@@ -1,0 +1,337 @@
+----------------------------------------------------------------------------------------------------------------------
+--  Общая схема принятия решений
+--  автор: Диденко Руслан (Stohe)
+--  TODO:
+----------------------------------------------------------------------------------------------------------------------
+storage = {}
+memtsg = {} --' временная таблица
+lasthealth = 0
+
+----------------------------------------------------------------------------------------------------------------------
+--Motivator binder
+----------------------------------------------------------------------------------------------------------------------
+class "motivator_binder" (object_binder)
+----------------------------------------------------------------------------------------------------------------------
+function motivator_binder:__init (obj) super(obj)
+end
+----------------------------------------------------------------------------------------------------------------------
+function motivator_binder:reinit()
+	object_binder.reinit(self)
+	self.object:set_pda_callback(pda_callback)
+
+	self.object:set_hear_callback(hear_callback)
+
+end
+----------------------------------------------------------------------------------------------------------------------
+function motivator_binder:net_destroy()
+	xr_motivator.storage[self.object:id()] = nil
+    object_binder.net_destroy(self)
+end
+----------------------------------------------------------------------------------------------------------------------
+function motivator_binder:update(delta)
+    object_binder.update(self, delta)
+--' Проверка ТИМ СКВАД ГРУП
+if false then
+  if memtsg[self.object:id()] == nil then
+    printf("[TSG] Object: %s t:%d s:%d g:%d", self.object:name(),
+                          self.object:team(),
+                          self.object:squad(),
+                          self.object:group())
+    memtsg[self.object:id()] = self.object:id()
+  end
+end
+
+--' Проверка потери жизни
+if false then
+	printf("%f * %f", self.object.health, self.object.health - lasthealth)
+	lasthealth = self.object.health
+end
+
+end
+----------------------------------------------------------------------------------------------------------------------
+function motivator_binder:reload (section)
+    object_binder.reload(self, section)
+
+    local char_ini = self.object:spawn_ini()
+
+    --' Bind other scripts
+    printf("Base evaluator ID %d", stalker_ids.property_script)
+    printf("Base action ID %d", stalker_ids.action_script)
+    self.object:disable_talk()
+
+    --' загрузка озвучки
+    xr_sounds.load_sounds (self.object)
+----------------------------------------------------------------------------------------------------------------------
+-- Общие скрипты
+----------------------------------------------------------------------------------------------------------------------
+	xr_sound.load_sound(self.object)
+    xr_motivator.storage[self.object:id()] = {  followers = {} }
+    --' Положения тела
+    xr_motivator.storage[self.object:id()].state = {
+            body_state = 0,
+            target_state = 0,
+            position = nil,
+            dist = 1,
+            anim = xr_state.anims(self.object)
+        }
+    xr_state.add_to_binder(self.object)
+    --' Настройка схемы реакции
+	xr_motivator.storage[self.object:id()].reactions = {
+		enabled = true,
+		time_wait = 5*60*1000,
+		evn = xr_reactions.events(self.object),
+		obj = {position = nil,
+				id = nil,
+				type = nil,
+				time = nil,
+				visibility = nil
+			},
+		rules = {}
+    }
+    xr_reactions.add_to_binder(self.object, char_ini)
+    --' схема привязки к позиции
+    xr_position.add_to_binder(self.object)
+    --' удар в морду
+    xr_punch.add_to_binder (self.object)   
+    --' Настройка встречи
+    xr_motivator.storage[self.object:id()].meet = {
+			Buyer = nil,
+            Seller = self.object,
+            begin_wait_to_see = { time = 300,
+                                begin = nil },
+            enabled = false,
+            over = false,
+            actor = nil,
+            noweap = false,			--' игнорируем наличие оружия у актора
+            distance = 15,			--' расстояние, в пределах которого мы реагируем
+            shoot_distance = 5		--' расстояние, в пределах которого мы стреляем
+        }  
+	xr_meet.add_to_binder(self.object, char_ini)	
+	--' помощник, мля !!!
+	xr_motivator.storage[self.object:id ()].sos = {
+		enabled = false,
+		npc = nil,
+		initialized = false,
+		code = 0,
+		need_follow = false
+    }
+	xr_sos.add_to_binder (self.object, char_ini)
+	--' раненый.
+	xr_motivator.storage[self.object:id ()].wounded = {
+		enabled = true,
+		threshold = 0.2,
+		sit = false,
+		cover = false,
+		npc = nil,
+		ignore_time = 0,
+		final = true,
+		immediate = false
+    }
+	xr_wounded.add_to_binder (self.object, char_ini)
+	xr_rest.add_to_binder (self.object, stalker_ids.action_puzzle_solver)
+
+----------------------------------------------------------------------------------------------------------------------
+-- Модели поведения
+----------------------------------------------------------------------------------------------------------------------
+    --' Грабители
+    xr_motivator.storage[self.object:id()].robber = { }
+    --' Поводырь/грабитель
+    xr_motivator.storage[self.object:id()].guide = { }
+    --' Охранник на входе в логово бандитов
+    xr_motivator.storage[self.object:id()].robber_guard = { }    
+    --' лагерь у костра
+    xr_motivator.storage[self.object:id()].kamp = {
+		enabled = false,
+		center_point = nil,
+		max_rad = 2,
+		action = 0,
+        last_action = 0,
+        patrol_path = {},
+        path_look = {},
+        pos_id = -1,
+        body_state = 0,
+        timer = { act1 = {begin = nil, time = 120},
+				act4 = {begin = nil, time = 60}}
+	}
+    --' спящий
+    xr_motivator.storage[self.object:id()].sleeper = {
+		enabled = false,
+		path_main = nil
+	}
+    --' Часовые
+    xr_motivator.storage[self.object:id()].guard = {
+		enabled = false,
+		action = nil,
+		path_main = nil,
+		path_hideout = nil
+	}
+    --' Сталкер, который ходит (версия часовых на новой схеме)
+    xr_motivator.storage[self.object:id()].walker = { }
+    xr_motivator.storage[self.object:id()].assassin = { }
+	--' Телохранители
+    xr_motivator.storage[self.object:id()].bodyguard = {
+		enabled = false,
+		action = nil,
+		path_main = nil,
+		path_side = nil,
+		path_guard = nil,
+		path_guard_radius = 0,
+		path_center = nil
+	}
+	--' Охранники
+    xr_motivator.storage[self.object:id()].zoneguard = { }
+    --' схема командира
+    xr_motivator.storage[self.object:id()].commander = {
+            enabled = false,
+            soldiers = {}
+    }
+    --' Настройка патруля
+    xr_motivator.storage[self.object:id()].patrol = {
+        enabled = false,
+            patrol_path = nil,
+            look_path = nil,
+            escape_path = nil,
+            raid_enabled = false,
+            raid_path = nil,
+            raid_look = nil,
+            raid_process = false,
+            npc_id = -1,
+            first_init = false,
+            patrol_end = false,
+            team = nil
+    }
+    --' Настройка follower
+    xr_motivator.storage[self.object:id()].follower = {
+            enabled = false,
+            leader_name = nil,
+            leader = nil,
+            escape_path = nil,
+            raid_enabled = false,
+            raid_path = nil,
+            mental_state = anim.free,
+            direction = vector():set(0,0,1),
+            distance = 2,
+            state = 0,
+            leader_command = 0,
+            npc = self.object,
+            look_dir = vector():set(0,0,0),
+            npc_id = -1
+        }
+	--' chaser
+	xr_motivator.storage[self.object:id()].chaser = {
+		enabled = false,        --enabled or disabled
+		npc = nil,              --sacrifice game_object
+		ret_vertex = -1         --level vertex id for return
+	}
+	--' бандиты в засаде
+	xr_motivator.storage[self.object:id()].ambush = {
+		enabled = false,
+		path = nil,
+		dist_sqr = 0
+	}
+    --‘ Снайпер
+	xr_motivator.storage[self.object:id()].sniper =
+		{
+        enabled  	= false,
+        rest_path 	= nil,
+        point_path	= nil,
+        camper_path = nil,
+		enemy		= nil,
+        zone		= nil,
+        enter       = false,
+        monster		= nil
+		}
+ 
+	--' Привязка к организации
+	if char_ini:section_exist("zones") == true then
+		xr_sleeper.add_to_binder	(self.object, nil)
+		xr_walker.add_to_binder		(self.object, nil)
+		xr_assassin.add_to_binder	(self.object, nil)
+	--	xr_patrol.add_to_binder		(self.object, nil)
+        xr_comm_ptr.add_to_binder   (self.object, nil)
+		xr_follower.add_to_binder	(self.object, nil)
+		xr_bodyguard.add_to_binder	(self.object, nil)
+		xr_zoneguard.add_to_binder	(self.object, nil)
+		xr_sniper.add_to_binder		(self.object, nil)
+		xr_kamp.add_to_binder		(self.object, nil)
+		xr_robbers.add_to_binder		(self.object, nil)
+		xr_formation.add_to_binder	(self.object)
+	else
+		xr_sniper.add_to_binder			(self.object, char_ini)
+		xr_ambush.add_to_binder			(self.object, char_ini)
+		xr_chaser.add_to_binder			(self.object, char_ini)
+	--	xr_patrol.add_to_binder			(self.object, char_ini)
+        xr_comm_ptr.add_to_binder       (self.object, char_ini)
+		xr_follower.add_to_binder		(self.object, char_ini)
+		xr_commander.add_to_binder		(self.object, char_ini)
+		xr_bodyguard.add_to_binder		(self.object, char_ini)
+		xr_zoneguard.add_to_binder		(self.object, char_ini)
+		xr_walker.add_to_binder			(self.object, char_ini)
+		xr_assassin.add_to_binder		(self.object, char_ini)
+		xr_guard.add_to_binder			(self.object, char_ini)
+		xr_sleeper.add_to_binder		(self.object, char_ini)
+		xr_kamp.add_to_binder			(self.object, char_ini)
+		xr_robber_guard.add_to_binder	(self.object, char_ini)
+		xr_guide.add_to_binder			(self.object, char_ini)
+		xr_robbers.add_to_binder		(self.object, char_ini)
+	end        
+    xr_storyline.set_storyline(self.object, char_ini)    
+end
+----------------------------------------------------------------------------------------------------------------------
+function pda_callback(recepient, who, msg_type)
+    recepient:answer_pda ()
+end
+----------------------------------------------------------------------------------------------------------------------
+function hear_callback(self, who, sound_type, sound_position, sound_power)
+    ----printf("SOUNDCHECK %s, %f", who:name(), sound_power)
+end
+----------------------------------------------------------------------------------------------------------------------
+function AddToMotivator(npc)
+    npc:bind_object(this.motivator_binder(npc))
+end
+----------------------------------------------------------------------------------------------------------------------
+function checkStorage(npc)
+    -- FIXME: Zmey: надо бы вынести общую часть кода в отдельную функцию
+    local count = 0
+    for k,v in xr_motivator.storage[npc:id()] do
+        if	k == "sleeper" or
+			k == "follower" or
+			k == "patrol" or
+			k == "guard" or
+			k == "walker" or
+			k == "assassin" or
+			k == "commander" or
+			k == "ambush" or
+			k == "bodyguard" or
+			k == "zoneguard" or
+			k == "sniper" or
+			k == "kamp"
+        then
+            if v.enabled == true then
+                count = count + 1
+            end
+        end
+    end
+    if count > 1 then
+        printf("ERROR: there is too many active script")
+        for k,v in xr_motivator.storage[npc:id()] do
+            if	k == "sleeper" or
+				k == "follower" or
+				k == "patrol" or
+				k == "guard" or
+				k == "walker" or
+				k == "assassin" or
+				k == "commander" or
+				k == "ambush" or
+				k == "bodyguard" or
+				k == "zoneguard" or
+				k == "sniper" or
+				k == "kamp"
+            then
+                if v.enabled == true then
+                    printf("ERROR: %s", k)
+                end
+            end
+        end
+    end
+end

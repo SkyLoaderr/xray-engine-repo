@@ -1,0 +1,217 @@
+--[[------------------------------------------------------------------------------------------------------------------
+Сюжетный скрипт "Имитация боя на заводе"
+Чугай Саша
+
+Сделать:
+	- если умерло >= 3 военных, вызвать рейд
+	- вертолёт кружит по маршруту
+	- зоны, в которых вертолёт видит игрока
+--------------------------------------------------------------------------------------------------------------------]]
+
+local a_wait    = 0
+local a_shoot   = 1
+local a_reload  = 2
+
+local e_wait    = 0
+local e_explode = 1
+
+local idle = true
+local the_actor
+local way
+
+local npcs = {}
+local wpns = {}
+
+local combat_duration = 25000   -- продолжительность боя в мс
+
+function on_enter( zone, obj )
+--	printf( "on_enter. zone=(%s, %d) obj=(%s, %d)", zone:name(), zone:id(), obj:name(), obj:id() )
+
+    if obj:id() == the_actor:id() then
+        idle = false
+        printf( "actor has entered zone %s", zone:name() )
+    end
+end
+
+function add_actions( npc, acts )
+    local i = 1
+
+    reset_action( npc, script_name() )
+
+    function get_act_cmd()
+        local c = acts[i]
+        i = i + 1
+        return c
+    end
+    
+    while i <= table.getn( acts ) do
+        local act = get_act_cmd()
+        if act == a_wait then
+            action(
+                npc,
+                cond( cond.time_end, get_act_cmd() )
+            )
+        elseif act == a_shoot then
+            action(
+                npc,
+                object( wpns[npc], object.fire1 ),
+                look( look.fire_point, way:point( get_act_cmd() ) ),
+                cond( cond.time_end, 1500 )
+            )
+        elseif act == a_reload then
+            action(
+                npc,
+                object( wpns[npc], object.fire1 ),
+                cond( cond.time_end, 3000 )
+            )
+        end
+    end
+
+    -- чтоб избежать спама в логе
+    action(
+        npc,
+        cond( cond.time_end, time_infinite )
+    )
+end
+
+function main()
+    the_actor  = get_actor()
+
+    if the_actor:has_info( "agroprom_factory_combat" ) then
+        return
+    end
+
+    local events = {
+        e_wait,    5000,
+        e_explode, "factory_combat_grnd_3",
+        e_wait,    5000,
+        e_explode, "factory_combat_grnd_1",
+        e_wait,    5000,
+        e_explode, "factory_combat_grnd_2",
+        e_wait,    combat_duration - 5000 - 5000 - 5000
+    }
+
+    local events_i
+
+    function get_event_cmd()
+        local c = events[events_i]
+        events_i = events_i + 1
+        return c
+    end
+
+    -- точки, в которые может постреливать i-й вояка
+    local shoot_points = {
+        { 0, 1 },
+        { 2 },
+        { 3 },
+        { },
+        { 4, 5 },
+        { 6 }
+    }
+
+    ----------
+
+    local zone = get_level_object( "zone_factory_combat" )
+    zone:set_callback( on_enter, true )
+
+    printf( "[%s] zone callback set", script_name() )
+
+    way  = patrol( "way_factory_combat" )
+
+    for i = 1, table.getn( shoot_points ) do
+        local npc = get_level_object( "military_"..i )
+        table.insert( npcs, npc )
+        npc:script( true, script_name() )
+
+        local wpn = npc:best_weapon()
+        wpns[npc] = wpn
+
+        action(
+            npc,
+            move(),
+            object( wpn, object.activate ),
+            look( look.path_dir ),
+--            anim( anim.danger ),
+            cond( cond.time_end, time_infinite )
+        )
+    end
+
+--    local heli = get_level_object( "helicopter_factory_combat" )
+--    local heli_target = get_level_object( "factory_corpse_3" )
+--    local heli_prepos   = way:point( way:index( "helicopter_prepos" ) )
+--    local heli_pos      = way:point( way:index( "helicopter_pos" ) )
+
+    local t = 0
+
+    while idle do
+--        if t < device():time_global() then
+--            t = device():time_global() + 60000
+--            heli:heli_go_to_point( heli_pos, heli_prepos, 60 )
+--        end
+
+        wait( 500 )
+    end
+
+--    the_actor:give_info_portion_via_pda( "agroprom_factory_combat", get_level_object( "factory_corpse_1" ) )
+    the_actor:give_info_portion( "agroprom_factory_combat" )
+
+    local snd = sound_object( "ambient\\gunfire" )
+    snd:play_at_pos( npcs[1], npcs[1]:position() )
+
+--    heli:heli_go_to_point( heli_pos, heli_prepos, combat_duration * 0.001 )
+
+    zone:clear_callback( true )
+
+    for i = 1, table.getn( shoot_points ) do
+        local actions = { a_reload }
+        local t = 0
+
+        if table.getn( shoot_points[i] ) > 0 then
+            while true do
+                local tt = math.random( 1000, 5000 )
+
+                t = t + tt
+                if t >= combat_duration then
+                    break
+                end
+
+                table.insert( actions, a_wait )
+                table.insert( actions, tt )
+                table.insert( actions, a_shoot )
+                table.insert( actions, random_choice( unpack( shoot_points[i] ) ) )
+            end
+        end
+
+        add_actions( npcs[i], actions )
+    end
+    
+    events_i = 1
+
+    while events_i <= table.getn( events ) do
+        local event = get_event_cmd()
+
+        if event == e_wait then
+            local t = device():time_global() + get_event_cmd()
+            
+            while t > device():time_global() do
+--                if not heli:air_attack_active() then
+--                    heli:air_attack( heli_target )
+--                end
+                
+                wait()
+            end
+
+        elseif event == e_explode then
+            local obj = level.object( get_event_cmd() )
+            if obj then
+                obj:explode( 0 )
+            end
+        end
+    end
+
+--    heli:heli_goto_stay_point( time_infinite )
+
+    for i = 1, table.getn( shoot_points ) do
+        npcs[i]:script( false, script_name() )
+    end
+end

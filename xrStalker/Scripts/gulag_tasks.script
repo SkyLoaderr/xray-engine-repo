@@ -1,0 +1,361 @@
+local t
+
+function loadJob(sj, gname, type, squad, groups)
+--'-----------------------------------------------------------------------------------------
+--' ESCAPE BLOCKPOST
+--'-----------------------------------------------------------------------------------------
+	if type == "blockpost" then	
+		--' STATE 0
+		t = { name = "patrol",
+			object = nil, begin = nil, idle = 6*60*60*1000,
+			prior = 8, state = {0,1},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			patrol_path = gname.."_patrol_0",
+			path_look = gname.."_patrol_look_0",
+			escape_path = gname.."_patrol_look_0" }
+		table.insert(sj, t)			
+		t = { name = "follower",
+			object = nil, begin = nil, idle = 6*60*60*1000,
+			prior = 7, state = {0,1},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			leader_name = nil,
+			escape_path = gname.."_patrol_look_0" }
+		table.insert(sj, t)			
+		t = { name = "follower",
+			object = nil, begin = nil, idle = 6*60*60*1000,
+			prior = 7, state = {0,1},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			leader_name = nil,
+			escape_path = gname.."_patrol_look_0" }
+		table.insert(sj, t)	
+		t = { name = "walker",
+			object = nil, begin = nil, idle = 0,
+			prior = 10, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = gname.."_zone",
+			path_walk = gname.."_guard_house_walk",
+			path_look = nil }
+		table.insert(sj, t)			
+		t = { name = "walker",
+			object = nil, begin = nil, idle = 0,
+			prior = 6, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = gname.."_zone",
+			path_walk = gname.."_guard_left_walk",
+			path_look = nil }
+		table.insert(sj, t)			
+		t = { name = "walker",
+			object = nil, begin = nil, idle = 0,
+			prior = 6, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = gname.."_zone",
+			path_walk = gname.."_guard_right_walk",
+			path_look = nil }
+		table.insert(sj, t)
+		t = { name = "walker",
+			object = nil, begin = nil, idle = 0,
+			prior = 9, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = gname.."_zone",
+			path_walk = gname.."_guard_light_walk",
+			path_look = gname.."_guard_light_look" }
+		table.insert(sj, t)			
+		t = { name = "walker",
+			object = nil, begin = nil, idle = 0,
+			prior = 5, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = gname.."_zone",
+			path_walk = gname.."_gb_left_walk",
+			path_look = nil }
+		table.insert(sj, t)
+		t = { name = "walker",
+			object = nil, begin = nil, idle = 0,
+			prior = 5, state = {0,1},
+			squad = 0, group = groups[1],
+			in_rest = "", out_rest = gname.."_zone",
+			path_walk = gname.."_gb_right_walk",
+			path_look = nil }
+		table.insert(sj, t)
+		t = { name = "sleeper",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = gname.."_zone",
+			path_main = gname.."_sleep_1"}
+		table.insert(sj, t)			
+		t = { name = "sleeper",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = gname.."_zone",
+			path_main = gname.."_sleep_2"}
+		table.insert(sj, t)			
+		t = { name = "sleeper",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = gname.."_zone",
+			path_main = gname.."_sleep_3"}
+		table.insert(sj, t)			
+		t = { name = "sleeper",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = gname.."_zone",
+			path_main = gname.."_sleep_4"}
+		table.insert(sj, t)			
+		t = { name = "sleeper",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = gname.."_zone",
+			path_main = gname.."_sleep_5"}
+		table.insert(sj, t)			
+		t = { name = "sleeper",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = gname.."_zone",
+			path_main = gname.."_sleep_6"}
+		table.insert(sj, t)			
+
+		--' STATE 1			
+		t = { name = "walker",
+			object = nil, begin = nil, idle = 0,
+			prior = 6, state = {1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = gname.."_zone",
+			path_walk = gname.."_alarm_left_walk",
+			path_look = gname.."_alarm_left_look" }
+		table.insert(sj, t)			
+		t = { name = "walker",
+			object = nil, begin = nil, idle = 0,
+			prior = 6, state = {1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = gname.."_zone",
+			path_walk = gname.."_alarm_right_walk",
+			path_look = gname.."_alarm_right_look" }
+		table.insert(sj, t)			
+		t = { name = "walker",
+			object = nil, begin = nil, idle = 0,
+			prior = 6, state = {1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = gname.."_zone",
+			path_walk = gname.."_alarm_center_walk",
+			path_look = gname.."_alarm_center_look" }
+		table.insert(sj, t)			
+	end
+--'------------------------------------------------------------------------------------------------------
+--' Dolg kamp at the Garbage
+--'------------------------------------------------------------------------------------------------------
+	if type == "dolg_kamp" then	
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_center",
+			patrol_path = nil,
+			path_look = nil }
+		table.insert(sj, t)			
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_center",
+			patrol_path = nil,
+			path_look = nil }
+		table.insert(sj, t)			
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_center",
+			patrol_path = nil,
+			path_look = nil }
+		table.insert(sj, t)			
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_center",
+			patrol_path = nil,
+			path_look = nil }
+		table.insert(sj, t)			
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_center",
+			patrol_path = nil,
+			path_look = nil }
+		table.insert(sj, t)			
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_center",
+			patrol_path = nil,
+			path_look = nil }
+		table.insert(sj, t)			
+
+		t = { name = "guard",
+			object = nil, begin = nil, idle = 0,
+			prior = 2, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_point1"}
+		table.insert(sj, t)			
+		t = { name = "guard",
+			object = nil, begin = nil, idle = 0,
+			prior = 2, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_point2"}
+		table.insert(sj, t)			
+
+
+	end
+
+
+--'------------------------------------------------------------------------------------------------------
+--' Stalkers meeteing in a round
+--'------------------------------------------------------------------------------------------------------
+	if type == "stalker_kamp" then	
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 8, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_center",
+			patrol_path = nil,
+			path_look = nil }
+		table.insert(sj, t)			
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 8, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_center",
+			patrol_path = nil,
+			path_look = nil }
+		table.insert(sj, t)			
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 8, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_center",
+			patrol_path = nil,
+			path_look = nil }
+		table.insert(sj, t)			
+	end
+--'------------------------------------------------------------------------------------------------------
+--' BANDITS CAMP. Sleepers и Walkers. Кол-во тех и тех определяется кол-вом путей на уровне
+--'------------------------------------------------------------------------------------------------------
+	if type == "bandits_camp" then	
+	--' STATE 0
+		--' walkers
+		local s1 = gname.."_walk_"
+		local s2 = gname.."_look_"
+		local sn1, sn2
+		local n = 1
+
+		while true do
+			sn1 = s1..n
+			if level.patrol_path_exists( sn1 ) then
+				t = {
+					name = "walker",
+					idle = 0,
+					prior = 1, state = {0},
+					squad = squad, group = groups[1],
+					in_rest = "", out_rest = "",
+					path_walk = sn1
+				}
+
+				--' path_look - не обязателен
+				sn2 = s2..n
+				if level.patrol_path_exists( sn2 ) then
+					t.path_look = sn2
+				end
+
+				table.insert(sj, t)
+
+				n = n + 1
+			else
+				break
+			end
+		end
+
+		--'sleepers
+		s1 = gname.."_sleep_"
+		n = 1
+
+		while true do
+			sn1 = s1..n
+			if level.patrol_path_exists( sn1 ) then
+				t = {
+					name = "sleeper",
+					idle = 0,
+					prior = 0, state = {0},
+					squad = squad, group = groups[1],
+					in_rest = "", out_rest = "",
+					path_main = sn1
+				}
+				table.insert(sj, t)
+
+				n = n + 1
+			else
+				break
+			end
+		end
+	end
+end
+
+function loadStates(gname, type)
+	if type == "blockpost" then
+		return function(obj)
+			for k,v in obj do
+				enemy = v:best_enemy()
+				if enemy ~= nil then
+					enemy_type = get_clsid(enemy)
+					if 	enemy_type == clsid.actor or
+	  	   				enemy_type == clsid.soldier or
+		   				enemy_type == clsid.stalker or
+	   					enemy_type == clsid.trader
+	   				then
+	   					return 1
+	   				end
+				end
+			end
+			return 0
+		end
+	end
+	if type == "dolg_kamp" then
+		return function()
+			return 0
+		end
+	end
+	if type == "bandits_camp" then
+		return function()
+			return 0
+		end
+	end
+end
+
+function get_megafone(type, name)
+	if type == "blockpost" then
+		st = gramofon.m_gramofon(name.."_rupor", "blockpost_commander")
+		st:event(0)
+		return st
+	end
+	return nil
+end

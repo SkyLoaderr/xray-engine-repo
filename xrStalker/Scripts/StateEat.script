@@ -1,0 +1,45 @@
+local s_eat		= 6
+
+class "CStateEat"
+function CStateEat:__init(_data, _mem)
+	self.data		= _data
+	self.memory		= _mem
+	self.corpse_id	= 0
+end
+
+function CStateEat:set_data(_data, _mem)			// это не правильно, но по другому ни как
+	self.data	= _data
+	self.memory = _mem
+end
+
+function CStateEat:initialize()
+	reset_action(self.data.npc, self.data.scr_name)
+	self.corpse_id	= self.memory.corpse:id()
+end
+
+function CStateEat:execute()
+	if(corpse_changed) then
+		reset_action(self.data.npc, self.data.scr_name)
+	end
+	
+	if(self.data.npc:action() == nil) then
+		action(self.data.npc, act(act.eat, self.memory.corpse), cond(cond.time_end, 60000))
+		if(self.memory.corpse) then printf("%d", self.memory.corpse:id()) end
+	end
+end
+
+function CStateEat:corpse_changed()
+	if(self.memory.corpse:id() ~= self.corpse_id) then
+		self.corpse_id	= self.memory.corpse:id()
+		return true
+	end
+	
+	return false
+end
+
+function CStateEat:id()
+	return s_eat
+end
+
+function CStateEat:finalize()
+end

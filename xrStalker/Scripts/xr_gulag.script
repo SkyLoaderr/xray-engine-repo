@@ -1,0 +1,325 @@
+fraction = {}
+
+class "fract"
+function fract:__init(name, type, squad, groups)
+	self.name   = name
+	self.type   = type
+	self.squad  = squad
+	self.groups = groups or {}
+
+	self.state = 0
+	self.stateBegin = nil
+
+	self.casualities = 0  	
+
+	self.Object = {}        
+	self.Job = {}           
+--	self.States = {}	
+	--' Функция для просчета состояний
+--	self.calculateStates = nil
+
+	self.music = gulag_tasks.get_megafone(type, name) --' матюгальник
+	
+	gulag_tasks.loadJob(self.Job, name, type, squad, self.groups)
+	table.sort(self.Job, function(a,b) return a.prior > b.prior end)
+	self.calculateStates = gulag_tasks.loadStates(name, type)
+end
+function fract:addObject(npc)
+	if self:checkNpc(npc) == true then
+		if self.Object[npc:id()] == nil then
+			self.Object[npc:id()] = npc
+			return true
+		end
+	else
+		return false
+	end
+end
+function fract:checkNpc(npc)
+	if self.type == "blockpost"
+	then
+		return true
+	end
+
+	if self.type == "dolg_kamp"	
+	then
+		return true
+	end
+
+	if self.type == "stalker_kamp"
+	then
+		return true
+	end
+
+	if self.type == "bandits_camp"
+	then
+		return true
+	end
+
+	return false
+end
+
+function fract:removeObject(npc)
+	self:clearAllJob(npc)
+	self.Object[npc:id()] = nil
+end
+function fract:calculate() 
+	--' Изменение потерь в лагере
+	for k,v in self.Object do
+		if v:alive() ~= true then
+			self:changeCasualities(1)
+			self.Object[k] = nil
+		end
+	end
+	--' Обнуление работ с несуществующими персонажами
+	for k,v in self.Job do
+		if v.object ~= nil and self.Object[v.object:id()] == nil then
+			v.object = nil				
+		end
+	end
+
+	if self.calculateStates ~= nil then 
+		self:changeState(self.calculateStates(self.Object))
+	end		
+
+	--' Апдейт матюгальника
+	if self.music ~= nil then
+		self.music:update()
+	end
+	
+	self:updateJob()
+--	self:print()
+end
+function fract:changeState(state)
+	if self.music ~= nil then
+		self.music:event(state)
+	end
+	self.state = state
+end
+function fract:updateJob()
+	function availState(st, state)
+		for k,v in st do
+			if v == state then return true end
+		end
+		return false
+	end
+
+	for k,v in self.Job do
+		-- проверка на доступность при текущем стейте
+		if availState(v.state, self.state) ~= true then
+			v.object = nil
+		else
+			if v.object == nil and
+        	   (v.begin == nil or
+			   game.time() - v.begin > v.idle)	
+			then			
+				for kk,vv in self.Object do
+					if self:getJob(vv) == nil then
+						self:setJob(vv, v) 
+						return
+					end
+				end
+				for i = table.getn(self.Job), k, -1 do
+					if self.Job[i].object ~= nil and
+						self.Job[i].prior < v.prior
+					then 
+						self:setJob(self.Job[i].object, v) 
+						return
+					end			
+				end				
+			end
+       	end
+	end
+end
+function fract:print()
+	printf("***  %s -- State: %d -- Capacity: %d -- Population: %d", self.name, self.state, self:get_capacity(), self:get_population())
+	printf("Resources:")
+	for k,v in self.Object do
+		printf("id: %d name: %s", k, v:name())
+	end
+	printf("Jobs:")
+	for k,v in self.Job do
+		printf("name: %s, prior %d", v.name, v.prior)
+		if v.object ~= nil then
+			printf("    ObjID: %d", v.object:id())
+			printf("    Actor: %s", self.Object[v.object:id()]:name())
+		end
+	end
+end
+function fract:get_capacity()
+	i = {}
+	for k,v in self.Job do
+		for kk,vv in v.state do
+			if i[vv] == nil then i[vv] = 0 end
+			i[vv] = i[vv] + 1
+		end
+	end
+	t = 0
+	for k,v in i do
+		if t == 0 then 
+			t = v 
+		else
+			if v < t then t = v end
+		end
+	end
+	return t
+end
+function fract:get_population()
+	i = 0
+	for k,v in self.Object do
+		i = i + 1
+	end
+	return i
+end
+function fract:setJob(npc, job) 
+	self:clearAllJob(npc)
+	if job.name == "guard" then
+		job.object = npc
+		job.begin = game.time()
+	    xr_guard.set_guard(npc, true, job.path_main, job.path_hideout, job.running, job.search_light)
+	end
+	if job.name == "walker" then
+		job.object = npc
+		job.begin = game.time()
+	    xr_walker.set_walker(npc, true, job.path_walk, job.path_look)
+	end
+	if job.name == "bodyguard" then
+		job.object = npc
+		job.begin = game.time()
+		xr_bodyguard.set_bodyguard(npc, true, job.path_main, job.path_side, job.path_guard, job.path_guard_radius, job.path_center)
+	end
+	if job.name == "sleeper" then
+		job.object = npc
+		job.begin = game.time()
+		xr_sleeper.set_sleeper(npc, true, job.path_main)			
+	end
+	if job.name == "patrol" then
+		job.object = npc
+		job.begin = game.time()
+		xr_comm_ptr.set_patrol(npc, true, job.patrol_path, job.path_look, job.escape_path)			
+	end
+	if job.name == "follower" then
+		local nn = self:nameStalkerOnJob("patrol")
+		if nn ~= nil then
+			job.object = npc
+			job.begin = game.time()
+		    xr_follower.set_follower(npc, true, nn, job.escape_path)			
+		end
+	end
+	if job.name == "kamp" then
+		job.object = npc
+		job.begin = game.time()
+			xr_kamp.set_kamp(npc, true, job.center_point, job.patrol_path)
+	end
+	if job.name == "sniper" then
+		job.object = npc
+		job.begin = game.time()
+			xr_sniper.set_sniper(npc, true, job.rest_path, job.camper_path, job.point_path)
+	end
+	--' Смена тим, сквад, груп
+	job.object:change_team(job.object:team(), job.squad or job.object:squad(), job.group or job.object:group())
+	--' Спейс рестрикторы
+	--job.object:remove_all_restrictions()
+	--job.object:add_restrictions(job.out_rest, job.in_rest)
+end
+function fract:getJob(npc)
+	if npc == nil then return nil end
+	for k,v in self.Job do
+		if v.object ~= nil and v.object:id() == npc:id() then
+			return v.name
+		end
+	end
+	return nil
+end
+function fract:clearAllJob(npc)
+	for k,v in self.Job do
+		if v.object ~= nil and v.object:id() == npc:id() then	
+			v.object = nil
+		end
+	end
+	for k,v in xr_motivator.storage[npc:id()] do
+		if k == "sleeper" or
+		   k == "camper" or
+		   k == "scout" or
+		   k == "follower" or
+		   k == "patrol" or
+		   k == "guard" or
+		   k == "walker" or
+		   k == "bodyguard" or
+		   k == "sniper" or
+		   k == "kamp"
+		then
+			v.enabled = false
+		end
+	end
+end
+function fract:stalkerExist(npc)
+	if self.Object[npc:id()] ~= nil then
+		return true
+	end
+	return false
+end
+function fract:nameStalkerOnJob(job_name)
+	for k,v in self.Job do
+		if v.name == job_name then
+			if v.object ~= nil then
+				return self.Object[v.object:id()]:name()
+			end
+		end
+	end
+	return nil
+end
+
+function fract:getCasualities()
+	return self.casualities
+end
+function fract:changeCasualities(delta)
+	self.casualities = self.casualities + delta
+end
+----------------------------------------------------------------------------------------------------------------------
+-- Function
+----------------------------------------------------------------------------------------------------------------------
+function createGulag(name, type, squad, groups)
+	if xr_gulag.fraction[name] == nil then
+		xr_gulag.fraction[name] = xr_gulag.fract(name, type, squad, groups)
+	end
+	return xr_gulag.fraction[name]
+end
+function destroyGulag(name)
+	xr_gulag.fraction[name] = nil
+end
+
+function isUnderFraction(npc)
+	for k,v in fraction do
+		if v:stalkerExist(npc) == true then
+			return k
+		end		
+	end
+	return nil
+end
+function resetJob(name, npc)
+	if xr_gulag.fraction[name] ~= nil then
+		xr_gulag.fraction[name]:clearAllJob(npc)
+		xr_gulag.fraction[name]:updateJob()
+	end
+end
+
+function needRaid(fraction)
+	if xr_gulag.fraction[fraction] ~= nil then
+		local cc = xr_gulag.fraction[fraction]:getCasualities()
+		printf("seekraid %d of 3", cc)
+		if cc >= 3 then return true end
+	end
+	return false			
+end
+function startRaid(fraction)
+	if xr_gulag.fraction[fraction] ~= nil then
+		local cc = xr_gulag.fraction[fraction]:getCasualities()
+		xr_gulag.fraction[fraction]:changeCasualities(-cc)
+	end
+end
+
+function changeCasualities(fraction, delta)
+	if xr_gulag.fraction[fraction] ~= nil then
+		xr_gulag.fraction[fraction]:changeCasualities(delta)
+	end
+end

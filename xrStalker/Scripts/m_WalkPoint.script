@@ -1,0 +1,287 @@
+local walking     = 1
+local look_around = 2
+local sit_idle    = 3
+local sleep       = 4
+
+local time_rest   = 6000
+local p_radius    = 15
+--------------------------------------------------------------------------------
+class "stateWalkPoint"
+function stateWalkPoint:__init( script_name, mem, position_o, radius_o )
+    self.scr_name      = script_name
+    self.memory        = mem
+	self.time          = nil
+    self.point         = position_o
+    self.new_point     = nil
+    self.need_reselect = true
+    self.need_init     = false
+    self.LookAround    = this.sLookAround( mem, script_name )
+    self.SitIdle       = this.sSitIdle   ( mem, script_name )
+    self.Walking       = this.sWalking   ( mem, script_name, position_o, radius_o )
+    self.Sleep         = this.sSleep     ( mem, script_name )
+
+    --printf( ":%s", self.scr_name )
+
+    self.curState      = nil
+
+end
+
+--------------------------------------------------------------------------------
+
+function stateWalkPoint:initialize()
+	self:check_state()
+    self.need_reselect = false
+end
+
+--------------------------------------------------------------------------------
+
+function stateWalkPoint:finalize()
+	if( self.curState ) then
+    	self.curState:finalize()
+    end
+
+    self.curState = nil
+end
+
+--------------------------------------------------------------------------------
+
+function stateWalkPoint:execute()
+
+    if( self.need_reselect ) then
+    	self:check_state()
+        self.need_reselect = false
+	end
+
+    self.curState:execute()
+
+    if( self.curState:check_completed() ) then
+    	self.need_reselect = true
+    end
+end
+
+--------------------------------------------------------------------------------
+
+function stateWalkPoint:check_state()
+--		100 - sWalking
+--		101 - sLookAround
+--		102 - sSitIdle
+--		103 - sSleep
+
+    if( self.curState == nil ) then
+    	self:set_state( self.Walking )
+        return
+    end
+
+	if( self.curState:id() == 100 ) then
+    	self:set_state( self.LookAround )
+        return
+    end
+
+    if( self.curState:id() == 101 ) then
+    	if( math.random() > 0.7 ) then
+        	self:set_state( self.SitIdle )
+        else
+        	self:set_state( self.Walking )
+        end
+        return
+    end
+
+    if( self.curState:id() == 102 ) then
+    	self:set_state( self.Walking )
+        return
+    end
+
+end
+
+--------------------------------------------------------------------------------
+
+function stateWalkPoint:set_state( new_state )
+--	printf( "1  id = %d", self.curState:id() )
+
+    if( self.curState ) then
+    	self.curState:finalize()
+    end
+
+    self.curState = new_state
+    self.curState:initialize()
+end
+
+--------------------------------------------------------------------------------
+
+function stateWalkPoint:check_completed()
+    return ( false )
+end
+
+--------------------------------------------------------------------------------
+
+function stateWalkPoint:can_start()
+    return ( true )
+end
+
+--------------------------------------------------------------------------------
+
+function stateWalkPoint:update()
+    if( self.curState ) then reset_action( self.memory.npc, self.scr_name ) end
+end
+
+--------------------------------------------------------------------------------
+
+function stateWalkPoint:id()
+    return 8
+end
+
+
+class "sWalking"
+function sWalking:__init( mem, script_name, position_o, radius_o )
+	self.memory    = mem
+    self.scr_name  = script_name
+    self.point     = patrol(position_o):level_vertex_id(0)
+    self.time      = 0
+
+    if( radius_o ) then
+        self.radius = radius_o
+    else
+        self.radius = p_radius
+    end
+end
+
+function sWalking:initialize()
+    self.time   = device():time_global() + math.random( 10000, 20000 )
+    self.memory.npc:script( true, self.scr_name )
+end
+
+function sWalking:execute()
+    if( self.memory.npc:action() == nil ) then
+        action( self.memory.npc, move( move.walk, new_point(self.point, self.memory.npc:level_vertex_id(), self.radius, self.radius/1.3), 1.5 ), sound( sound.idle ), cond( cond.move_end ) )
+    end
+end
+
+local pos   = nil
+
+function sWalking:finalize()
+    self.memory.npc:script( false, self.scr_name )
+end
+
+function sWalking:check_completed()
+    return ( device():time_global() > self.time )
+end
+
+function sWalking:update()
+    reset_action( self.memory.npc, self.scr_name )
+end
+
+function sWalking:id()
+	return 100
+end
+
+--==============================================================================
+
+class "sLookAround"
+function sLookAround:__init( mem, script_name )
+    self.memory   = mem
+    self.scr_name = script_name
+    self.time     = nil
+end
+
+function sLookAround:initialize()
+	self.time   = device():time_global() + 5000
+    self.memory.npc:script( true, self.scr_name )
+end
+
+function sLookAround:execute()
+	if( self.memory.npc:action() == nil ) then
+    	action( self.memory.npc, anim( anim.look_around, 0 ), sound( sound.idle ), cond( cond.time_end, 10000 ) )
+    end
+end
+
+function sLookAround:finalize()
+    self.memory.npc:script( false, self.scr_name )
+end
+
+function sLookAround:update()
+    reset_action( self.memory.npc, self.scr_name )
+end
+
+function sLookAround:check_completed()
+	return ( device():time_global() > self.time )
+end
+
+function sLookAround:id()
+    return 101
+end
+
+--==============================================================================
+
+class "sSitIdle"
+function sSitIdle:__init( mem, script_name )
+    self.memory   = mem
+    self.scr_name = script_name
+    self.time     = nil
+end
+
+function sSitIdle:initialize()
+    self.time   = device():time_global() + 10000
+    self.memory.npc:script( true, self.scr_name )
+end
+
+function sSitIdle:execute()
+    if( self.memory.npc:action() == nil ) then
+        if( math.random() > 0.5 ) then
+        	action( self.memory.npc, anim( anim.sit_idle, 0 ), sound(sound.idle), cond( cond.time_end, 20000 ) )
+        else
+		    action( self.memory.npc, anim( anim.lie_idle, 0 ), sound(sound.idle), cond( cond.time_end, 20000 ) )
+        end
+    end
+end
+
+function sSitIdle:finalize()
+    self.memory.npc:script( false, self.scr_name )
+end
+
+function sSitIdle:update()
+    reset_action( self.memory.npc, self.scr_name )
+end
+
+function sSitIdle:check_completed()
+    return ( device():time_global() > self.time )
+end
+
+function sSitIdle:id()
+    return 102
+end
+
+--==============================================================================
+
+class "sSleep"
+function sSleep:__init( mem, script_name )
+    self.memory   = mem
+    self.scr_name = script_name
+    self.time     = nil
+end
+
+function sSleep:initialize()
+    self.time   = device():time_global() + 30000
+    self.memory.npc:script( true, self.scr_name )
+end
+
+function sSleep:execute()
+    if( self.memory.npc:action() == nil ) then
+        action( self.memory.npc, anim( anim.sleep, 0 ), cond( cond.time_end, 30000 ) )
+    end
+end
+
+function sSleep:finalize()
+    self.memory.npc:script( false, self.scr_name )
+end
+
+function sSleep:update()
+    reset_action( self.memory.npc, self.scr_name )
+end
+
+function sSleep:check_completed()
+    return ( device():time_global() > self.time )
+end
+
+function sSleep:id()
+    return 103
+end

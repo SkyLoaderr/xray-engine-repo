@@ -1,0 +1,83 @@
+--------------------------------------------------------------------------------
+class "stateHit"
+function stateHit:__init( script_name, mem )
+    self.scr_name   = script_name
+    self.memory     = mem
+    self.time		= device():time_global()
+end
+
+--------------------------------------------------------------------------------
+
+function stateHit:initialize()
+	self.memory.npc:script( true, self.scr_name )
+    self.time	= self.memory.hit.time
+end
+
+--------------------------------------------------------------------------------
+
+function stateHit:finalize()
+    self.memory.npc:script( false, self.scr_name )
+end
+
+--------------------------------------------------------------------------------
+
+function stateHit:execute()
+--	printf( "stateHit executed" )
+	if(self.time ~= self.memory.hit.time) then
+    	reset_action(self.memory.npc, self.scr_name )
+		self.time = self.memory.hit.time
+    end
+
+	if( self.memory.npc:action() == nil ) then
+        if(self.memory.hit.who and is_object_online(self.memory.hit.who:id()) and self.memory.hit.who:alive()) then
+            action( self.memory.npc, act(act.panic, self.memory.hit.who), sound(sound.panic), cond(cond.time_end, 20000) )
+		else
+            action( self.memory.npc, anim(anim.look_around, 0), sound(sound.idle), cond(cond.time_end, 10000) )
+            action( self.memory.npc, anim(anim.sit_idle, 0), sound(sound.idle), cond(cond.time_end, 40000) )
+        end
+    end
+end
+
+--------------------------------------------------------------------------------
+
+function stateHit:can_start()
+    return ( device():time_global() < self.memory.hit.time + 5000 )
+end
+
+--------------------------------------------------------------------------------
+
+function stateHit:check_complited()
+    return ( device():time_global() > self.memory.hit.time + 5000 )
+end
+
+--------------------------------------------------------------------------------
+
+function stateHit:update()
+	reset_action( self.memory.npc, self.scr_name )
+end
+
+--------------------------------------------------------------------------------
+
+function stateHit:id()
+    return 10
+end
+
+--------------------------------------------------------------------------------
+
+class "stateHitRunToHit" (stateHit)
+function stateHitRunToHit:__init(script_name, mem) super(script_name, mem)
+end
+
+--------------------------------------------------------------------------------
+function stateHitRunToHit:execute()
+    if(self.time ~= self.memory.hit.time) then
+        reset_action(self.memory.npc, self.scr_name )
+        self.time = self.memory.hit.time
+    end
+
+    if( self.memory.npc:action() == nil ) then
+        action( self.memory.npc, move( move.run_fwd, self.memory.hit.who, 0.2, move.force ), cond(cond.move_end) )
+        action( self.memory.npc, anim(anim.look_around, 0), sound(sound.idle), cond(cond.time_end, 10000) )
+        action( self.memory.npc, anim(anim.sit_idle, 0), sound(sound.idle), cond(cond.time_end, 40000) )
+    end
+end

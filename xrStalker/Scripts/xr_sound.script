@@ -1,0 +1,322 @@
+---------------------------------------------------------------------------------------------------------------------
+--	Схема озвучки
+--	автор:  Диденко Руслан  (Stohe)
+--	update: Чугай Александр (Chugai)
+----------------------------------------------------------------------------------------------------------------------
+local nstl = 10
+
+theme = {}
+
+snd_files = {
+	weather_bad_soldier            = "script_sound\\weather\\bad\\soldier\\soldier_bad_weather_",
+	weather_good_soldier           = "script_sound\\weather\\good\\soldier\\soldier_good_weather_",
+	state_idle_soldier             = "script_sound\\states\\idle\\soldier\\soldier_idle_",
+	state_health_soldier           = "script_sound\\states\\health\\soldier\\soldier_health_",
+	state_fatique_soldier          = "script_sound\\states\\fatique\\soldier\\soldier_fatique_",
+	state_starvation_soldier       = "script_sound\\states\\starvation\\soldier\\soldier_starvation_",
+	state_sleep_soldier            = "script_sound\\states\\sleep\\soldier\\soldier_sleep_",
+	help_soldier                   = "script_sound\\help\\soldier\\soldier_help_",
+	hail_soldier                   = "script_sound\\hail\\soldier\\soldier_hail_",
+	wait_soldier                   = "script_sound\\waiting\\soldier\\soldier_wait_",
+	threat_weap_soldier            = "script_sound\\threat\\drop_weapon\\soldier\\soldier_dropweapon_",
+	threat_back_soldier            = "script_sound\\threat\\backoff\\soldier\\soldier_backoff_",
+	threat_stop_soldier            = "script_sound\\threat\\stop\\soldier\\soldier_stop_",
+	reac_hear_soldier              = "script_sound\\reactions\\hear_something\\soldier\\soldier_hear_",
+	reac_see_soldier               = "script_sound\\reactions\\see_something\\soldier\\soldier_see_",
+	reac_search_soldier            = "script_sound\\reactions\\search_enemy\\soldier\\soldier_search_",
+	reac_monstr_soldier            = "script_sound\\reactions\\mutants\\soldier\\soldier_mutants_",
+	reac_enemy_soldier             = "script_sound\\reactions\\enemy\\soldier\\soldier_enemy_",
+	reac_cmonstr_soldier           = "script_sound\\reactions\\dead_mutant\\soldier\\soldier_deadmutant_",
+	reac_cenemy_soldier            = "script_sound\\reactions\\dead_enemy\\soldier\\soldier_dead_enemy_",
+	reac_cneutral_soldier          = "script_sound\\reactions\\dead_neutral\\soldier\\soldier_deadneutral_",
+	reac_cfriend_soldier           = "script_sound\\reactions\\dead_friend\\soldier\\soldier_deadfriend_",
+	reac_nothing_soldier           = "script_sound\\reactions\\nothing\\soldier\\soldier_nothing_",
+	talk_hello_soldier             = "script_sound\\talk\\greeting\\soldier\\soldier_greeting_",
+	talk_bye_soldier               = "script_sound\\talk\\leave\\soldier\\soldier_leave_",
+	talk_accept_soldier            = "script_sound\\talk\\accept\\soldier\\soldier_accept_",
+	talk_reject_soldier            = "script_sound\\talk\\rejection\\soldier\\soldier_rejection_",
+	talk_abuse_soldier             = "script_sound\\talk\\abuse\\soldier\\soldier_abuse_",
+	trade_yes_soldier              = "script_sound\\talk\\trade\\yes\\soldier\\soldier_trade_",
+	trade_no_soldier               = "script_sound\\talk\\trade\\no\\soldier\\soldier_tradeno_",
+	wounded_get_help               = "script_sound\\help\\soldier\\soldier_help_",
+	wounded_enemy                  = "script_sound\\help\\soldier\\soldier_help_",
+	zombie						   = "script_replics\\zombie\\stalker_zombie\\zombie_phrase_",
+
+------------------ сюжетные --------------------
+------ ESCAPE --------
+	-- бандиты на заводе
+--[[	esc_f_band_novice              = "l_escape\\factory_bandits\\bandit_about_novice_",
+	esc_f_band_zone                = "l_escape\\factory_bandits\\bandit_about_zone_",
+	esc_f_band_place               = "l_escape\\factory_bandits\\bandit_hiding_place_",
+	esc_f_band_novice_again        = "l_escape\\factory_bandits\\bandit_novice_again_",
+	esc_f_band_on_actor            = "l_escape\\factory_bandits\\bandit_on_actor_", ]]
+	esc_f_band_novice              = "script_replics\\bandit_1\\replics\\bandit_about_novice_",
+	esc_f_band_zone                = "script_replics\\bandit_1\\replics\\bandit_about_zone_",
+	esc_f_band_place               = "script_replics\\bandit_1\\replics\\bandit_hiding_place_",
+	esc_f_band_novice_again        = "script_replics\\bandit_1\\replics\\bandit_novice_again_",
+	esc_f_band_on_actor            = "script_replics\\bandit_1\\replics\\bandit_on_actor_",
+	place1                         = "script_replics\\bandit_1\\replics\\bandit_hiding_place_1",
+	place2                         = "script_replics\\bandit_1\\replics\\bandit_hiding_place_2",
+	// Новичок, которого ограбили
+	esc_novice_weeping		   	   = "script_replics\\stalker_1\\newbie\\robbered_replic_1_",
+	esc_novice_ask_for_help		   = "script_replics\\stalker_1\\newbie\\robbered_replic_2_",
+	esc_novice_i_dead_their		   = "script_replics\\stalker_1\\newbie\\robbered_replic_3_",
+------ GARBAGE  -------
+
+------ AGROPROM -------
+
+}
+-----------------------------------------------------------------------------------------------------------------------------------
+function load_sound(obj)
+	local sounds_base = stalker_ids.sound_script + 10000
+
+	function id()
+		sounds_base = sounds_base + 1			//local t = sounds_base
+		return sounds_base - 1					//sounds_base = sounds_base + 1
+												//return t
+	end
+	-- загрузка звуков, возвращает ИД пачки и количество звуков в пачке.
+	function load_theme(name)
+		local file = snd_files[name]
+		if file ~= nil then
+			local sid = id()
+			return { id = sid, max = obj:add_sound(file, nstl, snd_type.talk, 2, 1, sid) }
+		else
+			return nil
+		end
+	end
+
+	-- фразы о погоде
+	theme["weather"] = { exec = weather_class, types = {}}
+	theme["weather"].types["bad"] = { exec = npc_class, types = {}}
+	theme["weather"].types["bad"].types["soldier"] = load_theme("weather_bad_soldier")
+	theme["weather"].types["good"] = { exec = npc_class, types = {}}
+	theme["weather"].types["good"].types["soldier"] = load_theme("weather_good_soldier")
+
+	-- состояния тела
+	theme["state"] = { exec = state_class, types = {}}
+	theme["state"].types["health"] = { exec = npc_class, types = {}}
+	theme["state"].types["health"].types["soldier"] = load_theme("state_health_soldier")
+	theme["state"].types["fatique"] = { exec = npc_class, types = {}}
+	theme["state"].types["fatique"].types["soldier"] = load_theme("state_fatique_soldier")
+	theme["state"].types["starvation"] = { exec = npc_class, types = {}}
+	theme["state"].types["starvation"].types["soldie7r"] = load_theme("state_starvation_soldier")
+	theme["state"].types["sleep"] = { exec = npc_class, types = {}}
+	theme["state"].types["sleep"].types["soldier"] = load_theme("state_sleep_soldier")
+	theme["state"].types["idle"] = { exec = npc_class, types = {}}
+	theme["state"].types["idle"].types["soldier"] = load_theme("state_idle_soldier")
+
+	-- просьба о помощи
+	theme["help"] = { exec = npc_class, types = {}}
+	theme["help"].types["soldier"] = load_theme("help_soldier")
+
+	-- окрик
+	theme["hail"] = { exec = npc_class, types = {}}
+	theme["hail"].types["soldier"] = load_theme("hail_soldier")
+
+	-- ожидание
+	theme["wait"] = { exec = npc_class, types = {}}
+	theme["wait"].types["soldier"] = load_theme("wait_soldier")
+
+	-- угрозы
+	theme["threat_weap"] = { exec = npc_class, types = {}}
+	theme["threat_weap"].types["soldier"] = load_theme("threat_weap_soldier")
+	theme["threat_back"] = { exec = npc_class, types = {}}
+	theme["threat_back"].types["soldier"] = load_theme("threat_back_soldier")
+	theme["threat_stop"] = { exec = npc_class, types = {}}
+	theme["threat_stop"].types["soldier"] = load_theme("threat_stop_soldier")
+
+	-- реакции
+	theme["reac_hear"] = { exec = npc_class, types = {}}
+	theme["reac_hear"].types["soldier"] = load_theme("reac_hear_soldier")
+	theme["reac_see"] = { exec = npc_class, types = {}}
+	theme["reac_see"].types["soldier"] = load_theme("reac_see_soldier")
+	theme["reac_search"] = { exec = npc_class, types = {}}
+	theme["reac_search"].types["soldier"] = load_theme("reac_search_soldier")
+	theme["reac_find_monstr"] = { exec = npc_class, types = {}}
+	theme["reac_find_monstr"].types["soldier"] = load_theme("reac_monstr_soldier")
+	theme["reac_find_enemy"] = { exec = npc_class, types = {}}
+	theme["reac_find_enemy"].types["soldier"] = load_theme("reac_enemy_soldier")
+	theme["reac_crps_monstr"] = { exec = npc_class, types = {}}
+	theme["reac_crps_monstr"].types["soldier"] = load_theme("reac_cmonstr_soldier")
+	theme["reac_crps_enemy"] = { exec = npc_class, types = {}}
+	theme["reac_crps_enemy"].types["soldier"] = load_theme("reac_cenemy_soldier")
+	theme["reac_crps_neutral"] = { exec = npc_class, types = {}}
+	theme["reac_crps_neutral"].types["soldier"] = load_theme("reac_cneutral_soldier")
+	theme["reac_crps_friend"] = { exec = npc_class, types = {}}
+	theme["reac_crps_friend"].types["soldier"] = load_theme("reac_cfriend_soldier")
+	theme["reac_nothing"] = { exec = npc_class, types = {}}
+	theme["reac_nothing"].types["soldier"] = load_theme("reac_nothing_soldier")
+
+	-- болтовня
+	theme["talk_hello"] = { exec = npc_class, types = {}}
+	theme["talk_hello"].types["soldier"] = load_theme("talk_hello_soldier")
+	theme["talk_bye"] = { exec = npc_class, types = {}}
+	theme["talk_bye"].types["soldier"] = load_theme("talk_bye_soldier")
+	theme["talk_accept"] = { exec = npc_class, types = {}}
+	theme["talk_accept"].types["soldier"] = load_theme("talk_accept_soldier")
+	theme["talk_reject"] = { exec = npc_class, types = {}}
+	theme["talk_reject"].types["soldier"] = load_theme("talk_reject_soldier")
+	theme["talk_abuse"] = { exec = npc_class, types = {}}
+	theme["talk_abuse"].types["soldier"] = load_theme("talk_abuse_soldier")
+
+	-- торговля
+	theme["trade_yes"] = { exec = npc_class, types = {}}
+	theme["trade_yes"].types["soldier"] = load_theme("trade_yes_soldier")
+	theme["trade_no"] = { exec = npc_class, types = {}}
+	theme["trade_no"].types["soldier"] = load_theme("trade_no_soldier")
+	
+	--раненый
+	theme["wounded_help"] = { exec = npc_class, types = {}}
+	theme["wounded_help"].types["soldier"] = load_theme("wounded_get_help")
+	theme["wounded_enemy"] = { exec = npc_class, types = {}}
+	theme["wounded_enemy"].types["soldier"] = load_theme("wounded_enemy")
+
+	// Zombie
+	theme["zombie"]								  = load_theme("zombie")
+----- сюжетные/одноразовые темы
+------ ESCAPE --------
+	-- бандиты на заводе
+--[[	theme["escape_factory_bandits_novice"]        = load_theme("esc_f_band_novice")
+	theme["escape_factory_bandits_zone"]          = load_theme("esc_f_band_zone")
+	theme["escape_factory_bandits_place"]         = load_theme("esc_f_band_place")]]
+	theme["escape_factory_bandits_novice_again"]  = load_theme("esc_f_band_novice_again")
+	theme["escape_factory_bandits_on_actor"]      = load_theme("esc_f_band_on_actor")
+	theme["place1"] = load_theme("place1")
+	theme["place2"] = load_theme("place2")
+	
+	// Новичок, которого ограбили
+	theme["escape_novice_weeping"]			  	= load_theme("esc_novice_weeping")
+	theme["escape_novice_ask_for_help"]		  	= load_theme("esc_novice_ask_for_help")
+	theme["escape_novice_i_dead_their"]		  	= load_theme("esc_novice_i_dead_their")
+------ GARBAGE  -------
+
+------ AGROPROM -------
+
+--	print_table(theme)
+	printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
+end
+-----------------------------------------------------------------------------------------------------------------------------------
+--	Sound Player Function
+-----------------------------------------------------------------------------------------------------------------------------------
+--  Пример конструктора, описывающего звуки
+--
+--  self.sound = {
+--           maxidle = 10, -- максимальное время между звуками (умолчание = 10)
+--           sumidle = 10, -- надбавочное время, добавляется к рандомно выбранному от 1 до максимального. (умолчание = 10)
+--               rnd = 75, -- вероятность, с которой будет проигран звук, если пришло время (умолчание = 100)
+--            themes = { "weather", "state" }  -- список тем для разговора
+--  }
+function sound_update(npc, sound, now)
+	if sound.begin == nil  or  now  or  device():time_global() - sound.begin > sound.idle*1000 then
+		sound.begin = device():time_global()
+
+		if sound.maxidle ~= nil then
+			sound.idle = math.random(sound.maxidle)
+		else
+			sound.idle = math.random(10)
+		end
+
+		if sound.sumidle ~= nil then
+			sound.idle = sound.idle + sound.sumidle
+		else
+			sound.idle = sound.idle + 10
+		end
+
+		if npc:active_sound_count() > 0 then
+			return
+		end
+
+		-- получить id-шки пачек звуков, которые могут быть проиграны
+
+		local sounds_ids = {}
+
+		function get_sound(path)
+			if path == nil then return nil end
+			if path.exec == nil then
+				sounds_ids[path.id] = path.max
+			else
+				local pe = path.exec(path.types, npc, target)
+				if type(pe) == "table" then
+					for k,v in pe do
+						get_sound(path.types[v])
+					end
+				else
+					get_sound(path.types[pe])
+				end
+			end
+		end
+
+		for k,v in sound.themes do
+			get_sound(theme[v])
+		end
+
+		-- проиграть один звук
+		if now or sound.rnd == nil or math.random(100) < sound.rnd then
+			local sum = 0
+			local id
+			local num
+
+			for k, w in sounds_ids do
+				sum = sum + w
+			end
+
+			repeat
+				local r = math.random(0, sum - 1)
+				local cur_sum = 0
+
+				for k, w in sounds_ids do
+					cur_sum = cur_sum + w
+
+					if r < cur_sum then
+						id  = k
+						num = r - (cur_sum - w)
+						break
+					end
+				end
+			until id ~= sound.last_id or num ~= sound.last_num or sum == 1
+
+			sound.last_id  = id
+			sound.last_num = num
+
+			if type( now ) == "number" then
+				printf("Number")
+				npc:play_sound(id, now+1, now, 1, 0, num)
+			else
+				npc:play_sound(id, 1, 0, 1, 0, num)
+			end
+		end
+	end
+end
+
+-----------------------------------------------------------------------------------------------------------------------------------
+--	Theme  functions
+-----------------------------------------------------------------------------------------------------------------------------------
+function npc_class(avail_types, npc, target)
+	return "soldier"
+end
+function weather_class(avail_types, npc, target)
+	local type = "good"
+	if level.rain_factor() < 0.07 then
+		type = "good"
+	else
+		type = "bad"
+	end
+	return type
+end          
+function state_class(avail_types, npc, target)
+	local type = {"idle"}
+	if npc.health < 0.5 then
+		table.insert(type, "health")
+	end
+	if npc.satiety < 0.5 then
+		table.insert(type, "starvation")
+	end
+	if npc.power < 0.5 then
+		table.insert(type, "fatique")
+	end
+	if xr_motivator.storage[npc:id()].state.body_state == xr_state.sleep then
+		type = {"sleep"}
+	end
+	return type
+end

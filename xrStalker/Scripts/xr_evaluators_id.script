@@ -1,0 +1,83 @@
+----------------------------------------------------------------------------------------------------------------------
+--  Айдишники эвалуаторов
+----------------------------------------------------------------------------------------------------------------------
+
+-- эвалуаторы Глобальные
+global_evaluators       = stalker_ids.property_script
+script_evaluator        = stalker_ids.property_script + 1
+final_trade_init        = stalker_ids.property_script + 2
+state_change            = stalker_ids.property_script + 3
+position            = stalker_ids.property_script + 4
+reaction        = stalker_ids.property_script + 5
+
+-- эвалуаторы Стохе
+stohe_evaluators        = stalker_ids.property_script + 1000
+stohe_tradeseller_base  = stohe_evaluators
+stohe_kamp_base         = stohe_evaluators + 20
+stohe_meet_base         = stohe_evaluators + 30
+stohe_reactions_base    = stohe_evaluators + 40
+stohe_state_base        = stohe_evaluators + 50
+stohe_gulag_base        = stohe_evaluators + 60
+stohe_bobik_base    = stohe_evaluators + 70
+
+--эвалуаторы Сидоровича
+sidor_evaluator                     =   stalker_ids.property_script + 2000
+sidor_pathend_commander_property    =   sidor_evaluator     + 0
+sidor_pathend_soldier_property      =   sidor_evaluator     + 5
+sidor_patrol_base_property          =   sidor_evaluator + 0
+sidor_wounded_base                  =   sidor_evaluator + 10
+sidor_bandits_base                  =   sidor_evaluator + 20
+sidor_swat_base                     =   sidor_evaluator + 40
+sidor_follower_base                 =   sidor_evaluator + 50
+sidor_report_leader                 =   sidor_evaluator + 60
+sidor_report_soldier                =   sidor_evaluator + 70
+sidor_rest                          =   sidor_evaluator + 80
+sidor_bar                           =   sidor_evaluator + 90
+sidor_chaser                        =   sidor_evaluator + 100
+sidor_sos                           =   sidor_evaluator + 110
+sidor_ptr                           =   sidor_evaluator + 120
+
+-- эвалуаторы Чугай
+chugai_evaluators                   = stalker_ids.property_script + 3000
+chugai_commander_base               = chugai_evaluators + 20
+chugai_scout_base                   = chugai_evaluators + 30
+chugai_military_commander_base      = chugai_evaluators + 40
+chugai_escape_factory_bandits_base  = chugai_evaluators + 50
+chugai_barman_base                  = chugai_evaluators + 60
+chugai_ambush_base                  = chugai_evaluators + 70
+chugai_formation_base               = chugai_evaluators + 80
+
+-- эвалуаторы Змея
+zmey_evaluators                     = stalker_ids.property_script + 4000
+zmey_guard_base                     = zmey_evaluators + 0
+zmey_property_guard_activity_end    = zmey_evaluators + 100
+zmey_robber_base                    = zmey_evaluators + 150
+zmey_camper_base                    = zmey_evaluators + 200
+zmey_sleeper_base                   = zmey_evaluators + 250
+zmey_talker_base                    = zmey_evaluators + 300
+zmey_bodyguard_base                 = zmey_evaluators + 350
+zmey_punch_base                     = zmey_evaluators + 400
+zmey_guide_base                     = zmey_evaluators + 450
+zmey_robber_guard_base              = zmey_evaluators + 500
+zmey_walker_base                    = zmey_evaluators + 550
+zmey_assassin_base                  = zmey_evaluators + 600
+zmey_scared_base                    = zmey_evaluators + 650
+zmey_zoneguard_base                 = zmey_evaluators + 700
+
+--  эвалуоторы Жени
+jon_evaluators          = stalker_ids.property_script + 5000
+jon_stalker_zombie      = jon_evaluators + 0
+jon_stalker_novice      = jon_evaluators + 1
+jon_stalker_novice2     = jon_evaluators + 2
+jon_stalker_novice3     = jon_evaluators + 3
+jon_stalker_attack      = jon_evaluators + 4
+
+jon_scientist           = jon_evaluators + 5
+jon_security            = jon_evaluators + 6
+
+jon_sniper_enabled      = jon_evaluators + 10           --5029
+jon_sniper_see_monster  = jon_evaluators + 11           --5030
+jon_sniper_see_enemy    = jon_evaluators + 12           --5031
+jon_sniper_enemy_near   = jon_evaluators + 13           --5034
+jon_sniper_enemy_is		= jon_evaluators + 14           --5035
+//+5 занято

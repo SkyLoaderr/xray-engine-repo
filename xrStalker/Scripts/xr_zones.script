@@ -1,0 +1,452 @@
+module("script_zone")
+
+--[[------------------------------------------------------------------------------------------------------------------
+Управление скриптовыми зонами
+Чугай Саша
+
+Сделать:
+	- если нету такого типа гулага
+	- если сталкер под фракцией заходит в зону другой фракции
+
+Идеи:
+	- дополнительные условия начала, конца фракции. Например, ночь и день для sleepers
+	- возложить проверку условий освобождения мужиков на класс типа фракции
+	- специальные диалоги
+	- группы, сквады - характеристика типа фракции
+
+Проблемы:
+	- проблема уничтожения зоны при переходе на другой уровень или при офлайне
+	- если во время офлайна истекло время существования фракции, то все разойдутся только при входе в онлайн :(
+	
+--------------------------------------------------------------------------------------------------------------------]]
+
+local h2ms = 60 * 60 * 1000
+local check_period = 300000
+
+local zones        = {} -- объекты управления для каждой зоны
+local zones_inside = {} -- списки объектов, находящихся в каждой зоне
+
+local the_actor
+-- находится ли объект в скриптовой зоне
+function is_in_zone( obj, zone_id )
+	return zones_inside[zone_id][obj:id()] == true
+end
+
+-------------- помощники для чтения spawn_ini -------------------
+function r_str( spawn_ini, section, line, default )
+	if spawn_ini:line_exist( section, line ) then
+		return spawn_ini:r_string( section, line )
+	else
+		return default
+	end
+end
+
+function r_num( spawn_ini, section, line, default )
+	if spawn_ini:line_exist( section, line ) then
+		return spawn_ini:r_float( section, line )
+	else
+		return default
+	end
+end
+
+function r_nums( spawn_ini, section, line, ... )
+	if spawn_ini:line_exist( section, line ) then
+		-- если default-ов больше, чем значений в ini, то забить недостающие последним значением из ini
+		local t = parse_names( spawn_ini:r_string( section, line ) )
+		local n = table.getn( t )
+
+		if n == 0 then
+			return unpack( arg )
+		end
+
+		while table.getn( t ) < arg.n do
+			table.insert( t, t[n] )
+		end
+
+		return unpack( t )
+	else
+		return unpack( arg )
+	end
+end
+
+-- включить в dest все элементы из src. Таблицы индексированы
+function table_include( dest, src )
+	if dest and src then
+		for i, v in src do
+			table.insert( dest, v )
+		end
+	end
+end
+
+----------------------------------------------------------------------------------------------------------------------
+-- класс zone_binder. Он контролирует скриптовую зону, подключает различные классы управления зоной.
+----------------------------------------------------------------------------------------------------------------------
+class "zone_binder" ( object_binder )
+
+function zone_binder:__init( obj ) super( obj )
+end
+
+function zone_binder:reinit()
+	object_binder.reinit( self )
+end
+
+function zone_binder:net_spawn( server_object )
+	local r = object_binder.net_spawn( self, server_object )
+	self.object:set_callback( self, "on_enter", true )
+	self.object:set_callback( self, "on_leave", false )
+	return r
+end
+
+function zone_binder:net_destroy()
+	self.object:clear_callback( true )
+	self.object:clear_callback( false )
+
+	object_binder.net_destroy( self )
+end
+
+function zone_binder:update( delta )
+	object_binder.update( self, delta )
+
+	table.foreach( zones[self.object:id()], function( k, v ) if v.update then v:update() end end )
+end
+
+function zone_binder:reload( section )
+	object_binder.reload( self, section )
+
+	local id = self.object:id()
+
+	if not zones[id] then
+		zones[id]        = {}
+		zones_inside[id] = {}
+	end
+
+	local z = zones[id]
+
+	local zone_ini = self.object:spawn_ini()
+
+	if not zone_ini then
+		return
+	end
+
+	if zone_ini:section_exist( "gulag1" ) then
+		-- если управление галагами ещё не создано, то создать
+		if not z.zone_gulags then
+			z.zone_gulags = zone_gulags( self.object, zone_ini )
+
+			-- если ошибка инициализации, то прибить
+			if not z.zone_gulags.ini_ok then
+				z.zone_gulags = nil
+			end
+		end
+	end
+
+	if zone_ini:section_exist( "sound" ) then
+		-- если управление звуками ещё не создано, то создать
+		if not z.zone_sound then
+			z.zone_sound = zone_sound( self.object, zone_ini )
+
+			-- если ошибка инициализации, то прибить
+			if not z.zone_sound.ini_ok then
+				z.zone_sound = nil
+			end
+		end
+	end
+	
+   if zone_ini:section_exist( "monster" ) then
+		if not z.monster then
+			z.monster = script_zone.monster_zone(self.object, zone_ini)
+
+			-- если ошибка инициализации, то прибить
+			if not z.monster.ini_ok then
+				z.monster = nil
+			end
+		end
+  end
+end
+
+-- callback на вход в зону
+function zone_binder:on_enter( zone, obj )
+	printf( "[zone %s] on_enter obj=%s", zone:name(), obj:name() )
+
+	zones_inside[zone:id()][obj:id()] = true
+
+	-- вызвать callback-и всех подключённых классов управления
+	table.foreach( zones[zone:id()], function( k, v ) v:on_enter( obj ) end )
+end
+
+-- callback на выход из зоны
+function zone_binder:on_leave( zone, obj )
+	printf( "[zone %s] on_leave obj=%s", zone:name(), obj:name() )
+
+	zones_inside[zone:id()][obj:id()] = nil
+end
+
+----------------------------------------------------------------------------------------------------------------------
+--Класс zone_gulags. Он управляет гулагами, которые могут образоваться в этой схеме.
+----------------------------------------------------------------------------------------------------------------------
+
+class "zone_gulags"
+
+function zone_gulags:__init( zone, ini )
+	local sect
+
+	self.zone            = zone
+	self.stalkers        = {}    -- group и squad для каждого сталкера
+	self.gulags          = {}    -- настройки гулагов, возможных в этой зоне
+	self.gulag           = nil   -- экземпляр текущего гулага
+	self.gulag_name      = zone:name()   -- имя текущего гулага
+
+	-- прочитать настройки всех возможных гулагов
+	local g  = self.gulags
+	local gi = 1
+
+	repeat
+		sect = "gulag"..gi
+
+		if not ini:section_exist( sect ) then
+			break
+		end
+
+		table.insert( g, {} )
+		local ggi = g[gi]
+
+		if ini:line_exist( sect, "type" ) then
+			ggi.type                            = ini:r_string( sect, "type" )
+			ggi.idle_min, ggi.idle_max          = r_nums( ini, sect, "idle",       12,     24 )
+			ggi.duration_min, ggi.duration_max  = r_nums( ini, sect, "duration",   100000, 100001 )
+			ggi.capacity                        = r_num ( ini, sect, "capacity",   100 )
+			ggi.stay_min, ggi.stay_max          = r_nums( ini, sect, "stay",       100000, 100001 )
+			ggi.probability                     = r_num ( ini, sect, "p",          100 )
+			ggi.squad                           = r_num ( ini, sect, "squad" )
+			ggi.groups                          = r_str ( ini, sect, "groups" )
+			ggi.preconditions                   = r_str ( ini, sect, "preconditions" )
+		else
+			table.remove( g, gi )
+			break
+		end
+
+		if ggi.preconditions then
+			ggi.preconditions = parse_names( ggi.preconditions )
+		end
+
+		if ggi.groups then
+			ggi.groups = parse_nums( ggi.groups )
+		end
+
+		gi = gi + 1
+	until false
+
+	if gi <= 1 then
+		return
+	end
+
+	self.gulag_name = zone:name()
+
+	self.ini_ok = true
+end
+
+-- добавить сталкера в гулаг
+function zone_gulags:add_stalker( obj )
+	-- если он не входит уже в какой-то гулаг
+	if not xr_gulag.isUnderFraction( obj ) then
+		-- если в гулаге есть свободные места, то добавить
+		local n = self.gulag:get_population()
+
+--		printf( "%d %d %d", n, self.gparams.capacity, self.gulag:get_capacity() )
+		if n < self.gparams.capacity and n < self.gulag:get_capacity() and math.random( 100 ) <= self.gparams.probability then
+			if self.gulag:addObject( obj ) then
+				self.stalkers[obj:id()] = {
+					group    = obj:group(),
+					squad    = obj:squad(),
+					stay_end = math.random( self.gparams.stay_min, self.gparams.stay_max ) * h2ms + game.time()
+				}
+
+				printf( "[zone %s] adding %s to gulag type=%s", self.zone:name(), obj:name(), self.gparams.type )
+			end
+		end
+	end
+end
+
+-- отпустить сталкера
+function zone_gulags:free_stalker( obj )
+	self.gulag:removeObject( obj )
+
+	local backup = self.stalkers[obj:id()]
+	obj:change_team( obj:team(), backup.squad, backup.group )
+
+	self.stalkers[obj:id()] = nil
+
+	printf( "[zone %s] removing %s from gulag type=%s", self.zone:name(), obj:name(), self.gparams.type )
+end
+
+-- может ли данный гулаг создаться в данный момент?
+function zone_gulags:is_gulag_available( gulag_params )
+	if gulag_params.preconditions then
+		for i, v in gulag_params.preconditions do
+			if not the_actor:has_info( v ) then
+				return false
+			end
+		end
+	end
+
+	return true
+end
+
+-- создание нового гулага по конфигурации для данной зоны
+function zone_gulags:create_gulag()
+	if not the_actor then
+		the_actor = level.actor()
+	end
+
+	-- выбор гулагов, которые могут быть созданы
+	local avail = {}
+	for i, v in self.gulags do
+		if self:is_gulag_available( v ) then
+			table.insert( avail, v )
+		end
+	end
+
+	if table.getn( avail ) > 0 then
+		-- создание 
+		self.gparams = avail[math.random( 1, table.getn( avail ) )]  -- ссылка на настройки текущего гулага
+
+		self.duration_end  = math.random( self.gparams.duration_min, self.gparams.duration_max ) * h2ms + game.time()
+		self.check_time    = game.time() + check_period
+
+		self.gulag         = xr_gulag.createGulag( self.gulag_name, self.gparams.type, self.gparams.squad, self.gparams.groups )
+
+		printf( "[zone %s] creating gulag of type %s", self.zone:name(), self.gparams.type )
+
+		return true
+	else
+		return false
+	end
+end
+
+-- всех освободить, убить гулаг
+function zone_gulags:remove_gulag()
+	-- освободить всех, кто ещё жив в гулаге
+	for k, obj in self.gulag.Object do
+		self:free_stalker( obj )
+	end
+
+	xr_gulag.destroyGulag( self.gulag_name )
+	self.gulag    = nil
+	self.idle_end = math.random( self.gparams.idle_min, self.gparams.idle_max ) * h2ms + game.time()
+
+	printf( "[zone %s] removing gulag type=%s", self.zone:name(), self.gparams.type )
+end
+
+-- callback на вход в зону
+function zone_gulags:on_enter( obj )
+	if get_clsid( obj ) == clsid.stalker then
+		local ini = obj:spawn_ini()
+
+		if ini and ini:section_exist( "zones" ) then
+			if self.gulag then
+				self:add_stalker( obj )
+			else
+				if not self.idle_end or self.idle_end < game.time() then
+					if self:create_gulag() then
+						self:add_stalker( obj )
+					end
+				end
+			end
+		end
+	end
+end
+
+-- обновление
+function zone_gulags:update()
+	if self.gulag then
+--		if self.duration_end < game.time() then
+--			self:remove_gulag()
+--		else
+			-- периодически проверять, не собрался ли кто-то к этому времени уже уходить
+			if self.check_time < game.time() then
+				self.check_time = game.time() + check_period
+
+				local n = 0
+
+				for id, obj in self.gulag.Object do
+					if self.stalkers[id].stay_end < game.time() then
+						self:free_stalker( obj )
+					else
+						n = n + 1
+					end
+				end
+
+				-- если мужиков в гулаге больше не осталось, убрать гулаг
+				if n == 0 then
+					self:remove_gulag()
+				else
+					self.gulag:calculate()
+				end
+			else
+				self.gulag:calculate()
+			end
+--		end
+	end
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+-- Класс zone_sound. Проигровка звуков при входе в зону.
+----------------------------------------------------------------------------------------------------------------------
+class "zone_sound"
+
+-- типы звуков для зон
+local sound_types = {
+	floor_wooden = {
+		"ambient\\floor_creak1",
+		"ambient\\floor_creak2",
+		"ambient\\floor_creak3"
+	}
+}
+
+function zone_sound:__init( zone, ini )
+	self.zone        = zone
+	self.sound_names = {}
+
+	local sect = "sound"
+
+	if ini:line_exist( sect, "snd" ) then
+		table_include( self.sound_names, parse_names( ini:r_string( sect, "snd" ) ) )
+	end
+
+	if ini:line_exist( sect, "type" ) then
+		local t = parse_names( ini:r_string( sect, "type" ) )
+
+		for i, v in t do
+			table_include( self.sound_names, sound_types[v] )
+		end
+	end
+
+	if table.getn( self.sound_names ) == 0 then
+		return
+	end
+
+--	printf( table.concat( self.sound_names, "  " ) )
+
+	self.delay = r_num( ini, sect, "delay", 0 )
+	self.idle  = r_num( ini, sect, "idle",  0 ) * 1000 -- секунды->мс
+	self.rnd   = r_num( ini, sect, "rnd", 100 )
+
+	self.idle_end = 0
+
+	self.ini_ok = true
+end
+
+function zone_sound:on_enter( obj )
+	if self.idle_end < game.time() then
+		self.idle_end = game.time() + self.idle
+
+		if math.random( 100 ) <= self.rnd then
+			local obj_type = object_type( obj )
+
+			if obj_type == "stalker" or obj_type == "monstr" then
+				sound_object( self.sound_names[math.random( 1, table.getn( self.sound_names ) )] ):play_at_pos( obj, obj:position(), self.delay )
+			end
+		end
+	end
+end

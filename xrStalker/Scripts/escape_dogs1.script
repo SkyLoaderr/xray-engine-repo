@@ -1,0 +1,21 @@
+module("m_monster_ai")
+
+function main()
+  local dog1 = m_monster_ai.m_MonsterArtful("btr_dog_1", this.script_name(), "way_btr_dog_1", vector():set(0, 0, 0), 5)
+    local dog2 = m_monster_ai.m_MonsterArtful("btr_dog_2", this.script_name(), "way_btr_dog_2", vector():set(0, 0, 0 ), 5)
+
+  local work = true
+
+    while(work) do
+    dog1:execute()
+        dog2:execute()
+        if(dog1:check_completed() and dog2:check_completed()) then
+          work = false
+        end
+
+        wait()
+    end
+
+    dog1:finalize()
+    dog2:finalize()
+end

@@ -1,0 +1,12 @@
+foo()
+function myClass:getRect  ()
+ddd.foo ()
+/*foo()
+	
+	foo(self)
+	fffo()
+	foo(self)
+	fffo()
+	
+*/
+

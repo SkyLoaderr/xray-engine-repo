@@ -1,0 +1,207 @@
+function break_dialog(first_speaker, second_speaker)
+        first_speaker:stop_talk()
+        second_speaker:stop_talk()
+end
+
+function kickass(first_speaker, second_speaker)
+	xr_punch.punch[first_speaker:id()] = second_speaker
+end
+
+function get_money_then_leave(first_speaker, second_speaker)
+	xr_motivator.storage[first_speaker:id()].meet.enabled = false
+	xr_motivator.storage[first_speaker:id()].robber.enabled = true
+end
+
+-----------------------------------------------------------------------------------
+-- LEVELS
+-----------------------------------------------------------------------------------
+function level_escape(first_speaker, second_speaker)
+	return level.name() == "l01_escape"
+end
+
+function level_garbage(first_speaker, second_speaker)
+	return level.name() == "l02_garbage"
+end
+
+function level_agroprom(first_speaker, second_speaker)
+	return level.name() == "l03_agroprom"
+end
+
+-----------------------------------------------------------------------------------
+-- TRADE
+-----------------------------------------------------------------------------------
+--' Инициализация торговли
+function trade_init(seller, buyer)
+	xr_motivator.storage[seller:id()].meet.begin_wait_to_see.begin = device():time_global()/1000
+	xr_position.setPosition(xr_motivator.storage[seller:id()].meet.Seller, 
+							xr_motivator.storage[seller:id()].meet.Seller:level_vertex_id())
+	xr_motivator.storage[seller:id()].meet.Buyer = buyer
+end
+
+function want_trade(seller, buyer)
+	if seller:relation(buyer) == game_object.friend or
+		seller:relation(buyer) == game_object.neutral
+	then
+		return true
+	else
+		return false
+	end
+end
+
+function dont_want_trade(seller, buyer)	
+	return not want_trade(seller,buyer)
+end
+
+-----------------------------------------------------------------------------------
+-- helper
+-----------------------------------------------------------------------------------
+function helper_init(first_speaker, second_speaker)
+	if xr_motivator.storage[first_speaker:id()].sos.npc == nil and 
+	   first_speaker:relation (second_speaker) ~= game_object.enemy then
+	   xr_motivator.storage[first_speaker:id()].sos.npc = second_speaker
+	end
+end
+-------------------
+--' Прекондишн на медикит
+function is_medikit_present (player, helper) 
+    printf ("is_medikit_present")
+    return helper:object ("medkit") ~= nil
+end
+-------------------
+--' Прекондишн на медикит
+function is_medikit_no_present (helper, player) 
+    printf ("is_medikit_no_present")
+    return helper:object ("medkit") == nil
+end
+-------------------
+--' Передача медикита халявная
+function drop_medikit (helper, player)
+    printf ("drop_medikit")
+    helper:transfer_item (helper:object ("medkit"), player)
+end
+-------------------
+--' Продажа медикита
+function sell_medikit (helper, player)
+    printf ("sell_medikit")
+    if player:money () < 300 then return end
+    helper:transfer_item (helper:object ("medkit"), player)
+    player:transfer_money (300, helper)
+end
+-------------------
+--' Имеется ли лишнее оружие
+function have_extra_weapon (player, helper)
+    printf ("have_extra_weapon")
+    local count = helper:object_count () 
+    if count == 0 then return false end
+    local wpn = 0
+    for a = 0, count - 1, 1 do
+        local obj = helper:object (a)
+        if isWeapon (obj) == true then wpn = wpn + 1 end
+    end
+    if wpn >= 1 then return true end
+    return false    
+end
+-------------------
+function no_have_extra_weapon (player, helper)
+    printf ("no_have_extra_weapon")
+    return not this.have_extra_weapon (helper, player)
+end    
+-------------------
+--' Хорошо ли персонаж себя чувствует
+function is_health_good (helper, player)
+    printf ("is_health_good")
+    return player.health >= 0.9 
+end    
+-------------------
+function is_good_relation (helper, player)
+    return helper:goodwill (player) > 50 
+end
+-------------------
+function is_bad_relation (helper, player)
+    return helper:goodwill (player) <= 50 
+end
+-------------------
+function activate_helper_follow (helper, player)
+    printf ("activate_helper_follow")
+    xr_motivator.storage[helper:id ()].sos.need_follow = true
+    xr_meet.override_meet (helper, true)
+end
+-------------------
+function disable_helper (helper, player)
+    printf ("disable_helper")
+    helper:stop_talk ()
+    xr_meet.override_meet (helper, false)
+    xr_motivator.storage[helper:id ()].sos.npc = nil
+end
+-------------------
+function disable_helper_2 (player, helper)
+    printf ("disable_helper")
+    helper:stop_talk ()
+    xr_meet.override_meet (helper, false)
+    xr_motivator.storage[helper:id ()].sos.npc = nil
+end
+-------------------
+function dialogs.trade_help (helper, player)
+    helper:switch_to_trade ()
+end
+------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------
+-- wounded
+------------------------------------------------------------------------------------
+-------------------
+function medikit_drop (player, wounded)
+    if player:relation (wounded) ~= game_object.friend then return false end
+    return player:object ("medkit") ~= nil
+end
+-------------------
+function medikit_sell (player, wounded)
+    if player:relation (wounded) ~= game_object.neutral then return false end
+    return player:object ("medkit") ~= nil
+end
+-------------------
+function medikit_no (player, wounded)
+    return player:object ("medkit") == nil
+end
+-------------------
+function medikit_yes (player, wounded)
+    return player:object ("medkit") ~= nil
+end
+-------------------
+function have_money (wounded, helper)
+    return wounded:money () >= 400 
+end
+-------------------
+function not_have_money (wounded, helper)
+    return wounded:money () < 400
+end
+-------------------
+function wounded_trade (wounded, helper)
+    helper:switch_to_trade ()
+    wounded:switch_to_trade ()
+end
+-------------------
+function disable_wounded (wounded, helper)
+    helper:stop_talk ()
+    wounded:stop_talk ()
+end
+-------------------
+function transfer_medikit (wounded, player)
+    player:transfer_item (player:object ("medkit"), wounded)
+    local good = wounded:goodwill (player) + 20
+    if good > 100 then good = 100 end
+    wounded:set_goodwill (good, player)
+end
+-------------------
+function sell_medikit (wounded, player)
+    if player:object ("medkit") == nil then return end
+    local good = wounded:goodwill (player) + 5
+    if good > 100 then good = 100 end
+    wounded:set_goodwill (good, player)
+end
+-------------------
+function kozel (wounded, player)
+    local good = wounded:goodwill (player) - 20
+    if good < 0 then good = 0 end
+    wounded:set_goodwill (good, player)
+end

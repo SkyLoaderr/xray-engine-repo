@@ -1,0 +1,758 @@
+
+-- Movement manager
+-- Created by: Andrey Fidrya (Zmey), af@svitonline.com
+
+local default_wait_time = 5000
+local default_anim = "idle"
+local sl_speed_h = 0.52 -- горизонтальная скорость вращения прожекторов
+local sl_speed_v = 0.22 -- вертикальная скорость вращения прожекторов
+
+arrival_before_rotation = 0
+arrival_after_rotation = 1
+
+local state_none = 0
+local state_moving = 1
+local state_standing_before_anim = 2
+local state_before_anim_playing = 3
+local state_anim_playing = 4
+
+local sync = {}
+
+class "move_mgr"
+
+function move_mgr:__init()
+	self.dialog_mgr = xr_dialogs.dialog_mgr()
+end
+
+function move_mgr:initialize(npc)
+	self.object = npc
+	self.object:set_callback(self, "waypoint_callback", game_object.movement)
+end
+
+-- Из move_cb вернуть true, чтобы приостановить работу схемы. Чтобы продолжить движение,
+-- нужно вызвать метод set_movement_state, который включит перемещение по вейпоинтам с нужной
+-- скоростью.
+function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team, mode, move_cb_info)
+	--xr_reactions.add_rule(self.object, "ignore") -- DELME
+
+	printf("move_mgr:reset(path_walk=%s, path_look=%s, team=%s)",
+		utils.to_str(path_walk), utils.to_str(path_look), utils.to_str(team))
+
+	self.patrol_walk = patrol(path_walk)
+	if not self.patrol_walk then
+		utils.abort("object '%s': unable to find path_walk '%s' on the map",
+			self.object:name(), path_walk)
+	end
+	if not path_walk_info then
+		utils.abort("object '%s': path_walk ('%s') field was supplied, but path_walk_info field is nil",
+			self.object:name(), path_walk)
+	end
+	self.path_walk_info = path_walk_info
+
+	if path_look then
+		if not path_look_info then
+			utils.abort("object '%s': path_look ('%s') field was supplied, but path_look_info field is nil",
+				self.object:name(), path_look)
+		end
+		self.patrol_look = patrol(path_look)
+		if not self.patrol_look then
+			utils.abort("object '%s': unable to find path_look '%s' on the map",
+				self.object:name(), path_look)
+		end
+	else
+		self.patrol_look = nil
+	end
+
+	self.path_walk = path_walk
+	self.path_look = path_look
+	self.path_look_info = path_look_info
+	self.team = team
+
+	self.cur_anim_set = default_anim
+	self.pt_wait_time = default_wait_time -- сколько ждать в точке, где играем анимацию 
+
+	self.shall_shoot = nil
+	self.is_shooting = false
+
+	if mode == nil then
+		self.crouch = false
+		self.running = true
+		self.danger = false
+	else
+		self.crouch = if_then_else(mode.crouch, true, false)
+		self.running = if_then_else(mode.running, true, false)
+		self.danger = if_then_else(mode.danger, true, false)
+	end
+	self.standing_crouch = self.crouch
+	self.standing_danger = self.danger
+
+	self.moving = false -- переменная для проверки из внешнего скрипта, стоит ли персонаж на месте
+
+	self.retval_after_rotation = nil
+
+	self.sound = nil
+	self.play_sound_after_anim_start = false
+	self.play_once = false
+
+	if move_cb_info then
+		self.move_cb_obj = move_cb_info.obj
+		self.move_cb_func = move_cb_info.func
+	else
+		self.move_cb_obj = nil
+		self.move_cb_func = nil
+	end
+
+	-- Точка, в которую смотрели в прошлый раз. Ее запоминаем для того, чтобы не делать паузу между анимациями,
+	-- если собираемся смотреть в ту же самую точку, не поворачиваясь никуда...
+	self.last_look_index = nil
+
+	self.sl = nil -- прожектор, запоминается, чтобы отпустить его потом из под скрипта
+	
+	self.object:clear_animations()
+
+	--self.object:set_mental_state(anim.free)
+	--self.object:set_movement_type(move.run) -- на стартовую точку идти бегом
+	self:update_movement_state()
+
+	self.object:set_path_type(game_object.patrol_path)
+	self.object:set_detail_path_type(move.line)
+	self.object:set_patrol_path(self.path_walk, patrol.nearest, patrol.continue, true)
+	self.object:set_sight(look.danger, nil, 0)
+	self.state = state_moving
+
+	self.path_cyclic, self.lowest_sync_val, self.highest_sync_val = self:get_lowest_highest_sync_val()
+	self.team = team
+	if self.team then
+		local s = sync[self.team]
+		if not s then
+			sync[self.team] = {}
+			s = sync[self.team]
+		end
+		s[self.object:id()] = -1
+	end
+
+	self.dialog_mgr:reset(self.object, team)
+
+	self.last_index = nil
+	-- self:simulate_callback_if_neccessary() WORKAROUND
+end
+
+--[[ WORKAROUND
+function move_mgr:simulate_callback_if_neccessary()
+	-- FIXME - переделать на вертексы
+	local pos = self.object:position()
+	local ptr = patrol(self.path_walk)
+	local num_points = ptr:count()
+	for i = 0, num_points - 1 do
+		if utils.stalker_at_waypoint(self.object, ptr, i) then
+			--printf("simulating callback")
+			self:waypoint_callback(self.object, nil, i)
+			break
+		end
+	end
+end
+--]]
+
+function move_mgr:look_at_waypoint(pt)
+	if not self.patrol_look then
+		return
+	end
+
+	local look_pt = utils.vector_copy_by_val(self.patrol_look:point(pt)):sub(self.object:position())
+	self.object:set_sight(look.direction, look_pt, 0)
+	self.last_look_index = pt
+
+	-- Прожектор:
+	local sl_name = self.path_look_info[pt]["sl"]
+	if sl_name then
+		self:reset_sl() -- отпустить старый прожектор (на всякий случай)
+		self.sl = level.object(sl_name)
+		if self.sl then
+			reset_action(self.sl, "move_mgr")
+			utils.action2(self.sl, look(self.patrol_look:point(pt), sl_speed_h, sl_speed_v),
+					cond(cond.time_end, time_infinite))
+		end
+	end
+end
+
+function move_mgr:update_sound()
+	if self.sound then
+		if self.dialog_mgr:active() == nil then
+			xr_sound.sound_update(self.object, self.sound)
+		end
+		if self.play_once then
+			self.sound = nil
+		end
+	end
+end
+
+function move_mgr:get_lowest_highest_sync_val()
+	local ptr = patrol(self.path_walk)
+	local num_points = ptr:count()
+	local v
+	local lowest = 100000000
+	local highest = -1
+	local highest_idx = nil
+	for i = 0, num_points - 1 do
+		v = self.path_walk_info[i]["n"]
+		if v then
+			v = tonumber(v)
+			if v > highest then
+				highest = v
+				highest_idx = i
+			end
+			if v < lowest then
+				lowest = v
+			end
+		end
+	end
+
+	local path_cyclic = false
+	if highest_idx then
+		v = self.path_walk_info[highest_idx]["loop"]
+		if v == "true" then
+			path_cyclic = true
+		else
+			path_cyclic = false
+		end
+	end
+	
+	return path_cyclic, lowest, highest
+end
+
+-- Сравнивает порядок двух вейпоинтов, считая, что последний вейпоинт меньше первого (для зацикленных маршрутов с
+-- синхронизацией)
+function move_mgr:wayp_lesser(arg1, arg2)
+	if not self.path_cyclic then
+		return arg1 < arg2
+	end
+
+	if arg1 == self.highest_sync_val and arg2 == self.lowest_sync_val then
+		return true
+	elseif arg1 == self.lowest_sync_val and arg2 == self.highest_sync_val then
+		return false
+	else
+		return arg1 < arg2
+	end
+end
+
+-- Проверка синхронизации с остальными солдатами на пути.
+-- Возвращает true, если дальнейшее движение разрешено.
+function move_mgr:sync_ok()
+	if self.team then
+		local s = sync[self.team]
+		local self_id = self.object:id()
+		
+		-- Если только бежим на путь (еще не были в точках синхронизации), то разрешить движение:
+		if s[self_id] == -1 then
+			return true
+		end
+		
+		local highest = -1
+
+		local prev = nil
+		local all_equal = true
+		for k, v in pairs(s) do
+			if v ~= nil then
+				if prev ~= nil and prev ~= v then
+					all_equal = false
+				end
+				if self:wayp_lesser(highest, v) then
+					highest = v
+				end
+				prev = v
+			end
+		end
+
+		-- В этом месте highest ~= -1 благодаря проверке до цикла
+
+		return all_equal or self:wayp_lesser(s[self_id], highest)
+	end
+	return true
+end
+
+function move_mgr:no_need_to_rotate()
+	if not self.patrol_look then
+		return false
+	end
+
+	local wayp_pos = self.patrol_look:point(self.last_look_index)
+	local y = yaw(self.object:direction(), utils.vector_copy_by_val(wayp_pos):sub(self.object:position()))
+
+	return y < 0.3
+end
+
+function move_mgr:reset_path_info()
+	self.object:set_node_evaluator   ()
+	self.object:set_path_evaluator   ()
+	self.object:set_desired_direction()
+	self.object:set_path_type        (game_object.level_path) -- чтобы сбросить инфу о предыдущем пути
+	self.object:set_detail_path_type (move.line)
+end
+
+function move_mgr:update(no_dialog_mgr_update)
+	printf("move_mgr:update(self.state == %s)", utils.to_str(self.state))
+
+	if not no_dialog_mgr_update then
+		self.dialog_mgr:update()
+	end
+
+	-- Если это не тот тип звука, который нужно проиграть всего один раз, то играть его:
+	if not self.play_sound_after_anim_start then
+		self:update_sound()
+	end
+
+	if not self.is_shooting then 
+		local best_weap = self.object:best_weapon()
+		if best_weap and get_clsid(best_weap) == clsid.obj_bolt then
+			best_weap = nil
+		end
+		self.object:set_item(object.idle, best_weap)
+	else
+		local best_weap = self.object:best_weapon()
+		if best_weap then
+			if self.shall_shoot == 1 then
+				self.object:set_item(object.fire1, best_weap)
+			else
+				self.object:set_item(object.fire2, best_weap)
+			end
+		end
+	end
+
+	if self.state == state_standing_before_anim and
+	   (  (self.expiration_time and device():time_global() >= self.expiration_time and not self.object:is_body_turning())
+	      or self:no_need_to_rotate()   ) then
+
+		if self.retval_after_rotation then
+			if not self.move_cb_func then
+				utils.abort("object '%s': path_look '%s': ret flag is set, but " ..
+					"callback function wasn't registered in move_mgr:reset()",
+					self.object:name(), self.path_look)
+			end
+			if self.move_cb_func(self.move_cb_obj, this.arrival_after_rotation, self.retval_after_rotation) then
+				-- Идти сразу дальше
+				self.expiration_time = 0
+				self.state = state_anim_playing
+				return nil
+			end
+		end
+
+		--printf("_debug_guard [%s]: adding animations", self.object:name())
+		if self.play_sound_after_anim_start then
+			-- Проиграть звук после старта анимации:
+			self:update_sound()
+		end
+
+		-- Уже когда прибыли, повернулись и начали играть анимацию - только тогда помечаем
+		-- в синхронизаторе, что прибыли на данную точку
+		if self.team then
+			local sync_id = self.path_walk_info[self.last_index]["n"]
+			if sync_id then
+				sync[self.team][self.object:id()] = tonumber(sync_id)
+			end
+		end
+
+		-- Если ждем с анимацией, то играть анимацию, иначе, установить запрошенное положение тела
+		if self.cur_anim_set ~= nil then
+			xr_state.anim_update(self.cur_anim_set, self.object)
+		else
+			self:update_standing_state()
+		end
+
+		self.state = state_before_anim_playing
+	end
+
+	-- Ждать синхронизации, а только затем включить счетчик анимации
+	if self.state == state_before_anim_playing then
+		if self:sync_ok() then
+		--	printf("_bp [%s]: anim counter activated", self.object:name())
+			-- После успешной синхронизации можно начинать стрельбу
+			if self.shall_shoot then
+				self.is_shooting = true
+			end
+
+			if self.pt_wait_time ~= -1 then
+				self.expiration_time = device():time_global() + self.pt_wait_time
+			else
+				self.expiration_time = nil
+			end
+			self.state = state_anim_playing
+		end
+	end
+
+	if (self.state == state_anim_playing and self.expiration_time and device():time_global() >= self.expiration_time
+		--[[and (self.is_shooting or xr_state.anim_safe_to_break(self.object))]]
+	   ) then
+		-- Идти дальше, а перед этим почистить состояния:
+		if self.is_shooting then
+			self.is_shooting = false
+		end
+
+		-- Очищать анимации, только если собираемся идти дальше по пути...
+		-- Не очищать, если дальше будем стоять, т.к. иначе будут рывки
+		local patrol_walk_count = self.patrol_walk:count()
+		if patrol_walk_count ~= 1 then
+			if self.object:animation_count() ~= 0 then
+				xr_state.anim_update(nil, self.object)
+				-- self:update_standing_state() -- anim_update сбивает crouch -- не надо! все равно дальше пойдем
+			end
+		end
+
+		self.state = state_moving
+
+		if patrol_walk_count == 1 then
+			self:waypoint_callback(self.object, nil, self.last_index)
+		else
+			self:reset_sl() -- отпустить прожектор
+			self.last_look_index = nil
+			self:update_movement_state() -- идти дальше
+			--self.object:set_sight(look.danger, nil, 0) -- делается в update_movement_state
+		end
+	end
+	
+	return nil
+end
+
+function move_mgr:finalize(npc)
+	self.dialog_mgr:finalize()
+
+	self.object:clear_callback(game_object.movement)
+
+	if self.team then
+		local s = sync[self.team]
+		if s then
+			s[self.object:id()] = nil
+		end
+	end
+
+	self:reset_sl() -- отпустить прожектор
+end
+
+function move_mgr:reset_sl()
+	if self.sl then
+		if self.sl:get_script() then
+			self.sl:script(false, "move_mgr")
+		end
+		self.sl = nil
+	end
+end
+
+-------------------------------------------------------------------------------
+-- IMPLEMENTATION
+-------------------------------------------------------------------------------
+
+function move_mgr:update_movement_state()
+	self.object:set_body_state(if_then_else(self.crouch, move.crouch, move.standing))
+	self.object:set_mental_state(if_then_else(self.danger or self.crouch, anim.danger, anim.free))
+	self.object:set_movement_type(if_then_else(self.running, move.run, move.walk))
+	self.moving = true
+
+	self.object:set_sight(look.danger, nil, 0)
+end
+
+function move_mgr:update_standing_state()
+	self.object:set_body_state(if_then_else(self.standing_crouch, move.crouch, move.standing))
+	self.object:set_mental_state(if_then_else(self.standing_danger or self.standing_crouch, anim.danger, anim.free))
+end
+
+function move_mgr:waypoint_callback(obj, action_type, index)
+	printf("move_mgr:waypoint_callback(): name=%s, index=%d", self.object:name(), index)
+	if index == -1 or index == nil then
+		printf("ERROR: move_mgr: waypoint_callback: index is -1 or nil")
+		return
+	end
+
+	self.last_index = index
+
+	-- <ЗВУК>
+	local suggested_snd = self.path_walk_info[index]["s"]
+	if suggested_snd then
+		local snd_from = self.path_walk_info[index]["sf"]
+		if snd_from then
+			snd_from = tonumber(snd_from)
+		end
+		local snd_to = self.path_walk_info[index]["st"]
+		if snd_to then
+			snd_to = tonumber(snd_to)
+		end
+
+		local snd_prob = self.path_walk_info[index]["sp"]
+		if snd_prob then
+			snd_prob = tonumber(snd_prob)
+		else
+			snd_prob = 100
+		end
+
+		local suggested_snd_once = self.path_walk_info[index]["sc"]
+		if suggested_snd_cont == "true" then
+			self.play_once = false
+		else
+			self.play_once = true
+		end
+
+		local snd_wait_anim = self.path_walk_info[index]["sa"]
+		if snd_wait_anim == "true" then
+			self.play_sound_after_anim_start = true
+		else
+			self.play_sound_after_anim_start = false
+		end
+
+		if not self.sound then
+			self.sound = {}
+		end
+		if snd_from and snd_to then
+			self.sound.rnd = snd_prob
+			self.sound.maxidle = snd_to - snd_from + 1
+			self.sound.sumidle = snd_from - 1
+			self.sound.themes = parse_names(suggested_snd)
+		else
+			self.sound.rnd = snd_prob
+			self.sound.maxidle = 10 - 5 + 1    -- 1  -- т.е. по умолчанию пауза от 5 до 10 сек
+			self.sound.sumidle = 5 - 1         -- 1
+			self.sound.themes = parse_names(suggested_snd)
+		end
+		-- Этот звук играть прямо сейчас, а не когда начнется анимация на позиции (после поворота и т.д.):
+		if not self.play_sound_after_anim_start then
+			if self.dialog_mgr:active() == nil then
+				self:update_sound()
+			end
+		end
+	else
+		self.sound = nil
+	end
+	-- </ЗВУК>
+
+	local suggested_dlg = self.path_walk_info[index]["ds"]
+	if suggested_dlg then
+		self.dialog_mgr:enable(parse_names(suggested_dlg))
+	else
+		self.dialog_mgr:disable()
+	end
+	self.dialog_mgr:update()
+
+	local suggested_crouch = self.path_walk_info[index]["c"]
+	if suggested_crouch == "true" then
+		self.crouch = true
+	else
+		self.crouch = false
+	end
+	self.standing_crouch = self.crouch
+
+	local suggested_running = self.path_walk_info[index]["r"]
+	if suggested_running == "true" then
+		self.running = true
+	else
+		self.running = false
+	end
+
+	local suggested_danger = self.path_walk_info[index]["d"]
+	if suggested_danger == "true" then
+		self.danger = true
+	else
+		self.danger = false
+	end
+	self.standing_danger = self.danger
+	
+	local retv = self.path_walk_info[index]["ret"]
+	if retv then
+		local retv_num = tonumber(retv)
+		
+		local set_bad_rel = self.path_walk_info[index]["rel"]
+		if set_bad_rel then
+			if retv_num == 0 then
+				-- ok
+			elseif retv_num == 1 then
+				-- ok
+			else
+				utils.abort("object '%s': path_walk '%s': 'rel' flag accepts only 0 (bad relation) or " ..
+					"1 (good relation) as value of 'ret' variable",
+					self.object:name(), self.path_walk)
+			end
+
+			local vict
+			for name in string.gfind(set_bad_rel, "([%w_\\]+)%p*" ) do -- "aaa,bbb,ccc"  "aaa"
+				printf("_bpa: %s", name)
+				vict = level.object(name)
+				if vict then
+					vict:set_relation(if_then_else(retv_num == 0,
+						game_object.enemy, game_object.friend), self.object)
+				end
+			end
+		else
+			if not self.move_cb_func then
+				utils.abort("object '%s': path_walk '%s': ret flag is set, but " ..
+					"callback function wasn't registered in move_mgr:reset()",
+					self.object:name(), self.path_walk)
+			end
+
+			if self.move_cb_func(self.move_cb_obj, this.arrival_before_rotation, retv_num) then
+				return
+			end
+		end
+	end
+
+	local new_path_walk = self.path_walk_info[index]["w"]
+	if new_path_walk then
+		self.path_walk = new_path_walk
+
+		local new_path_look = self.path_walk_info[index]["l"]
+		self.path_look = new_path_look -- can also be nil, it's ok
+
+		self.path_walk_info = utils.path_parse_waypoints(self.path_walk)
+		if self.path_look then
+			self.st.path_look_info = utils.path_parse_waypoints(self.st.path_look)
+		else
+			self.path_look_info = nil
+		end
+		self:reset(self.path_walk, self.path_walk_info, self.path_look, self.path_look_info, self.team,
+			{ crouch = self.crouch, running = self.running, danger = self.danger },
+			{ obj = self.move_cb_obj, func = self.move_cb_func })
+		return
+	end
+
+	if not self.patrol_look then
+		self:update_movement_state() -- идти дальше
+		return
+	end
+
+	local search_for = 0 -- значение флагов точки, которую будем искать
+	for f = 0, 31 do
+		if self.patrol_walk:flag(index, f) then
+			search_for = search_for + (2 ^ f)
+		end
+	end
+
+	if search_for == 0 then
+		self:update_movement_state() -- идти дальше
+		return
+	end
+
+	local this_val -- значение флагов текущей точки
+	local pts_found_total_weight = 0 -- количество найденных точек (с нужными флагами)
+	local pt_chosen_idx = nil -- индекс выбранной точки
+	local r
+	for look_idx = 0, self.patrol_look:count() - 1 do
+		this_val = 0
+		for f = 0, 31 do
+			if self.patrol_look:flag(look_idx, f) then
+				this_val = this_val + (2 ^ f)
+			end
+		end
+		if this_val == search_for then
+			-- Нашли точку с нужными флагами, но поскольку в пути могут быть еще такие-же
+			-- точки, возьмем текущую только с некоторой вероятностью:
+			-- Шанс, с которым на точку посмотрит персонаж:
+			local point_look_weight = self.path_look_info[look_idx]["p"]
+			if point_look_weight then
+				point_look_weight = tonumber(point_look_weight)
+			else
+				point_look_weight = 100 -- по умолчанию у всех точек вес = 100
+			end
+			pts_found_total_weight = pts_found_total_weight + point_look_weight
+			r = math.random(1, pts_found_total_weight)
+			if r <= point_look_weight then
+				pt_chosen_idx = look_idx
+			end
+		end
+	end
+	if pt_chosen_idx then
+		local suggested_crouch = self.path_look_info[pt_chosen_idx]["c"]
+		if suggested_crouch == "true" then
+			self.standing_crouch = true
+		else
+			self.standing_crouch = false
+		end
+
+		local suggested_danger = self.path_look_info[pt_chosen_idx]["d"]
+		if suggested_danger == "true" then
+			self.standing_danger = true
+		else
+			self.standing_danger = false
+		end
+
+		local retv = self.path_look_info[pt_chosen_idx]["ret"]
+		if retv then
+			self.retval_after_rotation = tonumber(retv)
+		else
+			self.retval_after_rotation = nil
+		end
+
+		local suggested_wait_time = self.path_look_info[pt_chosen_idx]["t"]
+		if suggested_wait_time then
+			self.pt_wait_time = tonumber(suggested_wait_time)
+		else
+			self.pt_wait_time = default_wait_time
+		end
+
+		local suggested_anim_set = self.path_look_info[pt_chosen_idx]["a"]
+		if suggested_anim_set then
+			if suggested_anim_set == "nil" then
+				suggested_anim_set = nil
+			end
+			self.cur_anim_set = suggested_anim_set
+		else
+			self.cur_anim_set = default_anim
+		end
+
+		local att = self.path_look_info[pt_chosen_idx]["att"]
+		if att then
+			att = tonumber(att)
+			if att == 1 then
+				self.shall_shoot = 1
+			elseif att == 2 then
+				self.shall_shoot = 2
+			else
+				self.shall_shoot = nil
+			end
+		else
+			self.shall_shoot = nil
+		end
+
+		--printf("[%s] pt_chosen_idx == %d", self.object:name(), pt_chosen_idx)
+		if not suggested_snd then -- в path_walk звук не задан, проверить, задан ли он на точке
+			suggested_snd = self.path_look_info[pt_chosen_idx]["s"]
+			if suggested_snd then
+				local snd_prob = self.path_look_info[pt_chosen_idx]["sp"]
+				if snd_prob then
+					snd_prob = tonumber(snd_prob)
+				else
+					snd_prob = 100
+				end
+				if not self.sound then
+					self.sound = {}
+				end
+				self.sound.rnd = snd_prob
+				self.sound.maxidle = 1
+				self.sound.sumidle = -1
+				self.sound.themes = parse_names(suggested_snd)
+				-- Этот звук играть не прямо сейчас, а когда начнется анимация на позиции (после поворота и т.д.):
+				self.play_sound_after_anim_start = true
+				-- И только один раз:
+				self.play_once = true
+			end
+		end
+
+		if pt_chosen_idx ~= self.last_look_index then
+			if self.object:animation_count() ~= 0 then
+				xr_state.anim_update(nil, self.object) -- не играть анимацию во время поворота!
+				--self:update_standing_state() -- anim_update сбивает crouch -- нет, поворачиваться в старом состоянии
+			end
+			self.expiration_time = device():time_global() + 700 -- дать 700 мс на начало поворота
+			--printf("move_mgr:waypoint_callback(): look_at_waypoint")
+			self:look_at_waypoint(pt_chosen_idx) -- поворачиваемся
+		else
+			self.expiration_time = 0 -- сразу же стартовать анимацию, уже смотрим в нужную сторону
+		end
+		self.state = state_standing_before_anim
+		self.object:set_movement_type(move.stand)
+		self:update_standing_state()
+		self.moving = false
+
+		-- Сразу же стартовать update, не ждать execute. Тогда, если мы уже смотрим
+		-- в нужную сторону - не будет паузы в несколько миллисекунд на поворот.
+		self:update(true)
+	else
+		utils.abort("object '%s': path_walk '%s', index %d: cannot find corresponding point(s) on path_look '%s'",
+			self.object:name(), self.path_walk, index, self.path_look)
+	end
+end

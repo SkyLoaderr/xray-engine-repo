@@ -1,0 +1,110 @@
+function init    (obj)
+	xr_motivator.AddToMotivator(obj)
+end
+
+lasthealth  = 0
+lasttime	= 0
+----------------------------------------------------------------------------------------------------------------------
+class "actor_binder" (object_binder)
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:__init (obj) super(obj)
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:net_spawn(data)
+	if object_binder.net_spawn(self,data) == false then
+		return false
+	else
+		printf("SET DEFAULT INFOS")
+		if self.object:dont_has_info("storyline_actor_start") then
+			self.object:give_info_portion("encyclopedy")
+			self.object:give_info_portion("storyline_actor_start")
+			self.object:give_info_portion("level_changer_icons")		
+		end
+		return true
+	end
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:update(delta)
+	object_binder.update(self, delta)
+	--' Проверка потери жизни
+if false then
+	printf("%f * %f | %d", self.object.health, self.object.health - lasthealth, game.time() - lasttime)
+	lasthealth = self.object.health
+	lasttime = game.time()
+end
+       		if self.object:has_info("escape_trader_need_artefact") and
+       		   self.object:object("af_night_star") ~= nil
+       		then
+       			self.object:give_info_portion("escape_trader_find_artefact")
+				self.object:set_task_state(task.completed, "escape_trader_need_artefact", 1)
+       		end       	
+
+       		if self.object:has_info("escape_need_blockpost_case") and
+       		   self.object:object("quest_case_01") ~= nil
+       		then
+       			self.object:give_info_portion("escape_take_blockpost_case")
+				self.object:set_task_state(task.completed, "escape_blockpost_case", 1)
+       		end       	
+
+       		if self.object:has_info("escape_need_agroprom_documents") and
+       		   self.object:object("quest_case_02") ~= nil
+       		then
+       			self.object:give_info_portion("agroprom_take_agroprom_documents")
+				self.object:set_task_state(task.completed, "agroprom_get_military_documents", 1)
+       		end       	
+
+			if self.object:has_info("garbage_find_stalker") and
+       			self.object:object("garbage_letter") ~= nil
+       		then
+       			self.object:give_info_portion("garbage_find_dead_stalker")
+       			self.object:give_info_portion("agroprom_meet_gunslinger_band")
+				self.object:set_task_state(task.fail, "garbage_meet_stalker", 0)				
+       		end       	
+
+       		if self.object:has_info("agroprom_meet_gunslinger_band") and
+       		   self.object:object("agroprom_notebook") ~= nil
+       		then
+       			self.object:give_info_portion("agroprom_find_gunslinger_band")
+				self.object:set_task_state(task.fail, "agroprom_meet_gunslinger_band", 0)
+       		end       		
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_init    (npc)
+	npc:bind_object(actor_binder(npc))
+end
+
+function object_init    (obj)
+	local obj_ini = obj:spawn_ini()
+	if obj_ini == nil then return end
+	
+	if obj_ini:section_exist("tip") == true then
+		if obj_ini:line_exist("tip", "label") == true then
+			local ll = obj_ini:r_string("tip", "label")
+			local st = string_table()
+			text = st:get_by_id(ll)
+			obj:set_tip_text(text)
+		end
+	end
+	
+	if obj_ini:section_exist("info") == true then
+		if obj_ini:line_exist("info", "id") == true then
+			obj:set_use_callback(object_info_callback)
+		end
+	end	
+end
+
+function object_info_callback(obj)
+	local obj_ini = obj:spawn_ini()	
+	local actor = level.actor()
+	if obj_ini == nil or actor == nil then return end
+	if obj_ini:section_exist("info") == true then
+		if obj_ini:line_exist("info", "id") == true then
+			local label = obj_ini:r_string("info", "id")
+			actor:give_info_portion(label)			
+		end
+	end
+end
+
+function script_zone_init(obj)
+	obj:bind_object(xr_zones.zone_binder(obj))
+end

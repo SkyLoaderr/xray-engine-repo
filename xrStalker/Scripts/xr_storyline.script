@@ -1,0 +1,158 @@
+function set_storyline(object, char_ini)
+	--' ┴юсшъ
+	if char_ini:section_exist ("bobik") == true then
+		escape_bobik.add_to_binder(object)
+    end
+
+    --' ┴рэфшЄ√ эр ЇрсЁшъх
+    xr_motivator.storage[object:id()].escape_factory_bandit = {
+            enabled  = false
+    }
+    if( char_ini:section_exist ("escape_factory_bandit") ) then
+        xr_motivator.storage[object:id()].escape_factory_bandit.enabled = true
+    end
+    if xr_motivator.storage[object:id()].escape_factory_bandit.enabled == true then
+        escape_factory_bandits.add_to_binder(object)
+    end
+    --' ═ютшўюъ, ъюЄюЁюую уЁрсрэєыш
+    xr_motivator.storage[object:id()].novice3 = {
+        }
+    if char_ini:section_exist ("novice3") == true then
+		xr_motivator.storage[object:id()].novice3.enabled = true
+		object:set_start_dialog("loser_hello_dialog")
+		xr_trivial.add_novice3    (object)
+    end
+
+    --Настройка сталкера зомби
+    xr_motivator.storage[object:id()].zombie = {
+            path     = nil,         --Путь, по которому ходить
+                curState = 1,
+                time     = 0,
+                stand    = false,
+                enabled  = false
+    }
+        if( char_ini:section_exist ("zombie") == true ) then
+            if( char_ini:line_exist("zombie", "path") == true ) then
+                    xr_motivator.storage[object:id()].zombie.path = char_ini:r_string("zombie", "path")
+            end
+            xr_motivator.storage[object:id()].zombie.enabled = true
+            xr_trivial.add_zombie(object)
+    end
+
+
+    --Настройка схемы реакции новичка
+    xr_motivator.storage[object:id()].novice = {
+                path     = nil,         --Путь, по которому ходить
+                rest     = nil,         --Места для сидения
+                curState = 1,
+                time     = nil,
+                index    = 1,           --Index точки, к которой идем, чтоб посидеть
+                enabled  = false
+    }
+        if char_ini:section_exist ("novice") == true then
+            xr_motivator.storage[object:id()].novice.enabled = true            --Если есть секция новичка, то включаем эту схему
+            if( char_ini:line_exist("novice", "path") == true ) then
+                    xr_motivator.storage[object:id()].novice.path   = char_ini:r_string("novice", "path")
+            end
+            if( char_ini:line_exist("novice", "rest") == true ) then
+                    xr_motivator.storage[object:id()].novice.rest_w = patrol(char_ini:r_string("novice", "rest"))
+            end
+            xr_trivial.add_novice     (object)
+        end
+
+
+    --Настройка схемы реакции новичка2 - новичок возле аномалии
+    xr_motivator.storage[object:id()].novice2 = {
+                path     = nil,         --Путь, по которому ходить
+                curState = 1,
+                time     = nil,
+                artifact = nil,         --Артифакт, который пытаемся достать
+                zone     = nil,         --Зона в которой лежит артефакт
+                radius   = nil,         --Радуис зоны
+                enabled  = false
+    }
+        if char_ini:section_exist ("novice2") == true then
+            xr_motivator.storage[object:id()].novice2.enabled = true            --Если есть секция новичка, то включаем эту схему
+            if char_ini:line_exist("novice2", "path") == true then
+                    xr_motivator.storage[object:id()].novice2.path     = char_ini:r_string("novice2", "path")
+            end
+            if char_ini:line_exist("novice2", "artifact") == true then
+                    xr_motivator.storage[object:id()].novice2.artifact = char_ini:r_string("novice2", "artifact")
+            end
+            if char_ini:line_exist("novice2", "zone") == true then
+                    xr_motivator.storage[object:id()].novice2.zone     = char_ini:r_string("novice2", "zone")
+            end
+            if char_ini:line_exist("novice2", "radius") == true then
+                    local way = patrol(char_ini:r_string("novice2", "radius"))
+                    xr_motivator.storage[object:id()].novice2.radius   = way:point(0):distance_to(way:point(1))
+            end
+            xr_trivial.add_novice2    (object)
+     end
+
+    --Настройка ученого
+    xr_motivator.storage[object:id()].scientist = {
+                path     = nil,         --Путь, по которому ходить
+                zone     = nil,         --Скриптовая зона, подход к бункеру и бункер
+                enabled  = false
+            }
+        if(char_ini:section_exist ("scientist") == true) then
+            xr_motivator.storage[object:id()].scientist.enabled = true            --Если есть секция новичка, то включаем эту схему
+
+            if(char_ini:line_exist("scientist", "path") == true) then
+                xr_motivator.storage[object:id()].scientist.path     = char_ini:r_string("scientist", "path")
+            end
+            if(char_ini:line_exist("scientist", "zone") == true) then
+                xr_motivator.storage[object:id()].scientist.zone     = char_ini:r_string("scientist", "zone")
+            end
+
+            object:set_start_dialog     ("dark_laboratory_scientist_dialog")
+            xr_scientist.add_to_binder  (object)
+     end
+
+    --Охранник в баре у бармена
+    xr_motivator.storage[object:id()].security = {
+                path     = nil,         --Путь, по которому ходить
+                enabled  = false
+            }
+        if(char_ini:section_exist ("security") == true) then
+            xr_motivator.storage[object:id()].security.enabled = true            --Если есть секция новичка, то включаем эту схему
+            if(char_ini:line_exist("security", "path") == true) then
+                xr_motivator.storage[object:id()].security.path     = patrol(char_ini:r_string("security", "path"))
+            end
+            xr_trivial.add_security    (object)
+            object:set_start_dialog    ("bar_security_dialog")
+     end
+
+
+     --Сталкеры в баре
+     --xr_motivator.storage[object:id()].bar_stalker = {enabled = false, interlocutor = nil, passive = false}
+     --if char_ini:section_exist ("bar_stalker") == true then
+        --xr_motivator.storage[object:id()].bar_stalker.enabled = true
+        --if char_ini:line_exist ("bar_stalker", "interlocutor") == true then
+           --xr_motivator.storage[object:id()].bar_stalker.interlocutor = char_ini:r_string ("bar_stalker", "interlocutor")
+        --end
+        --if char_ini:line_exist ("bar_stalker", "passive") == true then
+           --xr_motivator.storage[object:id()].bar_stalker.passive = char_ini:r_bool ("bar_stalker", "passive")
+        --end
+        --bar_stalker.add_to_binder (object)
+     --end
+
+    -- Бармен
+    if char_ini:section_exist("barman") then
+        barman.add_to_binder(object)
+    end
+
+    --' рыъюуюышъш т срЁх :)
+	xr_motivator.storage[object:id ()].bar = {
+		enabled = false,
+		meat = false,
+		interlocutor = nil,
+		talking = false,
+		pose = nil
+	}
+	bar_stalker.add_to_binder (object, char_ini)
+
+	-- ╚ёяєурээ√щ ёЄрыъхЁ, ъюЄюЁюую єсштрхЄ яыюЄ№ шыш ъЁютюёюё
+	xr_motivator.storage[object:id()].scared = {}
+	xr_scared.add_to_binder(object, char_ini)
+end

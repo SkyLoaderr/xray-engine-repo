@@ -1,0 +1,73 @@
+local entered = false
+
+function on_enter (zone, obj)
+    local act = level.actor ()
+    if act == nil or obj:id () ~= act:id () then
+       return
+    end
+
+    entered = true
+end
+
+
+function main ()
+    if true then return end
+    local heli = get_level_object ("helicopter")
+    local ini = heli:spawn_ini ()
+    if ini == nil or
+       ini:line_exist ("settings", "zone") == false or
+       ini:line_exist ("settings", "corpse_candidat") == false
+       then
+       return
+    end
+
+    local zone = get_level_object (ini:r_string ("settings", "zone"))
+    local candidat = get_level_object (ini:r_string ("settings", "corpse_candidat"))
+    zone:set_callback (this.on_enter, true)
+
+    while entered == false do
+          --heli:heli_goto_stay_point  ()
+          wait ()
+    end
+
+    while candidat:alive () == true do
+          if heli:air_attack_active () == false then
+             heli:air_attack_wait (candidat, 100, 5)    --остановиться за 100 метров до цели, висеть 5 сек
+--             heli:air_attack (candidat)
+          end
+          wait ()
+    end
+
+
+end
+
+
+
+--      void        air_attack        (CLuaGameObject*);
+--      void        air_attack_wait      (CLuaGameObject*, float dist = 20.0f, float time = 5.0f);
+--      bool        air_attack_active    ();
+--
+--      void        heli_goto_stay_point  (Fvector& pos, float time=0.0f);
+--      void        heli_go_patrol      (float time=0.0f);
+
+
+
+
+
+--function main()
+
+--  local helicopter = get_level_object( "helicopter" )
+--  local actor = get_actor()
+--  wait(10000)
+--  while(true)do
+
+--    if(helicopter:air_attack_active()==false) then
+--      wait(5000)
+--      helicopter:air_attack_wait(actor,100,15)    --остановиться за 100 метров до цели, висеть 15 сек
+--      helicopter:air_attack(actor)
+--    end
+
+--    wait()
+--  end
+
+--end

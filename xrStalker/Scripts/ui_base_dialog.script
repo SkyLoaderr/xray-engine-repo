@@ -1,0 +1,149 @@
+-- File:        UI_COMMON_DATA.SCRIPT
+-- Description: 
+-- Created:     16.11.2004
+-- Last Change: 16.11.2004
+-- Author:      Serhiy O. Vynnychenko
+-- Mail:        narrator@gsc-game.kiev.ua
+--
+-- Copyright:   2004 GSC Game World
+
+function main()
+	local dlg = ui_base_dialog.base_dialog()
+	level.start_stop_menu(dlg,true)
+	dlg:InitControls("Base Dialog TEST")
+	while true do
+		wait(3000)
+	end
+end
+
+
+class "base_dialog" (CUIScriptWnd)
+
+function base_dialog:__init() super()
+	
+end
+
+function base_dialog:__finalize()
+end
+
+function base_dialog:InitControls(caption)
+	-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< INIT DATA 
+	self.indent = 18	
+	self.button_indent = -1 --7	
+	self.screen    = {x = 0, y = 0, width = 1024, height = 768}
+	
+	-- rect of main window
+	self.main_rect = {x = 0, y = 0,
+					  width  = 600,
+					  height = 400}
+	self.main_rect.x = (self.screen.width  - self.main_rect.width )/2
+	self.main_rect.y = (self.screen.height - self.main_rect.height)/2
+	-----------------------------------------------------------------
+	self.left_align_x   = self.indent
+	self.right_align_x  = self.main_rect.width - self.indent
+	self.top_align_y    = self.indent
+	self.bottom_align_y = self.main_rect.height - self.indent
+	------------------------------------------------------------------
+	
+	-- button template
+	self.btn_rect  = {x = 0, 
+					  y = 0, 
+					  width = 135, 
+					  height = 40 }
+	self.btn_rect.x = (self.main_rect.width - self.btn_rect.width)/2
+	--------------------------------------------------
+	-- special button aling
+	
+--		| _main form_	     |
+--		|                    |
+--		|          ________  |
+--		----------| cancel |--
+--		          ``````````
+	self.btn_special_rect = { x = 0, y = 0, width = self.btn_rect.width, height = self.btn_rect.height}
+	self.btn_special_rect.x = self.right_align_x - self.btn_special_rect.width
+	self.btn_special_rect.y = self.main_rect.height - self.btn_special_rect.height/2
+	---------------------------------------------------
+	
+	-- Left Top Frame
+	self.lt_frame_indent = {x = 20, y = 45}
+	-- Caption text rect
+	self.caption_text_rect = {x = 60, y = -33, width = 500, height = 50 }
+	
+	-- Fonts
+	self.caption_font = GetFontLetterica25()
+	self.edit_font    = GetFontLetterica25()
+	self.button_font  = GetFontLetterica25()
+	self.list_file_font = GetFontMedium()
+	self.list_date_font = GetFontMedium()
+	self.message_box_font = GetFontLetterica25()
+	
+	-- Message Box
+	self.message_rect = {x = 0, y = 0, width = 400, height = 300}
+	
+	
+	-- INIT DATA >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	
+	-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< CODE
+	
+	-- init self position and size
+	self:Init(self.screen.x, 
+			  self.screen.y, 
+			  self.screen.width, 
+			  self.screen.height)
+	
+	-- MAIN FRAME WINDOW
+	self.main_frame = CUIFrameWindow()
+	self.main_frame:SetAutoDelete(true)
+	self.main_frame:SetWindowName("main_frame")
+	self.main_frame:Init("ui\\ui_frame", self.main_rect.x, 
+										 self.main_rect.y, 
+										 self.main_rect.width, 
+										 self.main_rect.height)
+	self.main_frame:InitLeftTop("ui\\ui_frame_over_lt", self.lt_frame_indent.x, self.lt_frame_indent.y)
+	self:AttachChild(self.main_frame)
+	
+	-- CAPTION --
+	self.txt_caption = CUIStatic()
+	self.txt_caption:SetAutoDelete(true)
+	self.txt_caption:SetWindowName("txt_caption")
+	self.txt_caption:SetFont(self.caption_font)
+	self.txt_caption:SetTextAlign(CGameFont.alLeft)
+	self.txt_caption:SetText(caption)
+	self.txt_caption:Init(self.caption_text_rect.x, 
+						  self.caption_text_rect.y,
+						  self.caption_text_rect.width, 
+						  self.caption_text_rect.height)
+	self.main_frame:AttachChild(self.txt_caption)		
+	
+	-- Message Box --
+	self.message_box = CUIMessageBox()
+	self.message_box:SetAutoDelete(true)
+	self.message_box:SetWindowName("message_box")
+	self.message_box:SetFont(GetFontLetterica25())
+	self.message_box:Init("ui\\ui_frame",self.message_rect.x, 
+										 self.message_rect.y, 
+										 self.message_rect.width, 
+										 self.message_rect.height)
+	self.message_box:SetStyle(0)	
+	self.message_box:Hide()
+	self:Register(self.message_box)
+	self.main_frame:AttachChild(self.message_box)
+	self.message_box:AutoCenter()
+	-- CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	
+	
+end
+
+function base_dialog:OnKeyboard(dik, keyboard_action)
+	CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
+	
+	DIK_RETURN = 28
+	WINDOW_KEY_PRESSED = 6
+	
+	local bind = dik_to_bind(dik)
+	if bind == key_bindings.kQUIT then
+		level.start_stop_menu(self,true)
+	end  
+
+	return true
+end
+

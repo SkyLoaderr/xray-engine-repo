@@ -1,0 +1,785 @@
+local animations = {
+                   {anim = "stoya_ruje_ 0",       flag = true},
+                   {anim = "vishka_3",            flag = false},
+                   {anim = "norm_torso_2_idle_1", flag = false},
+                   {anim = "norm_torso_2_idle_2", flag = true},
+                   {anim = "norm_torso_2_idle_3", flag = false},
+                   {anim = "norm_torso_2_idle_4", flag = true},
+                   {anim = "norm_torso_2_idle_5", flag = false},
+                   {anim = "norm_torso_2_idle_6", flag = false}
+                   }
+
+
+local anim_pris = {
+                  {anim = "prisluh_0", flag = false},
+                  {anim = "prisluh_1", flag = false},
+                  {anim = "prisluh_2", flag = false}
+                  }
+                  
+local anim_raid = {
+                  {anim = "spetsnaz_0", flag = false},
+                  {anim = "spetsnaz_1", flag = false},
+                  {anim = "spetsnaz_2", flag = false},
+                  {anim = "spetsnaz_3", flag = false},
+                  {anim = "spetsnaz_4", flag = false},
+                  {anim = "spetsnaz_5", flag = false},
+                  {anim = "spetsnaz_6", flag = false},
+                  {anim = "spetsnaz_7", flag = false}
+                  }
+                  
+local anim_find_stop = {
+                  {anim = "poisk_idle_0", flag = true},                  
+                  {anim = "poisk_idle_1", flag = true},                  
+                  {anim = "poisk_idle_2", flag = true},
+                  {anim = "poisk_idle_3", flag = true},
+                  {anim = "poisk_idle_4", flag = true},
+                  {anim = "poisk_idle_5", flag = true}
+                  }
+
+local anim_find_move = {
+                  {anim = "poisk_walk_0", flag = true},
+                  {anim = "poisk_walk_1", flag = true},
+                  {anim = "poisk_walk_2", flag = true},
+                  {anim = "poisk_walk_3", flag = true}
+                  }                                      
+
+local commander_snd                     = xr_sounds_id.sound_patrol_base
+local soldiers_idle_snd                 = commander_snd + 1
+local soldiers_hear_snd                 = commander_snd + 2
+local soldiers_idle2_snd                = commander_snd + 3
+local soldiers_replics_snd              = commander_snd + 4
+
+local leader_no_command					= 0
+local leader_move                       = 1
+local leader_stop                       = 2
+local leader_speak						= 3
+local leader_speak_enable				= 4
+local leader_return                     = 5  
+local leader_free                       = 6
+
+local num_phrases = 10
+
+----------------------------------------------------------------------------------------------------------------------
+-- Evaluators
+----------------------------------------------------------------------------------------------------------------------
+-- Есть лидер
+class "evaluator_leader_present" (property_evaluator)
+function evaluator_leader_present:__init (name, storage) super ()
+	self.a = storage
+end
+--------------
+function evaluator_leader_present:evaluate ()
+    if self.a.leader == nil then
+       if self.a.leader_name == nil then return false end 
+       self.a.leader = level.object (self.a.leader_name)
+       if self.a.leader == nil then 
+          return false 
+       else
+          table.insert (xr_motivator.storage[self.a.leader:id()].followers, self.a)
+       end   
+    end
+    return true
+end
+
+----------------------------------------------------------------------------------------------------------------------
+-- Окончание следования
+class "evaluator_follow" (property_evaluator)
+function evaluator_follow:__init (name, storage) super ()
+	self.a = storage
+end
+--------------
+function evaluator_follow:evaluate ()
+    return not (self.a.enabled == true)
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+-- Окончание рейда
+class "evaluator_raid" (property_evaluator)
+function evaluator_raid:__init (name, storage) super ()
+	self.a = storage
+end
+--------------
+function evaluator_raid:evaluate ()
+    return not (self.a.raid_enabled == true)
+end
+
+----------------------------------------------------------------------------------------------------------------------
+-- Actions
+----------------------------------------------------------------------------------------------------------------------
+-- Если нет лидера - стоим ждем
+class "action_leader_wait" (action_base)
+--------------
+function action_leader_wait:__init (name, storage) super (nil, name)
+	self.a = storage
+    self.current_animation = 0
+end
+--------------
+function action_leader_wait:initialize ()
+    action_base.initialize (self)
+    self.object:clear_animations ()
+    
+    self.object:set_node_evaluator        ()
+    self.object:set_path_evaluator        ()
+    self.object:set_desired_position      ()
+    self.object:set_item                  (object.idle, self.object:best_weapon ())
+    self.object:set_detail_path_type      (move.line)
+    self.object:set_body_state            (move.standing)
+    self.object:set_movement_type         (move.stand)
+    self.object:set_path_type             (game_object.level_path)
+    self.object:set_mental_state          (anim.free)
+    self.object:set_sight                 (look.path_dir, nil, 0)
+end
+--------------
+function action_leader_wait:execute ()
+    action_base.execute                 (self)
+    self.object:set_item                (object.idle, self.object:best_weapon ())
+    if self.object:animation_count () < 2 then
+       self:set_animation ()
+    end    
+end
+--------------
+function action_leader_wait:finalize ()
+    action_base.finalize (self)
+    self.object:clear_animations ()
+end
+--------------
+function action_leader_wait:set_animation ()
+
+    self.current_animation = self.current_animation + 1
+    if self.current_animation > table.getn (animations) then
+       self.current_animation = 1
+    end
+
+    self.object:add_animation (animations[self.current_animation].anim, animations[self.current_animation].flag)
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+-- Следуем за лидером
+class "action_follow" (action_base)
+function action_follow:__init (name, storage) super (nil, name)
+	self.a = storage
+    self.current_vertex_id = -1
+    self.stage = 0
+    self.leader_v_id = -1
+    self.last_time = 0
+    self.current_animation = math.random (1, table.getn (animations))
+    self.current_phrase = math.random (0, num_phrases)
+    self.mental_state = anim.free
+    self.time = 0
+    self.dist = self.a.distance
+    self.sound_s = { 
+                   rnd = 100,
+                   maxidle = math.random (5, 10),
+                   sumidle = math.random (2, 10),
+                   themes = { "weather", "state" } 
+                   }
+end
+--------------
+function action_follow:initialize ()
+    action_base.initialize (self)
+
+    self.object:set_callback (self, "move_callback", game_object.movement)
+    self.object:clear_animations ()
+    
+    self.object:set_node_evaluator        ()
+    self.object:set_path_evaluator        ()
+    self.object:set_desired_position      ()
+    self.object:set_item                  (object.activate, self.object:best_weapon ())
+    self.object:set_detail_path_type      (move.line)
+    self.object:set_body_state            (move.standing)
+    self.object:set_movement_type         (move.stand)
+    self.object:set_path_type             (game_object.level_path)
+    self.object:set_mental_state          (self.a.mental_state)
+    self.object:set_sight                 (look.path_dir, nil, 0)
+    
+
+    
+    if self.stage ~= 3 then 
+       self.stage = 0 
+       self:check_path ()    
+       if self.object:accessible (self.current_vertex_id) == false then 
+          self.current_vertex_id = self.a.leader:level_vertex_id ()
+       end   
+       self.object:set_dest_level_vertex_id  (self.current_vertex_id)
+       self.object:set_movement_type         (move.walk)
+    else
+       if self.a.escape_path == nil then 
+          self.a.enabled = false
+          self.stage = 0
+          return true
+       end         
+       self.object:set_path_type (game_object.patrol_path)
+       self.object:set_patrol_path (self.a.escape_path, patrol.nearest, patrol.stop, false)
+       self.object:set_mental_state (anim.danger)
+       self.object:set_movement_type (move.run)
+    end   
+    
+    self.last_time = 0
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_follow:free ()
+    local ini = self.object:spawn_ini ()
+    if ini == nil or ini:section_exist ("escape_raid") == false or 
+       ini:line_exist ("escape_raid", "raider") == false or ini:r_bool ("escape_raid", "raider") == false then
+       local st = xr_gulag.isUnderFraction (self.object)
+       if st ~= nil then
+          xr_gulag.resetJob (st, self.object)
+       end   
+    else
+       local sim = alife ()
+       if sim ~= nil then
+          sim:set_switch_online  (self.object:id (), false) 
+          sim:set_switch_offline (self.object:id (), true)
+       end   
+    end   
+end
+--------------
+function action_follow:execute ()
+    action_base.execute                 (self)
+    
+    if self.object:active_item () ~= nil then
+       self.object:set_item (object.idle, self.object:best_weapon ())
+    else
+       self.object:set_item (object.activate, self.object:best_weapon ())     
+    end   
+    
+    
+    if self.a.leader_command == leader_free then
+       self.a.stage = 0 
+       self.a.enabled = false
+       self:free ()
+       return 
+    end   
+    
+    --if self.dist ~= self.a.distance then
+       self:recalculate_position ()
+      -- self.dist = self.a.distance
+    --end        
+    
+    if self.stage == 0 then 
+       if self:check_path () == false then
+          self:update_stage_0 ()
+       end   
+       if self.object:active_sound_count() == 0 then
+          xr_sound.sound_update (self.object, self.sound_s)
+       end
+    elseif self.stage == 1 then        
+       self:check_path     ()
+       self:update_stage_1 ()
+       if self.object:active_sound_count() == 0 then
+          xr_sound.sound_update(self.object, self.sound_s)
+       end
+    elseif self.stage == 2 then
+       self:update_stage_2 ()
+    elseif self.stage == 3 then
+       self.object:set_mental_state (anim.danger)
+       self.object:set_movement_type (move.run)
+    elseif self.stage == 4 then
+       self:update_stage_4 ()         
+    end       
+end    
+--------------
+function action_follow:finalize ()
+    action_base.finalize (self)
+    self.object:clear_animations ()
+    self.object:clear_callback (game_object.movement)
+end
+--------------
+function action_follow:move_callback (obj, action_type, index)
+    if index == -1 then return end
+    if patrol (self.object:patrol ()):flag (index, 6) == true then
+       self.a.stage = 0 
+       self.a.enabled = false
+       local st = xr_gulag.isUnderFraction (self.object)
+       if st ~= nil then
+          xr_gulag.resetJob (st, self.object)
+       end   
+    end   
+end
+--------------
+function action_follow:check_path ()
+
+    if self.a.leader:alive () == false or self.a.leader_command == leader_return then 
+       if self.a.escape_path == nil then 
+          self.a.enabled = false
+          return false
+       end         
+       self.object:set_path_type (game_object.patrol_path)
+       self.object:set_patrol_path (self.a.escape_path, patrol.nearest, patrol.stop, false)
+       self.object:set_mental_state (anim.danger)
+       self.object:set_movement_type (move.run)
+       self.stage = 3 
+       return false
+    end   
+    
+    self.object:set_mental_state (self.a.mental_state)
+    if self.last_time - device ():time_global () > 0 then 
+       return false 
+    end
+    self.last_time = 5000 + device ():time_global ()
+
+    if self.current_vertex_id ~= -1 then
+       if self.object:level_vertex_id () ~= self.current_vertex_id then --and self.current_vertex_id ~= -1 then 
+          return false 
+       end
+    end   
+    
+    if self.a.leader_command == leader_stop then
+       self.object:set_movement_type (move.stand)
+       if self.a.look_dir.x == 0 and self.a.look_dir.y == 0 and self.a.look_dir.z == 0 then 
+          self.stage = 2  
+          return false
+       end
+       self.object:set_sight (look.direction, self.a.look_dir, 0)
+       self.stage = 4
+       self.time = device ():time_global ()        
+       return true
+    end   
+    
+    local cv_id = level.vertex_in_direction (self.a.leader:level_vertex_id (), self.a.direction, self.a.distance)
+    if cv_id == -1 then 
+       cv_id = self.a.leader:level_vertex_id ()
+    end   
+    if cv_id == self.current_vertex_id or self.object:accessible (cv_id) == false then 
+       return false 
+    end
+    self.current_vertex_id = cv_id
+    
+    --local leader_direction = self.a.leader:direction ()
+    --leader_direction.invert(leader_direction)
+    --self.object:set_desired_direction (leader_direction)
+    
+    self.object:set_desired_direction (self.a.leader:direction ())
+    self.object:set_dest_level_vertex_id  (self.current_vertex_id)   
+    self.object:set_sight (look.path_dir, nil, 0)
+    return false
+end
+--------------
+function action_follow:recalculate_position ()
+    local cv_id = level.vertex_in_direction (self.a.leader:level_vertex_id (), self.a.direction, self.a.distance)
+    if cv_id == self.current_vertex_id then return end
+    if cv_id == -1 then cv_id = self.a.leader:level_vertex_id () end
+	stop_play_sound(self.object)
+    if self.object:accessible (cv_id) == false then
+       cv_id = self.a.leader:level_vertex_id ()
+    end  
+    self.current_vertex_id = cv_id
+    self.object:set_desired_direction (self.a.leader:direction ())
+    self.object:set_dest_level_vertex_id  (self.current_vertex_id)   
+    self.object:set_sight (look.path_dir, nil, 0)
+end
+--------------
+function action_follow:update_stage_0 ()
+
+	if self.a.leader_command == leader_speak then
+		stop_play_sound(self.object)
+       self.a.leader_command = 0
+    end   
+    
+	if self.a.leader_command == leader_speak_enable then
+	   self.current_phrase = self.current_phrase + 1 
+	   if self.current_phrase >= num_phrases then self.current_phrase = 0 end
+       xr_sounds.play_sound (self.object, 0, "commander_patrol", 1, 2, self.current_phrase)
+       --self.object:play_sound (soldiers_idle_snd, 1, 0, 1, 0, self.current_phrase)
+       self.a.leader_command = 0
+    end   
+	   
+
+    if self.object:position ():distance_to (level.vertex_position (self.a.leader:level_vertex_id ())) < (self.a.distance * 3) then
+       self.object:set_movement_type         (move.walk)
+       self.object:set_mental_state          (self.a.mental_state)
+       self.object:set_sight                 (look.path_dir, nil, 0)
+       self.object:set_desired_direction     (self.a.leader:direction ())
+       return
+    end
+    self.stage = 1
+    self:update_stage_1 ()   
+end
+--------------
+function action_follow:update_stage_1 ()
+    if self.object:position ():distance_to (level.vertex_position (self.a.leader:level_vertex_id ())) < (self.a.distance + self.a.distance * 0.5) then
+       self.stage = 0
+       self:update_stage_0 ()
+       return 
+    end
+    self.last_time = -1
+    self.current_vertex_id = -1
+    self:check_path ()
+    self.object:set_movement_type         (move.run)
+    self.object:set_mental_state          (anim.danger)
+    self.object:set_sight                 (look.path_dir, nil, 0)
+    self.object:set_desired_direction     (self.a.leader:direction ())
+        
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_follow:update_stage_2 ()
+
+    if self.a.leader:alive () == false or self.a.leader_command == leader_return then 
+       self.object:clear_animations ()
+       if self.a.escape_path == nil then 
+          self.a.enabled = false
+          return
+       end         
+       self.object:set_path_type (game_object.patrol_path)
+       self.object:set_patrol_path (self.a.escape_path, patrol.nearest, patrol.stop, false)
+       self.object:set_mental_state (anim.danger)
+       self.object:set_movement_type (move.run)
+       self.stage = 3 
+       return
+    end   
+
+    if self.a.leader_command == leader_move then
+       self.stage = 0
+       self.object:clear_animations ()
+       return
+    end 
+    if self.object:animation_count () <= 1 then
+       self:set_animation ()
+    end    
+    self.object:set_movement_type (move.stand)
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_follow:update_stage_4 ()
+    if device ():time_global () - self.time > 1500 then
+       self.stage = 2
+       return
+    end    
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_follow:set_animation ()
+
+    self.current_animation = self.current_animation + 1
+    if self.current_animation > table.getn (animations) then
+       self.current_animation = 1
+    end
+
+    self.object:add_animation (animations[self.current_animation].anim, animations[self.current_animation].flag)
+end
+
+
+
+
+-- рейд
+class "action_raid" (action_base)
+--------------
+function action_raid:__init (name, storage) super (nil, name)
+	self.a = storage
+    self.current_animation = 0
+    self.move_type = move.walk
+    self.body_state = move.standing
+    self.mental_state = anim.free
+    self.stage = 0
+    self.in_find = false
+    self.path_type = patrol.start
+    self.first_init = true
+end
+--------------
+function action_raid:initialize ()
+    action_base.initialize (self)
+    
+    self.object:set_callback (self, "move_callback", game_object.movement)
+    self.object:clear_animations ()
+    
+    self.object:set_node_evaluator        ()
+    self.object:set_path_evaluator        ()
+    self.object:set_desired_position      ()
+    self.object:set_desired_direction     ()
+    self.object:set_item                  (object.idle, self.object:best_weapon ())
+    self.object:set_detail_path_type      (move.line)
+    self.object:set_body_state            (self.body_state)
+    self.object:set_movement_type         (self.move_type)
+    self.object:set_path_type             (game_object.patrol_path)
+    if self.first_init == true then 
+       self.path_type = patrol.start
+       self.first_init = false
+    else 
+       self.path_type = patrol.nearest 
+    end 
+    self.object:set_patrol_path           (self.a.raid_path, self.path_type, patrol.continue, true)
+    self.object:set_mental_state          (self.mental_state)
+    self.object:set_sight                 (look.path_dir, nil, 0)
+    self.stage = 0
+    self.in_find = false
+end
+--------------
+function action_raid:execute ()
+    action_base.execute                 (self)
+    if self.stage == 0 then
+       return  
+    elseif self.stage == 1 then
+           if self.object:animation_count () == 0 then
+              self.object:set_body_state            (self.body_state)
+              self.object:set_movement_type         (self.move_type)
+              self.object:set_mental_state          (self.mental_state)
+              if self.in_find == true then
+                 local num = math.random (1, 4)
+                 self.object:add_animation (anim_find_move[num].anim,  anim_find_move[num].flag)
+                 self.stage = 2
+              else
+                 self.stage = 0   
+              end   
+           end
+    elseif self.stage == 2 then
+           self:update_stage2 ()
+    end      
+           
+end
+--------------
+function action_raid:finalize ()
+    action_base.finalize (self)
+    self.object:clear_animations ()
+    self.object:clear_callback (game_object.movement)
+end
+--------------
+function action_raid:set_animation ()
+
+    self.current_animation = self.current_animation + 1
+    if self.current_animation > table.getn (animations) then
+       self.current_animation = 1
+    end
+
+    self.object:add_animation (animations[self.current_animation].anim, animations[self.current_animation].flag)
+end
+--------------
+function action_raid:update_stage2 ()
+    if self.object:animation_count () >= 2 then return end
+    local num = math.random (1, 4)
+    self.object:add_animation (anim_find_move[num].anim,  anim_find_move[num].flag)
+end
+--------------
+function action_raid:move_callback (obj, action_type, index)
+    if index == -1 then return end
+    
+    local ptr = patrol (self.object:patrol ())
+    if ptr:flag (index, 4) == true then
+       self.a.raid_enabled = false
+       self.first_init = true
+       return
+    end   
+    
+    if ptr:flag (index, 8) == true then
+       self.object:set_movement_type (move.stand)
+       self.move_type = move.walk
+       self.body_state = move.standing
+       self.mental_state = anim.free
+       self.object:set_body_state            (move.standing)
+       self.object:set_movement_type         (move.walk)
+       self.object:set_mental_state          (anim.free)
+       return
+    end
+
+    if ptr:flag (index, 9) == true then
+       self.object:set_movement_type (move.stand)
+       self.body_state = move.standing
+       self.move_type = move.run
+       self.mental_state = anim.danger
+       self.object:set_body_state            (move.standing)
+       self.object:set_movement_type         (move.run)
+       self.object:set_mental_state          (anim.danger)
+       return
+    end
+    
+    if ptr:flag (index, 10) == true then
+       self.object:set_movement_type (move.stand)
+       self.move_type = move.run
+       self.body_state = move.crouch
+       self.mental_state = anim.danger
+       self.object:set_body_state            (move.crouch)
+       self.object:set_movement_type         (move.run)
+       self.object:set_mental_state          (anim.danger)
+       return
+    end
+        
+    if ptr:flag (index, 11) == true then
+       self.object:set_movement_type (move.stand)
+       self.object:set_mental_state (anim.free)
+       local num
+       if self.in_find == false then
+          if self.body_state == move.crouch then     
+             num = math.random (1, 4)  
+          else
+             num = math.random (5, 8)
+          end
+          self.object:add_animation (anim_raid[num].anim, anim_raid[num].flag)
+       else
+          num = math.random (1, 6)
+          self.object:clear_animations ()
+          self.object:add_animation (anim_find_stop[num].anim,  anim_find_stop[num].flag)
+       end    
+       self.stage = 1
+       return 
+    end
+    
+    if ptr:flag (index, 12) == true then
+       self.in_find = true
+       --self.move_type = move.run
+       --self.body_state = move.crouch
+       --self.mental_state = anim.danger
+       --self.object:set_body_state            (move.crouch)
+       --self.object:set_movement_type         (move.run)
+       --self.object:set_mental_state          (anim.danger)
+       --self.stage = 2
+       --local num = math.random (1, 4)
+       --self.object:add_animation (anim_find_move[num].anim,  anim_find_move[num].flag)
+       return 
+    end   
+    
+    if ptr:flag (index, 13) == true then
+       --self.move_type = move.walk
+       --self.body_state = move.standing
+       --self.mental_state = anim.danger
+       --self.object:set_body_state            (move.standing)
+       --self.object:set_movement_type         (move.walk)
+       --self.object:set_mental_state          (anim.danger)
+       --self.object:clear_animations ()
+       self.in_find = false
+       --self.stage = 0
+    end   
+        
+end
+
+----------------------------------------------------------------------------------------------------------------------
+function  add_to_binder(obj, char_ini)
+    if char_ini == nil  or char_ini:section_exist ("follower") == true then
+	local operators		= {}
+	local properties	= {}
+	
+	printf ("FOLLOWER_EVA_BASE = %d", xr_evaluators_id.sidor_follower_base)
+
+	local manager = obj:motivation_action_manager ()
+
+	properties["leader_present"]        = xr_evaluators_id.sidor_follower_base + 0
+	properties["follow"]                = xr_evaluators_id.sidor_follower_base + 1
+	properties["raid"]                  = xr_evaluators_id.sidor_follower_base + 2
+	properties["state_end"]		        = xr_evaluators_id.state_change
+
+	operators["leader_wait"]            = xr_actions_id.sidor_act_follower_base + 0
+	operators["follow"]                 = xr_actions_id.sidor_act_follower_base + 1
+	operators["raid"]                   = xr_actions_id.sidor_act_follower_base + 2
+   
+    manager:add_evaluator (properties["leader_present"], this.evaluator_leader_present 	("evaluator_leader_alive", xr_motivator.storage[obj:id()].follower))
+    manager:add_evaluator (properties["follow"], this.evaluator_follow	("evaluator_follow", xr_motivator.storage[obj:id()].follower))
+    manager:add_evaluator (properties["raid"], xr_comm_ptr.evaluator_raid ("evaluator_raid", xr_motivator.storage[obj:id()].patrol))
+        
+    local action = this.action_leader_wait ("action_leader_wait",	xr_motivator.storage[obj:id()].follower)
+    action:add_precondition     (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
+	action:add_precondition	    (world_property (properties["state_end"], 	    true))
+    action:add_precondition     (world_property (properties["leader_present"],  false))
+    action:add_effect           (world_property (properties["leader_present"],  true))
+    manager:add_action (operators["leader_wait"], action)
+    
+    action = this.action_follow ("action_follow",			xr_motivator.storage[obj:id()].follower)
+    action:add_precondition     (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
+    action:add_precondition     (world_property (properties["leader_present"],  true))
+    action:add_precondition     (world_property (properties["raid"],            false))
+	action:add_precondition		(world_property (properties["state_end"], 	    true))
+    action:add_precondition     (world_property (properties["follow"],          false))
+    action:add_effect           (world_property (properties["follow"],          true))
+    manager:add_action (operators["follow"], action)
+    
+    action = xr_comm_ptr.action_raid ("raid", xr_motivator.storage[obj:id()].patrol)
+    action:add_precondition (world_property(stalker_ids.property_alive, true))
+    action:add_precondition (world_property(stalker_ids.property_enemy, false))
+    action:add_precondition (world_property(properties["follow"], false))
+    action:add_precondition (world_property(properties["raid"], true))
+    action:add_effect (world_property(properties["raid"], false))
+    manager:add_action (operators["raid"], action)
+    
+    --action = this.action_raid ("action_raid", xr_motivator.storage[obj:id()].follower)
+    --action:add_precondition     (world_property (stalker_ids.property_alive,    true))
+    --action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
+	--action:add_precondition	    (world_property (properties["state_end"], 	    true))
+    --action:add_precondition     (world_property (properties["raid"],            false))
+    --action:add_effect           (world_property (properties["raid"],            true))
+    --manager:add_action          (operators["raid"], action)
+      
+    action = manager:action     (stalker_ids.action_puzzle_solver)
+    action:add_precondition     (world_property (properties["follow"],  true))
+
+	if char_ini ~= nil then xr_follower.set_follower(obj) end
+    end 
+    
+end
+----------------------------------------------------------------------------------------------------------------------
+function set_follower (npc, enabled, leader_name, escape_path, raid_enabled, raid_path, raid_look, team)
+	local char_ini = npc:spawn_ini()
+	local st = xr_motivator.storage[npc:id()].follower
+	local ptr = xr_motivator.storage[npc:id()].patrol
+	
+    if enabled == nil then
+       if char_ini:section_exist ("follower") == true and char_ini:line_exist("follower", "enabled") == true then
+          st.enabled = char_ini:r_bool("follower", "enabled")
+       else
+          st.enabled = false     
+       end
+    else
+        st.enabled = enabled
+    end
+    
+    if leader_name == nil then 
+       if char_ini:section_exist ("follower") == true and char_ini:line_exist("follower", "leader_name") == true then
+          st.leader_name = char_ini:r_string("follower", "leader_name")
+       else
+          st.leader_name = nil
+       end
+    else
+       st.leader_name = leader_name
+    end          
+
+    if escape_path == nil then
+       if char_ini:section_exist ("follower") == true and char_ini:line_exist("follower", "escape_path") == true then
+          st.escape_path = char_ini:r_string("follower", "escape_path")
+       else
+          st.escape_path = st.patrol_path
+       end
+    else
+       st.escape_path = escape_path
+    end       
+    
+    if raid_enabled == nil then
+       if char_ini:section_exist ("follower") == true and char_ini:line_exist ("follower", "raid_enabled") == true then
+          ptr.raid_enabled = char_ini:r_bool ("follower", "raid_enabled")
+       else
+          ptr.raid_enabled = false
+       end
+    else
+       ptr.raid_enabled = raid_enabled
+    end   
+    
+    if raid_path == nil then
+      if char_ini:section_exist ("follower") == true and char_ini:line_exist ("follower", "raid_path") == true then
+          ptr.raid_path = char_ini:r_string ("follower", "raid_path")
+      else
+          ptr.raid_path = st.patrol_path
+      end
+    else
+       ptr.raid_path = raid_path
+    end      
+
+    if raid_look == nil then
+      if char_ini:section_exist ("follower") == true and char_ini:line_exist ("follower", "raid_look") == true then
+          ptr.raid_look = char_ini:r_string ("follower", "raid_look")
+      else
+          ptr.raid_look = st.patrol_look
+      end
+    else
+       ptr.raid_path = raid_path
+    end      
+
+    if team == nil then
+      if char_ini:section_exist ("follower") == true and char_ini:line_exist ("follower", "team") == true then
+          ptr.team = char_ini:r_string ("follower", "team")
+      else
+          ptr.team = nil
+      end
+    else
+       ptr.team = team
+    end      
+
+	xr_motivator.checkStorage (npc)
+	xr_state.change_state (npc, xr_state.stand, false)
+end

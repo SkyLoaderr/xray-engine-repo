@@ -1,0 +1,307 @@
+
+--------------------------------------------------------------------------------
+class "stateAttack"
+function stateAttack:__init( script_name, mem )
+    self.scr_name   = script_name
+  self.memory     = mem
+    self.enemy      = nil
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttack:initialize()
+  self.memory.npc:script( true, self.scr_name )
+    self.enemy = self.memory.enemy
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttack:finalize()
+  self.memory.npc:script( false, self.scr_name )
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttack:execute()
+--    printf( "stateAttack executed" )
+
+  self:testing()
+
+  if( self.memory.npc:action() == nil ) then
+	  printf("attack 1-1")
+      action( self.memory.npc, act( act.attack, self.enemy ), cond( cond.time_end, 100000 ) )
+      printf("attack 1-2")
+    end
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttack:testing()
+  --Проверяем, не поменялся ли враг
+  if( self.enemy ) then
+      if( self.memory.enemy == nil ) then
+          	self.enemy = nil
+            return
+        end
+        if( self.enemy:id() ~= self.memory.enemy:id() ) then
+          	self.enemy = self.memory.enemy
+            printf( "New enemy  %d  Time  %d ", self.enemy:id(), device():time_global() )
+            self:update()
+        end
+    else
+      if( self.memory.enemy ) then
+          self.enemy = self.memory.enemy
+            self:update()
+        end
+    end
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttack:can_start()
+    return ( self.memory.enemy ~= nil )
+end
+
+--------------------------------------------------------------------------------
+
+--Врага нет, значит закончили выполнятся
+function stateAttack:check_complited()
+    return ( self.memory.enemy == nil )
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttack:update()
+  reset_action( self.memory.npc, self.scr_name )
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttack:id()
+    return 1
+end
+
+--==============================================================================
+--==============================================================================
+
+class "stateCowardAttack" ( stateAttack )
+function stateCowardAttack:__init( script_name, mem ) super( script_name, mem )
+
+end
+
+--------------------------------------------------------------------------------
+
+function stateCowardAttack:execute()
+    self:testing()
+
+    if( self.memory.npc:action() == nil ) then
+        action( self.memory.npc, act( act.panic, self.enemy ), cond( cond.time_end, 100000 ) )
+    end
+end
+--==============================================================================
+--==============================================================================
+
+class "stateAttackThreaten" ( stateAttack )
+function stateAttackThreaten:__init( script_name, mem ) super( script_name, mem )
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttackThreaten:execute()
+    self:testing()
+
+    if( self.memory.npc:action() == nil ) then
+    if(self.memory.hit.time ~= 0) then
+        --If hit, attack enemy
+	      printf("attack 2-1")
+          action(self.memory.npc, act(act.attack, self.memory.enemy), cond(cond.time_end, 20000))
+	      printf("attack 2-2")
+          return
+        end
+
+    if(distance_between(self.memory.npc, self.memory.enemy) > 5) then
+    --If enemy near, retreat
+          action(self.memory.npc, anim(anim.turn, 0), look(look.point, self.enemy:position()), cond(cond.look_end) )
+          action(self.memory.npc, anim(anim.attack, 0), look(look.point, self.enemy:position()), sound(sound.growling), cond(cond.time_end, 1000))
+      escape_bobik.bobik_alarm()
+        else
+--      local new_pos = self.memory.npc:position()
+--            new_pos:sub( self.memory.enemy:position():sub(self.memory.npc:position()):mul(10) )
+      local dir = self.memory.npc:position():sub(self.memory.enemy:position())
+
+      local l_v = level.vertex_in_direction(self.memory.npc:level_vertex_id(), dir, 10)
+            if(l_v == self.memory.npc:level_vertex_id()) then
+                dir.x = - dir.x
+                dir.z = - dir.z
+                l_v = level.vertex_in_direction(self.memory.npc:level_vertex_id(), dir, 10)
+            end
+
+      action(self.memory.npc, move(move.run_fwd, level.vertex_position(l_v), 0.3), sound(sound.attack, 500), cond(cond.move_end, 3000))
+        end
+    end
+end
+
+
+class "stateAttackArtful" ( stateAttack )
+function stateAttackArtful:__init( script_name, mem, way_o ) super( script_name, mem, way_o )
+    self.way        = patrol(way_o, patrol.start, patrol.stop)
+    self.time       = 0
+    self.attack_actor = false
+    self.angry        = false
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttackArtful:initialize()
+    self.time         = 0
+    self.memory.npc:script( true, self.scr_name )
+    self.enemy        = self.memory.enemy
+  if(level.actor() and level.actor():id() == self.enemy:id()) then
+      self.attack_actor = true
+    end
+    self.angry        = false
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttackArtful:finalize()
+    self.memory.npc:script( false, self.scr_name )
+    self.attack_actor = false
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttackArtful:execute()
+
+    self:testing()
+
+  if(self.attack_actor) then
+      self:actor()
+        return
+    end
+
+    if( self.memory.npc:action() == nil ) then
+	    printf("attack 3-1")
+        action( self.memory.npc, act( act.attack, self.enemy ), cond( cond.time_end, 100000 ) )
+	    printf("attack 3-2")
+    end
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttackArtful:testing()
+    --Проверяем, не поменялся ли враг
+    if( self.enemy ) then
+        if( self.memory.enemy == nil ) then
+            self.enemy = nil
+            return
+        end
+
+		if( self.enemy:id() ~= self.memory.enemy:id() ) then
+            self.enemy = self.memory.enemy
+      		if(level.actor() and self.enemy:id() == level.actor():id())then
+       			self.attack_actor = true
+      		else
+            	self.attack_actor = false
+      		end
+            printf( "New enemy  %d  Time  %d ", self.enemy:id(), device():time_global() )
+            self:update()
+        end
+    else
+        if( self.memory.enemy ) then
+            self.enemy = self.memory.enemy
+
+            if(level.actor() and self.enemy:id() == level.actor():id())then
+                self.attack_actor = true
+            else
+                self.attack_actor = false
+            end
+
+            self:update()
+        end
+    end
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttackArtful:can_start()
+    return ( self.memory.enemy ~= nil )
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttackArtful:check_complited()
+	if(self.attack_actor)then
+        --Если атакуем актера, то конец состояния если актер мертв, либо долго сидим на нычке
+        if(level.actor():alive() == false) then
+           return true
+        end
+
+    if(self.time ~= 0 and self.angry == false and device():time_global() > self.time + 40000)then
+      	printf( "completed. Device time = %d  nedd time = %d", device():time_global(), self.time + 40000 )
+        	return true
+        end
+   	else
+    	return ( self.memory.enemy == nil )
+   	end
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttackArtful:actor()
+  if(self.angry)then
+  --Если злые, то атакуем актера
+      if(self.memory.npc:action() == nil) then
+	      printf("attack 4-1")
+          action(self.memory.npc, act(act.attack, level.actor()), cond(cond.time_end, 30000) )
+	      printf("attack 4-2")
+        end
+      return
+    end
+
+  if(self.memory.npc:position():distance_to(self.way:point(0)) > 3) then
+  --Далеко от точки-нычки
+        if(self.memory.npc:action() == nil) then
+          action(self.memory.npc, move(move.run_fwd, self.way, 0.2, move.force), sound(sound.idle), cond(cond.move_end))
+            printf( "Attack ____________________________________________________________" )
+        end
+    else
+  --Сидим, если видим актера, то атакуем, также атакуем если получили хит, или слышим рядом звук
+--    printf("device_time = %d  hit_time = %d", device():time_global(), self.memory.hit.time + 3000)
+--        if( distance_between(self.memory.npc, level.actor() ) then
+        if(device():time_global() < self.memory.hit.time + 2000) then
+      --Получили хит, атакуем
+            self.angry = true
+            self:update()
+            return
+    end
+
+        if(device():time_global() < (self.memory.hit.time + 2000) and self.memory.sound.who ~= nil and self.memory.sound.who:id() == level.actor():id()) then
+      --Услышали звук, атакуем.
+            self.angry = true
+            self:update()
+            return
+        end
+
+        if(self.memory.npc:see(level.actor()) )then
+      self.angry = true
+            self:update()
+        else
+          if(self.memory.npc:action() == nil) then
+              action(self.memory.npc, anim(anim.sit_idle, 0), cond(cond.time_end, 30000) )
+            end
+        end
+        --Запоминаем время. Как оно истечет, то возвращаемся назад, если актер не подошел
+        if(self.time == 0) then
+          self.time = device():time_global()
+        end
+    end
+end
+
+
+class "AttackError" (stateAttack)
+function AttackError:__init( script_name, mem, way_o ) super( script_name, mem)
+    self.time       = 0
+    self.attack_actor = false
+    self.angry        = false
+end

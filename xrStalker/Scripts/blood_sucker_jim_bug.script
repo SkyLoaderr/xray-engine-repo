@@ -1,0 +1,33 @@
+local prev_point = 0
+local npc		 = nil
+
+function m_callback(obj, type, index)
+	if(index == prev_point) then
+    	return
+    end
+	reset_action(npc, this.script_name())
+    action(npc, anim(anim.look_around, 0), cond(cond.time_end, 3000))
+    prev_point   = index
+    printf("previous point = %d", index)
+end
+
+
+
+function main()
+
+    npc		= get_level_object("blood_sucker1")
+
+    npc:script(true, this.script_name())
+    npc:set_callback(this.m_callback, game_object.movement)
+
+    while(true) do
+		if(npc:action() == nil) then
+        	action(npc, move(move.walk_fwd, patrol("way10", patrol.next, patrol.continue, true, prev_point)),
+            			cond(cond.move_end)
+                   )
+        end
+    	wait()
+    end
+
+	npc:script(true, this.script_name())
+end

@@ -1,0 +1,171 @@
+-- File:        UI_MAIN_MENU.SCRIPT
+-- Description: Load Dialog for STALKER
+-- Created:     28.10.2004
+-- Copyright:   2004 GSC Game World
+-- Author:      Serhiy Vynnychenko (narrator@gsc-game.kiev.ua)
+-- Version:     0.1
+
+
+function main()
+	local dlg = ui_options_dialog.options_dialog()
+	level.start_stop_menu(dlg,true)
+		while true do
+		wait(3000)
+	end
+end
+
+
+class "options_dialog" (ui_base_dialog.base_dialog)
+
+function options_dialog:__init() super()
+   self:SetFont(GetFontMedium()) --set base font for dialog.
+   
+   self:InitControls()
+   self:InitCallBacks()
+end
+
+function options_dialog:__finalize()
+
+end
+
+function options_dialog:SetClGame(game_cl)
+   self.m_game_cl = game_cl
+end
+
+function options_dialog:InitControls()
+	ui_base_dialog.base_dialog.InitControls(self, "Options")
+	
+
+	----- DATA ----
+		----- BUTTONS --->>>
+	local btn_video_rect  = {x = self.left_align_x,
+							 y = self.top_align_y,
+							 width = self.btn_rect.width,
+							 height = self.btn_rect.height}
+							 
+	local btn_sound_rect  = {x = self.left_align_x,
+							 y = btn_video_rect.y + btn_video_rect.height + self.indent,
+							 width = self.btn_rect.width,
+							 height = self.btn_rect.height}
+							 
+	local btn_game_rect   = {x = self.left_align_x,
+							 y = btn_sound_rect.y + btn_sound_rect.height + self.indent,
+							 width = self.btn_rect.width,
+							 height = self.btn_rect.height}
+	
+	local btn_control_rect= {x = self.left_align_x,
+							 y = btn_game_rect.y + btn_game_rect.height + self.indent,
+							 width = self.btn_rect.width,
+							 height = self.btn_rect.height}
+		----- Bottom right align --->>>
+	local btn_cancel_rect = {x = self.btn_special_rect.x,
+							 y = self.btn_special_rect.y,
+							 width = self.btn_special_rect.width,
+							 height = self.btn_special_rect.height}
+							 
+	local btn_accept_rect = {x = btn_cancel_rect.x - self.btn_special_rect.width - self.indent, 
+							 y = btn_cancel_rect.y,
+							 width = self.btn_special_rect.width,
+							 height = self.btn_special_rect.height}
+	
+	----- CODE -------
+
+-------- BUTTONS ------------------------------- 
+	--------->> VIDEO
+    local btn = CUIButton()
+	btn:SetAutoDelete(true)
+	btn:SetWindowName("btn_video")
+	btn:Init("ui\\ui_button_01", btn_video_rect.x, btn_video_rect.y, btn_video_rect.width, btn_video_rect.height)
+	btn:SetText("Video")
+	btn:SetFont(self.button_font)
+	btn:SetTextAlign(CGameFont.alCenter)
+	btn:SetTextY(self.button_indent)
+	self:Register(btn)
+	self.main_frame:AttachChild(btn)
+	
+	--------->> SOUND
+	btn = CUIButton()
+	btn:SetAutoDelete(true)
+	btn:SetWindowName("btn_sound")
+	btn:Init("ui\\ui_button_03", btn_sound_rect.x, btn_sound_rect.y, btn_sound_rect.width, btn_sound_rect.height)
+	btn:SetText("Sound")
+	btn:SetFont(self.button_font)
+	btn:SetTextAlign(CGameFont.alCenter)
+	btn:SetTextY(self.button_indent)
+	self:Register(btn)
+	self.main_frame:AttachChild(btn)	
+	
+	--------->> GAME
+	btn = CUIButton()
+	btn:SetAutoDelete(true)
+	btn:SetWindowName("btn_game")
+	btn:Init("ui\\ui_button_02", btn_game_rect.x, btn_game_rect.y, btn_game_rect.width, btn_game_rect.height)
+	btn:SetText("Game")
+	btn:SetFont(self.button_font)
+	btn:SetTextAlign(CGameFont.alCenter)
+	btn:SetTextY(self.button_indent)
+	self:Register(btn)
+	self.main_frame:AttachChild(btn)
+	
+	--------->> CONTROLS
+	btn = CUIButton()
+	btn:SetAutoDelete(true)
+	btn:SetWindowName("btn_controls")
+	btn:Init("ui\\ui_button_05", btn_control_rect.x, btn_control_rect.y, btn_control_rect.width, btn_control_rect.height)
+	btn:SetText("Controls")
+	btn:SetFont(self.button_font)
+	btn:SetTextAlign(CGameFont.alCenter)
+	btn:SetTextY(self.button_indent)
+	self:Register(btn)
+	self.main_frame:AttachChild(btn)
+	
+	--------->> BACK
+	btn = CUIButton()
+	btn:SetAutoDelete(true)
+	btn:SetWindowName("btn_cancel")
+	btn:Init("ui\\ui_button_02", btn_cancel_rect.x, btn_cancel_rect.y, btn_cancel_rect.width, btn_cancel_rect.height)
+	btn:SetText("Cancel")
+	btn:SetFont(self.button_font)
+	btn:SetTextAlign(CGameFont.alCenter)
+	btn:SetTextY(self.button_indent)
+	self:Register(btn)
+	self.main_frame:AttachChild(btn)
+	
+	btn = CUIButton()
+	btn:SetAutoDelete(true)
+	btn:SetWindowName("btn_accept")
+	btn:Init("ui\\ui_button_03", btn_accept_rect.x, btn_accept_rect.y, btn_accept_rect.width, btn_accept_rect.height)
+	btn:SetText("Accept")
+	btn:SetFont(self.button_font)
+	btn:SetTextAlign(CGameFont.alCenter)
+	btn:SetTextY(self.button_indent)
+	self:Register(btn)
+	self.main_frame:AttachChild(btn)
+end
+
+function options_dialog:InitCallBacks()
+	self:AddCallback("btn_accept",  ui_events.BUTTON_CLICKED,        self,"OnButton_accept")
+	self:AddCallback("btn_cancel", ui_events.BUTTON_CLICKED,         self,"OnButton_cancel")
+end
+
+function options_dialog:OnButton_accept()
+	level.start_stop_menu(self,true)
+end
+
+function options_dialog:OnButton_cancel()
+	level.start_stop_menu(self,true)
+end
+
+function options_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
+   ui_base_dialog.base_dialog.OnKeyboard(self,dik,keyboard_action)
+     
+   DIK_RETURN = 28
+   WINDOW_KEY_PRESSED = 6
+
+	if dik == DIK_RETURN and keyboard_action == WINDOW_KEY_PRESSED then
+		self:OnButton_ok_clicked()
+	end
+   
+	return true
+end
+
