@@ -75,6 +75,22 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 		return;
 	}
 
+#if RENDER==R_R2
+	// Emissive geometry should be marked and R2 special-cases it
+	// a) Allow to skeep already lit pixels
+	// b) Allow to make them 100% lit and really bright
+	// c) Should not cast shadows
+	// d) Should be rendered to accumulation buffer in the second pass
+	if (sh->Flags.bEmissive) {
+		mapEmissive_Node* N		= mapEmissive.insertInAnyWay	(distSQ);
+		N->val.ssa				= SSA;
+		N->val.pObject			= RI.val_pObject;
+		N->val.pVisual			= pVisual;
+		N->val.Matrix			= *RI.val_pTransform;
+		N->val.se				= sh;
+	}
+#endif
+
 	// the most common node
 	SPass&						pass	= *sh->Passes.front	();
 	mapMatrix_T&				map		= mapMatrix			[sh->Flags.iPriority/2];
