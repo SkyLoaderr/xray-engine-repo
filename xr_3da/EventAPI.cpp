@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "eventapi.h"
+#include "xr_ioconsole.h"
 
 extern	void msRead			();
 extern	void msCreate		(LPCSTR name);
