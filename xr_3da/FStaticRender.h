@@ -124,6 +124,7 @@ public:
 	// Main
 	virtual void					Calculate				();
 	virtual void					Render					();
+	virtual void					RenderBox				(Fbox& bounds, int sh_id);
 	virtual void					Screenshot				();
 	
 	// Render mode

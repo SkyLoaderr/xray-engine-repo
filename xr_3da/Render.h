@@ -69,9 +69,10 @@ public:
 	virtual BOOL					occ_visible				(sPoly& P)						= 0;
 	
 	// Main
-	virtual void					Calculate				()	= 0;
-	virtual void					Render					()	= 0;
-	virtual void					Screenshot				()	= 0;
+	virtual void					Calculate				()								= 0;
+	virtual void					Render					()								= 0;
+	virtual void					RenderBox				(Fbox& bounds, int sh_id)		= 0;
+	virtual void					Screenshot				()								= 0;
 
 	// Render mode
 	virtual void					rmNear					()	= 0;
