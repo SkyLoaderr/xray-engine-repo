@@ -31,7 +31,7 @@ function main()
 			)
 
 	while walker01:action() do
-		if walker01:see(actor) or walker02:see(actor) or walker03:see(actor) then
+		if walker01:see(actor) or walker02:see(actor) then
 			walker01:script	(false,  script_veterans_01.script_name())
 			walker02:script	(false,  script_veterans_01.script_name())
 			walker03:script	(false,  script_veterans_01.script_name())
