@@ -195,20 +195,33 @@ void	CROS_impl::update	(IRenderable* O)
 	hemi_value				=	float	(_pass)/float(result_count?result_count:1);
 	hemi_smooth				=	hemi_value*l_f + hemi_smooth*l_i;
 	sun_smooth				=	sun_value *l_f + sun_smooth *l_i;
+	Msg						("- hemi[%f], sun[%f]", hemi_smooth, sun_smooth);
 
 	// Process ambient lighting and approximate average lighting
 	// Process our lights to find average luminiscense
 	CEnvDescriptor&	desc	=	g_pGamePersistent->Environment.CurrentEnv;
-	Fvector			accum	=	{ desc.ambient.x,	 desc.ambient.y,		desc.ambient.z		};
+	Fvector			accum	=	{ desc.ambient.x,		desc.ambient.y,		desc.ambient.z		};
 	Fvector			hemi	=	{ desc.hemi_color.x,	desc.hemi_color.y,	desc.hemi_color.z	};
+	Fvector			sun		=	{ desc.sun_color.x,		desc.sun_color.y,	desc.sun_color.z	};
 	if (MODE & IRender_ObjectSpecific::TRACE_HEMI	)	hemi.mul(hemi_smooth); else hemi.mul(.2f);
 					accum.add	( hemi );
+	if (MODE & IRender_ObjectSpecific::TRACE_SUN	)	sun.mul(sun_smooth); else sun.mul(.2f);
+					accum.add	( sun  );
 	if (MODE & IRender_ObjectSpecific::TRACE_LIGHTS )	{
+		Fvector		lacc	=	{ 0,0,0 };
 		for (u32 lit=0; lit<lights.size(); lit++)	{
-			accum.x += lights[lit].color.r*desc.lmap_color.x;
-			accum.y += lights[lit].color.g*desc.lmap_color.y;
-			accum.z += lights[lit].color.b*desc.lmap_color.z;
+			float	d	=	lights[lit].source->position.distance_to(position);
+			float	r	=	lights[lit].source->range;
+			float	a	=	clampr(1.f - r/(d+EPS),0.f,1.f);
+			lacc.x		+=	lights[lit].color.r*a;
+			lacc.y		+=	lights[lit].color.g*a;
+			lacc.z		+=	lights[lit].color.b*a;
 		}
+		lacc.x		*= desc.lmap_color.x;
+		lacc.y		*= desc.lmap_color.y;
+		lacc.z		*= desc.lmap_color.z;
+		Msg				("- rgb[%f,%f,%f]",lacc.x,lacc.y,lacc.z);
+		accum.add		(lacc);
 	} else 			accum.mad	( desc.lmap_color,	 .1f );
 	approximate				=	accum;
 }
