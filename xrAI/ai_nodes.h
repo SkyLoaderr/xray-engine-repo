@@ -16,6 +16,7 @@
 #include "xrGraph.h"
 #include "ai_nodes.h"
 #include "ai_a_star_search.h"
+#include "ai_a_star.h"
 
 extern CStream*					vfs;			// virtual file
 extern hdrNODES					m_header;		// m_header
@@ -228,7 +229,7 @@ class CGraphThread : public CThread
 	SIndexNode			*m_tpIndexes;
 	float				m_fMaxDistance;
 	CCriticalSection	*m_tpCriticalSection;
-	vector<u32>			tpaNodes;
+	//vector<u32>			tpaNodes;
 	vector<u32>			tpaNodes1;
 	CAStarSearch<CAIMapShortestPathNode,SAIMapData> m_tpMapPath;
 
@@ -271,20 +272,31 @@ public:
 					try {
 						fDistance = ffCheckPositionInDirection(tCurrentGraphVertex.dwNodeID,tCurrentGraphVertex.tPoint,tNeighbourGraphVertex.tPoint,m_fMaxDistance);
 						if (fDistance == MAX_VALUE) {
-							SAIMapData			tData;
-							tData.dwFinishNode	= tNeighbourGraphVertex.dwNodeID;
-							m_tpMapPath.vfFindOptimalPath(
-								m_tpHeap,
-								m_tpIndexes,
-								m_dwAStarStaticCounter,
-								tData,
+//							SAIMapData			tData;
+//							tData.dwFinishNode	= tNeighbourGraphVertex.dwNodeID;
+//							m_tpMapPath.vfFindOptimalPath(
+//								m_tpHeap,
+//								m_tpIndexes,
+//								m_dwAStarStaticCounter,
+//								tData,
+//								tCurrentGraphVertex.dwNodeID,
+//								tNeighbourGraphVertex.dwNodeID,
+//								fDistance,
+//								m_fMaxDistance,
+//								tCurrentGraphVertex.tPoint,
+//								tNeighbourGraphVertex.tPoint,
+//								tpaNodes1);
+							vfFindTheShortestPath(
+								(TNode *)m_tpHeap, 
+								(TIndexNode *)m_tpIndexes, 
+								m_dwAStarStaticCounter, 
 								tCurrentGraphVertex.dwNodeID,
 								tNeighbourGraphVertex.dwNodeID,
 								fDistance,
 								m_fMaxDistance,
 								tCurrentGraphVertex.tPoint,
 								tNeighbourGraphVertex.tPoint,
-								tpaNodes);
+								tpaNodes1);
 						}
 						if (fDistance < m_fMaxDistance) {
 							m_tpCriticalSection->Enter();

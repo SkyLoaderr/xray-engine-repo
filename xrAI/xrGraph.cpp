@@ -92,6 +92,8 @@ void vfLoafAIMap(LPCSTR name)
 	// special query tables
 	q_mark_bit.assign	(m_header.count,false);
 	Progress(1.0f);
+
+	vfLoadSearch();
 }
 
 void vfLoadAIPoints(LPCSTR name)
