@@ -101,14 +101,13 @@ void Integrate(float& v, float &s, float& a, float dt, float f)
 	s += (v0 + v)*Qdiv2;
 }
 
-float Integrate1D_to	(float& v, float &s, float& a, float dt, float f, float s_desired)
+float Integrate1D_to	(float v, float &s, float& a,  float f, float s_desired)
 {
-	float	Q		= 1.f/float(psPhysicsFPS);
-	int		steps	= iFloor(dt/Q);	// note: round-towards-zero
+	float	Q		= 1.f/float(psPhysicsFPS*10.f);
 	float	v0		= v;
 	float	QmulF	= Q*f;
 	float	Qdiv2	= Q*0.5f;
-	for (int i=0; i<steps; i++) 
+	while (s<s_desired) 
 	{
 		// velocity
 		v0 = v;
@@ -116,22 +115,8 @@ float Integrate1D_to	(float& v, float &s, float& a, float dt, float f, float s_d
 
 		// motion
 		s += (v0 + v)*Qdiv2;
-
-		if	(s>s_desired)	return v0;
 	}
-	Q = dt-float(steps)*Q;
-	QmulF	= Q*f;
-	Qdiv2	= Q*0.5f;
-
-	// velocity
-	v0 = v;
-	v += a*Q - (v0 + a*Q)*QmulF;
-
-	// motion
-	s += (v0 + v)*Qdiv2;
-
-	if (s>s_desired)	return v0;
-	else				return v;
+	return v0;
 }
 
 void Integrate(Fvector& v, Fvector &s, Fvector& a, float dt, float f)
@@ -199,7 +184,7 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 {
 	Fvector motion,vAccel;
 	float	fOldFriction	= fFriction;
-	float	fOldActVelocity	= fActualVelocity;
+	float	fVelocityBefore	= vVelocity.magnitude	();
 
 	vExternalImpulse.div(dt);
 	vAccel.add			(vExternalImpulse,_Accel);
@@ -285,7 +270,7 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	
 	// Environment
 	if (fLastMotionMag>EPS_S)
-		CheckEnvironment	();
+		CheckEnvironment	(vPosition);
  
 	// Set movement friction
 	switch(eEnvironment)
@@ -307,13 +292,15 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 		gcontact_Was		= TRUE;
 		gcontact_Power		= 0;
 		gcontact_HealthLost = 0;
-		if (s_res<s_calc)	
+		if (s_res<=s_calc)	
 		{
-			float		dt_x			= s_calc > EPS_S ? dt*(s_res/s_calc) : 0;
 			float		dummy_s			= 0;
 			float		a				= vAccel.magnitude();
-			float		contact_speed	= Integrate1D_to	(fOldActVelocity,dummy_s,a,dt_x,fOldFriction,s_res);
+			float		contact_speed	= Integrate1D_to	(fVelocityBefore,dummy_s,a,fOldFriction,s_res);
 			// s_res, dummy_s ???
+
+			Msg	("dummy_s: %2.3f, sres: %2.3f, scalc: %2.1f, old_aspeed: %2.3f, cspeed: %2.3f (min: %2.1f)",
+				dummy_s,s_res,s_calc,fVelocityBefore,contact_speed,fMinCrashSpeed);
 
 			// contact with ground
 			gcontact_Power				= contact_speed/fMaxCrashSpeed;
@@ -325,9 +312,6 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 				//float dh=sqrtf((dv-A)*k);
 				gcontact_HealthLost = 
 					(100*(contact_speed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
-				
-				Msg	("sres: %2.1f, scalc: %2.1f, cspeed: %2.1f (min: %2.1f)",
-					s_res,s_calc,contact_speed,fMinCrashSpeed);
 			}
 		}
 	}
@@ -354,7 +338,7 @@ void CMovementControl::Move(Fvector& Dest, Fvector& Motion, BOOL bDynamic)
 	Engine.Sheduler.Slice();
 }
 
-void CMovementControl::CheckEnvironment()
+void CMovementControl::CheckEnvironment(const Fvector& newpos)
 {
 	// verify surface and update Player State
 	int cp_cnt=pCreator->ObjectSpace.q_result.tris.size();
@@ -364,7 +348,9 @@ void CMovementControl::CheckEnvironment()
 	{
 		Fmatrix33	A; A.set(pObject->Rotation());
 		Fvector		C; 
-		pObject->svXFORM().transform_tiny(C,vFootCenter);
+		Fmatrix		xform	=	pObject->svXFORM();
+		xform.c				=	newpos;
+		xform.transform_tiny(C,vFootCenter);
 		for(int i=0; i<cp_cnt; i++)
 		{
 			clQueryTri& T=pCreator->ObjectSpace.q_result.tris[i];

@@ -16,7 +16,7 @@ public:
 		peInAir
 	};
 private:
-	void				CheckEnvironment();
+	void				CheckEnvironment	(const Fvector& V);
 
 	BOOL				bIsAffectedByGravity;
 	//------------------------------
