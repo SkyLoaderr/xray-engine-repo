@@ -23,6 +23,9 @@ private:
 protected: //чтоб нельзя было вызвать на прямую
 	CShootingObject(void);
 	virtual ~CShootingObject(void);
+public:
+	//материал для пули и осколков (инициализируется в CWeapon::Load)
+	static u16 bullet_material_id;
 protected:
 
 	//функция обработки хитов объектов
@@ -46,7 +49,4 @@ protected:
 	Fvector		m_vEndPoint;
 	//ID персонажа который иницировал действие
 	u32			m_iCurrentParentID;
-
-	//материал для пули и осколков (инициализируется в CWeapon::Load)
-	static u16 bullet_material_id;
 };

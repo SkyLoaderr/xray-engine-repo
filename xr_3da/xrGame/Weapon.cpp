@@ -318,9 +318,7 @@ void CWeapon::Load		(LPCSTR section)
 	m_fK_Explosion		= pSettings->r_float("weapon","explosion_immunity");
 	m_fK_FireWound		= pSettings->r_float("weapon","fire_wound_immunity");
 
-	//получить материал пули
-	CShootingObject::bullet_material_id  = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
-	
+
 	inherited::Load		(section);
 
 	Fvector				pos,ypr;
