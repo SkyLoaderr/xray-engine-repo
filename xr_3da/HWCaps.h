@@ -29,7 +29,8 @@ public:
 	// force flags
 	BOOL			bForceVertexFog;
 	BOOL			bForceMultipass;
-	BOOL			bForceSWTransform;
+	BOOL			bForceGPU_SW;
+	BOOL			bForceGPU_NonPure;
 	BOOL			bForceDXT3;
 	BOOL			bShowOverdraw;
 
