@@ -219,11 +219,11 @@ void	CROS_impl::update	(IRenderable* O)
 	CEnvDescriptor&	desc	=	g_pGamePersistent->Environment.CurrentEnv;
 	Fvector			accum	=	{ desc.ambient.x,		desc.ambient.y,		desc.ambient.z		};
 	Fvector			hemi	=	{ desc.hemi_color.x,	desc.hemi_color.y,	desc.hemi_color.z	};
-	Fvector			sun		=	{ desc.sun_color.x,		desc.sun_color.y,	desc.sun_color.z	};
+	Fvector			sun_	=	{ desc.sun_color.x,		desc.sun_color.y,	desc.sun_color.z	};
 	if (MODE & IRender_ObjectSpecific::TRACE_HEMI	)	hemi.mul(hemi_smooth); else hemi.mul(.2f);
 					accum.add	( hemi );
-	if (MODE & IRender_ObjectSpecific::TRACE_SUN	)	sun.mul(sun_smooth); else sun.mul(.2f);
-					accum.add	( sun  );
+	if (MODE & IRender_ObjectSpecific::TRACE_SUN	)	sun_.mul(sun_smooth); else sun_.mul(.2f);
+					accum.add	( sun_ );
 	if (MODE & IRender_ObjectSpecific::TRACE_LIGHTS )	{
 		Fvector		lacc	=	{ 0,0,0 };
 		for (u32 lit=0; lit<lights.size(); lit++)	{
