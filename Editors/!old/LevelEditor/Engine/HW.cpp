@@ -111,6 +111,7 @@ void	CHW::selectResolution	(u32 &dwWidth, u32 &dwHeight)
 	case 800:	dwHeight = 600;		break;
 	case 1024:	dwHeight = 768;		break;
 	case 1280:	dwHeight = 960;		break;
+	case 1280+1:dwHeight = 1024;	break;
 	case 1600:	dwHeight = 1200;	break;
 	default:	dwWidth  = 1024; dwHeight = 768; break;
 	}
