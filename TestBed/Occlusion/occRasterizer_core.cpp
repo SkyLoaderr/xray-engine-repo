@@ -57,7 +57,7 @@ int maxPixel(float v)
 /* Rasterize a scan line between given X point values, corresponding Z values
 and current color
 */
-void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startX, float endX, float startZ, float endZ)
+void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, float startX, float endX, float startZ, float endZ)
 {
 	occTri**	pFrame	= OCC->get_frame();
 	float*		pDepth	= OCC->get_depth();
