@@ -185,7 +185,14 @@ function proceed(actor)
 		actor:give_info_portion("bar_darklab_document_gain")
 		set_task_state(task.completed, "bar_darklab_documents", 1)
 	end 
-	
+
+	if	actor:has_info("bar_svoboda_rg6_start") and 
+ 		actor:dont_has_info("bar_svoboda_rg6_finish") and
+		actor:object("wpn_rg-6") ~= nil 
+	then		
+		actor:give_info_portion("mil_svoboda_rg6_gain")
+		set_task_state(task.completed, "bar_dolg_find_rg6", 1)
+	end 
 
 	if	actor:has_info("bar_decoding_start") and 
  		actor:dont_has_info("yan_decoding_gain") and
