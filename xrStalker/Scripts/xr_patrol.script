@@ -24,6 +24,11 @@ local soldiers_idle_snd                 = commander_snd + 1
 local soldiers_hear_snd                 = commander_snd + 2
 local soldiers_idle2_snd                = commander_snd + 3
 local soldiers_replics_snd              = commander_snd + 4
+local radio_noise                       = commander_snd + 5
+local radio_voice                       = commander_snd + 6
+local radio_on                          = commander_snd + 7
+local radio_off                         = commander_snd + 8
+local radio_commander                   = commander_snd + 9  
 
 local leader_no_command					= 0
 local leader_move                       = 1
@@ -74,6 +79,9 @@ function action_single_patrol:__init (name, storage) super (nil, name)
     self.stage = 0
     self.current_animation = 0
     self.speak_time = 0
+    self.sub_stage = 0
+    self.current_phrase = 0
+    self.phrases = {}
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_single_patrol:initialize ()
@@ -170,7 +178,7 @@ function action_single_patrol:execute ()
            end   
         end   
     elseif self.stage == 2 then
-        if self.object:animation_count () == 0 then
+        if self:process_radio () == true then
            self.stage = 0
            self.object:set_movement_type (move.walk) 
            self.object:set_patrol_path   (self.a.patrol_path, patrol.nearest, patrol.continue, true)
@@ -185,8 +193,49 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 function action_single_patrol:finalize ()
     action_base.finalize (self)
-    self.object:clear_callback (game_object.movement)
+    self.object:clear_callback (game_object.movement) 
     self.object:clear_animations ()
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_single_patrol:process_radio ()
+    local count = self.object:animation_count ()
+    local t_size = table.getn (self.phrases)
+    
+    if self.sub_stage == 0 and count == 1 then
+       self.sub_stage = 1 
+       return false
+    end    
+    
+    if self.sub_stage == 1 then
+       if count == 1 and self.current_phrase < t_size then 
+          self.object:add_animation ("raciya_2", true) 
+       end
+       if self.object:active_sound_count () == 0 then 
+          if self.current_phrase > t_size then
+             self.sub_stage = 2 
+             self.object:clear_animations ()
+             self.object:add_animation ("raciya_3", true)
+             self.object:add_animation ("raciya_4", true)
+             return false
+          else
+             self.object:play_sound (self.phrases[self.current_phrase].namespace, 1, 0, 1, 0, self.phrases[self.current_phrase].phrase)
+             self.current_phrase = self.current_phrase + 1
+             printf ("CURRENT PHRASE = %d", self.current_phrase)
+          end   
+       return false
+       end
+    end      
+          
+                
+    if count ~= 0 then 
+       return false 
+    end
+    
+    while table.getn (self.phrases) ~= 0 do
+          table.remove (self.phrases, 1)
+    end      
+    
+    return true
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_single_patrol:radio ()
@@ -194,8 +243,20 @@ function action_single_patrol:radio ()
     self.object:add_animation ("raciya_0", true)
     self.object:add_animation ("raciya_1", true)
     self.object:add_animation ("raciya_2", true)
-    self.object:add_animation ("raciya_3", true)
-    self.object:add_animation ("raciya_4", true)
+    self.sub_stage = 0
+    self.current_phrase = 1
+    
+    table.insert (self.phrases, {namespace = radio_on, phrase = 0})
+    table.insert (self.phrases, {namespace = radio_commander, phrase = math.random (0, 10)})
+    table.insert (self.phrases, {namespace = radio_voice, phrase = math.random (0, 2)})
+    table.insert (self.phrases, {namespace = radio_commander, phrase = math.random (0, 10)})
+    table.insert (self.phrases, {namespace = radio_voice, phrase = math.random (0, 2)})
+    table.insert (self.phrases, {namespace = radio_commander, phrase = math.random (0, 10)})
+    table.insert (self.phrases, {namespace = radio_off, phrase = 0})
+
+    self.object:set_sound_mask (2147483647)
+    self.object:set_sound_mask (0)
+    
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_single_patrol:check_return ()
@@ -242,6 +303,7 @@ function action_single_patrol:move_callback (obj, action_type, index)
     if ptr:flag (index, 0) == true then
        self.object:set_movement_type (move.stand)
        self:set_animation ()
+       --self:radio ()
        self:set_look_dir ()
        self:set_command (leader_stop)
        self.stage = 1
@@ -323,6 +385,12 @@ function add_to_binder(obj)
     obj:add_sound ("script_replics\\soldier_1\\idle\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle2_snd)
     obj:add_sound ("script_replics\\soldier_1\\replics\\soldier_replic_", 20, snd_type.talk, 2, 1, soldiers_replics_snd)
     obj:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_", 20, snd_type.talk, 2, 1, soldiers_hear_snd)
+    obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, radio_commander)
+    obj:add_sound ("script_replics\\radio\\message\\radio_noise_", 30, snd_type.talk, 2, 1, radio_noise)
+    obj:add_sound ("script_replics\\radio\\message\\radio_voice_", 30, snd_type.talk, 2, 1, radio_voice)
+    obj:add_sound ("script_replics\\radio\\message\\radio_turn_on_", 30, snd_type.talk, 2, 1, radio_on)
+    obj:add_sound ("script_replics\\radio\\message\\radio_turn_off_", 30, snd_type.talk, 2, 1, radio_off)
+   
     
     printf ("PATROL_EVA_BASE = %d", xr_evaluators_id.sidor_patrol_base_property)
     
