@@ -137,7 +137,7 @@ void CObject::OnDeviceCreate	()
 	REQ_CREATE					();
 	LPCSTR visual_name			= cNameVisual();
  	if (visual_name&&visual_name[0]) pVisual	= Render->model_Create	(visual_name);
-	pLights						= new CLightTrack;
+	pLights						= xr_new<CLightTrack> ();
 	Sector_Detect				();
 
 	// Collision model
@@ -146,9 +146,9 @@ void CObject::OnDeviceCreate	()
 		if (pSettings->LineExists(cNameSect(),"cform")) {
 			LPCSTR cf				= pSettings->ReadSTRING(cNameSect(), "cform");
 
-			if (strcmp(cf,"skeleton")==0) cfModel	= new CCF_Skeleton(this);
+			if (strcmp(cf,"skeleton")==0) cfModel	= xr_new<CCF_Skeleton> (this);
 			else {
-				cfModel					= new CCF_Polygonal(this);
+				cfModel					= xr_new<CCF_Polygonal> (this);
 				((CCF_Polygonal*)(cfModel))->LoadModel(pSettings, cNameSect());
 			}
 			pCreator->ObjectSpace.Object_Register	(this);
@@ -179,7 +179,7 @@ void CObject::Update	( u32 T )
 			// Just update time
 			PositionStack.back().dwTime	= Device.dwTimeGlobal;
 		} else {
-			// Register new record
+			// Register _new_ record
 			bUpdate							= TRUE;
 			if (PositionStack.size()<4)		{
 				PositionStack.push_back			(SavedPosition());

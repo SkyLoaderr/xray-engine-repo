@@ -63,7 +63,7 @@ CRT* CShaderManager::_CreateRT		(LPCSTR Name, u32 w, u32 h)
 	}
 	else 
 	{
-		CRT *RT			=	new CRT;
+		CRT *RT			=	xr_new<CRT>();
 		RT->dwReference	=	1;
 		rtargets.insert	(make_pair(xr_strdup(Name),RT));
 		if (Device.bReady)	RT->Create	(Name,w,h);
@@ -102,7 +102,7 @@ CVS*	CShaderManager::_CreateVS		(LPCSTR cName, LPDWORD decl, u32 stride)
 	}
 	else 
 	{
-		CVS *VS			=	new CVS;
+		CVS *VS			=	xr_new<CVS>();
 		VS->dwReference	=	1;
 		VS->dwStride	=	stride;
 		VS->bFFP		=	FALSE;
@@ -140,7 +140,7 @@ CVS*	CShaderManager::_CreateVS	(u32 FVF)
 	}
 	else
 	{
-		CVS *VS			=	new CVS;
+		CVS *VS			=	xr_new<CVS>();
 		VS->dwReference	=	1;
 		VS->dwStride	=	D3DXGetFVFVertexSize	(FVF);
 		VS->bFFP		=	TRUE;
@@ -194,7 +194,7 @@ CPS*	CShaderManager::_CreatePS		(LPCSTR cName)
 	}
 	else 
 	{
-		CPS *PS			=	new CPS;
+		CPS *PS			=	xr_new<CPS>();
 		PS->dwReference	=	1;
 		ps.insert		(make_pair(xr_strdup(Name),PS));
 		
@@ -237,7 +237,7 @@ CTexture* CShaderManager::_CreateTexture	(LPCSTR Name)
 	}
 	else 
 	{
-		CTexture *T		= new CTexture;
+		CTexture *T		= xr_new<CTexture>();
 		T->dwReference	= 1;
 		textures.insert	(make_pair(xr_strdup(Name),T));
 		if (Device.bReady && !bDeferredLoad) T->Load(Name);
@@ -273,7 +273,7 @@ CMatrix*	CShaderManager::_CreateMatrix	(LPCSTR Name)
 	}
 	else
 	{
-		CMatrix* M		=	new CMatrix;
+		CMatrix* M		=	xr_new<CMatrix>();
 		M->dwReference	=	1;
 		matrices.insert	(make_pair(xr_strdup(Name),M));
 		return	M;
@@ -315,7 +315,7 @@ CConstant*	CShaderManager::_CreateConstant	(LPCSTR Name)
 	}
 	else
 	{
-		CConstant* C	=	new CConstant;
+		CConstant* C	=	xr_new<CConstant>();
 		C->dwReference	=	1;
 		constants.insert	(make_pair(xr_strdup(Name),C));
 		return	C;
@@ -390,7 +390,7 @@ STextureList*	CShaderManager::_CreateTextureList(STextureList& L)
 			return base;
 		}
 	}
-	STextureList*	lst		= new STextureList(L);
+	STextureList*	lst		= xr_new<STextureList>(L);
 	lst->dwReference		= 1;
 	lst_textures.push_back	(lst);
 	return lst;
@@ -415,7 +415,7 @@ SMatrixList*	CShaderManager::_CreateMatrixList(SMatrixList& L)
 			return base;
 		}
 	}
-	SMatrixList*	lst		= new SMatrixList(L);
+	SMatrixList*	lst		= xr_new<SMatrixList>(L);
 	lst->dwReference		= 1;
 	lst_matrices.push_back	(lst);
 	return lst;
@@ -441,7 +441,7 @@ SConstantList*	CShaderManager::_CreateConstantList(SConstantList& L)
 			return base;
 		}
 	}
-	SConstantList*	lst		= new SConstantList(L);
+	SConstantList*	lst		= xr_new<SConstantList>(L);
 	lst->dwReference		= 1;
 	lst_constants.push_back	(lst);
 	return lst;
@@ -505,8 +505,8 @@ ShaderElement* CShaderManager::_CreateElement(	CBlender_Compile& C)
 		}
 	}
 	
-	// Create new entry
-	ShaderElement*	N	= new ShaderElement(S);
+	// Create _new_ entry
+	ShaderElement*	N	= xr_new<ShaderElement>(S);
 	N->dwReference		= 1;
 	elements.push_back	(N);
 	return N;
@@ -559,8 +559,8 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 		}
 	}
 	
-	// Create new entry
-	Shader*		N		= new Shader(S);
+	// Create _new_ entry
+	Shader*		N		= xr_new<Shader>(S);
 	N->dwReference		= 1;
 	shaders.push_back	(N);
 	return N;

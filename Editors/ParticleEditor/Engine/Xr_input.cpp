@@ -227,7 +227,7 @@ void CInput::iCapture(CController *p)
 	cbStack.push(p);
 	cbStack.top()->OnInputActivate();
 
-	// prepare for new controller
+	// prepare for _new_ controller
 	ZeroMemory			( timeStamp,	sizeof(timeStamp) );
 	ZeroMemory			( timeSave,		sizeof(timeStamp) );
 	ZeroMemory			( offs,			sizeof(offs) );

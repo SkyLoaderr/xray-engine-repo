@@ -77,9 +77,9 @@ EVENT	CEventAPI::Create(const char* N)
 		}
 	}
 
-	EVENT X = new CEvent(N);
-	Events.push_back	(X);
-	CS.Leave			( );
+	EVENT X = xr_new<new> CEvent(N);
+	Events.push_back			(X);
+	CS.Leave					( );
 	return X;
 }
 void	CEventAPI::Destroy(EVENT& E)

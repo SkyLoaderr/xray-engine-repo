@@ -215,7 +215,7 @@ ENGINE_API u32*	TUBuild32MipLevel(ETextureMipgen ALG, u32 &_w, u32 &_h, u32 &_p,
 			*pDest++	= BYTE(A);
 		}
 	}
-	// correct for new
+	// correct for new mip
 	_w/=2; _h/=2; _p=_w*4;
 	return pNewData;
 }

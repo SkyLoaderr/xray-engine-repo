@@ -102,9 +102,9 @@ CStream*	CStream::OpenChunk(u32 ID)
 			BYTE*		dest;
 			unsigned	dest_sz;
 			_decompressLZ(&dest,&dest_sz,Pointer(),dwSize);
-			return new CTempStream(dest,dest_sz);
+			return xr_new<CTempStream>(dest,dest_sz);
 		} else {
-			return new CStream(Pointer(),dwSize);
+			return xr_new<CStream>(Pointer(),dwSize);
 		}
 	} else return 0;
 };

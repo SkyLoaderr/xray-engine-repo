@@ -105,25 +105,25 @@ CBlender*	CBlender::Create	(CLASS_ID cls)
 {	
 	switch (cls)
 	{
-	case B_DEFAULT:			return new CBlender_default;		break;
-	case B_DEFAULT_AREF:	return new CBlender_default_aref;	break;
-	case B_VERT:			return new CBlender_Vertex;			break;
-	case B_VERT_AREF:		return new CBlender_Vertex_aref;	break;
-	case B_SCREEN_SET:		return new CBlender_Screen_SET;		break;
-	case B_SCREEN_GRAY:		return new CBlender_Screen_GRAY;	break;
-	case B_EDITOR_WIRE:		return new CBlender_Editor_Wire;	break;
-	case B_EDITOR_SEL:		return new CBlender_Editor_Selection;break;
-	case B_LIGHT:			return new CBlender_LIGHT;			break;
-	case B_LmBmmD:			return new CBlender_LmBmmD;			break;
-	case B_LaEmB:			return new CBlender_LaEmB;			break;
-	case B_LmEbB:			return new CBlender_LmEbB;			break;
-	case B_B:				return new CBlender_B;				break;
-	case B_BmmD:			return new CBlender_BmmD;			break;
-	case B_SHADOW_TEX:		return new CBlender_ShTex;			break;
-	case B_SHADOW_WORLD:	return new CBlender_ShWorld;		break;
-	case B_BLUR:			return new CBlender_Blur;			break;
-	case B_MODEL:			return new CBlender_Model;			break;
-	case B_MODEL_EbB:		return new CBlender_Model_EbB;		break;
+	case B_DEFAULT:			return xr_new<CBlender_default>();		break;
+	case B_DEFAULT_AREF:	return xr_new<CBlender_default_aref>();	break;
+	case B_VERT:			return xr_new<CBlender_Vertex>();		break;
+	case B_VERT_AREF:		return xr_new<CBlender_Vertex_aref>();	break;
+	case B_SCREEN_SET:		return xr_new<CBlender_Screen_SET>();	break;
+	case B_SCREEN_GRAY:		return xr_new<CBlender_Screen_GRAY>();	break;
+	case B_EDITOR_WIRE:		return xr_new<CBlender_Editor_Wire>();	break;
+	case B_EDITOR_SEL:		return xr_new<CBlender_Editor_Selection>();break;
+	case B_LIGHT:			return xr_new<CBlender_LIGHT>();		break;
+	case B_LmBmmD:			return xr_new<CBlender_LmBmmD>();		break;
+	case B_LaEmB:			return xr_new<CBlender_LaEmB>();		break;
+	case B_LmEbB:			return xr_new<CBlender_LmEbB>();		break;
+	case B_B:				return xr_new<CBlender_B>();			break;
+	case B_BmmD:			return xr_new<CBlender_BmmD>();			break;
+	case B_SHADOW_TEX:		return xr_new<CBlender_ShTex>();		break;
+	case B_SHADOW_WORLD:	return xr_new<CBlender_ShWorld>();		break;
+	case B_BLUR:			return xr_new<CBlender_Blur>();			break;
+	case B_MODEL:			return xr_new<CBlender_Model>();		break;
+	case B_MODEL_EbB:		return xr_new<CBlender_Model_EbB>();	break;
 	default:				return 0;
 	}
 }

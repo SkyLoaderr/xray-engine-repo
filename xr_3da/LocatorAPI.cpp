@@ -61,7 +61,7 @@ void CLocatorAPI::ProcessArchive(const char* path)
 {
 	// Open archive
 	archive				A;
-	A.vfs				= new CVirtualFileStream(path);
+	A.vfs				= xr_new<CVirtualFileStream> (path);
 	archives.push_back	(A);
 
 	// Create base path
@@ -229,8 +229,8 @@ CStream* CLocatorAPI::Open	(const char* F)
 	if (0xffffffff == desc.vfs)
 	{
 		// Normal file
-		if (desc.size<256*1024)	return new CFileStream			(F);
-		else					return new CVirtualFileStream	(F);
+		if (desc.size<256*1024)	return xr_new<CFileStream>			(F);
+		else					return xr_new<CVirtualFileStream>	(F);
 	} else {
 		// Archived one
 		LPVOID	ptr	= LPVOID(LPBYTE(archives[desc.vfs].vfs->Pointer()) + desc.ptr);
@@ -241,10 +241,10 @@ CStream* CLocatorAPI::Open	(const char* F)
 			unsigned	size;
 
 			_decompressLZ	(&dest,&size,ptr,desc.size);
-			return new CTempStream	(dest,size);
+			return xr_new<CTempStream>	(dest,size);
 		} else {
 			// Plain (VFS)
-			return new CStream		(ptr,desc.size);
+			return xr_new<CStream>		(ptr,desc.size);
 		}
 	}
 }

@@ -94,7 +94,7 @@ void CTexture::Load(LPCSTR cName)
 #endif
 	{
 		// AVI
-		pAVI = new CAviPlayerCustom;
+		pAVI = xr_new<CAviPlayerCustom>();
 		if (!pAVI->Load(fn)) {
 			xr_delete(pAVI);
 			Device.Fatal("Can't open video stream");
@@ -127,7 +127,7 @@ void CTexture::Load(LPCSTR cName)
 		// Sequence
 		char buffer[256];
 #ifdef _EDITOR
-		destructor<CStream>	fs(new CFileStream(fn));
+		destructor<CStream>	fs(xr_new<CFileStream>(fn));
 #else
 		destructor<CStream>	fs(Engine.FS.Open(fn));
 #endif

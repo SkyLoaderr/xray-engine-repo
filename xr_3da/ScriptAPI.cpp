@@ -149,7 +149,7 @@ CScript*	CScriptAPI::CreateInstance(const char *name)
 	for (;i<Scripts.end();i++)
 		if (strcmp(i->name,N)==0) {
 			// script found
-			CScript*	pS = new CScript(i->S);
+			CScript*	pS = xr_new<CScript> (i->S);
 			return pS;
 		}
 	R_ASSERT(0=="Engine can't find required script");

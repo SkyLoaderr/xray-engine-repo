@@ -154,7 +154,7 @@ void	CShaderManager::OnDeviceCreate	(CStream* FS)
 		CStream*	fs		= FS->OpenChunk(0);
 		while (fs&&!fs->Eof())	{
 			fs->RstringZ	(name);
-			CConstant*		C = new CConstant;
+			CConstant*		C = xr_new<CConstant>();
 			C->Load			(fs);
 			constants.insert(make_pair(xr_strdup(name),C));
 		}
@@ -166,7 +166,7 @@ void	CShaderManager::OnDeviceCreate	(CStream* FS)
 		CStream*	fs		= FS->OpenChunk(1);
 		while (fs&&!fs->Eof())	{
 			fs->RstringZ	(name);
-			CMatrix*		M = new CMatrix;
+			CMatrix*		M = xr_new<CMatrix>();
 			M->Load			(fs);
 			matrices.insert	(make_pair(xr_strdup(name),M));
 		}
@@ -262,7 +262,7 @@ void	CShaderManager::OnDeviceCreate	(LPCSTR shName)
 	if (0==strncmp(id,ID,8))	
 	{
 		Engine.FS.Close			(F);
-		F						= new CCompressedStream(shName,ID);
+		F						= xr_new<CCompressedStream>(shName,ID);
 	}
 	CStream&				FS	= *F;
 

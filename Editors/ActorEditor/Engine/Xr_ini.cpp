@@ -8,7 +8,7 @@
 CInifile *pSettings	= NULL;
 
 CInifile* CInifile::Create(const char* szFileName, BOOL ReadOnly)
-{	return new CInifile(szFileName,ReadOnly); }
+{	return xr_new<CInifile>(szFileName,ReadOnly); }
 
 void CInifile::Destroy(CInifile* ini)
 {	xr_delete(ini); }
@@ -86,7 +86,7 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd
 #ifdef _EDITOR
 	    if (!bReadOnly&&!Engine.FS.Exist(szFileName)) Engine.FS.CreateNullFile(szFileName);
 #endif
-		destructor<CStream>	file(new CFileStream(szFileName));
+		destructor<CStream>	file(xr_new<CFileStream>(szFileName));
 #endif
 
 
@@ -374,7 +374,7 @@ void	CInifile::WriteString	( LPCSTR S, LPCSTR L, LPCSTR			V, LPCSTR comment)
 	_parse	(sect,S);
 	_strlwr	(sect);
 	if (!SectionExists(sect))	{
-		// create new section
+		// create _new_ section
 		Sect			NEW;
 		NEW.Name		= xr_strdup(sect);
 		RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),NEW,sect_pred());
