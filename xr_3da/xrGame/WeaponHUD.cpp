@@ -79,7 +79,7 @@ void CWeaponHUD::Shoot(){
 	VERIFY			(mShoots.size());
 	new_mstate		= hsShoot; 
 	int sh_id		= Random.randI(mShoots.size());
-//	PKinematics(pVisual)->PlayFX(mShoots[sh_id]);
+	PKinematics(pVisual)->PlayFX(mShoots[sh_id]);
 }
 
 void CWeaponHUD::UpdateAnimation()
