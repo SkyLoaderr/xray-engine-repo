@@ -532,9 +532,9 @@ void CWeaponMagazined::OnShot		()
 	OnShellDrop					();
 
 
-	//particles of smoke from the gun
+/*	//particles of smoke from the gun
 	CParticlesObject* pStaticPG;
-	pStaticPG = xr_new<CParticlesObject>("weapons\\generic_shoot",Sector());
+	pStaticPG = xr_new<CParticlesObject>("weapons\\generic_weapon",Sector());
 	Fmatrix l_pos; 
 	l_pos.set(XFORM()); 
 	l_pos.c.set(vLastFP);
@@ -544,7 +544,7 @@ void CWeaponMagazined::OnShot		()
 //	l_vel.set(0,0,0);
 	pStaticPG->UpdateParent(l_pos, l_vel); 
 	pStaticPG->Play();
-	//pStaticPG->SetTransform(l_pos); pStaticPG->Play();
+	//pStaticPG->SetTransform(l_pos); pStaticPG->Play();*/
 }
 
 void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R)

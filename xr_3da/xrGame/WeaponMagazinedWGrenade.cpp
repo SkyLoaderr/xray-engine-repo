@@ -589,6 +589,8 @@ void CWeaponMagazinedWGrenade::Load	(LPCSTR section)
 	//SoundCreate			(sndRicochet[3],"ric4"    ,m_eSoundRicochet);
 	//SoundCreate			(sndRicochet[4],"ric5"    ,m_eSoundRicochet);
 	
+	m_sGrenadeFlameParticles = pSettings->r_string(section, "grenade_flame_particles");
+
 	// HUD :: Anims
 	R_ASSERT			(m_pHUD);
 
@@ -636,7 +638,7 @@ BOOL CWeaponMagazinedWGrenade::net_Spawn(LPVOID DC)
 	BOOL l_res = inherited::net_Spawn(DC);
 	
 	CKinematics* V = PKinematics(m_pHUD->Visual()); R_ASSERT(V);
-	V->LL_GetBoneInstance(V->LL_BoneID(*grenade_bone_name)).set_callback(GrenadeCallback, this);
+	V->LL_GetBoneInstance(V->LL_BoneID(grenade_bone_name)).set_callback(GrenadeCallback, this);
 
 /*	CSE_ALifeObject *l_tpALifeObject = (CSE_ALifeObject*)(DC);
 	m_bHideGrenade = !iAmmoElapsed;
@@ -713,7 +715,7 @@ void CWeaponMagazinedWGrenade::OnShot		()
 		}
 		
 		CParticlesObject* pStaticPG;/* s32 l_c = m_effects.size();*/
-		pStaticPG = xr_new<CParticlesObject>("weapons\\generic_shoot",Sector());
+		pStaticPG = xr_new<CParticlesObject>(m_sGrenadeFlameParticles,Sector());
 		Fmatrix pos; 
 		pos.set(XFORM()); 
 		pos.c.set(vLastFP);

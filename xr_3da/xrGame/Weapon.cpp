@@ -408,6 +408,8 @@ void CWeapon::Load		(LPCSTR section)
 	fFlameLength		= pSettings->r_float		(section,"flame_length"		);
 	fFlameSize			= pSettings->r_float		(section,"flame_size"		);
 
+	m_sFlameParitcles	= pSettings->r_string		(section,"flame_particles" );
+
 	// hands
 	eHandDependence		= EHandDependence(pSettings->r_s32(section,"hand_dependence"));
 
@@ -1025,16 +1027,16 @@ void CWeapon::OnDrawFlame	()
 		*/
 
 		
-//		CParticlesObject* pStaticPG;
-//		pStaticPG = xr_new<CParticlesObject>("weapons\\generic_flame",Sector());
-//		Fmatrix pos; 
-//		pos.set(XFORM()); 
-//		pos.c.set(vLastFP);
-//		Fvector vel; 
-//		vel.sub(Position(),ps_Element(0).vPosition); 
-//		vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
-//		pStaticPG->UpdateParent(pos, vel); 
-//		pStaticPG->Play();
+		CParticlesObject* pStaticPG;
+		pStaticPG = xr_new<CParticlesObject>(m_sFlameParitcles,Sector());
+		Fmatrix pos; 
+		pos.set(XFORM()); 
+		pos.c.set(vLastFP);
+		Fvector vel; 
+		vel.sub(Position(),ps_Element(0).vPosition); 
+		vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
+		pStaticPG->UpdateParent(pos, vel); 
+		pStaticPG->Play();
 
 
 		fFlameTime -= Device.fTimeDelta;

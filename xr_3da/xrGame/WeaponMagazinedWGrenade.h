@@ -144,11 +144,15 @@ public:
 	bool m_bGrenadeMode;
 
 
+	//имя пратиклов для огня из подствольника
+	LPCSTR m_sGrenadeFlameParticles;
+
+
 	Fvector* m_pGrenadePoint;
 	CWeaponFakeGrenade* m_pGrenade;
 
 	//название косточки для гранаты подствольника в HUD
-	ref_str grenade_bone_name;
+	LPCSTR grenade_bone_name;
 
 protected:
 	void SpawFakeGrenade(const char*  grenade_section_name);

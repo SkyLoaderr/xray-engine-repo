@@ -271,11 +271,8 @@ public:
 	float					GetConditionDispersionFactor	();
 	float					GetConditionMisfireProbability	();
 
+	int						GetAmmoCurrent		();
 
-	// @@@ WT: Subject to remove
-	IC int					GetAmmoLimit		()				{	return 0/*iAmmoLimit*/;						}
-	int						GetAmmoCurrent		();//				{	return /*m_pAmmo?m_pAmmo->m_boxSize:*/0;	}
-	//
 
 	IC ref_shader			GetUIIcon			()				{	return hUIIcon;								}
 	IC void					SetHUDmode			(BOOL H)		{	hud_mode = H;								}
@@ -326,7 +323,8 @@ public:
 	f32					m_resource, m_abrasion;
 	string64			m_tmpName;
 
-	//
+	//имя пратиклов для огня
+	LPCSTR				m_sFlameParitcles;
 
 	// Multitype ammo support
 	xr_stack<CCartridge> m_magazine;
