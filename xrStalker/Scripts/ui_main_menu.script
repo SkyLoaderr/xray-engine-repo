@@ -165,6 +165,10 @@ function main_menu:InitControls()
 	btn:SetTextY(self.button_indent)
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)
+	
+	while true do
+		wait(3000)
+	end
 end
 
 function main_menu:InitCallBacks()
