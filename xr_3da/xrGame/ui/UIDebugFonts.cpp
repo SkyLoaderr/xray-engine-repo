@@ -56,6 +56,11 @@ void CUIDebugFonts::FillUpList(){
 	m_list.AddItem(pItem);
 
 	pItem = xr_new<CUIListItem>();
+	pItem->SetFont(UI()->Font()->pFontConsole);
+	pItem->SetText("pFontConsole 1 2 3 4 5 6 7 8 9 0");
+	m_list.AddItem(pItem);
+
+	pItem = xr_new<CUIListItem>();
 	pItem->SetFont(UI()->Font()->pFontDI);
 	pItem->SetText("pFontDI 1 2 3 4 5 6 7 8 9 0");
 	m_list.AddItem(pItem);
@@ -116,8 +121,15 @@ void CUIDebugFonts::FillUpList(){
 	m_list.AddItem(pItem);
 
 	pItem = xr_new<CUIListItem>();
+	pItem->SetFont(UI()->Font()->pFontStartup);
+	pItem->SetText("pFontStartup 1 2 3 4 5 6 7 8 9 0");
+	m_list.AddItem(pItem);
+
+	pItem = xr_new<CUIListItem>();
 	pItem->SetFont(UI()->Font()->pFontStat);
 	pItem->SetText("pFontStat 1 2 3 4 5 6 7 8 9 0");
 	m_list.AddItem(pItem);
+
+	
 
 }
