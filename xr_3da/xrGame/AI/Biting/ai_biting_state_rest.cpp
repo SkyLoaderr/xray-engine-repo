@@ -71,6 +71,9 @@ void CBitingRest::Run()
 		DO_IN_TIME_INTERVAL_END();
 	}
 
+	
+	pMonster->MotionMan.accel_activate(eAT_Calm);
+
 	switch (m_tAction) {
 		case ACTION_WALK:						// обход точек графа
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;

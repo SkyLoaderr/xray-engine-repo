@@ -261,8 +261,6 @@ bool CMotionManager::AA_TimeTest(SAAParam &params)
 	// вычислить смещённое время хита в соответствии с параметрами анимации атаки
 	TTime offset_time = pMonster->cur_anim.started + u32(1000 * GetAnimTime(*pMonster->cur_anim.name) * it->second.time);
 
-	//Msg("Anim = [%s] Anim time = [%f]", *pMonster->cur_anim.name, GetAnimTime(*pMonster->cur_anim.name));
-
 	if ((offset_time >= (cur_time - TIME_OFFSET)) && (offset_time <= (cur_time + TIME_OFFSET)) ){
 		params = it->second;
 		return true;
@@ -341,7 +339,7 @@ float CMotionManager::GetAnimTime(EMotionAnim anim, u32 index)
 	CBoneData			&bone_data = PKinematics(pVisual)->LL_GetData(0);
 	CBoneDataAnimated	*bone_anim = dynamic_cast<CBoneDataAnimated *>(&bone_data);
 
-	return  bone_anim->Motions[def->motion].GetLength();
+	return  bone_anim->Motions[def->motion].GetLength() / def->Dequantize(def->speed);
 }
 
 float CMotionManager::GetAnimTime(LPCSTR anim_name)
@@ -565,7 +563,6 @@ void CMotionManager::STEPS_Update(u8 legs_num)
 	
 	SGameMtlPair* mtl_pair		= pMonster->CMaterialManager::get_current_pair();
 	if (!mtl_pair) return;
-	if (mtl_pair->StepSounds.empty()) return;
 
 	// получить параметры шага
 	SStepParam &step		= step_info.params;
@@ -581,12 +578,32 @@ void CMotionManager::STEPS_Update(u8 legs_num)
 		
 		if ((offset_time >= (cur_time - TIME_OFFSET)) && (offset_time <= (cur_time + TIME_OFFSET)) ){
 			
-			// Play Sound
-			step_info.activity[i].sound = SELECT_RANDOM(mtl_pair->StepSounds);
-			step_info.activity[i].sound.play_at_pos	(pMonster,pMonster->Position());
-			//step_info.activity[i].sound.set_volume	();
+			// Играть звук
+			if (!mtl_pair->StepSounds.empty()) {
+				step_info.activity[i].sound = SELECT_RANDOM(mtl_pair->StepSounds);
+				step_info.activity[i].sound.play_at_pos	(pMonster,pMonster->Position());
+			}
+			
+			// Играть партиклы
+			if (!mtl_pair->CollideParticles.empty()) {
+				LPCSTR ps_name = *mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
+				
+				//отыграть партиклы столкновения материалов
+				CParticlesObject* ps = xr_new<CParticlesObject>(ps_name);
 
-			// Play Particle
+				// вычислить позицию и направленность партикла
+				Fmatrix pos; 
+
+				// установить направление
+				pos.k.set(Fvector().set(0.0f,1.0f,0.0f));
+				Fvector::generate_orthonormal_basis(pos.k, pos.i, pos.j);
+				// установить позицию
+				pos.c.set(pMonster->get_foot_position(u8(i)));
+
+				ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
+				Level().ps_needtoplay.push_back(ps);
+			}
+
 			// Play Camera FXs
 
 			step_info.activity[i].handled = true;
@@ -597,6 +614,7 @@ void CMotionManager::STEPS_Update(u8 legs_num)
 	for (u32 i=0; i<legs_num; i++) {
 		if (step_info.activity[i].handled && step_info.activity[i].sound.feedback) {
 			step_info.activity[i].sound.set_position	(pMonster->Position());
+			step_info.activity[i].sound.set_volume		(step_info.params.step[i].power);
 		}
 	}
 }

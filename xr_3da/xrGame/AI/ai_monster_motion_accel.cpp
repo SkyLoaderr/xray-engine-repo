@@ -59,6 +59,7 @@ bool CMotionManager::accel_chain_get(float cur_speed, EMotionAnim target_anim, E
 		// Пройти по текущему вектору
 		for (IT = IT_B; IT != IT_E; IT++) {
 
+
 			ANIM_ITEM_MAP_IT	item_it = _sd->m_tAnims.find(*IT);
 			SVelocityParam		*param	= item_it->second.velocity;
 			float				from	= param->velocity.linear * param->min_factor;
@@ -71,7 +72,10 @@ bool CMotionManager::accel_chain_get(float cur_speed, EMotionAnim target_anim, E
 					best_param	= item_it->second.velocity;
 				}
 
-				if ((*IT) == target_anim) found = true;
+				if ((*IT) == target_anim) {
+					found = true;
+					break;
+				}
 		}
 
 		if (!found) continue;

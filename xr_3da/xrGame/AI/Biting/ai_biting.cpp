@@ -552,3 +552,22 @@ float CAI_Biting::GetEnemyDistances(float &min_dist, float &max_dist)
 	return cur_dist;
 }
 
+
+Fvector	CAI_Biting::get_foot_position(u8 leg_id)
+{
+	CKinematics *pK = PKinematics(Visual());
+	Fmatrix bone_transform;
+
+	switch (leg_id) {
+		case 0:	bone_transform = pK->LL_GetBoneInstance(pK->LL_BoneID("bip01_l_finger0")).mTransform;	break;
+		case 1: bone_transform = pK->LL_GetBoneInstance(pK->LL_BoneID("bip01_r_finger0")).mTransform;	break;
+		case 2: bone_transform = pK->LL_GetBoneInstance(pK->LL_BoneID("bip01_r_toe0")).mTransform;		break;
+		case 3: bone_transform = pK->LL_GetBoneInstance(pK->LL_BoneID("bip01_l_toe0")).mTransform;		break;
+	}
+
+	Fmatrix global_transform;
+	global_transform.set(XFORM());
+	global_transform.mulB(bone_transform);
+
+	return global_transform.c;
+}

@@ -164,6 +164,7 @@ public:
 
 	// ---------------------------------------------------------------------------------
 	virtual u8				get_legs_number					() {return QUADRUPEDAL;}
+	virtual Fvector			get_foot_position				(u8 leg_id);
 	// ---------------------------------------------------------------------------------
 
 	virtual float			GetEnemyDistances				(float &min_dist, float &max_dist);
