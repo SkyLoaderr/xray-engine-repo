@@ -55,12 +55,14 @@ v2p_out v_main	( a2v  	IN )
 	// TangentToEyeSpace = object2eye * tangent2object
 	//					 = object2eye * transpose(object2tangent) (since the inverse of a rotation is its transpose)
 	/*
-	float3x3 xform	= mul	((float3x3)m_model2view, float3x3(
-								IN.T.x,IN.B.y,IN.N.z,
-								IN.T.x,IN.B.y,IN.N.z,
-								IN.T.x,IN.B.y,IN.N.z) 
-							);
-	*/							
+	float3x3 xform	= mul	((float3x3)m_model2view, 
+								float3x3(
+								IN.T.x,IN.T.y,IN.T.z,
+								IN.B.x,IN.B.y,IN.B.z,
+								IN.N.x,IN.N.y,IN.N.z
+								)
+								);
+	*/								
 	float3x3 xform	= float3x3	(
 								IN.T.x,IN.T.y,IN.T.z,
 								IN.B.x,IN.B.y,IN.B.z,
