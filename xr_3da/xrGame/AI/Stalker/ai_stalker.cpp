@@ -387,7 +387,9 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 				if ((I - B) == (int)inventory().GetActiveSlot()) 
 					(*I).m_pIItem->Drop();
 				else
-					if((*I).m_pIItem) inventory().Ruck((*I).m_pIItem);
+					if((*I).m_pIItem)
+						if ((*I).m_pIItem->SUB_CLS_ID != CLSID_IITEM_BOLT)
+							inventory().Ruck((*I).m_pIItem);
 
 			///!!!
 			TIItemList &l_list = inventory().m_ruck;
