@@ -11,8 +11,14 @@ class ENGINE_API NET_Packet;
 class	ENGINE_API 				CObjectList
 {
 private:
+	struct str_pred : public binary_function<char*, char*, bool> 
+	{	
+		IC bool operator()(LPCSTR x, LPCSTR y) const
+		{	return strcmp(x,y)<0;	}
+	};
+
 	typedef vector<CObject*>::iterator				OBJ_IT;
-	typedef multimap<CLASS_ID,CObject*>				POOL;
+	typedef multimap<LPCSTR,CObject*,str_pred>		POOL;
 	typedef POOL::iterator							POOL_IT;
 private:
 	POOL						map_POOL;
@@ -42,11 +48,11 @@ public:
 	void						net_Unregister		( CObject*	O		);
 
 	void						net_Export			( NET_Packet* P		);
-	void						net_Import			(NET_Packet* P		);
-	CObject*					net_Find			(u32 ID				);
+	void						net_Import			( NET_Packet* P		);
+	CObject*					net_Find			( u32 ID			);
 
-	void						SLS_Save			(IWriter&	fs		);
-	void						SLS_Load			(IReader&	fs		);
+	void						SLS_Save			( IWriter&	fs		);
+	void						SLS_Load			( IReader&	fs		);
 };
 
 #endif //__XR_OBJECT_LIST_H__

@@ -5,20 +5,20 @@
 
 CObject*	CObjectList::Create				( LPCSTR	name	)
 {
-	CLASS_ID CLS		=	pSettings->r_clsid(name,"class");
-	multimap<CLASS_ID,CObject*>::iterator	it	= map_POOL.find	(CLS);
+	string128			l_name;
+	POOL_IT	it			=	map_POOL.find	(strlwr(strcpy(l_name,name)));
 	if (it!=map_POOL.end())
 	{
 		// Instance found
 		CObject* O				=	it->second;
-		R_ASSERT(O->SUB_CLS_ID	==	CLS);
 		map_POOL.erase		(it);
 		objects.push_back	(O);
 		return				O;
 	} else {
 		// Create and load new instance
 		Msg					("! Uncached loading '%s'...",name);
-		CObject* O			=	(CObject*) NEW_INSTANCE(CLS);
+		CLASS_ID CLS		=	pSettings->r_clsid		(name,"class");
+		CObject* O			=	(CObject*) NEW_INSTANCE	(CLS);
 		O->Load				(name);
 		objects.push_back	(O);
 		return				O;
@@ -31,8 +31,5 @@ void		CObjectList::Destroy			( CObject*	O		)
 	net_Unregister			(O);
 	OBJ_IT it				=	find		(objects.begin(),objects.end(),O);
 	if (it!=objects.end())	objects.erase	(it);
-
-	CLASS_ID CLS			=	pSettings->r_clsid(O->cNameSect(),"class");
-	R_ASSERT(O->SUB_CLS_ID	==	CLS);
-	map_POOL.insert			(make_pair(CLS,O));
+	map_POOL.insert			(make_pair(O->cNameSect(),O));
 }

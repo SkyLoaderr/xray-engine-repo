@@ -5,7 +5,7 @@
 
 void CObjectList::Load()
 {
-	R_ASSERT	(map_POOL.empty() && map_NETID.empty() && objects.empty() && destroy_queue.empty());
+	R_ASSERT			(map_POOL.empty() && map_NETID.empty() && objects.empty() && destroy_queue.empty());
 
 	u32	mem_0			= Memory.mem_usage();
 	CTimer T;			T.Start		();
@@ -25,7 +25,7 @@ void CObjectList::Load()
 			{
 				CObject* pObject	= (CObject*) NEW_INSTANCE(CLS);
 				pObject->Load		(S->Name);
-				map_POOL.insert		(make_pair(CLS,pObject));
+				map_POOL.insert		(make_pair(pObject->cNameSect(),pObject));
 			}
 		}
 	}
