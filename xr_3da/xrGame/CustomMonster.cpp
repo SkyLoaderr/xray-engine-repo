@@ -30,6 +30,7 @@
 #include "entitycondition.h"
 #include "sound_player.h"
 #include "level.h"
+#include "material_manager.h"
 
 #define IMPORTANT_BUILD
 
@@ -63,19 +64,24 @@ void CCustomMonster::SAnimState::Create(CSkeletonAnimated* K, LPCSTR base)
 
 CCustomMonster::CCustomMonster()
 {
+	m_memory_manager			= 0;
 	m_movement_manager			= 0;
+	m_sound_player				= 0;
+	m_material_manager			= 0;
 }
 
 CCustomMonster::~CCustomMonster	()
 {
 	xr_delete					(m_memory_manager);
 	xr_delete					(m_movement_manager);
+	xr_delete					(m_sound_player);
+	xr_delete					(m_material_manager);
 }
 
 void CCustomMonster::Load		(LPCSTR section)
 {
 	inherited::Load				(section);
-	CMaterialManager::Load		(section);
+	material().Load				(section);
 	memory().Load				(section);
 	movement().Load				(section);
 
@@ -155,7 +161,7 @@ void CCustomMonster::reinit()
 {
 	CScriptEntity::reinit		();
 	CEntityAlive::reinit		();
-	CMaterialManager::reinit	();
+	material().reinit			();
 	memory().reinit				();
 	movement().reinit			();
 	sound().reinit				();
@@ -171,7 +177,7 @@ void CCustomMonster::reload		(LPCSTR section)
 {
 	sound().reload				(section);
 	CEntityAlive::reload		(section);
-	CMaterialManager::reload	(section);
+	material().reload			(section);
 	memory().reload				(section);
 	movement().reload			(section);
 	load_killer_clsids			(section);
@@ -655,7 +661,7 @@ void CCustomMonster::Die	(CObject* who)
 
 BOOL CCustomMonster::net_Spawn	(CSE_Abstract* DC)
 {
-	if (!inherited::net_Spawn(DC) || !CScriptEntity::net_Spawn(DC) || !movement().net_Spawn(DC))
+	if (!movement().net_Spawn(DC) || !inherited::net_Spawn(DC) || !CScriptEntity::net_Spawn(DC))
 		return					(FALSE);
 
 	CSE_Abstract				*e	= (CSE_Abstract*)(DC);
@@ -909,10 +915,10 @@ DLL_Pure *CCustomMonster::_construct()
 	m_memory_manager			= xr_new<CMemoryManager>(this);
 	m_movement_manager			= create_movement_manager();
 	m_sound_player				= xr_new<CSoundPlayer>(this);
+	m_material_manager			= xr_new<CMaterialManager>(this,m_PhysicMovementControl);
 
 	inherited::_construct		();
 	CScriptEntity::_construct	();
-	CMaterialManager::_construct();
 
 	return						(this);
 }

@@ -13,8 +13,6 @@
 
 #include "entity_alive.h"
 #include "script_entity.h"
-#include "damage_manager.h"
-#include "material_manager.h"
 
 using namespace MonsterSpace;
 
@@ -24,11 +22,11 @@ class CSkeletonAnimated;
 class CMemoryManager;
 class CMovementManager;
 class CSoundPlayer;
+class CMaterialManager;
 
 class CCustomMonster : 
 	public CEntityAlive, 
 	public CScriptEntity,
-	public CMaterialManager,
 	public Feel::Vision,
 	public Feel::Sound,
 	public Feel::Touch
@@ -40,6 +38,7 @@ private:
 	CMemoryManager		*m_memory_manager;
 	CMovementManager	*m_movement_manager;
 	CSoundPlayer		*m_sound_player;
+	CMaterialManager	*m_material_manager;
 
 protected:
 	
@@ -222,6 +221,7 @@ protected:
 public:
 	IC		CMovementManager	&movement				() const;
 	IC		CSoundPlayer		&sound					() const;
+	IC		CMaterialManager	&material				() const;
 };
 
 #include "custommonster_inline.h"

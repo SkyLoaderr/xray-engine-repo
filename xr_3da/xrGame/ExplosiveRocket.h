@@ -10,9 +10,10 @@
 
 
 
-class CExplosiveRocket : public CCustomRocket,
-						virtual public CInventoryItem,
-								public CExplosive
+class CExplosiveRocket : 
+			public CCustomRocket,
+			public CInventoryItem,
+			public CExplosive
 {
 private:
 	typedef CCustomRocket inherited;

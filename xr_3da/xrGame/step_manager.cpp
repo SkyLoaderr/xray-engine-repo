@@ -3,6 +3,7 @@
 #include "custommonster.h"
 #include "../skeletonanimated.h"
 #include "level.h"
+#include "material_manager.h"
 
 #define TIME_OFFSET 10
 
@@ -91,7 +92,7 @@ void CStepManager::update()
 	if (m_step_info.disable)	return;
 	if (!m_blend)				return;
 
-	SGameMtlPair* mtl_pair		= m_object->CMaterialManager::get_current_pair();
+	SGameMtlPair* mtl_pair		= m_object->material().get_current_pair();
 	if (!mtl_pair)				return;
 
 	// получить параметры шага

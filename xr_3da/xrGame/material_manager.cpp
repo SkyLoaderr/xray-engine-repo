@@ -12,22 +12,20 @@
 #include "phmovementcontrol.h"
 #include "entity_alive.h"
 
-CMaterialManager::CMaterialManager	()
+CMaterialManager::CMaterialManager	(CObject *object, CPHMovementControl *movement_control)
 {
+	VERIFY					(object);
+	m_object				= object;
+
+	VERIFY					(movement_control);
+	m_movement_control		= movement_control;
+
 	m_my_material_idx		= GAMEMTL_NONE_IDX;
 	m_run_mode				= false;
-	m_object				= 0;
 }
 
 CMaterialManager::~CMaterialManager	()
 {
-}
-
-DLL_Pure *CMaterialManager::_construct	()
-{
-	m_object				= smart_cast<CObject*>(this);
-	VERIFY					(m_object);
-	return					(m_object);
 }
 
 void CMaterialManager::Load			(LPCSTR section)
@@ -64,10 +62,9 @@ void CMaterialManager::update		(float time_delta, float volume, float step_time,
 	SGameMtlPair			*mtl_pair = GMLib.GetMaterialPair(m_my_material_idx,m_last_material_idx);
 	VERIFY3					(mtl_pair,"Undefined material pair: ", *GMLib.GetMaterialByIdx(m_last_material_idx)->m_Name);
 	Fvector					position = m_object->Position();
-	CPHMovementControl* movement=movement_control();
-	if(movement&&movement->CharacterExist())
+	if(m_movement_control->CharacterExist())
 	{
-		position.y				+= movement->FootRadius(); 
+		position.y				+= m_movement_control->FootRadius(); 
 	}
 	
 	// ref_sound step

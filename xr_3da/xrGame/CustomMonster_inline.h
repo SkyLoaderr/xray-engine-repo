@@ -53,3 +53,9 @@ IC	CSoundPlayer &CCustomMonster::sound			() const
 	VERIFY			(m_sound_player);
 	return			(*m_sound_player);
 }
+
+IC	CMaterialManager &CCustomMonster::material	() const
+{
+	VERIFY			(m_material_manager);
+	return			(*m_material_manager);
+}

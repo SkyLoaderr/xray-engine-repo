@@ -9,7 +9,7 @@
 #include "Explosive.h"
 
 class CExplosiveItem: 
-	virtual public CInventoryItem,
+			public CInventoryItem,
 			public CExplosive
 {
 private:

@@ -50,15 +50,17 @@ CMovementManager::~CMovementManager	()
 {
 	xr_delete					(m_base_game_selector		);
 	xr_delete					(m_base_level_selector		);
+	
+	xr_delete					(m_restricted_object		);
+	xr_delete					(m_selector_manager			);
+	xr_delete					(m_location_manager			);
+	
 	xr_delete					(m_game_location_selector	);
 	xr_delete					(m_game_path_manager		);
 	xr_delete					(m_level_location_selector	);
 	xr_delete					(m_level_path_manager		);
 	xr_delete					(m_detail_path_manager		);
 	xr_delete					(m_patrol_path_manager		);
-	xr_delete					(m_restricted_object		);
-	xr_delete					(m_selector_manager			);
-	xr_delete					(m_location_manager			);
 }
 
 void CMovementManager::Load			(LPCSTR section)

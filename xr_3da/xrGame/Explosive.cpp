@@ -20,6 +20,7 @@
 #include "level.h"
 #include "level_bullet_manager.h"
 #include "xrmessages.h"
+#include "gamemtllib.h"
 
 #define EFFECTOR_RADIUS 30.f
 

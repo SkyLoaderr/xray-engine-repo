@@ -10,9 +10,7 @@
 #include "inventory_item.h"
 #include "ai_sounds.h"
 
-class CExplosive:
-		public Feel::Touch
-{
+class CExplosive : public Feel::Touch {
 
 public:
 								CExplosive(void);

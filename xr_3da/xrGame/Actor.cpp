@@ -64,6 +64,8 @@
 #include "artifact.h"
 #include "CharacterPhysicsSupport.h"
 
+#include "material_manager.h"
+
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
 const float		respawn_auto	= 7.f;
@@ -177,6 +179,7 @@ CActor::CActor() : CEntityAlive()
 	m_anims = xr_new<SActorMotions>();
 	m_vehicle_anims = xr_new<SActorVehicleAnims>();
 	m_entity_condition = NULL;
+	m_material_manager = 0;
 }
 
 
@@ -186,6 +189,7 @@ CActor::~CActor()
 	xr_delete				(encyclopedia_registry);
 	xr_delete				(game_task_registry);
 	xr_delete				(game_news_registry);
+	xr_delete				(m_material_manager);
 #ifdef DEBUG
 	Device.seqRender.Remove(this);
 #endif
@@ -217,7 +221,7 @@ void CActor::reinit	()
 	m_PhysicMovementControl->SetPhysicsRefObject(this);
 	CEntityAlive::reinit	();
 	CInventoryOwner::reinit	();
-	CMaterialManager::reinit();
+	material().reinit		();
 	m_pPhysics_support->in_Init		();
 	m_pUsableObject=NULL;
 }
@@ -226,14 +230,14 @@ void CActor::reload	(LPCSTR section)
 {
 	CEntityAlive::reload	(section);
 	CInventoryOwner::reload	(section);
-	CMaterialManager::reload(section);
+	material().reload		(section);
 }
 
 void CActor::Load	(LPCSTR section )
 {
 	Msg						("Loading actor: %s",section);
 	inherited::Load			(section);
-	CMaterialManager::Load	(section);
+	material().Load			(section);
 	CInventoryOwner::Load	(section);
 
 	//////////////////////////////////////////////////////////////////////////
@@ -680,12 +684,12 @@ void CActor::UpdateCL()
 		float				tm = isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
 		float				s_k	= ((mstate_real&mcCrouch) ? CROUCH_SOUND_FACTOR : 1.f);
 		float				s_vol = s_k * (isAccelerated(mstate_real) ? 1.f : ACCELERATED_SOUND_FACTOR);
-		SGameMtlPair		*mtl_pair = GMLib.GetMaterialPair(self_material_idx(),last_material_idx());
+		SGameMtlPair		*mtl_pair = GMLib.GetMaterialPair(material().self_material_idx(),material().last_material_idx());
 		
 		if(!m_holder)
 		{
-			CMaterialManager::set_run_mode(isAccelerated(mstate_real));
-			CMaterialManager::update		(
+			material().set_run_mode(isAccelerated(mstate_real));
+			material().update		(
 				Device.fTimeDelta,
 				s_vol,
 				tm,
@@ -1486,8 +1490,8 @@ CEntityCondition *CActor::create_entity_condition	()
 
 DLL_Pure *CActor::_construct		()
 {
+	m_material_manager				= xr_new<CMaterialManager>(this,m_PhysicMovementControl);
 	CEntityAlive::_construct		();
 	CInventoryOwner::_construct		();
-	CMaterialManager::_construct	();
 	return							(this);
 }

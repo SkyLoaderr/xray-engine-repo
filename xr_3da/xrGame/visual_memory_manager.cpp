@@ -15,6 +15,7 @@
 #include "ai_object_location.h"
 #include "level_graph.h"
 #include "stalker_movement_manager.h"
+#include "gamemtllib.h"
 
 struct SRemoveOfflinePredicate {
 	bool		operator()						(const CVisibleObject &object) const

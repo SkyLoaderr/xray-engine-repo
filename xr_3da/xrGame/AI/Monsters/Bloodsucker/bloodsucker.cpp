@@ -10,6 +10,7 @@
 #include "../../../../skeletonanimated.h"
 #include "../ai_monster_movement.h"
 #include "../../../level.h"
+#include "../../../material_manager.h"
 
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
@@ -260,7 +261,7 @@ void CAI_Bloodsucker::shedule_Update(u32 dt)
 	CInvisibility::schedule_update();
 
 	if (state_invisible && g_Alive() && (m_fCurSpeed != 0)) {
-		SGameMtlPair* mtl_pair		= CMaterialManager::get_current_pair();
+		SGameMtlPair* mtl_pair		= material().get_current_pair();
 		if (!mtl_pair) return;
 
 		if (mtl_pair->CollideParticles.empty()) return;

@@ -14,8 +14,6 @@
 #include "PHMovementControl.h"
 #include "PhysicsShell.h"
 #include "InventoryOwner.h"
-#include "damage_manager.h"
-#include "material_manager.h"
 #include "StatGraph.h"
 #include "PhraseDialogManager.h"
 #include "CharacterPhysicsSupport.h"
@@ -53,13 +51,13 @@ class   CArtefact;
 struct SActorMotions;
 struct SActorVehicleAnims;
 class  CActorCondition;
+class CMaterialManager;
 
 class	CActor: 
 	public CEntityAlive, 
 	public IInputReceiver,
 	public Feel::Touch,
 	public CInventoryOwner,
-	public CMaterialManager,
 	public CPhraseDialogManager
 #ifdef DEBUG
 	,public pureRender
@@ -608,12 +606,14 @@ public:
 
 private:
 	CActorCondition				*m_entity_condition;
+	CMaterialManager			*m_material_manager;
 
 protected:
 	virtual	CEntityCondition	*create_entity_condition	();
 
 public:
 	IC		CActorCondition		&conditions					() const;
+	IC		CMaterialManager	&material					() const;
 	virtual DLL_Pure			*_construct					();
 };
 
@@ -621,6 +621,12 @@ IC	CActorCondition	&CActor::conditions	() const
 {
 	VERIFY			(m_entity_condition);
 	return			(*m_entity_condition);
+}
+
+IC	CMaterialManager	&CActor::material	() const
+{
+	VERIFY			(m_material_manager);
+	return			(*m_material_manager);
 }
 
 //extern float	g_fNumUpdates;

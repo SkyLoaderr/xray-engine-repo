@@ -2,6 +2,7 @@
 #include "poltergeist.h"
 #include "../../../PhysicsShell.h"
 #include "../../../level.h"
+#include "../../../material_manager.h"
 
 #define IMPULSE					10.f
 #define IMPULSE_RADIUS			5.f
@@ -43,7 +44,7 @@ void CPoltergeist::StrangeSounds(const Fvector &position)
 
 				// Получить пару материалов
 				CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris() + l_rq.element;
-				SGameMtlPair* mtl_pair = GMLib.GetMaterialPair(CMaterialManager::self_material_idx(),pTri->material);
+				SGameMtlPair* mtl_pair = GMLib.GetMaterialPair(material().self_material_idx(),pTri->material);
 				if (!mtl_pair) continue;
 
 				// Играть звук

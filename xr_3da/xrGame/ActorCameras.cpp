@@ -11,6 +11,7 @@
 #include "ActorEffector.h"
 #include "level.h"
 #include "../cl_intersect.h"
+#include "gamemtllib.h"
 
 void CActor::cam_Set	(EActorCameras style)
 {
