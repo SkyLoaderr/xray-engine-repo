@@ -61,7 +61,7 @@ typedef class_exporter<IRender_Visual>	IRender_VisualScript;
 add_to_type_list(IRender_VisualScript)
 #undef script_type_list
 #define script_type_list save_type_list(IRender_VisualScript)
-
+/*
 typedef class_exporter<FHierrarhyVisual>	FHierrarhyVisualScript;
 add_to_type_list(FHierrarhyVisualScript)
 #undef script_type_list
@@ -71,7 +71,7 @@ typedef class_exporter<CKinematics>	CKinematicsScript;
 add_to_type_list(CKinematicsScript)
 #undef script_type_list
 #define script_type_list save_type_list(CKinematicsScript)
-
+*/
 
 typedef class_exporter<CSkeletonAnimated>	CSkeletonAnimatedScript;
 add_to_type_list(CSkeletonAnimatedScript)

@@ -166,11 +166,21 @@ void CSkeletonAnimatedScript::script_register		(lua_State *L)
 {
 	module(L)
 	[
-		class_<CSkeletonAnimated,CKinematics>("CSkeletonAnimated")
+		class_<CSkeletonAnimated>("CSkeletonAnimated")
 			.def("PlayCycle",		&CSkeletonAnimated_PlayCycle)
 	];
 }
 
+void CBlendScript::script_register		(lua_State *L)
+{
+	module(L)
+		[
+			class_<CBlend>("CBlend")
+			//			.def(constructor<>())
+		];
+}
+
+/*
 void CKinematicsScript::script_register		(lua_State *L)
 {
 	module(L)
@@ -188,12 +198,4 @@ void FHierrarhyVisualScript::script_register		(lua_State *L)
 			//			.def(constructor<>())
 		];
 }
-
-void CBlendScript::script_register		(lua_State *L)
-{
-	module(L)
-		[
-			class_<CBlend>("CBlend")
-			//			.def(constructor<>())
-		];
-}
+*/
