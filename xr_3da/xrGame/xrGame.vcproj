@@ -1099,7 +1099,7 @@
 						RelativePath=".\ai_script_lua_export.cpp">
 					</File>
 					<File
-						RelativePath=".\ai_script_lua_export_actor.cpp">
+						RelativePath=".\ai_script_lua_export_extension.cpp">
 					</File>
 					<File
 						RelativePath=".\ai_script_lua_extension.cpp">

@@ -36,6 +36,7 @@ public:
 
 							CPatrolPathParams	(LPCSTR caPatrolPathToGo, const CPatrolPathManager::EPatrolStartType tPatrolPathStart = CPatrolPathManager::ePatrolStartTypeNearest, const CPatrolPathManager::EPatrolRouteType tPatrolPathStop = CPatrolPathManager::ePatrolRouteTypeContinue, bool bRandom = true)
 	{
+		VERIFY2				(Level().m_PatrolPaths.find(caPatrolPathToGo) != Level().m_PatrolPaths.end(),caPatrolPathToGo);
 		m_caPatrolPathToGo	= caPatrolPathToGo;
 		m_tPatrolPathStart	= tPatrolPathStart;
 		m_tPatrolPathStop	= tPatrolPathStop;
@@ -44,6 +45,49 @@ public:
 
 	virtual					~CPatrolPathParams	()
 	{
+	}
+
+	IC	u32					count				() const
+	{
+		CLevel::SPathPairIt	I = Level().m_PatrolPaths.find(*m_caPatrolPathToGo);
+		VERIFY				(I != Level().m_PatrolPaths.end());
+		return				((*I).second.tpaWayPoints.size());
+	}
+
+	IC	const Fvector		&point				(u32 index) const
+	{
+		CLevel::SPathPairIt	I = Level().m_PatrolPaths.find(*m_caPatrolPathToGo);
+		VERIFY				(I != Level().m_PatrolPaths.end());
+		VERIFY				((*I).second.tpaWayPoints.size() > index);
+		return				((*I).second.tpaWayPoints[index].tWayPoint);
+	}
+
+	IC	u32					point				(LPCSTR name) const
+	{
+		CLevel::SPathPairIt	I = Level().m_PatrolPaths.find(*m_caPatrolPathToGo);
+		VERIFY				(I != Level().m_PatrolPaths.end());
+		xr_vector<CLevel::SWayPoint>::const_iterator	i = (*I).second.tpaWayPoints.begin(), b = i;
+		xr_vector<CLevel::SWayPoint>::const_iterator	e = (*I).second.tpaWayPoints.end();
+		for ( ; i != e; ++i)
+			if (!strcmp(name,*(*i).name))
+				return		(u32(i - b));
+		return				(u32(-1));
+	}
+
+	IC	u32					point				(const Fvector &point) const
+	{
+		CLevel::SPathPairIt	I = Level().m_PatrolPaths.find(*m_caPatrolPathToGo);
+		VERIFY				(I != Level().m_PatrolPaths.end());
+		u32					best_index = u32(-1);
+		float				min_dist = flt_max;
+		xr_vector<CLevel::SWayPoint>::const_iterator	i = (*I).second.tpaWayPoints.begin(), b = i;
+		xr_vector<CLevel::SWayPoint>::const_iterator	e = (*I).second.tpaWayPoints.end();
+		for ( ; i != e; ++i)
+			if ((*i).tWayPoint.distance_to(point) < min_dist) {
+				min_dist	= (*i).tWayPoint.distance_to(point);
+				best_index	= u32(i - b);
+			}
+		return				(u32(best_index));
 	}
 };
 

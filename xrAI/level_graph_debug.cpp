@@ -185,20 +185,6 @@ void CLevelGraph::render()
 		}
 	}
 
-	{
-		CLevel::SPathPairIt I = Level().m_PatrolPaths.begin();
-		CLevel::SPathPairIt E = Level().m_PatrolPaths.end();
-		for ( ; I != E; ++I) {
-			u32	N = (u32)(*I).second.tpaVectors[0].size();
-			if (N)
-				RCache.dbg_DrawAABB((*I).second.tpaVectors[0][0],.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
-			for (u32 i=1; i<N; ++i) {
-				RCache.dbg_DrawLINE(Fidentity,(*I).second.tpaVectors[0][i-1],(*I).second.tpaVectors[0][i],D3DCOLOR_XRGB(0,255,0));
-				RCache.dbg_DrawAABB((*I).second.tpaVectors[0][i],.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
-			}
-		}
-	}
-
 #ifdef DEBUG
 	if (psAI_Flags.test(aiMotion)) {
 		xr_vector<CObject*>::iterator	I = Level().Objects.objects.begin();

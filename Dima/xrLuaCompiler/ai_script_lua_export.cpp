@@ -11,16 +11,12 @@
 #include "ai_script_lua_extension.h"
 #include "ai_script_classes.h"
 #include "ai_script_actions.h"
-#include "../cameramanager.h"
-#include "../effectorpp.h"
 #include "luabind/return_reference_to_policy.hpp"
 #include "luabind/out_value_policy.hpp"
 //#include "luabind/adopt_policy.hpp"
 //#include "luabind/dependency_policy.hpp"
 //#include "luabind/discard_result_policy.hpp"
 //#include "luabind/iterator_policy.hpp"
-#include "ParticlesObject.h"
-#include "ArtifactMerger.h"
 
 using namespace luabind;
 using namespace Script;
@@ -37,29 +33,10 @@ double get_time()
 	return((double)Device.TimerAsync());
 }
 
-const CRenderDevice &get_device()
-{
-	return		(Device);
-}
-
-const CCameraManager &get_camera_manager()
-{
-	return		(Level().Cameras);
-}
-
 void vfLuaErrorHandler(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
 	if (!bfPrintOutput(tpLuaVirtualMachine,"unknown script"))
 		vfPrintError(tpLuaVirtualMachine,LUA_ERRRUN);
-}
-
-CLuaGameObject *get_object_by_name(LPCSTR caObjectName)
-{
-	CGameObject		*l_tpGameObject	= dynamic_cast<CGameObject*>(Level().Objects.FindObjectByName(caObjectName));
-	if (l_tpGameObject)
-		return		(xr_new<CLuaGameObject>(l_tpGameObject));
-	else
-		return		(0);
 }
 
 int Script::LuaPanic(CLuaVirtualMachine *tpLuaVirtualMachine)
@@ -293,24 +270,6 @@ void Script::vfExportGame(CLuaVirtualMachine *tpLuaVirtualMachine)
 	];
 }
 
-void Script::vfExportLevel(CLuaVirtualMachine *tpLuaVirtualMachine)
-{
-	module(tpLuaVirtualMachine,"level")
-	[
-		// declarations
-		def("cameras",							get_camera_manager),
-		def("object",							get_object_by_name),
-		def("actor",							tpfGetActor),
-		def("set_artifact_merge",				&CArtifactMerger::SetArtifactMergeFunctor)
-//		def("get_weather",						Level::get_weather)
-	];
-
-	module(tpLuaVirtualMachine)
-	[
-		def("device",							get_device)
-	];
-}
-
 void Script::vfExportDevice(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
 	module(tpLuaVirtualMachine)
@@ -329,18 +288,6 @@ void Script::vfExportDevice(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def_readonly("full_transform",			&CRenderDevice::mFullTransform)
 			.def_readonly("fov",					&CRenderDevice::fFOV)
 			.def_readonly("aspect_ratio",			&CRenderDevice::fASPECT)
-	];
-}
-
-void Script::vfExportParticles(CLuaVirtualMachine *tpLuaVirtualMachine)
-{
-	module(tpLuaVirtualMachine)
-	[
-		class_<CParticlesObject>("particles")
-			.def(								constructor<LPCSTR,bool>())
-			.def("position",					&CParticlesObject::Position)
-			.def("play_at_pos",					&CParticlesObject::play_at_pos)
-			.def("stop",						&CParticlesObject::Stop)
 	];
 }
 
@@ -421,9 +368,13 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def(								constructor<LPCSTR>())
 			.def(								constructor<LPCSTR,const CPatrolPathManager::EPatrolStartType>())
 			.def(								constructor<LPCSTR,const CPatrolPathManager::EPatrolStartType,const CPatrolPathManager::EPatrolRouteType>())
-			.def(								constructor<LPCSTR,const CPatrolPathManager::EPatrolStartType,const CPatrolPathManager::EPatrolRouteType, bool>()),
+			.def(								constructor<LPCSTR,const CPatrolPathManager::EPatrolStartType,const CPatrolPathManager::EPatrolRouteType, bool>())
+			.def("count",						&CPatrolPathParams::count)
+			.def("point",						(const Fvector &(CPatrolPathParams::*)(u32)				const)	(CPatrolPathParams::point))
+			.def("index",						(u32			(CPatrolPathParams::*)(LPCSTR)			const)	(CPatrolPathParams::point))
+			.def("nearest",						(u32			(CPatrolPathParams::*)(const Fvector &) const)	(CPatrolPathParams::point)),
 
-		class_<CMovementAction>("move")
+			class_<CMovementAction>("move")
 			.enum_("body")
 			[
 				value("crouch",					int(MonsterSpace::eBodyStateCrouch)),
@@ -693,62 +644,3 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 	];
 }
 
-void Script::vfExportEffector(CLuaVirtualMachine *tpLuaVirtualMachine)
-{
-	module(tpLuaVirtualMachine)
-	[
-		class_<SPPInfo::SDuality>("duality")
-			.def_readwrite("h",					&SPPInfo::SDuality::h)
-			.def_readwrite("v",					&SPPInfo::SDuality::v)
-			.def(								constructor<>()),
-
-		class_<SPPInfo::SNoise::SColor>("color")
-			.def_readwrite("r",					&SPPInfo::SNoise::SColor::r)
-			.def_readwrite("g",					&SPPInfo::SNoise::SColor::g)
-			.def_readwrite("b",					&SPPInfo::SNoise::SColor::b)
-			.def_readwrite("a",					&SPPInfo::SNoise::SColor::a)
-			.def(								constructor<>()),
-
-		class_<SPPInfo::SNoise>("noise")
-			.def_readwrite("intensity",			&SPPInfo::SNoise::intensity)
-			.def_readwrite("grain",				&SPPInfo::SNoise::grain)
-			.def_readwrite("color",				&SPPInfo::SNoise::color)
-			.def(								constructor<>()),
-
-		class_<SPPInfo>("effector_params")
-			.def_readwrite("blur",				&SPPInfo::blur)
-			.def_readwrite("gray",				&SPPInfo::gray)
-			.def_readwrite("dual",				&SPPInfo::duality)
-			.def_readwrite("noise",				&SPPInfo::noise)
-			.def(								constructor<>()),
-
-		class_<CLuaEffector, CLuaEffectorWrapper>("effector")
-			.def_readwrite("info",				&CLuaEffector::m_tInfo)
-			.def(								constructor<int,float>())
-			.def("start",						&CLuaEffector::Add)
-			.def("finish",						&CLuaEffector::Remove)
-			.def("process",						&CLuaEffectorWrapper::Process_static)
-	];
-}
-
-void Script::vfExportArtifactMerger(CLuaVirtualMachine *tpLuaVirtualMachine)
-{
-	module(tpLuaVirtualMachine)
-	[
-		class_<CArtifactMerger>("artifact_merger")
-		.def("get_mercury_ball_num",	&CArtifactMerger::GetMercuryBallNum)
-		.def("get_gravi_num",			&CArtifactMerger::GetGraviArtifactNum)
-		.def("get_black_drops_num",		&CArtifactMerger::GetBlackDropsNum)
-		.def("get_needles_num",			&CArtifactMerger::GetNeedlesNum)
-
-		.def("destroy_mercury_ball",	&CArtifactMerger::DestroyMercuryBall)
-		.def("destroy_gravi",			&CArtifactMerger::DestroyGraviArtifact)
-		.def("destroy_black_drops",		&CArtifactMerger::DestroyBlackDrops)
-		.def("destroy_needles",			&CArtifactMerger::DestroyNeedles)
-
-		.def("spawn_mercury_ball",	&CArtifactMerger::SpawnMercuryBall)
-		.def("spawn_gravi",			&CArtifactMerger::SpawnGraviArtifact)
-		.def("spawn_black_drops",	&CArtifactMerger::SpawnBlackDrops)
-		.def("spawn_needles",		&CArtifactMerger::SpawnNeedles)
-	];
-}

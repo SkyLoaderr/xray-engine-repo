@@ -89,8 +89,9 @@ public:
 	// waypoints
 	typedef struct tagSWayPoint{
 		Fvector	tWayPoint;
-		u32	dwFlags;
-		u32	dwNodeID;
+		u32		dwFlags;
+		u32		dwNodeID;
+		ref_str	name;
 	} SWayPoint;
 	
 	typedef struct tagSWayLink{
@@ -98,14 +99,10 @@ public:
 		u16	wTo;
 	} SWayLink;
 
-	typedef xr_vector<Fvector>			SPointVector;
-
 	typedef struct tagSPath {
-//		u32								dwType;
 		xr_vector<SWayPoint>			tpaWayPoints;
 		xr_vector<SWayLink>				tpaWayLinks;
 		xr_vector<u32>					tpaWayPointIndexes;
-		SPointVector					tpaVectors[3];
 	} SPath;
 
 	enum EPathTypes {

@@ -7,83 +7,13 @@
 
 void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 {
-//	xr_vector<BYTE>			tpaFrom;
-//	xr_vector<BYTE>			tpaTo;
 	xr_vector<Fvector>		tpaPoints;
 	xr_vector<Fvector>		tpaDeviations;
 	xr_vector<u32>			tpaNodes;
 
 	int i;
-	int /**iStartPoint = -1, iFinishPoint = -1, /**/iCurPoint = 0, iPrevPoint = -1;
-	u32 N = (u32)tpPatrolPath.tpaWayPoints.size();//, dwOneZero = 0, dwZeroOne = 0, dwOneCount = 0, dwTwoCount = 0;
-
-//	tpaFrom.resize		(N);
-//	tpaTo.resize		(N);
-	
-//	tpPatrolPath.dwType = PATH_LOOPED | PATH_BIDIRECTIONAL;
-//	
-//	// computing from-to arrays
-//	for ( i=0; i<(int)N; ++i)
-//		tpaTo[i] = tpaFrom[i] = 0;
-//	
-//	for ( i=0; i<(int)tpPatrolPath.tpaWayLinks.size(); ++i) {
-//		++(tpaTo[tpPatrolPath.tpaWayLinks[i].wTo]);
-//		++(tpaFrom[tpPatrolPath.tpaWayLinks[i].wFrom]);
-//	}
-//	
-//	// counting types of points
-//	for ( i=0; i<(int)N; ++i) {
-//		if (tpaTo[i] > 2)
-//			Debug.fatal("Patrol path %s : invalid count of incoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaTo[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
-//		if (tpaFrom[i] > 2)
-//			Debug.fatal("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
-//		if ((tpaTo[i] == 1) && (tpaFrom[i] == 0)) {
-//			if (dwOneZero)
-//				Debug.fatal("Patrol path %s : invalid count of start points [%.2f,%.2f,%.2f]",sName,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
-//			++dwOneZero;
-//			iFinishPoint = i;
-//		}
-//		
-//		if ((tpaTo[i] == 0) && (tpaFrom[i] == 1)) {
-//			if (dwZeroOne)
-//				Debug.fatal("Patrol path %s : invalid count of finish points [%.2f,%.2f,%.2f]",sName,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
-//			++dwZeroOne;
-//			iStartPoint = i;
-//		}
-//		
-//		if ((tpaTo[i] == 1) && (tpaFrom[i] == 1)) {
-//			if ((!dwOneCount) && (!dwZeroOne) && (!dwOneZero))
-//				iStartPoint = i;
-//			else
-//				if ((dwOneCount == 1) && (!dwZeroOne) && (!dwOneZero))
-//					iFinishPoint = i;
-//			++dwOneCount;
-//		}
-//		
-//		if ((tpaTo[i] == 2) && (tpaFrom[i] == 2))
-//			++dwTwoCount;
-//	}
-//	
-//	// checking for supported path types
-//	if (!(dwOneZero + dwZeroOne)) {
-//		if ((dwOneCount == 2) && (dwTwoCount == N - 2)) {
-//			iCurPoint = iStartPoint;
-//			tpPatrolPath.dwType ^= PATH_LOOPED;
-//		}
-//		else
-//			if (dwOneCount == N)
-//				tpPatrolPath.dwType ^= PATH_BIDIRECTIONAL;
-//			else
-//				if (dwTwoCount != N)
-//					Debug.fatal("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
-//	}
-//	else
-//		if ((N - 2 != dwOneCount) || (1 != dwOneZero) || (1 != dwZeroOne))
-//			Debug.fatal("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f] in non-looped one-directional path",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
-//		else {
-//			iCurPoint = iStartPoint;
-//			tpPatrolPath.dwType ^= PATH_LOOPED ^ PATH_BIDIRECTIONAL;
-//		}
+	int iCurPoint = 0, iPrevPoint = -1;
+	u32 N = (u32)tpPatrolPath.tpaWayPoints.size();
 
 	// building point sequencies and path
 	tpPatrolPath.tpaWayPointIndexes.resize(N);
@@ -96,83 +26,6 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 				break;
 			}
 	}
-
-//	// creating realistic path
-//	tpaDeviations.resize(N);
-//	tpaPoints.resize(N);
-//	for (int i=0; i<(int)N; ++i)
-//		tpaPoints[i] = tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayPointIndexes[i]].tWayPoint;
-//
-//	ai().vfCreateFastRealisticPath(tpaPoints,tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayPointIndexes[0]].dwNodeID,tpaDeviations,tpPatrolPath.tpaVectors[0],tpaNodes,tpPatrolPath.dwType & PATH_LOOPED);
-//
-//	// creating variations
-//	if (!tpPatrolPath.tpaVectors[0].size())
-//		Debug.fatal("Patrol path %s was not built - there are not enough nodes to build all the straight lines",sName);
-//	tpPatrolPath.tpaVectors[1].resize(tpPatrolPath.tpaVectors[0].size());
-//	tpPatrolPath.tpaVectors[2].resize(tpPatrolPath.tpaVectors[0].size());
-//			
-//	float fHalfSubnodeSize = ai().level_graph().header().cell_size()*.5f;
-//
-//	xr_vector<Fvector> &tpaVector0 = tpPatrolPath.tpaVectors[0];
-//	u32 M = (u32)tpaVector0.size();
-//
-//	for (int I=1; I<3; ++I) {
-//		xr_vector<Fvector> &tpaVector1 = ((I == 1) ? tpPatrolPath.tpaVectors[1] : tpPatrolPath.tpaVectors[2]);
-//		for (int i=0, j=0, k=0; i<(int)M; ++i, ++j) {
-//			
-//			tpaVector1[j] = tpaVector0[i];
-//
-//			Fvector tTemp;
-//			
-//			if (tpPatrolPath.dwType & PATH_LOOPED) {
-//				tTemp.sub(tpaVector0[i < (int)M - 1 ? i + 1 : 0], tpaVector0[i]);
-//				tTemp.y = 0.f;
-//				if (tTemp.magnitude() < EPS_L) {
-//					tTemp.sub(tpaVector0[i < (int)M - 2 ? i + 2 : 1], tpaVector0[i]);
-//					tTemp.y = 0.f;
-//				}
-//			}
-//			else {
-//				if (i < (int)M - 1)
-//					tTemp.sub(tpaVector0[i < (int)M - 1 ? i + 1 : 0], tpaVector0[i]);
-//				else
-//					tTemp.sub(tpaVector0[i], tpaVector0[i - 1]);
-//				tTemp.y = 0.f;
-//			}
-//			tTemp.normalize();
-//
-//			if (I == 1)
-//				tTemp.set(tTemp.z,0,-tTemp.x);
-//			else
-//				tTemp.set(-tTemp.z,0,tTemp.x);
-//			
-//			tpaVector1[j].add(tTemp);
-//
-//			for (int m=k; (k < (int)tpaNodes.size()) && (!ai().level_graph().inside(ai().level_graph().vertex(tpaNodes[k]),tpaVector0[i])); ++k) ;
-//
-//			if (k >= (int)tpaNodes.size()) {
-//				k = m;
-//				tpaVector1.erase(tpaVector1.begin() + j);
-//				--j;
-//				continue;
-//			}
-//
-//			PathManagers::CVertexEvaluator<aiSearchRange | aiInsideNode> tSearch;
-//			tSearch.m_fSearchRange = 4*fHalfSubnodeSize;
-//			tSearch.m_dwStartNode = tpaNodes[k];
-//			tSearch.m_tStartPosition = tpaVector0[i];
-//			tSearch.vfShallowGraphSearch(ai().q_mark_bit);
-////			ai().q_Range_Bit_X(tpaNodes[k],tpaVector0[i],4*fHalfSubnodeSize,&tNodePosition,dwBestNode,fBestCost);
-//			tpaVector1[j].y = ai().level_graph().vertex_plane_y(*(ai().level_graph().vertex(tSearch.m_dwBestNode)),tpaVector1[j].x,tpaVector1[j].z);
-//		}
-//		if (tpaVector1[0].distance_to(tpaVector1[j - 1]) > EPS_L) {
-//			tpaVector1.push_back(tpaVector1[0]);
-//			++j;
-//		}
-//		tpaVector1.resize(j);
-//	}
-//	if ((tpPatrolPath.dwType & PATH_LOOPED) && (tpaVector0[0].distance_to(tpaVector0[tpaVector0.size() - 1]) > EPS_L))
-//		tpaVector0.push_back(tpaVector0[0]);
 }
 
 BOOL CLevel::Load_GameSpecific_Before()
@@ -191,23 +44,24 @@ BOOL CLevel::Load_GameSpecific_Before()
 		if (0!=(O = F->open_chunk	(WAY_PATROLPATH_CHUNK))) { 
 			int chunk = 0;
 			for (IReader *OBJ = O->open_chunk(chunk++); OBJ; OBJ = O->open_chunk(chunk++)) {
-				R_ASSERT(OBJ->find_chunk(WAYOBJECT_CHUNK_VERSION));
-				u32 dw = OBJ->r_u16();
-				R_ASSERT(dw == WAYOBJECT_VERSION);
+				R_ASSERT			(OBJ->find_chunk(WAYOBJECT_CHUNK_VERSION));
+				u32					dw = OBJ->r_u16();
+				R_ASSERT			(dw == WAYOBJECT_VERSION);
 
 				SPath tPatrolPath;
 
-				LPSTR sName = (LPSTR)xr_malloc(64*sizeof(char));
-				R_ASSERT(OBJ->find_chunk(WAYOBJECT_CHUNK_NAME));
-				OBJ->r_stringZ(sName);
+				LPSTR				sName = (LPSTR)xr_malloc(64*sizeof(char));
+				R_ASSERT			(OBJ->find_chunk(WAYOBJECT_CHUNK_NAME));
+				OBJ->r_stringZ		(sName);
 
-				R_ASSERT(OBJ->find_chunk(WAYOBJECT_CHUNK_POINTS));
-				u32 dwCount = OBJ->r_u16();
+				R_ASSERT			(OBJ->find_chunk(WAYOBJECT_CHUNK_POINTS));
+				u32					dwCount = OBJ->r_u16();
 				tPatrolPath.tpaWayPoints.resize(dwCount);
 				for (int i=0; i<(int)dwCount; ++i){
-					OBJ->r_fvector3(tPatrolPath.tpaWayPoints[i].tWayPoint);
+					OBJ->r_fvector3	(tPatrolPath.tpaWayPoints[i].tWayPoint);
 					tPatrolPath.tpaWayPoints[i].dwFlags = OBJ->r_u32();
 					tPatrolPath.tpaWayPoints[i].dwNodeID = ai().level_graph().vertex(tPatrolPath.tpaWayPoints[i].tWayPoint);
+					tPatrolPath.tpaWayPoints[i].name= "";
 				}
 
 				R_ASSERT(OBJ->find_chunk(WAYOBJECT_CHUNK_LINKS));
