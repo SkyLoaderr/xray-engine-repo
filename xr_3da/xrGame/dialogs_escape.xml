@@ -25,6 +25,8 @@
         </phrase_list>
     </dialog>
     <dialog id="escape_trader_talk_level" priority="2">
+		<dont_has_info>esc_trader_can_leave</dont_has_info>
+		<dont_has_info>tutorial_artefact_start</dont_has_info>
         <phrase_list>
             <phrase id="2">
                 <text>escape_trader_talk_level_2</text>
@@ -388,6 +390,8 @@
         </phrase_list>
     </dialog>
     <dialog id="escape_trader_jobs" priority="5">
+        <dont_has_info>esc_trader_can_leave</dont_has_info>
+		<dont_has_info>tutorial_artefact_start</dont_has_info>
         <phrase_list>
             <phrase id="6">
                 <text>escape_trader_jobs_6</text>
@@ -493,7 +497,9 @@
         </phrase_list>
     </dialog>
     <dialog id="escape_trader_talk_info">
-        <phrase_list>
+        <dont_has_info>esc_trader_can_leave</dont_has_info>
+		<dont_has_info>tutorial_artefact_start</dont_has_info>
+		<phrase_list>
             <phrase id="1">
                 <text>escape_trader_talk_info_1</text>
                 <next>11</next>
