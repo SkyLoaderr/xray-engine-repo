@@ -146,7 +146,7 @@ void CUIGameTDM::OnTeamSelect(int Team)
 		//P.w_u32			(0);
 		l_pPlayer->u_EventSend		(P);
 		//-----------------------------------------------------------------
-		m_bSkinSelected = FALSE;
+		m_bSkinSelected = TRUE;
 	};
 	//-----------------------------------------------------------------
 	m_bTeamSelected = TRUE;	
