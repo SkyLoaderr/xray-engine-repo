@@ -372,15 +372,12 @@ LRESULT CMainFrame::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 
 	case DMSG_ACTIVATE_IDE:
 			
-//			SendMessage(SW_SHOW,0,0);
-//			ShowWindow(SW_SHOWNORMAL);
-			if(!IsWindowEnabled())
-				PostMessage(WM_ACTIVATE,WA_ACTIVE,NULL);
-//			BringWindowToTop();
 			m_needAnswer = TRUE;
 			OnUpdateFrameTitle(TRUE);
 			SetMode(modeDebugBreak);
 			m_wndWatches.Redraw();
+//			BringWindowToTop();
+			::SetForegroundWindow(g_mainFrame->m_hWnd);
 		break;
 
 	case DMSG_WRITE_DEBUG:
@@ -936,10 +933,13 @@ void CMainFrame::OnClearOutput()
 
 void ActivateXRAY()
 {
+
 	HWND h = FindWindow("_XRAY_","XRAY Engine");
 	if(h){
+//		BringWindowToTop(h);
 //		PostMessage(h,WM_MOUSEACTIVATE,WA_ACTIVE,NULL);
 //		PostMessage(h,WM_ACTIVATE,WA_ACTIVE,NULL);
+		::SetForegroundWindow(h);
 	}
 }
 /*
