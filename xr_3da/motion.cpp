@@ -9,7 +9,7 @@
 #define EOBJ_OMOTION_VERSION   	0x0003
 #define EOBJ_SMOTION_VERSION   	0x0003
 
-#ifdef LWO_EXPORTS
+#ifdef _LWO_EXPORTS
 	extern char* ReplaceSpace(char* s);
 #endif
 //------------------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ CCustomMotion::~CCustomMotion(){
 }
 
 void CCustomMotion::Save(CFS_Base& F){
-#ifdef LWO_EXPORTS
+#ifdef _LWO_EXPORTS
 	ReplaceSpace(name);			strlwr(name);
 #endif
 	F.WstringZ	(name);
@@ -191,7 +191,7 @@ bool CSMotion::LoadMotion(const char* buf){
 
 void CSMotion::Save(CFS_Base& F){
 	CCustomMotion::Save(F);
-#ifdef LWO_EXPORTS
+#ifdef _LWO_EXPORTS
 	ReplaceSpace(cStartBone);	strlwr(cStartBone);
 	ReplaceSpace(cBonePart);	strlwr(cBonePart);
 #endif
@@ -206,7 +206,7 @@ void CSMotion::Save(CFS_Base& F){
     F.Wfloat	(fPower);
 	F.Wdword	(bone_mots.size()); 
 	for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
-	#ifdef LWO_EXPORTS
+	#ifdef _LWO_EXPORTS
 		ReplaceSpace(bm_it->name);
 	#endif
 		F.Wdword(bm_it->flag);

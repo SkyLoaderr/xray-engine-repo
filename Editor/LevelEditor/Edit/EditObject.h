@@ -258,6 +258,11 @@ public:
 	CSurface*		CreateSurface			(Mtl* M, DWORD m_id);
 	LPCSTR			GenerateSurfaceName		(const char* base_name);
 #endif
+	
+#ifdef _LWO_EXPORT
+		// import routines
+	bool			Import_LWO				(st_ObjectDB *I);
+#endif
 };
 //----------------------------------------------------
 #define EOBJ_CURRENT_VERSION		0x0010
