@@ -3,6 +3,7 @@
 		. TODO: collision database simplification
 
 	/ EFFECTS
+		. TODO: Sound-rolloff
 		. TODO: Blurred output
 		. TODO: Rain with collisions
 		. TODO: Sound-wave-tracing
