@@ -10,6 +10,7 @@
 
 class CMotionDef;
 class CBlend;
+class CSkeletonAnimated;
 
 class CAI_Crow : public CEntity
 {
