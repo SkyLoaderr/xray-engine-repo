@@ -66,12 +66,14 @@ void					CRender::create					()
 
 	PSLibrary.OnCreate			();
 	PSLibrary.OnDeviceCreate	();
+	HWOCC.occq_create			(occq_size);
 
 	rmNormal					();
 	marker						= 0;
 } 
 void					CRender::destroy				()
 {
+	HWOCC.occq_destroy			();
 	PSLibrary.OnDeviceDestroy	();
 	PSLibrary.OnDestroy			();
 

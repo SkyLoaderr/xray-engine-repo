@@ -1,6 +1,7 @@
 #pragma once
 
 #include "r__dsgraph_structure.h"
+#include "r__occlusion.h"
 
 #include "PSLibrary.h"
 
@@ -43,6 +44,7 @@ public:
 	xrXRC														Sectors_xrc;
 	CDB::MODEL*													rmPortals;
 	CHOM														HOM;
+	R_occlusion													HWOCC;
 
 	// Global vertex-buffer container
 	xr_vector<ref_shader>										Shaders;
@@ -84,6 +86,12 @@ public:
 	IRender_Sector*					getSectorActive				();
 	IRender_Visual*					model_CreatePE				(LPCSTR name);
 	IRender_Sector*					detectSector				(Fvector& P, Fvector& D);
+
+	// HW-occlusion culling
+	IC void							occq_begin					(u32&	ID		)	{ HWOCC.occq_begin	(ID);		}
+	IC void							occq_end					(u32&	ID		)	{ HWOCC.occq_end	(ID);		}
+	IC u32							occq_get					(u32&	ID		)	{ return HWOCC.occq_get(ID);	}
+
 public:
 	// Loading / Unloading
 	virtual void					create						();

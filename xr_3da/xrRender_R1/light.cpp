@@ -123,6 +123,7 @@ const	u32	delay_small_min			= 1;
 const	u32	delay_small_max			= 3;
 const	u32	delay_large_min			= 10;
 const	u32	delay_large_max			= 20;
+const	u32	cullfragments			= 4;
 
 void	light::vis_prepare			()
 {
@@ -141,6 +142,8 @@ void	light::vis_prepare			()
 	}
 
 	// testing
+	vis.pending							= true;
+	xform_calc							();
 	RImplementation.occq_begin			(vis.query_id);
 	RImplementation.Target.draw_volume	(this);
 	RImplementation.occq_end			(vis.query_id);
@@ -153,6 +156,18 @@ void	light::vis_update			()
 	//		. shedule for 'large' interval
 	//	. test-result:	invisible:
 	//		. shedule for 'next-frame' interval
+
+	if (!vis.pending)	return;
+
+	u32	frame			= Device.dwFrame;
+	u32 fragments		= RImplementation.occq_get	(vis.query_id);
+	vis.visible			= (fragments > cullfragments);
+	vis.pending			= false;
+	if (vis.visible)	{
+		vis.frame2test	=	frame	+ ::Random.randI(delay_large_min,delay_large_max);
+	} else {
+		vis.frame2test	=	frame	+ 1;
+	}
 }
 
 // Xforms
@@ -173,21 +188,21 @@ void	light::xform_calc			()
 	case IRender_Light::SPOT	:
 		{
 			// scale to account range and angle
-			float		s			= 2.f*L->range*tanf(L->cone/2.f);	
-			Fmatrix		mScale;		mScale.scale(s,s,L->range);		// make range and radius
+			float		s			= 2.f*range*tanf(cone/2.f);	
+			Fmatrix		mScale;		mScale.scale(s,s,range);	// make range and radius
 
 			// build final rotation / translation
 			Fvector					L_dir,L_up,L_right;
-			L_dir.set				(L->direction);			L_dir.normalize		();
+			L_dir.set				(direction);			L_dir.normalize		();
 			L_up.set				(0,1,0);				if (_abs(L_up.dotproduct(L_dir))>.99f)	L_up.set(0,0,1);
 			L_right.crossproduct	(L_up,L_dir);			L_right.normalize	();
 			L_up.crossproduct		(L_dir,L_right);		L_up.normalize		();
 
 			Fmatrix		mR;
-			mR.i					= L_right;		mR._14	= 0;
-			mR.j					= L_up;			mR._24	= 0;
-			mR.k					= L_dir;		mR._34	= 0;
-			mR.c					= L->position;	mR._44	= 1;
+			mR.i					= L_right;	mR._14	= 0;
+			mR.j					= L_up;		mR._24	= 0;
+			mR.k					= L_dir;	mR._34	= 0;
+			mR.c					= position;	mR._44	= 1;
 
 			// final xform
 			m_xform.mul_43			(mR,mScale);

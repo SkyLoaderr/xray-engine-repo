@@ -315,6 +315,12 @@
 				RelativePath=".\r__dsgraph_types.h">
 			</File>
 			<File
+				RelativePath=".\r__occlusion.cpp">
+			</File>
+			<File
+				RelativePath=".\r__occlusion.h">
+			</File>
+			<File
 				RelativePath=".\Texture.cpp">
 			</File>
 			<Filter
