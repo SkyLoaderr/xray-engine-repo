@@ -49,7 +49,7 @@ public:
 	CVertexStream*					vsPatches;
 
 	// Sector detection
-	RAPID::Model*					rmPortals;
+	CDB::MODEL*						rmPortals;
 	CSector*						pLastSector;
 	Fvector							vLastCameraPos;
 public:
