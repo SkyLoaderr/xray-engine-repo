@@ -120,8 +120,9 @@ HRESULT CInput::CreateInputDevice( LPDIRECTINPUTDEVICE7* device, GUID guidDevice
 
 void CInput::SetAllAcquire( BOOL bAcquire )
 {
-	if (pMouse)		bAcquire ? pMouse->Acquire() : pMouse->Unacquire();
-	if (pKeyboard)	bAcquire ? pKeyboard->Acquire()	: pKeyboard->Unacquire();
+	HRESULT hr;
+	if (pMouse)		hr= (bAcquire ? pMouse->Acquire() : pMouse->Unacquire());
+	if (pKeyboard)	hr= (bAcquire ? pKeyboard->Acquire() : pKeyboard->Unacquire());
 }
 
 void CInput::SetMouseAcquire( BOOL bAcquire )
