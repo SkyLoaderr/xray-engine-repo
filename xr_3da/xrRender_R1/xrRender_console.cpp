@@ -85,5 +85,7 @@ void		xrRender_initconsole	()
 	// R2-specific
 	CMD4(CCC_Float,		"r2_ls_dynamic_range",	&ps_r2_ls_dynamic_range,	.5f,	8.f		);
 	CMD4(CCC_Float,		"r2_ls_bloom_kernel",	&ps_r2_ls_bloom_kernel,		1.f,	7.f		);
+	CMD4(CCC_Float,		"r2_ls_dsm_kernel",		&ps_r2_ls_dsm_kernel,		.1f,	3.f		);
+	CMD4(CCC_Float,		"r2_ls_psm_kernel",		&ps_r2_ls_psm_kernel,		.1f,	3.f		);
 }
 #endif
