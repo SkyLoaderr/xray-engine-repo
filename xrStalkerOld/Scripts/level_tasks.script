@@ -553,6 +553,13 @@ function process_map_spot(info_id)
 	elseif info_id == "bar_resque_research_gain" then
 		remove_location(503, "bar_ecolog_crush_location")
 		add_location(500, "bar_barman_location")
+		if db.actor:dont_has_info("bar_freedom_attack_ecolog") and
+		   (db.actor:dont_has_info("bar_get_research_start") or
+			db.actor:has_info("bar_get_research_fail"))			
+		then
+			news_manager.send_tip(db.actor, "bar_freedom_attack_spy", nil, "freedom")
+			db.actor:give_info_portion("bar_freedom_attack_ecolog")
+		end
 		
 	elseif info_id == "bar_resque_research_done" then
 		remove_location(500, "bar_barman_location")
@@ -574,7 +581,10 @@ function process_map_spot(info_id)
 	elseif info_id == "bar_freedom_attack_ecolog" then
 		news_manager.send_tip(db.actor, "bar_freedom_attack", nil, "freedom")
 		news_manager.send_tip(db.actor, "bar_ecolog_attack", 3, "ecolog")
-		db.actor:give_info_portion("bar_resque_research_corruped")
+		if db.actor:object("bar_ecolog_flash") == nil then
+			db.actor:give_info_portion("bar_resque_research_corruped")
+		end
+		
 			
 	elseif info_id == "bar_get_research_fail" then
 		remove_location(509, "bar_freedom_volkodav_location")
