@@ -1,8 +1,8 @@
 module("ui_save_dialog")
 module("ui_load_dialog")
-
+--[[
 function dump_time(t)
-/*	printf(t:dateToString(game.CTime.DateToDay))
+	printf(t:dateToString(game.CTime.DateToDay))
 	printf(t:dateToString(game.CTime.DateToMonth))
 	printf(t:dateToString(game.CTime.DateToYear))
 	
@@ -11,10 +11,10 @@ function dump_time(t)
 	printf(t:timeToString(game.CTime.TimeToSeconds))
 	
 	printf(t:timeToString(game.CTime.TimeToMilisecs))
-	*/
+	
 printf("")
 end
-
+]]
 
 function main()
 for i in 1,100000	do
