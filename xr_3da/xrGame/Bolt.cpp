@@ -40,7 +40,7 @@ void CBolt::Throw()
 {
 	CBolt						*l_pBolt = dynamic_cast<CBolt*>(m_fake_missile);
 	VERIFY						(l_pBolt);
-	l_pBolt->m_destroyTime		= 100000;
+	l_pBolt->m_dwDestroyTime		= 100000;
 	inherited::Throw			();
 	spawn_fake_missile			();
 }
@@ -48,7 +48,7 @@ void CBolt::Throw()
 bool CBolt::Useful() 
 {
 	// ≈сли IItem еще не полностью использованый, вернуть true
-	return m_destroyTime == 0xffffffff;
+	return m_dwDestroyTime == 0xffffffff;
 }
 
 bool CBolt::Action(s32 cmd, u32 flags) 

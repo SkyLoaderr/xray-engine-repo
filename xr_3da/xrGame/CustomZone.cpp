@@ -33,6 +33,7 @@ CCustomZone::~CCustomZone(void)
 	m_idle_sound.destroy();
 	m_blowout_sound.destroy();
 	m_hit_sound.destroy();
+	m_entrance_sound.destroy();
 }
 
 void CCustomZone::Load(LPCSTR section) 
@@ -71,6 +72,13 @@ void CCustomZone::Load(LPCSTR section)
 		sound_str = pSettings->r_string(section,"hit_sound");
 		m_hit_sound.create(TRUE, sound_str, st_SourceType);
 	}
+
+	if(pSettings->line_exist(section,"entrance_sound")) 
+	{
+		sound_str = pSettings->r_string(section,"entrance_sound");
+		m_entrance_sound.create(TRUE, sound_str, st_SourceType);
+	}
+
 
 /*	string512		m_effectsSTR;
 	strcpy			(m_effectsSTR,pSettings->r_string(section,"effects"));
@@ -114,10 +122,17 @@ void CCustomZone::Load(LPCSTR section)
 	if(pSettings->line_exist(section,"blowout_particles")) 
 		m_sBlowoutParticles = pSettings->r_string(section,"blowout_particles");
 
+
+	if(pSettings->line_exist(section,"entrance_small_particles")) 
+		m_sEntranceParticlesSmall = pSettings->r_string(section,"entrance_small_particles");
+	if(pSettings->line_exist(section,"entrance_big_particles")) 
+		m_sEntranceParticlesBig = pSettings->r_string(section,"entrance_big_particles");
+
 	if(pSettings->line_exist(section,"hit_small_particles")) 
 		m_sHitParticlesSmall = pSettings->r_string(section,"hit_small_particles");
 	if(pSettings->line_exist(section,"hit_big_particles")) 
 		m_sHitParticlesBig = pSettings->r_string(section,"hit_big_particles");
+
 	if(pSettings->line_exist(section,"idle_small_particles")) 
 		m_sIdleObjectParticlesBig = pSettings->r_string(section,"idle_big_particles");
 	if(pSettings->line_exist(section,"idle_big_particles")) 
@@ -157,17 +172,6 @@ BOOL CCustomZone::net_Spawn(LPVOID DC)
 		setEnabled(true);
 
 		PlayIdleParticles();	
-		/*CParticlesObject* pStaticPG; s32 l_c = (int)m_effects.size();
-		Fmatrix l_m; l_m.set(renderable.xform);
-		Fvector zero_vel = {0.f,0.f,0.f};
-		for(s32 i = 0; i < l_c; ++i) {
-			Fvector c; c.set(l_m.c.x,l_m.c.y+EPS,l_m.c.z);
-			IRender_Sector *l_pRS = ::Render->detectSector(c);
-			pStaticPG = xr_new<CParticlesObject>(*m_effects[i],l_pRS,false);
-			pStaticPG->UpdateParent(l_m,zero_vel);
-			pStaticPG->Play();
-			m_effectsPSs.push_back(pStaticPG);
-		}*/
 	}
 
 	return bOk;
@@ -228,6 +232,7 @@ void CCustomZone::feel_touch_new(CObject* O)
 					m_pLocalActor = dynamic_cast<CActor*>(O);
 
 	CGameObject* pGameObject =dynamic_cast<CGameObject*>(O);
+	PlayEntranceParticles(pGameObject);
 	PlayObjectIdleParticles(pGameObject);
 }
 
@@ -339,9 +344,7 @@ void CCustomZone::Affect(CObject* O)
 				::Random.randF(-.5f,.5f)); 
 	hit_dir.normalize();
 	
-	//Fvector l_dir; l_dir.sub(l_pO->Position(), P); l_dir.normalize();
-	//l_pO->ph_Movement.ApplyImpulse(l_dir, 50.f*Power(l_pO->Position().distance_to(P)));
-	
+
 	Fvector position_in_bone_space;
 	
 	float power = Power(pGameObject->Position().distance_to(P));
@@ -405,7 +408,7 @@ void CCustomZone::PlayBlowoutParticles()
 
 void CCustomZone::PlayHitParticles(CGameObject* pObject)
 {
-	Sound->play_at_pos	(m_blowout_sound ,this, pObject->Position());
+	m_hit_sound.play_at_pos(this, pObject->Position());
 
 	ref_str particle_str = NULL;
 
@@ -421,11 +424,55 @@ void CCustomZone::PlayHitParticles(CGameObject* pObject)
 		particle_str = m_sHitParticlesBig;
 	}
 
-	pObject->StartParticles(*particle_str, 0, 
-						  Fvector().set(0,0,0), 
-						  Fvector().set(0,1,0), (u16)ID(), true);
+	//выбрать случайную косточку на объекте
+	BONE_INFO_VECTOR_IT it = pObject->GetParticleBones().begin() +
+							::Random.randI(0,pObject->GetParticleBones().size());
+	pObject->StartParticles(*particle_str, (*it).index, (*it).offset,
+						     Fvector().set(0,1,0), (u16)ID(), true);
 }
 
+void CCustomZone::PlayEntranceParticles(CGameObject* pObject)
+{
+	m_entrance_sound.play_at_pos(this, pObject->Position());
+
+	ref_str particle_str = NULL;
+
+	//разные партиклы для объектов разного размера
+	if(pObject->Radius()<SMALL_OBJECT_RADIUS)
+	{
+		if(!m_sEntranceParticlesSmall) return;
+		particle_str = m_sEntranceParticlesSmall;
+	}
+	else
+	{
+		if(!m_sEntranceParticlesBig) return;
+		particle_str = m_sEntranceParticlesBig;
+	}
+
+	//выбрать случайную косточку на объекте
+	BONE_INFO_VECTOR_IT it = pObject->GetParticleBones().begin() +
+							::Random.randI(0,pObject->GetParticleBones().size());
+	pObject->StartParticles(*particle_str, (*it).index, (*it).offset,
+						     Fvector().set(0,1,0), (u16)ID(), true);
+}
+
+
+void CCustomZone::PlayBulletParticles(Fvector& pos)
+{
+	m_entrance_sound.play_at_pos(this, pos);
+
+	if(!m_sEntranceParticlesSmall) return;
+	
+	CParticlesObject* pParticles;
+	pParticles = xr_new<CParticlesObject>(*m_sEntranceParticlesSmall,Sector());
+	
+	Fmatrix M;
+	M = XFORM();
+	M.c.set(pos);
+	
+	pParticles->UpdateParent(M,zero_vel);
+	pParticles->Play();
+}
 
 void CCustomZone::PlayObjectIdleParticles(CGameObject* pObject)
 {
@@ -458,4 +505,20 @@ void CCustomZone::StopObjectIdleParticles(CGameObject* pObject)
 	if(m_IdleParticlesMap.end() == it) return;
 	//остановить партиклы
 	pObject->StopParticles(it->second);
+}
+
+
+void  CCustomZone::Hit(float P, Fvector &dir,	
+					  CObject* who, s16 element,
+					  Fvector position_in_object_space, 
+					  float impulse, 
+					  ALife::EHitType hit_type)
+{
+	Fmatrix M;
+	M.identity();
+	M.translate_over(position_in_object_space);
+	M.mulA(XFORM());
+	PlayBulletParticles(M.c);
+
+	inherited::Hit(P, dir, who, element, position_in_object_space, impulse, hit_type);
 }

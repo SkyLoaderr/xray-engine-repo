@@ -14,7 +14,7 @@
 // Съедобная вещь
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-class CEatableItem : public CInventoryItem 
+class CEatableItem : virtual public CInventoryItem 
 {
 private:
 	typedef CInventoryItem	inherited;

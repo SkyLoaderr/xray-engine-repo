@@ -61,11 +61,18 @@ protected:
 	u32 m_dwPeriod;
 	BOOL m_bZoneReady;
 
+	////////////////////////////////
+	// имена партиклов зоны
+
 	//обычное состояние зоны
 	ref_str m_sIdleParticles;
 	//выброс зоны
 	ref_str m_sBlowoutParticles;
 
+
+	//появление большого и мальнекого объекта в зоне
+	ref_str m_sEntranceParticlesSmall;
+	ref_str m_sEntranceParticlesBig;
 	//поражение большого и мальнекого объекта в зоне
 	ref_str m_sHitParticlesSmall;
 	ref_str m_sHitParticlesBig;
@@ -76,6 +83,7 @@ protected:
 	ref_sound m_idle_sound;
 	ref_sound m_blowout_sound;
 	ref_sound m_hit_sound;
+	ref_sound m_entrance_sound;
 
 	//объект партиклов обычного состояния зоны
 	CParticlesObject* m_pIdleParticles;
@@ -84,12 +92,22 @@ protected:
 	DEFINE_MAP (CObject*, PARTICLES_PTR_VECTOR, ATTACHED_PARTICLES_MAP, ATTACHED_PARTICLES_MAP_IT);
 	ATTACHED_PARTICLES_MAP m_IdleParticlesMap;
 
+	virtual	void Hit (float P, Fvector &dir,	
+					  CObject* who, s16 element,
+					  Fvector position_in_object_space, 
+					  float impulse, 
+					  ALife::EHitType hit_type = eHitTypeWound);
+
+
 	//для визуализации зоны
 	virtual void PlayIdleParticles();
 	virtual void StopIdleParticles();
 
 	virtual void PlayBlowoutParticles();
 	
+	virtual void PlayEntranceParticles(CGameObject* pObject);
+	virtual void PlayBulletParticles(Fvector& pos );
+
 	virtual void PlayHitParticles(CGameObject* pObject);
 
 	virtual void PlayObjectIdleParticles(CGameObject* pObject);

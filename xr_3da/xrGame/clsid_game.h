@@ -151,7 +151,8 @@
 #define CLSID_IITEM_BOLT			MK_CLSID('I','I','_','B','O','L','T',' ')
 
 #define CLSID_IITEM_MEDKIT			MK_CLSID('I','I','_','M','E','D','K','I')
-#define CLSID_IITEM_BREAD			MK_CLSID('I','I','_','B','R','E','A','D')
+#define CLSID_IITEM_FOOD			MK_CLSID('I','I','_','F','O','O','D',' ')
+#define CLSID_IITEM_BOTTLE			MK_CLSID('I','I','_','B','O','T','T','L')
 #define CLSID_IITEM_ANTIRAD			MK_CLSID('I','I','_','A','N','T','I','R')
 
 // Info Document

@@ -92,23 +92,6 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 
 		}
 		break;
-	case GE_TRANSFER_AMMO:
-		{
-			//u16					from;
-			//P.r_u16				(from);
-
-			//CObject* Ofrom		= Level().Objects.net_Find	(from);
-			//if (0==Ofrom)		break;
-			//CWeapon* Wfrom		= dynamic_cast<CWeapon*>	(Ofrom);
-			//if (0==Wfrom)		break;
-			//CWeapon* Wto		= Weapons->getWeaponByWeapon(Wfrom);
-			//if (0==Wto)			break;
-
-			//// Test for locality
-			//Wto->Ammo_add		(Wfrom->Ammo_eject());
-			//Wfrom->setDestroy	(TRUE);
-		}
-		break;
 	case GE_INV_ACTION:
 		{
 			s32 cmd;

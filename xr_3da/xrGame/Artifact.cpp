@@ -133,7 +133,7 @@ void CArtifact::OnH_B_Independent()
 		Fvector l_up; l_up.set(XFORM().j); l_up.mul(2.f);
 		Fmatrix l_p1, l_p2;
 		l_p1.set(XFORM()); l_p1.c.add(l_up); l_up.mul(1.2f); //l_p1.c.add(l_fw);
-		l_p2.set(XFORM()); l_p2.c.add(l_up); /*l_fw.mul(1.f+m_force);*/ l_p2.c.add(l_fw);
+		l_p2.set(XFORM()); l_p2.c.add(l_up); /*l_fw.mul(1.f+m_fThrowForce);*/ l_p2.c.add(l_fw);
 		//Log("aaa",l_p1.c);
 		//Log("bbb",l_p2.c);
 		//m_pPhysicsShell->Activate(l_p1, 0, l_p2);
