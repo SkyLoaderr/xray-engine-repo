@@ -12,6 +12,7 @@ public:
 
 	Fvector			posMy;
 	Fvector			posTarget;
+	Fvector			tTargetDirection;
 	MemberPlacement	Members;
 
 	virtual	void	Load	(CInifile* ini, const char* section)
@@ -79,6 +80,8 @@ virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// m
 	float fResult = 0.0;//*fDistance*costTravel;
 	// node lighting
 	fResult += ((float)(tNode->light)/255.f)*costLight;
+	if (fResult>BestCost)
+		return(fResult);
 	// leader relationship
 	Fvector		P,P1,P2;
 	Level().AI.UnpackPosition	(P1,tNode->p0);
@@ -93,6 +96,8 @@ virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// m
 			fResult += MAX_PLAYER_PENALTY*costTarget;
 		else
 			fResult += (fDistanceToPlayer - OPTIMAL_PLAYER_DISTANCE)/OPTIMAL_PLAYER_DISTANCE;
+	if (fResult>BestCost)
+		return(fResult);
 	
 	// cover from leader
 	Fvector tDirection;
@@ -109,9 +114,13 @@ virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// m
 		fResult += costCover*(1.0 - float(tNode->cover[3])/255.f + float(tNode->cover[1])/255.f);
 	else
 		fResult += costCover*(1.0 - float(tNode->cover[1])/255.f + float(tNode->cover[3])/255.f);
+	if (fResult>BestCost)
+		return(fResult);
 	
 	if (tDirection.y > 2.0)
 		fResult += tDirection.y*Y_PENALTY;
+	if (fResult>BestCost)
+		return(fResult);
 
 	// cost of members relationship
 	if (Members.size()) {
@@ -140,6 +149,9 @@ virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// m
 			else
 				fResult += 0.5*costCover*(1.0 - float(tNode->cover[1])/255.f + float(tNode->cover[3])/255.f);
 			
+			if (fResult>BestCost)
+				return(fResult);
+			
 			//if (tDirection.y > 2.0)
 			//	fResult += tDirection.y*Y_MEMBER_PENALTY;
 			/**/
@@ -150,61 +162,20 @@ virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// m
 	return	fResult;
 }
 
-/**
-	virtual	float	Estimate(tNodeCompressed* Node, float dist, BOOL& bStop)	// min - best, max - worse
-	{
-		float	cost				= 0;
-		
-		// travel cost
-		float	cDist	= dist*costTravel;
-		cost += cDist;
-		//if (cost>BestCost)			return cost;
-
-		// lighting cost
-		float	cLight	= float(Node->light)/255.f;
-		cost	+=	cLight*costLight;
-		//if (cost>BestCost)			return cost;
-		
-		// tactical cost
-		float	cCover	= float(Node->cover[0])+float(Node->cover[1])+float(Node->cover[2])+float(Node->cover[3]);
-		cCover			= cCover/1024.f;
-		cost	+=	cCover*costCover;
-		//if (cost>BestCost)			return cost;
-
-		// cost of leader  relation
-		Fvector		P,P1,P2;
-		Level().AI.UnpackPosition	(P1,Node->p0);
-		Level().AI.UnpackPosition	(P2,Node->p1);
-		P.lerp						(P1,P2,.5f);
-		float						cL	= P.distance_to(posTarget);
-		if (cL<distTargetMin)		cL	= (distTargetMin-cL)*15;
-		else if (cL>distTargetMax)	cL	= (cL-distTargetMax);
-		else cL = 0;
-		cost	+=	cL*costTarget;
-		//if (cost>BestCost)			return cost;
-
-		// cost of members relationship
-		if (Members.size()) {
-			for (DWORD it=0; it<Members.size(); it++)
-			{
-				float c					= P.distance_to	(Members[it]);
-				if (c<distMemberMin)	{
-					cost += (distMemberMin-c)*costMembers;
-					if (cost>BestCost)	return cost;
-				}
-			}
-		}
-
-		// exit
-		if (cost<EPS)	bStop = TRUE;
-		return	cost;
-	}
-/**/
 };
 
 //*****************************************************************************************************************
 //*****************************************************************************************************************
 //*****************************************************************************************************************
+#define OPTIMAL_ENEMY_DISTANCE  5.f
+#define MIN_ENEMY_PENALTY		0.f
+#define MAX_ENEMY_PENALTY		10.f
+#define MIN_ENEMY_DISTANCE		distTargetMin
+#define MAX_ENEMY_DISTANCE		distTargetMax
+#define ENEMY_VIEW_PENALTY		1000.f
+#define SURROUND_PENALTY		1000.f
+#define COVER_PENALTY			100.f
+
 class	SelectorAttack	: public SelectorBase
 {
 public:
@@ -215,50 +186,101 @@ public:
 		SelectorBase::Load	(ini,section);
 	};
 
-	virtual	float	Estimate(NodeCompressed* Node, float dist, BOOL& bStop)	// min - best, max - worse
+	virtual	float	Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// min - best, max - worse
 	{
-		float	cost				= 0;
-		
-		// travel cost
-		float	cDist	= dist*costTravel;
-		//if (cost>BestCost)			return cost;
+	// distance to node
+	float fResult = 0.0;//*fDistance*costTravel;
+	// node lighting
+	fResult += ((float)(tNode->light)/255.f)*costLight;
+	if (fResult>BestCost)
+		return(fResult);
+	// leader relationship
+	Fvector		P,P1,P2;
+	Level().AI.UnpackPosition	(P1,tNode->p0);
+	Level().AI.UnpackPosition	(P2,tNode->p1);
+	P.lerp						(P1,P2,.5f);
+	float						fDistanceToPlayer = P.distance_to(posTarget);
+	
+	if (fDistanceToPlayer < MIN_ENEMY_DISTANCE)
+		fResult += MIN_ENEMY_PENALTY*costTarget;
+	else
+		if (fDistanceToPlayer > MAX_ENEMY_DISTANCE)
+			fResult += MAX_ENEMY_PENALTY*costTarget;
+		else
+			fResult += (fDistanceToPlayer - OPTIMAL_ENEMY_DISTANCE)/OPTIMAL_ENEMY_DISTANCE;
+	if (fResult>BestCost)
+		return(fResult);
+	
+	// cover from leader
+	Fvector tDirection;
+	tDirection.x = posTarget.x - P.x;
+	tDirection.y = fabs(posTarget.y - P.y);
+	tDirection.z = posTarget.z - P.z;
 
-		// lighting cost
-		float	cLight	= float(Node->light)/255.f;
-		cost	+=	cLight*costLight;
-		//if (cost>BestCost)			return cost;
-		
-		// cost of leader  relation
-		Fvector		P,P1,P2;
-		Level().AI.UnpackPosition	(P1,Node->p0);
-		Level().AI.UnpackPosition	(P2,Node->p1);
-		P.lerp						(P1,P2,.5f);
-		float						cL	= P.distance_to(posTarget);
-		if (cL<distTargetMin)		cL	= (distTargetMin-cL)*15;
-		else if (cL>distTargetMax)	cL	= (cL-distTargetMax);
-		else cL = 0;
-		cost	+=	cL*costTarget;
-		//if (cost>BestCost)			return cost;
+	if (tDirection.x < 0.0)
+		fResult += COVER_PENALTY*(1.0 - float(tNode->cover[0])/255.f + float(tNode->cover[2])/255.f);
+	else
+		fResult += COVER_PENALTY*(1.0 - float(tNode->cover[2])/255.f + float(tNode->cover[0])/255.f);
+	
+	if (tDirection.z < 0.0)
+		fResult += COVER_PENALTY*(1.0 - float(tNode->cover[3])/255.f + float(tNode->cover[1])/255.f);
+	else
+		fResult += COVER_PENALTY*(1.0 - float(tNode->cover[1])/255.f + float(tNode->cover[3])/255.f);
+	
+	if (fResult>BestCost)
+		return(fResult);
+	
+	tDirection.normalize();
+	
+	fResult += ENEMY_VIEW_PENALTY*(1.f - sqrt(SQR(tDirection.x - tTargetDirection.x) + SQR(tDirection.y - tTargetDirection.y) + SQR(tDirection.z - tTargetDirection.z)));
+	if (fResult>BestCost)
+		return(fResult);
+	
+	//if (tDirection.y > 2.0)
+	//	fResult += tDirection.y*Y_PENALTY;
 
-		// tactical cost
-		cost	+=	costCover * h_slerp(posTarget,P,Node->cover);
-		//if (cost>BestCost)			return cost;
+	// cost of members relationship
+	if (Members.size()) {
+		for (DWORD it=0; it<Members.size(); it++)
+		{
+			float fDistanceToMember	= P.distance_to	(Members[it]);
+			if (fDistanceToMember < MIN_MEMBER_DISTANCE)
+				fResult += MIN_MEMBER_PENALTY*costMembers;
+			else
+				if (fDistanceToMember > MAX_MEMBER_DISTANCE)
+					fResult += MAX_MEMBER_PENALTY*costMembers;
+				else
+					fResult += (fDistanceToMember - OPTIMAL_MEMBER_DISTANCE)/OPTIMAL_MEMBER_DISTANCE;
+			if (fResult>BestCost)
+				return(fResult);
+			
+			Fvector tDirection1;
+			tDirection1.x += Members[it].x - P.x;
+			tDirection1.y += fabs(Members[it].y - P.y);
+			tDirection1.z += Members[it].z - P.z;
+			tDirection1.normalize();
+			tDirection.add(tDirection1);
 
-		// cost of members relationship
-		if (Members.size()) {
-			for (DWORD it=0; it<Members.size(); it++)
-			{
-				float c					= P.distance_to	(Members[it]);
-				if (c<distMemberMin)	{
-					cost += (distMemberMin-c)*costMembers;
-					if (cost>BestCost)	return cost;
-				}
-			}
+			/**/
+			if (Members[it].x - P.x < 0.0)
+				fResult += 0.5*COVER_PENALTY*(1.0 - float(tNode->cover[0])/255.f + float(tNode->cover[2])/255.f);
+			else
+				fResult += 0.5*COVER_PENALTY*(1.0 - float(tNode->cover[2])/255.f + float(tNode->cover[0])/255.f);
+			
+			if (Members[it].z - P.z < 0.0)
+				fResult += 0.5*COVER_PENALTY*(1.0 - float(tNode->cover[3])/255.f + float(tNode->cover[1])/255.f);
+			else
+				fResult += 0.5*COVER_PENALTY*(1.0 - float(tNode->cover[1])/255.f + float(tNode->cover[3])/255.f);
+
+			/**/
 		}
+	}
 
-		// exit
-		if (cost<EPS)	bStop = TRUE;
-		return	cost;
+	fResult += SURROUND_PENALTY*sqrt(SQR(tDirection.x) + SQR(tDirection.y) + SQR(tDirection.z));
+
+	// exit
+	if (fResult<EPS)	bStop = TRUE;
+	return	fResult;
 	}
 };
 
@@ -275,50 +297,122 @@ public:
 		SelectorBase::Load	(ini,section);
 	};
 
-	virtual	float	Estimate(NodeCompressed* Node, float dist, BOOL& bStop)	// min - best, max - worse
+virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// min - best, max - worse
 	{
-		float	cost				= 0;
-		
-		// travel cost
-		float	cDist	= dist*costTravel;
-		//if (cost>BestCost)			return cost;
+	// distance to node
+	float fResult = 0.0;//*fDistance*costTravel;
+	// node lighting
+	fResult += ((float)(tNode->light)/255.f)*costLight;
+	if (fResult>BestCost)
+		return(fResult);
+	// leader relationship
+	Fvector		P,P1,P2;
+	Level().AI.UnpackPosition	(P1,tNode->p0);
+	Level().AI.UnpackPosition	(P2,tNode->p1);
+	P.lerp						(P1,P2,.5f);
+	float						fDistanceToPlayer = P.distance_to(posTarget);
+	
+	if (fDistanceToPlayer < MIN_PLAYER_DISTANCE)
+		fResult += MIN_PLAYER_PENALTY*costTarget;
+	else
+		if (fDistanceToPlayer > MAX_PLAYER_DISTANCE)
+			fResult += MAX_PLAYER_PENALTY*costTarget;
+		else
+			fResult += (fDistanceToPlayer - OPTIMAL_PLAYER_DISTANCE)/OPTIMAL_PLAYER_DISTANCE;
+	if (fResult>BestCost)
+		return(fResult);
+	
+	// cover from leader
+	Fvector tDirection;
+	tDirection.x = posTarget.x - P.x;
+	tDirection.y = fabs(posTarget.y - P.y);
+	tDirection.z = posTarget.z - P.z;
 
-		// lighting cost
-		float	cLight	= float(Node->light)/255.f;
-		cost	+=	cLight*costLight;
-		//if (cost>BestCost)			return cost;
-		
-		// cost of leader  relation
-		Fvector		P,P1,P2;
-		Level().AI.UnpackPosition	(P1,Node->p0);
-		Level().AI.UnpackPosition	(P2,Node->p1);
-		P.lerp						(P1,P2,.5f);
-		float						cL	= P.distance_to(posTarget);
-		if (cL<distTargetMin)		cL	= (distTargetMin-cL)*15;
-		else if (cL>distTargetMax)	cL	= (cL-distTargetMax);
-		else cL = 0;
-		cost	+=	cL*costTarget;
-		if (cost>BestCost)			return cost;
+	if (tDirection.x < 0.0)
+		fResult += COVER_PENALTY*(1.0 - float(tNode->cover[0])/255.f + float(tNode->cover[2])/255.f);
+	else
+		fResult += COVER_PENALTY*(1.0 - float(tNode->cover[2])/255.f + float(tNode->cover[0])/255.f);
+	
+	if (tDirection.z < 0.0)
+		fResult += COVER_PENALTY*(1.0 - float(tNode->cover[3])/255.f + float(tNode->cover[1])/255.f);
+	else
+		fResult += COVER_PENALTY*(1.0 - float(tNode->cover[1])/255.f + float(tNode->cover[3])/255.f);
+	if (fResult>BestCost)
+		return(fResult);
+	
+	if (tDirection.y > 2.0)
+		fResult += tDirection.y*Y_PENALTY;
+	if (fResult>BestCost)
+		return(fResult);
 
-		// tactical cost
-		cost	+=	costCover * h_slerp(posTarget,P,Node->cover);
-		//if (cost>BestCost)			return cost;
+	// cost of members relationship
+	if (Members.size()) {
+		for (DWORD it=0; it<Members.size(); it++)
+		{
+			float fDistanceToMember	= P.distance_to	(Members[it]);
+			if (fDistanceToMember < MIN_MEMBER_DISTANCE)
+				fResult += MIN_MEMBER_PENALTY*costMembers;
+			else
+				if (fDistanceToMember > MAX_MEMBER_DISTANCE)
+					fResult += MAX_MEMBER_PENALTY*costMembers;
+				else
+					fResult += (fDistanceToMember - OPTIMAL_MEMBER_DISTANCE)/OPTIMAL_MEMBER_DISTANCE;
+			/**/
+			tDirection.x = Members[it].x - P.x;
+			tDirection.y = fabs(Members[it].y - P.y);
+			tDirection.z = Members[it].z - P.z;
 
-		// cost of members relationship
-		if (Members.size()) {
-			for (DWORD it=0; it<Members.size(); it++)
-			{
-				float c					= P.distance_to	(Members[it]);
-				if (c<distMemberMin)	{
-					cost += (distMemberMin-c)*costMembers;
-					if (cost>BestCost)	return cost;
-				}
-			}
+			if (tDirection.x < 0.0)
+				fResult += 0.5*COVER_PENALTY*(1.0 - float(tNode->cover[0])/255.f + float(tNode->cover[2])/255.f);
+			else
+				fResult += 0.5*COVER_PENALTY*(1.0 - float(tNode->cover[2])/255.f + float(tNode->cover[0])/255.f);
+			
+			if (tDirection.z < 0.0)
+				fResult += 0.5*COVER_PENALTY*(1.0 - float(tNode->cover[3])/255.f + float(tNode->cover[1])/255.f);
+			else
+				fResult += 0.5*COVER_PENALTY*(1.0 - float(tNode->cover[1])/255.f + float(tNode->cover[3])/255.f);
+			
+			if (fResult>BestCost)
+				return(fResult);
 		}
-
-		// exit
-		if (cost<EPS)	bStop = TRUE;
-		return	cost;
 	}
+	// exit
+	if (fResult<EPS)	bStop = TRUE;
+	return	fResult;
+}
+
+};
+
+class	SelectorFreeHunting	: public SelectorBase
+{
+public:
+	SelectorFreeHunting	() { Name="sel_free_hunting"; };
+
+	virtual void	Load	(CInifile* ini, const char* section)
+	{
+		SelectorBase::Load	(ini,section);
+	};
+
+/**/
+#define COVER_FREEHUNTING 1000.f
+	
+virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// min - best, max - worse
+{
+	// distance to node
+	float fResult = 0.0;//*fDistance*costTravel;
+	// node lighting
+	fResult += ((float)(tNode->light)/255.f)*costLight;
+	if (fResult>BestCost)
+		return(fResult);
+
+	// cover
+	fResult += COVER_FREEHUNTING*((float)(tNode->cover[0])/255.f + (float)(tNode->cover[1])/255.f
+				+ (float)(tNode->cover[2])/255.f + (float)(tNode->cover[3])/255.f);
+
+	// exit
+	if (fResult<EPS)	bStop = TRUE;
+	return	fResult;
+}
+
 };
 

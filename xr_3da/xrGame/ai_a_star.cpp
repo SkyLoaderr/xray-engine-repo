@@ -44,8 +44,12 @@ __forceinline float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1)
 	float x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
 	float y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
 	float z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+
+	float fCover = (float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f;
+
+	float fLight = (float)(tNode1.light)/255.f;
 	
-	return((float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + fYSize2*SQR(y2 - y1))));
+	return(fLight*10 + fCover*5 + 30*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + fYSize2*SQR(y2 - y1))));
 	/**/
 }
 

@@ -11,6 +11,7 @@
 #include "xr_weapon_list.h"
 #include "..\\3dsound.h"
 #include "entity.h"
+#include "..\\_matrix.h"
 
 IC float sqr(float a) { return a*a; }
 const float	ai_hit_relevant_time	= 5.f;
@@ -71,7 +72,10 @@ void	CAI_Hen::Die		( )
 {
 	inherited::Die			( );
 	q_action.setup			(AI::AIC_Action::FireEnd);
-	State_Push				(new AI::_Die());
+	State_Push				(new AI::_HenDie());
+	Fvector				dir;
+	AI_Path.Direction	(dir);
+	SelectAnimation			(clTransform.k,dir,AI_Path.fSpeed);
 
 	// Play sound
 	pSounds->Play3DAtPos(sndDie[Random.randI(SND_DIE_COUNT)],vPosition);
@@ -152,6 +156,12 @@ namespace AI {
 
 	BOOL _HenFollowMe::Parse	(CCustomMonster* Me)
 	{
+		if (Me->g_Health() <= 0) {
+			Me->State_Push	(new _HenDie());
+			return FALSE;
+		}
+
+		bool bWatch = false;
 		EnemySelected		Enemy;
 		vfSelectEnemy		(Enemy,Me);
 		
@@ -173,6 +183,12 @@ namespace AI {
 			CSquad&	Squad		= Level().acc_squad(Me->g_Team(),Me->g_Squad());
 			CEntity* Leader		= Squad.Leader;
 			R_ASSERT (Leader);
+			/**/
+			if (Leader == Me) {
+				Me->State_Push	(new _HenFreeHunting());
+				return FALSE;
+			}
+			/**/
 			
 			// fill it with data
 			SelectorFollow&	S	= Me->fuzzyFollow;
@@ -199,34 +215,57 @@ namespace AI {
 				}
 			} else {
 				// we doesn't need to move anywhere
+				bWatch = true;
 			}
 		}
 		
 		// *** look
-		if (Level().timeServer() - hitTime < _FB_hit_RelevantTime)
-		{
-			// *** look at direction of last hit
-			q_look.setup(
-				AI::AIC_Look::Look, 
-				AI::t_Direction, 
-				&hitDir,
-				1000);
-			q_look.o_look_speed=_FB_look_speed;
-		} else
-		{
-			u_orientate(Me->AI_NodeID,vLook);
+		if (!bWatch) {
+			if (Level().timeServer() - hitTime < _FB_hit_RelevantTime)
+			{
+				// *** look at direction of last hit
+				q_look.setup(
+					AI::AIC_Look::Look, 
+					AI::t_Direction, 
+					&hitDir,
+					1000);
+				q_look.o_look_speed=_FB_look_speed;
+			} else
+			{
+				//u_orientate(Me->AI_NodeID,vLook);
+				NodeCompressed* tNode		= Level().AI.Node(Me->AI_NodeID);
+				Me->tWatchDirection.y = 0.f;
+				Me->tWatchDirection.x = float(tNode->cover[2])/255.f - float(tNode->cover[0])/255.f;
+				Me->tWatchDirection.z = float(tNode->cover[1])/255.f - float(tNode->cover[3])/255.f;
+				Me->tWatchDirection.normalize();
+				q_look.setup
+					(
+					AI::AIC_Look::Look, 
+					AI::t_Direction, 
+					&(Me->tWatchDirection),
+					1000
+					);
+				q_look.o_look_speed=_FB_look_speed;
+			}
+		}
+		else {
+			NodeCompressed* tNode		= Level().AI.Node(Me->AI_NodeID);
+			
+			Fmatrix M;
+			M.rotateY(PI/60.f);
+			M.transform(Me->tWatchDirection);
 			q_look.setup
 				(
 				AI::AIC_Look::Look, 
 				AI::t_Direction, 
-				&vLook,
+				&(Me->tWatchDirection),
 				1000
 				);
-			q_look.o_look_speed=_FB_look_speed;
+			q_look.o_look_speed = _FB_look_speed;
 		}
-
 		return FALSE;
 	}
+	
 	void _HenFollowMe::u_orientate	(DWORD node, Fvector& look)
 	{
 		// *** look at focus direction (temporarily at less covered direction)
@@ -272,6 +311,11 @@ namespace AI {
 	//- Attack -------------------------------------------------------------------------
 	BOOL _HenAttack::Parse(CCustomMonster* Me)
 	{
+		if (Me->g_Health() <= 0) {
+			Me->State_Push	(new _HenDie());
+			return FALSE;
+		}
+		
 		EnemySelected		Enemy;
 		vfSelectEnemy		(Enemy,Me);
 		if (Enemy.E)		EnemySaved = Enemy.E;
@@ -285,6 +329,9 @@ namespace AI {
 			{
 				bBuildPathToLostEnemy = FALSE;
 
+				// does the enemy see me?
+				
+				
 				//***** attack him
 				q_look.setup(
 					AI::AIC_Look::Look, 
@@ -300,7 +347,8 @@ namespace AI {
 				if (Me->AI_Path.bNeedRebuild) 
 				{
 					//Level().AI.q_Path			(Me->AI_NodeID,Me->AI_Path.DestNode,Me->AI_Path);
-					Level().AI.vfFindTheXestPath	(Me->AI_NodeID,Me->AI_Path.DestNode,Me->AI_Path);
+					//Level().AI.vfFindTheXestPath	(Me->AI_NodeID,Me->AI_Path.DestNode,Me->AI_Path);
+					Level().AI.vfFindTheXestPath	(Enemy.E->AI_NodeID,Me->AI_Path.DestNode,Me->AI_Path);
 					Me->AI_Path.BuildTravelLine	(Me->Position());
 				} else {
 					// fill it with data
@@ -308,6 +356,8 @@ namespace AI {
 					SelectorAttack&	S	= Me->fuzzyAttack;
 					S.posMy				= Me->Position();
 					S.posTarget			= Enemy.E->Position();
+					S.tTargetDirection	= Enemy.E->Direction();
+					S.tTargetDirection.normalize();
 					Squad.Groups[Me->g_Group()].GetMemberDedication(S.Members,Me);
 					
 					// *** query and move if needed
@@ -322,10 +372,10 @@ namespace AI {
 							Level().AI.u_SqrDistance2Node(Me->Position(),OLD),
 							dummy);
 						
-						if (S.BestCost < (old_cost-S.laziness)) {
+						//if (S.BestCost < (old_cost-S.laziness)) {
 							Me->AI_Path.DestNode		= S.BestNode;
 							Me->AI_Path.bNeedRebuild	= TRUE;
-						}
+						//}
 					} else {
 						// we doesn't need to move anywhere
 					}
@@ -334,7 +384,8 @@ namespace AI {
 			} else {
 				if (!bBuildPathToLostEnemy)	{
 					// We has enemy but it's invisible to us - we or him is under cover
-					Level().AI.q_Path			(Me->AI_NodeID, Enemy.E->AI_NodeID, Me->AI_Path);
+					//Level().AI.q_Path			(Me->AI_NodeID, Enemy.E->AI_NodeID, Me->AI_Path);
+					Level().AI.vfFindTheXestPath(Me->AI_NodeID, Enemy.E->AI_NodeID, Me->AI_Path);
 					Me->AI_Path.BuildTravelLine	(Me->Position());
 					bBuildPathToLostEnemy		= TRUE;
 				}
@@ -396,6 +447,11 @@ namespace AI {
 
 		AIC_Look			&q_look		=Me->q_look;
 		AIC_Action			&q_action	=Me->q_action;
+		
+		if (Me->g_Health() <= 0) {
+			Me->State_Push	(new _HenDie());
+			return FALSE;
+		}
 		
 		if (Enemy.E) 
 		{
@@ -471,5 +527,124 @@ namespace AI {
 		}
 		return FALSE;
 	}
-};
 
+	void _HenFreeHunting::Hit		(Fvector& D)
+	{
+		hitTime				= Level().timeServer();
+		hitDir.set			(D);
+	}
+
+	BOOL _HenFreeHunting::Parse	(CCustomMonster* Me)
+	{
+		if (Me->g_Health() <= 0) {
+			Me->State_Push	(new _HenDie());
+			return FALSE;
+		}
+
+		bool bWatching = false;
+		EnemySelected		Enemy;
+		vfSelectEnemy		(Enemy,Me);
+		
+		// do I see the enemies?
+		if (Enemy.E)		{
+			Me->State_Push	(new _HenAttack());
+			return TRUE;
+		}
+
+		AIC_Look			&q_look		= Me->q_look;
+		AIC_Action			&q_action	= Me->q_action;
+
+		if (Me->AI_Path.bNeedRebuild) 
+		{
+			//Level().AI.q_Path	(Me->AI_NodeID,Me->AI_Path.DestNode,Me->AI_Path);
+			Level().AI.vfFindTheXestPath	(Me->AI_NodeID,Me->AI_Path.DestNode,Me->AI_Path);
+			Me->AI_Path.BuildTravelLine		(Me->Position());
+		} else {
+			CSquad&	Squad		= Level().acc_squad(Me->g_Team(),Me->g_Squad());
+			CEntity* Leader		= Squad.Leader;
+			R_ASSERT (Leader);
+			
+			// fill it with data
+			SelectorFreeHunting&	S	= Me->fuzzyFreeHunting;
+			S.posMy				= Me->Position();
+			S.posTarget			= Leader->Position();
+			Squad.Groups[Me->g_Group()].GetMemberDedication(S.Members,Me);
+			
+			// *** query and move if needed
+			Level().AI.q_Range	(Me->AI_NodeID,Me->Position(),30.f,S);
+			//Level().AI.vfFindTheBestNode(Me->AI_NodeID,Me->Position(),35.f,S);
+
+			if (Me->AI_Path.DestNode != S.BestNode) 
+			{
+				NodeCompressed* OLD		= Level().AI.Node(Me->AI_Path.DestNode);
+				BOOL			dummy	= FALSE;
+				float			old_cost= S.Estimate(
+					OLD,
+					Level().AI.u_SqrDistance2Node(Me->Position(),OLD),
+					dummy);
+
+				//if (S.BestCost < (old_cost-S.laziness)) {
+					Me->AI_Path.DestNode		= S.BestNode;
+					Me->AI_Path.bNeedRebuild	= TRUE;
+				//}
+			} else {
+				// we doesn't need to move anywhere
+				bWatching = true;
+			}
+		}
+		
+		// *** look
+		if (!bWatching) {
+			if (Level().timeServer() - hitTime < _FB_hit_RelevantTime)
+			{
+				// *** look at direction of last hit
+				q_look.setup(
+					AI::AIC_Look::Look, 
+					AI::t_Direction, 
+					&hitDir,
+					1000);
+				q_look.o_look_speed=_FB_look_speed;
+			} else
+			{
+				//u_orientate(Me->AI_NodeID,vLook);
+				NodeCompressed* tNode		= Level().AI.Node(Me->AI_NodeID);
+				Me->tWatchDirection.y = 0.f;
+				Me->tWatchDirection.x = float(tNode->cover[2])/255.f - float(tNode->cover[0])/255.f;
+				Me->tWatchDirection.z = float(tNode->cover[1])/255.f - float(tNode->cover[3])/255.f;
+				Me->tWatchDirection.normalize();
+				q_look.setup
+					(
+					AI::AIC_Look::Look, 
+					AI::t_Direction, 
+					&(Me->tWatchDirection),
+					1000
+					);
+				q_look.o_look_speed=_FB_look_speed;
+			}
+		}
+		else {
+			NodeCompressed* tNode		= Level().AI.Node(Me->AI_NodeID);
+			//fLook.y = 0.f;
+			//fLook.x = float(tNode->cover[2])/255.f - float(tNode->cover[0])/255.f;
+			//fLook.z = float(tNode->cover[1])/255.f - float(tNode->cover[3])/255.f;
+			//fLook.normalize();
+			
+			Fmatrix M;
+			M.rotateY(PI/2);
+			M.transform(Me->tWatchDirection);
+			/**/
+			q_look.setup
+				(
+				AI::AIC_Look::Look, 
+				AI::t_Direction, 
+				&(Me->tWatchDirection),
+				1000
+				);
+			q_look.o_look_speed = 15;//_FB_look_speed
+			/**/
+		}
+
+		return FALSE;
+	}
+	
+};

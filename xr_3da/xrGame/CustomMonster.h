@@ -60,11 +60,13 @@ public:
 	// AI
 	AI::AIC_Look		q_look;
 	AI::AIC_Action		q_action;
+	Fvector				tWatchDirection;
 
 	// State machine
 	SelectorFollow		fuzzyFollow;
 	SelectorAttack		fuzzyAttack;
 	SelectorPursuit		fuzzyPursuit;
+	SelectorFreeHunting fuzzyFreeHunting;
 
 	stack<AI::State*>	STATE;
 	EGroupState			Goal()					{ return Level().get_group(id_Team,id_Squad,id_Group).State; }

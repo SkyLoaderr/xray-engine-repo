@@ -100,11 +100,16 @@ namespace AI {
 	// 		aiHenFreeHunting,			
 	class _HenFreeHunting			: public State
 	{
+		DWORD					hitTime;
+		Fvector					hitDir;
 	public:
 		_HenFreeHunting()			: State(aiHenFreeHunting)
 		{
+			hitTime				= 0;
+			hitDir.set			(0,0,1);
 		}
 		virtual BOOL	Parse	(CCustomMonster* Me);
+		virtual void	Hit			(Fvector &dir);
 	};
 	//		aiHenFollowMe
 	class _HenFollowMe			: public State
