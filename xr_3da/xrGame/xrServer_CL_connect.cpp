@@ -50,32 +50,8 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 
 	// Replicate current entities on to this client
 	xrS_entities::iterator	I=entities.begin(),E=entities.end();
-	for (; I!=E; I++)		I->second->net_Processed	= FALSE;
-	for (I=entities.begin(); I!=E; I++)
-	{
-		xrServerEntity*		Test	= I->second;
-		if (Test->s_flags & M_SPAWN_OBJECT_PHANTOM)	continue;
-
-		if (0==Test->owner)	
-		{
-			// PROCESS NAME; Name this entity
-			if (Test->s_flags & M_SPAWN_OBJECT_ASPLAYER)
-			{
-				CL->owner		= Test;
-				strcpy			(Test->s_name_replace,CL->Name);
-			}
-
-			// Associate
-			Test->owner			= CL;
-			Test->Spawn_Write	(P,TRUE	);
-		}
-		else				
-		{
-			// Just inform
-			Test->Spawn_Write	(P,FALSE);
-		}
-		SendTo				(CL->ID,P,mode);
-	}
+	for (; I!=E; I++)						I->second->net_Processed	= FALSE;
+	for (I=entities.begin(); I!=E; I++)		Perform_connect_spawn(I->second,CL,P);
 
 	// Send "finished" signal
 	P.w_begin		(M_SV_CONFIG_FINISHED);
