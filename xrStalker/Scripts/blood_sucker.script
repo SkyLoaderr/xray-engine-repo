@@ -14,18 +14,19 @@ local s_ambush    = 6
 
 class "CBaseBloodsucker"
 function CBaseBloodsucker:__init(_npc, _can_eat, _state_rest, _state_attack, _state_hit, _state_sound)
-  self.npc      = level.object(_npc)
+
+    self.npc      = level.object(_npc)
     self.eating      = _can_eat
     self.curState    = nil
 
-  self.memory      = {
-                hit,
+    self.memory      = {
+                            hit,
                             sound,
                             enemy
                           }
   //Устанавливаем состония атаки, отдыха, реакции на звук и на хит
     if(_state_attack == nil) then
-    self.stateAttack    = this.CStateAttack  (self.npc, self.memory)
+        self.stateAttack    = this.CStateAttack  (self.npc, self.memory)
     else
         self.stateAttack    = _state_attack     (self.npc, self.memory)
     end
@@ -52,7 +53,7 @@ function CBaseBloodsucker:__init(_npc, _can_eat, _state_rest, _state_attack, _st
 end
 
 function CBaseBloodsucker:initialize()
-  self.npc:script    (true, this.script_name())
+  self.npc:script    (true, script_name())
 end
 
 function CBaseBloodsucker:execute()
