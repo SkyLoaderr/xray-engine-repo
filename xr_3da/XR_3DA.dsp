@@ -746,6 +746,14 @@ SOURCE=.\Blenders\blender_light.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\Blenders\Blender_LmBmmD.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\Blender_LmBmmD.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Blenders\Blender_Screen_GRAY.cpp
 # End Source File
 # Begin Source File
@@ -783,14 +791,6 @@ SOURCE=.\Blenders\BlenderDefault.cpp
 # Begin Source File
 
 SOURCE=.\Blenders\BlenderDefault.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\Blenders\CBlender_lm_detail.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Blenders\CBlender_lm_detail.h
 # End Source File
 # End Group
 # Begin Source File
