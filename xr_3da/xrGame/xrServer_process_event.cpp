@@ -62,7 +62,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			// Parse message
 			u16					id_parent=destination,id_entity;
 			P.r_u16				(id_entity);
-			xrServerEntity*		e_parent	= ID_to_entity	(id_parent);
+			xrServerEntity*		e_parent	= ID_to_entity	();
 			xrServerEntity*		e_entity	= ID_to_entity	(id_entity);
 			if (e_parent && e_entity) 
 			{
@@ -72,7 +72,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 				// R_ASSERT			(c_entity == c_parent);
 				// R_ASSERT			(c_parent == c_from);		// assure client only send request for local units
 
-				if (game->OnTargetDetouched(sender,id_entity))
+				if (game->OnTargetDetouched(sender,id_parent,id_entity))
 				{
 					// Perform migration if needed
 					xrClientData*		c_dest		= SelectBestClientToMigrateTo		(e_entity);
