@@ -122,6 +122,8 @@ void CObject::Load				(LPCSTR section )
 
 BOOL CObject::net_Spawn			(CSE_Abstract* data)
 {
+	PositionStack.clear			();
+
 	VERIFY						(_valid(renderable.xform));
 
 	if (0==collidable.model) 
@@ -158,6 +160,7 @@ void CObject::net_Destroy		()
 	shedule_unregister			();
 	spatial_unregister			();
 	setDestroy					(true);
+	PositionStack.clear			();
 }
 
 //////////////////////////////////////////////////////////////////////////
