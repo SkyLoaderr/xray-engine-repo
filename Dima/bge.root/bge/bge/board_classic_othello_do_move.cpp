@@ -137,7 +137,7 @@ IC	void CBoardClassicOthello::do_move		(const cell_index &index)
 	m_flip_stack.push	(CStackCell(start_cell));
 	m_flip_stack.push	(CStackCell((int)m_flip_stack.size() - stack_count - 1,m_passed));
 	m_passed			= false;
-	m_difference		= difference + 1;
+	m_difference		= difference + (_color_to_move == BLACK ? 1 : -1);
 	m_color_to_move		= opponent_color;
 	--m_empties;
 }
