@@ -262,7 +262,11 @@ int XRXMLPARSER_API CUIXml::GetNodesNum(const char *path, int index, const char*
 	
 	if(node == NULL) return 0;
 
-	return node->NumChildrenHavingTag(tag_name);
+	int result = node->NumChildrenHavingTag(tag_name);
+
+	if(&m_root != node) xr_delete(node);
+
+	return result;
 }
 
 int CUIXml::GetNodesNum(XML_NODE* node, const char* tag_name)
@@ -279,8 +283,12 @@ XML_NODE* CUIXml::SearchForAttribute(const char *path, int index,
 
 {
 	XML_NODE* start_node = NavigateToNode(path, index);
+	XML_NODE* result_node = SearchForAttribute(start_node, tag_name, 
+											   attrib, attrib_value_pattern);
 
-	return SearchForAttribute(start_node, tag_name, attrib, attrib_value_pattern);
+	xr_delete(result_node);
+
+	return result_node;
 }
 
 XML_NODE* CUIXml::SearchForAttribute(XML_NODE* start_node, 
