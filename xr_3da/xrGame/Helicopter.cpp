@@ -63,6 +63,9 @@ void CHelicopter::setState(CHelicopter::EHeliState s)
 	case CHelicopter::eDead:
 		str = "eDead";
 		break;
+	case CHelicopter::eMovingToPoint:
+		str = "eMovingToPoint";
+		break;
 
 	default:
 		str = "unknown";

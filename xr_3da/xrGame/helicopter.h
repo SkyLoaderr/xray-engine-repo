@@ -28,6 +28,7 @@ public:
 		eInitiateWaitBetweenPatrol,			// ->eMovingToWaitPoint
 		eMovingToWaitPoint,					// ->eWaitBetweenPatrol
 		eInitiateGoToPoint,					// ->eMovingByPatrolZonePath
+		eMovingToPoint,
 		eDead
 	}; 
 protected:

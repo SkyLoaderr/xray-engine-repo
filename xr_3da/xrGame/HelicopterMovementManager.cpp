@@ -176,7 +176,8 @@ void CHelicopterMovManager::shedule_Update(u32 timeDelta, CHelicopter* heli)
 	if (heli->state() == CHelicopter::eInitiateGoToPoint) {
 		addGoToPointPath(lt);
 		m_time_last_patrol_start = lt;
-		heli->setState(CHelicopter::eMovingByPatrolZonePath);
+//		heli->setState(CHelicopter::eMovingByPatrolZonePath);
+		heli->setState(CHelicopter::eMovingToPoint);
 	};
 
 	if (heli->state() == CHelicopter::eInitiatePatrolZone) {
@@ -251,8 +252,11 @@ void CHelicopterMovManager::truncatePathSafe(float from_time,
 
 		FindNearestKey(from_time, minT, maxT, minIdx, maxIdx);
 
-		if( maxIdx < (sz-3) )// 2 key ahead
-			DropHeadKeys(sz-maxIdx-3);
+		int ahead_cnt = sz-maxIdx-1;
+		int to_del_cnt = ahead_cnt-3; //оставить спереди 3 ключа
+
+		if( to_del_cnt > 0 )// 2 key ahead
+			DropHeadKeys(to_del_cnt);
 
 		safe_time = m_endTime;
 
@@ -444,11 +448,8 @@ void CHelicopterMovManager::addGoToPointPath(float from_time)
 {
 	Fvector fromPos;
 	float safe_time;
-	u32 key_count = CHelicopterMotion::KeyCount();
 	
 	truncatePathSafe(from_time, safe_time, fromPos);
-	
-	key_count = CHelicopterMotion::KeyCount();
 	
 	xr_vector<Fvector> vAddedKeys;
 
