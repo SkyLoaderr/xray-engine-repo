@@ -89,8 +89,7 @@ void CWeaponAmmo::OnH_B_Independent()
 		u_EventGen		(P,GE_DESTROY,ID());
 		if (Local())
 			u_EventSend	(P);
-		CGameObject::OnH_B_Independent();
-		return;
+		m_ready_to_destroy	= true;
 	}
 	inherited::OnH_B_Independent();
 }

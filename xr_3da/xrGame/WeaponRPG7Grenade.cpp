@@ -213,7 +213,7 @@ void CWeaponRPG7Grenade::UpdateCL()
 			CGameObject::UpdateCL();
 		break;
 	case stFlying:
-		CGameObject::UpdateCL();
+		CWeaponFakeGrenade::UpdateCL();
 		break;
 	}
 }

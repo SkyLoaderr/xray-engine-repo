@@ -31,12 +31,13 @@ CPhysicItem::~CPhysicItem	()
 
 void CPhysicItem::init		()
 {
-	m_pPhysicsShell		= 0;
+	m_pPhysicsShell			= 0;
 }
 
 void CPhysicItem::reinit	()
 {
 	inherited::reinit		();
+	m_ready_to_destroy		= false;
 }
 
 void CPhysicItem::Load		(LPCSTR section)
@@ -52,6 +53,9 @@ void CPhysicItem::reload	(LPCSTR section)
 void CPhysicItem::OnH_B_Independent	()
 {
 	inherited::OnH_B_Independent();
+
+	if (m_ready_to_destroy)
+		return;
 
 	setVisible					(true);
 	setEnabled					(true);

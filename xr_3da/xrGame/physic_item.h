@@ -16,6 +16,8 @@ class CPhysicItem :
 			public CPHShellSimpleCreator
 {
 	typedef CGameObject inherited;
+protected:
+	bool			m_ready_to_destroy;
 public:
 					CPhysicItem				();
 	virtual			~CPhysicItem			();
