@@ -7,8 +7,6 @@ function main()
 	stalker_veteran01	= get_level_object("stalker_veteran01")
 	stalker_veteran02	= get_level_object("stalker_veteran02")
 
-	actor   	= get_actor()
-
 			wait(1000)			
 
 			stalker_veteran01:script	(true,  script_veterans_00.script_name())
