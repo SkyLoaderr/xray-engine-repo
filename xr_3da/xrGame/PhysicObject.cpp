@@ -62,6 +62,7 @@ void CPhysicObject::RunStartupAnim(CSE_Abstract *D)
 			R_ASSERT2					(*visual->startup_animation,"no startup animation");
 			pSkeletonAnimated->PlayCycle(*visual->startup_animation);
 		}
+		smart_cast<CKinematics*>(Visual())->CalculateBones_Invalidate();
 		smart_cast<CKinematics*>(Visual())->CalculateBones	();
 	}
 }
