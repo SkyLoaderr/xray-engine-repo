@@ -24,12 +24,13 @@ void __fastcall TfrmPreviewImage::FormKeyDown(TObject *Sender,
 }
 
 //----------------------------------------------------
-int __fastcall TfrmPreviewImage::Run(ETextureCore* T){
-	VERIFY(T);
+int __fastcall TfrmPreviewImage::Run(){
 	form = new TfrmPreviewImage(0);
-    form->tex = T;
+
 //S
 /*
+	VERIFY(T);
+	form->tex = T;
 	form->ClientHeight 	= T->height()+4;
     form->ClientWidth 	= T->width()+4;
     form->mult = 1;

@@ -18,8 +18,10 @@
 // mimimal bounding box size
 float g_MinBoxSize 	= 0.05f;
 
-CEditableObject::CEditableObject(CLibObject* parent){
-    m_LibParent 	= parent;
+CEditableObject::CEditableObject(LPCSTR name)
+{
+	m_LibName		= name;
+//    m_LibParent 	= parent;
 
 	m_DynamicObject = false;
     m_ObjVer.reset	();
@@ -40,7 +42,7 @@ CEditableObject::~CEditableObject(){
     ClearGeometry();
 }
 //----------------------------------------------------
-
+/*
 LPCSTR CEditableObject::GetName(){
 	return m_LibParent->GetName();
 }
@@ -50,7 +52,7 @@ void CEditableObject::SetName(LPCSTR name){
 	m_LibParent->SetName(name);
 }
 //----------------------------------------------------
-
+*/
 void CEditableObject::VerifyMeshNames(){
 	int idx=0;
     for(EditMeshIt m_def=m_Meshes.begin();m_def!=m_Meshes.end();m_def++){

@@ -56,8 +56,6 @@ __fastcall TfrmPropertiesObject::TfrmPropertiesObject(TComponent* Owner)
     : TForm(Owner)
 {
     sgBB->Cells[0][0]="X"; sgBB->Cells[0][1]="Y"; sgBB->Cells[0][2]="Z";
-    tx_selected = 0;
-    surf_selected = 0;
     char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
     fsStorage->IniFileName = buf;
     bLoadMode = false;

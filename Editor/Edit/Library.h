@@ -8,11 +8,10 @@
 #include "CustomObject.h"
 #include "pure.h"
 //----------------------------------------------------
-class ETexture;
 class CCustomObject;
 class CEditableObject;
 struct FSChunkDef;
-
+/*
 class CLibObject{
 	friend class 	ELibrary;
 	friend class 	ELibrary;
@@ -56,6 +55,8 @@ public:
 };
 
 DEFINE_VECTOR(CLibObject*, LibObjVect, LibObjIt);
+*/
+DEFINE_MAP_PRED(AnsiString,CEditableObject*,EditObjVec,EditObjPairIt,astr_pred);
 
 //----------------------------------------------------
 class ELibrary:
@@ -65,28 +66,32 @@ class ELibrary:
 	friend class TfrmChoseObject;
 public:
 	bool m_Valid;
-    LibObjVect			m_Objects;
-	CLibObject*			m_Current;
+//	LibObjVect			m_Objects;
+//	CLibObject*			m_Current;
+
+	EditObjVec			m_EditObjects;
+    AStringVec			m_Objects;
+    AnsiString			m_Current;
 protected:
     bool 				Load				();
     void 				Save				();
 public:
 	IC bool 			valid				(){return m_Valid;}
 
-	void 				AddObject			(CLibObject* obj);
-	void 				RemoveObject		(CLibObject* obj);
-	void 				RemoveObject		(LPCSTR name);
+//	void 				AddObject			(CLibObject* obj);
+//	void 				RemoveObject		(CLibObject* obj);
+//	void 				RemoveObject		(LPCSTR name);
 
 	int 				ObjectCount        	();
-	CLibObject*			SearchObject		(const char *name);
-	CEditableObject*	SearchEditObject	(const char *name);
-	CLibObject*			FindObjectByName	(const char *name, const CLibObject* pass_object);
+//	CLibObject*			SearchObject		(const char *name);
+//	CEditableObject*	SearchEditObject	(const char *name);
+//	CLibObject*			FindObjectByName	(const char *name, const CLibObject* pass_object);
 public:
 	void 				Init				();
 	void 				Clear				();
 
-	IC LibObjIt			FirstObj			(){return m_Objects.begin();}
-	IC LibObjIt			LastObj				(){return m_Objects.end();}
+//	IC LibObjIt			FirstObj			(){return m_Objects.begin();}
+//	IC LibObjIt			LastObj				(){return m_Objects.end();}
 
     void 				SaveLibrary			(){Save();}
     void 				ReloadLibrary		();
@@ -94,13 +99,14 @@ public:
     void 				UnloadMeshes		();
     void				ResetAnimation		();
 
-	void 				GenerateObjectName	(char* buffer, const char* start_name, const CLibObject* pass_object);
+//	void 				GenerateObjectName	(char* buffer, const char* start_name, const CLibObject* pass_object);
 
     void				SetCurrentObject	(LPCSTR T);
-    CLibObject*			GetCurrentObject	(){return m_Current;}
+    const AnsiString&	GetCurrentObject	(){return m_Current;}
+    CEditableObject*	GetEditObject		(LPCSTR name);
 
-    bool 				Validate			();
-    void				Clean				();
+//    bool 				Validate			();
+//    void				Clean				();
 
 						ELibrary			();
 	virtual 			~ELibrary			();

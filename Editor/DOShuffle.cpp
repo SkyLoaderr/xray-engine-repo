@@ -181,7 +181,7 @@ void __fastcall TfrmDOShuffle::FormClose(TObject *Sender, TCloseAction &Action)
 	for (DWORD k=0; k<color_indices.size(); k++)
     	_DELETE(color_indices[k]);
     color_indices.clear();
-    _DELETE(sel_thm);
+//S    _DELETE(sel_thm);
 
     if (ModalResult==mrOk)
 		Scene->m_DetailObjects->InvalidateCache();
@@ -194,7 +194,7 @@ void __fastcall TfrmDOShuffle::FormClose(TObject *Sender, TCloseAction &Action)
 void __fastcall TfrmDOShuffle::tvItemsItemSelectedChange(TObject *Sender, TElTreeItem *Item)
 {
 	if (Item==tvItems->Selected) return;
-    _DELETE(sel_thm);
+//S    _DELETE(sel_thm);
 	if (Item&&Item->Data){
 		AnsiString nm = AnsiString("$O_")+Item->Text;
 //S
@@ -207,17 +207,17 @@ void __fastcall TfrmDOShuffle::tvItemsItemSelectedChange(TObject *Sender, TElTre
         lbInfo->Caption			= temp;
 */
     }else{
-		lbItemName->Caption = "...";
-		lbInfo->Caption		= "...";
+		lbItemName->Caption = "-";
+		lbInfo->Caption		= "-";
     }
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmDOShuffle::pbImagePaint(TObject *Sender)
 {
-	if (sel_thm){
 //S
 /*
+	if (sel_thm){
         RECT r; r.left = 2; r.top = 2;
         float w, h;
         w = THUMB_WIDTH;
@@ -225,8 +225,8 @@ void __fastcall TfrmDOShuffle::pbImagePaint(TObject *Sender)
         if (w>h){   r.right = pbImage->Width; r.bottom = h/w*pbImage->Height;
         }else{      r.right = w/h*pbImage->Width; r.bottom = pbImage->Height;}
         sel_thm->DrawStretch(paImage->Handle, &r);
-*/
     }
+*/
 }
 //---------------------------------------------------------------------------
 

@@ -74,9 +74,8 @@ void CFileSystem::Init(){
     m_GameDO.Init	(m_Root,  "game\\data\\meshes\\",	"do",		"Detail object (*.do)|*.do" );
     m_GameTextures.Init(m_Root,"game\\data\\textures\\","dds",		"Textures (*.dds)|*.dds" );
 
-	m_Groups.Init   ( m_Root, "meshes\\",       		"group",	"Groups (*.group)|*.group" );
-	m_Meshes.Init   ( m_Root, "meshes\\",       		"mesh", 	"Meshes (*.mesh)|*.mesh" );
-    m_Objects.Init  ( m_Root, "meshes\\",       		"object",	"Editor objects (*.object,*.lwo)|*.object;*.lwo" );
+	m_Groups.Init   ( m_Root, "objects\\",       		"mesh", 	"Groups (*.group)|*.group" );
+    m_Objects.Init  ( m_Root, "objects\\",       		"object",	"Editor objects (*.object,*.lwo)|*.object;*.lwo" );
 	m_Import.Init  	( m_Root, "import\\",       		"object",	"Import objects (*.object,*.lwo)|*.object;*.lwo" );
 	m_OMotion.Init	( m_Root, "import\\", 		      	"anm",		"Object animation (*.anim)|*.anim" );
 	m_OMotions.Init	( m_Root, "import\\", 		      	"anms",	    "Object animation list (*.anims)|*.anims" );
@@ -84,8 +83,6 @@ void CFileSystem::Init(){
 	m_SMotions.Init	( m_Root, "import\\", 		      	"skls",		"Skeleton motions file (*.skls)|*.skls" );
 	m_Maps.Init     ( m_Root, "maps\\",         		"lv2",  	"Levels (*.lv2)|*.lv2" );
 	m_Textures.Init ( m_Root, "textures\\",     		"bmp",  	"Textures (*.bmp;*.tga)|*.bmp;*.tga" );
-    m_TexturesThumbnail.Init( m_Root, "textures\\thumbnail\\",	"", "" );
-	m_ObjectsThumbnail.Init( m_Root, "textures\\thumbnail\\$object\\","","" );
 	m_Config.Init   ( m_Root, "config\\",       		"",     	"" );
 	m_Temp.Init     ( m_Root, "temp\\",         		"",     	"" );
 }
@@ -349,5 +346,17 @@ AStringVec& CFileSystem::GetDirectories(LPCSTR path)
 	m_FindItems.clear();
 	Recurse			(path);
     return m_FindItems;
+}
+
+void CFileSystem::VerifyPath(LPCSTR path)
+{
+	char tmp[MAX_PATH];
+	for(int i=0;path[i];i++){
+		if( path[i]!='\\' || i==0 )
+			continue;
+		memcpy( tmp, path, i );
+		tmp[i] = 0;
+		CreateDirectory( tmp, 0 );
+	}
 }
 

@@ -150,6 +150,11 @@ struct str_pred : public binary_function<char*, char*, bool>
     IC bool operator()(LPCSTR x, LPCSTR y) const
     {	return strcmp(x,y)<0;	}
 };
+struct astr_pred : public binary_function<AnsiString&, AnsiString&, bool>
+{
+    IC bool operator()(AnsiString& x, AnsiString& y) const
+    {	return x<y;	}
+};
 
 DEFINE_VECTOR(bool,BOOLVec,BOOLIt);
 DEFINE_VECTOR(BYTE,BYTEVec,BYTEIt);

@@ -182,7 +182,7 @@ void __fastcall TfrmChoseItem::sbSelectClick(TObject *Sender)
         select_item.Delete(select_item.Length()-1,2);
 
         if (select_item.IsEmpty()){
-            if (tvItems->Selected&&((DWORD)tvItems->Selected->Data==TYPE_OBJECT)){
+            if (tvItems->Selected&&FOLDER::IsObject(tvItems->Selected)){
                 select_item = tvItems->Selected->Text;
                 Close();
                 ModalResult = mrOk;
@@ -194,7 +194,7 @@ void __fastcall TfrmChoseItem::sbSelectClick(TObject *Sender)
             ModalResult = mrOk;
         }
     }else{
-	    if (tvItems->Selected&&((DWORD)tvItems->Selected->Data==TYPE_OBJECT)){
+	    if (tvItems->Selected&&FOLDER::IsObject(tvItems->Selected)){
     	    FOLDER::MakeName(tvItems->Selected,0,select_item,false);
 	        Close();
     	    ModalResult = mrOk;
@@ -385,24 +385,24 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
 {
 	TElTreeItem* Item = tvItems->Selected;
 	_DELETE(m_Thm);
-	if (Item&&((DWORD)Item->Data==TYPE_OBJECT)){
+	if (Item&&FOLDER::IsObject(Item)){
         if (Mode==smTexture){
 	        AnsiString nm;
         	FOLDER::MakeName		(Item,0,nm,false);
-    	    m_Thm 					= new EImageThumbnail(nm.c_str());
+    	    m_Thm 					= new EImageThumbnail(nm.c_str(),EImageThumbnail::EITTexture);
 	        if (!m_Thm->Valid())	pbImage->Repaint();
             else	 				pbImagePaint(Sender);
 	        lbItemName->Caption 	= "\""+ChangeFileExt(Item->Text,"")+"\"";
     	    lbFileName->Caption 	= "\""+Item->Text+"\"";
-			AnsiString temp; 		temp.sprintf("%d x %d x %s",m_Thm->_Width(),m_Thm->_Height(),m_Thm->_Format().HasAlphaChannel()?"32b":"24b");
+			AnsiString temp; 		temp.sprintf("%d x %d x %s",m_Thm->_Width(),m_Thm->_Height(),m_Thm->_Alpha()?"32b":"24b");
             lbInfo->Caption			= temp;
         }else if (Mode==smObject){
 	        AnsiString nm,fn;
         	FOLDER::MakeName		(Item,0,nm,false);
             fn						= ChangeFileExt(nm,".thm");
-            FS.m_ObjectsThumbnail.Update(fn);
+            FS.m_Objects.Update(fn);
             if (FS.Exist(fn.c_str())){
-	    	    m_Thm 					= new EImageThumbnail(nm.c_str());
+	    	    m_Thm 					= new EImageThumbnail(nm.c_str(),EImageThumbnail::EITObject);
     	        if (!m_Thm->Valid()) 	pbImage->Repaint();
         	    else				 	pbImagePaint(Sender);
             }
@@ -416,9 +416,9 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
             lbInfo->Caption		= "-";
         }
     }else{
-		lbItemName->Caption = "...";
-		lbFileName->Caption	= "...";
-		lbInfo->Caption		= "...";
+		lbItemName->Caption = "-";
+		lbFileName->Caption	= "-";
+		lbInfo->Caption		= "-";
     }
 }
 //---------------------------------------------------------------------------

@@ -45,8 +45,6 @@ void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bCheck){
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmImageLib::CheckImageLib(){
-	ImageManager.SynchronizePath();
-
 	check_tex_list.clear();
     if (ImageManager.GetModifiedFiles(check_tex_list))
     	EditImageLib(AnsiString("Check image params"),true);
@@ -88,7 +86,6 @@ void __fastcall TfrmImageLib::FormClose(TObject *Sender, TCloseAction &Action)
 {
 	if (!form) return;
     form->Enabled = false;
-	form = 0;
 
     SaveTextureParams();
     if (bCheckMode&&!check_tex_list.empty()){
@@ -106,6 +103,7 @@ void __fastcall TfrmImageLib::FormClose(TObject *Sender, TCloseAction &Action)
 
 	_DELETE(m_Thm);
 
+	form = 0;
 	Action = caFree;
 
 	Scene->unlock();
@@ -167,7 +165,7 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
         SaveTextureParams();
 		_DELETE(m_Thm);
         // get new texture
-        m_Thm = new EImageThumbnail(nm.c_str());
+        m_Thm = new EImageThumbnail(nm.c_str(),EImageThumbnail::EITTexture);
         if (!m_Thm->Valid())	pbImage->Repaint();
         else	 				pbImagePaint(Sender);
         lbFileName->Caption 	= "\""+ChangeFileExt(nm,"")+"\"";

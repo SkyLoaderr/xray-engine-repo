@@ -22,7 +22,6 @@
 #include "mxPlacemnt.hpp"
 //---------------------------------------------------------------------------
 // refs
-class ETextureThumbnail;
 class TfrmOneColor;
 
 class TfrmDOShuffle : public TForm
@@ -84,7 +83,7 @@ private:	// User declarations
 	static TfrmDOShuffle* form;
     TElTreeItem* FDragItem;
 
-    ETextureThumbnail* sel_thm;
+//S    ETextureThumbnail* sel_thm;
 
     vector<TfrmOneColor*> color_indices;
 

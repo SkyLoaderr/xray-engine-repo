@@ -10,7 +10,6 @@ struct 	SRayPickInfo;
 class 	CEditableMesh;
 class 	CFrustum;
 class 	Shader;
-class 	ETextureCore;
 class 	CSMotion;
 class 	COMotion;
 class 	CCustomMotion;
@@ -71,7 +70,8 @@ class CEditableObject{
     friend class TfrmPropertiesObject;
     friend class CSector;
     friend class TUI_ControlSectorAdd;
-    friend class CLibObject;
+//    friend class CLibObject;
+	friend class ELibrary;
 
 // general
 	AnsiString		m_ClassScript;
@@ -113,14 +113,15 @@ protected:
 public:
     DWORD			m_LoadState;
 
-	CLibObject*		m_LibParent;
+//	CLibObject*		m_LibParent;
+	AnsiString		m_LibName;
 public:
     // constructor/destructor methods
-					CEditableObject			(CLibObject* parent);
+					CEditableObject			(LPCSTR name);
 	virtual 		~CEditableObject		();
 
-    LPCSTR			GetName					();
-    void			SetName					(LPCSTR name);
+//    LPCSTR			GetName					();
+//    void			SetName					(LPCSTR name);
 
     IC EditMeshIt	FirstMesh				()	{return m_Meshes.begin();}
     IC EditMeshIt	LastMesh				()	{return m_Meshes.end();}

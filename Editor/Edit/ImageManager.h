@@ -14,10 +14,10 @@ class CImageManager{
 public:
 				CImageManager		(){;}
 				~CImageManager		(){;}
-    BOOL		IfChanged			(LPCSTR name);
-	void		Synchronize			(LPCSTR name);  // return some as IfUpdated
-    void		CreateThumbnail		(EImageThumbnail* THM, LPCSTR src_name);
-	void		SynchronizePath		();
+    BOOL		IfChanged			(const AnsiString& name);
+	void		Synchronize			(const AnsiString& name);  // return some as IfUpdated
+    void		CreateThumbnail		(EImageThumbnail* THM, const AnsiString& src_name);
+//	void		SynchronizePath		();
     int			GetModifiedFiles	(AStringVec& files);
     int			GetFiles			(AStringVec& files);
 };

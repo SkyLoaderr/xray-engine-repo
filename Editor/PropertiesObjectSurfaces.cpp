@@ -99,7 +99,8 @@ void __fastcall TfrmPropertiesObject::ebSelectTextureClick(TObject *Sender)
 void __fastcall TfrmPropertiesObject::tvSurfacesItemSelectedChange(
       TObject *Sender, TElTreeItem *Item)
 {
-	if (Item==tvSurfaces->Selected) 	return;
+//S
+/*	if (Item==tvSurfaces->Selected) 	return;
     tx_selected 					= 0;
     surf_selected 					= 0;
     paSurface->Visible 				= Item->Level==1;
@@ -124,8 +125,6 @@ void __fastcall TfrmPropertiesObject::tvSurfacesItemSelectedChange(
 		surf_selected 				= surf;
     }break;
     case 2:
-//S
-/*
         tx_selected = Device.Shader.FindTexture(Item->Text.c_str());
         if (tx_selected){
             lbWidth->Caption = tx_selected->width();
@@ -136,15 +135,17 @@ void __fastcall TfrmPropertiesObject::tvSurfacesItemSelectedChange(
         }else{
         	ELog.DlgMsg(mtInformation,"Texture '%s' not used in current material.",Item->Text.c_str());
         }
-*/    break;
+    break;
     }
+*/
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmPropertiesObject::imPaint(TObject *Sender)
 {
-    if (tx_selected){
 //S
-/*        RECT r; r.left = 1; r.top = 1;
+/*
+    if (tx_selected){
+        RECT r; r.left = 1; r.top = 1;
         float w, h;
         w = tx_selected->width();
         h = tx_selected->height();
@@ -153,7 +154,8 @@ void __fastcall TfrmPropertiesObject::imPaint(TObject *Sender)
         }else{
         	r.right = w/h*im->Width; r.bottom = im->Height;}
 		tx_selected->StretchThumbnail(paImage->Handle, &r);
-*/    }
+    }
+*/
 }
 
 void __fastcall TfrmPropertiesObject::cbSurfSideFlagClick(TObject *Sender)

@@ -61,13 +61,16 @@ struct STextureParams{
     DWORD			fade_color;
     DWORD			fade_amount;
 	DWORD			mip_filter;
-    DWORD			reserved[2];
+    int				width;
+    int				height;
     STextureParams	()
 	{
 		ZeroMemory(this,sizeof(STextureParams));
 		flag.bGenerateMipMaps	= TRUE;
 		flag.bDitherColor		= TRUE;
 		mip_filter				= dMIPFilterBox;
+        width					= 0;
+        height					= 0;
 	}
 	IC BOOL HasAlphaChannel()
 	{
@@ -91,12 +94,12 @@ extern xr_token	tparam_token[];
 extern xr_token	tfmt_token[];
 
 	//----------------------------------------------------
-#define THM_CURRENT_VERSION				0x0011
+#define THM_CURRENT_VERSION				0x0012
 //----------------------------------------------------
 #define THM_CHUNK_VERSION				0x0810
 #define THM_CHUNK_DATA					0x0811
 #define THM_CHUNK_TEXTUREPARAM			0x0812
-#define THM_CHUNK_SIZE					0x0813
+#define THM_CHUNK_TYPE					0x0813
 //----------------------------------------------------
 #define THM_SIGN 		"THM_FILE"
 #define THUMB_WIDTH 	128

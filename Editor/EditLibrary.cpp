@@ -17,6 +17,8 @@
 #include "Texture.h"
 #include "BottomBar.h"
 #include "FolderLib.h"
+#include "ImageManager.h"
+#include "ImageThumbnail.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ElTree"
@@ -177,6 +179,7 @@ void __fastcall TfrmEditLibrary::tvObjectsItemFocused(TObject *Sender)
     }
 	TfrmPropertiesObject::SetCurrent(new_selection);
     m_SelectedObject = new_selection;
+	ZoomObject();
 
     UI.RedrawScene();
 }
@@ -190,6 +193,7 @@ void __fastcall TfrmEditLibrary::cbPreviewClick(TObject *Sender)
     	AnsiString name; FOLDER::MakeName(itm,0,name,false);
         m_SelectedObject = Lib->SearchObject(name.c_str());
 	    ebMakeThm->Enabled = true;
+        ZoomObject();
     }
     UI.RedrawScene();
 }
@@ -348,8 +352,9 @@ void __fastcall TfrmEditLibrary::ebReloadObjectClick(TObject *Sender)
 {
     TElTreeItem* pNode = tvObjects->Selected;
     if (pNode){
-    	if (pNode->Data){
-            CLibObject* obj = (CLibObject*)pNode->Data;
+    	if (FOLDER::IsObject(pNode)){
+	    	AnsiString name; FOLDER::MakeName(pNode,0,name,false);
+    	    CLibObject* obj = Lib->SearchObject(name.c_str());
             if (obj){
 				AnsiString fn = obj->GetSrcName();
 			    if( FS.GetOpenName( &FS.m_Import, fn ) ){
@@ -398,13 +403,14 @@ void __fastcall TfrmEditLibrary::miNewFolderClick(TObject *Sender)
 
 void __fastcall TfrmEditLibrary::miEditFolderClick(TObject *Sender)
 {
-    if (tvObjects->Selected&&!tvObjects->Selected->Data) tvObjects->Selected->EditText();
+    if (tvObjects->Selected&&FOLDER::IsFolder(tvObjects->Selected)) tvObjects->Selected->EditText();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmEditLibrary::tvObjectsDragDrop(TObject *Sender,
       TObject *Source, int X, int Y)
 {
+//S
     TElTreeItem* node;
     node = tvObjects->GetItemAtY(Y);
     if (node&&(!node->Data)&&(!node->IsUnder(FDragItem)))FDragItem->MoveTo(node);
@@ -435,105 +441,31 @@ void __fastcall TfrmEditLibrary::tvObjectsStartDrag(TObject *Sender,
     FDragItem = tvObjects->ItemFocused;
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmEditLibrary::ebSaveObjectOGFClick(TObject *Sender)
-{
-    CEditableObject* _pT = 0;
-    TElTreeItem* pNode = tvObjects->Selected;
-    if (pNode && pNode->Data) _pT = ((CLibObject*)pNode->Data)->GetReference();
-    if (_pT){
-    	if (!_pT->IsDynamic()){
-        	ELog.DlgMsg(mtInformation, "Export only dynamic object!");
-            return;
-        }
-        char buf[MAX_PATH];
-        strcpy(buf,_pT->GetName());
-        if (FS.GetSaveName(&FS.m_GameMeshes,buf)){
-            if (!Builder->SaveObjectOGF(buf,_pT)){
-                ELog.DlgMsg(mtInformation, "Can't save object '%s'.", _pT->GetName());
-            }else{
-                ELog.DlgMsg(mtInformation, "Object '%s' export successfully.", _pT->GetName());
-            }
-        }
-    }else{
-        ELog.DlgMsg(mtInformation, "Select object before save.");
-    }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLibrary::ebSaveObjectSkeletonOGFClick(TObject *Sender)
-{
-    CEditableObject* _pT = 0;
-    TElTreeItem* pNode = tvObjects->Selected;
-    if (pNode && pNode->Data) _pT = ((CLibObject*)pNode->Data)->GetReference();
-    if (_pT){
-    	if (!_pT->IsDynamic()){
-        	ELog.DlgMsg(mtInformation, "Export only dynamic object!");
-            return;
-        }
-        AnsiString buf = AnsiString(_pT->GetName());
-        if (FS.GetSaveName(&FS.m_GameMeshes,buf)){
-            if (!Builder->SaveObjectSkeletonOGF(buf.c_str(),_pT)){
-                ELog.DlgMsg(mtInformation, "Can't save object '%s'.", _pT->GetName());
-            }else{
-            	buf = ChangeFileExt(buf,".ltx");
-            	Builder->SaveObjectSkeletonLTX(buf.c_str(),_pT);
-                ELog.DlgMsg(mtInformation, "Object '%s' export successfully.", _pT->GetName());
-            }
-        }
-    }else{
-        ELog.DlgMsg(mtInformation, "Select object before save.");
-    }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLibrary::ebSaveObjectVCFClick(TObject *Sender)
-{
-    CEditableObject* _pT = 0;
-    TElTreeItem* pNode = tvObjects->Selected;
-    if (pNode && pNode->Data) _pT = ((CLibObject*) pNode->Data)->GetReference();
-    if (_pT){
-    	if (!_pT->IsDynamic()){
-        	ELog.DlgMsg(mtInformation, "Export only dynamic object!");
-            return;
-        }
-        char buf[MAX_PATH];
-        strcpy(buf,_pT->GetName());
-        if (FS.GetSaveName(&FS.m_GameCForms,buf)){
-            if (!Builder->SaveObjectVCF(buf,_pT)){
-                ELog.DlgMsg(mtInformation, "Can't save object '%s'.", _pT->GetName());
-            }else{
-                ELog.DlgMsg(mtInformation, "Object '%s' export successfully.", _pT->GetName());
-            }
-        }
-    }else{
-        ELog.DlgMsg(mtInformation, "Select object before save.");
-    }
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
 {
 	DWORDVec pixels;
     DWORD w,h;
     int src_age = 0;
-	if (tvObjects->Selected&&tvObjects->Selected->Data){
-        CLibObject* LO = (CLibObject*)tvObjects->Selected->Data;
+	if (tvObjects->Selected&&FOLDER::IsObject(tvObjects->Selected)){
+    	AnsiString name; FOLDER::MakeName(tvObjects->Selected,0,name,false);
+   	    CLibObject* LO = Lib->SearchObject(name.c_str());
     	if (LO->IsLoaded()&&cbPreview->Checked){
             AnsiString obj_name, tex_name;
             obj_name = AnsiString(LO->GetName())+AnsiString(".object");
-            tex_name = "$O_"+AnsiString(LO->GetName());
+            tex_name = ChangeFileExt(obj_name,".thm");
             FS.m_Objects.Update(obj_name);
             src_age = FS.GetFileAge(obj_name);
             if (Device.MakeScreenshot(pixels,w,h)){
-//S	            EImageThumbnail tex(tex_name.c_str());
-//S    	        tex.CreateFromData(pixels,w,h,src_age,false,false);
-//S        	    tex.Save(src_age);
+	            EImageThumbnail tex(tex_name.c_str(),EImageThumbnail::EITObject,false);
+    	        tex.CreateFromData(pixels.begin(),w,h);
+        	    tex.Save(src_age);
             	ELog.DlgMsg(mtInformation,"Thumbnail created.");
             }else{
 	            ELog.DlgMsg(mtError,"Can't make screenshot.");
             }
 	    }else{
-            ELog.DlgMsg(mtError,"Can't create thumbnail. Please, set preview mode.");
+            ELog.DlgMsg(mtError,"Can't create thumbnail. Set preview mode.");
         }
     }
 }

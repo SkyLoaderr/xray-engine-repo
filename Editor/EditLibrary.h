@@ -47,9 +47,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ebLoadObject;
 	TExtBtn *ebDeleteObject;
 	TExtBtn *ebProperties;
-	TExtBtn *ebSaveObjectOGF;
-	TExtBtn *ebSaveObjectVCF;
-	TExtBtn *ebSaveObjectSkeletonOGF;
 	TExtBtn *ebReloadObject;
 	TCheckBox *cbPreview;
     void __fastcall ebSaveClick(TObject *Sender);
@@ -71,20 +68,15 @@ __published:	// IDE-managed Components
     void __fastcall tvObjectsStartDrag(TObject *Sender,
           TDragObject *&DragObject);
 //    void __fastcall ebEditObjectClick(TObject *Sender);
-    void __fastcall tvObjectsItemSelectedChange(TObject *Sender,
-          TElTreeItem *Item);
 //    void __fastcall ebApplyEditClick(TObject *Sender);
 //    void __fastcall ebCancelEditClick(TObject *Sender);
     void __fastcall cbPreviewClick(TObject *Sender);
     void __fastcall ebValidateClick(TObject *Sender);
     void __fastcall tvObjectsItemChange(TObject *Sender, TElTreeItem *Item,
           TItemChangeMode ItemChangeMode);
-    void __fastcall ebSaveObjectOGFClick(TObject *Sender);
-    void __fastcall ebSaveObjectVCFClick(TObject *Sender);
 	void __fastcall ebMakeThmClick(TObject *Sender);
 	void __fastcall ebUnloadClick(TObject *Sender);
 	void __fastcall pcItemTypeClick(TObject *Sender);
-	void __fastcall ebSaveObjectSkeletonOGFClick(TObject *Sender);
 	void __fastcall ebReloadObjectClick(TObject *Sender);
 	void __fastcall tvObjectsKeyPress(TObject *Sender, char &Key);
 	void __fastcall tvObjectsItemFocused(TObject *Sender);

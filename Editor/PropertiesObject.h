@@ -26,7 +26,6 @@
 #include <Menus.hpp>
 
 class CLibObject;
-class ETextureCore;
 class CEditMesh;
 class CSurface;
 class CSMotion;
@@ -253,7 +252,7 @@ __published:	// IDE-managed Components
 	void __fastcall seTransformChange(TObject *Sender);
 	void __fastcall ebSelectShaderXRLCClick(TObject *Sender);
 private:	// User declarations
-    ETextureCore* 			tx_selected;
+//S    ETextureCore* 			tx_selected;
     CSurface* 				surf_selected;
 
     CSMotion* 				selected_smotion;

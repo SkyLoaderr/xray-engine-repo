@@ -39,7 +39,6 @@ public:
 	FSPath 	m_GameLevels;
 	FSPath 	m_Maps;
 	FSPath 	m_Import;
-	FSPath 	m_Meshes;
 	FSPath 	m_Groups;
 	FSPath 	m_OMotion;
 	FSPath 	m_SMotion;
@@ -47,8 +46,6 @@ public:
 	FSPath 	m_SMotions;
 	FSPath 	m_Objects;
 	FSPath 	m_Textures;
-	FSPath 	m_TexturesThumbnail;
-	FSPath 	m_ObjectsThumbnail;
 	FSPath 	m_Config;
 	FSPath 	m_Temp;
 public:
@@ -85,6 +82,8 @@ public:
 
     AStringVec&	GetFiles	(LPCSTR path);
 	AStringVec& GetDirectories(LPCSTR path);
+
+    void	VerifyPath		(LPCSTR path);
 };
 extern CFileSystem FS;
 #endif /*_INCDEF_FileSystem_H_*/

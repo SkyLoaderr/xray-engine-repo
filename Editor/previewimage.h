@@ -24,7 +24,7 @@ private:	// User declarations
     float mult;
 public:		// User declarations
     __fastcall TfrmPreviewImage(TComponent* Owner);
-    static int __fastcall Run(ETextureCore* T);
+    static int __fastcall Run();
 };
 //---------------------------------------------------------------------------
 #endif

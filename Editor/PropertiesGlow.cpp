@@ -140,7 +140,8 @@ void __fastcall TfrmPropertiesGlow::pbImagePaint(TObject *Sender)
     if (bValidTex){
         RECT r; r.left = 1; r.top = 1;
         float w, h;
-        ETextureCore tx(lbTexture->Caption.c_str());
+//S
+/*        ETextureCore tx(lbTexture->Caption.c_str());
         if (tx.Valid()){
 	        w = tx.width();
     	    h = tx.height();
@@ -148,6 +149,7 @@ void __fastcall TfrmPropertiesGlow::pbImagePaint(TObject *Sender)
     	    }else{      r.right = h/w*pbImage->Width; r.bottom = pbImage->Height;}
     	    tx.StretchThumbnail(paImage->Handle, &r);
         }
+*/
     }
 }
 //---------------------------------------------------------------------------

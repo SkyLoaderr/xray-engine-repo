@@ -57,7 +57,6 @@ public:
 	}
 } FTLpolygon;
 
-class ETexture;
 class	CTLSprite
 {
 	FTLpolygon		mesh;

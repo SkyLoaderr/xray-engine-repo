@@ -80,7 +80,6 @@ TUI::~TUI()
 
 bool TUI::OnCreate(TD3DWindow* wnd){
     FS.Init			();
-	ImageManager.SynchronizePath();
     Scene           = new EScene();
     Lib             = new ELibrary();
     PSLib			= new CPSLibrary();

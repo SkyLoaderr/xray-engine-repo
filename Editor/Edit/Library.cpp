@@ -21,6 +21,7 @@
 //----------------------------------------------------
 #define CHUNK_LIB_OBJECT_LIST  	0x9d02
 //----------------------------------------------------
+/*
 CLibObject::~CLibObject(){
 	_DELETE(m_EditObject);
 }
@@ -98,10 +99,10 @@ void CLibObject::Load(CStream& F){
 
     R_ASSERT(F.FindChunk(LOBJ_CHUNK_NAMES));
     F.RstringZ	(buf); m_Name=buf;
-    m_FileName = m_Name;
 
     R_ASSERT(F.FindChunk(LOBJ_CHUNK_FOLDER));
     F.RstringZ	(buf); if (buf[0]) m_Name=AnsiString(buf)+AnsiString("\\")+m_Name;
+    m_FileName = m_Name;
 
     if(F.FindChunk(LOBJ_CHUNK_SRCNAME)){
 	    F.RstringZ(buf); m_SrcName=buf;
@@ -119,17 +120,22 @@ void CLibObject::Save(CFS_Base& F){
     F.WstringZ	(m_SrcName.c_str());
     F.close_chunk();
 }
-
+*/
 //----------------------------------------------------
 ELibrary* Lib;
 //----------------------------------------------------
+static bool sort_pred(AnsiString& A, AnsiString& B)
+{	return A<B; }
+//----------------------------------------------------
+
 void ELibrary::SetCurrentObject(LPCSTR T){
-	m_Current = SearchObject(T);
+//	m_Current = SearchObject(T);
 }
 int ELibrary::ObjectCount(){
 	return m_Objects.size();
 }
 //----------------------------------------------------
+/*
 void ELibrary::AddObject(CLibObject* obj){
 	VERIFY( obj );
 	VERIFY( m_Valid );
@@ -152,10 +158,11 @@ void ELibrary::RemoveObject(LPCSTR name){
 	CLibObject* _O = SearchObject(name); R_ASSERT(_O);
     RemoveObject(_O);
 }
+*/
 //----------------------------------------------------
 void ELibrary::UnloadMeshes(){
-    for(LibObjIt it=FirstObj(); it!=LastObj(); it++)
-        _DELETE((*it)->m_EditObject);
+//    for(LibObjIt it=FirstObj(); it!=LastObj(); it++)
+//        _DELETE((*it)->m_EditObject);
 }
 //----------------------------------------------------
 void ELibrary::ReloadLibrary(){
@@ -164,11 +171,21 @@ void ELibrary::ReloadLibrary(){
 }
 //----------------------------------------------------
 void ELibrary::RefreshLibrary(){
-    for(LibObjIt it=FirstObj(); it!=LastObj(); it++)
-		(*it)->Refresh();
+//    for(LibObjIt it=FirstObj(); it!=LastObj(); it++)
+//		(*it)->Refresh();
 }
 //----------------------------------------------------
-bool ELibrary::Load(){
+bool ELibrary::Load()
+{
+    int count = strlen(FS.m_Objects.m_Path);
+    AStringVec& lst = FS.GetFiles(FS.m_Objects.m_Path);
+    for (AStringIt it=lst.begin(); it!=lst.end(); it++){
+	    AnsiString ext = ExtractFileExt(*it).LowerCase();
+        if (ext=="object") m_Objects.push_back(it->Delete(1,count));
+    }
+	std::sort(m_Objects.begin(),m_Objects.end(),sort_pred);
+    return !m_Objects.empty();
+/*
   	char _FileName[MAX_PATH]="library";
     FS.m_Meshes.Update(_FileName);
 
@@ -205,10 +222,12 @@ bool ELibrary::Load(){
 		return true;
     }
 	return false;
+*/
 }
 //----------------------------------------------------
 
 void ELibrary::Save(){
+/*
   	char _FileName[MAX_PATH]="library";
     FS.m_Meshes.Update(_FileName);
 
@@ -228,6 +247,7 @@ void ELibrary::Save(){
     F.close_chunk	();
 
     F.SaveTo		(_FileName,"LIBRARY");
+*/
 }
 
 void ELibrary::Init(){
@@ -242,7 +262,7 @@ void ELibrary::Clear(){
 
 	m_Current = 0;
 
-    for(LibObjIt it=FirstObj(); it!=LastObj(); it++) _DELETE( *it );
+//    for(LibObjIt it=FirstObj(); it!=LastObj(); it++) _DELETE( *it );
 
     m_Objects.clear();
 	ELog.Msg( mtInformation, "Lib: cleared" );
@@ -258,13 +278,20 @@ ELibrary::ELibrary(){
 ELibrary::~ELibrary(){
 	Device.seqDevCreate.Remove(this);
 	Device.seqDevDestroy.Remove(this);
+    // remove all instance edit object
+	EditObjPairIt O = m_EditObjects.begin();
+	EditObjPairIt E = m_EditObjects.end();
+    for(; O!=E; O++) delete O->second;
+	m_EditObjects.clear();
 	m_Objects.clear();
 	VERIFY( m_Valid == false );
 }
 
 //----------------------------------------------------
+/*
 CLibObject *ELibrary::SearchObject(const char *name){
 	if (!name) return 0;
+    m_Objects.
     for(LibObjIt it=FirstObj(); it!=LastObj(); it++)
         if((0==strcmp((*it)->m_Name.c_str(),name))) return *it;
 	return 0;
@@ -339,14 +366,40 @@ void ELibrary::Clean(){
 	    FindClose(sr);
 	}
 }
-
+*/
 void ELibrary::OnDeviceCreate(){
-    for(LibObjIt it=FirstObj(); it!=LastObj(); it++)
-    	if ((*it)->IsLoaded()) (*it)->GetReference()->OnDeviceCreate();
+	EditObjPairIt O = m_EditObjects.begin();
+	EditObjPairIt E = m_EditObjects.end();
+    for(; O!=E; O++)
+    	O->second->OnDeviceCreate();
 }
 
 void ELibrary::OnDeviceDestroy(){
-    for(LibObjIt it=FirstObj(); it!=LastObj(); it++)
-    	if ((*it)->IsLoaded()) (*it)->GetReference()->OnDeviceDestroy();
+	EditObjPairIt O = m_EditObjects.begin();
+	EditObjPairIt E = m_EditObjects.end();
+    for(; O!=E; O++)
+    	O->second->OnDeviceDestroy();
 }
+
+CEditableObject* ELibrary::GetEditObject(LPCSTR name)
+{
+	AStringIt P = lower_bound(m_Objects.begin(),m_Objects.end(),AnsiString(name),sort_pred);
+    if (P==m_Objects.end()) return 0;
+	EditObjPairIt it = m_EditObjects.find(AnsiString(name));
+    if (it==m_EditObjects.end()){
+    	CEditableObject* m_EditObject = new CEditableObject(name);
+        AnsiString fn=ChangeFileExt(name,".object");
+		FS.m_Objects.Update(fn);
+	    if (FS.Exist(fn.c_str(), true))
+	        if (m_EditObject->Load(fn.c_str())){
+            	m_EditObject->m_ObjVer.f_age = FS.GetFileAge(fn);
+                m_EditObjects[name] = m_EditObject;
+            	return m_EditObject;
+            }
+        _DELETE(m_EditObject);
+    }
+	return 0;
+}
+
+
 

@@ -38,15 +38,13 @@ bool CreateBitmap(HDC hdc, HBITMAP& th, DWORDVec& data, int w, int h){
 }
 //----------------------------------------------------
 
-EImageThumbnail::EImageThumbnail(LPCSTR src_name)
+EImageThumbnail::EImageThumbnail(LPCSTR src_name, THMType type, bool bLoad)
 {
-	m_Width	= 0;
-    m_Height= 0;
+	m_Type	= type;
 	m_Name 	= ChangeFileExt(src_name,".thm");
     m_Age	= 0;
-//    ZeroMemory(&m_TexParams,sizeof(m_TexParams));
-    if (!Load())
-		ImageManager.CreateThumbnail(this,src_name);
+    if (bLoad)
+		if (!Load()&&IsTexture()) ImageManager.CreateThumbnail(this,src_name);
 }
 
 EImageThumbnail::~EImageThumbnail()
@@ -55,19 +53,21 @@ EImageThumbnail::~EImageThumbnail()
 }
 
 void EImageThumbnail::CreateFromData(LPDWORD p, int w, int h){
-	R_ASSERT(p&&(w<=0)&&(h<=0));
+	R_ASSERT(p&&(w>0)&&(h>0));
 //	imf_filter	imf_box  imf_triangle  imf_bell  imf_b_spline  imf_lanczos3  imf_mitchell
 	m_Pixels.resize(THUMB_SIZE);
 	imf_Process(m_Pixels.begin(),THUMB_WIDTH,THUMB_HEIGHT,p,w,h,imf_box);
-	m_Width  	= w;
-    m_Height	= h;
+    m_TexParams.width = w;
+    m_TexParams.height= h;
 }
 
 bool EImageThumbnail::Load()
 {
 	AnsiString fn = m_Name;
-	FS.m_TexturesThumbnail.Update(fn);
-
+    switch (m_Type){
+    case EITObject: FS.m_Objects.Update(fn); 	break;
+    case EITTexture:FS.m_Textures.Update(fn); 	break;
+    }
     if (!FS.Exist(fn.c_str())) return false;
     CFileStream FN(fn.c_str());
     char MARK[8]; FN.Read(MARK,8);
@@ -87,17 +87,14 @@ bool EImageThumbnail::Load()
     }
 
     R_ASSERT(F.FindChunk(THM_CHUNK_DATA));
-    int sz = F.Rdword();
-    m_Pixels.resize(sz);
-    F.Read(m_Pixels.begin(),sz*sizeof(DWORD));
+    m_Pixels.resize(THUMB_SIZE);
+    F.Read(m_Pixels.begin(),THUMB_SIZE*sizeof(DWORD));
 
     R_ASSERT(F.FindChunk(THM_CHUNK_TEXTUREPARAM));
     F.Read(&m_TexParams,sizeof(STextureParams));
 
-    if (F.FindChunk(THM_CHUNK_SIZE)){
-	    m_Width = F.Rdword();
-    	m_Height= F.Rdword();
-	}
+    R_ASSERT(F.FindChunk(THM_CHUNK_TYPE));
+    m_Type	= THMType(F.Rdword());
 
     m_Age = FS.GetFileAge(fn);
 
@@ -113,7 +110,6 @@ void EImageThumbnail::Save(int age){
 	F.close_chunk	();
 
 	F.open_chunk	(THM_CHUNK_DATA);
-    F.Wdword		(THUMB_SIZE);
     F.write			(m_Pixels.begin(),m_Pixels.size()*sizeof(DWORD));
 	F.close_chunk	();
 
@@ -121,13 +117,16 @@ void EImageThumbnail::Save(int age){
     F.write			(&m_TexParams,sizeof(STextureParams));
 	F.close_chunk	();
 
-    F.open_chunk	(THM_CHUNK_SIZE);
-    F.Wdword		(m_Width);
-    F.Wdword		(m_Height);
+    F.open_chunk	(THM_CHUNK_TYPE);
+    F.Wdword		(m_Type);
 	F.close_chunk	();
 
 	AnsiString fn 	= m_Name;
-	FS.m_TexturesThumbnail.Update(fn);
+    switch (m_Type){
+    case EITObject: FS.m_Objects.Update(fn); 	break;
+    case EITTexture:FS.m_Textures.Update(fn); 	break;
+    }
+	FS.VerifyPath	(fn.c_str());
 
     F.SaveTo		(fn.c_str(),THM_SIGN);
 
