@@ -58,7 +58,7 @@ bool CRestrictedObject::accessible		(u32 vertex_id) const
 
 u32	CRestrictedObject::accessible_nearest	(const Fvector &position, Fvector &result) const
 {
-#pragma todo("Dima to Dima : Optimize in case of slowdown")
+#pragma todo("Dima to Dima : Warning : this place can be optimized in case of a slowdown")
 	VERIFY	(!accessible(position));
 	const xr_vector<u32> &border = Level().space_restrictor_manager().restriction(ID())->border();
 
@@ -92,7 +92,9 @@ u32	CRestrictedObject::accessible_nearest	(const Fvector &position, Fvector &res
 			}
 		}
 		selected	= new_selected;
-
+	}
+	VERIFY	(ai().level_graph().valid_vertex_id(selected));
+	{
 		Fvector		center = ai().level_graph().vertex_position(selected);
 		float		offset = ai().level_graph().header().cell_size()*.5f;
 		bool		found = false;
@@ -118,6 +120,7 @@ u32	CRestrictedObject::accessible_nearest	(const Fvector &position, Fvector &res
 				found = true;
 			}
 		}
+		VERIFY	(found);
 	}
 	VERIFY	(ai().level_graph().valid_vertex_id(selected));
 	return	(selected);
