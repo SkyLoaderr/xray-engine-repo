@@ -139,10 +139,10 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 			case fcvPartial:	// addition with TEST
 				{
 					for (int sp_id=0; sp_id<dm_obj_in_slot; sp_id++)
-					{
+					{                                                                 
 						SlotPart&			sp	= S.G		[sp_id];
 						if (sp.id==0xff)	continue;
-						vector<SlotItem*>&	vis = m_Visible	[sp.id];
+						vector<SlotItem*>&	vis = m_Visible	[sp.id];			R_ASSERT(sp.id<m_Objects.size());
 						float				R   = m_Objects	[sp.id]->m_fRadius;
 
 						SlotItem			*siIT=sp.items.begin(), *siEND=sp.items.end();
@@ -174,7 +174,7 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 					{
 						SlotPart&			sp	= S.G		[sp_id];
 						if (sp.id==0xff)	continue;
-						vector<SlotItem*>&	vis = m_Visible	[sp.id];
+						vector<SlotItem*>&	vis = m_Visible	[sp.id];            R_ASSERT(sp.id<m_Objects.size());
 						float				R   = m_Objects	[sp.id]->m_fRadius;
 
 						SlotItem			*siIT=sp.items.begin(), *siEND=sp.items.end();
@@ -218,6 +218,7 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 		vector<SlotItem*>&	vis = m_Visible	[O];
 		if (vis.empty())	continue;
 
+		R_ASSERT(O<m_Objects.size());
 		CDetail&	Object		= *m_Objects[O];
 		DWORD	vCount_Object	= Object.m_Vertices.size();
 		DWORD	iCount_Object	= Object.m_Indices.size();
@@ -490,6 +491,7 @@ void CDetailManager::UpdateCache	(int limit)
 				Item.P.y	= y;
 
 				// Angles and scale
+				R_ASSERT(ID<m_Objects.size());
 				Item.scale	= r_scale.randF		(m_Objects[ID]->m_fMinScale,m_Objects[ID]->m_fMaxScale);
 				Item.phase_x= ::Random.randFs	(phase_range);
 				Item.phase_z= ::Random.randF	(phase_range);

@@ -7,6 +7,7 @@
 
 #include "Builder.h"
 #include "Scene.h"
+#include "WayPoint.h"
 #include "RPoint.h"
 #include "Event.h"
 #include "net_utils.h"
@@ -14,7 +15,7 @@
 
 bool SceneBuilder::BuildGame()
 {
-    CFS_Memory F;
+    CFS_Memory SPAWN;
 	int chunk = 0;
     // add event
 	if (Scene.ObjCount(OBJCLASS_EVENT)) {
@@ -64,9 +65,9 @@ bool SceneBuilder::BuildGame()
             u16 size			= u16(Packet.w_tell()-position);
             Packet.w_seek		(position,&size,sizeof(u16));
 
-            F.open_chunk		(chunk);
-            F.write				(Packet.B.data,Packet.B.count);
-            F.close_chunk		();
+            SPAWN.open_chunk	(chunk);
+            SPAWN.write			(Packet.B.data,Packet.B.count);
+            SPAWN.close_chunk	();
 
             chunk++;
 		}
@@ -101,9 +102,9 @@ bool SceneBuilder::BuildGame()
 				u16 size			= u16(Packet.w_tell()-position);
                 Packet.w_seek		(position,&size,sizeof(u16));
 
-                F.open_chunk		(chunk);
-                F.write				(Packet.B.data,Packet.B.count);
-                F.close_chunk		();
+                SPAWN.open_chunk	(chunk);
+                SPAWN.write			(Packet.B.data,Packet.B.count);
+                SPAWN.close_chunk	();
 
             	chunk++;
             }
@@ -112,8 +113,36 @@ bool SceneBuilder::BuildGame()
     if (chunk){
 	    AnsiString lev_spawn="level.spawn";
     	m_LevelPath.Update(lev_spawn);
-	    F.SaveTo(lev_spawn.c_str(),0);
+	    SPAWN.SaveTo(lev_spawn.c_str(),0);
     }
+// game
+	CFS_Memory GAME;
+	// way points
+	if (Scene.ObjCount(OBJCLASS_WAY)) {
+		ObjectIt _F  = Scene.FirstObj(OBJCLASS_WAY);
+        ObjectIt _E  = Scene.LastObj(OBJCLASS_WAY);
+        AnsiString temp;
+        for (EWayType t=0; t<wtMaxType; t++){
+        	GAME.open_chunk(t+0x1000);
+        	chunk=0;
+	        for(ObjectIt it=_F; it!=_E; it++){
+    	    	CWayObject* P = (CWayObject*)(*it);
+                if (P->GetType()==t){
+					GAME.open_chunk(chunk);
+                    P->Export(GAME);
+					GAME.close_chunk();
+                    chunk++;
+                }
+			}
+        	GAME.close_chunk();
+        }
+    }
+    if (GAME.size()){
+	    AnsiString lev_game="level.game";
+    	m_LevelPath.Update(lev_game);
+	    GAME.SaveTo(lev_game.c_str(),0);
+    }
+
     return true;
 }
 

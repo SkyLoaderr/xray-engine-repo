@@ -38,8 +38,10 @@ void __fastcall TfrmOneColor::mcColorMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	DWORD color = ((TMultiObjColor*)Sender)->Brush->Color;
-	if (SelectColorWin(&color))
+	if (SelectColorWin(&color)){
     	((TMultiObjColor*)Sender)->_Set(color);
+		m_Parent->ModifColorInd();
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -73,6 +75,7 @@ void __fastcall TfrmOneColor::tvDOListDragDrop(TObject *Sender,
       TObject *Source, int X, int Y)
 {
     tvDOList->Items->Add(0,m_Parent->FDragItem->Text);
+	m_Parent->ModifColorInd();
 }
 //---------------------------------------------------------------------------
 

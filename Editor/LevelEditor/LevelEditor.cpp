@@ -214,6 +214,7 @@ USEUNIT("Engine\Blenders\Blender_Shadow_World.cpp");
 USEFORM("TextForm.cpp", frmText);
 USEFORM("PropertiesWayPoint.cpp", frmPropertiesWayPoint);
 USEUNIT("edit\CustomObjectLE.cpp");
+USEUNIT("Engine\Blenders\Blender_Blur.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

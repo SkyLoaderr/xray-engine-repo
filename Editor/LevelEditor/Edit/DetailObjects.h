@@ -62,6 +62,7 @@ class CDetail{
     bool				m_bSideFlag;
 
     // references
+    AnsiString			m_sRefs;
 	CEditableObject*	m_pRefs;
 
 	int 				_AddVert		(const Fvector& p, float u, float v);
@@ -226,14 +227,14 @@ public:
     float				m_fDensity;
 
     void				SaveColorIndices		(CFS_Base&);
-    void				LoadColorIndices		(CStream&);
+    bool				LoadColorIndices		(CStream&);
 public:
 						CDetailManager			();
     virtual 			~CDetailManager			();
 
     bool				Load            		(CStream&);
     void				Save            		(CFS_Base&);
-    void				Export          		(LPCSTR fn);
+    bool				Export          		(LPCSTR fn);
 
     bool				UpdateBBox				();
     bool				UpdateBaseTexture		(LPCSTR tex_name=0);
@@ -244,7 +245,7 @@ public:
     void				InvalidateSlots			();
 
     CDetail*			AppendObject			(LPCSTR name, bool bTestUnique=true);
-    void				RemoveObjects			(bool bOnlyMarked=false);
+    int					RemoveObjects			(bool bOnlyMarked=false);
     CDetail*			FindObjectByName		(LPCSTR name);
     void				MarkAllObjectsAsDel		();
 

@@ -198,11 +198,11 @@ void DrawDirectionalLight(const Fvector& p, const Fvector& d, float radius, floa
 	// and Render it as triangle list
     Device.DP		(D3DPT_LINELIST,LStream,vBase,3);
 
-    Fbox b;
+    Fbox b;                                       
     b.min.set(-r,-r,-r);
     b.max.set(r,r,r);
 
-    DrawSelectionBox(b,&c);
+	DrawLineSphere	( p, radius, c, true );
 }
 
 void DrawPointLight(const Fvector& p, float radius, DWORD c)

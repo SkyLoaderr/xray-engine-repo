@@ -23,7 +23,7 @@ class CWayPoint{
     bool		DeleteLink		(CWayPoint* P);
 public:
                 CWayPoint		();
-    void    	Render      	();
+    void    	Render      	(bool bParentSelect);
     bool    	RayPick	    	(float& distance, Fvector& S, Fvector& D);
     bool 		FrustumPick		(const CFrustum& frustum);
     bool 		FrustumSelect	(int flag, const CFrustum& frustum);
@@ -49,6 +49,8 @@ public:
     void            Construct   	();
 	virtual			~CWayObject		();
     void			Clear			();
+
+    EWayType		GetType			(){return m_Type;}
 
 	virtual void 	Select			(int flag);
 	virtual bool 	RaySelect		(int flag, Fvector& start,Fvector& dir, bool bRayTest=false); // flag 1,0,-1 (-1 invert)

@@ -96,7 +96,7 @@ bool CLight::GetBox( Fbox& box ){
     }
 	box.set( m_D3D.position, m_D3D.position );
 	box.min.sub(m_D3D.range);
-	box.max.add(m_D3D.range);
+	box.max.add(m_D3D.range);                                           
 	return true;
 }
 

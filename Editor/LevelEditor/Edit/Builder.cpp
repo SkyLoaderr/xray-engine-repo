@@ -117,7 +117,10 @@ bool SceneBuilder::MakeDetails(bool bOkMessage){
         AnsiString fn="level.details";
         m_LevelPath.Update(fn);
         // save details
-		Scene.m_DetailObjects->Export(fn.c_str());
+		if (!Scene.m_DetailObjects->Export(fn.c_str())){
+			error_text="Export failed.";
+            error_flag=true;
+        };
     }while(0);
 	if( error_flag )  	ELog.DlgMsg(mtError,error_text.c_str());
     else				if (bOkMessage) ELog.DlgMsg(mtInformation,"Details succesfully exported.");

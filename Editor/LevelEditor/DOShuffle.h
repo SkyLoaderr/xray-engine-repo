@@ -93,6 +93,8 @@ private:	// User declarations
     void GetInfo();
     void ApplyInfo();
 
+    bool bColorIndModif;
+    void ModifColorInd(){bColorIndModif=true;}
 public:		// User declarations
     __fastcall TfrmDOShuffle(TComponent* Owner);
 // static function

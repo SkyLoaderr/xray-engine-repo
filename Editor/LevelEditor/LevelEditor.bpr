@@ -99,7 +99,7 @@
       intermediate\Blender_Shadow_Texture.obj intermediate\PropertiesGroup.obj 
       intermediate\FrameEvent.obj intermediate\Blender_Shadow_World.obj 
       intermediate\TextForm.obj intermediate\PropertiesWayPoint.obj 
-      intermediate\CustomObjectLE.obj"/>
+      intermediate\CustomObjectLE.obj intermediate\Blender_Blur.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>

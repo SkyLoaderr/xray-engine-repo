@@ -79,7 +79,8 @@ bool CCustomObject::Load(CStream& F)
         F.Rvector	(FScale);
     }
 
-    UpdateTransform();
+    UpdateTransform	(true);
+	m_bUpdateTransform = TRUE;
 
 	return true;
 }

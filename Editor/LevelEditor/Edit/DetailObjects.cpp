@@ -67,6 +67,7 @@ CDetail::CDetail(){
     m_fMinScale			= 0.5f;
     m_fMaxScale         = 2.f;
     m_fDensityFactor	= 1.f;
+    m_sRefs				= "";
 }
 
 CDetail::~CDetail(){
@@ -75,11 +76,11 @@ CDetail::~CDetail(){
 }
 
 LPCSTR CDetail::GetName	(){
-	R_ASSERT(m_pRefs);
-    return m_pRefs->GetName();
+    return m_pRefs?m_pRefs->GetName():m_sRefs.c_str();
 }
 
 void CDetail::OnDeviceCreate(){
+	if (!m_pRefs)		return;
     CSurface* surf		= *m_pRefs->FirstSurface();
     VERIFY				(surf);
     VERIFY				(surf->_Shader());
@@ -100,21 +101,26 @@ int CDetail::_AddVert(const Fvector& p, float u, float v)
 }
 
 bool CDetail::Update	(LPCSTR name){
+	m_sRefs				= name;
     // update link
-    Lib.RemoveEditObject(m_pRefs);
-    m_pRefs				= Lib.CreateEditObject(name);
-    if (!m_pRefs){
+    CEditableObject* R	= Lib.CreateEditObject(name);
+    if (!R){
         ELog.DlgMsg		(mtError, "CDetail: '%s' not found in library", name);
         return false;
     }
-    if(m_pRefs->SurfaceCount()!=1){
+    if(R->SurfaceCount()!=1){
     	ELog.DlgMsg		(mtError,"Object must contain 1 material.");
+	    Lib.RemoveEditObject(R);
     	return false;
     }
-	if(m_pRefs->MeshCount()==0){
+	if(R->MeshCount()==0){
     	ELog.DlgMsg		(mtError,"Object must contain 1 mesh.");
+	    Lib.RemoveEditObject(R);
     	return false;
     }
+
+    Lib.RemoveEditObject(m_pRefs);
+    m_pRefs				= R;
 
     // get surface
     CSurface* surf		= *m_pRefs->FirstSurface();
@@ -186,9 +192,8 @@ void CDetail::Save(CFS_Base& F){
     F.close_chunk		();
 
     // reference
-	R_ASSERT			(m_pRefs);
 	F.open_chunk		(DETOBJ_CHUNK_REFERENCE);
-    F.WstringZ			(m_pRefs->GetName());
+    F.WstringZ			(m_sRefs.c_str());
     F.close_chunk		();
 
 	// scale
@@ -719,9 +724,9 @@ void CDetailManager::InvalidateSlots(){
     InvalidateCache();
 }
 
-void CDetailManager::RemoveObjects(bool bOnlyMarked){
+int CDetailManager::RemoveObjects(bool bOnlyMarked){
+	int cnt=0;
 	if (bOnlyMarked){
-    	int cnt=0;
 		for (DWORD i=0; i<m_Objects.size(); i++){  // не менять int i; на DWORD
     		if (m_Objects[i]->m_bMarkDel){
             	_DELETE(m_Objects[i]);
@@ -730,15 +735,13 @@ void CDetailManager::RemoveObjects(bool bOnlyMarked){
                 cnt++;
             }
         }
-        if (cnt>0){
-	        ELog.DlgMsg(mtInformation,"Object list changed. Update objects needed!");
-    	    InvalidateSlots();
-        }
     }else{
 		for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
     		_DELETE(*it);
+        cnt = m_Objects.size();
 	    m_Objects.clear();
     }
+    return cnt;
 }
 
 void CDetailManager::RemoveColorIndices(){
@@ -812,7 +815,7 @@ void CDetailManager::SaveColorIndices(CFS_Base& F)
     F.close_chunk		();
 }
 
-void CDetailManager::LoadColorIndices(CStream& F)
+bool CDetailManager::LoadColorIndices(CStream& F)
 {
     // objects
     CStream* OBJ 		= F.OpenChunk(DETMGR_CHUNK_OBJECTS);
@@ -820,12 +823,8 @@ void CDetailManager::LoadColorIndices(CStream& F)
         CStream* O   	= OBJ->OpenChunk(0);
         for (int count=1; O; count++) {
             CDetail* DO = new CDetail();
-            if (DO->Load(*O)){
-                m_Objects.push_back(DO);
-            }else{
-                ELog.Msg(mtError,"Can't load detail object.");
-                _DELETE(DO);
-            }
+            if (!DO->Load(*O)) ELog.Msg(mtError,"Can't load detail object.");
+			m_Objects.push_back(DO);
             O->Close();
             O = OBJ->OpenChunk(count);
         }
@@ -846,6 +845,8 @@ void CDetailManager::LoadColorIndices(CStream& F)
             if (DO) 	m_ColorIndices[index].push_back(DO);
         }
     }
+
+    return true;
 }
 
 bool CDetailManager::Load(CStream& F){
@@ -946,7 +947,9 @@ void CDetailManager::Save(CFS_Base& F){
     F.close_chunk		();
 }
 
-void CDetailManager::Export(LPCSTR fn){
+bool CDetailManager::Export(LPCSTR fn){
+    bool bRes=true;
+
     UI.ProgressStart	(4,"Making details...");
     m_Header.version	= DETAIL_VERSION;
 	CFS_Memory F;
@@ -959,21 +962,31 @@ void CDetailManager::Export(LPCSTR fn){
 	F.open_chunk		(DETMGR_CHUNK_OBJECTS);
     for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
 		F.open_chunk	(it-m_Objects.begin());
-        (*it)->Export	(F);
+        if (!(*it)->m_pRefs){
+        	ELog.DlgMsg(mtError, "Bad object or object not found '%s'.", (*it)->m_sRefs.c_str());
+            bRes=false;
+        }else{
+	        (*it)->Export	(F);
+        }
 	    F.close_chunk	();
+        if (!bRes) break;
     }
     F.close_chunk		();
 	UI.ProgressInc();
 
     // slots
-	F.open_chunk		(DETMGR_CHUNK_SLOTS);
-	F.write				(m_Slots.begin(),m_Slots.size()*sizeof(DetailSlot));
-    F.close_chunk		();
-	UI.ProgressInc();
+    if (bRes){
+		F.open_chunk	(DETMGR_CHUNK_SLOTS);
+		F.write			(m_Slots.begin(),m_Slots.size()*sizeof(DetailSlot));
+	    F.close_chunk	();
+		UI.ProgressInc	();
+    }
 
-    F.SaveTo			(fn,0);
+    if (bRes)			F.SaveTo(fn,0);
+
 	UI.ProgressInc();
     UI.ProgressEnd		();
+    return bRes;
 }
 
 //------------------------------------------------------------------------------
@@ -1021,6 +1034,7 @@ void CDetailManager::SBase::CreateFromObjects(const Fbox& box, ObjectList& lst)
 void CDetailManager::SBase::Render()
 {
 	if (!Valid()) return;
+    Device.RenderNearer(0.001f);
 	Device.SetTransform(D3DTS_WORLD,Fidentity);
     Device.SetShader((fraBottomBar->miDrawDOBlended->Checked)?shader_blended:shader_overlap);
     div_t cnt = div(mesh.size(),MAX_BUF_SIZE);
@@ -1037,6 +1051,7 @@ void CDetailManager::SBase::Render()
 	    stream->Unlock(cnt.rem);
     	Device.DP(D3DPT_TRIANGLELIST,stream,vBase,cnt.rem/3);
     }
+    Device.ResetNearer();
 }
 
 void CDetailManager::SBase::CreateShader()

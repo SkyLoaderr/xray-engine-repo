@@ -12,9 +12,6 @@
 #include "UI_Tools.h"
 #include "FrameWayPoint.h"
 
-#define WAY_VERSION				0x0012
-//----------------------------------------------------
-#define WAY_CHUNK_VERSION		0x0001
 //----------------------------------------------------
 
 #define WAYPOINT_SIZE 	1.5f
@@ -38,7 +35,7 @@ void CWayPoint::GetBox(Fbox& bb)
     bb.min.x-=WAYPOINT_RADIUS;
     bb.min.z-=WAYPOINT_RADIUS;
 }
-void CWayPoint::Render()
+void CWayPoint::Render(bool bParentSelect)
 {
 	Fvector pos;
     pos.set	(m_vPosition.x,m_vPosition.y+WAYPOINT_SIZE*0.85f,m_vPosition.z);
@@ -51,7 +48,7 @@ void CWayPoint::Render()
 	    p2.set	(O->m_vPosition.x,O->m_vPosition.y+WAYPOINT_SIZE*0.85f,O->m_vPosition.z);
     	DU::DrawLink(p1,p2,0.25f,0xffffff00);
     }
-	if (m_bSelected){
+	if (bParentSelect&&m_bSelected){
     	Fbox bb; GetBox(bb);
         DWORD clr = 0xffffffff;
 		DU::DrawSelectionBox(bb,&clr);
@@ -266,7 +263,9 @@ void CWayObject::RemoveSelectedPoints()
     }
 	for (int i=0; i<(int)m_WayPoints.size(); i++)
     	if (m_WayPoints[i]->m_bSelected){
-			m_WayPoints.erase(m_WayPoints.begin()+i);
+        	WPIt it = m_WayPoints.begin()+i;
+        	_DELETE(*it);
+			m_WayPoints.erase(it);
             i--;
         }
     // remove object from scene if empty?
@@ -303,6 +302,7 @@ void CWayObject::Select(int flag)
 {
 	inherited::Select(flag);
     if (flag==0) for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++) (*it)->Select(0);
+    if ((flag==1)&&(m_WayPoints.size()==1)) for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++) (*it)->Select(1);
 }
 
 bool CWayObject::RaySelect(int flag, Fvector& start,Fvector& dir, bool bRayTest)
@@ -373,7 +373,7 @@ void CWayObject::Render(int priority, bool strictB2F)
 		Fbox bb; GetBox(bb);
         Fvector C; float S; bb.getsphere(C,S);
         if (Device.m_Frustum.testSphere(C,S)){
-			for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++) (*it)->Render();
+			for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++) (*it)->Render(Selected());
             if( Selected() ){
                 DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
                 DU::DrawSelectionBox(bb,&clr);
@@ -411,8 +411,9 @@ bool CWayObject::Load(CStream& F)
 	DWORD version = 0;
 	char buf[1024];
 
-    R_ASSERT(F.ReadChunk(WAY_CHUNK_VERSION,&version));
-    if(version!=WAY_VERSION){
+    if (!F.FindChunk(WAYOBJECT_CHUNK_VERSION)) return false;
+    R_ASSERT(F.ReadChunk(WAYOBJECT_CHUNK_VERSION,&version));
+    if(version!=WAYOBJECT_VERSION){
         ELog.DlgMsg( mtError, "CWayPoint: Unsupported version.");
         return false;
     }
@@ -447,8 +448,8 @@ void CWayObject::Save(CFS_Base& F)
 {
 	CCustomObject::Save(F);
 
-	F.open_chunk	(WAY_CHUNK_VERSION);
-	F.Wword			(WAY_VERSION);
+	F.open_chunk	(WAYOBJECT_CHUNK_VERSION);
+	F.Wword			(WAYOBJECT_VERSION);
 	F.close_chunk	();
 
     int l_cnt		= 0;
@@ -482,6 +483,10 @@ void CWayObject::Save(CFS_Base& F)
 }
 
 void CWayObject::Export(CFS_Base& F){
+	F.open_chunk	(WAYOBJECT_CHUNK_VERSION);
+	F.Wword			(WAYOBJECT_VERSION);
+	F.close_chunk	();
+
     F.open_chunk	(WAYOBJECT_CHUNK_NAME);
     F.WstringZ		(Name);
     F.close_chunk	();
@@ -497,7 +502,6 @@ void CWayObject::Export(CFS_Base& F){
     	CWayPoint* W = *it;
 		F.Wvector	(W->m_vPosition);
         F.Wdword	(W->m_dwFlags);
-        F.Wword		(W->m_bSelected);
         l_cnt		+= W->m_Links.size();
     }
 	F.close_chunk	();

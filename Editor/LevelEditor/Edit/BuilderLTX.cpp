@@ -153,36 +153,6 @@ bool SceneBuilder::BuildLTX(){
 		}
 	}
 
-	// -- add ai-traffic --
-	if (Scene.ObjCount(OBJCLASS_WAY)) {
-//S
-/*
-		i = Scene.FirstObj(OBJCLASS_WAYPOINT);
-        _E  = Scene.LastObj(OBJCLASS_WAYPOINT);
-        AnsiString temp;
-        for(;i!=_E;i++){
-        	CWayPoint* P = (CWayPoint*)(*i);
-            temp.sprintf("%.3f,%.3f,%.3f", P->PPosition.x,P->PPosition.y,P->PPosition.z);
-            for (ObjectIt it=P->m_Links.begin(); it!=P->m_Links.end(); it++)
-	            temp += AnsiString(", ") + AnsiString((*it)->Name);
-            pIni->WriteString("ai_traffic",P->Name,temp.c_str());
-		}
-
-		i = Scene.FirstObj(OBJCLASS_WAYPOINT);
-        _E  = Scene.LastObj(OBJCLASS_WAYPOINT);
-        temp="";
-        AnsiString t;
-        for(;i!=_E;){
-        	CWayPoint* P = (CWayPoint*)(*i);
-            t.sprintf("%3.2f,%3.2f,%3.2f", P->PPosition.x,P->PPosition.y,P->PPosition.z);
-        	temp += t;
-            i++;
-            if (i!=_E) temp+=", ";
-        }
-		pIni->WriteString("patrol_path","path_00",temp.c_str());
-*/
-	}
-
 
 end_ltx_build:
     delete pIni;
