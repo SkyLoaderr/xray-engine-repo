@@ -29,7 +29,6 @@ void CAI_Stalker::g_fireParams(Fvector& P, Fvector& D)
 
 void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 {
-	CKinematics *V	= PKinematics(Visual());
 	R1				= m_r_hand;
 	R2				= m_r_finger2;
 	if ((IsLimping() && (m_tMentalState == eMentalStateFree)) || (GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bHandUsage))
