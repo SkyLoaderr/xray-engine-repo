@@ -126,12 +126,14 @@ public:
     void DrawGrid	();
     void DrawPivot	(const Fvector& pos, float sz=5.f);
 	void DrawAxis	(const Fmatrix& T);
-	void DrawObjectAxis(const Fmatrix& T);
+	void DrawObjectAxis(const Fmatrix& T, float sz=0.1f);
 	void DrawSelectionRect(const Ivector2& m_SelStart, const Ivector2& m_SelEnd);
 
     void DrawPrimitiveL(D3DPRIMITIVETYPE pt, u32 pc, Fvector* vertices, int vc, u32 color, bool bCull, bool bCycle);
     void DrawPrimitiveTL(D3DPRIMITIVETYPE pt, u32 pc, FVF::TL* vertices, int vc, bool bCull, bool bCycle);
     void DrawPrimitiveLIT(D3DPRIMITIVETYPE pt, u32 pc, FVF::LIT* vertices, int vc, bool bCull, bool bCycle);
+
+    void DrawText	(const Fvector& pos, LPCSTR text, u32 color=0xFF000000, u32 shadow_color=0xFF909090);
 };
 extern CDrawUtilities DU;
 //----------------------------------------------------

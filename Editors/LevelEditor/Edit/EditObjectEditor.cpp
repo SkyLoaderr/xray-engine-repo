@@ -146,16 +146,23 @@ void CEditableObject::RenderBones(const Fmatrix& parent){
         Device.SetShader(Device.m_WireShader);
 		BoneVec& lst = m_Bones;
         for(BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++){
-            Fmatrix& M = (*b_it)->LTransform();
-            Fvector p1;
-            p1.set			(0,0,0);
-            M.transform_tiny(p1);
+            Fmatrix& M 	= (*b_it)->LTransform();
+            Fvector& p1	= M.c;
             u32 c 		= D3DCOLOR_RGBA(255,255,0,255);
-            Fvector p2,d; 	d.set	(0,0,1);
-            M.transform_dir	(d);
-            p2.mad			(p1,d,(*b_it)->Length());
-            DU.DrawLine	(p1,p2,c);
             DU.DrawRomboid	(p1,0.025,c);
+            if ((*b_it)->ParentIndex()>-1){
+				Fvector& p2 = lst[(*b_it)->ParentIndex()]->LTransform().c;
+        	    DU.DrawLine	(p1,p2,c);
+            }
+			if (fraBottomBar->miDrawBoneAxis->Checked) DU.DrawObjectAxis(M,0.03f);
+            else{
+				Fvector p2,d; 	d.set	(0,0,1);
+	            M.transform_dir	(d);
+    	        p2.mad			(p1,d,(*b_it)->Length());
+        	    DU.DrawLine	(p1,p2,c);
+            	DU.DrawRomboid	(p1,0.025,c);
+            }
+			if (fraBottomBar->miDrawBoneNames->Checked) DU.DrawText(p1,(*b_it)->Name());
         }
     }
 }

@@ -639,7 +639,7 @@ void CDrawUtilities::DrawAxis(const Fmatrix& T)
     Device.pSystemFont->Out(p[5].x-1,p[5].y-1,"z");
 }
 
-void CDrawUtilities::DrawObjectAxis(const Fmatrix& T)
+void CDrawUtilities::DrawObjectAxis(const Fmatrix& T, float sz)
 {
 	VERIFY( Device.bReady );
 	_VertexStream*	Stream	= &RCache.Vertex;
@@ -647,7 +647,7 @@ void CDrawUtilities::DrawObjectAxis(const Fmatrix& T)
 	float w	= T.c.x*Device.mFullTransform._14 + T.c.y*Device.mFullTransform._24 + T.c.z*Device.mFullTransform._34 + Device.mFullTransform._44;
     if (w<0) return; // culling
 
-	float s = w*0.1;
+	float s = w*sz;
 								Device.mFullTransform.transform(c,T.c);
     r.mul(T.i,s); r.add(T.c); 	Device.mFullTransform.transform(r);
     n.mul(T.j,s); n.add(T.c); 	Device.mFullTransform.transform(n);
@@ -681,6 +681,21 @@ void CDrawUtilities::DrawObjectAxis(const Fmatrix& T)
     Device.pSystemFont->Out(r.x-1,r.y-1,"x");
     Device.pSystemFont->Out(n.x-1,n.y-1,"y");
     Device.pSystemFont->Out(d.x-1,d.y-1,"z");
+}
+
+void CDrawUtilities::DrawText(const Fvector& pos, LPCSTR text, u32 color, u32 shadow_color)
+{
+    Fvector p;
+    float w	= pos.x*Device.mFullTransform._14 + pos.y*Device.mFullTransform._24 + pos.z*Device.mFullTransform._34 + Device.mFullTransform._44;
+    if (w>=0){
+        Device.mFullTransform.transform(p,pos);
+        p.x = iFloor(Device._x2real(p.x)); p.y = iFloor(Device._y2real(-p.y));
+
+        Device.pSystemFont->SetColor(shadow_color);
+        Device.pSystemFont->Out(p.x,p.y,(LPSTR)text);
+        Device.pSystemFont->SetColor(color);
+        Device.pSystemFont->Out(p.x-1,p.y-1,(LPSTR)text);
+    }
 }
 
 void CDrawUtilities::DrawSafeRect()
