@@ -174,7 +174,6 @@ void CxrUpdateView::OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pH
 //8-067-441-52-07 саша гулова
 HTREEITEM CxrUpdateView::FillTaskTree(CTask* t, HTREEITEM parent)
 {
-    m_tree_ctrl.SetRedraw(FALSE);
 	TV_INSERTSTRUCT itm;
 	itm.hParent = parent;
 	itm.hInsertAfter = TVI_LAST;
@@ -197,7 +196,6 @@ HTREEITEM CxrUpdateView::FillTaskTree(CTask* t, HTREEITEM parent)
 	SortItems(tree_itm);
 	return tree_itm;
 
-	m_tree_ctrl.SetRedraw(TRUE);
 }
 
 
@@ -207,19 +205,24 @@ void CxrUpdateView::OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
 
 	CTask* t = (CTask*)m_tree_ctrl.GetItemData( pNMTreeView->itemNew.hItem );
+	BOOL r=FALSE;
 	if(t){
 		m_active_task = t;
-		ShowPropDlg(t);
-	}else{
+		r = ShowPropDlg(t);
+	}else
 		m_active_task = NULL;
-		if(m_cur_prop_wnd)
+
+	if(!r){
+		if(m_cur_prop_wnd){
 			m_cur_prop_wnd->ShowWindow(SW_HIDE);
+			m_cur_prop_wnd=NULL;
+		}
 	}
 
 	*pResult = 0;
 }
 
-void CxrUpdateView::ShowPropDlg(CTask* t)
+BOOL CxrUpdateView::ShowPropDlg(CTask* t)
 {
 	m_task_name_edt.EnableWindow(TRUE);
 	m_task_name=t->name();
@@ -249,6 +252,7 @@ void CxrUpdateView::ShowPropDlg(CTask* t)
 			m_copy_files_dlg->MoveWindow(&r_place);
 			m_cur_prop_wnd = m_copy_files_dlg;
 		}
+	return TRUE;
 	}
 
 	if(t->type()==eTaskCopyFolder){
@@ -262,6 +266,7 @@ void CxrUpdateView::ShowPropDlg(CTask* t)
 			m_copy_folder_dlg->MoveWindow(&r_place);
 			m_cur_prop_wnd = m_copy_folder_dlg;
 		}
+	return TRUE;
 	}
 
 	if(t->type()==eTaskRunExecutable){
@@ -275,6 +280,7 @@ void CxrUpdateView::ShowPropDlg(CTask* t)
 			m_exec_process_dlg->MoveWindow(&r_place);
 			m_cur_prop_wnd = m_exec_process_dlg;
 		}
+	return TRUE;
 	}
 
 	if(t->type()==eTaskBatchExecute){
@@ -288,9 +294,10 @@ void CxrUpdateView::ShowPropDlg(CTask* t)
 			m_batch_process_dlg->MoveWindow(&r_place);
 			m_cur_prop_wnd = m_batch_process_dlg;
 		}
+	return TRUE;
 	}
 
-
+	return FALSE;
 }
 
 void CxrUpdateView::OnBnClickedBtnRun()

@@ -59,6 +59,20 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// Menu
+//
+
+IDR_LOG_MENU MENU 
+BEGIN
+    POPUP "Log..."
+    BEGIN
+        MENUITEM "Clear all",                   ID_MENU_CLEARALL
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // Dialog
 //
 
@@ -76,6 +90,17 @@ BEGIN
     LTEXT           "Enter task name",IDC_STATIC,7,35,124,12
 END
 
+IDD_LOG_DIALOG DIALOGEX 0, 0, 191, 127
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | 
+    WS_THICKFRAME
+CAPTION "Log"
+MENU IDR_LOG_MENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LISTBOX         IDC_LIST2,0,0,189,126,NOT LBS_NOTIFY | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -91,6 +116,12 @@ BEGIN
         RIGHTMARGIN, 131
         TOPMARGIN, 7
         BOTTOMMARGIN, 82
+    END
+
+    IDD_LOG_DIALOG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 189
+        BOTTOMMARGIN, 126
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -301,18 +332,23 @@ BEGIN
     PUSHBUTTON      "...",IDC_BTN_SEL_WRK_FOLDER,222,40,17,13
 END
 
-IDD_BATCH_TASK DIALOGEX 0, 0, 247, 148
+IDD_BATCH_TASK DIALOGEX 0, 0, 248, 188
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_BORDER
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "formatted command",IDC_STATIC,7,10,72,11
-    EDITTEXT        IDC_EDIT_CMD,77,7,163,12,ES_AUTOHSCROLL
-    LISTBOX         IDC_LIST_FILES_3,7,31,172,105,LBS_SORT | LBS_MULTIPLESEL | 
+    EDITTEXT        IDC_EDIT_CMD,78,7,163,12,ES_AUTOHSCROLL
+    LISTBOX         IDC_LIST_FILES_3,7,58,172,123,LBS_SORT | LBS_MULTIPLESEL | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Files:",IDC_STATIC,7,20,68,8
+    LTEXT           "Files:",IDC_STATIC,7,47,68,8
     PUSHBUTTON      "Add file(s)",IDC_BTN_ADD_FILE_3,181,55,55,12
     PUSHBUTTON      "Remove file(s)",IDC_BTN_REMOVE_FILE_3,181,70,56,12
     PUSHBUTTON      "Remove all",IDC_BTN_REMOVE_ALL_FILES_3,181,87,56,12
+    LTEXT           "$dir$  -directory",IDC_STATIC,20,22,57,8
+    LTEXT           "$file$ -file name",IDC_STATIC,18,35,57,8
+    LTEXT           "$ext$  -file extention",IDC_STATIC,83,22,158,8
+    LTEXT           "$full_file_name$ -given full file name with path",
+                    IDC_STATIC,81,33,160,8
 END
 
 
@@ -406,9 +442,9 @@ BEGIN
     IDD_BATCH_TASK, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 240
+        RIGHTMARGIN, 241
         TOPMARGIN, 7
-        BOTTOMMARGIN, 141
+        BOTTOMMARGIN, 181
     END
 END
 #endif    // APSTUDIO_INVOKED

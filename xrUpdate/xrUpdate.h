@@ -12,7 +12,7 @@
 // CxrUpdateApp:
 // See xrUpdate.cpp for the implementation of this class
 //
-
+class CLogDlg;
 class CxrUpdateApp : public CWinApp
 {
 public:
@@ -22,6 +22,7 @@ public:
 
 // Overrides
 public:
+	CLogDlg*	m_log_dlg;
 	virtual BOOL InitInstance();
 
 // Implementation
@@ -30,3 +31,5 @@ public:
 };
 
 extern CxrUpdateApp theApp;
+extern void	__stdcall log_cb_fn (LPCSTR string);
+extern CLogDlg*	g_log_dlg;

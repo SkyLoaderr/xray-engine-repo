@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "upd_task.h"
-#include "FileOperations.h"
 
 void SaveStringWithBrackets(CInifile& ini, LPCSTR section, LPCSTR name, shared_str& str)
 {
@@ -127,7 +126,7 @@ BOOL CTask::load(CInifile& ini, LPCSTR section)
 	m_name				= ini.r_string_wb(section,				"task_name");
 	m_enabled			= ini.r_bool(section,				"enabled");
 	m_priority			= ini.r_u32(section,				"priority");
-
+	Msg("Loading %s ...",*m_name);
 	if(ini.line_exist(section,"sub_task_count") ){
 		u32 cnt = ini.r_u32(section,				"sub_task_count");
 		string512 sname;
@@ -141,6 +140,7 @@ BOOL CTask::load(CInifile& ini, LPCSTR section)
 			sort_sub_tasks();
 		}
 	}
+
 	return TRUE;
 }
 
@@ -173,15 +173,6 @@ void CTask::set_enabled(BOOL b)
 	for(;it != m_sub_tasks.end(); ++it){
 		(*it)->set_enabled(b);
 	}
-}
-void CTask::run()
-{
-	if( !is_enabled() ) return;
-
-	CTaskArray::reverse_iterator sub_task_it =	m_sub_tasks.rbegin();
-	for(;sub_task_it !=m_sub_tasks.rend();++sub_task_it)
-		(*sub_task_it)->run();
-
 }
 
 
@@ -220,38 +211,6 @@ BOOL CTaskCopyFiles::save				(CInifile& ini, LPCSTR section)
 	return TRUE;
 }
 
-void CTaskCopyFiles::run()
-{
-	if( !is_enabled() ) return;
-	CTask::run();
-
-	CFileNamesArray::iterator it = m_file_names.begin();
-	string_path file_name;
-	string16	drive;
-	string_path dir;
-	string16	ext;
-	string_path new_path;
-
-	if( !is_enabled() )
-		return;
-
-	CFileOperation fo;      // create object
-	fo.SetOverwriteMode(true); // reset OverwriteMode flag (optional)
-	fo.SetAskIfReadOnly(true);
-	for(;it!=m_file_names.end();++it){
-		_splitpath(*(*it),drive,dir,file_name,ext);
-//		strconcat(new_path,target_folder(),"\\",file_name,ext);
-		strcpy(new_path,target_folder());
-//		BOOL res = CopyFile(*(*it),new_path,FALSE);
-		if (!fo.Copy(*(*it), new_path)) // do Copy
-		{
-			CString msg;
-			msg.Format("Copying file %s to %s\n",*(*it),new_path);
-			fo.ShowError_( msg.GetBuffer() ); // if copy fails show error message
-		}
-
-	}
-}
 
 void CTaskCopyFiles::copy_to(CTask*t)
 {
@@ -283,25 +242,6 @@ BOOL CTaskCopyFolder::save				(CInifile& ini, LPCSTR section)
 	return TRUE;
 }
 
-void CTaskCopyFolder::run ()
-{
-	if( !is_enabled() ) return;
-	CTask::run();
-
-	CFileOperation fo;      // create object
-	fo.SetOverwriteMode(true); // reset OverwriteMode flag (optional)
-	fo.SetAskIfReadOnly();   // set AskIfReadonly flag (optional)
-	if (!fo.Copy(*m_source_folder, *m_target_folder)) // do Copy
-	{
-		fo.ShowError(); // if copy fails show error message
-	}
-
-/*	if (!fo.Delete("c:\\source")) // do Copy
-	{
-		fo.ShowError(); // if copy fails show error message
-	}
-*/
-}
 
 void CTaskCopyFolder::copy_to(CTask*t)
 {
@@ -332,20 +272,6 @@ BOOL CTaskExecute::save				(CInifile& ini, LPCSTR section)
 	return TRUE;
 }
 
-void CTaskExecute::run					()
-{
-	if( !is_enabled() ) return;
-	CTask::run();
-
-	string_path cur_dir;
-	if( xr_strlen(m_working_folder) ){
-		GetCurrentDirectoryA(_MAX_PATH,cur_dir);
-		SetCurrentDirectoryA(*m_working_folder);
-	};
-	spawnl(_P_WAIT, *m_app_name, (xr_strlen(m_params))?" ":*m_params);
-	if( xr_strlen(m_working_folder) )
-		SetCurrentDirectoryA(cur_dir);
-}
 
 void CTaskExecute::copy_to(CTask*t)
 {
@@ -380,8 +306,6 @@ BOOL CTaskBatchExecute::save				(CInifile& ini, LPCSTR section)
 {
 	CTask::save(ini, section);
 
-//	ini.w_string(section,	"app_name", *m_app_name);
-//	ini.w_string(section,	"working_folder", *m_working_folder);
 	SaveStringWithBrackets(ini,section,"params",m_params);
 
 	ini.w_u32(section,"file_count",m_file_names.size());
@@ -404,80 +328,6 @@ void CTaskBatchExecute::copy_to(CTask*t)
 	tt->m_params				= m_params;
 }
 
-CString parseParams(LPCSTR fn, LPCSTR params);
-
-void CTaskBatchExecute::run					()
-{
-	if( !is_enabled() ) return;
-	CTask::run();
-
-/*
-	string_path cur_dir;
-	if( xr_strlen(m_working_folder) ){
-		GetCurrentDirectoryA(_MAX_PATH,cur_dir);
-		SetCurrentDirectoryA(*m_working_folder);
-	};*/
-
-	CFileNamesArray::iterator it = m_file_names.begin();
-	CString		params;
-//	CString		command;
-
-	for(;it!=m_file_names.end();++it){
-		params = parseParams(*(*it), *m_params);
-//		spawnl(_P_WAIT, *m_app_name, (params.IsEmpty())?" ":params.GetBuffer() );
-//		command.Format( "%s %s",*m_app_name,params.GetBuffer() );
-		system(params.GetBuffer());
-	}
-
-/*
-	if( xr_strlen(m_working_folder) )
-		SetCurrentDirectoryA(cur_dir);
-*/
-}
-
-CString parseParams(LPCSTR fn, LPCSTR params)
-{
-	CString res;
-	// $dir$  -directory
-	// $file$ -file name
-	// $ext$  -file extention
-	// $full_file_name$ -given full file name with path
-
-	string16	drive;
-	string_path dir;
-	string_path file_name;
-	string16	ext;
-	_splitpath(fn,drive,dir,file_name,ext);
-
-	const char* c = params;
-	while(c){
-		if(c[0]=='$'){//alias begin
-			if(c==strstr(c,"$dir$")){
-				res.Append(dir);
-				c+=xr_strlen("$dir$");
-			}else
-			if(c==strstr(c,"$file$")){
-				res.Append(file_name);
-				c+=xr_strlen("$file$");
-			}else
-			if(c==strstr(c,"$ext$")){
-				res.Append(ext);
-				c+=xr_strlen("$ext$");
-			}else
-			if(c==strstr(c,"$full_file_name$")){
-				res.Append(fn);
-				c+=xr_strlen("$full_file_name$");
-			}
-		}else{
-			res.AppendChar(c[0]);
-			if(*(c+1))c+=1;
-			else
-				break;
-		}
-	}
-	
-	return res;
-}
 
 
 CTask*	CTaskFacrory::create_task(ETaskType t)
@@ -506,6 +356,7 @@ CTask*	CTaskFacrory::create_task(ETaskType t)
 			return 0;
 		}break;
 	}
+	return NULL;
 }
 
 CTask*	CTaskFacrory::create_task(CInifile& ini, LPCSTR section)
@@ -513,20 +364,3 @@ CTask*	CTaskFacrory::create_task(CInifile& ini, LPCSTR section)
 	ETaskType t		= strToType(ini.r_string(section,	"type") );
 	return create_task(t);
 }
-
-/*
-shared_str getBestSectionName(CTask* t)
-{
-	string128 sname;
-	string128 s_res_name;
-	int i=0;
-	for(;;){
-		sprintf(sname,"s%04d",i++);
-		if(!t->section_exist(sname))
-		{
-			strconcat(s_res_name,t->section_name(),".",sname);
-			return s_res_name;
-		}
-	}
-
-}*/

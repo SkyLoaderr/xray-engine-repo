@@ -124,9 +124,7 @@ public:
 class CTaskBatchExecute :public CTask
 {
 	CFileNamesArray m_file_names;
-//	shared_str		m_app_name;
 	shared_str		m_params;
-//	shared_str		m_working_folder;
 	virtual void	copy_to				(CTask*);
 
 public:
@@ -136,12 +134,8 @@ public:
 	virtual BOOL	save				(CInifile& ini, LPCSTR section);
 	virtual void	run					();
 	CFileNamesArray* file_list			()										{return &m_file_names;}
-//	LPCSTR			get_app_name		()										{return *m_app_name;}
-//	void			set_app_name		(LPCSTR n)								{m_app_name=n;}
 	LPCSTR			get_params			()										{return *m_params;}
 	void			set_params			(LPCSTR n)								{m_params=n;}
-//	LPCSTR			get_wrk_folder		()										{return *m_working_folder;}
-//	void			set_wrk_folder		(LPCSTR n)								{m_working_folder=n;}
 
 };
 
@@ -154,4 +148,3 @@ public:
 };
 
 extern void updateTreeItemName(HTREEITEM itm, CTask* t);
-//shared_str getBestSectionName(CTask*t);

@@ -52,7 +52,7 @@ protected:
 
 void CreateRoot();
 HTREEITEM FillTaskTree(CTask*, HTREEITEM parent=NULL);
-void ShowPropDlg(CTask*);
+BOOL ShowPropDlg(CTask*);
 void CheckChildren(HTREEITEM itm, BOOL b);
 // Generated message map functions
 protected:

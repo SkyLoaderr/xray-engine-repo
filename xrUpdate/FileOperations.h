@@ -59,6 +59,7 @@ public:
 	bool IsOverwriteMode() {return m_bOverwriteMode;} // return current overwrite mode
 	int CheckPath(CString sPath);
 	bool IsAborted() {return m_bAborted;}
+	CString m_sError;
 
 protected:
 	void DoDelete(CString sPathName);
@@ -75,7 +76,6 @@ protected:
 	CString ParseFolderName(CString sPathName);
 
 private:
-	CString m_sError;
 	DWORD m_dwError;
 	bool m_bAskIfReadOnly;
 	bool m_bOverwriteMode;

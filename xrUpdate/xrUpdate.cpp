@@ -7,6 +7,7 @@
 
 #include "xrUpdateDoc.h"
 #include "xrUpdateView.h"
+#include "LogDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -17,24 +18,32 @@
 
 BEGIN_MESSAGE_MAP(CxrUpdateApp, CWinApp)
 	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
-	// Standard file based document commands
 	ON_COMMAND(ID_FILE_NEW, CWinApp::OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, CWinApp::OnFileOpen)
 END_MESSAGE_MAP()
 
 
 // CxrUpdateApp construction
+extern CLogDlg*	g_log_dlg = NULL;
+void	__stdcall log_cb_fn (LPCSTR string)
+{
+	if(!g_log_dlg)
+		return;
+	g_log_dlg->m_list_box.InsertString(0,string);
+	g_log_dlg->ShowWindow(SW_SHOW);
+}
 
 CxrUpdateApp::CxrUpdateApp()
 {
-	// TODO: add construction code here,
-	// Place all significant initialization in InitInstance
-	Core._initialize("xrUpdate",0,FALSE);
-	FS._initialize(CLocatorAPI::flTargetFolderOnly,"c:\\upd");
+	m_log_dlg = xr_new<CLogDlg>( MAKEINTRESOURCE(IDD_LOG_DIALOG));
+
 }
+
 CxrUpdateApp::~CxrUpdateApp()
 {
 	Core._destroy();
+	g_log_dlg = NULL;
+	xr_delete(m_log_dlg);
 }
 
 // The one and only CxrUpdateApp object
@@ -47,17 +56,15 @@ BOOL CxrUpdateApp::InitInstance()
 {
 	CWinApp::InitInstance();
 
-	// Standard initialization
-	// If you are not using these features and wish to reduce the size
-	// of your final executable, you should remove from the following
-	// the specific initialization routines you do not need
-	// Change the registry key under which our settings are stored
-	// TODO: You should modify this string to be something appropriate
-	// such as the name of your company or organization
+	g_log_dlg = m_log_dlg;
+	m_log_dlg->Create( MAKEINTRESOURCE(IDD_LOG_DIALOG) , NULL);
+	m_log_dlg->ShowWindow(SW_SHOW);
+
+	Core._initialize("xrUpdate",log_cb_fn,FALSE);
+	FS._initialize(CLocatorAPI::flTargetFolderOnly,"c:\\upd");
+
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
 	LoadStdProfileSettings(10);  // Load standard INI file options (including MRU)
-	// Register the application's document templates.  Document templates
-	//  serve as the connection between documents, frame windows and views
 	CSingleDocTemplate* pDocTemplate;
 	pDocTemplate = new CSingleDocTemplate(
 		IDR_MAINFRAME,
@@ -70,15 +77,12 @@ BOOL CxrUpdateApp::InitInstance()
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
-	// Dispatch commands specified on the command line.  Will return FALSE if
-	// app was launched with /RegServer, /Register, /Unregserver or /Unregister.
 	if (!ProcessShellCommand(cmdInfo))
 		return FALSE;
-	// The one and only window has been initialized, so show and update it
 	m_pMainWnd->ShowWindow(SW_SHOW);
 	m_pMainWnd->UpdateWindow();
-	// call DragAcceptFiles only if there's a suffix
-	//  In an SDI app, this should occur after ProcessShellCommand
+
+
 	return TRUE;
 }
 
