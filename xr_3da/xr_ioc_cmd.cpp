@@ -271,6 +271,7 @@ void CCC_Register()
  		
 	// Render device states
 	CMD3(CCC_Mask,		"rs_no_v_sync",			&psDeviceFlags,rsNoVSync);
+	CMD3(CCC_Mask,		"rs_anisotropic",		&psDeviceFlags,rsAnisotropic);
 	CMD3(CCC_Mask,		"rs_wireframe",			&psDeviceFlags,rsWireframe);
 	CMD3(CCC_Mask,		"rs_renormalize",		&psDeviceFlags,rsNormalize);
 	CMD3(CCC_Mask,		"rs_antialias",			&psDeviceFlags,rsAntialias);
