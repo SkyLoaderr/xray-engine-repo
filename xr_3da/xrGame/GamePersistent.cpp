@@ -54,9 +54,9 @@ void CGamePersistent::OnFrame		()
 {
 	__super::OnFrame	();
 
-	VERIFY	(pDemoFile);
+	if	(0==pDemoFile)	return;
 	
-	if (Device.dwTimeGlobal>uTime2Change)
+	if	(Device.dwTimeGlobal>uTime2Change)
 	{
 		// Change level + play demo
 		if			(pDemoFile->elapsed()<3)	pDemoFile->seek(0);		// cycle
