@@ -104,7 +104,17 @@ public:
 	virtual void		__stdcall	FillProp		(LPCSTR pref, PropItemVec &items);
 	virtual LPCSTR		__stdcall	name			() const;
 	virtual LPCSTR		__stdcall	name_replace	() const;
-	virtual void		__stdcall	set_name		(LPCSTR s) {s_name = s;};
+	virtual void		__stdcall	set_name		(LPCSTR s)
+	{
+		if	(
+			!xr_strcmp(*s_name,"m_stalker_e") ||
+			!xr_strcmp(*s_name,"m_stalker_demo") ||
+			!xr_strcmp(*s_name,"m_stalker_wolf")
+			)
+			s_name		= "stalker";
+		else
+			s_name		= s;
+	};
 	virtual void		__stdcall	set_name_replace(LPCSTR s) {xr_free(s_name_replace); s_name_replace = xr_strdup(s);};
 	virtual Fvector&	__stdcall	position		();
 	virtual Fvector&	__stdcall	angle			();
