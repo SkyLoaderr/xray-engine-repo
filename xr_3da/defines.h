@@ -78,7 +78,7 @@ enum {
 	rsPostprocess		= (1ul<<13ul),
 	rsRefresh60hz		= (1ul<<14ul),
 	mtSound				= (1ul<<15ul),
-	mtInput				= (1ul<<16ul)
+	mtInput				= (1ul<<16ul),
 	mtPhysics			= (1ul<<17ul)
 // 20-32 bit - defined in Editor
 };
