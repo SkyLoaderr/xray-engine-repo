@@ -452,7 +452,7 @@ void CActor::Update	(DWORD DT)
 
 	// generic stuff
 	UpdateTransform			();
-	CObject::Update			(DT);
+	inherited::Update		(DT);
 	
 	if (IsMyCamera())		{
 		if (!pCamBobbing){ 
