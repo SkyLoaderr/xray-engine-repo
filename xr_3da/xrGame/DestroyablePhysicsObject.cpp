@@ -104,7 +104,7 @@ void CDestroyablePhysicsObject::InitServerObject(CSE_Abstract* D)
 }
 void CDestroyablePhysicsObject::shedule_Update(u32 dt)
 {
-	inherited::shedule_Update(dt);
+	CPhysicsShellHolder::shedule_Update(dt);
 	CPHDestroyable::SheduleUpdate(dt);
 }
 
