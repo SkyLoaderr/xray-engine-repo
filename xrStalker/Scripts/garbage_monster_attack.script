@@ -309,11 +309,7 @@ function CGarbageRunMonster:initialize()
 
 	self.object:script(true, script_name())
 	action(self.object, anim(anim.stand_idle, 0), cond(cond.time_end, 100000))
-	self.object:set_callback (self, "move_callback", game_object.movement)
-end
-
-function CGarbageRunMonster:move_callback()
-	printf("callback")
+	self.id		= self.object:id()
 end
 
 function CGarbageRunMonster:update()
@@ -321,20 +317,26 @@ function CGarbageRunMonster:update()
 	if(self.end_work == true) then return end             // По логике, не должно быть, но почему-то иногда случается
 	
 	// На всякий случай, чтоб не вывалилось
-	if(self.object == nil) then
-		self.object = level.object_by_id(self.id)
-		if(self.object) then
-			if(self.object:get_script()) then
-				assert(true)
-			end
+	//if(self.object == nil) then
+	//	self.object = level.object_by_id(self.id)
+	//	if(self.object) then
+	//		if(self.object:get_script()) then
+	//			assert(true)
+	//		end
 
-			self.object:script(true, script_name())
-			action(self.object, anim(anim.stand_idle, 0), cond(cond.time_end, 100000))
-		else
-			return 
-		end
-	end
+	//		self.object:script(true, script_name())
+	//		action(self.object, anim(anim.stand_idle, 0), cond(cond.time_end, 100000))
+	//	else
+	//		return 
+	//	end
+	//end
 		
+	// Если монстра разорвало на куски, то только таким способом про это мы можем узнать
+	if(is_object_online(self.id) == false) then
+		self.end_work	= true
+		return
+	end
+	
 	if(self.object:alive() == false) then
 		self:finalize()
 		return
