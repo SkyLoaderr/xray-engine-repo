@@ -1,0 +1,24 @@
+﻿<?xml version='1.0' encoding="UTF-8"?>
+<!-- ITEM INFO IN THE INVENTORY MENU -->
+<window>
+
+	<!-- NAME -->
+	<static x="20" y="5" width="240" height="60">
+		<text x="0" y="0" font="letterica18" r="255" g="128" b="64"></text>
+	</static>
+
+	<!-- WEIGHT -->
+	<static x="20" y="40" width="240" height="60">
+		<text x="0" y="0" font="letterica18" r="255" g="255" b="255"></text>
+	</static>
+
+	<!-- DESCRIPTION -->
+	<static x="20" y="60" width="240" height="60">
+		<text x="0" y="0" font="letterica18" r="255" g="255" b="255"></text>
+	</static>
+
+	<!-- 3D STATIC -->
+	<static_3d x="0" y="-185" width="250" height="190"></static_3d>
+
+</window>
+

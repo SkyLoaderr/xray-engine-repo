@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<!-- ITEM INFO IN THE INVENTORY MENU -->
+<window>
+	<!-- NAME -->
+	<s	<static x="20" y="20" width="240" height="60">
+		<text x="0" y="0" font="letterica16" r="255" g="128" b="64"></text>
+static>
+
+	<!-- WEIGHT -->
+	<s	<static x="20" y="40" width="240" height="60">
+		<text x="0" y="0" font="letterica16" r="255" g="255" b="255"></text>
+static>
+
+	<!-- DESCRIPTION -->
+	<d	<static x="20" y="60" width="240" height="60">
+		<text x="0" y="0" font="letterica16" r="255" g="255" b="255"></text>
+	</static>
+indow>
+

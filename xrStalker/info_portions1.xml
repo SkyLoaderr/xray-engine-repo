@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding="UTF-8"?>
+
+<game_information_portions>
+
+	<info_portion index="1">
+		<text>Brother! Finish the "Dog"... \nTake artefact from his body... Then bring it to the Dealer. \n[hit "M" to view map objectives] </text>
+		<location >
+			<level>0</level>
+			<object>m_stalker_pes</object>
+			<icon name="stalker 'Dog'" x="0" y="5" width="1" height="1"></icon>
+			<text>You must kill the "Dog"... \nTake artefact from his body... \nThen bring it to the Dealer.</text>
+		</location>
+		<location >
+			<level>0</level>
+			<object>trader</object>
+			<icon name="Dealer" x="2" y="2" width="1" height="1"></icon>
+			<text>Bring artefact to the Dealer</text>
+		</location>
+		<location >
+			<level>0</level>
+			<object>zone_mosquito_bald0015</object>	
+			<icon name="DANGER!!! Heavy concentration of anomalies!!!" x="0" y="8" width="1" height="1"></icon>
+			<text>Use your detector and avoid the anomalies</text>
+		</location>
+		<location >
+			<level>0</level>
+			<object>zone_mosquito_bald0007</object>	
+			<icon name="DANGER!!! Heavy concentration of anomalies!!!" x="0" y="8" width="1" height="1"></icon>
+			<text>Use your detector and avoid the anomalies</text>
+		</location>
+		<location >
+			<level>0</level>
+			<object>zone_burning_fuzz0000</object>	
+			<icon name="DANGER!!! Bloodsuckers spoted!!!" x="1" y="7" width="1" height="1"></icon>
+			<text>Veteran stalker "Seventh" spot bloodsucker</text>
+		</location>
+
+		<question>
+			<text>I want to know about Info4 also</text>
+			<to_info>4</to_info>
+			<negative_answer>
+				It's lie, there's no Info4 at all, AFAIK.
+			</negative_answer>
+		</question>
+		<question>
+			<text>I want to know about Info5 also!!!\nMore info!!!\nYahoo!!!</text>
+			<to_info>5</to_info>
+			<negative_answer>
+				It's lie, there's no Info5 at all, AFAIK.
+			</negative_answer>
+		</question>
+
+
+
+	</info_portion>
+
+	<info_portion index="2">
+		<text>Brother! Finish the "Dog" (stalker "Dog")... \nTake artefact from his body...\n[hit "M" to view map objectives] </text>
+		<location >
+			<level>0</level>
+			<object>m_stalker_pes</object>
+			<icon name="stalker 'Dog'" x="0" y="5" width="1" height="1"></icon>
+			<text>You must kill the "Dog"... \nTake artefact from his body...</text>
+		</location>
+
+		<question>
+			<text>I want to know about Info4 also</text>
+			<to_info>4</to_info>
+			<negative_answer>
+				It's lie, there's no Info4 at all, AFAIK.
+			</negative_answer>
+		</question>
+		<question>
+						<text>I want to know about Info5 also!!!\nFuck off, son of bitch!!\nAss hole!!!</text>
+			<to_info>5</to_info>
+			<negative_answer>
+				It's lie, there's no Info5 at all, AFAIK.
+			</negative_answer>
+		</question>
+	</info_portion>
+
+	<info_portion index="3">
+		<text>Info3. Enjoy :)))</text>
+	</info_portion>
+	
+	<info_portion index="4">
+		<text>Info4. Enjoy it too.</text>
+	</info_portion>
+
+	<info_portion index="5">
+		<text>Info555555.</text> 
+	</info_portion>
+
+
+	<info_portion index="6">
+		<text>SOS!!! Help me!!!</text>
+		<location >
+			<level>0</level>
+			<x>0.4</x>
+			<y>0.2</y>
+			<icon name="my_icon" x="0" y="5" width="1" height="1"></icon>
+		</location>
+	</info_portion>
+
+	<info_portion index="7">
+		<text>Get out of here!!!</text>
+	</info_portion>
+
+
+	<info_portion index="8">
+		<text>Добей Пса и забери у него артефакт... отнеси его торговцу... он будет ждать тебя. [задание добавленно, нажмите "O"]</text>
+		<location >
+			<level>0</level>
+			<x>0.4</x>
+			<y>0.2</y>
+			<icon name="Добей Пса..." x="1" y="5" width="1" height="1"></icon>
+		</location>
+	</info_portion>
+
+
+<!-- for comments -->
+
+</game_information_portions>

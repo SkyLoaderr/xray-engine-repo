@@ -1,0 +1,43 @@
+﻿<?xml version='1.0' encoding="UTF-8"?>
+<!-- Minimap  -->	
+<window x="0" y="0" w="700" h="480" r="227" g="121" b="222" texture="1">
+
+	<!-- A frame with map and buttons -->	
+	<frame_window x="40" y="40" width="940" height="680">
+		<base_texture>ui\ui_pda_frame</base_texture>
+	</frame_window>
+	<!-- PDA STATIC HEADER -->
+	<static x="0" y="0" width="940" height="128">
+		<texture>ui\ui_pda_frame_top</texture>
+	</static>
+
+
+	<!--        --> 
+	<window x="13" y="76" width="912" height="561"></window>
+
+	<!--  TEXT OF DESCRIPTION --> 
+	<static x="730" y="295" width="240" height="280">
+		<text x="0" y="0" font="normal" r="255" g="255" b="255"></text>
+	</static>
+
+
+
+	<button x="710" y="90" width="150" height="40">
+		<texture>ui\ui_button_02</texture>
+		<text></text>
+	</button>
+	<button x="710" y="130" width="150" height="40">
+		<texture>ui\ui_button_02</texture>
+		<text></text>
+	</button>
+	<button x="710" y="170" width="150" height="40">
+		<texture>ui\ui_button_02</texture>
+		<text></text>
+	</button>
+	<button x="710" y="210" width="150" height="40">
+		<texture>ui\ui_button_02</texture>
+		<text></text>
+	</button>
+
+</window>
+
