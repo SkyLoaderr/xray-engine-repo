@@ -6,8 +6,7 @@
 	<info_portion id="escape_novice_need_weapon">
 		<location >
 			<level></level>
-			<x>-300</x>
-			<y>-130</y>
+			<object>trivial_novice3_0_1</object>
 			<icon name="Novice" x="2" y="2" width="1" height="1"></icon>
 			<text>Novice need weapon</text>
 		</location>
