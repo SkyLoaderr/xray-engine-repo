@@ -10,7 +10,7 @@ void xrServer::Perform_game_export	()
 	NET_Packet		P;
 	u32				mode			= net_flags(TRUE,TRUE);
 
-	// Game config (all, info includes new player)
+	// Game config (all, info includes _new_ player)
 	csPlayers.Enter		();
 	for (u32 client=0; client<net_Players.size(); client++)
 	{
