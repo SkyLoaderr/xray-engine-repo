@@ -77,6 +77,7 @@ void CHudItem::renderable_Render()
 		// HUD render
 		if(m_bRenderHud)
 		{
+			UpdateXForm();
 			::Render->set_Transform		(&m_pHUD->Transform());
 			::Render->add_Visual		(m_pHUD->Visual());
 		}
@@ -173,7 +174,6 @@ void CHudItem::UpdateCL()
 
 	if(m_pHUD) m_pHUD->UpdateHud();
 	UpdateHudPosition	();
-	UpdateXForm			();
 }
 
 void CHudItem::OnH_A_Chield		()

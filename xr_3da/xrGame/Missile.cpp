@@ -199,9 +199,6 @@ void CMissile::UpdateCL()
 		}
 		if (m_dwDestroyTime < 0xffffffff) m_dwDestroyTime -= Device.dwTimeDelta;
 	} 
-	else
-		if (H_Parent())
-			UpdateXForm();
 }
 
 u32 CMissile::State(u32 state) 

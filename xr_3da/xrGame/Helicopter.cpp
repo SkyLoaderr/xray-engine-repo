@@ -307,12 +307,12 @@ void CHelicopter::UpdateCL()
 	m_engineSound.set_position(XFORM().c);
 
 	//weapon
-	CKinematics* K	= PKinematics(Visual());
-	K->Calculate	();
-
 	MGunUpdateFire();
 
 	if( m_curState==CHelicopter::eMovingByAttackTraj ){
+		CKinematics* K		= PKinematics(Visual());
+		K->Calculate		();
+
 		m_fire_bone_xform	= K->LL_GetTransform(m_fire_bone);
 
 		m_fire_bone_xform.mulA(XFORM());
@@ -320,7 +320,6 @@ void CHelicopter::UpdateCL()
 		m_fire_bone_xform.transform_tiny(m_fire_pos);
 		m_fire_dir.set(0,0,1); 
 		m_fire_bone_xform.transform_dir(m_fire_dir);
-
 
 		m_left_rocket_bone_xform	= K->LL_GetTransform(m_left_rocket_bone);
 		m_left_rocket_bone_xform.mulA(XFORM());
