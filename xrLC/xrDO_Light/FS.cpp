@@ -65,7 +65,7 @@ ENGINE_API void *FileDownload(const char *fn, DWORD *pdwSize)
 	void*	buf;
 
 	hFile	= open(fn,O_RDONLY|O_BINARY|O_SEQUENTIAL);
-	Log("* FS: Download ",fn);
+	Msg		("* FS [Download] %s",fn);
 	R_ASSERT(hFile>0);
 	size	= filelength(hFile);
 
@@ -85,7 +85,7 @@ ENGINE_API void		FileCompress	(const char *fn, const char* sign, void* data, DWO
 	MARK M; mk_mark(M,sign);
 
 	int H	= open(fn,O_BINARY|O_CREAT|O_WRONLY|O_TRUNC,S_IREAD|S_IWRITE);
-	Log("* FS: Compress ",fn);
+	Msg		("* FS [Compress] %s",fn);
 	R_ASSERT(H>0);
 	_write	(H,&M,8);
 	_writeLZ(H,data,size);
@@ -97,7 +97,7 @@ ENGINE_API void *	FileDecompress	(const char *fn, const char* sign, DWORD* size)
 	MARK M,F; mk_mark(M,sign);
 
 	int	H = open	(fn,O_BINARY|O_RDONLY);
-	Log("* FS: Decompress ",fn);
+	Msg		("* FS: [Decompress] %s",fn);
 	R_ASSERT(H>0);
 	_read	(H,&F,8);
 	if (strncmp(M,F,8)!=0)		{

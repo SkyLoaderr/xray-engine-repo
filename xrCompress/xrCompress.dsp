@@ -259,6 +259,14 @@ SOURCE=.\xrCompress.cpp
 # End Group
 # Begin Source File
 
+SOURCE=.\FS.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\FS.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\LzHuf.cpp
 # End Source File
 # Begin Source File

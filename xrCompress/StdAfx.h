@@ -22,11 +22,13 @@
 #include <sys\stat.h>
 #include <assert.h>
 #include <direct.h>
+#include <d3d8.h>
 
 #include "limits"
 #include "list"
 #include "set"
 #include "map"
+#include "stack"
 #include "algorithm"
 using namespace std;
 
@@ -34,15 +36,13 @@ using namespace std;
 #undef max
 #define ENGINE_API 
 #define IC __forceinline
-#define	NO_XR_COLOR
 #define NO_XR_LIGHT
 #define NO_XR_MATERIAL
 #define NO_XR_3DBUFFER
 #define VERIFY(a)	assert(a)
 #define R_ASSERT(a)	assert(a)
+#define _FREE(a) { if (a) free(a); }
 #define Msg printf
-struct D3DVECTOR;
-struct D3DMATRIX;
 #define NODEFAULT
 #include "vector.h"
 
