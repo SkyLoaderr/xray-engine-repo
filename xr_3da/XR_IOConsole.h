@@ -58,7 +58,7 @@ public:
 
 	// get
 	BOOL			GetBool				(LPCSTR cmd);
-	FLOAT			GetFloat			(LPCSTR cmd);
+	float			GetFloat			(LPCSTR cmd);
 	char *			GetValue			(LPCSTR cmd);
 	char *			GetNextValue		(LPCSTR cmd);
 	char *			GetPrevValue		(LPCSTR cmd);

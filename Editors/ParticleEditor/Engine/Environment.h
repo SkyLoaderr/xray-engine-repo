@@ -67,7 +67,7 @@ public:
     bool					bTerminator;
     
     EnvVec*					CurrentWeather;
-    LPCSTR					CurrentWeatherName;
+    ref_str					CurrentWeatherName;
 	WeatherMap				Weathers;
 	ref_shader				sh_2sky;
 	ref_geom				sh_2geom;
