@@ -56,7 +56,7 @@ end
 function fract:addObject(npc)
 	if self.Object[npc:id()] == nil then
 		table.insert(self.Object, npc:id(), npc)
-		self:updateJob()
+		--self:updateJob()
 	end
 end
 function fract:broadcast()
