@@ -151,6 +151,7 @@ public:
 	PIItem Get(const u32  id,	 bool bSearchRuck);			// »щет на по€се или в рюкзаке IItem с указанным именем (id)
 	void   Clear();											// clearing Inventory
 	virtual u32		dwfGetSameItemCount(LPCSTR caSection);	// get all the items with the same section name
+	virtual bool	bfCheckForObject(_OBJECT_ID tObjectID);	// get all the items with the same object id
 
 	bool Eat(PIItem pIItem);								// скушать предмет :)
 

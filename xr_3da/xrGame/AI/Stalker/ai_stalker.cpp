@@ -40,7 +40,6 @@ void CAI_Stalker::Init()
 	r_torso_speed					= PI_MUL_2;
 	r_head_speed					= 3*PI_DIV_2;
 
-	m_dwTimeToChange				= 0;
 	m_dwHitTime						= 0;
 
 	m_dwActionRefreshRate			= 1000;
@@ -162,6 +161,11 @@ void CAI_Stalker::Load				(LPCSTR section)
 	m_fWalkFreeFactor				= pSettings->r_float(section,"WalkFreeFactor");
 	m_fRunFreeFactor				= pSettings->r_float(section,"RunFreeFactor");
 	m_fPanicFactor					= pSettings->r_float(section,"PanicFactor");
+	m_fDamagedWalkFactor			= pSettings->r_float(section,"DamagedWalkFactor");
+	m_fDamagedRunFactor				= pSettings->r_float(section,"DamagedRunFactor");
+	m_fDamagedWalkFreeFactor		= pSettings->r_float(section,"DamagedWalkFreeFactor");
+	m_fDamagedRunFreeFactor			= pSettings->r_float(section,"DamagedRunFreeFactor");
+	m_fDamagedPanicFactor			= pSettings->r_float(section,"DamagedPanicFactor");
 
 	//fire
 	m_dwFireRandomMin  				= pSettings->r_s32(section,"FireRandomMin");
@@ -194,7 +198,6 @@ void CAI_Stalker::Load				(LPCSTR section)
 		tTerrainPlace.dwMaxTime		= atoi(_GetItem(S,i++,I))*1000;
 		m_tpaTerrain.push_back		(tTerrainPlace);
 	}
-	m_fGoingSpeed					= pSettings->r_float	(section, "going_speed");
 
 	m_dwMaxDynamicObjectsCount		= _min(pSettings->r_s32(section,"DynamicObjectsCount"),MAX_DYNAMIC_OBJECTS);
 	m_dwMaxDynamicSoundsCount		= _min(pSettings->r_s32(section,"DynamicSoundsCount"),MAX_DYNAMIC_SOUNDS);
@@ -243,14 +246,14 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	r_current.yaw = r_target.yaw = r_torso_current.yaw = r_torso_target.yaw	= angle_normalize_signed(-tpHuman->o_Angle.y);
 	r_torso_current.pitch			= r_torso_target.pitch	= 0;
 
-	m_tCurGP						= tpHuman->m_tGraphID;
-	m_tNextGP						= tpHuman->m_tNextGraphID;
+	m_tGraphID						= tpHuman->m_tGraphID;
+	m_tNextGraphID					= tpHuman->m_tNextGraphID;
 	m_dwBornTime					= Level().timeServer();
 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	if (m_dwParticularState == u32(-1)) {
 		R_ASSERT2					(getAI().bfCheckIfMapLoaded() && getAI().bfCheckIfGraphLoaded() && getAI().bfCheckIfCrossTableLoaded() && (getAI().m_dwCurrentLevelID != u32(-1)),"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!");
-		m_tNextGP					= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
+		m_tNextGraphID				= m_tGraphID = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 	}
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -284,6 +287,8 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 		}
 	}
 
+	m_tpKnownCustomers				= tpHuman->m_tpKnownCustomers;
+
 	return							(TRUE);
 }
 
@@ -315,16 +320,16 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	P.w_angle8						(N.o_torso.yaw);
 	P.w_angle8						(N.o_torso.pitch);
 
-	P.w								(&m_tNextGP,				sizeof(m_tNextGP));
-	P.w								(&m_tCurGP,					sizeof(m_tCurGP));
-	P.w								(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
-	P.w								(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
+	float							f1 = 0;
+	P.w								(&m_tNextGraphID,			sizeof(m_tNextGraphID));
+	P.w								(&m_tGraphID,				sizeof(m_tGraphID));
+	P.w								(&f1,						sizeof(f1));
+	P.w								(&f1,						sizeof(f1));
 
-	float							f1;
-	if (m_tCurGP != u16(-1)) {
-		f1							= Position().distance_to		(getAI().m_tpaGraph[m_tCurGP].tLocalPoint);
+	if (m_tGraphID != u16(-1)) {
+		f1							= Position().distance_to		(getAI().m_tpaGraph[m_tGraphID].tLocalPoint);
 		P.w							(&f1,						sizeof(f1));
-		f1							= Position().distance_to		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
+		f1							= Position().distance_to		(getAI().m_tpaGraph[m_tNextGraphID].tLocalPoint);
 		P.w							(&f1,						sizeof(f1));
 	}
 	else {
@@ -357,8 +362,8 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 	P.r_angle8						(N.o_torso.yaw);
 	P.r_angle8						(N.o_torso.pitch);
 
-	P.r								(&m_tNextGP,		sizeof(m_tNextGP));
-	P.r								(&m_tCurGP,			sizeof(m_tCurGP));
+	P.r								(&m_tNextGraphID,		sizeof(m_tNextGraphID));
+	P.r								(&m_tGraphID,			sizeof(m_tGraphID));
 
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
 		NET.push_back				(N);

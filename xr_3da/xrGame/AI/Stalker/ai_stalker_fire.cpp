@@ -33,7 +33,10 @@ void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 	CKinematics *V	= PKinematics(Visual());
 	R1				= V->LL_BoneID("bip01_r_hand");
 	R2				= V->LL_BoneID("bip01_r_finger2");
-	L				= V->LL_BoneID("bip01_l_finger1");
+	if (IsLimping() && (m_tStateType == eStateTypeNormal))
+		L				= R2;
+	else
+		L				= V->LL_BoneID("bip01_l_finger1");
 }
 
 bool CAI_Stalker::bfCheckIfCanKillTarget(CEntity *tpEntity, Fvector target_pos, float yaw2, float pitch2, float fSafetyAngle) 

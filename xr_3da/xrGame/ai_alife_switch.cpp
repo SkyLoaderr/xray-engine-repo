@@ -354,7 +354,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 		if (I->ID_Parent == 0xffff) {
 			// checking if the object is not an empty group of objects
 			CSE_ALifeGroupAbstract *tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(I);
-			if (tpALifeGroupAbstract && (!tpALifeGroupAbstract->m_tpMembers.size())) {
+			if (tpALifeGroupAbstract && tpALifeGroupAbstract->m_tpMembers.empty()) {
 				// relase empty group of objects
 				vfReleaseObject(tpALifeGroupAbstract);
 				return;

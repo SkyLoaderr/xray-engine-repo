@@ -638,6 +638,12 @@
 							RelativePath=".\Ai\Stalker\ai_stalker_alife.cpp">
 						</File>
 						<File
+							RelativePath=".\Ai\Stalker\ai_stalker_alife_fsm.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\Stalker\ai_stalker_alife_misc.cpp">
+						</File>
+						<File
 							RelativePath="AI\Stalker\ai_stalker_animations.cpp">
 						</File>
 						<File
@@ -2427,12 +2433,6 @@
 					Name="graph"
 					Filter="">
 					<File
-						RelativePath=".\ai_alife_a_star.cpp">
-					</File>
-					<File
-						RelativePath="ai_alife_a_star.h">
-					</File>
-					<File
 						RelativePath="ai_alife_cross_table.h">
 					</File>
 					<File
@@ -2537,6 +2537,92 @@
 				<File
 					RelativePath="ai_sounds.h">
 				</File>
+			</Filter>
+			<Filter
+				Name="AScript"
+				Filter="">
+				<File
+					RelativePath=".\ai_script.cpp">
+				</File>
+				<File
+					RelativePath=".\ai_script.h">
+				</File>
+				<Filter
+					Name="lua_bind"
+					Filter="">
+					<File
+						RelativePath=".\luabind\class_rep.cpp">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\luabind\create_class.cpp">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\luabind\find_best_match.cpp">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\luabind\function.cpp">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\luabind\implicit_cast.cpp">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\luabind\object.cpp">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\luabind\open.cpp">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\luabind\stack_content_by_name.cpp">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"/>
+						</FileConfiguration>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

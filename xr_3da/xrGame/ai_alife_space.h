@@ -194,14 +194,14 @@ namespace ALife {
 	
 	enum ETaskState {
 		eTaskStateChooseTask = u32(0),
-		eTaskStateHealthCare,
-		eTaskStateBuySupplies,
 		eTaskStateGoToCustomer,
-		eTaskStateBringToCustomer,
+		eTaskStateAccomplishTask,
 		eTaskStateGoToSOS,
 		eTaskStateSendSOS,
-		eTaskStateAccomplishTask,
 		eTaskStateSearchItem,
+		eTaskStateGoingToSearchItem,
+		eTaskStateGoingToCustomer,
+		eTaskStateTradeWithCustomer,
 		eTaskStateDummy = u32(-1),
 	};
 	

@@ -11,6 +11,7 @@
 #include "physicobject.h"
 #include "HangingLamp.h"
 #include "PhysicsShell.h"
+#include "game_sv_single.h"
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -34,6 +35,7 @@ CGameObject::CGameObject		()
 	Device.seqRender.Add	(this,REG_PRIORITY_LOW-999);
 #endif
 	*/
+	m_tpALife		= 0;
 }
 
 CGameObject::~CGameObject		()
@@ -113,6 +115,14 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	setReady						(TRUE);
 	setID							(E->ID);
 	g_pGameLevel->Objects.net_Register	(this);
+
+	m_tpALife						= 0;
+	if (Level().game.type == GAME_SINGLE) {
+		game_sv_Single			*tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+		if (tpGame && tpGame->m_tpALife) {
+			m_tpALife				= tpGame->m_tpALife;
+		}
+	}
 
 	// AI-DB connectivity
 	CTimer		T; T.Start		();

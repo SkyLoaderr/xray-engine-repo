@@ -29,8 +29,10 @@ CAI_Space::CAI_Space	()
 	m_tpAStar					= 0;
 	
 	string256					caFileName;
-	if (FS.exist(caFileName,"$game_data$",GRAPH_NAME))
-		CSE_ALifeGraph::Load		(caFileName);
+	if (FS.exist(caFileName,"$game_data$",GRAPH_NAME)) {
+		CSE_ALifeGraph::Load	(caFileName);
+		m_tpAStar				= xr_new<CAStar>(this,0,GraphHeader().dwVertexCount,65535);
+	}
 	
 	m_dwCurrentLevelID			= u32(-1);
 }
@@ -38,6 +40,7 @@ CAI_Space::CAI_Space	()
 CAI_Space::~CAI_Space	()
 {
 	Unload();
+	xr_delete					(m_tpAStar);
 }
 
 void CAI_Space::Unload()
@@ -45,7 +48,6 @@ void CAI_Space::Unload()
 	m_dwCurrentLevelID			= u32(-1);
 	xr_free						(m_nodes_ptr);
 	xr_delete					(vfs);
-	xr_delete					(m_tpAStar);
 }
 
 void CAI_Space::Load()
@@ -92,7 +94,9 @@ void CAI_Space::Load()
 	// a*
 	m_fSize2				= _sqr(m_header.size)/4;
 	m_fYSize2				= _sqr((float)(m_header.size_y/32767.0))/4;
-	m_tpAStar				= xr_new<CAStar>(65535);
+	
+	xr_delete				(m_tpAStar);
+	m_tpAStar				= xr_new<CAStar>(this,Header().count,GraphHeader().dwVertexCount,65535);
 
 	if (!FS.exist(fName,"$level$",CROSS_TABLE_NAME))
 		return;

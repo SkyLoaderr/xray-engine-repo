@@ -35,7 +35,7 @@ public:
 	CAStarSearch<CAIMapEnemyPathNode,SAIMapDataE>			*m_tpEnemyPath;
 	CAStarSearch<CAIMapEnemyPositionPathNode,SAIMapDataF>   *m_tpEnemyPositionPath;
 	CAStarSearch<CAIGraphShortestPathNode,SAIMapDataG>      *m_tpGraphPath;
-					CAStar(u32 dwMaxNodes);
+					CAStar(CAI_Space *tpAI_Space, u32 dwCount1, u32 dwCount2, u32 dwMaxNodes);
 	virtual			~CAStar();
 			float	ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode);
 			float	ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, DWORD_VECTOR	&tpaNodes);

@@ -44,6 +44,7 @@ public:
 //by Dandy
 //for the fog over the map
 class CFogOfWar;
+class CScriptProcessor;
 
 class CLevel					: public IGame_Level, public IPureClient
 {
@@ -57,6 +58,8 @@ protected:
 	EVENT						eEnvironment;
 	EVENT						eEntitySpawn;
 public:
+	// scripts
+	CScriptProcessor			*m_tpScriptProcessor;
 	// static particles
 	DEFINE_VECTOR(CParticlesObject*,POVec,POIt);
 	POVec						m_StaticParticles;

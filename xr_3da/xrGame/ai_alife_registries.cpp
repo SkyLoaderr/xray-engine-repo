@@ -191,7 +191,7 @@ void CSE_ALifeTaskRegistry::Update(CSE_ALifeTask	*tpTask)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeGraphRegistry
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeGraphRegistry::CSE_ALifeGraphRegistry() : CSE_ALifeAStar()
+CSE_ALifeGraphRegistry::CSE_ALifeGraphRegistry()
 {
 	m_tpCurrentLevel			= 0;
 }
@@ -203,8 +203,6 @@ CSE_ALifeGraphRegistry::~CSE_ALifeGraphRegistry()
 
 void CSE_ALifeGraphRegistry::Init()
 {
-	inherited::Init				();
-
 	for (int i=0; i<LOCATION_TYPE_COUNT; i++) {
 		{
 			for (int j=0; j<LOCATION_COUNT; j++)

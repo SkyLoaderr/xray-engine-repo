@@ -36,6 +36,7 @@ float faTurnAngles			[] = {
 LPCSTR caStateNames			[] = {
 	"cr_",
 	"norm_",
+	"norm_dmg_",
 	0
 };
 
@@ -206,7 +207,7 @@ void CAI_Stalker::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
 {
 	if (g_Alive()) {
 		if ((m_tStateType == eStateTypePanic) && (AI_Path.fSpeed > EPS_L))
-			tpGlobalAnimation = m_tAnims.A[eBodyStateStand].m_tGlobal.A[1].A[0];
+			tpGlobalAnimation = m_tAnims.A[IsLimping() ? eBodyStateStandDamaged : eBodyStateStand].m_tGlobal.A[1].A[0];
 	}
 	//else
 	//	tpGlobalAnimation = m_tAnims.A[eBodyStateStand].m_tGlobal.A[2].A[0];
@@ -265,13 +266,14 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 //	Msg			("[%s] Current weapon slot   : %d",cName(),dwCurrentAniSlot);
 //	Msg			("[%s] Current movement type : %d",cName(),m_tMovementType);
 
+	EBodyState l_tBodyState = (m_tBodyState == eBodyStateStand) && IsLimping() ? eBodyStateStandDamaged : m_tBodyState;
 	if (m_tStateType == eStateTypeNormal) {
 		tpTorsoAnimation = 0;
 		VERIFY(m_tBodyState == eBodyStateStand);
 		if (m_tMovementType == eMovementTypeStand)
-			tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[9].A[0];
+			tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[9].A[0];
 		else
-			tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[7 + m_tMovementType].A[1];
+			tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[IsLimping() ? 9 : (7 + m_tMovementType)].A[IsLimping() ? 0 : 1];
 		return;
 	}
 	if (m_inventory.ActiveItem()) {
@@ -301,19 +303,19 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 				}
 				default : {
 					if ((m_bFiring && (tpWeapon->STATE != CWeapon::eIdle)) || (m_tBodyState != eBodyStateStand))
-						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[6].A[0];
+						tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[(IsLimping() && (m_tBodyState == eBodyStateStand)) ? 9 : 6].A[0];
 					else
 						switch (m_tMovementType) {
 							case eMovementTypeStand : {
-								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[6].A[0];
+								tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[IsLimping() ? 9 : 6].A[0];
 								break;
 							}
 							case eMovementTypeWalk : {
-								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[7].A[0];
+								tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[7].A[0];
 								break;
 							}
 							case eMovementTypeRun : {
-								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[8].A[0];
+								tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[IsLimping() ? 7 : 8].A[0];
 								break;
 							}
 							default : {
@@ -334,6 +336,7 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 {
 	if (!g_Alive())
 		return;
+	EBodyState l_tBodyState = (m_tBodyState == eBodyStateStand) && IsLimping() ? eBodyStateStandDamaged : m_tBodyState;
 	if ((AI_Path.fSpeed < EPS_L) || (m_tMovementType == eMovementTypeStand)) {
 		// standing
 		if (getAI().bfTooSmallAngle(r_torso_target.yaw,r_torso_current.yaw,PI_DIV_6)) {
@@ -357,7 +360,7 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 
 	if (m_tStateType != eStateTypeDanger)
 		if (getAI().bfTooSmallAngle(r_torso_current.yaw,yaw,PI_DIV_6)) {
-			tpLegsAnimation = m_tAnims.A[m_tBodyState].m_tMoves.A[m_tMovementType].A[eMovementDirectionForward].A[m_tStateType];
+			tpLegsAnimation = m_tAnims.A[l_tBodyState].m_tMoves.A[m_tMovementType].A[eMovementDirectionForward].A[m_tStateType];
 			return;
 		}
 		else
@@ -432,7 +435,7 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 //	if (m_tStateType == eStateTypeNormal)
 //		m_tMovementDirection = eMovementDirectionForward;
 
-	tpLegsAnimation	= m_tAnims.A[m_tBodyState].m_tMoves.A[m_tMovementType].A[m_tMovementDirection].A[0];
+	tpLegsAnimation			= m_tAnims.A[l_tBodyState].m_tMoves.A[m_tMovementType].A[m_tMovementDirection].A[0];
 	r_torso_target.yaw		= angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
 //	Msg("[W=%7.2f][TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",yaw,r_torso_target.yaw,r_torso_current.yaw,r_target.yaw,r_current.yaw);
 }

@@ -348,7 +348,7 @@ void CAI_Stalker::Detour()
 	switch (m_tActionState) {
 		case eActionStateWatchGo : {
 			WRITE_TO_LOG			("WatchGo : Detour");
-			vfAccomplishTask			((F || G) ? 0 : &m_tSelectorFreeHunting);
+			vfContinueWithALifeGoals((F || G) ? 0 : &m_tSelectorFreeHunting);
 			if ((Level().timeServer() - m_dwActionStartTime > dwDelay1) && (getAI().dwfCheckPositionInDirection(AI_NodeID,Position(),tPoint) != u32(-1))) {
 				m_tActionState		= eActionStateWatchLook;
 				m_dwActionStartTime = Level().timeServer();
@@ -358,9 +358,9 @@ void CAI_Stalker::Detour()
 		case eActionStateWatchLook : {
 			WRITE_TO_LOG			("WatchLook : Detour");
 			vfUpdateSearchPosition	();
-			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGraphID].tNodeID;
 			if (!AI_Path.DestNode) {
-				Msg("! Invalid graph point node (graph index %d)",m_tNextGP);
+				Msg("! Invalid graph point node (graph index %d)",m_tNextGraphID);
 				for (int i=0; i<(int)getAI().GraphHeader().dwVertexCount; i++)
 					Msg("%3d : %6d",i,getAI().m_tpaGraph[i].tNodeID);
 			}
@@ -688,7 +688,7 @@ void CAI_Stalker::ExploreDNE()
 	switch (m_tActionState) {
 		case eActionStateDontWatch : {
 			WRITE_TO_LOG			("DontWatch : Exploring danger non-expedient ref_sound");
-			vfAccomplishTask			(&m_tSelectorFreeHunting);
+			vfContinueWithALifeGoals(&m_tSelectorFreeHunting);
 			if (getAI().dwfCheckPositionInDirection(AI_NodeID,Position(),tPoint) != u32(-1)) {
 				m_tActionState		= eActionStateWatch;
 				m_dwActionStartTime = Level().timeServer();
@@ -706,7 +706,7 @@ void CAI_Stalker::ExploreDNE()
 		}
 		case eActionStateWatchGo : {
 			WRITE_TO_LOG			("WatchGo : Exploring danger non-expedient ref_sound");
-			vfAccomplishTask			(&m_tSelectorFreeHunting);
+			vfContinueWithALifeGoals(&m_tSelectorFreeHunting);
 			if ((Level().timeServer() - m_dwActionStartTime > 7000) && (getAI().dwfCheckPositionInDirection(AI_NodeID,Position(),tPoint) != u32(-1))) {
 				m_tActionState		= eActionStateWatchLook;
 				m_dwActionStartTime = Level().timeServer();
@@ -716,9 +716,9 @@ void CAI_Stalker::ExploreDNE()
 		case eActionStateWatchLook : {
 			WRITE_TO_LOG			("WatchLook : Exploring danger non-expedient ref_sound");
 			vfUpdateSearchPosition	();
-			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGraphID].tNodeID;
 			if (!AI_Path.DestNode) {
-				Msg("! Invalid graph point node (graph index %d)",m_tNextGP);
+				Msg("! Invalid graph point node (graph index %d)",m_tNextGraphID);
 				for (int i=0; i<(int)getAI().GraphHeader().dwVertexCount; i++)
 					Msg("%3d : %6d",i,getAI().m_tpaGraph[i].tNodeID);
 			}
@@ -800,7 +800,7 @@ void CAI_Stalker::ExploreNDNE()
 	switch (m_tActionState) {
 		case eActionStateDontWatch : {
 			WRITE_TO_LOG			("DontWatch : Exploring non-danger non-expedient ref_sound");
-			vfAccomplishTask();
+			vfContinueWithALifeGoals();
 			if (getAI().dwfCheckPositionInDirection(AI_NodeID,Position(),tPoint) != u32(-1)) {
 				m_tActionState = eActionStateWatch;
 				m_dwActionStartTime = Level().timeServer();
@@ -818,7 +818,7 @@ void CAI_Stalker::ExploreNDNE()
 		}
 		case eActionStateWatchGo : {
 			WRITE_TO_LOG			("WatchGo : Exploring non-danger non-expedient ref_sound");
-			vfAccomplishTask();
+			vfContinueWithALifeGoals();
 			if ((Level().timeServer() - m_dwActionStartTime > 10000) && (getAI().dwfCheckPositionInDirection(AI_NodeID,Position(),tPoint) != u32(-1))) {
 				m_tActionState = eActionStateWatchLook;
 				m_dwActionStartTime = Level().timeServer();
@@ -828,9 +828,9 @@ void CAI_Stalker::ExploreNDNE()
 		case eActionStateWatchLook : {
 			WRITE_TO_LOG			("WatchLook : Exploring non-danger non-expedient ref_sound");
 			vfUpdateSearchPosition	();
-			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGraphID].tNodeID;
 			if (!AI_Path.DestNode) {
-				Msg("! Invalid graph point node (graph index %d)",m_tNextGP);
+				Msg("! Invalid graph point node (graph index %d)",m_tNextGraphID);
 				for (int i=0; i<(int)getAI().GraphHeader().dwVertexCount; i++)
 					Msg("%3d : %6d",i,getAI().m_tpaGraph[i].tNodeID);
 			}
@@ -1126,45 +1126,7 @@ void CAI_Stalker::Think()
 	if (M) {
 		TakeItems();
 	} else {
-		switch (m_tTaskState) {
-			case eTaskStateChooseTask : {
-				vfChooseTask();
-				break;
-			}
-			case eTaskStateHealthCare : {
-				vfHealthCare();
-				break;
-			}
-			case eTaskStateBuySupplies : {
-				vfBuySupplies();
-				break;
-			}
-			case eTaskStateGoToCustomer : {
-				vfGoToCustomer();
-				break;
-			}
-			case eTaskStateBringToCustomer : {
-				vfBringToCustomer();
-				break;
-			}
-			case eTaskStateGoToSOS : {
-				vfGoToSOS();
-				break;
-			}
-			case eTaskStateSendSOS : {
-				vfSendSOS();
-				break;
-			}
-			case eTaskStateAccomplishTask : {
-				vfAccomplishTask();
-				break;
-			}
-			case eTaskStateSearchItem : {
-				vfSearchObject();
-				break;
-			}
-			default			: NODEFAULT;
-		}
+		ALifeUpdate();
 	}
 
 	if (m_bSearchedForEnemy)

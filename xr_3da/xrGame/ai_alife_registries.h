@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "ai_alife_a_star.h"
 #include "ai_alife_objects.h"
 using namespace ALife;
 
@@ -88,9 +87,8 @@ public:
 	}
 };
 
-class CSE_ALifeGraphRegistry : public CSE_ALifeAStar {
+class CSE_ALifeGraphRegistry {
 public:
-	typedef CSE_ALifeAStar inherited;
 	CSE_ALifeCreatureActor			*m_tpActor;
 	bool							m_bSwitchChanged;
 	_OBJECT_ID						m_tNextFirstSwitchObjectID;

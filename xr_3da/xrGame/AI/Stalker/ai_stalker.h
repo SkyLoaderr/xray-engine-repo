@@ -48,9 +48,6 @@ private:
 	bool						m_bCanFire;
 
 	// ALife members
-	CSE_ALifeSimulator			*m_tpALife;
-	ETaskState					m_tTaskState;
-
 	xr_vector<Fvector>			m_tpaPoints;
 	xr_vector<Fvector>			m_tpaDeviations;
 	xr_vector<Fvector>			m_tpaTravelPath;
@@ -147,15 +144,7 @@ private:
 	bool					m_bActionStarted;
 	u32						m_dwSoundTime;
 
-
 	CCharacterPhysicsSupport* m_pPhysics_support;
-	// Graph
-	_GRAPH_ID				m_tCurGP;
-	_GRAPH_ID				m_tNextGP;
-	u32						m_dwTimeToChange;
-	float					m_fGoingSpeed;
-	TERRAIN_VECTOR			m_tpaTerrain;
-	Fvector					m_tNextGraphPoint;
 	
 	// FSM
 	u32						m_dwLastUpdate;
@@ -197,24 +186,27 @@ private:
 	float					m_fWalkFreeFactor;
 	float					m_fRunFreeFactor;
 	float					m_fPanicFactor;
+	float					m_fDamagedWalkFactor;
+	float					m_fDamagedRunFactor;
+	float					m_fDamagedWalkFreeFactor;
+	float					m_fDamagedRunFreeFactor;
+	float					m_fDamagedPanicFactor;
 
 	u32						m_dwLastRangeSearch;
 
-			// state machine
+	// ALife
+	TERRAIN_VECTOR			m_tpaTerrain;
+	ETaskState				m_tTaskState;
+	// ALife path builder
+	DWORD_VECTOR			m_tpGraphPath;
+	u32						m_dwCurGraphPathNode;
+	_GRAPH_ID				m_tGraphID;
+	_GRAPH_ID				m_tNextGraphID;
+	_GRAPH_ID				m_tDestGraphPointIndex;
+	_TASK_ID				m_tTaskID;
+	OBJECT_VECTOR			m_tpKnownCustomers;
 
-//	IC		void			vfAddStateToList(EStalkerStates eState)
-//	{
-//		if ((m_tStateList.size()) && (m_tStateList[m_tStateList.size() - 1].eState == eState)) {
-//			m_tStateList[m_tStateList.size() - 1].dwTime = m_dwCurrentUpdate;
-//			return;
-//		}
-//		if (m_tStateList.size() >= MAX_STATE_LIST_SIZE)
-//			m_tStateList.erase(u32(0));
-//		SStalkerStates tStalkerStates;
-//		tStalkerStates.dwTime = m_dwCurrentUpdate;
-//		tStalkerStates.eState = eState;
-//		m_tStateList.push_back(tStalkerStates);
-//	}
+
 			void			BackStraight					();
 			void			BackCover						(bool bFire = true);
 			void			ForwardCover					();
@@ -231,6 +223,7 @@ private:
 			void			TakeItems						();
 			
 			// ALife
+			void			ALifeUpdate						();
 			void			vfChooseTask					();
 			void			vfHealthCare					();
 			void			vfBuySupplies					();
@@ -238,8 +231,24 @@ private:
 			void			vfBringToCustomer				();
 			void			vfGoToSOS						();
 			void			vfSendSOS						();
-			void			vfAccomplishTask				(IBaseAI_NodeEvaluator *tpNodeEvaluator = 0);
+			void			vfAccomplishTask				();
+			void			vfContinueWithALifeGoals		(IBaseAI_NodeEvaluator *tpNodeEvaluator = 0);
 			void			vfSearchObject					();
+			bool			bfHealthIsGood					();
+			bool			bfItemCanTreat					(CInventoryItem *tpInventoryItem);
+			void			vfUseItem						(CInventoryItem *tpInventoryItem);
+			bool			bfCanTreat						();
+			bool			bfEnoughMoneyToTreat			();
+			bool			bfEnoughTimeToTreat				();
+			bool			bfEnoughEquipmentToGo			();
+			bool			bfDistanceToTraderIsDanger		();
+			bool			bfEnoughMoneyToEquip			();
+			void			vfChooseHumanTask				();
+			bool			bfCheckIfTaskCompleted			();
+			bool			bfCheckIfTaskCompleted			(OBJECT_IT		&I);
+			void			vfSetCurrentTask				(_TASK_ID		&tTaskID);
+			bool			bfAssignDestinationNode			();
+			void			vfFinishTask					();
 
 			// selectors
 			void			vfInitSelector					(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader);

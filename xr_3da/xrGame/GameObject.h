@@ -25,12 +25,14 @@ class CGameObject :
 	public CPhysicsRefObject
 {
 	typedef CObject inherited;
+protected:
+	CSE_ALifeSimulator		*m_tpALife;
 public:
 	// AI connection
-	u32											AI_NodeID;
-	NodeCompressed*								AI_Node;
-	CPhysicsShell*								m_pPhysicsShell;
-	IC CPhysicsShell*&			PPhysicsShell()		
+	u32						AI_NodeID;
+	NodeCompressed			*AI_Node;
+	CPhysicsShell			*m_pPhysicsShell;
+	IC CPhysicsShell		*&PPhysicsShell()		
 	{
 		return m_pPhysicsShell;
 	}

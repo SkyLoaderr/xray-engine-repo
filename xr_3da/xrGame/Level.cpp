@@ -21,6 +21,7 @@
 
 //fog over the map
 #include "LevelFogOfWar.h"
+#include "ai_script.h"
 
 CPHWorld*	ph_world = 0;
 
@@ -46,10 +47,11 @@ CLevel::CLevel()
 	m_caServerOptions[0]		= 0;
 	m_caClientOptions[0]		= 0;
 
-	
 	//by Dandy
-	m_pFogOfWar = NULL;
-	m_pFogOfWar = xr_new<CFogOfWar>();
+	m_pFogOfWar					= NULL;
+	m_pFogOfWar					= xr_new<CFogOfWar>();
+
+	m_tpScriptProcessor			= 0;
 }
 
 CLevel::~CLevel()
@@ -85,7 +87,7 @@ CLevel::~CLevel()
 	//destroy fog of war
 	if(m_pFogOfWar) xr_delete(m_pFogOfWar);
 
-
+	xr_delete			(m_tpScriptProcessor);
 	xr_delete			(tpAI_Space);
 	xr_free				(m_caServerOptions);
 	xr_free				(m_caClientOptions);
@@ -243,6 +245,8 @@ void CLevel::OnFrame	()
 			F->OutNext("client_2_sever ping: %d",	net_Statistic.getPing());
 		}
 	}
+	
+	m_tpScriptProcessor->Update();
 }
 
 void CLevel::OnRender()

@@ -1560,3 +1560,38 @@ bool CAI_Space::bfCreateStraightPTN_Path(u32 dwStartNode, Fvector tStartPoint, F
 	else
 		return(false);
 }
+
+void CAI_Space::vfFindGraphPointNodeInDirection(u32 dwStartNode, Fvector tStartPoint, Fvector tDirection, u32 &dwFinishNode, _GRAPH_ID tGraphID)
+{
+	PContour				tCurContour;
+	NodeCompressed			*tpNode;
+	NodeLink				*taLinks;
+	int						i, iCount, iSavedIndex, iPrevIndex = -1, iNextNode;
+	Fvector					tFinishPoint = tStartPoint, tTempPoint = tStartPoint;
+	u32						dwCurNode = dwStartNode;
+	tDirection.mul			(2000.f);
+	tFinishPoint.add		(tDirection);
+	float					fCurDistance = 0.f;
+
+	for (;;) {
+		tpNode				= Node(dwCurNode);
+		taLinks				= (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
+		iCount				= tpNode->links;
+		iSavedIndex			= -1;
+		UnpackContour		(tCurContour,dwCurNode);
+		for ( i=0; i < iCount; i++)
+			if ((iNextNode = UnpackLink(taLinks[i])) != iPrevIndex)
+				if (m_tpaCrossTable[iNextNode].tGraphIndex == tGraphID)
+					vfChoosePoint	(tStartPoint,tFinishPoint,tCurContour, iNextNode,tTempPoint,iSavedIndex);
+
+		if (iSavedIndex > -1) {
+			fCurDistance	= tStartPoint.distance_to_xz(tTempPoint);
+			iPrevIndex		= dwCurNode;
+			dwCurNode		= iSavedIndex;
+		}
+		else
+			return;
+		
+		dwFinishNode		= dwCurNode;
+	}
+}

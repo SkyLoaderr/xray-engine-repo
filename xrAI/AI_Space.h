@@ -175,6 +175,7 @@ public:
 	float	ffFindFarthestNodeInDirection	(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, u32 &dwFinishNode, xr_vector<bool> *tpaMarks = 0);
 
 	bool	bfCreateStraightPTN_Path		(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, xr_vector<Fvector> &tpaOutputPoints, xr_vector<u32> &tpaOutputNodes, bool bAddFirstPoint);
+	void	vfFindGraphPointNodeInDirection	(u32 dwStartNode, Fvector tStartPoint, Fvector tDirection, u32 &dwFinishNode, _GRAPH_ID tGraphID);
 };
 
 extern CAI_Space *tpAI_Space;

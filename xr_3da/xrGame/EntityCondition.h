@@ -28,6 +28,8 @@ public:
 	float GetMaxHealth() {return m_fHealthMax;}
 	float GetHealthLost() {return m_fHealthLost;}
 
+	virtual bool IsLimping();
+
 	void ChangeHealth(float value);
 	void ChangePower(float value);
 	void ChangeSatiety(float value);

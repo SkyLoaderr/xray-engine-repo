@@ -2,8 +2,8 @@
 #pragma hdrstop
 
 #include "gamepersistent.h"
-
 #include "..\xr_ioconsole.h"
+#include "ai_script.h"
 
 CGamePersistent::CGamePersistent(void)
 {
@@ -24,6 +24,8 @@ CGamePersistent::CGamePersistent(void)
 		pDemoFile			=	NULL;
 		eDemoStart			=	NULL;
 	}
+
+	m_tpScriptProcessor			= 0;
 }
 
 CGamePersistent::~CGamePersistent(void)
@@ -31,6 +33,7 @@ CGamePersistent::~CGamePersistent(void)
 	FS.r_close					(pDemoFile);
 	Device.seqFrame.Remove		(this);
 	Engine.Event.Handler_Detach	(eDemoStart,this);
+	xr_delete					(m_tpScriptProcessor);
 }
 
 void CGamePersistent::OnAppCycleStart()
@@ -39,6 +42,12 @@ void CGamePersistent::OnAppCycleStart()
 	string256		fn_mtl;
 	if (FS.exist(fn_mtl, "$game_data$","gamemtl.xr"))
 		GMLib.Load	(fn_mtl);
+
+	// loading scripts
+	xr_delete					(m_tpScriptProcessor);
+	string256					l_caFilePath;
+	FS.update_path				(l_caFilePath,"$game_scripts$","\\*.script");
+	m_tpScriptProcessor			= xr_new<CScriptProcessor>(l_caFilePath);
 
 	__super::OnAppCycleStart	();
 }
@@ -53,6 +62,8 @@ void CGamePersistent::OnAppCycleEnd	()
 void CGamePersistent::OnFrame		()
 {
 	__super::OnFrame	();
+
+	m_tpScriptProcessor->Update		();
 
 	if	(0==pDemoFile)	return;
 	

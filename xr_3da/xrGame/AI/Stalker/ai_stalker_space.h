@@ -36,6 +36,7 @@ DEFINE_VECTOR							(ref_sound,SOUND_VECTOR,SOUND_IT);
 enum EBodyState {
 	eBodyStateCrouch = 0,
 	eBodyStateStand,
+	eBodyStateStandDamaged,
 };
 
 enum EMovementType {

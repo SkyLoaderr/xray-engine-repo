@@ -10,6 +10,7 @@
 #include "ai_alife.h"
 #include "ai_space.h"
 #include "ai_alife_predicates.h"
+#include "a_star.h"
 
 CSE_Abstract *CSE_ALifeSimulator::tpfCreateGroupMember(CSE_ALifeGroupAbstract *tpALifeGroupAbstract, CSE_ALifeDynamicObject *j)
 {
@@ -712,7 +713,7 @@ void CSE_ALifeSimulator::vfUpdateTasks()
 				TRADER_SET_IT	ii = (*I).second.begin();
 				TRADER_SET_IT	ee = (*I).second.end(), jj = ee;
 				for ( ; ii != ee; ii++) {
-					float		l_fDistance = ffFindMinimalPath((*ii)->m_tGraphID,(*II)->m_tGraphID);
+					float		l_fDistance = getAI().m_tpAStar->ffFindMinimalPath((*ii)->m_tGraphID,(*II)->m_tGraphID);
 					if (l_fDistance < l_fMinDistance) {
 						l_fMinDistance = l_fDistance;
 						jj = ii;

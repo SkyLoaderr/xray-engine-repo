@@ -613,7 +613,7 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 			}
 		}
 
-		if (!(m_tpBlockedItems1.size() + m_tpBlockedItems2.size())) {
+		if (m_tpBlockedItems1.empty() && m_tpBlockedItems2.empty()) {
 			if (l_iItemCount1)
 				vfAssignItemParents	(tpALifeHumanAbstract1,l_iItemCount1);
 			if (l_iItemCount2)
@@ -625,8 +625,8 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 			k					= 0;
 		}
 		else {
-			if (m_tpBlockedItems1.size())
-				if (m_tpBlockedItems2.size()) {
+			if (!m_tpBlockedItems1.empty())
+				if (!m_tpBlockedItems2.empty()) {
 					vfAppendBlockedItems(tpALifeHumanAbstract1,m_tpBlockedItems1,m_tpBlockedItems2,l_iItemCount1);
 					vfAppendBlockedItems(tpALifeHumanAbstract2,m_tpBlockedItems2,m_tpBlockedItems1,l_iItemCount2);
 					tpALifeHumanAbstract1->children.resize(tpALifeHumanAbstract1->children.size() - l_iItemCount1);
@@ -688,7 +688,7 @@ void CSE_ALifeSimulator::vfPerformCommunication()
 		SCHEDULE_P_IT	i = m_tpaCombatGroups[1].begin();
 		SCHEDULE_P_IT	e = m_tpaCombatGroups[1].end();
 		for ( ; i != e; i++) {
-			if ((*I)->children.size() || (*i)->children.size())
+			if (!(*I)->children.empty() || !(*i)->children.empty())
 				vfPerformTrading(dynamic_cast<CSE_ALifeHumanAbstract*>(*I),dynamic_cast<CSE_ALifeHumanAbstract*>(*i));
 			// update events
 #pragma todo("Dima to Dima: Update events")

@@ -149,12 +149,13 @@ void CAI_Rat::SelectCorp(SEnemySelected& S)
 {
 	// Initiate process
 	objVisible&	Known	= Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
-	S.Enemy					= 0;
+	S.Enemy				= 0;
 	S.bVisible			= FALSE;
 	S.fCost				= flt_max-1;
 	
-	if (Known.size()==0)
+	if (!Known.size())
 		return;
+
 	// Get visible list
 	feel_vision_get	(m_tpaVisibleObjects);
 	std::sort		(m_tpaVisibleObjects.begin(),m_tpaVisibleObjects.end());
@@ -234,10 +235,6 @@ void CAI_Rat::vfUpdateMorale()
 
 void CAI_Rat::vfUpdateMoraleBroadcast(float fValue, float fRadius)
 {
-#pragma todo("Oles to Dima : Leadership changed")
-	CEntity *tpLeader = Level().Teams[g_Team()].Squads[g_Squad()].Leader;
-	if (tpLeader->g_Alive())
-		tpLeader->m_fMorale += fValue;
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	for (int i=0; i<(int)Group.Members.size(); i++)
 		if (Group.Members[i]->g_Alive())

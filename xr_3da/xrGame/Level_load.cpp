@@ -4,6 +4,7 @@
 #include "ai_space.h"
 #include "ai\ai_selector_template.h"
 #include "ParticlesObject.h"
+#include "ai_script.h"
 
 void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 {
@@ -312,6 +313,13 @@ BOOL CLevel::Load_GameSpecific_After()
 		}
 		Sounds_dwNextTime		= Device.TimerAsync	()	+ 5000;
 	}
+	
+	// loading scripts
+	xr_delete					(m_tpScriptProcessor);
+	string256					l_caFilePath;
+	FS.update_path				(l_caFilePath,"$level$","\\scripts\\*.script");
+	m_tpScriptProcessor			= xr_new<CScriptProcessor>(l_caFilePath);
+
 	return TRUE;
 }
 

@@ -8,6 +8,8 @@
 
 #include "stdafx.h"
 #include "ai_alife.h"
+#include "ai_space.h"
+#include "a_star.h"
 
 //#define OLD_BEHAVIOUR
 
@@ -28,20 +30,8 @@ void CSE_ALifeHumanAbstract::Update			()
 				vfChooseTask();
 				break;
 			}
-			case eTaskStateHealthCare : {
-				vfHealthCare();
-				break;
-			}
-			case eTaskStateBuySupplies : {
-				vfBuySupplies();
-				break;
-			}
 			case eTaskStateGoToCustomer : {
 				vfGoToCustomer();
-				break;
-			}
-			case eTaskStateBringToCustomer : {
-				vfBringToCustomer();
 				break;
 			}
 			case eTaskStateGoToSOS : {
@@ -81,12 +71,12 @@ void CSE_ALifeHumanAbstract::vfChooseTask()
 				return;
 			}
 			else {
-				m_tTaskState = eTaskStateBuySupplies;
+				m_tTaskState = eTaskStateGoToCustomer;
 				return;
 			}
 		}
 		else {
-			m_tTaskState = eTaskStateHealthCare;
+			//m_tTaskState = eTaskStateHealthCare;
 			return;
 		}
 	}
@@ -97,7 +87,7 @@ void CSE_ALifeHumanAbstract::vfChooseTask()
 				return;
 			}
 			else {
-				m_tTaskState = eTaskStateBuySupplies;
+				m_tTaskState = eTaskStateGoToCustomer;
 				return;
 			}
 		}
@@ -145,13 +135,8 @@ void CSE_ALifeHumanAbstract::vfBuySupplies()
 void CSE_ALifeHumanAbstract::vfGoToCustomer()
 {
 	// go to customer to get something to accomplish task
-}
-
-void CSE_ALifeHumanAbstract::vfBringToCustomer()
-{
-	// go to customer to sell found artefacts
 	if (m_tpPath.empty()) {
-		m_tpALife->ffFindMinimalPath(m_tGraphID,m_tpALife->tpfGetObjectByID(m_tpALife->tpfGetTaskByID(m_dwCurTaskID)->m_tCustomerID)->m_tGraphID,m_tpPath);
+		getAI().m_tpAStar->ffFindMinimalPath(m_tGraphID,m_tpALife->tpfGetObjectByID(m_tpALife->tpfGetTaskByID(m_dwCurTaskID)->m_tCustomerID)->m_tGraphID,m_tpPath);
 		m_dwCurNode					= 0;
 		m_tNextGraphID				= m_tGraphID;
 		m_fCurSpeed					= m_fGoingSpeed;
@@ -186,14 +171,14 @@ void CSE_ALifeHumanAbstract::vfAccomplishTask()
 	m_fCurSpeed		= m_fGoingSpeed;
 	m_fProbability	= m_fGoingSuccessProbability; 
 	if (m_tpPath.empty()) {
-		m_tpALife->ffFindMinimalPath(m_tGraphID,m_tDestGraphPointIndex,m_tpPath);
+		getAI().m_tpAStar->ffFindMinimalPath(m_tGraphID,m_tDestGraphPointIndex,m_tpPath);
 		m_dwCurNode				= 0;
 		m_tNextGraphID			= m_tGraphID;
 	}
 	if ((m_dwCurNode + 1 >= (m_tpPath.size())) && (m_tGraphID == m_tNextGraphID)) {
 		if (bfCheckIfTaskCompleted()) {
 			m_tpPath.clear		();
-			m_tTaskState		= eTaskStateBringToCustomer;
+			m_tTaskState		= eTaskStateGoToCustomer;
 		}
 		else {
 			CSE_ALifeTask		*l_tpALifeTask = m_tpALife->tpfGetTaskByID(m_dwCurTaskID);

@@ -505,3 +505,8 @@ void CEntityCondition::Awoke()
 	m_fCurrentSleepSatiety =  1.0f;
 	m_fCurrentSleepRadiation =  1.0f;
 }
+
+bool CEntityCondition::IsLimping()
+{
+	return (true);//m_fPower*m_fHealth <= .5f);
+}

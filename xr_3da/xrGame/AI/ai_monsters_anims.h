@@ -39,7 +39,7 @@ public:
 		for (int j=0; caBaseNames[j]; j++);
 		A.resize	(j);
 		for (int i=0; i<j; i++)
-			A[i] = tpKinematics->ID_Cycle(strconcat(S,caBaseName,caBaseNames[i]));
+			A[i] = tpKinematics->ID_Cycle_Safe(strconcat(S,caBaseName,caBaseNames[i]));
 	}
 };
 

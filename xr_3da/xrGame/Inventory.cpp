@@ -893,6 +893,18 @@ u32 CInventory::dwfGetSameItemCount(LPCSTR caSection)
 	return		(l_dwCount);
 }
 
+bool CInventory::bfCheckForObject(_OBJECT_ID tObjectID)
+{
+	TIItemList	&l_list = m_ruck;
+	for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++) 
+	{
+		PIItem	l_pIItem = *l_it;
+		if (l_pIItem->ID() == tObjectID)
+			return(true);
+	}
+	return		(false);
+}
+
 //скушать предмет 
 bool CInventory::Eat(PIItem pIItem)
 {

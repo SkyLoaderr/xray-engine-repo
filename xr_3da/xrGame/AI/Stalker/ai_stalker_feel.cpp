@@ -21,6 +21,7 @@ BOOL CAI_Stalker::feel_vision_isRelevant(CObject* O)
 	CEntityAlive*	E = dynamic_cast<CEntityAlive*>		(O);
 	CInventoryItem*	I = dynamic_cast<CInventoryItem*>	(O);
 	if (!E && !I)	return	(FALSE);
+	if (E && (E->g_Team() == g_Team()))			return FALSE;
 	return(TRUE);
 }
 

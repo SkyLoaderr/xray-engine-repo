@@ -58,7 +58,6 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 			case eMeetActionTypeAttack : {
 #ifdef ALIFE_LOG
 				Msg("[LSS] %s started combat versus %s",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
-				break;
 #endif
 				ECombatResult			l_tCombatResult = eCombatResultRetreat12;
 				bool					l_bDoNotContinue = false;

@@ -62,11 +62,9 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 		switch (m_tBodyState) {
 			case eBodyStateCrouch : {
 				m_fCurSpeed *= m_fCrouchFactor;
-				//Movement.ActivateBox(1);
 				break;
 			}
 			case eBodyStateStand : {
-				//Movement.ActivateBox(0);
 				break;
 			}
 			default : NODEFAULT;
@@ -75,11 +73,11 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 			case eMovementTypeWalk : {
 				switch (m_tStateType) {
 					case eStateTypeDanger : {
-						m_fCurSpeed *= m_fWalkFactor;
+						m_fCurSpeed *= IsLimping() ? m_fDamagedWalkFactor : m_fWalkFactor;
 						break;
 					}
 					case eStateTypeNormal : {
-						m_fCurSpeed *= m_fWalkFreeFactor;
+						m_fCurSpeed *= IsLimping() ? m_fDamagedWalkFreeFactor : m_fWalkFreeFactor;
 						break;
 					}
 					case eStateTypePanic : {
@@ -94,20 +92,18 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 			case eMovementTypeRun : {
 				switch (m_tStateType) {
 					case eStateTypeDanger : {
-						m_fCurSpeed *= m_fRunFactor;
+						m_fCurSpeed *= IsLimping() ? m_fDamagedRunFactor : m_fRunFactor;
 						break;
 					}
 					case eStateTypeNormal : {
-						m_fCurSpeed *= m_fRunFreeFactor;
+						m_fCurSpeed *= IsLimping() ? m_fDamagedRunFreeFactor : m_fRunFreeFactor;
 						break;
 					}
 					case eStateTypePanic : {
-						m_fCurSpeed *= m_fPanicFactor;
+						m_fCurSpeed *= IsLimping() ? m_fDamagedPanicFactor : m_fPanicFactor;
 						break;
 					}
 				}
-//				r_torso_speed	= PI;
-//				r_head_speed	= 3*PI_DIV_4;
 				r_torso_speed	= PI_MUL_2;
 				r_head_speed	= 3*PI_DIV_2;
 				break;
@@ -216,7 +212,7 @@ void CAI_Stalker::vfSelectItemToTake(CInventoryItem *&tpItemToTake)
 	tpItemToTake = m_tpItemsToTake[0];
 	float fDistSqr = Position().distance_to_sqr(tpItemToTake->Position());
 	for (int i=1, n = (int)m_tpItemsToTake.size(); i<n; i++)
-		if (!m_tpItemsToTake[i]->H_Parent() && (Position().distance_to_sqr(m_tpItemsToTake[i]->Position()) < fDistSqr)) {
+		if (!m_tpItemsToTake[i]->H_Parent() && (Position().distance_to_sqr(m_tpItemsToTake[i]->Position()) < fDistSqr) && (getAI().bfInsideNode(m_tpItemsToTake[i]->AI_Node,m_tpItemsToTake[i]->Position()))) {
 			fDistSqr = Position().distance_to_sqr(m_tpItemsToTake[i]->Position());
 			tpItemToTake = m_tpItemsToTake[i];
 		}
@@ -254,12 +250,12 @@ void CAI_Stalker::vfUpdateSearchPosition()
 //		}
 //	}
 //	else
-		if ((Level().timeServer() >= m_dwTimeToChange) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGP)) {
-			m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
-			vfChooseNextGraphPoint		();
-			m_tNextGraphPoint.set		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
-			m_dwTimeToChange			= Level().timeServer() + 10000;
-		}
+//		if ((Level().timeServer() >= m_dwTimeToChange) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGP)) {
+//			m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
+//			vfChooseNextGraphPoint		();
+//			m_tNextGraphPoint.set		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
+//			m_dwTimeToChange			= Level().timeServer() + 10000;
+//		}
 }
 
 void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E, bool &F, bool &G, bool &H, bool &I, bool &J, bool &K, bool &L, bool &M)
@@ -292,7 +288,7 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 	C = D = E = F = G	= false;
 	objVisible			&VisibleEnemies = Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
 	if (bfIsAnyAlive(VisibleEnemies)) {
-		switch (dwfChooseAction(0,m_fAttackSuccessProbability0,m_fAttackSuccessProbability1,m_fAttackSuccessProbability2,m_fAttackSuccessProbability3,g_Team(),g_Squad(),g_Group(),0,1,2,3,4,this,30.f)) {
+ 		switch (dwfChooseAction(0,m_fAttackSuccessProbability0,m_fAttackSuccessProbability1,m_fAttackSuccessProbability2,m_fAttackSuccessProbability3,g_Team(),g_Squad(),g_Group(),0,1,2,3,4,this,30.f)) {
 			case 4 : 
 				C = true;
 				break;
