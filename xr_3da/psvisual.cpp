@@ -214,12 +214,12 @@ DWORD CPSVisual::RenderTO	(FVF::TL* dest)
         // update
 		for (int sample=mb_samples-1; sample>=0; sample--)
 		{
-            float T 	= fTime-P->m_Time.start-(sample*mb_step);
-            if (T<0) continue;
-            float mb_v	= 1-float(sample)/float(mb_samples);
-            float k 	= T/(P->m_Time.end-P->m_Time.start);
+            float T 	=	fTime-P->m_Time.start-(sample*mb_step);
+            if (T<0)		continue;
+            float mb_v	=	1-float(sample)/float(mb_samples);
+            float k 	=	T/(P->m_Time.end-P->m_Time.start);
 			if ((m_Emitter->m_dwFlag&PS_EM_PLAY_ONCE) && (k>1)) continue;
-            float k_inv = 1-k;
+            float k_inv =	1-k;
 			
             Fvector Pos;
             
