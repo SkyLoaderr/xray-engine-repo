@@ -289,6 +289,8 @@ void	CRenderTarget::OnDeviceCreate	()
 					//float	sim0	=	_abs	(1-_abs	(ld-ls));
 					//float	sim1	=	_abs	(1-_abs	(ld*.5f-ls)+.5f);
 					//float	sim		=	_max	(sim0,sim1);
+
+					// 1
 					float	sim0	=	_abs	(1-_abs	(0.05f*_sin(33.f*ld)+ld-ls));
 					float	sim1	=	_abs	(1-_abs	(0.05f*_cos(33.f*ld*ls)+ld-ls));
 					float	sim2	=	_abs	(1-_abs	(ld-ls));
