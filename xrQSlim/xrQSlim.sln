@@ -5,6 +5,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrQSlim", "xrQSlim.vcproj",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QSTest", "QSTest\QSTest.vcproj", "{4DAD76BB-E866-4116-A382-4409B5964BF2}"
 	ProjectSection(ProjectDependencies) = postProject
+		{F1836CE2-59EF-4189-8B9C-D103A511CB27} = {F1836CE2-59EF-4189-8B9C-D103A511CB27}
 	EndProjectSection
 EndProject
 Global
