@@ -62,7 +62,6 @@ void CBuild::SaveTREE(CFS_Base &fs)
 		100.f * float(g_batch_1000)/float(g_batch_count),
 		100.f * float(g_batch_5000)/float(g_batch_count)
 		);
-
 	mem_Compact			();
 
 	Status				("Geometry : vertices ...");
