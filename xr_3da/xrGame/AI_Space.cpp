@@ -410,7 +410,7 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 		if (u_InsideNode(N,P)) 
 		{
 			/**
-			int dist = fabsf(int(P.y)-int((N.p0.y + N.p1.y)/2.f));
+			int dist = fabsf(iFloor(P.y)-iFloor((N.p0.y + N.p1.y)/2.f));
 			//if (dist>=0) {
 				if (dist<min_dist) {
 					min_dist = dist;

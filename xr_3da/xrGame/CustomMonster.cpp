@@ -402,7 +402,7 @@ static BOOL __fastcall Qualifier				(CObject* O, void* P)
 {
 	CEntity* E = dynamic_cast<CEntity*>		(O);
 	if (0==E)								return FALSE;
-	if (E->g_Team() == (int)int(*LPDWORD(P)))	return FALSE;
+	if (E->g_Team() == (int)(*LPDWORD(P)))	return FALSE;
 	if (!E->IsVisibleForAI())				return FALSE;
 	return TRUE;
 }
