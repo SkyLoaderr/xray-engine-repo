@@ -114,6 +114,6 @@ void CDummyObject::PlayDemo		(LPCSTR N)
 	animator->StopMotion();
 	animator->PlayMotion(N,false);
 	animator->OnMove	();
-	pSounds->Play3DAtPos(sndDummy,this,vPosition,true);
+	pSounds->PlayAtPos(sndDummy,this,vPosition,true);
 	if (sndDummy.feedback) sndDummy.feedback->SetMinMax(1,100);
 }

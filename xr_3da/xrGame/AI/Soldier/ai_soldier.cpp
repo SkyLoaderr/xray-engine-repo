@@ -77,7 +77,7 @@ void CAI_Soldier::Death()
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 	
 	// Play sound
-	pSounds->Play3DAtPos(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
+	pSounds->PlayAtPos(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
 }
 
 void CAI_Soldier::vfLoadSelectors(CInifile *ini, const char *section)

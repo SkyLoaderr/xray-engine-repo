@@ -84,12 +84,12 @@ void	CEffect_Rain::OnEvent	(EVENT E, DWORD P1, DWORD P2)
 {
 	if ((E==control_start) && (state!=stWorking))	{
 		state				= stStarting;
-		snd_Ambient_control	= pSounds->Play2D(snd_Ambient,TRUE);
-		snd_Ambient_control->SetVolume	(snd_Ambient_volume);
-		Log("start");
+		pSounds->Play		(snd_Ambient,0,TRUE);
+		snd_Ambient->feedback->SetVolume	(snd_Ambient_volume);
+		Log	("start");
 	} else if ((E==control_stop) && (state!=stIdle))	{
 		state				= stStopping;
-		Log("stop");
+		Log	("stop");
 	}
 }
 

@@ -49,7 +49,7 @@ public:
 			// stop old and play new
 			sounds[s_id]->Rewind();
 		} else {
-			sounds.push_back(pSounds->Play3DAtPos(handle,pos));
+			sounds.push_back(pSounds->PlayAtPos(handle,pos));
 		}
 	}
 };

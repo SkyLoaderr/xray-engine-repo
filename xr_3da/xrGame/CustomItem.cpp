@@ -23,7 +23,7 @@ CCustomItem::CCustomItem() : CObject()
 
 CCustomItem::~CCustomItem()
 {
-	pSounds->Delete3D(sndTake);
+	pSounds->Delete	(sndTake);
 }
 
 void	CCustomItem::SetState(EItemState e)
@@ -43,7 +43,7 @@ void	CCustomItem::SetState(EItemState e)
 		bVisible = true;
 		break;
 	case esHidding:	
-		pSounds->Play3DAtPos(sndTake,this,vPosition);
+		pSounds->PlayAtPos(sndTake,this,vPosition);
 		vScale.set(SM,SM,SM);
 		UpdateTransform();
 		bVisible = true;

@@ -80,7 +80,7 @@ void CAI_Hen::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	sound& S				= sndHit[Random.randI(SND_HIT_COUNT)];
 	if (S.feedback)			return;
 	if (Random.randI(2))	return;
-	pSounds->Play3DAtPos	(S,this,vPosition);
+	pSounds->PlayAtPos	(S,this,vPosition);
 }
 
 // when someone hit hen
@@ -109,7 +109,7 @@ void CAI_Hen::Death()
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 
 	// Play sound
-	pSounds->Play3DAtPos(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
+	pSounds->PlayAtPos(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
 }
 
 // hen update

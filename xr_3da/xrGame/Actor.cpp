@@ -264,7 +264,7 @@ void CActor::HitSignal(int perc, Fvector& vLocalDir, CEntity* who)
 	if (S.feedback) return;
 
 	// Play hit-sound
-	pSounds->Play3DAtPos(S,this,vPosition);
+	pSounds->PlayAtPos(S,this,vPosition);
 
 	// hit marker
 	if (net_Local && (who!=this))	
@@ -282,7 +282,7 @@ void CActor::HitSignal(int perc, Fvector& vLocalDir, CEntity* who)
 void CActor::Die	( )
 {
 	// Play sound
-	pSounds->Play3DAtPos(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
+	pSounds->PlayAtPos(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
 	cam_Set		(eacFreeLook);
 	g_fireEnd	();
 	bAlive		= FALSE;
@@ -345,7 +345,7 @@ void CActor::g_Physics(Fvector& accel, float jump, float dt)
 	// Check ground-contact
 	if (net_Local && Movement.gcontact_Was) 
 	{
-		pSounds->Play2D(sndLanding);
+		pSounds->PlayAtPos	(sndLanding,this,Position());
 		pCreator->Cameras.AddEffector		(new CEffectorFall(Movement.gcontact_Power));
 		Fvector D; D.set	(0,1,0);
 		if (Movement.gcontact_HealthLost)	Hit(int(Movement.gcontact_HealthLost),D,this);
@@ -507,10 +507,10 @@ void CActor::Update	(DWORD DT)
 	// sound step
 	if (mstate_real&mcAnyMove){
 		if(m_fTimeToStep<0){
-			pSounds->Play2D(sndStep[bStep]);
+			pSounds->Play	(sndStep[bStep],this,Position());
 			bStep = !bStep;
-			float k = (mstate_real&mcCrouch)?0.75f:1.f;
-			float tm = isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
+			float k			= (mstate_real&mcCrouch)?0.75f:1.f;
+			float tm		= isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
 			m_fTimeToStep	= tm;
 		}
 		m_fTimeToStep -= dt;

@@ -77,7 +77,7 @@ void CWeaponRail::OnMove()
 
 		//	sounds
 			Fvector r_pos; r_pos.mad(p1,d,2);
-			pSounds->Play3DAtPos(sndFire,r_pos);
+			pSounds->PlayAtPos(sndFire,r_pos);
 
 			m_pParent->bEnabled = false;
 			Collide::ray_query RQ;

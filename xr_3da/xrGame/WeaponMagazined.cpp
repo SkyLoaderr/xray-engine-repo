@@ -393,7 +393,7 @@ void CWeaponMagazined::OnShellDrop(BOOL bHUD)
 void CWeaponMagazined::OnShot(BOOL bHUD)
 {
 	// Sound
-	pSounds->Play3DAtPos		(sndShot,H_Root(),vLastFP);
+	pSounds->PlayAtPos		(sndShot,H_Root(),vLastFP);
 	// Camera
 	if (bHUD)	{
 		CEffectorShot* S		= dynamic_cast<CEffectorShot*>(Level().Cameras.GetEffector(cefShot)); 
@@ -411,7 +411,7 @@ void CWeaponMagazined::OnShot(BOOL bHUD)
 
 void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R)
 {
-	pSounds->Play3DAtPos	(sndRicochet[Random.randI(SND_RIC_COUNT)], 0, vEnd,false);
+	pSounds->PlayAtPos	(sndRicochet[Random.randI(SND_RIC_COUNT)], 0, vEnd,false);
 	
 	if (!R.O) 
 	{
@@ -438,7 +438,7 @@ void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Col
 
 void CWeaponMagazined::OnEmptyClick	(BOOL bHUDView)
 {
-	pSounds->Play3DAtPos	(sndEmptyClick,H_Root(),vLastFP);
+	pSounds->PlayAtPos	(sndEmptyClick,H_Root(),vLastFP);
 }
 
 void CWeaponMagazined::OnAnimationEnd()
@@ -464,20 +464,20 @@ void CWeaponMagazined::switch2_Empty(BOOL bHUDView)
 }
 void CWeaponMagazined::switch2_Reload(BOOL bHUDView)
 {
-	pSounds->Play3DAtPos		(sndReload,H_Root(),vLastFP);
+	pSounds->PlayAtPos		(sndReload,H_Root(),vLastFP);
 	m_pHUD->animPlay			(mhud_reload[Random.randI(mhud_reload.size())],TRUE,this);
 }
 
 void CWeaponMagazined::switch2_Hiding(BOOL bHUDView)
 {
 	switch2_Idle				(bHUDView);
-	pSounds->Play3DAtPos		(sndHide,H_Root(),vLastFP);
+	pSounds->PlayAtPos		(sndHide,H_Root(),vLastFP);
 	m_pHUD->animPlay			(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
 }
 
 void CWeaponMagazined::switch2_Showing(BOOL bHUDView)
 {
-	pSounds->Play3DAtPos		(sndShow,H_Root(),vLastFP);
+	pSounds->PlayAtPos		(sndShow,H_Root(),vLastFP);
 	m_pHUD->animPlay			(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
 }
 
