@@ -188,7 +188,7 @@ void CEnvironment::OnFrame()
 	CEnvDescriptor&	_A	= Palette	[f_1];
 	CEnvDescriptor&	_B	= Palette	[f_2];
 	Current.lerp		(_A,_B,t_fact);
-    eff_LensFlare->lerp	(_A.lens_flare_id,_B.lens_flare_id,t_fact);
+	eff_LensFlare->lerp	(_A.lens_flare_id,_B.lens_flare_id,t_fact);
 
 	// ******************** Environment params (setting)
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGCOLOR,	color_rgba_f(Current.fog_color.x,Current.fog_color.y,Current.fog_color.z,0) )); 
