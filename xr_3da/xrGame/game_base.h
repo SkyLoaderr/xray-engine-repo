@@ -30,6 +30,8 @@ enum
 	GAME_PLAYER_WEAPON_SPECIAL_2		= 4,
 	GAME_PLAYER_WEAPON_BINOCULAR		= 5,
 
+	GAME_PLAYER_WEAPON_LAST,
+
 	GAME_PLAYER_WEAPON_FORCEDWORD		= u32(-1)
 };
 
@@ -51,7 +53,7 @@ struct	game_PlayerState
 	s16			money_for_round;
 	u16			flags;
 
-	u4			weapons[]
+	u8			weapons	[GAME_PLAYER_WEAPON_LAST];
 
 	game_PlayerState();
 };
