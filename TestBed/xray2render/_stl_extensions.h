@@ -95,7 +95,7 @@ namespace std
 };
 
 // string(char)
-template	<>												class	xr_string		: public std::basic_string<char,xr_allocator_t<char> >								{ public: 
+class		xr_string		: public std::basic_string<char,xr_allocator_t<char> >					{ public: 
 };
 
 // vector
