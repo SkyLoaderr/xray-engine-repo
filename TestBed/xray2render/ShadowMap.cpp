@@ -287,6 +287,9 @@ HRESULT CMyD3DApplication::Render		()
 // Desc: Initialize device-dependent objects. This is the place to create mesh
 //       and texture objects.
 //-----------------------------------------------------------------------------
+/*
+ */
+
 HRESULT CMyD3DApplication::InitDeviceObjects()
 {
 	VERTEX*					pDst;
@@ -300,10 +303,12 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	// Load model
 	if (FAILED(Mesh.Create(m_pd3dDevice, _T("media\\star.x"))))			return D3DAPPERR_MEDIANOTFOUND;
 
-	// Fix vertex contents
-	Mesh.SetFVF			(m_pd3dDevice, D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1);
+	// 
+	LPD3DXMESH			pMesh 
 
+	// Fix vertex contents
 	// ************************************* Perform mungle
+	Mesh.SetFVF			(m_pd3dDevice, D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1);
 	D3DXVECTOR3			vecModelCenter;
 	{
 		unsigned int i;
