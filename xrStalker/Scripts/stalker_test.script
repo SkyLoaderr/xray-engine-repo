@@ -44,39 +44,30 @@ function main ()
     
     stalker:script		(true,stalker_test:script_name());
     
---	stalker:set_hit_callback(stalker_test.hit_callback);
---	stalker:set_hear_callback(stalker_test.hear_callback);
+	stalker:set_hit_callback(stalker_test.hit_callback);
+	stalker:set_hear_callback(stalker_test.hear_callback);
     
-    wait				(10000)
+    wait				(1000)
     
---    action				(
---		stalker,
---		object			(vodka,object.activate),
---		cond			(cond.object_end)
---    )
---    
---    action				(
---		stalker,
---		object			(vodka,object.fire),
---		cond			(cond.object_end)
---    )
---    
---    action				(
---		stalker,
---		object			(vodka,object.reload),
---		cond			(cond.object_end)
---    )
-    
-	local				sound_blin = sound_object("scripts\\Rolik\\stalker_wounded\\wounded-15")
-	
-	sound_blin:play_at_pos(
+    action				(
 		stalker,
-		stalker:position(),
-		true
-	)
-	
---	while stalker:action() do
-	while true do
+		object			(vodka,object.activate),
+		cond			(cond.object_end)
+    )
+    
+    action				(
+		stalker,
+		object			(vodka,object.fire),
+		cond			(cond.object_end)
+    )
+    
+    action				(
+		stalker,
+		object			(vodka,object.reload),
+		cond			(cond.object_end)
+    )
+    
+	while stalker:action() do
 		wait			()
     end
     
