@@ -489,25 +489,6 @@ bool MxPropSlim::decimate(unsigned int target, float max_error, void* cb_params)
 	return true;
 }
 
-void aaaa(MxPropSlim::edge_info* info, MxFaceID v1, MxFaceID v2)
-{
-	if (info->v1==v1||info->v2==v1||info->v1==v2||info->v2==v2)
-		info->heap_key(-1000.f);
-}
-
-void MxPropSlim::mark_face(MxFaceID id, float err)
-{
-	MxFace& F = m->face(id);
-
-	unsigned int i;
-	for(i=0; i<(unsigned int)edge_links(F.v[0]).length(); i++)
-		aaaa(edge_links(F.v[0])[i],F[1],F[2]);
-	for(i=0; i<(unsigned int)edge_links(F.v[1]).length(); i++)
-		aaaa(edge_links(F.v[1])[i],F[0],F[2]);
-	for(i=0; i<(unsigned int)edge_links(F.v[2]).length(); i++)
-		aaaa(edge_links(F.v[2])[i],F[0],F[1]);
-}
-
 
 
 ////////////////////////////////////////////////////////////////////////
