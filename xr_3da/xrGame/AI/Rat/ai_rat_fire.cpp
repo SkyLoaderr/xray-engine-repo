@@ -25,16 +25,16 @@ void CAI_Rat::Exec_Action(float dt)
 	switch (L->Command) {
 		case AI::AIC_Action::AttackBegin: {
 			
-			if (tSavedEnemy->g_Health() > 0) {
+			if (m_tSavedEnemy->g_Health() > 0) {
 				DWORD dwTime = Level().timeServer();
 				m_bActionStarted = true;
 				m_dwStartAttackTime = dwTime;
 				Fvector tDirection;
-				tDirection.sub(tSavedEnemy->Position(),this->Position());
+				tDirection.sub(m_tSavedEnemy->Position(),this->Position());
 				tDirection.normalize();
 				
-				if ((this->Local()) && (tSavedEnemy) && (tSavedEnemy->CLS_ID == CLSID_ENTITY))
-					tSavedEnemy->Hit(m_fHitPower,tDirection,this);
+				if ((this->Local()) && (m_tSavedEnemy) && (m_tSavedEnemy->CLS_ID == CLSID_ENTITY))
+					m_tSavedEnemy->Hit(m_fHitPower,tDirection,this);
 			}
 			else
 				m_bActionStarted = false;
@@ -75,29 +75,19 @@ void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
 	// Save event
 	Fvector D;
 	svTransform.transform_dir(D,vLocalDir);
-	dwHitTime = Level().timeServer();
-	tHitDir.set(D);
-	tHitDir.normalize();
-	tHitPosition = who->Position();
+	m_dwHitTime = Level().timeServer();
+	m_tHitDir.set(D);
+	m_tHitDir.normalize();
+	m_tHitPosition = who->Position();
 	
 	// Play hit-sound
-	sound& S				= sndHit[Random.randI(SND_HIT_COUNT)];
+	sound& S				= m_tpaSoundHit[Random.randI(SND_HIT_COUNT)];
 	if (S.feedback)			return;
 	if (Random.randI(2))	return;
 	pSounds->PlayAtPos		(S,this,vPosition);
-	if (g_Health() + amount < 0) {
-		PKinematics(pVisual)->PlayCycle(tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)]);
-	}
-}
-
-// when someone hit rat
-void CAI_Rat::SenseSignal(float amount, Fvector& vLocalDir, CObject* who)
-{
-	// Save event
-	Fvector D;
-	svTransform.transform_dir(D,vLocalDir);
-	dwSenseTime = Level().timeServer();
-	tSenseDir.set(D);
+	//if (g_Health() + amount < 0) {
+	//	PKinematics(pVisual)->PlayCycle(m_tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)]);
+	//}
 }
 
 void CAI_Rat::SelectEnemy(SEnemySelected& S)
@@ -112,25 +102,20 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 		return;
 	
 	// Get visible list
-	feel_vision_get	(tpaVisibleObjects);
-	std::sort		(tpaVisibleObjects.begin(),tpaVisibleObjects.end());
+	feel_vision_get	(m_tpaVisibleObjects);
+	std::sort		(m_tpaVisibleObjects.begin(),m_tpaVisibleObjects.end());
 	
 	INIT_SQUAD_AND_LEADER;
 	CGroup &Group = Squad.Groups[g_Group()];
 	
-	// Iterate on known
-	for (DWORD i=0; i<Known.size(); i++)
-	{
+	for (DWORD i=0; i<Known.size(); i++) {
 		CEntity*	E = dynamic_cast<CEntity*>(Known[i].key);
 		float		H = EnemyHeuristics(E);
 		if (H<S.fCost) {
-			// Calculate local visibility
-			//CObject**	ins	 = lower_bound(tpaVisibleObjects.begin(),tpaVisibleObjects.end(),(CObject*)E);
-			//bool	bVisible = ((ins==tpaVisibleObjects.end())?FALSE:((E==*ins)?TRUE:FALSE)) && (bfCheckForVisibility(E));
 			bool bVisible = false;
-			for (int i=0; i<(int)tpaVisibleObjects.size(); i++)
-				if (tpaVisibleObjects[i] == E) {
-					bVisible = bfCheckForVisibility(E);
+			for (int i=0; i<(int)m_tpaVisibleObjects.size(); i++)
+				if (m_tpaVisibleObjects[i] == E) {
+					bVisible = true;
 					break;
 				}
 			float	cost	 = H*(bVisible?1:_FB_invisible_hscale);
