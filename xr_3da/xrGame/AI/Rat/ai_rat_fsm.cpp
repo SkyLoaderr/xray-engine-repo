@@ -149,6 +149,7 @@ void CAI_Rat::AttackRun()
 			GO_TO_NEW_STATE_THIS_UPDATE(aiRatAttackFire);
 		}
 		else {
+			r_torso_target.yaw = sTemp.yaw;
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
 		}
 	}

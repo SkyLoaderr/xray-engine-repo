@@ -199,7 +199,7 @@ bool CAI_Rat::bfGetActionSuccessProbability(EntityVec &Members, objVisible &Visi
 
 DWORD CAI_Rat::dwfChooseAction(DWORD a1, DWORD a2, DWORD a3)
 {
-	//return(a3);
+	//return(a1);
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	
 	if (Level().timeServer() - Group.m_dwLastActionTime < ACTION_REFRESH_RATE) {
@@ -212,7 +212,6 @@ DWORD CAI_Rat::dwfChooseAction(DWORD a1, DWORD a2, DWORD a3)
 
 	objVisible &VisibleEnemies = Level().Teams[g_Team()].KnownEnemys;
 	
-//	VERIFY(VisibleEnemies.size());
 	if (!VisibleEnemies.size())
 		return(a3);
 

@@ -187,36 +187,37 @@ void CAI_Rat::Exec_Movement	( float dt )
 		Msg("%s",cName());
 	}
 	AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
-	if (m_bFiring) {
-		if (m_bActionStarted) {
-			m_bActionStarted = false;
-			if (tSavedEnemy) {
-				m_fJumpSpeed = 7.f;
-				Fvector tAcceleration, tVelocity;
-				tVelocity.sub(tSavedEnemy->Position(),vPosition);
-				tVelocity.normalize_safe();
-				tVelocity.mul(m_fJumpSpeed);
-				Movement.SetVelocity(tVelocity);
-				tAcceleration.set(0,0,0);
-				Movement.SetPosition(vPosition);
-				Movement.Calculate(tAcceleration,0,m_fJumpSpeed,dt > .1f ? .1f : dt,false);
-				Movement.GetPosition(vPosition);
-			}
-		}
-		else {
-			float fY = ffGetY(*AI_Node,vPosition.x,vPosition.z);
-			if (vPosition.y - fY > 0.01f) {
-				Fvector tAcceleration;
-				tAcceleration.set(0,m_fJumpSpeed,0);
-				Movement.SetPosition(vPosition);
-				Movement.Calculate	(tAcceleration,0,0,dt > .1f ? .1f : dt,false);
-				Movement.GetPosition(vPosition);
-			}
-			else
-				vPosition.set(vPosition.x,fY,vPosition.z);
-		}
-		UpdateTransform();
-	}
+//	if (m_bFiring) {
+//		if (m_bActionStarted) {
+//			m_bActionStarted = false;
+//			if (tSavedEnemy) {
+//				m_fJumpSpeed = 7.f;
+//				Fvector tAcceleration, tVelocity;
+//				tVelocity.sub(tSavedEnemy->Position(),vPosition);
+//				//tVelocity.y += 1.5f;
+//				tVelocity.normalize_safe();
+//				tVelocity.mul(m_fJumpSpeed);
+//				Movement.SetVelocity(tVelocity);
+//				tAcceleration.set(0,0,0);
+//				Movement.SetPosition(vPosition);
+//				Movement.Calculate(tAcceleration,0,m_fJumpSpeed,dt > .1f ? .1f : dt,false);
+//				Movement.GetPosition(vPosition);
+//			}
+//		}
+//		else {
+//			float fY = ffGetY(*AI_Node,vPosition.x,vPosition.z);
+////			if (vPosition.y - fY > 0.01f) {
+//				Fvector tAcceleration;
+//				tAcceleration.set(0,m_fJumpSpeed,0);
+//				Movement.SetPosition(vPosition);
+//				Movement.Calculate	(tAcceleration,0,0,dt > .1f ? .1f : dt,false);
+//				Movement.GetPosition(vPosition);
+////			}
+////			else
+////				vPosition.set(vPosition.x,fY,vPosition.z);
+//		}
+//		UpdateTransform();
+//	}
 }
 
 void CAI_Rat::OnEvent(EVENT E, DWORD P1, DWORD P2)
