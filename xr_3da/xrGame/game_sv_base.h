@@ -2,6 +2,8 @@
 
 #include "game_base.h"
 #include "alife_space.h"
+#include "script_export_space.h"
+
 class CSE_Abstract;
 
 // [OLES] Policy:
@@ -96,4 +98,8 @@ public:
 	virtual		bool				load_game				(NET_Packet &net_packet, DPNID sender);
 	virtual		void				reload_game				(NET_Packet &net_packet, DPNID sender);
 	virtual		void				switch_distance			(NET_Packet &net_packet, DPNID sender);
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(game_sv_GameState)
+#undef script_type_list
+#define script_type_list save_type_list(game_sv_GameState)

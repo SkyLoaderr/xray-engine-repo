@@ -9,14 +9,12 @@
 #pragma once
 
 #include "action_planner_action.h"
-#include "ai_script_classes.h"
-
-typedef CActionPlannerAction<CLuaGameObject> CScriptActionPlannerAction;
+#include "script_game_object.h"
 
 class CScriptActionPlannerActionWrapper : public CScriptActionPlannerAction, public luabind::wrap_base {
 public:
-	virtual void			reinit								(CLuaGameObject *object, CPropertyStorage *storage, bool clear_all = false);
-	static	void			reinit_static						(CScriptActionPlannerAction *planner, CLuaGameObject *object, CPropertyStorage *storage, bool clear_all = false);
+	virtual void			reinit								(CScriptGameObject *object, CPropertyStorage *storage, bool clear_all = false);
+	static	void			reinit_static						(CScriptActionPlannerAction *planner, CScriptGameObject *object, CPropertyStorage *storage, bool clear_all = false);
 };
 
 #include "script_action_planner_action_wrapper_inline.h"

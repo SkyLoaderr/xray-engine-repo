@@ -12,6 +12,9 @@
 #include "action_base.h"
 #include "property_evaluator.h"
 #include "property_storage.h"
+#include "script_export_space.h"
+
+class CScriptGameObject;
 
 template <
 	typename _object_type,
@@ -74,6 +77,11 @@ public:
 	virtual LPCSTR			property2string			(const _condition_type &action_id);
 	virtual LPCSTR			object_name				() const;
 #endif
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+typedef CActionPlanner<CScriptGameObject> CScriptActionPlanner;
+add_to_type_list(CScriptActionPlanner)
+#undef script_type_list
+#define script_type_list save_type_list(CScriptActionPlanner)
 
 #include "action_planner_inline.h"

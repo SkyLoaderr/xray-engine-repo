@@ -15,7 +15,7 @@
 #include "level_graph.h"
 #include "game_level_cross_table.h"
 #include "ph_shell_interface.h"
-#include "ai_script_classes.h"
+#include "script_game_object.h"
 #include "xrserver_objects_alife.h"
 #include "game_cl_base.h"
 #include "object_factory.h"
@@ -497,10 +497,10 @@ void __stdcall VisualCallback(CKinematics *tpKinematics)
 
 
 
-CLuaGameObject *CGameObject::lua_game_object		() const
+CScriptGameObject *CGameObject::lua_game_object		() const
 {
 	if (!m_lua_game_object)
-		m_lua_game_object			= xr_new<CLuaGameObject>(const_cast<CGameObject*>(this));
+		m_lua_game_object			= xr_new<CScriptGameObject>(const_cast<CGameObject*>(this));
 	return							(m_lua_game_object);
 }
 

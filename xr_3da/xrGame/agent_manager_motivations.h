@@ -10,7 +10,7 @@
 
 #include "motivation.h"
 #include "motivation_action.h"
-#include "ai_script_classes.h"
+#include "script_game_object.h"
 
 class CAgentManager;
 

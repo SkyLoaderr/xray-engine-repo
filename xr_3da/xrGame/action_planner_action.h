@@ -10,6 +10,9 @@
 
 #include "action_base.h"
 #include "action_planner.h"
+#include "script_export_space.h"
+
+class CScriptGameObject;
 
 template <typename _object_type>
 class CActionPlannerAction : 
@@ -32,6 +35,11 @@ public:
 	virtual void		execute					();
 	virtual void		finalize				();
 	virtual bool		completed				() const;
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+typedef CActionPlannerAction<CScriptGameObject> CScriptActionPlannerAction;
+add_to_type_list(CScriptActionPlannerAction)
+#undef script_type_list
+#define script_type_list save_type_list(CScriptActionPlannerAction)
 
 #include "action_planner_action_inline.h"

@@ -9,7 +9,7 @@
 #pragma once
 
 #include "motivation_action_manager.h"
-#include "ai_script_classes.h"
+#include "script_game_object.h"
 
 template <
 	typename _object_type,
@@ -18,14 +18,14 @@ template <
 >
 class CMotivationActionManagerScript : 
 	public CMotivationActionManager<
-		CLuaGameObject,
+		CScriptGameObject,
 		_motivation_type,
 		_motivation_action_type
 	> 
 {
 protected:
 	typedef CMotivationActionManager<
-		CLuaGameObject,
+		CScriptGameObject,
 		_motivation_type,
 		_motivation_action_type
 	> inherited;

@@ -16,7 +16,7 @@
 class CPhysicsShell;
 class CSE_Abstract;
 class CPHSynchronize;
-class CLuaGameObject;
+class CScriptGameObject;
 
 class CGameObject : 
 	public CObject, 
@@ -145,10 +145,10 @@ public:
 
 
 private:
-	mutable CLuaGameObject	*m_lua_game_object;
+	mutable CScriptGameObject	*m_lua_game_object;
 	int						m_script_clsid;
 public:
-			CLuaGameObject	*lua_game_object() const;
+			CScriptGameObject	*lua_game_object() const;
 			int				clsid			() const
 	{
 		VERIFY				(m_script_clsid >= 0);

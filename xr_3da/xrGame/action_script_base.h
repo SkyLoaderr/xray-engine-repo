@@ -9,12 +9,12 @@
 #pragma once
 
 #include "action_base.h"
-#include "ai_script_classes.h"
+#include "script_game_object.h"
 
 template <typename _object_type>
-class CActionScriptBase : public CActionBase<CLuaGameObject> {
+class CActionScriptBase : public CScriptActionBase {
 protected:
-	typedef CActionBase<CLuaGameObject>	inherited;
+	typedef CScriptActionBase inherited;
 
 public:
 	_object_type			*m_object;
@@ -24,7 +24,7 @@ public:
 	IC						CActionScriptBase	(_object_type *object = 0, LPCSTR action_name = "");
 	virtual					~CActionScriptBase	();
 	virtual	void			reinit				(_object_type *object, CPropertyStorage *storage, bool clear_all);
-	virtual	void			reinit				(CLuaGameObject *object, CPropertyStorage *storage, bool clear_all);
+	virtual	void			reinit				(CScriptGameObject *object, CPropertyStorage *storage, bool clear_all);
 };
 
 #include "action_script_base_inline.h"

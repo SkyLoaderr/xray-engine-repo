@@ -8,14 +8,14 @@
 
 #include "stdafx.h"
 #include "script_action_planner_wrapper.h"
-#include "ai_script_classes.h"
+#include "script_game_object.h"
 
-void CScriptActionPlannerWrapper::reinit		(CLuaGameObject *object, bool clear_all)
+void CScriptActionPlannerWrapper::reinit		(CScriptGameObject *object, bool clear_all)
 {
 	call_member<void>				("reinit",object,clear_all);
 }
 
-void CScriptActionPlannerWrapper::reinit_static	(CScriptActionPlanner *planner, CLuaGameObject *object, bool clear_all)
+void CScriptActionPlannerWrapper::reinit_static	(CScriptActionPlanner *planner, CScriptGameObject *object, bool clear_all)
 {
 	planner->CScriptActionPlanner::reinit	(object,clear_all);
 }

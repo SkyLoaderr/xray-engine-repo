@@ -8,9 +8,9 @@
 
 #include "stdafx.h"
 #include "script_binder_object.h"
-#include "ai_script_classes.h"
+#include "script_game_object.h"
 
-CScriptBinderObject::CScriptBinderObject	(CLuaGameObject *object)
+CScriptBinderObject::CScriptBinderObject	(CScriptGameObject *object)
 {
 	m_object		= object;
 }

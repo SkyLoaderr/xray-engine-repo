@@ -9,6 +9,7 @@
 #pragma once
 
 #include "graph_engine.h"
+#include "script_export_space.h"
 
 class CPropertyStorage {
 public:
@@ -23,6 +24,10 @@ public:
 	IC		void				clear			();
 	IC		void				set_property	(const _condition_type &condition_id, const _value_type &value);
 	IC		const _value_type	&property		(const _condition_type &condition_id) const;
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(CPropertyStorage)
+#undef script_type_list
+#define script_type_list save_type_list(CPropertyStorage)
 
 #include "property_storage_inline.h"

@@ -12,6 +12,9 @@
 #include "action_planner.h"
 #include "motivation.h"
 #include "motivation_action.h"
+#include "script_export_space.h"
+
+class CScriptGameObject;
 
 template <
 	typename _object_type,
@@ -42,6 +45,11 @@ public:
 	virtual void	clear						();
 	IC		void	clear_motivations			();
 	IC		void	clear_actions				();
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+typedef CMotivationActionManager<CScriptGameObject> CScriptMotivationActionManager;
+add_to_type_list(CScriptMotivationActionManager)
+#undef script_type_list
+#define script_type_list save_type_list(CScriptMotivationActionManager)
 
 #include "motivation_action_manager_inline.h"

@@ -28,7 +28,7 @@
 #include "LevelFogOfWar.h"
 #include "Level_Bullet_Manager.h"
 
-#include "ai_script_processor.h"
+#include "script_process.h"
 #include "script_engine.h"
 #include "team_base_zone.h"
 #include "xrServer_Objects_ALife.h"
@@ -122,7 +122,7 @@ CLevel::~CLevel()
 
 	xr_delete					(m_patrol_path_storage);
 	
-	ai().script_engine().remove_script_processor("level");
+	ai().script_engine().remove_script_process("level");
 
 	xr_free						(m_caServerOptions);
 	xr_free						(m_caClientOptions);
@@ -294,7 +294,7 @@ void CLevel::OnFrame	()
 	
 	g_pGamePersistent->Environment.SetGameTime	(GetGameDayTimeSec(),GetGameTimeFactor());
 
-	ai().script_engine().script_processor("level")->update();
+	ai().script_engine().script_process("level")->update();
 
 	//просчитать полет пуль
 	Device.Statistic.TEST0.Begin();

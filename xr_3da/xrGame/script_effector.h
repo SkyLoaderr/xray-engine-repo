@@ -8,58 +8,24 @@
 
 #pragma once
 
-#include "script_space.h"
-#include "script_bind_macroses.h"
 #include "../effectorpp.h"
-#include "level.h"
+#include "script_export_space.h"
 
-class CLuaEffector : public CEffectorPP {
+class CScriptEffector : public CEffectorPP {
 public:
 	typedef CEffectorPP inherited;
 	EEffectorPPType		m_tEffectorType;
 	SPPInfo				m_tInfo;
 
-					CLuaEffector				(int		iType, float time) : CEffectorPP(EEffectorPPType(iType),time,false)
-	{
-		m_tEffectorType		= EEffectorPPType(iType);
-	}
-
-	virtual			~CLuaEffector				()
-	{
-	}
-
-	virtual	BOOL	Process						(SPPInfo	&pp)
-	{
-		return		(inherited::Process(pp));
-	}
-
-	virtual	void	Add							()
-	{
-		Level().Cameras.AddEffector		(this);
-	}
-
-	virtual	void	Remove							()
-	{
-		Level().Cameras.RemoveEffector	(m_tEffectorType);
-	}
+	IC					CScriptEffector		(int iType, float time);
+	virtual				~CScriptEffector	();
+	virtual	BOOL		Process				(SPPInfo &pp);
+	virtual	void		Add					();
+	virtual	void		Remove				();
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(CScriptEffector)
+#undef script_type_list
+#define script_type_list save_type_list(CScriptEffector)
 
-class CLuaEffectorWrapper : public CLuaEffector, public luabind::wrap_base {
-public:
-					CLuaEffectorWrapper	(int iType, float fTime) : CLuaEffector(iType, fTime)
-	{
-	}
-
-	virtual BOOL	Process				(SPPInfo &pp)
-	{
-		BOOL	l_bResult = !!call_member<bool>("process",pp);
-		pp		= m_tInfo;
-		return	(l_bResult);
-	}
-
-	static	bool	Process_static		(CLuaEffector *tpLuaEffector, SPPInfo &pp)
-	{
-		return		(!!tpLuaEffector->CLuaEffector::Process(pp));
-	}
-};
-
+#include "script_effector_inline.h"

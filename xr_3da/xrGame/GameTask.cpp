@@ -9,7 +9,7 @@
 #include "gameobject.h"
 #include "script_engine.h"
 #include "ai_space.h"
-#include "ai_script_classes.h"
+#include "script_game_object.h"
 
 CGameTask::CGameTask		()
 {

@@ -7,7 +7,7 @@
 #include "stdafx.h"
 #include "ArtifactMerger.h"
 #include "PhysicsShell.h"
-//#include "ai_script_processor.h"
+//#include "script_process.h"
 #include "xrserver_objects_alife.h"
 #include "level.h"
 

@@ -12,7 +12,7 @@
 #include "script_binder.h"
 #include "xrServer_Objects_ALife.h"
 #include "script_binder_object.h"
-#include "ai_script_classes.h"
+#include "script_game_object.h"
 
 CScriptBinder::CScriptBinder		()
 {

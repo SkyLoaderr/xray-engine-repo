@@ -1,7 +1,7 @@
 #pragma once
 #include "script_debugger_messages.h"
 
-class CScriptProcessor;
+class CScriptProcess;
 struct lua_State;
 
 class CDbgScriptThreads
@@ -10,7 +10,7 @@ class CDbgScriptThreads
 public:
 				CDbgScriptThreads			(){};
 				~CDbgScriptThreads			(){};
-	u32			FillFrom					(CScriptProcessor*);
+	u32			FillFrom					(CScriptProcess*);
 	u32			Fill						();
 	lua_State*	FindScript					(int nthreadID);
 	void		DrawThreads					();

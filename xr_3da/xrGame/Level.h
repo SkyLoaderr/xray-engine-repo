@@ -8,6 +8,7 @@
 
 #include "team.h"
 #include "infoportiondefs.h"
+#include "script_export_space.h"
 
 class	CHUDManager;
 class	CParticlesObject;
@@ -230,7 +231,11 @@ public:
 			bool			IsServer					();
 			bool			IsClient					();
 			CSE_Abstract	*spawn_item					(LPCSTR section, const Fvector &position, u32 level_vertex_id, u16 parent_id, bool return_item = false);
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(CLevel)
+#undef script_type_list
+#define script_type_list save_type_list(CLevel)
 
 IC CLevel&				Level()		{ return *((CLevel*) g_pGameLevel);			}
 IC game_cl_GameState&	Game()		{ return *Level().game;					}

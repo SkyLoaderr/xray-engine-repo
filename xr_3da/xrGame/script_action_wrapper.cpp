@@ -8,16 +8,16 @@
 
 #include "stdafx.h"
 #include "script_action_wrapper.h"
-#include "ai_script_classes.h"
+#include "script_game_object.h"
 
-void CScriptActionWrapper::reinit				(CLuaGameObject *object, CPropertyStorage *storage, bool clear_all)
+void CScriptActionWrapper::reinit				(CScriptGameObject *object, CPropertyStorage *storage, bool clear_all)
 {
 	call_member<void>			("reinit",object,storage,clear_all);
 }
 
-void CScriptActionWrapper::reinit_static		(CScriptAction *action, CLuaGameObject *object, CPropertyStorage *storage, bool clear_all)
+void CScriptActionWrapper::reinit_static		(CScriptActionBase *action, CScriptGameObject *object, CPropertyStorage *storage, bool clear_all)
 {
-	action->CScriptAction::reinit		(object,storage,clear_all);
+	action->CScriptActionBase::reinit		(object,storage,clear_all);
 }
 
 void CScriptActionWrapper::initialize			()
@@ -25,9 +25,9 @@ void CScriptActionWrapper::initialize			()
 	call_member<void>			("initialize");
 }
 
-void CScriptActionWrapper::initialize_static	(CScriptAction *action)
+void CScriptActionWrapper::initialize_static	(CScriptActionBase *action)
 {
-	action->CScriptAction::initialize	();
+	action->CScriptActionBase::initialize	();
 }
 
 void CScriptActionWrapper::execute				()
@@ -35,9 +35,9 @@ void CScriptActionWrapper::execute				()
 	call_member<void>			("execute");
 }
 
-void CScriptActionWrapper::execute_static		(CScriptAction *action)
+void CScriptActionWrapper::execute_static		(CScriptActionBase *action)
 {
-	action->CScriptAction::execute		();
+	action->CScriptActionBase::execute		();
 }
 
 void CScriptActionWrapper::finalize				()
@@ -45,9 +45,9 @@ void CScriptActionWrapper::finalize				()
 	call_member<void>			("finalize");
 }
 
-void CScriptActionWrapper::finalize_static		(CScriptAction *action)
+void CScriptActionWrapper::finalize_static		(CScriptActionBase *action)
 {
-	action->CScriptAction::finalize		();
+	action->CScriptActionBase::finalize		();
 }
 
 //CScriptActionWrapper::_edge_value_type CScriptActionWrapper::weight	(const CSConditionState &condition0, const CSConditionState &condition1)
@@ -61,7 +61,7 @@ CScriptActionWrapper::_edge_value_type CScriptActionWrapper::weight	(const CSCon
 	return								(const_cast<CScriptActionWrapper*>(this)->call_member<_edge_value_type>("weight",condition0,condition1));
 }
 
-CScriptActionWrapper::_edge_value_type CScriptActionWrapper::weight_static	(CScriptAction *action, const CSConditionState &condition0, const CSConditionState &condition1)
+CScriptActionWrapper::_edge_value_type CScriptActionWrapper::weight_static	(CScriptActionBase *action, const CSConditionState &condition0, const CSConditionState &condition1)
 {
-	return								(((const CScriptActionWrapper*)action)->CScriptAction::weight(condition0,condition1));
+	return								(((const CScriptActionWrapper*)action)->CScriptActionBase::weight(condition0,condition1));
 }

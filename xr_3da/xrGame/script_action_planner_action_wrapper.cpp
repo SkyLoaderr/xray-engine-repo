@@ -9,12 +9,12 @@
 #include "stdafx.h"
 #include "script_action_planner_action_wrapper.h"
 
-void CScriptActionPlannerActionWrapper::reinit		(CLuaGameObject *object, CPropertyStorage *storage, bool clear_all)
+void CScriptActionPlannerActionWrapper::reinit		(CScriptGameObject *object, CPropertyStorage *storage, bool clear_all)
 {
 	call_member<void>				("reinit",object,storage,clear_all);
 }
 
-void CScriptActionPlannerActionWrapper::reinit_static	(CScriptActionPlannerAction *planner, CLuaGameObject *object, CPropertyStorage *storage, bool clear_all)
+void CScriptActionPlannerActionWrapper::reinit_static	(CScriptActionPlannerAction *planner, CScriptGameObject *object, CPropertyStorage *storage, bool clear_all)
 {
 	planner->CScriptActionPlannerAction::reinit	(object,storage,clear_all);
 }

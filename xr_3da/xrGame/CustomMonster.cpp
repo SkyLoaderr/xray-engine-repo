@@ -12,7 +12,7 @@
 	#include "actor.h"
 #endif
 
-//#include "ai_script_actions.h"
+//#include "script_entity_action.h"
 #include "ai/rat/ai_rat.h"
 #include "ai/biting/ai_biting.h"
 #include "ai/stalker/ai_stalker.h"

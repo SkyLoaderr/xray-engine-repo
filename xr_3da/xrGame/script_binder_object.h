@@ -8,19 +8,19 @@
 
 #pragma once
 
+#include "script_export_space.h"
+
 class CSE_ALifeObject;
-class CLuaGameObject;
+class CScriptGameObject;
 
 class CScriptBinderObject {
 public:
 	typedef CSE_ALifeObject*	SpawnType;
 	typedef NET_Packet			NetPacket;
-//	typedef int					SpawnType;
-//	typedef int					NetPacket;
-	CLuaGameObject				*m_object;
+	CScriptGameObject				*m_object;
 
 public:
-						CScriptBinderObject	(CLuaGameObject *object);
+						CScriptBinderObject	(CScriptGameObject *object);
 	virtual				~CScriptBinderObject();
 	virtual void		reinit				();
 	virtual void		reload				(LPCSTR section);
@@ -28,4 +28,8 @@ public:
 	virtual void		net_Destroy			();
 	virtual void		net_Import			(NetPacket *net_packet);
 	virtual void		net_Export			(NetPacket *net_packet);
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(CScriptBinderObject)
+#undef script_type_list
+#define script_type_list save_type_list(CScriptBinderObject)

@@ -9,11 +9,11 @@
 #pragma once
 
 #include "script_binder_object.h"
-#include "ai_script_classes.h"
+#include "script_game_object.h"
 
 class CScriptBinderObjectWrapper : public CScriptBinderObject, public luabind::wrap_base {
 public:
-						CScriptBinderObjectWrapper	(CLuaGameObject *object);
+						CScriptBinderObjectWrapper	(CScriptGameObject *object);
 	virtual				~CScriptBinderObjectWrapper	();
 	virtual void		reinit						();
 	static  void		reinit_static				(CScriptBinderObject *script_binder_object);

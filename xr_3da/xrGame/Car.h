@@ -14,7 +14,7 @@ class						CInventory;
 
 // defs
 
-class CEntityAction;
+class CScriptEntityAction;
 
 class CCar : 
 	public CEntity, 
@@ -387,8 +387,8 @@ public:
 	virtual void			UpdateCL			( ); 
 	virtual void			shedule_Update		(u32 dt);
 	virtual void			renderable_Render	( ); 
-	virtual	bool			bfAssignMovement	(CEntityAction *tpEntityAction);
-	virtual	bool			bfAssignObject		(CEntityAction *tpEntityAction);
+	virtual	bool			bfAssignMovement	(CScriptEntityAction *tpEntityAction);
+	virtual	bool			bfAssignObject		(CScriptEntityAction *tpEntityAction);
 
 	// Network
 	virtual void			net_Export			(NET_Packet& P);				// export to server

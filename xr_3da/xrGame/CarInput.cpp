@@ -5,7 +5,7 @@
 #include "actor.h"
 #include "cameralook.h"
 #include "camerafirsteye.h"
-#include "ai_script_actions.h"
+#include "script_entity_action.h"
 #include "xr_level_controller.h"
 
 void	CCar::OnMouseMove(int dx, int dy)
@@ -24,7 +24,7 @@ void	CCar::OnMouseMove(int dx, int dy)
 	}
 }
 
-bool CCar::bfAssignMovement(CEntityAction *tpEntityAction)
+bool CCar::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 {
 	if (tpEntityAction->m_tMovementAction.m_bCompleted)
 		return(false);
@@ -47,7 +47,7 @@ bool CCar::bfAssignMovement(CEntityAction *tpEntityAction)
 	return	(true);
 }
 
-bool CCar::bfAssignObject(CEntityAction *tpEntityAction)
+bool CCar::bfAssignObject(CScriptEntityAction *tpEntityAction)
 {
 	CScriptObjectAction	&l_tObjectAction = tpEntityAction->m_tObjectAction;
 	if (l_tObjectAction.m_bCompleted || !xr_strlen(l_tObjectAction.m_caBoneName))

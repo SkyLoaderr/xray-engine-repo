@@ -10,6 +10,9 @@
 
 #include "action_management_config.h"
 #include "property_storage.h"
+#include "script_export_space.h"
+
+class CScriptGameObject;
 
 template <typename _object_type>
 class CActionBase : public CGraphEngine::CWorldOperator {
@@ -71,6 +74,11 @@ public:
 	IC		void				set_property		(const _condition_type &condition_id, const _value_type &value);
 	IC		const _value_type	&property			(const _condition_type &condition_id) const;
 	IC		void 				set_weight			(const _edge_value_type &weight);
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+typedef CActionBase<CScriptGameObject> CScriptActionBase;
+add_to_type_list(CScriptActionBase)
+#undef script_type_list
+#define script_type_list save_type_list(CScriptActionBase)
 
 #include "action_base_inline.h"

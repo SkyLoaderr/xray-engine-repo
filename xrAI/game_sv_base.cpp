@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "xrServer.h"
 #include "LevelGameDef.h"
-#include "ai_script_processor.h"
+#include "script_process.h"
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "script_engine.h"
 #include "level.h"
@@ -290,7 +290,7 @@ void game_sv_GameState::Create					(LPSTR &/**options/**/)
 		FS.r_close	(F);
 	}
 	// loading scripts
-	ai().script_engine().remove_script_processor("game");
+	ai().script_engine().remove_script_process("game");
 	LPCSTR						caSection = "";
 	switch (type) {
 		case GAME_ANY			: {
@@ -334,9 +334,9 @@ void game_sv_GameState::Create					(LPSTR &/**options/**/)
 	CInifile					*l_tpIniFile = xr_new<CInifile>(S);
 	R_ASSERT					(l_tpIniFile);
 	if (l_tpIniFile->r_string(caSection,"script"))
-		ai().script_engine().add_script_processor("game",xr_new<CScriptProcessor>("game",l_tpIniFile->r_string(caSection,"script")));
+		ai().script_engine().add_script_process("game",xr_new<CScriptProcess>("game",l_tpIniFile->r_string(caSection,"script")));
 	else
-		ai().script_engine().add_script_processor("game",xr_new<CScriptProcessor>("game",""));
+		ai().script_engine().add_script_process("game",xr_new<CScriptProcess>("game",""));
 	xr_delete					(l_tpIniFile);
 }
 
@@ -405,7 +405,7 @@ void game_sv_GameState::Update		()
 		C->ps.ping				= u16(C->stats.getPing());
 	}
 	
-	ai().script_engine().script_processor("game")->update();
+	ai().script_engine().script_process("game")->update();
 }
 
 game_sv_GameState::game_sv_GameState()
@@ -417,7 +417,7 @@ game_sv_GameState::game_sv_GameState()
 
 game_sv_GameState::~game_sv_GameState()
 {
-	ai().script_engine().remove_script_processor("game");
+	ai().script_engine().remove_script_process("game");
 }
 
 ALife::_TIME_ID game_sv_GameState::GetGameTime()

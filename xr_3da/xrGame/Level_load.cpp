@@ -3,7 +3,7 @@
 #include "LevelGameDef.h"
 #include "ai_space.h"
 #include "ParticlesObject.h"
-#include "ai_script_processor.h"
+#include "script_process.h"
 #include "script_engine.h"
 #include "level.h"
 #include "game_cl_base.h"
@@ -99,12 +99,12 @@ BOOL CLevel::Load_GameSpecific_After()
 	}
 	
 	// loading scripts
-	ai().script_engine().remove_script_processor("level");
+	ai().script_engine().remove_script_process("level");
 
 	if (pLevel->section_exist("level_scripts") && pLevel->line_exist("level_scripts","script"))
-		ai().script_engine().add_script_processor("level",xr_new<CScriptProcessor>("level",pLevel->r_string("level_scripts","script")));
+		ai().script_engine().add_script_process("level",xr_new<CScriptProcess>("level",pLevel->r_string("level_scripts","script")));
 	else
-		ai().script_engine().add_script_processor("level",xr_new<CScriptProcessor>("level",""));
+		ai().script_engine().add_script_process("level",xr_new<CScriptProcess>("level",""));
 		
 	BlockCheatLoad();
 	return TRUE;

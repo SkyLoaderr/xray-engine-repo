@@ -12,6 +12,8 @@
 #	define	NO_XR_GAME
 #endif
 
+#include "script_export_space.h"
+
 #ifndef NO_XR_GAME
 #	include <boost/type_traits/is_base_and_derived.hpp>
 #	include "script_space.h"
@@ -194,7 +196,11 @@ public:
 #else
 	IC		SERVER_BASE_CLASS		*server_object		(const CLASS_ID &clsid, LPCSTR section) const;
 #endif
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(CObjectFactory)
+#undef script_type_list
+#define script_type_list save_type_list(CObjectFactory)
 
 IC	const CObjectFactory &object_factory()
 {

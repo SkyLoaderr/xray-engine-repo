@@ -39,7 +39,7 @@ void CScriptBaseAction::reinit		(_object_type *object, CPropertyStorage *storage
 }
 
 TEMPLATE_SPECIALIZATION
-void CScriptBaseAction::reinit		(CLuaGameObject *object, CPropertyStorage *storage, bool clear_all)
+void CScriptBaseAction::reinit		(CScriptGameObject *object, CPropertyStorage *storage, bool clear_all)
 {
 	VERIFY				(object);
 	inherited::reinit	(object,storage,clear_all);

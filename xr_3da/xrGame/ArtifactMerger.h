@@ -15,6 +15,7 @@
 #include "BlackDrops.h"
 #include "Needles.h"
 #include "xrmessages.h"
+#include "script_export_space.h"
 
 DEF_LIST (ARTIFACT_LIST, CArtifact*);
 
@@ -130,4 +131,8 @@ public:
 protected:
 	//список артефактов помещенных в устройство
 	ARTIFACT_LIST m_ArtifactList;
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(CArtifactMerger)
+#undef script_type_list
+#define script_type_list save_type_list(CArtifactMerger)

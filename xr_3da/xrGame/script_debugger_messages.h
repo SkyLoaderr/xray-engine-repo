@@ -20,8 +20,8 @@ struct SScriptThread{
 	int				scriptID;
 	bool			active;
 	char			name[255];
-	char			processor[255];
-	SScriptThread():pScript(0),scriptID(-1),active(false){name[0]=0;processor[0]=0;};
+	char			process[255];
+	SScriptThread():pScript(0),scriptID(-1),active(false){name[0]=0;process[0]=0;};
 	SScriptThread(const SScriptThread& other)
 	{
 		operator = (other);
@@ -31,9 +31,9 @@ struct SScriptThread{
 		scriptID		= other.scriptID;
 		active			= other.active;
 		name[0]			=0;
-		processor[0]	=0;
+		process[0]	=0;
 		strcat(name,other.name);
-		strcat(processor,other.processor);
+		strcat(process,other.process);
 
 		return *this;
 	}

@@ -9,6 +9,9 @@
 #pragma once
 
 #include "property_storage.h"
+#include "script_export_space.h"
+
+class CScriptGameObject;
 
 template <typename _object_type>
 class CPropertyEvaluator {
@@ -29,6 +32,11 @@ public:
 	virtual void				reload				(LPCSTR section);
 	virtual	_value_type			evaluate			();
 	IC		const _value_type	&property			(const _condition_type &condition_id) const;
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+typedef CPropertyEvaluator<CScriptGameObject> CScriptPropertyEvaluator;
+add_to_type_list(CScriptPropertyEvaluator)
+#undef script_type_list
+#define script_type_list save_type_list(CScriptPropertyEvaluator)
 
 #include "property_evaluator_inline.h"

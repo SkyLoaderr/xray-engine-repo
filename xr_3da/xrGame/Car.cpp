@@ -8,7 +8,7 @@
 #include "Actor.h"
 #define   _USE_MATH_DEFINES
 #include "math.h"
-#include "ai_script_actions.h"
+#include "script_entity_action.h"
 #include "inventory.h"
 #include "xrserver_objects_alife_items.h"
 
@@ -1155,7 +1155,7 @@ void CCar::ResetScriptData(void	*P)
 {
 	CScriptMonster::ResetScriptData(P);
 	{
-		CEntityAction	l_tpEntityAction;
+		CScriptEntityAction	l_tpEntityAction;
 		l_tpEntityAction.m_tMovementAction.SetInputKeys(CScriptMovementAction::eInputKeyEngineOff);
 		bfAssignMovement(&l_tpEntityAction);
 	}

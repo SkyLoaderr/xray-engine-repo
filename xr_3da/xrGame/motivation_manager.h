@@ -11,6 +11,9 @@
 #include "graph_abstract.h"
 #include "motivation.h"
 #include "motivation_action.h"
+#include "script_export_space.h"
+
+class CScriptGameObject;
 
 template <
 	typename _object_type,
@@ -79,6 +82,11 @@ public:
 	IC		u32						selected_id			() const;
 	IC		const CSGraphAbstract	&graph				() const;
 	IC		bool					actual				() const;
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+typedef CMotivationManager<CScriptGameObject> CScriptMotivationManager;
+add_to_type_list(CScriptMotivationManager)
+#undef script_type_list
+#define script_type_list save_type_list(CScriptMotivationManager)
 
 #include "motivation_manager_inline.h"

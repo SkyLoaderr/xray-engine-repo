@@ -11,6 +11,7 @@
 #include "path_manager_params.h"
 #include "level_graph.h"
 #include "group.h"
+#include "script_export_space.h"
 
 #define CHECK_CONDITION(A)				((qwFlags & A) == A)
 
@@ -145,7 +146,11 @@ public:
 	{
 		return		(false);
 	}
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(CAbstractVertexEvaluator)
+#undef script_type_list
+#define script_type_list save_type_list(CAbstractVertexEvaluator)
 
 template <const u64 qwFlags> class CVertexEvaluator : public CAbstractVertexEvaluator {
 private:
