@@ -36,7 +36,7 @@ public:
 	virtual void	UpdateCL			( );								// Called each frame, so no need for dt
 	virtual void	renderable_Render	( );
 
-	virtual BOOL	renderable_ShadowGenerate	( ) { return TRUE;	}
+	virtual BOOL	renderable_ShadowGenerate	( ) { return FALSE;	}
 	virtual BOOL	renderable_ShadowReceive	( ) { return TRUE;	}
 	
 	virtual	void	Hit					(float P,Fvector &dir, CObject* who,s16 element,
