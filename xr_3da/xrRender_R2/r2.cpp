@@ -41,11 +41,18 @@ static class cl_encodeZ01		: public R_constant_setup		{	virtual void setup	(R_co
 	enc.div			(f);
 	RCache.set_c	(C,enc.x,enc.y,enc.z,0.f);
 }}	binder_encodeZ01;
+static class cl_decodeZ01		: public R_constant_setup		{	virtual void setup	(R_constant* C)
+{
+	float		f	= g_pGamePersistent->Environment.CurrentEnv.far_plane;
+	Fvector3	enc = {f/1.f,f/256.f,f/65536.f};
+	RCache.set_c	(C,enc.x,enc.y,enc.z,0.f);
+}}	binder_decodeZ01;
 //////////////////////////////////////////////////////////////////////////
 // Just two static storage
 void					CRender::create					()
 {
 	::Device.Resources->RegisterConstantSetup	("v_encodeZ01",	&binder_encodeZ01);
+	::Device.Resources->RegisterConstantSetup	("v_decodeZ01",	&binder_decodeZ01);
 
 	Target.OnDeviceCreate		();
 	LR.Create					();
