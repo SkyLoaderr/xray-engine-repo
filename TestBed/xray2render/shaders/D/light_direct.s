@@ -53,17 +53,17 @@ p2f 	p_main	( v2p_in IN )
   float3 V 	= normalize	(-P);
 
   // Vector to the light:
-  float3 L 	= -float3(light_direction.x,light_direction.y,light_direction.z);
+  float3 L 	= -float3	(light_direction.x,light_direction.y,light_direction.z);
 
   // Diffuse = (L • N)
-  float D 	= max(0,dot(L, N));
+  float D 	= max		(0,dot(L, N));
 
   // Half-angle vector:
-  float3 H 	= normalize(L + V);
+  float3 H 	= normalize	(L + V);
 
   // Specular = (H • N)^m
-  float S 	= pow(max(0,dot(H, N)), 32);
+  float S 	= pow		(max(0,dot(H, N)), 32);
 
-  OUT.C 	= float4(light_color.x*D,light_color.y*D,light_color.z*D,light_color.w*S);
+  OUT.C 	= float4	(light_color.x*D,light_color.y*D,light_color.z*D,light_color.w*S);
   return OUT;
 }
