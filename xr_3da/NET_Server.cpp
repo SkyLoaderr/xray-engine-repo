@@ -449,6 +449,6 @@ void	IPureServer::ClearStatistic	()
 {
 	for (u32 I=0; I<net_Players.size(); I++)
 	{
-		net_Players[I].stats.Clear();
+		net_Players[I]->stats.Clear();
 	}
 };
