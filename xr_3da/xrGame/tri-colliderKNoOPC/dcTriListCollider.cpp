@@ -568,12 +568,7 @@ int dTriSphere(const dReal* v0,const dReal* v1,const dReal* v2,
 			Contacts->g1 = Geometry;
 			Contacts->g2 = Sphere;
 			((dxGeomUserData*)dGeomGetData(Sphere))->tri_material=T->material;
-			SURFACE(Contacts,0)->mu=GMLib.GetMaterial(T->material)->fPHFriction;
-			SURFACE(Contacts,0)->bounce=GMLib.GetMaterial(T->material)->fPHBouncing;
-			SURFACE(Contacts,0)->bounce_vel=GMLib.GetMaterial(T->material)->fPHBounceStartVelocity;
-			SURFACE(Contacts,0)->soft_cfm=GMLib.GetMaterial(T->material)->fPHSpring;
-			SURFACE(Contacts,0)->soft_erp=GMLib.GetMaterial(T->material)->fPHDamping;
-			SURFACE(Contacts,0)->mode=GMLib.GetMaterial(T->material)->Flags.get();
+			SURFACE(Contacts,0)->mode=T->material;
 			//////////////////////////////////
 			//	++OutTriCount;
 			return 1;
@@ -628,13 +623,7 @@ int dSortedTriSphere(//const dReal* v1,const dReal* v2,
 							 Contacts->g1 = Geometry;
 							 Contacts->g2 = Sphere;
 							 ((dxGeomUserData*)dGeomGetData(Sphere))->tri_material=T->material;
-							 SURFACE(Contacts,0)->mu=GMLib.GetMaterial(T->material)->fPHFriction;
-							 SURFACE(Contacts,0)->bounce=GMLib.GetMaterial(T->material)->fPHBouncing;
-							 SURFACE(Contacts,0)->bounce_vel=GMLib.GetMaterial(T->material)->fPHBounceStartVelocity;
-							 SURFACE(Contacts,0)->soft_cfm=GMLib.GetMaterial(T->material)->fPHSpring;
-							 SURFACE(Contacts,0)->soft_erp=GMLib.GetMaterial(T->material)->fPHDamping;
-							 //SURFACE(Contacts,0)->mode=GMLib.GetMaterial(T->material)->Flags.is(SGameMtl::flClimbable);
-							 SURFACE(Contacts,0)->mode=GMLib.GetMaterial(T->material)->Flags.get();
+							 SURFACE(Contacts,0)->mode=T->material;
 							 //////////////////////////////////
 							 //	++OutTriCount;
 							 return 1;

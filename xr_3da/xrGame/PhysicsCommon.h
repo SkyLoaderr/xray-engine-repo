@@ -24,7 +24,12 @@ IC float Erp(float k_p,float k_d)		{return ((fixed_step*(k_p)) / (((fixed_step)*
 IC float Cfm(float k_p,float k_d)		{return (1.f / (((fixed_step)*(k_p)) + (k_d)));}
 IC float Spring(float cfm,float erp)	{return ((erp)/(cfm)/fixed_step);}
 IC float Damping(float cfm,float erp)	{return ((1.f-(erp))/(cfm));}
-
+IC void	 MulSprDmp(float &cfm,float	&erp,float mul_spring,float mul_damping)
+{
+	float factor=1.f/(mul_spring*erp+mul_damping*(1-erp));
+	cfm*=factor;
+	erp*=(factor*mul_spring);
+}
 typedef  void __stdcall ContactCallbackFun(CDB::TRI* T,dContactGeom* c);
 typedef	void __stdcall  ObjectContactCallbackFun(bool& do_colide,dContact& c);
 typedef void __stdcall  PushOutCallbackFun(bool& do_colide,dContact& c);

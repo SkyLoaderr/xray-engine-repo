@@ -169,13 +169,7 @@ contact->depth = outDepth;
 	CONTACT(contact,i*skip)->normal[0] = norm[0];
 	CONTACT(contact,i*skip)->normal[1] = norm[1];
 	CONTACT(contact,i*skip)->normal[2] = norm[2];
-	SURFACE(contact,i*skip)->mu=GMLib.GetMaterial(T->material)->fPHFriction;
-	SURFACE(contact,i*skip)->bounce=GMLib.GetMaterial(T->material)->fPHBouncing;
-	SURFACE(contact,i*skip)->bounce_vel=GMLib.GetMaterial(T->material)->fPHBounceStartVelocity;
-	SURFACE(contact,i*skip)->soft_cfm=GMLib.GetMaterial(T->material)->fPHSpring;
-	SURFACE(contact,i*skip)->soft_erp=GMLib.GetMaterial(T->material)->fPHDamping;
-	SURFACE(contact,i*skip)->mode=GMLib.GetMaterial(T->material)->Flags.get();
-//	if(dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T,CONTACT(contact,i*skip));
+	SURFACE(contact,i*skip)->mode=T->material;
   }
   if(dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T,contact);
   return ret;
@@ -697,19 +691,13 @@ contact->depth = outDepth;
 	CONTACT(contact,i*skip)->normal[0] = norm[0];
 	CONTACT(contact,i*skip)->normal[1] = norm[1];
 	CONTACT(contact,i*skip)->normal[2] = norm[2];
-	SURFACE(contact,i*skip)->mu=GMLib.GetMaterial(T->material)->fPHFriction;
-	SURFACE(contact,i*skip)->bounce=GMLib.GetMaterial(T->material)->fPHBouncing;
-	SURFACE(contact,i*skip)->bounce_vel=GMLib.GetMaterial(T->material)->fPHBounceStartVelocity;
-	SURFACE(contact,i*skip)->soft_cfm=GMLib.GetMaterial(T->material)->fPHSpring;
-	SURFACE(contact,i*skip)->soft_erp=GMLib.GetMaterial(T->material)->fPHDamping;
-	SURFACE(contact,i*skip)->mode=GMLib.GetMaterial(T->material)->Flags.get();
-//	if(dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T,CONTACT(contact,i*skip));
-  }
-  if(dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T,contact);
-  return ret;
+	SURFACE(contact,i*skip)->mode=T->material;
+ }
+ if(dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T,contact);
+ return ret;
 
 
- 
+
 }
 
 
@@ -1312,15 +1300,10 @@ else {//7-12
 	CONTACT(contact,i*skip)->normal[0] = norm[0];
 	CONTACT(contact,i*skip)->normal[1] = norm[1];
 	CONTACT(contact,i*skip)->normal[2] = norm[2];
-	SURFACE(contact,i*skip)->mu=GMLib.GetMaterial(T->material)->fPHFriction;
-	SURFACE(contact,i*skip)->bounce=GMLib.GetMaterial(T->material)->fPHBouncing;
-	SURFACE(contact,i*skip)->bounce_vel=GMLib.GetMaterial(T->material)->fPHBounceStartVelocity;
-	SURFACE(contact,i*skip)->soft_cfm=GMLib.GetMaterial(T->material)->fPHSpring;
-	SURFACE(contact,i*skip)->soft_erp=GMLib.GetMaterial(T->material)->fPHDamping;
-	//SURFACE(contact,i*skip)->mode=GMLib.GetMaterial(T->material)->Flags.is(SGameMtl::flClimbable);
-	SURFACE(contact,i*skip)->mode=GMLib.GetMaterial(T->material)->Flags.get();
-  }
-  return ret;  
+	SURFACE(contact,i*skip)->mode=T->material;
+ }
+  if(dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T,contact);
+ return ret;  
 }
 
 

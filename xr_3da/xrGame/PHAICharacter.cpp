@@ -70,10 +70,12 @@ void CPHAICharacter::BringToDesired(float time,float velocity,float /**force/**/
 
 
 ///////////////////////////////////////////////////////////////////
-const dReal spring_rate=0.5f;
-const dReal dumping_rate=20.1f;
+const dReal def_spring_rate=0.5f;
+const dReal def_dumping_rate=20.1f;
 /////////////////////////////////////////////////////////////////
 void CPHAICharacter::InitContact(dContact* c){
+	dReal spring_rate=def_spring_rate;
+	dReal dumping_rate=def_dumping_rate;
 	R_ASSERT2(dV_valid(c->geom.pos),"odd contact position");
 	bool object=(dGeomGetBody(c->geom.g1)&&dGeomGetBody(c->geom.g2));
 	b_on_object=b_on_object||object;
@@ -86,17 +88,15 @@ void CPHAICharacter::InitContact(dContact* c){
 			b_side_contact=true;
 
 
-		//c->surface.mode =dContactApprox1|dContactSoftCFM|dContactSoftERP;
-		//c->surface.soft_cfm=0.0001f;
-		//c->surface.soft_erp=0.2f;
-		c->surface.soft_cfm*=spring_rate;//0.01f;
-		c->surface.soft_erp*=dumping_rate;//10.f;
-		//c->surface.mode =dContactApprox0;
+		//c->surface.soft_cfm*=spring_rate;//0.01f;
+		//c->surface.soft_erp*=dumping_rate;//10.f;
+		MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,spring_rate,dumping_rate);
 		c->surface.mu = 0.00f;
 	}
 
 
 	if(object){
+		spring_rate*=10.f;
 		const dReal* vel=dBodyGetLinearVel(m_body);
 		dReal c_vel;
 		dBodyID b;
@@ -141,12 +141,12 @@ void CPHAICharacter::InitContact(dContact* c){
 		}
 		}
 
-
-	bool bClimable=!!(((DWORD)c->surface.mode)& SGameMtl::flClimbable);
+	SGameMtl* material=GMLib.GetMaterial(c->surface.mode);
+	bool bClimable=!!material->Flags.is(SGameMtl::flClimbable);
 	b_climb=b_climb || bClimable;
 	b_pure_climb=b_pure_climb && bClimable;
-
-	if((c->surface.mode&SGameMtl::flWalkOn))
+ 
+	if(material->Flags.is(SGameMtl::flWalkOn))
 		b_clamb_jump=true;
 
 
@@ -261,24 +261,18 @@ void CPHAICharacter::InitContact(dContact* c){
 
 
 	if(is_control&&!b_lose_control||b_jumping){
-		//c->surface.mode =dContactApprox1|dContactSoftCFM|dContactSoftERP;// dContactBounce;|dContactFDir1
-		c->surface.mu = 0.00f;
-		//c->surface.mu2 = dInfinity;
-		//c->surface.soft_cfm=0.0001f;
-		//c->surface.soft_erp=0.2f;
-		c->surface.soft_cfm*=spring_rate;//0.01f;
-		c->surface.soft_erp*=dumping_rate;//10.f;
-		//Memory.mem_copy(c->fdir1,m_control_force,sizeof(dVector3));
-		//dNormalize3(c->fdir1);
 
+		c->surface.mu = 0.00f;
+		//c->surface.soft_cfm*=spring_rate;//0.01f;
+		//c->surface.soft_erp*=dumping_rate;//10.f;
+		MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,spring_rate,dumping_rate);
 	}
 	else
 	{
-		//c->surface.mode =dContactApprox1|dContactSoftCFM|dContactSoftERP;
-		//c->surface.soft_cfm=0.0001f;
-		//c->surface.soft_erp=0.2f;
-		c->surface.soft_cfm*=spring_rate;//0.01f;
-		c->surface.soft_erp*=dumping_rate;//10.f;
+
+		//c->surface.soft_cfm*=spring_rate;//0.01f;
+		//c->surface.soft_erp*=dumping_rate;//10.f;
+		MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,spring_rate,dumping_rate);
 		c->surface.mu *= (1.f+b_clamb_jump*3.f+b_climb*20.f);
 
 	}

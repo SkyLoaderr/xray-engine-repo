@@ -2797,9 +2797,6 @@
 		<Filter
 			Name="Physics"
 			Filter="">
-			<File
-				RelativePath=".\PhysicsCommon.h">
-			</File>
 			<Filter
 				Name="Tri-Collider"
 				Filter="">
@@ -2937,9 +2934,6 @@
 				Name="Base"
 				Filter="">
 				<File
-					RelativePath=".\BlockAllocator.h">
-				</File>
-				<File
 					RelativePath="ExtendedGeom.h">
 				</File>
 				<File
@@ -2953,6 +2947,9 @@
 				</File>
 				<File
 					RelativePath="Physics.h">
+				</File>
+				<File
+					RelativePath=".\PhysicsCommon.h">
 				</File>
 				<Filter
 					Name="Objects"
@@ -3047,6 +3044,9 @@
 				Name="Utils"
 				Filter="">
 				<File
+					RelativePath=".\BlockAllocator.h">
+				</File>
+				<File
 					RelativePath=".\CycleConstStorage.h">
 				</File>
 				<File
@@ -3070,6 +3070,19 @@
 				</File>
 				<File
 					RelativePath=".\CharacterPhysicsSupport.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="BodyEffectors"
+				Filter="">
+				<File
+					RelativePath=".\PHBaseBodyEffector.h">
+				</File>
+				<File
+					RelativePath=".\PHContactBodyEffector.cpp">
+				</File>
+				<File
+					RelativePath=".\PHContactBodyEffector.h">
 				</File>
 			</Filter>
 		</Filter>

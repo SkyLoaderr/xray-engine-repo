@@ -91,14 +91,13 @@ public:
 
 	virtual void OnFrame ();
 
-	//private:
-	//static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);
+
 };
 /////////////////////////////////////////////////////////////////////////////
 
 extern dWorldID phWorld;
 /////////////////////////////////
-extern class BlockAllocator<dJointFeedback,128> ContactFeedBacks;
+extern class CBlockAllocator<dJointFeedback,128> ContactFeedBacks;
 
 class CPHElement;
 class CPHShell;

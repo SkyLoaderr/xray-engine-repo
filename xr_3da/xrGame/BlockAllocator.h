@@ -1,13 +1,43 @@
 #ifndef BLOCK_ALLOCATOR_H
 #define BLOCK_ALLOCATOR_H
 template<class T,u32 block_size>
-class BlockAllocator
+class CBlockAllocator
 {
 	u32 block_count;
 	u32	block_position;
 	T*	current_block;
 	xr_vector<T*> blocks;
 public:
+	IC T* pointer	(u32 position)
+	{
+		return blocks[position/block_size]+position%block_size;
+	}
+
+	IC T& back()
+	{
+		return current_block[block_position-1];
+	}
+
+	IC T& back_pointer()
+	{
+		return current_block+block_position-1;
+	}
+
+	IC T& operator[](u32 position)
+	{
+		return *pointer(position);
+	}
+
+	IC void construct(u32 position)
+	{
+		xr_allocator_t <T> ().construct(pointer(position));
+	}
+
+	IC void construct_back()
+	{
+		xr_allocator_t <T> ().construct(back_pointer());
+	}
+
 	IC T* add()
 	{
 		if(block_position==block_size)next_block();
@@ -27,13 +57,14 @@ public:
 			block_position=block_size;
 		}
 	}
-	BlockAllocator()
+	CBlockAllocator()
 	{
 		block_position=block_size;
 		block_count=0;
+		current_block=NULL;
 	}
 
-	~BlockAllocator()
+	~CBlockAllocator()
 	{
 		xr_vector<T*>::iterator i=blocks.begin(),e=blocks.end();
 		for(;i!=e;++i) xr_free(*i);
@@ -52,5 +83,26 @@ private:
 		++block_count;
 		block_position=0;
 	}
+public:
+	template <typename _Predicate>
+	IC	void for_each(const _Predicate &pred)
+	{
+		if(! current_block) return;
+		xr_vector<T*>::iterator	i = blocks.begin();
+		xr_vector<T*>::iterator	e = blocks.begin()+block_count;
+		u32 j;
+		for ( ; i != e; ++i)
+		{
+			for(j=0;j<block_size;++j)
+				pred.operator()((*i)+j);
+		}
+		for(j=0;j<block_position;++j)
+		{
+			pred.operator()(current_block+j);
+		}
+		//for_each(blocks.begin(),block.end(),pred);
+	}
 };
+
+
 #endif

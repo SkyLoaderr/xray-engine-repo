@@ -363,7 +363,11 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 }
 
 void CPHSimpleCharacter::PhTune(dReal /**step/**/){
-	if(!dBodyIsEnabled(m_body)) return;
+	if(!dBodyIsEnabled(m_body)) 
+	{	
+		b_lose_control=false;
+		return;
+	}
 
 	if(m_acceleration.magnitude()>0.f) is_control=true;
 	else							   is_control=false;
@@ -397,9 +401,18 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 		Memory.mem_copy(m_depart_position,dBodyGetPosition(m_body),sizeof(dVector3));
 
 	const dReal* velocity=dBodyGetLinearVel(m_body);
-	if(b_lose_control&&b_on_ground&&m_ground_contact_normal[1]>M_SQRT1_2/2.f&& !b_external_impulse && dSqrt(velocity[0]*velocity[0]+velocity[2]*velocity[2])<5.) 
+	dReal linear_vel_smag=dDOT(velocity,velocity);
+	if(b_lose_control											 &&
+		b_on_ground												 &&
+		m_ground_contact_normal[1]>M_SQRT1_2/2.f				 && 
+		!b_external_impulse										 && 
+		dSqrt(velocity[0]*velocity[0]+velocity[2]*velocity[2])<5.||
+		fis_zero(linear_vel_smag)								 ||
+		b_climb
+		) 
 		b_lose_control=false;
-
+	
+	
 	if(b_jumping&&b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2 ||(b_at_wall&&b_valide_wall_contact)) 
 		b_jumping=false;
 

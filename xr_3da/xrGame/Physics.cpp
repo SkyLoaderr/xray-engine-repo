@@ -2,7 +2,7 @@
 #include "PHDynamicData.h"
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
-
+#include "PHContactBodyEffector.h"
 ///////////////////////////////////////////////////////////////
 #pragma warning(disable:4995)
 #pragma warning(disable:4267)
@@ -50,7 +50,29 @@ int			phIterations	= 18;
 dWorldID	phWorld;
 /////////////////////////////////////
 static dJointGroupID ContactGroup;
-BlockAllocator<dJointFeedback,128> ContactFeedBacks;
+CBlockAllocator<dJointFeedback,128>			ContactFeedBacks;
+CBlockAllocator<CPHContactBodyEffector,128> ContactEffectors;
+class SPredicate 
+{
+
+public:
+	SPredicate()
+	{
+	}
+
+	void	operator	()(CPHContactBodyEffector* pointer) const
+	{
+		pointer->Apply();
+	}
+};
+
+IC void add_contact_body_effector(dBodyID body,dContact& c)
+{
+	
+}
+
+
+
 static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);
 
 void CPHWorld::Render()
@@ -207,6 +229,8 @@ void CPHWorld::Step(dReal step)
 		dSpaceCollide		(Space, 0, &NearCallback); 
 		Device.Statistic.ph_collision.End	();
 
+		ContactEffectors.for_each(SPredicate());
+
 		Device.Statistic.ph_core.Begin		();
 		for(iter=m_objects.begin();m_objects.end() != iter;++iter)
 			(*iter)->PhTune(fixed_step);	
@@ -222,6 +246,7 @@ void CPHWorld::Step(dReal step)
 			(*iter)->PhDataUpdate(fixed_step);
 		dJointGroupEmpty(ContactGroup);//this is to be called after PhDataUpdate!!!-the order is critical!!!
 		ContactFeedBacks.empty();
+		ContactEffectors.empty();
 
 
 
@@ -256,20 +281,18 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 			if(fis_zero (dif)) continue;
 		}
 
-
-		if(dTriListClass != dGeomGetClass(contacts[i].geom.g1) &&
-			dTriListClass != dGeomGetClass(contacts[i].geom.g2)){
-				contacts[i].surface.mu =1.f;// 5000.f;
-				contacts[i].surface.soft_erp=1.f;//ERP(world_spring,world_damping);
-				contacts[i].surface.soft_cfm=1.f;//CFM(world_spring,world_damping);
-				contacts[i].surface.bounce = 0.01f;//0.1f;
-				contacts[i].surface.mode=0;
-			}
-
-
 			bool pushing_neg=false;
-			dxGeomUserData* usr_data_1=NULL;
-			dxGeomUserData* usr_data_2=NULL;
+			dxGeomUserData* usr_data_1		=NULL;
+			dxGeomUserData* usr_data_2		=NULL;
+			u32				material_id_1	=0;
+			u32				material_id_2	=0;
+
+			contacts[i].surface.mu =1.f;// 5000.f;
+			contacts[i].surface.soft_erp=1.f;//ERP(world_spring,world_damping);
+			contacts[i].surface.soft_cfm=1.f;//CFM(world_spring,world_damping);
+			contacts[i].surface.bounce = 0.01f;//0.1f;
+			contacts[i].surface.bounce_vel =1.5f;//0.005f;
+
 			if(dGeomGetClass(contacts[i].geom.g1)==dGeomTransformClass){
 				const dGeomID geom=dGeomTransformGetGeom(contacts[i].geom.g1);
 				usr_data_1 = dGeomGetUserData(geom);
@@ -283,12 +306,29 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 			}
 			else
 				usr_data_2 = dGeomGetUserData(contacts[i].geom.g2);
+			///////////////////////////////////////////////////////////////////////////////////////////////////
+			if(usr_data_2)	material_id_2=usr_data_2->material;
+			if(usr_data_1)	material_id_1=usr_data_1->material;
+			bool is_tri_1=dTriListClass == dGeomGetClass(contacts[i].geom.g1);
+			bool is_tri_2=dTriListClass == dGeomGetClass(contacts[i].geom.g2);
+			if(!is_tri_2&&!is_tri_1) contacts[i].surface.mode=0;
+			if(is_tri_1) material_id_1=contacts[i].surface.mode;
+			if(is_tri_2) material_id_2=contacts[i].surface.mode;
+			SGameMtl* material_1=GMLib.GetMaterial(material_id_1);
+			SGameMtl* material_2=GMLib.GetMaterial(material_id_2);
+			///////////////////////////////////////////////////////////////////////////////////////////////////
+			float spring	=material_2->fPHSpring*material_1->fPHSpring*world_spring;
+			float damping	=material_2->fPHDamping*material_1->fPHDamping*world_damping;
+			contacts[i].surface.soft_erp=ERP(spring,damping);
+			contacts[i].surface.soft_cfm=CFM(spring,damping);
+			contacts[i].surface.mu=material_2->fPHFriction*material_1->fPHFriction;
 			/////////////////////////////////////////////////////////////////////////////////////////////////
 			if(usr_data_2&&usr_data_2->object_callback){
 				bool do_colide=true;
 				usr_data_2->object_callback(do_colide,contacts[i]);
 				if(!do_colide) continue;
 			}
+
 			if(usr_data_1&&usr_data_1->object_callback){
 				bool do_colide=true;
 				usr_data_1->object_callback(do_colide,contacts[i]);
@@ -298,15 +338,8 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 			if(usr_data_2){
 
 				pushing_neg=usr_data_2->pushing_b_neg||usr_data_2->pushing_neg;
-				contacts[i].surface.mu*=GMLib.GetMaterial(usr_data_2->material)->fPHFriction;
-				contacts[i].surface.soft_cfm*=GMLib.GetMaterial(usr_data_2->material)->fPHSpring;
-				contacts[i].surface.soft_erp*=GMLib.GetMaterial(usr_data_2->material)->fPHDamping;
 				if(usr_data_2->ph_object){
 					usr_data_2->ph_object->InitContact(&contacts[i]);
-					//if(pushing_neg) contacts[i].surface.mu=dInfinity;
-					//dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
-					//dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
-					//continue;
 
 				}
 
@@ -314,42 +347,15 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 			///////////////////////////////////////////////////////////////////////////////////////
 			if(usr_data_1){ 
 
-				pushing_neg=usr_data_1->pushing_b_neg||
-					usr_data_1->pushing_neg;
-				contacts[i].surface.mu*=GMLib.GetMaterial(usr_data_1->material)->fPHFriction;
-				contacts[i].surface.soft_cfm*=GMLib.GetMaterial(usr_data_1->material)->fPHSpring;
-				contacts[i].surface.soft_erp*=GMLib.GetMaterial(usr_data_1->material)->fPHDamping;
+				pushing_neg=usr_data_1->pushing_b_neg||usr_data_1->pushing_neg;
 				if(usr_data_1->ph_object){
 					usr_data_1->ph_object->InitContact(&contacts[i]);
 
-					//if(pushing_neg) contacts[i].surface.mu=dInfinity;
-					//dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
-					//dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
-					//continue;
 				}
 
 			}
 
 			contacts[i].surface.mode =dContactBounce|dContactApprox1|dContactSoftERP|dContactSoftCFM;
-			dReal cfm=1.f/(world_spring*contacts[i].surface.soft_cfm*fixed_step+world_damping*contacts[i].surface.soft_erp);
-
-
-			//contacts[i].surface.soft_erp=ERP(world_spring*contacts[i].surface.soft_cfm,
-			//								 world_damping*contacts[i].surface.soft_erp);
-			//contacts[i].surface.soft_cfm=CFM(world_spring*contacts[i].surface.soft_cfm,
-			//								 world_damping*contacts[i].surface.soft_erp);
-
-
-
-			//dReal erp1=ERP(world_spring,world_damping);//0.54545456
-			//dReal cfm1=CFM(world_spring,world_damping);//1.1363636e-006
-
-
-			contacts[i].surface.soft_erp=fixed_step*world_spring*contacts[i].surface.soft_cfm*cfm;
-			contacts[i].surface.soft_cfm=cfm;
-			contacts[i].surface.bounce_vel =1.5f;//0.005f;
-
-
 			if(pushing_neg) 
 				contacts[i].surface.mu=dInfinity;
 
@@ -360,16 +366,16 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup){
-	const ULONG N = 100;
-	dContact contacts[N];
+	const ULONG N = 800;
+	static dContact contacts[N];
 
 	// get the contacts up to a maximum of N contacts
 	ULONG n;
 
 	n = dCollide(o1, o2, N, &contacts[0].geom, sizeof(dContact));	
 
-	if(n>N)
-		n=N;
+	if(n>N-1)
+		n=N-1;
 	ULONG i;
 
 
@@ -379,22 +385,21 @@ void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup){
 			dReal dif=dFabs(contacts[i-1].geom.pos[0]-contacts[i].geom.pos[0])+
 				dFabs(contacts[i-1].geom.pos[1]-contacts[i].geom.pos[1])+
 				dFabs(contacts[i-1].geom.pos[2]-contacts[i].geom.pos[2]);
-			if(dif==0.f) continue;
+			if(fis_zero (dif)) continue;
 		}
 
-
-		if(dTriListClass != dGeomGetClass(contacts[i].geom.g1) &&
-			dTriListClass != dGeomGetClass(contacts[i].geom.g2)){
-				contacts[i].surface.mu =1.f;// 5000.f;
-				contacts[i].surface.soft_erp=1.f;//ERP(world_spring,world_damping);
-				contacts[i].surface.soft_cfm=1.f;//CFM(world_spring,world_damping);
-				contacts[i].surface.bounce = 0.01f;//0.1f;
-			}
-
-
 			bool pushing_neg=false;
-			dxGeomUserData* usr_data_1=NULL;
-			dxGeomUserData* usr_data_2=NULL;
+			dxGeomUserData* usr_data_1		=NULL;
+			dxGeomUserData* usr_data_2		=NULL;
+			u32				material_id_1	=0;
+			u32				material_id_2	=0;
+
+			contacts[i].surface.mu =1.f;// 5000.f;
+			contacts[i].surface.soft_erp=1.f;//ERP(world_spring,world_damping);
+			contacts[i].surface.soft_cfm=1.f;//CFM(world_spring,world_damping);
+			contacts[i].surface.bounce = 0.01f;//0.1f;
+			contacts[i].surface.bounce_vel =1.5f;//0.005f;
+
 			if(dGeomGetClass(contacts[i].geom.g1)==dGeomTransformClass){
 				const dGeomID geom=dGeomTransformGetGeom(contacts[i].geom.g1);
 				usr_data_1 = dGeomGetUserData(geom);
@@ -408,78 +413,62 @@ void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup){
 			}
 			else
 				usr_data_2 = dGeomGetUserData(contacts[i].geom.g2);
+			///////////////////////////////////////////////////////////////////////////////////////////////////
+			if(usr_data_2)	material_id_2=usr_data_2->material;
+			if(usr_data_1)	material_id_1=usr_data_1->material;
+			bool is_tri_1=dTriListClass == dGeomGetClass(contacts[i].geom.g1);
+			bool is_tri_2=dTriListClass == dGeomGetClass(contacts[i].geom.g2);
+			if(!is_tri_2&&!is_tri_1) contacts[i].surface.mode=0;
+			if(is_tri_1) material_id_1=contacts[i].surface.mode;
+			if(is_tri_2) material_id_2=contacts[i].surface.mode;
+			SGameMtl* material_1=GMLib.GetMaterial(material_id_1);
+			SGameMtl* material_2=GMLib.GetMaterial(material_id_2);
+			///////////////////////////////////////////////////////////////////////////////////////////////////
+			float spring	=material_2->fPHSpring*material_1->fPHSpring*world_spring;
+			float damping	=material_2->fPHDamping*material_1->fPHDamping*world_damping;
+			contacts[i].surface.soft_erp=ERP(spring,damping);
+			contacts[i].surface.soft_cfm=CFM(spring,damping);
+			contacts[i].surface.mu=material_2->fPHFriction*material_1->fPHFriction;
 			/////////////////////////////////////////////////////////////////////////////////////////////////
 			if(usr_data_2&&usr_data_2->object_callback){
 				bool do_colide=true;
 				usr_data_2->object_callback(do_colide,contacts[i]);
 				if(!do_colide) continue;
 			}
+
 			if(usr_data_1&&usr_data_1->object_callback){
 				bool do_colide=true;
 				usr_data_1->object_callback(do_colide,contacts[i]);
 				if(!do_colide) continue;
 			}
-			if(usr_data_2){ 
+
+			if(usr_data_2){
 
 				pushing_neg=usr_data_2->pushing_b_neg||usr_data_2->pushing_neg;
-				contacts[i].surface.mu*=GMLib.GetMaterial(usr_data_2->material)->fPHFriction;
-				contacts[i].surface.soft_cfm*=GMLib.GetMaterial(usr_data_2->material)->fPHSpring;
-				contacts[i].surface.soft_erp*=GMLib.GetMaterial(usr_data_2->material)->fPHDamping;
 				if(usr_data_2->ph_object){
 					usr_data_2->ph_object->InitContact(&contacts[i]);
-					//if(pushing_neg) contacts[i].surface.mu=dInfinity;
-					//dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
-					//dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
-					//continue;
+
 				}
 
 			}
 			///////////////////////////////////////////////////////////////////////////////////////
 			if(usr_data_1){ 
-				pushing_neg=usr_data_1->pushing_b_neg||
-					usr_data_1->pushing_neg;
-				contacts[i].surface.mu*=GMLib.GetMaterial(usr_data_1->material)->fPHFriction;
-				contacts[i].surface.soft_cfm*=GMLib.GetMaterial(usr_data_1->material)->fPHSpring;
-				contacts[i].surface.soft_erp*=GMLib.GetMaterial(usr_data_1->material)->fPHDamping;
+
+				pushing_neg=usr_data_1->pushing_b_neg||usr_data_1->pushing_neg;
 				if(usr_data_1->ph_object){
 					usr_data_1->ph_object->InitContact(&contacts[i]);
-					//if(pushing_neg) contacts[i].surface.mu=dInfinity;
-					//dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
-					//dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
-					//continue;
-				}
 
+				}
 
 			}
 
 			contacts[i].surface.mode =dContactBounce|dContactApprox1|dContactSoftERP|dContactSoftCFM;
-			dReal cfm=1.f/(world_spring*contacts[i].surface.soft_cfm*fixed_step+world_damping*contacts[i].surface.soft_erp);
-
-
-			//contacts[i].surface.soft_erp=ERP(world_spring*contacts[i].surface.soft_cfm,
-			//								 world_damping*contacts[i].surface.soft_erp);
-			//contacts[i].surface.soft_cfm=CFM(world_spring*contacts[i].surface.soft_cfm,
-			//								 world_damping*contacts[i].surface.soft_erp);
-
-
-
-			//dReal erp1=ERP(world_spring,world_damping);//0.54545456
-			//dReal cfm1=CFM(world_spring,world_damping);//1.1363636e-006
-
-
-			contacts[i].surface.soft_erp=fixed_step*world_spring*contacts[i].surface.soft_cfm*cfm;
-			contacts[i].surface.soft_cfm=cfm;
-			contacts[i].surface.bounce_vel =1.5f;//0.005f;
-
-
 			if(pushing_neg) 
 				contacts[i].surface.mu=dInfinity;
 
 			dJointID c = dJointCreateContact(phWorld, jointGroup, &contacts[i]);
 			dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
 	}
-
-
 }
 
 
@@ -515,6 +504,8 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 			if(mtl_pair)
 			{
 				if(vel_cret>30.f && !mtl_pair->HitMarks.empty())
+				{
+				
 #pragma TODO("Oles to Slipch: NO WALLMARKS FROM PHYSICAL HITS. Need vertices here")
 					;
 					/*
@@ -524,6 +515,7 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 					0.09f,
 					T);
 					*/
+				}
 				if(vel_cret>15.f && !mtl_pair->HitSounds.empty())
 				{
 					::Sound->play_at_pos(
@@ -741,12 +733,12 @@ void __stdcall PushOutCallback(bool& do_colide,dContact& c)
 		const dReal erp=0.2f;
 		const dReal cfm=0.001f;
 
-		//c.surface.soft_erp=5000.f;
-		//c.surface.soft_cfm=0.0001f;
 
-		c.surface.soft_erp=(1.f-erp)/cfm /world_damping;
-		c.surface.soft_cfm=erp/cfm/fixed_step /world_spring;
 
+		//c.surface.soft_erp=(1.f-erp)/cfm /world_damping;
+		//c.surface.soft_cfm=erp/cfm/fixed_step /world_spring;
+		c.surface.soft_erp=erp;
+		c.surface.soft_cfm=cfm;
 	}
 
 	if(pos1[0]==pos2[0]&&pos1[1]==pos2[1]&&pos1[2]==pos2[2])
@@ -840,8 +832,7 @@ void __stdcall PushOutCallback2(bool& do_colide,dContact& c)
 	dBodyID body2=dGeomGetBody(c.geom.g2);
 	if(!(body1&&body2)) 
 		return;
-
-	//c.surface.soft_cfm/=3.5f;
-	c.surface.soft_erp*=3.1623f;
+	//c.surface.soft_erp*=3.1623f;
+	MulSprDmp(c.surface.soft_cfm,c.surface.soft_erp,1.f,3.1623f);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
