@@ -1,8 +1,71 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <game_tasks_data>
+	<game_task id="storyline_eliminate_gunslinger">
+		<title>storyline_escape_eliminate_gunslinger</title>
+		<objective>
+			<text>storyline_escape_eliminate_gunslinger</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>storyline_escape_find_gunslinger</text>
+			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>storyline_escape_eliminate_gunslinger</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>
 
-	<game_task id="escape_blockpost_case">
+	<game_task id="tutorial_find_artefact">
+		<title>Найти артефакт.</title>
+		<objective>
+			<text>Найди свой первый артефакт.</text>
+			<icon x="450" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>
+
+	<game_task id="tutorial_help_wounded">
+		<title>Помогите раненому.</title>
+		<objective>
+			<text>Найди выжившего после обстрела и помогите ему.</text>
+			<icon x="250" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>
+
+	<game_task id="esc_trader_need_electra_artefact">
+		<title>Найти и принести артефакт аномалии "Электра".</title>
+		<objective>
+			<text>Торговцу нужен любой артефакт из аномалии "Электра".</text>
+			<icon x="450" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>Найти артефакт. Получить его можно, попытавшись загнать кого-то в аномалию.</text>
+			<icon x="400" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>Принести артефакт торговцу.</text>
+			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>	
+	</game_task>
+
+	<game_task id="esc_help_wounded_from_raid">
+		<title>Помочь сталкеру.</title>
+		<objective>
+			<text>Помочь сталкеру, возвращающемуся из рейда к центру Зоны.</text>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>
+
+	<game_task id="esc_wounded_to_trader_gift">
+		<title>Помочь сталкеру.</title>
+		<objective>
+			<text>Помочь сталкеру, возвращающемуся из рейда к центру Зоны.</text>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>
+
+	<game_task id="esc_blockpost_case_to_trader">
 		<title>Украсть ящик с блокпоста.</title>
 		<objective>
 			<text>Украсть у командира блокпоста ящик с важными документами.</text>
@@ -18,32 +81,24 @@
 		</objective>
 	</game_task>
 
-	<game_task id="storyline_eliminate_gunslinger">
-		<title>Убить Стрелка.</title>
+	<game_task id="esc_dinamit_to_volk">
+		<title>Достать динамит для Волка.</title>
 		<objective>
-			<text>Необходимо найти и уничтожить Стрелка.</text>
-			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<article>social_stalker-clans_gunslinger-clan</article>
+			<text>Необходимо забрать динамит у бандитов на фабрике и доставить его Волку.</text>
+			<icon x="350" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
-			<text>Найти Стрелка.</text>
-			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
-			<article>social_stalker-clans_gunslinger-clan</article>
+			<text>Найти динамит на фабрике.</text>
+			<icon x="300" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
-			<text>Убить Стрелка.</text>
-			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<article>social_stalker-clans_gunslinger-clan</article>
+			<text>Принести динамит Волку.</text>
+			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
 
-	<game_task id="escape_trader_artefact">
-		<title>Найти первый артефакт.</title>
-		<objective>
-			<text>Недалеко от тороговца лежит артефакт, подбери его.</text>
-			<icon x="450" y="0" width="50" height="50">ui\ui_icons_task</icon>
-		</objective>
-	</game_task>
+
+
 
 	<game_task id="garbage_meet_stalker">
 		<title>Встретиться на свалке со сталкером.</title>
