@@ -201,10 +201,11 @@ void CLightShadows::render	()
 	int slot_max	= slot_line*slot_line;
 	
 	// Projection and xform
-	float _43 = Device.mProject._43;
+	float _43			= Device.mProject._43;
 	Device.mProject._43 -= 0.001f; 
 	Device.set_xform_world	(Fidentity);
 	Device.set_xform_project(Device.mProject);
+	Fvector	View		= Device.vCameraPosition;
 	
 	// Render shadows
 	Device.Shader.set_Shader	(sh_World);
@@ -236,15 +237,24 @@ void CLightShadows::render	()
 		// Clip polys by frustum
 		for (CDB::RESULT* p = XRC.r_begin(); p!=XRC.r_end(); p++)
 		{
+			// 
 			CDB::TRI&	t		= TRIS[p->id];
 			sPoly		A,B;
 			A.push_back			(*t.verts[0]);
 			A.push_back			(*t.verts[1]);
 			A.push_back			(*t.verts[2]);
 
+			// Calc plane
+			Fplane		P;
+			P.build				(A[0],A[1],A[2]);
+			if (P.classify(View)<0)				continue;
+			if (P.classify(S.L->position)<0)	continue;
+			
+			// Clip polygon
 			sPoly*		clip	= F.ClipPoly(A,B);
 			if (0==clip)		continue;
 
+			// Triangulate poly 
 			for (int v=2; v<clip->size(); v++)
 			{
 				Fvector& v1		= (*clip)[0];
@@ -275,6 +285,7 @@ void CLightShadows::render	()
 	shadows.clear			();
 
 	// Debug
+/*
 	{
 		// UV
 		Fvector2				p0,p1;
@@ -295,6 +306,7 @@ void CLightShadows::render	()
 		Device.Shader.set_Shader(sh_Screen);
 		Device.Primitive.Draw	(vs_Screen,4,2,Offset,Device.Streams_QuadIB);
 	}
+*/
 
 	// Projection
 	Device.mProject._43 = _43;
