@@ -85,6 +85,7 @@ void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 		vfRemoveObjectFromScheduled	(tpALifeDynamicObject);
 		vfRemoveObjectFromGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
 	}
+	tpALifeDynamicObject->m_bOnline	= true;
 }
 
 void CSE_ALifeSimulator::vfRemoveOnlineObject(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bAddToScheduled)
@@ -123,6 +124,7 @@ void CSE_ALifeSimulator::vfRemoveOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 		vfAddObjectToScheduled		(tpALifeDynamicObject);
 		vfAddObjectToGraphPoint		(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
 	}
+	tpALifeDynamicObject->m_bOnline	= false;
 }
 
 void CSE_ALifeSimulator::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDynamicObject)
