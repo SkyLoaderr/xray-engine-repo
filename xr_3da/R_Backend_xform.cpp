@@ -46,8 +46,11 @@ void	R_xforms::unmap			()
 }
 R_xforms::R_xforms				()
 {
-	unmap		();
-	set_W		(Fidentity);
-	set_V		(Fidentity);
-	set_P		(Fidentity);
+	unmap			();
+	m_w.identity	();
+	m_v.identity	();
+	m_p.identity	();
+	m_wv.identity	();
+	m_vp.identity	();
+	m_wvp.identity	();
 }
