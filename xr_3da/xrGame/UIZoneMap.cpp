@@ -43,6 +43,8 @@ static float		MAX_VIEW_DISTANCE	=		50.f;
 #define				MAP_ARROW_WIDTH				16
 #define				MAP_ARROW_HEIGHT			16
 
+#define				MAP_SECTION					"game_map"
+
 // Название ключа имени текстуры карты уровня
 const char * const	mapTextureKey				= "level_map";
 // Аналогично её координаты на глобальной карте
@@ -84,22 +86,40 @@ struct FindLevelByName
 
 void CUIZoneMap::Init()
 {
-	DWORD align = alLeft|alTop;
-//	back.Init	("ui\\hud_map_back",	"hud\\default",BASE_LEFT,BASE_TOP,align);
-//	back.SetRect(0,0,153,148);
+	static LPCSTR	map_point_texture			= pSettings->r_string	(MAP_SECTION, "map_point");
+	static u32		map_point_size				= pSettings->r_u32		(MAP_SECTION, "map_point_size");
+	static LPCSTR	map_point_up_texture		= pSettings->r_string	(MAP_SECTION, "map_point_up");
+	static u32		map_point_up_texture_size	= pSettings->r_u32		(MAP_SECTION, "map_point_up_size");
+	static LPCSTR	map_point_down_texture		= pSettings->r_string	(MAP_SECTION, "map_point_down");
+	static u32		map_point_down_texture_size	= pSettings->r_u32		(MAP_SECTION, "map_point_down_size");
+	static LPCSTR	map_point_info_texture		= pSettings->r_string	(MAP_SECTION, "map_point_info");
+	static u32		map_point_info_texture_size	= pSettings->r_u32		(MAP_SECTION, "map_point_info_size");
+	static LPCSTR	map_arrow_texture			= pSettings->r_string	(MAP_SECTION, "map_arrow");
 
+	DWORD align = alLeft|alTop;
 	compass.Init("ui\\hud_map_arrow",	"hud\\default",125,118,align);
 	
-	entity.Init			("ui\\hud_map_point",	"hud\\default");
-	entity_arrow.Init	(MAP_ARROW_TEXTURE,	"hud\\default");
-	entity_up.Init		("ui\\ui_hud_map_point_up",		"hud\\default");
-	entity_down.Init	("ui\\ui_hud_map_point_down",	"hud\\default");
-	entity.SetRect(0,0,3,3);
+	entity.Init			(map_point_texture,			"hud\\default");
+	entity_story.Init	(map_point_info_texture,	"hud\\default");
+	entity_arrow.Init	(map_arrow_texture,			"hud\\default");
+	entity_up.Init		(map_point_up_texture,		"hud\\default");
+	entity_down.Init	(map_point_down_texture,	"hud\\default");
+	
+	entity.SetRect(0,0,map_point_size,map_point_size);
 	entity.SetAlign(alLeft|alTop);
-	entity_up.SetRect	(0,0,3,4);
-	entity_up.SetAlign	(alLeft |alTop);
-	entity_down.SetRect	(0,0,3,4);
+	entity_story.SetOffset(map_point_size/2, map_point_size/2);
+	
+	entity_story.SetRect(0,0,map_point_info_texture_size,map_point_info_texture_size);
+	entity_story.SetOffset(map_point_info_texture_size/2, map_point_info_texture_size/2);
+	entity_story.SetAlign(alLeft|alTop);
+
+	entity_up.SetRect	(0,0,map_point_up_texture_size,map_point_up_texture_size);
+	entity_up.SetAlign	(alLeft|alTop);
+	entity_up.SetOffset (map_point_up_texture_size/2, map_point_up_texture_size/2);
+	
+	entity_down.SetRect	(0,0,map_point_down_texture_size,map_point_down_texture_size);
 	entity_down.SetAlign(alLeft|alTop);
+	entity_up.SetOffset (map_point_down_texture_size/2, map_point_down_texture_size/2);
 
 	HUD().ClientToScreen(map_center,MAP_LEFT+BASE_LEFT,MAP_TOP+BASE_TOP,align);
 	map_radius = MAP_RADIUS; //iFloor(MAP_RADIUS*HUD().GetScale());
@@ -228,6 +248,7 @@ void CUIZoneMap::UpdateRadar(CActor* pActor)
 
 
 	entity.Clear		();
+	entity_story.Clear	();
 	entity_up.Clear		();
 	entity_down.Clear	();
 	entity_arrow.Clear	();
@@ -306,7 +327,12 @@ void CUIZoneMap::UpdateRadar(CActor* pActor)
 		if(draw_entity)
 		{
 			if(!on_border)
-				entity.Out(P.x,P.y,entity_color);
+			{
+				if(map_location->big_icon)
+					entity_story.Out(P.x,P.y,entity_color);
+				else
+					entity.Out(P.x,P.y,entity_color);
+			}
 			else if(map_location->marker_show)
 			{
 				float arrowHeading = 0;
@@ -452,6 +478,7 @@ void CUIZoneMap::Render()
 	//////////////////////////////////////////
 	compass.Render		(heading);
 	entity.Render		();
+	entity_story.Render	();
 	entity_up.Render	();
 	entity_down.Render	();
 	entity_arrow.Render	();

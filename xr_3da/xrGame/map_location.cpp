@@ -20,6 +20,7 @@ SMapLocation::SMapLocation():animation(&icon_color)
 	attached_to_object			= false;
 	object_id					= 0xffff;
 	marker_show					= false;
+	big_icon					= false;
 	icon_color					= 0xffffffff;
 	dynamic_manifestation		= false;
 	type_flags.zero				();

@@ -25,6 +25,8 @@ class CUIZoneMap
 	CUIStaticItem	back;
 	CUIStaticItem	compass;
 	CUIDynamicItem	entity;
+	//для вывода сюжетных локаций
+	CUIDynamicItem	entity_story;
 	CUIDynamicItem	entity_arrow;
 	CUIDynamicItem	entity_up;
 	CUIDynamicItem	entity_down;

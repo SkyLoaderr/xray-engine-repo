@@ -19,12 +19,15 @@ class CUIDynamicItem: public CUICustomItem
 		
 	DIDVec			data;
 	u32				item_cnt;
+
+	int				offset_x, offset_y;
 protected:
 	typedef CUICustomItem inherited;
 public:
 					CUIDynamicItem	();
 	virtual			~CUIDynamicItem	();
 	void			Init			(LPCSTR tex, LPCSTR sh);
+	void			SetOffset		(int x, int y) {offset_x = x; offset_y = y;}
 	void			Out				(int left, int top, u32 color, float angle = 0.f);
 	void			Clear			(){item_cnt=0;}
 	void			Render			();
