@@ -15,44 +15,47 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 class CAI_Biting;
 
-#define FORCE_ANIMATION_SELECT() {\
-	m_tpCurAnim = 0; \
-	SelectAnimation(Direction(),Direction(),0);\
-}
+//#define FORCE_ANIMATION_SELECT() {\
+//	m_tpCurAnim = 0; \
+//	SelectAnimation(Direction(),Direction(),0);\
+//}
 
-extern LPCSTR caBitingStateNames	[];
-extern LPCSTR caBitingGlobalNames	[];
-
-
-class CBitingAnimations {
-protected:
-	CBitingAnimations() {
-		m_tpCurAnim = 0;
-	};
-
-	void	Load(CKinematics *tpKinematics) {
-		m_tAnimations.Load	(tpKinematics,"");
-	};
-
-protected:
-	typedef CAniCollection<CAniVector,caBitingGlobalNames> CStateAnimations;
-	CAniCollection<CStateAnimations,caBitingStateNames>	m_tAnimations;
-	u8				m_bAnimationIndex;
-
-public:
-	CMotionDef		*m_tpCurAnim;
-};
-
-// Lock animation 
-struct SLockAnim {
-	EMotionAnim	anim;
-	int			i3;
-	TTime		from;
-	TTime		to;
-};
+//extern LPCSTR caBitingStateNames	[];
+//extern LPCSTR caBitingGlobalNames	[];
+//
+//
+//class CBitingAnimations {
+//protected:
+//	CBitingAnimations() {
+//		m_tpCurAnim = 0;
+//	};
+//
+//	void	Load(CKinematics *tpKinematics) {
+//		m_tAnimations.Load	(tpKinematics,"");
+//	};
+//
+//protected:
+//	typedef CAniCollection<CAniVector,caBitingGlobalNames> CStateAnimations;
+//	CAniCollection<CStateAnimations,caBitingStateNames>	m_tAnimations;
+//	u8				m_bAnimationIndex;
+//
+//public:
+//	CMotionDef		*m_tpCurAnim;
+//};
 
 
-DEFINE_VECTOR(SLockAnim, LOCK_ANIM_VECTOR, LOCK_ANIM_IT);
+
+
+//// Lock animation 
+//struct SLockAnim {
+//	EMotionAnim	anim;
+//	int			i3;
+//	TTime		from;
+//	TTime		to;
+//};
+//
+//
+//DEFINE_VECTOR(SLockAnim, LOCK_ANIM_VECTOR, LOCK_ANIM_IT);
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -177,11 +180,13 @@ class CMotionManager {
 	DEFINE_VECTOR	(STransition, TRANSITION_ANIM_VECTOR, TRANSITION_ANIM_VECTOR_IT);
 	DEFINE_VECTOR	(SMotionItem, MOTION_ITEM_VECTOR, MOTION_ITEM_VECTOR_IT);
 	
+	ANIM_ITEM_MAP			m_tAnims;			// карта анимаций
+	TRANSITION_ANIM_VECTOR	m_tTransitions;		// вектор переходов из одной анимации в другую
+	MOTION_ITEM_VECTOR		m_tMotions;			// вектор движений монстров
 
-	ANIM_ITEM_MAP			m_tAnims;
-	TRANSITION_ANIM_VECTOR	m_tTransitions;
-	MOTION_ITEM_VECTOR		m_tMotions;
+	CAI_Biting				*pMonster;
 
+public:
 	EAction					m_tAction;
 	
 	EMotionAnim				cur_anim; 
@@ -196,7 +201,7 @@ public:
 			
 			CMotionManager	();
 	
-	void	Init			(CKinematics *tpKin);
+	void	Init			(CAI_Biting	*pM, CKinematics *tpKin);
 	void	Destroy			();
 	
 	// создание карты анимаций, переходов 
@@ -214,6 +219,7 @@ public:
 //	void	CheckSpecFlags	();
 
 	void	ProcessAction	();
+	void	ApplyParams		();
 	
 	void	Play			();
 

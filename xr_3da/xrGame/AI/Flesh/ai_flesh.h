@@ -6,6 +6,10 @@ class CAI_Flesh;
 
 class CTest : public IState {
 		CAI_Flesh	*pMonster;
+		
+		TTime m_dwLastPlanTime;
+		TTime m_dwReplanTime;	
+
 public:
 						CTest	(CAI_Flesh *p);
 		virtual void	Run		();
@@ -20,7 +24,7 @@ public:
 	virtual					~CAI_Flesh		();	
 	
 	virtual void	Init					();
-	virtual void	Load					(LPCSTR section);
+	virtual	BOOL	net_Spawn				(LPVOID DC);
 	virtual void    StateSelector			();
 
 	virtual	void	MotionToAnim			(EMotionAnim motion, int &index1, int &index2, int &index3);

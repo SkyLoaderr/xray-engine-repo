@@ -63,7 +63,7 @@ void CAI_Biting::Init()
 	m_dwAnimStarted					= 0;
 	anim_i3							= 0;
 
-	m_tLockedAnims.clear			();
+//	m_tLockedAnims.clear			();
 	m_tAnimPlaying					= DEFAULT_ANIM;
 
 	flagEatNow						= false;
@@ -162,7 +162,7 @@ void CAI_Biting::Load(LPCSTR section)
 
 	LoadAttackAnim					();
 
-	MotionMan.Init					(PKinematics(Visual()));
+	
 }
 
 BOOL CAI_Biting::net_Spawn (LPVOID DC) 
@@ -180,7 +180,7 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	m_tNextGP						= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 	
 	// loading animations
-	CBitingAnimations::Load			(PKinematics(Visual()));
+	MotionMan.Init					(this, PKinematics(Visual()));
 
 	m_pPhysics_support->in_NetSpawn();
 

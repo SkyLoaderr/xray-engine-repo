@@ -29,20 +29,16 @@ void CAI_Biting::Think()
 		SetState(stateRest);
 	}
 	
-	if (Motion.m_tSeq.isActive())	{
-		Motion.m_tSeq.Cycle(m_dwCurrentUpdate);
-	}else {
+//	if (MotionMan.m_tSeq.isActive()) {
+//		MotionMan.m_tSeq.Cycle(m_dwCurrentUpdate);
+//	} else {
 		StateSelector			();
-
 		CurrentState->Execute(m_dwCurrentUpdate);
-
 		// провер€ем на завершЄнность
 		if (CurrentState->CheckCompletion()) SetState(stateRest, true);
-	}
-
-	//ProcessAction();
-//	Motion.SetFrameParams(this);
-//	ControlAnimation();		
+//	}
+//
+	MotionMan.ProcessAction();
 }
 
 
@@ -70,7 +66,7 @@ void CAI_Biting::OnMotionSequenceStart()
 {
 	// блокировка состо€ни€
 	CurrentState->LockState();
-	FORCE_ANIMATION_SELECT();
+//	FORCE_ANIMATION_SELECT();
 }
 
 void CAI_Biting::OnMotionSequenceEnd()

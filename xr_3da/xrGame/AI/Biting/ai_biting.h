@@ -59,7 +59,7 @@ typedef VisionElem SEnemy;
 
 
 class CAI_Biting : public CCustomMonster, 
-				   public CBitingAnimations,
+//				   public CBitingAnimations,
 				   public CMonsterMemory
 {
 
@@ -116,8 +116,8 @@ public:
 			void			SetState						(IState *pS, bool bSkipInertiaCheck = false);
 
 	// Animation control
-			void			OnAnimationEnd					();
-			void			ControlAnimation				();
+	//		void			OnAnimationEnd					();
+	//		void			ControlAnimation				();
 	virtual	void			MotionToAnim					(EMotionAnim motion, int &index1, int &index2, int &index3) = 0;
 	virtual	void			CheckTransitionAnims			();	 // проверить необходимо ли устанавливать специфич. параметры (kinda StandUp)
 			void			LockAnim						(EMotionAnim anim, int i3, TTime from, TTime to);
@@ -168,7 +168,7 @@ public:
 	float					m_fHitPower;
 	bool					bShowDeath;				// need to control animation
 	CAttackAnim				m_tAttackAnim;			// for hit calculation
-	LOCK_ANIM_VECTOR		m_tLockedAnims;
+	//LOCK_ANIM_VECTOR		m_tLockedAnims;
 	int						anim_i3;				// 3ий индекс текущей анимации
 	TTime					m_dwAnimStarted;		// время начала текущей анимации
 	EMotionAnim				m_tAnimPlaying;
@@ -248,5 +248,6 @@ public:
 	bool					flagEatNow;				// true - сейчас монстр ест]
 
 	CMotionManager			MotionMan; 
+	CMotionDef				*m_tpCurAnim;
 
 };

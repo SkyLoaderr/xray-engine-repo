@@ -109,7 +109,7 @@ void CAI_Chimera::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int
 		///default:					NODEFAULT;
 	} 
 
-	if (index3 == -1) index3 = ::Random.randI((int)m_tAnimations.A[index1].A[index2].A.size());
+///	if (index3 == -1) index3 = ::Random.randI((int)m_tAnimations.A[index1].A[index2].A.size());
 }
 
 

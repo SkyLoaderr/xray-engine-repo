@@ -47,25 +47,26 @@ void CAI_Flesh::Init()
 	m_fEyeShiftYaw					= PI_DIV_6;
 }
 
-void CAI_Flesh::Load(LPCSTR section)
+BOOL CAI_Flesh::net_Spawn (LPVOID DC) 
 {
-	inherited::Load (section);
-	
+	if (!inherited::net_Spawn(DC))
+		return(FALSE);
+
 	// define animation set
-	MotionMan.AddAnim(eAnimStandIdle,			"stand_idle_",			-1, 0,		  0);
-	MotionMan.AddAnim(eAnimStandTurnLeft,		"stand_turn_left_",		-1, PI_DIV_3, PI_DIV_6);
+	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0,		  0);
+	MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_left_",		-1, PI_DIV_3, PI_DIV_6);
 	MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_right_",	-1, PI_DIV_3, PI_DIV_6);
 	MotionMan.AddAnim(eAnimLieIdle,			"lie_idle_",			-1, PI_DIV_3, PI_DIV_6);
 	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, PI_DIV_3, PI_DIV_6);
-	MotionMan.AddAnim(eAnimWalkBkwd,			"stand_walk_bkwd_",		-1, PI_DIV_3, PI_DIV_6);
-	MotionMan.AddAnim(eAnimWalkTurnLeft,		"stand_walk_ls_",		-1, PI_DIV_3, PI_DIV_6);
-	MotionMan.AddAnim(eAnimWalkTurnRight,		"stand_walk_rs_",		-1, PI_DIV_3, PI_DIV_6);
+	MotionMan.AddAnim(eAnimWalkBkwd,		"stand_walk_bkwd_",		-1, PI_DIV_3, PI_DIV_6);
+	MotionMan.AddAnim(eAnimWalkTurnLeft,	"stand_walk_ls_",		-1, PI_DIV_3, PI_DIV_6);
+	MotionMan.AddAnim(eAnimWalkTurnRight,	"stand_walk_rs_",		-1, PI_DIV_3, PI_DIV_6);
 	MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1, PI_DIV_3, PI_DIV_6);
 	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_idle_",			 3, PI_DIV_3, PI_DIV_6);
 	MotionMan.AddAnim(eAnimEat,				"lie_eat_",				-1, PI_DIV_3, PI_DIV_6);
-	MotionMan.AddAnim(eAnimStandLieDown,		"stand_lie_down_",		-1, PI_DIV_3, PI_DIV_6);
+	MotionMan.AddAnim(eAnimStandLieDown,	"stand_lie_down_",		-1, PI_DIV_3, PI_DIV_6);
 	
-	MotionMan.AddTransition(eAnimStandIdle,	eAnimLieIdle,		eAnimStandLieDown,	false);
+	MotionMan.AddTransition(eAnimStandIdle,		eAnimLieIdle,		eAnimStandLieDown,	false);
 	MotionMan.AddTransition(eAnimLieIdle,		eAnimStandIdle,		eAnimLieStandUp,	false);
 
 	// the order is very important!!!  add motions according to EAction enum
@@ -81,7 +82,11 @@ void CAI_Flesh::Load(LPCSTR section)
 	MotionMan.AddMotion(eAnimAttack);
 	MotionMan.AddMotion(eAnimWalkFwd);
 	MotionMan.AddMotion(eAnimStandIdle);
+
+	return TRUE;
 }
+
+
 
 void CAI_Flesh::StateSelector()
 {
@@ -148,7 +153,7 @@ void CAI_Flesh::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &
 		//default:					NODEFAULT;
 	}
 
-	if (index3 == -1) index3 = ::Random.randI((int)m_tAnimations.A[index1].A[index2].A.size());
+//	if (index3 == -1) index3 = ::Random.randI((int)m_tAnimations.A[index1].A[index2].A.size());
 }
 
 void CAI_Flesh::LoadAttackAnim()
@@ -271,10 +276,29 @@ bool CAI_Flesh::ConeSphereIntersection(Fvector ConeVertex, float ConeAngle, Fvec
 CTest::CTest (CAI_Flesh *p)
 {
 	pMonster = p;
+	m_dwLastPlanTime	= 0;
+	m_dwReplanTime		= 3000;	
 }
 
 void CTest::Run()
 {
-	//pMonster->m_tAction = ACT_STAND_IDLE;
+	int i = 0;
+	
+	DO_IN_TIME_INTERVAL_BEGIN(m_dwLastPlanTime, m_dwReplanTime);
+		i++;
+	DO_IN_TIME_INTERVAL_END();
+	
+	if (i % 2) {
+		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
+	} else {
+		pMonster->AI_Path.TravelPath.clear();
+		pMonster->vfUpdateDetourPoint();	
+		pMonster->AI_Path.DestNode	= getAI().m_tpaGraph[pMonster->m_tNextGP].tNodeID;
+		pMonster->vfChoosePointAndBuildPath(0,0, false, 0,2000);
+
+		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
+	}
+	
+	
 }
 

@@ -11,125 +11,91 @@
 #include "ai_biting.h"
 #include "ai_biting_anim.h"
 
-LPCSTR caBitingStateNames			[] = {
-	"stand_",				// 0
-	"sit_",					// 1
-	"lie_",					// 2
-	0
-};
-
-LPCSTR caBitingGlobalNames		[] = {
-	"idle_",				// 0			// 0	 
-	"idle_rs_",				// 1			// 1	
-	"idle_ls_",				// 20			// 2
-											
-	"walk_fwd_",			// 2			// 3
-	"walk_bkwd_",			// 3			// 4
-	"walk_ls_",				// 4			// 5
-	"walk_rs_",				// 5			// 6
-											
-	"run_",					// 6			// 7
-	"run_ls_",				// 7			// 8
-	"run_rs_",				// 8			// 9
-											
-	"attack_",				// 9			// 10
-	"attack2_",				// 10			// 11
-	"attack_jump_",			// 19			// 12
-	
-	"fast_turn_ls_",		// 11			// 13
-										
-	"eat_",					// 12			// 14
-											
-	"damaged_",				// 13			// 15
-	"scared_",				// 14			// 16
-	"die_",					// 15			// 17	
-											
-	"sit_down_",			// 23			// 18
-	"to_sleep_",			// 24			// 19
-	"lie_down_",			// 16			// 20
-	"stand_up_",			// 17			// 21
-	"liedown_eat_",			// 18			// 22
-
-	"to_sleep_",			// 21			// 23 
-	"sleep_",				// 22			// 24 
-	0
-};
+//LPCSTR caBitingStateNames			[] = {
+//	"stand_",				// 0
+//	"sit_",					// 1
+//	"lie_",					// 2
+//	0
+//};
+//
+//LPCSTR caBitingGlobalNames		[] = {
+//	"idle_",				// 0			// 0	 
+//	"idle_rs_",				// 1			// 1	
+//	"idle_ls_",				// 20			// 2
+//											
+//	"walk_fwd_",			// 2			// 3
+//	"walk_bkwd_",			// 3			// 4
+//	"walk_ls_",				// 4			// 5
+//	"walk_rs_",				// 5			// 6
+//											
+//	"run_",					// 6			// 7
+//	"run_ls_",				// 7			// 8
+//	"run_rs_",				// 8			// 9
+//											
+//	"attack_",				// 9			// 10
+//	"attack2_",				// 10			// 11
+//	"attack_jump_",			// 19			// 12
+//	
+//	"fast_turn_ls_",		// 11			// 13
+//										
+//	"eat_",					// 12			// 14
+//											
+//	"damaged_",				// 13			// 15
+//	"scared_",				// 14			// 16
+//	"die_",					// 15			// 17	
+//											
+//	"sit_down_",			// 23			// 18
+//	"to_sleep_",			// 24			// 19
+//	"lie_down_",			// 16			// 20
+//	"stand_up_",			// 17			// 21
+//	"liedown_eat_",			// 18			// 22
+//
+//	"to_sleep_",			// 21			// 23 
+//	"sleep_",				// 22			// 24 
+//	0
+//};
 
 static void __stdcall vfPlayCallBack(CBlend* B)
 {
 	CAI_Biting *tpBiting = (CAI_Biting*)B->CallbackParam;
-	tpBiting->OnAnimationEnd();
+	tpBiting->MotionMan.OnAnimationEnd();
 }
 
 void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
 {
 	if (g_Alive()) {
-		PKinematics(Visual())->PlayCycle(m_tpCurAnim,TRUE,vfPlayCallBack,this);
-
+		MotionMan.Play();		
 	}
 }
 
-void CAI_Biting::OnAnimationEnd()
-{
-	m_tpCurAnim = 0;
-	Motion.m_tSeq.OnAnimEnd();
-}
+//void CAI_Biting::OnAnimationEnd()
+//{
+//	//m_tpCurAnim = 0;
+//	//Motion.m_tSeq.OnAnimEnd();
+//	
+//}
 
-
-
-void CAI_Biting::CheckAttackHit()
-{
-	// Проверка состояния анимации (атака)
-	TTime cur_time = Level().timeServer();
-	SAttackAnimation apt_anim;
-
-	bool bGoodTime = m_tAttackAnim.CheckTime(cur_time,apt_anim);
-
-	if (bGoodTime) {
-		VisionElem ve;
-		if (!GetEnemy(ve)) return;
-		CObject *obj = dynamic_cast<CObject *>(ve.obj);
-
-		// определить точку, откуда будем пускать луч 
-		Fvector trace_from;
-		Center(trace_from);
-		trace_from.add(apt_anim.trace_offset);
-
-		this->setEnabled(false);
-		Collide::ray_query	l_rq;
-
-		if (Level().ObjectSpace.RayPick(trace_from, Direction(), apt_anim.dist, l_rq)) {
-			if ((l_rq.O == obj) && (l_rq.range < apt_anim.dist)) {
-				DoDamage(ve.obj, apt_anim.damage,apt_anim.dir_yaw,apt_anim.dir_pitch);
-				m_tAttackAnim.UpdateLastAttack(cur_time);
-			}
-		}
-		this->setEnabled(true);			
-
-		if (!ve.obj->g_Alive()) AddCorpse(ve);
-	}
-}
 
 void CAI_Biting::LockAnim(EMotionAnim anim, int i3, TTime from, TTime to)
 {
-	SLockAnim S;  
-	
-	S.anim	= anim;
-	S.i3	= i3;
-	S.from	= from; 
-	S.to	= to;
-	
-	m_tLockedAnims.push_back(S); 
+//	SLockAnim S;  
+//	
+//	S.anim	= anim;
+//	S.i3	= i3;
+//	S.from	= from; 
+//	S.to	= to;
+//	
+//	m_tLockedAnims.push_back(S); 
 }
 
 
 bool CAI_Biting::IsAnimLocked(TTime cur_time)
 {
-	for (LOCK_ANIM_IT I = m_tLockedAnims.begin(); I != m_tLockedAnims.end(); I++) 
-		if (I->anim == m_tAnimPlaying && I->i3 == anim_i3) {
-			if ((I->from + m_dwAnimStarted < cur_time) && (cur_time < I->to + m_dwAnimStarted)) return true;
-			else return false;
-		}
+//	for (LOCK_ANIM_IT I = m_tLockedAnims.begin(); I != m_tLockedAnims.end(); I++) 
+//		if (I->anim == m_tAnimPlaying && I->i3 == anim_i3) {
+//			if ((I->from + m_dwAnimStarted < cur_time) && (cur_time < I->to + m_dwAnimStarted)) return true;
+//			else return false;
+//		}
 	return false;
 }
 
@@ -207,6 +173,42 @@ bool CAttackAnim::CheckTime(TTime cur_time, SAttackAnimation &anim)
 	return false;
 }
 
+void CAI_Biting::CheckAttackHit()
+{
+	// Проверка состояния анимации (атака)
+	TTime cur_time = Level().timeServer();
+	SAttackAnimation apt_anim;
+
+	bool bGoodTime = m_tAttackAnim.CheckTime(cur_time,apt_anim);
+
+	if (bGoodTime) {
+		VisionElem ve;
+		if (!GetEnemy(ve)) return;
+		CObject *obj = dynamic_cast<CObject *>(ve.obj);
+
+		// определить точку, откуда будем пускать луч 
+		Fvector trace_from;
+		Center(trace_from);
+		trace_from.add(apt_anim.trace_offset);
+
+		this->setEnabled(false);
+		Collide::ray_query	l_rq;
+
+		if (Level().ObjectSpace.RayPick(trace_from, Direction(), apt_anim.dist, l_rq)) {
+			if ((l_rq.O == obj) && (l_rq.range < apt_anim.dist)) {
+				DoDamage(ve.obj, apt_anim.damage,apt_anim.dir_yaw,apt_anim.dir_pitch);
+				m_tAttackAnim.UpdateLastAttack(cur_time);
+			}
+		}
+		this->setEnabled(true);			
+
+		if (!ve.obj->g_Alive()) AddCorpse(ve);
+	}
+}
+
+
+
+
 
 
 
@@ -222,10 +224,11 @@ CMotionManager::CMotionManager()
 {
 }
 
-void CMotionManager::Init (CKinematics *tpKin)
+void CMotionManager::Init (CAI_Biting	*pM, CKinematics *tpKin)
 {
+	pMonster		= pM;
 	tpKinematics	= tpKin;
-
+	
 	prev_anim		= cur_anim	= eAnimStandIdle; 
 	m_tAction		= ACT_STAND_IDLE;
 	m_tpCurAnim		= 0;
@@ -324,15 +327,6 @@ bool CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 	return false;
 }
 
-//void CMotionManager::ApplyParams(CAI_Biting *pM)
-//{
-//	ANIM_ITEM_MAP_IT	item_it = m_tAnims.find(cur_anim);
-//	R_ASSERT(item_it != m_tAnims.end());
-//	
-//	pM->m_fCurSpeed		= item_it->second.speed.linear;
-//	pM->r_torso_speed	= item_it->second.speed.angular;
-//}
-
 void CMotionManager::AddMotion(EMotionAnim pmt_motion, EMotionAnim pmt_left, EMotionAnim pmt_right, float pmt_angle)
 {
 	SMotionItem new_item;
@@ -356,68 +350,88 @@ void CMotionManager::AddMotion(EMotionAnim pmt_motion)
 	m_tMotions.push_back(new_item);
 }
 
+// В соответствии текущему действию m_tAction, назначить соответсвующию анимацию и параметры движения
+// выполняется на каждом шед.апдейте, после выполнения состояния
 void CMotionManager::ProcessAction()
 {
+	// преобразовать Action в Motion и получить новую анимацию
+	SMotionItem MI = m_tMotions[m_tAction];
+	cur_anim = MI.anim;
 
-//	// преобразовать Action в Motion и получить новую анимацию
-//	SMotionItem MI = m_tMotions[m_tAction];
-//	cur_anim = MI.anim;
-//
+	float &cur_yaw		= pMonster->r_torso_current.yaw;
+	float &target_yaw	= pMonster->r_torso_target.yaw;
+
+	// проверить необходимость поворота
+	if (MI.is_turn_params)
+		if (!getAI().bfTooSmallAngle(cur_yaw, target_yaw, MI.turn.min_angle)) {
+			// повернуться
+			// необходим поворот влево или вправо
+			if (angle_normalize_signed(target_yaw - cur_yaw) > 0) {
+				// вправо
+				cur_anim = MI.turn.anim_right;
+			} else {
+				// влево
+				cur_anim = MI.turn.anim_left;
+			}
+		}
+
 //	// если новая анимация не совпадает с предыдущей, проверить переход
 //	if (prev_anim != cur_anim) {
 //		if (CheckTransition	(prev_anim, cur_anim)) return;
 //	}
+
+	ApplyParams();
+	//ControlAnimation();
+
+	prev_anim = cur_anim;
+}
+
+void CMotionManager::ApplyParams()
+{
+	ANIM_ITEM_MAP_IT	item_it = m_tAnims.find(cur_anim);
+	R_ASSERT(item_it != m_tAnims.end());
+	
+	pMonster->m_fCurSpeed		= item_it->second.speed.linear;
+	pMonster->r_torso_speed		= item_it->second.speed.angular;
+}
+
+
+
+
+//void CAI_Biting::ControlAnimation()
+//{
+//	if (!Motion.m_tSeq.Playing) {
 //
-//	if (MI.is_turn_params)
-//		// проверить необходимость поворота
-//		if (!getAI().bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw, MI.turn.min_angle)) {
-//			// повернуться
-//			// необходим поворот влево или вправо
-//			if (angle_normalize_signed(r_torso_target.yaw - r_torso_current.yaw) > 0) {
-//				// вправо
-//				cur_anim = MI.turn.anim_right;
-//			} else {
-//				// влево
-//				cur_anim = MI.turn.anim_left;
+//		// __START: Bug protection 
+//		// Если нет пути и есть анимация движения, то играть анимацию стоять на месте
+//		if (AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) <= AI_Path.TravelStart)) {
+//			if ((m_tAnim == eAnimWalkFwd) || (m_tAnim == eAnimRun)) {
+//				m_tAnim = eAnimStandIdle;
 //			}
 //		}
 //
-//		ApplyParams(this);					
-}
+//		// если стоит на месте и пытается бежать...
+//		int i = ps_Size();		
+//		if (i > 1) {
+//			CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
+//			if (tCurrentPosition.vPosition.similar(tPreviousPosition.vPosition)) {
+//				if ((m_tAnim == eAnimWalkFwd) || (m_tAnim == eAnimRun)) {
+//					m_tAnim = eAnimStandIdle;
+//				}
+//			}
+//		}
+//		// __END
+//
+//		// если анимация изменилась, переназначить анимацию
+//		if (m_tAnimPrevFrame != m_tAnim) {
+////			FORCE_ANIMATION_SELECT();
+//		}	
+//	}
+//	//--------------------------------------
+//
+//	// Сохранение предыдущей анимации
+//	m_tAnimPrevFrame = m_tAnim;
+//}
 
 
 
-void CAI_Biting::ControlAnimation()
-{
-	if (!Motion.m_tSeq.Playing) {
-
-		// __START: Bug protection 
-		// Если нет пути и есть анимация движения, то играть анимацию стоять на месте
-		if (AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) <= AI_Path.TravelStart)) {
-			if ((m_tAnim == eAnimWalkFwd) || (m_tAnim == eAnimRun)) {
-				m_tAnim = eAnimStandIdle;
-			}
-		}
-
-		// если стоит на месте и пытается бежать...
-		int i = ps_Size();		
-		if (i > 1) {
-			CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
-			if (tCurrentPosition.vPosition.similar(tPreviousPosition.vPosition)) {
-				if ((m_tAnim == eAnimWalkFwd) || (m_tAnim == eAnimRun)) {
-					m_tAnim = eAnimStandIdle;
-				}
-			}
-		}
-		// __END
-
-		// если анимация изменилась, переназначить анимацию
-		if (m_tAnimPrevFrame != m_tAnim) {
-			FORCE_ANIMATION_SELECT();
-		}	
-	}
-	//--------------------------------------
-
-	// Сохранение предыдущей анимации
-	m_tAnimPrevFrame = m_tAnim;
-}
