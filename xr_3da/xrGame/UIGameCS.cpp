@@ -5,7 +5,7 @@
 #include "entity.h"
 #include "hudmanager.h"
 
-static const int money_x_offs = 690; 
+static const int money_x_offs = 785; 
 static const int money_y_offs = 485;
 
 //--------------------------------------------------------------------
@@ -14,10 +14,10 @@ CUIGameCS::CUIGameCS(CUI* parent):CUIGameCustom(parent)
 	BuyMenu.Load			("game_cs.ltx",this,BuyItem);
 	FragList.Init			();
 	PlayerList.Init			();
-	OwnBase.Init			("ui\\ui_cs_base",		"font",	5,175,	alLeft|alTop); OwnBase.SetColor	(0x8000FF00);
-	EnemyBase.Init			("ui\\ui_cs_base",		"font",	5,175,	alLeft|alTop); EnemyBase.SetColor(0x80FF0000);
-	BuyZone.Init			("ui\\ui_cs_buyzone",	"font", 5,210,	alLeft|alTop); BuyZone.SetColor	(0x8000FF00);
-	Artifact.Init			("ui\\ui_cs_artefact",	"font",	5,245,	alLeft|alTop); Artifact.SetColor(0x80FF00A2);
+	OwnBase.Init			("ui\\ui_cs_base",		"font",	5,175,	alLeft|alTop); OwnBase.SetColor		(0x8000FF00);
+	EnemyBase.Init			("ui\\ui_cs_base",		"font",	5,175,	alLeft|alTop); EnemyBase.SetColor	(0x80FF0000);
+	BuyZone.Init			("ui\\ui_cs_buyzone",	"font", 5,210,	alLeft|alTop); BuyZone.SetColor		(0x8000FF00);
+	Artifact.Init			("ui\\ui_cs_artefact",	"font",	5,245,	alLeft|alTop); Artifact.SetColor	(0x80FF00A2);
 	m_Parent->m_Parent->ClientToScreen(vMoneyPlace, money_x_offs, money_y_offs, alRight|alBottom);
 }
 //--------------------------------------------------------------------
@@ -73,8 +73,9 @@ void CUIGameCS::OnFrame()
 	}
 	game_cl_GameState::Player* P = Game().local_player;
 	m_Parent->m_Parent->pFontBigDigit->SetColor	(0xA0969678);
+	m_Parent->m_Parent->pFontBigDigit->SetAligment(CGameFont::alRight);
 	m_Parent->m_Parent->pFontBigDigit->OutSet	((float)vMoneyPlace.x,(float)vMoneyPlace.y);
-	m_Parent->m_Parent->pFontBigDigit->OutNext	("$%-4d",P->money_total);
+	m_Parent->m_Parent->pFontBigDigit->OutNext	("$%d",P->money_total);
 }
 //--------------------------------------------------------------------
 

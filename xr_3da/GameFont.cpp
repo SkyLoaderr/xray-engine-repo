@@ -153,7 +153,10 @@ void CGameFont::OnRender()
 				float	Y2	= Y+S;
 				S			= (S*vTS.x)/fHeight;
 
-				if (alCenter==uAligment) X-=SizeOf(PS.string)*.5f;
+				switch(uAligment){
+				case alCenter:	X-=SizeOf(PS.string)*.5f;	break;
+				case alRight:	X-=SizeOf(PS.string);		break;
+				}
 
 				u32	clr,clr2; 
 				clr			= PS.c; 
@@ -180,10 +183,7 @@ void CGameFont::OnRender()
 						v->set	(X+scw,	Y2,	clr2,tu+l.z,	tv+fTCHeight);	v++;
 						v->set	(X+scw,	Y,	clr, tu+l.z,	tv);			v++;
 					}
-					switch(uAligment){
-					case alRight:	X-=scw*vInterval.x; break;
-					default:		X+=scw*vInterval.x; break;
-					}
+					X+=scw*vInterval.x;
 				}
 			}
 		}
