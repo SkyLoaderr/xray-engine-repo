@@ -78,6 +78,8 @@ void CAI_ALife::Update(u32 dt)
 				ALIFE_MONSTER_P_IT			E = m_tpScheduledObjects.end();
 				int i=1;
 				for (I = M ; I != E; I++, i++) {
+					if ((*I)->m_bOnline)
+						continue;
 					vfProcessNPC			(*I);
 					if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= qwMaxProcessTime) {
 						m_dwObjectsBeingProcessed = I - B + 1;
@@ -85,6 +87,8 @@ void CAI_ALife::Update(u32 dt)
 					}
 				}
 				for (I = B; I != M; I++, i++) {
+					if ((*I)->m_bOnline)
+						continue;
 					vfProcessNPC			(*I);
 					if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= qwMaxProcessTime) {
 						m_dwObjectsBeingProcessed = I - B + 1;
@@ -255,10 +259,9 @@ void CAI_ALife::vfUpdateHuman(xrSE_Human *tpALifeHuman)
 //		}
 //		default : NODEFAULT;
 //	};
-	if (!tpALifeHuman->m_bOnline) {
-		vfChooseNextRoutePoint	(tpALifeHuman);
-		vfCheckForTheBattle		(tpALifeHuman);
-		bfCheckForItems			(tpALifeHuman);
-	}
+	VERIFY(!tpALifeHuman->m_bOnline);
+	vfChooseNextRoutePoint	(tpALifeHuman);
+	vfCheckForTheBattle		(tpALifeHuman);
+	bfCheckForItems			(tpALifeHuman);
 //	vfCheckForDeletedEvents	(tpALifeHuman);
 }
