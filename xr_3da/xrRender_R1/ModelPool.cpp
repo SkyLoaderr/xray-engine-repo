@@ -279,8 +279,7 @@ IRender_Visual* CModelPool::CreateChild(LPCSTR name, IReader* data)
 
 void	CModelPool::Delete	(IRender_Visual* &V, BOOL bDiscard)
 {
-//.
-	bDiscard = false;
+//	bDiscard = false;
 	if (bDiscard||bForceDiscard){
     	Discard(V); 
 	}else{
