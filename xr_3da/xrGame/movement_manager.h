@@ -9,8 +9,6 @@
 #pragma once
 
 #include "gameobject.h"
-#include "path_manager_game_selector.h"
-#include "path_manager_level_selector.h"
 #include "game_location_selector.h"
 #include "level_location_selector.h"
 #include "game_path_manager.h"

@@ -14,8 +14,6 @@
 #include "state_manager_combat.h"
 #include "ai/stalker/ai_stalker.h"
 
-#include "state_manager_goap.h"
-
 CStateManagerStalker::CStateManagerStalker	(LPCSTR state_name) : inherited(state_name)
 {
 	Init					();

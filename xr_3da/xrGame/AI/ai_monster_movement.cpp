@@ -2,7 +2,6 @@
 
 #include "ai_monster_movement.h"
 #include "ai_monster_utils.h"
-#include "../path_manager_level_selector.h"
 #include "biting/ai_biting.h"
 #include "ai_monster_motion_stats.h"
 
