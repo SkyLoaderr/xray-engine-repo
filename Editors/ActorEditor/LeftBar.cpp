@@ -89,7 +89,7 @@ void TfraLeftBar::AppendRecentFile(LPCSTR name)
 
 	if (miRecentFiles->Count==5) miRecentFiles->Remove(miRecentFiles->Items[4]);
 
-    TMenuItem *MI = new TMenuItem(0);
+    TMenuItem *MI = xr_new<TMenuItem>((TComponent*)0);
     MI->Caption = name;
     MI->OnClick = miRecentFilesClick;
     MI->Tag		= 0x1001;

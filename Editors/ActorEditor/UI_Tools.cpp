@@ -163,7 +163,7 @@ void CActorTools::OnDestroy(){
 
     m_PreviewObject.Clear();
     m_RenderObject.Clear();
-	_DELETE(m_pEditObject);
+	xr_delete(m_pEditObject);
     Device.seqDevCreate.Remove(this);
     Device.seqDevDestroy.Remove(this);
 }
@@ -314,7 +314,7 @@ void CActorTools::Clear(){
 	VERIFY(m_bReady);
 
     // delete visuals
-    _DELETE(m_pEditObject);
+    xr_delete(m_pEditObject);
     m_RenderObject.Clear();
 //	m_PreviewObject.Clear();
     m_ObjectProps->ClearProperties();
@@ -330,10 +330,10 @@ void CActorTools::Clear(){
 bool CActorTools::Load(LPCSTR name)
 {
 	VERIFY(m_bReady);
-	CEditableObject* O = new CEditableObject(name);
+	CEditableObject* O = xr_new<CEditableObject>(name);
 	if (O->Load(name)){
     	if (O->m_Flags.is(CEditableObject::eoDynamic)){
-            _DELETE(m_pEditObject);
+            xr_delete(m_pEditObject);
             m_pEditObject = O;
             // delete visual
             m_RenderObject.Clear();
@@ -346,7 +346,7 @@ bool CActorTools::Load(LPCSTR name)
     }else{
        	ELog.DlgMsg(mtError,"Can't load object file '%s'.",name);
     }
-    _DELETE(O);
+    xr_delete(O);
 
     return false;
 }

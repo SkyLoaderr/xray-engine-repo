@@ -23,7 +23,8 @@ USEFORM("Editor\ShaderFunction.cpp", frmShaderFunction);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {
-    try{
+//    try{
+    	Core._initialize	("LevelEditor");
         TfrmLog::CreateLog();
 
         frmSplash = new TfrmSplash(0);
@@ -43,16 +44,16 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 		Application->CreateForm(__classid(TfrmBonePart), &frmBonePart);
 		frmMain->SetHInst(hInst);
 
-        _DELETE(frmSplash);
+        xr_delete(frmSplash);
 
         Application->Run();
 
         TfrmLog::DestroyLog();
-    }
-    catch (Exception &exception)
-    {
-           Application->ShowException(&exception);
-    }
+//    }
+//    catch (Exception &exception)
+//    {
+//           Application->ShowException(&exception);
+//    }
     return 0;
 }
 //---------------------------------------------------------------------------
