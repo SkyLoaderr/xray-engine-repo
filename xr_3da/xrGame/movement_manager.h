@@ -13,7 +13,7 @@
 #include "level_location_selector.h"
 #include "level_path_manager.h"
 #include "detail_path_manager.h"
-#include "enemy_predictor.h"
+#include "enemy_location_predictor.h"
 
 class CPHMovementControl;
 
@@ -23,7 +23,7 @@ class CMovementManager :
 	public CLevelLocationSelector,
 	public CLevelPathManager,
 	public CDetailPathManager,
-	public CEnemyPredictor
+	public CEnemyLocationPredictor
 {
 private:
 	enum EPathState {
