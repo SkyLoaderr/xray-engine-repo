@@ -17,7 +17,7 @@
 	#define XRSOUND_EDITOR_API
 #endif
 
-#define SNDENV_FILENAME "sEnvironment.xr2"
+#define SNDENV_FILENAME "sEnvironment.xr"
 #define OGG_COMMENT_VERSION 		0x0001 
 
 // refs
