@@ -491,7 +491,9 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 					// copy if need
 					if (bCopy)			
 					{
-						IReader*	_src	= xr_new<CVirtualFileReader>	(fname);
+						IReader*	_src;
+						if (desc.size_real<256*1024)	_src = xr_new<CFileReader>			(fname);
+						else							_src = xr_new<CVirtualFileReader>	(fname);
 						IWriter*	_dst	= xr_new<CFileWriter>			(fname_in_cache);
 						_dst->w				(_src->pointer(),_src->length());
 						xr_delete			(_dst);

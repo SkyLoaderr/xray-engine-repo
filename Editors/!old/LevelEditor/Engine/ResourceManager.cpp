@@ -102,6 +102,8 @@ void	CResourceManager::_ParseList(sh_list& dest, LPCSTR names)
 
 ShaderElement* CResourceManager::_CreateElement			(ShaderElement& S)
 {
+	if (S.Passes.empty())		return	0;
+
 	// Search equal in shaders array
 	for (u32 it=0; it<v_elements.size(); it++)
 		if (S.equal(*(v_elements[it])))	return v_elements[it];
