@@ -22,8 +22,6 @@ CScriptStorage::CScriptStorage		()
 		return;
 	}
 	// initialize lua standard library functions 
-//	print_table				(lua(),"_G");
-//	print_stack				(lua());
 	luaopen_base			(lua()); 
 	luaopen_table			(lua());
 	luaopen_string			(lua());
@@ -31,9 +29,6 @@ CScriptStorage::CScriptStorage		()
 #ifdef DEBUG
 	luaopen_debug			(lua());
 #endif
-//	print_table				(lua(),"_G");
-//	print_stack				(lua());
-//	lua_settop				(lua(),0);
 }
 
 CScriptStorage::~CScriptStorage		()
