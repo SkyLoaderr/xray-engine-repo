@@ -50,6 +50,7 @@ void	CRenderTarget::u_stencil_optimize	()
 	pv->set						(float(_w+eps),	float(_h+eps),	eps,	1.f, C, 0, 0);	pv++;
 	pv->set						(float(_w+eps),	eps,			eps,	1.f, C, 0, 0);	pv++;
 	RCache.Vertex.Unlock		(4,g_combine->vb_stride);
+	RCache.set_CullMode			(CULL_NONE	);
 	RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00);	// keep/keep/keep
 	RCache.set_Element			(s_occq->E[1]	);
 	RCache.set_Geometry			(g_combine		);

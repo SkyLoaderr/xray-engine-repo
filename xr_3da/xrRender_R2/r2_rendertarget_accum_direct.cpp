@@ -25,6 +25,7 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 	L_dir.normalize				();
 
 	// Perform masking (only once - on the first/near phase)
+	RCache.set_CullMode			(CULL_NONE	);
 	if (SE_SUN_NEAR==sub_phase)	//.
 	{
 		// Fill vertex buffer
@@ -45,7 +46,6 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 
 		// if (stencil>=1 && aref_pass)	stencil = light_id
 		RCache.set_ColorWriteEnable	(FALSE		);
-		RCache.set_CullMode			(CULL_NONE	);
 		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0x01,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
