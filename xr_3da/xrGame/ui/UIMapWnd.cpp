@@ -278,7 +278,6 @@ CUIGlobalMap::~CUIGlobalMap()
 void CUIGlobalMap::Init		(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 {
 	inherited::Init(name, gameLtx, sh_name);
-
 	CUIXml uiXml;
 	bool xml_result			= uiXml.Init(CONFIG_PATH, UI_PATH, "pda_map.xml");
 	R_ASSERT3(xml_result, "xml file not found", "global_map.xml");
@@ -402,6 +401,13 @@ void CUIGlobalMap::Draw					()
 	inherited::Draw();
 }
 
+Ivector2 CUIGlobalMap::ConvertRealToLocal(const Fvector2& src)// pixels->pixels (relatively own left-top pos)
+{
+	Ivector2 res;
+	res.x = iFloor( (src.x-m_BoundRect.lt.x ) * m_zoom_factor);
+	res.y = iFloor( (src.y-m_BoundRect.lt.y ) * m_zoom_factor);
+	return res;
+}
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -418,10 +424,9 @@ CUILevelMap::~CUILevelMap()
 
 void CUILevelMap::Init	(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 {
-	inherited::Init(name, gameLtx, "hud\\set");
-
+	inherited::Init(name, gameLtx, sh_name);
 	Fvector4 tmp = gameLtx.r_fvector4(MapName(),"global_rect");
-	m_GlobalRect.set(tmp.x, tmp.w, tmp.z, tmp.y);
+	m_GlobalRect.set(tmp.x, tmp.y, tmp.z, tmp.w);
 
 	m_globalMapSpot->Init(inactiveLocalMapColor);
 }
@@ -449,6 +454,7 @@ CUIMiniMap::~CUIMiniMap()
 void CUIMiniMap::Init(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 {
 	inherited::Init(name, gameLtx, sh_name);
+	CUIStatic::SetColor(0x7fffffff);
 }
 void CUIMiniMap::MoveWndDelta(const Ivector2& d)
 {
@@ -534,7 +540,7 @@ void CUIMapWnd::Init()
 
 	m_GlobalMap				= xr_new<CUIGlobalMap>(this);
 	m_GlobalMap->SetAutoDelete				(true);
-	m_GlobalMap->Init						("global_map",gameLtx,"hud\\set");
+	m_GlobalMap->Init						("global_map",gameLtx,"hud\\default");
 	m_UILevelFrame.AttachChild				(m_GlobalMap);
 	m_GlobalMap->SwitchTo					(CUIGlobalMap::stNormal);
 
@@ -552,7 +558,7 @@ void CUIMapWnd::Init()
 
 			l = xr_new<CUILevelMap>();
 			
-			l->Init(map_name, gameLtx, "hud\\set");
+			l->Init(map_name, gameLtx, "hud\\default");
 
 			l->OptimalFit( m_UILevelFrame.GetWndRect() );
 			

@@ -25,7 +25,7 @@ class CUIGlobalMapSpot;
 
 class CUICustomMap : public CUIStatic, public CUIWndCallback
 {
-	
+protected:	
 	shared_str		m_name;
 	Frect			m_BoundRect;// real map size (meters)
 	float			m_zoom_factor;
@@ -36,7 +36,7 @@ public:
 	virtual void	SetActivePoint					(const Fvector &vNewPoint);
 
 	virtual void	Init							(shared_str name, CInifile& gameLtx, LPCSTR sh_name);
-	Ivector2		ConvertRealToLocal				(const Fvector2& src);// meters->pixels (relatively own left-top pos)
+	virtual Ivector2 ConvertRealToLocal				(const Fvector2& src);// meters->pixels (relatively own left-top pos)
 	Ivector2		ConvertRealToLocalNoTransform	(const Fvector2& src);// meters->pixels (relatively own left-top pos)
 
 	bool			GetPointerTo					(const Ivector2& src, int item_radius, Ivector2& pos, float& heading);//position and heading for drawing pointer to src pos
@@ -91,6 +91,7 @@ public:
 	void			SwitchTo				(EState new_state);
 
 	virtual void	SendMessage				(CUIWindow* pWnd, s16 msg, void* pData = NULL);
+	virtual Ivector2 ConvertRealToLocal				(const Fvector2& src);// pixels->pixels (relatively own left-top pos)
 
 					CUIGlobalMap			(CUIMapWnd*	pMapWnd);
 	virtual			~CUIGlobalMap			();
