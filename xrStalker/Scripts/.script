@@ -234,6 +234,10 @@ function FSM:run_loop()
 							end
 							return nil
 					  end)
+		if self.npc:alive () == false then
+		   self.npc:script (false, self.script_name)
+		   return
+		   end		
 		wait()
 	end
 end
