@@ -239,10 +239,9 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 	UIIcon.SetShader(GetCharIconsShader());
 	UIIcon.GetUIStaticItem().SetOriginalRect(
 		pCharInfo->TradeIconX()*ICON_GRID_WIDTH,
-		pCharInfo->TradeIconY()*CHAR_ICON_HEIGHT,
+		pCharInfo->TradeIconY()*ICON_GRID_HEIGHT,
 		pCharInfo->TradeIconX()+CHAR_ICON_WIDTH*ICON_GRID_WIDTH,
 		pCharInfo->TradeIconY()+CHAR_ICON_HEIGHT*ICON_GRID_HEIGHT);
-
 
 	// Bio
 	if (UIBio.IsEnabled())
