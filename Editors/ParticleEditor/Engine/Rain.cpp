@@ -62,7 +62,7 @@ CEffect_Rain::~CEffect_Rain()
 void	CEffect_Rain::Born		(Item& dest, float radius, float height)
 {
 	Fvector		axis;	
-    //axis.set			(0,-1,0);
+    axis.set			(0,-1,0);
 	float	factor		= drop_max_angle*(g_pGamePersistent->Environment.CurrentEnv.wind_velocity/drop_max_wind_vel);
     clamp				(factor,0.f,1.f);
     factor				+= -PI_DIV_2;
@@ -242,8 +242,9 @@ void	CEffect_Rain::Render	()
 	snd_Ambient.set_position	(sndP);
 
 	// 
-	Fvector3&	f_rain_color;	f_rain_color.set(1,1,1);//	= g_pGamePersistent->Environment.CurrentEnv.rain_color;
-	u32			u_rain_color	= color_rgba_f(f_rain_color.x,f_rain_color.y,f_rain_color.z,1);
+	float		factor_visual	= factor/2.f+.5f;
+	Fvector3	f_rain_color	= g_pGamePersistent->Environment.CurrentEnv.rain_color;
+	u32			u_rain_color	= color_rgba_f(f_rain_color.x,f_rain_color.y,f_rain_color.z,factor_visual);
 
 	// Born _new_ if needed
 	float	b_radius		= 10.f;
@@ -299,7 +300,7 @@ void	CEffect_Rain::Render	()
 
 		// Build line
 		Fvector&	pos_head	= one.P;
-		Fvector		pos_trail;	pos_trail.mad	(pos_head,one.D,-drop_length*factor);
+		Fvector		pos_trail;	pos_trail.mad	(pos_head,one.D,-drop_length*factor_visual);
 		
 		// Culling
 		Fvector sC,lineD;	float sR; 
@@ -327,12 +328,10 @@ void	CEffect_Rain::Render	()
 	// Render if needed
 	if (vCount)	{
 		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_NONE);
-
 		RCache.set_xform_world		(Fidentity);
 		RCache.set_Shader			(SH_Rain);
 		RCache.set_Geometry			(hGeom_Rain);
 		RCache.Render				(D3DPT_TRIANGLELIST,vOffset,0,vCount,0,vCount/2);
-
 		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_CCW);
 	}
 	
@@ -372,7 +371,7 @@ void	CEffect_Rain::Render	()
 				mXform.mul_43		(P->mXForm,mScale);
 				
 				// XForm verts
-				DM_Drop->transfer	(mXform,v_ptr,0xffffffff,i_ptr,pcount*DM_Drop->number_vertices);
+				DM_Drop->transfer	(mXform,v_ptr,u_rain_color,i_ptr,pcount*DM_Drop->number_vertices);
 				v_ptr			+=	DM_Drop->number_vertices;
 				i_ptr			+=	DM_Drop->number_indices;
 				pcount			++;
