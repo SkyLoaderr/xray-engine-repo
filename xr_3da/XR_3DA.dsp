@@ -650,7 +650,7 @@ SOURCE=.\xrSyncronize.h
 # Begin Group "Engine"
 
 # PROP Default_Filter ""
-# Begin Group "Collision"
+# Begin Group "Collision Core"
 
 # PROP Default_Filter ""
 # Begin Group "RAPID"
@@ -718,149 +718,6 @@ SOURCE=.\Collide\cl_RAPID.h
 SOURCE=.\Collide\cl_raypick.cpp
 # End Source File
 # End Group
-# Begin Group "Physics"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\Physics\PhysicsObject.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Physics\PhysicsObject.h
-# End Source File
-# End Group
-# Begin Source File
-
-SOURCE=.\xr_area.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xr_area.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\xr_area_collide.cpp
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\xr_area_debug.cpp
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\xr_area_movement.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xr_area_query.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xr_area_raypick.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xr_collide_defs.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\xr_collide_form.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xr_collide_form.h
-# End Source File
-# End Group
-# Begin Group "Cameras"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\CameraBase.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\CameraBase.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\CameraDebug.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\CameraDebug.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\CameraDefs.h
-
-!IF  "$(CFG)" == "XR_3DA - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\CameraFirstEye.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\CameraFirstEye.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\cameralook.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\cameralook.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\CameraManager.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\CameraManager.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\Effector.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Effector.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\EffectorFall.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\EffectorFall.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\EffectorNoise.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\EffectorNoise.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\EffectorRecoil.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\EffectorRecoil.h
-# End Source File
 # End Group
 # Begin Group "LTX"
 
@@ -1076,99 +933,6 @@ SOURCE=.\DebugKernel.cpp
 # Begin Source File
 
 SOURCE=.\DebugKernel.h
-# End Source File
-# End Group
-# Begin Group "AI_Old"
-
-# PROP Default_Filter ""
-# Begin Group "AI_Navigation"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\AI_FileFormat.h
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_Mover.cpp
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_Mover.h
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_Navigation.cpp
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_Navigation.h
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_NaviHierrarhy.h
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_NaviObstacle.h
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_NaviPlane.cpp
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_NaviPlane.h
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_SaveNavigation.cpp
-# PROP Exclude_From_Build 1
-# End Source File
-# End Group
-# Begin Source File
-
-SOURCE=.\AI.cpp
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI.h
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_Frustum.h
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_NavigationPoint.h
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_Network.h
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_PathQuantizer.cpp
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_PathQuantizer.h
-# PROP Exclude_From_Build 1
 # End Source File
 # End Group
 # Begin Group "Scripting"
@@ -1696,6 +1460,246 @@ SOURCE=.\AI_Utilities.cpp
 
 !ENDIF 
 
+# End Source File
+# End Group
+# Begin Group "Cameras"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\CameraBase.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\CameraBase.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\CameraDebug.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\CameraDebug.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\CameraDefs.h
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\CameraFirstEye.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\CameraFirstEye.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\cameralook.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\cameralook.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\CameraManager.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\CameraManager.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Effector.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Effector.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\EffectorFall.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\EffectorFall.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\EffectorNoise.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\EffectorNoise.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\EffectorRecoil.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\EffectorRecoil.h
+# End Source File
+# End Group
+# Begin Group "Collision"
+
+# PROP Default_Filter ""
+# Begin Group "Physics"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\Physics\PhysicsObject.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Physics\PhysicsObject.h
+# End Source File
+# End Group
+# Begin Source File
+
+SOURCE=.\xr_area.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\xr_area.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\xr_area_collide.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\xr_area_debug.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\xr_area_movement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\xr_area_query.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\xr_area_raypick.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\xr_collide_defs.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\xr_collide_form.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\xr_collide_form.h
+# End Source File
+# End Group
+# Begin Group "AI_Old"
+
+# PROP Default_Filter ""
+# Begin Group "AI_Navigation"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\AI_FileFormat.h
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI_Mover.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI_Mover.h
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI_Navigation.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI_Navigation.h
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI_NaviHierrarhy.h
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI_NaviObstacle.h
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI_NaviPlane.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI_NaviPlane.h
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI_SaveNavigation.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# End Group
+# Begin Source File
+
+SOURCE=.\AI.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI.h
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI_Frustum.h
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI_NavigationPoint.h
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI_Network.h
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI_PathQuantizer.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI_PathQuantizer.h
+# PROP Exclude_From_Build 1
 # End Source File
 # End Group
 # Begin Source File

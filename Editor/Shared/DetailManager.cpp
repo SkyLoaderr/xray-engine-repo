@@ -388,6 +388,10 @@ void CDetailManager::UpdateCache	(int limit)
 			D.G[i].id		= DS.items[i].id;
 		}
 		
+		// Select polygons
+		XRC.BBoxMode	(BBOX_TRITEST);
+		XRC.BBoxCollide	(precalc_identity,pCreator->ObjectSpace.,precalc_identity,BB);
+
 		// Prepare to selection
 		float		density		= 0.1f;
 		float		jitter		= density/2.f;
@@ -454,7 +458,7 @@ DetailSlot&	CDetailManager::QueryDB(int sx, int sz)
 	DS.r_yaw				= 0xaaaaaaaa;
 	DS.r_scale				= 0xaaaaaaaa;
 
-	DS.items[0].id			= 2;
+	DS.items[0].id			= 3;
 	DS.items[0].palette.a0	= 7;
 	DS.items[0].palette.a1	= 0;
 	DS.items[0].palette.a2	= 0;
