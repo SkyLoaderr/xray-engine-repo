@@ -29,7 +29,6 @@ private:
 
 	int						look_idx;
 
-	CActor*					last_actor;
 	//------------------------------
 	void					cam_Set					(EActorCameras style);
 	void					cam_Update				(CActor* A=0);
