@@ -59,7 +59,12 @@ void	CBlender::Save(	CFS_Base& FS )
 
 void	CBlender::Load(	CStream& FS )
 {
+	// Read desc and doesn't change version
+	WORD	version = description.version;
 	FS.Read			(&description,sizeof(description));
+	description.version	= version;
+
+	// Properties
 	xrPREAD_MARKER	(FS);
 	xrPREAD_PROP	(FS,xrPID_INTEGER,	oPriority);
 	xrPREAD_PROP	(FS,xrPID_BOOL,		oStrictSorting);
