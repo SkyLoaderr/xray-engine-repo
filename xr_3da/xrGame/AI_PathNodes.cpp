@@ -414,8 +414,8 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 			d.set(0,1,0);
 			Me->Hit	(Me->Movement.gcontact_HealthLost,d,Me,0,p_dest,0);
 		}
-		
 #endif
+		Me->UpdateTransform	();
 		return;
 	}
 	//Msg("TP %d",TravelPath.size());
