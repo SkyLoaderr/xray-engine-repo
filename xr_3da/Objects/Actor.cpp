@@ -334,8 +334,6 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	// Check ground-contact
 	if (Movement.gcontact_Was) 
 	{
-		::Sound->PlayAtPos					(sndLanding,this,Position());
-
 		Fvector correctV					= Movement.GetVelocity	();
 		correctV.x							*= 0.1f;
 		correctV.z							*= 0.1f;
@@ -581,6 +579,9 @@ void CActor::Update	(u32 DT)
 		sndStep[1].feedback->SetPosition(Position());
 		sndStep[1].feedback->SetVolume	(s_vol);
 	}
+	// landing sounds
+	if ((mstate_real&(mcLanding|mcLanding2))&&fis_zero(m_fLandingTime-s_fLandingTime1))
+		::Sound->PlayAtPos	(sndLanding,this,Position());
 }
 
 void CActor::OnVisible	()
