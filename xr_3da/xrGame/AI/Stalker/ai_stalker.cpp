@@ -11,26 +11,24 @@
 #include "..\\ai_monsters_misc.h"
 #include "..\\..\\weapon.h"
 #include "..\\..\\CharacterPhysicsSupport.h"
+
 CAI_Stalker::CAI_Stalker			()
 {
-	m_pPhysics_support=xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etStalker,this);
-	Init();
+	m_pPhysics_support				= xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etStalker,this);
+	Init							();
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
-	shedule.t_min	= 200;
-	shedule.t_max	= 1;
+	shedule.t_min					= 200;
+	shedule.t_max					= 1;
 }
 
 CAI_Stalker::~CAI_Stalker			()
 {
-xr_delete(m_pPhysics_support);
+	xr_delete						(m_pPhysics_support);
 }
 
 void CAI_Stalker::Init()
 {
-	//	m_tStateList.clear				();
-	//	while (m_tStateStack.size())
-	//		m_tStateStack.pop			();
-	m_pPhysics_support				->in_Init();
+	m_pPhysics_support->in_Init		();
 	m_tMovementDirection			= eMovementDirectionForward;
 	m_tDesirableDirection			= eMovementDirectionForward;
 	m_tLookType						= eLookTypeDirection;
@@ -117,11 +115,8 @@ void CAI_Stalker::Init()
 	m_tTaskState					= eTaskStateChooseTask;
 }
 
-// when soldier is dead
 void CAI_Stalker::Die				()
 {
-	//	vfAddStateToList				(m_eCurrentState = eStalkerStateDie);
-
 //#ifdef DEBUG
 //	Msg								("Death position : [%f][%f][%f]",VPUSH(Position()));
 //#endif
@@ -149,6 +144,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	m_tSelectorReload.Load			(section,"selector_reload");
 	m_tSelectorRetreat.Load			(section,"selector_retreat");
 	m_tSelectorCover.Load			(section,"selector_cover");
+	
 	// visibility
 	m_dwMovementIdleTime			= pSettings->r_s32(section,"MovementIdleTime");
 	m_fMaxInvisibleSpeed			= pSettings->r_float(section,"MaxInvisibleSpeed");
@@ -176,6 +172,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	m_fMinMissFactor   				= pSettings->r_float(section,"MinMissFactor");
 	m_fMaxMissDistance 				= pSettings->r_float(section,"MaxMissDistance");
 	m_fMaxMissFactor				= pSettings->r_float(section,"MaxMissFactor");
+	
 	if (pSettings->line_exist(section,"State"))
 		m_dwParticularState			= pSettings->r_u32(section,"State");
 
@@ -251,9 +248,6 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	if (m_dwParticularState == u32(-1))
 		m_tNextGP					= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-	//	m_tStateStack.push				(m_eCurrentState = eStalkerStateAccomplishingTask);
-	//	vfAddStateToList				(m_eCurrentState);
 
 	CStalkerAnimations::Load		(PKinematics(Visual()));
 	vfAssignBones					(pSettings,cNameSect());

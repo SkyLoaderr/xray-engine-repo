@@ -117,7 +117,7 @@ void CAI_Stalker::vfAccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 
 void CAI_Stalker::vfChooseTask()
 {
-
+	m_tTaskState	= eTaskStateAccomplishTask;
 }
 
 void CAI_Stalker::vfHealthCare()
