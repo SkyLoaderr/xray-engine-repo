@@ -30,7 +30,7 @@
 // inventory rukzak size
 #define RUCK_HEIGHT					8
 #define RUCK_WIDTH					7
-#define MAX_ITEM_VOLUME				((RUCK_WIDTH)*(RUCK_HEIGHT))
+#define MAX_ITEM_VOLUME				100
 
 class CSE_ALifeEventGroup;
 class CSE_ALifeDynamicObject;

@@ -214,6 +214,60 @@ bool CSE_ALifeHumanAbstract::bfPerformAttack()
 	}
 }
 
+void CSE_ALifeHumanAbstract::vfCollectAmmoBoxes()
+{
+	for (int i=0, n=children.size() ; i<n; i++) {
+		
+		if (m_tpALife->m_baMarks[i])
+			continue;
+		
+		m_tpALife->m_baMarks[i]	= true;
+		
+		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(children[i]));
+		if (!l_tpALifeItemAmmo)
+			continue;
+
+		for (int j=i+1; j<n; j++) {
+			if (m_tpALife->m_baMarks[j])
+				continue;
+
+			CSE_ALifeItemAmmo	*l_tpALifeItemAmmo1 = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(children[j]));
+			if (!l_tpALifeItemAmmo1) {
+				m_tpALife->m_baMarks[j]	= true;
+				continue;
+			}
+
+			if (!strstr(l_tpALifeItemAmmo->s_name,l_tpALifeItemAmmo1->s_name))
+				continue;
+
+			m_tpALife->m_baMarks[j]	= true;
+
+			if (l_tpALifeItemAmmo->a_elapsed + l_tpALifeItemAmmo1->a_elapsed > l_tpALifeItemAmmo->m_boxSize) {
+				l_tpALifeItemAmmo1->a_elapsed	= l_tpALifeItemAmmo->a_elapsed + l_tpALifeItemAmmo1->a_elapsed - l_tpALifeItemAmmo->m_boxSize;
+				l_tpALifeItemAmmo->a_elapsed	= l_tpALifeItemAmmo->m_boxSize;
+				l_tpALifeItemAmmo				= l_tpALifeItemAmmo1;
+			}
+			else {
+				l_tpALifeItemAmmo->a_elapsed	= l_tpALifeItemAmmo->a_elapsed + l_tpALifeItemAmmo1->a_elapsed;
+				l_tpALifeItemAmmo1->a_elapsed	= 0;
+			}
+		}
+	}
+
+	for (int i=0, j=0; i<n; i++,j++) {
+		m_tpALife->m_baMarks[j] = false;
+
+		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(children[i]));
+		if (!l_tpALifeItemAmmo || l_tpALifeItemAmmo->a_elapsed)
+			continue;
+
+		m_tpALife->vfDetachItem	(*this,l_tpALifeItemAmmo,m_tGraphID);
+		m_tpALife->vfReleaseObject(l_tpALifeItemAmmo,true);
+		i--;
+		n--;
+	}
+}
+
 void CSE_ALifeHumanAbstract::vfUpdateWeaponAmmo()
 {
 	if (!m_tpCurrentBestWeapon)
@@ -245,52 +299,7 @@ void CSE_ALifeHumanAbstract::vfUpdateWeaponAmmo()
 			break;
 		}
 	}
-
-	for (int i=0, n=children.size() ; i<n; i++) {
-		if (m_tpALife->m_baMarks[i])
-			continue;
-		m_tpALife->m_baMarks[i]	= true;
-		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(children[i]));
-		if (!l_tpALifeItemAmmo)
-			continue;
-
-		for (int j=i+1; j<n; j++) {
-			if (m_tpALife->m_baMarks[j])
-				continue;
-			
-			CSE_ALifeItemAmmo	*l_tpALifeItemAmmo1 = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(children[j]));
-			if (!l_tpALifeItemAmmo1) {
-				m_tpALife->m_baMarks[j]	= true;
-				continue;
-			}
-
-			if (!strstr(l_tpALifeItemAmmo->s_name,l_tpALifeItemAmmo1->s_name))
-				continue;
-
-			m_tpALife->m_baMarks[j]	= true;
-
-			if (l_tpALifeItemAmmo->a_elapsed + l_tpALifeItemAmmo1->a_elapsed > l_tpALifeItemAmmo->m_boxSize) {
-				l_tpALifeItemAmmo1->a_elapsed	= l_tpALifeItemAmmo->a_elapsed + l_tpALifeItemAmmo1->a_elapsed - l_tpALifeItemAmmo->m_boxSize;
-				l_tpALifeItemAmmo->a_elapsed	= l_tpALifeItemAmmo->m_boxSize;
-				l_tpALifeItemAmmo				= l_tpALifeItemAmmo1;
-			}
-			else {
-				l_tpALifeItemAmmo->a_elapsed	= l_tpALifeItemAmmo->a_elapsed + l_tpALifeItemAmmo1->a_elapsed;
-				l_tpALifeItemAmmo1->a_elapsed	= 0;
-			}
-		}
-	}
-
-	for (int i=0, j=0; i<n; i++,j++) {
-		m_tpALife->m_baMarks[j] = false;
-		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(children[i]));
-		if (!l_tpALifeItemAmmo || l_tpALifeItemAmmo->a_elapsed)
-			continue;
-		m_tpALife->vfDetachItem	(*this,l_tpALifeItemAmmo,m_tGraphID);
-		m_tpALife->vfReleaseObject(l_tpALifeItemAmmo,true);
-		i--;
-		n--;
-	}
+	vfCollectAmmoBoxes();
 }
 
 u16	CSE_ALifeHumanAbstract::get_available_ammo_count(CSE_ALifeItemWeapon *tpALifeItemWeapon, OBJECT_VECTOR &tpObjectVector)
