@@ -93,7 +93,8 @@ void CRenderTarget::End		(float blur)
 	
 	// Draw full-screen quad textured with our scene image
 	DWORD	Offset;
-	DWORD	C		= D3DCOLOR_RGBA	(120,120,120,0);
+	// DWORD	C		= D3DCOLOR_RGBA	(120,120,120,0);
+	DWORD	C		= 0xffffffff;
 	float	tw		= float(Device.dwWidth);
 	float	th		= float(Device.dwHeight);
 	DWORD	_w		= Device.dwWidth-1;
