@@ -41,10 +41,11 @@ void			xrMU_Model::_face::CalcNormal	()
 	float mag		= N.magnitude();
 	if (mag<EPS_S)
 	{
-		CalcNormal2	();
+		N.set(0,1,0);
 	} else {
 		N.div(mag);
 	}
+	N.normalize		();
 };
 
 // Does the face contains this vertex?
