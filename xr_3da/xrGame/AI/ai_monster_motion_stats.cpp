@@ -5,7 +5,7 @@
 void CMotionStats::update()
 {
 	elem _new;
-	_new.speed		= pMonster->m_fCurSpeed;
+	_new.speed		= pMonster->m_velocity_linear.current;
 	_new.position	= pMonster->Position();
 	_new.time		= pMonster->m_dwCurrentTime;	
 	_data[index]	= _new;

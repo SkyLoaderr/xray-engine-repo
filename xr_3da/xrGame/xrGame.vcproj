@@ -5277,6 +5277,13 @@
 						RelativePath=".\random32.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="Shared"
+					Filter="">
+					<File
+						RelativePath=".\shared_data.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Server"

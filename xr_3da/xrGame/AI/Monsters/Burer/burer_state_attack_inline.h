@@ -47,11 +47,11 @@ void CStateBurerAttackAbstract::initialize()
 	inherited::initialize();
 }
 
-#define GOOD_DISTANCE			20.f
+#define GOOD_DISTANCE			10.f
 #define MAX_HANDLED_OBJECTS		3
 #define CHECK_OBJECTS_RADIUS	10.f
-#define MINIMAL_MASS			50.f
-#define MAXIMUM_MASS			500.f
+#define MINIMAL_MASS			20.f
+#define MAXIMAL_MASS			5000.f
 
 TEMPLATE_SPECIALIZATION
 void CStateBurerAttackAbstract::execute()
@@ -66,18 +66,21 @@ void CStateBurerAttackAbstract::execute()
 		if (m_object->CTelekinesis::get_objects_count() < MAX_HANDLED_OBJECTS) {
 			
 			// получить список объектов вокруг монстра
-			Level().ObjectSpace.GetNearest	(m_object->Position(), CHECK_OBJECTS_RADIUS); 
-			xr_vector<CObject*> &tpNearest	= Level().ObjectSpace.q_nearest; 
+			Level().ObjectSpace.GetNearest	(m_object->Position(), CHECK_OBJECTS_RADIUS);
+			xr_vector<CObject*> &tpNearest	= Level().ObjectSpace.q_nearest;
+			
 			bool b_objects_found = true;
 
-			if (tpNearest.empty()) {
+			if (get_number_available_objects(tpNearest) == 0) {
 				// получить список объектов на середине пути от монстра до врага
 				Fvector pos;
 				pos.mad(m_object->Position(), dir, dist / 2.f);
 				Level().ObjectSpace.GetNearest(pos, CHECK_OBJECTS_RADIUS); 
 				tpNearest	= Level().ObjectSpace.q_nearest; 
 
-				if (tpNearest.empty()) b_objects_found = false;
+				if (get_number_available_objects(tpNearest) == 0) {
+					b_objects_found = false;
+				}
 			} 
 			
 			if (b_objects_found) {
@@ -85,7 +88,7 @@ void CStateBurerAttackAbstract::execute()
 				for (u32 i=0;i<tpNearest.size();i++) {
 					CGameObject *obj = dynamic_cast<CGameObject *>(tpNearest[i]);
 					// проверка по объекту и его массе
-					if (!obj || !obj->m_pPhysicsShell || (obj->m_pPhysicsShell->getMass() < MINIMAL_MASS) || (obj->m_pPhysicsShell->getMass() > MINIMAL_MASS)) continue;
+					if (!obj || !obj->m_pPhysicsShell || (obj->m_pPhysicsShell->getMass() < MINIMAL_MASS) || (obj->m_pPhysicsShell->getMass() > MAXIMAL_MASS)) continue;
 
 					// проверить, активен ли уже объект
 					if (m_object->CTelekinesis::is_active_object(obj)) continue;
@@ -114,4 +117,19 @@ void CStateBurerAttackAbstract::finalize()
 {
 	inherited::finalize();
 }
+
+TEMPLATE_SPECIALIZATION
+u32	CStateBurerAttackAbstract::get_number_available_objects(xr_vector<CObject*> &tpObjects)
+{
+	u32 ret_val = 0;
+
+	for (u32 i=0;i<tpObjects.size();i++) {
+		CGameObject *obj = dynamic_cast<CGameObject *>(tpObjects[i]);
+		if (!obj || !obj->m_pPhysicsShell || (obj->m_pPhysicsShell->getMass() < MINIMAL_MASS) || (obj->m_pPhysicsShell->getMass() > MAXIMAL_MASS)) continue;
+		ret_val++;
+	}
+
+	return ret_val;
+}
+
 

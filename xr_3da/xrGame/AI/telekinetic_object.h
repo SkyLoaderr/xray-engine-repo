@@ -4,10 +4,12 @@ enum ETelekineticState {
 	TS_None,
 	TS_Raise,
 	TS_Keep,
+	TS_Fire,
 };
 
 class CTelekineticObject {
 
+public:
 	ETelekineticState	state;
 	CGameObject			*object;
 	
@@ -18,8 +20,10 @@ class CTelekineticObject {
 
 	u32					time_to_keep;
 	
-	float				strength;
+	u32					time_fire_started;
 
+	float				strength;
+	
 public:
 						CTelekineticObject		();
 						~CTelekineticObject		();
@@ -39,11 +43,14 @@ public:
 	bool				check_height			();
 		
 	bool				time_keep_elapsed		();
+	bool				time_fire_elapsed		();
 
 	void				enable					();
 
 	bool				operator==				(const CGameObject *obj) {
 		return (object == obj);
 	}
+
 	
+
 };

@@ -5,6 +5,7 @@
 #include "../PHElement.h"
 
 #define KEEP_IMPULSE_UPDATE 200
+#define FIRE_TIME			3000
 
 CTelekineticObject::CTelekineticObject()
 {
@@ -33,6 +34,8 @@ bool CTelekineticObject::init(CGameObject *obj, float s, float h, u32 ttk)
 	time_to_keep		= ttk;
 
 	strength			= s;
+
+	time_fire_started	= 0;
 
 	object->m_pPhysicsShell->set_ApplyByGravity(FALSE);
 
@@ -65,6 +68,13 @@ bool CTelekineticObject::time_keep_elapsed()
 	if (time_keep_started + time_to_keep < Level().timeServer()) return true;
 	return false;
 }
+
+bool CTelekineticObject::time_fire_elapsed()
+{
+	if (time_fire_started + FIRE_TIME < Level().timeServer()) return true;
+	return false;
+}
+
 
 void CTelekineticObject::keep()
 {
@@ -101,6 +111,7 @@ void CTelekineticObject::release()
 	object->m_pPhysicsShell->set_ApplyByGravity(TRUE);
 	// приложить небольшую силу для того, чтобы объект начал падать
 	object->m_pPhysicsShell->applyImpulse(dir_inv, 0.5f * object->m_pPhysicsShell->getMass());
+
 }
 
 void CTelekineticObject::fire(const Fvector &target)
@@ -111,9 +122,12 @@ void CTelekineticObject::fire(const Fvector &target)
 	dir.normalize();
 
 	// включить гравитацию
-	object->m_pPhysicsShell->set_ApplyByGravity(FALSE);
+	object->m_pPhysicsShell->set_ApplyByGravity(TRUE);
 	// выполнить бросок
 	object->m_pPhysicsShell->applyImpulse(dir, 10.f * object->m_pPhysicsShell->getMass());
+
+	state				= TS_Fire;
+	time_fire_started	= Level().timeServer();
 }
 
 bool CTelekineticObject::check_height()

@@ -20,6 +20,8 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 	if (!g_Alive())
 		return;
 
+	return;
+
 	CScriptMonster	*script_monster = dynamic_cast<CScriptMonster*>(this);
 	if (script_monster)
 		script_monster->sound_callback(who,eType,Position,power);

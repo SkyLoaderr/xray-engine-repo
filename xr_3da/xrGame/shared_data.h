@@ -90,30 +90,30 @@ public:
 //-----------------------------------------
 // Usage
 //-----------------------------------------
-//// define shared class storage
+////1. define shared class storage
 //struct shared_struc : CSharedResource {
 //	u8 a;
 //	u8 b;
 //};
 //
-//// define custom class inherited CSharedClass
+////2. define custom class inherited CSharedClass
 //class CClass : public CSharedClass<shared_struc, CLASS_ID> {
 //	typedef  CSharedClass<shared_struc, CLASS_ID> inherited_shared;
 //	
 //public:
 //
-//	// call shared load on Load
+//	//3. call shared load on Load
 //	virtual void Load			(LPCSTR section) {
 //		inherited_shared::load_shared(class_id(), section);
 //	}
 //	
-//	// load shared data
+//	//4. load shared data
 //	virtual void load_shared	(LPCSTR section) {
 //		a = pSettings->r_u8(section, "smth1");
 //		b = pSettings->r_u8(section, "smth2");
 //	}
 //
-//	// access to shared data
+//	//5. access to shared data
 //	void Smth() {
 //		Msg("shared: a = [%d] b =[%d]", inherited_shared::get_sd()->a, inherited_shared::get_sd()->b);
 //	}

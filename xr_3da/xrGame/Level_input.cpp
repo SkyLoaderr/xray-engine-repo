@@ -8,6 +8,8 @@
 
 #include "ai/monsters/burer/burer.h"
 
+#include "../fdemorecord.h"
+
 #ifdef DEBUG
 extern EStalkerBehaviour	g_stalker_behaviour;
 #endif
@@ -97,6 +99,19 @@ void CLevel::IR_OnKeyboardPress(int key)
 	
 	case DIK_MULTIPLY:
 		Level().SetGameTimeFactor(1000.f);
+		break;
+
+	case DIK_NUMPAD5: 
+		{
+			if (Game().type != GAME_SINGLE) 
+			{
+				Msg("For this game type Demo Record is disabled.");
+				return;
+			};
+			Console->Hide	();
+			char fn[256]; strcpy(fn,"1.xrdemo");
+			g_pGameLevel->Cameras.AddEffector(xr_new<CDemoRecord> (fn));
+		}
 		break;
 
 #ifdef DEBUG

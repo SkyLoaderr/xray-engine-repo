@@ -75,15 +75,6 @@ void CTelekinesis::fire(CGameObject *obj, const Fvector &target)
 
 	// бросить объект
 	it->fire(target);
-
-	// удалить
-	objects.erase(it);
-
-	// проверить на полную деактивацию
-	if (objects.empty()) {
-		CPHUpdateObject::Deactivate();
-		active = false;
-	}
 }
 
 bool CTelekinesis::is_active_object(CGameObject *obj)
@@ -111,11 +102,13 @@ void CTelekinesis::schedule_update()
 		case TS_Keep:
 			if (cur_obj->time_keep_elapsed()) deactivate(cur_obj->get_object());
 			break;
+		case TS_Fire:
+			if (cur_obj->time_fire_elapsed()) deactivate(cur_obj->get_object());
+			break;
 		case TS_None: continue; 
 		}
 	}
 }
-
 
 void CTelekinesis::PhDataUpdate(dReal step)
 {
@@ -142,5 +135,6 @@ void  CTelekinesis::PhTune(dReal step)
 		}
 	}
 }
+
 
 

@@ -3,6 +3,7 @@
 #include "ai_monster_jump.h"
 #include "biting/ai_biting.h"
 #include "ai_monster_utils.h"
+#include "../PHMovementControl.h"
 
 // DEBUG purpose only
 char *dbg_action_name_table[] = {
@@ -488,7 +489,7 @@ void CMotionManager::SelectVelocities()
 	if (pMonster->state_invisible) pMonster->m_velocity_linear.target	= _abs(path_vel.linear);
 
 	// финальная корректировка анимации по физической скорости
-	float  real_speed = pMonster->m_fCurSpeed;
+	float  real_speed = pMonster->m_PhysicMovementControl->GetVelocityMagnitude();
 	EMotionAnim new_anim;
 	float		a_speed;
 

@@ -28,6 +28,9 @@ public:
 	virtual	void		initialize				();
 	virtual	void		execute					();
 	virtual	void		finalize				();
+
+private:
+			u32			get_number_available_objects(xr_vector<CObject*> &tpObjects);
 };
 
 #include "burer_state_attack_inline.h"
