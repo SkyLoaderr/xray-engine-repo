@@ -23,10 +23,6 @@ void CSun::LoadSunData	( CInifile* pIni, LPSTR section ) {
 	sun_dir.normalize	();
 }
 
-void CSun::OnMove( ){
-	LensFlare.OnMove();
-}
-
 void CSun::RenderSource( ) {
 	LensFlare.Render	(true,false,false);
 }

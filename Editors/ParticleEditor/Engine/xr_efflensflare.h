@@ -12,6 +12,7 @@ class CLensFlare
 protected:
 	BOOL			bInit;
 	float			fBlend;
+	DWORD			dwFrame;
 
 	Fvector			vSunDir;
 	Fvector			vecLight;
@@ -54,6 +55,8 @@ public:
     SFlare			m_Gradient;
     Shader*			CreateSourceShader(const char* tex_name);
     Shader*			CreateFlareShader(const char* tex_name);
+
+	void			OnFrame		();
 public:
 					CLensFlare	();
 	virtual			~CLensFlare	();
@@ -61,7 +64,6 @@ public:
 	virtual void	OnDeviceDestroy();
 	virtual void	OnDeviceCreate();
 
-	void			OnMove		( );
 	void			Load		( CInifile* pIni, LPSTR section );
     void __fastcall	Render		( BOOL bSun, BOOL bFlares, BOOL bGradient );
 	void			Update		( Fvector& sun_dir, Fcolor& color );

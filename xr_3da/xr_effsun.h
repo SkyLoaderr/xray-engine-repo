@@ -22,7 +22,6 @@ public:
 	void __fastcall				RenderFlares			( );
 	Fvector&					Direction				( ) { return sun_dir;	}
 	void						Update					( );
-	void						OnMove					( );
 };
 
 #endif //__XR_EFFSUN_H__

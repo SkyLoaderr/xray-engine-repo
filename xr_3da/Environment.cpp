@@ -143,9 +143,6 @@ void CEnvironment::Music_Play(int id)
 
 void CEnvironment::OnMove()
 {
-	// Suns
-	for(DWORD i=0; i<Suns.size(); i++) Suns[i]->OnMove();
-
 	// ******************** Viewport params
 	float src = 10*Device.fTimeDelta;	clamp(src,0.f,1.f);
 	float dst = 1-src;

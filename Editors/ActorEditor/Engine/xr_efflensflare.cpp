@@ -39,6 +39,7 @@ CLensFlare::CLensFlare()
 #endif
 
 	bInit				= false;
+	dwFrame				= 0xfffffffe;
 
     m_Flags.bFlare		= FALSE;
     m_Flags.bSource		= FALSE;
@@ -166,9 +167,11 @@ void CLensFlare::Load( CInifile* pIni, LPSTR section )
 	bInit			= false;
 }
 
-void CLensFlare::OnMove()
+void CLensFlare::OnFrame()
 {
 	VERIFY(bInit);
+	if (dwFrame==Device.dwFrame) return;
+	dwFrame			= Device.dwFrame;
 	//
 	// Compute center and axis of flares
 	//
@@ -254,6 +257,7 @@ void CLensFlare::OnMove()
 void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 {
 	VERIFY(bInit);
+	OnFrame					();
 	if (!bRender) return;
 	
 	Fcolor dwLight;
