@@ -96,6 +96,9 @@ public:
 
 protected:
 	XML_NODE m_root;
+
+	//буфферная строка
+	char* buf_str;	
 };
 
 #endif //xrXMLParserH
