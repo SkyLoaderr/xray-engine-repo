@@ -564,9 +564,13 @@ u8 		game_sv_Deathmatch::GetItemAddonsForSlot	(u8 SlotNum, u8 ItemID, game_Playe
 {
 	if (!ps) return 0;
 
-	if (0xff == ps->Slots[SlotNum]) return 0;
+	if (ItemID == 0xff)
+	{
+		if (0xff == ps->Slots[SlotNum]) return 0;
+		ItemID = ps->Slots[SlotNum];	
+	};
 
-	u8 res = (ps->Slots[SlotNum] >> 0x05);
+	u8 res = (ItemID >> 0x05);
 
 	return res;
 };

@@ -169,7 +169,7 @@ bool CUIGameDM::IR_OnKeyboardPress(int dik)
 			{
 				if (!m_bBuyEnabled) break;
 				CActor* pCurActor = dynamic_cast<CActor*> (Level().CurrentEntity());
-				if (!pCurActor) break;
+				if (!pCurActor || !pCurActor->g_Alive()) break;
 
 				SetCurrentBuyMenu	();
 

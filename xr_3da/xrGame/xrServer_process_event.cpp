@@ -202,13 +202,33 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			// Parse message
 			u16					id_dest		=	destination;
 			CSE_Abstract*		e_dest		=	game->get_entity_from_eid	(id_dest);	// кто должен быть уничтожен
-			if (0==e_dest)		Msg			("SV:ge_destroy: [%d]",id_dest);
+			if (0==e_dest)		
+			{
+				Msg			("!SV:ge_destroy: [%d]",id_dest);
+				break;
+			};
 
 			R_ASSERT			(e_dest			);
 			xrClientData*		c_dest		=	e_dest->owner;				// клиент, чей юнит
 			R_ASSERT			(c_dest			);
 			xrClientData*		c_from		=	ID_to_client	(sender);	// клиент, кто прислал
 			R_ASSERT			(c_dest == c_from);							// assure client ownership of event
+
+			if (Game().type != GAME_SINGLE)
+			{
+				xr_vector<u16>::const_iterator	I = e_dest->children.begin	();
+				xr_vector<u16>::const_iterator	E = e_dest->children.end		();
+				for ( ; I != E; ++I) {
+					CSE_Abstract	*e_child	= game->get_entity_from_eid(*I);
+					NET_Packet			P2;
+					P2.w_begin			(M_EVENT);
+					P2.w_u32			(timestamp);
+					P2.w_u16			(GE_DESTROY);
+					P2.w_u16			(*I);
+
+					Level().Send(P2,net_flags(TRUE,TRUE));
+				}
+			};
 
 			SendBroadcast		(0xffffffff,P,MODE);
 			// Parent-signal
