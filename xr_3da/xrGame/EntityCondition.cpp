@@ -330,7 +330,7 @@ void CEntityCondition::AddWound(float hit_power, s16 element)
 
 void CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element)
 {
-	//кто нанес хит
+	//кто нанес последний хит
 	m_pWho = who;
 
 	//нормализуем силу удара
