@@ -20,16 +20,13 @@ class	CLightPPA_Manager
 {
 	ref_shader						hShader;
 	ref_geom						hGeom;
+
+	xr_vector<light*>				selected;
 public:
 	CLightPPA_Manager				();
 	virtual ~CLightPPA_Manager		();
 
-	CLightPPA*		Create			();
-	void			Destroy			(CLightPPA*);
-
-	void			Activate		(CLightPPA* L);
-	void			Deactivate		(CLightPPA* L);
-
+	void			Add				(light* L);
 	void			Render			();
 };
 

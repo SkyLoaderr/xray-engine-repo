@@ -14,7 +14,7 @@
 #include "lightShadows.h"
 #include "lightProjector.h"
 #include "lightPPA.h"
-#include "FLightsController.h"
+#include "light_DB.h"
 
 // defs
 const int max_patches = 512;
@@ -63,7 +63,7 @@ public:
 	xr_vector<IRender_Visual*>								Visuals;
 	CPSLibrary												PSLibrary;
 
-	CLightDB_Static*										L_DB;
+	CLight_DB*												L_DB;
 	CLightPPA_Manager*										L_Dynamic;
 	CLightShadows*											L_Shadows;
 	CLightProjector*										L_Projector;

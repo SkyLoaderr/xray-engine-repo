@@ -143,7 +143,7 @@ void		CModelPool::Instance_Register(LPCSTR N, IRender_Visual* V)
 {
 	// Registration
 	ModelDef			M;
-	strcpy				(M.name,N);
+	M.name				= N;
 	M.model				= V;
 	Models.push_back	(M);
 }

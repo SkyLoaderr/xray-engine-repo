@@ -8,8 +8,6 @@
 class ENGINE_API IRender_Visual;
 namespace PS	{ 
 	struct ENGINE_API SEmitter; 
-	struct ENGINE_API CPEDef; 
-    struct ENGINE_API CPGDef;
 };
 
 // defs
