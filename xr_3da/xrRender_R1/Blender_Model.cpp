@@ -73,7 +73,7 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 		switch (C.iElement)
 		{
 		case SE_R1_NORMAL_HQ:	
-			sname				= "r1_model_def_hq"; 
+			sname				= "model_def_hq"; 
 			if (oBlend.value)	C.r_Pass	(sname,sname,TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
 			else				C.r_Pass	(sname,sname,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
@@ -81,7 +81,7 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 			C.r_End				();
 			break;
 		case SE_R1_NORMAL_LQ:
-			sname				= "r1_model_def_lq"; 
+			sname				= "model_def_lq"; 
 			if (oBlend.value)	C.r_Pass	(sname,sname,TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
 			else				C.r_Pass	(sname,sname,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
@@ -90,8 +90,8 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 		case SE_R1_LPOINT:
 			break;
 		case SE_R1_LSPOT:
-			sname				= "r1_model_def_spot";
-			sname_ps			= "r1_add_spot";
+			sname				= "model_def_spot";
+			sname_ps			= "add_spot";
 			if (oBlend.value)	C.r_Pass	(sname,sname_ps,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,	D3DBLEND_ONE,TRUE,oAREF.value);
 			else				C.r_Pass	(sname,sname_ps,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE, D3DBLEND_ONE,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);

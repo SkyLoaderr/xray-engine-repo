@@ -66,8 +66,8 @@ void	CBlender_Tree::Compile	(CBlender_Compile& C)
 		case SE_R1_NORMAL_HQ:
 		case SE_R1_NORMAL_LQ:
 			// Level view
-			if (oBlend.value)	C.r_Pass	("r1_tree_wave","r1_vert",TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,tree_aref);
-			else				C.r_Pass	("r1_tree_wave","r1_vert",TRUE,TRUE,TRUE,TRUE,D3DBLEND_ONE,			D3DBLEND_ZERO,			TRUE,tree_aref);
+			if (oBlend.value)	C.r_Pass	("tree_wave","vert",TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,tree_aref);
+			else				C.r_Pass	("tree_wave","vert",TRUE,TRUE,TRUE,TRUE,D3DBLEND_ONE,			D3DBLEND_ZERO,			TRUE,tree_aref);
 			C.r_Sampler		("s_base",	C.L_textures[0]);
 			C.r_Sampler		("s_detail",C.detail_texture);
 			C.r_End			();
@@ -75,7 +75,7 @@ void	CBlender_Tree::Compile	(CBlender_Compile& C)
 		case SE_R1_LPOINT:
 			break;
 		case SE_R1_LSPOT:
-			C.r_Pass		("r1_tree_wave_spot","r1_add_spot",FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE,TRUE,0);
+			C.r_Pass		("tree_wave_spot","add_spot",FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE,TRUE,0);
 			C.r_Sampler		("s_base",	C.L_textures[0]);
 			C.r_Sampler_clf	("s_lmap",	"internal\\internal_light_att",		true);
 			C.r_Sampler_clf	("s_att",	"internal\\internal_light_attclip"		);
@@ -83,7 +83,7 @@ void	CBlender_Tree::Compile	(CBlender_Compile& C)
 			break;
 		case SE_R1_LMODELS:
 			// Lighting only
-			C.r_Pass		("r1_tree_wave","r1_vert_l",FALSE);
+			C.r_Pass		("tree_wave","vert_l",FALSE);
 			C.r_Sampler		("s_base",C.L_textures[0]);
 			C.r_End			();
 			break;
