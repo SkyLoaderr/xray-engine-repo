@@ -1,23 +1,82 @@
 function init(obj)
-  local ini  = obj:spawn_ini()
-  if(ini and ini:section_exist("door")) then
-    obj:set_nonscript_usable(false)
-    obj:set_use_callback(physic_object.door_callback)
-    obj:set_tip_text("press E to open the door")
-  end
+
+	local ini  = obj:spawn_ini()
+	if(ini and ini:section_exist("door")) then
+		obj:bind_object(door_binder(obj))
+	end
 end
 
+class "door_binder" (object_binder)
+function door_binder:__init(obj) super(obj)
+	self.need_initialize	= true
+	self.joint				= nil
+	self.low_limits			= 0
+	self.hi_limits			= 0
+	self.angel				= 0
+end
 
-function door_callback(door, actor)
-	local joint  = door:get_physics_shell():get_joint_by_bone_name("door")
-	local angel  = joint:get_axis_angle(0)
-	local low_limits, hi_limits  = 0.0, 0.0
-	low_limits, hi_limits = joint:get_limits(low_limits, hi_limits, 0)
+function door_binder:reload(section)
+	object_binder.reload(self, section)
+end
 
-	if(angel - low_limits > hi_limits - angel) then
-		joint:set_max_force_and_velocity(200, -1, 1)
+function door_binder:initialize()
+	object_binder.reinit(self)
+
+	local ini	= self.object:spawn_ini()
+	self.joint	= self.object:get_physics_shell():get_joint_by_bone_name("door")
+	
+	self.low_limits, self.hi_limits	= self.joint:get_limits(self.low_limits, self.hi_limits, 0)
+    
+    self.object:set_nonscript_usable(false)
+    self.object:set_use_callback(self, "door_callback")
+    self.object:set_tip_text("press E to open the door")
+
+	local variable = false
+
+	if(ini:line_exist("door", "opened")) then
+		//'Есть данные о том, закрыта или открыта дверь
+		variable = ini:r_bool("door", "opened")
+
+		if(variable) then
+			self:open_door()
+		else
+			self:close_door()
+		end
+	end
+
+	if(ini:line_exist("door", "text")) then
+		//'Надпись, которая высвечивается, когда подходишь к двери
+		variable = ini:r_string("door", "text")
+		self.object:set_tip_text(variable)
+	end
+	
+	self.need_initialize	= false
+end
+
+function door_binder:update(delta)
+	object_binder.update(self, delta)
+	if(self.need_initialize) then
+		self:initialize()
+	end
+end
+
+function door_binder:open_door()
+	self.joint:set_max_force_and_velocity(200, 1, 0)
+end
+
+function door_binder:close_door()
+	self.joint:set_max_force_and_velocity(200, -1, 1)
+end
+
+function door_binder:door_callback(door, actor)
+	self.angel  = self.joint:get_axis_angle(90)
+
+	self.low_limits, self.hi_limits	= self.joint:get_limits(self.low_limits, self.hi_limits, 0)
+
+	if(self.angel - self.low_limits > self.hi_limits - self.angel) then
+		self.joint:set_max_force_and_velocity(300, -2, 1)
 	else
-        joint:set_max_force_and_velocity(200, 1, 1)
+        self.joint:set_max_force_and_velocity(300, 2, 1)
 	end
 end
 
