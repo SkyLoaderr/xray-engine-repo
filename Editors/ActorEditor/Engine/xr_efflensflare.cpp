@@ -238,7 +238,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 		vecSy.mul			(vecY, m_Source.fRadius*fDistance);
 		color.set			( dwLight );
 
-		u32 c				= color.get();
+		u32 c				= 0xffffffff; //color.get();
 		pv->set				(vecLight.x+vecSx.x-vecSy.x, vecLight.y+vecSx.y-vecSy.y, vecLight.z+vecSx.z-vecSy.z, c, 0, 0); pv++;
 		pv->set				(vecLight.x+vecSx.x+vecSy.x, vecLight.y+vecSx.y+vecSy.y, vecLight.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
 		pv->set				(vecLight.x-vecSx.x-vecSy.x, vecLight.y-vecSx.y-vecSy.y, vecLight.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
@@ -262,7 +262,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 				float    cl			= F.fOpacity * fBlend;
 				color.set			( dwLight );
 				color.mul_rgba		( cl );
-				u32 c				= color.get();
+				u32 c				= 0xffffffff; // color.get();
 				pv->set				(vec.x+vecSx.x-vecSy.x, vec.y+vecSx.y-vecSy.y, vec.z+vecSx.z-vecSy.z, c, 0, 0); pv++;
 				pv->set				(vec.x+vecSx.x+vecSy.x, vec.y+vecSx.y+vecSy.y, vec.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
 				pv->set				(vec.x-vecSx.x-vecSy.x, vec.y-vecSx.y-vecSy.y, vec.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
@@ -280,7 +280,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 			color.set				( dwLight );
 			color.mul_rgba			( fGradientValue );
 
-			u32 c					= color.get	();
+			u32 c					= 0xffffffff; // color.get	();
 			pv->set					(vecLight.x+vecSx.x-vecSy.x, vecLight.y+vecSx.y-vecSy.y, vecLight.z+vecSx.z-vecSy.z, c, 0, 0); pv++;
 			pv->set					(vecLight.x+vecSx.x+vecSy.x, vecLight.y+vecSx.y+vecSy.y, vecLight.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
 			pv->set					(vecLight.x-vecSx.x-vecSy.x, vecLight.y-vecSx.y-vecSy.y, vecLight.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
@@ -299,6 +299,11 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 		{
 			u32						vBase	= i*4+VS_Offset;
 			RCache.set_Shader		(_2render[i]);
+			/*
+			CHK_DX					(HW.pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE,TRUE));
+			CHK_DX					(HW.pDevice->SetRenderState(D3DRS_SRCBLEND,		D3DBLEND_ONE));
+			CHK_DX					(HW.pDevice->SetRenderState(D3DRS_DESTBLEND,	D3DBLEND_ONE));
+			*/
 			RCache.Render			(D3DPT_TRIANGLELIST,vBase, 0,4,0,2);
 	    }
 	}
