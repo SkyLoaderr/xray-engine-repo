@@ -10221,6 +10221,12 @@
 					Name="InteractiveBackground"
 					Filter="">
 					<File
+						RelativePath=".\ui\UI_IB_Static.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UI_IB_Static.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIInteractiveBackground.h">
 					</File>
 				</Filter>
@@ -10356,18 +10362,6 @@
 			<Filter
 				Name="Multiplayer"
 				Filter="">
-				<File
-					RelativePath=".\ui\UIBuyWeaponWnd.cpp">
-				</File>
-				<File
-					RelativePath=".\ui\UIBuyWeaponWnd.h">
-				</File>
-				<File
-					RelativePath=".\ui\UIDragDropItemMP.cpp">
-				</File>
-				<File
-					RelativePath=".\ui\UIDragDropItemMP.h">
-				</File>
 				<Filter
 					Name="Stats"
 					Filter="">
@@ -10428,6 +10422,43 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIGameLog.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="BuyWeaponWnd"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIBag.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIBag.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIBuyWeaponStd.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIBuyWeaponTab.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIBuyWeaponTab.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIBuyWeaponWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIBuyWeaponWnd.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIDragDropItemMP.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIDragDropItemMP.h">
+					</File>
+					<File
+						RelativePath=".\ui\UITabButtonMP.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UITabButtonMP.h">
 					</File>
 				</Filter>
 			</Filter>
