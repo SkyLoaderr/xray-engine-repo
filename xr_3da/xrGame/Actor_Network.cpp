@@ -885,7 +885,8 @@ void	CActor::ResetCallbacks()
 
 void	CActor::OnChangeVisual()
 {
-	inherited::OnChangeVisual();
+///	inherited::OnChangeVisual();
+	CGameObject::OnChangeVisual();
 	CSkeletonAnimated* V	= smart_cast<CSkeletonAnimated*>(Visual());
 	if (V){
 		SetCallbacks		();
