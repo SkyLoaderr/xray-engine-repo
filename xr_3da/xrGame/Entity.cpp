@@ -153,6 +153,8 @@ BOOL CEntity::Spawn		(BOOL bLocal, int server_id, int team, int squad, int group
 	iArmor				= 0;
 	Movement.SetPosition(o_pos.x,o_pos.y,o_pos.z);
 	Movement.SetVelocity(0,0,0);
+	pCreator->Objects.sheduled.Unregister	(this);
+	pCreator->Objects.sheduled.Register		(this);
 
 	return				TRUE;
 }
