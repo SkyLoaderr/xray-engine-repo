@@ -79,6 +79,6 @@ void CSE_ALifeMonsterAbstract::Update		(CSE_ALifeSimulator *tpALife)
 			m_fCurSpeed			= m_fGoingSpeed;
 		}
 	}
-	//tpALife->vfCheckForTheBattle(this);
+	tpALife->vfCheckForTheBattle(this);
 	m_tTimeID					= tpALife->tfGetGameTime();
 }

@@ -9,63 +9,67 @@
 #include "stdafx.h"
 #include "ai_alife.h"
 
+#define OLD_BEHAVIOUR
+
 void CSE_ALifeHumanAbstract::Update			(CSE_ALifeSimulator *tpALife)
 {
 	if (fHealth <= 0)
 		return;
+#ifdef OLD_BEHAVOIUR
 	inherited2::Update		(tpALife);
 	tpALife->vfCheckForTheBattle(this);
 	bfProcessItems			(tpALife);
-	return;
-//	R_ASSERT3			(!m_bOnline,"Can't update online object ",s_name_replace);
-//	bool				bOk;
-//	do {
-//		switch (m_tTaskState) {
-//			case eTaskStateChooseTask : {
-//				vfChooseTask(tpALife);
-//				break;
-//										}
-//			case eTaskStateHealthCare : {
-//				vfHealthCare(tpALife);
-//				break;
-//										}
-//			case eTaskStateBuySupplies : {
-//				vfBuySupplies(tpALife);
-//				break;
-//										 }
-//			case eTaskStateGoToCustomer : {
-//				vfGoToCustomer(tpALife);
-//				break;
-//										  }
-//			case eTaskStateBringToCustomer : {
-//				vfBringToCustomer(tpALife);
-//				break;
-//											 }
-//			case eTaskStateGoToSOS : {
-//				vfGoToSOS(tpALife);
-//				break;
-//									 }
-//			case eTaskStateSendSOS : {
-//				vfSendSOS(tpALife);
-//				break;
-//									 }
-//			case eTaskStateAccomplishTask : {
-//				vfAccomplishTask(tpALife);
-//				break;
-//											}
-//			case eTaskStateSearchItem : {
-//				vfSearchObject	(tpALife);
-//				break;
-//										}
-//			default				: NODEFAULT;
-//		}
-//		bOk						= bfChooseNextRoutePoint(tpALife);
-//		//vfCheckForTheBattle		(tpALife);
-//		//vfProcessItems			(tpALife);
-//		//vfCheckForDeletedEvents	(tpALifeHumanAbstract);
-//	}
-//	while (bOk && (tpALife->m_tpActor->o_Position.distance_to(o_Position) > tpALife->m_fOnlineDistance));
-//	m_tTimeID					= tpALife->tfGetGameTime();
+#else
+	R_ASSERT3			(!m_bOnline,"Can't update online object ",s_name_replace);
+	bool				bOk;
+	do {
+		switch (m_tTaskState) {
+			case eTaskStateChooseTask : {
+				vfChooseTask(tpALife);
+				break;
+										}
+			case eTaskStateHealthCare : {
+				vfHealthCare(tpALife);
+				break;
+										}
+			case eTaskStateBuySupplies : {
+				vfBuySupplies(tpALife);
+				break;
+										 }
+			case eTaskStateGoToCustomer : {
+				vfGoToCustomer(tpALife);
+				break;
+										  }
+			case eTaskStateBringToCustomer : {
+				vfBringToCustomer(tpALife);
+				break;
+											 }
+			case eTaskStateGoToSOS : {
+				vfGoToSOS(tpALife);
+				break;
+									 }
+			case eTaskStateSendSOS : {
+				vfSendSOS(tpALife);
+				break;
+									 }
+			case eTaskStateAccomplishTask : {
+				vfAccomplishTask(tpALife);
+				break;
+											}
+			case eTaskStateSearchItem : {
+				vfSearchObject	(tpALife);
+				break;
+										}
+			default				: NODEFAULT;
+		}
+		bOk						= bfChooseNextRoutePoint(tpALife);
+		tpALife->vfCheckForTheBattle(this);
+		bfProcessItems			(tpALife);
+		vfCheckForDeletedEvents	(tpALife);
+	}
+	while (bOk && (tpALife->m_tpActor->o_Position.distance_to(o_Position) > tpALife->m_fOnlineDistance));
+#endif
+	m_tTimeID					= tpALife->tfGetGameTime();
 }
 
 void CSE_ALifeHumanAbstract::vfChooseTask(CSE_ALifeSimulator *tpALife)
@@ -88,7 +92,7 @@ void CSE_ALifeHumanAbstract::vfChooseTask(CSE_ALifeSimulator *tpALife)
 	}
 	else {
 		if (!EnoughEquipmentToGo()) {
-			if (DistanceToTraderIsBig() || !EnoughMoneyToEquip()) {
+			if (DistanceToTraderIsDanger() || !EnoughMoneyToEquip()) {
 				m_tTaskState = eTaskStateSendSOS;
 				return;
 			}
@@ -106,18 +110,15 @@ void CSE_ALifeHumanAbstract::vfChooseTask(CSE_ALifeSimulator *tpALife)
 				case eTaskTypeSearchForItemOG : {
 					tGraphID		= l_tpTask->m_tGraphID;
 					break;
-												}
+				}
 				case eTaskTypeSearchForItemCL :
 				case eTaskTypeSearchForItemOL : {
 #pragma todo("Dima to Dima : add graph point type item search")
-//					tpfGetCurrentTask()
-//					VERIFY		(m_tpTerrain[tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]->m_tLocationID].size());
-//					tpALifeHuman->m_baVisitedVertices.resize(m_tpTerrain[tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]->m_tLocationID].size());
-//					tpALifeHuman->m_baVisitedVertices.assign(m_tpTerrain[tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]->m_tLocationID].size(),false);
-//					tGraphID	= m_tpTerrain[tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]->m_tLocationID][tpALifeHuman->m_dwCurTaskLocation = 0];
-//					tpALifeHuman->m_baVisitedVertices[tpALifeHumanAbstract->m_dwCurTaskLocation] = true;
+					//m_baVisitedVertices.assign(tpALife->m_tpTerrain[l_tpTask->m_tLocationID].size(),false);
+					//tGraphID		= tpALife->m_tpTerrain[l_tpTask->m_tLocationID][m_dwCurTaskLocation = 0];
+					//m_baVisitedVertices[m_dwCurTaskLocation] = true;
 					break;
-												}
+				}
 				default				: NODEFAULT;
 			};
 			m_tTaskState			= eTaskStateAccomplishTask;
@@ -141,6 +142,7 @@ void CSE_ALifeHumanAbstract::vfHealthCare(CSE_ALifeSimulator *tpALife)
 void CSE_ALifeHumanAbstract::vfBuySupplies(CSE_ALifeSimulator *tpALife)
 {
 	// choose an appropriate trader and go to him to buy supplies
+	m_tTaskState = eTaskStateChooseTask;
 }
 
 void CSE_ALifeHumanAbstract::vfGoToCustomer(CSE_ALifeSimulator *tpALife)

@@ -190,7 +190,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			bool					EnoughMoneyToTreat		();
 			bool					EnoughTimeToTreat		();
 			bool					EnoughEquipmentToGo		();
-			bool					DistanceToTraderIsBig	();
+			bool					DistanceToTraderIsDanger();
 			bool					EnoughMoneyToEquip		();
 			// miscellanious
 			bool					bfCheckIfTaskCompleted	(CSE_ALifeSimulator	*tpALife, OBJECT_IT &I);

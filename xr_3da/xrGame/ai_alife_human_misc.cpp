@@ -13,7 +13,7 @@
 
 bool CSE_ALifeHumanAbstract::HealthIsGood			()
 {
-	return(true);
+	return(fHealth > 50);
 }
 
 bool CSE_ALifeHumanAbstract::CanTreat				()
@@ -36,9 +36,9 @@ bool CSE_ALifeHumanAbstract::EnoughEquipmentToGo	()
 	return(true);
 }
 
-bool CSE_ALifeHumanAbstract::DistanceToTraderIsBig	()
+bool CSE_ALifeHumanAbstract::DistanceToTraderIsDanger()
 {
-	return(true);
+	return(false);
 }
 
 bool CSE_ALifeHumanAbstract::EnoughMoneyToEquip		()
