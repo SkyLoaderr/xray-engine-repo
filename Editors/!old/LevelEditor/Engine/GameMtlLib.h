@@ -106,7 +106,7 @@ public:
         // factors
         fFlotationFactor		= 1.f;
         fShootFactor			= 0.f;
-        fBounceDamageFactor		= 0.f;
+        fBounceDamageFactor		= 1.f;
         fVisTransparencyFactor	= 0.f;
         fSndOcclusionFactor		= 0.f;
         // physics
