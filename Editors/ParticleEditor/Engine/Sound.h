@@ -241,7 +241,7 @@ IC void	ref_sound::play							( CObject* O,						BOOL bLoop)			{	::Sound->play		
 IC void ref_sound::play_unlimited				( CObject* O,						BOOL bLoop)			{	::Sound->play_unlimited			(*this,O,bLoop);					}
 IC void	ref_sound::play_at_pos					( CObject* O,	const Fvector &pos,	BOOL bLoop)			{	::Sound->play_at_pos			(*this,O,pos,bLoop);				}
 IC void	ref_sound::play_at_pos_unlimited		( CObject* O,	const Fvector &pos,	BOOL bLoop)			{	::Sound->play_at_pos_unlimited	(*this,O,pos,bLoop);				}
-IC void	ref_sound::set_position					( const Fvector &pos)									{	if (feedback)	feedback->set_position(pos);						}
+IC void	ref_sound::set_position					( const Fvector &pos)									{	VERIFY(feedback);feedback->set_position(pos);						}
 IC void	ref_sound::set_frequency				( float freq)											{	if (feedback)	feedback->set_frequency(freq);						}
 IC void	ref_sound::set_range					( float min, float max )								{	if (feedback)	feedback->set_range(min,max);						}
 IC void	ref_sound::set_volume					( float vol )											{	if (feedback)	feedback->set_volume(vol);							}
