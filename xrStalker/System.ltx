@@ -901,7 +901,7 @@ class			= Z_MBALD
 hit_impulse_scale	= .1
 sound			= zone_mosquito_bald
 
-postprocess		= postprocess_new
+postprocess		= mosquito_bald
 
 hit_effect		= anomaly2\gravity_blast_01 ;anomaly\_anomal-03-full; anomaly\a-02-black-stars ;explosions\expl_02_sparks
 effects			= nature\group_items\tornado_01_dust_01 ;anomaly\marevo2		;anomaly\marevo, anomaly\storm_01
@@ -2220,6 +2220,19 @@ radius_min		= 0.1
 radius_max		= 0.8
 
 
+[mosquito_bald]
+duality_h		= 0.0
+duality_v		= 0.0
+blur			= 0.01
+gray			= 0.5
+noise_intensity = 0.8
+noise_grain		= 1
+noise_fps		= 30
+color_base		= 0.5,0.5,0.5
+color_gray		= 1,1,1
+color_add		= 0.2,0.2,0.2
+radius_min		= 0.1
+radius_max		= 0.8
 ;---------------------------------------------------------------------
 
 [postprocess_anomaly1]
