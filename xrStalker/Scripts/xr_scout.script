@@ -16,7 +16,7 @@ function vector_rotate_y( v, angle )
     return vector():set( v.x * c - v.z * s, v.y, v.x * s + v.z * c )
 end
 
-function set_soldier_positions( scout, a )
+function set_soldier_positions( scout, a, around )
     local size = table.getn( a.followers )
     if size == 0 then
         return
@@ -26,8 +26,15 @@ function set_soldier_positions( scout, a )
     dir.y = 0.0
     dir:normalize ()
 
-    local step = 180.0 / size
+    local step
     local angle = 90.0
+    local vec0 = vector():set( 0, 0, 0 )
+
+    if around then
+        step = 360.0 / size
+    else
+        step = 180.0 / size
+    end
 
     for i, v in ipairs( a.followers ) do
         if i == 1 then
@@ -39,7 +46,14 @@ function set_soldier_positions( scout, a )
         local vec = this.vector_rotate_y( dir, angle )
 
         v.direction = vec
-        v.distance  = 3.0
+
+        if around then
+            v.look_dir = vec
+            v.distance = 5
+        else
+            v.look_dir = vec0
+            v.distance = 3
+        end
     end
 end
 
@@ -180,16 +194,16 @@ function action_look_around:initialize()
     self.object:set_movement_type       ( move.stand )
     self.object:set_mental_state        ( anim.danger )
 
-    self.a.timer = device():time_global() + 5000
+    self.a.timer = device():time_global() + time_infinite
 
     this.set_command( self.aa, leader_stop )
+    this.set_soldier_positions( self.object, self.aa, true )
 
     printf( "look_around initialized" )
 end
 
 function action_look_around:execute()
     action_base.execute( self )
---    this.set_soldier_positions( self.object, self.aa )
 end
 
 function action_look_around:finalize()
