@@ -2,10 +2,6 @@
 #define TYPES_H
 
 // Type defs
-#ifndef _WINDOWS_
-	typedef	int				BOOL;
-#endif
-
 typedef	signed		char	s8;
 typedef	unsigned	char	u8;
 
@@ -20,6 +16,18 @@ typedef	unsigned	__int64	u64;
 
 typedef float				f32;
 typedef double				f64;
+
+typedef char*				pstr;
+typedef const char*			pcstr;
+
+// windoze stuff
+#ifndef _WINDOWS_
+	typedef	int				BOOL;
+	typedef pstr			LPSTR;
+	typedef pcstr			LPCSTR;
+	#define TRUE			true;
+	#define FALSE			false;
+#endif
 
 // Type limits
 #define type_max(T)		(std::numeric_limits<T>::max())

@@ -6,30 +6,13 @@
 class xrCriticalSection
 {
 private:
-	CRITICAL_SECTION    m_CritSec;
+	void*				pmutex;
 public:
-    xrCriticalSection	()
-    {
-        InitializeCriticalSection	( &m_CritSec );
-    };
+    xrCriticalSection	();
+    ~xrCriticalSection	();
 
-    ~xrCriticalSection	()
-    {
-        DeleteCriticalSection		( &m_CritSec );
-    };
-
-    IC void		Enter	()
-    {
-        EnterCriticalSection		( &m_CritSec );
-    };
-
-    IC void		Leave	()
-    {
-        LeaveCriticalSection		( &m_CritSec );
-    };
-	IC BOOL		TryEnter()
-	{
-		return TryEnterCriticalSection( &m_CritSec );
-	};
+    void				Enter	();
+    void				Leave	();
+	BOOL				TryEnter();
 };
 #endif

@@ -604,6 +604,9 @@
 			</File>
 		</Filter>
 		<File
+			RelativePath=".\xrSyncronize.cpp">
+		</File>
+		<File
 			RelativePath="xrSyncronize.h">
 		</File>
 	</Files>

@@ -12,7 +12,7 @@ private:
 	u32					s_offset;		// header size
 	u8*					list;
 private:
-	void**				access			(void* P)	{ return (void**) LPVOID(P);	}
+	void**				access			(void* P)	{ return (void**) ((void*)(P));	}
 	void				block_create	();
 public:
 	void				_initialize		(u32 _element, u32 _sector, u32 _header);
