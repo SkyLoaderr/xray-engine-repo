@@ -485,7 +485,8 @@ void CPHShell::build_FromKinematics(CKinematics* K,BONE_P_MAP* p_geting_map)
 	spGetingMap				=p_geting_map;
 	//CBoneData& bone_data	= m_pKinematics->LL_GetData(0);
 	if(!m_spliter_holder) m_spliter_holder=xr_new<CPHShellSplitterHolder>(this);
-	AddElementRecursive(0,m_pKinematics->LL_GetBoneRoot(),Fidentity,0);
+	bool vis_check = false;
+	AddElementRecursive(0,m_pKinematics->LL_GetBoneRoot(),Fidentity,0,&vis_check);
 	R_ASSERT2((*elements.begin())->numberOfGeoms(),"No physics shapes was assigned for model or no shapes in main root bone!!!");
 	SetCallbacks(BonesCallback);
 	if(m_spliter_holder->isEmpty())xr_delete(m_spliter_holder);
@@ -497,12 +498,20 @@ void CPHShell::preBuild_FromKinematics(CKinematics* K,BONE_P_MAP* p_geting_map)
 	spGetingMap				=p_geting_map;
 	//CBoneData& bone_data	= m_pKinematics->LL_GetData(0);
 	if(!m_spliter_holder) m_spliter_holder=xr_new<CPHShellSplitterHolder>(this);
-	AddElementRecursive(0,m_pKinematics->LL_GetBoneRoot(),Fidentity,0);
+	bool vis_check=false;
+	AddElementRecursive(0,m_pKinematics->LL_GetBoneRoot(),Fidentity,0,&vis_check);
 	R_ASSERT2((*elements.begin())->numberOfGeoms(),"No physics shapes was assigned for model or no shapes in main root bone!!!");
 	if(m_spliter_holder->isEmpty())xr_delete(m_spliter_holder);
 }
+IC bool check_obb_sise(Fobb& obb)
+{
+	return (!fis_zero(obb.m_halfsize.x,EPS_L)||
+			!fis_zero(obb.m_halfsize.y,EPS_L)||
+			!fis_zero(obb.m_halfsize.z,EPS_L)
+			);
 
-void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix global_parent,u16 element_number)
+}
+void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix global_parent,u16 element_number,bool* vis_check)
 {
 
 	//CBoneInstance& B	= m_pKinematics->LL_GetBoneInstance(u16(id));
@@ -513,22 +522,40 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 	fm_position.mulA(global_parent);
 	Flags64 mask;
 	mask.assign(m_pKinematics->LL_GetBonesVisible());
-	if(!mask.is(1ui64<<(u64)id))
+	bool no_visible=!mask.is(1ui64<<(u64)id);
+	bool lvis_check=false;
+	if(no_visible)
 	{
+	
 		for (vecBonesIt it=bone_data.children.begin(); bone_data.children.end() != it; ++it)
-			AddElementRecursive		(root_e,(*it)->SelfID,fm_position,element_number);
+			AddElementRecursive		(root_e,(*it)->SelfID,fm_position,element_number,&lvis_check);
 		return;
 	}
 	
 	CPhysicsElement* E  = 0;
 	CPhysicsJoint*   J	= 0;
 	bool	breakable=joint_data.ik_flags.test(SJointIKData::flBreakable)	&& 
-		root_e															&&
+		root_e																&&
 		!(
 		SBoneShape::stNone==bone_data.shape.type&&
 		joint_data.type==jtRigid
 		)				
 		;
+
+	///////////////////////////////////////////////////////////////
+	lvis_check=(check_obb_sise(bone_data.obb));
+	
+	bool *arg_check=vis_check;
+	if(breakable||!root_e)
+	{
+		arg_check=&lvis_check;
+	}
+	else
+	{
+		*vis_check=*vis_check||lvis_check;
+	}
+	/////////////////////////////////////////////////////////////////////
+
 	bool element_added=false;//set true when if elemen created and added by this call
 	u16	 splitter_position=0;
 	u16 fracture_num=u16(-1);
@@ -823,7 +850,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	for (vecBonesIt it=bone_data.children.begin(); bone_data.children.end() != it; ++it)
-		AddElementRecursive		(E,(*it)->SelfID,fm_position,element_number);
+		AddElementRecursive		(E,(*it)->SelfID,fm_position,element_number,arg_check);
 	/////////////////////////////////////////////////////////////////////////////////////
 	if(breakable)
 	{
@@ -847,7 +874,10 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 	}
 
 	if(element_added&&E->isBreakable())setElementSplitter(element_number,splitter_position);
-
+#ifdef DEBUG
+	VERIFY3(lvis_check||(!breakable && root_e),*dbg_obj->cNameVisual(),"has breaking parts with no vertexes or size less than 1mm");//
+#endif
+	
 }
 
 void CPHShell::ResetCallbacks(u16 id,Flags64 &mask)

@@ -230,8 +230,11 @@ class CPhysicsShell			: public CPhysicsBase
 {
 protected:
 CKinematics* m_pKinematics;
-public:
 
+public:
+#ifdef DEBUG
+	CPhysicsShellHolder*		dbg_obj;
+#endif
 public:
 IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	void						set_Kinematics			(CKinematics* p)	{m_pKinematics=p;}
