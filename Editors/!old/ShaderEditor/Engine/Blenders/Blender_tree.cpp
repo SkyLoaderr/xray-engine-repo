@@ -113,8 +113,8 @@ void	CBlender_Tree::Compile	(CBlender_Compile& C)
 	case CRender::PHASE_SMAP_D:	// smap-direct
 	case CRender::PHASE_SMAP_P:	// smap-point
 	case CRender::PHASE_SMAP_S:	// smap-spot
-		if (oBlend.value)	C.r_Pass	("shadow_direct_tree","shadow_direct_aref",FALSE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,TRUE,220);
-		else				C.r_Pass	("shadow_direct_base","shadow_direct_base",FALSE);
+		if (oBlend.value)	C.r_Pass	("shadow_direct_tree","shadow_direct_base_aref",FALSE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,TRUE,220);
+		else				C.r_Pass	("shadow_direct_base","shadow_direct_base",		FALSE);
 		C.r_Sampler			("s_base",C.L_textures[0]);
 		C.r_End				();
 		break;
