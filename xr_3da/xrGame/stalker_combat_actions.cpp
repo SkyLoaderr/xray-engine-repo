@@ -384,27 +384,27 @@ CStalkerActionTakeCover::CStalkerActionTakeCover(CCoverPoint **last_cover, CAI_S
 
 void CStalkerActionTakeCover::initialize		()
 {
-	inherited::initialize				();
+	inherited::initialize						();
 	object().movement().set_node_evaluator		(0);
 	object().movement().set_path_evaluator		(0);
-	object().movement().set_desired_direction		(0);
-	object().movement().set_path_type				(MovementManager::ePathTypeLevelPath);
-	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
+	object().movement().set_desired_direction	(0);
+	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
+	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_body_state			(eBodyStateStand);
-	object().movement().set_movement_type			(eMovementTypeRun);
-	object().movement().set_mental_state			(eMentalStateDanger);
-	m_storage->set_property				(eWorldPropertyLookedOut,false);
-	m_storage->set_property				(eWorldPropertyPositionHolded,false);
-	m_storage->set_property				(eWorldPropertyEnemyDetoured,false);
+	object().movement().set_movement_type		(eMovementTypeRun);
+	object().movement().set_mental_state		(eMentalStateDanger);
+	m_storage->set_property						(eWorldPropertyLookedOut,false);
+	m_storage->set_property						(eWorldPropertyPositionHolded,false);
+	m_storage->set_property						(eWorldPropertyEnemyDetoured,false);
 
 	if (object().memory().enemy().selected()->human_being()) {
 		if (object().memory().visual().visible_now(object().memory().enemy().selected()) && object().agent_manager().member().group_behaviour())
 //			if (::Random.randI(2))
-				object().sound().play				(eStalkerSoundBackup,0,0,6000,4000);
+				object().sound().play			(eStalkerSoundBackup,0,0,6000,4000);
 //			else
-//				object().sound().play				(eStalkerSoundAttack);
+//				object().sound().play			(eStalkerSoundAttack);
 		else
-			object().sound().play					(eStalkerSoundAttack,0,0,6000,4000);
+			object().sound().play				(eStalkerSoundAttack,0,0,6000,4000);
 	}
 }
 

@@ -11,7 +11,7 @@
 #include "member_order.h"
 #include "memory_space.h"
 
-#define OLD_AGENT_MANAGER_BEHAVIOUR
+//#define OLD_AGENT_MANAGER_BEHAVIOUR
 
 class CAgentManager;
 
