@@ -10,15 +10,8 @@
 
 #include "ai_script_space.h"
 #include "..\\effectorpp.h"
-
-#ifndef _XRAY_LUA_COMPILER_
-	#include "ai\\stalker\\ai_stalker.h"
-	#include "script_zone.h"
-#else
-	#include "ai_alife_space.h"
-	#include "empty_objects.h"
-#endif
-
+#include "ai\\stalker\\ai_stalker.h"
+#include "script_zone.h"
 
 #define DECLARE_FUNCTION10(A,D)\
 	IC		D				A					() const\

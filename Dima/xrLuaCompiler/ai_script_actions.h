@@ -10,10 +10,7 @@
 
 #include "ai_monster_space.h"
 #include "ai_script_lua_space.h"
-#ifndef _XRAY_LUA_COMPILER_
-	#include "car.h"
-#else
-#endif
+#include "car.h"
 
 class CAbstractAction {
 public:
