@@ -294,7 +294,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 				vecSy.mul(vecDy, F.fRadius*fDistance);
 				float    cl		= F.fOpacity * fBlend;
 				color.set		( dwLight );
-				color.mul_rgb	( cl );
+				color.mul_rgba	( cl );
 				DWORD c=color.get();
 				pv->set(vec.x+vecSx.x-vecSy.x, vec.y+vecSx.y-vecSy.y, vec.z+vecSx.z-vecSy.z, c, 0, 0); pv++;
 				pv->set(vec.x+vecSx.x+vecSy.x, vec.y+vecSx.y+vecSy.y, vec.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
@@ -335,12 +335,11 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 
 void CLensFlare::Update( Fvector& sun_dir, Fcolor& color )
 {
-	vSunDir.mul	(sun_dir,-1);
+	vSunDir.mul		(sun_dir,-1);
 	
 	// color
-	Fcolor		a; a.set(color); a.a = 0;
-	LightColor.set	(a.get());
-	LightColor.a	= 0;
+	LightColor.set	(color);
+	LightColor.a	= 1;
 	
-	bInit = true;
+	bInit			= true;
 }
