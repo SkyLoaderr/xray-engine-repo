@@ -47,11 +47,13 @@ function evaluator_leader:evaluate ()
     if t ~= nil and t.leader ~= nil then 
        self.st.leader_id = xr_gulag.fraction[gulag]:idStalkerOnJob (t.leader)
        if self.st.leader_id ~= nil then 
+          self.time = 0  
           return true
        end   
     end
     
-    if self.time == 0 then self.time = device ():time_global () 
+    if self.time == 0 then 
+       self.time = device ():time_global () 
     else
        if device ():time_global () - self.time > 10000 then
           --if t ~= nil and t.leader ~= nil then 
@@ -60,6 +62,7 @@ function evaluator_leader:evaluate ()
              --printf ("!!! ERROR !!! FOLLOWER %s NOT FOUND LEADER BECAUSE LEADER NOT DEFINED")
           --end    
           printf ("!!! ERROR !!! Leader for object %s not defined from GULAG system", self.object:name ())
+          self.time = 0
           xr_gulag.resetJob (gulag, self.object)
        end
     end      
