@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "..\xr_ioconsole.h"
-#include "..\xr_ioc_cmd.h"
+#pragma hdrstop
+
 #include "xrRender_console.h"
 
 // Common
@@ -31,7 +31,10 @@ float		ps_r2_ssaLOD_A			= 64.f;
 float		ps_r2_ssaLOD_B			= 48.f;
 float		ps_r2_ssaHZBvsTEX		= 256.f;
 
-extern void			xrRender_initconsole	()
+#ifndef _EDITOR
+#include	"..\xr_ioconsole.h"
+#include	"..\xr_ioc_cmd.h"
+void		xrRender_initconsole	()
 {
 	// Common
 	CMD4(CCC_Integer,	"r__supersample",		&ps_r__Supersample,			0,		4		);
@@ -60,3 +63,4 @@ extern void			xrRender_initconsole	()
 	CMD4(CCC_Float,		"r2_ssa_dontsort",		&ps_r2_ssaDONTSORT,			16,		128		);
 	CMD4(CCC_Float,		"r2_ssa_hzb_vs_tex",	&ps_r2_ssaHZBvsTEX,			16,		512		);
 }
+#endif

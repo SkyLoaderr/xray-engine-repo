@@ -1,3 +1,5 @@
+#ifndef xrRender_consoleH
+#define xrRender_consoleH
 #pragma once
 
 // Common
@@ -29,3 +31,4 @@ extern float		ps_r2_ssaLOD_B;
 extern float		ps_r2_ssaHZBvsTEX;
 
 extern void			xrRender_initconsole	();
+#endif
