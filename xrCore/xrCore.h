@@ -72,20 +72,19 @@
 #ifdef __BORLANDC__
 #else
 #ifdef XRCORE_EXPORTS				// no exceptions, export allocator and common stuff
-#define _STLP_DESIGNATED_DLL 1
-#define _STLP_USE_DECLSPEC 1
+#define _STLP_DESIGNATED_DLL	1
+#define _STLP_USE_DECLSPEC		1
 #else
-#define _STLP_USE_DECLSPEC 1	// no exceptions, import allocator and common stuff
+#define _STLP_USE_DECLSPEC		1	// no exceptions, import allocator and common stuff
 #endif
 #endif
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <time.h>
+// #include <time.h>
 #include <string.h>
 #include <process.h>
-#include <assert.h>
 #include <typeinfo.h>
 
 #ifndef DEBUG
@@ -98,6 +97,8 @@
 #endif
 
 #ifdef __BORLANDC__
+	#define ALIGN(a)
+
 	#include <utime.h>
 	#define _utimbuf utimbuf
 	#define MODULE_NAME 		"xrCoreB.dll"
@@ -133,6 +134,7 @@
 	#define _RC_CHOP RC_CHOP
 	#define _RC_NEAR RC_NEAR
 #else
+	#define ALIGN(a) __declspec(align(a))
 	#include <sys\utime.h>
 	#define MODULE_NAME 	"xrCore.dll"
 	

@@ -8,8 +8,8 @@ template <class T, u32 limit>
 class	R_constant_cache
 {
 private:
-	svector<T,limit>		array;
-	u32						lo,hi;
+	ALIGN(16)	svector<T,limit>		array;
+	u32									lo,hi;
 public:
 	R_constant_cache()
 	{
@@ -30,10 +30,10 @@ public:
 	typedef		R_constant_cache<Ivector4,16>	t_i;
 	typedef		R_constant_cache<BOOL,16>		t_b;
 public:
+	ALIGN(16)	t_f					c_f;
+	ALIGN(16)	t_i					c_i;
+	ALIGN(16)	t_b					c_b;
 	BOOL							b_dirty;
-	t_f								c_f;
-	t_i								c_i;
-	t_b								c_b;
 public:
 	void					set		(R_constant* C, R_constant_load& L, const Fmatrix& A)
 	{
@@ -111,8 +111,8 @@ public:
 class	ENGINE_API R_constants
 {
 private:
-	R_constant_array		a_pixel;
-	R_constant_array		a_vertex;
+	ALIGN(16)	R_constant_array	a_pixel;
+	ALIGN(16)	R_constant_array	a_vertex;
 
 	void					flush_cache	();
 public:
