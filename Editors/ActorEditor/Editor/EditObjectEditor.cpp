@@ -295,9 +295,10 @@ void CEditableObject::DefferedLoadRP()
 //*/
 	// создать LOD shader
 	AnsiString l_name = GetLODTextureName();
-    AnsiString fname = l_name+AnsiString(".tga");
+    AnsiString fname = l_name+AnsiString(".dds");
     m_LODShader.destroy();
-    if (FS.exist(_textures_,fname.c_str()))
+//    if (FS.exist(_game_textures_,fname.c_str()))
+    if (m_Flags.is(eoUsingLOD))
     	m_LODShader.create(GetLODShaderName(),l_name.c_str());
     m_LoadState.set(LS_RBUFFERS,TRUE);
 }

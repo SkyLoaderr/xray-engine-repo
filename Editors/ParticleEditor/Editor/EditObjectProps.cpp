@@ -33,7 +33,7 @@ void CEditableObject::FillBasicProps(LPCSTR pref, PropItemVec& items)
 	PHelper.CreateCaption	(items, FHelper.PrepareKey(pref,"Reference Name"),		m_LibName.c_str());
     PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Flags\\Dynamic"),		&m_Flags,		CEditableObject::eoDynamic);
     PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Flags\\HOM"),			&m_Flags,		CEditableObject::eoHOM);
-    PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Flags\\Use LOD"),		&m_Flags,		CEditableObject::eoUsingLOD);
+    V=PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Flags\\Use LOD"),		&m_Flags,		CEditableObject::eoUsingLOD); V->OnChangeEvent=OnChangeShader;
     PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Flags\\Multiple Usage"),&m_Flags,		CEditableObject::eoMultipleUsage);
     V=PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Transform\\Position"),	&t_vPosition,	-10000,	10000,0.01,2); 	V->OnChangeEvent=OnChangeTransform;
     V=PHelper.CreateAngle3	(items, FHelper.PrepareKey(pref,"Transform\\Rotation"),	&t_vRotate, 	-10000,	10000,0.1,1);	V->OnChangeEvent=OnChangeTransform;

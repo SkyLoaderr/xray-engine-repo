@@ -317,6 +317,8 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
         
 		return true;
     }else{
+    	FS_Path* P = FS.get_path("$app_root$");
+        Log(P->m_Path);
     	ELog.Msg(mtError,"Can't find file: '%s'",map_name);
     }
 	return false;

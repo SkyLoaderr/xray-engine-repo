@@ -24,7 +24,7 @@ CRender::~CRender	()
 
 void					CRender::create					()
 {
-	::Device.Resources->SetHLSL_path("R1\\");
+	::Device.Resources->SetHLSL_path("XR1\\");
 	Models						= xr_new<CModelPool>	();
     Models->Logging				(FALSE);
 
