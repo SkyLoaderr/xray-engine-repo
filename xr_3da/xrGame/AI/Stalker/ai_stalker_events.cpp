@@ -161,9 +161,8 @@ void CAI_Stalker::feel_touch_new				(CObject* O)
 
 	// Now, test for game specific logical objects to minimize traffic
 	CInventoryItem		*I	= dynamic_cast<CInventoryItem*>	(O);
-	CBolt				*E	= dynamic_cast<CBolt*>			(O);
 
-	if (I && !E) {
+	if (I && I->Useful()) {
 #ifndef SILENCE
 		Msg("Taking item %s (%d)!",I->cName(),I->ID());
 #endif
@@ -172,6 +171,13 @@ void CAI_Stalker::feel_touch_new				(CObject* O)
 		P.w_u16			(u16(I->ID()));
 		u_EventSend		(P);
 	}
+//	else
+//		if (I) {
+//			float y = getAI().ffGetY(AI_NodeID,E->Position().x,E->Position().z);
+//			if (_abs(y - E->Position().y) > .2f) {
+//				
+//			}
+//		}
 }
 
 void CAI_Stalker::DropItemSendMessage(CObject *O)
