@@ -22,12 +22,12 @@ struct event_comparer{
 	}
 };
 
-UIScriptWnd::UIScriptWnd():inherited()
+UIDialogWndEx::UIDialogWndEx():inherited()
 {
 	Hide();
 }
 
-UIScriptWnd::~UIScriptWnd()
+UIDialogWndEx::~UIDialogWndEx()
 {
 	try {
 		delete_data(m_callbacks);
@@ -35,12 +35,12 @@ UIScriptWnd::~UIScriptWnd()
 	catch(...) {
 	}
 }
-void UIScriptWnd::Register			(CUIWindow* pChild)
+void UIDialogWndEx::Register			(CUIWindow* pChild)
 {
 	pChild->SetMessageTarget(this);
 }
 
-void UIScriptWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
+void UIDialogWndEx::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
 	event_comparer ec(pWnd->WindowName(),msg);
 
@@ -51,18 +51,18 @@ void UIScriptWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 
 }
 
-bool UIScriptWnd::Load(LPCSTR xml_name)
+bool UIDialogWndEx::Load(LPCSTR xml_name)
 {
 	return true;
 }
 
-SCallbackInfo*	UIScriptWnd::NewCallback ()
+SCallbackInfo*	UIDialogWndEx::NewCallback ()
 {
 	m_callbacks.push_back( xr_new<SCallbackInfo>() );
 	return m_callbacks.back();
 }
 
-void UIScriptWnd::AddCallback(LPCSTR control_id, s16 event, const luabind::functor<void> &lua_function)
+void UIDialogWndEx::AddCallback(LPCSTR control_id, s16 event, const luabind::functor<void> &lua_function)
 {
 	SCallbackInfo* c	= NewCallback ();
 	c->m_callback.set	(lua_function);
@@ -71,7 +71,7 @@ void UIScriptWnd::AddCallback(LPCSTR control_id, s16 event, const luabind::funct
 	
 }
 
-void UIScriptWnd::AddCallback (LPCSTR control_id, s16 event, const luabind::object &lua_object, LPCSTR method)
+void UIDialogWndEx::AddCallback (LPCSTR control_id, s16 event, const luabind::object &lua_object, LPCSTR method)
 {
 	SCallbackInfo* c	= NewCallback ();
 	c->m_callback.set	(lua_object,method);
@@ -80,14 +80,14 @@ void UIScriptWnd::AddCallback (LPCSTR control_id, s16 event, const luabind::obje
 }
 
 
-void UIScriptWnd::test()
+void UIDialogWndEx::test()
 {
 	CALLBACK_IT it = m_callbacks.begin();
 	for(;it!=m_callbacks.end();++it)
 		SCRIPT_CALLBACK_EXECUTE_0( (*it)->m_callback )
 }
 
-bool UIScriptWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
+bool UIDialogWndEx::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
 	inherited::OnKeyboard(dik,keyboard_action);
 	return true;

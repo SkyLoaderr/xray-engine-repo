@@ -23,7 +23,7 @@ using namespace luabind;
 extern export_class &script_register_ui_window1(export_class &);
 extern export_class &script_register_ui_window2(export_class &);
 
-void UIScriptWnd::script_register(lua_State *L)
+void UIDialogWndEx::script_register(lua_State *L)
 {
 	export_class				instance("CUIScriptWnd");
 

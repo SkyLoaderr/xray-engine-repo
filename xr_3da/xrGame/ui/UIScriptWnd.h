@@ -8,7 +8,7 @@
 struct SCallbackInfo;
 
 
-class UIScriptWnd :public CUIDialogWnd, public DLL_Pure
+class UIDialogWndEx :public CUIDialogWnd, public DLL_Pure
 {
 typedef CUIDialogWnd				inherited;
 typedef xr_vector<SCallbackInfo*>	CALLBACKS;
@@ -23,8 +23,8 @@ protected:
 
 public:
 			void				Register			(CUIWindow* pChild);
-								UIScriptWnd			();
-	virtual						~UIScriptWnd		();
+								UIDialogWndEx		();
+	virtual						~UIDialogWndEx		();
 			void				AddCallback			(LPCSTR control_id, s16 event, const luabind::functor<void> &lua_function);
 			void				AddCallback			(LPCSTR control_id, s16 event, const luabind::object &lua_object, LPCSTR method);
 	virtual bool				OnKeyboard			(int dik, EUIMessages keyboard_action);
@@ -36,6 +36,6 @@ IC	T*	GetControl(LPCSTR name);
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 
-add_to_type_list(UIScriptWnd)
+add_to_type_list(UIDialogWndEx)
 #undef script_type_list
-#define script_type_list save_type_list(UIScriptWnd)
+#define script_type_list save_type_list(UIDialogWndEx)
