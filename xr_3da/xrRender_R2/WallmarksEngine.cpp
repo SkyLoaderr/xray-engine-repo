@@ -219,7 +219,7 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector* pVer
 		bb.getsphere					(W->bounds.P,W->bounds.R);
 	}
 
-	if (W->bounds.R < 2.f)	
+	if (W->bounds.R < 1.f)	
 	{
 		// search if similar wallmark exists
 		wm_slot* slot			= FindSlot	(hShader);
