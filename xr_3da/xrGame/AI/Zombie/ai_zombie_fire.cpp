@@ -77,7 +77,7 @@ float CAI_Zombie::EnemyHeuristics(CEntity* E)
 		return flt_max;		// don't attack our team
 	
 	if (!E->g_Alive())					
-		return flt_max - 2;		// don't attack dead enemiyes
+		return flt_max - 0;		// don't attack dead enemiyes
 	
 	float	g_strength = E->g_Armor()+E->g_Health();
 	

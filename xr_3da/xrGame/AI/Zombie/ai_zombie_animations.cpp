@@ -12,11 +12,11 @@
 // sounds
 void CAI_Zombie::vfLoadSounds()
 {
-	pSounds->Create(m_tpaSoundHit[0],TRUE,"monsters\\zombie\\zombie_1",0,SOUND_TYPE_MONSTER_INJURING_ANIMAL);
-	pSounds->Create(m_tpaSoundDie[0],TRUE,"monsters\\zombie\\zombie_2",0,SOUND_TYPE_MONSTER_DYING_ANIMAL);
-	pSounds->Create(m_tpaSoundAttack[0],TRUE,"monsters\\zombie\\zombie_2",0,SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
-	pSounds->Create(m_tpaSoundVoice[0],TRUE,"monsters\\zombie\\zombie_1",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	pSounds->Create(m_tpaSoundVoice[1],TRUE,"monsters\\zombie\\zombie_2",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundHit[0],TRUE,"monsters\\rat\\rat_1",0,SOUND_TYPE_MONSTER_INJURING_ANIMAL);
+	pSounds->Create(m_tpaSoundDie[0],TRUE,"monsters\\rat\\rat_2",0,SOUND_TYPE_MONSTER_DYING_ANIMAL);
+	pSounds->Create(m_tpaSoundAttack[0],TRUE,"monsters\\rat\\rat_2",0,SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
+	pSounds->Create(m_tpaSoundVoice[0],TRUE,"monsters\\rat\\rat_1",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundVoice[1],TRUE,"monsters\\rat\\rat_2",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
 }
 
 // animations
