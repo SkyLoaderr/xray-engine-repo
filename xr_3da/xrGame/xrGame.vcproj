@@ -9261,6 +9261,9 @@
 				RelativePath=".\Shedule.txt">
 			</File>
 			<File
+				RelativePath=".\smart_terrain.ltx">
+			</File>
+			<File
 				RelativePath="System.ltx">
 			</File>
 			<File
