@@ -258,6 +258,7 @@ end
 function Trader:on_end_trade ()
     self.process_trade = false
     self.first = true
+    self:set_trade_end ()
     printf ("End trade")
 end
 ----------------------------------------------------------------------------------------------------------------------
