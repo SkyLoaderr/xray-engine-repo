@@ -750,7 +750,7 @@ end
 function check_state_lager_bandits(gulag)
 	return function(gulag)
 		for k,v in gulag.Object do
-			enemy = v:best_enemy()
+			local enemy = v:best_enemy()
 			if enemy ~= nil then
 				enemy_type = get_clsid(enemy)
 				if enemy_type == clsid.actor or
