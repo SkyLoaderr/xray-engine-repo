@@ -8,6 +8,9 @@ private:
 	typedef game_sv_TeamDeathmatch inherited;
 protected:
 	u16			m_dwArtefactID;
+	s32			m_dwArtefactsSpawned;
+	s32			m_dwArtefactsTotal;
+	s32			m_dwArtefactsHalf;
     	
 public:
 	virtual		void				Create					(LPSTR &options);
@@ -32,4 +35,7 @@ public:
 
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_what);
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_what);
+
+	virtual		void				Update					();
+
 };

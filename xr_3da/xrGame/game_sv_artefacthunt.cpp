@@ -6,11 +6,17 @@
 void	game_sv_ArtefactHunt::Create					(LPSTR &options)
 {
 	inherited::Create					(options);
+
+	m_dwArtefactsTotal	= get_option_i		(options,"NumberArtefacts",11);
+	if (m_dwArtefactsTotal%2 == 0) m_dwArtefactsTotal++;
+	m_dwArtefactsHalf = m_dwArtefactsTotal/2;
 }
 
 void	game_sv_ArtefactHunt::OnRoundStart			()
 {
 	inherited::OnRoundStart	();
+
+	m_dwArtefactsSpawned = 0;
 /*
 	// Respawn all players and some info
 	u32		cnt = get_count();
@@ -312,7 +318,7 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(u32 id_who)
 	//-----------------------------------------------
 	//add player's points
 	ps->kills += 5;
-	teams[ps->team].score++;
+	teams[ps->team-1].score++;
 	//-----------------------------------------------
 	//remove artefact from player
 	NET_Packet	P;
@@ -328,4 +334,29 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(u32 id_who)
 	P.w_u16				(ps->GameID);
 	P.w_u16				(ps->team);
 	u_EventSend(P);
+	//-----------------------------------------------
+	if (m_dwArtefactsTotal>0 && (teams[ps->team-1].score > m_dwArtefactsHalf)) 
+	{
+		OnTeamScore(ps->team-1);
+		phase = u16((ps->team-1)?GAME_PHASE_TEAM2_SCORES:GAME_PHASE_TEAM1_SCORES);
+	};
 };
+
+void	game_sv_ArtefactHunt::Update			()
+{
+	inherited::Update	();
+	/*
+	switch(phase) 	{
+		case GAME_PHASE_TEAM1_SCORES :
+		case GAME_PHASE_TEAM2_SCORES :
+		case GAME_PHASE_TEAMS_IN_A_DRAW :
+		case GAME_PHASE_INPROGRESS : {
+			if (timelimit) if (s32(Device.TimerAsync()-u32(start_time))>timelimit) OnTimelimitExceed();
+			if(m_delayedRoundEnd && m_roundEndDelay < Device.TimerAsync()) OnRoundEnd("Finish");
+									 } break;
+		case GAME_PHASE_PENDING : {
+			if ((Device.TimerAsync()-start_time)>u32(30*1000)) OnRoundStart();
+								  } break;
+	}
+	*/
+}
