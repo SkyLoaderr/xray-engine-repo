@@ -21,8 +21,8 @@ float CAI_Stalker::HitScale	(int element)
 void CAI_Stalker::g_fireParams(Fvector& P, Fvector& D)
 {
 	if (g_Alive()) {
-		Center(P);
-		D.setHP(-m_head.current.yaw,-m_head.current.pitch);
+		Center			(P);
+		D.setHP			(-m_body.current.yaw,-m_body.current.pitch);
 		D.normalize_safe();
 	}
 }
