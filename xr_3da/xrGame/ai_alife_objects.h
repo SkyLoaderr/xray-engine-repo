@@ -8,28 +8,9 @@
 
 #pragma once
 
+#include "ai_alife_interfaces.h"
 #include "ai_alife_templates.h"
-
-class IPureALifeLObject {
-public:
-	virtual void					Load(CStream	&tFileStream)	= 0;
-};
-
-class IPureALifeSObject {
-public:
-	virtual void					Save(CFS_Memory	&tMemoryStream) = 0;
-};
-
-class IPureALifeIObject {
-public:
-	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_P_VECTOR &tpSpawnPoints) = 0;
-};
-
-class IPureALifeLSObject : public IPureALifeLObject, public IPureALifeSObject {
-};
-
-class IPureALifeLSIObject : public IPureALifeLSObject, public IPureALifeIObject {
-};
+#include "ai_alife_spawn.h"
 
 class CALifeGameTime : public IPureALifeLSObject {
 public:
@@ -68,49 +49,6 @@ public:
 	IC _TIME_ID						tfGetGameTime()
 	{
 		return(m_tGameTime + iFloor(m_fTimeFactor*float(Level().timeServer() - m_dwStartTime)));
-	};
-};
-
-class CALifeSpawnHeader : public IPureALifeLObject {
-public:
-	u32								m_tSpawnVersion;
-	
-	virtual void					Load(CStream	&tFileStream)
-	{
-		R_ASSERT(tFileStream.FindChunk(SPAWN_POINT_CHUNK_VERSION));
-		m_tSpawnVersion				= tFileStream.Rdword();
-		if (m_tSpawnVersion != SPAWN_POINT_VERSION)
-			THROW;
-	};
-};
-
-class CALifeSpawnPoint : public IPureALifeLObject {
-public:
-	_GRAPH_ID						m_tNearestGraphPointID;
-	string64						m_caModel;
-	u8								m_ucTeam;
-	u8								m_ucSquad;
-	u8								m_ucGroup;
-	u16								m_wGroupID;
-	u16								m_wCount;
-	float							m_fBirthRadius;
-	float							m_fBirthProbability;
-	float							m_fIncreaseCoefficient;
-	GRAPH_VECTOR					m_tpRouteGraphPoints;
-	
-	virtual void					Load(CStream	&tFileStream)
-	{
-		m_tNearestGraphPointID		= tFileStream.Rword();
-		tFileStream.Rstring			(m_caModel);
-		m_ucTeam					= tFileStream.Rbyte();
-		m_ucSquad					= tFileStream.Rbyte();
-		m_ucGroup					= tFileStream.Rbyte();
-		m_wGroupID					= tFileStream.Rword();
-		m_wCount					= tFileStream.Rword();
-		m_fBirthRadius				= tFileStream.Rfloat();
-		m_fBirthProbability			= tFileStream.Rfloat();
-		m_fIncreaseCoefficient		= tFileStream.Rfloat();
-		load_base_vector			(m_tpRouteGraphPoints, tFileStream);
 	};
 };
 
@@ -280,7 +218,9 @@ public:
 		PSGP.memCopy				(&m_tClassID,S,sizeof(m_tClassID));
 		m_tGraphID					= tpSpawnPoints[tSpawnID]->m_tNearestGraphPointID;
 		m_tSpawnID					= tSpawnID;
-		m_wCount					= tpSpawnPoints[tSpawnID]->m_wCount;
+		CALifeCreatureSpawnPoint	*tpALifeCreatureSpawnPoint = dynamic_cast<CALifeCreatureSpawnPoint *>(tpSpawnPoints[tSpawnID]);
+		VERIFY						(tpALifeCreatureSpawnPoint);
+		m_wCount					= tpALifeCreatureSpawnPoint->m_wCount;
 		m_bOnline					= false;
 	};
 };
@@ -454,6 +394,27 @@ public:
 	}
 };
 
+class CALifeZone : public IPureALifeLSIObject {
+public:
+	EAnomalousZoneType				m_tAnomalousZone;
+
+	virtual void					Save(CFS_Memory	&tMemoryStream)
+	{
+		tMemoryStream.write			(&m_tAnomalousZone,sizeof(m_tAnomalousZone));
+	};
+	
+	virtual void					Load(CStream	&tFileStream)
+	{
+		tFileStream.Read			(&m_tAnomalousZone,sizeof(m_tAnomalousZone));
+	};
+
+	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_P_VECTOR &tpSpawnPoints)
+	{
+		m_tAnomalousZone			= EAnomalousZoneType(pSettings->ReadINT(tpSpawnPoints[tSpawnID]->m_caModel, "anomaly_type"));
+	};
+
+};
+
 class CALifePersonalTask : public CALifeTask {
 public:
 	typedef CALifeTask inherited;
@@ -477,27 +438,6 @@ public:
 	};
 };
 
-class CALifeAnomalousZone : public IPureALifeLSIObject {
-public:
-	EAnomalousZoneType				m_tAnomalousZone;
-
-	virtual void					Save(CFS_Memory	&tMemoryStream)
-	{
-		tMemoryStream.write			(&m_tAnomalousZone,sizeof(m_tAnomalousZone));
-	};
-	
-	virtual void					Load(CStream	&tFileStream)
-	{
-		tFileStream.Read			(&m_tAnomalousZone,sizeof(m_tAnomalousZone));
-	};
-
-	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_P_VECTOR &tpSpawnPoints)
-	{
-		m_tAnomalousZone			= EAnomalousZoneType(pSettings->ReadINT(tpSpawnPoints[tSpawnID]->m_caModel, "anomaly_type"));
-	};
-
-};
-
 class CALifeDynamicObject : public CALifeObject {
 public:
 	typedef	CALifeObject inherited;
@@ -518,7 +458,7 @@ public:
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_P_VECTOR &tpSpawnPoints)
 	{
-		inherited::Init				(tSpawnID,tpSpawnPoints);
+		inherited::Init				(tSpawnID, tpSpawnPoints);
 		m_tTimeID					= 0;
 	};
 };
@@ -563,6 +503,27 @@ public:
 	};
 };
 
+class CALifeAnomalousZone : public CALifeDynamicObject, public CALifeZone {
+public:
+	virtual	void					Save(CFS_Memory &tMemoryStream)
+	{
+		CALifeDynamicObject::Save	(tMemoryStream);
+		CALifeZone::Save			(tMemoryStream);
+	};
+	
+	virtual	void					Load(CStream	&tFileStream)
+	{
+		CALifeDynamicObject::Load	(tFileStream);
+		CALifeZone::Load			(tFileStream);
+	};
+
+	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_P_VECTOR &tpSpawnPoints)
+	{
+		CALifeDynamicObject::Init	(tSpawnID, tpSpawnPoints);
+		CALifeZone::Init			(tSpawnID, tpSpawnPoints);
+	};
+};
+
 class CALifeTrader : public CALifeDynamicObject, public CALifeTraderParams, public CALifeTraderAbstract {
 public:
 	virtual	void					Save(CFS_Memory &tMemoryStream)
@@ -581,9 +542,9 @@ public:
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_P_VECTOR &tpSpawnPoints)
 	{
-		CALifeDynamicObject::Init	(tSpawnID,tpSpawnPoints);
-		CALifeTraderParams::Init	(tSpawnID,tpSpawnPoints);
-		CALifeTraderAbstract::Init	(tSpawnID,tpSpawnPoints);
+		CALifeDynamicObject::Init	(tSpawnID, tpSpawnPoints);
+		CALifeTraderParams::Init	(tSpawnID, tpSpawnPoints);
+		CALifeTraderAbstract::Init	(tSpawnID, tpSpawnPoints);
 	};
 };
 
@@ -622,7 +583,7 @@ public:
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_P_VECTOR &tpSpawnPoints)
 	{
-		inherited::Init				(tSpawnID,tpSpawnPoints);
+		inherited::Init				(tSpawnID, tpSpawnPoints);
 		m_tNextGraphID				= tpSpawnPoints[tSpawnID]->m_tNearestGraphPointID;
 		m_tPrevGraphID				= tpSpawnPoints[tSpawnID]->m_tNearestGraphPointID;
 		m_fGoingSpeed				= pSettings->ReadFLOAT	(tpSpawnPoints[tSpawnID]->m_caModel, "going_speed");
@@ -632,24 +593,24 @@ public:
 	};
 };
 
-class CALifeDynamicAnomalousZone : public CALifeMonsterAbstract, public CALifeAnomalousZone {
+class CALifeDynamicAnomalousZone : public CALifeMonsterAbstract, public CALifeZone {
 public:
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
 		CALifeMonsterAbstract::Save	(tMemoryStream);
-		CALifeAnomalousZone::Save	(tMemoryStream);
+		CALifeZone::Save			(tMemoryStream);
 	};
 	
 	virtual	void					Load(CStream	&tFileStream)
 	{
 		CALifeMonsterAbstract::Load	(tFileStream);
-		CALifeAnomalousZone::Load	(tFileStream);
+		CALifeZone::Load			(tFileStream);
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_P_VECTOR &tpSpawnPoints)
 	{
 		CALifeMonsterAbstract::Init	(tSpawnID, tpSpawnPoints);
-		CALifeAnomalousZone::Init	(tSpawnID, tpSpawnPoints);
+		CALifeZone::Init			(tSpawnID, tpSpawnPoints);
 	};
 };
 

@@ -74,11 +74,11 @@ const char *cpArtefactModels[] = {
 	0
 };
 
-IC bool	bfSpawnPointPredicate(CALifeSpawnPoint *v1, CALifeSpawnPoint *v2)
-{
-	return(v1->m_wGroupID <= v2->m_wGroupID);
-}
-
+//IC bool	bfSpawnPointPredicate(CALifeSpawnPoint *v1, CALifeSpawnPoint *v2)
+//{
+//	return(v1->m_wGroupID <= v2->m_wGroupID);
+//}
+//
 void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFactors)
 {
 	/**
@@ -173,86 +173,86 @@ void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFa
 			}
 		}
 	/**/
-	m_tSpawnVersion				= SPAWN_POINT_VERSION;
-	u16 wGroupID				= 0;
-	m_tpSpawnPoints.resize		(Level().AI.GraphHeader().dwVertexCount + 2);
-	int							j;
-	SPAWN_P_IT					B = m_tpSpawnPoints.begin();
-	SPAWN_P_IT					E = m_tpSpawnPoints.end() - 2;
-	SPAWN_P_IT					I = B;
-	for ( ; I != E; I++) {
-		(*I)							= xr_new<CALifeSpawnPoint> ();
-		(*I)->m_tNearestGraphPointID	= _GRAPH_ID(I - B);
-		(*I)->m_wGroupID				= wGroupID++;
-		j								= ::Random.randI(5);
-		PSGP.memCopy					((*I)->m_caModel,cpArtefactModels[j],(1 + strlen(cpArtefactModels[j]))*sizeof(char));
-		(*I)->m_ucTeam					= 0;
-		(*I)->m_ucSquad					= 0;
-		(*I)->m_ucGroup					= 0;
-		(*I)->m_wCount					= 1;
-		(*I)->m_fBirthRadius			= 10.f;
-		(*I)->m_fBirthProbability		= 1.0f;
-		(*I)->m_fIncreaseCoefficient	= 1.0f;
-		(*I)->m_tpRouteGraphPoints.clear();
-	}
-	(*I)							= xr_new<CALifeSpawnPoint> ();
-	(*I)->m_tNearestGraphPointID	= _GRAPH_ID(::Random.randI(Level().AI.GraphHeader().dwVertexCount));
-	(*I)->m_wGroupID				= wGroupID++;
-	j								= 1;
-	PSGP.memCopy					((*I)->m_caModel,cpHumanModels[j],(1 + strlen(cpHumanModels[j]))*sizeof(char));
-	(*I)->m_ucTeam					= 1;
-	(*I)->m_ucSquad					= 0;
-	(*I)->m_ucGroup					= 0;
-	(*I)->m_wCount					= 1;
-	(*I)->m_fBirthRadius			= 10.f;
-	(*I)->m_fBirthProbability		= 1.0f;
-	(*I)->m_fIncreaseCoefficient	= 1.0f;
-	(*I)->m_tpRouteGraphPoints.clear();
-
-	I++;
-
-	(*I)							= xr_new<CALifeSpawnPoint> ();
-	(*I)->m_tNearestGraphPointID	= _GRAPH_ID(::Random.randI(Level().AI.GraphHeader().dwVertexCount));
-	(*I)->m_wGroupID				= wGroupID++;
-	j								= 2;
-	PSGP.memCopy					((*I)->m_caModel,cpHumanModels[j],(1 + strlen(cpHumanModels[j]))*sizeof(char));
-	(*I)->m_ucTeam					= 1;
-	(*I)->m_ucSquad					= 0;
-	(*I)->m_ucGroup					= 0;
-	(*I)->m_wCount					= 1;
-	(*I)->m_fBirthRadius			= 10.f;
-	(*I)->m_fBirthProbability		= 1.0f;
-	(*I)->m_fIncreaseCoefficient	= 1.0f;
-	(*I)->m_tpRouteGraphPoints.clear();
-	/**/
-	sort(m_tpSpawnPoints.begin(),m_tpSpawnPoints.end(),bfSpawnPointPredicate);
+//	m_tSpawnVersion				= SPAWN_POINT_VERSION;
+//	u16 wGroupID				= 0;
+//	m_tpSpawnPoints.resize		(Level().AI.GraphHeader().dwVertexCount + 2);
+//	int							j;
+//	SPAWN_P_IT					B = m_tpSpawnPoints.begin();
+//	SPAWN_P_IT					E = m_tpSpawnPoints.end() - 2;
+//	SPAWN_P_IT					I = B;
+//	for ( ; I != E; I++) {
+//		(*I)							= xr_new<CALifeSpawnPoint> ();
+//		(*I)->m_tNearestGraphPointID	= _GRAPH_ID(I - B);
+//		(*I)->m_wGroupID				= wGroupID++;
+//		j								= ::Random.randI(5);
+//		PSGP.memCopy					((*I)->m_caModel,cpArtefactModels[j],(1 + strlen(cpArtefactModels[j]))*sizeof(char));
+//		(*I)->m_ucTeam					= 0;
+//		(*I)->m_ucSquad					= 0;
+//		(*I)->m_ucGroup					= 0;
+//		(*I)->m_wCount					= 1;
+//		(*I)->m_fBirthRadius			= 10.f;
+//		(*I)->m_fBirthProbability		= 1.0f;
+//		(*I)->m_fIncreaseCoefficient	= 1.0f;
+//		(*I)->m_tpRouteGraphPoints.clear();
+//	}
+//	(*I)							= xr_new<CALifeSpawnPoint> ();
+//	(*I)->m_tNearestGraphPointID	= _GRAPH_ID(::Random.randI(Level().AI.GraphHeader().dwVertexCount));
+//	(*I)->m_wGroupID				= wGroupID++;
+//	j								= 1;
+//	PSGP.memCopy					((*I)->m_caModel,cpHumanModels[j],(1 + strlen(cpHumanModels[j]))*sizeof(char));
+//	(*I)->m_ucTeam					= 1;
+//	(*I)->m_ucSquad					= 0;
+//	(*I)->m_ucGroup					= 0;
+//	(*I)->m_wCount					= 1;
+//	(*I)->m_fBirthRadius			= 10.f;
+//	(*I)->m_fBirthProbability		= 1.0f;
+//	(*I)->m_fIncreaseCoefficient	= 1.0f;
+//	(*I)->m_tpRouteGraphPoints.clear();
+//
+//	I++;
+//
+//	(*I)							= xr_new<CALifeSpawnPoint> ();
+//	(*I)->m_tNearestGraphPointID	= _GRAPH_ID(::Random.randI(Level().AI.GraphHeader().dwVertexCount));
+//	(*I)->m_wGroupID				= wGroupID++;
+//	j								= 2;
+//	PSGP.memCopy					((*I)->m_caModel,cpHumanModels[j],(1 + strlen(cpHumanModels[j]))*sizeof(char));
+//	(*I)->m_ucTeam					= 1;
+//	(*I)->m_ucSquad					= 0;
+//	(*I)->m_ucGroup					= 0;
+//	(*I)->m_wCount					= 1;
+//	(*I)->m_fBirthRadius			= 10.f;
+//	(*I)->m_fBirthProbability		= 1.0f;
+//	(*I)->m_fIncreaseCoefficient	= 1.0f;
+//	(*I)->m_tpRouteGraphPoints.clear();
+//	/**/
+//	sort(m_tpSpawnPoints.begin(),m_tpSpawnPoints.end(),bfSpawnPointPredicate);
 }
 
 void CAI_ALife::vfSaveSpawnPoints()
 {
-	CFS_Memory	tStream;
-	tStream.open_chunk	(SPAWN_POINT_CHUNK_VERSION);
-	tStream.write		(&m_tSpawnVersion,sizeof(m_tSpawnVersion));
-	tStream.close_chunk	();
-	tStream.open_chunk	(SPAWN_POINT_CHUNK_DATA);
-	tStream.Wdword		(m_tpSpawnPoints.size());
-	SPAWN_P_IT			I = m_tpSpawnPoints.begin();
-	SPAWN_P_IT			E = m_tpSpawnPoints.end();
-	for ( ; I != E; I++) {
-		tStream.Wword	((*I)->m_tNearestGraphPointID);
-		tStream.Wstring	((*I)->m_caModel);
-		tStream.Wbyte	((*I)->m_ucTeam);
-		tStream.Wbyte	((*I)->m_ucSquad);
-		tStream.Wbyte	((*I)->m_ucGroup);
-		tStream.Wword	((*I)->m_wGroupID);
-		tStream.Wword	((*I)->m_wCount);
-		tStream.Wfloat	((*I)->m_fBirthRadius);
-		tStream.Wfloat	((*I)->m_fBirthProbability);
-		tStream.Wfloat	((*I)->m_fIncreaseCoefficient);
-		save_base_vector((*I)->m_tpRouteGraphPoints,tStream);
-	}
-	tStream.close_chunk	();
-	tStream.SaveTo		("game.spawn",0);
+//	CFS_Memory	tStream;
+//	tStream.open_chunk	(SPAWN_POINT_CHUNK_VERSION);
+//	tStream.write		(&m_tSpawnVersion,sizeof(m_tSpawnVersion));
+//	tStream.close_chunk	();
+//	tStream.open_chunk	(SPAWN_POINT_CHUNK_DATA);
+//	tStream.Wdword		(m_tpSpawnPoints.size());
+//	SPAWN_P_IT			I = m_tpSpawnPoints.begin();
+//	SPAWN_P_IT			E = m_tpSpawnPoints.end();
+//	for ( ; I != E; I++) {
+//		tStream.Wword	((*I)->m_tNearestGraphPointID);
+//		tStream.Wstring	((*I)->m_caModel);
+//		tStream.Wbyte	((*I)->m_ucTeam);
+//		tStream.Wbyte	((*I)->m_ucSquad);
+//		tStream.Wbyte	((*I)->m_ucGroup);
+//		tStream.Wword	((*I)->m_wGroupID);
+//		tStream.Wword	((*I)->m_wCount);
+//		tStream.Wfloat	((*I)->m_fBirthRadius);
+//		tStream.Wfloat	((*I)->m_fBirthProbability);
+//		tStream.Wfloat	((*I)->m_fIncreaseCoefficient);
+//		save_base_vector((*I)->m_tpRouteGraphPoints,tStream);
+//	}
+//	tStream.close_chunk	();
+//	tStream.SaveTo		("game.spawn",0);
 }
 
 #ifdef DEBUG

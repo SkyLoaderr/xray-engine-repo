@@ -11,17 +11,21 @@
 // spawn points
 #define SPAWN_POINT_VERSION			0x0001
 
-#define SPAWN_POINT_CHUNK_VERSION	0x0001
-#define SPAWN_POINT_CHUNK_DATA		0x0002
-	
+#define SPAWN_POINT_CHUNK_VERSION	0x0000
+#define SPAWN_POINT_CHUNK_DATA		0x0001
+
+#define SPAWN_POINT_CREATURE_ID		0x0000
+#define SPAWN_POINT_OBJECT_ID		0x0001
+#define SPAWN_POINT_ZONE_ID			0x0002
+
 // ALife objects, events and tasks
 #define ALIFE_VERSION				0x0001
 
-#define ALIFE_CHUNK_DATA			0x0001
-#define OBJECT_CHUNK_DATA			0x0002
-#define EVENT_CHUNK_DATA			0x0003
-#define TASK_CHUNK_DATA				0x0004
-#define GAME_TIME_CHUNK_DATA		0x0005
+#define ALIFE_CHUNK_DATA			0x0000
+#define OBJECT_CHUNK_DATA			0x0001
+#define EVENT_CHUNK_DATA			0x0002
+#define TASK_CHUNK_DATA				0x0003
+#define GAME_TIME_CHUNK_DATA		0x0004
 
 #define ALIFE_ITEM_ID				0x00
 #define ALIFE_MONSTER_ID			0x01
@@ -31,6 +35,7 @@
 #define ALIFE_TRADER_ID				0x05
 #define ALIFE_ANOMALOUS_ZONE_ID		0x06
 
+class CALifeSpawnPoint;
 class CALifeMonsterParams;
 class CALifeHumanParams;
 class CALifeEventGroup;
@@ -42,7 +47,6 @@ class CALifeEvent;
 class CALifeTask;
 class CALifePersonalEvent;
 class CALifePersonalTask;
-class CALifeSpawnPoint;
 
 namespace ALife {
 	typedef u64	_CLASS_ID;									// Class ID
@@ -63,13 +67,13 @@ namespace ALife {
 	DEFINE_VECTOR	(_TASK_ID,					TASK_VECTOR,					TASK_IT);
 	DEFINE_VECTOR	(_GRAPH_ID,					GRAPH_VECTOR,					GRAPH_IT);
 	DEFINE_VECTOR	(OBJECT_VECTOR,				OBJECT_VECTOR_VECTOR,			OBJECT_VECTOR_IT);
+	DEFINE_VECTOR	(CALifeSpawnPoint *,		SPAWN_P_VECTOR,					SPAWN_P_IT);
 	DEFINE_VECTOR	(CALifeMonsterParams *,		MONSTER_PARAMS_P_VECTOR,		MONSTER_PARAMS_P_IT);
 	DEFINE_VECTOR	(CALifeHumanParams *,		HUMAN_PARAMS_P_VECTOR,			HUMAN_PARAMS_P_IT);
 	DEFINE_VECTOR	(CALifeDynamicObject *,		DYNAMIC_OBJECT_P_VECTOR,		DYNAMIC_OBJECT_P_IT);
 	DEFINE_VECTOR	(CALifeMonsterAbstract *,	ALIFE_MONSTER_P_VECTOR,			ALIFE_MONSTER_P_IT);
 	DEFINE_VECTOR	(CALifeTrader *,			TRADER_P_VECTOR,				TRADER_P_IT);
 	DEFINE_VECTOR	(CALifeEvent *,				EVENT_P_VECTOR,					EVENT_P_IT);
-	DEFINE_VECTOR	(CALifeSpawnPoint *,		SPAWN_P_VECTOR,					SPAWN_P_IT);
 	DEFINE_VECTOR	(CALifePersonalEvent *,		PERSONAL_EVENT_P_VECTOR,		PERSONAL_EVENT_P_IT);
 	DEFINE_VECTOR	(CALifePersonalTask *,		PERSONAL_TASK_P_VECTOR,			PERSONAL_TASK_P_IT);
 	DEFINE_VECTOR	(ALIFE_MONSTER_P_VECTOR,	ALIFE_MONSTER_P_VECTOR_VECTOR,	ALIFE_MONSTER_P_VECTOR_IT);
@@ -145,6 +149,13 @@ namespace ALife {
 		eStalkerRankDummy = u32(-1),
 	};
 
+	enum EZoneState {
+		eZoneStateNone = u32(0),
+		eZoneStateSurge,
+		eZoneStateAfterSurge,
+		eZoneStateDummy = u32(-1),
+	};
+	
 	enum EAnomalousZoneType {
 		eAnomalousZoneTypeNone = u32(0),
 		eAnomalousZoneTypeGravi,
@@ -158,10 +169,13 @@ namespace ALife {
 		eAnomalousZoneTypeDummy = u32(-1),
 	};
 
-	enum EZoneState {
-		eZoneStateNone = u32(0),
-		eZoneStateSurge,
-		eZoneStateAfterSurge,
-		eZoneStateDummy = u32(-1),
+	enum EArtefactType {
+		eArtefactTypeNone = u32(0),
+		eArtefactTypeGravi,
+		eArtefactTypeRadio,
+		eArtefactTypeMagnet,
+		eArtefactTypeMercuryBall,
+		eArtefactTypeBlackDroplets,
+		eArtefactTypeDummy = u32(-1),
 	};
 };

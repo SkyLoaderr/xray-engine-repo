@@ -27,10 +27,9 @@ class CAI_ALife :
 	public CSheduled,
 	public CRandom 
 {
-public:
+private:
 	u32								m_dwObjectsBeingProcessed;
 	u64								m_qwMaxProcessTime;
-	bool							m_bLoaded;
 	
 	// buffer for union operations
 	TASK_VECTOR						m_tpBufferTaskIDs;
@@ -40,99 +39,18 @@ public:
 															//	местности получить список точек 
 															//  графа
 	
-	IC void vfUpdateDynamicData(CALifeDynamicObject *tpALifeDynamicObject)
-	{
-		CALifeGraphRegistry::Update		(tpALifeDynamicObject);
-		CALifeTraderRegistry::Update	(tpALifeDynamicObject);
-		CALifeScheduleRegistry::Update	(tpALifeDynamicObject);
-	};
-	
-	IC void vfUpdateDynamicData()
-	{
-		// initialize
-		CALifeGraphRegistry::Init	();
-		CALifeTraderRegistry::Init	();
-		CALifeScheduleRegistry::Init();
-		// update objects
-		{
-			OBJECT_PAIR_IT				I = m_tObjectRegistry.begin();
-			OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
-			for ( ; I != E; I++)
-				vfUpdateDynamicData((*I).second);
-		}
-		// update events
-		{
-			EVENT_PAIR_IT	I = m_tEventRegistry.begin();
-			EVENT_PAIR_IT	E = m_tEventRegistry.end();
-			for ( ; I != E; I++)
-				vfAddEventToGraphPoint((*I).second,(*I).second->m_tGraphID);
-		}
-	};
-
-	IC void vfCreateNewDynamicObject(SPAWN_P_IT I, bool bUpdateDynamicData = false)
-	{
-		CALifeDynamicObject	*tpALifeDynamicObject = 0;
-		if (pSettings->LineExists((*I)->m_caModel, "scheduled") && pSettings->ReadBOOL((*I)->m_caModel, "scheduled")) {
-			if (pSettings->LineExists((*I)->m_caModel, "human") && pSettings->ReadBOOL((*I)->m_caModel, "human"))
-				if (((*I)->m_wCount > 1) && pSettings->LineExists((*I)->m_caModel, "single") && pSettings->ReadBOOL((*I)->m_caModel, "single"))
-					tpALifeDynamicObject	= xr_new<CALifeHumanGroup>();
-				else
-					if (pSettings->LineExists((*I)->m_caModel, "trader") && pSettings->ReadBOOL((*I)->m_caModel, "trader"))
-						tpALifeDynamicObject	= xr_new<CALifeTrader>();
-					else
-						tpALifeDynamicObject	= xr_new<CALifeHuman>();
-			else
-				if (pSettings->LineExists((*I)->m_caModel, "monster") && pSettings->ReadBOOL((*I)->m_caModel, "monster"))
-					if (((*I)->m_wCount > 1) && pSettings->LineExists((*I)->m_caModel, "single") && pSettings->ReadBOOL((*I)->m_caModel, "single"))
-						tpALifeDynamicObject	= xr_new<CALifeMonsterGroup>();
-					else
-						tpALifeDynamicObject	= xr_new<CALifeMonster>();
-				else
-					if (pSettings->LineExists((*I)->m_caModel, "zone") && pSettings->ReadBOOL((*I)->m_caModel, "zone"))
-						tpALifeDynamicObject	= xr_new<CALifeDynamicAnomalousZone>();
-					else {
-						Msg("!Unspecified ALife monster type!");
-						R_ASSERT(false);
-					}
-		}
-		else
-			tpALifeDynamicObject			= xr_new<CALifeItem>();
-
-		tpALifeDynamicObject->Init			(_SPAWN_ID(I - m_tpSpawnPoints.begin()),m_tpSpawnPoints);
-		CALifeObjectRegistry::Add			(tpALifeDynamicObject);
-		if (bUpdateDynamicData)
-			vfUpdateDynamicData				(tpALifeDynamicObject);
-	};
-
-	IC void vfCreateNewTask(CALifeTrader *tpTrader)
-	{
-		OBJECT_PAIR_IT	I = m_tObjectRegistry.begin();
-		OBJECT_PAIR_IT	E = m_tObjectRegistry.end();
-		for ( ; I != E; I++) {
-			CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>((*I).second);
-			if (tpALifeItem && !tpALifeItem->m_bAttached) {
-				CALifeTask					*tpTask = xr_new<CALifeTask>();
-				tpTask->m_tCustomerID		= tpTrader->m_tObjectID;
-				tpTask->m_tLocationID		= Level().AI.m_tpaGraph[tpALifeItem->m_tGraphID].tVertexType;
-				tpTask->m_tObjectID			= tpALifeItem->m_tObjectID;
-				tpTask->m_tTimeID			= tfGetGameTime();
-				tpTask->m_tTaskType			= eTaskTypeSearchForItemOL;
-				CALifeTaskRegistry::Add		(tpTask);
-				tpTrader->m_tpTaskIDs.push_back(tpTask->m_tTaskID);
-				break;
-			}
-		}
-	};
-
+	// comnmon
+	void							vfUpdateDynamicData		(CALifeDynamicObject *tpALifeDynamicObject);
+	void							vfUpdateDynamicData		();
+	void							vfCreateNewDynamicObject(SPAWN_P_IT I, bool bUpdateDynamicData = false);
+	void							vfCreateNewTask			(CALifeTrader *tpTrader);
 	// surge
 	void							vfGenerateAnomalousZones();
 	void							vfGenerateArtefacts		();
-	void							vfCreateZoneShot		();
 	void							vfSellArtefacts			(CALifeTrader &tTrader);
 	void							vfUpdateArtefactOrders	(CALifeTrader &tTrader);
 	void							vfGiveMilitariesBribe	(CALifeTrader &tTrader);
 	void							vfBuySupplies			(CALifeTrader &tTrader);
-	void							vfBuyZoneShot			(CALifeTrader &tTrader);
 	void							vfAssignPrices			(CALifeTrader &tTrader);
 	void							vfBallanceCreatures		();
 	void							vfUpdateCreatures		();
@@ -154,6 +72,9 @@ public:
 	void							vfGenerateSpawnPoints	(const u32 dwTotalCount, FLOAT_VECTOR &fpFactors);
 	//
 public:
+	// members
+	bool							m_bLoaded;
+	// methods
 									CAI_ALife				();
 	virtual							~CAI_ALife				();
 	virtual float					shedule_Scale			()					{return .5f;};

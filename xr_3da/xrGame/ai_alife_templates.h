@@ -111,6 +111,7 @@ void free_vector(vector<T *> &tpVector)
 template <class T1, class T2>
 void save_map(map<T1,T2 *> &tpMap, CFS_Memory &tMemoryStream)
 {
+	tMemoryStream.Wdword		(tpMap.size());
 	map<T1,T2 *>::iterator		I = tpMap.begin();
 	map<T1,T2 *>::iterator		E = tpMap.end();
 	for ( ; I != E; I++)
@@ -136,5 +137,4 @@ void free_map(map<T1,T2 *> &tpMap)
 	map<T1,T2 *>::iterator		E = tpMap.end();
 	for ( ; I != E; I++)
 		xr_delete					((*I).second);
-	tpMap.clear					();
 };

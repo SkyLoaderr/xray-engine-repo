@@ -136,8 +136,13 @@ void CAI_ALife::vfListSpawnPoints()
 	SPAWN_P_IT	I = m_tpSpawnPoints.begin();
 	SPAWN_P_IT	E = m_tpSpawnPoints.end();
 	Msg("%s->Listing spawn points :",cName());
-	for (int i=0; I != E; I++, i++)
-		Msg("* %4d : [MDL=%10s][GID=%d]",i,(*I)->m_caModel,(*I)->m_wGroupID);
+	for (int i=0; I != E; I++, i++) {
+		CALifeCreatureSpawnPoint *tpALifeCreatureSpawnPoint = dynamic_cast<CALifeCreatureSpawnPoint *>(*I);
+		if (tpALifeCreatureSpawnPoint)
+			Msg("* %4d : [MDL=%10s][GID=%d]",i,(*I)->m_caModel,tpALifeCreatureSpawnPoint->m_wGroupID);
+		else
+			Msg("* %4d : [MDL=%10s]",i,(*I)->m_caModel);
+	}
 	Msg("Total %d spawn points",i);
 }
 
@@ -449,26 +454,36 @@ void CAI_ALife::vfSpawnPointInfo(_SPAWN_ID &tSpawnID)
 	CALifeSpawnPoint &tSpawnPoint = *(m_tpSpawnPoints[tSpawnID]);
 	Msg("%s->Spawn-point information :",cName());
 	Msg("* Model                   : %s",tSpawnPoint.m_caModel);
-	Msg("* Team                    : %d",tSpawnPoint.m_ucTeam);
-	Msg("* Squad                   : %d",tSpawnPoint.m_ucSquad);
-	Msg("* Group                   : %d",tSpawnPoint.m_ucGroup);
-	Msg("* Group ID	               : %d",tSpawnPoint.m_wGroupID);
-	Msg("* Count	               : %d",tSpawnPoint.m_wCount);
-	Msg("* BirthRadius	           : %6.2f",tSpawnPoint.m_fBirthRadius);
-	Msg("* BirthProbability	       : %6.2f",tSpawnPoint.m_fBirthProbability);
-	Msg("* IncreaseCoefficient     : %6.2f",tSpawnPoint.m_fIncreaseCoefficient);
+	Msg("* GraphID                 : %s",tSpawnPoint.m_tNearestGraphPointID);
+	Msg("* Position                : [%7.2f][%7.2f][%7.2f]",tSpawnPoint.m_tPosition.x,tSpawnPoint.m_tPosition.y,tSpawnPoint.m_tPosition.z);
 	
-	GRAPH_IT	I = tSpawnPoint.m_tpRouteGraphPoints.begin();
-	GRAPH_IT	E = tSpawnPoint.m_tpRouteGraphPoints.end();
-	string4096		S;
-	string16		S1;
-	S[0] = 0;
-	for (int j=0; I != E; I++, j++) {
-		if (j)
-			strcat(S,",");
-		strcat(S,itoa(*I,S1,10));
+	CALifeZoneSpawnPoint *tpZoneSpawnPoint = dynamic_cast<CALifeZoneSpawnPoint *>(&tSpawnPoint);
+	if (tpZoneSpawnPoint) {
+		Msg("* Zone type               : %d",tpZoneSpawnPoint->m_tAnomalousZoneType);
 	}
-	vfPrintLargeString(S,"RouteGraphPoints",tSpawnPoint.m_tpRouteGraphPoints.size(),105);
+	CALifeCreatureSpawnPoint *tpCreatureSpawnPoint = dynamic_cast<CALifeCreatureSpawnPoint *>(&tSpawnPoint);
+	if (tpCreatureSpawnPoint) {
+		Msg("* Team                    : %d",tpCreatureSpawnPoint->m_ucTeam);
+		Msg("* Squad                   : %d",tpCreatureSpawnPoint->m_ucSquad);
+		Msg("* Group                   : %d",tpCreatureSpawnPoint->m_ucGroup);
+		Msg("* Group ID	               : %d",tpCreatureSpawnPoint->m_wGroupID);
+		Msg("* Count	               : %d",tpCreatureSpawnPoint->m_wCount);
+		Msg("* BirthRadius	           : %6.2f",tpCreatureSpawnPoint->m_fBirthRadius);
+		Msg("* BirthProbability	       : %6.2f",tpCreatureSpawnPoint->m_fBirthProbability);
+		Msg("* IncreaseCoefficient     : %6.2f",tpCreatureSpawnPoint->m_fIncreaseCoefficient);
+		
+		GRAPH_IT	I = tpCreatureSpawnPoint->m_tpRouteGraphPoints.begin();
+		GRAPH_IT	E = tpCreatureSpawnPoint->m_tpRouteGraphPoints.end();
+		string4096		S;
+		string16		S1;
+		S[0] = 0;
+		for (int j=0; I != E; I++, j++) {
+			if (j)
+				strcat(S,",");
+			strcat(S,itoa(*I,S1,10));
+		}
+		vfPrintLargeString(S,"RouteGraphPoints",tpCreatureSpawnPoint->m_tpRouteGraphPoints.size(),105);
+	}
 }
 
 void CAI_ALife::vfGraphVertexInfo(_GRAPH_ID &tGraphID)

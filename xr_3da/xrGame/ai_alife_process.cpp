@@ -20,7 +20,6 @@ void CAI_ALife::Update(u32 dt)
 	switch (m_tZoneState) {
 		case eZoneStateSurge : {
 			vfGenerateArtefacts			();
-			vfCreateZoneShot			();
 			TRADER_P_IT					I = m_tpTraders.begin();
 			TRADER_P_IT					E = m_tpTraders.end();
 			for ( ; I != E; I++) {
@@ -28,7 +27,6 @@ void CAI_ALife::Update(u32 dt)
 				vfUpdateArtefactOrders	(**I);
 				vfGiveMilitariesBribe	(**I);
 				vfBuySupplies			(**I);
-				vfBuyZoneShot			(**I);
 				vfAssignPrices			(**I);
 			}
 			vfBallanceCreatures			();

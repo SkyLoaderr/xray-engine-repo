@@ -1586,6 +1586,9 @@
 					RelativePath="ai_alife_console.cpp">
 				</File>
 				<File
+					RelativePath="ai_alife_interfaces.h">
+				</File>
+				<File
 					RelativePath="ai_alife_misc.cpp">
 				</File>
 				<File
@@ -1602,6 +1605,9 @@
 				</File>
 				<File
 					RelativePath="ai_alife_space.h">
+				</File>
+				<File
+					RelativePath="ai_alife_spawn.h">
 				</File>
 				<File
 					RelativePath="ai_alife_templates.h">

@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ai_alife_spawn.h"
 #include "ai_alife_predicates.h"
 
 using namespace ALife;
@@ -253,9 +254,28 @@ public:
 	
 	virtual void					Load(CStream	&tFileStream)
 	{
-		inherited::Load(tFileStream);
-		R_ASSERT(tFileStream.FindChunk(SPAWN_POINT_CHUNK_DATA));
-		load_vector(m_tpSpawnPoints,tFileStream);
+		inherited::Load				(tFileStream);
+		R_ASSERT					(tFileStream.FindChunk(SPAWN_POINT_CHUNK_DATA));
+		m_tpSpawnPoints.resize		(tFileStream.Rdword());
+		SPAWN_P_IT					I = m_tpSpawnPoints.begin();
+		SPAWN_P_IT					E = m_tpSpawnPoints.end();
+		for ( ; I != E; I++) {
+			switch (tFileStream.Rbyte()) {
+				case SPAWN_POINT_CREATURE_ID : {
+					*I				= xr_new<CALifeCreatureSpawnPoint>();
+					break;
+				}
+				case SPAWN_POINT_ZONE_ID : {
+					*I				= xr_new<CALifeZoneSpawnPoint>();
+					break;
+				}
+				case SPAWN_POINT_OBJECT_ID : {
+					*I				= xr_new<CALifeObjectSpawnPoint>();
+					break;
+				}
+			}
+			(*I)->Load				(tFileStream);
+		}
 	};
 };
 
