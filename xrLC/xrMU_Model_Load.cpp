@@ -53,6 +53,7 @@ xrMU_Model::_face* xrMU_Model::load_create_face(Fvector& P1, Fvector& P2, Fvecto
 	_face*	_F			= mu_faces.create();
 	_F->dwMaterial		= WORD(B.dwMaterial);
 	_F->dwMaterialGame	= B.dwMaterialGame;
+	R_ASSERT			(B.dwMaterialGame<65536);
 
 	// Vertices and adjacement info
 	_F->VSet			(0,load_create_vertex(P1));

@@ -111,6 +111,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 				Face*	_F			= FacePool.create();
 				b_face	B;
 				F->r				(&B,sizeof(B));
+				R_ASSERT			(B.dwMaterialGame<65536);
 
 				_F->dwMaterial		= WORD(B.dwMaterial);
 				_F->dwMaterialGame	= B.dwMaterialGame;
