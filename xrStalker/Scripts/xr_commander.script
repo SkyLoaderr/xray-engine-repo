@@ -382,7 +382,7 @@ function action_commander:exec_box_alarm()
                     self.object:play_sound( snd_lost_box, 1, 0 )
                 end
 
---                xr_gulag.setFractionState( "blockpost", 2 )
+                xr_gulag.setFractionState( "blockpost", 2 )
                 self.box_alarm = true
 
                 self.sub_act = true
