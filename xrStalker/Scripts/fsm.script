@@ -44,11 +44,11 @@ function FSM:run()
 								printf("transition from %d to %d", self.current_state, to_state_num)
 
 								if to_state_num == 0 then 
-									reset_script_control()
+									self:reset_script_control()
 								end
 
 								if  self.current_state == 0 then 
-									set_script_control()
+									self:set_script_control()
 								end
 				
 								self.current_state = to_state_num
