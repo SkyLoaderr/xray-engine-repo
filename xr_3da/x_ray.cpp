@@ -276,7 +276,7 @@ void CApplication::Level_Scan()
 				Msg("! Warning: partially compiled level: %s",folder[i]);
 			sLevelInfo			LI;
 			LI.folder			= folder[i];
-			LI.name				= "";
+			LI.name				= 0;
 			Levels.push_back	(LI);
 		} else {
 			Msg("! Level not compiled: %s",folder[i]);
