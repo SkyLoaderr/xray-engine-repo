@@ -145,8 +145,11 @@ int	 CBoardClassicOthello::compute_difference	(const cell_index &index) const
 		if (color_to_move() == BLACK)
 			return	(compute_difference<BLACK>(index));
 		else
-			return	(compute_difference<WHITE>(index));
+			return	(-compute_difference<WHITE>(index));
 	}
 	VERIFY			(!can_move());
-	return			(difference());
+	if (color_to_move() == BLACK)
+		return		(difference());
+	else
+		return		(-difference());
 }
