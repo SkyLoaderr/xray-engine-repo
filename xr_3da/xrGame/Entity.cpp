@@ -148,7 +148,7 @@ void CEntity::Load(CInifile* ini, const char* section)
 
 BOOL CEntity::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
-	CGameObject::Spawn		(bLocal,server_id,o_pos,o_angle);
+	CGameObject::Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
 
 	// Initialize variables
 	id_Team				= team;
