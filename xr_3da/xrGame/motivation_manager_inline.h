@@ -24,6 +24,10 @@ IC	CSMotivationManager::CMotivationManager		()
 TEMPLATE_SPECIALIZATION
 IC	CSMotivationManager::~CMotivationManager	()
 {
+	xr_vector<CSGraphAbstract::CVertex>::iterator	I = m_graph->vertices().begin();
+	xr_vector<CSGraphAbstract::CVertex>::iterator	E = m_graph->vertices().end();
+	for ( ; I != E; ++I)
+		xr_delete			((*I).data());
 	xr_delete				(m_graph);
 }
 

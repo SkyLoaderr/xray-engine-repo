@@ -31,7 +31,7 @@ BOOL CBreakableObject::net_Spawn(LPVOID DC)
 
 	// set bone id
 	R_ASSERT				(Visual()&&PKinematics(Visual()));
-	CKinematics* K			= PKinematics(Visual());
+//	CKinematics* K			= PKinematics(Visual());
 	fHealth					= obj->m_health;
 	
 	setVisible				(TRUE);
