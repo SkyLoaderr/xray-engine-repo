@@ -34,7 +34,7 @@ function save_dialog:InitControls()
 	local edit_rect       = {x = indent, 
 						     y = caption_rect.y + caption_rect.height + indent,
 						     width = caption_rect.width - indent*2, 
-						     height = 60}
+						     height = 100}
 	local btn_ok_rect     = {x = indent,
 							 y = 0,
 							 height = 40,
@@ -82,9 +82,7 @@ function save_dialog:InitControls()
 	-- EDIT box --
 	local frame_edit = CUIFrameWindow()  --background for ListView
     frame_edit:SetAutoDelete(true)
-	frame_edit:SetWindowName("frame_edit")
     frame_edit:Init("ui\\ui_pop_up", edit_rect.x, edit_rect.y, edit_rect.width, edit_rect.height)
-    -- txt_list:ClipperOn()
     main_frame:AttachChild(frame_edit)
 	
 	local edit_filename = CUIEditBox()
