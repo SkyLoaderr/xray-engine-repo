@@ -362,8 +362,8 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 			normals.push_back	(vertexBuffer[i].n.x);
 			normals.push_back	(vertexBuffer[i].n.y);
 			normals.push_back	(vertexBuffer[i].n.z);
-			texCoord.push_back	(vertexBuffer[i].tu*2);
-			texCoord.push_back	(vertexBuffer[i].tv*2);
+			texCoord.push_back	(vertexBuffer[i].tu);
+			texCoord.push_back	(vertexBuffer[i].tv);
 			texCoord.push_back	(0);
 		}
 		gMesh->UnlockVertexBuffer();
