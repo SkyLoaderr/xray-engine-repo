@@ -181,7 +181,7 @@ public:
 
 	virtual u32					mem_usage			()
 	{
-		u32 sz					= CKinematics::mem_usage()+sizeof(*this)+blend_instances->mem_usage();
+		u32 sz					= CKinematics::mem_usage()+sizeof(*this)+blend_instances?blend_instances->mem_usage():0;
 		return sz;
 	}
 };
