@@ -134,7 +134,6 @@ function action_wait:execute ()
 		self.object:set_sight(look.point, level.vertex_position(self.a.position), 0)
 		-- озвучка на поиск
 		globals.set_sound(self.object, self.sound_search, false)
-
 	end
 
 
