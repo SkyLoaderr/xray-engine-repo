@@ -14,6 +14,14 @@ xr_token					tparam_token							[ ]={
 	{ 0,					0											}
 };
 
+xr_token					ttype_token								[ ]={
+	{ "2D Texture",			STextureParams::ttImage						},
+	{ "Cube Map",  			STextureParams::ttCubeMap					},
+	{ "Normal Map",			STextureParams::ttNormalMap					},
+	{ "Du Dv Map",			STextureParams::ttDuDvMap					},
+	{ 0,					0											}
+};
+
 xr_token					tfmt_token						[ ]={
 	{ "DXT1",				STextureParams::tfDXT1				},
 	{ "DXT1 Alpha",			STextureParams::tfADXT1				},

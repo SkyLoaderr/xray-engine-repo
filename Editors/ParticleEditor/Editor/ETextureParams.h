@@ -20,6 +20,13 @@ struct STextureParams{
 		tfNVHU,
 		tfForceDWORD	= DWORD(-1)
 	};
+	enum ETType{
+    	ttImage	= 0,
+        ttCubeMap,
+        ttNormalMap,
+        ttDuDvMap,
+		ttForceDWORD	= DWORD(-1)
+	};
 	enum{
         dMIPFilterBox				= 0,
         dMIPFilterCubic				= 1,
@@ -31,8 +38,6 @@ struct STextureParams{
 	enum{
 		flGenerateMipMaps	= (1<<0),
 		flBinaryAlpha		= (1<<1),
-		flNormalMap			= (1<<2),
-		flDuDvMap			= (1<<3),
 		flAlphaBorder		= (1<<4),
 		flColorBorder		= (1<<5),
 		flFadeToColor		= (1<<6),
@@ -40,7 +45,8 @@ struct STextureParams{
 		flDitherColor		= (1<<8),
 		flDitherEachMIPLevel= (1<<9),
 		flGreyScale			= (1<<10),
-		flCubeMap			= (1<<11),
+
+		flHasDetailTexture	= (1<<23),
 		flImplicitLighted	= (1<<24),
 		flHasAlpha			= (1<<25)
 	};
@@ -53,6 +59,13 @@ struct STextureParams{
 	DWORD			mip_filter;
     int				width;
     int				height;
+
+    ETType			type;
+    
+    // detail ext
+    string128		detail_name;
+    float			detail_scale;
+    
     STextureParams	()
 	{
 		ZeroMemory(this,sizeof(STextureParams));
@@ -61,6 +74,7 @@ struct STextureParams{
 		mip_filter	= 	dMIPFilterBox;
         width		= 	0;
         height		= 	0;
+        detail_scale= 	1;
 	}
     IC BOOL HasAlpha(){ // исходная текстура содержит альфа канал
     	return flag&flHasAlpha;
@@ -86,7 +100,7 @@ struct STextureParams{
 struct xr_token;
 extern xr_token	tparam_token[];
 extern xr_token	tfmt_token[];
-//extern xr_token	ttype_token[];
+extern xr_token	ttype_token[];
 
 //----------------------------------------------------
 #define THM_CURRENT_VERSION				0x0012
@@ -95,6 +109,8 @@ extern xr_token	tfmt_token[];
 #define THM_CHUNK_DATA					0x0811
 #define THM_CHUNK_TEXTUREPARAM			0x0812
 #define THM_CHUNK_TYPE					0x0813
+#define THM_CHUNK_TEXTURE_TYPE			0x0814
+#define THM_CHUNK_DETAIL_EXT			0x0815
 //----------------------------------------------------
 #define THM_SIGN 		"THM_FILE"
 #define THUMB_WIDTH 	128
