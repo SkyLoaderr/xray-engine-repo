@@ -49,6 +49,11 @@ struct CTestObject : public IPureServerObject {
 		return						(a == self.a);
 	}
 
+	IC		bool					operator!=(const CTestObject &self) const
+	{
+		return						(a != self.a);
+	}
+
 	virtual void					STATE_Write	(NET_Packet &tNetPacket)
 	{
 		printf	("STATE_Write called\n");
