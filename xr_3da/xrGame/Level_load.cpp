@@ -181,7 +181,8 @@ BOOL CLevel::Load_GameSpecific_After()
 		ai().script_engine().add_script_processor("level",xr_new<CScriptProcessor>("level",pLevel->r_string("level_scripts","script")));
 	else
 		ai().script_engine().add_script_processor("level",xr_new<CScriptProcessor>("level",""));
-
+		
+	BlockCheatLoad();
 	return TRUE;
 }
 
@@ -206,4 +207,9 @@ void CLevel::Load_GameSpecific_CFORM	( CDB::TRI* tris, u32 count )
 			Debug.fatal	("Game material '%d' not found",T->material);
 		T->material						= index->second;
 	}
+}
+
+void CLevel::BlockCheatLoad()
+{
+	if(Game().type!=GAME_SINGLE) phTimefactor=1.f;
 }

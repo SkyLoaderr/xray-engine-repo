@@ -74,6 +74,9 @@ dBodyID dBodyCreate (dWorldID);
 void dBodyDestroy (dBodyID);
 void dWorldAddBody(dWorldID, dBodyID);
 void dWorldAddJoint(dWorldID,dJointID);
+void dWorldRemoveBody(dWorldID,dBodyID);
+void dWorldRemoveJoint(dWorldID,dJointID);
+
 void  dBodySetData (dBodyID, void *data);
 void *dBodyGetData (dBodyID);
 

@@ -335,7 +335,7 @@ void dWorldCheck (dxWorld *w)
 
 void	dWorldRemoveBody(dxWorld *w, dxBody* b)
 {
-	dAASSERT (w);dAASSERT (b);
+	dAASSERT (w);dAASSERT (b);dAASSERT(b->world==w);
 	removeObjectFromList (b);
 	b->world->nb--;
 	b->world=0;
@@ -903,7 +903,13 @@ int dBodyGetGravityMode (dBodyID b)
    w->nj++;
    
  }
-
+void	dWorldRemoveJoint(dxWorld* w,dxJoint *j)
+{
+	dIASSERT(w&&j&&w==j->world);
+	removeObjectFromList((dObject*)j);
+	w->nj--;
+	j->world=0;
+}
 static void dJointInit (dxWorld *w, dxJoint *j)
 {
   dIASSERT (j);
@@ -1073,9 +1079,9 @@ void dJointAttach (dxJoint *joint, dxBody *body1, dxBody *body2)
   dUASSERT (joint,"bad joint argument");
   dUASSERT (body1 == 0 || body1 != body2,"can't have body1==body2");
   dxWorld *world = joint->world;
-  dUASSERT ( !world||(!body1 || body1->world == world) &&
-	     (!body2 || body2->world == world),
-	     "joint and bodies must be in same world");
+  //dUASSERT ( !world||(!body1 || body1->world == world) &&
+	//     (!body2 || body2->world == world),
+	//     "joint and bodies must be in same world");
 
   // check if the joint can not be attached to just one body
   dUASSERT (!((joint->flags & dJOINT_TWOBODIES) &&

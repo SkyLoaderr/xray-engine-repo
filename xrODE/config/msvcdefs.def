@@ -256,6 +256,8 @@ dTestSolveLCP
 dWorldCreate
 dWorldAddBody
 dWorldAddJoint
+dWorldRemoveBody
+dWorldRemoveJoint
 dWorldDestroy
 dWorldGetAutoEnableDepthSF1
 dWorldGetCFM

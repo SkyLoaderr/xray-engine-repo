@@ -95,6 +95,7 @@ private:
 	u32							m_dwDeltaUpdate ;
 	u32							m_dwLastNetUpdateTime;
 	void						UpdateDeltaUpd					( u32 LastTime );
+	void						BlockCheatLoad					()				;
 public:
 	//////////////////////////////////////////////	
 	// static particles
