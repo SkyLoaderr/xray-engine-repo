@@ -21,7 +21,7 @@ end
 function map_tab:__finalize()
 end
 
-function map_tab:InitControls(x_pos, y_pos)
+function map_tab:InitControls(x_pos, y_pos, width, height)
 	ui_multiplayer_base_tab.multiplayer_base_tab.InitControls(self, "Map", x_pos, y_pos)
 	
 	----- DATA ----
