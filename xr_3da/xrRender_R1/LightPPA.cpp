@@ -193,7 +193,7 @@ void CLightR_Manager::render_point	()
 		F.CreateFromMatrix	(L_combine,FRUSTUM_P_ALL);
 		bHUD				= F.testSphere_dirty	(Device.vCameraPosition,1.f);
 
-		//		4. Dump sorting tree
+		//		5. Dump sorting tree
 		if (bHUD)			g_pGameLevel->pHUD->Render_Last		();	
 		RImplementation.r_dsgraph_render_graph					(0);
 		if (bHUD)			RImplementation.r_dsgraph_render_hud();	
@@ -246,9 +246,17 @@ void CLightR_Manager::render_spot	()
 			TRUE
 			);
 
+		//		4. Analyze if HUD intersects light volume
+		BOOL				bHUD	= FALSE;
+		CFrustum			F;
+		F.CreateFromMatrix	(L_combine,FRUSTUM_P_ALL);
+		bHUD				= F.testSphere_dirty	(Device.vCameraPosition,1.f);
+
 		//		4. Dump sorting tree
 		//	RCache.set_ClipPlanes					(true,	&L_combine);
-		RImplementation.r_dsgraph_render_graph		(0);
+		if (bHUD)	g_pGameLevel->pHUD->Render_Last		();	
+		RImplementation.r_dsgraph_render_graph			(0);
+		if (bHUD)	RImplementation.r_dsgraph_render_hud();	
 		//	RCache.set_ClipPlanes					(false,	&L_combine);
 	}
 	//		??? grass ???
