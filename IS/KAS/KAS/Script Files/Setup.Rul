@@ -17,7 +17,8 @@
 //---------------------------------------------------------------------------
 // Global variables
 //---------------------------------------------------------------------------
-string g_sSerial;
+string 	g_sSerial;
+BOOL	g_NeedReboot;
 //---------------------------------------------------------------------------
             
 //---------------------------------------------------------------------------
@@ -168,7 +169,8 @@ end;
 // InstallShield Events
 //---------------------------------------------------------------------------                                                                        
 function OnBegin()
-begin
+begin       
+	g_NeedReboot = FALSE;
 	// check admin rights
 	if (FALSE=CheckAdminRights()) then abort; endif;
 end;
@@ -180,9 +182,6 @@ function OnFirstUIBefore()
     string  sSetupType, sMainDir;
     BOOL    bLicenseAccepted;	
     LIST 	listStartCopy;
-    number 	nRootKey; 
-    string 	mdac_ver,au;
-	NUMBER 	nvType, nvSize, nLocation;
 begin	  
     SetTitle( @IDS_PRODUCT_NAME, 0, BACKGROUNDCAPTION ); 	                  
    
@@ -332,9 +331,6 @@ Dlg_SdStartCopy:
     ClearFolder	(TARGETDIR);
     ClearFolder	(MSDE_INSTANCE_FOLDER);
 
-	// set reboot flag 
-	BATCH_INSTALL	= TRUE;
-        
     return 0;
 end;
 //---------------------------------------------------------------------------
@@ -421,30 +417,10 @@ function MSDE_2000_Installed()
 	BOOL 	bRes;
 	string 	sTmp,db_files,sInsertSQL,sServerName;
 	string 	sPrimReg,sSecReg,sVersion,sBuild,sLastUpdate;
-	BOOL	mdac_found, mdac_need_install;
-    string 	mdac_ver;
 	NUMBER 	nvType, nvSize, nLocation;
 begin
 	bRes = CheckMSDEStatus();    
 	if (TRUE=bRes) then
-	// launch MuDAC setup	
-		nRootKey 				= HKEY_LOCAL_MACHINE;
-		mdac_found				= FALSE;
-		mdac_need_install		= TRUE;
-		RegDBSetDefaultRoot		(nRootKey);
-		if (RegDBGetKeyValueEx("Software\\Microsoft\\dataAccess","FullInstallVer",nvType,mdac_ver,nvSize) = 0) then
-			nLocation			= StrFind(mdac_ver,"2.8");
-			if (nLocation=0)	then  mdac_found=TRUE; endif;
-		endif;
-		if (mdac_found=TRUE) then
-			if (AskYesNo("'MDAC' версии 2.8 или выше уже установлен. Переустановить?",NO)=NO) then
-				mdac_need_install = FALSE;
-		 	endif;
-		endif;                                   
-		if (mdac_need_install=TRUE) then
-			LaunchAppAndWait ("mdac_typ.exe", " /Q:A /C:\"dasetup /Q /N\"", WAIT);
-		endif;
-
 		// register our SQLDMO.dll
 		LaunchAppAndWait (WINSYSDIR^"regsvr32" , "/s sqldmo.dll", WAIT); // /s 
 		           
@@ -589,9 +565,11 @@ label_end:
 	    nResult = UnUseDLL (DLL_FILE);
 	    if (nResult < 0) then
 	        MessageBox ("Невозможно выгрузить: "+DLL_FILE, SEVERE);
-	    else
-	    	bRes=TRUE;
 	    endif;
+
+		if (bRes=TRUE) then
+			g_NeedReboot = TRUE;
+		endif;
 	    
 	    // if error found -> abort instalation          
 	    if (bRes=FALSE) then abort; endif;
@@ -666,9 +644,38 @@ function OnFirstUIAfter()
     STRING szTitle, szMsg1, szMsg2, szOpt1, szOpt2;
     NUMBER bvOpt1, bvOpt2;
 	NUMBER bShowUpdateServiceDlg;
+
+	BOOL	mdac_found, mdac_need_install;
+    string 	mdac_ver;
+    number 	nRootKey; 
+	NUMBER 	nvType, nvSize, nLocation;
 begin
+	// launch MuDAC setup	
+	nRootKey 				= HKEY_LOCAL_MACHINE;
+	mdac_found				= FALSE;
+	mdac_need_install		= TRUE;
+	RegDBSetDefaultRoot		(nRootKey);
+	if (RegDBGetKeyValueEx("Software\\Microsoft\\dataAccess","FullInstallVer",nvType,mdac_ver,nvSize) = 0) then
+		nLocation			= StrFind(mdac_ver,"2.8");
+		if (nLocation=0)	then  mdac_found=TRUE; endif;
+	endif;
+	if (mdac_found=TRUE) then
+		if (AskYesNo("'MDAC' версии 2.8 или выше уже установлен. Переустановить?",NO)=NO) then
+			mdac_need_install = FALSE;
+	 	endif;
+	endif;                                   
+	if (mdac_need_install=TRUE) then
+		LaunchAppAndWait ("mdac_typ.exe", " /Q:A /C:\"dasetup /Q /N\"", WAIT);
+		g_NeedReboot 		= TRUE;
+	endif;
+
+	// create uninstall shortcut
 	CreateUninstallShortcut();
 
+	// set reboot flag 
+	if (g_NeedReboot=TRUE) then BATCH_INSTALL = TRUE; endif;
+        
+	// 
     ShowObjWizardPages(NEXT);
     
     szTitle = "";
