@@ -755,6 +755,7 @@ Fvector start_point;
 start_point.set(dynamic_cast<CGameObject*>(m_character->PhysicsRefObject())->Position());
 Fvector velosity;
 velosity.x=end_point.x-start_point.x;
+velosity.y=end_point.y-start_point.y;
 velosity.z=end_point.z-start_point.z;
 float time=_sqrt(2.f*velosity.magnitude()/world_gravity);
 velosity.x/=time;
