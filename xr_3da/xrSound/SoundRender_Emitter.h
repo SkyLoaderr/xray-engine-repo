@@ -4,7 +4,6 @@
 
 #include "soundrender.h"
 #include "soundrender_environment.h"
-#include "soundrender_emitter_params.h"
 
 class CSoundRender_Emitter		:	public CSound_interface
 {
