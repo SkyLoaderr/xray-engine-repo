@@ -1368,35 +1368,36 @@ struct SSS {
 	{
 		printf		("Partial specialization\n");
 	}
-	template <>
-	IC		void	search					(
-				const CProblemSolver<
-					u32,
-					u32,
-					u32
-				>						&graph, 
-				const CProblemSolver<
-					u32,
-					u32,
-					u32
-				>::_index_type			&start_node,
-				const CProblemSolver<
-					u32,
-					u32,
-					u32
-				>::_index_type			&dest_node, 
-				xr_vector<
-					CProblemSolver<
-						u32,
-						u32,
-						u32
-					>::_edge_type
-				>						*node_path,
-				PP		&parameters
-			)
-	{
-		printf		("Partial partial specialization\n");
-	}
+
+//	template <>
+//	IC		void	search					(
+//				const CProblemSolver<
+//					u32,
+//					u32,
+//					u32
+//				>						&graph, 
+//				const CProblemSolver<
+//					u32,
+//					u32,
+//					u32
+//				>::_index_type			&start_node,
+//				const CProblemSolver<
+//					u32,
+//					u32,
+//					u32
+//				>::_index_type			&dest_node, 
+//				xr_vector<
+//					CProblemSolver<
+//						u32,
+//						u32,
+//						u32
+//					>::_edge_type
+//				>						*node_path,
+//				PP		&parameters
+//			)
+//	{
+//		printf		("Partial partial specialization\n");
+//	}
 };
 int __cdecl main(char argc, char *argv[])
 {
