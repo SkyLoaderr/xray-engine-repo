@@ -110,7 +110,7 @@ void CDemoPlay::stat_Stop	()
 		pcstr	param		= strstr(Core.Params,"-benchmark ");
 		if (0==param)		strcpy	(fname,"benchmark.result");
 		else				sscanf	(param+xr_strlen("-benchmark "),"%s",fname);
-		FS.update_path		(fname,"$server_root$",fname);
+		FS.update_path		(fname,"$app_root$",fname);
 		CInifile			res		(fname,FALSE,FALSE,TRUE);
 		res.w_float			("general","renderer",	float(::Render->get_generation())/10.f,	"dx-level required"		);
 		res.w_float			("general","min",		rfps_min,								"absolute minimum"		);
