@@ -5572,10 +5572,16 @@
 									RelativePath=".\character_info_defs.h">
 								</File>
 								<File
+									RelativePath=".\ini_id_loader.h">
+								</File>
+								<File
 									RelativePath=".\relation_registry.cpp">
 								</File>
 								<File
 									RelativePath=".\relation_registry.h">
+								</File>
+								<File
+									RelativePath=".\relation_registry_defs.h">
 								</File>
 								<File
 									RelativePath=".\specific_character.cpp">
@@ -7085,6 +7091,9 @@
 				<Filter
 					Name="NET Shared"
 					Filter="">
+					<File
+						RelativePath=".\client_id.h">
+					</File>
 					<File
 						RelativePath=".\client_id.h">
 					</File>

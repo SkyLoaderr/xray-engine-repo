@@ -102,8 +102,9 @@
 // 83 - CSE_AlifeObject					m_fProbability moved to CSE_Abstract, m_dwSpawnGroup is removed completely
 // 84 - CSE_SpawnGroup					appended with a property
 // 85 - CSE_SpawnGroup					all the properties moved to CSE_Abstract
+// 86 - CSE_AlifeTraderAbstract			appended with m_community_index
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(85)
+#define SPAWN_VERSION	u16(86)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

@@ -67,6 +67,9 @@ void CUICharacterInfo::Init(int x, int y, int width, int height, const char* xml
 		UIName.Enable(false);
 	}
 
+
+	///////////////
+	// rank
 	AttachChild(&UIRank);
 	if(uiXml.NavigateToNode("rank_static", 0))
 	{
@@ -90,6 +93,9 @@ void CUICharacterInfo::Init(int x, int y, int width, int height, const char* xml
 		UIRankCaption.Enable(false);
 	}
 
+
+	/////////////////////
+	//community
 	AttachChild(&UICommunity);
 	if(uiXml.NavigateToNode("community_static", 0))
 	{
@@ -113,6 +119,32 @@ void CUICharacterInfo::Init(int x, int y, int width, int height, const char* xml
 		UICommunityCaption.Enable(false);
 	}
 
+	/////////////////////
+	//reputation
+	AttachChild(&UIReputation);
+	if(uiXml.NavigateToNode("reputation_static", 0))
+	{
+		xml_init.InitStatic(uiXml, "reputation_static", 0, &UIReputation);
+		UIReputation.SetElipsis(CUIStatic::eepEnd, 1);
+	}
+	else
+	{
+		UIReputation.Enable(false);
+		UIReputation.Show(false);
+	}
+	AttachChild(&UIReputationCaption);
+	if(uiXml.NavigateToNode("reputation_caption", 0))
+	{
+		xml_init.InitStatic(uiXml, "reputation_caption", 0, &UIReputationCaption);
+	}
+	else
+	{
+		UIReputationCaption.Enable(false);
+		UIReputationCaption.Show(false);
+	}
+
+	///////////////////
+	// relation
 	AttachChild(&UIRelation);
 	if(uiXml.NavigateToNode("relation_static", 0))
 	{
@@ -175,15 +207,15 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 	sprintf(str, "%s", *stbl(GetReputationAsText(pCharInfo->Reputation())));
 	if (m_bInfoAutoAdjust)
 	{
-		if (UIRelationCaption.IsEnabled() && UIRelationCaption.GetFont())
+		if (UIReputationCaption.IsEnabled() && UIReputationCaption.GetFont())
 		{
-			offset = static_cast<int>(UIRelationCaption.GetFont()->SizeOf(UIRelationCaption.GetText()) + UIRelationCaption.GetWndRect().left + 5);
-			UIRelation.SetWndRect(offset, UIRelation.GetWndRect().top, GetWndRect().right - offset - 10, UIRelation.GetWndRect().bottom);
+			offset = static_cast<int>(UIReputationCaption.GetFont()->SizeOf(UIRelationCaption.GetText()) + UIReputationCaption.GetWndRect().left + 5);
+			UIReputation.SetWndRect(offset, UIReputation.GetWndRect().top, GetWndRect().right - offset - 10, UIReputation.GetWndRect().bottom);
 		}
 	}
-	UIRelation.SetText(str);
+	UIReputation.SetText(str);
 
-	sprintf(str, "%s", CStringTable()(pCharInfo->Community().id()));
+	sprintf(str, "%s", *CStringTable()(pCharInfo->Community().id()));
 	if (m_bInfoAutoAdjust)
 	{
 		if (UICommunityCaption.IsEnabled() && UICommunityCaption.GetFont())
@@ -227,17 +259,17 @@ void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner)
 		UIRelationCaption.Show(false);
 		UIRelation.Show(false);
 	}
-
-	CEntityAlive	*entity_alive = smart_cast<CEntityAlive*>(Level().CurrentEntity());
-	VERIFY			(entity_alive);
-
-//	CEntityAlive* ContactEA = smart_cast<CEntityAlive*>(pInvOwner);
-//	SetRelation(ContactEA->tfGetRelationType(entity_alive));
+	else
+	{
+		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
+		if(pActor)
+			SetRelation(pInvOwner->CharacterInfo().Relations().GetRelationType(pActor->ID(), pActor->CharacterInfo().Community().index()));
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-/*
+
 void  CUICharacterInfo::SetRelation(ALife::ERelationType relation)
 {
 	shared_str relation_str;
@@ -268,7 +300,7 @@ void  CUICharacterInfo::SetRelation(ALife::ERelationType relation)
 		UIRelation.SetWndRect(offset, UIRelation.GetWndRect().top, GetWndRect().right - offset - 10, UICommunity.GetWndRect().bottom - UIRelation.GetWndRect().top);
 	}
 }
-*/
+
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -278,4 +310,5 @@ void CUICharacterInfo::ResetAllStrings()
 	UIRank.SetText("");
 	UICommunity.SetText("");
 	UIRelation.SetText("");
+	UIReputation.SetText("");
 }

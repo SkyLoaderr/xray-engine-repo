@@ -42,7 +42,13 @@ float CAI_Stalker::evaluate		(const CGameObject *object) const
 
 ALife::ERelationType  CAI_Stalker::tfGetRelationType	(const CEntityAlive *tpEntityAlive) const
 {
-	ALife::ERelationType relation = CInventoryOwner::CharacterInfo().Relations().GetRelationType(tpEntityAlive->ID());
+	const CInventoryOwner* pOtherIO = smart_cast<const CInventoryOwner*>(tpEntityAlive);
+	
+	ALife::ERelationType relation = ALife::eRelationTypeDummy;
+		
+	if(pOtherIO)
+		relation = CInventoryOwner::CharacterInfo().Relations().GetRelationType(tpEntityAlive->ID(), pOtherIO->CharacterInfo().Community().index());
+	
 	if(ALife::eRelationTypeDummy != relation)
 		return relation;
 	else

@@ -58,6 +58,7 @@ CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection)
 
 #ifdef XRGAME_EXPORTS
 	m_character_profile_init	= false;
+	m_community_index			= NO_COMMUNITY_INDEX;
 #endif
 
 	m_trader_flags.zero			();
@@ -94,6 +95,12 @@ void CSE_ALifeTraderAbstract::STATE_Write	(NET_Packet &tNetPacket)
 #endif
 	tNetPacket.w_u32			(m_trader_flags.get());
 	tNetPacket.w_s32			(m_iCharacterProfile);
+
+#ifdef XRGAME_EXPORTS
+	tNetPacket.w_s32			(m_community_index);
+#else
+	tNetPacket.w_s32			(NO_COMMUNITY_INDEX);
+#endif
 }
 
 void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
@@ -112,10 +119,12 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 			m_trader_flags.assign(tNetPacket.r_u32());
 		if (m_wVersion > 81)
 			tNetPacket.r_s32	(m_iCharacterProfile);
+		if (m_wVersion > 85)
+			tNetPacket.r_s32	(m_community_index);
 	}
 
 #ifdef XRGAME_EXPORTS
-	relation_registry.Init(base()->ID);
+	relation_registry.Init(base()->ID, m_community_index);
 #endif
 }
 
@@ -251,6 +260,7 @@ void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_INDEX n
 	}
 
 #ifdef XRGAME_EXPORTS
+	m_community_index = selected_char.Community().index();
 	CSE_ALifeCreatureAbstract* creature = smart_cast<CSE_ALifeCreatureAbstract*>(base());
 	if (creature)
 		creature->s_team = selected_char.Community().team();
@@ -289,9 +299,9 @@ PROFILE_INDEX CSE_ALifeTraderAbstract::character_profile()
 
 #ifdef XRGAME_EXPORTS
 
-ALife::ERelationType CSE_ALifeTraderAbstract::get_relation (u16 person_id)
+ALife::ERelationType CSE_ALifeTraderAbstract::get_relation (u16 person_id, CHARACTER_COMMUNITY_INDEX comm_index)
 {
-	return relation_registry.GetRelationType(person_id);
+	return relation_registry.GetRelationType(person_id, comm_index);
 }
 
 #endif

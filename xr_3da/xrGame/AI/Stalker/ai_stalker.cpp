@@ -375,8 +375,9 @@ void CAI_Stalker::UpdateCL()
 
 void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
-	if(smart_cast<CActor*>(who))
-		CInventoryOwner::CharacterInfo().Relations().SetRelationType(who->ID(), ALife::eRelationTypeEnemy);
+	CActor* pActor = smart_cast<CActor*>(who);
+	if(pActor)
+		CInventoryOwner::CharacterInfo().Relations().SetRelationType(pActor->ID(), pActor->CharacterInfo().Community().index(), ALife::eRelationTypeEnemy);
 
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 }

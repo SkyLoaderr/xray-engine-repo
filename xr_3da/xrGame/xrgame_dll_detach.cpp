@@ -41,7 +41,7 @@ void clean_game_globals()
 	CEncyclopediaArticle::DeleteIdToIndexData		();
 	CCharacterInfo::DeleteIdToIndexData				();
 	CSpecificCharacter::DeleteIdToIndexData			();
-	CHARACTER_COMMUNITY::DeleteCommunitiesNames		();
+	CHARACTER_COMMUNITY::DeleteIdToIndexData		();
 	CPhraseDialog::DeleteIdToIndexData				();
 	CGameTask::DeleteIdToIndexData					();
 
