@@ -72,6 +72,7 @@ namespace PS
             dfVelocityScale	= (1<<18),
             dfCollisionDyn	= (1<<19),
 			dfWorldAlign	= (1<<20),
+            dfFaceAlign		= (1<<21),
 		};
 		shared_str		  	m_Name;
 		Flags32				m_Flags;

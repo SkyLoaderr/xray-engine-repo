@@ -264,6 +264,13 @@ struct EPARestore : public EParticleAction
     virtual void	Compile		(IWriter& F);
 };
 
+struct EPAScatter : public EParticleAction
+{
+					EPAScatter	();
+    virtual void	Compile		(IWriter& F);
+    virtual void 	Render		(const Fmatrix& parent);
+};
+
 struct EPASink : public EParticleAction
 {
 					EPASink		();

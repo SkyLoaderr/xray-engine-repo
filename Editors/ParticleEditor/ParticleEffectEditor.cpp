@@ -227,14 +227,15 @@ void PS::CPEDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
     P=PHelper().CreateFlag32(items,PrepareKey	(pref,"Movement\\Align To Path"), 					&m_Flags, dfAlignToPath);
     P->OnChangeEvent.bind	(this,&PS::CPEDef::OnFlagChange);
     if (m_Flags.is(dfAlignToPath)){
-	    PHelper().CreateFlag32(items,PrepareKey	(pref,"Movement\\World Align"), 					&m_Flags, dfWorldAlign);
+	    PHelper().CreateFlag32(items,PrepareKey	(pref,"Movement\\Align To Path\\Face Align"), 		&m_Flags, dfFaceAlign);
+	    PHelper().CreateFlag32(items,PrepareKey	(pref,"Movement\\Align To Path\\Deafult World Align"), &m_Flags, dfWorldAlign);
     	PHelper().CreateAngle3(items,PrepareKey	(pref,"Movement\\Align To Path\\Default Rotate"),	&m_APDefaultRotation);
     }
 	// velocity scale
     P=PHelper().CreateFlag32(items,PrepareKey	(pref,"Movement\\Velocity Scale"),					&m_Flags, dfVelocityScale);
     P->OnChangeEvent.bind	(this,&PS::CPEDef::OnFlagChange);
     if (m_Flags.is(dfVelocityScale))
-    	PHelper().CreateVector(items,PrepareKey		(pref,"Movement\\Velocity Scale\\Value"),		&m_VelocityScale, -1000.f, 1000.f);
+    	PHelper().CreateVector(items,PrepareKey	(pref,"Movement\\Velocity Scale\\Value"),			&m_VelocityScale, -1000.f, 1000.f);
 	// collision
     P=PHelper().CreateFlag32(items,PrepareKey	(pref,"Movement\\Collision"),						&m_Flags, dfCollision);
     P->OnChangeEvent.bind	(this,&PS::CPEDef::OnFlagChange);

@@ -7,7 +7,7 @@
 
 namespace PAPI{
 	#pragma pack (push,4)
-	struct pDomain
+	struct PARTICLES_API pDomain
 	{
 		PDomainEnum type;			// PABoxDomain, PASphereDomain, PAConeDomain...
 		pVector 	p1, p2;			// Box vertices, Sphere center, Cylinder/Cone ends

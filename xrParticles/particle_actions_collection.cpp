@@ -925,8 +925,7 @@ void PAJet::Transform(const Fmatrix& m)
 // Accelerate particles form center
 void PAScatter::Execute(ParticleEffect *effect, float dt)
 {
-/*
-	float magdt = magnitude * dt;
+	float magdt 		= magnitude * dt;
 	float max_radiusSqr = max_radius * max_radius;
 	
 	if(max_radiusSqr < P_MAXFLOAT)
@@ -945,7 +944,9 @@ void PAScatter::Execute(ParticleEffect *effect, float dt)
 			if(rSqr < max_radiusSqr)
 			{
 				pVector accel;
-				acc.Generate(accel);
+                accel = dir/_sqrt(rSqr);
+                
+//				acc.Generate(accel);
 				
 				// Step velocity with acceleration
 				m.vel += accel * (magdt / (rSqr + epsilon));
@@ -966,13 +967,12 @@ void PAScatter::Execute(ParticleEffect *effect, float dt)
 			float rSqr = dir.length2();
 			
 			pVector accel;
-			acc.Generate(accel);
+            accel = dir/_sqrt(rSqr);
 			
 			// Step velocity with acceleration
 			m.vel += accel * (magdt / (rSqr + epsilon));
 		}
 	}
-*/    
 }
 void PAScatter::Transform(const Fmatrix& m)
 {

@@ -88,9 +88,9 @@ void CParticleManager::PlayEffect(int effect_id, int alist_id)
 	// Step through all the actions in the action list.
 	for(PAVecIt it=pa->begin(); it!=pa->end(); it++){
 		switch((*it)->type){
-		case PASourceID:
-			dynamic_cast<PASource*>(*it)->m_Flags.set(PASource::flSilent,FALSE);
-			break;
+		case PASourceID: 	static_cast<PASource*>(*it)->m_Flags.set(PASource::flSilent,FALSE); break;
+		case PAExplosionID: static_cast<PAExplosion*>(*it)->age = 0.f; break;
+		case PATurbulenceID:static_cast<PATurbulence*>(*it)->age = 0.f; break;
 		}
 	}
 }
@@ -103,9 +103,7 @@ void CParticleManager::StopEffect(int effect_id, int alist_id, BOOL deffered)
     // Step through all the actions in the action list.
     for(PAVecIt it=pa->begin(); it!=pa->end(); it++){
         switch((*it)->type){
-        case PASourceID:
-            dynamic_cast<PASource*>(*it)->m_Flags.set(PASource::flSilent,TRUE);
-            break;
+        case PASourceID: static_cast<PASource*>(*it)->m_Flags.set(PASource::flSilent,TRUE);		break;
         }
     }
 	if (!deffered){
@@ -145,7 +143,7 @@ void CParticleManager::Transform(int alist_id, const Fmatrix& full, const Fvecto
 		switch((*it)->type)
 		{
 		case PASourceID:
-			dynamic_cast<PASource*>(*it)->parent_vel = pVector(vel.x,vel.y,vel.z)*dynamic_cast<PASource*>(*it)->parent_motion;
+			static_cast<PASource*>(*it)->parent_vel = pVector(vel.x,vel.y,vel.z)*static_cast<PASource*>(*it)->parent_motion;
 			break;
 		}
 	}
@@ -217,6 +215,7 @@ ParticleAction* CParticleManager::CreateAction(PActionEnum type)
     case PATargetVelocityDID:   pa = xr_new<PATargetVelocity>();	break;
     case PAVortexID:    		pa = xr_new<PAVortex>();			break;
     case PATurbulenceID:		pa = xr_new<PATurbulence>();		break;
+    case PAScatterID:  			pa = xr_new<PAScatter>();			break;
     default: NODEFAULT;
     }
     pa->type					= type;

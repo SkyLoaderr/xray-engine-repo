@@ -285,6 +285,24 @@ void PARestore::Save		(IWriter& F)
     F.w_float		(time_left);
 }
 
+void PAScatter::Load		(IReader& F)
+{
+	ParticleAction::Load	(F);
+	F.r_fvector3	(center);
+	magnitude		= F.r_float();
+	epsilon			= F.r_float();
+	max_radius		= F.r_float();
+	centerL			= center;
+}
+void PAScatter::Save		(IWriter& F)
+{
+	ParticleAction::Save   	(F);
+	F.w_fvector3	(center);
+	F.w_float		(magnitude);
+	F.w_float		(epsilon);
+	F.w_float		(max_radius);
+}
+
 void PASink::Load			(IReader& F)
 {
 	ParticleAction::Load 	(F);

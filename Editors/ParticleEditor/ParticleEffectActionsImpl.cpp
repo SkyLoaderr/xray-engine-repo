@@ -30,6 +30,7 @@ xr_token2					actions_token		[ ]={
     { "Random Displace",	"Immediately replace position with a position from the domain.", 			PARandomDisplaceID		},        
     { "Random Velocity",	"Immediately replace velocity with a velocity from the domain.", 			PARandomVelocityID		},        
     { "Restore",			"Over time, restore particles to their secondary positions.", 				PARestoreID				},        
+    { "Scatter",			"Scatter particles from center.", 											PAScatterID				},
     { "Sink",				"Kill particles with positions on wrong side of the specified domain.", 	PASinkID				},        
     { "Sink Velocity",		"Kill particles with velocities on wrong side of the specified domain.", 	PASinkVelocityID		},        
     { "Source",				"Add particles in the specified domain.", 									PASourceID				},        
@@ -39,7 +40,7 @@ xr_token2					actions_token		[ ]={
     { "Target Rotate",		"Change rotate of all particles toward the specified rotation.", 			PATargetRotateID		},        
     { "Target Velocity",	"Change velocity of all particles toward the specified velocity.", 			PATargetVelocityID		},        
     { "Vortex",				"Swirl particles around a vortex.", 										PAVortexID				},        
-    { "Turbulence",			"A Turbulence.",																PATurbulenceID			},        
+    { "Turbulence",			"A Turbulence.",															PATurbulenceID			},        
     { 0,					0				  	 	}
 };
 
@@ -66,6 +67,7 @@ EParticleAction* pCreateEActionImpl(PAPI::PActionEnum type)
     case PAPI::PARandomDisplaceID:  pa = xr_new<EPARandomDisplace>	();	break;
     case PAPI::PARandomVelocityID:  pa = xr_new<EPARandomVelocity>	();	break;
     case PAPI::PARestoreID:    		pa = xr_new<EPARestore>			();	break;
+    case PAPI::PAScatterID:			pa = xr_new<EPAScatter>			();	break;
     case PAPI::PASinkID:    		pa = xr_new<EPASink>		   	();	break;
     case PAPI::PASinkVelocityID:    pa = xr_new<EPASinkVelocity>   	();	break;
     case PAPI::PASourceID:    		pa = xr_new<EPASource>			();	break;
@@ -254,7 +256,7 @@ void pExplosion(IWriter& F, const Fvector& center, float velocity,
 	S.epsilon		= epsilon;
 	S.age			= age;
 	S.m_Flags.set	(ParticleAction::ALLOW_ROTATE,allow_rotate);
-	
+
 	if(S.epsilon < 0.0f)
 		S.epsilon 	= EPS_L;
 	
@@ -436,6 +438,22 @@ void pRestore(IWriter& F, float time_left)
 	S.type			= PARestoreID;
 	
 	S.time_left		= time_left;
+	
+    F.w_u32			(S.type);
+	S.Save			(F);
+}
+
+void pScatter(IWriter& F, const Fvector& center, float magnitude, float epsilon, float max_radius, BOOL allow_rotate)
+{
+	PAScatter 		S;
+	S.type			= PAScatterID;
+	
+	S.centerL		= pVector(center.x, center.y, center.z);
+	S.center		= S.centerL;
+	S.magnitude		= magnitude;
+	S.epsilon		= epsilon;
+	S.max_radius	= max_radius;
+	S.m_Flags.set	(ParticleAction::ALLOW_ROTATE,allow_rotate);
 	
     F.w_u32			(S.type);
 	S.Save			(F);
@@ -661,11 +679,11 @@ EPAExplosion::EPAExplosion			():EParticleAction(PAPI::PAExplosionID)
 	actionType						= "Explosion";
 	actionName						= actionType;
     appendVector					("Center",PVector::vNum, 0.f,0.f,0.f);
-    appendFloat						("Velocity",0.f);
-    appendFloat						("Magnitude",0.f);
-    appendFloat						("Standart Dev",0.f);
-    appendFloat						("Epsilon",EPS_L);
-    appendFloat						("Age",0.f);
+    appendFloat						("Velocity",		1.f);
+    appendFloat						("Magnitude",		2.f);
+    appendFloat						("Standart Dev",	3.f,EPS);
+    appendFloat						("Epsilon",			EPS_L,EPS);
+    appendFloat						("Age",				0.f,0.f);
     appendBool						("Allow Rotate",	TRUE);
 }
 void	EPAExplosion::Compile	  	(IWriter& F)
@@ -864,6 +882,28 @@ EPARestore::EPARestore				():EParticleAction(PAPI::PARestoreID)
 void	EPARestore::Compile			(IWriter& F)
 {
     pRestore(F,_float("Time").val);
+}
+
+EPAScatter::EPAScatter				():EParticleAction(PAPI::PAScatterID)
+{
+	actionType						= "Scatter";
+	actionName						= actionType;
+    appendVector					("Center",PVector::vNum, 0.f,0.f,0.f);
+    appendFloat						("Magnitude",0.f);
+    appendFloat						("Epsilon",EPS_L);
+    appendFloat						("Max Radius",P_MAXFLOAT);
+    appendBool						("Allow Rotate",	TRUE);
+}
+void	EPAScatter::Compile	 		(IWriter& F)
+{
+    pScatter(F,_vector("Center").val, _float("Magnitude").val, _float("Epsilon").val, _float("Max Radius").val, _bool("Allow Rotate").val);
+}
+void	EPAScatter::Render	   		(const Fmatrix& parent)
+{
+	EParticleAction::Render			(parent);
+    RCache.set_xform_world			(parent);
+    Device.SetShader				(Device.m_WireShader);
+    DU.DrawCross					(_vector("Center").val, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, 0x600000ff);
 }
 
 EPASink::EPASink					():EParticleAction(PAPI::PASinkID)
@@ -1090,13 +1130,13 @@ void	EPATurbulence::Render		(const Fmatrix& parent)
 	
     for (i = 0; i < detail; i++){
         for (j = 0; j < detail; j++){
-            if(1){
+//			if(1){
                 kb = 0;
                 ke = detail;
-            }else{
-                kb = detail/2;
-                ke = detail/2+1;
-            }
+//      	}else{
+//				kb = detail/2;
+//				ke = detail/2+1;
+//			}
             for (k = kb; k < ke; k++){
                 vec[0] = (((float)i/(float)detail)-0.5)*2.0*draw_area;
                 vec[1] = (((float)j/(float)detail)-0.5)*2.0*draw_area;
