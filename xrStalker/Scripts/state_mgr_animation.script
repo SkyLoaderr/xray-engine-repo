@@ -504,9 +504,9 @@ function animation:set_state(id, reset)
 end
 --' апдейт
 function animation:update()
---	printf("update")
+	printf("update")
 --	printf("		time %s", device():time_global())				
---	printf("		current state %s", utils.to_str(self.states.current_state))
+	printf("		current state %s", utils.to_str(self.states.current_state))
 --	printf("		target state %s", utils.to_str(self.states.target_state))
 --	printf("		anims %s", self.npc:animation_count())
 	self.is_called = false
@@ -631,7 +631,7 @@ function animation:play_rnd(state, rnd)
 end
 -- Инициализация коллбека
 function animation:callback_init()
---		printf("callback init")
+		printf("callback init")
 		
 		if self.mgr.callback ~= nil and
 		   self.mgr.callback.func ~= nil and
@@ -639,7 +639,7 @@ function animation:callback_init()
 		   self.mgr.callback.begin == nil
 		then
 				self.mgr.callback.begin = device():time_global()
---				printf("		Callback initialized %s", device():time_global())				
+				printf("		Callback initialized %s", device():time_global())				
 		end
 end
 --' обработка колбека на время
@@ -650,17 +650,16 @@ function animation:callback_process()
 		   self.mgr.callback.func ~= nil and
 		   self.mgr.callback.begin ~= nil
 		then
---			printf("callback process")
---			printf("	%s - %s ? %s", device():time_global(), utils.to_str(self.mgr.callback.begin), utils.to_str(self.mgr.callback.timeout))
+			printf("callback process")
+			printf("	%s - %s ? %s", device():time_global(), utils.to_str(self.mgr.callback.begin), utils.to_str(self.mgr.callback.timeout))
 			if device():time_global() - self.mgr.callback.begin >= self.mgr.callback.timeout then
---				printf("		Callback called %s", device():time_global())
+				printf("		Callback called %s", device():time_global())
 				
 				local a = self.mgr.callback.func
 				local b = self.mgr.callback.obj
 				self.mgr.callback.begin = nil
 				self.mgr.callback.func = nil
 				a(b)
---				self.mgr.callback.func(self.mgr.callback.obj)				
 				ret = true
 			end
 		end
