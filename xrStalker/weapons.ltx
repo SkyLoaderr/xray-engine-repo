@@ -561,7 +561,7 @@ flame			         = ShotFlame1, ShotFlame2, ShotFlame3
 
 smoke_particles			= weapons\generic_shoot_00
 
-shell_point		 = 0.0, 0.05, 0.05
+shell_point		 = 0.0, 0.04, 0.09
 shell_dir		 = 0.0, 1.0, 0.0
 shell_particles	 = weapons\generic_shells
 
@@ -572,8 +572,8 @@ hit_power                = 50 		;//WAS "60"!!!
 hit_impulse		         = 60
 hit_type = wound
 
-fire_distance            = 600
-rpm                      = 600
+fire_distance            = 300
+rpm                      = 500
 ; end ttc
 
 hud                      = wpn_vintorez_hud
@@ -805,7 +805,7 @@ inv_grid_y			= 4
 
 cam_relax_speed          = 10.0
 cam_dispersion           = 2.1
-cam_max_angle		 = 9
+cam_max_angle		 = 5; 9
 
 fire_dispersion          = 0.2
 fire_dispersion_add      = 1.0
@@ -828,7 +828,7 @@ flame			 = ShotFlame1, ShotFlame2, ShotFlame3
 
 smoke_particles			= weapons\generic_shoot_00
 
-shell_point		 = 0.2, 0.05, 0.07
+shell_point		 = 0.0, 0.04, 0.09
 shell_dir		 = 0.0, 1.0, 0.0
 shell_particles	 = weapons\generic_shells
 
@@ -840,7 +840,7 @@ hit_impulse		 = 70
 hit_type = wound
 
 fire_distance            = 300
-rpm                      = 600
+rpm                      = 500
 ; end ttc
 
 hud                      = wpn_val_hud
@@ -937,11 +937,11 @@ inv_grid_height		= 2
 inv_grid_x			= 5
 inv_grid_y			= 5
 
-cam_relax_speed          = 10.0
+cam_relax_speed          = 8.0
 cam_dispersion           = 2.1
 cam_max_angle		 = 9
 
-fire_dispersion          = 0.5	;2.5
+fire_dispersion          = 0.4	;0,5
 fire_dispersion_add      = 4.0	;1.0
 fire_dispersion_relax    = 0.5
 fire_dispersion_base	 = 1.0
@@ -955,7 +955,7 @@ condition_shot_dec = 0.0003					;увеличение износа при каждом выстреле
 
 direction                = 0, 0, 1
 fire_point               = 0.0, 0.1, 0.75
-fire_point2               = 0.0, 0.1, 0.75 ;0.0, 0.1, 0.72
+fire_point2               = 0.0, 0.0, 0.75 ;0.0, 0.1, 0.72
 flame_div                = 7
 flame_length             = .3
 flame_size               = 0.07
@@ -965,7 +965,7 @@ flame_particles		    = weapons\generic_weapon05
 smoke_particles		    = weapons\generic_shoot_00
 grenade_flame_particles = weapons\generic_weapon01
 
-shell_point		 = 0.20, 0.03, -0.07
+shell_point		 = -0.02, 0.05, 0.37
 shell_dir		 = 0.0, 0.0, 0.4
 shell_particles	 = weapons\generic_shells
 
@@ -1053,11 +1053,11 @@ silencer_light_time 		 = 0.2
  
 [wpn_ak74_hud]
 
-shell_point          = -0.1, 0.0, 0.05
+shell_point          = 0.1, 0.0, 0.15
 shell_dir		     = 0.0, 1.0, 0.0
 
 fire_point               = 0.45, 0.00, -0.05
-fire_point2              = 0.45, -0.02, -0.05	;0.45, 0.0, 0.04
+fire_point2              = 0.45, -0.04, -0.05	;0.45, 0.0, 0.04
 fire_bone                = wpn_body
 orientation              = 0, 0, 0
 position                 = 0, 0, 0
@@ -1124,9 +1124,9 @@ inv_grid_height		= 2
 inv_grid_x			= 0
 inv_grid_y			= 14
 
-cam_relax_speed          = 10.0
+cam_relax_speed          = 12.0; 10
 cam_dispersion           = 2.1
-cam_max_angle		 = 9
+cam_max_angle		 = 6; 9
 
 fire_dispersion          = 0.5
 fire_dispersion_add      = 3.0
@@ -1152,7 +1152,7 @@ smoke_particles		    = weapons\generic_shoot_00
 grenade_flame_particles = weapons\generic_weapon01
 
 
-shell_point		 = -0.20, 0.0, 0.05
+shell_point		 = 0, 0.050, 0.1
 shell_dir		 = 0.0, 0.0, 0.4
 shell_particles	 = weapons\generic_shells
 
@@ -1281,7 +1281,7 @@ inv_grid_height		= 1
 inv_grid_x			= 16
 inv_grid_y			= 7
 
-cam_relax_speed          = 5.5
+cam_relax_speed          = 15; 5.5
 cam_dispersion           = 2
 cam_max_angle		 = 5
 fire_dispersion          = 0.5
@@ -1414,7 +1414,7 @@ inv_grid_height		= 1
 inv_grid_x			= 18
 inv_grid_y			= 6
 
-cam_relax_speed          = 5.5
+cam_relax_speed          = 12, 5.5
 cam_dispersion           = 2
 cam_max_angle		 = 5
 
@@ -1548,9 +1548,9 @@ inv_grid_height		= 1
 inv_grid_x			= 15
 inv_grid_y			= 6
 
-cam_relax_speed          = 5.5
+cam_relax_speed          = 20; 5.5
 cam_dispersion           = 2
-cam_max_angle		 = 5
+cam_max_angle		 = 2 ;5
 
 fire_dispersion          = 1
 fire_dispersion_add      = 1
@@ -1684,11 +1684,11 @@ inv_grid_height		= 1
 inv_grid_x			= 19
 inv_grid_y			= 5
 
-cam_relax_speed          = 5.5
+cam_relax_speed          = 25;5.5
 cam_dispersion           = 2
 cam_max_angle		 = 2
 
-fire_dispersion          = 0.5
+fire_dispersion          = 0.2; 0.5
 fire_dispersion_add      = 1
 fire_dispersion_relax    = 3
 fire_dispersion_base	 = 1.5
@@ -1819,7 +1819,7 @@ inv_grid_height		= 1
 inv_grid_x			= 11
 inv_grid_y			= 8
 
-cam_relax_speed          = 5.5
+cam_relax_speed          = 15; 5.5
 cam_dispersion           = 2
 cam_max_angle		 = 5
 
@@ -1855,7 +1855,7 @@ rpm_empty_click 	 = 200
 
 ; ttc
 hit_power                = 60
-hit_impulse		 		 = 75
+hit_impulse		 		 = 100
 hit_type = wound
 
 fire_distance            = 120
@@ -2530,8 +2530,8 @@ inv_grid_y			= 0
 ;cam_relax              = 0.37
 ;cam_dispersion         = 2
 direction               = 0, 0, 1
-shell_point				= 0.0, 0.0, 0.0
-fire_point              = 0.0, 0.0, 0.95
+
+fire_point              = 0.0, -0.01, 0.95
 flame_div               = 7
 flame_length            = .3
 flame_size              = 0.07
@@ -2540,11 +2540,11 @@ flame_particles		    = weapons\generic_weapon05
 smoke_particles		   = weapons\generic_shoot_00
 rpm_empty_click 		= 200
 ; ttc
-shell_point		 = 0.25, -0.03, 0.05
+shell_point		 = 0.0, -0.03, 0.05
 shell_dir		 = 0.0, 0.0, 0.4
 shell_particles	 = weapons\generic_shells
 
-hit_power                = 65
+hit_power                = 80
 hit_impulse		 		 = 200		;120
 hit_type = wound
 
@@ -2592,10 +2592,10 @@ snd_reload			= weapons\svd_reload
  
 [wpn_svd_hud]
 
-shell_point		 = 0.15, -0.03, 0.05
+shell_point		 = 0.0, -0.03, 0.05 ; 0.15, -0.03, 0.05
 shell_dir		 = 0.0, 1.0, 0.0
 
-fire_point               = 0.3, -0.07, 0.15
+fire_point               = 0.3, -0.1, 0.15; 0.3, -0.07, 0.15
 fire_bone                = wpn_body
 orientation              = 0, 0, 0
 position                 = 0, 0, 0
@@ -2632,9 +2632,9 @@ ammo_class		 = ammo_7.62x54_7h1, ammo_7.62x54_ap, ammo_7.62x54_7h14
 
 resource		= 6000
 
-cam_relax_speed          = 5.5
+cam_relax_speed          = 10; 5.5
 cam_dispersion           = 2
-cam_max_angle		 = 4
+cam_max_angle		 = 3; 4
 fire_dispersion          = 0.1
 fire_dispersion_add      = 3
 fire_dispersion_relax    = 4
@@ -2660,13 +2660,13 @@ inv_grid_y			= 4
 ;cam_dispersion           = 2
 direction                = 0, 0, 1
 shell_point		 = 0.0, 0.0, 0.0
-fire_point               = 0.0, 0.03, 0.6
+fire_point               = 0.0, 0.00, 0.6
 fire_point2              = 0.0, 0.0, 0.0
 flame_div                = 3
 flame_length             = .1
 flame_size               = 0.04
 
-flame_particles		   = weapons\generic_weapon05
+flame_particles		   = weapons\generic_weapon06
 smoke_particles		   = weapons\generic_shoot_00
 rpm_empty_click 	 = 200
 ; ttc
@@ -2675,11 +2675,11 @@ shell_dir		 = 0.0, 0.0, 0.4
 shell_particles	 = weapons\generic_shells
 
 hit_power                = 65
-hit_impulse		 = 127
+hit_impulse	        	 = 150
 hit_type = wound
 
 fire_distance            = 600
-rpm                      = 300
+rpm                      = 600
 ; end ttc
 hud                      = wpn_svu_hud
 normal                   = 0, 1, 0
