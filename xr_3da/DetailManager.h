@@ -66,13 +66,7 @@ public:
 #ifdef _EDITOR
 	virtual ObjectList*		GetSnapObjects	()=0;
 #endif
-	IC bool					UseVS			()	{ 
-#ifdef _EDITOR
-    	return false; 
-#else    
-    	return HW.Caps.vertex.dwVersion >= CAP_VERSION(1,1); 
-#endif
-    }
+	IC bool					UseVS			()		{ return HW.Caps.vertex.dwVersion >= CAP_VERSION(1,1); }
 
 	CVS*					soft_VS;
 	void					soft_Load		();
