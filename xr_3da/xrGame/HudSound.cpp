@@ -64,6 +64,7 @@ void HUD_SOUND::PlaySound(HUD_SOUND&		hud_snd,
 						  const CObject*	parent,
 						  bool				hud_mode)
 {
+	VERIFY2					(hud_snd.snd.handle,"Trying to play non-existant or destroyed sound");
 	hud_snd.snd.set_volume	(hud_snd.volume);
 	hud_snd.snd.play_at_pos	(const_cast<CObject*>(parent),
 							position,
