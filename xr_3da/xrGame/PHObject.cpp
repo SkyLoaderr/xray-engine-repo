@@ -31,6 +31,7 @@ void CPHObject::EnableObject()
 void CPHObject::deactivate()
 {
 	if(!b_activated)return;
+	VERIFY(m_island.IsActive(),"can not do it in during processing");
 	ph_world->RemoveObject(PH_OBJECT_I(this));
 	b_activated=false;
 }
