@@ -124,8 +124,6 @@ void CPlanner::update				(u32 time_delta)
 {
 	solve						();
 
-	VERIFY						(!solution().empty());
-
 #ifdef LOG_ACTION
 	// printing solution
 	if (m_use_log) {
@@ -171,6 +169,8 @@ void CPlanner::update				(u32 time_delta)
 //		VERIFY2						(!m_failed,"Problem solver couldn't build a valid path - verify your conditions, effects and goals!");
 	}
 #endif
+
+	VERIFY						(!solution().empty());
 
 	if (initialized()) {
 		if (current_action_id() != solution().front()) {
