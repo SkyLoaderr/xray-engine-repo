@@ -40,9 +40,6 @@ static		HWND			logoWindow		= NULL;
 
 int				doLauncher					();
 ENGINE_API	bool			g_bBenchmark	= false;
-ENGINE_API	Flags32			g_bPause;
-ENGINE_API		float		g_fPause_TimeGlobal		=0.0f;
-ENGINE_API		float		g_dwPause_TimeGlobal	=0;
 
 // -------------------------------------------
 // startup point
@@ -116,39 +113,10 @@ void execUserScript()
 
 void Startup				( )
 {
-/* --andy
-	// initialization
-	Engine.Initialize			( );
-	Device.Initialize			( );
-	CheckCopyProtection			( );
-
-	// Creation
-	string256					fname; 
-	FS.update_path				(fname,"$game_data$","system.ltx");
-	pSettings					= xr_new<CInifile>	(fname,TRUE);
-
-	Console						= xr_new<CConsole>	();
-	Console->Initialize			( );
-	Engine.External.Initialize	( );
-*/	
-		execUserScript();
-/*	{
-		strcpy						(Console->ConfigFile,"user.ltx");
-		if (strstr(Core.Params,"-ltx ")) {
-			string64				c_name;
-			sscanf					(strstr(Core.Params,"-ltx ")+5,"%[^ ] ",c_name);
-			strcpy					(Console->ConfigFile,c_name);
-		}
-		if (!FS.exist(Console->ConfigFile))
-			strcpy					(Console->ConfigFile,"user.ltx");
-		Console->ExecuteScript		(Console->ConfigFile);
-	}*/
+	execUserScript();
 	InitInput();
-//	BOOL bCaptureInput			= !strstr(Core.Params,"-i");
-//	pInput						= xr_new<CInput>		(bCaptureInput);
 	
 	InitSound();
-	//CSound_manager_interface::_create					(u64(Device.m_hWnd));
 
 	// ...command line for auto start
 	{
@@ -183,12 +151,10 @@ void Startup				( )
 
 	// Destroying
 	destroySound();
-//	CSound_manager_interface::_destroy				( );
 	destroyInput();
-//	xr_delete					( pInput		);
+
 	if(!g_bBenchmark)
 		destroySettings();
-//	xr_delete					( pSettings		);
 
 	LALib.OnDestroy				( );
 	
@@ -197,11 +163,7 @@ void Startup				( )
 	else
 		Console->Reset();
 
-//	Console->Destroy				( );
-//	xr_delete					(Console);
 	destroyEngine();
-//	Device.Destroy				( );
-//	Engine.Destroy				( );
 
 }
 
@@ -296,46 +258,12 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	InitSettings();
 	InitConsole();
 	
-//	g_bBenchmark = true;
-//	execUserScript();
 	if (strstr(lpCmdLine,"-launcher")) 
 	{
 		int l_res = doLauncher();
 		if (l_res != 0)
 			return 0;
 	};
-/*	{
-		InitLauncher();
-		int res = pLauncher(0);
-		FreeLauncher();
-		if(res == 1) // do benchmark
-			g_bBenchmark = true;
-	}
-	if(g_bBenchmark){ //perform benchmark cycle
-			string_path in_file;
-			FS.update_path(in_file,"$local_root$","tmp_benchmark.ini");
-			CInifile ini(in_file);
-			int test_count = ini.line_count("benchmark");
-			LPCSTR test_name,t;
-			ref_str test_command;
-			for(int i=0;i<test_count;++i){
-			ini.r_line( "benchmark", i, &test_name, &t);
-			
-			test_command = ini.r_string_wb("benchmark",test_name);
-			strlwr				(strcpy(Core.Params,*test_command));
-			
-			if(i){
-				ZeroMemory(&HW,sizeof(CHW));
-				InitEngine();
-			}
-
-			Engine.External.Initialize	( );
-			Startup	 				();
-		}
-		Core._destroy			();
-		return 0;
-
-	};*/
 	Engine.External.Initialize	( );
 	Startup	 				();
 	Core._destroy			();
