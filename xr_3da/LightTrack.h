@@ -9,6 +9,16 @@
 class ENGINE_API CLightTrack  
 {
 public:
+	struct Item 
+	{
+		int					id;
+		Collide::ray_cache	Cache;
+		float				fuzzy;			// note range: (-1[no]..1[yes])
+		float				fuzzy_smooth;
+		DWORD				mark;
+	};
+	vector<Item>			track;
+public:
 	CLightTrack();
 	~CLightTrack();
 };

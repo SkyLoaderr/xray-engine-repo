@@ -7,6 +7,7 @@
 DEF_VECTOR(vecI,int);
 
 class ENGINE_API CStream;
+class ENGINE_API CLightTrack;
 
 class ENGINE_API CLightDB_Static 
 {
@@ -36,6 +37,7 @@ public:
 
 	void	Select			(Fvector &pos, float fRadius, vector<xrLIGHT*>&	dest);
 	void	Select			(Fvector &pos, float fRadius);
+	void	Track			(Fvector &pos, float fRadius, CLightTrack& dest);
 
 	void	Load			(CStream *fs);
 	void	Unload			(void);
