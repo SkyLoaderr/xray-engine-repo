@@ -478,9 +478,6 @@
 				Name="Cross"
 				Filter="">
 				<File
-					RelativePath="ai_alife_cross_table.h">
-				</File>
-				<File
 					RelativePath="xrCrossTable.cpp">
 				</File>
 				<File
@@ -527,6 +524,9 @@
 				</File>
 				<File
 					RelativePath="NET_utils.h">
+				</File>
+				<File
+					RelativePath="ai_alife_cross_table.h">
 				</File>
 				<File
 					RelativePath="ai_alife_interfaces.h">

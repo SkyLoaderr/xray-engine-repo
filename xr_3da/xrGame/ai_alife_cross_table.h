@@ -18,7 +18,7 @@ public:
 		u32									dwVersion;
 		u32									dwNodeCount;
 		u32									dwGraphPointCount;
-	} SCrossTabelHeader;
+	} SCrossTableHeader;
 	
 	typedef struct tagSCrossTableCell {
 		u16									tGraphIndex;
@@ -26,7 +26,7 @@ public:
 	} SCrossTableCell;
 	#pragma pack(pop)
 
-	SCrossTabelHeader						m_tCrossTableHeader;
+	SCrossTableHeader						m_tCrossTableHeader;
 	CVirtualFileStream						*m_tpCrossTableVFS;
 	SCrossTableCell							*m_tpaCrossTable;
 
@@ -43,7 +43,7 @@ public:
 		Load								(fName);
 	};
 
-	~CCrossTable							()
+	~CALifeCrossTable						()
 	{
 		xr_delete							(m_tpCrossTableVFS);
 	};

@@ -133,7 +133,7 @@ void					xrBuildCrossTable(LPCSTR caProjectName)
 	
 	Phase				("Saving cross table");
 	CFS_Memory			tMemoryStream;
-	CCrossTable			tCrossTable;
+	CALifeCrossTable	tCrossTable;
 	
 	tCrossTable.m_tCrossTableHeader.dwVersion = XRAI_CURRENT_VERSION;
 	tCrossTable.m_tCrossTableHeader.dwNodeCount = iNodeCount;
@@ -148,7 +148,7 @@ void					xrBuildCrossTable(LPCSTR caProjectName)
 		for (int i=0; i<iNodeCount; i++) {
 			FLOAT_VECTOR_IT		I = tDistances.begin(), B = I;
 			FLOAT_VECTOR_IT		E = tDistances.end();
-			CCrossTable::SCrossTableCell tCrossTableCell;
+			CALifeCrossTable::SCrossTableCell tCrossTableCell;
 			tCrossTableCell.fDistance = fDistanceToSearch;
 			tCrossTableCell.tGraphIndex = u16(-1);
 			for ( ; I != E; I++)
