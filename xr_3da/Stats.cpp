@@ -186,7 +186,7 @@ void CStats::Show()
 		F.OutNext	("TEST 3:      %2.2fms, %d",TEST3.result,TEST3.count);
 #ifdef	DEBUG
 		F.OutSkip	();
-		F.OutNext	("dbg_strcmp:  %d",			Memory.stat_strcmp);
+		F.OutNext	("dbg_strcmp:  %d",			Memory.stat_strcmp);	Memory.stat_strcmp=0;
 #endif
 
 		//////////////////////////////////////////////////////////////////////////

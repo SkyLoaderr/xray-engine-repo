@@ -6,7 +6,7 @@
 #include "soundrender_source.h"
 #include "soundrender_emitter.h"
 
-int		psSoundTargets			= 12;
+int		psSoundTargets			= 16;
 Flags32	psSoundFlags			= {ssHardware | ssEAX};
 float	psSoundOcclusionScale	= 0.5f;
 float	psSoundCull				= 0.01f;
