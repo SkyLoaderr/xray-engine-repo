@@ -410,7 +410,7 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 	tpALifeHumanAbstract2->vfDetachAll();
 
 	int					l_iItemCount1 = -1, l_iItemCount2 = -1;
-	for (int j=0, k=0; j<8; j++) {
+	for (int j=0, k=0; j<7; j++) {
 		switch (k) {
 			case 0 : {
 				vfRunFunctionByIndex(tpALifeHumanAbstract1,tpALifeHumanAbstract2,j,0,l_iItemCount1,l_iItemCount2);
@@ -498,7 +498,8 @@ void CSE_ALifeSimulator::vfPerformCommunication()
 		SCHEDULE_P_IT	i = m_tpaCombatGroups[1].begin();
 		SCHEDULE_P_IT	e = m_tpaCombatGroups[1].end();
 		for ( ; i != e; i++) {
-			vfPerformTrading(dynamic_cast<CSE_ALifeHumanAbstract*>(*I),dynamic_cast<CSE_ALifeHumanAbstract*>(*i));
+			if ((*I)->children.size() || (*i)->children.size())
+				vfPerformTrading(dynamic_cast<CSE_ALifeHumanAbstract*>(*I),dynamic_cast<CSE_ALifeHumanAbstract*>(*i));
 			// update events
 #pragma todo("Dima to Dima: Update events")
 		}

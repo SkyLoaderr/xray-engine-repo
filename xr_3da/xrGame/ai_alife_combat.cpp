@@ -135,15 +135,17 @@ bool CSE_ALifeSimulator::bfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 			m_tCombatType			= eCombatTypeMonsterAnomaly;
 		}
 		else {
+			m_tCombatType			= eCombatTypeMonsterMonster;
 			if (tfGetRelationType(l_tpALifeMonsterAbstract1,l_tpALifeMonsterAbstract2) == eRelationTypeFriend) {
 				CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract1 = dynamic_cast<CSE_ALifeHumanAbstract*>(l_tpALifeMonsterAbstract1);
 				CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract2 = dynamic_cast<CSE_ALifeHumanAbstract*>(l_tpALifeMonsterAbstract2);
-				if (l_tpALifeHumanAbstract1 && l_tpALifeHumanAbstract2)
+				if (l_tpALifeHumanAbstract1 && l_tpALifeHumanAbstract2) {
+					iCombatGroupIndex = 0;
 					return(true);
+				}
 				else
 					return(false);
 			}
-			m_tCombatType			= eCombatTypeMonsterMonster;
 		}
 	}
 	
