@@ -493,6 +493,22 @@ SOURCE=.\BlenderDefault.cpp
 SOURCE=.\BlenderDefault.h
 # End Source File
 # End Group
+# Begin Group "Compiling"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\Blender_Recorder.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blender_Recorder.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\tss.h
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\Blender.cpp
@@ -505,18 +521,22 @@ SOURCE=.\Blender.h
 
 SOURCE=.\Blender_Params.h
 # End Source File
-# Begin Source File
-
-SOURCE=.\Blender_Recorder.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Blender_Recorder.h
-# End Source File
 # End Group
 # Begin Source File
 
-SOURCE=.\tss.h
+SOURCE=.\Shader.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Shader.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Shader_TSS.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Shader_TSS.h
 # End Source File
 # Begin Source File
 
