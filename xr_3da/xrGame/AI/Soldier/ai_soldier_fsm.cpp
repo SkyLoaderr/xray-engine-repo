@@ -26,7 +26,7 @@
 #define RECHARGE_EPSILON				(0.f/6.f)
 
 #define SPECIAL_SQUAD					6
-/**/
+
 void CAI_Soldier::Test()
 {
 	WRITE_TO_LOG("Temporary test state");
