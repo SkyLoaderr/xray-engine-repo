@@ -337,7 +337,6 @@ void CActor::net_OwnershipReject	(CObject* O)
 	if (W) 
 	{
 		R_ASSERT							(BE(Local(),W->Local()));	// remote can't take local
-		R_ASSERT							(W->Local());
 		W->H_SetParent						(0);
 		int id	= Weapons->weapon_remove	(W);
 		Weapons->ActivateWeaponID			(id-1);
