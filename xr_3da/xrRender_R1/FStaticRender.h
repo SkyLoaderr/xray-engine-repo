@@ -91,6 +91,10 @@ private:
 public:
 	ShaderElement*						rimp_select_sh_static	(IRender_Visual	*pVisual, float cdist_sq);
 	ShaderElement*						rimp_select_sh_dynamic	(IRender_Visual	*pVisual, float cdist_sq);
+	D3DVERTEXELEMENT9*					getVB_Format			(int id);
+	IDirect3DVertexBuffer9*				getVB					(int id);
+	IDirect3DIndexBuffer9*				getIB					(int id);
+	FSlideWindowItem*					getSWI					(int id);
 	IRender_Portal*						getPortal				(int id);
 	IRender_Sector*						getSectorActive			();
 	IRender_Visual*						model_CreatePE			(LPCSTR			name);
@@ -130,10 +134,6 @@ public:
 	virtual ref_shader				getShader				(int id);
 	virtual IRender_Sector*			getSector				(int id);
 	virtual IRender_Visual*			getVisual				(int id);
-	virtual D3DVERTEXELEMENT9*		getVB_Format			(int id);
-	virtual IDirect3DVertexBuffer9*	getVB					(int id);
-	virtual IDirect3DIndexBuffer9*	getIB					(int id);
-	virtual FSlideWindowItem*		getSWI					(int id);
 	virtual IRender_Sector*			detectSector			(const Fvector& P);
 	virtual IRender_Target*			getTarget				();
 	

@@ -200,7 +200,7 @@ void FTreeVisual_PM::Load		(const char* N, IReader *data, u32 dwFlags)
 	R_ASSERT					(data->find_chunk(OGF_SWICONTAINER));
 	{
 		u32 ID					= data->r_u32		();
-		pSWI					= ::Render->getSWI	(ID);
+		pSWI					= RImplementation.getSWI	(ID);
 	}
 }
 void FTreeVisual_PM::Render		(float LOD)

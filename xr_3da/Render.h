@@ -183,12 +183,8 @@ public:
 	virtual ref_shader				getShader				(int id)									= 0;
 	virtual IRender_Sector*			getSector				(int id)									= 0;
 	virtual IRender_Visual*			getVisual				(int id)									= 0;
-	virtual D3DVERTEXELEMENT9*		getVB_Format			(int id)									= 0;
-	virtual IDirect3DVertexBuffer9*	getVB					(int id)									= 0;
-	virtual IDirect3DIndexBuffer9*	getIB					(int id)									= 0;
 	virtual IRender_Sector*			detectSector			(const Fvector& P)							= 0;
 	virtual IRender_Target*			getTarget				()											= 0;
-	virtual FSlideWindowItem*		getSWI					(int id)									= 0;
 
 	// Main 
 	IC		void					set_Frustum				(CFrustum*	O	)							{ VERIFY(O);	View = O;			}
