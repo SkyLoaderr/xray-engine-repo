@@ -230,17 +230,6 @@ IC	bool CProblemSolverAbstract::is_goal_reached(const _index_type &vertex_index)
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CProblemSolverAbstract::solve			()
-{
-#ifndef AI_COMPILER
-	if (m_actuality)
-		return;
-	bool						successful = ai().graph_engine().search(*this,target_state(),CState(),&m_solution,CGraphEngine::CSolverBaseParameters());
-	m_actuality					= successful;
-#endif
-}
-
-TEMPLATE_SPECIALIZATION
 IC	const xr_vector<typename CProblemSolverAbstract::_edge_type> &CProblemSolverAbstract::solution	() const
 {
 	return						(m_solution);
@@ -252,6 +241,18 @@ IC	typename CProblemSolverAbstract::COperator *CProblemSolverAbstract::get_opera
 	OPERATOR_VECTOR::iterator	I = std::lower_bound(m_operators.begin(), m_operators.end(),operator_id);
 	VERIFY						(m_operators.end() != I);
 	return						((*I).get_operator());
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CProblemSolverAbstract::solve			()
+{
+#ifndef AI_COMPILER
+	if (m_actuality)
+		return;
+	m_current_state.clear		();
+	bool						successful = ai().graph_engine().search(*this,target_state(),CState(),&m_solution,CGraphEngine::CSolverBaseParameters());
+	m_actuality					= successful;
+#endif
 }
 
 #undef TEMPLATE_SPECIALIZATION
