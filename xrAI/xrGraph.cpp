@@ -72,6 +72,8 @@ void vfLoafAIMap(LPCSTR name)
 	R_ASSERT	(m_header.version == XRAI_CURRENT_VERSION);
 	m_nodes		= (BYTE*) vfs->Pointer();
 
+	m_fSize2	= _sqr(m_header.size)/4;
+	m_fYSize2	= _sqr((float)(m_header.size_y/32767.0))/4;
 	// dispatch table
 	m_nodes_ptr	= (NodeCompressed**)xr_malloc(m_header.count*sizeof(void*));
 	Progress(0.0f);
