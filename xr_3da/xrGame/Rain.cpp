@@ -15,7 +15,7 @@ const float drop_width		= 0.025f;
 const float drop_angle		= 3.f;
 const float drop_speed_min	= 40.f;
 const float drop_speed_max	= 80.f;
-const int	max_particles	= 300;
+const int	max_particles	= 1000;
 const int	particles_update= 50;
 
 //////////////////////////////////////////////////////////////////////
@@ -187,6 +187,7 @@ void	CEffect_Rain::p_free(Particle* P)
 // startup new particle system
 void	CEffect_Rain::Hit		(Fvector& pos)
 {
+	if (0!=::Random.randI(4))	return;
 	Particle*	P	= p_allocate();
 	if (0==P)	return;
 
