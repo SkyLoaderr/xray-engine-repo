@@ -85,8 +85,10 @@ void CUICustomMap::MoveWndDelta(const Ivector2& d)
 
 void rotation_(int x, int y, const float angle, int& x_, int& y_)
 {
-	x_= iFloor(float(x)*_cos(angle)+float(y)*_sin(angle));
-	y_= iFloor(float(y)*_cos(angle)-float(x)*_sin(angle));
+	float _sc = _cos(angle);
+	float _sn = _sin(angle);
+	x_= iFloor(float(x)*_sc+float(y)*_sn);
+	y_= iFloor(float(y)*_sc-float(x)*_sn);
 }
 
 Ivector2 CUICustomMap::ConvertRealToLocal  (const Fvector2& src)// meters->pixels (relatively own left-top pos)

@@ -53,8 +53,4 @@ protected:
 	MotionSVec		mhud_add_cartridge;
 	MotionSVec		mhud_close;
 
-
-	bool			m_bTriStateReload;
-
-
 };

@@ -33,6 +33,7 @@ CWeapon::CWeapon(LPCSTR name)
 {
 	STATE				= NEXT_STATE		= eHidden;
 	m_sub_state			= eSubstateReloadBegin;
+	m_bTriStateReload	= false;
 	SetDefaults			();
 
 	m_Offset.identity		();
@@ -569,6 +570,7 @@ void CWeapon::OnH_B_Independent	()
 
 	m_strapped_mode				= false;
 	hud_mode					= FALSE;
+	m_bZoomMode					= false;
 	UpdateXForm					();
 
 	RemoveShotEffector			();
@@ -599,7 +601,8 @@ void CWeapon::OnHiddenItem ()
 {
 	inherited::OnHiddenItem();
 	if (m_pHUD)	m_pHUD->Hide ();
-	STATE = NEXT_STATE = eHidden;
+	STATE						= NEXT_STATE = eHidden;
+	m_bZoomMode					= false;
 }
 
 
@@ -986,7 +989,6 @@ CUIStaticItem* CWeapon::ZoomTexture()
 void CWeapon::SwitchState(u32 S)
 {
 	NEXT_STATE		= S;	// Very-very important line of code!!! :)
-
 	if (CHudItem::object().Local() && !CHudItem::object().getDestroy()/* && (S!=NEXT_STATE)*/ 
 		&& m_pInventory)	
 	{

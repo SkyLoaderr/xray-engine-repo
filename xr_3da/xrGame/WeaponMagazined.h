@@ -12,6 +12,7 @@ class ENGINE_API CMotionDef;
 //заканчиваем стрельбу, только, если кончились патроны
 #define WEAPON_ININITE_QUEUE -1
 
+
 class CWeaponMagazined: public CWeapon
 {
 private:

@@ -163,6 +163,7 @@ public:
 	BOOL					AutoSpawnAmmo		() const		{ return m_bAutoSpawnAmmo; };
 
 protected:
+	bool					m_bTriStateReload;
 	u8						m_sub_state;
 	// Weapon fires now
 	bool					bWorking2;
