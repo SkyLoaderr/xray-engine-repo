@@ -1,4 +1,24 @@
 
+
+local timeout = 60000
+local dist_for_report = 10
+local min_dist_to_report = 1
+
+local report_soldier_start      =   xr_sounds_id.sound_report_base  +   0
+local report_commander_start    =   report_soldier_start + 1
+local report_soldier            =   report_soldier_start + 2
+local report_commander          =   report_soldier_start + 3
+local report_soldier_end        =   report_soldier_start + 4
+
+local operators		= {}
+local properties	= {}
+	
+properties["leader_report"]             = xr_evaluators_id.sidor_report_leader      + 0
+properties["timeout_soldier"]           = xr_evaluators_id.sidor_report_soldier     + 0
+operators["report_leader"]              = xr_actions_id.sidor_act_report_leader     + 0
+operators["report_soldier"]             = xr_actions_id.sidor_act_report_soldier    + 0  
+
+
 ----------------------------------------------------------------------------------------------------------------------
 class "evaluator_const" (property_evaluator)
 ----------------------
@@ -13,101 +33,332 @@ end
 
 
 ----------------------------------------------------------------------------------------------------------------------
-class "action_move" (action_base)
+class "evaluator_timeout" (property_evaluator)
 ----------------------
-function action_move:__init (name) super (nil, name)
-    self.path = nil
+function evaluator_timeout:__init (name, leader_name) super ()
+    self.time = device ():time_global ()
+    self.leader_name = leader_name
 end
 ----------------------
-function action_move:initialize ()
+function evaluator_timeout:evaluate ()
+    if (device ():time_global () - self.time) > timeout then
+       local leader = level.object (self.leader_name)
+       if leader ~= nil and leader:alive () == true and distance_between (leader, self.object) < dist_for_report then 
+          leader:motivation_action_manager ():evaluator (properties["leader_report"]).npc = self.object
+          return true
+       end    
+    end   
+    return false
+end
+----------------------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------------------------------------------------------------------------
+class "evaluator_report" (property_evaluator)
+----------------------
+function evaluator_report:__init (name) super ()
+    self.npc = nil
+end
+----------------------
+function evaluator_report:evaluate ()
+    return self.npc ~= nil
+end
+----------------------------------------------------------------------------------------------------------------------
+
+
+
+----------------------------------------------------------------------------------------------------------------------
+class "evaluator_leader" (property_evaluator)
+----------------------
+function evaluator_leader:__init (name, leader_name) super ()
+    self.leader_name = leader_name
+end
+----------------------
+function evaluator_leader:evaluate ()
+    local leader = level.object (self.leader_name)
+    if leader ~= nil and leader:alive () == true and distance_between (leader, self.object) < dist_for_report then return true end
+    return false
+end
+----------------------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------------------------------------------------------------------------
+class "action_report_soldier" (action_base) 
+----------------------
+function action_report_soldier:__init (name, leader_name) super (nil, name)
+    self.leader_name = leader_name
+    self.leader = nil
+    self.stage = 0
+    self.sub_stage = 0
+    self.phrases = {}
+    self.current_phrase = 1
+    self.time = 0
+end
+----------------------
+function action_report_soldier:initialize ()
     action_base.initialize (self)
     
-    if self.path == nil then
-       local ini = self.object:spawn_ini ()
-       if ini:line_exist ("report", "path") then
-          self.path = ini:r_string ("report", "path")
-       end
-    end      
+    self.leader = level.object (self.leader_name)
     
     self.object:set_node_evaluator        ()
     self.object:set_path_evaluator        ()
     self.object:set_desired_position      ()
-    self.object:set_item                  (object.idle, self.object:best_weapon ())
+    self.object:set_item                  (object.deactivate , self.object:best_weapon ())
     self.object:set_detail_path_type      (move.line)
     self.object:set_body_state            (move.standing)
     self.object:set_movement_type         (move.walk)
-    self.object:set_path_type             (game_object.patrol_path)
-    self.object:set_patrol_path           (self.path, patrol.nearest, patrol.continue, true)
+    self.object:set_path_type             (game_object.level_path)
+    self.object:set_dest_level_vertex_id  (self.leader:level_vertex_id ())
     self.object:set_mental_state          (anim.free)
     self.object:set_sight                 (look.path_dir, nil, 0)
-end    
+    
+    self.stage = 0
+    
+end
 ----------------------
-function action_move:execute ()
+function action_report_soldier:execute ()
     action_base.execute (self)
-end    
+
+    if self.stage == 0 then 
+       self:stage1 ()     
+    elseif self.stage == 1 then
+       self:stage2 ()    
+    elseif self.stage == 2 then
+       self:stage3 ()    
+    end   
+    
+end
 ----------------------
-function action_move:finalize ()
+function action_report_soldier:finalize ()
     action_base.finalize (self)
+    self.object:clear_animations () 
+    self.object:motivation_action_manager ():evaluator (properties["timeout_soldier"]).time = device ():time_global ()
+    self.stage = 0
+    self.sub_stage = 0
+end
+----------------------
+function action_report_soldier:stage1 ()
+    if distance_between (self.object, self.leader) > min_dist_to_report then
+       self.object:set_item                     (object.deactivate, self.object:best_weapon ())
+       self.object:set_path_type                (game_object.level_path)
+       self.object:set_dest_level_vertex_id     (self.leader:level_vertex_id ())
+       return
+    end   
+    self.stage = 1
+    self.sub_stage = 0
+    self.object:set_movement_type (move.stand)
+    self.object:add_animation ("chest_0", false)
+    self.object:add_animation ("chest_2", false)
+    self.object:add_animation ("chest_1", false)
+    self:create_report ()
+end
+----------------------
+function action_report_soldier:stage2 ()
+    local size = self.object:animation_count ()
+    if self.sub_stage == 0 and size == 1 then
+       self.sub_stage = 1
+       if self.phrases[self.current_phrase].our == true then
+          self.object:play_sound (self.phrases[self.current_phrase].namespace, 1, 0, 1, 0, self.phrases[self.current_phrase].phrase)
+       else
+          self.leader:play_sound (self.phrases[self.current_phrase].namespace, 1, 0, 1, 0, self.phrases[self.current_phrase].phrase)
+       end   
+       return
+    end
+    
+    if self.sub_stage == 1 then
+       if size == 1 then
+          self.object:add_animation ("chest_1", false)
+       end
+       
+       if self.phrases[self.current_phrase].our == true then
+          if self.object:active_sound_count () ~= 0 then return end
+       else
+          if self.leader:active_sound_count () ~= 0 then return end 
+       end  
+       
+       self.current_phrase = self.current_phrase + 1
+       if self.current_phrase >= table.getn (self.phrases) then
+          self.sub_stage = 2
+          self.object:clear_animations ()
+          self.object:add_animation ("chest_2", false)
+          self.object:add_animation ("chest_3", false)
+          return
+       else
+          if self.phrases[self.current_phrase].our == true then
+             self.object:play_sound (self.phrases[self.current_phrase].namespace, 1, 0, 1, 0, self.phrases[self.current_phrase].phrase)
+          else
+             self.leader:play_sound (self.phrases[self.current_phrase].namespace, 1, 0, 1, 0, self.phrases[self.current_phrase].phrase)
+          end   
+       end
+       return
+    end   
+    
+    if size == 0 then
+       self.object:clear_animations () 
+       --self.object:set_movement_type (move.walk)
+       local dir = self.object:direction ()
+       dir.x = -dir.x 
+       dir.y = -dir.y
+       dir.z = -dir.z
+       self.object:set_sight (look.direction, dir, 0) 
+       self.stage = 2
+       self.time = device ():time_global ()
+--       self.leader:motivation_action_manager ():evaluator (properties["leader_report"]).npc = nil 
+    end    
+                
+end
+function action_report_soldier:stage3 ()
+    if device ():time_global () - self.time > 1500 then
+       self.object:motivation_action_manager ():evaluator (properties["timeout_soldier"]).time = device ():time_global ()
+--       self.leader:motivation_action_manager ():evaluator (properties["leader_report"]).npc = nil 
+    end   
+end
+----------------------
+function action_report_soldier:create_report ()
+    while table.getn (self.phrases) ~= 0 do
+          table.remove (self.phrases, 1)
+    end
+    table.insert (self.phrases, {namespace = report_soldier_start,   phrase = 0,   our = true})
+    table.insert (self.phrases, {namespace = report_commander_start, phrase = 0,   our = true})
+    table.insert (self.phrases, {namespace = report_soldier,         phrase = 0,   our = true})
+    table.insert (self.phrases, {namespace = report_commander,       phrase = 0,   our = true})
+    table.insert (self.phrases, {namespace = report_soldier_end,     phrase = 0,   our = true})
+
+    self.object:set_sound_mask (2147483647)
+    self.object:set_sound_mask (0)
+    
+    self.leader:set_sound_mask (2147483647)
+    self.leader:set_sound_mask (0)
+    
+    self.current_phrase = 1
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+
+
+
+----------------------------------------------------------------------------------------------------------------------
+class "action_report_leader" (action_base)
+----------------------
+function action_report_leader:__init (name) super (nil, name)
+    self.npc = nil
+    self.stage = 0
+end
+----------------------
+function action_report_leader:initialize ()
+    action_base.initialize (self)
+    self.npc = self.object:motivation_action_manager ():evaluator (properties["leader_report"]).npc
+    self.object:set_node_evaluator        ()
+    self.object:set_path_evaluator        ()
+    self.object:set_desired_position      ()
+    self.object:set_item                  (object.deactivate, self.object:best_weapon ())
+    self.object:set_detail_path_type      (move.line)
+    self.object:set_body_state            (move.standing)
+    self.object:set_movement_type         (move.walk)
+    self.object:set_path_type             (game_object.level_path)
+    self.object:set_dest_level_vertex_id  (self.npc:level_vertex_id ())
+    self.object:set_mental_state          (anim.free)
+    self.object:set_sight                 (look.path_dir, nil, 0)
+    
+    self.stage = 0
+end
+----------------------
+function action_report_leader:execute ()
+    action_base.execute (self)
+    
+    if self.stage == 0 then 
+       if distance_between (self.object, self.npc) < min_dist_to_report then
+          self.object:set_movement_type (move.stand)
+          self.stage = 1
+          self.object:add_animation ("chest_1", false)
+          self.object:add_animation ("chest_2", false)
+          self.object:add_animation ("chest_1", false)
+       end   
+       return 
+    end    
+    
+    local act = self.npc:motivation_action_manager ():action (operators["report_soldier"])
+    if act == nil then 
+       self.object:motivation_action_manager ():evaluator (properties["leader_report"]).npc = nil
+       return
+    end
+    
+    if self.stage == 1 then
+       if act.stage == 1 and act.sub_stage == 2 then
+          self.object:clear_animations ()
+          self.object:add_animation ("chest_1", false)
+          self.object:add_animation ("chest_2", false)
+          self.object:add_animation ("chest_3", false)
+          self.stage = 2
+       else
+          if self.object:animation_count () == 1 then
+             self.object:add_animation ("chest_1", false)
+          end   
+       end  
+       return
+    end
+    
+    if self.object:animation_count () == 0 then      
+       self.object:motivation_action_manager ():evaluator (properties["leader_report"]).npc = nil
+    end   
+    
+end
+----------------------
+function action_report_leader:finalize ()
+    action_base.finalize (self)
+    self.object:clear_animations ()
+    self.object:motivation_action_manager ():evaluator (properties["leader_report"]).npc = nil
 end
 ----------------------------------------------------------------------------------------------------------------------
 
 
-function SetScheme (obj)
-	local operators		= {}
-	local properties	= {}
-	
-	properties["timeout_leader"]            = xr_evaluators_id.sidor_report_leader      + 0
-	properties["timeout_soldier"]           = xr_evaluators_id.sidor_report_soldier     + 0
-	properties["complete"]                  = xr_evaluators_id.sidor_report_leader      + 1
- 	operators["report_leader"]              = xr_actions_id.sidor_act_report_leader     + 0
- 	operators["report_soldier"]             = xr_actions_id.sidor_act_report_soldier    + 0  
- 	operators["action_move"]                = xr_actions_id.sidor_act_report_soldier    + 1
+
+function AddScheme (obj, property_id)
+
+    obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, report_soldier_start)
+    obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, report_commander_start)
+    obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, report_soldier)
+    obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, report_commander)
+    obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, report_soldier_end)
+
     
 	local manager  = obj:motivation_action_manager ()
-    manager:add_evaluator (properties["complete"], this.evaluator_const ("evaluator_complete"))
+
+   	local ini = obj:spawn_ini ()
+   	if ini == nil then return end
+   	
+   	if ini:line_exist ("report", "leader_name") == true then
+   	   local leader_name = ini:r_string ("report", "leader_name")
+   	   --if manager:evaluator (properties["timeout_soldier"]) ~= nil then return end
+       manager:add_evaluator (properties["timeout_soldier"], this.evaluator_timeout ("evaluator_timeout_soldier", leader_name))
+   	   local action = this.action_report_soldier ("action_report_soldier", leader_name)
+       action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
+   	   action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
+   	   action:add_precondition      (world_property (properties["timeout_soldier"], true))
+   	   action:add_effect            (world_property (properties["timeout_soldier"], false))
+   	   manager:add_action           (operators["report_soldier"], action)
+   	   
+   	   action = manager:action (property_id)
+   	   action:add_precondition (world_property (properties["timeout_soldier"],  false)) 	   
+    else
+       if ini:line_exist ("report", "is_leader") == false or ini:r_bool ("report", "is_leader") == false then
+          return
+       end     
+       --if manager:evaluator (properties["leader_report"]) ~= nil then return end
+       manager:add_evaluator (properties["leader_report"], this.evaluator_report ("evaluator_leader_report"))
+       local action = this.action_report_leader ("action_report_leader")
+       action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
+   	   action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
+   	   action:add_precondition      (world_property (properties["leader_report"],   true))
+   	   action:add_effect            (world_property (properties["leader_report"],   false))
+   	   manager:add_action           (operators["report_leader"], action)
+   	   
+       action = manager:action (property_id)
+   	   action:add_precondition (world_property (properties["leader_report"],  false))
+   	   
+    end       
     
-    local action = this.action_move ("action_move")
-   	action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
-   	action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
-   	action:add_precondition     	(world_property (properties["complete"],        false))
-   	action:add_effect           	(world_property (properties["complete"],        true))
-   	manager:add_action              (operators["action_move"], action)
-
-   	action = manager:action (stalker_ids.action_free_no_alife)
-   	action:add_precondition (world_property (properties["complete"],  true))
-    
 end
 
 
-----------------------------------------------------------------------------------------------------------------------
-class "report_binder" (object_binder)
-----------------------------------------------------------------------------------------------------------------------
-function report_binder:__init (obj) super(obj)
-end
-----------------------------------------------------------------------------------------------------------------------
-function report_binder:reinit ()
-    object_binder.reinit (self)
-end
-----------------------------------------------------------------------------------------------------------------------
-function report_binder:reload (section)
-    object_binder.reload  (self, section)
-    this.SetScheme (self.object)
-end
-----------------------------------------------------------------------------------------------------------------------
-function report_binder:net_spawn  (server_object)
-  if (object_binder.net_spawn (self, server_object) == false) then
-     return false
-  end
-  return true
-end
-----------------------------------------------------------------------------------------------------------------------
-function report_binder:net_destroy  ()
-  object_binder.net_destroy  (self)
-end
-----------------------------------------------------------------------------------------------------------------------
-
-
-function add_to_binder (npc)
-    npc:bind_object  (this.report_binder (npc))
-    return true
-end
