@@ -17,9 +17,9 @@ class CFrustum;
 namespace CDB
 {
 	enum {
-		RAY_CULL		= (1<<0),
-		RAY_ONLYFIRST	= (1<<1),
-		RAY_ONLYNEAREST	= (1<<2)
+		OPT_CULL		= (1<<0),
+		OPT_ONLYFIRST	= (1<<1),
+		OPT_ONLYNEAREST	= (1<<2)
 	};
 	
 	class XRCDB_API MODEL;
