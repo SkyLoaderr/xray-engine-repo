@@ -21,6 +21,7 @@ stohe_tradeseller_base      = sound_stohe_base + 10
 stohe_meet_base             = sound_stohe_base + 20
 stohe_reaction_base         = sound_stohe_base + 30
 stohe_bobik_base            = sound_stohe_base + 40
+stohe_sleep_base            = sound_stohe_base + 50
 
 -- «мей
 sound_zmey_base             =   global_sounds + 3000
