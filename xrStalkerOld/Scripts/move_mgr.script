@@ -3,7 +3,8 @@
 -- Created by: Andrey Fidrya (Zmey), af@svitonline.com
 
 local default_wait_time = 5000
-local default_anim = "idle"
+local default_anim_standing = "idle"
+local default_anim_crouch = "hide"
 local sl_speed_h = 0.52 -- горизонтальная скорость вращения прожекторов
 local sl_speed_v = 0.22 -- вертикальная скорость вращения прожекторов
 
@@ -68,7 +69,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	self.path_look_info = path_look_info
 	self.team = team
 
-	self.cur_anim_set = default_anim
+	self.cur_anim_set = default_anim_standing
 	self.pt_wait_time = default_wait_time -- сколько ждать в точке, где играем анимацию 
 
 	self.shall_shoot = nil
@@ -85,6 +86,9 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	end
 	self.standing_crouch = self.crouch
 	self.standing_danger = self.danger
+
+	self.no_wpn = false
+	self.standing_no_wpn = self.no_wpn
 
 	self.moving = false -- переменная для проверки из внешнего скрипта, стоит ли персонаж на месте
 
@@ -307,7 +311,13 @@ function move_mgr:update(no_dialog_mgr_update)
 	end
 
 	if not self.is_shooting then 
-		local best_weap = self.object:best_weapon()
+		local best_weap
+		if (self.state == state_moving and self.no_wpn) or
+		   (self.state ~= state_moving and self.standing_no_wpn) then
+			best_weap = nil
+		else
+			best_weap = self.object:best_weapon()
+		end
 		if best_weap and get_clsid(best_weap) == clsid.obj_bolt then
 			best_weap = nil
 		end
@@ -556,6 +566,9 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		self.danger = false
 	end
 	self.standing_danger = self.danger
+
+	self.no_wpn = (self.path_walk_info[index]["nowpn"] == "true")
+	self.standing_no_wpn = self.no_wpn
 	
 	local retv = self.path_walk_info[index]["ret"]
 	if retv then
@@ -604,7 +617,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 
 		self.path_walk_info = utils.path_parse_waypoints(self.path_walk)
 		if self.path_look then
-			self.st.path_look_info = utils.path_parse_waypoints(self.st.path_look)
+			self.path_look_info = utils.path_parse_waypoints(self.path_look)
 		else
 			self.path_look_info = nil
 		end
@@ -614,7 +627,10 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		return
 	end
 
-	if not self.patrol_look then
+	local stop_probability = self.path_walk_info[index]["p"]
+	
+	if not self.patrol_look or
+	   (stop_probability and stop_probability < math.random(1, 100)) then
 		self:update_movement_state() -- идти дальше
 		return
 	end
@@ -695,7 +711,11 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 			end
 			self.cur_anim_set = suggested_anim_set
 		else
-			self.cur_anim_set = default_anim
+			if suggested_crouch == "true" then
+				self.cur_anim_set = default_anim_crouch
+			else
+				self.cur_anim_set = default_anim_standing
+			end
 		end
 
 		local att = self.path_look_info[pt_chosen_idx]["att"]
@@ -760,3 +780,6 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 			self.object:name(), self.path_walk, index, self.path_look)
 	end
 end
+
+-- Last modified: 2004/11/02 by Andrey Fidrya
+
