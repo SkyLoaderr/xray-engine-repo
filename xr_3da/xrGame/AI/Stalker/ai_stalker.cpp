@@ -12,6 +12,8 @@
 CAI_Stalker::CAI_Stalker()
 {
 	m_tStateList.clear();
+	while (m_tStateStack.size())
+		m_tStateStack.pop();
 }
 
 CAI_Stalker::~CAI_Stalker()
@@ -54,7 +56,9 @@ BOOL CAI_Stalker::net_Spawn	(LPVOID DC)
 	R_ASSERT		(tpHuman);
 	cNameVisual_set	(tpHuman->caModel);
 	fHealth			= tpHuman->fHealth;
-	m_eCurrentState = m_ePreviousState = eStalkerStateLookingOver;
+
+	m_tStateStack.push	(m_eCurrentState = eStalkerStateLookingOver);
+	vfAddStateToList	(m_eCurrentState);
 	return				(TRUE);
 }
 

@@ -435,7 +435,7 @@ class CAI_Soldier : public CCustomMonster
 
 		// finite state machine
 		stack<ESoldierStates>	m_tStateStack;
-		svector<SSoldierStates,MAX_STATE_LIST_SIZE>	tStateList;
+		svector<SSoldierStates,MAX_STATE_LIST_SIZE>	m_tStateList;
 		bool					m_bStateChanged;
 		
 		CSoldierSelectorAttack				SelectorAttack;
@@ -668,16 +668,16 @@ class CAI_Soldier : public CCustomMonster
 		}
 	IC	void vfAddStateToList(ESoldierStates eState)
 		{
-			if ((tStateList.size()) && (tStateList[tStateList.size() - 1].eState == eState)) {
-				tStateList[tStateList.size() - 1].dwTime = m_dwCurrentUpdate;
+			if ((m_tStateList.size()) && (m_tStateList[m_tStateList.size() - 1].eState == eState)) {
+				m_tStateList[m_tStateList.size() - 1].dwTime = m_dwCurrentUpdate;
 				return;
 			}
-			if (tStateList.size() >= MAX_STATE_LIST_SIZE)
-				tStateList.erase(u32(0));
+			if (m_tStateList.size() >= MAX_STATE_LIST_SIZE)
+				m_tStateList.erase(u32(0));
 			SSoldierStates tSoldierStates;
 			tSoldierStates.dwTime = m_dwCurrentUpdate;
 			tSoldierStates.eState = eState;
-			tStateList.push_back(tSoldierStates);
+			m_tStateList.push_back(tSoldierStates);
 		}
 	IC	void vfAddHurtToList(CEntity *tpEntity)
 		{
@@ -694,11 +694,11 @@ class CAI_Soldier : public CCustomMonster
 		}
 	IC	bool bfCheckHistoryForState(ESoldierStates eState, u32 dwTimeInterval)
 		{
-			for (int i=tStateList.size() - 2; i>=0; i--)
-				if (tStateList[i].eState == eState)
+			for (int i=m_tStateList.size() - 2; i>=0; i--)
+				if (m_tStateList[i].eState == eState)
 					return(true);
 				else
-					if (m_dwCurrentUpdate - tStateList[i].dwTime > dwTimeInterval)
+					if (m_dwCurrentUpdate - m_tStateList[i].dwTime > dwTimeInterval)
 						return(false);
 			return(false);
 		}

@@ -90,7 +90,7 @@ void CAI_Stalker::Recharge()
 	WRITE_TO_LOG("Recharge");
 	VERIFY(Weapons->ActiveWeapon());
 	Weapons->ActiveWeapon()->Reload();
-	CHECK_IF_GO_TO_PREV_STATE(Weapons->ActiveWeapon()->GetAmmoCurrent());
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Weapons->ActiveWeapon()->GetAmmoElapsed());
 }
 
 void CAI_Stalker::LookingOver()
@@ -101,7 +101,7 @@ void CAI_Stalker::LookingOver()
 		Weapons->ActiveWeapon()->FireEnd();
 	if (!::Random.randI(100))
 		if (Weapons->ActiveWeapon()) {
-			CHECK_IF_SWITCH_TO_NEW_STATE(!Weapons->ActiveWeapon()->GetAmmoCurrent(),eStalkerStateRecharge);
+			CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(!Weapons->ActiveWeapon()->GetAmmoElapsed(),eStalkerStateRecharge);
 			Weapons->ActiveWeapon()->FireStart();
 		}
 }

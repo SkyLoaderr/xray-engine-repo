@@ -43,11 +43,11 @@ private:
 
 	IC		void			vfAddStateToList		(EStalkerStates eState)
 	{
-		if ((m_tStateStack.size()) && (m_tStateList[m_tStateStack.size() - 1].eState == eState)) {
-			m_tStateList[m_tStateStack.size() - 1].dwTime = m_dwCurrentUpdate;
+		if ((m_tStateList.size()) && (m_tStateList[m_tStateList.size() - 1].eState == eState)) {
+			m_tStateList[m_tStateList.size() - 1].dwTime = m_dwCurrentUpdate;
 			return;
 		}
-		if (m_tStateStack.size() >= MAX_STATE_LIST_SIZE)
+		if (m_tStateList.size() >= MAX_STATE_LIST_SIZE)
 			m_tStateList.erase(u32(0));
 		SStalkerStates tStalkerStates;
 		tStalkerStates.dwTime = m_dwCurrentUpdate;

@@ -166,7 +166,7 @@ void CAI_Soldier::OnHurtAlone()
 		
 	r_torso_speed = 1*PI_DIV_2;
 	
-	if ((tStateList.size() > 1) && (tStateList[tStateList.size() - 2].eState != aiSoldierRetreatAloneFire) && (AI_Path.fSpeed > EPS_L)) {
+	if ((m_tStateList.size() > 1) && (m_tStateList[m_tStateList.size() - 2].eState != aiSoldierRetreatAloneFire) && (AI_Path.fSpeed > EPS_L)) {
 		if (m_cBodyState != BODY_STATE_LIE) {
 			if (m_cBodyState == BODY_STATE_STAND)
 				m_tpAnimationBeingWaited = tSoldierAnimations.tNormal.tGlobal.tpaLieDown[1];
