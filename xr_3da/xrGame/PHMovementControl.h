@@ -249,7 +249,7 @@ public:
 	void				ApplyImpulse			(const Fvector& dir,const dReal P)										;
 	void				ApplyHit				(const Fvector& dir,const dReal P,ALife::EHitType hit_type)				;
 	void				SetJumpUpVelocity		(float velocity)														{m_character->SetJupmUpVelocity(velocity);}
-	void				EnableCharacter			()																		{if(m_character)m_character->Enable();}
+	void				EnableCharacter			()																		{if(m_character&&m_character->b_exist)m_character->Enable();}
 	void				SetOjectContactCallback (ObjectContactCallbackFun* callback){if(m_character)m_character->SetObjectContactCallback(callback);}
 	void				SetFootCallBack			(ObjectContactCallbackFun* callback){VERIFY(m_character);m_character->SetWheelContactCallback(callback);}
 	ObjectContactCallbackFun* ObjectContactCallback(){if(m_character)return m_character->ObjectContactCallBack();else return NULL; }
