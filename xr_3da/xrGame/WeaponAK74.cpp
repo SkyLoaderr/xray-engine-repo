@@ -61,7 +61,7 @@ void CWeaponAK74::FlameLOAD()
 	// flame textures
 	LPCSTR S		= pSettings->ReadSTRING	(cName(),"flame");
 	DWORD scnt		= _GetItemCount(S);
-	char name[255];
+	string256 name;
 	for (DWORD i=0; i<scnt; i++)
 		hFlames.push_back(Device.Shader.Create("particles\\add",_GetItem(S,i,name),false));
 }
