@@ -239,10 +239,8 @@ bool CAI_Zombie::bfComputeNextDirectionPosition(bool bCanAdjustSpeed)
 	if (bCanAdjustSpeed)
 		vfAdjustSpeed();
 
-	if (m_fSpeed < EPS_L) {
+	if (m_fSpeed < EPS_L)
 		return(true);
-	}
-
 	
 	m_fCurSpeed = m_fSpeed;
 
@@ -334,6 +332,8 @@ bool CAI_Zombie::bfComputeNextDirectionPosition(bool bCanAdjustSpeed)
 		m_fSafeSpeed = m_fSpeed = EPS_S;
 		m_bNoWay = true;
 	}
+	
+	SetDirectionLook();
 	
 	bool m_bResult = false;
 	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {

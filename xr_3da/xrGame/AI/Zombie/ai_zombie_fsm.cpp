@@ -191,6 +191,9 @@ void CAI_Zombie::FreeHuntingActive()
 	m_tVarGoal.set			(m_tGoalVariation);
 	m_fASpeed				= m_fAngleSpeed;
 	
+	if (m_bStateChanged)
+		vfChooseNewSpeed();
+
 	if (bfCheckIfGoalChanged()) {
 		if (m_bStateChanged || (vPosition.distance_to(m_tSpawnPosition) > m_fStableDistance) || (::Random.randF(0,1) > m_fChangeActiveStateProbability))
 			if (vPosition.distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius)
@@ -206,8 +209,6 @@ void CAI_Zombie::FreeHuntingActive()
 
 	if (bfComputeNewPosition(false))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
-
-	SetDirectionLook();
 
 //	if (Level().timeServer() - m_dwLastRangeSearch > 5000) {
 //		m_dwLastRangeSearch = Level().timeServer();
@@ -235,8 +236,7 @@ void CAI_Zombie::FreeHuntingActive()
 		if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
 			m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
 
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	vfSetFire(false,Group);
+	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 }
 
 void CAI_Zombie::FreeHuntingPassive()
@@ -272,8 +272,7 @@ void CAI_Zombie::FreeHuntingPassive()
 
 	vfAddActiveMember();
 
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	vfSetFire(false,Group);
+	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 }
 
 void CAI_Zombie::AttackFire()
@@ -379,8 +378,6 @@ void CAI_Zombie::AttackRun()
 	if (bfComputeNextDirectionPosition())
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
 
-	SetDirectionLook();
-
 	if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
 		u32 dwCurTime = Level().timeServer();
 		if (m_tpSoundBeingPlayed && !m_tpSoundBeingPlayed->feedback) {
@@ -439,8 +436,6 @@ void CAI_Zombie::Pursuit()
 
 	if (bfComputeNewPosition())
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
-
-	SetDirectionLook();
 }
 
 void CAI_Zombie::ReturnHome()
@@ -476,22 +471,7 @@ void CAI_Zombie::ReturnHome()
 	if (bfComputeNewPosition())
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
 
-	SetDirectionLook();
-
-	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
-		m_fSpeed = .1f;
-		if (m_bNoWay) {
-			float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-			r_torso_target.yaw = r_torso_current.yaw + fAngle;
-			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
-		}
-	}
-	else 
-		m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
-
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	vfSetFire(false,Group);
+	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 }
 
 void CAI_Zombie::Resurrect()
