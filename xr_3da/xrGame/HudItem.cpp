@@ -125,8 +125,8 @@ void CHudItem::renderable_Render()
 		if(!H_Parent() || (!hud_mode && !m_pHUD->IsHidden() && !IsHidden()))
 			inherited::renderable_Render();
 
-	if(m_pHUD)
-		PSkeletonAnimated(m_pHUD->Visual())->Update	();
+	if(m_pHUD) 
+		m_pHUD->UpdateHud();
 }
 /*
 BOOL CHudItem::renderable_ShadowGenerate() 
@@ -223,10 +223,18 @@ void CHudItem::UpdateCL()
 void CHudItem::OnH_A_Chield		()
 {
 	hud_mode = FALSE;
+	
+	if(Level().CurrentEntity() == H_Parent())
+		m_pHUD->SetCurrentEntityHud(true);
+	else
+		m_pHUD->SetCurrentEntityHud(false);
+
 	inherited::OnH_A_Chield		();
 }
 void CHudItem::OnH_B_Independent	()
 {
 	hud_mode = FALSE;
+	m_pHUD->SetCurrentEntityHud(false);
+
 	inherited::OnH_B_Independent	();
 }

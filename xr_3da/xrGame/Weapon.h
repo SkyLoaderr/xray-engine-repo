@@ -341,8 +341,7 @@ public:
 	LPCSTR				m_sSmokeParticlesCurrent;
 	LPCSTR				m_sSmokeParticles;
 
-	//точка и направление вылета партиклов гильз
-	Fvector				vShellDir;
+	//точка вылета партиклов гильз
 	Fvector				vShellPoint;
 	//имя пратиклов для гильз
 	LPCSTR				m_sShellParticles;

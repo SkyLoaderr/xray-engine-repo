@@ -41,7 +41,7 @@ void CWeaponShotgun::renderable_Render	()
 
 void CWeaponShotgun::OnShot () 
 {
-	std::swap(m_pHUD->vFirePoint, m_pHUD->vFirePoint2);
+	std::swap(m_pHUD->FirePoint(), m_pHUD->FirePoint2());
 	std::swap(vFirePoint, vFirePoint2);
 	//std::swap(m_pFlameParticles, m_pFlameParticles2);
 

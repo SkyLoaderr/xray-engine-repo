@@ -205,20 +205,18 @@ void CWeapon::UpdateFP		()
 			V->Calculate			();
 
 			// fire point&direction
-			Fmatrix& fire_mat		= V->LL_GetTransform(u16(m_pHUD->iFireBone));
+			Fmatrix& fire_mat		= V->LL_GetTransform(u16(m_pHUD->FireBone()));
 			Fmatrix& parent			= m_pHUD->Transform	();
 
-			Fvector& fp				= m_pHUD->vFirePoint;
-			Fvector& fp2			= m_pHUD->vFirePoint2;
-			Fvector& sp				= m_pHUD->vShellPoint;
-			//Fvector& sd				= m_pHUD->vShellDir;
+			Fvector& fp				= m_pHUD->FirePoint();
+			Fvector& fp2			= m_pHUD->FirePoint2();
+			Fvector& sp				= m_pHUD->ShellPoint();
 
 			fire_mat.transform_tiny	(vLastFP,fp);
 			parent.transform_tiny	(vLastFP);
 			fire_mat.transform_tiny	(vLastFP2,fp2);
 			parent.transform_tiny	(vLastFP2);
-
-			
+		
 			fire_mat.transform_tiny	(vLastSP,sp);
 			parent.transform_tiny	(vLastSP);
 
@@ -367,7 +365,6 @@ void CWeapon::Load		(LPCSTR section)
 	{
 		m_sShellParticles = pSettings->r_string (section,"shell_particles");
 		vShellPoint	= pSettings->r_fvector3	(section,"shell_point");
-		//vShellDir	= pSettings->r_fvector3	(section,"shell_dir");
 	}
 
 	//текущие партиклы

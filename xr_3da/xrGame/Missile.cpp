@@ -210,7 +210,7 @@ u32 CMissile::State(u32 state)
 	case MS_SHOWING:
         {
 			m_bPending = true;
-			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimShow), TRUE, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimShow), FALSE, this);
 			
 			//Msg("------------------");
 			//Msg("Missile show begin");
@@ -239,6 +239,7 @@ u32 CMissile::State(u32 state)
 		} break;
 	case MS_THREATEN:
 		{
+			m_bPending = true;
 			m_fThrowForce = m_fMinForce;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowBegin), true, this);
 
@@ -260,6 +261,7 @@ u32 CMissile::State(u32 state)
 		} break;
 	case MS_END:
 		{
+			m_bPending = true;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowEnd), true, this);
 
 			//Msg("Missile throw finish");

@@ -77,15 +77,15 @@ public:
 
 	
 	//активация и деактивации вещи как активной в интерфейсе
-	virtual bool	Activate();
-	virtual void	Deactivate();
+	virtual bool	Activate			();
+	virtual void	Deactivate			();
 	
 
 	//для завершения анимации
 	virtual void	OnAnimationEnd		();
 
-	virtual void	UpdateCL();
-	virtual void	renderable_Render			();
+	virtual void	UpdateCL			();
+	virtual void	renderable_Render	();
 
 	virtual void	Hide() = 0;
 	virtual void	Show() = 0;
