@@ -45,6 +45,7 @@ CCharacterInfo::CCharacterInfo()
 #ifdef XRGAME_EXPORTS
 	m_CurrentRank.set(NO_RANK);
 	m_CurrentReputation.set(NO_REPUTATION);
+	m_iStartDialog = NO_PHRASE_DIALOG;
 #endif
 }
 
@@ -79,6 +80,8 @@ void CCharacterInfo::InitSpecificCharacter (SPECIFIC_CHARACTER_INDEX new_index)
 		SetReputation(m_SpecificCharacter.Reputation());
 	if(Community().index() == NO_COMMUNITY_INDEX)
 		SetCommunity(m_SpecificCharacter.Community());
+	if(m_iStartDialog == NO_PHRASE_DIALOG)
+		m_iStartDialog = m_SpecificCharacter.data()->m_iStartDialog;
 }
 
 
@@ -203,8 +206,7 @@ int	 CCharacterInfo::MapIconY()	 const
 
 PHRASE_DIALOG_INDEX	CCharacterInfo::StartDialog	()	const
 {
-	R_ASSERT(m_iSpecificCharacterIndex != NO_SPECIFIC_CHARACTER);
-	return m_SpecificCharacter.data()->m_iStartDialog;
+	return m_iStartDialog;
 }
 const DIALOG_INDEX_VECTOR&	CCharacterInfo::ActorDialogs	()	const
 {
@@ -214,7 +216,7 @@ const DIALOG_INDEX_VECTOR&	CCharacterInfo::ActorDialogs	()	const
 
 void CCharacterInfo::load	(IReader& stream)
 {
-	m_SpecificCharacter.data()->m_iStartDialog = stream.r_s16();
+	m_iStartDialog = stream.r_s16();
 }
 void CCharacterInfo::save	(NET_Packet& stream)
 {

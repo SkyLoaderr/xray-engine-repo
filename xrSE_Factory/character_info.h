@@ -93,6 +93,8 @@ protected:
 	SPECIFIC_CHARACTER_INDEX m_iSpecificCharacterIndex;
 
 #ifdef XRGAME_EXPORTS
+	PHRASE_DIALOG_INDEX m_iStartDialog;
+
 	//загруженная информация о конкретном персонаже
 	CSpecificCharacter m_SpecificCharacter;
 #endif
