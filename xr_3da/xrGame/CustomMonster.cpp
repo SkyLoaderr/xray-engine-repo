@@ -275,8 +275,9 @@ void CCustomMonster::net_Import(NET_Packet* P)
 void CCustomMonster::Exec_Physics( float dt )
 {
 	// Test nearest object
-	Fvector C; float R;		Movement.GetBoundingSphere	(C,R);
-	Level().ObjectSpace.TestNearestObject				(cfModel, C, R);
+	Fvector C; float R;		
+	Movement.GetBoundingSphere(C,R);
+	Level().ObjectSpace.TestNearestObject(cfModel, C, R);
 }
 
 void CCustomMonster::Update	( DWORD DT )
@@ -309,7 +310,8 @@ void CCustomMonster::Update	( DWORD DT )
 			uNext.p_pos			= vPosition;
 			NET.push_back		(uNext);
 		}
-		else
+		else {
+			Exec_Physics	(dt);
 			if (bfExecMovement()) {
 				Exec_Movement(dt);
 				net_update			uNext;
@@ -319,6 +321,7 @@ void CCustomMonster::Update	( DWORD DT )
 				uNext.p_pos			= vPosition;
 				NET.push_back		(uNext);
 			}
+		}
 		Exec_Action	(dt);
 	}
 
