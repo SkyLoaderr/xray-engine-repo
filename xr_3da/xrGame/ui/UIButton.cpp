@@ -232,6 +232,9 @@ void  CUIButton::Draw()
 
 void  CUIButton::Update()
 {
+	inherited::Update();
+	return;
+
 	RECT rect = GetAbsoluteRect();
 
 	int right_offset;

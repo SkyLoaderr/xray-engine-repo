@@ -123,17 +123,18 @@ void CUIMapWnd::InitMap()
 	}
 	else
 	{
-		UIMapBackground.m_LevelBox.x2 = 359.843f;
-		UIMapBackground.m_LevelBox.x1 = -280.157f;
-		UIMapBackground.m_LevelBox.z2 = 253.36f;
-		UIMapBackground.m_LevelBox.z1 = -386.64f;
+		UIMapBackground.m_LevelBox.x1 = -443.66000f;
+		UIMapBackground.m_LevelBox.z1 = -131.66000f;
+		UIMapBackground.m_LevelBox.x2 = 196.33000f;
+		UIMapBackground.m_LevelBox.z2 = 508.32999f;
+
 	}
 
 	m_fWorldMapWidth = UIMapBackground.m_LevelBox.x2 - UIMapBackground.m_LevelBox.x1;
 	m_fWorldMapHeight = UIMapBackground.m_LevelBox.z2 - UIMapBackground.m_LevelBox.z1;
 
 	m_fWorldMapLeft = UIMapBackground.m_LevelBox.x1;
-	m_fWorldMapTop = UIMapBackground.m_LevelBox.z1;
+	m_fWorldMapTop = UIMapBackground.m_LevelBox.z2;
 
 
 	UIMapBackground.InitMapBackground();
