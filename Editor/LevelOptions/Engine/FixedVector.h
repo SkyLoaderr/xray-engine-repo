@@ -21,6 +21,7 @@ public:
 	IC DWORD	size()				{ return count;							}
 	IC void		clear()				{ count=0;								}
 	IC void		resize(int c)		{ VERIFY(c<=dim); count=c;				}
+	IC void		reserve(int c)		{ }
 
 	IC void		push_back(T e)		{ VERIFY(count<dim); array[count++]=e;	}
 	IC void		pop_back()			{ VERIFY(count); count--;				}
