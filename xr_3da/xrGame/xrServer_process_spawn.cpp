@@ -51,7 +51,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 	E->owner			= CL;
 
 	// PROCESS NAME; Name this entity
-	LPCSTR				NameReplace = 0;
+	// LPCSTR				NameReplace = 0;
 	if (CL && (0 == CL->owner))	{
 		CL->owner		= E;
 		strcpy			(E->s_name_replace,CL->Name);

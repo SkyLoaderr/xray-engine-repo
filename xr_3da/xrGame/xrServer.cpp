@@ -32,8 +32,8 @@ void		xrServer::client_Replicate	()
 void		xrServer::client_Destroy	(IClient* C)
 {
 	// Delete assosiated entity
-	xrClientData*	D = (xrClientData*)C;
-	xrServerEntity* E = D->owner;
+	// xrClientData*	D = (xrClientData*)C;
+	// xrServerEntity* E = D->owner;
 
 	_DELETE			(C);
 }
@@ -201,7 +201,7 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 	NET_Packet			P;
 	P.w_begin			(M_DESTROY);
 	P.w_u16				(IDs.size());
-	for (int i=0; i<IDs.size(); i++)
+	for (int i=0; i<int(IDs.size()); i++)
 	{
 		u16		ID			= IDs[i];
 		P.w_u16				(ID);
