@@ -51,9 +51,9 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	R_ASSERT				(pVisual&&PKinematics(pVisual));
 	PKinematics(pVisual)->PlayCycle("idle");
 	PKinematics(pVisual)->Calculate();
-	lanim					= LALib.FindItem(lamp->animator);
+	lanim					= LALib.FindItem(lamp->color_animator);
 
-	CreateBody				();
+	if (lamp->flags.is(xrSE_HangingLamp::flPhysic)) CreateBody(lamp->mass);
 
 	setVisible(true);
 	setEnabled(true);
@@ -152,11 +152,12 @@ void CHangingLamp::AddElement(CPhysicsElement* root_e, int id)
 	}
 }
 
-void CHangingLamp::CreateBody()
+void CHangingLamp::CreateBody(float mass)
 {
 	m_pPhysicsShell		= P_create_Shell();
 	m_pPhysicsShell->set_Kinematics(PKinematics(pVisual));
 	AddElement			(0,PKinematics(pVisual)->LL_BoneRoot());
 	m_pPhysicsShell->mXFORM.set(svTransform);
 	m_pPhysicsShell->SetAirResistance(0.001f, 0.02f);
+	m_pPhysicsShell->setMass(mass);
 }

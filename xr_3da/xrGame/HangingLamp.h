@@ -23,7 +23,7 @@ private:
 	float			fBrightness;
 
 	void			AddElement		(CPhysicsElement* root_e, int id);
-	void			CreateBody		();
+	void			CreateBody		(float mass);
 	bool			Alive			(){return fHealth>0.f;}
 public:
 					CHangingLamp	();
