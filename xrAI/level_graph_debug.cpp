@@ -29,6 +29,8 @@
 #include "alife_object_registry.h"
 #include "game_cl_base.h"
 
+u32	vertex_in_direction(u32 level_vertex_id, Fvector direction, float max_distance);
+
 #define NORMALIZE_VECTOR(t) t.x /= 10.f, t.x += tCameraPosition.x, t.y /= 10.f, t.y += 20.f, t.z /= 10.f, t.z += tCameraPosition.z;
 #define DRAW_GRAPH_POINT(t0,c0,c1,c2) {\
 	Fvector t1 = (t0);\
@@ -75,6 +77,34 @@ void CLevelGraph::render()
 //		RCache.dbg_DrawAABB	(position,.35f,1.f,.35f,D3DCOLOR_XRGB(255,255,255));
 //	}
 	// end of test
+	
+//	{
+//		CActor				*actor = dynamic_cast<CActor*>(Level().CurrentEntity());
+//		if (actor) {
+//			CAI_Stalker		*stalker = dynamic_cast<CAI_Stalker*>(Level().Objects.FindObjectByName("m_stalker_e0000"));
+//			if (stalker) {
+//				Fvector		dir;
+//				dir.sub		(actor->Position(),stalker->Position());
+//				dir.normalize_safe();
+//				u32 vertex_id = vertex_in_direction(actor->level_vertex_id(),dir,2.f);
+//				if (valid_vertex_id(vertex_id)) {
+//					float				half_size = header().cell_size()*.5f;
+//					Fvector				position = vertex_position(vertex_id);
+//					position.y			+= 1.f;
+//					RCache.dbg_DrawAABB	(position,half_size - .01f,1.f,ai().level_graph().header().cell_size()*.5f-.01f,D3DCOLOR_XRGB(0*255,255,0*255));
+//				}
+//			}
+////			Fvector	dir;
+////			dir.setHP(actor->r_torso.yaw,0);
+////			u32 vertex_id = vertex_in_direction(actor->level_vertex_id(),dir,2.f);
+////			if (valid_vertex_id(vertex_id)) {
+////				float				half_size = header().cell_size()*.5f;
+////				Fvector				position = vertex_position(vertex_id);
+////				position.y			+= 1.f;
+////				RCache.dbg_DrawAABB	(position,half_size - .01f,1.f,ai().level_graph().header().cell_size()*.5f-.01f,D3DCOLOR_XRGB(0*255,255,0*255));
+////			}
+//		}
+//	}
 	
 	if (bDebug && psAI_Flags.test(aiDebug)) {
 		CGameObject*	O	= dynamic_cast<CGameObject*> (Level().CurrentEntity());
