@@ -9,7 +9,7 @@ function main()
 	action(                                                                                                       
     	flesh,                                                                                                      
 		move(move.act_run,patrol("way0000")),
-    	cond(cond.time_end,20000) 
+    	cond(cond.move_end) 
 	)                                                                                                             
 
 	while flesh:action() do                                                        
