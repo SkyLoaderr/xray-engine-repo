@@ -133,6 +133,7 @@ TElTreeItem* FOLDER::AppendFolder(TElTree* tv, LPCSTR full_name)
 
 	char fld[64];
 	int cnt = _GetItemCount(full_name,'\\');
+	node = last_node;
     for (int itm=idx; itm<cnt; itm++){
     	_GetItem(full_name,itm,fld,'\\');
 		node=tv->Items->AddChildObject(node,fld,(void*)TYPE_FOLDER);
