@@ -11,6 +11,7 @@ sound_sidor_base    =   global_sounds + 1000
 
 sound_patrol_base   =   sound_sidor_base + 0
 sound_wounded_base  =   sound_sidor_base + 10
+sound_report_base   =   sound_sidor_base + 30
 
 
 -- Стохе
