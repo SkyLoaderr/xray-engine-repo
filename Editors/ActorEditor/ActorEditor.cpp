@@ -1,26 +1,27 @@
 #include "stdafx.h"
 #pragma hdrstop
-USEFORM("BottomBar.cpp", fraBottomBar);
-USEFORM("EditorPref.cpp", frmEditorPreferences);
-USEFORM("Splash.cpp", frmSplash);
-USEFORM("main.cpp", frmMain);
-USEFORM("LeftBar.cpp", fraLeftBar); /* TFrame: File Type */
-USEFORM("LogForm.cpp", frmLog);
-USEFORM("Editor\ChoseForm.cpp", frmChoseItem);
-USEFORM("Editor\TopBar.cpp", fraTopBar); /* TFrame: File Type */
-USEFORM("Editor\PropertiesList.cpp", frmProperties);
-USEFORM("BonePart.cpp", frmBonePart);
-USEFORM("KeyBar.cpp", frmKeyBar);
-USEFORM("Editor\NumericVector.cpp", frmNumericVector);
-USEFORM("Editor\TextForm.cpp", frmText);
-USEFORM("Editor\ImageEditor.cpp", frmImageLib);
-USEFORM("Editor\ShaderFunction.cpp", frmShaderFunction);
-USEFORM("Editor\ItemList.cpp", ItemList);
-//---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
 #include "UI_Main.h"
 #include "LogForm.h"
+//---------------------------------------------------------------------------
+USEFORM("BonePart.cpp", frmBonePart);
+USEFORM("BottomBar.cpp", fraBottomBar); /* TFrame: File Type */
+USEFORM("EditorPref.cpp", frmEditPrefs);
+USEFORM("KeyBar.cpp", frmKeyBar);
+USEFORM("LeftBar.cpp", fraLeftBar); /* TFrame: File Type */
+USEFORM("LogForm.cpp", frmLog);
+USEFORM("main.cpp", frmMain);
+USEFORM("Splash.cpp", frmSplash);
+USEFORM("Editor\ChoseForm.cpp", frmChoseItem);
+USEFORM("Editor\FrameEmitter.cpp", fraEmitter); /* TFrame: File Type */
+USEFORM("Editor\ImageEditor.cpp", frmImageLib);
+USEFORM("Editor\ItemList.cpp", ItemList);
+USEFORM("Editor\NumericVector.cpp", frmNumericVector);
+USEFORM("Editor\PropertiesList.cpp", Properties);
+USEFORM("Editor\ShaderFunction.cpp", frmShaderFunction);
+USEFORM("Editor\TextForm.cpp", frmText);
+USEFORM("Editor\TopBar.cpp", fraTopBar); /* TFrame: File Type */
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {
@@ -41,6 +42,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 		Application->Title = "Actor Editor";
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
 		Application->CreateForm(__classid(TfrmBonePart), &frmBonePart);
+		Application->CreateForm(__classid(TfrmSplash), &frmSplash);
 		frmMain->SetHInst(hInst);
 
         xr_delete(frmSplash);
