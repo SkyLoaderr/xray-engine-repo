@@ -65,6 +65,7 @@ CAI_Soldier::CAI_Soldier()
 	m_iCurrentSuspiciousNodeIndex = -1;
 	m_tpPath = 0;
 	m_dwLoopCount = 0;
+	m_tpaNodeStack.clear();
 //	if (!bStarted) {
 //		bStarted = true;
 //		u64 uTime = 0;

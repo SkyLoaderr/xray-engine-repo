@@ -972,6 +972,7 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
     bool bRotation = tMyRotation.yaw < tEnemyRotation.yaw;
 	/**/
 	INIT_SQUAD_AND_LEADER;
+	m_tpaNodeStack.clear();
 	vfMarkVisibleNodes(Leader);
 	for (int i=0; i<getGroup()->Members.size(); i++)
 		vfMarkVisibleNodes(getGroup()->Members[i]);
@@ -1067,13 +1068,18 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 			break;
 	}
 
-//	{
-//		vector<DWORD>::iterator it	= AI.q_stack.begin();
-//		vector<DWORD>::iterator end	= AI.q_stack.end();
-//		for ( ; it!=end; it++)	
-//			AI.q_mark_bit[*it] = false;
-//	}
-	AI.q_mark_bit.assign(AI.GetHeader().count,false);
+	{
+		vector<DWORD>::iterator it	= AI.q_stack.begin();
+		vector<DWORD>::iterator end	= AI.q_stack.end();
+		for ( ; it!=end; it++)	
+			AI.q_mark_bit[*it] = false;
+		
+		it	= m_tpaNodeStack.begin();
+		end	= m_tpaNodeStack.end();
+		for ( ; it!=end; it++)	
+			AI.q_mark_bit[*it] = false;
+	}
+	//AI.q_mark_bit.assign(AI.GetHeader().count,false);
 	
 	Msg("Suspicious nodes :");
 	for (int k=0; k<Group.m_tpaSuspiciousNodes.size(); k++)
@@ -1230,6 +1236,6 @@ void CAI_Soldier::vfMarkVisibleNodes(CEntity *tpEntity)
 	
 	for (float fIncrement = 0; fIncrement < PI_MUL_2; fIncrement += PI/10.f) {
 		tDirection.setHP(fIncrement,0.f);
-		AI.ffMarkNodesInDirection(tpCustomMonster->AI_NodeID,tpCustomMonster->Position(),tDirection,AI.q_mark_bit,fRange);
+		AI.ffMarkNodesInDirection(tpCustomMonster->AI_NodeID,tpCustomMonster->Position(),tDirection,AI.q_mark_bit,fRange,m_tpaNodeStack);
 	}
 }

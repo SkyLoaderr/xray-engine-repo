@@ -753,7 +753,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 	//	tpaPath.push_back(tpaPath[0]);
 }
 
-float CAI_Space::ffMarkNodesInDirection(DWORD dwStartNode, Fvector tStartPosition, Fvector tDirection, vector<bool> &tpaMarks, float fDistance)
+float CAI_Space::ffMarkNodesInDirection(DWORD dwStartNode, Fvector tStartPosition, Fvector tDirection, vector<bool> &tpaMarks, float fDistance, vector<DWORD> &tpaStack)
 {
 	NodeCompressed *tpNode;
 	NodeLink *taLinks;
@@ -776,6 +776,7 @@ float CAI_Space::ffMarkNodesInDirection(DWORD dwStartNode, Fvector tStartPositio
 	while (fCurDistance < fDistance) {
 		do {
 			tpaMarks[dwCurNode] = true;
+			tpaStack.push_back(dwCurNode);
 			UnpackContour(tCurContour,dwCurNode);
 			tpNode = Node(dwCurNode);
 			taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
@@ -818,6 +819,7 @@ float CAI_Space::ffMarkNodesInDirection(DWORD dwStartNode, Fvector tStartPositio
 
 			if (iSavedIndex > -1) {
 				tpaMarks[iSavedIndex] = true;
+				tpaStack.push_back(iSavedIndex);
 				fCurDistance = tStartPoint.distance_to_xz(tTempPoint);
 				tPrevPoint = tTravelNode;
 				dwPrevNode = dwCurNode;
@@ -906,6 +908,7 @@ float CAI_Space::ffMarkNodesInDirection(DWORD dwStartNode, Fvector tStartPositio
 					}
 					if (iSavedIndex > -1) {
 						tpaMarks[iSavedIndex] = true;
+						tpaStack.push_back(iSavedIndex);
 						fCurDistance = tStartPoint.distance_to_xz(tTempPoint);
 						tTravelNode = tTempPoint;
 						tPrevPoint = tTravelNode;

@@ -385,6 +385,7 @@ class CAI_Soldier : public CCustomMonster
 		int					m_iCurrentSuspiciousNodeIndex;
 		SuspiciousPoints	m_tpaSuspiciousPoints;
 		SuspiciousForces	m_tpaSuspiciousForces;
+		vector<DWORD>		m_tpaNodeStack;
 
 		
 		// performance data
