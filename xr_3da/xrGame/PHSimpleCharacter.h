@@ -43,6 +43,7 @@ protected:
 	////////////////////////// movement
 	dVector3 m_control_force;
 	Fvector	 m_acceleration;	
+	Fvector  m_cam_dir;
 	dVector3 m_wall_contact_normal;
 	dVector3 m_ground_contact_normal;
 	dVector3 m_clamb_depart_position;
@@ -127,6 +128,8 @@ public:
 	virtual		ObjectContactCallbackFun* ObjectContactCallBack	();
 	virtual		void		SetAcceleration						(Fvector accel)		;
 	virtual		Fvector		GetAcceleration						()					{ return m_acceleration; };
+	virtual     void		SetCamDir							(const Fvector& cam_dir);
+	virtual	const Fvector&	CamDir								()const				{return m_cam_dir;}
 	virtual		void		SetMaterial							(u16 material)		;
 	virtual		void		SetPosition							(Fvector pos)		;
 	virtual		void		GetVelocity							(Fvector& vvel)		;

@@ -79,7 +79,7 @@ void CPHMovementControl::ApplyImpulse(const Fvector& dir,const dReal P)
 	AddControlVel(force);
 	/*m_character->ApplyImpulse(dir,P);*/
 }
-void CPHMovementControl::Calculate(Fvector& vAccel,float /**ang_speed/**/,float jump,float /**dt/**/,bool /**bLight/**/){
+void CPHMovementControl::Calculate(Fvector& vAccel,const Fvector& camDir,float /**ang_speed/**/,float jump,float /**dt/**/,bool /**bLight/**/){
 
 	
 	
@@ -100,6 +100,7 @@ void CPHMovementControl::Calculate(Fvector& vAccel,float /**ang_speed/**/,float 
 	}
 	//vAccel.y=jump;
 	float mAccel=vAccel.magnitude();
+	m_character->SetCamDir(camDir);
 	m_character->SetMaximumVelocity(mAccel/10.f);
 	//if(!fis_zero(mAccel))vAccel.mul(1.f/mAccel);
 	m_character->SetAcceleration(vAccel);

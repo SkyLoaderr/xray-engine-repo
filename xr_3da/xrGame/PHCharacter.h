@@ -85,6 +85,8 @@ virtual		void		GroundNormal						(Fvector &norm)												=0 ;
 virtual		void		Create								(dVector3 /**sizes/**/)										=0 ;
 virtual		void		Destroy								(void)														=0 ;
 virtual		void		SetAcceleration						(Fvector accel)												=0 ;
+virtual     void		SetCamDir							(const Fvector& cam_dir)									=0 ;
+virtual	const Fvector&	CamDir								()const														=0 ;
 virtual		Fvector		GetAcceleration						()															=0 ;
 virtual		void		SetPosition							(Fvector pos)												=0 ;
 virtual		void		SetApplyGravity						(BOOL flag)						{ dBodySetGravityMode(m_body,flag); }

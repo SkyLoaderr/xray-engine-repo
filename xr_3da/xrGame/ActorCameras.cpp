@@ -18,7 +18,23 @@ void CActor::cam_Set	(EActorCameras style)
 	old_cam->OnDeactivate();
 	cam_Active()->OnActivate(old_cam);
 }
-
+float CActor::f_Ladder_cam_limit=1.f;
+void CActor::cam_SetLadder()
+{
+	CCameraBase* C			= cameras[eacFirstEye];
+	g_LadderOrient			();
+	C->yaw					= -XFORM().k.getH();
+	C->lim_yaw[0]			= C->yaw-1.f;
+	C->lim_yaw[1]			= C->yaw+1.f;
+	C->bClampYaw			= true;
+}
+void CActor::cam_UnsetLadder()
+{
+	CCameraBase* C			= cameras[eacFirstEye];
+	C->lim_yaw[0]			= 0;
+	C->lim_yaw[1]			= 0;
+	C->bClampYaw			= false;
+}
 float CActor::CameraHeight()
 {
 	Fvector						R;
@@ -57,6 +73,7 @@ void CActor::cam_Update(float dt, float fFOV)
 	// apply inertion
 	switch (cam_active)
 	{
+
 	case eacFirstEye:
 		dangle.set			(0,0,0);
 		break;
@@ -68,22 +85,17 @@ void CActor::cam_Update(float dt, float fFOV)
 		break;
 	}
 
-
-	
-	CCameraBase* C						= cam_Active();
-
-	cameras[eacFirstEye]->Update		(point,dangle);
-	cameras[eacFirstEye]->f_fov			= fFOV;
+	CCameraBase* C			= cam_Active();
+	C->Update				(point,dangle);
+	C->f_fov				= fFOV;
+	if(eacFirstEye != cam_active){
+		cameras[eacFirstEye]->Update	(point,dangle);
+		cameras[eacFirstEye]->f_fov		= fFOV;
+	}
 	EffectorManager().Update			(cameras[eacFirstEye]);
 
-	if(eacLookAt == cam_active)
-		EffectorManager().Update			(C);
-
-	if(eacFirstEye != cam_active)
-	{
-		C->Update					(point,dangle);
-		C->f_fov					= fFOV;
-	}
+//	if(eacLookAt == cam_active)
+//		EffectorManager().Update			(C);
 
 	if (Level().CurrentEntity() == this)
 	{
@@ -91,9 +103,6 @@ void CActor::cam_Update(float dt, float fFOV)
 		if(eacFirstEye == cam_active && !Level().Cameras.GetEffector(cefDemo))
 			EffectorManager().ApplyDevice();
 	}
-
-		
-	// ::Render.Target.set_gray	(cam_gray);
 }
 
 void CActor::LoadShootingEffector (LPCSTR section)

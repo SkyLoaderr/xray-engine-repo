@@ -315,6 +315,8 @@ public:
 protected:
 	void					cam_Set					(EActorCameras style);
 	void					cam_Update				(float dt, float fFOV);
+	void					cam_SetLadder			();
+	void					cam_UnsetLadder			();
 
 	// Cameras
 	CCameraBase*			cameras[eacMaxCam];
@@ -333,7 +335,7 @@ protected:
 
 	//менеджер эффекторов, есть у каждого актрера
 	CActorEffector*			m_pActorEffector;
-
+	static float			f_Ladder_cam_limit;
 	////////////////////////////////////////////
 	// для взаимодействия с другими персонажами 
 	// или предметами
@@ -377,7 +379,7 @@ public:
 	void					g_cl_Orientate			(u32 mstate_rl, float dt);
 	void					g_sv_Orientate			(u32 mstate_rl, float dt);
 	void					g_Orientate				(u32 mstate_rl, float dt);
-	bool					g_LeaderOrient			(u32 mstate_rl,float dt) ;
+	bool					g_LadderOrient			() ;
 	static bool				isAccelerated			(u32 mstate);
 	
 	bool					CanAccelerate			();

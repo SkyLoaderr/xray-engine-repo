@@ -728,7 +728,10 @@ void CPHSimpleCharacter::SetAcceleration(Fvector accel){
 			Enable();
 	m_acceleration=accel;
 }
-
+void CPHSimpleCharacter::SetCamDir(const Fvector& cam_dir)
+{
+	m_cam_dir.set(cam_dir);
+}
 static const float pull_force=25.f;
 void CPHSimpleCharacter::ApplyAcceleration() 
 {

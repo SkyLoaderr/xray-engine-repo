@@ -15,6 +15,15 @@ static const float out_dist				=1.5f;
 	m_character=NULL;
 }
 
+float CElevatorState::ClimbDirection()
+{
+	Fvector d;
+	m_ladder->DToPlain(m_character,d);
+	float dir=m_character->ControlAccel().dotproduct(d);
+	if(dir>0.f)dir*=m_character->CamDir().y;
+	return dir;
+}
+
 void CElevatorState::PhTune(float step)
 {
 	if(!m_ladder)			return;
@@ -113,7 +122,8 @@ void CElevatorState::UpdateStNearUp()
 	Fvector d;
 	float dist=m_ladder->DDUpperP(m_character,d);
 	if(	m_ladder->InTouch(m_character)				 &&
-		d.dotproduct(m_character->ControlAccel())<0.f&&
+		//d.dotproduct(m_character->ControlAccel())<0.f&&
+		//ClimbDirection()<0.f&&
 		m_ladder->DDToPlain(m_character,d)>m_character->FootRadius()/3.f&&
 		m_ladder->BeforeLadder(m_character)
 		)SwitchState(clbClimbingDown);
@@ -126,16 +136,19 @@ void CElevatorState::UpdateStNearDown()
 	float dist=m_ladder->DDLowerP(m_character,d);
 	if(	m_ladder->InTouch(m_character)&&
 		d.dotproduct(m_character->ControlAccel())>0.f&&
+		ClimbDirection()>0.f&&
 		m_ladder->BeforeLadder(m_character)
 		)SwitchState(clbClimbingUp);
 	if(dist-m_character->FootRadius()>out_dist)SwitchState((clbNone));
 }
+
+
 void CElevatorState::UpdateStClimbingDown()
 {
 	//if(m_character->ControlAccel().dotproduct(m_ladder->Axis())>0.f)
 	Fvector d;
-	m_ladder->DToPlain(m_character,d);
-	if(m_character->ControlAccel().dotproduct(d)>0.f)
+	
+	if(ClimbDirection()>0.f)
 		SwitchState(clbClimbingUp);
 	float to_ax=m_ladder->DDToAxis(m_character,d);
 	Fvector ca;ca.set(m_character->ControlAccel());
@@ -148,12 +161,13 @@ void CElevatorState::UpdateStClimbingDown()
 															SwitchState((clbNone));
 	if(fis_zero(control_a)) m_character->ApplyForce(d,m_character->Mass());
 }
+
 void CElevatorState::UpdateStClimbingUp()
 {
 	//if(m_character->ControlAccel().dotproduct(m_ladder->Axis())<0.f)
 	Fvector d;
-	m_ladder->DToPlain(m_character,d);
-	if(m_character->ControlAccel().dotproduct(d)<0.f)
+
+	if(ClimbDirection()<0.f)
 		SwitchState(clbClimbingDown);
 	float to_ax=m_ladder->DDToAxis(m_character,d);
 	Fvector ca;ca.set(m_character->ControlAccel());
@@ -171,15 +185,16 @@ void CElevatorState::UpdateStClimbingUp()
 void CElevatorState::GetControlDir(Fvector& dir)
 {
 	Fvector d;
+	float dist;
 	switch(m_state)
 	{
 	case	clbDepart		: 
 	case	clbNone			: 		break;			
-	case 	clbNearUp		:		 m_ladder->DDUpperP(m_character,d);
-									if(m_character->ControlAccel().dotproduct(d)>0.f) dir.set(d);
+	case 	clbNearUp		:		dist= m_ladder->DDUpperP(m_character,d);
+									if(!fis_zero(dist,EPS_L)&&m_character->ControlAccel().dotproduct(d)>0.f) dir.set(d);
 									break;						
-	case 	clbNearDown		:		m_ladder->DDLowerP(m_character,d);
-									if(m_character->ControlAccel().dotproduct(d)>0.f) dir.set(d);
+	case 	clbNearDown		:		dist=m_ladder->DDLowerP(m_character,d);
+									if(!fis_zero(dist,EPS_L)&&m_character->ControlAccel().dotproduct(d)>0.f) dir.set(d);
 									break;					
 	case 	clbClimbingUp	:		m_ladder->DDAxis(dir);
 									m_ladder->DDToAxis(m_character,d);
@@ -231,7 +246,7 @@ void CElevatorState::GetLeaderNormal(Fvector& dir)
 {
 	if(!m_ladder)	return;
 	m_ladder->DDNorm(dir);
-	Fvector d;
-	m_ladder->DToAxis(m_character,d);
-	if(dir.dotproduct(d)>0.f) dir.invert();
+	//Fvector d;
+	//m_ladder->DToAxis(m_character,d);
+	//if(dir.dotproduct(d)>0.f) dir.invert();
 }

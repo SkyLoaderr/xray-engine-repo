@@ -33,6 +33,7 @@ public:
 			bool		NearState						(){return m_state==clbNearUp || m_state == clbNearDown;}
 			bool		ClimbingState					(){return m_state==clbClimbingUp || m_state == clbClimbingDown;}
 			void		Depart							();
+			float		ClimbDirection					();
 private:
 			void		InitDepart						();
 

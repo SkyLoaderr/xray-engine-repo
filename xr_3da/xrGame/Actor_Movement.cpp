@@ -93,16 +93,16 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 	{
 		if(!(mstate_real & mcClimb))
 		{
-		
-		mstate_real				|=mcClimb;
-		//cam_Set(eacLadder);
+			mstate_real				|=mcClimb;
+			cam_SetLadder();
+
 		}
 	}
 	else
 	{
 		if (mstate_real & mcClimb)
 		{
-			//cam_Set(eacFirstEye);
+			cam_UnsetLadder();
 			RestoreHidedWeapon();
 		}
 		mstate_real				&=~mcClimb;		
@@ -266,7 +266,7 @@ void CActor::g_Orientate	(u32 mstate_rl, float dt)
 	float calc_yaw = 0;
 	if(mstate_real&mcClimb)
 	{
-		if(g_LeaderOrient(mstate_rl,dt)) return;
+		if(g_LadderOrient()) return;
 	}
 	switch(mstate_rl&mcAnyMove)
 	{
@@ -295,7 +295,7 @@ void CActor::g_Orientate	(u32 mstate_rl, float dt)
 	mXFORM.c.set	(Position());
 	XFORM().set		(mXFORM);
 }
-bool CActor::g_LeaderOrient(u32/* mstate_rl*/,float dt)
+bool CActor::g_LadderOrient()
 {
 	Fvector leader_norm;
 	m_PhysicMovementControl->GroundNormal(leader_norm);

@@ -101,7 +101,6 @@ CActor::CActor() : CEntityAlive()
 	cameras[eacFirstEye]	= xr_new<CCameraFirstEye>	(this, pSettings, "actor_firsteye_cam", 0);
 	cameras[eacLookAt]		= xr_new<CCameraLook>		(this, pSettings, "actor_look_cam",		0);
 	cameras[eacFreeLook]	= xr_new<CCameraLook>		(this, pSettings, "actor_free_cam",		0);
-	cameras[eacLadder]		= xr_new<CCameraFirstEye>	(this, pSettings, "actor_ladder_cam",	0);
 	cam_active				= eacFirstEye;
 	fPrevCamPos				= 0;
 	
@@ -620,7 +619,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 
 	//m_PhysicMovementControl->SetPosition		(Position());
 
-	m_PhysicMovementControl->Calculate			(accel,0,jump,dt,false);
+	m_PhysicMovementControl->Calculate			(accel,cameras[cam_active]->vDirection,0,jump,dt,false);
 	m_PhysicMovementControl->GetPosition		(Position());
 	m_PhysicMovementControl->bSleep				=false;
 	///////////////////////////////////////////////////////////////////////////////////////
