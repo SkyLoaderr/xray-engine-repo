@@ -13,6 +13,9 @@ const u32 XR_MAX_PORTAL_VERTS	= 6;
 // internal use
 struct b_rc_face
 {
+	struct{
+		u32				bOpaque:1;
+	};
 	u16					dwMaterial;
 	u32					dwMaterialGame;
 	Fvector2			t[3];				// TC
