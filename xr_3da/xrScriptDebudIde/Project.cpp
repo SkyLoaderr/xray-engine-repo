@@ -100,7 +100,7 @@ CProjectFile* CProject::GetProjectFile(CString strPathName)
 void CProject::AddFiles()
 {
 	CFileDialog fd(TRUE, NULL, NULL, OFN_FILEMUSTEXIST|OFN_PATHMUSTEXIST|OFN_ALLOWMULTISELECT, 
-		"Lua files (*.lua)|*.lua|All files (*.*)|*.*||", g_mainFrame);
+		"Script files (*.script)|*.script|All files (*.*)|*.*||", g_mainFrame);
 
 	if ( fd.DoModal()==IDOK )
 	{

@@ -504,7 +504,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    AFX_IDS_APP_TITLE       "LuaIDE"
+    AFX_IDS_APP_TITLE       "xRayScriptDebugger"
     AFX_IDS_IDLEMESSAGE     "Ready"
 END
 

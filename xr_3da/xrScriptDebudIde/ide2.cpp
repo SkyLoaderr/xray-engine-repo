@@ -75,7 +75,7 @@ BOOL CIdeApp::InitInstance()
 	// Change the registry key under which our settings are stored.
 	// TODO: You should modify this string to be something appropriate
 	// such as the name of your company or organization.
-	SetRegistryKey(_T("LuaIde"));
+	SetRegistryKey(_T("xrScriptDebugIde"));
 
 	LoadStdProfileSettings();  // Load standard INI file options (including MRU)
 

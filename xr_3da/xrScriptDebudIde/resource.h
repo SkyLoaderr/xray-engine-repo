@@ -20,6 +20,7 @@
 #define IDR_ACCEL_BUILD                 129
 #define IDR_SUBMENU_BUILD               130
 #define IDR_ACCEL_DEBUG                 130
+#define IDS_STRING130                   130
 #define IDR_SUBMENU_DEBUG               131
 #define IDR_ACCEL_DEBUG_BREAK           131
 #define IDR_PROJECT_MENU                132

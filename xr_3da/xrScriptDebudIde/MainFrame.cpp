@@ -583,15 +583,20 @@ void CMainFrame::UpdateFrameTitleForDocument(LPCTSTR lpszDocName)
 		{
 			lstrcpy(szText, m_project.GetName());
 			lstrcat(szText, _T(" - "));
-			lstrcat(szText, m_strTitle);
-		}
-		else
+//			lstrcat(szText, m_strTitle);
+		}else
 			lstrcpy(szText, m_strTitle);
 
-		if ( m_nAppMode==modeDebug )
+/*		if ( m_nAppMode==modeDebug )
 			lstrcat(szText, _T(" [run] "));
 		else if ( m_nAppMode==modeDebugBreak )
 			lstrcat(szText, _T(" [break] "));
+*/
+		if(m_needAnswer)
+			lstrcat(szText, _T(" [DEBUG BREAK] "));
+		else
+			lstrcat(szText, _T(" [NOT ACTIVE] "));
+
 
 		if (lpszDocName != NULL)
 		{
@@ -724,13 +729,10 @@ UINT CMainFrame::StartListener()
 {
 	UINT u = GetTickCount();
 	CMailSlotMsg msg;
-	char s[80] = "message arrived\n";
-	char s1[80] = "message translated\n";
 	while(true){
 	if( CheckMailslotMessage(m_mailSlot, msg) )
 		TranslateMsg(msg);
-
-		Sleep(100);
+		Sleep(10);
 	};
 
 }
