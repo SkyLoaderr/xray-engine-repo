@@ -1,17 +1,5 @@
 
 
-#include <ode/common.h>
-#include <ode/geom.h>
-#include <ode/rotation.h>
-#include <ode/odemath.h>
-#include <ode/memory.h>
-#include <ode/misc.h>
-#include <ode/objects.h>
-#include <ode/matrix.h>
-//#include <ode/src/objects.h>
-//#include <ode/src/array.h>
-#include <ode/src/geom_internal.h>
-
 #ifndef DTROCOLLIDERH
 #define DTROCOLLIDERH
 

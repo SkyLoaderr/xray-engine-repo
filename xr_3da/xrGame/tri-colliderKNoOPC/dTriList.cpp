@@ -1,12 +1,20 @@
-
 #include "stdafx.h"
+#include <ode/common.h>
+#include <ode/geom.h>
+#include <ode/rotation.h>
+#include <ode/odemath.h>
+#include <ode/memory.h>
+#include <ode/misc.h>
+#include <ode/objects.h>
+#include <ode/matrix.h>
+#include <ode/src/geom_internal.h>
+#include "dTriCollideK.h"
+#include "dxTriList.h"
+#include "dcTriListCollider.h"
 #include "dcTriListCollider.cpp"	// Allow inlining
 
-#include "array.h"
 
-#include "dxTriList.h"
 
-#include "dcTriListCollider.h"
 
 
 
@@ -88,48 +96,10 @@ int dCollideBTL(dxGeom* TriList, dxGeom* Box, int Flags, dContactGeom* Contact, 
 
 
 
-int dAABBTestTL(dxGeom* TriList, dxGeom* Object, dReal AABB[6]) throw()
-{
-
-	return 1;
 
 
 
-	int Class = dGeomGetClass(Object);
-
-	if (Class == dGeomGroupClass){
-
-		CollisionAABB Box;
-
-		Box.mCenter.x = (AABB[1] + AABB[0]) / 2.0f;
-
-		Box.mCenter.y = (AABB[3] + AABB[2]) / 2.0f;
-
-		Box.mCenter.z = (AABB[5] + AABB[4]) / 2.0f;
-
-		Box.mExtents.x = (AABB[1] - AABB[0]) / 2.0f;
-
-		Box.mExtents.y = (AABB[3] - AABB[2]) / 2.0f;
-
-		Box.mExtents.z = (AABB[5] - AABB[4]) / 2.0f;
-
-		return GetData(TriList)->GenerateTC(Object, Box);
-
-	}
-
-	else {
-
-		GetData(TriList)->ClearTC();
-
-		return 1;
-
-	}
-
-}
-
-
-
-dColliderFn* dTriListColliderFn(int num){
+dColliderFn* FUNCCALL dTriListColliderFn(int num){
 
 	if (num == dBoxClass) return (dColliderFn*)&dCollideBTL;
 
@@ -141,13 +111,19 @@ dColliderFn* dTriListColliderFn(int num){
 
 }
 
+int FUNCCALL dAABBTestTL(dxGeom* TriList, dxGeom* Object, dReal AABB[6]) throw()
+{
 
+	return 1;
+}
 
-void dDestroyTriList(dGeomID g){
+void FUNCCALL dDestroyTriList(dGeomID g){
 
-	dxTriList* Data = (dxTriList*)dGeomGetClassData(g);
+	//External Creating & Destroing!!!!!!!!
 
-	delete Data->Collider;
+	//dxTriList* Data = (dxTriList*)dGeomGetClassData(g);
+
+	//delete Data->Collider;
 
 }
 
@@ -242,65 +218,4 @@ dxGeom* dCreateTriList(dSpaceID space, dTriCallback* Callback, dTriArrayCallback
 
 
 
-void dGeomTriListBuild(dGeomID g, const dcVector3* Vertices, int VertexCount, const int* Indices, int IndexCount){
-
-	dxTriList* Data = (dxTriList*)dGeomGetClassData(g);
-
-	Data->Collider->Vertices = Vertices;
-
-	Data->Collider->Indices = Indices;
-
-	Data->Collider->Build(VertexCount, IndexCount);
-
-}
-
-
-
-void dGeomTriListGetTriangle(dGeomID g, int Index, dVector3* v0, dVector3* v1, dVector3* v2){
-
-	dxTriList* Data = (dxTriList*)dGeomGetClassData(g);
-
-	if (v0 != 0){
-
-		const dcVector3& v = Data->Collider->Vertices[Data->Collider->Indices[Index * 3 + 0]];
-
-		(*v0)[0] = v[0];
-
-		(*v0)[1] = v[1];
-
-		(*v0)[2] = v[2];
-
-		(*v0)[3] = REAL(0.0);
-
-	}
-
-	if (v1 != 0){
-
-		const dcVector3& v = Data->Collider->Vertices[Data->Collider->Indices[Index * 3 + 1]];
-
-		(*v1)[0] = v[0];
-
-		(*v1)[1] = v[1];
-
-		(*v1)[2] = v[2];
-
-		(*v1)[3] = REAL(0.0);
-
-	}
-
-	if (v2 != 0){
-
-		const dcVector3& v = Data->Collider->Vertices[Data->Collider->Indices[Index * 3 + 2]];
-
-		(*v2)[0] = v[0];
-
-		(*v2)[1] = v[1];
-
-		(*v2)[2] = v[2];
-
-		(*v2)[3] = REAL(0.0);
-
-	}
-
-}
 

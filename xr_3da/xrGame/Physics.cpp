@@ -1,5 +1,6 @@
 
 #include "StdAfx.h"
+#include "PHDynamicData.h"
 #include "Physics.h"
 #include <dTriList.h>
 #include  <dRay.h>
@@ -168,7 +169,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 
 
 	//dynamic data
-//		CreateJeepDynamic();
+CreateDynamicData();
 
 }
 
@@ -179,6 +180,7 @@ void CPHJeep::Destroy(){
 	for(UINT i=0;i<NofJoints;i++) dJointDestroy(Joints[i]);
 	for(UINT i=0;i<NofBodies;i++) dBodyDestroy(Bodies[i]);
 	for(UINT i=0;i<NofGeoms;i++) dGeomDestroy(Geoms[i]);
+	DynamicData.Destroy();
 
 }
 
@@ -236,7 +238,16 @@ void CPHJeep::Steer(const char& velocity, const char& steering)
 		break;
 	}
 }
+////////////////////////////////////////////////////////////////
 
+void CPHJeep::CreateDynamicData(){
+DynamicData.Create(4,Bodies[0]);
+DynamicData.SetChild(0,0,Bodies[1]);
+DynamicData.SetChild(1,0,Bodies[2]);
+DynamicData.SetChild(2,0,Bodies[3]);
+DynamicData.SetChild(3,0,Bodies[4]);
+
+}
 ////////////////////////////////////////////////////////////////////////////
 ///////////CPHWorld/////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
@@ -267,7 +278,7 @@ void CPHWorld::Destroy(){
 
 //////////////////////////////////////////////////////////////////////////////
 
-void CPHWorld::Step(){
+void CPHWorld::Step(dReal step){
 			// compute contact joints and forces
 			dSpaceCollide(Space, 0, &NearCallback);
 		
@@ -283,7 +294,7 @@ void CPHWorld::Step(){
 				}
 				*/
 
-			dWorldStep(World, 0.025f);
+			dWorldStep(World, step);
 			dJointGroupEmpty(ContactGroup);
 	
 			//isShootting=false;

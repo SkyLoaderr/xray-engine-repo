@@ -1,4 +1,11 @@
 #include "stdafx.h"
+
+#include <ode/common.h>
+#include <ode/geom.h>
+#include <ode/rotation.h>
+#include <ode/odemath.h>
+#include <ode/src/geom_internal.h>
+
 #include "dTriCollideK.h"
 
 //#define CONTACT(p,skip) ((dContactGeom*) (((char*)p) + (skip)))
@@ -15,7 +22,7 @@ extern "C" int dTriBox (
 {
 
  // dIASSERT (skip >= (int)sizeof(dContactGeom));
-  dIASSERT (o1->_class->num == dBoxClass);
+ // dIASSERT (o1->_class->num == dBoxClass);
   
 
   dxBox *box = (dxBox*) CLASSDATA(o1);

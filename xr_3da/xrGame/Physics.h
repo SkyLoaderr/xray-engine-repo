@@ -20,11 +20,14 @@ class CPHJeep {
 	dJointID Joints[NofJoints];
 
 
+	void CreateDynamicData();
 public:
 	CPHJeep(){}
 	void Create(dSpaceID space, dWorldID world);
 	void Destroy();
 	void Steer(const char& velocity, const char& steering);
+
+	PHDynamicData DynamicData;
 };
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -33,11 +36,13 @@ class CPHMan{
 
 class CPHGun{
 };
-/////////////////////
+/////////////////////////////////////////////////////////////////////////////
+static dWorldID World;
+static dJointGroupID ContactGroup;
+
 class CPHWorld {
 	dSpaceID Space;
-	static dWorldID World;
-	static dJointGroupID ContactGroup;
+
 	CPHJeep Jeep;
 	CPHMesh Mesh;
 
@@ -49,10 +54,10 @@ public:
 
 	void Destroy();
 
-	void Step();
+	void Step(dReal step=0.025f);
 
 private:
-		static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
+		static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 	const ULONG N = 100;
 	dContact contacts[N];
 	// get the contacts up to a maximum of N contacts

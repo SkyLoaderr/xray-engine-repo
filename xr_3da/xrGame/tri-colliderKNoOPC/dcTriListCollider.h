@@ -3,20 +3,6 @@
 
 #define __DCTRILISTCOLLIDER_INCLUDED__
 
-//#include <stdafx.h>
-
-//#include <Opcode.h>
-
-//using namespace Opcode;
-
-
-
-#include "dcAABBCollider.h"
-
-#include "dcOBBCollider.h"
-
-
-
 class dcTriListCollider{
 
 	dxGeom* Geometry;	// The geom object
@@ -41,7 +27,7 @@ class dcTriListCollider{
 
 	};
 
-	dArray<CollisionTriangle> CollisionTriangles;	// Internal buffer
+	vector<CollisionTriangle>	CollisionTriangles;	// Internal buffer
 
 
 
@@ -49,17 +35,7 @@ class dcTriListCollider{
 
 
 
-	dcAABBTreeCollider AABBCollider;	// Opcode collider
-
-	dcOBBTreeCollider OBBCollider;	// Opcode collider
-
-
-
-	OPCODE_Model BVTree;
-
-
-
-	dArray<const AABBNoLeafNode*> TCData;	// TC buffer
+	//vector<const AABBNoLeafNode*> TCData;	// TC buffer
 
 public:
 
@@ -75,21 +51,17 @@ public:
 
 
 
-	void Build(int VertexCount, int IndexCount);
-
-
-
 	int CollideBox(dxGeom* Box, int Flags, dContactGeom* Contact, int Stride);
 
 	int CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Contact, int Stride);
 
-	bool GenerateTC(dxGeom* Object, const CollisionAABB& Box);
+//	bool GenerateTC(dxGeom* Object, const CollisionAABB& Box);
 
-	void ClearTC();
+//	void ClearTC();
 
 
 
-	void Callback(dxGeom* Object, dArray<int>& TriIndices);
+//	void Callback(dxGeom* Object, dArray<int>& TriIndices);
 
 	bool Valid(dxGeom* Object, int TriIndex);
 
