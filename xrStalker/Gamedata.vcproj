@@ -244,9 +244,6 @@
 				RelativePath=".\pda.xml">
 			</File>
 			<File
-				RelativePath=".\pda_character.xml">
-			</File>
-			<File
 				RelativePath=".\pda_contacts.xml">
 			</File>
 			<File

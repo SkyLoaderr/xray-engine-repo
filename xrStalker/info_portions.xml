@@ -97,6 +97,23 @@
 		<article>zone_anomalies_heat</article>
 		<article>zone_anomalies_deadzone</article>
 		<article>zone_locations_escape</article>
+<!--
+		<article>equipment_items_med</article>
+		<article>equipment_items_capsule</article>
+		<article>equipment_items_detect1</article>
+		<article>equipment_items_detect2</article>
+		<article>equipment_items_detect3</article>
+		<article>equipment_items_detect4</article>
+		<article>equipment_items_health</article>
+		<article>equipment_items_diagnost</article>
+		<article>equipment_armors_armor1</article>
+		<article>equipment_armors_sci1</article>
+		<article>equipment_armors_sci2</article>
+		<article>equipment_armors_arm-light</article>
+		<article>equipment_armors_arm-medium</article>
+		<article>equipment_armors_arm-heavy</article>
+-->
+		
 	</info_portion>
 
 </game_information_portions>
