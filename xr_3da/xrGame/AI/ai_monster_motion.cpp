@@ -478,6 +478,7 @@ void CMotionManager::SelectVelocities()
 
 	// финальная корректировка анимации по физической скорости
 	float  real_speed = pMonster->m_PhysicMovementControl->GetVelocityMagnitude();
+	//Msg("Real speed = [%f]", pMonster->m_PhysicMovementControl->GetVelocityActual());
 	EMotionAnim new_anim;
 	float		a_speed;
 

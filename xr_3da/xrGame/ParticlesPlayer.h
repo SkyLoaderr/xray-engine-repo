@@ -80,4 +80,6 @@ public:
 	IC u16					GetRandomBone			(){return m_Bones.size()?(u16)Random.randI(m_Bones.size()):BI_NONE;}
 
 	void					SetParentVel			(const Fvector& vel) {parent_vel = vel;}
+	
+	bool					IsPlaying				() {return m_bActiveBones;}
 };

@@ -7,7 +7,7 @@
 #include "../../ai_monster_utils.h"
 
 
-#define HEIGHT_CHANGE_VELOCITY	0.1f
+#define HEIGHT_CHANGE_VELOCITY	0.5f
 #define HEIGHT_CHANGE_MIN_TIME	3000
 #define HEIGHT_CHANGE_MAX_TIME	10000
 #define HEIGHT_MIN				0.4f
@@ -36,6 +36,7 @@ void CPoltergeist::Load(LPCSTR section)
 	LoadFlame(section);
 
 	m_particles_hidden		= pSettings->r_string(section,"Hidden_Particles");
+	m_particles_hide		= pSettings->r_string(section,"Hide_Particles");
 
 	if (!MotionMan.start_load_shared(SUB_CLS_ID)) return;
 
@@ -83,7 +84,7 @@ void CPoltergeist::reinit()
 	time_tele_start		= 0;
 	tele_enemy			= 0;	
 
-	target_height		= 1.f;
+	target_height		= 0.3f;
 	time_height_updated = 0;
 
 	Energy::set_auto_activate();
@@ -106,6 +107,7 @@ void CPoltergeist::Hide()
 	movement_control()->DestroyCharacter();
 
 	CParticlesPlayer::StartParticles(m_particles_hidden,Fvector().set(0.0f,0.1f,0.0f),ID());
+	CParticlesPlayer::StartParticles(m_particles_hide,Fvector().set(0.0f,0.1f,0.0f),ID());
 }
 
 void CPoltergeist::Show()
@@ -123,6 +125,7 @@ void CPoltergeist::Show()
 	movement_control()->SetPosition(Position());
 	movement_control()->CreateCharacter();
 	
+	CParticlesPlayer::StartParticles(m_particles_hide,Fvector().set(0.0f,0.1f,0.0f),ID());
 	CParticlesPlayer::StopParticles(m_particles_hidden);
 }
 
@@ -190,10 +193,13 @@ bool CPoltergeist::UpdateStateManager()
 void CPoltergeist::on_activate()
 {
 	Hide();
+	
+	m_height			= 0.3f;
+	time_height_updated = 0;
 }
 
 void CPoltergeist::on_deactivate()
 {
-	//Show();
+	Show();
 }
 

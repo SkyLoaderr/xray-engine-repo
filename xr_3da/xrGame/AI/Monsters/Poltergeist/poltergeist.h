@@ -19,6 +19,7 @@ class CPoltergeist :	public CAI_Biting ,
 	bool				m_hidden;
 
 	LPCSTR				m_particles_hidden;
+	LPCSTR				m_particles_hide;
 
 	CStateManagerPoltergeist *StateMan;
 
