@@ -3,7 +3,7 @@
 #include "Torch.h"
 #include "xr_weapon_list.h"
 #include "trade.h"
-
+#include "..\CameraBase.h"
 
 void CActor::OnKeyboardPress(int cmd)
 {

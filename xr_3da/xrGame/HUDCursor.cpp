@@ -7,6 +7,7 @@
 #include "hudcursor.h"
 #include "hudmanager.h"
 
+#include "..\Environment.h"
 #include "..\CustomHUD.h"
 #include "Entity.h"
 

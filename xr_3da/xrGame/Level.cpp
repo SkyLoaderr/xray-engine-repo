@@ -4,6 +4,11 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "..\fdemorecord.h"
+#include "..\fdemoplay.h"
+#include "..\environment.h"
+#include "..\PGObject.h"
+
 #include "Level.h"
 #include "entity.h"
 #include "hudmanager.h"
@@ -11,12 +16,8 @@
 #include "ai_console.h"
 
 // events
-#include "..\fdemorecord.h"
-#include "..\fdemoplay.h"
 #include "PHdynamicdata.h"
 #include "Physics.h"
-
-#include "..\PGObject.h"
 
 CPHWorld*	ph_world = 0;
 
