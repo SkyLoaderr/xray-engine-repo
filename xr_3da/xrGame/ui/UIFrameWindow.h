@@ -9,6 +9,7 @@
 #include "uiwindow.h"
 
 #include "..\uiframerect.h"
+#include "..\uistaticitem.h"
 
 
 
@@ -35,6 +36,11 @@ protected:
 	///////////////////////////////////////	
 	//Графический интрефейс для рисования
 	///////////////////////////////////////
+	
+	//основной фрейм 
 	CUIFrameRect m_UIWndFrame;
+	//заголовки поверх него
+	CUIStaticItem m_UIStaticOverLeftTop;
+	CUIStaticItem m_UIStaticOverLeftBottom;
 
 };

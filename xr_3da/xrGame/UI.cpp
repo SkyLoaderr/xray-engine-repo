@@ -21,6 +21,55 @@ CUI::CUI(CHUDManager* p)
 	UIHealth.Init	();
 	UISquad.Init	();
 
+/**
+	UIMainWindow.Init("ui\\ui_frame", 100,100, 700,530);
+
+	UIButton1.Init("ui\\ui_button_01", 200,475,150,50);
+	UIButton2.Init("ui\\ui_button_02", 360,475,150,50);
+	UIButton3.Init("ui\\ui_button_03", 520,475,150,50);
+
+	UIMainWindow.AttachChild(&UIButton1);
+	UIMainWindow.AttachChild(&UIButton2);
+	UIMainWindow.AttachChild(&UIButton3);
+/**/
+
+/*	UIMainWindow.AttachChild(&UIScrollBar);
+	UIScrollBar.Init(10,10,350,true);
+	UIScrollBar.SetRange(0, 10);
+	UIScrollBar.SetPageSize(2);
+	UIScrollBar.SetScrollPos(0);*/
+
+
+//UIButton1.Init("ui\\hud_health_back", 10,10,128,128);
+//	UIButton2.Init(10,210,128,128);
+
+//	UIMainWindow.AttachChild(&UIButton1);
+//	UIMainWindow.AttachChild(&UIButton2);
+
+/*	UIMainWindow.AttachChild(&UIRadioGroup);
+	UIRadioGroup.Init(100,10, 300,300);
+
+	UIRadioGroup.AttachChild(&UIRadioButton1);
+	UIRadioGroup.AttachChild(&UIRadioButton2);
+
+	UIRadioButton1.Init(10,10,128,128);
+	UIRadioButton2.Init(10,110,128,128);
+*/
+/*	UIMainWindow.AttachChild(&UIScrollBar);
+	UIScrollBar.Init(10,10,250,true);*/
+
+//	CGameFont *pGameFont = m_Parent->pFontMedium;
+	//UIButton1.SetFont(m_Parent->pFontMedium);
+	//UIButton2.SetFont(m_Parent->pFontSmall);
+
+					
+	//show the cursor
+	UICursor.SetPos(Device.dwWidth/2, Device.dwHeight/2);
+//	UICursor.Show();
+	UICursor.Hide();
+
+	
+
 	m_Parent		= p;
 	pUIGame			= 0;
 
@@ -79,6 +128,13 @@ void CUI::OnFrame()
 		if(l_pA && (l_pA->m_inventory.m_activeSlot < l_pA->m_inventory.m_slots.size())) {
 			UIWeapon.Out(dynamic_cast<CWeapon*>(l_pA->m_inventory.m_slots[l_pA->m_inventory.m_activeSlot].m_pIItem));
 		} else UIWeapon.Out(NULL);
+
+
+		//update windows
+//		UIMainWindow.SetFont(m_Parent->pFontMedium);
+//		UIMainWindow.Update();
+			
+
 	}
 	// out GAME-style depend information
 	if (pUIGame) pUIGame->OnFrame	();
@@ -111,6 +167,13 @@ bool CUI::Render()
 		UIZoneMap.Render();
 		UIWeapon.Render();
 		UIHealth.Render();
+
+		//Draw main window and its children
+//		UIMainWindow.Draw();
+
+		//render cursor only when it visible
+		if(UICursor.IsVisible())
+					UICursor.Render();
 	}
 	// out GAME-style depend information
 	if (pUIGame) pUIGame->Render	();
@@ -119,14 +182,38 @@ bool CUI::Render()
 //--------------------------------------------------------------------
 bool CUI::OnKeyboardPress(int dik)
 {
-	if (pUIGame&&pUIGame->OnKeyboardPress(dik)) return true;
+/**
+	if(dik==MOUSE_1)
+	{
+		UIMainWindow.OnMouse(UICursor.GetPos().x,UICursor.GetPos().y,
+			CUIWindow::LBUTTON_DOWN);
+		return true;
+	}
+/**/
+
+	if (pUIGame&&pUIGame->OnKeyboardPress(dik)) 
+	{
+		return true;
+	}
 	return false;
 }
 //--------------------------------------------------------------------
 
 bool CUI::OnKeyboardRelease(int dik)
 {
-	if (pUIGame&&pUIGame->OnKeyboardRelease(dik)) return true;
+/**
+	if(dik==MOUSE_1)
+	{
+		UIMainWindow.OnMouse(UICursor.GetPos().x,UICursor.GetPos().y,
+			CUIWindow::LBUTTON_UP);
+		return true;
+	}
+/**/
+
+	if (pUIGame&&pUIGame->OnKeyboardRelease(dik)) 
+	{
+		return true;
+	}
 	return false;
 }
 //--------------------------------------------------------------------
@@ -135,7 +222,13 @@ bool CUI::OnMouseMove(int dx,int dy)
 {
 	if (UICursor.IsVisible())
 	{ 
-		UICursor.MoveBy(dx,dy);
+		UICursor.MoveBy(dx, dy);
+
+/**
+		UIMainWindow.OnMouse(UICursor.GetPos().x,
+							 UICursor.GetPos().y,
+							 CUIWindow::MOUSE_MOVE);
+/**/
 		return true;
 	}
 	return false;
@@ -143,7 +236,7 @@ bool CUI::OnMouseMove(int dx,int dy)
 
 void CUI::AddMessage(LPCSTR S, LPCSTR M, u32 C, float life_time)
 {
-	if (messages.size()==MAX_UIMESSAGES){ 
+	if (messages.size()==MAX_UIMESSAGES){
 		xr_delete(messages.front());
 		messages.erase(u32(0));
 	}

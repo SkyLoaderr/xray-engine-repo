@@ -1694,10 +1694,40 @@
 						RelativePath=".\ui\UIButton.h">
 					</File>
 					<File
+						RelativePath=".\ui\UICheckButton.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UICheckButton.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIFrameWindow.cpp">
 					</File>
 					<File
 						RelativePath=".\ui\UIFrameWindow.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIRadioButton.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIRadioButton.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIRadioGroup.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIRadioGroup.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIScrollBar.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIScrollBar.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIScrollBox.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIScrollBox.h">
 					</File>
 					<File
 						RelativePath=".\ui\UIWindow.cpp">

@@ -15,7 +15,10 @@ CUIButton:: CUIButton()
 	m_eButtonState = BUTTON_NORMAL;
 	m_ePressMode = NORMAL_PRESS;
 
+	m_str = "Hello";
+
 	m_bButtonClicked = false;
+	m_bCursorOverButton = false;
 }
 
  CUIButton::~ CUIButton()
@@ -25,16 +28,14 @@ CUIButton:: CUIButton()
 
 
 
-void CUIButton::Init(int x, int y, int width, int height)
+void CUIButton::Init(LPCSTR tex_name, int x, int y, int width, int height)
 {
 	
-	m_UIStaticNormal.Init("ui\\ui_hud_frame_l","hud\\default",x,y,alNone);
-	m_UIStaticPushed.Init("ui\\ui_hud_frame_back","hud\\default",x,y,alNone);
+	m_UIStaticItem.Init(tex_name,"hud\\default",x,y,alNone);
 
 	
 	CUIWindow::Init(x, y, width, height);
 }
-
 
 
 void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
@@ -47,6 +48,8 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 		cursor_on_button = true;
 	else
 		cursor_on_button = false;
+
+	m_bCursorOverButton = cursor_on_button;
 
 
 	m_bButtonClicked = false;
@@ -162,39 +165,65 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 
 }
 
+#define PUSH_OFFSET_RIGHT 2
+#define PUSH_OFFSET_DOWN  3
+
+
 //прорисовка кнопки
 void  CUIButton::Draw()
 {
 	RECT rect = GetAbsoluteRect();
+		
 
 	if(m_eButtonState == BUTTON_UP || m_eButtonState == BUTTON_NORMAL)
 	{
-		m_UIStaticNormal.SetPos(rect.left, rect.top);
-		m_UIStaticNormal.Render();
+		m_UIStaticItem.SetPos(rect.left, rect.top);
 	}
 	else
 	{
-		m_UIStaticPushed.SetPos(rect.left, rect.top);
-		m_UIStaticPushed.Render();
+		m_UIStaticItem.SetPos(rect.left+PUSH_OFFSET_RIGHT, 
+								rect.top+PUSH_OFFSET_DOWN);
 	}
+
+	m_UIStaticItem.Render();
+
+	//установить размер кнопки в соответствии с размером отрендеренной текстуры
+	/*SetWndRect(GetWndRect().left + m_UIStaticNormal.GetRect().x1,
+			   GetWndRect().top  + m_UIStaticNormal.GetRect().y1,
+			   m_UIStaticNormal.GetRect().x2-m_UIStaticNormal.GetRect().x1,
+			   m_UIStaticNormal.GetRect().y2-m_UIStaticNormal.GetRect().y1);*/
+
+				
 }
 
 void  CUIButton::Update()
 {
 	RECT rect = GetAbsoluteRect();
 
+	int right_offset;
+	int down_offset;
+
 	if(m_eButtonState == BUTTON_UP || m_eButtonState == BUTTON_NORMAL)
 	{
-			m_pFont->SetColor(0xFF00FF00);
-			
-			m_pFont->Out((float)rect.left, (float)rect.top,	"normal");
-
-			
-			
+			right_offset = 0;
+			down_offset = 0;
 	}
 	else
 	{
-			m_pFont->SetColor(0xFF0000FF);
-			m_pFont->Out((float)rect.left, (float)rect.top,	"pushed");
+			right_offset = PUSH_OFFSET_RIGHT;
+			down_offset = PUSH_OFFSET_DOWN;
+	}
+
+	GetFont()->SetColor(0xFFEEEEEE);
+	GetFont()->Out((float)rect.left + right_offset, 
+				   (float)rect.top + down_offset,
+				    m_str);
+
+	if(m_bCursorOverButton)
+	{
+			GetFont()->SetColor(0xFF444444);
+			GetFont()->Out((float)rect.left + right_offset + 2, 
+					   (float)rect.top + down_offset + 2,
+					    m_str);
 	}
 }

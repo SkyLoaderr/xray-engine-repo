@@ -59,9 +59,6 @@ public:
 	void Show(bool status) {m_bIsShown =  status;}
 	bool IsShown() {return m_bIsShown;}
 	
-	
-
-
 	////////////////////////////////////
 	//положение и размеры окна
 
@@ -101,7 +98,14 @@ public:
 	virtual void Draw();
 	//обновление окна передпрорисовкой
 	virtual void Update();
-	
+
+
+	//временно!!!!
+	void SetFont(CGameFont* pFont) {m_pFont = pFont;}
+	CGameFont* GetFont() {if(m_pParentWnd== NULL)	
+								return  m_pFont;
+							else
+								return  m_pParentWnd->GetFont();}
 
 protected:
 
@@ -125,5 +129,12 @@ protected:
 	bool m_bIsEnabled;
 	//показывать ли окно
 	bool m_bIsShown;
+
+
+	/////////////
+	//указатель на используемый шрифт
+	//временно!!!!
+	CGameFont* m_pFont;
+
 
 };

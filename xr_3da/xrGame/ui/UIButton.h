@@ -22,7 +22,7 @@ public:
 	virtual ~ CUIButton();
 
 
-	virtual void Init(int x, int y, int width, int height);
+	virtual void Init(LPCSTR tex_name, int x, int y, int width, int height);
 	
 	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
 
@@ -46,8 +46,9 @@ public:
 	E_PRESS_MODE GetPressMode() {return m_ePressMode;}
 
 
-	void SetFont(CGameFont* pFont) {
-		m_pFont = pFont;}
+	void SetText(LPSTR str) {m_str = str;}
+	LPSTR GetText() {return m_str;}
+
 
 protected:
 	
@@ -62,18 +63,22 @@ protected:
 	//если кнопка была только что нажата
 	bool m_bButtonClicked;
 
+	//если курсор над мышкой
+	bool m_bCursorOverButton;
+
 	//режим в котором нажимается кнопка
 	E_PRESS_MODE m_ePressMode;
+
+	//текст на кнопке
+	LPSTR m_str;
+
 
 
 	///////////////////////////////////////	
 	//Графический интрефейс для рисования
 	///////////////////////////////////////
-	CUIStaticItem m_UIStaticNormal;
-	CUIStaticItem m_UIStaticPushed;
-
-	CGameFont* m_pFont;
-
+	CUIStaticItem m_UIStaticItem;
+	
 };
 
 #endif // _UI_BUTTON_H_

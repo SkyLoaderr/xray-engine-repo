@@ -9,6 +9,18 @@
 #include "UIGroup.h"
 #include "UIGameCustom.h"
 
+/**
+#include "ui\UIFrameWindow.h"
+#include "ui\UIButton.h"
+#include "ui\UICheckButton.h"
+
+#include "ui\UIRadioButton.h"
+#include "ui\UIRadioGroup.h"
+
+#include "ui\UIScrollBar.h"
+/**/
+
+
 #define UI_BASE_WIDTH	800
 #define UI_BASE_HEIGHT	600
 
@@ -48,6 +60,31 @@ class CUI{
 	CUIWeapon			UIWeapon;
 	CUIHealth			UIHealth;
 	CUISquad			UISquad;
+
+
+	//////////////////////////////////
+	// window tests begin
+	///////////////////////////////////
+
+/**
+	CUIFrameWindow		UIMainWindow;
+	CUIButton			UIButton1;
+	CUIButton			UIButton2;
+	CUIButton			UIButton3;
+
+	CUIRadioGroup		UIRadioGroup;
+	CUIRadioButton		UIRadioButton1;
+	CUIRadioButton		UIRadioButton2;
+
+	CUIScrollBar		UIScrollBar;
+/**/
+
+	//////////////////////////////////
+	// window tests end
+	///////////////////////////////////
+
+
+
 
 	CUIGameCustom*		pUIGame;
 
