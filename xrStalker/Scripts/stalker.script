@@ -70,7 +70,6 @@ end
 
 function action_alive:execute()
 	action_base.execute					(self)
-	printf								("action %s is executed",self.name)
 	
 	self.object:play_sound				(2,60000,10000)
 
@@ -99,6 +98,10 @@ end
 
 function stalker_script:reinit		()
 	object_binder.reinit	(self)
+end
+
+function stalker_script:reload		(section)
+	object_binder.reload	(self,section)
 	local					motivations	= {}
 	local					operators	= {}
 	local					properties	= {}
@@ -149,10 +152,6 @@ function stalker_script:reinit		()
 	action:add_precondition	(world_property(properties["solved"],	false))
 	action:add_effect		(world_property(properties["solved"],	true))
 	manager:add_action		(operators["free"],			action)
-end
-
-function stalker_script:reload		(section)
-	object_binder.reload	(self,section)
 end
 
 function stalker_script:net_spawn	(server_object)
