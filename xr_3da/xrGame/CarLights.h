@@ -21,7 +21,7 @@ struct SCarLight
 
 };
 
-DEFINE_VECTOR(SCarLight,LIGHTS_VECTOR,LIGHTS_I)
+DEFINE_VECTOR(SCarLight*,LIGHTS_VECTOR,LIGHTS_I)
 class CCarLights
 {
 public:

@@ -102,9 +102,9 @@ void CCarLights::ParseDefinitions()
 	for (int i=0 ;i<count; ++i) 
 	{
 		_GetItem					(S,i,S1);
-		m_lights.push_back(SCarLight());
-		m_lights.back().Init(this);
-		m_lights.back().ParseDefinitions(S1);
+		m_lights.push_back(xr_new<SCarLight>());
+		m_lights.back()->Init(this);
+		m_lights.back()->ParseDefinitions(S1);
 	}
 	
 }
@@ -112,16 +112,18 @@ void CCarLights::ParseDefinitions()
 void CCarLights::Update()
 {
 	LIGHTS_I i =m_lights.begin(),e=m_lights.end();
-	for(;i!=e;++i) i->Update();
+	for(;i!=e;++i) (*i)->Update();
 }
 
 void CCarLights::SwitchHeadLights()
 {
 	LIGHTS_I i =m_lights.begin(),e=m_lights.end();
-	for(;i!=e;++i) i->Switch();
+	for(;i!=e;++i) (*i)->Switch();
 }
 
 CCarLights::~CCarLights()
 {
+	LIGHTS_I i =m_lights.begin(),e=m_lights.end();
+	for(;i!=e;++i) xr_delete(*i);
 	m_lights.clear();
 }
