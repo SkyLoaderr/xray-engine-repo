@@ -66,12 +66,11 @@ void CStateManagerPoltergeist::execute()
 		bool can_eat = false;
 		if (corpse) {
 
-			if (prev_substate == eStateEat) {
-				if (!get_state_current()->check_completion()) can_eat = true;
+			if (prev_substate == eStateEat) {	// уже ест
+				if (!get_state_current()->check_completion())				can_eat = true;
+			} else {							// ещё не ест	
+				if (object->GetSatiety() < object->get_sd()->m_fMinSatiety) can_eat = true;	
 			}
-
-			if ((prev_substate != eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMinSatiety)) 
-				can_eat = true;		
 		}
 
 		if (can_eat) state_id = eStateEat;
