@@ -194,7 +194,8 @@ const CAnimationPair *CStalkerAnimationManager::weapon_animation	(u32 slot, cons
 
 const CAnimationPair *CStalkerAnimationManager::missile_animation	(u32 slot, const EBodyState &body_state) const
 {
-	if ((body_state == eBodyStateCrouch) && m_missile)
+	VERIFY			(m_missile);
+	if (body_state == eBodyStateCrouch)
 		slot		= 0;
 
 	switch (m_missile->State()) {
@@ -216,7 +217,7 @@ const CAnimationPair *CStalkerAnimationManager::missile_animation	(u32 slot, con
 		case MS_HIDDEN	 :
 		case MS_EMPTY	 :
 		default			 :
-			return  (&m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 9 : 6].A[0]);
+			return  (&m_part_animations.A[body_state].m_torso.A[slot].A[6].A[0]);
 	}
 }
 

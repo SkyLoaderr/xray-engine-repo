@@ -12,7 +12,9 @@
 #include "../skeletonanimated.h"
 #include "stalker_movement_manager.h"
 #include "entitycondition.h"
+
 #include "inventory.h"
+#include "missile.h"
 
 void CStalkerAnimationManager::reinit				()
 {
@@ -148,6 +150,41 @@ void CStalkerAnimationManager::update						()
 			default : {
 				Msg			("body state is INVALID");
 				break;
+			}
+		}
+
+		Msg					("stalker name is %s",*m_object->cName());
+		Msg					("stalker section is %s",*m_object->cNameSect());
+		Msg					("stalker visual is %s",*m_object->cNameVisual());
+
+		if (m_missile) {
+			switch (m_missile->State()) {
+				case MS_SHOWING	 :
+					Msg				("norm_torso_%d_draw_0",object_slot());
+					break;
+				case MS_HIDING	 :
+					Msg				("norm_torso_%d_holster_0",object_slot());
+					break;
+				case MS_THREATEN :
+					Msg				("norm_torso_%d_attack_0",object_slot());
+					break;
+				case MS_READY	 :
+					Msg				("norm_torso_%d_attack_1",object_slot());
+					break;
+				case MS_THROW	 :
+					Msg				("norm_torso_%d_attack_2",object_slot());
+					break;
+				case MS_END		 :
+					Msg				("norm_torso_%d_attack_2",object_slot());
+					break;
+				case MS_PLAYING	 :
+					Msg				("norm_torso_%d_attack_2",object_slot());
+					break;
+				case MS_IDLE	 :
+				case MS_HIDDEN	 :
+				case MS_EMPTY	 :
+				default			 :
+					Msg				("norm_torso_%d_aim_0",object_slot());
 			}
 		}
 
