@@ -157,8 +157,8 @@ void CGameFont::OnRender()
 				S			= (S*vTS.x)/fHeight;
 
 				switch(PS.align){
-				case alCenter:	X-=SizeOf(PS.string)*.5f;	break;
-				case alRight:	X-=SizeOf(PS.string);		break;
+				case alCenter:	X-=SizeOf(PS.string,PS.size)*.5f;	break;
+				case alRight:	X-=SizeOf(PS.string,PS.size);		break;
 				}
 
 				u32	clr,clr2; 
@@ -277,10 +277,10 @@ void CGameFont::OutSkip(float val)
 	fCurrentY += val*CurrentHeight();
 }
 
-float CGameFont::SizeOf(char *s)	
+float CGameFont::SizeOf(char *s,float size)	
 { 
 	int		len			= strlen(s);
 	float	X			= 0;
 	if (len) for (int j=0; j<len; j++) X+=TCMap[s[j]].z;
-	return				X*ConvertSize(fCurrentSize)/fHeight*vInterval.x*vTS.x;
+	return				X*ConvertSize(size)/fHeight*vInterval.x*vTS.x;
 }
