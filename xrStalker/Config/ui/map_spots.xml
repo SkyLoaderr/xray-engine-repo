@@ -2,9 +2,13 @@
 <map_spots>
 
 #include "ui\map_spots_escape.xml"
+
 #include "ui\map_spots_garbage.xml"
+
 #include "ui\map_spots_agroprom.xml"
+
 #include "ui\map_spots_rostok.xml"
+
 #include "ui\map_spots_military.xml"
 
 #include "ui\map_spots_radar.xml"
