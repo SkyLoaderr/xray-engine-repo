@@ -17,12 +17,38 @@
 
 CEntity::CEntity()
 {
-	iMAX_Health	= MAX_HEALTH;
-	iMAX_Armor	= MAX_ARMOR;
+	iMAX_Health			= MAX_HEALTH;
+	iMAX_Armor			= MAX_ARMOR;
+	
+	eHealthLost_Begin	= Engine.Event.Handler_Attach	("level.entity.healthlost.begin",	this);
+	eHealthLost_End		= Engine.Event.Handler_Attach	("level.entity.healthlost.end",		this);
 }
 
 CEntity::~CEntity()
 {
+	Engine.Event.Handler_Detach	(eHealthLost_Begin,	this);
+	Engine.Event.Handler_Detach	(eHealthLost_End,	this);
+}
+
+void CEntity::OnEvent	(EVENT E, DWORD P1, DWORD P2)
+{
+	if (E==eHealthLost_Begin)	
+	{
+		if (0==P2 || this==P2)	
+		{
+			eHealthLost_Enabled		= TRUE;
+			LPCSTR	param			= LPCSTR(P1);
+			sscanf					(param,"%d,%d",&eHealthLost_speed,&eHealthLost_granularity);
+			eHealthLost_cumulative	= 0;
+		}
+	} else
+	if (E==eHealthLost_End)
+	{
+		if (0==P2 || this==P2)	
+		{
+			eHealthLost_Enabled		= FALSE;
+		}
+	}
 }
 
 BOOL CEntity::Hit(int perc, Fvector &dir, CEntity* who) 
@@ -182,4 +208,21 @@ float CEntity::OnVisible()
 	float ret = inherited::OnVisible();
 	::Render.Wallmarks.AddShadow(this);
 	return ret;
+}
+
+void CEntity::Update	(DWORD dt)
+{
+	inherited::Update	(dt);
+
+	if (eHealthLost_Enabled)
+	{
+		eHealthLost_cumulative	+= (float(dt)/1000.f)*eHealthLost_speed;
+		if (eHealthLost_cumulative > eHealthLost_granularity)
+		{
+			Fvector vdir; vdir.set	(0,1,0);
+			eHealthLost_cumulative	-= eHealthLost_granularity;
+			Hit						(iFloor(eHealthLost_granularity),vdir,0);
+		}
+
+	}
 }

@@ -28,9 +28,15 @@ protected:
 	// health & shield
 	int					iHealth,	iMAX_Health;
 	int					iArmor,		iMAX_Armor;
-protected:
-	EVENT*				
+protected:	
+	// EVENT: health lost 
+	EVENT*				eHealthLost_Begin;
+	EVENT*				eHealthLost_End;
 	
+	BOOL				eHealthLost_Enabled;
+	float				eHealthLost_speed;
+	float				eHealthLost_granularity;
+	float				eHealthLost_cumulative;
 public:
 	// movement
 	CMovementControl	Movement;
@@ -80,8 +86,8 @@ public:
 	}
 public:
 	// General
-	CEntity				();
-	virtual ~CEntity	();
+	CEntity					();
+	virtual ~CEntity		();
 
 	virtual void			Load				(CInifile* ini, LPCSTR section);
 	virtual BOOL			Spawn				(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
@@ -113,6 +119,9 @@ public:
 	virtual void			g_sv_fireStart		(NET_Packet* P)		{;}
 	virtual void			g_fireEnd			( )					{;}
 
+	// Events
+	virtual void			OnEvent				(EVENT E, DWORD P1, DWORD P2);
+	virtual void			Update				( DWORD dt	);	
 	virtual BOOL			TakeItem			( DWORD CID ) { return FALSE; }
 };
 
