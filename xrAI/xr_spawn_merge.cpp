@@ -12,7 +12,7 @@
 #include "xrLevel.h"
 #include "xrGraph.h"
 #include "ai_nodes.h"
-#include "xrServer_Entities.h"
+#include "xrServer_Objects_ALife_All.h"
 #include "game_base.h"
 #include "xr_spawn_merge.h"
 #include "xrCrossTable.h"
@@ -78,7 +78,7 @@ public:
 			string64			s_name;
 			P.r_string			(s_name);
 			// create server entity
-			xrServerEntity*	E	= F_entity_Create	(s_name);
+			CAbstractServerObject*	E	= F_entity_Create	(s_name);
 			if (!E) {
 				string4096		S;
 				sprintf			(S,"Can't create entity '%s' !\n",E->s_name_replace);
@@ -194,7 +194,7 @@ public:
 	{
 		NET_Packet		P;
 		for (u32 i=0 ; i<m_tpSpawnPoints.size(); i++, dwID++) {
-			xrServerEntity*	E	= m_tpSpawnPoints[i];
+			CAbstractServerObject*	E	= m_tpSpawnPoints[i];
 
 			fs.open_chunk		(dwID);
 

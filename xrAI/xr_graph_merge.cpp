@@ -13,7 +13,7 @@
 #include "xrGraph.h"
 #include "ai_alife_space.h"
 #include "game_base.h"
-#include "xrServer_Entities.h"
+#include "xrServer_Objects_ALife_All.h"
 #include "xrCrossTable.h"
 using namespace ALife;
 
@@ -121,10 +121,10 @@ public:
 				P.r_begin							(ID);
 				R_ASSERT							(M_SPAWN==ID);
 				P.r_string							(fName);
-				xrServerEntity						*E = F_entity_Create	(fName);
+				CAbstractServerObject				*E = F_entity_Create	(fName);
 				R_ASSERT2							(E,"Can't create entity.");
 				E->Spawn_Read						(P);
-				xrGraphPoint						*tpGraphPoint = dynamic_cast<xrGraphPoint*>(E);
+				CALifeGraphPoint					*tpGraphPoint = dynamic_cast<CALifeGraphPoint*>(E);
 				if (tpGraphPoint) {
 					Fvector							tVector;
 					tVector							= tpGraphPoint->o_Position;
