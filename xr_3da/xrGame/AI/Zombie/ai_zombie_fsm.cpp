@@ -121,7 +121,7 @@ void CAI_Zombie::Death()
 		if (m_dwLastRangeSearch <= m_dwDeathTime)
 			m_dwLastRangeSearch = Level().timeServer();
 		setVisible(false);
-		if (Level().timeServer() - m_dwLastRangeSearch > 10000) {
+		if (Level().timeServer() - m_dwLastRangeSearch > m_dwToWaitBeforeDestroy) {
 			NET_Packet			P;
 			u_EventGen			(P,GE_DESTROY,ID());
 			u_EventSend			(P);

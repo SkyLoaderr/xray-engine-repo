@@ -188,6 +188,7 @@ class CAI_Zombie : public CCustomMonster
 		float				m_fWallMaxTurnValue;
 		float				m_fSoundThreshold;
 		u32					m_dwTimeToLie;
+		u32					m_dwToWaitBeforeDestroy;
 
 		//////////////////////////
 		// INLINE FUNCTIONS

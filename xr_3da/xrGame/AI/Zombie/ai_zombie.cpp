@@ -42,6 +42,7 @@ CAI_Zombie::CAI_Zombie()
 	m_dwStartAttackTime		= 0;
 	q_look.o_look_speed		= PI;
 	m_dwTimeToLie			= 10000;
+	m_dwToWaitBeforeDestroy = 10000;
 }
 
 CAI_Zombie::~CAI_Zombie()
