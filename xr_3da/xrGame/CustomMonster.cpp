@@ -338,80 +338,45 @@ void CCustomMonster::net_update::lerp(CCustomMonster::net_update& A, CCustomMons
 void CCustomMonster::UpdateCL	()
 { 
 	inherited::UpdateCL();
+	
 	if	(NET.empty())	return;
 
 	// distinguish interpolation/extrapolation
 	u32	dwTime			= Level().timeServer()-NET_Latency;
 	net_update&	N		= NET.back();
-	if (NET.size()<2) {
+	if ((dwTime > N.dwTimeStamp) || (NET.size() < 2)) {
 		// BAD.	extrapolation
-		Log("Extrapolation");
+		//Log("Extrapolation");
 		NET_Last		= N;
 	}
-	else
-		if (dwTime > N.dwTimeStamp) {
-			int select		= -1;
-			u32				dwMaxTime = 0;
-			for (u32 id=0; id<NET.size()-1; id++)
-			{
-				if (NET[id].dwTimeStamp >= dwMaxTime)
-					select=id;
-			}
-			if (select >= 0) {
-				if (select == (int)NET.size()-1)
-					select--;
-				// Interpolate state
-				net_update&	A			= NET[select+0];
-				net_update&	B			= NET[select+1];
-				u32	d1					= dwTime-A.dwTimeStamp;
-				u32	d2					= B.dwTimeStamp - A.dwTimeStamp;
-				float					f = (float(d1)/float(d2));
-				
-//				NET_Last.p_pos.sub		(B.p_pos,A.p_pos);
-//				if (dwTime - B.dwTimeStamp < 150)
-//					NET_Last.p_pos.mul		(f);
-//				else
-//					NET_Last.p_pos.mul		((float(d2 + 150)/float(d2)));
-//				NET_Last.p_pos.add		(A.p_pos);
-				NET_Last.lerp			(A,B,_min(f,2.f));
-				
-				Fvector					dir;
-				AI_Path.Direction		(dir);
-				SelectAnimation			(XFORM().k,dir,AI_Path.fSpeed);
-				
-				// Signal, that last time we used interpolation
-				NET_WasExtrapolating	= TRUE;
-				NET_Time				= dwTime;
-			}
+	else {
+		// OK.	interpolation
+		NET_WasExtrapolating		= FALSE;
+		// Search 2 keyframes for interpolation
+		int select		= -1;
+		for (u32 id=0; id<NET.size()-1; id++)
+		{
+			if ((NET[id].dwTimeStamp<=dwTime)&&(dwTime<=NET[id+1].dwTimeStamp))	select=id;
 		}
-		else {
-			// OK.	interpolation
-			NET_WasExtrapolating		= FALSE;
-			// Search 2 keyframes for interpolation
-			int select		= -1;
-			for (u32 id=0; id<NET.size()-1; id++)
-			{
-				if ((NET[id].dwTimeStamp<=dwTime)&&(dwTime<=NET[id+1].dwTimeStamp))	select=id;
-			}
-			if (select>=0)		
-			{
-				// Interpolate state
-				net_update&	A			= NET[select+0];
-				net_update&	B			= NET[select+1];
-				u32	d1					= dwTime-A.dwTimeStamp;
-				u32	d2					= B.dwTimeStamp - A.dwTimeStamp;
-				float	factor			= (float(d1)/float(d2));
-				NET_Last.lerp			(A,B,factor);
-				
-				Fvector					dir;
-				AI_Path.Direction		(dir);
-				SelectAnimation			(XFORM().k,dir,AI_Path.fSpeed);
-				
-				// Signal, that last time we used interpolation
-				NET_WasInterpolating	= TRUE;
-				NET_Time				= dwTime;
-			}
+		if (select>=0)		
+		{
+			// Interpolate state
+			net_update&	A			= NET[select+0];
+			net_update&	B			= NET[select+1];
+			u32	d1					= dwTime-A.dwTimeStamp;
+			u32	d2					= B.dwTimeStamp - A.dwTimeStamp;
+			float	factor			= (float(d1)/float(d2));
+			NET_Last.lerp			(A,B,factor);
+			
+			Fvector					dir;
+			AI_Path.Direction		(dir);
+			SelectAnimation			(XFORM().k,dir,AI_Path.fSpeed);
+			
+			// Signal, that last time we used interpolation
+			NET_WasInterpolating	= TRUE;
+			NET_Time				= dwTime;
 		}
+	}
 
 	// Use interpolated/last state
 	// mTransformCL	= mTransform;
