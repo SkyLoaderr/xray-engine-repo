@@ -16,10 +16,10 @@ end
 --    local phrase = 0
 --    if table.getn (phrase_set) == 1 then phrase = 1
 --    else
---       phrase = phrase_set[math.random (1, table,getn (phrase_set)]
+--       phrase = phrase_set[math.random (1, table,getn (phrase_set))]
 --    end    
 --    this.play_sound (obj, delay, theme, sub_theme, phrase)
-end
+--end
 -----------------------------------------------------------------------------------------------------------------------------------
 function play_sound (obj, delay, theme, sub_theme, phrase_set, sub_phrase)
 
