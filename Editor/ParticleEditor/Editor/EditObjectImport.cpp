@@ -92,15 +92,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                             }
                             char tex_name[_MAX_FNAME];
                             _splitpath( tname, 0, 0, tex_name, 0 );
-                            if (_GetItemCount(tex_name,'_')>1){
-                            	char _fn[_MAX_FNAME];
-                            	char fld[_MAX_FNAME];
-                                _GetItem(tex_name,0,fld,'_');
-                                sprintf(_fn,"%s\\%s",fld,tex_name);
-	                            Osf->SetTexture(_fn);
-                            }else{
-	                            Osf->SetTexture(tex_name);
-                            }
+							Osf->SetTexture(FS.UpdateTextureNameWithFolder(tname));
                             // get vmap refs
                             Osf->SetVMap(Itx->param.imap.vmap_name);
 				            Osf->SetShaderXRLC("default");
