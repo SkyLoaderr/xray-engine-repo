@@ -8066,6 +8066,12 @@
 					Name="Diary"
 					Filter="">
 					<File
+						RelativePath=".\ui\UIActorDiary.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIActorDiary.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIContracts.cpp">
 					</File>
 					<File
@@ -8076,6 +8082,12 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIDiaryWnd.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIEncyclopediaCore.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIEncyclopediaCore.h">
 					</File>
 					<File
 						RelativePath=".\ui\UIEncyclopediaWnd.cpp">

@@ -13,13 +13,28 @@ typedef ref_str		ARTICLE_STR_ID;
 
 struct ARTICLE_DATA
 {
-	ARTICLE_DATA ():index(NO_ARTICLE),receive_time(0),readed(false) {}
-	ARTICLE_DATA (ARTICLE_INDEX idx, ALife::_TIME_ID time):index(idx),receive_time(time),readed(false) {}
+	enum EArticleType {eEncyclopediaArticle, eDiaryArticle, eDummyArticle};
+
+	ARTICLE_DATA			()
+		:	index			(NO_ARTICLE),
+			receive_time	(0),
+			readed			(false),
+			article_type	(EArticleType::eDummyArticle)
+	{}
+
+	ARTICLE_DATA			(ARTICLE_INDEX idx, ALife::_TIME_ID time, EArticleType articleType)
+		:	index			(idx),
+			receive_time	(time),
+			readed			(false),
+			article_type	(articleType)
+	{}
 	
 	ALife::_TIME_ID receive_time;
 	ARTICLE_INDEX index;
 	//whether the article has been read
 	bool readed;
+
+	EArticleType article_type;
 };
 
 DEFINE_VECTOR		(ARTICLE_INDEX, ARTICLE_INDEX_VECTOR, ARTICLE_INDEX_IT);

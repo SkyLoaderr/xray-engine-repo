@@ -27,6 +27,9 @@ struct SArticleData : CSharedResource
 	
 	//секция ltx, откуда читать данные
 	ref_str ltx;
+
+	// Тип статьи
+	ARTICLE_DATA::EArticleType articleType;
 };
 
 class CEncyclopediaArticle;

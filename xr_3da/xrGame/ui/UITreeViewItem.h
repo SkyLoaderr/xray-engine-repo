@@ -13,12 +13,14 @@
 
 #include "UIListItem.h"
 
+class CUIListWnd;
+
 class CUITreeViewItem: public CUIListItem
 {
 	typedef CUIListItem inherited;
-	// Являемся ли мы началом подиерархии
+	// Являемся ли мы началом подыерархии
 	bool			isRoot;
-	// Если мы рут, то этот флаг показывает открыта наша подиерархия или нет
+	// Если мы рут, то этот флаг показывает открыта наша подыерархия или нет
 	bool			isOpened;
 	// Смещение в пробелах
 	int				iTextShift;
@@ -54,6 +56,8 @@ public:
 	typedef			SubItems::iterator				SubItems_it;
 	SubItems		vSubItems;
 
+	CUIStatic		UIBkg;
+
 	// Добавить элемент
 	void AddItem(CUITreeViewItem *pItem);
 	// Удалить все
@@ -61,6 +65,9 @@ public:
 	// Найти элемент с заданным именем
 	// Return:	указатель на элемент, если нашли, либо NULL в противном случае
 	CUITreeViewItem * Find(LPCSTR text) const;
+	// Найти заданный элемент
+	// Return:	указатель на элемент, если нашли, либо NULL в противном случае
+	CUITreeViewItem * Find(CUITreeViewItem *pItem) const;
 	// Вернуть иерархию от верха до текущего элемента в виде строки-пути
 	// Рутовые элементы заканчиваются символом "/"
 	std::string GetHierarchyAsText();
@@ -75,5 +82,16 @@ public:
 	CUITreeViewItem();
 	~CUITreeViewItem();
 };
+
+//////////////////////////////////////////////////////////////////////////
+//  Function for automatic tree hierarchy creation
+//////////////////////////////////////////////////////////////////////////
+
+DEF_VECTOR(GroupTree, ref_str);
+
+//////////////////////////////////////////////////////////////////////////
+
+void CreateTreeBranch(ref_str nestingTree, ref_str leafName, CUIListWnd *pListToAdd, int leafProperty,
+					  CGameFont *pRootFont, u32 rootColor, CGameFont *pLeafFont, u32 leafColor);
 
 #endif	//UI_TREE_VIEW_ITEM_H_

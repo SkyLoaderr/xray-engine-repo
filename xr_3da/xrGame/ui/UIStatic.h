@@ -106,8 +106,8 @@ public:
 	void SetElipsis(EElipsisPosition pos, int indent);
 
 	// Включть/выключить текстуру
-	void TextureOn()	{ m_bAvailableTexture = true; }
-	void TextureOff()	{ m_bAvailableTexture = false; }
+	void TextureOn()	{ m_bTextureEnable = true; }
+	void TextureOff()	{ m_bTextureEnable = false; }
 
 protected:
 	bool m_bClipper;
@@ -118,8 +118,8 @@ protected:
 	//Графический интрефейс для рисования
 	///////////////////////////////////////
 	bool m_bAvailableTexture;
+	bool m_bTextureEnable;
 	CUIStaticItem m_UIStaticItem;
-
 
 	//текст
 	LPSTR m_str;

@@ -68,6 +68,16 @@ void CEncyclopediaArticle::load_shared	(LPCSTR)
 	}
 	else 
 		xml_init.InitTexture(uiXml, "", 0, &data()->image);
+
+	// Тип статьи
+	if (uiXml.ReadAttribInt(pNode, "article_type", 0))
+	{
+		data()->articleType = ARTICLE_DATA::eDiaryArticle;
+	}
+	else
+	{
+		data()->articleType = ARTICLE_DATA::eEncyclopediaArticle;
+	}
 }
 
 void CEncyclopediaArticle::InitXmlIdToIndex()

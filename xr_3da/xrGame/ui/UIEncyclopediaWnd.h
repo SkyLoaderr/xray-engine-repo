@@ -15,6 +15,7 @@
 #include "UIAnimatedStatic.h"
 #include "UIListWnd.h"
 #include "UITreeViewItem.h"
+#include "UIEncyclopediaCore.h"
 
 #include "../encyclopedia_article_defs.h"
 
@@ -29,13 +30,6 @@ private:
 
 	ref_str m_InfosHeaderStr;
 
-	// Вложенная иерархия заголовков
-	typedef xr_vector<ref_str>			GroupTree;
-	typedef GroupTree::iterator			GroupTree_it;
-	// Вставляем хвост списка в лист
-	// Return:	Указатель на последний вставленный элемент
-	CUITreeViewItem * AddTreeTail(GroupTree_it it, GroupTree &cont, CUITreeViewItem *pItemToIns);
-
 	// Изменить размер статика по размеру текстуры
 	void RescaleStatic(CUIStatic &s);
 public:
@@ -47,7 +41,6 @@ public:
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData = NULL);
 	virtual void Draw();
 
-	// Добавлем 1 энциклопедиционную статью
 	void AddArticle(ARTICLE_INDEX);
 	void DeleteArticles();
 
@@ -64,6 +57,7 @@ protected:
 	// Data lists
 	CUIListWnd			UIIdxList;
 	CUIListWnd			UIInfoList;
+	CUIEncyclopediaCore	UIInfo;
 
 	// Маска для изображения предмета текущей статьи
 	CUIFrameWindow		UIImgMask;
@@ -71,17 +65,12 @@ protected:
 	int m_iItemX;
 	int m_iItemY;
 
-	CGameFont			*m_pTreeRootFont;
-	u32					m_uTreeRootColor;
-	CGameFont			*m_pTreeItemFont;
-	u32					m_uTreeItemColor;
+//	// Хранилище статей
+//	typedef xr_vector<CEncyclopediaArticle*>			ArticlesDB;
+//	typedef xr_vector<CEncyclopediaArticle*>::iterator	ArticlesDB_it;
+//	ArticlesDB											m_ArticlesDB;
 
-	// Хранилище статей
-	typedef xr_vector<CEncyclopediaArticle*>			ArticlesDB;
-	typedef xr_vector<CEncyclopediaArticle*>::iterator	ArticlesDB_it;
-	ArticlesDB											m_ArticlesDB;
-
-	CEncyclopediaArticle							   *m_pCurrArticle;
+//	CEncyclopediaArticle							   *m_pCurrArticle;
 };
 
 #endif	//UI_ENCYCLOPEDIA_WND_H_

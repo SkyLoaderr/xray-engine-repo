@@ -72,7 +72,9 @@ void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion)
 	for(ARTICLE_INDEX_VECTOR::const_iterator it = info_portion->Articles().begin();
 									it != info_portion->Articles().end(); it++)
 	{
-		article_vector.push_back(ARTICLE_DATA(*it, Level().GetGameTime()));
+		CEncyclopediaArticle article;
+		article.Load(*it);
+		article_vector.push_back(ARTICLE_DATA(*it, Level().GetGameTime(), article.data()->articleType));
 	}
 }
 

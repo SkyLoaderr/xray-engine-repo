@@ -23,10 +23,14 @@
 #include "../script_space.h"
 #include "../script_engine.h"
 
+#include "../string_table.h"
+
 //////////////////////////////////////////////////////////////////////////
 
 const char * const	DIARY_XML			= "events_new.xml";
 const int			contractsOffset		= 60;
+
+//////////////////////////////////////////////////////////////////////////
 
 // ID for tree view items
 enum EDiaryIDs
@@ -34,10 +38,10 @@ enum EDiaryIDs
 	idJobsCurrent,
 	idJobsAccomplished,
 	idJobsFailed,
-
 	idContracts,
-
-	idNews
+	idNews,
+	idActorDiary,
+	idMax
 };
 
 //-----------------------------------------------------------------------------/
@@ -50,7 +54,8 @@ CUIDiaryWnd::CUIDiaryWnd()
 		m_pContractsTreeItem	(NULL),
 		m_uTreeRootColor		(0xffffffff),
 		m_uTreeItemColor		(0xffffffff),
-		m_pLeftHorisontalLine	(NULL)
+		m_pLeftHorisontalLine	(NULL),
+		m_pActorDiaryRoot		(NULL)
 {
 	Hide();
 }
@@ -91,6 +96,7 @@ void CUIDiaryWnd::Init()
 
 	UIFrameWnd.AttachChild(&UIFrameWndHeader);
 	xml_init.InitFrameLine(uiXml, "left_frame_line", 0, &UIFrameWndHeader);
+	UIFrameWndHeader.UITitleText.SetElipsis(CUIStatic::eepBegin, 20);
 
 	UIFrameWnd.AttachChild(&UIArticleCaption);
 	xml_init.InitStatic(uiXml, "article_header_static", 0, &UIArticleCaption);
@@ -98,11 +104,17 @@ void CUIDiaryWnd::Init()
 	UITreeViewBg.AttachChild(&UITreeView);
 	xml_init.InitListWnd(uiXml, "idx_list", 0, &UITreeView);
 	UITreeView.SetMessageTarget(this);
+	UITreeView.EnableScrollBar(true);
 
 	// Поддиалоги
 	UIJobsWnd.Init();
 	UINewsWnd.Init();
 	UIContractsWnd.Init();
+	UIActorDiaryWnd.Init(&UITreeView);
+	UIActorDiaryWnd.m_pCore->m_pTreeRootFont	= m_pTreeRootFont;
+	UIActorDiaryWnd.m_pCore->m_pTreeItemFont	= m_pTreeItemFont;
+	UIActorDiaryWnd.m_pCore->m_uTreeRootColor	= m_uTreeRootColor;
+	UIActorDiaryWnd.m_pCore->m_uTreeItemColor	= m_uTreeItemColor;
 
 	m_pActiveSubdialog = NULL;
 	
@@ -144,20 +156,33 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 
 			RECT r;
 
-			switch (static_cast<EDiaryIDs>(pTVItem->GetValue()))
+			EDiaryIDs id;
+			if (m_pActorDiaryRoot->Find(pTVItem))
+			{
+				id = idActorDiary;
+			}
+			else
+			{
+				id = static_cast<EDiaryIDs>(pTVItem->GetValue());
+			}
+
+			switch (id)
 			{
 
 			case idJobsFailed:
 				UIJobsWnd.SetFilter(eTaskStateFail);
 				m_pActiveSubdialog = &UIJobsWnd;
+				ArticleCaption(*(m_pActiveSubdialog->DialogName()));
 				break;
 			case idJobsAccomplished:
 				UIJobsWnd.SetFilter(eTaskStateCompleted);
 				m_pActiveSubdialog = &UIJobsWnd;
+				ArticleCaption(*(m_pActiveSubdialog->DialogName()));
 				break;
 			case idJobsCurrent:
 				UIJobsWnd.SetFilter(eTaskStateInProgress);
 				m_pActiveSubdialog = &UIJobsWnd;
+				ArticleCaption(*(m_pActiveSubdialog->DialogName()));
 				break;
 
 			case idContracts:
@@ -166,29 +191,40 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				m_pLeftHorisontalLine->MoveWindow(r.left, r.top + contractsOffset);
 				m_pActiveSubdialog = &UIContractsWnd;
 				SetContractTrader();
+				ArticleCaption(*(m_pActiveSubdialog->DialogName()));
 				break;
 
 			case idNews:
 				m_pActiveSubdialog = &UINewsWnd;
+				ArticleCaption(*(m_pActiveSubdialog->DialogName()));
 				break;
 
+			case idActorDiary:
+				m_pActiveSubdialog = &UIActorDiaryWnd;
+				caption = static_cast<std::string>(ALL_PDA_HEADER_PREFIX) +
+						  m_pActorDiaryRoot->GetHierarchyAsText() +
+						  *UIActorDiaryWnd.m_pCore->SetCurrentArtice(pTVItem);
+				UIFrameWndHeader.UITitleText.SetText(caption.c_str());
+				caption.erase(0, caption.find_last_of("/") + 1);
+				ArticleCaption(caption.c_str());
+				break;
 			default:
 				NODEFAULT;
-				return;
 			}
 
 			if (m_pActiveSubdialog)
 			{
 				UIFrameWnd.AttachChild(m_pActiveSubdialog);
 				m_pActiveSubdialog->Show();
-				ArticleCaption(*(m_pActiveSubdialog->DialogName()));
 			}
 		}
 	}
 
 	inherited::SendMessage(pWnd, msg, pData);
 }
+
 //////////////////////////////////////////////////////////////////////////
+
 void CUIDiaryWnd::SetContractTrader()
 {
 	CSE_Abstract* E = Level().Server->game->get_entity_from_eid(m_TraderID);
@@ -233,10 +269,11 @@ void CUIDiaryWnd::AddNewsItem(const char *sData)
 void CUIDiaryWnd::InitTreeView()
 {
 	CUITreeViewItem *pTVItem = NULL, *pTVItemSub = NULL;
+	CStringTable stbl;
 
 	// News section
 	pTVItem = xr_new<CUITreeViewItem>();
-	pTVItem->SetText("News & Events");
+	pTVItem->SetText(*stbl("News & Events"));
 	pTVItem->SetRoot(true);
 	pTVItem->SetFont(m_pTreeRootFont);
 	pTVItem->SetTextColor(m_uTreeRootColor);
@@ -245,34 +282,34 @@ void CUIDiaryWnd::InitTreeView()
 	pTVItemSub = xr_new<CUITreeViewItem>();
 	pTVItemSub->SetFont(m_pTreeItemFont);
 	pTVItemSub->SetTextColor(m_uTreeItemColor);
-	pTVItemSub->SetText("News");
+	pTVItemSub->SetText(*stbl("News"));
 	pTVItemSub->SetValue(idNews);
 	pTVItem->AddItem(pTVItemSub);
 
 	// Jobs section
 	pTVItem = xr_new<CUITreeViewItem>();
-	pTVItem->SetText("Jobs");
+	pTVItem->SetText(*stbl("Jobs"));
 	pTVItem->SetRoot(true);
 	pTVItem->SetFont(m_pTreeRootFont);
 	pTVItem->SetTextColor(m_uTreeRootColor);
 	UITreeView.AddItem(pTVItem);
 
 	pTVItemSub = xr_new<CUITreeViewItem>();
-	pTVItemSub->SetText("Current");
+	pTVItemSub->SetText(*stbl("Current"));
 	pTVItemSub->SetValue(idJobsCurrent);
 	pTVItemSub->SetFont(m_pTreeItemFont);
 	pTVItemSub->SetTextColor(m_uTreeItemColor);
 	pTVItem->AddItem(pTVItemSub);
 
 	pTVItemSub = xr_new<CUITreeViewItem>();
-	pTVItemSub->SetText("Accomplished");
+	pTVItemSub->SetText(*stbl("Accomplished"));
 	pTVItemSub->SetValue(idJobsAccomplished);
 	pTVItemSub->SetFont(m_pTreeItemFont);
 	pTVItemSub->SetTextColor(m_uTreeItemColor);
 	pTVItem->AddItem(pTVItemSub);
 
 	pTVItemSub = xr_new<CUITreeViewItem>();
-	pTVItemSub->SetText("Failed");
+	pTVItemSub->SetText(*stbl("Failed"));
 	pTVItemSub->SetValue(idJobsFailed);
 	pTVItemSub->SetFont(m_pTreeItemFont);
 	pTVItemSub->SetTextColor(m_uTreeItemColor);
@@ -280,13 +317,21 @@ void CUIDiaryWnd::InitTreeView()
 
 	// Contracts section
 	pTVItem = xr_new<CUITreeViewItem>();
-	pTVItem->SetText("Contracts");
+	pTVItem->SetText(*stbl("Contracts"));
 	pTVItem->SetRoot(true);
 	pTVItem->SetFont(m_pTreeRootFont);
 	pTVItem->SetTextColor(m_uTreeRootColor);
 	UITreeView.AddItem(pTVItem);
 	m_pContractsTreeItem = pTVItem;
 
+	// Actor diary section
+	pTVItem = xr_new<CUITreeViewItem>();
+	pTVItem->SetText(*stbl("Diary"));
+	pTVItem->SetRoot(true);
+	pTVItem->SetFont(m_pTreeRootFont);
+	pTVItem->SetTextColor(m_uTreeRootColor);
+	UITreeView.AddItem(pTVItem);
+	m_pActorDiaryRoot = pTVItem;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -334,6 +379,21 @@ void CUIDiaryWnd::InitDiary()
 				pTVItemSub->SetFont(m_pTreeItemFont);
 				pTVItemSub->SetTextColor(m_uTreeItemColor);
 				m_pContractsTreeItem->AddItem(pTVItemSub);
+			}
+		}
+	}
+
+	// Тут добавляются записи в дневник игрока
+	UIActorDiaryWnd.DeleteArticles(m_pActorDiaryRoot);
+
+	if(pActor && pActor->encyclopedia_registry.objects_ptr())
+	{
+		for(ARTICLE_VECTOR::const_iterator it = pActor->encyclopedia_registry.objects_ptr()->begin();
+			it != pActor->encyclopedia_registry.objects_ptr()->end(); it++)
+		{
+			if (ARTICLE_DATA::eDiaryArticle == it->article_type)
+			{
+				UIActorDiaryWnd.AddArticle((*it).index);
 			}
 		}
 	}

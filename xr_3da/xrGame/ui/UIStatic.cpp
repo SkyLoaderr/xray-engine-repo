@@ -20,6 +20,7 @@ CUIStatic:: CUIStatic()
 {
 	m_str				= NULL;
 	m_bAvailableTexture	= false;
+	m_bTextureEnable	= true;
 
 	m_bClipper			= false;
 	m_bStretchTexture	= false;
@@ -71,7 +72,7 @@ void CUIStatic::Init(int x, int y, int width, int height)
 //прорисовка
 void  CUIStatic::Draw()
 {
-	if(m_bAvailableTexture)
+	if(m_bAvailableTexture && m_bTextureEnable)
 	{
 
 		RECT rect = GetAbsoluteRect();
@@ -748,5 +749,6 @@ void CUIStatic::Elipsis(const RECT &rect, EElipsisPosition elipsisPos)
 
 void CUIStatic::SetElipsis(EElipsisPosition pos, int indent)
 {
-	m_ElipsisPos = pos;
+	m_ElipsisPos		= pos;
+	m_iElipsisIndent	= indent;
 }

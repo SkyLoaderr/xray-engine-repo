@@ -12,6 +12,7 @@
 #include "UINewsWnd.h"
 #include "UIJobsWnd.h"
 #include "UIContracts.h"
+#include "UIActorDiary.h"
 
 ///////////////////////////////////////
 // Дневник
@@ -34,12 +35,12 @@ public:
 	// Вывести заголовок текущего раздела
 	void ArticleCaption(LPCSTR caption);
 
-
 protected:
 	// Дочерние окна входящие в окно информации
 	CUINewsWnd			UINewsWnd;
 	CUIJobsWnd			UIJobsWnd;
 	CUIContractsWnd		UIContractsWnd;
+	CUIActorDiaryWnd	UIActorDiaryWnd;
 
 	// Текущий активный поддиалог
 	CUIDialogWnd		*m_pActiveSubdialog;
@@ -69,6 +70,8 @@ protected:
 
 	//список торговцев, которые дают заказы на артефакты
 	CUITreeViewItem*	m_pContractsTreeItem;
+	// Список сттаей дневника
+	CUITreeViewItem		*m_pActorDiaryRoot;
 
 	// Инициализируем TreeView
 	void				InitTreeView();
