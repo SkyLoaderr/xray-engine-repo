@@ -16,6 +16,7 @@ public:
 	typedef CCustomMonster inherited;
 	vector<CMotionDef*>	m_tpaAnims;
 	CBlend				*m_tpCurrentBlend;
+	bool				m_bPlaying;
 	
 						CAI_Idol		();
 	virtual				~CAI_Idol		();
@@ -33,4 +34,9 @@ public:
 	virtual void		g_WeaponBones	(int &L, int &R1, int &R2)	{};
 	virtual	float		ffGetFov		(){return 150.f;}
 	virtual	float		ffGetRange		(){return 30.f;}
+	static void			AnimCallback	(CBlend* B)
+	{
+		CAI_Idol		*tpIdol = (CAI_Idol*)B->CallbackParam;
+		tpIdol->m_bPlaying = false;
+	}
 };
