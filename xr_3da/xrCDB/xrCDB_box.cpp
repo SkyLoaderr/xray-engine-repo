@@ -214,10 +214,12 @@ public:
 
 void COLLIDER::box_query(const MODEL *m_def, const Fvector& b_center, const Fvector& b_dim)
 {
+	m_def->syncronize		();
+
 	// Get nodes
 	const AABBNoLeafTree* T = (const AABBNoLeafTree*)m_def->tree->GetTree();
 	const AABBNoLeafNode* N = T->GetNodes();
-	r_clear	();
+	r_clear					();
 	
 	// Binary dispatcher
 	if (box_mode&OPT_FULL_TEST) 

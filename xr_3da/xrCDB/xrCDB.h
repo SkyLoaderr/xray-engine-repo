@@ -47,10 +47,16 @@ namespace CDB
 	class XRCDB_API MODEL
 	{
 		friend class COLLIDER;
+		enum
+		{
+			S_READY				= 0,
+			S_INIT				= 1,
+			S_BUILD				= 2,
+			S_forcedword		= u32(-1)
+		};
 	private:
-		HANDLE					heapHandle;
-		BOOL					heapPrivate;
-
+		u32						status;		// 0=ready, 1=init, 2=building
+		xrCriticalSection		cs;
 		Opcode::OPCODE_Model*	tree;
 
 		// tris
@@ -63,9 +69,21 @@ namespace CDB
 		~MODEL();
 
 		IC TRI*					get_tris	()	{ return tris;	}
+		IC void					syncronize	()	const
+		{
+			if (S_READY==status)	return;
+			else				
+			{	// syncronize
+				xrCriticalSection*	C	= (xrCriticalSection*) &cs;
+				C->Enter				();
+				C->Leave				();
+			}
+		}
 
-		virtual u32	build		(Fvector* V, int Vcnt, TRI* T, int Tcnt, BOOL bPrivateHeap=FALSE);
-		virtual u32	memory		();
+		static	void	__cdecl	build_thread	(void*);
+		void					build_internal	(Fvector* V, int Vcnt, TRI* T, int Tcnt);
+		void					build			(Fvector* V, int Vcnt, TRI* T, int Tcnt);
+		u32						memory			();
 	};
 
 	// Collider result
@@ -118,12 +136,6 @@ namespace CDB
 
 		IC void			r_clear			()	{	rd_count = 0;				};
 	};
-
-	const u32			err_ok			= 0;
-	const u32			err_memory_0	= 1;
-	const u32			err_memory_1	= 2;
-	const u32			err_memory_2	= 3;
-	const u32			err_build		= 4;
 
 	//
 	const u32 edge_open = 0xffffffff;
@@ -188,7 +200,7 @@ extern "C"
 {
 	XRCDB_API	void*	__cdecl		cdb_model_create	();
 	XRCDB_API	void	__cdecl		cdb_model_destroy	(void*);
-	XRCDB_API	u32		__cdecl		cdb_model_build		(CDB::MODEL *m_def, Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt);
+	XRCDB_API	void	__cdecl		cdb_model_build		(CDB::MODEL *m_def, Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt);
 	XRCDB_API	void*	__cdecl		cdb_collider_create	();
 	XRCDB_API	void	__cdecl		cdb_collider_destroy(void*);
 	XRCDB_API	void	__cdecl		cdb_query_ray		(const CDB::COLLIDER* C, const CDB::MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range = 10000.f);

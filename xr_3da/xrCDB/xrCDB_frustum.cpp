@@ -69,11 +69,13 @@ public:
 
 void COLLIDER::frustum_query(const MODEL *m_def, const CFrustum& F)
 {
+	m_def->syncronize		();
+
 	// Get nodes
 	const AABBNoLeafTree*	T	= (const AABBNoLeafTree*)m_def->tree->GetTree();
 	const AABBNoLeafNode*	N	= T->GetNodes();
 	const DWORD				mask= F.getMask();
-	r_clear	();
+	r_clear					();
 	
 	// Binary dispatcher
 	if (frustum_mode&OPT_FULL_TEST) 

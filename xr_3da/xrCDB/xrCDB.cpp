@@ -25,18 +25,6 @@ BOOL APIENTRY DllMain( HANDLE hModule,
     return TRUE;
 }
 
-// Allocators / Deallocators
-template <class T>
-IC T*	cl_alloc	(u32 count, HANDLE H)
-{
-	return (T*) HeapAlloc	(H,0,count*sizeof(T));
-}
-template <class T>
-IC void cl_free		(T* P, HANDLE H)
-{
-	HeapFree				(H,0,P);
-}
-
 // Triangle utilities
 void	TRI::convert_I2P	(Fvector* pBaseV, TRI* pBaseTri)	
 {
@@ -64,59 +52,72 @@ void	TRI::convert_P2I	(Fvector* pBaseV, TRI* pBaseTri)
 // Model building
 MODEL::MODEL()
 {
-	heapHandle	= GetProcessHeap();
-	heapPrivate	= FALSE;
 	tree		= 0;
 	tris		= 0;
 	tris_count	= 0;
 	verts		= 0;
 	verts_count	= 0;
+	status		= S_INIT;
 }
 MODEL::~MODEL()
 {
-	delete		tree;	tree = 0;
-	if (tris)	{ cl_free(tris,heapHandle);		tris=0;		tris_count=0;	}
-	if (verts)	{ cl_free(verts,heapHandle);	verts=0;	verts_count=0;	}
-
-	if (heapPrivate)
-	{
-		HeapDestroy	(heapHandle);
-	}
+	if (status!=S_INIT)	syncronize	();		// maybe model still in building
+	status		= S_INIT;
+	xr_delete	(tree);
+	xr_free		(tris);		tris_count = 0;
+	xr_free		(verts);	verts_count= 0;
 }
 
-u32	MODEL::build(Fvector* V, int Vcnt, TRI* T, int Tcnt, BOOL bPrivateHeap)
+struct	BTHREAD_params
 {
-	if (bPrivateHeap)
-	{
-		DWORD V		= verts_count*sizeof(Fvector);
-		DWORD T		= tris_count *sizeof(TRI);
-		DWORD T3	= tris_count*3*sizeof(DWORD);
+	MODEL*		M;
+	Fvector*	V;
+	int			Vcnt;
+	TRI*		T;
+	int			Tcnt;
+};
 
-		heapPrivate	= TRUE;
-		heapHandle	= HeapCreate(0,V+T+T3,0);
-	}
+void	MODEL::build_thread		(void *params)
+{
+	BTHREAD_params	P			= *( (BTHREAD_params*)params );
+	P.M->cs.Enter				();
+	P.M->status					= S_BUILD;
+	P.M->build_internal			(P.V,P.Vcnt,P.T,P.Tcnt);
+	P.M->status					= S_READY;
+	P.M->cs.Leave				();
+}
 
+void	MODEL::build			(Fvector* V, int Vcnt, TRI* T, int Tcnt)
+{
+	R_ASSERT					(S_INIT == status);
+	BTHREAD_params				P = { this, V, Vcnt, T, Tcnt };
+	_beginthread				(build_thread,0,&P);
+	while						(S_INIT	== status)	Sleep	(5);
+}
+
+void	MODEL::build_internal	(Fvector* V, int Vcnt, TRI* T, int Tcnt)
+{
 	// verts
 	verts_count	= Vcnt;
-	verts		= cl_alloc<Fvector>	(verts_count,heapHandle);
-	if (0==verts)	return err_memory_0;
+	verts		= xr_alloc<Fvector>	(verts_count);
+	if (0==verts)	return;
 	CopyMemory	(verts,V,verts_count*sizeof(Fvector));
 	
 	// tris
 	tris_count	= Tcnt;
-	tris		= cl_alloc<TRI>		(tris_count,heapHandle);
+	tris		= xr_alloc<TRI>		(tris_count);
 	if (0==tris)	{
-		cl_free		(verts,heapHandle);
-		return		err_memory_1;
+		xr_free		(verts);
+		return;
 	}
 	CopyMemory	(tris,T,tris_count*sizeof(TRI));
 	
 	// Allocate temporary "OPCODE" tris + convert tris to 'pointer' form
-	DWORD*		temp_tris	= cl_alloc<DWORD>	(tris_count*3,heapHandle);
+	DWORD*		temp_tris	= xr_alloc<DWORD>	(tris_count*3);
 	if (0==temp_tris)	{
-		cl_free		(verts,heapHandle);
-		cl_free		(tris,heapHandle);
-		return		err_memory_2;
+		xr_free		(verts);
+		xr_free		(tris);
+		return;
 	}
 	DWORD*		temp_ptr	= temp_tris;
 	for (int i=0; i<tris_count; i++)
@@ -139,22 +140,23 @@ u32	MODEL::build(Fvector* V, int Vcnt, TRI* T, int Tcnt, BOOL bPrivateHeap)
 	tree			= new OPCODE_Model;
 	if (!tree->Build(OPCC)) 
 	{
-		cl_free		(verts,heapHandle);
-		cl_free		(tris,heapHandle);
-		cl_free		(temp_tris,heapHandle);
-		return		err_build;
+		xr_free		(verts);
+		xr_free		(tris);
+		xr_free		(temp_tris);
+		return;
 	};
 
 
 	// Free temporary tris
-	cl_free			(temp_tris,heapHandle);
-	return err_ok;
+	xr_free			(temp_tris);
+	return;
 }
 
-u32 MODEL::memory()
+u32 MODEL::memory	()
 {
-	DWORD V = verts_count*sizeof(Fvector);
-	DWORD T = tris_count *sizeof(TRI);
+	if (S_BUILD==status)	{ Msg	("! xrCDB: model still isn't ready"); return 0; }
+	DWORD V					= verts_count*sizeof(Fvector);
+	DWORD T					= tris_count *sizeof(TRI);
 	return tree->GetUsedBytes()+V+T+sizeof(*this)+sizeof(*tree);
 }
 
@@ -203,9 +205,9 @@ extern "C" {
 	{
 		delete (MODEL*)P;
 	}
-	u32			__cdecl		cdb_model_build		(CDB::MODEL *m_def, Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt)
+	void		__cdecl		cdb_model_build		(CDB::MODEL *m_def, Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt)
 	{
-		return m_def->build(V,Vcnt,T,Tcnt);
+		m_def->build(V,Vcnt,T,Tcnt);
 	}
 	void*		__cdecl		cdb_collider_create	()
 	{
