@@ -19,16 +19,17 @@
 #include "path_test_old.h"
 #include "path_test.h"
 
-#define ROWS	300
-#define COLUMNS 300
+#define ROWS	30
+#define COLUMNS 30
 typedef float _dist_type;
 
-typedef CAI_Map																CGraph;
-//typedef CSE_ALifeGraph														CGraph;
+//typedef CAI_Map																CGraph;
+typedef CSE_ALifeGraph														CGraph;
 //typedef CTestTable<_dist_type,ROWS,COLUMNS>									CGraph;	
 
+typedef CDataStorageMultiBinaryHeap<2,_dist_type,u32,u32,true,24,8>			CDataStorage;
 //typedef CDataStorageBinaryHeap<_dist_type,u32,u32,true,24,8>				CDataStorage;
-typedef CDataStorageUL<_dist_type,u32,u32,true,24,8>						CDataStorage;
+//typedef CDataStorageUL<_dist_type,u32,u32,true,24,8>						CDataStorage;
 typedef CPathManager<CGraph,CDataStorage,_dist_type,u32,u32>				CDistancePathManager;
 typedef CAStar<CDataStorage,CDistancePathManager,CGraph,u32,_dist_type>		CAStarSearch;
 
@@ -38,7 +39,7 @@ void path_test(LPCSTR caLevelName)
 {
 	xr_vector<u32>			path, path1;
 	string256				fName;
-	if (false)
+	if (true)
 		strconcat			(fName,caLevelName,"level.graph");
 	else
 		strcpy				(fName,caLevelName);
@@ -54,9 +55,6 @@ void path_test(LPCSTR caLevelName)
 //	a.resize				(ROWS*COLUMNS);
 //	for (int i=0, n = ROWS*COLUMNS; i<n; ++i)
 //		a[i] = (i/COLUMNS + 1)*(COLUMNS + 2) + i%COLUMNS + 1;
-//	
-//	std::random_shuffle		(a.begin(),a.end());
-//	Msg						("%d times",_min(ROWS*COLUMNS,1000));
 	
 	a.resize				(graph->get_node_count());
 	for (int i=0, n = (int)a.size(); i<n; ++i)
@@ -87,46 +85,46 @@ void path_test(LPCSTR caLevelName)
 	Msg						("%f microseconds",float(s64(finish - start))*CPU::cycles2microsec);
 	Msg						("%f microseconds per search",float(s64(finish - start))*CPU::cycles2microsec/_min(ROWS*COLUMNS,1000));
 #else
-	for (int I=0, N = graph->get_node_count(); I<N; ++I) {
-		int _i = I/(COLUMNS + 2), _j = I % (COLUMNS + 2);
-		if (!_i || !_j || (_i == ROWS + 1) || (_j == COLUMNS + 1))
-			continue;
+	for (int I=1, N = graph->get_node_count(); I<N; ++I) {
+//		int _i = I/(COLUMNS + 2), _j = I % (COLUMNS + 2);
+//		if (!_i || !_j || (_i == ROWS + 1) || (_j == COLUMNS + 1))
+//			continue;
 		path_manager->setup		(
 			graph,
 			data_storage,
 			&path,
 			I,
-			graph->get_node_count() - 1 - I,
+			graph->get_node_count() - I,
 			u32(-1),
 			6000,
 			u32(-1)
 			);
 		a_star->find		(*data_storage,*path_manager,*graph);
-//		u32 v = data_storage->get_visited_node_count(), v1;
-//		float f;
-//		path_test_old		(graph,path1,1 + I,graph->get_node_count() - 1 - I,f,v1);
-////		if ((path.size() != path1.size()) || (_abs(data_storage->get_best().f() - f) > EPS_S) || (v != v1))
-//		if (_abs(data_storage->get_best().f() - f) > EPS_L) {
-//			float			v_ = 0, v_1 = 0;
-//			{
-//				xr_vector<u32>::const_iterator	I = path.begin(), J = I;
-//				xr_vector<u32>::const_iterator	E = path.end();
-//				if (I != E)
-//					for (++I ; I != E; ++I, ++J)
-//						v_ += graph->get_edge_weight(*J,*I);
-//			}
-//			{
-//				xr_vector<u32>::const_iterator	I = path1.begin(), J = I;
-//				xr_vector<u32>::const_iterator	E = path1.end();
-//				if (I != E)
-//					for (++I ; I != E; ++I, ++J)
-//						v_1 += graph->get_edge_weight(*J,*I);
-//			}
-//			Msg				("[%6d] Path lengths : %d[%f][%d] -> %d[%f][%d] (real path lengths are %f -> %f)",I,path.size(),data_storage->get_best().f(),v,path1.size(),f,v1,v_,v_1);
-//		}
-//		else
-//			if (I % 100 == 0)
-//				Msg			("%6d",I);
+		u32 v = data_storage->get_visited_node_count(), v1;
+		float f;
+		path_test_old		(graph,path1,I,graph->get_node_count() - I,f,v1);
+//		if ((path.size() != path1.size()) || (_abs(data_storage->get_best().f() - f) > EPS_S) || (v != v1))
+		if (_abs(data_storage->get_best().f() - f) > EPS_L) {
+			float			v_ = 0, v_1 = 0;
+			{
+				xr_vector<u32>::const_iterator	I = path.begin(), J = I;
+				xr_vector<u32>::const_iterator	E = path.end();
+				if (I != E)
+					for (++I ; I != E; ++I, ++J)
+						v_ += graph->get_edge_weight(*J,*I);
+			}
+			{
+				xr_vector<u32>::const_iterator	I = path1.begin(), J = I;
+				xr_vector<u32>::const_iterator	E = path1.end();
+				if (I != E)
+					for (++I ; I != E; ++I, ++J)
+						v_1 += graph->get_edge_weight(*J,*I);
+			}
+			Msg				("[%6d] Path lengths : %d[%f][%d] -> %d[%f][%d] (%f -> %f)",I,path.size(),data_storage->get_best().f(),v,path1.size(),f,v1,v_,v_1);
+		}
+		else
+			if (I % 100 == 0)
+				Msg			("%6d",I);
 //		u32					n = _min(path.size(),path1.size());
 //		for (u32 i=0; i<n; ++i)
 //			if (path[i] != path1[i])
