@@ -6,8 +6,9 @@
 #include "Build.h"
 #include "Image.h"
 
-vector<OGF_Base *>	g_tree;
-b_params			g_params;
+vector<OGF_Base *>		g_tree;
+b_params				g_params;
+HANDLE					hLargeHeap=0;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -31,15 +32,17 @@ extern void		Surface_Init	();
 
 CBuild::CBuild	(b_params& Params, CStream& FS)
 {
-	DWORD			i	= 0;
+	HANDLE			hLargeHeap	= HeapCreate(0,64*1024*1024,0);
 
-	float			p_total = 0;
-	float			p_cost  = 1.f/3.f;
+	DWORD			i			= 0;
+
+	float			p_total		= 0;
+	float			p_cost		= 1.f/3.f;
 	
-	CStream*		F	= 0;
+	CStream*		F			= 0;
 
 	// 
-	shaders.Load		("gamedata\\shaders_xrlc.xr");
+	shaders.Load				("gamedata\\shaders_xrlc.xr");
 	/*
 	{
 		Shader_xrLCVec&	S = shaders.Library();
