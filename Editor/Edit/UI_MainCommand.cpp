@@ -301,9 +301,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 
 	case COMMAND_BUILD:
 		if( !Scene.locked() ){
-            if( !Builder->InProgress() )
+            if( !Builder.InProgress() )
                 if (frmScenePropertiesRun(&Scene.m_BuildParams,true)==mrOk)
-                    Builder->Execute( );
+                    Builder.Execute( );
         }else{
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
@@ -312,9 +312,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 
 	case COMMAND_MAKE_LTX:
 		if( !Scene.locked() ){
-            if( !Builder->InProgress() )
+            if( !Builder.InProgress() )
                 if (frmScenePropertiesRun(&Scene.m_BuildParams,true)==mrOk)
-                    Builder->MakeLTX( );
+                    Builder.MakeLTX( );
         }else{
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
@@ -322,8 +322,8 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		break;
     case COMMAND_MAKE_DETAILS:
 		if( !Scene.locked() ){
-            if( !Builder->InProgress() )
-				Builder->MakeDetails(true);
+            if( !Builder.InProgress() )
+				Builder.MakeDetails(true);
         }else{
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;

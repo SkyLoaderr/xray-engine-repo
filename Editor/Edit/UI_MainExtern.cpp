@@ -17,7 +17,6 @@
 #include "main.h"
 #include "xr_input.h"
 
-bool g_bEditorValid = false;
 
 bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& direction, int bSnap){
     // pick object geometry

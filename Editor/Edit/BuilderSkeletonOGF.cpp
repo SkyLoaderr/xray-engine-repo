@@ -116,9 +116,9 @@ struct st_SPLIT
 
 		// Texture
 		F.open_chunk(OGF_TEXTURE);
-        b_material& M 	= Builder->l_materials[mtl];
-        b_shader& B 	= Builder->l_shaders[M.shader];
-        b_texture& T 	= Builder->l_textures[M.surfidx];
+        b_material& M 	= Builder.l_materials[mtl];
+        b_shader& B 	= Builder.l_shaders[M.shader];
+        b_texture& T 	= Builder.l_textures[M.surfidx];
 		AnsiString Tname= AnsiString(T.name);
 		F.WstringZ		(Tname.c_str());
 		Tname 			= AnsiString(B.name);

@@ -13,7 +13,7 @@
 #include "DetailObjects.h"
 //----------------------------------------------------
 
-SceneBuilder* Builder;
+SceneBuilder Builder;
 //----------------------------------------------------
 SceneBuilder::SceneBuilder(){
 	m_InProgress = false;

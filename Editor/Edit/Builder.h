@@ -124,7 +124,7 @@ public:
     bool SaveObjectSkeletonLTX      (const char* name, CEditableObject* obj);
 };
 
-extern SceneBuilder* Builder;
+extern SceneBuilder Builder;
 
 //----------------------------------------------------
 #endif /*_INCDEF_Builder_H_*/
