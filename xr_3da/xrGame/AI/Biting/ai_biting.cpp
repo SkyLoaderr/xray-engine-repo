@@ -52,13 +52,14 @@ void CAI_Biting::Init()
 	Motion.Init						();
 
 	m_dwPathBuiltLastTime			= 0;
-	ZeroMemory						(&m_tAttack,sizeof(m_tAttack));
 	
 	AI_Path.TravelPath.clear		();
 	AI_Path.Nodes.clear				();
 	AI_Path.TravelStart				= 0;
 	AI_Path.DestNode				= u32(-1);
 	m_pPhysics_support				->in_Init();
+
+	m_tAttackAnim.Clear				();
 }
 
 void CAI_Biting::Die()
@@ -106,9 +107,9 @@ void CAI_Biting::Load(LPCSTR section)
 	m_fSoundThreshold				= pSettings->r_float (section,"SoundThreshold");
 
 	m_dwHealth						= pSettings->r_u32   (section,"Health");
-	m_fHitPower						= pSettings->r_float (section,"HitPower");
+	//m_fHitPower						= pSettings->r_float (section,"HitPower");
 	// temp
-	//m_fHitPower						= 1.f;
+	m_fHitPower						= 1.f;
 	fHealth							= (float)m_dwHealth;
 
 	// prefetching
@@ -142,6 +143,8 @@ void CAI_Biting::Load(LPCSTR section)
 	m_dwProbRestTurnLeft			= pSettings->r_u32   (section,"ProbRestTurnLeft");
 	m_pPhysics_support				->in_Load(section);
 	R_ASSERT2 ((m_dwProbRestWalkFree + m_dwProbRestStandIdle + m_dwProbRestLieIdle + m_dwProbRestTurnLeft) == 100, "Probability sum isn't 1");
+
+	LoadAttackAnim					();
 }
 
 BOOL CAI_Biting::net_Spawn (LPVOID DC) 

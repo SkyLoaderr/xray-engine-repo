@@ -9,13 +9,16 @@ public:
 							CAI_Flesh		();
 	virtual					~CAI_Flesh		();	
 	
-	virtual void	Init();
+	virtual void	Init					();
 
-	virtual void	Think ();
-	virtual void	UpdateCL();
+	virtual void	Think					();
+	virtual void	UpdateCL				();
 
-	virtual	void	MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3);
-	virtual void	FillAttackStructure(u32 i, TTime t);
+	virtual	void	MotionToAnim			(EMotionAnim motion, int &index1, int &index2, int &index3);
+	virtual	void	LoadAttackAnim			();
+			void	CheckAttackHit			();
+
+	//virtual void	FillAttackStructure(u32 i, TTime t);
 
 	// Flesh-specific FSM
 	CBitingRest			*stateRest;

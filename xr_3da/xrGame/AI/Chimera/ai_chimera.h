@@ -10,14 +10,15 @@ public:
 							CAI_Chimera			();
 	virtual					~CAI_Chimera		();	
 
-	virtual void	Init();
+	virtual void			Init				();
  
-	virtual void	Think						();
-	virtual void	UpdateCL					();
-	virtual BOOL	net_Spawn					(LPVOID DC);
+	virtual void			Think				();
+	virtual void			UpdateCL			();
+	virtual BOOL			net_Spawn			(LPVOID DC);
 
-	virtual	void	MotionToAnim				(EMotionAnim motion, int &index1, int &index2, int &index3);
-	virtual void	FillAttackStructure			(u32 i, TTime t);
+	virtual	void			MotionToAnim		(EMotionAnim motion, int &index1, int &index2, int &index3);
+	virtual	void			LoadAttackAnim		();
+			void			CheckAttackHit		();
 
 	// Bone manipulation
 			void			vfAssignBones		(CInifile *ini, const char *section);

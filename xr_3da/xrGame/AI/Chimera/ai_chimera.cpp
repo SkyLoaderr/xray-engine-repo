@@ -43,6 +43,7 @@ void CAI_Chimera::Init()
 	fStartYaw				= 0.f;
 	fFinishYaw				= 1.f;
 	fPrevMty				= 0.f;
+
 }
 
 
@@ -111,34 +112,7 @@ void CAI_Chimera::UpdateCL()
 	inherited::UpdateCL();
 
 	// Проверка состояния анимации (атака)
-	TTime cur_time = Level().timeServer();
-
-	VisionElem ve;
-	if (!GetEnemy(ve)) return;
-	CObject *obj = dynamic_cast<CObject *>(ve.obj);
-
-	if (m_tAttack.time_started != 0) {
-
-		if ((m_tAttack.time_started + m_tAttack.time_from < cur_time) && 
-			(m_tAttack.time_started + m_tAttack.time_to > cur_time) && 
-			(m_tAttack.LastAttack + 1000 < cur_time)) {
-
-	
-			this->setEnabled(false);
-			Collide::ray_query	l_rq;
-
-			if (Level().ObjectSpace.RayPick(m_tAttack.TraceFrom, Direction(), m_tAttack.dist, l_rq)) {
-				if ((l_rq.O == obj) && (l_rq.range < m_tAttack.dist)) {
-					DoDamage(ve.obj);
-					m_tAttack.LastAttack = cur_time;
-				}
-			}
-
-			this->setEnabled(true);			
-		
-			if (!ve.obj->g_Alive()) AddCorpse(ve);
-		}
-	}	
+	CheckAttackHit();
 }
 
 

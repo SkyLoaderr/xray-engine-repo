@@ -10,6 +10,10 @@
 
 #include "..\\ai_monsters_anims.h"
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Biting Animation class
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 #define FORCE_ANIMATION_SELECT() {\
 	m_tpCurAnim = 0; \
 	SelectAnimation(Direction(),Direction(),0);\
@@ -40,24 +44,54 @@ public:
 	CMotionDef		*m_tpCurAnim;
 };
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Attack Animation
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#define AA_FLAG_ATTACK_RAT		(1 << 0)			// аттака крыс?
+#define AA_FLAG_FIRE_ANYWAY		(1 << 1)			// трассировка не нужна
 
-// Attack 
+// Определение времени аттаки по анимации
 typedef struct {
-	u32		i_anim;				// анимация аттаки
+	// индексы конкретной анимации 
+	u32		anim_i1;
+	u32		anim_i2;
+	u32		anim_i3;
 
-	TTime	time_started;		//
-	TTime	time_from;			// диапазон времени когда можно наносить hit
-	TTime	time_to;
+	TTime	time_from;			// диапазон времени когда можно наносить hit (от)
+	TTime	time_to;		    // диапазон времени когда можно наносить hit (до)
 
-	Fvector	TraceFrom;
-	float	dist;
+	Fvector	trace_offset;		// направление трассировки
+	float	dist;				// дистанция трассировки
 
-	TTime	LastAttack;
-	bool	b_fire_anyway;		// трассировка не нужна
-	bool	b_attack_rat;
+	// специальные флаги
+	u32		flags;				
 
+	float	damage;				// урон при данной атаке
 } SAttackAnimation;
 
 
+DEFINE_VECTOR(SAttackAnimation, ATTACK_ANIM, ATTACK_ANIM_IT);
+
+class CAttackAnim {
+
+	TTime			time_started;		// время начала анимации	
+	TTime			time_last_attack;	// время последнего нанесения хита
+
+	ATTACK_ANIM		m_all;		// список всех атак
+	ATTACK_ANIM		m_stack;	// список атак для текущей анимации
+
+public:
+	void		Clear				(); 
+
+	void		SwitchAnimation		(TTime cur_time, u32 i1, u32 i2, u32 i3);
+	void		PushAttackAnim		(SAttackAnimation AttackAnim);
+	void		PushAttackAnim		(u32 i1, u32 i2, u32 i3, TTime from, TTime to, Fvector &ray, 
+									 float dist, float damage, u32 flags = 0);
+
+	bool		CheckTime			(TTime cur_time, SAttackAnimation &anim); 
+	void		UpdateLastAttack	(TTime cur_time) {time_last_attack = cur_time;}
+
+	ATTACK_ANIM	&GetStack			() {return m_stack;}
+};
 

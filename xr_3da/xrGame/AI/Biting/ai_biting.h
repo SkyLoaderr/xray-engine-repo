@@ -27,6 +27,7 @@
 #endif
 
 class CCharacterPhysicsSupport;
+
 // Paths
 enum EBitingPathState {
 	PATH_STATE_SEARCH_NODE = 0,
@@ -36,7 +37,6 @@ enum EBitingPathState {
 };
 
 typedef VisionElem SEnemy;
-
 
 
 class CAI_Biting : public CCustomMonster, 
@@ -51,32 +51,32 @@ public:
 	friend	class			CBitingMotion;
 	friend	class			IState;
 
-							CAI_Biting					();
-	virtual					~CAI_Biting					();
-	virtual	BOOL			renderable_ShadowReceive	()			{ return TRUE;	}  
-	virtual void			Die							();
-	virtual void			HitSignal					(float amount, Fvector& vLocalDir, CObject* who, s16 element);
-	virtual void			Hit							(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse);
-	virtual void			SelectAnimation				(const Fvector& _view, const Fvector& _move, float speed );
+							CAI_Biting						();
+	virtual					~CAI_Biting						();
+	virtual	BOOL			renderable_ShadowReceive		()	{ return TRUE;	}  
+	virtual void			Die								();
+	virtual void			HitSignal						(float amount, Fvector& vLocalDir, CObject* who, s16 element);
+	virtual void			Hit								(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse);
+	virtual void			SelectAnimation					(const Fvector& _view, const Fvector& _move, float speed );
 
-	virtual void			Load						(LPCSTR section);
+	virtual void			Load							(LPCSTR section);
 
 	// network routines
-	virtual BOOL			net_Spawn					(LPVOID DC);
-	virtual void			net_Destroy					();
-	virtual void			net_Export					(NET_Packet& P);
-	virtual void			net_Import					(NET_Packet& P);
+	virtual BOOL			net_Spawn						(LPVOID DC);
+	virtual void			net_Destroy						();
+	virtual void			net_Export						(NET_Packet& P);
+	virtual void			net_Import						(NET_Packet& P);
 
-	virtual void			Exec_Movement				(float dt);
+	virtual void			Exec_Movement					(float dt);
 	
-	virtual void			UpdateCL					();
-	virtual void			shedule_Update				(u32 dt);
+	virtual void			UpdateCL						();
+	virtual void			shedule_Update					(u32 dt);
 
-	virtual void			Think						();
-	virtual	void			Init						();
+	virtual void			Think							();
+	virtual	void			Init							();
 
-	virtual void			feel_sound_new				(CObject* who, int eType, const Fvector &Position, float power);
-	virtual BOOL			feel_vision_isRelevant		(CObject* O);
+	virtual void			feel_sound_new					(CObject* who, int eType, const Fvector &Position, float power);
+	virtual BOOL			feel_vision_isRelevant			(CObject* O);
 
 	// path routines
 			void			vfInitSelector					(IBaseAI_NodeEvaluator &S, CSquad &Squad);
@@ -89,21 +89,21 @@ public:
 			void			SetReversedDirectionLook		();
 			
 			void			vfUpdateParameters				();
-			void			OnAnimationEnd					();
-			
 		
-			void			DoDamage						(CEntity *pEntity);
-
-			void			SetState(IState *pS, bool bSkipInertiaCheck = false);
+			void			DoDamage						(CEntity *pEntity, float fDamage);
+			void			SetState						(IState *pS, bool bSkipInertiaCheck = false);
 
 	// Animation control
-			void			ControlAnimation();
-	virtual	void			FillAttackStructure(u32, TTime) = 0;
-	virtual	void			MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3) = 0;
-	virtual	bool			IsInMotion();
+			void			OnAnimationEnd					();
+			void			ControlAnimation				();
+	virtual	void			MotionToAnim					(EMotionAnim motion, int &index1, int &index2, int &index3) = 0;
+	virtual	bool			IsInMotion						();
 
+
+	virtual	void			LoadAttackAnim					() {}
 // members
 public:
+
 	CCharacterPhysicsSupport *m_pPhysics_support;
 	// graph params
 	TERRAIN_VECTOR			m_tpaTerrain;
@@ -130,7 +130,7 @@ public:
 	float					m_fHitPower;
 	bool					bShowDeath;				//!< need to control animation
 	bool					m_bActionFinished;		//!< true if animation finished
-	SAttackAnimation		m_tAttack;				//!< for hit calculation
+	CAttackAnim				m_tAttackAnim;			//!< for hit calculation
 
 	CBitingMotion			Motion;					//!< motion frame params
 	

@@ -31,7 +31,7 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
  	}
 }
 
-void CAI_Biting::DoDamage(CEntity *pEntity)
+void CAI_Biting::DoDamage(CEntity *pEntity, float fDamage)
 {
 	if (!g_Alive()) return;
 	if (!pEntity) return;
@@ -46,7 +46,7 @@ void CAI_Biting::DoDamage(CEntity *pEntity)
 		tDirection.sub(ve.obj->Position(),this->Position());
 		vfNormalizeSafe(tDirection);
 
-		pEntity->Hit(m_fHitPower,tDirection,this,0,position_in_bone_space,0);
+		pEntity->Hit(fDamage,tDirection,this,0,position_in_bone_space,0);
 	}
 }
 

@@ -103,81 +103,9 @@ void CAI_Flesh::UpdateCL()
 {
 	inherited::UpdateCL();
 
+
 	// Проверка состояния анимации (атака)
-	TTime cur_time = Level().timeServer();
-
-	VisionElem ve;
-	if (!GetEnemy(ve)) return;
-	CObject *obj = dynamic_cast<CObject *>(ve.obj);
-
-	if (m_tAttack.time_started != 0) {
-
-		if ((m_tAttack.time_started + m_tAttack.time_from < cur_time) && 
-			(m_tAttack.time_started + m_tAttack.time_to > cur_time) && 
-			(m_tAttack.LastAttack + 1000 < cur_time)) {
-
-				// трассировка нужна?
-				if (m_tAttack.b_fire_anyway) {
-					DoDamage(ve.obj); // не нужна
-					m_tAttack.LastAttack = cur_time;
-				}
-				else if (m_tAttack.b_attack_rat) {
-
-					// TestIntersection конуса(копыта) и сферы(крысы)
-					bool Intersected = false;
-
-					float angle = PI_DIV_6;					// угол конуса
-					Fvector fromV = m_tAttack.TraceFrom;	// вершина конуса
-					Fvector dir;							// направление конуса
-					dir.set(0.f,-1.f,0.f);
-
-					float fInvSin = 1.0f/_sin(angle);
-					float fCosSqr = _cos(angle)*_cos(angle);
-
-					Fvector vC;		ve.obj->Center(vC);		// центр сферы
-					Fvector kCmV;	kCmV.sub(vC,fromV);
-					Fvector kD		= kCmV;
-					Fvector tempV	= dir;
-					tempV.mul(ve.obj->Radius()* fInvSin);
-					kD.add(tempV);
-
-					float fDSqrLen = kD.square_magnitude();
-					float fE = kD.dotproduct(dir);
-					if ( fE > 0.0f && fE*fE >= fDSqrLen*fCosSqr )
-					{
-						float fSinSqr = _sin(angle)*_sin(angle);
-
-						fDSqrLen = kCmV.square_magnitude();
-						fE = -kCmV.dotproduct(dir);
-						if ( fE > 0.0f && fE*fE >= fDSqrLen*fSinSqr )
-						{
-							float fRSqr = ve.obj->Radius()*ve.obj->Radius();
-							Intersected =  fDSqrLen <= fRSqr;
-						}else Intersected = true;
-					} else Intersected = false;
-
-					if (Intersected) {
-						DoDamage(ve.obj);
-						m_tAttack.LastAttack = cur_time;
-					}
-
-				} else 	{ // нужна
-					this->setEnabled(false);
-					Collide::ray_query	l_rq;
-
-					if (Level().ObjectSpace.RayPick(m_tAttack.TraceFrom, Direction(), m_tAttack.dist, l_rq)) {
-						if ((l_rq.O == obj) && (l_rq.range < m_tAttack.dist)) {
-							DoDamage(ve.obj);
-							m_tAttack.LastAttack = cur_time;
-						}
-					}
-
-					this->setEnabled(true);			
-				}
-
-				if (!ve.obj->g_Alive()) AddCorpse(ve);
-			}
-	}
+	CheckAttackHit();
 }
 
 
@@ -210,58 +138,110 @@ void CAI_Flesh::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &
 	}
 }
 
-void CAI_Flesh::FillAttackStructure(u32 i, TTime t)
+void CAI_Flesh::LoadAttackAnim()
 {
-	m_tAttack.i_anim		= i;
-	m_tAttack.time_started	= t;
-	m_tAttack.b_fire_anyway = false;
-	m_tAttack.b_attack_rat	= false;
+	Fvector center, left_side, right_side, special_side;
 
-	Fvector tempV;
+	center.set		(0.f,0.f,0.f);
+	left_side.set	(-0.1f,0.f,0.f);
+	right_side.set	(0.1f,0.f,0.f);
+	special_side.set(-0.5f,0.f,0.5f);
 
-	switch (m_tAttack.i_anim) {
-		case 0:
-			m_tAttack.time_from = 700;
-			m_tAttack.time_to	= 800;
-			m_tAttack.dist		= 2.f;
-			Center(m_tAttack.TraceFrom);
-			break;
-		case 1:
-			m_tAttack.time_from = 600;
-			m_tAttack.time_to	= 800;
-			m_tAttack.dist		= 2.5f;
-			Center(m_tAttack.TraceFrom);
-			break;
-		case 2:
-			m_tAttack.time_from = 1100;
-			m_tAttack.time_to	= 1250;
-			m_tAttack.dist		= 1.5f;
-			Center(m_tAttack.TraceFrom);
-			tempV.set(0.1f,0.f,0.f);
-			m_tAttack.TraceFrom.add(tempV);
-			break;
-		case 3:
-			m_tAttack.time_from = 1300;
-			m_tAttack.time_to	= 1400;
-			m_tAttack.dist		= 0.6f;
-			Center(m_tAttack.TraceFrom);
-			tempV.set(0.1f,0.f,0.f);
-			m_tAttack.TraceFrom.sub(tempV);
-			break;
-		case 4:
-			m_tAttack.time_from = 600;
-			m_tAttack.time_to	= 800;
-			m_tAttack.dist		= 2.6f;
-			Center(m_tAttack.TraceFrom);
-			tempV.set(-0.5f,0.f,0.5f);
-			m_tAttack.TraceFrom.add(tempV);
-			m_tAttack.b_attack_rat = true;
-			break;
-		case 5:
-			m_tAttack.time_from = 700;
-			m_tAttack.time_to	= 850;
-			m_tAttack.b_fire_anyway = true;
-			break;
+
+	// 1 //
+	m_tAttackAnim.PushAttackAnim(0, 9, 0, 700,	800,	center,		2.f, m_fHitPower);
+
+	// 2 //
+	m_tAttackAnim.PushAttackAnim(0, 9, 1, 600,	800,	center,		2.5f, m_fHitPower);
+
+	// 3 // 
+	m_tAttackAnim.PushAttackAnim(0, 9, 2, 1100,	1250,	right_side,	1.5f, m_fHitPower);
+
+	// 4 // 
+	m_tAttackAnim.PushAttackAnim(0, 9, 3, 1300,	1400,	left_side,	0.6f, m_fHitPower);
+
+	// 5 // 
+	m_tAttackAnim.PushAttackAnim(0, 9, 4, 600, 800,	special_side,	2.6f, m_fHitPower, AA_FLAG_ATTACK_RAT);
+
+	// 6 //
+	m_tAttackAnim.PushAttackAnim(0, 9, 5, 700, 850,		center,		2.6f, m_fHitPower, AA_FLAG_FIRE_ANYWAY);
+
+}
+
+void CAI_Flesh::CheckAttackHit()
+{
+	// Проверка состояния анимации (атака)
+	TTime cur_time = Level().timeServer();
+	SAttackAnimation apt_anim;
+
+	bool bGoodTime = m_tAttackAnim.CheckTime(cur_time,apt_anim);
+
+	if (bGoodTime) {
+		VisionElem ve;
+		if (!GetEnemy(ve)) return;
+		CObject *obj = dynamic_cast<CObject *>(ve.obj);
+
+		Fvector trace_from;
+		Center(trace_from);
+		trace_from.add(apt_anim.trace_offset);
+
+		// трассировка нужна?
+		if ((apt_anim.flags & AA_FLAG_FIRE_ANYWAY) == AA_FLAG_FIRE_ANYWAY) {
+			DoDamage(ve.obj, apt_anim.damage);	// не нужна
+			m_tAttackAnim.UpdateLastAttack(cur_time);
+		} else if ((apt_anim.flags & AA_FLAG_ATTACK_RAT) == AA_FLAG_ATTACK_RAT) {
+
+			// TestIntersection конуса(копыта) и сферы(крысы)
+			bool Intersected = false;
+
+			float angle = PI_DIV_6;					// угол конуса
+			Fvector fromV = trace_from;				// вершина конуса
+			Fvector dir;							// направление конуса
+			dir.set(0.f,-1.f,0.f);
+
+			float fInvSin = 1.0f/_sin(angle);
+			float fCosSqr = _cos(angle)*_cos(angle);
+
+			Fvector vC;		ve.obj->Center(vC);		// центр сферы
+			Fvector kCmV;	kCmV.sub(vC,fromV);
+			Fvector kD		= kCmV;
+			Fvector tempV	= dir;
+			tempV.mul(ve.obj->Radius()* fInvSin);
+			kD.add(tempV);
+
+			float fDSqrLen = kD.square_magnitude();
+			float fE = kD.dotproduct(dir);
+			if ( fE > 0.0f && fE*fE >= fDSqrLen*fCosSqr )
+			{
+				float fSinSqr = _sin(angle)*_sin(angle);
+
+				fDSqrLen = kCmV.square_magnitude();
+				fE = -kCmV.dotproduct(dir);
+				if ( fE > 0.0f && fE*fE >= fDSqrLen*fSinSqr ) {
+					float fRSqr = ve.obj->Radius()*ve.obj->Radius();
+					Intersected =  fDSqrLen <= fRSqr;
+				}else Intersected = true;
+			} else Intersected = false;
+
+			if (Intersected) {
+				DoDamage(ve.obj,apt_anim.damage);
+				m_tAttackAnim.UpdateLastAttack(cur_time);
+			}
+
+		} else 	{ // нужна
+			this->setEnabled(false);
+			Collide::ray_query	l_rq;
+			
+			if (Level().ObjectSpace.RayPick(trace_from, Direction(), apt_anim.dist, l_rq)) {
+				if ((l_rq.O == obj) && (l_rq.range < apt_anim.dist)) {
+					DoDamage(ve.obj, apt_anim.damage);
+					m_tAttackAnim.UpdateLastAttack(cur_time);
+				}
+			}
+			this->setEnabled(true);			
+
+			if (!ve.obj->g_Alive()) AddCorpse(ve);	
+		}
 	}
 }
 

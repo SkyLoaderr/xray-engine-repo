@@ -90,10 +90,7 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 			m_tpCurAnim = m_tAnimations.A[i1].A[i2].A[i3];
 			PKinematics(Visual())->PlayCycle(m_tpCurAnim,TRUE,vfPlayCallBack,this);
 
-			if (i2 == 9) FillAttackStructure(i3, m_dwCurrentUpdate);
-			else if (i2 == 10) FillAttackStructure(4, m_dwCurrentUpdate); // атака крыс
-			else if (i2 == 19) FillAttackStructure(5, m_dwCurrentUpdate); // атака крыс|прыжок
-			else m_tAttack.time_started = 0;
+			m_tAttackAnim.SwitchAnimation(m_dwCurrentUpdate,i1,i2,i3);
 		}
 }
 
@@ -106,3 +103,77 @@ bool CAI_Biting::IsInMotion()
 	}
 	return false;
 }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Attack Animation
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CAttackAnim::Clear()
+{ 
+	time_started		= 0;
+	time_last_attack	= 0;
+	m_all.clear			(); 
+	m_stack.clear		(); 
+}
+
+void CAttackAnim::PushAttackAnim(SAttackAnimation AttackAnim)
+{
+	m_all.push_back(AttackAnim);
+}
+
+void CAttackAnim::PushAttackAnim(u32 i1, u32 i2, u32 i3, TTime from, TTime to, Fvector &ray, float dist, float damage, u32 flags)
+{
+	SAttackAnimation anim;
+
+	anim.anim_i1		= i1;
+	anim.anim_i2		= i2;
+	anim.anim_i3		= i3;
+
+	anim.time_from		= from;
+	anim.time_to		= to;
+
+	anim.trace_offset	= ray;
+	anim.dist			= dist;
+
+	anim.damage			= damage;
+	anim.flags			= flags;
+
+	PushAttackAnim		(anim);
+}
+
+void CAttackAnim::SwitchAnimation(TTime cur_time, u32 i1, u32 i2, u32 i3)
+{
+	time_started = cur_time;
+
+	m_stack.empty();
+
+	// найти в m_all анимации с индексами (i1,i2,i3) и заполнить m_stack
+	ATTACK_ANIM_IT I = m_all.begin();
+	ATTACK_ANIM_IT E = m_all.end();
+
+	for (;I!=E; I++) {
+		if ((I->anim_i1 == i1) && (I->anim_i2 == i2) && (I->anim_i3 == i3)) {
+			m_stack.push_back(*I);
+		}
+	}
+}
+
+// Сравнивает тек. время с временами хитов в стеке
+bool CAttackAnim::CheckTime(TTime cur_time, SAttackAnimation &anim)
+{
+	// Частота хитов не может быть больше 'time_delta'
+	TTime time_delta = 1000;
+	
+	if (m_stack.empty()) return false;
+	if (time_last_attack + time_delta > cur_time) return false;
+
+	ATTACK_ANIM_IT I = m_stack.begin();
+	ATTACK_ANIM_IT E = m_stack.end();
+
+	for (;I!=E; I++) if ((time_started + I->time_from <= cur_time) && (cur_time <= time_started + I->time_to)) {
+		anim = (*I);
+		return true;
+	}
+	return false;
+}
+
