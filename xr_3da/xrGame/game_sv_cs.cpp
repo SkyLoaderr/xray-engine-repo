@@ -121,6 +121,82 @@ void	game_sv_CS::OnTimelimitExceed	()
 	OnRoundEnd		("TIME_limit");
 }
 
+BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
+{
+	xrServer*			S		= Level().Server;
+	xrServerEntity*		e_who	= S->ID_to_entity(eid_who);		VERIFY(e_who	);
+	xrServerEntity*		e_what	= S->ID_to_entity(eid_what);	VERIFY(e_what	);
+
+	xrSE_Actor*			A		= dynamic_cast<xrSE_Actor*> (e_who);
+	if (A) 	{
+		game_PlayerState*	ps_who		=	get_id			(e_who->ID);
+		// Actor touches something
+		xrSE_Weapon*	W			=	dynamic_cast<xrSE_Weapon*> (e_what);
+		if (W) 
+		{
+			// Weapon
+			vector<u16>&	C			=	A->children;
+			u8 slot						=	W->get_slot	();
+			for (u32 it=0; it<C.size(); it++)
+			{
+				xrServerEntity*		Et	= S->ID_to_entity				(C[it]);
+				if (0==Et)				continue;
+				xrSE_Weapon*		T	= dynamic_cast<xrSE_Weapon*>	(Et);
+				if (0==T)				continue;
+				if (slot == T->get_slot())	
+				{
+					// We've found same slot occupied - disallow ownership
+					return FALSE;
+				}
+			}
+
+			// Weapon slot empty - ownership OK
+			return TRUE;
+		}
+
+		xrSE_Target_CSBase *l_pCSBase	=	dynamic_cast<xrSE_Target_CSBase*>(e_what);
+		if(l_pCSBase) {
+			// База
+			if(ps_who->team == -1) ps_who->team = l_pCSBase->g_team(); // @@@ WT : Пока не сделан респавн
+			if(l_pCSBase->s_team == ps_who->team) {				// Если игрок пришел на свою базу
+				ps_who->flags |= GAME_PLAYER_FLAG_CS_ON_BASE;
+			} else ps_who->flags |= GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE;
+			return false;
+		}
+
+		xrSE_Target_CS *l_pMBall =  dynamic_cast<xrSE_Target_CS*>(e_what);
+		if(l_pMBall) {
+			// Мяч
+			if(ps_who->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT)		return false;
+			ps_who->flags |= GAME_PLAYER_FLAG_CS_HAS_ARTEFACT;
+			return true;
+		}
+
+		xrSE_Target_CS *l_pCSCask =  dynamic_cast<xrSE_Target_CSCask*>(e_what);
+		if(l_pCSCask) {
+			// Бочка
+			if((ps_who->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT) && (ps_who->flags&GAME_PLAYER_FLAG_CS_ON_BASE))		{
+				ps_who->flags &= ~GAME_PLAYER_FLAG_CS_HAS_ARTEFACT;
+				teams[ps_who->team].num_targets++;
+				return false;
+			}
+			if(!(ps_who->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT) && (ps_who->flags&GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE))		{
+				ps_who->flags |= GAME_PLAYER_FLAG_CS_HAS_ARTEFACT;
+				teams[(ps_who->team+1)%2].num_targets--;
+				return false;
+			}
+		}
+	}
+
+	// We don't know what the hell is it, so disallow ownership just for safety 
+	return FALSE;
+}
+
+BOOL	game_sv_CS::OnDetouch		(u16 eid_who, u16 eid_what)
+{
+	return TRUE;
+}
+/*
 BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_who, u32 eid_target)
 {
 	xrServer*		S				=	Level().Server;
@@ -150,6 +226,8 @@ BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_who, u32 eid_target)
 			signal_Syncronize();
 		}
 	} else {
+		if(dynamic_cast<xrSE_Actor*>(e_who)) {
+		}
 
 	}
 	return TRUE;
@@ -190,7 +268,7 @@ BOOL	game_sv_CS::OnTargetDetouched	(u32 id_who, u32 eid_target)
 	}
 	return TRUE;
 }
-
+*/
 void	game_sv_CS::Update			()
 {
 	switch(phase) 	{
