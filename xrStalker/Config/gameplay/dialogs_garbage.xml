@@ -226,6 +226,7 @@
         </phrase_list>
     </dialog>
     <dialog id="gar_dolg_acces">
+		<precondition>dialogs.dialog_allowed</precondition>
         <phrase_list>
             <phrase id="4">
                 <text>gar_dolg_acces_4</text>
