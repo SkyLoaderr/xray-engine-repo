@@ -6,8 +6,8 @@
 #define AFX_OCCRASTERIZER_H__3739AF97_E2A7_4740_B8C2_6EEB0F8CB66D__INCLUDED_
 #pragma once
 
-const int	occ_dim0			= 64;
-const int	occ_dim1			= occ_dim0/2;
+const int	occ_dim0			= 64+2;
+const int	occ_dim1			= (occ_dim0-2)/2;
 const int	occ_dim2			= occ_dim1/2;
 const int	occ_dim3			= occ_dim2/2;
 
