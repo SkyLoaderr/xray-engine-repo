@@ -133,33 +133,28 @@ function main ()
             anim (anim.danger), look (look.fire_point, fire1:point (0)), cond (cond.time_end, time_infinite))
     action (stalker2, move (move.standing, move.stand, move.line, testway), object (stalker2:best_weapon (), object.activate), 
             sound ("scripts\\rolik\\incoming", "bip01_head", vector ():set (0, 0, 0), vector ():set (0, 0, 0), false),
-            anim (anim.danger), look (look.fire_point, fire2:point (0)), cond (cond.time_end, time_infinite))
+            anim (anim.danger), look (look.fire_point, fire2:point (0)), cond (cond.sound_end))
             
-    wait (1000)            
-    
-    --printf ("Best weapon for stalker1 - %s", stalker1:best_weapon ():name ())
-    --printf ("Best weapon for stalker2 - %s", stalker2:best_weapon ():name ())
+    while stalker2:action () do wait () end
+    reset_action (stalker2, military2_1.script_name ())
+    action (stalker2, object (stalker2:best_weapon (), object.fire1), cond (cond.time_end, time_infinite))
     update_action (stalker1, military2_1.script_name (), object (stalker1:best_weapon (), object.fire1))
-    update_action (stalker2, military2_1.script_name (), object (stalker2:best_weapon (), object.fire1))
     
     
-    icount = 0
     ipoint = 0
     
     local time = device():time_global ()
     
     while true do
-          if stalker1.health <= 0 then  icount = icount + 1 end  
-          if stalker2.health <= 0 then  icount = icount + 1 end  
-          if icount == 2 then return end
+          if stalker1:alive () == false and stalker2:alive () == false then return end
           if device ():time_global () - time  > 500 then
              if ipoint == 0 then
-                update_action (stalker1, military2_1.script_name (), look (look.fire_point, fire1:point (1)))
-                update_action (stalker2, military2_1.script_name (), look (look.fire_point, fire2:point (1)))
+                if stalker1:alive () then update_action (stalker1, military2_1.script_name (), look (look.fire_point, fire1:point (1))) end
+                if stalker2:alive () then update_action (stalker2, military2_1.script_name (), look (look.fire_point, fire2:point (1))) end
                 ipoint = 1
              else   
-                update_action (stalker1, military2_1.script_name (), look (look.fire_point, fire1:point (0)))
-                update_action (stalker2, military2_1.script_name (), look (look.fire_point, fire2:point (0)))
+                if stalker1:alive () then update_action (stalker1, military2_1.script_name (), look (look.fire_point, fire1:point (0))) end
+                if stalker2:alive () then update_action (stalker2, military2_1.script_name (), look (look.fire_point, fire2:point (0))) end
                 ipoint = 0
              end    
              time = device():time_global ()
