@@ -164,11 +164,11 @@ CBlend*	CKinematics::LL_PlayFX(int bone, int motion, float blendAccrue, float bl
 {
 	if (motion<0)	return 0;
 	if (bone<0)		bone = iRoot;
-
+	
 	CBlend*	B		= IBlend_Create();
 	CBoneData*	Bone	= (*bones)[bone];
 	Bone->Motion_Start(this,B);
-
+	
 	B->blend		= CBlend::eAccrue;
 	B->blendAmount	= 0;
 	B->blendAccrue	= blendAccrue;
@@ -179,10 +179,10 @@ CBlend*	CKinematics::LL_PlayFX(int bone, int motion, float blendAccrue, float bl
 	B->timeCurrent	= 0;
 	B->timeTotal	= Bone->Motions[motion].GetLength();
 	B->bone_or_part	= bone;
-
+	
 	B->playing		= TRUE;
 	B->noloop		= FALSE;
-
+	
 	blend_fx.push_back(B);
 	return			B;
 }
@@ -190,7 +190,7 @@ CBlend*	CKinematics::LL_PlayFX(int bone, int motion, float blendAccrue, float bl
 void	CKinematics::LL_FadeCycle(int part, float falloff)
 {
 	BlendList&	Blend	= blend_cycles[part];
-
+	
 	for (DWORD I=0; I<Blend.size(); I++)
 	{
 		CBlend& B		= *Blend[I];
@@ -204,7 +204,26 @@ void	CKinematics::LL_FadeCycle(int part, float falloff)
 	}
 }
 
-CBlend*	CKinematics::LL_PlayCycle(int part, int motion, float blendAccrue, float blendFalloff, float Speed, BOOL noloop)
+void	CKinematics::LL_CloseCycle(int part)
+{
+	// destroy cycle(s)
+	BlendListIt	I = blend_cycles[part].begin(), E = blend_cycles[part].end();
+	for (; I!=E; I++)
+	{
+		CBlend& B = *(*I);
+
+		B.blend = CBlend::eFREE_SLOT;
+		
+		CPartDef& P	= (*partition)[B.bone_or_part];
+		for (int i=0; i<int(P.bones.size()); i++)
+			(*bones)[P.bones[i]]->Motion_Stop(this,*I);
+		
+		blend_cycles[part].erase(I);
+		E=blend_cycles[part].end(); I--; 
+	}
+}
+
+CBlend*	CKinematics::LL_PlayCycle(int part, int motion, BOOL  bMixing,	float blendAccrue, float blendFalloff, float Speed, BOOL noloop)
 {
 	// validate and unroll
 	if (motion<0)			return 0;

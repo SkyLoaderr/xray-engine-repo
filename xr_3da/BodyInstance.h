@@ -280,10 +280,11 @@ public:
 		return (*bones)[bone_id]->obb;
 	}
 
-	CBlend*						LL_PlayFX		(int bone,		int motion, float blendAccrue, float blendFalloff, float Speed=1.f, float Power=1.f);
-	CBlend*						LL_PlayCycle	(int partition, int motion, float blendAccrue, float blendFalloff, float Speed=1.f, BOOL noloop=FALSE);
+	CBlend*						LL_PlayFX		(int bone,		int motion, float blendAccrue,	float blendFalloff, float Speed=1.f, float Power=1.f);
+	CBlend*						LL_PlayCycle	(int partition, int motion, BOOL  bMixing,		float blendAccrue,	float blendFalloff, float Speed=1.f, BOOL noloop=FALSE);
 	void						LL_FadeCycle	(int partition, float falloff);
-
+	void						LL_CloseCycle	(int partition);
+	
 	// Main functionality
 	void						Calculate		(BOOL bLight=FALSE);	// Recalculate skeleton (Light mode can be used to avoid interpolation)
 
