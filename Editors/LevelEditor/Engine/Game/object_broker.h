@@ -14,6 +14,7 @@
 #include "net_utils.h"
 #include "object_type_traits.h"
 #include "object_equality_checker.h"
+#include "object_cloner.h"
 #include "object_destroyer.h"
 #include "object_loader.h"
 #include "object_saver.h"

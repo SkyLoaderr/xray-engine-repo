@@ -34,7 +34,14 @@ struct CTestObject : public IPureServerObject {
 
 	IC								CTestObject	(const CTestObject &self)
 	{
+		++constructor_count;
 		this->a = self.a;
+	}
+
+	IC		CTestObject				&operator=	(const CTestObject &self)
+	{
+		this->a						= self.a;
+		return						(*this);
 	}
 
 	IC		bool					operator==(const CTestObject &self) const
@@ -111,11 +118,18 @@ struct CTestObject : public IPureServerObject {
 }
 #endif
 
+#define _clone(data) {\
+	clone(data,___##data);\
+	verify(data,___##data);\
+}
+
 #define _delete(data) {\
 	delete_data					(data);\
 	delete_data					(_##data);\
 	delete_data					(__##data);\
+	delete_data					(___##data);\
 }
+
 
 void traits_test();
 
@@ -164,7 +178,7 @@ struct CMapPredicate {
 template <typename T>
 struct CTemplate {};
 
-//#define TEST_SAVE_LOAD_DELETE
+#define TEST_SAVE_LOAD_DELETE
 
 void broker_test()
 {
@@ -192,90 +206,90 @@ void broker_test()
 #endif
 
 		// simple type
-		u16							_type = 1, __type, ___type;
+		u16							_type = 1, __type, ___type, ____type;
 		save						(_type);
 		// LPCSTR
-		LPCSTR						_lpcstr = "LPCSTR";
-		LPSTR						__lpcstr = (LPSTR)xr_malloc(xr_strlen(_lpcstr) + 1), ___lpcstr = (LPSTR)xr_malloc(xr_strlen(_lpcstr) + 1);
+		LPCSTR						_lpcstr = "LPCSTR", ____lpcstr = 0;
+		LPSTR						__lpcstr = 0, ___lpcstr = 0;
 		save						(_lpcstr);
 		// LPSTR
-		LPSTR						_lpstr = xr_strdup("LPSTR"), __lpstr = (LPSTR)xr_malloc(xr_strlen(_lpstr) + 1), ___lpstr = (LPSTR)xr_malloc(xr_strlen(_lpstr) + 1);
+		LPSTR						_lpstr = xr_strdup("LPSTR"), __lpstr = 0, ___lpstr = 0, ____lpstr = 0;
 		save						(_lpstr);
 #ifndef USE_WRITER
 #ifdef  USE_REF_STR
 		// ref_str
-		ref_str						_ref_str = "ref_str", __ref_str, ___ref_str;
+		ref_str						_ref_str = "ref_str", __ref_str, ___ref_str, ____ref_str;
 		save						(_ref_str);
 #endif
 #endif
 		// savable object
-		CTestObject					_object, __object, ___object;
+		CTestObject					_object, __object, ___object, ____object;
 		save						(_object);
 		// pointer to savable object
-		CTestObject					*_pobject = xr_new<CTestObject>(), *__pobject = 0, *___pobject = 0;
+		CTestObject					*_pobject = xr_new<CTestObject>(), *__pobject = 0, *___pobject = 0, *____pobject = 0;
 		save						(_pobject);
 		// vector bool
-		xr_vector<bool>				_vectorbool, __vectorbool, ___vectorbool;
+		xr_vector<bool>				_vectorbool, __vectorbool, ___vectorbool, ____vectorbool;
 		_vectorbool.push_back		(true);
 		save						(_vectorbool);
 		// svector
-		svector<CTestObject*,5>		_svector, __svector, ___svector;
+		svector<CTestObject*,5>		_svector, __svector, ___svector, ____svector;
 		_svector.push_back			(xr_new<CTestObject>());
 		save						(_svector);
 		// vector
-		xr_vector<CTestObject*>		_vector, __vector, ___vector;
+		xr_vector<CTestObject*>		_vector, __vector, ___vector, ____vector;
 		_vector.push_back			(xr_new<CTestObject>());
 		save						(_vector);
 		// list
-		xr_list<CTestObject*>		_list, __list, ___list;
+		xr_list<CTestObject*>		_list, __list, ___list, ____list;
 		_list.push_back				(xr_new<CTestObject>());
 		save						(_list);
 		// deque
-		xr_deque<CTestObject*>		_deque, __deque, ___deque;
+		xr_deque<CTestObject*>		_deque, __deque, ___deque, ____deque;
 		_deque.push_back			(xr_new<CTestObject>());
 		save						(_deque);
 		// queue
-		std::queue<CTestObject*>	_queue, __queue, ___queue;
+		std::queue<CTestObject*>	_queue, __queue, ___queue, ____queue;
 		_queue.push					(xr_new<CTestObject>());
 		save						(_queue);
 		// priority queue
-		std::priority_queue<CTestObject*>	_priorityqueue, __priorityqueue, ___priorityqueue;
+		std::priority_queue<CTestObject*>	_priorityqueue, __priorityqueue, ___priorityqueue, ____priorityqueue;
 		_priorityqueue.push			(xr_new<CTestObject>());
 		save						(_priorityqueue);
 		// stack
-		xr_stack<CTestObject*>		_stack, __stack, ___stack;
+		xr_stack<CTestObject*>		_stack, __stack, ___stack, ____stack;
 		_stack.push					(xr_new<CTestObject>());
 		save						(_stack);
 		// set
-		xr_set<CTestObject*>		_set, __set, ___set;
+		xr_set<CTestObject*>		_set, __set, ___set, ____set;
 		_set.insert					(xr_new<CTestObject>());
 		save						(_set);
 		// map
-		xr_map<u16,CTestObject*>	_map, __map, ___map;
+		xr_map<u16,CTestObject*>	_map, __map, ___map, ____map;
 		_map.insert					(std::make_pair(1,xr_new<CTestObject>()));
 		save						(_map);
 		// multiset
-		xr_multiset<CTestObject*>	_multiset, __multiset, ___multiset;
+		xr_multiset<CTestObject*>	_multiset, __multiset, ___multiset, ____multiset;
 		_multiset.insert			(xr_new<CTestObject>());
 		save						(_multiset);
 		// multimap
-		xr_multimap<u16,CTestObject*> _multimap, __multimap, ___multimap;
+		xr_multimap<u16,CTestObject*> _multimap, __multimap, ___multimap, ____multimap;
 		_multimap.insert			(std::make_pair(1,xr_new<CTestObject>()));
 		save						(_multimap);
 		// hashset
-		std::hash_set<CTestObject*>	_hashset, __hashset, ___hashset;
+		std::hash_set<CTestObject*>	_hashset, __hashset, ___hashset, ____hashset;
 		_hashset.insert				(xr_new<CTestObject>());
 		save						(_hashset);
 		// hashmap
-		std::hash_map<u16,CTestObject*>	_hashmap, __hashmap, ___hashmap;
+		std::hash_map<u16,CTestObject*>	_hashmap, __hashmap, ___hashmap, ____hashmap;
 		_hashmap.insert				(std::make_pair(1,xr_new<CTestObject>()));
 		save						(_hashmap);
 		// hashmultiset
-		std::hash_multiset<CTestObject*>	_hashmultiset, __hashmultiset, ___hashmultiset;
+		std::hash_multiset<CTestObject*>	_hashmultiset, __hashmultiset, ___hashmultiset, ____hashmultiset;
 		_hashmultiset.insert		(xr_new<CTestObject>());
 		save						(_hashmultiset);
 		// hashmultimap
-		std::hash_multimap<u16,CTestObject*>	_hashmultimap, __hashmultimap, ___hashmultimap;
+		std::hash_multimap<u16,CTestObject*>	_hashmultimap, __hashmultimap, ___hashmultimap, ____hashmultimap;
 		_hashmultimap.insert		(std::make_pair(1,xr_new<CTestObject>()));
 		save						(_hashmultimap);
 //		save_data					(_hashmultimap,packet,CMapPredicate(_hashmultimap));
@@ -331,7 +345,7 @@ void broker_test()
 		T10							complex10;
 		complex10.insert			(xr_new<T9>(complex9));
 
-		T11							_complex, __complex, ___complex;
+		T11							_complex, __complex, ___complex, ____complex;
 		_complex.insert				(std::make_pair(11,complex10));
 
 		save						(_complex);
@@ -410,6 +424,61 @@ void broker_test()
 #ifdef USE_WRITER
 		FS.r_close					(preader);
 #endif
+
+//////////////////////////////////////////////////////////////////////////
+// CLONE TESTS
+//////////////////////////////////////////////////////////////////////////
+
+		// simple type
+		_clone						(_type);
+		// LPCSTR
+		_clone						(_lpcstr);
+		// LPSTR
+		_clone						(_lpstr);
+#ifndef USE_WRITER
+#ifdef  USE_REF_STR
+		// ref_str
+		_clone						(_ref_str);
+#endif
+#endif
+		// savable object
+		_clone						(_object);
+		// pointer to savable object
+		_clone						(_pobject);
+		// vector bool
+		_clone						(_vectorbool);
+		// svector
+		_clone						(_svector);
+		// vector
+		_clone						(_vector);
+		// list
+		_clone						(_list);
+		// deque
+		_clone						(_deque);
+		// queue
+		_clone						(_queue);
+		// priority queue
+		_clone						(_priorityqueue);
+		// stack
+		_clone						(_stack);
+		// set
+		_clone						(_set);
+		// map
+		_clone						(_map);
+		// multiset
+		_clone						(_multiset);
+		// multimap
+		_clone						(_multimap);
+		// hashset
+		_clone						(_hashset);
+		// hashmap
+		_clone						(_hashmap);
+		// hashmultiset
+		_clone						(_hashmultiset);
+		// hashmultimap
+		_clone						(_hashmultimap);
+		// complex
+		_clone						(_complex);
 
 //////////////////////////////////////////////////////////////////////////
 // DELETE TESTS

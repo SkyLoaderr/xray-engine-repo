@@ -6418,6 +6418,9 @@
 						RelativePath=".\object_broker.h">
 					</File>
 					<File
+						RelativePath=".\object_cloner.h">
+					</File>
+					<File
 						RelativePath=".\object_destroyer.h">
 					</File>
 					<File

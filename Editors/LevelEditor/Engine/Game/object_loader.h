@@ -202,7 +202,7 @@ struct CLoader {
 	IC	static void load_data(std::queue<T1,T2> &data, M &stream, const P &p)
 	{
 		if (p.can_clear()) {
-			while (!data->empty())
+			while (!data.empty())
 				data.pop();
 		}
 		std::queue<T1,T2>				temp;
@@ -221,7 +221,7 @@ struct CLoader {
 	IC	static void load_data(T1<T2,T3> &data, M &stream, const P &p, bool)
 	{
 		if (p.can_clear()) {
-			while (!data->empty())
+			while (!data.empty())
 				data.pop();
 		}
 		T1<T2,T3>						temp;
@@ -240,7 +240,7 @@ struct CLoader {
 	IC	static void load_data(T1<T2,T3,T4> &data, M &stream, const P &p, bool)
 	{
 		if (p.can_clear()) {
-			while (!data->empty())
+			while (!data.empty())
 				data.pop();
 		}
 		T1<T2,T3,T4>					temp;
