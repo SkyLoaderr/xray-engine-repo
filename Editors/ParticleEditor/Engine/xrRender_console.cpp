@@ -38,6 +38,7 @@ float		ps_r2_ssaHZBvsTEX		= 256.f;
 
 // R2-specific
 float		ps_r2_ls_dynamic_range	= 2.f;	// r2-only
+float		ps_r2_ls_bloom_kernel	= 3.3f;	// r2-only
 
 #ifndef _EDITOR
 #include	"..\xr_ioconsole.h"
@@ -81,5 +82,6 @@ void		xrRender_initconsole	()
 
 	// R2-specific
 	CMD4(CCC_Float,		"r2_ls_dynamic_range",	&ps_r2_ls_dynamic_range,	.5f,	8.f		);
+	CMD4(CCC_Float,		"r2_ls_bloom_kernel",	&ps_r2_ls_bloom_kernel,		1.f,	7.f		);
 }
 #endif
