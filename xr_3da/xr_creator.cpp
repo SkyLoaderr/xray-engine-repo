@@ -42,7 +42,6 @@ CCreator::~CCreator	( )
 	for (DWORD i=0; i<Sounds.size(); i++)
 		pSounds->Delete3D(Sounds[i]);
 	Sounds.clear();
-	pSounds->UnloadEnvironment();
 
 	// Unregister
 	Device.seqRender.Remove(this);
@@ -140,7 +139,6 @@ BOOL CCreator::Load(DWORD dwNum)
 			pSounds->Create3D	(Sounds.back(),I->first);
 			pSounds->Play3DAtPos(Sounds.back(),pos,true);
 		}
-		pSounds->LoadEnvironment(pLevel,"sound_environment");
 	}
 	Environment.Load_Music(pLevel);
 

@@ -29,29 +29,6 @@ C3DSoundRender::~C3DSoundRender()
 	_RELEASE		( pListener );
 }
 
-/*
-void FIntersectionQuad::Render()
-{
-
-}
-
-void C3DSoundRender::RenderClipPlanes()
-{
-	Fmaterial mmx;
-	mmx.set(1,1,1);
-	mmx.diffuse.a=.5f;
-	HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d());
-//	HW.pDevice->SetMaterial(mmx.d3d());
-	Device.rsSet(vZTest|vAlpha);
-	int hTexture = Device.Texture.Create("STD:refl","std_aop",false);
-	Device.Texture.Set(hTexture);
-	for (int k=0; k<clip_planes.size(); k++) {
-		clip_planes[k].Render();
-	}
-	Device.Texture.Delete(hTexture);
-}
-*/
-
 const DWORD dwSndKillTime = 3;
 void C3DSoundRender::OnMove()
 {

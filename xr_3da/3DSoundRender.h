@@ -27,14 +27,14 @@ private:
 	int							FindEmptySlot		();
 	int							Append				(C3DSound *p);
 public:
-	int							CreateSound	(LPCSTR name, BOOL bCtrlFreq=FALSE, BOOL bNotClip=FALSE );
-	int							CreateSound	(CInifile *pIni, LPCSTR section);
-	void						DeleteSound	(int& hSound);
-	void						Play		(int  hSound, C3DSound** P, BOOL bLoop=false, int iLoopCnt=0);
+	int							CreateSound			(LPCSTR name, BOOL bCtrlFreq=FALSE, BOOL bNotClip=FALSE );
+	int							CreateSound			(CInifile *pIni, LPCSTR section);
+	void						DeleteSound			(int& hSound);
+	void						Play				(int  hSound, C3DSound** P, BOOL bLoop=false, int iLoopCnt=0);
 
-	void						Reload		();
+	void						Reload				();
 
-	void						OnMove		(void);
+	void						OnMove				(void);
 
 	C3DSoundRender();
 	~C3DSoundRender();
