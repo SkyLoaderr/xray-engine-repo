@@ -125,7 +125,7 @@ public:
 	IC	void						set_Vertices		(IDirect3DVertexBuffer9* _vb, u32 _vb_stride);
 	IC	void						set_Indices			(IDirect3DIndexBuffer9* _ib);
 	IC  void						set_Geometry		(SGeometry* _geom);
-	IC  void						set_Geometry		(ref_shader& _geom);
+	IC  void						set_Geometry		(ref_geom& _geom);
 	IC  void						set_Stencil			(u32 _enable, u32 _func=D3DCMP_ALWAYS, u32 _ref=0x00, u32 _mask=0x00, u32 _writemask=0x00, u32 _fail=D3DSTENCILOP_KEEP, u32 _pass=D3DSTENCILOP_KEEP, u32 _zfail=D3DSTENCILOP_KEEP);
 
 	// constants
