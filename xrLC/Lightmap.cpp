@@ -144,8 +144,9 @@ void CLightmap::Save()
 		DWORD	pitch			= w*4;
 
 		STextureParams fmt;
-		fmt.fmt					= STextureParams::tfDXT5;
-		fmt.flag				= EF_DITHER | EF_NO_MIPMAP;
+		fmt.fmt						= STextureParams::tfDXT5;
+		fmt.flag.bDitherColor		= true;
+		fmt.flag.bGenerateMipMaps	= false;
 		DXTCompress				(FN,raw_data,w,h,pitch,&fmt,4);
 	}
 

@@ -10,7 +10,7 @@ BOOL	hasImplicitLighting(Face* F)
 	
 	b_material& M = pBuild->materials			[F->dwMaterial];
 	b_BuildTexture&	T  = pBuild->textures		[M.surfidx];
-	return (T.THM.flag & EF_IMPLICIT_LIGHTED);
+	return (T.THM.flag.bImplicitLighted);
 }
 
 class ImplicitLumel
