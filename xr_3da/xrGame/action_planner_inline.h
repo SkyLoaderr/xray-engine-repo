@@ -78,10 +78,10 @@ void CPlanner::reinit				(_object_type *object, bool clear_all)
 		OPERATOR_VECTOR::iterator	E = m_operators.end();
 		for ( ; I != E; ++I)
 			if (!clear_all) {
-				(*I).get_operator()->reinit(object,&m_storage,clear_all);
 #ifdef LOG_ACTION
 				(*I).get_operator()->m_use_log = m_use_log;
 #endif
+				(*I).get_operator()->reinit(object,&m_storage,clear_all);
 			}
 			else
 				xr_delete	((*I).m_operator);
@@ -108,8 +108,12 @@ void CPlanner::reload				(LPCSTR section)
 	{
 		OPERATOR_VECTOR::iterator	I = m_operators.begin();
 		OPERATOR_VECTOR::iterator	E = m_operators.end();
-		for ( ; I != E; ++I)
+		for ( ; I != E; ++I) {
+#ifdef LOG_ACTION
+			(*I).get_operator()->m_use_log = m_use_log;
+#endif
 			(*I).get_operator()->reload(section);
+		}
 	}
 	{
 		EVALUATOR_MAP::iterator		I = m_evaluators.begin();

@@ -66,7 +66,7 @@ void CBaseAction::reinit		(_object_type *object, CPropertyStorage *storage, bool
 	m_storage			= storage;
 	m_inertia_time		= 0;
 #ifdef LOG_ACTION
-	if (xr_strlen(m_action_name))
+	if (m_use_log && xr_strlen(m_action_name))
 		debug_log		(eActionStateReinitialized);
 #endif
 }
@@ -75,7 +75,7 @@ TEMPLATE_SPECIALIZATION
 void CBaseAction::reload			(LPCSTR section)
 {
 #ifdef LOG_ACTION
-	if (xr_strlen(m_action_name))
+	if (m_use_log && xr_strlen(m_action_name))
 		debug_log		(eActionStateReloaded);
 #endif
 }
