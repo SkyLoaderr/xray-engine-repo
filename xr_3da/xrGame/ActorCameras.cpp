@@ -25,12 +25,13 @@ void CActor::cam_SetLadder()
 {
 	CCameraBase* C			= cameras[eacFirstEye];
 	g_LadderOrient			();
-	float yaw				=angle_normalize_signed(-XFORM().k.getH());
+	float yaw				=(-XFORM().k.getH());
 	float &cam_yaw=C->yaw;
-	cam_yaw=angle_normalize_signed(cam_yaw);
-	float delta_yaw=angle_normalize_signed(yaw-cam_yaw);
+	//cam_yaw=angle_normalize_signed(cam_yaw);
+	float delta_yaw=angle_difference_signed(yaw,cam_yaw);
 	if(-f_Ladder_cam_limit<delta_yaw&&f_Ladder_cam_limit>delta_yaw)
 	{
+		yaw=cam_yaw+delta_yaw;
 		float lo=(yaw-f_Ladder_cam_limit);
 		float hi=(yaw+f_Ladder_cam_limit);
 		C->lim_yaw[0]			= lo;
@@ -41,14 +42,15 @@ void CActor::cam_SetLadder()
 void CActor::camUpdateLeader(float dt)
 {
 	if(cameras[eacFirstEye]->bClampYaw) return;
-	float yaw	= angle_normalize_signed(-XFORM().k.getH());
+	float yaw	= (-XFORM().k.getH());
 
 	float & cam_yaw=cameras[eacFirstEye]->yaw;
-	cam_yaw=angle_normalize_signed(cam_yaw);
-	float delta=angle_normalize_signed(yaw-cam_yaw);
+	//cam_yaw=angle_normalize_signed(cam_yaw);
+	float delta=angle_difference_signed(yaw,cam_yaw);
 
 	if(-0.05f<delta&&0.05f>delta)
 	{
+		yaw=cam_yaw+delta;
 		float lo=(yaw-f_Ladder_cam_limit);
 		float hi=(yaw+f_Ladder_cam_limit);
 		cameras[eacFirstEye]->lim_yaw[0]			= lo;

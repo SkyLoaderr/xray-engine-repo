@@ -31,6 +31,7 @@ public:
 			void		GetJumpDir						(const Fvector& accel,Fvector& dir);
 			void		GetLeaderNormal					(Fvector& dir);
 			bool		Active							(){return m_ladder && m_state!=clbNone;}
+			bool		NearDown						(){return m_state == clbNearDown;}
 			bool		NearState						(){return m_state==clbNearUp || m_state == clbNearDown;}
 			bool		ClimbingState					(){return m_state==clbClimbingUp || m_state == clbClimbingDown;}
 			void		Depart							();

@@ -490,7 +490,7 @@ void CPHSimpleCharacter::PhTune(dReal step){
 				dVectorSet(m_clamb_depart_position,dBodyGetPosition(m_body));
 	}
 
-	else b_clamb_jump=ValidateWalkOn();
+	else b_clamb_jump=ValidateWalkOn()&&!m_elevator_state.NearDown();
 
 	//jump	
 	if(b_jump)
