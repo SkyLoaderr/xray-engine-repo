@@ -84,10 +84,12 @@ void __fastcall TfrmEditorPreferences::fsEditorPrefRestorePlacement(
     Device.m_Camera.SetSensitivity(float(seCameraSM->Value)/100.f, float(seCameraSR->Value)/100.f);
 	Device.m_Camera.SetFlyParams(seCameraFlySpeed->Value,seCameraFlyAltitude->Value);
 
+#ifdef _LEVEL_EDITOR
     UI.m_Cursor->SetBrushSegment(seBrushSegment->Value);
     UI.m_Cursor->SetBrushRadius(seBrushSize->Value);
     UI.m_Cursor->SetBrushDepth(seBrushUpDepth->Value,seBrushDnDepth->Value);
     Fcolor c; c.set_windows(mc3DCursorColor->Brush->Color); UI.m_Cursor->SetColor(c);
+#endif
 
     UI.Command(COMMAND_UPDATE_GRID);
 
