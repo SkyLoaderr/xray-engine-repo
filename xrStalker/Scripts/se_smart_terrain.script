@@ -35,7 +35,7 @@ end
 
 function se_smart_terrain:__init		(section) super(section)
 	log							("se_smart_terrain::se_smart_terrain called!")
-	self.m_monster				= nil
+//	self.m_monster				= nil
 end
 
 function se_smart_terrain:__finalize	()
