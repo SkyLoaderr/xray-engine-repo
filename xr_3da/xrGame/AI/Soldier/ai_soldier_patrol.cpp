@@ -873,23 +873,11 @@ void CAI_Soldier::FollowLeaderPatrol()
 		return;
 	}
 
-	SetLessCoverLook(AI_Node);
-	
-	vfInitSelector(SelectorPatrol,Squad,Leader);
-
-	if (AI_Path.bNeedRebuild) {
-		AI_Path.DestNode = m_dwStartPatrolNode;
-		Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,0,0);
-		if (AI_Path.Nodes.size() > 1) {
-			AI_Path.BuildTravelLine(Position());
-			CTravelNode tTemp;
-			tTemp.floating = FALSE;
-			tTemp.P = AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P;
-		}
-		else {
-			AI_Path.TravelPath.clear();
-			AI_Path.bNeedRebuild = FALSE;
-		}
+	if (m_bStateChanged) {
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierPatrolReturnToRoute;
+		m_dwLastRangeSearch = 0;
+		return;
 	}
 	else
 		if ((!(AI_Path.fSpeed)) || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 4)) {
@@ -925,24 +913,8 @@ void CAI_Soldier::FollowLeaderPatrol()
 				/**/
 				m_dwLastRangeSearch = Level().timeServer();
 			}
-			else {
-				if (Leader->Position().distance_to(m_tpaPatrolPoints[0]) < Position().distance_to(m_tpaPatrolPoints[0])) {
-					vfInitSelector(SelectorPatrol,Squad,Leader);
-					SelectorPatrol.m_tEnemyPosition = m_tpaPatrolPoints[0];
-					/**
-					float fTemp, fDistance = m_tpaPatrolPoints[0].distance_to(Position());
-					for (int i=1; i<m_tpaPatrolPoints.size(); i++)
-						if ((fTemp = m_tpaPatrolPoints[i].distance_to(Position())) < fDistance) {
-							fDistance = fTemp;
-							SelectorPatrol.m_tEnemyPosition = m_tpaPatrolPoints[i];
-						}
-					/**/
-					vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
-					AI_Path.bNeedRebuild = TRUE;
-				}
-			}
 		}
-
+	
 	if ((!m_dwLastRangeSearch) || (Level().timeServer() - m_dwLastRangeSearch >= 5000)) {
 		m_dwLastRangeSearch = Level().timeServer();
 		m_fMinPatrolDistance = MIN_PATROL_DISTANCE;
@@ -975,8 +947,27 @@ void CAI_Soldier::Patrol()
 {
 	CHECK_FOR_STATE_TRANSITIONS("Patrol detour...");
 	
+	if (m_bStateChanged) {
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierPatrolReturnToRoute;
+		m_dwLastRangeSearch = 0;
+		return;
+	}
+	else
+		if ((!(AI_Path.fSpeed)) || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 4)) {
+			vfCreateFastRealisticPath(m_tpaPatrolPoints, m_dwStartPatrolNode, m_tpaPointDeviations, AI_Path.TravelPath);
+			AI_Path.TravelStart = 0;
+			m_dwLastRangeSearch = Level().timeServer();
+		}
+	
+	SET_LOOK_FIRE_MOVEMENT(false,false,m_fMinSpeed)
+}
+
+void CAI_Soldier::PatrolReturn()
+{
+	CHECK_FOR_STATE_TRANSITIONS("Patrol return to route...");
+	
 	if (AI_Path.bNeedRebuild) {
-		AI_Path.DestNode = m_dwStartPatrolNode;
 		Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,0,0);
 		if (AI_Path.Nodes.size() > 1) {
 			AI_Path.BuildTravelLine(Position());
@@ -989,12 +980,26 @@ void CAI_Soldier::Patrol()
 			AI_Path.bNeedRebuild = FALSE;
 		}
 	}
-	else
-		if ((!(AI_Path.fSpeed)) || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 4)) {
-			vfCreateFastRealisticPath(m_tpaPatrolPoints, m_dwStartPatrolNode, m_tpaPointDeviations, AI_Path.TravelPath);
-			AI_Path.TravelStart = 0;
-			m_dwLastRangeSearch = Level().timeServer();
+	else {
+		vfInitSelector(SelectorPatrol,Squad,Leader);
+		SelectorPatrol.m_tEnemyPosition = m_tpaPatrolPoints[0];
+		float fTemp, fDistance = m_tpaPatrolPoints[0].distance_to(Position());
+		for (int i=1; i<m_tpaPatrolPoints.size(); i++)
+			if ((fTemp = m_tpaPatrolPoints[i].distance_to(Position())) < fDistance) {
+				fDistance = fTemp;
+				SelectorPatrol.m_tEnemyPosition = m_tpaPatrolPoints[i];
+			}
+		if (fDistance < 2.f) {
+			eCurrentState = tStateStack.top();
+			tStateStack.pop();
+			m_dwLastRangeSearch = 0;
+			return;
 		}
+		else {
+			vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
+			AI_Path.bNeedRebuild = TRUE;
+		}
+	}
 
 	SET_LOOK_FIRE_MOVEMENT(false,false,m_fMinSpeed)
 }

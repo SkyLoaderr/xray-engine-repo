@@ -1429,6 +1429,7 @@ void CAI_Soldier::Think()
 {
 	bStopThinking = false;
 	do {
+		ESoldierStates ePreviousState = eCurrentState;
 		switch(eCurrentState) {
 			case aiSoldierAttackRun : {
 				AttackRun();
@@ -1477,7 +1478,11 @@ void CAI_Soldier::Think()
 			case aiSoldierPatrolRoute : {
 				Patrol();
 				break;
-			}
+										}
+			case aiSoldierPatrolReturnToRoute : {
+				PatrolReturn();
+				break;
+										}
 			case aiSoldierFollowLeaderPatrol : {
 				FollowLeaderPatrol();
 				break;
@@ -1511,6 +1516,7 @@ void CAI_Soldier::Think()
 				break;
 			}
 		}
+		m_bStateChanged = ePreviousState != eCurrentState;
 	}
 	while (!bStopThinking);
 }
