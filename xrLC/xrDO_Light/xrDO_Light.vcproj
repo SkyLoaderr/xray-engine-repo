@@ -347,6 +347,9 @@
 			RelativePath=".\light.h">
 		</File>
 		<File
+			RelativePath=".\R_light.h">
+		</File>
+		<File
 			RelativePath="Shader_xrLC.h">
 		</File>
 		<File

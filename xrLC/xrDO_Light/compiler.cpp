@@ -7,8 +7,18 @@
 #include "xrhemisphere.h"
 #include "cl_intersect.h"
 #include "Etextureparams.h"
+#include "r_light.h"
 
 #define NUM_THREADS		3
+
+enum
+{
+	LP_DEFAULT			= 0,
+	LP_UseFaceDisable	= (1<<0),
+	LP_dont_rgb			= (1<<1),
+	LP_dont_hemi		= (1<<2),
+	LP_dont_sun			= (1<<3),
+};
 
 float	color_intensity	(Fcolor& c)
 {
@@ -16,6 +26,34 @@ float	color_intensity	(Fcolor& c)
 	float	absolute	= c.magnitude_rgb() / 1.7320508075688772935274463415059f;
 	return	ntsc*0.5f + absolute*0.5f;
 }
+class base_lighting
+{
+public:
+	xr_vector<R_Light>		rgb;		// P,N	
+	xr_vector<R_Light>		hemi;		// P,N	
+	xr_vector<R_Light>		sun;		// P
+
+	void					select		(xr_vector<R_Light>& dest, xr_vector<R_Light>& src, Fvector& P, float R);
+	void					select		(base_lighting& from, Fvector& P, float R);
+};
+class base_color
+{
+public:
+	Fvector					rgb;		// - all static lighting
+	float					hemi;		// - hemisphere
+	float					sun;		// - sun
+	float					_tmp_;		// ???
+	base_color()			{ rgb.set(0,0,0); hemi=0; sun=0; _tmp_=0;	}
+
+	void					mul			(float s)									{	rgb.mul(s);	hemi*=s; sun*=s;				};
+	void					add			(float s)									{	rgb.add(s);	hemi+=s; sun+=s;				};
+	void					add			(base_color& s)								{	rgb.add(s.rgb);	hemi+=s.hemi; sun+=s.sun;	};
+	void					scale		(int samples)								{	mul	(1.f/float(samples));					};
+	void					max			(base_color& s)								{ 	rgb.max(s.rgb); hemi=_max(hemi,s.hemi); sun=_max(sun,s.sun); };
+	void					lerp		(base_color& A, base_color& B, float s)		{ 	rgb.lerp(A.rgb,B.rgb,s); float is=1-s;  hemi=is*A.hemi+s*B.hemi; sun=is*A.sun+s*B.sun; };
+};
+IC	u8	u8_clr				(float a)	{ s32 _a = iFloor(a*255.f); clamp(_a,0,255); return u8(_a);		};
+
 
 //-----------------------------------------------------------------------------------------------------------------
 const int	LIGHT_Count				=	7;
@@ -24,37 +62,6 @@ const int	LIGHT_Count				=	7;
 __declspec(thread)		u64			t_start	= 0;
 __declspec(thread)		u64			t_time	= 0;
 __declspec(thread)		u64			t_count	= 0;
-
-//-----------------------------------------------------------------
-#define LT_DIRECT		0
-#define LT_POINT		1
-#define LT_SECONDARY	2
-
-struct R_Light
-{
-    u32				type;				// Type of light source		
-    Fcolor          diffuse;			// Diffuse color of light	
-    Fvector         position;			// Position in world space	
-    Fvector         direction;			// Direction in world space	
-    float		    range;				// Cutoff range
-	float			range2;				// ^2
-    float	        attenuation0;		// Constant attenuation		
-    float	        attenuation1;		// Linear attenuation		
-    float	        attenuation2;		// Quadratic attenuation	
-	float			energy;				// For radiosity ONLY
-	
-	Fvector			tri[3];
-
-	R_Light()		{
-		tri[0].set	(0,0,0);
-		tri[1].set	(0,0,EPS_S);
-		tri[2].set	(EPS_S,0,0);
-	}
-};
-typedef	svector<R_Light*,4*1024>	LSelection;
-
-DEF_VECTOR		(Lights,R_Light);
-//-----------------------------------------------------------------
 
 struct b_BuildTexture : public b_texture
 {
@@ -81,7 +88,7 @@ struct b_BuildTexture : public b_texture
 };
 
 //-----------------------------------------------------------------
-Lights						g_lights;
+base_lighting				g_lights;
 CDB::MODEL					RCAST_Model;
 Fbox						LevelBB;
 CVirtualFileRW*				dtFS=0;
@@ -390,44 +397,119 @@ float rayTrace	(CDB::COLLIDER* DB, R_Light& L, Fvector& P, Fvector& D, float R)/
 	return 0;
 }
 
-float LightPoint(CDB::COLLIDER* DB, Fvector &Pold, Fvector &N, LSelection& SEL)
+void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color &C, Fvector &P, Fvector &N, base_lighting& lights, u32 flags, Face* skip)
 {
 	Fvector		Ldir,Pnew;
-	Pnew.mad	(Pold,N,0.1f);
+	Pnew.mad	(P,N,0.01f);
 
-	R_Light	**IT = SEL.begin(), **E = SEL.end();
+	BOOL		bUseFaceDisable	= flags&LP_UseFaceDisable;
 
-	float	amount = 0;
-	for (; IT!=E; IT++)
+	if (0==(flags&LP_dont_rgb))
 	{
-		R_Light* L = *IT;
-		if (L->type==LT_DIRECT) 
+		R_Light	*L	= &*lights.rgb.begin(), *E = &*lights.rgb.end();
+		for (;L!=E; L++)
 		{
-			// Cos
-			Ldir.invert	(L->direction);
-			float D		= Ldir.dotproduct( N );
-			if( D <=0 ) continue;
+			if (L->type==LT_DIRECT) {
+				// Cos
+				Ldir.invert	(L->direction);
+				float D		= Ldir.dotproduct( N );
+				if( D <=0 ) continue;
 
-			// Trace Light
-			amount += D*L->energy*rayTrace(DB,*L,Pnew,Ldir,1000.f);//,skip);
-		} else {
-			// Distance
-			float sqD	= Pnew.distance_to_sqr(L->position);
-			if (sqD > L->range2) continue;
-			
-			// Dir
-			Ldir.sub	(L->position,Pnew);
-			Ldir.normalize_safe();
-			float D		= Ldir.dotproduct( N );
-			if( D <=0 ) continue;
-			
-			// Trace Light
-			float R		= _sqrt(sqD);
-			float scale = D*L->energy*rayTrace(DB,*L,Pnew,Ldir,R);//,skip);
-			amount		+= scale / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
+				// Trace Light
+				float scale	=	D*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,1000.f,skip,bUseFaceDisable);
+				C.rgb.x		+=	scale * L->diffuse.x; 
+				C.rgb.y		+=	scale * L->diffuse.y;
+				C.rgb.z		+=	scale * L->diffuse.z;
+			} else {
+				// Distance
+				float sqD	=	P.distance_to_sqr	(L->position);
+				if (sqD > L->range2) continue;
+
+				// Dir
+				Ldir.sub	(L->position,P);
+				Ldir.normalize_safe();
+				float D		= Ldir.dotproduct( N );
+				if( D <=0 ) continue;
+
+				// Trace Light
+				float R		= _sqrt(sqD);
+				float scale = D*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,R,skip,bUseFaceDisable);
+				float A		= scale / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
+
+				C.rgb.x += A * L->diffuse.x;
+				C.rgb.y += A * L->diffuse.y;
+				C.rgb.z += A * L->diffuse.z;
+			}
 		}
 	}
-	return amount;
+	if (0==(flags&LP_dont_sun))
+	{
+		R_Light	*L	= &*(lights.sun.begin()), *E = &*(lights.sun.end());
+		for (;L!=E; L++)
+		{
+			if (L->type==LT_DIRECT) {
+				// Cos
+				Ldir.invert	(L->direction);
+				float D		= Ldir.dotproduct( N );
+				if( D <=0 ) continue;
+
+				// Trace Light
+				float scale	=	L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,1000.f,skip,bUseFaceDisable);
+				C.sun		+=	scale;
+			} else {
+				// Distance
+				float sqD	=	P.distance_to_sqr(L->position);
+				if (sqD > L->range2) continue;
+
+				// Dir
+				Ldir.sub			(L->position,P);
+				Ldir.normalize_safe	();
+				float D				= Ldir.dotproduct( N );
+				if( D <=0 )			continue;
+
+				// Trace Light
+				float R		=	_sqrt(sqD);
+				float scale =	D*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,R,skip,bUseFaceDisable);
+				float A		=	scale / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
+
+				C.sun		+=	A;
+			}
+		}
+	}
+	if (0==(flags&LP_dont_hemi))
+	{
+		R_Light	*L	= &*lights.hemi.begin(), *E = &*lights.hemi.end();
+		for (;L!=E; L++)
+		{
+			if (L->type==LT_DIRECT) {
+				// Cos
+				Ldir.invert	(L->direction);
+				float D		= Ldir.dotproduct( N );
+				if( D <=0 ) continue;
+
+				// Trace Light
+				float scale	=	D*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,1000.f,skip,bUseFaceDisable);
+				C.hemi		+=	scale;
+			} else {
+				// Distance
+				float sqD	=	P.distance_to_sqr(L->position);
+				if (sqD > L->range2) continue;
+
+				// Dir
+				Ldir.sub			(L->position,P);
+				Ldir.normalize_safe	();
+				float D		=	Ldir.dotproduct( N );
+				if( D <=0 ) continue;
+
+				// Trace Light
+				float R		=	_sqrt(sqD);
+				float scale =	D*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,R,skip,bUseFaceDisable);
+				float A		=	scale / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
+
+				C.hemi		+=	A;
+			}
+		}
+	}
 }
 
 DEFINE_VECTOR(u32,DWORDVec,DWORDIt);
