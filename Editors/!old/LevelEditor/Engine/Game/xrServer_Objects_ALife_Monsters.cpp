@@ -53,6 +53,7 @@ CSE_ALifeTraderAbstract::~CSE_ALifeTraderAbstract()
 void CSE_ALifeTraderAbstract::STATE_Write	(NET_Packet &tNetPacket)
 {
 	save_data					(m_tpEvents,tNetPacket);
+	tNetPacket.w_u32			(m_dwMoney);
 }
 
 void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
@@ -62,6 +63,8 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 		ALife::TASK_VECTOR		l_tpTaskIDs;
 		if (m_wVersion < 36)
 			load_data			(l_tpTaskIDs,tNetPacket);
+		if (m_wVersion > 62)
+			tNetPacket.r_u32	(m_dwMoney);
 	}
 }
 
@@ -69,7 +72,6 @@ void CSE_ALifeTraderAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
 {
 	tNetPacket.w_float			(m_fCumulativeItemMass);
 //	tNetPacket.w_float			(m_iCumulativeItemVolume);
-	tNetPacket.w_u32			(m_dwMoney);
 	tNetPacket.w_u32			(m_tRank);
 };
 
@@ -77,7 +79,6 @@ void CSE_ALifeTraderAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 {
 	tNetPacket.r_float			(m_fCumulativeItemMass);
 //	tNetPacket.r_float			(m_iCumulativeItemVolume);
-	tNetPacket.r_u32			(m_dwMoney);
 	u32							dwDummy;
 	tNetPacket.r_u32			(dwDummy);
 	m_tRank						= ALife::EStalkerRank(m_tRank);
