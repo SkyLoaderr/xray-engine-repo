@@ -21,15 +21,15 @@ struct	vertHW
 void CDetailManager::VS_Load()
 {
 	// Load vertex shader
-	LPD3DXBUFFER	code;
-	LPD3DXBUFFER	errors;
+	LPD3DXBUFFER	code  = 0;
+	LPD3DXBUFFER	errors= 0;
 	R_CHK			(D3DXAssembleShaderFromFile("data\\shaders\\detail.vs",0,NULL,&code,&errors));
 	R_CHK			(HW.pDevice->CreateVertexShader(dwDecl,LPDWORD(code->GetBufferPointer()),&VS_Code,0));
 	_RELEASE		(code);
 	_RELEASE		(errors);
 
 	// Analyze batch-size
-	VS_BatchSize	= 10; //(DWORD(HW.Caps.vertex.dwRegisters)-1)/5;
+	VS_BatchSize	= 19; //(DWORD(HW.Caps.vertex.dwRegisters)-1)/5;
 
 	// Pre-process objects
 	DWORD			dwVerts		= 0;
@@ -109,8 +109,6 @@ void CDetailManager::VS_Unload()
 
 void CDetailManager::VS_Render()
 {
-	return;
-
 	// Phase
 	float	fPhaseRange	= PI/16;
 	float	fPhaseX		= sinf(Device.fTimeGlobal*0.1f)	*fPhaseRange;
@@ -118,9 +116,8 @@ void CDetailManager::VS_Render()
 
 	// Render-prepare
 	CVS_Constants& VSC	=	Device.Shader.VSC;
-	VSC.set						(0,255,255,255,255);
+	VSC.set						(0,255.01f,255.01f,255.01f,255.01f);
 	VSC.flush					(0,1);
-	Device.Primitive.setVertices(VS_Code,(3+1+2)*4,VS_VB);
 	
 	// Matrices and offsets
 	Fmatrix		mXform,	mTemp;
@@ -138,7 +135,6 @@ void CDetailManager::VS_Render()
 		{
 			// Setup matrices + colors (and flush it as nesessary)
 			Device.Shader.set_Shader		(Object.shader);
-			Device.Primitive.setIndicesUC	(vOffset, VS_IB);
 
 			DWORD dwBatch	= 0;
 			for (DWORD item = 0; item<vis.size(); item++)
@@ -175,6 +171,8 @@ void CDetailManager::VS_Render()
 					VSC.flush						(1,dwBatch*5);
 					DWORD dwCNT_verts				= dwBatch * Object.number_vertices;
 					DWORD dwCNT_prims				= (dwBatch * Object.number_indices)/3;
+					Device.Primitive.setVerticesUC	(VS_Code,(3+1+2)*4,VS_VB);
+					Device.Primitive.setIndicesUC	(vOffset, VS_IB);
 					Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,dwCNT_verts,iOffset,dwCNT_prims);
 					UPDATEC							(dwCNT_verts,dwCNT_prims,2);
 					
@@ -189,6 +187,8 @@ void CDetailManager::VS_Render()
 				VSC.flush						(1,dwBatch*5);
 				DWORD dwCNT_verts				= dwBatch * Object.number_vertices;
 				DWORD dwCNT_prims				= (dwBatch * Object.number_indices)/3;
+				Device.Primitive.setVerticesUC	(VS_Code,(3+1+2)*4,VS_VB);
+				Device.Primitive.setIndicesUC	(vOffset, VS_IB);
 				Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,dwCNT_verts,iOffset,dwCNT_prims);
 				UPDATEC							(dwCNT_verts,dwCNT_prims,2);
 			}
