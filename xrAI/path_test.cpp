@@ -13,11 +13,8 @@
 #include "data_storage_priority_queue.h"
 #include "data_storage_heap.h"
 #include "data_storage_list.h"
-#include "boost\\d_heap.hpp"
 #include "boost\\f_heap.hpp"
-#include "boost\\l_heap.hpp"
 #include "boost\\p_heap.hpp"
-#include "boost\\s_heap.hpp"
 #include "path_manager.h"
 #include "a_star.h"
 #include "path_test.h"
@@ -239,7 +236,6 @@ void test_all				(LPCSTR caLevelName, u32 test_count, _dist_type min_value, _dis
 	test<CDataStorageCheapList		<32,true,true,				_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
 	test<CDataStorageBucketList		<8*1024,false,				_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value,max_value);
 	test<CDataStoragePriorityQueue	<boost::fibonacci_heap,		_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-//	test<CDataStoragePriorityQueue	<boost::lazy_fibonacci_heap,_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
 	test<CDataStoragePriorityQueue	<boost::pairing_heap,		_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
 
 	xr_delete				(graph);
