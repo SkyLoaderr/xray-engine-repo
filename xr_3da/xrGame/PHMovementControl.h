@@ -183,7 +183,11 @@ public:
 	{	P.set			(vPosition); }
 	void				GetCharacterPosition(Fvector &P)
 	{ m_character->GetPosition(P);}
-
+	void				InterpolatePosition(Fvector	&P)
+	{
+		VERIFY(m_character&&m_character->b_exist);
+		m_character->IPosition(P);
+	}
 	bool				TryPosition				(Fvector& pos)															{return m_character->TryPosition(pos);}
 	bool				IsCharacterEnabled		()																		{return m_character->IsEnabled();}
 	void				Calculate				(Fvector& vAccel, float ang_speed, float jump, float dt, bool bLight);
