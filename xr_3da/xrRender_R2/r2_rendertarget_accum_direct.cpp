@@ -265,7 +265,7 @@ void CRenderTarget::accum_direct_f		(u32 sub_phase)
 		// Make jitter texture
 		Fvector2					j0,j1;
 		float	scale_X				= float(Device.dwWidth)	/ float(TEX_jitter);
-		float	scale_Y				= float(Device.dwHeight)/ float(TEX_jitter);
+		//float	scale_Y				= float(Device.dwHeight)/ float(TEX_jitter);
 		float	offset				= (.5f / float(TEX_jitter));
 		j0.set						(offset,offset);
 		j1.set						(scale_X,scale_X).add(offset);
