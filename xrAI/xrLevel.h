@@ -2,7 +2,7 @@
 #define xrLevelH
 #pragma once
 
-#define NODE_NEIGHBOUR_COUNT 4
+//#define NODE_NEIGHBOUR_COUNT 4
 
 enum fsL_Chunks {
 	fsL_HEADER2			=1,		//*
@@ -149,7 +149,17 @@ public:
 	friend class CLevelGraph;
 	friend struct CNodeCompressed;
 };									// 2+5+1+11 = 19b
+
+struct SNodePositionOld {
+	s16				x;
+	u16				y;
+	s16				z;
+};
 #pragma pack	(pop)
+
+#ifdef _EDITOR
+typedef	SNodePositionOld NodePosition;
+#endif
 
 const u32 XRCL_CURRENT_VERSION		=	16;	// input
 const u32 XRCL_PRODUCTION_VERSION	=	12;	// output
