@@ -3,6 +3,8 @@
 Чугай Саша
 
 Сделать:
+	- инерция перехода из близкого в дальний
+	- реакция на хит
 	- звуки
 	- когда будет сохранение, время сделать game_time
 ------------------------------------------------------------------------------------------------------------]]
@@ -64,11 +66,12 @@ class "evaluator_close" ( property_evaluator )
 
 function evaluator_close:__init( name, storage ) super ( nil, name )
 	self.st = storage
+	self.close_dist_sqr = math.random( 20*20, 35*35 )
 end
 
 function evaluator_close:evaluate()
 	local be = self.object:best_enemy()
-	return be ~= nil and self.object:position():distance_to_sqr( be:position() ) < 30*30
+	return be ~= nil and self.object:position():distance_to_sqr( be:position() ) < self.close_dist_sqr
 end
 
 --------------------------------------------------------------------------------------------------------------
