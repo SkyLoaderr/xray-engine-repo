@@ -143,7 +143,6 @@ public:
 	virtual void					light_destroy			(IRender_Light* &);
 	
 	// Models
-	virtual IRender_Visual*			model_CreatePS			(LPCSTR name, PS::SEmitter* E);
 	virtual IRender_Visual*			model_CreateParticles	(LPCSTR name);
 	virtual IRender_DetailModel*	model_CreateDM			(IReader*	F);
 	virtual IRender_Visual*			model_Create			(LPCSTR name);
