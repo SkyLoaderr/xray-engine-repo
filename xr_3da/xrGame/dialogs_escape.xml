@@ -31,6 +31,63 @@
 			<next>13</next>
 		</phrase>
 		<phrase id="5">
+	        <precondition>escape_dialog.trader_need_artefact</precondition>  
+			<text>Есть одно дельце. По слухам недалеко тут есть место. Там лежит артефакт редкий. Но не новичков же посылать туда. Принеси мне артефакт, а я пока о Стрелке твоем попытаюсь разузнать. За артефакт само собой заплачу как полагается.</text>
+			<next>6</next>
+			<next>7</next>
+		</phrase>
+		<phrase id="6">
+			<text>Согласен.[Задание]</text>
+	        <give_info>escape_trader_need_artefact</give_info>
+			<next>8</next>
+		</phrase>
+		<phrase id="7">
+			<text>Нет, не хочу.</text>
+			<next>9</next>
+		</phrase>
+		<phrase id="8">
+			<text>По рукам.</text>
+		</phrase>
+		<phrase id="9">
+			<text>Твое право.</text>
+		</phrase>
+		<phrase id="12">
+	        <precondition>escape_dialog.trader_dont_has_job</precondition>
+			<text>Не, пока ничего нет.</text>
+		</phrase>
+		<phrase id="13">
+	        <precondition>escape_dialog.trader_alredy_give_job</precondition>
+			<text>Кажется ты уже что-то обещал мне сделать, и еще не сделал. Пока не сделаешь - никаких новых заданий.</text>
+		</phrase>
+		<phrase id="15">
+			<text>Ну вот и ладненько. Что нибудь еще?</text>
+		</phrase>
+	</phrase_list>
+    </dialog>
+
+<!--
+    <dialog id="escape_trader_jobs">
+	<phrase_list>
+	    	<phrase id="0">
+			<text>Какая у тебя есть работа?</text>
+			<next>2</next>
+		</phrase>
+		<phrase id="2">
+			<text>Все как обычно. Прежде всего мне нужны артефакты. Плачу обычную цену, ни больше, ни меньше.\n Ну и иногда мне нужны "особые" люди для "особой" работы.</text>
+			<next>3</next>
+			<next>4</next>
+		</phrase>
+		<phrase id="3">
+			<text>Действительно, все как обычно. Ладно - если что-то найду, постараюсь не забыть принести.</text>
+			<next>15</next>
+		</phrase>
+		<phrase id="4">
+			<text>А может у тебя найдется "особая" работа для "особого" человека?</text>
+			<next>5</next>
+			<next>12</next>
+			<next>13</next>
+		</phrase>
+		<phrase id="5">
 	        <precondition>escape_dialog.trader_need_blockpost_box</precondition>
 			<text>Ну чтож, ты мой должник, я попрошу тебя кое о чем. Сделаешь, и мы в рассчете.\n Нужно спереть ящик с блокпоста. Только осторожно.\n Они когда обижаются, то вокруг такой шмон наводят, что даже крысы разбегаются.</text>
 			<next>6</next>
@@ -68,7 +125,23 @@
 		</phrase>
 	</phrase_list>
     </dialog>
+-->
+    <dialog id="escape_trader_done_artefact">
+    <precondition>escape_dialog.have_artefact_nightstar</precondition>
+	<phrase_list>
+		<phrase id="0">
+			<text>Вот твой артефакт. Забавная вещица.</text>
+	        <action>escape_dialog.give_artefact_nightstar</action>
+	        <give_info>escape_trader_have_artefact</give_info>
+			<next>2</next>			
+		</phrase>			
+		<phrase id="2">
+			<text>Тааак, 1000 или нет, 500 рублей и мы в рассчете.</text>
+		</phrase>
+	</phrase_list>
+    </dialog>
 
+<!--
     <dialog id="escape_trader_done_blockpost_box">
     <precondition>escape_dialog.have_blockpost_case</precondition>
 	<phrase_list>
@@ -83,7 +156,7 @@
 		</phrase>
 	</phrase_list>
     </dialog>
-
+-->
 	<dialog id="escape_trader_talk_about">
 	<phrase_list>
 	   	<phrase id="0">

@@ -1,12 +1,14 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <game_tasks_data>
-	<game_task id="escape_blockpost_case">
+
+<!--	<game_task id="escape_blockpost_case">
 		<title>escape_steal_blockpost_case</title>
 		<objective>
 			<text>escape_steal_blockpost_case</text>
 		</objective>
 	</game_task>
+-->
 
 	<game_task id="escape_novice_need_weapon">
 		<title>escape_novice_need_gun</title>
@@ -28,5 +30,11 @@
 		</objective>
 	</game_task>
 
-
+	<game_task id="escape_trader_need_artefact">
+		<title>Торговцу нужен особый артефакт</title>
+		<objective>
+			<text>Найдите "Ночную звезду" и принесите торговцу.</text>
+		</objective>
+	</game_task>
+	
 </game_tasks_data>

@@ -16,8 +16,8 @@
 
     <info_portion id="escape_factory_bandits_dead">
     </info_portion>
-
-    <info_portion id="escape_need_blockpost_case">
+    
+<!--    <info_portion id="escape_need_blockpost_case">
         <location>
             <level></level>
             <object>000</object>
@@ -30,5 +30,21 @@
     <info_portion id="escape_have_blockpost_case">
         <disable>escape_need_blockpost_case</disable>
     </info_portion>
+    -->
 
+    <info_portion id="escape_trader_need_artefact">
+        <location>
+            <level></level>
+            <x>-100</x>
+            <y>-100</y>
+			<icon name="Аномалия" x="5" y="1" width="1" height="1" r="0" g="50" b="255" marker="1"></icon>
+            <text>Предполагаемое место появления артефакта "Ночная звезда".</text>
+        </location>
+        <task>escape_trader_need_artefact</task>
+		<dialog>escape_trader_done_artefact</dialog>
+    </info_portion>
+    <info_portion id="escape_trader_have_artefact">
+        <disable>escape_trader_need_artefact</disable>
+    </info_portion>
+    
 </game_information_portions>
