@@ -600,9 +600,9 @@ int doLauncher()
 	if(g_bBenchmark){ //perform benchmark cycle
 		doBenchmark();
 	
-		InitLauncher();
-		pLauncher	(2);//show results
-		FreeLauncher();
+		// InitLauncher	();
+		// pLauncher	(2);	//show results
+		// FreeLauncher	();
 
 		Core._destroy			();
 		return					(1);
