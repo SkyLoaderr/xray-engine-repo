@@ -3,6 +3,7 @@
 #include "WeaponHUD.h"
 #include "PhysicsShell.h"
 #include "effectorshot.h"
+#include "actor.h"
 
 CMissile::CMissile(void) {
 	m_state = MS_HIDDEN;
@@ -225,7 +226,7 @@ u32 CMissile::State(u32 state) {
 }
 
 void CMissile::OnVisible() {
-	if(m_pHUD && H_Parent()) {
+	if(m_pHUD && H_Parent() && dynamic_cast<CActor*>(H_Parent())) {
 		Fmatrix trans;
 		Level().Cameras.affected_Matrix(trans);
 		m_pHUD->UpdatePosition(trans);
