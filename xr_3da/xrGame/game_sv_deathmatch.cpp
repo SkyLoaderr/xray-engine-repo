@@ -73,6 +73,7 @@ void	game_sv_Deathmatch::Create					(shared_str& options)
 	{
 		m_bSpectatorMode = true;
 		m_dwSM_SwitchDelta = SpectatorMode;
+		if (m_dwSM_SwitchDelta<20) m_dwSM_SwitchDelta = 20;
 		m_dwSM_LastSwitchTime = 0;
 	}
 	//-----------------------------------------------------------------------
