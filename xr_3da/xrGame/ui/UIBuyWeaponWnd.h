@@ -392,14 +392,19 @@ protected:
 	// На данный момент: - 1 - нет, 0 - экзоскелет, 1 - научный
 	const u8	GetCurrentSuit();
 	// Восстановить скин стаокера без костюма
-	void		SetDefaultSuit();
+	void		SetDefaultSuit(  );
+	
 	// Таблица соответсвия имени армора с именами моделей персонажей. Заполняется ручками
 	// Во вложенной паре первое имя для синей комманды, второе для зеленой
 	typedef xr_vector<std::pair<ref_str, std::pair<ref_str, ref_str> > >	CONFORMITY_TABLE;
 	typedef CONFORMITY_TABLE::iterator										CONFORMITY_TABLE_it;
 	CONFORMITY_TABLE		m_ConformityTable;
-
+	
+	u8			m_CurSkin;
 public:
+
+	void		SetSkin			(u8 SkinID )	{ m_CurSkin = SkinID; };	
+
 	// А не является ли данная вещь чьим-то аддоном?
 	// Возвращаем адрес хозяина аддона, если нашли и тип аддона
 	CUIDragDropItemMP * IsItemAnAddon(CUIDragDropItemMP *pPossibleAddon, CUIDragDropItemMP::AddonIDs &ID);

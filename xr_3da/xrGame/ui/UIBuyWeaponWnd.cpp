@@ -51,6 +51,7 @@ CUIBuyWeaponWnd::CUIBuyWeaponWnd(char *strSectionName)
 //	m_pItemToUpgrade = NULL;
 
 	m_iUsedItems	= 0;
+	m_CurSkin		= 0;
 
 	SetFont(HUD().pFontMedium);
 
@@ -1684,7 +1685,7 @@ void CUIBuyWeaponWnd::CheckBuyAvailability()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIBuyWeaponWnd::SetDefaultSuit()
+void CUIBuyWeaponWnd::SetDefaultSuit( u8 Skin )
 {
 	UIOutfitIcon.Show(false);
 }
