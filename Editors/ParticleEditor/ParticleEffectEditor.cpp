@@ -122,19 +122,19 @@ void __fastcall PS::CPEDef::CollisionFrictionOnBeforeEdit(PropValue* sender, flo
 {    edit_val = 1.f-edit_val;}
 void __fastcall PS::CPEDef::CollisionFrictionOnAfterEdit(PropValue* sender, float& edit_val, bool& accepted)
 {    edit_val = 1.f-edit_val;}
-void __fastcall PS::CPEDef::CollisionFrictionOnDraw(PropValue* sender, shared_str& draw_val)
+void __fastcall PS::CPEDef::CollisionFrictionOnDraw(PropValue* sender, std::string& draw_val)
 {    
 	FloatValue* V	= dynamic_cast<FloatValue*>(sender); VERIFY(V);
-	rstring_sprintf(draw_val,1.f-V->GetValue(),V->dec);
+	draw_sprintf(draw_val,1.f-V->GetValue(),V->dec);
 }
 void __fastcall PS::CPEDef::CollisionCutoffOnBeforeEdit(PropValue* sender, float& edit_val)
 {    edit_val = _sqrt(edit_val);}
 void __fastcall PS::CPEDef::CollisionCutoffOnAfterEdit(PropValue* sender, float& edit_val, bool& accepted)
 {    edit_val = (edit_val)*(edit_val);}
-void __fastcall PS::CPEDef::CollisionCutoffOnDraw(PropValue* sender, shared_str& draw_val)
+void __fastcall PS::CPEDef::CollisionCutoffOnDraw(PropValue* sender, std::string& draw_val)
 {    
 	FloatValue* V	= dynamic_cast<FloatValue*>(sender); VERIFY(V);
-	rstring_sprintf(draw_val,_sqrt(V->GetValue()),V->dec);
+	draw_sprintf(draw_val,_sqrt(V->GetValue()),V->dec);
 }
 
 void __fastcall PS::CPEDef::OnActionEditClick(PropValue* sender, bool& bDataModified, bool& bSafe)
