@@ -31,7 +31,13 @@ void		xrServer::client_Replicate	()
 }
 void		xrServer::client_Destroy	(IClient* C)
 {
-	_DELETE(C);
+	// Delete assosiated entity
+	xrClientData*	D = (xrClientData*)C;
+	xrServerEntity* E = D->owner;
+	entities.erase	(E->ID);
+	entity_Destroy	(E);
+
+	_DELETE			(C);
 }
 
 //--------------------------------------------------------------------
@@ -250,4 +256,9 @@ void xrServer::OnCL_Connected		(IClient* CL)
 void xrServer::OnCL_Disconnected	(IClient* CL)
 {
 	Level().HUD()->outMessage(0xffffffff,"SERVER","Player '%s' disconnected",CL->Name);
+
+	// Send this to all other clients
+	NET_Packet		P;
+	P.w_begin		(M_DESTROY);
+	SendBroadcast	(CL->ID,P,net_flags(TRUE));
 }
