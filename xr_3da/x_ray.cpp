@@ -543,7 +543,10 @@ void InitLauncher(){
 		return;
 	hLauncher	= LoadLibrary	("xrLauncher.dll");
 	if (0==hLauncher)	R_CHK			(GetLastError());
+	R_ASSERT2		(hLauncher,"xrLauncher DLL raised exception during loading or there is no xrLauncher.dll at all");
+
 	pLauncher = (LauncherFunc*)GetProcAddress(hLauncher,"RunXRLauncher");
+	R_ASSERT2		(pLauncher,"Cannot obtain RunXRLauncher function from xrLauncher.dll");
 };
 
 void FreeLauncher(){
