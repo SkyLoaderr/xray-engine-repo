@@ -8,6 +8,9 @@
 
 using namespace PS;
 
+static const Fvector zero_vel={0,0,0};
+
+//------------------------------------------------------------------------------
 CPGDef::CPGDef()
 {                             
     m_Flags.zero	();
@@ -118,9 +121,11 @@ void CParticleGroup::SItem::Clear()
     for (VisualVecIt it=visuals.begin(); it!=visuals.end(); it++)
 	    ::Render->model_Delete(*it);
 }
-void CParticleGroup::SItem::AppendChild(LPCSTR eff_name)
+IRender_Visual* CParticleGroup::SItem::AppendChild(LPCSTR eff_name)
 {
-    _children.push_back((CParticleEffect*)RImplementation.model_CreatePE(eff_name));
+	IRender_Visual* V = RImplementation.model_CreatePE(eff_name);
+    _children.push_back(V);
+    return V;
 }
 void CParticleGroup::SItem::RemoveChild(u32 idx)
 {
@@ -152,20 +157,31 @@ void CParticleGroup::SItem::UpdateParent(const Fmatrix& m, const Fvector& veloci
     if (E) E->UpdateParent(m,velocity,bXFORM);
 }
 //------------------------------------------------------------------------------
-void OnGroupParticleBirth(void* owner, PAPI::Particle& m, u32 idx)
+void OnGroupParticleBirth(void* owner, u32 param, PAPI::Particle& m, u32 idx)
 {
-	PS::OnEffectParticleBirth(owner, m, idx);
+	CParticleGroup* PG 	= static_cast<CParticleGroup*>(owner); 	VERIFY(PG);
+    CParticleEffect*PE	= static_cast<CParticleEffect*>(PG->items[param]._effect);
+	PS::OnEffectParticleBirth(PE, param, m, idx);
+    // if have child
+    const CPGDef* PGD			= PG->GetDefinition();					VERIFY(PGD);
+    const CPGDef::SEffect& eff	= PGD->m_Effects[param];
+    if (eff.m_Flags.is(CPGDef::SEffect::flHaveChild)){
+	    CParticleEffect*C		= static_cast<CParticleEffect*>(PG->items[param].AppendChild(*eff.m_ChildEffectName));
+        Fmatrix M; M.translate(m.pos);
+        C->UpdateParent	(M,zero_vel,FALSE);
+    }
 }
-void OnGroupParticleDead(void* owner, PAPI::Particle& m, u32 idx)
+void OnGroupParticleDead(void* owner, u32 param, PAPI::Particle& m, u32 idx)
 {
-	PS::OnEffectParticleDead(owner, m, idx);
+	CParticleGroup* PG 	= static_cast<CParticleGroup*>(owner); VERIFY(PG);
+    CParticleEffect*PE	= static_cast<CParticleEffect*>(PG->items[param]._effect);
+	PS::OnEffectParticleDead(PE, param, m, idx);
 }
 //------------------------------------------------------------------------------
 struct zero_vis_pred : public std::unary_function<IRender_Visual*, bool>
 {
 	bool operator()(const IRender_Visual* x){ return x==0; }
 };
-static const Fvector zero_vel={0,0,0};
 void CParticleGroup::SItem::OnFrame(u32 u_dt, const CPGDef::SEffect& def, Fbox& box, bool& bPlaying)
 {
     CParticleEffect* E		= static_cast<CParticleEffect*>(_effect);
@@ -316,7 +332,7 @@ BOOL CParticleGroup::Compile(CPGDef* def)
         items.resize			(m_Def->m_Effects.size());
         for (CPGDef::EffectVec::const_iterator e_it=m_Def->m_Effects.begin(); e_it!=m_Def->m_Effects.end(); e_it++){
         	CParticleEffect* eff = (CParticleEffect*)RImplementation.model_CreatePE(*e_it->m_EffectName);
-            eff->SetBirthDeadCB	(OnGroupParticleBirth,OnGroupParticleDead);
+            eff->SetBirthDeadCB	(OnGroupParticleBirth,OnGroupParticleDead,this,e_it-m_Def->m_Effects.begin());
 			items[e_it-def->m_Effects.begin()].Set(eff);
         }
     }

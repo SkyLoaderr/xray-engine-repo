@@ -6,6 +6,21 @@
 using namespace PAPI;
 using namespace PS;
 
+void PS::OnEffectParticleBirth(void* owner, u32 param, PAPI::Particle& m, u32 idx)
+{
+	CParticleEffect* PE = static_cast<CParticleEffect*>(owner); VERIFY(PE);
+    CPEDef* PED			= PE->GetDefinition(); 
+    if (PED){
+        if (PED->m_Flags.is(CPEDef::dfRandomFrame))
+            m.frame	= (u16)iFloor(Random.randI(PED->m_Frame.m_iFrameCount)*255.f);
+        if (PED->m_Flags.is(CPEDef::dfAnimated)&&PED->m_Flags.is(CPEDef::dfRandomPlayback)&&Random.randI(2))
+            m.flags.set(Particle::ANIMATE_CCW,TRUE);
+    }
+}
+void PS::OnEffectParticleDead(void* owner, u32 param, PAPI::Particle& m, u32 idx)
+{
+//	CPEDef* PE = static_cast<CPEDef*>(owner);
+}
 //------------------------------------------------------------------------------
 // class CParticleEffect
 //------------------------------------------------------------------------------
@@ -125,7 +140,7 @@ BOOL CParticleEffect::Compile(CPEDef* def)
 		IReader F				(m_Def->m_Actions.pointer(),m_Def->m_Actions.size());
         ParticleManager()->LoadActions		(m_HandleActionList,F);
         ParticleManager()->SetMaxParticles	(m_HandleEffect,m_Def->m_MaxParticles);
-        ParticleManager()->SetCallback		(m_HandleEffect,OnEffectParticleBirth,OnEffectParticleDead,m_Def);
+        ParticleManager()->SetCallback		(m_HandleEffect,OnEffectParticleBirth,OnEffectParticleDead,this,0);
 		// time limit
 		if (m_Def->m_Flags.is(CPEDef::dfTimeLimit))
 			m_fElapsedLimit 	= m_Def->m_fTimeLimit;
@@ -134,10 +149,9 @@ BOOL CParticleEffect::Compile(CPEDef* def)
 	return TRUE;
 }
 
-void CParticleEffect::SetBirthDeadCB(PAPI::OnBirthParticleCB bc, PAPI::OnDeadParticleCB dc)
+void CParticleEffect::SetBirthDeadCB(PAPI::OnBirthParticleCB bc, PAPI::OnDeadParticleCB dc, void* owner, u32 p)
 {
-	if (m_Def)
-        ParticleManager()->SetCallback		(m_HandleEffect,bc,dc,m_Def);
+    ParticleManager()->SetCallback		(m_HandleEffect,bc,dc,owner,p);
 }
 
 u32 CParticleEffect::ParticlesCount()

@@ -10,18 +10,6 @@
 using namespace PAPI;
 using namespace PS;
 
-void PS::OnEffectParticleBirth(void* owner, PAPI::Particle& m, u32 idx)
-{
-	CPEDef* PE = static_cast<CPEDef*>(owner);
-    if (PE->m_Flags.is(CPEDef::dfRandomFrame))
-        m.frame	= (u16)iFloor(Random.randI(PE->m_Frame.m_iFrameCount)*255.f);
-    if (PE->m_Flags.is(CPEDef::dfAnimated)&&PE->m_Flags.is(CPEDef::dfRandomPlayback)&&Random.randI(2))
-        m.flags.set(Particle::ANIMATE_CCW,TRUE);
-}
-void PS::OnEffectParticleDead(void* owner, PAPI::Particle& m, u32 idx)
-{
-//	CPEDef* PE = static_cast<CPEDef*>(owner);
-}
 //------------------------------------------------------------------------------
 // class CParticleEffectDef
 //------------------------------------------------------------------------------

@@ -83,7 +83,7 @@ namespace PS
             void			OnDeviceCreate	();
             void			OnDeviceDestroy	();
 
-            void			AppendChild		(LPCSTR eff_name);
+            IRender_Visual*	AppendChild		(LPCSTR eff_name);
             void			RemoveChild		(u32 idx);
 
             void 			UpdateParent	(const Fmatrix& m, const Fvector& velocity, BOOL bXFORM);

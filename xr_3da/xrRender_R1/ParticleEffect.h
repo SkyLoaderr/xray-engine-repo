@@ -69,11 +69,13 @@ namespace PS
 
         void				SetDestroyCB		(DestroyCallback 	destroy_cb)		{m_DestroyCallback 	= destroy_cb;}
         void				SetCollisionCB		(CollisionCallback	collision_cb)	{m_CollisionCallback= collision_cb;}
-        void				SetBirthDeadCB		(PAPI::OnBirthParticleCB bc, PAPI::OnDeadParticleCB dc);		
+        void				SetBirthDeadCB		(PAPI::OnBirthParticleCB bc, PAPI::OnDeadParticleCB dc, void* owner, u32 p);		
 
 	    virtual u32			ParticlesCount		();
 	};
 	DEFINE_VECTOR			(PS::CPEDef*,PEDVec,PEDIt);
+    void OnEffectParticleBirth	(void* owner, u32 param, PAPI::Particle& m, u32 idx);
+    void OnEffectParticleDead	(void* owner, u32 param, PAPI::Particle& m, u32 idx);
 }
 //---------------------------------------------------------------------------
 #endif
