@@ -68,10 +68,10 @@ bone_head				= bip01_head				; bone name
 bone_fire				= bip01_head				; bone name
 weapon_usage			= 0							; boolean
 
-ph_box0_center 			= 0.0,  0.8,  0.0
-ph_box0_size 			= 0.45, 0.8,  0.45
+ph_box0_center 			= 0.0,  0.7,  0.0
+ph_box0_size 			= 0.35, 0.7,  0.35
 ph_box1_center 			= 0.0,  0.6,  0.0
-ph_box1_size 			= 0.45, 0.6,  0.45
+ph_box1_size 			= 0.35, 0.6,  0.35
 ph_crash_speed_min		= 16
 ph_crash_speed_max		= 30
 ph_mass 				= 70.
@@ -97,8 +97,8 @@ eye_range							= 90
 max_hear_dist						= 60
 
 ; speed factors			linear | angular_real | angular_path | min |  max
-Velocity_Stand			= 0,		4.0,			4.0,		0.2,	0.5
-Velocity_RunFwdNormal	= 5.0,		2.5,			2.5,		0.3,	1	
+Velocity_Stand			= 0,		8.0,			8.0,		0.2,	0.5
+Velocity_RunFwdNormal	= 5.0,		2.5,			2.5,		0.2,	1	
 Velocity_RunFwdDamaged	= 3.5,  	3.0,			3.0,		0.2,	1
 Velocity_WalkFwdNormal	= 1.6,		3.0,			3.0,		0.02,	1.5
 Velocity_WalkFwdDamaged	= 1.0,		3.0,			3.0,		0.5,	2.0	
@@ -242,15 +242,15 @@ Gravi_Hit_Power				= 50.0
 ; Tele Strike
 Tele_Max_Handled_Objects = 3	
 Tele_Time_To_Hold		 = 600
-Tele_Object_Min_Mass	 = 40.0
+Tele_Object_Min_Mass	 = 30.0
 Tele_Object_Max_Mass	 = 1000.0
 Tele_Find_Radius		 = 7.0
 
 ; Scanner
-scan_critical_value		= 30.0	; граничное значение 
-scan_radius				= 40.0  ; радиус сканирования
+scan_critical_value		= 35.0	; граничное значение 
+scan_radius				= 50.0  ; радиус сканирования
 scan_velocity_threshold	= 4.0	; граничная скорость, до которой движение актера игнорируется
-scan_decrease_value		= 0.5	; уменьшение текущей суммы в секунду
+scan_decrease_value		= 0.3	; уменьшение текущей суммы в секунду
 scan_sound				= monsters\burer\burer_scan_affect_0
 
 LegsCount				= 2
