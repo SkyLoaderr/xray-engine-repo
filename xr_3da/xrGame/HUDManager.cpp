@@ -62,10 +62,10 @@ float CHUDManager::ClientToScreenY(float top, DWORD align){
 
 void CHUDManager::Load()
 {
+	_DELETE			(pUI);
 	pUI				= new CUI(this);
 }
 //--------------------------------------------------------------------
-
 void CHUDManager::OnMove()
 {
 	if (pUI) pUI->OnMove();
@@ -153,13 +153,19 @@ void CHUDManager::SetScale(float s){
 	pHUDFont->SetScale(fScale);
 }
 
-void CHUDManager::OnDeviceCreate(){
+void CHUDManager::OnDeviceCreate()
+{
+	pUI				= new CUI(this);
+	
 	if (Device.dwWidth<UI_BASE_WIDTH)	SetScale(float(Device.dwWidth)/float(UI_BASE_WIDTH));
 	else								SetScale(1.f);
+
 }
 //--------------------------------------------------------------------
 
-void CHUDManager::OnDeviceDestroy(){
+void CHUDManager::OnDeviceDestroy()
+{
+	_DELETE		(pUI);
 }
 //--------------------------------------------------------------------
 void __cdecl CHUDManager::outMessage(DWORD C, LPCSTR from, LPCSTR msg, ...)
