@@ -461,6 +461,9 @@
 						RelativePath=".\Config\text\eng\stable_dialogs_test.xml">
 					</File>
 					<File
+						RelativePath=".\Config\text\eng\stable_storyline_info_to_diary.xml">
+					</File>
+					<File
 						RelativePath=".\Config\text\eng\string_table_enc_equipment.xml">
 					</File>
 					<File
