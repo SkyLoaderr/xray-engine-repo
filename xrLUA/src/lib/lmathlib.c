@@ -40,22 +40,22 @@
 
 
 static int math_abs (lua_State *L) {
-  lua_pushnumber(L, fabs(luaL_checknumber(L, 1)));
+  lua_pushnumber(L, _abs(luaL_checknumber(L, 1)));
   return 1;
 }
 
 static int math_sin (lua_State *L) {
-  lua_pushnumber(L, sin(TORAD(luaL_checknumber(L, 1))));
+  lua_pushnumber(L, _sin(TORAD(luaL_checknumber(L, 1))));
   return 1;
 }
 
 static int math_cos (lua_State *L) {
-  lua_pushnumber(L, cos(TORAD(luaL_checknumber(L, 1))));
+  lua_pushnumber(L, _cos(TORAD(luaL_checknumber(L, 1))));
   return 1;
 }
 
 static int math_tan (lua_State *L) {
-  lua_pushnumber(L, tan(TORAD(luaL_checknumber(L, 1))));
+  lua_pushnumber(L, _tan(TORAD(luaL_checknumber(L, 1))));
   return 1;
 }
 
@@ -95,7 +95,7 @@ static int math_mod (lua_State *L) {
 }
 
 static int math_sqrt (lua_State *L) {
-  lua_pushnumber(L, sqrt(luaL_checknumber(L, 1)));
+  lua_pushnumber(L, _sqrt(luaL_checknumber(L, 1)));
   return 1;
 }
 
