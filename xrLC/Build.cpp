@@ -33,7 +33,14 @@ CBuild::CBuild(b_transfer * L)
 
 	Phase		("Loading shaders...");
 	shaders.Load("x:\\game\\shaders_xrlc.xr");
-
+	{
+		Shader_xrLCVec&	S = shaders.Library();
+		for (Shader_xrLCIt I = S.begin(); I!=S.end(); I++)
+		{
+			Log(I->Name);
+		}
+	}
+	
 	Phase		("Converting data structures...");
 
 	//*******
