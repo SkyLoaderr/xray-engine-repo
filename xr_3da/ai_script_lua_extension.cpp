@@ -96,7 +96,7 @@ int __cdecl Lua::LuaOut(Lua::ELuaMessageType tLuaMessageType, LPCSTR caFormat, .
 }
 
 #ifndef ENGINE_BUILD
-void Script::vfLoadStandardScripts(CLuaVirtualMachine *tpLuaVirtualMachine)
+void Script::vfLoadStandardScripts(CLuaVirtualMachine *tpLuaVM)
 {
 	string256		S,S1;
 	FS.update_path	(S,"$game_data$","script.ltx");
@@ -108,57 +108,57 @@ void Script::vfLoadStandardScripts(CLuaVirtualMachine *tpLuaVirtualMachine)
 	string256		I;
 	for (u32 i=0; i<caNamespaceName; i++) {
 		FS.update_path(S,"$game_scripts$",strconcat(S1,_GetItem(caScriptString,i,I),".script"));
-		bfLoadFile	(tpLuaVirtualMachine,S,true);
+		bfLoadFile	(tpLuaVM,S,true);
 	}
 	xr_delete		(l_tpIniFile);
 }
 
-void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
+void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVM)
 {
-	luabind::open	(tpLuaVirtualMachine);
+	luabind::open	(tpLuaVM);
 
-	lua_atpanic		(tpLuaVirtualMachine,Script::LuaPanic);
+	lua_atpanic		(tpLuaVM,Script::LuaPanic);
 
-	vfExportGlobals	(tpLuaVirtualMachine);
-	vfExportFvector	(tpLuaVirtualMachine);
-	vfExportFmatrix	(tpLuaVirtualMachine);
-	vfExportGame	(tpLuaVirtualMachine);
-	vfExportLevel	(tpLuaVirtualMachine);
-	vfExportDevice	(tpLuaVirtualMachine);
-	vfExportParticles(tpLuaVirtualMachine);
-	vfExportSound	(tpLuaVirtualMachine);
-	vfExportHit		(tpLuaVirtualMachine);
-	vfExportActions	(tpLuaVirtualMachine);
-	vfExportObject	(tpLuaVirtualMachine);
-	vfExportEffector(tpLuaVirtualMachine);
-	vfExportArtifactMerger(tpLuaVirtualMachine);
+	vfExportGlobals	(tpLuaVM);
+	vfExportFvector	(tpLuaVM);
+	vfExportFmatrix	(tpLuaVM);
+	vfExportGame	(tpLuaVM);
+	vfExportLevel	(tpLuaVM);
+	vfExportDevice	(tpLuaVM);
+	vfExportParticles(tpLuaVM);
+	vfExportSound	(tpLuaVM);
+	vfExportHit		(tpLuaVM);
+	vfExportActions	(tpLuaVM);
+	vfExportObject	(tpLuaVM);
+	vfExportEffector(tpLuaVM);
+	vfExportArtifactMerger(tpLuaVM);
 #ifdef DEBUG
-	lua_sethook		(tpLuaVirtualMachine, LuaHookCall,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
+	lua_sethook		(tpLuaVM, LuaHookCall,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
 #endif
 
-	vfLoadStandardScripts(tpLuaVirtualMachine);
+	vfLoadStandardScripts(tpLuaVM);
 }
 
-bool Script::bfLoadFile(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName, bool bCall)
+bool Script::bfLoadFile(CLuaVirtualMachine *tpLuaVM, LPCSTR caScriptName, bool bCall)
 {
 	string256		l_caNamespaceName;
 	_splitpath		(caScriptName,0,0,l_caNamespaceName,0);
 	if (!xr_strlen(l_caNamespaceName))
-		return		(bfLoadFileIntoNamespace(tpLuaVirtualMachine,caScriptName,"_G",bCall));
+		return		(bfLoadFileIntoNamespace(tpLuaVM,caScriptName,"_G",bCall));
 	else
-		return		(bfLoadFileIntoNamespace(tpLuaVirtualMachine,caScriptName,l_caNamespaceName,bCall));
+		return		(bfLoadFileIntoNamespace(tpLuaVM,caScriptName,l_caNamespaceName,bCall));
 }
 #endif
 
-bool bfCreateNamespaceTable(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caNamespaceName)
+bool bfCreateNamespaceTable(CLuaVirtualMachine *tpLuaVM, LPCSTR caNamespaceName)
 {
-	lua_pushstring	(tpLuaVirtualMachine,"_G");
-	lua_gettable	(tpLuaVirtualMachine,LUA_GLOBALSINDEX);
+	lua_pushstring	(tpLuaVM,"_G");
+	lua_gettable	(tpLuaVM,LUA_GLOBALSINDEX);
 	LPSTR			S2	= xr_strdup(caNamespaceName);
 	LPSTR			S	= S2;
 	for (;;) {
 		if (!xr_strlen(S)) {
-			lua_pop		(tpLuaVirtualMachine,1);
+			lua_pop		(tpLuaVM,1);
 			LuaOut		(Lua::eLuaMessageTypeError,"the namespace name %s is incorrect!",caNamespaceName);
 			xr_free		(S2);
 			return		(false);
@@ -166,23 +166,23 @@ bool bfCreateNamespaceTable(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caNa
 		LPSTR			S1 = strchr(S,'.');
 		if (S1)
 			*S1				= 0;
-		lua_pushstring	(tpLuaVirtualMachine,S);
-		lua_gettable	(tpLuaVirtualMachine,-2);
-		if (lua_isnil(tpLuaVirtualMachine,-1)) {
-			lua_pop			(tpLuaVirtualMachine,1);
-			lua_newtable	(tpLuaVirtualMachine);
-			lua_pushstring	(tpLuaVirtualMachine,S);
-			lua_pushvalue	(tpLuaVirtualMachine,-2);
-			lua_settable	(tpLuaVirtualMachine,-4);
+		lua_pushstring	(tpLuaVM,S);
+		lua_gettable	(tpLuaVM,-2);
+		if (lua_isnil(tpLuaVM,-1)) {
+			lua_pop			(tpLuaVM,1);
+			lua_newtable	(tpLuaVM);
+			lua_pushstring	(tpLuaVM,S);
+			lua_pushvalue	(tpLuaVM,-2);
+			lua_settable	(tpLuaVM,-4);
 		}
 		else
-			if (!lua_istable(tpLuaVirtualMachine,-1)) {
+			if (!lua_istable(tpLuaVM,-1)) {
 				xr_free			(S2);
-				lua_pop			(tpLuaVirtualMachine,2);
+				lua_pop			(tpLuaVM,2);
 				LuaOut			(Lua::eLuaMessageTypeError,"the namespace name %s is already being used by the non-table object!",caNamespaceName);
 				return			(false);
 			}
-			lua_remove		(tpLuaVirtualMachine,-2);
+			lua_remove		(tpLuaVM,-2);
 			if (S1)
 				S			= ++S1;
 			else
@@ -192,109 +192,158 @@ bool bfCreateNamespaceTable(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caNa
 	return			(true);
 }
 
-void vfCopyGlobals(CLuaVirtualMachine *tpLuaVirtualMachine)
+void vfCopyGlobals(CLuaVirtualMachine *tpLuaVM)
 {
-	lua_newtable	(tpLuaVirtualMachine);
-	lua_pushstring	(tpLuaVirtualMachine,"_G");
-	lua_gettable	(tpLuaVirtualMachine,LUA_GLOBALSINDEX);
-	lua_pushnil		(tpLuaVirtualMachine);
-	while (lua_next(tpLuaVirtualMachine, -2) != 0) {
-		lua_pushvalue	(tpLuaVirtualMachine,-2);
-		lua_pushvalue	(tpLuaVirtualMachine,-2);
-		lua_settable	(tpLuaVirtualMachine,-6);
-		lua_pop			(tpLuaVirtualMachine, 1);
+	lua_newtable	(tpLuaVM);
+	lua_pushstring	(tpLuaVM,"_G");
+	lua_gettable	(tpLuaVM,LUA_GLOBALSINDEX);
+	lua_pushnil		(tpLuaVM);
+	while (lua_next(tpLuaVM, -2) != 0) {
+		lua_pushvalue	(tpLuaVM,-2);
+		lua_pushvalue	(tpLuaVM,-2);
+		lua_settable	(tpLuaVM,-6);
+		lua_pop			(tpLuaVM, 1);
 	}
 }
 
-bool Script::bfLoadBuffer(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caBuffer, size_t tSize, LPCSTR caScriptName)
+bool Script::bfLoadBuffer(CLuaVirtualMachine *tpLuaVM, LPCSTR caBuffer, size_t tSize, LPCSTR caScriptName)
 {
-	int				l_iErrorCode = luaL_loadbuffer(tpLuaVirtualMachine,caBuffer,tSize,caScriptName);
+	int				l_iErrorCode = luaL_loadbuffer(tpLuaVM,caBuffer,tSize,caScriptName);
 
 	if (l_iErrorCode) {
 #ifdef DEBUG
-		if (!bfPrintOutput	(tpLuaVirtualMachine,caScriptName,l_iErrorCode))
-			vfPrintError(tpLuaVirtualMachine,l_iErrorCode);
+		if (!bfPrintOutput	(tpLuaVM,caScriptName,l_iErrorCode))
+			vfPrintError(tpLuaVM,l_iErrorCode);
 #endif
 		return			(false);
 	}
 	return			(true);
 }
 
-bool bfDoFile(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName, bool bCall)
+bool bfDoFile(CLuaVirtualMachine *tpLuaVM, LPCSTR caScriptName, bool bCall)
 {
 	string256		l_caLuaFileName;
 	IReader			*l_tpFileReader = FS.r_open(caScriptName);
 	R_ASSERT		(l_tpFileReader);
 	strconcat		(l_caLuaFileName,"@",caScriptName);
 	
-	if (!bfLoadBuffer(tpLuaVirtualMachine,static_cast<LPCSTR>(l_tpFileReader->pointer()),(size_t)l_tpFileReader->length(),l_caLuaFileName)) {
-		lua_pop			(tpLuaVirtualMachine,2);
+	if (!bfLoadBuffer(tpLuaVM,static_cast<LPCSTR>(l_tpFileReader->pointer()),(size_t)l_tpFileReader->length(),l_caLuaFileName)) {
+		lua_pop			(tpLuaVM,2);
 		FS.r_close		(l_tpFileReader);
 		return		(false);
 	}
 	FS.r_close		(l_tpFileReader);
 
 	if (bCall) {
-		lua_call	(tpLuaVirtualMachine,0,0);
-//		int			l_iErrorCode = lua_pcall(tpLuaVirtualMachine,0,0,0);
+		lua_call	(tpLuaVM,0,0);
+//		int			l_iErrorCode = lua_pcall(tpLuaVM,0,0,0);
 //		if (l_iErrorCode) {
 //#ifdef DEBUG
-//			bfPrintOutput	(tpLuaVirtualMachine,caScriptName,l_iErrorCode);
-//			vfPrintError	(tpLuaVirtualMachine,l_iErrorCode);
+//			bfPrintOutput	(tpLuaVM,caScriptName,l_iErrorCode);
+//			vfPrintError	(tpLuaVM,l_iErrorCode);
 //#endif
 //			return	(false);
 //		}
 	}
 	else
-		lua_insert		(tpLuaVirtualMachine,-4);
+		lua_insert		(tpLuaVM,-4);
 
 	return			(true);
 }
 
-void vfSetNamespace(CLuaVirtualMachine *tpLuaVirtualMachine)
+void vfSetNamespace(CLuaVirtualMachine *tpLuaVM)
 {
-	lua_pushnil		(tpLuaVirtualMachine);
-	while (lua_next(tpLuaVirtualMachine, -2) != 0) {
-		lua_pushvalue	(tpLuaVirtualMachine,-2);
-		lua_gettable	(tpLuaVirtualMachine,-5);
-		if (lua_isnil(tpLuaVirtualMachine,-1)) {
-			lua_pop			(tpLuaVirtualMachine,1);
-			lua_pushvalue	(tpLuaVirtualMachine,-2);
-			lua_pushvalue	(tpLuaVirtualMachine,-2);
-			lua_pushvalue	(tpLuaVirtualMachine,-2);
-			lua_pushnil		(tpLuaVirtualMachine);
-			lua_settable	(tpLuaVirtualMachine,-7);
-			lua_settable	(tpLuaVirtualMachine,-7);
+	lua_pushnil		(tpLuaVM);
+	while (lua_next(tpLuaVM, -2) != 0) {
+		lua_pushvalue	(tpLuaVM,-2);
+		lua_gettable	(tpLuaVM,-5);
+		if (lua_isnil(tpLuaVM,-1)) {
+			lua_pop			(tpLuaVM,1);
+			lua_pushvalue	(tpLuaVM,-2);
+			lua_pushvalue	(tpLuaVM,-2);
+			lua_pushvalue	(tpLuaVM,-2);
+			lua_pushnil		(tpLuaVM);
+			lua_settable	(tpLuaVM,-7);
+			lua_settable	(tpLuaVM,-7);
 		}
 		else {
-			lua_pop			(tpLuaVirtualMachine,1);
-			lua_pushvalue	(tpLuaVirtualMachine,-2);
-			lua_gettable	(tpLuaVirtualMachine,-4);
-			if (!lua_equal(tpLuaVirtualMachine,-1,-2)) {
-				lua_pushvalue	(tpLuaVirtualMachine,-3);
-				lua_pushvalue	(tpLuaVirtualMachine,-2);
-				lua_pushvalue	(tpLuaVirtualMachine,-2);
-				lua_pushvalue	(tpLuaVirtualMachine,-5);
-				lua_settable	(tpLuaVirtualMachine,-8);
-				lua_settable	(tpLuaVirtualMachine,-8);
+			lua_pop			(tpLuaVM,1);
+			lua_pushvalue	(tpLuaVM,-2);
+			lua_gettable	(tpLuaVM,-4);
+			if (!lua_equal(tpLuaVM,-1,-2)) {
+				lua_pushvalue	(tpLuaVM,-3);
+				lua_pushvalue	(tpLuaVM,-2);
+				lua_pushvalue	(tpLuaVM,-2);
+				lua_pushvalue	(tpLuaVM,-5);
+				lua_settable	(tpLuaVM,-8);
+				lua_settable	(tpLuaVM,-8);
 			}
-			lua_pop			(tpLuaVirtualMachine,1);
+			lua_pop			(tpLuaVM,1);
 		}
-		lua_pushvalue	(tpLuaVirtualMachine,-2);
-		lua_pushnil		(tpLuaVirtualMachine);
-		lua_settable	(tpLuaVirtualMachine,-6);
-		lua_pop			(tpLuaVirtualMachine, 1);
+		lua_pushvalue	(tpLuaVM,-2);
+		lua_pushnil		(tpLuaVM);
+		lua_settable	(tpLuaVM,-6);
+		lua_pop			(tpLuaVM, 1);
 	}
-	lua_pop			(tpLuaVirtualMachine,3);
+	lua_pop			(tpLuaVM,3);
 }
 
-bool Script::bfLoadFileIntoNamespace(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName, LPCSTR caNamespaceName, bool bCall)
+bool Script::bfLoadFileIntoNamespace(CLuaVirtualMachine *tpLuaVM, LPCSTR caScriptName, LPCSTR caNamespaceName, bool bCall)
 {
-	if (!bfCreateNamespaceTable(tpLuaVirtualMachine,caNamespaceName))
+	if (!bfCreateNamespaceTable(tpLuaVM,caNamespaceName))
 		return		(false);
-	vfCopyGlobals	(tpLuaVirtualMachine);
-	if (!bfDoFile(tpLuaVirtualMachine,caScriptName,bCall))
+	vfCopyGlobals	(tpLuaVM);
+	if (!bfDoFile(tpLuaVM,caScriptName,bCall))
 		return		(false);
-	vfSetNamespace	(tpLuaVirtualMachine);
+	vfSetNamespace	(tpLuaVM);
 	return			(true);
+}
+
+bool Script::bfGetNamespaceTable(CLuaVirtualMachine *tpLuaVM, LPCSTR N)
+{
+	lua_pushstring 		(tpLuaVM,"_G"); 
+	lua_gettable 		(tpLuaVM,LUA_GLOBALSINDEX); 
+	string256			S2;	strcpy	(S2,N);
+	LPCSTR				S	= S2;
+	for (;;) { 
+		if (!xr_strlen(S)) return	(false); 
+		LPSTR S1 		= strchr(S,'.'); 
+		if (S1) 	*S1 = 0; 
+		lua_pushstring 	(tpLuaVM,S); 
+		lua_gettable 	(tpLuaVM,-2); 
+		if (lua_isnil(tpLuaVM,-1)) { 
+			lua_pop		(tpLuaVM,2); 
+			Debug.fatal	(" Error : the namespace name is already being used by the non-table object!\n");
+			return		(false); 
+		} 
+		else 
+			if (!lua_istable(tpLuaVM,-1)) { 
+				lua_pop		(tpLuaVM,2); 
+				Debug.fatal	(" Error : the namespace name is already being used by the non-table object!\n");
+				return		(false); 
+			} 
+			lua_remove	(tpLuaVM,-2); 
+			if (S1)		S = ++S1; 
+			else 		break; 
+	} 
+	return	(true); 
+}
+bool	Script::bfIsObjectPresent	(CLuaVirtualMachine *tpLuaVM, LPCSTR identifier, int type)
+{
+	lua_pushnil (tpLuaVM); 
+	while (lua_next(tpLuaVM, -2) != 0) { 
+		if ((lua_type(tpLuaVM, -1) == type) && !strcmp(identifier,lua_tostring(tpLuaVM, -2))) { 
+			lua_pop (tpLuaVM, 3); 
+			return	(true); 
+		} 
+		lua_pop (tpLuaVM, 1); 
+	} 
+	lua_pop (tpLuaVM, 2); 
+	return	(false); 
+}
+
+bool	Script::bfIsObjectPresent	(CLuaVirtualMachine *tpLuaVM, LPCSTR namespace_name, LPCSTR identifier, int type)
+{
+	if (!bfGetNamespaceTable(tpLuaVM,namespace_name)) return (false); 
+	return (bfIsObjectPresent(tpLuaVM,identifier,type)); 
 }

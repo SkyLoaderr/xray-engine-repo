@@ -134,3 +134,8 @@ void	CResourceManager::LS_Unload			()
 	lua_close	(LSVM);
 	LSVM		= NULL;
 }
+
+BOOL	CResourceManager::_lua_HasShader	(LPCSTR s_shader)
+{
+	return Script::bfIsObjectPresent(LSVM,s_shader,"normal",LUA_TFUNCTION);
+}

@@ -13,29 +13,32 @@
 
 namespace Script {
 #ifndef ENGINE_BUILD
-	void		vfExportGlobals				(CLuaVirtualMachine *tpLuaVirtualMachine);
-	void		vfExportFvector				(CLuaVirtualMachine *tpLuaVirtualMachine);
-	void		vfExportFmatrix				(CLuaVirtualMachine *tpLuaVirtualMachine);
-	void		vfExportGame				(CLuaVirtualMachine *tpLuaVirtualMachine);
-	void		vfExportLevel				(CLuaVirtualMachine *tpLuaVirtualMachine);
-	void		vfExportDevice				(CLuaVirtualMachine *tpLuaVirtualMachine);
-	void		vfExportParticles			(CLuaVirtualMachine *tpLuaVirtualMachine);
-	void		vfExportSound				(CLuaVirtualMachine *tpLuaVirtualMachine);
-	void		vfExportHit					(CLuaVirtualMachine *tpLuaVirtualMachine);
-	void		vfExportActions				(CLuaVirtualMachine *tpLuaVirtualMachine);
-	void		vfExportObject				(CLuaVirtualMachine *tpLuaVirtualMachine);
-	void		vfExportEffector			(CLuaVirtualMachine *tpLuaVirtualMachine);
-	void		vfExportArtifactMerger		(CLuaVirtualMachine *tpLuaVirtualMachine);
-	void		vfLoadStandardScripts		(CLuaVirtualMachine *tpLuaVirtualMachine);
-	void		vfExportToLua				(CLuaVirtualMachine *tpLuaVirtualMachine);
-	bool		bfLoadFile					(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName,	bool	bCall = true);
-	void		LuaHookCall					(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpLuaDebug);
-	int			LuaPanic					(CLuaVirtualMachine *tpLuaVirtualMachine);
+	void		vfExportGlobals				(CLuaVirtualMachine *tpLuaVM);
+	void		vfExportFvector				(CLuaVirtualMachine *tpLuaVM);
+	void		vfExportFmatrix				(CLuaVirtualMachine *tpLuaVM);
+	void		vfExportGame				(CLuaVirtualMachine *tpLuaVM);
+	void		vfExportLevel				(CLuaVirtualMachine *tpLuaVM);
+	void		vfExportDevice				(CLuaVirtualMachine *tpLuaVM);
+	void		vfExportParticles			(CLuaVirtualMachine *tpLuaVM);
+	void		vfExportSound				(CLuaVirtualMachine *tpLuaVM);
+	void		vfExportHit					(CLuaVirtualMachine *tpLuaVM);
+	void		vfExportActions				(CLuaVirtualMachine *tpLuaVM);
+	void		vfExportObject				(CLuaVirtualMachine *tpLuaVM);
+	void		vfExportEffector			(CLuaVirtualMachine *tpLuaVM);
+	void		vfExportArtifactMerger		(CLuaVirtualMachine *tpLuaVM);
+	void		vfLoadStandardScripts		(CLuaVirtualMachine *tpLuaVM);
+	void		vfExportToLua				(CLuaVirtualMachine *tpLuaVM);
+	bool		bfLoadFile					(CLuaVirtualMachine *tpLuaVM, LPCSTR	caScriptName,	bool	bCall = true);
+	void		LuaHookCall					(CLuaVirtualMachine *tpLuaVM, lua_Debug *tpLuaDebug);
+	int			LuaPanic					(CLuaVirtualMachine *tpLuaVM);
 #endif
-	bool		bfPrintOutput				(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName, int iErorCode = 0);
+	bool		bfPrintOutput				(CLuaVirtualMachine *tpLuaVM, LPCSTR	caScriptName, int iErorCode = 0);
 	LPCSTR		cafEventToString			(int				iEventCode);
-	void		vfPrintError				(CLuaVirtualMachine *tpLuaVirtualMachine, int		iErrorCode);
-	bool		bfListLevelVars				(CLuaVirtualMachine *tpLuaVirtualMachine, int		iStackLevel);
-	bool		bfLoadBuffer				(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caBuffer,		size_t	tSize,				LPCSTR	caScriptName);
-	bool		bfLoadFileIntoNamespace		(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName,	LPCSTR	caNamespaceName,	bool	bCall);
+	void		vfPrintError				(CLuaVirtualMachine *tpLuaVM, int		iErrorCode);
+	bool		bfListLevelVars				(CLuaVirtualMachine *tpLuaVM, int		iStackLevel);
+	bool		bfLoadBuffer				(CLuaVirtualMachine *tpLuaVM, LPCSTR	caBuffer,		size_t	tSize,				LPCSTR	caScriptName);
+	bool		bfLoadFileIntoNamespace		(CLuaVirtualMachine *tpLuaVM, LPCSTR	caScriptName,	LPCSTR	caNamespaceName,	bool	bCall);
+	bool		bfGetNamespaceTable			(CLuaVirtualMachine *tpLuaVM, LPCSTR	caName);
+	bool		bfIsObjectPresent			(CLuaVirtualMachine *tpLuaVM, LPCSTR	caIdentifier,	int type);
+	bool		bfIsObjectPresent			(CLuaVirtualMachine *tpLuaVM, LPCSTR	caNamespaceName, LPCSTR	caIdentifier, int type);
 };
