@@ -99,11 +99,7 @@ void CBitingRest::Run()
 			if (IS_NEED_REBUILD()) {
 				u32 vertex_id = pMonster->GetNextGameVertex(40.f);
 				
-				pMonster->SetPathParams(
-					CMovementManager::ePathTypeLevelPath, 
-					vertex_id, 
-					ai().level_graph().vertex_position(vertex_id)
-				);
+				pMonster->SetPathParams(vertex_id, ai().level_graph().vertex_position(vertex_id));
 			}
 
 			break;
@@ -122,11 +118,7 @@ void CBitingRest::Run()
 			if (IS_NEED_REBUILD()) {
 				u32 vertex_id = pMonster->GetNextGameVertex(40.f);
 				
-				pMonster->SetPathParams(
-					CMovementManager::ePathTypeLevelPath, 
-					vertex_id, 
-					ai().level_graph().vertex_position(vertex_id)
-				);
+				pMonster->SetPathParams(vertex_id, ai().level_graph().vertex_position(vertex_id));
 			}
 			break;
 		case ACTION_WALK_PATH_END:

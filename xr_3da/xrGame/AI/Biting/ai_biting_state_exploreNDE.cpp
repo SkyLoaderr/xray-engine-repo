@@ -59,14 +59,7 @@ void CBitingExploreNDE::Run()
 		break;
 	}
 
-	pMonster->SetPathParams(
-		CMovementManager::ePathTypeLevelPath, 
-		pMonster->level_vertex_id(), 
-		pMonster->Position()
-//		pMonster->eVelocityParamsWalk,
-//		pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand
-	); 
-
+	pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
 	pMonster->SetSound(SND_TYPE_IDLE, pMonster->_sd->m_dwIdleSndDelay);
 }
 

@@ -153,25 +153,15 @@ Fvector CAI_Biting::GetValidPosition(CEntity *entity, const Fvector &actual_posi
 	else return ai().level_graph().vertex_position(entity->level_vertex());
 }
 
-void CAI_Biting::MoveToTarget(CEntity *entity, u32 vel_mask, u32 des_mask) 
+void CAI_Biting::MoveToTarget(CEntity *entity) 
 {
-	SetPathParams(
-		CMovementManager::ePathTypeLevelPath, 
-		entity->level_vertex_id(),
-		GetValidPosition(entity, entity->Position())
-	);
+	SetPathParams(entity->level_vertex_id(), GetValidPosition(entity, entity->Position()));
 
 }
 
-void CAI_Biting::MoveToTarget(const Fvector &pos, u32 node_id, u32 vel_mask, u32 des_mask) 
+void CAI_Biting::MoveToTarget(const Fvector &pos, u32 node_id) 
 {
-	SetPathParams(
-		CMovementManager::ePathTypeLevelPath, 
-		node_id,
-		pos
-//		vel_mask,
-//		des_mask
-	);
+	SetPathParams(node_id,pos);
 }
 
 void CAI_Biting::FaceTarget(CEntity *entity) 
@@ -296,11 +286,11 @@ Fvector CAI_Biting::RandomPosInR(const Fvector &p, float R)
 	return v;
 }
 
-void CAI_Biting::SetPathParams(CMovementManager::EPathType path_type, u32 dest_vertex_id, const Fvector &dest_pos)
+void CAI_Biting::SetPathParams(u32 dest_vertex_id, const Fvector &dest_pos)
 {
 	set_level_dest_vertex(dest_vertex_id);
 	set_dest_position(dest_pos);
-	set_path_type (path_type);
+	set_path_type (CMovementManager::ePathTypeLevelPath);
 	
 	SetupVelocityMasks();
 }

@@ -196,7 +196,7 @@ public:
 			void			Path_ApproachPoint				(CEntity *pE, Fvector position);
 			void			Path_WalkAroundObj				(CEntity *pE, Fvector position);
 			
-			void			SetPathParams					(CMovementManager::EPathType path_type, u32 dest_vertex_id, const Fvector &dest_pos);
+			void			SetPathParams					(u32 dest_vertex_id, const Fvector &dest_pos);
 			
 			void			SetVelocity						();
 			void			PreprocessAction				();
@@ -359,8 +359,8 @@ public:
 	} _as;
 
 	// PathManagement Bridge
-	void MoveToTarget			(CEntity *entity,u32 vel_mask, u32 des_mask); 
-	void MoveToTarget			(const Fvector &pos, u32 node_id,u32 vel_mask, u32 des_mask);
+	void MoveToTarget			(CEntity *entity); 
+	void MoveToTarget			(const Fvector &pos, u32 node_id);
 	void FaceTarget				(CEntity *entity);
 	void FaceTarget				(const Fvector &position);
 	bool IsObjectPositionValid	(CEntity *entity);

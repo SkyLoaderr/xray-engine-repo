@@ -10,7 +10,7 @@
 #define		REST_AFTER_LUNCH_TIME			5000
 #define		DIST_SLOW_APPROACH_TO_CORPSE	5.0f
 
-#define		EAT_WITHOUT_DRAG
+//#define		EAT_WITHOUT_DRAG
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingEat class
@@ -73,7 +73,7 @@ void CBitingEat::Run()
 {
 	// Если новый труп, снова инициализировать состояние 
 	VisionElem ve;
-	if (!pMonster->GetCorpse(ve)) {Done(); return;}
+	if (!pMonster->GetCorpse(ve) || (!pCorpse->m_pPhysicsShell)) {Done(); return;}
 	if (pCorpse != ve.obj) Init();
 
 	// Определить позицию ближайшей боны у трупа
@@ -111,7 +111,7 @@ void CBitingEat::Run()
 	
 		
 		DO_IN_TIME_INTERVAL_BEGIN(rebuild_path, 5000);
-			pMonster->MoveToTarget(approach_pos,approach_vertex_id, pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand, pMonster->eVelocityParameterWalkNormal);
+			pMonster->MoveToTarget(approach_pos,approach_vertex_id);
 		DO_IN_TIME_INTERVAL_END();
 		
 		
@@ -142,7 +142,7 @@ void CBitingEat::Run()
 		pMonster->HDebug->M_Add(0,"APP_WALK",D3DCOLOR_XRGB(255,0,128));
 
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
-		pMonster->MoveToTarget(nearest_bone_pos,pCorpse->level_vertex_id(),pMonster->eVelocityParamsWalk,pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand);
+		pMonster->MoveToTarget(nearest_bone_pos,pCorpse->level_vertex_id());
 		
 		if (cur_dist < m_fDistToCorpse) {
 			
@@ -227,7 +227,7 @@ void CBitingEat::Run()
 		pMonster->HDebug->M_Add(0,"APP_WALK",D3DCOLOR_XRGB(255,0,128));
 
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
-		pMonster->MoveToTarget(nearest_bone_pos,pCorpse->level_vertex_id(),pMonster->eVelocityParamsWalk,pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand);
+		pMonster->MoveToTarget(nearest_bone_pos,pCorpse->level_vertex_id());
 
 		if (cur_dist < m_fDistToCorpse) m_tAction = ACTION_EAT;
 		break;
@@ -267,7 +267,7 @@ void CBitingEat::Run()
 		pMonster->MotionMan.SetSpecParams(ASP_MOVE_BKWD);
 		
 		if (IS_NEED_REBUILD()) {
-			pMonster->SetPathParams(CMovementManager::ePathTypeLevelPath,pMonster->level_vertex_id(),pMonster->Position()); 
+			pMonster->SetPathParams(pMonster->level_vertex_id(),pMonster->Position()); 
 			pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), 10);
 		}	
 

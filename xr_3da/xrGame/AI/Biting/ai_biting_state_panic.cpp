@@ -89,13 +89,7 @@ void CBitingPanic::Run()
 		}
 	}
 	
-	pMonster->SetPathParams(
-		CMovementManager::ePathTypeLevelPath, 
-		pMonster->level_vertex_id(), 
-		pMonster->Position()
-//		pMonster->eVelocityParamsRun,
-//		pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand | pMonster->eVelocityParameterRunNormal
-	); 
+	pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
 	pMonster->Path_GetAwayFromPoint(m_tEnemy.obj,m_tEnemy.position, 30);	
 
 	prev_pos = cur_pos;

@@ -38,14 +38,7 @@ void CBitingTest::Run()
 		vertex_id = dynamic_cast<CEntity*>(Level().CurrentEntity())->level_vertex_id();
 	}
 
-	pMonster->SetPathParams(
-		CMovementManager::ePathTypeLevelPath, 
-		vertex_id, 
-		ai().level_graph().vertex_position(vertex_id)
-//		pMonster->eVelocityParamsRun,
-//		pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterRunNormal
-	);
-
+	pMonster->SetPathParams(vertex_id, ai().level_graph().vertex_position(vertex_id));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -77,7 +70,7 @@ void CBitingSearchEnemy::Init()
 	pMonster->HDebug->L_Add(ai().level_graph().vertex_position(search_vertex_id),D3DCOLOR_XRGB(255,0,0));
 	pMonster->HDebug->L_Add(next_pos,D3DCOLOR_XRGB(0,0,255));
 
-	pMonster->MoveToTarget(ai().level_graph().vertex_position(search_vertex_id),search_vertex_id, pMonster->eVelocityParameterRunNormal | pMonster->eVelocityParameterStand, pMonster->eVelocityParameterRunNormal);
+	pMonster->MoveToTarget(ai().level_graph().vertex_position(search_vertex_id),search_vertex_id);
 	m_tAction = ACTION_SEARCH_ENEMY_INIT;
 
 	RebuildPathInterval = 0;
@@ -109,6 +102,8 @@ void CBitingSearchEnemy::Run()
 	case ACTION_SEARCH_ENEMY:
 		// search_vertex_id - содержит исходную ноду
 		LOG_EX("ATTACK: SEARCH_ENEMY");
+		
+		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 
 		//if (pMonster->IsMovingOnPath()) bNeedRebuildPath = true;
 
@@ -126,15 +121,10 @@ void CBitingSearchEnemy::Run()
 
 			u32 vertex_id = nodes[::Random.randI(nodes.size())];
 
-			pMonster->MoveToTarget(
-				ai().level_graph().vertex_position(vertex_id),
-				vertex_id,
-				pMonster->eVelocityParamsWalk,
-				pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand			
-				);
+			pMonster->MoveToTarget(ai().level_graph().vertex_position(vertex_id),vertex_id);	
 		}
 
-		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
+		
 		break;
 	}
 }

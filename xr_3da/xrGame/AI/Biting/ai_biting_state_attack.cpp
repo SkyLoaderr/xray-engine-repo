@@ -174,7 +174,7 @@ void CBitingAttack::Run()
 			R_ASSERT(nearest_node_id != u32(-1));
 
 			m_tAction = ACTION_WALK_AWAY;
-			pMonster->MoveToTarget(ai().level_graph().vertex_position(nearest_node_id), nearest_node_id, pMonster->eVelocityParameterRunNormal | pMonster->eVelocityParameterStand, pMonster->eVelocityParameterRunNormal);
+			pMonster->MoveToTarget(ai().level_graph().vertex_position(nearest_node_id), nearest_node_id);
 			
 		}
 	}
@@ -223,15 +223,16 @@ void CBitingAttack::Run()
 	switch (m_tAction) {	
 		case ACTION_RUN:		 // бежать на врага
 			LOG_EX("ATTACK: RUN");
+			pMonster->MotionMan.m_tAction = ACT_RUN;
 
 			DO_IN_TIME_INTERVAL_BEGIN(RebuildPathInterval,500);
-				pMonster->MoveToTarget(m_tEnemy.obj, pMonster->eVelocityParameterRunNormal | pMonster->eVelocityParameterStand, pMonster->eVelocityParameterRunNormal);
+				pMonster->MoveToTarget(m_tEnemy.obj);
 			DO_IN_TIME_INTERVAL_END();
-
-			pMonster->MotionMan.m_tAction = ACT_RUN;
+			
 			break;
 		case ACTION_ATTACK_MELEE:		// атаковать вплотную
 			LOG_EX("ATTACK: ATTACK_MELEE");
+			pMonster->MotionMan.m_tAction = ACT_ATTACK;
 			pMonster->enable_movement(false);			
 			bCanThreaten			= false;
 
@@ -258,19 +259,18 @@ void CBitingAttack::Run()
 			}
 
 			if (m_bAttackRat) pMonster->MotionMan.SetSpecParams(ASP_ATTACK_RAT);
-			pMonster->MotionMan.m_tAction = ACT_ATTACK;
-
 
 			break;
 		case ACTION_STEAL:
 			LOG_EX("ATTACK: STEAL");
-			if (dist < (m_fDistMax + 2.f)) bEnemyDoesntSeeMe = false;
-			pMonster->MoveToTarget(m_tEnemy.obj, pMonster->eVelocityParamsSteal, pMonster->eVelocityParameterSteal);
 			pMonster->MotionMan.m_tAction = ACT_STEAL;
+			if (dist < (m_fDistMax + 2.f)) bEnemyDoesntSeeMe = false;
+			pMonster->MoveToTarget(m_tEnemy.obj);
 			break;
 		
 		case ACTION_THREATEN: 
 			LOG_EX("ATTACK: THREATEN");
+			pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
 			pMonster->enable_movement(false);
 
 			// Смотреть на врага 
@@ -278,7 +278,6 @@ void CBitingAttack::Run()
 				pMonster->FaceTarget(m_tEnemy.obj);
 			DO_IN_TIME_INTERVAL_END();
 
-			pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
 			pMonster->MotionMan.SetSpecParams(ASP_THREATEN);
 			break;
 
@@ -507,13 +506,13 @@ void CBitingAttack::SearchEnemy()
 	case ACTION_SEARCH_ENEMY_INIT: 
 
 		LOG_EX("ATTACK: SEARCH_ENEMY_INIT");
-
-		DO_IN_TIME_INTERVAL_BEGIN(RebuildPathInterval,1000);
-			pMonster->MoveToTarget(ai().level_graph().vertex_position(search_vertex_id),search_vertex_id, pMonster->eVelocityParameterRunNormal | pMonster->eVelocityParameterStand, pMonster->eVelocityParameterRunNormal);
-		DO_IN_TIME_INTERVAL_END();
-						
 		pMonster->MotionMan.m_tAction = ACT_RUN;
 
+		DO_IN_TIME_INTERVAL_BEGIN(RebuildPathInterval,1000);
+			pMonster->MoveToTarget(ai().level_graph().vertex_position(search_vertex_id),search_vertex_id);
+		DO_IN_TIME_INTERVAL_END();
+						
+		
 		if (!pMonster->IsMovingOnPath()) {
 			m_tAction = ACTION_SEARCH_ENEMY;
 		}
@@ -522,6 +521,7 @@ void CBitingAttack::SearchEnemy()
 	case ACTION_SEARCH_ENEMY:
 		// search_vertex_id - содержит исходную ноду
 		LOG_EX("ATTACK: SEARCH_ENEMY");
+		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 
 		//if (pMonster->IsMovingOnPath()) bNeedRebuildPath = true;
 		
@@ -539,15 +539,9 @@ void CBitingAttack::SearchEnemy()
 
 			u32 vertex_id = nodes[::Random.randI(nodes.size())];
 
-			pMonster->MoveToTarget(
-				ai().level_graph().vertex_position(vertex_id),
-				vertex_id,
-				pMonster->eVelocityParamsWalk,
-				pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand			
-			);
+			pMonster->MoveToTarget(ai().level_graph().vertex_position(vertex_id),vertex_id);
 		}
 
-		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 		break;
 	}
 }
