@@ -190,8 +190,18 @@ bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 			return false;
 
 		Fbox level_box = Level().ObjectSpace.GetBoundingVolume();
-		if(!level_box.contains(bullet->pos))
+		
+/*		if(!level_box.contains(bullet->pos))
 			return false;
+*/
+		if(!((bullet->pos.x>=level_box.x1) && 
+			 (bullet->pos.x<=level_box.x2) && 
+			 (bullet->pos.y>=level_box.y1) && 
+//			 (bullet->pos.y<=level_box.y2) && 
+			 (bullet->pos.z>=level_box.z1) && 
+			 (bullet->pos.z<=level_box.z2))	)
+			 return false;
+
 
 		//изменить скорость и направление ее полета
 		//с учетом гравитации
