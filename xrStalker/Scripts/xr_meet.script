@@ -32,7 +32,7 @@ function evaluator_contact:evaluate()
 	else
 		self.a.actor = nil
 	end	
-	return self.a.actor ~= nil
+	return self.a.actor ~= nil and (self.a.over == false)
 end
 -- имеет ли клиент оружие
 class "evaluator_weapon" (property_evaluator)
@@ -923,4 +923,8 @@ function add_to_binder_pda(object, char_ini)
                 xr_motivator.storage[object:id()].tradeseller.enabled = char_ini:r_bool("tradeseller", "enabled")
         end
     end
+end
+
+function override_meet(npc, flag)
+	xr_motivator.storage[npc:id()].meet.over = flag
 end
