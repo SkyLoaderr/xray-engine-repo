@@ -14,10 +14,11 @@ enum MT {
 	MT_SKELETON_GEOMDEF_PM	=4,
 	MT_SKELETON_GEOMDEF_ST	=5,
 	MT_LOD					=6,
-	MT_TREE					=7,
+	MT_TREE_ST				=7,
 	MT_PARTICLE_EFFECT		=8,
 	MT_PARTICLE_GROUP		=9,
 	MT_SKELETON_RIGID		=10,
+	MT_TREE_PM				=11,
 };
 
 enum OGF_Chuncks {
@@ -40,6 +41,7 @@ enum OGF_Chuncks {
 	OGF_S_USERDATA			= 17,	// * For skeletons only (Ini-file)
 	OGF_S_DESC				= 18,	// * For skeletons only
 	OGF_S_MOTION_REFS		= 19,	// * For skeletons only
+	OGF_SWCONTAINER			= 20,	// * SlidingWindowItem record container
     OGF_forcedword			= 0xFFFFFFFF         
 };							
 							
@@ -84,6 +86,18 @@ struct ogf_header {
 	u16			shader_id;				// should not be ZERO
 	ogf_bbox	bb;
 	ogf_bsphere	bs;
+};
+
+// Sliding Window Record
+struct ENGINE_API FSlideWindow {
+	u32			offset;
+	u16			num_tris;
+	u16			num_verts;
+};
+struct ENGINE_API FSlideWindowItem {
+	FSlideWindow*	sw;
+	u32				count;
+	u32				reserved[4];
 };
 
 // OGF_TEXTURE1
