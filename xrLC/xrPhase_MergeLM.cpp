@@ -7,7 +7,7 @@
 extern void _InitSurface	();
 extern BOOL _rect_place		(_rect &r, CDeflector::Layer* D);
 
-b_light*	compare_layer	= 0;
+int 	compare_layer		= 0;
 
 IC int	compare_defl		(CDeflector* D1, CDeflector* D2)
 {
@@ -28,8 +28,8 @@ IC int	compare_defl		(CDeflector* D1, CDeflector* D2)
 	{
 		CDeflector::Layer&	lay1	= D1->layers[I];
 		CDeflector::Layer&	lay2	= D2->layers[I];
-		if (lay1.base<lay2.base)	return 1;
-		if (lay1.base>lay2.base)	return 0;
+		if (lay1.base_id<lay2.base_id)	return 1;
+		if (lay1.base_id>lay2.base_id)	return 0;
 	}
 	return 2;
 }
@@ -87,17 +87,16 @@ void CBuild::xrPhase_MergeLM()
 {
 	vecDefl			Layer;
 
-	for (DWORD light_layer=0; light_layer<pBuild->lights.size(); light_layer++)
+	for (DWORD light_layer=0; light_layer<pBuild->L_layers.size(); light_layer++)
 	{
 		Status		("-= LM-Layer #%d =-",light_layer);
 		
 		// **** Select all deflectors, which contain this light-layer
 		Layer.clear	();
-		b_light*	L_base	= pBuild->lights[light_layer].original;
 		for (int it=0; it<(int)g_deflectors.size(); it++)
 		{
-			if (g_deflectors[it]->bMerged)				continue;
-			if (0==g_deflectors[it]->GetLayer(L_base))	continue;	
+			if (g_deflectors[it]->bMerged)					continue;
+			if (0==g_deflectors[it]->GetLayer(light_layer))	continue;	
 			Layer.push_back	(g_deflectors[it]);
 		}
 		if (Layer.empty())	continue;
@@ -128,7 +127,7 @@ void CBuild::xrPhase_MergeLM()
 			int merge_count	= 0;
 			for (it=0; it<(int)Layer.size(); it++)
 			{
-				int		defl_area	= Layer[it]->GetLayer(L_base)->Area();
+				int		defl_area	= Layer[it]->GetLayer(light_layer)->Area();
 				if (curarea + defl_area > maxarea) break;
 				curarea		+=	defl_area;
 				merge_count ++;
@@ -136,7 +135,7 @@ void CBuild::xrPhase_MergeLM()
 
 			// Sort part of layer by size decreasing
 			Status		("Selection 4...");
-			compare_layer	= L_base;
+			compare_layer	= light_layer;
 			std::sort	(Layer.begin(),Layer.begin()+merge_count,compare3_defl);
 
 			// Startup
@@ -149,7 +148,7 @@ void CBuild::xrPhase_MergeLM()
 			for (it=0; it<merge_count; it++) 
 			{
 				if (0==(it%16))		Status	("Process [%d/%d]...",it,merge_count);
-				CDeflector::Layer&	L = *(Layer[it]->GetLayer(L_base));
+				CDeflector::Layer&	L = *(Layer[it]->GetLayer(light_layer));
 				_rect		rT,rS; 
 				rS.a.set	(0,0);
 				rS.b.set	(L.lm.dwWidth+2*BORDER-1, L.lm.dwHeight+2*BORDER-1);
@@ -166,7 +165,7 @@ void CBuild::xrPhase_MergeLM()
 						R_ASSERT(rT.SizeY() == rS.SizeX());
 						bRotated = TRUE;
 					}
-					lmap->Capture		(Layer[it],rT.a.x,rT.a.y,rT.SizeX(),rT.SizeY(),bRotated,L_base);
+					lmap->Capture		(Layer[it],rT.a.x,rT.a.y,rT.SizeX(),rT.SizeY(),bRotated,light_layer);
 					Layer[it]->bMerged	= TRUE;
 				}
 				Progress(sqrtf(float(it)/float(merge_count)));

@@ -157,8 +157,8 @@ public:
 	{
 		R_ASSERT				(DATA);
 		ImplicitDeflector& defl = *DATA;
-		vector<R_Light>	Lights	= pBuild->lights[0].lights;
-		CDB::COLLIDER		DB;
+		vector<R_Light>			Lights	= pBuild->L_layers.front().lights;
+		CDB::COLLIDER			DB;
 		
 		// Setup variables
 		UVpoint		dim,half;

@@ -44,13 +44,6 @@ void CBuild::BuildSectors()
 		g_sectors[DWORD(P.sector_front)]->add_portal	(WORD(I));
 		g_sectors[DWORD(P.sector_back)]->add_portal		(WORD(I));
 	}
-	// occluders
-	for (I=0; I<occluders.size(); I++)
-	{
-		b_occluder &O = occluders[I];
-		R_ASSERT(O.sector<g_sectors.size());
-		g_sectors[O.sector]->add_occluder		(O);
-	}
 	// glows
 	for (I=0; I<glows.size(); I++)
 	{
@@ -60,10 +53,10 @@ void CBuild::BuildSectors()
 		g_sectors[M.sector]->add_glow			(WORD(I));
 	}
 	// lights
-	for (I=0; I<lights_dynamic.size(); I++)
+	for (I=0; I<L_dynamic.size(); I++)
 	{
-		b_light		&L = lights_dynamic[I];
-		if (L.type == D3DLIGHT_DIRECTIONAL)
+		b_light_dynamic	&L = L_dynamic[I];
+		if (L.data.type == D3DLIGHT_DIRECTIONAL)
 		{
 			for (DWORD j=0; j<g_sectors.size(); j++)
 			{
@@ -79,7 +72,7 @@ void CBuild::BuildSectors()
 				}
 			} else {
 				Msg("Fuck!!! Light at position %f,%f,%f non associated!!!",
-					L.position.x,L.position.y,L.position.z
+					L.data.position.x,L.data.position.y,L.data.position.z
 					);
 			}
 		}
