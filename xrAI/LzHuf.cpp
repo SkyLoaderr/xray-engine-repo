@@ -4,6 +4,10 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include <io.h>
+#include <fcntl.h>
+#include <sys\stat.h>
+
 #define MODULE
 
 //typedef unsigned char BYTE;
@@ -637,11 +641,11 @@ unsigned _writeLZ	(int hf, void* d, unsigned size)
 	fs.Init_Input(start,start+size);
 	
 	// Actual compression
-    Encode();
+    Encode			();
 	// Flush cache
 	int size_out = fs.OutSize();
 	if (size_out) _write(hf,fs.OutPointer(),size_out);
-	fs.OutRelease();
+	fs.OutRelease	();
 	return size_out;
 }
 

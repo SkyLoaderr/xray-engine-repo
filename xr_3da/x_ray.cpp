@@ -95,7 +95,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
     // Init COM so we can use CoCreateInstance
     CoInitializeEx	(NULL, COINIT_MULTITHREADED);
 
-	mmgrInitialize	(0);
+	// mmgrInitialize	(0);
 
 	BOOL bCaptureExceptions	= !(strstr(lpCmdLine,"-E") || strstr(lpCmdLine,"-e"));
 #ifdef DEBUG
@@ -119,7 +119,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	
 	Debug.Stop	();
 	CloseLog	();
-	mmgrDone	();
+	// mmgrDone	();
 
 	// check for need to execute something external
 	if (strstr(lpCmdLine,"-exec ")) 

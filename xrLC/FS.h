@@ -14,7 +14,8 @@ extern ENGINE_API void *	FileDecompress	(const char *fn, const char* sign, DWORD
 #define CFS_CompressMark	(1ul << 31ul)
 #define CFS_AlignMark		(1ul << 30ul)
 
-class ENGINE_API CFS_Base {
+class ENGINE_API CFS_Base 
+{
 private:
 	std::stack<int>	chunk_pos;
 	int				align_correction;
@@ -60,52 +61,12 @@ public:
 	{	write(&v,4*sizeof(float));	}
 
 	// generalized chunking
-	IC DWORD	align		()
-	{
-		DWORD bytes = correction(tell());
-		DWORD copy  = bytes;
-		while (bytes) { Wbyte(0); bytes--; }
-		return copy;
-	}
-	IC void		open_chunk	(DWORD type)
-	{
-		Wdword(type);
-		chunk_pos.push(tell());
-		Wdword(0);	// the place for 'size'
-		if (type&CFS_AlignMark)	align_correction = align();
-		else					align_correction = 0;
-	}
-	IC void		close_chunk	()
-	{
-		VERIFY(!chunk_pos.empty());
-
-		int pos			= tell();
-		seek			(chunk_pos.top());
-		Wdword			(pos-chunk_pos.top()-4-align_correction);
-		seek			(pos);
-		chunk_pos.pop	();
-	}
-	IC DWORD	chunk_size	()					// returns size of currently opened chunk, 0 otherwise
-	{
-		if (chunk_pos.empty())	return 0;
-		return tell() - chunk_pos.top()-4-align_correction;
-	}
-	IC void		write_compressed(void* ptr, DWORD count)
-	{
-		BYTE*		dest	= 0;
-		unsigned	dest_sz	= 0;
-		_compressLZ(&dest,&dest_sz,ptr,count);
-		if (dest && dest_sz)
-			write(dest,dest_sz);
-		xr_free		(dest);
-	}
-	IC void		write_chunk(DWORD type, void* data, DWORD size)
-	{
-		open_chunk	(type);
-		if (type & CFS_CompressMark)	write_compressed(data,size);
-		else							write			(data,size);
-		close_chunk	();
-	}
+	DWORD		align				();
+	void		open_chunk			(DWORD type);
+	void		close_chunk			();
+	DWORD		chunk_size			();					// returns size of currently opened chunk, 0 otherwise
+	void		write_compressed	(void* ptr, DWORD count);
+	void		write_chunk			(DWORD type, void* data, DWORD size);
 };
 
 class ENGINE_API CFS_Memory : public CFS_Base
@@ -135,20 +96,7 @@ public:
 	BYTE*	pointer	()	{ return data; }
 	DWORD	size	()	{ return file_size;	}
 	void	clear	()  { file_size=0; position=0;	}
-	void	SaveTo	(const char* fn, const char* sign)
-	{
-    	if (sign) FileCompress(fn,sign,pointer(),size());
-        else {
-        #ifdef M_BORLAND
-        	int H = open(fn,O_WRONLY|O_CREAT|O_TRUNC|O_BINARY,S_IREAD|S_IWRITE);
-        #else
-        	int H = _open(fn,O_WRONLY|O_CREAT|O_TRUNC|O_BINARY,S_IREAD|S_IWRITE);
-        #endif
-            R_ASSERT(H>0);
-            _write(H,pointer(),size());
-            _close(H);
-        }
-	}
+	void	SaveTo	(const char* fn, const char* sign);
 };
 
 class ENGINE_API CFS_File : public CFS_Base

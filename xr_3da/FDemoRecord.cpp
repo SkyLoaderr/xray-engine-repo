@@ -10,6 +10,11 @@
 #include "xr_creator.h"
 #include "xr_input.h"
 
+#include <io.h>
+#include <fcntl.h>
+#include <sys\stat.h>
+
+
 CDemoRecord * xrDemoRecord = 0;
 
 #define		g_fSpeed		5.0f

@@ -140,7 +140,6 @@ IC void	CRenderDevice::set_xform	(DWORD ID, const Fmatrix& M)
 }
 
 #include "TextureManager_Runtime.h"
-#include "PrimitivesR_Runtime.h"
 
 #define		REQ_CREATE()	if (!Device.bReady)	return;
 #define		REQ_DESTROY()	if (Device.bReady)	return;

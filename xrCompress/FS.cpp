@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include <io.h>
+#include <fcntl.h>
+#include <sys\stat.h>
+
 #include "FS.h"
 
 //////////////////////////////////////////////////////////////////////
@@ -26,6 +30,65 @@ void CFS_Memory::write	(const void* ptr, DWORD count)
 #endif
 	position		+=count;
 	if (position>file_size) file_size=position;
+}
+
+void	CFS_Memory::SaveTo	(const char* fn, const char* sign)
+{
+	if (sign) FileCompress(fn,sign,pointer(),size());
+	else {
+		int H = open(fn,O_WRONLY|O_CREAT|O_TRUNC|O_BINARY,S_IREAD|S_IWRITE);
+		R_ASSERT(H>0);
+		_write(H,pointer(),size());
+		_close(H);
+	}
+}
+
+
+DWORD	CFS_Base::align		()
+{
+	DWORD bytes = correction(tell());
+	DWORD copy  = bytes;
+	while (bytes) { Wbyte(0); bytes--; }
+	return copy;
+}
+void	CFS_Base::open_chunk	(DWORD type)
+{
+	Wdword(type);
+	chunk_pos.push(tell());
+	Wdword(0);	// the place for 'size'
+	if (type&CFS_AlignMark)	align_correction = align();
+	else					align_correction = 0;
+}
+void	CFS_Base::close_chunk	()
+{
+	VERIFY(!chunk_pos.empty());
+
+	int pos			= tell();
+	seek			(chunk_pos.top());
+	Wdword			(pos-chunk_pos.top()-4-align_correction);
+	seek			(pos);
+	chunk_pos.pop	();
+}
+DWORD	CFS_Base::chunk_size	()					// returns size of currently opened chunk, 0 otherwise
+{
+	if (chunk_pos.empty())	return 0;
+	return tell() - chunk_pos.top()-4-align_correction;
+}
+void	CFS_Base::write_compressed(void* ptr, DWORD count)
+{
+	BYTE*		dest	= 0;
+	unsigned	dest_sz	= 0;
+	_compressLZ(&dest,&dest_sz,ptr,count);
+	if (dest && dest_sz)
+		write(dest,dest_sz);
+	xr_free		(dest);
+}
+void	CFS_Base::write_chunk(DWORD type, void* data, DWORD size)
+{
+	open_chunk	(type);
+	if (type & CFS_CompressMark)	write_compressed(data,size);
+	else							write			(data,size);
+	close_chunk	();
 }
 
 //---------------------------------------------------

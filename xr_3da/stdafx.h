@@ -66,14 +66,8 @@
 #include <dplay8.h>
 
 #include <malloc.h>
-#ifdef DEBUG
-#include <crtdbg.h>
-#endif
 #include <stdio.h>
 #include <stdlib.h>
-#include <io.h>
-#include <fcntl.h>
-#include <sys\stat.h>
 #include <math.h>
 #include <time.h>
 #include <string.h>
@@ -140,11 +134,7 @@ using namespace std;
 #include "vector.h"
 #undef  VERIFY
 #include "engine.h"
-#ifndef NO_MMGR
-#include "fmemorymanager.h"
-#endif
 #include "defines.h"
-#include "pure.h"
 #ifndef NO_XRLOG
 #include "log.h"
 #endif

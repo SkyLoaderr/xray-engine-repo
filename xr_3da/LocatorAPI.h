@@ -47,7 +47,7 @@ private:
 
 	void						Register		(const char* name, DWORD vfs, DWORD ptr, DWORD size, BOOL bCompressed);
 	void						ProcessArchive	(const char* path);
-	void						ProcessOne		(const char* path, _finddata_t& F);
+	void						ProcessOne		(const char* path, LPVOID F);
 	void						Recurse			(const char* path);
 public:
 	void						Initialize		();

@@ -3,7 +3,14 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "LocatorAPI.h"
+
+#include <io.h>
+#include <fcntl.h>
+#include <sys\stat.h>
+
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -83,8 +90,10 @@ void CLocatorAPI::ProcessArchive(const char* path)
 	A.vfs->Seek			(0);
 }
 
-void CLocatorAPI::ProcessOne	(const char* path, _finddata_t& F)
+void CLocatorAPI::ProcessOne	(const char* path, LPVOID _F)
 {
+	_finddata_t& F	= *((_finddata_t*)_F);
+
 	FILE_NAME	N;
 	strcpy		(N,path);
 	strcat		(N,F.name);
@@ -112,10 +121,10 @@ void CLocatorAPI::Recurse		(const char* path)
 	strcat			(N,"*.*");
 
     R_ASSERT		((hFile=_findfirst(N, &sFile)) != -1);
-	ProcessOne		(path,sFile);
+	ProcessOne		(path,&sFile);
 
     while			( _findnext( hFile, &sFile ) == 0 )
-		ProcessOne	(path,sFile);
+		ProcessOne	(path,&sFile);
 
     _findclose		( hFile );
 }
@@ -212,7 +221,8 @@ CStream* CLocatorAPI::Open	(const char* F)
 	if (0xffffffff == desc.vfs)
 	{
 		// Normal file
-		return new CFileStream	(F);
+		if (desc.size<256*1024)	return new CFileStream			(F);
+		else					return new CVirtualFileStream	(F);
 	} else {
 		// Archived one
 		LPVOID	ptr	= LPVOID(LPBYTE(archives[desc.vfs].vfs->Pointer()) + desc.ptr);

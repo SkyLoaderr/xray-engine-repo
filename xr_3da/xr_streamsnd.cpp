@@ -47,13 +47,13 @@ CSoundStream::CSoundStream	( )
 CSoundStream::~CSoundStream	( )
 {
 	Stop				( );
-    close				(hf);
+	Engine.FS.Close		(hf);
 
 	_FREE				(WaveSource);
 	_FREE				(WaveDest);
 	_FREE				(pwfx);
 	_FREE				(psrc);
-	_RELEASE			( pBuffer );
+	_RELEASE			(pBuffer);
 }
 
 void CSoundStream::Update( )
@@ -86,7 +86,7 @@ void CSoundStream::Play	( BOOL loop, int cnt )
 	WaveSource = (unsigned char *)xr_malloc(dwSrcBufSize);
 
 	// seek to data start
-	lseek		(hf,DataPos,SEEK_SET);
+	hf->Seek	(DataPos);
 	writepos	= 0;
 	Decompress	(WaveDest);
 	writepos	=stream.cbDstLengthUsed;
@@ -205,7 +205,7 @@ BOOL CSoundStream::Decompress(unsigned char *dest)
 		dwSrcSize=dwTotalSize-dwDecPos;
 		r=false;
 	}
-    _read	(hf,WaveSource,dwSrcSize);
+	hf->Read(WaveSource,dwSrcSize);
 
     stream.cbStruct=sizeof(stream);
     stream.fdwStatus=0;
@@ -246,7 +246,7 @@ void CSoundStream::AppWriteDataToBuffer(
 	}
 }
 
-#define XRead(a) (read(hf,&a,sizeof(a))!=0)
+#define XRead(a) hf->Read(&a,sizeof(a))
 
 //--------------------------------------------------------------------------------------------------
 BOOL ADPCMCreateSoundBuffer(LPDIRECTSOUND lpDS, LPDIRECTSOUNDBUFFER *pDSB, WAVEFORMATEX* fmt)
@@ -283,35 +283,37 @@ void CSoundStream::LoadADPCM( )
 
 	DataPos			= NULL;
 
-    hf=_open		(fn,O_RDONLY|O_BINARY);
+    hf				= Engine.FS.Open(fn);
 	R_ASSERT		(hf>=0);
 	ZeroMemory		(&riff, sizeof(riff));
     XRead			(riff);
     memcpy			(buf,riff.id,4); buf[4]=0;
     memcpy			(buf,riff.wave_id,4); buf[4]=0;
 
-    while (XRead(hdr)) {
-        memcpy(buf,hdr.id,4); buf[4]=0;
-        pos=_tell(hf);
+    while (!hf->Eof()) 
+	{
+		XRead	(hdr);
+        memcpy	(buf,hdr.id,4); buf[4]=0;
+        pos		= hf->Tell();
         if (stricmp(buf, "fmt ")==0) {
 			dwFMT_Size = hdr.len;
-			psrc = (LPWAVEFORMATEX)xr_malloc(dwFMT_Size);
-			pwfx = (LPWAVEFORMATEX)xr_malloc(dwFMT_Size);
-			_read(hf,psrc,dwFMT_Size);
-			PSGP.memCopy(pwfx,psrc,dwFMT_Size);
+			psrc		= (LPWAVEFORMATEX)xr_malloc(dwFMT_Size);
+			pwfx		= (LPWAVEFORMATEX)xr_malloc(dwFMT_Size);
+			hf->Read	(psrc,		dwFMT_Size);
+			PSGP.memCopy(pwfx,psrc,	dwFMT_Size);
 			pwfx->wFormatTag = WAVE_FORMAT_PCM;
         } else {
             if (stricmp(buf,"data")==0) {
-                DataPos=_tell(hf);
+                DataPos=hf->Tell();
 				dwTotalSize=hdr.len;
             }
 		}
-        _lseek(hf,hdr.len+pos,SEEK_SET);
+        hf->Seek(hdr.len+pos);
     }
 
-	VERIFY(DataPos);
+	VERIFY	(DataPos);
 	// dest format
-	CHK_DX(acmFormatSuggest(NULL,psrc,pwfx,dwFMT_Size,ACM_FORMATSUGGESTF_WFORMATTAG));
+	CHK_DX	(acmFormatSuggest(NULL,psrc,pwfx,dwFMT_Size,ACM_FORMATSUGGESTF_WFORMATTAG));
 	// dest buffer (const size)
     WaveDest		= (unsigned char *)xr_malloc(dwDestBufSize);
 	// wave source -- alloc on Play

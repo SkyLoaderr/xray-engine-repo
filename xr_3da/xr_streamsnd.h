@@ -53,7 +53,8 @@ private:
     DWORD					writepos;
 	BOOL					isPresentData; // признак окончания буфера
 	DWORD					dwDecPos;
-	int					    hf,DataPos;
+	CStream*				hf;
+	int					    DataPos;
 
 private:
 //-----------------------------------------------------

@@ -174,7 +174,6 @@ void CCreator::OnRender()
 
 void CCreator::OnFrame	( void ) 
 {
-	mmgrMessage					("*** Frame");
 	if (fabsf(Device.fTimeDelta)<EPS_S) return;
 
 	// Update all objects

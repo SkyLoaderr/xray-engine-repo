@@ -77,11 +77,11 @@ void IPureServer::config_Load()
 	//************ Build sys_config
 	
 	// traffic in
-	int hin = _open(nameTraffic,O_BINARY|O_RDONLY);
-	if (hin>0) {
-		_read	(hin,&traffic_in,sizeof(traffic_in));
-		_read	(hin,&traffic_out,sizeof(traffic_out));
-		_close	(hin);
+	CStream*		F	= Engine.FS.Open(nameTraffic);
+	if (F) {
+		F->Read	(&traffic_in,sizeof(traffic_in));
+		F->Read	(&traffic_out,sizeof(traffic_out));
+		F->Close();
 		traffic_in.Normalize	();
 		traffic_out.Normalize	();
 	} else {
@@ -103,18 +103,16 @@ void IPureServer::config_Load()
 void IPureServer::config_Save	()
 {
 	// traffic in
-	int hin = _open(nameTraffic, O_BINARY|O_WRONLY|O_CREAT|O_TRUNC, S_IREAD|S_IWRITE);
-	R_ASSERT(hin>0);
-	_write(hin,&traffic_in,sizeof(traffic_in));
-	_write(hin,&traffic_out,sizeof(traffic_out));
-	_close(hin);
+	CFS_File		fs	(nameTraffic);
+	fs.write			(&traffic_in,sizeof(traffic_in));
+	fs.write			(&traffic_out,sizeof(traffic_out));
 }
 
 void IPureServer::Reparse	()
 {
-	config_Save		();
-	config_Load		();
-	SendBroadcast_LL(0,&msgConfig,sizeof(msgConfig));
+	config_Save			();
+	config_Load			();
+	SendBroadcast_LL	(0,&msgConfig,sizeof(msgConfig));
 }
 
 BOOL IPureServer::Connect(LPCSTR session_name)
