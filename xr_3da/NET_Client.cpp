@@ -526,7 +526,7 @@ void	IPureClient::Sync_Thread	()
 		}
 	}
 }
-
+ 
 void	IPureClient::Sync_Average	()
 {
 	//***** Analyze results
