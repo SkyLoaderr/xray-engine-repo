@@ -292,14 +292,14 @@ public:
 				break;
 			}
 		VERIFY							(bOk);
-		Msg("ALife : removing object %s from graph point %d",tpALifeDynamicObject->s_name_replace,tGraphID);
+//.		Msg("ALife : removing object %s from graph point %d",tpALifeDynamicObject->s_name_replace,tGraphID);
 	};
 	
 	IC void vfAddObjectToGraphPoint(CALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tNextGraphPointID)
 	{
 		m_tpGraphObjects[tNextGraphPointID].tpObjects.push_back(tpALifeDynamicObject);
 		tpALifeDynamicObject->m_tGraphID = tNextGraphPointID;
-		Msg("ALife : adding object %s to graph point %d",tpALifeDynamicObject->s_name_replace,tNextGraphPointID);
+//.		Msg("ALife : adding object %s to graph point %d",tpALifeDynamicObject->s_name_replace,tNextGraphPointID);
 	};
 
 	IC void vfChangeObjectGraphPoint(CALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
@@ -337,12 +337,12 @@ public:
 	IC void vfAttachItem(xrServerEntity &tServerEntity, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bAddChild = true)
 	{
 		if (bAddChild) {
-			Msg("ALife : (OFFLINE) Attaching item %s to object %s",tpALifeItem->s_name_replace,tServerEntity.s_name_replace);
+//.			Msg("ALife : (OFFLINE) Attaching item %s to object %s",tpALifeItem->s_name_replace,tServerEntity.s_name_replace);
 			tServerEntity.children.push_back(tpALifeItem->ID);
 			tpALifeItem->ID_Parent = tServerEntity.ID;
 		}
-		else
-			Msg("ALife : (ONLINE) Attaching item %s to object %s",tpALifeItem->s_name_replace,tServerEntity.s_name_replace);
+//.		else
+//.			Msg("ALife : (ONLINE) Attaching item %s to object %s",tpALifeItem->s_name_replace,tServerEntity.s_name_replace);
 
 		vfRemoveObjectFromGraphPoint(tpALifeItem,tGraphID);
 		

@@ -49,7 +49,7 @@ void CAI_ALife::Update(u32 dt)
 				ProcessOnlineOfflineSwitches(*I);
 				if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= m_qwMaxProcessTime) {
 					m_dwObjectsBeingSwitched = I - B + 1;
-					Msg("Not enough time (0)[%d : %d] !",E - B, I - M);
+//.					Msg("Not enough time (0)[%d : %d] !",E - B, I - M);
 					return;
 				}
 			}
@@ -57,13 +57,13 @@ void CAI_ALife::Update(u32 dt)
 				ProcessOnlineOfflineSwitches(*I);
 				if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= m_qwMaxProcessTime) {
 					m_dwObjectsBeingSwitched = I - B + 1;
-					Msg("Not enough time (1)[%d : %d] !",E - B, E - M + I - B);
+//.					Msg("Not enough time (1)[%d : %d] !",E - B, E - M + I - B);
 					return;
 				}
 			}
 			
 			if (CPU::GetCycleCount() - qwStartTime >= m_qwMaxProcessTime) {
-				Msg("Not enough time (2)[%d : %d] !",E - B,E - B);
+//.				Msg("Not enough time (2)[%d : %d] !",E - B,E - B);
 				return;
 			}
 			
@@ -71,7 +71,7 @@ void CAI_ALife::Update(u32 dt)
 			qwStartTime						= CPU::GetCycleCount();
 			
 			// updating objects being scheduled
-			Msg("Enough time (0) !");
+//.			Msg("Enough time (0) !");
 			if (m_tpScheduledObjects.size()) {
 				ALIFE_MONSTER_P_IT			B = m_tpScheduledObjects.begin();
 				ALIFE_MONSTER_P_IT			M = B + m_dwObjectsBeingProcessed, I;

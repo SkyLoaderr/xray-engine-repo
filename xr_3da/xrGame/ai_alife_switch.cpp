@@ -17,7 +17,7 @@ void CAI_ALife::vfCreateObject(CALifeDynamicObject *tpALifeDynamicObject)
 	tpALifeDynamicObject->s_flags.or(M_SPAWN_UPDATE);
 	m_tpServer->Process_spawn		(tNetPacket,0,FALSE,tpALifeDynamicObject);
 	tpALifeDynamicObject->s_flags.and(u16(-1) ^ M_SPAWN_UPDATE);
-	Msg("ALife : Spawning object %s",tpALifeDynamicObject->s_name_replace);
+//.	Msg("ALife : Spawning object %s",tpALifeDynamicObject->s_name_replace);
 
 	CALifeTraderParams				*tpTraderParams = dynamic_cast<CALifeTraderParams*>(tpALifeDynamicObject);
 	if (tpTraderParams) {
@@ -31,7 +31,7 @@ void CAI_ALife::vfCreateObject(CALifeDynamicObject *tpALifeDynamicObject)
 			if (!tpItem)
 				continue;
 			tpItem->s_flags.or		(M_SPAWN_UPDATE);
-			Msg("ALife : Spawning item %s",tpItem->s_name_replace);
+//.			Msg("ALife : Spawning item %s",tpItem->s_name_replace);
 			m_tpServer->Process_spawn(tNetPacket,0,FALSE,tpItem);
 			tpItem->s_flags.and		(u16(-1) ^ M_SPAWN_UPDATE);
 			tpItem->m_bOnline		= true;
@@ -53,13 +53,13 @@ void CAI_ALife::vfReleaseObject(CALifeDynamicObject *tpALifeDynamicObject)
 			CALifeItem				*tpItem = dynamic_cast<CALifeItem*>(m_tObjectRegistry[*I]);
 			if (!tpItem)
 				continue;
-			Msg("ALife : Destroying item %s",tpItem->s_name_replace);
+//.			Msg("ALife : Destroying item %s",tpItem->s_name_replace);
 			m_tpServer->Perform_destroy(tpItem,net_flags(TRUE,TRUE));
 			tpItem->m_bOnline		= false;
 		}
 		//tpALifeDynamicObject->children = m_tpChildren;
 	}
-	Msg("ALife : Destroying monster %s",tpALifeDynamicObject->s_name_replace);
+//.	Msg("ALife : Destroying monster %s",tpALifeDynamicObject->s_name_replace);
 }
 
 void CAI_ALife::vfSwitchObjectOnline(CALifeDynamicObject *tpALifeDynamicObject)
@@ -88,7 +88,7 @@ void CAI_ALife::vfSwitchObjectOnline(CALifeDynamicObject *tpALifeDynamicObject)
 		vfCreateObject					(tpALifeDynamicObject);
 	tpALifeDynamicObject->m_dwLastSwitchTime = 0;
 	tpALifeDynamicObject->m_bOnline	= true;
-	Msg								("ALife : Going online [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Device.dwTimeGlobal,tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->g_team(), tpALifeDynamicObject->g_squad(), tpALifeDynamicObject->g_group(), tpALifeDynamicObject->ID, "*SERVER*");
+//.	Msg								("ALife : Going online [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Device.dwTimeGlobal,tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->g_team(), tpALifeDynamicObject->g_squad(), tpALifeDynamicObject->g_group(), tpALifeDynamicObject->ID, "*SERVER*");
 }
 
 void CAI_ALife::vfSwitchObjectOffline(CALifeDynamicObject *tpALifeDynamicObject)
@@ -127,7 +127,7 @@ void CAI_ALife::vfSwitchObjectOffline(CALifeDynamicObject *tpALifeDynamicObject)
 		vfReleaseObject				(tpALifeDynamicObject);
 	tpALifeDynamicObject->m_dwLastSwitchTime = 0;
 	tpALifeDynamicObject->m_bOnline	= false;
-	Msg								("ALife : Going offline [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Device.dwTimeGlobal,tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->g_team(), tpALifeDynamicObject->g_squad(), tpALifeDynamicObject->g_group(), tpALifeDynamicObject->ID, "*SERVER*");
+//.	Msg								("ALife : Going offline [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Device.dwTimeGlobal,tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->g_team(), tpALifeDynamicObject->g_squad(), tpALifeDynamicObject->g_group(), tpALifeDynamicObject->ID, "*SERVER*");
 }
 
 void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
@@ -143,10 +143,10 @@ void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 			I->m_fDistance = getAI().m_tpaCrossTable[I->m_tNodeID].fDistance;
 		}
 		u64 qwFinish = CPU::GetCycleCount();
-		Msg("* ALife : synchronizing (%f sec) for object %s : %d -> %d",(qwFinish - qwStart)*CPU::cycles2microsec/1000000.f,I->s_name_replace,dwLastNodeID,I->m_tNodeID);
+//.		Msg("* ALife : synchronizing (%f sec) for object %s : %d -> %d",(qwFinish - qwStart)*CPU::cycles2microsec/1000000.f,I->s_name_replace,dwLastNodeID,I->m_tNodeID);
 	}
 	if ((I->m_tNodeID < 0) || (I->m_tNodeID >= getAI().Header().count))
-		Msg("! ALife : Corresponding node hasn't been found for object %s",I->s_name_replace);
+//.		Msg("! ALife : Corresponding node hasn't been found for object %s",I->s_name_replace);
 	if (I->m_bOnline)
 		if (I->ID_Parent == 0xffff) {
 			if (I->m_dwLastSwitchTime) {

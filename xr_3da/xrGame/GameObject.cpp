@@ -114,7 +114,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 			AI_NodeID			=	AI.q_LoadSearch(vPosition);
 		
 		if (!AI_NodeID)
-			Msg("! GameObject::NET_Spawn : Corresponding node hasn't been found for monster %s",cName());
+			Msg("! GameObject::NET_Spawn : Corresponding node hasn't been found for object %s",cName());
 
 		AI_Node				=	AI.Node		(AI_NodeID);
 		getAI().ref_add		(AI_NodeID);
