@@ -16,6 +16,7 @@ class CScriptEntityAction;
 class CEntity;
 class CScriptGameObject;
 class CMotionDef;
+class CCustomMonster;
 
 using namespace ScriptEntity;
 

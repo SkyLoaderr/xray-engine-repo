@@ -113,7 +113,8 @@ void CActor::AddGameTask			 (const CInfoPortion* info_portion) const
 
 	//установить флажок необходимости прочтения тасков в PDA
 	if(old_size != task_vector.size())
-		HUD().GetUI()->UIMainIngameWnd.SetFlashIconState(CUIMainIngameWnd::efiPdaTask, true);
+		if(HUD().GetUI())
+			HUD().GetUI()->UIMainIngameWnd.SetFlashIconState(CUIMainIngameWnd::efiPdaTask, true);
 }
 
 
@@ -137,16 +138,13 @@ void  CActor::AddGameNews			 (GAME_NEWS_DATA& news_data)
 	news_data.receive_time = Level().GetGameTime();
 	news_vector.push_back(news_data);
 	
-	HUD().GetUI()->UIMainIngameWnd.OnNewsReceived(news_data);
+	if(HUD().GetUI())
+		HUD().GetUI()->UIMainIngameWnd.OnNewsReceived(news_data);
 }
 
 
 bool CActor::OnReceiveInfo(INFO_INDEX info_index) const
 {
-	//только если находимся в режиме single
-	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-	if(!pGameSP) return false;
-
 	if(!CInventoryOwner::OnReceiveInfo(info_index))
 		return false;
 
@@ -156,6 +154,14 @@ bool CActor::OnReceiveInfo(INFO_INDEX info_index) const
 	AddMapLocationsFromInfo	(&info_portion);
 	AddEncyclopediaArticle	(&info_portion);
 	AddGameTask				(&info_portion);
+
+
+	if(!HUD().GetUI())
+		return false;
+	//только если находимся в режиме single
+	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+	if(!pGameSP) return false;
+
 	
 	if(pGameSP->TalkMenu.IsShown())
 	{
@@ -168,12 +174,15 @@ bool CActor::OnReceiveInfo(INFO_INDEX info_index) const
 
 void CActor::OnDisableInfo(INFO_INDEX info_index)  const
 {
+	Level().RemoveMapLocationByInfo(info_index);
+	CInventoryOwner::OnDisableInfo(info_index);
+
+	if(!HUD().GetUI())
+		return;
+
 	//только если находимся в режиме single
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(pGameSP && pGameSP->TalkMenu.IsShown()) pGameSP->TalkMenu.UpdateQuestions();
-
-	Level().RemoveMapLocationByInfo(info_index);
-	CInventoryOwner::OnDisableInfo(info_index);
 }
 
 
@@ -181,6 +190,8 @@ void CActor::OnDisableInfo(INFO_INDEX info_index)  const
 void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index)
 {
 	//только если находимся в режиме single
+	if(!HUD().GetUI())
+		return;
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(!pGameSP) return;
 
@@ -190,6 +201,7 @@ void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index)
 	CPda* pPda = smart_cast<CPda*>(pPdaObject);
 	VERIFY(pPda);
 	HUD().GetUI()->UIMainIngameWnd.ReceivePdaMessage(pPda->GetOriginalOwner(), msg, info_index);
+
 
 	SPdaMessage last_pda_message;
 	//bool prev_msg = 

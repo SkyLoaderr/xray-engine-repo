@@ -31,6 +31,7 @@ class CCustomMonster;
 class CAI_Stalker;
 class CScriptEntity;
 class CAI_ObjectLocation;
+class CWeapon;
 
 class CGameObject : 
 	public CObject, 
