@@ -4,20 +4,21 @@
 class CAI_Biting;
 
 //////////////////////////////////////////////////////////////////////////
-// CStateBitingWander
-// Бродить по точкам графа
+// CStateBitingEatEat
+// Есть труп
 //////////////////////////////////////////////////////////////////////////
 
-class CStateBitingWander : public CStateBase<CAI_Biting> {
-protected:
+class CStateBitingEatEat : public CStateBase<CAI_Biting> {
 	typedef CStateBase<CAI_Biting> inherited;
 
 public:
-						CStateBitingWander	(LPCSTR state_name);
-	virtual				~CStateBitingWander	();
+						CStateBitingEatEat	(LPCSTR state_name);
+	virtual				~CStateBitingEatEat	();
 
 	virtual	void		initialize			();
 	virtual	void		execute				();
 	virtual	void		finalize			();
+
+	virtual	bool		completed			() const;
 };
 

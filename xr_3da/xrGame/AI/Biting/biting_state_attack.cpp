@@ -6,16 +6,12 @@
 
 CStateBitingAttack::CStateBitingAttack(LPCSTR state_name) : inherited(state_name)
 {
-	Init					();
 }
 
 CStateBitingAttack::~CStateBitingAttack	()
 {
 }
 
-void CStateBitingAttack::Init			()
-{
-}
 
 void CStateBitingAttack::Load(LPCSTR section)
 {
@@ -34,10 +30,7 @@ void CStateBitingAttack::reinit(CAI_Biting *object)
 	set_dest_state			(eAS_Run);
 }
 
-void CStateBitingAttack::reload(LPCSTR section)
-{
-	inherited::reload		(section);
-}
+
 
 void CStateBitingAttack::initialize()
 {

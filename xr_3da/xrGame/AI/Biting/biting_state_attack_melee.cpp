@@ -5,30 +5,10 @@
 
 CStateBitingAttackMelee::CStateBitingAttackMelee(LPCSTR state_name) : inherited(state_name)
 {
-	Init();
 }
 
 CStateBitingAttackMelee::~CStateBitingAttackMelee()
 {
-}
-
-void CStateBitingAttackMelee::Init()
-{
-}
-
-void CStateBitingAttackMelee::Load(LPCSTR section)
-{
-	inherited::Load(section);
-}
-
-void CStateBitingAttackMelee::reinit(CAI_Biting *object)
-{
-	inherited::reinit(object);
-}
-
-void CStateBitingAttackMelee::reload(LPCSTR section)
-{
-	inherited::reload(section);
 }
 
 void CStateBitingAttackMelee::initialize()

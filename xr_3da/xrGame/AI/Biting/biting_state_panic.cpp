@@ -6,14 +6,9 @@
 
 CStateBitingPanic::CStateBitingPanic(LPCSTR state_name) : inherited(state_name)
 {
-	Init					();
 }
 
 CStateBitingPanic::~CStateBitingPanic	()
-{
-}
-
-void CStateBitingPanic::Init			()
 {
 }
 
@@ -30,11 +25,6 @@ void CStateBitingPanic::reinit(CAI_Biting *object)
 	inherited::reinit		(object);
 	set_current_state		(ePS_RunAway);
 	set_dest_state			(ePS_RunAway);
-}
-
-void CStateBitingPanic::reload(LPCSTR section)
-{
-	inherited::reload		(section);
 }
 
 void CStateBitingPanic::initialize()

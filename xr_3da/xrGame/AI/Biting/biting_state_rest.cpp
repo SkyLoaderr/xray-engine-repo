@@ -7,14 +7,9 @@
 
 CStateBitingRest::CStateBitingRest(LPCSTR state_name) : inherited(state_name)
 {
-	Init					();
 }
 
 CStateBitingRest::~CStateBitingRest	()
-{
-}
-
-void CStateBitingRest::Init			()
 {
 }
 
@@ -36,14 +31,9 @@ void CStateBitingRest::reinit(CAI_Biting *object)
 	set_dest_state			(eRS_Sleep);
 }
 
-void CStateBitingRest::reload(LPCSTR section)
-{
-	inherited::reload		(section);
-}
-
 void CStateBitingRest::initialize()
 {
-	inherited::initialize();
+	inherited::finalize();
 }
 
 void CStateBitingRest::execute()

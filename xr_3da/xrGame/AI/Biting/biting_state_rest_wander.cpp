@@ -5,30 +5,10 @@
 
 CStateBitingWander::CStateBitingWander	(LPCSTR state_name) : inherited(state_name)
 {
-	Init();
 }
 
 CStateBitingWander::~CStateBitingWander	()
 {
-}
-
-void CStateBitingWander::Init()
-{
-}
-
-void CStateBitingWander::Load(LPCSTR section)
-{
-	inherited::Load(section);
-}
-
-void CStateBitingWander::reinit(CAI_Biting *object)
-{
-	inherited::reinit(object);
-}
-
-void CStateBitingWander::reload(LPCSTR section)
-{
-	inherited::reload(section);
 }
 
 void CStateBitingWander::initialize()

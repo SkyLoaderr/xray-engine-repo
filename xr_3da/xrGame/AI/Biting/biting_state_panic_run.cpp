@@ -5,30 +5,10 @@
 
 CStateBitingPanicRun::CStateBitingPanicRun(LPCSTR state_name) : inherited(state_name)
 {
-	Init();
 }
 
 CStateBitingPanicRun::~CStateBitingPanicRun()
 {
-}
-
-void CStateBitingPanicRun::Init()
-{
-}
-
-void CStateBitingPanicRun::Load(LPCSTR section)
-{
-	inherited::Load(section);
-}
-
-void CStateBitingPanicRun::reinit(CAI_Biting *object)
-{
-	inherited::reinit(object);
-}
-
-void CStateBitingPanicRun::reload(LPCSTR section)
-{
-	inherited::reload(section);
 }
 
 void CStateBitingPanicRun::initialize()
@@ -47,3 +27,7 @@ void CStateBitingPanicRun::finalize()
 {
 	inherited::finalize();
 }
+
+
+
+

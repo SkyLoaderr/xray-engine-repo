@@ -5,30 +5,10 @@
 
 CStateBitingAttackRun::CStateBitingAttackRun(LPCSTR state_name) : inherited(state_name)
 {
-	Init();
 }
 
 CStateBitingAttackRun::~CStateBitingAttackRun()
 {
-}
-
-void CStateBitingAttackRun::Init()
-{
-}
-
-void CStateBitingAttackRun::Load(LPCSTR section)
-{
-	inherited::Load(section);
-}
-
-void CStateBitingAttackRun::reinit(CAI_Biting *object)
-{
-	inherited::reinit(object);
-}
-
-void CStateBitingAttackRun::reload(LPCSTR section)
-{
-	inherited::reload(section);
 }
 
 void CStateBitingAttackRun::initialize()

@@ -1,23 +1,26 @@
+
+
 #pragma once
 #include "../../state_base.h"
 
 class CAI_Biting;
 
 //////////////////////////////////////////////////////////////////////////
-// CStateBitingAttackMelee
-// Атаковать врага с близкого расстояния
+// CStateBitingEatApproach
+// Подойти к трупу
 //////////////////////////////////////////////////////////////////////////
 
-class CStateBitingAttackMelee : public CStateBase<CAI_Biting> {
+class CStateBitingEatApproach : public CStateBase<CAI_Biting> {
 	typedef CStateBase<CAI_Biting> inherited;
 
-
 public:
-						CStateBitingAttackMelee	(LPCSTR state_name);
-	virtual				~CStateBitingAttackMelee();
+						CStateBitingEatApproach	(LPCSTR state_name);
+	virtual				~CStateBitingEatApproach();
 
 	virtual	void		initialize				();
 	virtual	void		execute					();
 	virtual	void		finalize				();
 
+	virtual	bool		completed				() const;
 };
+

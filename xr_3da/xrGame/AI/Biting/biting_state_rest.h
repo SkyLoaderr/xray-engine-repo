@@ -16,10 +16,9 @@ protected:
 public:
 						CStateBitingRest		(LPCSTR state_name);
 	virtual				~CStateBitingRest		();
-			void		Init					();
 	virtual	void		Load					(LPCSTR section);
 	virtual	void		reinit					(CAI_Biting *object);
-	virtual	void		reload					(LPCSTR section);
+	
 	virtual	void		initialize				();
 	virtual	void		execute					();
 	virtual	void		finalize				();

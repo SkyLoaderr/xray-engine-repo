@@ -1610,6 +1610,30 @@
 							<Filter
 								Name="State Eat"
 								Filter="">
+								<File
+									RelativePath=".\ai\biting\biting_state_eat.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\biting\biting_state_eat.h">
+								</File>
+								<File
+									RelativePath=".\ai\biting\biting_state_eat_approach.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\biting\biting_state_eat_approach.h">
+								</File>
+								<File
+									RelativePath=".\ai\biting\biting_state_eat_drag.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\biting\biting_state_eat_drag.h">
+								</File>
+								<File
+									RelativePath=".\ai\biting\biting_state_eat_eat.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\biting\biting_state_eat_eat.h">
+								</File>
 							</Filter>
 							<Filter
 								Name="State Panic"

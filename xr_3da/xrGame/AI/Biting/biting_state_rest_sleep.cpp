@@ -5,30 +5,10 @@
 
 CStateBitingSleep::CStateBitingSleep(LPCSTR state_name) : inherited(state_name)
 {
-	Init();
 }
 
 CStateBitingSleep::~CStateBitingSleep()
 {
-}
-
-void CStateBitingSleep::Init()
-{
-}
-
-void CStateBitingSleep::Load(LPCSTR section)
-{
-	inherited::Load(section);
-}
-
-void CStateBitingSleep::reinit(CAI_Biting *object)
-{
-	inherited::reinit(object);
-}
-
-void CStateBitingSleep::reload(LPCSTR section)
-{
-	inherited::reload(section);
 }
 
 void CStateBitingSleep::initialize()
