@@ -194,7 +194,7 @@ public:
 	}
 	void			_stab		(const AABBNoLeafNode* node)
 	{
-		// Actual ray/aabb test
+		// Actual box-box test
 		if (!_box((Fvector&)node->mAABB.mCenter,(Fvector&)node->mAABB.mExtents))	return;
 		
 		// 1st chield

@@ -94,7 +94,7 @@ public:
 		}
 		return test_mask ? fcvPartial:fcvFully;
 	}
-	IC BOOL			testSphereDirty		(Fvector& c, float r)
+	IC BOOL			testSphere_dirty		(Fvector& c, float r)
 	{
 		switch (p_count) {
 		case 8:	if (planes[7].classify(c)>r)	return FALSE;
