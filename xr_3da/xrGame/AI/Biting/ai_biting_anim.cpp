@@ -10,23 +10,22 @@
 
 #include "ai_biting.h"
 
-LPCSTR caStateNames			[] = {
-	"stand_",
-	"sit_",
-	"lie_",
-	0
-};
+namespace AI_Biting {
+	LPCSTR caStateNames			[] = {
+		"stand_",
+		"sit_",
+		"lie_",
+		0
+	};
 
-LPCSTR caGlobalNames		[] = {
-	"idle_",
-	"walk_fwd_",
-	"walk_ls_",
-	"walk_rs_",
-	"walk_back_",
-	"run_",
-	"run_attack_",
-	"attack_",
-	"eat_",
-	"damage_",
-	0
+	LPCSTR caGlobalNames		[] = {
+		"idle_",
+		"walk_fwd_",
+		"walk_ls_",
+		"run_",
+		"attack_",
+		"eat_",
+		"damage_",
+		0
+	};
 };

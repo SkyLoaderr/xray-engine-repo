@@ -10,13 +10,15 @@
 
 #include "..\\ai_monsters_anims.h"
 
-extern LPCSTR caStateNames			[];
-extern LPCSTR caGlobalNames			[];
+namespace AI_Biting {
+	extern LPCSTR caStateNames		[];
+	extern LPCSTR caGlobalNames		[];
+};
 
 class CBitingAnimations {
 public:
-	typedef CAniCollection<CAniVector,caGlobalNames> CStateAnimations;
-	CAniCollection<CStateAnimations,caStateNames>	m_tAnims;
+	typedef CAniCollection<CAniVector,AI_Biting::caGlobalNames> CStateAnimations;
+	CAniCollection<CStateAnimations,AI_Biting::caStateNames>	m_tAnims;
 	CMotionDef		*m_tpCurrentGlobalAnimation;
 	CBlend			*m_tpCurrentGlobalBlend;
 	u8				m_bAnimationIndex;
