@@ -92,6 +92,7 @@ void CPHCharacter::set_State(const SPHNetState& state)
 	if(state.enabled&& !dBodyIsEnabled(m_body)) 
 	{
 		dBodyEnable(m_body);
+		CPHObject::Activate();
 	};
 	if(!state.enabled && dBodyIsEnabled(m_body)) 
 	{
