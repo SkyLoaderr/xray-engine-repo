@@ -9,7 +9,7 @@
 #pragma once
 
 #include "xrLevel.h"
-#include "ai_alife_space.h"
+#include "alife_space.h"
 #include "game_level_cross_table.h"
 #include "game_graph.h"
 #include "level_graph.h"

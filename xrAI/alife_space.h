@@ -6,8 +6,8 @@
 //	Description : ALife space
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef XRAY_AI_ALIFE_SPACE
-#define XRAY_AI_ALIFE_SPACE
+#ifndef XRAY_ALIFE_SPACE
+#define XRAY_ALIFE_SPACE
 
 // spawn points
 #define SPAWN_POINT_VERSION			0x0001
@@ -393,4 +393,4 @@ namespace ALife {
 	#endif
 #endif
 
-#endif
+#endif //XRAY_ALIFE_SPACE

@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "ai_alife_space.h"
+#include "alife_space.h"
 #include "game_graph.h"
 
 typedef struct tagSDynamicGraphVertex {

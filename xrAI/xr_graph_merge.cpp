@@ -16,7 +16,7 @@
 #include "xrCrossTable.h"
 #include "level_graph.h"
 #include "net_utils.h"
-#include "ai_alife_templates.h"
+#include "object_broker.h"
 #include "xr_graph_merge.h"
 using namespace ALife;
 

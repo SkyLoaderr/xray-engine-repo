@@ -1209,16 +1209,10 @@
 				Name="Shared"
 				Filter="">
 				<File
-					RelativePath="ai_alife_interfaces.h">
+					RelativePath=".\alife_interfaces.h">
 				</File>
 				<File
-					RelativePath=".\ai_alife_predicates.h">
-				</File>
-				<File
-					RelativePath="ai_alife_space.h">
-				</File>
-				<File
-					RelativePath="ai_alife_templates.h">
+					RelativePath=".\alife_space.h">
 				</File>
 				<File
 					RelativePath=".\bone.h">
@@ -1249,6 +1243,15 @@
 				</File>
 				<File
 					RelativePath="NET_utils.h">
+				</File>
+				<File
+					RelativePath=".\object_broker.cpp">
+				</File>
+				<File
+					RelativePath=".\object_broker.h">
+				</File>
+				<File
+					RelativePath=".\object_broker_inline.h">
 				</File>
 				<File
 					RelativePath=".\PHSynchronize.cpp">

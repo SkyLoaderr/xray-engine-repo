@@ -32,6 +32,7 @@ public:
 
 									CSE_ALifeSchedulable	(LPCSTR caSection);
 	virtual							~CSE_ALifeSchedulable	();
+	virtual bool					need_update				(CSE_ALifeDynamicObject *object);
 #ifndef _EDITOR
 #ifndef AI_COMPILER
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(ALife::EHitType		&tHitType,			float		&fHitPower) = 0;
@@ -42,7 +43,6 @@ public:
 	virtual	ALife::EMeetActionType	tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,int			iGroupIndex, bool bMutualDetection) = 0;
 	virtual bool					bfActive				()															= 0;
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		()															= 0;
-	virtual bool					need_update				(CSE_ALifeDynamicObject *object);
 #endif
 #endif
 };
