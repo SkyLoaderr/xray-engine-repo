@@ -56,7 +56,7 @@ p2f 	p_main	( v2p_in IN )
 	// positive
 	for (s=0; s<7; s++)
 	{
-		samples[8+s]	= tex2D	(s_bloom, IN.tc0 - offset[s]);
+		samples[8+s]	= tex2D	(s_bloom, IN.tc0 - offset[7-s]);
 	}
 	
 	// final weight
