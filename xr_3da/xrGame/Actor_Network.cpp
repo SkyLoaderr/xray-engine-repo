@@ -843,6 +843,7 @@ void	CActor::OnChangeVisual()
 	//-------------------------------------------------------------------------------
 	reattach_items();
 	//-------------------------------------------------------------------------------
+	m_pPhysics_support->in_ChangeVisual();
 };
 
 void	CActor::ChangeVisual			( shared_str NewVisual )
