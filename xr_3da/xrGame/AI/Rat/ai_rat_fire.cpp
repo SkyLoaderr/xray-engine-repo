@@ -145,7 +145,7 @@ void CAI_Rat::vfUpdateMorale()
 		switch (eCurrentState) {
 			case aiRatFreeHuntingActive :
 			case aiRatFreeHuntingPassive : 
-			case aiRatRecoil : {
+			case aiRatFreeRecoil : {
 				if (m_fMorale < m_fMoraleNormalValue) {
 					m_fMorale += m_fMoraleRestoreQuant*(1.f - fDistance/m_fMoraleNullRadius);
 					if (m_fMorale > m_fMoraleNormalValue)
@@ -161,12 +161,14 @@ void CAI_Rat::vfUpdateMorale()
 			}
 			case aiRatUnderFire :
 			case aiRatRetreat : {
-				m_fMorale += m_fMoraleRestoreQuant;
+				//m_fMorale += fDistance <= m_fMoraleNullRadius ? m_fMoraleRestoreQuant : 0;
+				m_fMorale += m_fMoraleRestoreQuant*(m_fMoraleNullRadius/fDistance);
+				//m_fMorale += m_fMoraleRestoreQuant;
 				break;
 			}
 			case aiRatAttackRun :
 			case aiRatAttackFire : {
-				m_fMorale += m_fMoraleRestoreQuant*(1.f - fDistance/m_fMoraleNullRadius);
+				//m_fMorale += m_fMoraleRestoreQuant*(1.f - fDistance/m_fMoraleNullRadius);
 				break;
 			}
 		}

@@ -49,7 +49,9 @@ class CAI_Rat : public CCustomMonster
 			aiRatUnderFire,
 			aiRatRetreat,
 			aiRatPursuit,
-			aiRatRecoil,
+			aiRatFreeRecoil,
+			aiRatReturnHome,
+			aiRatReturnRecoil,
 		};
 
 	
@@ -303,7 +305,9 @@ class CAI_Rat : public CCustomMonster
 		void	UnderFire();
 		void	Retreat();
 		void	Pursuit();
-		void	Recoil();
+		void	FreeRecoil();
+		void	ReturnHome();
+		void	ReturnRecoil();
 	public:
 					   CAI_Rat();
 		virtual		  ~CAI_Rat();

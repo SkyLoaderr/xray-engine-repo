@@ -183,11 +183,13 @@ void CAI_Rat::vfComputeNextDirectionPosition()
 
 	m_tHPB.x = angle_normalize_signed(m_tHPB.x);
 	m_tHPB.y = angle_normalize_signed(m_tHPB.y);
-	//m_tHPB.z = angle_normalize_signed(m_tHPB.z);
+	m_tHPB.z = 0;//angle_normalize_signed(m_tHPB.z);
 
 	// Build the local matrix for the pplane
 	mRotate.setHPB(m_tHPB.x,m_tHPB.y,m_tHPB.z);
 	r_target.yaw = r_torso_target.yaw = -m_tHPB.x;
+	UpdateTransform();
+	
 	// Update position
 	Fvector tTemp;
 	tTemp.set(vPosition);
@@ -211,5 +213,4 @@ void CAI_Rat::vfComputeNextDirectionPosition()
 		m_fSafeSpeed = m_fSpeed = EPS_S;
 		m_bNoWay = true;
 	}
-	UpdateTransform();
 }
