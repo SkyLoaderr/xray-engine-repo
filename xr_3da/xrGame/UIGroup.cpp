@@ -67,16 +67,16 @@ void CUIGroup::Render(CGroup& G, int idx, int grp_index, bool bSelected)
 			list_item_health.Render		();
 			list_item_ammo.Render		();
 			// out name
-			HUD->pHUDFont->Out			(float(offset+11),Y,"%6.6s",E->cName());
+			HUD->pFontSmall->Out		(float(offset+11),Y,"%6.6s",E->cName());
 			item_cnt++;
 		}
 	}
 	list_bottom.SetPos(iFloor(sc_offset+3*sc),iFloor(Y*sc));
 	list_bottom.Render();
 	// counters
-	HUD->pHUDFont->Color(0xffffffff);
-	HUD->pHUDFont->Out	(float(offset+5),	10,	"#%02d",grp_index+1);
-	HUD->pHUDFont->Out	(float(offset+30),	40,	"%02d",item_cnt);
+	HUD->pFontSmall->Color	(0xffffffff);
+	HUD->pFontSmall->Out	(float(offset+5),	10,	"#%02d",grp_index+1);
+	HUD->pFontSmall->Out	(float(offset+30),	40,	"%02d",item_cnt);
 }
 //--------------------------------------------------------------------
 

@@ -32,6 +32,10 @@ void Startup()
 {
 	Engine.Initialize			( );
 	Device.Initialize			( );
+
+	// Creation
+	pSettings					= new CInifile		("GameData\\system.ltx",TRUE);
+
 	Console.Initialize			( );
 	Engine.External.Initialize	( );
 	
@@ -51,9 +55,6 @@ void Startup()
 		strconcat				(cmd,"net_name ",c_name);
 		Console.Execute			(cmd);
 	}
-
-	// Creation
-	pSettings					= new CInifile		("GameData\\system.ltx",TRUE);
 
 	BOOL bCaptureInput			= !strstr(Engine.Params,"-i");
 #ifdef DEBUG
@@ -78,6 +79,13 @@ void Startup()
 			strconcat		(cmd,"client ",pLevelName+8);
 			Console.Execute	(cmd);
 		}
+	}
+
+	if (strstr(Engine.Params,"-demo ")) {
+		string64				cmd;
+		char *	pDemoName		= strstr(Engine.Params,"-demo ");
+		strconcat				(cmd,"demo_play ",pDemoName);
+		Console.Execute			(cmd);
 	}
 
 	// Main cycle
@@ -156,8 +164,8 @@ CApplication::CApplication()
 	Level_Scan					( );
 
 	// Font
-	pFont						= new CGameFont	("font","ui\\ui_font_console",CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
-	Device.seqRender.Add		( pFont, REG_PRIORITY_LOW-1000 );
+	pFontSystem					= new CGameFont	("startup_font",CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
+	Device.seqRender.Add		( pFontSystem, REG_PRIORITY_LOW-1000 );
 
 	// Register us
 	Device.seqFrame.Add			(this, REG_PRIORITY_HIGH+1000);
@@ -168,8 +176,8 @@ CApplication::~CApplication()
 {
 	Console.Hide				( );
 	// font
-	Device.seqRender.Remove		( pFont		);
-	_DELETE						( pFont		);
+	Device.seqRender.Remove		( pFontSystem		);
+	_DELETE						( pFontSystem		);
 
 	// events
 	Engine.Event.Handler_Detach	(eDisconnect,this);
@@ -300,14 +308,13 @@ void CApplication::LoadTitle	(char *S, char *S2)
 
 	// Draw title
 	Log			(S,S2);
-	R_ASSERT	(pFont);
-	pFont->Clear();
-	pFont->Color(D3DCOLOR_RGBA(192,192,192,255));
-	pFont->Size	(0.02f);
+	R_ASSERT	(pFontSystem);
+	pFontSystem->Clear();
+	pFontSystem->Color(D3DCOLOR_RGBA(192,192,192,255));
 	char *F = "~%s";
 	if (S2) F="~%s%s";
-	pFont->Out	(0.f,0.93f,F,S,S2);
-	pFont->OnRender();
+	pFontSystem->Out	(0.f,0.93f,F,S,S2);
+	pFontSystem->OnRender();
 
 	Device.End	();
 }

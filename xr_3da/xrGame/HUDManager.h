@@ -28,9 +28,9 @@ private:
 	float					fScale;
 public:
 	// hud font
-	CGameFont*				pHUDFont;
-	CGameFont*				pHUDFont2;
-	CGameFont*				pGameFont;
+	CGameFont*				pFontSmall;
+	CGameFont*				pFontMedium;
+	CGameFont*				pFontDI;
 public:
 							CHUDManager			();
 	virtual					~CHUDManager		();

@@ -21,7 +21,7 @@ private:
 	Shader*					ll_hLogo1;
 	Shader*					ll_hLogo2;
 	CVS*					ll_hVS;
-	u32					ll_dwReference;
+	u32						ll_dwReference;
 private:
 	EVENT					eQuit;
 	EVENT					eStartServer;
@@ -29,11 +29,11 @@ private:
 	EVENT					eStartClient;
 	EVENT					eDisconnect;
 public:
-	CGameFont*				pFont;
+	CGameFont*				pFontSystem;
 
 	// Levels
 	vector<sLevelInfo>		Levels;
-	u32					Level_Current;
+	u32						Level_Current;
 	void					Level_Scan			();
 	int						Level_ID			(LPCSTR name);
 	void					Level_Set			(u32 ID);

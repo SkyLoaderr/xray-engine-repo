@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "AI_Space.h"
 #include "gameobject.h"
+#include "hudmanager.h"
 
 // for a* search
 #include "ai_a_star.h"
@@ -305,11 +306,12 @@ void CAI_Space::Render()
 	NodePosition		Local;
 	PackPosition		(Local,P);
 
-	u32 ID			= O->AI_NodeID;
+	u32 ID				= O->AI_NodeID;
 
-	pApp->pFont->Size	(.02f);
-	pApp->pFont->Out	(0.f,0.5f,"%f,%f,%f",VPUSH(P));
-	pApp->pFont->Out	(0.f,0.55f,"%3d,%4d,%3d -> %d",	iFloor(Local.x),iFloor(Local.y),iFloor(Local.z),u32(ID));
+	CGameFont* F		= ((CHUDManager*)Level().HUD())->pFontDI;
+	F->Size				(.02f);
+	F->Out				(0.f,0.5f,"%f,%f,%f",VPUSH(P));
+	F->Out				(0.f,0.55f,"%3d,%4d,%3d -> %d",	iFloor(Local.x),iFloor(Local.y),iFloor(Local.z),u32(ID));
 
 	svector<u32,128>	linked;
 	{
@@ -331,7 +333,7 @@ void CAI_Space::Render()
 	Fvector	DUP;	DUP.set(0,1,0);
 
 	Device.Shader.set_Shader(sh_debug);
-	pApp->pFont->Color		(D3DCOLOR_RGBA(255,255,255,255));
+	F->Color		(D3DCOLOR_RGBA(255,255,255,255));
 
 	for (u32 Nid=0; Nid<m_header.count; Nid++)
 	{
@@ -384,8 +386,8 @@ void CAI_Space::Render()
 				Fvector4	S;
 				T.set		(PC); T.y+=0.3f;
 				Device.mFullTransform.transform	(S,T);
-				pApp->pFont->Size	(0.05f/sqrtf(_abs(S.w)));
-				pApp->pFont->Out	(S.x,-S.y,"~%d",Nid);
+				F->Size		(0.05f/sqrtf(_abs(S.w)));
+				F->Out		(S.x,-S.y,"~%d",Nid);
 			}
 		}
 	}

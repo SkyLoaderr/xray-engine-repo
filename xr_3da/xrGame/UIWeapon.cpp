@@ -41,7 +41,7 @@ void CUIWeapon::Render()
 
 void CUIWeapon::Out(CWeapon* W){
 	if (W){
-		CGameFont* H= Level().HUD()->pHUDFont;
+		CGameFont* H= Level().HUD()->pFontSmall;
 		H->Color	(0x80ffffff);
 		H->Out		(float(position.x+6),	float(position.y+15),"%s",W->GetName());
 		int	AE		= W->GetAmmoElapsed();

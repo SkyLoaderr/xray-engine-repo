@@ -13,7 +13,7 @@ class ENGINE_API CGameFont;
 class ENGINE_API CStats
 {
 public:
-	CGameFont*	font;
+	CGameFont*	pFont;
 
 	float		fFPS,fRFPS,fTPS;	// FPS, RenderFPS, TPS
 	u32		dwShader_Codes;		// Number of times the shader-code changes

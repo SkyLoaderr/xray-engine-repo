@@ -11,6 +11,7 @@
 #include "xr_sndman.h"
 #include "GameFont.h"
 #include "xr_tokens.h"
+#include "xr_trims.h"
 
 #define  LDIST .05f
 
@@ -38,7 +39,7 @@ void CConsole::Initialize()
 	bVisible		= false;
 	rep_time		= 0;
 
-	pFont			= new CGameFont	("font","ui\\ui_font_console",CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
+	pFont			= new CGameFont	("console_font",CGameFont::fsDeviceIndependent);
 	Device.seqDevDestroy.Add(this);
 
 	// Commands
@@ -95,7 +96,6 @@ void CConsole::OnRender	()
 	if (bCursor) strcat(buf,"|");
 
 	pFont->Color( D3DCOLOR_RGBA(128  ,128  ,255, 255) );
-	pFont->Size	( 0.019f );
 	pFont->Out	( -1.f, fMaxY-LDIST, "%s", buf );
 
 	float ypos=fMaxY-LDIST-LDIST;

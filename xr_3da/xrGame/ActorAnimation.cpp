@@ -179,9 +179,9 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	if (mstate_rl&mcTurn)		strcat(buf,"Turn ");
 	if (mstate_rl&mcLanding)	strcat(buf,"Landing ");
 	if (m_bJumpKeyPressed)		strcat(buf,"+Jumping ");
-	HUD->pHUDFont->Color(0xffffffff);
-	HUD->pHUDFont->OutSet(120,450);
-	HUD->pHUDFont->OutNext("MSTATE:     [%s]",buf);
+	HUD->pFontSmall->Color(0xffffffff);
+	HUD->pFontSmall->OutSet(120,450);
+	HUD->pFontSmall->OutNext("MSTATE:     [%s]",buf);
 //	if (buf[0]) 
 //		Msg("%s",buf);
 	switch (Movement.Environment())
@@ -190,9 +190,9 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	case CMovementControl::peInAir:		strcpy(buf,"air");				break;
 	case CMovementControl::peAtWall:	strcpy(buf,"wall");				break;
 	}
-	HUD->pHUDFont->OutNext	(buf);
-	HUD->pHUDFont->OutNext	("Accel     [%3.2f, %3.2f, %3.2f]",VPUSH(NET_SavedAccel));
-	HUD->pHUDFont->OutNext	("V         [%3.2f, %3.2f, %3.2f]",VPUSH(Movement.GetVelocity()));
+	HUD->pFontSmall->OutNext	(buf);
+	HUD->pFontSmall->OutNext	("Accel     [%3.2f, %3.2f, %3.2f]",VPUSH(NET_SavedAccel));
+	HUD->pFontSmall->OutNext	("V         [%3.2f, %3.2f, %3.2f]",VPUSH(Movement.GetVelocity()));
 #endif
 }
 

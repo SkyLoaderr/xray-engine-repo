@@ -46,7 +46,10 @@ protected:
 	IC	float				ConvertX		(float x)	{return (uFlags&fsDeviceIndependent)?Device._x2real(x):x;}
 	IC	float				ConvertY		(float y)	{return (uFlags&fsDeviceIndependent)?Device._y2real(y):y;}
 	IC	float				ConvertSize		(float sz)	{return (uFlags&fsDeviceIndependent)?sz*Device.dwWidth:sz;}
+
+	void					Initialize		(LPCSTR shader, LPCSTR texture, u32 flags);
 public:
+							CGameFont		(LPCSTR section, u32 flags=0);
 							CGameFont		(LPCSTR shader, LPCSTR texture, u32 flags=0);
 							~CGameFont		();
 
@@ -59,7 +62,7 @@ public:
 	void __cdecl            OutNext			(char *fmt, ...);
 	void __cdecl            OutPrev			(char *fmt, ...);
 	void __cdecl 			Out				(float _x, float _y, char *fmt, ...);
-	IC void					OutSkip			(float val=1.f)		{fCurrentY += val*fCurrentSize*vInterval.y;}
+	void					OutSkip			(float val=1.f);
 	
 	virtual void			OnRender		();
 	virtual void			OnDeviceCreate	();

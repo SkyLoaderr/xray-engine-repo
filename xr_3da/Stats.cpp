@@ -11,12 +11,12 @@ CStats::CStats()
 	fFPS		= 30.f;
 	fRFPS		= 30.f;
 	fTPS		= 0;
-	font		= 0;
+	pFont		= 0;
 }
 
 CStats::~CStats()
 {
-	_DELETE		(font);
+	_DELETE		(pFont);
 }
 
 #define QS if(psDeviceFlags&rsStatistic)
@@ -92,7 +92,7 @@ void CStats::Show()
 		r_ps						= .99f*r_ps + .01f*(clRAY.count/clRAY.result);
 		b_ps						= .99f*b_ps + .01f*(clBOX.count/clBOX.result);
 		
-		CGameFont&	F = *((CGameFont*)font);
+		CGameFont&	F = *((CGameFont*)pFont);
 		F.Color		(0xFFFFFFFF	);
 		F.OutSet	(0,0);
 		F.OutNext	("FPS/RFPS:    %3.1f/%3.1f",fFPS,fRFPS);
@@ -213,9 +213,9 @@ void CStats::Show()
 
 void CStats::OnDeviceCreate			()
 {
-	font	= new CGameFont			("font","ui\\ui_font_hud_01",0);
+	pFont	= new CGameFont			("stat_font");
 }
 void CStats::OnDeviceDestroy		()
 {
-	_DELETE	(font);
+	_DELETE	(pFont);
 }

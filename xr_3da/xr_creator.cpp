@@ -170,7 +170,7 @@ void CCreator::OnRender()
 	Render->Render				();
 
 	// Font
-	pApp->pFont->OnRender		();
+	pApp->pFontSystem->OnRender	();
 }
 
 void CCreator::OnFrame	( void ) 

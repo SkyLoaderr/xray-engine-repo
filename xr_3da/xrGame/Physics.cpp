@@ -31,7 +31,7 @@ Fvector f;
 Log("dfdf ",f);
 Msg("%s","rrr");
 */
-//Level().HUD().pHUDFont->Out(x,y,"%s","sdfsdsd");
+//Level().HUD().pFontSmall->Out(x,y,"%s","sdfsdsd");
 
 void CPHWorld::Render()
 {

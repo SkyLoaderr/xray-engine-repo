@@ -131,7 +131,7 @@ void CUI::OnFrame()
 	}
 
 	if (!messages.empty()){
-		m_Parent->pHUDFont->OutSet(0,msgs_offs);
+		m_Parent->pFontSmall->OutSet(0,msgs_offs);
 		for (int i=messages.size()-1; i>=0; i--){
 			SUIMessage* M = messages[i];
 			M->life_time-=Device.dwTimeDelta;
@@ -144,8 +144,8 @@ void CUI::OnFrame()
 			u32 color = messages[i]->color;
 			if (M->life_time<=(HIDE_TIME*1000))
 				color = ScaleAlpha(color, float(M->life_time)/float(HIDE_TIME*1000));
-			m_Parent->pHUDFont->Color(color);
-			m_Parent->pHUDFont->OutPrev("%s: %s",messages[i]->sender,messages[i]->msg);
+			m_Parent->pFontSmall->Color(color);
+			m_Parent->pFontSmall->OutPrev("%s: %s",messages[i]->sender,messages[i]->msg);
 		}
 	}
 }

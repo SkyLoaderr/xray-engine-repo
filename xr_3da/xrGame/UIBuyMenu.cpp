@@ -36,7 +36,7 @@ void CUIBuyMenu::Load	()
 void CUIBuyMenu::OnFrame()
 {
 	if (menu_active){
-		CGameFont* F	= Level().HUD()->pHUDFont2;
+		CGameFont* F	= Level().HUD()->pFontMedium;
 		F->Color		(0xFFFFFFFF);
 		if (menu_active->Parent()){
 			F->OutSet	(float(menu_offs_col[1]),float(menu_offs));

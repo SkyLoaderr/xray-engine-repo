@@ -879,20 +879,6 @@ void CActor::g_WeaponBones	(int& L, int& R)
 
 void CActor::Statistic		()
 {
-	//-------------------------------------------------------------------
-	pApp->pFont->OutSet(0,0);
-	switch(Movement.Environment()){
-	case CMovementControl::peOnGround:	pApp->pFont->OutNext("Environment: Ground");	break;
-	case CMovementControl::peInAir:		pApp->pFont->OutNext("Environment: Air");		break;
-	case CMovementControl::peAtWall:	pApp->pFont->OutNext("Environment: At Wall");	break;
-	default:							pApp->pFont->OutNext("Environment: ???");	
-	}
-	
-	pApp->pFont->OutNext("Speed:    %f,%f,%f",VPUSH(Movement.GetVelocity()));
-	pApp->pFont->OutNext("Position: %f,%f,%f",VPUSH(vPosition));
-	pApp->pFont->OutNext("CamPos:   %f,%f,%f",VPUSH(Device.vCameraPosition));
-	pApp->pFont->OutNext("Sleep?:   %s",Movement.bSleep?"TRUE":"FALSE");
-	//-------------------------------------------------------------------
 }
 
 // HUD
@@ -904,19 +890,19 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 #ifdef _DEBUG
 	CHUDManager* HUD	= (CHUDManager*)hud;
 	string128 buf;
-	HUD->pHUDFont->Color(0xffffffff);
-	HUD->pHUDFont->OutSet(120,530);
-	HUD->pHUDFont->OutNext("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(vPosition));
-	HUD->pHUDFont->OutNext("Velocity:      [%3.2f, %3.2f, %3.2f]",VPUSH(Movement.GetVelocity()));
-	HUD->pHUDFont->OutNext("Vel Magnitude: [%3.2f]",Movement.GetVelocityMagnitude());
-	HUD->pHUDFont->OutNext("Vel Actual:    [%3.2f]",Movement.GetVelocityActual());
+	HUD->pFontSmall->Color(0xffffffff);
+	HUD->pFontSmall->OutSet(120,530);
+	HUD->pFontSmall->OutNext("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(vPosition));
+	HUD->pFontSmall->OutNext("Velocity:      [%3.2f, %3.2f, %3.2f]",VPUSH(Movement.GetVelocity()));
+	HUD->pFontSmall->OutNext("Vel Magnitude: [%3.2f]",Movement.GetVelocityMagnitude());
+	HUD->pFontSmall->OutNext("Vel Actual:    [%3.2f]",Movement.GetVelocityActual());
 	switch (Movement.Environment())
 	{
 	case CMovementControl::peOnGround:	strcpy(buf,"ground");			break;
 	case CMovementControl::peInAir:		strcpy(buf,"air");				break;
 	case CMovementControl::peAtWall:	strcpy(buf,"wall");				break;
 	}
-	HUD->pHUDFont->OutNext	(buf);
+	HUD->pFontSmall->OutNext	(buf);
 #endif
 /**
 	CHUDManager* HUD	= (CHUDManager*)hud;

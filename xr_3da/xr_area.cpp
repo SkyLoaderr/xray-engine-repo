@@ -212,10 +212,6 @@ void CObjectSpace::dbgRender()
 {
 	R_ASSERT(bDebug);
 
-	pApp->pFont->Size	(.02f);
-	pApp->pFont->Out	(0,0,"Box count: %d",q_debug.boxes.size());
-	
-	
 	Device.Shader.set_Shader(sh_debug);
 	for (u32 i=0; i<q_debug.boxes.size(); i++)
 	{
@@ -269,5 +265,4 @@ void CObjectSpace::dbgRender()
 		}
 	}
 	c.set(pCreator->CurrentEntity()->Position());
-	pApp->pFont->Out(-1.f,0.5f,"Slot {%d,%d}",TransX(c.x),TransZ(c.z));
 }

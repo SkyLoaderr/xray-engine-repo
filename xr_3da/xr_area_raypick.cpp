@@ -22,7 +22,6 @@ BOOL CObjectSpace::nl_append(int x, int z, const Fvector2& O, const Fvector2& D)
 		if(TestRaySlot(x,z,O,D))
 		{
 			if(bDebug){
-				pApp->pFont->OutNext("{%d,%d}",x,z);
 				dbg_Slot.push_back(Fvector2());
 				dbg_Slot.back().set(float(x),float(z));
 			}
@@ -54,8 +53,6 @@ BOOL CObjectSpace::TestRaySlot(int x, int z, const Fvector2& start, const Fvecto
 void CObjectSpace::CaptureSlots(const Fvector& start, const Fvector& dir, float range)
 {
 	dbg_Slot.clear();
-
-	if (bDebug) pApp->pFont->OutSet(0.5f,-1.f);
 
 	Fvector end; end.mad	(start,dir,range);
 	Fvector2 S,D;

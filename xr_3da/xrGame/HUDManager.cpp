@@ -13,9 +13,9 @@
 CHUDManager::CHUDManager()
 { 
 	Level().pHUD	= this;
-	pHUDFont		= new CGameFont("font","ui\\ui_font_hud_01");//"ui\\ui_font_hud_01");
-	pHUDFont2		= new CGameFont("font","ui\\ui_font_hud_03");//"ui\\ui_font_hud_02");
-	pGameFont		= new CGameFont("font","ui\\ui_font_console");//"ui\\ui_font_hud_02",16,CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
+	pFontSmall		= new CGameFont("hud_font_small");
+	pFontMedium		= new CGameFont("hud_font_medium");
+	pFontDI			= new CGameFont("hud_font_di",CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
 	pUI				= 0;
 	Device.seqDevCreate.Add	(this);
 	Device.seqDevDestroy.Add(this);
@@ -28,9 +28,9 @@ CHUDManager::~CHUDManager()
 	Device.seqDevCreate.Remove(this);
 	Device.seqDevDestroy.Remove(this);
 	_DELETE			(pUI);
-	_DELETE			(pHUDFont);
-	_DELETE			(pHUDFont2);
-	_DELETE			(pGameFont);
+	_DELETE			(pFontSmall);
+	_DELETE			(pFontMedium);
+	_DELETE			(pFontDI);
 }
 //--------------------------------------------------------------------
 void CHUDManager::ClientToScreenScaled(Irect& r, u32 align)
@@ -129,9 +129,9 @@ void CHUDManager::Render_Direct	()
 		
 		// UI
 		bAlready = ! (pUI && !pUI->Render());
-		pGameFont->OnRender		();
-		pHUDFont->OnRender		();
-		pHUDFont2->OnRender		();
+		pFontDI->OnRender		();
+		pFontSmall->OnRender	();
+		pFontMedium->OnRender	();
 	}
 	if ((psHUD_Flags&HUD_CROSSHAIR) && !bAlready)	HUDCursor.Render();
 }

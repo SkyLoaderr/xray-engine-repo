@@ -84,17 +84,17 @@ void CHUDCursor::Render()
 	PT.transform	(p2,Device.mFullTransform);
 	float			di_size = C_SIZE/powf(PT.p.w,.2f);
 
+	CGameFont* F = Level().HUD()->pFontDI;
 	if (psHUD_Flags&HUD_CROSSHAIR_DIST){
-		pApp->pFont->Color	(C);
-		pApp->pFont->Size	(di_size*1.5f);
-		pApp->pFont->Out(PT.p.x,PT.p.y+di_size*2,"~%3.1f",dist);
+		F->Color	(C);
+		F->Size		(di_size*1.5f);
+		F->Out		(PT.p.x,PT.p.y+di_size*2,"~%3.1f",dist);
 	}
 	if (RQ.O && (psHUD_Flags&HUD_INFO))
 	{ 
 		CEntityAlive*	E = dynamic_cast<CEntityAlive*>(RQ.O);
 		if (E && (E->g_Health()>0)) 
 		{
-			CGameFont* F = Level().HUD()->pGameFont;
 			F->Color	(C);
 			F->Size		(0.02f);
 			F->Out		(PT.p.x,PT.p.y+di_size*4,"~%s",RQ.O->cName());

@@ -469,12 +469,12 @@ void CCustomMonster::OnRender()
 		Fvector         T;
         Fvector4        S;
         
-        T.set   (AI_Path.TravelPath[I].P); T.y+=(Radius()*2);
+        T.set			(AI_Path.TravelPath[I].P); T.y+=(Radius()*2);
         Device.mFullTransform.transform (S,T);
         
-        pApp->pFont->Size       (0.07f/sqrtf(_abs(S.w)));
-        pApp->pFont->Color      (D3DCOLOR_RGBA(0,255,0,(S.z<=0)?0:255));
-		pApp->pFont->Out		(S.x,-S.y,"%d",I);
+//		pApp->pFont->Size       (0.07f/sqrtf(_abs(S.w)));
+//		pApp->pFont->Color      (D3DCOLOR_RGBA(0,255,0,(S.z<=0)?0:255));
+//		pApp->pFont->Out		(S.x,-S.y,"%d",I);
 		/**/
 	}
 	}
@@ -602,9 +602,9 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 void CCustomMonster::OnHUDDraw(CCustomHUD* hud)
 {
 	CHUDManager* H			= (CHUDManager*)hud;
-	H->pHUDFont->Color		(D3DCOLOR_XRGB(255,0,0));
-	H->pHUDFont->OutSet		(0,200);
-	H->pHUDFont->OutNext	("NET_Q_size: %d",NET.size());
+	H->pFontSmall->Color	(D3DCOLOR_XRGB(255,0,0));
+	H->pFontSmall->OutSet	(0,200);
+	H->pFontSmall->OutNext	("NET_Q_size: %d",NET.size());
 	
 	/*
 	const float			fy = -1;

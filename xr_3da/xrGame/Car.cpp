@@ -312,10 +312,10 @@ void	CCar::OnHUDDraw				(CCustomHUD* hud)
 {
 #ifdef DEBUG
 	CHUDManager* HUD	= (CHUDManager*)hud;
-	HUD->pHUDFont->Color(0xffffffff);
-	HUD->pHUDFont->OutSet(120,530);
-	HUD->pHUDFont->OutNext("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(vPosition));
-	HUD->pHUDFont->OutNext("Velocity:      [%3.2f]",m_jeep.GetVelocity().magnitude());
+	HUD->pFontSmall->Color	(0xffffffff);
+	HUD->pFontSmall->OutSet	(120,530);
+	HUD->pFontSmall->OutNext("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(vPosition));
+	HUD->pFontSmall->OutNext("Velocity:      [%3.2f]",m_jeep.GetVelocity().magnitude());
 #endif
 }
 

@@ -8,12 +8,23 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 #define MAX_CHARS	1024
+CGameFont::CGameFont(LPCSTR section, u32 flags)
+{
+	Initialize	(pSettings->ReadSTRING(section,"shader"),pSettings->ReadSTRING(section,"texture"),flags);
+	if (pSettings->LineExists(section,"size"))		Size(pSettings->ReadFLOAT(section,"size"));
+	if (pSettings->LineExists(section,"interval"))	vInterval = pSettings->ReadVECTOR2(section,"interval");
+}
 CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, u32 flags)
+{
+	Initialize	(shader,texture,flags);
+}
+void CGameFont::Initialize(LPCSTR shader, LPCSTR texture, u32 flags)
 {
 	uFlags						= flags;
 	cShader						= xr_strdup(shader);
 	cTexture					= xr_strdup(texture);
 	pShader						= 0;
+	vInterval.set				(1.f,1.f);
 	Device.seqDevCreate.Add		(this);
 	Device.seqDevDestroy.Add	(this);
 	for (int i=0; i<256; i++)	CharMap[i] = i;
@@ -23,9 +34,9 @@ CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, u32 flags)
 	string256 fn,buf;
 	strcpy(buf,texture); if (strext(buf)) *strext(buf)=0;
 #ifdef M_BORLAND
-	R_ASSERT(Engine.FS.Exist(fn,Engine.FS.m_GameTextures.m_Path,buf,".ini"));
+	R_ASSERT2(Engine.FS.Exist(fn,Engine.FS.m_GameTextures.m_Path,buf,".ini"),fn);
 #else
-	R_ASSERT(Engine.FS.Exist(fn,Path.Textures,buf,".ini"));
+	R_ASSERT2(Engine.FS.Exist(fn,Path.Textures,buf,".ini"),fn);
 #endif
 	CInifile* ini				= CInifile::Create(fn);
 	if (ini->SectionExists("symbol_coords")){
@@ -35,7 +46,6 @@ CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, u32 flags)
 			TCMap[i].set			(v.x,v.y,v[2]-v[0]);
 		}
 		fHeight						= ini->ReadFLOAT("symbol_coords","height");
-		vInterval.set				(1.f,1.f);
 	}else{
 		if (ini->SectionExists("char widths")){
 			fHeight					= ini->ReadFLOAT("char widths","height");
@@ -45,14 +55,11 @@ CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, u32 flags)
 				float w				= ini->ReadFLOAT("char widths",buf);
 				TCMap[i].set		((i%cpl)*fHeight,(i/cpl)*fHeight,w);
 			}
-			vInterval.set			(1.f,1.f);
 		}else{
 			R_ASSERT(ini->SectionExists("font_size"));
 			fHeight					= ini->ReadFLOAT("font_size","height");
 			float width				= ini->ReadFLOAT("font_size","width");
 			const int cpl			= ini->ReadINT	("font_size","cpl");
-			vInterval.x				= ini->ReadFLOAT("font_size","interval");
-			vInterval.y				= 1.f;
 			for (int i=0; i<256; i++)
 				TCMap[i].set			((i%cpl)*width,(i/cpl)*fHeight,width);
 		}
@@ -140,7 +147,7 @@ void CGameFont::OnRender()
 				float	Y	= float(iFloor(ConvertY(PS.y)));
 				float	S	= ConvertSize(PS.size);
 				float	Y2	= Y+S;
-				S			= S/fHeight*vTS.x;
+				S			= (S*vTS.x)/fHeight;
 
 				u32	clr,clr2; 
 				clr			= PS.c; 
@@ -241,7 +248,7 @@ void __cdecl CGameFont::OutNext(char *fmt,...)
 	va_end(p);
 
 	strings.push_back(rs);
-	fCurrentY += fCurrentSize*vInterval.y;
+	OutSkip(1);
 }
 
 void __cdecl CGameFont::OutPrev(char *fmt,...)
@@ -265,7 +272,12 @@ void __cdecl CGameFont::OutPrev(char *fmt,...)
 	va_end(p);
 
 	strings.push_back(rs);
-	fCurrentY -= fCurrentSize*vInterval.y;
+	OutSkip(-1);
+}
+
+void CGameFont::OutSkip(float val)		
+{
+	fCurrentY += val*fCurrentSize*vInterval.y*((uFlags&fsDeviceIndependent)?2.f:1.f);
 }
 
 float CGameFont::SizeOf(char *s)	
