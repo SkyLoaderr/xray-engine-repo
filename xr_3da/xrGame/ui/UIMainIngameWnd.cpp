@@ -567,10 +567,8 @@ void CUIMainIngameWnd::Update()
 	// health&armor
 	//	UIHealth.Out(m_Actor->g_Health(),m_Actor->g_Armor());
 	UIHealthBar.SetProgressPos((s16)m_pActor->g_Health());
-	if (GameID() != GAME_SINGLE)
-	{
-		UIMotionIcon.SetProgressPos(s16(m_pActor->conditions().GetPower()*100));
-	};
+	UIMotionIcon.SetProgressPos(s16(m_pActor->conditions().GetPower()*100));
+	
 	
 	EWarningIcons i = ewiWeaponJammed;
 		
