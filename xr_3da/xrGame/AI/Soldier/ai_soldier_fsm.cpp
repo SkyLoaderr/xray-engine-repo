@@ -801,7 +801,8 @@ void CAI_Soldier::OnLookingOver()
 	
 //	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierPatrolUnderFire)
 	
-	/**/
+	CHECK_IF_SWITCH_TO_NEW_STATE(m_tpaPatrolPoints.size() > 1,aiSoldierPatrolRoute)
+	/**
 	for (int i=0; i<tpaDynamicSounds.size(); i++)
 		if (tpaDynamicSounds[i].dwTime > m_dwLastUpdate) {
 			SelectSound(m_iSoundIndex);
@@ -1546,6 +1547,7 @@ void CAI_Soldier::Think()
 				OnPointAtSmth();
 				break;
 			}
+			/**/
 		}
 		m_bStateChanged = m_ePreviousState != eCurrentState;
 	}
