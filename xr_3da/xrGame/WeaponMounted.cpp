@@ -8,6 +8,10 @@
 #include "weaponammo.h"
 
 
+#include "actoreffector.h"
+#include "effectorshot.h"
+
+
 //----------------------------------------------------------------------------------------
 
 void __stdcall CWeaponMounted::BoneCallbackX(CBoneInstance *B)
@@ -45,6 +49,17 @@ void	CWeaponMounted::Load(LPCSTR section)
 	CShootingObject::Load	(section);
 
 	HUD_SOUND::LoadSound(section,"snd_shoot", sndShot, TRUE, SOUND_TYPE_WEAPON_SHOOTING);
+
+	//тип используемых патронов
+	m_sAmmoType = pSettings->r_string(section, "ammo_class");
+	m_CurrentAmmo.Load(*m_sAmmoType);
+
+	//подбрасывание камеры во время отдачи
+	camMaxAngle			= pSettings->r_float		(section,"cam_max_angle"	); 
+	camMaxAngle			= deg2rad					(camMaxAngle);
+	camRelaxSpeed		= pSettings->r_float		(section,"cam_relax_speed"	); 
+	camRelaxSpeed		= deg2rad					(camRelaxSpeed);
+
 }
 
 BOOL	CWeaponMounted::net_Spawn(LPVOID DC)
@@ -257,6 +272,27 @@ void CWeaponMounted::FireEnd()
 {
 	CShootingObject::FireEnd();
 	StopFlameParticles	();
+	RemoveShotEffector ();
+}
+
+
+void CWeaponMounted::OnShot		()
+{
+	VERIFY(Owner());
+
+	FireBullet(CurrentFirePoint(),fire_dir, 
+		fireDispersionBase,
+		m_CurrentAmmo, Owner()->ID(),ID());
+
+	StartFlameParticles();
+	StartSmokeParticles(fire_pos, zero_vel);
+	OnShellDrop(fire_pos, zero_vel);
+
+	bool hud_mode = (Level().CurrentEntity() == dynamic_cast<CObject*>(Owner()));
+	HUD_SOUND::PlaySound(sndShot, fire_pos, Owner(), hud_mode);
+
+	//добавить эффектор стрельбы
+	AddShotEffector		();
 }
 
 void CWeaponMounted::UpdateFire()
@@ -281,30 +317,24 @@ void CWeaponMounted::UpdateFire()
 
 }
 
-void CWeaponMounted::OnShot		()
-{
-	VERIFY(Owner());
-
-	CCartridge cartridge;
-	cartridge.m_kDist = 1.f;
-	cartridge.m_kHit = 1.f;
-	cartridge.m_kImpulse = 1.f;
-	cartridge.m_kPierce = 1.f;
-	cartridge.fWallmarkSize = 0.3f;
-
-	FireBullet(CurrentFirePoint(),fire_dir, 
-				fireDispersionBase,
-				cartridge, Owner()->ID(),ID());
-
-	StartFlameParticles();
-	StartSmokeParticles(fire_pos, zero_vel);
-	OnShellDrop(fire_pos, zero_vel);
-
-	bool hud_mode = (Level().CurrentEntity() == dynamic_cast<CObject*>(Owner()));
-	HUD_SOUND::PlaySound(sndShot, fire_pos, Owner(), hud_mode);
-}
-
 const Fmatrix&	 CWeaponMounted::ParticlesXFORM() const	
 {
 	return fire_bone_xform;
+}
+
+void CWeaponMounted::AddShotEffector		()
+{
+	if(Owner())
+	{
+		CEffectorShot* S		= dynamic_cast<CEffectorShot*>	(Owner()->EffectorManager().GetEffector(eCEShot)); 
+		if (!S)	S				= (CEffectorShot*)Owner()->EffectorManager().AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed, 0.25f));
+		R_ASSERT				(S);
+		S->MountedWeaponShot	();
+	}
+}
+
+void  CWeaponMounted::RemoveShotEffector	()
+{
+	if(Owner())
+		Owner()->EffectorManager().RemoveEffector	(eCEShot);
 }

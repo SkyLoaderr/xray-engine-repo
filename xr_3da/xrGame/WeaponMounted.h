@@ -4,7 +4,9 @@
 
 #include "holder_custom.h"
 #include "shootingobject.h"
-#include "HudSound.h"
+
+#include "hudsound.h"
+#include "weaponammo.h"
 
 
 class CWeaponMounted :	public CGameObject, 
@@ -26,9 +28,6 @@ private:
 	Fvector					fire_pos, fire_dir;
 	Fmatrix					fire_bone_xform;
 
-	//звук стрельбы
-	HUD_SOUND				sndShot;
-
 	static void __stdcall	BoneCallbackX		(CBoneInstance *B);
 	static void __stdcall	BoneCallbackY		(CBoneInstance *B);
 public:
@@ -40,13 +39,34 @@ public:
 	virtual IRender_Sector*	Sector()				{return CGameObject::Sector();}
 	virtual const Fvector&	CurrentFirePoint()		{return fire_pos;}
 
+
+	//////////////////////////////////////////////////
+	// непосредственно обработка стрельбы
+	//////////////////////////////////////////////////
+
+protected:
 	virtual	void			FireStart	();
 	virtual	void			FireEnd		();
 	virtual	void			UpdateFire	();
 	virtual	void			OnShot		();
+	virtual void			AddShotEffector		();
+	virtual void			RemoveShotEffector	();
+protected:
+	ref_str					m_sAmmoType;
+	CCartridge				m_CurrentAmmo;
+
+	//звук стрельбы
+	HUD_SOUND				sndShot;
+
+	//для отдачи
+	float					camRelaxSpeed;
+	float					camMaxAngle;
 
 
+	/////////////////////////////////////////////////
 	// Generic
+	/////////////////////////////////////////////////
+public:
 	virtual void			Load				(LPCSTR section);
 
 	virtual BOOL			net_Spawn			(LPVOID DC);
