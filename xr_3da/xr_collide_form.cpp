@@ -413,6 +413,7 @@ BOOL CCF_Shape::Contact		( CObject* O )
 		S.R				= O->Radius();
 	}else if (O->CFORM()){
 		S = O->CFORM()->getSphere();
+		O->clXFORM().transform_tiny(S.P);
 	}else return FALSE;
 	
 	// Get our matrix
