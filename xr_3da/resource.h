@@ -8,7 +8,7 @@
 #define IDD_VERIFY                      104
 #define IDI_XRAY                        105
 #define IDD_STARTUP                     106
-#define IDB_BITMAP1                     107
+#define IDB_LOGO                        108
 #define IDC_LIST                        1000
 #define IDC_FILE                        1001
 #define IDC_LINE                        1002
@@ -21,7 +21,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        108
+#define _APS_NEXT_RESOURCE_VALUE        109
 #define _APS_NEXT_COMMAND_VALUE         40001
 #define _APS_NEXT_CONTROL_VALUE         1007
 #define _APS_NEXT_SYMED_VALUE           101

@@ -96,6 +96,14 @@ LINK32=link.exe
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\icon1.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\logo.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\resource.h
 # End Source File
 # Begin Source File
@@ -2185,10 +2193,6 @@ SOURCE=X:\game\engine.log
 # Begin Source File
 
 SOURCE=.\features.txt
-# End Source File
-# Begin Source File
-
-SOURCE=.\icon1.ico
 # End Source File
 # Begin Source File
 

@@ -160,11 +160,11 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Dialog
 //
 
-IDD_STARTUP DIALOG DISCARDABLE  0, 0, 295, 252
+IDD_STARTUP DIALOG DISCARDABLE  0, 0, 171, 158
 STYLE DS_ABSALIGN | DS_SETFOREGROUND | DS_CENTER | WS_VISIBLE
 FONT 8, "MS Sans Serif"
 BEGIN
-    CONTROL         "",IDC_STATIC,"Static",SS_BITMAP,0,0,15,13
+    CONTROL         108,IDC_STATIC,"Static",SS_BITMAP,0,0,171,158
 END
 
 
@@ -179,9 +179,9 @@ BEGIN
     IDD_STARTUP, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 288
+        RIGHTMARGIN, 164
         TOPMARGIN, 7
-        BOTTOMMARGIN, 245
+        BOTTOMMARGIN, 151
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -192,7 +192,7 @@ END
 // Bitmap
 //
 
-IDB_BITMAP1             BITMAP  DISCARDABLE     "bitmap1.bmp"
+IDB_LOGO                BITMAP  DISCARDABLE     "logo.bmp"
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
