@@ -66,11 +66,17 @@ local num_phrases = 10
 class "evaluator_leader_present" (property_evaluator)
 function evaluator_leader_present:__init (name, storage) super (nil, name)
 	self.a = storage
+	self.time = 0
 end
 --------------
 function evaluator_leader_present:evaluate ()
     if self.a.leader == nil then
-       if self.a.leader_name == nil then return false end 
+       if self.a.leader_name == nil then 
+          self.a.leader_name = self:get_leader ()
+          if self.a.leader_name == nil then 
+             return false 
+          end   
+       end
        self.a.leader = level.object (self.a.leader_name)
        if self.a.leader == nil then 
           return false 
@@ -79,6 +85,28 @@ function evaluator_leader_present:evaluate ()
        end   
     end
     return true
+end
+--------------
+function evaluator_leader_present:get_leader ()
+    local gulag = xr_gulag.isUnderFraction (self.object)
+    if gulag == nil then return nil end
+    local t = xr_gulag.fraction[gulag]:getJob (self.object)
+    if t ~= nil and t.leader ~= nil then 
+       local name = xr_gulag.fraction[gulag]:nameStalkerOnJob (t.leader)
+       if name ~= nil then 
+          printf ("LEADER NAME %s", name) 
+          return name 
+       end   
+    end
+    if self.time == 0 then
+       self.time = device ():time_global ()
+       return nil
+    else
+       if device ():time_global () - self.time > 10000 then
+          xr_gulag.resetJob (gulag, self.object) 
+          return nil
+       end
+    end      
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -221,7 +249,12 @@ function action_follow:initialize ()
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_follow:free ()
-    xr_logic.try_switch_to_another_section(self.object, self.a)
+    local st = xr_gulag.isUnderFraction (self.object)
+    if st ~= nil then
+       xr_gulag.resetJob (st, self.object)
+    else
+       xr_logic.try_switch_to_another_section (self.object, self.a)   
+    end
 end
 --------------
 function action_follow:execute ()
@@ -450,7 +483,7 @@ end
 
 
 
-
+--[[
 -- рейд
 class "action_raid" (action_base)
 --------------
@@ -629,6 +662,7 @@ function action_raid:move_callback (obj, action_type, index)
     end   
         
 end
+]]--
 
 ---------------------------------------------------------------------------------------------------------------------
 class "action_raid" (action_base)
@@ -651,7 +685,6 @@ function action_raid:initialize ()
     self.object:set_path_evaluator        ()
     self.object:set_desired_position      ()
     self.object:set_desired_direction     ()
-
 	
 	self:reset_scheme ()
 end
@@ -746,11 +779,14 @@ function set_scheme (npc, ini, scheme, section, gulag_name)
 
 	local st = xr_logic.assign_storage_and_bind (npc, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions (ini, section, npc)
-	st.leader_name  = utils.cfg_get_string (ini, section, "leader_name", npc, true,  gulag_name)
+
 	st.patrol_look  = utils.cfg_get_string (ini, section, "escape_path", npc, false, gulag_name)
 	st.raid_path    = utils.cfg_get_string (ini, section, "raid_path",   npc, false, gulag_name)
 	st.raid_look    = utils.cfg_get_string (ini, section, "raid_look",   npc, false, gulag_name)
 	st.team         = utils.cfg_get_string (ini, section, "team",        npc, false, gulag_name)
+    st.leader_name  = utils.cfg_get_string (ini, section, "leader_name", npc, false, "empty")
+    
+    if st.leader_name == "empty" then st.leader_name = nil end
 	
 	st.mental_state = anim.free
     st.raid_process = false

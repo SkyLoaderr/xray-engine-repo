@@ -150,6 +150,7 @@ function action_patrol:callback (mode, number)
            local st = xr_gulag.isUnderFraction (self.object)
            if st ~= nil then
               xr_gulag.resetJob (st, self.object)
+              self:set_command (leader_free)
            else
               xr_logic.try_switch_to_another_section (self.object, self.a)   
            end
