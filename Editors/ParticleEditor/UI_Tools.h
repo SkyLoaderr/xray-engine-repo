@@ -1,8 +1,9 @@
 //---------------------------------------------------------------------------
-#ifndef UIToolsH
-#define UIToolsH
+#ifndef UI_ToolsH
+#define UI_ToolsH
 
 #include "ParticleSystem.h"
+#include "ParticleGroup.h"
 
 // refs
 class CPSObject;
@@ -48,6 +49,12 @@ class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
     Fvector				m_RotateCenter;
     Fvector				m_RotateVector;
     float				m_fRotateSnapAngle;
+    
+    AnsiString			m_CommandList;
+    CParticleGroup		m_EditGroup;
+    void __fastcall		OnApplyClick		();
+public:
+	void				EditActionList		();
 public:
 						CParticleTools		();
     virtual 			~CParticleTools		();

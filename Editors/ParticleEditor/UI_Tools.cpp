@@ -16,6 +16,11 @@
 #include "xr_trims.h"
 #include "library.h"
 
+#include "xr_tokens.h"
+#include "TextForm.h"
+#include "d3dutils.h"
+#include "engine/particles/papi.h"
+#include "engine/particles/general.h"
 //------------------------------------------------------------------------------
 CParticleTools Tools;
 //------------------------------------------------------------------------------
@@ -99,6 +104,9 @@ void CParticleTools::Render(){
 	if (!m_bReady) return;
     if (m_EditObject)	m_EditObject->RenderSingle(Fidentity);
 	if (m_TestObject)	m_TestObject->RenderSingle();
+
+	// Draw the particles.
+    m_EditGroup.Render();
 }
 
 void CParticleTools::OnFrame(){
@@ -111,6 +119,8 @@ void CParticleTools::OnFrame(){
     }
 	if (m_EditObject)
     	m_EditObject->OnFrame();
+        
+    m_EditGroup.OnFrame();
 }
 
 void CParticleTools::ZoomObject(BOOL bObjectOnly){
@@ -468,5 +478,17 @@ void __fastcall CParticleTools::MouseMove(TShiftState Shift)
     }
     UpdateEmitter();
     m_PSProps->fraEmitter->GetInfoFirst(m_EditPS.m_DefaultEmitter);
+}       
+
+//------------------------------------------------------------------------------
+
+void __fastcall	CParticleTools::OnApplyClick()
+{
+	m_EditGroup.ParseCommandList(m_CommandList.c_str());
+}
+
+void __fastcall CParticleTools::EditActionList()
+{
+	TfrmText::Run(m_CommandList,"Edit action list",false,0,false,OnApplyClick);
 }
 

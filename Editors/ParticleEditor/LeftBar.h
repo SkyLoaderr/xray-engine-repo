@@ -79,6 +79,7 @@ __published:	// IDE-managed Components
 	TMenuItem *N6;
 	TMenuItem *Refresh1;
 	TMenuItem *Checknewtextures1;
+	TExtBtn *ExtBtn2;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebReloadClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
@@ -115,6 +116,7 @@ __published:	// IDE-managed Components
 	void __fastcall Checknewtextures1Click(TObject *Sender);
 	void __fastcall OnDragDrop(TObject *Sender, TObject *Source,
           int X, int Y);
+	void __fastcall ExtBtn2Click(TObject *Sender);
 private:	// User declarations
 	void __fastcall ShowPPMenu		(TMxPopupMenu* M, TObject* btn);
 	void __fastcall RenameItem(LPCSTR p0, LPCSTR p1);

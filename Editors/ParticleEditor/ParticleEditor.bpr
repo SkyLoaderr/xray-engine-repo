@@ -70,7 +70,8 @@
       Intermediate\Blender_B.obj Intermediate\defines.obj 
       Intermediate\Blender_Model_EbB.obj Intermediate\HW.obj 
       Intermediate\du_sphere.obj Intermediate\du_box.obj 
-      Intermediate\PropertiesListHelper.obj"/>
+      Intermediate\PropertiesListHelper.obj Intermediate\ParticleGroup.obj 
+      Intermediate\ParticleGroupParser.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -81,7 +82,7 @@
       Editor\ImageEditor.dfm Editor\PropertiesList.dfm Editor\NumericVector.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
       lib\DXT.lib lib\d3d8.lib lib\d3dx8d.lib lib\dinput.lib Lib\ETools.lib 
-      Lib\xrCDB.lib Lib\FreeImage.lib"/>
+      Lib\xrCDB.lib Lib\FreeImage.lib Lib\ParticleDLL.lib"/>
     <LIBRARIES value="elpackB6.lib editor.lib vclx.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
     <PACKAGES value="rtl.bpi vcl.bpi"/>
@@ -95,16 +96,16 @@
     <USERDEFINES value="_EDITOR;_PARTICLE_EDITOR;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="ParticleEditor.cpp"/>
-    <INCLUDEPATH value="Engine\Animations;Engine\BLENDERS;r:\borland\components6\alexmx;editor;lib;lib\DX;R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\Elpack\Code;R:\Borland\Components6\Elpack\Code\Source"/>
+    <INCLUDEPATH value="C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;r:\borland\components6\alexmx;editor;lib;lib\DX;R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\Elpack\Code;R:\Borland\Components6\Elpack\Code\Source"/>
     <LIBPATH value="Engine\Animations;Engine\BLENDERS;c:\rad\borland\CBuilder6\Projects;lib;lib\DX;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\Elpack\Code\Source;R:\Borland\Components6\Elpack\Code"/>
     <WARNINGS value="-w-par -w-8027"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-IEngine\Animations -IEngine\BLENDERS -Ir:\borland\components6\alexmx 
-      -Ieditor -Ilib -Ilib\DX -IR:\DirectX8.1\include -I$(BCB)\include 
-      -I$(BCB)\include\vcl -Iengine -IP:\MagicFM_Borland\Sdk\Include 
-      -IR:\Borland\Components6\Elpack\Code 
+    <IDLCFLAGS value="-IC:\Rad\Borland\CBuilder6\Projects -IEngine\Animations -IEngine\BLENDERS 
+      -Ir:\borland\components6\alexmx -Ieditor -Ilib -Ilib\DX 
+      -IR:\DirectX8.1\include -I$(BCB)\include -I$(BCB)\include\vcl -Iengine 
+      -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\Elpack\Code 
       -IR:\Borland\Components6\Elpack\Code\Source -src_suffix cpp -D_EDITOR 
       -D_PARTICLE_EDITOR -D_DEBUG -no_tie -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -xf -xp -VF -ff -X- -r- -a8 -6 -b- 
@@ -272,6 +273,9 @@
       <FILE FILENAME="Editor\du_sphere.cpp" FORMNAME="" UNITNAME="du_sphere.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\du_box.cpp" FORMNAME="" UNITNAME="du_box.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\PropertiesListHelper.cpp" FORMNAME="" UNITNAME="PropertiesListHelper" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\ParticleGroup.cpp" FORMNAME="" UNITNAME="ParticleGroup" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ParticleGroupParser.cpp" FORMNAME="" UNITNAME="ParticleGroupParser" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Lib\ParticleDLL.lib" FORMNAME="" UNITNAME="ParticleDLL.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

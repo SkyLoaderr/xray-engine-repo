@@ -357,3 +357,9 @@ void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
+void __fastcall TfraLeftBar::ExtBtn2Click(TObject *Sender)
+{
+	Tools.EditActionList();	
+}
+//---------------------------------------------------------------------------
+
