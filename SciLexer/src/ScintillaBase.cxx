@@ -324,7 +324,7 @@ void ScintillaBase::AutoCompleteCompleted() {
 		scn.message = 0;
 		scn.wParam = listType;
 		scn.listType = listType;
-		scn.lParam = 0;
+		scn.lParam = item;
 		scn.text = userListSelected.c_str();
 		NotifyParent(scn);
 		return;
