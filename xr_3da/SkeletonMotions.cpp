@@ -39,6 +39,9 @@ bool find_bone_in_part(CPartition* parts, u16 part_id, u16 bid)
 //-----------------------------------------------------------------------
 BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 {
+#ifdef DEBUG
+	Log				("Loading motions:",N);
+#endif
 	bool bRes		= true;
 	// Load definitions
 	U16Vec rm_bones	(bones->size(),BI_NONE);
@@ -133,10 +136,12 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
             
             if (M.test_flag(flRKeyAbsent))	{
                 CKeyQR* r 		= (CKeyQR*)MS->pointer();
-                M._initR.x		= float(r->x)*KEY_QuantI;
-                M._initR.y		= float(r->y)*KEY_QuantI;
-                M._initR.z		= float(r->z)*KEY_QuantI;
-                M._initR.w		= float(r->w)*KEY_QuantI;
+				u32 crc_q		= crc32(r,sizeof(CKeyQR));
+				M._keysR.create	(crc_q,1,r);
+//                M._initR.x		= float(r->x)*KEY_QuantI;
+//                M._initR.y		= float(r->y)*KEY_QuantI;
+//                M._initR.z		= float(r->z)*KEY_QuantI;
+//                M._initR.w		= float(r->w)*KEY_QuantI;
                 MS->advance		(1 * sizeof(CKeyQR));
             }else{
                 u32 crc_q		= MS->r_u32	();

@@ -48,8 +48,7 @@ class ENGINE_API		CMotion
 public:
     ref_smem<CKeyQR>	_keysR;
     ref_smem<CKeyQT>	_keysT;
-    Fquaternion			_initR;
-    Fvector				_initT;
+	Fvector				_initT;
     Fvector				_sizeT;
 public:    
     void				set_flags			(u8 val)			{_flags=val;}

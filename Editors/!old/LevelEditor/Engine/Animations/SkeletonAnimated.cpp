@@ -476,7 +476,6 @@ void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 		}
 		IReader* MS	= FS.r_open(fn);
         // Check compatibility
-        Log			("Loading reference motions:",nm);
 		motions.create(nm,MS,bones);
         MS->close	();
     }else{
@@ -563,13 +562,17 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
                 u32				frame	=	iFloor(time);
                 float			delta	=	time-float(frame);
                 u32				count	=	M.get_count();
-                CKeyQR*			K1r		=	&M._keysR[(frame+0)%count];
-                CKeyQR*			K2r		=	&M._keysR[(frame+1)%count];
                 // rotation
                 if (M.test_flag(flRKeyAbsent)){
-                    D->Q.set	(M._initR);
+					CKeyQR*		K		=	&M._keysR[0];
+					D->Q.x		= float(K->x)*KEY_QuantI;
+					D->Q.y		= float(K->y)*KEY_QuantI;
+					D->Q.z		= float(K->z)*KEY_QuantI;
+					D->Q.w		= float(K->w)*KEY_QuantI;
                 }else{
-                    Fquaternion	Q1,Q2;
+					CKeyQR*		K1r		=	&M._keysR[(frame+0)%count];
+					CKeyQR*		K2r		=	&M._keysR[(frame+1)%count];
+					Fquaternion	Q1,Q2;
                     Q1.x		= float(K1r->x)*KEY_QuantI;
                     Q1.y		= float(K1r->y)*KEY_QuantI;
                     Q1.z		= float(K1r->z)*KEY_QuantI;
