@@ -139,6 +139,8 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 			Fvector tTemp;
 			tTemp.sub	(tPointToLook,eye_matrix.c);
 			tTemp.getHP	(r_target.yaw,r_target.pitch);
+			VERIFY					(_valid(r_target.yaw));
+			VERIFY					(_valid(r_target.pitch));
 			r_target.yaw *= -1;
 			r_target.pitch *= -1;
 			break;
@@ -148,6 +150,8 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 			Center(tTemp);
 			tTemp.sub	(tPointToLook,tTemp);
 			tTemp.getHP	(r_target.yaw,r_target.pitch);
+			VERIFY					(_valid(r_target.yaw));
+			VERIFY					(_valid(r_target.pitch));
 			r_target.yaw *= -1;
 			r_target.pitch *= -1;
 			break;
@@ -158,6 +162,8 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 			Fvector tTemp;
 			tTemp.sub	(tPointToLook,eye_matrix.c);
 			tTemp.getHP	(r_target.yaw,r_target.pitch);
+			VERIFY					(_valid(r_target.yaw));
+			VERIFY					(_valid(r_target.pitch));
 			if (Level().timeServer() - m_dwLookChangedTime > dwLookOverDelay)
 				if (Level().timeServer() - m_dwLookChangedTime < 2*dwLookOverDelay)
 					r_target.yaw += PI_DIV_6*2;
@@ -177,6 +183,8 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 			Center(tTemp);
 			tTemp.sub	(tPointToLook,tTemp);
 			tTemp.getHP	(r_target.yaw,r_target.pitch);
+			VERIFY					(_valid(r_target.yaw));
+			VERIFY					(_valid(r_target.pitch));
 			if (Level().timeServer() - m_dwLookChangedTime > dwLookOverDelay)
 				if (Level().timeServer() - m_dwLookChangedTime < 2*dwLookOverDelay)
 					r_target.yaw += PI_DIV_6*2;

@@ -424,6 +424,7 @@ void CCustomMonster::eye_pp_s0			( )
 	V->Calculate							();
 	Fmatrix&	mEye						= V->LL_GetTransform(eye_bone);
 	Fmatrix		X;							X.mul_43	(XFORM(),mEye);
+	VERIFY									(_valid(mEye));
 	eye_matrix.setHPB						(-r_current.yaw + m_fEyeShiftYaw,-r_current.pitch,0);
 //	eye_matrix.c.set						(X.c);
 	eye_matrix.c.add						(X.c,m_tEyeShift);
@@ -438,6 +439,7 @@ void CCustomMonster::eye_pp_s1			( )
 	Device.Statistic.AI_Vis_Query.Begin		();
 	Fmatrix									mProject,mFull,mView;
 	mView.build_camera_dir					(eye_matrix.c,eye_matrix.k,eye_matrix.j);
+	VERIFY									(_valid(eye_matrix));
 	mProject.build_projection				(deg2rad(eye_fov),1,0.1f,eye_range);
 	mFull.mul								(mProject,mView);
 	feel_vision_query						(mFull,eye_matrix.c);

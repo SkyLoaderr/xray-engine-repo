@@ -316,9 +316,13 @@ private:
 			return;
 		
 		CObject::SavedPosition	tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
+		VERIFY					(_valid(tPreviousPosition.vPosition));
+		VERIFY					(_valid(tCurrentPosition.vPosition));
 		tDirection.sub			(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
 		if (tDirection.magnitude() < EPS_L)	return;
 		tDirection.getHP		(yaw,pitch);
+		VERIFY					(_valid(yaw));
+		VERIFY					(_valid(pitch));
 	}
 
 	IC		void			GetDirectionAngles				(float &yaw, float &pitch)
