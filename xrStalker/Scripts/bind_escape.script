@@ -32,12 +32,21 @@ function CDeadFlesh:update(delta)
 		self.object:script(true, script_name())
 	end
 	
-	if(self.actor_near == false and self.object:get_monster_hit_info().time ~= 0) then
-		reset_action(self.object, script_name())
-		self.actor_near	= true
+	// проверка, пора ли бежать плоти в анамалию
+	if(self.actor_near == false) then 
+		self.hear_sound	= self.object:get_sound_info()
+		if( (self.object:get_monster_hit_info().time ~= 0) or
+			(level.actor() and self.object:see(level.actor()) or
+			(self.hear_sound.who and self.hear_sound.who:id() == get_actor_id())
+			)
+		) then
+			reset_action(self.object, script_name())
+			self.actor_near	= true
+		end
 	end
 
-	if(self.actor_near == false and distance_between_safe(self.object, level.actor()) >flesh_distance) then
+	//if(self.actor_near == false and distance_between_safe(self.object, level.actor()) >flesh_distance) then
+	if(self.actor_near == false) then	
 		// Актер далеко, ходит просто по маршруту
 		action(self.object, move(move.walk_fwd, patrol(self.rest_way):point(0), 1), sound(sound.idle), cond(cond.move_end))
 		action(self.object, look(look.point, patrol(self.rest_way):point(1)), anim(anim.turn, 0), sound(sound.idle), cond(cond.look_end))
