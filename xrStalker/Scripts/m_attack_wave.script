@@ -128,7 +128,7 @@ function main ()
 		action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
 	end
 
-	wait (8000)
+	--wait (8000)
 
 	local time = game.time ()
 	local called = false
