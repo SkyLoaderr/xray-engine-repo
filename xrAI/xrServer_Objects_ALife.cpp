@@ -638,6 +638,7 @@ CSE_ALifeLevelChanger::CSE_ALifeLevelChanger(LPCSTR caSection) : CSE_ALifeScript
 	m_dwNextNodeID				= u32(-1);
 	m_tNextPosition.set			(0.f,0.f,0.f);
 	m_fAngle					= 0.f;
+	m_caLevelToChange[0]		= 0;
 }
 
 CSE_ALifeLevelChanger::~CSE_ALifeLevelChanger()
@@ -709,7 +710,7 @@ void CSE_ALifeLevelChanger::FillProp		(LPCSTR pref, PropItemVec& items)
 	if (Ini)
 		xr_delete				(Ini);
 	
-	PHelper.CreateRList			(items,FHelper.PrepareKey(pref,s_name,"Level to change"),		&m_caLevelToChange,		&level_ids);
+	PHelper.CreateList			(items,FHelper.PrepareKey(pref,s_name,"Level to change"),		&m_caLevelToChange,		&level_ids);
 	PHelper.CreateRText			(items,FHelper.PrepareKey(pref,s_name,"Level point to change"),	&m_caLevelPointToChange);
 }
 #endif
