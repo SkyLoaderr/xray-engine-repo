@@ -74,6 +74,7 @@ function action_guard_activity:simulate_callback_if_neccessary()
 end
 
 function action_guard_activity:reset_scheme()
+	utils.trace(this.script_name(), "xr_guard:reset_scheme called: self.object:name()='%s'", self.object:name())
 	self.last_seen_actor = nil
 
 	-- TODO: выбирать активный путь в зависимости от погоды (сделать выбор функцией)
