@@ -88,6 +88,7 @@ void CBuild::CorrectTJunctions()
 {
 	Status					("Processing...");
 	vecJunctions.reserve	(1024);
+	vecEdges.reserve		(1024);
 	for (DWORD I=0; I<g_faces.size(); I++)
 	{
 		Face* F = g_faces[I];
