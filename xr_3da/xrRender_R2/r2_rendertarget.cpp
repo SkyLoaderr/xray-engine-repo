@@ -252,8 +252,8 @@ void	CRenderTarget::OnDeviceCreate	()
 			R_CHK						(t_encodeB_surf->LockRect	(0,&R,0,0));
 			for (u32 x=0; x<TEX_float2rgb; x++)
 			{
-				u32*	p	=	(u32*)		(LPBYTE (R.pBits) + y*R.Pitch + x*4);
-				*p			=	color_rgba	(y,x,0,0);
+				u32*	p	=	(u32*)		(LPBYTE (R.pBits) + x*4);
+				*p			=	color_rgba	(0,0,x,0);
 			}
 			R_CHK						(t_encodeB_surf->UnlockRect	(0));
 		}
@@ -299,8 +299,10 @@ void	CRenderTarget::OnDeviceDestroy	()
 	_RELEASE					(t_ds2fade_surf);
 	t_material->surface_set		(NULL);
 	_RELEASE					(t_material_surf);
-	t_encode->surface_set		(NULL);
-	_RELEASE					(t_encode_surf);
+	t_encodeRG->surface_set		(NULL);
+	_RELEASE					(t_encodeRG_surf);
+	t_encodeB->surface_set		(NULL);
+	_RELEASE					(t_encodeB_surf);
 
 	_RELEASE					(rt_Bloom_ZB			);
 	_RELEASE					(rt_smap_p_ZB			);
