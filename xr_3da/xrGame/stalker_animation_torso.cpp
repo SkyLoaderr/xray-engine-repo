@@ -45,7 +45,7 @@ void CStalkerAnimationManager::fill_object_info		()
 MotionID CStalkerAnimationManager::no_object_animation(const EBodyState &body_state) const
 {
 	if (eMentalStateFree == object().movement().mental_state()) {
-		R_ASSERT3			(eBodyStateStand == body_state,"Cannot run !free! animation when body state is not stand!",*object().cName());
+		R_ASSERT3			(eBodyStateStand == object().movement().body_state(),"Cannot run !free! animation when body state is not stand!",*object().cName());
 		if ((eMovementTypeStand == object().movement().movement_type()) || fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
 			return			(m_part_animations.A[body_state].m_torso.A[0].A[9].A[1]);
 		else
@@ -69,7 +69,7 @@ MotionID CStalkerAnimationManager::unknown_object_animation(u32 slot, const EBod
 		case ObjectHandlerSpace::eWorldOperatorFire2 :
 		case ObjectHandlerSpace::eWorldOperatorQueueWait1 :
 		case ObjectHandlerSpace::eWorldOperatorQueueWait2 : {
-			if ((body_state == eBodyStateStand) && !fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
+			if ((object().movement().body_state() == eBodyStateStand) && !fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
 				return m_part_animations.A[body_state].m_torso.A[slot].A[(body_state == eBodyStateStandDamaged) ? 9 : 6].A[1];
 			else
 				return m_part_animations.A[body_state].m_torso.A[slot].A[(body_state == eBodyStateStandDamaged) ? 9 : 6].A[0];
@@ -96,7 +96,7 @@ MotionID CStalkerAnimationManager::unknown_object_animation(u32 slot, const EBod
 		default : {
 			if (eMentalStateFree == object().movement().mental_state()) {
 				//. hack
-				R_ASSERT3	(eBodyStateStand == body_state,"Cannot run !free! animation when body state is not stand!",*object().cName());
+				R_ASSERT3	(eBodyStateStand == object().movement().body_state(),"Cannot run !free! animation when body state is not stand!",*object().cName());
 				if ((eMovementTypeStand == object().movement().movement_type()) || fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
 					return m_part_animations.A[body_state].m_torso.A[slot].A[9].A[1];
 				else
@@ -110,12 +110,12 @@ MotionID CStalkerAnimationManager::unknown_object_animation(u32 slot, const EBod
 					case eMovementTypeStand :
 						return m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 9 : 6].A[0];
 					case eMovementTypeWalk :
-						if (body_state == eBodyStateStand)
+						if (object().movement().body_state() == eBodyStateStand)
 							return m_part_animations.A[body_state].m_torso.A[slot].A[7].A[0];
 						else
 							return m_part_animations.A[body_state].m_torso.A[slot].A[6].A[0];
 					case eMovementTypeRun :
-						if (body_state == eBodyStateStand)
+						if (object().movement().body_state() == eBodyStateStand)
 							return m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 7 : 8].A[0];
 						else
 							return m_part_animations.A[body_state].m_torso.A[slot].A[6].A[0];
@@ -142,12 +142,12 @@ MotionID CStalkerAnimationManager::weapon_animation	(u32 slot, const EBodyState 
 		case CWeapon::eHiding :
 			return m_part_animations.A[body_state].m_torso.A[slot].A[3].A[0];
 		case CWeapon::eFire:
-			if ((body_state == eBodyStateStand) && !fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
+			if ((object().movement().body_state() == eBodyStateStand) && !fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
 				return m_part_animations.A[body_state].m_torso.A[slot].A[1].A[1];
 			else
 				return m_part_animations.A[body_state].m_torso.A[slot].A[1].A[0];
 		case CWeapon::eFire2 :
-			if ((body_state == eBodyStateStand) && !fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
+			if ((object().movement().body_state() == eBodyStateStand) && !fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
 				return m_part_animations.A[body_state].m_torso.A[slot].A[1].A[1];
 			else
 				return m_part_animations.A[body_state].m_torso.A[slot].A[1].A[0];
