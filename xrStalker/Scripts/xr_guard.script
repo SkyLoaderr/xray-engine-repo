@@ -93,7 +93,7 @@ function action_guard_activity:reset_scheme()
 	self.object:set_item(object.idle, self.object:best_weapon())
 	self.object:set_detail_path_type(move.line)
 	self.object:set_body_state(move.standing)
-	self.object:set_movement_type(move.walk)
+	self.object:set_movement_type(if_then_else(self.a.running, move.run, move.walk))
 	self.object:set_path_type(game_object.patrol_path)
 	self.object:set_patrol_path(self.path_active, patrol.start, patrol.continue, true)
 	--self.object:set_mental_state(anim.free)
@@ -261,7 +261,7 @@ function action_guard_activity:execute()
             self:waypoint_callback(self.object, self.last_action_type, self.last_index)
         else
       self.last_look_index = nil
-            self.object:set_movement_type(move.walk)
+            self.object:set_movement_type(if_then_else(self.a.running, move.run, move.walk))
             --self.object:set_sight(look.search, nil, 0)
             self.object:set_sight(look.danger, nil, 0)
         end
@@ -347,7 +347,7 @@ function vector_copy_by_val(vec)
 end
 
 -- включение лагеря
-function set_guard(object, enable, path_main, path_hideout, search_light)
+function set_guard(object, enable, path_main, path_hideout, running, search_light)
 	-- enable - будет ли работать схема в принципе
 	-- path_main - основной патрульный путь
 	-- path_hideout - патрульный путь во время дождя
@@ -395,6 +395,21 @@ function set_guard(object, enable, path_main, path_hideout, search_light)
 			end
 		else
 			st.path_hideout = path_hideout
+		end
+	end
+	if st.enabled == true then
+		if running == nil then
+		    	if char_ini:section_exist ("guard") == true then
+	        		if char_ini:line_exist("guard", "running") == true then
+		        	        st.running = char_ini:r_string("guard", "running")
+	        		else
+		        	    	st.running = st.path_main
+			        end
+			else
+				st.running = st.path_main
+			end
+		else
+			st.running = running
 		end
 	end
 	if st.enabled == true then
