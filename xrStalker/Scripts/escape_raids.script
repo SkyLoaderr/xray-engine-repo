@@ -194,7 +194,7 @@ function switch_online (a, b)
        sim:set_switch_online  (patrols[a][b].id, true) 
        sim:set_switch_offline (patrols[a][b].id, false)
        local npc = get_level_object (patrols[a][b].name)
-       if b == 1 then xr_patrol.set_patrol (npc, true)
+       if b == 1 then xr_comm_ptr.set_patrol (npc, true)
        else xr_follower.set_follower (npc, true) 
        patrols[a][b].npc = npc
        printf ("Object %s move to online at %d time", npc:name (), device ():time_global ())
