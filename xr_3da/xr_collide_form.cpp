@@ -162,7 +162,7 @@ void CCF_Polygonal::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
-IC BOOL RAYvsOBB(CCF_Skeleton::xOBB &B, Fvector &S, Fvector &D, float &R)
+IC BOOL RAYvsOBB(CCF_OBB &B, Fvector &S, Fvector &D, float &R)
 {
 	// XForm world-2-local
 	Fvector	SL,DL,PL;
@@ -245,7 +245,7 @@ BOOL CCF_Skeleton::_svRayTest( RayQuery& Q)
 	if (dwFrame!=Device.dwFrame)			BuildState();
 
 	BOOL bHIT = FALSE;
-	for (vector<xOBB>::iterator I=model.begin(); I!=model.end(); I++) 
+	for (vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
 	{
 		if (RAYvsOBB(*I,Q.start,Q.dir,Q.range)) 
 		{
@@ -276,7 +276,7 @@ void CCF_Skeleton::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 		clQueryCollision& Q = pCreator->ObjectSpace.q_result;
 
 #pragma todo("CCF_Skeleton::_BoxQuery - Actual test BOX vs SkeletonNODE")
-		for (vector<xOBB>::iterator I=model.begin(); I!=model.end(); I++) 
+		for (vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
 		{
 			Q.AddBox(I->OBB);
 		}
@@ -285,6 +285,131 @@ void CCF_Skeleton::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
+CCF_Rigid::CCF_Rigid(CObject* O) : CCFModel(O)
+{
+	FHierrarhyVisual* pH= dynamic_cast<FHierrarhyVisual*>(O->Visual());
+	if (pH){
+		model.resize	(pH->children.size());
+		base_box.set	(pH->vis.box);
+		bv_box.set		(pH->vis.box);
+		bv_box.getsphere(bv_sphere.P,bv_sphere.R);
+	}else{ 
+		Fvisual* pV			= dynamic_cast<Fvisual*>(O->Visual());
+		if (pV){
+			model.resize	(1);
+			base_box.set	(pV->vis.box);
+			bv_box.set		(pV->vis.box);
+			bv_box.getsphere(bv_sphere.P,bv_sphere.R);
+		}else{
+			Debug.fatal("Unsuported visual type.");
+		}
+	}
+}
+
+void CCF_Rigid::UpdateModel(CCF_OBB& m, Fbox& box)
+{
+	const Fmatrix &L2W	= owner->clXFORM();
+
+	Fobb			B;
+	Fvector			c;
+	box.get_CD		(c,B.m_halfsize);
+	Fmatrix			T,R;
+	T.translate		(c);
+	R.mul_43		(L2W,T);
+	B.xform_set		(R);
+
+	m.OBB.xform_set	(R);
+	m.IM.invert		(R);
+	m.B.set			(
+		-B.m_halfsize.x,-B.m_halfsize.y,-B.m_halfsize.z,
+		B.m_halfsize.x,B.m_halfsize.y,B.m_halfsize.z
+		);
+}
+void CCF_Rigid::BuildState()
+{
+	dwFrame			= Device.dwFrame;
+	FHierrarhyVisual* pH= dynamic_cast<FHierrarhyVisual*>(owner->Visual());
+	if (pH){
+		const Fmatrix &L2W	= owner->clXFORM();
+		for (u32 i=0; i<model.size(); i++)
+			UpdateModel		(model[i],pH->children[i]->vis.box);
+	}else{
+		Fvisual* pV	= dynamic_cast<Fvisual*>(owner->Visual());
+		UpdateModel	(model[0],pV->vis.box);
+	}
+}
+
+void CCF_Rigid::BuildTopLevel()
+{
+	dwFrameTL			= Device.dwFrame;
+	IVisual* K			= owner->Visual();
+	Fbox& B				= K->vis.box;
+	bv_box.min.average	(B.min);
+	bv_box.max.average	(B.max);
+	bv_box.grow			(0.05f);
+	bv_sphere.P.average	(K->vis.sphere.P);
+	bv_sphere.R			+= K->vis.sphere.R;
+	bv_sphere.R			*= 0.5f;
+}
+
+BOOL CCF_Rigid::_svRayTest( RayQuery& Q)
+{
+	if (dwFrameTL!=Device.dwFrame)			BuildTopLevel();
+
+	// Convert ray into local model space
+	Fvector dS, dD;
+	Fmatrix temp; 
+	temp.invert			(owner->svXFORM());
+	temp.transform_tiny	(dS,Q.start);
+	temp.transform_dir	(dD,Q.dir);
+
+	// 
+	if (!bv_sphere.intersect(dS,dD))	return FALSE;
+
+	if (dwFrame!=Device.dwFrame)			BuildState();
+
+	BOOL bHIT = FALSE;
+	for (vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
+	{
+		if (RAYvsOBB(*I,Q.start,Q.dir,Q.range)) 
+		{
+			bHIT = TRUE;
+			Q.element = I-model.begin();
+		}
+	}
+	return bHIT;
+}
+BOOL CCF_Rigid::_clRayTest( RayQuery& Q)
+{
+#pragma todo("CCF_Rigid::_clRayTest")
+	return _svRayTest(Q);
+}
+
+void CCF_Rigid::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
+{
+	if ((flags&clQUERY_TOPLEVEL) || ((flags&clGET_BOXES)==0))
+	{
+		if (dwFrameTL!=Device.dwFrame) BuildTopLevel();
+		// Return only top level
+		clQueryCollision& Q = pCreator->ObjectSpace.q_result;
+		Q.AddBox			(owner->svXFORM(),bv_box);
+	} else { 
+		if (dwFrame!=Device.dwFrame) BuildState();
+
+		// Return actual boxes
+		clQueryCollision& Q = pCreator->ObjectSpace.q_result;
+
+#pragma todo("CCF_Rigid::_BoxQuery - Actual test BOX vs SkeletonNODE")
+		for (vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
+		{
+			Q.AddBox(I->OBB);
+		}
+	}
+}
+//----------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------
+
 CCF_EventBox::CCF_EventBox( CObject* O ) : CCFModel(O)
 {
 	Fvector A[8],B[8];

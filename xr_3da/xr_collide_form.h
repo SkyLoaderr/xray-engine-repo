@@ -130,20 +130,20 @@ public:
 	CDB::MODEL*		GetModel		() { return &model;				}
 };
 
+struct CCF_OBB
+{
+	// Ray test
+	Fmatrix		IM;
+	Fbox		B;
+	// Ready to use OBB
+	Fobb		OBB;
+};
+
 class ENGINE_API	CCF_Skeleton : public CCFModel
 {
-public:
-	struct xOBB
-	{
-		// Ray test
-		Fmatrix		IM;
-		Fbox		B;
-		// Ready to use OBB
-		Fobb		OBB;
-	};
 private:
 	Fbox			base_box;
-	vector<xOBB>	model;
+	vector<CCF_OBB>	model;
 
 	u32				dwFrame;		// The model itself
 	u32				dwFrameTL;		// Top level
@@ -152,6 +152,26 @@ private:
 	void			BuildTopLevel	();
 public:
 					CCF_Skeleton	( CObject* _owner );
+
+	virtual BOOL	_clRayTest		( RayQuery& Q );
+	virtual BOOL	_svRayTest		( RayQuery& Q );
+	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
+};
+
+class ENGINE_API	CCF_Rigid : public CCFModel
+{
+private:
+	Fbox			base_box;
+	vector<CCF_OBB>	model;
+
+	u32				dwFrame;		// The model itself
+	u32				dwFrameTL;		// Top level
+
+	void			BuildState		();
+	void			BuildTopLevel	();
+	void			UpdateModel		(CCF_OBB& m, Fbox& box);
+public:
+					CCF_Rigid		( CObject* _owner );
 
 	virtual BOOL	_clRayTest		( RayQuery& Q );
 	virtual BOOL	_svRayTest		( RayQuery& Q );
