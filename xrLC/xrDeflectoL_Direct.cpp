@@ -17,6 +17,7 @@ void CDeflector::L_Direct_Edge (UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& 
 	int	du		= iCeil(_abs(size.u)/texel_size);
 	int	dv		= iCeil(_abs(size.v)/texel_size);
 	int steps	= _max(du,dv);
+	R_ASSERT	(steps);
 	for (int I=0; I<=steps; I++)
 	{
 		float	time = float(I)/float(steps);
@@ -40,7 +41,7 @@ void CDeflector::L_Direct_Edge (UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& 
 		Fcolor	R;
 		R.lerp	(C,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
 		R.a		= 1.f;
-		Lumel   = R.get();
+		Lumel   = R.get() | RGBA_MAKE(0,0,0,255);
 	}
 }
 
