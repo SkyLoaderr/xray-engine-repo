@@ -58,6 +58,7 @@ void CCharacterPhysicsSupport::in_Load(LPCSTR section)
 {
 
 	skel_airr_ang_factor			= pSettings->r_float(section,"ph_skeleton_airr_ang_factor");
+	skel_airr_lin_factor			= pSettings->r_float(section,"ph_skeleton_airr_lin_factor");
 	hinge_force_factor				= pSettings->r_float(section,"ph_skeleton_hinger_factor");
 	hinge_force_factor1				= pSettings->r_float(section,"ph_skeleton_hinger_factor1");
 	skel_ddelay						= pSettings->r_s32(section,"ph_skeleton_ddelay");
