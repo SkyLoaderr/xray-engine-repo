@@ -43,6 +43,7 @@ void CMovementManager::process_enemy_search()
 		case ePathStateBuildDetailPath : {
 			Device.Statistic.TEST2.Begin();
 			CDetailPathManager::set_start_position(Position());
+			CDetailPathManager::set_start_direction(Fvector().setHP(-m_body.current.yaw,0));
 			CDetailPathManager::set_dest_position(
 				ai().level_graph().vertex_position(
 					CLevelPathManager::intermediate_vertex_id()

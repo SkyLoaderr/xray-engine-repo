@@ -24,6 +24,9 @@ public:
 	struct STravelParams {
 		float			linear_velocity;
 		float			angular_velocity; 
+
+		STravelParams(){}
+		STravelParams(float l, float a) : linear_velocity(l), angular_velocity(a) {}
 	};
 
 	struct STravelPoint {
@@ -66,6 +69,8 @@ public:
 			return		(time < d1.time);
 		}
 	};
+protected:
+	xr_map<u32,STravelParams>					m_movement_params;
 
 private:
 	u32											m_current_travel_point;
@@ -81,7 +86,6 @@ private:
 	Fvector										m_dest_direction;
 
 	EDetailPathType								m_path_type;
-	xr_map<u32,STravelParams>					m_movement_params;
 	xr_vector<STravelPathPoint>					m_travel_line;
 	xr_vector<STravelPathPoint>					m_temp_path;
 	xr_vector<STravelPoint>						m_key_points;

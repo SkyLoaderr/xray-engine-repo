@@ -355,7 +355,7 @@ bool CDetailPathManager::compute_path(
 		for ( ; i != e; ++i) {
 			(STravelParams&)dest	= (*i).second;
 			m_temp_path.clear		();
-			if (compute_trajectory(start,dest,m_tpTravelLine ? &m_temp_path : 0,time,(*I).first,0,(*i).first)) {
+			if (compute_trajectory(start,dest,m_tpTravelLine ? &m_temp_path : 0,time,(*I).first,(*I).first,(*i).first)) {
 				if (time < min_time) {
 					min_time = time;
 					if (m_tpTravelLine) {
@@ -388,18 +388,22 @@ void CDetailPathManager::build_smooth_path		(
 //
 //	start.position							= ai().level_graph().v2d(m_start_position);
 //	start.direction							= ai().level_graph().v2d(m_start_direction);
+//	start.vertex_id							= level_path.front();
 //	
 //	dest.position							= ai().level_graph().v2d(m_dest_position);
-//	dest.direction							= ai().level_graph().v2d(m_dest_direction);
+////	dest.direction							= ai().level_graph().v2d(m_dest_direction);
+//	dest.direction							= ai().level_graph().v2d(Fvector().sub(ai().level_graph().vertex_position(level_path.back()),ai().level_graph().vertex_position(level_path.front())));
+//	dest.vertex_id							= level_path.back();
 //
 //	VERIFY									(!level_path.empty());
 //	VERIFY									(level_path.size() > intermediate_index);
 //
+//	m_current_travel_point					= 0;
 //	start.direction.normalize				();
 //	dest.direction.normalize				();
 //	m_path.clear							();
 //
-//	if (m_tpaNodes.size() == 1) {
+//	if (level_path.size() == 1) {
 //		if (!compute_path(start,dest,&m_path)) {
 //			m_path.clear					();
 //			Device.Statistic.AI_Range.End	();
@@ -415,11 +419,11 @@ void CDetailPathManager::build_smooth_path		(
 //		m_path.clear						();
 //
 //		STravelPoint						start_point;
-//		start_point.vertex_id				= m_tpaNodes.front();
+//		start_point.vertex_id				= level_path.front();
 //		start_point.position				= start.position;
 //
-//		for (int _i=0, i=0, n=(int)m_tpaNodes.size() - 1, j = n, m=j; _i < n; ) {
-//			if (!ai().level_graph().check_vertex_in_direction(start_point.vertex_id,start_point.position,m_tpaNodes[j])) {
+//		for (int _i=0, i=0, n=(int)level_path.size() - 1, j = n, m=j; _i < n; ) {
+//			if (!ai().level_graph().check_vertex_in_direction(start_point.vertex_id,start_point.position,level_path[j])) {
 //				m							= j;
 //				j							= (i + j)/2;
 //			}
@@ -444,7 +448,7 @@ void CDetailPathManager::build_smooth_path		(
 //						return;
 //					}
 //				}
-//				start_point.vertex_id		= m_tpaNodes[_i];
+//				start_point.vertex_id		= level_path[_i];
 //				start_point.position		= ai().level_graph().v2d(ai().level_graph().vertex_position(start_point.vertex_id));
 //				j = m						= n;
 //			}
@@ -499,7 +503,6 @@ void CDetailPathManager::build_smooth_path		(
 //			VERIFY							(false);
 //		}
 //	}
-//	m_current_travel_point					= 0;
 //
 //	Device.Statistic.AI_Range.End			();
 }

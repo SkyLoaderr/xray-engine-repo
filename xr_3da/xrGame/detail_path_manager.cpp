@@ -29,6 +29,7 @@ void CDetailPathManager::Init			()
 	m_current_travel_point	= u32(-1);
 	m_path_type				= eDetailPathTypeSmooth;
 	m_path.clear			();
+	m_movement_params.clear	();
 }
 
 bool CDetailPathManager::valid			() const

@@ -58,6 +58,8 @@ void CAI_Stalker::vfSetParameters(
 
 	m_fCurSpeed		= 1.f;
 
+//	EMovementParameters		mask = 0;
+
 	if (!CDetailPathManager::path().empty() && ((CDetailPathManager::path().size() - 1) > CDetailPathManager::curr_travel_point_index())) {
 		if (GetScriptControl() && GetCurrentAction() && (_abs(GetCurrentAction()->m_tMovementAction.m_fSpeed) > EPS_L))
 			m_fCurSpeed = GetCurrentAction()->m_tMovementAction.m_fSpeed;

@@ -118,6 +118,22 @@ void CAI_Stalker::Init()
 
 	m_tTaskState					= eTaskStateChooseTask;
 	m_bCanFire						= true;
+
+//	m_movement_params.insert		(std::make_pair(eMovementParameterStand						,STravelParams(0.f									,PI_MUL_2)));
+	m_movement_params.insert		(std::make_pair(eMovementParameterWalkFree					,STravelParams(m_fWalkFreeFactor					,PI_DIV_4)));
+//	m_movement_params.insert		(std::make_pair(eMovementParameterRunFree					,STravelParams(m_fRunFreeFactor						,PI_MUL_2)));
+//	m_movement_params.insert		(std::make_pair(eMovementParameterWalkDangerStand			,STravelParams(m_fWalkFactor						,PI_MUL_2)));
+//	m_movement_params.insert		(std::make_pair(eMovementParameterWalkDangerCrouch			,STravelParams(m_fWalkFactor*m_fCrouchFactor		,PI_MUL_2)));
+//	m_movement_params.insert		(std::make_pair(eMovementParameterRunDangerStand			,STravelParams(m_fRunFactor							,PI_MUL_2)));
+//	m_movement_params.insert		(std::make_pair(eMovementParameterRunDangerCrouch			,STravelParams(m_fRunFactor*m_fCrouchFactor			,PI_MUL_2)));
+//	m_movement_params.insert		(std::make_pair(eMovementParameterPanic						,STravelParams(m_fPanicFactor						,PI_MUL_2)));
+//	m_movement_params.insert		(std::make_pair(eMovementParameterWalkFreeDamaged			,STravelParams(m_fDamagedWalkFreeFactor				,PI_MUL_2)));
+//	m_movement_params.insert		(std::make_pair(eMovementParameterRunFreeDamaged			,STravelParams(m_fDamagedRunFreeFactor				,PI_MUL_2)));
+//	m_movement_params.insert		(std::make_pair(eMovementParameterWalkDangerStandDamaged	,STravelParams(m_fDamagedWalkFactor					,PI_MUL_2)));
+//	m_movement_params.insert		(std::make_pair(eMovementParameterWalkDangerCrouchDamaged	,STravelParams(m_fWalkFactor*m_fCrouchFactor		,PI_MUL_2)));
+//	m_movement_params.insert		(std::make_pair(eMovementParameterRunDangerStandDamaged		,STravelParams(m_fDamagedRunFactor					,PI_MUL_2)));
+//	m_movement_params.insert		(std::make_pair(eMovementParameterRunDangerCrouchDamaged	,STravelParams(m_fRunFactor*m_fCrouchFactor			,PI_MUL_2)));
+//	m_movement_params.insert		(std::make_pair(eMovementParameterPanicDamaged				,STravelParams(m_fDamagedPanicFactor				,PI_MUL_2)));
 }
 
 void CAI_Stalker::Die				()
@@ -237,6 +253,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))
 		return						(FALSE);
+	Init							();
 
 	//проспавнить PDA у InventoryOwner
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
