@@ -97,10 +97,11 @@ void CScintillaView::Clear()
 	m_view.SetReadOnly(TRUE);
 }
 
-void CScintillaView::Write(CString strMsg)
+void CScintillaView::Write(CString& strMsg)
 {
 	m_view.SetReadOnly(FALSE);
 	m_view.AddText(strMsg);
+	m_view.AddText("\n");
 	m_view.SetReadOnly(TRUE);
 	m_view.GotoLastLine();
 }

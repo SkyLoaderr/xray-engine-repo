@@ -19,6 +19,10 @@ void ActivateXRAY();
 /////////////////////////////////////////////////////////////////////////////
 // CMainFrame
 CString g_calltip;
+CString get_local_time()
+{
+	return CTime::GetCurrentTime().Format("%H:%M:%S");
+}
 
 IMPLEMENT_DYNAMIC(CMainFrame, CMDIFrameWnd)
 
@@ -362,14 +366,24 @@ LRESULT CMainFrame::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch( nMsg )
 	{
-	case DMSG_NEW_CONNECTION:
+	case DMSG_NEW_CONNECTION:{
 			m_wndCallStack.Clear();
 			m_wndLocals.RemoveAll();
 			m_wndThreads.RemoveAll();
-			GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Clear();
-			GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write("Script debugger connected...\n");
+			//GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Clear();
+			CString msg;
+			msg.Format("%s %s",get_local_time(),"Script debugger connected...");
+			GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write(msg);
 			OnUpdateFrameTitle(TRUE);
-		break;
+		}break;
+
+	case DMSG_CLOSE_CONNECTION:{
+			CString msg;
+			msg.Format("%s %s",get_local_time(),"Script debugger disconnected...");
+			GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write(msg);
+			m_needAnswer = FALSE;
+			OnUpdateFrameTitle(TRUE);
+		}break;
 
 	case DMSG_ACTIVATE_IDE:
 			
@@ -377,14 +391,13 @@ LRESULT CMainFrame::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 			OnUpdateFrameTitle(TRUE);
 			SetMode(modeDebugBreak);
 			m_wndWatches.Redraw();
-//			BringWindowToTop();
 			::SetForegroundWindow(g_mainFrame->m_hWnd);
 		break;
 
-	case DMSG_WRITE_DEBUG:
-			GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write((const char*)wParam);
-			GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write("\n");
-		break;
+	case DMSG_WRITE_DEBUG:{
+			CString msg=(const char*)wParam;
+			GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write(msg);
+			}break;
 
 	case DMSG_GOTO_FILELINE:
 			GotoFileLine((const char*)wParam, (int)lParam);
@@ -570,7 +583,8 @@ void CMainFrame::OnDebugRuntocursor()
 	m_wndThreads.AddThread(&st);
 
 	return;*/
-	GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write("Not implemented yet...\n");
+	CString smsg = "Not implemented yet...";
+	GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write(smsg);
 	SendBreakPoints();
 	return;
 	if (!m_needAnswer)return;
@@ -591,11 +605,15 @@ void CMainFrame::OnDebugBreak()
 	if (m_needAnswer)return;
 	CMailSlotMsg msg;
 	msg.w_int(DMSG_DEBUG_BREAK);
+	CString smsg;
 	if( CheckExisting (DEBUGGER_MAIL_SLOT) ){
 		SendMailslotMessage(DEBUGGER_MAIL_SLOT, msg);
-		GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write("Initiated debug break...\n");
-	}else
-		GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write("Debugger not present...\n");
+		smsg = "Initiated debug break...";
+		GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write(smsg);
+	}else{
+		smsg = "Debugger not present...\n";
+		GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write(smsg);
+	}
 
 	ActivateXRAY();
 }
@@ -759,6 +777,10 @@ void CMainFrame::TranslateMsg( CMailSlotMsg& msg )
 		break;
 	case DMSG_NEW_CONNECTION:
 			SendMessage(DMSG_NEW_CONNECTION,0,0);
+		break;
+
+	case DMSG_CLOSE_CONNECTION:
+			SendMessage(DMSG_CLOSE_CONNECTION,0,0);
 		break;
 
 	case DMSG_ACTIVATE_IDE:

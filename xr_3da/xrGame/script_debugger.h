@@ -40,13 +40,13 @@ struct SBreakPoint{
 class CScriptDebugger
 {
 public:
+	void			Connect				(LPCSTR mslot_name);
 	void			Eval				(const char* strCode, char* res);
 	void			AddLocalVariable	(const Variable& var);
 	void			ClearLocalVariables	();
 	void			AddGlobalVariable	(const char* name, const char* type, const char* value);
 	void			ClearGlobalVariables();
 	void			StackLevelChanged	();
-//	void			Break				();
 	void			initiateDebugBreak	();
 	void			DebugBreak			(const char* szFile, int nLine);
 	void			ErrorBreak			(const char* szFile = 0, int nLine = 0);
@@ -58,8 +58,8 @@ public:
 	void			UnPrepareLua		(lua_State* l, int idx);
 	BOOL			PrepareLuaBind		();
 
-	CScriptDebugger						();
-	virtual ~CScriptDebugger			();
+					CScriptDebugger		();
+	virtual			~CScriptDebugger	();
 
 	void			Go					();
 	void			StepInto			();
@@ -79,7 +79,7 @@ public:
 	static LRESULT			_SendMessage(UINT message, WPARAM wParam, LPARAM lParam);
 
 protected:
-	void			DrawVariableInfo(char* varName);
+	void			DrawVariableInfo	(char* varName);
 	void			DrawCurrentState	();
 	void			DrawThreadInfo		(int nThreadID);
 	void			GetBreakPointsFromIde();
@@ -105,4 +105,5 @@ protected:
 	BOOL								m_bIdePresent;
 
 	xr_vector<SBreakPoint>				m_breakPoints;
+	string_path							m_curr_connected_mslot;
 };

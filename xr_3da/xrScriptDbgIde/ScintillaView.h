@@ -27,7 +27,7 @@ protected:
 // Operations
 public:
 	void Clear();
-	void Write(CString strMsg);
+	void Write(CString& strMsg);
 
 	CLuaEditor* GetEditor() { return &m_view; };
 

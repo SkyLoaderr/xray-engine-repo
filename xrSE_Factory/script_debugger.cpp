@@ -38,6 +38,11 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 			SendMessageToIde(msg);
 		}break;
 
+	case DMSG_CLOSE_CONNECTION:{
+			msg.w_int(DMSG_CLOSE_CONNECTION);
+			SendMessageToIde(msg);
+		}break;
+
 	case DMSG_WRITE_DEBUG:{
 			msg.w_int(DMSG_WRITE_DEBUG);
 			msg.w_string((char*)wParam);
@@ -109,9 +114,6 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 			DrawVariableInfo((char*)wParam);
 		}break;
 
-/*	case DMSG_REDRAW_WATCHES:{
-			m_wndWatches.Redraw();
-		}break;*/
 
 	case DMSG_EVAL_WATCH:{
 			string2048 res; res[0]=0;
@@ -136,17 +138,23 @@ BOOL CScriptDebugger::Active()
 
 CScriptDebugger::CScriptDebugger()
 {
-	m_pDebugger = this;
-	m_nLevel = 0;
-	m_mailSlot = CreateMailSlotByName(DEBUGGER_MAIL_SLOT);
+	ZeroMemory(m_curr_connected_mslot,sizeof(m_curr_connected_mslot));
+	m_pDebugger					= this;
+	m_nLevel					= 0;
+	m_mailSlot					= CreateMailSlotByName(DEBUGGER_MAIL_SLOT);
 
 	if (m_mailSlot == INVALID_HANDLE_VALUE) {
 		m_bIdePresent	= false;
 		return;
 	}
 
-	m_bIdePresent = CheckExisting(IDE_MAIL_SLOT);
+	Connect(IDE_MAIL_SLOT);
+}
 
+void CScriptDebugger::Connect(LPCSTR mslot_name)
+{
+	m_bIdePresent = CheckExisting(IDE_MAIL_SLOT);
+	ZeroMemory(m_curr_connected_mslot,sizeof(m_curr_connected_mslot));
 	if (Active())
 	{
 		_SendMessage(DMSG_NEW_CONNECTION,0,0);
@@ -154,12 +162,15 @@ CScriptDebugger::CScriptDebugger()
 		msg.w_int(DMSG_GET_BREAKPOINTS);
 		SendMessageToIde(msg);
 		WaitForReply(false);
-
+		strcat(m_curr_connected_mslot,mslot_name);
 	}
 }
 
 CScriptDebugger::~CScriptDebugger()
 {
+	if (Active())
+		_SendMessage(DMSG_CLOSE_CONNECTION,0,0);
+
 	CloseHandle(m_mailSlot);
 }
 
@@ -310,10 +321,6 @@ void CScriptDebugger::ClearLocalVariables()
 
 void CScriptDebugger::AddLocalVariable(const Variable& var)
 {
-/*	Variable var;
-	strcat(var.szName, name );
-	strcat(var.szType, type );
-	strcat(var.szValue, value );*/
 	_SendMessage(DMSG_ADD_LOCALVARIABLE, (WPARAM)&var, 0);
 }
 
