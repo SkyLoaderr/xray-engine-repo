@@ -109,7 +109,7 @@ void CBuild::Run	(LPCSTR P)
 	FPU::m64r();
 	Phase						("Building collision database...");
 	mem_Compact					();
-	BuildCForm					(*fs);
+	BuildCForm					();
 
 	//****************************************** Portals
 	FPU::m64r					();
