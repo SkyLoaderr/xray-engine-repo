@@ -8,7 +8,7 @@ void xrServer::Perform_connect_spawn(xrServerEntity* E, xrClientData* CL, NET_Pa
 
 	// Connectivity order
 	xrServerEntity* Parent = ID_to_entity	(E->ID_Parent);
-	if (Parent)		Perform_connect_spawn(Parent,CL,P);
+	if (Parent)		Perform_connect_spawn	(Parent,CL,P);
 
 	// Process
 	if (0==E->owner)	
