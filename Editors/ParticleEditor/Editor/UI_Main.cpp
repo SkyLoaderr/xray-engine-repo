@@ -97,11 +97,16 @@ bool TUI::OnCreate(){
 	pSettings		= new CInifile(si_name.c_str(),TRUE);// FALSE,TRUE,TRUE);
 
     m_bReady		= true;
+
+    Engine.FS.WriteAccessLog(_EDITOR_FILE_NAME_,"Started");
+    
     return true;
 }
 
 void TUI::OnDestroy()
 {
+    Engine.FS.WriteAccessLog(_EDITOR_FILE_NAME_,"Finished");
+
 	VERIFY(m_bReady);
 	m_bReady		= false;
     _DELETE			(pSettings);

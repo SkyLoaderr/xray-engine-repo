@@ -12,7 +12,7 @@
 #include "xr_hudfont.h"
 #include "bottombar.h"
 
-#define SPAWNPOINT_VERSION   			0x0013
+#define SPAWNPOINT_VERSION   			0x0014
 //----------------------------------------------------
 #define SPAWNPOINT_CHUNK_VERSION		0xE411
 #define SPAWNPOINT_CHUNK_POSITION		0xE412

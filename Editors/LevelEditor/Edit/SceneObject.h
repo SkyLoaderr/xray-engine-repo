@@ -91,7 +91,8 @@ public:
     IC LPCSTR		GetRefName				() {return m_pRefs?m_pRefs->GetName():0;}
 
     // statistics methods
-	IC bool 		IsDynamic     			()	{return (m_pRefs?m_pRefs->IsFlag(CEditableObject::eoDynamic):false); }
+	IC bool 		IsDynamic     			()	{return (m_pRefs?m_pRefs->IsDynamic():false); }
+	IC bool 		IsStatic     			()	{return (m_pRefs?m_pRefs->IsStatic():false); }
     int 			GetFaceCount			();
     void			GetFaceWorld			(CEditableMesh* M, int idx, Fvector* verts);
 	int 			GetVertexCount			();

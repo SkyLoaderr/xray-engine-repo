@@ -247,7 +247,7 @@ void CSector::CaptureInsideVolume(){
         // ignore dynamic objects
 		for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
 	        obj = (CSceneObject*)(*_F);
-	        if (obj->IsDynamic()) continue;
+	        if (!obj->IsStatic()) continue;
 	        EditMeshVec* M = obj->Meshes();
             R_ASSERT(M);
             for(EditMeshIt m_def = M->begin();m_def!=M->end();m_def++){
@@ -275,7 +275,7 @@ void CSector::CaptureAllUnusedMeshes(){
     for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
 		UI.ProgressInc();
         obj = (CSceneObject*)(*_F);
-        if (obj->IsDynamic()) continue;
+        if (!obj->IsStatic()) continue;
         EditMeshVec* M = obj->Meshes();
         R_ASSERT(M);
         for(EditMeshIt m_def = M->begin(); m_def!=M->end();m_def++)

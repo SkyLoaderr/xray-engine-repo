@@ -482,7 +482,7 @@ public:
     virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((DWORD*)value);}
     virtual void		InitNext		(LPVOID value)
     {
-       	if (0!=memcmp(values.front(),&value,p_size))
+       	if (0!=memcmp(values.front(),value,p_size))
         	bDiff=true; 
         AppendValue((DWORD*)value);
     }

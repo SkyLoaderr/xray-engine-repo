@@ -164,6 +164,11 @@ public:
         eoHOM			= (1<<3),	
 		eoFORCE32		= DWORD(-1)
     };
+	IC DWORD& 		GetFlags	   			(){return m_dwFlags; }
+	IC bool 		IsFlag	     			(DWORD flag){return !!(m_dwFlags&flag); }
+    IC void			SetFlag					(DWORD flag, bool value){if (value) m_dwFlags|=flag; else m_dwFlags&=~flag;}
+    IC bool			IsDynamic				(){return IsFlag(eoDynamic);}
+    IC bool			IsStatic				(){return !IsFlag(eoDynamic)&&!IsFlag(eoHOM);}
 private:
 	// options
 	DWORD			m_dwFlags;
@@ -242,10 +247,6 @@ public:
 
 ///    IC bool			CheckVersion			()  {if(m_LibRef) return (m_ObjVer==m_LibRef->m_ObjVer); return true;}
     // get object properties methods
-	IC DWORD& 		GetFlags	   			(){return m_dwFlags; }
-	IC bool 		IsFlag	     			(DWORD flag){return !!(m_dwFlags&flag); }
-    IC void			SetFlag					(DWORD flag, bool value){if (value) m_dwFlags|=flag; else m_dwFlags&=~flag;}
-    IC bool			IsDynamic				(){return IsFlag(eoDynamic);}
 
 	IC AnsiString&	GetClassScript			()	{return m_ClassScript;}
     IC const Fbox&	GetBox					() 	{return m_Box;}

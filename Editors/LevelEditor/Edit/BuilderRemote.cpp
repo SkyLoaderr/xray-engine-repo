@@ -674,7 +674,7 @@ BOOL SceneBuilder::ParseStaticObjects(ObjectList& lst, LPCSTR prefix)
 {
 	BOOL bResult = TRUE;
     for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-        UI.ProgressInc();
+        UI.ProgressInc((*_F)->Name);
         if (UI.NeedAbort()) break;
         switch((*_F)->ClassID){
         case OBJCLASS_LIGHT:
@@ -689,7 +689,7 @@ BOOL SceneBuilder::ParseStaticObjects(ObjectList& lst, LPCSTR prefix)
             break;
         case OBJCLASS_SCENEOBJECT:{
             CSceneObject *obj = (CSceneObject*)(*_F);
-            if (!obj->IsDynamic()) bResult = BuildObject(obj);
+            if (obj->IsStatic()) bResult = BuildObject(obj);
         }break;
         case OBJCLASS_GROUP:{ 
             CGroupObject* group = (CGroupObject*)(*_F);
@@ -720,7 +720,7 @@ BOOL SceneBuilder::CompileStatic()
     ObjectIt _E = Scene.LastObj(OBJCLASS_SCENEOBJECT);
     for(;_O!=_E;_O++){
     	CSceneObject* obj = (CSceneObject*)(*_O);
-		if (!obj->IsDynamic()){
+		if (obj->IsStatic()){
 			l_faces_cnt		+= obj->GetFaceCount();
     	    l_vertices_cnt  += obj->GetVertexCount();
         }
@@ -733,7 +733,7 @@ BOOL SceneBuilder::CompileStatic()
     	ObjectIt _E1 = group->GetObjects().end();
 	    for(;_O1!=_E1;_O1++){
 	    	CSceneObject* obj = dynamic_cast<CSceneObject*>(*_O1);
-			if (obj&&!obj->IsDynamic()){
+			if (obj&&obj->IsStatic()){
 				l_faces_cnt		+= obj->GetFaceCount();
     	    	l_vertices_cnt  += obj->GetVertexCount();
 	        }
@@ -742,7 +742,7 @@ BOOL SceneBuilder::CompileStatic()
 	l_faces		= new b_face[l_faces_cnt];
 	l_vertices	= new b_vertex[l_vertices_cnt];
 
-    UI.ProgressStart(Scene.ObjCount(OBJCLASS_SCENEOBJECT),"Parse static objects...");
+    UI.ProgressStart(Scene.ObjCount(),"Parse static objects...");
 // make hemisphere
 	BuildHemiLights();
 // parse scene

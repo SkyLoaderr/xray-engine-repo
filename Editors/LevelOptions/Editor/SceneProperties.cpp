@@ -299,7 +299,7 @@ void __fastcall TfrmSceneProperties::ebChooseSkydomeClick(TObject *Sender)
     	ELog.DlgMsg(mtError,"Object %s can't find in library.",N);
         return;
 	}
-//    if (!O->IsDynamic()){
+//    if (O->IsStatic()){
 //    	ELog.DlgMsg(mtError,"Non-dynamic models can't be used as Skydome.");
 //        Lib.RemoveEditObject(O);
 //        return ;
