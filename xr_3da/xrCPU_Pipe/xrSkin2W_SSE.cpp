@@ -81,8 +81,7 @@ void __stdcall xrSkin2W_SSE(vertRender*		D,
 							vertBoned2W*	S,
 							u32				vCount,
 							CBoneInstance*	Bones) 
-{
-	__asm {
+{__asm{
 // ------------------------------------------------------------------
 	mov			ecx,vCount		; ecx = vCount
 // ------------------------------------------------------------------
@@ -251,5 +250,4 @@ void __stdcall xrSkin2W_SSE(vertRender*		D,
 	dec			ecx						; ecx = ecx - 1
 	jnz			new_dot					; ecx==0 ? goto new_dot : exit
 // ------------------------------------------------------------------
-	}
-}
+}}
