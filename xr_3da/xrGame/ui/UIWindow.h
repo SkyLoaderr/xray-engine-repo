@@ -127,8 +127,8 @@ public:
 
 
 	//абсолютные координаты
-	Ivector2				GetAbsolutePos		() const							{Irect abs = GetAbsoluteRect();}; 
-																					return Ivector2().set(abs.x1,abs.y1);)
+	Ivector2				GetAbsolutePos		() const							{Irect abs = GetAbsoluteRect(); 
+																						return Ivector2().set(abs.x1,abs.y1);}
 	Irect					GetAbsoluteRect		();
 
 	virtual void			SetWidth			(int width)			{m_WndRect.right = m_WndRect.left+width;}
