@@ -164,6 +164,12 @@ function motivator_binder:reload (section)
         }
     xr_meet.add_to_binder_pda(self.object, char_ini)
 
+    xr_motivator.storage[self.object:id()].helper = {   
+			position
+            enabled = false
+        }
+    //xr_meet.add_to_binder_pda(self.object, char_ini)
+    
     --Motivations
     manager:remove_motivation (motivations["solve_zone_puzzle"])
 
