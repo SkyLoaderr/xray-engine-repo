@@ -457,92 +457,9 @@ skydome                  = 32
 sun                      = 32
 ui\logo                  = 32
 
-; ALife Simulator objects - do not delete!!!
-;monsters
 [graph_point]
-    class                = AI_GRAPH
-    $spawn               = "ai\graph point"
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-[m_idol_e]
-GroupControlSection	= spawn_group
-$spawn 			     = "physics\idol"; option for Level Editor
-$npc			     = on			; option for Level Editor
-;$prefetch 		     = 32
-Scheduled		     = on			; option for ALife Simulator
-Human		     	 = off			; optionww for ALife Simulator
-Health			     = 100			; option for ALife Simulator
-cform                = skeleton		; collision class
-class                = AI_IDOL		; AI class
-
-visual				 = actors\hero\stalker_novice.ogf
-
-weapon_usage		 = 0			; boolean
-DynamicObjectsCount	 = 32
-DynamicSoundsCount	 = 32 
-terrain		         = 255,255,255,255,0,1,
-going_speed          = 1.5                      ; option for ALife Simulator
-search_speed         = .5                       ; option for ALife Simulator
-going_item_detect_probability = 0.1
-search_item_detect_probability = 0.9
-rank				 = 0
-max_item_mass		 = 40.0
-MaxHealthValue		     = 100			; range [0..200]
-transparency_threshold = 0.25
-
-eye_fov              = 145	;170
-eye_range            = 80	;150
-
-bone_torso_weapon	 = bip01_r_hand
-bone_head_weapon	 = bip01_l_finger1
-
-bone_head		     = bip01_head
-bone_shoulder		 = bip01_spine2
-bone_spin		     = bip01_spine1
-bone_model		     = bip01
-
-ph_box0_center 		 = 0.0,  0.9,  0.0
-ph_box0_size 		 = 0.35, 0.9,  0.35
-ph_box1_center 		 = 0.0,  0.6,  0.0
-ph_box1_size 		 = 0.40, 0.6,  0.40
-ph_crash_speed_min   = 16
-ph_crash_speed_max   = 30
-ph_mass 			 = 120
-
-
-satiety_v = 0.001			;0.01			;скорость уменьшения сытости со временем
-radiation_v = 0.00001		;0.004			;скорость уменьшения радиации
-satiety_power_v = 0.001		;0.01			;увеличение силы при уменьшении сытости 
-satiety_health_v = 0.001	;0.03			;увеличение здоровья при уменьшении сытости 
-satiety_critical = 0		;0.25						;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
-radiation_health_v = 0.01	;0.006			;уменьшение здоровья при воздействии радиации
-bleeding_v = 0.05			;0.02			;потеря крови при максимальной ране
-wound_incarnation_v = 0.01	;0.001		    ;скорость заживания раны 
-morale_v			= 0.01					;скорость восстановления морали
-health_hit_part = 1.0		;0.8			;процент хита, уходящий на отнимание здоровья
-power_hit_part = 1.0		;0.9			;процент хита, уходящий на отнимание силы
-min_wound_size				= 0.01
-
-burn_immunity = 1.0				;коэффициенты иммунитета 
-strike_immunity = 1.0
-shock_immunity = 1.0
-wound_immunity = 1.0		
-radiation_immunity = 1.0
-telepatic_immunity = 1.0
-chemical_burn_immunity = 1.0
-explosion_immunity = 1.0
-fire_wound_immunity  = 1.0
-
-sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
-sleep_power = 1.0		;1.5
-sleep_satiety = 1.0		;0.8
-sleep_radiation = 1.0	;1.1
-
-;animations			 = udar_1,udar_2,rrrrrr_1,rrrrrr_2,rrrrrr_3
-
-material					= creatures\human
-DynamicObjectsCount			= 32
+class                = AI_GRAPH
+$spawn               = "ai\graph point"
 
 ;-----------------------------------------------------------------
 ; Trade
