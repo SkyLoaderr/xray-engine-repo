@@ -12,7 +12,8 @@ DECLARE_RP(Stats);
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CStats::CStats()
+BOOL			g_bDisableRedText	= FALSE;
+CStats::CStats	()
 {
 	fFPS		= 30.f;
 	fRFPS		= 30.f;
@@ -236,6 +237,7 @@ void CStats::Show()
 
 	//////////////////////////////////////////////////////////////////////////
 	// PERF ALERT
+	if (!g_bDisableRedText)
 	{
 		CGameFont&	F = *((CGameFont*)pFont);
 		F.SetColor						(color_rgba(255,16,16,255));
@@ -259,7 +261,7 @@ void CStats::Show()
 
 	//////////////////////////////////////////////////////////////////////////
 	// Show errors
-	if (errors.size())
+	if (!g_bDisableRedText && errors.size())
 	{
 		CGameFont&	F = *((CGameFont*)pFont);
 		F.SetColor	(color_rgba(255,16,16,191));
@@ -332,6 +334,8 @@ void	__stdcall _LogCallback		(LPCSTR string)
 
 void CStats::OnDeviceCreate			()
 {
+	g_bDisableRedText				= strstr(Core.Params,"-clearscreen")?TRUE:FALSE;
+
 	pFont	= xr_new<CGameFont>		("stat_font");
 	
 	if(!pSettings->section_exist("evaluation")
@@ -346,7 +350,7 @@ void CStats::OnDeviceCreate			()
 
 	// 
 #ifdef DEBUG
-	SetLogCB	(_LogCallback);
+	if (!g_bDisableRedText)			SetLogCB	(_LogCallback);
 #endif
 }
 
