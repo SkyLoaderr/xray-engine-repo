@@ -253,7 +253,7 @@ void TProperties::FillElItems(PropItemVec& items, LPCSTR startup_pref)
                 LPCSTR k0		= k.c_str();
                 LPCSTR k1		= startup_pref;
                 while (k0[0]&&k1[0]&&(k0[0]==k1[0]))	{k0++;k1++; if(k1[0]=='\\')key=k0+1;}
-                if ((k0[0]!='\\')||(k1[0]!=0))	continue;
+                if (!((k0[0]==0)&&(k1[0]==0)))			if ((k0[0]!='\\')||(k1[0]!=0))	continue;
             }else{
             	if (1!=_GetItemCount(key.c_str(),'\\')) continue;
             }
@@ -581,8 +581,8 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             }break;
             case PROP_FLAG:{
                 FlagValueCustom*  V	= dynamic_cast<FlagValueCustom*>(prop->GetFrontValue()); R_ASSERT(V);
-                if (V->HaveCaption())	OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
-                else	        		OutBOOL	(V->GetValueEx(),Surface,R,prop->Enabled());
+                if (V->HaveCaption())	OutText	(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
+                else	        		OutBOOL	(V->m_Flags.is(FlagValueCustom::flInvertedDraw)?!V->GetValueEx():V->GetValueEx(),Surface,R,prop->Enabled());
             }break;
             case PROP_BOOLEAN:{
                 BOOLValue* V		= dynamic_cast<BOOLValue*>(prop->GetFrontValue()); R_ASSERT(V);

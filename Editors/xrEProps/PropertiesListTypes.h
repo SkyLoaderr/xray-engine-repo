@@ -485,7 +485,12 @@ class XR_EPROPS_API FlagValueCustom: public PropValue
 {
 public:
     AnsiString			caption[2];
+    enum{
+    	flInvertedDraw	= (1<<0),
+    };
+    Flags32				m_Flags;
 public:
+						FlagValueCustom	(u32 mask){m_Flags.set(mask);}
 	virtual	bool		HaveCaption		(){return caption[0].Length()&&caption[1].Length();}
     virtual bool		GetValueEx		()=0;
 };
@@ -500,7 +505,7 @@ public:
 	TYPE*				value;
     T::TYPE				mask;
 public:
-						FlagValue		(T* val, T::TYPE _mask, LPCSTR c0, LPCSTR c1):FlagValueCustom(),mask(_mask)
+						FlagValue		(T* val, T::TYPE _mask, LPCSTR c0, LPCSTR c1, u32 flags):FlagValueCustom(flags),mask(_mask)
 	{
     	value			= val;
     	init_value		= *val;
