@@ -182,7 +182,7 @@ void CCoverEvaluatorRandomGame::setup		(GameGraph::_GRAPH_ID game_vertex_id, flo
 {
 	inherited::setup		();
 	
-//	m_actuality				= m_actuality && (m_game_vertex_id == game_vertex_id);
+	m_actuality				= m_actuality && (m_game_vertex_id == game_vertex_id);
 	m_game_vertex_id		= game_vertex_id;
 
 	m_start_position		= ai().game_graph().vertex(game_vertex_id)->level_point();
@@ -218,10 +218,10 @@ void CCoverEvaluatorAmbush::setup			(const Fvector &my_position, const Fvector &
 //	m_actuality				= m_actuality && m_my_position.similar(my_position);
 	m_my_position			= my_position;
 
-//	m_actuality				= m_actuality && m_enemy_position.similar(enemy_position);
+	m_actuality				= m_actuality && m_enemy_position.similar(enemy_position,5.f);
 	m_enemy_position		= enemy_position;
 
-//	m_actuality				= m_actuality && fsimilar(m_min_enemy_distance,min_enemy_distance);
+	m_actuality				= m_actuality && fsimilar(m_min_enemy_distance,min_enemy_distance);
 	m_min_enemy_distance	= min_enemy_distance;
 }
 

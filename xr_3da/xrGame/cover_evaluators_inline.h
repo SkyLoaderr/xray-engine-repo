@@ -107,16 +107,16 @@ IC	void CCoverEvaluatorCloseToEnemy::setup		(const Fvector &enemy_position, floa
 {
 	inherited::setup		();
 	
-//	m_actuality				= m_actuality && m_enemy_position.similar(enemy_position);
+	m_actuality				= m_actuality && m_enemy_position.similar(enemy_position,10.f);
 	m_enemy_position		= enemy_position;
 
-//	m_actuality				= m_actuality && fsimilar(m_deviation,deviation);
+	m_actuality				= m_actuality && fsimilar(m_deviation,deviation);
 	m_deviation				= deviation;
 	
-//	m_actuality				= m_actuality && fsimilar(m_min_distance,min_enemy_distance);
+	m_actuality				= m_actuality && fsimilar(m_min_distance,min_enemy_distance);
 	m_min_distance			= min_enemy_distance;
 
-//	m_actuality				= m_actuality && fsimilar(m_max_distance,max_enemy_distance);
+	m_actuality				= m_actuality && fsimilar(m_max_distance,max_enemy_distance);
 	m_max_distance			= max_enemy_distance;
 }
 
@@ -135,7 +135,7 @@ IC	CCoverEvaluatorAngle::CCoverEvaluatorAngle	(CRestrictedObject *object) : inhe
 IC	void CCoverEvaluatorAngle::setup		(const Fvector &enemy_position, float min_enemy_distance, float	max_enemy_distance, u32 level_vertex_id)
 {
 	inherited::setup		(enemy_position,min_enemy_distance,max_enemy_distance);
-//	m_actuality				= m_actuality && (m_level_vertex_id == level_vertex_id);
+	m_actuality				= m_actuality && (m_level_vertex_id == level_vertex_id);
 	m_level_vertex_id		= level_vertex_id;
 }
 
@@ -163,7 +163,7 @@ IC	CCoverEvaluatorSafe::CCoverEvaluatorSafe	(CRestrictedObject *object) : inheri
 IC	void CCoverEvaluatorSafe::setup		(float min_distance)
 {
 	inherited::setup		();
-//	m_actuality				= m_actuality && fsimilar(m_min_distance,min_distance);
+	m_actuality				= m_actuality && fsimilar(m_min_distance,min_distance);
 	m_min_distance			= min_distance;
 }
 
