@@ -19,15 +19,17 @@ CAI_Biting::CAI_Biting()
 	m_PhysicMovementControl.AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
 	m_pPhysics_support=xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etBitting,this);
 
+#ifdef 
 	HDebug							= xr_new<CMonsterDebug>(this, Fvector().set(0.0f,2.0f,0.0f), 20.f);
-	
+#endif
 }
 
 CAI_Biting::~CAI_Biting()
 {
 	xr_delete(m_pPhysics_support);
-	
+#ifdef 
 	xr_delete(HDebug);
+#endif	
 }
 
 void CAI_Biting::Init()
@@ -319,8 +321,9 @@ void CAI_Biting::UpdateCL()
 
 	m_pPhysics_support->in_UpdateCL();
 
-	HDebug->M_Update();
-	
+#ifdef DEBUG
+	HDebug->M_Update	();
+#endif
 }
 
 void CAI_Biting::shedule_Update(u32 dt)
