@@ -62,8 +62,6 @@ BOOL ApplyBorders	(lm_layer &lm, u32 ref)
 
 	try {
 		lm_layer	result	= lm;
-		R_ASSERT	(lm.height<=lmap_size	);
-		R_ASSERT	(lm.width<=lmap_size	);
 
 		for (int y=0; y<(int)lm.height; y++) {
 			for (int x=0; x<(int)lm.width; x++)

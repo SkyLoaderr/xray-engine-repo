@@ -10,7 +10,7 @@ xr_vector<OGF_Base *>	g_tree;
 BOOL					b_R2	= FALSE;
 CThreadManager			mu_base;
 CThreadManager			mu_secondary;
-#define		MU_THREADS	1
+#define		MU_THREADS	4
 
 //////////////////////////////////////////////////////////////////////
 

@@ -85,6 +85,9 @@ public:
 	}
 	virtual void		Execute	()
 	{
+		// Priority
+		SetThreadPriority		(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL);
+		Sleep					(0);
 		R_ASSERT				(DATA);
 		ImplicitDeflector&		defl	= *DATA;
 		CDB::COLLIDER			DB;
