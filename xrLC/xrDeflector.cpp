@@ -110,8 +110,8 @@ VOID CDeflector::OA_Export()
 	size.sub	(max,min);
 
 	// Surface
-	lm.dwWidth  = iCeil(size.u*g_params.m_lm_pixels_per_meter*density); clamp(lm.dwWidth, 2ul,510ul);
-	lm.dwHeight = iCeil(size.v*g_params.m_lm_pixels_per_meter*density); clamp(lm.dwHeight,2ul,510ul);
+	lm.dwWidth  = iCeil(size.u*g_params.m_lm_pixels_per_meter*density+.5f); clamp(lm.dwWidth, 2ul,510ul);
+	lm.dwHeight = iCeil(size.v*g_params.m_lm_pixels_per_meter*density+.5f); clamp(lm.dwHeight,2ul,510ul);
 	lm.bHasAlpha= FALSE;
 	iArea		= lm.dwWidth*lm.dwHeight;
 
