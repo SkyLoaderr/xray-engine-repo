@@ -114,6 +114,7 @@ void CEditableMesh::GeneratePNormals()
 {
 	if (!m_LoadState.is(LS_FNORMALS)) GenerateFNormals();
 
+    VERIFY(m_SGs.size()==m_Faces.size());
 	// vertex normals
     m_PNormals.resize	(m_Faces.size()*3);
 	if (m_Flags.is(flSGMask)){
