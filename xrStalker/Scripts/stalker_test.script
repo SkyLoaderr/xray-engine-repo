@@ -1,4 +1,4 @@
-function action(obj,...)
+function action1(obj,...)
 	local act = entity_action()
 	local i = 1
 	while true do
@@ -15,7 +15,7 @@ function action(obj,...)
 	return	entity_action(act)
 end
 
-function action_first(obj,...)
+function action_first1(obj,...)
 	local act = entity_action()
 	local i = 1
 	while true do
@@ -67,7 +67,7 @@ function main ()
 --		cond		(cond.move_end)
 --	)
 
-	stalker_test:action (
+	stalker_test:action1 (
 		stalker, 
 		move		(move.standing, move.walk, move.line, patrol ("way0000")),
 		look		(look.path_dir),
@@ -77,7 +77,7 @@ function main ()
 	
 	wait			(2000)
 	
-	stalker_test:action_first (
+	stalker_test:action_first1 (
 		stalker, 
 		move		(move.standing, move.stand, move.line, patrol ("way0000")),
 		anim		("stoya_ruje_ 0"),
