@@ -17,21 +17,22 @@
 #include "script_export_space.h"
 
 struct CScriptPropertiesListHelper {
-//			void 				FvectorRDOnAfterEdit(PropValue* sender,  Fvector& edit_val, bool& accepted);
-//			void 				FvectorRDOnBeforeEdit(PropValue* sender, Fvector& edit_val);
-//			void 				FvectorRDOnDraw		(PropValue* sender,  LPCSTR& draw_val);
-//			void 				floatRDOnAfterEdit	(PropValue* sender,  float&	 edit_val, bool& accepted);
-//			void 				floatRDOnBeforeEdit	(PropValue* sender,  float&	 edit_val);
-//			void 				floatRDOnDraw		(PropValue* sender,  LPCSTR& draw_val);
-// name edit
-//			void 				NameAfterEdit		(PropValue* sender,  LPCSTR& edit_val, bool& accepted);
-//			void				NameBeforeEdit		(PropValue* sender,  LPCSTR& edit_val);
-//			void 				NameDraw			(PropValue* sender,  LPCSTR& draw_val);
 public:
-//			CaptionValue*  		CreateCaption	    (PropItemVec& items, LPCSTR key, LPCSTR val);
-//			CanvasValue*		CreateCanvas	    (PropItemVec& items, LPCSTR key, LPCSTR val, int height);
-//			ButtonValue*		CreateButton	    (PropItemVec& items, LPCSTR key, LPCSTR val, u32 flags);
-//			ChooseValue*		CreateChoose	    (PropItemVec& items, LPCSTR key, LPCSTR* val, u32 mode, LPCSTR path=0);
+			void 				FvectorRDOnAfterEdit(PropValue* sender,  Fvector& edit_val, bool& accepted);
+			void 				FvectorRDOnBeforeEdit(PropValue* sender, Fvector& edit_val);
+			void 				FvectorRDOnDraw		(PropValue* sender,  LPCSTR& draw_val);
+			void 				floatRDOnAfterEdit	(PropValue* sender,  float&	 edit_val, bool& accepted);
+			void 				floatRDOnBeforeEdit	(PropValue* sender,  float&	 edit_val);
+			void 				floatRDOnDraw		(PropValue* sender,  LPCSTR& draw_val);
+// name edit
+			void 				NameAfterEdit		(PropValue* sender,  LPCSTR& edit_val, bool& accepted);
+			void				NameBeforeEdit		(PropValue* sender,  LPCSTR& edit_val);
+			void 				NameDraw			(PropValue* sender,  LPCSTR& draw_val);
+public:
+			CaptionValue*  		CreateCaption	    (PropItemVec& items, LPCSTR key, LPCSTR val);
+			CanvasValue*		CreateCanvas	    (PropItemVec& items, LPCSTR key, LPCSTR val, int height);
+			ButtonValue*		CreateButton	    (PropItemVec& items, LPCSTR key, LPCSTR val, u32 flags);
+			ChooseValue*		CreateChoose	    (PropItemVec& items, LPCSTR key, LPCSTR* val, u32 mode, LPCSTR path=0);
 			S8Value* 			CreateS8		    (PropItemVec& items, LPCSTR key, s8* val, s8 mn=0, s8 mx=100, s8 inc=1);
 			S16Value* 			CreateS16		    (PropItemVec& items, LPCSTR key, s16* val, s16 mn=0, s16 mx=100, s16 inc=1);
 			S32Value* 	 		CreateS32		    (PropItemVec& items, LPCSTR key, s32* val, s32 mn=0, s32 mx=100, s32 inc=1);
@@ -44,12 +45,12 @@ public:
 			Flag8Value*			CreateFlag8		    (PropItemVec& items, LPCSTR key, Flags8* val, u8 mask, LPCSTR c0=0, LPCSTR c1=0, u32 flags=0);
 			Flag16Value*		CreateFlag16	    (PropItemVec& items, LPCSTR key, Flags16* val, u16 mask, LPCSTR c0=0, LPCSTR c1=0, u32 flags=0);
 			Flag32Value*		CreateFlag32	    (PropItemVec& items, LPCSTR key, Flags32* val, u32 mask, LPCSTR c0=0, LPCSTR c1=0, u32 flags=0);
-//			Token8Value*		CreateToken8	    (PropItemVec& items, LPCSTR key, u8* val, xr_token* token);
-//			Token16Value*		CreateToken16	    (PropItemVec& items, LPCSTR key, u16* val, xr_token* token);
-//			Token32Value*		CreateToken32	    (PropItemVec& items, LPCSTR key, u32* val, xr_token* token);
-//			RToken8Value* 		CreateRToken8	    (PropItemVec& items, LPCSTR key, u8* val, RTokenVec* token);
-//			RToken16Value* 		CreateRToken16	    (PropItemVec& items, LPCSTR key, u16* val, RTokenVec* token);
-//			RToken32Value* 		CreateRToken32	    (PropItemVec& items, LPCSTR key, u32* val, RTokenVec* token);
+			Token8Value*		CreateToken8	    (PropItemVec& items, LPCSTR key, u8* val, xr_token* token);
+			Token16Value*		CreateToken16	    (PropItemVec& items, LPCSTR key, u16* val, xr_token* token);
+			Token32Value*		CreateToken32	    (PropItemVec& items, LPCSTR key, u32* val, xr_token* token);
+			RToken8Value* 		CreateRToken8	    (PropItemVec& items, LPCSTR key, u8* val, RTokenVec* token);
+			RToken16Value* 		CreateRToken16	    (PropItemVec& items, LPCSTR key, u16* val, RTokenVec* token);
+			RToken32Value* 		CreateRToken32	    (PropItemVec& items, LPCSTR key, u32* val, RTokenVec* token);
 //			TokenValueSH*   	CreateTokenSH	    (PropItemVec& items, LPCSTR key, u32* val, u32 cnt, const TokenValueSH::Item* lst);
 //			ListValue* 	 		CreateList		    (PropItemVec& items, LPCSTR key, LPCSTR* val, RStringVec* lst);
 			U32Value*  			CreateColor		    (PropItemVec& items, LPCSTR key, u32* val);

@@ -111,8 +111,12 @@ void CScriptPropertiesListHelper::script_register(lua_State *L)
 			.def("equal",	(bool (*)(Flags32*,const Flags32&))(&equal<Flags32>))
 			.def("equal",	(bool (*)(Flags32*,const Flags32&,const Flags32::TYPE))(&equal<Flags32>)),
 
+		class_<PropValue>	("prop_value"),
 		class_<PropItemVec>	("prop_item_vec"),
-		class_<S8Value>		("s8_value"),
+		class_<CaptionValue>("caption_value"),
+		class_<CanvasValue>	("canvas_value"),
+		class_<ButtonValue>	("button_value"),
+		class_<ChooseValue>	("choose_value"),
 		class_<S16Value>	("s16_value"),
 		class_<S32Value>	("s32_value"),
 		class_<S8Value>		("u8_value"),
@@ -125,8 +129,31 @@ void CScriptPropertiesListHelper::script_register(lua_State *L)
 		class_<Flag8Value>	("flag8_value"),
 		class_<Flag16Value>	("flag16_value"),
 		class_<Flag32Value>	("flag32_value"),
+		class_<Token8Value>	("token8_value"),
+		class_<Token16Value>("token16_value"),
+		class_<Token32Value>("token32_value"),
+		class_<RToken8Value>("rtoken8_value"),
+		class_<RToken16Value>("rtoken16_value"),
+		class_<RToken32Value>("rtoken32_value"),
 
 		class_<CScriptPropertiesListHelper>("properties_list_helper")
+			.def("vector_on_after_edit",	&CScriptPropertiesListHelper::FvectorRDOnAfterEdit)
+			.def("vector_on_before_edit",	&CScriptPropertiesListHelper::FvectorRDOnBeforeEdit)
+			.def("vector_on_draw",			&CScriptPropertiesListHelper::FvectorRDOnDraw)
+			.def("float_on_after_edit",		&CScriptPropertiesListHelper::floatRDOnAfterEdit)
+			.def("float_on_before_edit",	&CScriptPropertiesListHelper::floatRDOnBeforeEdit)
+			.def("float_on_draw",			&CScriptPropertiesListHelper::floatRDOnDraw)
+			.def("name_after_edit",			&CScriptPropertiesListHelper::NameAfterEdit)
+			.def("name_before_edit",		&CScriptPropertiesListHelper::NameBeforeEdit)
+			.def("name_on_draw",			&CScriptPropertiesListHelper::NameDraw)
+
+			.def("create_caption",&CScriptPropertiesListHelper::CreateCaption)
+			.def("create_canvas",&CScriptPropertiesListHelper::CreateCanvas)
+			.def("create_button",&CScriptPropertiesListHelper::CreateButton)
+			
+			.def("create_choose", (ChooseValue *(CScriptPropertiesListHelper::*)(PropItemVec&, LPCSTR,  LPCSTR*, u32))					(&CScriptPropertiesListHelper::CreateChoose))
+			.def("create_choose", (ChooseValue *(CScriptPropertiesListHelper::*)(PropItemVec&, LPCSTR,  LPCSTR*, u32, LPCSTR))			(&CScriptPropertiesListHelper::CreateChoose))
+			
 			.def("create_s8", (S8Value *(CScriptPropertiesListHelper::*)(PropItemVec&, LPCSTR,  s8*))					(&CScriptPropertiesListHelper::CreateS8))
 			.def("create_s8", (S8Value *(CScriptPropertiesListHelper::*)(PropItemVec&, LPCSTR,  s8*,  s8))				(&CScriptPropertiesListHelper::CreateS8))
 			.def("create_s8", (S8Value *(CScriptPropertiesListHelper::*)(PropItemVec&, LPCSTR,  s8*,  s8,  s8))			(&CScriptPropertiesListHelper::CreateS8))
@@ -171,6 +198,29 @@ void CScriptPropertiesListHelper::script_register(lua_State *L)
 			.def("create_vector",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec&, LPCSTR, Fvector*, float, float, float))(&CScriptPropertiesListHelper::CreateVector))
 			.def("create_vector",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec&, LPCSTR, Fvector*, float, float, float,int))(&CScriptPropertiesListHelper::CreateVector))
 			
+			.def("create_flag8",(Flag8Value *(CScriptPropertiesListHelper::*)(PropItemVec&, LPCSTR, Flags8*, u8))					(&CScriptPropertiesListHelper::CreateFlag8))
+			.def("create_flag8",(Flag8Value *(CScriptPropertiesListHelper::*)(PropItemVec&, LPCSTR, Flags8*, u8,LPCSTR))			(&CScriptPropertiesListHelper::CreateFlag8))
+			.def("create_flag8",(Flag8Value *(CScriptPropertiesListHelper::*)(PropItemVec&, LPCSTR, Flags8*, u8,LPCSTR,LPCSTR))		(&CScriptPropertiesListHelper::CreateFlag8))
+			.def("create_flag8",(Flag8Value *(CScriptPropertiesListHelper::*)(PropItemVec&, LPCSTR, Flags8*, u8,LPCSTR,LPCSTR,u32))	(&CScriptPropertiesListHelper::CreateFlag8))
+			
+			.def("create_flag16",(Flag16Value *(CScriptPropertiesListHelper::*)(PropItemVec&, LPCSTR, Flags16*, u16))					(&CScriptPropertiesListHelper::CreateFlag16))
+			.def("create_flag16",(Flag16Value *(CScriptPropertiesListHelper::*)(PropItemVec&, LPCSTR, Flags16*, u16,LPCSTR))			(&CScriptPropertiesListHelper::CreateFlag16))
+			.def("create_flag16",(Flag16Value *(CScriptPropertiesListHelper::*)(PropItemVec&, LPCSTR, Flags16*, u16,LPCSTR,LPCSTR))		(&CScriptPropertiesListHelper::CreateFlag16))
+			.def("create_flag16",(Flag16Value *(CScriptPropertiesListHelper::*)(PropItemVec&, LPCSTR, Flags16*, u16,LPCSTR,LPCSTR,u32))	(&CScriptPropertiesListHelper::CreateFlag16))
+
+			.def("create_flag32",(Flag32Value *(CScriptPropertiesListHelper::*)(PropItemVec&, LPCSTR, Flags32*, u32))					(&CScriptPropertiesListHelper::CreateFlag32))
+			.def("create_flag32",(Flag32Value *(CScriptPropertiesListHelper::*)(PropItemVec&, LPCSTR, Flags32*, u32,LPCSTR))			(&CScriptPropertiesListHelper::CreateFlag32))
+			.def("create_flag32",(Flag32Value *(CScriptPropertiesListHelper::*)(PropItemVec&, LPCSTR, Flags32*, u32,LPCSTR,LPCSTR))		(&CScriptPropertiesListHelper::CreateFlag32))
+			.def("create_flag32",(Flag32Value *(CScriptPropertiesListHelper::*)(PropItemVec&, LPCSTR, Flags32*, u32,LPCSTR,LPCSTR,u32))	(&CScriptPropertiesListHelper::CreateFlag32))
+
+			.def("create_token8",	&CScriptPropertiesListHelper::CreateToken8)
+			.def("create_token16",	&CScriptPropertiesListHelper::CreateToken16)
+			.def("create_token32",	&CScriptPropertiesListHelper::CreateToken32)
+
+			.def("create_rtoken8",	&CScriptPropertiesListHelper::CreateRToken8)
+			.def("create_rtoken16",	&CScriptPropertiesListHelper::CreateRToken16)
+			.def("create_rtoken32",	&CScriptPropertiesListHelper::CreateRToken32)
+
 			.def("create_color",&CScriptPropertiesListHelper::CreateColor)
 			.def("create_fcolor",&CScriptPropertiesListHelper::CreateFColor)
 			.def("create_vcolor",&CScriptPropertiesListHelper::CreateVColor)
