@@ -156,7 +156,7 @@ float getLastRP_Scale(CDB::COLLIDER* DB, CDB::MODEL* MDL, R_Light& L, Face* skip
 
 			u32 pixel		= T.pSurface[V*T.dwWidth+U];
 			u32 pixel_a		= color_get_A(pixel);
-			float opac		= 1.f - float(pixel_a)/255.f;
+			float opac		= 1.f - _sqr(float(pixel_a)/255.f);
 			scale			*= opac;
 		}
 	} 
