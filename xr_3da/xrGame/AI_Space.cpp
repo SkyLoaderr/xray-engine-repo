@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "game_graph.h"
 #include "game_level_cross_table.h"
-#include "level_graph.h"
+#include "level_navigation_graph.h"
 #include "graph_engine.h"
 #include "ef_storage.h"
 #include "ai_space.h"
@@ -58,7 +58,7 @@ void CAI_Space::load				(LPCSTR level_name)
 	u64						start = CPU::GetCycleCount();
 #endif
 
-	m_level_graph			= xr_new<CLevelGraph>();
+	m_level_graph			= xr_new<CLevelNavigationGraph>();
 	m_cross_table			= xr_new<CGameLevelCrossTable>();
 	m_graph_engine			= xr_new<CGraphEngine>(
 		_max(

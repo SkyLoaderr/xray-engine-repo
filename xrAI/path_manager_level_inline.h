@@ -17,7 +17,7 @@
 	>
 
 #define CLevelPathManager CPathManager<\
-	CLevelGraph,\
+	CLevelNavigationGraph,\
 	_DataStorage,\
 	SBaseParameters<\
 		_dist_type,\

@@ -61,7 +61,7 @@ class CPatrolPathManager;
 class CDetailPathManager;
 class CPHMovementControl;
 class CGameGraph;
-class CLevelGraph;
+class CLevelNavigationGraph;
 class CAbstractVertexEvaluator;
 class CRestrictedObject;
 class CSelectorManager;
@@ -107,12 +107,12 @@ protected:
 				u32
 			>		CGamePathManager;
 	typedef CBaseLocationSelector<
-				CLevelGraph,
+				CLevelNavigationGraph,
 				CAbstractVertexEvaluator,
 				u32
 			>		CLevelLocationSelector;
 	typedef CBasePathManager<
-				CLevelGraph,
+				CLevelNavigationGraph,
 				SBaseParameters<
 					float,
 					u32,

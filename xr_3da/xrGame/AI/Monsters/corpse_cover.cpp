@@ -2,7 +2,7 @@
 #include "corpse_cover.h"
 #include "../../cover_point.h"
 #include "../../ai_space.h"
-#include "../../level_graph.h"
+#include "../../level_navigation_graph.h"
 
 void CMonsterCorpseCoverEvaluator::evaluate			(CCoverPoint *cover_point, float weight)
 {

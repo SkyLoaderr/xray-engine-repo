@@ -987,7 +987,7 @@ void CLevelGraph::build_detail_path()
 
 	m_tpTravelLine.clear					();
 //	ai().m_visited_nodes.clear				();
-	if (!ai().graph_engine().search(level_graph,start.vertex_id,dest.vertex_id,&m_tpaNodes,GraphEngineSpace::CBaseParameters()))
+	if (!ai().graph_engine().search(ai().level_graph(),start.vertex_id,dest.vertex_id,&m_tpaNodes,GraphEngineSpace::CBaseParameters()))
 		return;
 
 #ifndef AI_COMPILER

@@ -10,7 +10,7 @@
 
 class	CGameGraph;
 class	CGameLevelCrossTable;
-class	CLevelGraph;
+class	CLevelNavigationGraph;
 class	CGraphEngine;
 class	CEF_Storage;
 class	CALifeSimulator;
@@ -26,7 +26,7 @@ private:
 private:
 	CGameGraph							*m_game_graph;
 	CGameLevelCrossTable				*m_cross_table;
-	CLevelGraph							*m_level_graph;
+	CLevelNavigationGraph				*m_level_graph;
 	CGraphEngine						*m_graph_engine;
 	CEF_Storage							*m_ef_storage;
 	CALifeSimulator						*m_alife_simulator;
@@ -43,8 +43,8 @@ public:
 	virtual								~CAI_Space		();
 	IC		CGameGraph					&game_graph		() const;
 	IC		CGameGraph					*get_game_graph	() const;
-	IC		CLevelGraph					&level_graph	() const;
-	IC		const CLevelGraph			*get_level_graph() const;
+	IC		CLevelNavigationGraph		&level_graph	() const;
+	IC		const CLevelNavigationGraph	*get_level_graph() const;
 	IC		const CGameLevelCrossTable	&cross_table	() const;
 	IC		const CGameLevelCrossTable	*get_cross_table() const;
 	IC		CEF_Storage					&ef_storage		() const;

@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "patrol_point.h"
 #include "ai_space.h"
-#include "level_graph.h"
+#include "level_navigation_graph.h"
 
 CPatrolPoint::CPatrolPoint				()
 {

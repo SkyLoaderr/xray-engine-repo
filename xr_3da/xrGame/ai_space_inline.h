@@ -19,13 +19,13 @@ IC	CGameGraph					*CAI_Space::get_game_graph	() const
 	return			(m_game_graph);
 }
 
-IC	CLevelGraph					&CAI_Space::level_graph		() const
+IC	CLevelNavigationGraph		&CAI_Space::level_graph		() const
 {
 	VERIFY			(m_level_graph);
 	return			(*m_level_graph);
 }
 
-IC	const CLevelGraph			*CAI_Space::get_level_graph	() const
+IC	const CLevelNavigationGraph	*CAI_Space::get_level_graph	() const
 {
 	return			(m_level_graph);
 }

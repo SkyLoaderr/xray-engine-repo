@@ -7,7 +7,7 @@
 #include "../critical_action_info.h"
 #include "../ai_monster_jump.h"
 #include "../../../detail_path_manager.h"
-#include "../../../level_graph.h"
+#include "../../../level_navigation_graph.h"
 #include "../ai_monster_movement.h"
 #include "../corpse_cover.h"
 #include "../../../cover_evaluators.h"

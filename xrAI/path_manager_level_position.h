@@ -16,7 +16,7 @@ template <
 	typename _index_type,
 	typename _iteration_type
 >	class CPathManager <
-		CLevelGraph,
+		CLevelNavigationGraph,
 		_DataStorage,
 		SPosition<
 			_dist_type,
@@ -27,7 +27,7 @@ template <
 		_index_type,
 		_iteration_type
 	> : public CPathManager <
-			CLevelGraph,
+			CLevelNavigationGraph,
 			_DataStorage,
 			SBaseParameters<
 				_dist_type,
@@ -39,7 +39,7 @@ template <
 			_iteration_type
 		>
 {
-	typedef CLevelGraph _Graph;
+	typedef CLevelNavigationGraph _Graph;
 	typedef SPosition<
 		_dist_type,
 		_index_type,

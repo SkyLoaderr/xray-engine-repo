@@ -14,7 +14,7 @@
 #include "../../clsid_game.h"
 #include "../../../fbasicvisual.h"
 #include "../../ai_object_location.h"
-#include "../../level_graph.h"
+#include "../../level_navigation_graph.h"
 #include "../../movement_manager.h"
 #include "../../location_manager.h"
 #include "../../level.h"

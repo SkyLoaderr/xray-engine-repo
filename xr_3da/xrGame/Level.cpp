@@ -46,7 +46,7 @@
 
 #include "ClimableObject.h"
 
-#include "level_graph.h"
+#include "level_navigation_graph.h"
 
 #include "phcommander.h"
 #include "map_manager.h"

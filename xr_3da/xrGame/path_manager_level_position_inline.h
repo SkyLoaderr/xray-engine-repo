@@ -17,7 +17,7 @@
 	>
 
 #define CLevelPositionPathManager CPathManager<\
-	CLevelGraph,\
+	CLevelNavigationGraph,\
 	_DataStorage,\
 	SPosition<\
 		_dist_type,\

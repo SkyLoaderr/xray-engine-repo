@@ -17,7 +17,7 @@
 	>
 
 #define CLevelObstaclesPathManager CPathManager<\
-	CLevelGraph,\
+	CLevelNavigationGraph,\
 	_DataStorage,\
 	SObstacleParams<\
 		_dist_type,\

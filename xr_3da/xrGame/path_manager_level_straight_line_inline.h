@@ -17,7 +17,7 @@
 	>
 
 #define CLevelStraightLinePathManager CPathManager<\
-	CLevelGraph,\
+	CLevelNavigationGraph,\
 	_DataStorage,\
 	SStraightLineParams<\
 		_dist_type,\

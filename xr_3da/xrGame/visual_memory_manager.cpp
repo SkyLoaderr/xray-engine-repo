@@ -13,7 +13,7 @@
 #include "../skeletoncustom.h"
 #include "clsid_game.h"
 #include "ai_object_location.h"
-#include "level_graph.h"
+#include "level_navigation_graph.h"
 #include "stalker_movement_manager.h"
 #include "gamemtllib.h"
 #include "agent_manager.h"

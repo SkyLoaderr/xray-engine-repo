@@ -8,7 +8,7 @@
 #include "../../../PhysicsShell.h"
 #include "../../../phcapture.h"
 #include "../../../ai_object_location.h"
-#include "../../../level_graph.h"
+#include "../../../level_navigation_graph.h"
 #include "../ai_monster_movement.h"
 #include "../../../entitycondition.h"
 #include "../../../ai_space.h"

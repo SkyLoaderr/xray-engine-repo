@@ -19,7 +19,7 @@
 #include "ui/UIDialogWnd.h"
 #include "date_time.h"
 #include "ai_space.h"
-#include "level_graph.h"
+#include "level_navigation_graph.h"
 #include "PHCommander.h"
 #include "PHScriptCall.h"
 #include "HUDManager.h"

@@ -12,7 +12,7 @@
 #include "HangingLamp.h"
 #include "PhysicsShell.h"
 #include "game_sv_single.h"
-#include "level_graph.h"
+#include "level_navigation_graph.h"
 #include "game_level_cross_table.h"
 #include "ph_shell_interface.h"
 #include "script_game_object.h"

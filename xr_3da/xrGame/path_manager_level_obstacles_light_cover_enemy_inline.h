@@ -17,7 +17,7 @@
 	>
 
 #define CLevelObstaclesLightCoverEnemyPathManager CPathManager<\
-	CLevelGraph,\
+	CLevelNavigationGraph,\
 	_DataStorage,\
 	SObstaclesLightCoverEnemy<\
 		_dist_type,\

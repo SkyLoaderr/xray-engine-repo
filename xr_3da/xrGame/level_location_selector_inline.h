@@ -13,7 +13,7 @@
 	typename _vertex_id_type\
 >
 
-#define CLevelLocationSelector CBaseLocationSelector<CLevelGraph,_VertexEvaluator,_vertex_id_type>
+#define CLevelLocationSelector CBaseLocationSelector<CLevelNavigationGraph,_VertexEvaluator,_vertex_id_type>
 
 TEMPLATE_SPECIALIZATION
 IC	CLevelLocationSelector::CBaseLocationSelector	(CRestrictedObject *object, CSelectorManager *selector_manager) :

@@ -17,7 +17,7 @@
 	>
 
 #define CLevelEvaluatorPathManager CPathManager<\
-	CLevelGraph,\
+	CLevelNavigationGraph,\
 	_DataStorage,\
 	CAbstractVertexEvaluator,\
 	_dist_type,\
