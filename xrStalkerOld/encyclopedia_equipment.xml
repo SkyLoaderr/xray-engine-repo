@@ -30,9 +30,9 @@
 
     <!-------------------------------- Vodka ----------------------------->
 
-    <article id="equipment_items_vodka1" name="Vodka" group="Equipment/Food">
+    <article id="equipment_food_vodka1" name="Vodka" group="Equipment/Food">
         <ltx>vodka</ltx>
-        <text>enc_equipment_items_vodka1</text>
+        <text>enc_equipment_food_vodka1</text>
     </article>
 
     <!-------------------------------- Antirad ----------------------------->

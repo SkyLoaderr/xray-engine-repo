@@ -4,7 +4,7 @@
         <text>Экипировка и еда</text>
     </string>
     <string id="Food">
-        <text>Еда</text>
+        <text>Продукты питания</text>
     </string>
     <string id="Medi">
         <text>Медицинские препараты</text>
@@ -33,7 +33,7 @@
     <string id="Vodka">
         <text>Водка "Казаки"</text>
     </string>
-    <string id="enc_equipment_items_vodka1">
+    <string id="enc_equipment_food_vodka1">
         <text>Вкусная и питательная водка производства корпорации "GSC". Снижает воздействие радиации, однако злоупотреблять ей не следует.</text>
     </string>
     <string id="Antirad">
@@ -69,7 +69,7 @@
     <string id="Detect1">
         <text>Детектор аномалий (ДА-2)</text>
     </string>
-    <string id="enc_equipment_items_detect1">
+    <string id="enc_equipment_devic_detect1">
         <text>Прибор, определяющий аномальные поля и возмущения, при положительной реакции издает звуковые сигналы. Для работы необходимо активировать, разместив прибор на поясе.</text>
     </string>
     <string id="Binocul">
