@@ -21,6 +21,7 @@ u32		psSoundModel			= 0;
 float	psSoundVMaster			= 1.0f;
 float	psSoundVEffects			= 1.0f;
 float	psSoundVMusic			= 0.7f;
+int		psSoundCacheSizeMB		= 16;
 
 CSoundRender_Core::CSoundRender_Core	()
 {

@@ -51,12 +51,14 @@ BOOL	CSoundRender_Cache::request		(cache_cat& cat, u32 id)
 	u16&	cptr	= cat.table[id];
 	if (CAT_FREE != cptr)	{
 		// cache line exists - change it's priority and return
-		cache_line*	L	= c_storage + cptr;
+		_stat_hit		++;
+		cache_line*	L	=	c_storage + cptr;
 		move2top		(L);
 		return			FALSE;
 	}
 
 	// 2. purge oldest item + move it to top
+	_stat_miss		++;
 	move2top	(c_end);
 	if (c_begin->loopback)	{
 		*c_begin->loopback		= CAT_FREE;

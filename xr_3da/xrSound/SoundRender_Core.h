@@ -4,6 +4,7 @@
 
 #include "SoundRender.h"
 #include "SoundRender_Environment.h"
+#include "SoundRender_Cache.h"
 
 class CSoundRender_Core					: public CSound_manager_interface
 {
@@ -42,6 +43,7 @@ private:
 	CDB::MODEL*							geom_ENV;
 
 	// Containers
+	CSoundRender_Cache					cache;
 	xr_vector<CSoundRender_Source*>		s_sources;
 	xr_vector<CSoundRender_Emitter*>	s_emitters;
 	u32									s_emitters_u;			// emitter update marker
