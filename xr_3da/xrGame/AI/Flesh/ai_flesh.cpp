@@ -51,13 +51,12 @@ BOOL CAI_Flesh::net_Spawn (LPVOID DC)
 		return(FALSE);
 
 
-	m_movement_params.insert(std::make_pair(eMovementParameterStand		,STravelParams(0.f,	inherited::_sd->m_fsTurnNormalAngular)));
-	m_movement_params.insert(std::make_pair(eMovementParameterWalkFree	,STravelParams(inherited::_sd->m_fsWalkFwdNormal,	inherited::_sd->m_fsWalkAngular)));
-	m_movement_params.insert(std::make_pair(eMovementParameterRunFree	,STravelParams(inherited::_sd->m_fsRunFwdNormal,	inherited::_sd->m_fsRunAngular )));
+	m_movement_params.insert(std::make_pair(eMovementParameterStand		,STravelParams(0.f,	inherited::_sd->m_fsTurnNormalAngular / 2)));
+	m_movement_params.insert(std::make_pair(eMovementParameterWalkFree	,STravelParams(inherited::_sd->m_fsWalkFwdNormal,	inherited::_sd->m_fsWalkAngular / 2)));
+	m_movement_params.insert(std::make_pair(eMovementParameterRunFree	,STravelParams(inherited::_sd->m_fsRunFwdNormal,	inherited::_sd->m_fsRunAngular / 2 )));
 
-	set_velocity_mask		(eMovementParameterWalkFree);
-	set_desirable_mask		(eMovementParameterWalkFree);
-
+	set_velocity_mask		(eMovementParameterRunFree);
+	set_desirable_mask		(eMovementParameterRunFree);
 
 	return TRUE;
 }

@@ -15,49 +15,44 @@ CBitingTest::CBitingTest(CAI_Biting *p)
 void CBitingTest::Init()
 {
 	inherited::Init();
+
+	last_time	= 0;
+	vertex_id	= 0;
+	start_vertex_id = pMonster->level_vertex_id();
 }
 
 void CBitingTest::Run()
 {
-	u32 vertex_id;
 
-//	if (pMonster->CDetailPathManager::completed(pMonster->Position())) {
-//		xr_vector<u32> nodes;
-//		float radius = 20.0f;
-//
-//		ai().graph_engine().search( ai().level_graph(), pMonster->level_vertex_id(), pMonster->level_vertex_id(), &nodes, CGraphEngine::CFlooder(radius));
-//
-//		vertex_id= nodes[::Random.randI(nodes.size())];
-//
-//		// look if there is node-already
-//		TNODES_MAP_IT	item_it = nodes.find(vertex_id);
-//		if (nodes.end() == item_it) { // insert new
-//			nodes.insert			(mk_pair(vertex_id, Level().timeServer()));
-//		} else {
-//			item_it->second = Level().timeServer();
-//		}
-//
-//	} else 
-//		vertex_id = pMonster->CDetailPathManager::path()[pMonster->CDetailPathManager::path().size()-1].vertex_id;
-	
+	bool bNeedRebuild = false;
 
 	xr_vector<u32> nodes;
-	float radius = 20.0f;
+	float radius = 20.f;
 
-	ai().graph_engine().search( ai().level_graph(), pMonster->level_vertex_id(), pMonster->level_vertex_id(), &nodes, CGraphEngine::CFlooder(radius));
-
-//	vertex_id= nodes[::Random.randI(nodes.size())];
+	if (pMonster->CMovementManager::path_completed() || (!pMonster->CDetailPathManager::path().empty() && (pMonster->CDetailPathManager::path().size() < pMonster->CDetailPathManager::curr_travel_point_index() + 5 ))) {
+		bNeedRebuild = true;
+	} else {
+		DO_IN_TIME_INTERVAL_BEGIN(last_time, 5000);
+			bNeedRebuild = true;
+		DO_IN_TIME_INTERVAL_END();
+	}
+	
+	
+	if (bNeedRebuild) {
+		// get new vertex_id here
+//		while (true) {
+//			get_node_in_dir();
 //
-//	// look if there is node-already
-//	CAI_Biting::s_dbg::TNODES_MAP_IT	item_it = pMonster->dbg_info.nodes.find(vertex_id);
-//	if (pMonster->dbg_info.nodes.end() == item_it) { // insert new
-//		pMonster->dbg_info.nodes.insert			(mk_pair(vertex_id, Level().timeServer()));
-//	} else {
-//		item_it->second = Level().timeServer();
-//	}
+//			ai().level_graph().check_position_in_direction(start_vertex_id, ) 
+//
+//
+//		}
 
-//	pMonster->SetPathParams(CMovementManager::ePathTypeLevelPath, vertex_id, ai().level_graph().vertex_position(vertex_id));
+		ai().graph_engine().search( ai().level_graph(), start_vertex_id, start_vertex_id, &nodes, CGraphEngine::CFlooder(radius));
+		vertex_id = nodes[::Random.randI(nodes.size())];
+	}
 
+	pMonster->MotionMan.m_tAction = ACT_RUN;
+	pMonster->SetPathParams(CMovementManager::ePathTypeLevelPath, vertex_id, ai().level_graph().vertex_position(vertex_id));
 
-	//pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 }

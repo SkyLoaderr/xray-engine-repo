@@ -338,6 +338,11 @@ public:
 class CBitingTest : public IState {
 	typedef IState inherited;
 	CAI_Biting		*pMonster;
+
+	u32		vertex_id;
+	TTime	last_time;
+	u32		start_vertex_id;	
+
 public:
 	CBitingTest(CAI_Biting *p);
 	

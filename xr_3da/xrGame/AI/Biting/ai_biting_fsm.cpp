@@ -14,17 +14,6 @@ void CAI_Biting::Think()
 	if (!g_Alive()) return;
 
 
-	//	if (CDetailPathManager::completed(Position())) {
-//		set_level_dest_vertex(dynamic_cast<CAI_ObjectLocation*>(Level().CurrentEntity())->level_vertex_id());
-//		set_dest_position(Level().CurrentEntity()->Position());
-//		set_desirable_speed(1.f);
-//		set_path_type(ePathTypeLevelPath);
-//		enable_movement(true);
-//		update_path();
-//	}
-//
-//	return;
-//
 	m_dwLastUpdateTime		= m_current_update;
 	m_current_update		= Level().timeServer();
 
