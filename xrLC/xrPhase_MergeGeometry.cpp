@@ -89,6 +89,12 @@ void CBuild::xrPhase_MergeGeometry	()
 					selected_volume	= volume;
 				}
 			}
+			if (selected == split)	break;	// No candidates for merge
+
+			// **OK**. Perform merge
+			subdiv.insert	(subdiv.end(), g_XSplit[selected].begin(), g_XSplit[selected].end());
+			g_XSplit.erase	(g_XSplit.begin()+selected);
 		}
+		Progress(float(split)/float(g_XSplit.size()));
 	}
 }
