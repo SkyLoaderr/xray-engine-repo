@@ -16,6 +16,7 @@ public:
 
 	IC	void		Load(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName)
 	{
+		A.clear		();
 		string256	S1, S2;
 		CMotionDef	*tpMotionDef;
 		for (int i=0; ; ++i)
@@ -35,7 +36,8 @@ public:
 
 	IC	void		Load(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName)
 	{
-		string256 S;
+		A.clear		();
+		string256	S;
 		for (int j=0; caBaseNames[j]; ++j);
 		A.resize	(j);
 		for (int i=0; i<j; ++i)
@@ -49,6 +51,7 @@ public:
 
 	IC	void		Load(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName)
 	{
+		A.clear		();
 		string256	S;
 		for (int j=0; caBaseNames[j]; ++j);
 		A.resize	(j);
