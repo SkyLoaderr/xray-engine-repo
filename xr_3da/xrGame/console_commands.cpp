@@ -20,7 +20,7 @@
 #include "customzone.h"
 #include "script_engine.h"
 #include "script_process.h"
-#include "xrServer_Objects_Abstract.h"
+#include "xrServer_Objects.h"
 #include "ui/UIMainIngameWnd.h"
 
 
