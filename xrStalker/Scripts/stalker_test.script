@@ -32,7 +32,6 @@ function action_first(obj,...)
 	return	entity_action(act)
 end
 
-
 function main ()
     stalker			= get_level_object ("m_stalker_e0000")
     stalker:script	(true,stalker_test:script_name());
@@ -68,7 +67,7 @@ function main ()
 --		cond		(cond.move_end)
 --	)
 
-	stalker_test.action (
+	stalker_test:action (
 		stalker, 
 		move		(move.standing, move.walk, move.line, patrol ("way0000")),
 		look		(look.path_dir),
@@ -78,7 +77,7 @@ function main ()
 	
 	wait			(2000)
 	
-	stalker_test.action_first (
+	stalker_test:action_first (
 		stalker, 
 		move		(move.standing, move.stand, move.line, patrol ("way0000")),
 		anim		("stoya_ruje_ 0"),
