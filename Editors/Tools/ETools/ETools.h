@@ -15,4 +15,12 @@ extern "C" {
 		ETOOLS_API bool TestRayTri2	(const Fvector& C, const Fvector& D, Fvector* p, float& range);
 	};
 };
+
+class ETOOLS_API CTestInterface{
+public:
+	virtual u32	Run()=0;
+};
+
+ETOOLS_API CTestInterface* CreateTestClass();
+
 #endif // EToolsH
