@@ -77,3 +77,10 @@ IC	bool CScriptEngine::functor(LPCSTR function_to_call, luabind::functor<_result
 
 	return					(true);
 }
+
+#ifdef USE_DEBUGGER
+IC CScriptDebugger*	CScriptEngine::debugger					()
+{
+	return m_scriptDebugger;
+}
+#endif

@@ -63,6 +63,11 @@ public:
 	IC		void				parse_script_namespace		(LPCSTR function_to_call, LPSTR name_space, LPSTR functor);
 			void				load_class_registrators		();
 
+#ifdef USE_DEBUGGER
+			void				stopDebugger				();
+			void				restartDebugger				();
+			CScriptDebugger*	debugger					();
+#endif
 	template <typename _result_type>
 	IC		bool				functor						(LPCSTR function_to_call, luabind::functor<_result_type> &lua_function);
 

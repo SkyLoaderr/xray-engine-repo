@@ -17,8 +17,8 @@ void LuaLog(LPCSTR caMessage)
 {
 	ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeMessage,"%s",caMessage);
 #ifdef USE_DEBUGGER
-	if( CScriptDebugger::GetDebugger()->Active() ){
-		CScriptDebugger::GetDebugger()->Write(caMessage);
+	if( ai().script_engine().debugger() ){
+		ai().script_engine().debugger()->Write(caMessage);
 	}
 #endif
 }

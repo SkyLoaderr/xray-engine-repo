@@ -75,8 +75,8 @@ public:
 	int				GetStackTraceLevel	();
 	
 	BOOL			Active				();
-	static CScriptDebugger* GetDebugger	() { return m_pDebugger; };
-	static LRESULT			_SendMessage(UINT message, WPARAM wParam, LPARAM lParam);
+//	static CScriptDebugger* GetDebugger	() { return m_pDebugger; };
+	LRESULT			_SendMessage(UINT message, WPARAM wParam, LPARAM lParam);
 
 protected:
 	void			DrawVariableInfo	(char* varName);
@@ -95,7 +95,7 @@ protected:
 	CDbgScriptThreads					m_threads;
 	CDbgLuaHelper						m_lua;
 	CScriptCallStack					m_callStack;
-	static CScriptDebugger*				m_pDebugger;
+//	static CScriptDebugger*				m_pDebugger;
 	int									m_nMode;
 	int									m_nLevel;  //for step into/over/out
 	string_path							m_strPathName;	//for run_to_line_number

@@ -8,18 +8,15 @@
 CDbgLuaHelper*	CDbgLuaHelper::m_pThis	= NULL;
 lua_State*		CDbgLuaHelper::L		= NULL;
 
-CDbgLuaHelper::CDbgLuaHelper()
+CDbgLuaHelper::CDbgLuaHelper(CScriptDebugger* d)
+:m_debugger(d)
 {
 	m_pThis = this;
 }
 
 CDbgLuaHelper::~CDbgLuaHelper()
 {
-}
-
-extern "C" void PrintDebugString(const char* str)
-{
-	CScriptDebugger::GetDebugger()->Write(str);
+	m_pThis = NULL;
 }
 
 void CDbgLuaHelper::UnPrepareLua(lua_State* l, int idx)
@@ -52,8 +49,9 @@ void CDbgLuaHelper::PrepareLuaBind()
 
 int CDbgLuaHelper::OutputTop(lua_State* L)
 {
-	CScriptDebugger::GetDebugger()->Write(luaL_checkstring(L, -1));
-	CScriptDebugger::GetDebugger()->Write("\n");
+	if(!m_pThis)return 0;
+	m_pThis->debugger()->Write(luaL_checkstring(L, -1));
+	m_pThis->debugger()->Write("\n");
 	return 0;
 }
 
@@ -62,19 +60,20 @@ int CDbgLuaHelper::OutputTop(lua_State* L)
 
 void CDbgLuaHelper::errormessageLuaBind(lua_State* l)
 {
+	if(!m_pThis)return;
 	L = l;
-//	errormessageLua(L);
 
 	char err_msg[8192];
 	sprintf(err_msg,"%s",lua_tostring(L,-1));
-	CScriptDebugger::GetDebugger()->Write(err_msg);
-	CScriptDebugger::GetDebugger()->Write("\n");
-	CScriptDebugger::GetDebugger()->ErrorBreak();
+	m_pThis->debugger()->Write(err_msg);
+	m_pThis->debugger()->Write("\n");
+	m_pThis->debugger()->ErrorBreak();
 	Debug.fatal("LUABIND error");
 }
 
 int CDbgLuaHelper::errormessageLua(lua_State* l)
 {
+	if(!m_pThis)return 0;
 	L = l;
 	int level = 1;  /* skip level 0 (it's this function) */
 
@@ -139,7 +138,7 @@ int CDbgLuaHelper::errormessageLua(lua_State* l)
 	const char* szSource=NULL;
 	if ( ar.source[0] == '@' )
 		szSource=ar.source+1;
-	CScriptDebugger::GetDebugger()->ErrorBreak(szSource, ar.currentline);
+	m_pThis->debugger()->ErrorBreak(szSource, ar.currentline);
 	Debug.fatal("LUA error");
 
 	return 0;
@@ -147,21 +146,24 @@ int CDbgLuaHelper::errormessageLua(lua_State* l)
 
 void CDbgLuaHelper::set_lua(lua_State * l)
 {
+	if(!m_pThis) return;
 	m_pThis->L = l;
 }
 
 void CDbgLuaHelper::line_hook (lua_State *l, lua_Debug *ar)
 {
+	if(!m_pThis) return;
 	lua_getinfo(L, "lnuS", ar);
 	m_pThis->m_pAr = ar;
 
 	if ( ar->source[0] == '@' ){
-		CScriptDebugger::GetDebugger()->LineHook(ar->source+1, ar->currentline);
+		m_pThis->debugger()->LineHook(ar->source+1, ar->currentline);
 	}
 }
 
 void CDbgLuaHelper::func_hook (lua_State *l, lua_Debug *ar)
 {
+	if(!m_pThis) return;
 	lua_getinfo(L, "lnuS", ar);
 	m_pThis->m_pAr = ar;
 
@@ -170,7 +172,7 @@ void CDbgLuaHelper::func_hook (lua_State *l, lua_Debug *ar)
 	{
 		szSource=ar->source+1;
 	};
-	CScriptDebugger::GetDebugger()->FunctionHook(szSource, ar->currentline, ar->event==LUA_HOOKCALL);
+	m_pThis->debugger()->FunctionHook(szSource, ar->currentline, ar->event==LUA_HOOKCALL);
 }
 
 void print_stack(lua_State *L)
@@ -182,6 +184,7 @@ void print_stack(lua_State *L)
 
 int CDbgLuaHelper::hookLuaBind (lua_State *l)
 {
+	if(!m_pThis) return 0;
 	L =l;
 	int top1 = lua_gettop(L);
 	
@@ -210,6 +213,7 @@ int CDbgLuaHelper::hookLuaBind (lua_State *l)
 
 void CDbgLuaHelper::hookLua (lua_State *l, lua_Debug *ar)
 {
+	if(!m_pThis) return;
 	L = l;
 	int top1 = lua_gettop(L);
 	
@@ -243,7 +247,7 @@ const char* CDbgLuaHelper::GetSource()
 
 void CDbgLuaHelper::DrawStackTrace()
 {
-	CScriptDebugger::GetDebugger()->ClearStackTrace();
+	debugger()->ClearStackTrace();
 
 	int nLevel = 0;
 	lua_Debug ar;
@@ -266,7 +270,7 @@ void CDbgLuaHelper::DrawStackTrace()
 			if ( ar.short_src )
 				strcat(szDesc, ar.short_src);
 
-			CScriptDebugger::GetDebugger()->AddStackTrace(szDesc, ar.source+1, ar.currentline);
+			debugger()->AddStackTrace(szDesc, ar.source+1, ar.currentline);
 		}
 
 		++nLevel;
@@ -275,9 +279,9 @@ void CDbgLuaHelper::DrawStackTrace()
 
 void CDbgLuaHelper::DrawLocalVariables()
 {
-	CScriptDebugger::GetDebugger()->ClearLocalVariables();
+	debugger()->ClearLocalVariables();
 
-	int nLevel = CScriptDebugger::GetDebugger()->GetStackTraceLevel();
+	int nLevel = debugger()->GetStackTraceLevel();
 	lua_Debug ar;
 	if ( lua_getstack (L, nLevel, &ar) )
 	{
@@ -293,7 +297,7 @@ void CDbgLuaHelper::DrawLocalVariables()
 
 void CDbgLuaHelper::DrawGlobalVariables()
 {
-	CScriptDebugger::GetDebugger()->ClearGlobalVariables();
+	debugger()->ClearGlobalVariables();
 
 	lua_pushvalue(L, LUA_GLOBALSINDEX);
 
@@ -311,7 +315,7 @@ void CDbgLuaHelper::DrawGlobalVariables()
 
 bool CDbgLuaHelper::GetCalltip(const char *szWord, char *szCalltip)
 {
-	int nLevel = CScriptDebugger::GetDebugger()->GetStackTraceLevel();
+	int nLevel = debugger()->GetStackTraceLevel();
 	lua_Debug ar;
 	if ( lua_getstack (L, nLevel, &ar) )
 	{
@@ -412,7 +416,7 @@ void CDbgLuaHelper::CoverGlobals()
 {
 	lua_newtable(L);  // save there globals covered by locals
 
-	int nLevel = CScriptDebugger::GetDebugger()->GetStackTraceLevel();
+	int nLevel = debugger()->GetStackTraceLevel();
 	lua_Debug ar;
 	if ( lua_getstack (L, nLevel, &ar) )
 	{
@@ -483,7 +487,7 @@ void CDbgLuaHelper::DrawVariable(lua_State * l, const char* name, bool bOpenTabl
 
 	case LUA_TTABLE:
 			var.szValue[0]=0;
-			CScriptDebugger::GetDebugger()->AddLocalVariable(var);
+			debugger()->AddLocalVariable(var);
 			if(bOpenTable)
 				DrawTable(l, name, false);
 			return;
@@ -504,7 +508,7 @@ void CDbgLuaHelper::DrawVariable(lua_State * l, const char* name, bool bOpenTabl
 		break;
 	}
 
-	CScriptDebugger::GetDebugger()->AddLocalVariable(var);
+	debugger()->AddLocalVariable(var);
 }
 
 void CDbgLuaHelper::DrawTable(lua_State *l, LPCSTR S, bool bRecursive)

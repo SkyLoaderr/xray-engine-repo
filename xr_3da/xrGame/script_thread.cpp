@@ -33,7 +33,7 @@ CScriptThread::CScriptThread(LPCSTR caNamespaceName)
 	m_thread_reference	= luaL_ref(ai().script_engine().lua(),LUA_REGISTRYINDEX);
 	
 #ifdef USE_DEBUGGER
-	if( !CScriptDebugger::GetDebugger()->Active() )
+	if( !ai().script_engine().debugger() || !ai().script_engine().debugger()->Active() )
 #endif
 		lua_sethook		(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
 #ifdef USE_DEBUGGER
@@ -75,7 +75,7 @@ bool CScriptThread::Update()
 		}
 		else {
 #ifdef USE_DEBUGGER
-			if( !CScriptDebugger::GetDebugger()->Active() ) 
+			if( !ai().script_engine().debugger() || !ai().script_engine().debugger()->Active() ) 
 #endif
 			{
 				VERIFY		(m_current_stack_level);

@@ -221,11 +221,13 @@ bool CScriptStorage::do_file	(LPCSTR caScriptName, LPCSTR caNameSpaceName, bool 
 //		int			l_iErrorCode = lua_pcall(lua(),0,0,0); //backup___Dima
 		int errFuncId = -1;
 #ifdef USE_DEBUGGER
-		errFuncId = CScriptDebugger::GetDebugger()->PrepareLua(lua());
+		if( ai().script_engine().debugger() )
+		errFuncId = ai().script_engine().debugger()->PrepareLua(lua());
 #endif
 		int	l_iErrorCode = lua_pcall(lua(),0,0,(-1==errFuncId)?0:errFuncId); //new_Andy
 #ifdef USE_DEBUGGER
-		CScriptDebugger::GetDebugger()->UnPrepareLua(lua(),errFuncId);
+		if( ai().script_engine().debugger() )
+			ai().script_engine().debugger()->UnPrepareLua(lua(),errFuncId);
 #endif
 		if (l_iErrorCode) {
 
@@ -359,8 +361,10 @@ bool CScriptStorage::print_output(CLuaVirtualMachine *L, LPCSTR caScriptFileName
 			if (!xr_strcmp(S,"cannot resume dead coroutine")) {
 				VERIFY2	("Please do not return any values from main!!!",caScriptFileName);
 #ifdef USE_DEBUGGER
-				CScriptDebugger::GetDebugger()->Write(S);
-				CScriptDebugger::GetDebugger()->ErrorBreak();
+				if(ai().script_engine().debugger() && ai().script_engine().debugger()->Active() ){
+					ai().script_engine().debugger()->Write(S);
+					ai().script_engine().debugger()->ErrorBreak();
+				}
 #endif
 				return	(true);
 			}
@@ -369,8 +373,10 @@ bool CScriptStorage::print_output(CLuaVirtualMachine *L, LPCSTR caScriptFileName
 					script_log	(ScriptStorage::eLuaMessageTypeInfo,"Output from %s",caScriptFileName);
 				script_log	(iErorCode ? ScriptStorage::eLuaMessageTypeError : ScriptStorage::eLuaMessageTypeMessage,"%s",S);
 #ifdef USE_DEBUGGER
-				CScriptDebugger::GetDebugger()->Write(S);
-				CScriptDebugger::GetDebugger()->ErrorBreak();
+				if(ai().script_engine().debugger() && ai().script_engine().debugger()->Active() ){
+					ai().script_engine().debugger()->Write(S);
+					ai().script_engine().debugger()->ErrorBreak();
+				}
 #endif
 			}
 		}

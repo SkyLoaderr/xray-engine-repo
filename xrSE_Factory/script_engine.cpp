@@ -26,8 +26,10 @@ CScriptEngine::CScriptEngine			()
 	m_stack_level			= 0;
 	m_reload_modules		= false;
 	m_global_script_loaded	= false;
+
 #ifdef USE_DEBUGGER
-	m_scriptDebugger		= xr_new<CScriptDebugger>();
+	m_scriptDebugger = NULL;
+	restartDebugger();	
 #endif
 }
 
@@ -360,11 +362,12 @@ void CScriptEngine::script_export		()
 	luabind::open						(lua());
 	
 #ifdef USE_DEBUGGER
-	m_scriptDebugger->PrepareLuaBind	();
+	if( debugger() )
+		debugger()->PrepareLuaBind	();
 #endif
 	
 #ifdef USE_DEBUGGER
-	if (!CScriptDebugger::GetDebugger()->Active())
+	if (!debugger() || !debugger()->Active() )
 #endif
 		luabind::set_error_callback		(CScriptEngine::lua_error);
 
@@ -379,7 +382,7 @@ void CScriptEngine::script_export		()
 
 #ifdef DEBUG
 #	ifdef USE_DEBUGGER
-		if( !CScriptDebugger::GetDebugger()->Active() )
+		if( !debugger() || !debugger()->Active()  )
 #	endif
 			lua_sethook					(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
 #endif
@@ -520,3 +523,26 @@ bool CScriptEngine::function_object(LPCSTR function_to_call, luabind::object &ob
 	object					= lua_namespace[function];
 	return					(true);
 }
+
+#ifdef USE_DEBUGGER
+void CScriptEngine::stopDebugger				()
+{
+	if(debugger()){
+		xr_delete( m_scriptDebugger );
+		Msg("Script debugger succesfully stoped.");
+	}else
+		Msg("Script debugger not present.");
+
+
+}
+
+void CScriptEngine::restartDebugger				()
+{
+	if(debugger())
+		stopDebugger();
+
+	m_scriptDebugger = xr_new<CScriptDebugger>();
+	debugger()->PrepareLuaBind();
+	Msg("Script debugger succesfully restarted.");
+}
+#endif

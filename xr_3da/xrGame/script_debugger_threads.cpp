@@ -58,12 +58,13 @@ lua_State* CDbgScriptThreads::FindScript(int nThreadID)
 
 void  CDbgScriptThreads::DrawThreads()
 {
-	CScriptDebugger::GetDebugger()->ClearThreads();
+	//CScriptDebugger::GetDebugger()->ClearThreads();
+	m_debugger->ClearThreads();
 	xr_vector<SScriptThread>::iterator It = m_threads.begin();
 	for(;It!=m_threads.end();++It){
 		SScriptThread th;
 		th = *It;
-		CScriptDebugger::GetDebugger()->AddThread(th);
+		m_debugger->AddThread(th);
 	}
 }
 
