@@ -82,6 +82,35 @@ void CRenderDevice::PreCache	(u32 amount)
 	dwPrecacheFrame	= dwPrecacheTotal = amount;
 }
 
+void ComputeFrustum				(Fvector* _F, float p_FOV, float p_A, float p_FAR, Fvector& camD, Fvector& camN, Fvector& camR, Fvector& camP)
+{
+	// calc window extents in camera coords
+	float YFov			=	deg2rad(p_FOV*p_A);
+	float XFov			=	deg2rad(p_FOV);
+	float wR			=	tanf(XFov*0.5f);
+	float wL			=	-wR;
+	float wT			=	tanf(YFov*0.5f);
+	float wB			=	-wT;
+
+	// calculate the corner vertices of the window
+	Fvector	sPts[4],Offset,T,ProjDirs[4];
+	Offset.add			(camD,camP);
+	sPts[0].mul			(camR,wR);		T.mad(Offset,camN,wT);	sPts[0].add(T);
+	sPts[1].mul			(camR,wL);		T.mad(Offset,camN,wT);	sPts[1].add(T);
+	sPts[2].mul			(camR,wL);		T.mad(Offset,camN,wB);	sPts[2].add(T);
+	sPts[3].mul			(camR,wR);		T.mad(Offset,camN,wB);	sPts[3].add(T);
+	ProjDirs[0].sub		(sPts[0],camP);	//ProjDirs[0].normalize();
+	ProjDirs[1].sub		(sPts[1],camP);	//ProjDirs[1].normalize();
+	ProjDirs[2].sub		(sPts[2],camP);	//ProjDirs[2].normalize();
+	ProjDirs[3].sub		(sPts[3],camP);	//ProjDirs[3].normalize();
+	_F[0].mad			(camP, ProjDirs[0], p_FAR);
+	_F[1].mad			(camP, ProjDirs[1], p_FAR);
+	_F[2].mad			(camP, ProjDirs[2], p_FAR);
+	_F[3].mad			(camP, ProjDirs[3], p_FAR);
+	_F[4].mad			(camP, camD,		p_FAR);
+	_F[5].set			(camP);
+}
+
 void CRenderDevice::Run			()
 {
     MSG         msg;
@@ -136,8 +165,8 @@ void CRenderDevice::Run			()
 
 					mView.build_camera_dir			(vCameraPosition,vCameraDirection,vCameraTop);
 				} else {
+					/*
 					// Frustum geom
-/*
 					CFrustum	draw;
 					Fplane		P;
 					Fvector		p	= Device.vCameraPosition;
@@ -150,57 +179,41 @@ void CRenderDevice::Run			()
 						R_CHK		(HW.pDevice->SetClipPlane(_it,(float*)&P));
 					}
 					R_CHK(HW.pDevice->SetRenderState(D3DRS_CLIPPLANEENABLE, 63));
-*/
+					*/
 
 					// Shadow-test
-					Fmatrix		mCam;		mCam.invert	(mView);
-					Fmatrix		L_view;
-					Fmatrix		L_project;
-					float		p_FOV				= fFOV;
-					float		p_A					= fASPECT;
-					float		p_FAR				= 20.f;
+					Fmatrix		mCam;	mCam.invert			(mView);
+					Fmatrix				L_view;
+					Fmatrix				L_project;
+					float				p_FOV				= fFOV;
+					float				p_A					= fASPECT;
+					float				p_FAR				= 30.f;
+					Fvector				camD,camN,camR,camP;
+					Fvector				_F	[12];
+
+					// 1
+					camD.set			(mCam.k);
+					camN.set			(mCam.j);
+					camR.set			(mCam.i);
+					camP.set			(mCam.c);
+					ComputeFrustum		(_F+0,p_FOV,p_A,p_FAR,camD,camN,camR,camP);
+
+					// 2
+					camD.set			(mCam.k);	camD.y = 0; camD.normalize	();
+					camN.crossproduct	(camD,camR);			camN.normalize	();
+					camR.crossproduct	(camN,camD);			camR.normalize	();
+					ComputeFrustum		(_F+6,p_FOV,p_A,p_FAR,camD,camN,camR,camP);
+
 					{
-						// calc window extents in camera coords
-						float YFov			=	deg2rad(p_FOV*p_A);
-						float XFov			=	deg2rad(p_FOV);
-						float wR			=	tanf(XFov*0.5f);
-						float wL			=	-wR;
-						float wT			=	tanf(YFov*0.5f);
-						float wB			=	-wT;
-
-						// calculate the corner vertices of the window
-						// R,N,D,P = i,j,k,c
-						Fvector	sPts	[4];  // silhouette points (corners of window)
-						Fvector	Offset,	T;
-						Offset.add			(mCam.k,mCam.c);
-						sPts[0].mul			(mCam.i,wR);		T.mad(Offset,mCam.j,wT);	sPts[0].add(T);
-						sPts[1].mul			(mCam.i,wL);		T.mad(Offset,mCam.j,wT);	sPts[1].add(T);
-						sPts[2].mul			(mCam.i,wL);		T.mad(Offset,mCam.j,wB);	sPts[2].add(T);
-						sPts[3].mul			(mCam.i,wR);		T.mad(Offset,mCam.j,wB);	sPts[3].add(T);
-
-						// find projector direction vectors (from cop through silhouette pts)
-						Fvector ProjDirs[4];
-						ProjDirs[0].sub		(sPts[0],mCam.c);	//ProjDirs[0].normalize();
-						ProjDirs[1].sub		(sPts[1],mCam.c);	//ProjDirs[1].normalize();
-						ProjDirs[2].sub		(sPts[2],mCam.c);	//ProjDirs[2].normalize();
-						ProjDirs[3].sub		(sPts[3],mCam.c);	//ProjDirs[3].normalize();
-
-						// that's all 5 corner points, excluding "near" plane
-						Fvector _F[5];
-						_F[0].mad			(mCam.c, ProjDirs[0], p_FAR);
-						_F[1].mad			(mCam.c, ProjDirs[1], p_FAR);
-						_F[2].mad			(mCam.c, ProjDirs[2], p_FAR);
-						_F[3].mad			(mCam.c, ProjDirs[3], p_FAR);
-						_F[4].set			(mCam.c);
-
 						// Build L-view vectors
 						Fvector				L_dir,L_up,L_right,L_pos;
 						float				cs	= 1000;
-						L_dir.set			(0.100f, -0.540f, -0.836f);		L_dir.normalize	();
-						L_up.set			(0,1,0);						L_up.normalize	();
-						L_right.crossproduct(L_up,L_dir);
-						L_up.crossproduct	(L_dir,L_right);
-						L_pos.set			(0,0,0);
+						
+						L_dir.set				(-0.071f, -0.574f, -0.816f);	L_dir.normalize		();
+						L_up.set				(mCam.i);						L_right.normalize	();
+						L_right.crossproduct	(L_up,L_dir);					L_right.normalize	();
+						L_up.crossproduct		(L_dir,L_right);				L_up.normalize		();
+						L_pos.set				(0,0,0);
 						L_view.build_camera_dir	(L_pos,L_dir,L_up);
 
 						//
@@ -208,8 +221,9 @@ void CRenderDevice::Run			()
 						Fvector bbc,bbd;
 
 						// L-view corner points and box
+						Fvector	T;
 						bb.invalidate			();
-						for (int i=0; i<5; i++)
+						for (int i=0; i<12; i++)
 						{
 							L_view.transform_tiny	(T,_F[i]);
 							bb.modify				(T);
@@ -227,7 +241,7 @@ void CRenderDevice::Run			()
 
 						// L-view corner points and box
 						bb.invalidate			();
-						for (int i=0; i<5; i++)
+						for (int i=0; i<12; i++)
 						{
 							L_view.transform_tiny	(T,_F[i]);
 							bb.modify				(T);
