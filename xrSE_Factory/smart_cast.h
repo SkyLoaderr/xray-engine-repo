@@ -253,6 +253,10 @@
 #	undef cast_type_list
 #	define cast_type_list save_cast_list	(CSE_ALifeMonsterAbstract,	CSE_Abstract)
 
+	DECLARE_SPECIALIZATION	(CSE_ALifeHumanAbstract,	CSE_Abstract,	cast_human_abstract);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_ALifeHumanAbstract,	CSE_Abstract)
+
 #	ifndef DO_NOT_DECLARE_TYPE_LIST
 #		include "smart_cast_impl1.h"
 #	endif
