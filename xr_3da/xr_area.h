@@ -60,9 +60,11 @@ public:
 
 	const Fbox&							GetBoundingVolume	() { return m_BoundingVolume;}
 
-	// Device dependance and debugging
+	// Debugging
+#ifdef DEBUG
 	void								dbgRender			();
 	ref_shader							dbgGetShader		()	{ return sh_debug;	}
+#endif
 };
 
 #endif //__XR_AREA_H__

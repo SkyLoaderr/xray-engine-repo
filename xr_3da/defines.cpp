@@ -1,6 +1,8 @@
 #include "stdafx.h"
 
-ECORE_API BOOL bDebug	= FALSE;
+#ifdef DEBUG
+	ECORE_API BOOL bDebug	= FALSE;
+#endif
 
 // Video
 u32			psCurrentMode		= 800;

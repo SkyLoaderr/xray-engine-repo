@@ -17,9 +17,9 @@ public:
 	void				_initialize		(BOOL _debug_mode=FALSE);
 	void				_destroy		();
 
+	BOOL				debug_mode;
 #ifdef DEBUG
 	xrCriticalSection	debug_cs;
-	BOOL				debug_mode;
 	std::vector<mdbg>	debug_info;
 	u32					debug_info_update;
 #endif
