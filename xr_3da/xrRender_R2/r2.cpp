@@ -22,11 +22,25 @@ ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float 
 //
 void					CRender::create					()
 {
-	if (b_nv3x)			::Device.Resources->SetHLSL_path("xr2_nv3x\\");
-	else				::Device.Resources->SetHLSL_path("xr2_r3xx\\");
+	if (b_nv3x)					::Device.Resources->SetHLSL_path("xr2_nv3x\\");
+	else						::Device.Resources->SetHLSL_path("xr2_r3xx\\");
+
+	Target.OnDeviceCreate		();
+	LR.Create					();
+
+	PSLibrary.OnCreate			();
+	PSLibrary.OnDeviceCreate	();
+
+	rmNormal					();
+	marker						= 0;
 }
 void					CRender::destroy				()
 {
+	PSLibrary.OnDeviceDestroy	();
+	PSLibrary.OnDestroy			();
+
+	LR.Destroy					();
+	Target.OnDeviceDestroy		();
 }
 
 // Implementation
@@ -125,29 +139,4 @@ CRender::CRender()
 
 CRender::~CRender()
 {
-}
-
-// Device events
-void CRender::OnDeviceCreate	()
-{
-	REQ_CREATE					();
-	Target.OnDeviceCreate		();
-	LR.Create					();
-
-	PSLibrary.OnCreate			();
-	PSLibrary.OnDeviceCreate	();
-	level_Load					();
-
-	rmNormal					();
-	marker						= 0;
-}
-
-void CRender::OnDeviceDestroy	()
-{
-	level_Unload				();
-	PSLibrary.OnDeviceDestroy	();
-	PSLibrary.OnDestroy			();
-
-	LR.Destroy					();
-	Target.OnDeviceDestroy		();
 }
