@@ -253,50 +253,50 @@ public:
 class CAI_DDD {
 
 public:
-	CEntityAlive					*m_tpCurrentMember;
-	CEntityAlive					*m_tpCurrentEnemy;
+	CEntityAlive							*m_tpCurrentMember;
+	CEntityAlive							*m_tpCurrentEnemy;
 	// primary functions
-	CBaseFunction					*fpaBaseFunctions		[AI_MAX_EVALUATION_FUNCTION_COUNT];
+	CBaseFunction							*fpaBaseFunctions		[AI_MAX_EVALUATION_FUNCTION_COUNT];
 
-	CDistanceFunction				pfDistance;
+	CDistanceFunction						pfDistance;
 
-	CPersonalHealthFunction			pfPersonalHealth;
-	CPersonalMoraleFunction			pfPersonalMorale;
-	CPersonalCreatureTypeFunction	pfPersonalCreatureType;
-	CPersonalWeaponTypeFunction		pfPersonalWeaponType;
+	CPersonalHealthFunction					pfPersonalHealth;
+	CPersonalMoraleFunction					pfPersonalMorale;
+	CPersonalCreatureTypeFunction			pfPersonalCreatureType;
+	CPersonalWeaponTypeFunction				pfPersonalWeaponType;
 
-	CEnemyHealthFunction			pfEnemyHealth;
-	CEnemyMoraleFunction			pfEnemyMorale;
-	CEnemyCreatureTypeFunction		pfEnemyCreatureType;
-	CEnemyWeaponTypeFunction		pfEnemyWeaponType;
+	CEnemyHealthFunction					pfEnemyHealth;
+	CEnemyMoraleFunction					pfEnemyMorale;
+	CEnemyCreatureTypeFunction				pfEnemyCreatureType;
+	CEnemyWeaponTypeFunction				pfEnemyWeaponType;
 
 	// complex functions
-	CPatternFunction				pfWeaponEffectiveness;
-	CPatternFunction				pfAttackSuccessProbability;
-	CPatternFunction				pfDefendSuccessProbability;
-	CPatternFunction				pfCreatureEffectiveness;
+	CPatternFunction						pfWeaponEffectiveness;
+	CPatternFunction						pfAttackSuccessProbability;
+	CPatternFunction						pfDefendSuccessProbability;
+	CPatternFunction						pfCreatureEffectiveness;
 
-									CAI_DDD()
+											CAI_DDD()
 	{	
-		fpaBaseFunctions[0] = &pfDistance;
+		fpaBaseFunctions[0]					= &pfDistance;
 		
-		fpaBaseFunctions[21] = &pfPersonalHealth;
-		fpaBaseFunctions[22] = &pfPersonalMorale;
-		fpaBaseFunctions[23] = &pfPersonalCreatureType;
-		fpaBaseFunctions[24] = &pfPersonalWeaponType;
+		fpaBaseFunctions[21]				= &pfPersonalHealth;
+		fpaBaseFunctions[22]				= &pfPersonalMorale;
+		fpaBaseFunctions[23]				= &pfPersonalCreatureType;
+		fpaBaseFunctions[24]				= &pfPersonalWeaponType;
 		
-		fpaBaseFunctions[41] = &pfEnemyHealth;
-		fpaBaseFunctions[42] = &pfEnemyMorale;
-		fpaBaseFunctions[43] = &pfEnemyCreatureType;
-		fpaBaseFunctions[44] = &pfEnemyWeaponType;
+		fpaBaseFunctions[41]				= &pfEnemyHealth;
+		fpaBaseFunctions[42]				= &pfEnemyMorale;
+		fpaBaseFunctions[43]				= &pfEnemyCreatureType;
+		fpaBaseFunctions[44]				= &pfEnemyWeaponType;
 
-		pfWeaponEffectiveness.		vfLoadEF("common\\WeaponEffectiveness.dat",this);
-		pfAttackSuccessProbability.	vfLoadEF("common\\AttackSuccessProbability.dat",this);
-		pfDefendSuccessProbability.	vfLoadEF("common\\DefendSuccessProbability.dat",this);
-		pfCreatureEffectiveness.	vfLoadEF("common\\CreatureEffectiveness.dat",this);
+		pfWeaponEffectiveness.vfLoadEF		("common\\WeaponEffectiveness.dat",this);
+		pfAttackSuccessProbability.vfLoadEF	("common\\AttackSuccessProbability.dat",this);
+		pfDefendSuccessProbability.vfLoadEF	("common\\DefendSuccessProbability.dat",this);
+		pfCreatureEffectiveness.vfLoadEF	("common\\CreatureEffectiveness.dat",this);
 	}
 
-	virtual							~CAI_DDD()
+	virtual									~CAI_DDD()
 	{
 	};
 };
