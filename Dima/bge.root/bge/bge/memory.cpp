@@ -11,11 +11,11 @@
 #include "ui.h"
 #include "cpu.h"
 
-void test();
+//void test();
 
 void Memory::init		()
 {
-	test	();
+//	test	();
 }
 
 void amd_copy(void *dest, const void *src, unsigned int n);
@@ -99,9 +99,9 @@ public:
 	}
 };
 
+/**
 void test()
 {
-	/**/
 	const u32 test_count = 100000;
 	const u32 size = 0x100;
 	char s[size], d[size];
@@ -132,3 +132,4 @@ void test()
 	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
 	SetPriorityClass	(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 }
+/**/

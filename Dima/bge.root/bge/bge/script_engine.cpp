@@ -47,7 +47,7 @@ void CScriptEngine::init		()
 	ui().log			("\n");
 #endif
 	export_classes		(lua());
-	ui().log			("completed\n");
+	ui().log			("completed\n\n");
 }
 
 void CScriptEngine::run_string	(LPCSTR string_to_run)
