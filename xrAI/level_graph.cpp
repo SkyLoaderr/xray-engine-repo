@@ -10,7 +10,7 @@
 #include "level_graph.h"
 #include "profiler.h"
 
-LPCSTR LEVEL_GRAPH_NAME = "level_new.ai";
+LPCSTR LEVEL_GRAPH_NAME = "level.ai";
 
 #ifdef AI_COMPILER
 CLevelGraph::CLevelGraph		(LPCSTR filename)

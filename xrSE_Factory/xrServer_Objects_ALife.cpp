@@ -26,7 +26,7 @@
 #	include "..\render.h"
 #endif
 
-LPCSTR GAME_CONFIG = "game_new.ltx";
+LPCSTR GAME_CONFIG = "game.ltx";
 
 bool SortStringsByAlphabetPred (const shared_str& s1, const shared_str& s2)
 {

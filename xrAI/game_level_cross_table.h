@@ -17,7 +17,7 @@
 #include "alife_space.h"
 #include "game_graph_space.h"
 
-#define CROSS_TABLE_NAME					"level_new.gct"
+#define CROSS_TABLE_NAME					"level.gct"
 
 #define CROSS_TABLE_CHUNK_VERSION			0
 #define CROSS_TABLE_CHUNK_DATA				1

@@ -10,7 +10,7 @@
 #include "defines.h"
 #include "xrCrossTable.h"
 
-LPCSTR GAME_LEVEL_GRAPH = "level_new.graph";
+LPCSTR GAME_LEVEL_GRAPH = "level.graph";
 
 DEFINE_VECTOR			(u32,			FLOAT_VECTOR,			FLOAT_IT);
 DEFINE_VECTOR			(FLOAT_VECTOR,	FLOAT_VECTOR_VECTOR,	FLOAT_VECTOR_IT);

@@ -14,7 +14,7 @@
 #include "game_graph.h"
 #include "level_graph.h"
 
-#define CROSS_TABLE_NAME_RAW	"level_new.gct.raw"
+#define CROSS_TABLE_NAME_RAW	"level.gct.raw"
 
 typedef	char FILE_NAME[_MAX_PATH];
 
