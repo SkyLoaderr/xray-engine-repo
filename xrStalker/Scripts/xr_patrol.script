@@ -189,6 +189,15 @@ function action_single_patrol:finalize ()
     self.object:clear_animations ()
 end
 ---------------------------------------------------------------------------------------------------------------------
+function action_single_patrol:radio ()
+    self.object:clear_animations ()
+    self.object:add_animation ("raciya_0", true)
+    self.object:add_animation ("raciya_1", true)
+    self.object:add_animation ("raciya_2", true)
+    self.object:add_animation ("raciya_3", true)
+    self.object:add_animation ("raciya_4", true)
+end
+---------------------------------------------------------------------------------------------------------------------
 function action_single_patrol:check_return ()
     local size = table.getn (xr_motivator.storage[self.object:id()].followers)
     if size == 0 then return false end
@@ -241,7 +250,8 @@ function action_single_patrol:move_callback (obj, action_type, index)
    
     if ptr:flag (index, 1) then
        self.object:set_movement_type (move.stand)
-       self:set_animation ()
+       --self:set_animation ()
+       self:radio ()
        self:set_look_dir ()
        self:set_command (leader_stop)
        self.stage = 2
