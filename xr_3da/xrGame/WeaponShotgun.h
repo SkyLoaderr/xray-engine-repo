@@ -7,4 +7,8 @@ class CWeaponShotgun :
 public:
 	CWeaponShotgun(void);
 	~CWeaponShotgun(void);
+
+	virtual void	OnAnimationEnd	();
+
+	bool m_reload;
 };
