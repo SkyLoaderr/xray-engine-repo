@@ -32,6 +32,22 @@ CGamePersistent::~CGamePersistent(void)
 	Engine.Event.Handler_Detach	(eDemoStart,this);
 }
 
+void CGamePersistent::RegisterModel(IRender_Visual* V)
+{
+	// Check types
+	switch (V->Type){
+	case MT_SKELETON_ANIM:
+	case MT_SKELETON_RIGID:{
+		CKinematics* K = PKinematics(V); VERIFY(K);
+		int cnt = K->LL_BoneCount();
+		for (u16 k=0; k<cnt; k++){
+			CBoneData& bd	= K->LL_GetData(k); 
+			bd.game_mtl_id	= *(bd.game_mtl)?GMLib.GetMaterialIdx(*bd.game_mtl):GAMEMTL_NONE;
+		}
+	}break;
+	}
+}
+
 void CGamePersistent::OnAppCycleStart()
 {
 	// load game materials

@@ -20,6 +20,8 @@ public:
 	virtual void		OnAppCycleEnd			();
 	virtual void		OnFrame					();
 	virtual void		OnEvent					(EVENT E, u64 P1, u64 P2);
+
+	virtual void		RegisterModel			(IRender_Visual* V);
 };
 
 #endif //GamePersistentH

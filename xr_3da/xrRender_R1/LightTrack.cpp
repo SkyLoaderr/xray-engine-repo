@@ -110,13 +110,13 @@ void	CLightTrack::ltrack	(IRenderable* O)
 		{
 			// direct
 			D.invert			(xrL->direction);
-			if (g_pGameLevel->ObjectSpace.RayTest(P,D,500.f,false,&I->cache))	amount -=	lt_dec;
+			if (g_pGameLevel->ObjectSpace.RayTest(P,D,500.f,Collide::rqtStatic,&I->cache))	amount -=	lt_dec;
 			else																amount +=	lt_inc;
 		} else {
 			// point/spot
 			float	f			= D.sub(P,LP).magnitude();
 			D.div				(f);
-			if (g_pGameLevel->ObjectSpace.RayTest(LP,D,f,false,&I->cache))		amount -=	lt_dec;
+			if (g_pGameLevel->ObjectSpace.RayTest(LP,D,f,Collide::rqtStatic,&I->cache))		amount -=	lt_dec;
 			else																amount +=	lt_inc;
 		}
 	

@@ -217,6 +217,14 @@ public:
             if (0==strcmpi((*it)->name,name)) return it;
         return materials.end();
     }
+/*
+    IC GameMtlIt 		GetMaterialIt	(ref_str& name)
+    {
+        for (GameMtlIt it=materials.begin(); materials.end() != it; ++it)
+            if (name.equal((*it)->name)) return it;
+        return materials.end();
+    }
+*/
     IC GameMtlIt 		GetMaterialItByID(int id)
     {
         for (GameMtlIt it=materials.begin(); materials.end() != it; ++it)

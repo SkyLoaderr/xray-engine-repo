@@ -237,7 +237,7 @@ BOOL CWeaponShotgun::FireTrace2		(const Fvector& P, const Fvector& /**Peff/**/, 
 
 		// ...and trace line
 		H_Parent()->setEnabled	(false);
-		bResult			= Level().ObjectSpace.RayPick( P, dir, fireDistance, RQ );
+		bResult			= Level().ObjectSpace.RayPick( P, dir, fireDistance, Collide::rqtBoth, RQ );
 		H_Parent()->setEnabled	(true);
 		D						= dir;
 

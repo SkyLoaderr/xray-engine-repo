@@ -30,6 +30,7 @@
     #include "SkeletonAnimated.h"
     #include "SkeletonRigid.h"
 #endif
+#include "..\IGame_Persistent.h"
 
 IRender_Visual*	CModelPool::Instance_Create(u32 type)
 {
@@ -125,7 +126,8 @@ IRender_Visual*	CModelPool::Instance_Load		(const char* N)
 	data->r_chunk_safe	(OGF_HEADER,&H,sizeof(H));
 	V = Instance_Create (H.type);
 	V->Load				(fn,data,0);
-	FS.r_close		(data);
+	FS.r_close			(data);
+	g_pGamePersistent->RegisterModel(V);
 
 	// Registration
 	Instance_Register	(N,V);

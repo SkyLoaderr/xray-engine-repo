@@ -59,12 +59,13 @@ void CHUDCursor::Render()
 	u32 C			= C_DEFAULT;
 	Collide::rq_result	RQ;
 
-	if (g_pGameLevel->ObjectSpace.RayPick( p1, dir, dist, RQ )){
+	if (g_pGameLevel->ObjectSpace.RayPick( p1, dir, dist, Collide::rqtBoth, RQ )){
 		// if (RQ.O && (RQ.O->CLS_ID == CLSID_ENTITY) && (((CEntity*)RQ.O)->id_Team!=cur_team)) C = C_ON_ENEMY;
 		dist = RQ.range;
 	}
+
 	g_pGameLevel->CurrentEntity()->setEnabled(true);
-	
+
 	if ( dist<NEAR_LIM) dist=NEAR_LIM;
 	
 	FVF::TL			PT;

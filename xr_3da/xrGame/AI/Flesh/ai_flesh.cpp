@@ -185,7 +185,7 @@ bool CAI_Flesh::AA_CheckHit()
 			this->setEnabled(false);
 			Collide::rq_result	l_rq;
 			
-			if (Level().ObjectSpace.RayPick(trace_from, Direction(), apt_anim.dist, l_rq)) {
+			if (Level().ObjectSpace.RayPick(trace_from, Direction(), apt_anim.dist, Collide::rqtBoth, l_rq)) {
 				if ((l_rq.O == obj) && (l_rq.range < apt_anim.dist)) {
 					DoDamage(ve.obj, apt_anim.damage,apt_anim.dir_yaw, apt_anim.dir_pitch);
 					was_hit = true;

@@ -28,6 +28,8 @@ public:
 	virtual void					OnAppCycleEnd	();
 	virtual void					OnFrame			();
 
+	virtual void					RegisterModel	(IRender_Visual* V) = 0;
+
 	IGame_Persistent				();
 	virtual ~IGame_Persistent		();
 

@@ -25,37 +25,53 @@ namespace Collide
 			verts[2].set(0,0,0);
 		}
 	};
+	enum rq_target{
+		rqtNone		= (0),
+		rqtDynamic	= (1<<0),
+		rqtStatic	= (1<<1),
+		rqtBoth		= (rqtDynamic|rqtStatic)
+	};
+	struct			ray_defs
+	{
+		Fvector		start;
+		Fvector		dir;
+		float		range;
+		u32			flags;
+		rq_target	tgt;
+		ray_defs	(const Fvector& _start, const Fvector& _dir, float _range, u32 _flags, rq_target _tgt)
+		{
+			start	= _start;
+			dir		= _dir;
+			range	= _range;
+			flags	= _flags;
+			tgt		= _tgt;
+		}
+	};
 	struct			rq_result 
 	{
 		CObject*	O;				// if NULL - static
 		float		range;			// range to intersection
 		int			element;		// номер кости/номер треугольника
+		IC void		set			(CObject* _O, float _range, int _element)
+		{
+			O		= _O;
+			range	= _range;
+			element	= _element;
+		}
+		IC BOOL		set_if_less	(CDB::RESULT*	I){if (I->range<range){ set(0,I->range,I->id);			return TRUE;}else return FALSE;}
+		IC BOOL		set_if_less	(rq_result*		R){if (R->range<range){ set(R->O,R->range,R->element);	return TRUE;}else return FALSE;}
+		IC BOOL		valid		() {return (element>=0);}
 	};
-	class			ray_query
+	DEFINE_VECTOR	(rq_result,rqVec,rqIt);
+	class			rq_results
 	{
 	protected:
-		Fvector		start;
-		Fvector		dir;
-		float		range;
-		u32			flags;
-	protected:
-		DEFINE_VECTOR(rq_result,rqVec,rqIt);
 		rqVec		results;
 	public:
-		ray_query	(const Fvector& _start, const Fvector& _dir, float _range, u32 _flags)
+		rq_results	(){results.reserve(8);}
+		IC BOOL		append_result	(CObject* _who, float _range, int _element, BOOL bNearest)
 		{
-			start	=_start;
-			dir		= _dir;
-			range	= _range;
-			flags	= _flags;
-		}
-		IC const Fvector&	_start			()	{return start;}
-		IC const Fvector&	_dir			()	{return dir;	}
-		IC float			_range			()	{return range;}
-		IC u32				_flags			()	{return flags;}
-		IC BOOL				append_result	(CObject* _who, float _range, int _element)
-		{
-			if ((flags&CDB::OPT_ONLYNEAREST)&&!results.empty()){
+			if (bNearest&&!results.empty()){
 				rq_result& R		= results.back();
 				if (_range<R.range){
 					R.O				=_who;
@@ -70,7 +86,13 @@ namespace Collide
 			rq.O		=_who;
 			return TRUE;
 		}
-		IC int				r_count			()	{return results.size();}
-		IC rq_result*		r_begin			()	{return &*results.begin();}
+		IC void		append_result	(rq_result& res)
+		{
+			results.push_back(res);
+		}
+		IC int		r_count			()	{return results.size();}
+		IC rq_result*r_begin		()	{return &*results.begin();}
+		IC void		r_clear			()	{results.clear();}
 	};
+	typedef  BOOL __stdcall rq_callback 	(rq_result& result, LPVOID user_data);
 };

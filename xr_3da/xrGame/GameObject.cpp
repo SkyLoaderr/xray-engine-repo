@@ -263,7 +263,7 @@ f32 CGameObject::ExplosionEffect(const Fvector &expl_centre, const f32 expl_radi
 	Fvector l_dir; 
 	l_dir.sub(l_pos, expl_centre); 
 	l_dir.normalize();
-	if(!Level().ObjectSpace.RayPick(expl_centre, l_dir, expl_radius, RQ)) return 0;
+	if(!Level().ObjectSpace.RayPick(expl_centre, l_dir, expl_radius, Collide::rqtBoth, RQ)) return 0;
 	//осколок не попал или попал, но не по нам
 	if(this != RQ.O) return 0;
 	

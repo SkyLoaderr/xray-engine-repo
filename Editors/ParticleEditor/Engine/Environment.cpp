@@ -8,6 +8,7 @@
 #include "Environment.h"
 #include "xr_efflensflare.h"
 #include "xr_trims.h"
+#include "IGame_Level.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -326,6 +327,8 @@ void CEnvironment::OnFrame()
             CurrentA=CurrentB=0;
         }
     }
+#else
+	if (!g_pGameLevel)		return;
 #endif
 	SelectEnvs				(fGameTime);
     VERIFY					(CurrentA&&CurrentB);

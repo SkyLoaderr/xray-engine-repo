@@ -240,7 +240,7 @@ void CLensFlare::OnFrame(int id)
 		o_enable		=	o_main->getEnabled();
 		o_main->setEnabled	(FALSE);
 	}
-	if ( g_pGameLevel->ObjectSpace.RayTest( Device.vCameraPosition, vSunDir, 1000.f) )
+	if ( g_pGameLevel->ObjectSpace.RayTest( Device.vCameraPosition, vSunDir, 1000.f, Collide::rqtBoth) )
 #endif
 	{
 		fBlend = fBlend - BLEND_DEC_SPEED * Device.fTimeDelta;

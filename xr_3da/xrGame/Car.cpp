@@ -17,7 +17,7 @@ extern CPHWorld*	ph_world;
 CCar::CCar(void)
 
 {
-	
+
 	active_camera	= 0;
 	camera[ectFirst]= xr_new<CCameraFirstEye>	(this, pSettings, "car_firsteye_cam",	CCameraBase::flRelativeLink|CCameraBase::flPositionRigid); 
 	camera[ectFirst]->tag	= ectFirst;
@@ -138,7 +138,7 @@ void	CCar::UpdateCL				( )
 {
 	inherited::UpdateCL();
 
-//#ifdef DEBUG
+	//#ifdef DEBUG
 	if(m_pPhysicsShell&&m_owner)
 	{
 		Fvector v;
@@ -158,7 +158,7 @@ void	CCar::UpdateCL				( )
 		//HUD().pFontSmall->OutNext("Vel Magnitude: [%3.2f]",m_PhysicMovementControl.GetVelocityMagnitude());
 		//HUD().pFontSmall->OutNext("Vel Actual:    [%3.2f]",m_PhysicMovementControl.GetVelocityActual());
 	}
-//#endif
+	//#endif
 	//	Log("UpdateCL",Device.dwFrame);
 	//XFORM().set(m_pPhysicsShell->mXFORM);
 	m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
@@ -172,7 +172,7 @@ void	CCar::UpdateCL				( )
 	Fvector		C,V;
 	Center	(C);
 	V.set		(lin_vel);
-	
+
 	m_car_sound->Update();
 	if(m_owner)
 	{
@@ -209,7 +209,7 @@ void	CCar::OnHUDDraw				(CCustomHUD* /**hud/**/)
 	HUD().pFontSmall->OutNext		("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(Position()));
 	HUD().pFontSmall->OutNext		("Velocity:      [%3.2f]",velocity.magnitude());
 
-	
+
 #endif
 }
 
@@ -339,7 +339,7 @@ void CCar::ParseDefinitions()
 
 	m_power_rpm			=		ini->r_float("car_definition","max_power_rpm");
 	m_power_rpm			*=		(1.f/60.f*2.f*M_PI);//
-	
+
 	m_torque_rpm		=		ini->r_float("car_definition","max_torque_rpm");
 	m_torque_rpm		*=		(1.f/60.f*2.f*M_PI);//
 
@@ -356,7 +356,7 @@ void CCar::ParseDefinitions()
 
 	/////////////////////////transmission////////////////////////////////////////////////////////////////////////
 	float main_gear_ratio=ini->r_float("car_definition","main_gear_ratio");
-	
+
 	R_ASSERT2(ini->section_exist("transmission_gear_ratio"),"no section transmission_gear_ratio");
 	m_gear_ratious.push_back(ini->r_fvector3("transmission_gear_ratio","R"));
 	m_gear_ratious[0][0]=-m_gear_ratious[0][0]*main_gear_ratio;
@@ -374,7 +374,7 @@ void CCar::ParseDefinitions()
 
 	///////////////////////////////sound///////////////////////////////////////////////////////
 	m_car_sound->Init();
-    ///////////////////////////////fuel///////////////////////////////////////////////////
+	///////////////////////////////fuel///////////////////////////////////////////////////
 	m_fuel_tank=ini->r_float("car_definition","fuel_tank");
 	m_fuel=m_fuel_tank;
 	m_fuel_consumption=ini->r_float("car_definition","fuel_consumption");
@@ -463,15 +463,15 @@ void CCar::Init()
 			i->Init();
 	}
 
-{
-	xr_map<u32,SDoor>::iterator i,e;
-	i=m_doors.begin();
-	e=m_doors.end();
-	for(;i!=e;++i)
-		i->second.Init();
-}
-Break();
-Transmision(1);
+	{
+		xr_map<u32,SDoor>::iterator i,e;
+		i=m_doors.begin();
+		e=m_doors.end();
+		for(;i!=e;++i)
+			i->second.Init();
+	}
+	Break();
+	Transmision(1);
 }
 
 void CCar::Revert()
@@ -505,7 +505,7 @@ void CCar::Unbreak()
 }
 void CCar::Drive()
 {
-	
+
 	if(!b_clutch||!b_engine_on) return;
 	m_pPhysicsShell->Enable();
 	m_current_rpm=EngineDriveSpeed();
@@ -521,21 +521,21 @@ void CCar::Drive()
 
 void CCar::StartEngine()
 {
-if(m_fuel<EPS) return;
-PlayExhausts();
-//m_car_sound.Start();
-m_car_sound->Drive();
-b_engine_on=true;
-m_current_rpm=0.f;
+	if(m_fuel<EPS) return;
+	PlayExhausts();
+	//m_car_sound.Start();
+	m_car_sound->Drive();
+	b_engine_on=true;
+	m_current_rpm=0.f;
 }
 void CCar::StopEngine()
 {
-m_car_sound->Stop();
-StopExhausts();
-NeutralDrive();//set zero speed
-b_engine_on=false;
-UpdatePower();//set engine friction;
-m_current_rpm=0.f;
+	m_car_sound->Stop();
+	StopExhausts();
+	NeutralDrive();//set zero speed
+	b_engine_on=false;
+	UpdatePower();//set engine friction;
+	m_current_rpm=0.f;
 }
 
 void CCar::Stall()
@@ -557,23 +557,23 @@ void CCar::ReleasePedals()
 
 void CCar::SwitchEngine()
 {
-if(b_engine_on) StopEngine();
-else			StartEngine();
+	if(b_engine_on) StopEngine();
+	else			StartEngine();
 }
 void CCar::Clutch()
 {
-b_clutch=true;
+	b_clutch=true;
 }
 
 void CCar::Unclutch()
 {
-b_clutch=false;
+	b_clutch=false;
 }
 
 void CCar::Starter()
 {
-b_starting=true;
-m_dwStartTime=Device.dwTimeGlobal;
+	b_starting=true;
+	m_dwStartTime=Device.dwTimeGlobal;
 }
 void CCar::UpdatePower()
 {
@@ -772,7 +772,7 @@ void CCar::Transmision(size_t num)
 	{
 		m_current_transmission_num=num;
 		m_current_gear_ratio=m_gear_ratious[num][0];
-	//	m_current_rpm=m_torque_rpm;
+		//	m_current_rpm=m_torque_rpm;
 	}
 }
 void CCar::CircleSwitchTransmission()
@@ -895,20 +895,21 @@ void CCar::ClearExhausts()
 bool CCar::Use(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 {
 	xr_map<u32,SDoor>::iterator i;
- 
+
 	if(!m_owner)
 	{
 		if(Enter(pos,dir,foot_pos)) return true;
 	}
 
-	Collide::ray_query Q(pos, dir, 3.f, 0);
-	if (collidable.model->_RayPick	(Q)) // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
+	Collide::ray_defs Q(pos, dir, 3.f, 0,Collide::rqtDynamic);  // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
+	if (g_pGameLevel->ObjectSpace.RayQuery(collidable.model,Q))
 	{
-		int y=Q.r_count();
+		Collide::rq_results& R = g_pGameLevel->ObjectSpace.r_results;
+		int y=R.r_count();
 		for (int k=0; k<y; ++k)
 		{
-			Collide::rq_result* R = Q.r_begin()+k;
-			if(is_Door(R->element,i)) 
+			Collide::rq_result* I = R.r_begin()+k;
+			if(is_Door(I->element,i)) 
 			{
 				i->second.Use();
 				return false;
@@ -916,11 +917,11 @@ bool CCar::Use(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 			}
 		}
 	}
-	
-if(m_owner)return Exit(pos,dir);
 
-return false;
-	
+	if(m_owner)return Exit(pos,dir);
+
+	return false;
+
 }
 bool CCar::DoorUse(u32 id)
 {
@@ -997,7 +998,7 @@ float CCar::EnginePower()
 	if(m_current_rpm<m_min_rpm)
 	{
 		if(b_starting) return Parabola(m_min_rpm);
-	
+
 	}
 	else
 	{
@@ -1115,7 +1116,7 @@ void CCar::OnEvent(NET_Packet& P, u16 type)
 {
 	inherited::OnEvent		(P,type);
 
-	
+
 	//обработка сообщений, нужных для работы с багажником машины
 	u16 id;
 	switch (type)
@@ -1124,7 +1125,7 @@ void CCar::OnEvent(NET_Packet& P, u16 type)
 		{
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
-		
+
 			if(m_inventory.Take(dynamic_cast<CGameObject*>(O))) 
 			{
 				O->H_SetParent(this);
@@ -1143,7 +1144,7 @@ void CCar::OnEvent(NET_Packet& P, u16 type)
 		{
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
-			
+
 			if(m_inventory.Drop(dynamic_cast<CGameObject*>(O))) 
 			{
 				O->H_SetParent(0);

@@ -81,7 +81,7 @@ void CWeaponRail::OnMove()
 
 			m_pParent->bEnabled = false;
 			Collide::rq_result RQ;
-			if (g_pGameLevel->ObjectSpace.RayPick( p1, d, dist, RQ )) {
+			if (g_pGameLevel->ObjectSpace.RayPick( p1, d, dist, Collide::rqtBoth, RQ )) {
 				if ( RQ.range>0.3f) 
 				{
 					SetRail		(p1,d,RQ,TRUE);

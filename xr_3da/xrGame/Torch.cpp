@@ -138,7 +138,7 @@ void CTorch::UpdateCL()
 		Fvector l_p, l_d; dynamic_cast<CEntity*>(H_Parent())->g_fireParams(l_p,l_d);
 		//Fmatrix l_cam; Level().Cameras.unaffected_Matrix(l_cam);
 		Fvector l_end, l_up; 
-		if(Level().ObjectSpace.RayPick(l_p, l_d, 50.f, RQ)) {
+		if(Level().ObjectSpace.RayPick(l_p, l_d, 50.f, Collide::rqtBoth, RQ)) {
 			l_end.mad(l_p, l_d, RQ.range); l_up.set(0, 1.f, 0);
 			XFORM().k.sub(l_end, l_p); XFORM().k.normalize();
 			XFORM().i.crossproduct(l_up, XFORM().k); XFORM().i.normalize();

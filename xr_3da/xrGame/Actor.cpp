@@ -1111,7 +1111,7 @@ void CActor::shedule_Update	(u32 DT)
 	Collide::rq_result l_rq;
 	if(g_pGameLevel->ObjectSpace.RayPick(Device.vCameraPosition, 
 										 Device.vCameraDirection, 
-									 	 m_inventory.GetTakeDist(),  l_rq)) 
+									 	 m_inventory.GetTakeDist(),  Collide::rqtBoth, l_rq)) 
 	{
 		m_inventory.m_pTarget = dynamic_cast<PIItem>(l_rq.O);
 		m_pPersonWeLookingAt = dynamic_cast<CInventoryOwner*>(l_rq.O);

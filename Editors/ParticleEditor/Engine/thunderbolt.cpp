@@ -99,7 +99,7 @@ BOOL CEffect_Thunderbolt::RayPick(const Fvector& s, const Fvector& d, float& dis
 	Collide::rq_result	RQ;
 	CObject* E 			= g_pGameLevel->CurrentViewEntity();
 	if (E)				E->setEnabled		(FALSE);
-	bRes 				= g_pGameLevel->ObjectSpace.RayPick(s,d,dist,RQ);	
+	bRes 				= g_pGameLevel->ObjectSpace.RayPick(s,d,dist,Collide::rqtBoth,RQ);	
 	if (E)				E->setEnabled		(TRUE);
     if (bRes) dist	 	= RQ.range;
     else{

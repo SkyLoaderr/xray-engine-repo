@@ -158,7 +158,7 @@ void CAI_PseudoDog::UpdateCL()
 		setEnabled(false);
 		Collide::rq_result	l_rq;
 
-		if (Level().ObjectSpace.RayPick(trace_from, Direction(), trace_dist , l_rq)) {
+		if (Level().ObjectSpace.RayPick(trace_from, Direction(), trace_dist , Collide::rqtBoth, l_rq)) {
 			if ((l_rq.O == CJumping::GetEnemy()) && (l_rq.range < trace_dist)) {
 				DoDamage(pE, inherited::_sd->m_fHitPower,0,0);
 				strike_in_jump = true;

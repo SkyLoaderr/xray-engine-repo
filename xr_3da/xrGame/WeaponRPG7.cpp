@@ -285,7 +285,7 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 				  ::Random.randF(-.5f,.5f)); 
 		l_dir.normalize();
 		
-		if(Level().ObjectSpace.RayPick(Position(), l_dir, m_fragsR, RQ)) 
+		if(Level().ObjectSpace.RayPick(Position(), l_dir, m_fragsR, Collide::rqtBoth, RQ)) 
 		{
 			Fvector l_end, l_bs_pos; 
 			l_end.mad(Position(),l_dir,RQ.range); 

@@ -62,7 +62,7 @@ void CGraviArtifact::UpdateCL()
 			setEnabled(false);
 			
 			//проверить высоту артифакта
-			if(Level().ObjectSpace.RayPick(Position(), dir, m_fJumpHeight, RQ)) 
+			if(Level().ObjectSpace.RayPick(Position(), dir, m_fJumpHeight, Collide::rqtBoth, RQ)) 
 			{
 				dir.y = 1.f; 
 				m_pPhysicsShell->applyImpulse(dir, 

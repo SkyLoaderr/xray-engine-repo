@@ -88,9 +88,8 @@ public:
 					ICollisionForm	( CObject* _owner );
 	virtual			~ICollisionForm	( );
 
-	virtual BOOL	_RayTest		( Collide::ray_query& Q) = 0;
-	virtual BOOL	_RayPick		( Collide::ray_query& Q) = 0;
-	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags) = 0;
+	virtual BOOL	_RayQuery		( const Collide::ray_defs& Q, Collide::rq_results& R) = 0;
+	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags)	= 0;
 
 	IC CObject*		Owner			( )	const				{ return owner;			}
 	const Fbox&		getBBox			( )	const				{ return bv_box;		}
@@ -105,8 +104,7 @@ private:
 public:
 					CCF_Polygonal	( CObject* _owner );
 
-	virtual BOOL	_RayTest		( Collide::ray_query& Q);
-	virtual BOOL	_RayPick		( Collide::ray_query& Q);
+	virtual BOOL	_RayQuery		( const Collide::ray_defs& Q, Collide::rq_results& R);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 
 	BOOL			LoadModel		( CInifile* ini, const char *section );
@@ -137,8 +135,7 @@ private:
 public:
 					CCF_Skeleton	( CObject* _owner );
 
-	virtual BOOL	_RayTest		( Collide::ray_query& Q);
-	virtual BOOL	_RayPick		( Collide::ray_query& Q);
+	virtual BOOL	_RayQuery		( const Collide::ray_defs& Q, Collide::rq_results& R);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 };
 
@@ -157,8 +154,7 @@ private:
 public:
 					CCF_Rigid		( CObject* _owner );
 
-	virtual BOOL	_RayTest		( Collide::ray_query& Q);
-	virtual BOOL	_RayPick		( Collide::ray_query& Q);
+	virtual BOOL	_RayQuery		( const Collide::ray_defs& Q, Collide::rq_results& R);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 };
 
@@ -169,8 +165,7 @@ private:
 public:
 					CCF_EventBox	( CObject* _owner );
 
-	virtual BOOL	_RayTest		( Collide::ray_query& Q);
-	virtual BOOL	_RayPick		( Collide::ray_query& Q);
+	virtual BOOL	_RayQuery		( const Collide::ray_defs& Q, Collide::rq_results& R);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 
 	BOOL			Contact			( CObject* O );
@@ -193,8 +188,7 @@ public:
 public:
 					CCF_Shape		( CObject* _owner );
 
-	virtual BOOL	_RayTest		( Collide::ray_query& Q);
-	virtual BOOL	_RayPick		( Collide::ray_query& Q);
+	virtual BOOL	_RayQuery		( const Collide::ray_defs& Q, Collide::rq_results& R);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 
 	void			add_sphere		( Fsphere& S	);

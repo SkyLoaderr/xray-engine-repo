@@ -821,6 +821,54 @@ void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Col
 	}
 }
 
+BOOL __stdcall firetrace_callback(Collide::rq_result& result, LPVOID params)
+{
+	result.O;		// 0-static else CObject*
+	result.range;	// range from start to element 
+	result.element;	// if (O) "num tri" else "num bone"
+	params;			// user defined abstract data
+	return TRUE;	// TRUE-продолжить трассировку / FALSE-закончить трассировку
+}
+/*
+def:
+	u32				self_gmtl_id;
+	u32				last_gmtl_id;
+init:
+	self_gmtl_id	= GAMEMTL_NONE;
+	last_gmtl_id	= GAMEMTL_NONE;
+load:
+	self_gmtl_id	= GMLib.GetMaterialIdx("actor");
+	last_gmtl_id	= GMLib.GetMaterialIdx("default");
+use:
+	SGameMtl* mtl0	= GMLib.GetMaterial(self_gmtl_id);
+	SGameMtl* mtl1	= GMLib.GetMaterial(last_gmtl_id);
+	SGameMtlPair* mtl_pair = GMLib.GetMaterialPair(self_gmtl_id,last_gmtl_id);
+
+	if (result.O){
+		// dynamic
+		CKinematics* V = 0;
+		if (0!=(V=PKinematics(result.O->Visual()))){
+			CBoneData* B = V->LL_GetData(result.element);
+			B->game_mtl_idx;
+		}
+	}else{
+		// static 
+		CDB::TRI& T		= g_pGameLevel->ObjectSpace.Static->get_tris()+result.element;
+		T.material;
+	}
+query:
+	if(0){
+	Collide::ray_defs RD(P,dir,fireDistance*l_cartridge.m_kDist,0,Collide::rqtBoth);
+	if (g_pGameLevel->ObjectSpace.RayQuery( RD, firetrace_callback, this ))
+	{ 
+	for (int k=0; k<g_pGameLevel->ObjectSpace.r_results.r_count(); k++){
+	Collide::rq_result* R = g_pGameLevel->ObjectSpace.r_results.r_begin()+k;
+	}
+	}
+	}
+
+*/
+
 BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 {
 	Collide::rq_result RQ;
@@ -852,7 +900,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 
 		// ...and trace line
 		H_Parent()->setEnabled(false);
-		bResult |= Level().ObjectSpace.RayPick(P, dir, fireDistance*l_cartridge.m_kDist, RQ);
+		bResult |= Level().ObjectSpace.RayPick(P, dir, fireDistance*l_cartridge.m_kDist, Collide::rqtBoth, RQ);
 		H_Parent()->setEnabled(true);
 		D = dir1;
 
