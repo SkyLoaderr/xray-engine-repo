@@ -22,18 +22,4 @@ void IGame_Level::LL_CheckTextures()
 		Msg			("***FATAL***: %s",msg);
 		bError		= TRUE;
 	}
-	if (bError && 0==strstr(Core.Params,"-external"))
-	{
-		BOOL	bAccess	= FALSE;
-		BOOL	bKoan	= FALSE;
-		BOOL	bProf	= FALSE;
-		BOOL	bOles	= FALSE;
-		BOOL	bAlexMX	= FALSE;
-		if ((0==stricmp(Core.UserName,"Andrew"))	&&(0==stricmp(Core.CompName,"Prof")))		bProf = TRUE;
-		if ((0==stricmp(Core.UserName,"Koan"))		&&(0==stricmp(Core.CompName,"Koan")))		bKoan = TRUE;
-		if ((0==stricmp(Core.UserName,"Oles"))		&&(0==stricmp(Core.CompName,"OlesXXX")))	bOles = TRUE;
-		if ((0==stricmp(Core.UserName,"Alexmx"))	&&(0==stricmp(Core.CompName,"Alexmx")))		bAlexMX = TRUE;
-		bAccess			= bKoan || bProf || bOles || bAlexMX;
-		if (!bAccess)	Debug.fatal	("Too much memory used for textures.");
-	}
 }
