@@ -941,6 +941,7 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_float			(m_virtual_size);
 	    tNetPacket.r_float			(m_ambient_radius);
     	tNetPacket.r_float			(m_ambient_power);
+	    tNetPacket.r_string			(m_ambient_texture);
         tNetPacket.r_string			(light_texture);
         tNetPacket.r_string			(guid_bone);
         tNetPacket.r_float			(spot_cone_angle);
@@ -964,12 +965,14 @@ void CSE_ALifeObjectHangingLamp::STATE_Write(NET_Packet	&tNetPacket)
 	tNetPacket.w_float			(m_virtual_size);
     tNetPacket.w_float			(m_ambient_radius);
     tNetPacket.w_float			(m_ambient_power);
+    tNetPacket.w_string			(m_ambient_texture);
 
     tNetPacket.w_string			(light_texture);
     tNetPacket.w_string			(guid_bone);
     tNetPacket.w_float			(spot_cone_angle);
     tNetPacket.w_string			(glow_texture);
     tNetPacket.w_float			(glow_radius);
+    
 }
 
 
@@ -1058,6 +1061,7 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
     if (flags.is(flPointAmbient)){
         PHelper.CreateFloat		(values, FHelper.PrepareKey(pref,s_name,"Ambient\\Radius"),		&m_ambient_radius,	0.f, 1000.f);
         PHelper.CreateFloat		(values, FHelper.PrepareKey(pref,s_name,"Ambient\\Power"),		&m_ambient_power);
+		PHelper.CreateChoose	(values, FHelper.PrepareKey(pref,s_name,"Ambient\\Texture"),	&m_ambient_texture,	smTexture);
     }
     // glow
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Glow\\Radius"),	    &glow_radius,		0.01f, 100.f);

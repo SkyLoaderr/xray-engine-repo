@@ -285,6 +285,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVis
 // ambient    
     float							m_ambient_radius;
     float							m_ambient_power;
+	ref_str							m_ambient_texture;
 // glow    
 	ref_str							glow_texture;
 	float							glow_radius;
