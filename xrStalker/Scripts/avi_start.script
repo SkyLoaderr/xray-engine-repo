@@ -84,5 +84,6 @@ function main()
 	level.remove_dialog_to_render(dlg)
 	level.show_indicators()
 
+	_G.g_start_avi = false
 end
 
