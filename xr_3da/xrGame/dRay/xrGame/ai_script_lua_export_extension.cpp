@@ -46,6 +46,15 @@ CLuaGameObject *get_object_by_name(LPCSTR caObjectName)
 		return		(0);
 }
 
+//CLuaGameObject *get_object_by_id(ALife::_OBJECT_ID id)
+//{
+//	CGameObject		*l_tpGameObject	= dynamic_cast<CGameObject*>(Level().Objects.FindObjectByID(id));
+//	if (l_tpGameObject)
+//		return		(l_tpGameObject->lua_game_object());
+//	else
+//		return		(0);
+//}
+//
 LPCSTR get_weather	()
 {
 	return			(g_pGamePersistent->Environment.GetWeather());
@@ -177,6 +186,7 @@ void CScriptEngine::export_level()
 	[
 		// declarations
 		def("object",							get_object_by_name),
+//		def("object",							get_object_by_id),
 		def("actor",							tpfGetActor),
 		//def("set_artifact_merge",				SetArtifactMergeFunctor),
 		def("get_weather",						get_weather),
