@@ -39,10 +39,14 @@ public:
 	svector<SEnvDef,32>		Palette;
 
 	// Environment cache
-	u32					c_Ambient;	
-	u32					c_Fog;		
+	u32						c_Ambient;	
+	u32						c_Fog;		
 	float					c_Fogness;	
 	float					c_Far;
+
+	float					c_FogNear;
+	float					c_FogFar;
+
 	IC void					c_Invalidate() {
 		c_Ambient	= 0xAAAAAAAA;
 		c_Fog		= 0xAAAAAAAA;

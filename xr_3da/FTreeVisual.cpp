@@ -71,6 +71,8 @@ void FTreeVisual::Load		(const char* N, CStream *data, u32 dwFlags)
 	c_c_scale			= T.get	("c_scale");
 	c_m_m2w				= T.get	("m_m2w");
 	c_m_w2v2p			= T.get	("m_w2v2p");
+	c_eye				= T.get	("v_eye");
+	c_fog				= T.get	("fog");
 }
 
 float	psTree_w_rot		= 10.0f;
@@ -86,6 +88,10 @@ void FTreeVisual::Render	(float LOD)
 	wind.set				(sinf(tm_rot),0,cosf(tm_rot),0);	wind.normalize	();	wind.mul(psTree_w_amp);	// dir1*amplitude
 	float	scale			= 1.f/float(FTreeVisual_quant);
 
+	// fog
+	float	f_near			= pCreator->Environment.c_FogNear;
+	float	f_far			= pCreator->Environment.c_FogFar - f_near;
+
 	// setup constants
 	RCache.set_c			(c_consts,	scale,		scale,		0,					0);
 	RCache.set_c			(c_wave,	psTree_Wave.x,	psTree_Wave.y,	psTree_Wave.z,	Device.fTimeGlobal*psTree_w_speed);	// wave
@@ -94,6 +100,8 @@ void FTreeVisual::Render	(float LOD)
 	RCache.set_c			(c_c_bias,	c_bias);																		// bias
 	RCache.set_c			(c_m_m2w,	xform);																			// xform
 	RCache.set_c			(c_m_w2v2p,	Device.mFullTransform);															// view-projection
+	RCache.set_c			(c_eye,		Device.vCameraPosition);														// view-pos
+	RCache.set_c			(c_fog,		f_near,	f_far,	0,	0);															// fog-params
 
 	// render
 	RCache.set_Shader		(hShader);
