@@ -268,7 +268,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 		pv->set				(vecLight.x+vecSx.x+vecSy.x, vecLight.y+vecSx.y+vecSy.y, vecLight.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
 		pv->set				(vecLight.x-vecSx.x+vecSy.x, vecLight.y-vecSx.y+vecSy.y, vecLight.z-vecSx.z+vecSy.z, c, 1, 1); pv++;
 		pv->set				(vecLight.x-vecSx.x-vecSy.x, vecLight.y-vecSx.y-vecSy.y, vecLight.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
-		_2render.push_back	(m_Source->hShader);
+		_2render.push_back	(m_Source.hShader);
 	}
 	
 	if (fBlend>=EPS_L)
@@ -310,13 +310,14 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 			pv->set					(vecLight.x+vecSx.x+vecSy.x, vecLight.y+vecSx.y+vecSy.y, vecLight.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
 			pv->set					(vecLight.x-vecSx.x+vecSy.x, vecLight.y-vecSx.y+vecSy.y, vecLight.z-vecSx.z+vecSy.z, c, 1, 1); pv++;
 			pv->set					(vecLight.x-vecSx.x-vecSy.x, vecLight.y-vecSx.y-vecSy.y, vecLight.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
-			_2render.push_back		(m_Gradient->hShader);
+			_2render.push_back		(m_Gradient.hShader);
 		}
 	}
 	
-	VS->Unlock				(_2render.size()*4);
+	VS->Unlock					(_2render.size()*4);
 
-	Device.set_xform_world	(Fidentity);
+	Device.set_xform_world		(Fidentity);
+	Device.Primitive.setVertices(VS->getFVF(),VS->Stride(),VS->getBuffer());
 	for (DWORD i=0; i<_2render.size(); i++)
 	{
     	if (_2render[i])
@@ -324,7 +325,6 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 			Device.Shader.set_Shader	(_2render[i]);
 
 			DWORD							vBase	= i*4+VS_Offset;
-			Device.Primitive.setVertices	(VS->mFVF,VS->Stride(),VS->pVB);
 			Device.Primitive.setIndices		(vBase, Device.Streams_QuadIB);
 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
 	    }
