@@ -9,7 +9,6 @@
 				<next>1</next>
 			</phrase>
 			<phrase id="1">
-				<has_info>escape_novice_need_weapon</has_info>
 				<text>Возьми эту пушку, может тебе она подойдет...</text>
 				<action>escape.give_weapon_to_loser</action>
 				<next>2</next>
