@@ -30,15 +30,9 @@ void CAI_Stalker::renderable_Render	()
 void CAI_Stalker::Exec_Look			(float dt)
 {
 	CSightManager::Exec_Look		(dt);
-
-	// updating rotation matrix
-	Fmatrix							mXFORM;
-	mXFORM.setHPB					(-NET_Last.o_model,0,0);
-	mXFORM.c.set					(Position());
-	XFORM().set						(mXFORM);
 }
 
 bool CAI_Stalker::bfCheckForNodeVisibility(u32 dwNodeID, bool bIfRayPick)
 {
-	return				(CVisualMemoryManager::visible(dwNodeID,m_head.current.yaw,ffGetFov()));
+	return							(CVisualMemoryManager::visible(dwNodeID,m_head.current.yaw,ffGetFov()));
 }
