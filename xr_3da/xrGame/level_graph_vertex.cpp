@@ -201,7 +201,6 @@ float CLevelGraph::farthest_vertex_in_direction(u32 start_vertex_id, const Fvect
 		contour				(_contour,dwCurNode);
 		for ( ; I != E; ++I) {
 			iNextNode		= value(dwCurNode,I);
-			
 			if (valid_vertex_id(iNextNode) && (iPrevIndex != iNextNode))
 				choose_point(start_point,finish_point,_contour, iNextNode,temp_point,saved_index);
 		}
@@ -285,7 +284,7 @@ u32	 CLevelGraph::check_position_in_direction_slow	(u32 start_vertex_id, const F
 		bool				found = false;
 		for ( ; I != E; ++I) {
 			u32				next_vertex_id = value(cur_vertex_id,I);
-			if ((next_vertex_id == prev_vertex_id))
+			if ((next_vertex_id == prev_vertex_id) || !valid_vertex_id(next_vertex_id))
 				continue;
 			unpack_xz		(vertex(next_vertex_id),temp.x,temp.y);
 			box.min			= box.max = temp;
@@ -341,7 +340,7 @@ bool CLevelGraph::check_vertex_in_direction_slow	(u32 start_vertex_id, const Fve
 		bool				found = false;
 		for ( ; I != E; ++I) {
 			u32				next_vertex_id = value(cur_vertex_id,I);
-			if ((next_vertex_id == prev_vertex_id))
+			if ((next_vertex_id == prev_vertex_id) || !valid_vertex_id(next_vertex_id))
 				continue;
 			unpack_xz		(vertex(next_vertex_id),temp.x,temp.y);
 			box.min			= box.max = temp;
