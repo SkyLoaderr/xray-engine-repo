@@ -22,6 +22,7 @@ public:
 	virtual				~CEffector	() {};
 	IC EEffectorType	GetType		() {return eType;}
 	IC BOOL				Affected	() {return bAffected;}
+	IC float			LifeTime	() {return fLifeTime;}
 
 	virtual	BOOL		Process		(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect)= 0;
 };
