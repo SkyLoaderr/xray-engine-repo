@@ -178,7 +178,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 
     case COMMAND_IMPORT_COMPILER_ERROR:{
     	AnsiString fn;
-    	if(EFS.GetOpenName(_server_root_, fn)){
+    	if(EFS.GetOpenName("$logs$", fn, false, NULL, 0)){
         	Scene.LoadCompilerError(fn.c_str());
         }
     	}break;

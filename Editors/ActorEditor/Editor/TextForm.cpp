@@ -129,7 +129,7 @@ void __fastcall TfrmText::FormClose(TObject *Sender, TCloseAction &Action)
 void __fastcall TfrmText::ebLoadClick(TObject *Sender)
 {
 	AnsiString fn;
-	if (EFS.GetOpenName(_import_,fn,false,NULL,4)){
+	if (EFS.GetOpenName(_import_,fn,false,NULL,2)){
     	string4096 buf;
     	IReader* F 		= FS.r_open(fn.c_str());
         F->r_stringZ	(buf);
