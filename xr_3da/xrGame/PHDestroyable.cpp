@@ -161,6 +161,7 @@ void CPHDestroyable::RespawnInit()
 {
 	m_flags.set(fl_destroyed,FALSE);
 	m_flags.set(fl_released,TRUE);
+	m_flags.set(fl_destroyable,FALSE);
 	m_destroyed_obj_visual_names.clear();
 	m_depended_objects=0;
 }
