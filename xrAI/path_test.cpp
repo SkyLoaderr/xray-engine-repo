@@ -236,14 +236,14 @@ void test_all				(LPCSTR caLevelName, u32 test_count, _dist_type min_value, _dis
 
 	path_params.resize		(_min(path_params.size(),test_count));
 				
-//	test<CDataStorageUL				<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-//	test<CDataStorageDLUL			<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-//	test<CDataStorageSL				<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-//	test<CDataStorageDLSL			<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-//	test<CDataStorageBinaryHeap		<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-//	test<CDataStorageBinaryHeapList	<4,							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-//	test<CDataStorageMultiBinaryHeap<4,							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-//	test<CDataStorageCheapList		<32,true,true,				_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
+	test<CDataStorageUL				<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
+	test<CDataStorageDLUL			<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
+	test<CDataStorageSL				<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
+	test<CDataStorageDLSL			<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
+	test<CDataStorageBinaryHeap		<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
+	test<CDataStorageBinaryHeapList	<4,							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
+	test<CDataStorageMultiBinaryHeap<4,							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
+	test<CDataStorageCheapList		<32,true,true,				_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
 	test<CDataStorageBucketList		<8*1024,false,				_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value,max_value);
 	test<CDataStoragePriorityQueue	<boost::fibonacci_heap,		_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
 	test<CDataStoragePriorityQueue	<boost::pairing_heap,		_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
@@ -255,9 +255,9 @@ void test_all				(LPCSTR caLevelName, u32 test_count, _dist_type min_value, _dis
 
 void path_test				(LPCSTR caLevelName)
 {
-//	test_all<CLevelGraph>				(caLevelName,TEST_COUNT,float(0),float(2000));
+	test_all<CLevelGraph>				(caLevelName,TEST_COUNT,float(0),float(2000));
 	test_all<CGameGraph>				(caLevelName,TEST_COUNT,float(0),float(2000));
-//	test_all<CTestTable<u32,30,30> >	(caLevelName,TEST_COUNT,u32(0),u32(60));
-//	test_all<CTestTable<u32,300,300> >	(caLevelName,TEST_COUNT,u32(0),u32(600));
-//	test_all<CTestTable<u32,900,900> >	(caLevelName,TEST_COUNT,u32(0),u32(1800));
+	test_all<CTestTable<u32,30,30> >	(caLevelName,TEST_COUNT,u32(0),u32(60));
+	test_all<CTestTable<u32,300,300> >	(caLevelName,TEST_COUNT,u32(0),u32(600));
+	test_all<CTestTable<u32,900,900> >	(caLevelName,TEST_COUNT,u32(0),u32(1800));
 }
