@@ -56,6 +56,8 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
     InplaceCompilerEdit->Editor->Color		= TColor(0x00A0A0A0);
     InplaceCompilerEdit->Editor->BorderStyle= bsNone;
     DragItem = 0;
+    frmMain->paLeftBar->Width = paLeftBar->Width+2;
+    frmMain->sbToolsMin->Left = paLeftBar->Width-frmMain->sbToolsMin->Width-3;
 }
 //---------------------------------------------------------------------------
 
