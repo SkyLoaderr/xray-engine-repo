@@ -167,20 +167,6 @@ public:
 		SetAct				(tActState);
 		SetPosition			(tPosition);
 	}
-							CMovementAction		(MonsterSpace::EActState tActState, const CPatrolPathParams &tPatrolPathParams)
-	{
-		SetAct				(tActState);
-		SetPatrolPath		(tPatrolPathParams.m_caPatrolPathToGo);
-		SetPatrolStart		(tPatrolPathParams.m_tPatrolPathStart);
-		SetPatrolStop		(tPatrolPathParams.m_tPatrolPathStop);
-		SetPatrolRandom		(tPatrolPathParams.m_bRandom);
-	}
-							CMovementAction		(MonsterSpace::EActState tActState, CLuaGameObject *tpObjectToGo)
-	{
-		SetAct				(tActState);
-		SetObjectToGo		(tpObjectToGo);
-	}
-
 
 			void			SetBodyState		(const MonsterSpace::EBodyState tBodyState)
 	{
