@@ -60,6 +60,8 @@ public:
 	IC							CScriptCallbackEx_	(const CScriptCallbackEx_ &callback);
 	IC	virtual					~CScriptCallbackEx_	();
 	IC	CScriptCallbackEx_		&operator=			(const CScriptCallbackEx_ &callback);
+	IC			bool			operator==			(const CScriptCallbackEx_ &callback){return *m_object==*(callback.m_object)&&*m_functor==*(callback.m_functor);}
+	IC			bool			operator==			(const object_type	&object){return *m_object==*(callback.m_object);};
 	IC			void			set					(const functor_type &functor);
 	IC			void			set					(const functor_type &functor, const object_type &object);
 	IC			void			clear				();

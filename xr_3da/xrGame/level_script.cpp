@@ -221,17 +221,23 @@ bool is_level_present()
 
 void add_call(const luabind::functor<bool> &condition,const luabind::functor<void> &action)
 {
-	Level().ph_commander().add_call(xr_new<CPHScriptCondition>(condition),xr_new<CPHScriptAction>(action));
+	CPHScriptCondition	* c=xr_new<CPHScriptCondition>(condition);
+	CPHScriptAction		* a=xr_new<CPHScriptAction>(action);
+	Level().ph_commander().add_call_unique(c,c,a,a);
 }
 
 void add_call(const luabind::object &lua_object, LPCSTR condition,LPCSTR action)
 {
-	Level().ph_commander().add_call(xr_new<CPHScriptObjectCondition>(lua_object,condition),xr_new<CPHScriptObjectAction>(lua_object,action));
+	CPHScriptObjectCondition	*c=xr_new<CPHScriptObjectCondition>(lua_object,condition);
+	CPHScriptObjectAction		*a=xr_new<CPHScriptObjectAction>(lua_object,action);
+	Level().ph_commander().add_call_unique(c,c,a,a);
 }
 
 void add_call(const luabind::object &lua_object, const luabind::functor<bool> &condition,const luabind::functor<void> &action)
 {
-	Level().ph_commander().add_call(xr_new<CPHScriptObjectConditionN>(lua_object,condition),xr_new<CPHScriptObjectActionN>(lua_object,action));
+	CPHScriptObjectConditionN	*c=xr_new<CPHScriptObjectConditionN>(lua_object,condition);
+	CPHScriptObjectActionN		*a=xr_new<CPHScriptObjectActionN>(lua_object,action);
+	Level().ph_commander().add_call_unique(c,c,a,a);
 }
 
 CEnvironment *environment()

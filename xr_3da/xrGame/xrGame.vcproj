@@ -9142,6 +9142,9 @@
 							RelativePath=".\PHCommander.h">
 						</File>
 						<File
+							RelativePath=".\PHReqComparer.h">
+						</File>
+						<File
 							RelativePath=".\PHScriptCall.cpp">
 						</File>
 						<File
