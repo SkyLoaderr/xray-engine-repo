@@ -2,7 +2,7 @@
 #include "xrdebug.h"
 #include "resource.h"
 #include "dbghelp.h"
-
+ 
 #include "dxerr9.h"
 
 #ifdef __BORLANDC__
