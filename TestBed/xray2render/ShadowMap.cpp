@@ -417,7 +417,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16F,	&d_Position,&d_Position_S);
 	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16F,	&d_Normal,&d_Normal_S);
 	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16,	&d_Color,&d_Color_S);
-	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16,	&d_Accumulator,&d_Accumulator_S);
+	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A8R8G8B8,		&d_Accumulator,&d_Accumulator_S);
 
 	// Create shaders
 	s_Scene2fat.compile				(m_pd3dDevice,"shaders\\D\\fat_base.s");
@@ -789,6 +789,16 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE,	D3DCULL_NONE);
 	m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
+
+	// Second light
+	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, TRUE);
+	m_pd3dDevice->SetRenderState			(D3DRS_SRCBLEND,	D3DBLEND_ONE);
+	m_pd3dDevice->SetRenderState			(D3DRS_DESTBLEND,	D3DBLEND_ONE);
+	cc.set									(s_Light_Direct.constants.get("light_direction"),	-vLightDir.x,-vLightDir.y,-vLightDir.z,0	);
+	cc.set									(s_Light_Direct.constants.get("light_color"),		.9f,		.3f,		.0,			.7		);
+	cc.flush								(m_pd3dDevice);
+	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
+	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
 
 	// Cleanup
 	m_pd3dDevice->SetTexture				(0, NULL);
