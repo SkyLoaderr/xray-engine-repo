@@ -3815,10 +3815,27 @@ ph_mass 		     = 170						; also it's the food
 
 SoundThreshold		 = 0.06						; range [0..1]
 
-EyeFov				 = 80;
-EyeRange			 = 30;
+EyeFov				 = 80
+EyeRange			 = 30
 
-HitPower			 = 30.0;
+HitPower			 = 30.0
+
+; motion factors
+StandTurnRSpeed		= 0.79						; PI_DIV_4
+WalkSpeed			= 3.0
+WalkTurningSpeed	= 1.0
+WalkRSpeed			= 0.79						; PI_DIV_4	when SetDirLook
+WalkTurnRSpeed		= 1.57						; PI_DIV_2	when turn needed
+WalkMinAngle		= 0.52						; PI_DIV_6
+RunAttackSpeed		= 7.0
+RunAttackTurnSpeed	= 3.5
+RunAttackTurnRSpeed = 2.61						; 5 * PI_DIV_6
+RunRSpeed			= 1.57						; PI_DIV_2
+RunAttackMinAngle	= 0.52						; PI_DIV_6
+AttackFastRSpeed	= 2.36						; 3 * PI_DIV_4
+AttackFastRSpeed2	= 3.14						; PI
+ScaredRSpeed		= 2.36						; 3 * PI_DIV_4
+
 
 ;							  fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
 selector_free_hunting    =      20.0,            20.0,                 1000.0,                 0.0,               10000.0,               1000.0,               10000.0,      
