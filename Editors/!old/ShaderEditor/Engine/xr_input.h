@@ -13,10 +13,6 @@ const int keyboard_device_key	= 2;
 const int all_device_key		= mouse_device_key | keyboard_device_key;
 const int default_key			= mouse_device_key | keyboard_device_key ;
 
-ENGINE_API extern float			psMouseSens;
-ENGINE_API extern float			psMouseSensScale;
-ENGINE_API extern Flags32		psMouseInvert;
-
 class ENGINE_API CInput
 #ifndef M_BORLAND
 	:

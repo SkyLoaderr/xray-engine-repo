@@ -1,6 +1,14 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+// mmsystem.h
+#define MMNOSOUND
+#define MMNOMIDI
+#define MMNOAUX
+#define MMNOMIXER
+#define MMNOJOY
+#include <mmsystem.h>
+
 // Initialized on startup
 XRCORE_API	Fmatrix			Fidentity;
 XRCORE_API	Dmatrix			Didentity;

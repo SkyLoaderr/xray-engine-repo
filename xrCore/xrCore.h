@@ -44,23 +44,6 @@
 	#include <windowsx.h>
 #endif
 
-// mmsystem.h
-#define MMNOSOUND
-#define MMNOMIDI
-#define MMNOAUX
-#define MMNOMIXER
-#define MMNOJOY
-#include <mmsystem.h>
-
-// mmreg.h
-#define NOMMIDS
-#define NONEWRIFF
-#define NOJPEGDIB
-#define NONEWIC
-#define NOBITMAP
-#include <mmreg.h>
-
-
 // stl-config
 // *** disable exceptions for both STLport and VC7.1 STL
 #define _STLP_NO_EXCEPTIONS	1
