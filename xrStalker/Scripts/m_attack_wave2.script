@@ -167,7 +167,7 @@ function Monster:find_enemy ()
 	local enemy = nil
 	for a = 1, table.getn (self.targets), 1 do
 		if self.targets[a].npc:alive () == true and self.targets[a].available == true then
-		   local tdist = distance_between (self.npc, self.targets[a]) 
+		   local tdist = distance_between (self.npc, self.targets[a].npc) 
 		   if tdist < dist and self.targets[a].attacker == nil then
 			  dist = tdist
 			  enemy = self.targets[a]
@@ -203,7 +203,7 @@ function Monster:process ()
 
 	self.target = enemy
 
-	if distance_between (self.npc, self.target) < 2 then
+	if distance_between (self.npc, self.target.npc) < 2 then
        reset_action (self.npc, self.script)
 	   action_first (self.npc, move (act_attack, move.default, self.target.npc), cond (cond.time_end, 1000))
 	end
