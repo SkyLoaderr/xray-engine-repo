@@ -165,6 +165,7 @@ bool CWeaponList::TakeItem(CLASS_ID cls, int iAmmoCount){
 	case CLSID_OBJECT_A_ROCKET:		idx = FindWeapon(CLSID_OBJECT_W_ROCKET);	break;
 	case CLSID_OBJECT_W_M134:	
 	case CLSID_OBJECT_W_GROZA:	
+	case CLSID_OBJECT_A_PROTECTA:
 	case CLSID_OBJECT_W_RAIL:	
 	case CLSID_OBJECT_W_ROCKET:		idx = FindWeapon(cls); bTakeWeapon = true; break;
 	}
