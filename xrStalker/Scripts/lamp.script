@@ -1,0 +1,17 @@
+function main ()
+
+   lamp_1 = get_level_object ("lamp")
+   while true do
+         h               = hit()
+         h.power         = 10
+         h.direction:set (0,0,1)
+         h:bone          ("bone02")
+         h.draftsman     = get_actor ()
+         h.impulse       = 1.0
+         h.type          = hit.strike
+         lamp_1:hit    (h)
+--         printf ("Lamp health : %f", lamp.health)
+         wait (1000)
+         end
+
+end
