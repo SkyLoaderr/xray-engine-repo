@@ -39,7 +39,6 @@ private:
 	MxBlock<edge_list> edge_links;	// 1 per vertex
 	MxBlock<MxQuadric*> __quadrics;	// 1 per vertex
 
-	void				mark_face				(MxFaceID, float err);
 	//
 	// Temporary variables used by methods
 	MxVertexList		star, star2;

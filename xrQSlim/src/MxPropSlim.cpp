@@ -477,10 +477,6 @@ bool MxPropSlim::decimate(unsigned int target, float max_error, void* cb_params)
 				(*contraction_callback)(conx, -(info->heap_key()+EDGE_BASE_ERROR), cb_params);
 			
 			apply_contraction(conx, info);
-
-			const MxFaceList& N2			= conx.delta_faces;
-			for (u32 f_idx=conx.delta_pivot; f_idx<(u32)N2.size(); f_idx++)
-				mark_face(N2[f_idx],1000.f);
 		}
 
 		xr_delete(info);
