@@ -4,7 +4,8 @@ news = {
 	escape_stalker_killed	  = [[characters_voice\human_01\scenario\trader\trader_tutorial_end_2]],
 	tutorial_flash_anomaly_alarm = [[characters_voice\human_01\scenario\trader\trader_tutorial_anomalies_1]],
 	escape_stalker_helped = [[characters_voice\human_01\scenario\trader\trader_tutorial_end_1]],
-	tutorial_trader_look_vagon = [[characters_voice\human_01\scenario\trader\trader_tutorial_go_help_tolik_1]]
+	tutorial_trader_look_vagon = [[characters_voice\human_01\scenario\trader\trader_tutorial_go_help_tolik_1]],
+	gar_dolg_warning = = [[characters_voice\human_01\scenario\trader\trader_tutorial_contacts_1]]
 }
 
 
