@@ -17,12 +17,26 @@ CPHDestroyable::CPHDestroyable()
 	m_flags.flags=0;
 }
 /////////spawn object representing destroyed item//////////////////////////////////////////////////////////////////////////////////
-void CPHDestroyable::GenSpawnReplace(u16 source_id,LPCSTR section)
+void CPHDestroyable::GenSpawnReplace(u16 ref_id,LPCSTR section)
 {
-	CPhysicsShellHolder	*obj	=PPhysicsShellHolder()		;
+
 	CSE_Abstract*				D	= F_entity_Create(section);//*cNameSect()
 	VERIFY						(D);
+	//init
+	InitServerObject			(D);
+	// Send
+	D->s_name			= section;//*cNameSect()
+	D->ID_Parent		= ref_id;
+	NET_Packet			P;
+	D->Spawn_Write		(P,TRUE);
+	Level().Send		(P,net_flags(TRUE));
+	// Destroy
+	F_entity_Destroy	(D);
+}
 
+void CPHDestroyable::InitServerObject(CSE_Abstract* D)
+{
+	CPhysicsShellHolder	*obj	=PPhysicsShellHolder()		;
 	CSE_ALifeDynamicObjectVisual	*l_tpALifeDynamicObject = smart_cast<CSE_ALifeDynamicObjectVisual*>(D);
 	VERIFY							(l_tpALifeDynamicObject);
 	CSE_PHSkeleton					*l_tpPHSkeleton = smart_cast<CSE_PHSkeleton*>(D);
@@ -34,12 +48,12 @@ void CPHDestroyable::GenSpawnReplace(u16 source_id,LPCSTR section)
 
 	l_tpPHSkeleton->source_id	= u16(-1);
 	//	l_tpALifePhysicObject->startup_animation=m_startup_anim;
-	D->s_name			= section;//*cNameSect()
+	
 	D->set_name_replace	("");
 	D->s_gameid			=	u8(GameID());
 	D->s_RP				=	0xff;
 	D->ID				=	0xffff;
-	D->ID_Parent		=	source_id;
+
 	D->ID_Phantom		=	0xffff;
 	D->o_Position		=	obj->Position();
 	if (ai().get_alife())
@@ -49,12 +63,6 @@ void CPHDestroyable::GenSpawnReplace(u16 source_id,LPCSTR section)
 	obj->XFORM().getHPB	(D->o_Angle);
 	D->s_flags.assign	(M_SPAWN_OBJECT_LOCAL);
 	D->RespawnTime		=	0;
-	// Send
-	NET_Packet			P;
-	D->Spawn_Write		(P,TRUE);
-	Level().Send		(P,net_flags(TRUE));
-	// Destroy
-	F_entity_Destroy	(D);
 }
 void CPHDestroyable::Destroy(u16 source_id/*=u16(-1)*/,LPCSTR section/*="ph_skeleton_object"*/)
 {

@@ -130,6 +130,7 @@ public:
 	virtual const CSE_Abstract		*base			() const;
 	virtual CSE_Abstract			*init			();
 	virtual CSE_ALifeObject			*cast_alife_object	() {return 0;}
+	virtual bool					match_configuration () const {return true;}
 	// end of the virtual inheritance dependant code
 	IC		int						script_clsid	() const					{VERIFY(m_script_clsid >= 0); return (m_script_clsid);}
 			CInifile				&spawn_ini		();

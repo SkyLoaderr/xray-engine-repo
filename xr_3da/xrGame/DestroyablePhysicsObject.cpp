@@ -4,7 +4,7 @@
 #include "PHDestroyable.h"
 #include "DestroyablePhysicsObject.h"
 #include "../SkeletonCustom.h"
-
+#include "xrServer_Objects_ALife.h"
 
 CDestroyablePhysicsObject ::CDestroyablePhysicsObject()
 {
@@ -45,4 +45,10 @@ void CDestroyablePhysicsObject::Hit							(float P,Fvector &dir,CObject *who,s16
 	m_fHealth-=P;
 	if(m_fHealth<=0.f) Destroy(u16(-1),"physic_destroyable_object");
 		
+}
+
+void CDestroyablePhysicsObject::InitServerObject(CSE_Abstract* D)
+{
+	CPHDestroyable::InitServerObject(D);
+	smart_cast<CSE_ALifeObjectPhysic*>(D)->type=epotSkeleton;
 }

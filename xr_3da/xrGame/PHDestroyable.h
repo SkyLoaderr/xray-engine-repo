@@ -18,12 +18,13 @@ public:
 			void						Init						()																											;
 			void						RespawnInit					()																											;
 	
-			void						Destroy						(u16 source_id=u16(-1),LPCSTR section="ph_skeleton_object")													;	
+			void						Destroy						(u16 ref_id=u16(-1),LPCSTR section="ph_skeleton_object")													;	
 
 			void						Load						(LPCSTR section)																							;
 			void						Load						(CInifile* ini,LPCSTR section)																				;
 IC			bool						CanDestroy					()												{return m_flags.test(fl_destroyable)&&!m_flags.test(fl_destroyed);}
 virtual		void						GenSpawnReplace				(u16 source_id,LPCSTR section)																								;
+virtual		void						InitServerObject			(CSE_Abstract*				D)																				;
 };
 
 

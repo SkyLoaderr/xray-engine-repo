@@ -14,7 +14,6 @@
 #include "object_broker.h"
 #include "restriction_space.h"
 
-
 #ifndef AI_COMPILER
 #	include "character_info.h"
 #endif
@@ -24,6 +23,7 @@
 #	include "defines.h"
 #else
 #	include "..\bone.h"
+#	include "..\render.h"
 #endif
 
 struct SFillPropData{
@@ -305,12 +305,12 @@ bool CSE_ALifeObject::used_ai_locations		() const
 
 bool CSE_ALifeObject::can_switch_online		() const
 {
-	return						(!!m_flags.is(flSwitchOnline));
+	return						(match_configuration() && !!m_flags.is(flSwitchOnline));
 }
 
 bool CSE_ALifeObject::can_switch_offline	() const
 {
-	return						(!!m_flags.is(flSwitchOffline));
+	return						(!match_configuration() || !!m_flags.is(flSwitchOffline));
 }
 
 bool CSE_ALifeObject::can_save				() const
@@ -992,6 +992,19 @@ void CSE_ALifeObjectHangingLamp::FillProps	(LPCSTR pref, PropItemVec& values)
 bool CSE_ALifeObjectHangingLamp::used_ai_locations	() const
 {
 	return						(false);
+}
+
+bool CSE_ALifeObjectHangingLamp::match_configuration() const
+{
+	R_ASSERT3(flags.test(flR1) || flags.test(flR2),"no render type set for lamp ",*s_name);
+#ifdef XRGAME_EXPORTS
+	return						(
+		(flags.test(flR1) && (::Render->get_generation() == IRender_interface::GENERATION_R1)) ||
+		(flags.test(flR2) && (::Render->get_generation() == IRender_interface::GENERATION_R2))
+	);
+#else
+	return						(true);
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////

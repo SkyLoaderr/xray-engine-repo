@@ -303,23 +303,23 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVi
 // light color    
     u32								color;
     float							brightness;
-    shared_str							color_animator;
+    shared_str						color_animator;
 // light texture    
-	shared_str							light_texture;
+	shared_str						light_texture;
 // range
     float							range;
 	float							m_virtual_size;
 // bones&motions
-	shared_str							guid_bone;
-    shared_str							fixed_bones;
+	shared_str						guid_bone;
+    shared_str						fixed_bones;
 // spot
 	float							spot_cone_angle;
 // ambient    
     float							m_ambient_radius;
     float							m_ambient_power;
-	shared_str							m_ambient_texture;
+	shared_str						m_ambient_texture;
 // glow    
-	shared_str							glow_texture;
+	shared_str						glow_texture;
 	float							glow_radius;
 // game
     float							m_health;
@@ -327,7 +327,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVi
                                     CSE_ALifeObjectHangingLamp	(LPCSTR caSection);
     virtual							~CSE_ALifeObjectHangingLamp	();
 	virtual	void					load						(NET_Packet &tNetPacket);
-	virtual bool					used_ai_locations	() const;
+	virtual bool					used_ai_locations			() const;
+	virtual bool					match_configuration			() const;
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeObjectHangingLamp)
 #define script_type_list save_type_list(CSE_ALifeObjectHangingLamp)
