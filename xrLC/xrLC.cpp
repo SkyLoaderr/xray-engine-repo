@@ -91,6 +91,7 @@ void Startup(LPSTR     lpCmdLine)
 	// Version
 	u32 version;
 	F->r_chunk			(EB_Version,&version);
+	clMsg				("version: %d",version);
 	R_ASSERT(XRCL_CURRENT_VERSION==version);
 
 	// Header
