@@ -233,14 +233,16 @@ CObject* CObject::H_SetParent	(CObject* O)
 	if (O==Parent)	return O;
 
 	CObject* S	= Parent; 
-
-	if (0==S)	OnH_B_Chield		();
-	else		OnH_B_Independent	();
-	if (O)		spatial_unregister	();
-	else		spatial_register	();
+	
+	// if (Parent) Parent->H_ChildRemove	(this);
+	if (0==S)	OnH_B_Chield			();
+	else		OnH_B_Independent		(); 
+	if (O)		spatial_unregister		();
+	else		spatial_register		();
 	Parent		= O;
-	if (0==S)	OnH_A_Chield		();
-	else		OnH_A_Independent	();
+	if (0==S)	OnH_A_Chield			();
+	else		OnH_A_Independent		(); 
+	// if (Parent)	Parent->H_ChildAdd		(this);
 
 	return		S;
 }

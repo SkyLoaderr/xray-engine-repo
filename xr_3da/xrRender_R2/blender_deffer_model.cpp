@@ -25,7 +25,8 @@ void	CBlender_deffer_model::Compile(CBlender_Compile& C)
 	case 0: 	// deffer
 		C.r_Pass		("deffer_model_flat","deffer_base_flat",FALSE);
 		C.r_Sampler		("s_base",C.L_textures[0]);
-		C.r_Sampler		("s_encodeRG",r2_float2rg,false,D3DTADDRESS_WRAP,D3DTEXF_POINT,D3DTEXF_NONE,D3DTEXF_POINT);
+		C.r_Sampler		("s_encodeRG",	r2_float2RG,false,D3DTADDRESS_WRAP,D3DTEXF_POINT,D3DTEXF_NONE,D3DTEXF_POINT);
+		C.r_Sampler		("s_encodeB",	r2_float2B,	false,D3DTADDRESS_WRAP,D3DTEXF_POINT,D3DTEXF_NONE,D3DTEXF_POINT);
 		C.r_End			();
 		break;
 	case 1:		// smap-direct

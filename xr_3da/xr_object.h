@@ -79,9 +79,13 @@ public:
 	virtual float						shedule_Scale		()					{ return Device.vCameraPosition.distance_to(Position())/200.f; }
 
 	// Parentness
-	IC CObject*							H_Parent			()					{ return Parent;		}
-	CObject*							H_Root				()					{ return Parent?Parent->H_Root():this;		}
+	IC CObject*							H_Parent			()					{ return Parent;						}
+	IC const CObject*					H_Parent			()			const	{ return Parent;						}
+	IC CObject*							H_Root				()					{ return Parent?Parent->H_Root():this;	}
+	IC const CObject*					H_Root				()			const	{ return Parent?Parent->H_Root():this;	}
 	virtual CObject*					H_SetParent			(CObject* O);
+	// virtual void						H_ChildAdd			(CObject* O)		{};
+	// virtual void						H_ChildRemove		(CObject* O)		{};
 
 	// Geometry xform
 	void								Center				(Fvector& C) const;
