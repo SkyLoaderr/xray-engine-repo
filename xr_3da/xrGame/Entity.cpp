@@ -201,17 +201,6 @@ void CEntity::OnVisible()
 void CEntity::Update	(DWORD dt)
 {
 	inherited::Update	(dt);
-
-	if (eHealthLost_Enabled)
-	{
-		eHealthLost_cumulative	+= (float(dt)/1000.f)*eHealthLost_speed;
-		if (eHealthLost_cumulative > eHealthLost_granularity)
-		{
-			Fvector vdir; vdir.set	(0,1,0);
-			eHealthLost_cumulative	-= eHealthLost_granularity;
-			Hit						(eHealthLost_granularity,vdir,this);
-		}
-	}
 }
 
 void CEntityAlive::Load		(LPCSTR section)
