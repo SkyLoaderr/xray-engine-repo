@@ -157,26 +157,6 @@ void CBitingEat::Run()
 
 		// Реализация 'Трясти труп во время еды'
 
-//		DO_IN_TIME_INTERVAL_BEGIN(m_dwLastImpulse, 100);
-//			Fmatrix global_transform;
-//			Fvector target_pos;
-//			
-//			global_transform.set(pMonster->XFORM());
-//			global_transform.mulB(pMonster->GetEatBone()->mTransform);
-//			target_pos = global_transform.c;
-//
-//			if (target_pos.distance_to(nearest_bone_pos) < 0.1f) {
-//				Fvector dir;
-//				dir.sub(nearest_bone_pos, target_pos);
-//
-//				CPhysicsElement *ph_elem =  pCorpse->m_pPhysicsShell->NearestToPoint(pMonster->Position());
-//				ph_elem->applyImpulse(dir,1000.f);
-//			}
-//		
-//		DO_IN_TIME_INTERVAL_END();
-
-		
-
 		break;
 	
 	case ACTION_GET_HIDE: 

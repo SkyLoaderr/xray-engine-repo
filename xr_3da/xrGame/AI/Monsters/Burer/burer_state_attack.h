@@ -10,7 +10,8 @@ protected:
 
 	enum EAttackStates {
 		eStateTelekinetic			= u32(0),
-		eStateGravi,
+		eStateGraviStart,
+		eStateGraviFinish,
 		eStateMelee,
 
 		eStateNumber
@@ -20,7 +21,7 @@ protected:
 	SSubStatePtr		states[eStateNumber];
 
 public:
-						CStateBurerAttack		(LPCSTR state_name, SSubStatePtr state_tele, SSubStatePtr state_gravi, SSubStatePtr state_melee);
+						CStateBurerAttack		(LPCSTR state_name, SSubStatePtr state_tele, SSubStatePtr state_gravi_start, SSubStatePtr state_gravi_finish, SSubStatePtr state_melee);
 	virtual				~CStateBurerAttack		();
 	virtual	void		Load					(LPCSTR section);
 	virtual	void		reinit					(_Object *object);

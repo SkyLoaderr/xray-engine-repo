@@ -7,10 +7,11 @@
 #define CStateBurerAttackAbstract CStateBurerAttack<_Object>
 
 TEMPLATE_SPECIALIZATION
-CStateBurerAttackAbstract::CStateBurerAttack(LPCSTR state_name, SSubStatePtr state_tele, SSubStatePtr state_gravi, SSubStatePtr state_melee) : inherited(state_name)
+CStateBurerAttackAbstract::CStateBurerAttack(LPCSTR state_name, SSubStatePtr state_tele, SSubStatePtr state_gravi_start, SSubStatePtr state_gravi_finish, SSubStatePtr state_melee) : inherited(state_name)
 {
 	states[eStateTelekinetic]	= state_tele;
-	states[eStateGravi]			= state_gravi;
+	states[eStateGraviStart]	= state_gravi_start;
+	states[eStateGraviFinish]	= state_gravi_finish;
 	states[eStateMelee]			= state_melee;
 }
 
@@ -23,12 +24,16 @@ TEMPLATE_SPECIALIZATION
 void CStateBurerAttackAbstract::Load(LPCSTR section)
 {
 	add_state				(states[eStateTelekinetic],		eStateTelekinetic,	1);
-	add_state				(states[eStateGravi],			eStateGravi,		2);
+	add_state				(states[eStateGraviStart],		eStateGraviStart,	2);
+	add_state				(states[eStateGraviFinish],		eStateGraviFinish,	3);
 	add_state				(states[eStateMelee],			eStateMelee,		0);
-
-	add_transition			(eStateTelekinetic,	eStateMelee,1,1);
-	add_transition			(eStateGravi,		eStateMelee,1,1);
-	add_transition			(eStateTelekinetic,	eStateGravi,1,1);
+	
+	add_transition			(eStateTelekinetic,	eStateMelee,		1,1);
+	add_transition			(eStateTelekinetic,	eStateGraviStart,	1);
+	add_transition			(eStateMelee,		eStateGraviStart,	1);
+	add_transition			(eStateGraviStart,	eStateGraviFinish,	1);
+	add_transition			(eStateGraviFinish,	eStateMelee,		1);
+	add_transition			(eStateGraviFinish,	eStateTelekinetic,	1);
 
 	inherited::Load			(section);
 }
@@ -94,16 +99,23 @@ void CStateBurerAttackAbstract::execute()
 					if (m_object->CTelekinesis::is_active_object(obj)) continue;
 
 					// применить телекинез на объект
-					m_object->CTelekinesis::activate(obj, 3.f, 3.f, 10000);
+					m_object->CTelekinesis::activate(obj, 3.f, 2.f, 10000);
 					break;
 				}
 			}
 		}
 	}
 
+	TTime cur_time = Level().timeServer();
+	TTime time_last_seen = m_object->EnemyMan.get_enemy_time_last_seen();
+
+
 	if (m_object->CTelekinesis::get_objects_count() > 0) {
 		// обработать объекты
 		set_dest_state(eStateTelekinetic);
+
+	} else if (time_last_seen == cur_time){
+		set_dest_state(eStateGraviStart);
 	} else {
 		// бить вплотную
 		set_dest_state(eStateMelee);
@@ -125,7 +137,7 @@ u32	CStateBurerAttackAbstract::get_number_available_objects(xr_vector<CObject*> 
 
 	for (u32 i=0;i<tpObjects.size();i++) {
 		CGameObject *obj = dynamic_cast<CGameObject *>(tpObjects[i]);
-		if (!obj || !obj->m_pPhysicsShell || (obj->m_pPhysicsShell->getMass() < MINIMAL_MASS) || (obj->m_pPhysicsShell->getMass() > MAXIMAL_MASS)) continue;
+		if (!obj || !obj->m_pPhysicsShell || (obj->m_pPhysicsShell->getMass() < MINIMAL_MASS) || (obj->m_pPhysicsShell->getMass() > MAXIMAL_MASS) || (obj == m_object)) continue;
 		ret_val++;
 	}
 

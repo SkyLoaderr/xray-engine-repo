@@ -5,6 +5,7 @@
 #include "../States/monster_state_attack_melee.h"
 #include "burer_state_attack.h"
 #include "burer_state_attack_tele.h"
+#include "burer_state_attack_gravi.h"
 
 
 CStateManagerBurer::CStateManagerBurer(LPCSTR state_name) : inherited(state_name)
@@ -28,7 +29,8 @@ void CStateManagerBurer::Load(LPCSTR section)
 	add_state(
 		xr_new<CStateBurerAttack<CBurer> > ("State Attack",
 			xr_new<CStateBurerAttackTele<CBurer> >("StateAttackTele"), 
-			xr_new<CStateBurerAttackTele<CBurer> >("StateAttackTele"),
+			xr_new<CStateBurerAttackGraviStart<CBurer> >("StateAttackGraviStart"),
+			xr_new<CStateBurerAttackGraviFinish<CBurer> >("StateAttackGraviFinish"),
 			xr_new<CStateMonsterAttackMelee<CBurer> >("StateAttackMelee")),
 		eStateAttack, 1
 		);

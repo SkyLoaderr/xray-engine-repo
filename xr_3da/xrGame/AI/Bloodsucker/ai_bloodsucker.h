@@ -56,5 +56,6 @@ public:
 
 
 	virtual	void			set_visible				(bool val);
+	virtual	void			ProcessTurn				();
 	
 };

@@ -123,9 +123,12 @@ void CTelekineticObject::fire(const Fvector &target)
 
 	// включить гравитацию
 	object->m_pPhysicsShell->set_ApplyByGravity(TRUE);
+	
 	// выполнить бросок
-	object->m_pPhysicsShell->applyImpulse(dir, 10.f * object->m_pPhysicsShell->getMass());
-
+	for (u32 i=0;i<object->m_pPhysicsShell->Elements().size();i++) {
+		object->m_pPhysicsShell->Elements()[i]->applyImpulse(dir, 20.f * object->m_pPhysicsShell->getMass() / object->m_pPhysicsShell->Elements().size());
+	}
+	
 	state				= TS_Fire;
 	time_fire_started	= Level().timeServer();
 }

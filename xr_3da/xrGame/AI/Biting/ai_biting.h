@@ -233,20 +233,20 @@ public:
 	virtual void            StateSelector					() = 0;  // should be pure 
 			void			SetState						(IState *pS, bool bSkipInertiaCheck = false);
 
-	CBitingRest				*stateRest;
-	CBitingEat				*stateEat;
-	CBitingAttack			*stateAttack;
-	CBitingHide				*stateHide;
-	CBitingDetour			*stateDetour;
-	CBitingPanic			*statePanic;
-	CBitingExploreDNE		*stateExploreDNE;
-	CBitingExploreDE		*stateExploreDE;
-	CBitingExploreNDE		*stateExploreNDE;
-	CBitingSquadTask		*stateSquadTask;
-	CBitingTest				*stateTest;
-	CBitingNull				*stateNull;
+	IState				*stateRest;
+	IState				*stateEat;
+	IState				*stateAttack;
+	IState				*stateHide;
+	IState				*stateDetour;
+	IState				*statePanic;
+	IState				*stateExploreDNE;
+	IState				*stateExploreDE;
+	IState				*stateExploreNDE;
+	IState				*stateSquadTask;
+	IState				*stateTest;
+	IState				*stateNull;
 
-	IState					*CurrentState;
+	IState				*CurrentState;
 
 	void					State_PlaySound(u32 internal_type, u32 max_stop_time);
 	

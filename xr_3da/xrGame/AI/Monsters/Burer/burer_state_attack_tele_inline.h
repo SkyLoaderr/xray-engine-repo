@@ -27,6 +27,7 @@ void CStateBurerAttackTeleAbstract::execute()
 {
 	const CEntityAlive *enemy		= m_object->EnemyMan.get_enemy();
 	m_object->MotionMan.m_tAction	= ACT_STAND_IDLE;
+	float dist = enemy->Position().distance_to(m_object->Position());
 
 	TTime cur_time = Level().timeServer();
 
@@ -34,7 +35,9 @@ void CStateBurerAttackTeleAbstract::execute()
 	while (i < m_object->CTelekinesis::get_objects_count()) {
 		CTelekineticObject tele_object = m_object->CTelekinesis::get_object_by_index(i);
 		if ((tele_object.get_state() == TS_Keep) && (tele_object.time_keep_started + 2000 < cur_time)) {
-			m_object->CTelekinesis::fire(tele_object.get_object(), enemy->Position());
+			Fvector enemy_pos = enemy->Position();
+			enemy_pos.y += enemy->Radius() * dist;
+			m_object->CTelekinesis::fire(tele_object.get_object(), enemy_pos);
 		} else i++;
 	}
 }

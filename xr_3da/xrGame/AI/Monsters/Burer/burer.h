@@ -33,5 +33,10 @@ public:
 
 	virtual u8		get_legs_number		() {return BIPEDAL;}
 
+
+private:
+
+	IState		*stateBurerAttack;
+
 };
 

@@ -1,12 +1,12 @@
 #include "stdafx.h"
 #include "burer.h"
 #include "../../ai_monster_utils.h"
-
+#include "burer_states.h"
 
 CBurer::CBurer() : CStateManagerBurer("Burer State Manager")
 {
-	stateRest			= xr_new<CBitingRest>(this);
-	stateAttack			= xr_new<CBitingAttack>		(this);
+	stateRest			= xr_new<CBitingRest>		(this);
+	stateAttack			= xr_new<CBurerAttack>		(this);
 	stateEat			= xr_new<CBitingEat>		(this);
 	stateHide			= xr_new<CBitingHide>		(this);
 	stateDetour			= xr_new<CBitingDetour>		(this);
@@ -94,24 +94,21 @@ void CBurer::Load(LPCSTR section)
 
 void CBurer::StateSelector()
 {	
-//	IState *state = 0;
-//
-//	if (EnemyMan.get_enemy()) {
-//		switch (EnemyMan.get_danger_type()) {
-//			case eVeryStrong:				state = statePanic; break;
-//			case eStrong:		
-//			case eNormal:
-//			case eWeak:						state = stateAttack; break;
-//		}
-//	} else if (hear_dangerous_sound || hear_interesting_sound) {
-//		if (hear_dangerous_sound)			state = stateExploreNDE;		
-//		if (hear_interesting_sound)			state = stateExploreNDE;	
-//	} else									state = stateRest; 
-//
-//	SetState(state); 
-	
-	SetState(stateNull);
+	IState *state = 0;
 
+	if (EnemyMan.get_enemy()) {
+		switch (EnemyMan.get_danger_type()) {
+			case eVeryStrong:				state = stateAttack; break;
+			case eStrong:		
+			case eNormal:
+			case eWeak:						state = stateAttack; break;
+		}
+	} else if (hear_dangerous_sound || hear_interesting_sound) {
+		if (hear_dangerous_sound)			state = stateNull;		
+		if (hear_interesting_sound)			state = stateNull;	
+	} else									state = stateNull; 
+
+	SetState(state); 
 }
 
 void CBurer::ProcessTurn()
@@ -141,8 +138,8 @@ void CBurer::ProcessTurn()
 
 bool CBurer::UpdateStateManager()
 {
-	CStateManagerBurer::update(m_current_update - m_dwLastUpdateTime);
-	return true;
+	//CStateManagerBurer::update(m_current_update - m_dwLastUpdateTime);
+	return false;
 }
 
 
