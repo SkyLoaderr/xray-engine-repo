@@ -52,7 +52,7 @@ void			INetQueue::Release	()
 }
 
 //
-const u32 syncQueueSize	= 256;
+const u32 syncQueueSize		= 256;
 const int syncSamples		= 8;
 class ENGINE_API syncQueue
 {
@@ -125,7 +125,7 @@ BOOL IPureClient::Connect(LPCSTR options)
 
     // Create our IDirectPlay8Address Device Address, --- Set the SP for our Device Address
 	net_Address_device	= NULL;
-	u32 c_port		= psNET_Port+1;
+	u32 c_port			= psNET_Port+1;
     R_CHK(CoCreateInstance	(CLSID_DirectPlay8Address,NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Address,(LPVOID*) &net_Address_device )); 
     R_CHK(net_Address_device->SetSP(&CLSID_DP8SP_TCPIP ));
 	R_CHK(net_Address_device->AddComponent	(DPNA_KEY_PORT, &c_port, sizeof(c_port), DPNA_DATATYPE_DWORD ));
@@ -137,7 +137,7 @@ BOOL IPureClient::Connect(LPCSTR options)
 	net_Address_server = NULL;
     R_CHK(CoCreateInstance	(CLSID_DirectPlay8Address,NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Address,(LPVOID*) &net_Address_server )); 
     R_CHK(net_Address_server->SetSP		(&CLSID_DP8SP_TCPIP ));
-	R_CHK(net_Address_server->AddComponent	(DPNA_KEY_PORT, &psNET_Port, sizeof(psNET_Port), DPNA_DATATYPE_DWORD ));
+	R_CHK(net_Address_server->AddComponent	(DPNA_KEY_PORT,	&psNET_Port, sizeof(psNET_Port), DPNA_DATATYPE_DWORD ));
     R_CHK(net_Address_server->AddComponent	(DPNA_KEY_HOSTNAME, ServerNameUNICODE, 2*(wcslen(ServerNameUNICODE) + 1), DPNA_DATATYPE_STRING ));
 	
     // Now set up the Application Description
