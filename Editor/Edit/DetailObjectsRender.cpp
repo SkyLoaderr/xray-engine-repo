@@ -49,10 +49,15 @@ void bwdithermap	(int levels, int magic[16][16] )
 }
 //--------------------------------------------------- Decompression
 
+void CDetailManager::InvalidateCache(){
+	// ??????????
+}
+
 void CDetailManager::InitRender(){
 	ZeroMemory(&m_Visible,sizeof(m_Visible));	m_Visible.resize	(dm_max_objects);
 	ZeroMemory(&m_Cache,sizeof(m_Cache));		m_Cache.resize		(dm_cache_size);
-	for (DWORD s=0; s<m_Cache.size(); s++)		m_Cache[s].type		= stInvalid;
+	for (DWORD s=0; s<m_Cache.size(); s++)    	m_Cache[s].type 	= stInvalid;
+//    InvalidateCache();
 
 	// Make dither matrix
 	bwdithermap		(2,m_Dither);
@@ -64,10 +69,10 @@ void CDetailManager::RenderTexture(float alpha){
 
     DWORD color = RGBA_MAKE(255,255,255,BYTE(alpha*255));
 
-	V[0].set(m_BBox.min.x,0.2f,m_BBox.min.z,color,0,1);  //m_BBox.max.y
-	V[1].set(m_BBox.min.x,0.2f,m_BBox.max.z,color,0,0);  //m_BBox.max.y
-	V[2].set(m_BBox.max.x,0.2f,m_BBox.max.z,color,1,0);  //m_BBox.max.y
-	V[3].set(m_BBox.max.x,0.2f,m_BBox.min.z,color,1,1);  //m_BBox.max.y
+	V[0].set(m_BBox.min.x,m_BBox.max.y,m_BBox.min.z,color,0,1);
+	V[1].set(m_BBox.min.x,m_BBox.max.y,m_BBox.max.z,color,0,0);
+	V[2].set(m_BBox.max.x,m_BBox.max.y,m_BBox.max.z,color,1,0);
+	V[3].set(m_BBox.max.x,m_BBox.max.y,m_BBox.min.z,color,1,1);
 
 	UI->Device.Shader.Set(m_pBaseShader);
     UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,precalc_identity);
@@ -99,7 +104,7 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 
 			// Transfer visibile and partially visible slot contents
 			BYTE mask		= 0xff;
-/*			switch (::Render.ViewBase.testAABB(S.BB.min,S.BB.max,mask))
+			switch (UI->Device.m_Frustum.testAABB(S.BB.min,S.BB.max,mask))
 			{
 			case fcvNone:		// nothing to do
 				break;
@@ -109,24 +114,24 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 					{
 						SlotPart&			sp	= S.G		[sp_id];
 						if (sp.id==0xff)	continue;
-						CList<SlotItem*>&	vis = visible	[sp.id];
-						float				R   = objects	[sp.id].radius;
+						vector<SlotItem*>&	vis = m_Visible	[sp.id];
+						float				R   = m_Objects	[sp.id]->m_fRadius;
 
 						SlotItem			*siIT=sp.items.begin(), *siEND=sp.items.end();
 						for (; siIT!=siEND; siIT++)
 						{
 							SlotItem& Item	= *siIT;
 
-							float	dist_sq = Device.vCameraPosition.distance_to_sqr(Item.P);
+							float	dist_sq = EYE.distance_to_sqr(Item.P);
 							if (dist_sq>fade_limit)	continue;
 
-							if (::Render.ViewBase.testSphereDirty(siIT->P,R*Item.scale))
+							if (UI->Device.m_Frustum.testSphere(siIT->P,R*Item.scale))
 							{
 								float	alpha	= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/fade_range;
 								float	scale	= Item.scale*(1-alpha);
 								float	radius	= R*scale;
 
-								if (g_fSCREEN*radius*radius/dist_sq < ssaLIMIT) continue;
+								if (UI->Device.GetRenderArea()*radius*radius/dist_sq < ssaLIMIT) continue;
 
 								Item.scale_calculated = scale; //alpha;
 								vis.push_back	(siIT);
@@ -141,7 +146,7 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 					{
 						SlotPart&			sp	= S.G		[sp_id];
 						if (sp.id==0xff)	continue;
-						CList<SlotItem*>&	vis = m_Visible	[sp.id];
+						vector<SlotItem*>&	vis = m_Visible	[sp.id];
 						float				R   = m_Objects	[sp.id]->m_fRadius;
 
 						SlotItem			*siIT=sp.items.begin(), *siEND=sp.items.end();
@@ -163,8 +168,8 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 						}
 					}
 				}
-//				break;
-//			}
+				break;
+			}
 		}
 	}
 
@@ -173,15 +178,14 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 	// Render itself
 	float	fPhaseRange	= PI/16;
 	float	fPhaseX		= sinf(UI->Device.m_fTimeGlobal*0.1f)	*fPhaseRange;
-	float	fPhaseZ		= sinf(UI->Device.m_fTimeGlobal*0.11f)*fPhaseRange;
+	float	fPhaseZ		= sinf(UI->Device.m_fTimeGlobal*0.11f)	*fPhaseRange;
 
 	for (DWORD O=0; O<dm_max_objects; O++){
-		CList<SlotItem*>&	vis = m_Visible	[O];
+		vector<SlotItem*>&	vis = m_Visible	[O];
 		if (vis.empty())	continue;
 
 		CDetail&	Object		= *m_Objects[O];
-//        UI->Device.Shader.Set	(Object.m_pShader);
-        UI->Device.Shader.Set	(UI->Device.m_WireShader);
+        UI->Device.Shader.Set	(Object.m_pShader);
 		Fmatrix		mXform,mRotXZ;
 		for (DWORD item=0; item<vis.size(); item++){
             SlotItem&	Instance	= *(vis[item]);
@@ -206,8 +210,6 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
             }
             // render objects
 			UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,mXform);
-//			UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,precalc_identity);
-//            DU::DrawCross(mXform.c,Object.m_fRadius,Object.m_fRadius,Object.m_fRadius,Object.m_fRadius,Object.m_fRadius,m_ColorIndices[] 0xffffffff,false);
 			UI->Device.DIP(D3DPT_TRIANGLELIST,F_DOV,Object.m_Vertices.begin(),Object.m_Vertices.size(),Object.m_Indices.begin(),Object.m_Indices.size());
 		}
 
@@ -295,7 +297,7 @@ void CDetailManager::UpdateCache	(int limit)
 	for (DWORD entry=0; limit && (entry<m_Cache.size()); entry++)
 	{
 		if (m_Cache[entry].type != stPending)	continue;
-		
+
 		// Gain access to data
 		Slot&		D	= m_Cache[entry];
 		DetailSlot&	DS	= QueryDB(D.sx,D.sz);
@@ -303,12 +305,10 @@ void CDetailManager::UpdateCache	(int limit)
 
 		// Select polygons
 		XRC.BBoxMode		(BBOX_TRITEST); // обязательно иначе точки установлены неверно
-        SBoxPickInfoVec		pinf;
-        Scene->BoxPick		(D.BB,pinf,true);
-//		XRC.BBoxCollide		(precalc_identity,pCreator->ObjectSpace.GetStaticModel(),precalc_identity,D.BB);
-		DWORD	triCount	= pinf.size();//XRC.GetBBoxContactCount();
+		SBoxPickInfoVec		pinf;
+		Scene->BoxPick		(D.BB,pinf,true);
+		DWORD	triCount	= pinf.size();
 		if (0==triCount)	continue;
-//		RAPID::tri* tris	= pCreator->ObjectSpace.GetStaticTris();
 
 		// Build shading table
 		float		alpha255	[dm_obj_in_slot][4];
@@ -319,13 +319,13 @@ void CDetailManager::UpdateCache	(int limit)
 			alpha255[i][2]	= 255.f*float(DS.items[i].palette.a2)/15.f;
 			alpha255[i][3]	= 255.f*float(DS.items[i].palette.a3)/15.f;
 		}
-		
+
 		// Prepare to selection
 		float		density		= 0.1f;
 		float		jitter		= density/2.f;
 		DWORD		d_size		= iCeil	(slot_size/density);
 		svector<int,dm_obj_in_slot>		selected;
-		
+
 		CRandom				r_selection	(0x12071980);
 		CRandom				r_jitter	(0x12071980);
 		CRandom				r_yaw		(DS.r_yaw);
@@ -365,8 +365,6 @@ void CDetailManager::UpdateCache	(int limit)
 				for (DWORD tid=0; tid<triCount; tid++)
 				{
                 	Fvector* verts = pinf[tid].bp_inf.p;
-//					RAPID::tri&	T		= tris[XRC.BBoxContact[tid].id];
-//					if (RAPID::TestRayTri(Item.P,dir,T.verts,r_u,r_v,r_range,TRUE))
 					if (RAPID::TestRayTri(Item.P,dir,verts,r_u,r_v,r_range,TRUE))
 					{
 						if (r_range>=0)	{

@@ -100,8 +100,7 @@ class CDetailManager{
     void				SortObjectsByID	();
     BYTE				FindEmptyID		();
 
-	DWORD				GetColor		(float x, float z);
-	DWORD 				GetColor		(int U, int V);
+	bool 				GetColor		(DWORD& color, int U, int V);
 
     DWORD				GetUFromX		(float x);
     DWORD				GetVFromZ		(float z);
@@ -125,7 +124,7 @@ public:
 	struct	SlotPart
 	{
 		DWORD		   	id;
-		CList<SlotItem>	items;
+		vector<SlotItem>items;
 	};
 	enum	SlotType
 	{
@@ -145,7 +144,7 @@ public:
 	};
 
 	svector<Slot,dm_cache_size>					m_Cache;
-	svector<CList<SlotItem*>,dm_max_objects> 	m_Visible;
+	svector<vector<SlotItem*>,dm_max_objects> 	m_Visible;
 
     void 				InitRender		();
 	void				Decompress		(int sx, int sz, Slot& D);
@@ -154,6 +153,7 @@ public:
 	void				UpdateCache		(int limit);
 	void				RenderObjects	(const Fvector& EYE);
     void				RenderTexture	(float alpha);
+    void				InvalidateCache	();
 // render part -----------------------------------------------------------------
 public:
     ColorIndexMap		m_ColorIndices;

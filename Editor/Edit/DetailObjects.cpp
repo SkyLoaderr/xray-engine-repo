@@ -205,10 +205,14 @@ CDetailManager::CDetailManager(){
     m_pBaseShader		= 0;
     ZeroMemory			(&m_Header,sizeof(DetailHeader));
     m_Header.version	= DETAIL_VERSION;
+    InitRender			();
 }
 
 CDetailManager::~CDetailManager(){
 	Clear();
+    m_Slots.clear		();
+	m_Cache.clear		();
+	m_Visible.clear		();
 }
 
 DetailSlot&	CDetailManager::GetSlot(DWORD sx, DWORD sz){
@@ -217,23 +221,19 @@ DetailSlot&	CDetailManager::GetSlot(DWORD sx, DWORD sz){
 	return m_Slots[sz*m_Header.size_x+sx];
 }
 
-DWORD CDetailManager::GetColor(float x, float z){
-	return m_pBaseTexture->GetPixel(GetUFromX(x),GetVFromZ(z));
-}
-
-DWORD CDetailManager::GetColor(int U, int V){
-	return m_pBaseTexture->GetPixel(U,V);
+bool CDetailManager::GetColor(DWORD& color, int U, int V){
+	return m_pBaseTexture->GetPixel(color, U,V);
 }
 
 DWORD CDetailManager::GetUFromX(float x){
 	float u = (x-m_BBox.min.x)/(m_BBox.max.x-m_BBox.min.x);
-	int U = iFloor(u*(m_pBaseTexture->width()-1)+0.5f); 	U %= m_pBaseTexture->width();
+	int U = iFloor(u*(m_pBaseTexture->width()-1)+0.5f);// 	U %= m_pBaseTexture->width();
     return U;
 }
 
 DWORD CDetailManager::GetVFromZ(float z){
 	float v = 1.f-(z-m_BBox.min.z)/(m_BBox.max.z-m_BBox.min.z);
-	int V = iFloor(v*(m_pBaseTexture->height()-1)+0.5f);    V %= m_pBaseTexture->height();
+	int V = iFloor(v*(m_pBaseTexture->height()-1)+0.5f);//    V %= m_pBaseTexture->height();
     return V;
 }
 
@@ -522,38 +522,45 @@ bool CDetailManager::UpdateObjects(bool bUpdateTex){
             SIndexDistVec best;
             // find best color index
             {
-                for (int v=R.y1; v<R.y2; v++){
-                    for (int u=R.x1; u<R.x2; u++){
-                        Fcolor C;
-                        C.set(GetColor(u,v));
-                        FindClosestIndex(C,best);
+                for (int v=R.y1; v<=R.y2; v++){
+                    for (int u=R.x1; u<=R.x2; u++){
+                    	DWORD clr;
+                    	if (GetColor(clr,u,v)){
+	                        Fcolor C;
+    	                    C.set(clr);
+        	                FindClosestIndex(C,best);
+                        }
                     }
                 }
             }
             sort(best.begin(),best.end(),CompareWeightFunc);
             // пройдем по 4 частям слота и определим плотность заполнения (учесть переворот V)
             Irect P[4];
-            float dx=(R.x2-R.x1)/2;
-            float dy=(R.y2-R.y1)/2;
-            P[0].x1=R.x1; 					P[0].y1=iFloor(R.y1+dy+0.5f); 	P[0].x2=R.x1+dx;	P[0].y2=R.y2;
-            P[1].x1=iFloor(R.x1+dx+0.5f);	P[1].y1=iFloor(R.y1+dy+0.5f);	P[1].x2=R.x2; 		P[1].y2=R.y2;
-            P[2].x1=R.x1; 					P[2].y1=R.y1; 					P[2].x2=R.x1+dx; 	P[2].y2=R.y1+dy;
-            P[3].x1=iFloor(R.x1+dx+0.5f); 	P[3].y1=R.y1;					P[3].x2=R.x2; 		P[3].y2=R.y1+dx;
+            float dx=float(R.x2-R.x1)/2.f;
+            float dy=float(R.y2-R.y1)/2.f;
+            P[0].x1=R.x1; 		  		P[2].y1=iFloor(R.y1+dy); 	P[0].x2=iFloor(R.x1+dx+.5f);	P[2].y2=R.y2;
+            P[1].x1=iFloor(R.x1+dx);	P[3].y1=iFloor(R.y1+dy);	P[1].x2=R.x2; 					P[3].y2=R.y2;
+            P[2].x1=R.x1; 		  		P[0].y1=R.y1; 		  		P[2].x2=iFloor(R.x1+dx+.5f); 	P[0].y2=iFloor(R.y1+dy+.5f);
+            P[3].x1=iFloor(R.x1+dx); 	P[1].y1=R.y1;		  		P[3].x2=R.x2; 					P[1].y2=iFloor(R.y1+dx+.5f);
             for (int part=0; part<4; part++){
 		        float	alpha=0;
                 int 	cnt=0;
 	            for (int v=P[part].y1; v<P[part].y2; v++){
 		            for (int u=P[part].x1; u<P[part].x2; u++){
-                        Fcolor C;
-                        C.set(GetColor(u,v));
-                        CalcClosestCount(part,C,best);
-                        alpha+=C.a;
-                        cnt++;
+                    	DWORD clr;
+                    	if (GetColor(clr,u,v)){
+		                    Fcolor C;
+                            C.set(clr);
+	                        CalcClosestCount(part,C,best);
+    	                    alpha+=C.a;
+	                        cnt++;
+                        }
                     }
                 }
-                alpha/=float(cnt);
+                alpha/=(cnt?float(cnt):1);
+                alpha*=0.5f;
                 for (DWORD i=0; i<best.size(); i++)
-	                best[i].density[part] = (best[i].density[part]*alpha)/float(cnt);
+	                best[i].density[part] = cnt?(best[i].density[part]*alpha)/float(cnt):0;
             }
 
             // fill empty slots
@@ -562,6 +569,7 @@ bool CDetailManager::UpdateObjects(bool bUpdateTex){
             DWORD o_cnt=0;
             for (DWORD i=0; i<best.size(); i++)
 				o_cnt+=m_ColorIndices[best[i].index].size();
+            // равномерно заполняем пустые слоты
 			if (o_cnt>best.size()){
                 while (best.size()<4){
                     if (m_ColorIndices[best[id].index].size()>1){
@@ -569,7 +577,6 @@ bool CDetailManager::UpdateObjects(bool bUpdateTex){
                         best.back()=best[id];
                     }
                     if (best.size()==o_cnt) break;
-                    id = SlotRandom.randI(0,best.size());
                 }
             }
 
@@ -579,7 +586,13 @@ bool CDetailManager::UpdateObjects(bool bUpdateTex){
 				slot->items[k].palette.a1 	= iFloor(best[k].density[1]*15);
 				slot->items[k].palette.a2 	= iFloor(best[k].density[2]*15);
 				slot->items[k].palette.a3 	= iFloor(best[k].density[3]*15);
-                slot->items[k].id           = GetRandomObject(best[k].index,SlotRandom);
+				bool bReject;
+                do{
+                	bReject					= false;
+	                slot->items[k].id       = GetRandomObject(best[k].index,SlotRandom);
+                    for (int j=0; j<k; j++)
+						if (slot->items[j].id==slot->items[k].id){bReject=true; break;}
+                }while(bReject);
                 slot->color					= 0xffffffff;
             }
 			slot->r_yaw 	= SlotRandom.randIs(int_max);
@@ -591,6 +604,9 @@ bool CDetailManager::UpdateObjects(bool bUpdateTex){
         }
     }
     UI->ProgressEnd		();
+
+    InvalidateCache();
+    
     return true;
 }
 
@@ -633,9 +649,6 @@ void CDetailManager::Clear(){
 	m_ColorIndices.clear();
     if (m_pBaseShader){ UI->Device.Shader.Delete(m_pBaseShader); m_pBaseShader = 0;}
     _DELETE				(m_pBaseTexture);
-    m_Slots.clear		();
-	m_Cache.clear		();
-	m_Visible.clear		();
 }
 
 
@@ -793,8 +806,6 @@ bool CDetailManager::Load(CStream& F){
             if (DO) 	m_ColorIndices[index].push_back(DO);
         }
     }
-
-    InitRender			();
 
     return true;
 }
