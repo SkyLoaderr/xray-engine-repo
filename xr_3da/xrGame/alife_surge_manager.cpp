@@ -17,15 +17,13 @@
 #include "alife_organization_registry.h"
 #include "alife_time_manager.h"
 #include "alife_graph_registry.h"
-#include "ef_storage.h"
-#include "graph_engine.h"
 #include "alife_task_registry.h"
 #include "alife_schedule_registry.h"
 #include "alife_simulator_header.h"
-#include "xrserver.h"
 #include "ai_space.h"
-
-#include "alife_simulator.h"
+#include "ef_storage.h"
+#include "graph_engine.h"
+#include "xrserver.h"
 
 using namespace ALife;
 
@@ -353,8 +351,6 @@ void CALifeSurgeManager::assign_stalker_customers()
 //			}
 			l_tpALifeHumanAbstract->m_tpKnownCustomers.push_back(traders().trader_nearest(l_tpALifeHumanAbstract)->ID);
 			l_tpALifeHumanAbstract->m_caKnownCustomers = 0;
-			OBJECT_TASK_MAP::const_iterator	J = ai().alife().tasks().cross().find(l_tpALifeHumanAbstract->m_tpKnownCustomers.back());
-			R_ASSERT2		(ai().alife().tasks().cross().end() != J,"Can't find a specified customer in the Task registry!\nPossibly, there is no traders at all or there is no anomalous zones.");
 		}
 	}
 }
