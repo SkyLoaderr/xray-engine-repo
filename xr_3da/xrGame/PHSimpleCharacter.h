@@ -75,6 +75,7 @@ protected:
 	bool b_on_object;
 	bool b_was_on_object;
 	bool b_external_impulse;
+	bool b_death_pos;
 	u32  m_contact_count;
 
 	dReal m_friction_factor;

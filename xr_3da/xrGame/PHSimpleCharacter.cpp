@@ -65,6 +65,7 @@ CPHSimpleCharacter::CPHSimpleCharacter()
 	//m_update_time=0.f;
 	b_meet_control=false;
 	b_jumping=false;
+	b_death_pos=false;
 	jump_up_velocity=6.f;
 
 
@@ -357,7 +358,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 	b_pure_climb=true;
 	b_was_on_object=b_on_object;
 	b_on_object=false;
-
+	b_death_pos=false;
 	m_contact_count=0;
 
 
@@ -393,6 +394,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 
 	//if(!b_exist)return;
+	if(!b_death_pos)Memory.mem_copy(m_death_position,dGeomGetPosition(m_wheel),sizeof(dVector3));
 	CPHContactBodyEffector* contact_effector=
 		(CPHContactBodyEffector*) dBodyGetData(m_body);
 	if(contact_effector)contact_effector->Apply();
@@ -602,12 +604,12 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 
 
 
-const float CHWON_ACCLEL_SHIFT=0.3f;
-const float CHWON_AABB_FACTOR =1.3f;
+const float CHWON_ACCLEL_SHIFT=0.1f;
+const float CHWON_AABB_FACTOR =1.f;
 const float CHWON_ANG_COS	  =M_SQRT1_2;
 const float CHWON_CALL_UP_SHIFT=0.05f;
 const float CHWON_CALL_FB_HIGHT=1.5f;
-const float CHWON_AABB_FB_FACTOR =0.7f;
+const float CHWON_AABB_FB_FACTOR =1.f;
 
 
 bool CPHSimpleCharacter::ValidateWalkOn()
@@ -829,7 +831,7 @@ void CPHSimpleCharacter::SetPosition(Fvector pos){
 	m_safe_position[0]=pos.x;
 	m_safe_position[1]=pos.y+m_radius;
 	m_safe_position[2]=pos.z;
-
+	b_death_pos=true;
 	dBodySetPosition(m_body,pos.x,pos.y+m_radius,pos.z);
 	m_body_interpolation.ResetPositions();
 }
@@ -883,7 +885,7 @@ void CPHSimpleCharacter::OnRender(){
 	Fvector pos;
 	GetPosition(pos);
 	pos.y+=m_radius;
-	RCache.dbg_DrawLINE(m,pos,*(Fvector*)m_control_force, RGB_ALPHA(256,0,0,1));
+	RCache.dbg_DrawLINE(m,pos,*(Fvector*)m_control_force, color_rgba(256,0,0,1));
 	RCache.dbg_DrawLINE(m,pos,n, 0xefffffff);
 
 
@@ -1183,6 +1185,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide){
 
 			if(dGeomGetUserData(c->geom.g1)->pushing_b_neg)
 				m_death_position[1]=dGeomGetUserData(c->geom.g1)->b_neg_tri.pos;
+			b_death_pos=true;
 		}
 		/////////////////////////////////////////////////////////////
 		if(c->geom.normal[1]>m_ground_contact_normal[1]||!b_valide_ground_contact)//
@@ -1217,6 +1220,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide){
 
 			if(dGeomGetUserData(c->geom.g2)->pushing_b_neg)
 				m_death_position[1]=dGeomGetUserData(c->geom.g2)->b_neg_tri.pos;
+			b_death_pos=true;
 		}
 		if(c->geom.normal[1]<-m_ground_contact_normal[1]||!b_valide_ground_contact)//
 		{
