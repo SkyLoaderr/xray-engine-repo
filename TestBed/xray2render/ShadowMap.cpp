@@ -22,8 +22,8 @@ enum COMBINE_MODE
 // 2D
 struct TVERTEX
 {
-    D3DXVECTOR4 p;
-    FLOAT       tu, tv;
+	D3DXVECTOR4 p;
+	FLOAT       tu, tv;
 };
 #define TVERTEX_FVF (D3DFVF_XYZRHW | D3DFVF_TEX1)
 D3DVERTEXELEMENT9 decl_vert2D[] =
@@ -36,9 +36,9 @@ D3DVERTEXELEMENT9 decl_vert2D[] =
 // 3D
 struct VERTEX
 {
-    D3DXVECTOR3 p;
-    D3DXVECTOR3 n;
-    FLOAT       tu, tv;
+	D3DXVECTOR3 p;
+	D3DXVECTOR3 n;
+	FLOAT       tu, tv;
 };
 D3DVERTEXELEMENT9 decl_vert[] =
 {
@@ -59,9 +59,9 @@ class CMyD3DApplication : public CD3DApplication
 	//	**** Generic stuff  ****
 	//  ************************
 
-    // Font for drawing text
-    CD3DFont*						m_pFont;
-    CD3DArcBall						m_ArcBall;
+	// Font for drawing text
+	CD3DFont*						m_pFont;
+	CD3DArcBall						m_ArcBall;
 
 	// Model
 	LPDIRECT3DVERTEXBUFFER9			m_pModelVB;
@@ -130,17 +130,17 @@ class CMyD3DApplication : public CD3DApplication
 	//	**** Shadow mapping ****
 	//  ************************
 public:
-    CMyD3DApplication();
+	CMyD3DApplication();
 
-    HRESULT OneTimeSceneInit();
-    HRESULT InitDeviceObjects();
-    HRESULT RestoreDeviceObjects();
-    HRESULT InvalidateDeviceObjects();
-    HRESULT DeleteDeviceObjects();
-    HRESULT Render			();
-    HRESULT FrameMove		();
-    HRESULT FinalCleanup	();
-    HRESULT ConfirmDevice	(D3DCAPS9* pCaps, DWORD dwBehavior, D3DFORMAT Format);
+	HRESULT OneTimeSceneInit();
+	HRESULT InitDeviceObjects();
+	HRESULT RestoreDeviceObjects();
+	HRESULT InvalidateDeviceObjects();
+	HRESULT DeleteDeviceObjects();
+	HRESULT Render			();
+	HRESULT FrameMove		();
+	HRESULT FinalCleanup	();
+	HRESULT ConfirmDevice	(D3DCAPS9* pCaps, DWORD dwBehavior, D3DFORMAT Format);
 
 	// Shadow mapping-base
 	HRESULT RenderShadowMap	();
@@ -156,7 +156,7 @@ public:
 
 	HRESULT UpdateTransform	();
 
-    LRESULT MsgProc			(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	LRESULT MsgProc			(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };
 
 CMyD3DApplication g_d3dApp;
@@ -168,12 +168,12 @@ CMyD3DApplication g_d3dApp;
 //-----------------------------------------------------------------------------
 INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, INT)
 {
-    InitCommonControls	();
+	InitCommonControls	();
 	InitMath			();
-    if (FAILED(g_d3dApp.Create(hInst)))
-        return 0;
+	if (FAILED(g_d3dApp.Create(hInst)))
+		return 0;
 
-    return g_d3dApp.Run();
+	return g_d3dApp.Run();
 }
 
 //-----------------------------------------------------------------------------
@@ -182,24 +182,24 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, INT)
 //-----------------------------------------------------------------------------
 CMyD3DApplication::CMyD3DApplication()
 {
-    // Override base class members
+	// Override base class members
 	m_strWindowTitle					= _T	("xray2 : render");
-    m_d3dEnumeration.AppUsesDepthBuffer = TRUE;
+	m_d3dEnumeration.AppUsesDepthBuffer = TRUE;
 	m_d3dEnumeration.AppMinStencilBits	= 1;
 	m_dwCreationWidth					= 512;
 	m_dwCreationHeight					= 512;
 
-    m_pFont								= new CD3DFont(_T("Arial"), 12, D3DFONT_BOLD);
+	m_pFont								= new CD3DFont(_T("Arial"), 12, D3DFONT_BOLD);
 
-    m_pModelVB							= NULL;
-    m_pModelIB							= NULL;
-    m_pFloorVB							= NULL;
+	m_pModelVB							= NULL;
+	m_pModelIB							= NULL;
+	m_pFloorVB							= NULL;
 
 	sm_ShadowMap						= NULL;
 	sm_ShadowMap_S						= NULL;
 	sm_ShadowMap_Z						= NULL;
 
-    m_pOverlayVB						= NULL;
+	m_pOverlayVB						= NULL;
 
 	// d-render
 	d_Position							= NULL;
@@ -223,7 +223,7 @@ HRESULT CMyD3DApplication::OneTimeSceneInit()	{ return S_OK; }
 HRESULT CMyD3DApplication::FrameMove	()
 {
 	UpdateTransform	();
-    return			S_OK;
+	return			S_OK;
 }
 
 //-----------------------------------------------------------------------------
@@ -234,9 +234,9 @@ HRESULT CMyD3DApplication::FrameMove	()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::Render		()
 {
-    // Begin the scene
-    if (SUCCEEDED(m_pd3dDevice->BeginScene()))
-    {
+	// Begin the scene
+	if (SUCCEEDED(m_pd3dDevice->BeginScene()))
+	{
 		// RenderShadowMap	();
 		// RenderScene			();
 		// RenderOverlay		();
@@ -247,15 +247,15 @@ HRESULT CMyD3DApplication::Render		()
 		RenderCombine				(CM_DBG_ACCUMULATOR);
 		RenderOverlay				();
 
-        // Output statistics
-        m_pFont->DrawText			(OVERLAY_SIZE + 12,  0, D3DCOLOR_ARGB(255,255,255,0), m_strFrameStats);
-        m_pFont->DrawText			(OVERLAY_SIZE + 12, 20, D3DCOLOR_ARGB(255,255,255,0), m_strDeviceStats);
+		// Output statistics
+		m_pFont->DrawText			(OVERLAY_SIZE + 12,  0, D3DCOLOR_ARGB(255,255,255,0), m_strFrameStats);
+		m_pFont->DrawText			(OVERLAY_SIZE + 12, 20, D3DCOLOR_ARGB(255,255,255,0), m_strDeviceStats);
 
-        // End the scene.
-        m_pd3dDevice->EndScene		();
-    }
+		// End the scene.
+		m_pd3dDevice->EndScene		();
+	}
 
-    return S_OK;
+	return S_OK;
 }
 
 //-----------------------------------------------------------------------------
@@ -265,55 +265,55 @@ HRESULT CMyD3DApplication::Render		()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::InitDeviceObjects()
 {
-    LPDIRECT3DVERTEXBUFFER9 pMeshSrcVB;
-    LPDIRECT3DINDEXBUFFER9  pMeshSrcIB;
-    VERTEX*					pSrc;
-    VERTEX*					pDst;
-    TVERTEX*				pDstT;
-    CD3DMesh                Mesh;
+	LPDIRECT3DVERTEXBUFFER9 pMeshSrcVB;
+	LPDIRECT3DINDEXBUFFER9  pMeshSrcIB;
+	VERTEX*					pSrc;
+	VERTEX*					pDst;
+	TVERTEX*				pDstT;
+	CD3DMesh                Mesh;
 	FLOAT					fModelRad;
 
-    // Initialize the font's internal textures
-    m_pFont->InitDeviceObjects(m_pd3dDevice);
+	// Initialize the font's internal textures
+	m_pFont->InitDeviceObjects(m_pd3dDevice);
 
 	// Load model
 	if (FAILED(Mesh.Create(m_pd3dDevice, _T("media\\star.x"))))			return D3DAPPERR_MEDIANOTFOUND;
 
 	// Fix vertex contents
-    Mesh.SetFVF			(m_pd3dDevice, D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1);
-	
+	Mesh.SetFVF			(m_pd3dDevice, D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1);
+
 	// Create model VB
-    m_dwModelNumVerts	= Mesh.GetSysMemMesh()->GetNumVertices();
-    m_pd3dDevice->CreateVertexBuffer(m_dwModelNumVerts * sizeof(VERTEX), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pModelVB, NULL);
-    
+	m_dwModelNumVerts	= Mesh.GetSysMemMesh()->GetNumVertices();
+	m_pd3dDevice->CreateVertexBuffer(m_dwModelNumVerts * sizeof(VERTEX), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pModelVB, NULL);
+
 	// Copy vertices and compute bounding sphere
-    Mesh.GetSysMemMesh()->GetVertexBuffer(&pMeshSrcVB);
-    pMeshSrcVB->Lock	(0, 0, (void**)&pSrc, 0);
-    m_pModelVB->Lock	(0, 0, (void**)&pDst, 0);
-    memcpy				(pDst, pSrc, m_dwModelNumVerts * sizeof(VERTEX));
+	Mesh.GetSysMemMesh()->GetVertexBuffer(&pMeshSrcVB);
+	pMeshSrcVB->Lock	(0, 0, (void**)&pSrc, 0);
+	m_pModelVB->Lock	(0, 0, (void**)&pDst, 0);
+	memcpy				(pDst, pSrc, m_dwModelNumVerts * sizeof(VERTEX));
 	D3DXVECTOR3			vecModelCenter;
 	D3DXComputeBoundingSphere(&pSrc->p, m_dwModelNumVerts, sizeof(VERTEX), &vecModelCenter, &fModelRad);
-    m_pModelVB->Unlock	();
-    pMeshSrcVB->Unlock	();
-    pMeshSrcVB->Release	();
+	m_pModelVB->Unlock	();
+	pMeshSrcVB->Unlock	();
+	pMeshSrcVB->Release	();
 
 	m_fModelSize = fModelRad * 2.0f;
-	
+
 	// Create model IB
-    m_dwModelNumFaces = Mesh.GetSysMemMesh()->GetNumFaces();
-    m_pd3dDevice->CreateIndexBuffer(m_dwModelNumFaces * 3 * sizeof(WORD), D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, D3DPOOL_MANAGED, &m_pModelIB, NULL);
-    
+	m_dwModelNumFaces = Mesh.GetSysMemMesh()->GetNumFaces();
+	m_pd3dDevice->CreateIndexBuffer(m_dwModelNumFaces * 3 * sizeof(WORD), D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, D3DPOOL_MANAGED, &m_pModelIB, NULL);
+
 	// Copy indices
-    Mesh.GetSysMemMesh()->GetIndexBuffer(&pMeshSrcIB);
-    pMeshSrcIB->Lock(0, 0, (void**)&pSrc, 0);
-    m_pModelIB->Lock(0, 0, (void**)&pDst, 0);
-    memcpy(pDst, pSrc, 3 * m_dwModelNumFaces * sizeof(WORD));
-    m_pModelIB->Unlock();
-    pMeshSrcIB->Unlock();
-    pMeshSrcIB->Release();
+	Mesh.GetSysMemMesh()->GetIndexBuffer(&pMeshSrcIB);
+	pMeshSrcIB->Lock(0, 0, (void**)&pSrc, 0);
+	m_pModelIB->Lock(0, 0, (void**)&pDst, 0);
+	memcpy(pDst, pSrc, 3 * m_dwModelNumFaces * sizeof(WORD));
+	m_pModelIB->Unlock();
+	pMeshSrcIB->Unlock();
+	pMeshSrcIB->Release();
 
 	// Create floor VB
-    m_pd3dDevice->CreateVertexBuffer(4 * sizeof(VERTEX), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pFloorVB, NULL);
+	m_pd3dDevice->CreateVertexBuffer(4 * sizeof(VERTEX), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pFloorVB, NULL);
 	m_pFloorVB->Lock(0, 0, (void**)&pDst, 0);
 	pDst[0].p = D3DXVECTOR3(-10.0f, 0.0f, 10.0f);
 	pDst[0].n = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
@@ -334,7 +334,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	m_pFloorVB->Unlock();
 
 	// Create overlay VB
-    m_pd3dDevice->CreateVertexBuffer(4 * sizeof(TVERTEX), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pOverlayVB, NULL);
+	m_pd3dDevice->CreateVertexBuffer(4 * sizeof(TVERTEX), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pOverlayVB, NULL);
 	m_pOverlayVB->Lock(0, 0, (void**)&pDstT, 0);
 	pDstT[0].p = D3DXVECTOR4(4.5f, 4.5f + OVERLAY_SIZE, 0.0f, 1.0f);
 	pDstT[0].tu = 0.0f;
@@ -377,7 +377,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	if (FAILED(m_pd3dDevice->CreateVertexDeclaration(decl_vert2D, &m_pDeclVert2D)))
 		return E_FAIL;
 
-    return S_OK;
+	return S_OK;
 }
 
 //-----------------------------------------------------------------------------
@@ -395,7 +395,7 @@ HRESULT CreateRT(IDirect3DDevice9* D, DWORD w, DWORD h, D3DFORMAT f, LPDIRECT3DT
 
 HRESULT CMyD3DApplication::RestoreDeviceObjects()
 {
-    m_pFont->RestoreDeviceObjects();
+	m_pFont->RestoreDeviceObjects();
 
 	UpdateTransform		();
 
@@ -435,11 +435,11 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 		t_SpecularPower_32->UnlockRect	(0);
 	}
 
-    m_ArcBall.SetWindow		(m_d3dsdBackBuffer.Width, m_d3dsdBackBuffer.Height, 1.0f);
-    m_ArcBall.SetRadius		(3.0f);
+	m_ArcBall.SetWindow		(m_d3dsdBackBuffer.Width, m_d3dsdBackBuffer.Height, 1.0f);
+	m_ArcBall.SetRadius		(3.0f);
 	m_ArcBall.SetRightHanded(TRUE);
 
-    return S_OK;
+	return S_OK;
 }
 
 //-----------------------------------------------------------------------------
@@ -448,9 +448,9 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::InvalidateDeviceObjects()
 {
-    m_pFont->InvalidateDeviceObjects();
+	m_pFont->InvalidateDeviceObjects();
 
-    return S_OK;
+	return S_OK;
 }
 
 //-----------------------------------------------------------------------------
@@ -460,17 +460,17 @@ HRESULT CMyD3DApplication::InvalidateDeviceObjects()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::DeleteDeviceObjects()
 {
-    m_pFont->DeleteDeviceObjects();
+	m_pFont->DeleteDeviceObjects();
 
-    SAFE_RELEASE(m_pModelVB);
-    SAFE_RELEASE(m_pModelIB);
-    SAFE_RELEASE(m_pFloorVB);
-    SAFE_RELEASE(m_pDeclVert);
+	SAFE_RELEASE(m_pModelVB);
+	SAFE_RELEASE(m_pModelIB);
+	SAFE_RELEASE(m_pFloorVB);
+	SAFE_RELEASE(m_pDeclVert);
 	SAFE_RELEASE(m_pDeclVert2D);
 
-    SAFE_RELEASE(m_pOverlayVB);
+	SAFE_RELEASE(m_pOverlayVB);
 
-    return S_OK;
+	return S_OK;
 }
 
 //-----------------------------------------------------------------------------
@@ -480,9 +480,9 @@ HRESULT CMyD3DApplication::DeleteDeviceObjects()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::FinalCleanup()
 {
-    SAFE_DELETE(m_pFont);
+	SAFE_DELETE(m_pFont);
 
-    return S_OK;
+	return S_OK;
 }
 
 //-----------------------------------------------------------------------------
@@ -491,7 +491,7 @@ HRESULT CMyD3DApplication::FinalCleanup()
 //       for some minimum set of capabilities
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::ConfirmDevice( D3DCAPS9* pCaps, DWORD dwBehavior,
-                                          D3DFORMAT Format )
+										 D3DFORMAT Format )
 {
 	BOOL	bDebug	= FALSE;
 
@@ -510,20 +510,20 @@ HRESULT CMyD3DApplication::ConfirmDevice( D3DCAPS9* pCaps, DWORD dwBehavior,
 	/*
 	if ((dwBehavior & D3DCREATE_SOFTWARE_VERTEXPROCESSING) == 0)
 	{
-		return E_FAIL;
+	return E_FAIL;
 	}
 
 	// If device doesn't support 1.1 vertex shaders in HW, switch to SWVP.
-    if (pCaps->VertexShaderVersion < D3DVS_VERSION(1, 1))
-    {
-        if ((dwBehavior & D3DCREATE_SOFTWARE_VERTEXPROCESSING) == 0)
-        {
-            return E_FAIL;
-        }
-    }
+	if (pCaps->VertexShaderVersion < D3DVS_VERSION(1, 1))
+	{
+	if ((dwBehavior & D3DCREATE_SOFTWARE_VERTEXPROCESSING) == 0)
+	{
+	return E_FAIL;
+	}
+	}
 	*/
 
-    return S_OK;
+	return S_OK;
 }
 
 //-----------------------------------------------------------------------------
@@ -556,7 +556,7 @@ HRESULT CMyD3DApplication::RenderShadowMap	()
 	m_pd3dDevice->SetViewport				(&shadowViewport);
 
 	// Clear viewport
-    m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0xFFFFFFFF, 1.0f, 0L);
+	m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0xFFFFFFFF, 1.0f, 0L);
 	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE, D3DCULL_CW);
 
 	// Shader and params
@@ -599,8 +599,8 @@ HRESULT CMyD3DApplication::RenderScene	()
 
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP);
-    m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MINFILTER, D3DTEXF_POINT);
-    m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MINFILTER, D3DTEXF_POINT);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);
 
 	// Pixel shader and jittering
 	// jittered sample offset table for 1k shadow maps
@@ -882,44 +882,66 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 	D3DXVec3Normalize						(&vLightDir, &vLightDir);
 
 	cc.set									(s_Light_Direct_smap.constants.get("light_direction"),	vLightDir.x,vLightDir.y,vLightDir.z,0	);
-	cc.set									(s_Light_Direct_smap.constants.get("light_color"),		.3f/2,		.3f/2,		1./2,		.9/2);
 	cc.set									(s_Light_Direct_smap.constants.get("light_xform"),		*(Fmatrix*)&dm_model2world2view2projection_light	);
-
 	R_constant*	C							= s_Light_Direct_smap.constants.get("jitter");
-	Fvector4 J; float scale					= (3.f / SHADOW_MAP_SIZE)/27.f;
-	J.set(21, 2,  33, 2 );	J.sub(27); J.mul(scale); cc.seta	(C,0,J.x,J.y,J.w,J.z);
-	J.set(9,  9,  45, 9 );	J.sub(27); J.mul(scale); cc.seta	(C,1,J.x,J.y,J.w,J.z);
-	J.set(20, 12, 34, 12);	J.sub(27); J.mul(scale); cc.seta	(C,2,J.x,J.y,J.w,J.z);
-	J.set(12, 20, 27, 20);	J.sub(27); J.mul(scale); cc.seta	(C,3,J.x,J.y,J.w,J.z);
-	J.set(42, 20, 2,  21);	J.sub(27); J.mul(scale); cc.seta	(C,4,J.x,J.y,J.w,J.z);
-	J.set(52, 21, 20, 27);	J.sub(27); J.mul(scale); cc.seta	(C,5,J.x,J.y,J.w,J.z);
-	cc.flush								(m_pd3dDevice);
 
-	// Blend mode - directional light comes first - means no blending
-	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
+	if (1)
+	{
+		cc.set									(s_Light_Direct_smap.constants.get("light_color"),		.3f,		.3f,		1.,			.9);
 
-	// Render Quad
-	m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
-	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
+		Fvector4 J; float scale					= (4.f / SHADOW_MAP_SIZE)/11.f;
+		J.set(11, 0,  0);		J.sub(11); J.mul(scale);	cc.seta	(C,0,J.x,J.y,-J.y,-J.x);
+		J.set(19, 3,  0);		J.sub(11); J.mul(scale);	cc.seta	(C,1,J.x,J.y,-J.y,-J.x);
+		J.set(22, 11, 0);		J.sub(11); J.mul(scale);	cc.seta	(C,2,J.x,J.y,-J.y,-J.x);
+		J.set(19, 19, 0);		J.sub(11); J.mul(scale);	cc.seta	(C,3,J.x,J.y,-J.y,-J.x);
 
-	// Second part
-	J.set(34, 27, 2,  33);	J.sub(27); J.mul(scale); cc.seta	(C,0,J.x,J.y,J.w,J.z);
-	J.set(52, 33, 12, 34);	J.sub(27); J.mul(scale); cc.seta	(C,1,J.x,J.y,J.w,J.z);
-	J.set(27, 34, 42, 34);	J.sub(27); J.mul(scale); cc.seta	(C,2,J.x,J.y,J.w,J.z);
-	J.set(20, 42, 34, 42);	J.sub(27); J.mul(scale); cc.seta	(C,3,J.x,J.y,J.w,J.z);
-	J.set(9,  45, 45, 45);	J.sub(27); J.mul(scale); cc.seta	(C,4,J.x,J.y,J.w,J.z);
-	J.set(21, 52, 33, 52);	J.sub(27); J.mul(scale); cc.seta	(C,5,J.x,J.y,J.w,J.z);
-	cc.flush								(m_pd3dDevice);
+		J.set(9,  7,  15, 9);	J.sub(11); J.mul(scale);	cc.seta	(C,4,J.x,J.y,J.w,J.z);
+		J.set(13, 15, 7,  13);	J.sub(11); J.mul(scale);	cc.seta	(C,5,J.x,J.y,J.w,J.z);
 
-	// Blend mode - directional light comes first - means no blending
-	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, TRUE);
-	m_pd3dDevice->SetRenderState			(D3DRS_SRCBLEND,	D3DBLEND_ONE);
-	m_pd3dDevice->SetRenderState			(D3DRS_DESTBLEND,	D3DBLEND_ONE);
+		// Blend mode - directional light comes first - means no blending
+		m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
 
-	// Render Quad
-	m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
-	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
-	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
+		// Render Quad
+		m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
+		m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
+	} else {
+		cc.set									(s_Light_Direct_smap.constants.get("light_color"),		.3f/2,		.3f/2,		1./2,		.9/2);
+
+		Fvector4 J; float scale					= (3.f / SHADOW_MAP_SIZE)/27.f;
+		J.set(21, 2,  33, 2 );	J.sub(27); J.mul(scale); cc.seta	(C,0,J.x,J.y,J.w,J.z);
+		J.set(9,  9,  45, 9 );	J.sub(27); J.mul(scale); cc.seta	(C,1,J.x,J.y,J.w,J.z);
+		J.set(20, 12, 34, 12);	J.sub(27); J.mul(scale); cc.seta	(C,2,J.x,J.y,J.w,J.z);
+		J.set(12, 20, 27, 20);	J.sub(27); J.mul(scale); cc.seta	(C,3,J.x,J.y,J.w,J.z);
+		J.set(42, 20, 2,  21);	J.sub(27); J.mul(scale); cc.seta	(C,4,J.x,J.y,J.w,J.z);
+		J.set(52, 21, 20, 27);	J.sub(27); J.mul(scale); cc.seta	(C,5,J.x,J.y,J.w,J.z);
+		cc.flush								(m_pd3dDevice);
+
+		// Blend mode - directional light comes first - means no blending
+		m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
+
+		// Render Quad
+		m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
+		m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
+
+		// Second part
+		J.set(34, 27, 2,  33);	J.sub(27); J.mul(scale); cc.seta	(C,0,J.x,J.y,J.w,J.z);
+		J.set(52, 33, 12, 34);	J.sub(27); J.mul(scale); cc.seta	(C,1,J.x,J.y,J.w,J.z);
+		J.set(27, 34, 42, 34);	J.sub(27); J.mul(scale); cc.seta	(C,2,J.x,J.y,J.w,J.z);
+		J.set(20, 42, 34, 42);	J.sub(27); J.mul(scale); cc.seta	(C,3,J.x,J.y,J.w,J.z);
+		J.set(9,  45, 45, 45);	J.sub(27); J.mul(scale); cc.seta	(C,4,J.x,J.y,J.w,J.z);
+		J.set(21, 52, 33, 52);	J.sub(27); J.mul(scale); cc.seta	(C,5,J.x,J.y,J.w,J.z);
+		cc.flush								(m_pd3dDevice);
+
+		// Blend mode - directional light comes first - means no blending
+		m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, TRUE);
+		m_pd3dDevice->SetRenderState			(D3DRS_SRCBLEND,	D3DBLEND_ONE);
+		m_pd3dDevice->SetRenderState			(D3DRS_DESTBLEND,	D3DBLEND_ONE);
+
+		// Render Quad
+		m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
+		m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
+		m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
+	}
 
 	// Cleanup
 	m_pd3dDevice->SetTexture				(0, NULL);
@@ -998,8 +1020,8 @@ HRESULT CMyD3DApplication::RenderCombineDBG_Accumulator	()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::RenderOverlay()
 {
-    m_pd3dDevice->SetSamplerState		(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-    m_pd3dDevice->SetSamplerState		(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+	m_pd3dDevice->SetSamplerState		(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+	m_pd3dDevice->SetSamplerState		(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
 	m_pd3dDevice->SetRenderState		(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	m_pd3dDevice->SetFVF				(TVERTEX_FVF);
@@ -1023,17 +1045,17 @@ HRESULT CMyD3DApplication::UpdateTransform()
 	// Model offset
 	D3DXVECTOR3 vModelOffs		= D3DXVECTOR3(0.0f, 2.0f, 0.0f);
 
-    // Set the transform matrices
-    D3DXVECTOR3 vEyePt			= D3DXVECTOR3(0.0f, 3.0f, -4.0f);
-    D3DXVECTOR3 vLookatPt		= D3DXVECTOR3(0.0f, 2.0f,  0.0f);
-    D3DXVECTOR3 vUpVec			= D3DXVECTOR3(0.0f, 1.0f,  0.0f);
-    FLOAT       fAspect			= (FLOAT)m_d3dsdBackBuffer.Width / (FLOAT)m_d3dsdBackBuffer.Height;
+	// Set the transform matrices
+	D3DXVECTOR3 vEyePt			= D3DXVECTOR3(0.0f, 3.0f, -4.0f);
+	D3DXVECTOR3 vLookatPt		= D3DXVECTOR3(0.0f, 2.0f,  0.0f);
+	D3DXVECTOR3 vUpVec			= D3DXVECTOR3(0.0f, 1.0f,  0.0f);
+	FLOAT       fAspect			= (FLOAT)m_d3dsdBackBuffer.Width / (FLOAT)m_d3dsdBackBuffer.Height;
 
 	D3DXMATRIX	matWorldModel,	matWorldFloor, matView, matProj, mat;
 	D3DXMATRIX	matShadowView,	matShadowProj, mat2;
 
-    D3DXMatrixLookAtLH			(&matView, &vEyePt, &vLookatPt, &vUpVec);
-    D3DXMatrixPerspectiveFovLH	(&matProj, D3DX_PI / 3, fAspect, 1.0f, 100.0f);
+	D3DXMatrixLookAtLH			(&matView, &vEyePt, &vLookatPt, &vUpVec);
+	D3DXMatrixPerspectiveFovLH	(&matProj, D3DX_PI / 3, fAspect, 1.0f, 100.0f);
 	D3DXMatrixMultiply			(&mat, &matView, &matProj);
 
 	dm_2view					= matView;
@@ -1055,15 +1077,15 @@ HRESULT CMyD3DApplication::UpdateTransform()
 	// Setup shadow map transform
 	vLookatPt					= vModelOffs;
 	vEyePt						= vLookatPt - dv_LightDir * (m_fModelSize / 2.0f);
-    D3DXMatrixLookAtLH			(&matView, &vEyePt, &vLookatPt, &vUpVec);
+	D3DXMatrixLookAtLH			(&matView, &vEyePt, &vLookatPt, &vUpVec);
 
 	// Projection for directional light
-    D3DXMatrixOrthoLH			(&matProj, 5.0f, 5.0f, 0.0f, DEPTH_RANGE);
+	D3DXMatrixOrthoLH			(&matProj, 5.0f, 5.0f, 0.0f, DEPTH_RANGE);
 
 	D3DXMATRIX matShadowModelMVP;
 	D3DXMatrixMultiply			(&mat, &matView, &matProj);
 	D3DXMatrixMultiply			(&matShadowModelMVP,	&matWorldModel, &mat);
-	
+
 	dm_model2world2view2projection_smap	= matShadowModelMVP;
 
 	// Now, take positions from eye-space to world space
@@ -1074,9 +1096,9 @@ HRESULT CMyD3DApplication::UpdateTransform()
 	// Texture adjustment matrix
 	FLOAT fTexelOffs			= (.5f / SHADOW_MAP_SIZE);
 	D3DXMATRIX matTexAdj	(	0.5f,      0.0f,        0.0f,        0.0f,
-								0.0f,     -0.5f,        0.0f,        0.0f,
-								0.0f,      0.0f,        1.0f,        0.0f,
-								0.5f + fTexelOffs,	0.5f + fTexelOffs,	0.0f, 1.0f);
+		0.0f,     -0.5f,        0.0f,        0.0f,
+		0.0f,      0.0f,        1.0f,        0.0f,
+		0.5f + fTexelOffs,	0.5f + fTexelOffs,	0.0f, 1.0f);
 	D3DXMatrixMultiply			(&dm_model2world2view2projection_light, &matView2World2Light, &matTexAdj);
 
 	// ***** Verify results
@@ -1099,7 +1121,7 @@ HRESULT CMyD3DApplication::UpdateTransform()
 //-----------------------------------------------------------------------------
 LRESULT CMyD3DApplication::MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-    m_ArcBall.HandleMouseMessages(hWnd, uMsg, wParam, lParam);
+	m_ArcBall.HandleMouseMessages(hWnd, uMsg, wParam, lParam);
 
-    return CD3DApplication::MsgProc(hWnd, uMsg, wParam, lParam);
+	return CD3DApplication::MsgProc(hWnd, uMsg, wParam, lParam);
 }
