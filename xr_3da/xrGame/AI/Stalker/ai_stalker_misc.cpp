@@ -74,7 +74,6 @@ bool CAI_Stalker::useful		(const CGameObject *object) const
 	if (!CItemManager::useful(object))
 		return			(false);
 
-	VERIFY				(!object->H_Parent());
 	const CInventoryItem *inventory_item = dynamic_cast<const CInventoryItem*>(object);
 	if (!inventory_item)
 		return			(false);
@@ -85,10 +84,8 @@ bool CAI_Stalker::useful		(const CGameObject *object) const
 
 	CInventory			*inventory_non_const = const_cast<CInventory*>(&inventory());
 	CInventoryItem		*inventory_item_non_const = const_cast<CInventoryItem*>(inventory_item);
-	if (!inventory_non_const->CanTakeItem(inventory_item_non_const)) {
-		inventory_non_const->CanTakeItem(inventory_item_non_const);
+	if (!inventory_non_const->CanTakeItem(inventory_item_non_const))
 		return			(false);
-	}
 
 	return				(true);
 }
