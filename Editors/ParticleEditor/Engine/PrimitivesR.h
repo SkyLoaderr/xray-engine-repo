@@ -38,18 +38,24 @@ public:
 			stat_vs++;
 			HW.pDevice->SetVertexShader(vCurShader=vs);
 		}
-		if ((VB!=pCurVB)||(STRIDE!=vCurStride))
+		if (VB!=pCurVB)
 		{
 			stat_vb++;
 			HW.pDevice->SetStreamSource(0,pCurVB=VB,vCurStride=STRIDE);
+		} else {
+			if (STRIDE!=vCurStride)
+				HW.pDevice->SetStreamSource(0,pCurVB=VB,vCurStride=STRIDE);
 		}
 	}
 	IC void setIndices		(DWORD BASE, IDirect3DIndexBuffer8* IB)
 	{
-		if ((IB!=pCurIB)||(BASE!=vCurBase))	
+		if (IB!=pCurIB)
 		{
 			stat_ib++;
 			HW.pDevice->SetIndices(pCurIB=IB,vCurBase=BASE);
+		} else {
+			if (BASE!=vCurBase)
+				HW.pDevice->SetIndices(pCurIB=IB,vCurBase=BASE);
 		}
 	}
 	IC void Render			(D3DPRIMITIVETYPE T, DWORD SV, DWORD CV, DWORD SI, DWORD PC)
