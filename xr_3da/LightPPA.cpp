@@ -130,7 +130,8 @@ void CLightPPA_Manager::Render()
 		float	alpha	= Device.vCameraPosition.distance_to(PPL.sphere.P)/MAX_DISTANCE;
 		if (alpha>=1)	continue;
 
-
+		if (!::Render.ViewBase->testSphereDirty(PPL.sphere.P,PPL.sphere.R))	continue;
+		
 	}
 
 	// Create D3D unattenuated light
