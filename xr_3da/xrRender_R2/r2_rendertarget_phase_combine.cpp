@@ -56,7 +56,7 @@ void	CRenderTarget::phase_combine	()
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		FALSE				));
 
 	// ********************* Debug
-	if (1)
+	if (0)
 	{
 		u32		Offset;
 		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
