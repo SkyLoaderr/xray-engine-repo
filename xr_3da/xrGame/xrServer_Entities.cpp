@@ -696,33 +696,31 @@ void xrSE_Rat::FillProp(LPCSTR pref, PropItemVec& items)
 {
    	inherited::FillProp(pref, items);
 	// model
-    PHelper.CreateGameObject(items,PHelper.PrepareKey(pref,s_name,"Model"), caModel, sizeof(caModel));
-/*	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),								"Model",				&caModel,						PHelper.CreateGameObject(sizeof(caModel)));
+    PHelper.CreateGameObject(items,	PHelper.PrepareKey(pref,s_name,"Model"													),caModel,							sizeof(caModel));
 	// personal characteristics
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Field of view",		&fEyeFov,						PHelper.CreateFloat(0,170,10));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Eye range",			&fEyeRange,						PHelper.CreateFloat(0,300,10));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Health",				&fHealth,						PHelper.CreateFloat(0,200,5));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Minimum speed",		&fMinSpeed,						PHelper.CreateFloat(0,10,0.1));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Maximum speed",		&fMaxSpeed,						PHelper.CreateFloat(0,10,0.1));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Attack speed",			&fAttackSpeed,					PHelper.CreateFloat(0,10,0.1));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Pursuit distance",		&fMaxPursuitRadius,				PHelper.CreateFloat(0,300,10));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Home distance",		&fMaxHomeRadius,				PHelper.CreateFloat(0,300,10));
-	// morale
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Success attack quant",	&fMoraleSuccessAttackQuant,		PHelper.CreateFloat(-100,100,5));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Death quant",			&fMoraleDeathQuant,				PHelper.CreateFloat(-100,100,5));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Fear quant",			&fMoraleFearQuant,				PHelper.CreateFloat(-100,100,5));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Restore quant",		&fMoraleRestoreQuant,			PHelper.CreateFloat(-100,100,5));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Restore time interval",&u16MoraleRestoreTimeInterval,	PHelper.CreateU16  (0,65535,500));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Minimum value",		&fMoraleMinValue,				PHelper.CreateFloat(-100,100,5));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Maximum value",		&fMoraleMaxValue,				PHelper.CreateFloat(-100,100,5));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Normal value",			&fMoraleNormalValue,			PHelper.CreateFloat(-100,100,5));
-	// attack
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Hit power",			&fHitPower,						PHelper.CreateFloat(0,200,5));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Hit interval",			&u16HitInterval,				PHelper.CreateU16  (0,65535,500));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Distance",				&fAttackDistance,				PHelper.CreateFloat(0,300,10));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Maximum angle",		&fAttackAngle,					PHelper.CreateFloat(0,180,10));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Success probability",	&fAttackSuccessProbability,		PHelper.CreateFloat(0,100,1));
-*/    
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal"),	"Field of view",		),fEyeFov,							PHelper.CreateFloat(0,170,10));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal"),	"Eye range",			),fEyeRange,						PHelper.CreateFloat(0,300,10));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal"),	"Health",				),fHealth,							PHelper.CreateFloat(0,200,5));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal"),	"Minimum speed",		),fMinSpeed,						PHelper.CreateFloat(0,10,0.1));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal"),	"Maximum speed",		),fMaxSpeed,						PHelper.CreateFloat(0,10,0.1));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal"),	"Attack speed",			),fAttackSpeed,						PHelper.CreateFloat(0,10,0.1));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal"),	"Pursuit distance",		),fMaxPursuitRadius,				PHelper.CreateFloat(0,300,10));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal"),	"Home distance",		),fMaxHomeRadius,					PHelper.CreateFloat(0,300,10));
+	// morale																												
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale"),	"Success attack quant",	),fMoraleSuccessAttackQuant,		PHelper.CreateFloat(-100,100,5));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale"),	"Death quant",			),fMoraleDeathQuant,				PHelper.CreateFloat(-100,100,5));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale"),	"Fear quant",			),fMoraleFearQuant,					PHelper.CreateFloat(-100,100,5));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale"),	"Restore quant",		),fMoraleRestoreQuant,				PHelper.CreateFloat(-100,100,5));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale"),	"Restore time interval",),u16MoraleRestoreTimeInterval,		PHelper.CreateU16  (0,65535,500));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale"),	"Minimum value",		),fMoraleMinValue,					PHelper.CreateFloat(-100,100,5));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale"),	"Maximum value",		),fMoraleMaxValue,					PHelper.CreateFloat(-100,100,5));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale"),	"Normal value",			),fMoraleNormalValue,				PHelper.CreateFloat(-100,100,5));
+	// attack																												 	
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack"),	"Hit power",			),fHitPower,						PHelper.CreateFloat(0,200,5));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack"),	"Hit interval",			),u16HitInterval,					PHelper.CreateU16  (0,65535,500));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack"),	"Distance",				),fAttackDistance,					PHelper.CreateFloat(0,300,10));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack"),	"Maximum angle",		),fAttackAngle,						PHelper.CreateFloat(0,180,10));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack"),	"Success probability",	),fAttackSuccessProbability,		PHelper.CreateFloat(0,100,1));
 }
 #endif
 
@@ -809,21 +807,21 @@ void xrSE_Zombie::FillProp(LPCSTR pref, PropItemVec& items)
 {
    	inherited::FillProp(pref, items);
 	// model
-/*	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),								"Model",				&caModel,						PHelper.CreateGameObject(sizeof(caModel)));
+/*	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,s_name),								"Model",				&caModel,						PHelper.CreateGameObject(sizeof(caModel)));
 	// personal characteristics
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Field of view",		&fEyeFov,						PHelper.CreateFloat(0,170,10));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Eye range",			&fEyeRange,						PHelper.CreateFloat(0,300,10));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Health",				&fHealth,						PHelper.CreateFloat(0,200,5));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Minimum speed",		&fMinSpeed,						PHelper.CreateFloat(0,10,0.1));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Maximum speed",		&fMaxSpeed,						PHelper.CreateFloat(0,10,0.1));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Attack speed",			&fAttackSpeed,					PHelper.CreateFloat(0,10,0.1));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Pursuit distance",		&fMaxPursuitRadius,				PHelper.CreateFloat(0,300,10));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Home distance",		&fMaxHomeRadius,				PHelper.CreateFloat(0,300,10));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Field of view",		&fEyeFov,						PHelper.CreateFloat(0,170,10));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Eye range",			&fEyeRange,						PHelper.CreateFloat(0,300,10));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Health",				&fHealth,						PHelper.CreateFloat(0,200,5));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Minimum speed",		&fMinSpeed,						PHelper.CreateFloat(0,10,0.1));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Maximum speed",		&fMaxSpeed,						PHelper.CreateFloat(0,10,0.1));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Attack speed",			&fAttackSpeed,					PHelper.CreateFloat(0,10,0.1));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Pursuit distance",		&fMaxPursuitRadius,				PHelper.CreateFloat(0,300,10));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Home distance",		&fMaxHomeRadius,				PHelper.CreateFloat(0,300,10));
 	// attack
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Hit power",			&fHitPower,						PHelper.CreateFloat(0,200,5));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Hit interval",			&u16HitInterval,				PHelper.CreateU16  (0,65535,500));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Distance",				&fAttackDistance,				PHelper.CreateFloat(0,300,10));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Maximum angle",		&fAttackAngle,					PHelper.CreateFloat(0,180,10));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Hit power",			&fHitPower,						PHelper.CreateFloat(0,200,5));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Hit interval",			&u16HitInterval,				PHelper.CreateU16  (0,65535,500));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Distance",				&fAttackDistance,				PHelper.CreateFloat(0,300,10));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Maximum angle",		&fAttackAngle,					PHelper.CreateFloat(0,180,10));
 */
 }
 #endif
@@ -941,31 +939,31 @@ void xrSE_Dog::FillProp(LPCSTR pref, PropItemVec& items)
 {
    	inherited::FillProp(pref, items);
 	// model
-/*	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),								"Model",				&caModel,						PHelper.CreateGameObject(sizeof(caModel)));
+/*	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,s_name),								"Model",				&caModel,						PHelper.CreateGameObject(sizeof(caModel)));
 	// personal characteristics
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Field of view",		&fEyeFov,						PHelper.CreateFloat(0,170,10));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Eye range",			&fEyeRange,						PHelper.CreateFloat(0,300,10));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Health",				&fHealth,						PHelper.CreateFloat(0,200,5));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Minimum speed",		&fMinSpeed,						PHelper.CreateFloat(0,10,0.1));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Maximum speed",		&fMaxSpeed,						PHelper.CreateFloat(0,10,0.1));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Attack speed",			&fAttackSpeed,					PHelper.CreateFloat(0,10,0.1));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Pursuit distance",		&fMaxPursuitRadius,				PHelper.CreateFloat(0,300,10));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Home distance",		&fMaxHomeRadius,				PHelper.CreateFloat(0,300,10));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Field of view",		&fEyeFov,						PHelper.CreateFloat(0,170,10));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Eye range",			&fEyeRange,						PHelper.CreateFloat(0,300,10));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Health",				&fHealth,						PHelper.CreateFloat(0,200,5));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Minimum speed",		&fMinSpeed,						PHelper.CreateFloat(0,10,0.1));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Maximum speed",		&fMaxSpeed,						PHelper.CreateFloat(0,10,0.1));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Attack speed",			&fAttackSpeed,					PHelper.CreateFloat(0,10,0.1));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Pursuit distance",		&fMaxPursuitRadius,				PHelper.CreateFloat(0,300,10));
+   	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Home distance",		&fMaxHomeRadius,				PHelper.CreateFloat(0,300,10));
 	// morale
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Success attack quant",	&fMoraleSuccessAttackQuant,		PHelper.CreateFloat(-100,100,5));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Death quant",			&fMoraleDeathQuant,				PHelper.CreateFloat(-100,100,5));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Fear quant",			&fMoraleFearQuant,				PHelper.CreateFloat(-100,100,5));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Restore quant",		&fMoraleRestoreQuant,			PHelper.CreateFloat(-100,100,5));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Restore time interval",&u16MoraleRestoreTimeInterval,	PHelper.CreateU16  (0,65535,500));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Minimum value",		&fMoraleMinValue,				PHelper.CreateFloat(-100,100,5));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Maximum value",		&fMoraleMaxValue,				PHelper.CreateFloat(-100,100,5));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Normal value",			&fMoraleNormalValue,			PHelper.CreateFloat(-100,100,5));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Success attack quant",	&fMoraleSuccessAttackQuant,		PHelper.CreateFloat(-100,100,5));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Death quant",			&fMoraleDeathQuant,				PHelper.CreateFloat(-100,100,5));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Fear quant",			&fMoraleFearQuant,				PHelper.CreateFloat(-100,100,5));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Restore quant",		&fMoraleRestoreQuant,			PHelper.CreateFloat(-100,100,5));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Restore time interval",&u16MoraleRestoreTimeInterval,	PHelper.CreateU16  (0,65535,500));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Minimum value",		&fMoraleMinValue,				PHelper.CreateFloat(-100,100,5));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Maximum value",		&fMoraleMaxValue,				PHelper.CreateFloat(-100,100,5));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Normal value",			&fMoraleNormalValue,			PHelper.CreateFloat(-100,100,5));
 	// attack
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Hit power",			&fHitPower,						PHelper.CreateFloat(0,200,5));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Hit interval",			&u16HitInterval,				PHelper.CreateU16  (0,65535,500));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Distance",				&fAttackDistance,				PHelper.CreateFloat(0,300,10));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Maximum angle",		&fAttackAngle,					PHelper.CreateFloat(0,180,10));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Success probability",	&fAttackSuccessProbability,		PHelper.CreateFloat(0,100,1));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Hit power",			&fHitPower,						PHelper.CreateFloat(0,200,5));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Hit interval",			&u16HitInterval,				PHelper.CreateU16  (0,65535,500));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Distance",				&fAttackDistance,				PHelper.CreateFloat(0,300,10));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Maximum angle",		&fAttackAngle,					PHelper.CreateFloat(0,180,10));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Success probability",	&fAttackSuccessProbability,		PHelper.CreateFloat(0,100,1));
 */
 }
 #endif
