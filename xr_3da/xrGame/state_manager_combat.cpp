@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "state_manager_combat.h"
 #include "state_combat_attack_weak.h"
+#include "ai/stalker/ai_stalker.h"
 
 CStateManagerCombat::CStateManagerCombat	(LPCSTR state_name) : inherited(state_name)
 {
@@ -44,6 +45,7 @@ void CStateManagerCombat::reload		(LPCSTR section)
 void CStateManagerCombat::initialize	()
 {
 	inherited::initialize	();
+	m_object->CSoundPlayer::set_sound_mask(eStalkerSoundHumming);
 }
 
 void CStateManagerCombat::execute		()

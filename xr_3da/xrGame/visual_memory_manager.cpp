@@ -60,7 +60,14 @@ bool CVisualMemoryManager::visible(const CGameObject *game_object) const
 	if (game_object->getDestroy())
 		return			(false);
 
-	return(true);
+//	xr_vector<CVisibleObject>::iterator	I = std::find(m_objects->begin(),m_objects->end(),game_object->ID());
+//	if (m_objects->end() == I)
+//		return			(false);
+
+//	if (!(*I).m_visible)
+//		return			(false);
+
+	return				(true);
 ////	if (Level().iGetKeyState(DIK_RCONTROL))
 ////		return(false);
 //#ifdef LOG_PARAMETERS

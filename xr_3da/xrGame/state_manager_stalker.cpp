@@ -58,14 +58,10 @@ void CStateManagerStalker::initialize		()
 void CStateManagerStalker::execute			()
 {
 	if (m_object->g_Alive())
-#ifndef NO_AI
 		if (!m_object->enemy())
 			set_dest_state	(eStalkerStateNoALife);
 		else
 			set_dest_state	(eStalkerStateCombat);
-#else
-		set_dest_state		(eStalkerStateNoALife);
-#endif
 	else
 		set_dest_state		(eStalkerStateDeath);
 	

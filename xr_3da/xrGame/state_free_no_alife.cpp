@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "state_free_no_alife.h"
 #include "ai/stalker/ai_stalker.h"
+#include "inventory.h"
 #include "inventory_item.h"
 
 using namespace MonsterSpace;
@@ -46,6 +47,7 @@ void CStateFreeNoAlife::reload			(LPCSTR section)
 void CStateFreeNoAlife::initialize		()
 {
 	inherited::initialize			();
+	m_object->CSoundPlayer::set_sound_mask(0);
 	m_object->set_selection_type	(CMovementManager::eSelectionTypeRandomBranching);
 }
 
@@ -60,10 +62,11 @@ void CStateFreeNoAlife::execute			()
 		CMovementManager::ePathTypeGamePath,
 		CMovementManager::eDetailPathTypeSmooth,
 		eBodyStateStand,
-		eMovementTypeWalk,
+		eMovementTypeStand,
 		eMentalStateFree
 	);
 	m_object->CSightManager::update				(eLookTypePathDirection);
+//	m_object->CObjectHandler::set_dest_state	(eObjectActionFire1,m_object->inventory().m_slots[5].m_pIItem);
 	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
 }
 

@@ -50,13 +50,17 @@ void CStateAttackWeak::execute			()
 {
 	inherited::execute				();
 	VERIFY										(m_object->enemy());
-	m_object->CObjectHandler::set_dest_state	(eObjectActionFire1,m_object->best_weapon());
-	m_object->CSightManager::update				(eLookTypeFirePoint,&m_object->enemy()->Position());
-	m_object->set_level_dest_vertex				(m_object->enemy()->level_vertex_id());
+	MemorySpace::CMemoryObject<const CGameObject> mem_object = m_object->memory(m_object->enemy());
+	if (m_object->visible(m_object->enemy()))
+		m_object->CObjectHandler::set_dest_state(eObjectActionFire1,m_object->best_weapon());
+	else
+		m_object->CObjectHandler::set_dest_state(eObjectActionAim1,m_object->best_weapon());
+	m_object->CSightManager::update				(eLookTypeFirePoint,&mem_object.m_object_params.m_position);
+	m_object->set_level_dest_vertex				(mem_object.m_object_params.m_level_vertex_id);
 	m_object->CStalkerMovementManager::update	(
 		0,
 		0,
-		&m_object->enemy()->Position(),
+		&mem_object.m_object_params.m_position,
 		0,
 		CMovementManager::ePathTypeLevelPath,
 		CMovementManager::eDetailPathTypeSmooth,

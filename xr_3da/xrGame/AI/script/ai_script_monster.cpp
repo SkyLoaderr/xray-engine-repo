@@ -426,6 +426,12 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 	if (l_tMovementAction.m_bCompleted)
 		return		(false);
 
+	CEntityAlive			*entity_alive = dynamic_cast<CEntityAlive*>(this);
+	if (entity_alive && !entity_alive->g_Alive()) {
+		l_tMovementAction.m_bCompleted = true;
+		return				(false);
+	}
+	
 	CMovementManager		*l_tpMovementManager = dynamic_cast<CMovementManager*>(this);
 
 	switch (l_tMovementAction.m_tGoalType) {
