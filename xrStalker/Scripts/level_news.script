@@ -15,7 +15,7 @@ function main()
 			end
 			begin = game.time()
 		end		
-		printf("%d of %d",game.time() - begin, delta)
+--		printf("%d of %d",game.time() - begin, delta)
 		wait()
 	end
 end
@@ -231,5 +231,5 @@ function get_random_news()
 		end
 	end
 	
-	print_table(news)
+--	print_table(news)
 end
