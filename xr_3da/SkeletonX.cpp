@@ -98,7 +98,7 @@ void CSkeletonX::_Render	(ref_geom& hGeom, u32 vCount, u32 pCount)
 }
 
 //////////////////////////////////////////////////////////////////////
-void CSkeletonX::_Release()
+void CSkeletonX::_Release	()
 {
 	xr_free		(Vertices1W);
 	xr_free		(Vertices2W);
