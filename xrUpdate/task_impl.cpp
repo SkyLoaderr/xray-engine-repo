@@ -217,17 +217,17 @@ BOOL mk_bk_rename(LPCSTR src, int start_from)
 		ZeroMemory(ext_orig,sizeof(ext_orig));
 		strncpy(ext_orig,ext, f-ext);
 		strconcat(new_ext,ext_orig,"_old",num);
-		strconcat(new_file_name,drive,"\\",dir,file_name,new_ext);
+		strconcat(new_file_name,drive,dir,file_name,new_ext);
 	}else{
 		strconcat(new_ext,"_old",num);
-		strconcat(new_file_name,drive,"\\",dir,file_name,ext,new_ext);
+		strconcat(new_file_name,drive,dir,"backup\\",file_name,ext,new_ext);
 	}
 
 
 	if( file_exist(new_file_name) )
 		if( !mk_bk_rename(new_file_name, ++start_from) )
 			return FALSE;
-
+	_VerifyPath(new_file_name);
 	return rename_file(src, new_file_name);
 }
 
