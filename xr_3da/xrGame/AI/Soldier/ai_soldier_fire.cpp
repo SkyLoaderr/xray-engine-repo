@@ -14,6 +14,7 @@
 #define	FIRE_SAFETY_ANGLE				PI/10
 #define SPECIAL_SQUAD					6
 #define LIGHT_FITTING			
+#define FNN(x,tpNode)					float(tpNode->cover[x])
 
 bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) 
 {
@@ -187,7 +188,7 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 		CEntity*	E = dynamic_cast<CEntity*>(Known[i].key);
 		float		H = EnemyHeuristics(E);
 		if (H<S.fCost) {
-			if (!Group.m_bEnemyNoticed)
+			if (!Group.m_bEnemyNoticed || !Group.Members.size())
 #ifdef LIGHT_FITTING
 				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				// this code is dummy
@@ -216,16 +217,16 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 					continue;
 				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #endif
-				// Calculate local visibility
-				CObject**	ins	 = lower_bound(tpaVisibleObjects.begin(),tpaVisibleObjects.end(),(CObject*)E);
-				bool	bVisible = ((ins==tpaVisibleObjects.end())?FALSE:((E==*ins)?TRUE:FALSE)) && (bfCheckForVisibility(E));
-				float	cost	 = H*(bVisible?1:_FB_invisible_hscale);
-				if (cost<S.fCost)	{
-					S.Enemy		= E;
-					S.bVisible	= bVisible;
-					S.fCost		= cost;
-					Group.m_bEnemyNoticed = true;
-				}
+			// Calculate local visibility
+			CObject**	ins	 = lower_bound(tpaVisibleObjects.begin(),tpaVisibleObjects.end(),(CObject*)E);
+			bool	bVisible = ((ins==tpaVisibleObjects.end())?FALSE:((E==*ins)?TRUE:FALSE)) && (bfCheckForVisibility(E));
+			float	cost	 = H*(bVisible?1:_FB_invisible_hscale);
+			if (cost<S.fCost)	{
+				S.Enemy		= E;
+				S.bVisible	= bVisible;
+				S.fCost		= cost;
+				Group.m_bEnemyNoticed = true;
+			}
 		}
 	}
 #ifdef LIGHT_FITTING
@@ -877,4 +878,51 @@ bool CAI_Soldier::bfSaveFromEnemy(CEntity *tpEntity)
 	NodeCompressed *tNode = AI_Node;
 	float fSquare = ffCalcSquare(r_torso_current.yaw,eye_fov/180.f*PI,FN(1),FN(2),FN(3),FN(0));
 	return(fSquare < .1f);
+}
+
+bool CAI_Soldier::bfCheckForDangerPlace()
+{
+	if ((AI_Path.TravelPath.empty()) || (AI_Path.TravelPath.size() - 1 <= AI_Path.TravelStart))
+		return(false);
+	NodeCompressed *tpCurrentNode = AI_Node;
+	NodeCompressed *tpNextNode = 0;
+	
+	bool bOk = false;
+	NodeLink *taLinks = (NodeLink *)((BYTE *)AI_Node + sizeof(NodeCompressed));
+	int iCount = AI_Node->link_count;
+	for (int i=0; i<iCount; i++) {
+		tpNextNode = Level().AI.Node(Level().AI.UnpackLink(taLinks[i]));
+ 		if (bfInsideNode(Level().AI,tpNextNode,AI_Path.TravelPath[AI_Path.TravelStart + 1].P,.35f)) {
+			bOk = true;
+			break;
+		}
+	}
+	if (!bOk)
+		return(false);
+	//Level().AI.Node(AI_Path.Nodes[AI_Path.TravelStart + 1]);
+ 	int iMax = 0, iIndexMax = -1;
+	/**
+	for (int i=0; i<4; i++)
+		if (int(tpNextNode->cover[i]) - int(tpCurrentNode->cover[i]) >= iMax ) {
+			iMax = int(tpNextNode->cover[i]) - int(tpCurrentNode->cover[i]);
+			iIndexMax = i;
+		}
+	/**/
+	float fAngleOfView = eye_fov*PI/180.f;
+	float fMaxSquare = 3.f, fBestAngle = -1.f;
+	for (float fIncrement = 0; fIncrement < PI_MUL_2; fIncrement += PI/20.f) {
+		float fSquare0 = ffCalcSquare(fIncrement,fAngleOfView,FNN(1,tpCurrentNode),FNN(2,tpCurrentNode),FNN(3,tpCurrentNode),FNN(0,tpCurrentNode));
+		float fSquare1 = ffCalcSquare(fIncrement,fAngleOfView,FNN(1,tpNextNode),FNN(2,tpNextNode),FNN(3,tpNextNode),FNN(0,tpNextNode));
+		if (fSquare1 - fSquare0 > fMaxSquare) {
+			fMaxSquare = fSquare1 - fSquare0;
+			fBestAngle = fIncrement;
+		}
+	}
+	
+	if (fBestAngle >= -EPS_L) {
+		r_torso_target.yaw = r_target.yaw = fBestAngle;
+		return(true);
+	}
+	else
+		return(false);
 }

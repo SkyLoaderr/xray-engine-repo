@@ -517,6 +517,8 @@ class CAI_Soldier : public CCustomMonster
 
 		// miscellanious funtions	
 		bool bfSaveFromEnemy(CEntity *tpEntity);
+		void vfLookAtDirection(int iIndex);
+		bool bfCheckForDangerPlace();
 		DWORD tfGetAloneFightType();
 		DWORD tfGetGroupFightType();
 		DWORD tfGetActionType();
@@ -667,26 +669,6 @@ class CAI_Soldier : public CCustomMonster
 						return(false);
 			return(false);
 		}
-	IC	bool bfCheckForDangerPlace()
-		{
-			if (AI_Path.TravelPath.size() - 1 <= AI_Path.TravelStart)
-				return(false);
-			NodeCompressed *tpCurrentNode = AI_Node;
-			NodeCompressed *tpNextNode = Level().AI.Node(AI_Path.Nodes[AI_Path.TravelStart + 1]);
-			int iMax = 0, iIndexMax = -1;
-			for (int i=0; i<4; i++)
-				if (int(tpNextNode->cover[i]) - int(tpCurrentNode->cover[i]) >= iMax ) {
-					iMax = int(tpNextNode->cover[i]) - int(tpCurrentNode->cover[i]);
-					iIndexMax = i;
-				}
-			
-			if (!iMax)
-				return(false);
-
-			
-			return(true);
-		}
-
 
 	public:
 		bool		  m_bActionStarted;

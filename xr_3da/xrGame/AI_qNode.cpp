@@ -264,13 +264,11 @@ DWORD CAI_Space::q_Node(DWORD PrevNode, const Fvector& BasePos)
 	if (BestCost < 3*m_header.size)	{
 		// small distance from node
 		Device.Statistic.AI_Node.End();
-		Msg("%d",BestNode);
 		return BestNode;
 	}
 	
 	// degrade to linear search
 	int id = q_LoadSearch(BasePos);
-	Msg("%d",id);
 	if (id>=0) return DWORD(id);
 	
 	// everything failed :(

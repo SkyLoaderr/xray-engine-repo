@@ -19,7 +19,7 @@
 
 bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 {
-	if (Level().iGetKeyState(DIK_LALT))
+	if (Level().iGetKeyState(DIK_RCONTROL))
 		return(false);
 
 	float fResult = 0.f;
@@ -442,4 +442,32 @@ void CAI_Soldier::vfAimAtEnemy(bool bInaccuracy)
 	r_target.yaw = r_torso_target.yaw;
 
 	//ASSIGN_SPINE_BONE;
+}
+
+void CAI_Soldier::vfLookAtDirection(int iIndex)
+{
+	Fvector tDirection;
+	switch (iIndex) {
+		case 0 : {
+			tDirection.set(-1,0,0);
+			mk_rotation(tDirection,r_torso_target);
+			break;
+		}
+		case 1 : {
+			tDirection.set(0,0,1);
+			mk_rotation(tDirection,r_torso_target);
+			break;
+		}
+		case 2 : {
+			tDirection.set(1,0,0);
+			mk_rotation(tDirection,r_torso_target);
+			break;
+		}
+		case 3 : {
+			tDirection.set(0,0,-1);
+			mk_rotation(tDirection,r_torso_target);
+			break;
+		}
+	}
+	r_target.yaw = r_torso_target.yaw;
 }
