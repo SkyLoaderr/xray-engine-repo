@@ -149,6 +149,21 @@ function proceed(actor)
 		actor:give_info_portion("bar_resque_research_gain")
 		set_task_state(task.completed, "bar_resque_information", 1)
 	end
+
+	if	actor:has_info("bar_bar_hunter_quest_start") and 
+		actor:object("hunters_toz") ~= nil 
+	then		
+		actor:give_info_portion("bar_bar_hunter_quest_find_rifle")
+		set_task_state(task.completed, "bar_hunter_rifle", 1)
+	end 
+
+        if	actor:has_info("bar_bar_hunter_quest_finish") 
+	then		
+		set_task_state(task.completed, "bar_hunter_rifle", 2)
+		set_task_state(task.completed, "bar_hunter_rifle", 0)
+	end
+
+
 	
 	
 	-- Military
@@ -353,8 +368,11 @@ function process_map_spot(info_id)
 		add_location(502, "bar_hunter_toz_location")
 
 	elseif info_id == "bar_bar_hunter_quest_find_rifle" then
-		remove_location(502, "bar_hunter_toz_location")	
-		add_location(504, "bar_hunter_location")
+		remove_location (502, "bar_hunter_toz_location")	
+		add_location (504, "bar_hunter_location")
+
+	elseif info_id == "bar_bar_hunter_quest_finish" then
+		remove_location(504, "bar_hunter_location")
 
 	elseif info_id == "bar_resque_research_start" then
 		add_location(503, "bar_ecolog_crush_location")
