@@ -7,6 +7,8 @@
 	- улёт в безопасное место
 --------------------------------------------------------------------------------------------------------------------]]
 
+local ltx = ini_file("creatures\\helicopter.ltx")
+
 local state, health, altitude, v, power, impulse, hit_type, enemy_type
 
 local pass_dist    = 100  -- расстояние, на которое вертолёт отлетит перед следующим заходом для атаки
@@ -33,6 +35,12 @@ function HeliManager:initialize( name, path, patrol_speed, attack_speed )
 	self.b_prepared_to_die = false
 	self.stay_point        = self.heli:position()
 	self.altitude          = self.heliObject:GetCurrAltitude()
+
+	if ltx:line_exist( "helicopter", "attack_altitude" ) then
+		self.attack_altitude = ltx:r_float( "helicopter", "attack_altitude" )
+	else
+		self.attack_altitude = self.altitude
+	end
 end
 
 function HeliManager:HeliOnHit( p )
@@ -127,6 +135,7 @@ function HeliManager:finish_attack()
 	if self.path then
 		self.heliObject:GoPatrolByPatrolPath( self.path, 0 )  --0==from_idx
 		self.heliObject:SetCurrVelocity( self.patrol_speed )
+		self.heliObject:SetCurrAltitude( self.altitude )
 	else
 		self:send_to_stay_point()
 	end
@@ -201,7 +210,7 @@ function HeliManager:set_enemy( enemy, attack_passes )
 
 		printf( "[heli] attack %s", enemy:name() )
 		self.heliObject:SetEnemy( enemy )
-		self.heliObject:SetCurrAltitude( self.altitude )
+		self.heliObject:SetCurrAltitude( self.attack_altitude )
 		self.heliObject:SetCurrVelocity( self.attack_speed ) -- m/sec (max)
 		self.heliObject:SetState( CHelicopter.eMovingByAttackTraj )
 
