@@ -23,6 +23,7 @@ void dBodyAngAccelFromTorqu(const dBodyID body, dReal* ang_accel, const dReal* t
 
 CPHCharacter::CPHCharacter(void)
 {
+b_external_impulse=false;
 m_phys_ref_object=NULL;
 p_lastMaterial=&lastMaterial;
 b_on_object=false;
@@ -82,6 +83,8 @@ CPHCharacter::~CPHCharacter(void)
 void		CPHCharacter::ApplyImpulse(const Fvector& dir,const dReal P){
 if(!b_exist) return;
 if(!dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+b_lose_control=true;
+b_external_impulse=true;
 dBodyAddForce(m_body,dir.x*P/fixed_step,dir.y*P/fixed_step,dir.z*P/fixed_step);
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -99,7 +102,7 @@ m_control_force[2]=0.f;
 m_depart_position[0]=0.f;
 m_depart_position[1]=0.f;
 m_depart_position[2]=0.f;
-
+b_external_impulse=false;
 b_on_object=false;
 b_was_on_object=true;
 b_jumping=false;
@@ -294,7 +297,8 @@ void CPHSimpleCharacter::PhDataUpdate(dReal step){
 	if(is_contact&&!is_control)
 							Disable();
 ///////////////////////
-
+	b_external_impulse=false;
+	
 	was_contact=is_contact;
 	was_control=is_control;
 	is_contact=false;
@@ -380,7 +384,10 @@ void CPHSimpleCharacter::PhTune(dReal step){
 	if(b_depart) 
 		Memory.mem_copy(m_depart_position,dBodyGetPosition(m_body),sizeof(dVector3));
 
-	if(is_contact) b_lose_control=false;
+	const dReal* velocity=dBodyGetLinearVel(m_body);
+	if(is_contact&& !b_external_impulse && dSqrt(velocity[0]*velocity[0]+velocity[2]*velocity[2])<5.) 
+																			b_lose_control=false;
+
 	if(b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2 ||(b_at_wall&&b_valide_wall_contact)) b_jumping=false;
 
 //deside if control lost

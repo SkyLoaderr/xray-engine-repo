@@ -1318,16 +1318,6 @@ void CActor::ForceTransform(const Fmatrix& m)
 
 }
 
-CObject* CActor::pick_Object()
-{
-	setEnabled(false);
-	Collide::ray_query	l_rq;
-	l_rq.O=NULL;
-	pCreator->ObjectSpace.RayPick(Device.vCameraPosition, Device.vCameraDirection, 15.f, l_rq);
-	setEnabled(true);
-
-	return l_rq.O;
-}
 
 #ifdef DEBUG
 void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);

@@ -27,6 +27,7 @@ float DriveVelocity;
 float DriveForce;
 float VelocityRate;
 CPhysicsJoint* weels[4];
+int	  m_doors_ids[2];
 ////////////////////////////////////////////////////
 void Steer(const char& steering);
 float GetSteerAngle();
@@ -69,6 +70,7 @@ public:
 	void					cam_Update			(float dt);
 	void					detach_Actor		();
 	bool					attach_Actor		(CActor* actor);
+	bool					is_Door				(int id);
 	// Core events
 	virtual void			Load				( LPCSTR section );
 	virtual BOOL			net_Spawn			( LPVOID DC );

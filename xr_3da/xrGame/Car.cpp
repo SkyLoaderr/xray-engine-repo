@@ -469,7 +469,17 @@ void CCar::ActivateJeep()
 	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearl")).set_callback	(cb_WheelBL,this);
 	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearr")).set_callback	(cb_WheelBR,this);
 	M->LL_GetInstance				(M->LL_BoneID("steer")).set_callback			(cb_Steer,this);
+	m_doors_ids[1]					=M->LL_BoneID("phy_door_left");
+	m_doors_ids[0]					=M->LL_BoneID("phy_door_right");
+
 	 ///clTransform.set					( m_jeep.DynamicData.BoneTransform	);
+}
+
+bool CCar::is_Door(int id)
+{
+if(id==m_doors_ids[0]) return true;
+if(id==m_doors_ids[1]) return true;
+return false;
 }
 
 void CCar::CreateShell()

@@ -255,7 +255,7 @@ private:
 	void					create_Skeleton1		();
 	void					attach_Vehicle			(CCar* vehicle);
 	void					use_Vehicle				();
-	CObject*				pick_Object				();
+	CCar*					pick_VehicleObject		();
 
 public:
 	void					detach_Vehicle			();

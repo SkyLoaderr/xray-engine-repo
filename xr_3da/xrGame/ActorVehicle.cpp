@@ -5,9 +5,14 @@
 
 void CActor::attach_Vehicle(CCar* vehicle)
 {
+	if(!vehicle) return;
+
 	if(m_vehicle) return;
-	m_vehicle=dynamic_cast<CCar*>(vehicle);
-	if(!m_vehicle) return;
+
+	m_vehicle=vehicle;
+
+
+	
 	if(!m_vehicle->attach_Actor(this)){
 		m_vehicle=NULL;
 		return;
@@ -52,7 +57,21 @@ void CActor::use_Vehicle()
 		detach_Vehicle();
 	}else{
 		if (pCamBobbing){Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0;}
-		attach_Vehicle(dynamic_cast<CCar*>(pick_Object()));
+		attach_Vehicle(pick_VehicleObject());
 	}
 }
 
+CCar* CActor::pick_VehicleObject()
+{
+	setEnabled(false);
+	Collide::ray_query	l_rq;
+	l_rq.O=NULL;
+	pCreator->ObjectSpace.RayPick(Device.vCameraPosition, Device.vCameraDirection, 15.f, l_rq);
+	setEnabled(true);
+	CCar* ret=dynamic_cast<CCar*>(l_rq.O);
+
+	if(!ret)	return NULL;
+	if(!ret->is_Door(l_rq.element)) return NULL;
+
+	return ret;
+}

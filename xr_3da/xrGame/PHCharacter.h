@@ -83,6 +83,7 @@ bool was_control;
 bool b_stop_control;
 bool b_on_object;
 bool b_was_on_object;
+bool b_external_impulse;
 u32  m_contact_count;
 dReal m_radius;
 dReal m_cyl_hight;
