@@ -86,7 +86,7 @@ IC	void CBoardClassicOthello::undo_move		()
 		undo_move<WHITE>			();
 }
 
-IC	bool CBoardClassicOthello::can_move			(const cell_index &index0, const cell_index &index1)
+IC	bool CBoardClassicOthello::can_move			(const cell_index &index0, const cell_index &index1) const
 {
 	return							(can_move(index(index0,index1)));
 }

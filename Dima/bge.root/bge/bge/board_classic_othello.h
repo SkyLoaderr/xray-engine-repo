@@ -46,8 +46,31 @@ private:
 protected:
 	IC		void			show_cell				(const cell_type &value) const;
 
+protected:
+	template <int increment, cell_type _color_to_move, cell_type opponent_color>
+	IC		void			try_flip_direction		(cell_type *start_cell, int &difference);
+	
+	template <cell_type color_to_move>
+	IC		bool			do_move					(const cell_index &index);
+
+protected:
+	template <cell_type opponent_color>
+	IC		void			undo_move				();
+
+protected:
+	template <int increment, cell_type _color_to_move, cell_type opponent_color>
+	IC		bool			can_move_in_direction	(cell_type const *start_cell) const;
+	
+	template <cell_type color_to_move>
+	IC		bool			can_move				(const cell_index &index) const;
+
+	template <cell_type color_to_move>
+	IC		bool			can_move				() const;
+
 public:
 	IC						CBoardClassicOthello	();
+			void			start_position			();
+			void			show					() const;
 
 public:
 	IC		const cell_type	&color_to_move			() const;
@@ -62,38 +85,16 @@ public:
 	IC		const cell_type	&cell					(const cell_index &index0, const cell_index &index1) const;
 
 public:
-			void			start_position			();
-			void			show					() const;
-
-protected:
-	template <int increment, cell_type _color_to_move, cell_type opponent_color>
-	IC		void			try_flip_direction		(cell_type *start_cell, int &difference);
-	
-	template <cell_type color_to_move>
-	IC		bool			do_move					(const cell_index &index);
-
-public:
 			bool			do_move					(const cell_index &index);
 	IC		bool			do_move					(const cell_index &index0, const cell_index &index1);
 
-protected:
-	template <cell_type opponent_color>
-	IC		void			undo_move				();
-
 public:
 	IC		void			undo_move				();
 
-protected:
-	template <int increment, cell_type _color_to_move, cell_type opponent_color>
-	IC		void			try_direction			(cell_type *start_cell, int &difference);
-	
-	template <cell_type color_to_move>
-	IC		bool			can_move				(const cell_index &index);
-
 public:
-			bool			can_move				();
-			bool			can_move				(const cell_index &index);
-	IC		bool			can_move				(const cell_index &index0, const cell_index &index1);
+			bool			can_move				() const;
+			bool			can_move				(const cell_index &index) const;
+	IC		bool			can_move				(const cell_index &index0, const cell_index &index1) const;
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

@@ -130,6 +130,7 @@ IC	bool CBoardClassicOthello::do_move		(const cell_index &index)
 			try_flip_direction< -1, color_to_move, opponent_color>(start_cell, difference);
 			break;
 		}
+		default : NODEFAULT;
 	}
 
 	if (m_current_flip != m_start_flip) {
