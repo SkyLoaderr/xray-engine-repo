@@ -371,7 +371,10 @@ public:
 		if (l_tpInventoryOwner) {
 			CInventoryItem	*l_tpInventoryItem = l_tpInventoryOwner->m_inventory.GetItemFromInventory(caObjectName);
 			CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(l_tpInventoryItem);
-			return			(xr_new<CLuaGameObject>(l_tpGameObject));
+			if (!l_tpGameObject)
+				return		(0);
+			else
+				return		(xr_new<CLuaGameObject>(l_tpGameObject));
 		}
 		else {
 			Msg				("* [LUA] CLuaGameObject : cannot access class member object!");
@@ -385,7 +388,10 @@ public:
 		if (l_tpInventoryOwner) {
 			CInventoryItem	*l_tpInventoryItem = l_tpInventoryOwner->m_inventory.tpfGetObjectByIndex(iIndex);
 			CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(l_tpInventoryItem);
-			return			(xr_new<CLuaGameObject>(l_tpGameObject));
+			if (!l_tpGameObject)
+				return		(0);
+			else
+				return		(xr_new<CLuaGameObject>(l_tpGameObject));
 		}
 		else {
 			Msg				("* [LUA] CLuaGameObject : cannot access class member object!");

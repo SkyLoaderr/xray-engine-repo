@@ -24,7 +24,7 @@ CScript::CScript(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caFileName)
 
 	string256		l_caNamespaceName, S;
 	_splitpath		(caFileName,0,0,l_caNamespaceName,0);
-	sprintf			(S,"\nfunction script_name()\nreturn \"%s\"\nend\n",l_caNamespaceName);
+	sprintf			(S,"\nfunction %s.script_name()\nreturn \"%s\"\nend\n",l_caNamespaceName,l_caNamespaceName);
 	if (!bfLoadBuffer(tpLuaVirtualMachine,S,strlen(S),caFileName))
 		return;
 

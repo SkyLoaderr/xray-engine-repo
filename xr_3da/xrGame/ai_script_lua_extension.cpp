@@ -88,7 +88,7 @@ bool bfCreateNamespaceTable(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caNa
 			if (!lua_istable(tpLuaVirtualMachine,-1)) {
 				xr_free			(S2);
 				lua_pop			(tpLuaVirtualMachine,2);
-				Msg				(" [LUA] Error : the namespace name %s is already being used by the non-table object!",caNamespaceName);
+				Msg				("! [LUA] Error : the namespace name %s is already being used by the non-table object!",caNamespaceName);
 				return			(false);
 			}
 			lua_remove		(tpLuaVirtualMachine,-2);
