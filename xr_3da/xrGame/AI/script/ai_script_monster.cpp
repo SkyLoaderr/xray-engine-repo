@@ -273,15 +273,11 @@ void CScriptMonster::vfChoosePatrolPathPoint(CEntityAction *tpEntityAction)
 			default : NODEFAULT;
 		}
 		R_ASSERT	(l_iFirst>=0);
-		bool		bOk = false;
-		for (int i=0, n=l_tPatrolPath.tpaWayLinks.size(); i<n; i++) {
-			if (l_tPatrolPath.tpaWayLinks[i].wTo == l_iFirst) {
-				l_iFirst = i;
-				bOk		= true;
-				break;
-			}
-		}
-		VERIFY		(bOk);
+		m_iPreviousPatrolPoint	= m_iCurrentPatrolPoint;
+		m_iCurrentPatrolPoint	= l_iFirst;
+		l_tMovementAction.m_tNodeID = l_tPatrolPath.tpaWayPoints[m_iCurrentPatrolPoint].dwNodeID;
+		l_tMovementAction.m_tDestinationPosition = l_tPatrolPath.tpaWayPoints[m_iCurrentPatrolPoint].tWayPoint;
+		return;
 	}
 	else {
 		if (l_tMovementAction.m_tDestinationPosition.distance_to(Position()) > .1f)
