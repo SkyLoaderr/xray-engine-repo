@@ -942,6 +942,11 @@ void CCustomZone::AffectObjects()
 
 	m_dwAffectFrameNum = Device.dwFrame;
 
+
+	// вермя срабатывания не чаще, чем заданный период
+	if(m_dwDeltaTime < m_dwPeriod) return;
+	m_dwDeltaTime = 0;
+
 	xr_set<CObject*>::iterator it;
 	for(it = m_inZone.begin(); m_inZone.end() != it; ++it) 
 	{
@@ -1097,6 +1102,8 @@ void CCustomZone::SwitchZoneState(EZoneState new_state)
 		P.w_u8			(u8(new_state));
 		u_EventSend		(P);
 	};
+
+	m_iPreviousStateTime = m_iStateTime = 0;
 }
 
 bool CCustomZone::Enable()
