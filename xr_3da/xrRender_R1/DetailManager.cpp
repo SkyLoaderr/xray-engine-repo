@@ -233,7 +233,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 					for (int sp_id=0; sp_id<dm_obj_in_slot; sp_id++)
 					{
 						SlotPart&			sp	= S.G		[sp_id];
-						if (sp.id==0xff)	continue;
+						if (sp.id==DetailSlot::ID_Empty)	continue;
 						float				R   = objects	[sp.id]->bv_sphere.R;
 
 						SlotItem			**siIT=&(*sp.items.begin()), **siEND=&(*sp.items.end());
