@@ -114,6 +114,8 @@ class CMyD3DApplication : public CD3DApplication
 
 	D3DXMATRIX						dm_world2view2projection;
 
+	D3DXVECTOR3						dv_LightDir;
+	D3DXMATRIX						dm_model2world2view2projection_smap;
 	D3DXMATRIX						dm_model2world2view2projection_light;
 
 	// Shaders
@@ -127,18 +129,6 @@ class CMyD3DApplication : public CD3DApplication
 	//  ************************
 	//	**** Shadow mapping ****
 	//  ************************
-
-    // Transform matrices
-    D3DXMATRIX						m_matModelMVP;
-    D3DXMATRIX						m_matShadowModelMVP;
-    D3DXMATRIX						m_matShadowModelTex;
-
-    D3DXMATRIX						m_matFloorMVP;
-    D3DXMATRIX						m_matShadowFloorMVP;
-    D3DXMATRIX						m_matShadowFloorTex;
-
-	D3DXVECTOR4						m_vecLightDirModel;
-	D3DXVECTOR4						m_vecLightDirFloor;
 public:
     CMyD3DApplication();
 
@@ -203,16 +193,9 @@ CMyD3DApplication::CMyD3DApplication()
     m_pModelIB							= NULL;
     m_pFloorVB							= NULL;
 
-	m_pSceneVS							= NULL;
-	m_pScenePS							= NULL;
-
 	sm_ShadowMap						= NULL;
 	sm_ShadowMap_S						= NULL;
 	sm_ShadowMap_Z						= NULL;
-
-	m_pShadowMapVS						= NULL;
-	m_pShadowMapPS						= NULL;
-	m_pShowMapPS						= NULL;
 
     m_pOverlayVB						= NULL;
 
@@ -257,8 +240,8 @@ HRESULT CMyD3DApplication::Render		()
 		// RenderOverlay		();
 
 		RenderFAT					();
-		RenderShadowMap				();
-		RenderLight_Direct_smap		();
+		// RenderShadowMap			();
+		RenderLight_Direct			();
 		RenderCombine				(CM_DBG_ACCUMULATOR);
 
         // Output statistics
@@ -577,7 +560,7 @@ HRESULT CMyD3DApplication::RenderShadowMap	()
 	m_pd3dDevice->SetPixelShader			(s_Scene2fat.ps);
 	m_pd3dDevice->SetVertexShader			(s_Scene2fat.vs);
 	m_pd3dDevice->SetVertexDeclaration		(m_pDeclVert);
-	cc.set									(s_Scene2fat.constants.get("m_model2view2projection"),	*((Fmatrix*)&dm_model2world2view2projection_light));
+	cc.set									(s_Scene2fat.constants.get("m_model2view2projection"),	*((Fmatrix*)&dm_model2world2view2projection_smap));
 	cc.flush								(m_pd3dDevice);
 
 	// Render model
@@ -756,7 +739,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	m_pd3dDevice->SetPixelShader			(s_Light_Direct.ps);
 	m_pd3dDevice->SetVertexShader			(s_Light_Direct.vs);
 	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
-	D3DXVECTOR3 vLightDir					= D3DXVECTOR3(-1.0f, -1.0f, 1.0f);
+	D3DXVECTOR3 vLightDir					= dv_LightDir;
 	D3DXMATRIX	mInvView;
 	D3DXVec3Normalize						(&vLightDir, &vLightDir);
 	D3DXMatrixInverse						(&mInvView,0,&dm_2view);
@@ -775,19 +758,21 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
 	// Second light
-	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, TRUE);
-	m_pd3dDevice->SetRenderState			(D3DRS_SRCBLEND,	D3DBLEND_ONE);
-	m_pd3dDevice->SetRenderState			(D3DRS_DESTBLEND,	D3DBLEND_ONE);
-	cc.set									(s_Light_Direct.constants.get("light_direction"),	-vLightDir.x,-vLightDir.y,-vLightDir.z,0	);
-	cc.set									(s_Light_Direct.constants.get("light_color"),		.9f,		.3f,		.0,			.7		);
-	cc.flush								(m_pd3dDevice);
-	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
-	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
+//	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, TRUE);
+//	m_pd3dDevice->SetRenderState			(D3DRS_SRCBLEND,	D3DBLEND_ONE);
+//	m_pd3dDevice->SetRenderState			(D3DRS_DESTBLEND,	D3DBLEND_ONE);
+//	cc.set									(s_Light_Direct.constants.get("light_direction"),	-vLightDir.x,-vLightDir.y,-vLightDir.z,0	);
+//	cc.set									(s_Light_Direct.constants.get("light_color"),		.9f,		.3f,		.0,			.7		);
+//	cc.flush								(m_pd3dDevice);
+//	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
+//	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
 
 	// Cleanup
 	m_pd3dDevice->SetTexture				(0, NULL);
 	m_pd3dDevice->SetTexture				(1, NULL);
+	m_pd3dDevice->SetTexture				(2, NULL);
 	m_pd3dDevice->SetRenderTarget			(0, pBaseTarget	);
+	pBaseTarget->Release					();
 
 	return S_OK;
 }
@@ -856,6 +841,7 @@ HRESULT CMyD3DApplication::RenderCombineDBG_Accumulator	()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::RenderOverlay()
 {
+/*
     m_pd3dDevice->SetSamplerState		(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
     m_pd3dDevice->SetSamplerState		(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
 	m_pd3dDevice->SetRenderState		(D3DRS_CULLMODE, D3DCULL_NONE);
@@ -868,6 +854,7 @@ HRESULT CMyD3DApplication::RenderOverlay()
 	m_pd3dDevice->SetTextureStageState	(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
 	m_pd3dDevice->DrawPrimitive			(D3DPT_TRIANGLESTRIP, 0, 2);
 	m_pd3dDevice->SetTexture			(0, NULL);
+*/
 
 	return S_OK;
 }
@@ -905,29 +892,24 @@ HRESULT CMyD3DApplication::UpdateTransform()
 
 	D3DXMatrixMultiply			(&dm_model2world2view,				&dm_model2world, &dm_2view);
 	D3DXMatrixMultiply			(&dm_model2world2view2projection,	&dm_model2world, &dm_world2view2projection);
-	D3DXMatrixMultiplyTranspose	(&m_matModelMVP, &matWorldModel,	&mat);
-
-	D3DXMatrixIdentity			(&matWorldFloor);
-	D3DXMatrixMultiplyTranspose	(&m_matFloorMVP, &matWorldFloor,	&mat);
 
 	// Light direction
-	D3DXVECTOR3 vLightDir		= D3DXVECTOR3(2.0f, 1.0f, -1.0f);
-	D3DXVec3Normalize			(&vLightDir, &vLightDir);
+	dv_LightDir					= D3DXVECTOR3(2.0f, 1.0f, -1.0f);
+	D3DXVec3Normalize			(&dv_LightDir, &dv_LightDir);
 
 	// Setup shadow map transform
 	vLookatPt					= vModelOffs;
-	vEyePt						= vLookatPt + vLightDir * (m_fModelSize / 2.0f);
+	vEyePt						= vLookatPt + dv_LightDir * (m_fModelSize / 2.0f);
     D3DXMatrixLookAtLH			(&matView, &vEyePt, &vLookatPt, &vUpVec);
 
 	// Projection for directional light
     D3DXMatrixOrthoLH			(&matProj, 5.0f, 5.0f, 0.0f, DEPTH_RANGE);
 
-	D3DXMATRIX matShadowModelMVP, matShadowFloorMVP;
+	D3DXMATRIX matShadowModelMVP;
 	D3DXMatrixMultiply			(&mat, &matView, &matProj);
-	D3DXMatrixMultiply			(&matShadowModelMVP, &matWorldModel, &mat);
-	D3DXMatrixTranspose			(&m_matShadowModelMVP, &matShadowModelMVP);
-	D3DXMatrixMultiply			(&matShadowFloorMVP, &matWorldFloor, &mat);
-	D3DXMatrixTranspose			(&m_matShadowFloorMVP, &matShadowFloorMVP);
+	D3DXMatrixMultiply			(&matShadowModelMVP,	&matWorldModel, &mat);
+	
+	dm_model2world2view2projection_smap	= matShadowModelMVP;
 
 	// Texture adjustment matrix
 	FLOAT fTexelOffs			= (.5f / SHADOW_MAP_SIZE);
@@ -935,21 +917,7 @@ HRESULT CMyD3DApplication::UpdateTransform()
 								0.0f,     -0.5f,        0.0f,        0.0f,
 								0.0f,      0.0f,        0.0f,        0.0f,
 								0.5f + fTexelOffs,	0.5f + fTexelOffs,	1.0f, 1.0f);
-
-	D3DXMatrixMultiplyTranspose(&m_matShadowModelTex, &matShadowModelMVP, &matTexAdj);
-	D3DXMatrixMultiplyTranspose(&m_matShadowFloorTex, &matShadowFloorMVP, &matTexAdj);
-
-	// Setup lighting -- transform into model space
-	D3DXVECTOR3 v;
-	D3DXMatrixInverse			(&mat, NULL, &matWorldModel);
-	D3DXVec3TransformNormal		(&v, &vLightDir, &mat);
-	D3DXVec3Normalize			(&v, &v);
-	m_vecLightDirModel			= D3DXVECTOR4(v.x, v.y, v.z, 0.0f);
-
-	D3DXMatrixInverse			(&mat, NULL, &matWorldFloor);
-	D3DXVec3TransformNormal		(&v, &vLightDir, &mat);
-	D3DXVec3Normalize			(&v, &v);
-	m_vecLightDirFloor			= D3DXVECTOR4(v.x, v.y, v.z, 0.0f);
+	D3DXMatrixMultiply			(&dm_model2world2view2projection_light, &matShadowModelMVP, &matTexAdj);
 
 	return S_OK;
 }
