@@ -202,7 +202,7 @@ function fract:setJob(npc, job)
 	if job.name == "patrol" then
 		job.object = npc
 		job.begin = game.time()
-		xr_patrol.set_patrol(npc, true, job.patrol_path, job.path_look, job.escape_path)			
+		xr_comm_ptr.set_patrol(npc, true, job.patrol_path, job.path_look, job.escape_path)			
 	end
 	if job.name == "follower" then
 		local nn = self:nameStalkerOnJob("patrol")
