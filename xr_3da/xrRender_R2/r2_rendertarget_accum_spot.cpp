@@ -108,7 +108,6 @@ void CRenderTarget::accum_spot	(light* L)
 	L_dir.normalize				();
 
 	// Draw volume with projective texgen
-	// CHK_DX	(Q->Issue(D3DISSUE_BEGIN));
 	{
 		// Lighting
 		RCache.set_Element			(shader->E[ L->flags.bShadow ? 1:2 ]);
@@ -123,11 +122,6 @@ void CRenderTarget::accum_spot	(light* L)
 		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP);
 		draw_volume					(L);
 	}
-	// CHK_DX	(Q->Issue	(D3DISSUE_END));
-	// DWORD	pixels	= 0;
-	// CHK_DX	(Q->GetData	(&pixels,sizeof(pixels),D3DGETDATA_FLUSH));
-	//Msg		("%8X : fragments(%d), size(%d)",u32(L),pixels,RImplementation.LR.S_size);
-
 	dwLightMarkerID					+=	2;	// keep lowest bit always setted up
 	CHK_DX		(HW.pDevice->SetRenderState(D3DRS_SCISSORTESTENABLE,FALSE));
 }
