@@ -99,7 +99,7 @@ void CScriptEntity::reinit()
 
 void CScriptEntity::SetScriptControl(const bool bScriptControl, shared_str caSciptName)
 {
-	VERIFY				(
+	if (!(
 		(
 			(m_bScriptControl && !bScriptControl) || 
 			(!m_bScriptControl && bScriptControl)
@@ -111,7 +111,11 @@ void CScriptEntity::SetScriptControl(const bool bScriptControl, shared_str caSci
 					!xr_strcmp(caSciptName,m_caScriptName)
 				)
 			)
-		);
+		)) {
+		ai().script_engine().script_log(eLuaMessageTypeError,"Invalid sequence of taking an entity under script control");
+		return;
+	}
+
 	if (bScriptControl && !m_bScriptControl)
 		object().add_visual_callback			(&ActionCallback);
 	else
@@ -169,11 +173,6 @@ void CScriptEntity::UseObject(const CObject *tpObject)
 
 void CScriptEntity::AddAction(const CScriptEntityAction *tpEntityAction, bool bHighPriority)
 {
-#ifdef _DEBUG
-//	if (!xr_strcmp("m_stalker_wounded",*object().cName())) {
-//		Msg				("%6d Adding action : %s",Level().timeServer(),*tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
-//	}
-#endif
 	bool				empty = m_tpActionQueue.empty();
 	if (!bHighPriority || m_tpActionQueue.empty())
 		m_tpActionQueue.push_back(xr_new<CScriptEntityAction>(*tpEntityAction));
@@ -188,18 +187,6 @@ void CScriptEntity::AddAction(const CScriptEntityAction *tpEntityAction, bool bH
 
 	if (empty)
 		ProcessScripts	();
-
-#ifdef _DEBUG
-//	if (!xr_strcmp("m_stalker_wounded",*object().cName()))
-//		Msg					("\n%6d Action queue",Level().timeServer());
-//	xr_deque<CScriptEntityAction*>::const_iterator	I = m_tpActionQueue.begin();
-//	xr_deque<CScriptEntityAction*>::const_iterator	E = m_tpActionQueue.end();
-//	for ( ; I != E; ++I)
-//		if (!xr_strcmp("m_stalker_wounded",*object().cName()))
-//			Msg				("%6d Action : %s",Level().timeServer(),*(*I)->m_tAnimationAction.m_caAnimationToPlay);
-//	if (!xr_strcmp("m_stalker_wounded",*object().cName()))
-//		Msg					("\n");
-#endif
 }
 
 CScriptEntityAction *CScriptEntity::GetCurrentAction()
@@ -293,41 +280,45 @@ void CScriptEntity::ProcessScripts()
 		return;
 	}
 
-	bool			l_bCompleted;
-	
-	l_bCompleted	= l_tpEntityAction->m_tWatchAction.m_bCompleted;
-	bfAssignWatch	(l_tpEntityAction);
-	if (l_tpEntityAction->m_tWatchAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeWatch].get_object())
-		callback(eActionTypeWatch);
+	try {
+		bool			l_bCompleted;
+		l_bCompleted	= l_tpEntityAction->m_tWatchAction.m_bCompleted;
+		bfAssignWatch	(l_tpEntityAction);
+		if (l_tpEntityAction->m_tWatchAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeWatch].get_object())
+			callback(eActionTypeWatch);
 
-	l_bCompleted	= l_tpEntityAction->m_tAnimationAction.m_bCompleted;
-	bfAssignAnimation(l_tpEntityAction);
+		l_bCompleted	= l_tpEntityAction->m_tAnimationAction.m_bCompleted;
+		bfAssignAnimation(l_tpEntityAction);
 
-	l_bCompleted	= l_tpEntityAction->m_tSoundAction.m_bCompleted;
-	bfAssignSound	(l_tpEntityAction);
-	if (l_tpEntityAction->m_tSoundAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeSound].get_object())
-		callback(eActionTypeSound);
-	
-	l_bCompleted	= l_tpEntityAction->m_tParticleAction.m_bCompleted;
-	bfAssignParticles(l_tpEntityAction);
-	if (l_tpEntityAction->m_tParticleAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeParticle].get_object())
-		callback(eActionTypeParticle);
-	
-	l_bCompleted	= l_tpEntityAction->m_tObjectAction.m_bCompleted;
-	bfAssignObject	(l_tpEntityAction);
-	if (l_tpEntityAction->m_tObjectAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeObject].get_object())
-		callback(eActionTypeObject);
-	
-	l_bCompleted	= l_tpEntityAction->m_tMovementAction.m_bCompleted;
-	bfAssignMovement(l_tpEntityAction);
-	if (l_tpEntityAction->m_tMovementAction.m_bCompleted && !l_bCompleted)
-		SCRIPT_CALLBACK_EXECUTE_3(m_tpCallbacks[eActionTypeMovement], object().lua_game_object(),u32(eActionTypeMovement),-1);
+		l_bCompleted	= l_tpEntityAction->m_tSoundAction.m_bCompleted;
+		bfAssignSound	(l_tpEntityAction);
+		if (l_tpEntityAction->m_tSoundAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeSound].get_object())
+			callback(eActionTypeSound);
+		
+		l_bCompleted	= l_tpEntityAction->m_tParticleAction.m_bCompleted;
+		bfAssignParticles(l_tpEntityAction);
+		if (l_tpEntityAction->m_tParticleAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeParticle].get_object())
+			callback(eActionTypeParticle);
+		
+		l_bCompleted	= l_tpEntityAction->m_tObjectAction.m_bCompleted;
+		bfAssignObject	(l_tpEntityAction);
+		if (l_tpEntityAction->m_tObjectAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeObject].get_object())
+			callback(eActionTypeObject);
+		
+		l_bCompleted	= l_tpEntityAction->m_tMovementAction.m_bCompleted;
+		bfAssignMovement(l_tpEntityAction);
+		if (l_tpEntityAction->m_tMovementAction.m_bCompleted && !l_bCompleted)
+			SCRIPT_CALLBACK_EXECUTE_3(m_tpCallbacks[eActionTypeMovement], object().lua_game_object(),u32(eActionTypeMovement),-1);
 
-	// Установить выбранную анимацию
-	if (!l_tpEntityAction->m_tAnimationAction.m_bCompleted)
-		bfScriptAnimation	();
+		// Установить выбранную анимацию
+		if (!l_tpEntityAction->m_tAnimationAction.m_bCompleted)
+			bfScriptAnimation	();
 
-	bfAssignMonsterAction(l_tpEntityAction);
+		bfAssignMonsterAction(l_tpEntityAction);
+	}
+	catch(...) {
+		ResetScriptData		();
+	}
 }
 
 bool CScriptEntity::bfAssignWatch(CScriptEntityAction *tpEntityAction)
@@ -444,12 +435,22 @@ bool CScriptEntity::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 		return				(false);
 	}
 	
-	VERIFY				(m_monster);
+	if (!m_monster) {
+		ai().script_engine().script_log(eLuaMessageTypeError,"Cannot assign a movement action not to a monster!");
+		return				(true);
+	}
 
 	switch (l_tMovementAction.m_tGoalType) {
 		case CScriptMovementAction::eGoalTypeObject : {
 			CGameObject		*l_tpGameObject = smart_cast<CGameObject*>(l_tMovementAction.m_tpObjectToGo);
-			R_ASSERT		(l_tpGameObject);
+#ifdef DEBUG
+			if (!l_tpGameObject) {
+				ai().script_engine().script_log(eLuaMessageTypeError,"eGoalTypeObject specified, but no object passed!");
+				throw;
+			}
+#else
+			R_ASSERT(l_tpGameObject);
+#endif
 			m_monster->movement().set_path_type(MovementManager::ePathTypeLevelPath);
 //			Msg			("%6d Object %s, position [%f][%f][%f]",Level().timeServer(),*l_tpGameObject->cName(),VPUSH(l_tpGameObject->Position()));
 			m_monster->movement().detail_path_manager().set_dest_position(l_tpGameObject->Position());
@@ -471,17 +472,17 @@ bool CScriptEntity::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 			m_monster->movement().set_path_type(MovementManager::ePathTypeLevelPath);
 			m_monster->movement().detail_path_manager().set_dest_position(l_tMovementAction.m_tDestinationPosition);
 			
-//			u64					start = CPU::GetCycleCount();
 			u32					vertex_id;
 			vertex_id			= ai().level_graph().vertex(object().ai_location().level_vertex_id(),l_tMovementAction.m_tDestinationPosition);
-			if (!ai().level_graph().valid_vertex_id(vertex_id)) {
+			if (!ai().level_graph().valid_vertex_id(vertex_id))
 				vertex_id		= ai().level_graph().check_position_in_direction(object().ai_location().level_vertex_id(),object().Position(),l_tMovementAction.m_tDestinationPosition);
+			
+#ifdef DEBUG
+			if (!ai().level_graph().valid_vertex_id(vertex_id)) {
+				ai().script_engine().script_log(eLuaMessageTypeError,"Cannot find corresponding level vertex for the specified position [%f][%f][%f] for monster %s",VPUSH(l_tMovementAction.m_tDestinationPosition),*m_monster->cName());
+				throw;
 			}
-//			u64					stop = CPU::GetCycleCount();
-#ifdef _DEBUG
-//			Msg					("%6d Searching for node for script object %s (%.5f seconds)",Level().timeServer(),*object().cName(),float(s64(stop - start))*CPU::cycles2seconds);
 #endif
-			VERIFY				(ai().level_graph().valid_vertex_id(vertex_id));
 			m_monster->movement().level_path_manager().set_dest_vertex(vertex_id);
 			m_monster->movement().level_location_selector().set_evaluator(0);
 			break;
@@ -519,7 +520,12 @@ void CScriptEntity::net_Destroy()
 
 void CScriptEntity::set_callback	(const luabind::object &lua_object, LPCSTR method, const ScriptEntity::EActionType tActionType)
 {
-	VERIFY					(tActionType < eActionTypeCount);
+#ifdef DEBUG
+	if (tActionType < eActionTypeCount) {
+		ai().script_engine().script_log(eLuaMessageTypeError,"Invalid action type passed to the set_callback function for object %s",*m_object->cName());
+		return;
+	}
+#endif
 
 	m_tpCallbacks[tActionType].set(lua_object, method);
 
@@ -531,7 +537,12 @@ void CScriptEntity::set_callback	(const luabind::object &lua_object, LPCSTR meth
 
 void CScriptEntity::set_callback	(const luabind::functor<void> &lua_function, const ScriptEntity::EActionType tActionType)
 {
-	VERIFY					(tActionType < eActionTypeCount);
+#ifdef DEBUG
+	if (tActionType < eActionTypeCount) {
+		ai().script_engine().script_log(eLuaMessageTypeError,"Invalid action type passed to the set_callback function for object %s",*m_object->cName());
+		return;
+	}
+#endif
 	
 	m_tpCallbacks[tActionType].set(lua_function);
 	
@@ -543,7 +554,12 @@ void CScriptEntity::set_callback	(const luabind::functor<void> &lua_function, co
 
 void CScriptEntity::clear_callback	(const ScriptEntity::EActionType tActionType)
 {
-	VERIFY					(tActionType < eActionTypeCount);
+#ifdef DEBUG
+	if (tActionType < eActionTypeCount) {
+		ai().script_engine().script_log(eLuaMessageTypeError,"Invalid action type passed to the clear_callback function for object %s",*m_object->cName());
+		return;
+	}
+#endif
 	
 	m_tpCallbacks[tActionType].clear();
 
@@ -590,7 +606,12 @@ void CScriptEntity::callback		(const ScriptEntity::EActionType tActionType)
 
 LPCSTR CScriptEntity::GetPatrolPathName()
 {
-	VERIFY					(GetScriptControl());
+#ifdef DEBUG
+	if (!GetScriptControl()) {
+		ai().script_engine().script_log(eLuaMessageTypeError,"Object %s is not under script control while you are trying to get patrol path name!",*m_object->cName());
+		return "";
+	}
+#endif
 	if (m_tpActionQueue.empty())
 		return				("");
 	return					(*m_tpActionQueue.back()->m_tMovementAction.m_path_name);
@@ -612,7 +633,7 @@ void CScriptEntity::shedule_Update	(u32 DT)
 void ScriptCallBack(CBlend* B)
 {
 	CScriptEntity	*l_tpScriptMonster = static_cast<CScriptEntity*>(B->CallbackParam);
-	R_ASSERT		(l_tpScriptMonster);
+	VERIFY			(l_tpScriptMonster);
 	if (l_tpScriptMonster->GetCurrentAction() && !B->bone_or_part) {
 		if (!l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted)
 			l_tpScriptMonster->callback(ScriptEntity::eActionTypeAnimation);

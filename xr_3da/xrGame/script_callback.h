@@ -26,7 +26,7 @@ public:
 			void					clear				(bool member);
 	IC		luabind::functor<void>	*get_function		();
 	IC		luabind::object			*get_object			();
-	IC		shared_str					get_method			();
+	IC		shared_str				get_method			();
 			void					callback			();
 	IC		bool					assigned			() const;
 };

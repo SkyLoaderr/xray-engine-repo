@@ -188,13 +188,13 @@ ALife::ERelationType CScriptGameObject::GetRelationType	(CScriptGameObject* who)
 {
 	CEntityAlive		*l_tpEntityAlive1 = smart_cast<CEntityAlive*>(&object());
 	if (!l_tpEntityAlive1) {
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"%s cannot access class member!",*object().cName());
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"%s cannot access class member GetRelationType!",*object().cName());
 		return ALife::eRelationTypeDummy;
 	}
 	
 	CEntityAlive		*l_tpEntityAlive2 = smart_cast<CEntityAlive*>(&who->object());
 	if (!l_tpEntityAlive2) {
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"%s cannot access class member!",*who->object().cName());
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"%s cannot apply GetRelationType method for non-alive object!",*who->object().cName());
 		return ALife::eRelationTypeDummy;
 	}
 	

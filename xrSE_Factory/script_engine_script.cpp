@@ -39,8 +39,8 @@ void FlushLogs()
 void verify_if_thread_is_running()
 {
 	if (!ai().script_engine().current_thread()) {
-		ai().script_engine().script_stack_tracker().print_stack(ai().script_engine().lua());
-		VERIFY2		(ai().script_engine().current_thread(),"coroutine.yield() is called outside the LUA thread!");
+		ai().script_engine().script_log(eLuaMessageTypeError,"coroutine.yield() is called outside the LUA thread!");
+		throw;
 	}
 }
 

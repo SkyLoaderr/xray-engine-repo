@@ -29,6 +29,6 @@ CStalkerActionDead::CStalkerActionDead	(CAI_Stalker *object, LPCSTR action_name)
 void CStalkerActionDead::execute		()
 {
 	inherited::execute		();
-	m_object->movement().enable_movement(false);
+	object().movement().enable_movement(false);
 	set_property			(eWorldPropertyDead,true);
 }

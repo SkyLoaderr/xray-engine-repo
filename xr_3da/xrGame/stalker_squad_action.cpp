@@ -24,20 +24,20 @@ CStalkerActionSquad::CStalkerActionSquad	(CAI_Stalker *object, LPCSTR action_nam
 void CStalkerActionSquad::initialize		()
 {
 	inherited::initialize	();
-	VERIFY					(m_object->agent_manager().member(m_object).order_type() == AgentManager::eOrderTypeAction);
-	m_object->setup().clear();
-	m_object->setup().add_action(0,xr_new<CSetupAction>(m_object->agent_manager().member(m_object).action()));
+	VERIFY					(object().agent_manager().member(m_object).order_type() == AgentManager::eOrderTypeAction);
+	object().setup().clear();
+	object().setup().add_action(0,xr_new<CSetupAction>(object().agent_manager().member(m_object).action()));
 }
 
 void CStalkerActionSquad::execute			()
 {
 	inherited::execute		();
-	VERIFY					(m_object->agent_manager().member(m_object).order_type() == AgentManager::eOrderTypeAction);
-	m_object->setup().action(0).update(m_object->agent_manager().member(m_object).action());
+	VERIFY					(object().agent_manager().member(m_object).order_type() == AgentManager::eOrderTypeAction);
+	object().setup().action(0).update(object().agent_manager().member(m_object).action());
 }
 
 void CStalkerActionSquad::finalize			()
 {
 	inherited::finalize		();
-	m_object->setup().clear	();
+	object().setup().clear	();
 }

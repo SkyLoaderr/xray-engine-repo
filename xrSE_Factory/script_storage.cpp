@@ -54,7 +54,7 @@ CScriptStorage::~CScriptStorage		()
 		lua_close			(m_virtual_machine);
 }
 
-int __cdecl CScriptStorage::script_log	(ScriptStorage::ELuaMessageType tLuaMessageType, LPCSTR caFormat, ...)
+int CScriptStorage::vscript_log			(ScriptStorage::ELuaMessageType tLuaMessageType, LPCSTR caFormat, va_list marker)
 {
 #ifndef NO_XRGAME_SCRIPT_ENGINE
 #	ifdef DEBUG
@@ -114,26 +114,42 @@ int __cdecl CScriptStorage::script_log	(ScriptStorage::ELuaMessageType tLuaMessa
 		default : NODEFAULT;
 	}
 	
-	va_list	l_tMarker;
-	
-	va_start(l_tMarker,caFormat);
-
 	strcpy	(S2,S);
 	S1		= S2 + xr_strlen(S);
-	int		l_iResult = vsprintf(S1,caFormat,l_tMarker);
+	int		l_iResult = vsprintf(S1,caFormat,marker);
 	Msg		("%s",S2);
 	
 	strcpy	(S2,SS);
 	S1		= S2 + xr_strlen(SS);
-	vsprintf(S1,caFormat,l_tMarker);
+	vsprintf(S1,caFormat,marker);
 
 #ifndef ENGINE_BUILD
 	ai().script_engine().m_output.w_stringZ(S2);
 #endif
 
-	va_end	(l_tMarker);
-
 	return	(l_iResult);
+}
+
+int __cdecl CScriptStorage::script_log	(ScriptStorage::ELuaMessageType tLuaMessageType, LPCSTR caFormat, ...)
+{
+
+	va_list		marker;
+	va_start	(marker,caFormat);
+	int			result = vscript_log(tLuaMessageType,caFormat,marker);
+	va_end		(marker);
+
+#ifndef ENGINE_BUILD
+	static bool	reenterability = false;
+	if (!reenterability) {
+		bool		condition = ((eLuaMessageTypeError == tLuaMessageType) && ai().script_engine().script_stack_tracker().lua());
+		reenterability = true;
+		if (condition)
+			ai().script_engine().script_stack_tracker().print_stack	(ai().script_engine().script_stack_tracker().lua());
+		reenterability = false;
+	}
+#endif
+
+	return		(result);
 }
 
 bool CScriptStorage::parse_namespace(LPCSTR caNamespaceName, LPSTR b, LPSTR c)
@@ -416,10 +432,6 @@ void CScriptStorage::print_error(CLuaVirtualMachine *L, int iErrorCode)
 		}
 		default : NODEFAULT;
 	}
-
-#ifndef ENGINE_BUILD
-	ai().script_engine().script_stack_tracker().print_stack(L);
-#endif
 }
 
 IC	LPCSTR CScriptStorage::event2string(int iEventCode)

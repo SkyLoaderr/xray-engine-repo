@@ -42,8 +42,8 @@ void CStalkerActionGetReadyToDialog::initialize	()
 	object().movement().set_body_state			(eBodyStateStand);
 	object().movement().set_movement_type		(eMovementTypeWalk);
 	object().movement().set_mental_state		(eMentalStateDanger);
-	object().movement().set_level_dest_vertex	(m_object->ai_location().level_vertex_id());
-	object().movement().set_desired_position	(&m_object->Position());
+	object().movement().set_level_dest_vertex	(object().ai_location().level_vertex_id());
+	object().movement().set_desired_position	(&object().Position());
 	object().sight().setup						(SightManager::eSightTypeCurrentDirection);
 	object().remove_active_sounds				(u32(eStalkerSoundMaskNoHumming));
 
@@ -66,7 +66,7 @@ void CStalkerActionGetReadyToDialog::finalize	()
 void CStalkerActionGetReadyToDialog::execute		()
 {
 	inherited::execute		();
-	if (m_object->CObjectHandler::weapon_strapped())
+	if (object().CObjectHandler::weapon_strapped())
 		m_storage->set_property	(eWorldPropertyReadyToDialog,true);
 }
 
@@ -90,8 +90,8 @@ void CStalkerActionHello::initialize	()
 	object().movement().set_body_state		(eBodyStateStand);
 	object().movement().set_movement_type		(eMovementTypeWalk);
 	object().movement().set_mental_state		(eMentalStateDanger);
-	object().movement().set_level_dest_vertex	(m_object->ai_location().level_vertex_id());
-	object().movement().set_desired_position	(&m_object->Position());
+	object().movement().set_level_dest_vertex	(object().ai_location().level_vertex_id());
+	object().movement().set_desired_position	(&object().Position());
 	object().sight().setup			(SightManager::eSightTypeCurrentDirection);
 	object().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
 	object().body_action			(eBodyActionHello);
@@ -143,8 +143,8 @@ void CStalkerActionDialog::initialize	()
 	object().movement().set_body_state		(eBodyStateStand);
 	object().movement().set_movement_type		(eMovementTypeWalk);
 	object().movement().set_mental_state		(eMentalStateDanger);
-	object().movement().set_level_dest_vertex	(m_object->ai_location().level_vertex_id());
-	object().movement().set_desired_position	(&m_object->Position());
+	object().movement().set_level_dest_vertex	(object().ai_location().level_vertex_id());
+	object().movement().set_desired_position	(&object().Position());
 	object().sight().setup			(SightManager::eSightTypeCurrentDirection);
 	object().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
 	object().body_action			(eBodyActionHello);

@@ -70,12 +70,12 @@ void CStalkerActionGatherItems::execute		()
 {
 	inherited::execute		();
 
-	if (!m_object->memory().item().selected())
+	if (!object().memory().item().selected())
 		return;
 
-	object().movement().set_level_dest_vertex	(m_object->memory().item().selected()->ai_location().level_vertex_id());
-	object().movement().set_desired_position	(&m_object->memory().item().selected()->Position());
-	object().sight().setup			(SightManager::eSightTypePosition,&m_object->memory().item().selected()->Position());
+	object().movement().set_level_dest_vertex	(object().memory().item().selected()->ai_location().level_vertex_id());
+	object().movement().set_desired_position	(&object().memory().item().selected()->Position());
+	object().sight().setup			(SightManager::eSightTypePosition,&object().memory().item().selected()->Position());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -113,14 +113,14 @@ void CStalkerActionNoALife::initialize	()
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	object().movement().set_level_dest_vertex	(m_object->ai_location().level_vertex_id());
-	object().movement().set_desired_position	(&m_object->Position());
+	object().movement().set_level_dest_vertex	(object().ai_location().level_vertex_id());
+	object().movement().set_desired_position	(&object().Position());
 //	Fvector							direction = Fvector().set(0.f,0.f,1.f);//Fvector().set(::Random.randF(1.f),0.f,::Random.randF(1.f));
 //	direction.normalize_safe		();
 //	object().movement().set_desired_direction	(&direction);
 //	object().movement().set_desired_position	(0);
 //	object().movement().set_path_type			(MovementManager::ePathTypePatrolPath);
-//	m_object->set_path				("way0000",PatrolPathManager::ePatrolStartTypeNearest,PatrolPathManager::ePatrolRouteTypeContinue,false);
+//	object().set_path				("way0000",PatrolPathManager::ePatrolStartTypeNearest,PatrolPathManager::ePatrolRouteTypeContinue,false);
 
 //	CGameObject						*actor = smart_cast<CGameObject*>(Level().CurrentEntity());
 //	object().movement().set_desired_position	(&actor->Position());
@@ -185,7 +185,7 @@ void CStalkerActionNoALife::execute		()
 //		object().movement().set_level_dest_vertex (dest_vertex);
 //		return;
 //	}
-//	dest_vertex						= m_object->accessible_nearest(Fvector(dest_position),dest_position);
+//	dest_vertex						= object().accessible_nearest(Fvector(dest_position),dest_position);
 //	object().movement().set_desired_position	(&dest_position);
 //	object().movement().set_level_dest_vertex (dest_vertex);
 //	Fvector							look_pos = actor->Position();

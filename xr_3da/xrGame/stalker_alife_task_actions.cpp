@@ -119,8 +119,8 @@ void CStalkerActionReachTaskLocation::execute		()
 {
 	inherited::execute					();
 	object().play						(eStalkerSoundHumming,60000,10000);
-	object().movement().set_game_dest_vertex		(m_object->current_alife_task().m_tGraphID);
-	if (object().movement().path_completed() || m_object->alife_task_completed())
+	object().movement().set_game_dest_vertex		(object().current_alife_task().m_tGraphID);
+	if (object().movement().path_completed() || object().alife_task_completed())
 		m_storage->set_property			(eWorldPropertyReachedTaskLocation,true);
 }
 
@@ -140,11 +140,11 @@ void CStalkerActionAccomplishTask::setup	(CAI_Stalker *object, CPropertyStorage 
 	m_inertia_time						= 60000;
 	m_max_search_distance				= 30.f;
 	
-	if (pSettings->line_exist(*m_object->cNameSect(),"time_to_search_for_artefacts"))
-		m_inertia_time					= pSettings->r_u32(*m_object->cNameSect(),"time_to_search_for_artefacts");
+	if (pSettings->line_exist(*object->cNameSect(),"time_to_search_for_artefacts"))
+		m_inertia_time					= pSettings->r_u32(*object->cNameSect(),"time_to_search_for_artefacts");
 
-	if (pSettings->line_exist(*m_object->cNameSect(),"distance_to_search_for_artefacts"))
-		m_max_search_distance			= pSettings->r_float(*m_object->cNameSect(),"distance_to_search_for_artefacts");
+	if (pSettings->line_exist(*object->cNameSect(),"distance_to_search_for_artefacts"))
+		m_max_search_distance			= pSettings->r_float(*object->cNameSect(),"distance_to_search_for_artefacts");
 }
 
 void CStalkerActionAccomplishTask::initialize	()
@@ -183,23 +183,23 @@ void CStalkerActionAccomplishTask::execute		()
 {
 	inherited::execute					();
 
-	if (m_object->alife_task_completed())
+	if (object().alife_task_completed())
 		m_storage->set_property			(eWorldPropertyTaskCompleted,true);
 
 	if (!object().movement().path_completed())
 		return;
 	
-	Fvector position					= ai().game_graph().vertex(m_object->current_alife_task().m_tGraphID)->level_point();
-	m_object->m_ce_random_game->setup	(m_object->current_alife_task().m_tGraphID,m_max_search_distance);
-	CCoverPoint							*point = ai().cover_manager().best_cover(position,m_max_search_distance,*m_object->m_ce_random_game);
+	Fvector position					= ai().game_graph().vertex(object().current_alife_task().m_tGraphID)->level_point();
+	object().m_ce_random_game->setup	(object().current_alife_task().m_tGraphID,m_max_search_distance);
+	CCoverPoint							*point = ai().cover_manager().best_cover(position,m_max_search_distance,*object().m_ce_random_game);
 
 	if (point && !completed()) {
 		object().movement().set_level_dest_vertex	(point->level_vertex_id());
 		object().movement().set_desired_position	(&point->position());
 	}
 	else {
-		if (!m_object->alife_task_completed()) {
-			m_object->failed_to_complete_alife_task();
+		if (!object().alife_task_completed()) {
+			object().failed_to_complete_alife_task();
 			m_storage->set_property		(eWorldPropertyReachedTaskLocation,false);
 		}
 		else {
@@ -249,8 +249,8 @@ void CStalkerActionReachCustomerLocation::execute		()
 
 	object().play						(eStalkerSoundHumming,60000,10000);
 
-	CSE_ALifeDynamicObject				*customer = ai().alife().objects().object(m_object->current_alife_task().m_tCustomerID);
-	if (m_object->ai_location().game_vertex_id() != customer->m_tGraphID) {
+	CSE_ALifeDynamicObject				*customer = ai().alife().objects().object(object().current_alife_task().m_tCustomerID);
+	if (object().ai_location().game_vertex_id() != customer->m_tGraphID) {
 		object().movement().set_game_dest_vertex	(customer->m_tGraphID);
 		return;
 	}
@@ -287,15 +287,15 @@ void CStalkerActionCommunicateWithCustomer::initialize	()
 	object().movement().set_desired_direction		(0);
 	object().movement().set_path_type				(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
-	object().movement().set_level_dest_vertex		(m_object->ai_location().level_vertex_id());
-	object().movement().set_desired_position		(&m_object->Position());
+	object().movement().set_level_dest_vertex		(object().ai_location().level_vertex_id());
+	object().movement().set_desired_position		(&object().Position());
 	object().movement().set_body_state			(eBodyStateStand);
 	object().movement().set_movement_type			(eMovementTypeStand);
 	object().movement().set_mental_state			(eMentalStateFree);
 	object().sight().setup				(CSightAction(SightManager::eSightTypeCover,false,true));
 	object().CObjectHandler::set_goal	(eObjectActionIdle);
 	object().remove_active_sounds		(u32(eStalkerSoundMaskNoHumming));
-	m_trader							= smart_cast<CAI_Trader*>(Level().Objects.net_Find(m_object->current_alife_task().m_tCustomerID));
+	m_trader							= smart_cast<CAI_Trader*>(Level().Objects.net_Find(object().current_alife_task().m_tCustomerID));
 	VERIFY								(m_trader);
 }
 
@@ -316,7 +316,7 @@ void CStalkerActionCommunicateWithCustomer::execute		()
 	if (m_trader->busy_now())
 		return;
 
-	m_object->communicate				(m_trader);
+	object().communicate				(m_trader);
 
 	m_storage->set_property				(eWorldPropertyReachedTaskLocation,		false);
 	m_storage->set_property				(eWorldPropertyTaskCompleted,			false);
