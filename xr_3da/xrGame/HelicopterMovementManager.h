@@ -24,6 +24,7 @@ class CHelicopterMovManager :public CHelicopterMotion
 	float							m_baseAltitude;
 	float							m_attackAltitude;
 	float							m_basePatrolSpeed;
+	float							m_baseAttackSpeed;
 	float							m_pitch_k;
 	Fbox							m_boundingVolume;
 	float							m_maxKeyDist;
@@ -40,20 +41,22 @@ class CHelicopterMovManager :public CHelicopterMotion
 	float	_flerp					(float src, float dst, float t)		{return src*(1.f-t) + dst*t;};
 	bool	dice					()		{return (::Random.randF(-1.0f, 1.0f) > 0.0f); };
 
+	void	insertRounding			(const Fvector& fromPos, const Fvector& destPos, float radius, xr_vector<Fvector>& vKeys);
 	void	makeSmoothKeyPath		(float from_time, const xr_vector<Fvector>& vAddedKeys, xr_vector<Fvector>& vSmoothKeys);
 	void	createLevelPatrolTrajectory(u32 keyCount, const Fvector& fromPos, xr_vector<Fvector>& keys );
-	void	createHuntPathTrajectory(const Fvector& fromPos, const Fvector& enemyPos, xr_vector<Fvector>& keys );
+	void	createHuntPathTrajectory(float from_time, const Fvector& fromPos, const Fvector& enemyPos, float dist, xr_vector<Fvector>& keys );
 	void	createStayPathTrajectory(const Fvector& fromPos, xr_vector<Fvector>& keys );
 	Fvector	makeIntermediateKey		(Fvector& start, Fvector& dest, float k);
 	void	buildHuntPath			(const Fvector& enemyPos);
 	void	onFrame					();
 	void	onTime					(float t);
-	void	insertKeyPoints			(float from_time, xr_vector<Fvector>& keys, bool updateHPB=true);
+	void	insertKeyPoints			(float from_time, xr_vector<Fvector>& keys, float velocity, bool updateHPB=true);
 	void	updatePathHPB			(float from_time);
 	void	buildHPB				(const Fvector& p_prev, const Fvector& p_prev_phb, const Fvector& p0, const Fvector& p_next, Fvector& p0_phb_res);
 	void	addPartolPath			(float from_time);
 	void	updatePatrolPath		(float from_time);
 	void	addHuntPath				(float from_time, const Fvector& enemyPos);
+	void	addHuntPath2			(float from_time, const Fvector& enemyPos);
 	void	addPathToStayPoint		(float from_time);
 	void	getPathAltitude			(Fvector& point);
 	void	truncatePathSafe		(float from_time, float& safe_time, Fvector& lastPoint);

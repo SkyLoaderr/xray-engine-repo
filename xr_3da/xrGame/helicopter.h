@@ -21,6 +21,7 @@ public:
 		eInitiatePatrolZone,				// ->eMovingByPatrolZonePath
 		eMovingByPatrolZonePath,			//->eInitiatePatrolZone, eInitiateWaitBetweenPatrol
 		eInitiateHunt,						// ->eMovingByAttackTraj,eInitiatePatrolZone
+		eInitiateHunt2,						// ->eMovingByAttackTraj,eInitiatePatrolZone
 		eMovingByAttackTraj,				// ->eInitiatePatrolZone
 		eWaitForStart,						// ->eInitiatePatrolZone
 		eWaitBetweenPatrol,					// ->eInitiatePatrolZone
@@ -61,7 +62,7 @@ protected:
 	float							m_cur_x_rot, m_cur_y_rot;
 	float							m_bind_x_rot, m_bind_y_rot;
 	Fvector							m_bind_x, m_bind_y;
-	BOOL							m_allow_fire;
+	bool							m_allow_fire;
 	BOOL							m_use_rocket_on_attack;
 	BOOL							m_use_mgun_on_attack;
 	u16								m_last_launched_rocket;
@@ -121,7 +122,10 @@ public:
 	//CAI_ObjectLocation
 	void							init();
 	virtual	void					reinit();
-
+	void							useRocket(bool b){m_use_rocket_on_attack = b;};
+	BOOL							useRocket()const{return m_use_rocket_on_attack;};
+	void							useMGun(bool b){m_use_mgun_on_attack = b;};
+	BOOL							useMGun()const{return m_use_mgun_on_attack;};
 
 	//CGameObject
 	virtual	void			Load				(LPCSTR		section);
@@ -159,5 +163,9 @@ protected:
 	virtual	void			OnShot				();
 
 	void					updateMGunDir		();
+
+public:
 	void					doHunt				(CObject* dest);
+	void					doHunt2				(CObject* dest);
+	BOOL			 		isOnAttack			(){return (m_curState==eInitiateHunt || m_curState==eMovingByAttackTraj) ;}					
 };

@@ -94,6 +94,7 @@ void CHelicopterMovementManager::onFrame(Fmatrix& xform,
 	case CHelicopter::eMovingByAttackTraj:
 	case CHelicopter::eMovingToWaitPoint:
 	case CHelicopter::eInitiateHunt:
+	case CHelicopter::eInitiateHunt2:
 		{
 			Fvector pos,w;
 			pos.set(0.0f,0.0f,0.0f);

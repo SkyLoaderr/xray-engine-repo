@@ -30,6 +30,9 @@ void CHelicopter::setState(CHelicopter::EHeliState s)
 	case CHelicopter::eInitiateHunt:
 		str = "eInitiateHunt";
 		break;
+	case CHelicopter::eInitiateHunt2:
+		str = "eInitiateHunt2";
+		break;
 	case CHelicopter::eMovingByAttackTraj:
 		str = "eMovingByAttackTraj";
 		break;
@@ -444,6 +447,7 @@ void CHelicopter::Hit(	float P,
 		switch (GO->SUB_CLS_ID){
 			case CLSID_OBJECT_ACTOR: 
 				doHunt(who);
+//				doHunt2(who);
 			break;
 		default:
 			break;
@@ -470,6 +474,16 @@ void CHelicopter::doHunt(CObject* dest)
 	*/
 		setState(CHelicopter::eInitiateHunt);
 
+	}
+}
+
+void CHelicopter::doHunt2(CObject* dest)
+{
+	if( m_curState==CHelicopter::eMovingByPatrolZonePath ){
+
+		m_destEnemy		= dest;
+		dest->Center	(m_destEnemyPos);
+		setState(CHelicopter::eInitiateHunt2);
 	}
 }
 
