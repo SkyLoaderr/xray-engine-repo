@@ -1,16 +1,16 @@
 function main ()
 
 	local flesh = get_level_object ("flesh_eat")
-	local dead = get_level_object ("dead_stalker")
+	local dead = get_level_object ("stalker_dead")
 	local actor = get_actor ()
 
-    flesh:script (true, military1.script_name())
+    flesh:script (true, military1_1.script_name())
     action (flesh, move (move.act_run, dead), cond (cond.time_end, 1000))
 
 	wait (1000)
 
-    flesh:script (false, military1.script_name())
-    flesh:script (true, military1.script_name())
+    flesh:script (false, military1_1.script_name())
+    flesh:script (true, military1_1.script_name())
 
     action (flesh, move (move.act_eat, dead), cond (cond.time_end, 10000000))
 
@@ -18,20 +18,21 @@ function main ()
 
 	wait (5000)
 
-    flesh:script (false, military1.script_name())
-    flesh:script (true, military1.script_name())
+    flesh:script (false, military1_1.script_name())
+    flesh:script (true, military1_1.script_name())
 	action (flesh, anim ("stand_scared_0"), cond (cond.anim_end))
 
+	printf ("Scared animation set")
 	while flesh:action () do wait () end
-	
+	printf ("Scared animation end")
 
-    flesh:script (false, military1.script_name())
-    flesh:script (true, military1.script_name())
+    flesh:script (false, military1_1.script_name())
+    flesh:script (true, military1_1.script_name())
 
 	action (flesh, move (move.act_run,  patrol ("flesh_way")), cond (cond.move_end))
 	
 	while flesh:action () do wait () end
 
-    flesh:script (false, military1.script_name())
+    flesh:script (false, military1_1.script_name())
 
 end

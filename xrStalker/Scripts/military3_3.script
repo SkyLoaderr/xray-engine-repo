@@ -2,6 +2,7 @@
 
 function main ()
 
+	printf ("call military3_3");
 	local stalker = get_level_object ("stalker_sh")
 
 	stalker:script (true, military3_3.script_name ())
@@ -34,11 +35,14 @@ function main ()
 
 	stalker:script (false, military3_3.script_name ())
 
-	local patrol = classes.SinglePatrol (stalker, military3_3.script_name (), "way_sh", nil, anim_end)
+	local patrol = classes.SinglePatrol (stalker, military3_3.script_name (), "way_sh", anim_end, anim_end)
 
 	while true do
       	  patrol:process ()
       	  wait ()
       	  end
 	patrol.finish ()
+
+	printf ("call military3_3");
+
 end

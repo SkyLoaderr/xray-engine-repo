@@ -2,6 +2,8 @@
 
 function main ()
 
+	printf ("call military3_6");
+
 	local stand = get_level_object ("stalker_stand")
 
 	stand:script (true, military3_6.script_name ())
@@ -31,5 +33,6 @@ function main ()
 		  end
 
 	stand:script (false, military3_6.script_name ())
+	printf ("call military3_6");
 
 end

@@ -1,5 +1,7 @@
 function main ()
+	printf ("call military3_5");
 
 
+	printf ("end call military3_5");
 
 end

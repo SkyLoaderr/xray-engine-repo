@@ -1,5 +1,6 @@
 function main ()
 
+	printf ("call military3_7");
 	local anim_razv = classes.AnimationSet (1)
 	anim_razv:add_animation ("stoya_ruje_ 0", true)
 	anim_razv:add_animation ("plechi", false)
@@ -14,14 +15,14 @@ function main ()
 	local actor = get_actor ()
   	local horror_sound = sound_object("rnd_the_horror4")
 
-	local bredun1 = classes.SinglePatrol (get_level_object ("stalker_ptr3"), military3_7.script_name (), "patrol_way1", anim_razv, anim_end)
-	local bredun2 = classes.SinglePatrol (get_level_object ("stalker_ptr4"), military3_7.script_name (), "patrol_way1", anim_razv, anim_end)
-	local bredun3 = classes.SinglePatrol (get_level_object ("stalker_ptr6"), military3_7.script_name (), "patrol_way1", anim_razv, anim_end)
-	local bredun4 = classes.SinglePatrol (get_level_object ("stalker_ptr7"), military3_7.script_name (), "patrol_way1", anim_razv, anim_end)
-	local bredun5 = classes.SinglePatrol (get_level_object ("stalker_ptr8"), military3_7.script_name (), "patrol_way1", anim_razv, anim_end)
-	local bredun6 = classes.SinglePatrol (get_level_object ("stalker_ptr1"), military3_7.script_name (), "patrol_way2", anim_razv, anim_end)
-	local bredun7 = classes.SinglePatrol (get_level_object ("stalker_ptr2"), military3_7.script_name (), "patrol_way2", anim_razv, anim_end)
-	local bredun8 = classes.SinglePatrol (get_level_object ("stalker_ptr5"), military3_7.script_name (), "patrol_way2", anim_razv, anim_end)
+	local bredun1 = classes.SinglePatrol (get_level_object ("stalker_ptr11"), military3_7.script_name (), "patrol_way2", anim_razv, anim_end)
+	local bredun2 = classes.SinglePatrol (get_level_object ("stalker_ptr12"), military3_7.script_name (), "patrol_way2", anim_razv, anim_end)
+	local bredun3 = classes.SinglePatrol (get_level_object ("stalker_ptr13"), military3_7.script_name (), "patrol_way2", anim_razv, anim_end)
+	local bredun4 = classes.SinglePatrol (get_level_object ("stalker_ptr21"), military3_7.script_name (), "patrol_way1", anim_razv, anim_end)
+	local bredun5 = classes.SinglePatrol (get_level_object ("stalker_ptr22"), military3_7.script_name (), "patrol_way1", anim_razv, anim_end)
+	local bredun6 = classes.SinglePatrol (get_level_object ("stalker_ptr23"), military3_7.script_name (), "patrol_way1", anim_razv, anim_end)
+	local bredun7 = classes.SinglePatrol (get_level_object ("stalker_ptr24"), military3_7.script_name (), "patrol_way1", anim_razv, anim_end)
+	local bredun8 = classes.SinglePatrol (get_level_object ("stalker_ptr25"), military3_7.script_name (), "patrol_way1", anim_razv, anim_end)
 
 	local old_time = game.time ()
 	local played = false
@@ -37,7 +38,7 @@ function main ()
 		  bredun8:process ()		
 		  wait ()
 		  local t = game.time () - old_time
-		  if t > 30000 and math.random (1, 100) > 50 and played == false then
+		  if t > 20000 and math.random (1, 100) > 50 and played == false then
 			 action_first (bredun1.npc, move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
 						   anim_end:get_animation (), cond (cond.anim_end))		  	
 			 action_first (bredun2.npc, move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
@@ -69,4 +70,5 @@ function main ()
   bredun6:finish ()
   bredun7:finish ()
   bredun8:finish ()
+	printf ("call military3_7");
 end

@@ -2,6 +2,7 @@
 
 function main ()
 
+	printf ("call military3_1");
   	local anims = classes.AnimationSet (1)
 	anims:add_animation ("stoya_ruje_ 0", true)
 	anims:add_animation ("vishka_1", true)
@@ -21,4 +22,5 @@ function main ()
 	guard1:finish ()
 	guard2:finish ()
 
+	printf ("end call military3_1");
 end

@@ -1,6 +1,7 @@
 -- сталкеры у костра
 function main ()
 
+	printf ("call military3_2");
 	local stalker1 = get_level_object ("stalker_eat1")
 	local stalker2 = get_level_object ("stalker_eat2")
 	local stalker3 = get_level_object ("stalker_eat3")
@@ -24,5 +25,6 @@ function main ()
 	stalker2:script (false, military3_2.script_name ())
 	stalker3:script (false, military3_2.script_name ())
 
+	printf ("end call military3_2");
 
 end
