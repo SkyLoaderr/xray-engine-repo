@@ -118,6 +118,7 @@ function generic_object_binder:update(delta)
 	--	actor:give_info_portion(info_name)
 	--end
 
+	--[[
 	if self.object:name() == "m_trader" then
 		local actor = level.actor()
 		if not actor then
@@ -135,6 +136,7 @@ function generic_object_binder:update(delta)
 		printf("infoportion 'esc_trader_experienced': %s",
 			if_then_else(actor:has_info("esc_trader_experienced"), "YES", "NO"))
 	end
+	--]]
 
 	if self.st.active_section ~= nil then
 		xr_logic.non_goap_update_actions_event(self.st, delta)
