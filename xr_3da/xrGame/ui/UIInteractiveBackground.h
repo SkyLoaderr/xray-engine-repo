@@ -59,10 +59,7 @@ CUIInteractiveBackground<T>::CUIInteractiveBackground(){
 
 template <class T>
 CUIInteractiveBackground<T>::~CUIInteractiveBackground(){
-    xr_delete(m_stateEnabled);
-    xr_delete(m_stateDisabled);
-    xr_delete(m_stateHighlighted);
-    xr_delete(m_stateTouched);
+
 }
 
 template <class T>
