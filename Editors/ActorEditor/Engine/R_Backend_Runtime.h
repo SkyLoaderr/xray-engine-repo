@@ -203,7 +203,7 @@ IC void CBackend::Render				(D3DPRIMITIVETYPE T, u32 startV, u32 PC)
 
 IC void CBackend::set_Shader			(Shader* S, u32 pass)
 {
-	set_Element			(S->lod0,pass);
+	set_Element			(S->E[0],pass);
 }
 IC void CBackend::set_Geometry			(SGeometry* _geom)
 {

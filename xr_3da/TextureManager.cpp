@@ -711,7 +711,6 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 	// Access to template
 	C.BT				= _GetBlender	(s_shader?s_shader:"null");
 	C.bEditor			= FALSE;
-	C.iLayers			= 1;
 	C.bDetail			= FALSE;
 #ifdef _EDITOR
     if (!C.BT)			{ ELog.Msg(mtError,"Can't find shader '%s'",s_shader); return 0; }
@@ -724,22 +723,19 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 	_ParseList			(C.L_matrices,	s_matrices	);
 
 	// Compile element
-	C.iLOD				= 0;
-	C.bLighting			= FALSE;
+	C.iElement			= 0;
 	C.bDetail			= TRUE;
-	S.lod0				= _CreateElement	(C);
+	S.E[0]				= _CreateElement	(C);
 
 	// Compile element
-	C.iLOD				= 1;
-	C.bLighting			= FALSE;
+	C.iElement			= 1;
 	C.bDetail			= FALSE;
-	S.lod1				= _CreateElement	(C);
+	S.E[1]				= _CreateElement	(C);
 
 	// Compile element
-	C.iLOD				= 0;
-	C.bLighting			= TRUE;
+	C.iElement			= 0;
 	C.bDetail			= FALSE;
-	S.lighting			= _CreateElement	(C);
+	S.E[2]				= _CreateElement	(C);
 
 	// Search equal in shaders array
 	for (u32 it=0; it<v_shaders.size(); it++)
@@ -765,7 +761,6 @@ Shader*	CShaderManager::Create_B	(CBlender* B, LPCSTR s_shader, LPCSTR s_texture
 	// Access to template
 	C.BT				= B;
 	C.bEditor			= FALSE;
-	C.iLayers			= 1;
 	C.bDetail			= FALSE;
 #ifdef _EDITOR
 	if (!C.BT)			{ ELog.Msg(mtError,"Can't find shader '%s'",s_shader); return 0; }
@@ -778,22 +773,19 @@ Shader*	CShaderManager::Create_B	(CBlender* B, LPCSTR s_shader, LPCSTR s_texture
 	_ParseList			(C.L_matrices,	s_matrices	);
 
 	// Compile element
-	C.iLOD				= 0;
-	C.bLighting			= FALSE;
+	C.iElement			= 0;
 	C.bDetail			= TRUE;
-	S.lod0				= _CreateElement	(C);
+	S.E[0]				= _CreateElement	(C);
 
 	// Compile element
-	C.iLOD				= 1;
-	C.bLighting			= FALSE;
+	C.iElement			= 1;
 	C.bDetail			= FALSE;
-	S.lod1				= _CreateElement	(C);
+	S.E[1]				= _CreateElement	(C);
 
 	// Compile element
-	C.iLOD				= 0;
-	C.bLighting			= TRUE;
+	C.iElement			= 0;
 	C.bDetail			= FALSE;
-	S.lighting			= _CreateElement	(C);
+	S.E[2]				= _CreateElement	(C);
 
 	// Search equal in shaders array
 	for (u32 it=0; it<v_shaders.size(); it++)
@@ -832,9 +824,9 @@ void CShaderManager::Delete(Shader* &S)
 {
 	if (0==S)	return;
 
-	_DeleteElement	(S->lighting);
-	_DeleteElement	(S->lod1);
-	_DeleteElement	(S->lod0);
+	_DeleteElement	(S->E[2]);
+	_DeleteElement	(S->E[1]);
+	_DeleteElement	(S->E[0]);
 	S->dwReference	--;
 	S				= 0;
 }
