@@ -590,6 +590,7 @@ void CWeapon::UpdatePosition(const Fmatrix& trans)
 {
 	Position().set	(trans.c);
 	XFORM().mul	(trans,m_Offset);
+	VERIFY							(!fis_zero(DET(renderable.xform)));
 }
 
 
