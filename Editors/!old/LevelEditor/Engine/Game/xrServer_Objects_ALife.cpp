@@ -868,7 +868,7 @@ CSE_ALifeObjectHangingLamp::CSE_ALifeObjectHangingLamp(LPCSTR caSection) : CSE_A
 	m_flags.set					(flSwitchOffline,false);
 
 	m_virtual_size				= 0.1f;
-	m_ambient_radius			= 0.1f;
+	m_ambient_radius			= 10.f;
     m_ambient_power				= 0.1f;
     spot_cone_angle				= deg2rad(120.f);
     glow_radius					= 0.2f;
