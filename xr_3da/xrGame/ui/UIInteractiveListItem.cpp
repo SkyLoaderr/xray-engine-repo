@@ -27,7 +27,7 @@ m_bInteractiveBahaviour(true)
 //	height:	высота элемента
 //	StartShift:	смещение относительно левого края в пробелах
 //-----------------------------------------------------------------------------/
-void CUIInteractiveListItem::Init(const char *str, const xr_vector<char *> &Data, xr_vector<int> &IDs, int height, const char StartShift)
+void CUIInteractiveListItem::Init(const char *str, const xr_vector<char *> &Data, xr_vector<int> &IDs, int height)
 {
 	CGameFont	*pFont	= GetFont();
 	R_ASSERT(pFont);
@@ -45,18 +45,7 @@ void CUIInteractiveListItem::Init(const char *str, const xr_vector<char *> &Data
 	// членов.
 	R_ASSERT(Data.size() % 2 == 0);
 
-	// Смещение относительно левого края в пробелах
-	if (StartShift)
-	{
-		string512	strT = {0};
-		for (int i = 0; i < StartShift; ++i)
-			strT[i] = ' ';
-		shift = static_cast<int>(pFont->SizeOf(strT));
-		std::strcat(strT, str);
-		SetText(strT);
-	}
-	else
-		SetText(str);
+	SetText(str);
 
 	// Cначала добавляем текст
 

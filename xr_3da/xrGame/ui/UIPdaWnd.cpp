@@ -44,7 +44,7 @@ void CUIPdaWnd::Init()
 {
 	CUIXml uiXml;
 	bool xml_result = uiXml.Init("$game_data$",PDA_XML);
-	R_ASSERT2(xml_result, "xml file not found");
+	R_ASSERT3(xml_result, "xml file not found", PDA_XML);
 
 	CUIXmlInit xml_init;
 

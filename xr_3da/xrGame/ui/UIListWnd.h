@@ -40,7 +40,7 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	
 	template <class Element>
-	bool AddItem(const char*  str, void* pData = NULL, int value = 0, int pushAfter = -1)
+	bool AddItem(const char*  str, const int shift = 0, void* pData = NULL, int value = 0, int pushAfter = -1)
 	{
 		//создать новый элемент и добавить его в список
 		Element* pItem = NULL;
@@ -49,7 +49,7 @@ public:
 		if(!pItem) return false;
 
 
-		pItem->Init(str, 0, m_bVertFlip?GetHeight()-GetSize()* m_iItemHeight-m_iItemHeight:GetSize()* m_iItemHeight, 
+		pItem->Init(str, shift, m_bVertFlip?GetHeight()-GetSize()* m_iItemHeight-m_iItemHeight:GetSize()* m_iItemHeight, 
 			m_iItemWidth, m_iItemHeight);
 
 		pItem->SetData(pData);
@@ -62,7 +62,7 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	
 	template <class Element>
-	bool AddParsedItem(const CUIString &str, const char StartShift, const u32 &MsgColor, CGameFont* pFont = NULL, void* pData = NULL, int value = 0, int pushAfter = -1)
+	bool AddParsedItem(const CUIString &str, const int shift, const u32 &MsgColor, CGameFont* pFont = NULL, void* pData = NULL, int value = 0, int pushAfter = -1)
 	{
 		bool ReturnStatus = true;
 		const STRING& text = str.m_str;
@@ -78,10 +78,9 @@ public:
 			if(text[i] == '\\' && text[i+1]== 'n')
 			{	
 				buf.clear();
-				buf.insert(buf.begin(), StartShift, ' ');
-				buf.insert(buf.begin() + StartShift, text.begin()+last_pos, text.begin()+i);
+				buf.insert(buf.begin(), text.begin()+last_pos, text.begin()+i);
 				buf.push_back(0);
-				ReturnStatus &= AddItem<Element>(&buf.front(), pData, value, pushAfter);
+				ReturnStatus &= AddItem<Element>(&buf.front(), shift, pData, value, pushAfter);
 				Element *pLocalItem = dynamic_cast<Element*>(GetItem(GetSize() - 1));
 				pLocalItem->SetGroupID(GroupID);
 				pLocalItem->SetTextColor(MsgColor);
@@ -94,10 +93,9 @@ public:
 		if(last_pos<text.size())
 		{
 			buf.clear();
-			buf.insert(buf.begin(), StartShift, ' ');
-			buf.insert(buf.begin() + StartShift, text.begin()+last_pos, text.end());
+			buf.insert(buf.begin(), text.begin()+last_pos, text.end());
 			buf.push_back(0);
-			AddItem<Element>(&buf.front(), pData, value, pushAfter);
+			AddItem<Element>(&buf.front(), shift, pData, value, pushAfter);
 			GetItem(GetSize() - 1)->SetGroupID(GroupID);
 			Element *pLocalItem = dynamic_cast<Element*>(GetItem(GetSize() - 1));
 			pLocalItem->SetGroupID(GroupID);
@@ -114,7 +112,8 @@ public:
 	bool AddItem(Element* pItem, int pushAfter = -1)
 	{	
 		AttachChild(pItem);
-		pItem->Init(0, m_bVertFlip?GetHeight()-GetSize()* m_iItemHeight-m_iItemHeight:GetSize()* m_iItemHeight, 
+
+		pItem->Init(pItem->GetWndRect().left, m_bVertFlip?GetHeight()-GetSize()* m_iItemHeight-m_iItemHeight:GetSize()* m_iItemHeight, 
 			m_iItemWidth, m_iItemHeight);
 
 		//добавление в конец или начало списка
@@ -212,7 +211,7 @@ public:
 	// ширину надписи в пискел€х
 	// ¬озвращаем вектор уникальных идентификаторов дл€ интерактивных элементов в строке, которые нам 
 	// будут посылатьс€ в поле pData при нажатии на интерактивный элемент
-	xr_vector<int> AddInteractiveItem(const char *str2, const char StartShift = 0,
+	xr_vector<int> AddInteractiveItem(const char *str2, const int shift = 0,
 		const u32 &MsgColor = 0xffffffff, CGameFont* pFont = 0, int pushAfter = -1);
 
 protected:

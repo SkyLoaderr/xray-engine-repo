@@ -161,19 +161,19 @@ void CUIPdaDialogWnd::AddMessageToLog(EPdaMsg msg, u32 color)
 void  CUIPdaDialogWnd::PhrasesAnswer()
 {	
 	UIPhrasesListWnd.RemoveAll();
-	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgAccept], NULL, ePdaMsgAccept);
-	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgDecline], NULL, ePdaMsgDecline);
-	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgDeclineRude], NULL, ePdaMsgDeclineRude);
+	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgAccept], 0, NULL, ePdaMsgAccept);
+	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgDecline], 0, NULL, ePdaMsgDecline);
+	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgDeclineRude], 0, NULL, ePdaMsgDeclineRude);
 	//завершение диалога
-	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgILeave], NULL,ePdaMsgMax);
+	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgILeave], 0, NULL,ePdaMsgMax);
 	
 }
 void CUIPdaDialogWnd::PhrasesAsk()
 {
 	UIPhrasesListWnd.RemoveAll();
-	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgTrade]	, NULL, ePdaMsgTrade);
-	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgNeedHelp]	, NULL, ePdaMsgNeedHelp);
-	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgGoAway]	, NULL, ePdaMsgGoAway);
+	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgTrade], 0, NULL, ePdaMsgTrade);
+	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgNeedHelp], 0, NULL, ePdaMsgNeedHelp);
+	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgGoAway], 0, NULL, ePdaMsgGoAway);
 	//завершение диалога
-	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgILeave], NULL, ePdaMsgMax);
+	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgILeave], 0, NULL, ePdaMsgMax);
 }

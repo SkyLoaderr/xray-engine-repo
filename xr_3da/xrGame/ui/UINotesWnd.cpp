@@ -9,6 +9,8 @@
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUINotesWnd::Init()
 {
 	CUIXmlInit xml_init;
@@ -18,4 +20,11 @@ void CUINotesWnd::Init()
 	// Заголовок
 //	AttachChild(&UIStaticCaption);
 //	xml_init.InitStatic(uiXml, "static", 0, &UIStaticCaption);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+ref_str CUINotesWnd::DialogName()
+{
+	return "Notes";
 }

@@ -53,6 +53,7 @@ protected:
 	CUIFrameLineWnd		UIEncyclopediaIdxHeader;
 	CUIFrameLineWnd		UIEncyclopediaInfoHeader;
 	CUIAnimatedStatic	UIAnimation;
+	CUIStatic			UIArticleHeader;
 
 	// Data lists
 	CUIListWnd			UIIdxList;

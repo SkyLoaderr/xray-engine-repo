@@ -15,7 +15,7 @@
 #include "../InfoPortionDefs.h"
 #include "../Actor.h"
 
-const char * const DIARY_XML = "events.xml";
+const char * const DIARY_XML = "events_new.xml";
 
 // ID for tree view items
 enum EDiaryIDs
@@ -51,25 +51,29 @@ CUIDiaryWnd::~CUIDiaryWnd()
 void CUIDiaryWnd::Init()
 {
 	CUIXml uiXml;
-	uiXml.Init("$game_data$", DIARY_XML);
+	bool xml_result = uiXml.Init("$game_data$", DIARY_XML);
+	R_ASSERT3(xml_result, "xml file not found", DIARY_XML);
 	CUIXmlInit xml_init;
 
 	inherited::Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 	AttachChild(&UITreeViewBg);
-	xml_init.InitFrameWindow(uiXml, "eventslist_frame_window", 0, &UITreeViewBg);
+	xml_init.InitFrameWindow(uiXml, "right_frame_window", 0, &UITreeViewBg);
 
 	UITreeViewBg.AttachChild(&UITreeViewHeader);
-	xml_init.InitFrameLine(uiXml, "eventslist_frame_line", 0, &UITreeViewHeader);
+	xml_init.InitFrameLine(uiXml, "right_frame_line", 0, &UITreeViewHeader);
 
 	UITreeViewHeader.AttachChild(&UIAnimation);
 	xml_init.InitAnimatedStatic(uiXml, "a_static", 0, &UIAnimation);
 
 	AttachChild(&UIFrameWnd);
-	xml_init.InitFrameWindow(uiXml, "eventsinfo_frame_window", 0, &UIFrameWnd);
+	xml_init.InitFrameWindow(uiXml, "left_frame_window", 0, &UIFrameWnd);
 
 	UIFrameWnd.AttachChild(&UIFrameWndHeader);
-	xml_init.InitFrameLine(uiXml, "eventsinfo_frame_line", 0, &UIFrameWndHeader);
+	xml_init.InitFrameLine(uiXml, "left_frame_line", 0, &UIFrameWndHeader);
+
+	UIFrameWnd.AttachChild(&UIArticleCaption);
+	xml_init.InitStatic(uiXml, "article_header_static", 0, &UIArticleCaption);
 	
 	UITreeViewBg.AttachChild(&UITreeView);
 	xml_init.InitListWnd(uiXml, "idx_list", 0, &UITreeView);
@@ -85,8 +89,8 @@ void CUIDiaryWnd::Init()
 	InitTreeView();
 
 	// Autostatics
-	xml_init.InitAutoStatic(uiXml, "ei_auto_static", &UIFrameWnd);
-	xml_init.InitAutoStatic(uiXml, "el_auto_static", &UITreeViewBg);
+	xml_init.InitAutoStatic(uiXml, "left_auto_static", &UIFrameWnd);
+	xml_init.InitAutoStatic(uiXml, "right_auto_static", &UITreeViewBg);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -115,8 +119,15 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			{
 
 			case idJobsFailed:
+				UIJobsWnd.SetFilter(eTaskStateFail);
+				m_pActiveSubdialog = &UIJobsWnd;
+				break;
 			case idJobsAccomplished:
+				UIJobsWnd.SetFilter(eTaskStateCompleted);
+				m_pActiveSubdialog = &UIJobsWnd;
+				break;
 			case idJobsCurrent:
+				UIJobsWnd.SetFilter(eTaskStateInProgress);
 				m_pActiveSubdialog = &UIJobsWnd;
 				break;
 
@@ -139,6 +150,7 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			{
 				UIFrameWnd.AttachChild(m_pActiveSubdialog);
 				m_pActiveSubdialog->Show();
+				ArticleCaption(*(m_pActiveSubdialog->DialogName()));
 			}
 		}
 	}
@@ -214,4 +226,11 @@ void CUIDiaryWnd::InitTreeView()
 	pTVItemSub->SetText("Failed");
 	pTVItemSub->SetValue(idContractsFailed);
 	pTVItem->AddItem(pTVItemSub);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIDiaryWnd::ArticleCaption(LPCSTR caption)
+{
+	UIArticleCaption.SetText(caption);
 }

@@ -73,13 +73,18 @@ public:
 	bool InitTexture			(CUIXml &xml_doc, const char *path,
 								int index, CUIStatic *pWnd);
 
-	//автоматическая инициализация статических элеменитов
-	bool InitAutoStatic(CUIXml& xml_doc, const char* tag_name, CUIWindow* pParentWnd);
+	// Автоматическая инициализация статических элеменитов
+	// Чтобы вернуть указатели на созданые статики (нам бывает необходимо прятать их, например)
+	// создадим тип - вектор указателей на статики
+	typedef		xr_vector<CUIStatic*>	StaticsVec;
+	typedef		StaticsVec::iterator	StaticsVec_it;
+
+	StaticsVec InitAutoStatic	(CUIXml& xml_doc, const char* tag_name, CUIWindow* pParentWnd);
 
 protected:
 	
 	// Вводим пересчет координат для соответствия нужному разрешению
-	// Params:	originalCoordinate - оригинальная базовая координата для разрешения 1024ч768
+	// Params:	originalCoordinate - оригинальная базовая координата для разрешения 1024x768
 	// Return:	Пересчитанная координата для текущего разоешения	
 	int RecalcXForResolution(int origninalCoordinate);
 	int RecalcYForResolution(int origninalCoordinate);

@@ -67,7 +67,7 @@ void CUIPropertiesBox::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 bool CUIPropertiesBox::AddItem(const char*  str, void* pData, int value)
 {
-	return m_UIListWnd.AddItem<CUIListItem>(str, pData, value);
+	return m_UIListWnd.AddItem<CUIListItem>(str, 0, pData, value);
 }
 void CUIPropertiesBox::RemoveItem(int index)
 {

@@ -22,10 +22,9 @@
 
 const u32 NameTextColor = 0xff00ff00;
 const u32 MsgTextColor  = 0xffffffff;
-const char MessageShift = 2;
+const int MessageShift	= 30;
 
-
-
+//////////////////////////////////////////////////////////////////////////
 
 CUITalkWnd::CUITalkWnd()
 {
@@ -44,9 +43,13 @@ CUITalkWnd::CUITalkWnd()
 	SetFont(HUD().pFontHeaderRussian);
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 CUITalkWnd::~CUITalkWnd()
 {
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUITalkWnd::Init()
 {
@@ -63,7 +66,7 @@ void CUITalkWnd::Init()
 	UITradeWnd.Hide();
 }
 
-
+//////////////////////////////////////////////////////////////////////////
 
 void CUITalkWnd::InitTalkDialog()
 {
@@ -94,6 +97,8 @@ void CUITalkWnd::InitTalkDialog()
 	UITradeWnd.Hide();
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUITalkWnd::InitOthersStartDialog()
 {
 	m_pOthersDialogManager->UpdateAvailableDialogs(m_pOurDialogManager);
@@ -112,6 +117,8 @@ void CUITalkWnd::InitOthersStartDialog()
 		if(m_pCurrentDialog->IsFinished()) ToTopicMode();
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUITalkWnd::UpdateQuestions()
 {
@@ -158,6 +165,8 @@ void CUITalkWnd::UpdateQuestions()
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUITalkWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
 	if(pWnd == &UITalkDialogWnd && msg == CUITalkDialogWnd::TRADE_BUTTON_CLICKED)
@@ -181,6 +190,7 @@ void CUITalkWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	inherited::SendMessage(pWnd, msg, pData);
 }
 
+//////////////////////////////////////////////////////////////////////////
 
 void CUITalkWnd::Update()
 {
@@ -194,16 +204,22 @@ void CUITalkWnd::Update()
 	inherited::Update();
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUITalkWnd::Draw()
 {
 	inherited::Draw();
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUITalkWnd::Show()
 {
 	InitTalkDialog();
 	inherited::Show();
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUITalkWnd::Hide()
 {
@@ -217,16 +233,21 @@ void CUITalkWnd::Hide()
 	m_pActor = NULL;
 }
 
+//////////////////////////////////////////////////////////////////////////
 
 bool  CUITalkWnd::TopicMode			() 
 {
 	return NULL == m_pCurrentDialog.get();
 }
+
+//////////////////////////////////////////////////////////////////////////
+
 void  CUITalkWnd::ToTopicMode		() 
 {
 	m_pCurrentDialog = DIALOG_SHARED_PTR((CPhraseDialog*)NULL);
 }
 
+//////////////////////////////////////////////////////////////////////////
 
 void CUITalkWnd::AskQuestion()
 {
@@ -252,6 +273,7 @@ void CUITalkWnd::AskQuestion()
 	UpdateQuestions();
 }
 
+//////////////////////////////////////////////////////////////////////////
 
 void CUITalkWnd::SayPhrase(PHRASE_ID phrase_id)
 {
@@ -273,12 +295,15 @@ void CUITalkWnd::SayPhrase(PHRASE_ID phrase_id)
 	if(m_pCurrentDialog->IsFinished()) ToTopicMode();
 }
 
+//////////////////////////////////////////////////////////////////////////
 
 void CUITalkWnd::AddQuestion(const CUIString &str, void* pData , int value)
 {
 	UITalkDialogWnd.UIQuestionsList.AddParsedItem<CUIListItem>(str, 0, UITalkDialogWnd.UIQuestionsList.GetTextColor(), 
 						UITalkDialogWnd.UIQuestionsList.GetFont(), pData, value);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUITalkWnd::AddAnswer(const CUIString &str, const CUIString &SpeakerName)
 {

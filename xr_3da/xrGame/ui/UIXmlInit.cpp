@@ -160,30 +160,6 @@ bool CUIXmlInit::InitButton(CUIXml& xml_doc, LPCSTR path,
 {
 	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
 
-//	string256 buf;
-//
-//	int x = xml_doc.ReadAttribInt(path, index, "x");
-//	int y = xml_doc.ReadAttribInt(path, index, "y");
-//	int width = xml_doc.ReadAttribInt(path, index, "width");
-//	int height = xml_doc.ReadAttribInt(path, index, "height");
-//	
-//	pWnd->Init(x, y, width, height);
-//	InitTexture(xml_doc, path, index, pWnd);
-//
-//	// Init font from xml config file
-//	CGameFont *LocalFont = NULL;
-//	u32 cl;
-//
-//	ref_str text_path = strconcat(buf,path,":text");
-//	InitFont(xml_doc, *text_path, index, cl, LocalFont);
-//	if (LocalFont)
-//	{
-//		pWnd->SetFont(LocalFont);
-//		pWnd->SetTextColor(cl);
-//	}
-//
-//	LPCSTR  text = xml_doc.Read(buf, index, NULL);
-//	pWnd->SetText(text);
 	InitStatic(xml_doc, path, index, pWnd);
 
 	u32 accel = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "accel", -1));
@@ -312,9 +288,11 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 
 //////////////////////////////////////////////////////////////////////////
 
-bool CUIXmlInit::InitAutoStatic(CUIXml& xml_doc, LPCSTR tag_name, CUIWindow* pParentWnd)
+CUIXmlInit::StaticsVec CUIXmlInit::InitAutoStatic(CUIXml& xml_doc, LPCSTR tag_name, CUIWindow* pParentWnd)
 {
 	int items_num = xml_doc.GetNodesNum(xml_doc.GetRoot(), tag_name);
+	// tmp statics vector
+	StaticsVec	tmpVec;
 
 	CUIStatic* pUIStatic = NULL;
 	for(int i=0; i<items_num; i++)
@@ -323,9 +301,11 @@ bool CUIXmlInit::InitAutoStatic(CUIXml& xml_doc, LPCSTR tag_name, CUIWindow* pPa
 		InitStatic(xml_doc, tag_name, i, pUIStatic);
 		pUIStatic->SetAutoDelete(true);
 		pParentWnd->AttachChild(pUIStatic);
+		tmpVec.push_back(pUIStatic);
 		pUIStatic = NULL;
 	}
-	return true;
+
+	return tmpVec;
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -12,6 +12,7 @@
 #include "UIListWnd.h"
 #include "UIFrameWindow.h"
 #include "UIFrameLineWnd.h"
+#include "UIAnimatedStatic.h"
 
 extern const char * const PDA_CONTACTS_HEADER_SUFFIX;
 
@@ -50,8 +51,11 @@ protected:
 	//ID выбранного контакта InventoryOwner
 	u32 m_idContact;
 
-	// Фрейм для обрамоения контактов
+	// Элементы оформления
 	CUIFrameWindow		UIFrameContacts;
-	// Заголовок
-	CUIFrameLineWnd		UIHeader;
+	CUIFrameLineWnd		UIContactsHeader;
+	CUIFrameWindow		UIRightFrame;
+	CUIFrameLineWnd		UIRightFrameHeader;
+	CUIStatic			UIArticleHeader;
+	CUIAnimatedStatic	UIAnimation;
 };

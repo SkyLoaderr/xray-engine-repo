@@ -206,7 +206,7 @@ void CUIListWnd::UpdateList()
 			i<_min(m_ItemList.size(),m_iFirstShownIndex + m_iRowNum+1);
 			++i, ++it)
 	{
-		(*it)->SetWndRect(0, m_bVertFlip?GetHeight()-(i-m_iFirstShownIndex)* m_iItemHeight-m_iItemHeight:(i-m_iFirstShownIndex)* m_iItemHeight, 
+		(*it)->SetWndRect((*it)->GetWndRect().left, m_bVertFlip?GetHeight()-(i-m_iFirstShownIndex)* m_iItemHeight-m_iItemHeight:(i-m_iFirstShownIndex)* m_iItemHeight, 
 							m_iItemWidth, m_iItemHeight);
 		(*it)->Show(true);
 		
@@ -475,7 +475,7 @@ void CUIListWnd::SetFocusedItem(int iNewFocusedItem)
 //  Interactive element insertion
 //=============================================================================
 
-xr_vector<int> CUIListWnd::AddInteractiveItem(const char *str2, const char StartShift,
+xr_vector<int> CUIListWnd::AddInteractiveItem(const char *str2, const int shift,
 											  const u32 &MsgColor, CGameFont* pFont, int pushAfter)
 {
 	string1024	str = {0};
@@ -517,7 +517,7 @@ xr_vector<int> CUIListWnd::AddInteractiveItem(const char *str2, const char Start
 		// ¬ этом случае ListWnd должен сам добавить строку обычным способом
 		CUIString A;
 		A.SetText(str);
-		AddParsedItem<CUIListItem>(A, StartShift, MsgColor, pFont);
+		AddParsedItem<CUIListItem>(A, shift, MsgColor, pFont);
 		return IDs;
 	}
 	int k = 0;
@@ -530,7 +530,7 @@ xr_vector<int> CUIListWnd::AddInteractiveItem(const char *str2, const char Start
 	// ≈сли строка таки интерактивна, то конструируем интерактивную структуру - член листа
 	CUIInteractiveListItem *pILItem = xr_new<CUIInteractiveListItem>();
 	AddItem<CUIListItem>(pILItem, pushAfter);
-	pILItem->Init(str, vSubItems, IDs, GetItemHeight(), StartShift);
+	pILItem->Init(str, vSubItems, IDs, GetItemHeight());
 	pILItem->SetFont(pFont);
 	pILItem->SetTextColor(MsgColor);
 	pILItem->SetMessageTarget(GetMessageTarget());

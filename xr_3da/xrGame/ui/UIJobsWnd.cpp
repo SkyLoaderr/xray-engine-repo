@@ -23,6 +23,7 @@ const u32			clTaskHeaderColor	= 0xffe1e1fa;
 //////////////////////////////////////////////////////////////////////////
 
 CUIJobsWnd::CUIJobsWnd()
+	:	filter	(eTaskStateMax)
 {
 	pHeaderFnt		= HUD().pFontLetterica25;
 	pSubTasksFnt	= HUD().pFontLetterica18Russian;
@@ -42,7 +43,7 @@ void CUIJobsWnd::Init()
 {
 	CUIXml uiXml;
 	bool xml_result = uiXml.Init("$game_data$", JOBS_XML);
-	R_ASSERT2(xml_result, "xml file not found");
+	R_ASSERT3(xml_result, "xml file not found", JOBS_XML);
 
 	CUIXmlInit xml_init;
 
@@ -60,9 +61,13 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 	R_ASSERT(task->ObjectivesNum() > 0);
 	if (!task || task->ObjectivesNum() < 0)	return;
 
+	// ѕроверим на фильтре
+	if (filter != eTaskStateMax && task->ObjectiveState(0) != filter) return;
+
 	// “ак как AddParsedItem добавл€ет несколько UIIconedListItem'ов, то мы запоминаем индекс первого
 	// дл€ того чтобы только ему присвоить иконку соответсвующую состо€нию задани€
-	int iconedItemIdx = 0; 
+	int			iconedItemIdx	= 0; 
+	const int	subitemsOffset	= 20;
 
 	// ћассив с именами текстурок - иконок состо€ний задани€
 	static ref_str iconsTexturesArr[3] =
@@ -90,7 +95,7 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 	for (u32 i = 1; i < task->ObjectivesNum(); ++i)
 	{
 		iconedItemIdx = UIList.GetSize();
-		UIList.AddParsedItem<CUIIconedListItem>(*task->ObjectiveDesc(i), 2, clTaskSubItemColor, HUD().pFontLetterica18Russian);
+		UIList.AddParsedItem<CUIIconedListItem>(*task->ObjectiveDesc(i), subitemsOffset, clTaskSubItemColor, HUD().pFontLetterica18Russian);
 
 		R_ASSERT(iconedItemIdx < UIList.GetSize());
 		CUIIconedListItem * pTask = dynamic_cast<CUIIconedListItem*>(UIList.GetItem(iconedItemIdx));
@@ -99,6 +104,7 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 		if (pTask)
 		{
 			pTask->SetIcon(iconsTexturesArr[task->ObjectiveState(i)], uTaskIconSize);
+			pTask->SetTextX(15);
 		}
 	}
 }
@@ -137,4 +143,33 @@ void CUIJobsWnd::Show()
 {
 	ReloadJobs();
 	inherited::Show();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+ref_str CUIJobsWnd::DialogName()
+{
+	switch (filter)
+	{
+	case eTaskStateCompleted:
+		return "Completed Jobs";
+		break;
+	case eTaskStateInProgress:
+		return "Active Jobs";
+		break;
+	case eTaskStateFail:
+		return "Failed Jobs";
+		break;
+	default:
+		R_ASSERT(!"Unknown type of task state");
+	}
+
+	return "";
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIJobsWnd::SetFilter(ETaskState newFilter)
+{
+	filter = newFilter;
 }

@@ -35,13 +35,18 @@ public:
 	void ReloadJobs();
 
 	// Установить фильтр
-//	void SetFilter(EDiaryIDs)
+	void SetFilter(ETaskState newFilter);
+	// Получить заголовок раздела
+	virtual ref_str		DialogName();
 protected:
 	// Добавляем заголовок крупным шрифтом
 	void AddHeader(ref_str strHeader);
 
 	CGameFont			*pHeaderFnt;
 	CGameFont			*pSubTasksFnt;
+
+	// CurrentFilter
+	ETaskState			filter;
 };
 
 #endif

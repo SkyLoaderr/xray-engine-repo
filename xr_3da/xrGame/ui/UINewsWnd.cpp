@@ -34,7 +34,7 @@ void CUINewsWnd::Init()
 {
 	CUIXml uiXml;
 	bool xml_result = uiXml.Init("$game_data$", NEWS_XML);
-	R_ASSERT2(xml_result, "xml file not found");
+	R_ASSERT3(xml_result, "xml file not found", NEWS_XML);
 	CUIXmlInit xml_init;
 
 	inherited::Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
@@ -59,4 +59,11 @@ void CUINewsWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 //	}
 //
 //	inherited::SendMessage(pWnd, msg, pData);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+ref_str CUINewsWnd::DialogName()
+{
+	return "News";
 }

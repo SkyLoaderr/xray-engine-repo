@@ -17,7 +17,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-const char * const	ENCYCLOPEDIA_DIALOG_XML		= "encyclopedia.xml";
+const char * const	ENCYCLOPEDIA_DIALOG_XML		= "encyclopedia_new.xml";
 static int			MAX_PICTURE_WIDTH			= 0;
 static const int	MIN_PICTURE_FRAME_WIDTH		= 64;
 static const int	MIN_PICTURE_FRAME_HEIGHT	= 64;
@@ -51,20 +51,23 @@ void CUIEncyclopediaWnd::Init()
 
 	// Load xml data
 	AttachChild(&UIEncyclopediaIdxBkg);
-	xml_init.InitFrameWindow(uiXml, "elist_frame_window", 0, &UIEncyclopediaIdxBkg);
+	xml_init.InitFrameWindow(uiXml, "right_frame_window", 0, &UIEncyclopediaIdxBkg);
 
 	UIEncyclopediaIdxBkg.AttachChild(&UIEncyclopediaIdxHeader);
-	xml_init.InitFrameLine(uiXml, "elist_frame_line", 0, &UIEncyclopediaIdxHeader);
+	xml_init.InitFrameLine(uiXml, "right_frame_line", 0, &UIEncyclopediaIdxHeader);
 
 	UIEncyclopediaIdxHeader.AttachChild(&UIAnimation);
 	xml_init.InitAnimatedStatic(uiXml, "a_static", 0, &UIAnimation);
 
 	AttachChild(&UIEncyclopediaInfoBkg);
-	xml_init.InitFrameWindow(uiXml, "einfo_frame_window", 0, &UIEncyclopediaInfoBkg);
+	xml_init.InitFrameWindow(uiXml, "left_frame_window", 0, &UIEncyclopediaInfoBkg);
 
 	UIEncyclopediaInfoBkg.AttachChild(&UIEncyclopediaInfoHeader);
-	xml_init.InitFrameLine(uiXml, "einfo_frame_line", 0, &UIEncyclopediaInfoHeader);
+	xml_init.InitFrameLine(uiXml, "left_frame_line", 0, &UIEncyclopediaInfoHeader);
 	UIEncyclopediaIdxBkg.AttachChild(&UIIdxList);
+
+	UIEncyclopediaInfoBkg.AttachChild(&UIArticleHeader);
+	xml_init.InitStatic(uiXml, "article_header_static", 0, &UIArticleHeader);
 
 	xml_init.InitListWnd(uiXml, "idx_list", 0, &UIIdxList);
 	UIIdxList.SetMessageTarget(this);
@@ -82,6 +85,9 @@ void CUIEncyclopediaWnd::Init()
 	string256 header;
 	strconcat(header, ALL_PDA_HEADER_PREFIX, "/Encyclopedia");
 	m_InfosHeaderStr = header;
+
+	xml_init.InitAutoStatic(uiXml, "left_auto_static", &UIEncyclopediaInfoBkg);
+	xml_init.InitAutoStatic(uiXml, "right_auto_static", &UIEncyclopediaIdxBkg);
 
 	AddArticle("one");
 	AddArticle("two");
@@ -313,6 +319,8 @@ void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 
 			std::string caption = static_cast<std::string>(*m_InfosHeaderStr) + pTVItem->GetHierarchyAsText();
 			UIEncyclopediaInfoHeader.UITitleText.SetText(caption.c_str());
+			caption.erase(0, caption.find_last_of("/") + 1);
+			UIArticleHeader.SetText(caption.c_str());
 
 			// Запоминаем текущий эдемент
 			m_pCurrArticle = &m_ArticlesDB[pTVItem->GetValue()];

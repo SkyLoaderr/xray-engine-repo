@@ -47,7 +47,7 @@ public:
 	// заключенная в знаки-разделители является интерактивной. При нажатии на
 	// кнопку соответствующая константа из массива pIDArr передается родитeльскому
 	// окну
-	virtual void Init(const char *str, const xr_vector<char *> &Data, xr_vector<int> &IDs, int height, const char StartShift = 0);
+	virtual void Init(const char *str, const xr_vector<char *> &Data, xr_vector<int> &IDs, int height);
 	//	// Задаем цвет текста неинтерактивной части поля
 	//	virtual void SetStaticTextColor(u32 uColor) {}
 	//	// Задаем цвет теста интерактивной части тесктового поля

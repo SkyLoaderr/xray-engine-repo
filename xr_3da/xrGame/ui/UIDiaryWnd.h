@@ -5,9 +5,7 @@
 #pragma once
 
 #include "UIDialogWnd.h"
-#include "UIStatic.h"
 #include "UIListWnd.h"
-#include "UITabControl.h"
 #include "UIFrameWindow.h"
 #include "UIFrameLineWnd.h"
 #include "UIAnimatedStatic.h"
@@ -32,6 +30,8 @@ public:
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData = NULL);
 	// Добавить новую новость
 	void AddNewsItem(const char *sData);
+	// Вывести заголовок текущего раздела
+	void ArticleCaption(LPCSTR caption);
 protected:
 	// Дочерние окна входящие в окно информации
 	CUINewsWnd			UINewsWnd;
@@ -45,13 +45,15 @@ protected:
 	// Подложка под TreeView
 	CUIFrameWindow		UITreeViewBg;
 	CUIFrameLineWnd		UITreeViewHeader;
-	// Анисационная иконка
+	// Анимационная иконка
 	CUIAnimatedStatic	UIAnimation;
 
 	// Подложка под основное поле
 	CUIFrameWindow		UIFrameWnd;
-	// Хидер
+	// Хидер основного поля
 	CUIFrameLineWnd		UIFrameWndHeader;
+	// Заголовок отображаемого в основном поле текущего раздела
+	CUIStatic			UIArticleCaption;
 
 	// Инициализируем TreeView
 	void				InitTreeView();
