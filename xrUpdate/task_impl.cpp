@@ -7,7 +7,8 @@
 CString parseParams(LPCSTR fn, LPCSTR params);
 BOOL copy_file(LPCSTR src, LPCSTR dst_fldr, LPCSTR dst_fn);
 BOOL rename_file(LPCSTR src, LPCSTR dst);
-BOOL check_RO(LPCSTR src);
+BOOL check_RO(LPCSTR src, BOOL& old);
+
 BOOL file_exist(LPCSTR src);
 BOOL mk_bk_rename(LPCSTR src, int start_from=0);
 void copy_folder(LPCSTR src, LPCSTR dst);
@@ -61,17 +62,8 @@ void CTaskCopyFolder::run ()
 	CTask::exec();
 
 	Msg("[%s]:Copying folder %s to %s ",name(),*m_source_folder, *m_target_folder);
-	check_RO(*m_target_folder);
-
+	check_RO(*m_target_folder,attr_save);
 	copy_folder(*m_source_folder, *m_target_folder);
-
-/*
-	if (!fo.Copy(*m_source_folder, *m_target_folder)) // do Copy
-	{
-		Msg("[%s]:Error :%s",name(), fo.m_sError.GetBuffer());
-	}else
-			Msg("[%s]:Done.",name());
-*/
 }
 
 void CTaskExecute::run	()
@@ -182,8 +174,6 @@ BOOL copy_file(LPCSTR src, LPCSTR dst_fldr, LPCSTR dst_fn)
 	fo.SetOverwriteMode(true); // reset OverwriteMode flag (optional)
 	fo.SetAskIfReadOnly(true);
 	BOOL res;
-
-	res = check_RO(dst_fn);
 	if(FALSE==res)
 		return FALSE;
 
@@ -199,14 +189,6 @@ BOOL copy_file(LPCSTR src, LPCSTR dst_fldr, LPCSTR dst_fn)
 			res = mk_bk_rename(dst_fn);
 			if(FALSE==res)
 				return FALSE;
-/*
-			string_path new_path_rename;
-			strconcat(new_path_rename,dst_fn,"_old");
-			Msg("Trying to rename %s to %s", dst_fn, new_path_rename);
-			res = rename_file(dst_fn, new_path_rename);
-			if(FALSE==res)
-				return FALSE;
-*/
 			return copy_file(src, dst_fldr, dst_fn);
 		}
 		return FALSE;
@@ -263,7 +245,7 @@ BOOL rename_file(LPCSTR src, LPCSTR dst)
 	return TRUE;
 }
 
-BOOL check_RO(LPCSTR src)
+BOOL check_RO(LPCSTR src, BOOL& old)
 {
 	DWORD dwAttr = GetFileAttributes(src);
 	//if (dwAttr == -1); //not_found
