@@ -23,7 +23,7 @@ void	CBlender_luminance::Compile(CBlender_Compile& C)
 		C.r_End			();
 		break;
 	case 2:				// 8x8		=> 1x1, blending with old result
-		C.r_Pass		("null", "bloom_luminance_3",false,FALSE,FALSE,TRUE,D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA);
+		C.r_Pass		("null", "bloom_luminance_3",false,FALSE,FALSE,  FALSE  ,D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA);
 		C.r_Sampler_clf	("s_image",	r2_RT_luminance_t8);
 		C.r_End			();
 		break;
