@@ -39,10 +39,12 @@ public:
 							CSoundRender_CoreD		();
     virtual					~CSoundRender_CoreD		();
 
-	virtual void			_initialize				( u64 window );
+	virtual void			_initialize				( u64 window	);
 	virtual void			_clear					( );
+
+	virtual void			set_volume				( float f		);
     
-	virtual const Fvector&	listener_position		( ){return Listener.vPosition;}
+	virtual const Fvector&	listener_position		( )				{ return Listener.vPosition; }
 };
 extern CSoundRender_CoreD* SoundRenderD;
 #endif
