@@ -9,6 +9,16 @@ static xrCriticalSection	logCS;
 std::vector <LPCSTR>		LogFile;
 static LogCallback			LogCB			= 0;
 
+void FlushLog			()
+{
+	FILE	*f = fopen	(logFName, "wt");
+	if (f) {
+		for (u32 it=0; it<LogFile.size(); it++)
+			fprintf			(f, "%s\n", LogFile[it]);
+		fclose			(f);
+	}
+}
+
 void AddOne				(const char *split) 
 {
 	logCS.Enter			();
@@ -17,12 +27,6 @@ void AddOne				(const char *split)
 	OutputDebugString	(split);
 	OutputDebugString	("\n");
 #endif
-
-	FILE	*f = fopen	(logFName, "at");
-	if (f) {
-		fprintf			(f, "%s\n", split);
-		fclose			(f);
-	}
 
 	LogFile.push_back	(split);
 
@@ -119,7 +123,7 @@ void CreateLog(LogCallback cb)
     VerifyPath			(logFName);
 
 	FILE *f;
-	f		= fopen(logFName, "wt");
+	f		= fopen		(logFName, "wt");
 	if		(f==NULL) abort();
 	fclose	(f);
 
@@ -136,10 +140,11 @@ void CreateLog(LogCallback cb)
 	}
 	for (mcnt=6; mcnt<mnum; mcnt++) build+=day_in_month[mcnt];
 	build+=dnum;
-	Msg("'%s' build %d\nCompilation date: %s\n","xrCore",build+(ynum-1999)*365, __DATE__);
+	Msg("'%s' build %d, %s\n","xrCore",build+(ynum-1999)*365, __DATE__);
 }
 
 void CloseLog(void)
 {
-	LogFile.clear();
+	FlushLog		();
+	LogFile.clear	();
 }

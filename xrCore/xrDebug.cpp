@@ -67,6 +67,7 @@ void xrDebug::backend(const char* reason, const char *file, int line)
 
 	// Log
 	Msg					("***STOP*** file '%s', line %d.\n***Reason***: %s",file,line,reason);
+	FlushLog			();
 
 	// Call the dialog
 	dlgExpr		= reason;	

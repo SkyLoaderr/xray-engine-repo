@@ -16,6 +16,7 @@ void XRCORE_API			Log		(LPCSTR msg, const Fmatrix& dop);
 typedef void (__stdcall * LogCallback) (LPCSTR string);
 void CreateLog					(LogCallback cb=0);
 void CloseLog					();
+void FlushLog					();
 
 extern 		XRCORE_API	std::vector <LPCSTR>		LogFile;
 
