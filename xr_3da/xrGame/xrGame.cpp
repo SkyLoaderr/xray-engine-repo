@@ -7,6 +7,7 @@
 #include "..\customhud.h"
 #include "ai_console.h"
 #include "Actor_Flags.h"
+#include "ai\\hen\\ai_hen.h"
   
 extern int					psPhysicsFPS;
 extern float				psSqueezeVelocity;
@@ -79,9 +80,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "flyer.h"
 #include "customevent.h"
 #include "dummyobject.h"
-#include "ai_human.h"
-#include "ai_hen.h"
-#include "ai_rat.h"
+#include "ai\\hen\\ai_hen.h"
 #include "customdoor.h"
 #include "customlift.h"
 #include "demoactor.h"
@@ -107,8 +106,8 @@ extern "C" {
 		case CLSID_OBJECT_FLYER:	P = new CFlyer();			break;
 		case CLSID_OBJECT_DUMMY:	P = new CDummyObject();		break;
 		case CLSID_EVENT:			P = new CCustomEvent();		break;
-		case CLSID_AI_HUMAN:		P = new CAI_Human();		break;
-		case CLSID_AI_HEN:			P = new CAI_Hen();			break;
+		//case CLSID_AI_HUMAN:		P = new CAI_Human();		break;
+		case CLSID_AI_HEN:			P = new AI::CAI_Hen();		break;
 		//case CLSID_AI_RAT:			P = new CAI_Rat();			break;
 		case CLSID_OBJECT_DOOR:		P = new CCustomDoor();		break;
 		case CLSID_OBJECT_LIFT:		P = new CCustomLift();		break;

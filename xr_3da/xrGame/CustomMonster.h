@@ -11,7 +11,7 @@
 #include "entity.h"
 #include "custommonster_vistrack.h"
 #include "ai_commands.h"
-#include "ai_hen.h"
+//#include "ai\\hen\\ai_hen_state.h"
 #include "ai_pathnodes.h"
 
 class ENGINE_API CMotionDef;
@@ -61,19 +61,16 @@ public:
 	AI::AIC_Action		q_action;
 	Fvector				tWatchDirection;
 
-	// State machine
-	SelectorFollow		fuzzyFollow;
-	SelectorAttack		fuzzyAttack;
-	SelectorPursuit		fuzzyPursuit;
-	SelectorFreeHunting sfFreeHunting;
-	SelectorUnderFire	sfUnderFire;
-
-	stack<AI::State*>	STATE;
+	/**
+	stack<AI::CAIState*> STATE;
 	EGroupState			Goal()					{ return Level().get_group(id_Team,id_Squad,id_Group).State; }
-	AI::State*			State_Get				( )					{ return STATE.top();	}
-	void				State_Set				( AI::State* S )	{ _DELETE(STATE.top());	STATE.top() = S;}
-	void				State_Push				( AI::State* S )	{ STATE.push(S); }
+	AI::CAIState*		State_Get				( )					{ return STATE.top();	}
+	void				State_Set				( AI::CAIState* S )	{ _DELETE(STATE.top());	STATE.top() = S;}
+	void				State_Push				( AI::CAIState* S )	{ STATE.push(S); }
 	void				State_Pop				( )					{ if(!STATE.empty()) STATE.pop(); }
+	/**/
+	virtual void		Think();
+	/**/
 
 	// Rotation
 	SRotation			r_current,r_target;
@@ -166,7 +163,6 @@ public:
 };
 
 namespace AI{
-	#define _FB_sense_RelevantTime _FB_hit_RelevantTime 
 	#define HIT_REACTION_TIME		30000
 	#define SENSE_REACTION_TIME		30000
 }

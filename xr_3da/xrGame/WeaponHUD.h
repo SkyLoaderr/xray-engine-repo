@@ -5,6 +5,7 @@
 class ENGINE_API FBasicVisual;
 class ENGINE_API CInifile;
 class CEntity;
+class ENGINE_API CMotionDef;
 
 class CWeaponHUD : 
 	public pureDeviceCreate, 

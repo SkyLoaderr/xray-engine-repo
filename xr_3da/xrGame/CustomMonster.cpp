@@ -65,11 +65,13 @@ CCustomMonster::~CCustomMonster()
 
 	Device.seqRender.Remove	(this);
 
+	/**
 	State_Pop	();
 	State_Pop	();
 	State_Pop	();
 	State_Pop	();
 	State_Pop	();
+	/**/
 }
 
 void CCustomMonster::Load(CInifile* ini, const char* section)
@@ -116,9 +118,9 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	PKinematics(pVisual)->LL_GetInstance(spine_bone).set_callback(SpinCallback,this);
 
 	// Pathfinding
-	fuzzyFollow.Load		(ini,section);
-	fuzzyAttack.Load		(ini,section);
-	fuzzyPursuit.Load		(ini,section);
+	//fuzzyFollow.Load		(ini,section);
+	//fuzzyAttack.Load		(ini,section);
+	//fuzzyPursuit.Load		(ini,section);
 
 	// Sheduler
 	dwMinUpdate	= 25;
@@ -283,8 +285,9 @@ void CCustomMonster::Update	( DWORD DT )
 	if (Remote())		{
 	} else {
 		// State parsing
-		R_ASSERT			(!STATE.empty());
-		while				(State_Get()->Parse(this)) ;
+		//R_ASSERT			(!STATE.empty());
+		//while				(State_Get()->Parse(this)) ;
+		Think();
 		
 		// Look and action streams
 		if (iHealth>0)		
@@ -548,4 +551,8 @@ void CCustomMonster::OnHUDDraw(CCustomHUD* hud)
 	pApp->pFont->OutNext("ACTION");
 	DumpStream			(&q_action);
 	*/
+}
+
+void CCustomMonster::Think()
+{
 }
