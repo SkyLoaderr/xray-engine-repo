@@ -71,7 +71,7 @@ CSoundManager::~CSoundManager( )
 	_RELEASE		( pDevice		);
 }
 
-void CSoundManager::Restart()
+void CSoundManager::Restart			()
 {
 	// release frame/mt links
 	Device.seqFrame.Remove		(this);
@@ -96,8 +96,7 @@ BOOL CSoundManager::CreatePrimaryBuffer( )
 	dsbd.dwBufferBytes	= 0;
 
 	// Actual creating
-    if( FAILED	( pDevice->CreateSoundBuffer( &dsbd, &pBuffer, NULL ) ) )
-        return false;
+    if( FAILED	( pDevice->CreateSoundBuffer( &dsbd, &pBuffer, NULL ) ) )	return FALSE;
 
     // Calculate primary buffer format.
 	DSCAPS				dsCaps;
@@ -118,8 +117,8 @@ BOOL CSoundManager::CreatePrimaryBuffer( )
     wfm.nAvgBytesPerSec	= wfm.nSamplesPerSec * wfm.nBlockAlign;
 
 	// For safety only :)
-	pBuffer->SetFormat	(&wfm);
-	pBuffer->Play		(0,0,0);
+	R_CHK(pBuffer->SetFormat	(&wfm));
+	R_CHK(pBuffer->Play			(0,0,DSBPLAY_LOOPING));
 
 	return true;
 }
@@ -128,7 +127,7 @@ BOOL CSoundManager::CreatePrimaryBuffer( )
 // Name: InitDirectSound()
 // Desc: Creates the DirectSound object, primary buffer, and 3D listener
 //-----------------------------------------------------------------------------
-void CSoundManager::Initialize( )
+void CSoundManager::Initialize	( )
 {
 	bPresent		= false;
 

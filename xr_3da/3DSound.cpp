@@ -251,13 +251,13 @@ void CSound::SetPosition	(const Fvector &pos)
 void CSound::SetFrequency	(DWORD freq)
 {
 	dwFreq				= freq;
-	clamp				(dwFreq,DSBFREQUENCY_MIN,DSBFREQUENCY_MAX);
+	clamp				(dwFreq,DWORD(DSBFREQUENCY_MIN),DWORD(DSBFREQUENCY_MAX));
 	bNeedUpdate			= true;
 }
 void CSound::SetFrequencyScale(float S)
 {
 	dwFreq				= iFloor(float(dwFreqBase)*S);
-	clamp				(dwFreq,DSBFREQUENCY_MIN,DSBFREQUENCY_MAX);
+	clamp				(dwFreq,DWORD(DSBFREQUENCY_MIN),DWORD(DSBFREQUENCY_MAX));
 	bNeedUpdate			= true;
 }
 void CSound::SetMinMax		(float min, float max)
