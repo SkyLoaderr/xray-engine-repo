@@ -7,8 +7,17 @@
 CFS_File*				fs=0;
 CFS_Memory				fs_desc;
 
-DWORD					bytesSRC=0,bytesDST=0;
-DWORD					filesTOTAL=0,filesSKIP=0,filesVFS=0;
+u32						bytesSRC=0,bytesDST=0;
+u32						filesTOTAL=0,filesSKIP=0,filesVFS=0,filesALIAS=0;
+
+struct	ALIAS
+{
+	LPCSTR			path;
+	u32				c_mode;
+	u32				c_ptr;
+	u32				c_size;
+};
+multimap<u32,ALIAS>		aliases;
 
 BOOL	testSKIP		(LPCSTR path)
 {
@@ -38,6 +47,31 @@ BOOL	testVFS			(LPCSTR path)
 	return FALSE;
 }
 
+BOOL	testEqual		(LPCSTR path, CVirtualFileStream& base)
+{
+	CVirtualFileStream	test	(path);
+	if (test.Length() != base.Length())
+	{
+		return FALSE;
+	}
+	return 0==memcmp(test.Pointer(),base.Pointer(),base.Length());
+}
+
+ALIAS*	testALIAS		(CVirtualFileStream& base, u32& a_tests)
+{
+	multimap<u32,ALIAS>::iterator I = aliases.lower_bound(base.Length());
+
+	while (I!=aliases.end() && (I->first==base.Length()))
+	{
+		a_tests	++;
+		if (testEqual(I->second.path,base))	
+		{
+			return	&I->second;
+		}
+	}
+	return 0;
+}
+
 void Compress			(LPCSTR path)
 {
 	filesTOTAL			++;
@@ -45,43 +79,68 @@ void Compress			(LPCSTR path)
 	printf				("\n%-80s   ",path);
 	if (testSKIP(path))	{
 		filesSKIP	++;
-		printf("SKIP");
+		printf(" -A SKIP");
 		return;
 	}
-	if (testVFS(path))	{
-		filesVFS	++;
-		printf("VFS");
 
-		// Write into BaseFS
-		CVirtualFileStream	src(path);
-		DWORD		c_ptr	= fs->tell();
-		DWORD		c_size	= src.Length();
-		fs->write			(src.Pointer(),c_size);
-		bytesSRC			+= c_size;
-		bytesDST			+= c_size;
-		
-		// Write description
-		fs_desc.WstringZ	(path	);
-		fs_desc.Wdword		(1		);	// VFS file
-		fs_desc.Wdword		(c_ptr	);
-		fs_desc.Wdword		(c_size	);
+	CVirtualFileStream		src	(path);
+	u32			c_ptr		= 0;
+	u32			c_size		= 0;
+	u32			c_mode		= 0;
+	u32			a_tests		= 0;
+
+	ALIAS*		A			= testALIAS(src,a_tests);
+	printf				("%2dA ",a_tests);
+	if (A) 
+	{
+		filesALIAS			++;
+		printf				("ALIAS");
+
+		// Alias found
+		c_ptr				= A->c_ptr;
+		c_size				= A->c_size;
+		c_mode				= A->c_mode;
 	} else {
-		// Compress into BaseFS
-		CVirtualFileStream	src(path);
-		DWORD		c_ptr	= fs->tell();
-		BYTE*		c_data	= 0;
-		unsigned	c_size	= 0;
-		_compressLZ			(&c_data,&c_size,src.Pointer(),src.Length());
-		fs->write			(c_data,c_size);
-		printf				("%3.1f%%",100.f*float(c_size)/float(src.Length()));
-		bytesSRC			+= src.Length();
-		bytesDST			+= c_size;
-		
-		// Write description
-		fs_desc.WstringZ	(path	);
-		fs_desc.Wdword		(0		);	// Normal file
-		fs_desc.Wdword		(c_ptr	);
-		fs_desc.Wdword		(c_size	);
+		if (testVFS(path))	{
+			filesVFS			++;
+			printf				("VFS");
+
+			// Write into BaseFS
+			c_ptr				= fs->tell	();
+			c_size				= src.Length();
+			c_mode				= 1;		// VFS file
+			fs->write			(src.Pointer(),c_size);
+			bytesSRC			+= c_size;
+			bytesDST			+= c_size;
+		} else {
+			// Compress into BaseFS
+			c_ptr				= fs->tell();
+			c_size				= 0;
+			c_mode				= 0;		// Normal file
+			BYTE*		c_data	= 0;
+			_compressLZ			(&c_data,&c_size,src.Pointer(),src.Length());
+			fs->write			(c_data,c_size);
+			printf				("%3.1f%%",100.f*float(c_size)/float(src.Length()));
+			bytesSRC			+= src.Length();
+			bytesDST			+= c_size;
+		}
+	}
+
+	// Write description
+	fs_desc.WstringZ	(path	);
+	fs_desc.Wdword		(c_mode	);
+	fs_desc.Wdword		(c_ptr	);
+	fs_desc.Wdword		(c_size	);
+
+	if (0==A)	
+	{
+		// Register for future aliasing
+		ALIAS			R;
+		R.path			= strdup	(path);
+		R.c_mode		= c_mode;
+		R.c_ptr			= c_ptr;
+		R.c_size		= c_size;
+		aliases.insert	(make_pair(u32(src.Length()),R));
 	}
 }
 
@@ -134,7 +193,7 @@ int __cdecl main	(int argc, char* argv[])
 	printf			("\nCompressing files...");
 	if (0==chdir(argv[1]))
 	{
-		DWORD			dwTimeStart	= timeGetTime();
+		u32			dwTimeStart	= timeGetTime();
 		string256		fname;
 		strconcat		(fname,"..\\",argv[1],".xrp");
 		fs				= new CFS_File(fname);
@@ -143,7 +202,7 @@ int __cdecl main	(int argc, char* argv[])
 		fs->close_chunk	();
 		fs->write_chunk	(1|CFS_CompressMark, fs_desc.pointer(),fs_desc.size());
 		delete fs;
-		DWORD			dwTimeEnd	= timeGetTime();
+		u32			dwTimeEnd	= timeGetTime();
 		printf			("\n\nFiles total/skipped/VFS: %d/%d/%d\nOveral ratio: %3.1f%%\nElapsed time: %d:%d\n",
 			filesTOTAL,filesSKIP,filesVFS,
 			100.f*float(bytesDST)/float(bytesSRC),
