@@ -195,6 +195,7 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 						Fvector end; end.direct(p1,d,RQ.range);
 						AddShotmark(d,end,RQ);
 					}
+					iAmmoElapsed--;
 				}
 				
 		 		if (iAmmoElapsed==0) { m_pParent->g_fireEnd(); break; }

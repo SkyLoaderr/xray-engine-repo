@@ -148,6 +148,9 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 
 	// cycle update
 	if (st_current == eShoot) UpdateFP(bHUDView);
+
+	m_pShootPSVisual->Update(dt*1000);
+
 	switch (st_current)
 	{
 	case eIdle:
@@ -162,8 +165,10 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 			while (fTime<0)
 			{
 				// play smoke
+				m_pShootPSVisual->Stop();
 				m_pShootPSEmitter.Stop();
-				m_pShootPSEmitter.m_Position.set(vLastFP);
+				m_pShootPSEmitter.m_Position.set		(vLastFP);
+				m_pShootPSEmitter.m_ConeDirection.set	(vLastFD);
 				m_pShootPSEmitter.Play();
 
 				// real shoot
@@ -187,7 +192,8 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 						}
 					}
 				}
-				
+				iAmmoElapsed--;
+
 		 		if (iAmmoElapsed==0) { m_pParent->g_fireEnd(); break; }
 				m_pHUD->Shoot();
 			}
@@ -215,7 +221,11 @@ void CWeaponProtecta::Render(BOOL bHUDView)
 		LL			= l_i*LL + l_f*CL; 
 
 		// HUD render
-		if (m_pHUD) Level().HUD()->RenderModel(m_pHUD->Visual(),m_pHUD->Transform(),iFloor(LL));
+		if (m_pHUD){ 
+			Level().HUD()->RenderModel(m_pHUD->Visual(),m_pHUD->Transform(),iFloor(LL));
+			// Render PS Shoot
+			Level().HUD()->RenderModel(m_pShootPSVisual,precalc_identity,255);
+		}
 	}
 	else
 	{
@@ -249,13 +259,12 @@ void CWeaponProtecta::AddShotmark(const Fvector &vDir, const Fvector &vEnd, Coll
 {
 	inherited::AddShotmark(vDir, vEnd, R);
 	pSounds->Play3DAtPos(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);
-	
+/*
 	// particles
 	RAPID::tri* pTri	= pCreator->ObjectSpace.GetStaticTris()+R.element;
 	Fvector N,D;
 	N.mknormal(pTri->V(0),pTri->V(1),pTri->V(2));
 	D.reflect(vDir,N);
-
 	CSector* S			= ::Render.getSector(pTri->sector);
 // stones
 	CPSObject* PS		= new CPSObject("stones",S,true);
@@ -268,4 +277,5 @@ void CWeaponProtecta::AddShotmark(const Fvector &vDir, const Fvector &vEnd, Coll
 	// update emitter & run
 	PS->m_Emitter.m_ConeDirection.set(D);
 	PS->PlayAtPos		(vEnd);
+*/
 }

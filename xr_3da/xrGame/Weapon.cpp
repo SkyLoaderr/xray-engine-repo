@@ -123,7 +123,6 @@ BOOL CWeapon::FireTrace(Fvector& P, Fvector& D, Collide::ray_query& R)
 	m_pParent->bEnabled = false;
 	BOOL bResult		= pCreator->ObjectSpace.RayPick( P, dir, fireDistance, R );
 	m_pParent->bEnabled = true;
-	iAmmoElapsed		--;
 
 	D					= dir;
 	return				bResult;
