@@ -144,15 +144,15 @@ printf					("point 0")
 
 	-- // operators/actions
 	local					action = action_base(self.object,"dead")
-	action:add_precondition	(properties["alive"],		false)
-	action:add_precondition	(properties["dead"],		false)
-	action:add_effect		(properties["dead"],		true)
+	action:add_precondition	(world_property(properties["alive"],	false))
+	action:add_precondition	(world_property(properties["dead"],		false))
+	action:add_effect		(world_property(properties["dead"],		true))
 	manager:add_action		(operators["dead"],			action)
 
 	local					action = stalker.action_free(self.object,"free")
-	action:add_precondition	(properties["alive"],		true)
-	action:add_precondition	(properties["solved"],		false)
-	action:add_effect		(properties["solved"],		true)
+	action:add_precondition	(world_property(properties["alive"],	true))
+	action:add_precondition	(world_property(properties["solved"],	false))
+	action:add_effect		(world_property(properties["solved"],	true))
 	manager:add_action		(operators["free"],			action)
 	printf					("point 8")
 end
