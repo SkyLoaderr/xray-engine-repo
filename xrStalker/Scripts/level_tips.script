@@ -17,7 +17,8 @@ function get_tips(actor)
 				if v.conditions == nil or
 					xr_logic.pick_section_from_condlist(actor,nil,v.conditions.condlist) ~= nil 
 				then
-					actor:give_info_portion_via_pda(v.info, actor)
+					actor:give_info_portion(v.info)
+					actor:give_game_news(v.info, "ui_icons_npc", 50,0,50,50)
 					tips[k] = nil
 				end
 			end
