@@ -118,7 +118,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 
 		if (dwInvalidFaces)	
 		{
-			Msg				("* FATAL: %d invalid faces. Compilation aborted");
+			Msg				("* FATAL: %d invalid faces. Compilation aborted",dwInvalidFaces);
 			R_ASSERT		(0);
 		}
 	}
