@@ -204,6 +204,7 @@ BOOL CWeaponRPG7Grenade::net_Spawn(LPVOID DC) {
 		// Physics (Box)
 		Fobb								obb;
 		Visual()->vis.box.get_CD			(obb.m_translate,obb.m_halfsize);
+		obb.m_translate.set(0, 0, 0); obb.m_halfsize.set(.07f, .07f, .35f);
 		obb.m_rotate.identity				();
 
 		// Physics (Elements)
@@ -237,7 +238,7 @@ BOOL CWeaponRPG7Grenade::net_Spawn(LPVOID DC) {
 		m_pPhysicsShell->Activate			();
 		m_pPhysicsShell->mDesired.identity	();
 		m_pPhysicsShell->fDesiredStrength	= 0.f;
-		m_pPhysicsShell->SetAirResistance(.000f, 0.f);
+		//m_pPhysicsShell->SetAirResistance(.000f, 0.f);
 		m_pPhysicsShell->Deactivate();
 	}
 	return l_res;
@@ -321,7 +322,7 @@ void CWeaponRPG7Grenade::OnH_B_Independent() {
 		vPosition.set(m_pPhysicsShell->mXFORM.c);
 		m_pPhysicsShell->set_PhysicsRefObject(this);
 		m_pPhysicsShell->set_ObjectContactCallback(ObjectContactCallback);
-		m_engineTime = 800;
+		m_engineTime = 2000;
 	}
 }
 
@@ -343,9 +344,10 @@ void CWeaponRPG7Grenade::UpdateCL() {
 		if(m_engineTime < 0xffffffff) {
 			m_engineTime -= Device.dwTimeDelta;
 			Fvector l_pos; l_pos.set(0, 0, 3.f);
+			//R_ASSERT(clTransform.k.magnitude() <= 1.01f);
 			m_pPhysicsShell->applyImpulseTrace(l_pos, clTransform.k, 35.f);
 			Fvector l_dir; l_dir.set(0, 1.f, 0);
-			//m_pPhysicsShell->applyForce(l_dir, 400.f);
+			m_pPhysicsShell->applyForce(l_dir, 430.f);
 			//m_pPhysicsShell->applyImpulse(l_dir, 8.f);
 		}
 	} //else if(H_Parent()) svTransform.set(H_Parent()->clXFORM());
