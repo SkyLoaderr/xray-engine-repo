@@ -1,0 +1,12 @@
+module("m_monster_ai")
+
+function main()
+	local dog = m_monster_ai.m_MonsterBobic("m_dog1", this.script_name(), vector():set(10, 10, 10) )
+
+    while(dog:execute()) do
+    	wait()
+    end
+
+    dog:finalize()
+end
+
