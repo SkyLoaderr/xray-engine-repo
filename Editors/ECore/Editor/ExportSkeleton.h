@@ -122,11 +122,11 @@ public:
 };
 //----------------------------------------------------
 
-
-class CExportSkeleton{
+class CExportSkeletonCustom{
+protected:
     struct SSplit: public CSkeletonCollectorPacked{
-        string128		m_Shader;
-        string128		m_Texture;
+        ref_str			m_Shader;
+        ref_str			m_Texture;
         Fbox			m_Box;
 
         // Progressive
@@ -148,18 +148,24 @@ class CExportSkeleton{
     };
 	DEFINE_VECTOR		(SSplit,SplitVec,SplitIt);
 	SplitVec			m_Splits;
-	CEditableObject*	m_Source;
 //----------------------------------------------------
-	void 	ComputeOBB			(Fobb &B, FvectorVec& V);
-    int     FindSplit			(LPCSTR shader, LPCSTR texture);
+	void 				ComputeOBB			(Fobb &B, FvectorVec& V);
+    int     			FindSplit			(LPCSTR shader, LPCSTR texture);
 public:
-			CExportSkeleton		(CEditableObject* object);
-    bool    Export				(IWriter& F);
-    bool    ExportGeometry		(IWriter& F);
-    bool    ExportMotions		(IWriter& F);
+    virtual bool    	Export				(IWriter& F)=0;
+};
 
-    bool    ExportMotionKeys	(IWriter& F);
-    bool    ExportMotionDefs	(IWriter& F);
+
+class CExportSkeleton: public CExportSkeletonCustom{
+	CEditableObject*	m_Source;
+public:
+						CExportSkeleton		(CEditableObject* object);
+    virtual bool    	Export				(IWriter& F);
+    virtual bool    	ExportGeometry		(IWriter& F);
+    virtual bool    	ExportMotions		(IWriter& F);
+
+    virtual bool    	ExportMotionKeys	(IWriter& F);
+    virtual bool    	ExportMotionDefs	(IWriter& F);
 };
 
 #endif

@@ -314,15 +314,20 @@ void CKinematics::LL_SetBoneVisible(u16 bone_id, BOOL val, BOOL bRecursive)
     visimask.set		(mask,val);
     if (!visimask.is(mask))
         bone_instances[bone_id].mTransform.scale(0.f,0.f,0.f);
-    for (xr_vector<CBoneData*>::iterator C=(*bones)[bone_id]->children.begin(); C!=(*bones)[bone_id]->children.end(); C++)
-    	LL_SetBoneVisible((*C)->SelfID,val,bRecursive);
+    if (bRecursive){
+        for (xr_vector<CBoneData*>::iterator C=(*bones)[bone_id]->children.begin(); C!=(*bones)[bone_id]->children.end(); C++)
+            LL_SetBoneVisible((*C)->SelfID,val,bRecursive);
+    }
 }
 
 void CKinematics::LL_SetBonesVisible(u64 mask)
 {
-	visimask.set(mask);	
+	visimask.set			(0);	
 	for (u32 b=0; b<bones->size(); b++){
-    	if (!visimask.is(u64(1)<<b)){
+    	u64 bm				= u64(1)<<b;
+    	if (mask&bm){
+        	visimask.set	(bm,TRUE);
+        }else{
 	    	Fmatrix& M		= bone_instances[b].mTransform;
         	M.scale			(0.f,0.f,0.f);
         }

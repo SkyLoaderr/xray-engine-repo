@@ -64,7 +64,9 @@ u32 CSkeletonCollectorPacked::VPack(SSkelVert& V){
     return P;
 }
 
-CSkeletonCollectorPacked::CSkeletonCollectorPacked(const Fbox &bb, int apx_vertices, int apx_faces){
+CSkeletonCollectorPacked::CSkeletonCollectorPacked(const Fbox &_bb, int apx_vertices, int apx_faces)
+{
+	Fbox bb;		bb.set(_bb); bb.grow(EPS_L);
     // Params
     m_VMscale.set	(bb.max.x-bb.min.x, bb.max.y-bb.min.y, bb.max.z-bb.min.z);
     m_VMmin.set		(bb.min);
@@ -86,10 +88,11 @@ CSkeletonCollectorPacked::CSkeletonCollectorPacked(const Fbox &bb, int apx_verti
 }
 //----------------------------------------------------
 
-CExportSkeleton::SSplit::SSplit(CSurface* surf, const Fbox& bb):CSkeletonCollectorPacked(bb){
-	strcpy(m_Texture,surf->_Texture());
-	strcpy(m_Shader,surf->_ShaderName());
-    I_Current=V_Minimal=-1;
+CExportSkeleton::SSplit::SSplit(CSurface* surf, const Fbox& bb):CSkeletonCollectorPacked(bb)
+{
+	m_Texture 	= surf->_Texture();
+	m_Shader	= surf->_ShaderName();
+    I_Current	= V_Minimal = -1;
 }
 //----------------------------------------------------
 
@@ -223,7 +226,7 @@ CExportSkeleton::CExportSkeleton(CEditableObject* object)
 }
 //----------------------------------------------------
 
-void CExportSkeleton::ComputeOBB	(Fobb &B, FvectorVec& V)
+void CExportSkeletonCustom::ComputeOBB	(Fobb &B, FvectorVec& V)
 {
     if (V.size()<3) { B.invalidate(); return; }
     Mgc::Box3	BOX		= Mgc::MinBox(V.size(), (const Mgc::Vector3*) V.begin());
@@ -235,10 +238,10 @@ void CExportSkeleton::ComputeOBB	(Fobb &B, FvectorVec& V)
 }
 //----------------------------------------------------
 
-int CExportSkeleton::FindSplit(LPCSTR shader, LPCSTR texture)
+int CExportSkeletonCustom::FindSplit(LPCSTR shader, LPCSTR texture)
 {
 	for (SplitIt it=m_Splits.begin(); it!=m_Splits.end(); it++){
-		if ((0==stricmp(it->m_Texture,texture))&&(0==stricmp(it->m_Shader,shader))) return it-m_Splits.begin();
+		if ((0==stricmp(*it->m_Texture,texture))&&(0==stricmp(*it->m_Shader,shader))) return it-m_Splits.begin();
     }
     return -1;
 }

@@ -45,10 +45,8 @@ struct SSceneSummary{
                     hom_vert_cnt		= 0;
                     object_mu_ref_cnt	= 0;
                     object_lod_ref_cnt	= 0;
-                    light_pointR1_cnt	= 0;
-                    light_pointR2_cnt	= 0;
-                    light_spotR1_cnt	= 0;
-                    light_spotR2_cnt	= 0;
+                    light_point_cnt		= 0;
+                    light_spot_cnt		= 0;
                     light_dynamic_cnt	= 0;
                     light_static_cnt	= 0;
                     light_breakable_cnt	= 0;

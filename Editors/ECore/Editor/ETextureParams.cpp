@@ -136,13 +136,13 @@ void STextureParams::FillProp(PropItemVec& items)
 {
     PropValue* P	= PHelper.CreateToken<u32>	(items, "Type",			(u32*)&type,		ttype_token);
     P->OnChangeEvent= OnTypeChange;
+    PHelper.CreateCaption			(items, "Source\\Width",			width);
+    PHelper.CreateCaption			(items, "Source\\Height",			height);
+    PHelper.CreateCaption			(items, "Source\\Alpha",			HasAlphaChannel()?"on":"off"); 
 	switch (type){
     case ttImage:	
     case ttCubeMap:	
 	    PHelper.CreateToken<u32>	(items, "Format",	   				(u32*)&fmt, 		tfmt_token);
-        PHelper.CreateCaption		(items, "Width",					width);
-        PHelper.CreateCaption		(items, "Height",					height);
-        PHelper.CreateCaption		(items, "Alpha",					HasAlphaChannel()?"on":"off"); 
 
 	    PHelper.CreateFlag<Flags32>	(items, "MipMaps\\Enabled",			&flags,				flGenerateMipMaps);
     	PHelper.CreateToken<u32>	(items, "MipMaps\\Filter",			(u32*)&mip_filter,	tparam_token);
