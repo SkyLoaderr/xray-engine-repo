@@ -42,11 +42,19 @@ using namespace InventoryUtilities;
 #include "../level.h"
 #include "../game_cl_base.h"
 
+#include "../string_table.h"
+
 #define MAX_ITEMS	70
 
 const char * const INVENTORY_ITEM_XML		= "inventory_item.xml";
 const char * const INVENTORY_XML			= "inventory_new.xml";
 const char * const INVENTORY_CHARACTER_XML	= "inventory_character.xml";
+
+
+
+#define CANT_SLEEP_ENEMIES "cant sleep near enemies"
+#define CANT_SLEEP_GROUND "cant sleep not on solid ground"
+
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -719,7 +727,20 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		if(GameID() != GAME_SINGLE)
 			return;
 
-		pActor->GoSleep(*reinterpret_cast<u32*>(pData));
+		EActorSleep result = pActor->GoSleep(*reinterpret_cast<u32*>(pData));
+		LPCSTR sleep_msg = NULL;
+		switch(result)
+		{
+		case easEnemies:
+			sleep_msg = *CStringTable()(CANT_SLEEP_ENEMIES);
+			break;
+		case easNotSolidGround:
+			sleep_msg = *CStringTable()(CANT_SLEEP_GROUND);
+			break;
+		}
+
+		HUD().GetUI()->UIMainIngameWnd.AddInfoMessage(sleep_msg);
+
 		Game().StartStopMenu(this);
 	}
 	else if (UNDRESS_OUTFIT == msg)

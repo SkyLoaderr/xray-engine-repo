@@ -651,7 +651,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	m_bInInterpolation = false;
 	m_bInterpolate = false;
 
-	if (GameID() != GAME_SINGLE)
+//	if (GameID() != GAME_SINGLE)
 	{
 		processing_activate();
 	}
@@ -752,6 +752,8 @@ void CActor::net_Destroy	()
 	LastPosH.clear();
 	LastPosL.clear();
 #endif
+
+	processing_deactivate();
 }
 
 void CActor::net_Relcase	(CObject* O)
