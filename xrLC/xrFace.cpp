@@ -12,7 +12,7 @@ Shader_xrLC&	base_Face::Shader		()
 void			base_Face::CacheOpacity	()
 {
 	bDisableShadowCast	= false;
-	bOpaque				= false;
+	bOpaque				= TRUE;
 
 	b_material& M		= pBuild->materials		[dwMaterial];
 	b_texture&	T		= pBuild->textures		[M.surfidx];

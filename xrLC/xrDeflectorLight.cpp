@@ -126,7 +126,7 @@ float getLastRP_Scale(CDB::COLLIDER* DB, CDB::MODEL* MDL, R_Light& L, Face* skip
 			Shader_xrLC&	SH								= F->Shader();
 			if (!SH.flags.bLIGHT_CastShadow)				continue;
 			
-			if (F->bOpaque)		{
+			if (F->bOpaque){
 				// Opaque poly - cache it
 				L.tri[0].set	(*clT.verts[0]);
 				L.tri[1].set	(*clT.verts[1]);

@@ -102,7 +102,6 @@ void CBuild::BuildRapid()
 		base_Face* F		= (base_Face*)T->dummy;
 		T->dummy			= k;
 		b_rc_face& cf		= rc_faces[k];
-		cf.bOpaque			= F->bOpaque;
 		cf.dwMaterial		= F->dwMaterial;
 		cf.dwMaterialGame	= F->dwMaterialGame;
 		Fvector2*	cuv		= F->getTC0();
