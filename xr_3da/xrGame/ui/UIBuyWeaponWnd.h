@@ -25,6 +25,7 @@
 
 #include "UIBuyWeaponTab.h"
 #include "UIBag.h"
+#include "UIAutobuyIndication.h"
 
 extern const u32	cDetached;
 extern const u32	cAttached;
@@ -58,15 +59,14 @@ public:
 	virtual void Hide();
 
 protected:
+	CUIStatic			UIBackground;
 	CUIBag				UIBagWnd;
 	CUIStatic			UIDescWnd;
 	CUIStatic			UIPersonalWnd;
 	CUIBuyWeaponTab		UITabControl;
-	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBelt;
 	CUIStatic			UIStaticBottom;
 	CUIStatic			UIStaticDesc;
-//	CUIStatic			UIStaticPersonal;
 	// Индикаторы денег
 	CUIStatic			UITotalMoneyHeader;
 	CUIStatic			UITotalMoney;
@@ -78,6 +78,7 @@ protected:
 	CUIStatic			UIOutfitIcon;		
 	//pop-up меню вызываемое по нажатию правой кнопки
 	CUIPropertiesBox	UIPropertiesBox;
+	CUIAutobuyIndication UIAutobuyIndication;
 
 	//элемент с которым работают в текущий момент
 	PIItem m_pCurrentItem;
@@ -129,6 +130,24 @@ protected:
 	bool BeltToSection(CUIDragDropItemMP *pDDItemMP);
 	bool CanPutInSlot(CUIDragDropItemMP *pDDItemMP, const u32 slotNum);
 	bool CanPutInBelt(CUIDragDropItemMP *pDDItemMP);
+	// for buy presets
+
+	typedef struct {
+		int m_price;
+		xr_vector<shared_str> m_list;
+	} Preset;
+
+	Preset   m_presets[3];
+		void FillUpPresets();
+		void ParseStrToVector(const char* str, xr_vector<shared_str>& vector);
+		void UpdatePresetPrices();
+		void UpdatePresetPrice(Preset& preset);
+		int  FindBestBuy();
+		void PerformAutoBuy();
+		int  GetPriceOfOwnItems();
+		int  GetPriceOfItemInSlot(int slot);
+static	int  GetItemPrice(CUIDragDropItemMP *pDDItemMP);
+//		void 
 	CUI3tButton UIBtnOK;
 	CUI3tButton UIBtnCancel;
 	CUI3tButton UIBtnAutobuy;
@@ -173,6 +192,8 @@ public:
 			void OnBtnCancelClicked();
 			void OnBtnClearClicked();
 			void OnBtnAutobuyClicked();
+			void OnBtnAutobuyFocusReceive();
+			void OnBtnAutobuyFocusLost();
 			void SetCurrentDDItem(CUIWindow* pWnd);
 
 	const u8	GetWeaponIndex(u32 slotNum);

@@ -50,6 +50,70 @@ CUIBuyWeaponWnd::~CUIBuyWeaponWnd()
 {
 }
 
+int CUIBuyWeaponWnd::FindBestBuy(){
+	int iMoney = GetMoneyAmount();
+	iMoney += GetPriceOfOwnItems();
+
+	for (int i = 2; i >= 0; i--)
+		if (iMoney >= m_presets[i].m_price)
+			return i;
+
+	return -1;
+}
+
+void CUIBuyWeaponWnd::PerformAutoBuy()
+{
+	int index = FindBestBuy();
+	if (-1 == index)
+		return;
+
+	OnBtnClearClicked();
+
+	xr_vector<shared_str>& buy_list = m_presets[index].m_list;
+
+	for (int i = 0; i < (int)buy_list.size(); i++)
+	{
+		CUIDragDropItemMP* pDDItem = UIBagWnd.GetItemBySectoin(*buy_list[i]);
+		SendMessage(pDDItem, DRAG_DROP_ITEM_DB_CLICK, NULL);
+	}
+}
+
+void CUIBuyWeaponWnd::UpdatePresetPrice(Preset& preset){
+	preset.m_price = 0;
+	for (int i = 0; i < (int)preset.m_list.size(); i++)
+	{
+		CUIDragDropItemMP* pDDItem = UIBagWnd.GetItemBySectoin(*preset.m_list[i]);
+		preset.m_price += GetItemPrice(pDDItem);
+	}
+}
+
+void CUIBuyWeaponWnd::FillUpPresets(){
+	string256 preset[3];
+
+
+	std::strcpy(preset[0], pSettings->r_string(m_StrSectionName, "autobuy_preset1"));
+	std::strcpy(preset[1], pSettings->r_string(m_StrSectionName, "autobuy_preset2"));
+	std::strcpy(preset[2], pSettings->r_string(m_StrSectionName, "autobuy_preset3"));
+
+
+	for (int i = 0; i < 3; i++)
+	{
+        ParseStrToVector(preset[i], m_presets[i].m_list);
+		UpdatePresetPrice(m_presets[i]);
+	}
+}
+
+void CUIBuyWeaponWnd::ParseStrToVector(const char* str, xr_vector<shared_str>& vector){
+	int itemsCount = _GetItemCount(str);
+	string16 item;
+
+	for (int i = 0; i< itemsCount; i++)
+	{
+		_GetItem(str, i, item);
+		vector.push_back(item);
+	}
+}
+
 void CUIBuyWeaponWnd::Init(LPCSTR strSectionName, LPCSTR strPricesSection)
 {
 	CUIXml uiXml;
@@ -65,8 +129,13 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName, LPCSTR strPricesSection)
 					CUIXmlInit::ApplyAlignY(0, alCenter),
 					UI_BASE_WIDTH, UI_BASE_WIDTH);
 
-	AttachChild(&UIStaticTop);
-	xml_init.InitStatic(uiXml, "slots_static", 0, &UIStaticTop);
+	AttachChild(&UIBackground);
+	UIBackground.Init(0, 0, 1024, 768);
+	UIBackground.SetShader(GetBuyMenuShader());	
+
+	AttachChild(&UIAutobuyIndication);
+	xml_init.InitWindow(uiXml, "autobuy_indication", 0, &UIAutobuyIndication);
+	FillUpPresets();
 
 	AttachChild(&UIStaticBelt);
 	xml_init.InitStatic(uiXml, "static", 0, &UIStaticBelt);
@@ -178,6 +247,9 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName, LPCSTR strPricesSection)
 
 	UIDescWnd.AttachChild(&UIItemInfo);
 	UIItemInfo.Init(0, 0, UIDescWnd.GetWidth(), UIDescWnd.GetHeight(), BUY_MP_ITEM_XML);
+
+	UpdatePresetPrices();
+	UIAutobuyIndication.SetPrices(m_presets[0].m_price, m_presets[1].m_price, m_presets[2].m_price);
 }
 
 void CUIBuyWeaponWnd::OnMouseScroll(int iDirection){
@@ -210,8 +282,7 @@ bool CUIBuyWeaponWnd::SlotProc0(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	// И отнимаем от денег стоимость вещи.
 	if (!pDDItemMP->m_bAlreadyPaid)
 	{
-		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - 
-			static_cast<int>(pDDItemMP->GetCost() * (pDDItemMP->m_bHasRealRepresentation ? fRealItemSellMultiplier : 1)));
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
 		pDDItemMP->m_bAlreadyPaid = true;
 	}
 	return true;
@@ -237,8 +308,7 @@ bool CUIBuyWeaponWnd::SlotProc1(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	// И отнимаем от денег стоимость вещи.
 	if (!pDDItemMP->m_bAlreadyPaid)
 	{
-		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - 
-			static_cast<int>(pDDItemMP->GetCost() * (pDDItemMP->m_bHasRealRepresentation ? fRealItemSellMultiplier : 1)));
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
 		pDDItemMP->m_bAlreadyPaid = true;
 	}
 	return true;
@@ -273,8 +343,7 @@ bool CUIBuyWeaponWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	// И отнимаем от денег стоимость вещи.
 	if (!pDDItemMP->m_bAlreadyPaid)
 	{
-		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() -
-			static_cast<int>(pDDItemMP->GetCost() * (pDDItemMP->m_bHasRealRepresentation ? fRealItemSellMultiplier : 1)));
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
 		pDDItemMP->m_bAlreadyPaid = true;
 	}
 
@@ -303,8 +372,7 @@ bool CUIBuyWeaponWnd::SlotProc3(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	// И отнимаем от денег стоимость вещи.
 	if (!pDDItemMP->m_bAlreadyPaid)
 	{
-		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() -
-			static_cast<int>(pDDItemMP->GetCost() * (pDDItemMP->m_bHasRealRepresentation ? fRealItemSellMultiplier : 1)));
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
 		pDDItemMP->m_bAlreadyPaid = true;
 	}
 
@@ -330,8 +398,7 @@ bool CUIBuyWeaponWnd::SlotProc4(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	// И отнимаем от денег стоимость вещи.
 	if (!pDDItemMP->m_bAlreadyPaid)
 	{
-		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() -
-			static_cast<int>(pDDItemMP->GetCost() * (pDDItemMP->m_bHasRealRepresentation ? fRealItemSellMultiplier : 1)));
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
 		pDDItemMP->m_bAlreadyPaid = true;
 	}
 
@@ -373,8 +440,7 @@ bool CUIBuyWeaponWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pL
 		// И отнимаем от денег стоимость вещи.
 		if (!pDDItemMP->m_bAlreadyPaid)
 		{
-			this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() -
-				static_cast<int>(pDDItemMP->GetCost() * (pDDItemMP->m_bHasRealRepresentation ? fRealItemSellMultiplier : 1)));
+			this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
 			pDDItemMP->m_bAlreadyPaid = true;
 		}
 		return true;
@@ -405,8 +471,7 @@ bool CUIBuyWeaponWnd::BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	// И отнимаем от денег стоимость вещи.
 	if (!pDDItemMP->m_bAlreadyPaid)
 	{
-		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() -
-			static_cast<int>(pDDItemMP->GetCost() * (pDDItemMP->m_bHasRealRepresentation ? fRealItemSellMultiplier : 1)));
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
 		pDDItemMP->m_bAlreadyPaid = true;
 	}
 
@@ -447,6 +512,14 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	case DRAG_DROP_REFRESH_ACTIVE_ITEM:
 		if (m_pCurrentDragDropItem) 
 			m_pCurrentDragDropItem->Highlight(true); break;
+
+	case STATIC_FOCUS_RECEIVED:
+		if (&UIBtnAutobuy == pWnd)
+            OnBtnAutobuyFocusReceive(); break;
+
+	case STATIC_FOCUS_LOST:
+		if (&UIBtnAutobuy == pWnd)
+            OnBtnAutobuyFocusLost(); break;
 	}
 
 	//по нажатию правой кнопки
@@ -537,7 +610,15 @@ void CUIBuyWeaponWnd::OnBtnCancelClicked(){
 }
 
 void CUIBuyWeaponWnd::OnBtnAutobuyClicked(){
+	PerformAutoBuy();
+}
 
+void CUIBuyWeaponWnd::OnBtnAutobuyFocusReceive(){
+	UIAutobuyIndication.HighlightItem(FindBestBuy());
+}
+
+void CUIBuyWeaponWnd::OnBtnAutobuyFocusLost(){
+	UIAutobuyIndication.UnHighlight();
 }
 
 void CUIBuyWeaponWnd::OnBtnClearClicked(){
@@ -714,6 +795,13 @@ void CUIBuyWeaponWnd::Show()
 		pActor->HideCurrentWeapon(GEG_PLAYER_BUYMENU_OPEN);//, false);
 	}
 	UITabControl.SetActiveState();
+	UpdatePresetPrices();
+	UIAutobuyIndication.SetPrices(m_presets[0].m_price, m_presets[1].m_price, m_presets[2].m_price);
+}
+
+void CUIBuyWeaponWnd::UpdatePresetPrices(){
+	for (int i = 0; i < 3; i++)
+		UpdatePresetPrice(m_presets[i]);
 }
 
 void CUIBuyWeaponWnd::Hide()
@@ -1132,6 +1220,39 @@ void CUIBuyWeaponWnd::ClearSlots()
 	IgnoreMoney(false);
 }
 
+int CUIBuyWeaponWnd::GetPriceOfOwnItems(){
+	int price = 0;
+
+	price += GetPriceOfItemInSlot(KNIFE_SLOT);
+	price += GetPriceOfItemInSlot(PISTOL_SLOT);
+	price += GetPriceOfItemInSlot(GRENADE_SLOT);
+	price += GetPriceOfItemInSlot(APPARATUS_SLOT);
+	price += GetPriceOfItemInSlot(OUTFIT_SLOT);
+
+	DRAG_DROP_LIST list = UITopList[BELT_SLOT].GetDragDropItemsList();
+	DRAG_DROP_LIST_it it;
+
+	for (it = list.begin(); it != list.end(); ++it)
+		price += GetItemPrice((CUIDragDropItemMP*)*it);
+
+	return price;
+}
+
+int CUIBuyWeaponWnd::GetPriceOfItemInSlot(int slot){
+	if (slot >= MP_SLOTS_NUM) 
+		return 0;
+
+
+	if (!UITopList[slot].GetDragDropItemsList().empty())
+	{
+		CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(*UITopList[slot].GetDragDropItemsList().begin());
+        return GetItemPrice(pDDItemMP);	
+	}
+
+	return 0;
+
+}
+
 void CUIBuyWeaponWnd::SectionToSlot(const char *sectionName, bool bRealRepresentationSet)
 {
 	CUIDragDropItemMP* pDDItem = UIBagWnd.GetItemBySectoin(sectionName);	
@@ -1240,6 +1361,16 @@ CUIDragDropItemMP * CUIBuyWeaponWnd::IsItemAnAddon(CUIDragDropItemMP *pPossibleA
 	return NULL;
 }
 
+int CUIBuyWeaponWnd::GetItemPrice(CUIDragDropItemMP* pDDItemMP){
+	if (NULL == pDDItemMP)
+		return 0;
+
+	if (!pDDItemMP->IsEnabled())
+		return 0;
+
+	return static_cast<int>(pDDItemMP->GetCost() * (pDDItemMP->m_bHasRealRepresentation ? fRealItemSellMultiplier : 1));
+}
+
 bool CUIBuyWeaponWnd::IsItemAnAddonSimple(CUIDragDropItemMP *pPossibleAddon) const
 {
 	return UIBagWnd.IsItemAnAddonSimple(pPossibleAddon);
@@ -1301,8 +1432,7 @@ bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 	if (pDDItemMP->m_bAlreadyPaid)
 	{
-		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() +
-			static_cast<int>(pDDItemMP->GetCost() * (pDDItemMP->m_bHasRealRepresentation ? fRealItemSellMultiplier : 1)));
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() + GetItemPrice(pDDItemMP)); 		
 
 		// Если у вещи есть аддоны, то прибавляем и также и их половинную стоимость
 		pDDItemMP->m_bAlreadyPaid = false;
