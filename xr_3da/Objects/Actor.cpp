@@ -365,9 +365,9 @@ void CActor::g_Physics(Fvector& accel, float jump, float dt)
 	// Check ground-contact
 	if (net_Local && Movement.gcontact_Was) 
 	{
-		pSounds->PlayAtPos	(sndLanding,this,Position());
+		pSounds->PlayAtPos					(sndLanding,this,Position());
 		pCreator->Cameras.AddEffector		(new CEffectorFall(Movement.gcontact_Power));
-		Fvector D; D.set	(0,1,0);
+		Fvector D; D.set					(0,1,0);
 		if (Movement.gcontact_HealthLost)	Hit(int(Movement.gcontact_HealthLost),D,this);
 	}
 }
@@ -451,10 +451,6 @@ void CActor::Update	(DWORD DT)
 
 	// 
 	clamp					(DT,0ul,100ul);
-	if (0==DT)				
-	{
-		Log("! !!!!!!!!!!!!!!!!!!!!!!!");
-	}
 	float	dt				= float(DT)/1000.f;
 	
 	// Check controls, create accel, prelimitary setup "mstate_real"
@@ -600,7 +596,7 @@ void CActor::g_cl_ValidateMState(DWORD mstate_wf)
 	if ((mstate_wf&mcJump)==0)	m_bJumpKeyPressed = FALSE;
 
 	// Зажало-ли меня/уперся - не двигаюсь
-	if (Movement.GetVelocityActual()<0.2f || Movement.bSleep) 
+	if (((Movement.GetVelocityActual()<0.2f)&&(!(mstate_real&mcJump))) || Movement.bSleep) 
 	{
 		mstate_real				&=~ mcAnyMove;
 	}

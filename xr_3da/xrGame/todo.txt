@@ -11,6 +11,7 @@
 	. TODO: Save/Load
 	. TODO: NET: Save/Load
 	. TODO: NET: Demo Record/Replay
+	. BUG:  Sliding anims
 	
 	. TODO: Detail texturing
 
