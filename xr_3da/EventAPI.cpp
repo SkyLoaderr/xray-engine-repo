@@ -149,7 +149,7 @@ void msParse			(LPCSTR c)
 {
 	if ((0==stricmp(c,"quit")) || (0==stricmp(c,"exit"))) 
 	{
-		Engine.Event.Defer	("KERNEL:QUIT");
+		Console.Execute			("quit");
 	}
 }
 
