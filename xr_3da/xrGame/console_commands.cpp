@@ -626,8 +626,15 @@ public:
 			  Msg	("! There are no level(s) started");
 		  } else {
 			  Console->Hide				();
-			  char fn[256]; strconcat	(fn,args,".xrdemo");
-			  g_pGameLevel->Cameras.AddEffector(xr_new<CDemoPlay> (fn,1.0f));
+			  string_path		fn;
+			  u32		loops	=	0;
+			  LPCSTR	comma	=	strchr(fn,',');
+			  if (comma)	{
+				  loops			=	atoi	(comma+1);
+				  *comma		=	0;	//. :)
+			  }
+			  strconcat			(fn,args,".xrdemo");
+			  g_pGameLevel->Cameras.AddEffector(xr_new<CDemoPlay> (fn,1.0f,loops));
 		  }
 	  }
 };

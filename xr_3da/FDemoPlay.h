@@ -13,14 +13,14 @@ struct	SAnimParams;
 // class
 class ENGINE_API CDemoPlay :	public CEffector
 {
-    COMotion*			m_pMotion;
-    SAnimParams*		m_MParam;
+    COMotion*			m_pMotion			;
+    SAnimParams*		m_MParam			;
 
-	xr_vector<Fmatrix>	seq;
-	int					m_count;
-	float				fStartTime;
-	float				fSpeed;
-	BOOL				bCycle;
+	xr_vector<Fmatrix>	seq					;
+	int					m_count				;
+	float				fStartTime			;
+	float				fSpeed				;
+	u32					dwCyclesLeft		;
 
 	// statistics
 	BOOL				stat_started		;
@@ -34,7 +34,7 @@ class ENGINE_API CDemoPlay :	public CEffector
 public:
 	virtual	BOOL		Process		(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect);
 
-						CDemoPlay	(const char *name, float ms, BOOL cycle=false, float life_time=60*60*1000);
+						CDemoPlay	(const char *name, float ms, u32 cycles, float life_time=60*60*1000);
 	virtual				~CDemoPlay	();
 };
 

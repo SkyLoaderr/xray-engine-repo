@@ -12,7 +12,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEffector(cefDemo,life_time,FALSE)
+CDemoPlay::CDemoPlay(const char *name, float ms, u32 cycles, float life_time) : CEffector(cefDemo,life_time,FALSE)
 {
 	Msg					("! Playing demo: %s",name);
 	Console->Execute	("hud_weapon 0");
@@ -20,7 +20,7 @@ CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEf
 
 	fStartTime			= 0;
 	fSpeed				= ms;
-	bCycle				= bc;
+	dwCyclesLeft		= cycles;
 
 	m_pMotion			= 0;
 	m_MParam			= 0;
@@ -52,15 +52,16 @@ CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEf
 		FS.r_close		(fs);
 		Log				("~ Total key-frames: ",m_count);
 	}
+	stat_loop_id		= 0;
 	stat_started		= FALSE;
 	Device.PreCache		(50);
 }
 
 CDemoPlay::~CDemoPlay		()
 {
+	stat_Stop				();
 	xr_delete				(m_pMotion	);
 	xr_delete				(m_MParam	);
-	stat_Stop				();
 	Console->Execute		("hud_weapon 1");
 	if(g_bBenchmark)		Console->Execute	("hud_draw 1");
 }
@@ -69,10 +70,12 @@ void CDemoPlay::stat_Start	()
 {
 	if (stat_started)		return;
 	stat_started			= TRUE				;
-	Sleep					(500)				;
-	stat_StartFrame			= Device.dwFrame	;
+	Sleep					(1)					;
+	stat_loop_id			+=	1				;
+	stat_StartFrame			=	Device.dwFrame	;
 	stat_Timer_frame.Start	()					;
 	stat_Timer_total.Start	()					;
+	stat_table.clear		()					;
 	stat_table.reserve		(1024)				;
 }
 
@@ -192,9 +195,11 @@ BOOL CDemoPlay::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float& 
 		
 		if (frame>=m_count)
 		{
-			if (!bCycle)	{ return FALSE; }
-			stat_Stop		();
-			stat_Start		();
+			if (0==dwCyclesLeft)	return FALSE;
+			dwCyclesLeft			--;
+			// just continue
+			// stat_Stop			();
+			// stat_Start			();
 		}
 		
 		int f1=frame; FIX(f1);
