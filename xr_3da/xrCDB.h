@@ -32,8 +32,6 @@ namespace CDB
 		DWORD			box_mode;
 		DWORD			frustum_mode;
 	public:
-		CList<int>		result;
-
 		CDB				();
 		~CDB			();
 		
