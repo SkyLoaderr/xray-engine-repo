@@ -205,22 +205,46 @@ void CUIBag::UpdateBuyPossibility(){
 }
 
 CUIDragDropItemMP* CUIBag::GetItemBySectoin(const char *sectionName){
-	xr_list<CUIDragDropItemMP*>::iterator it;
 
-	for (it = m_allItems.begin(); it != m_allItems.end(); ++it)
-		if (0 == xr_strcmp((*it)->GetSectionName(), sectionName))
-			return *it;
+	for (int i = 0; i < NUMBER_OF_GROUPS; i++)
+	{
+		DRAG_DROP_LIST list = m_groups[i].GetDragDropItemsList();
+		DRAG_DROP_LIST_it it;
+		for (it = list.begin(); it != list.end(); ++it)
+		{
+			CUIDragDropItemMP* pDDItem = smart_cast<CUIDragDropItemMP*>(*it);
+			if (0 == xr_strcmp(pDDItem->GetSectionName(), sectionName))
+				return pDDItem;
+		}
+	}
+	//xr_list<CUIDragDropItemMP*>::iterator it;
+
+	//for (it = m_allItems.begin(); it != m_allItems.end(); ++it)
+	//	if (0 == xr_strcmp((*it)->GetSectionName(), sectionName))
+	//		return *it;
 
 	return NULL;
 }
 
 CUIDragDropItemMP* CUIBag::GetItemBySectoin(const u8 grpNum, u8 uIndexInSlot){
-	xr_list<CUIDragDropItemMP*>::iterator it;
+	for (int i = 0; i < NUMBER_OF_GROUPS; i++)
+	{
+		DRAG_DROP_LIST list = m_groups[i].GetDragDropItemsList();
+		DRAG_DROP_LIST_it it;
+		for (it = list.begin(); it != list.end(); ++it)
+		{
+			CUIDragDropItemMP* pDDItem = smart_cast<CUIDragDropItemMP*>(*it);
+			if (grpNum == pDDItem->GetSectionGroupID() && uIndexInSlot == pDDItem->GetPosInSectionsGroup())
+				return pDDItem;
+		}
+	}
+
+	/*xr_list<CUIDragDropItemMP*>::iterator it;
 
 	for (it = m_allItems.begin(); it != m_allItems.end(); ++it)
         if (grpNum == (*it)->GetSectionGroupID() && uIndexInSlot == (*it)->GetPosInSectionsGroup())
 			return *it;
-
+	*/
 	return NULL;
 }
 

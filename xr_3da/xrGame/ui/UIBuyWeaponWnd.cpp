@@ -979,10 +979,14 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 		OnButtonClicked(&UIBtnCancel);		
 		return true;
 	}
-
-	else if (g_iOkAccelerator == dik)
+	else if (g_iOkAccelerator == dik || DIK_SPACE == dik)
 	{
 		OnButtonClicked(&UIBtnOK);
+		return true;
+	}
+	else if (DIK_B == dik)
+	{
+		UITabControl.SetActiveState();
 		return true;
 	}
 

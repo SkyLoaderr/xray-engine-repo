@@ -64,7 +64,6 @@ public:
 			void	GetWeaponIndexByName(const xr_string sectionName, u8 &grpNum, u8 &idx);
 			u8		GetItemIndex(CUIDragDropItemMP* pDDItem, u8 &sectionNum);
 
-CUIDragDropItemMP*	GetCurrentItem(){return m_pCurrentDDItem;}
 CUIDragDropItemMP*	GetItemBySectoin(const char *sectionName);
 CUIDragDropItemMP*	GetItemBySectoin(const u8 grpNum, u8 uIndexInSlot);
 CUIDragDropItemMP*	GetAddonByID(CUIDragDropItemMP *pAddonOwner, CUIDragDropItemMP::AddonIDs ID);
