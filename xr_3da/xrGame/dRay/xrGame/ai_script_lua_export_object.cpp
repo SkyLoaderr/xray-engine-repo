@@ -18,6 +18,7 @@
 #include "ai_script_hit.h"
 #include "cover_point.h"
 #include "script_ini_file.h"
+#include "attachable_item.h"
 
 using namespace luabind;
 
@@ -266,6 +267,9 @@ void CScriptEngine::export_object()
 
 			.def("heli_goto_stay_point",        (void (CLuaGameObject::*)(float))(CLuaGameObject::heli_goto_stay_point))
 			.def("heli_goto_stay_point",        (void (CLuaGameObject::*)(Fvector&,float))(CLuaGameObject::heli_goto_stay_point))
-			.def("heli_go_patrol",				&CLuaGameObject::heli_go_patrol)
+			.def("heli_go_patrol",				&CLuaGameObject::heli_go_patrol),
+
+		class_<CAttachableItem>("attachable_item")
+			.def(								constructor<>())
 	];
 }
