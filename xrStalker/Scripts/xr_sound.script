@@ -8,62 +8,44 @@ local nstl = 10
 theme = {}
 
 snd_files = {
-	weather_bad_soldier            = "script_sound\\weather\\bad\\soldier\\soldier_bad_weather_",
-	weather_good_soldier           = "script_sound\\weather\\good\\soldier\\soldier_good_weather_",
-	state_idle_soldier             = "script_sound\\states\\idle\\soldier\\soldier_idle_",
-	state_health_soldier           = "script_sound\\states\\health\\soldier\\soldier_health_",
-	state_fatique_soldier          = "script_sound\\states\\fatique\\soldier\\soldier_fatique_",
-	state_starvation_soldier       = "script_sound\\states\\starvation\\soldier\\soldier_starvation_",
-	state_sleep_soldier            = "script_sound\\states\\sleep\\soldier\\soldier_sleep_",
-	help_soldier                   = "script_sound\\help\\soldier\\soldier_help_",
-	hail_soldier                   = "script_sound\\hail\\soldier\\soldier_hail_",
-	wait_soldier                   = "script_sound\\waiting\\soldier\\soldier_wait_",
-	threat_weap_soldier            = "script_sound\\threat\\drop_weapon\\soldier\\soldier_dropweapon_",
-	threat_back_soldier            = "script_sound\\threat\\backoff\\soldier\\soldier_backoff_",
-	threat_stop_soldier            = "script_sound\\threat\\stop\\soldier\\soldier_stop_",
-	reac_hear_soldier              = "script_sound\\reactions\\hear_something\\soldier\\soldier_hear_",
-	reac_see_soldier               = "script_sound\\reactions\\see_something\\soldier\\soldier_see_",
-	reac_search_soldier            = "script_sound\\reactions\\search_enemy\\soldier\\soldier_search_",
-	reac_monstr_soldier            = "script_sound\\reactions\\mutants\\soldier\\soldier_mutants_",
-	reac_enemy_soldier             = "script_sound\\reactions\\enemy\\soldier\\soldier_enemy_",
-	reac_cmonstr_soldier           = "script_sound\\reactions\\dead_mutant\\soldier\\soldier_deadmutant_",
-	reac_cenemy_soldier            = "script_sound\\reactions\\dead_enemy\\soldier\\soldier_dead_enemy_",
-	reac_cneutral_soldier          = "script_sound\\reactions\\dead_neutral\\soldier\\soldier_deadneutral_",
-	reac_cfriend_soldier           = "script_sound\\reactions\\dead_friend\\soldier\\soldier_deadfriend_",
-	reac_nothing_soldier           = "script_sound\\reactions\\nothing\\soldier\\soldier_nothing_",
-	talk_hello_soldier             = "script_sound\\talk\\greeting\\soldier\\soldier_greeting_",
-	talk_bye_soldier               = "script_sound\\talk\\leave\\soldier\\soldier_leave_",
-	talk_accept_soldier            = "script_sound\\talk\\accept\\soldier\\soldier_accept_",
-	talk_reject_soldier            = "script_sound\\talk\\rejection\\soldier\\soldier_rejection_",
-	talk_abuse_soldier             = "script_sound\\talk\\abuse\\soldier\\soldier_abuse_",
-	trade_yes_soldier              = "script_sound\\talk\\trade\\yes\\soldier\\soldier_trade_",
-	trade_no_soldier               = "script_sound\\talk\\trade\\no\\soldier\\soldier_tradeno_",
-	wounded_get_help               = "script_sound\\help\\soldier\\soldier_help_",
-	wounded_enemy                  = "script_sound\\help\\soldier\\soldier_help_",
-	zombie						   = "script_replics\\zombie\\stalker_zombie\\zombie_phrase_",
-
------------------- сюжетные --------------------
------- ESCAPE --------
-	-- бандиты на заводе
---[[	esc_f_band_novice              = "l_escape\\factory_bandits\\bandit_about_novice_",
-	esc_f_band_zone                = "l_escape\\factory_bandits\\bandit_about_zone_",
-	esc_f_band_place               = "l_escape\\factory_bandits\\bandit_hiding_place_",
-	esc_f_band_novice_again        = "l_escape\\factory_bandits\\bandit_novice_again_",
-	esc_f_band_on_actor            = "l_escape\\factory_bandits\\bandit_on_actor_", ]]
-	esc_f_band_novice              = "script_replics\\bandit_1\\replics\\bandit_about_novice_",
-	esc_f_band_zone                = "script_replics\\bandit_1\\replics\\bandit_about_zone_",
-	esc_f_band_place               = "script_replics\\bandit_1\\replics\\bandit_hiding_place_",
-	esc_f_band_novice_again        = "script_replics\\bandit_1\\replics\\bandit_novice_again_",
-	esc_f_band_on_actor            = "script_replics\\bandit_1\\replics\\bandit_on_actor_",
-	place1                         = "script_replics\\bandit_1\\replics\\bandit_hiding_place_1",
-	place2                         = "script_replics\\bandit_1\\replics\\bandit_hiding_place_2",
-	// Новичок, которого ограбили
-	esc_novice_weeping		   	   = "script_replics\\stalker_1\\newbie\\robbered_replic_1_",
-	esc_novice_ask_for_help		   = "script_replics\\stalker_1\\newbie\\robbered_replic_2_",
-	esc_novice_i_dead_their		   = "script_replics\\stalker_1\\newbie\\robbered_replic_3_",
------- GARBAGE  -------
-
------- AGROPROM -------
+	weather_bad_stalker            = "characters_voice\\human_1\\weather\\bad_weather\\bad_weather_",
+	weather_good_stalker           = "characters_voice\\human_1\\weather\\good_weather\\good_weather_",
+	
+	state_idle_stalker             = "characters_voice\\human_1\\states\\idle\\stalker\\idle_",
+	state_health_stalker           = "characters_voice\\human_1\\states\\health\\stalker\\health_",
+	state_fatique_stalker          = "characters_voice\\human_1\\states\\fatique\\stalker\\fatique_",
+	state_starvation_stalker       = "characters_voice\\human_1\\states\\starvation\\stalker\\starvation_",
+	state_sleep_stalker            = "characters_voice\\human_1\\states\\sleep\\stalker\\sleep_",
+	
+	help_stalker                   = "characters_voice\\human_1\\help\\not_see_helper\\stalker\\help_",
+	help_stalker_see               = "characters_voice\\human_1\\help\\see_helper\\stalker\\help_",
+	
+	hail_stalker                   = "characters_voice\\human_1\\hail\\stalker\\hail_",
+	
+	wait_stalker                   = "characters_voice\\human_1\\waiting\\stalker\\wait_",
+	
+	threat_weap_stalker            = "characters_voice\\human_1\\threat\\drop_weapon\\stalker\\dropweapon_",
+	threat_back_stalker            = "characters_voice\\human_1\\threat\\back_off\\stalker\\backoff_",
+	threat_stop_stalker            = "characters_voice\\human_1\\threat\\stop\\stalker\\stop_",
+	
+	reac_hear_stalker              = "characters_voice\\human_1\\reactions\\hear_something\\stalker\\hear_",
+	reac_see_stalker               = "characters_voice\\human_1\\reactions\\see_something\\stalker\\see_",
+	reac_cmonstr_stalker           = "characters_voice\\human_1\\reactions\\dead_mutant\\stalker\\dead_mutant_",
+	reac_cenemy_stalker            = "characters_voice\\human_1\\reactions\\dead_enemy\\stalker\\dead_enemy_",
+	reac_cneutral_stalker          = "characters_voice\\human_1\\reactions\\dead_neutral\\stalker\\dead_neutral_",
+	reac_cfriend_stalker           = "characters_voice\\human_1\\reactions\\dead_friend\\stalker\\dead_friend_",
+	reac_nothing_stalker           = "characters_voice\\human_1\\reactions\\nothing\\stalker\\nothing_",
+	
+	talk_hello_stalker             = "characters_voice\\human_1\\talk\\neutral_greeting\\stalker\\greeting_",
+	talk_hello_friend_stalker      = "characters_voice\\human_1\\talk\\friendly_greeting\\stalker\\greeting_",
+	talk_bye_stalker               = "characters_voice\\human_1\\talk\\leave\\stalker\\leave_",
+	talk_accept_stalker            = "characters_voice\\human_1\\talk\\accept\\stalker\\accept_",
+	talk_reject_stalker            = "characters_voice\\human_1\\talk\\rejection\\stalker\\rejection_",
+	talk_abuse_stalker             = "characters_voice\\human_1\\talk\\abuse\\stalker\\abuse_",
+	
+	trade_yes_stalker              = "characters_voice\\human_1\\talk\\trade\\yes\\stalker\\yes_",
+	trade_no_stalker               = "characters_voice\\human_1\\talk\\trade\\no\\stalker\\no_",
+	
 
 }
 -----------------------------------------------------------------------------------------------------------------------------------
@@ -89,109 +71,86 @@ function load_sound(obj)
 	-- фразы о погоде
 	theme["weather"] = { exec = weather_class, types = {}}
 	theme["weather"].types["bad"] = { exec = npc_class, types = {}}
-	theme["weather"].types["bad"].types["soldier"] = load_theme("weather_bad_soldier")
+	theme["weather"].types["bad"].types["stalker"] = load_theme("weather_bad_stalker")
 	theme["weather"].types["good"] = { exec = npc_class, types = {}}
-	theme["weather"].types["good"].types["soldier"] = load_theme("weather_good_soldier")
+	theme["weather"].types["good"].types["stalker"] = load_theme("weather_good_stalker")
 
 	-- состояния тела
 	theme["state"] = { exec = state_class, types = {}}
 	theme["state"].types["health"] = { exec = npc_class, types = {}}
-	theme["state"].types["health"].types["soldier"] = load_theme("state_health_soldier")
+	theme["state"].types["health"].types["stalker"] = load_theme("state_health_stalker")
 	theme["state"].types["fatique"] = { exec = npc_class, types = {}}
-	theme["state"].types["fatique"].types["soldier"] = load_theme("state_fatique_soldier")
+	theme["state"].types["fatique"].types["stalker"] = load_theme("state_fatique_stalker")
 	theme["state"].types["starvation"] = { exec = npc_class, types = {}}
-	theme["state"].types["starvation"].types["soldie7r"] = load_theme("state_starvation_soldier")
-	theme["state"].types["sleep"] = { exec = npc_class, types = {}}
-	theme["state"].types["sleep"].types["soldier"] = load_theme("state_sleep_soldier")
+	theme["state"].types["starvation"].types["stalker"] = load_theme("state_starvation_stalker")
 	theme["state"].types["idle"] = { exec = npc_class, types = {}}
-	theme["state"].types["idle"].types["soldier"] = load_theme("state_idle_soldier")
+	theme["state"].types["idle"].types["stalker"] = load_theme("state_idle_stalker")
+	theme["state"].types["sleep"] = { exec = npc_class, types = {}}
+	theme["state"].types["sleep"].types["stalker"] = load_theme("state_sleep_stalker")
 
 	-- просьба о помощи
 	theme["help"] = { exec = npc_class, types = {}}
-	theme["help"].types["soldier"] = load_theme("help_soldier")
+	theme["help"].types["stalker"] = load_theme("help_stalker")
+	theme["help_see"] = { exec = npc_class, types = {}}
+	theme["help_see"].types["stalker"] = load_theme("help_stalker_see")
 
 	-- окрик
 	theme["hail"] = { exec = npc_class, types = {}}
-	theme["hail"].types["soldier"] = load_theme("hail_soldier")
+	theme["hail"].types["stalker"] = load_theme("hail_stalker")
 
 	-- ожидание
 	theme["wait"] = { exec = npc_class, types = {}}
-	theme["wait"].types["soldier"] = load_theme("wait_soldier")
+	theme["wait"].types["stalker"] = load_theme("wait_stalker")
 
 	-- угрозы
 	theme["threat_weap"] = { exec = npc_class, types = {}}
-	theme["threat_weap"].types["soldier"] = load_theme("threat_weap_soldier")
+	theme["threat_weap"].types["stalker"] = load_theme("threat_weap_stalker")
 	theme["threat_back"] = { exec = npc_class, types = {}}
-	theme["threat_back"].types["soldier"] = load_theme("threat_back_soldier")
+	theme["threat_back"].types["stalker"] = load_theme("threat_back_stalker")
 	theme["threat_stop"] = { exec = npc_class, types = {}}
-	theme["threat_stop"].types["soldier"] = load_theme("threat_stop_soldier")
+	theme["threat_stop"].types["stalker"] = load_theme("threat_stop_stalker")
 
 	-- реакции
 	theme["reac_hear"] = { exec = npc_class, types = {}}
-	theme["reac_hear"].types["soldier"] = load_theme("reac_hear_soldier")
+	theme["reac_hear"].types["stalker"] = load_theme("reac_hear_stalker")
 	theme["reac_see"] = { exec = npc_class, types = {}}
-	theme["reac_see"].types["soldier"] = load_theme("reac_see_soldier")
-	theme["reac_search"] = { exec = npc_class, types = {}}
-	theme["reac_search"].types["soldier"] = load_theme("reac_search_soldier")
-	theme["reac_find_monstr"] = { exec = npc_class, types = {}}
-	theme["reac_find_monstr"].types["soldier"] = load_theme("reac_monstr_soldier")
-	theme["reac_find_enemy"] = { exec = npc_class, types = {}}
-	theme["reac_find_enemy"].types["soldier"] = load_theme("reac_enemy_soldier")
+	theme["reac_see"].types["stalker"] = load_theme("reac_see_stalker")
 	theme["reac_crps_monstr"] = { exec = npc_class, types = {}}
-	theme["reac_crps_monstr"].types["soldier"] = load_theme("reac_cmonstr_soldier")
+	theme["reac_crps_monstr"].types["stalker"] = load_theme("reac_cmonstr_stalker")
 	theme["reac_crps_enemy"] = { exec = npc_class, types = {}}
-	theme["reac_crps_enemy"].types["soldier"] = load_theme("reac_cenemy_soldier")
+	theme["reac_crps_enemy"].types["stalker"] = load_theme("reac_cenemy_stalker")
 	theme["reac_crps_neutral"] = { exec = npc_class, types = {}}
-	theme["reac_crps_neutral"].types["soldier"] = load_theme("reac_cneutral_soldier")
+	theme["reac_crps_neutral"].types["stalker"] = load_theme("reac_cneutral_stalker")
 	theme["reac_crps_friend"] = { exec = npc_class, types = {}}
-	theme["reac_crps_friend"].types["soldier"] = load_theme("reac_cfriend_soldier")
+	theme["reac_crps_friend"].types["stalker"] = load_theme("reac_cfriend_stalker")
 	theme["reac_nothing"] = { exec = npc_class, types = {}}
-	theme["reac_nothing"].types["soldier"] = load_theme("reac_nothing_soldier")
+	theme["reac_nothing"].types["stalker"] = load_theme("reac_nothing_stalker")
 
 	-- болтовня
 	theme["talk_hello"] = { exec = npc_class, types = {}}
-	theme["talk_hello"].types["soldier"] = load_theme("talk_hello_soldier")
+	theme["talk_hello"].types["stalker"] = load_theme("talk_hello_stalker")
+	theme["talk_hello_friend"] = { exec = npc_class, types = {}}
+	theme["talk_hello_friend"].types["stalker"] = load_theme("talk_hello_friend_stalker")
 	theme["talk_bye"] = { exec = npc_class, types = {}}
-	theme["talk_bye"].types["soldier"] = load_theme("talk_bye_soldier")
+	theme["talk_bye"].types["stalker"] = load_theme("talk_bye_stalker")
 	theme["talk_accept"] = { exec = npc_class, types = {}}
-	theme["talk_accept"].types["soldier"] = load_theme("talk_accept_soldier")
+	theme["talk_accept"].types["stalker"] = load_theme("talk_accept_stalker")
 	theme["talk_reject"] = { exec = npc_class, types = {}}
-	theme["talk_reject"].types["soldier"] = load_theme("talk_reject_soldier")
+	theme["talk_reject"].types["stalker"] = load_theme("talk_reject_stalker")
 	theme["talk_abuse"] = { exec = npc_class, types = {}}
-	theme["talk_abuse"].types["soldier"] = load_theme("talk_abuse_soldier")
+	theme["talk_abuse"].types["stalker"] = load_theme("talk_abuse_stalker")
 
 	-- торговля
 	theme["trade_yes"] = { exec = npc_class, types = {}}
-	theme["trade_yes"].types["soldier"] = load_theme("trade_yes_soldier")
+	theme["trade_yes"].types["stalker"] = load_theme("trade_yes_stalker")
 	theme["trade_no"] = { exec = npc_class, types = {}}
-	theme["trade_no"].types["soldier"] = load_theme("trade_no_soldier")
+	theme["trade_no"].types["stalker"] = load_theme("trade_no_stalker")
 	
 	--раненый
 	theme["wounded_help"] = { exec = npc_class, types = {}}
 	theme["wounded_help"].types["soldier"] = load_theme("wounded_get_help")
 	theme["wounded_enemy"] = { exec = npc_class, types = {}}
 	theme["wounded_enemy"].types["soldier"] = load_theme("wounded_enemy")
-
-	// Zombie
-	theme["zombie"]								  = load_theme("zombie")
------ сюжетные/одноразовые темы
------- ESCAPE --------
-	-- бандиты на заводе
---[[	theme["escape_factory_bandits_novice"]        = load_theme("esc_f_band_novice")
-	theme["escape_factory_bandits_zone"]          = load_theme("esc_f_band_zone")
-	theme["escape_factory_bandits_place"]         = load_theme("esc_f_band_place")]]
-	theme["escape_factory_bandits_novice_again"]  = load_theme("esc_f_band_novice_again")
-	theme["escape_factory_bandits_on_actor"]      = load_theme("esc_f_band_on_actor")
-	theme["place1"] = load_theme("place1")
-	theme["place2"] = load_theme("place2")
-	
-	// Новичок, которого ограбили
-	theme["escape_novice_weeping"]			  	= load_theme("esc_novice_weeping")
-	theme["escape_novice_ask_for_help"]		  	= load_theme("esc_novice_ask_for_help")
-	theme["escape_novice_i_dead_their"]		  	= load_theme("esc_novice_i_dead_their")
------- GARBAGE  -------
-
------- AGROPROM -------
 
 --	print_table(theme)
 	printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
@@ -293,7 +252,8 @@ end
 --	Theme  functions
 -----------------------------------------------------------------------------------------------------------------------------------
 function npc_class(avail_types, npc, target)
-	return "soldier"
+	--return "soldier"
+	return "stalker"
 end
 function weather_class(avail_types, npc, target)
 	local type = "good"
