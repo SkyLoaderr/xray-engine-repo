@@ -9,7 +9,7 @@
 
 class ECORE_API CLAItem{
 public:
-    string64    cName;
+    ref_str		cName;
     float   	fFPS;
     DEFINE_MAP(int,u32,KeyMap,KeyPairIt);
     KeyMap		Keys;

@@ -14,7 +14,6 @@ ELightAnimLibrary LALib;
 
 CLAItem::CLAItem()
 {
-	cName[0]	= 0;
 	fFPS		= 15.f;
 	iFrameCount	= 1;
 }
@@ -256,14 +255,13 @@ LPCSTR ELightAnimLibrary::GenerateName(LPSTR name, LPCSTR source)
 
 CLAItem* ELightAnimLibrary::AppendItem(LPCSTR folder_name, CLAItem* parent)
 {
-    char old_name[128]; if (parent) strcpy(old_name,parent->cName);
-	CLAItem* I=xr_new<CLAItem>();
+    CLAItem* I=xr_new<CLAItem>();
     I->InitDefault();
-    char new_name[128]; new_name[0]=0;
+    string256 new_name; new_name[0]=0;
     if (folder_name) strcpy(new_name,folder_name);
-    GenerateName(new_name,parent?old_name:0);
-    strcpy(I->cName,new_name);
-    Items.push_back(I);
+    GenerateName(new_name,parent?*parent->cName:0);
+    I->cName		= new_name;
+    Items.push_back	(I);
 	return I;
 }
 #ifdef _EDITOR
