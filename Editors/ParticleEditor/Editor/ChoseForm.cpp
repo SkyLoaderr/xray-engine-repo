@@ -91,18 +91,24 @@ int __fastcall TfrmChoseItem::SelectItem(ESelectMode mode, LPCSTR& dest, int sel
 }
 // Constructors
 //---------------------------------------------------------------------------
+
+void __fastcall TfrmChoseItem::AppendItem(LPCSTR name)
+{
+    TElTreeItem* node		= FHelper.AppendObject(form->tvItems,name);
+    node->CheckBoxEnabled 	= form->bMultiSel;
+    node->ShowCheckBox 		= form->bMultiSel;
+}
+
 void __fastcall TfrmChoseItem::FillEntity()
 {
     form->Caption					= "Select Entity";
+    AppendItem						(AIPOINT_CHOOSE_NAME);
+    AppendItem						(RPOINT_CHOOSE_NAME);
     CInifile::Root& data 			= pSettings->Sections();
     for (CInifile::RootIt it=data.begin(); it!=data.end(); it++){
     	LPCSTR val;
     	if (it->LineExists("$spawn",&val))
-			if (CInifile::IsBOOL(val)){
-			    TElTreeItem* node		= FHelper.AppendObject(form->tvItems,it->Name);
-			    node->CheckBoxEnabled 	= form->bMultiSel;
-			    node->ShowCheckBox 		= form->bMultiSel;
-            }
+			if (CInifile::IsBOOL(val))	AppendItem(it->Name);
     }
 }
 //---------------------------------------------------------------------------
@@ -113,11 +119,7 @@ void __fastcall TfrmChoseItem::FillSound()
     if (SoundManager.GetSounds(lst)){
 	    FilePairIt it=lst.begin();
     	FilePairIt _E=lst.end();
-	    for (; it!=_E; it++){
-        	TElTreeItem* node=FHelper.AppendObject(form->tvItems,it->first.c_str());
-            node->CheckBoxEnabled 	= form->bMultiSel;
-            node->ShowCheckBox 		= form->bMultiSel;
-        }
+        for (; it!=_E; it++)		AppendItem(it->first.c_str());
     }
 }
 //---------------------------------------------------------------------------
@@ -127,11 +129,7 @@ void __fastcall TfrmChoseItem::FillObject()
     FileMap& lst 					= Lib.Objects();
     FilePairIt it					= lst.begin();
     FilePairIt _E					= lst.end();   		// check without extension
-    for (; it!=_E; it++){
-        TElTreeItem* node			= FHelper.AppendObject(form->tvItems,it->first.c_str());
-        node->CheckBoxEnabled 		= form->bMultiSel;
-        node->ShowCheckBox 			= form->bMultiSel;
-    }
+    for (; it!=_E; it++)			AppendItem(it->first.c_str());
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::FillGameObject()
@@ -141,11 +139,7 @@ void __fastcall TfrmChoseItem::FillGameObject()
     Engine.FS.GetFileList			(Engine.FS.m_GameMeshes.m_Path,lst,true,true,false,"*.ogf");
     FilePairIt it					= lst.begin();
     FilePairIt _E					= lst.end();
-    for (; it!=_E; it++){
-        TElTreeItem* node			= FHelper.AppendObject(form->tvItems,it->first.c_str());
-        node->CheckBoxEnabled 		= form->bMultiSel;
-        node->ShowCheckBox 			= form->bMultiSel;
-	}               
+    for (; it!=_E; it++)			AppendItem(it->first.c_str());
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::FillLAnim()
@@ -154,11 +148,7 @@ void __fastcall TfrmChoseItem::FillLAnim()
     LAItemVec& lst 					= LALib.Objects();
     LAItemIt it						= lst.begin();
     LAItemIt _E						= lst.end();
-    for (; it!=_E; it++){
-        TElTreeItem* node			= FHelper.AppendObject(form->tvItems,(*it)->cName);
-        node->CheckBoxEnabled 		= form->bMultiSel;
-        node->ShowCheckBox 			= form->bMultiSel;
-    }
+    for (; it!=_E; it++)			AppendItem((*it)->cName);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::FillShader()
@@ -167,11 +157,7 @@ void __fastcall TfrmChoseItem::FillShader()
     CShaderManager::BlenderMap& blenders = Device.Shader._GetBlenders();
 	CShaderManager::BlenderPairIt _F = blenders.begin();
 	CShaderManager::BlenderPairIt _E = blenders.end();
-	for (CShaderManager::BlenderPairIt _S = _F; _S!=_E; _S++){
-		TElTreeItem* node			= FHelper.AppendObject(form->tvItems,_S->first);
-        node->CheckBoxEnabled 		= form->bMultiSel;
-        node->ShowCheckBox 			= form->bMultiSel;
-    }
+	for (CShaderManager::BlenderPairIt _S = _F; _S!=_E; _S++)AppendItem(_S->first);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::FillShaderXRLC()
@@ -180,21 +166,13 @@ void __fastcall TfrmChoseItem::FillShaderXRLC()
     Shader_xrLCVec& shaders 		= Device.ShaderXRLC.Library();
 	Shader_xrLCIt _F 				= shaders.begin();
 	Shader_xrLCIt _E 				= shaders.end();
-	for ( ;_F!=_E;_F++){
-		TElTreeItem* node			= FHelper.AppendObject(form->tvItems,_F->Name);
-        node->CheckBoxEnabled 		= form->bMultiSel;
-        node->ShowCheckBox 			= form->bMultiSel;
-    }
+	for ( ;_F!=_E;_F++)				AppendItem(_F->Name);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::FillPS()
 {
     form->Caption					= "Select Particle System";
-    for (PS::SDef* S=PSLib.FirstPS(); S!=PSLib.LastPS(); S++){
-        TElTreeItem* node			= FHelper.AppendObject(form->tvItems,S->m_Name);
-        node->CheckBoxEnabled 		= form->bMultiSel;
-        node->ShowCheckBox 			= form->bMultiSel;
-    }
+    for (PS::SDef* S=PSLib.FirstPS(); S!=PSLib.LastPS(); S++)AppendItem(S->m_Name);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::FillTexture()
@@ -204,11 +182,7 @@ void __fastcall TfrmChoseItem::FillTexture()
     if (ImageManager.GetTextures(lst)){
 	    FilePairIt it				= lst.begin();
     	FilePairIt _E				= lst.end();
-	    for (; it!=_E; it++){
-        	TElTreeItem* node		= FHelper.AppendObject(form->tvItems,it->first.c_str());
-            node->CheckBoxEnabled 	= form->bMultiSel;
-            node->ShowCheckBox 		= form->bMultiSel;
-        }
+	    for (; it!=_E; it++)		AppendItem(it->first.c_str());
     }
 }
 //---------------------------------------------------------------------------
@@ -217,11 +191,7 @@ void __fastcall TfrmChoseItem::FillGameMaterial()
     form->Caption					= "Select Game Material";
 	GameMtlIt _F 					= GMLib.FirstMaterial();
 	GameMtlIt _E 					= GMLib.LastMaterial();
-	for ( ;_F!=_E;_F++){
-		TElTreeItem* node			= FHelper.AppendObject(form->tvItems,(*_F)->name);
-        node->CheckBoxEnabled 		= form->bMultiSel;
-        node->ShowCheckBox 			= form->bMultiSel;
-    }
+	for ( ;_F!=_E;_F++)				AppendItem((*_F)->name);
 }
 //---------------------------------------------------------------------------
 

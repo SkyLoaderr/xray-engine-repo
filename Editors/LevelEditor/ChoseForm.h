@@ -92,6 +92,8 @@ private:	// User declarations
     void __fastcall FillEntity		();
     void __fastcall FillGameObject	();
     void __fastcall FillGameMaterial();
+
+    void __fastcall AppendItem		(LPCSTR name);
 public:		// User declarations
     enum ESelectMode{
     	smSound = 0,
