@@ -11,7 +11,9 @@
 #include "ui.h"
 #include "script_space.h"
 
-void CConsoleUI::script_register(lus_State *L)
+using namespace luabind;
+
+void CConsoleUI::script_register(lua_State *L)
 {
 	module(L)
 	[
