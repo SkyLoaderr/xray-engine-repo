@@ -88,6 +88,7 @@ void	CBuild::BuildCForm	()
 	}
 
 	Status			("Building base mesh : models[%d]...",mu_refs.size());
+	mesh.garbage_collection		();
 	for (u32 ref=0; ref<mu_refs.size(); ref++)
 		mu_refs[ref]->export_cform_game(mesh,failedfaces);
 
@@ -141,8 +142,8 @@ void	CBuild::BuildCForm	()
 
 	// Saving
 	Status			("Saving...");
-			nf_after		= int	(CL.getVS());
-			nv_after		= int	(CL.getTS());
+			nf_after		= int	(CL.getTS());
+			nv_after		= int	(CL.getVS());
 	clMsg					("vertices: was[%d], now[%d] => %f %% left",nv_before,nv_after, 100.f*float(nv_after)/float(nv_before) );
 	clMsg					("   faces: was[%d], now[%d] => %f %% left",nf_before,nf_after, 100.f*float(nf_after)/float(nf_before) );
 	string512		fn;
