@@ -82,8 +82,8 @@ void	CRenderTarget::phase_combine	()
 
 		float	_w					= float(Device.dwWidth);
 		float	_h					= float(Device.dwHeight);
-		float	ddw					= 1.f/_w;	float kw = ddw;
-		float	ddh					= 1.f/_h;	float kh = ddh;
+		float	ddw					= 1.f/_w;	float kw = ddw*ps_r2_aa_kernel;
+		float	ddh					= 1.f/_h;	float kh = ddh*ps_r2_aa_kernel;
 		p0.set						(.5f/_w, .5f/_h);
 		p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
 
