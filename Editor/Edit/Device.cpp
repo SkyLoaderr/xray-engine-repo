@@ -151,7 +151,7 @@ void CRenderDevice::OnDeviceCreate(){
 #ifdef _EDITOR
     UpdateFog();
 #else
-    UpdateFog(0xffffffff,1.f,100);
+    UpdateFog(0xffffffff,0.f,m_Camera.m_Zfar);
 #endif
 
 	// Create TL-primitive
