@@ -12,6 +12,7 @@ public:
 	BOOL		bForceMultipass;
 	BOOL		bForceSWTransform;
 	BOOL		bForceDXT3;
+	BOOL		bShowOverdraw;
 
 	// caps itself
 	BOOL		bSoftware;
@@ -19,6 +20,7 @@ public:
 	BOOL		bPointSpritesHW;
 	DWORD		dwRefreshRate;
 	DWORD		dwNumBlendStages;
+	BOOL		bStencil;
 
 	BOOL		bWFog;			//
 	BOOL		bTableFog;

@@ -50,7 +50,6 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
     return DefWindowProc(hWnd,uMsg,wParam,lParam);
 }
 
-/*
 void CRenderDevice::overdrawBegin	()
 {
     // Turn stenciling
@@ -65,10 +64,9 @@ void CRenderDevice::overdrawBegin	()
     HW.pDevice->SetRenderState( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP		);
     HW.pDevice->SetRenderState( D3DRS_STENCILPASS,		D3DSTENCILOP_INCRSAT	);
 }
+
 void CRenderDevice::overdrawEnd		()
 {
-	rsSet(0);
-
     // Turn off the buffer, and enable alpha blending
     HW.pDevice->SetRenderState( D3DRS_SRCBLEND,			D3DBLEND_ONE	);
     HW.pDevice->SetRenderState( D3DRS_DESTBLEND,		D3DBLEND_ZERO	);
@@ -81,41 +79,26 @@ void CRenderDevice::overdrawEnd		()
     HW.pDevice->SetRenderState( D3DRS_STENCILMASK,	0xff				);
 
     // Set the background to black
-    HW.pDevice->Clear( 0L, NULL, D3DCLEAR_TARGET, 0x00000000, 1.0f, 0L );
+	CHK_DX(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,	0,1,0));
 
-	// Initialize RECT
-	struct V : public FVF::TL
-	{
-		IC void		set(float x,float y)
-		{	set	(x,y,0.1f,5.f,0,0,0); }
-	} * pv = (V*) TL.VB_Lock();
-	pv->set(0,dwHeight); pv++;
-	pv->set(0,0); pv++;
-	pv->set(dwWidth,dwHeight); pv++;
-	pv->set(dwWidth,0); pv++;
-	TL.VB_Unlock();
-
-    // Set render states for drawing a rectangle that covers the viewport.
-    // The color of the rectangle will be passed in D3DRS_TEXTUREFACTOR
-    HW.pDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TFACTOR );
-    HW.pDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-
+	// Draw a rectangle wherever the count equal I
+	Shader.SetNULL	();
 	for (int I=1; I<16; I++ ) {
 		DWORD	c = I*256/17;
-
-		// Draw a rectangle wherever the count equal I
-		HW.pDevice->SetRenderState	( D3DRS_TEXTUREFACTOR,	D3DCOLOR_RGBA(c,c,c,c) );
-		HW.pDevice->SetRenderState	( D3DRS_STENCILREF,		I );
-		Primitive.Draw				(TL,4,2);
+		
+		FVF::TL	pv[4];
+		pv[0].set(0,dwHeight,c,0,0);			
+		pv[1].set(0,0,c,0,0);					
+		pv[2].set(dwWidth,dwHeight,c,0,0);	
+		pv[3].set(dwWidth,0,c,0,0);
+		
+		HW.pDevice->SetRenderState	( D3DRS_STENCILREF,		I	);
+		HW.pDevice->SetVertexShader	( FVF::F_TL );
+		HW.pDevice->DrawPrimitiveUP	( D3DPT_TRIANGLESTRIP,	2,	pv, sizeof(pv) );
 	}
 
-    // Restore states
-    HW.pDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-    HW.pDevice->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_DIFFUSE );
-    HW.pDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE );
     HW.pDevice->SetRenderState( D3DRS_STENCILENABLE,    FALSE );
 }
-*/
 
 void CRenderDevice::Begin(void)
 {
@@ -131,11 +114,11 @@ void CRenderDevice::Begin(void)
 	CHK_DX(HW.pDevice->Clear(0,0,
 		D3DCLEAR_ZBUFFER|
 		((psDeviceFlags&rsClearBB)?D3DCLEAR_TARGET:0)|
-		((psDeviceFlags&rsOverdrawView)?D3DCLEAR_STENCIL:0),
-		D3DCOLOR_XRGB(32,32,32),1,0
+		(HW.Caps.bStencil?D3DCLEAR_STENCIL:0)),
+		D3DCOLOR_XRGB(0,255,0),1,0
 		));
 	Streams.BeginFrame();
-//	if (psDeviceFlags&rsOverdrawView) overdrawBegin();
+	if (HW.Caps.bShowOverdraw)	overdrawBegin	();
 	FPU::m24r();
 }
 
@@ -143,7 +126,7 @@ void CRenderDevice::End(void)
 {
 	VERIFY(HW.pDevice);
 
-//	if (psDeviceFlags&rsOverdrawView) overdrawEnd();
+	if (HW.Caps.bShowOverdraw)	overdrawEnd		();
 
 	// end scene
 	Shader.SetNULL	();
@@ -230,11 +213,9 @@ void CRenderDevice::Create	() {
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGCOLOR,			0					));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_RANGEFOGENABLE,	FALSE				));
 	if (HW.Caps.bTableFog)	{
-		Log("* Using per-pixel fog...");
-		CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGTABLEMODE, D3DFOG_LINEAR		));
-		CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGVERTEXMODE,D3DFOG_NONE			));
+		CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGTABLEMODE,	D3DFOG_LINEAR		));
+		CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGVERTEXMODE,	D3DFOG_NONE			));
 	} else {
-		Log("* Using per-vertex fog...");
 		CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGTABLEMODE,	D3DFOG_NONE			));
 		CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGVERTEXMODE,	D3DFOG_LINEAR		));
 	}

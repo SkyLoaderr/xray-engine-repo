@@ -51,6 +51,8 @@ void CRenderDevice::Initialize()
 	else										HW.Caps.bForceSWTransform	= FALSE;
 	if (strstr(lpCmdLine,"-dxt3")!=NULL)		HW.Caps.bForceDXT3			= TRUE;
 	else										HW.Caps.bForceDXT3			= FALSE;
+	if (strstr(lpCmdLine,"-overdraw")!=NULL)	HW.Caps.bShowOverdraw		= TRUE;
+	else										HW.Caps.bShowOverdraw		= FALSE;
 
 	// Startup shaders
 	Shader.xrStartUp	();

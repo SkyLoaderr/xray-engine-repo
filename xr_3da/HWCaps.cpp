@@ -12,8 +12,25 @@ void CHWCaps::Update()
 
 	dwNumBlendStages = _MIN(caps.MaxTextureBlendStages,caps.MaxSimultaneousTextures);
 
-	bTableFog	=	BOOL(caps.RasterCaps&D3DPRASTERCAPS_FOGTABLE);
-	bWFog		=	BOOL(caps.RasterCaps&D3DPRASTERCAPS_WFOG);
+	bTableFog	=	BOOL	(caps.RasterCaps&D3DPRASTERCAPS_FOGTABLE);
+	bWFog		=	BOOL	(caps.RasterCaps&D3DPRASTERCAPS_WFOG);
+	bStencil	=	FALSE;
+
+	// Detect if stencil available
+	IDirect3DSurface8*	surfZS=0;
+	D3DSURFACE_DESC		surfDESC;
+	CHK_DX		(HW->pDevice->GetDepthStencilSurface(&surfZS));
+	R_ASSERT	(surfZS);
+	CHK_DX		(surfZS->GetDesc(&surfDESC));
+	_RELEASE	(surfZS);
+
+	switch		(surfDESC.Format)
+	{
+	case D3DFMT_D15S1:		bStencil = TRUE;	break;
+	case D3DFMT_D24S8:		bStencil = TRUE;	break;
+	case D3DFMT_D24X4S4:	bStencil = TRUE;	break;
+	}
+
 
 	// Stencil relative caps
     DWORD dwStencilCaps = caps.StencilCaps;
