@@ -26,8 +26,8 @@ struct WaveForm
 			case fSQUARE:		return signf(cosf(t*PI));
 			case fSAWTOOTH:		return atanf(tanf((t+0.5f)*PI))/PI_DIV_2;
 			case fINVSAWTOOTH:	return -(atanf(tanf((t+0.5f)*PI))/PI_DIV_2);
-			default:			NODEFAULT; return 0;
 		}
+		return 0.f;
 	}
 public:
 	EFunction	F;

@@ -7,7 +7,7 @@
 #include <ode\src\objects.h>
 #include <ode\src\geom_internal.h>
 #include "ExtendedGeom.h"
-#include "contacts.h"
+// #include "contacts.h"
 float friction_table[2]={5000.f,100.f};
 
 
