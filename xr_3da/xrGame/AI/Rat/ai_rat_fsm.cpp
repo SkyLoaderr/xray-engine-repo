@@ -142,7 +142,7 @@ void CAI_Rat::Turn()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
 
-	//mRotate.setHPB(m_tHPB.x = -r_torso_target.yaw,m_tHPB.y,m_tHPB.z);
+	mRotate.setHPB(m_tHPB.x = -r_torso_current.yaw,m_tHPB.y,m_tHPB.z);
 	UpdateTransform();
 
 	CHECK_IF_GO_TO_PREV_STATE(Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw, PI_DIV_6))
@@ -209,8 +209,15 @@ void CAI_Rat::FreeHuntingActive()
 
 	SetDirectionLook();
 
-	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8))
+	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
 		m_fSpeed = EPS_S;
+		if (m_bNoWay) {
+			m_tGoalDir.set(::Random.randF(-1,1),0,::Random.randF(-1,1));
+			m_tGoalDir.normalize();
+			m_tGoalDir.mul(1000.f);
+			m_tGoalDir.add(vPosition);
+		}
+	}
 	else 
 		if (m_fSafeSpeed != m_fSpeed) {
 			int iRandom = ::Random.randI(0,2);
@@ -484,7 +491,7 @@ void CAI_Rat::Retreat()
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
 
 	SelectEnemy(m_Enemy);
-	
+
 	if (m_Enemy.Enemy) {
 		vfSaveEnemy();
 		ERatStates eState = ERatStates(dwfChooseAction(ACTION_REFRESH_RATE,MIN_PROBABILITY,g_Team(),g_Squad(),g_Group(),aiRatAttackRun,aiRatAttackRun,aiRatRetreat));
@@ -501,7 +508,7 @@ void CAI_Rat::Retreat()
 		m_tSpawnPosition.add(vPosition,tTemp);
 	}
 	else
-		if ((Level().timeServer() - m_dwLostEnemyTime > RETREAT_TIME) && ((m_tLastSound.dwTime > m_dwLastUpdateTime) || (m_tLastSound.tpEntity && ((m_tLastSound.tpEntity->g_Team() == g_Team()) || bfCheckIfSoundFrightful())))) {
+		if ((Level().timeServer() - m_dwLostEnemyTime > RETREAT_TIME) && ((m_tLastSound.dwTime < m_dwLastUpdateTime) || !m_tLastSound.tpEntity || (m_tLastSound.tpEntity->g_Team() == g_Team()) || (!bfCheckIfSoundFrightful()))) {
 			GO_TO_PREV_STATE;
 		}
 

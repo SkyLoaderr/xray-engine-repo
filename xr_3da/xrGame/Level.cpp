@@ -102,7 +102,7 @@ void CLevel::OnFrame	()
 			CSquad&	SD	= TD.Squads[S];
 			if (SD.Leader)	{
 				CEntityAlive* E	= dynamic_cast<CEntityAlive*>(SD.Leader);
-				if (E)		E->GetVisible(VIS);
+				if (E && E->g_Alive())		E->GetVisible(VIS);
 			}
 
 			for (DWORD G=0; G<SD.Groups.size(); G++)
@@ -111,7 +111,7 @@ void CLevel::OnFrame	()
 				for (DWORD M=0; M<GD.Members.size(); M++)
 				{
 					CEntityAlive* E	= dynamic_cast<CEntityAlive*>(GD.Members[M]);
-					if (E)	E->GetVisible(VIS);
+					if (E && E->g_Alive())	E->GetVisible(VIS);
 				}
 			}
 		}
