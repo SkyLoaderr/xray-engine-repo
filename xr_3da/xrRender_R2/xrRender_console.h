@@ -3,7 +3,7 @@
 #pragma once
 
 // Common
-extern ECORE_API int			ps_r__Supersample;
+extern ENGINE_API int			ps_r__Supersample;
 extern ECORE_API int			ps_r__Anisotropic;
 extern ECORE_API int			ps_r__LightSleepFrames;
 

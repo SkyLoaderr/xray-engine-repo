@@ -285,7 +285,7 @@ extern int			psSheduler;
 extern float		psShedulerLoadBalance;
 extern Flags32		psEnvFlags;
 extern float		rsDT_Range;
-
+ENGINE_API int			ps_r__Supersample			= 1;
 void CCC_Register()
 {
 	// General
@@ -320,6 +320,9 @@ void CCC_Register()
 #endif
 
 	// Render device states
+
+	CMD4(CCC_Integer,	"r__supersample",		&ps_r__Supersample,			1,		4		);
+
 	CMD3(CCC_Mask,		"rs_no_v_sync",			&psDeviceFlags,		rsNoVSync);
 	CMD3(CCC_Mask,		"rs_warm_hzb",			&psDeviceFlags,		rsWarmHZB);
 	CMD3(CCC_Mask,		"rs_fullscreen",		&psDeviceFlags,		rsFullscreen);

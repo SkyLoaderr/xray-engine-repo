@@ -540,6 +540,11 @@ char * CConsole::GetString(LPCSTR cmd)
 */
 	return NULL;
 }
+char * CConsole::GetToken(LPCSTR cmd)
+{
+	return GetString(cmd);
+}
+
 /*
 char * CConsole::GetNextValue(LPCSTR cmd)
 {
