@@ -727,10 +727,11 @@ void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect, u32 ParentID)
 	F_entity_Destroy(D);
 }
 
+/*
 const char* CWeapon::Name() 
 {
-	if(m_name) 
-		strcpy(m_tmpName, m_name); 
+	if(*m_name) 
+		strcpy(m_tmpName, *m_name); 
 	else m_tmpName[0] = 0;
 	
 	char l_tmp[20]; 
@@ -738,6 +739,7 @@ const char* CWeapon::Name()
 	strcpy(&m_tmpName[xr_strlen(m_tmpName)], l_tmp);
 	return m_tmpName;
 }
+*/
 
 int CWeapon::GetAmmoCurrent() const
 {

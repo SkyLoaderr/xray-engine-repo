@@ -107,7 +107,7 @@ public:
 //////////////////////////////////////////////////////////////////////////
 public:
 	virtual bool			Action(s32 cmd, u32 flags);
-	virtual LPCSTR			Name();
+//	virtual LPCSTR			Name();
 
 //////////////////////////////////////////////////////////////////////////
 //  Weapon state
@@ -371,10 +371,9 @@ public:
 	CWeaponAmmo*			m_pAmmo;
 	u32						m_ammoType;
 	ref_str					m_ammoName;
-	string64				m_tmpName;
 
 	// Multitype ammo support
-	xr_stack<CCartridge> m_magazine;
+	xr_stack<CCartridge>	m_magazine;
 };
 
 #endif // !defined(AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_)

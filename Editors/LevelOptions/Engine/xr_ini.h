@@ -67,8 +67,10 @@ public:
 
 	CLASS_ID	r_clsid			( LPCSTR S, LPCSTR L );
 	CLASS_ID	r_clsid			( const ref_str& S, LPCSTR L )				{ return r_clsid(*S,L);			}
-	LPCSTR 		r_string		( LPCSTR S, LPCSTR L );
-	LPCSTR 		r_string		( const ref_str& S, LPCSTR L )				{ return r_string(*S,L);		}
+	LPCSTR 		r_string		( LPCSTR S, LPCSTR L);															// оставляет кавычки
+	LPCSTR 		r_string		( const ref_str& S, LPCSTR L)				{ return r_string(*S,L);		}	// оставляет кавычки
+	ref_str		r_string_wb		( LPCSTR S, LPCSTR L);															// убирает кавычки
+	ref_str		r_string_wb		( const ref_str& S, LPCSTR L)				{ return r_string_wb(*S,L);		}	// убирает кавычки
 	u8	 		r_u8			( LPCSTR S, LPCSTR L );
 	u8	 		r_u8			( const ref_str& S, LPCSTR L )				{ return r_u8(*S,L);			}
 	u16	 		r_u16			( LPCSTR S, LPCSTR L );

@@ -72,8 +72,8 @@ public:
 
 public:
 	CInventory		*m_pInventory;								// Указатель на инвентарь. Всегда полезно знать где находишься :)
-	LPCSTR			m_name;
-	LPCSTR			m_nameShort;
+	ref_str			m_name;
+	ref_str			m_nameShort;
 	char			m_nameComplex[255];
 	bool			m_drop;
 	//текущее положение вещи в инвентаре

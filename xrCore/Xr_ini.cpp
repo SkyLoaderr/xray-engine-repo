@@ -37,8 +37,7 @@ XRCORE_API void _parse(LPSTR dest, LPCSTR src)
 			} else if (*src=='"') {
 				bInsideSTR = !bInsideSTR;
 			}
-			if (*src!='"')	*dest++ = *src++;
-			else			src++;
+			*dest++ = *src++;
 		}
 	}
 	*dest = 0;
@@ -56,8 +55,7 @@ XRCORE_API void _decorate(LPSTR dest, LPCSTR src)
 			} else if (*src=='"') {
 				bInsideSTR = !bInsideSTR;
 			}
-			if (*src!='"')	*dest++ = *src++;
-			else			src++;
+			*dest++ = *src++;
 		}
 	}
 	*dest = 0;
@@ -278,7 +276,7 @@ CInifile::Sect& CInifile::r_section( LPCSTR S )
 	return	*I;
 }
 
-LPCSTR	CInifile::r_string(LPCSTR S, LPCSTR L )
+LPCSTR	CInifile::r_string(LPCSTR S, LPCSTR L)
 {
 	Sect&	I = r_section(S);
 	SectIt	A = std::lower_bound(I.begin(),I.end(),L,item_pred);
@@ -286,6 +284,15 @@ LPCSTR	CInifile::r_string(LPCSTR S, LPCSTR L )
 	else										Debug.fatal("Can't find variable %s in [%s]",L,S);
 	return 0;
 }
+
+ref_str		CInifile::r_string_wb(LPCSTR S, LPCSTR L)	{
+	string512	_original;	strcpy(r_string(S,L));
+	u32			_len		= xr_strlen(_original);
+	if	('"'==_original[_len-1])	_original[_len-1]=0;				// end
+	if	('"'==_original[0])			return ref_str(&*_original[0] + 1);
+	return		ref_str(_original);
+}
+
 u8 CInifile::r_u8(LPCSTR S, LPCSTR L)
 {
 	LPCSTR		C = r_string(S,L);

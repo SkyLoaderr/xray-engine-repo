@@ -68,8 +68,8 @@ void CInventoryItem::Load(LPCSTR section)
 	ISpatial*		self				=	dynamic_cast<ISpatial*> (this);
 	if (self)		self->spatial.type	|=	STYPE_VISIBLEFORAI;	
 
-	m_name = pSettings->r_string(section, "inv_name");
-	m_nameShort = pSettings->r_string(section, "inv_name_short");
+	m_name = pSettings->r_string_wb(section, "inv_name");
+	m_nameShort = pSettings->r_string_wb(section, "inv_name_short");
 	NameComplex();
 	m_weight = pSettings->r_float(section, "inv_weight");
 	R_ASSERT(m_weight>=0.f);
@@ -114,12 +114,12 @@ void CInventoryItem::Hit(float P, Fvector &dir,
 
 const char* CInventoryItem::Name() 
 {
-	return m_name;
+	return *m_name;
 }
 
 const char* CInventoryItem::NameShort() 
 {
-	return m_nameShort;
+	return *m_nameShort;
 }
 
 LPCSTR CInventoryItem::NameComplex() 

@@ -111,6 +111,7 @@ void CWeaponAmmo::OnH_B_Independent()
 	inherited::OnH_B_Independent();
 }
 
+/*
 const char* CWeaponAmmo::Name() 
 {
 	if(m_name) strcpy(m_tmpName, m_name); else m_tmpName[0] = 0;
@@ -118,12 +119,7 @@ const char* CWeaponAmmo::Name()
 	strcpy(&m_tmpName[xr_strlen(m_tmpName)], l_tmp);
 	return m_tmpName;
 }
-
-const char* CWeaponAmmo::NameShort() 
-{
-	if(m_nameShort) strcpy(m_tmpName, m_nameShort); else m_tmpName[0] = 0;
-	return m_tmpName;
-}
+*/
 
 bool CWeaponAmmo::Useful() const
 {

@@ -35,24 +35,20 @@ public:
 	virtual void UpdateCL();
 	virtual void renderable_Render();
 
-	virtual const char* Name();
-	virtual const char* NameShort();
-
 	virtual bool Useful() const;
 	virtual s32 Sort(PIItem pIItem);
 	virtual bool Merge(PIItem pIItem);
 
-	bool Get(CCartridge &cartridge);
+	bool		Get(CCartridge &cartridge);
 
-	float m_kDist, m_kDisp, m_kHit, m_kImpulse, m_kPierce;
-	bool m_tracer;
-	int	m_buckShot;
-	float m_impair;
-	float fWallmarkSize;
+	float		m_kDist, m_kDisp, m_kHit, m_kImpulse, m_kPierce;
+	bool		m_tracer;
+	int			m_buckShot;
+	float		m_impair;
+	float		fWallmarkSize;
 
 	u16			m_boxSize;			// Размер коробки (Сколько патронов игрок берет за раз)
 	u16			m_boxCurr;			// Сколько патронов осталось в коробке (включая текущий магазин)
-	string64	m_tmpName;
 
 	bool		m_bCanBeUnlimited;
 
