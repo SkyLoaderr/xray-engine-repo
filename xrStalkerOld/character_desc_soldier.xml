@@ -24,6 +24,10 @@
 			wpn_ak74u \n
 			ammo_5.45x39_ap = 1 \n
 		</supplies>	
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="soldier_regular_default2" team_default = "1">
@@ -48,6 +52,10 @@
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="soldier_regular_default3" team_default = "1">
@@ -72,6 +80,10 @@
 			wpn_ak74 \n
 			ammo_5.45x39_fmj = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="soldier_regular_default4" team_default = "1">
@@ -96,6 +108,10 @@
 			wpn_ak74 \n
 			ammo_5.45x39_ap = 1 \n
 		</supplies>		
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="soldier_regular_default5" team_default = "1">
@@ -120,6 +136,10 @@
 			wpn_ak74 \n
 			ammo_5.45x39_fmj = 1 \n
 		</supplies>		
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 <!---------------------------SOLDIER SNIPER---------------------->
@@ -145,6 +165,10 @@
 			wpn_svu \n
 			ammo_7.62x54_ap = 1 \n
 		</supplies>		
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="soldier_sniper_default2" team_default = "1">
@@ -169,6 +193,10 @@
 			wpn_svu \n
 			ammo_7.62x54_ap = 1 \n
 			</supplies>		
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="soldier_sniper_default3" team_default = "1">
@@ -193,6 +221,10 @@
 			wpn_svd \n
 			ammo_7.62x54_ap = 1 \n
 			</supplies>		
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>	
 	
 <!---------------------------SOLDIER SPECNAZ---------------------->
@@ -218,6 +250,10 @@
 			wpn_vintorez \n
 			ammo_9x39_ap = 1 \n
 		</supplies>		
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="soldier_specnaz_default2" team_default = "1">
@@ -242,6 +278,10 @@
 			wpn_val \n
 			ammo_9x39_ap = 1 \n
 		</supplies>		
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 	
 		<specific_character id="soldier_specnaz_default3" team_default = "1">
@@ -267,6 +307,10 @@
 			ammo_5.45x39_ap = 1 \n
 			ammo_vog-25 = 1 \n
 		</supplies>		
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 	
 <!---------------------------SOLDIER MASTER----------------------->
@@ -293,6 +337,10 @@
 			wpn_val \n
 			ammo_9x39_sp5 = 1 \n
 		</supplies>		
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="soldier_military_default2" team_default = "1">
@@ -318,6 +366,10 @@
 			wpn_val \n
 			ammo_9x39_sp5 = 1 \n
 		</supplies>		
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 <!--
 	<specific_character id="soldier_default" team_default = "1">
