@@ -37,8 +37,8 @@ public:
 	s32								type;
 
 	s32								round;
-	u32								fraglimit;
-	u32								timelimit;
+	s32								fraglimit;
+	s32								timelimit;
 	vector<game_TeamState>			teams;
 public:
 	game_GameState();
