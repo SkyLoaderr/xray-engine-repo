@@ -98,8 +98,9 @@ class CCC_tf_Aniso		: public CCC_Integer
 public:
 	void	apply	()	{
 		if (0==HW.pDevice)	return	;
+		int	val = *value;	clamp(val,1,16);
 		for (u32 i=0; i<HW.Caps.raster.dwStages; i++)
-			CHK_DX(HW.pDevice->SetSamplerState( i, D3DSAMP_MAXANISOTROPY, *value	));
+			CHK_DX(HW.pDevice->SetSamplerState( i, D3DSAMP_MAXANISOTROPY, val	));
 	}
 	CCC_tf_Aniso(LPCSTR N, int*	v) : CCC_Integer(N, v, 1, 16)		{ };
 	virtual void Execute	(LPCSTR args)
