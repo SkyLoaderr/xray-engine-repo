@@ -70,6 +70,7 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 	
 	//init bullet manager
 	BulletManager().Clear		();
+	BulletManager().Load		();
 
 	pApp->LoadEnd				();
 

@@ -125,6 +125,7 @@ protected:
 	//время когда актера надо разбудить
 	ALife::_TIME_ID			m_dwWakeUpTime;
 	float					m_fOldTimeFactor;
+	float					m_fOldOnlineRadius;
 	float					m_fSleepTimeFactor;
 
 	/////////////////////////////////////////////////////////////////

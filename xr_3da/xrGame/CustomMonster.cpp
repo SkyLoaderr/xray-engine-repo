@@ -649,7 +649,8 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 	CSE_Abstract				*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeMonsterAbstract	*E	= dynamic_cast<CSE_ALifeMonsterAbstract*>(e);
 	
-	set_level_dest_vertex	(level_vertex_id());
+	if (ai().get_level_graph())
+		set_level_dest_vertex	(level_vertex_id());
 	
 	eye_matrix.identity		();
 	m_body.current.yaw		= m_body.target.yaw	= -E->o_Angle.y;

@@ -75,6 +75,18 @@ CBulletManager::~CBulletManager()
 //	Device.seqRender.Remove		(this);
 }
 
+#define BULLET_MANAGER_SECTION "bullet_manager"
+
+void CBulletManager::Load		()
+{
+	m_fTracerWidth		= pSettings->r_float(BULLET_MANAGER_SECTION, "tracer_width");
+	m_fTracerLength		= pSettings->r_float(BULLET_MANAGER_SECTION, "tracer_length_max");
+	m_fTracerLengthMin	= pSettings->r_float(BULLET_MANAGER_SECTION, "tracer_length_min");
+	m_fLengthToWidthRatio = pSettings->r_float(BULLET_MANAGER_SECTION, "tracer_length_to_width_ratio");
+
+	m_fMinViewDist = pSettings->r_float(BULLET_MANAGER_SECTION, "min_view_dist");
+	m_fMaxViewDist = pSettings->r_float(BULLET_MANAGER_SECTION, "max_view_dist");
+}
 
 void CBulletManager::Clear		()
 {
@@ -198,10 +210,6 @@ bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 	return true;
 }
 
-#define TRACER_WIDTH 0.04f
-#define TRACER_LENGHT 3.f
-#define TRACER_LENGHT_MIN 0.1f
-#define TRACER_LENGTH_TO_WIDTH_RATIO 10.f
 
 void CBulletManager::Render	()
 {
@@ -227,18 +235,35 @@ void CBulletManager::Render	()
 		Fvector dist;
 		dist.sub(bullet->prev_pos,bullet->pos);
 		float length = dist.magnitude();
-	
-		if(length<TRACER_LENGHT_MIN)
+
+		if(length<m_fTracerLengthMin)
 			continue;
 
-		if(length>TRACER_LENGHT)
-			length = TRACER_LENGHT;
+		if(length>m_fTracerLength)
+			length = m_fTracerLength;
+
+		//изменить размер трассера в зависимости от расстояния до камеры
+		Fvector to_camera;
+		to_camera.sub(bullet->pos,Device.vCameraPosition);
+		float dist_to_camera = to_camera.magnitude();
+
+		if(dist_to_camera<m_fMinViewDist)
+			length = m_fTracerLengthMin;
+		else if(dist_to_camera<m_fMaxViewDist)
+		{
+			float length_max = m_fTracerLengthMin + 
+							  (m_fTracerLength - m_fTracerLengthMin)*
+							  (dist_to_camera-m_fMinViewDist)/
+							  (m_fMaxViewDist-m_fMinViewDist);
+
+			if(length>length_max) length  = length_max;
+		}
 
 		float width;
-		if(length>(TRACER_WIDTH*TRACER_LENGTH_TO_WIDTH_RATIO))
-			width = TRACER_WIDTH;
+		if(length>(m_fTracerWidth*m_fLengthToWidthRatio))
+			width = m_fTracerWidth;
 		else 
-			width = length/TRACER_LENGTH_TO_WIDTH_RATIO;
+			width = length/m_fLengthToWidthRatio;
 
 		dist.normalize();
 

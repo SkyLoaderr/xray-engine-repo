@@ -196,6 +196,7 @@ public:
 			void					vfSpawnPointInfo			(ALife::_SPAWN_ID			tSpawnID);
 			void					vfGraphVertexInfo			(ALife::_GRAPH_ID			tGraphID);
 			void					vfSetSwitchDistance			(float						fNewDistance);
+			float					ffGetSwitchDistance			();
 			void					vfSetProcessTime			(int						iMicroSeconds);
 			void					vfSetSwitchFactor			(float						fSwitchFactor);
 			void					vfSetSwitchDelay			(int						iMilliSeconds);

@@ -86,6 +86,8 @@ public:
 	CBulletManager();
 	virtual ~CBulletManager();
 
+	void Load       ();
+
 	void Clear		();
 
 	void AddBullet	(SBullet* pBullet);
@@ -131,4 +133,13 @@ protected:
 
 	//отрисовка трассеров от пуль
 	CTracer tracers;
+
+	//параметры отрисовки трассеров
+	float m_fTracerWidth;
+	float m_fTracerLength;
+	float m_fTracerLengthMin;
+	float m_fLengthToWidthRatio;
+	//границы в которых изменяется размер трассера (как его видит актер)
+	float m_fMinViewDist;
+	float m_fMaxViewDist;
 };

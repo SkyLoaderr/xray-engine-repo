@@ -431,6 +431,11 @@ void CSE_ALifeSimulator::vfSetSwitchDistance		(float	fNewDistance)
 	m_fOfflineDistance	= m_fSwitchDistance/m_fSwitchFactor;
 }
 
+float CSE_ALifeSimulator::ffGetSwitchDistance			()
+{
+	return m_fSwitchDistance;
+}
+
 void CSE_ALifeSimulator::vfSetProcessTime			(int	iMicroSeconds)
 {
 	m_qwMaxProcessTime	= iMicroSeconds*CPU::cycles_per_microsec;

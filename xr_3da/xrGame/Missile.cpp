@@ -405,18 +405,9 @@ void CMissile::setup_throw_params()
 		trans.k.set(FireDir);
 		Fvector::generate_orthonormal_basis(trans.k, trans.i,trans.j);
 		trans.c.set(FirePos);
-		trans.c.mad(FireDir, 1.f);
+		//trans.c.mad(FireDir, 1.f);
 		m_throw_matrix.set(trans);
 		m_throw_direction.set(trans.k);
-
-//		Level().Cameras.unaffected_Matrix(trans);
-//		m_throw_direction.set(trans.k);
-
-
-		//		m_throw_matrix.set(m_pHUD->Transform());
-//		m_throw_matrix.identity();
-//		m_throw_matrix.c.set(m_vHudThrowPoint);
-//		m_throw_matrix.mulA(m_pHUD->Transform());
 	}
 	else
 	{
