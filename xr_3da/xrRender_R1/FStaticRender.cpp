@@ -415,9 +415,9 @@ void	CRender::Render		()
 	r_dsgraph_render_graph						(0);			// normal level
 	Details->Render								();				// grass / details
 	g_pGamePersistent->Environment.RenderFirst	();				// sky / sun
-	Wallmarks->Render							();				// wallmarks has priority as normal geometry
 	r_pmask										(true,false);	// disable priority "1"
 	L_Dynamic->render							();				// addititional light sources
+	Wallmarks->Render							();				// wallmarks has priority as normal geometry
 	phase										= PHASE_NORMAL;
 	r_pmask										(true,true);	// enable priority "0" and "1"
 	L_Shadows->render							();				// ... and shadows
