@@ -292,12 +292,18 @@ void CCustomMonster::Update	( DWORD DT )
 		}
 		// Look and action streams
 		if (iHealth>0) {
-			Device.Statistic.TEST.Begin	();
+			Device.Statistic.TEST0.Begin	();
 			Exec_Look			(dt);
+			Device.Statistic.TEST0.End		();
+			Device.Statistic.TEST1.Begin	();
 			Exec_Movement		(dt);
-			Device.Statistic.TEST.Begin	();
+			Device.Statistic.TEST1.End		();
+			Device.Statistic.TEST2.Begin	();
 			Exec_Visibility		(dt);
+			Device.Statistic.TEST2.End		();
+			Device.Statistic.TEST3.Begin	();
 			Exec_Physics		(dt);
+			Device.Statistic.TEST3.End		();
 			
 			net_update			uNext;
 			uNext.dwTimeStamp	= Level().timeServer();
