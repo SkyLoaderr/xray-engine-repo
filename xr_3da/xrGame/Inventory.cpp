@@ -65,7 +65,7 @@ bool CInventoryItem::Detach(PIItem pIItem, bool force) {
 	// если данный IItem НЕ МОЖЕТ быть отсоединен,
 	// и вызвать return CInventoryItem::Detach(pIItem, force);
 	if(force) {
-		if(m_subs.erase(find(m_subs.begin(), m_subs.end(), pIItem)) != m_subs.end()) {
+		if(m_subs.erase(std::find(m_subs.begin(), m_subs.end(), pIItem)) != m_subs.end()) {
 			return true;
 		}
 		return false;
@@ -74,7 +74,7 @@ bool CInventoryItem::Detach(PIItem pIItem, bool force) {
 }
 
 bool CInventoryItem::DetachAll() {
-	if(!m_pInventory || find(m_pInventory->m_ruck.begin(), m_pInventory->m_ruck.end(), this) == m_pInventory->m_ruck.end()) return false;
+	if(!m_pInventory || std::find(m_pInventory->m_ruck.begin(), m_pInventory->m_ruck.end(), this) == m_pInventory->m_ruck.end()) return false;
 	for(PPIItem l_it = m_subs.begin(); l_it != m_subs.end(); l_it++) {
 		Detach(*l_it);
 		//m_pInventory->m_ruck.insert(m_pInventory->m_ruck.end(), *l_it);
@@ -267,12 +267,12 @@ bool CInventory::Slot(PIItem pIItem) {
 bool CInventory::Belt(PIItem pIItem) {
 	if(!pIItem || !pIItem->m_belt) return false;
 	if(m_belt.size() == m_maxBelt) return false;
-	if(find(m_belt.begin(), m_belt.end(), pIItem) != m_belt.end()) return true;
+	if(std::find(m_belt.begin(), m_belt.end(), pIItem) != m_belt.end()) return true;
 	if((pIItem->m_slot < m_slots.size()) && (m_slots[pIItem->m_slot].m_pIItem == pIItem)) {
 		if(m_activeSlot == pIItem->m_slot) Activate(0xffffffff);
 		m_slots[pIItem->m_slot].m_pIItem = NULL;
 	}
-	PPIItem l_it = find(m_ruck.begin(), m_ruck.end(), pIItem); if(l_it != m_ruck.end()) m_ruck.erase(l_it);
+	PPIItem l_it = std::find(m_ruck.begin(), m_ruck.end(), pIItem); if(l_it != m_ruck.end()) m_ruck.erase(l_it);
 	m_belt.insert(m_belt.end(), pIItem); SortRuckAndBelt(this);
 	return true;
 }

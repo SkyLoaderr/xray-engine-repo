@@ -49,7 +49,7 @@ BOOL CTargetCS::net_Spawn(LPVOID DC) {
 void CTargetCS::net_Destroy			()
 {
 	inherited::net_Destroy();
-	Game().targets.erase(find(Game().targets.begin(), Game().targets.end(), this));
+	Game().targets.erase(std::find(Game().targets.begin(), Game().targets.end(), this));
 
 	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
 	xr_delete			(m_pPhysicsShell);

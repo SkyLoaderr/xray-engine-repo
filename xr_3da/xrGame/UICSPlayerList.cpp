@@ -28,7 +28,7 @@ void CUICSPlayerList::OnFrame()
 	// create temporary (sort by kills)
 	items.clear			();
 	for (;I!=E;I++)		items.push_back(&I->second);
-	sort(items.begin(),items.end(),pred_player);
+	std::sort			(items.begin(),items.end(),pred_player);
 
 	// out info
 	int k=1;

@@ -109,7 +109,7 @@ void CCustomDetector::Update(u32 dt) {
 			f32 l_dst = P.distance_to(l_pZ->Position()); if(l_dst > m_radius) l_dst -= m_radius; else l_dst = 0;
 			f32 l_relPow = l_pZ->Power(l_dst) / l_pZ->m_maxPower;
 			if(l_relPow > 0 && l_pZ->feel_touch_contact(this)) l_buzzer = true;
-			l_maxPow = max(l_maxPow, l_relPow); l_relPow = 1.f - l_relPow;
+			l_maxPow = _max(l_maxPow, l_relPow); l_relPow = 1.f - l_relPow;
 			if((f32)l_time > 5000.f * (l_relPow/**l_relPow*l_relPow*l_relPow*/)) {
 				l_time = 0;
 				if(m_sounds.find(l_pZ->SUB_CLS_ID) != m_sounds.end()) {
@@ -163,7 +163,7 @@ void CCustomDetector::feel_touch_delete(CObject* O) {
 	CCustomZone *l_pZ = dynamic_cast<CCustomZone*>(O);
 	if(l_pZ) {
 		if(bDebug) HUD().outMessage(0xffffffff,cName(),"stoped to feel a zone.");
-		m_zones.erase(find(m_zones.begin(), m_zones.end(), l_pZ));
+		m_zones.erase(std::find(m_zones.begin(), m_zones.end(), l_pZ));
 	}
 }
 

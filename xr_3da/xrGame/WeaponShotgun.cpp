@@ -40,8 +40,8 @@ void CWeaponShotgun::Load	(LPCSTR section)
 }
 
 void CWeaponShotgun::OnShot () {
-	swap(m_pHUD->vFirePoint, m_pHUD->vFirePoint2);
-	swap(vFirePoint, vFirePoint2);
+	std::swap(m_pHUD->vFirePoint, m_pHUD->vFirePoint2);
+	std::swap(vFirePoint, vFirePoint2);
 	UpdateFP();
 	inherited::OnShot();
 }
@@ -185,8 +185,8 @@ void CWeaponShotgun::OnDrawFlame	()
 			P.add(D);
 		}
 
-		swap(m_pHUD->vFirePoint, m_pHUD->vFirePoint2);
-		swap(vFirePoint, vFirePoint2);
+		std::swap(m_pHUD->vFirePoint, m_pHUD->vFirePoint2);
+		std::swap(vFirePoint, vFirePoint2);
 		UpdateFP();
 
 		// fire flash 2

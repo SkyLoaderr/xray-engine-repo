@@ -116,7 +116,7 @@ void game_sv_CS::SaveDefaultWeapon(CMemoryWriter &store) {		//@@@ WT: Это надо п
 void game_sv_CS::SpawnArtifacts() {
 	xr_vector<RPoint>&		rp	= rpoints[2];
 	srand				( (unsigned)time( NULL ) );
-	random_shuffle		( rp.begin( ), rp.end( ) );
+	std::random_shuffle	( rp.begin( ), rp.end( ) );
 	for(s32 i = 0; i < 3; i++) {
 		xrServerEntity*		E	=	spawn_begin	("m_target_cs");								// create SE
 		xrSE_Target_CS*	A		=	(xrSE_Target_CS*) E;					

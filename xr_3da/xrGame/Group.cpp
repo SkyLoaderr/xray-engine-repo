@@ -39,7 +39,7 @@ void CGroup::Member_Add(CEntity* E){
 }
 
 void CGroup::Member_Remove(CEntity* E){
-	EntityIt it = find(Members.begin(),Members.end(),E);
+	EntityIt it = std::find(Members.begin(),Members.end(),E);
 	if (it!=Members.end()) Members.erase(it);
 }
 

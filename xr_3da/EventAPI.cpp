@@ -88,7 +88,7 @@ void	CEventAPI::Destroy(EVENT& E)
 	E->dwRefCount--;
 	if (E->dwRefCount == 0) 
 	{
-		xr_vector<CEvent*>::iterator I = find(Events.begin(),Events.end(),E);
+		xr_vector<CEvent*>::iterator I = std::find(Events.begin(),Events.end(),E);
 		R_ASSERT(I!=Events.end());
 		Events.erase(I);
 		xr_delete	(E);

@@ -28,7 +28,7 @@ void CUIDMFragList::OnFrame()
 	// create temporary map (sort by kills)
 	items.clear			();
 	for (;I!=E;I++)		items.push_back(&I->second);
-	sort(items.begin(),items.end(),pred_player);
+	std::sort			(items.begin(),items.end(),pred_player);
 
 	// out info
 	CGameFont* H		= HUD().pFontSmall;

@@ -330,9 +330,9 @@ void CAI_Stalker::Detour()
 	if (F)	f =40.f;
 	if (G)	f =20.f;
 	
-	float fDistance = min(vPosition.distance_to(m_tSavedEnemyPosition),f);
+	float fDistance = _min(vPosition.distance_to(m_tSavedEnemyPosition),f);
 	dwDelay1 = iFloor((fDistance / f) * 20000);
-	dwDelay2 = max(u32(20000 - dwDelay1),u32(2000));
+	dwDelay2 = _max(u32(20000 - dwDelay1),u32(2000));
 	switch (m_tActionState) {
 		case eActionStateWatchGo : {
 			WRITE_TO_LOG			("WatchGo : Detour");

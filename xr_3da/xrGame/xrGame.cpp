@@ -142,7 +142,7 @@ public:
 					Msg("! there are only %d vertexes!",getAI().GraphHeader().dwVertexCount);
 				else
 					if (min(id1,id2) < 0)
-						Msg("! invalid vertex number (%d)!",min(id1,id2));
+						Msg("! invalid vertex number (%d)!",_min(id1,id2));
 					else {
 						Sleep				(1);
 						u64 t1x = CPU::GetCycleCount();

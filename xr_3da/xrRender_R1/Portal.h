@@ -81,7 +81,7 @@ public:
 	}
 	void					objectRemove	(CObject* O)
 	{
-		xr_vector<CObject*>::iterator I = find(Objects.begin(),Objects.end(),O);
+		xr_vector<CObject*>::iterator I = std::find(Objects.begin(),Objects.end(),O);
 		if (I!=Objects.end()) Objects.erase(I);
 	}
 

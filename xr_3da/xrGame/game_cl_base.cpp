@@ -35,7 +35,7 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 	u16	p_count;
 	P.r_u16			(p_count);
 	players.clear	();
-	pair <xr_map<u32,Player>::iterator, bool> I;
+	std::pair <xr_map<u32,Player>::iterator, bool> I;
 	for (u16 p_it=0; p_it<p_count; p_it++)
 	{
 		u32				ID;
