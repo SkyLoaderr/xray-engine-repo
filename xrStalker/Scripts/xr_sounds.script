@@ -27,7 +27,10 @@ function play_sound_rnd (obj, min_delay, max_delay, theme, sub_theme, phrase_set
     end
 --    printf ("Phrase_set %d", phrase_set)
     if sub_phrase == nil or this.get_num_subphrases (theme, sub_theme, phrase_set) < sub_phrase then
-       local num = this.get_num_subphrases (theme, sub_theme, phrase_set)
+       local num = get_num_subphrases (theme, sub_theme, phrase_set)
+	if num == nil then
+		return
+	end
        if num == 0 then
           printf ("NO SOUNDS LOADED !!! Theme : %s, sub theme : %d, phrases set : %d", theme, sub_theme, phrase_set)
           return
