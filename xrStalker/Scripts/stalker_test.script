@@ -1,7 +1,7 @@
 function main()
     actor				= get_actor()
     stalker				= get_level_object ("m_stalker_e0000")
-    f1					= get_level_object ("grenade_f10000")
+    f1					= get_level_object ("grenade_f0000")
     
     f1:explode			(time() + 10000)
     
