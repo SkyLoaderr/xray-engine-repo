@@ -62,9 +62,9 @@ function multiplayer_dialog:InitControls()
 	self.main_frame:AttachChild(btn)	
 end
 
-function multiplayer_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
+--[[function multiplayer_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
 	ui_base_dialog.base_dialog.OnKeyboard(self,dik,keyboard_action)
 	
 	return true
-end
+end]]
 
