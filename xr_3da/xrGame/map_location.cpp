@@ -85,9 +85,24 @@ void CMapLocation::LoadSpot(LPCSTR type)
 Fvector2 CMapLocation::Position()
 {
 	Fvector2 pos;
+	pos.set(0.0f,0.0f);
+
 	CObject* pObject =  Level().Objects.net_Find(m_objectID);
-	const Fvector& op = pObject->Position();
-	pos.set(op.x, op.z);
+	if(!pObject){
+		if(ai().get_alife())		
+		{
+			CSE_ALifeDynamicObject* O = ai().alife().objects().object(m_objectID,true);
+			if(O){
+				const Fvector& p = O->Position();
+				pos.set(p.x, p.z);
+			}
+		}
+	
+	}else{
+		const Fvector& op = pObject->Position();
+		pos.set(op.x, op.z);
+	}
+
 	return pos;
 }
 
@@ -97,6 +112,8 @@ Fvector2 CMapLocation::Direction()
 		return Fvector2().set(Device.vCameraDirection.x,Device.vCameraDirection.z);
 
 	CObject* pObject =  Level().Objects.net_Find(m_objectID);
+	if(!pObject)return Fvector2().set(0.0f, 0.0f);
+
 	const Fvector& op = pObject->Direction();
 	return Fvector2().set(op.x, op.z);
 }
