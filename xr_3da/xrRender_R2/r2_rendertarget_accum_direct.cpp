@@ -45,21 +45,48 @@ void CRenderTarget::accum_direct	()
 		pv->set						(float(_w+EPS),	float(_h+EPS),	EPS,	1.f, C, p1.x, p1.y);	pv++;
 		pv->set						(float(_w+EPS),	EPS,			EPS,	1.f, C, p1.x, p0.y);	pv++;
 		RCache.Vertex.Unlock		(4,g_combine->vb_stride);
+		RCache.set_Geometry			(g_combine);
 
 		// Shader + constants
-		RCache.set_Shader			(s_accum_direct);
-		RCache.set_c				("c_hpos",c_hpos);
-		Fvector4 J; float scale		= (3.0f / DSM_size)/11.f;
-		R_constant* _C				= RCache.get_c			("jitter");
-		J.set(11, 0,  0);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,0,J.x,J.y,-J.y,-J.x);
-		J.set(19, 3,  0);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,1,J.x,J.y,-J.y,-J.x);
-		J.set(22, 11, 0);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,2,J.x,J.y,-J.y,-J.x);
-		J.set(19, 19, 0);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,3,J.x,J.y,-J.y,-J.x);
-		J.set(9,  7,  15, 9);	J.sub(11); J.mul(scale);	RCache.set_ca	(_C,4,J.x,J.y,J.w,J.z);
-		J.set(13, 15, 7,  13);	J.sub(11); J.mul(scale);	RCache.set_ca	(_C,5,J.x,J.y,J.w,J.z);
+		float circle				= 3.f / DSM_size;
+		if (0)
+		{
+			Fvector4 J; float scale		= circle/11.f;
 
-		// Render
-		RCache.set_Geometry			(g_combine);
-		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+			// 1
+			RCache.set_Element			(s_accum_direct->E[0]);
+			R_constant* _C				= RCache.get_c			("jitter");
+			J.set(11, 0,  0);			J.sub(11); J.mul(scale);	RCache.set_ca	(_C,0,J.x,J.y,-J.y,-J.x);
+			J.set(19, 3,  0);			J.sub(11); J.mul(scale);	RCache.set_ca	(_C,1,J.x,J.y,-J.y,-J.x);
+			J.set(22, 11, 0);			J.sub(11); J.mul(scale);	RCache.set_ca	(_C,2,J.x,J.y,-J.y,-J.x);
+			J.set(19, 19, 0);			J.sub(11); J.mul(scale);	RCache.set_ca	(_C,3,J.x,J.y,-J.y,-J.x);
+			J.set(9,  7,  15, 9);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,4,J.x,J.y,J.w,J.z);
+			J.set(13, 15, 7,  13);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,5,J.x,J.y,J.w,J.z);
+			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+		} else {
+			Fvector4 J; float scale		= circle/27.f;
+
+			// 1
+			RCache.set_Element			(s_accum_direct->E[0]);
+			R_constant* _C1				= RCache.get_c			("jitter");
+			J.set(21, 2,  33, 2 );	J.sub(27); J.mul(scale); RCache.set_ca	(_C1,0,J.x,J.y,J.w,J.z);
+			J.set(9,  9,  45, 9 );	J.sub(27); J.mul(scale); RCache.set_ca	(_C1,1,J.x,J.y,J.w,J.z);
+			J.set(20, 12, 34, 12);	J.sub(27); J.mul(scale); RCache.set_ca	(_C1,2,J.x,J.y,J.w,J.z);
+			J.set(12, 20, 27, 20);	J.sub(27); J.mul(scale); RCache.set_ca	(_C1,3,J.x,J.y,J.w,J.z);
+			J.set(42, 20, 2,  21);	J.sub(27); J.mul(scale); RCache.set_ca	(_C1,4,J.x,J.y,J.w,J.z);
+			J.set(52, 21, 20, 27);	J.sub(27); J.mul(scale); RCache.set_ca	(_C1,5,J.x,J.y,J.w,J.z);
+			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+
+			// 2
+			RCache.set_Element			(s_accum_direct->E[1]);
+			R_constant* _D1				= RCache.get_c			("jitter");
+			J.set(34, 27, 2,  33);	J.sub(27); J.mul(scale); RCache.set_ca	(_D1,0,J.x,J.y,J.w,J.z);
+			J.set(52, 33, 12, 34);	J.sub(27); J.mul(scale); RCache.set_ca	(_D1,1,J.x,J.y,J.w,J.z);
+			J.set(27, 34, 42, 34);	J.sub(27); J.mul(scale); RCache.set_ca	(_D1,2,J.x,J.y,J.w,J.z);
+			J.set(20, 42, 34, 42);	J.sub(27); J.mul(scale); RCache.set_ca	(_D1,3,J.x,J.y,J.w,J.z);
+			J.set(9,  45, 45, 45);	J.sub(27); J.mul(scale); RCache.set_ca	(_D1,4,J.x,J.y,J.w,J.z);
+			J.set(21, 52, 33, 52);	J.sub(27); J.mul(scale); RCache.set_ca	(_D1,5,J.x,J.y,J.w,J.z);
+			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+		}
 	}
 }
