@@ -34,6 +34,13 @@ void CRenderTarget::accum_direct	(u32 dls_phase)
 		p0.set						(.5f/_w, .5f/_h);
 		p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
 
+		// Analyze depth
+		float	d_Z	= EPS_S, d_W = 1.f;
+		if (0==dls_phase)
+		{
+			
+		}
+
 		// Fill vertex buffer
 		FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
 		pv->set						(EPS,			float(_h+EPS),	EPS,	1.f, C, p0.x, p1.y);	pv++;
