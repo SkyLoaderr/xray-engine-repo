@@ -92,7 +92,9 @@ bool CAI_Stalker::useful		(const CGameObject *object) const
 
 float CAI_Stalker::evaluate		(const CGameObject *object) const
 {
-	return				(Position().distance_to_sqr(object->Position()));
+	float				distance = Position().distance_to_sqr(object->Position());
+	distance			= !fis_zero(distance) ? distance : EPS_L;
+	return				(1.f/distance);
 }
 
 void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E, bool &F, bool &G, bool &H, bool &I, bool &J, bool &K, bool &L, bool &M)

@@ -31,12 +31,12 @@ void CStateManagerNoALife::Init				()
 
 void CStateManagerNoALife::Load				(LPCSTR section)
 {
-	add_state				(xr_new<CStateFreeNoAlife>		("FreeNoALife"),		eNoALifeStateFree,			0);
+	add_state				(xr_new<CStateFreeNoAlife>		("FreeNoALife"),		eNoALifeStateFree,			1);
 	add_state				(xr_new<CStateGatherItems>		("GatherItems"),		eNoALifeGatherItems,		0);
-	add_state				(xr_new<CStateAnomalyCheck>		("AnomalyCheck"),		eNoALifeAnomalyCheck,		0);
-	add_state				(xr_new<CStateHiddenEnemyCheck>	("HiddenEnemyCheck"),	eNoALifeHiddenEnemyCheck,	0);
-	add_state				(xr_new<CStateBackEnemyCheck>	("BackEnemyCheck"),		eNoALifeBackEnemyCheck,		0);
-	add_state				(xr_new<CStateWatchOver>		("WatchOver"),			eNoALifeWatchOver,			0);
+	add_state				(xr_new<CStateAnomalyCheck>		("AnomalyCheck"),		eNoALifeAnomalyCheck,		1);
+	add_state				(xr_new<CStateHiddenEnemyCheck>	("HiddenEnemyCheck"),	eNoALifeHiddenEnemyCheck,	1);
+	add_state				(xr_new<CStateBackEnemyCheck>	("BackEnemyCheck"),		eNoALifeBackEnemyCheck,		1);
+	add_state				(xr_new<CStateWatchOver>		("WatchOver"),			eNoALifeWatchOver,			1);
 
 	add_transition			(eNoALifeStateFree,eNoALifeGatherItems,				1,1);
 	add_transition			(eNoALifeStateFree,eNoALifeAnomalyCheck,			1,1);
