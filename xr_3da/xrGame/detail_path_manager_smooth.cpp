@@ -68,7 +68,7 @@ bool CDetailPathManager::compute_tangent(
 	yaw1				= direction.getH();
 	yaw1 = yaw2			= yaw1 >= 0.f ? yaw1 : yaw1 + PI_MUL_2;
 
-	if (start_cp*dest_cp >= 0.f) {
+	if ((start_cp*dest_cp > 0.f) || fis_zero(dest_cp)) {
 		// so, our tangents are outside
 		if (start_circle.center.similar(dest_circle.center)) {
 			if  (fsimilar(start_circle.radius,dest_circle.radius)) {
@@ -95,7 +95,8 @@ bool CDetailPathManager::compute_tangent(
 			distance		= start_circle.center.distance_to(dest_circle.center);
 			// radius difference
 			float			r_diff = start_circle.radius - dest_circle.radius;
-			if ((r_diff > distance) && !fsimilar(r_diff,distance))
+			float			r_diff_abs = _abs(r_diff);
+			if ((r_diff_abs > distance) && !fsimilar(r_diff_abs,distance))
 				return		(false);
 			// angle between external tangents and circle centers segment
 			float			temp = r_diff/distance;
@@ -298,7 +299,7 @@ bool CDetailPathManager::build_trajectory(
 		}
 	}
 	
-	std::sort	(dist,dist + tangent_count);
+//	std::sort	(dist,dist + tangent_count);
 
 	{
 		for (u32 i=0, j = path ? path->size() : 0; i<tangent_count; ++i) {
@@ -572,10 +573,8 @@ void CDetailPathManager::build_path_via_key_points(
 	xr_vector<STravelPoint>::const_iterator	I = m_key_points.begin(), P = I;
 	xr_vector<STravelPoint>::const_iterator	E = m_key_points.end();
 	for ( ; I != E; ++I) {
-		// setting up destination
-		if (!ai().level_graph().inside((*I).vertex_id,(*I).position)) {
-			VERIFY					(false);
-		}
+		VERIFY							(ai().level_graph().inside((*I).vertex_id,(*I).position));
+
 		if ((I + 1) != E) {
 			(STravelPoint&)d = *I;
 			d.direction.sub				((I + 1)->position,d.position);
@@ -601,17 +600,12 @@ void CDetailPathManager::build_path_via_key_points(
 				compute_path			(s,d,&m_path,m_start_params,m_dest_params,straight_line_index,straight_line_index_negative);
 				m_path.clear			();
 				return;
-				//VERIFY				(false);
 			}
 			P							= I - 1;
 
 			s							= d;
 
 			VERIFY						(m_path.size() > 1);
-//			u32							add = 0;
-//			if (m_path[m_path.size()-1].position.similar(m_path[m_path.size()-2].position))
-//				add						= 1;
-//			VERIFY						(m_path.size() > 1 + add);
 			s.direction.sub				(
 				ai().level_graph().v2d(m_path[m_path.size() - 1].position),
 				ai().level_graph().v2d(m_path[m_path.size() - 2].position)
@@ -638,11 +632,8 @@ void CDetailPathManager::build_path_via_key_points(
 	}
 
 	if (!compute_path(s,d,&m_path,m_start_params,finish_params,straight_line_index,straight_line_index_negative)) {
-//		compute_path(s,d,0,m_start_params,finish_params,straight_line_index,straight_line_index_negative);
-//		compute_path(s,d,&m_path,m_start_params,finish_params,straight_line_index,straight_line_index_negative);
 		m_path.clear					();
 		return;
-//		VERIFY							(false);
 	}
 
 	add_patrol_point					();
