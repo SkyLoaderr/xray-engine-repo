@@ -72,29 +72,6 @@ IC	void CAbstractOperator::add_effect		(const COperatorCondition &effect)
 	m_effects.push_back		(effect);
 }
 
-#ifdef INTENSIVE_MEMORY_USAGE
-TEMPLATE_SPECIALIZATION
-IC	bool CAbstractOperator::applicable		(const CSConditionState &condition) const
-{
-	xr_vector<COperatorCondition>::const_iterator	i = conditions().begin();
-	xr_vector<COperatorCondition>::const_iterator	e = conditions().end();
-	xr_vector<COperatorCondition>::const_iterator	I = condition.conditions().begin();
-	xr_vector<COperatorCondition>::const_iterator	E = condition.conditions().end();
-	for ( ; (I != E) && (i != e); )
-		if ((*I).condition() < (*i).condition())
-			++I;
-		else
-			if ((*I).condition() > (*i).condition())
-				++i;
-			else {
-				if ((*I).value() != (*i).value())
-					return	(false);
-				++I;
-				++i;
-			}
-	return					(true);
-}
-#else
 TEMPLATE_SPECIALIZATION
 IC	bool CAbstractOperator::applicable		(const xr_vector<COperatorCondition> &condition, const xr_vector<COperatorCondition> &start, const xr_vector<COperatorCondition> &self_condition) const
 {
@@ -143,72 +120,11 @@ IC	bool CAbstractOperator::applicable		(const xr_vector<COperatorCondition> &con
 	return					(true);
 }
 
-#endif
-
-#ifdef INTENSIVE_MEMORY_USAGE
-TEMPLATE_SPECIALIZATION
-IC	bool CAbstractOperator::apply	(const CSConditionState &condition, CSConditionState &result) const
-{
-	result.clear			();
-#ifdef USE_AFFECT
-	bool					changed = false;
-#endif
-	xr_vector<COperatorCondition>::const_iterator	i = effects().begin();
-	xr_vector<COperatorCondition>::const_iterator	e = effects().end();
-	xr_vector<COperatorCondition>::const_iterator	I = condition.conditions().begin();
-	xr_vector<COperatorCondition>::const_iterator	E = condition.conditions().end();
-	for ( ; (I != E) && (i != e); )
-		if ((*I).condition() < (*i).condition()) {
-			result.add_condition	(*I);
-			++I;
-		}
-		else
-			if ((*I).condition() > (*i).condition()) {
-				result.add_condition(*i);
-#ifdef USE_AFFECT
-				changed		= true;
-#endif
-				++i;
-			}
-			else {
-#ifdef USE_AFFECT
-				if ((*I).value() != (*i).value())
-					changed	= true;
-#endif
-				result.add_condition(*i);
-				++I;
-				++i;
-			}
-
-#ifdef USE_AFFECT
-	if (i == e) {
-		if (!changed)
-			return			(false);
-	}
-	else {
-		I					= i;
-		E					= e;
-	}
-#else
-	if (I == E) {
-		I					= i;
-		E					= e;
-	}
-#endif
-	
-	for ( ; (I != E); ++I)
-		result.add_condition(*I);
-
-	return					(true);
-}
-#else
 TEMPLATE_SPECIALIZATION
 IC	bool CAbstractOperator::apply	(const CSConditionState &condition, const xr_vector<COperatorCondition> &start, CSConditionState &result, const xr_vector<COperatorCondition> &self_condition) const
 {
 	result.clear			();
-#ifdef USE_AFFECT
 	bool					changed = false;
-#endif
 	xr_vector<COperatorCondition>::const_iterator	i = self_condition.begin();
 	xr_vector<COperatorCondition>::const_iterator	e = self_condition.end();
 	xr_vector<COperatorCondition>::const_iterator	I = condition.conditions().begin();
@@ -227,17 +143,13 @@ IC	bool CAbstractOperator::apply	(const CSConditionState &condition, const xr_ve
 				if ((J != EE) && ((*J).condition() == (*i).condition())) {
 					if ((*J).value() != (*i).value()) {
 						result.add_condition(*i);
-#ifdef USE_AFFECT
 						changed	= true;
-#endif
 					}
 					++J;
 				}
 				else {
 					result.add_condition(*i);
-#ifdef USE_AFFECT
 					changed	= true;
-#endif
 				}
 				++i;
 			}
@@ -245,9 +157,7 @@ IC	bool CAbstractOperator::apply	(const CSConditionState &condition, const xr_ve
 				if ((*I).value() == (*i).value())
 					result.add_condition(*I);
 				else {
-#ifdef USE_AFFECT
 					changed	= true;
-#endif
 					while ((J != EE) && ((*J).condition() < (*i).condition()))
 						++J;
 					if ((J != EE) && ((*J).condition() == (*i).condition())) {
@@ -263,10 +173,8 @@ IC	bool CAbstractOperator::apply	(const CSConditionState &condition, const xr_ve
 			}
 
 	if (i == e) {
-#ifdef USE_AFFECT
 		if (!changed)
 			return			(false);
-#endif
 		for ( ; (I != E); ++I)
 			result.add_condition(*I);
 		return				(true);
@@ -278,43 +186,31 @@ IC	bool CAbstractOperator::apply	(const CSConditionState &condition, const xr_ve
 		else
 			if ((*J).condition() > (*i).condition()) {
 				result.add_condition(*i);
-#ifdef USE_AFFECT
 				changed		= true;
-#endif
 				++i;
 			}
 			else {
 				if ((*J).value() != (*i).value()) {
 					result.add_condition(*i);
-#ifdef USE_AFFECT
 					changed	= true;
-#endif
 				}
 				++J;
 				++i;
 			}
 
 	if ((J == EE) && (i != e))
-#ifdef USE_AFFECT
 		changed = true;
-#endif
 		for ( ; (i != e); ++i)
 			result.add_condition(*i);
 
-#ifdef USE_AFFECT
 	return					(changed);
-#else
-	return					(true);
-#endif
 }
 
 TEMPLATE_SPECIALIZATION
 IC	bool CAbstractOperator::apply_reverse	(const CSConditionState &condition, const xr_vector<COperatorCondition> &start, CSConditionState &result, const xr_vector<COperatorCondition> &self_condition) const
 {
 	result.clear			();
-#ifdef USE_AFFECT
 	bool					changed = false;
-#endif
 	xr_vector<COperatorCondition>::const_iterator	i = self_condition.begin();
 	xr_vector<COperatorCondition>::const_iterator	e = self_condition.end();
 	xr_vector<COperatorCondition>::const_iterator	I = condition.conditions().begin();
@@ -327,9 +223,7 @@ IC	bool CAbstractOperator::apply_reverse	(const CSConditionState &condition, con
 				++J;
 			if ((J != EE) && ((*J).condition() == (*I).condition())) {
 				VERIFY		((*J).value() == (*I).value());
-#ifdef USE_AFFECT
 				changed		= true;
-#endif
 				++J;
 			}
 			else
@@ -342,20 +236,16 @@ IC	bool CAbstractOperator::apply_reverse	(const CSConditionState &condition, con
 				++i;
 			}
 			else {
-#ifdef USE_AFFECT
 				if ((*I).value() != (*i).value())
 					changed	= true;
-#endif
 				result.add_condition(*i);
 				++I;
 				++i;
 			}
 
 	if (I == E) {
-#ifdef USE_AFFECT
 		if (!changed)
 			return			(false);
-#endif
 		for ( ; (i != e); ++i)
 			result.add_condition(*i);
 		return				(true);
@@ -371,17 +261,13 @@ IC	bool CAbstractOperator::apply_reverse	(const CSConditionState &condition, con
 			}
 			else {
 				VERIFY		((*J).value() == (*I).value());
-#ifdef USE_AFFECT
 				changed		= true;
-#endif
 				++J;
 				++I;
 			}
 
-#ifdef USE_AFFECT
 	if (!changed)
 		return				(false);
-#endif
 
 	if ((J == EE) && (I != E))
 		for ( ; (I != E); ++I)
@@ -389,6 +275,6 @@ IC	bool CAbstractOperator::apply_reverse	(const CSConditionState &condition, con
 
 	return					(true);
 }
-#endif
+
 #undef TEMPLATE_SPECIALIZATION
 #undef CAbstractOperator

@@ -578,9 +578,6 @@
 					Name="ProblemSolver"
 					Filter="">
 					<File
-						RelativePath=".\condition_config.h">
-					</File>
-					<File
 						RelativePath=".\problem_solver.h">
 					</File>
 					<File

@@ -76,16 +76,12 @@ protected:
 //	typedef CPriorityQueue<boost::pairing_heap>				CPriorityQueue;
 	
 	typedef CVertexManagerFixed<u32,u32,8>					CVertexManager;
-#ifndef USE_HASH
-	typedef CVertexManagerGeneric<u32,_solver_index_type>	CSolverVertexManager;
-#else
 	typedef CVertexManagerHashFixed<
 				u32,
 				_solver_index_type,
 				4096,
 				16*65536
 			>												CSolverVertexManager;
-#endif
 	typedef CVertexAllocatorFixed<65536>					CVertexAllocator;
 	typedef CVertexAllocatorFixed<16*65536>					CSolverVertexAllocator;
 

@@ -88,11 +88,7 @@ IC	const typename CProblemSolverAbstract::CState &CProblemSolverAbstract::target
 TEMPLATE_SPECIALIZATION
 IC	u8	CProblemSolverAbstract::get_edge_weight	(const _index_type &vertex_index0, const _index_type &vertex_index1, const const_iterator &i) const
 {
-#ifdef INTENSIVE_MEMORY_USAGE
 	return					(vertex_index0.weight(vertex_index1));
-#else
-	return					(vertex_index0.weight(vertex_index1,current_state()));
-#endif
 }
 
 TEMPLATE_SPECIALIZATION
@@ -104,18 +100,8 @@ IC	bool CProblemSolverAbstract::is_accessible	(const _index_type &vertex_index) 
 TEMPLATE_SPECIALIZATION
 IC	const typename CProblemSolverAbstract::_index_type &CProblemSolverAbstract::value(const _index_type &vertex_index, const_iterator &i) const
 {
-#ifdef INTENSIVE_MEMORY_USAGE
-	if ((*i).m_operator->applicable(vertex_index))
-		m_applied			= (*i).m_operator->apply(vertex_index,m_temp);
-#else
-	#ifndef REVERSE_SEARCH
-		if ((*i).m_operator->applicable(vertex_index.conditions(),current_state().conditions(),(*i).m_operator->conditions()))
-			m_applied		= (*i).m_operator->apply(vertex_index,current_state().conditions(),m_temp,(*i).m_operator->effects());
-	#else
-		if ((*i).m_operator->applicable((*i).m_operator->effects(),(*i).m_operator->conditions(),vertex_index.conditions()))
-			m_applied		= (*i).m_operator->apply_reverse(vertex_index,(*i).m_operator->effects(),m_temp,(*i).m_operator->conditions());
-	#endif
-#endif
+	if ((*i).m_operator->applicable((*i).m_operator->effects(),(*i).m_operator->conditions(),vertex_index.conditions()))
+		m_applied			= (*i).m_operator->apply_reverse(vertex_index,(*i).m_operator->effects(),m_temp,(*i).m_operator->conditions());
 	else
 		m_applied			= false;
 	return					(m_temp);

@@ -18,12 +18,8 @@
 TEMPLATE_SPECIALIZATION
 IC	CConditionStateAbstract::CConditionState	()
 {
-#ifdef RESERVE_COUNT
-	m_conditions.reserve	(RESERVE_COUNT);
-#endif
-#ifdef USE_HASH
+	m_conditions.reserve	(32);
 	m_hash					= 0;
-#endif
 }
 
 TEMPLATE_SPECIALIZATION
@@ -41,18 +37,14 @@ TEMPLATE_SPECIALIZATION
 IC	void CConditionStateAbstract::add_condition	(const COperatorCondition &condition)
 {
 	m_conditions.push_back	(condition);
-#ifdef USE_HASH
 	m_hash					^= condition.hash_value();
-#endif
 }
 
 TEMPLATE_SPECIALIZATION
 IC	void CConditionStateAbstract::clear	()
 {
 	m_conditions.clear		();
-#ifdef USE_HASH
 	m_hash					= 0;
-#endif
 }
 
 TEMPLATE_SPECIALIZATION
@@ -136,10 +128,8 @@ IC	bool CConditionStateAbstract::operator<	(const CConditionState &condition) co
 TEMPLATE_SPECIALIZATION
 IC	bool CConditionStateAbstract::operator==	(const CConditionState &condition)
 {
-#ifdef USE_HASH
 	if (hash_value() != condition.hash_value())
 		return				(false);
-#endif
 	xr_vector<COperatorCondition>::const_iterator	I = conditions().begin();
 	xr_vector<COperatorCondition>::const_iterator	E = conditions().end();
 	xr_vector<COperatorCondition>::const_iterator	i = condition.conditions().begin();
@@ -155,9 +145,7 @@ IC	bool CConditionStateAbstract::operator==	(const CConditionState &condition)
 TEMPLATE_SPECIALIZATION
 IC	typename CConditionStateAbstract::CSConditionState &CConditionStateAbstract::operator-=(const CConditionState &condition)
 {
-#ifdef USE_HASH
 	m_hash							= 0;
-#endif
 	xr_vector<COperatorCondition>	temp;
 	xr_vector<COperatorCondition>::const_iterator	I = conditions().begin();
 	xr_vector<COperatorCondition>::const_iterator	E = conditions().end();
@@ -172,9 +160,7 @@ IC	typename CConditionStateAbstract::CSConditionState &CConditionStateAbstract::
 			else {
 				if ((*I).value() != (*i).value()) {
 					temp.push_back	(*I);
-#ifdef USE_HASH
 					m_hash			^= (*I).hash_value();
-#endif
 				}
 				++I;
 				++i;
@@ -263,7 +249,6 @@ IC	bool CConditionStateAbstract::includes(const CConditionState &condition, cons
 	return						(i == e);
 }
 
-#ifdef USE_HASH
 TEMPLATE_SPECIALIZATION
 IC	CConditionStateAbstract::operator u32		() const
 {
@@ -275,7 +260,6 @@ IC	u32	CConditionStateAbstract::hash_value		() const
 {
 	return					(m_hash);
 }
-#endif
 
 #undef TEMPLATE_SPECIALIZATION
 #undef CConditionStateAbstract
