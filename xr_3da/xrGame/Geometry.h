@@ -1,5 +1,8 @@
 #ifndef GEOMETRY_H
 #define GEOMETRY_H 
+#include "PhysicsCommon.h"
+#include "ExtendedGeom.h"
+
 //this is equivalent dMULTIPLYOP0_333 whith consequent transposion of A
 #define dMULTIPLYOP3_333(A,op,B,C)  \
 	(A)[0]  op dDOT14((B),  (C));   \
@@ -15,9 +18,7 @@
 inline void dMULTIPLY3_333(dReal *A, const dReal *B, const dReal *C)
 { dMULTIPLYOP3_333(A,=,B,C) }
 
-typedef  void __stdcall ContactCallbackFun		(CDB::TRI* T,		dContactGeom* c);
-typedef	 void __stdcall ObjectContactCallbackFun(bool& do_colide,	dContact& c);
-#include "ExtendedGeom.h"
+
 class CPhysicsRefObject;
 class CPHObject;
 class CODEGeom

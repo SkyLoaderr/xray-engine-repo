@@ -2769,6 +2769,9 @@
 		<Filter
 			Name="Physics"
 			Filter="">
+			<File
+				RelativePath=".\PhysicsCommon.h">
+			</File>
 			<Filter
 				Name="Tri-Collider"
 				Filter="">

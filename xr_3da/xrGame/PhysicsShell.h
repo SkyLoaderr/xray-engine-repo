@@ -1,31 +1,10 @@
 #ifndef PhysicsShellH
 #define PhysicsShellH
 #pragma once
-typedef void __stdcall BoneCallbackFun(CBoneInstance* B);
-typedef void __stdcall ContactCallbackFun(CDB::TRI* T,dContactGeom* c);
-typedef	void __stdcall ObjectContactCallbackFun(bool& do_colide,dContact& c);
-typedef void __stdcall PushOutCallbackFun(bool& do_colide,dContact& c);
-
-void __stdcall PushOutCallback(bool& do_colide,dContact& c);
-void __stdcall PushOutCallback1(bool& do_colide,dContact& c);
-
-
-
 #include "PhysicsRefObject.h"
 #include "PHDefs.h"
-extern const dReal fixed_step;
-IC float Erp(float k_p,float k_d)		{return ((fixed_step*(k_p)) / (((fixed_step)*(k_p)) + (k_d)));}
-IC float Cfm(float k_p,float k_d)		{return (1.f / (((fixed_step)*(k_p)) + (k_d)));}
-IC float Spring(float cfm,float erp)	{return ((erp)/(cfm)/fixed_step);}
-IC float Damping(float cfm,float erp)	{return ((1.f-(erp))/(cfm));}
-extern const dReal default_l_limit;
-extern const dReal default_w_limit;
-extern const dReal	default_k_l;
-extern const dReal	default_k_w;
-extern const dReal default_l_scale;
-extern const dReal default_w_scale;
-extern const dReal default_disw;
-extern const dReal default_disl;
+#include "PhysicsCommon.h"
+
 class CPhysicsJoint;
 class CPhysicsElement;
 class CPhysicsShell;

@@ -29,6 +29,18 @@ const dReal	default_k_w		=0.05f;
 const dReal default_disw	=0.00005f;
 const dReal default_disl	=0.005f;
 
+#ifndef  ODE_SLOW_SOLVER
+const dReal world_cfm		=1.1363636e-008f;
+const dReal world_erp		=0.74545456f;
+#else
+const dReal world_cfm		=1.1363636e-006f;
+const dReal world_erp		=0.54545456f;
+#endif
+
+const dReal world_spring	=1.0f*SPRING	(world_cfm,world_erp);
+const dReal world_damping	=1.0f*DAMPING	(world_cfm,world_erp);
+
+
 const dReal	world_gravity=2.f*9.81f;
 
 int			phFPS			= 50;

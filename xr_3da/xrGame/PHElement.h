@@ -7,13 +7,10 @@
 //using namespace std;
 #ifndef PH_ELEMENT
 #define PH_ELEMENT
+#include "PhysicsCommon.h"
 class CPHElement;
 class CPHShell;
 class CPHFracture;
-typedef		void	__stdcall	ContactCallbackFun		(CDB::TRI* T,dContactGeom* c);
-void				__stdcall	ContactShotMark			(CDB::TRI* T,dContactGeom* c);
-typedef		void	__stdcall	PushOutCallbackFun		(bool& do_colide,dContact& c);
-
 DEFINE_VECTOR(CODEGeom*,GEOM_STORAGE,GEOM_I)
 class CPHFracturesHolder;
 class CPHElement	:  public CPhysicsElement 
