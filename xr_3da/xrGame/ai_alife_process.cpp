@@ -73,12 +73,14 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 	if (tpALifeHuman->m_dwCurTask == u32(-1)) {
 		CALifeHuman *tpTrader = tpfGetNearestSuitableTrader(tpALifeHuman);
 		Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,tpTrader->m_tGraphID,tpALifeHuman->m_tpaVertices);
+		tpALifeHuman->m_dwCurNode = 0;
 	}
 	else
 		switch (tpALifeHuman->m_tTaskState) {
 			case eTaskStateNone : {
 				break;
 			}
+			default : NODEFAULT;
 		};
 	vfChooseNextRoutePoint	(tpALifeHuman);
 	vfCheckForTheBattle		(tpALifeHuman);

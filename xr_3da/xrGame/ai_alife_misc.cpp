@@ -22,56 +22,69 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 		}
 	}
 	if (tpALifeMonsterAbstract->m_tNextGraphID == tpALifeMonsterAbstract->m_tGraphID) {
-		_GRAPH_ID			tGraphID		= tpALifeMonsterAbstract->m_tGraphID;
-		AI::SGraphVertex	*tpaGraph		= Level().AI.m_tpaGraph;
-		u16					wNeighbourCount = (u16)tpaGraph[tGraphID].dwNeighbourCount;
-		AI::SGraphEdge		*tpaEdges		= (AI::SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[tGraphID].dwEdgeOffset);
-		int					iPointCount		= (int)m_tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID].ucRoutePointCount;
-		GRAPH_VECTOR		&wpaVertexes	= m_tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID].tpRouteGraphPoints;
-		int					iBranches		= 0;
-		bool bOk = false;
-		for (int i=0; i<wNeighbourCount; i++)
-			for (int j=0; j<iPointCount; j++)
-				if ((tpaEdges[i].dwVertexNumber == wpaVertexes[j]) && (wpaVertexes[j] != tpALifeMonsterAbstract->m_tPrevGraphID))
-					iBranches++;
-		if (!iBranches) {
-			for (int i=0; i<wNeighbourCount; i++) {
-				for (int j=0; j<iPointCount; j++)
-					if (tpaEdges[i].dwVertexNumber == wpaVertexes[j]) {
-						tpALifeMonsterAbstract->m_tNextGraphID = wpaVertexes[j];
-						tpALifeMonsterAbstract->m_fDistanceToPoint = tpaEdges[i].fPathDistance;
-						bOk = true;
-						break;
-					}
-				if (bOk)
-					break;
+		CALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CALifeHumanAbstract *>(tpALifeMonsterAbstract);
+		if (tpALifeHumanAbstract) {
+			if (tpALifeHumanAbstract->m_tpaVertices.size() > ++(tpALifeHumanAbstract->m_dwCurNode)) {
+				tpALifeHumanAbstract->m_tNextGraphID		= _GRAPH_ID(tpALifeHumanAbstract->m_tpaVertices[tpALifeHumanAbstract->m_dwCurNode]);
+				tpALifeHumanAbstract->m_fCurSpeed			= tpALifeMonsterAbstract->m_fMinSpeed;
+			}
+			else {
+				tpALifeHumanAbstract->m_fCurSpeed			= 0.0f;
+				tpALifeHumanAbstract->m_fDistanceToPoint	= 0.0f;
 			}
 		}
 		else {
-			int iChosenBranch = ::Random.randI(0,iBranches);
-			iBranches = 0;
-			for (int i=0; i<wNeighbourCount; i++) {
+			_GRAPH_ID			tGraphID		= tpALifeMonsterAbstract->m_tGraphID;
+			AI::SGraphVertex	*tpaGraph		= Level().AI.m_tpaGraph;
+			u16					wNeighbourCount = (u16)tpaGraph[tGraphID].dwNeighbourCount;
+			AI::SGraphEdge		*tpaEdges		= (AI::SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[tGraphID].dwEdgeOffset);
+			int					iPointCount		= (int)m_tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID].ucRoutePointCount;
+			GRAPH_VECTOR		&wpaVertexes	= m_tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID].tpRouteGraphPoints;
+			int					iBranches		= 0;
+			bool bOk = false;
+			for (int i=0; i<wNeighbourCount; i++)
 				for (int j=0; j<iPointCount; j++)
-					if ((tpaEdges[i].dwVertexNumber == wpaVertexes[j]) && (wpaVertexes[j] != tpALifeMonsterAbstract->m_tPrevGraphID)) {
-						if (iBranches == iChosenBranch) {
+					if ((tpaEdges[i].dwVertexNumber == wpaVertexes[j]) && (wpaVertexes[j] != tpALifeMonsterAbstract->m_tPrevGraphID))
+						iBranches++;
+			if (!iBranches) {
+				for (int i=0; i<wNeighbourCount; i++) {
+					for (int j=0; j<iPointCount; j++)
+						if (tpaEdges[i].dwVertexNumber == wpaVertexes[j]) {
 							tpALifeMonsterAbstract->m_tNextGraphID = wpaVertexes[j];
 							tpALifeMonsterAbstract->m_fDistanceToPoint = tpaEdges[i].fPathDistance;
 							bOk = true;
 							break;
 						}
-						iBranches++;
-					}
-				if (bOk)
-					break;
+					if (bOk)
+						break;
+				}
 			}
-		}
-		tpALifeMonsterAbstract->m_fDistanceFromPoint	= 0.0f;
-		if (!bOk) {
-			tpALifeMonsterAbstract->m_fCurSpeed			= 0.0f;
-			tpALifeMonsterAbstract->m_fDistanceToPoint	= 0.0f;
-		}
-		else {
-			tpALifeMonsterAbstract->m_fCurSpeed			= tpALifeMonsterAbstract->m_fMinSpeed;
+			else {
+				int iChosenBranch = ::Random.randI(0,iBranches);
+				iBranches = 0;
+				for (int i=0; i<wNeighbourCount; i++) {
+					for (int j=0; j<iPointCount; j++)
+						if ((tpaEdges[i].dwVertexNumber == wpaVertexes[j]) && (wpaVertexes[j] != tpALifeMonsterAbstract->m_tPrevGraphID)) {
+							if (iBranches == iChosenBranch) {
+								tpALifeMonsterAbstract->m_tNextGraphID = wpaVertexes[j];
+								tpALifeMonsterAbstract->m_fDistanceToPoint = tpaEdges[i].fPathDistance;
+								bOk = true;
+								break;
+							}
+							iBranches++;
+						}
+					if (bOk)
+						break;
+				}
+			}
+			tpALifeMonsterAbstract->m_fDistanceFromPoint	= 0.0f;
+			if (!bOk) {
+				tpALifeMonsterAbstract->m_fCurSpeed			= 0.0f;
+				tpALifeMonsterAbstract->m_fDistanceToPoint	= 0.0f;
+			}
+			else {
+				tpALifeMonsterAbstract->m_fCurSpeed			= tpALifeMonsterAbstract->m_fMinSpeed;
+			}
 		}
 	}
 }

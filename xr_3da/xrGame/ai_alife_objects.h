@@ -325,6 +325,7 @@ public:
 	ETaskState						m_tTaskState;
 	u32								m_dwCurTask;
 	DWORD_VECTOR					m_tpaVertices;
+	u32								m_dwCurNode;
 
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
@@ -396,6 +397,13 @@ public:
 			for ( ; I != E; I++)
 				tFileStream.Read	(I,sizeof(*I));
 		}
+		{
+			m_tpaVertices.resize	(tFileStream.Rdword());
+			DWORD_IT 				I = m_tpaVertices.begin();
+			DWORD_IT 				E = m_tpaVertices.end();
+			for ( ; I != E; I++)
+				tFileStream.Read	(I,sizeof(*I));
+		}
 		m_fMaxItemMass				= tFileStream.Rfloat();
 		m_tTaskState				= ETaskState(tFileStream.Rdword());
 		m_dwCurTask					= tFileStream.Rdword();
@@ -409,6 +417,8 @@ public:
 		m_fMaxItemMass				= pSettings->ReadFLOAT				(tpSpawnPoints[tSpawnID].caModel, "max_item_mass");
 		m_tTaskState				= eTaskStateNone;
 		m_dwCurTask					= u32(-1);
+		m_dwCurNode					= u32(-1);
+		m_tpaVertices.clear			();
 	};
 };
 
