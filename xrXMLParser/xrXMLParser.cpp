@@ -104,9 +104,18 @@ XML_NODE* CUIXml::NavigateToNode(const char* path, int node_index)
 }
 
 
+
 char* CUIXml::Read(const char *path, int index, const char*  default_str_val)
 {
 	XML_NODE* node = NavigateToNode(path, index);
+	return Read(node,  default_str_val);
+}
+
+
+
+char* CUIXml::Read(XML_NODE* start_node,  const char *path, int index, const char*  default_str_val)
+{
+	XML_NODE* node = NavigateToNode(start_node, path, index);
 	return Read(node,  default_str_val);
 }
 
@@ -119,6 +128,8 @@ char* CUIXml::Read(XML_NODE* node,  const char*  default_str_val)
 		return (char*)node->get_Content();
 }
 
+
+
 int XRXMLPARSER_API CUIXml::ReadInt(XML_NODE* node, int default_int_val)
 {
 	char* result_str = Read(node, NULL ); 
@@ -130,16 +141,33 @@ int XRXMLPARSER_API CUIXml::ReadInt(XML_NODE* node, int default_int_val)
 
 	return atoi(result_str);
 }
-int XRXMLPARSER_API CUIXml::ReadInt(const char *path, int index, int default_int_val)
+int CUIXml::ReadInt(const char *path, int index, int default_int_val)
 {
 	char* result_str = Read(path, index, NULL ); 
-
 	if(result_str==NULL)
 	{
 		return default_int_val;
 	}
-
 	return atoi(result_str);
+}
+int CUIXml::ReadInt(XML_NODE* start_node, const char *path, int index, int default_int_val)
+{
+	char* result_str = Read(start_node, path, index, NULL ); 
+	if(result_str==NULL)
+	{
+		return default_int_val;
+	}
+	return atoi(result_str);
+}
+
+
+
+char* CUIXml::ReadAttrib(XML_NODE* start_node, const char *path,  int index, 
+					const char *attrib, const char*  default_str_val)
+{
+	XML_NODE* node = NavigateToNode(start_node, path, index);
+	
+	return ReadAttrib(node, attrib, default_str_val);
 }
 
 
@@ -173,8 +201,8 @@ char* CUIXml::ReadAttrib(XML_NODE* node, const char *attrib, const char*  defaul
 	}
 }
 
-int XRXMLPARSER_API CUIXml::ReadAttribInt(XML_NODE* node,
-					const char *attrib, int default_int_val)
+
+int CUIXml::ReadAttribInt(XML_NODE* node, const char *attrib, int default_int_val)
 {
 	char* result_str = ReadAttrib(node, attrib, NULL); 
 
@@ -182,11 +210,10 @@ int XRXMLPARSER_API CUIXml::ReadAttribInt(XML_NODE* node,
 	{
 		return default_int_val;
 	}
-
 	return atoi(result_str);
 }
 
-int XRXMLPARSER_API CUIXml::ReadAttribInt(const char *path, int index,  
+int CUIXml::ReadAttribInt(const char *path, int index,  
 					const char *attrib, int default_int_val)
 {
 	char* result_str = ReadAttrib(path, index, attrib, NULL); 
@@ -198,6 +225,23 @@ int XRXMLPARSER_API CUIXml::ReadAttribInt(const char *path, int index,
 
 	return atoi(result_str);
 }
+
+
+int CUIXml::ReadAttribInt(XML_NODE* start_node, const char *path, int index,  
+					const char *attrib, int default_int_val)
+{
+	char* result_str = ReadAttrib(start_node, path, index, attrib, NULL); 
+
+	if(result_str==NULL)
+	{
+		return default_int_val;
+	}
+
+	return atoi(result_str);
+}
+
+
+
 
 
 

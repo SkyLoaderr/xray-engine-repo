@@ -46,17 +46,24 @@ public:
 	
 	//чтение элементов
 	char* Read(const char *path, int index,  const char*  default_str_val = "" );
+	char* Read(XML_NODE* start_node, const char *path, int index,  const char*  default_str_val = "" );
 	char* Read(XML_NODE* node,  const char*  default_str_val = "" );
 	
 	int   ReadInt(const char *path, int index,  int default_int_val = 0);
+	int   ReadInt(XML_NODE* start_node,  const char *path, int index,  int default_int_val = 0);
 	int   ReadInt(XML_NODE* node,  int default_int_val = 0);
 
+
 	char* ReadAttrib(const char *path,  int index, 
+						const char *attrib, const char*  default_str_val = "");
+	char* ReadAttrib(XML_NODE* start_node, const char *path,  int index, 
 						const char *attrib, const char*  default_str_val = "");
 	char* ReadAttrib(XML_NODE* node,
 						const char *attrib, const char*  default_str_val = "");
 
 	int   ReadAttribInt(const char *path, int index,  
+							const char *attrib, int default_int_val = 0);
+	int   ReadAttribInt(XML_NODE* start_node, const char *path, int index,  
 							const char *attrib, int default_int_val = 0);
 	int   ReadAttribInt(XML_NODE* node,
 							const char *attrib, int default_int_val = 0);
