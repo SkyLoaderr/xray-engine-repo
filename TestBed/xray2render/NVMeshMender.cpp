@@ -708,7 +708,7 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
             nv_scalar b = sxt.y;
             nv_scalar c = sxt.z;
 			
-			nv_scalar _eps	= type_zero(nv_scalar)*10;
+			nv_scalar _eps	= type_epsilon(nv_scalar)*10;
             nv_scalar ds_dx = nv_zero;
             if ( _abs( a ) > _eps )
             {
