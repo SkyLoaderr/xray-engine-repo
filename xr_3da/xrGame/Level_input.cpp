@@ -45,9 +45,7 @@ void CLevel::OnKeyboardPress(int key)
 					break;
 				}
 			}
-			if (bOk)
-				SetEntity(*I);
-			else {
+			if (!bOk)
 				for (I = B; I != J; I++) {
 					CEntityAlive* tpEntityAlive = dynamic_cast<CEntityAlive*>(*I);
 					if (tpEntityAlive) {
@@ -55,8 +53,13 @@ void CLevel::OnKeyboardPress(int key)
 						break;
 					}
 				}
-				if (bOk)
-					SetEntity(*I);
+			if (bOk) {
+				CObject *tpObject = CurrentEntity();
+				SetEntity(*I);
+				Engine.Sheduler.Unregister	(tpObject);
+				Engine.Sheduler.Register	(tpObject);
+				Engine.Sheduler.Unregister	(*I);
+				Engine.Sheduler.Register	(*I, TRUE);
 			}
 		}
 		return;

@@ -202,8 +202,10 @@ void CAI_Stalker::vfCheckForItems()
 		CBolt			*tpBolt				= dynamic_cast<CBolt*>			(m_tpaVisibleObjects[i]);
 #pragma todo("Check if rukzak is not full!!")
 		if (tpInventoryItem && !tpBolt && (tpInventoryItem->Position().distance_to(vPosition) < fDistance) && getAI().bfInsideNode(tpInventoryItem->AI_Node,tpInventoryItem->Position())) {
-			fDistance		= tpInventoryItem->Position().distance_to(vPosition);
-			m_tpItemToTake	= tpInventoryItem;
+			if (_abs(getAI().ffGetY(*tpInventoryItem->AI_Node,  tpInventoryItem->Position().x, tpInventoryItem->Position().z) - tpInventoryItem->Position().y) < .5f) {
+				fDistance		= tpInventoryItem->Position().distance_to(vPosition);
+				m_tpItemToTake	= tpInventoryItem;
+			}
 		}
 	}
 	if (!m_tpItemToTake && tpSavedItem && !tpSavedItem->H_Parent())
@@ -232,6 +234,7 @@ void CAI_Stalker::vfUpdateSearchPosition()
 			m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 			vfChooseNextGraphPoint		();
 			m_tNextGraphPoint.set		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
+			m_dwTimeToChange			= Level().timeServer() + 10000;
 		}
 }
 

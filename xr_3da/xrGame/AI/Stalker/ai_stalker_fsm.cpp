@@ -88,7 +88,7 @@ void CAI_Stalker::BackCover(bool bFire)
 		case eActionStateWatchGo : {
 			WRITE_TO_LOG			("WatchGo : Detour");
 			vfSetParameters			(&m_tSelectorCover,0,true,eWeaponStateIdle,ePathTypeDodgeCriteria,eBodyStateStand,m_tSavedEnemyPosition.distance_to(vPosition) > 0.f ? eMovementTypeRun : eMovementTypeWalk,eStateTypeDanger,eLookTypeDirection);
-			if ((Level().timeServer() - m_dwActionStartTime > 4000) && ((getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) != u32(-1)) || (Level().timeServer() - m_dwActionStartTime > 8000))) {
+			if ((Level().timeServer() - m_dwActionStartTime > 10000) && ((getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) != u32(-1)) || (Level().timeServer() - m_dwActionStartTime > 8000))) {
 				m_tActionState		= eActionStateWatchLook;
 				m_dwActionStartTime = Level().timeServer();
 			}
@@ -100,7 +100,7 @@ void CAI_Stalker::BackCover(bool bFire)
 				Camp(bFire);
 			else {
 				vfSetParameters			(&m_tSelectorCover,0,true,bFire ? eWeaponStatePrimaryFire : eWeaponStateIdle,ePathTypeDodgeCriteria,eBodyStateCrouch,eMovementTypeStand,eStateTypeDanger,eLookTypeFirePoint,tPoint);
-				if (Level().timeServer() - m_dwActionStartTime > 3000) {
+				if (Level().timeServer() - m_dwActionStartTime > 6000) {
 					m_tActionState		= eActionStateWatchGo;
 					m_dwActionStartTime = Level().timeServer();
 				}

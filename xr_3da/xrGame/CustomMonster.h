@@ -15,7 +15,7 @@
 #include "ai_commands.h"
 #include "ai_pathnodes.h"
 
-//#define IGNORE_ACTOR
+#define IGNORE_ACTOR
 
 class CCustomMonster : 
 	public CEntityAlive, 
