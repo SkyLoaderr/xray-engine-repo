@@ -285,7 +285,11 @@ void __fastcall TfrmSceneProperties::mcLMAmbientMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	DWORD color = ((TMultiObjColor*)Sender)->Brush->Color;
+#ifdef _LEVEL_EDITOR
 	if (SelectColorWin(&color))
+#else
+	if (SelectColorWin(&color,true))
+#endif
 		((TMultiObjColor*)Sender)->_Set(color);
 }
 //---------------------------------------------------------------------------
