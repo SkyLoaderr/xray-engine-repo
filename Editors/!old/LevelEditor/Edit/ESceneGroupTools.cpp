@@ -26,9 +26,11 @@ void ESceneGroupTools::UngroupObjects(bool bUndo)
     ObjectList lst 	= m_Objects;
     if (!lst.empty()){
         for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
-        	Scene->RemoveObject(*it,false);
-            ((CGroupObject*)(*it))->UngroupObjects();
-            xr_delete(*it);
+        	if ((*it)->Selected()){
+                Scene->RemoveObject(*it,false);
+                ((CGroupObject*)(*it))->UngroupObjects();
+                xr_delete(*it);
+            }
         }
 	    if (bUndo) Scene->UndoSave();
     }
