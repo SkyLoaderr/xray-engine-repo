@@ -13,6 +13,7 @@
 #include "../../game_level_cross_table.h"
 #include "../../game_graph.h"
 
+
 CAI_Biting::CAI_Biting()
 {
 	m_PhysicMovementControl.AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
@@ -22,6 +23,9 @@ CAI_Biting::CAI_Biting()
 	m_tSelectorGetAway				= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
 	m_tSelectorWalkAround			= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
 	m_tSelectorCommon				= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
+
+
+	HDebug							= xr_new<CMonsterDebug>(this, Fvector().set(0.0f,2.0f,0.0f), 20.f);
 }
 
 CAI_Biting::~CAI_Biting()
@@ -31,6 +35,8 @@ CAI_Biting::~CAI_Biting()
 	xr_delete(m_tSelectorGetAway);
 	xr_delete(m_tSelectorWalkAround);
 	xr_delete(m_tSelectorCommon);
+
+	xr_delete(HDebug);
 }
 
 void CAI_Biting::Init()
@@ -69,6 +75,14 @@ void CAI_Biting::Init()
 	// Инициализация параметров анимации	
 	MotionMan.Init					(this);
 
+	time_start_stand				=0;
+	bStanding						= false;
+
+	bSpeedDiffer					= false;
+	time_start_speed_differ			= 0;
+
+	// debug
+	dbg_info.node_vec.clear();
 }
 
 void CAI_Biting::Die()
@@ -309,6 +323,8 @@ void CAI_Biting::UpdateCL()
 	}
 
 	m_pPhysics_support->in_UpdateCL();
+
+	HDebug->Update();
 }
 
 void CAI_Biting::shedule_Update(u32 dt)

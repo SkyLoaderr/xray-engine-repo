@@ -123,6 +123,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	float				real_motion	= motion.magnitude() + dist_save-dist;
 	float				real_speed	= real_motion/time_delta;
 	m_speed				= 0.5f*speed + 0.5f*real_speed;
+	
 	Device.Statistic.Physics.End	();
 }
 

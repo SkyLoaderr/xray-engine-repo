@@ -32,6 +32,7 @@ void CBitingEat::Reset()
 }
 void CBitingEat::Init()
 {
+	LOG_EX("eat init");
 	IState::Init();
 
 	// Получить инфо о трупе
@@ -229,3 +230,5 @@ void CBitingEat::Done()
 		pMonster->m_PhysicMovementControl.PHReleaseObject();
 	}
 }
+
+

@@ -120,7 +120,8 @@ class CBitingAttack : public IState {
 		ACTION_WALK_AWAY,
 		ACTION_FACE_ENEMY,
 		ACTION_THREATEN2,
-	} m_tAction;
+		ACTION_WALK_END_PATH,
+	} m_tAction,m_tSubAction;
 
 	VisionElem		m_tEnemy;
 
@@ -152,6 +153,15 @@ class CBitingAttack : public IState {
 
 	TTime			ThreatenTimeStarted;
 
+	bool			bEnableBackAttack;
+	
+	TTime			RebuildPathInterval;
+	
+	bool			bAngrySubStateActive;
+
+	TTime			SubActionStartTime;
+	Fvector			SubActionSavedPos;
+
 public:	
 					CBitingAttack	(CAI_Biting *p, bool bVisibility);
 
@@ -166,6 +176,7 @@ public:
 			
 			void	WalkAngrySubState();
 
+			bool	CanAttackFromBack();
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

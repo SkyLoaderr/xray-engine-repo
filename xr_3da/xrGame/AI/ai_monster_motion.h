@@ -43,6 +43,7 @@ enum EMotionAnim {
 
 	eAnimAttack,
 	eAnimAttackRat,
+	eAnimAttackFromBack,
 
 	eAnimEat,
 	eAnimSleep,
@@ -110,6 +111,8 @@ enum EPState {
 #define ASP_ATTACK_RAT_JUMP		(1 << 4)
 #define	ASP_STAND_SCARED		(1 << 5)
 #define ASP_THREATEN			(1 << 6)
+#define ASP_BACK_ATTACK			(1 << 7)
+
 
 DEFINE_VECTOR	(CMotionDef*, ANIM_VECTOR, ANIM_IT);
 
@@ -170,19 +173,19 @@ struct SReplacedAnim {
 // Определение времени аттаки по анимации
 typedef struct {
 	EMotionAnim	anim;				// параметры конкретной анимации 
-	u32			anim_i3; 			
+	u32			anim_i3;
 
 	TTime		time_from;			// диапазон времени когда можно наносить hit (от)
 	TTime		time_to;		    // диапазон времени когда можно наносить hit (до)
-
-	Fvector		trace_offset;		// направление трассировки
-	float		dist;				// дистанция трассировки
-
+	
+	Fvector		trace_from;			// направление трассировки (относительно центра)
+	Fvector		trace_to;
+	
 	u32			flags;				// специальные флаги
 
 	float		damage;				// урон при данной атаке
-	float		dir_yaw;			// угол направления приложения силы к объекту 
-	float		dir_pitch;			//  - || -
+	Fvector		hit_dir;			// угол направления приложения силы к объекту
+
 } SAttackAnimation;
 
 
@@ -253,6 +256,8 @@ class CMotionManager : public CSharedClass<_motion_shared> {
 	TTime					aa_time_started;		// время начала анимации	
 	TTime					aa_time_last_attack;	// время последнего нанесения хита
 	ATTACK_ANIM				aa_stack;				// список атак для текущей анимации
+
+	// -------------------------------------------------------------------------
 
 	u32						spec_params;			// дополнительные параметры
 
@@ -328,7 +333,7 @@ public:
 
 	// работа с анимациями атак
 	void		AA_PushAttackAnim		(SAttackAnimation AttackAnim);
-	void		AA_PushAttackAnim		(EMotionAnim a, u32 i3, TTime from, TTime to, Fvector &ray, float dist, float damage, float yaw, float pitch, u32 flags = 0);
+	void		AA_PushAttackAnim		(EMotionAnim a, u32 i3, TTime from, TTime to, const Fvector &ray_from, const Fvector &ray_to, float damage, Fvector &dir, u32 flags = 0);
 	bool		AA_CheckTime			(TTime cur_time, SAttackAnimation &anim); 
 	void		AA_UpdateLastAttack		(TTime cur_time) {aa_time_last_attack = cur_time;}
 

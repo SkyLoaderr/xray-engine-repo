@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "ai_biting.h"
 #include "ai_biting_state.h"
-#include "../../game_graph.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingRest implementation
@@ -29,13 +28,12 @@ void CBitingRest::Reset()
 
 void CBitingRest::Init()
 {
+	LOG_EX2("%s: rest init", *"*/ pMonster->cName() /*"*);
 	IState::Init();
-	LOG_EX("REST_INIT");
 
 	// если есть путь - дойти до конца (последствия преследования врага)
-	if (!pMonster->path_completed()) {
-		m_bFollowPath = true;
-	} else m_bFollowPath = false;
+	if (!pMonster->path_completed()) m_bFollowPath = true;
+	else m_bFollowPath = false;
 }
 
 void CBitingRest::Replanning()
@@ -53,20 +51,6 @@ void CBitingRest::Replanning()
 
 		} else {					// бродит, ищет еду
 			m_tAction = ACTION_WALK;
-
-			// Построить путь обхода точек графа, поиск пищи
-			float radius = 10.f;
-			xr_vector<u32> nodes;
-			ai().graph_engine().search( ai().level_graph(), pMonster->level_vertex_id(),pMonster->level_vertex_id(), &nodes, CGraphEngine::CFlooder(radius));
-			u32 vertex_id = nodes[::Random.randI(nodes.size())];
-
-			pMonster->SetPathParams(
-				CMovementManager::ePathTypeLevelPath, 
-				vertex_id, 
-				ai().level_graph().vertex_position(vertex_id),
-				pMonster->eVelocityParamsWalk,
-				pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand
-			);						
 			
 			dwMinRand = pMonster->_sd->m_timeFreeWalkMin;  dwMaxRand = pMonster->_sd->m_timeFreeWalkMax;
 		}
@@ -85,19 +69,6 @@ void CBitingRest::Replanning()
 
 			m_tAction = ACTION_WALK_CIRCUMSPECTION;
 
-			// Построить путь обхода точек графа, поиск пищи
-			float radius = 10.f;
-			xr_vector<u32> nodes;
-			ai().graph_engine().search( ai().level_graph(), pMonster->level_vertex_id(),pMonster->level_vertex_id(), &nodes, CGraphEngine::CFlooder(radius));
-			u32 vertex_id = nodes[::Random.randI(nodes.size())];
-
-			pMonster->SetPathParams(
-				CMovementManager::ePathTypeLevelPath, 
-				vertex_id, 
-				ai().level_graph().vertex_position(vertex_id),
-				pMonster->eVelocityParamsWalk,
-				pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand
-				);						
 
 			dwMinRand = pMonster->_sd->m_timeFreeWalkMin; dwMaxRand = pMonster->_sd->m_timeFreeWalkMax;
 		}
@@ -124,19 +95,47 @@ void CBitingRest::Run()
 
 	// FSM 2-го уровня
 	switch (m_tAction) {
-		case ACTION_WALK:		// обход точек графа
+		case ACTION_WALK:						// обход точек графа
+
+			if (!pMonster->IsMovingOnPath()) {
+				// ходить по точкам графа
+				u32 vertex_id = pMonster->GetNextGameVertex(40.f);
+
+				pMonster->SetPathParams(
+					CMovementManager::ePathTypeLevelPath, 
+					vertex_id, 
+					ai().level_graph().vertex_position(vertex_id),
+					pMonster->eVelocityParamsWalk,
+					pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand
+				);
+			}
+
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 			break;
-		case ACTION_SATIETY_GOOD:     // стоять, ничего не делать
+		case ACTION_SATIETY_GOOD:				// стоять, ничего не делать
 			pMonster->enable_movement(false);
 			pMonster->MotionMan.m_tAction = ACT_REST;
 			break;
-		case ACTION_SLEEP:		// лежать
+		case ACTION_SLEEP:						// лежать
 			pMonster->enable_movement(false);
 			pMonster->MotionMan.m_tAction = ACT_SLEEP;
 			break;
 		case ACTION_WALK_CIRCUMSPECTION:		// повернуться на 90 град.
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
+
+			if (!pMonster->IsMovingOnPath()) {
+				// ходить по точкам графа
+				u32 vertex_id = pMonster->GetNextGameVertex(40.f);
+
+				pMonster->SetPathParams(
+					CMovementManager::ePathTypeLevelPath, 
+					vertex_id, 
+					ai().level_graph().vertex_position(vertex_id),
+					pMonster->eVelocityParamsWalk,
+					pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand
+					);
+			}
+
 			break;
 		case ACTION_WALK_PATH_END:
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;

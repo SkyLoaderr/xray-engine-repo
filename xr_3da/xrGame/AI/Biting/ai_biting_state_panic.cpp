@@ -29,6 +29,8 @@ void CBitingPanic::Reset()
 
 void CBitingPanic::Init()
 {
+	LOG_EX("panic init");
+
 	inherited::Init();
 
 	// Получить врага

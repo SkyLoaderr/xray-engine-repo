@@ -115,9 +115,9 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	Fvector center;
 	center.set		(0.f,0.f,0.f);
 
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 500,	600,	center,		2.2f, inherited::_sd->m_fHitPower, -PI_DIV_6,	PI_DIV_6);
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 600,	700,	center,		2.2f, inherited::_sd->m_fHitPower, 0.f,			PI_DIV_6);
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	center,		2.3f, inherited::_sd->m_fHitPower, PI_DIV_3,	PI_DIV_6);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 500,	600,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,2.2f), inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,2.2f));
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 600,	700,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,2.2f), inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,2.2f));
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,2.3f), inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,2.2f));
 
 	//MotionMan.FX_LoadMap(section); 
 
@@ -240,8 +240,7 @@ void CAI_Bloodsucker::UpdateCL()
 	bool NewVis		=	CMonsterInvisibility::Update();
 	if (NewVis != PrevVis) setVisible(NewVis);
 
-
-	SquadDebug();
+	//SquadDebug();
 
 }
 
@@ -287,7 +286,6 @@ void CAI_Bloodsucker::StateSelector()
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Process Squad AI
-
 
 void CAI_Bloodsucker::DBG_TranslateTaskBefore()
 {
@@ -546,3 +544,6 @@ void CAI_Bloodsucker::SquadDebug()
 
 	HUD().pFontMedium->OutNext("%s",s);
 }
+
+
+//MONSTER_DEBUG(str,floor,y,color);

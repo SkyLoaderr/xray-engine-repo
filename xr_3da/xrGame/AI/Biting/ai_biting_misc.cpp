@@ -175,14 +175,28 @@ void CAI_Biting::vfUpdateParameters()
 	if (!bStanding) time_start_stand = 0; 
 
 	prev_pos	= cur_pos;
-
+	
 	// Setup is own additional flags
 	m_bDamaged = ((GetHealth() < _sd->m_fDamagedThreshold) ? true : false);
+	
+	// update speed checking
+	Fvector vec;
+	m_PhysicMovementControl.GetCharacterVelocity(vec);
+	float ph_speed = vec.magnitude();
+
+	bSpeedDiffer = ((ph_speed * 2.f) < m_fCurSpeed) && (m_fCurSpeed > 0.f);
+	if (bSpeedDiffer && (0 == time_start_speed_differ)) time_start_speed_differ = m_dwCurrentTime;
+	if (!bSpeedDiffer) time_start_speed_differ = 0;
 }
 
 bool CAI_Biting::IsStanding (TTime time)
 {
 	return (bStanding && (time_start_stand + time < m_dwCurrentTime));
+}
+
+bool CAI_Biting::IsObstacle(TTime time)
+{
+	return (bSpeedDiffer && (time_start_speed_differ + time < m_dwCurrentTime));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -194,11 +208,8 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 	if (!inherited::bfAssignMovement(tpEntityAction))
 		return		(false);
 
-	///LOG_EX("Scripting now!!!");
-	
 	CMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
 	MotionMan.m_tAction = EAction(l_tMovementAction.m_tActState);
-
 
 	// pre-update path parameters
 	enable_movement(true);
@@ -262,17 +273,20 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 
 		CDetailPathManager::set_path_type(eDetailPathTypeSmooth);
 		CDetailPathManager::set_try_min_time(true);
+		
+		bStanding = false;
 	} else {
 		enable_movement(false);
 	}
 
 	update_path				();
 
+	
 	PreprocessAction();
 	MotionMan.ProcessAction();
 
-	//if (IsMovingOnPath()) UpdateVelocities();
-	
+	if (IsMovingOnPath()) UpdateVelocities(STravelParams(m_fCurSpeed,m_body.speed));
+
 	SetVelocity();
 
 #pragma todo("Dima to Jim : This method will be automatically removed after 22.12.2003 00:00")

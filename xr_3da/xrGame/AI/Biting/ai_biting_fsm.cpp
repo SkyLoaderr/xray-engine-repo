@@ -13,7 +13,6 @@ void CAI_Biting::Think()
 {
 	if (!g_Alive()) return;
 
-
 	m_dwLastUpdateTime		= m_current_update;
 	m_current_update		= Level().timeServer();
 
@@ -35,49 +34,8 @@ void CAI_Biting::Think()
 	// update path
 	CDetailPathManager::set_path_type(eDetailPathTypeSmooth);
 	CDetailPathManager::set_try_min_time(true);
-
-//	CTimer T;
-//	T.Start();
 	
 	update_path				();
-
-//	if (T.GetElapsed_sec() > 0.1f)  {
-//		// Time checker	
-//		LOG_EX("------------- PATH BUILDER OVERTIME -------------");
-//		LOG_EX2("Time: %f ", *"*/ T.GetElapsed_sec() /*"*);
-//		LOG_EX2("Start Node ID = [%u] Start Position = [%f,%f] ", *"*/ CDetailPathManager::path()[0].vertex_id,  CDetailPathManager::path()[0].position.x, CDetailPathManager::path()[0].position.y /*"*);
-//		
-//		u32 last_index = CDetailPathManager::path().size() - 1;
-//		LOG_EX2("Finish Node ID = [%u] Finish Position = [%f,%f] ", *"*/ CDetailPathManager::path()[last_index].vertex_id,  CDetailPathManager::path()[last_index].position.x, CDetailPathManager::path()[last_index].position.y /*"*);	
-//		
-//		LOG_EX("Velocity Mask: ");
-//
-//		xr_map<u32,STravelParams>::iterator it;
-//		for (it = m_movement_params.begin(); it != m_movement_params.end(); it++) {
-//			LOG_EX2("Mask: [linear = %f, angular = %f]", *"*/ it->second.linear_velocity, it->second.angular_velocity /*"*);
-//		}
-//		
-//		LOG_EX("Desirable Mask: ");
-//		u32 m = desirable_mask();
-//		
-////		if ((m & eMovementParameterStand) == eMovementParameterStand) {
-////			xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(eMovementParameterStand);
-////			LOG_EX2("Mask: [linear = %f, angular = %f]", *"*/ it->second.linear_velocity, it->second.angular_velocity /*"*);
-////		} 
-////		if ((m & eMovementParameterWalkFree) == eMovementParameterWalkFree) {
-////			xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(eMovementParameterWalkFree);
-////			LOG_EX2("Mask: [linear = %f, angular = %f]", *"*/ it->second.linear_velocity, it->second.angular_velocity /*"*);
-////		}
-////		
-////		if ((m & eMovementParameterRunFree) == eMovementParameterRunFree) {
-////			xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(eMovementParameterRunFree);
-////			LOG_EX2("Mask: [linear = %f, angular = %f]", *"*/ it->second.linear_velocity, it->second.angular_velocity /*"*);
-////		}
-//		
-//		LOG_EX2("Start dir: [yaw = %f]", *"*/m_body.current.yaw /*"*);
-//
-//		LOG_EX("-------------------------------------------------");
-//	}
 
 	PreprocessAction();
 	MotionMan.ProcessAction();
@@ -97,47 +55,14 @@ void CAI_Biting::Think()
 	m_head = m_body;
 }
 
-// ”становить линейную и угловую скорости в соответствии с построенным путем
-void CAI_Biting::SetVelocity()
-{
-	if (IsMovingOnPath()) {
-		u32 velocity_index = CDetailPathManager::path()[curr_travel_point_index()].velocity;
-
-		u32 next_point_velocity = u32(-1);
-		if (CDetailPathManager::path().size() > curr_travel_point_index() + 1) 
-			next_point_velocity = CDetailPathManager::path()[curr_travel_point_index() + 1].velocity;
-
-		if ((velocity_index == eVelocityParameterStand) && (next_point_velocity != u32(-1))) {
-			if (angle_difference(m_body.current.yaw, m_body.target.yaw) < PI_DIV_6/6) {
-				velocity_index = next_point_velocity;
-			}
-		}
-
-		xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(velocity_index);
-		R_ASSERT(it != m_movement_params.end());
-
-		m_fCurSpeed		= (*it).second.linear_velocity;
-		m_body.speed	= (*it).second.angular_velocity;
-
-//		m_fCurSpeed		= 6.0f;
-//		m_body.speed	= 3.14f;
-
-//		m_fCurSpeed		= velocities[curr_travel_point_index()].linear_velocity;
-//		m_body.speed	= PI_DIV_2;
-
-	} else m_fCurSpeed	= 0;	
-
-
-
-}
-
 // ¬ зависимости от маршрута - изменить Action
 void CAI_Biting::PreprocessAction()
 {
 	if (IsMovingOnPath()) {
 		u32 velocity_index = CDetailPathManager::path()[curr_travel_point_index()].velocity;
 
-		if (velocity_index == eVelocityParameterStand) MotionMan.m_tAction = ACT_STAND_IDLE;
+		if (velocity_index == eVelocityParameterStand) 
+			MotionMan.m_tAction = ACT_STAND_IDLE;
 		else if (velocity_index == eVelocityParameterWalkNormal) MotionMan.m_tAction = ACT_WALK_FWD;
 		else if (velocity_index == eVelocityParameterRunNormal) MotionMan.m_tAction = ACT_RUN;
 
@@ -163,11 +88,38 @@ void CAI_Biting::PreprocessAction()
 	}
 }
 
-void CAI_Biting::UpdateVelocities()
+// ”становить линейную и угловую скорости в соответствии с построенным путем
+void CAI_Biting::SetVelocity()
+{
+	if (IsMovingOnPath()) {
+		u32 velocity_index = CDetailPathManager::path()[curr_travel_point_index()].velocity;
+
+		u32 next_point_velocity = u32(-1);
+		if (CDetailPathManager::path().size() > curr_travel_point_index() + 1) 
+			next_point_velocity = CDetailPathManager::path()[curr_travel_point_index() + 1].velocity;
+
+		if ((velocity_index == eVelocityParameterStand) && (next_point_velocity != u32(-1))) {
+			if (angle_difference(m_body.current.yaw, m_body.target.yaw) < PI_DIV_6/6) {
+				velocity_index = next_point_velocity;
+			}
+		}
+
+		xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(velocity_index);
+		R_ASSERT(it != m_movement_params.end());
+
+		m_fCurSpeed		= (*it).second.linear_velocity;
+		m_body.speed	= (*it).second.angular_velocity;
+
+	} else m_fCurSpeed	= 0;	
+
+}
+
+// –еализаци€ движени€ по пути с ускорением
+void CAI_Biting::UpdateVelocities(STravelParams cur_velocity)
 {
 	// заполнить вектор velocities
-	velocities.clear();
-	velocities.reserve(CDetailPathManager::path().size());
+	velocities.clear(); 
+	velocities.reserve(CDetailPathManager::path().size()); 
 
 	for (u32 i=0; i<CDetailPathManager::path().size(); i++) {
 		xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(CDetailPathManager::path()[i].velocity);
@@ -176,11 +128,12 @@ void CAI_Biting::UpdateVelocities()
 		velocities.push_back(it->second);
 	}
 
+	velocities[curr_travel_point_index()] = cur_velocity;
+
 	u32	start_point_index	= 0;
 	u32	end_point_index		= 0;		// индекс последнего валидного элемента
 	u32 cur_point_index		= 0;
 
-	
 	while (true) {							// цикл дл€ всего пути
 
 		xr_vector<u32>	section;			// индексы в массиве скоростей
@@ -248,13 +201,15 @@ void CAI_Biting::UpdateVelocities()
 	}
 
 	LOG_EX("----------------- VELOCITIES --------------------");
-	for (int i=0;i<velocities.size();i++) {
+	for (u32 i=0;i<velocities.size();i++) {
 		LOG_EX2("V%u = [%f]", *"*/ i+1, velocities[i].linear_velocity /*"*);
 	}
 	LOG_EX("-------------------------------------------------");
-	
 
 }
+
+
+
 
 
 

@@ -17,6 +17,12 @@ public:
 
 	virtual	void	CheckSpecParams			(u32 spec_params);
 
+	// debug
+#ifdef DEBUG
+	virtual void OnRender ();
+#endif
+
+
 private:
 	bool	ConeSphereIntersection	(Fvector ConeVertex, float ConeAngle, Fvector ConeDir, 
 									Fvector SphereCenter, float SphereRadius);

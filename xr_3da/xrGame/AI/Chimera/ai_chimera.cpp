@@ -132,11 +132,11 @@ void CAI_Chimera::Load(LPCSTR section)
 	left_side.set	(-0.3f,0.f,0.f);
 	right_side.set	(0.3f,0.f,0.f);
 
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 700,	800,	center,		2.f,	inherited::_sd->m_fHitPower, 0.f, 0.f);
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 500,	600,	right_side, 2.5f,	inherited::_sd->m_fHitPower, 0.f, 0.f);
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 600,	700,	center,		2.5f,	inherited::_sd->m_fHitPower, 0.f, 0.f);
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 3, 800,	900,	left_side,	1.0f,	inherited::_sd->m_fHitPower, 0.f, 0.f);
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 5, 1500,	1600,	right_side, 2.0f,	inherited::_sd->m_fHitPower, 0.f, 0.f);
+//	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 700,	800,	center,		2.f,	inherited::_sd->m_fHitPower, 0.f, 0.f);
+//	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 500,	600,	right_side, 2.5f,	inherited::_sd->m_fHitPower, 0.f, 0.f);
+//	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 600,	700,	center,		2.5f,	inherited::_sd->m_fHitPower, 0.f, 0.f);
+//	MotionMan.AA_PushAttackAnim(eAnimAttack, 3, 800,	900,	left_side,	1.0f,	inherited::_sd->m_fHitPower, 0.f, 0.f);
+//	MotionMan.AA_PushAttackAnim(eAnimAttack, 5, 1500,	1600,	right_side, 2.0f,	inherited::_sd->m_fHitPower, 0.f, 0.f);
 
 	END_LOAD_SHARED_MOTION_DATA();
 }

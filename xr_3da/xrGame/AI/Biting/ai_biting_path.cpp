@@ -268,10 +268,46 @@ void CAI_Biting::SetPathParams(CMovementManager::EPathType path_type, u32 dest_v
 	set_desirable_mask(desirable_vel);
 }
 
-
 //bool CAI_Biting::IsGoodMovement() 
 //{
 //	if (IsMoveAlongPathFinished() || CDetailPathManager) {
 //
 //	}
 //}
+
+
+
+// возвращает вершину level_graph, соответствующую случайной вершине game_graph в радиусе R
+// если нет такой вершины - возвращает ближайшую
+u32 CAI_Biting::GetNextGameVertex(float R)
+{
+	const CGameGraph::CVertex *pV;
+	u32		nearest_game_vertex = u32(-1);
+	float	best_dist = flt_max;
+
+	// все вершины на этом уровне
+	xr_vector<u32> level_nodes; 
+
+	for (u32 i=0;i<ai().game_graph().header().vertex_count();i++) {
+		pV = ai().game_graph().vertex(i);
+		// находится ли вершина на данном уровне
+		if (pV->level_id() == ai().level_graph().level_id()) {
+			
+			float cur_dist = pV->level_point().distance_to(Position());
+			if ((best_dist > cur_dist) && (game_vertex_id() != i)) {
+				best_dist = cur_dist;
+				nearest_game_vertex = i;
+			}
+			
+			if (cur_dist < R) level_nodes.push_back(i);
+		}
+	}	
+	
+	R_ASSERT(nearest_game_vertex != u32(-1));
+
+	if (level_nodes.empty()) return ai().game_graph().vertex(nearest_game_vertex)->level_vertex_id();
+	else return ai().game_graph().vertex(level_nodes[::Random.randI(level_nodes.size())])->level_vertex_id();
+}
+
+
+

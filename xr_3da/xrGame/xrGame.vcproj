@@ -643,6 +643,12 @@
 						RelativePath=".\ai\ai_monster_bones.h">
 					</File>
 					<File
+						RelativePath=".\ai\ai_monster_debug.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\ai_monster_debug.h">
+					</File>
+					<File
 						RelativePath=".\ai\ai_monster_defs.h">
 					</File>
 					<File

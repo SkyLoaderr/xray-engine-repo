@@ -462,7 +462,7 @@ void CMotionManager::AA_PushAttackAnim(SAttackAnimation AttackAnim)
 	_sd->aa_all.push_back(AttackAnim);
 }
 
-void CMotionManager::AA_PushAttackAnim(EMotionAnim a, u32 i3, TTime from, TTime to, Fvector &ray, float dist, float damage, float yaw, float pitch, u32 flags)
+void CMotionManager::AA_PushAttackAnim(EMotionAnim a, u32 i3, TTime from, TTime to, const Fvector &ray_from, const Fvector &ray_to, float damage, Fvector &dir, u32 flags)
 {
 	CHECK_SHARED_LOADED();	
 
@@ -473,12 +473,12 @@ void CMotionManager::AA_PushAttackAnim(EMotionAnim a, u32 i3, TTime from, TTime 
 	anim.time_from		= from;
 	anim.time_to		= to;
 
-	anim.trace_offset	= ray;
-	anim.dist			= dist;
+	anim.trace_from		= ray_from;
+	anim.trace_to		= ray_to;
 
 	anim.damage			= damage;
-	anim.dir_yaw		= yaw;
-	anim.dir_pitch		= pitch;
+	anim.hit_dir			= dir;
+
 	anim.flags			= flags;
 
 	AA_PushAttackAnim	(anim);

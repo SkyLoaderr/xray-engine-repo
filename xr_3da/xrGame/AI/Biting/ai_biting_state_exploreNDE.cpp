@@ -14,6 +14,8 @@ CBitingExploreNDE::CBitingExploreNDE(CAI_Biting *p)
 
 void CBitingExploreNDE::Init()
 {
+	LOG_EX("nde init");
+
 	inherited::Init();
 
 	bool bTemp;

@@ -17,6 +17,8 @@
 #include "../ai_monster_share.h"
 #include "../../path_manager_level_selector.h"
 
+#include "..\\ai_monster_debug.h"
+
 
 // flags
 #define FLAG_ENEMY_DIE					( 1 << 0 )
@@ -198,10 +200,13 @@ public:
 			void			SetVelocity						();
 			void			PreprocessAction				();
 
+			bool			IsObstacle						(TTime time);
+
 	// Other
 			void			vfUpdateParameters				();
 		
-			void			DoDamage						(CEntity *pEntity, float fDamage, float yaw, float pitch);
+			void			HitEntity						(CEntity *pEntity, float fDamage, Fvector &dir);
+			
 			void			SetState						(IState *pS, bool bSkipInertiaCheck = false);
 
 	virtual bool			AA_CheckHit						();
@@ -298,9 +303,12 @@ public:
 	
 	// local standing params
 	Fvector					cur_pos, prev_pos;
-	bool					bStanding;
+	bool					bStanding;				// true - позиция с предыдущего апдейта соответствует позиции на этом апдейте
 	TTime					time_start_stand;			
 
+	bool					bSpeedDiffer;
+	TTime					time_start_speed_differ;
+		
 
 	float					m_fCurMinAttackDist;		// according to attack stops
 
@@ -353,7 +361,7 @@ public:
 		bool	active;
 		Fvector pos;
 
-		s_dbg() {active = true;}
+		s_dbg() {active = true; node_id = 0;}
 		void set(const Fvector &f) {pos = f; active = true;}
 
 		DEFINE_MAP(u32,TTime,TNODES_MAP,TNODES_MAP_IT);
@@ -361,6 +369,14 @@ public:
 
 		DEFINE_VECTOR(u32, TNODES_VECTOR, TNODES_VECTOR_IT);
 		TNODES_VECTOR node_vec;
+
+		DEFINE_VECTOR(Fvector, VECTOR_VEC, VECTOR_VEC_IT);
+		VECTOR_VEC vec;
+
+		Fvector dir_from;
+		Fvector dir_to;
+
+		u32		node_id;
 	} dbg_info;
 
 	
@@ -379,9 +395,17 @@ public:
 
 	Fvector	RandomPosInR(const Fvector &p, float r);
 
-	void			UpdateVelocities();
+	void	UpdateVelocities(STravelParams cur_velocity);
 	
 	xr_vector<STravelParams> velocities;
+
+
+	bool RayPickEnemy(CObject *target_obj, const Fvector &trace_from, const Fvector &dir, float dist, float radius, u32 num_picks);
+
+	u32 GetNextGameVertex(float R);
+
+	
+	CMonsterDebug *HDebug;
 
 };
 
@@ -422,4 +446,5 @@ IC void CAI_Biting::AS_Check(bool hit_success) {
 }
 
 IC bool CAI_Biting::AS_Active() {return _as.active;}
+
 
