@@ -38,10 +38,24 @@ void CLightTrack::remove(int id)
 	}
 }
 
-void	CLightDB_Static::Track(Fvector &pos, float fRadius, CLightTrack& dest)
+void	CLightDB_Static::Track	(CObject* O)
 {
-	dest.lights.clear	();
+	Fvector				pos; 
+	float				fRadius;
 
+	// Prepare
+	CLightTrack& dest	= *O->Lights();
+	if					(dest.dwFrame==Device.dwFrame)	return;
+	dest.dwFrame		= Device.dwFrame;
+	O->clCenter			(pos);
+	fRadius				= O->Radius();
+	
+	// Process ambient lighting
+	float	dt			= Device.fTimeDelta;
+	float	l_f			= dt*lt_smooth;
+	float	l_i			= 1.f-l_f;
+	dest.ambient		= l_i*dest.ambient + l_f*O->Ambient();
+	
 	// Process selected lights
 	for (vecI_it it=Selected.begin(); it!=Selected.end(); it++)
 	{
@@ -56,10 +70,10 @@ void	CLightDB_Static::Track(Fvector &pos, float fRadius, CLightTrack& dest)
 	}
 	
 	// Trace visibility
+	dest.lights.clear	();
 	vector<CLightTrack::Item>& track		= dest.track;
 	vector<CLightTrack::Item>::iterator I	= track.begin(), E=track.end();
 	float R									= fRadius*.5f;
-	float dt								= Device.fTimeDelta;
 	for (; I!=E; I++)
 	{
 		float	amount	= 0;
