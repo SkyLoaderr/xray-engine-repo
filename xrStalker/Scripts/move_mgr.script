@@ -677,7 +677,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	local stop_probability = self.path_walk_info[index]["p"]
 	
 	if not self.patrol_look or
-	   (stop_probability and stop_probability < math.random(1, 100)) then
+	   (stop_probability and tonumber(stop_probability) < math.random(1, 100)) then
 		self:update_movement_state() -- идти дальше
 		return
 	end
