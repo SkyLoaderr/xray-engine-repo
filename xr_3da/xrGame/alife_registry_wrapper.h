@@ -29,18 +29,14 @@ private:
 	//id - владельца реестра
 	u16	holder_id;
 
-#ifdef DEBUG
 	//реестр на случай, если нет ALife (для отладки)
 	typename _registry_type::_data	local_registry;
-#endif
 };
 
 template <typename _registry_type>
 const typename _registry_type::_data* CALifeRegistryWrapper<_registry_type>::objects_ptr	(u16 id) const
 {
-#ifdef DEBUG
 	if(NULL == ai().get_alife()) return &local_registry;
-#endif
 
 	VERIFY(0xffff != id);
 
@@ -51,9 +47,7 @@ const typename _registry_type::_data* CALifeRegistryWrapper<_registry_type>::obj
 template <typename _registry_type>
 typename _registry_type::_data& CALifeRegistryWrapper<_registry_type>::objects	(u16 id)
 {
-#ifdef DEBUG
 	if(NULL == ai().get_alife()) return local_registry;
-#endif
 
 	typename _registry_type::_data* registy_container = ai().alife().registry((_registry_type*)NULL).object(id, true);
 
