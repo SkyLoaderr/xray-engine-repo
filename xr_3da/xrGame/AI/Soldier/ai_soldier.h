@@ -24,8 +24,10 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierAttack = 0,
 		aiSoldierDie,
 		aiSoldierDefend,
+		aiSoldierFindEnemy,
+		aiSoldierFollowLeader,
 		aiSoldierFreeHunting,
-		aiSoldierHurt,
+		aiSoldierInjuring,
 		aiSoldierJumping,
 		aiSoldierMoreDeadThanAlive,
 		aiSoldierPursuit,
@@ -71,26 +73,40 @@ class CAI_Soldier : public CCustomMonster
 		// performance data
 		DWORD			m_dwLastRangeSearch;
 		DWORD			m_dwLastSuccessfullSearch;
+
+		// characteristics
+		float			m_fAggressiveness;
+		float			m_fTimorousness;
 		
 		// finite state machine
 		stack<ESoldierStates>	tStateStack;
 		
-		CSoldierSelectorAttack			SelectorAttack;
-		CSoldierSelectorFindEnemy		SelectorFindEnemy;
-		CSoldierSelectorFreeHunting		SelectorFreeHunting;
-		CSoldierSelectorFollow			SelectorFollow;
-		CSoldierSelectorPursuit			SelectorPursuit;
-		CSoldierSelectorUnderFire		SelectorUnderFire;
-		CSoldierSelectorWeaponReload	SelectorWeaponReload;
+		CSoldierSelectorAttack				SelectorAttack;
+		CSoldierSelectorDefend				SelectorDefend;
+		CSoldierSelectorFindEnemy			SelectorFindEnemy;
+		CSoldierSelectorFollowLeader		SelectorFollowLeader;
+		CSoldierSelectorFreeHunting			SelectorFreeHunting;
+		CSoldierSelectorMoreDeadThanAlive	SelectorMoreDeadThanAlive;
+		CSoldierSelectorPursuit				SelectorPursuit;
+		CSoldierSelectorReload				SelectorReload;
+		CSoldierSelectorRetreat				SelectorRetreat;
+		CSoldierSelectorSenseSomething		SelectorSenseSomething;
+		CSoldierSelectorUnderFire			SelectorUnderFire;
 
-		void Die();
-		void UnderFire();
-		void SenseSomething();
-		void FreeHunting();
-		void FollowMe();
 		void Attack();
+		void Die();
+		void Defend();
+		void FindEnemy();
+		void FollowLeader();
+		void FreeHunting();
+		void Injuring();
+		void Jumping();
+		void MoreDeadThanAlive();
 		void Pursuit();
-		void WeaponReload();
+		void Reload();
+		void Retreat();
+		void SenseSomething();
+		void UnderFire();
 
 		// miscellanious funtions	
 	IC	bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);

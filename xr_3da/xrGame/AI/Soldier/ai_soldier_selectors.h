@@ -18,11 +18,26 @@ class CSoldierSelectorAttack : public CAISelectorBase
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
+class CSoldierSelectorDefend : public CAISelectorBase
+{
+	public:
+		CSoldierSelectorDefend();
+		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
+};
+
 class CSoldierSelectorFindEnemy : public CAISelectorBase
 {
 	public:
 		CSoldierSelectorFindEnemy();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
+};
+
+class CSoldierSelectorFollowLeader : public CAISelectorBase
+{
+	public:
+		CSoldierSelectorFollowLeader();
+		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
+
 };
 
 class CSoldierSelectorFreeHunting : public CAISelectorBase
@@ -32,12 +47,11 @@ class CSoldierSelectorFreeHunting : public CAISelectorBase
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CSoldierSelectorFollow : public CAISelectorBase
+class CSoldierSelectorMoreDeadThanAlive : public CAISelectorBase
 {
 	public:
-		CSoldierSelectorFollow	();
+		CSoldierSelectorMoreDeadThanAlive();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
-
 };
 
 class CSoldierSelectorPursuit : public CAISelectorBase
@@ -47,17 +61,31 @@ class CSoldierSelectorPursuit : public CAISelectorBase
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
+class CSoldierSelectorReload : public CAISelectorBase
+{
+	public:
+		CSoldierSelectorReload();
+		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
+};
+
+class CSoldierSelectorRetreat : public CAISelectorBase
+{
+	public:
+		CSoldierSelectorRetreat();
+		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
+};
+
+class CSoldierSelectorSenseSomething : public CAISelectorBase
+{
+	public:
+		CSoldierSelectorSenseSomething();
+		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
+};
+
 class CSoldierSelectorUnderFire : public CAISelectorBase
 {
 	public:
 		CSoldierSelectorUnderFire();
-		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
-};
-
-class CSoldierSelectorWeaponReload : public CAISelectorBase
-{
-	public:
-		CSoldierSelectorWeaponReload();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 

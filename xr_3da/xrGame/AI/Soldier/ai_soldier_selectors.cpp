@@ -54,6 +54,34 @@ float CSoldierSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, B
 	return(m_fResult);
 }
 
+CSoldierSelectorDefend::CSoldierSelectorDefend()
+{ 
+	Name = "selector_defend"; 
+}
+
+float CSoldierSelectorDefend::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+{
+	// initialization
+	m_tpCurrentNode = tNode;
+	m_fDistance = fDistance;
+	vfInit();
+	// computations
+	vfAddTravelCost();
+	CHECK_RESULT;
+	vfAddLightCost();
+	CHECK_RESULT;
+	vfAddTotalCoverCost();
+	CHECK_RESULT;
+	vfAddDistanceToEnemyCost();
+	CHECK_RESULT;
+	vfAddCoverFromEnemyCost();
+	CHECK_RESULT;
+	// checking for epsilon
+	vfCheckForEpsilon(bStop);
+	// returning a value
+	return(m_fResult);
+}
+
 CSoldierSelectorFindEnemy::CSoldierSelectorFindEnemy()
 { 
 	Name = "selector_find_enemy"; 
@@ -74,6 +102,46 @@ float CSoldierSelectorFindEnemy::Estimate(NodeCompressed* tNode, float fDistance
 	CHECK_RESULT;
 	vfAddDistanceToLastPositionCost();
 	CHECK_RESULT;
+	// checking for epsilon
+	vfCheckForEpsilon(bStop);
+	// returning a value
+	return(m_fResult);
+}
+
+CSoldierSelectorFollowLeader::CSoldierSelectorFollowLeader()
+{ 
+	Name = "selector_follow_leader"; 
+}
+
+float CSoldierSelectorFollowLeader::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+{
+	// initialization
+	m_tpCurrentNode = tNode;
+	m_fDistance = fDistance;
+	vfInit();
+	// computations
+	vfAddTravelCost();
+	CHECK_RESULT;
+	vfAddLightCost();
+	CHECK_RESULT;
+	vfAddTotalCoverCost();
+	CHECK_RESULT;
+	if (m_tLeader) {
+		vfAddDistanceToLeaderCost();
+		CHECK_RESULT;
+		vfAddCoverFromLeaderCost();
+		CHECK_RESULT;
+		if (taMemberPositions.size()) {
+			if (m_iAliveMemberCount) {
+				for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
+					vfAssignMemberPositionAndNode();
+					vfComputeMemberDirection();
+					vfAddDistanceToMemberCost();
+					vfAddCoverFromMemberCost();
+				}
+			}
+		}
+	}
 	// checking for epsilon
 	vfCheckForEpsilon(bStop);
 	// returning a value
@@ -120,12 +188,17 @@ float CSoldierSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistan
 	return(m_fResult);
 }
 
-CSoldierSelectorFollow::CSoldierSelectorFollow()
+CSoldierSelectorPursuit::CSoldierSelectorPursuit()
 { 
-	Name = "selector_follow"; 
+	Name = "selector_pursuit"; 
 }
 
-float CSoldierSelectorFollow::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+CSoldierSelectorMoreDeadThanAlive::CSoldierSelectorMoreDeadThanAlive()
+{ 
+	Name = "selector_mdta"; 
+}
+
+float CSoldierSelectorMoreDeadThanAlive::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
 	// initialization
 	m_tpCurrentNode = tNode;
@@ -138,31 +211,14 @@ float CSoldierSelectorFollow::Estimate(NodeCompressed* tNode, float fDistance, B
 	CHECK_RESULT;
 	vfAddTotalCoverCost();
 	CHECK_RESULT;
-	if (m_tLeader) {
-		vfAddDistanceToLeaderCost();
-		CHECK_RESULT;
-		vfAddCoverFromLeaderCost();
-		CHECK_RESULT;
-		if (taMemberPositions.size()) {
-			if (m_iAliveMemberCount) {
-				for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
-					vfAssignMemberPositionAndNode();
-					vfComputeMemberDirection();
-					vfAddDistanceToMemberCost();
-					vfAddCoverFromMemberCost();
-				}
-			}
-		}
-	}
+	vfAddDistanceToEnemyCost();
+	CHECK_RESULT;
+	vfAddCoverFromEnemyCost();
+	CHECK_RESULT;
 	// checking for epsilon
 	vfCheckForEpsilon(bStop);
 	// returning a value
 	return(m_fResult);
-}
-
-CSoldierSelectorPursuit::CSoldierSelectorPursuit()
-{ 
-	Name = "selector_pursuit"; 
 }
 
 float CSoldierSelectorPursuit::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
@@ -194,6 +250,62 @@ float CSoldierSelectorPursuit::Estimate(NodeCompressed* tNode, float fDistance, 
 			vfAddSurroundEnemyCost();
 		}
 	}
+	// checking for epsilon
+	vfCheckForEpsilon(bStop);
+	// returning a value
+	return(m_fResult);
+}
+
+CSoldierSelectorReload::CSoldierSelectorReload()
+{ 
+	Name = "selector_reload"; 
+}
+
+float CSoldierSelectorReload::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+{
+	// initialization
+	m_tpCurrentNode = tNode;
+	m_fDistance = fDistance;
+	vfInit();
+	// computations
+	vfAddTravelCost();
+	CHECK_RESULT;
+	vfAddLightCost();
+	CHECK_RESULT;
+	vfAddTotalCoverCost();
+	CHECK_RESULT;
+	vfAddDistanceToEnemyCost();
+	CHECK_RESULT;
+	vfAddCoverFromEnemyCost();
+	CHECK_RESULT;
+	// checking for epsilon
+	vfCheckForEpsilon(bStop);
+	// returning a value
+	return(m_fResult);
+}
+
+CSoldierSelectorRetreat::CSoldierSelectorRetreat()
+{ 
+	Name = "selector_retreat"; 
+}
+
+float CSoldierSelectorRetreat::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+{
+	// initialization
+	m_tpCurrentNode = tNode;
+	m_fDistance = fDistance;
+	vfInit();
+	// computations
+	vfAddTravelCost();
+	CHECK_RESULT;
+	vfAddLightCost();
+	CHECK_RESULT;
+	vfAddTotalCoverCost();
+	CHECK_RESULT;
+	vfAddDistanceToEnemyCost();
+	CHECK_RESULT;
+	vfAddCoverFromEnemyCost();
+	CHECK_RESULT;
 	// checking for epsilon
 	vfCheckForEpsilon(bStop);
 	// returning a value
@@ -244,12 +356,12 @@ float CSoldierSelectorUnderFire::Estimate(NodeCompressed* tNode, float fDistance
 	return(m_fResult);
 }
 
-CSoldierSelectorWeaponReload::CSoldierSelectorWeaponReload()
+CSoldierSelectorSenseSomething::CSoldierSelectorSenseSomething()
 { 
-	Name = "selector_weapon_reload"; 
+	Name = "selector_sense_something"; 
 }
 
-float CSoldierSelectorWeaponReload::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+float CSoldierSelectorSenseSomething::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
 	// initialization
 	m_tpCurrentNode = tNode;
