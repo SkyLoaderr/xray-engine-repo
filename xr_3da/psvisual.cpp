@@ -96,8 +96,15 @@ void CPSVisual::Update(DWORD dt)
 		PS::SimulatePosition		(Pos, &P,T,k);		bv_BBox.modify		(Pos);
 		PS::SimulateSize			(size,&P,k,1-k);	if (size>p_size)	p_size = size;
 	}
-	bv_BBox.grow		(p_size);
-	bv_BBox.getsphere	(bv_Position,bv_Radius);
+	
+	if (m_Particles.empty())	{
+		bv_BBox.set			(m_Emitter->m_Position, m_Emitter->m_Position);
+		bv_BBox.grow		(0.1f);
+		bv_BBox.getsphere	(bv_Position,bv_Radius);
+	} else {
+		bv_BBox.grow		(p_size);
+		bv_BBox.getsphere	(bv_Position,bv_Radius);
+	}
 }
 
 //----------------------------------------------------
@@ -237,8 +244,14 @@ void CPSVisual::Render(float LOD)
 			bv_BBox.modify(Pos);
         }
     }
-	bv_BBox.grow		(p_size);
-	bv_BBox.getsphere	(bv_Position,bv_Radius);
+	if (m_Particles.empty())	{
+		bv_BBox.set			(m_Emitter->m_Position,m_Emitter->m_Position);
+		bv_BBox.grow		(0.1f);
+		bv_BBox.getsphere	(bv_Position,bv_Radius);
+	} else {
+		bv_BBox.grow		(p_size);
+		bv_BBox.getsphere	(bv_Position,bv_Radius);
+	}
 	
 	// unlock VB and Render it as triangle list
 	DWORD dwNumVerts = pv-pv_start;
