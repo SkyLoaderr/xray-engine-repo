@@ -283,7 +283,7 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
     tvItems->ShowCheckboxes 	= bMultiSel;
 	int itm_cnt = _GetItemCount(m_LastSelection[form->Mode].c_str());
 	if (bMultiSel){
-	    char T[MAX_OBJ_NAME];
+	    string256 T;
         for (int i=0; i<itm_cnt; i++){
             TElTreeItem* itm_node = FHelper.FindObject(tvItems,_GetItem(m_LastSelection[form->Mode].LowerCase().c_str(),i,T),0,0,bIgnoreExt);
 	        TElTreeItem* fld_node = 0;

@@ -3,44 +3,47 @@
 
 #include "freeimage.h"
 
-static	vector<string>	exts;
-string	formats;
-
-bool IsFormatRegister(LPCSTR ext){
-	for (DWORD i=0; i<exts.size(); i++)
-    	if (exts[i]==ext) return true;
-    return false;
-}
-
-void	Format_Register	(string& F)
-{
-	if (0==F.length()) return;
-
-	for (DWORD I=0; I<exts.size(); I++)
-		if (exts[I]==F)	return;
-
-	formats += F+",";
-	exts.push_back(F);
-	F = "";
-}
+struct SExts{
+	vector<LPSTR>	exts;
+    void format_register(LPCSTR ext)
+    {
+    	if (ext&&ext[0]){
+			for (DWORD i=0; i<exts.size(); i++)
+    			if (0==stricmp(exts[i],ext)) return;
+    		exts.push_back(xr_strdup(ext));
+        }
+    }
+    u32 size(){return exts.size();}
+    LPSTR operator [](int k){return exts[k];}
+	~SExts()
+    {
+		for (u32 i=0; i<exts.size(); i++)
+    		xr_free(exts[i]);
+        exts.clear();
+    }
+};
+SExts formats;
 
 void	Surface_FormatExt(FREE_IMAGE_FORMAT f)
 {
 	LPCSTR n=FreeImage_GetFIFExtensionList(f);
-	string	ext = string(n)+",";
-	string	cur;
-	for		(DWORD i=0; i<ext.length(); i++)
-	{
-		if (ext[i]==',')	Format_Register(cur);
-		else				cur += ext[i];
+    LPSTR ext = xr_strdup(n);
+	LPSTR cur = ext;
+	for	(; ext[0]; ext++){
+   	if (ext[0]==','){ 
+        	ext[0] = 0;
+            formats.format_register(cur);
+            cur = ++ext;
+        }
 	}
-	Format_Register	(cur);
+    if (cur&&cur[0]) formats.format_register(cur);
+    xr_free(ext);
 }
 void	Surface_Init()
 {
 	Msg("* ImageLibrary version: %s",FreeImage_GetVersion());
 
-	Format_Register(string("tga"));
+    formats.format_register("tga");
 	Surface_FormatExt(FIF_BMP);
 	Surface_FormatExt(FIF_ICO);
 	Surface_FormatExt(FIF_JPEG);
@@ -64,17 +67,17 @@ void	Surface_Init()
 	Surface_FormatExt(FIF_PSD);
 	Surface_FormatExt(FIF_IFF);
 
-	Msg("* %d supported formats (%s)",exts.size(),formats.c_str());
+	Msg("* %d supported formats",formats.size());
 }
 
 BOOL	Surface_Detect(LPSTR F, LPSTR N)
 {
-	for (DWORD i=0; i<exts.size(); i++)
+	for (DWORD i=0; i<formats.size(); i++)
 	{
 #ifdef _EDITOR
-		strconcat(F,Engine.FS.m_Textures.m_Path,N,".",exts[i].c_str());
+		strconcat(F,Engine.FS.m_Textures.m_Path,N,".",formats[i]);
 #else
-		strconcat(F,"\\\\x-ray\\stalkerdata$\\textures\\",N,".",exts[i].c_str());
+		strconcat(F,"\\\\x-ray\\stalkerdata$\\textures\\",N,".",formats[i]);
 #endif
 		int h = _open(F,O_RDONLY|O_BINARY);
 		if (h>0)	{

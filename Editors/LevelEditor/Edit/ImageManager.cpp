@@ -424,11 +424,11 @@ IC void GET(U32Vec& pixels, u32 w, u32 h, u32 x, u32 y, u32 ref, u32 &count, u32
 
     // summarize
     u32 pixel = pixels[y*w + x];
-    if (RGBA_GETALPHA(pixel)<=ref) return;
+    if (color_get_A(pixel)<=ref) return;
 
-    r+=RGBA_GETRED  (pixel);
-    g+=RGBA_GETGREEN(pixel);
-    b+=RGBA_GETBLUE (pixel);
+    r+=color_get_R  (pixel);
+    g+=color_get_G	(pixel);
+    b+=color_get_B 	(pixel);
     count++;
 }
 
@@ -443,7 +443,7 @@ BOOL ApplyBorders(U32Vec& pixels, u32 w, u32 h, u32 ref)
         CopyMemory(result.begin(),pixels.begin(),w*h*4);
         for (u32 y=0; y<h; y++){
             for (u32 x=0; x<w; x++){
-                if (RGBA_GETALPHA(pixels[y*w+x])==0) {
+                if (color_get_A(pixels[y*w+x])==0) {
                     u32 C=0,r=0,g=0,b=0;
                     GET(pixels,w,h,x-1,y-1,ref,C,r,g,b);
                     GET(pixels,w,h,x  ,y-1,ref,C,r,g,b);
@@ -457,7 +457,7 @@ BOOL ApplyBorders(U32Vec& pixels, u32 w, u32 h, u32 ref)
                     GET(pixels,w,h,x+1,y+1,ref,C,r,g,b);
 
                     if (C) {
-                        result[y*w+x]	= RGBA_MAKE(r/C,g/C,b/C,ref);
+                        result[y*w+x]	= color_rgba(r/C,g/C,b/C,ref);
                         bNeedContinue 	= TRUE;
                     }
                 }
@@ -516,11 +516,11 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, u32 tgt_w, u32 
     }
     U32Vec border_pixels = new_pixels;
     for (U32It it=new_pixels.begin(); it!=new_pixels.end(); it++)
-        *it=(RGBA_GETALPHA(*it)>200)?subst_alpha(*it,0xFF):subst_alpha(*it,0x00);
+        *it=(color_get_A(*it)>200)?subst_alpha(*it,0xFF):subst_alpha(*it,0x00);
     for (u32 ref=254; ref>0; ref--)
         ApplyBorders(new_pixels,pitch,src_h,ref);
     for (int t=0; t<int(new_pixels.size()); t++)
-        new_pixels[t]=subst_alpha(new_pixels[t],RGBA_GETALPHA(border_pixels[t]));
+        new_pixels[t]=subst_alpha(new_pixels[t],color_get_A(border_pixels[t]));
 
     AnsiString out_name=tex_name;
     Engine.FS.m_Textures.Update(out_name);
