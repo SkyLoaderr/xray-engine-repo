@@ -519,6 +519,12 @@
 							RelativePath="AI\Biting\ai_biting_fsm.cpp">
 						</File>
 						<File
+							RelativePath=".\Ai\Biting\ai_biting_mem.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\Biting\ai_biting_mem.h">
+						</File>
+						<File
 							RelativePath="AI\Biting\ai_biting_misc.cpp">
 						</File>
 						<File
@@ -527,16 +533,6 @@
 						<File
 							RelativePath="AI\Biting\ai_biting_space.h">
 						</File>
-						<Filter
-							Name="ai_crow"
-							Filter="">
-							<File
-								RelativePath=".\AI\Crow\ai_crow.cpp">
-							</File>
-							<File
-								RelativePath=".\AI\Crow\ai_crow.h">
-							</File>
-						</Filter>
 					</Filter>
 					<Filter
 						Name="ai_idol"
@@ -668,6 +664,16 @@
 						</File>
 						<File
 							RelativePath="AI\Zombie\ai_zombie_templates.cpp">
+						</File>
+					</Filter>
+					<Filter
+						Name="ai_crow"
+						Filter="">
+						<File
+							RelativePath=".\AI\Crow\ai_crow.cpp">
+						</File>
+						<File
+							RelativePath=".\AI\Crow\ai_crow.h">
 						</File>
 					</Filter>
 				</Filter>

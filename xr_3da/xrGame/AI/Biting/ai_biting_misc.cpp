@@ -168,7 +168,6 @@ void CAI_Biting::vfSetParameters(EPathType path_type,IBaseAI_NodeEvaluator *tpNo
 			r_torso_target.yaw *= -1;
 
 			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-
 		}
 	}
 
@@ -344,10 +343,6 @@ void CAI_Biting::vfUpdateParameters()
 				H = true;
 	}
 
-//	if (Level().iGetKeyState(DIK_H)) {
-//		K = C = D = E = F = false;
-//		H = true; I = false;
-
 	// temp
 	H = true;
 }
@@ -357,26 +352,6 @@ void CAI_Biting::vfUpdateParameters()
 void CAI_Biting::SetText()
 {
 
-//#ifndef SILENCE
-////	HUD().pFontSmall->OutSet	(300,380);	
-////	HUD().pFontSmall->OutNext	("Health = [%f]", g_Health());
-//	
-//	
-//	if (m_tCorpse.Enemy) 
-//		if (m_tCorpse.Enemy->m_fFood >= 0) {	
-//			HUD().pFontSmall->OutSet	(300,400);	
-//			HUD().pFontSmall->OutNext	("Food = [%f]", m_tCorpse.Enemy->m_fFood);
-//		}
-///*
-//	HUD().pFontSmall->OutSet	(300,420);	
-//	HUD().pFontSmall->OutNext	("Current = [%f] Target = [%f]", R2D(r_torso_current.yaw), R2D(r_torso_target.yaw));
-//
-//	HUD().pFontSmall->OutSet	(300,440);	
-//	HUD().pFontSmall->OutNext	("Current = [%f] Target = [%f]", R2D(r_torso_current.pitch), R2D(r_torso_target.pitch));*/
-//#endif
-
-	
-	
 	float yaw, pitch;
 	float yaw2, pitch2;
 

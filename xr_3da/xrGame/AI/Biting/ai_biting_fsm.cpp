@@ -8,16 +8,10 @@
 
 #include "stdafx.h"
 #include "ai_biting.h"
-//#include "..\\..\\actor.h"
 #include "..\\rat\\ai_rat.h"
 
 using namespace AI_Biting;
 #define SILENCE
-
-/**
-	Msg("Path state : %s",(m_tPathState == ePathStateSearchNode) ? "Searching for the node" : (m_tPathState == ePathStateBuildNodePath) ? "Building path" : (m_tPathState == ePathStateBuildTravelLine) ? "Building travel line" : "Dodging travel line");\
-	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
-/**/
 
 
 #undef	WRITE_TO_LOG
@@ -48,7 +42,7 @@ void CAI_Biting::Panic()
 
 	if ((AI_Path.fSpeed < EPS_L) && !m_tEnemy.Enemy) { // осматриваемся 
 		switch (m_tActionState) {
-			case eActionStateWatch : {
+			case eActionStateWatch : 
 				vfSetMotionActionParams	(eBodyStateStand,eMovementTypeRun,eMovementDirectionForward,eStateTypeDanger,eActionTypeRun);
 
 				vfSetParameters			(ePathTypeStraight,0,0,false,0);
@@ -58,19 +52,12 @@ void CAI_Biting::Panic()
 					m_tActionState = eActionStateDontWatch;
 				}
 				break;
-									 }
-			case eActionStateDontWatch : {
-//				Fvector					tPoint;
-//				tPoint.setHP			(m_ls_yaw,0);
-//				tPoint.mul				(100.f);
-//				tPoint.add				(vPosition);
-//				vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateCrouch,eMovementTypeStand,eStateTypeDanger,eLookTypeLookOver,tPoint,2500);
+									 
+			case eActionStateDontWatch : 
 				break;
-										 }
-			default : {
+			default : 
 				m_tActionState = eActionStateWatch;
 				break;
-					  }
 		}
 		return;
 	}
@@ -85,28 +72,18 @@ void CAI_Biting::Panic()
 
 void CAI_Biting::Scared()
 {
-	WRITE_TO_LOG("----------");
-	WRITE_TO_LOG("Scared....");
+	WRITE_TO_LOG("Scared");
 
 	if (m_bStateChanged) {
 		m_tActionState = eActionStateWatch;
-		m_dwActionStartTime = m_dwCurrentUpdate + 10000; // ::Random.randI(10000);
+		m_dwActionStartTime = m_dwCurrentUpdate + 1500;
 
 		Fvector ptr = vPosition;
 		ptr.sub(m_tSavedEnemy->Position());
 		ptr.normalize();
-		ptr.mul(3.f);
+		ptr.mul(20.f);
 		ptr.add(vPosition);
 		m_EnemyPos = ptr;
-
-//		float y,h;
-//		ptr.getHP(y,h);
-//	
-//		Fvector newptr;
-//		newptr.set(1.f,1.f,1.f); // newptr = ptr; newptr.normalize(); newptr.mul(3.f);
-//		newptr.setHP(y,h);
-//		newptr.mul(3.f);
-//		ptr.add(newptr);
 	}
 
 	if (m_dwActionStartTime < m_dwCurrentUpdate) {
@@ -118,22 +95,23 @@ void CAI_Biting::Scared()
 	switch (m_tActionState) {
 		case eActionStateWatch :		// пятиться
 			// построить путь в обратную от врага сторону
-			
-			vfSetMotionActionParams(eBodyStateStand, eMovementTypeWalk, eMovementDirectionForward, 
+			vfSetMotionActionParams(eBodyStateStand, eMovementTypeWalk, eMovementDirectionBack, 
 				eStateTypeDanger,eActionTypeWalk);
 			
 			vfSetParameters	 (ePathTypeStraight,0,&m_EnemyPos,true,0,true);
-			
-
 			break;
 		case eActionStateDontWatch :	// убегать
+			
+			m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) + m_tSelectorFreeHunting.m_fSearchRange;
+			m_tSelectorFreeHunting.m_fOptEnemyDistance = m_tSelectorFreeHunting.m_fMaxEnemyDistance;
+			m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) + 3.f;
+
+			vfSetMotionActionParams		(eBodyStateStand,eMovementTypeRun,eMovementDirectionForward,eStateTypeDanger,eActionTypeRun);
+			vfSetParameters				(ePathTypeStraight,&m_tSelectorFreeHunting,0,true,0);
 
 			break;
 	}
 }
-
-
-
 
 void CAI_Biting::BackCover(bool bFire)
 {
@@ -205,8 +183,8 @@ void CAI_Biting::ForwardStraight()
 	float tDist2 = 3.8f;
 
 	if (bAttackRat) {
-		tDist1 = 1.0f;
-		tDist2 = 2.5f;
+		tDist1 = 2.0f;
+		tDist2 = 3.0f;
 	}
 
 	m_tActionState = ((EnemyPosition.distance_to(vPosition) > tDist1) ? eActionStateRun : eActionStateStand);	
@@ -448,7 +426,10 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	if (m_tCorpse.Enemy) 
 		if (m_tCorpse.Enemy->m_fFood >= 0) bCorpseFound = true;
 
-	
+	if (m_bStateChanged) {
+		_CAction.Init();
+	}
+
 	if (bCorpseFound) {
 		AI_Path.DestNode		= m_tCorpse.Enemy->AI_NodeID;
 		Fvector l_tCorpsePosition;
@@ -458,8 +439,14 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 		m_tActionState = eActionStateRun;			
 		m_dwActionStartTime = 0;
 
+		//if (bCorpseFoundFirstTime) {
+		//	bCorpseFoundFirstTime = false;
+		//	
+		//}
 	} else {
 		
+		bCorpseFoundFirstTime = true;
+
 		if (m_bStateChanged || (m_dwActionStartTime < m_dwCurrentUpdate)) {
 		
 			m_bStateChanged = false;
@@ -548,10 +535,17 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 
 					break;
 		case eActionStateRun:   // бежать к трупу
-			if (m_tCorpse.Enemy->Position().distance_to(vPosition) > 1.5f) {
+			if (m_tCorpse.Enemy->Position().distance_to(vPosition) > 2.0f) {
 				vfSetMotionActionParams(eBodyStateStand, eMovementTypeRun, 
 										eMovementDirectionForward, eStateTypeNormal, eActionTypeRun);
-			} else  { // жрет
+			} else  { // ест труп
+				if (!_CAction.Active() && !_CAction.Finished) {
+					u32 time = m_dwCurrentUpdate;
+					_CAction.Add(ePostureStand,eActionCheckCorpse,( time += 2000));
+					_CAction.Add(ePostureStand, eActionLieDown,(time += 2000));
+					_CAction.Switch();
+				} 
+					
 				vfSetMotionActionParams(eBodyStateLie, eMovementTypeStand, 
 										eMovementDirectionNone, eStateTypeNormal, eActionTypeEat);
 				
@@ -661,7 +655,7 @@ void CAI_Biting::Think()
 		Scared	();
 	} else
 	if (C && H && !I) {
-		Panic();
+		Scared	();
 	} else
 	if (C && !H && I) {
 		Panic			();

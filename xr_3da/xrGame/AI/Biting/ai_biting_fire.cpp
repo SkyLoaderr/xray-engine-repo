@@ -20,6 +20,7 @@ void CAI_Biting::vfSaveEnemy()
 	m_tMySavedPosition		= vPosition;
 	m_dwMyNodeID			= AI_NodeID;
 	vfValidatePosition		(m_tSavedEnemyPosition,m_dwSavedEnemyNodeID);
+	m_dwEnemyLastMemoryTime	= m_dwSeenEnemyLastTime;
 };
 
 float CAI_Biting::EnemyHeuristics(CEntity* E)
@@ -39,6 +40,10 @@ float CAI_Biting::EnemyHeuristics(CEntity* E)
 
 void CAI_Biting::SelectEnemy(SEnemySelected& S)
 {
+	
+	if (m_tSavedEnemy && m_tSavedEnemy->g_Alive()) 
+			if (m_dwLostEnemyTime + m_dwEnemyMemoryTime > m_dwCurrentUpdate) return;
+	
 	// Initiate process
 	objVisible&	Known	= Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
 	S.Enemy					= 0;
@@ -50,7 +55,6 @@ void CAI_Biting::SelectEnemy(SEnemySelected& S)
 	// Get visible list
 	feel_vision_get	(m_tpaVisibleObjects);
 	std::sort		(m_tpaVisibleObjects.begin(),m_tpaVisibleObjects.end());
-
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 
 	for (u32 i=0; i<Known.size(); i++) {

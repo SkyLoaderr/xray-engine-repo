@@ -12,7 +12,8 @@
 #include "..\\ai_monsters_misc.h"
 #include "ai_biting_anim.h"
 #include "ai_biting_space.h"
-//#include "ai_biting_state.h"
+//#include "ai_biting_mem.h"
+
 
 class CAI_Biting : public CCustomMonster, public CBitingAnimations
 {
@@ -355,11 +356,16 @@ private:
 	
 	//////////////////////////////////////////////////////////////////////////
 	Fvector					m_EnemyPos;
+	bool					bCorpseFoundFirstTime;
+	u32						m_dwEnemyMemoryTime;				// врямя хранения "визуального" врага  
+	u32						m_dwEnemyLastMemoryTime;			// врямя хранения "визуального" врага  
 	//////////////////////////////////////////////////////////////////////////
 	
 	void vfChoosePointAndBuildPathAtOnce(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath = false);
 	
-//	IState					*CurrentState;
+	//CMonsterMemory			Mem;
+	
+	//	IState					*CurrentState;
 //
 //	CRest					*stateRest;
 //	CWalk					*stateWalk;

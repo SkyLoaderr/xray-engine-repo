@@ -69,24 +69,6 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 				m_tLastSound.fPower			= power;
 				m_tLastSound.tSavedPosition = Position;
 			}
-
-			
-			
-				
-
-			//float fDistance = (Position.distance_to(vPosition) < 1.f ? 1.f : Position.distance_to(vPosition));
-			//			if ((eType & SOUND_TYPE_MONSTER_DYING) == SOUND_TYPE_MONSTER_DYING)
-			//				m_fMorale += m_fMoraleDeathQuant;///fDistance;
-			//			else
-
-
-			/*
-			if (((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) && (!m_tEnemy.Enemy))
-			m_fMorale += m_fMoraleFearQuant;///fDistance;
-			else
-			if ((eType & SOUND_TYPE_MONSTER_ATTACKING) == SOUND_TYPE_MONSTER_ATTACKING)
-			m_fMorale += m_fMoraleSuccessAttackQuant;///fDistance;
-			*/
 		}
 	}
 }

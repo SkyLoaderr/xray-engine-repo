@@ -40,6 +40,7 @@ namespace AI_Biting {
 		"die_",		
 		"lie_down_",
 		"stand_up_",
+		"scared_",	   //TODO: change it in check corpse
 		0
 	};
 };

@@ -106,6 +106,7 @@ namespace AI_Biting {
 		eActionDie,
 		eActionLieDown,
 		eActionStandUp,
+		eActionCheckCorpse,
 	};
 
 	// Sound

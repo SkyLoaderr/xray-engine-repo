@@ -126,6 +126,8 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 			m_fLastValue = 21;
 			break;
 		}
+		case CLSID_AI_TRADER: break;
+
 		default : NODEFAULT;
 	}
 	return(m_fLastValue);
@@ -280,7 +282,9 @@ float CPersonalWeaponTypeFunction::ffGetValue()
 		case CLSID_AI_DOG_BLACK	: {
 			m_fLastValue =  4;
 			break;
-		}
+								  }
+		case CLSID_AI_TRADER: 
+			break;
 		default : NODEFAULT;
 	}
 	return(m_fLastValue -= 1.f);

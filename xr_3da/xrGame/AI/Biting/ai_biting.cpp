@@ -7,7 +7,6 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-
 #include "ai_biting.h"
 
 using namespace AI_Biting;
@@ -122,11 +121,19 @@ void CAI_Biting::Init()
 
 
 	_CAction.Init();
+	bCorpseFoundFirstTime			= true;
+	m_dwEnemyMemoryTime				= 5000;  
+	m_dwEnemyLastMemoryTime			= 0;
+
+	//Mem.Init();
 }
 
 void CAI_Biting::Die()
 {
 	inherited::Die( );
+
+	//Mem.Deinit();
+
 
 	Fvector	dir;
 	AI_Path.Direction(dir);
