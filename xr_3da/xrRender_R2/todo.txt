@@ -37,7 +37,7 @@ OPT:	occlusion culling of light volumes
 		2. employ temporal coherence
 OPT:	precompute invisible list (visuals) for static lights at load time
 
-OPT:	
+FEAT:	shadows from transparent particles
 
 +FEATURE:	stats:
 +FEATURE:	materials:
