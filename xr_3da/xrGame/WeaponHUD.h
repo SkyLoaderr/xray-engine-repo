@@ -16,6 +16,9 @@ class CWeaponHUD
 	Fmatrix				mTransform;
 	ref_str				pVisualName;
 	IRender_Visual*		pVisual;
+
+	//флаг, если hud спрятан не показывается
+	bool				m_bHidden;
 public:	
 	int					iFireBone;
 	Fvector				vFirePoint;
@@ -36,6 +39,10 @@ public:
 	CMotionDef*			animGet			(LPCSTR name);
 	
 	void				UpdatePosition	(const Fmatrix& transform);
+
+	bool				IsHidden		() {return m_bHidden;}
+	void				Hide			() {m_bHidden = true;}
+	void				Show			() {m_bHidden = false;}
 };
  
 #endif // __XR_WEAPON_HUD_H__

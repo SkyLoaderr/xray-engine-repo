@@ -29,11 +29,11 @@ public:
 	};
 protected:
 	EHandDependence			eHandDependence;		// 0-используется без участия рук, 1-одна рука, 2-две руки
-	BOOL					bWorking, bWorking2;	// Weapon fires now
-	BOOL					bPending;				// Weapon needs some time to update itself, even if hidden
+	bool					bWorking, bWorking2;	// Weapon fires now
+	bool					bPending;				// Weapon needs some time to update itself, even if hidden
 	ref_str					m_WpnName;
 
-	BOOL					bMisfire;				// a misfire happens, you'll need to rearm weapon
+	bool					bMisfire;				// a misfire happens, you'll need to rearm weapon
 
 	Fmatrix					m_Offset;
 
@@ -213,6 +213,9 @@ public:
 	IC BOOL					IsValid				()				{	return iAmmoElapsed;						}
 	IC BOOL					IsVisible			()				{	return getVisible();						}	// Weapon change occur only after visibility change
 	IC BOOL					IsUpdating			()				{	return bWorking || bPending || getVisible();}	// Does weapon need's update?
+	virtual bool			IsHidden			()				{	return STATE == eHidden;}						// Does weapon is in hidden state
+	virtual bool			IsPending			()				{   return bPending;}
+	
 	IC EHandDependence		HandDependence		()				{	return eHandDependence;}
 	virtual BOOL			HasOpticalAim		()				{	return FALSE;								}
 	virtual float			GetZoomFactor		()				{	return fZoomFactor;							}
@@ -249,7 +252,7 @@ public:
 
 	void SpawnAmmo		(u32 boxCurr = 0xffffffff, LPCSTR ammoSect = NULL);
 
-	CWeaponAmmo *		m_pAmmo;
+	CWeaponAmmo*		m_pAmmo;
 	xr_vector<ref_str>	m_ammoTypes;
 	u32					m_ammoType;
 	ref_str				m_ammoName;

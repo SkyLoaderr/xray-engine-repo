@@ -77,29 +77,31 @@ float CMincer::Impulse(float power, float mass)
 void CMincer::Affect(CObject* O) 
 {
 	//CGameObject *l_pO = dynamic_cast<CGameObject*>(O);
-	CEntityAlive *l_pO = dynamic_cast<CEntityAlive*>(O);
+	CEntityAlive *pObject = dynamic_cast<CEntityAlive*>(O);
 
 	//разрядка только на живые существа
-	if(l_pO /*&& l_pO->g_Alive()*/) 
+	if(pObject /*&& l_pO->g_Alive()*/) 
 	{
 		//флаг активности зоны
 		m_bDischarging = true;
 
-		Fvector P; 
-		XFORM().transform_tiny(P,CFORM()->getSphere().P);
+		Fvector position; 
+		XFORM().transform_tiny(position,CFORM()->getSphere().P);
 		
-		char l_pow[255]; 
-		sprintf(l_pow, "zone hit. %.1f", Power(l_pO->Position().distance_to(P),
-							l_pO->GetMass()));
-		if(bDebug) HUD().outMessage(0xffffffff,l_pO->cName(), l_pow);
-		Fvector l_dir; 
-		l_dir.set(::Random.randF(-.5f,.5f), 
+		char pow[255]; 
+		sprintf(pow, "zone hit. %.1f", Power(pObject->Position().distance_to(position),
+											 pObject->GetMass()));
+		if(bDebug) HUD().outMessage(0xffffffff,pObject->cName(), pow);
+		
+		Fvector dir; 
+		dir.set(::Random.randF(-.5f,.5f), 
 				  ::Random.randF(-.5f,.2f), 
 				  ::Random.randF(-.5f,.5f)); 
-		l_dir.normalize();
+		dir.normalize();
+		
 		//l_pO->Movement.ApplyImpulse(l_dir, 50.f*Power(l_pO->Position().distance_to(P)));
-		float power = Power(l_pO->Position().distance_to(P), l_pO->GetMass());
-		float impulse = power*l_pO->GetMass()/**m_hitImpulseScale*/;
+		float power = Power(pObject->Position().distance_to(position), pObject->GetMass());
+		float impulse = power*pObject->GetMass()/**m_hitImpulseScale*/;
 		//float impulse = Impulse(power, l_pO->GetMass());
 
 		
@@ -108,16 +110,16 @@ void CMincer::Affect(CObject* O)
 		if(power > 0.01f) 
 		{
 			position_in_bone_space.set(0.f,0.f,0.f);
-			NET_Packet		l_P;
-			l_pO->u_EventGen	(l_P,GE_HIT,l_pO->ID());
-			l_P.w_u16			(u16(l_pO->ID()));
-			l_P.w_dir			(l_dir);
-			l_P.w_float			(power);
-			l_P.w_s16			((s16)0);
-			l_P.w_vec3			(position_in_bone_space);
-			l_P.w_float			(impulse);
-			l_P.w_u16			(eHitTypeWound);
-			l_pO->u_EventSend	(l_P);
+			NET_Packet	P;
+			pObject->u_EventGen		(P,GE_HIT,pObject->ID());
+			P.w_u16					(u16(pObject->ID()));
+			P.w_dir					(dir);
+			P.w_float				(power);
+			P.w_s16					((s16)0);
+			P.w_vec3				(position_in_bone_space);
+			P.w_float				(impulse);
+			P.w_u16					(eHitTypeWound);
+			pObject->u_EventSend	(P);
 		}
 	}
 }

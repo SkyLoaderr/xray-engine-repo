@@ -97,7 +97,7 @@ void CWeaponMagazined::FireStart		()
 			}*/
 			inherited::FireStart();
 			if (iAmmoElapsed == 0) 
-				SwitchState(eMagEmpty);
+				OnMagazineEmpty();
 			else
 				SwitchState(eFire);
 		}
@@ -113,6 +113,7 @@ void CWeaponMagazined::FireStart		()
 void CWeaponMagazined::FireEnd() 
 {
 	m_shotNum = 0;
+	
 	if(IsWorking()) 
 	{
 		CWeapon::FireEnd();
@@ -139,12 +140,14 @@ void CWeaponMagazined::TryReload()
 		
 		if(IsMisfire())
 		{
+			bPending = true;
 			SwitchState(eReload); 
 			return;
 		}
 
 		if(m_pAmmo) 
 		{
+			bPending = true;
 			SwitchState(eReload); 
 			return;
 		} 
@@ -155,6 +158,7 @@ void CWeaponMagazined::TryReload()
 			if(m_pAmmo) 
 			{ 
 				m_ammoType = i; 
+				bPending = true;
 				SwitchState(eReload); 
 				return; 
 			}
@@ -187,23 +191,26 @@ bool CWeaponMagazined::IsAmmoAvailable()
 
 void CWeaponMagazined::OnMagazineEmpty() 
 {
-	SwitchState(eMagEmpty);
+	bPending = true;
+	SwitchState(eMagEmpty); 
 }
 
 void CWeaponMagazined::UnloadMagazine() 
 {
 	xr_map<LPCSTR, u16> l_ammo;
 	
-	while(m_magazine.size()) 
+	while(!m_magazine.empty()) 
 	{
 		CCartridge &l_cartridge = m_magazine.top();
 		xr_map<LPCSTR, u16>::iterator l_it;
 		for(l_it = l_ammo.begin(); l_it != l_ammo.end(); l_it++) 
+		{
             if(!strcmp(*l_cartridge.m_ammoSect, l_it->first)) 
             { 
 				 l_it->second++; 
 				 break; 
 			}
+		}
 
 		if(l_it == l_ammo.end()) l_ammo[*l_cartridge.m_ammoSect] = 1;
 		m_magazine.pop(); 
@@ -232,11 +239,14 @@ void CWeaponMagazined::ReloadMagazine()
 	//устранить осечку при перезарядке
 	if(IsMisfire())	bMisfire = false;
 	
-	static l_lockType = false;
+	//переменная блокирует использование
+	//только разных типов патронов
+	static bool l_lockType = false;
 	if(!l_lockType) m_ammoName = NULL;
 	
 	if(m_pInventory) 
 	{
+		//попытаться найти в инвентаре патроны текущего типа 
 		m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[m_ammoType],
 														   !dynamic_cast<CActor*>(H_Parent())));
 		
@@ -244,6 +254,7 @@ void CWeaponMagazined::ReloadMagazine()
 		{
 			for(u32 i = 0; i < m_ammoTypes.size(); i++) 
 			{
+				//проверить патроны всех подходящих типов
 				m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[i],
 													!dynamic_cast<CActor*>(H_Parent())));
 				if(m_pAmmo) 
@@ -255,38 +266,31 @@ void CWeaponMagazined::ReloadMagazine()
 		}
 	}
 
+	//нет патронов для перезарядки
 	if(!m_pAmmo) return;
 
-	//разрядить магазин, если загружаемя патронами другого типа
-	if(!l_lockType && m_magazine.size() && 
+	//разрядить магазин, если загружаем патронами другого типа
+	if(!l_lockType && !m_magazine.empty() && 
 		(!m_pAmmo || strcmp(m_pAmmo->cNameSect(), 
-					 *m_magazine.top().m_ammoSect))) 
+					 *m_magazine.top().m_ammoSect)))
 		UnloadMagazine();
 	
-	
-	if(m_pAmmo) 
+	CCartridge l_cartridge;
+	while(iAmmoElapsed < iMagazineSize && m_pAmmo->Get(l_cartridge)) 
 	{
-		CCartridge l_cartridge;
-		while(iAmmoElapsed < iMagazineSize && m_pAmmo->Get(l_cartridge)) 
-		{
-			iAmmoElapsed++;
-			m_magazine.push(l_cartridge);
-		}
-		m_ammoName = m_pAmmo->m_nameShort;
-		if(!m_pAmmo->m_boxCurr) m_pAmmo->Drop();
-		//	NET_Packet				P;
-		//	u_EventGen				(P,GE_OWNERSHIP_REJECT,H_Parent()->ID());
-		//	P.w_u16					(u16(m_pAmmo->ID()));
-		//	u_EventSend				(P);
-		//	//m_pInventory->Drop(m_pAmmo);
-		//	m_pAmmo = NULL;
-		//}
-		if(iMagazineSize > iAmmoElapsed) 
-		{ 
-			l_lockType = true; 
-			ReloadMagazine(); 
-			l_lockType = false; 
-		}
+		iAmmoElapsed++;
+		m_magazine.push(l_cartridge);
+	}
+	m_ammoName = m_pAmmo->m_nameShort;
+
+	//выкинуть коробку патронов, если она пустая
+	if(!m_pAmmo->m_boxCurr) m_pAmmo->Drop();
+
+	if(iMagazineSize > iAmmoElapsed) 
+	{ 
+		l_lockType = true; 
+		ReloadMagazine(); 
+		l_lockType = false; 
 	}
 }
 
@@ -331,7 +335,7 @@ void CWeaponMagazined::OnStateSwitch	(u32 S)
 void CWeaponMagazined::UpdateCL			()
 {
 	inherited::UpdateCL	();
-	float dt			= Device.fTimeDelta;
+	float dt = Device.fTimeDelta;
 	
 	// cycle update
 	switch (NEXT_STATE)
@@ -350,7 +354,7 @@ void CWeaponMagazined::UpdateCL			()
 	case eHidden:		break;
 	}
 	UpdateSounds		();
-	bPending			= FALSE;
+	//bPending			= false;
 }
 
 void CWeaponMagazined::UpdateSounds	()
@@ -371,9 +375,14 @@ void CWeaponMagazined::state_Fire	(float dt)
 {
 	UpdateFP				();
 	fTime					-=dt;
-	Fvector					p1, d; p1.set(vLastFP); d.set(vLastFD);
-	if(H_Parent()) dynamic_cast<CEntity*>	(H_Parent())->g_fireParams	(p1,d);
-	else return;
+	Fvector					p1, d; 
+	p1.set(vLastFP);
+	d.set(vLastFD);
+
+	if(H_Parent()) 
+		dynamic_cast<CEntity*>	(H_Parent())->g_fireParams	(p1,d);
+	else 
+		return;
 	
 	while (fTime<0)
 	{
@@ -411,21 +420,27 @@ void CWeaponMagazined::state_MagEmpty	(float dt)
 
 void CWeaponMagazined::renderable_Render	()
 {
-	inherited::renderable_Render	();
-	UpdateXForm				();
-	CActor *l_pA = dynamic_cast<CActor*>(H_Parent());
-	if (l_pA && l_pA->HUDview() && m_pHUD)
+	inherited::renderable_Render();
+	UpdateXForm();
+	
+	CActor *pActor = dynamic_cast<CActor*>(H_Parent());
+	
+	if (pActor && pActor->HUDview() && m_pHUD)
 	{ 
 		// HUD render
-		::Render->set_Transform		(&m_pHUD->Transform());
-		::Render->add_Visual		(m_pHUD->Visual());
+		if(!m_pHUD->IsHidden())
+		{
+			::Render->set_Transform		(&m_pHUD->Transform());
+			::Render->add_Visual		(m_pHUD->Visual());
+		}
 	}
-	else if(!l_pA || !l_pA->HUDview())
+	else if(!pActor || !pActor->HUDview())
 	{
 		// Actor render
 		::Render->set_Transform		(&XFORM());
 		::Render->add_Visual		(Visual());
 	}
+	
 	if (((eFire==STATE) || (eReload==STATE))&& bFlame) 
 	{
 		UpdateFP	();
@@ -442,11 +457,11 @@ void CWeaponMagazined::SetDefaults	()
 void CWeaponMagazined::Hide		()
 {
 	// add shot effector
-	SwitchState						(eHiding);
+	SwitchState(eHiding);
 }
 void CWeaponMagazined::Show		()
 {
-	SwitchState						(eShowing);
+	SwitchState(eShowing);
 }
 
 void CWeaponMagazined::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) 
@@ -585,13 +600,14 @@ void CWeaponMagazined::OnAnimationEnd()
 	switch(STATE) 
 	{
 		case eReload:	ReloadMagazine();		break;	// End of reload animation
-		case eHiding:	SwitchState(eHidden); /*if(H_Parent()) setVisible(false);*/	break;	// End of Hide
+		case eHiding:	SwitchState(eHidden);   break;	// End of Hide
 		case eShowing:	SwitchState(eIdle);		break;	// End of Show
+		case eIdle:		switch2_Idle();			break;  // Keep showing idle
 	}
 }
 void CWeaponMagazined::switch2_Idle	()
 {
-	//лsetVisible(true);
+	bPending = false;
 	m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);
 }
 void CWeaponMagazined::switch2_Fire	()
@@ -603,19 +619,24 @@ void CWeaponMagazined::switch2_Empty()
 void CWeaponMagazined::switch2_Reload()
 {
 	Sound->play_at_pos		(sndReload,H_Root(),vLastFP);
+	
 	if (sndReload.feedback)
 		sndReload.feedback->set_volume(.2f);
+	
 	m_pHUD->animPlay		(mhud_reload[Random.randI(mhud_reload.size())],FALSE,this);
+	bPending = true;
 }
 void CWeaponMagazined::switch2_Hiding()
 {
-	CWeapon::FireEnd					();
-	bPending				= TRUE;
-	Sound->play_at_pos		(sndHide,H_Root(),vLastFP);
-	if (sndHide.feedback)
-		sndHide.feedback->set_volume(.2f);
-	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],FALSE,this);
-	if (Local())			Level().Cameras.RemoveEffector	(cefShot);
+	CWeapon::FireEnd();
+	
+	Sound->play_at_pos(sndHide,H_Root(),vLastFP);
+	if (sndHide.feedback) sndHide.feedback->set_volume(.2f);
+	
+	m_pHUD->animPlay (mhud_hide[Random.randI(mhud_hide.size())],FALSE,this);
+	bPending = true;
+
+	if (Local()) Level().Cameras.RemoveEffector	(cefShot);
 }
 void CWeaponMagazined::switch2_Hidden()
 {
@@ -624,23 +645,30 @@ void CWeaponMagazined::switch2_Hidden()
 }
 void CWeaponMagazined::switch2_Showing()
 {
-	//setVisible				(TRUE);
+	
 	Sound->play_at_pos		(sndShow,H_Root(),vLastFP);
 	if (sndShow.feedback)
 		sndShow.feedback->set_volume(.3f);
+
+	bPending = true;
 	m_pHUD->animPlay		(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
 }
 
 bool CWeaponMagazined::Action(s32 cmd, u32 flags) 
 {
 	if(inherited::Action(cmd, flags)) return true;
+
 	switch(cmd) 
 	{
-		case kWPN_RELOAD : {
+	case kWPN_RELOAD:
+		{
 			if(flags&CMD_START) 
 				if(iAmmoElapsed < iMagazineSize || IsMisfire()) 
-					Reload();//TryReload();//if(m_pAmmo && m_pAmmo->CanReload()) m_pAmmo->Reload();
-		} return true;
+					Reload();
+					//TryReload();
+					//if(m_pAmmo && m_pAmmo->CanReload()) m_pAmmo->Reload();
+		} 
+		return true;
 	}
 	return false;
 }

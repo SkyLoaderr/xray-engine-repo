@@ -2,7 +2,8 @@
 #include "weaponammo.h"
 #include "PhysicsShell.h"
 
-CCartridge::CCartridge() {
+CCartridge::CCartridge() 
+{
 	m_ammoSect = NULL;
 	m_kDist = m_kDisp = m_kHit = m_kImpulse = m_kPierce = 1.f;
 	m_tracer = true;
@@ -10,7 +11,8 @@ CCartridge::CCartridge() {
 	m_impair = 1.f;
 }
 
-void CCartridge::Load(LPCSTR section) {
+void CCartridge::Load(LPCSTR section) 
+{
 	m_ammoSect = section;
 	m_kDist = pSettings->r_float(section, "k_dist");
 	m_kDisp = pSettings->r_float(section, "k_disp");
@@ -22,14 +24,16 @@ void CCartridge::Load(LPCSTR section) {
 	m_impair = pSettings->r_float(section, "impair");
 }
 
-CWeaponAmmo::CWeaponAmmo(void) {
+CWeaponAmmo::CWeaponAmmo(void) 
+{
 	m_weight = .2f;
 	m_belt = true;
 }
 
 CWeaponAmmo::~CWeaponAmmo(void) {}
 
-void CWeaponAmmo::Load(LPCSTR section) {
+void CWeaponAmmo::Load(LPCSTR section) 
+{
 	// verify class
 	LPCSTR Class = pSettings->r_string(section,"class");
 	CLASS_ID load_cls = TEXT2CLSID(Class);
@@ -50,7 +54,8 @@ void CWeaponAmmo::Load(LPCSTR section) {
 	m_boxCurr = m_boxSize;
 }
 
-BOOL CWeaponAmmo::net_Spawn(LPVOID DC) {
+BOOL CWeaponAmmo::net_Spawn(LPVOID DC) 
+{
 	BOOL bResult = inherited::net_Spawn	(DC);
 	CSE_Abstract					*e		= (CSE_Abstract*)(DC);
 	CSE_ALifeItemAmmo					*l_pW	= dynamic_cast<CSE_ALifeItemAmmo*>(e);
@@ -66,7 +71,8 @@ BOOL CWeaponAmmo::net_Spawn(LPVOID DC) {
 	R_ASSERT(V);
 
 
-	if (0==m_pPhysicsShell) {
+	if (0==m_pPhysicsShell) 
+	{
 		// Physics (Box)
 		Fobb obb; Visual()->vis.box.get_CD(obb.m_translate,obb.m_halfsize); obb.m_rotate.identity();
 		// Physics (Elements)
@@ -84,20 +90,23 @@ BOOL CWeaponAmmo::net_Spawn(LPVOID DC) {
 	return bResult;
 }
 
-void CWeaponAmmo::net_Destroy() {
+void CWeaponAmmo::net_Destroy() 
+{
 	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
 	xr_delete(m_pPhysicsShell);
 	inherited::net_Destroy();
 }
 
-void CWeaponAmmo::OnH_B_Chield() {
+void CWeaponAmmo::OnH_B_Chield() 
+{
 	inherited::OnH_B_Chield		();
 	setVisible					(false);
 	setEnabled					(false);
 	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
 }
 
-void CWeaponAmmo::OnH_B_Independent() {
+void CWeaponAmmo::OnH_B_Independent() 
+{
 	inherited::OnH_B_Independent();
 	if(!Useful()) {
 		NET_Packet P;
@@ -110,7 +119,8 @@ void CWeaponAmmo::OnH_B_Independent() {
 	CObject* E = dynamic_cast<CObject*>(H_Parent()); R_ASSERT(E);
 	XFORM().set(E->XFORM());
 	Position().set(XFORM().c);
-	if(m_pPhysicsShell) {
+	if(m_pPhysicsShell) 
+	{
 		Fmatrix trans;
 		Level().Cameras.unaffected_Matrix(trans);
 		Fvector l_fw; l_fw.set(trans.k);
@@ -124,24 +134,28 @@ void CWeaponAmmo::OnH_B_Independent() {
 	}
 }
 
-const char* CWeaponAmmo::Name() {
+const char* CWeaponAmmo::Name() 
+{
 	if(m_name) strcpy(m_tmpName, m_name); else m_tmpName[0] = 0;
 	char l_tmp[20]; sprintf(l_tmp, " %d/%d", m_boxCurr, m_boxSize);
 	strcpy(&m_tmpName[xr_strlen(m_tmpName)], l_tmp);
 	return m_tmpName;
 }
 
-const char* CWeaponAmmo::NameShort() {
+const char* CWeaponAmmo::NameShort() 
+{
 	if(m_nameShort) strcpy(m_tmpName, m_nameShort); else m_tmpName[0] = 0;
 	return m_tmpName;
 }
 
-bool CWeaponAmmo::Useful() {
+bool CWeaponAmmo::Useful() 
+{
 	// Если IItem еще не полностью использованый, вернуть true
 	return !!m_boxCurr;
 }
 
-s32 CWeaponAmmo::Sort(PIItem pIItem) {
+s32 CWeaponAmmo::Sort(PIItem pIItem) 
+{
 	// Если нужно разместить IItem после this - вернуть 1, если
 	// перед - -1. Если пофиг то 0.
 	CWeaponAmmo *l_pA = dynamic_cast<CWeaponAmmo*>(pIItem);
@@ -151,7 +165,8 @@ s32 CWeaponAmmo::Sort(PIItem pIItem) {
 	else return -1;
 }
 
-bool CWeaponAmmo::Merge(PIItem pIItem) {
+bool CWeaponAmmo::Merge(PIItem pIItem) 
+{
 	// Если удалось слить вместе вернуть true
 	if(m_boxCurr == m_boxSize) return false;
 	CWeaponAmmo *l_pA = dynamic_cast<CWeaponAmmo*>(pIItem);
@@ -163,7 +178,8 @@ bool CWeaponAmmo::Merge(PIItem pIItem) {
 	return true;
 }
 
-bool CWeaponAmmo::Get(CCartridge &cartridge) {
+bool CWeaponAmmo::Get(CCartridge &cartridge) 
+{
 	if(!m_boxCurr) return false;
 	cartridge.m_ammoSect = cNameSect();
 	cartridge.m_kDist = m_kDist;
@@ -178,29 +194,35 @@ bool CWeaponAmmo::Get(CCartridge &cartridge) {
 	return true;
 }
 
-void CWeaponAmmo::renderable_Render() {
-	if(getVisible() && !H_Parent()) {
+void CWeaponAmmo::renderable_Render() 
+{
+	if(getVisible() && !H_Parent()) 
+	{
 		::Render->set_Transform		(&XFORM());
 		::Render->add_Visual		(Visual());
 	}
 }
 
-void CWeaponAmmo::UpdateCL() {
+void CWeaponAmmo::UpdateCL() 
+{
 	inherited::UpdateCL();
-	if(getVisible() && m_pPhysicsShell) {
+	if(getVisible() && m_pPhysicsShell) 
+	{
 		m_pPhysicsShell->Update	();
-		XFORM().set			(m_pPhysicsShell->mXFORM);
+		XFORM().set				(m_pPhysicsShell->mXFORM);
 		Position().set			(XFORM().c);
 	}
 }
 
 
-void CWeaponAmmo::net_Export(NET_Packet& P) {
+void CWeaponAmmo::net_Export(NET_Packet& P) 
+{
 	//inherited::net_Export(P);
 	P.w_u16(m_boxCurr);
 }
 
-void CWeaponAmmo::net_Import(NET_Packet& P) {
+void CWeaponAmmo::net_Import(NET_Packet& P) 
+{
 	inherited::net_Import(P);
 	P.r_u16(m_boxCurr);
 }

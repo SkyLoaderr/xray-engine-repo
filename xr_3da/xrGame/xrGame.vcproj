@@ -1026,6 +1026,24 @@
 							Name="Custom Weapon"
 							Filter="">
 							<File
+								RelativePath=".\Explosive.cpp">
+								<FileConfiguration
+									Name="Debug|Win32"
+									ExcludedFromBuild="TRUE">
+									<Tool
+										Name="VCCLCompilerTool"/>
+								</FileConfiguration>
+							</File>
+							<File
+								RelativePath=".\Explosive.h">
+								<FileConfiguration
+									Name="Debug|Win32"
+									ExcludedFromBuild="TRUE">
+									<Tool
+										Name="VCCustomBuildTool"/>
+								</FileConfiguration>
+							</File>
+							<File
 								RelativePath="Grenade.cpp">
 							</File>
 							<File
@@ -1085,6 +1103,36 @@
 							<File
 								RelativePath="WeaponPistol.h">
 							</File>
+							<Filter
+								Name="Silencer"
+								Filter="">
+								<File
+									RelativePath=".\Silencer.cpp">
+								</File>
+								<File
+									RelativePath=".\Silencer.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="Scope"
+								Filter="">
+								<File
+									RelativePath=".\Scope.cpp">
+								</File>
+								<File
+									RelativePath=".\Scope.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="GrenadeLauncher"
+								Filter="">
+								<File
+									RelativePath=".\GrenadeLauncher.cpp">
+								</File>
+								<File
+									RelativePath=".\GrenadeLauncher.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="Weapon M134"
@@ -1864,6 +1912,16 @@
 						</File>
 						<File
 							RelativePath=".\script_zone.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="GalantineZone"
+						Filter="">
+						<File
+							RelativePath=".\GalantineZone.cpp">
+						</File>
+						<File
+							RelativePath=".\GalantineZone.h">
 						</File>
 					</Filter>
 				</Filter>

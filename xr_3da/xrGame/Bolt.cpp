@@ -60,12 +60,14 @@ void CBolt::OnEvent(NET_Packet& P, u16 type) {
 	}
 }
 
-bool CBolt::Activate() {
+bool CBolt::Activate() 
+{
 	Show();
 	return true;
 }
 
-void CBolt::Deactivate() {
+void CBolt::Deactivate() 
+{
 	Hide();
 }
 

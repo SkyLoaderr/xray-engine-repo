@@ -148,6 +148,7 @@ void CWeaponFakeGrenade::Load(LPCSTR section)
 static const u32 EXPLODE_TIME	= 5000;
 static const u32 FLASH_TIME		= 300;
 static const u32 ENGINE_TIME	= 3000;
+
 void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &normal) 
 {
 	m_state			= stExplode;
@@ -164,25 +165,48 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &normal)
 	feel_touch_update(Position(), m_blastR);
 	xr_list<s16> l_elsemnts;
 	xr_list<Fvector> l_bs_positions;
-	while(m_blasted.size()) {
+	while(m_blasted.size()) 
+	{
 		CGameObject *l_pGO = *m_blasted.begin();
-		Fvector l_goPos; if(l_pGO->Visual()) l_pGO->Center(l_goPos); else l_goPos.set(l_pGO->Position());
-		l_dir.sub(l_goPos, Position()); l_dst = l_dir.magnitude(); l_dir.div(l_dst); 
+		Fvector l_goPos; 
+		if(l_pGO->Visual()) 
+			l_pGO->Center(l_goPos); 
+		else 
+			l_goPos.set(l_pGO->Position());
+		l_dir.sub(l_goPos, Position()); 
+		l_dst = l_dir.magnitude(); l_dir.div(l_dst); 
+		
 		f32 l_S = (l_pGO->Visual()?l_pGO->Radius()*l_pGO->Radius():0);
-		if(l_pGO->Visual()) {
-			const Fbox &l_b1 = l_pGO->BoundingBox(); Fbox l_b2; l_b2.invalidate();
-			Fmatrix l_m; l_m.identity(); l_m.k.set(l_dir); GetBasis(l_m.k, l_m.i, l_m.j);
-			for(int i = 0; i < 8; i++) { Fvector l_v; l_b1.getpoint(i, l_v); l_m.transform_tiny(l_v); l_b2.modify(l_v); }
-			Fvector l_c, l_d; l_b2.get_CD(l_c, l_d);
+		if(l_pGO->Visual()) 
+		{
+			const Fbox &l_b1 = l_pGO->BoundingBox(); 
+			Fbox l_b2; 
+			l_b2.invalidate();
+			Fmatrix l_m; 
+			l_m.identity(); 
+			l_m.k.set(l_dir); 
+			GetBasis(l_m.k, l_m.i, l_m.j);
+			for(int i = 0; i < 8; i++) 
+			{ 
+				Fvector l_v; 
+				l_b1.getpoint(i, l_v); 
+				l_m.transform_tiny(l_v); 
+				l_b2.modify(l_v); 
+			}
+			
+			Fvector l_c, l_d; 
+			l_b2.get_CD(l_c, l_d);
 			l_S = l_d.x*l_d.y;
 		}
 		f32 l_impuls = m_blast * (1.f - (l_dst/m_blastR)*(l_dst/m_blastR)) * l_S;
-		if(l_impuls > .001f) {
+		if(l_impuls > .001f) 
+		{
 			setEnabled(false);
 			l_impuls *= l_pGO->ExplosionEffect(Position(), m_blastR, l_elsemnts, l_bs_positions);
 			setEnabled(true);
 		}
-		if(l_impuls > .001f) while(l_elsemnts.size()) {
+		if(l_impuls > .001f) while(l_elsemnts.size()) 
+		{
 			l_dir.y += .2f;
 			s16 l_element = *l_elsemnts.begin();
 			Fvector l_bs_pos = *l_bs_positions.begin();
@@ -201,13 +225,21 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &normal)
 		}
 		m_blasted.pop_front();
 	}
+	
 	Collide::ray_query RQ;
 	setEnabled(false);
-	for(s32 i = 0; i < m_frags; i++) {
-		l_dir.set(::Random.randF(-.5f,.5f), ::Random.randF(-.5f,.5f), ::Random.randF(-.5f,.5f)); l_dir.normalize();
-		if(Level().ObjectSpace.RayPick(Position(), l_dir, m_fragsR, RQ)) {
-			Fvector l_end, l_bs_pos; l_end.mad(Position(),l_dir,RQ.range); l_bs_pos.set(0, 0, 0);
-			if(RQ.O) {
+	for(s32 i = 0; i < m_frags; i++) 
+	{
+		l_dir.set(::Random.randF(-.5f,.5f), ::Random.randF(-.5f,.5f), ::Random.randF(-.5f,.5f)); 
+		l_dir.normalize();
+		
+		if(Level().ObjectSpace.RayPick(Position(), l_dir, m_fragsR, RQ)) 
+		{
+			Fvector l_end, l_bs_pos; 
+			l_end.mad(Position(),l_dir,RQ.range); 
+			l_bs_pos.set(0, 0, 0);
+			if(RQ.O) 
+			{
 				f32 l_hit = m_fragHit * (1.f - (RQ.range/m_fragsR)*(RQ.range/m_fragsR));
 				CEntity* E = dynamic_cast<CEntity*>(RQ.O);
 				if(E) l_hit *= E->HitScale(RQ.element);
@@ -225,17 +257,41 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &normal)
 			FragWallmark(l_dir, l_end, RQ);
 		}
 	}
-	CParticlesObject* pStaticPG; s32 l_c = (s32)m_effects.size();
-	Fmatrix l_m; l_m.identity(); l_m.c.set(pos);l_m.j.set(normal); GetBasis(normal, l_m.k, l_m.i);
-	for(s32 i = 0; i < l_c; i++) {
+
+
+	//запустить партикловую анимацию взрыва
+	CParticlesObject* pStaticPG; 
+	s32 l_c = (s32)m_effects.size();
+	for(s32 i = 0; i < l_c; i++) 
+	{
+		pStaticPG = xr_new<CParticlesObject>(*m_effects[i],Sector()); 
+		pStaticPG->play_at_pos(pos);
+	}
+	m_pLight->set_position(pos); 
+	m_pLight->set_active(true);
+
+
+	
+	/*CParticlesObject* pStaticPG; 
+	s32 l_c = (s32)m_effects.size();
+	Fmatrix l_m; 
+	l_m.identity(); 
+	l_m.c.set(pos);
+	l_m.j.set(normal); 
+	GetBasis(normal, l_m.k, l_m.i);
+	for(s32 i = 0; i < l_c; i++) 
+	{
 		pStaticPG = xr_new<CParticlesObject>(*m_effects[i],Sector());
 		pStaticPG->SetTransform(l_m);
 		pStaticPG->Play();
 	}
+	
 	m_curColor.set(m_lightColor);
 	m_pLight->set_color(m_curColor);
 	m_pLight->set_position(Position()); 
-	m_pLight->set_active(true);
+	m_pLight->set_active(true);*/
+
+
 	setEnabled(true);
 	m_pOwner = NULL;
 }
@@ -319,7 +375,8 @@ void CWeaponFakeGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd,
 {
 	if (!hWallmark)	return;
 	
-	if (R.O) {
+	if (R.O) 
+	{
 		if (R.O->CLS_ID==CLSID_ENTITY)
 		{
 #pragma todo("Oles to Yura: replace 'CPSObject' with 'CParticlesObject'")
@@ -337,7 +394,7 @@ void CWeaponFakeGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd,
 	else 
 	{
 		R_ASSERT(R.element >= 0);
-		::Render->add_Wallmark	(
+		::Render->add_Wallmark (
 			hWallmark,
 			vEnd,
 			fWallmarkSize,
@@ -391,17 +448,23 @@ void CWeaponFakeGrenade::OnH_B_Independent()
 	inherited::OnH_B_Independent();
 	setVisible					(true);
 	setEnabled					(true);
-	CObject*	E		= dynamic_cast<CObject*>(H_Parent());
-	R_ASSERT		(E);
+	CObject*	 E = dynamic_cast<CObject*>(H_Parent());
+	R_ASSERT	(E);
 	XFORM().set(E->XFORM());
 	Position().set(XFORM().c);
+	
 	if(m_pPhysicsShell) 
 	{
 		Fmatrix trans;
 		Level().Cameras.unaffected_Matrix(trans);
 		CWeaponMagazinedWGrenade *l_pW = dynamic_cast<CWeaponMagazinedWGrenade*>(E);
-		Fmatrix l_p1, l_r; l_r.rotateY(M_PI*2.f); l_p1.mul(l_pW->GetHUDmode()?trans:XFORM(), l_r); l_p1.c.set(*l_pW->m_pGrenadePoint);
-		Fvector a_vel; a_vel.set(0, 0, 0);
+		Fmatrix l_p1, l_r; 
+		l_r.rotateY(M_PI*2.f); 
+		l_p1.mul(l_pW->GetHUDmode()?trans:XFORM(), l_r); 
+		l_p1.c.set(*l_pW->m_pGrenadePoint);
+		
+		Fvector a_vel; 
+		a_vel.set(0, 0, 0);
 		m_pPhysicsShell->Activate(l_p1, m_vel, a_vel);
 		XFORM().set(m_pPhysicsShell->mXFORM);
 		Position().set(m_pPhysicsShell->mXFORM.c);
@@ -426,7 +489,9 @@ void CWeaponFakeGrenade::OnH_B_Independent()
 void CWeaponFakeGrenade::UpdateCL() 
 {
 	inherited::UpdateCL();
-	switch (m_state){
+	
+	switch (m_state)
+	{
 	case stInactive:
 		break;
 	case stDestroying: 
@@ -526,9 +591,10 @@ void CWeaponFakeGrenade::SoundDestroy(ref_sound& dest)
 
 CWeaponMagazinedWGrenade::CWeaponMagazinedWGrenade(LPCSTR name,ESoundTypes eSoundType) : CWeaponMagazined(name, eSoundType)
 {
-	m_bGrenadeMode = false;
 	m_ammoType2 = 0;
-	m_pGrenade = 0;
+
+	m_pGrenade = NULL;
+	m_bGrenadeMode = false;
 }
 
 CWeaponMagazinedWGrenade::~CWeaponMagazinedWGrenade(void)
@@ -549,6 +615,7 @@ void CWeaponMagazinedWGrenade::Load	(LPCSTR section)
 	//SoundCreate			(sndRicochet[2],"ric3"    ,m_eSoundRicochet);
 	//SoundCreate			(sndRicochet[3],"ric4"    ,m_eSoundRicochet);
 	//SoundCreate			(sndRicochet[4],"ric5"    ,m_eSoundRicochet);
+	
 	// HUD :: Anims
 	R_ASSERT			(m_pHUD);
 	animGet				(mhud_idle_g,	"idle_g");
@@ -560,10 +627,12 @@ void CWeaponMagazinedWGrenade::Load	(LPCSTR section)
 	// load ammo classes SECOND (grenade_class)
 	m_ammoTypes2.clear	(); 
 	LPCSTR				S = pSettings->r_string(section,"grenade_class");
-	if (S && S[0]) {
+	if (S && S[0]) 
+	{
 		string128		_ammoItem;
 		int				count		= _GetItemCount	(S);
-		for (int it=0; it<count; it++)	{
+		for (int it=0; it<count; it++)	
+		{
 			_GetItem				(S,it,_ammoItem);
 			m_ammoTypes2.push_back	(_ammoItem);
 		}
@@ -579,10 +648,10 @@ BOOL CWeaponMagazinedWGrenade::net_Spawn(LPVOID DC)
 {
 	m_pGrenadePoint = &vLastFP;
 	BOOL l_res = inherited::net_Spawn(DC);
+	
 	CKinematics* V = PKinematics(m_pHUD->Visual()); R_ASSERT(V);
 	V->LL_GetBoneInstance(V->LL_BoneID("grenade_0")).set_callback(GrenadeCallback, this);
-	//V = PKinematics(Visual()); R_ASSERT(V);
-	//V->LL_GetBoneInstance(V->LL_BoneID("grenade")).set_callback(GrenadeCallback, this);
+
 	CSE_ALifeObject *l_tpALifeObject = (CSE_ALifeObject*)(DC);
 	m_bHideGrenade = !iAmmoElapsed;
 	
@@ -610,26 +679,40 @@ BOOL CWeaponMagazinedWGrenade::net_Spawn(LPVOID DC)
 		// Destroy
 		F_entity_Destroy	(D);
 	}
+
+	bPending = false;
+
 	return l_res;
 }
 void CWeaponMagazinedWGrenade::switch2_Idle() 
 {
 	if(m_bGrenadeMode) 
+	{
 		m_pHUD->animPlay(mhud_idle_g[Random.randI(mhud_idle_g.size())],FALSE);
-	else inherited::switch2_Idle();
+		bPending = false;
+	}
+	else 
+		inherited::switch2_Idle();
 }
 void CWeaponMagazinedWGrenade::switch2_Reload()
 {
 	Sound->play_at_pos		(sndReloadG,H_Root(),vLastFP);
+	
 	if (sndReload.feedback)
 		sndReload.feedback->set_volume(.2f);
-	if(m_bGrenadeMode) m_pHUD->animPlay(mhud_reload_g[Random.randI(mhud_reload_g.size())],FALSE,this);
-	else inherited::switch2_Reload();
+	
+	if(m_bGrenadeMode) 
+	{
+		m_pHUD->animPlay(mhud_reload_g[Random.randI(mhud_reload_g.size())],FALSE,this);
+		bPending = true;
+	}
+	else 
+		inherited::switch2_Reload();
 }
 
 void CWeaponMagazinedWGrenade::OnShot		()
 {
-	if(m_bGrenadeMode) 
+	if(m_bGrenadeMode)
 	{
 		Sound->play_at_pos			(sndShot,H_Root(),vLastFP);
 		if(hud_mode) 
@@ -640,12 +723,19 @@ void CWeaponMagazinedWGrenade::OnShot		()
 			S->Shot					(camDispersion);
 			m_pHUD->animPlay(mhud_shots_g[Random.randI(mhud_shots_g.size())],TRUE,this);
 		}
+		
 		CParticlesObject* pStaticPG;/* s32 l_c = m_effects.size();*/
 		pStaticPG = xr_new<CParticlesObject>("weapons\\generic_shoot",Sector());
-		Fmatrix l_pos; l_pos.set(XFORM()); l_pos.c.set(vLastFP);
-		Fvector l_vel; l_vel.sub(Position(),ps_Element(0).vPosition); l_vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
-		pStaticPG->UpdateParent(l_pos, l_vel); pStaticPG->Play();
-	} else inherited::OnShot();
+		Fmatrix pos; 
+		pos.set(XFORM()); 
+		pos.c.set(vLastFP);
+		Fvector vel; 
+		vel.sub(Position(),ps_Element(0).vPosition); 
+		vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
+		pStaticPG->UpdateParent(pos, vel); 
+		pStaticPG->Play();
+	} 
+	else inherited::OnShot();
 	//// Sound
 	//Sound->play_at_pos			(sndShot,H_Root(),vLastFP);
 
@@ -674,9 +764,18 @@ void CWeaponMagazinedWGrenade::OnShot		()
 	//pStaticPG->UpdateParent(l_pos, l_vel); pStaticPG->Play();
 	////pStaticPG->SetTransform(l_pos); pStaticPG->Play();
 }
-
+//переход в режим подствольника или выход из него
 void CWeaponMagazinedWGrenade::SwitchMode() 
 {
+	//только если оружие в режиме IDLE
+	//char* curre
+	//m_pHUD->animGet()
+	if(STATE != eIdle || bPending)
+	{
+		return;
+	}
+	bPending = true;
+
 	m_bGrenadeMode = !m_bGrenadeMode;
 
 	iMagazineSize = m_bGrenadeMode?1:iMagazineSize2;
@@ -692,15 +791,19 @@ void CWeaponMagazinedWGrenade::SwitchMode()
 	while(l_magazine.size()) { m_magazine2.push(l_magazine.top()); l_magazine.pop(); }
 	iAmmoElapsed = (int)m_magazine.size();
 	
-	if(m_bGrenadeMode) m_pHUD->animPlay(mhud_switch_g[Random.randI(mhud_switch_g.size())],FALSE,this);
-	else m_pHUD->animPlay(mhud_switch[Random.randI(mhud_switch.size())],FALSE,this);
+	if(m_bGrenadeMode)
+		m_pHUD->animPlay(mhud_switch_g[Random.randI(mhud_switch_g.size())],FALSE,this);
+	else 
+		m_pHUD->animPlay(mhud_switch[Random.randI(mhud_switch.size())],FALSE,this);
 }
 
 bool CWeaponMagazinedWGrenade::Action(s32 cmd, u32 flags) 
 {
 	if(inherited::Action(cmd, flags)) return true;
+	
 	switch(cmd) 
 	{
+	case kWPN_ZOOM: 
 	case kWPN_FUNC: 
 			{
                 if(flags&CMD_START) SwitchMode();
@@ -712,13 +815,19 @@ bool CWeaponMagazinedWGrenade::Action(s32 cmd, u32 flags)
 
 void CWeaponMagazinedWGrenade::state_Fire(float dt) 
 {
-	if(m_bGrenadeMode) 
+	//режим стрельбы подствольника
+	if(m_bGrenadeMode)
 	{
 		UpdateFP				();
 		fTime					-=dt;
-		Fvector					p1, d; p1.set(vLastFP); d.set(vLastFD);
-		if(H_Parent()) dynamic_cast<CEntity*>	(H_Parent())->g_fireParams	(p1,d);
-		else return;
+		Fvector					p1, d; 
+		p1.set(vLastFP); 
+		d.set(vLastFD);
+		
+		if(H_Parent()) 
+			dynamic_cast<CEntity*>	(H_Parent())->g_fireParams	(p1,d);
+		else 
+			return;
 		
 		while (fTime<0)
 		{
@@ -727,9 +836,10 @@ void CWeaponMagazinedWGrenade::state_Fire(float dt)
 
 			m_shotNum++;
 			OnShot			();
-			//FireTrace		(p1,vLastFP,d);
+			
 			// Ammo
-			if(Local()) {
+			if(Local()) 
+			{
 				//m_abrasion		= _max(0.f, m_abrasion - l_cartridge.m_impair);
 				m_magazine.pop	();
 				if(!(--iAmmoElapsed)) OnMagazineEmpty();
@@ -737,20 +847,33 @@ void CWeaponMagazinedWGrenade::state_Fire(float dt)
 		}
 		UpdateSounds			();
 		if(m_shotNum == m_queueSize) FireEnd();
-	} else inherited::state_Fire(dt);
+	} 
+	//режим стрельбы очередями
+	else inherited::state_Fire(dt);
 }
+
 void CWeaponMagazinedWGrenade::SwitchState(u32 S) 
 {
 	inherited::SwitchState(S);
-	if(m_bGrenadeMode && STATE == eIdle && S==eFire && m_pGrenade) 
+	
+	//стрельнуть из подствольника
+	if(m_bGrenadeMode && STATE == eIdle && S == eFire && m_pGrenade) 
 	{
-		Fvector						p1, d; p1.set(vLastFP); d.set(vLastFD);
+		Fvector						p1, d; 
+		p1.set(vLastFP); 
+		d.set(vLastFD);
+
 		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
+		
 		if (E) E->g_fireParams		(p1,d);
+		
 		m_pGrenade->m_pos.set(p1);
-		m_pGrenade->m_vel.set(d); m_pGrenade->m_vel.y += .0f; m_pGrenade->m_vel.mul(50.f);
+		m_pGrenade->m_vel.set(d); 
+		m_pGrenade->m_vel.y += .0f; 
+		m_pGrenade->m_vel.mul(50.f);
 		m_pGrenade->m_pOwner = dynamic_cast<CGameObject*>(H_Parent());
 		m_pGrenade->m_jump = 1.f;
+		
 		NET_Packet P;
 		u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
 		P.w_u16(u16(m_pGrenade->ID()));
@@ -762,7 +885,8 @@ void CWeaponMagazinedWGrenade::OnEvent(NET_Packet& P, u16 type)
 {
 	inherited::OnEvent(P,type);
 	u16 id;
-	switch (type) {
+	switch (type) 
+	{
 		case GE_OWNERSHIP_TAKE: 
 			{
 				P.r_u16(id);
@@ -786,16 +910,16 @@ void CWeaponMagazinedWGrenade::ReloadMagazine()
 {
 	inherited::ReloadMagazine();
 	
-	//перезарядка подствольного гранатамета
-	if(!m_bGrenadeMode) return;
-
+	//перезарядка подствольного гранатомета
 	if(iAmmoElapsed && !m_pGrenade) 
 	{
 		CSE_Abstract*		D	= F_entity_Create("wpn_fake_missile");
 		R_ASSERT			(D);
-		CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
-		R_ASSERT							(l_tpALifeDynamicObject);
-		l_tpALifeDynamicObject->m_tNodeID	= AI_NodeID;
+		
+//		CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
+//		R_ASSERT							(l_tpALifeDynamicObject);
+//		l_tpALifeDynamicObject->m_tNodeID	= AI_NodeID;
+		
 		// Fill
 		strcpy				(D->s_name,"wpn_fake_missile");
 		strcpy				(D->s_name_replace,"");
@@ -817,7 +941,9 @@ void CWeaponMagazinedWGrenade::ReloadMagazine()
 
 void __stdcall CWeaponMagazinedWGrenade::GrenadeCallback(CBoneInstance* B) 
 {
-	CWeaponMagazinedWGrenade* l_pW = dynamic_cast<CWeaponMagazinedWGrenade*>(static_cast<CObject*>(B->Callback_Param)); R_ASSERT(l_pW);
+	CWeaponMagazinedWGrenade* l_pW = dynamic_cast<CWeaponMagazinedWGrenade*>(
+									 static_cast<CObject*>(B->Callback_Param)); 
+	R_ASSERT(l_pW);
 	if(l_pW->m_bHideGrenade) B->mTransform.scale(EPS, EPS, EPS);
 }
 
@@ -825,4 +951,28 @@ void CWeaponMagazinedWGrenade::OnStateSwitch(u32 S)
 {
 	inherited::OnStateSwitch(S);
 	m_bHideGrenade = (!iAmmoElapsed && !(S == eReload));
+}
+
+
+void CWeaponMagazinedWGrenade::OnAnimationEnd()
+{
+	inherited::OnAnimationEnd();
+}
+
+void CWeaponMagazinedWGrenade::OnH_B_Chield	()
+{
+	inherited::OnH_B_Chield();
+}
+void CWeaponMagazinedWGrenade::OnH_B_Independent()
+{
+	inherited::OnH_B_Independent();
+
+	bPending = false;
+	if(m_bGrenadeMode)
+	{
+		STATE = eIdle;
+		SwitchMode();
+		bPending = false;
+	}
+		
 }

@@ -38,6 +38,9 @@ public:
 
 	virtual void Show();
 	virtual void Hide();
+	virtual bool IsHidden() {return MS_HIDDEN == m_state;}
+	virtual bool IsPending() {return m_bPending;}
+
 	virtual void Throw();
 	virtual void Destroy();
 
@@ -51,4 +54,6 @@ public:
 	bool m_throw;
 	f32 m_force, m_minForce, m_maxForce, m_forceGrowSpeed;
 	u32 m_destroyTime, m_stateTime;
+
+	bool m_bPending;
 };

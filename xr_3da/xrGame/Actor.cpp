@@ -1012,12 +1012,17 @@ void CActor::shedule_Update	(u32 DT)
 		if (pCamBobbing)						{Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0;}
 	}
 
+	//если в режиме HUD, то сама модель актера не рисуется
 	setVisible				(!HUDview	());
 
-	//Weapons->Update			(dt,HUDview());
-	if(m_inventory.ActiveItem()) m_inventory.ActiveItem()->m_showHUD = !!HUDview();
-	CWeapon *l_pW = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
-	if(l_pW) l_pW->SetHUDmode(HUDview());
+	//установить режим показа HUD для текущего активного слота
+	if(m_inventory.ActiveItem()) 
+		m_inventory.ActiveItem()->m_showHUD = !!HUDview();
+
+	//если это оружие
+	CWeapon *pWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+	if(pWeapon) pWeapon->SetHUDmode(HUDview());
+
 
 	R_ASSERT(last_gmtl_id!=GAMEMTL_NONE);
 	SGameMtlPair* mtl_pair		= GMLib.GetMaterialPair(self_gmtl_id,last_gmtl_id);
@@ -1385,13 +1390,15 @@ void CActor::g_PerformDrop	( )
 		m_pArtifact				= 0;
 	} else {
 		//
-		CObject*		O		= m_inventory.ActiveItem();//Weapons->ActiveWeapon();
-		if (0==O)				return;
+		
+		PIItem pItem = m_inventory.ActiveItem();
+		if (0==pItem) return;
+		pItem->Drop();
 
-		NET_Packet				P;
+		/*NET_Packet				P;
 		u_EventGen				(P,GE_OWNERSHIP_REJECT,ID());
 		P.w_u16					(u16(O->ID()));
-		u_EventSend				(P);
+		u_EventSend				(P);*/
 	}
 }
 

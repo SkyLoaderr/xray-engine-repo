@@ -538,8 +538,11 @@ void CWeapon::OnH_B_Independent	()
 {
 	inherited::OnH_B_Independent();
 
+	if(m_pHUD)					m_pHUD->Hide();
+
 	setVisible					(true);
 	setEnabled					(true);
+
 	CWeapon::FireEnd();
 	hud_mode					= FALSE;
 	UpdateXForm					();
@@ -564,9 +567,14 @@ void CWeapon::OnH_B_Chield		()
 	setVisible					(false);
 	setEnabled					(false);
 
+	if(m_pHUD)					m_pHUD->Hide();
+
 	if (m_pPhysicsShell)		m_pPhysicsShell->Deactivate	();
 
-	if(Local()) OnStateSwitch(eHiding);
+/*	if(Local()) 
+	{
+		OnStateSwitch(eShowing);
+	}*/
 
 	/*
 	if (Local() && (0xffff!=respawnPhantom)) 
@@ -597,7 +605,8 @@ int CWeapon::Ammo_eject		()
 	return	save;  
 }
 
-void CWeapon::Ammo_add(int iValue) {
+void CWeapon::Ammo_add(int iValue) 
+{
 	//SpawnAmmo();
 	//iAmmoCurrent+=iValue;
 }
@@ -684,7 +693,7 @@ void CWeapon::SwitchState(u32 S)
 	if (Local() && /*??????? (S!=STATE) ??????? &&*/ (S!=NEXT_STATE))	
 	{
 		// !!! Just single entry for given state !!!
-		NEXT_STATE			= S;	// Very-very important line of code!!! :)
+		NEXT_STATE		= S;	// Very-very important line of code!!! :)
 		NET_Packet		P;
 		u_EventGen		(P,GE_WPN_STATE_CHANGE,ID());
 		P.w_u8			(u8(S));
@@ -706,6 +715,8 @@ void CWeapon::renderable_Render		()
 void CWeapon::signal_HideComplete()
 {
 	if(H_Parent()) setVisible(FALSE);
+	bPending = false;
+	if(m_pHUD) m_pHUD->Hide();
 }
 
 void CWeapon::SetDefaults()
@@ -760,8 +771,8 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	Fvector dir, dir1;
 	//dir.random_dir			(D,(fireDispersionBase+fireDispersion*fireDispersion_Current)*GetPrecision(),Random);
 	dir.random_dir(D,(fireDispersion*fireDispersion_Current)*
-						GetPrecision()*
-						GetConditionDispersionFactor(),Random);
+					  GetPrecision()*
+					  GetConditionDispersionFactor(),Random);
 
 	// increase dispersion
 	fireDispersion_Current += fireDispersion_Inc;
@@ -939,46 +950,54 @@ void CWeapon::OnEvent		(NET_Packet& P, u16 type)
 	}
 }
 
-bool CWeapon::Activate() {
-	// Aucuaaaony i?e aeoeaaoee neioa a eioi?ii iaoiaeony iauaeo
-	// Anee iauaeo ii?ao auou aeoeae?iaai aa?ioou true, eia?a false
-	//if(H_Parent() && m_ammoSect) SpawnAmmo();
-	//if(!IsValid()) return false;
+bool CWeapon::Activate() 
+{
 	Show();
 	return true;
 }
 
-void CWeapon::Deactivate() {
-	// Aucuaaaony i?e aaaeoeaaoee neioa a eioi?ii iaoiaeony iauaeo
+void CWeapon::Deactivate() 
+{
 	Hide();
 }
 
 bool CWeapon::Action(s32 cmd, u32 flags) 
 {
 	if(inherited::Action(cmd, flags)) return true;
-	switch(cmd) {
-		case kWPN_FIRE : {
-			if(flags&CMD_START) 
-				FireStart();
-			else 
-				FireEnd();
-		} return true;
-		case kWPN_NEXT : {
-			if(flags&CMD_START) {
-				u32 l_newType = m_ammoType;
-				do {
-					l_newType = (l_newType+1)%m_ammoTypes.size();
-				} while(l_newType != m_ammoType && !m_pInventory->Get(*m_ammoTypes[l_newType],
-																	 !dynamic_cast<CActor*>(H_Parent())));
-				
-				if(l_newType != m_ammoType) 
+
+	if(bPending) return false;
+	
+	switch(cmd) 
+	{
+		case kWPN_FIRE: 
+			{
+                if(flags&CMD_START) 
+					FireStart();
+				else 
+					FireEnd();
+			} 
+			return true;
+		case kWPN_NEXT: 
+			{
+				if(flags&CMD_START) 
 				{
-					m_ammoType = l_newType;
-					m_pAmmo = NULL;
-					Reload();
+					u32 l_newType = m_ammoType;
+					do 
+					{
+						l_newType = (l_newType+1)%m_ammoTypes.size();
+					} while(l_newType != m_ammoType && 
+							!m_pInventory->Get(*m_ammoTypes[l_newType],
+												!dynamic_cast<CActor*>(H_Parent())));
+				
+					if(l_newType != m_ammoType) 
+					{
+						m_ammoType = l_newType;
+						m_pAmmo = NULL;
+						Reload();
+					}
 				}
-			}
-		} return true;
+			} 
+            return true;
 	}
 	return false;
 }
@@ -1023,8 +1042,10 @@ void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect)
 	D->s_flags.set(M_SPAWN_OBJECT_LOCAL);
 	D->RespawnTime = 0;
 	l_pA->m_tNodeID	= AI_NodeID;
+	
 	// Send
 	if(boxCurr == 0xffffffff) boxCurr = l_pA->m_boxSize;
+	
 	while(boxCurr) 
 	{
 		l_pA->a_elapsed = (u16)(boxCurr > l_pA->m_boxSize ? l_pA->m_boxSize : boxCurr);

@@ -117,6 +117,10 @@ CSE_Abstract *F_entity_Create			(LPCSTR caSection)
 		case CLSID_OBJECT_G_RPG7:		return xr_new<CSE_Temporary>					(caSection);
 		case CLSID_OBJECT_G_FAKE:		return xr_new<CSE_Temporary>					(caSection);
 
+		case  CLSID_OBJECT_W_SCOPE:		return xr_new<CSE_ALifeItem>					(caSection);  			// Visualed
+		case  CLSID_OBJECT_W_SILENCER:	return xr_new<CSE_ALifeItem>					(caSection);  			// Visualed
+		case  CLSID_OBJECT_W_GLAUNCHER:	return xr_new<CSE_ALifeItem>					(caSection);  			// Visualed
+
 //		case CLSID_OBJECT_HEALTH:		return xr_new<xrSE_Health>						(caSection);
 		case CLSID_TARGET_ASSAULT:		return xr_new<CSE_TargetAssault>				(caSection);
 		case CLSID_TARGET_CS_BASE:		return xr_new<CSE_Target_CS_Base>				(caSection);

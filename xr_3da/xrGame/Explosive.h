@@ -1,55 +1,50 @@
+// Explosive.h: интерфейс для взврывающихся объектов
+//
+//////////////////////////////////////////////////////////////////////
+
 #pragma once
-#include "missile.h"
-#include "..\feel_touch.h"
 
 #define SND_RIC_COUNT 5
 
-class CGrenade :
-	public CMissile,
-	public Feel::Touch
+#include "missile.h"
+#include "..\feel_touch.h"
+
+class CExplosive
 {
-	typedef CMissile inherited;
 public:
-	CGrenade(void);
-	virtual ~CGrenade(void);
+	CExplosive(void);
+	virtual ~CExplosive(void);
 
 	virtual void Load(LPCSTR section);
+	
 	virtual BOOL net_Spawn(LPVOID DC);
 	virtual void net_Destroy();
-	virtual void OnH_A_Chield();
-	virtual void OnH_B_Independent();
-	virtual void OnEvent(NET_Packet& P, u16 type);
-	virtual void OnAnimationEnd();
+
 	virtual void UpdateCL();
 
 	virtual void feel_touch_new(CObject* O);
 
-	virtual bool Activate();
-	virtual void Deactivate();
-	virtual void Throw();
-	virtual void Destroy();
 	virtual void Explode();
-	virtual void FragWallmark(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R);
-
-	virtual bool Action(s32 cmd, u32 flags);
-	virtual bool Useful();
-	virtual u32 State(u32 state);
+	virtual void FragWallmark(const Fvector& vDir, 
+							  const Fvector &vEnd, 
+							  Collide::ray_query& R);
 
 protected:
-
-	CGrenade *m_pFake;
-
 	//параметры взрыва
 	float m_blast, m_blastR, m_fragsR, m_fragHit;
+	//количество осколков
 	int m_frags;
-	u32	m_expoldeTime;
+	//список пораженных объектов
 	xr_list<CGameObject*> m_blasted;
 
+	//продолжительность взрыва
+	u32	m_expoldeTime;
+
+	//визуальные эффекты
 	ref_str		pstrWallmark;
 	ref_shader	hWallmark;
 	float		fWallmarkSize;
-
-	//эффекты
+	
 	xr_vector<ref_str>	m_effects;
 	IRender_Light*		m_pLight;
 	Fcolor m_lightColor;

@@ -97,6 +97,11 @@
 #define CLSID_OBJECT_A_PM			MK_CLSID('A','M','M','O',' ',' ',' ',' ')
 #define CLSID_OBJECT_A_FORT			MK_CLSID('A','_','F','O','R','T',' ',' ')
 
+// Weapons Add-ons
+#define CLSID_OBJECT_W_SCOPE		MK_CLSID('W','_','S','C','O','P','E',' ')
+#define CLSID_OBJECT_W_SILENCER		MK_CLSID('W','_','S','I','L','E','N','C')
+#define CLSID_OBJECT_W_GLAUNCHER	MK_CLSID('W','_','G','L','A','U','N','C')
+
 // Modifiers
 #define CLSID_OBJECT_M_QDAMAGE		MK_CLSID('O','_','Q','D','M','G',' ',' ')
 #define CLSID_OBJECT_M_IMMORTAL		MK_CLSID('O','_','I','M','M','O','R','T')

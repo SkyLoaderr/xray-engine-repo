@@ -37,11 +37,16 @@ public:
 	virtual bool	Useful();									// !!! Переопределить. (см. в Inventory.cpp)
 	virtual bool	Attach(PIItem pIItem, bool force = false);	// !!! Переопределить. (см. в Inventory.cpp)
 	virtual bool	Detach(PIItem pIItem, bool force = true);	// !!! Переопределить. (см. в Inventory.cpp)
+	
 	virtual bool	Activate();									// !!! Переопределить. (см. в Inventory.cpp)
 	virtual void	Deactivate();								// !!! Переопределить. (см. в Inventory.cpp)
 	virtual bool	Action(s32 cmd, u32 flags) {return false;}	// true если известная команда, иначе false
+	virtual bool	IsHidden()					{return true;}	// вещь спрятано в инвентаре
+	virtual bool	IsPending()					{return false;}	// true если вещь чем-то занята
+	
 	virtual void	OnAnimationEnd() {}
 	virtual void	renderable_Render() {}
+	
 	virtual s32		Sort(PIItem pIItem);						// !!! Переопределить. (см. в Inventory.cpp)
 	virtual bool	Merge(PIItem pIItem);						// !!! Переопределить. (см. в Inventory.cpp)
 

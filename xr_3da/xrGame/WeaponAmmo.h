@@ -1,7 +1,8 @@
 #pragma once
 #include "inventory.h"
 
-class CCartridge {
+class CCartridge 
+{
 public:
 	CCartridge();
 	void Load(LPCSTR section);
@@ -13,8 +14,7 @@ public:
 	f32		m_impair;
 };
 
-class CWeaponAmmo :
-	public CInventoryItem
+class CWeaponAmmo :	public CInventoryItem
 {
 	typedef CInventoryItem		inherited;
 public:
@@ -24,8 +24,8 @@ public:
 	virtual void Load(LPCSTR section);
 	virtual BOOL net_Spawn(LPVOID DC);
 	virtual void net_Destroy();
-	virtual void			net_Export			(NET_Packet& P);	// export to server
-	virtual void			net_Import			(NET_Packet& P);	// import from server
+	virtual void net_Export(NET_Packet& P);	// export to server
+	virtual void net_Import(NET_Packet& P);	// import from server
 	virtual void OnH_B_Chield();
 	virtual void OnH_B_Independent();
 	virtual void UpdateCL();

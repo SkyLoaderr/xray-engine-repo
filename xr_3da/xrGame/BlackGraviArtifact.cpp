@@ -25,6 +25,8 @@ CBlackGraviArtifact::~CBlackGraviArtifact(void)
 	m_GameObjectList.clear();
 }
 
+
+
 void CBlackGraviArtifact::Load(LPCSTR section) 
 {
 	inherited::Load(section);
@@ -33,6 +35,30 @@ void CBlackGraviArtifact::Load(LPCSTR section)
 	m_fRadius = pSettings->r_float(section,"radius");
 	m_fStrikeImpulse = pSettings->r_float(section,"strike_impulse");
 	m_sParticleName = pSettings->r_string(section,"particle");
+}
+
+BOOL CBlackGraviArtifact::net_Spawn(LPVOID DC)
+{
+	if(!inherited::net_Spawn(DC)) return FALSE;
+
+
+
+	CParticlesObject* pStaticPG;
+	pStaticPG = xr_new<CParticlesObject>("anomaly\\galantine",Sector(),false);
+	Fmatrix pos;
+	//pos.rotateY(1.57);
+	//pos.mulA(pos);
+	pos.scale(0.7f,0.7f,0.7f);
+	pos.translate_over(XFORM().c);
+	
+	Fvector vel;
+	vel.set(0,0,0);
+	pStaticPG->UpdateParent(pos, vel); 
+	pStaticPG->Play();
+
+
+
+	return TRUE;
 }
 
 void CBlackGraviArtifact::UpdateCL() 
@@ -64,7 +90,6 @@ void CBlackGraviArtifact::UpdateCL()
 			m_bStrike = false;
 		}
 	}
-		
 }
 
 void CBlackGraviArtifact::Hit(float P, Fvector &dir,

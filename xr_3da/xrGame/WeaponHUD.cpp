@@ -17,6 +17,8 @@ CWeaponHUD::CWeaponHUD()
 	m_Offset.identity			();
 	pVisualName					= 0;
 	iFireBone					= -1;
+
+	m_bHidden = true;
 }
 
 CWeaponHUD::~CWeaponHUD()
@@ -73,6 +75,8 @@ static void __stdcall animCallback	(CBlend* B)
 
 void CWeaponHUD::animPlay			(CMotionDef* M,	BOOL bMixIn, CInventoryItem* W)
 {
+	Show();
+
 	PSkeletonAnimated(pVisual)->Update		();
 	if (W)	PSkeletonAnimated(pVisual)->PlayCycle	(M,bMixIn,animCallback,W);
 	else	PSkeletonAnimated(pVisual)->PlayCycle	(M,bMixIn);

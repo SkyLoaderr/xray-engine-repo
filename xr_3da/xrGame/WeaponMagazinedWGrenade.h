@@ -58,17 +58,29 @@ public:
 };
 
 
-class CWeaponMagazinedWGrenade :
-	public CWeaponMagazined
+
+
+class CWeaponMagazinedWGrenade : public CWeaponMagazined
 {
 	typedef CWeaponMagazined inherited;
+protected:
+	enum EState
+	{
+		eSwitchingState = 256,	// for pistols, etc
+	};
 public:
 	CWeaponMagazinedWGrenade(LPCSTR name,ESoundTypes eSoundType);
 	virtual ~CWeaponMagazinedWGrenade(void);
 
 	virtual void	Load			(LPCSTR section);
+	
 	virtual BOOL	net_Spawn		(LPVOID DC);
+	
+	virtual void	OnH_B_Chield	();
+	virtual void	OnH_B_Independent();
+	
 	virtual void	OnStateSwitch	(u32 S);
+	
 	virtual void	switch2_Idle	();
 	virtual void	switch2_Reload	();
 	virtual void	state_Fire		(float dt);
@@ -77,9 +89,11 @@ public:
 	virtual void	OnEvent			(NET_Packet& P, u16 type);
 	virtual void	ReloadMagazine	();
 
-	virtual bool Action(s32 cmd, u32 flags);
+	virtual bool	Action			(s32 cmd, u32 flags);
 
-	void SwitchMode();
+	//переключение в режим подствольника
+	void			SwitchMode		();
+	void			OnAnimationEnd	();
 
 	static void	__stdcall GrenadeCallback(CBoneInstance*);
 
@@ -90,6 +104,8 @@ public:
 	MotionSVec			mhud_shots_g;
 	MotionSVec			mhud_switch_g, mhud_switch;
 
+	//дополнительные параметры патронов 
+	//для подствольника
 	CWeaponAmmo* m_pAmmo2;
 	char m_ammoSect2[255];
 	xr_vector<ref_str> m_ammoTypes2;
@@ -100,7 +116,8 @@ public:
 	
 	bool m_bHideGrenade;
 	bool m_bGrenadeMode;
+
+
 	Fvector* m_pGrenadePoint;
 	CWeaponFakeGrenade* m_pGrenade;
-
 };

@@ -20,6 +20,8 @@ public:
 	CBlackGraviArtifact(void);
 	virtual ~CBlackGraviArtifact(void);
 
+	virtual BOOL net_Spawn			(LPVOID DC);
+
 	virtual void Load				(LPCSTR section);
 	virtual void UpdateCL			();
 
