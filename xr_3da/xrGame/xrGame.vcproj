@@ -611,6 +611,9 @@
 						<File
 							RelativePath=".\ai\biting\ai_biting_state_rest.cpp">
 						</File>
+						<File
+							RelativePath=".\ai\biting\ai_biting_state_squadtask.cpp">
+						</File>
 					</Filter>
 					<Filter
 						Name="ai_rat"

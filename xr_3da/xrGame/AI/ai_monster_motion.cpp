@@ -620,7 +620,7 @@ void CMotionManager::FX_Play(u16 bone, bool is_front, float amount)
 		// Найти минимальное расстояние до боны на которой есть fx
 		CBoneInstance *target_bone = &PKinematics(pVisual)->LL_GetBoneInstance(bone);
 		
-		float	best_dist = 10000.f;
+		float	best_dist = flt_max;
 
 		for (FX_MAP_U16_IT it = _sd->fx_map_u16.begin(); it != _sd->fx_map_u16.end(); it++) {
 			CBoneInstance *cur_bone = &PKinematics(pVisual)->LL_GetBoneInstance(it->first);

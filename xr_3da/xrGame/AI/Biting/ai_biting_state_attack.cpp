@@ -104,21 +104,6 @@ void CBitingAttack::Run()
 
 	u32 delay;
 
-#pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
-	if (m_bInvisibility) {
-		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
-		CActor			*pA  =  dynamic_cast<CActor*>(Level().CurrentEntity());
-		
-		if (pBS && pA && (pA->Position().distance_to(pBS->Position()) < pBS->m_fEffectDist)) {
-			if ((dist < pBS->m_fInvisibilityDist) && (pBS->GetPower() > pBS->m_fPowerThreshold)) {
-				if (pBS->CMonsterInvisibility::Switch(false)) {
-					pBS->ChangePower(pBS->m_ftrPowerDown);
-					pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
-				}
-			}
-		}
-	}
-	
 	// проверить на возможность прыжка
 	CJumping *pJumping = dynamic_cast<CJumping *>(pMonster);
 	if (pJumping) pJumping->Check(pMonster->Position(),m_tEnemy.obj->Position(),m_tEnemy.obj);
@@ -130,6 +115,22 @@ void CBitingAttack::Run()
 	if ((m_tAction == ACTION_RUN) && bEnemyDoesntSeeMe) m_tAction = ACTION_STEAL;
 
 	if (CheckThreaten()) m_tAction = ACTION_THREATEN;
+
+#pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
+	if (m_bInvisibility && m_tAction != ACTION_THREATEN) {
+		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
+		CActor			*pA  =  dynamic_cast<CActor*>(Level().CurrentEntity());
+
+		if (pBS && pA && (pA->Position().distance_to(pBS->Position()) < pBS->m_fEffectDist)) {
+			if ((dist < pBS->m_fInvisibilityDist) && (pBS->GetPower() > pBS->m_fPowerThreshold)) {
+				if (pBS->CMonsterInvisibility::Switch(false)) {
+					pBS->ChangePower(pBS->m_ftrPowerDown);
+					pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
+				}
+			}
+		}
+	}
+
 
 	// ¬ыполнение состо€ни€
 	switch (m_tAction) {	
@@ -198,7 +199,7 @@ void CBitingAttack::Run()
 			DO_IN_TIME_INTERVAL_END();
 
 			pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
-			//pMonster->MotionMan.SetSpecParams(ASP_THREATEN);
+			pMonster->MotionMan.SetSpecParams(ASP_THREATEN);
 
 			break;
 	}
@@ -219,13 +220,12 @@ void CBitingAttack::Done()
 // на прот€жении N мин не был атакован этим монстром
 // враг стоит не бежит, видит
 // если состо€ни€ ATTACK_MELEE ещЄ не было
-
 bool CBitingAttack::CheckThreaten()
 {
-	if (pMonster->GetEntityMorale() > 0.8f) {
-		LOG_EX("Try Threaten:: Entity Morale > 0.8");
-		return false;
-	}
+//	if (pMonster->GetEntityMorale() > 0.8f) {
+//		LOG_EX("Try Threaten:: Entity Morale > 0.8");
+//		return false;
+//	}
 
 	if (((pMonster->flagsEnemy & FLAG_ENEMY_DOESNT_SEE_ME) == FLAG_ENEMY_DOESNT_SEE_ME) || 
 		((pMonster->flagsEnemy & FLAG_ENEMY_GO_FARTHER_FAST) == FLAG_ENEMY_GO_FARTHER_FAST)) {

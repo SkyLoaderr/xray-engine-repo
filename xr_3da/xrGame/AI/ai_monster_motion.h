@@ -71,6 +71,10 @@ enum EMotionAnim {
 	
 	eAnimSniff,
 	eAnimHowling,
+	eAnimThreaten,
+
+	eAnimMiscAction_00,
+
 };
 
 // Generic actions
@@ -105,6 +109,7 @@ enum EPState {
 #define ASP_ATTACK_RAT			(1 << 3)
 #define ASP_ATTACK_RAT_JUMP		(1 << 4)
 #define	ASP_STAND_SCARED		(1 << 5)
+#define ASP_THREATEN			(1 << 6)
 
 DEFINE_VECTOR	(CMotionDef*, ANIM_VECTOR, ANIM_IT);
 

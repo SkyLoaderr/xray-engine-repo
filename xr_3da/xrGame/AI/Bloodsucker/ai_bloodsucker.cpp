@@ -11,7 +11,8 @@ CAI_Bloodsucker::CAI_Bloodsucker()
 	statePanic			= xr_new<CBitingPanic>			(this, false);
 	stateExploreDNE		= xr_new<CBitingExploreDNE>		(this, true);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>		(this);
-
+	stateSquadTask		= xr_new<CBitingSquadTask>		(this);
+	
 	Init();
 }
 
@@ -23,6 +24,7 @@ CAI_Bloodsucker::~CAI_Bloodsucker()
 	xr_delete(statePanic);
 	xr_delete(stateExploreDNE);
 	xr_delete(stateExploreNDE);
+	xr_delete(stateSquadTask);
 }
 
 
@@ -73,14 +75,17 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimSitToSleep,		"sit_sleep_down_",		-1, 0,										0,										PS_SIT);
 	MotionMan.AddAnim(eAnimStandSitDown,	"stand_sit_down_",		-1, 0,										0,										PS_STAND);
 	MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, inherited::_sd->m_fsSteal,				inherited::_sd->m_fsWalkAngular,		PS_STAND);
-
+	MotionMan.AddAnim(eAnimThreaten,		"stand_aggressive_",	-1, 0,										0,										PS_STAND);
+	MotionMan.AddAnim(eAnimMiscAction_00,	"stand_to_aggressive_",	-1, 0,										0,										PS_STAND);	
+	
 	// define transitions
-	MotionMan.AddTransition(eAnimStandSitDown,	eAnimSleep,	eAnimSitToSleep,	false);
-	MotionMan.AddTransition(PS_STAND,			eAnimSleep,	eAnimStandSitDown,	true);
-	MotionMan.AddTransition(PS_STAND,			PS_SIT,		eAnimStandSitDown,	false);
-	MotionMan.AddTransition(PS_STAND,			PS_LIE,		eAnimStandSitDown,	false);
-	MotionMan.AddTransition(PS_SIT,				PS_STAND,	eAnimSitStandUp,	false);
-	MotionMan.AddTransition(PS_LIE,				PS_STAND,	eAnimSitStandUp,	false);
+	MotionMan.AddTransition(PS_STAND,			eAnimThreaten,	eAnimMiscAction_00,	false);
+	MotionMan.AddTransition(eAnimStandSitDown,	eAnimSleep,		eAnimSitToSleep,	false);
+	MotionMan.AddTransition(PS_STAND,			eAnimSleep,		eAnimStandSitDown,	true);
+	MotionMan.AddTransition(PS_STAND,			PS_SIT,			eAnimStandSitDown,	false);
+	MotionMan.AddTransition(PS_STAND,			PS_LIE,			eAnimStandSitDown,	false);
+	MotionMan.AddTransition(PS_SIT,				PS_STAND,		eAnimSitStandUp,	false);
+	MotionMan.AddTransition(PS_LIE,				PS_STAND,		eAnimSitStandUp,	false);
 
 	// define links from Action to animations
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
@@ -96,6 +101,7 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack,	eAnimRun,			eAnimRun,			PI_DIV_6);
 	MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround); 
+
 
 	Fvector center;
 	center.set		(0.f,0.f,0.f);
@@ -136,27 +142,62 @@ void CAI_Bloodsucker::StateSelector()
 {
 	VisionElem ve;
 
-	if (C && H && I)			SetState(statePanic);
-	else if (C && H && !I)		SetState(statePanic);
-	else if (C && !H && I)		SetState(statePanic);
-	else if (C && !H && !I) 	SetState(statePanic);
-	else if (D && H && I)		SetState(stateAttack);
-	else if (D && !H && I)		SetState(statePanic);
-	else if (D && !H && !I) 	SetState(stateAttack);			// :: Hide
-	else if (D && H && !I)		SetState(stateAttack); 
-	else if (E && H && I)		SetState(stateAttack); 
-	else if (E && H && !I)  	SetState(stateAttack);  
-	else if (E && !H && I) 		SetState(stateAttack);			// :: Detour
-	else if (E && !H && !I)		SetState(stateAttack);			// :: Detour 
-	else if (F && H && I) 		SetState(stateAttack); 		
-	else if (F && H && !I)  	SetState(stateAttack); 
-	else if (F && !H && I)  	SetState(stateAttack); 
-	else if (F && !H && !I) 	SetState(stateAttack);		
-	else if (A && !K)			SetState(stateExploreNDE); 
-	else if (B && !K)			SetState(stateExploreNDE); 
-	else if ((GetCorpse(ve) && (ve.obj->m_fFood > 1)) && ((GetSatiety() < 0.85f) || flagEatNow))
-		SetState(stateEat);	
-	else						SetState(stateRest);
+	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad(g_Squad());
+	if (pSquad->GetLeader() == this) pSquad->ProcessGroupIntel();
+	GTask &pTask = pSquad->GetTask(this);
+
+	if (pSquad->GetLeader() == this) SetState(stateRest);
+	else {
+		if ((pTask.state.type == TS_REQUEST) && (pTask.state.ttl > m_dwCurrentTime)) {
+			pTask.state.type	= TS_PROGRESS;
+			pTask.state.ttl		= m_dwCurrentTime + 3000;
+		} else {
+			if ((pTask.state.type == TS_PROGRESS) && (pTask.state.ttl > m_dwCurrentTime)) {
+				
+			}
+			SetState(stateSquadTask);
+		}
+	}
+	
+	SetState(stateSquadTask);
+	
+//	if (CanExecuteTask()){
+//		if (task != changed) {
+//			if (new_target) rebuild_path();
+//			ChooseAction(AccordingToTask);
+//		}
+//	} else RefuseExecute(pTask);
+
+//	if (ReadyToExecuteTask(pTask)) {
+//		Execute(pTask); 
+//		return;
+//	} else {
+//		RefuseExecute(pTask);
+//	}
+
+
+	
+//	if (C && H && I)			SetState(statePanic);
+//	else if (C && H && !I)		SetState(statePanic);
+//	else if (C && !H && I)		SetState(statePanic);
+//	else if (C && !H && !I) 	SetState(statePanic);
+//	else if (D && H && I)		SetState(stateAttack);
+//	else if (D && !H && I)		SetState(statePanic);
+//	else if (D && !H && !I) 	SetState(stateAttack);			// :: Hide
+//	else if (D && H && !I)		SetState(stateAttack); 
+//	else if (E && H && I)		SetState(stateAttack); 
+//	else if (E && H && !I)  	SetState(stateAttack);  
+//	else if (E && !H && I) 		SetState(stateAttack);			// :: Detour
+//	else if (E && !H && !I)		SetState(stateAttack);			// :: Detour 
+//	else if (F && H && I) 		SetState(stateAttack); 		
+//	else if (F && H && !I)  	SetState(stateAttack); 
+//	else if (F && !H && I)  	SetState(stateAttack); 
+//	else if (F && !H && !I) 	SetState(stateAttack);		
+//	else if (A && !K)			SetState(stateExploreNDE); 
+//	else if (B && !K)			SetState(stateExploreNDE); 
+//	else if ((GetCorpse(ve) && (ve.obj->m_fFood > 1)) && ((GetSatiety() < 0.85f) || flagEatNow))
+//		SetState(stateEat);	
+//	else						SetState(stateRest);
 
 }
 
@@ -238,5 +279,10 @@ void CAI_Bloodsucker::CheckSpecParams(u32 spec_params)
 	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
 		MotionMan.Seq_Add(eAnimCheckCorpse);
 		MotionMan.Seq_Switch();
+	}
+
+	if ((spec_params & ASP_THREATEN) == ASP_THREATEN) {
+		MotionMan.SetCurAnim(eAnimThreaten);
+		return;
 	}
 }

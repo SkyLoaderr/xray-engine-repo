@@ -12,6 +12,7 @@
 #include "tracer.h"
 #include "ai_sounds.h"
 #include "net_queue.h"
+#include "ai\\ai_monster_group.h"
 
 class CHUDManager;
 class CParticlesObject;
@@ -73,6 +74,8 @@ public:
 	xrServer*					Server;
 
 	svector<CTeam,maxTeams>		Teams;
+	CSquadManager				SquadMan;
+	
 
 	CTracer						Tracers;
 
@@ -234,6 +237,7 @@ public:
 	IC u8 GetDayTime() { 
 		return ((u8) ((GetGameTime() / 3600000) % 24 )); 
 	}
+
 
 };
 

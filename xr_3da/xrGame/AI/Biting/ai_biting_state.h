@@ -313,3 +313,17 @@ public:
 	CBitingNull(CAI_Biting *p) {}
 };
 
+//////////////////////////////////////////////////////////////////////////
+// Выполнение задач группового интелекта
+//////////////////////////////////////////////////////////////////////////
+class CBitingSquadTask : public IState {
+	typedef IState inherited;
+	CAI_Biting		*pMonster;
+public:
+	CBitingSquadTask (CAI_Biting *p);
+private:
+	virtual void	Init				();
+	virtual void	Run					();
+};
+
+

@@ -196,7 +196,7 @@ public:
 			void			SetDirectionLook				(bool bReversed = false);
 	virtual void			LookPosition					(Fvector to_point);		// каждый монстр может по-разному реализвать эту функ (e.g. кровосос с поворотом головы и т.п.)
 
-
+	// Process scripts
 	virtual	bool			bfAssignMovement				(CEntityAction	*tpEntityAction);
 	virtual	bool			bfAssignObject					(CEntityAction	*tpEntityAction);
 
@@ -288,6 +288,7 @@ public:
 	CBitingExploreDNE		*stateExploreDNE;
 	CBitingExploreDE		*stateExploreDE;
 	CBitingExploreNDE		*stateExploreNDE;
+	CBitingSquadTask		*stateSquadTask;
 	
 	friend	class			CBitingRest;
 	friend  class 			CBitingAttack;
@@ -298,6 +299,7 @@ public:
 	friend	class 			CBitingExploreDNE;
 	friend	class 			CBitingExploreDE;
 	friend	class 			CBitingExploreNDE;
+	friend	class 			CBitingSquadTask;
 
 	// State flags
 	bool					flagEatNow;				// true - сейчас монстр ест

@@ -8,6 +8,8 @@
 #include "Entity.h"
 #include "inventory.h"
 
+#include "actor.h"
+
 #define MAX_ARMOR		200
 #define MAX_HEALTH		100
 
@@ -167,6 +169,12 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 	if (S.Leader==0)		S.Leader			=this;
 	++G.m_dwAliveCount;
 	
+	CActor	*pA = dynamic_cast<CActor*>(this);
+	if (!pA) {
+		Level().SquadMan.RegisterMember(id_Squad, this);
+		Level().SquadMan.Dump();
+	}
+
 	// Initialize variables
 	fEntityHealth			= 100;
 	fArmor					= 0;
@@ -208,7 +216,12 @@ void CEntity::net_Destroy	()
 			}
 		}
 	}
-
+	
+	CActor	*pA = dynamic_cast<CActor*>(this);
+	if (!pA) {
+		Level().SquadMan.RemoveMember(g_Squad(), this);
+		Level().SquadMan.Dump();
+	}
 
 	inherited::net_Destroy	();
 }
