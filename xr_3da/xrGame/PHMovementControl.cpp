@@ -44,7 +44,7 @@ CPHMovementControl::CPHMovementControl(void)
 
 CPHMovementControl::~CPHMovementControl(void)
 {
-	//m_character.Destroy();
+	m_character.Destroy();
 }
 
 //static Fvector old_pos={0,0,0};
