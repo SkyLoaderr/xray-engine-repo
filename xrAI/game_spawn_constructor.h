@@ -63,7 +63,6 @@ protected:
 	IC		shared_str				spawn_name				(LPCSTR output);
 			void					save_spawn				(LPCSTR name, LPCSTR output);
 			void					verify_level_changers	();
-			void					build_root_spawns		();
 			void					verify_spawns			(ALife::_SPAWN_ID spawn_id);
 			void					verify_spawns			();
 			void					process_spawns			();
