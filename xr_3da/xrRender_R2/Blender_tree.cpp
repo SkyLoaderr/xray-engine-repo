@@ -128,29 +128,29 @@ void	CBlender_Tree::Compile	(CBlender_Compile& C)
 	switch (C.iElement)
 	{
 	case 0:		// deffer
-		if (oBlend.value)		C.r2_Pass				(r2v("r2_deffer_tree_flat"),r2p("r2_deffer_base_aref_flat"));
-		else					C.r2_Pass				(r2v("r2_deffer_tree_flat"),r2p("r2_deffer_base_flat"));
-		C.r2_Sampler			("s_base",C.L_textures[0]);
-		C.r2_End				();
+		if (oBlend.value)		C.r_Pass	(r2v("r2_deffer_tree_flat"),r2p("r2_deffer_base_aref_flat"));
+		else					C.r_Pass	(r2v("r2_deffer_tree_flat"),r2p("r2_deffer_base_flat"));
+		C.r_Sampler			("s_base",C.L_textures[0]);
+		C.r_End				();
 		break;
 	case 1:		// smap-direct
-		if (oBlend.value)		C.r2_Pass	(r2v("r2_shadow_direct_tree"),r2p("r2_shadow_direct_aref"),TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,TRUE,220);
-		else					C.r2_Pass	(r2v("r2_shadow_direct_base"),r2p("r2_shadow_direct_base"));
-		C.r2_Sampler			("s_base",C.L_textures[0]);
-		C.r2_End				();
+		if (oBlend.value)		C.r_Pass	(r2v("r2_shadow_direct_tree"),r2p("r2_shadow_direct_aref"),TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,TRUE,220);
+		else					C.r_Pass	(r2v("r2_shadow_direct_base"),r2p("r2_shadow_direct_base"));
+		C.r_Sampler			("s_base",C.L_textures[0]);
+		C.r_End				();
 		break;
 	case 2:		// smap-point
-		if (oBlend.value)		C.r2_Pass				(r2v("r2_shadow_point_aref"),r2p("r2_shadow_point_aref"));
-		else					C.r2_Pass				(r2v("r2_shadow_point_base"),r2p("r2_shadow_point_base"));
-		C.r2_Sampler			("s_base",C.L_textures[0]);
+		if (oBlend.value)		C.r_Pass				(r2v("r2_shadow_point_aref"),r2p("r2_shadow_point_aref"));
+		else					C.r_Pass				(r2v("r2_shadow_point_base"),r2p("r2_shadow_point_base"));
+		C.r_Sampler			("s_base",C.L_textures[0]);
 		C.r2_Constant			("light_position",	&RImplementation.Binders.l_position);
-		C.r2_End				();
+		C.r_End				();
 		break;
 	case 3:		// smap-spot
-		if (oBlend.value)		C.r2_Pass	(r2v("r2_shadow_direct_tree"),r2p("r2_shadow_direct_aref"),TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,TRUE,220);
-		else					C.r2_Pass	(r2v("r2_shadow_direct_base"),r2p("r2_shadow_direct_base"));
-		C.r2_Sampler			("s_base",C.L_textures[0]);
-		C.r2_End				();
+		if (oBlend.value)		C.r_Pass	(r2v("r2_shadow_direct_tree"),r2p("r2_shadow_direct_aref"),TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,TRUE,220);
+		else					C.r_Pass	(r2v("r2_shadow_direct_base"),r2p("r2_shadow_direct_base"));
+		C.r_Sampler			("s_base",C.L_textures[0]);
+		C.r_End				();
 		break;
 	}
 }
