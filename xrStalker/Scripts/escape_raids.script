@@ -205,6 +205,6 @@ function check_need_raid (a)
     
     if count >= 2 then
        raid_needed = true
-       printf ("RAID NEEDED !!!")
+   --    printf ("RAID NEEDED !!!")
     end   
 end
