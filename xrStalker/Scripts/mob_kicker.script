@@ -23,6 +23,7 @@ function mob_kicker:__init (npc, storage)
     self.time = 0
     self.rnd = 0
     self.initialized = false
+    self.set = false
 end
 ------------------
 function mob_kicker:reset_scheme ()    
@@ -74,7 +75,7 @@ function mob_kicker:update (delta)
 end
 ------------------
 function mob_kicker:move_and_kick   ()
-    if distance_between (self.object, self.corpse) < 2.5 then
+    if distance_between (self.object, self.corpse) < 2.2 then
        local vDir = self.corpse:position ():sub (self.object:position ())
        vDir:normalize ()
        self.dir = vDir
@@ -84,9 +85,9 @@ function mob_kicker:move_and_kick   ()
           action (self.object, look (look.point, self.corpse:position ()), anim (anim.turn, 0), cond (cond.look_end))
           return
        else
-          xr_logic.mob_capture (self.object, false)
-          xr_logic.mob_capture (self.object, true)
-          action (self.object, move (move.run_fwd, self.corpse), sound (sound.attack), cond(cond.time_end, cond.move_end))
+          --xr_logic.mob_capture (self.object, false)
+          --xr_logic.mob_capture (self.object, true)
+          --action (self.object, move (move.run_fwd, self.corpse), sound (sound.attack), cond(cond.time_end, cond.move_end))
           --action (self.object, anim (anim.attack, 0), cond (cond.time_end, 600))
           vDir.y = 0.6
           local constant = 200000
@@ -94,6 +95,7 @@ function mob_kicker:move_and_kick   ()
           self.state = state_move_to_start
           self.time = device ():time_global () + math.random (300, 400)
           self.start_point = self:select_point ()
+          self.set = false
           return
        end   
     else
@@ -119,13 +121,12 @@ function mob_kicker:move_to_start ()
        return
     end   
         
-    xr_logic.mob_capture (self.object, false)
-    xr_logic.mob_capture (self.object, true)
-    --if self.rnd > 50 then
+    if self.set == false then        
+       xr_logic.mob_capture (self.object, false)
+       xr_logic.mob_capture (self.object, true)
+       self.set = true
        action (self.object, move (move.run_fwd, self.start_point, 0.5), cond (cond.move_end))
-    --else
-       --action (self.object, move (move.walk_fwd, self.start_point, 0.5), sound (sound.attack), cond (cond.move_end))
-    --end
+    end
     self.rnd = math.random (1, 100)
 end
 ------------------
@@ -135,12 +136,12 @@ function mob_kicker:select_point ()
     local dist
     dir:normalize ()
     if self.corpse_pos:distance_to (current) > max_corpse_dist then
-       dist = math.random (5, 8)
+       dist = math.random (4, 8)
     else
        dir = self.object:position ():sub (self.corpse:position ())
        dir:normalize ()
        dir = vector_rotate_y (dir, math.random (30, 120))
-       dist = math.random (5, 10)
+       dist = math.random (4, 8)
     end   
     self.start_point_id = level.vertex_in_direction (self.corpse:level_vertex_id (), dir, dist)
     return level.vertex_position (self.start_point_id)
