@@ -458,7 +458,8 @@ public:
 	virtual CInventoryItem		*GetCurrentEquipment	() const;
 	virtual CInventoryItem		*GetMedikit				() const;
 	virtual CInventoryItem		*GetFood				() const;
-	virtual	bool				bfAssignMovement		(CEntityAction *tpEntityAction);
-	virtual	bool				bfAssignWatch			(CEntityAction *tpEntityAction);
-	virtual	void				ResetScriptData			(void *P = 0);
+	virtual	bool				bfAssignMovement		(CEntityAction			*tpEntityAction);
+	virtual	bool				bfAssignWatch			(CEntityAction			*tpEntityAction);
+	virtual	void				ResetScriptData			(void					*P = 0);
+	virtual	bool				bfAssignObject			(CEntityAction			*tpEntityAction);
 };

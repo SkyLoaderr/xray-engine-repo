@@ -197,7 +197,8 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 		if (!getAI().bfTooSmallAngle(r_torso_target.yaw,r_target.yaw,2*PI_DIV_6))
 			r_torso_target.yaw = r_target.yaw;
 	
-	vfSetWeaponState(tWeaponState);
+	if (!GetScriptControl())
+		vfSetWeaponState(tWeaponState);
 }
 
 

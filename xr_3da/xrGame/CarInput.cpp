@@ -26,7 +26,7 @@ void	CCar::IR_OnMouseMove(int dx, int dy)
 bool CCar::bfAssignMovement(CEntityAction *tpEntityAction)
 {
 	if (tpEntityAction->m_tMovementAction.m_bCompleted)
-		return(true);
+		return(false);
 
 	u32		l_tInput = tpEntityAction->m_tMovementAction.m_tInputKeys;
 
@@ -43,7 +43,7 @@ bool CCar::bfAssignMovement(CEntityAction *tpEntityAction)
 	if (_abs(tpEntityAction->m_tMovementAction.m_fSpeed) > EPS_L)
 		m_max_rpm = _abs(tpEntityAction->m_tMovementAction.m_fSpeed*m_current_gear_ratio);
 
-	return	(false);
+	return	(true);
 }
 
 void CCar::vfProcessInputKey	(int iCommand, bool bPressed)

@@ -10,6 +10,7 @@
 #include "ai_stalker.h"
 #include "..\\..\\ai_script_actions.h"
 #include "..\\..\\weapon.h"
+#include "..\\..\\WeaponMagazined.h"
 
 void CAI_Stalker::UseObject(const CObject *tpObject)
 {
@@ -61,7 +62,7 @@ void CAI_Stalker::ResetScriptData(void *P)
 
 bool CAI_Stalker::bfAssignMovement(CEntityAction *tpEntityAction)
 {
-	if (!CScriptMonster::bfAssignMovement(tpEntityAction))
+	if (!inherited::bfAssignMovement(tpEntityAction))
 		return		(false);
 	
 	CMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
@@ -128,4 +129,133 @@ bool CAI_Stalker::bfAssignWatch(CEntityAction *tpEntityAction)
 		l_tWatchAction.m_bCompleted = false;
 	
 	return		(!l_tWatchAction.m_bCompleted);
+}
+
+bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
+{
+	if (!inherited::bfAssignObject(tpEntityAction))
+		return	(false);
+
+	CObjectAction	&l_tObjectAction = tpEntityAction->m_tObjectAction;
+	if (!l_tObjectAction.m_tpObject)
+		return	((l_tObjectAction.m_bCompleted = true) == false);
+
+	CInventoryItem		*l_tpInventoryItem		= dynamic_cast<CInventoryItem*>(l_tObjectAction.m_tpObject);
+	if (!l_tpInventoryItem)
+		return	((l_tObjectAction.m_bCompleted = true) == false);
+
+	CWeapon				*l_tpWeapon				= dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+	CWeaponMagazined	*l_tpWeaponMagazined	= dynamic_cast<CWeaponMagazined*>(m_inventory.ActiveItem());
+
+	switch (l_tObjectAction.m_tGoalType) {
+		case eObjectActionIdle : {
+			if (!l_tpWeapon)
+				return	((l_tObjectAction.m_bCompleted = true) == false);
+			m_inventory.Action	(kWPN_FIRE,	CMD_STOP);
+			l_tObjectAction.m_bCompleted = true;
+			break;
+		}
+		case eObjectActionPrimaryFire : {
+			if (!l_tpWeapon)
+				return	((l_tObjectAction.m_bCompleted = true) == false);
+			if (m_inventory.ActiveItem()) {
+				if (l_tpWeapon->GetAmmoElapsed()) {
+					if (l_tpWeapon->GetAmmoMagSize() > 1)
+						l_tpWeaponMagazined->SetQueueSize(l_tObjectAction.m_dwQueueSize);
+					else
+						l_tpWeaponMagazined->SetQueueSize(1);
+					m_inventory.Action(kWPN_FIRE,	CMD_START);
+				}
+				else {
+					m_inventory.Action(kWPN_FIRE,	CMD_STOP);
+					if (l_tpWeapon->GetAmmoCurrent())
+						m_inventory.Action(kWPN_RELOAD, CMD_START);
+					else
+						l_tObjectAction.m_bCompleted = true;
+				}
+			}
+			break;
+		}
+		case eObjectActionSecondaryFire : {
+			if (!l_tpWeapon)
+				return	((l_tObjectAction.m_bCompleted = true) == false);
+			if (m_inventory.ActiveItem()) {
+				if (l_tpWeapon->GetAmmoElapsed()) {
+					if (l_tpWeapon->GetAmmoMagSize() > 1)
+						l_tpWeaponMagazined->SetQueueSize(l_tObjectAction.m_dwQueueSize);
+					else
+						l_tpWeaponMagazined->SetQueueSize(1);
+					m_inventory.Action(kWPN_FUNC,	CMD_START);
+				}
+				else {
+					m_inventory.Action(kWPN_FUNC,	CMD_STOP);
+					if (l_tpWeapon->GetAmmoCurrent())
+						m_inventory.Action(kWPN_RELOAD, CMD_START);
+					else
+						l_tObjectAction.m_bCompleted = true;
+				}
+			}
+			break;
+		}
+		case eObjectActionReload : {
+			if (!l_tpWeapon)
+				return	((l_tObjectAction.m_bCompleted = true) == false);
+			if (m_inventory.ActiveItem()) {
+				m_inventory.Action(kWPN_FIRE,	CMD_STOP);
+				if (l_tpWeapon->STATE != CWeapon::eReload)
+					m_inventory.Action(kWPN_RELOAD,	CMD_START);
+				else
+					l_tObjectAction.m_bCompleted = true;
+			}
+			else
+				Msg	("* [LUA] cannot reload active item because it is not selected!");
+			break;
+		}
+		case eObjectActionActivate : {
+			CInventoryItem	*l_tpInventoryItem = dynamic_cast<CInventoryItem*>(l_tObjectAction.m_tpObject);
+			if (l_tpInventoryItem) {
+				m_inventory.Slot(l_tpInventoryItem);
+				m_inventory.Activate(l_tpInventoryItem->m_slot);
+				if (l_tpWeapon && (l_tpWeapon->STATE != CWeapon::eShowing))
+					l_tObjectAction.m_bCompleted = true;
+			}
+			else
+				Msg	("* [LUA] cannot activate non-inventory object!");
+			break;
+		}
+		case eObjectActionDeactivate : {
+			CInventoryItem	*l_tpInventoryItem = dynamic_cast<CInventoryItem*>(l_tObjectAction.m_tpObject);
+			if (l_tpInventoryItem) {
+				m_inventory.Activate(u32(-1));
+				l_tObjectAction.m_bCompleted = true;
+			}
+			else
+				Msg	("* [LUA] cannot activate non-inventory object!");
+			break;
+		}
+		case eObjectActionUse : {
+			l_tObjectAction.m_bCompleted = true;
+			break;
+		}
+		case eObjectActionTake : {
+			if (m_inventory.GetItemFromInventory(l_tObjectAction.m_tpObject->cName())) {
+				Msg	("* [LUA] item is already in the inventory!");
+				return	((l_tObjectAction.m_bCompleted = true) == false);
+			}
+			feel_touch_new(l_tObjectAction.m_tpObject);
+			l_tObjectAction.m_bCompleted = true;
+			break;
+		}
+		case eObjectActionDrop : {
+			if (!m_inventory.GetItemFromInventory(l_tObjectAction.m_tpObject->cName())) {
+				Msg	("* [LUA] item is not in the inventory!");
+				return	((l_tObjectAction.m_bCompleted = true) == false);
+			}
+			DropItemSendMessage(l_tObjectAction.m_tpObject);
+			break;
+		}
+		default : NODEFAULT;
+	}
+
+	return	(true);
 }

@@ -170,7 +170,7 @@ void CAI_Biting::vfUpdateParameters()
 // обработка скриптов
 bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 {
-	if (!CScriptMonster::bfAssignMovement(tpEntityAction))
+	if (!inherited::bfAssignMovement(tpEntityAction))
 		return		(false);
 
 	CMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;

@@ -77,7 +77,7 @@ CEntityAction *CScriptMonster::GetCurrentAction()
 	if (m_tpActionQueue.empty())
 		return(0);
 	else
-		return(m_tpActionQueue.back());
+		return(m_tpActionQueue.front());
 }
 
 void CScriptMonster::ProcessScripts()
@@ -147,6 +147,7 @@ void __stdcall SoundCallback(CBoneInstance *tpBoneInstance)
 		if (l_tpScriptMonster->GetCurrentAction() && strlen(l_caBoneName) && l_tSoundAction.m_tpSound->feedback)
 			l_tSoundAction.m_tpSound->feedback->set_position(l_tpScriptMonster->GetUpdatedMatrix(l_caBoneName,l_tSoundAction.m_tSoundPosition,Fvector().set(0,0,0)).c);
 		else {
+			R_ASSERT		(l_caBoneName && strlen(l_caBoneName));
 			CBoneInstance	&l_tBoneInstance = PKinematics(l_tpScriptMonster->Visual())->LL_GetInstance(PKinematics(l_tpScriptMonster->Visual())->LL_BoneID(l_caBoneName));
 			l_tBoneInstance.set_callback(0,0);
 		}
@@ -160,8 +161,9 @@ const Fmatrix CScriptMonster::GetUpdatedMatrix(LPCSTR caBoneName, const Fvector 
 	l_tMatrix.setHPB(VPUSH(tAngleOffset));
 	l_tMatrix.c		= tPositionOffset;
 
-	if (strlen(caBoneName)) {
+	if (caBoneName && strlen(caBoneName)) {
 		CBoneInstance	&l_tBoneInstance = PKinematics(Visual())->LL_GetInstance(PKinematics(Visual())->LL_BoneID(caBoneName));
+#pragma todo("Dima to Dima : null callbacks after completion")
 		if (fpBoneCallback)
 			l_tBoneInstance.set_callback(fpBoneCallback,this);
 		l_tMatrix.mulA	(l_tBoneInstance.mTransform);
@@ -187,6 +189,8 @@ bool CScriptMonster::bfAssignSound(CEntityAction *tpEntityAction)
 			else
 				l_tSoundAction.m_bCompleted = true;
 	}
+	else
+		l_tSoundAction.m_bCompleted = true;
 	return		(!l_tSoundAction.m_bCompleted);
 }
 
@@ -208,6 +212,8 @@ bool CScriptMonster::bfAssignParticles(CEntityAction *tpEntityAction)
 				l_tParticleAction.m_bCompleted = true;
 			}
 	}
+	else
+		l_tParticleAction.m_bCompleted = true;
 
 	return			(!l_tParticleAction.m_bCompleted);
 }
@@ -325,6 +331,7 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 	switch (l_tMovementAction.m_tGoalType) {
 		case CMovementAction::eGoalTypeObject : {
 			CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(l_tMovementAction.m_tpObjectToGo);
+			R_ASSERT		(l_tpGameObject);
 			l_tMovementAction.m_tDestinationPosition = l_tMovementAction.m_tpObjectToGo->Position();
 			if (Position().distance_to(l_tMovementAction.m_tDestinationPosition) < .1f)
 				l_tMovementAction.m_bCompleted = true;
@@ -367,7 +374,8 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 			}
 			break;
 		}
-		default : NODEFAULT;
+		default :
+			return(l_tMovementAction.m_bCompleted = true);
 	}
 
 	if (int(l_tMovementAction.m_tNodeID) > 0)
@@ -388,8 +396,10 @@ void CScriptMonster::ResetScriptData(void *P)
 
 void CScriptMonster::Init()
 {
-	m_tpScriptAnimation		= 0;
+	// movement
 	m_iCurrentPatrolPoint	= m_iPreviousPatrolPoint = -1;
+	// animation
+	m_tpScriptAnimation		= 0;
 }
 
 void CScriptMonster::net_Destroy()

@@ -814,12 +814,12 @@ bool CInventory::Ruck(PIItem pIItem)
 {
 
 	if(!pIItem || !pIItem->m_ruck) return false;
+
 	if(std::find(m_ruck.begin(), m_ruck.end(), pIItem) != m_ruck.end()) return true;
 	
 	if((pIItem->m_slot < m_slots.size()) && (m_slots[pIItem->m_slot].m_pIItem == pIItem)) 
 	{
-		if(m_activeSlot == pIItem->m_slot) 
-            Activate(0xffffffff);
+		if(m_activeSlot == pIItem->m_slot)    Activate(0xffffffff);
 		m_slots[pIItem->m_slot].m_pIItem = NULL;
 	}
 	
@@ -833,9 +833,9 @@ bool CInventory::Ruck(PIItem pIItem)
 
 bool CInventory::Activate(u32 slot) 
 {
-	if(/*(slot == 0xffffffff) || */(slot == m_activeSlot) || 
+	if(/**(slot == 0xffffffff) ||/**/(slot == m_activeSlot) || 
 		(slot < m_slots.size() && !m_slots[slot].m_pIItem)) 
-												return false;
+        return false;
 	
 	if(m_activeSlot < m_slots.size()) 
 	{
@@ -849,6 +849,7 @@ bool CInventory::Activate(u32 slot)
 	{
 		m_activeSlot = slot;
 	}
+	
 	return false;
 }
 
@@ -1200,15 +1201,15 @@ bool CInventory::CanPutInRuck(PIItem pIItem)
 
 u32	CInventory::dwfGetObjectCount()
 {
-	return		(m_ruck.size());
+	return		(m_all.size());
 }
 
 CInventoryItem	*CInventory::tpfGetObjectByIndex(int iIndex)
 {
-	if ((iIndex >= 0) && (iIndex < m_ruck.size())) {
-		TIItemList	&l_list = m_ruck;
+	if ((iIndex >= 0) && (iIndex < (int)m_all.size())) {
+		TIItemSet	&l_list = m_all;
 		int			i = 0;
-		for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++, i++) 
+		for(PSPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++, i++) 
 			if (i == iIndex)
                 return	(*l_it);
 	}
@@ -1216,7 +1217,20 @@ CInventoryItem	*CInventory::tpfGetObjectByIndex(int iIndex)
 		Msg		("* [LUA] invalid inventory index!");
 		return	(0);
 	}
+	R_ASSERT(false);
+	return		(0);
 }
+
+CInventoryItem	*CInventory::GetItemFromInventory(LPCSTR caItemName)
+{
+	TIItemSet	&l_list = m_all;
+	for(PSPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++) 
+		if (!strcmp((*l_it)->cName(),caItemName))
+			return	(*l_it);
+	Msg		("* [LUA] Object with name %s is not found in the %s inventory!",caItemName,dynamic_cast<CGameObject*>(m_pOwner)->cName());
+	return	(0);
+}
+
 
 // CInventorySlot class //////////////////////////////////////////////////////////////////////////
 

@@ -108,9 +108,10 @@ public:
 		SetPatrolStart		(CPatrolPathParams::ePatrolPathNearest);
 		SetPatrolStop		(CPatrolPathParams::ePatrolPathContinue);
 		SetPatrolRandom		(true);
-		SetPosition			(Fvector().set(0,0,0));
 		SetSpeed			(0);
 		SetObjectToGo		(0);
+		SetPosition			(Fvector().set(0,0,0));
+		m_tGoalType			= eGoalTypeDummy;
 	}
 
 							CMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, MonsterSpace::EPathType tPathType, CLuaGameObject *tpObjectToGo, float fSpeed = 0.f)
@@ -521,6 +522,7 @@ class CObjectAction : public CAbstractAction {
 public:
 	CObject							*m_tpObject;
 	MonsterSpace::EObjectAction		m_tGoalType;
+	u32								m_dwQueueSize;
 
 							CObjectAction		()
 	{
@@ -529,10 +531,11 @@ public:
 		m_bCompleted		= false;
 	}
 
-							CObjectAction		(CLuaGameObject *tpLuaGameObject, MonsterSpace::EObjectAction tObjectActionType)
+							CObjectAction		(CLuaGameObject *tpLuaGameObject, MonsterSpace::EObjectAction tObjectActionType, u32 dwQueueSize = 1)
 	{
 		SetObject			(tpLuaGameObject);
 		SetObjectAction		(tObjectActionType);
+		SetQueueSize		(dwQueueSize);
 	}
 
 			void			SetObject			(CLuaGameObject *tpLuaGameObject);
@@ -540,6 +543,12 @@ public:
 			void			SetObjectAction		(MonsterSpace::EObjectAction tObjectActionType)
 	{
 		m_tGoalType			= tObjectActionType;
+		m_bCompleted		= false;
+	}
+
+			void			SetQueueSize		(u32 dwQueueSize)
+	{
+		m_dwQueueSize		= dwQueueSize;
 		m_bCompleted		= false;
 	}
 };

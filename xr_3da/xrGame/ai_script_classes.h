@@ -349,7 +349,7 @@ public:
 	{
 		CInventoryOwner		*l_tpInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
 		if (l_tpInventoryOwner) {
-			CInventoryItem	*l_tpInventoryItem = l_tpInventoryOwner->m_inventory.Get(caObjectName,true);
+			CInventoryItem	*l_tpInventoryItem = l_tpInventoryOwner->m_inventory.GetItemFromInventory(caObjectName);
 			CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(l_tpInventoryItem);
 			return			(xr_new<CLuaGameObject>(l_tpGameObject));
 		}

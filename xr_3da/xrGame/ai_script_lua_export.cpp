@@ -443,6 +443,8 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("activate",				int(MonsterSpace::eObjectActionActivate)),
 				value("deactivate",				int(MonsterSpace::eObjectActionDeactivate)),
 				value("use",					int(MonsterSpace::eObjectActionUse)),
+				value("take",					int(MonsterSpace::eObjectActionTake)),
+				value("drop",					int(MonsterSpace::eObjectActionDrop)),
 				value("dummy",					int(MonsterSpace::eObjectActionDummy))
 			]
 			.def(								constructor<>())
@@ -488,7 +490,7 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
 	module(tpLuaVirtualMachine)
 	[
-		class_<CLuaGameObject>("object")
+		class_<CLuaGameObject>("game_object")
 			.enum_("relation")
 			[
 				value("friend",					int(ALife::eRelationTypeFriend)),
@@ -546,8 +548,8 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("get_ammo",					&CLuaGameObject::GetWeaponAmmo)
 			.def("command",						&CLuaGameObject::AddAction)
 			.def("action",						&CLuaGameObject::GetCurrentAction)
-			.def("obj_count",					&CLuaGameObject::GetInventoryObjectCount)
-			.def("object",						&CLuaGameObject::GetObjectByName)
-			.def("object",						&CLuaGameObject::GetObjectByIndex)
+			.def("object_count",				&CLuaGameObject::GetInventoryObjectCount)
+			.def("object",						(CLuaGameObject *(CLuaGameObject::*)(LPCSTR))(CLuaGameObject::GetObjectByName))
+			.def("object",						(CLuaGameObject *(CLuaGameObject::*)(int))(CLuaGameObject::GetObjectByIndex))
 	];
 }

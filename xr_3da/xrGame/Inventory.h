@@ -188,6 +188,7 @@ public:
 	virtual bool	bfCheckForObject(_OBJECT_ID tObjectID);	// get all the items with the same object id
 			u32		dwfGetObjectCount();
 	CInventoryItem	*tpfGetObjectByIndex(int iIndex);
+	CInventoryItem	*GetItemFromInventory(LPCSTR caItemName);
 
 	bool Eat(PIItem pIItem);								// скушать предмет :)
 

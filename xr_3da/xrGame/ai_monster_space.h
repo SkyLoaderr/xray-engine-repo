@@ -72,6 +72,8 @@ namespace MonsterSpace {
 		eObjectActionActivate,
 		eObjectActionDeactivate,
 		eObjectActionUse,
+		eObjectActionTake,
+		eObjectActionDrop,
 		eObjectActionDummy = u32(-1)
 	};
 

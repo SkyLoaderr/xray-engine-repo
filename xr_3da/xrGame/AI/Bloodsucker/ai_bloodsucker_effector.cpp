@@ -37,27 +37,24 @@ BOOL CBloodsuckerEffector::Process(SPPInfo& pp)
 	
 	float time_past = time - fLifeTime;
 	float d = 1.f;
-	bool in_static = false;
 
 	if (time_past < max_past)				d = time_past / max_past; 			// grow
 	else if (time_past > (time - max_past)) d = (time - time_past) / max_past;  // fade
 	else {																		// static
-		in_static = true;
 		pp = max_power;
+		return TRUE;
 	}
 	
-	if (!in_static) {
-		pp.duality.h		= max_power.duality.h * d;
-		pp.duality.v		= max_power.duality.v * d;
-		pp.noise.grain		= max_power.noise.grain * d;
-		pp.noise.color.r	= max_power.noise.color.r * d;
-		pp.noise.color.g	= max_power.noise.color.g * d;
-		pp.noise.color.b	= max_power.noise.color.b * d; 
-		pp.noise.color.a	= max_power.noise.color.a * d; 
-		pp.gray				= max_power.gray * d; 
-		pp.blur				= max_power.blur * d; 
-		pp.noise.intensity  = max_power.noise.intensity *d;
-	}
+	pp.duality.h		= max_power.duality.h * d;
+	pp.duality.v		= max_power.duality.v * d;
+	pp.noise.grain		= max_power.noise.grain * d;
+	pp.noise.color.r	= max_power.noise.color.r * d;
+	pp.noise.color.g	= max_power.noise.color.g * d;
+	pp.noise.color.b	= max_power.noise.color.b * d; 
+	pp.noise.color.a	= max_power.noise.color.a * d; 
+	pp.gray				= max_power.gray * d; 
+	pp.blur				= max_power.blur * d; 
+	pp.noise.intensity  = max_power.noise.intensity *d;
 
 	return TRUE;
 }
