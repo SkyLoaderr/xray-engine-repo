@@ -5,6 +5,8 @@
 #include "..\fcached.h"
 #include "..\flod.h"
 
+using namespace SceneGraph;
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Scene graph actual insertion and sorting ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -34,27 +36,27 @@ void CRender::InsertSG_Dynamic	(IVisual *pVisual, Fvector& Center)
 	ShaderElement*		sh		= pVisual->hShader->lod0;
 	if (val_bHUD)	{
 		// HUD
-		SceneGraph::mapHUD_Node* N			= mapHUD.insertInAnyWay(distSQ);
+		mapHUD_Node* N			= mapHUD.insertInAnyWay(distSQ);
 		N->val.pVisual			= pVisual;
 		N->val.Matrix			= *val_pTransform;
 		N->val.vCenter.set		(Center);
 	} else if (sh->Flags.bStrictB2F) {
 		// Strict
-		SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
+		mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
 		N->val.pVisual			= pVisual;
 		N->val.Matrix			= *val_pTransform;
 		N->val.vCenter.set		(Center);
 	} else {
 		// Normal
 		SPass&									pass	= *sh->Passes.front();
-		SceneGraph::mapMatrix_T&				map		= mapMatrix;
-		SceneGraph::mapMatrixVS::TNode*			Nvs		= map.insert		(pass.vs);
-		SceneGraph::mapMatrixPS::TNode*			Nps		= Nvs->val.insert	(pass.ps);
-		SceneGraph::mapMatrixCS::TNode*			Ncs		= Nps->val.insert	(pass.constants);
-		SceneGraph::mapMatrixStates::TNode*		Nstate	= Ncs->val.insert	(pass.state);
-		SceneGraph::mapMatrixTextures::TNode*	Ntex	= Nstate->val.insert(pass.T);
-		SceneGraph::mapMatrixVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
-		SceneGraph::mapMatrixItems&				item	= Nvb->val;
+		mapMatrix_T&				map		= mapMatrix;
+		mapMatrixVS::TNode*			Nvs		= map.insert		(pass.vs);
+		mapMatrixPS::TNode*			Nps		= Nvs->val.insert	(pass.ps);
+		mapMatrixCS::TNode*			Ncs		= Nps->val.insert	(pass.constants);
+		mapMatrixStates::TNode*		Nstate	= Ncs->val.insert	(pass.state);
+		mapMatrixTextures::TNode*	Ntex	= Nstate->val.insert(pass.T);
+		mapMatrixVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
+		mapMatrixItems&				item	= Nvb->val;
 
 		// Need to sort for HZB efficient use
 		if (SSA>Nvb->val.ssa) {
@@ -103,20 +105,20 @@ void CRender::InsertSG_Static	(IVisual *pVisual)
 	// Select List and add to it
 	ShaderElement*		sh		= pVisual->hShader->lod0;
 	if (sh->Flags.bStrictB2F) {
-		SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
+		mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
 		N->val.pVisual			= pVisual;
 		N->val.Matrix			= Fidentity;
 		N->val.vCenter.set		(pVisual->vis.sphere.P);
 	} else {
 		SPass&									pass	= *sh->Passes.front();
-		SceneGraph::mapNormal_T&				map		= mapNormal;		//	[sh->Flags.iPriority];
-		SceneGraph::mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs);
-		SceneGraph::mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps);
-		SceneGraph::mapNormalCS::TNode*			Ncs		= Nps->val.insert	(pass.constants);
-		SceneGraph::mapNormalStates::TNode*		Nstate	= Ncs->val.insert	(pass.state);
-		SceneGraph::mapNormalTextures::TNode*	Ntex	= Nstate->val.insert(pass.T);
-		SceneGraph::mapNormalVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
-		SceneGraph::mapNormalItems&				item	= Nvb->val;
+		mapNormal_T&				map		= mapNormal;		//	[sh->Flags.iPriority];
+		mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs);
+		mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps);
+		mapNormalCS::TNode*			Ncs		= Nps->val.insert	(pass.constants);
+		mapNormalStates::TNode*		Nstate	= Ncs->val.insert	(pass.state);
+		mapNormalTextures::TNode*	Ntex	= Nstate->val.insert(pass.T);
+		mapNormalVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
+		mapNormalItems&				item	= Nvb->val;
 
 		// Need to sort for HZB efficient use
 		if (SSA>Nvb->val.ssa) {
@@ -216,7 +218,7 @@ void CRender::add_leafs_Static(IVisual *pVisual)
 			float		ssa		= CalcSSA	(D,pV->vis.sphere.P,pV);
 			if (ssa<r_ssaLOD_A)
 			{
-				SceneGraph::mapLOD_Node*	N	= mapLOD.insertInAnyWay(D);
+				mapLOD_Node*	N	= mapLOD.insertInAnyWay(D);
 				N->val.ssa						= ssa;
 				N->val.pVisual					= pVisual;
 			}
@@ -348,7 +350,7 @@ void CRender::add_Static(IVisual *pVisual, u32 planes)
 			float		ssa		= CalcSSA	(D,pV->vis.sphere.P,pV);
 			if (ssa<r_ssaLOD_A)	
 			{
-				SceneGraph::mapLOD_Node*	N	= mapLOD.insertInAnyWay(D);
+				mapLOD_Node*	N	= mapLOD.insertInAnyWay(D);
 				N->val.ssa						= ssa;
 				N->val.pVisual					= pVisual;
 			}
