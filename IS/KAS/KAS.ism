@@ -329,7 +329,11 @@
 		<col def="I4">Disk</col>
 		<row><td>NewDisk1File1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\setupMSDE.ini</td><td>1</td></row>
 		<row><td>NewDisk1File2</td><td>&lt;ISPROJECTDIR&gt;\source\setup\grant_rights.cmd</td><td>1</td></row>
+		<row><td>NewDisk1File3</td><td>&lt;ISPROJECTDIR&gt;\source\setup\Start.exe</td><td>1</td></row>
 		<row><td>NewDisk1File4</td><td>&lt;ISPROJECTDIR&gt;\source\setup\autorun.inf</td><td>1</td></row>
+		<row><td>NewDisk1File5</td><td>&lt;ISPROJECTDIR&gt;\source\setup\start.htm</td><td>1</td></row>
+		<row><td>NewDisk1File6</td><td>&lt;ISPROJECTDIR&gt;\source\setup\maket.jpg</td><td>1</td></row>
+		<row><td>NewDisk1File7</td><td>&lt;ISPROJECTDIR&gt;\source\setup\MDISplit.ico</td><td>1</td></row>
 	</table>
 
 	<table name="ISDynamicFile">

@@ -367,7 +367,7 @@ end;
 //---------------------------------------------------------------------------                                                                        
 function OnBegin()             
 begin      
-	MessageBox("BUILD DATE:\n\n"+CURRENT_BUILD_DATE,INFORMATION);
+//.	MessageBox("BUILD DATE:\n\n"+CURRENT_BUILD_DATE,INFORMATION);
 	// check admin rights
 	if (FALSE=CheckAdminRights()) then abort; endif;
 end;
@@ -456,7 +456,8 @@ Dlg_SdCustomerInformation:
 	endif;
 
 Dlg_SdCustomerInformationServer:
-	sSerial 	="demo-kharkiv";
+	sSerial 	="demo-demo";
+//	sSerial 	="demo-kharkiv";
 	nResult 	= SdCustomerInformationEx(sTitle, sName, sCompany, sSerial,nUser);
 	if (nResult = BACK) then
 		goto Dlg_SetupType;
