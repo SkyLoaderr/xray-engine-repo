@@ -715,7 +715,7 @@ function isWeapon(id)
         else return false end
 end
 
---Вычисляет yaw 
+--Вычисляет yaw в радианах 
 function yaw( v1, v2 )
     return  math.acos( ( (v1.x*v2.x) + (v1.z*v2.z ) ) / ( math.sqrt(v1.x*v1.x + v1.z*v1.z ) * math.sqrt(v2.x*v2.x + v2.z*v2.z ) ) )
 end
