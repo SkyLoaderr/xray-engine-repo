@@ -132,7 +132,6 @@ function add_to_binder(npc, ini, scheme, section, storage)
   	local manager = npc:motivation_action_manager()
 
   	properties["need_sleeper"]   	= xr_evaluators_id.zmey_sleeper_base + 1
-  	properties["state_end"]      	= xr_evaluators_id.state_change
 
   	operators["action_sleeper"]   	= xr_actions_id.zmey_sleeper_base + 1
 

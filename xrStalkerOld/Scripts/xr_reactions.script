@@ -281,7 +281,6 @@ function add_to_binder(object, char_ini)
 
 	local manager = object:motivation_action_manager()
 
-	properties["state_end"]		= xr_evaluators_id.state_change
 	properties["event"] 		= xr_evaluators_id.reaction
 
 	operators["wait"] 		= xr_actions_id.stohe_reactions_base + 0
@@ -293,7 +292,6 @@ function add_to_binder(object, char_ini)
 	local action = this.action_reaction_wait (object:name(),"action_reaction_wait", xr_motivator.storage[object:id()].reactions)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
-	action:add_precondition		(world_property(properties["state_end"], 	true))
 	action:add_precondition		(world_property(properties["event"],		true))
 	action:add_effect		(world_property(properties["event"],		false))
 	manager:add_action (operators["wait"], action)
