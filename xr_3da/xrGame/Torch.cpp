@@ -147,9 +147,9 @@ void CTorch::UpdateCL()
 {
 	inherited::UpdateCL();
 	
-	CBoneInstance* BI = PKinematics(Visual())->LL_GetBoneInstance(guid_bone);
+	CBoneInstance& BI = PKinematics(Visual())->LL_GetBoneInstance(guid_bone);
 	Fmatrix M;
-	M.mul(XFORM(),BI->mTransform);
+	M.mul(XFORM(),BI.mTransform);
 
 	if (H_Parent()) {
 		light_render->set_direction	(M.k);
