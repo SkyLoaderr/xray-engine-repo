@@ -90,11 +90,9 @@ function Defender:initialize ()
     if self.way == nil then
 	   action (self.npc, move (move.crouch, move.stand, move.line, self.npc:position ()), anim (anim.danger), 
 	   		   cond (cond.time_end, time_infinite))	
-	   printf ("State = ON_READY")
 	   self.state = on_ready		   
 	else
 	   action (self.npc, move (move.standing, move.run, move.line, self.way), anim (anim.danger), cond (cond.move_end))
-	   printf ("State = ON_MOVE")
 	   self.state = on_move		   		   
 	end	   		   
 	
@@ -112,16 +110,16 @@ function Defender:process ()
 	      reset_action (self.npc, self.script)   
 	      action (self.npc, move (move.crouch, move.stand, move.line, self.way), anim (anim.danger), cond (cond.time_end, time_infinite))	
 	      self.state = on_ready 
-	      printf ("Set On_Ready")
 	   end
 	end   
+	
 	--если сталкер должен быть отпущен, то отпускаем
 	if self.has_freed == true then
 	   self.npc:script (false, self.script)
 	   self.freed = true
-	   printf ("Stalker freed 1")
 	   return
 	end
+	
 	--если таблица монстров не задана или в ней нет элементов, то отпускаем нпц       
     if self.monsters == nil or table.getn (self.monsters) == 0 then
 	   self.npc:script (false, self.script)
