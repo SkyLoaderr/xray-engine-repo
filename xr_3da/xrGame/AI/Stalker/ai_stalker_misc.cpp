@@ -253,13 +253,16 @@ void CAI_Stalker::vfSetMovementType(EBodyState tBodyState, EMovementType tMoveme
 			SetLessCoverLook(AI_Node,PI);
 			break;
 		}
-		case eLookTypePoint :
-		case eLookTypeFirePoint : {
+		case eLookTypePoint : {
 			Fvector tTemp;
 			tTemp.sub	(tPointToLook,vPosition);
 			tTemp.getHP	(r_target.yaw,r_target.pitch);
 			r_target.yaw *= -1;
 			r_target.pitch *= -1;
+			break;
+		}
+		case eLookTypeFirePoint : {
+
 			break;
 		}
 		default : NODEFAULT;

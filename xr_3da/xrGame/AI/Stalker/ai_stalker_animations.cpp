@@ -88,6 +88,34 @@ LPCSTR caGlobalNames		[] = {
 	0
 };
 
+void CAI_Stalker::g_fireParams(Fvector &fire_pos, Fvector &fire_dir)
+{
+	if (Weapons->ActiveWeapon()) {
+		Weapons->GetFireParams(fire_pos,fire_dir);
+//		fire_pos.set(Weapons->ActiveWeapon()->Position());
+//		float					yaw_factor = 0, pitch_factor = 0;
+//		switch(m_tLookType) {
+//			case eLookTypeFirePoint : {
+//				yaw_factor		= y_shoulder_fire_factor;
+//				pitch_factor	= p_shoulder_fire_factor;
+//				break;
+//			}
+//			case eLookTypePatrol :
+//			case eLookTypeSearch :
+//			case eLookTypeDanger :
+//			case eLookTypePoint : {
+//				yaw_factor		= y_shoulder_factor;
+//				pitch_factor	= p_shoulder_factor;
+//				break;
+//			}
+//			default : NODEFAULT;
+//		}
+//		float					yaw		= angle_normalize_signed(-(yaw_factor * angle_normalize_signed(NET_Last.o_torso.yaw - NET_Last.o_model) + NET_Last.o_model));
+//		float					pitch	= angle_normalize_signed(-pitch_factor * (NET_Last.o_torso.pitch));
+//		fire_dir.setHP(yaw,pitch);
+	}
+}
+
 void CAI_Stalker::vfAssignBones(CInifile *ini, const char *section)
 {
 	int head_bone		= PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_head"));
@@ -198,41 +226,49 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 	if (g_Health() <= 0)
 		return;
 	if (Weapons->ActiveWeapon())
-//		if (m_eCurrentState == eStalkerStateRecharge) {
-//			switch (Weapons->ActiveWeaponID()) {
-//				case 0 : {
-//					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[5].A[0];
-//					break;
-//				}
-//				case 1 : {
-//					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[5].A[0];
-//					break;
-//				}
-//				case 2 : {
-//					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[5].A[0];
-//					break;
-//				}
-//			}
-//		}
-//		else 
-		{
+		if (m_eCurrentState == eStalkerStateRecharge) {
+			switch (Weapons->ActiveWeaponID()) {
+				case 0 : {
+					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[5].A[0];
+					break;
+				}
+				case 1 : {
+					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[5].A[0];
+					break;
+				}
+				case 2 : {
+					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[5].A[0];
+					break;
+				}
+			}
+		}
+		else {
 			switch (Weapons->ActiveWeaponID()) {
 				case 0 : {
 					if (m_eCurrentState == eStalkerStateAccomplishingTask)
 						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[7+m_tMovementType].A[0];
 					else
-						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[0].A[0];
+						if (!m_bFiring)
+							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[0].A[0];
+						else
+							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[1].A[0];
 					break;
 				}
 				case 1 : {
 					if (m_eCurrentState == eStalkerStateAccomplishingTask)
 						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[7+m_tMovementType].A[0];
 					else
-						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[0].A[0];
+						if (!m_bFiring)
+							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[0].A[0];
+						else
+							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[1].A[0];
 					break;
 				}
 				case 2 : {
-					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[0].A[0];
+					if (!m_bFiring)
+						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[0].A[0];
+					else
+						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[1].A[0];
 					break;
 				}
 			}

@@ -37,43 +37,44 @@ void CAI_Stalker::OnVisible	()
 
 bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
 {
-	if (Level().iGetKeyState(DIK_RCONTROL))
-		return(false);
-
-	float fResult = 0.f;
-	
-	// computing maximum viewable distance in the specified direction
-	Fvector tCurrentWatchDirection, tTemp;
-	tCurrentWatchDirection.setHP	(-r_current.yaw,-r_current.pitch);
-	tCurrentWatchDirection.normalize();
-	tTemp.sub(tpEntity->Position(),vPosition);
-	if (tTemp.magnitude() > EPS_L)
-		tTemp.normalize();
-	else
-		return(true);
-	float fAlpha = tCurrentWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
-	//float fAlpha = tWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
-	clamp(fAlpha,-.99999f,+.99999f);
-	fAlpha = acosf(fAlpha);
-	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/m_fLateralMultiplier));
-	
-	// computing distance weight
-	tTemp.sub(vPosition,tpEntity->Position());
-	fResult += tTemp.magnitude() >= fMaxViewableDistanceInDirection ? 0.f : m_fDistanceWeight*(1.f - tTemp.magnitude()/fMaxViewableDistanceInDirection);
-	
-	// computing movement speed weight
-	if (tpEntity->ps_Size() > 1) {
-		u32 dwTime = tpEntity->ps_Element(tpEntity->ps_Size() - 1).dwTime;
-		if (dwTime < m_dwMovementIdleTime) {
-			tTemp.sub(tpEntity->ps_Element(tpEntity->ps_Size() - 2).vPosition,tpEntity->ps_Element(tpEntity->ps_Size() - 1).vPosition);
-			float fSpeed = tTemp.magnitude()/dwTime;
-			fResult += fSpeed < m_fMaxInvisibleSpeed ? m_fMovementSpeedWeight*fSpeed/m_fMaxInvisibleSpeed : m_fMovementSpeedWeight;
-		}
-	}
-	
-	// computing my ability to view the enemy
-	fResult += m_fCurSpeed < m_fMaxViewableSpeed ? m_fSpeedWeight*(1.f - m_fCurSpeed/m_fMaxViewableSpeed) : m_fSpeedWeight;
-	
+	return(true);
+//	if (Level().iGetKeyState(DIK_RCONTROL))
+//		return(false);
+//
+//	float fResult = 0.f;
+//	
+//	// computing maximum viewable distance in the specified direction
+//	Fvector tCurrentWatchDirection, tTemp;
+//	tCurrentWatchDirection.setHP	(-r_current.yaw,-r_current.pitch);
+//	tCurrentWatchDirection.normalize();
+//	tTemp.sub(tpEntity->Position(),vPosition);
+//	if (tTemp.magnitude() > EPS_L)
+//		tTemp.normalize();
+//	else
+//		return(true);
+//	float fAlpha = tCurrentWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
+//	//float fAlpha = tWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
+//	clamp(fAlpha,-.99999f,+.99999f);
+//	fAlpha = acosf(fAlpha);
+//	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/m_fLateralMultiplier));
+//	
+//	// computing distance weight
+//	tTemp.sub(vPosition,tpEntity->Position());
+//	fResult += tTemp.magnitude() >= fMaxViewableDistanceInDirection ? 0.f : m_fDistanceWeight*(1.f - tTemp.magnitude()/fMaxViewableDistanceInDirection);
+//	
+//	// computing movement speed weight
+//	if (tpEntity->ps_Size() > 1) {
+//		u32 dwTime = tpEntity->ps_Element(tpEntity->ps_Size() - 1).dwTime;
+//		if (dwTime < m_dwMovementIdleTime) {
+//			tTemp.sub(tpEntity->ps_Element(tpEntity->ps_Size() - 2).vPosition,tpEntity->ps_Element(tpEntity->ps_Size() - 1).vPosition);
+//			float fSpeed = tTemp.magnitude()/dwTime;
+//			fResult += fSpeed < m_fMaxInvisibleSpeed ? m_fMovementSpeedWeight*fSpeed/m_fMaxInvisibleSpeed : m_fMovementSpeedWeight;
+//		}
+//	}
+//	
+//	// computing my ability to view the enemy
+//	fResult += m_fCurSpeed < m_fMaxViewableSpeed ? m_fSpeedWeight*(1.f - m_fCurSpeed/m_fMaxViewableSpeed) : m_fSpeedWeight;
+//	
 //	// computing enemy state
 //	switch (m_cBodyState) {
 //		case BODY_STATE_STAND : {
@@ -90,13 +91,13 @@ bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
 //	}
 	
 	// computing lightness weight
-	float fTemp = float(tpEntity->AI_Node->light)/255.f;
-	if (fTemp < .05f)
-		fResult = 0.f;
-	else
-		fResult += m_fShadowWeight*fTemp;
-	
-	return(fResult >= m_fVisibilityThreshold);
+//	float fTemp = float(tpEntity->AI_Node->light)/255.f;
+//	if (fTemp < .05f)
+//		fResult = 0.f;
+//	else
+//		fResult += m_fShadowWeight*fTemp;
+//	
+//	return(fResult >= m_fVisibilityThreshold);
 }
 
 void CAI_Stalker::SetDirectionLook()
@@ -221,10 +222,8 @@ void CAI_Stalker::Exec_Look(float dt)
 	r_target.pitch			= angle_normalize_signed	(r_target.pitch);
 
 	// validating angles
-//	Msg("Before : [TT=%f][TC=%f]",r_torso_current.yaw,r_torso_target.yaw);
 	vfValidateAngleDependency(r_torso_current.yaw,r_torso_target.yaw,r_current.yaw);
 	vfValidateAngleDependency(r_current.yaw,r_target.yaw,r_torso_current.yaw);
-//	Msg("After  : [TT=%f][TC=%f]",r_torso_current.yaw,r_torso_target.yaw);
 
 	// updating torso angles
 	//float					fAngleDifference = _abs(angle_normalize_signed(r_torso_current.yaw - r_torso_target.yaw));
@@ -244,7 +243,6 @@ void CAI_Stalker::Exec_Look(float dt)
 	r_current.yaw			= angle_normalize_signed	(r_current.yaw);
 	r_current.pitch			= angle_normalize_signed	(r_current.pitch);
 	
-	//Msg("After  : %f, %f, %f, %f",R2D(r_torso_current.yaw),R2D(r_torso_target.yaw),R2D(r_current.yaw),R2D(r_target.yaw));
 	// updating rotation matrix
 	mRotate.setHPB			(-NET_Last.o_model,0,0);
 	

@@ -30,6 +30,7 @@ CAI_Stalker::CAI_Stalker			()
 
 	m_dwActionRefreshRate			= 1000;
 	m_fAttackSuccessProbability		= .7f;
+	m_dwNoFireTime					= 0;
 	
 	m_pPhysicsShell					= NULL;
 	m_saved_impulse					= 0.f;
@@ -88,6 +89,9 @@ void CAI_Stalker::Load				(LPCSTR section)
 	m_fMinMissFactor   				= pSettings->ReadFLOAT(section,"MinMissFactor");
 	m_fMaxMissDistance 				= pSettings->ReadFLOAT(section,"MaxMissDistance");
 	m_fMaxMissFactor				= pSettings->ReadFLOAT(section,"MaxMissFactor");
+
+	eye_fov							= pSettings->ReadFLOAT(section,"eye_fov");
+	eye_range						= pSettings->ReadFLOAT(section,"eye_range");
 
 	m_tpaTerrain.clear				();
 	LPCSTR							S = pSettings->ReadSTRING(section,"terrain");

@@ -107,29 +107,11 @@ void CAI_Stalker::vfUpdateSearchPosition()
 	}
 }
 
-void CAI_Stalker::Recharge()
-{
-	WRITE_TO_LOG("Pursuiting known");
-	
-	SelectEnemy(m_tEnemy);
-
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!m_tEnemy.Enemy);
-
-	VERIFY(Weapons->ActiveWeapon());
-	Weapons->ActiveWeapon()->Reload();
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Weapons->ActiveWeapon()->GetAmmoElapsed());
-
-	vfChoosePointAndBuildPath	(m_tSelectorReload);
-
-	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypePoint, m_tEnemy.Enemy->Position());
-	
-	if (m_fCurSpeed < EPS_L)
-		r_torso_target.yaw		= r_target.yaw;
-}
-
 void CAI_Stalker::AccomplishTask()
 {
 	WRITE_TO_LOG				("Accomplishing task");
+
+	vfStopFire();
 
 	SelectEnemy(m_tEnemy);
 
@@ -144,6 +126,29 @@ void CAI_Stalker::AccomplishTask()
 		r_torso_target.yaw		= r_target.yaw;
 }
 
+void CAI_Stalker::Recharge()
+{
+	WRITE_TO_LOG("Pursuiting known");
+	
+	vfStopFire();
+
+	SelectEnemy(m_tEnemy);
+
+	VERIFY(Weapons->ActiveWeapon());
+	Weapons->ActiveWeapon()->Reload();
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Weapons->ActiveWeapon()->GetAmmoElapsed());
+
+	vfChoosePointAndBuildPath	(m_tSelectorReload);
+
+	if (m_tEnemy.Enemy)
+		vfSetMovementType		(eBodyStateStand,eMovementTypeWalk,eLookTypePoint, m_tEnemy.Enemy->Position());
+	else
+		vfSetMovementType		(eBodyStateStand,eMovementTypeStand,eLookTypeDanger);
+	
+	if (m_fCurSpeed < EPS_L)
+		r_torso_target.yaw		= r_target.yaw;
+}
+
 void CAI_Stalker::Attack()
 {
 	WRITE_TO_LOG("Attacking");
@@ -152,10 +157,15 @@ void CAI_Stalker::Attack()
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!m_tEnemy.Enemy);
 
 	EStalkerStates eState = EStalkerStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),eStalkerStateAttack,eStalkerStateDefend,eStalkerStateRetreatKnown));
-	if (eState != m_eCurrentState)
-		GO_TO_NEW_STATE_THIS_UPDATE(eState);
+	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(eState != m_eCurrentState,eState);
 
-	vfChoosePointAndBuildPath	(m_tSelectorReload);
+	vfSetFire					(false,*getGroup());
+
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Weapons->ActiveWeapon() && !Weapons->ActiveWeapon()->GetAmmoElapsed(),eStalkerStateRecharge);
+
+	//vfChoosePointAndBuildPath	(m_tSelectorReload);
+	AI_Path.TravelPath.clear();
+	AI_Path.DestNode = u32(-1);
 
 	vfSetFire					(true,*getGroup());
 
