@@ -378,29 +378,21 @@ void CImageManager::CheckCompliance(FileMap& files, FileMap& compl)
 	UI.ProgressEnd();
 }
 
-enum ECameraView{
-	ecvLeft,
-    ecvRight,
-    ecvFront,
-    ecvBack
-};
-
-IC void SetCamera(ECameraView cv, const Fvector& C, const Fvector& S, float dist)
+IC void SetCamera(float angle, const Fvector& C, float height, float radius, float dist)
 {
-	Fvector sz;
-    Fvector D;
-    Fvector hpb;
-    Fmatrix P;
-	switch (cv){
-	case ecvLeft: 	hpb.set(-PI_DIV_2,0,0); sz.set(S.z,S.y,S.x); D.set(-dist+C.x,	C.y,	0+C.z); 	break;
-    case ecvRight: 	hpb.set(PI_DIV_2,0,0); 	sz.set(S.z,S.y,S.x); D.set(dist+C.x,	C.y,	0+C.z); 	break;
-    case ecvFront: 	hpb.set(0,0,0); 		sz.set(S.x,S.y,S.z); D.set(0+C.x,		C.y,	-dist+C.z);	break;
-    case ecvBack: 	hpb.set(PI,0,0); 		sz.set(S.x,S.y,S.z); D.set(0+C.x,		C.y,	dist+C.z); 	break;
-    }
-    float ta	= sz.y/dist;
-    float asp 	= sz.y/sz.x;
-	float fp	= dist+4.f*sz.z;
-    float np	= dist-4.f*sz.z; clamp(np,0.1f,fp);
+    Fvector 	D;
+    Fvector 	hpb;
+    Fmatrix 	P;
+
+	hpb.set		(angle,0,0);
+	D.setHP		(hpb.x,hpb.y);
+    D.mul		(-dist);
+    D.add		(C);
+
+    float ta	= height/dist;
+    float asp 	= height/radius;
+	float fp	= dist+4.f*radius;
+    float np	= dist-4.f*radius; clamp(np,0.1f,fp);
     Device.m_Camera.Set		(hpb,D);
     P.build_projection_HAT	(ta,asp,np,fp);
     Device.SetTransform		(D3DTS_PROJECTION,P);
@@ -469,11 +461,13 @@ BOOL ApplyBorders(DWORDVec& pixels, int w, int h, DWORD ref)
 
 void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR out_name, int tgt_w, int tgt_h, int age)
 {
-    int src_w=2*tgt_w,src_h=2*tgt_h;
+    int src_w=tgt_w,src_h=tgt_h;
 	DWORDVec pixels;
 
-    Fvector C,S;
+    Fvector C;
+    Fvector S;
     bbox.getradius(S);
+    float R = sqrtf(S.x*S.x+S.z*S.z);
     bbox.getcenter(C);
 
     Fmatrix save_projection	= Device.mProjection;
@@ -485,19 +479,19 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR out_name, int tgt_w, int 
     DWORDVec new_pixels;
     new_pixels.resize(src_w*src_h*4);           
 	Device.m_Camera.SetStyle(csPlaneMove);
-    SetCamera(ecvLeft,C,S,D);
+    SetCamera(deg2rad(45),C,S.y,R,D);
     if (Device.MakeScreenshot(pixels,src_w,src_h)){
     	CopyLODImage(pixels, new_pixels, src_w, src_h, 0, 0);
-	    SetCamera(ecvRight,C,S,D);
+	    SetCamera(deg2rad(135),C,S.y,R,D);
         if (Device.MakeScreenshot(pixels,src_w,src_h)){
 	    	CopyLODImage(pixels, new_pixels, src_w, src_h, src_w, 0);
-		    SetCamera(ecvFront,C,S,D);
+		    SetCamera(deg2rad(225),C,S.y,R,D);
             if (Device.MakeScreenshot(pixels,src_w,src_h)){
 		    	CopyLODImage(pixels, new_pixels, src_w, src_h, 0, src_h);
-			    SetCamera(ecvBack,C,S,D);
+			    SetCamera(deg2rad(315),C,S.y,R,D);
                 if (Device.MakeScreenshot(pixels,src_w,src_h)){
 			    	CopyLODImage(pixels, new_pixels, src_w, src_h, src_w, src_h);
-
+/*
 					DWORDVec border_pixels = new_pixels;
                     int cnt = tgt_w*2*tgt_h*2;
 
@@ -509,9 +503,9 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR out_name, int tgt_w, int 
                     }
 
 			        for (DWORD ref=254; ref>0; ref--)
-	                    ApplyBorders(final_pixels,tgt_w*2,tgt_h*2,ref);
+	                    ApplyBorders(new_pixels,tgt_w*2,tgt_h*2,ref);
 
-                    for (t=0; t<cnt; t++) final_pixels[t]=subst_alpha(new_pixels[t],RGBA_GETALPHA(border_pixels[t]));
+                    for (t=0; t<cnt; t++) new_pixels[t]=subst_alpha(new_pixels[t],RGBA_GETALPHA(border_pixels[t]));
 
                     DWORDVec final_pixels;
                     final_pixels.resize(src_h*src_w*4);
@@ -523,9 +517,9 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR out_name, int tgt_w, int 
                         ELog.DlgMsg(mtError,"* ERROR: imf_Process");
                         return;
                     }
-
+*/
                     CImage* I = new CImage();
-                    I->Create	(tgt_w*2,tgt_h*2,final_pixels.begin());
+                    I->Create	(tgt_w*2,tgt_h*2,new_pixels.begin());
                     I->Vflip	();
                     I->SaveTGA	(out_name);
                     _DELETE		(I);
@@ -538,9 +532,9 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR out_name, int tgt_w, int 
         ELog.DlgMsg(mtError,"Can't make screenshot.");
     }
 
-	Device.m_Camera.SetStyle(save_style);
-    Device.SetTransform	(D3DTS_PROJECTION,save_projection);
-    Device.m_Camera.Set(save_hpb,save_pos);
+//	Device.m_Camera.SetStyle(save_style);
+//    Device.SetTransform	(D3DTS_PROJECTION,save_projection);
+//    Device.m_Camera.Set(save_hpb,save_pos);
 }
 
 

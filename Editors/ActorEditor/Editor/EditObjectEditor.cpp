@@ -12,13 +12,20 @@
 
 #define EPS_LOD 1.f/64.f
 
-static FVF::LIT LOD[24]={
-	-1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.0f,	0.0f, // F 0
-	 1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.5f,	0.0f, // F 1
-	 1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 0.5f,	0.5f, // F 2
-	-1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.0f,	0.0f, // F 0
-	 1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 0.5f,	0.5f, // F 2
-	-1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 0.0f,	0.5f, // F 3
+static FVF::LIT LOD[6]={
+	-1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.5f,0.0f, // F 0
+	 1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 1.0f,0.0f, // F 1
+	 1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 1.0f,0.5f, // F 2
+	-1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.5f,0.0f, // F 0
+	 1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 1.0f,0.5f, // F 2
+	-1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 0.5f,0.5f, // F 3
+/*
+	-1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.0f,0.0f, // F 0
+	 1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.5f,0.0f, // F 1
+	 1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 0.5f,0.5f, // F 2
+	-1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.0f,0.0f, // F 0
+	 1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 0.5f,0.5f, // F 2
+	-1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 0.0f,0.5f, // F 3
 
 	 1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.5f,0.0f, // B
 	-1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 1.0f,0.0f, // B
@@ -27,23 +34,20 @@ static FVF::LIT LOD[24]={
     -1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 1.0f,0.5f, // B
      1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 0.5f,0.5f, // B
 
-	 0.0f, 1.0f,  1.0f, 0xFFFFFFFF, 0.0f,0.5f, // L
-	 0.0f, 1.0f, -1.0f, 0xFFFFFFFF, 0.5f,0.5f, // L
-     0.0f,-1.0f, -1.0f, 0xFFFFFFFF, 0.5f,1.0f, // L
-
-	 0.0f, 1.0f,  1.0f, 0xFFFFFFFF, 0.0f,0.5f, // L
-     0.0f,-1.0f, -1.0f, 0xFFFFFFFF, 0.5f,1.0f, // L
-
-     0.0f,-1.0f,  1.0f, 0xFFFFFFFF, 0.0f,1.0f, // L
+	 0.0f, 1.0f,  1.0f, 0xFFFFFFFF,	0.0f,0.5f,// L
+	 0.0f, 1.0f, -1.0f, 0xFFFFFFFF, 0.5f,0.5f,// L
+     0.0f,-1.0f, -1.0f, 0xFFFFFFFF, 0.5f,1.0f,// L
+	 0.0f, 1.0f,  1.0f, 0xFFFFFFFF, 0.0f,0.5f,// L
+     0.0f,-1.0f, -1.0f, 0xFFFFFFFF, 0.5f,1.0f,// L
+     0.0f,-1.0f,  1.0f, 0xFFFFFFFF, 0.0f,1.0f,// L
 
 	 0.0f, 1.0f, -1.0f, 0xFFFFFFFF, 0.5f,0.5f, // R
 	 0.0f, 1.0f,  1.0f, 0xFFFFFFFF, 1.0f,0.5f, // R
      0.0f,-1.0f,  1.0f, 0xFFFFFFFF, 1.0f,1.0f, // R
-
 	 0.0f, 1.0f, -1.0f, 0xFFFFFFFF, 0.5f,0.5f, // R
      0.0f,-1.0f,  1.0f, 0xFFFFFFFF, 1.0f,1.0f, // R
-
      0.0f,-1.0f, -1.0f, 0xFFFFFFFF, 0.5f,1.0f, // R
+*/
 };
 
 bool CEditableObject::Reload()
@@ -122,6 +126,11 @@ void CEditableObject::RenderSingle(const Fmatrix& parent)
 		Render(parent, i, false);
 		Render(parent, i, true);
     }
+    Device.SetTransform(D3DTS_WORLD,parent);
+	Fvector offs, size;
+	m_Box.get_CD(offs,size);
+	Device.SetShader(Device.m_WireShader);
+	DU::DrawBox(offs,size,true,0xFFFFFFFF);
 }
 
 void CEditableObject::RenderAnimation(const Fmatrix& parent){
@@ -172,23 +181,22 @@ void CEditableObject::RenderSelection(const Fmatrix& parent, CEditableMesh* mesh
 
 void CEditableObject::RenderLOD(const Fmatrix& parent)
 {
-/*	Fvector offs, size;
-	m_Box.get_CD(offs,size);
-	Device.SetShader(Device.m_WireShader);
-	DU::DrawBox(offs,size,true,0xFFFFFFFF);
-*/
-    Shader* S = Device.Shader.Create("def_shaders\\def_aref_v_lod","lod\\lod_trees_tree_green3");
-    Fvector P,R;
-    m_Box.get_CD(P,R);
-    Fmatrix matrix;
-    matrix.translate(P);
-    matrix.scale_over(R);
+    Shader* SH = Device.Shader.Create("def_shaders\\def_aref_v_lod","lod\\lod_trees_tree_green3");
+    Fvector P,S;
+    m_Box.get_CD(P,S);
+    float r = sqrtf(S.x*S.x+S.z*S.z);
+    Fmatrix matrix,scale;
+    matrix.rotateY(-PI_DIV_4);
+    matrix.translate_over(P);
+    scale.scale(r,S.y,r);
+    matrix.mulB(scale);
     matrix.mulA(parent);
     Device.SetTransform(D3DTS_WORLD,matrix);
-    Device.SetShader(S);
+    Device.SetShader(SH);
+//    Device.SetShader(Device.m_WireShader);//SH);
 //	if (!m_TexName.IsEmpty()&&!m_ShaderName.IsEmpty()) m_GShader = Device.Shader.Create(m_ShaderName.c_str(),m_TexName.c_str());
-    DU::DrawPrimitiveLIT(D3DPT_TRIANGLELIST, 8, LOD, 24, true, false);
-    Device.Shader.Delete(S);
+    DU::DrawPrimitiveLIT(D3DPT_TRIANGLELIST, 2, LOD, 6, true, false);
+    Device.Shader.Delete(SH);
 }
 
 void CEditableObject::OnDeviceCreate(){
