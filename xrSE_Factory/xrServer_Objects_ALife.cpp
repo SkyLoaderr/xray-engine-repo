@@ -1023,10 +1023,10 @@ void CSE_ALifeObjectHangingLamp::FillProps	(LPCSTR pref, PropItemVec& values)
 	PHelper().CreateChoose		(values, PrepareKey(pref,*s_name,"Light\\Bone"),		&light_main_bone,	smSkeletonBones,0,(void*)visual()->get_visual());
 
 	if (flags.is(flPointAmbient)){
-		PHelper().CreateFloat	(values, PrepareKey(pref,*s_name,"Ambient\\Radius"),	&m_ambient_radius,	0.f, 1000.f);
-		PHelper().CreateFloat	(values, PrepareKey(pref,*s_name,"Ambient\\Power"),		&m_ambient_power);
-		PHelper().CreateChoose	(values, PrepareKey(pref,*s_name,"Ambient\\Texture"),	&m_ambient_texture,	smTexture, 	"lights");
-		PHelper().CreateChoose	(values, PrepareKey(pref,*s_name,"Ambient\\Bone"),		&light_ambient_bone,smSkeletonBones,0,(void*)visual()->get_visual());
+		PHelper().CreateFloat	(values, PrepareKey(pref,*s_name,"Light\\Ambient\\Radius"),		&m_ambient_radius,	0.f, 1000.f);
+		PHelper().CreateFloat	(values, PrepareKey(pref,*s_name,"Light\\Ambient\\Power"),		&m_ambient_power);
+		PHelper().CreateChoose	(values, PrepareKey(pref,*s_name,"Light\\Ambient\\Texture"),	&m_ambient_texture,	smTexture, 	"lights");
+		PHelper().CreateChoose	(values, PrepareKey(pref,*s_name,"Light\\Ambient\\Bone"),		&light_ambient_bone,smSkeletonBones,0,(void*)visual()->get_visual());
 	}
 
     if (flags.is(flTypeSpot))
