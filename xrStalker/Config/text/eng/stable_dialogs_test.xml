@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+    <string id="esc_lager_volk_dynamite_done_0">
+        <text>Вот твой динамит</text>
+    </string>
+    <string id="esc_lager_volk_dynamite_done_1">
+        <text>Спасибо</text>
+    </string>
+    <string id="lala1">
+        <text>test1</text>
+    </string>
+</string_table>
