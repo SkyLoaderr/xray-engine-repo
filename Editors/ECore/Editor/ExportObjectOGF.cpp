@@ -591,8 +591,12 @@ bool CExportObjectOGF::ExportAsWavefrontOBJ(IWriter& F, LPCSTR fn)
     string256 	name,ext; 
     _splitpath	(fn, 0, 0, name, ext );
     strcat		(name,ext);
-    // write mtl
+
+	// writ comment
+    F.w_string				("# This file uses meters as units for non-parametric coordinates.");
+
     string512 	tmp,tex_path,tex_name;
+    // write mtl
     for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
 	    _splitpath			((*split_it)->m_Surf->_Texture(), 0, 0, tex_name, 0 );
     	sprintf				(tmp,"newmtl %s",tex_name); 	F.w_string	(tmp);
