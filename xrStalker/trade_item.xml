@@ -7,23 +7,23 @@
 static>
 
 	<!-- WEIGHT -->
-	<s	<static x="20" y="45" width="240" height="16">
-		<text x="0" y="0" font="letterica16" r="216" g="186" b="140"></text>
-static>
+	<s	<static x="20" y="45" width="240" height="18">
+text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
+	</static>
 
 	<!-- COST -->
-	<s	<static x="20" y="61" width="240" height="16">
-		<text x="0" y="0" font="letterica16" r="216" g="186" b="140"></text>
-static>
+	<s	<static x="20" y="63" width="240" height="18">
+text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
+	</static>
 	
 	<!-- CONDITION -->
-	<s	<static x="20" y="77" width="240" height="16">
-		<text x="0" y="0" font="letterica16" r="216" g="186" b="140"></text>
-static>
+	<s	<static x="20" y="81" width="240" height="18">
+text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
+	</static>
 
 	<!-- DESCRIPTION -->
 	<d	<descr_list x="20" y="100" width="285" height="105" item_height="17">
-		<font font="letterica16" r="216" g="186" b="140"/>
+		<font font="letterica16" r="240" g="217" b="182"/>
 descr_list>
    indow>
 

@@ -9,22 +9,22 @@
 
 	<!-- WEIGHT -->
 	<static x="210" y="130" width="200" height="20">
-		<text x="0" y="0" font="letterica18" r="216" g="186" b="140"></text>
+		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
 	</static>
 
 	<!-- COST -->
 	<static x="210" y="150" width="200" height="20">
-		<text x="0" y="0" font="letterica18" r="216" g="186" b="140"></text>
+		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
 	</static>
 
 	<!-- CONDITION -->
 	<static x="210" y="170" width="200" height="20">
-		<text x="0" y="0" font="letterica18" r="216" g="186" b="140"></text>
+		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
 	</static>
 
 	<!-- DESCRIPTION -->
 	<descr_list x="20" y="230" width="304" height="145" item_height="20">
-		<font font="letterica18" r="216" g="186" b="140"/>
+		<font font="letterica18" r="240" g="217" b="182"/>
 	</descr_list>
 
 	<!-- 3D STATIC OLD!!!OLD!!!OLD!! REMOVE ME!!! -->
