@@ -9,43 +9,38 @@
 #pragma warning(default:4530)
 
 // Lua
-//extern "C"
-//{
-	#include "lua.h"
-	#include "lualib.h"
-	#include "lauxlib.h"
-//}
+#include "lua.h"
+#include "lualib.h"
+#include "lauxlib.h"
 #pragma comment(lib,"x:/xrLUA.lib")
-//
-//// Lua-bind
-//#pragma warning(disable:4995)
-//#pragma warning(disable:4530)
-//#pragma warning(disable:4244)
-//#include "luabind/luabind.hpp"
-//#include "luabind/adopt_policy.hpp"
-//#include "luabind/dependency_policy.hpp"
-//#include "luabind/return_reference_to_policy.hpp"
-//#include "luabind/out_value_policy.hpp"
-//#include "luabind/discard_result_policy.hpp"
-//#include "luabind/iterator_policy.hpp"
-//#pragma warning(default:4244)
-//#pragma warning(default:4995)
-//#pragma warning(default:4530)
-//
-////extern "C" {
-//	__declspec(dllimport) LPSTR g_ca_stdout;
-////}
-//
-//// I need this because we have to exclude option /EHsc (exception handling) from the project
-//namespace boost {
-//	void __stdcall throw_exception(const exception &A)
-//	{
-//		Debug.fatal("Boost exception raised %s",A.what());
-//	}
-//};
-//
-//using namespace luabind;
-//
+
+// Lua-bind
+#pragma warning(disable:4995)
+#pragma warning(disable:4530)
+#pragma warning(disable:4244)
+#include "luabind/luabind.hpp"
+#include "luabind/adopt_policy.hpp"
+#include "luabind/dependency_policy.hpp"
+#include "luabind/return_reference_to_policy.hpp"
+#include "luabind/out_value_policy.hpp"
+#include "luabind/discard_result_policy.hpp"
+#include "luabind/iterator_policy.hpp"
+#pragma warning(default:4244)
+#pragma warning(default:4995)
+#pragma warning(default:4530)
+
+__declspec(dllimport) LPSTR g_ca_stdout;
+
+// I need this because we have to exclude option /EHsc (exception handling) from the project
+namespace boost {
+	void __stdcall throw_exception(const exception &A)
+	{
+		Debug.fatal("Boost exception raised %s",A.what());
+	}
+};
+
+using namespace luabind;
+
 ////void Log(LPCSTR S)
 ////{
 ////	printf("%s",S);
@@ -491,128 +486,128 @@
 ////	return			(l_bResult);
 ////}
 //
-//bool create_namespace_table(lua_State *L, LPCSTR N)
-//{
-//	lua_pushstring	(L,"_G");
-//	lua_gettable	(L,LUA_GLOBALSINDEX);
-//	LPSTR			S2 = (char*)xr_malloc((xr_strlen(N) + 1)*sizeof(char)), S = S2;
-//	strcpy			(S,N);
-//	for (;;) {
-//		if (!xr_strlen(S)) {
-//			xr_free		(S2);
-//			return		(false);
-//		}
-//		LPSTR			S1 = strchr(S,'.');
-//		if (S1)
-//			*S1				= 0;
-//		lua_pushstring	(L,S);
-//		lua_gettable	(L,-2);
-//		if (lua_isnil(L,-1)) {
-//			lua_pop			(L,1);
-//			lua_newtable	(L);
-//			lua_pushstring	(L,S);
-//			lua_pushvalue	(L,-2);
-//			lua_settable	(L,-4);
-//		}
-//		else
-//			if (!lua_istable(L,-1)) {
-//				xr_free			(S2);
-//				lua_pop			(L,2);
-//				printf			(" Error : the namespace name is already being used by the non-table object!\n");
-//				return			(false);
-//			}
-//		lua_remove		(L,-2);
-//		if (S1)
-//			S			= ++S1;
-//		else
-//			break;
-//	}
-//	xr_free			(S2);
-//	return			(true);
-//}
-//
-//void copy_globals(lua_State *L)
-//{
-//	lua_newtable	(L);
-//	lua_pushstring	(L,"_G");
-//	lua_gettable	(L,LUA_GLOBALSINDEX);
-//	lua_pushnil		(L);
-//	while (lua_next(L, -2) != 0) {
-//		lua_pushvalue	(L,-2);
-//		lua_pushvalue	(L,-2);
-//		lua_settable	(L,-6);
-//		lua_pop			(L, 1);
-//	}
-//}
-//
-//bool do_file(lua_State *L, LPCSTR S, bool bCall)
-//{
-//	if (luaL_loadfile(L,S)) {
-//		printf			("\n");
-//		for (int i=0; ; i++)
-//			if (lua_isstring(L,i))
-//				printf	(" %s\n",lua_tostring(L,i));
-//			else
-//				break;
-//		lua_pop			(L,i + 4);
-//		return			(false);
-//	}
-//
-//	if (bCall)
-//		lua_call		(L,0,0);
-//	else
-//		lua_insert		(L,-4);
-//
-//	return			(true);
-//}
-//
-//void set_namespace(lua_State *L)
-//{
-//	lua_pushnil		(L);
-//	while (lua_next(L, -2) != 0) {
-//		lua_pushvalue	(L,-2);
-//		lua_gettable	(L,-5);
-//		if (lua_isnil(L,-1)) {
-//			lua_pop			(L,1);
-//			lua_pushvalue	(L,-2);
-//			lua_pushvalue	(L,-2);
-//			lua_pushvalue	(L,-2);
-//			lua_pushnil		(L);
-//			lua_settable	(L,-7);
-//			lua_settable	(L,-7);
-//		}
-//		else {
-//			lua_pop			(L,1);
-//			lua_pushvalue	(L,-2);
-//			lua_gettable	(L,-4);
-//			if (!lua_equal(L,-1,-2)) {
-//				lua_pushvalue	(L,-3);
-//				lua_pushvalue	(L,-2);
-//				lua_pushvalue	(L,-2);
-//				lua_pushvalue	(L,-5);
-//				lua_settable	(L,-8);
-//				lua_settable	(L,-8);
-//			}
-//			lua_pop			(L,1);
-//		}
-//		lua_pushvalue	(L,-2);
-//		lua_pushnil		(L);
-//		lua_settable	(L,-6);
-//		lua_pop			(L, 1);
-//	}
-//	lua_pop			(L,3);
-//}
-//
-//bool load_file_into_namespace(lua_State *L, LPCSTR S, LPCSTR N, bool bCall = true)
-//{
-//	if (!create_namespace_table(L,N))
-//		return		(false);
-//	copy_globals	(L);
-//	if (!do_file(L,S,bCall))
-//		return		(false);
-//	set_namespace	(L);
-//	return			(true);
-//}
+bool create_namespace_table(lua_State *L, LPCSTR N)
+{
+	lua_pushstring	(L,"_G");
+	lua_gettable	(L,LUA_GLOBALSINDEX);
+	LPSTR			S2 = (char*)xr_malloc((xr_strlen(N) + 1)*sizeof(char)), S = S2;
+	strcpy			(S,N);
+	for (;;) {
+		if (!xr_strlen(S)) {
+			xr_free		(S2);
+			return		(false);
+		}
+		LPSTR			S1 = strchr(S,'.');
+		if (S1)
+			*S1				= 0;
+		lua_pushstring	(L,S);
+		lua_gettable	(L,-2);
+		if (lua_isnil(L,-1)) {
+			lua_pop			(L,1);
+			lua_newtable	(L);
+			lua_pushstring	(L,S);
+			lua_pushvalue	(L,-2);
+			lua_settable	(L,-4);
+		}
+		else
+			if (!lua_istable(L,-1)) {
+				xr_free			(S2);
+				lua_pop			(L,2);
+				printf			(" Error : the namespace name is already being used by the non-table object!\n");
+				return			(false);
+			}
+		lua_remove		(L,-2);
+		if (S1)
+			S			= ++S1;
+		else
+			break;
+	}
+	xr_free			(S2);
+	return			(true);
+}
+
+void copy_globals(lua_State *L)
+{
+	lua_newtable	(L);
+	lua_pushstring	(L,"_G");
+	lua_gettable	(L,LUA_GLOBALSINDEX);
+	lua_pushnil		(L);
+	while (lua_next(L, -2) != 0) {
+		lua_pushvalue	(L,-2);
+		lua_pushvalue	(L,-2);
+		lua_settable	(L,-6);
+		lua_pop			(L, 1);
+	}
+}
+
+bool do_file(lua_State *L, LPCSTR S, bool bCall)
+{
+	if (luaL_loadfile(L,S)) {
+		printf			("\n");
+		for (int i=0; ; i++)
+			if (lua_isstring(L,i))
+				printf	(" %s\n",lua_tostring(L,i));
+			else
+				break;
+		lua_pop			(L,i + 4);
+		return			(false);
+	}
+
+	if (bCall)
+		lua_call		(L,0,0);
+	else
+		lua_insert		(L,-4);
+
+	return			(true);
+}
+
+void set_namespace(lua_State *L)
+{
+	lua_pushnil		(L);
+	while (lua_next(L, -2) != 0) {
+		lua_pushvalue	(L,-2);
+		lua_gettable	(L,-5);
+		if (lua_isnil(L,-1)) {
+			lua_pop			(L,1);
+			lua_pushvalue	(L,-2);
+			lua_pushvalue	(L,-2);
+			lua_pushvalue	(L,-2);
+			lua_pushnil		(L);
+			lua_settable	(L,-7);
+			lua_settable	(L,-7);
+		}
+		else {
+			lua_pop			(L,1);
+			lua_pushvalue	(L,-2);
+			lua_gettable	(L,-4);
+			if (!lua_equal(L,-1,-2)) {
+				lua_pushvalue	(L,-3);
+				lua_pushvalue	(L,-2);
+				lua_pushvalue	(L,-2);
+				lua_pushvalue	(L,-5);
+				lua_settable	(L,-8);
+				lua_settable	(L,-8);
+			}
+			lua_pop			(L,1);
+		}
+		lua_pushvalue	(L,-2);
+		lua_pushnil		(L);
+		lua_settable	(L,-6);
+		lua_pop			(L, 1);
+	}
+	lua_pop			(L,3);
+}
+
+bool load_file_into_namespace(lua_State *L, LPCSTR S, LPCSTR N, bool bCall = true)
+{
+	if (!create_namespace_table(L,N))
+		return		(false);
+	copy_globals	(L);
+	if (!do_file(L,S,bCall))
+		return		(false);
+	set_namespace	(L);
+	return			(true);
+}
 //
 ////typedef BOOL test_type;
 ////
@@ -857,71 +852,6 @@
 //	return			(is_object_presented(L,identifier,type));
 //}
 //
-//int __cdecl main(int argc, char* argv[])
-//{
-//	printf	("xrLuaCompiler v0.1\n");
-//	if (argc < 2) {
-//		printf	("Syntax : xrLuaCompiler.exe <file1> <file2> ... <fileN>\nAll the files must be in the directory \"s:\\gamedata\\scripts\" \nwith \".script\" extension\n");
-//		return 0;
-//	}
-//
-//	string4096		SSS;
-//	strcpy			(SSS,"");
-//	g_ca_stdout		= SSS;
-//
-//	lua_State		*L = lua_open();
-//	if (!L)
-//		lua_error	(L);
-//
-//	luaopen_base	(L);
-//	luaopen_string	(L);
-//	luaopen_math	(L);
-//	luaopen_table	(L);
-//
-//	lua_pop			(L,4);
-//
-//	open			(L);
-//
-//	for (int i=1; i<argc; i++) {
-//		string256	l_caScriptName;
-//		strconcat	(l_caScriptName,"s:\\gamedata\\scripts\\",argv[i],".script");
-//		printf		("File %s : ",l_caScriptName);
-//		print_stack	(L);
-//		bool		b = load_file_into_namespace(L,l_caScriptName,xr_strlen(argv[i]) ? argv[i] : "_G",true);
-//		print_stack	(L);
-//		if (xr_strlen(SSS)) {
-//			printf		("\n%s\n",SSS);
-//			strcpy		(SSS,"");
-//		}
-//		else
-//			if (b)
-//				printf	("0 syntax errors\n");
-///**
-//LUA_TNIL			0
-//LUA_TBOOLEAN		1
-//LUA_TLIGHTUSERDATA	2
-//LUA_TNUMBER			3
-//LUA_TSTRING			4
-//LUA_TTABLE			5
-//LUA_TFUNCTION		6
-//LUA_TUSERDATA		7
-//LUA_TTHREAD			8
-///**/		
-////		vfPrintTable(L,argv[1]);
-////		lua_pushstring(L,"test");
-////		print_stack	(L);
-////		printf		("%s\n",object_presented(L,argv[1],"main",LUA_TFUNCTION)  ? "true" : "false");
-////		print_stack	(L);
-////		printf		("%s\n",object_presented(L,argv[1],"main",LUA_TUSERDATA)  ? "true" : "false");
-////		print_stack	(L);
-////		printf		("%s\n",object_presented(L,argv[1],"_main",LUA_TFUNCTION) ? "true" : "false");
-////		print_stack	(L);
-////		printf		("%s\n",object_presented(L,argv[1],"Main",LUA_TFUNCTION)  ? "true" : "false");
-////		print_stack	(L);
-//	}
-//
-//	lua_close		(L);
-//}
 
 template <typename T>
 class CEmptyClassTemplate {
@@ -1399,39 +1329,106 @@ struct SSS {
 //		printf		("Partial partial specialization\n");
 //	}
 };
-int __cdecl main(char argc, char *argv[])
+//int __cdecl main(char argc, char *argv[])
+//{
+////	SSS								sss;
+////	PP								t0;
+////	CProblemSolver<u32,bool,u32>	t1;
+////	CProblemSolver<u32,u32,u32>		t2;
+//
+////	sss.search	(t0,0,t0);//,1,0
+////	sss.search	(t1,0,0,0,t0);//,1,0
+////	sss.search	(t2,0,0,0,t0);//,1,0
+//
+////	typedef CEDSB<float>										_data_storage_base;
+////	typedef CEDSBA<_data_storage_base,CDSA>						_data_storage_base_allocator;
+////	typedef CEDSIBA<u32,_data_storage_base_allocator>			_data_storage_index_base_allocator;
+////	typedef CEDLSL<_data_storage_index_base_allocator>			_data_storage;
+////	typedef CDSC<CESLSL,CEDSI<u32>,CEDSB<float>,CEDSA>				_data_storage;
+////
+////	A<int>::B<float>	AAA;
+////
+////	_data_storage::CGraphNode	g;
+////	g.f()		= 1.f;
+////	g.g()		= 2.f;
+////	g.h()		= 3.f;
+////	g.index()	= 4;
+////	g.back()	= &g;
+//////	g.prev()	= &g;
+////	g.next()	= &g;
+////	u64			a = 0x7fffffffffffffff;
+////	printf		("%s : %I64d","string",a);
+////	A<B<CClassTemplate>::BB>::AA	X;
+////	X.pointerA	= &X;
+////	X.pointerB	= &X;
+////	X.x			= 1;
+////	X.X			= &X;
+//	return		(0);
+
+int __cdecl main(int argc, char* argv[])
 {
-//	SSS								sss;
-//	PP								t0;
-//	CProblemSolver<u32,bool,u32>	t1;
-//	CProblemSolver<u32,u32,u32>		t2;
+	printf	("xrLuaCompiler v0.1\n");
+	if (argc < 2) {
+		printf	("Syntax : xrLuaCompiler.exe <file1> <file2> ... <fileN>\nAll the files must be in the directory \"s:\\gamedata\\scripts\" \nwith \".script\" extension\n");
+		return 0;
+	}
 
-//	sss.search	(t0,0,t0);//,1,0
-//	sss.search	(t1,0,0,0,t0);//,1,0
-//	sss.search	(t2,0,0,0,t0);//,1,0
+	string4096		SSS;
+	strcpy			(SSS,"");
+	g_ca_stdout		= SSS;
 
-//	typedef CEDSB<float>										_data_storage_base;
-//	typedef CEDSBA<_data_storage_base,CDSA>						_data_storage_base_allocator;
-//	typedef CEDSIBA<u32,_data_storage_base_allocator>			_data_storage_index_base_allocator;
-//	typedef CEDLSL<_data_storage_index_base_allocator>			_data_storage;
-//	typedef CDSC<CESLSL,CEDSI<u32>,CEDSB<float>,CEDSA>				_data_storage;
-//
-//	A<int>::B<float>	AAA;
-//
-//	_data_storage::CGraphNode	g;
-//	g.f()		= 1.f;
-//	g.g()		= 2.f;
-//	g.h()		= 3.f;
-//	g.index()	= 4;
-//	g.back()	= &g;
-////	g.prev()	= &g;
-//	g.next()	= &g;
-//	u64			a = 0x7fffffffffffffff;
-//	printf		("%s : %I64d","string",a);
-//	A<B<CClassTemplate>::BB>::AA	X;
-//	X.pointerA	= &X;
-//	X.pointerB	= &X;
-//	X.x			= 1;
-//	X.X			= &X;
-	return		(0);
+	lua_State		*L = lua_open();
+	if (!L)
+		lua_error	(L);
+
+	luaopen_base	(L);
+	luaopen_string	(L);
+	luaopen_math	(L);
+	luaopen_table	(L);
+
+	lua_pop			(L,4);
+
+	open			(L);
+
+	for (int i=1; i<argc; i++) {
+		string256	l_caScriptName;
+		strconcat	(l_caScriptName,"s:\\gamedata\\scripts\\",argv[i],".script");
+		printf		("File %s : ",l_caScriptName);
+//		print_stack	(L);
+		bool		b = load_file_into_namespace(L,l_caScriptName,xr_strlen(argv[i]) ? argv[i] : "_G",true);
+//		print_stack	(L);
+		lua_dostring	(L,"test_this.main()");
+		if (xr_strlen(SSS)) {
+			printf		("\n%s\n",SSS);
+			strcpy		(SSS,"");
+		}
+		else
+			if (b)
+				printf	("0 syntax errors\n");
+/**
+LUA_TNIL			0
+LUA_TBOOLEAN		1
+LUA_TLIGHTUSERDATA	2
+LUA_TNUMBER			3
+LUA_TSTRING			4
+LUA_TTABLE			5
+LUA_TFUNCTION		6
+LUA_TUSERDATA		7
+LUA_TTHREAD			8
+/**/		
+//		vfPrintTable(L,argv[1]);
+//		lua_pushstring(L,"test");
+//		print_stack	(L);
+//		printf		("%s\n",object_presented(L,argv[1],"main",LUA_TFUNCTION)  ? "true" : "false");
+//		print_stack	(L);
+//		printf		("%s\n",object_presented(L,argv[1],"main",LUA_TUSERDATA)  ? "true" : "false");
+//		print_stack	(L);
+//		printf		("%s\n",object_presented(L,argv[1],"_main",LUA_TFUNCTION) ? "true" : "false");
+//		print_stack	(L);
+//		printf		("%s\n",object_presented(L,argv[1],"Main",LUA_TFUNCTION)  ? "true" : "false");
+//		print_stack	(L);
+	}
+
+	lua_close		(L);
 }
+
