@@ -42,7 +42,7 @@ float ffGetStartVolume(ESoundTypes eType)
 					return(.3f);
 				else if ((eType & SOUND_TYPE_WORLD_DOOR_CLOSING) == SOUND_TYPE_WORLD_DOOR_CLOSING)
 					return(.5f);
-				else if ((eType & SOUND_TYPE_WORLD_WINDOW_BREAKING) == SOUND_TYPE_WORLD_WINDOW_BREAKING)
+				else if ((eType & SOUND_TYPE_WORLD_OBJECT_BREAKING) == SOUND_TYPE_WORLD_OBJECT_BREAKING)
 					return(.8f);
 				else if ((eType & SOUND_TYPE_WORLD_OBJECT_FALLING) == SOUND_TYPE_WORLD_OBJECT_FALLING)
 					return(.7f);
