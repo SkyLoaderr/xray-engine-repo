@@ -301,8 +301,7 @@ void	CCar::UpdateCL				( )
 		//HUD().pFontSmall->OutNext("Vel Actual:    [%3.2f]",m_PhysicMovementControl->GetVelocityActual());
 	}
 	#endif
-	if (GetScriptControl())
-		ProcessScripts();
+
 	//	Log("UpdateCL",Device.dwFrame);
 	//XFORM().set(m_pPhysicsShell->mXFORM);
 	VisualUpdate();
@@ -1151,19 +1150,7 @@ void CCar::InitParabola()
 }
 void CCar::PhTune(dReal step)
 {
-	if(m_repairing)Revert();
-	LimitWheels();
-	UpdateFuel(step);
-	//if(fwp)
-	{	
-		UpdatePower();
-		if(b_engine_on&&!b_starting && m_current_rpm<m_min_rpm)Stall();
-	}
-	if(bkp)
-	{
-		UpdateBack();
-	}
-	
+
 }
 void CCar::UpdateBack()
 {
@@ -1471,8 +1458,24 @@ void CCar::ResetScriptData(void	*P)
 	m_max_rpm		= m_fSaveMaxRPM;
 }
 
-void CCar::PhDataUpdate(dReal /**step/**/)
+void CCar::PhDataUpdate(dReal step)
 {
+	if (GetScriptControl())
+			ProcessScripts();
+
+		if(m_repairing)Revert();
+		LimitWheels();
+		UpdateFuel(step);
+		//if(fwp)
+		{	
+			UpdatePower();
+			if(b_engine_on&&!b_starting && m_current_rpm<m_min_rpm)Stall();
+		}
+		if(bkp)
+		{
+			UpdateBack();
+		}
+//////////////////////////////////////////////////////////
 	for (int k=0; k<(int)m_doors_update.size(); ++k){
 		SDoor* D = m_doors_update[k];
 		if (!D->update)

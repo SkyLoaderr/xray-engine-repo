@@ -478,6 +478,7 @@ void CPHShellSplitterHolder::Activate()
 	if(bActive) return;
 	CPHUpdateObject::Activate();
 	bActive=true;
+	PhTune(fixed_step);
 }
 
 void CPHShellSplitterHolder::Deactivate()
