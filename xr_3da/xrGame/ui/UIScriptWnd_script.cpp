@@ -62,6 +62,7 @@ void UIScriptWnd::script_register(lua_State *L)
 		.def("GetFrameLineWnd",	(CUIFrameLineWnd* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUIFrameLineWnd>)
 		.def("GetProgressBar",	(CUIProgressBar* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUIProgressBar>)
 		.def("GetTabControl",	(CUITabControl* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUITabControl>)
+		.def("GetListWnd",		(CUIListWnd* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUIListWnd>)
 
 
 		.def("OnKeyboard",		&BaseType::OnKeyboard, &WrapType::OnKeyboard_static)

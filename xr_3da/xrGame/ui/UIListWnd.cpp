@@ -352,6 +352,7 @@ void CUIListWnd::SetItemWidth(int iItemWidth)
 void CUIListWnd::SetItemHeight(int iItemHeight)
 {
 	m_iItemHeight = iItemHeight;
+	m_iRowNum = GetHeight()/iItemHeight;
 }
 
 void CUIListWnd::Reset()

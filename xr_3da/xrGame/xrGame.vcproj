@@ -8453,6 +8453,9 @@
 					<File
 						RelativePath=".\ui\UIListWnd.h">
 					</File>
+					<File
+						RelativePath=".\ui\UIListWnd_script.cpp">
+					</File>
 				</Filter>
 				<Filter
 					Name="ScrollBar"

@@ -11,6 +11,8 @@
 #include "uilistitem.h"
 #include "uiscrollbar.h"
 
+#include "../script_export_space.h"
+
 #define DEFAULT_ITEM_HEIGHT 30
 
 
@@ -39,8 +41,10 @@ public:
 	
 	//////////////////////////////////////////////////////////////////////////
 	
+	
 	template <class Element>
 	bool AddItem(const char*  str, const int shift = 0, void* pData = NULL,
+
 				 int value = 0, int insertBeforeIdx = -1)
 	{
 		//создать новый элемент и добавить его в список
@@ -61,7 +65,7 @@ public:
 	}
 
 	//////////////////////////////////////////////////////////////////////////
-	
+	bool AddText_script(LPCSTR str, int shift, u32 color, CGameFont* pFont);
 	template <class Element>
 	bool AddParsedItem(const CUIString &str, const int shift,
 					   const u32 &MsgColor, CGameFont* pFont = NULL,
@@ -276,6 +280,11 @@ protected:
 	// Текущий уникальный идентификатор
 	int m_iLastUniqueID;
 	bool m_bNewRenderMethod;
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+
+add_to_type_list(CUIListWnd)
+#undef script_type_list
+#define script_type_list save_type_list(CUIListWnd)
 
 #endif //_UI_LIST_WND_H_

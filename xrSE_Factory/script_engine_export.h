@@ -74,6 +74,7 @@
 #	include "UI/UIMessageBox.h"
 #	include "UI/UIPropertiesBox.h"
 #	include "UI/UITabControl.h"
+#	include "UI/UIListWnd.h"
 
 
 #	include "script_ui_registrator.h"
