@@ -236,12 +236,12 @@ function Trader:set_trade_end ()
     if variant == 1 then
        self.current.start_anim = "idle_spinka"
        self.current.process_anim = "spinka"
-       self.current.repeats = math.random (1, 8)
+       self.current.repeats = math.random (3, 8)
        self.current.end_anim = "spinka_idle"
     elseif variant == 2 then
        self.current.start_anim = "idle"
        self.current.process_anim = "palci"
-       self.current.repeats = math.random (1, 3)
+       self.current.repeats = math.random (3, 8)
        self.current.end_anim = "idle"
     end
     self.current.end_current = false
