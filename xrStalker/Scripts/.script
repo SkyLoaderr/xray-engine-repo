@@ -25,7 +25,7 @@ module ("xr_ambush")
 module ("xr_waiter")
 module ("xr_wounded")
 module ("xr_scout")
---module ("xr_trivial")
+module ("xr_trivial")
 module ("xr_report")
 
 function printf(fmt,...)
@@ -272,24 +272,24 @@ function distance_between(obj1, obj2)
 end
 
 --------------------------------------------------
--- Класс LUA реализующий Finite State Machine
+-- іласс LUA реализуіий Finite State Machine
 -- для управления персонажами
 --------------------------------------------------
 class 'FSM'
 
 --  инициализация путем задания объекта Non-Player Character
 function FSM:__init(script_name, npc_obj)
-    -- указатель на подконтрольный NPC
+    -- указатель на подконтрольнvй NPC
     self.npc = npc_obj
-    -- строка - имя скрипта, который запускает игру
+    -- строка - имя скрипта, которvй запускает игру
     self.script_name = script_name
-    -- матрица, задающая граф переходов состояний
+    -- матрица, задаіая граф переходов состояний
     -- реализуется как двумерная таблица
     self.transition_matrix = {[0] = {}}
-    -- номер текущего состояния
+    -- номер текуего состояния
     self.current_state = 0
 
-    -- флаг того, что машина включена
+    -- флаг того, что машина вклічена
     self.machine_running = true
 
     printf("inialization FSM for NPC %s", self.npc:name())
@@ -312,7 +312,7 @@ end
 
 
 --  добавление указателя на булеву
---  функцию условия перехода
+--  функциі условия перехода
 function FSM:set_transition(from_state_num, to_state_num, cond_func)
     printf("in setting transition %d, %d ", from_state_num, to_state_num)
 
@@ -421,7 +421,7 @@ function script_object:update()
 end
 
 --
--- Передача персонажу информации
+-- іередача персонажу информации
 --
 function GiveInfo(obj, info_number)
 
@@ -441,15 +441,15 @@ end
 -- Functions and variables added by Zmey
 --------------------------------------------------
 
--- Константа, которую использовать в местах, где нужно задать неограниченное время действия
+-- іонстанта, которуі использовать в местах, где нужно задать неограниченное время действия
 time_infinite = 100000000
 
--- Название скрипта, который в данный момент находится в отладке
--- (в этом скрипте будут срабатывать вызовы функции debug_log)
+-- =азвание скрипта, которvй в даннvй момент находится в отладке
+-- (в этом скрипте будут срабатvвать вvзовv функции debug_log)
 debug_script_name = ""
 
--- Выводит в лог строчку, если script_name == debug_script_name
--- Используется для отрадки сценариев
+-- Tvводит в лог строчку, если script_name == debug_script_name
+-- Lспользуется для отрадки сценариев
 function debug_log(script_name, fmt, ...)
   if debug_script_name == script_name then
     log(string.format(fmt, unpack(arg)))
@@ -457,7 +457,7 @@ function debug_log(script_name, fmt, ...)
   end
 end
 
--- Если в данный момент выполняется какое-то действие, прерывает его и отключает скриптовый режим
+-- +сли в даннvй момент вvполняется какое-то действие, прерvвает его и отклічает скриптовvй режим
 function interrupt_action(who, script_name)
   if who:get_script() then
     who:script(false, script_name)
@@ -538,7 +538,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 -- Evaluators
 ----------------------------------------------------------------------------------------------------------------------
--- зарезервированы id с номерами от 0 до 256 для создания стандартных эвалуаторов.
+-- зарезервированv id с номерами от 0 до 256 для создания стандартнvх эвалуаторов.
 
 --Constant evaluator
 class "const_evaluator" (property_evaluator)
@@ -670,7 +670,7 @@ function random_choice_weighted( a )
 
     for k, w in pairs( a ) do
         sum = sum + w
-        
+
         if r <= sum then
             return k
         end
@@ -715,8 +715,7 @@ function isWeapon(id)
         else return false end
 end
 
---Вычисляет yaw в радианах 
+--Tvчисляет yaw в радианах
 function yaw( v1, v2 )
     return  math.acos( ( (v1.x*v2.x) + (v1.z*v2.z ) ) / ( math.sqrt(v1.x*v1.x + v1.z*v1.z ) * math.sqrt(v2.x*v2.x + v2.z*v2.z ) ) )
 end
-
