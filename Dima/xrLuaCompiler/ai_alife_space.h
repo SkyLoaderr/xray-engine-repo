@@ -413,7 +413,7 @@ namespace ALife {
 };
 
 #ifndef _EDITOR
-#include "ai_console.h"
+	#include "ai_debug.h"
 #endif
 
 #endif
