@@ -53,8 +53,10 @@ CALifeStorageManager::~CALifeStorageManager	()
 void CALifeStorageManager::save	(LPCSTR save_name)
 {
 	if (!save_name) {
-		if (!xr_strlen(m_save_name))
+		if (!xr_strlen(m_save_name)) {
 			Log					("There is no file name specified!");
+			return;
+		}
 	}
 	else {
 		VERIFY					(xr_strlen(m_save_name));

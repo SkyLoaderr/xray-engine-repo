@@ -183,7 +183,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CS
 
 #ifndef _EDITOR
 #ifndef AI_COMPILER
-	virtual void					spawn_supplies		();
+	virtual void					spawn_supplies			();
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END

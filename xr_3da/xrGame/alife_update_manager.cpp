@@ -17,6 +17,7 @@
 #include "alife_object_registry.h"
 #include "ef_storage.h"
 #include "xrserver.h"
+#include "level.h"
 
 using namespace ALife;
 
@@ -107,6 +108,8 @@ bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 	if (m_changing_level)
 		return					(false);
 
+	Level().ClientSave			();
+	
 	m_changing_level			= true;
 	for (u32 i=0, n = graph().actor()->children.size(); i<n; ++i)
 		if (objects().object(graph().actor()->children[i],true))

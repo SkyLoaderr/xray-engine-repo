@@ -247,6 +247,10 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	return						(TRUE);
 }
 
+void CGameObject::net_Save		(NET_Packet &net_packet)
+{
+}
+
 void CGameObject::spawn_supplies()
 {
 	if (!spawn_ini() || ai().get_alife())
@@ -626,4 +630,9 @@ void CGameObject::shedule_Update	(u32 dt)
 
 	// Msg							("-SUB-:[%x][%s] CGameObject::shedule_Update",dynamic_cast<void*>(this),*cName());
 	inherited::shedule_Update	(dt);
+}
+
+BOOL CGameObject::net_SaveRelevant	()
+{
+	return						(false);
 }

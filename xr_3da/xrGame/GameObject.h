@@ -56,6 +56,8 @@ public:
 	virtual void			Load				(LPCSTR section);
 	virtual BOOL			net_Spawn			(LPVOID DC);
 	virtual void			net_Destroy			();
+	virtual void			net_Save			(NET_Packet &net_packet);
+	virtual BOOL			net_SaveRelevant	();
 	virtual BOOL			net_Relevant		()	{ return getLocal();	}	// send messages only if active and local
 	virtual void			spatial_move		();
 	virtual BOOL			Ready				()	{ return getReady();	}	// update only if active and fully initialized by/for network

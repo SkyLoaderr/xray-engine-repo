@@ -184,6 +184,10 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 ///			SendConnectionData		(CL);
 //			game->OnPlayerReady		(CL->ID);			
 		}break;
+	case M_SWITCH_DISTANCE:
+		{
+			game->switch_distance(P,sender);
+		}break;
 	case M_CHANGE_LEVEL:
 		{
 			if (game->change_level(P,sender))
@@ -191,7 +195,7 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 		}break;
 	case M_SAVE_GAME:
 		{
-			game->save_game(P,sender);
+			game->save_game			(P,sender);
 		}break;
 	case M_LOAD_GAME:
 		{
@@ -202,10 +206,12 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 		{
 			SendBroadcast			(0xffffffff,P,net_flags(TRUE,TRUE));
 		}break;
-	case M_SWITCH_DISTANCE:
+	case M_SAVE_PACKET:
 		{
-			game->switch_distance(P,sender);
+			Process_save		(P,sender);
 		}break;
+
+
 	}
 	csPlayers.Leave				();
 

@@ -5,6 +5,7 @@
 #include "alife_object_registry.h"
 #include "alife_graph_registry.h"
 #include "alife_time_manager.h"
+#include "level.h"
 
 game_sv_Single::~game_sv_Single			()
 {
@@ -192,6 +193,9 @@ void game_sv_Single::save_game				(NET_Packet &net_packet, DPNID sender)
 {
 	if (!ai().get_alife())
 		return;
+	
+	Level().ClientSave			();
+
 	ref_str						game_name;
 	net_packet.r_string			(game_name);
 	alife().save				(*game_name);

@@ -54,6 +54,49 @@ void CLevel::ClientSend	()
 	}
 }
 
+u32	CLevel::Objects_net_Save	(NET_Packet* _Packet, u32 start, u32 count)
+{
+	NET_Packet& Packet	= *_Packet;
+	u32			position;
+	for (; start<Objects.objects.size(); start++)	{
+		CObject		*_P = Objects.objects[start];
+		CGameObject *P = dynamic_cast<CGameObject*>(_P);
+		if (P && !P->getDestroy() && P->net_SaveRelevant())	{
+			Packet.w_u16			(u16(P->ID())	);
+			Packet.w_chunk_open8	(position);
+			P->net_Save				(Packet);
+#ifdef DEBUG
+			u32 size				= u32		(Packet.w_tell()-position)-sizeof(u8);
+			if				(size>=256)			{
+				Debug.fatal	("Object [%s][%d] exceed network-data limit\n size=%d, Pend=%d, Pstart=%d",
+					*P->cName(), P->ID(), size, Packet.w_tell(), position);
+			}
+#endif
+			Packet.w_chunk_close8	(position);
+			if (0==(--count))		break;
+		}
+	}
+	return	start;
+}
+
+void CLevel::ClientSave	()
+{
+	NET_Packet		P;
+	u32				start	= 0;
+
+	for (;;) {
+		P.w_begin	(M_SAVE_PACKET);
+		
+//		start		= Objects.net_Save(&P, start, 48);
+		start		= Objects_net_Save(&P, start, 48);
+
+		if (P.B.count>2)
+			Send	(P, net_flags(FALSE));
+		else
+			break;
+	}
+}
+
 void CLevel::Send		(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 {
 	// optimize the case when server located in our memory

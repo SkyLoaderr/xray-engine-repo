@@ -68,6 +68,7 @@ public:
 
 	void					Process_spawn			(NET_Packet& P, DPNID sender, BOOL bSpawnWithClientsMainEntityAsParent=FALSE, CSE_Abstract* tpExistedEntity=0);
 	void					Process_update			(NET_Packet& P, DPNID sender);
+	void					Process_save			(NET_Packet& P, DPNID sender);
 	void					Process_event			(NET_Packet& P, DPNID sender);
 	void					Process_event_ownership	(NET_Packet& P, DPNID sender, u32 time, u16 ID);
 	void					Process_event_reject	(NET_Packet& P, DPNID sender, u32 time, u16 ID);

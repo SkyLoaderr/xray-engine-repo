@@ -34,7 +34,7 @@ IC	void CALifeTaskRegistry::remove			(const ALife::_TASK_ID &id, bool no_assert)
 {
 	ALife::TASK_PAIR_IT			I = m_tasks.find(id);
 	if (I == m_tasks.end()) {
-		R_ASSERT2				(no_assert,"The specified task is already presented in the Task Registry!");
+		R_ASSERT2				(no_assert,"Cannot find a specified task in the Task registry!");
 		return;
 	}
 	m_tasks.erase				(I);
@@ -53,7 +53,7 @@ IC	CSE_ALifeTask *CALifeTaskRegistry::task	(const ALife::_TASK_ID &id, bool no_a
 {
 	ALife::TASK_MAP::const_iterator	I = tasks().find(id);
 	if (I == tasks().end()) {
-		R_ASSERT2				(no_assert,"The specified task is already presented in the Task Registry!");
+		R_ASSERT2				(no_assert,"Cannot find a specified task in the Task registry!");
 		return					(0);
 	}
 	return						((*I).second);

@@ -24,10 +24,13 @@ enum {
 	M_CL_UPDATE,
 	//-------------------------------------------------
 	M_CLIENTREADY,				// Client has finished to load level and are ready to play
+	
 	M_CHANGE_LEVEL,				// changing level
-	M_SAVE_GAME,
 	M_LOAD_GAME,
 	M_RELOAD_GAME,
+	M_SAVE_GAME,
+	M_SAVE_PACKET,
+
 	M_SWITCH_DISTANCE,
 	M_GAMEMESSAGE,					// Game Message
 	MSG_FORCEDWORD				= u32(-1)
