@@ -8,8 +8,8 @@ class	CLight_DB
 private:
 	xr_vector<light*>		v_static;
 public:
-	light*					sun;
-	light*					sun_base;
+	light*					sun_original;
+	light*					sun_adapted;
 	light_Package			package;
 public:
 	void					add_light			(light*		L);
