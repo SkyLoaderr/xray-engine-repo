@@ -30,7 +30,6 @@ public:
     MxPairContraction& operator=(const MxPairContraction& c);
 
     MxVertexID v1, v2;
-    MxVertexID v_new;		//.
     float dv1[3], dv2[3];	// dv2 is not really necessary
 
     unsigned int delta_pivot;
@@ -52,9 +51,10 @@ public:
 typedef MxPairContraction MxPairExpansion;
 
 // Masks for internal tag bits
-#define MX_VALID_FLAG 0x01
-#define MX_PROXY_FLAG 0x02
+#define MX_VALID_FLAG	0x01
+#define MX_PROXY_FLAG	0x02
 #define MX_TOUCHED_FLAG 0x04
+#define MX_LOCK_FLAG	0x08
 
 class MxStdModel : public MxBlockModel
 {
@@ -107,16 +107,23 @@ public:
     ////////////////////////////////////////////////////////////////////////
     //  Tagging and marking
     //
-    unsigned int	vertex_is_valid		(MxVertexID i) const
-	{ return v_check_tag(i,MX_VALID_FLAG); }
+    unsigned int	vertex_is_valid		(MxVertexID i) const { return v_check_tag(i,MX_VALID_FLAG); }
     void			vertex_mark_valid	(MxVertexID i) { v_set_tag(i,MX_VALID_FLAG); }
     void			vertex_mark_invalid	(MxVertexID i) { v_unset_tag(i,MX_VALID_FLAG); }
 
-    unsigned int	face_is_valid		(MxFaceID i) const {return f_check_tag(i,MX_VALID_FLAG);}
+	unsigned int	vertex_is_locked	(MxVertexID i) const { return v_check_tag(i,MX_LOCK_FLAG); }
+	void			vertex_mark_locked	(MxVertexID i) { v_set_tag(i,MX_LOCK_FLAG); }
+	void			vertex_mark_unlocked(MxVertexID i) { v_unset_tag(i,MX_LOCK_FLAG); }
+
+	unsigned int	face_is_valid		(MxFaceID i) const {return f_check_tag(i,MX_VALID_FLAG);}
     void			face_mark_valid		(MxFaceID i) { f_set_tag(i,MX_VALID_FLAG); }
     void			face_mark_invalid	(MxFaceID i) { f_unset_tag(i,MX_VALID_FLAG); }
 
-    unsigned int	vertex_is_proxy		(MxVertexID i) const
+	unsigned int	face_is_locked		(MxFaceID i) const { return f_check_tag(i,MX_LOCK_FLAG); }
+	void			face_mark_locked	(MxFaceID i) { f_set_tag(i,MX_LOCK_FLAG); }
+	void			face_mark_unlocked	(MxFaceID i) { f_unset_tag(i,MX_LOCK_FLAG); }
+
+	unsigned int	vertex_is_proxy		(MxVertexID i) const
 	{ return v_check_tag(i,MX_PROXY_FLAG); }
     void			vertex_mark_proxy	(MxVertexID i) { v_set_tag(i,MX_PROXY_FLAG); }
     void			vertex_mark_nonproxy(MxVertexID i) { v_unset_tag(i,MX_PROXY_FLAG); }
