@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "detailmanager.h"
 
-const int			quant	= 32767;
+const int			quant	= 16384;
 const int			c_hdr	= 6;
 const int			c_base	= c_hdr;
 const int			c_size	= 4;
@@ -25,7 +25,7 @@ struct	vertHW
 
 short QC (float v)
 {
-	int t=iFloor(v*float(quant)); clamp(t,-quant,quant);
+	int t=iFloor(v*float(quant));// clamp(t,-quant,quant);
 	return short(t);
 }
 
@@ -83,8 +83,8 @@ void CDetailManager::VS_Load()
 				{
 					pV->P.set	(D.vertices[v].P);
 					pV->M	=	M;
-					pV->u	=	D.vertices[v].u; //QC(D.vertices[v].u);
-					pV->v	=	D.vertices[v].v; //QC(D.vertices[v].v);
+					pV->u	=	QC(D.vertices[v].u);
+					pV->v	=	QC(D.vertices[v].v);
 					pV++;
 				}
 			}
