@@ -45,9 +45,11 @@ static BOOL CALLBACK verifyProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
 		if( LOWORD(wp)==IDSTOP ) {
 			EndDialog(hw, IDSTOP);
 		}
+		/*
 		if( LOWORD(wp)==IDCONTINUE) {
 			EndDialog(hw, IDCONTINUE);
 		}
+		*/
 		if( LOWORD(wp)==IDDEBUG) {
 			EndDialog(hw, IDDEBUG);
 		}
