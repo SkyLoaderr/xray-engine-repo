@@ -119,11 +119,13 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 	if (m_callback)
 		SCRIPT_CALLBACK_EXECUTE_3((*m_callback), m_restricted_object->lua_game_object(),u32(ScriptMonster::eActionTypeMovement),m_curr_point_index);
 
-	u32							count = 0;
-	float						sum = 0.f;
+	u32							count = 0;		// количество разветвлений
+	float						sum = 0.f;		// сумма весов разветвления
 	vertex						= m_path->vertex(m_curr_point_index);
 	CPatrolPath::const_iterator	I = vertex->edges().begin(), E = vertex->edges().end();
-	u32							temp = u32(-1);
+	u32							target = u32(-1);
+	
+	// вычислить количество разветвлений
 	for ( ; I != E; ++I) {
 		if ((*I).vertex_id() == m_prev_point_index)
 			continue;
@@ -131,21 +133,30 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 		if (!accessible(m_path->vertex((*I).vertex_id())))
 			continue;
 
-		if (!count)
-			temp				= (*I).vertex_id();
+		if (count == 0)
+			target				= (*I).vertex_id();
 		
 		sum						+= (*I).weight();
 		++count;
 	}
 
-	if (!count) {
+	if (count == 0) {
 		switch (m_route_type) {
 			case ePatrolRouteTypeStop : {
 				m_completed	= true;
 				return;
 			}
 			case ePatrolRouteTypeContinue : {
-				m_completed	= true;
+				for (I = vertex->edges().begin() ; I != E; ++I) {
+					if (!accessible(m_path->vertex((*I).vertex_id())))
+						continue;
+
+					target			= (*I).vertex_id();
+					break;
+				}
+				if (target != u32(-1))	break;
+
+				m_completed				= true;
 				return;
 			}
 			default : NODEFAULT;
@@ -153,10 +164,13 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 	}
 	else {
 		float			fChoosed = 0.f;
+		
 		if (random() && (count > 1))
 			fChoosed	= ::Random.randF(sum);
+		
 		sum				= 0.f;
 		I				= vertex->edges().begin();
+
 		for ( ; I != E; ++I) {
 			if ((*I).vertex_id() == m_prev_point_index)
 				continue;
@@ -167,15 +181,16 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 			sum			+= (*I).weight();
 
 			if (sum >= fChoosed) {
-				temp	= (*I).vertex_id();
+				target	= (*I).vertex_id();
 				break;
 			}
 		}
-		VERIFY			(m_path->vertex(temp));
 	}
-	
+
+	VERIFY				(m_path->vertex(target));
+
 	m_prev_point_index	= m_curr_point_index;
-	m_curr_point_index	= temp;
+	m_curr_point_index	= target;
 	dest_vertex_id		= m_path->vertex(m_curr_point_index)->data().level_vertex_id();
 	m_dest_position		= m_path->vertex(m_curr_point_index)->data().position();
 	VERIFY				(accessible(m_dest_position));
