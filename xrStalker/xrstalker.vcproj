@@ -1627,6 +1627,9 @@
 						<File
 							RelativePath=".\scripts\fx_sound.script">
 						</File>
+						<File
+							RelativePath=".\Scripts\snd_source.script">
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
