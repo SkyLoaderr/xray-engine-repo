@@ -37,6 +37,7 @@ public:
 	CStatTimer	RenderCALC_HOM;		// portal traversal, frustum culling, entities "OnVisible"
 	CStatTimer	Animation;			// skeleton calculation
 	CStatTimer	RenderDUMP;			// actual primitive rendering
+	CStatTimer	RenderDUMP_RT;		// ...render-targets
 	CStatTimer	RenderDUMP_SKIN;	// ...skinning
 	CStatTimer	RenderDUMP_Cached;	// ...cached rendering
 	CStatTimer	RenderDUMP_HUD;		// ...hud rendering

@@ -74,6 +74,8 @@ void CLightShadows::calculate	()
 {
 	if (id.empty())	return;
 
+	R_CHK(HW.pDevice->SetRenderTarget())
+	
 	// sort by distance
 	std::sort	(id.begin(),id.end(),pred_casters(this));
 	
