@@ -23,7 +23,10 @@ void	CRenderTarget::phase_combine	()
 	{
 		//.
 		RCache.set_Stencil					(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0x00);	// stencil should be >= 1
-		if (RImplementation.o.nvstencil)	u_stencil_optimize	(FALSE);
+		if (RImplementation.o.nvstencil)	{
+			u_stencil_optimize				(FALSE);
+			RCache.set_ColorWriteEnable		();
+		}
 
 		// Compute params
 		Fmatrix		m_v2w;			m_v2w.invert				(Device.mView		);
@@ -71,6 +74,10 @@ void	CRenderTarget::phase_combine	()
 	{
 		//.
 		RCache.set_Stencil			(TRUE,D3DCMP_EQUAL,0x00,0xff,0x00);
+		if (RImplementation.o.nvstencil)	{
+			u_stencil_optimize				(FALSE);
+			RCache.set_ColorWriteEnable		();
+		}
 		g_pGamePersistent->Environment.RenderFirst	();
 	}
 
