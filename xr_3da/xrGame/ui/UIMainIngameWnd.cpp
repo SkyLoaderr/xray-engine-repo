@@ -160,7 +160,6 @@ void CUIMainIngameWnd::Draw()
 		m_pWeapon->ZoomTexture()->SetPos(0,0);
 		m_pWeapon->ZoomTexture()->Render(0,0, Device.dwWidth, Device.dwHeight);
 
-		//!!!
 		if(psHUD_Flags.test(HUD_CROSSHAIR))
 		{
 			psHUD_Flags.set(HUD_CROSSHAIR, FALSE);
@@ -175,7 +174,6 @@ void CUIMainIngameWnd::Draw()
 			CUIWindow::Draw();
 			UIZoneMap.Render();
 		}
-		//!!!
 		if (m_bShowHudCrosshair)
 		{
 			m_bShowHudCrosshair = false;
