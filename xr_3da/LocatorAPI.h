@@ -9,9 +9,12 @@
 enum FS_List
 {
 	FS_ListFiles	=(1<<0),
-	FS_ListFolders	=(1<<1),
-	FS_forcedword	=DWORD(-1)
+		FS_ListFolders	=(1<<1),
+		FS_forcedword	=DWORD(-1)
 };
+
+class ENGINE_API CStream;
+class ENGINE_API CVirtualFileStream;
 
 class ENGINE_API CLocatorAPI  
 {
@@ -23,16 +26,18 @@ public:
 		DWORD	ptr;			// pointer inside vfs
 		DWORD	size;
 		BOOL	bCompressed;
-		
-		IC bool operator < (CLocatorAPI& other) const
-		{	return strcmp(name,other.name)<0;	}
+	};
+	struct	file_pred		: public std::binary_function<file&, file&, bool> 
+	{	
+		IC bool operator()	(const file& x, const file& y) const
+		{	return strcmp(x.name,y.name)<0;	}
 	};
 	struct	archive
 	{
 		CVirtualFileStream*		vfs;
 	};
 private:
-	typedef set<file>				set_files;
+	typedef set<file,file_pred>		set_files;
 	typedef set_files::iterator		set_files_it;
 	typedef vector<archive>			vec_archives;
 	typedef vec_archives::iterator	vec_archives_it;

@@ -19,7 +19,7 @@ CLocatorAPI::~CLocatorAPI()
 	
 }
 
-void CLocatorAPI::Register		(LPCSTR name, DWORD vfs, DWORD ptr, BOOL bCompressed)
+void CLocatorAPI::Register		(LPCSTR name, DWORD vfs, DWORD ptr, DWORD size, BOOL bCompressed)
 {
 	file				desc;
 	desc.name			= strlwr(strdup(name));
@@ -59,7 +59,7 @@ void CLocatorAPI::ProcessArchive(const char* path)
 	hdr->Close			();
 }
 
-void CLocatorAPI::ProcessOne	(_finddata_t& F, const char* path)
+void CLocatorAPI::ProcessOne	(const char* path, _finddata_t& F)
 {
 	FILE_NAME	N;
 	strcpy		(N,path);
@@ -70,11 +70,11 @@ void CLocatorAPI::ProcessOne	(_finddata_t& F, const char* path)
 		if (0==strcmp(F.name,"."))	return;
 		if (0==strcmp(F.name,"..")) return;
 		strcat		(N,"\\");
-		Register	(N,0xffffffff,0,0);
+		Register	(N,0xffffffff,0,0,0);
 		Recurse		(N);
 	} else {
 		if (strext(N) && 0==strcmp(strext(N),".xrp"))	ProcessArchive	(N);
-		else											Register		(N,0xffffffff,F.size,0);
+		else											Register		(N,0xffffffff,0,0,0);
 	}
 }
 
@@ -88,10 +88,10 @@ void CLocatorAPI::Recurse		(const char* path)
 	strcat			(N,"*.*");
 
     R_ASSERT		((hFile=_findfirst(N, &sFile)) != -1);
-	ProcessOne		(sFile,path);
+	ProcessOne		(path,sFile);
 
     while			( _findnext( hFile, &sFile ) == 0 )
-		ProcessOne	(sFile,path);
+		ProcessOne	(path,sFile);
 
     _findclose		( hFile );
 }
@@ -105,9 +105,9 @@ void CLocatorAPI::Initialize	()
 void CLocatorAPI::Destroy		()
 {
 	Log		("ShutDown: File System...");
-	for		(set_cstr_it I=files.begin(); I!=files.end(); I++)
+	for		(set_files_it I=files.begin(); I!=files.end(); I++)
 	{
-		char* str = *I;
+		char* str = LPSTR(I->name);
 		_FREE(str);
 	}
 	files.clear();
@@ -118,8 +118,10 @@ BOOL CLocatorAPI::Exist			(const char* F)
 	FILE_NAME		N;
 	strcpy			(N,F);
 	strlwr			(N);
+	file			desc;
+	desc.name		= N;
 
-	set_cstr_it		I = files.find(N);
+	set_files_it	I = files.find(desc);
 	return			I != files.end();
 }
 
@@ -142,7 +144,7 @@ void CLocatorAPI::List			(vector<char*>& dest, const char* path, DWORD flags)
 	strlwr			(N);
 	if (N[strlen(N)-1]!='\\') strcat(N,"\\");
 
-	set_cstr_it		I = files.find(N);
+	set_files_it	I = files.find(N);
 	if (I==files.end())	return;
 
 	int base_len	= strlen(N);
