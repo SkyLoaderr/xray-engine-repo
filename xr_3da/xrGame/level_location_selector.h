@@ -30,7 +30,8 @@ protected:
 public:
 					CLevelLocationSelector	();
 	virtual			~CLevelLocationSelector	();
-	virtual void	init_evaluator			(PathManagers::CAbstractNodeEvaluator *node_evaluator);
-	template <u64 flags>
-			void	select_location			(PathManagers::CNodeEvaluator<flags> *node_evaluator);
+//	virtual void	init_evaluator			(PathManagers::CAbstractNodeEvaluator *node_evaluator);
+//	template <u64 flags>
+//			void	select_location			(PathManagers::CNodeEvaluator<flags> *node_evaluator);
+			void	select_level_vertex		();
 };

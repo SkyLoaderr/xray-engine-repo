@@ -126,23 +126,34 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, fl
 	Device.Statistic.Physics.End	();
 }
 
+bool CMovementManager::path_actual() const
+{
+	return				(m_path_type_changed);
+}
+
+void CMovementManager::set_path_type(EPathType path_type)
+{
+	m_path_type_changed	= m_path_type != path_type;
+	m_path_type			= path_type;
+}
+
 void CMovementManager::build_path()
 {
 	if (!path_actual()) {
 		switch (m_path_type) {
 			case ePathTypeGamePath : {
-				m_path_state			= m_game_vertex_evaluator ? ePathStateSelectGameVertex : ePathStateBuildGamePath;
+				m_path_state	= ePathStateSelectGameVertex;
 				break;
 			}
 			case ePathTypeLevelPath : {
-				m_path_state			= m_level_vertex_evaluator ? ePathStateSelectLevelVertex : ePathStateBuildLevelPath;
+				m_path_state	= ePathStateSelectLevelVertex;
 				break;
 			}
-			case ePathTypeGamePath : {
-				m_path_state			= ePathStatePredictEnemyVertices;
+			case ePathTypeEnemySearch : {
+				m_path_state	= ePathStatePredictEnemyVertices;
 				break;
 			}
-			default : NODEFAULT;
+			default :			NODEFAULT;
 		}
 	}
 
@@ -159,7 +170,7 @@ void CMovementManager::build_path()
 			process_enemy_search();
 			break;
 		}
-		default : NODEFAULT;
+		default :				NODEFAULT;
 	}
 }
 

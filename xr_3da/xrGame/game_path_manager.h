@@ -32,5 +32,6 @@ public:
 	virtual			~CGamePathManager			();
 	virtual void	init						();
 			void	build_game_path				();
+			void	select_game_path_vertex		();
 };
 

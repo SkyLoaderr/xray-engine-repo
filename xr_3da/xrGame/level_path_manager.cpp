@@ -112,3 +112,7 @@ void CLevelPathManager::build_level_path()
 			m_level_cur_node_index = 0;
 	}
 }
+
+void CLevelPathManager::select_level_path_vertex()
+{
+}

@@ -48,3 +48,7 @@ void CGamePathManager::build_game_path	()
 		m_game_path_actual		= true;
 	}
 }
+
+void CGamePathManager::select_game_path_vertex()
+{
+}

@@ -42,4 +42,5 @@ public:
 	virtual			~CLevelPathManager			();
 	virtual void	init						();
 			void	build_level_path			();
+			void	select_level_path_vertex	();
 };

@@ -59,13 +59,14 @@ public:
 private:
 	EPathState								m_path_state;
 	EPathType								m_path_type;
-	EPathType								m_path_type_previous;
+	bool									m_path_type_changed;
 
 //	template <u64 flags>
 //	void			find_location			(PathManagers::CNodeEvaluator<flags> *node_evaluator);
 	void			process_game_path		();
 	void			process_level_path		();
 	void			process_enemy_search	();
+	bool			path_actual				() const;
 
 protected:
 	float									m_speed;
@@ -76,4 +77,5 @@ public:
 	virtual void	init					();
 			void	build_path				();
 			void	move_along_path			(CPHMovementControl *movement_control, float time_delta);
+			void	set_path_type			(EPathType path_type);
 };

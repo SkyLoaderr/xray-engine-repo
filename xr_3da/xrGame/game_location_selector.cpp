@@ -16,3 +16,7 @@ CGameLocationSelector::CGameLocationSelector	()
 CGameLocationSelector::~CGameLocationSelector	()
 {
 }
+
+void CGameLocationSelector::select_game_vertex	()
+{
+}
