@@ -104,7 +104,7 @@ BOOL CCreator::Load(DWORD dwNum)
 	chunk->Close();
 	
 	// CForms
-	pApp->LoadTitle("Loading CFORM...");
+	pApp->LoadTitle				("Loading CFORM...");
 	chunk = fs.OpenChunk		(fsL_CFORM);
 	ObjectSpace.Load			(chunk);
 	chunk->Close				();
@@ -115,13 +115,13 @@ BOOL CCreator::Load(DWORD dwNum)
 	Render.OnDeviceCreate		();
 	
 	// Objects
-	pApp->LoadTitle	("Loading entities...");
-	R_ASSERT(Load_GameSpecific_Before());
-	Objects.Load	(pLevel, "mobileobjects" );
-	R_ASSERT(Load_GameSpecific_After ());
+	pApp->LoadTitle				("Loading entities...");
+	R_ASSERT					(Load_GameSpecific_Before());
+	Objects.Load				(pLevel, "mobileobjects" );
+	R_ASSERT					(Load_GameSpecific_After ());
 	
 	// Load Sounds
-	pApp->LoadTitle("Loading sound and music...");
+	pApp->LoadTitle				("Loading sound and music...");
 	{
 		CInifile::Sect& S = pLevel->ReadSection("static_sounds");
 		Sounds.reserve	(S.size());
