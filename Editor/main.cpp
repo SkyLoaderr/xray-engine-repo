@@ -309,12 +309,12 @@ void __fastcall TfrmMain::D3DWindowChangeFocus(TObject *Sender)
 {
 	if (D3DWindow->Focused()){
      	paWindow->Color=TColor(0x090FFFF);
-        if (UI->IsMouseInUse()){
-			// если потеряли фокус, а до этого кликнули мышкой -> вызовим событие MouseUp
-        	POINT pt; GetCursorPos(&pt); pt=D3DWindow->ScreenToClient(pt);
-            UI->OnMouseRelease(0);
-        }
+		// если потеряли фокус, а до этого кликнули мышкой -> вызовим событие MouseUp
+        if (UI->IsMouseInUse())
+            UI->OnMouseRelease(TShiftState());
+        if (UI) UI->iCapture();
     }else{
+        if (UI) UI->iRelease();
     	paWindow->Color=clGray;
     }
 }
@@ -392,15 +392,29 @@ void __fastcall TfrmMain::LockSelected1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmMain::D3DWindowMouseDown(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+	UI->OnMousePress(Shift);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::D3DWindowMouseUp(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+	UI->OnMouseRelease(Shift);
+}
+//---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormActivate(TObject *Sender)
 {
-    pInput->OnAppActivate();
+	pInput->OnAppActivate();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmMain::FormDeactivate(TObject *Sender)
 {
-    pInput->OnAppDeactivate();
+	pInput->OnAppDeactivate();
 }
 //---------------------------------------------------------------------------
+
 

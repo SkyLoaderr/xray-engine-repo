@@ -103,11 +103,6 @@ private:	// User declarations
     TElTreeItem* FDragItem;
     TElTreeItem* FEditNode;
     CLibObject* m_SelectedObject;
-//    CEditObject* m_SelectedObject;
-//    CEditObject* m_EditObject;
-//    CEditObject* m_SaveObject;
-//    bool bEditObjectMode;
-//    void EnableEditingMode(bool flag);
     bool CloseEditLibrary(bool bReload);
 public:		// User declarations
     __fastcall TfrmEditLibrary(TComponent* Owner);

@@ -437,7 +437,7 @@ bool TUI::Command( int _Command, int p1 ){
         }
     	break;
     case COMMAND_RENDER_FOCUS:
-		if (frmMain->Visible)
+		if (frmMain->Visible&&g_bEditorValid)
         	m_D3DWindow->SetFocus();
     	break;
     case COMMAND_UPDATE_CAPTION:

@@ -172,9 +172,12 @@ public:
     EObjClass CurrentClassID();
 
 	// direct input
-	virtual void OnMousePress			(int btn);
-	virtual void OnMouseRelease			(int btn);
+	void OnMousePress					(TShiftState State);
+	void OnMouseRelease					(TShiftState State);
 	virtual void OnMouseMove			(int x, int y);
+
+    void OnAppActivate					(){;}
+    void OnAppDeactivate                (){;}
 };
 extern TUI* UI;
 #endif

@@ -11,6 +11,7 @@
 #include "xr_trims.h"
 #include "Library.h"
 #include "EditObject.h"
+#include "D3DUtils.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "Placemnt"
@@ -336,8 +337,8 @@ void __fastcall TfrmChoseItem::pbImagePaint(TObject *Sender)
         if (w!=h)	pbImage->Canvas->FillRect(pbImage->BoundsRect);
         if (w>h){   r.right = pbImage->Width; r.bottom = h/w*pbImage->Height;
         }else{      r.right = w/h*pbImage->Width; r.bottom = pbImage->Height;}
-        sel_tex->DrawThumbnail(paImage->Handle, &r);
         //sel_tex->StretchThumbnail(paImage->Handle, &r);
+        sel_tex->DrawThumbnail(paImage->Handle, &r);
     }else if (sel_thm){
         RECT r; r.left = 2; r.top = 2;
         float w, h;
@@ -345,8 +346,8 @@ void __fastcall TfrmChoseItem::pbImagePaint(TObject *Sender)
         h = THUMB_HEIGHT;
         if (w>h){   r.right = pbImage->Width; r.bottom = h/w*pbImage->Height;
         }else{      r.right = w/h*pbImage->Width; r.bottom = pbImage->Height;}
-        sel_thm->DrawStretch(paImage->Handle, &r);
-		//sel_thm->DrawNormal(paImage->Handle, &r);
+//		sel_thm->DrawStretch(paImage->Handle, &r);
+		sel_thm->DrawNormal(paImage->Handle, &r);
     }
 }
 //---------------------------------------------------------------------------

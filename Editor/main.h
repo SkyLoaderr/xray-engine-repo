@@ -97,8 +97,12 @@ __published:	// IDE-managed Components
 	void __fastcall UnlockUnselected1Click(TObject *Sender);
 	void __fastcall UnlockSelected1Click(TObject *Sender);
 	void __fastcall LockSelected1Click(TObject *Sender);
+	void __fastcall D3DWindowMouseDown(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y);
 	void __fastcall FormActivate(TObject *Sender);
 	void __fastcall FormDeactivate(TObject *Sender);
+	void __fastcall D3DWindowMouseUp(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y);
 private:	// User declarations
     void __fastcall IdleHandler(TObject *Sender, bool &Done);
 

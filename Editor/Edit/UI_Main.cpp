@@ -437,6 +437,7 @@ void TUI::ShowObjectHint(){
 bool __fastcall TUI::KeyDown (WORD Key, TShiftState Shift)
 {
 	m_ShiftState = Shift;
+    if (m_ShiftState.Contains(ssLeft)) Log("LB press.");
 	if (Device.m_Camera.KeyDown(Key,Shift)) return true;
     return m_Tools->KeyDown(Key, Shift);
 }
@@ -467,9 +468,8 @@ EObjClass TUI::CurrentClassID(){
 	return (fraLeftBar->ebIgnoreTarget->Down)?OBJCLASS_DUMMY:m_Tools->GetTargetClassID();
 }
 
-void TUI::OnMousePress(int btn){
+void TUI::OnMousePress(TShiftState state){
 	if(!g_bEditorValid) return;
-//    if(m_MouseCaptured||Device.m_Camera.IsMoving()) return;
     if(m_MouseCaptured) return;
 
     // test owner
@@ -480,12 +480,11 @@ void TUI::OnMousePress(int btn){
 
     bMouseInUse = true;
 
-    TShiftState Shift = m_ShiftState;
-    if (iGetBtnState(0)) Shift << ssLeft;
-    if (iGetBtnState(1)) Shift << ssRight;
+    if (state.Contains(ssLeft)) 	m_ShiftState << ssLeft;
+    if (state.Contains(ssRight)) 	m_ShiftState << ssRight;
 
     // camera activate
-    if(!Device.m_Camera.MoveStart(Shift)){
+    if(!Device.m_Camera.MoveStart(m_ShiftState)){
         if( Scene->locked() ){
 		    EEditorState est = GetEState();
             switch(est){
@@ -501,7 +500,6 @@ void TUI::OnMousePress(int btn){
             case esEditParticles: 	break;
             case esEditImages: 		break;
             }
-		// ELog.DlgMsg( mtError, "Scene sharing violation..." );
             return;
         }
         if( !m_MouseCaptured ){
@@ -516,9 +514,8 @@ void TUI::OnMousePress(int btn){
                 Device.m_Camera.MouseRayFromPoint(m_CurrentRStart, m_CurrentRNorm, m_CurrentCp );
             }
 
-            if(m_Tools->MouseStart(Shift)){
+            if(m_Tools->MouseStart(m_ShiftState)){
                 if(m_Tools->HiddenMode()) ShowCursor( FALSE );
-
                 SetCapture( m_D3DWindow );
                 m_MouseCaptured = true;
             }
@@ -526,27 +523,22 @@ void TUI::OnMousePress(int btn){
     }
     RedrawScene();
 }
-void TUI::OnMouseRelease(int btn){
+void TUI::OnMouseRelease(TShiftState state){
 	if(!g_bEditorValid) return;
 
-    TShiftState Shift = m_ShiftState;
-    if (iGetBtnState(0)) Shift << ssLeft;
-    if (iGetBtnState(1)) Shift << ssRight;
+    if (state.Contains(ssLeft)) 	m_ShiftState << ssLeft;
+    if (state.Contains(ssRight)) 	m_ShiftState << ssRight;
 
     if( Device.m_Camera.IsMoving() ){
-        if (Device.m_Camera.MoveEnd(Shift)) bMouseInUse = false;
+        if (Device.m_Camera.MoveEnd(m_ShiftState)) bMouseInUse = false;
     }else{
 	    bMouseInUse = false;
         if( m_MouseCaptured ){
-            if( m_Tools->HiddenMode() ){
-//                GetCursorPos( &m_DeltaCpH );
-//                m_DeltaCpH.x -= m_CenterCpH.x;
-//                m_DeltaCpH.y -= m_CenterCpH.y;
-            }else{
+            if( !m_Tools->HiddenMode() ){
                 iGetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
                 Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp );
             }
-            if( m_Tools->MouseEnd(Shift) ){
+            if( m_Tools->MouseEnd(m_ShiftState) ){
                 if( m_Tools->HiddenMode() ){
                     SetCursorPos(m_StartCpH.x,m_StartCpH.y);
                     ShowCursor( TRUE );
@@ -564,25 +556,17 @@ void TUI::OnMouseMove(int x, int y){
 	if(!g_bEditorValid) return;
     bool bRayUpdated = false;
 
-    TShiftState Shift = m_ShiftState;
-    if (iGetBtnState(0)) Shift << ssLeft;
-    if (iGetBtnState(1)) Shift << ssRight;
-
-	if (!Device.m_Camera.Process(Shift)){
+	if (!Device.m_Camera.Process(m_ShiftState)){
         if( m_MouseCaptured || m_MouseMultiClickCaptured ){
             if( m_Tools->HiddenMode() ){
-//                GetCursorPos( &m_DeltaCpH );
-//                m_DeltaCpH.x -= m_CenterCpH.x;
-//                m_DeltaCpH.y -= m_CenterCpH.y;
 				m_DeltaCpH.set(x,y);
                 if( m_DeltaCpH.x || m_DeltaCpH.y ){
-//                	SetCursorPos(m_CenterCpH.x,m_CenterCpH.y);
-                	m_Tools->MouseMove(Shift);
+                	m_Tools->MouseMove(m_ShiftState);
                 }
             }else{
                 iGetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
                 Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp);
-                m_Tools->MouseMove(Shift);
+                m_Tools->MouseMove(m_ShiftState);
             }
 		    UI->RedrawScene();
             bRayUpdated = true;
@@ -596,4 +580,5 @@ void TUI::OnMouseMove(int x, int y){
     // Out cursor pos
     OutUICursorPos();
 }
+
 

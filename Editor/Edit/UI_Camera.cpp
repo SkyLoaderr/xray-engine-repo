@@ -6,6 +6,8 @@
 #include "Scene.h"
 
 CUI_Camera::CUI_Camera(){
+	m_Style = csPlaneMove; 
+
 	Reset();
 
 	m_Aspect = 1.f;
@@ -38,9 +40,12 @@ void CUI_Camera::SetStyle(ECameraStyle new_style){
 	        // parse pitch
     	    dir.normalize_safe	();
 	        m_HPB.y			= asinf(dir.y);
+
+            BuildCamera		();
         }
 		m_Style=new_style;
     }
+    UI->RedrawScene();
 }
 
 void CUI_Camera::Reset(){

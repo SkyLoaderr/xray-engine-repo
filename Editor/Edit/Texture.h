@@ -27,6 +27,7 @@ public:
 					ETextureThumbnail(const char *_ShortName);
 					~ETextureThumbnail();
 
+	IC DWORD 		Pixels			(int x, int y){return m_Pixels[y*THUMB_WIDTH+x];}
     // thumbnail public routines
 	bool 			Save			(int src_age);
 	bool 			Load			();

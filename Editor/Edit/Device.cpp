@@ -437,7 +437,7 @@ bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height
 
     UI->ProgressStart(height,"Screenshot making");
     DWORDIt it 		= pixels.begin();
-    for (DWORD h=0; h<height; h++,it+=width){
+    for (int h=height-1; h>=0; h--,it+=width){
         LPDWORD dt 	= LPDWORD(DWORD(pPixel)+DWORD(D.Pitch*h));
         CopyMemory	(it,dt,sizeof(DWORD)*width);
 	    UI->ProgressInc();
