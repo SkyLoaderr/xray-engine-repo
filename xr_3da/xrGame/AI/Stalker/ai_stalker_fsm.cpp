@@ -916,6 +916,7 @@ void CAI_Stalker::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	}
 
 	AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+	VERIFY(getAI().m_tpaCrossTable[getAI().m_tpaGraph[m_tNextGP].tNodeID].tGraphIndex == m_tNextGP);
 	if (!AI_Path.DestNode) {
 		Msg("! Invalid graph point node (graph index %d)",m_tNextGP);
 		for (int i=0; i<getAI().GraphHeader().dwVertexCount; i++)
