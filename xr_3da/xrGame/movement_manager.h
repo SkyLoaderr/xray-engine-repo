@@ -67,6 +67,8 @@ private:
 		ePathStatePathVerification,
 		
 		ePathStatePathCompleted,
+
+		ePathStateTeleport,
 		
 		ePathStateDummy = u32(-1),
 	};
@@ -107,6 +109,9 @@ private:
 
 	friend class CScriptMonster;
 	friend class CGroup;
+
+protected:
+	virtual void	teleport				(u32 game_vertex_id);
 
 public:
 

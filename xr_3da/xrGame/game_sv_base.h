@@ -16,10 +16,9 @@ class	game_sv_GameState	: public game_GameState
 {
 	typedef game_GameState inherited;
 protected:
-	float		m_fFriendlyFireModifier;
-
-	xrServer*											m_server;
-	GameEventQueue*										m_event_queue;
+	float							m_fFriendlyFireModifier;
+	xrServer*						m_server;
+	GameEventQueue*					m_event_queue;
 
 	//Events
 	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender );
@@ -113,7 +112,7 @@ public:
 				void				ProcessDelayedEvent		();
 	virtual		BOOL				isFriendlyFireEnabled	()	{return (m_fFriendlyFireModifier > 0.1f);};
 	virtual		BOOL				CanHaveFriendlyFire		()	= 0;
-
+	virtual		void				teleport_object			(NET_Packet &packet, u16 id);
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(game_sv_GameState)

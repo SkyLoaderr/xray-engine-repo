@@ -936,8 +936,8 @@ void CSE_ALifeMonsterAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
 	inherited1::UPDATE_Write	(tNetPacket);
 	tNetPacket.w				(&m_tNextGraphID,			sizeof(m_tNextGraphID));
 	tNetPacket.w				(&m_tPrevGraphID,			sizeof(m_tPrevGraphID));
-	tNetPacket.w				(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
-	tNetPacket.w				(&m_fCurSpeed,				sizeof(m_fCurSpeed));
+//	tNetPacket.w				(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
+//	tNetPacket.w				(&m_fCurSpeed,				sizeof(m_fCurSpeed));
 	tNetPacket.w				(&m_fDistanceFromPoint,		sizeof(m_fDistanceFromPoint));
 	tNetPacket.w				(&m_fDistanceToPoint,		sizeof(m_fDistanceToPoint));
 };
@@ -947,8 +947,8 @@ void CSE_ALifeMonsterAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 	inherited1::UPDATE_Read		(tNetPacket);
 	tNetPacket.r				(&m_tNextGraphID,			sizeof(m_tNextGraphID));
 	tNetPacket.r				(&m_tPrevGraphID,			sizeof(m_tPrevGraphID));
-	tNetPacket.r				(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
-	tNetPacket.r				(&m_fCurSpeed,				sizeof(m_fCurSpeed));
+//	tNetPacket.r				(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
+//	tNetPacket.r				(&m_fCurSpeed,				sizeof(m_fCurSpeed));
 	tNetPacket.r				(&m_fDistanceFromPoint,		sizeof(m_fDistanceFromPoint));
 	tNetPacket.r				(&m_fDistanceToPoint,		sizeof(m_fDistanceToPoint));
 };

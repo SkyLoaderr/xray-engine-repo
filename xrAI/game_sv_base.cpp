@@ -535,3 +535,7 @@ RPoint game_sv_GameState::getRP (u16 team_idx, u32 rp_idx)
 	else 
 		return RPoint();
 };
+
+void game_sv_GameState::teleport_object	(NET_Packet &packet, u16 id)
+{
+}

@@ -220,3 +220,19 @@ void game_sv_Single::switch_distance		(NET_Packet &net_packet, ClientID sender)
 
 	alife().set_switch_distance	(net_packet.r_float());
 }
+
+void game_sv_Single::teleport_object	(NET_Packet &net_packet, u16 id)
+{
+	if (!ai().get_alife())
+		return;
+	
+	ALife::_GRAPH_ID		game_vertex_id;
+	u32						level_vertex_id;
+	Fvector					position;
+
+	net_packet.r			(&game_vertex_id,sizeof(game_vertex_id));
+	net_packet.r			(&level_vertex_id,sizeof(level_vertex_id));
+	net_packet.r_vec3		(position);
+
+	alife().teleport_object (id,game_vertex_id,level_vertex_id,position);
+}

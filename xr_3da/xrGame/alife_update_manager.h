@@ -45,6 +45,7 @@ public:
 			void		set_switch_offline		(ALife::_OBJECT_ID id, bool value);
 			void		set_interactive			(ALife::_OBJECT_ID id, bool value);
 			void		jump_to_level			(LPCSTR level_name) const;
+			void		teleport_object			(ALife::_OBJECT_ID id, ALife::_GRAPH_ID game_vertex_id, u32 level_vertex_id, const Fvector &position);
 };
 
 #include "alife_update_manager_inline.h"

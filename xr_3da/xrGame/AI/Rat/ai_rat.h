@@ -77,7 +77,7 @@ protected:
 	ALife::_GRAPH_ID			m_tCurGP;
 	ALife::_GRAPH_ID			m_tNextGP;
 	u32							m_dwTimeToChange;
-	float						m_fGoingSpeed;
+//	float						m_fGoingSpeed;
 	bool						m_thinking;
 	bool						m_turning;
 

@@ -287,8 +287,8 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	ALife::_GRAPH_ID		l_game_vertex_id = game_vertex_id();
 	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
 	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
-	P.w						(&f1,						sizeof(f1));
-	P.w						(&f1,						sizeof(f1));
+//	P.w						(&f1,						sizeof(f1));
+//	P.w						(&f1,						sizeof(f1));
 	if (ai().game_graph().valid_vertex_id(l_game_vertex_id)) {
 		f1					= Position().distance_to	(ai().game_graph().vertex(l_game_vertex_id)->level_point());
 		P.w					(&f1,						sizeof(f1));
@@ -300,7 +300,12 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 		P.w					(&f1,						sizeof(f1));
 	}
 
-	P.w_float						(0);
+	P.w_float						(inventory().TotalWeight());
+	P.w_u32							(m_dwMoney);
+	P.w_u32							(0);
+
+	ALife::ETaskState				task_state = ALife::eTaskStateChooseTask;
+	P.w								(&task_state,sizeof(task_state));
 	P.w_u32							(0);
 	P.w_u32							(0);
 }
@@ -337,16 +342,18 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 		NET_WasInterpolating		= TRUE;
 	}
 
-	float							fDummy;
-	u32								dwDummy;
-	P.r_float						(fDummy);
-	m_dwMoney						= P.r_u32();
-	P.r_u32							(dwDummy);
+	P.r_float						();
+	P.r_float						();
 
-	P.r_u32							(dwDummy);
-	P.r_u32							(dwDummy);
-	P.r_u32							(dwDummy);
-//	P.r_u32							(dwDummy);
+	P.r_float						();
+
+	m_dwMoney						= P.r_u32();
+	P.r_u32							();
+
+	ALife::ETaskState				task_state;
+	P.r								(&task_state,sizeof(task_state));
+	P.r_u32							();
+	P.r_u32							();
 
 	setVisible						(TRUE);
 	setEnabled						(TRUE);

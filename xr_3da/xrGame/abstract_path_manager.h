@@ -38,12 +38,12 @@ protected:
 	IC			void	set_dest_vertex				(const _vertex_id_type vertex_id);
 
 	IC			bool	actual						(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id) const;
-	IC			bool	completed					() const;
+	IC	virtual	bool	completed					() const;
 	IC			bool	failed						() const;
 	IC	const xr_vector<_vertex_id_type> &path		() const;
 
 	IC			void	build_path					(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id);
-	IC			void	select_intermediate_vertex	();
+	IC	virtual	void	select_intermediate_vertex	();
 	IC	const _VertexEvaluator	*evaluator			() const;
 	IC			void	make_inactual				();
 	IC	virtual	void	before_search				(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id);

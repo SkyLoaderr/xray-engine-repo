@@ -8,6 +8,9 @@
 
 #include "stdafx.h"
 #include "movement_manager.h"
+#include "alife_simulator.h"
+#include "alife_graph_registry.h"
+#include "alife_level_registry.h"
 
 void CMovementManager::process_game_path()
 {
@@ -26,12 +29,18 @@ void CMovementManager::process_game_path()
 			case ePathStateBuildGamePath : {
 				Device.Statistic.TEST0.Begin();
 				
+				Msg							("GAME PATH : %d -> %d",game_vertex_id(),game_dest_vertex_id());
+				Msg							("GAME PATH LEVEL : %d -> %d",ai().game_graph().vertex(game_vertex_id())->level_id(),ai().game_graph().vertex(game_dest_vertex_id())->level_id());
+				
 				CGamePathManager::build_path(game_vertex_id(),game_dest_vertex_id());
 
 				if (CGamePathManager::failed()) {
 					Device.Statistic.TEST0.End();
 					break;
 				}
+				
+				Msg							("GAME PATH : %d -> %d",game_vertex_id(),CGamePathManager::path().back());
+				
 				m_path_state	= ePathStateContinueGamePath;
 				Device.Statistic.TEST0.End();
 				if (time_over())
@@ -39,6 +48,13 @@ void CMovementManager::process_game_path()
 			}
 			case ePathStateContinueGamePath : {
 				CGamePathManager::select_intermediate_vertex();
+				if (ai().game_graph().vertex(game_vertex_id())->level_id() != ai().game_graph().vertex(CGamePathManager::intermediate_vertex_id())->level_id()) {
+					m_path_state	= ePathStateTeleport;
+					VERIFY			(ai().get_alife());
+					VERIFY			(ai().alife().graph().level().level_id() == ai().game_graph().vertex(game_vertex_id())->level_id());
+					teleport		(CGamePathManager::intermediate_vertex_id());
+					break;
+				}
 				m_path_state	= ePathStateBuildLevelPath;
 				if (time_over())
 					break;
@@ -119,6 +135,9 @@ void CMovementManager::process_game_path()
 			case ePathStatePathCompleted : {
 				if (!CGameLocationSelector::actual(game_vertex_id(),path_completed()))
 					m_path_state	= ePathStateSelectGameVertex;
+				break;
+			}
+			case ePathStateTeleport : {
 				break;
 			}
 			default : NODEFAULT;

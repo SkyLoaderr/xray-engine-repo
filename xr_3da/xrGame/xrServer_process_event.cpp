@@ -306,6 +306,10 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 			SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
 //			VERIFY					(verify_entities());
 		}break;		
+	case GE_TELEPORT_OBJECT:
+		{
+			game->teleport_object	(P,destination);
+		}break;
 	default:
 		R_ASSERT2	(0,"Game Event not implemented!!!");
 		break;

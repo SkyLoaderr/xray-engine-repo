@@ -247,7 +247,7 @@ public:
 
 	CCharacterPhysicsSupport	*m_pPhysics_support;
 	
-	float						m_fGoingSpeed;			// speed over the path
+//	float						m_fGoingSpeed;			// speed over the path
 	u32							m_dwHealth;				
 
 	// State flags

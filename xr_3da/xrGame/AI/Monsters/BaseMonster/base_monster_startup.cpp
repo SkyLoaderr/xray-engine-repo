@@ -81,7 +81,7 @@ void CBaseMonster::Load(LPCSTR section)
 
 	m_pPhysics_support				->in_Load(section);
 
-	m_fGoingSpeed					= pSettings->r_float	(section, "going_speed");
+//	m_fGoingSpeed					= pSettings->r_float	(section, "going_speed");
 	m_dwHealth						= pSettings->r_u32		(section,"Health");
 
 	fEntityHealth					= (float)m_dwHealth;

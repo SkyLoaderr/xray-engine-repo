@@ -121,7 +121,7 @@ void CSE_ALifeHumanAbstract::vfSetCurrentTask(_TASK_ID &tTaskID)
 
 bool CSE_ALifeHumanAbstract::bfChooseNextRoutePoint()
 {
-	if (!m_flags.test(flOfflineNoMove))
+	if (!move_offline())
 		return					(false);
 
 	bool						bContinue = false;

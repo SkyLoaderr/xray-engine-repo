@@ -346,3 +346,18 @@ void CALifeUpdateManager::jump_to_level			(LPCSTR level_name) const
 	net_packet.w_vec3				(Fvector().set(0.f,0.f,0.f));
 	Level().Send					(net_packet,net_flags(TRUE));
 }
+
+void CALifeUpdateManager::teleport_object	(ALife::_OBJECT_ID id, ALife::_GRAPH_ID game_vertex_id, u32 level_vertex_id, const Fvector &position)
+{
+	CSE_ALifeDynamicObject					*object = objects().object(id,true);
+	if (!object) {
+		Msg									("! cannot teleport entity with id %d",id);
+		return;
+	}
+	
+	if (object->m_bOnline)
+		remove_online						(object);
+	graph().change							(object,object->m_tGraphID,game_vertex_id);
+	object->m_tNodeID						= level_vertex_id;
+	object->o_Position						= position;
+}

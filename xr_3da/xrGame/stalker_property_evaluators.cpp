@@ -15,6 +15,8 @@
 
 using namespace StalkerDecisionSpace;
 
+#define NO_ALIFE_ACTIONS
+
 typedef CStalkerPropertyEvaluator::_value_type _value_type;
 
 //////////////////////////////////////////////////////////////////////////
@@ -23,7 +25,11 @@ typedef CStalkerPropertyEvaluator::_value_type _value_type;
 
 _value_type CStalkerPropertyEvaluatorALife::evaluate	()
 {
-	return			(false);//!!ai().get_alife());
+#ifdef NO_ALIFE_ACTIONS
+	return			(false);
+#else
+	return			(!!ai().get_alife());
+#endif
 }
 
 //////////////////////////////////////////////////////////////////////////

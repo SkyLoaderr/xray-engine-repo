@@ -149,8 +149,6 @@ void CAI_Rat::Load(LPCSTR section)
 	m_phMass						= pSettings->r_float (section,"corp_mass");
 	m_dwActiveScheduleMin			= shedule.t_min;
 	m_dwActiveScheduleMax			= shedule.t_max;
-
-	m_fGoingSpeed					= pSettings->r_float	(section, "going_speed");
 }
 
 BOOL CAI_Rat::net_Spawn	(LPVOID DC)
@@ -262,8 +260,8 @@ void CAI_Rat::net_Export(NET_Packet& P)
 	ALife::_GRAPH_ID		l_game_vertex_id = game_vertex_id();
 	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
 	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
-	P.w						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
-	P.w						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
+//	P.w						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
+//	P.w						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
 	float					f1 = 0;
 	if (ai().game_graph().valid_vertex_id(l_game_vertex_id)) {
 		f1					= Position().distance_to	(ai().game_graph().vertex(l_game_vertex_id)->level_point());

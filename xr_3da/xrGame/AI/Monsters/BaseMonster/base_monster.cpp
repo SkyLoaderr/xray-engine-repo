@@ -50,7 +50,7 @@ CBaseMonster::CBaseMonster()
 	// Инициализация параметров анимации	
 	MotionMan.Init					(this);
 
-	m_fGoingSpeed					= 0.f;
+//	m_fGoingSpeed					= 0.f;
 
 	// Attack-stops init
 	AS_Init							();

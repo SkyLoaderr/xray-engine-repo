@@ -46,7 +46,7 @@ IC bool CMonsterMovement::actual_params()
 IC void CMonsterMovement::detour_graph_points()
 {
 	set_path_type		(MovementManager::ePathTypeGamePath);
-	set_selection_type	(CMovementManager::eSelectionTypeRandomBranching);
+	set_selection_type	(eSelectionTypeRandomBranching);
 }
 
 IC void CMonsterMovement::set_generic_parameters()

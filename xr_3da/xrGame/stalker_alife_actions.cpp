@@ -226,6 +226,7 @@ void CStalkerActionReachTaskLocation::initialize	()
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_position	(0);
 	m_object->set_desired_direction	(0);
+	m_object->set_selection_type	(eSelectionTypeMask);
 	m_object->set_path_type			(MovementManager::ePathTypeGamePath);
 	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
@@ -237,6 +238,8 @@ void CStalkerActionReachTaskLocation::initialize	()
 void CStalkerActionReachTaskLocation::finalize	()
 {
 	inherited::finalize				();
+
+	m_object->set_selection_type	(eSelectionTypeRandomBranching);
 
 	if (!m_object->g_Alive())
 		return;

@@ -13,6 +13,12 @@
 #include "ai_object_location.h"
 #include "location_manager.h"
 
+enum ESelectionType {
+	eSelectionTypeMask = u32(0),
+	eSelectionTypeRandomBranching,
+	eSelectionTypeDummy = u32(-1),
+};
+
 template <
 	typename _VertexEvaluator,
 	typename _vertex_id_type
@@ -36,13 +42,6 @@ class
 		_VertexEvaluator,
 		_vertex_id_type
 	> inherited;
-public:
-	enum ESelectionType {
-		eSelectionTypeMask = u32(0),
-		eSelectionTypeRandomBranching,
-		eSelectionTypeDummy = u32(-1),
-	};
-
 private:
 	ESelectionType			m_selection_type;
 	ALife::_GRAPH_ID		m_previous_vertex_id;
