@@ -28,8 +28,26 @@ ISpatial::~ISpatial(void)
 {
 }
 
+BOOL	ISpatial::spatial_inside()
+{
+	float	dr	= - spatial_node_radius + spatial_radius;
+	if (spatial_center.x < spatial_node_center.x - dr)	return FALSE;
+	if (spatial_center.x > spatial_node_center.x + dr)	return FALSE;
+	if (spatial_center.y < spatial_node_center.y - dr)	return FALSE;
+	if (spatial_center.y > spatial_node_center.y + dr)	return FALSE;
+	if (spatial_center.z < spatial_node_center.z - dr)	return FALSE;
+	if (spatial_center.z > spatial_node_center.z + dr)	return FALSE;
+	return TRUE;
+}
+
 void	ISpatial::spatial_move	()
 {
+	//*** somehow it was determined that object has been moved
+	//*** check if we are supposed to correct it's spatial location
+	VERIFY		(spatial_node_ptr);
+	if			(spatial_inside())	return;
+	DB->remove	(this);
+	DB->insert	(this);
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -40,6 +40,8 @@ public:
 	ISpatial_NODE*				spatial_node_ptr;		// Cached parent node for "empty-members" optimization
 	IRender_Sector*				spatial_sector;
 public:
+	BOOL						spatial_inside	();
+public:
 	virtual		void			spatial_move	();
 
 	ISpatial					();
