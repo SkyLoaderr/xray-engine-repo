@@ -43,6 +43,18 @@ BOOL	NeedMerge		(vecFace& subdiv, Fbox& bb_base)
 	return FALSE;
 }
 
+float	Cuboid			(Fbox& BB)
+{
+	Fvector sz;			BB.getsize(sz);
+	float	min			= sz.x;
+	if (sz.y<min)	min = sz.y;
+	if (sz.z<min)	min = sz.z;
+	
+	float	volume_cube	= min*min*min;
+	float	volume		= sz.x*sz.y*sz.z;
+	return  volume_cube	/ volume;
+}
+
 BOOL	ValidateMerge	(DWORD f1, Fbox& bb_base, DWORD f2, Fbox& bb, float& volume)
 {
 	// Polygons
@@ -58,7 +70,7 @@ BOOL	ValidateMerge	(DWORD f1, Fbox& bb_base, DWORD f2, Fbox& bb, float& volume)
 	// Volume
 	float	v1	= bb_base.getvolume	();
 	float	v2	= bb.getvolume		();
-	volume		= merge.getvolume	();
+	volume		= merge.getvolume	() / Cuboid(merge);
 //	if (volume > 2*2*2*(v1+v2))						return FALSE;	// Don't merge too distant groups (8 vol)
 
 	// OK
