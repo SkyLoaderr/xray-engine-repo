@@ -103,11 +103,11 @@ void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarSt
 		// finding the node being estimated as the cheapest among the opened ones
 		tpBestNode = tpOpenedList->tpOpenedNext;
 
-		// checking if distance is too big
-		if (tpBestNode->f >= fMaxDistance) {
-			fDistance = MAX_VALUE;
-			return;
-		}
+//		// checking if distance is too big
+//		if (tpBestNode->f >= fMaxDistance) {
+//			fDistance = MAX_VALUE;
+//			return;
+//		}
 		
 		// remove that node from the opened list and put that node to the closed list
 		tpOpenedList->tpOpenedNext = tpBestNode->tpOpenedNext;
