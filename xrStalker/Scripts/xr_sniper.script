@@ -757,7 +757,6 @@ function chiter_binding(obj, char_ini)
     properties["enabled"]            = xr_evaluators_id.jon_sniper_enabled
     properties["wait_enemy"]		 = xr_evaluators_id.jon_sniper_enemy_is
     properties["enemy_near"]         = xr_evaluators_id.jon_sniper_enemy_near
-    properties["state_end"]          = xr_evaluators_id.state_change
     properties["event"]              = xr_evaluators_id.reaction
     properties["stand"]				 = xr_evaluators_id.stohe_state_base + 1
 
@@ -776,8 +775,6 @@ function chiter_binding(obj, char_ini)
     action:add_precondition         (world_property (stalker_ids.property_alive,    true))
     action:add_precondition         (world_property (stalker_ids.property_enemy,    false))
     action:add_precondition         (world_property (properties["wait_enemy"],      false))
-    action:add_precondition         (world_property (properties["event"],           false))
-    action:add_precondition         (world_property (properties["state_end"],       true))
     action:add_precondition         (world_property (properties["enabled"],         true))
     action:add_effect               (world_property (properties["enabled"],         false))
     manager:add_action              (operators["idle"], action)
