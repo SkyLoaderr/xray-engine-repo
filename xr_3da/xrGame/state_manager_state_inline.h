@@ -33,7 +33,7 @@ void CStateManagerAbstract::Init			()
 TEMPLATE_SPECIALIZATION
 void CStateManagerAbstract::Load			(LPCSTR section)
 {
-	CStateBase<_Object>::Load		(section);
+	CSStateBase::Load				(section);
 	CSStateManagerAbstract::Load	(section);
 	for (u32 i=0, n=graph().vertices().size(); i<n; ++i)
 		graph().vertices()[i].data().m_state->Load(section);
@@ -42,7 +42,7 @@ void CStateManagerAbstract::Load			(LPCSTR section)
 TEMPLATE_SPECIALIZATION
 void CStateManagerAbstract::reinit			(_Object *object, u32 state_id)
 {
-	CStateBase<_Object>::reinit		(object);
+	CSStateBase::reinit				(object);
 	CSStateManagerAbstract::reinit	(state_id);
 	for (u32 i=0, n=graph().vertices().size(); i<n; ++i)
 		graph().vertices()[i].data().m_state->reinit(object);
@@ -51,7 +51,7 @@ void CStateManagerAbstract::reinit			(_Object *object, u32 state_id)
 TEMPLATE_SPECIALIZATION
 void CStateManagerAbstract::reload			(LPCSTR section)
 {
-	CStateBase<_Object>::reload		(section);
+	CSStateBase::reload				(section);
 	CSStateManagerAbstract::reload	(section);
 	for (u32 i=0, n=graph().vertices().size(); i<n; ++i)
 		graph().vertices()[i].data().m_state->reload(section);
@@ -70,14 +70,14 @@ void CStateManagerAbstract::update			(u32 time_delta)
 TEMPLATE_SPECIALIZATION
 void CStateManagerAbstract::initialize		()
 {
-	CStateBase<_Object>::initialize	();
+	CSStateBase::initialize			();
 	current_state().initialize		();
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateManagerAbstract::finalize		()
 {
-	CStateBase<_Object>::finalize	();
+	CSStateBase::finalize			();
 	current_state().finalize		();
 }
 

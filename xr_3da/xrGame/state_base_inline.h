@@ -69,7 +69,7 @@ void CStateBaseAbstract::finalize		()
 TEMPLATE_SPECIALIZATION
 bool CStateBaseAbstract::completed		() const
 {
-	return				(true);
+	return				(m_start_level_time + m_inertia_time <= Level().timeServer());
 }
 
 TEMPLATE_SPECIALIZATION

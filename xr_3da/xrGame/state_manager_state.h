@@ -21,6 +21,7 @@ class CStateManagerState :
 	public CStateBase<_Object>
 {
 protected:
+	typedef CStateBase<_Object> CSStateBase;
 	typedef CStateManagerAbstract<CStateBase<_Object> > CSStateManagerAbstract;
 
 	IC		xr_vector<u32> &sequence();
@@ -39,7 +40,7 @@ public:
 	virtual	void		update					(u32 time_delta);
 			bool		completed				();
 	IC		const xr_vector<u32> &sequence		() const;
-	IC		const CStateBase<_Object> &current_state() const;
+	IC		const CSStateBase &current_state	() const;
 };
 
 #include "state_manager_state_inline.h"
