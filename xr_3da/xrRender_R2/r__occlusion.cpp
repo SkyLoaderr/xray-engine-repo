@@ -35,6 +35,8 @@ void	R_occlusion::occq_destroy	(				)
 }
 u32		R_occlusion::occq_begin		(u32&	ID		)
 {
+	if (!enabled)		return 0;
+
 	if (!fids.empty())	{
 		ID				= fids.back	();	
 		fids.pop_back	();
@@ -52,11 +54,15 @@ u32		R_occlusion::occq_begin		(u32&	ID		)
 }
 void	R_occlusion::occq_end		(u32&	ID		)
 {
+	if (!enabled)		return;
+
 	// Msg				("end  : [%2d] - %d", used[ID].order, ID);
 	CHK_DX			(used[ID].Q->Issue	(D3DISSUE_END));
 }
 u32		R_occlusion::occq_get		(u32&	ID		)
 {
+	if (!enabled)		return 0xffffffff;
+
 	DWORD	fragments	= 0;
 	CHK_DX			(used[ID].Q->GetData(&fragments,sizeof(fragments),D3DGETDATA_FLUSH));
 	// Msg			("get  : [%2d] - %d => %d", used[ID].order, ID, fragments);
