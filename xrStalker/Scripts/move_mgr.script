@@ -296,7 +296,11 @@ function move_mgr:update()
 
 			if self.is_shooting then
 				-- При стрельбе не ждать синхронизации (так весь магазин можно выстрелять :))
-				self.expiration_time = device():time_global() + self.pt_wait_time
+				if self.pt_wait_time ~= -1 then
+					self.expiration_time = device():time_global() + self.pt_wait_time
+				else
+					self.expiration_time = nil
+				end
 				self.state = state_anim_playing
 			else
 				self.state = state_before_anim_playing
@@ -308,12 +312,16 @@ function move_mgr:update()
 	if self.state == state_before_anim_playing then
 		if self:sync_ok() then
 		--	printf("_bp [%s]: anim counter activated", self.object:name())
-			self.expiration_time = device():time_global() + self.pt_wait_time
+			if self.pt_wait_time ~= -1 then
+				self.expiration_time = device():time_global() + self.pt_wait_time
+			else
+				self.expiration_time = nil
+			end
 			self.state = state_anim_playing
 		end
 	end
 
-	if (self.state == state_anim_playing and device():time_global() >= self.expiration_time and
+	if (self.state == state_anim_playing and self.expiration_time and device():time_global() >= self.expiration_time and
 	    (self.is_shooting or true --[[xr_state.anim_safe_to_break(self.object)]]
 	    )
 	   ) then
