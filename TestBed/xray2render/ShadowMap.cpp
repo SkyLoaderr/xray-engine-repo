@@ -680,8 +680,10 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 		0,NULL,NULL,&height);
 	hr = D3DXCreateTexture				(m_pd3dDevice,256,256,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED, &t_Normals);
 	hr = D3DXComputeNormalMap			(t_Normals,height,0,0,D3DX_CHANNEL_RED,4.f);
+	height->Release						();
 
 	hr = CreatePower					(m_pd3dDevice,256,48.f,&t_SpecularPower_32);
+	hr = CreateNCM						(m_pd3dDevice,64,&t_NCM);
 
 	m_ArcBall.SetWindow		(m_d3dsdBackBuffer.Width, m_d3dsdBackBuffer.Height, 1.0f);
 	m_ArcBall.SetRadius		(3.0f);
