@@ -398,7 +398,7 @@ function action_commander:exec_walk_random()
             
             self.object:clear_animations()
 
-            printf( "[commander] : walk_random" )
+--            printf( "[commander] : walk_random" )
         end
     end
 end
@@ -417,11 +417,11 @@ function action_commander:exec_look_after()
 --            if not self.object:see( self.obj_look_after ) then
 --            if self.object:position():distance_to_sqr( self.obj_look_after:position() ) > 25 then
             if self.object:position():distance_to_sqr( self.obj_look_after:position() ) > 25 or self:actor_has_box() then
-                printf( "[commander] : ßùèê óêğàëè! Òğåâîãà!!!" )
+--                printf( "[commander] : ßùèê óêğàëè! Òğåâîãà!!!" )
                 self.act = alarm_look_after
                 self.already_alarm = true
             else
-                printf( "[commander] : ßùèê íà ìåñòå" )
+--                printf( "[commander] : ßùèê íà ìåñòå" )
                 --self:add_walk_random_animations( 1 )
                 --self.act = walk_random
                 self.act = self.act_before_look_after
@@ -511,7 +511,7 @@ function action_commander:exec_walk_path()
             self.sub_act = true
             self.a.near_door_visited = false
 
-            printf( "[commander] : walk_path" )
+--            printf( "[commander] : walk_path" )
         end
     end
 end
@@ -551,7 +551,7 @@ function action_commander:exec_look_map()
         if not xr_state.change_state( self.object, 0 ) then
             self.object:clear_animations()
             self:walk_to_pos( self.a.way, "level_map" )
-            printf( "[commander] : look_map" )
+--            printf( "[commander] : look_map" )
         end
     end
 end
@@ -587,7 +587,7 @@ function action_commander:exec_stretch_himself()
         if not xr_state.change_state( self.object, 0 ) then
             self.object:clear_animations()
             self:walk_to_pos( self.a.way, "near_door" )
-            printf( "[commander] : stretch_himself" )
+--            printf( "[commander] : stretch_himself" )
         end
     end
 end
@@ -633,7 +633,7 @@ function action_commander:exec_radio_talk()
 
             self.sub_act = true
 
-            printf( "[commander] : radio_talk" )
+--            printf( "[commander] : radio_talk" )
        end
     end
 end
@@ -767,13 +767,13 @@ function action_commander:exec_drink_vodka()
                     if self.vodka_active then
                         self.object:set_item( object.deactivate, self.object:object( "vodka" ) )
                         self.vodka_active = false
-                        printf( "[commander] : ÓÁÈĞÀŞ ÂÎÄÊÓ" )
+--                        printf( "[commander] : ÓÁÈĞÀŞ ÂÎÄÊÓ" )
                     end
                 elseif dt < 20000 then
                     if not self.vodka_active then
                         self.object:set_item( object.use, self.object:object( "vodka" ) )
                         self.vodka_active = true
-                        printf( "[commander] : ÍÀ×ÈÍÀŞ ÏÈÒÜ" )
+--                        printf( "[commander] : ÍÀ×ÈÍÀŞ ÏÈÒÜ" )
                     end
                 end
                 
@@ -784,7 +784,7 @@ function action_commander:exec_drink_vodka()
                 self.object:set_sight( look.direction, dir, 0 )
 
                 if xr_state.change_state( self.object, 2 ) then 
-                    printf( "[commander] : ÍÀ×ÈÍÀŞ ÑÀÄÈÒÜÑß" )
+--                    printf( "[commander] : ÍÀ×ÈÍÀŞ ÑÀÄÈÒÜÑß" )
                 else
                     if day_time() > 14 * h2ms then
                         self.drunk = true
@@ -794,7 +794,7 @@ function action_commander:exec_drink_vodka()
                     self.time_end = device():time_global() + 20000
                     self.vodka_active = false
                     
-                    printf( "[commander] : ÑÅË" )
+--                    printf( "[commander] : ÑÅË" )
                 end
             end
         else
@@ -814,7 +814,7 @@ function action_commander:exec_drink_vodka()
         if not xr_state.change_state( self.object, 0 ) then
             self.object:clear_animations()
             self:walk_to_pos( self.a.way, "mattress" )
-            printf( "[commander] : drink_vodka" )
+--            printf( "[commander] : drink_vodka" )
         end
     end
 end
@@ -863,7 +863,7 @@ function action_commander:exec_sleep()
         if not xr_state.change_state( self.object, 0 ) then
             self.object:clear_animations()
             self:walk_to_pos( self.a.way, "mattress" )
-            printf( "[commander] : sleep" )
+--            printf( "[commander] : sleep" )
         end
     end
 end
@@ -929,7 +929,7 @@ function action_dead_hook:initialize()
     self.a.dead_hook = true
     xr_gulag.changeCasualities( self.a.fraction, 3 )
 
-    printf( "[commander] : dead" )
+--    printf( "[commander] : dead" )
 end
 
 function action_dead_hook:execute()
