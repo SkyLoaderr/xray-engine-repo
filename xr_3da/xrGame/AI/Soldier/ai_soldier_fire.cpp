@@ -246,7 +246,7 @@ bool CAI_Soldier::bfCheckForDanger()
 	if (bfIsMemberHurt())
 		return(true);
 
-	SelectSound(m_iSoundIndex);
+	//SelectSound(m_iSoundIndex);
 
 	return(m_iSoundIndex > -1);
 }
