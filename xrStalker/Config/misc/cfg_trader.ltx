@@ -187,4 +187,13 @@ dialog_enabled = false
 anim = idle_non_stop
 anim_head = head_anim_normal
 snd = trader_map_quest_1
-on_signal = action_end | mob_remark@talking %+tutorial_artefact_start%
+;on_signal = action_end | mob_remark@talking %+tutorial_artefact_start% ;OK
+on_signal = action_end | mob_remark@talking_no_dlg %+tutorial_artefact_start%
+
+
+; HACK
+[mob_remark@talking_no_dlg]
+dialog_enabled = false
+anim = idle
+on_info = {+tutorial_end} mob_remark@talking
+
