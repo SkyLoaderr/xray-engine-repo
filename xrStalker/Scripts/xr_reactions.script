@@ -29,11 +29,11 @@ end
 --Actions
 ----------------------------------------------------------------------------------------------------------------------
 -- Обработка раздражителя
-class "action_wait" (action_base)
-function action_wait:__init (npc_name,action_name, storage) super (nil, action_name)
+class "action_reaction_wait" (action_base)
+function action_reaction_wait:__init (npc_name,action_name, storage) super (nil, action_name)
 	self.a = storage
 end
-function action_wait:initialize()
+function action_reaction_wait:initialize()
 	action_base.initialize(self)
 	self.object:set_node_evaluator()
 	self.object:set_path_evaluator()
@@ -89,9 +89,10 @@ function action_wait:initialize()
 	
 	xr_state.change_state(self.object, 0)
 end
-function action_wait:execute()
+function action_reaction_wait:execute()
+	self.object:set_item(object.idle, self.object:best_weapon())
 	self.a.evn:get_event(self.a.obj)
-
+	
 --	if self.a.obj.id ~= nil and
 --	   self.a.obj.type ~= nil then
 --	   printf("Process obj %d, type: %s",self.a.obj.id, self.a.obj.type)
@@ -217,11 +218,11 @@ function action_wait:execute()
 	end
 	action_base.execute(self)
 end
-function action_wait:finalize()	
+function action_reaction_wait:finalize()	
 	self:set_prisluh(false)
 	action_base.finalize (self)
 end
-function action_wait:set_prisluh(prisluh)
+function action_reaction_wait:set_prisluh(prisluh)
 	if prisluh == true then
 		xr_state.anim_update("prisluh", self.object)
 	end
@@ -256,7 +257,7 @@ function add_to_binder(object, char_ini)
 	manager:add_evaluator (properties["event"], 		this.evaluator_new		("evaluator_new", xr_motivator.storage[object:id()].reactions))
 
 	-- Actions
-	local action = this.action_wait (object:name(),"action_reaction_wait", xr_motivator.storage[object:id()].reactions)
+	local action = this.action_reaction_wait (object:name(),"action_reaction_wait", xr_motivator.storage[object:id()].reactions)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["state_end"], 	true))
