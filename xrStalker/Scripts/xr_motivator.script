@@ -235,11 +235,6 @@ xr_motivator.storage[self.object:id()].patrol = {
       if char_ini:section_exist ("patrol") == true then
          if char_ini:line_exist("patrol", "enabled") == true then
             xr_motivator.storage[self.object:id()].patrol.enabled = char_ini:r_bool("patrol", "enabled")
-            if xr_motivator.storage[self.object:id()].patrol.enabled == true then
-               printf ("PATROL_ENABLED")
-            else
-                printf ("PATROL_DISABLED")
-            end  
          end
          if char_ini:line_exist("patrol", "patrol_path") == true then
             xr_motivator.storage[self.object:id()].patrol.patrol_path = char_ini:r_string("patrol", "patrol_path")
