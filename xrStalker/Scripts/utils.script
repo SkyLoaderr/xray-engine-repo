@@ -508,7 +508,7 @@ function get_nearest_waypoint(obj, pathname, ptr, cnt)
 		end
 	end
 	if not pt_chosen then
-		utils.abort("get_nearest_waypoint: object '%s': path '%s': action_car: unable to choose a nearest waypoint (path has no waypoints?)",
+		utils.abort("object '%s': path '%s': get_nearest_waypoint: unable to choose a nearest waypoint (path has no waypoints?)",
 			obj:name(), pathname)
 	end
 	return pt_chosen
