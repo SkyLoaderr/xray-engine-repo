@@ -19,12 +19,12 @@
 //////////////////////////////////////////////////////////////////////
 CWeaponProtecta::CWeaponProtecta() : CWeapon("PROTECTA")
 {
-	pSounds->Create3D(sndShoot,		 "weapons\\protecta_fire");
-	pSounds->Create3D(sndRicochet[0],"weapons\\ric1");
-	pSounds->Create3D(sndRicochet[1],"weapons\\ric2");
-	pSounds->Create3D(sndRicochet[2],"weapons\\ric3");
-	pSounds->Create3D(sndRicochet[3],"weapons\\ric4");
-	pSounds->Create3D(sndRicochet[4],"weapons\\ric5");
+	pSounds->Create(sndShoot,		TRUE,	"weapons\\protecta_fire");
+	pSounds->Create(sndRicochet[0],	TRUE,	"weapons\\ric1");
+	pSounds->Create(sndRicochet[1],	TRUE,	"weapons\\ric2");
+	pSounds->Create(sndRicochet[2],	TRUE,	"weapons\\ric3");
+	pSounds->Create(sndRicochet[3],	TRUE,	"weapons\\ric4");
+	pSounds->Create(sndRicochet[4],	TRUE,	"weapons\\ric5");
 
 	iShotCount		= 0;
 

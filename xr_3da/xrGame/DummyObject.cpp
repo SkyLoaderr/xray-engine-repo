@@ -103,7 +103,7 @@ void CDummyObject::Load	(CInifile* ini, const char* section)
 	if (ini->LineExists(section,"sound"))
 	{
 		LPCSTR N = ini->ReadSTRING(section,"sound");
-		pSounds->Create3D(sndDummy,N);
+		pSounds->Create(sndDummy,TRUE,N);
 	}
 
 	Sector_Detect();

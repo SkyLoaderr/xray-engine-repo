@@ -11,7 +11,7 @@ class C3DSoundHelper
 public:
 	void	Load	(const char* fName, int max_simultaneous = SoundHelper_Limit)
 	{
-		handle	= pSounds->Create3D(fName);
+		handle	= pSounds->Create(fName,TRUE);
 		limit	= _MIN(max_simultaneous,SoundHelper_Limit-1);
 	}
 	void	Unload	()

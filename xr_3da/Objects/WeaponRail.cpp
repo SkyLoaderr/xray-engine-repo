@@ -20,14 +20,14 @@
 CWeaponRail::CWeaponRail() : CWeapon("rail")
 {
 	pTrail			= NULL;
-	pSounds->Create3D(sndFire,"weapons\\rail_fire.wav");
+	pSounds->Create	(sndFire,TRUE,"weapons\\rail_fire.wav");
 	bCanFire		= true;
 	iAmmoElapsed	= 10;
 }
 
 CWeaponRail::~CWeaponRail()
 {
-	pSounds->Delete(sndFire);
+	pSounds->Delete	(sndFire);
 }
 
 void CWeaponRail::FireStart()

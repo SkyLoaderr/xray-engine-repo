@@ -46,18 +46,18 @@ void CAI_Hen::Load(CInifile* ini, const char* section)
 	P.z				+= ::Random.randF();
 
 	// sounds
-	pSounds->Create3D(sndHit[0],"actor\\bhit_flesh-1");
-	pSounds->Create3D(sndHit[1],"actor\\bhit_flesh-2");
-	pSounds->Create3D(sndHit[2],"actor\\bhit_flesh-3");
-	pSounds->Create3D(sndHit[3],"actor\\bhit_helmet-1");
-	pSounds->Create3D(sndHit[4],"actor\\bullet_hit1");
-	pSounds->Create3D(sndHit[5],"actor\\bullet_hit2");
-	pSounds->Create3D(sndHit[6],"actor\\ric_conc-1");
-	pSounds->Create3D(sndHit[7],"actor\\ric_conc-2");
-	pSounds->Create3D(sndDie[0],"actor\\die0");
-	pSounds->Create3D(sndDie[1],"actor\\die1");
-	pSounds->Create3D(sndDie[2],"actor\\die2");
-	pSounds->Create3D(sndDie[3],"actor\\die3");
+	pSounds->Create(sndHit[0],TRUE,	"actor\\bhit_flesh-1");
+	pSounds->Create(sndHit[1],TRUE,	"actor\\bhit_flesh-2");
+	pSounds->Create(sndHit[2],TRUE,	"actor\\bhit_flesh-3");
+	pSounds->Create(sndHit[3],TRUE,	"actor\\bhit_helmet-1");
+	pSounds->Create(sndHit[4],TRUE,	"actor\\bullet_hit1");
+	pSounds->Create(sndHit[5],TRUE,	"actor\\bullet_hit2");
+	pSounds->Create(sndHit[6],TRUE,	"actor\\ric_conc-1");
+	pSounds->Create(sndHit[7],TRUE,	"actor\\ric_conc-2");
+	pSounds->Create(sndDie[0],TRUE,	"actor\\die0");
+	pSounds->Create(sndDie[1],TRUE,	"actor\\die1");
+	pSounds->Create(sndDie[2],TRUE,	"actor\\die2");
+	pSounds->Create(sndDie[3],TRUE,	"actor\\die3");
 
 	SelectorAttack.Load(ini,section);
 	SelectorFollow.Load(ini,section);

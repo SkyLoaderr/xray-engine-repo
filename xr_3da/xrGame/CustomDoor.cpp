@@ -27,7 +27,7 @@ void CCustomDoor::Load(CInifile* ini, const char * section)
 	if (ini->LineExists(section,"sound"))
 	{
 		LPCSTR N	= ini->ReadSTRING(section,"sound");
-		pSounds->Create3D(sndOpenClose,N);
+		pSounds->Create(sndOpenClose,TRUE,N);
 	}
 }
 
