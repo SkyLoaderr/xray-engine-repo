@@ -1,0 +1,143 @@
+----------------------------------------------------------------------------
+-- Flesh поедает труп и защищает его от врагов (задаются таблицей enemies)
+----------------------------------------------------------------------------
+--
+-- 2003/01/23 [ zmey ]
+--   первый вариант
+--
+-- TODO: проверить переключение на нового врага после смерти жертвы (когда починят метод alive)
+-- TODO: сделать нормальную атаку на врага, а не бег с тараном.
+--
+
+local state_end = 0
+local state_eat = 1
+local state_attack = 2
+local state_frighten = 3
+
+local attack_distance = 10
+
+local cond_none = 0
+local cond_moving = 1
+local cond_eating = 2
+local cond_attacking = 3
+local last_cond = cond_none
+
+local flesh
+local actor
+local corpse
+local enemy
+
+function is_moving(npc)
+	return npc:get_script() and npc:action() and last_cond == cond_moving
+end
+
+function is_attacking(npc)
+	return npc:get_script() and npc:action() and last_cond == cond_moving
+end
+
+function nearest_enemy(enemies)
+	local nenemy = nil
+	local min_distance = 10000000;
+	table.foreachi(enemies, 
+		function(n, v)
+			if v:alive() then
+				if corpse == nil or v == nil then
+					printf("nearest_enemy(): error: nil object encountered")
+					return nil
+				end
+				local dist = distance_between(corpse, v)
+				if dist < min_distance then
+					nenemy = v
+					min_distance = dist
+				end
+			end
+		end
+	)
+	return nenemy
+end
+
+function main ()
+	printf("zmey_flesh started");
+
+	flesh = get_level_object ("m_flesh_e0000") -- флеш
+	actor = get_actor ()
+	corpse = get_level_object ("m_flesh_e0001") -- труп
+	enemy = get_level_object ("m_flesh_e0002") -- враг
+
+	local enemies = { actor, enemy }
+	
+	local current_enemy = nil
+	
+	flesh:script (true, zmey_flesh.script_name())
+
+	local state = state_eat
+
+	printf("distance_between(flesh, corpse) == %d", distance_between(flesh, corpse))
+	while state ~= state_end do
+		--printf("_bp: main cycle")
+		-- FLESH LOGIC:
+		if state == state_eat then
+			-- Если врага еще не выбрали, либо он помер, либо убежал - выбрать нового ближайшего
+			if current_enemy == nil or not current_enemy:alive() or not (distance_between(current_enemy, corpse) < attack_distance) then
+				current_enemy = zmey_flesh.nearest_enemy(enemies)
+			end
+
+			--printf("state_eat: distance_between(flesh, corpse) == %d", distance_between(flesh, corpse))
+			if current_enemy:alive() and distance_between(corpse, current_enemy) < attack_distance then
+				if flesh:get_script() then
+					reset_action(flesh, zmey_flesh.script_name())
+				end
+				action(flesh, move(move.act_run, current_enemy), cond(cond.move_end))
+				last_cond = cond_attacking
+				state = state_attack
+			end
+			
+			if distance_between(flesh, corpse) > 2 then
+				if not flesh:get_script() then
+					flesh:script(true, zmey_flesh.script_name())
+				end
+				if not flesh:action() then
+					action (flesh, move (move.act_walk_fwd, corpse), cond (cond.move_end))
+					last_cond = cond_moving
+				end
+			else
+				if zmey_flesh.is_moving(flesh) then
+					printf("_bp: is moving: stopping")
+					reset_action(flesh, zmey_flesh.script_name())
+					action (flesh, move(move.act_eat, corpse), look(look.point, corpse), cond(cond.time_end, time_infinite))
+					last_cond = cond_eating
+				end
+			end
+
+		elseif state == state_attack then
+			-- ZZZ - доделать тут обработку если is_attacking то если дистанция до врага большая, то сперва подбежать в врагу!
+			printf("state_attack: distance_between(corpse, current_enemy) == %d", distance_between(corpse, current_enemy))
+			if current_enemy:alive() then
+				printf("state_attack: current_enemy is alive!")
+			end;
+			if not current_enemy:alive() or not (distance_between(corpse, current_enemy) < attack_distance) then
+				if not flesh:get_script() then
+					flesh:script(true, zmey_flesh.script_name())
+				end
+				reset_action(flesh, zmey_flesh.script_name())
+				action (flesh, move (move.act_walk_fwd, corpse), cond (cond.move_end))
+				last_cond = cond_moving
+				state = state_eat
+			end
+
+			--if is_attacking
+
+		elseif state == state_frighten then
+			-- UNIMPLEMENTED
+		end
+
+		wait()
+	end
+	
+	if who:get_script() then
+		who:script(false, zmey_flesh.script_name())
+	end
+
+	printf("zmey_flesh stopped");
+end
+
