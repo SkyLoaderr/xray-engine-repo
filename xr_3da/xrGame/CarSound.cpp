@@ -31,7 +31,9 @@ void CCar::SCarSound::Update()
 	//float		velocity						= V.magnitude();
 	float		scale							= 0.2f+pcar->m_current_rpm/pcar->m_torque_rpm; clamp(scale,0.2f,2.0f);
 
-	snd_engine.set_position			(pcar->Position());
+#pragma todo("Dima to Kostya : С тебя - пиво (Черниговское белое 0.5л)!")
+	if (snd_engine.feedback)
+		snd_engine.set_position		(pcar->Position());
 
 	switch (eCarSound)
 	{
