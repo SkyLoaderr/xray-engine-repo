@@ -69,7 +69,7 @@
 	<!-- BAG LIST -->
 	<dragdrop_list x="20" y="30" width="400" height="350"
 			cell_width = "50" cell_height="50"
-			rows_num="18" cols_num="7"></dragdrop_list>
+			rows_num="18" cols_num="7" rows_num_view="8"></dragdrop_list>
 
 	<!-- SLOTS LISTS -->
 	<dragdrop_list x="23" y="14" width="120" height="120"
