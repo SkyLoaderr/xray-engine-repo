@@ -1,10 +1,7 @@
 class "save_dialog" (CUIScriptWnd)
 
 funciton save_dialog:__init() super()
-   self:SetFont(GetFontMedium()) --set base font for dialog.
    
-   self:InitControls()
-   self:InitCallBacks()
 end
 
 function save_dialog:__finilize()
@@ -12,42 +9,9 @@ function save_dialog:__finilize()
 end
 
 function save_dialog:InitControls()
-	self:Init(100,100,257,271) --init self position and size
 	
-	
-	local txt_main   = CUIStatic()
-	txt_main:SetAutoDelete(true)              --parent will delete this item on destructor
-	txt_main:SetWindowName("static_0")
-	txt_main:Init("ui\\ui_inv_info_over_b",0,0,257,271) --init texture and position relatively parent
-    --textures name, root is Gamedata\Textures folder
-	txt_main:ClipperOn() --clip texture by window region
-	self:AttachChild(txt_main)
---------------------------------------- 
-    local btn   = CUIButton()
-	btn:SetAutoDelete(true) 
-	btn:SetWindowName("button_ok") --set window name for callback processing
-	
-	btn:Init("ui\\ui_button_01",10,210,135,40)
---  btn:Init(10,10,100,100) --or without texture
-    btn:SetText("OK")
-	btn:SetTextAlign(CGameFont.alCenter) --horizontal align. possible values are [alCenter,alLeft,alRight]
-	btn:SetTextY(20) --vertical align(pixel). set value to -1 for center
-	self:Register(btn) --for event-handling
-	txt_main:AttachChild(btn)
---------------------------------------
-    btn   = CUIButton()
-    btn:SetAutoDelete(true)
-    btn:SetWindowName("button_cancel")
-	
-	btn:Init("ui\\ui_button_01",130,210,135,40) 	
-	btn:SetText("cancel")
-	btn:SetTextAlign(CGameFont.alCenter)
-	btn:SetTextY(20)
-	self:Register(btn)
-	txt_main:AttachChild(btn)
 end
 
 function save_dialog:InitCallBacks()
-	self:AddCallback("button_ok",ui_events.BUTTON_CLICKED,self,"OnButton_ok_clicked")
-	self:AddCallback("button_cancel",ui_events.BUTTON_CLICKED,self,"OnButton_cancel_clicked")
+	
 end
