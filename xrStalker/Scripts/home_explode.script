@@ -1,3 +1,33 @@
-function main ()
 
+local entered = false
+local this = home_explode
+
+function on_enter (zone, object)
+	entered = true
+end
+
+
+function main ()
+	local zone = get_level_object ("explode_zone")
+	local barrel = get_level_object ("bochka_push")
+	local snd = patrol ("soundw"):point (0)
+	local part = patrol ("particlew"):point (0)
+	local snd_explode = sound_object ("weapons\\rgd5_explode")
+
+	zone:clear_callback (true)
+	zone:set_callback (home_explode.on_enter, true) 
+
+	while entered == false do wait () end
+
+	snd_explode:play_at_pos (barrel, snd, 0)
+	local h = hit ()	
+    h.power = 1
+    h.direction = vector ():set (1, 0, 0)
+    h:bone ("bone01")
+    h.draftsman = barrel
+    h.impulse = 5000
+    h.type = hit.strike
+    barrel:hit (h)
+
+	wait (5000)
 end
