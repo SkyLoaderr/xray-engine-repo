@@ -375,9 +375,9 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def(								constructor<LPCSTR,const Fvector &,const Fvector &>())
 			.def(								constructor<LPCSTR,const Fvector &,const Fvector &,bool>())
 			.def("set",							&CSoundAction::SetSound)
-			.def("set",							&CSoundAction::SetPosition)
 			.def("set",							&CSoundAction::SetBone)
-			.def("set",							&CSoundAction::SetAngles),
+			.def("set_position",				&CSoundAction::SetPosition)
+			.def("set_angles",					&CSoundAction::SetAngles),
 
 		class_<CParticleAction>("particle")
 			.def(								constructor<>())
@@ -388,9 +388,10 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def(								constructor<LPCSTR,const Fvector &>())
 			.def(								constructor<LPCSTR,const Fvector &,const Fvector &, bool>())
 			.def("set",							&CParticleAction::SetParticle)
-			.def("set",							&CParticleAction::SetPosition)
 			.def("set",							&CParticleAction::SetBone)
-			.def("set",							&CParticleAction::SetAngles),
+			.def("set_position",				&CParticleAction::SetPosition)
+			.def("set_angles",					&CParticleAction::SetAngles)
+			.def("set_velocity",				&CParticleAction::SetVelocity),
 
 		class_<CObjectAction>("object")
 			.enum_("state")

@@ -455,10 +455,10 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			ProcessScripts();
 		else {
 			while (!m_tpActionQueue.empty()) {
-				ResetScriptData(false);
-				xr_delete	(m_tpActionQueue.back());
+				xr_delete	(m_tpActionQueue.front());
 				m_tpActionQueue.erase(m_tpActionQueue.begin());
 			}
+			ResetScriptData				(false);
 			Think						();
 		}
 		m_dwLastUpdateTime				= Level().timeServer();
