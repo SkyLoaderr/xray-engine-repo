@@ -621,7 +621,7 @@ static void	ScriptPlayCallback(CBlend *B)
 	VERIFY								(m_object);
 //	VERIFY								(!m_object->m_current_script_animation || m_object->m_current_script_animation == m_object->m_script_animations.front().m_motion);
 #endif
-	if (m_object->m_current_script_animation && m_object->m_current_script_animation == m_object->m_script_animations.front().m_motion)
+	if (m_object->m_current_script_animation && !m_object->m_script_animations.empty() && (m_object->m_current_script_animation == m_object->m_script_animations.front().m_motion))
 		m_object->m_script_animations.pop_front();
 	m_object->m_current_script_animation	= 0;
 }
