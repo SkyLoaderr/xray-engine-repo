@@ -15,7 +15,7 @@
 	#include "lualib.h"
 	#include "lauxlib.h"
 //}
-#pragma comment(lib,"x:\\xrLUA.lib")
+//#pragma comment(lib,"x:\\xrLUA.lib")
 
 // Lua-bind
 #pragma warning(disable:4244)
@@ -28,9 +28,9 @@
 #include "luabind\\iterator_policy.hpp"
 #pragma warning(default:4244)
 
-extern "C" {
+//extern "C" {
 	__declspec(dllimport) LPSTR g_ca_stdout;
-}
+//}
 
 // I need this because we have to exclude option /EHsc (exception handling) from the project
 namespace boost {
