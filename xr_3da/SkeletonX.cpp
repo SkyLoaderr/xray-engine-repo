@@ -236,6 +236,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 void CSkeletonX_PM::Load(const char* N, IReader *data, u32 dwFlags) 
 {
 	_Load							(N,data,vCount);
+	void*	_verts_					= data->pointer	();
 	inherited::Load					(N, data, dwFlags|VLOAD_NOVERTICES|VLOAD_NOINDICES);
 	::Render->shader_option_skinning(0);
 
@@ -257,15 +258,16 @@ void CSkeletonX_PM::Load(const char* N, IReader *data, u32 dwFlags)
 
 	// Create HW VB in case this is possible
 	vBase							= 0;
-	_Load_hw						(*this);
+	_Load_hw						(*this,_verts_);
 }
 void CSkeletonX_ST::Load(const char* N, IReader *data, u32 dwFlags) 
 {
 	_Load							(N,data,vCount);
+	void*	_verts_					= data->pointer	();
 	inherited::Load					(N,data,dwFlags|VLOAD_NOVERTICES);
 	::Render->shader_option_skinning(0);
 	vBase							= 0;
-	_Load_hw						(*this);
+	_Load_hw						(*this,_verts_);
 }
 #pragma pack(push,1)
 s16	q_P		(float v)
@@ -356,7 +358,7 @@ struct	vertHW_2W
 };
 #pragma pack(pop)
 
-void CSkeletonX::_Load_hw	(Fvisual& V)
+void CSkeletonX::_Load_hw	(Fvisual& V, void *	_verts_)
 {
 	// Create HW VB in case this is possible
 	BOOL	bSoft		= HW.Caps.geometry.bSoftware;
@@ -375,7 +377,7 @@ void CSkeletonX::_Load_hw	(Fvisual& V)
 			R_CHK				(HW.pDevice->CreateVertexBuffer(V.vCount*vStride,dwUsage,0,D3DPOOL_MANAGED,&V.pVertices,0));
 			R_CHK				(V.pVertices->Lock(0,0,(void**)&bytes,0));
 			vertRender*		dst	= (vertRender*)bytes;
-			vertBoned1W*	src = (vertBoned1W*)*Vertices1W;
+			vertBoned1W*	src = (vertBoned1W*)_verts_;
 			for (u32 it=0; it<V.vCount; it++)	{
 				dst->P			= src->P;
 				dst->N			= src->N;
@@ -396,7 +398,7 @@ void CSkeletonX::_Load_hw	(Fvisual& V)
 			R_CHK				(HW.pDevice->CreateVertexBuffer(V.vCount*vStride,dwUsage,0,D3DPOOL_MANAGED,&V.pVertices,0));
 			R_CHK				(V.pVertices->Lock(0,0,(void**)&bytes,0));
 			vertHW_1W*		dst	= (vertHW_1W*)bytes;
-			vertBoned1W*	src = (vertBoned1W*)*Vertices1W;
+			vertBoned1W*	src = (vertBoned1W*)_verts_;
 			for (u32 it=0; it<V.vCount; it++)	{
 				Fvector2	uv; uv.set(src->u,src->v);
 				dst->set	(src->P,src->N,uv,src->matrix*3);
@@ -415,7 +417,7 @@ void CSkeletonX::_Load_hw	(Fvisual& V)
 			R_CHK				(HW.pDevice->CreateVertexBuffer(V.vCount*vStride,dwUsage,0,D3DPOOL_MANAGED,&V.pVertices,0));
 			R_CHK				(V.pVertices->Lock(0,0,(void**)&bytes,0));
 			vertHW_2W*		dst	= (vertHW_2W*)bytes;
-			vertBoned2W*	src = (vertBoned2W*)*Vertices2W;
+			vertBoned2W*	src = (vertBoned2W*)_verts_;
 			for (u32 it=0; it<V.vCount; it++)	{
 				Fvector2	uv; uv.set(src->u,src->v);
 				dst->set	(src->P0,src->P1,src->N0,src->N1,uv,int(src->matrix0)*3,int(src->matrix1)*3,src->w);
