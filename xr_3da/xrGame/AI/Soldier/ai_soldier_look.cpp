@@ -592,7 +592,7 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 	float fDistance = tDirection.magnitude();
 	if (fDistance > fEyeRange + EPS_L)
 		return(false);
-		//return(true);
+	
 	tDirection.normalize_safe();
 	SRotation tRotation;
 	mk_rotation(tDirection,tRotation);
@@ -630,7 +630,7 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 bool CAI_Soldier::bfCheckForNodeVisibility(DWORD dwNodeID, bool bIfRayPick)
 {
 	SRotation tRotation;
-	float fResult0 = 0.f, fResult1 = 0.f, fEyeFov = ffGetFov()*PI/180.f;
+	float fResult0 = 0.f, fResult1 = 0.f, fEyeFov = ffGetFov()*PI/180.f/2.f;
 	Fvector tPosition = Level().AI.tfGetNodeCenter(dwNodeID), tDirection;
 	
 //	if (bIfRayPick) {
@@ -657,17 +657,10 @@ bool CAI_Soldier::bfCheckForNodeVisibility(DWORD dwNodeID, bool bIfRayPick)
 //	}
 //	else 
 	{
-		tDirection.sub(vPosition,tPosition);
+		tDirection.sub(tPosition,vPosition);
 		float fDistance = tDirection.magnitude();
 		if ((fDistance >= 15.f) || (fabsf(tDirection.y) > 1.5f))
 			return(false);
-
-		tDirection.normalize_safe();
-		mk_rotation(tDirection,tRotation);
-		
-		fResult0 = ffGetCoverInDirection(tRotation.yaw,Level().AI.Node(dwNodeID));
-		
-		tDirection.sub(tPosition,vPosition);
 		tDirection.normalize_safe();
 		mk_rotation(tDirection,tRotation);
 		
@@ -681,13 +674,22 @@ bool CAI_Soldier::bfCheckForNodeVisibility(DWORD dwNodeID, bool bIfRayPick)
 					r_current.yaw += PI_MUL_2;
 			}
 		
-		if ((tRotation.yaw >= r_current.yaw - fEyeFov) && (tRotation.yaw <= r_current.yaw + fEyeFov))
+		if ((tRotation.yaw >= r_current.yaw - fEyeFov) && (tRotation.yaw <= r_current.yaw + fEyeFov)) {
 			float fResult1 = ffGetCoverInDirection(tRotation.yaw,AI_NodeID);
-
-		if (min(fResult0,fResult1) > .0f) {
-			fDistance = eye_matrix.c.distance_to(tPosition);
-			tPosition.normalize_safe();
-			return(Level().ObjectSpace.RayTest(eye_matrix.c,tPosition,fDistance,FALSE) == TRUE);
+			
+			tDirection.sub(vPosition,tPosition);
+			tDirection.normalize_safe();
+			mk_rotation(tDirection,tRotation);
+			
+			fResult0 = ffGetCoverInDirection(tRotation.yaw,Level().AI.Node(dwNodeID));
+			if (min(fResult0,fResult1) > 1.0f) {
+				return(true);
+// 				fDistance = eye_matrix.c.distance_to(tPosition);
+//				tPosition.normalize_safe();
+//				return(Level().ObjectSpace.RayTest(eye_matrix.c,tPosition,fDistance,FALSE) == TRUE);
+			}
+			else
+				return(false);
 		}
 		else
 			return(false);

@@ -124,9 +124,9 @@ void CAI_Soldier::OnFindAlone()
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
 	if ((Enemy.Enemy && bfFireEnemy(Enemy.Enemy)) || (tSavedEnemy && bfFireEnemy(tSavedEnemy)))
-		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierFindAloneFire)
+		SWITCH_TO_NEW_STATE_AND_UPDATE(aiSoldierFindAloneFire)
 	else
-		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierFindAloneNonFire)
+		SWITCH_TO_NEW_STATE_AND_UPDATE(aiSoldierFindAloneNonFire)
 }
 
 void CAI_Soldier::OnRetreatAlone()
@@ -284,7 +284,7 @@ void CAI_Soldier::OnFindAloneFire()
  		if (!m_bActionStarted) {
 			if (m_bStateChanged) {
 				if (!Group.m_tpaSuspiciousNodes.size()) {
-					vfFindAllSuspiciousNodes(dwSavedEnemyNodeID,tSavedEnemyPosition,tSavedEnemyPosition,max(20.f,min(1*8.f*vPosition.distance_to(tSavedEnemyPosition)/4.5f,40.f)),Group);
+					vfFindAllSuspiciousNodes(dwSavedEnemyNodeID,tSavedEnemyPosition,tSavedEnemyPosition,max(30.f,min(1*8.f*vPosition.distance_to(tSavedEnemyPosition)/4.5f,60.f)),Group);
 					vfClasterizeSuspiciousNodes(Group);
 				}
 			}
@@ -310,8 +310,6 @@ void CAI_Soldier::OnFindAloneFire()
 				if (m_iCurrentSuspiciousNodeIndex != -1) {
 					Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched = 1;
 					Group.m_tpaSuspiciousGroups[Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwGroup] = 1;
-//					AI_Path.DestNode = Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
-//					vfBuildPathToDestinationPoint(0);
 					vfInitSelector(SelectorPatrol,Squad,Leader);
 					SelectorPatrol.m_tpEnemyNode = Level().AI.Node(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID);
 					SelectorPatrol.m_tEnemyPosition = Level().AI.tfGetNodeCenter(SelectorPatrol.m_tpEnemyNode);
@@ -354,7 +352,7 @@ void CAI_Soldier::OnFindAloneFire()
 			else {
 				for (int i=0, iCount = 0; i<Group.m_tpaSuspiciousNodes.size(); i++)
 					if (Group.m_tpaSuspiciousNodes[i].dwSearched != 2) {
-						if (bfCheckForNodeVisibility(Group.m_tpaSuspiciousNodes[i].dwNodeID, i == m_iCurrentSuspiciousNodeIndex))
+						if ((Group.m_tpaSuspiciousNodes[i].dwNodeID = AI_NodeID) || bfCheckForNodeVisibility(Group.m_tpaSuspiciousNodes[i].dwNodeID, i == m_iCurrentSuspiciousNodeIndex))
 							Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
 						iCount++;
 					}

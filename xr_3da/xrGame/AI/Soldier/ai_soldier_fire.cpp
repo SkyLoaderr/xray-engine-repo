@@ -982,7 +982,7 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 
 	AI.q_stack.clear();
 	AI.q_stack.push_back(StartNode);
-	AI.q_mark [StartNode]	+= 1;
+	AI.q_mark_bit[StartNode] = true;
 	
 	NodeCompressed*	Base = AI.Node(StartNode);
 	
@@ -1027,7 +1027,7 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 				break;
 			// test node
 			DWORD Test = AI.UnpackLink(*L_it);
-			if (AI.q_mark[Test])
+			if (AI.q_mark_bit[Test])
 				continue;
 
 			NodeCompressed*	T = AI.Node(Test);
@@ -1037,7 +1037,7 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 				continue;
 
 			// register
-			AI.q_mark[Test]		+= 1;
+			AI.q_mark_bit[Test]		= true;
 			AI.q_stack.push_back	(Test);
 
 			// estimate
@@ -1106,7 +1106,7 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 		vector<DWORD>::iterator it	= AI.q_stack.begin();
 		vector<DWORD>::iterator end	= AI.q_stack.end();
 		for ( ; it!=end; it++)	
-			AI.q_mark[*it] -= 1;
+			AI.q_mark_bit[*it] = false;
 	}
 	
 	Msg("Suspicious nodes :");
