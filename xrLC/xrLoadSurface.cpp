@@ -2,7 +2,6 @@
 #pragma hdrstop
 
 #include "freeimage.h"
-#include "xr_func.h"
 
 static	vector<string>	exts;
 string	formats;
