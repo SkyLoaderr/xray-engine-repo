@@ -76,7 +76,7 @@
       Intermediate\EThumbnailTexture.obj Intermediate\ETextureParams.obj 
       Intermediate\EThumbnail.obj Intermediate\EThumbnailObject.obj 
       Intermediate\EThumbnailSound.obj Intermediate\Blender_Particle.obj 
-      Intermediate\du_sphere_part.obj"/>
+      Intermediate\du_sphere_part.obj Intermediate\FProgressive.obj"/>
     <RESFILES value="resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -96,18 +96,18 @@
     <USERDEFINES value="_EDITOR;_ECOREB;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="xrECoreB.bpf"/>
-    <INCLUDEPATH value="R:\SDK\DirectX9.0_sum_2004\Include;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps"/>
+    <INCLUDEPATH value="R:\SDK\DirectX9.0_sum_2004\Include;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps;..\..\Tools\Etools"/>
     <LIBPATH value="Editor;Engine\Visuals;Engine\Blenders;Engine;c:\rad\borland\CBuilder5\Projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code;R:\Borland\CBuilder6\Lib\Psdk;&quot;x:\&quot;"/>
     <WARNINGS value="-w-par -w-8027"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_ECOREB -D_DEBUG 
-      -IR:\SDK\DirectX9.0_sum_2004\Include -IEditor -IEngine -IEngine\Visuals 
+    <IDLCFLAGS value="-IR:\SDK\DirectX9.0_sum_2004\Include -IEditor -IEngine -IEngine\Visuals 
       -IEngine\Blenders -I$(BCB)\include -I$(BCB)\include\vcl 
       -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source 
-      -IR:\Borland\CBuilder6\Include\Mfc -IP:\xrCore -IP:\Editors\xrEProps -boa"/>
+      -IR:\Borland\CBuilder6\Include\Mfc -IP:\xrCore -IP:\Editors\xrEProps 
+      -I..\..\Tools\Etools -src_suffix cpp -D_EDITOR -D_ECOREB -D_DEBUG -boa"/>
     <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vms -Vx -Ve -xf -xp -VF -ff -X- 
       -r- -ps -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -283,6 +283,7 @@
       <FILE FILENAME="Editor\EThumbnailSound.cpp" FORMNAME="" UNITNAME="EThumbnailSound.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Particle.cpp" FORMNAME="" UNITNAME="Blender_Particle" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\du_sphere_part.cpp" FORMNAME="" UNITNAME="du_sphere_part" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Visuals\FProgressive.cpp" FORMNAME="" UNITNAME="FProgressive" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -316,14 +317,16 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=7
-Item0=R:\SDK\DirectX9.0_sum_2004\Include;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps
-Item1=Editor;Engine;Engine\Visuals;Engine\Blenders;R:\SDK\DirectX9.0_sum_2004\Include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps
-Item2=..\LevelEditor\Edit;Editor;Engine;Engine\Visuals;Engine\Blenders;R:\SDK\DirectX9.0_beta3\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps
-Item3=Editor;Engine;Engine\Visuals;Engine\Blenders;R:\SDK\DirectX9.0_beta3\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps
-Item4=Editor;Engine;Engine\Visuals;Engine\Blenders;R:\SDK\DirectX9.0_beta3\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore
-Item5=Editor;Engine;Engine\Visuals;Engine\Blenders;R:\SDK\DirectX9.0_beta3\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc
-Item6=Editor;Engine\Visuals;Engine\Blenders;Engine;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include;R:\Borland\CBuilder6\Include\Mfc
+Count=9
+Item0=R:\SDK\DirectX9.0_sum_2004\Include;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps;..\..\Tools\Etools
+Item1=R:\SDK\DirectX9.0_sum_2004\Include;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps;..\Tools\Etools
+Item2=R:\SDK\DirectX9.0_sum_2004\Include;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps
+Item3=Editor;Engine;Engine\Visuals;Engine\Blenders;R:\SDK\DirectX9.0_sum_2004\Include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps
+Item4=..\LevelEditor\Edit;Editor;Engine;Engine\Visuals;Engine\Blenders;R:\SDK\DirectX9.0_beta3\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps
+Item5=Editor;Engine;Engine\Visuals;Engine\Blenders;R:\SDK\DirectX9.0_beta3\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps
+Item6=Editor;Engine;Engine\Visuals;Engine\Blenders;R:\SDK\DirectX9.0_beta3\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore
+Item7=Editor;Engine;Engine\Visuals;Engine\Blenders;R:\SDK\DirectX9.0_beta3\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc
+Item8=Editor;Engine\Visuals;Engine\Blenders;Engine;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include;R:\Borland\CBuilder6\Include\Mfc
 
 [HistoryLists\hlLibraryPath]
 Count=3

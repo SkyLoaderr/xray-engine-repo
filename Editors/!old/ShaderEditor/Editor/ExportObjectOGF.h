@@ -3,7 +3,7 @@
 #ifndef ExportObjectOGFH
 #define ExportObjectOGFH
 
-#include "progmesh.h"
+#include "PropSlimTools.h"
 //---------------------------------------------------------------------------
 const int clpOGFMX = 48, clpOGFMY=16, clpOGFMZ=48;
 //---------------------------------------------------------------------------
@@ -53,6 +53,9 @@ public:
     OGFVertVec		m_Verts;
     OGFFaceVec		m_Faces;
 
+    // Progressive
+    ArbitraryList<VIPM_SWR>	m_SWR;// The records of the collapses.
+
     Fvector			m_VMmin, m_VMscale;
     U32Vec			m_VM[clpOGFMX+1][clpOGFMY+1][clpOGFMZ+1];
     Fvector			m_VMeps;
@@ -60,8 +63,9 @@ public:
     u32				VPack			(SOGFVert& V);
 	void			ComputeBounding	();
 public:
-    CObjectOGFCollectorPacked	(const Fbox &bb, int apx_vertices, int apx_faces);
-    IC bool 		check      	(SOGFFace& F){
+    CObjectOGFCollectorPacked		(const Fbox &bb, int apx_vertices, int apx_faces);
+    void 			MakeProgressive	();
+    IC bool 		check      		(SOGFFace& F){
 		if ((F.v[0]==F.v[1]) || (F.v[0]==F.v[2]) || (F.v[1]==F.v[2])) return false;
 /*        for (OGFFaceIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
             // Test for 6 variations
@@ -116,15 +120,10 @@ class CExportObjectOGF
         CSurface*		m_Surf;
 
         // Progressive
-//		int				I_Current;
-//		int				V_Minimal;
-//		std::vector<Vsplit>	pmap_vsplit;
-//		std::vector<u16>	pmap_faces;
-
 		void			AppendPart		(int apx_vertices, int apx_faces);
         void 			Save			(IWriter& F, int& chunk_id);
 
-//		void 			MakeProgressive	();
+		void 			MakeProgressive	();
         				SSplit			(CSurface* surf, const Fbox& bb);
         				~SSplit			();
 		void 			ComputeBounding	()

@@ -94,7 +94,6 @@ CExportSkeleton::SSplit::SSplit(CSurface* surf, const Fbox& bb):CSkeletonCollect
 {
 	m_Texture 	= surf->_Texture();
 	m_Shader	= surf->_ShaderName();
-    I_Current	= V_Minimal = -1;
 }
 //----------------------------------------------------
 
@@ -104,7 +103,7 @@ void CExportSkeleton::SSplit::Save(IWriter& F, BOOL b2Link)
     F.open_chunk		(OGF_HEADER);
     ogf_header			H;
     H.format_version	= xrOGF_FormatVersion;
-    H.type				= (I_Current>=0)?MT_SKELETON_GEOMDEF_PM:MT_SKELETON_GEOMDEF_ST;
+    H.type				= (m_SWR.size())?MT_SKELETON_GEOMDEF_PM:MT_SKELETON_GEOMDEF_ST;
     H.shader_id			= 0;
     H.bb.min			= m_Box.min;
     H.bb.max			= m_Box.max;                    
@@ -155,25 +154,11 @@ void CExportSkeleton::SSplit::Save(IWriter& F, BOOL b2Link)
     F.close_chunk		();
 
     // PMap
-    if (I_Current>=0) {
-        F.open_chunk(OGF_P_MAP);
-        {
-            F.open_chunk(0x1);
-            F.w_u32(V_Minimal);
-            F.w_u32(I_Current);
-            F.close_chunk();
-        }
-        {
-            F.open_chunk(0x2);
-            F.w(pmap_vsplit.begin(),pmap_vsplit.size()*sizeof(Vsplit));
-            F.close_chunk();
-        }
-        {
-            F.open_chunk(0x3);
-            F.w_u32(pmap_faces.size());
-            F.w(pmap_faces.begin(),pmap_faces.size()*sizeof(WORD));
-            F.close_chunk();
-        }
+    if (m_SWR.size()) {
+        F.open_chunk(OGF_P_LODS);
+        F.w_u32			(m_SWR.size()); // num collapses
+        for (u32 swr_idx=0; swr_idx<m_SWR.size(); swr_idx++)
+        	F.w			(&m_SWR[swr_idx],sizeof(VIPM_SWR));
         F.close_chunk();
     }
 // SMF
@@ -352,20 +337,6 @@ void CExportSkeleton::SSplit::CalculateTB()
     }
 }
 
-#include "PropSlimTools.h"
-
-static const u32 TAG_NORM_FACE	= 0;
-static const u32 TAG_DEAD_FACE	= (1<<0);
-static const u32 TAG_DELTA_FACE	= (1<<1);
-
-struct SSliceFrame
-{
-	u16	begin;
-    u16 end;
-    float err;
-};
-DEFINE_VECTOR(SSliceFrame,SliceFrameVec,SliceFrameVecIt);
-
 void CExportSkeleton::SSplit::MakeProgressive()
 {
 	VIPM_Init	();
@@ -374,163 +345,59 @@ void CExportSkeleton::SSplit::MakeProgressive()
     for (SkelFaceIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++)
     	VIPM_AppendFace(f_it->v[0],f_it->v[1],f_it->v[2]);
 
-    VIPM_Result* R = VIPM_Convert();
-    // generate contraction
-    ETOOLS::QSContraction* 	qs_conx = 0;
-    ETOOLS::ContractionGenerate		(qs_mesh,qs_conx,0.f,1.f);
+    VIPM_Result* R = VIPM_Convert(u32(-1),1.f,1);
 
-    // process contraction
-//    float max_err = 0.2f;
-    U16Vec old_counter;
-    U16Vec new_counter;
-    U16Vec old_indices;
-    U16Vec new_indices;
-    u32 contr_count = 0;
-    for (u32 c_idx=0; c_idx<qs_conx->items.size(); c_idx++){
-    	ETOOLS::QSContractionItem* item = qs_conx->items[c_idx];
-//        if (item->error>=max_err) break;
-        // process dead faces
-        for (u32 dead_idx=0; dead_idx<item->f_dead.size(); dead_idx++){
-        	u32 f_idx				= item->f_dead[dead_idx];
-            ETOOLS::QSFace& F		= qs_mesh->faces[f_idx];
-	        F.tag					|= TAG_DEAD_FACE;
-        	old_indices.push_back	(F.v[0]);
-        	old_indices.push_back	(F.v[1]);
-        	old_indices.push_back	(F.v[2]);
-        }
-        // process delta faces
-        for (u32 delta_idx=0; delta_idx<item->f_delta.size(); delta_idx++){
-        	u32 f_idx				= item->f_delta[delta_idx];
-            ETOOLS::QSFace& F		= qs_mesh->faces[f_idx];
-	        F.tag					|= TAG_DELTA_FACE;
-        	old_indices.push_back	(F.v[0]);
-        	old_indices.push_back	(F.v[1]);
-        	old_indices.push_back	(F.v[2]);
-
-            ETOOLS::QSFace F_new	= F;
-            F_new.remap_vertex		(item->v_dead,item->v_kept);
-            // remap 
-        	new_indices.push_back	(F_new.v[0]);
-        	new_indices.push_back	(F_new.v[1]);
-        	new_indices.push_back	(F_new.v[2]);
-        }
-        old_counter.push_back		(item->f_dead.size()+item->f_delta.size());
-        new_counter.push_back		(item->f_delta.size());
-        contr_count++;
-    }    
-
-    // process norm indices
-    U16Vec norm_indices;
-    for (u32 f_idx=0; f_idx<qs_mesh->faces.size(); f_idx++){
-        ETOOLS::QSFace& F			= qs_mesh->faces[f_idx];
-    	if (TAG_NORM_FACE==F.tag){	
-        	norm_indices.push_back	(F.v[0]);
-        	norm_indices.push_back	(F.v[1]);
-        	norm_indices.push_back	(F.v[2]);
-        }
+    // Permute vertices
+    SkelVertVec temp_list = m_Verts;
+    for(u32 i=0; i<temp_list.size(); i++)
+        m_Verts[R->permute_verts[i]]=temp_list[i];
+    
+    // Fill indices
+    m_Faces.resize	(R->indices.size()/3);
+    for (u32 f_idx=0; f_idx<m_Faces.size(); f_idx++){
+	    SSkelFace& F= m_Faces[f_idx];
+    	F.v[0]			= R->indices[f_idx*3+0];
+    	F.v[1]			= R->indices[f_idx*3+1];
+    	F.v[2]			= R->indices[f_idx*3+2];
     }
 
-    u32 norm_count					= norm_indices.size();
-    SliceFrameVec slice_frames(contr_count+1);
-    // process begin
-    u32 curr_begin					= 0;
-    for (c_idx=0; c_idx<contr_count; c_idx++){
-    	SSliceFrame& SF				= slice_frames[c_idx];
-        SF.err						= qs_conx->items[c_idx]->error;
-        SF.begin					= curr_begin;
-        curr_begin					+= old_counter[c_idx]*3;
-    }    
-    // process end
-    u32 curr_end					= curr_begin+norm_count;
-    for (c_idx=0; c_idx<contr_count; c_idx++){
-    	SSliceFrame& SF				= slice_frames[c_idx];
-        SF.end						= curr_end;
-        curr_end					+= new_counter[c_idx]*3;
-    }    
-    SSliceFrame& SF					= slice_frames.back();
-    SF.begin						= curr_begin;
-    SF.end							= curr_end;
-    
-    U16Vec slice_indices;
-    slice_indices.insert			(slice_indices.end(),old_indices.begin(),old_indices.end());
-    slice_indices.insert			(slice_indices.end(),norm_indices.begin(),norm_indices.end());
-    slice_indices.insert			(slice_indices.end(),new_indices.begin(),new_indices.end());
+    // Fill SWR
+    m_SWR.resize		(R->swr_records.size());
+    for (u32 swr_idx=0; swr_idx!=m_SWR.size(); swr_idx++)
+    	m_SWR[swr_idx]	= R->swr_records[swr_idx];
 
+    // cleanup
+    VIPM_Destroy		();
+}
+
+/*
     // write SMF
-    AnsiString r= "x:\\import\\test.smf";
-    IWriter* W 	= FS.w_open(r.c_str());
+    AnsiString r		= "x:\\import\\test.smf";
+    IWriter* W 			= FS.w_open(r.c_str());
+    // vertices
     for (SkelVertIt v_it=m_Verts.begin(); v_it!=m_Verts.end(); v_it++){
         SSkelVert& pV 	= *v_it;
-        // vertices
         AnsiString 		tmp;
         tmp.sprintf		("v %f %f %f",pV.O.x,pV.O.y,-pV.O.z);
         W->w_string		(tmp.c_str());
     }
+    u32 idx 			= R->swr_records.size()-1;
+    VIPM_SWR& swr		= R->swr_records[idx];
+    for (f_idx=0; f_idx<swr.num_tris; f_idx++){
+	    SSkelFace& F	= m_Faces[f_idx+swr.offset/3];
 
-    SF					= slice_frames.back();
-    // face
-    for (u32 kk=SF.begin/3; kk<SF.end/3; kk++){
+		u16* idx		= &R->indices[swr.offset+f_idx*3];
+	    SSkelFace F0;
+        F0.v[0]			= *(idx+0);
+        F0.v[1]			= *(idx+1);
+        F0.v[2]			= *(idx+2);
+
         AnsiString 		tmp;
-        tmp.sprintf		("f %d %d %d",slice_indices[kk*3+2]+1,slice_indices[kk*3+1]+1,slice_indices[kk*3+0]+1);
-        W->w_string		(tmp.c_str());
+        tmp.sprintf		("f %d %d %d",F.v[2]+1,F.v[1]+1,F.v[0]+1);
+		W->w_string		(tmp.c_str());
     }
-    W->w_string		("bind c face");
-    for (kk=SF.begin/3; kk<SF.end/3; kk++){
-        AnsiString 		tmp;
-        if (kk>=((old_indices.size()+norm_indices.size())/3)){
-	        tmp.sprintf		("c %f %f %f",1.f,0.0f,0.0f);
-    	}else
-            tmp.sprintf		("c %f %f %f",0.5f,0.9f,0.5f);
-        W->w_string		(tmp.c_str());
-    }    
     FS.w_close	(W);
-
-    
-    // cleanup
-    ETOOLS::ContractionClear(qs_conx);
-    xr_delete				(qs_mesh);
-
-/*
-    I_Current=V_Minimal=-1;
-    if (m_Faces.size()>1) {
-        // Options
-        PM_Init(1,1,4,0.1f,1,1,120,0.15f,0.95f);
-
-        // Transfer vertices
-        for (SkelVertIt vert_it=m_Verts.begin(); vert_it!=m_Verts.end(); vert_it++){
-            SSkelVert	&iV = *vert_it;
-            PM_CreateVertex(iV.P.x,iV.P.y,iV.P.z,vert_it - m_Verts.begin(),(P_UV*)(&iV.UV));
-        }
-
-        // Convert
-        PM_Result R;
-        I_Current = PM_Convert((LPWORD)m_Faces.begin(),m_Faces.size()*3, &R);
-        if (I_Current>=0) {
-            u32 progress_diff = m_Verts.size()-R.minVertices;
-            if (progress_diff!=R.splitSIZE){
-                ELog.Msg(mtError,"PM_Convert return wrong indices.");
-                I_Current = -1;
-                return;
-            }
-            // Permute vertices
-            SkelVertVec temp_list = m_Verts;
-
-            // Perform permutation
-            for(u32 i=0; i<temp_list.size(); i++)
-                m_Verts[R.permutePTR[i]]=temp_list[i];
-
-            // Copy results
-            pmap_vsplit.resize(R.splitSIZE);
-            CopyMemory(pmap_vsplit.begin(),R.splitPTR,R.splitSIZE*sizeof(Vsplit));
-
-            pmap_faces.resize(R.facefixSIZE);
-            CopyMemory(pmap_faces.begin(),R.facefixPTR,R.facefixSIZE*sizeof(WORD));
-
-            V_Minimal = R.minVertices;
-        }
-    }
 */
-}
 
 CExportSkeleton::CExportSkeleton(CEditableObject* object)
 {
@@ -641,8 +508,8 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     UI->SetStatus("Make progressive...");
     // fill per bone vertices
     for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
-		if (m_Source->m_Flags.is(CEditableObject::eoProgressive)) split_it->MakeProgressive();
 		split_it->CalculateTB();
+		if (m_Source->m_Flags.is(CEditableObject::eoProgressive)) split_it->MakeProgressive();
 		SkelVertVec& lst = split_it->getV_Verts();
 	    for (SkelVertIt sv_it=lst.begin(); sv_it!=lst.end(); sv_it++){
 		    bone_points[sv_it->B0].push_back(sv_it->O);

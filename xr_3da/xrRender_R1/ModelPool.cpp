@@ -11,7 +11,7 @@
 	#include "..\IGame_Persistent.h"
     #include "..\fmesh.h"
     #include "..\fvisual.h"
-    #include "..\fprogressivefixedvisual.h"
+    #include "..\fprogressive.h"
     #include "..\fhierrarhyvisual.h"
     #include "..\SkeletonAnimated.h"
     #include "..\SkeletonRigid.h"
@@ -24,6 +24,7 @@
 #else
     #include "fmesh.h"
     #include "fvisual.h"
+    #include "fprogressive.h"
     #include "fprogressivefixedvisual.h"
     #include "ParticleGroup.h"
     #include "skeletonX.h"
@@ -46,7 +47,7 @@ IRender_Visual*	CModelPool::Instance_Create(u32 type)
 		V	= xr_new<FHierrarhyVisual> ();
 		break;
 	case MT_PROGRESSIVE:		// dynamic-resolution visual
-		V	= xr_new<FProgressiveFixedVisual> ();
+		V	= xr_new<FProgressive> ();
 		break;
 	case MT_SKELETON_ANIM:
 		V	= xr_new<CSkeletonAnimated> ();

@@ -143,7 +143,7 @@ void CExportObjectOGF::SSplit::Save(IWriter& F, int& chunk_id)
             F.open_chunk		(OGF_HEADER);
             ogf_header			H;
             H.format_version	= xrOGF_FormatVersion;
-            H.type				= /*(I_Current>=0)?MT_PROGRESSIVE:*/MT_NORMAL;
+            H.type				= (part->m_SWR.size())?MT_PROGRESSIVE:MT_NORMAL;
             H.shader_id			= 0;
             H.bb.min			= part->m_Box.min;
             H.bb.max			= part->m_Box.max;
@@ -175,36 +175,16 @@ void CExportObjectOGF::SSplit::Save(IWriter& F, int& chunk_id)
             F.w_u32(part->m_Faces.size()*3);
             F.w(part->m_Faces.begin(),part->m_Faces.size()*3*sizeof(u16));
             F.close_chunk();
-/*
+
             // PMap
-            if (I_Current>=0) {
-                F.open_chunk(OGF_P_MAP);
-                {
-                    F.open_chunk(0x1);
-                    F.w_u32(V_Minimal);
-                    F.w_u32(I_Current);
-                    F.close_chunk();
-                }
-                {
-                    F.open_chunk(0x2);
-                    F.w(pmap_vsplit.begin(),pmap_vsplit.size()*sizeof(Vsplit));
-                    F.close_chunk();
-                }
-                {
-                    F.open_chunk(0x3);
-                    F.w_u32(pmap_faces.size());
-                    F.w(pmap_faces.begin(),pmap_faces.size()*sizeof(WORD));
-                    F.close_chunk();
-                }
+            if (part->m_SWR.size()) {
+                F.open_chunk(OGF_P_LODS);
+                F.w_u32			(part->m_SWR.size()); // num collapses
+                for (u32 swr_idx=0; swr_idx<part->m_SWR.size(); swr_idx++)
+                    F.w			(&part->m_SWR[swr_idx],sizeof(VIPM_SWR));
                 F.close_chunk();
             }
-*/
 /*
-            F.open_chunk		(OGF_OBB);
-            F.w					(&part->m_OBB,sizeof(part->m_OBB));
-            F.close_chunk		();
-*/
-//*
 			AnsiString r=AnsiString("x:\\import\\test")+chunk_id+".smf";
             IWriter* W 	= FS.w_open(r.c_str());
 // optimize
@@ -270,50 +250,47 @@ void CExportObjectOGF::SSplit::Save(IWriter& F, int& chunk_id)
     }
 }
 //----------------------------------------------------
-/*
-void CExportObjectOGF::SSplit::MakeProgressive(){
-    // Progressive
-    I_Current=V_Minimal=-1;
-    if (m_Faces.size()>1) {
-        // Options
-        PM_Init(1,1,4,0.1f,1,1,120,0.15f,0.95f);
 
-        // Transfer vertices
-        for (OGFVertIt vert_it=m_Verts.begin(); vert_it!=m_Verts.end(); vert_it++){
-            SOGFVert	&iV = *vert_it;
-            PM_CreateVertex(iV.P.x,iV.P.y,iV.P.z,vert_it - m_Verts.begin(),(P_UV*)(&iV.UV));
-        }
+void CObjectOGFCollectorPacked::MakeProgressive()
+{
+	VIPM_Init	();
+    for (OGFVertIt vert_it=m_Verts.begin(); vert_it!=m_Verts.end(); vert_it++)
+    	VIPM_AppendVertex(vert_it->P,vert_it->UV);
+    for (OGFFaceIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++)
+    	VIPM_AppendFace(f_it->v[0],f_it->v[1],f_it->v[2]);
 
-        // Convert
-        PM_Result R;
-        I_Current = PM_Convert((LPWORD)m_Faces.begin(),m_Faces.size()*3, &R);
-        if (I_Current>=0) {
-            u32 progress_diff = m_Verts.size()-R.minVertices;
-            if (progress_diff!=R.splitSIZE){
-                ELog.Msg(mtError,"PM_Convert return wrong indices.");
-                I_Current = -1;
-                return;
-            }
-            // Permute vertices
-            OGFVertVec temp_list = m_Verts;
+    VIPM_Result* R = VIPM_Convert(u32(-1),1.f,1);
 
-            // Perform permutation
-            for(u32 i=0; i<temp_list.size(); i++)
-                m_Verts[R.permutePTR[i]]=temp_list[i];
-
-            // Copy results
-            pmap_vsplit.resize(R.splitSIZE);
-            CopyMemory(pmap_vsplit.begin(),R.splitPTR,R.splitSIZE*sizeof(Vsplit));
-
-            pmap_faces.resize(R.facefixSIZE);
-            CopyMemory(pmap_faces.begin(),R.facefixPTR,R.facefixSIZE*sizeof(WORD));
-
-            V_Minimal = R.minVertices;
-        }
+    // Permute vertices
+    OGFVertVec temp_list = m_Verts;
+    for(u32 i=0; i<temp_list.size(); i++)
+        m_Verts[R->permute_verts[i]]=temp_list[i];
+    
+    // Fill indices
+    m_Faces.resize	(R->indices.size()/3);
+    for (u32 f_idx=0; f_idx<m_Faces.size(); f_idx++){
+	    SOGFFace& F		= m_Faces[f_idx];
+    	F.v[0]			= R->indices[f_idx*3+0];
+    	F.v[1]			= R->indices[f_idx*3+1];
+    	F.v[2]			= R->indices[f_idx*3+2];
     }
+
+    // Fill SWR
+    m_SWR.resize		(R->swr_records.size());
+    for (u32 swr_idx=0; swr_idx!=m_SWR.size(); swr_idx++)
+    	m_SWR[swr_idx]	= R->swr_records[swr_idx];
+
+    // cleanup
+    VIPM_Destroy		();
 }
 //----------------------------------------------------
-*/
+
+void CExportObjectOGF::SSplit::MakeProgressive()
+{
+	for (COGFCPIt it=m_Parts.begin(); it!=m_Parts.end(); it++)
+    	(*it)->MakeProgressive();
+}
+
 CExportObjectOGF::CExportObjectOGF(CEditableObject* object)
 {
 	m_Source=object;
@@ -425,6 +402,16 @@ bool CExportObjectOGF::Export(IWriter& F)
     	return 			false;
     }
     
+    UI->SetStatus("Make progressive...");
+    // fill per bone vertices
+	if (m_Source->m_Flags.is(CEditableObject::eoProgressive)){
+        for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
+            (*split_it)->MakeProgressive();
+            UI->ProgressInc				();
+        }
+    }
+    UI->ProgressInc();
+
 	// Compute bounding...
     ComputeBounding	();
 

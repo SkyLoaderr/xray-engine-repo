@@ -3,7 +3,7 @@
 #ifndef ExportSkeletonH
 #define ExportSkeletonH
 
-#include "progmesh.h"
+#include "PropSlimTools.h"
 #include "SkeletonCustom.h"
 //---------------------------------------------------------------------------
 const int clpSMX = 28, clpSMY=16, clpSMZ=28;
@@ -119,10 +119,7 @@ protected:
         Fbox			m_Box;
 
         // Progressive
-        int				I_Current;
-        int				V_Minimal;
-        xr_vector<Vsplit>	pmap_vsplit;
-        xr_vector<WORD>		pmap_faces;
+		ArbitraryList<VIPM_SWR>	m_SWR;// The records of the collapses.
     public:
         SSplit			(CSurface* surf, const Fbox& bb);
 
