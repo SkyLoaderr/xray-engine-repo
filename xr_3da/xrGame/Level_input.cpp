@@ -38,6 +38,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 			HW.Caps.SceneMode			= (HW.Caps.SceneMode+1)%3;
 		return;
 	case DIK_F6: {
+		if (Game().type != GAME_SINGLE) return;
 		NET_Packet					net_packet;
 		net_packet.w_begin			(M_SAVE_GAME);
 		net_packet.w_string			("quick_save");
@@ -45,6 +46,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 		return;
 	}
 	case DIK_F7: {
+		if (Game().type != GAME_SINGLE) return;
 		NET_Packet					net_packet;
 		net_packet.w_begin			(M_RELOAD_GAME);
 		Send						(net_packet,net_flags(TRUE));
