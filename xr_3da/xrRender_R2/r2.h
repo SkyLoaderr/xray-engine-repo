@@ -23,6 +23,13 @@ public:
 	SceneGraph::mapSorted_T									mapSorted;
 	SceneGraph::mapHUD_T									mapHUD;
 
+	vector<SceneGraph::mapNormalVS::TNode*>					lstVS;
+	vector<SceneGraph::mapNormalPS::TNode*>					lstPS;
+	vector<SceneGraph::mapNormalStates::TNode*>				lstStates;
+	vector<SceneGraph::mapNormalTextures::TNode*>			lstTextures;
+	vector<SceneGraph::mapNormalTextures::TNode*>			lstTexturesTemp;
+	vector<SceneGraph::mapNormalVB::TNode*>					lstVB;
+
 	// Sector detection and visibility
 	CSector*												pLastSector;
 	Fvector													vLastCameraPos;
