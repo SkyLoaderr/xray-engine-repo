@@ -108,12 +108,6 @@ IC	const typename CProblemSolverAbstract::OPERATOR_VECTOR &CProblemSolverAbstrac
 	return					(m_operators);
 }
 
-TEMPLATE_SPECIALIZATION
-IC	typename CProblemSolverAbstract::OPERATOR_VECTOR &CProblemSolverAbstract::operators	()
-{
-	return					(m_operators);
-}
-
 // states
 TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::set_target_state		(const CState &state)
@@ -165,12 +159,6 @@ IC	const typename CProblemSolverAbstract::EVALUATOR_MAP &CProblemSolverAbstract:
 	return						(m_evaluators);
 }
 
-//TEMPLATE_SPECIALIZATION
-//IC	typename CProblemSolverAbstract::EVALUATOR_MAP &CProblemSolverAbstract::evaluators()
-//{
-//	return						(m_evaluators);
-//}
-//
 TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::evaluate_condition			(typename xr_vector<COperatorCondition>::const_iterator &I, typename xr_vector<COperatorCondition>::const_iterator &E, const _condition_type &condition_id) const
 {
