@@ -91,11 +91,13 @@ BOOL CObjectSpace::RayPick	( const Fvector &start, const Fvector &dir, float ran
 		Collide::RayQuery Q			(start,dir,R.range,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL);
 		if (collidable->collidable.model->_RayTest(Q))	
 		{
+			Collide::rq_result* res = Q.r_begin(); 
 			C	= D3DCOLOR_XRGB(128,128,196);
-			if (Q.range<R.range) {
-				R.O			= collidable;
-				R.range		= Q.r_begin()->range;
-				R.element	= Q.r_begin()->element;
+			if (res->range<R.range) {
+				R			= *res;
+//				R.O			= collidable;
+//				R.range		= res->range;
+//				R.element	= res->element;
 			}
 		}
 		if (bDebug) 
