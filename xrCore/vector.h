@@ -243,6 +243,6 @@ IC void _matrix<T>::mk_xform	(const _quaternion &Q, const Tvector &V) {
 
 //----------------------------------------------------------------------------------------------
 // Deprecate some features
-#pragma deprecated("MIN","MAX","ABS",fabsf,sqrt,sqrtf,malloc,free,calloc,realloc,memcpy,memmove,strdup)
+#pragma deprecated("MIN","MAX","ABS",fabsf,sqrt,sqrtf,malloc,free,calloc,realloc,memcpy,memmove,memset,strdup,new,delete)
 
 #endif
