@@ -11,9 +11,9 @@
 #include "xrCore.h"
 
 #pragma warning(disable:4995)
-#include <d3d8.h>
-#include <d3dx8.h>
-#include <dx7todx8.h>
+#include <d3d9.h>
+//#include <d3dx9.h>
+//#include <dx7todx8.h>
 #include <commctrl.h>
 #pragma warning(default:4995)
 
