@@ -32,7 +32,7 @@ VOID CLightmap::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOO
 	// Allocate 512x512 texture if needed
 	if (0==lm.pSurface)	{
 		DWORD	size	= lmap_size*lmap_size*sizeof(u32);
-		lm.pSurface		= LPDWORD(malloc(size));
+		lm.pSurface		= LPDWORD(xr_malloc(size));
 		lm.dwWidth		= lmap_size;
 		lm.dwHeight		= lmap_size;
 		lm.bHasAlpha	= FALSE;

@@ -40,7 +40,7 @@ Image *	new_image(int xsize, int ysize)		/* create a blank image */
 {
 	Image *image;
 
-	if((image = (Image *)malloc(sizeof(Image)))
+	if((image = (Image *)xr_malloc(sizeof(Image)))
 	&& (image->data = (Pixel *)calloc(ysize*xsize,sizeof(Pixel)))) 
 	{
 		image->xsize	= xsize;

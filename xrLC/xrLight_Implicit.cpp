@@ -317,7 +317,7 @@ void CBuild::ImplicitLighting()
 		for (DWORD ref=254; ref>0; ref--)	if (!defl.ApplyBorders(ref)) break;
 
 		Status	("Mixing lighting with texture...");
-		DWORD*	markup = LPDWORD(malloc(defl.Height()*defl.Width()*4));
+		DWORD*	markup = LPDWORD(xr_malloc(defl.Height()*defl.Width()*4));
 		{
 			for (DWORD V=0; V<defl.Height(); V++)
 			{

@@ -25,7 +25,7 @@ void InternalRender()
 
 	// allocation
 	int		msize = dimX*dimZ*sizeof(Texel);
-	texels	= (Texel*)malloc(msize);
+	texels	= (Texel*)xr_malloc(msize);
 	ZeroMemory(texels,msize);
 
 	// rasterization

@@ -241,8 +241,8 @@ BOOL	__stdcall rms_test	(b_texture& lm, DWORD w, DWORD h, DWORD rms)
 	if ((w<=1) || (h<=1))	return FALSE;
 
 	// scale down(lanczos3) and up (bilinear, as video board)
-	LPDWORD	pScaled		= LPDWORD(malloc(w*h*4));
-	LPDWORD	pRestored	= LPDWORD(malloc(lm.dwWidth*lm.dwHeight*4));
+	LPDWORD	pScaled		= LPDWORD(xr_malloc(w*h*4));
+	LPDWORD	pRestored	= LPDWORD(xr_malloc(lm.dwWidth*lm.dwHeight*4));
 	try {
 		imf_Process	(pScaled,	w,h,lm.pSurface,lm.dwWidth,lm.dwHeight,imf_lanczos3	);
 		imf_Process	(pRestored,	lm.dwWidth,lm.dwHeight,pScaled,w,h,imf_filter		);
@@ -342,7 +342,7 @@ BOOL	compress_Zero			(b_texture& lm, DWORD rms)
 		DWORD	c_x			= BORDER*2;
 		DWORD	c_y			= BORDER*2;
 		DWORD   c_size		= c_x*c_y;
-		LPDWORD	compressed	= LPDWORD(malloc(c_size*4));
+		LPDWORD	compressed	= LPDWORD(xr_malloc(c_size*4));
 		DWORD	c_fill		= RGBA_MAKE	(_r,_g,_b,255);
 		for (DWORD p=0; p<c_size; p++)	compressed[p]=c_fill;
 		
@@ -412,7 +412,7 @@ VOID CDeflector::L_Calculate(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH
 			R_ASSERT	(lm.dwWidth<=(lmap_size-2*BORDER));
 			R_ASSERT	(lm.dwHeight<=(lmap_size-2*BORDER));
 			DWORD size = lm.dwWidth*lm.dwHeight*4;
-			lm.pSurface = (DWORD *)malloc(size);
+			lm.pSurface = (DWORD *)xr_malloc(size);
 			ZeroMemory	(lm.pSurface,size);
 		}
 		L_Direct		(DB,LightsSelected,H);
@@ -497,7 +497,7 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 				T.dwWidth		= 2*BORDER;
 				T.dwHeight		= lm.dwHeight+2*BORDER;
 				DWORD size		= T.dwWidth*T.dwHeight*4;
-				T.pSurface		= LPDWORD(malloc(size));
+				T.pSurface		= LPDWORD(xr_malloc(size));
 				ZeroMemory		(T.pSurface,size);
 
 				// Transfer
@@ -522,7 +522,7 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 				T.dwWidth		= lm.dwWidth+2*BORDER;
 				T.dwHeight		= 2*BORDER;
 				DWORD size		= T.dwWidth*T.dwHeight*4;
-				T.pSurface		= LPDWORD(malloc(size));
+				T.pSurface		= LPDWORD(xr_malloc(size));
 				ZeroMemory		(T.pSurface,size);
 
 				// Transfer
@@ -547,7 +547,7 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 				lm_new.dwWidth	= (lm_old.dwWidth+2*BORDER);
 				lm_new.dwHeight	= (lm_old.dwHeight+2*BORDER);
 				DWORD size		= lm_new.dwWidth*lm_new.dwHeight*4;
-				lm_new.pSurface	= LPDWORD(malloc(size));
+				lm_new.pSurface	= LPDWORD(xr_malloc(size));
 				ZeroMemory		(lm_new.pSurface,size);
 				blit			(lm_new.pSurface,lm_new.dwWidth,lm_new.dwHeight,lm_old.pSurface,lm_old.dwWidth,lm_old.dwHeight,BORDER,BORDER,255-BORDER);
 				_FREE			(lm_old.pSurface);

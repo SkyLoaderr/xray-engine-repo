@@ -12,7 +12,7 @@ typedef	char		FILE_NAME	[ _MAX_PATH	];
 #define _DELETE(x)			{ delete x;	(x)=NULL; }
 #define _DELETEARRAY(x)		{ delete[] x;	(x)=NULL; }
 #define _RELEASE(x)			{ if(x) { (x)->Release();       (x)=NULL; } }
-#define _FREE(x)			{ if(x) { free(x);              (x)=NULL; } }
+#define _FREE(x)			{ if(x) { xr_free(x);           (x)=NULL; } }
 #define _SHOW_REF(msg, x)   { VERIFY(x); x->AddRef(); DWORDToFile(msg,x->Release()); }
 #define THROW				throw 123456789
 

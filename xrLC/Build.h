@@ -73,7 +73,7 @@ public:
 	Shader_xrLC_LIB			shaders;
 	string					path;
 
-	DWORD	mem_Usage				(LPDWORD used=0,LPDWORD free=0);
+	DWORD	mem_Usage				(LPDWORD _used=0,LPDWORD _free=0);
 	void	mem_Compact				();
 	void	mem_CompactSubdivs		();
 public:
