@@ -73,7 +73,7 @@ void CBuild::Flex2OGF()
 					}
 					
 					// build face
-					pOGF->_BuildFace(V1,V2,V3);
+					TRY(pOGF->_BuildFace(V1,V2,V3));
 				}
 			} catch (...) {  Msg("* ERROR: Flex2OGF, model# %d, *faces*",MODEL_ID); }
 		} catch (...)
