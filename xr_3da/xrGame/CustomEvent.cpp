@@ -115,6 +115,7 @@ BOOL CCustomEvent::Spawn		( BOOL bLocal, int server_id, Fvector& o_pos, Fvector&
 			P.r_u64				(A.CLS);
 			P.r_string			(str);		A.OnEnter	= Parse(str);
 			P.r_string			(str);		A.OnLeave	= Parse(str);
+			A.bEnabled			= TRUE;
 			Actions.push_back	(A);
 			count--;
 		}
@@ -128,9 +129,14 @@ void CCustomEvent::Update (DWORD dt)
 	if (!Contacted.empty()) {
 		for (DWORD i=0; i<Contacted.size(); i++) {
 			// Check if it is still contact us
-			CCF_EventBox* M = (CCF_EventBox*)CFORM(); R_ASSERT	(M);
+			CCF_Shape* M = (CCF_Shape*)CFORM(); R_ASSERT	(M);
 			if (!M->Contact(Contacted[i])) {
+				for (DWORD a=0; a<Actions.size(); a++)
+				{
+					if (DEF_ACTION.bOnce	= 
+				}
 				OnExit.Signal((DWORD)Contacted[i]);
+
 				Contacted.erase(Contacted.begin()+i);
 				i--;
 			}

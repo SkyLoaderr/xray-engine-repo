@@ -69,9 +69,10 @@ M_SPAWN
 			u8				count;
 
 			action {
-				u8			bOnce;
 				u64			clsid_target;
+				u16			OnEnter_count;	// number of times to play
 				stringZ		OnEnter;
+				u16			OnLeave_count;	// number of times to play
 				stringZ		OnLeave;
 			}
 			...

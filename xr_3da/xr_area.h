@@ -62,10 +62,8 @@ private:
 	RAPID::Model			Static;
 	Fvector					Static_Shift;
 
-	IC void					GetRect			( const Fvector &center, Irect &rect, float range );
-	IC void					GetRect			( const CCFModel *obj, Irect &rect );
-	IC int					GetNearest		( CCFModel *obj, float range );
-	IC int					GetNearest		( const Fvector &point, float range );
+	void					GetRect			( const Fvector &center, Irect &rect, float range );
+	void					GetRect			( const CCFModel *obj, Irect &rect );
 
 	BOOL					TestRaySlot		(int x, int z, const Fvector2& start, const Fvector2& dir);
 	void					CaptureSlots	(const Fvector& start, const Fvector& dir, float range);
@@ -82,7 +80,6 @@ private:
 	void					clCheckCollision(SCollisionData& cl);
 	void					clResolveStuck	(SCollisionData& cl, Fvector& position);
 	Fvector					CollideWithWorld(SCollisionData& cl, Fvector position, Fvector velocity,WORD cnt=0);
-
 public:
 	typedef svector<CCFModel*,128>	NL_TYPE;
 	typedef CCFModel**				NL_IT;
@@ -118,6 +115,8 @@ public:
 	void					cl_Move				( const CCFModel *object, const Fmatrix& T, const Fvector& velocity, const Fbox& bb, const Fbox& bb_foots, Fvector& final_pos, Fvector& final_vel, float sq_vel, BOOL bDynamic=false );
 	BOOL					EllipsoidCollide	( CCFModel *object, const Fmatrix& T, const Fvector& center_pos, const Fbox& bb);
 
+	int						GetNearest			( CCFModel *obj, float range );
+	int						GetNearest			( const Fvector &point, float range );
 	BOOL					TestNearestObject	( CCFModel *object, const Fvector& center, float radius);
 
 	RAPID::tri*				GetStaticTris		() { return Static.GetTris();  }
