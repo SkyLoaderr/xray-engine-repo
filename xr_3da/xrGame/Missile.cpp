@@ -5,7 +5,6 @@
 #include "effectorshot.h"
 #include "actor.h"
 #include "../CameraBase.h"
-#include "bolt.h"
 
 CMissile::CMissile(void) 
 {
@@ -475,10 +474,9 @@ void CMissile::OnEvent(NET_Packet& P, u16 type)
 		} 
 		case GE_OWNERSHIP_REJECT : {
 			P.r_u16			(id);
-			CBolt			*bolt = dynamic_cast<CBolt*>(Level().Objects.net_Find(id));
-			if (m_fake_missile && (!bolt || (id == m_fake_missile->ID())))
+			if (m_fake_missile && (id == m_fake_missile->ID()))
 				m_fake_missile	= NULL;
-			CMissile		*missile = dynamic_cast<CMissile*>(Level().Objects.net_Find(id));			
+			CMissile		*missile = dynamic_cast<CMissile*>(Level().Objects.net_Find(id));
 			if (!missile)
 				break;
 			missile->H_SetParent(0);

@@ -459,7 +459,7 @@ u32 CObjectHandler::weapon_state(const CWeapon *weapon) const
 
 u32 CObjectHandler::object_state() const
 {
-	if (!inventory().ActiveItem() || !inventory().ActiveItem()->H_Parent())
+	if (!inventory().ActiveItem() || !inventory().ActiveItem()->H_Parent())// || !inventory().ActiveItem()->getDestroy())
 		return			(eObjectActionNoItems);
 
 	CWeapon				*weapon = dynamic_cast<CWeapon*>(inventory().ActiveItem());
@@ -757,26 +757,27 @@ void CObjectHandler::remove_item		(CInventoryItem *inventory_item)
 #ifdef DEBUG
 void CObjectHandler::show_graph()
 {
-//	Msg						("\nGraph dump (%d vertices, %d edges)",graph().vertices().size(),graph().edge_count());
-//	state_iterator			I = graph().vertices().begin(), B = I;
-//	state_iterator			E = graph().vertices().end();
-//	for ( ;I != E; ++I) {
-//		string4096			S;
-//		char				*S1 = S;
-//		if ((*I).edges().empty())
-//			S1				+= sprintf(S1,"%32s -> %32s",to_string((*I).vertex_id()),"(no edges)");
-//		else
-//			for (u32 i=0; i<(*I).edges().size(); ++i) {
-//				S1				+= sprintf(S1,"%32s -> ",to_string((*I).vertex_id()));
-//				S1				+= sprintf(S1,"%32s%s",to_string(graph().vertices()[(*I).edges()[i].vertex_index()].vertex_id()),i != ((*I).edges().size() - 1) ? "\n" : "");
-//			}
-//			Msg					("%s",S);
-//	}
+	Msg						("\nGraph dump (%d vertices, %d edges)",graph().vertices().size(),graph().edge_count());
+	state_iterator			I = graph().vertices().begin(), B = I;
+	state_iterator			E = graph().vertices().end();
+	for ( ;I != E; ++I) {
+		string4096			S;
+		char				*S1 = S;
+		if ((*I).edges().empty())
+			S1				+= sprintf(S1,"%32s -> %32s",to_string((*I).vertex_id()),"(no edges)");
+		else
+			for (u32 i=0; i<(*I).edges().size(); ++i) {
+				S1				+= sprintf(S1,"%32s -> ",to_string((*I).vertex_id()));
+				S1				+= sprintf(S1,"%32s%s",to_string(graph().vertices()[(*I).edges()[i].vertex_index()].vertex_id()),i != ((*I).edges().size() - 1) ? "\n" : "");
+			}
+			Msg					("%s",S);
+	}
 }
 #endif
 
 void CObjectHandler::OnItemTake			(CInventoryItem *inventory_item)
 {
+	Msg						("Adding item %s (%d)",inventory_item->cName(),inventory_item->ID());
 	add_item				(inventory_item);
 #ifdef DEBUG
 	show_graph				();
@@ -785,9 +786,12 @@ void CObjectHandler::OnItemTake			(CInventoryItem *inventory_item)
 
 void CObjectHandler::OnItemDrop			(CInventoryItem *inventory_item)
 {
-	if (object_state(current_state_id(),inventory_item))
-		set_dest_state	(eObjectActionNoItems);
-	remove_item			(inventory_item);
+	Msg						("Removing item %s (%d)",inventory_item->cName(),inventory_item->ID());
+	if (object_state(current_state_id(),inventory_item)) {
+		set_current_state	(eObjectActionNoItems);
+		set_dest_state		(eObjectActionNoItems);
+	}
+	remove_item				(inventory_item);
 #ifdef DEBUG
 	show_graph				();
 #endif
@@ -805,6 +809,8 @@ CInventoryItem *CObjectHandler::best_weapon() const
 	TIItemSet::const_iterator	I = inventory().m_all.begin();
 	TIItemSet::const_iterator	E = inventory().m_all.end();
 	for ( ; I != E; ++I) {
+		if ((*I)->getDestroy())
+			continue;
 		CWeapon		*weapon = dynamic_cast<CWeapon*>(*I);
 		if (weapon && (weapon->GetAmmoCurrent() > weapon->GetAmmoMagSize()/10)) {
 			ai().ef_storage().m_tpGameObject	= weapon;
