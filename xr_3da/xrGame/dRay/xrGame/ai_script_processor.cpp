@@ -13,6 +13,8 @@
 #include "ai_script.h"
 #include "ai_space.h"
 
+#include "script_debugger.h"
+
 DEFINE_VECTOR(LPSTR,LPSTR_VECTOR,LPSTR_IT);
 
 CScriptProcessor::CScriptProcessor(LPCSTR caCaption, LPCSTR caScriptString)
@@ -55,7 +57,12 @@ void CScriptProcessor::run_strings()
 {
 	for ( ; !m_strings_to_run.empty(); ) {
 		LPSTR		I = m_strings_to_run.back();
-		lua_dostring(ai().script_engine().lua(),I);
+		int			err_code = lua_dostring(ai().script_engine().lua(),I);
+
+		if (err_code) {
+			if (!ai().script_engine().print_output(ai().script_engine().lua(),"console_string",err_code))
+				ai().script_engine().print_error(ai().script_engine().lua(),err_code);
+		}
 		xr_free		(I);
 		m_strings_to_run.pop_back();
 	}
