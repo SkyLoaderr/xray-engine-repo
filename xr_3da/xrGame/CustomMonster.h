@@ -130,7 +130,7 @@ public:
 						CCustomMonster			( );
 	virtual				~CCustomMonster			( );
 
-	virtual BOOL		Spawn					( BOOL bLocal, int sid, int team, int squad, int group, Fvector4& o_pos );
+	virtual BOOL		Spawn					( BOOL bLocal, int sid, int team, int squad, int group, Fvector& o_pos, Fvector& o_angle );
 	virtual void		Death					( );
 	virtual void		HitSignal				( int iHitAmount, Fvector& vLocalDir, CEntity* who);
 	virtual void		SenseSignal				( int iSenseAmount, Fvector& vLocalDir, CEntity* who);

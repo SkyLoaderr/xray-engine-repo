@@ -23,9 +23,18 @@ CGameObject::~CGameObject()
 	
 }
 
-BOOL CGameObject::Spawn	(BOOL bLocal, int server_id, Fvector4& o_pos)
+void CGameObject::OnActivate()
 {
-	BOOL bResult		= CObject::Spawn(bLocal,server_id,o_pos);
+	bActive = TRUE;
+}
+void CGameObject::OnDeactivate()
+{
+	bActive = FALSE;
+}
+
+BOOL CGameObject::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle)
+{
+	BOOL bResult		= CObject::Spawn(bLocal,server_id,o_pos,o_angle);
 	
 	// AI-DB connectivity
 	Fvector				nPos = vPosition;

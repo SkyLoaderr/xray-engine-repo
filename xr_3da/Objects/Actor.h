@@ -174,7 +174,7 @@ public:
 	virtual void		Load					( CInifile* ini, const char *section );
 
 	virtual void		Die						( );
-	virtual	BOOL		Spawn					(BOOL bLocal, int sid, int team, int squad, int group, Fvector4& o_pos );
+	virtual	BOOL		Spawn					(BOOL bLocal, int sid, int team, int squad, int group, Fvector& o_pos, Fvector& o_angle );
 	virtual	BOOL		Hit						(int iLost, Fvector &dir, CEntity* who);
 	virtual void		HitSignal				(int HitAmount, Fvector& vLocalDir, CEntity* who);
 

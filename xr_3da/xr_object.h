@@ -108,7 +108,7 @@ public:
 	virtual								~CObject		();
 
 	virtual void						Load			(CInifile* ini, const char * section);
-	virtual BOOL						Spawn			(BOOL bLocal, int server_id, Fvector4& o_pos);
+	virtual BOOL						Spawn			(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle);
 	virtual void						Sector_Detect	();
 	virtual void						Sector_Move		(CSector* P);
 	

@@ -16,7 +16,7 @@ public:
 	BOOL								bActive;		// was it activated or not - sleeping, not updating, no network messages etc.
 	
 	// Methods
-	virtual BOOL						Spawn			(BOOL bLocal, int server_id, Fvector4& o_pos);
+	virtual BOOL						Spawn			(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle);
 	virtual void						Sector_Detect	();
 	virtual float						OnVisible		();
 
@@ -26,6 +26,10 @@ public:
 	
 	// Position stack
 	virtual	SavedPosition				ps_Element		(DWORD ID);
+
+	// Game-specific events
+	virtual void						OnActivate		();
+	virtual void						OnDeactivate	();
 
 	CGameObject();
 	virtual ~CGameObject();

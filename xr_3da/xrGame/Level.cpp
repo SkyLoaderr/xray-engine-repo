@@ -82,22 +82,24 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 
 	// Read definition
 	char		s_name[128],s_replace[128];
-	DWORD		s_team,s_squad,s_group,s_server_id;
-	BOOL		s_local;
-	Fvector4	o_pos;
+	u8			s_team,s_squad,s_group,s_rp;
+	u16			s_server_id;
+	u8			s_local;
+	Fvector		o_pos,o_angle;
 	P.r_string	(s_name);
 	P.r_string	(s_replace);
-	s_team		= P.r_u8	();
-	s_squad		= P.r_u8	();
-	s_group		= P.r_u8	();
-	s_server_id	= P.r_u8	();
-	s_local		= P.r_u8	();
-	P.r			(&o_pos,3*sizeof(float));
-	o_pos.w		= P.r_angle8();
+	P.r_u8		(s_team);
+	P.r_u8		(s_squad);
+	P.r_u8		(s_group);
+	P.r_u8		(s_rp);
+	P.r_vec3	(o_pos);
+	P.r_vec3	(o_angle);
+	P.r_u16		(s_server_id);
+	P.r_u8		(s_local);
 	
 	// Real spawn
 	CEntity* E = (CEntity*) Objects.LoadOne(pSettings,s_name);
-	if (0==E || (!E->Spawn(s_local,s_server_id,s_team,s_squad,s_group,o_pos))) 
+	if (0==E || (!E->Spawn(s_local,s_server_id,s_team,s_squad,s_group,o_pos,o_angle))) 
 	{
 		Objects.DestroyObject(E);
 		Msg("! Failed to spawn ai entity '%s'",s_name);

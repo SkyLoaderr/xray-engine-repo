@@ -128,7 +128,7 @@ void CObject::Load				( CInifile* ini, const char *section )
 	sh_Size						= Radius()/2;
 }
 
-BOOL CObject::Spawn		(BOOL bLocal, int server_id, Fvector4& o_pos)
+BOOL CObject::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle)
 {
 	// XForm
 	Fvector4&			P = o_pos;

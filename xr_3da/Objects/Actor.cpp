@@ -224,9 +224,9 @@ void CActor::Load(CInifile* ini, const char* section )
 	dwMinUpdate			= dwMaxUpdate = 1;
 }
 
-BOOL CActor::Spawn		( BOOL bLocal, int sid, int team, int squad, int group, Fvector4& o_pos )
+BOOL CActor::Spawn		( BOOL bLocal, int sid, int team, int squad, int group, Fvector& o_pos, Fvector& o_angle )
 {
-	if (!inherited::Spawn(bLocal,sid,team,squad,group,o_pos))	return FALSE;
+	if (!inherited::Spawn(bLocal,sid,team,squad,group,o_pos,o_angle))	return FALSE;
 	r_model_yaw			= o_pos.w;
 	cameras[cam_active]->Set(o_pos.w,0,0);		// set's camera orientation
 
