@@ -173,7 +173,7 @@ void CWeaponMagazined::Update			(float dt, BOOL bHUDView)
 	// on state change
 	if (st_target!=st_current)
 	{
-		switch(st_target)
+		switch (st_target)
 		{
 		case eIdle:
 			bFlame			= FALSE;
