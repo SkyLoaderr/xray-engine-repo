@@ -135,7 +135,7 @@ void CEffect_Thunderbolt::Bolt(float period, float lt)
     float lng	            = Random.randF(sun_h-p_var_long+PI,sun_h+p_var_long+PI); 
     float dist	            = Random.randF(FAR_DIST*p_min_dist,FAR_DIST*MAX_DIST_FACTOR);
     current_direction.setHP	(lng,alt);
-    pos.mad		            (Device.vCameraPosition,dir,dist);
+    pos.mad		            (Device.vCameraPosition,current_direction,dist);
     dev.x		            = Random.randF(-p_tilt,p_tilt);
     dev.y		            = Random.randF(0,PI_MUL_2);
     dev.z		            = Random.randF(-p_tilt,p_tilt);
@@ -196,8 +196,8 @@ void CEffect_Thunderbolt::OnFrame(BOOL enabled, float period, float duration)
         lightning_phase	= 1.5f*(current_time/life_time);
         clamp			(lightning_phase,0.f,1.f);
 
-        g_pGamePersistent->Environment.CurrentEnv.sky_color.add(lightning_phase*p_sky_color);
-        g_pGamePersistent->Environment.CurrentEnv.sun_color.add(lightning_phase*p_sun_color);
+        g_pGamePersistent->Environment.CurrentEnv.sky_color.add(lightning_phase*p_sky_color*5.f);	//.
+        g_pGamePersistent->Environment.CurrentEnv.sun_color.add(lightning_phase*p_sun_color*2.f);	//.
 
 		if (::Render->get_generation()==IRender_interface::GENERATION_R2)	{
 			g_pGamePersistent->Environment.CurrentEnv.sun_dir = current_direction;
