@@ -162,36 +162,6 @@ ICF BOOL isect_sse			(const aabb_t &box, const ray_t &ray, float &dist)	{
 	return  ret;
 }
 
-template <bool bUseSSE, bool bCull, bool bFirst, bool bNearest>
-class _MM_ALIGN16	ray_collider
-{
-public:
-	COLLIDER*		dest;
-	TRI*			tris;
-	Fvector*		verts;
-
-	ray_t			ray;
-	float			rRange;
-	float			rRange2;
-
-	IC void			_init		(COLLIDER* CL, Fvector* V, TRI* T, const Fvector& C, const Fvector& D, float R)
-	{
-		dest			= CL;
-		tris			= T;
-		verts			= V;
-		ray.pos.set		(C);
-		ray.inv_dir.set	(1.f,1.f,1.f).div(D);
-		rRange			= R;
-		rRange2			= R*R;
-		if (!bUseSSE)	{
-			// for FPU - zero out inf
-			if (_abs(D.x)>flt_eps){}	else ray.inv_dir.x=0;
-			if (_abs(D.y)>flt_eps){}	else ray.inv_dir.y=0;
-			if (_abs(D.z)>flt_eps){}	else ray.inv_dir.z=0;
-		}
-	}
-};
-
 extern Fvector	c_spatial_offset[8];
 
 template <bool b_use_sse, bool b_first, bool b_nearest>
