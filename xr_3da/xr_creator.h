@@ -59,10 +59,10 @@ public:
 								CCreator				( );
 	virtual						~CCreator				( );
 
-	virtual BOOL				net_Server				( LPCSTR name_of_level, BOOL SLS_Load	);
-	virtual BOOL				net_Client				( LPCSTR name_of_server );
-	virtual void				net_Save				( LPCSTR name );
-	virtual void				net_Disconnect			( );
+	virtual BOOL				net_Start				( LPCSTR name, BOOL server	)	= 0;
+	virtual void				net_Load				( LPCSTR name )					= 0;
+	virtual void				net_Save				( LPCSTR name )					= 0;
+	virtual void				net_Stop				( )								= 0;
 
 	virtual BOOL				Load					( DWORD dwNum );
 	virtual BOOL				Load_GameSpecific_Before( ) { return TRUE; };	// before object loading

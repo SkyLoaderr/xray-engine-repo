@@ -3,7 +3,7 @@
 #include "PHdynamicdata.h"
 #include "Physics.h"
 
-BOOL CLevel::net_Client		( LPCSTR name_of_server )
+BOOL CLevel::net_Start_client	( LPCSTR name_of_server )
 {
 	pApp->LoadBegin	();
 
@@ -37,10 +37,6 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 		pApp->LoadTitle				("CLIENT: Spawning...");
 		while (!net_isCompleted_Connect()) Sleep(5);
 
-		// Spawn actor if non-local server
-		if (0!=stricmp(name_of_server,"localhost"))
-			g_cl_Spawn("actor",0,0,0,0);
-
 		// And receiving spawn information (game-state)
 		BOOL bFinished		= FALSE;
 		while (!bFinished) 
@@ -58,20 +54,6 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 			}
 			Sleep	(1);
 		}
-
-		// Waiting for actor spawn
-		/*
-		while (0==CurrentEntity()) 
-		{
-			for (NET_Packet* P = net_Retreive(); P; P=net_Retreive())
-			{
-				u16			m_type;	
-				P->r_begin	(m_type);
-				if			(M_SPAWN==m_type) g_sv_Spawn(P);
-			}
-			Sleep	(1);
-		}
-		*/
 
 		// Textures
 		pApp->LoadTitle						("Loading textures...");

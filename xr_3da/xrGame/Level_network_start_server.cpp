@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+/*
 BOOL CLevel::net_Server			( LPCSTR name, BOOL SLS_Load )
 {
 	pApp->LoadBegin				();
@@ -68,3 +69,4 @@ BOOL CLevel::net_Server			( LPCSTR name, BOOL SLS_Load )
 
 	return bResult;
 }
+*/

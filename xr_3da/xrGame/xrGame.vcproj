@@ -307,6 +307,9 @@
 				RelativePath="Level_network_start_server.cpp">
 			</File>
 			<File
+				RelativePath="Level_start.cpp">
+			</File>
+			<File
 				RelativePath="PhysicsShell.cpp">
 			</File>
 			<File

@@ -44,6 +44,7 @@ public:
 	// spawn data
 	string64				s_name;
 	string64				s_name_replace;
+	u8						s_gameid;
 	u8						s_RP;
 	u16						s_flags;		// state flags
 

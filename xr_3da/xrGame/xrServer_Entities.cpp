@@ -52,9 +52,18 @@ void	xrServerEntity::Spawn_Read		(NET_Packet& P)
 }
 
 #ifdef _EDITOR
+xr_token game_types[]
+{
+	{ "Any game",	GAME_ANY		},
+	{ "Single",		GAME_SINGLE		},
+	{ "Deathmatch", GAME_DEATHMATCH },
+	{ "Assault",	GAME_ASSAULT	},
+	{ 0,			0				}
+};
 void	xrServerEntity::FillProp(LPCSTR pref, PropValueVec& values)
 {
-	FILL_PROP_EX(values,	pref, "Active",	&s_flags, 	PROP::CreateFlag(M_SPAWN_OBJECT_ACTIVE));
+	FILL_PROP_EX(values,	pref, "Game Type",	&s_gameid, 	PROP::CreateToken(game_types));
+	FILL_PROP_EX(values,	pref, "Active",		&s_flags, 	PROP::CreateFlag(M_SPAWN_OBJECT_ACTIVE));
 }
 #endif
 

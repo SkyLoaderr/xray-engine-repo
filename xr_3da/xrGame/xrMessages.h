@@ -57,8 +57,9 @@ M_SPAWN
 	stringZ		Name_section;		// section in SYSTEM.LTX
 	stringZ		Name_replace;		// Name of EDITOR's object, user can change this
 
-	u8			o_Point;			// [0..0xFD] = NumberOfRespawnPoint 0xFF = AutoSelect, 0xFE = UseSupplied
-	vec3		o_Position;
+	u8			gameid;
+	u8			o_Point;			// [0..0xFC] = NumberOfRespawnPoint, or following... 
+	vec3		o_Position;			// ... 0xFF = AutoSelectAny, 0xFD = AutoSelectTeamed, 0xFE = UseSuppliedCoords
 	vec3		o_Angle;
 
 	u16			server_id;			// 0xffff = Unknown/None/Invalid

@@ -50,21 +50,6 @@ CCreator::~CCreator	( )
 	Device.seqFrame.Remove		(this);
 }
 
-BOOL CCreator::net_Server		( LPCSTR name_of_level, BOOL SLS_Load )
-{
-	return FALSE;
-}
-BOOL CCreator::net_Client		( LPCSTR name_of_server )
-{
-	return FALSE;
-}
-void CCreator::net_Disconnect	( )
-{
-}
-void CCreator::net_Save			( LPCSTR N )
-{
-}
-
 //-------------------------------------------------------------------------------------------
 BOOL CCreator::Load(DWORD dwNum) 
 {

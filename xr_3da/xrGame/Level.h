@@ -98,10 +98,11 @@ public:
 	SPathMap					m_PatrolPaths;
 
 	// Starting/Loading
-	virtual BOOL				net_Server				( LPCSTR name, BOOL SLS_Load);
-	virtual BOOL				net_Client				( LPCSTR name_of_server );
+	virtual BOOL				net_Start				( LPCSTR name, BOOL server	);
+	virtual void				net_Load				( LPCSTR name );
 	virtual void				net_Save				( LPCSTR name );
-	virtual void				net_Disconnect			( );
+	virtual void				net_Stop				( );
+	virtual void				net_Start_client		( LPCSTR name );
 
 	void						vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath);
 	virtual BOOL				Load_GameSpecific_Before( );
