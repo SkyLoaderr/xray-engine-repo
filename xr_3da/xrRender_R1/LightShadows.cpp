@@ -44,8 +44,8 @@ void CLightShadows::OnDeviceCreate	()
 	string128 RTtemp2;	strconcat(RTtemp2,RTtemp,",",RTtemp);
 	
 	// 
-	RT			= Device.Shader._CreateRT	(RTname,S_rt_size,S_rt_size);
-	RT_temp		= Device.Shader._CreateRT	(RTtemp,S_rt_size,S_rt_size);
+	RT			= Device.Shader._CreateRT	(RTname,S_rt_size,S_rt_size,HW.Caps.fTarget);
+	RT_temp		= Device.Shader._CreateRT	(RTtemp,S_rt_size,S_rt_size,HW.Caps.fTarget);
 	sh_Texture	= Device.Shader.Create		("effects\\shadow_texture");
 	sh_World	= Device.Shader.Create		("effects\\shadow_world",	RTname);
 	geom_World	= Device.Shader.CreateGeom	(FVF::F_LIT,	RCache.Vertex.Buffer(), NULL);

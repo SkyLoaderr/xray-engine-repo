@@ -38,8 +38,8 @@ void CLightProjector::OnDeviceCreate	()
 	string128 RTtemp2;	strconcat(RTtemp2,RTtemp,",",RTtemp);
 	
 	// 
-	RT			= Device.Shader._CreateRT	(RTname,P_rt_size,P_rt_size);
-	RT_temp		= Device.Shader._CreateRT	(RTtemp,P_rt_size,P_rt_size);
+	RT			= Device.Shader._CreateRT	(RTname,P_rt_size,P_rt_size,HW.Caps.fTarget);
+	RT_temp		= Device.Shader._CreateRT	(RTtemp,P_rt_size,P_rt_size,HW.Caps.fTarget);
 	sh_BlurTR	= Device.Shader.Create		("effects\\blur",			RTtemp2);
 	sh_BlurRT	= Device.Shader.Create		("effects\\blur",			RTname2);
 	geom_Blur	= Device.Shader.CreateGeom	(FVF::F_TL2uv,	RCache.Vertex.Buffer(), RCache.QuadIB);
