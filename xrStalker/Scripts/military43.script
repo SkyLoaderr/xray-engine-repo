@@ -5,7 +5,7 @@ function main ()
 	
 	for a = 1, table.getn (st), 1 do
 		st[a]:script (true, military43.script_name ())
-		action (st[a], anim (anim.free), cond (cond.time_end, time_infinite))
+		action (st[a], anim (anim.free), object (st[a]:best_weapon (), object.activate), cond (cond.time_end, time_infinite))
 	end
 
 	wait (10000)
