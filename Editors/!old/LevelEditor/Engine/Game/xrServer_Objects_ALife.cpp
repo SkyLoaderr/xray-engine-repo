@@ -777,7 +777,7 @@ void CSE_ALifeObjectPhysic::FillProps		(LPCSTR pref, PropItemVec& values)
     PHelper().CreateFlag8		(values, PrepareKey(pref,s_name,"Active"), &_flags, flActive);
 
     // motions & bones
-	V 							= PHelper().CreateChoose	(values, 	PrepareKey(pref,s_name,"Model\\Fixed bones"),	&fixed_bones,		smSkeletonBones,0,(u32)visual()->get_visual());
+	ChooseValue* V				= PHelper().CreateChoose	(values, 	PrepareKey(pref,s_name,"Model\\Fixed bones"),	&fixed_bones,		smSkeletonBones,0,(void*)visual()->get_visual());
     V->Owner()->subitem			= 8;
 }
 
@@ -968,9 +968,9 @@ void CSE_ALifeObjectHangingLamp::FillProps	(LPCSTR pref, PropItemVec& values)
 		PHelper().CreateAngle	(values, PrepareKey(pref,s_name,"Light\\Cone Angle"),	&spot_cone_angle,	deg2rad(1.f), deg2rad(120.f));
 
 	// bones
-    V        					= PHelper().CreateChoose	(values, 	PrepareKey(pref,s_name,"Model\\Fixed bones"),	&fixed_bones,		smSkeletonBones,0,(u32)visual()->get_visual());
+    ChooseValue* V				= PHelper().CreateChoose	(values, 	PrepareKey(pref,s_name,"Model\\Fixed bones"),	&fixed_bones,		smSkeletonBones,0,(void*)visual()->get_visual());
     V->Owner()->subitem			= 8;
-    V        					= PHelper().CreateChoose	(values, 	PrepareKey(pref,s_name,"Model\\Guid bone"),		&guid_bone,			smSkeletonBones,0,(u32)visual()->get_visual());
+    V        					= PHelper().CreateChoose	(values, 	PrepareKey(pref,s_name,"Model\\Guid bone"),		&guid_bone,			smSkeletonBones,0,(void*)visual()->get_visual());
 
 	if (flags.is(flPointAmbient)){
         PHelper().CreateFloat	(values, PrepareKey(pref,s_name,"Ambient\\Radius"),		&m_ambient_radius,	0.f, 1000.f);
