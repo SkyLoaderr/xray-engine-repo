@@ -176,10 +176,9 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
     // IK data
 	IReader* IKD 	= data->open_chunk(OGF_IKDATA);
     if (IKD){
-		string256	tmp;
         for (u32 i=0; i<bones->size(); i++) {
             CBoneData*	B 	= (*bones)[i];
-            IKD->r_stringZ	(tmp); B->game_mtl_name=tmp;
+            IKD->r_stringZ	(B->game_mtl_name);
             IKD->r			(&B->shape,sizeof(SBoneShape));
             IKD->r			(&B->IK_data,sizeof(SJointIKData));
             Fvector vXYZ,vT;

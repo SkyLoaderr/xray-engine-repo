@@ -330,7 +330,7 @@ void CSMotion::Save(IWriter& F)
     F.w_float	(fPower);
 	F.w_u16		((u16)bone_mots.size());
 	for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
-    	F.w_stringZ	(*bm_it->name);
+    	F.w_stringZ	(bm_it->name);
 		F.w_u8		(bm_it->m_Flags.get());
 		for (int ch=0; ch<ctMaxChannel; ch++)
 			bm_it->envs[ch]->Save(F);
@@ -454,9 +454,9 @@ void CClip::Save(IWriter& F)
 	F.close_chunk	();
 
 	F.open_chunk	(EOBJ_CLIP_DATA_CHUNK);
-    F.w_stringZ		(*name);
-    for (int k=0; k<4; k++) F.w_stringZ(*cycles[k]?*cycles[k]:"");
-    F.w_stringZ		(*fx?*fx:"");
+    F.w_stringZ		(name);
+    for (int k=0; k<4; k++) F.w_stringZ(cycles[k]);
+    F.w_stringZ		(fx);
     F.w_float		(fx_power);
     F.w_float		(length);
 	F.close_chunk	();
@@ -468,11 +468,10 @@ bool CClip::Load(IReader& F)
 	R_ASSERT		(F.find_chunk(EOBJ_CLIP_VERSION_CHUNK));
     u16 ver			= F.r_u16();
     if (ver!=EOBJ_CLIP_VERSION) return false;
-    string256		buf;
 	R_ASSERT(F.find_chunk(EOBJ_CLIP_DATA_CHUNK));
-    F.r_stringZ		(buf); name=buf;
-    for (int k=0; k<4; k++){ F.r_stringZ(buf); cycles[k]=buf; }
-    F.r_stringZ		(buf); fx=buf;
+    F.r_stringZ		(name);
+    for (int k=0; k<4; k++){ F.r_stringZ(cycles[k]); }
+    F.r_stringZ		(fx);
     fx_power		= F.r_float();
     length			= F.r_float();
     return true;

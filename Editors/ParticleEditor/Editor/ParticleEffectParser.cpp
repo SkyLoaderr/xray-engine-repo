@@ -282,7 +282,7 @@ public:
         else if (command=="pVertexBD")	  		pVertexBD		(P10);
         else if (command=="pVertexBTracks") 	pVertexBTracks	(P1);
         else if (command=="pSize")		  		pSize			(P3);
-        else if (command=="pSizeD")		  		pSizeD   		(P10);
+        else if (command=="pSizeD")		  		pSizeD   		(P11);
         else if (command=="pRotate")			pRotate			(P3);
         else if (command=="pRotateD")			pRotateD 		(P10);
         else if (command=="pStartingAge")		pStartingAge   	(P2);
@@ -360,7 +360,7 @@ static LPCSTR PStateCommands[]={
 	"pRotate(float rot_x, float rot_y=0.f, float rot_z=0.f);",
 	"pRotateD(PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f);",
 	"pSize(float size_x, float size_y=1.0f, float size_z=1.0f);",
-	"pSizeD(PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f);",
+	"pSizeD(PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f, BOOL single_size=TRUE);",
 	"pStartingAge(float age, float sigma=1.0f);",
 	"pTimeStep(float new_dt);",
 	"pVelocity(float x, float y, float z);",

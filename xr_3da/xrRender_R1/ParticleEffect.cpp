@@ -230,9 +230,9 @@ BOOL CPEDef::Load(IReader& F)
     
 #ifdef _PARTICLE_EDITOR
     if (F.find_chunk(PED_CHUNK_OWNER)){
-    	AnsiString 	tmp;
-	    F.r_stringZ	(tmp); m_OwnerName = tmp.c_str();
-	    F.r_stringZ	(tmp); m_ModifName = tmp.c_str();
+    	AnsiString tmp;
+	    F.r_stringZ	(m_OwnerName);
+	    F.r_stringZ	(m_ModifName);
         F.r			(&m_CreateTime,sizeof(m_CreateTime));
         F.r			(&m_ModifTime,sizeof(m_ModifTime));
     }
@@ -307,8 +307,8 @@ void CPEDef::Save(IWriter& F)
     }
 #ifdef _PARTICLE_EDITOR
 	F.open_chunk	(PED_CHUNK_OWNER);
-    F.w_stringZ		(*m_OwnerName?*m_OwnerName:"unknown");
-    F.w_stringZ		(*m_ModifName?*m_ModifName:"unknown");
+    F.w_stringZ		(m_OwnerName);
+    F.w_stringZ		(m_ModifName);
     F.w				(&m_CreateTime,sizeof(m_CreateTime));
     F.w				(&m_ModifTime,sizeof(m_ModifTime));
 	F.close_chunk	();

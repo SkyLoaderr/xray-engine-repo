@@ -46,8 +46,8 @@ BOOL CPGDef::Load(IReader& F)
     m_Effects.resize(F.r_u32());
     for (EffectIt it=m_Effects.begin(); it!=m_Effects.end(); it++){
     	F.r_stringZ		(it->m_EffectName);
-    	it->m_Time0 	= F.r_float();//float(F.r_u32())/1000.f;
-    	it->m_Time1 	= F.r_float();//float(F.r_u32())/1000.f;
+    	it->m_Time0 	= F.r_float();
+    	it->m_Time1 	= F.r_float();
     	it->m_Flags.set	(F.r_u32());
     }
     
@@ -57,9 +57,8 @@ BOOL CPGDef::Load(IReader& F)
 
 #ifdef _PARTICLE_EDITOR
     if (F.find_chunk(PGD_CHUNK_OWNER)){
-    	AnsiString 	tmp;
-	    F.r_stringZ	(tmp); m_OwnerName = tmp.c_str();
-	    F.r_stringZ	(tmp); m_ModifName = tmp.c_str();
+	    F.r_stringZ	(m_OwnerName);
+	    F.r_stringZ	(m_ModifName);
         F.r			(&m_CreateTime,sizeof(m_CreateTime));
         F.r			(&m_ModifTime,sizeof(m_ModifTime));
     }
