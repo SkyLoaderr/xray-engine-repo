@@ -28,7 +28,7 @@ void CUIStatic::script_register(lua_State *L)
 		.def("SetTextureOffset",	&CUIStatic::SetTextureOffset )
 
 
-		.def("SetOriginalRect",		&CUIStatic::SetOriginalRect)
+		.def("SetOriginalRect",		(void(CUIStatic::*)(int,int,int,int))&CUIStatic::SetOriginalRect)
 
 		.def("SetTextureScaleXY",	&CUIStatic::SetTextureScaleXY)
 		.def("GetTextureScaleX",	&CUIStatic::GetTextureScaleX)

@@ -59,6 +59,7 @@ public:
 	
 	virtual void	InitTexture(LPCSTR tex_name);
 	void			SetOriginalRect (int x, int y, int width, int height)	{m_UIStaticItem.SetOriginalRect(x,y,width,height);};
+	void			SetOriginalRect (const Irect& r)						{m_UIStaticItem.SetOriginalRect(r.x1, r.y1, r.x2 - r.x1, r.y2 - r.y1);}
 	CUIStaticItem*	GetStaticItem			()								{return &m_UIStaticItem;}
 
 	virtual void ClipperOn					();
