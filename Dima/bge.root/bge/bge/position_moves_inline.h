@@ -28,6 +28,7 @@ IC	void CSPositionMoves::init				()
 TEMPLATE_SPECIALIZATION
 IC	void CSPositionMoves::add				(const move_type &move)
 {
+	VERIFY				(!actual());
 	VERIFY				(std::find(m_moves.begin(),m_moves.end(),move) == m_moves.end());
 	m_moves.push_back	(move);
 }

@@ -9,6 +9,7 @@
 #pragma comment(lib,"winmm.lib")
 
 #include "stdafx.h"
+#include "ui.h"
 
 void boost::throw_exception(const std::exception &A)
 {

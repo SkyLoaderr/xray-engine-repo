@@ -21,13 +21,19 @@ void COthelloClassicBoard::fill_moves		()
 				m_move_processor.current_position_moves().add(index(i,j));
 		}
 
-	if (!m_move_processor.moves().empty()) {
-		m_move_processor.current_position_moves().actual(true);
+	m_move_processor.current_position_moves().actual	(true);
+
+	if (!m_move_processor.current_position_moves().moves().empty()) {
 		return;
 	}
 
+#ifdef _DEBUG
+	m_move_processor.current_position_moves().actual(false);
+#endif
 	m_move_processor.current_position_moves().add	(MOVE_PASS);
+#ifdef _DEBUG
 	m_move_processor.current_position_moves().actual(true);
+#endif
 }
 
 void COthelloClassicBoard::fill_moves		()

@@ -10,12 +10,7 @@
 #include <typeinfo.h>
 #include "script_space.h"
 
-#undef	SCRIPT_EXPORT_SPACE_H
-#undef	script_type_list
-#undef	add_to_type_list
-#undef	save_type_list
 #define SCRIPT_REGISTRATOR
-
 #include "script_export_space.h"
 #include "script_engine_export.h"
 

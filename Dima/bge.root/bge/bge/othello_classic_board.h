@@ -9,6 +9,7 @@
 #pragma once
 
 #include "script_export_space.h"
+#include "ui.h"
 #include "move_processor.h"
 
 class COthelloClassicBoard {

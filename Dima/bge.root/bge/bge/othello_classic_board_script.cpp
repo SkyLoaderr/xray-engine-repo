@@ -10,6 +10,8 @@
 #include "othello_classic_board.h"
 #include "script_space.h"
 
+#include <luabind/iterator_policy.hpp>
+
 using namespace luabind;
 
 void COthelloClassicBoard::script_register(lua_State *L)
@@ -21,6 +23,7 @@ void COthelloClassicBoard::script_register(lua_State *L)
 			.def("start_position",		&COthelloClassicBoard::start_position)
 			.def("show",				&COthelloClassicBoard::show)
 			.def("move",				(void (COthelloClassicBoard::*)(const cell_index &, const cell_index &))(&COthelloClassicBoard::do_move))
+			.def("move",				(void (COthelloClassicBoard::*)(const cell_index &))(&COthelloClassicBoard::do_move))
 			.def("move",				(void (COthelloClassicBoard::*)(LPCSTR))(&COthelloClassicBoard::do_move))
 			.def("undo",				(void (COthelloClassicBoard::*)())(&COthelloClassicBoard::undo_move))
 			.def("can_move",			(bool (COthelloClassicBoard::*)(const cell_index &, const cell_index &) const)(&COthelloClassicBoard::can_move))
@@ -33,5 +36,6 @@ void COthelloClassicBoard::script_register(lua_State *L)
 			.def("compute_difference",	(int (COthelloClassicBoard::*)(LPCSTR) const)(&COthelloClassicBoard::compute_difference))
 			.def("terminal_position",	&COthelloClassicBoard::terminal_position)
 			.def("score",				&COthelloClassicBoard::score)
+			.def("moves",				&COthelloClassicBoard::moves, return_stl_iterator)
 	];
 }
