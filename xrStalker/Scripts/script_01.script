@@ -73,7 +73,7 @@ function main()
 				anim	(anim.danger),
 				cond	(cond.time_end, 10000)
 				)
-		wait(1000)
+		wait(2000)
 			action(
 				stalker2,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
@@ -82,7 +82,7 @@ function main()
 				anim	(anim.danger),
 				cond	(cond.time_end, 10000)
 				)
-		wait(1000)
+		wait(2000)
 			action(
 				stalker1,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
@@ -93,7 +93,7 @@ function main()
 				)
 			printf("am!")
 			flush()
-		wait(1000)
+		wait(2000)
 			action(
 				stalker1,
 			  	move	(move.standing, move.stand,move.line,patrol("way0001")),
@@ -104,7 +104,7 @@ function main()
 				)
 			printf("b!")
 			flush()
-		wait(1000)
+		wait(2000)
 			action(
 				stalker2,
 			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
