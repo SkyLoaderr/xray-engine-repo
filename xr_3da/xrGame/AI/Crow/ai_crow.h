@@ -8,9 +8,8 @@
 
 #include "..\..\entity.h"
 
-class CAI_Crow : public CEntityAlive//GameObject
+class CAI_Crow : public CEntityAlive
 {
-//	typedef	CGameObject inherited;
 	typedef	CEntityAlive inherited;
 	enum ECrowStates 	{
 		eUndef		= -1,
@@ -19,27 +18,32 @@ class CAI_Crow : public CEntityAlive//GameObject
 		eFlyIdle,
 		eFlyUp
 	};
+// constants and types
+	enum			{ MAX_ANIM_COUNT = 8	};
+	enum			{ MAX_SND_COUNT = 8		};
+
 // animations
-	struct SAnim{
-		#define MAX_ANIM_COUNT 8
-		typedef svector<CMotionDef*,MAX_ANIM_COUNT> MotionSVec;
-		MotionSVec	m_Animations;
-		CMotionDef*	GetRandom	(){return m_Animations[Random.randI(0,m_Animations.size())];}
-		void		Load		(CKinematics* visual, LPCSTR prefix);
+	struct SAnim
+	{
+		typedef			svector<CMotionDef*,MAX_ANIM_COUNT> MotionSVec;
+		MotionSVec		m_Animations;
+		CMotionDef*		GetRandom	(){return m_Animations[Random.randI(0,m_Animations.size())];}
+		void			Load		(CKinematics* visual, LPCSTR prefix);
 	};
-	struct SSound{
-		#define MAX_SND_COUNT 8
-		typedef svector<sound,MAX_SND_COUNT> MotionSVec;
-		MotionSVec	m_Sounds;
-		sound&		GetRandom	(){return m_Sounds[Random.randI(0,m_Sounds.size())];}
-		void		Load		(LPCSTR prefix);
-		void		SetPosition	(const Fvector& pos);
-		void		Unload		();
+	struct SSound
+	{
+		typedef			svector<sound,MAX_SND_COUNT>		MotionSVec;
+		MotionSVec		m_Sounds;
+		sound&			GetRandom	(){return m_Sounds[Random.randI(0,m_Sounds.size())];}
+		void			Load		(LPCSTR prefix);
+		void			SetPosition	(const Fvector& pos);
+		void			Unload		();
 	};
 public:
 	void			OnHitEndPlaying(CBlend* B);
 protected:
-	struct SCrowAnimations{
+	struct SCrowAnimations
+	{
 		SAnim		m_idle;
 		SAnim		m_fly;
 		SAnim		m_death;
@@ -47,7 +51,8 @@ protected:
 		SAnim		m_death_dead;
 	};
 	SCrowAnimations	m_Anims;
-	struct SCrowSounds{
+	struct SCrowSounds
+	{
 		SSound		m_idle;
 	};
 	SCrowSounds		m_Sounds;

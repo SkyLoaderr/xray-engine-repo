@@ -119,8 +119,6 @@ public:
     }
 
 
-#define rfabs(x) fabsf(x)
-
 #define ROT(a,i,j,k,l) g=a.m[i][j]; h=a.m[k][l]; a.m[i][j]=g-s*(h+g*tau); a.m[k][l]=h+s*(g-h*tau);
 
     int IC Meigen(Fvector& dout, _matrix33& a)
@@ -146,15 +144,15 @@ public:
             if (sm == 0.0) { set(v); dout.set(d); return i; }
             if (i < 3) tresh=0.2f*sm/(3.0f*3.0f); else tresh=0.0f;
             {
-                g = 100.0f*rfabs(a.m[0][1]);
-                if (i>3 && rfabs(d.x)+g==rfabs(d.x) && rfabs(d.y)+g==rfabs(d.y))
+                g = 100.0f*fabsf(a.m[0][1]);
+                if (i>3 && fabsf(d.x)+g==fabsf(d.x) && fabsf(d.y)+g==fabsf(d.y))
                     a.m[0][1]=0.0;
-                else if (rfabs(a.m[0][1])>tresh){
+                else if (fabsf(a.m[0][1])>tresh){
                     h = d.y-d.x;
-                    if (rfabs(h)+g == rfabs(h)) t=(a.m[0][1])/h;
+                    if (fabsf(h)+g == fabsf(h)) t=(a.m[0][1])/h;
                     else{
                         theta=0.5f*h/(a.m[0][1]);
-                        t=1.0f/(rfabs(theta)+sqrtf(1.0f+theta*theta));
+                        t=1.0f/(fabsf(theta)+sqrtf(1.0f+theta*theta));
                         if (theta < 0.0f) t = -t;
                     }
                     c=1.0f/sqrtf(1+t*t); s=t*c; tau=s/(1.0f+c); h=t*a.m[0][1];
@@ -165,15 +163,15 @@ public:
                 }
             }
             {
-                g = 100.0f*rfabs(a.m[0][2]);
-                if (i>3 && rfabs(d.x)+g==rfabs(d.x) && rfabs(d.z)+g==rfabs(d.z))
+                g = 100.0f*fabsf(a.m[0][2]);
+                if (i>3 && fabsf(d.x)+g==fabsf(d.x) && fabsf(d.z)+g==fabsf(d.z))
                     a.m[0][2]=0.0f;
-                else if (rfabs(a.m[0][2])>tresh){
+                else if (fabsf(a.m[0][2])>tresh){
                     h = d.z-d.x;
-                    if (rfabs(h)+g == rfabs(h)) t=(a.m[0][2])/h;
+                    if (fabsf(h)+g == fabsf(h)) t=(a.m[0][2])/h;
                     else{
                         theta=0.5f*h/(a.m[0][2]);
-                        t=1.0f/(rfabs(theta)+sqrtf(1.0f+theta*theta));
+                        t=1.0f/(fabsf(theta)+sqrtf(1.0f+theta*theta));
                         if (theta < 0.0f) t = -t;
                     }
                     c=1.0f/sqrtf(1+t*t); s=t*c; tau=s/(1.0f+c); h=t*a.m[0][2];
@@ -184,15 +182,15 @@ public:
                 }
             }
             {
-                g = 100.0f*rfabs(a.m[1][2]);
-                if (i>3 && rfabs(d.y)+g==rfabs(d.y) && rfabs(d.z)+g==rfabs(d.z))
+                g = 100.0f*fabsf(a.m[1][2]);
+                if (i>3 && fabsf(d.y)+g==fabsf(d.y) && fabsf(d.z)+g==fabsf(d.z))
                     a.m[1][2]=0.0f;
-                else if (rfabs(a.m[1][2])>tresh){
+                else if (fabsf(a.m[1][2])>tresh){
                     h = d.z-d.y;
-                    if (rfabs(h)+g == rfabs(h)) t=(a.m[1][2])/h;
+                    if (fabsf(h)+g == fabsf(h)) t=(a.m[1][2])/h;
                     else{
                         theta=0.5f*h/(a.m[1][2]);
-                        t=1.0f/(rfabs(theta)+sqrtf(1.0f+theta*theta));
+                        t=1.0f/(fabsf(theta)+sqrtf(1.0f+theta*theta));
                         if (theta < 0.0) t = -t;
                     }
                     c=1.0f/sqrtf(1+t*t); s=t*c; tau=s/(1.0f+c); h=t*a.m[1][2];
@@ -209,6 +207,7 @@ public:
 //        Log.Msg("eigen: too many iterations in Jacobi transform (%d).\n", i);
         return i;
     }
+#undef ROT
 
 //--------------------------------------------------------------------------------
 // other unused function

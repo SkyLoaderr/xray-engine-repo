@@ -2,14 +2,13 @@
 #define _FIXEDMAP_H
 #pragma once
 
-#ifndef SG_REALLOC_ADVANCE
-#define SG_REALLOC_ADVANCE	64
-#define SG_REALLOC_ALIGN	64
-#endif
-
 template<class K, class T>
 class FixedMAP
 {
+	enum	{
+		SG_REALLOC_ADVANCE	= 64,
+		SG_REALLOC_ALIGN	= 64
+	};
 public:
 	struct TNode {
 		K		key;

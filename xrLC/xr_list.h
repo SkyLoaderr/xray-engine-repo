@@ -1,12 +1,13 @@
 #ifndef __XR_LIST_H__
 #define __XR_LIST_H__
 
-#define	XR_LIST_INITSIZE		32
-//-----------------------------------------------------------------------------------------------------------
-//array
 //-----------------------------------------------------------------------------------------------------------
 template <class T> class		CList
 {
+	enum	{
+		XR_LIST_INITSIZE		= 32
+	};
+private:
 	T*							data;
 	int							_count;
 	int							_size;

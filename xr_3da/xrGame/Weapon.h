@@ -6,7 +6,6 @@
 #define AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_
 #pragma once
 
-#include "..\xr_collide_defs.h"
 #include "..\lightPPA.h"
 
 // refs
@@ -14,13 +13,12 @@ class CEntity;
 class CWeaponHUD;
 class ENGINE_API CMotionDef;
 
-#define MAX_ANIM_COUNT 8
- 
-typedef svector<CMotionDef*,MAX_ANIM_COUNT> MotionSVec;
-
 class CWeapon : public CObject
 {
 	friend class	CWeaponList;
+public:
+	enum			{ MAX_ANIM_COUNT = 8 };
+	typedef			svector<CMotionDef*,MAX_ANIM_COUNT>		MotionSVec;
 protected:
 	BOOL			bWorking;		// Weapon fires now
 	BOOL			bPending;		// Weapon needs some time to update itself, even if hidden
@@ -40,7 +38,7 @@ protected:
 	float			fFlameSize;
 	float			fFlameTime;
 
-	void			animGet			(MotionSVec& lst, LPCSTR prefix);
+	void			animGet					(MotionSVec& lst, LPCSTR prefix);
 public:
 	float			GetPrecision();
 protected:

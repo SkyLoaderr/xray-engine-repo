@@ -73,10 +73,6 @@
     #define				PI_DIV_8	0.3926990816987241548078304229099f
 #endif
 
-// Min/Max
-#define _MIN(a,b)		(a)<(b)?(a):(b)
-#define _MAX(a,b)		(a)>(b)?(a):(b)
-
 // comparisions
 IC BOOL  fsimilar		( float		a, float	b, float	cmp=EPS )		{ return fabsf(a-b)<cmp;	}
 IC BOOL  dsimilar		( double	a, double	b, double	cmp=EPS )		{ return fabs(a-b)<cmp;		}
