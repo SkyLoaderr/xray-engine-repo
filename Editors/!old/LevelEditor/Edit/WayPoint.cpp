@@ -56,28 +56,31 @@ void CWayPoint::Render(LPCSTR parent_name, bool bParentSelect)
     pos.set	(m_vPosition.x,m_vPosition.y+WAYPOINT_SIZE*0.85f,m_vPosition.z);
     DU.DrawCross(pos,WAYPOINT_RADIUS,WAYPOINT_SIZE*0.85f,WAYPOINT_RADIUS,WAYPOINT_RADIUS,WAYPOINT_SIZE*0.15f,WAYPOINT_RADIUS,0x0000ff00);
 	// draw links
-	Fvector p1,p2;
+	Fvector p1;
     p1.set	(m_vPosition.x,m_vPosition.y+WAYPOINT_SIZE*0.85f,m_vPosition.z);
 
     if (bParentSelect){
-        u32 c = (m_bSelected)?0xFFFFFFFF:0xFFA0A0A0;
-        u32 s = 0xFF000000;
+        u32 c 	= (m_bSelected)?0xFFFFFFFF:0xFFA0A0A0;
+        u32 s 	= 0xFF000000;
 
 	    AnsiString hint	= AnsiString(" ")+parent_name;
-	    hint		+= " [";
-	    hint		+= *m_Name;
-	    hint		+= "]";
+	    hint	+= " [";
+	    hint	+= *m_Name;
+	    hint	+= "]";
+		Fvector p2;
         for (WPLIt it=m_Links.begin(); it!=m_Links.end(); it++){
             SWPLink* O = (SWPLink*)(*it);
+		    p2.set	(O->way_point->m_vPosition.x,O->way_point->m_vPosition.y+WAYPOINT_SIZE*0.85f,O->way_point->m_vPosition.z);
             Fvector xx;
-            xx.sub(p2,p1);
-            xx.mul(0.95f);
-            xx.add(p1);
+            xx.sub	(p2,p1);
+            xx.mul	(0.95f);
+            xx.add	(p1);
             DU.DrawText(xx,AnsiString().sprintf("P: %1.2f",O->probability).c_str(),c,s);
         }
 	    DU.DrawText(m_vPosition,hint.c_str(),c,s);
     }
     
+	Fvector p2;
     u32 l = 0xff606000;
     if (bParentSelect) l = m_bSelected?0xffffff00:0xff909000;
     for (WPLIt it=m_Links.begin(); it!=m_Links.end(); it++){
@@ -392,8 +395,13 @@ bool CWayObject::GetBox( Fbox& box )
 void CWayObject::MoveTo(const Fvector& pos, const Fvector& up)
 {
 	if (IsPointMode()){
-        for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
-            if ((*it)->m_bSelected) (*it)->m_vPosition.set(pos);
+    	CWayPoint* sel_point = 0;
+        for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++) 
+        	if ((*it)->m_bSelected){ 
+        		if (sel_point){ Msg("!Only one selected way point supported."); return; }
+            	sel_point=*it;
+        	}
+        if (sel_point) sel_point->m_vPosition.set(pos);
     }else{
         for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
             (*it)->m_vPosition.set(pos);
