@@ -114,6 +114,15 @@ struct SExhaust
 	}
 	~SExhaust();
 };
+
+struct SDoor 
+{
+CCar* pcar;
+SDoor(CCar* acar)
+{
+	pcar=acar;
+}
+};
 private:
 	typedef CEntity			inherited;
 private:
@@ -129,8 +138,8 @@ xr_vector <SWheelDrive> m_driving_wheels;
 xr_vector <SWheelSteer> m_steering_wheels;
 xr_vector <SWheelBreak> m_breaking_wheels;
 xr_vector <SExhaust>	m_exhausts;
+xr_map	  <int,SDoor>		m_doors;
 xr_vector <float>		m_gear_ratious;
-xr_vector <int>			m_doors_ids;
 xr_vector <Fmatrix>		m_sits_transforms;// m_sits_transforms[0] - driver_place
 float					m_current_gear_ratio;
 float					m_power;
@@ -276,6 +285,27 @@ private:
 			{
 				bone_map.insert(mk_pair(bone_id,physicsBone()));
 			}
+
+		}
+	}
+	IC void fill_doors_map(LPCSTR S,xr_map<int,SDoor>& doors)
+	{
+		CKinematics* pKinematics	=PKinematics(Visual());
+		string64					S1;
+		int count =					_GetItemCount(S);
+		for (int i=0 ;i<count; i++) 
+		{
+			_GetItem					(S,i,S1);
+
+			int bone_id	=				pKinematics->LL_BoneID(S1);
+			SDoor						door(this);
+			//door.bone_id=				bone_id;
+			doors.insert				(mk_pair(bone_id,door));
+			//BONE_P_PAIR_IT J		= bone_map.find(bone_id);
+			//if (J == bone_map.end()) 
+			//{
+			//	bone_map.insert(mk_pair(bone_id,physicsBone()));
+			//}
 
 		}
 	}

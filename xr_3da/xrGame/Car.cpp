@@ -350,9 +350,12 @@ bool CCar::attach_Actor(CActor* actor)
 
 bool CCar::is_Door(int id)
 {
-	if(id==m_doors_ids[0]) return true;
-	if(id==m_doors_ids[1]) return true;
-	return false;
+	xr_map<int,SDoor>::iterator i		= m_doors.find(id);
+	if (i == m_doors.end()) 
+	{
+		return false;
+	}
+	else return true;
 }
 
 
@@ -368,6 +371,7 @@ void CCar::ParseDefinitions()
 	fill_wheel_vector			(ini->r_string	("car_definition","steering_wheels"),m_steering_wheels);
 	fill_wheel_vector			(ini->r_string	("car_definition","breaking_wheels"),m_breaking_wheels);
 	fill_exhaust_vector			(ini->r_string	("car_definition","exhausts"),m_exhausts);
+	fill_doors_map				(ini->r_string	("car_definition","doors"),m_doors);
 	m_power				=		ini->r_float("car_definition","engine_power");
 	m_power				*=		(0.8f*1000.f);
 	m_max_rpm			=		ini->r_float("car_definition","max_engine_rpm");
