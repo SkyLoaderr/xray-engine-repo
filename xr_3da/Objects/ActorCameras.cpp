@@ -38,6 +38,7 @@ void CActor::cam_Update(float dt, BOOL bZoom)
 	{
 	case eacFirstEye:
 		{
+			cam_gray		= 0;
 			// apply footstep bobbing effect
 			Fvector offset;
 			offset.set		(0,0,0);
@@ -67,16 +68,18 @@ void CActor::cam_Update(float dt, BOOL bZoom)
 		}
 		break;
 	case eacLookAt: 
-		dangle.set		(0,0,0);
+		cam_gray			= 0;
+		dangle.set			(0,0,0);
 		break;
 	case eacFreeLook: 
-		dangle.set		(0,0,0);
+		cam_gray			+= dt;
+		clamp				(cam_gray,0.f,1.f);
+		dangle.set			(0,0,0);
 		break;
 	}
 	CCameraBase* C				= cameras	[cam_active];
 	C->f_fov					= bZoom?15.f:90.f;
 	C->Update					(point,dangle);
-//	if (bZoom)					::Render.Target.set_gray(1);
-//	else						::Render.Target.set_gray(0);
 	pCreator->Cameras.Update	(C);
+	::Render.Target.set_gray	(cam_gray);
 }

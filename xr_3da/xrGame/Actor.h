@@ -115,6 +115,7 @@ private:
 	// Cameras
 	CCameraBase*		cameras[eacMaxCam];
 	EActorCameras		cam_active;
+	float				cam_gray;
 	float				fPrevCamPos;
 	CEffectorBobbing*	pCamBobbing;
 
