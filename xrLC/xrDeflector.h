@@ -87,6 +87,7 @@ public:
 			bounds.merge(B);
 		}
 	}
+	void	RemapUV		(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v, DWORD lm_u, DWORD lm_v, BOOL bRotate);
 };
 
 typedef vector<UVtri>::iterator UVIt;

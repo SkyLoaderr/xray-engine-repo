@@ -84,6 +84,7 @@ VOID CDeflector::OA_Export()
 	up.crossproduct(N,right);	up.normalize_safe();
 	mView.build_camera(from,at,up);
 
+	Fbox bb; bb.invalidate();
 	for (it = tris.begin(); it!=tris.end(); it++)
 	{
 		UVtri	*T = it;
@@ -93,8 +94,11 @@ VOID CDeflector::OA_Export()
 		for (int i=0; i<3; i++) {
 			mView.transform_tiny(P,F->v[i]->P);
 			T->uv[i].u=P.x;	T->uv[i].v=P.y;
+			bb.modify	(F->v[i]->P);
 		}
+		T->owner = F;
 	}
+	bb.getsphere(Center,Radius);
 
 	// UV rect
 	UVpoint		min,max,size;
@@ -107,33 +111,8 @@ VOID CDeflector::OA_Export()
 	lm.bHasAlpha= FALSE;
 	iArea		= (lm.dwWidth+2*BORDER)*(lm.dwHeight+2*BORDER);
 
-	// Setup variables
-	UVpoint		dim,half,scale;
-	dim.set		(float(lm.dwWidth), float(lm.dwHeight));
-	half.set	(.5f/512.f,.5f/512.f);
-	scale.set	(dim.u-1,dim.v-1);
-	scale.u		/= dim.u;
-	scale.v		/= dim.v;
-
-	// *** Addressing 
-	// also calculate center & radius in 3D space
-	Fbox bb; bb.invalidate();
-	for (it = tris.begin(); it!=tris.end(); it++)
-	{
-		UVtri	*T  = it;
-		Face	*F  = T->owner;
-		UVtri	R;
-
-		for (int i=0; i<3; i++) 
-		{
-			R.uv[i].u = ((T->uv[i].u-min.u)/size.u)*scale.u+half.u; 
-			R.uv[i].v = ((T->uv[i].v-min.v)/size.v)*scale.v+half.v; 
-			bb.modify	(F->v[i]->P);
-		}
-		*T = R;
-		T->owner = F;
-	}
-	bb.getsphere(Center,Radius);
+	// Addressing
+	RemapUV		(0,0,lm.dwWidth,lm.dwHeight,lm.dwWidth,lm.dwHeight,FALSE);
 }
 
 BOOL CDeflector::OA_Place(Face *owner)
@@ -162,6 +141,48 @@ VOID CDeflector::GetRect(UVpoint &min, UVpoint &max)
 	}
 }
 
+void CDeflector::RemapUV(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v, DWORD lm_u, DWORD lm_v, BOOL bRotate)
+{
+	// UV rect (actual)
+	UVpoint		a_min,a_max,a_size;
+	GetRect		(a_min,a_max);
+	a_size.sub	(a_max,a_min);
+	
+	// UV rect (dedicated)
+	UVpoint		d_min,d_max,d_size;
+	d_min.u		= (float(base_u)+.5f)/float(lm_u);
+	d_min.v		= (float(base_v)+.5f)/float(lm_v);
+	d_max.u		= (float(base_u+size_u)-.5f)/float(lm_u);
+	d_max.v		= (float(base_v+size_v)-.5f)/float(lm_v);
+	d_size.sub	(d_max,d_min);
+	
+	// Remapping
+	UVtri	R;
+	if (bRotate)	{
+		for (UVIt it = tris.begin(); it!=tris.end(); it++)
+		{
+			UVtri&	T  = *it;
+			for (int i=0; i<3; i++) 
+			{
+				R.uv[i].u = ((T.uv[i].v-a_min.v)/a_size.v)*d_size.u + d_min.u;
+				R.uv[i].v = ((T.uv[i].u-a_min.u)/a_size.u)*d_size.v + d_min.v;
+			}
+			T = R;
+		}
+	} else {
+		for (UVIt it = tris.begin(); it!=tris.end(); it++)
+		{
+			UVtri&	T  = *it;
+			for (int i=0; i<3; i++) 
+			{
+				R.uv[i].u = ((T.uv[i].u-a_min.u)/a_size.u)*d_size.u + d_min.u;
+				R.uv[i].v = ((T.uv[i].v-a_min.v)/a_size.v)*d_size.v + d_min.v;
+			}
+			T = R;
+		}
+	}
+}
+
 VOID CDeflector::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOOL bRotated)
 {
 	// Allocate 512x512 texture if needed
@@ -171,52 +192,26 @@ VOID CDeflector::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BO
 		ZeroMemory		(lm.pSurface,size);
 	}
 
-	// Calculate UV shift,scale,guardband
-	UVpoint half;	half.set	(.5f/512.f, .5f/512.f);
-	UVpoint guard;	guard.set	(BORDER/512.f, BORDER/512.f);
-	UVpoint scale;  scale.set	(float(s_u-2*BORDER)/512.f, float(s_v-2*BORDER)/512.f);	// take in mind border
-	UVpoint base;	base.set	(float(b_u)/512.f, float(b_v)/512.f);					// offset in UV space
+	// Addressing
+	D->RemapUV		(b_u+BORDER,b_v+BORDER,s_u-2*BORDER,s_v-2*BORDER,512,512,bRotated);
 
+	// Capture faces and setup their coords
+	for (UVIt T=D->tris.begin(); T!=D->tris.end(); T++)
+	{
+		UVtri	P		= *T;
+		Face	*F		= P.owner;
+		F->pDeflector	= this;
+		F->AddChannel	(P.uv[0], P.uv[1], P.uv[2]);
+		tris.push_back	(P);
+	}
+
+	// Perform BLIT
 	if (!bRotated) 
 	{
-		// Normal
-		for (UVIt T=D->tris.begin(); T!=D->tris.end(); T++)
-		{
-			UVtri	P;
-			Face	*F = T->owner;
-			
-			P.uv[0].set(T->uv[0]); P.uv[0].sub(half); P.uv[0].mul(scale); P.uv[0].add(base); P.uv[0].add(guard); P.uv[0].add(half);
-			P.uv[1].set(T->uv[1]); P.uv[1].sub(half); P.uv[1].mul(scale); P.uv[1].add(base); P.uv[1].add(guard); P.uv[1].add(half);
-			P.uv[2].set(T->uv[2]); P.uv[2].sub(half); P.uv[2].mul(scale); P.uv[2].add(base); P.uv[2].add(guard); P.uv[2].add(half); 
-			
-			P.owner			= F;
-			F->pDeflector	= this;
-			F->AddChannel	(P.uv[0], P.uv[1], P.uv[2]);
-			tris.push_back	(P);
-		}
-
-		// Transfer bitmap
 		DWORD real_H	= (D->lm.dwHeight	+ 2*BORDER);
 		DWORD real_W	= (D->lm.dwWidth	+ 2*BORDER);
 		blit	(lm.pSurface,512,512,D->lm.pSurface,real_W,real_H,b_u,b_v);
 	} else {
-		// Rotated
-		for (UVIt T=D->tris.begin(); T!=D->tris.end(); T++)
-		{
-			UVtri	P;
-			Face	*F = T->owner;
-			
-			P.uv[0].set(T->uv[0]); P.uv[0].sub(half); swap(P.uv[0].u,P.uv[0].v); P.uv[0].mul(scale); P.uv[0].add(base); P.uv[0].add(guard); P.uv[0].add(half);
-			P.uv[1].set(T->uv[1]); P.uv[1].sub(half); swap(P.uv[1].u,P.uv[1].v); P.uv[1].mul(scale); P.uv[1].add(base); P.uv[1].add(guard); P.uv[1].add(half);
-			P.uv[2].set(T->uv[2]); P.uv[2].sub(half); swap(P.uv[2].u,P.uv[2].v); P.uv[2].mul(scale); P.uv[2].add(base); P.uv[2].add(guard); P.uv[2].add(half); 
-			
-			P.owner			= F;
-			F->pDeflector	= this;
-			F->AddChannel	(P.uv[0], P.uv[1], P.uv[2]);
-			tris.push_back	(P);
-		}
-
-		// Transfer bitmap
 		DWORD real_H	= (D->lm.dwHeight	+ 2*BORDER);
 		DWORD real_W	= (D->lm.dwWidth	+ 2*BORDER);
 		blit_r	(lm.pSurface,512,512,D->lm.pSurface,real_W,real_H,b_u,b_v);
