@@ -39,24 +39,44 @@ void	CBlender_Screen_GRAY::Compile	(CBlender_Recorder& RS, sh_list& L_textures, 
 		RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
 		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(FALSE));
 		
-		// Stage0 - Base texture
-		RS.StageBegin		();
-		{
-			RS.StageSET_Address	(D3DTADDRESS_CLAMP);
-			if (HW.Caps.pixel.op_DP3)	{
-				RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_DOTPRODUCT3,	D3DTA_TFACTOR);
-				RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_DOTPRODUCT3,	D3DTA_TFACTOR);
-				RS.R().SetRS		(D3DRS_TEXTUREFACTOR,D3DCOLOR_RGBA(76,150,29,0));
-			} else {
-				// 
+		if (HW.Caps.pixel.op_DP3)	{
+			RS.R().SetRS		(D3DRS_TEXTUREFACTOR,D3DCOLOR_RGBA(76+105,150+105,29+105,0));
+
+			// Stage0 - Base texture
+			RS.StageBegin		();
+			{
+				RS.StageSET_Address	(D3DTADDRESS_CLAMP);
+				RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_DIFFUSE);
+				RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_DIFFUSE);
+				RS.Stage_Texture	(oT_Name,	L_textures);
+				RS.Stage_Matrix		(oT_xform,	L_matrices,	0);
+				RS.Stage_Constant	("$null",	L_constants);
+			}
+			RS.StageEnd			();
+			
+			// Stage1 - Base texture
+			RS.StageBegin		();
+			{
+				RS.StageSET_Address	(D3DTADDRESS_CLAMP);
+				RS.StageSET_Color	(D3DTA_CURRENT,	  D3DTOP_DOTPRODUCT3,	D3DTA_TFACTOR);
+				RS.StageSET_Alpha	(D3DTA_CURRENT,	  D3DTOP_DOTPRODUCT3,	D3DTA_TFACTOR);
+				RS.Stage_Texture	(oT_Name,	L_textures);
+				RS.Stage_Matrix		(oT_xform,	L_matrices,	0);
+				RS.Stage_Constant	("$null",	L_constants);
+			}
+			RS.StageEnd			();
+		} else {
+			RS.StageBegin		();
+			{
+				RS.StageSET_Address	(D3DTADDRESS_CLAMP);
 				RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
 				RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
+				RS.Stage_Texture	(oT_Name,	L_textures);
+				RS.Stage_Matrix		(oT_xform,	L_matrices,	0);
+				RS.Stage_Constant	("$null",	L_constants);
 			}
-			RS.Stage_Texture	(oT_Name,	L_textures);
-			RS.Stage_Matrix		(oT_xform,	L_matrices,	0);
-			RS.Stage_Constant	("$null",	L_constants);
+			RS.StageEnd			();
 		}
-		RS.StageEnd			();
 	}
 	RS.PassEnd			();
 }
