@@ -235,8 +235,9 @@ xr_chaser.add_to_binder (self.object, char_ini)
   }
 xr_ambush.add_to_binder(self.object, char_ini)
   -- построение солдат на плацу
-  xr_motivator.storage[self.object:id()].formation = {}
-xr_formation.add_to_binder( self.object )
+    if char_ini:section_exist("formation") == true then
+		xr_formation.add_to_binder(self.object)
+	end
 
     --Привязка к организации
     if char_ini:section_exist ("fraction") == true then

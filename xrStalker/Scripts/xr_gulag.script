@@ -29,10 +29,9 @@ function fract:__init(name, char_ini)
 	end
 
 
-        if char_ini:line_exist("fraction", "zone") == true then
+	if char_ini ~= nil and char_ini:line_exist("fraction", "zone") == true then
 		self.territory_name = char_ini:r_string("fraction", "zone")
-        end
-
+	end
 end
 function fract:zone_enter(zone, obj)
 	printf("ENTER %s", obj:name())
@@ -780,6 +779,8 @@ function addMember(name, npc, char_ini)
 		        xr_bodyguard.add_to_binder(npc, nil)
 		end
 	end
+
+	xr_formation.add_to_binder(npc)
 end
 function setFractionState(name, id)
 	if xr_gulag.fraction[name] ~= nil then

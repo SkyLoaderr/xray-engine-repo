@@ -146,7 +146,7 @@ function action_stand:execute()
 					self.object:add_animation( "chest_3", true )
 				elseif self.state == 11 then
 					--self.a.enabled = false
-					this.disable( self.object )
+					disable( self.object )
 				end
 			end
 		end
@@ -264,7 +264,7 @@ function action_command:execute()
 		end
 	elseif self.a.state == 11 then
 		--self.a.enabled = false
-		this.disable( self.object )
+		disable( self.object )
 	end
 end
 
@@ -313,29 +313,34 @@ function action_command:go_to( pos_id )
 end
 
 -------------------------------------------------------------------------------------------------------------------
--- Обычнейший рядовой binder. Типичный представитель binder-ского сословия.
+-- Обычнейший binder.
 -------------------------------------------------------------------------------------------------------------------
 function add_to_binder( npc )
-	local a = xr_motivator.storage[npc:id()].formation
+	local a = xr_motivator.storage[npc:id()]
+	if not a.formation then
+		a.formation = {}
+	end
+
+	a = a.formation
 
 	local manager = npc:motivation_action_manager()
 
-	manager:add_evaluator( prop_formation,      this.evaluator_formation( "property_formation", a ) )
-	manager:add_evaluator( prop_i_am_commander, this.evaluator_i_am_commander( "property_i_am_commander", a ) )
-	manager:add_evaluator( prop_position,       this.evaluator_position( "property_position", a ) )
+	manager:add_evaluator( prop_formation,      evaluator_formation( "property_formation", a ) )
+	manager:add_evaluator( prop_i_am_commander, evaluator_i_am_commander( "property_i_am_commander", a ) )
+	manager:add_evaluator( prop_position,       evaluator_position( "property_position", a ) )
 
-	local action = this.action_go_to_pos( "action_go_to_position", a )
+	local action = action_go_to_pos( "action_go_to_position", a )
 	action:add_effect( world_property( prop_position, true ) )
 	manager:add_action( act_go_to_position, action )
 
-	action = this.action_stand( "action_stand", a )
+	action = action_stand( "action_stand", a )
 	action:add_precondition( world_property( prop_position,            	    true  ) )
 	action:add_precondition( world_property( stalker_ids.property_enemy,    false ) )
 	action:add_precondition( world_property( prop_i_am_commander,           false ) )
 	action:add_effect( world_property( prop_formation, false ) )
 	manager:add_action( act_stand, action )
 
-	action = this.action_command( "action_command", a )
+	action = action_command( "action_command", a )
 	action:add_precondition( world_property( prop_position,                 true  ) )
 	action:add_precondition( world_property( stalker_ids.property_enemy,    false ) )
 	action:add_precondition( world_property( prop_i_am_commander,           true  ) )
@@ -348,8 +353,13 @@ end
 
 -------------------------------------------------------------------------------------------------------------------
 function enable( npc )
-	xr_motivator.storage[npc:id()].formation.enabled = true
+	local a = xr_motivator.storage[npc:id()].formation
+
+	a.enabled = true
+
 	xr_reactions.add_rule( npc, "ignore" )
+
+	return a
 end
 
 function disable( npc )
@@ -362,7 +372,7 @@ end
 -------------------------------------------------------------------------------------------------------------------
 function go( commander, soldiers, path_name )
 	if not level.patrol_path_exists( path_name ) then
-		printf( "ERROR: xr_formation: There is no patrol path %s", path_name )
+		printf( "[xr_formation] There is no patrol path %s", path_name )
 		return
 	end
 
@@ -370,9 +380,8 @@ function go( commander, soldiers, path_name )
 
 	-- коммандир
 
-	local a = xr_motivator.storage[commander:id()].formation
-	--a.enabled       = true
-	this.enable( commander )
+	local a         = enable( commander )
+
 	a.commander     = nil
 	a.pos           = path:point( 0 )
 	a.center_pos    = a.pos
@@ -420,9 +429,8 @@ function go( commander, soldiers, path_name )
 			step_pos_id = level.vertex_in_direction( init_step_pos_id, a.dir, soldier_step )
 		end
 
-		local aa = xr_motivator.storage[npc:id()].formation
-		--aa.enabled   = true
-		this.enable( npc )
+		local aa     = enable( npc )
+
 		aa.commander = commander
 		aa.pos       = step_pos
 		aa.pos_id    = step_pos_id
@@ -446,4 +454,3 @@ function go( commander, soldiers, path_name )
 
 	a.pos = nil
 end
-
