@@ -41,7 +41,7 @@ function main ()
              old_monster = scr_monster:id ()
              scr_monster = nil   
              printf ("Attacker freed")
-             wait (10000)
+             wait (1000)
           end
           
           if scr_monster ~= nil and scr_monster:alive () == false then 
