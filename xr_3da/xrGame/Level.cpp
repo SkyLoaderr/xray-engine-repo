@@ -8,6 +8,7 @@
 #include "entity.h"
 #include "hudmanager.h"
 #include "ai_space.h"
+#include "ai_console.h"
 
 // events
 #include "..\fdemorecord.h"
@@ -192,9 +193,10 @@ void CLevel::OnRender()
 	Tracers.Render		();
 	eff_Rain.Render		();
 //	ph_world->Render	();
+	if (bDebug || psAI_Flags.test(aiMotion))
+		getAI().Render		();
 	if (bDebug)	{
 		ObjectSpace.dbgRender	();
-		getAI().Render			();
 	}
 }
 

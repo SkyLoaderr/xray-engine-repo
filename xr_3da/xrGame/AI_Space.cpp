@@ -9,6 +9,7 @@
 #include "ai_console.h"
 #include "a_star.h"
 #include "game_sv_single.h"
+#include "CustomMonster.h"
 using namespace AI;
 
 CAI_Space *	tpAI_Space = 0;
@@ -217,12 +218,20 @@ void CAI_Space::Render()
 		}
 	}
 
+	CObjectList::OBJ_IT	I = Level().Objects.objects.begin();
+	CObjectList::OBJ_IT	E = Level().Objects.objects.end();
+	for ( ; I != E; I++) {
+		CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster*>(*I);
+		if (tpCustomMonster)
+			tpCustomMonster->OnRender();
+	}
+	
 	if (!bDebug)	return;
 
 	if (0==vfs)						return;
 	if (0==sh_debug)				return;
 	if (!psAI_Flags.test(aiDebug))	return;
-	
+
 	CGameObject*	O	= dynamic_cast<CGameObject*> (Level().CurrentEntity());
 	Fvector	POSITION	= O->Position();
 	POSITION.y += 0.5f;
