@@ -769,7 +769,6 @@
     <dialog id="escape_lager_volk_hello">
         <phrase_list>
             <phrase id="0">
-                <text />
                 <next>1</next>
                 <next>2</next>
                 <next>3</next>
@@ -778,7 +777,6 @@
                 <text>escape_lager_volk_hello_13</text>
             </phrase>
             <phrase id="3">
-                <text />
                 <dont_has_info>tutorial_wounded_help</dont_has_info>
                 <next>13</next>
             </phrase>
@@ -786,14 +784,12 @@
                 <text>escape_lager_volk_hello_12</text>
             </phrase>
             <phrase id="2">
-                <text />
-                <dont_has_info>tutorial_wounded_volk_greet</dont_has_info>
-                <give_info>tutorial_wounded_volk_greet</give_info>
                 <has_info>tutorial_wounded_help</has_info>
+                <dont_has_info>tutorial_wounded_volk_greet</dont_has_info>                
+                <give_info>tutorial_wounded_volk_greet</give_info>
                 <next>12</next>
             </phrase>
             <phrase id="1">
-                <text />
                 <has_info>tutorial_wounded_help</has_info>
                 <has_info>tutorial_wounded_volk_greet</has_info>
                 <next>11</next>
