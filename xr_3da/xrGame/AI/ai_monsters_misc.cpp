@@ -228,7 +228,6 @@ void vfGoToPointViaNodes(vector<CTravelNode> &tpaPath, DWORD dwCurNode, Fvector 
 	CTravelNode tTravelNode;
  	CAI_Space &AI = Level().AI;
 	PSegment tSegment;
-	float fHalfSubNodeSize = (Level().AI.GetHeader().size)*.5f;
 
 	tpaPath.clear();
 	UnpackContour(tCurContour,dwCurNode);

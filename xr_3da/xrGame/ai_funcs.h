@@ -39,7 +39,7 @@ public:
 			else {
 				double dDummy = (m_dMaxResultValue - m_dMinResultValue)/(double)dwDiscretizationValue;
 				dDummy = (dTemp - m_dMinResultValue)/dDummy;
-				return(iFloor(dDummy));
+				return(iFloor((float)dDummy));
 			}
 	}
 };

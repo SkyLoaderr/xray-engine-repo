@@ -821,7 +821,7 @@ float CAI_Space::ffMarkNodesInDirection(DWORD dwStartNode, Fvector tStartPositio
 	PSegment tSegment;
 	int i, iNodeIndex, iCount, iSavedIndex;
 	Fvector tPrevPoint, tTempPoint, tStartPoint, tFinishPoint, tTravelNode;
-	float fCurDistance = 0.f, fHalfSubNodeSize = m_header.size*.5f;
+	float fCurDistance = 0.f;
 	DWORD dwCurNode, dwPrevNode = DWORD(-1);
 
 	tStartPoint = tStartPosition;
@@ -993,7 +993,7 @@ bool CAI_Space::bfCheckNodeInDirection(DWORD dwStartNode, Fvector tStartPosition
 	PSegment tSegment;
 	int i, iNodeIndex, iCount, iSavedIndex;
 	Fvector tPrevPoint, tTempPoint, tStartPoint, tFinishPoint, tTravelNode;
-	float fCurDistance = 0.f, fHalfSubNodeSize = m_header.size*.5f, fDistance = ffGetDistanceBetweenNodeCenters(dwStartNode,dwFinishNode);
+	float fCurDistance = 0.f, fDistance = ffGetDistanceBetweenNodeCenters(dwStartNode,dwFinishNode);
 	DWORD dwCurNode, dwPrevNode = DWORD(-1);
 
 	tStartPoint = tStartPosition;
@@ -1153,7 +1153,7 @@ DWORD CAI_Space::dwfCheckPositionInDirection(DWORD dwStartNode, Fvector tStartPo
 	PSegment tSegment;
 	int i, iNodeIndex, iCount, iSavedIndex;
 	Fvector tPrevPoint, tTempPoint, tStartPoint, tFinishPoint, tTravelNode;
-	float fCurDistance = 0.f, fHalfSubNodeSize = m_header.size*.5f, fDistance = tStartPosition.distance_to(tFinishPosition);
+	float fCurDistance = 0.f, fDistance = tStartPosition.distance_to(tFinishPosition);
 	DWORD dwCurNode, dwPrevNode = DWORD(-1);
 
 	tStartPoint = tStartPosition;
