@@ -9,9 +9,8 @@
 
 BOOL PS::CPGDef::SEffect::Equal(const SEffect& src)
 {
-	if (m_Type!=src.m_Type) 			return FALSE;
 	if (!m_Flags.equal(src.m_Flags))	return FALSE;
-    if (0!=strcmp(m_EffectName,src.m_EffectName)) return FALSE;
+    if (!m_EffectName.equal(src.m_EffectName)) return FALSE;
 	if (!fsimilar(m_Time0,src.m_Time0))	return FALSE;
 	if (!fsimilar(m_Time1,src.m_Time1))	return FALSE;
 	return TRUE;
@@ -66,7 +65,13 @@ void __fastcall PS::CPGDef::OnEffectEditClick(PropValue* sender, bool& bDataModi
     	PTools->PlayCurrent	(B->Owner()->tag);    
 		bDataModified	= false;
     break;
-    case 1:        
+    case 1:{
+    	CPGDef::SEffect* eff = m_Effects.begin()+B->Owner()->tag; VERIFY(eff);
+		PTools->SelectEffect(*eff->m_EffectName);
+		bDataModified	= false;
+        bSafe			= true;
+    }break;
+    case 2:        
         if (ELog.DlgMsg(mtConfirmation, TMsgDlgButtons() << mbYes << mbNo,"Remove effect?") == mrYes){
             m_Effects.erase	(m_Effects.begin()+B->Owner()->tag);
             UI->Command		(COMMAND_UPDATE_PROPERTIES);
@@ -84,10 +89,6 @@ void __fastcall PS::CPGDef::OnParamsChange(PropValue* sender)
 	PTools->SetCurrentPG	(this);
 }
 
-xr_token			effect_token					[ ]={
-    { "Stop/End",	PS::CPGDef::SEffect::etStopEnd	},        
-    { 0,			0				  				}
-};
 void PS::CPGDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
 {
 	PHelper.CreateCaption	(items,FHelper.PrepareKey(pref,"Version\\Owner Name"),*m_OwnerName);
@@ -105,22 +106,18 @@ void PS::CPGDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
     V->OnChangeEvent			= OnParamsChange;
     for (EffectIt it=m_Effects.begin(); it!=m_Effects.end(); it++){
         AnsiString nm 			= AnsiString("Effect #")+(it-m_Effects.begin()+1);
-        B=PHelper.CreateButton(items,FHelper.PrepareKey(pref,nm.c_str()),"Preview,Remove",ButtonValue::flFirstOnly); B->Owner()->tag = it-m_Effects.begin();
+        B=PHelper.CreateButton(items,FHelper.PrepareKey(pref,nm.c_str()),"Preview,Select,Remove",ButtonValue::flFirstOnly); B->Owner()->tag = it-m_Effects.begin();
         B->OnBtnClickEvent		= OnEffectEditClick;
-        V=PHelper.CreateChoose	(items,FHelper.PrepareKey(pref,nm.c_str(),"Name"),it->m_EffectName,sizeof(it->m_EffectName),smPE);
+        V=PHelper.CreateChoose	(items,FHelper.PrepareKey(pref,nm.c_str(),"Name"),&it->m_EffectName,smPE);
         V->OnChangeEvent		= OnParamsChange;
-	    switch (it->m_Type){
-        case SEffect::etStopEnd: 
-            V=PHelper.CreateFloat	(items,FHelper.PrepareKey(pref,nm.c_str(),"Start Time (s)"),&it->m_Time0,		0.f,1000.f);
-            V->OnChangeEvent		= OnParamsChange;
-            V=PHelper.CreateFloat	(items,FHelper.PrepareKey(pref,nm.c_str(),"End Time (s)"),	&it->m_Time1,		0.f,1000.f);
-            V->OnChangeEvent		= OnParamsChange;
-            V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,nm.c_str(),"Deferred Stop"),	&it->m_Flags,		SEffect::flDeferredStop);
-            V->OnChangeEvent		= OnParamsChange;
-            V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,nm.c_str(),"Enabled"),		&it->m_Flags,		SEffect::flEnabled);
-            V->OnChangeEvent		= OnParamsChange;
-        break;
-        }
+        V=PHelper.CreateFloat	(items,FHelper.PrepareKey(pref,nm.c_str(),"Start Time (s)"),&it->m_Time0,		0.f,1000.f);
+        V->OnChangeEvent		= OnParamsChange;
+        V=PHelper.CreateFloat	(items,FHelper.PrepareKey(pref,nm.c_str(),"End Time (s)"),	&it->m_Time1,		0.f,1000.f);
+        V->OnChangeEvent		= OnParamsChange;
+        V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,nm.c_str(),"Deferred Stop"),	&it->m_Flags,	SEffect::flDefferedStop);
+        V->OnChangeEvent		= OnParamsChange;
+        V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,nm.c_str(),"Enabled"),		&it->m_Flags,		SEffect::flEnabled);
+        V->OnChangeEvent		= OnParamsChange;
     }
 }
 

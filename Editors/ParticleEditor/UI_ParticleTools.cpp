@@ -36,6 +36,7 @@ CParticleTools::CParticleTools()
     m_Transform.identity();
     fFogness			= 0.9f;
     dwFogColor			= 0xffffffff;
+    m_Flags.zero		();
 }
 //---------------------------------------------------------------------------
 
@@ -153,10 +154,11 @@ void CParticleTools::Render()
     }break;
     case emGroup:{
     	if (m_EditPG){
-         	int cnt = m_EditPG->children.size();
+         	int cnt 		= m_EditPG->items.size();
             for (int k=0; k<cnt; k++){
-                PS::CParticleEffect* E		= (PS::CParticleEffect*)m_EditPG->children[k];
-				if (E&&E->GetDefinition())	E->GetDefinition()->Render(m_Transform);
+                PS::CParticleEffect* E		= (PS::CParticleEffect*)m_EditPG->items[k].effect;
+				if (E&&E->GetDefinition()&&m_LibPGD->m_Effects[k].m_Flags.is(PS::CPGDef::SEffect::flEnabled))	
+                	E->GetDefinition()->Render(m_Transform);
             }
         }
     }break;
@@ -535,8 +537,8 @@ void CParticleTools::PlayCurrent(int idx)
     case emEffect:	m_EditPE->Play(); 		break;
     case emGroup:	
     	if (idx>-1){
-        	VERIFY(idx<m_EditPG->children.size());
-            m_LibPED = ((PS::CParticleEffect*)m_EditPG->children[idx])->GetDefinition();
+        	VERIFY(idx<m_EditPG->items.size());
+            m_LibPED = ((PS::CParticleEffect*)m_EditPG->items[idx].effect)->GetDefinition();
 			m_EditPE->Compile(m_LibPED);
         	m_EditPE->Play	();
         }else{
@@ -554,6 +556,11 @@ void CParticleTools::StopCurrent(bool bFinishPlaying)
 	VERIFY(m_bReady);
     m_EditPE->Stop(bFinishPlaying);
     m_EditPG->Stop(bFinishPlaying);
+}
+
+void CParticleTools::SelectEffect(LPCSTR name)
+{
+	m_PList->SelectItem(name,true,false,true);
 }
 
 void CParticleTools::OnShowHint(AStringVec& SS)

@@ -107,6 +107,7 @@ public:
 
     void				PlayCurrent			(int idx=-1);
     void				StopCurrent			(bool bFinishPlaying);
+    void				SelectEffect		(LPCSTR name);
 
     void				Rename				(LPCSTR src_name, LPCSTR part_name, int part_idx);
     void				Rename				(LPCSTR src_name, LPCSTR dest_name);
