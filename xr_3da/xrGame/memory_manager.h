@@ -14,6 +14,8 @@
 #include "enemy_manager.h"
 #include "item_manager.h"
 
+class CAI_Stalker;
+
 class CMemoryManager : 
 	public CVisualMemoryManager,
 	public CSoundMemoryManager,
@@ -21,6 +23,9 @@ class CMemoryManager :
 	public CEnemyManager,
 	public CItemManager
 {
+protected:
+	CAI_Stalker				*m_object;
+
 public:
 							CMemoryManager			();
 	virtual					~CMemoryManager			();

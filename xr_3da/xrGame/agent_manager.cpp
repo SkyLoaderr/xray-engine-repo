@@ -20,6 +20,7 @@ using namespace AgentManager;
 CAgentManager::CAgentManager		()
 {
 	reload						(SECTION);
+	inherited::reinit			(this);
 }
 
 CAgentManager::~CAgentManager		()
@@ -56,8 +57,6 @@ void CAgentManager::reload			(LPCSTR section)
 	add_motivations				();
 	add_evaluators				();
 	add_actions					();
-
-	inherited::reinit			(this);
 }
 
 void CAgentManager::add				(CEntity *member)
@@ -65,6 +64,8 @@ void CAgentManager::add				(CEntity *member)
 	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(member);
 	if (!stalker)
 		return;
+
+	VERIFY2						(sizeof(squad_mask_type)*8 > members().size(),"Too many stalkers in squad!");
 
 	iterator					I = std::find_if(m_members.begin(),m_members.end(), CMemberPredicate(stalker));
 	VERIFY						(I == m_members.end());

@@ -29,3 +29,10 @@ IC	const CMemberOrder &CAgentManager::member	(CAI_Stalker *object) const
 	VERIFY			(I != members().end());
 	return			(*I);
 }
+
+IC	MemorySpace::squad_mask_type CAgentManager::mask(const CAI_Stalker *object) const
+{
+	const_iterator	I = std::find_if(members().begin(),members().end(), CMemberPredicate(object));
+	VERIFY			(I != m_members.end());
+	return			(MemorySpace::squad_mask_type(1) << (I - members().begin()));
+}

@@ -8,6 +8,8 @@
 
 #include "stdafx.h"
 #include "memory_manager.h"
+#include "ai/stalker/ai_stalker.h"
+#include "agent_manager.h"
 
 CMemoryManager::CMemoryManager		()
 {
@@ -29,6 +31,7 @@ void CMemoryManager::Load			(LPCSTR section)
 	CHitMemoryManager::Load			(section);
 	CEnemyManager::Load				(section);
 	CItemManager::Load				(section);
+	m_object						= dynamic_cast<CAI_Stalker*>(this);
 }
 
 void CMemoryManager::reinit	()
@@ -74,6 +77,8 @@ void CMemoryManager::update			(const xr_vector<T> &objects)
 	xr_vector<T>::const_iterator	E = objects.end();
 	for ( ; I != E; ++I) {
 		if (!(*I).m_enabled)
+			continue;
+		if (m_object && !(*I).m_squad_mask.is(m_object->agent_manager().mask(m_object)))
 			continue;
 		const CEntityAlive			*entity_alive = dynamic_cast<const CEntityAlive*>((*I).m_object);
 		if (!entity_alive || !CEnemyManager::add(entity_alive))

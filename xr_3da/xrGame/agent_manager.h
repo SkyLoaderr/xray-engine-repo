@@ -22,10 +22,10 @@ class CAgentManager :
 public:
 	class CMemberPredicate {
 	protected:
-		CAI_Stalker		*m_object;
+		const CAI_Stalker	*m_object;
 
 	public:
-		IC				CMemberPredicate	(CAI_Stalker *object) :
+		IC				CMemberPredicate	(const CAI_Stalker *object) :
 							m_object	(object)
 		{
 		}
@@ -67,6 +67,7 @@ public:
 	IC		const CMemberOrder		&member			(CAI_Stalker *object) const;
 	IC		const MEMBER_STORAGE	&members		() const;
 	IC		MEMBER_STORAGE			&members		();
+	IC		MemorySpace::squad_mask_type mask		(const CAI_Stalker *object) const;
 };
 
 #include "agent_manager_inline.h"

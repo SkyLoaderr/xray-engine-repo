@@ -7278,6 +7278,9 @@
 				<File
 					RelativePath=".\M_Pseudodog.ltx">
 				</File>
+				<File
+					RelativePath=".\m_stalker.ltx">
+				</File>
 			</Filter>
 			<Filter
 				Name="Weapons"

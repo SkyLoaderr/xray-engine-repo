@@ -29,6 +29,12 @@ IC	void CObjectParams<T>::fill				(const T *game_object)
 }
 
 template <typename T>
+IC	CMemoryObject<T>::CMemoryObject			()
+{
+	m_squad_mask.one		();
+}
+
+template <typename T>
 IC	bool CMemoryObject<T>::operator==		(u32 id) const
 {
 	VERIFY					(m_object);

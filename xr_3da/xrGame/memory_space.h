@@ -16,6 +16,7 @@ class CEntityAlive;
 class CGameObject;
 
 namespace MemorySpace {
+	typedef u32 squad_mask_type;
 
 	struct CNotYetVisibleObject {
 		const CGameObject			*m_object;
@@ -69,7 +70,9 @@ namespace MemorySpace {
 		const T						*m_object;
 		CObjectParams<T>			m_object_params;
 		CObjectParams<T>			m_self_params;
+		_flags<squad_mask_type>		m_squad_mask;
 
+		IC			CMemoryObject	();
 		IC	bool	operator==		(u32 id) const;
 		IC	void	fill			(const T *game_object, const T *self);
 	};
