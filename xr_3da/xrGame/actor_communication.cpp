@@ -137,7 +137,7 @@ void  CActor::AddGameNews			 (GAME_NEWS_DATA& news_data)
 	GAME_NEWS_VECTOR& news_vector = game_news_registry->registry().objects();
 	news_data.receive_time = Level().GetGameTime();
 	news_vector.push_back(news_data);
-	
+
 	if(HUD().GetUI())
 		HUD().GetUI()->UIMainIngameWnd.OnNewsReceived(news_data);
 }

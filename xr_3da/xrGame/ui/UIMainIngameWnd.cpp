@@ -904,7 +904,7 @@ void CUIMainIngameWnd::AddIconedGameMessage(LPCSTR textureName, RECT originalRec
 	{
 		pItem->UIIcon.InitTexture(textureName);
 		pItem->UIIcon.SetOriginalRect(originalRect.left, originalRect.top, originalRect.right, originalRect.bottom);
-		pItem->UIMsgText.MoveWindow(originalRect.right, originalRect.bottom);
+		pItem->UIMsgText.MoveWindow(originalRect.right, 0/*originalRect.bottom*/);
 	}
 }
 
