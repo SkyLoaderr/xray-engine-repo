@@ -309,18 +309,21 @@ void CAI_Soldier::OnFindAloneFire()
 //			SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierFindAloneFireRetreat);
 //	}
 
-	if (bfCheckForDangerPlace()) {
-		Squat();
-		vfSetMovementType(WALK_FORWARD_1);
-	}
-	else {
-		if (AI_Path.fSpeed < EPS_L)
-			SetLessCoverLook(AI_Node);
-		else
-			SetDirectionLook();
+	if (AI_Path.fSpeed < EPS_L) {
+		SetLessCoverLook(AI_Node);
 		StandUp();
 		vfSetMovementType(RUN_FORWARD_3);
 	}
+	else
+		if (bfCheckForDangerPlace() && (!bfTooBigDistance(AI_Path.TravelPath[AI_Path.TravelStart].P,.5f))) {
+			Squat();
+			vfSetMovementType(WALK_FORWARD_1);
+		}
+		else {
+			SetDirectionLook();
+			StandUp();
+			vfSetMovementType(RUN_FORWARD_3);
+		}
 }
 
 void CAI_Soldier::OnRetreatAloneNonFire()
