@@ -255,7 +255,7 @@ void __fastcall mapNormal_Render	(SceneGraph::mapNormalItems& N)
 		
 		// DIRECT:UNSORTED
 		vector<CVisual*>&	L			= N.direct.unsorted;
-		CVisual **I=L.begin(), **E = L.end();
+		CVisual **I=&*L.begin(), **E = &*L.end();
 		for (; I!=E; I++)
 		{
 			CVisual *V = *I;

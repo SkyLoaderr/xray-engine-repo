@@ -189,7 +189,7 @@ void CSector::Render(CFrustum &F)
 
 			// Clip by frustum
 			vector<Fvector> &	POLY = PORTAL->getPoly();
-			S.assign			(POLY.begin(),POLY.size()); D.clear();
+			S.assign			(&*POLY.begin(),POLY.size()); D.clear();
 			sPoly* P			= F.ClipPoly(S,D);
 			if (0==P)			continue;
 			
@@ -241,7 +241,7 @@ void CSector::ll_GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM)
 		sPoly	S,D;
 		if (Portals[I]->dwFrameObject != oQuery.dwMark) {
 			vector<Fvector> &POLY = Portals[I]->getPoly();
-			S.assign(POLY.begin(),POLY.size()); D.clear();
+			S.assign(&*POLY.begin(),POLY.size()); D.clear();
 			
 			// Clip by frustum
 			sPoly* P	= F.ClipPoly(S,D);
@@ -300,18 +300,18 @@ void CSector::Load(CStream& fs)
 	// Load glows
 	size	= fs.FindChunk(fsP_Glows);
 	if (size) {
-		R_ASSERT(0==(size&1));
-		count	= size/sizeof(WORD);
+		R_ASSERT	(0==(size&1));
+		count		= size/sizeof(WORD);
 		Glows.resize(count);
-		fs.Read(Glows.begin(),size);
+		fs.Read		(&*Glows.begin(),size);
 	}
 
 	// Load lights
 	size	= fs.FindChunk(fsP_Lights);	
 	if (size) {
-		R_ASSERT(0==(size&1));
-		count	= size/sizeof(WORD);
-		Lights.resize(count);
-		fs.Read(Lights.begin(),size);
+		R_ASSERT		(0==(size&1));
+		count			= size/sizeof(WORD);
+		Lights.resize	(count);
+		fs.Read			(&*Lights.begin(),size);
 	}
 }

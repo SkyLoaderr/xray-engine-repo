@@ -28,9 +28,9 @@ void FDetailPatch::Load(const char* N, CStream* fs, DWORD dwFlags)
 	R_ASSERT		(size && (size%sizeof(DPatch) == 0));
 	DWORD count		= size/sizeof(DPatch);
 	patches.resize	(count);
-	PSGP.memCopy	(patches.begin(),fs->Pointer(),size);
+	PSGP.memCopy	(&*patches.begin(),fs->Pointer(),size);
 
-	Stream = Device.Streams.Create(FVF::F_TL,count*4);
+	Stream			= Device.Streams.Create(FVF::F_TL,count*4);
 }
 
 void FDetailPatch::Render(float LOD)

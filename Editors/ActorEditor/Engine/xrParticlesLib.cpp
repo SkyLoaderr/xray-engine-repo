@@ -32,9 +32,9 @@ BOOL psLibrary_Load(const char *Name, PS::PSVec &LIB)
 void psLibrary_Save(const char *Name, PS::PSVec &LIB)
 {
 	CFS_Memory F;
-    F.Wword(PARTICLESYSTEM_VERSION);
+    F.Wword	(PARTICLESYSTEM_VERSION);
     F.Wdword(LIB.size());
-	F.write(LIB.begin(), LIB.size()*sizeof(PS::SDef));
+	F.write	(&*LIB.begin(), LIB.size()*sizeof(PS::SDef));
     F.SaveTo(Name,PS_LIB_SIGN);
 }
 
@@ -46,15 +46,16 @@ DWORD	psLibrary_GetCount	(const char *Name)
 
 PS::SDef* psLibrary_FindSorted(const char* Name, PS::PSVec &LIB)
 {
-	PS::SDef	D; strcpy(D.m_Name,Name);
-	PS::SDef*	P = &*std::lower_bound(LIB.begin(),LIB.end(),D,sort_pred);
-	if ((P!=LIB.end()) && (0==strcmp(P->m_Name,Name)) ) return P;
+	PS::SDef	D; 
+	strcpy		(D.m_Name,Name);
+	vector<PS::SDef>::iterator	P = std::lower_bound	(LIB.begin(),LIB.end(),D,sort_pred);
+	if ((P!=LIB.end()) && (0==strcmp(P->m_Name,Name)) ) return &*P;
 	return NULL;
 }
 
 PS::SDef* psLibrary_FindUnsorted(const char* Name, PS::PSVec &LIB)
 {
 	for (PS::PSIt it=LIB.begin(); it!=LIB.end(); it++)
-    	if (0==strcmp(it->m_Name,Name)) return it;
+    	if (0==strcmp(it->m_Name,Name)) return &*it;
 	return NULL;
 }

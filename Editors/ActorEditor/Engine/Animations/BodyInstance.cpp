@@ -629,7 +629,7 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
 			MP->RstringZ(buf);
 			PART.Name			= _strlwr(strdup(buf));
 			PART.bones.resize	(MP->Rword());
-			MP->Read			(PART.bones.begin(),PART.bones.size()*sizeof(int));
+			MP->Read			(&*PART.bones.begin(),PART.bones.size()*sizeof(int));
 		}
 
 		m_cycle = new mdef;

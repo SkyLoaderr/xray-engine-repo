@@ -57,7 +57,7 @@ void CDetail::Optimize	()
 		Msg					("DM: %d verts, %d indices, VT: %d/%d",number_vertices,number_indices,vt_old,vt_new);
 
 		// Copy faces
-		PSGP.memCopy		(indices,vec_indices.begin(),vec_indices.size()*sizeof(WORD));
+		PSGP.memCopy		(indices,&*vec_indices.begin(),vec_indices.size()*sizeof(WORD));
 
 		// Permute vertices
 		vector<fvfVertexIn>	verts	(vertices,vertices+number_vertices);

@@ -1070,8 +1070,8 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 	}
 
 	{
-		vector<DWORD>::iterator it	= q_stack.begin();
-		vector<DWORD>::iterator end	= q_stack.end();
+		vector<DWORD>::iterator it	= AI.q_stack.begin();
+		vector<DWORD>::iterator end	= AI.q_stack.end();
 		for ( ; it!=end; it++)	
 			AI.q_mark[*it] -= 1;
 	}

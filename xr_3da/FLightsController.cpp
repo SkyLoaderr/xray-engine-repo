@@ -43,11 +43,11 @@ void	CLightDB_Static::Select		(Fvector &pos, float fRadius, vector<xrLIGHT*>& de
 
 void CLightDB_Static::Load			(CStream *fs) 
 {
-	DWORD size	= fs->Length();
-	DWORD count	= size/sizeof(xrLIGHT);
-	R_ASSERT(count*sizeof(xrLIGHT) == size);
-	Lights.resize(count);
-	fs->Read(Lights.begin(),size);
+	DWORD size		= fs->Length();
+	DWORD count		= size/sizeof(xrLIGHT);
+	R_ASSERT		(count*sizeof(xrLIGHT) == size);
+	Lights.resize	(count);
+	fs->Read		(&*Lights.begin(),size);
 
 	Distance.resize	(count);
 	Enabled.resize	(count);

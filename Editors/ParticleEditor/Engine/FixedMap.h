@@ -225,7 +225,7 @@ public:
 	IC void		getANY_P	(std::vector<TNode*>&	D)
 	{
 		D.resize			(size());
-		TNode** _it			= D.begin();
+		TNode** _it			= &*D.begin();
 		TNode*	_end		= end();
 		for (TNode* cur = begin(); cur!=_end; cur++,_it++) *_it = cur;
 	}

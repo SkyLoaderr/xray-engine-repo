@@ -66,9 +66,9 @@ namespace CDB {
 		}
 		void			calc_adjacency	();
 		
-		Fvector*		getV()	{ return verts.begin();	}
+		Fvector*		getV()	{ return &*verts.begin();	}
 		u32				getVS()	{ return verts.size();	}
-		TRI*			getT()	{ return faces.begin();	}
+		TRI*			getT()	{ return &*faces.begin();	}
 		u32				getTS() { return faces.size();	}
 	};
 
@@ -109,9 +109,9 @@ namespace CDB {
 			faces.push_back(T);
 		}
 		vector<Fvector>& getV_Vec()	{ return verts;	}
-		Fvector*		getV()	{ return verts.begin();	}
+		Fvector*		getV()	{ return &*verts.begin();	}
 		u32				getVS()	{ return verts.size();	}
-		TRI*			getT()	{ return faces.begin();	}
+		TRI*			getT()	{ return &*faces.begin();	}
 		u32				getTS() { return faces.size();	}
 	};
 };
