@@ -55,6 +55,11 @@ IC	void CLevelManagerTemplate::build_path	(const _vertex_id_type start_vertex_id
 //		return;
 //	}
 	inherited::build_path		(start_vertex_id,dest_vertex_id);
+#ifdef DEBUG
+	if (failed()) {
+		Msg						("! Cannot build path from \n[%d][%f][%f][%f]\nto\n[%d][%f][%f][%f]",start_vertex_id,VPUSH(ai().level_graph().vertex_position(start_vertex_id)),dest_vertex_id,VPUSH(ai().level_graph().vertex_position(dest_vertex_id)));
+	}
+#endif
 }
 
 #undef TEMPLATE_SPECIALIZATION
