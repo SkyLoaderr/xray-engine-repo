@@ -904,9 +904,10 @@ HRESULT CMyD3DApplication::RenderFAT	()
 	m_pd3dDevice->SetTexture				(1, t_Normals);
 	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSU,	D3DTADDRESS_WRAP);
 	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSV,	D3DTADDRESS_WRAP);
-	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MINFILTER,	D3DTEXF_LINEAR);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MINFILTER,	D3DTEXF_ANISOTROPIC);
 	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MIPFILTER,	D3DTEXF_LINEAR);
-	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MAGFILTER,	D3DTEXF_LINEAR);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MAGFILTER,	D3DTEXF_ANISOTROPIC);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MAXANISOTROPY, 4);
 
 	// NCM
 	/*
@@ -1088,7 +1089,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 	// Set new render targets
 	m_pd3dDevice->GetRenderTarget			(0, &pBaseTarget	);
 	m_pd3dDevice->SetRenderTarget			(0, d_Accumulator_S	);
-	m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET, 0x10101010, 1.0f, 0L);
+	m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET, 0x0, 1.0f, 0L);
 
 	// samplers and texture (POS)
 	m_pd3dDevice->SetTexture				(0, d_Position);
@@ -1145,7 +1146,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 	cc.set									(s_Light_Direct_smap.constants.get("light_xform"),		*(Fmatrix*)&dm_model2world2view2projection_light	);
 	R_constant*	C							= s_Light_Direct_smap.constants.get("jitter");
 
-	if (1)
+	if (0)
 	{
 		cc.set									(s_Light_Direct_smap.constants.get("light_color"),		.8f,		.8f,		1.,			.7);
 
