@@ -231,6 +231,8 @@ DWORD CHW::selectGPU ()
 
 DWORD CHW::selectRefresh(DWORD dwWidth, DWORD dwHeight)
 {
+	return D3DPRESENT_RATE_DEFAULT;
+	
 	DWORD count		= pD3D->GetAdapterModeCount(D3DADAPTER_DEFAULT);
 	DWORD selected	= D3DPRESENT_RATE_DEFAULT;
 	for (DWORD I=0; I<count; I++)
