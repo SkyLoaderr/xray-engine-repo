@@ -201,6 +201,7 @@ public:
 				}
 				xr_delete							(E);
 			}
+			VERIFY3									(i == m_tpGraph->header().vertex_count(), "Rebuild graph for the level ",m_tLevel.name());
 			O->close								();
 		}
 	};
@@ -455,7 +456,10 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 					}
 					R_ASSERT					(K != tpGraphs.end());
 					M							= (*K).second->m_tVertexMap.find(tConnectionVertex.caConnectName);
-					R_ASSERT3					(M != (*K).second->m_tVertexMap.end(),tConnectionVertex.caConnectName,(*K).second->m_tLevel.name());
+					if (M == (*K).second->m_tVertexMap.end()) {
+						Msg						("Level %s with id %d has an INVALID connection point %s,\nwhich references to graph point %s on the level %s with id %d\n",(*I).second->m_tLevel.name(),(*I).second->m_tLevel.id(),(*i).first,tConnectionVertex.caConnectName,(*K).second->m_tLevel.name(),(*K).second->m_tLevel.id());
+						R_ASSERT				(M != (*K).second->m_tVertexMap.end());
+					}
 					tGraphEdge.dwVertexNumber	= (*M).second.tGraphID + (*K).second->m_dwOffset;
 					tGraphEdge.fPathDistance	= (*I).second->m_tpVertices[tConnectionVertex.tGraphID].tGlobalPoint.distance_to((*K).second->m_tpVertices[(*M).second.tGraphID].tGlobalPoint);
 					(*I).second->vfAddEdge		((*i).second.tGraphID,tGraphEdge);
