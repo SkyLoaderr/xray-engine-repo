@@ -12,7 +12,7 @@ using namespace xrLauncher;
 
 int RunXRLauncher()
 {
-	CConsoleWrapper con;// = new CConsoleWrapper();
+//	CConsoleWrapper con;// = new CConsoleWrapper();
 //	con.Execute("quit");
 
 	xrLauncher::xrLauncherControl* frm = new xrLauncher::xrLauncherControl();

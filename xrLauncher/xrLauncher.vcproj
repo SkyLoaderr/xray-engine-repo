@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="xrLauncher"
-	ProjectGUID="{770108EA-5B52-4AD8-AB3C-B0A61DCD2D70}"
+	ProjectGUID="{1C86CAB0-0F44-4D47-B8E1-333492359CCC}"
 	RootNamespace="xrLauncher"
 	SccProjectName="SAK"
 	SccAuxPath="SAK"
@@ -24,12 +24,11 @@
 			ManagedExtensions="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Zl"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;XRLAUNCHER_EXPORTS"
+				PreprocessorDefinitions="WIN32;_DEBUG"
 				MinimalRebuild="FALSE"
 				BasicRuntimeChecks="0"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				UsePrecompiledHeader="3"
 				WarningLevel="3"
 				DebugInformationFormat="3"/>
@@ -38,13 +37,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/noentry"
-				AdditionalDependencies="nochkclr.obj mscoree.lib xr_3da.lib xrCore.lib"
-				OutputFile="$(OutDir)\xrLauncher.dll"
+				AdditionalDependencies="xrCore.lib xr_3da.lib"
+				OutputFile="x:\xrLauncher.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="msvcrt.lib"
 				GenerateDebugInformation="TRUE"
 				AssemblyDebug="1"
-				ImportLibrary="x:\xrLauncher.lib"/>
+				SubSystem="2"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -68,14 +66,13 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="x:\"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="2"
 			ManagedExtensions="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Zl"
 				PreprocessorDefinitions="WIN32;NDEBUG"
 				MinimalRebuild="FALSE"
 				RuntimeLibrary="0"
@@ -87,10 +84,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/noentry"
-				AdditionalDependencies="nochkclr.obj mscoree.lib"
-				OutputFile="$(OutDir)\$(ProjectName).dll"
+				AdditionalDependencies="xrCore.lib xr_3da.lib"
+				OutputFile="x:\xrLauncher.dll"
 				LinkIncremental="1"
-				GenerateDebugInformation="TRUE"/>
+				GenerateDebugInformation="TRUE"
+				SubSystem="2"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -115,15 +113,11 @@
 	</Configurations>
 	<References>
 		<AssemblyReference
-			RelativePath="X:\MagicLibrary.dll"/>
-		<AssemblyReference
 			RelativePath="mscorlib.dll"/>
 		<AssemblyReference
 			RelativePath="System.dll"/>
 		<AssemblyReference
 			RelativePath="System.Data.dll"/>
-		<AssemblyReference
-			RelativePath="{ReferencesPath}\System.Design.dll"/>
 		<AssemblyReference
 			RelativePath="System.Drawing.dll"/>
 		<AssemblyReference
@@ -138,9 +132,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
 				RelativePath=".\AssemblyInfo.cpp">
-			</File>
-			<File
-				RelativePath=".\new_form.cpp">
 			</File>
 			<File
 				RelativePath=".\stdafx.cpp">
@@ -159,19 +150,12 @@
 			</File>
 			<File
 				RelativePath=".\xrLauncher.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"
-						CompileAsManaged="2"/>
-				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\xrLauncher_utils.cpp">
 			</File>
 			<File
 				RelativePath=".\xrLauncherControl.cpp">
-			</File>
-			<File
-				RelativePath=".\xrLauncherInit.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -192,7 +176,7 @@
 			</File>
 			<File
 				RelativePath=".\xrLauncherControl.h"
-				FileType="4">
+				FileType="3">
 				<File
 					RelativePath=".\xrLauncherControl.resX">
 					<FileConfiguration
@@ -221,9 +205,6 @@
 				RelativePath=".\app.rc">
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\ReadMe.txt">
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

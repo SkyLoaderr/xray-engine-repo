@@ -39,10 +39,10 @@ void xrLauncherControl::InitSoundPage()
 	this->sndVolMusicTrack->set_Value((int)(fval*100.0f));
 
 	con.GetBool( SND_ACCEL, bval);
-	this->sndAccelCheck->set_Checked(bval);
+	this->sndAccelCheck->set_Checked(!!bval);
 
 	con.GetBool( SND_EFX, bval);
-	this->sndEfxCheck->set_Checked(bval);
+	this->sndEfxCheck->set_Checked(!!bval);
 
 	con.GetInteger( SND_TARGETS, ival, imin, imax);
 	this->sndVolMusicTrack->set_Minimum(imin);
@@ -75,38 +75,74 @@ void xrLauncherControl::ApplySoundPage()
 
 }
 // mod page----------------------------------------
-#include <string.h>
-#include <vcclr.h>
 
-#include "xrLauncher_utils.h"
 
 void xrLauncherControl::InitModPage()
 {
+	m_mod_info->clear();
+
 	CLocatorAPI_wrapper fs;
 	LPCSTR mod_dir = fs.get_path("$mod_dir$");
 
-	// Only get subdirectories that begin with the letter "p."
 	String* dirs[] = System::IO::Directory::GetDirectories(mod_dir);
-	Console::WriteLine(S"The number of mod directories  is {0}.", __box(dirs->Length));
     Collections::IEnumerator* myEnum = dirs->GetEnumerator();
     while (myEnum->MoveNext()) {
-        Console::WriteLine(myEnum->Current);
 		String* cur = static_cast<String*>(myEnum->Current);
 		String* info_file_name = String::Concat(cur,S"\\mod.inf");
 		if(System::IO::File::Exists(info_file_name)){
-//			LPCSTR f_name = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(info_file_name);
 			string512 f_name;
 			convert(info_file_name, f_name);
 			CInifile_wrapper ini(f_name);
 			if(!ini.section_exist("general"))
 				continue;
-			if(!ini.line_exist("general","name"))
-				continue;
-			
-			String* mod_name = ini.r_string("general","name");
-			this->modList->Items->Add(mod_name);
+
+			LPCSTR pStr = 0;
+			m_mod_info->push_back( SmodInfo() );
+			SmodInfo& info = m_mod_info->back();
+
+			if(ini.line_exist("general","name")){
+				pStr = ini.r_string("general","name");
+				strcpy(info.m_mod_name, pStr);
+				this->modList->Items->Add(new String(info.m_mod_name) );
+			};
+			if(ini.line_exist("general","description_short")){
+				pStr = ini.r_string("general","description_short");
+				strcpy(info.m_descr_short, pStr);
+			};
+			if(ini.line_exist("general","description_long")){
+				pStr = ini.r_string("general","description_long");
+				strcpy(info.m_descr_long, pStr);
+			};
+
+			if(ini.line_exist("general","version")){
+				pStr = ini.r_string("general","version");
+				strcpy(info.m_version, pStr);
+			};
+
+			if(ini.line_exist("general","www")){
+				pStr = ini.r_string("general","www");
+				strcpy(info.m_www, pStr);
+			};
 		};
-			
     }
 
+
+	modList_SelectedIndexChanged(0,0);
+}
+
+
+System::Void xrLauncherControl::modList_SelectedIndexChanged(System::Object *  sender, System::EventArgs *  e)
+{
+	modShortDescrLbl->Text	= S"Short description: ";
+	modLongDescrLbl->Text	= S"Long description: ";
+	modLinkLbl->Text		= S"Website: ";
+
+	int index = modList->SelectedIndex;
+	  if (-1 == index)
+		  return;
+
+    SmodInfo& info = m_mod_info->at(index);
+	modShortDescrLbl->Text = String::Concat(modShortDescrLbl->Text, new String(info.m_descr_short) );
+	modLongDescrLbl->Text = String::Concat(modLongDescrLbl->Text, new String(info.m_descr_long) );
+	modLinkLbl->Text = String::Concat(modLinkLbl->Text, new String(info.m_www) );
 }
