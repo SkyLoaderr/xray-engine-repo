@@ -12,7 +12,11 @@
 #include "InfoPortionDefs.h"
 #include "PdaMsg.h"
 #include "encyclopedia_article_defs.h"
+
 #include "character_info_defs.h"
+#include "relation_registry_defs.h"
+
+
 #include "gametaskdefs.h"
 #include "game_news.h"
 
@@ -29,7 +33,7 @@ add_to_registry_type_list(CInfoPortionRegistry);
 #define registry_type_list save_registry_type_list(CInfoPortionRegistry)
 
 //для всех персонажей, отношения с другими персонажами
-typedef CALifeAbstractRegistry<u16, RELATION_MAP > CRelationRegistry;
+typedef CALifeAbstractRegistry<u16, RELATION_DATA > CRelationRegistry;
 add_to_registry_type_list(CRelationRegistry);
 #define character_relations define_constant(CRelationRegistry) 
 #define registry_type_list save_registry_type_list(CRelationRegistry)

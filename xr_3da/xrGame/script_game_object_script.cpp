@@ -306,9 +306,21 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("get_start_dialog",			&CScriptGameObject::GetStartDialog)
 			.def("restore_default_start_dialog",&CScriptGameObject::RestoreDefaultStartDialog)
 
-			.def("set_goodwill",				&CScriptGameObject::SetGoodwill)
+			//////////////////////////////////////////////////////////////////////////
+			
 			.def("goodwill",					&CScriptGameObject::GetGoodwill)
+			.def("set_goodwill",				&CScriptGameObject::SetGoodwill)
+			.def("change_goodwill",				&CScriptGameObject::ChangeGoodwill)
+
+			.def("community_goodwill",			&CScriptGameObject::GetCommunityGoodwill)
+			.def("set_community_goodwill",		&CScriptGameObject::SetCommunityGoodwill)
+			.def("change_community_goodwill",	&CScriptGameObject::ChangeCommunityGoodwill)
+
+			.def("general_goodwill",			&CScriptGameObject::GetAttitude)
 			.def("set_relation",				&CScriptGameObject::SetRelation)
+
+
+			//////////////////////////////////////////////////////////////////////////
 			
 			.def("need_to_answer_pda",			&CScriptGameObject::NeedToAnswerPda)
 			.def("answer_pda",					&CScriptGameObject::AnswerPda)

@@ -10,16 +10,20 @@
 #define GAME_RELATIONS_SECT "game_relations"
 #define GAME_COMMUNITIES	"communities"
 
-
+CHARACTER_COMMUNITY::GOODWILL_TABLE*  CHARACTER_COMMUNITY::m_pCommunityRelationTable = NULL;
 
 //////////////////////////////////////////////////////////////////////////
+COMMUNITY_DATA::COMMUNITY_DATA (CHARACTER_COMMUNITY_INDEX idx, CHARACTER_COMMUNITY_ID idn, LPCSTR team_str)
+{
+	index = idx;
+	id = idn;
+	team = (u8)atoi(team_str);
+}
 
-CHARACTER_COMMUNITY::COMMUNITIES_NAMES* CHARACTER_COMMUNITY::communities_names = NULL;
-
+//////////////////////////////////////////////////////////////////////////
 CHARACTER_COMMUNITY::CHARACTER_COMMUNITY	()
 {
 	m_current_index = NO_COMMUNITY_INDEX;
-	communities_names = NULL;
 }
 CHARACTER_COMMUNITY::~CHARACTER_COMMUNITY	()
 {
@@ -28,7 +32,7 @@ CHARACTER_COMMUNITY::~CHARACTER_COMMUNITY	()
 
 void  CHARACTER_COMMUNITY::set	(CHARACTER_COMMUNITY_ID id)
 {
-	m_current_index	 = index_by_id(id);
+	m_current_index	 = IdToIndex(id);
 
 }
 void  CHARACTER_COMMUNITY::set	(CHARACTER_COMMUNITY_INDEX index)
@@ -38,71 +42,75 @@ void  CHARACTER_COMMUNITY::set	(CHARACTER_COMMUNITY_INDEX index)
 
 CHARACTER_COMMUNITY_ID		 CHARACTER_COMMUNITY::id			() const
 {
-	return id_by_index(m_current_index);
+	return IndexToId(m_current_index);
 }
 CHARACTER_COMMUNITY_INDEX	 CHARACTER_COMMUNITY::index			() const
 {
 	return m_current_index;
 }
 
-u8							  CHARACTER_COMMUNITY::team			() const
+u8							 CHARACTER_COMMUNITY::team			() const
 {
-	return CommunitiesNames()[m_current_index].team;
+	return ItemDataVector()[m_current_index].team;
 }
 
-//////////////////////////////////////////////////////////////////////////
-const CHARACTER_COMMUNITY::COMMUNITIES_NAMES& CHARACTER_COMMUNITY::CommunitiesNames	()
+
+void CHARACTER_COMMUNITY::InitIdToIndex	()
 {
-	if(!communities_names)
+	section_name = GAME_RELATIONS_SECT;
+	line_name = GAME_COMMUNITIES;
+}
+
+
+CHARACTER_COMMUNITY::GOODWILL_TABLE& CHARACTER_COMMUNITY::relation_table	()
+{
+
+	if(m_pCommunityRelationTable)
+		return *m_pCommunityRelationTable;
+
+	m_pCommunityRelationTable = xr_new<GOODWILL_TABLE>();
+
+	LPCSTR table_sect = "communities_relations";
+	std::size_t table_size = GetMaxIndex()+1;
+
+	m_pCommunityRelationTable->resize(table_size);
+
+	string64 buffer;
+	CInifile::Sect&	relations = pSettings->r_section(table_sect);
+
+	R_ASSERT3(relations.size() == table_size, "wrong size for table in section", table_sect);
+
+	for (CInifile::SectIt i = relations.begin(); relations.end() != i; ++i)
 	{
-		communities_names = xr_new<COMMUNITIES_NAMES>();
-		LPCSTR				cfgRecord = pSettings->r_string(GAME_RELATIONS_SECT, GAME_COMMUNITIES); VERIFY(cfgRecord);
-		u32					count		= _GetItemCount(cfgRecord);
+		CHARACTER_COMMUNITY_INDEX cur_index = IdToIndex((*i).first);
 		
-		string64 buf;
-		for (u32 k = 0; k < count; k+=2)
+		if(NO_COMMUNITY_INDEX == cur_index)
+			Debug.fatal("wrong community %s in section [%s],  (*i).first, table_sect");
+		
+		(*m_pCommunityRelationTable)[cur_index].resize(table_size);
+		for(std::size_t j=0; j<table_size; j++)
 		{
-			COMMUNITY_DATA comm_data;
-			LPCSTR comm_name  = _GetItem(cfgRecord, k, buf);
-			char* comm_lwr = xr_strdup(comm_name);
-			xr_strlwr(comm_lwr);
-			comm_data.id = comm_name;
-			xr_free(comm_lwr);
-
-			u8 team_idx = (u8)atoi(_GetItem(cfgRecord, k+1, buf));
-			
-			comm_data.team = team_idx;
-			communities_names->push_back(comm_data);
+			(*m_pCommunityRelationTable)[cur_index][j] = (CHARACTER_GOODWILL)atoi(_GetItem(*(*i).second,(int)j,buffer));
 		}
 	}
 
-	return *communities_names;
-}
-void CHARACTER_COMMUNITY::DeleteCommunitiesNames()
-{
-	delete (communities_names);
+	return *m_pCommunityRelationTable;
 }
 
-CHARACTER_COMMUNITY_INDEX	 CHARACTER_COMMUNITY::index_by_id		(CHARACTER_COMMUNITY_ID id)	const
+CHARACTER_GOODWILL CHARACTER_COMMUNITY::relation		(CHARACTER_COMMUNITY_INDEX to)
 {
-	if(id == NO_COMMUNITY_ID)
-		return NO_COMMUNITY_INDEX;
-	else
-	{
-		const COMMUNITIES_NAMES& names = CommunitiesNames();
-		for(std::size_t i=0; i<names.size(); i++)
-		{
-			if(names[i].id == id)
-				return (CHARACTER_COMMUNITY_INDEX)i;
-		}
-		return NO_COMMUNITY_INDEX;
-	}
+	return relation(m_current_index, to);
 }
 
-CHARACTER_COMMUNITY_ID		 CHARACTER_COMMUNITY::id_by_index		(CHARACTER_COMMUNITY_INDEX index) const
+CHARACTER_GOODWILL  CHARACTER_COMMUNITY::relation		(CHARACTER_COMMUNITY_INDEX from, CHARACTER_COMMUNITY_INDEX to)
 {
-	if(index == NO_COMMUNITY_INDEX)
-		return NO_COMMUNITY_ID;
-	else
-		return CommunitiesNames()[index].id;
+	VERIFY(from	<(int)relation_table().size());
+	VERIFY(to	<(int)relation_table().size());
+	return relation_table()[from][to];
+}
+
+void CHARACTER_COMMUNITY::DeleteIdToIndexData	()
+{
+	xr_delete(m_pCommunityRelationTable);
+	inherited::DeleteIdToIndexData();
 }

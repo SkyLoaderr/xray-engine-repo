@@ -86,9 +86,9 @@ void CSE_ALifeTraderAbstract::spawn_supplies	()
 	pda->m_original_owner		= base()->ID;
 
 #ifdef XRGAME_EXPORTS
-	relation_registry.Init(base()->ID);
 	character_profile();
 	specific_character();
+	relation_registry.Init(base()->ID, m_community_index);
 #endif
 
 	if(NO_SPECIFIC_CHARACTER != m_iSpecificCharacter)

@@ -36,6 +36,10 @@ struct SSpecificCharacterData : CSharedResource
 	std::string m_sBioText;
 	//строка содержащая предметы, которые нужно проспавнить 
 	std::string m_sSupplySpawn;
+	//имя секции конфигурации настроек NPC для персонажа
+	std::string m_sNpcConfigSect;
+	//имя секции конфигурации звука для NPC персонажа
+	std::string m_sSndConfigSect;
 
 #endif
 
@@ -125,8 +129,11 @@ public:
 	LPCSTR						Visual		() const ;
 
 #ifdef  XRGAME_EXPORTS
-	LPCSTR					SupplySpawn	() const ;
+	LPCSTR						SupplySpawn		() const ;
+	LPCSTR						NpcConfigSect   () const ;
+	LPCSTR						SndConfigSect   () const ;
 	
+
 	int		TradeIconX	() const	 {return data()->m_iIconX;}
 	int		TradeIconY	() const	 {return data()->m_iIconY;}
 	int		MapIconX	() const 	 {return data()->m_iMapIconX;}

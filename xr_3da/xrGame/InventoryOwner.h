@@ -8,6 +8,7 @@
 #include "pda_space.h"
 #include "attachment_owner.h"
 #include "script_space_forward.h"
+#include "character_info_defs.h"
 
 class CScriptCallback;
 class CInventory;
@@ -136,6 +137,9 @@ public:
 	//игровые характеристики персонажа
 public:
 	virtual CCharacterInfo& CharacterInfo	() const {VERIFY(m_pCharacterInfo); return *m_pCharacterInfo;}
+	//установка группировки на клиентском и серверном объкте
+	virtual void			SetCommunity	(CHARACTER_COMMUNITY_INDEX);
+
 protected:
 	CCharacterInfo*		m_pCharacterInfo;
 

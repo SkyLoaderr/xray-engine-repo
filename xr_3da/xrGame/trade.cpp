@@ -386,10 +386,10 @@ u32	CTrade::GetItemPrice(PIItem pItem)
 		}
 
 
-		CHARACTER_ATTITUDE attitude = pPartner.inv_owner->CharacterInfo().Relations().GetAttitude(pThis.base->ID());
+		CHARACTER_GOODWILL attitude = pPartner.inv_owner->CharacterInfo().Relations().GetAttitude(pThis.base->ID(), pThis.inv_owner->CharacterInfo().Community().index());
 		float goodwill_factor;
 		
-		if(NO_ATTITUDE == attitude)
+		if(NO_GOODWILL == attitude)
 			goodwill_factor = 0.f;
 		else
 			goodwill_factor = float(attitude)/100.f;
@@ -407,10 +407,10 @@ u32	CTrade::GetItemPrice(PIItem pItem)
 		}
 
 
-		CHARACTER_ATTITUDE attitude = pThis.inv_owner->CharacterInfo().Relations().GetAttitude(pPartner.base->ID());
+		CHARACTER_GOODWILL attitude = pThis.inv_owner->CharacterInfo().Relations().GetAttitude(pPartner.base->ID(), pThis.inv_owner->CharacterInfo().Community().index());
 		float goodwill_factor;
 
-		if(NO_ATTITUDE == attitude)
+		if(NO_GOODWILL == attitude)
 			goodwill_factor = 0.f;
 		else
 			goodwill_factor = float(attitude)/100.f;

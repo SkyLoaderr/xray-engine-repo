@@ -39,10 +39,12 @@ void CAI_PhraseDialogManager::AnswerPhrase (DIALOG_SHARED_PTR& phrase_dialog)
 	VERIFY(pInvOwner);
 	CGameObject* pOthersGO = smart_cast<CGameObject*>(phrase_dialog->OurPartner(this));
 	VERIFY(pOthersGO);
+	CInventoryOwner* pOthersIO = smart_cast<CInventoryOwner*>(pOthersGO);
+	VERIFY(pOthersIO);
 
 	if(!phrase_dialog->IsFinished())
 	{
-		CHARACTER_ATTITUDE attitude = pInvOwner->CharacterInfo().Relations().GetAttitude(pOthersGO->ID());
+		CHARACTER_GOODWILL attitude = pInvOwner->CharacterInfo().Relations().GetAttitude(pOthersGO->ID(), pOthersIO->CharacterInfo().Community().index());
 
 		//если не найдем более подходяещей выводим фразу
 		//последнюю из списка (самую грубую)

@@ -21,8 +21,12 @@
 #include "game_base_space.h"
 #include "script_space.h"
 #include "PhraseDialog.h"
+
+#include "xrserver.h"
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "alife_registry_wrappers.h"
+
+
 
 //////////////////////////////////////////////////////////////////////////
 // CInventoryOwner class 
@@ -92,19 +96,24 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	CSE_Abstract* E	= (CSE_Abstract*)(DC);
 	if (GameID() == GAME_SINGLE)
 	{
-		//-------------------------------------
-		m_known_info_registry->registry().init(pThis->ID());
-		CharacterInfo().Relations().Init(pThis->ID());
-		//-------------------------------------
-
 		CSE_ALifeTraderAbstract* pTrader = NULL;
 		if(E) pTrader = smart_cast<CSE_ALifeTraderAbstract*>(E);
 		if(!pTrader) return FALSE;
 
 		R_ASSERT(NO_PROFILE != pTrader->character_profile());
 
+		//синхронизируем группировку с серверным объектом
+		if(pTrader->m_community_index != NO_COMMUNITY_INDEX)
+			SetCommunity(pTrader->m_community_index);
+
 		CharacterInfo().Load(pTrader->character_profile());
 		CharacterInfo().InitSpecificCharacter (pTrader->specific_character());
+
+		//-------------------------------------
+		m_known_info_registry->registry().init(pThis->ID());
+		CharacterInfo().Relations().Init(pThis->ID(), pTrader->m_community_index);
+		//-------------------------------------
+
 
 		CAI_PhraseDialogManager* dialog_manager = smart_cast<CAI_PhraseDialogManager*>(this);
 		if(dialog_manager && CharacterInfo().StartDialog() != NO_PHRASE_DIALOG)
@@ -276,8 +285,7 @@ bool CInventoryOwner::OfferTalk(CInventoryOwner* talk_partner)
 	CEntityAlive* pPartnerEntityAlive = smart_cast<CEntityAlive*>(talk_partner);
 	R_ASSERT(pPartnerEntityAlive);
 	
-	ALife::ERelationType relation = talk_partner->CharacterInfo().Relations().GetRelationType(pOurEntityAlive->ID());
-
+	ALife::ERelationType relation = talk_partner->CharacterInfo().Relations().GetRelationType(pOurEntityAlive->ID(), CharacterInfo().Community().index());
 	if(relation == ALife::eRelationTypeEnemy) return false;
 
 	if(!pOurEntityAlive->g_Alive() || !pPartnerEntityAlive->g_Alive()) return false;
@@ -383,4 +391,17 @@ void CInventoryOwner::NewPdaContact		(CInventoryOwner* pInvOwner)
 }
 void CInventoryOwner::LostPdaContact	(CInventoryOwner* pInvOwner)
 {
+}
+
+//установка группировки на клиентском и серверном объкте
+void CInventoryOwner::SetCommunity	(CHARACTER_COMMUNITY_INDEX new_community)
+{
+	CEntityAlive* EA					= smart_cast<CEntityAlive*>(this); VERIFY(EA);
+    CSE_Abstract* e_entity				= Level().Server->game->get_entity_from_eid	(EA->ID()); VERIFY(e_entity);
+	CSE_ALifeTraderAbstract* trader		= smart_cast<CSE_ALifeTraderAbstract*>(e_entity);
+	if(!trader) return;
+
+	CharacterInfo().m_CurrentCommunity.set(new_community);
+	EA->id_Team = CharacterInfo().m_CurrentCommunity.team();
+	trader->m_community_index  = new_community;
 }

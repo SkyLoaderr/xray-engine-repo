@@ -190,7 +190,7 @@ void CScriptGameObject::TransferMoney(int money, CScriptGameObject* pForWho)
 	pOurOwner->m_dwMoney	-= money;
 	pOtherOwner->m_dwMoney	+= money;
 }
-
+//////////////////////////////////////////////////////////////////////////
 
 int	CScriptGameObject::GetGoodwill(CScriptGameObject* pToWho)
 {
@@ -206,12 +206,59 @@ void CScriptGameObject::SetGoodwill(int goodwill, CScriptGameObject* pWhoToSet)
 	pInventoryOwner->CharacterInfo().Relations().SetGoodwill(pWhoToSet->m_tpGameObject->ID(), goodwill);
 }
 
+void CScriptGameObject::ChangeGoodwill(int delta_goodwill, CScriptGameObject* pWhoToSet)
+{
+	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
+	VERIFY(pInventoryOwner);
+	pInventoryOwner->CharacterInfo().Relations().ChangeGoodwill(pWhoToSet->m_tpGameObject->ID(), delta_goodwill);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CScriptGameObject::SetCommunityGoodwill(int goodwill, CScriptGameObject* pWhoToSet)
+{
+	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
+	VERIFY(pInventoryOwner);
+	pInventoryOwner->CharacterInfo().Relations().SetCommunityGoodwill(pWhoToSet->m_tpGameObject->ID(), goodwill);
+}
+
+int	CScriptGameObject::GetCommunityGoodwill(CScriptGameObject* pToWho)
+{
+	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
+	VERIFY(pInventoryOwner);
+	return pInventoryOwner->CharacterInfo().Relations().GetCommunityGoodwill(pToWho->m_tpGameObject->ID());
+}
+
+void CScriptGameObject::ChangeCommunityGoodwill(int delta_goodwill, CScriptGameObject* pWhoToSet)
+{
+	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
+	VERIFY(pInventoryOwner);
+	pInventoryOwner->CharacterInfo().Relations().ChangeCommunityGoodwill(pWhoToSet->m_tpGameObject->ID(), delta_goodwill);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
 void CScriptGameObject::SetRelation(ALife::ERelationType relation, CScriptGameObject* pWhoToSet)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
 	VERIFY(pInventoryOwner);
-	pInventoryOwner->CharacterInfo().Relations().SetRelationType(pWhoToSet->m_tpGameObject->ID(), relation);
+	CInventoryOwner* pOthersInventoryOwner = smart_cast<CInventoryOwner*>(pWhoToSet->m_tpGameObject);
+	VERIFY(pOthersInventoryOwner);
+	pInventoryOwner->CharacterInfo().Relations().SetRelationType(pWhoToSet->m_tpGameObject->ID(), pOthersInventoryOwner->CharacterInfo().Community().index(), relation);
 }
+
+//////////////////////////////////////////////////////////////////////////
+
+int	CScriptGameObject::GetAttitude			(CScriptGameObject* pToWho)
+{
+	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);VERIFY(pInventoryOwner);
+	CInventoryOwner* pOthersInventoryOwner = smart_cast<CInventoryOwner*>(pToWho->m_tpGameObject);VERIFY(pOthersInventoryOwner);
+	return pInventoryOwner->CharacterInfo().Relations().GetAttitude(pToWho->m_tpGameObject->ID(), pOthersInventoryOwner->CharacterInfo().Community().index());
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+
 bool CScriptGameObject::NeedToAnswerPda		()
 {
 	CAI_PhraseDialogManager* pDialogManager = smart_cast<CAI_PhraseDialogManager*>(m_tpGameObject);
@@ -287,7 +334,7 @@ void CScriptGameObject::SetCharacterCommunity	(LPCSTR comm)
 	VERIFY(pInventoryOwner);
 	CHARACTER_COMMUNITY	community;
 	community.set(comm);
-	return pInventoryOwner->CharacterInfo().SetCommunity(community);
+	return pInventoryOwner->SetCommunity(community.index());
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -20,6 +20,7 @@ SSpecificCharacterData::SSpecificCharacterData()
 	m_sBioText.clear();
 	m_sVisual.clear();
 	m_sSupplySpawn.clear();
+	m_sNpcConfigSect.clear();
 
 
 	m_iStartDialog	= NO_PHRASE_DIALOG;
@@ -157,6 +158,9 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 		}
 	}
 
+	data()->m_sNpcConfigSect = uiXml.Read("npc_config", 0, "");
+	data()->m_sSndConfigSect = uiXml.Read("snd_config", 0, "");
+
 #endif
 
 	data()->m_Classes.clear();
@@ -218,6 +222,15 @@ LPCSTR CSpecificCharacter::SupplySpawn	() const
 	return data()->m_sSupplySpawn.c_str();
 }
 
+LPCSTR CSpecificCharacter::NpcConfigSect () const 
+{
+	return data()->m_sNpcConfigSect.c_str();
+}
+
+LPCSTR CSpecificCharacter::SndConfigSect () const 
+{
+	return data()->m_sSndConfigSect.c_str();
+}
 
 #endif
 

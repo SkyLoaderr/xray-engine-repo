@@ -101,7 +101,7 @@ const typename CSXML_IdToIndex::ITEM_DATA* CSXML_IdToIndex::GetById (const T_ID&
 	for(T_VECTOR::iterator it = ItemDataVector().begin();
 		ItemDataVector().end() != it; it++)
 	{
-		if((*it).id == str_id)
+		if(!xr_strcmp((*it).id, str_id))
 			break;
 	}
 

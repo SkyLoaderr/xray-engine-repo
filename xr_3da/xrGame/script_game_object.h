@@ -210,10 +210,20 @@ public:
 			void				TransferItem		(CScriptGameObject* pItem, CScriptGameObject* pForWho);
 			void				TransferMoney		(int money, CScriptGameObject* pForWho);
 			u32					Money				();
-			void				SetGoodwill			(int goodwill, CScriptGameObject* pWhoToSet);
-			int					GetGoodwill			(CScriptGameObject* pToWho);
-			void				SetRelation			(ALife::ERelationType relation, CScriptGameObject* pWhoToSet);
 			
+			void				SetRelation			(ALife::ERelationType relation, CScriptGameObject* pWhoToSet);
+	
+			int					GetAttitude			(CScriptGameObject* pToWho);
+
+			int					GetGoodwill			(CScriptGameObject* pToWho);
+			void				SetGoodwill			(int goodwill, CScriptGameObject* pWhoToSet);
+			void				ChangeGoodwill		(int delta_goodwill, CScriptGameObject* pWhoToSet);
+
+			int					GetCommunityGoodwill	(CScriptGameObject* pToWho);
+			void				SetCommunityGoodwill	(int goodwill, CScriptGameObject* pWhoToSet);
+			void				ChangeCommunityGoodwill	(int delta_goodwill, CScriptGameObject* pWhoToSet);
+
+
 			void				SetStartDialog		(LPCSTR dialog_id);
 			void				GetStartDialog		();
 			void				RestoreDefaultStartDialog();
