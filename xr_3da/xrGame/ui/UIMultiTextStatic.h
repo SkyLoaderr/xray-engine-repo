@@ -53,7 +53,7 @@ class CUICaption :protected CUIMultiTextStatic
 	xr_map<ref_str,u32>		m_indices;
 public:
 	virtual void		Draw();
-	void				addCustomMessage(const ref_str& msg_name, float x, float y, float font_size, CGameFont *pFont, u32 color, LPCSTR def_str="");
+	void				addCustomMessage(const ref_str& msg_name, float x, float y, float font_size, CGameFont *pFont, CGameFont::EAligment al, u32 color, LPCSTR def_str="");
 	EffectParams*		customizeMessage(const ref_str& msg_name, const CUITextBanner::TextBannerStyles styleName);
 	void				setCaption(const ref_str& msg_name, LPCSTR message_to_out, u32 color=0, bool replaceColor=false);
 

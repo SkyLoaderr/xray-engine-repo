@@ -88,8 +88,8 @@ void CUIMultiTextStatic::SPh::SetText(const char *fmt, ...)
 }
 
 
-void CUICaption::addCustomMessage(const ref_str& msg_name, float x, float y, float font_size,
-										  CGameFont *pFont, u32 color, LPCSTR def_str)
+void CUICaption::addCustomMessage(const ref_str& msg_name, float x, float y, float font_size, 
+								  CGameFont *pFont, CGameFont::EAligment al, u32 color, LPCSTR def_str)
 {
 	R_ASSERT2( (m_indices.find(msg_name) == m_indices.end()),"message already defined !!!" );
 
@@ -99,6 +99,7 @@ void CUICaption::addCustomMessage(const ref_str& msg_name, float x, float y, flo
 	sp->effect.SetFontSize(font_size);
 	sp->effect.SetFont(pFont);
 	sp->effect.SetTextColor(color);
+	sp->effect.SetFontAlignment(al);
 	sp->SetText(def_str);
 
 	m_indices[msg_name] = m_vPhrases.size()-1;
