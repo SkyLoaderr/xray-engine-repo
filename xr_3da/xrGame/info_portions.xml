@@ -14,7 +14,6 @@
 	</info_portion>
 
 	<info_portion id="escape_novice_has_weapon">
-		<disable>escape_novice_need_weapon</disable>
 	</info_portion>
 
 	<info_portion id="escape_factory_bandits_dead">

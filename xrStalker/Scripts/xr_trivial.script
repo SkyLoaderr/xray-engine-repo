@@ -76,16 +76,6 @@ function can_attack_enemy_evaluator:evaluate()
         return false
     end
 
-    if(level.object(self.a.enemy) == nil) then
-        return false
-    end
-
-    if(level.object(self.a.enemy):alive() == false) then
-    --Если враги мерты, то вся схема отрубается
-    self.a.enabled = false
-        return false
-    end
-
     return true
 end
 ---------------------------------------------------------------------------------------------------------------------
@@ -745,6 +735,12 @@ function novice3_attack:initialize ()
     self.object:set_sight            ( look.path_dir, nil, 0 )
     self.object:set_item             ( object.activate, self.object:best_weapon() )
 
+	-- Инициализируем инфопоршн
+	local actor = level.actor()	
+	if actor ~= nil then
+		actor:give_info_portion("escape_novice_has_weapon")
+	end
+
     self.object:set_dest_level_vertex_id(patrol(self.a.enemy_path):level_vertex_id(0) )
 
     self.walk_time   = device():time_global() + 10000
@@ -767,21 +763,21 @@ function novice3_attack:execute ()
 
     if(self.start_run == false and self.end_run == false) then
       self.object:set_movement_type    ( move.run )
-    self.start_run = true
+      self.start_run = true
     end
 
     if(self.start_run and self.object:level_vertex_id() == patrol(self.a.enemy_path):level_vertex_id(0) ) then
         self.object:set_movement_type    ( move.walk )
         self.object:set_patrol_path      ( self.a.enemy_path, patrol.nearest, patrol.continue, true )
         self.object:set_path_type        ( game_object.patrol_path )
-    self.start_run = false
+        self.start_run = false
         self.end_run   = true
     end
 
     if(self.end_run and
       self.object:level_vertex_id() == patrol(self.a.enemy_path):level_vertex_id(patrol(self.a.enemy_path):count() -1 ) ) then
     --Если пришли, то схема заканчивает работу
-    self.a.enabled = false
+        self.a.enabled = false
   end
 
     self.object:set_mental_state     ( anim.danger )
@@ -829,7 +825,6 @@ function add_novice3(obj)
   action = this.novice3_attack("novice go to attack", xr_motivator.storage[obj:id()].novice3)
 
     action:add_precondition       (world_property(stalker_ids.property_enemy, false))
---    action:add_precondition         (world_property (properties["event"],       false))
     action:add_precondition         (world_property ( properties["work"],       true ) )
     action:add_precondition         (world_property ( properties["attack"],     true ) )
     action:add_effect               (world_property ( properties["attack"],     false ) )
