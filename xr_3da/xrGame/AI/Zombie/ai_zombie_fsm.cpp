@@ -10,7 +10,7 @@
 #include "ai_zombie.h"
 #include "..\\ai_monsters_misc.h"
 
-/**/
+/**
 //#define WRITE_TO_LOG(s) bStopThinking = true;
 #undef WRITE_TO_LOG
 #define WRITE_TO_LOG(s) {\

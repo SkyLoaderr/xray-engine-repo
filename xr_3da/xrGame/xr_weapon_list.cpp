@@ -101,6 +101,7 @@ void CWeaponList::weapon_die		()
 	for (int it=0; it<(int)(m_Weapons.size()); it++)
 	{
 		CWeapon* W	= m_Weapons[it];
+		if (0==W)	continue;
 		if (it==m_iActiveWeapon)
 		{
 			m_pParent->u_EventGen		(P,GE_OWNERSHIP_REJECT,m_pParent->ID());
