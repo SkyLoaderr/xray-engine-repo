@@ -198,6 +198,7 @@ void IGame_Level::OnFrame		( )
 	if (_abs(Device.fTimeDelta)<EPS_S) return;
 
 	// Update all objects
+	::Sound->update_events		( );
 	VERIFY						(bReady);
 	Engine.Sheduler.Update		( );
 	Environment->OnFrame		( );
