@@ -22,6 +22,10 @@ struct SPPInfo {
 			r += ppi.r; g += ppi.g; b += ppi.b; 
 			return *this;
 		}
+		IC SColor& operator -= (const SColor &ppi)				{
+			r -= ppi.r; g -= ppi.g; b -= ppi.b; 
+			return *this;
+		}
 		IC void set		(float _r, float _g, float _b)			{
 			r=_r;g=_g;b=_b;
 		}
@@ -46,6 +50,17 @@ struct SPPInfo {
 		color_base	+= ppi.color_base;
 		color_gray	+= ppi.color_gray;
 		color_add	+= ppi.color_add;
+		return *this;
+	}
+	IC SPPInfo& operator -= (const SPPInfo &ppi) {
+		blur		-= ppi.blur;
+		gray		-= ppi.gray;
+		duality.h	-= ppi.duality.h; duality.v -= ppi.duality.v;
+		noise.intensity -= ppi.noise.intensity; noise.grain -= ppi.noise.grain;
+		noise.fps	-= ppi.noise.fps;
+		color_base	-= ppi.color_base;
+		color_gray	-= ppi.color_gray;
+		color_add	-= ppi.color_add;
 		return *this;
 	}
 	void normalize		();

@@ -64,7 +64,8 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	P.w_u8				(flags);
 	Fvector				p = Position();
 	P.w_vec3			(p);//Position());
-	P.w_angle8			(r_model_yaw);
+
+	P.w_angle8			(r_model_yaw); //Device.vCameraDirection.getH());//
 	P.w_angle8			(unaffected_r_torso.yaw	);//(r_torso.yaw);
 	P.w_angle8			(unaffected_r_torso.pitch);//(r_torso.pitch);
 	P.w_angle8			(unaffected_r_torso.roll);//(r_torso.roll);
@@ -1346,6 +1347,7 @@ void CActor::save(NET_Packet &output_packet)
 {
 	inherited::save(output_packet);
 	CInventoryOwner::save(output_packet);
+
 }
 
 void CActor::load(IReader &input_packet)

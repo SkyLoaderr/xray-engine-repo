@@ -1068,6 +1068,9 @@ void CSE_ALifeCreatureAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 	tNetPacket.r_angle8			(o_torso.yaw	);
 	tNetPacket.r_angle8			(o_torso.pitch	);
 	tNetPacket.r_angle8			(o_torso.roll	);
+	
+	o_Angle.set					(o_torso.pitch,o_torso.yaw,0.f);
+
 	tNetPacket.r_u8				(s_team);
 	tNetPacket.r_u8				(s_squad);
 	tNetPacket.r_u8				(s_group);

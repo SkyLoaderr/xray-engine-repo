@@ -203,7 +203,7 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	// EffectorPP
 	int		_count	= 0;
 	if(m_EffectorsPP.size()) {
-		pp_affected = pp_zero;
+		pp_affected = pp_identity;
 		//Log("e-count:",m_EffectorsPP.size());
 		for(int i = m_EffectorsPP.size()-1; i >= 0; i--) {
 			CEffectorPP* eff	= m_EffectorsPP[i];
@@ -212,6 +212,7 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 			if((eff->fLifeTime>0)&&eff->Process(l_PPInf)) {
 				_count		+= 1;
 				pp_affected += l_PPInf;
+				pp_affected -= pp_identity;
 			} else RemoveEffector(eff->eType);
 			//Log					("camMMGR_gray_aff:",pp_affected.gray);
 		}
