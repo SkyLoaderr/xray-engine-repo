@@ -145,7 +145,12 @@ void CEditableMesh::GenerateSVertices(){
                         if (VM.type==vmtWeight){
 							//float& w = VM.getW(vmpt_it->index);
                             SV.bone 	= m_Parent->GetBoneIndexByWMap(VM.name);
-                            VERIFY2(SV.bone>-1,"Can't find weight map");
+							if (SV.bone<=-1){
+	                            ELog.DlgMsg(mtError,"Can't find bone assigned to weight map %s",VM.name);
+								m_SVertices.clear();
+                                THROW2("Editor crashed.");
+                                return;
+                            }
                             CBone* B 	= m_Parent->m_Bones[SV.bone];
                             B->LITransform().transform_tiny(SV.offs,P);
                             bRes=true;

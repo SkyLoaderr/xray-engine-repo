@@ -178,7 +178,7 @@ void CEditableObject::CalculateAnimation(bool bGenInvMat){
         Fmatrix& parent = ((*b_it)->ParentIndex()>-1)?m_Bones[(*b_it)->ParentIndex()]->LTransform():Fidentity;
         const Fvector& r = (*b_it)->Rotate();
         if (flag&WORLD_ORIENTATION){
-	        R.setHPB(-r.x,-r.y,r.z);
+	        R.setHPB(-r.x,-r.y,-r.z);
             M.identity();
     	    M.c.set((*b_it)->Offset());
 			M.mulA(parent);
@@ -186,7 +186,7 @@ void CEditableObject::CalculateAnimation(bool bGenInvMat){
             M.j.set(R.j);
             M.k.set(R.k);
         }else{
-            M.setHPB(-r.x,-r.y,r.z);
+            M.setHPB(-r.x,-r.y,-r.z);
             M.c.set((*b_it)->Offset());
             M.mulA(parent);
         }
@@ -379,7 +379,7 @@ void CEditableObject::GetBoneWorldTransform(DWORD bone_idx, float t, CSMotion* m
         Fmatrix rot, mat;
         motion->Evaluate(idx,t,T,R);
         if (flag&WORLD_ORIENTATION){
-            rot.setHPB(-R.x,-R.y,R.z);
+            rot.setHPB(-R.x,-R.y,-R.z);
             mat.identity();
             mat.c.set(T);
             mat.mulA(matrix);
@@ -387,7 +387,7 @@ void CEditableObject::GetBoneWorldTransform(DWORD bone_idx, float t, CSMotion* m
             mat.j.set(rot.j);
             mat.k.set(rot.k);
         }else{
-            mat.setHPB(-R.x,-R.y,R.z);
+            mat.setHPB(-R.x,-R.y,-R.z);
             mat.c.set(T);
             mat.mulA(matrix);
         }

@@ -417,10 +417,10 @@ bool CExportSkeleton::ExportMotions(CFS_Base& F)
                         inv_parent	= Fidentity;
                     }
                     Fmatrix 	rot;
-                    rot.setHPB	(-R.x,-R.y,R.z);
+                    rot.setHPB	(-R.x,-R.y,-R.z);
                     mat.mul	(inv_parent,rot);
                 }else{
-                    mat.setHPB	(-R.x,-R.y,R.z);
+                    mat.setHPB	(-R.x,-R.y,-R.z);
                 }
 
                 q.set		(mat);
