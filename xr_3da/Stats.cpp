@@ -181,7 +181,7 @@ void CStats::Show()
 		//////////////////////////////////////////////////////////////////////////
 		// PERF ALERT
 		F.SetColor	(color_rgba(255,0,0,255));
-		F.OutSet	(.5f,0);
+		F.OutSet	(200,0);
 		F.SetSize	(f_base_size*2);
 		if (fFPS<30)					F.OutNext	("FPS < 30:        %3.1f",fFPS);
 		if (RCache.stat.verts>500000)	F.OutNext	("Verts > 500k:    %d",	RCache.stat.verts);
