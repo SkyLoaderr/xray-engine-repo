@@ -37,7 +37,7 @@ void			CFrustum::_add			(Fvector& P1, Fvector& P2, Fvector&P3)
 	planes[p_count].cache	();
 	p_count					++;
 }
-
+ 
 #define			mx			0
 #define			my			1
 #define			mz			2
