@@ -169,7 +169,7 @@ IC bool CAI_Hen::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvect
 	tMemberDirection.sub(tMyPoint,tMemberPoint);
 	vfNormalizeSafe(tMemberDirection);
 	float fAlpha = acosf(tFireVector.dotproduct(tMemberDirection));
-	return(fAlpha < PI/10);
+	return(fAlpha < PI/20);
 	//return(false);
 }
 
@@ -582,7 +582,7 @@ void CAI_Hen::FollowMe()
 							else {
 							// if path is too short then clear it (patch for ExecMove)
 								AI_Path.TravelPath.clear();
-								AI_Path.bNeedRebuild = FALSE;
+								//AI_Path.bNeedRebuild = FALSE;
 							}
 						} 
 						else {

@@ -78,13 +78,16 @@ void CAISelectorBase::vfAddLightCost()
 	m_fResult += ((float)(m_tpCurrentNode->light)/255.f)*fLightWeight;
 }
 
-void CAISelectorBase::vfComputeCurrentPosition()
+void CAISelectorBase::vfInit()
 {
+	m_fResult = 0.f;
+	m_tEnemySurroundDirection.set(0,0,0);
 	Fvector tTemp0, tTemp1;
 	Level().AI.UnpackPosition(tTemp0,m_tpCurrentNode->p0);
 	Level().AI.UnpackPosition(tTemp1,m_tpCurrentNode->p1);
 	m_tCurrentPosition.lerp(tTemp1,tTemp1,.5f);
 	m_iAliveMemberCount = taMembers.size();
+	m_fFireDispersionAngle = PI/20;
 }
 
 void CAISelectorBase::vfAddDistanceToEnemyCost()
@@ -362,4 +365,16 @@ void CAISelectorBase::vfCheckForEpsilon(BOOL &bStop)
 {
 	if (m_fResult < EPS)
 		bStop = TRUE;
+}
+
+void CAISelectorBase::vfAddDeviationFromMemberViewCost()
+{
+	Fvector tTempDirection0, tTempDirection1;
+	tTempDirection0.sub(m_tEnemyPosition,m_tCurrentMemberPosition);
+	tTempDirection1.sub(m_tCurrentPosition,m_tCurrentMemberPosition);
+	vfNormalizeSafe(tTempDirection0);
+	vfNormalizeSafe(tTempDirection1);
+	float fAlpha = acosf(tTempDirection0.dotproduct(tTempDirection1));
+	if (fAlpha < m_fFireDispersionAngle)
+		m_fResult += fMemberViewDeviationWeight;
 }

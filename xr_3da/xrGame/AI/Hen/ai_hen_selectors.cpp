@@ -19,11 +19,9 @@ CHenSelectorAttack::CHenSelectorAttack()
 float CHenSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
 	// initialization
-	m_fResult = 0.f;
 	m_tpCurrentNode = tNode;
 	m_fDistance = fDistance;
-	m_tEnemySurroundDirection.set(0,0,0);
-	vfComputeCurrentPosition();
+	vfInit();
 	// computations
 	vfAddTravelCost();
 	CHECK_RESULT;
@@ -47,6 +45,7 @@ float CHenSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BOOL&
 						vfAddDistanceToMemberCost();
 						vfComputeSurroundEnemy();
 						vfAddCoverFromMemberCost();
+						vfAddDeviationFromMemberViewCost();
 					}
 				vfAddSurroundEnemyCost();
 			}
@@ -65,10 +64,9 @@ CHenSelectorFreeHunting::CHenSelectorFreeHunting()
 float CHenSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
 	// initialization
-	m_fResult = 0.f;
 	m_tpCurrentNode = tNode;
 	m_fDistance = fDistance;
-	vfComputeCurrentPosition();
+	vfInit();
 	// computations
 	vfAddTravelCost();
 	CHECK_RESULT;
@@ -107,10 +105,9 @@ CHenSelectorFollow::CHenSelectorFollow()
 float CHenSelectorFollow::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
 	// initialization
-	m_fResult = 0.f;
 	m_tpCurrentNode = tNode;
 	m_fDistance = fDistance;
-	vfComputeCurrentPosition();
+	vfInit();
 	// computations
 	vfAddTravelCost();
 	CHECK_RESULT;
@@ -149,11 +146,9 @@ CHenSelectorPursuit::CHenSelectorPursuit()
 float CHenSelectorPursuit::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
 	// initialization
-	m_fResult = 0.f;
 	m_tpCurrentNode = tNode;
 	m_fDistance = fDistance;
-	m_tEnemySurroundDirection.set(0,0,0);
-	vfComputeCurrentPosition();
+	vfInit();
 	// computations
 	vfAddTravelCost();
 	CHECK_RESULT;
@@ -194,10 +189,9 @@ CHenSelectorUnderFire::CHenSelectorUnderFire()
 float CHenSelectorUnderFire::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// min - best, max - worse
 {
 	// initialization
-	m_fResult = 0.f;
 	m_tpCurrentNode = tNode;
 	m_fDistance = fDistance;
-	vfComputeCurrentPosition();
+	vfInit();
 	// computations
 	vfAddTravelCost();
 	CHECK_RESULT;

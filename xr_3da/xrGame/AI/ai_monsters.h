@@ -114,26 +114,26 @@ class CAISelectorBase : public AI::NodeEstimator
 
 		// common
 		float			m_fResult;
+		float			m_fFireDispersionAngle;
 
 		virtual	void Load(CInifile* ini, const char* section);
-		
-		void vfAddTravelCost();
-		void vfAddLightCost();
-		void vfComputeCurrentPosition();
-		void vfAssignMemberPositionAndNode();
-		void vfAddDistanceToEnemyCost();
-		void vfAddDistanceToLeaderCost();
-		void vfAddDistanceToMemberCost();
 		void vfAddCoverFromEnemyCost();
 		void vfAddCoverFromLeaderCost();
 		void vfAddCoverFromMemberCost();
-		void vfAddCoverFromSavedEnemyCost();
-		void vfAddTotalCoverCost();
+		void vfAddDeviationFromMemberViewCost();
+		void vfAddDistanceToEnemyCost();
+		void vfAddDistanceToLeaderCost();
+		void vfAddDistanceToMemberCost();
 		void vfAddEnemyLookCost();
+		void vfAddLightCost();
+		void vfAddSurroundEnemyCost();
+		void vfAddTotalCoverCost();
+		void vfAddTravelCost();
+		void vfAssignMemberPositionAndNode();
+		void vfCheckForEpsilon(BOOL &bStop);
+		void vfInit();
 		void vfComputeMemberDirection();
 		void vfComputeSurroundEnemy();
-		void vfAddSurroundEnemyCost();
-		void vfCheckForEpsilon(BOOL &bStop);
 };
 
 #endif

@@ -188,6 +188,9 @@ void CCustomMonster::mk_orientation(Fvector &dir, Fmatrix& mR)
 
 void CCustomMonster::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {
+	R_ASSERT(fsimilar(_view.magnitude(),1));
+	R_ASSERT(fsimilar(_move.magnitude(),1));
+
 	CMotionDef*	S=0;
 
 	bool bCrouched = false; 
