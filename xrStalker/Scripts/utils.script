@@ -275,7 +275,7 @@ function path_parse_waypoints(pathname)
 	local rslt = {}
 
 	for pt = 0, cnt - 1 do
-		printf("_bp: %s", ptr:name(pt))
+		--printf("_bp: %s", ptr:name(pt))
 		rslt[pt] = parse_waypoint_data(pathname, ptr:name(pt))
 		if not rslt[pt] then
 			utils.abort("error while parsing point %d of path '%s'", pt, pathname)

@@ -44,18 +44,19 @@ function action_walker_activity:initialize()
 
 	self.move_mgr:initialize(self.object)
 
-	if self.path_walk_info == nil then
-		self.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
-	end
-	if self.path_look_info == nil then
-		self.path_look_info = utils.path_parse_waypoints(self.st.path_look)
-	end
 	self:reset_scheme()
 end
 
 
 function action_walker_activity:reset_scheme()
-	self.move_mgr:reset(self.st.path_walk, self.path_walk_info, self.st.path_look, self.path_look_info, self.st.team)
+	if self.st.path_walk_info == nil then
+		self.st.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
+	end
+	if self.st.path_look_info == nil then
+		self.st.path_look_info = utils.path_parse_waypoints(self.st.path_look)
+	end
+
+	self.move_mgr:reset(self.st.path_walk, self.st.path_walk_info, self.st.path_look, self.st.path_look_info, self.st.team)
 end	
 
 function action_walker_activity:execute()
@@ -133,6 +134,9 @@ function set_walker(object, enabled, path_walk, path_look, team)
 	st.path_walk = utils.conf_get_string(char_ini, "walker", "path_walk", path_walk, object, true)
 	st.path_look = utils.conf_get_string(char_ini, "walker", "path_look", path_look, object, false)
 	st.team = utils.conf_get_string(char_ini, "walker", "team", team, object, false)
+
+	st.path_walk_info = nil -- Будут инициализированы в reset(), сейчас пути могут быть еще
+	st.path_look_info = nil -- не загружены.
 
 	if st.action ~= nil then
 		st.action.reset_scheme(st.action)
