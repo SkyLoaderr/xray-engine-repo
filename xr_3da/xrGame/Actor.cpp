@@ -324,7 +324,13 @@ void CActor::g_Physics(Fvector& accel, float jump, float dt)
 {
 	// Calculate physics
 	Movement.SetPosition	(vPosition);
-	Movement.Calculate		(accel,0,jump,dt,false);
+	while (dt>.05f)			{
+		Movement.Calculate		(accel,0,jump,0.05f,false);
+		dt -= .05f;
+	}
+	if (dt>0)	{
+		Movement.Calculate		(accel,0,jump,dt,false);
+	}
 	Movement.GetPosition	(vPosition);
 	
 	// Test nearest object
@@ -360,7 +366,7 @@ void CActor::Update	(DWORD DT)
 {
 	if (!bEnabled)	return;
 
-	clamp			(DT,0ul,66ul);
+//	clamp			(DT,0ul,66ul);
 	float	dt		= float(DT)/1000.f;
 	
 	// Check controls, create accel, prelimitary setup "mstate_real"
