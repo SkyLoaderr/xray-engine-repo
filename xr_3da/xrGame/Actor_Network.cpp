@@ -1543,7 +1543,9 @@ void		CActor::Check_Weapon_ShowHideState	()
 		u32 InventorySlot = inventory().GetActiveSlot();
 		if( InventorySlot != NO_ACTIVE_SLOT && InventorySlot <= PDA_SLOT &&
 			inventory().m_slots[InventorySlot].m_pIItem &&
-			(!(m_iCurWeaponHideState&(1<<2)) || !inventory().m_slots[InventorySlot].m_pIItem->IsSingleHanded()))
+			(!(m_iCurWeaponHideState&(1<<2)) || !inventory().m_slots[InventorySlot].m_pIItem->IsSingleHanded()) &&
+			(!(m_iCurWeaponHideState&(1<<3) && InventorySlot == KNIFE_SLOT))
+			)
 		{
 			if (inventory().Activate(NO_ACTIVE_SLOT))
 			{
