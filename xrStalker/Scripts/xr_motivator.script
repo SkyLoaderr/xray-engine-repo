@@ -327,6 +327,14 @@ xr_formation.add_to_binder( self.object )
 
     xr_storyline.set_storyline(self.object, char_ini)
     xr_rest.add_to_binder (self.object, stalker_ids.action_puzzle_solver)
+
+-- помощник, мля !!!
+xr_motivator.storage[self.object:id ()].sos = 
+    {
+    enabled = false
+    }
+xr_sos.add_to_binder (self.object, char_ini)
+ 
 end
 ----------------------------------------------------------------------------------------------------------------------
 function pda_call_back(recepient, who, msg, info_index)
