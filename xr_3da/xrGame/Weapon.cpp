@@ -23,7 +23,6 @@ CWeapon::CWeapon(LPCSTR name)
 {
 	fTimeToFire	= 0;
 	iHitPower	= 0;
-	m_pParent	= 0;
 	bVisible	= false;
 	SetDefaults	();
 	m_pHUD		= new CWeaponHUD();
@@ -124,10 +123,11 @@ void CWeapon::ShaderDestroy	(Shader* &dest)
 
 float CWeapon::GetPrecision()
 {
-	VERIFY(m_pParent);
-	float prec=m_pParent->g_Accuracy();
+	CEntity* E	=	dynamic_cast<CEntity*>(H_Parent());
+	VERIFY			(E);
+	float prec	=	E->g_Accuracy();
 	CEntity::SEntityState state;
-	if (m_pParent->g_State(state))
+	if (E->g_State(state))
 	{
 		prec *= (1.f+state.fVelocity*dispVelFactor);
 		if (state.bJump)		prec*=dispJumpFactor;
@@ -139,7 +139,7 @@ float CWeapon::GetPrecision()
 
 void CWeapon::SetParent	(CEntity* parent, CWeaponList* container)
 {
-	R_ASSERT(parent);		m_pParent		= parent;
+	R_ASSERT(parent);		Parent			= parent;
 	R_ASSERT(container);	m_pContainer	= container;
 }
 
@@ -319,9 +319,9 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	clamp				(fireDispersion_Current,0.f,1.f);
 
 	// ...and trace line
-	m_pParent->setEnabled(false);
+	H_Parent()->setEnabled(false);
 	BOOL bResult		= pCreator->ObjectSpace.RayPick( P, dir, fireDistance, RQ );
-	m_pParent->setEnabled(true);
+	H_Parent()->setEnabled(true);
 	D					= dir;
 
 	// ...analyze
@@ -330,10 +330,10 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	if (bResult)
 	{
 		if (RQ.O) {
-			if (m_pParent->Local() && (RQ.O->CLS_ID==CLSID_ENTITY))
+			if (H_Parent()->Local() && (RQ.O->CLS_ID==CLSID_ENTITY))
 			{
 				CEntity* E =	dynamic_cast<CEntity*>(RQ.O);
-				E->Hit			(iHitPower,D,m_pParent);
+				E->Hit			(iHitPower,D,dynamic_cast<CEntity*>(H_Parent()));
 			}
 		}
 		FireShotmark		(D,end_point,RQ);

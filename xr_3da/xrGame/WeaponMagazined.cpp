@@ -94,7 +94,7 @@ void CWeaponMagazined::UpdateXForm(BOOL bHUDView)
 			}
 		} else {
 			Fmatrix			mRes;
-			CKinematics* V	= PKinematics(m_pParent->Visual());
+			CKinematics* V	= PKinematics	(H_Parent()->Visual());
 			V->Calculate	();
 			Fmatrix& mL		= V->LL_GetTransform(m_pContainer->m_iACTboneL);
 			Fmatrix& mR		= V->LL_GetTransform(m_pContainer->m_iACTboneR);
@@ -104,7 +104,7 @@ void CWeaponMagazined::UpdateXForm(BOOL bHUDView)
 			R.crossproduct	(mR.j,D);		R.normalize_safe();
 			N.crossproduct	(D,R);			N.normalize_safe();
 			mRes.set		(R,N,D,mR.c);
-			mRes.mulA_43	(m_pParent->clXFORM());
+			mRes.mulA_43	(H_Parent()->clXFORM());
 			UpdatePosition	(mRes);
 		}
 	}
@@ -215,7 +215,7 @@ void CWeaponMagazined::ReloadMagazine	()
 void CWeaponMagazined::Update			(float dt, BOOL bHUDView)
 {
 	inherited::Update	(dt,bHUDView);
-	VERIFY				(m_pParent);
+	VERIFY				(H_Parent());
 	
 	// on state change
 	if (st_target!=st_current)
@@ -276,7 +276,7 @@ void CWeaponMagazined::state_Fire	(BOOL bHUDView, float dt)
 	UpdateFP				(bHUDView);
 	fTime					-=dt;
 	Fvector					p1, d;
-	m_pParent->g_fireParams	(p1,d);
+	dynamic_cast<CEntity*>(H_Parent())->g_fireParams	(p1,d);
 	
 	while (fTime<0)
 	{
@@ -376,7 +376,7 @@ void CWeaponMagazined::MediaUNLOAD	()
 void CWeaponMagazined::OnShellDrop(BOOL bHUD)
 {
 	// shells
-	CPSObject* PS				= new CPSObject("weapons\\shells_generic",m_pParent->Sector(),true);
+	CPSObject* PS				= new CPSObject("weapons\\shells_generic",H_Parent()->Sector(),true);
 	Fmatrix M;
 	M.setHPB(PS->m_Emitter.m_ConeHPB.x, PS->m_Emitter.m_ConeHPB.y, PS->m_Emitter.m_ConeHPB.z);
 	Fvector V; M.transform_dir(V,vLastFD);

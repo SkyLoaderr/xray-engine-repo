@@ -191,7 +191,7 @@ void CWeaponM134::UpdateXForm(BOOL bHUDView)
 			}
 		} else {
 			Fmatrix mRes;
-			CKinematics* V	= PKinematics(m_pParent->Visual());
+			CKinematics* V	= PKinematics		(H_Parent()->Visual());
 			V->Calculate	();
 			Fmatrix& mL		= V->LL_GetTransform(m_pContainer->m_iACTboneL);
 			Fmatrix& mR		= V->LL_GetTransform(m_pContainer->m_iACTboneR);
@@ -201,7 +201,7 @@ void CWeaponM134::UpdateXForm(BOOL bHUDView)
 			R.crossproduct	(mR.j,D);		R.normalize_safe();
 			N.crossproduct	(D,R);			N.normalize_safe();
 			mRes.set		(R,N,D,mR.c);
-			mRes.mulA		(m_pParent->clXFORM());
+			mRes.mulA		(H_Parent()->clXFORM());
 			UpdatePosition	(mRes);
 		}
 	}
@@ -314,7 +314,7 @@ void CWeaponM134::Update	(float dt, BOOL bHUDView)
 		{
 			fTime-=dt;
 			Fvector p1, d;
-			m_pParent->g_fireParams(p1,d);
+			dynamic_cast<CEntity*>(H_Parent())->g_fireParams(p1,d);
 
 			while ((fTime<0)  && iAmmoElapsed)
 			{

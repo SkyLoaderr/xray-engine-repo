@@ -27,7 +27,8 @@ void CWeaponHPSA::switch2_Fire	(BOOL bHUDView)
 {
 	// Fire
 	Fvector						p1, d;
-	m_pParent->g_fireParams		(p1,d);
+	CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
+	if (E) E->g_fireParams		(p1,d);
 	bFlame						=	TRUE;
 	OnShot						(bHUDView);
 	FireTrace					(p1,vLastFP,d);
