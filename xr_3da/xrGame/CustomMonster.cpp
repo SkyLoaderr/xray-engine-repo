@@ -9,6 +9,7 @@
 #include "xr_weapon_list.h"
 #include "customitem.h"
 #include "hudmanager.h"
+#include "ai_funcs.h"
 
 DWORD psAI_Flags	= 0;
 ENGINE_API extern float psGravity;
@@ -52,11 +53,14 @@ CCustomMonster::CCustomMonster()
 	eye_pp_stage		= 0;
 	m_tpPath			= 0;
 	vfResetPatrolData	();
+	dwFunctionCount		= 6;
+	fpaTypeFunctions	= (CPatternFunction **)xr_malloc(dwFunctionCount*sizeof(CPatternFunction *));
 }
 
 CCustomMonster::~CCustomMonster	()
 {
 	_DELETE		(Weapons);
+	FREE(fpaTypeFunctions);
 
 #ifdef DEBUG
 	Device.seqRender.Remove	(this);
