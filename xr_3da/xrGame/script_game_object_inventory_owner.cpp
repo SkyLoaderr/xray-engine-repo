@@ -179,3 +179,22 @@ void CScriptGameObject::SetStartDialog(LPCSTR dialog_id)
 	if(!pDialogManager) return;
 	pDialogManager->SetStartDialog(dialog_id);
 }
+
+LPCSTR CScriptGameObject::CharacterName			()
+{
+	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	VERIFY(pInventoryOwner);
+	return pInventoryOwner->CharacterInfo().Name();
+}
+LPCSTR CScriptGameObject::CharacterRank			()
+{
+	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	VERIFY(pInventoryOwner);
+	return pInventoryOwner->CharacterInfo().Rank();
+}
+LPCSTR CScriptGameObject::CharacterCommunity	()
+{
+	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	VERIFY(pInventoryOwner);
+	return pInventoryOwner->CharacterInfo().Community();
+}

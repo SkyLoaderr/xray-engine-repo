@@ -185,6 +185,11 @@ public:
 			void				SetGoodwill			(int goodwill, CScriptGameObject* pWhoToSet);
 			void				SetRelation			(ALife::ERelationType relation, CScriptGameObject* pWhoToSet);
 			void				SetStartDialog		(LPCSTR dialog_id);
+
+			LPCSTR				CharacterName		();
+			LPCSTR				CharacterRank		();
+			LPCSTR				CharacterCommunity	();
+
 			
 			u32					GetInventoryObjectCount() const;
 

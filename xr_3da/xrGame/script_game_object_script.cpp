@@ -270,6 +270,11 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("set_relation",				&CScriptGameObject::SetRelation)
 			.def("set_start_dialog",			&CScriptGameObject::SetStartDialog)
 
+			.def("character_name",				&CScriptGameObject::CharacterName)
+			.def("character_rank",				&CScriptGameObject::CharacterRank)
+			.def("character_community",			&CScriptGameObject::CharacterCommunity)
+			
+
 			//////////////////////////////////////////////////////////////////////////
 			// Trader
 			//////////////////////////////////////////////////////////////////////////

@@ -181,6 +181,7 @@ void CWeaponMagazinedWGrenade::SwitchMode()
 		if(SingleShotMode())
 			inherited::SwitchMode();
 	}*/
+	m_dwAmmoCurrentCalcFrame = 0;
 }
 
 void  CWeaponMagazinedWGrenade::PerformSwitch()
