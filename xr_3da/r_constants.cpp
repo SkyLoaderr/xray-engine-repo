@@ -90,7 +90,7 @@ BOOL	R_constant_table::parse	(D3DXSHADER_CONSTANTTABLE* desc, u16 destination)
 		if (0==C)	{
 			C					=	g_constant_allocator.create();
 			strcpy				(C->name,name);
-			C->destination		|=	destination;
+			C->destination		=	destination;
 			C->type				=	type;
 			R_constant_load& L	=	(destination&1)?C->ps:C->vs;
 			L.index				=	r_index;
@@ -107,4 +107,30 @@ BOOL	R_constant_table::parse	(D3DXSHADER_CONSTANTTABLE* desc, u16 destination)
 	}
 	std::sort	(table.begin(),table.end(),p_sort);
 	return		TRUE;
+}
+
+void R_constant_table::merge(R_constant_table* T)
+{
+	for (u32 it=0; it<T->table.size(); it++)
+	{
+		R_constant*	src			=	T->table[it];
+		R_constant*	C			=	get	(src->name);
+		if (0==C)	{
+			C					=	g_constant_allocator.create();
+			strcpy				(C->name,src->name);
+			C->destination		=	src->destination;
+			C->type				=	src->type;
+			C->ps				=	src->ps;
+			C->vs				=	src->vs;
+			table.push_back		(C);
+		} else {
+			C->destination		|=	src->destination;
+			VERIFY	(C->type	==	src->type);
+			R_constant_load& sL	=	(src->destination&1)?src->ps:src->vs;
+			R_constant_load& dL	=	(src->destination&1)?C->ps:C->vs;
+			dL.index			=	sL.index;
+			dL.cls				=	sL.cls;
+		}
+	}
+	std::sort	(table.begin(),table.end(),p_sort);
 }

@@ -53,22 +53,25 @@ void	CBlender_Compile::PassBegin		()
 	passTextures.clear		();
 	passMatrices.clear		();
 	passConstants.clear		();
+	strcpy					(pass_ps,"null");
+	strcpy					(pass_vs,"null");
 	dwStage					= 0;
 }
+
 void	CBlender_Compile::PassEnd			()
 {
 	// Last Stage - disable
-	RS.SetTSS		(Stage(),D3DTSS_COLOROP,D3DTOP_DISABLE);
-	RS.SetTSS		(Stage(),D3DTSS_ALPHAOP,D3DTOP_DISABLE);
+	RS.SetTSS				(Stage(),D3DTSS_COLOROP,D3DTOP_DISABLE);
+	RS.SetTSS				(Stage(),D3DTSS_ALPHAOP,D3DTOP_DISABLE);
 
 	// Create pass
-	SPS* ps					= Device.Shader._CreatePS			("null");
-	SVS* vs					= Device.Shader._CreateVS			("null");
+	SPS* ps					= Device.Shader._CreatePS			(pass_ps);
+	SVS* vs					= Device.Shader._CreateVS			(pass_vs);
 
 	SPass					P;
 	P.ps					= ps->ps;
 	P.vs					= vs->vs;
-	P.constants				= NULL;
+	P.constants				= Device.Shader._CreateConstantTable(ps->constants,vs->constants);
 	P.state					= Device.Shader._CreateState		(RS.GetContainer());
 	P.T						= Device.Shader._CreateTextureList	(passTextures);
 	P.M						= Device.Shader._CreateMatrixList	(passMatrices);

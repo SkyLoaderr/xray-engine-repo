@@ -32,6 +32,9 @@ private:
 	SConstantList		passConstants;
 	u32					dwStage;
 
+	string128			pass_vs;
+	string128			pass_ps;
+
 	u32					BC					(BOOL v)	{ return v?0xff:0; }
 public:
 	CSimulator&			R()					{ return RS; }
@@ -47,6 +50,7 @@ public:
 	void				PassSET_Blend_MUL	()	{ PassSET_Blend	(TRUE, D3DBLEND_DESTCOLOR,D3DBLEND_ZERO,FALSE,0);		}
 	void				PassSET_Blend_MUL2X	()	{ PassSET_Blend	(TRUE, D3DBLEND_DESTCOLOR,D3DBLEND_SRCCOLOR,FALSE,0);	}
 	void				PassSET_LightFog	(BOOL bLight, BOOL bFog);
+	void				PassSET_VS			(LPCSTR name);
 	void				PassEnd				();
 	void				PassTemplate_Detail	(LPCSTR T);
 

@@ -23,6 +23,11 @@ struct	R_constant_load
 	u16						cls;		// element class
 
 	R_constant_load() : index(u16(-1)), cls(u16(-1)) {};
+
+	IC BOOL					equal		(R_constant_load& C)
+	{
+		return (index==C.index) && (cls == C.cls);
+	}
 };
 
 struct	R_constant 
@@ -35,16 +40,41 @@ struct	R_constant
 	R_constant_load			vs;
 
 	R_constant() : type(u16(-1)), destination(0) { name[0]=0; };
+
+	IC BOOL					equal		(R_constant& C)
+	{
+		return (0==strcmp(name,C.name)) && (type==C.type) && (destination==C.destination) && ps.equal(C.ps) && vs.equal(C.vs);
+	}
+	IC BOOL					equal		(R_constant* C)
+	{
+		return equal(*C);
+	}
 };
 
 class	R_constant_table
 {
 private:
-	typedef svector<R_constant*,32>	c_table;
+	typedef svector<R_constant*,32>		c_table;
 
 	c_table					table;
 	void					fatal		(LPCSTR s);
 public:
 	BOOL					parse		(D3DXSHADER_CONSTANTTABLE* desc, u16 destination);
+	void					merge		(R_constant_table* C);
 	R_constant*				get			(LPCSTR name);
+
+	IC BOOL					equal		(R_constant_table& C)
+	{
+		if (table.size() != C.table.size())	return FALSE;
+		u32 size			= table.size();
+		for (u32 it=0; it<size; it++)
+		{
+			if (!table[it]->equal(C.table[it]))	return FALSE;
+		}
+		return TRUE;
+	}
+	IC BOOL					equal		(R_constant_table* C)
+	{
+		return equal(*C);
+	}
 };
