@@ -169,6 +169,7 @@ USEFORM("DOOneColor.cpp", frmOneColor);
 USEUNIT("edit\DetailObjectsRender.cpp");
 USEFORM("PropertiesDetailObject.cpp", frmPropertiesDO);
 USEUNIT("edit\DetailObjectsPick.cpp");
+USE("!TODO.txt", File);
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
