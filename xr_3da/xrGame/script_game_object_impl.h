@@ -18,10 +18,12 @@ IC	CGameObject &CScriptGameObject::object	() const
 		return	(*m_game_object);
 
 #ifdef DEBUG
-	if (ai().script_engine().script_stack_tracker().lua())
+	if (ai().script_engine().script_stack_tracker().lua()) {
 		ai().script_engine().script_stack_tracker().print_stack(
 			ai().script_engine().script_stack_tracker().lua()
 		);
+		Msg	("! you are trying to use a destroyed object [%x]",m_game_object);
+	}
 	VERIFY2	(m_game_object && m_game_object->lua_game_object() == this,"Probably, you are trying to use a destroyed object!");
 #endif
 	return	(*m_game_object);

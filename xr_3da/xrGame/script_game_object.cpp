@@ -29,6 +29,7 @@
 #include "ai_object_location.h"
 #include "custommonster.h"
 #include "entitycondition.h"
+#include "space_restrictor.h"
 
 class CScriptBinderObject;
 
@@ -467,4 +468,19 @@ void CScriptGameObject::eat				(CScriptGameObject *item)
 	}
 	
 	inventory_owner->inventory().Eat(inventory_item);
+}
+
+bool CScriptGameObject::inside					(const Fvector &position, float epsilon) const
+{
+	CSpaceRestrictor		*space_restrictor = smart_cast<CSpaceRestrictor*>(&object());
+	if (!space_restrictor) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CSpaceRestrictor : cannot access class member inside!");
+		return			(false);
+	}
+	return				(space_restrictor->inside(position,epsilon));
+}
+
+bool CScriptGameObject::inside					(const Fvector &position) const
+{
+	return				(inside(position,EPS_L));
 }

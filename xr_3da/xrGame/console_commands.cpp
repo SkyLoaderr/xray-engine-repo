@@ -52,7 +52,7 @@ extern	BOOL	g_ShowAnimationInfo		;
 		int		g_dwEventDelay			= 0	;
 		int		net_cl_inputupdaterate	= 50;
 #ifdef DEBUG
-		Flags32	dbg_net_Draw_Flags			= {0};
+		Flags32	dbg_net_Draw_Flags		= {0};
 #endif
 
 #ifdef DEBUG
@@ -1533,6 +1533,7 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,				"ai_dbg_vision",		&psAI_Flags,	aiVision);
 	CMD3(CCC_Mask,				"ai_dbg_monster",		&psAI_Flags,	aiMonsterDebug);
 	CMD3(CCC_Mask,				"ai_stats",				&psAI_Flags,	aiStats);
+	CMD3(CCC_Mask,				"ai_dbg_destroy",		&psAI_Flags,	aiDestroy);
 	CMD4(CCC_Integer,			"ai_dbg_inactive_time",	&g_AI_inactive_time, 0, 1000000);
 	
 	CMD1(CCC_DebugNode,			"ai_dbg_node");
@@ -1550,9 +1551,9 @@ void CCC_RegisterCommands()
 	// Physics
 	CMD4(CCC_Integer,			"ph_fps",						&phFPS						,			10,		100				);
 	CMD1(CCC_PHIterations,		"ph_iterations"																					);
-	CMD4( CCC_FloatBlock,		"ph_timefactor",				&phTimefactor				,			0.0001f	,1000.f			);
-	CMD4( CCC_FloatBlock,		"ph_break_common_factor",		&phBreakCommonFactor		,			0.f		,1000000000.f	);
-	CMD4( CCC_FloatBlock,		"ph_rigid_break_weapon_factor",	&phRigidBreakWeaponFactor	,			0.f		,1000000000.f	);
+	CMD4(CCC_FloatBlock,		"ph_timefactor",				&phTimefactor				,			0.0001f	,1000.f			);
+	CMD4(CCC_FloatBlock,		"ph_break_common_factor",		&phBreakCommonFactor		,			0.f		,1000000000.f	);
+	CMD4(CCC_FloatBlock,		"ph_rigid_break_weapon_factor",	&phRigidBreakWeaponFactor	,			0.f		,1000000000.f	);
 	CMD4(CCC_FloatBlock,		"snd_collide_max_volume",		&collide_volume_max			,			1.f		,5000.f			);
 	CMD4(CCC_FloatBlock,		"snd_collide_min_volume",		&collide_volume_min 		,			0.f		,5000.f			);
 	// Mad Max
@@ -1606,13 +1607,14 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Integer,	"center_x",				&x_m_x,	-1000,	1000);
 	CMD4(CCC_Integer,	"center_y",				&x_m_z,	-1000,	1000);
 
-	CMD3(CCC_Mask,		"dbg_draw_actor_alive",	&dbg_net_Draw_Flags,	(1<<0));
-	CMD3(CCC_Mask,		"dbg_draw_actor_dead",	&dbg_net_Draw_Flags,	(1<<1));
-	CMD3(CCC_Mask,		"dbg_draw_customzone",	&dbg_net_Draw_Flags,	(1<<2));
-	CMD3(CCC_Mask,		"dbg_draw_teamzone",	&dbg_net_Draw_Flags,	(1<<3));
-	CMD3(CCC_Mask,		"dbg_draw_invitem",		&dbg_net_Draw_Flags,	(1<<4));
-	CMD3(CCC_Mask,		"dbg_draw_actor_phys",	&dbg_net_Draw_Flags,	(1<<5));
+	CMD3(CCC_Mask,		"dbg_draw_actor_alive",		&dbg_net_Draw_Flags,	(1<<0));
+	CMD3(CCC_Mask,		"dbg_draw_actor_dead",		&dbg_net_Draw_Flags,	(1<<1));
+	CMD3(CCC_Mask,		"dbg_draw_customzone",		&dbg_net_Draw_Flags,	(1<<2));
+	CMD3(CCC_Mask,		"dbg_draw_teamzone",		&dbg_net_Draw_Flags,	(1<<3));
+	CMD3(CCC_Mask,		"dbg_draw_invitem",			&dbg_net_Draw_Flags,	(1<<4));
+	CMD3(CCC_Mask,		"dbg_draw_actor_phys",		&dbg_net_Draw_Flags,	(1<<5));
 	CMD3(CCC_Mask,		"dbg_draw_customdetector",	&dbg_net_Draw_Flags,	(1<<6));
+	CMD3(CCC_Mask,		"dbg_destroy",				&dbg_net_Draw_Flags,	(1<<7));
 
 #endif
 

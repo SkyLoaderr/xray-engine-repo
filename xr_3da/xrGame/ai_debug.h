@@ -23,4 +23,5 @@
 #	define aiVision			(1<<10)
 #	define aiMonsterDebug	(1<<11)
 #	define aiStats			(1<<12)
+#	define aiDestroy		(1<<13)
 #endif

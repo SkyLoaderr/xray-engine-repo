@@ -22,6 +22,7 @@
 #include "../skeletoncustom.h"
 #include "ai_object_location_impl.h"
 #include "game_graph.h"
+#include "ai_debug.h"
 
 #define OBJECT_REMOVE_TIME 180000
 //////////////////////////////////////////////////////////////////////
@@ -100,6 +101,11 @@ void CGameObject::net_Destroy	()
 {
 	if (!frame_check(m_dwFrameDestroy))
 		return;
+
+#ifdef DEBUG
+	if (psAI_Flags.test(aiDestroy))
+		Msg					("Destroying client object [%d][%s][%x]",ID(),*cName(),this);
+#endif
 
 	VERIFY					(m_spawned);
 
@@ -514,6 +520,10 @@ void __stdcall VisualCallback(CKinematics *tpKinematics)
 
 CScriptGameObject *CGameObject::lua_game_object		() const
 {
+#ifdef DEBUG
+	if (!m_spawned)
+		Msg							("! you are trying to use a destroyed object [%x]",this);
+#endif
 	VERIFY							(m_spawned);
 	if (!m_lua_game_object)
 		m_lua_game_object			= xr_new<CScriptGameObject>(const_cast<CGameObject*>(this));
