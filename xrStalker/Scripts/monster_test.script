@@ -12,8 +12,7 @@ function main()
 
 	while true do
 		action( monster,
-			move	(move.run_fwd), 
-			patrol	("way", patrol.next, patrol.continue),
+			move	(move.run_fwd, patrol("way", patrol.next, patrol.continue)), 
 			cond	(cond.move_end)
 		)
 
