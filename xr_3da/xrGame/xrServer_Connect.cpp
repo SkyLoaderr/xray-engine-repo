@@ -29,7 +29,7 @@ BOOL xrServer::Connect(LPCSTR session_name)
 		if (0==strchr(options,'/'))			return FALSE;
 		string64				type;
 		strcpy					(type,strchr(options,'/')+1);
-		game								= NULL;
+		game					= NULL;
 		switch (_ParseItem(type,game_type_token))
 		{
 		case GAME_SINGLE:	
@@ -45,5 +45,9 @@ BOOL xrServer::Connect(LPCSTR session_name)
 			return				FALSE;
 			break;
 		}
+
+		// Options
+		if (0==game)				return FALSE;
+		game->Create				(options);
 	}
 }

@@ -84,6 +84,7 @@ public:
 
 	// main
 	virtual BOOL			Connect				(LPCSTR		session_name);
+	virtual void			Disconnect			();
 	void					Update				();
 	void					SLS_Default			();
 	void					SLS_Save			(CFS_Base& FS);
