@@ -532,8 +532,8 @@ void CGameObject::add_visual_callback		(visual_callback *callback)
 	CALLBACK_VECTOR_IT			I = std::find(visual_callbacks().begin(),visual_callbacks().end(),callback);
 	VERIFY						(I == visual_callbacks().end());
 
-	if (m_visual_callback.empty())
-		PKinematics(Visual())->Callback(VisualCallback,this);
+	if (m_visual_callback.empty())	SetKinematicsCallback(true);
+//		PKinematics(Visual())->Callback(VisualCallback,this);
 	m_visual_callback.push_back	(callback);
 }
 
@@ -542,9 +542,17 @@ void CGameObject::remove_visual_callback	(visual_callback *callback)
 	CALLBACK_VECTOR_IT			I = std::find(m_visual_callback.begin(),m_visual_callback.end(),callback);
 	VERIFY						(I != m_visual_callback.end());
 	m_visual_callback.erase		(I);
-	if (m_visual_callback.empty())
-		PKinematics(Visual())->Callback(0,0);
+	if (m_visual_callback.empty())	SetKinematicsCallback(false);
+//		PKinematics(Visual())->Callback(0,0);
 }
+
+void CGameObject::SetKinematicsCallback		(bool set)
+{
+	if (set)
+		PKinematics(Visual())->Callback(VisualCallback,this);
+	else
+		PKinematics(Visual())->Callback(0,0);
+};
 
 void __stdcall VisualCallback(CKinematics *tpKinematics)
 {

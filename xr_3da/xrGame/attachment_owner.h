@@ -26,6 +26,7 @@ public:
 			void			detach				(CInventoryItem *inventory_item);
 	virtual	bool			can_attach			(const CInventoryItem *inventory_item) const;
 			bool			attached			(const CInventoryItem *inventory_item) const;
+	virtual void			reattach_items		();
 	IC		const xr_vector<CAttachableItem*> &attached_objects	() const;
 };
 

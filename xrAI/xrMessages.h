@@ -69,6 +69,10 @@ enum {
 	GEG_PLAYER_KILL,			//player wants to die
 	GEG_PLAYER_BUY_FINISHED,	//player end to buy items
 	GEG_PLAYER_CHANGE_SKIN,
+	
+	GEG_PLAYER_ITEM2SLOT,
+	GEG_PLAYER_ITEM2BELT,
+	GEG_PLAYER_ITEM2RUCK,
 
 	GE_FORCEDWORD				= u32(-1)
 };

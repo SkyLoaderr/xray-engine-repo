@@ -136,12 +136,18 @@ void	CCustomOutfit::OnMoveToSlot		()
 					}
 				}
 				
+				if (NewVisual == NULL || *NewVisual == NULL)
+					NewVisual = m_ActorVisual;
+
+				pActor->ChangeVisual(NewVisual);
+/*
 				if (NewVisual != NULL) 
 					pActor->cNameVisual_set(NewVisual);
 				else
 					pActor->cNameVisual_set(m_ActorVisual);
 
 				pActor->OnChangeVisual();
+				*/
 			}
 		}
 	}
@@ -159,9 +165,12 @@ void	CCustomOutfit::OnMoveToRuck		()
 				ref_str DefVisual = pActor->GetDefaultVisualOutfit();
 				if (DefVisual != NULL)
 				{
+					pActor->ChangeVisual(DefVisual);
+/*
 					pActor->cNameVisual_set(DefVisual);
 
 					pActor->OnChangeVisual();
+*/
 				};
 			}
 		}

@@ -147,6 +147,8 @@ public:
 public:
 			void			add_visual_callback		(visual_callback *callback);
 			void			remove_visual_callback	(visual_callback *callback);
+			void			SetKinematicsCallback	(bool set);
+
 	IC		CALLBACK_VECTOR &visual_callbacks	()
 	{
 		return				(m_visual_callback);

@@ -586,6 +586,22 @@ void	CActor::OnChangeVisual()
 	m_r_hand				= PKinematics(Visual())->LL_BoneID("bip01_r_hand");
 	m_l_finger1				= PKinematics(Visual())->LL_BoneID("bip01_l_finger1");
 	m_r_finger2				= PKinematics(Visual())->LL_BoneID("bip01_r_finger2");
+	//-------------------------------------------------------------------------------
+	reattach_items();
+	//-------------------------------------------------------------------------------
+};
+
+void	CActor::ChangeVisual			( ref_str NewVisual )
+{
+	if (NewVisual == NULL || !(*NewVisual)) return;
+	if (cNameVisual() != NULL && (*cNameVisual()))
+	{
+		if (cNameVisual() == NewVisual) return;
+	}
+
+	cNameVisual_set(NewVisual);
+
+	OnChangeVisual();
 };
 
 void CActor::net_Relcase	(CObject* O)

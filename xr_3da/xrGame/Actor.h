@@ -477,6 +477,8 @@ public:
 	virtual	ref_str			GetDefaultVisualOutfit	() const	{return m_DefaultVisualOutfit;};
 	virtual	void			SetDefaultVisualOutfit	(ref_str DefaultOutfit) {m_DefaultVisualOutfit = DefaultOutfit;};
 	virtual void			UpdateAnimation			() 	{ g_SetAnimation(mstate_real); };
+
+	virtual void			ChangeVisual			( ref_str NewVisual );
 	virtual void			OnChangeVisual			();
 	
 

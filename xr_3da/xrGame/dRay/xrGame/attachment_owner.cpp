@@ -131,13 +131,19 @@ bool CAttachmentOwner::can_attach			(const CInventoryItem *inventory_item) const
 
 void CAttachmentOwner::reattach_items		()
 {
+	CGameObject							*game_object = dynamic_cast<CGameObject*>(this);
+	VERIFY								(game_object && game_object->Visual());
+
 	xr_vector<CAttachableItem*>::const_iterator	I = m_attached_objects.begin();
 	xr_vector<CAttachableItem*>::const_iterator	E = m_attached_objects.end();
 	for ( ; I != E; ++I) {
 		CAttachableItem* attachable_item = *I;
 		VERIFY (attachable_item);
-		CGameObject							*game_object = dynamic_cast<CGameObject*>(this);
-		VERIFY								(game_object && game_object->Visual());
 		attachable_item->set_bone_id		(PKinematics(game_object->Visual())->LL_BoneID(attachable_item->bone_name()));
 	}
+	//---------------------------------------------------------------------------
+	if (m_attached_objects.empty())
+		game_object->SetKinematicsCallback(false);
+	else
+		game_object->SetKinematicsCallback(true);
 }
