@@ -74,6 +74,7 @@ public:
 	virtual void			OnMessage				(void* data, u32 size);
 	BOOL					net_HasBandwidth		();
 	void					ClearStatistic			();
+	IClientStatistic		GetStatistic			() const {return  net_Statistic; }
 	
 	// time management
 	IC u32					timeServer				()	{ return TimeGlobal(device_timer) + net_TimeDelta + net_TimeDelta_User; }
