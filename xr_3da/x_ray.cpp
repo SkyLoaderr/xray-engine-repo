@@ -509,7 +509,7 @@ void CApplication::Level_Scan()
 			LI.name				= 0;
 			Levels.push_back	(LI);
 		} else {
-			Msg		("! Level not compiled: %s",(*folder)[i]);
+			// Msg		("! Level not compiled: %s",(*folder)[i]);
 		}
 	}
 	FS.file_list_close	(folder);
