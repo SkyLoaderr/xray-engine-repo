@@ -82,8 +82,45 @@ public:
 			fs.Wdword(dwVertCount);	// Number of vertices
 			fs.write(vContainers[i].begin(),dwTotalSize);
 		}
-		FVF.clear();
-		vContainers.clear();
+		FVF.clear			();
+		vContainers.clear	();
+	}
+};
+
+class IBContainer
+{
+	vector<vector<WORD> >	data;
+public:
+	void	Register		(WORD* begin, WORD* end, DWORD* dwContainerID, DWORD *dwStart)
+	{
+		DWORD size				= end-begin;
+
+		// 
+		for	(int ID=0; ID<data.size(); ID++)
+		{
+			if ((data[ID].size()+size) < 65535)	
+			{
+				*dwContainerID	= ID;
+				*dwStart		= data[ID].size();
+				data[ID].insert	(data[ID].end(),begin,end);
+			}
+		}
+
+		// Can't find suitable container - register new
+		*dwContainerID		= data.size();
+		*dwStart			= 0;
+		data.push_back		(vector<WORD> ());
+		data.back().assign	(begin,end);
+	}
+	void	Save	(CFS_Base &fs)
+	{
+		fs.Wdword	(data.size());
+		for (DWORD i=0; i<data.size(); i++)
+		{
+			fs.Wdword	(data[i].size());
+			fs.write	(data[i].begin(),data[i].end,data[i].size()*2);
+		}
+		data.clear	();
 	}
 };
 
