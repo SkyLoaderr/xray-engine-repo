@@ -34,7 +34,6 @@ CAI_Soldier::CAI_Soldier()
 	m_fAggressiveness = ::Random.randF(0,1);
 	m_fTimorousness = ::Random.randF(0,1);
 	m_bFiring = false;
-	m_tpEventSay = Engine.Event.Handler_Attach	("level.entity.say",this);
 	m_bLessCoverLook = false;
 	q_look.o_look_speed = _FB_look_speed;
 	m_tpCurrentGlobalAnimation = 
@@ -47,6 +46,8 @@ CAI_Soldier::CAI_Soldier()
 	m_tpCurrentLegsBlend = 0;
 	m_bActionStarted = false;
 	m_bJumping = false;
+	// event handlers
+	m_tpEventSay = Engine.Event.Handler_Attach("level.entity.say",this);
 }
 
 CAI_Soldier::~CAI_Soldier()
