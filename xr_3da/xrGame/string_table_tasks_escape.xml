@@ -89,10 +89,14 @@
 	</string>
 
 	<string id="esc_dinamit_to_volk_1">
-		<text>Найти динамит на фабрике.</text>
+		<text>Встретиться с людьми Волка.</text>
 	</string>
 
 	<string id="esc_dinamit_to_volk_2">
+		<text>Найти динамит на фабрике.</text>
+	</string>
+
+	<string id="esc_dinamit_to_volk_3">
 		<text>Принести динамит Волку.</text>
 	</string>
 

@@ -180,6 +180,15 @@
 		</location>
 		<task>esc_dinamit_to_volk</task>
 	</info_portion>
+	<info_portion id="escape_dynamite_meet">
+		<location>
+			<level>l01_escape</level>
+			<x>10</x>
+			<y>-26</y>
+			<icon name="" x="0" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<text>Встретиться с ребятами Волка.</text>
+		</location>
+	</info_portion>
 	<info_portion id="escape_dynamite_have">
 		<location>
 			<level>l01_escape</level>
@@ -188,6 +197,7 @@
 			<text>Принести динамит для Волку.</text>
 		</location>
 		<disable>escape_dynamite_start</disable>
+		<disable>escape_dynamite_meet</disable>
 	</info_portion>
 	<info_portion id="escape_dynamite_done">
 		<disable>escape_dynamite_start</disable>

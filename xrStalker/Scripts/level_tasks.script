@@ -59,7 +59,7 @@ function proceed(actor)
 	   actor:object("dynamite") ~= nil
 	then
 		actor:give_info_portion("escape_dynamite_have")
-		actor:set_task_state(task.completed, "esc_dinamit_to_volk", 1)
+		actor:set_task_state(task.completed, "esc_dinamit_to_volk", 2)
 	end
 
 	--' GARBAGE
