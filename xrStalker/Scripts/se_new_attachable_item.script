@@ -8,3 +8,7 @@ function CSE_NewAttachableItem:__finalize()
 	log		("CSE_NewAttachableItem::~CSE_NewAttachableItem called!")
 end
 
+function CSE_NewAttachableItem:init()
+	return	(self)
+end
+
