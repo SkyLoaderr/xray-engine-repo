@@ -47,10 +47,10 @@ BOOL CAI_Idol::net_Spawn			(LPVOID DC)
 	m_body.current.yaw				= m_body.target.yaw	= -tpIdol->o_Angle.y;
 	m_body.current.pitch			= m_body.target.pitch	= 0;
 	
-	u32								N = _GetItemCount(tpIdol->m_caAnimations);
+	u32								N = _GetItemCount(*tpIdol->m_caAnimations);
 	string32						I;
 	for (u32 i=0; i<N; ++i)
-		m_tpaAnims.push_back		(PSkeletonAnimated(Visual())->ID_Cycle(_GetItem(tpIdol->m_caAnimations,i,I)));
+		m_tpaAnims.push_back		(PSkeletonAnimated(Visual())->ID_Cycle(_GetItem(*tpIdol->m_caAnimations,i,I)));
 
 	return							TRUE;
 }

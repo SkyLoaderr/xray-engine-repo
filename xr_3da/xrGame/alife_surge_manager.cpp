@@ -414,8 +414,8 @@ void CALifeSurgeManager::buy_supplies(CSE_ALifeTrader &tTrader)
 	TRADER_SUPPLY_IT				E = tTrader.m_tpSupplies.end();
 	for ( ; I != E; ++I) {
 		// choosing item to purchase
-		u32							l_dwIndex = randI(_GetItemCount((*I).m_caSections));
-		_GetItem					((*I).m_caSections,l_dwIndex,S);
+		u32							l_dwIndex = randI(_GetItemCount(*(*I).m_caSections));
+		_GetItem					(*(*I).m_caSections,l_dwIndex,S);
 		
 		// checking if item dependent discoveries are invented
 		LPCSTR						l_caItemDependencies = pSettings->r_string(S,"discovery_dependency");
