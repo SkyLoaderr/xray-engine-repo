@@ -88,25 +88,25 @@ void CPlanner::execute				()
 //		return;
 //	}
 //
-//	if (path().empty())
+//	if (solution().empty())
 //		return;
 //
 //	for (;;) {
 //		if (
-//			(internal_state(path().front()).priority() <= internal_state(path().back()).priority()) 
+//			(internal_state(solution().front()).priority() <= internal_state(solution().back()).priority()) 
 //			&& 
-//			!state(path().front()).completed()
+//			!action(solution().front()).completed()
 //			)
 //		{
-//			state(path().front()).execute();
+//			action(solution().front()).execute();
 //			return;
 //		}
 //
-//		state(path().front()).finalize();
+//		action(solution().front()).finalize();
 //		follow_solution			();
-//		state(path().front()).initialize();
-//		state(path().front()).execute();
-//		if (path().size() < 2) {
+//		action(solution().front()).initialize();
+//		action(solution().front()).execute();
+//		if (solution().size() < 2) {
 //			follow_solution		();
 //			break;
 //		}
