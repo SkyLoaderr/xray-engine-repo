@@ -146,17 +146,17 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 {
 	CRender&	RI				=	RImplementation;
 
-//.	if (pVisual->vis.marker		==	RI.marker)	return	;
+	if (pVisual->vis.marker		==	RI.marker)	return	;
 	pVisual->vis.marker			=	RI.marker			;
 
 #if RENDER==R_R1
-//.	if (RI.o.vis_intersect &&	(pVisual->vis.accept_frame!=Device.dwFrame))	return;
+	if (RI.o.vis_intersect &&	(pVisual->vis.accept_frame!=Device.dwFrame))	return;
 	pVisual->vis.accept_frame	=	Device.dwFrame		;
 #endif
 
 	float distSQ;
 	float SSA					=	CalcSSA		(distSQ,pVisual->vis.sphere.P,pVisual);
-//.	if (SSA<=r_ssaDISCARD)		return;
+	if (SSA<=r_ssaDISCARD)		return;
 
 	// Distortive geometry should be marked and R2 special-cases it
 	// a) Allow to optimize RT order
@@ -174,7 +174,7 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 	// Select shader
 	ShaderElement*		sh		= RImplementation.rimp_select_sh_static(pVisual,distSQ);
 	if (0==sh)								return;
-//.	if (!pmask[sh->flags.iPriority/2])		return;
+	if (!pmask[sh->flags.iPriority/2])		return;
 
 	// strict-sorting selection
 	if (sh->flags.bStrictB2F) {
@@ -290,7 +290,7 @@ void CRender::add_leafs_Dynamic(IRender_Visual *pVisual)
 
 void CRender::add_leafs_Static(IRender_Visual *pVisual)
 {
-	//. if (!HOM.visible(pVisual->vis))		return;
+	if (!HOM.visible(pVisual->vis))		return;
 
 	// Visual is 100% visible - simply add it
 	xr_vector<IRender_Visual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
@@ -448,8 +448,8 @@ void CRender::add_Static(IRender_Visual *pVisual, u32 planes)
 	EFC_Visible	VIS;
 	vis_data&	vis			= pVisual->vis;
 	VIS = View->testSAABB	(vis.sphere.P,vis.sphere.R,vis.box.data(),planes);
-	//. if (fcvNone==VIS)		return;
-	//. if (!HOM.visible(vis))	return;
+	if (fcvNone==VIS)		return;
+	if (!HOM.visible(vis))	return;
 
 	// If we get here visual is visible or partially visible
 	xr_vector<IRender_Visual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals

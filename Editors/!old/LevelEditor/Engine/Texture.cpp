@@ -241,7 +241,6 @@ _DDS:
 		IReader*	S			= FS.r_open	(fn);
 		R_ASSERT				(S);
 		R_CHK					(D3DXGetImageInfoFromFileInMemory	(S->pointer(),S->length(),&IMG));
-//.		Msg						("!!! %d : %s",IMG.MipLevels,fn);
 		if (IMG.ResourceType	== D3DRTYPE_CUBETEXTURE)			goto _DDS_CUBE;
 		else														goto _DDS_2D;
 

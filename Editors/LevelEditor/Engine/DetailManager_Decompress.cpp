@@ -190,8 +190,8 @@ Device.Statistic.TEST0.End		();
 			Item.c_hemi						=	DS.r_qclr	(DS.c_hemi,	15);
 			Item.c_sun						=	DS.r_qclr	(DS.c_dir,	15);
 
-			//. hack: RGB = hemi
-			//. Item.c_rgb.add					(ps_r__Detail_rainbow_hemi*Item.c_hemi);
+			//? hack: RGB = hemi
+			//? Item.c_rgb.add					(ps_r__Detail_rainbow_hemi*Item.c_hemi);
 
 			// Vis-sorting
 			if (!UseVS())

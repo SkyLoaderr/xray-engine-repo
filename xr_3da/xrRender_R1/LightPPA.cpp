@@ -260,11 +260,10 @@ void CLightR_Manager::render_spot	()
 
 		//		4. Dump sorting tree
 		//	RCache.set_ClipPlanes					(true,	&L_combine);
-		u32 _dbg_dip	= RCache.stat.calls;
+		RCache.set_Constants	((R_constant_table*)0);
 		if (bHUD)	g_pGameLevel->pHUD->Render_Last		();	
 		RImplementation.r_dsgraph_render_graph			(0);
 		if (bHUD)	RImplementation.r_dsgraph_render_hud();	
-		Msg	("%d : %d",it-selected_spot.begin(),RCache.stat.calls-_dbg_dip);
 		//	RCache.set_ClipPlanes					(false,	&L_combine);
 	}
 	//		??? grass ???
