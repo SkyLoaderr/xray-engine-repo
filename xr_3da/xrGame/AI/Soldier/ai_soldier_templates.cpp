@@ -238,26 +238,133 @@ void CAI_Soldier::vfSetFire(bool bFire, CGroup &Group)
 					Group.m_dwFiring++;
 }
 
-void CAI_Soldier::vfSetMovementType(char cBodyState, float fSpeed)
+void CAI_Soldier::vfSetMovementType(char cBodyState, char cMovementType)
 {
-	switch (cBodyState) {
-		case BODY_STATE_STAND : {
-			StandUp();
-			m_fCurSpeed = fSpeed;
-			r_torso_speed = PI;
-			break;
-		}
-		case BODY_STATE_CROUCH : {
-			Squat();
-			m_fCurSpeed = fSpeed;//m_fCrouchCoefficient*fSpeed;
-			r_torso_speed = 3*PI_DIV_4;
-			break;
-		}
-		case BODY_STATE_LIE : {
-			Lie();
-			m_fCurSpeed = fSpeed;//3*m_fCrouchCoefficient*fSpeed;
-			r_torso_speed = PI_DIV_2;
-			break;
-		}
+	Fvector view = clTransform.k, move;
+	AI_Path.Direction(move); 
+	move.y = view.y = 0; 
+	view.normalize_safe();
+	move.normalize_safe();
+	float dot = view.dotproduct(move);
+	Fvector cross; 
+	cross.crossproduct(view,move);
+	if ((cMovementType == WALK_FORWARD_0) || 
+		(cMovementType == RUN_FORWARD_0) || 
+		(cMovementType == WALK_FORWARD_1) || 
+		(cMovementType == RUN_FORWARD_1) || 
+		(cMovementType == WALK_FORWARD_2) || 
+		(cMovementType == RUN_FORWARD_2) || 
+		(cMovementType == WALK_FORWARD_3) || 
+		(cMovementType == RUN_FORWARD_3) || 
+		(cMovementType == WALK_FORWARD_4)) {
+		m_cMovementType = WALK_NO;
+		m_fCurSpeed = 0.0f;
 	}
+	else
+		switch (cBodyState) {
+			case BODY_STATE_STAND : {
+				StandUp();
+				r_torso_speed = PI;
+				if (dot > .7f) {
+					m_cMovementType = cMovementType;
+					if (cMovementType == WALK_FORWARD_0)
+						m_fCurSpeed = 1.5f;
+					else if (cMovementType == WALK_FORWARD_1)
+						m_fCurSpeed = 1.5f;
+					else if (cMovementType == WALK_FORWARD_2)
+						m_fCurSpeed = 1.8f;
+					else if (cMovementType == WALK_FORWARD_3)
+						m_fCurSpeed = 1.4f;
+					else if (cMovementType == WALK_FORWARD_4)
+						m_fCurSpeed = 1.4f;
+					else if (cMovementType == RUN_FORWARD_0)
+						m_fCurSpeed = 4.0f;
+					else if (cMovementType == RUN_FORWARD_1)
+						m_fCurSpeed = 1.7f;
+					else if (cMovementType == RUN_FORWARD_2)
+						m_fCurSpeed = 3.0f;
+					else
+						m_fCurSpeed = 4.5f;
+				}
+				else 
+					if ((dot <= 0.7f) && (dot >= -0.7f))
+						if (cross.y > 0) {
+							m_fCurSpeed = 0.8f;
+							m_cMovementType = WALK_RIGHT;
+						}
+						else {
+							m_fCurSpeed = 0.8f;
+							m_cMovementType = WALK_LEFT;
+						}
+					else
+						if ((cMovementType == WALK_FORWARD_0) || (cMovementType == RUN_FORWARD_0)) {
+							m_fCurSpeed = 1.3f;
+							m_cMovementType = WALK_BACK_0;
+						}
+						else 
+							if ((cMovementType == WALK_FORWARD_1) || (cMovementType == RUN_FORWARD_1)) {
+								m_fCurSpeed = 0.7f;
+								m_cMovementType = WALK_BACK_1;
+							}
+							else {
+								m_fCurSpeed = 0.7f;
+								m_cMovementType = WALK_BACK_2;
+							}
+				break;
+			}
+			case BODY_STATE_CROUCH : {
+				Squat();
+				r_torso_speed = 3*PI_DIV_4;
+				if (dot > .7f) {
+					m_cMovementType = cMovementType;
+					if (cMovementType == WALK_FORWARD_0)
+						m_fCurSpeed = 0.6f;
+					else
+						m_fCurSpeed = 0.4f;
+				}
+				else 
+					if ((dot <= 0.7f) && (dot >= -0.7f))
+						if (cross.y > 0) {
+							m_fCurSpeed = 0.7f;
+							m_cMovementType = WALK_RIGHT;
+						}
+						else {
+							m_fCurSpeed = 0.7f;
+							m_cMovementType = WALK_LEFT;
+						}
+					else
+						if (cMovementType == WALK_FORWARD_0) {
+							m_fCurSpeed = 0.4f;
+							m_cMovementType = WALK_BACK_0;
+						}
+						else {
+							m_fCurSpeed = 0.4f;
+							m_cMovementType = WALK_BACK_1;
+						}
+				break;
+			}
+			case BODY_STATE_LIE : {
+				Lie();
+				r_torso_speed = PI_DIV_2;
+				if (dot > .7f) {
+					m_fCurSpeed = 0.6f;
+					m_cMovementType = WALK_FORWARD_0;
+				}
+				else 
+					if ((dot <= 0.7f) && (dot >= -0.7f))
+						if (cross.y > 0) {
+							m_fCurSpeed = 1.0f;
+							m_cMovementType = WALK_RIGHT;
+						}
+						else {
+							m_fCurSpeed = 1.0f;
+							m_cMovementType = WALK_LEFT;
+						}
+					else {
+						m_fCurSpeed = 0.7f;
+						m_cMovementType = WALK_BACK_0;
+					}
+				break;
+			}
+		}
 }

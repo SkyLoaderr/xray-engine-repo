@@ -148,7 +148,41 @@ void CAI_Soldier::vfLoadAnimations()
 	//tSoldierAnimations.tLie.tGlobal.tpRaiseHandSign = tpVisualObject->ID_Cycle("lie_sign_0");
 	//tSoldierAnimations.tLie.tGlobal.tpGoAheadSign = tpVisualObject->ID_Cycle("lie_sign_1");
 	//tSoldierAnimations.tLie.tGlobal.tpPointSign = tpVisualObject->ID_Cycle("lie_sign_2");
+
+	memset(m_tpaMovementAnimations,0,sizeof(m_tpaMovementAnimations));
 	
+	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_FORWARD_0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0];
+	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_FORWARD_1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1];
+	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_FORWARD_2] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[2];
+	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_FORWARD_3] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[3];
+	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_FORWARD_4] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[4];
+	
+	m_tpaMovementAnimations[BODY_STATE_STAND][RUN_FORWARD_0] = tSoldierAnimations.tNormal.tGlobal.tpaRunForward[0];
+	m_tpaMovementAnimations[BODY_STATE_STAND][RUN_FORWARD_1] = tSoldierAnimations.tNormal.tGlobal.tpaRunForward[1];
+	m_tpaMovementAnimations[BODY_STATE_STAND][RUN_FORWARD_2] = tSoldierAnimations.tNormal.tGlobal.tpaRunForward[2];
+	m_tpaMovementAnimations[BODY_STATE_STAND][RUN_FORWARD_3] = tSoldierAnimations.tNormal.tGlobal.tpaRunForward[3];
+	
+	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_BACK_0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[0];
+	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_BACK_1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[1];
+	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_BACK_2] = tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[2];
+
+	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_LEFT] = tSoldierAnimations.tNormal.tGlobal.tpWalkLeft;
+	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_RIGHT] = tSoldierAnimations.tNormal.tGlobal.tpWalkRight;
+
+	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_FORWARD_0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0];
+	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_FORWARD_1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1];
+	
+	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_BACK_0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[0];
+	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_BACK_1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[1];
+
+	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_LEFT] = tSoldierAnimations.tNormal.tGlobal.tpWalkLeft;
+	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_RIGHT] = tSoldierAnimations.tNormal.tGlobal.tpWalkRight;
+
+	m_tpaMovementAnimations[BODY_STATE_LIE][WALK_FORWARD_0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0];
+	m_tpaMovementAnimations[BODY_STATE_LIE][WALK_BACK_0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[0];
+	m_tpaMovementAnimations[BODY_STATE_LIE][WALK_LEFT] = tSoldierAnimations.tNormal.tGlobal.tpWalkLeft;
+	m_tpaMovementAnimations[BODY_STATE_LIE][WALK_RIGHT] = tSoldierAnimations.tNormal.tGlobal.tpWalkRight;
+
 	m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpIdle);
 }
 
@@ -529,126 +563,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 				}
 				else {
 					//Msg("moving...");
-					Fvector view = _view, move = _move; 
-					move.y = view.y = 0; 
-					view.normalize_safe();
-					move.normalize_safe();
-					float dot = view.dotproduct(move);
-					
-					if ((speed >= m_fMaxSpeed - EPS_L) && (m_cBodyState == BODY_STATE_STAND) && (dot > .7f)) {
-						for (int i=0; i<4; i++)
-							if (tSoldierAnimations.tNormal.tGlobal.tpaRunForward[i] == m_tpCurrentGlobalAnimation) {
-								tpGlobalAnimation = m_tpCurrentGlobalAnimation;
-								break;
-							}
-						if (!tpGlobalAnimation)
-							tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaRunForward[::Random.randI(0,4)];
-					}
-					else
-						if (dot > .7f)
-							switch (m_cBodyState) {
-								case BODY_STATE_STAND : {
-									switch (eCurrentState) {
-										case aiSoldierPatrolRoute : {
-											for (int i=3; i<5; i++)
-												if (tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[i] == m_tpCurrentGlobalAnimation) {
-													tpGlobalAnimation = m_tpCurrentGlobalAnimation;
-													break;
-												}
-											if (!tpGlobalAnimation)
-												tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[::Random.randI(3,5)];
-											break;
-										}
-										default : {
-											for (int i=0; i<5; i++)
-												if (tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[i] == m_tpCurrentGlobalAnimation) {
-													tpGlobalAnimation = m_tpCurrentGlobalAnimation;
-													break;
-												}
-											if (!tpGlobalAnimation)
-												tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[::Random.randI(0,5)];
-											break;
-										}
-									}
-									break;
-								}
-								case BODY_STATE_CROUCH : {
-									for (int i=0; i<2; i++)
-										if (tSoldierAnimations.tCrouch.tGlobal.tpaWalkForward[i] == m_tpCurrentGlobalAnimation) {
-											tpGlobalAnimation = m_tpCurrentGlobalAnimation;
-											break;
-										}
-									if (!tpGlobalAnimation)
-										tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpaWalkForward[::Random.randI(0,2)];
-									break;
-								}
-								case BODY_STATE_LIE : {
-									tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpWalkForward;
-									break;
-								}
-							}
-						else 
-							if ((dot<=0.7f)&&(dot>=-0.7f)) {
-								Fvector cross; 
-								cross.crossproduct(view,move);
-								if (cross.y > 0)
-									switch (m_cBodyState) {
-										case BODY_STATE_STAND : {
-											tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpWalkRight;
-											break;
-										}
-										case BODY_STATE_CROUCH : {
-											tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpWalkRight;
-											break;
-										}
-										case BODY_STATE_LIE : {
-											tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpWalkRight;
-											break;
-										}
-									}
-								else
-									switch (m_cBodyState) {
-										case BODY_STATE_STAND : {
-											tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpWalkLeft;
-											break;
-										}
-										case BODY_STATE_CROUCH : {
-											tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpWalkLeft;
-											break;
-										}
-										case BODY_STATE_LIE : {
-											tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpWalkLeft;
-											break;
-										}
-									}
-							}
-							else
-								switch (m_cBodyState) {
-									case BODY_STATE_STAND : {
-										for (int i=0; i<3; i++)
-											if (tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[i] == m_tpCurrentGlobalAnimation) {
-												tpGlobalAnimation = m_tpCurrentGlobalAnimation;
-												break;
-											}
-										if (!tpGlobalAnimation)
-											tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[::Random.randI(0,3)];
-										break;
-									}
-									case BODY_STATE_CROUCH : {
-										for (int i=0; i<2; i++)
-											if (tSoldierAnimations.tCrouch.tGlobal.tpaWalkBack[i] == m_tpCurrentGlobalAnimation) {
-												tpGlobalAnimation = m_tpCurrentGlobalAnimation;
-												break;
-											}
-										if (!tpGlobalAnimation)
-											tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpaWalkBack[::Random.randI(0,2)];
-										break;
-									}
-									case BODY_STATE_LIE : {
-										tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpWalkBack;
-										break;
-									}
-								}
+					tpGlobalAnimation = m_tpaMovementAnimations[m_cBodyState][m_cMovementType];
 					//torso
 				}
 			}
@@ -665,6 +580,59 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 		}
 	}
 
+	/**
+	if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0])
+		m_fCurSpeed = 1.5f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1])
+		m_fCurSpeed = 1.5f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[2])
+		m_fCurSpeed = 1.8f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[3])
+		m_fCurSpeed = 1.4f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[4])
+		m_fCurSpeed = 1.4f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaRunForward[0])
+		m_fCurSpeed = 4.0f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaRunForward[1])
+		m_fCurSpeed = 1.7f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaRunForward[2])
+		m_fCurSpeed = 3.0f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaRunForward[3])
+		m_fCurSpeed = 4.5f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[0])
+		m_fCurSpeed = 1.3f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[1])
+		m_fCurSpeed = 0.7f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[2])
+		m_fCurSpeed = 0.7f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpWalkLeft)
+		m_fCurSpeed = 0.8f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpWalkRight)
+		m_fCurSpeed = 0.8f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpWalkForward)
+		m_fCurSpeed = 0.6f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpWalkBack)
+		m_fCurSpeed = 0.7f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpWalkLeft)
+		m_fCurSpeed = 1.0f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpWalkRight)
+		m_fCurSpeed = 1.0f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tCrouch.tGlobal.tpaWalkForward[0])
+		m_fCurSpeed = 0.6f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tCrouch.tGlobal.tpaWalkForward[1])
+		m_fCurSpeed = 0.4f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tCrouch.tGlobal.tpaWalkBack[0])
+		m_fCurSpeed = 0.4f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tCrouch.tGlobal.tpaWalkBack[1])
+		m_fCurSpeed = 0.4f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tCrouch.tGlobal.tpWalkLeft)
+		m_fCurSpeed = 0.7f;
+	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tCrouch.tGlobal.tpWalkRight)
+		m_fCurSpeed = 0.7f;
+	else
+		m_fCurSpeed = 0.0f;
+	/**/
+	
 	/**
 	if (tpTorsoAnimation != m_tpCurrentTorsoAnimation) { 
 		//Msg("restarting animation..."); 

@@ -75,6 +75,24 @@ class CAI_Soldier : public CCustomMonster
 		GESTURE_STATE_GO_AHEAD,
 	};
 
+	enum EMovementTypes {
+		WALK_FORWARD_0=char(0),
+		WALK_FORWARD_1,
+		WALK_FORWARD_2,
+		WALK_FORWARD_3,
+		WALK_FORWARD_4,
+		RUN_FORWARD_0,
+		RUN_FORWARD_1,
+		RUN_FORWARD_2,
+		RUN_FORWARD_3,
+		WALK_BACK_0,
+		WALK_BACK_1,
+		WALK_BACK_2,
+		WALK_LEFT,
+		WALK_RIGHT,
+		WALK_NO,
+	};
+
 	typedef	CCustomMonster inherited;
 
 	protected:
@@ -85,6 +103,7 @@ class CAI_Soldier : public CCustomMonster
 		DWORD					m_dwMaxDynamicSoundsCount;
 		float					m_fSensetivity;
 		int						m_iSoundIndex;
+
 		////////////////////////////////////////////////////////////////////////////
 		// normal animations
 		////////////////////////////////////////////////////////////////////////////
@@ -224,6 +243,8 @@ class CAI_Soldier : public CCustomMonster
 		char				m_cGestureState;
 		float				m_fAddAngle;
 		DWORD				m_dwTimeBeingWaited;
+		char				m_cMovementType;
+		CMotionDef*			m_tpaMovementAnimations[3][WALK_NO];
 		
 		// head turns
 		static void __stdcall HeadSpinCallback(CBoneInstance*);
@@ -404,7 +425,7 @@ class CAI_Soldier : public CCustomMonster
 		bool bfCheckIfCanKillMember();
 		bool bfCheckIfCanKillEnemy();
 		void vfSetFire(bool bFire, CGroup &Group);
-		void vfSetMovementType(char cBodyState, float fSpeed);
+		void vfSetMovementType(char cBodyState, char cMovementType);
 		void vfCheckForSavedEnemy();
 		void vfUpdateDynamicObjects();
 		void SetLook(Fvector tPosition);
