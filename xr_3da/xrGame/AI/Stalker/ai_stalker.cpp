@@ -153,11 +153,19 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	P.w								(&m_tCurGP,					sizeof(m_tCurGP));
 	P.w								(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
 	P.w								(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
+	
 	float							f1;
-	f1								= vPosition.distance_to		(getAI().m_tpaGraph[m_tCurGP].tLocalPoint);
-	P.w								(&f1,						sizeof(f1));
-	f1								= vPosition.distance_to		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
-	P.w								(&f1,						sizeof(f1));
+	if (m_tCurGP != u16(-1)) {
+		f1								= vPosition.distance_to		(getAI().m_tpaGraph[m_tCurGP].tLocalPoint);
+		P.w								(&f1,						sizeof(f1));
+		f1								= vPosition.distance_to		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
+		P.w								(&f1,						sizeof(f1));
+	}
+	else {
+		f1								= 0;
+		P.w								(&f1,						sizeof(f1));
+		P.w								(&f1,						sizeof(f1));
+	}
 }
 
 void CAI_Stalker::net_Import		(NET_Packet& P)
