@@ -6,6 +6,15 @@
     <string id="rad_chief_start_dialog_100">
         <text>Привет!</text>
     </string>
+    <string id="rad_find_deputy_dialog_1_0">
+        <text>Где деньги за задание? </text>
+    </string>
+    <string id="rad_find_deputy_dialog_1_100">
+        <text>Найди моего помошника и будут тебе деньги!</text>
+    </string>
+    <string id="rad_find_deputy_dialog_1_1000">
+        <text>Хорошо, но на этот раз чтоб без обмана!</text>
+    </string>
     <string id="rad_find_stalkers_dialog_1_0">
         <text>Кто ты?</text>
     </string>
