@@ -41,6 +41,8 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 	xrServerEntity*		E	= F_entity_Create(s_name);
 	R_ASSERT			(E);
 	E->Spawn_Read		(P);
+	if (E->s_flags.is(M_SPAWN_UPDATE))
+		E->UPDATE_Read	(P);
 
 	Msg					("CLIENT: Spawn: %s, ID=%d", E->s_name, E->ID);
 

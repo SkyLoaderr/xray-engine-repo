@@ -96,13 +96,19 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 	{
 		// For local ONLY
 		E->Spawn_Write		(Packet,TRUE	);
+		if (E->s_flags.is(M_SPAWN_UPDATE))
+			E->UPDATE_Write	(Packet);
 		SendTo				(CL->ID,Packet,net_flags(TRUE,TRUE));
 
 		// For everybody, except client, which contains authorative copy
 		E->Spawn_Write		(Packet,FALSE	);
+		if (E->s_flags.is(M_SPAWN_UPDATE))
+			E->UPDATE_Write	(Packet);
 		SendBroadcast		(CL->ID,Packet,net_flags(TRUE,TRUE));
 	} else {
 		E->Spawn_Write		(Packet,FALSE	);
+		if (E->s_flags.is(M_SPAWN_UPDATE))
+			E->UPDATE_Write	(Packet);
 		SendBroadcast		(0,		Packet,net_flags(TRUE,TRUE));
 	}
 
