@@ -165,9 +165,9 @@ void CDetailManager::Render		(Fvector& vecEYE)
 
 	// Collect objects for rendering
 	Device.Statistic.RenderDUMP_DT_VIS.Begin	();
-	for (int _z=s_z-dm_size; _z<=(s_z+dm_size); _z++)
+	for (int _z=-dm_size; _z<=dm_size; _z++)
 	{
-		for (int _x=s_x-dm_size; _x<=(s_x+dm_size); _x++)
+		for (int _x=-dm_size; _x<=dm_size; _x++)
 		{
 			// Query for slot
 			Device.Statistic.RenderDUMP_DT_VIS.End		();

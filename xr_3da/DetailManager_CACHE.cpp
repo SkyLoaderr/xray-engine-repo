@@ -17,13 +17,10 @@ void CDetailManager::cache_Initialize	()
 		}
 }
 
-CDetailManager::Slot*	CDetailManager::cache_Query	(int v_x, int v_z)
+CDetailManager::Slot*	CDetailManager::cache_Query	(int r_x, int r_z)
 {
-	// base slot
-	int			dx		= v_x - cache_cx;
-	int			dz		= v_z - cache_cz;
-	int			gx		= dx  - dm_size;	clamp(gx,0,dm_cache_line-1);
-	int			gz		= dz  - dm_size;	clamp(gz,0,dm_cache_line-1);
+	int			gx		= r_x + dm_size;	VERIFY	(gx>=0 && gx<dm_cache_line);
+	int			gz		= r_z + dm_size;	VERIFY	(gz>=0 && gz<dm_cache_line);
 	return		cache	[gz][gx];
 }
 
