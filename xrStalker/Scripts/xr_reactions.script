@@ -876,7 +876,9 @@ function events:isTrash(obj)
 		otype == clsid.obj_bolt or
 		otype == clsid.obj_food or
 		otype == clsid.obj_bottle or
-		otype == clsid.obj_document
+		otype == clsid.obj_document or
+		otype == clsid.rat or
+		otype == clsid.crow
 	then
 		return true
 	else
