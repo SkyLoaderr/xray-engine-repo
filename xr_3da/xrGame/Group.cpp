@@ -73,6 +73,7 @@ void CGroup::Member_Remove(CEntity* E){
 	EntityIt it = std::find(Members.begin(),Members.end(),E);
 	if (Members.end()!=it) {
 		Members.erase(it);
+		agent_manager().remove(E);
 		
 		if (Members.empty())
 			xr_delete	(m_agent_manager);
