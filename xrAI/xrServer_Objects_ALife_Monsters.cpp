@@ -796,6 +796,7 @@ CSE_ALifeCreatureActor::CSE_ALifeCreatureActor	(LPCSTR caSection) : CSE_ALifeCre
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
 		set_visual				(pSettings->r_string(caSection,"visual"));
 	m_u16NumItems				= 0;
+	fArmor						= 0.f;
 }
 
 CSE_ALifeCreatureActor::~CSE_ALifeCreatureActor()
