@@ -18,12 +18,31 @@ struct CCellVertex {
 	}
 };
 
-struct CSector {
-	u32		min_vertex_id;
-	u32		max_vertex_id;
+struct CSector : public IPureSerializeObject<IReader,IWriter> {
+	u32				min_vertex_id;
+	u32				max_vertex_id;
 
-	IC		CSector(int) {}
-	IC		CSector() {}
+	IC				CSector		() {}
+	
+	virtual void	save		(IWriter &stream)
+	{
+		stream.w	(&min_vertex_id,sizeof(min_vertex_id));
+		stream.w	(&max_vertex_id,sizeof(max_vertex_id));
+	}
+	
+	virtual void	load		(IReader &stream)
+	{
+		stream.r	(&min_vertex_id,sizeof(min_vertex_id));
+		stream.r	(&max_vertex_id,sizeof(max_vertex_id));
+	}
+
+	IC		bool	operator==	(const CSector &obj) const
+	{
+		return		(
+			(min_vertex_id == obj.min_vertex_id) &&
+			(max_vertex_id == obj.max_vertex_id)
+		);
+	}
 };
 
 struct CCellInfo {
@@ -374,6 +393,18 @@ void test_hierarchy		(LPCSTR name)
 	SetPriorityClass			(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 
 	Msg							("Total time %f (%d tests : %f)",CPU::cycles2seconds*float(f - s),TEST_COUNT,CPU::cycles2microsec*float(f - s)/float(TEST_COUNT));
+
+	CMemoryWriter				stream;
+	save_data					(sector_graph,stream);
+	stream.save_to				("x:\\sector_graph.dat");
+
+	IReader						*reader = FS.r_open("x:\\sector_graph.dat");
+	CSectorGraph				*test;
+	load_data					(test,*reader);
+
+	VERIFY						(equal(sector_graph,test));
 	
 	xr_delete					(level_graph);
+	xr_delete					(sector_graph);
+	xr_delete					(test);
 }
