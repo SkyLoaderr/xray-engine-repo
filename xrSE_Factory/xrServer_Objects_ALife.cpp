@@ -1091,6 +1091,7 @@ void CSE_ALifeHelicopter::UPDATE_Write		(NET_Packet	&tNetPacket)
 }
 
 #ifdef _EDITOR
+
 void __fastcall	CSE_ALifeHelicopter::OnChangeAnim(PropValue* sender)
 {
 	CSE_Visual::PlayAnimation	(*startup_animation);
@@ -1104,6 +1105,7 @@ void __fastcall	CSE_ALifeHelicopter::OnChooseAnim(ChooseItemVec& lst)
     _E							= ll_motions->end();
     for (; _I!=_E; ++_I) 		lst.push_back(SChooseItem(*_I->first,""));
 }
+
 void CSE_ALifeHelicopter::FillProp(LPCSTR pref, PropItemVec& values)
 {
 	inherited1::FillProp		(pref,	 values);
@@ -1116,8 +1118,10 @@ void CSE_ALifeHelicopter::FillProp(LPCSTR pref, PropItemVec& values)
         V->OnChooseFillEvent	= OnChooseAnim;
     }
 
-	CSE_Motion::FillProp		(FHelper.PrepareKey(pref,s_name).c_str(),	 values);
-    PHelper.CreateChoose		(values,	FHelper.PrepareKey(pref,s_name,"Engine Sound"), &engine_sound, smSoundSource);
+//	CSE_Motion::FillProp		(FHelper.PrepareKey(pref,s_name).c_str(),	 values);
+  
+  PHelper.CreateChoose		(values,	FHelper.PrepareKey(pref,s_name,"Engine Sound"), &engine_sound, smSoundSource);
+
 }
 #endif
 

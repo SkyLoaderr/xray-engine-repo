@@ -5,10 +5,10 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CWeaponAK74::CWeaponAK74() : CWeaponMagazinedWGrenade("AK74",SOUND_TYPE_WEAPON_SUBMACHINEGUN)
+CWeaponAK74::CWeaponAK74(LPCSTR name, ESoundTypes eSoundType) : CWeaponMagazinedWGrenade(name, eSoundType)
 {
-	m_weight = 1.5f;
-	m_slot = 2;
+//	m_weight = 1.5f; CInventoryItem load this
+//	m_slot = 2;
 }
 
 CWeaponAK74::~CWeaponAK74()

@@ -22,6 +22,8 @@
 //#include "luabind/iterator_policy.hpp"
 #include "script_engine.h"
 
+#include "WeaponAK74.h"
+
 using namespace luabind;
 
 extern CLuaGameObject	*tpfGetActor();
@@ -365,6 +367,9 @@ void CScriptEngine::export_monster_info()
 				value("head_anim_angry",		MonsterSpace::eHeadAnimAngry),
 				value("head_anim_glad",			MonsterSpace::eHeadAnimGlad),
 				value("head_anim_kind",			MonsterSpace::eHeadAnimKind)
-			]
+			],
+
+		class_<CWeaponAK74Lua>("AK74Lua")
+			.def( constructor<>())
 	];
 }
