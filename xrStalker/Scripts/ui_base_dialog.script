@@ -78,7 +78,7 @@ function base_dialog:InitControls(caption)
 	self.message_box_font = GetFontLetterica25()
 	
 	-- Message Box
-	self.message_rect = {x = 0, y = 0, width = 400, height = 300}
+	self.message_rect = {x = 0, y = 0, width = 550, height = 300}
 	
 	
 	-- INIT DATA >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
