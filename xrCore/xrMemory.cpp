@@ -4,6 +4,7 @@
 
 #include "xrMemory.h"
 #include "xrMemory_pso.h"
+#include "xrMemory_align.h"
 
 xrMemory	Memory;
 
@@ -32,15 +33,15 @@ void	xrMemory::_initialize	()
 //
 void*	xrMemory::mem_alloc		(size_t size)
 {
-	return	_aligned_malloc	(size,16);
+	return	xr_aligned_malloc	(size,16);
 }
 void	xrMemory::mem_free		(void* P)
 {
-	_aligned_free			(P);
+	xr_aligned_free				(P);
 }
 void*	xrMemory::mem_realloc	(void* P, size_t size)
 {	
-	return _aligned_realloc(P,size,16); 
+	return xr_aligned_realloc	(P,size,16); 
 }
 void	xrMemory::mem_compact	()
 {
