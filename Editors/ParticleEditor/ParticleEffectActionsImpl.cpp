@@ -118,41 +118,41 @@ void 	EParticleAction::FillProp	(PropItemVec& items, LPCSTR pref, u32 clr)
     for (OrderVecIt o_it=orders.begin(); o_it!=orders.end(); o_it++)
     {
     	LPCSTR name 				= o_it->name.c_str();
-		switch (o_it->type){
+		switch (o_it->type){           
         case tpDomain:                                             
-            domains[o_it->name].FillProp(items, PHelper().PrepareKey(pref,name).c_str(),clr);
+            domains[o_it->name].FillProp(items, PrepareKey(pref,name).c_str(),clr);
         break;
         case tpVector:{ 
         	PVector& vect = vectors[o_it->name];
         	switch (vect.type){
             case PVector::vNum: 	
-				V=PHelper().CreateVector	(items,	PHelper().PrepareKey(pref,name).c_str(), &vect.val, vect.mn, vect.mx, 0.001f, 3);            
+				V=PHelper().CreateVector	(items,	PrepareKey(pref,name).c_str(), &vect.val, vect.mn, vect.mx, 0.001f, 3);            
 			break;
             case PVector::vAngle: 	
-				V=PHelper().CreateAngle3	(items,	PHelper().PrepareKey(pref,name).c_str(), &vect.val, vect.mn, vect.mx, 0.001f, 3);            
+				V=PHelper().CreateAngle3	(items,	PrepareKey(pref,name).c_str(), &vect.val, vect.mn, vect.mx, 0.001f, 3);            
             break;
             case PVector::vColor: 	
-				V=PHelper().CreateVColor	(items,	PHelper().PrepareKey(pref,name).c_str(), &vect.val);
+				V=PHelper().CreateVColor	(items,	PrepareKey(pref,name).c_str(), &vect.val);
             break;
             }
         }break;
         case tpFloat:{
         	PFloat& flt	= floats[o_it->name];
-            V=PHelper().CreateFloat		(items,	PHelper().PrepareKey(pref,name).c_str(), &flt.val, flt.mn, flt.mx, 0.001f, 3);
+            V=PHelper().CreateFloat		(items,	PrepareKey(pref,name).c_str(), &flt.val, flt.mn, flt.mx, 0.001f, 3);
         }break;
         case tpInt:{
         	PInt& el	= ints[o_it->name];
-            V=PHelper().CreateS32			(items,	PHelper().PrepareKey(pref,name).c_str(), &el.val, el.mn, el.mx);
+            V=PHelper().CreateS32			(items,	PrepareKey(pref,name).c_str(), &el.val, el.mn, el.mx);
         }break;
         case tpBool: 
-            V=PHelper().CreateBOOL		(items,	PHelper().PrepareKey(pref,name).c_str(), &bools[o_it->name].val);
+            V=PHelper().CreateBOOL		(items,	PrepareKey(pref,name).c_str(), &bools[o_it->name].val);
         break;
         }
         if (V) V->Owner()->prop_color	= clr;
     }
-    V=PHelper().CreateFlag32			(items,	PHelper().PrepareKey(pref,"Draw").c_str(), 			&flags, flDraw);
+    V=PHelper().CreateFlag32			(items,	PrepareKey(pref,"Draw").c_str(), 			&flags, flDraw);
     V->Owner()->prop_color				= clr;
-    V=PHelper().CreateFlag32			(items,	PHelper().PrepareKey(pref,"Enabled").c_str(), 		&flags, flEnabled);
+    V=PHelper().CreateFlag32			(items,	PrepareKey(pref,"Enabled").c_str(), 		&flags, flEnabled);
     V->Owner()->prop_color				= clr;
 }
 void EParticleAction::appendFloat	(LPCSTR name, float v, float mn, float mx)

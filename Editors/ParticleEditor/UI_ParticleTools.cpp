@@ -683,8 +683,8 @@ LPCSTR CParticleTools::GetInfo()
 //------------------------------------------------------------------------------
 
 void CParticleTools::SelectListItem(LPCSTR pref, LPCSTR name, bool bVal, bool bLeaveSel, bool bExpand)
-{
-	AnsiString nm = (name&&name[0])?PHelper().PrepareKey(pref,name).c_str():pref;
+{                                                 
+	AnsiString nm = (name&&name[0])?PrepareKey(pref,name).c_str():pref;
 	m_PList->SelectItem(nm.c_str(),bVal,bLeaveSel,bExpand);
 	if (pref){
     	m_PList->SelectItem(pref,true,true,bExpand);
