@@ -312,6 +312,51 @@
     <string id="bar_bar_visitors_9_start_711">
         <text>Интересно</text>
     </string>
+    <string id="bar_dolg_base_guard_acces_0">
+        <text>Почему вы не пускаете чужаков?</text>
+    </string>
+    <string id="bar_dolg_base_guard_acces_1">
+        <text>Хех... Ты откуда вылез, такой наивный? У нас война идет, понимаешь? С бандитами Свободы. Регулярные стычки с ихними боевиками на дикой территории.</text>
+    </string>
+    <string id="bar_dolg_base_guard_acces_2">
+        <text>Война с группировкой Свободы? Почему?</text>
+    </string>
+    <string id="bar_dolg_base_guard_acces_21">
+        <text>Потому что бандитам Свободы нет места в Зоне, они должны быть уничтожены. Если тебе интересно, то спроси бармена, он тебе все объяснит, а я слишком занят для этого.</text>
+    </string>
+    <string id="bar_dolg_base_guard_acces_3">
+        <text>А если я хочу вступить в Долг? Как мне быть?</text>
+    </string>
+    <string id="bar_dolg_base_guard_acces_31">
+        <text>Плати взнос 1000 и получишь пропуск. С ним иди к администратору Долга, он тебе назначит проверки.</text>
+    </string>
+    <string id="bar_dolg_base_guard_acces_311">
+        <text>Хорошо, вот деньги.</text>
+    </string>
+    <string id="bar_dolg_base_guard_acces_3111">
+        <text>Вот и отлично, держи пропуск и дуй с ним к администратору, я тебе отметил на карте.</text>
+    </string>
+    <string id="bar_dolg_base_guard_acces_312">
+        <text>Нет, я передумал.</text>
+    </string>
+    <string id="bar_dolg_base_guard_acces_3121">
+        <text>Ну дело твое, бывай.</text>
+    </string>
+    <string id="bar_dolg_base_guard_acces_4">
+        <text>Спасибо</text>
+    </string>
+    <string id="bar_dolg_base_guard_start_11">
+        <text>Стой! На территорию базы Долга дороги нет! Чужакам там делать нечего.</text>
+    </string>
+    <string id="bar_dolg_base_guard_start_21">
+        <text>Чего стоишь? Проходи быстрее.</text>
+    </string>
+    <string id="bar_dolg_base_guard_start_3">
+        <text>text in default</text>
+    </string>
+    <string id="bar_dolg_base_guard_start_31">
+        <text>Проходи, брат. И помни, миссия Долга - очищение!</text>
+    </string>
     <string id="bar_dolg_novice_start_2">
         <text>Здравствуй, брат сталкер</text>
     </string>
