@@ -364,35 +364,55 @@ void CDrawUtilities::DrawSound(const Fvector& p, float r, u32 c){
 	DrawCross(p, r,r,r, r,r,r, c, true);
 }
 //------------------------------------------------------------------------------
-void CDrawUtilities::DrawIdentCone	(bool bSolid, bool bWire, u32 clr)
+void CDrawUtilities::DrawIdentCone	(bool bSolid, bool bWire, u32 clr_s, u32 clr_w)
 {
-	Device.SetRS	(D3DRS_TEXTUREFACTOR,	clr);
-    if (bSolid)		m_SolidCone.Render	();
-    if (bWire)		m_WireCone.Render	();
+    if (bSolid){
+		Device.SetRS		(D3DRS_TEXTUREFACTOR,	clr_s);
+    	m_SolidCone.Render	();
+    }
+    if (bWire){
+		Device.SetRS		(D3DRS_TEXTUREFACTOR,	clr_w);
+    	m_WireCone.Render	();
+    }
 	Device.SetRS	(D3DRS_TEXTUREFACTOR,	0xffffffff);
 }
 
-void CDrawUtilities::DrawIdentSphere	(bool bSolid, bool bWire, u32 clr)
+void CDrawUtilities::DrawIdentSphere	(bool bSolid, bool bWire, u32 clr_s, u32 clr_w)
 {
-	Device.SetRS	(D3DRS_TEXTUREFACTOR,	clr);
-    if (bSolid)		m_SolidSphere.Render();
-    if (bWire)		m_WireSphere.Render	();
+    if (bSolid){
+		Device.SetRS		(D3DRS_TEXTUREFACTOR,	clr_s);
+    	m_SolidSphere.Render();
+    }
+    if (bWire){
+		Device.SetRS		(D3DRS_TEXTUREFACTOR,	clr_w);
+     	m_WireSphere.Render	();
+    }
 	Device.SetRS	(D3DRS_TEXTUREFACTOR,	0xffffffff);
 }
 
-void CDrawUtilities::DrawIdentCylinder	(bool bSolid, bool bWire, u32 clr)
+void CDrawUtilities::DrawIdentCylinder	(bool bSolid, bool bWire, u32 clr_s, u32 clr_w)
 {
-	Device.SetRS	(D3DRS_TEXTUREFACTOR,	clr);
-    if (bSolid)		m_SolidCylinder.Render	();
-    if (bWire)		m_WireCylinder.Render	();
+    if (bSolid){
+		Device.SetRS			(D3DRS_TEXTUREFACTOR,	clr_s);
+    	m_SolidCylinder.Render	();
+    }
+    if (bWire){
+		Device.SetRS			(D3DRS_TEXTUREFACTOR,	clr_w);
+    	m_WireCylinder.Render	();
+    }
 	Device.SetRS	(D3DRS_TEXTUREFACTOR,	0xffffffff);
 }
 
-void CDrawUtilities::DrawIdentBox(bool bSolid, bool bWire, u32 cc)
+void CDrawUtilities::DrawIdentBox(bool bSolid, bool bWire, u32 clr_s, u32 clr_w)
 {
-	Device.SetRS	(D3DRS_TEXTUREFACTOR,	cc);
-    if (bSolid)		m_SolidBox.Render	();
-    if (bWire)		m_WireBox.Render	();
+    if (bSolid){
+		Device.SetRS		(D3DRS_TEXTUREFACTOR,	clr_s);
+    	m_SolidBox.Render	();
+    }
+    if (bWire){
+		Device.SetRS		(D3DRS_TEXTUREFACTOR,	clr_w);
+    	m_WireBox.Render	();
+    }
 	Device.SetRS	(D3DRS_TEXTUREFACTOR,	0xffffffff);
 }
 
@@ -515,7 +535,7 @@ void CDrawUtilities::DrawSelectionBox(const Fvector& C, const Fvector& S, u32* c
     Device.SetRS	(D3DRS_FILLMODE,Device.dwFillMode);
 }
 
-void CDrawUtilities::DrawBox(const Fvector& offs, const Fvector& Size, bool bWire, u32 c)
+void CDrawUtilities::DrawBox(const Fvector& offs, const Fvector& Size, bool bSolid, bool bWire, u32 clr_s, u32 clr_w)
 {
 	_VertexStream*	Stream	= &RCache.Vertex;
     if (bWire){
@@ -525,19 +545,20 @@ void CDrawUtilities::DrawBox(const Fvector& offs, const Fvector& Size, bool bWir
             pv->p.mul	(identboxwire[i],Size);
             pv->p.mul	(2);
             pv->p.add	(offs);
-            pv->color	= c;
+            pv->color	= clr_w;
         }
 		Stream->Unlock(identboxwirecount,vs_L->vb_stride);
 
 	    Device.DP		(D3DPT_LINELIST,vs_L,vBase,identboxwirecount/2);
-    }else{
+    }
+    if (bSolid){
         u32			vBase;
 		FVF::L*	pv	 	= (FVF::L*)Stream->Lock(DU_BOX_NUMVERTEX2,vs_L->vb_stride,vBase);
         for (int i=0; i<DU_BOX_NUMVERTEX2; i++, pv++){
             pv->p.mul	(du_box_vertices2[i],Size);
             pv->p.mul	(2);
             pv->p.add	(offs);
-            pv->color	= c;
+            pv->color	= clr_s;
         }
 		Stream->Unlock(DU_BOX_NUMVERTEX2,vs_L->vb_stride);
 
@@ -546,7 +567,7 @@ void CDrawUtilities::DrawBox(const Fvector& offs, const Fvector& Size, bool bWir
 }
 //----------------------------------------------------
 
-void CDrawUtilities::DrawOBB(const Fmatrix& parent, const Fobb& box, u32 c)
+void CDrawUtilities::DrawOBB(const Fmatrix& parent, const Fobb& box, u32 clr_s, u32 clr_w)
 {
     Fmatrix			R,S,X;
     box.xform_get	(R);
@@ -554,64 +575,70 @@ void CDrawUtilities::DrawOBB(const Fmatrix& parent, const Fobb& box, u32 c)
     X.mul_43		(R,S);
     R.mul_43		(parent,X); 
 	RCache.set_xform_world(R);
-	DrawIdentBox	(true,true,c);
+	DrawIdentBox	(true,true,clr_s,clr_w);
 }
 //----------------------------------------------------
 
-void CDrawUtilities::DrawAABB(const Fmatrix& parent, const Fvector& center, const Fvector& size, u32 c, BOOL bSolid, BOOL bWire)
+void CDrawUtilities::DrawAABB(const Fmatrix& parent, const Fvector& center, const Fvector& size, u32 clr_s, u32 clr_w, BOOL bSolid, BOOL bWire)
 {
     Fmatrix			R,S;
     S.scale			(size.x*2.f,size.y*2.f,size.z*2.f);
     S.translate_over(center);
     R.mul_43		(parent,S); 
 	RCache.set_xform_world(R);
-	DrawIdentBox	(bSolid,bWire,c);
+	DrawIdentBox	(bSolid,bWire,clr_s,clr_w);
 }
 
-void CDrawUtilities::DrawAABB(const Fvector& p0, const Fvector& p1, u32 c, BOOL bSolid, BOOL bWire)
+void CDrawUtilities::DrawAABB(const Fvector& p0, const Fvector& p1, u32 clr_s, u32 clr_w, BOOL bSolid, BOOL bWire)
 {
     Fmatrix			R;
 	Fvector	C; C.set((p1.x+p0.x)*0.5f,(p1.y+p0.y)*0.5f,(p1.z+p0.z)*0.5f);
     R.scale			(_abs(p1.x-p0.x),_abs(p1.y-p0.y),_abs(p1.z-p0.z));
     R.translate_over(C);
 	RCache.set_xform_world(R);
-	DrawIdentBox	(bSolid,bWire,c);
+	DrawIdentBox	(bSolid,bWire,clr_s,clr_w);
 }
 
-void CDrawUtilities::DrawSphere(const Fmatrix& parent, const Fvector& center, float radius, u32 c, BOOL bSolid, BOOL bWire)
+void CDrawUtilities::DrawSphere(const Fmatrix& parent, const Fvector& center, float radius, u32 clr_s, u32 clr_w, BOOL bSolid, BOOL bWire)
 {
     Fmatrix B;
     B.scale				(radius,radius,radius);
     B.translate_over	(center);
     B.mulA				(parent);
     RCache.set_xform_world(B);
-    DrawIdentSphere		(bSolid, bWire, c);
+    DrawIdentSphere		(bSolid, bWire, clr_s,clr_w);
 }
 //----------------------------------------------------
 
-void CDrawUtilities::DrawFace(const Fvector& p0, const Fvector& p1, const Fvector& p2, u32 clr, BOOL bSolid, BOOL bWire)
+void CDrawUtilities::DrawFace(const Fvector& p0, const Fvector& p1, const Fvector& p2, u32 clr_s, u32 clr_w, BOOL bSolid, BOOL bWire)
 {
 	_VertexStream*	Stream	= &RCache.Vertex;
 
     u32				vBase;
-    FVF::L*	pv	 	= (FVF::L*)Stream->Lock(4,vs_L->vb_stride,vBase);
-    pv->set			(p0,clr); pv++;
-    pv->set			(p1,clr); pv++;
-    pv->set			(p2,clr); pv++;
-    pv->set			(p0,clr); pv++;
-    Stream->Unlock	(4,vs_L->vb_stride);
     if (bSolid)
     {
+        FVF::L*	pv	 	= (FVF::L*)Stream->Lock(4,vs_L->vb_stride,vBase);
+        pv->set			(p0,clr_s); pv++;
+        pv->set			(p1,clr_s); pv++;
+        pv->set			(p2,clr_s); pv++;
+        pv->set			(p0,clr_s); pv++;
+        Stream->Unlock	(4,vs_L->vb_stride);
 	    Device.DP		(D3DPT_TRIANGLELIST,vs_L,vBase,1);
     }
     if (bWire)
     {
+        FVF::L*	pv	 	= (FVF::L*)Stream->Lock(4,vs_L->vb_stride,vBase);
+        pv->set			(p0,clr_w); pv++;
+        pv->set			(p1,clr_w); pv++;
+        pv->set			(p2,clr_w); pv++;
+        pv->set			(p0,clr_w); pv++;
+        Stream->Unlock	(4,vs_L->vb_stride);
 	    Device.DP		(D3DPT_LINESTRIP,vs_L,vBase,3);
     }
 }
 //----------------------------------------------------
 
-void CDrawUtilities::DrawCylinder(const Fmatrix& parent, const Fvector& center, const Fvector& dir, float height, float radius, u32 c, BOOL bSolid, BOOL bWire)
+void CDrawUtilities::DrawCylinder(const Fmatrix& parent, const Fvector& center, const Fvector& dir, float height, float radius, u32 clr_s, u32 clr_w, BOOL bSolid, BOOL bWire)
 {
     Fmatrix mScale;
     mScale.scale		(2.f*radius,2.f*radius,height);
@@ -633,11 +660,11 @@ void CDrawUtilities::DrawCylinder(const Fmatrix& parent, const Fvector& center, 
     Fmatrix xf;			xf.mul (mR,mScale);
     xf.mulA				(parent);
     RCache.set_xform_world(xf);
-	DrawIdentCylinder	(bSolid,bWire,c);
+	DrawIdentCylinder	(bSolid,bWire,clr_s,clr_w);
 }
 //----------------------------------------------------
 
-void CDrawUtilities::DrawCone	(const Fmatrix& parent, const Fvector& apex, const Fvector& dir, float height, float radius, u32 c, BOOL bSolid, BOOL bWire)
+void CDrawUtilities::DrawCone	(const Fmatrix& parent, const Fvector& apex, const Fvector& dir, float height, float radius, u32 clr_s, u32 clr_w, BOOL bSolid, BOOL bWire)
 {
     Fmatrix mScale;
     mScale.scale		(2.f*radius,2.f*radius,height);
@@ -659,11 +686,11 @@ void CDrawUtilities::DrawCone	(const Fmatrix& parent, const Fvector& apex, const
     Fmatrix xf;			xf.mul (mR,mScale);
     xf.mulA				(parent);
     RCache.set_xform_world(xf);
-	DrawIdentCone		(bSolid,bWire,c);
+	DrawIdentCone		(bSolid,bWire,clr_s,clr_w);
 }
 //----------------------------------------------------
 
-void CDrawUtilities::DrawPlane	(const Fvector& p, const Fvector& n, float d, const Fvector2& scale, u32 c, bool bCull, BOOL bSolid, BOOL bWire)
+void CDrawUtilities::DrawPlane	(const Fvector& p, const Fvector& n, const Fvector2& scale, u32 clr_s, u32 clr_w, bool bCull, BOOL bSolid, BOOL bWire)
 {
     // build final rotation / translation
     Fvector             L_dir,L_up=n,L_right;
@@ -680,27 +707,34 @@ void CDrawUtilities::DrawPlane	(const Fvector& p, const Fvector& n, float d, con
 	// fill VB
 	_VertexStream*	Stream	= &RCache.Vertex;
 	u32			vBase;
-    FVF::L*	pv	 = (FVF::L*)Stream->Lock(5,vs_L->vb_stride,vBase);
-    pv->set		(-scale.x, 0, -scale.y, c); mR.transform_tiny(pv->p); pv++;
-    pv->set		(+scale.x, 0, -scale.y, c); mR.transform_tiny(pv->p); pv++;
-    pv->set		(+scale.x, 0, +scale.y, c); mR.transform_tiny(pv->p); pv++;
-    pv->set		(-scale.x, 0, +scale.y, c); mR.transform_tiny(pv->p); pv++;
-    pv->set		(*(pv-4));
-    Stream->Unlock(5,vs_L->vb_stride);
     
     if (bSolid){
+        FVF::L*	pv	 = (FVF::L*)Stream->Lock(5,vs_L->vb_stride,vBase);
+        pv->set		(-scale.x, 0, -scale.y, clr_s); mR.transform_tiny(pv->p); pv++;
+        pv->set		(+scale.x, 0, -scale.y, clr_s); mR.transform_tiny(pv->p); pv++;
+        pv->set		(+scale.x, 0, +scale.y, clr_s); mR.transform_tiny(pv->p); pv++;
+        pv->set		(-scale.x, 0, +scale.y, clr_s); mR.transform_tiny(pv->p); pv++;
+        pv->set		(*(pv-4));
+        Stream->Unlock(5,vs_L->vb_stride);
         if (!bCull) Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
         Device.DP		(D3DPT_TRIANGLEFAN,vs_L,vBase,2);
         if (!bCull) Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
     }
 
     if (bWire){
+        FVF::L*	pv	 = (FVF::L*)Stream->Lock(5,vs_L->vb_stride,vBase);
+        pv->set		(-scale.x, 0, -scale.y, clr_w); mR.transform_tiny(pv->p); pv++;
+        pv->set		(+scale.x, 0, -scale.y, clr_w); mR.transform_tiny(pv->p); pv++;
+        pv->set		(+scale.x, 0, +scale.y, clr_w); mR.transform_tiny(pv->p); pv++;
+        pv->set		(-scale.x, 0, +scale.y, clr_w); mR.transform_tiny(pv->p); pv++;
+        pv->set		(*(pv-4));
+        Stream->Unlock(5,vs_L->vb_stride);
 	    Device.DP	(D3DPT_LINESTRIP,vs_L,vBase,4);
     }
 }
 //----------------------------------------------------
 
-void CDrawUtilities::DrawPlane  (const Fvector& center, const Fvector2& scale, const Fvector& rotate, u32 c, bool bCull, BOOL bSolid, BOOL bWire)
+void CDrawUtilities::DrawPlane  (const Fvector& center, const Fvector2& scale, const Fvector& rotate, u32 clr_s, u32 clr_w, bool bCull, BOOL bSolid, BOOL bWire)
 {
     Fmatrix M;
     M.setHPB		(rotate.y,rotate.x,rotate.z);
@@ -708,27 +742,34 @@ void CDrawUtilities::DrawPlane  (const Fvector& center, const Fvector2& scale, c
 	// fill VB
 	_VertexStream*	Stream	= &RCache.Vertex;
 	u32			vBase;
-    FVF::L*	pv	 = (FVF::L*)Stream->Lock(5,vs_L->vb_stride,vBase);
-    pv->set		(-scale.x, 0, -scale.y, c); M.transform_tiny(pv->p); pv++;
-    pv->set		(+scale.x, 0, -scale.y, c); M.transform_tiny(pv->p); pv++;
-    pv->set		(+scale.x, 0, +scale.y, c); M.transform_tiny(pv->p); pv++;
-    pv->set		(-scale.x, 0, +scale.y, c); M.transform_tiny(pv->p); pv++;
-    pv->set		(*(pv-4));
-    Stream->Unlock(5,vs_L->vb_stride);
     
     if (bSolid){
+        FVF::L*	pv	 = (FVF::L*)Stream->Lock(5,vs_L->vb_stride,vBase);
+        pv->set		(-scale.x, 0, -scale.y, clr_s); M.transform_tiny(pv->p); pv++;
+        pv->set		(+scale.x, 0, -scale.y, clr_s); M.transform_tiny(pv->p); pv++;
+        pv->set		(+scale.x, 0, +scale.y, clr_s); M.transform_tiny(pv->p); pv++;
+        pv->set		(-scale.x, 0, +scale.y, clr_s); M.transform_tiny(pv->p); pv++;
+        pv->set		(*(pv-4));
+        Stream->Unlock(5,vs_L->vb_stride);
         if (!bCull) Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
         Device.DP		(D3DPT_TRIANGLEFAN,vs_L,vBase,2);
         if (!bCull) Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
     }
 
     if (bWire){
+        FVF::L*	pv	 = (FVF::L*)Stream->Lock(5,vs_L->vb_stride,vBase);
+        pv->set		(-scale.x, 0, -scale.y, clr_w); M.transform_tiny(pv->p); pv++;
+        pv->set		(+scale.x, 0, -scale.y, clr_w); M.transform_tiny(pv->p); pv++;
+        pv->set		(+scale.x, 0, +scale.y, clr_w); M.transform_tiny(pv->p); pv++;
+        pv->set		(-scale.x, 0, +scale.y, clr_w); M.transform_tiny(pv->p); pv++;
+        pv->set		(*(pv-4));
+        Stream->Unlock(5,vs_L->vb_stride);
 	    Device.DP	(D3DPT_LINESTRIP,vs_L,vBase,4);
     }
 }
 //----------------------------------------------------
 
-void CDrawUtilities::DrawRectangle(const Fvector& o, const Fvector& u, const Fvector& v, u32 clr, BOOL bSolid, BOOL bWire)
+void CDrawUtilities::DrawRectangle(const Fvector& o, const Fvector& u, const Fvector& v, u32 clr_s, u32 clr_w, BOOL bSolid, BOOL bWire)
 {
 	_VertexStream*	Stream	= &RCache.Vertex;
 
@@ -736,23 +777,23 @@ void CDrawUtilities::DrawRectangle(const Fvector& o, const Fvector& u, const Fve
     if (bSolid)
     {
         FVF::L*	pv	 	= (FVF::L*)Stream->Lock(6,vs_L->vb_stride,vBase);
-        pv->set			(o.x,			o.y,		o.z,		clr); pv++;
-        pv->set			(o.x+u.x+v.x,	o.y+u.y+v.y,o.z+u.z+v.z,clr); pv++;
-        pv->set			(o.x+v.x,		o.y+v.y,	o.z+v.z,	clr); pv++;
-        pv->set			(o.x,			o.y,		o.z,		clr); pv++;
-        pv->set			(o.x+u.x,		o.y+u.y,	o.z+u.z,	clr); pv++;
-        pv->set			(o.x+u.x+v.x,	o.y+u.y+v.y,o.z+u.z+v.z,clr); pv++;
+        pv->set			(o.x,			o.y,		o.z,		clr_s); pv++;
+        pv->set			(o.x+u.x+v.x,	o.y+u.y+v.y,o.z+u.z+v.z,clr_s); pv++;
+        pv->set			(o.x+v.x,		o.y+v.y,	o.z+v.z,	clr_s); pv++;
+        pv->set			(o.x,			o.y,		o.z,		clr_s); pv++;
+        pv->set			(o.x+u.x,		o.y+u.y,	o.z+u.z,	clr_s); pv++;
+        pv->set			(o.x+u.x+v.x,	o.y+u.y+v.y,o.z+u.z+v.z,clr_s); pv++;
         Stream->Unlock	(6,vs_L->vb_stride);
 	    Device.DP		(D3DPT_TRIANGLELIST,vs_L,vBase,2);
     }
     if (bWire)
     {
         FVF::L*	pv	 	= (FVF::L*)Stream->Lock(5,vs_L->vb_stride,vBase);
-        pv->set			(o.x,			o.y,		o.z,		clr); pv++;
-        pv->set			(o.x+u.x,		o.y+u.y,	o.z+u.z,	clr); pv++;
-        pv->set			(o.x+u.x+v.x,	o.y+u.y+v.y,o.z+u.z+v.z,clr); pv++;
-        pv->set			(o.x+v.x,		o.y+v.y,	o.z+v.z,	clr); pv++;
-        pv->set			(o.x,			o.y,		o.z,		clr); pv++;
+        pv->set			(o.x,			o.y,		o.z,		clr_w); pv++;
+        pv->set			(o.x+u.x,		o.y+u.y,	o.z+u.z,	clr_w); pv++;
+        pv->set			(o.x+u.x+v.x,	o.y+u.y+v.y,o.z+u.z+v.z,clr_w); pv++;
+        pv->set			(o.x+v.x,		o.y+v.y,	o.z+v.z,	clr_w); pv++;
+        pv->set			(o.x,			o.y,		o.z,		clr_w); pv++;
         Stream->Unlock	(5,vs_L->vb_stride);
 	    Device.DP		(D3DPT_LINESTRIP,vs_L,vBase,4);
     }

@@ -177,7 +177,7 @@ void CPSObject::Render(int priority, bool strictB2F){
                 DU.DrawLineSphere(m_Emitter.m_Position, m_Emitter.m_SphereRadius, C, true);
                 break;
             case PS::SEmitter::emBox:
-                DU.DrawBox(m_Emitter.m_Position,m_Emitter.m_BoxSize,true,C);
+                DU.DrawBox(m_Emitter.m_Position,m_Emitter.m_BoxSize,false,true,C,C);
                 break;
             default: THROW;
             }

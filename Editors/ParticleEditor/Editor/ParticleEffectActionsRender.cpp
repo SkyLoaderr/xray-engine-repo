@@ -4,225 +4,132 @@
 
 #include "ParticleEffectActions.h"
 #include "D3DUtils.h"
+#include "ui_tools.h"
 
-void PS::CPEDef::Render()
-{
-	for (EPAVecIt it=m_EActionList.begin(); it!=m_EActionList.end(); it++)
-    	(*it)->Render();
-}
+using namespace PAPI;
 
-void PAPI::pDomain::Render(u32 clr)
+void RenderDomain(pDomain d, u32 clr)
 {
+	u32 clr_s = subst_alpha	(clr,0x60);
+	u32 clr_w = subst_alpha	(clr,0xff);
     RCache.set_xform_world	(Fidentity);
-	switch(type){
+    
+    Device.SetShader	(Tools.m_Flags.is(CParticleTools::flDrawTransp)?Device.m_SelectionShader:Device.m_WireShader);
+    
+	switch(d.type){
     case PDPoint: 	
-		Device.SetShader	(Device.m_WireShader);
-    	DU.DrawCross		(p1, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, clr);
+    	DU.DrawCross		(d.p1, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, clr_w);
     break;
 	case PDLine: 	
-		Device.SetShader	(Device.m_WireShader);
-    	DU.DrawCross		(p1, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, clr);
-    	DU.DrawCross		(p1+p2, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, clr);
-    	DU.DrawLine 		(p1, p1+p2, clr);
+    	DU.DrawCross		(d.p1, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, clr_w);
+    	DU.DrawCross		(d.p1+d.p2, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, clr_w);
+    	DU.DrawLine 		(d.p1, d.p1+d.p2, clr_w);
     break;
     case PDTriangle: 	
-		Device.SetShader	(Device.m_SelectionShader);
-        DU.DrawFace			(p1, p1+u, p1+v, clr, true, false);
-		Device.SetShader	(Device.m_WireShader);
-        DU.DrawFace			(p1, p1+u, p1+v, clr, false, true);
+        DU.DrawFace			(d.p1, d.p1+d.u, d.p1+d.v, clr_s, clr_w, true, true);
     break;
 	case PDPlane:{
-		Device.SetShader	(Device.m_SelectionShader);
         Fvector2 sz			= {100.f,100.f};
-        DU.DrawPlane		(p1,p2,radius1,sz,clr,true,true,false);
+        DU.DrawPlane		(d.p1,d.p2,sz,clr_s,clr_w,true,true,true);
     }break;
 	case PDBox: 	
-		Device.SetShader	(Device.m_SelectionShader);
-    	DU.DrawAABB			(p1, p2, clr, true, false);
-		Device.SetShader	(Device.m_WireShader);
-    	DU.DrawAABB			(p1, p2, clr, false, true);
+    	DU.DrawAABB			(d.p1, d.p2, clr_s, clr_w, true, true);
     break;
 	case PDSphere: 	
-		Device.SetShader	(Device.m_SelectionShader);
-    	DU.DrawSphere		(Fidentity, p1, radius2, clr, true, false);
-    	DU.DrawSphere		(Fidentity, p1, radius1, clr, true, false);
-		Device.SetShader	(Device.m_WireShader);
-    	DU.DrawSphere		(Fidentity, p1, radius2, clr, false, true);
-    	DU.DrawSphere		(Fidentity, p1, radius1, clr, false, true);
+    	DU.DrawSphere		(Fidentity, d.p1, d.radius2, clr_s, clr_w, true, true);
+    	DU.DrawSphere		(Fidentity, d.p1, d.radius1, clr_s, clr_w, true, true);
     break;
 	case PDCylinder:{
-    	pVector c,d;
-        float h 			= p2.length	();
-        c 					= (p1+p1+p2)/2.f;
-        d 					= p2/h;
-		Device.SetShader	(Device.m_SelectionShader);
-		DU.DrawCylinder		(Fidentity, c, d, h, radius1, clr, true, false);
-		Device.SetShader	(Device.m_WireShader);
-		DU.DrawCylinder		(Fidentity, c, d, h, radius1, clr, false, true);
+    	pVector C,D;
+        float H 			= d.p2.length	();
+        C 					= (d.p1+d.p1+d.p2)/2.f;
+        D 					= d.p2/H;
+		DU.DrawCylinder		(Fidentity, C, D, H, d.radius1, clr_s, clr_w, true, true);
     }break;
 	case PDCone:{ 	
-    	pVector d;
-        float h = p2.length	();
-        d = p2/h;
-		Device.SetShader	(Device.m_SelectionShader);
-		DU.DrawCone			(Fidentity, p1, d, h, radius2, clr, true, false);
-		DU.DrawCone			(Fidentity, p1, d, h, radius1, clr, true, false);
-		Device.SetShader	(Device.m_WireShader);
-		DU.DrawCone			(Fidentity, p1, d, h, radius2, clr, false, true);
-		DU.DrawCone			(Fidentity, p1, d, h, radius1, clr, false, true);
+    	pVector D;
+        float H 			= d.p2.length	();
+        D 					= d.p2/H;
+		DU.DrawCone			(Fidentity, d.p1, D, H, d.radius2, clr_s, clr_w, true, true);
+		DU.DrawCone			(Fidentity, d.p1, D, H, d.radius1, clr_s, clr_w, true, true);
     }break;
 	case PDBlob: 	
-		Device.SetShader	(Device.m_WireShader);
-    	DU.DrawCross		(p1, 0.1f,0.1f,0.1f, 0.1f,0.1f,0.1f, clr);
+    	DU.DrawCross		(d.p1, 0.1f,0.1f,0.1f, 0.1f,0.1f,0.1f, clr_w);
     break;
 	case PDDisc:{
-		Device.SetShader	(Device.m_SelectionShader);
-		DU.DrawCylinder		(Fidentity, p1, p2, EPS, radius2, clr, true, false);
-		DU.DrawCylinder		(Fidentity, p1, p2, EPS, radius1, clr, true, false);
-		Device.SetShader	(Device.m_WireShader);
-		DU.DrawCylinder		(Fidentity, p1, p2, EPS, radius2, clr, false, true);
-		DU.DrawCylinder		(Fidentity, p1, p2, EPS, radius1, clr, false, true);
+		DU.DrawCylinder		(Fidentity, d.p1, d.p2, EPS, d.radius2, clr_s, clr_w, true, true);
+		DU.DrawCylinder		(Fidentity, d.p1, d.p2, EPS, d.radius1, clr_s, clr_w, true, true);
     }break;
 	case PDRectangle: 	
-		Device.SetShader	(Device.m_SelectionShader);
-        DU.DrawRectangle	(p1, u, v, clr, true, false);
-		Device.SetShader	(Device.m_WireShader);
-        DU.DrawRectangle	(p1, u, v, clr, false, true);
+        DU.DrawRectangle	(d.p1, d.u, d.v, clr_s, clr_w, true, true);
     break;
     }
 }
-/*
-void 	EPAAvoid::Render			()
+
+void RenderAction(ParticleAction* pa)
 {
-	position.Render(0x6096FF96);
+	switch (pa->type){                     
+    case PAPI::PAAvoidID:			RenderDomain(dynamic_cast<PAAvoid*>			(pa)->position, 0x6096FF96);	break;
+    case PAPI::PABounceID:    		RenderDomain(dynamic_cast<PABounce*>		(pa)->position, 0x6096FEEC);	break;
+    case PAPI::PACallActionListID:  dynamic_cast<PACallActionList*>	(pa);	break;
+    case PAPI::PACopyVertexBID:    	dynamic_cast<PACopyVertexB*>   	(pa);	break;
+    case PAPI::PADampingID:    		dynamic_cast<PADamping*>	  	(pa);	break;
+    case PAPI::PAExplosionID:    	dynamic_cast<PAExplosion*>		(pa);	break;
+    case PAPI::PAFollowID:    		dynamic_cast<PAFollow*>			(pa);	break;
+    case PAPI::PAGravitateID:    	dynamic_cast<PAGravitate*>		(pa);	break;
+    case PAPI::PAGravityID:    		dynamic_cast<PAGravity*>	   	(pa);	break;
+    case PAPI::PAJetID:{
+    	PAJet* PA 					= dynamic_cast<PAJet*>		   	(pa);	
+        RCache.set_xform_world		(Fidentity);
+        Device.SetShader			(Device.m_WireShader);
+        DU.DrawCross				(PA->center, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, 0x600000ff);
+	}break;
+    case PAPI::PAKillOldID:    		dynamic_cast<PAKillOld*>	   	(pa);	break;
+    case PAPI::PAMatchVelocityID:   dynamic_cast<PAMatchVelocity*>	(pa);	break;
+    case PAPI::PAMoveID:    		dynamic_cast<PAMove*>		   	(pa);	break;
+    case PAPI::PAOrbitLineID:{
+    	PAOrbitLine* PA				= dynamic_cast<PAOrbitLine*>  	(pa);	
+        RCache.set_xform_world		(Fidentity);
+        Device.SetShader			(Device.m_WireShader);
+        DU.DrawCross				(PA->p, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, 0x6000ff00);
+        DU.DrawCross				(PA->p+PA->axis, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, 0x6000ff00);
+        DU.DrawLine 				(PA->p, PA->p+PA->axis, 0x6000ff00);
+    }break;
+    case PAPI::PAOrbitPointID:{
+    	PAOrbitPoint* PA			= dynamic_cast<PAOrbitPoint*>	(pa);	
+        RCache.set_xform_world		(Fidentity);
+        Device.SetShader			(Device.m_WireShader);
+        DU.DrawCross				(PA->center, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, 0x6000ff00);
+    }break;
+    case PAPI::PARandomAccelID:    	dynamic_cast<PARandomAccel*>   	(pa);	break;
+    case PAPI::PARandomDisplaceID:  dynamic_cast<PARandomDisplace*>	(pa);	break;
+    case PAPI::PARandomVelocityID:  dynamic_cast<PARandomVelocity*>	(pa);	break;
+    case PAPI::PARestoreID:    		dynamic_cast<PARestore*>		(pa);	break;
+    case PAPI::PASinkID:    		RenderDomain(dynamic_cast<PASink*>		   	(pa)->position, 0x60ff0000);	break;
+    case PAPI::PASinkVelocityID:    dynamic_cast<PASinkVelocity*>   (pa);	break;
+    case PAPI::PASourceID:    		RenderDomain(dynamic_cast<PASource*>		(pa)->position, 0x60FFEBAA);	break;
+    case PAPI::PASpeedLimitID:    	dynamic_cast<PASpeedLimit*>		(pa);	break;
+    case PAPI::PATargetColorID:    	dynamic_cast<PATargetColor*> 	(pa);	break;
+    case PAPI::PATargetSizeID:    	dynamic_cast<PATargetSize*>		(pa);	break;
+    case PAPI::PATargetRotateID:    dynamic_cast<PATargetRotate*> 	(pa);	break;
+    case PAPI::PATargetRotateDID:   dynamic_cast<PATargetRotate*> 	(pa);	break;
+    case PAPI::PATargetVelocityID:	dynamic_cast<PATargetVelocity*>	(pa);	break;
+    case PAPI::PATargetVelocityDID: dynamic_cast<PATargetVelocity*>	(pa);	break;
+    case PAPI::PAVortexID:{
+    	PAVortex* PA				= dynamic_cast<PAVortex*>		(pa);	
+        RCache.set_xform_world		(Fidentity);
+        Device.SetShader			(Device.m_WireShader);
+        DU.DrawCross				(PA->center, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, 0x6000ffff);
+    }break;
+    default: NODEFAULT;
+    }
 }
 
-void 	EPABounce::Render			()
+void PS::CPEDef::Render()
 {
-	position.Render(0x6096FEEC);
+//.	for (EPAVecIt it=m_EActionList.begin(); it!=m_EActionList.end(); it++)
+//.    	(*it)->Render();
+	for (PAPI::PAVecIt it=m_ActionList.begin(); it!=m_ActionList.end(); it++)
+    	RenderAction(*it);
 }
 
-void 	EPACallActionList::Render	()
-{
-}
-
-void 	EPACopyVertexB::Render  	()
-{
-}
-
-void 	EPADamping::Render		()
-{
-}
-
-void 	EPAExplosion::Render		()
-{
-}
-
-void 	EPAFollow::Render			()
-{
-}
-
-void 	EPAGravitate::Render		()
-{
-}
-
-void 	EPAGravity::Render		()
-{
-}
-
-void 	EPAJet::Render			()
-{
-    RCache.set_xform_world	(Fidentity);
-    Device.SetShader		(Device.m_WireShader);
-    DU.DrawCross			(center, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, 0x600000ff);
-}
-
-void 	EPAKillOld::Render		()
-{
-}
-
-void 	EPAMatchVelocity::Render	()
-{
-}
-
-void 	EPAMove::Render			()
-{
-}
-
-void 	EPAOrbitLine::Render		()
-{
-    RCache.set_xform_world	(Fidentity);
-    Device.SetShader		(Device.m_WireShader);
-    DU.DrawCross			(p, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, 0x6000ff00);
-    DU.DrawCross			(p+axis, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, 0x6000ff00);
-    DU.DrawLine 			(p, p+axis, 0x6000ff00);
-}
-
-void 	EPAOrbitPoint::Render		()
-{
-    RCache.set_xform_world	(Fidentity);
-    Device.SetShader		(Device.m_WireShader);
-    DU.DrawCross			(center, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, 0x6000ff00);
-}
-
-void 	EPARandomAccel::Render	()
-{
-}
-
-void 	EPARandomDisplace::Render	()
-{
-}
-
-void 	EPARandomVelocity::Render	()
-{
-}
-
-void 	EPARestore::Render		()
-{
-}
-
-void 	EPASink::Render			()
-{
-	position.Render(0x60ff0000);
-}
-
-void 	EPASinkVelocity::Render	()
-{
-}
-
-void 	EPASpeedLimit::Render		()
-{
-}
-
-void 	EPASource::Render			()
-{
-	position.Render(0x60FFEBAA);
-}
-
-void 	EPATargetColor::Render	()
-{
-}
-
-void 	EPATargetSize::Render		()
-{
-}
-
-void 	EPATargetRotate::Render	()
-{
-}
-
-void 	EPATargetVelocity::Render	()
-{
-}
-
-void 	EPAVelocityD::Render		()
-{
-}
-
-void 	EPAVortex::Render			()
-{
-    RCache.set_xform_world	(Fidentity);
-    Device.SetShader		(Device.m_WireShader);
-    DU.DrawCross			(center, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, 0x6000ffff);
-}
-*/

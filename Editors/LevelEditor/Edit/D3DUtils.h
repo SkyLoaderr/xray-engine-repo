@@ -104,7 +104,7 @@ public:
     void dbgDrawEdge(const Fvector& p0,	const Fvector& p1, u32 clr, LPCSTR caption=0);
     void dbgDrawFace(const Fvector& p0,	const Fvector& p1, const Fvector& p2, u32 clr, LPCSTR caption=0);
 
-    void DrawFace(const Fvector& p0,	const Fvector& p1, const Fvector& p2, u32 clr, BOOL bSolid, BOOL bWire);
+    void DrawFace(const Fvector& p0,	const Fvector& p1, const Fvector& p2, u32 clr_s, u32 clr_w, BOOL bSolid, BOOL bWire);
     void DrawLine(const Fvector& p0,	const Fvector& p1, u32 clr);
     IC void DrawLine(const Fvector* p, u32 clr){DrawLine(p[0],p[1],clr);}
     void DrawLink(const Fvector& p0, const Fvector& p1, float sz, u32 clr);
@@ -122,22 +122,22 @@ public:
         box.getcenter(C);
         DrawSelectionBox(C,S,c);
     }
-    void DrawIdentSphere	(bool bSolid, bool bWire, u32 clr);
-    void DrawIdentCone		(bool bSolid, bool bWire, u32 clr);
-	void DrawIdentCylinder	(bool bSolid, bool bWire, u32 clr);
-    void DrawIdentBox		(bool bSolid, bool bWire, u32 clr);
+    void DrawIdentSphere	(bool bSolid, bool bWire, u32 clr_s, u32 clr_w);
+    void DrawIdentCone		(bool bSolid, bool bWire, u32 clr_s, u32 clr_w);
+	void DrawIdentCylinder	(bool bSolid, bool bWire, u32 clr_s, u32 clr_w);
+    void DrawIdentBox		(bool bSolid, bool bWire, u32 clr_s, u32 clr_w);
 
-    void DrawBox	(const Fvector& offs, const Fvector& Size, bool bWire, u32 c);
-    void DrawAABB	(const Fvector& p0, const Fvector& p1, u32 c, BOOL bSolid, BOOL bWire);
-    void DrawAABB	(const Fmatrix& parent, const Fvector& center, const Fvector& size, u32 c, BOOL bSolid, BOOL bWire);
-    void DrawOBB	(const Fmatrix& parent, const Fobb& box, u32 c);
-	void DrawSphere	(const Fmatrix& parent, const Fvector& center, float radius, u32 c, BOOL bSolid, BOOL bWire);
-	void DrawSphere	(const Fmatrix& parent, const Fsphere& S, u32 c, BOOL bSolid, BOOL bWire){DrawSphere(parent,S.P,S.R,c,bSolid,bWire);}
-	void DrawCylinder(const Fmatrix& parent, const Fvector& center, const Fvector& dir, float height, float radius, u32 c, BOOL bSolid, BOOL bWire);
-	void DrawCone	(const Fmatrix& parent, const Fvector& apex, const Fvector& dir, float height, float radius, u32 c, BOOL bSolid, BOOL bWire);
-    void DrawPlane	(const Fvector& center, const Fvector2& scale, const Fvector& rotate, u32 c, bool bCull, BOOL bSolid, BOOL bWire);
-    void DrawPlane	(const Fvector& p, const Fvector& n, float d, const Fvector2& scale, u32 c, bool bCull, BOOL bSolid, BOOL bWire);
-    void DrawRectangle(const Fvector& o, const Fvector& u, const Fvector& v, u32 clr, BOOL bSolid, BOOL bWire);
+    void DrawBox	(const Fvector& offs, const Fvector& Size, bool bSolid, bool bWire, u32 clr_s, u32 clr_w);
+    void DrawAABB	(const Fvector& p0, const Fvector& p1, u32 clr_s, u32 clr_w, BOOL bSolid, BOOL bWire);
+    void DrawAABB	(const Fmatrix& parent, const Fvector& center, const Fvector& size, u32 clr_s, u32 clr_w, BOOL bSolid, BOOL bWire);
+    void DrawOBB	(const Fmatrix& parent, const Fobb& box, u32 clr_s, u32 clr_w);
+	void DrawSphere	(const Fmatrix& parent, const Fvector& center, float radius, u32 clr_s, u32 clr_w, BOOL bSolid, BOOL bWire);
+	void DrawSphere	(const Fmatrix& parent, const Fsphere& S, u32 clr_s, u32 clr_w, BOOL bSolid, BOOL bWire){DrawSphere(parent,S.P,S.R,clr_s,clr_w,bSolid,bWire);}
+	void DrawCylinder(const Fmatrix& parent, const Fvector& center, const Fvector& dir, float height, float radius, u32 clr_s, u32 clr_w, BOOL bSolid, BOOL bWire);
+	void DrawCone	(const Fmatrix& parent, const Fvector& apex, const Fvector& dir, float height, float radius, u32 clr_s, u32 clr_w, BOOL bSolid, BOOL bWire);
+    void DrawPlane	(const Fvector& center, const Fvector2& scale, const Fvector& rotate, u32 clr_s, u32 clr_w, bool bCull, BOOL bSolid, BOOL bWire);
+    void DrawPlane	(const Fvector& p, const Fvector& n, const Fvector2& scale, u32 clr_s, u32 clr_w, bool bCull, BOOL bSolid, BOOL bWire);
+    void DrawRectangle(const Fvector& o, const Fvector& u, const Fvector& v, u32 clr_s, u32 clr_w, BOOL bSolid, BOOL bWire);
 
     void DrawSafeRect();
     void DrawGrid	();

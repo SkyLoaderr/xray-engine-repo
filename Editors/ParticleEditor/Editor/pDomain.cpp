@@ -92,85 +92,80 @@ void	PDomain::set(PDomainEnum t,
 	f[8] = inA8;
 }
 //--------------------------------------------------------------------
-void 	PDomain::Render		(u32 color)
+void 	PDomain::Render		(u32 clr)
 {
+	u32 clr_s = subst_alpha	(clr,0x60);
+	u32 clr_w = subst_alpha	(clr,0xff);
     RCache.set_xform_world	(Fidentity);
 	switch(type){
     case PDPoint: 	
 		Device.SetShader	(Device.m_WireShader);
-//    	DU.DrawCross		(p1, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, clr);
+    	DU.DrawCross		(v[0], 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, clr_w);
     break;
 	case PDLine: 	
 		Device.SetShader	(Device.m_WireShader);
-//    	DU.DrawCross		(p1, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, clr);
-//  	DU.DrawCross		(p1+p2, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, clr);
-//    	DU.DrawLine 		(p1, p1+p2, clr);
+    	DU.DrawCross		(v[0], 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, clr_w);
+	  	DU.DrawCross		(v[1], 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, clr_w);
+    	DU.DrawLine 		(v[0], v[1], clr_w);
     break;
     case PDTriangle: 	
 		Device.SetShader	(Device.m_SelectionShader);
-//        DU.DrawFace			(p1, p1+u, p1+v, clr, true, false);
-		Device.SetShader	(Device.m_WireShader);
-//        DU.DrawFace			(p1, p1+u, p1+v, clr, false, true);
+        DU.DrawFace			(v[0], v[1], v[2], clr_s, clr_w, true, true);
     break;
 	case PDPlane:{
 		Device.SetShader	(Device.m_SelectionShader);
-//        Fvector2 sz			= {100.f,100.f};
-//        DU.DrawPlane		(p1,p2,radius1,sz,clr,true,true,false);
+        Fvector2 sz			= {100.f,100.f};
+        DU.DrawPlane		(v[0],v[1],sz,clr_s,clr_w,true,true,true);
     }break;
 	case PDBox: 	
 		Device.SetShader	(Device.m_SelectionShader);
-//    	DU.DrawAABB			(p1, p2, clr, true, false);
-		Device.SetShader	(Device.m_WireShader);
-//    	DU.DrawAABB			(p1, p2, clr, false, true);
+    	DU.DrawAABB			(v[0], v[1], clr_s, clr_w, true, true);
     break;
 	case PDSphere: 	
 		Device.SetShader	(Device.m_SelectionShader);
-//    	DU.DrawSphere		(Fidentity, p1, radius2, clr, true, false);
-//    	DU.DrawSphere		(Fidentity, p1, radius1, clr, true, false);
-		Device.SetShader	(Device.m_WireShader);
-//    	DU.DrawSphere		(Fidentity, p1, radius2, clr, false, true);
-//    	DU.DrawSphere		(Fidentity, p1, radius1, clr, false, true);
-    break;
-	case PDCylinder:{
+    	DU.DrawSphere		(Fidentity, v[0], f[4], clr_s, clr_w, true, true);
+    	DU.DrawSphere		(Fidentity, v[0], f[3], clr_s, clr_w, true, true);
+    break;                                      
+/*	case PDCylinder:{
     	pVector c,d;
-//        float h 			= p2.length	();
-//        c 					= (p1+p1+p2)/2.f;
-//        d 					= p2/h;
+        float h 			= p2.length	();
+        c 					= (p1+p1+p2)/2.f;
+        d 					= p2/h;
 		Device.SetShader	(Device.m_SelectionShader);
-//		DU.DrawCylinder		(Fidentity, c, d, h, radius1, clr, true, false);
+		DU.DrawCylinder		(Fidentity, c, d, h, radius1, clr, true, false);
 		Device.SetShader	(Device.m_WireShader);
-//		DU.DrawCylinder		(Fidentity, c, d, h, radius1, clr, false, true);
+		DU.DrawCylinder		(Fidentity, c, d, h, radius1, clr, false, true);
     }break;
 	case PDCone:{ 	
     	pVector d;
-//        float h = p2.length	();
-//        d = p2/h;
+        float h = p2.length	();
+        d = p2/h;
 		Device.SetShader	(Device.m_SelectionShader);
-//		DU.DrawCone			(Fidentity, p1, d, h, radius2, clr, true, false);
-//		DU.DrawCone			(Fidentity, p1, d, h, radius1, clr, true, false);
+		DU.DrawCone			(Fidentity, p1, d, h, radius2, clr, true, false);
+		DU.DrawCone			(Fidentity, p1, d, h, radius1, clr, true, false);
 		Device.SetShader	(Device.m_WireShader);
-//		DU.DrawCone			(Fidentity, p1, d, h, radius2, clr, false, true);
-//		DU.DrawCone			(Fidentity, p1, d, h, radius1, clr, false, true);
+		DU.DrawCone			(Fidentity, p1, d, h, radius2, clr, false, true);
+		DU.DrawCone			(Fidentity, p1, d, h, radius1, clr, false, true);
     }break;
 	case PDBlob: 	
 		Device.SetShader	(Device.m_WireShader);
-//    	DU.DrawCross		(p1, 0.1f,0.1f,0.1f, 0.1f,0.1f,0.1f, clr);
+    	DU.DrawCross		(p1, 0.1f,0.1f,0.1f, 0.1f,0.1f,0.1f, clr);
     break;
 	case PDDisc:{
 		Device.SetShader	(Device.m_SelectionShader);
-//		DU.DrawCylinder		(Fidentity, p1, p2, EPS, radius2, clr, true, false);
-//		DU.DrawCylinder		(Fidentity, p1, p2, EPS, radius1, clr, true, false);
+		DU.DrawCylinder		(Fidentity, p1, p2, EPS, radius2, clr, true, false);
+		DU.DrawCylinder		(Fidentity, p1, p2, EPS, radius1, clr, true, false);
 		Device.SetShader	(Device.m_WireShader);
-//		DU.DrawCylinder		(Fidentity, p1, p2, EPS, radius2, clr, false, true);
-//		DU.DrawCylinder		(Fidentity, p1, p2, EPS, radius1, clr, false, true);
+		DU.DrawCylinder		(Fidentity, p1, p2, EPS, radius2, clr, false, true);
+		DU.DrawCylinder		(Fidentity, p1, p2, EPS, radius1, clr, false, true);
     }break;
 	case PDRectangle: 	
 		Device.SetShader	(Device.m_SelectionShader);
-//        DU.DrawRectangle	(p1, u, v, clr, true, false);
+        DU.DrawRectangle	(p1, u, v, clr, true, false);
 		Device.SetShader	(Device.m_WireShader);
-//        DU.DrawRectangle	(p1, u, v, clr, false, true);
+        DU.DrawRectangle	(p1, u, v, clr, false, true);
     break;
-    }
+*/    }
 }
 
 xr_token					domain_token	[ ]={

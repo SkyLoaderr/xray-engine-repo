@@ -83,6 +83,8 @@ void __fastcall PS::CPEDef::OnActionsClick(PropValue* sender, bool& bDataModifie
 
 void PS::CPEDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
 {
+    PHelper.CreateFlag32	(items,FHelper.PrepareKey(pref,"Domain Draw"), 		  &Tools.m_Flags, CParticleTools::flDrawDomain);
+    PHelper.CreateFlag32	(items,FHelper.PrepareKey(pref,"Domain Transp"),	  &Tools.m_Flags, CParticleTools::flDrawTransp);
 	PHelper.CreateCaption	(items,FHelper.PrepareKey(pref,"Version\\Owner Name"),*m_OwnerName);
 	PHelper.CreateCaption	(items,FHelper.PrepareKey(pref,"Version\\Modif Name"),*m_ModifName);
 	PHelper.CreateCaption	(items,FHelper.PrepareKey(pref,"Version\\Creation Time"),Trim(AnsiString(ctime(&m_CreateTime))));

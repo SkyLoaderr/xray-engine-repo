@@ -152,12 +152,12 @@ void CParticleTools::Render()
 	RCache.set_xform_world		(Fidentity);
     switch(m_EditMode){
     case emEffect:{	
-		if (m_EditPE&&m_EditPE->GetDefinition())	
+		if (m_Flags.is(flDrawDomain)&&m_EditPE&&m_EditPE->GetDefinition())	
         	m_EditPE->GetDefinition()->Render();
     	::Render->Models->RenderSingle(m_EditPE,Fidentity,1.f);	
     }break;
     case emGroup:{
-    	if (m_EditPG){
+    	if (m_EditPG&&m_Flags.is(flDrawDomain)){
          	int cnt = m_EditPG->children.size();
             for (int k=0; k<cnt; k++){
                 IRender_Visual*  V  = m_EditPG->children[k];
