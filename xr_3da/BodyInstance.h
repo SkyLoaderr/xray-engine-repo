@@ -169,9 +169,9 @@ public:
 	BOOL	noloop;
 
 	IC float	Dequantize(WORD V) 
-	{	return  float(V)/6553.4f; }
+	{	return  float(V)/655.35f; }
 	IC WORD		Quantize(float V)
-	{	clamp(V,0.f,50.f); return WORD(iFloor(V*6553.4f));	}
+	{	int		t = iFloor(V*655.35f); clamp(t,0,65535); return WORD(t); }
 
 	void		Load		(CKinematics* P, CInifile* INI, LPCSTR section, BOOL bCycle);
 	CBlend*		PlayCycle	(CKinematics* P);
