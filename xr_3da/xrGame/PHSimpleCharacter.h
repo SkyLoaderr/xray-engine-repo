@@ -137,6 +137,9 @@ public:
 	//Creating
 	virtual		void		Create								(dVector3 sizes)	;
 	virtual		void		Destroy								(void)				;
+	virtual		void		Disable								()					;
+	virtual		void 		EnableObject						(CPHObject* obj)	;
+	virtual		void		Enable								()					;
 	virtual		void		SetBox								(const dVector3 &sizes);
 	//get-set
 	virtual		void		SetObjectContactCallback			(ObjectContactCallbackFun* callback);

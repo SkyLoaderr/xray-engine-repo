@@ -959,6 +959,42 @@ void CPHSimpleCharacter::SetObjectContactCallback(ObjectContactCallbackFun* call
 	dGeomUserDataSetObjectContactCallback(m_geom_shell,callback);
 	dGeomUserDataSetObjectContactCallback(m_wheel,callback);
 }
+void CPHSimpleCharacter::Disable()
+{
+	dGeomGetUserData(m_wheel)->pushing_neg			=false;
+	dGeomGetUserData(m_wheel)->pushing_b_neg		=false;
+	dGeomGetUserData(m_geom_shell)->pushing_neg		=false;
+	dGeomGetUserData(m_geom_shell)->pushing_b_neg	=false;
+	dGeomGetUserData(m_hat)->pushing_neg			=false;
+	dGeomGetUserData(m_hat)->pushing_b_neg			=false;
+	dGeomGetUserData(m_cap)->pushing_neg			=false;
+	dGeomGetUserData(m_cap)->pushing_b_neg			=false;
+	CPHCharacter::Disable();
+}
+void CPHSimpleCharacter::Enable()
+{
+	dGeomGetUserData(m_wheel)->pushing_neg			=false;
+	dGeomGetUserData(m_wheel)->pushing_b_neg		=false;
+	dGeomGetUserData(m_geom_shell)->pushing_neg		=false;
+	dGeomGetUserData(m_geom_shell)->pushing_b_neg	=false;
+	dGeomGetUserData(m_hat)->pushing_neg			=false;
+	dGeomGetUserData(m_hat)->pushing_b_neg			=false;
+	dGeomGetUserData(m_cap)->pushing_neg			=false;
+	dGeomGetUserData(m_cap)->pushing_b_neg			=false;
+	CPHCharacter::Enable();
+}
+void CPHSimpleCharacter::EnableObject(CPHObject* obj)
+{
+	dGeomGetUserData(m_wheel)->pushing_neg			=false;
+	dGeomGetUserData(m_wheel)->pushing_b_neg		=false;
+	dGeomGetUserData(m_geom_shell)->pushing_neg		=false;
+	dGeomGetUserData(m_geom_shell)->pushing_b_neg	=false;
+	dGeomGetUserData(m_hat)->pushing_neg			=false;
+	dGeomGetUserData(m_hat)->pushing_b_neg			=false;
+	dGeomGetUserData(m_cap)->pushing_neg			=false;
+	dGeomGetUserData(m_cap)->pushing_b_neg			=false;
+	CPHCharacter::EnableObject(obj);
+}
 void	CPHSimpleCharacter::SetWheelContactCallback				(ObjectContactCallbackFun* callback)
 {
 	VERIFY(b_exist);

@@ -70,7 +70,7 @@ public:
 	virtual	dSpaceID	dSpace								()															=0;		
 	virtual	void		Disable								()															;																		
 	virtual	void		ReEnable							()															{;}																				
-			void		Enable								()															;											//!!
+	virtual	void		Enable								()															;											//!!
 			bool		IsEnabled							()															{ if(!b_exist)return false; return !!dBodyIsEnabled(m_body);}
 			bool		ActorMovable						()															{return b_actor_movable;}
 			void		SetActorMovable						(bool v)													{b_actor_movable=v;}
