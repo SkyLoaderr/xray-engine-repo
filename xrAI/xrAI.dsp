@@ -291,10 +291,6 @@ SOURCE=.\cl_defs.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\cl_intersect.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\cl_intersect.h
 # End Source File
 # Begin Source File
