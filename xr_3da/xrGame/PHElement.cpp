@@ -907,13 +907,13 @@ void	CPHElement::Disabling(){
 				//return;
 			}
 			else{
-				previous_dev=0;
-				previous_v=0;
+				previous_dev=deviation;
+				previous_v=mag_v;
 				dis_count_f=1;
 				dis_count_f1=0;
 				Memory.mem_copy(previous_p,current_p,sizeof(dVector3));
 				Memory.mem_copy(previous_r,current_r,sizeof(dMatrix3));
-				previous_p[0]=dInfinity;
+				//previous_p[0]=dInfinity;
 			}
 
 			{
