@@ -15,12 +15,14 @@ static LogCallback			LogCB			= 0;
 void FlushLog			()
 {
 	if (!no_log){
+		logCS.Enter			();
         IWriter *f			= FS.w_open(logFName);
         if (f) {
             for (u32 it=0; it<LogFile.size(); it++)
-                f->w_string	(*LogFile[it]);
+                f->w_string	(*(LogFile[it]));
             FS.w_close		(f);
         }
+		logCS.Leave			();
     }
 }
 
