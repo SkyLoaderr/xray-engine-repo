@@ -38,7 +38,7 @@ function motivator_binder:reinit()
     self.object:set_hear_callback(hear_callback)
     self.object:set_patrol_extrapolate_callback(motivator_binder.extrapolate_callback, self)
         
-    local char_ini = self.object:spawn_ini()
+    local char_ini = self.object:spawn_ini() or ini_file("scripts\\dummy")
 
     --' Bind other scripts
     printf("Base evaluator ID %d", stalker_ids.property_script)
