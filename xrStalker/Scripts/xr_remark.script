@@ -89,7 +89,7 @@ function action_remark_activity:activate_sound()
 	printf("_bp: %s: action_remark_activity:activate_sound(): activating sound", self.object:name())
 
 	self.snd_start_time = device():time_global()
-	self.snd_scheduled = true
+	self.snd_scheduled = true				
 
 	local snd = {}
 	--snd.rnd = snd_prob
@@ -359,7 +359,6 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.arrival_timeout = utils.cfg_get_number (ini, section,   "arrival_timeout", npc, false,     5000)
 	st.anim = utils.cfg_get_string            (ini, section,   "anim",            npc, false, "")
 	st.no_move = utils.cfg_get_bool           (ini, section,   "no_move",         npc, false,     st.anim ~= nil)
-	st.dlg = utils.cfg_get_string             (ini, section,   "dlg",             npc, false, "")
 	st.target = utils.cfg_get_string          (ini, section,   "target",          npc, false, "", "actor")
 	if st.target ~= actor then
 		st.target_sid = tonumber(st.target)
