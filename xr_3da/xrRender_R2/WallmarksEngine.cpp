@@ -12,7 +12,6 @@
 
 // #include "xr_effsun.h"
 
-const float W_TTL			= 30.f;
 const float W_DIST_FADE		= 15.f;
 const float	W_DIST_FADE_SQR	= W_DIST_FADE*W_DIST_FADE;
 const float I_DIST_FADE_SQR	= 1.f/W_DIST_FADE_SQR;
@@ -71,7 +70,7 @@ CWallmarksEngine::static_wallmark*	CWallmarksEngine::static_wm_allocate		()
 	if (static_pool.empty())  W = xr_new<static_wallmark> ();
 	else					{ W = static_pool.back(); static_pool.pop_back(); }
 
-	W->ttl				= W_TTL;
+	W->ttl				= ps_r__WallmarkTTL;
 	W->verts.clear		();
 	return W;
 }
@@ -83,7 +82,7 @@ void		CWallmarksEngine::static_wm_destroy		(CWallmarksEngine::static_wallmark*	W
 // render
 void		CWallmarksEngine::static_wm_render		(CWallmarksEngine::static_wallmark*	W, FVF::LIT* &V)
 {
-	float		a		= 1-(W->ttl/W_TTL);
+	float		a		= 1-(W->ttl/ps_r__WallmarkTTL);
 	int			aC		= iFloor	( a * 255.f);	clamp	(aC,0,255);
 	u32			C		= color_rgba(128,128,128,aC);
 	FVF::LIT*	S		= &*W->verts.begin	();
