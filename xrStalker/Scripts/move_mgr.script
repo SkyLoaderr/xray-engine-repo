@@ -434,6 +434,11 @@ function move_mgr:turn_end_callback()
 		self:scheme_set_signal(sig)
 	end
 
+	if self.play_sound_after_anim_start then
+		-- ѕроиграть звук сразу после окончани€ поворота:
+		self:update_sound()
+	end
+
 	if self.retval_after_rotation then
 		if not self.move_cb_info then
 			utils.abort("object '%s': path_look '%s': ret flag is set, but " ..

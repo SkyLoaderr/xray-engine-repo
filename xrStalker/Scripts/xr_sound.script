@@ -63,7 +63,9 @@ snd_files = {
 	gar_dm_bandit_demand           = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_bandits_demand_]],
 	gar_dm_newbie_no_money         = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_newbie_no_money_]],
 	gar_dm_newbie_help_me          = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_newbie_help_me_]],
-	gar_dm_newbie_thank_you        = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_newbie_thank_you_]]
+	gar_dm_newbie_thank_you        = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_newbie_thank_you_]],
+	
+	val_prisoner_captive_help_me   = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_newbie_help_me_]]
 }
 -----------------------------------------------------------------------------------------------------------------------------------
 function load_sound(obj)
@@ -202,6 +204,10 @@ function load_sound(obj)
 	theme["gar_dm_newbie_help_me"].types["stalker"] = load_theme("gar_dm_newbie_help_me")
 	theme["gar_dm_newbie_thank_you"] = { exec = npc_class, types = {}}
 	theme["gar_dm_newbie_thank_you"].types["stalker"] = load_theme("gar_dm_newbie_thank_you")
+
+	-- DarkValley
+	theme["val_prisoner_captive_help_me"] = { exec = npc_class, types = {}}
+	theme["val_prisoner_captive_help_me"].types["stalker"] = load_theme("val_prisoner_captive_help_me")
 
 	------------------------------------------------------------------------------------------------
 	-- radar monolith

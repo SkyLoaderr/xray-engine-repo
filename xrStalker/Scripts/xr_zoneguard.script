@@ -119,7 +119,7 @@ function action_zoneguard_activity:go_to_actor(actor)
 		if_then_else(sug_body_state == body_state_free, "run", "assault"),
 		nil,
 		nil,
-		{ look_direction = actor:direction() })
+		{ look_object = actor })
 end
 
 function action_zoneguard_activity:stand_still(actor)

@@ -7,8 +7,10 @@
 local state_none = 0
 local state_initial = 1
 local state_going_to_plr = 2
-local state_rotating = 3
 local state_standing = 4
+
+local body_state_free = 0
+local body_state_danger = 1
 
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_need_remark" (property_evaluator)
@@ -46,7 +48,7 @@ end
 function action_remark_activity:reset_scheme()
 	printf("_bp: action_remark_activity [%s]: reset_scheme", self.object:name())
 
-	self.object:clear_animations()
+	--self.object:clear_animations()
 	
 	self.state = state_initial
 
@@ -96,21 +98,68 @@ function action_remark_activity:activate_sound()
 	printf("_bp2 [%s]: num_snd = %d", self.object:name(), self.object:active_sound_count())
 end
 
-function action_remark_activity:update_anim()
-	if self.st.anim then
-		xr_state.anim_update(self.st.anim, self.object)
-	end
-end
-
 function action_remark_activity:if_actor_far_go_to_actor()
 	if not self.st.no_move then
 		if distance_between(self.object, self.target) >= 4 then
-			self.object:set_movement_type(move.run)
-			self.object:set_desired_direction(self.target:direction())
-			self.object:set_dest_level_vertex_id(self.target:level_vertex_id())
+			self:go_to_target()
 			self.state = state_going_to_plr
 		end
 	end
+end
+
+function action_remark_activity:get_sug_body_state()
+	if self.st.no_danger or self.object:relation(self.target) == game_object.friend then
+		return body_state_free --"guard"
+	else
+		return body_state_danger --"threat"
+	end
+end
+
+function action_remark_activity:time_callback()
+end
+
+function action_remark_activity:turn_end_callback()
+	if self.st.snd then
+		printf("_bp: action_remark_activity:step(): calling activate_sound from state_initial")
+		self:activate_sound()
+	end
+end
+
+function action_remark_activity:stand_still()
+	local sug_body_state = self:get_sug_body_state()
+	local look_tbl
+	if self.st.no_rotate then
+		look_tbl = nil
+	else
+		look_tbl = { look_object = self.target }
+	end
+	local cb = { obj = self, func = self.time_callback, turn_end_func = self.turn_end_callback }
+	
+	if self.st.anim then
+		state_mgr.set_state(self.object, self.st.anim, cb, nil, look_tbl)
+	else
+		state_mgr.set_state(self.object,
+			if_then_else(sug_body_state == body_state_free, "guard", "threat"),
+			cb,
+			nil,
+			look_tbl)
+	end
+end
+
+function action_remark_activity:update_destination()
+	self.object:set_path_type(game_object.level_path)
+	self.object:set_dest_level_vertex_id(self.target:level_vertex_id())
+end
+
+function action_remark_activity:go_to_target()
+	local sug_body_state = self:get_sug_body_state()
+
+	self:update_destination()
+	state_mgr.set_state(self.object,
+		if_then_else(sug_body_state == body_state_free, "run", "assault"),
+		nil,
+		nil,
+		{ look_object = self.target })
 end
 	
 function action_remark_activity:step()
@@ -127,10 +176,7 @@ function action_remark_activity:step()
 	end
 
 	-- Try to switch to another scheme:
-	local actor = level.actor()
-	if not actor then
-		return
-	end
+	local actor = db.actor
 	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
 		return
 	end
@@ -146,58 +192,23 @@ function action_remark_activity:step()
 		end
 	end
 
-	-- ƒл€ всех состо€ний нужно выбрать режим оружи€:
-	if self.st.no_wpn then
-		self.object:set_item(object.idle, nil)
-	else
-		self.object:set_item(object.idle, self.object:best_weapon())
-	end
-
 	-- Ќачальное состо€ние
 	if self.state == state_initial then
-		xr_state.anim_update(nil, self.object)
-		local mental_state
-		if self.st.no_danger or self.object:relation(self.target) == game_object.friend then
-			mental_state = anim.free
-		else
-			mental_state = anim.danger
-		end
 		if self.st.no_move then
-			self.object:set_movement_type(move.stand)
-			self.object:set_body_state(move.standing) -- тут об€зательно standing, т.к. mental_state может быть danger
-			self.object:set_mental_state(mental_state)
-			if self.st.no_rotate then
-				-- ћожно включать и звук и анимацию
-				if self.st.snd then
-					printf("_bp: action_remark_activity:step(): calling activate_sound from state_initial")
-					self:activate_sound()
-				end
-				self:update_anim()
-				self.state = state_standing
-				return
-			else
-				-- —перва повернемс€, а затем включим анимацию
-				self.expiration_time = device():time_global() + move_mgr.rotation_start_time
-				self.state = state_rotating
-			end
+			self:stand_still()
+			self.state = state_standing
 		else
 			-- ѕобежали к игроку
 			self.object:set_path_type(game_object.level_path)
 			self.object:set_desired_direction(self.target:direction())
 			self.object:set_dest_level_vertex_id(self.target:level_vertex_id())
-			self.object:set_movement_type(move.run)
-			self.object:set_body_state(move.standing) -- тут об€зательно standing, т.к. mental_state может быть danger
-			self.object:set_mental_state(mental_state)
+			self:go_to_target()
 			self.state = state_going_to_plr
 		end
-		-- ≈сли бежим к сталкеру, или стоим на месте, но не запрещено вращение - посмотреть на сталкера:
-		utils.stalker_look_at_stalker(self.object, self.target)
 		return
 	end
 
 	if self.state == state_going_to_plr then
-		utils.stalker_look_at_stalker(self.object, self.target)
-	
 		-- ѕробовать включать звук, когда мы близко, или долго не можем добратьс€ до игрока:
 		if self.st.snd and
 		   (distance_between(self.object, self.target) <= self.st.snd_dist or
@@ -206,43 +217,14 @@ function action_remark_activity:step()
 			self:activate_sound()
 		end
 
-
 		if distance_between(self.object, self.target) < 3 or
 		   self.st.arrival_timeout <= device():time_global() - self.reset_time then
-			self.object:set_movement_type(move.stand)
+			self:stand_still()
 			self.st.no_move = true -- Ќе получаетс€ пробежать к актеру - больше и не пытатьс€
 			self:signal_arrival()
-			if self.st.no_rotate then
-				self.state = state_standing
-			else
-				self.state = state_rotating
-			end
-		else
-			self.object:set_movement_type(move.run)
-			self.object:set_desired_direction(self.target:direction())
-			self.object:set_dest_level_vertex_id(self.target:level_vertex_id())
-		end
-		return
-	end
-
-	if self.state == state_rotating then
-		utils.stalker_look_at_stalker(self.object, self.target)
-		if not self.st.no_move or not self.st.anim then
-			if self.st.snd then
-				printf("_bp: action_remark_activity:step(): calling activate_sound from state_rotating")
-				self:activate_sound()
-			end
-			self:if_actor_far_go_to_actor()
-		elseif ((self.expiration_time and device():time_global() >= self.expiration_time and
-		        not self.object:is_body_turning())
-		       or utils.no_need_to_rotate(self.object, self.target:position())) then
-			-- ѕовернулись в сторону игрока - включить анимацию и звук
-			self:update_anim()
-			if self.st.snd then
-				printf("_bp: action_remark_activity:step(): calling activate_sound from state_rotating2")
-				self:activate_sound()
-			end
 			self.state = state_standing
+		else
+			self:update_destination()
 		end
 		return
 	end
@@ -252,7 +234,6 @@ function action_remark_activity:step()
 			printf("_bp: action_remark_activity:step(): calling activate_sound from state_standing")
 			self:activate_sound()
 		end
-		self:update_anim()
 		self:if_actor_far_go_to_actor()
 		return
 	end	
@@ -280,7 +261,7 @@ function action_remark_activity:execute()
 end
 
 function action_remark_activity:finalize()
-	self.object:clear_animations()
+	--self.object:clear_animations()
 	action_base.finalize(self)
 end
 
@@ -333,6 +314,9 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.no_rotate = utils.cfg_get_bool         (ini, section,   "no_rotate",       npc, false)
 	st.no_wpn = utils.cfg_get_bool            (ini, section,   "no_wpn",          npc, false)
+	if st.no_wpn then
+		utils.abort("object '%s': xr_remark.set_scheme: no_wpn field is deprecated", npc:name())
+	end
 	st.snd = utils.cfg_get_string             (ini, section,   "snd",             npc, false, "")
 	st.snd_dist = utils.cfg_get_number        (ini, section,   "snd_dist",        npc, false,     5)
 	st.snd_timeout = utils.cfg_get_number     (ini, section,   "snd_timeout",     npc, false,     4000)
