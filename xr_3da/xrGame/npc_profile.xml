@@ -10,7 +10,6 @@
 		<rank>Novice</rank>
 		<team>Lonewolf</team>
 		<start_dialog>stalker_talk_about</start_dialog>
-		<start_dialog>job_medkit</start_dialog>
 	</character>
 	<character name_id="veteran">
 		<name>Unknown Stalker</name>
@@ -21,16 +20,6 @@
 		<team>Lonewolf</team>
 		<start_dialog>stalker_talk_about</start_dialog>
 	</character>
-	<character name_id="veteran2">
-		<name>Unknown Stalker</name>
-		<icon x="6" y="9"></icon>
-		<map_icon x="0" y="4"></map_icon>
-		<visual>string_name2</visual>
-		<rank>veteran</rank>
-		<team>Lonewolf</team>
-		<start_dialog>stalker_talk_about</start_dialog>
-	</character>
-
 	<character name_id="monolith">
 		<name>Unknown Stalker</name>
 		<icon x="4" y="9"></icon>
@@ -75,14 +64,6 @@
 		<rank>novice</rank>
 		<team>Lonewolf</team>
 		<start_dialog>stalker_talk_about</start_dialog>
-	</character>
-	<character name_id="wounded">
-		<name>Wounded stalker</name>
-		<icon x="8" y="9"></icon>
-		<map_icon x="0" y="4"></map_icon>
-		<visual>string_name2</visual>
-		<rank>veteran</rank>
-		<team>Lonewolf</team>
 	</character>
 
 
