@@ -202,3 +202,36 @@ void __fastcall TfraBottomBar::miWeatherClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void TfraBottomBar::RedrawBar()
+{
+	SPBItem* pbi 	= UI->ProgressLast();
+	if (pbi){
+        AnsiString 	txt;
+        float 		p,m;
+        pbi->GetInfo(txt,p,m);
+        // status line
+        if (paStatus->Caption!=txt){
+	        paStatus->Caption		= txt;
+    	    paStatus->Repaint		();
+        }
+        // progress
+    	int val = (int)((p/m)*100);
+        if (val!=cgProgress->Progress){
+			cgProgress->Progress	= val;
+	        cgProgress->Repaint	();
+        }
+    	if (false==cgProgress->Visible) 
+        	cgProgress->Visible 	= true;
+    }else{
+    	if (cgProgress->Visible){
+            // status line
+            paStatus->Caption		= "";
+            paStatus->Repaint		();
+	        // progress
+	        cgProgress->Progress	= 0;
+        	cgProgress->Visible 	= false;
+        }
+    }
+}
+//---------------------------------------------------------------------------
+

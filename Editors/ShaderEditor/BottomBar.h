@@ -83,6 +83,7 @@ private:	// User declarations
 public:		// User declarations
     __fastcall TfraBottomBar(TComponent* Owner);
     void RefreshBar(){;}
+    void RedrawBar();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraBottomBar *fraBottomBar;
