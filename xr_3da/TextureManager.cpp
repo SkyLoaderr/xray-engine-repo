@@ -211,6 +211,8 @@ SPS*	CShaderManager::_CreatePS			(LPCSTR name)
 		LPD3DXBUFFER				pErrorBuf	= NULL;
 		LPD3DXSHADER_CONSTANTTABLE	pConstants	= NULL;
 		HRESULT						_hr			= S_OK;
+		string64					cname;
+		strconcat					(cname, "GameData\\shaders\\", name, ".ps");
 
 		// pixel
 		IReader*					fs			= Engine.FS.Open(cname);
