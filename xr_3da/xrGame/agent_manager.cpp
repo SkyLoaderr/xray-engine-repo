@@ -68,7 +68,13 @@ void CAgentManager::add				(CEntity *member)
 
 	iterator					I = std::find_if(m_members.begin(),m_members.end(), CMemberPredicate(stalker));
 	VERIFY						(I == m_members.end());
-	m_members.push_back			(CMemberOrder(stalker));
+	
+	CWorldState					goal;
+	add_condition				(goal,StalkerDecisionSpace::eWorldPropertyPuzzleSolved,true);
+
+	CMemberOrder				member_order(stalker);
+//	member_order.goal			(goal);
+	m_members.push_back			(member_order);
 }
 
 void CAgentManager::remove			(CEntity *member)

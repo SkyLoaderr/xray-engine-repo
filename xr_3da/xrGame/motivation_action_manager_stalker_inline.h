@@ -7,8 +7,3 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
-
-IC	void CMotivationActionManagerStalker::add_condition	(CWorldState &goal, _condition_type condition_id, _value_type value)
-{
-	goal.add_condition		(CWorldProperty(condition_id,value));
-}

@@ -41,9 +41,11 @@ protected:
 	typedef xr_vector<CMemberOrder>					MEMBER_STORAGE;
 	typedef MEMBER_STORAGE::iterator				iterator;
 	typedef MEMBER_STORAGE::const_iterator			const_iterator;
+	
+	using inherited::add_condition;
 
 protected:
-	MEMBER_STORAGE				m_members;
+	MEMBER_STORAGE					m_members;
 
 protected:
 			void					add_motivations	();

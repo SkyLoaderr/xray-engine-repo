@@ -78,7 +78,7 @@ float CMotivationSquad::evaluate	(u32 sub_motivation_id)
 			return		(0.f);
 	else
 		if (eMotivationSquadAction == sub_motivation_id)
-			if (m_object->agent_manager().member(m_object).order_type() != AgentManager::eOrderTypeAction)
+			if (m_object->agent_manager().member(m_object).order_type() == AgentManager::eOrderTypeAction)
 				return	(1.f);
 			else
 				return	(0.f);

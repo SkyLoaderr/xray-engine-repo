@@ -15,7 +15,8 @@
 
 template <
 	typename _object_type,
-	template <typename _object_type> class _motivation_type = CMotivation
+	template <typename _object_type> class _motivation_type = CMotivation,
+	template <typename _object_type> class _motivation_action_type = CMotivationAction
 >
 class CMotivationActionManager :
 	public CMotivationManager<_object_type,_motivation_type>,
@@ -25,6 +26,11 @@ protected:
 	typedef CMotivationManager<_object_type,_motivation_type>	CSMotivationManager;
 	typedef CActionPlanner<_object_type>						CSActionPlanner;
 	typedef CMotivationAction<_object_type>						CSMotivationAction;
+
+	using CSActionPlanner::add_condition;
+
+protected:
+	IC		void	add_condition				(CWorldState &goal, _condition_type condition_id, _value_type value);
 
 public:
 	IC				CMotivationActionManager	();

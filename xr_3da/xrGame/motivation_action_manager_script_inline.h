@@ -11,10 +11,11 @@
 #define TEMPLATE_SPECIALIZATION \
 	template <\
 		typename _object_type,\
-		template <typename _object_type> class _motivation_type\
+		template <typename _object_type> class _motivation_type,\
+		template <typename _object_type> class _motivation_action_type\
 	>
 
-#define CSMotivationActionManager CMotivationActionManagerScript<_object_type,_motivation_type>
+#define CSMotivationActionManager CMotivationActionManagerScript<_object_type,_motivation_type,_motivation_action_type>
 
 TEMPLATE_SPECIALIZATION
 IC	CSMotivationActionManager::CMotivationActionManagerScript	()

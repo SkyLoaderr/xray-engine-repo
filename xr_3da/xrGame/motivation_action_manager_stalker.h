@@ -20,15 +20,12 @@ protected:
 	typedef CGraphEngine::_solver_value_type			_value_type;
 	typedef CGraphEngine::_solver_condition_type		_condition_type;
 
-	using inherited::add_condition;
-
 protected:
 #ifdef DEBUG
 	EStalkerBehaviour		m_stalker_behaviour;
 #endif
 
 protected:
-	IC		void			add_condition						(CWorldState &goal, _condition_type condition_id, _value_type value);
 			void			add_evaluators						();
 			void			add_actions							();
 			void			add_motivations						();

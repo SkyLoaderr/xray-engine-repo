@@ -11,10 +11,11 @@
 #define TEMPLATE_SPECIALIZATION \
 	template <\
 		typename _object_type,\
-		template <typename _object_type> class _motivation_type\
+		template <typename _object_type> class _motivation_type,\
+		template <typename _object_type> class _motivation_action_type\
 	>
 
-#define CSMotivationActionManager CMotivationActionManager<_object_type,_motivation_type>
+#define CSMotivationActionManager CMotivationActionManager<_object_type,_motivation_type,_motivation_action_type>
 
 TEMPLATE_SPECIALIZATION
 IC	CSMotivationActionManager::CMotivationActionManager	()
@@ -73,6 +74,12 @@ TEMPLATE_SPECIALIZATION
 IC	void CSMotivationActionManager::clear_actions	()
 {
 	CSActionPlanner::clear				();
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CSMotivationActionManager::add_condition	(CWorldState &goal, _condition_type condition_id, _value_type value)
+{
+	goal.add_condition					(CWorldProperty(condition_id,value));
 }
 
 #undef TEMPLATE_SPECIALIZATION

@@ -13,11 +13,22 @@
 
 template <
 	typename _object_type,
-	template <typename _object_type> class _motivation_type = CMotivation
+	template <typename _object_type> class _motivation_type = CMotivation,
+	template <typename _object_type> class _motivation_action_type = CMotivationAction
 >
-class CMotivationActionManagerScript : public CMotivationActionManager<CLuaGameObject,_motivation_type> {
+class CMotivationActionManagerScript : 
+	public CMotivationActionManager<
+		CLuaGameObject,
+		_motivation_type,
+		_motivation_action_type
+	> 
+{
 protected:
-	typedef CMotivationActionManager<CLuaGameObject,_motivation_type> inherited;
+	typedef CMotivationActionManager<
+		CLuaGameObject,
+		_motivation_type,
+		_motivation_action_type
+	> inherited;
 
 protected:
 	_object_type	*m_object;
