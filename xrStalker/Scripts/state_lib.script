@@ -88,7 +88,7 @@ states = {
 				animstate = "stand",
 				animation = "hide"
 			},
-	listen = {	weapon = nil,
+	caution = {	weapon = nil,
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
