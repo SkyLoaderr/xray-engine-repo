@@ -8,21 +8,13 @@
 
 #pragma once
 
-const u32 dwStateCount			= 2;
-const u32 dwWeaponCount			= 4;
-const u32 dwWeaponActionCount	= 7;
-const u32 dwMovementCount		= 2;
-const u32 dwMovementActionCount	= 4;
-const u32 dwInPlaceCount		= 6;
-const u32 dwGlobalCount			= 2;
-
-extern LPCSTR caStateNames			[dwStateCount];
-extern LPCSTR caWeaponNames			[dwWeaponCount];
-extern LPCSTR caWeaponActionNames	[dwWeaponActionCount];
-extern LPCSTR caMovementNames		[dwMovementCount];
-extern LPCSTR caMovementActionNames	[dwMovementActionCount];
-extern LPCSTR caInPlaceNames		[dwInPlaceCount];
-extern LPCSTR caGlobalNames			[dwGlobalCount];
+extern LPCSTR caStateNames			[];
+extern LPCSTR caWeaponNames			[];
+extern LPCSTR caWeaponActionNames	[];
+extern LPCSTR caMovementNames		[];
+extern LPCSTR caMovementActionNames	[];
+extern LPCSTR caInPlaceNames		[];
+extern LPCSTR caGlobalNames			[];
 
 DEFINE_VECTOR	(CMotionDef*,ANIM_VECTOR, ANIM_IT);
 
@@ -43,22 +35,19 @@ public:
 	}
 };
 
-template <u32 COUNT, LPCSTR caBaseNames[]> class CAniFVector {
+template <LPCSTR caBaseNames[]> class CAniFVector {
 public:
 	ANIM_VECTOR		A;
 	
 	IC	void		Load(CKinematics *tpKinematics, LPCSTR caBaseName)
 	{
 		string256 S;
-		A.resize(COUNT);
-		ANIM_IT		I = A.begin(), B = I;
-		ANIM_IT		E = A.end();
-		for ( ; I != E; I++)
-			*I = tpKinematics->ID_Cycle(strconcat(S,caBaseName,caBaseNames[I - B]));
+		for (int i=0; caBaseNames[i]; i++)
+			A.push_back	(tpKinematics->ID_Cycle(strconcat(S,caBaseName,caBaseNames[i])));
 	}
 };
 
-template <typename TYPE_NAME, u32 COUNT, LPCSTR caBaseNames[]> class CAniCollection {
+template <typename TYPE_NAME, LPCSTR caBaseNames[]> class CAniCollection {
 public:
 	vector<TYPE_NAME*>	A;
 	
@@ -70,28 +59,25 @@ public:
 	IC	void		Load(CKinematics *tpKinematics, LPCSTR caBaseName)
 	{
 		string256 S;
-		A.resize(COUNT);
-		vector<TYPE_NAME*>::iterator	I = A.begin(), B = I;
-		vector<TYPE_NAME*>::iterator	E = A.end();
-		for ( ; I != E; I++) {
-			*I = xr_new<TYPE_NAME>();
-			(*I)->Load(tpKinematics,strconcat(S,caBaseName,caBaseNames[I - B]));
+		for (int i=0; caBaseNames[i]; i++) {
+			A.push_back	(xr_new<TYPE_NAME>());
+			A[i]->Load	(tpKinematics,strconcat(S,caBaseName,caBaseNames[i]));
 		}
 	}
 };
 
 class CStateAnimations {
 public:
-	typedef CAniCollection<CAniVector,	dwMovementActionCount,	caMovementActionNames>	CMovementActions;
-	typedef CAniCollection<CAniVector,	dwWeaponActionCount,	caWeaponActionNames>	CWeaponActions;
+	typedef CAniCollection<CAniVector,	caMovementActionNames>	CMovementActions;
+	typedef CAniCollection<CAniVector,	caWeaponActionNames>	CWeaponActions;
 	
 	// global
-	CAniCollection<CAniVector,			dwGlobalCount,	caGlobalNames>		m_tGlobal;
+	CAniCollection<CAniVector,		caGlobalNames>		m_tGlobal;
 	// torso
-	CAniCollection<CWeaponActions,		dwWeaponCount,	caWeaponNames>		m_tTorso;
+	CAniCollection<CWeaponActions,	caWeaponNames>		m_tTorso;
 	// legs
-	CAniCollection<CMovementActions,	dwMovementCount,caMovementNames>	m_tMoves;
-	CAniFVector	  <dwInPlaceCount,		caInPlaceNames>						m_tInPlace;
+	CAniCollection<CMovementActions,caMovementNames>	m_tMoves;
+	CAniFVector	  <caInPlaceNames>						m_tInPlace;
 
 	virtual			~CStateAnimations()
 	{
@@ -109,7 +95,7 @@ public:
 
 class CStalkerAnimations {
 public:
-	CAniCollection<CStateAnimations,dwStateCount,caStateNames>				m_tAnims;
+	CAniCollection<CStateAnimations,caStateNames>				m_tAnims;
 	CMotionDef*		m_tpCurrentGlobalAnimation;
 	CMotionDef*		m_tpCurrentTorsoAnimation;
 	CMotionDef*		m_tpCurrentLegsAnimation;

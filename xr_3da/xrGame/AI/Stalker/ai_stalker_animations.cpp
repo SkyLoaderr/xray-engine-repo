@@ -24,19 +24,21 @@ float faTurnAngles			[4] = {
 	0.f,
 };
 
-LPCSTR caStateNames			[dwStateCount] = {
+LPCSTR caStateNames			[] = {
 	"cr_",
 	"norm_",
+	0
 };
 
-LPCSTR caWeaponNames		[dwWeaponCount] = {
+LPCSTR caWeaponNames		[] = {
 	"0_",
 	"1_",
 	"2_",
 	"3_",
+	0
 };
 
-LPCSTR caWeaponActionNames	[dwWeaponActionCount] = {
+LPCSTR caWeaponActionNames	[] = {
 	"aim_",
 	"attack_",
 	"draw_",
@@ -44,32 +46,37 @@ LPCSTR caWeaponActionNames	[dwWeaponActionCount] = {
 	"holster_",
 	"reload_",
 	"pick_",
+	0
 };
 
-LPCSTR caMovementNames		[dwMovementCount] = {
+LPCSTR caMovementNames		[] = {
 	"walk_",
 	"run_",
+	0
 };
 
-LPCSTR caMovementActionNames[dwMovementActionCount] = {
+LPCSTR caMovementActionNames[] = {
 	"fwd_",
 	"back_",
 	"rs_",
 	"ls_",
+	0
 };
 
-LPCSTR caInPlaceNames		[dwInPlaceCount] = {
+LPCSTR caInPlaceNames		[] = {
 	"idle",
 	"turn",
 	"jump_begin",
 	"jump_idle",
 	"jump_end",
 	"jump_end_1",
+	0
 };
 
-LPCSTR caGlobalNames		[dwGlobalCount] = {
+LPCSTR caGlobalNames		[] = {
 	"death_",
 	"damage_",
+	0
 };
 
 void CAI_Stalker::vfAssignBones(CInifile *ini, const char *section)
@@ -220,27 +227,27 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 {
 	if (m_fCurSpeed < EPS_L) {
 		// standing
-		tpLegsAnimation	= m_tAnims.A[1]->m_tInPlace.A[0];
+		tpLegsAnimation		= m_tAnims.A[1]->m_tInPlace.A[0];
 		return;
 	}
-	Fvector				tDirection;
-	float				yaw, pitch;
+	Fvector					tDirection;
+	float					yaw, pitch;
 	
-	int i = ps_Size	();
+	int						i = ps_Size	();
 	if (!i)
 		return;
 	
-	CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
-	tDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
+	CObject::SavedPosition	tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
+	tDirection.sub			(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
 	if (tDirection.magnitude() < EPS_L)
 		return;
 	
-	tDirection.getHP	(yaw,pitch);
-	yaw					= angle_normalize_signed(-yaw);
+	tDirection.getHP		(yaw,pitch);
+	yaw						= angle_normalize_signed(-yaw);
 	// moving
 	if (getAI().bfTooSmallAngle(yaw,r_current.yaw,MAX_HEAD_TURN_ANGLE)) {
 		// moving forward
-		Msg				("Trying forward");
+		Msg					("Trying forward");
 		if (m_tMovementDirection == eMovementDirectionForward)
 			m_dwDirectionStartTime	= Level().timeServer();
 		else
@@ -303,10 +310,10 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 		}
 	}
 	
-	tpLegsAnimation		= m_tAnims.A[m_tBodyState]->m_tMoves.A[m_tMovementType]->A[m_tMovementDirection]->A[0];
-	r_target.yaw		= angle_normalize_signed(r_target.yaw + r_torso_target.yaw);
-	r_torso_target.yaw	= angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
-	r_target.yaw		= angle_normalize_signed(r_target.yaw - r_torso_target.yaw);
+	tpLegsAnimation			= m_tAnims.A[m_tBodyState]->m_tMoves.A[m_tMovementType]->A[m_tMovementDirection]->A[0];
+	r_target.yaw			= angle_normalize_signed(r_target.yaw + r_torso_target.yaw);
+	r_torso_target.yaw		= angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
+	r_target.yaw			= angle_normalize_signed(r_target.yaw - r_torso_target.yaw);
 }
 
 void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
