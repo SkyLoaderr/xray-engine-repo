@@ -13,10 +13,10 @@ struct SPPInfo {
 	struct SColor {
 		f32 r, g, b;
 		IC operator u32()										{
-			int		_r	= clamp	(iFloor(r*255.f+.5f),0,255);
-			int		_g	= clamp	(iFloor(g*255.f+.5f),0,255);
-			int		_b	= clamp	(iFloor(b*255.f+.5f),0,255);
-			return color_rgba	(_r,_g,_b,0);
+			int		_r	= clampr	(iFloor(r*255.f+.5f),0,255);
+			int		_g	= clampr	(iFloor(g*255.f+.5f),0,255);
+			int		_b	= clampr	(iFloor(b*255.f+.5f),0,255);
+			return color_rgba		(_r,_g,_b,0);
 		}
 		IC SColor& operator += (const SColor &ppi)				{
 			r += ppi.r; g += ppi.g; b += ppi.b; 
