@@ -167,6 +167,7 @@ void CRender::LoadBuffers	(IReader *base_fs)
 			u32 dcl_len			= D3DXGetDeclLength		(dcl)+1;
 			DCL[i].resize		(dcl_len);
 			fs().r				(DCL[i].begin(),dcl_len*sizeof(D3DVERTEXELEMENT9));
+			//.????????? remove T&B from DCL[]
 
 			// count, size
 			u32 vCount			= fs().r_u32	();
@@ -177,7 +178,7 @@ void CRender::LoadBuffers	(IReader *base_fs)
 			BYTE*	pData		= 0;
 			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vSize,dwUsage,0,D3DPOOL_MANAGED,&VB[i],0));
 			R_CHK				(VB[i]->Lock(0,0,(void**)&pData,0));
-			Memory.mem_copy		(pData,fs().pointer(),vCount*vSize);
+			Memory.mem_copy		(pData,fs().pointer(),vCount*vSize);	//.???? copy while skip T&B
 			VB[i]->Unlock		();
 
 			fs().advance		(vCount*vSize);

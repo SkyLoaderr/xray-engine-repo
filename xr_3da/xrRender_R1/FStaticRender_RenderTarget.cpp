@@ -142,7 +142,6 @@ BOOL CRenderTarget::Perform		()
 #define SHOW(a)	Log(#a,a);
 void CRenderTarget::Begin		()
 {
-	//.
 	/*
 	if (g_pGameLevel->IR_GetKeyState(DIK_LSHIFT))	
 	{

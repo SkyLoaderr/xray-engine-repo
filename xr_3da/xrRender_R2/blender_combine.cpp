@@ -19,7 +19,7 @@ void	CBlender_combine::Compile(CBlender_Compile& C)
 		C.r_Sampler_rtf		("s_diffuse",		r2_RT_albedo);
 		C.r_Sampler_rtf		("s_accumulator",	r2_RT_accum);
 		C.r_Sampler_rtf		("s_depth",			r2_RT_depth);
-		C.r_Sampler_rtf		("s_tonemap",		r2_RT_luminance);
+		C.r_Sampler_rtf		("s_tonemap",		r2_RT_luminance_cur);
 		C.r_End				();
 		break;
 	case 1:	// aa-edge-detection + AA :)

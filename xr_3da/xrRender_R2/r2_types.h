@@ -17,10 +17,13 @@
 
 #define		r2_RT_luminance_t64	"$user$lum_t64"			// --- temp
 #define		r2_RT_luminance_t8	"$user$lum_t8"			// --- temp
-#define		r2_RT_luminance		"$user$tonemap"			// --- result
 
-#define		r2_RT_smap_surf		"$user$smap_surf"		// ---	directional
-#define		r2_RT_smap_depth	"$user$smap_depth"		// ---	directional
+#define		r2_RT_luminance_src	"$user$tonemap_src"		// --- prev-frame-result
+#define		r2_RT_luminance_cur	"$user$tonemap"			// --- result
+#define		r2_RT_luminance_pool "$user$luminance"		// --- pool
+
+#define		r2_RT_smap_surf		"$user$smap_surf"		// --- directional
+#define		r2_RT_smap_depth	"$user$smap_depth"		// ---directional
 
 #define		r2_material			"$user$material"		// ---
 #define		r2_ds2_fade			"$user$ds2_fade"		// ---

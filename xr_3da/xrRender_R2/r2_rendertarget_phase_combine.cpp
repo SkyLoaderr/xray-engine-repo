@@ -7,6 +7,13 @@ void	CRenderTarget::phase_combine	()
 	u32			Offset					= 0;
 	Fvector2	p0,p1;
 
+	//*** exposure-pipeline
+	u32			gpu_id	= Device.dwFrame%2;
+	{
+		t_LUM_src->surface_set		(rt_LUM_pool[gpu_id*2+0]->pSurface);
+		t_LUM_dest->surface_set		(rt_LUM_pool[gpu_id*2+1]->pSurface);
+	}
+
 	// low/hi RTs	
 	u_setrt				(rt_Generic_0,rt_Generic_1,0,HW.pBaseZB);
 	RCache.set_CullMode	( CULL_NONE );
@@ -97,8 +104,16 @@ void	CRenderTarget::phase_combine	()
 	//	Re-adapt luminance
 	RCache.set_Stencil		(FALSE);
 
+	//*** exposure-pipeline-clear
+	{
+		std::swap					(rt_LUM_pool[gpu_id*2+0],rt_LUM_pool[gpu_id*2+1]);
+		t_LUM_src->surface_set		(NULL);
+		t_LUM_dest->surface_set		(NULL);
+	}
+
 	// ********************* Debug
-	if (1)		{
+	/*
+	if (0)		{
 		u32		C					= color_rgba	(255,255,255,255);
 		float	_w					= float(Device.dwWidth)/3;
 		float	_h					= float(Device.dwHeight)/3;
@@ -158,6 +173,7 @@ void	CRenderTarget::phase_combine	()
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		}
 	}
+	*/
 #ifdef DEBUG
 	dbg_spheres.clear	();
 #endif

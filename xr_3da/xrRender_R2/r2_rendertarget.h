@@ -44,7 +44,10 @@ public:
 	ref_rt						rt_Bloom_2;		// 32bit, dim/4	(r,g,b,?)
 	ref_rt						rt_LUM_64;		// 64bit, 64x64,	log-average in all components
 	ref_rt						rt_LUM_8;		// 64bit, 8x8,		log-average in all components
-	ref_rt						rt_LUM_result;	// 64bit, 1x1,		exp-result
+
+	ref_rt						rt_LUM_pool	[4]	;	// 1xfp32,1x1,		exp-result -> scaler
+	ref_texture					t_LUM_src		;	// source
+	ref_texture					t_LUM_dest		;	// destination & usage for current frame
 
 	// smap
 	ref_rt						rt_smap_surf;	// 32bit,		color
