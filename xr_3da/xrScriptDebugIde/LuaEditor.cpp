@@ -637,7 +637,8 @@ void	CLuaEditor::AdjustCurrTabIndent()
 	int line		= 	Sci(SCI_LINEFROMPOSITION,pos);
 	int prev_indent	=	Sci(SCI_GETLINEINDENTATION,line-1);
 	Sci(SCI_SETLINEINDENTATION,line,prev_indent);
-	int l_lenght	=	Sci(SCI_GETLINEENDPOSITION,line);
+//	int l_lenght	=	Sci(SCI_GETLINEENDPOSITION,line);
+	int l_lenght	=	Sci(SCI_GETLINEINDENTPOSITION,line);
 	Sci(SCI_SETCURRENTPOS,l_lenght);
 	Sci(SCI_SETSELECTIONSTART,l_lenght);
 	Sci(SCI_SETSELECTIONEND,l_lenght);
