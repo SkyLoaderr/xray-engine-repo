@@ -314,7 +314,7 @@ void CSE_ALifeObject::FillProps				(LPCSTR pref, PropItemVec& items)
 	PHelper().CreateRText		(items,	PrepareKey(pref,*s_name,"Custom data"),&m_ini_string);
 	PHelper().CreateFloat		(items,	PrepareKey(pref,*s_name,"ALife\\Probability"),			&m_fProbability,	0.f,1.f);
 	LPCSTR gcs					= pSettings->r_string(s_name,"GroupControlSection");
-    PHelper().CreateChoose		(items, PrepareKey(pref,*s_name,"ALife\\Group control"),		&m_caGroupControl,	smSpawnItem,	0, (void*)gcs);
+    PHelper().CreateChoose		(items, PrepareKey(pref,*s_name,"ALife\\Group control"),		&m_caGroupControl,	smSpawnItem,	0, (void*)gcs, 16);
 	if (m_flags.is(flUseSwitches)) {
 		PHelper().CreateFlag32	(items,	PrepareKey(pref,*s_name,"ALife\\Can switch online"),	&m_flags,			flSwitchOnline);
 		PHelper().CreateFlag32	(items,	PrepareKey(pref,*s_name,"ALife\\Can switch offline"),	&m_flags,			flSwitchOffline);
