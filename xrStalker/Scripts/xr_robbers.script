@@ -579,6 +579,7 @@ function action_robber_activity:fsm_step()
 end
 
 function action_robber_activity:execute()
+	action_base.execute(self)
 	local prev_state
 	repeat
 		prev_state = self.state
