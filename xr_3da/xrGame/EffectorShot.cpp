@@ -24,7 +24,7 @@ CEffectorShot::~CEffectorShot	()
 void CEffectorShot::Shot		(float angle)
 {
 	fAngleCurrent	+= (angle*.75f+::Random.randF(-1,1)*angle*.25f);
-	clamp(fAngleCurrent,0.f,fMaxAngle);
+	clamp(fAngleCurrent,-fMaxAngle,fMaxAngle);
 	float r = (::Random.randF()>0.75f)?(fAngleCurrent/fMaxAngle)*::Random.randF(-1,1):0.f;
 	vDispersionDir.set(r,1.f,r); 
 	vDispersionDir.normalize_safe();
@@ -32,7 +32,7 @@ void CEffectorShot::Shot		(float angle)
 
 BOOL CEffectorShot::Process		(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect)
 {
-	if (fAngleCurrent<0) return TRUE;
+	if (_abs(fAngleCurrent)<_abs(fRelaxSpeed*Device.fTimeDelta)) return TRUE;
 	d.mad			(vDispersionDir,tanf(fAngleCurrent));
 	fAngleCurrent	-= fRelaxSpeed*Device.fTimeDelta;
 	return TRUE;

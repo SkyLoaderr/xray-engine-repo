@@ -36,7 +36,7 @@ void CWeaponPistol::switch2_Hiding()
 {
 	if(m_opened) {
 		Sound->play_at_pos		(sndClose,H_Root(),vLastFP);
-		m_pHUD->animPlay		(mhud_close[Random.randI(mhud_close.size())],TRUE,this);
+		m_pHUD->animPlay		(mhud_close[Random.randI(mhud_close.size())],FALSE,this);
 	} else inherited::switch2_Hiding	();
 }
 void CWeaponPistol::switch2_Reload()
@@ -78,8 +78,8 @@ void CWeaponPistol::OnShot		()
 	}
 	
 	// Animation
-	if(/*m_pAmmo->m_magCurr*/iAmmoElapsed > 1) m_pHUD->animPlay			(mhud_shots[Random.randI(mhud_shots.size())],FALSE);
-	else { m_pHUD->animPlay			(mhud_shot_l[Random.randI(mhud_shot_l.size())],FALSE); m_opened = true; }
+	if(/*m_pAmmo->m_magCurr*/iAmmoElapsed > 1) m_pHUD->animPlay			(mhud_shots[Random.randI(mhud_shots.size())],FALSE,this);
+	else { m_pHUD->animPlay			(mhud_shot_l[Random.randI(mhud_shot_l.size())],FALSE,this); m_opened = true; }
 	
 	// Flames
 	fFlameTime					= .1f;

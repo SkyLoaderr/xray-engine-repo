@@ -1,21 +1,26 @@
 #pragma once
 #include "missile.h"
 
-class CBolt :
+class CGrenade :
 	public CMissile
 {
 	typedef CMissile inherited;
 public:
-	CBolt(void);
-	virtual ~CBolt(void);
+	CGrenade(void);
+	virtual ~CGrenade(void);
 
+	virtual BOOL net_Spawn(LPVOID DC);
+	virtual void net_Destroy();
 	virtual void OnH_A_Chield();
+	virtual void OnH_B_Independent();
 	virtual void OnEvent(NET_Packet& P, u16 type);
+	virtual void OnAnimationEnd();
 
 	virtual bool Activate();
 	virtual void Deactivate();
-	virtual bool Attach(PIItem pIItem, bool force = false);
 	virtual void Throw();
-	virtual bool Action(s32 cmd, u32 flags);
+
 	virtual bool Useful();
+
+	CGrenade *m_pFake;
 };

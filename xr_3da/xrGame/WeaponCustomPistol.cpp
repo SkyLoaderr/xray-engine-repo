@@ -47,10 +47,22 @@ void CWeaponCustomPistol::OnEmptyClick	()
 }
 */
 
-void	CWeaponCustomPistol::state_Fire	(float dt)
-{
+void	CWeaponCustomPistol::state_Fire	(float dt) {
 	fTime					-=dt;
 }
-void	CWeaponCustomPistol::state_MagEmpty	(float dt)
-{
+void	CWeaponCustomPistol::state_MagEmpty	(float dt) {
+}
+void CWeaponCustomPistol::OnAnimationEnd() {
+	switch(STATE) {
+		case eIdle:
+		case eMagEmpty:
+		case eFire: {
+			inherited::FireEnd();
+		} return;
+	}
+	return inherited::OnAnimationEnd();
+}
+
+void CWeaponCustomPistol::FireEnd() {
+	if(fTime<=0) inherited::FireEnd();
 }

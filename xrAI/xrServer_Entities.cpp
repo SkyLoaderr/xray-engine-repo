@@ -1345,13 +1345,14 @@ xrServerEntity*	F_entity_Create		(LPCSTR caSection)
 	case CLSID_OBJECT_W_SHOTGUN:	return xr_new<xrSE_Weapon>			(caSection);
 	case CLSID_OBJECT_W_SVD:		return xr_new<xrSE_Weapon>			(caSection);
 	case CLSID_OBJECT_W_SVU:		return xr_new<xrSE_Weapon>			(caSection);
-	//case CLSID_OBJECT_W_RPG7:		return xr_new<xrSE_Weapon>			(caSection);
+	case CLSID_OBJECT_W_RPG7:		return xr_new<xrSE_Weapon>			(caSection);
 	case CLSID_OBJECT_HEALTH:		return xr_new<xrSE_Health>			(caSection);
 	case CLSID_TARGET_ASSAULT:		return xr_new<xrSE_Target_Assault>	(caSection);
 	case CLSID_TARGET_CS_BASE:		return xr_new<xrSE_Target_CSBase>	(caSection);
 	case CLSID_TARGET_CS:			return xr_new<xrSE_Target_CS>		(caSection);
 	case CLSID_TARGET_CS_CASK:		return xr_new<xrSE_Target_CSCask>	(caSection);
 	case CLSID_IITEM_BOLT:			return xr_new<CALifeDynamicObject>	(caSection);
-	}
+	case CLSID_GRENADE_F1:			return xr_new<CALifeDynamicObject>	(caSection);
+}
 	return 0;
 }

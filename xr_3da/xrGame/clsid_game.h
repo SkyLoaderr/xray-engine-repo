@@ -96,3 +96,6 @@
 
 // Inventory items
 #define CLSID_IITEM_BOLT			MK_CLSID('I','I','_','B','O','L','T',' ')
+
+// Grenades
+#define CLSID_GRENADE_F1			MK_CLSID('G','_','F','1',' ',' ',' ',' ')

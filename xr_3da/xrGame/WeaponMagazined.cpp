@@ -6,6 +6,7 @@
 #include "WeaponHUD.h"
 #include "WeaponMagazined.h"
 #include "entity.h"
+#include "actor.h"
 #include "xr_weapon_list.h"
 #include "actor.h"
 
@@ -394,7 +395,7 @@ void CWeaponMagazined::OnShot		()
 	}
 	
 	// Animation
-	m_pHUD->animPlay			(mhud_shots[Random.randI(mhud_shots.size())],FALSE);
+	m_pHUD->animPlay			(mhud_shots[Random.randI(mhud_shots.size())],TRUE,this);
 	
 	// Flames
 	fFlameTime					= .1f;
@@ -434,13 +435,11 @@ void CWeaponMagazined::OnEmptyClick	()
 {
 	Sound->play_at_pos	(sndEmptyClick,H_Root(),vLastFP);
 }
-void CWeaponMagazined::OnAnimationEnd()
-{
-	switch (STATE)
-	{
-	case eReload:	ReloadMagazine();		break;	// End of reload animation
-	case eHiding:	SwitchState(eHidden);	break;	// End of Hide
-	case eShowing:	SwitchState(eIdle);		break;	// End of Show
+void CWeaponMagazined::OnAnimationEnd() {
+	switch(STATE) {
+		case eReload:	ReloadMagazine();		break;	// End of reload animation
+		case eHiding:	SwitchState(eHidden);	break;	// End of Hide
+		case eShowing:	SwitchState(eIdle);		break;	// End of Show
 	}
 }
 void CWeaponMagazined::switch2_Idle	()
@@ -456,14 +455,14 @@ void CWeaponMagazined::switch2_Empty()
 void CWeaponMagazined::switch2_Reload()
 {
 	Sound->play_at_pos		(sndReload,H_Root(),vLastFP);
-	m_pHUD->animPlay		(mhud_reload[Random.randI(mhud_reload.size())],TRUE,this);
+	m_pHUD->animPlay		(mhud_reload[Random.randI(mhud_reload.size())],FALSE,this);
 }
 void CWeaponMagazined::switch2_Hiding()
 {
 	CWeapon::FireEnd					();
 	bPending				= TRUE;
 	Sound->play_at_pos		(sndHide,H_Root(),vLastFP);
-	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
+	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],FALSE,this);
 	if (Local())			Level().Cameras.RemoveEffector	(cefShot);
 }
 void CWeaponMagazined::switch2_Hidden()

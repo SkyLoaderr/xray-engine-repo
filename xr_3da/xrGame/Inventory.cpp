@@ -11,6 +11,7 @@ CInventoryItem::CInventoryItem() {
 	m_showHUD = true;
 	m_pInventory = NULL;
 	m_drop = false;
+	m_ruck = true;
 }
 
 CInventoryItem::~CInventoryItem() {}
@@ -175,10 +176,11 @@ bool CInventory::Take(CGameObject *pObj) {
 	if(m_all.find(l_pIItem) != m_all.end()) {
 		R_ASSERT(0);
 	}
-	if(l_pIItem && (l_pIItem->m_weight + TotalWeight() < m_maxWeight) && (m_all.find(l_pIItem) == m_all.end())) {
+	if(l_pIItem && l_pIItem->Useful() && (l_pIItem->m_weight + TotalWeight() < m_maxWeight) && (m_all.find(l_pIItem) == m_all.end())) {
 		l_pIItem->m_pInventory = this;
 		l_pIItem->m_drop = false;
-		m_all.insert(l_pIItem); m_ruck.insert(m_ruck.end(), l_pIItem); SortRuckAndBelt(this);
+		m_all.insert(l_pIItem);
+		if(l_pIItem->m_ruck) m_ruck.insert(m_ruck.end(), l_pIItem); SortRuckAndBelt(this);
 		TIItemList l_subs; l_subs.insert(l_subs.end(), l_pIItem->m_subs.begin(), l_pIItem->m_subs.end());
 		while(l_subs.size()) {
 			l_pIItem = *l_subs.begin();
@@ -197,7 +199,7 @@ bool CInventory::Take(CGameObject *pObj) {
 				if(m_slots[l_pIItem->m_slot].m_pIItem->Attach(l_pIItem)) {
 					m_ruck.erase(find(m_ruck.begin(), m_ruck.end(), l_pIItem));
 					return true;
-				} else if(m_ruck.size() > m_maxRuck) {
+				} else if(m_ruck.size() > m_maxRuck || !l_pIItem->m_ruck) {
 					if(Belt(l_pIItem)) return true;
 					else return !Drop(l_pIItem);
 				}
@@ -213,8 +215,7 @@ bool CInventory::Take(CGameObject *pObj) {
 
 bool CInventory::Drop(CGameObject *pObj) {
 	CInventoryItem *l_pIItem = dynamic_cast<CInventoryItem*>(pObj);
-	if(l_pIItem && (m_all.find(l_pIItem) != m_all.end())) {
-		Ruck(l_pIItem);
+	if(l_pIItem && (m_all.find(l_pIItem) != m_all.end()) && Ruck(l_pIItem)) {
 		m_ruck.erase(find(m_ruck.begin(), m_ruck.end(), l_pIItem)); m_all.erase(l_pIItem);
 		l_pIItem->m_pInventory = NULL;
 		TIItemList l_subs; l_subs.insert(l_subs.end(), l_pIItem->m_subs.begin(), l_pIItem->m_subs.end());
@@ -266,7 +267,7 @@ bool CInventory::Belt(PIItem pIItem) {
 }
 
 bool CInventory::Ruck(PIItem pIItem) {
-	if(!pIItem) return false;
+	if(!pIItem || !pIItem->m_ruck) return false;
 	if(find(m_ruck.begin(), m_ruck.end(), pIItem) != m_ruck.end()) return true;
 	if((pIItem->m_slot < m_slots.size()) && (m_slots[pIItem->m_slot].m_pIItem == pIItem)) {
 		if(m_activeSlot == pIItem->m_slot) Activate(0xffffffff);
@@ -302,7 +303,11 @@ bool CInventory::Action(s32 cmd, u32 flags) {
 		case kWPN_4 :
 		case kWPN_5 :
 		case kWPN_6 : {
-			if(flags&CMD_START && Activate(cmd - kWPN_1)) return true;
+			if(flags&CMD_START) {
+				if(m_activeSlot == cmd - kWPN_1) m_slots[cmd - kWPN_1].m_pIItem->Action(kWPN_NEXT, CMD_START);
+				else Activate(cmd - kWPN_1);
+				return true;
+			}
 		} break;
 		case kUSE : {
 			if(flags&CMD_START && m_pTarget) {

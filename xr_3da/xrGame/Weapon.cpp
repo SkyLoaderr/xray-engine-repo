@@ -319,7 +319,7 @@ void CWeapon::Load		(LPCSTR section)
 
 	camMaxAngle			= pSettings->r_float		(section,"cam_max_angle"	); camMaxAngle = deg2rad(camMaxAngle);
 	camRelaxSpeed		= pSettings->r_float		(section,"cam_relax_speed"	); camRelaxSpeed = deg2rad(camRelaxSpeed);
-	camDispersion		= pSettings->r_float		(section,"cam_dispersion"	); camDispersion = deg2rad(camDispersion);
+	camDispersion		= pSettings->r_float		(section,"cam_dispersion"	); camDispersion = deg2rad(camDispersion);/**/
 
 	dispVelFactor		= pSettings->r_float		(section,"disp_vel_factor"	);
 	dispJumpFactor		= pSettings->r_float		(section,"disp_jump_factor"	);
@@ -617,6 +617,7 @@ void CWeapon::UpdateCL		()
 
 void CWeapon::SwitchState(u32 S)
 {
+	//R_ASSERT(S <= eHidden);
 	if (Local() && /*??????? (S!=STATE) ??????? &&*/ (S!=NEXT_STATE))	
 	{
 		/// sdlkajdklsjaskldjlkasjdkljaskljdklasjldkjasklj
@@ -638,7 +639,7 @@ void CWeapon::OnVisible		()
 		UpdateFP	();
 		Light_Render(vLastFP);
 	}
-	if (m_pHUD && hud_mode)	
+	if (m_pHUD /*&& hud_mode*/)	
 		PKinematics(m_pHUD->Visual())->Update	();
 }
 

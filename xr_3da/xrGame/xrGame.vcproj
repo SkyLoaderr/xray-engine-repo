@@ -848,6 +848,12 @@
 							Name="Custom Weapon"
 							Filter="">
 							<File
+								RelativePath="Grenade.cpp">
+							</File>
+							<File
+								RelativePath="Grenade.h">
+							</File>
+							<File
 								RelativePath="Missile.cpp">
 							</File>
 							<File
@@ -1138,6 +1144,16 @@
 							</File>
 							<File
 								RelativePath="WeaponRPG7.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Grenade F1"
+							Filter="">
+							<File
+								RelativePath="F1.cpp">
+							</File>
+							<File
+								RelativePath="F1.h">
 							</File>
 						</Filter>
 					</Filter>

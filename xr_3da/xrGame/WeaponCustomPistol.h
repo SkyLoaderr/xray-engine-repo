@@ -16,9 +16,11 @@ protected:
 //	virtual void	OnEmptyClick		();
 	virtual void	state_Fire			(float dt);
 	virtual void	state_MagEmpty		(float dt);
+	virtual void	OnAnimationEnd	();
 public:
 					CWeaponCustomPistol	(LPCSTR name);
 	virtual			~CWeaponCustomPistol();
+	virtual void	FireEnd			();
 };
 
 #endif //__XR_WEAPON_PISTOL_H__

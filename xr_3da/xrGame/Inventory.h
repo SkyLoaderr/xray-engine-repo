@@ -41,7 +41,7 @@ public:
 
 	f32 m_weight;											// Вес объекта
 	u32 m_slot;												// Слот в который можно установить объект (0xffffffff если нельзя)
-	bool m_belt;											// Может ли объект быть на поясе
+	bool m_belt, m_ruck;									// Может ли объект быть на поясе или в рюкзаке
 	TIItemList m_subs;										// Присоединенные объекты
 	CInventory *m_pInventory;								// Указатель на инвентарь. Всегда полезно знать где находишься :)
 	const char *m_name, *m_nameShort;

@@ -651,6 +651,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "weaponsvu.h"
 #include "weaponrpg7.h"
 #include "bolt.h"
+#include "f1.h"
 #include "Spectator.h"
 
 #include "customzone.h"
@@ -706,6 +707,9 @@ extern "C" {
 
 		// Inventory
 		case CLSID_IITEM_BOLT:			P = xr_new<CBolt>();				break;
+
+		// Grenades
+		case CLSID_GRENADE_F1:			P = xr_new<CF1>();					break;
 
 		// Zones
 		case CLSID_ZONE:				P = xr_new<CCustomZone>();			break;

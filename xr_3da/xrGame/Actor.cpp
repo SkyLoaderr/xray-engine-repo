@@ -333,9 +333,10 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 
 // @@@: WT - !!!ВРЕМЕННО!!! - спавним каждому актеру детектор
-	if(Local()) for(u32 i = 0; i < 2; i++) {
+	if(Local()) for(u32 i = 0; i < 1; i++) {
 		// Create
 		//xrServerEntity*		D	= F_entity_Create("detector_simple");
+		//xrServerEntity*		D	= F_entity_Create("grenade_f1");
 		xrServerEntity*		D	= F_entity_Create("bolt");
 		R_ASSERT			(D);
 		// Fill

@@ -101,7 +101,7 @@ void CWeaponShotgun::OnShotBoth()
 	}
 	
 	// Animation
-	m_pHUD->animPlay			(mhud_shot_boths[Random.randI(mhud_shots.size())],FALSE);
+	m_pHUD->animPlay			(mhud_shot_boths[Random.randI(mhud_shot_boths.size())],FALSE,this);
 	
 	// Flames
 	fFlameTime					= .1f;

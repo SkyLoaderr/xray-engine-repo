@@ -84,7 +84,13 @@ void CMissile::OnH_B_Chield() {
 
 void CMissile::OnH_B_Independent() {
 	inherited::OnH_B_Independent();
-	xr_delete(m_pHUD);
+	if(!m_destroyTime) {
+		NET_Packet			P;
+		u_EventGen			(P,GE_DESTROY,ID());
+		u_EventSend			(P);
+		return;
+	}
+	//xr_delete(m_pHUD);
 	setVisible					(true);
 	setEnabled					(true);
 	CObject*	E		= dynamic_cast<CObject*>(H_Parent());
@@ -98,7 +104,7 @@ void CMissile::OnH_B_Independent() {
 		Fvector l_up; l_up.set(svTransform.j); l_up.mul(2.f);
 		Fmatrix l_p1, l_p2;
 		l_p1.set(svTransform); l_p1.c.add(l_up); l_up.mul(1.2f); //l_p1.c.add(l_fw);
-		l_p2.set(svTransform); l_p2.c.add(l_up); l_fw.mul(m_force); l_p2.c.add(l_fw);
+		l_p2.set(svTransform); l_p2.c.add(l_up); l_fw.mul(1.f+m_force); l_p2.c.add(l_fw);
 		//Log("aaa",l_p1.c);
 		//Log("bbb",l_p2.c);
 		//m_pPhysicsShell->Activate(l_p1, 0, l_p2);
@@ -123,7 +129,7 @@ void CMissile::UpdateCL() {
 			if(m_force > m_maxForce) m_force = m_maxForce;
 		}
 	}
-	if(getVisible() && m_destroyTime < 0xffffffff && m_pPhysicsShell) {
+	if(getVisible() && /*m_destroyTime < 0xffffffff &&*/ m_pPhysicsShell) {
 		if(m_destroyTime < Device.dwTimeDelta) {
 			m_destroyTime = 0xffffffff;
 			R_ASSERT(!m_pInventory);
@@ -135,8 +141,8 @@ void CMissile::UpdateCL() {
 		m_destroyTime -= Device.dwTimeDelta;
 		m_pPhysicsShell->Update	();
 		svTransform.set			(m_pPhysicsShell->mXFORM);
-		vPosition.set			(svTransform.c);
-	}
+		vPosition.set(m_pPhysicsShell->mXFORM.c);
+	} else if(H_Parent()) svTransform.set(H_Parent()->clXFORM());
 }
 
 u32 CMissile::State() {
@@ -151,8 +157,8 @@ u32 CMissile::State(u32 state) {
 			m_pHUD->animPlay(m_pHUD->animGet("draw"), true, this);
 		} break;
 		case MS_IDLE : {
-			setVisible(true);
-			setEnabled(true);
+			//setVisible(true);
+			//setEnabled(true);
 			m_pHUD->animPlay(m_pHUD->animGet("idle_0"));
 		} break;
 		case MS_HIDING : {
@@ -184,7 +190,7 @@ u32 CMissile::State(u32 state) {
 }
 
 void CMissile::OnVisible() {
-	if(m_pHUD) {
+	if(m_pHUD && H_Parent()) {
 		Fmatrix trans;
 		Level().Cameras.affected_Matrix(trans);
 		m_pHUD->UpdatePosition(trans);
@@ -229,7 +235,7 @@ void CMissile::OnAnimationEnd() {
 			State(MS_IDLE);
 		} break;
 		case MS_THREATEN : {
-			State(MS_READY);
+			if(m_throw) State(MS_THROW); else State(MS_READY);
 		} break;
 		case MS_THROW : {
 			Throw();
@@ -252,7 +258,7 @@ bool CMissile::Action(s32 cmd, u32 flags) {
 				 m_throw = false;
 				if(State() == MS_IDLE) State(MS_THREATEN);
 			} else if(State() == MS_READY || State() == MS_THREATEN) {
-				m_throw = true; State(MS_THROW);
+				m_throw = true; if(State() == MS_READY) State(MS_THROW);
 			}
 		} return true;
 	}
