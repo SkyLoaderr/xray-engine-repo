@@ -23,8 +23,9 @@ function main()
 	while ( true ) do
 
 		if( monster:action() == nil ) then
-			monster:script( false, script_name() );
-			monster:script( true, script_name() );
+			monster:script	( false,	script_name() );
+			wait			(1000);
+			monster:script	( true,	script_name() );
 
 			if(stage == 0) then
 				this.action_one( monster );
