@@ -9,6 +9,7 @@
 #pragma once
 
 #include "ai_object_location.h"
+#include "ai_script_space.h"
 
 class CPatrolPathManager : 
 	virtual public CAI_ObjectLocation
@@ -36,6 +37,7 @@ private:
 	u32											m_curr_point_index;
 	u32											m_prev_point_index;
 	Fvector										m_dest_position;
+	const luabind::functor<void>				*m_callback;
 protected:
 	IC			bool	actual						() const;
 	IC			bool	completed					() const;
@@ -51,6 +53,7 @@ public:
 	IC					CPatrolPathManager			();
 	IC	virtual			~CPatrolPathManager			();
 	IC	virtual	void	Init						();
+	IC	virtual	void	set_callback				(const luabind::functor<void> *callback);
 };
 
 #include "patrol_path_manager_inline.h"

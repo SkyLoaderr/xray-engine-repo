@@ -27,6 +27,7 @@ IC	void CPatrolPathManager::Init				()
 	m_completed				= true;
 	m_curr_point_index		= u32(-1);
 	m_prev_point_index		= u32(-1);
+	m_callback				= 0;
 }
 
 IC	bool CPatrolPathManager::actual				() const
@@ -75,7 +76,12 @@ IC	void CPatrolPathManager::set_route_type		(const EPatrolRouteType patrol_route
 	m_route_type			= patrol_route_type;
 }
 
-IC	void CPatrolPathManager::set_random					(bool random)
+IC	void CPatrolPathManager::set_random	(bool random)
 {
 	m_random				= random;
+}
+
+IC	void CPatrolPathManager::set_callback(const luabind::functor<void> *callback)
+{
+	m_callback				= callback;
 }

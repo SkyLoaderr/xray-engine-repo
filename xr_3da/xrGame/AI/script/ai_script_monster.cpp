@@ -365,9 +365,6 @@ void CScriptMonster::InitScript()
 	// animation
 	m_tpScriptAnimation		= 0;
 
-	for (u32 i=(u32)eActionTypeMovement; i<(u32)eActionTypeCount; ++i)
-		xr_delete			(m_tpCallbacks[i]);
-
 	// callbacks
 	if (Visual())
 		PKinematics(Visual())->Callback(0,0);
@@ -384,12 +381,22 @@ void CScriptMonster::set_callback	(const luabind::functor<void> &tpActionCallbac
 	VERIFY					(tActionType < eActionTypeCount);
 	xr_delete				(m_tpCallbacks[tActionType]);
 	m_tpCallbacks[tActionType] = xr_new<luabind::functor<void> >(tpActionCallback);
+	if (eActionTypeMovement == tActionType) {
+		CPatrolPathManager	*l_tpPatrolPathManager = dynamic_cast<CPatrolPathManager*>(this);
+		if (l_tpPatrolPathManager)
+			l_tpPatrolPathManager->set_callback(m_tpCallbacks[tActionType]);
+	}
 }
 
 void CScriptMonster::clear_callback	(const CScriptMonster::EActionType tActionType)
 {
 	VERIFY					(tActionType < eActionTypeCount);
 	xr_delete				(m_tpCallbacks[tActionType]);
+	if (tActionType) {
+		CPatrolPathManager	*l_tpPatrolPathManager = dynamic_cast<CPatrolPathManager*>(this);
+		if (l_tpPatrolPathManager)
+			l_tpPatrolPathManager->set_callback(0);
+	}
 }
 
 void CScriptMonster::callback		(const CScriptMonster::EActionType tActionType)
