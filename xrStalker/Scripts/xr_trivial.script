@@ -743,10 +743,10 @@ function novice3_attack:initialize ()
     self.object:set_item             ( object.activate, self.object:best_weapon() )
 
 	-- Инициализируем инфопоршн
---	local actor = level.actor()
---	if actor ~= nil then
---		actor:give_info_portion("escape_novice_has_weapon")
---	end
+	local actor = level.actor()
+	if actor ~= nil then
+		actor:give_info_portion("escape_novice_has_weapon")
+	end
 
 end
 ---------------------------------------------------------------------------------------------------------------------
