@@ -390,6 +390,7 @@ void CSE_ALifeGraphRegistry::vfAttachItem(CSE_Abstract &tAbstract, CSE_ALifeInve
 	CSE_ALifeTraderAbstract		*l_tpALifeTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(&tAbstract);
 	R_ASSERT2					(!bALifeRequest || l_tpALifeTraderAbstract,"Cannot attach an item to a non-trader object");
 
+	VERIFY						(bALifeRequest || !dynamic_cast<CSE_ALifeDynamicObject*>(&tAbstract) || (ai().game_graph().vertex(dynamic_cast<CSE_ALifeDynamicObject*>(&tAbstract)->m_tGraphID)->level_id() == m_tCurrentLevelID));
 	if (l_tpALifeTraderAbstract)
 		l_tpALifeTraderAbstract->vfAttachItem(tpALifeInventoryItem,bALifeRequest);
 }
@@ -408,6 +409,8 @@ void CSE_ALifeGraphRegistry::vfDetachItem(CSE_Abstract &tAbstract, CSE_ALifeInve
 
 	CSE_ALifeTraderAbstract		*l_tpALifeTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(&tAbstract);
 	R_ASSERT2					(!bALifeRequest || l_tpALifeTraderAbstract,"Cannot detach an item from non-trader object");
+	
+	VERIFY						(bALifeRequest || !dynamic_cast<CSE_ALifeDynamicObject*>(&tAbstract) || (ai().game_graph().vertex(dynamic_cast<CSE_ALifeDynamicObject*>(&tAbstract)->m_tGraphID)->level_id() == m_tCurrentLevelID));
 
 	if (l_tpALifeTraderAbstract)
 		l_tpALifeTraderAbstract->vfDetachItem(tpALifeInventoryItem,0,bALifeRequest);

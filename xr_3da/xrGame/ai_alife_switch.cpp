@@ -48,6 +48,8 @@ void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract, bool bALif
 
 void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bRemoveFromRegistries)
 {
+	VERIFY							((ai().game_graph().vertex(tpALifeDynamicObject->m_tGraphID)->level_id() == m_tCurrentLevelID));
+
 	tpALifeDynamicObject->m_bOnline	= true;
 
 	NET_Packet						tNetPacket;
@@ -290,8 +292,10 @@ void CSE_ALifeSimulator::vfValidatePosition(CSE_ALifeDynamicObject *I)
 				if ((tGraphID != I->m_tGraphID) && (0xffff == I->ID_Parent))
 					if (!I->m_bOnline)
 						vfChangeObjectGraphPoint(I,I->m_tGraphID,tGraphID);
-					else
-						I->m_tGraphID = tGraphID;
+					else {
+						VERIFY			(ai().game_graph().vertex(tGraphID)->level_id() == m_tCurrentLevelID);
+						I->m_tGraphID	= tGraphID;
+					}
 				// validating distance to graph point via graph cross-table
 				I->m_fDistance			= ai().cross_table().vertex(I->m_tNodeID).distance();
 			}
