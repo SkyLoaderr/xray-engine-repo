@@ -11,14 +11,20 @@
 #include "detailformat.h"
 #include "detailmodel.h"
 
-const int		dm_max_objects	= 64;
-const int		dm_obj_in_slot	= 4;
-const int		dm_size			= 70;
-const int		dm_cache_line	= dm_size+1+dm_size;
-const int		dm_cache_size	= dm_cache_line*dm_cache_line;
-const float		dm_fade			= float(2*dm_size)-.5f;
-const float		dm_slot_size	= DETAIL_SLOT_SIZE;
-const float		dm_slot_radius	= DETAIL_SLOT_SIZE*0.70710678118654752440084436210485f; // (slot_size/2)*sqrtf(2)
+#ifdef _EDITOR
+	const int	dm_max_decompress	= 14;
+	const int	dm_size				= 20;
+#else
+	const int	dm_max_decompress	= 7;
+	const int	dm_size				= 70;
+#endif
+const int		dm_max_objects		= 64;
+const int		dm_obj_in_slot		= 4;
+const int		dm_cache_line		= dm_size+1+dm_size;
+const int		dm_cache_size		= dm_cache_line*dm_cache_line;
+const float		dm_fade				= float(2*dm_size)-.5f;
+const float		dm_slot_size		= DETAIL_SLOT_SIZE;
+const float		dm_slot_radius		= DETAIL_SLOT_SIZE*0.70710678118654752440084436210485f; // (slot_size/2)*sqrtf(2)
 
 class ENGINE_API CDetailManager  
 {

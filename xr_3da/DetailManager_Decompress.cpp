@@ -133,7 +133,9 @@ void		CDetailManager::cache_Decompress(Slot* S)
 				SBoxPickInfo& I=pinf[tid];
 				for (int k=0; k<(int)I.inf.size(); k++){
 					R_ASSERT(I.s_obj);
+Device.Statistic.TEST0.Begin	();
 					I.s_obj->GetFaceWorld(I.e_mesh,I.inf[k].id,verts);
+Device.Statistic.TEST0.End		();
 					if (CDB::TestRayTri(Item.P,dir,verts,r_u,r_v,r_range,TRUE))
 					{
 						if (r_range>=0)	{

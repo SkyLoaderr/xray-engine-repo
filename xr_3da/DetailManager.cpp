@@ -155,8 +155,8 @@ void CDetailManager::Render		(Fvector& vecEYE)
 {
 #ifndef _EDITOR
 	if (0==dtFS)						return;
-	if (0==(psDeviceFlags&rsDetails))	return;
 #endif
+	if (0==(psDeviceFlags&rsDetails))	return;
 
 	float	r_ssaCHEAP			= 16*r_ssaDISCARD;
 
@@ -167,7 +167,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 	int s_z	= iFloor			(EYE.z/dm_slot_size+.5f);
 
 	Device.Statistic.RenderDUMP_DT_Cache.Begin	();
-	cache_Update				(s_x,s_z,EYE,7);
+	cache_Update				(s_x,s_z,EYE,dm_max_decompress);
 	Device.Statistic.RenderDUMP_DT_Cache.End	();
 
 	float fade_limit			= dm_fade;	fade_limit=fade_limit*fade_limit;
