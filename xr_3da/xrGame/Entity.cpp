@@ -116,11 +116,6 @@ BOOL CEntity::Hit(int perc, Fvector &dir, CEntity* who)
 	}
 }
 
-BOOL CEntity::Sense(int perc, Fvector &dir, CEntity* who) 
-{
-	return(TRUE);
-}
-
 void CEntity::Load(CInifile* ini, const char* section)
 {
 	CGameObject::Load(ini,section);

@@ -117,16 +117,6 @@ void CAI_Soldier::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	pSounds->Play3DAtPos	(S,this,vPosition);
 }
 
-// when someone hit soldier
-void CAI_Soldier::SenseSignal(int amount, Fvector& vLocalDir, CEntity* who)
-{
-	// Save event
-	Fvector D;
-	svTransform.transform_dir(D,vLocalDir);
-	dwSenseTime = Level().timeServer();
-	tSenseDir.set(D);
-}
-
 void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 {
 	// Initiate process

@@ -528,10 +528,6 @@ void CCustomMonster::HitSignal(int perc, Fvector& vLocalDir, CEntity* who)
 {
 }
 
-void CCustomMonster::SenseSignal(int perc, Fvector& vLocalDir, CEntity* who)
-{
-}
-
 void CCustomMonster::Death	()
 {
 }

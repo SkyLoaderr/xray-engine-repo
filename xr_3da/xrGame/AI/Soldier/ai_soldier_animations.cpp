@@ -14,11 +14,11 @@
 // bones
 void CAI_Soldier::vfAssignBones(CInifile *ini, const char *section)
 {
-	int head_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_head"));
-	PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback(HeadSpinCallback,this);
+	//int h  ead_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_head"));
+	//PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback(HeadSpinCallback,this);
 	
-	int torso_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_torso"));
-	PKinematics(pVisual)->LL_GetInstance(torso_bone).set_callback(SpineSpinCallback,this);
+	//int torso_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_torso"));
+	//PKinematics(pVisual)->LL_GetInstance(torso_bone).set_callback(SpineSpinCallback,this);
 }
 
 void __stdcall CAI_Soldier::HeadSpinCallback(CBoneInstance* B)
@@ -72,6 +72,8 @@ void CAI_Soldier::vfLoadAnimations()
 	tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0] = tpVisualObject->ID_Cycle("norm_walk_fwd_0");
 	tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1] = tpVisualObject->ID_Cycle("norm_walk_fwd_1");
 	tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[2] = tpVisualObject->ID_Cycle("norm_walk_fwd_2");
+	tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[3] = tpVisualObject->ID_Cycle("norm_walk_fwd_3");
+	tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[4] = tpVisualObject->ID_Cycle("norm_walk_fwd_4");
 	
 	tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[0] = tpVisualObject->ID_Cycle("norm_walk_back_0");
 	tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[1] = tpVisualObject->ID_Cycle("norm_walk_back_1");
@@ -195,6 +197,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 	}
 		/**/
 		switch (eCurrentState) {
+			/**
 			case aiSoldierLyingDown : {
 				switch (m_cBodyState) {
 					case BODY_STATE_STAND : {
@@ -264,9 +267,10 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 				}
 				break;
 			}
+			/**/
 			default : {
 				// not moving
-				if (speed < 0.2f) {
+				if (speed < .1f) {
 					// turning around || standing idle
 					if (fabsf(r_torso_target.yaw - r_torso_current.yaw) <= PI)
 						if (fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
@@ -418,6 +422,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 							}
 					// torso
 					switch (eCurrentState) {
+						/**
 						case aiSoldierRecharge : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
@@ -469,6 +474,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 							}
 							break;
 						}
+						/**/
 						default : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
@@ -535,13 +541,15 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 						if (dot > .7f)
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
-									for (int i=0; i<3; i++)
+									/**/
+									for (int i=3; i<5; i++)
 										if (tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[i] == m_tpCurrentGlobalAnimation) {
 											tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 											break;
 										}
 									if (!tpGlobalAnimation)
-										tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[::Random.randI(0,3)];
+										tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[::Random.randI(3,5)];
+									/**/
 									break;
 								}
 								case BODY_STATE_CROUCH : {
@@ -623,6 +631,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 								}
 					//torso
 					switch (eCurrentState) {
+						/**
 						case aiSoldierRecharge : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
@@ -674,6 +683,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 							}
 							break;
 						}
+						/**/
 					}
 				}
 			}

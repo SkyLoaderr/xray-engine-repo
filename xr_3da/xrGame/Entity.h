@@ -115,7 +115,6 @@ public:
 
 	// Health calculations
 	virtual	BOOL			Hit					(int iLost, Fvector &dir, CEntity* who);	// TRUE if died
-	virtual	BOOL			Sense				(int iHear, Fvector &dir, CEntity* who);	// TRUE if died
 	virtual void			HitSignal			(int HitAmount, Fvector& local_dir, CEntity* who) = 0;
 	virtual void			Cure				(int iCnt)	{ iHealth+=iCnt;}
 	virtual void			Die					() = 0;

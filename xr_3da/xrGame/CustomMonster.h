@@ -176,7 +176,6 @@ public:
 	virtual BOOL		Spawn					( BOOL bLocal, int sid, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
 	virtual void		Death					( );
 	virtual void		HitSignal				( int iHitAmount, Fvector& vLocalDir, CEntity* who);
-	virtual void		SenseSignal				( int iSenseAmount, Fvector& vLocalDir, CEntity* who);
 	virtual void		Load					( CInifile* ini, const char* section );
 	virtual void		Update					( DWORD DT );
 	virtual void		UpdateCL				( );

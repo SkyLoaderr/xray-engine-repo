@@ -19,8 +19,6 @@ CAI_Soldier::CAI_Soldier()
 {
 	dwHitTime = 0;
 	tHitDir.set(0,0,1);
-	dwSenseTime = 0;
-	tSenseDir.set(0,0,1);
 	tSavedEnemy = 0;
 	tSavedEnemyPosition.set(0,0,0);
 	tpSavedEnemyNode = 0;
@@ -48,6 +46,9 @@ CAI_Soldier::CAI_Soldier()
 	m_tpEventAssignPath = Engine.Event.Handler_Attach("level.entity.path.assign",this);
 	m_dwPatrolPathIndex = -1;
 	m_dwCreatePathAttempts = 0;
+	m_dwLastUpdate = 0;
+	m_fSensetivity = 0.f;
+	m_iSoundIndex = -1;
 }
 
 CAI_Soldier::~CAI_Soldier()
@@ -143,7 +144,7 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 BOOL CAI_Soldier::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
 	if (!inherited::Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
-	eCurrentState = aiSoldierFollowLeader;
+	eCurrentState = aiSoldierFollowLeaderPatrol;
 	return TRUE;
 }
 
@@ -157,7 +158,7 @@ void CAI_Soldier::Update(DWORD DT)
 void CAI_Soldier::Exec_Movement	( float dt )
 {
 	AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
-	/**/
+	/**
 	if (eCurrentState != aiSoldierJumping)
 		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
 	else {

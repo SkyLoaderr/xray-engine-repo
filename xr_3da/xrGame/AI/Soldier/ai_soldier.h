@@ -23,7 +23,7 @@ class CAI_Soldier : public CCustomMonster
 	};
 
 	enum ESoldierStates 	{
-		/**/
+		/**
 		aiSoldierAttackRun = 0,
 		aiSoldierAttackFire,
 		aiSoldierDefend,
@@ -41,21 +41,22 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierPatrolHurtAggressiveUnderFire,
 		aiSoldierPatrolHurtNonAggressiveUnderFire,
 		aiSoldierPatrolUnderFire,
-		aiSoldierTurnOver,
 
 		aiSoldierPursuit,
 		aiSoldierRetreat,
-		aiSoldierSenseSomething,
 		aiSoldierUnderFire,
-		/**/
-		aiSoldierDie,
+		
 		aiSoldierJumping,
 		aiSoldierLyingDown,
 		aiSoldierNoWeapon,
+		aiSoldierRecharge,
+		/**/
+		aiSoldierDie,
 		aiSoldierPatrolReturnToRoute,
 		aiSoldierPatrolRoute,
 		aiSoldierFollowLeaderPatrol,
-		aiSoldierRecharge,
+		aiSoldierSenseSomething,
+		aiSoldierTurnOver,
 	};
 	
 	enum EGestureStates {
@@ -73,7 +74,8 @@ class CAI_Soldier : public CCustomMonster
 		vector<SDynamicSound>	tpaDynamicSounds;
 		DWORD					m_dwMaxDynamicObjectsCount;
 		DWORD					m_dwMaxDynamicSoundsCount;
-
+		float					m_fSensetivity;
+		int						m_iSoundIndex;
 		////////////////////////////////////////////////////////////////////////////
 		// normal animations
 		////////////////////////////////////////////////////////////////////////////
@@ -87,7 +89,7 @@ class CAI_Soldier : public CCustomMonster
 		typedef struct tagSNormalGlobalAnimations{
 			CMotionDef* tpaDeath[5];
 			CMotionDef* tpaRunForward[4];
-			CMotionDef* tpaWalkForward[3];
+			CMotionDef* tpaWalkForward[5];
 			CMotionDef* tpaWalkBack[3];
 			CMotionDef* tpaLieDown[2];
 			CMotionDef* tpWalkLeft;
@@ -229,6 +231,7 @@ class CAI_Soldier : public CCustomMonster
 		ESoldierStates	eCurrentState;
 		ESoldierStates	m_ePreviousState;
 		bool			bStopThinking;
+		DWORD			m_dwLastUpdate;
 //		float			m_fAddAngle;
 		
 		// action data
@@ -240,10 +243,6 @@ class CAI_Soldier : public CCustomMonster
 		Fvector			tHitDir;
 		Fvector			tHitPosition;
 		
-		// sense data
-		DWORD			dwSenseTime;
-		Fvector			tSenseDir;
-
 		// visual data
 		objSET			tpaVisibleObjects;
 		
@@ -324,40 +323,41 @@ class CAI_Soldier : public CCustomMonster
 		CSoldierSelectorSenseSomething		SelectorSenseSomething;
 		CSoldierSelectorUnderFire			SelectorUnderFire;
 
-		/**/
-		void AttackRun();
-		void AttackFire();
+		/**
+		void OnAttackRun();
+		void OnAttackFire();
 		
+		void OnDefend();
+		void OnFindEnemy();
+		void OnFollowLeader();
+		void OnFreeHunting();
+		void OnInjuring();
+		void OnMoreDeadThanAlive();
+
+		void OnStandingUp();
+		void OnSitting();
+
+		void OnPatrolHurt();
+		void OnPatrolHurtAggressiveUnderFire();
+		void OnPatrolHurtNonAggressiveUnderFire();
+		void OnPatrolUnderFire();
+		
+		void OnPursuit();
+		void OnRetreat();
+		void OnUnderFire();
+		void OnJumping();
+		void OnLyingDown();
+		void OnNoWeapon();
+		void OnRecharge();
+		/**/
 		void Die();
-		void Defend();
-		void FindEnemy();
-		void FollowLeader();
-		void FreeHunting();
-		void Injuring();
-		void MoreDeadThanAlive();
-
-		void StandingUp();
-		void Sitting();
-
-		void PatrolHurt();
-		void PatrolHurtAggressiveUnderFire();
-		void PatrolHurtNonAggressiveUnderFire();
-		void PatrolUnderFire();
-		void TurnOver();
-		
-		void Pursuit();
-		void Retreat();
-		void SenseSomething();
-		void UnderFire();
-		void Jumping();
-		void LyingDown();
-		void NoWeapon();
-		void Recharge();
-		void Patrol();
-		void PatrolReturn();
-		void FollowLeaderPatrol();
-		/**/
+		void OnPatrol();
+		void OnPatrolReturn();
+		void OnFollowLeaderPatrol();
+		void OnSenseSomething();
+		void OnTurnOver();
 		// miscellanious funtions	
+		void SelectSound(int &iIndex);
 		void vfUpdateSounds(DWORD dwTimeDelta);
 	IC  CGroup getGroup() {return Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];};
 		bool bfCheckForVisibility(CEntity* tpEntity);
@@ -382,13 +382,12 @@ class CAI_Soldier : public CCustomMonster
 		void vfSetMovementType(char cBodyState, float fSpeed);
 		void vfCheckForSavedEnemy();
 		void vfUpdateDynamicObjects();
-
+		void SetLook(Fvector tPosition);
 	public:
 					   CAI_Soldier();
 		virtual		  ~CAI_Soldier();
 		virtual void  Update(DWORD DT);
 		virtual void  HitSignal(int amount, Fvector& vLocalDir, CEntity* who);
-		virtual void  SenseSignal(int amount, Fvector& vLocalDir, CEntity* who);
 		virtual void  Death();
 		virtual void  Load( CInifile* ini, const char* section );
 		virtual void  Think();
