@@ -233,6 +233,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 	}
 	return TRUE;
 }
+
 int	CLevel::get_RPID(LPCSTR name)
 {
 	// Gain access to string
