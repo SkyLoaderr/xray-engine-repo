@@ -303,7 +303,8 @@ void CHelicopterMovManager::createHuntPathTrajectory(float from_time,
 		if(cp.y>0)
 			norm.mul(-1.0f);
 
-		imPoint.mad(fromPos,norm,20.0f);
+		imPoint.mad(fromPos,norm,30.0f);
+		getPathAltitude(imPoint);
 		keys.push_back(imPoint);
 	};
 	keys.push_back(destPos);
