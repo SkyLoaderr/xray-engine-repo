@@ -1,14 +1,15 @@
     
 local animations = {
-                   "stoya_ruje_ 0",
-                   "vishka_3",                   
-                   "norm_torso_2_idle_1",
-                   "norm_torso_2_idle_2",
-                   "norm_torso_2_idle_3",
-                   "norm_torso_2_idle_4",
-                   "norm_torso_2_idle_5",
-                   "norm_torso_2_idle_6"
-
+                   "idle_0_idle_0",
+                   "idle_0_idle_1",
+                   "idle_0_idle_2",
+                   "idle_0_idle_3",
+                   "idle_0_idle_4",
+                   "idle_1_idle_0",
+                   "idle_1_idle_1",
+                   "idle_1_idle_2",
+                   "idle_1_idle_3",
+                   "idle_1_idle_4"
                    }
                    
 
