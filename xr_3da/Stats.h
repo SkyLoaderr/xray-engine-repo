@@ -8,9 +8,13 @@
 
 #include "stats_timer.h"
 
+class ENGINE_API CCustomFont;
+
 class ENGINE_API CStats
 {
 public:
+	CCustomFont*	font;
+
 	float		fFPS,fRFPS,fTPS;	// FPS, RenderFPS, TPS
 	DWORD		dwPoly, dwVert;
 	DWORD		dwCalls;			// Number of primitive-render calls
@@ -34,7 +38,7 @@ public:
 	CStatTimer	RenderTOTAL;		// 
 	CStatTimer	RenderTOTAL_Real;	
 	CStatTimer	RenderCALC;			// portal traversal, frustum culling, entities "OnVisible"
-	CStatTimer	RenderCALC_HOM;		// portal traversal, frustum culling, entities "OnVisible"
+	CStatTimer	RenderCALC_HOM;		// HOM rendering
 	CStatTimer	Animation;			// skeleton calculation
 	CStatTimer	RenderDUMP;			// actual primitive rendering
 	CStatTimer	RenderDUMP_RT;		// ...render-targets
@@ -60,7 +64,9 @@ public:
 	
 	CStatTimer	TEST;				// debug counter
 
-	void	Show		(void);
+	void		Show			(void);
+	void		OnDeviceCreate	(void);
+	void		OnDeviceDestroy (void);
 
 	CStats	();
 	~CStats	();

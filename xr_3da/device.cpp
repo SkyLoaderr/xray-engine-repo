@@ -138,8 +138,10 @@ void CRenderDevice::End(void)
 
 void CRenderDevice::_Create	(LPCSTR shName)
 {
+	Engine.mem_Compact		();
+
 	// after creation
-	bReady			= TRUE;
+	bReady					= TRUE;
 
 	// General Render States
 	mView.identity			();
@@ -208,6 +210,7 @@ void CRenderDevice::_Create	(LPCSTR shName)
 	Shader.OnDeviceCreate		(shName);
 	seqDevCreate.Process		(rp_DeviceCreate);
 	Primitive.OnDeviceCreate	();
+	Statistic.OnDeviceCreate	();
 	dwFrame						= 0;
 	
 	// Create TL-primitive
@@ -277,8 +280,10 @@ void CRenderDevice::Create	()
 
 void CRenderDevice::_Destroy	(BOOL bKeepTextures)
 {
+	Engine.mem_Compact			();
 	// before destroy
 	bReady						= FALSE;
+	Statistic.OnDeviceDestroy	();
 	Primitive.OnDeviceDestroy	();
 	seqDevDestroy.Process		(rp_DeviceDestroy);
 	Streams.OnDeviceDestroy		();
@@ -302,11 +307,13 @@ void CRenderDevice::Destroy	(void) {
 
 void CRenderDevice::Reset		(LPCSTR shName, BOOL bKeepTextures)
 {
-	u32 tm_start	= TimerAsync();
-	_Destroy		(bKeepTextures);
-	_Create			(shName);
-	u32 tm_end		= TimerAsync();
-	Msg				("*** RESET [%d ms]",tm_end-tm_start);
+	u32 tm_start		= TimerAsync();
+	Engine.mem_Compact	();
+	_Destroy			(bKeepTextures);
+	_Create				(shName);
+	Engine.mem_Compact	();
+	u32 tm_end			= TimerAsync();
+	Msg					("*** RESET [%d ms]",tm_end-tm_start);
 }
 
 void __cdecl mt_Thread(void *ptr) {

@@ -3,9 +3,7 @@
 
 #include "Stats.h"
 #include "hw.h"
-#include "x_ray.h"
-#include "xr_gamefont.h"
-#include "xr_smallfont.h"
+#include "xr_hudfont.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -16,11 +14,12 @@ CStats::CStats()
 	fFPS		= 30.f;
 	fRFPS		= 30.f;
 	fTPS		= 0;
+	font		= 0;
 }
 
 CStats::~CStats()
 {
-	
+	_DELETE		(font);
 }
 
 #define QS if(psDeviceFlags&rsStatistic)
@@ -179,4 +178,13 @@ void CStats::Show()
 	dwVert = dwPoly = dwCalls = 0;
 	dwSND_Played = dwSND_Allocated = 0;
 	dwShader_Codes = dwShader_Textures = dwShader_Matrices = dwShader_Constants = 0;
+}
+
+void CStats::OnDeviceCreate			()
+{
+	font	= new CFontHUD			();
+}
+void CStats::OnDeviceDestroy		()
+{
+	_DELETE	(font);
 }

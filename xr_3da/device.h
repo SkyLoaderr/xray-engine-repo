@@ -82,8 +82,7 @@ public:
 	Fmatrix									mProject;
 	Fmatrix									mFullTransform;
 	float									fFOV;
-
-
+	
 	CRenderDevice() {
 	    m_hWnd              = NULL;
 		bActive				= FALSE;
