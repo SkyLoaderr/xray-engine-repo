@@ -5,10 +5,11 @@
 
 
 local entered = false
+local pes_id = 0
 
 function on_enter (zone, obj)
+    if obj:id () == pes_id then return end
     printf ("Entered object : %s", obj:name ())
-    if obj:name () == "pes" then return end
     entered = true
     zone:clear_callback (true)
 end
@@ -16,6 +17,7 @@ end
 function main ()
 
     local stalker = get_level_object ("pes")
+    pes_id = stalker:id ()
     stalker:script (true, pes.script_name ())
     
     local z = get_level_object ("pes_zone")
