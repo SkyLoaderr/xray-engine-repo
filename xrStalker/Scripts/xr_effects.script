@@ -44,3 +44,49 @@ function log_bp1(actor, npc)
 	printf("xr_effects: log_bp1 (actor='%s', npc='%s'", actor:name(), npc:name())
 end
 
+local counter = 0
+local need_monsters = 0
+function garbage_monster_death (actor, npc)
+
+    local st = xr_motivator.storage[npc:id()]
+    local way_name = nil
+    if st.active_scheme == "mob_walker" then
+        way_name = st[st.active_scheme].path_walk
+    else
+        printf ("WARNING: garbage_monster_death: object '%s' is not mob_walker", npc:name())
+    end
+    if st.death.killer == -1 then return end
+    
+    -- remove from spawner 
+    xr_spawner.remove_from_list (npc:id ())
+    
+    -- no actor kill monster - simple remove
+    if actor == nil or actor:id () ~= st.death.killer then 
+       return 
+    end
+    
+    printf ("Monster %s killed by actor", npc:name ())
+    
+    counter = counter + 1
+    printf ("Monsters killed by actor %d", counter)
+    if way_name ~= nil then
+       printf ("Monster last path : %s", way_name)
+       if way_name == "garbage_rush_way2" or way_name == "garbage_rush_way4" then
+          need_monsters = need_monsters + 1
+          counter = counter + 1
+       end   
+    end   
+    
+    -- check for set gulag to normal mode
+    if need_monsters > 5 then
+       -- set gulag to normal state
+       if act:has_info ("gar_monsters_rush_wave1") then
+          act:disable_info_portion ("gar_monsters_rush_wave1") 
+          printf ("Return GULAG to start state")
+       end   
+    end
+    if counter > 3 then
+       xr_gulag.setGulagRelation ("gar_dolg", game_object.friend, act)
+    end    
+    
+end
