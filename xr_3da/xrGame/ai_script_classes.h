@@ -334,7 +334,7 @@ public:
 		else l_tpTrader->clear_trade_callback();
 	}
 
-	BIND_FUNCTION10	(m_tpGameObject,	GetPatrolPathName,		CScriptMonster,	GetPatrolPathName,		LPCSTR,								"");
+	LPCSTR	GetPatrolPathName	();
 
 	void SetCallback(const luabind::object &lua_object, LPCSTR method, const CScriptMonster::EActionType tActionType)
 	{

@@ -521,3 +521,19 @@ u32	CLuaGameObject::level_vertex_id		() const
 {
 	return						(m_tpGameObject->level_vertex_id());
 }
+
+LPCSTR CLuaGameObject::GetPatrolPathName()
+{
+	CAI_Stalker			*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+	if (!stalker) {
+		CScriptMonster	*script_monster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
+		if (!script_monster) {
+			ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member GetPatrolPathName!");
+			return		("");
+		}
+		else
+			return		(script_monster->GetPatrolPathName());
+	}
+	else
+		return			(*stalker->path_name());
+}

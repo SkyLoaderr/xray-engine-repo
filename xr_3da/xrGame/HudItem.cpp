@@ -135,7 +135,7 @@ void CHudItem::renderable_Render()
 	}
 	//else if(!pActor || !hud_mode)
 	else
-		if(!H_Parent() || (!hud_mode && !m_pHUD->IsHidden() && !IsHidden()))
+		if(!H_Parent() || (!hud_mode && m_pHUD && !m_pHUD->IsHidden() && !IsHidden()))
 			inherited::renderable_Render();
 
 	
@@ -246,17 +246,20 @@ void CHudItem::OnH_A_Chield		()
 {
 	hud_mode = FALSE;
 	
-	if(Level().CurrentEntity() == H_Parent())
-		m_pHUD->SetCurrentEntityHud(true);
-	else
-		m_pHUD->SetCurrentEntityHud(false);
+	if (m_pHUD) {
+		if(Level().CurrentEntity() == H_Parent())
+			m_pHUD->SetCurrentEntityHud(true);
+		else
+			m_pHUD->SetCurrentEntityHud(false);
+	}
 
 	inherited::OnH_A_Chield		();
 }
 void CHudItem::OnH_B_Independent	()
 {
 	hud_mode = FALSE;
-	m_pHUD->SetCurrentEntityHud(false);
+	if (m_pHUD)
+		m_pHUD->SetCurrentEntityHud(false);
 
 	inherited::OnH_B_Independent	();
 }

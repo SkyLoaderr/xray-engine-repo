@@ -54,14 +54,13 @@ public:
 	IC	virtual	void	reinit						();
 	IC	virtual	void	set_callback				(const SMemberCallback &callback);
 	IC			void	make_inactual				();
-	
-	// for test only
-	const CLevel::SPath* get_path					() {return m_path;}
+	const CLevel::SPath	*get_path					() {return m_path;}
 	IC			void	set_path					(ref_str path_name);
 	IC			void	set_path					(ref_str path_name, const EPatrolStartType patrol_start_type = ePatrolStartTypeNearest, const EPatrolRouteType patrol_route_type = ePatrolRouteTypeContinue, bool random = true);
 	IC			void	set_start_type				(const EPatrolStartType patrol_start_type);
 	IC			void	set_route_type				(const EPatrolRouteType patrol_route_type);
 	IC			void	set_random					(bool random);
+	IC			ref_str	path_name					() const;
 };
 
 #include "patrol_path_manager_inline.h"

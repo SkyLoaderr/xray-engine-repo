@@ -115,3 +115,9 @@ IC	void CPatrolPathManager::set_path		(ref_str path_name, const EPatrolStartType
 	set_route_type			(patrol_route_type);
 	set_random				(random);
 }
+
+IC	ref_str	CPatrolPathManager::path_name	() const
+{
+	VERIFY					(m_path);
+	return					(m_path_name);
+}

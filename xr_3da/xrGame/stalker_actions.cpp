@@ -697,18 +697,18 @@ void CStalkerActionKillEnemyAggressive::initialize	()
 	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
 
 	float					distance = m_object->Position().distance_to(m_object->enemy()->Position());
-	if (distance >= 50.f) {
+	if (distance >= 30.f) {
         set_inertia_time	(250);
 		m_fire_crouch		= true;
 	}
 	else
-		if (distance <= 10.f) {
+		if (distance <= 5.f) {
 			set_inertia_time(1500);
 			m_fire_crouch	= false;
 		}
 		else {
-			set_inertia_time(iFloor(float(1500 - 250)*(distance - 10.f)/(50.f - 10.f)) + 250);
-			m_fire_crouch	= ::Random.randF(40.f) < (distance - 10.f);
+			set_inertia_time(iFloor(float(1500 - 250)*(distance - 5.f)/(30.f - 5.f)) + 250);
+			m_fire_crouch	= ::Random.randF(40.f) < (distance - 5.f);
 		}
 }
 
