@@ -17,12 +17,12 @@ Engine/Game:
 		- should speed up physics considerably						~1 week for me, ??? for Slipch
 
 Sound:
-	* I3DL2_reverb				(?)									-	3 days
+	* I3DL2_reverb				(?)									-	3 days / Sanya (???)
 	
-Compiler:
-	* R2: xrLC geometry selection for point/spot lights	(???)		-
+LevelCompiler/GeometryProcessing:
+	* R2: xrLC geometry selection for point/spot lights	(???)		-	? R2 only ?
 	* CDB - qSlim						(???) / discrete attrs		-	~1week
-	* better hemisphere / qSlim			(???)						-	~2weeks
+	* better hemisphere / qSlim			(???)						-	~2weeks?
 	* SlidingWindow VIPM				(???)						-	~1week
 
 R1:
@@ -41,7 +41,7 @@ R2:
 	* transluency						(again + experiment)		-	1day - 1week
 	* reverse culling for spot/point with initial clears - should avoid most biasing (?)	- 1day - but can just not work :)
 	* 4*32bit	RT(s) / emissive									-	1day + emissive shaders (as need them)
-	* perspective shadow maps and all that stuff Gary talks about	-	1month...1year
+	* perspective shadow maps and all that stuff Gary talks about	-	1month...			1year :)))
 	* wallmarks :)	(?)												-	?
 	* surface material:
 		- emmisive map
@@ -55,7 +55,7 @@ R2:
 		diffuse texture			/ diffuse detail (???)
 		height map [rgb](5cm)	/ detail heightmap
 		gloss map  [a]	(0..1)	/ 
-		emisssive				/ 1 scalar / 1 koeff					-	none
+		emisssive				/ 1 scalar / 1 koeff				-	none
 		material-id				/ 1 scalar
 		transluency				/ ???
 
