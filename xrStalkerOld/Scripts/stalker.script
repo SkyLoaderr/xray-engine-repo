@@ -27,7 +27,10 @@ function actor_binder:reinit()
 	if self.object:dont_has_info("storyline_actor_start") then
 		self.object:give_info_portion("encyclopedy")
 		self.object:give_info_portion("storyline_actor_start")
-		self.object:give_info_portion("level_changer_icons")		
+		self.object:give_info_portion("level_changer_icons")
+		
+		local console = get_console()
+		console:execute("run_script avi_start")
 	end		
 end
 ----------------------------------------------------------------------------------------------------------------------
