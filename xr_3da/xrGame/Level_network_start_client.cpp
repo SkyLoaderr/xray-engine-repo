@@ -28,10 +28,10 @@ BOOL CLevel::net_Start_client	( LPCSTR name_of_server )
 		pApp->Level_Set		(level_id);
 
 		// Load level
-		R_ASSERT(Load				(level_id));
-		pHUD->Load					();
-		// ph_world					= new CPHWorld;
-		// ph_world->Create			();
+		R_ASSERT(Load						(level_id));
+		pHUD->Load							();
+		ph_world							= new CPHWorld;
+		ph_world->Create					();
 
 		// Waiting for connection completition
 		pApp->LoadTitle						("CLIENT: Spawning...");
