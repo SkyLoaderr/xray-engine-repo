@@ -491,5 +491,9 @@ void CScriptEngine::export_object()
 			.def("give_info_portion",			&CLuaGameObject::GiveInfoPortion)
 			.def("give_info_portion_via_pda",	&CLuaGameObject::GiveInfoPortionViaPda)
 
+			.def("is_talking",					&CLuaGameObject::IsTalking)
+			.def("stop_talk",					&CLuaGameObject::StopTalk)
+
+
 	];
 }

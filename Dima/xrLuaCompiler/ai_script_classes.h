@@ -271,11 +271,14 @@ public:
 			CLuaGameObject	*GetFood			() const;
 			CLuaGameObject	*GetMedikit			() const;
 
+	//////////////////////////////////////////////////////////////////////////
 	// CInventoryOwner
 	
 	//передача порции информации InventoryOwner
 	bool GiveInfoPortion(int info_index);
 	bool GiveInfoPortionViaPda(int info_index, CLuaGameObject* pFromWho);
+	bool IsTalking();
+	void StopTalk();
 	
 	u32				GetInventoryObjectCount() const;
 

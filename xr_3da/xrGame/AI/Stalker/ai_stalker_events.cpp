@@ -131,8 +131,10 @@ void CAI_Stalker::ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index)
 			pda_msg = ePdaMsgDeclineRude;
 			break;
 		}
-
 		//реакция на сообщение
-		SendPdaMessage(who, pda_msg, info_index);
+		//SendPdaMessage(who, pda_msg, info_index);
 	}
+
+	CInventoryOwner::ReceivePdaMessage(who, msg, info_index);
+
 }

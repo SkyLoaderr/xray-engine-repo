@@ -73,6 +73,20 @@ bool CLuaGameObject::GiveInfoPortionViaPda(int info_index, CLuaGameObject* pFrom
 	return			true;
 }
 
+bool CLuaGameObject::IsTalking()
+{
+	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	if(!pInventoryOwner) return false;
+	return			pInventoryOwner->IsTalking();
+}
+
+void CLuaGameObject::StopTalk()
+{
+	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	if(!pInventoryOwner) return;
+	pInventoryOwner->StopTalk();
+}
+
 
 CLuaGameObject *CLuaGameObject::GetCurrentWeapon() const
 {
