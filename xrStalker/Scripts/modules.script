@@ -44,7 +44,6 @@ module ("xr_replics")
 
 module ("xr_gulag")
 module ("gulag_tasks")
-module ("xr_meet")
 module ("xr_kamp")
 module ("xr_robbers")
 module ("xr_guide")
@@ -105,6 +104,7 @@ load_scheme("xr_death",	      "death",       stype_stalker)
 load_scheme("xr_hit",	      "hit",         stype_stalker)
 load_scheme("xr_wounded",     "wounded",     stype_stalker)
 load_scheme("xr_rest",        "rest",        stype_stalker)
+load_scheme("xr_meet",        "actor_dialogs",stype_stalker)
 
 ----------------------------------------------------------------------
 -- Загрузка модулей монстров:
