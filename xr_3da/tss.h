@@ -82,6 +82,8 @@ public:
 						CSimulator	()							{ Invalidate(); }
 	IC void				Invalidate	()							{ TSS.Invalidate(); RS.Invalidate(); container.clear(); }
 	IC void				SetTSS		(DWORD S, DWORD N, DWORD V) { TSS.Set(container,S,N,V);	}
+	IC void				SetColor	(DWORD S, DWORD a, DWORD b, DWORD c) {TSS.SetColor(container,S,a,b,c);}
+	IC void				SetAlpha	(DWORD S, DWORD a, DWORD b, DWORD c) {TSS.SetAlpha(container,S,a,b,c);}
 	IC void				SetRS		(DWORD N, DWORD V)			{ RS.Set(container,N,V);	}
 	IC SimulatorStates&	GetContainer()							{ return container; }
 };

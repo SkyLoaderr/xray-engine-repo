@@ -50,7 +50,8 @@ CTexture* CShaderManager::_CreateTexture	(LPCSTR Name)
 	R_ASSERT(Name && Name[0]);
 
 	// ***** first pass - search already loaded texture
-	map<LPSTR,CTexture*,str_pred>::iterator I = textures.find	(Name);
+	LPSTR N = LPSTR(Name);
+	map<LPSTR,CTexture*,str_pred>::iterator I = textures.find	(N);
 	if (I!=textures.end())	
 	{
 		CTexture *T		=	I->second;
@@ -78,7 +79,8 @@ CMatrix*	CShaderManager::_CreateMatrix	(LPCSTR Name)
 	R_ASSERT(Name && Name[0]);
 	if (0==stricmp(Name,"$null"))	return NULL;
 
-	map<LPSTR,CMatrix*,str_pred>::iterator I = matrices.find	(Name);
+	LPSTR N = LPSTR(Name);
+	map<LPSTR,CMatrix*,str_pred>::iterator I = matrices.find	(N);
 	if (I!=matrices.end())	
 	{
 		CMatrix* M		=	I->second;
@@ -105,7 +107,8 @@ CConstant*	CShaderManager::_CreateConstant	(LPCSTR Name)
 	R_ASSERT(Name && Name[0]);
 	if (0==stricmp(Name,"$null"))	return NULL;
 	
-	map<LPSTR,CConstant*,str_pred>::iterator I = constants.find	(Name);
+	LPSTR N = LPSTR(Name);
+	map<LPSTR,CConstant*,str_pred>::iterator I = constants.find	(N);
 	if (I!=constants.end())	
 	{
 		CConstant* C	=	I->second;

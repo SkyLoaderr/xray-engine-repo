@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "sh_texture.h"
+#include "texture.h"
+#include "xr_avi.h"
+#include "xr_trims.h"
 
 #define		PRIORITY_HIGH	12
 #define		PRIORITY_NORMAL	8
@@ -9,20 +12,15 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CTexture::CTexture(const char* Name, BOOL _bMipmaps)
+CTexture::CTexture		()
 {
-	R_ASSERT			(Name);
-	R_ASSERT			(strlen(Name)<64);
-	strcpy				(cName,Name);
-
-	dwRefCount			= 0;
+	dwReference			= 1;
 	pSurface			= NULL;
 	pAVI				= NULL;
-	bMipmaps			= _bMipmaps;
 }
 
 CTexture::~CTexture() {
-	R_ASSERT(dwRefCount==0);
+	R_ASSERT(dwReference==0);
 }
 
 void CTexture::Apply(DWORD dwStage)
@@ -52,7 +50,7 @@ void CTexture::Apply(DWORD dwStage)
 	Device.Statistic.dwTexture_Changes++;
 }
 
-void CTexture::Load()
+void CTexture::Load(LPCSTR cName)
 {
 	if (pSurface)					return;
 	
@@ -113,7 +111,7 @@ void CTexture::Load()
 					(
 					buffer,
 					tpfCompressed,
-					bMipmaps?tmBOX4:tmDisable,
+					tmBOX4,
 					psTextureLOD,
 					0.5f,
 					false,
@@ -138,7 +136,7 @@ void CTexture::Load()
 			(
 			cName,
 			tpfCompressed,
-			bMipmaps?tmBOX4:tmDisable,
+			tmBOX4,
 			psTextureLOD,
 			0.5f,
 			false,

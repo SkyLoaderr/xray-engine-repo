@@ -10,6 +10,7 @@ public:
 	Fcolor			const_float;
 	DWORD			const_dword;
 
+	DWORD			dwReference;
 	DWORD			dwFrame;
 	DWORD			dwMode;
 	WaveForm		_R;
