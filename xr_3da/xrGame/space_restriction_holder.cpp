@@ -15,7 +15,7 @@
 #include "space_restriction_composition.h"
 #include "restriction_space.h"
 
-const u32 time_to_delete = 30000;
+const u32 time_to_delete = 300000;
 
 CSpaceRestrictionHolder::~CSpaceRestrictionHolder			()
 {

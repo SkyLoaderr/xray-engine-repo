@@ -54,6 +54,7 @@ protected:
 	IC		void				collect_garbage					();
 	virtual void				on_default_restrictions_changed	(const RestrictionSpace::EDefaultRestrictorTypes &restrictor_type, ref_str old_restrictions, ref_str new_restrictions);
 	IC		bool				no_default_restrictions			(ref_str restrictions);
+	IC		void				restrict						(ALife::_OBJECT_ID id, CSpaceRestrictionManager::CRestrictionPtr restriction);
 
 public:
 								CSpaceRestrictionManager		();

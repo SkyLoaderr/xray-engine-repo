@@ -14,7 +14,7 @@
 #include "space_restriction_bridge.h"
 #include "object_broker.h"
 
-const u32 time_to_delete = 30000;
+const u32 time_to_delete = 300000;
 
 CSpaceRestrictionManager::CSpaceRestrictionManager			()
 {
@@ -34,12 +34,19 @@ IC	CSpaceRestrictionManager::CRestrictionPtr CSpaceRestrictionManager::restricti
 	return							((*I).second);
 }
 
-IC	void CSpaceRestrictionManager::restrict						(ALife::_OBJECT_ID id, ref_str out_restrictors, ref_str in_restrictors)
+IC	void CSpaceRestrictionManager::restrict						(ALife::_OBJECT_ID id, CSpaceRestrictionManager::CRestrictionPtr restriction)
 {
 	CLIENT_RESTRICTIONS::iterator	I = m_clients->find(id);
 	VERIFY2							((m_clients->end() == I) || !(*I).second || !(*I).second->applied(),"Restriction cannot be changed since its border is still applied!");
-	(*m_clients)[id]				= restriction(out_restrictors,in_restrictors);
-	collect_garbage					();
+	(*m_clients)[id]				= restriction;
+}
+
+IC	void CSpaceRestrictionManager::restrict						(ALife::_OBJECT_ID id, ref_str out_restrictors, ref_str in_restrictors)
+{
+	update_restrictions<true>			(out_restrictors,default_out_restrictions());
+	update_restrictions<true>			(in_restrictors,default_in_restrictions());
+	restrict							(id,restriction(out_restrictors,in_restrictors));
+	collect_garbage						();
 }
 
 IC	void CSpaceRestrictionManager::collect_garbage				()
@@ -49,7 +56,6 @@ IC	void CSpaceRestrictionManager::collect_garbage				()
 	for ( ; I != E; ) {
 		if (!(*I).second->m_ref_count && (Device.dwTimeGlobal >= (*I).second->m_last_time_dec + time_to_delete)) {
 			J						= I;
-//			Msg						("INTRUSIVE : removing CSpaceRestriction [%s][%s]",*(*J).second->out_restrictions(),*(*J).second->in_restrictions());
 			++I;
 			xr_delete				((*J).second);
 			m_space_restrictions.erase	(J);
@@ -90,7 +96,6 @@ CSpaceRestrictionManager::CRestrictionPtr	CSpaceRestrictionManager::restriction	
 	if (I != m_space_restrictions.end())
 		return					((*I).second);
 
-//	Msg							("INTRUSIVE : adding CSpaceRestriction [%s][%s]",*out_restrictors,*in_restrictors);
 	CSpaceRestriction			*client_restriction = xr_new<CSpaceRestriction>(this,out_restrictors,in_restrictors);
 	m_space_restrictions.insert	(std::make_pair(space_restrictions,client_restriction));
 	return						(client_restriction);
@@ -153,7 +158,11 @@ template <bool add>
 IC	void CSpaceRestrictionManager::update_restrictions		(ALife::_OBJECT_ID id, ref_str out_restrictions, ref_str in_restrictions)
 {
 	CRestrictionPtr				client_restriction = restriction(id);
-	VERIFY						(client_restriction);
+	if (!client_restriction) {
+		if (add)
+			restrict			(id,out_restrictions,in_restrictions);
+		return;
+	}
 	ref_str						new_out_restrictions = client_restriction->out_restrictions();
 	ref_str						new_in_restrictions = client_restriction->in_restrictions();
 	update_restrictions<add>	(new_out_restrictions,out_restrictions);
@@ -208,7 +217,10 @@ ref_str	CSpaceRestrictionManager::out_restrictions			(ALife::_OBJECT_ID id)
 void CSpaceRestrictionManager::change_restrictions			(ALife::_OBJECT_ID id, ref_str add_out_restrictions, ref_str add_in_restrictions, ref_str remove_out_restrictions, ref_str remove_in_restrictions)
 {
 	CRestrictionPtr				client_restriction = restriction(id);
-	VERIFY						(client_restriction);
+	if (!client_restriction) {
+		restrict				(id,add_out_restrictions,add_in_restrictions);
+		return;
+	}
 	ref_str						new_out_restrictions = client_restriction->out_restrictions();
 	ref_str						new_in_restrictions = client_restriction->in_restrictions();
 	update_restrictions<false>	(new_out_restrictions,remove_out_restrictions);
