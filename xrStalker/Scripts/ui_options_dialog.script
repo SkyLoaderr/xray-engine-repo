@@ -104,7 +104,7 @@ function options_dialog:InitControls()
 	txt_caption:SetAutoDelete(true)
 	txt_caption:SetWindowName("txt_caption")
 	txt_caption:SetFont(GetFontLetterica25())
-	txt_caption:SetTextAlign(CGameFont:alLeft)
+	txt_caption:SetTextAlign(CGameFont.alLeft)
 	txt_caption:SetText("Options")
 
 	txt_caption:SetTextAlign(CGameFont.alCenter)
