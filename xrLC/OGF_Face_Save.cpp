@@ -109,6 +109,7 @@ void OGF_Reference::Save	(CFS_Base &fs)
 	fs.write			(&xform,sizeof(xform));
 	fs.write			(&c_scale,sizeof(c_scale));
 	fs.write			(&c_bias,sizeof(c_bias));
+	fs.close_chunk		();
 
 	// Header
 	fs.open_chunk		(OGF_HEADER);
