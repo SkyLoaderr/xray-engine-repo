@@ -74,7 +74,7 @@ void	CEffect_Rain::OnDeviceCreate	()
 	CFileStream	 fs		(name);
 	DM_Drop.Load		(&fs);
 
-	SH_Rain				= Device.Shader.Create	("effects\\rain","effects\\rain");
+	SH_Rain				= Device.Shader.Create	("effects\\rain","fx\\rain");
 	VS_Rain				= Device.Streams.Create	(FVF::F_LIT,desired_items*4);
 	VS_Drops			= Device.Streams.Create	(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1, particles_cache*DM_Drop.number_vertices );
 	p_create			();
