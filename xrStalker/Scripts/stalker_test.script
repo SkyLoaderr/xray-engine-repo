@@ -8,7 +8,7 @@ end
 
 
 function main ()
-	zone0				= get_level_object ("script_zone0000")
+--[	zone0				= get_level_object ("script_zone0000")
 	zone1				= get_level_object ("script_zone0001")
 	
 	zone0:set_callback	(stalker_test.callback_enter,true);
@@ -20,6 +20,8 @@ function main ()
 	while true do
 		wait			()
 	end
+--]
+	sdfsadfsdafadsfs	()
 --[
     stalker				= get_level_object ("m_stalker_e0000")
     actor				= get_actor()
