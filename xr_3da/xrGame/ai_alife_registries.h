@@ -93,31 +93,31 @@ public:
 			CALifeDynamicObject *tpALifeDynamicObject = 0;
 			switch (tFileStream.Rbyte()) {
 				case ALIFE_ITEM_ID : {
-					tpALifeDynamicObject = new CALifeItem;
+					tpALifeDynamicObject = new CALifeItem();
 					break;
 				}
 				case ALIFE_MONSTER_ID : {
-					tpALifeDynamicObject = new CALifeMonster;
+					tpALifeDynamicObject = new CALifeMonster();
 					break;
 				}
 				case ALIFE_MONSTER_GROUP_ID : {
-					tpALifeDynamicObject = new CALifeMonsterGroup;
+					tpALifeDynamicObject = new CALifeMonsterGroup();
 					break;
 				}
 				case ALIFE_HUMAN_ID : {
-					tpALifeDynamicObject = new CALifeHuman;
+					tpALifeDynamicObject = new CALifeHuman();
 					break;
 				}
 				case ALIFE_HUMAN_GROUP_ID : {
-					tpALifeDynamicObject = new CALifeHumanGroup;
+					tpALifeDynamicObject = new CALifeHumanGroup();
 					break;
 				}
 				case ALIFE_TRADER_ID : {
-					tpALifeDynamicObject = new CALifeTrader;
+					tpALifeDynamicObject = new CALifeTrader();
 					break;
 				}
 				case ALIFE_ANOMALOUS_ZONE_ID : {
-					tpALifeDynamicObject = new CALifeDynamicAnomalousZone;
+					tpALifeDynamicObject = new CALifeDynamicAnomalousZone();
 					break;
 				}
 				default : NODEFAULT;
@@ -164,13 +164,15 @@ public:
 		EVENT_PAIR_IT it			= m_tEventRegistry.begin();
 		EVENT_PAIR_IT E				= m_tEventRegistry.end();
 		for ( ; it != E; it++) {
-			CALifeEvent				&tEvent = *((*it).second);
-			tMemoryStream.write		(&tEvent.m_tEventID,		sizeof(tEvent.m_tEventID		));
-			tMemoryStream.write		(&tEvent.m_tTimeID,			sizeof(tEvent.m_tTimeID		));
-			tMemoryStream.write		(&tEvent.m_tGraphID,		sizeof(tEvent.m_tGraphID		));
-			tMemoryStream.write		(&tEvent.m_tBattleResult,	sizeof(tEvent.m_tBattleResult	));
-			tEvent.m_tpMonsterGroup1->Save(tMemoryStream);
-			tEvent.m_tpMonsterGroup2->Save(tMemoryStream);
+			CALifeEvent				*tpEvent = (*it).second;
+			tMemoryStream.write		(&(tpEvent->m_tEventID),		sizeof(tpEvent->m_tEventID		));
+			tMemoryStream.write		(&(tpEvent->m_tTimeID),			sizeof(tpEvent->m_tTimeID		));
+			tMemoryStream.write		(&(tpEvent->m_tGraphID),		sizeof(tpEvent->m_tGraphID		));
+			tMemoryStream.write		(&(tpEvent->m_tBattleResult),	sizeof(tpEvent->m_tBattleResult	));
+			tpEvent->m_tpMonsterGroup1 = new CALifeEventGroup();
+			tpEvent->m_tpMonsterGroup2 = new CALifeEventGroup();
+			tpEvent->m_tpMonsterGroup1->Save(tMemoryStream);
+			tpEvent->m_tpMonsterGroup2->Save(tMemoryStream);
 		}
 		tMemoryStream.close_chunk	();
 	};
@@ -182,16 +184,16 @@ public:
 		m_tEventRegistry.clear();
 		u32 dwCount = tFileStream.Rdword();
 		for (u32 i=0; i<dwCount; i++) {
-			CALifeEvent				tEvent;
-			tFileStream.Read		(&tEvent.m_tEventID,		sizeof(tEvent.m_tEventID		));
-			tFileStream.Read		(&tEvent.m_tTimeID,		sizeof(tEvent.m_tTimeID		));
-			tFileStream.Read		(&tEvent.m_tGraphID,		sizeof(tEvent.m_tGraphID		));
-			tFileStream.Read		(&tEvent.m_tBattleResult,	sizeof(tEvent.m_tBattleResult	));
-			tEvent.m_tpMonsterGroup1	= new CALifeEventGroup;
-			tEvent.m_tpMonsterGroup2	= new CALifeEventGroup;
-			tEvent.m_tpMonsterGroup1->Load(tFileStream);
-			tEvent.m_tpMonsterGroup2->Load(tFileStream);
-			m_tEventRegistry.insert	(make_pair(tEvent.m_tEventID,&tEvent));
+			CALifeEvent				*tpEvent = new CALifeEvent;
+			tFileStream.Read		(&tpEvent->m_tEventID,		sizeof(tpEvent->m_tEventID		));
+			tFileStream.Read		(&tpEvent->m_tTimeID,		sizeof(tpEvent->m_tTimeID		));
+			tFileStream.Read		(&tpEvent->m_tGraphID,		sizeof(tpEvent->m_tGraphID		));
+			tFileStream.Read		(&tpEvent->m_tBattleResult,	sizeof(tpEvent->m_tBattleResult	));
+			tpEvent->m_tpMonsterGroup1	= new CALifeEventGroup();
+			tpEvent->m_tpMonsterGroup2	= new CALifeEventGroup();
+			tpEvent->m_tpMonsterGroup1->Load(tFileStream);
+			tpEvent->m_tpMonsterGroup2->Load(tFileStream);
+			m_tEventRegistry.insert	(make_pair(tpEvent->m_tEventID,tpEvent));
 		}
 	};
 	
@@ -220,20 +222,20 @@ public:
 		TASK_PAIR_IT it				= m_tTaskRegistry.begin();
 		TASK_PAIR_IT E				= m_tTaskRegistry.end();
 		for ( ; it != E; it++)
-			tMemoryStream.write		(&((*it).second),		sizeof((*it).second));
+			(*it).second->Save(tMemoryStream);
 		tMemoryStream.close_chunk	();
 	};
 	
 	virtual	void					Load(CStream	&tFileStream)
 	{
 		R_ASSERT(tFileStream.FindChunk(TASK_CHUNK_DATA));
-		tFileStream.Read(&m_tTaskID,sizeof(m_tTaskID));
-		m_tTaskRegistry.clear();
+		tFileStream.Read			(&m_tTaskID,sizeof(m_tTaskID));
+		m_tTaskRegistry.clear		();
 		u32 dwCount = tFileStream.Rdword();
 		for (u32 i=0; i<dwCount; i++) {
-			CALifeTask				tTask;
-			tFileStream.Read		(&tTask,		sizeof(tTask));
-			m_tTaskRegistry.insert	(make_pair(tTask.m_tTaskID,&tTask));
+			CALifeTask				*tpTask = new CALifeTask();
+			tpTask->Load			(tFileStream);
+			m_tTaskRegistry.insert	(make_pair(tpTask->m_tTaskID,tpTask));
 		}
 	};
 	

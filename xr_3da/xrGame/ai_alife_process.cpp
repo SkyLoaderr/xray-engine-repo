@@ -97,7 +97,8 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 			break;
 		}
 		case eTaskStateChooseTask : {
-			tpALifeHuman->m_tCurTask = *(m_tTaskRegistry[tpALifeHuman->m_tpTaskIDs[0]]);
+			CALifeTask *tpTask = m_tTaskRegistry[tpALifeHuman->m_tpTaskIDs[0]];
+			tpALifeHuman->m_tCurTask = *tpTask;;
 			_GRAPH_ID tGraphID = _GRAPH_ID(-1);
 			switch (tpALifeHuman->m_tCurTask.m_tTaskType) {
 				case eTaskTypeSearchForItemCG :

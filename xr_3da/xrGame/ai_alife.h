@@ -209,14 +209,14 @@ public:
 		for ( ; I != E; I++) {
 			CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>((*I).second);
 			if (tpALifeItem && !tpALifeItem->m_bAttached) {
-				CALifeTask					tTask;
-				tTask.m_tCustomerID			= tpTrader->m_tObjectID;
-				tTask.m_tLocationID			= Level().AI.m_tpaGraph[tpALifeItem->m_tGraphID].tVertexType;
-				tTask.m_tObjectID			= tpALifeItem->m_tObjectID;
-				tTask.m_tTimeID				= tfGetGameTime();
-				tTask.m_tTaskType			= eTaskTypeSearchForItemOL;
-				CALifeTaskRegistry::Add		(&tTask);
-				tpTrader->m_tpTaskIDs.push_back(tTask.m_tTaskID);
+				CALifeTask					*tpTask = new CALifeTask();
+				tpTask->m_tCustomerID		= tpTrader->m_tObjectID;
+				tpTask->m_tLocationID		= Level().AI.m_tpaGraph[tpALifeItem->m_tGraphID].tVertexType;
+				tpTask->m_tObjectID			= tpALifeItem->m_tObjectID;
+				tpTask->m_tTimeID			= tfGetGameTime();
+				tpTask->m_tTaskType			= eTaskTypeSearchForItemOL;
+				CALifeTaskRegistry::Add		(tpTask);
+				tpTrader->m_tpTaskIDs.push_back(tpTask->m_tTaskID);
 				break;
 			}
 		}

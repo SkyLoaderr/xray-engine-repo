@@ -445,7 +445,9 @@ public:
 				tMemoryStream.write	(&m_tGraphID,	sizeof(m_tGraphID));
 				break;
 			}
-			default : NODEFAULT;
+			default : {
+				break;
+			}
 		};
 	};
 
@@ -477,7 +479,9 @@ public:
 				tFileStream.Read	(&m_tGraphID,	sizeof(m_tGraphID));
 				break;
 			}
-			default : NODEFAULT;
+			default : {
+				break;
+			}
 		};
 	}
 };

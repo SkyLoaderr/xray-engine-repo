@@ -98,6 +98,12 @@ CAI_ALife::~CAI_ALife()
 void CAI_ALife::vfInitTerrain()
 {
 	m_tpTerrain.resize(LOCATION_COUNT);
+	{
+		GRAPH_VECTOR_IT		I = m_tpTerrain.begin();
+		GRAPH_VECTOR_IT		E = m_tpTerrain.end();
+		for ( ; I != E; I++)
+			(*I).clear();
+	}
 	for (_GRAPH_ID i=0; i<(_GRAPH_ID)Level().AI.GraphHeader().dwVertexCount; i++)
 		m_tpTerrain[Level().AI.m_tpaGraph[i].tVertexType].push_back(i);
 }
@@ -243,7 +249,7 @@ void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFa
 	I++;
 
 	(*I)							= new CALifeSpawnPoint();
-	(*I)->m_tNearestGraphPointID	= _GRAPH_ID(Level().AI.GraphHeader().dwVertexCount);
+	(*I)->m_tNearestGraphPointID	= _GRAPH_ID(::Random.randI(Level().AI.GraphHeader().dwVertexCount));
 	(*I)->m_wGroupID				= wGroupID++;
 	j								= 2;
 	PSGP.memCopy					((*I)->m_caModel,cpHumanModels[j],(1 + strlen(cpHumanModels[j]))*sizeof(char));
