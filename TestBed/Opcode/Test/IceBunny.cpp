@@ -11,7 +11,7 @@
 // Precompiled Header
 #include "Stdafx.h"
 
-#pragma comment(lib,"opcode_d")
+#pragma comment(lib,"x:\\opcode.lib")
 
 #pragma warning(disable : 4305)
 #pragma warning(disable : 4136)
