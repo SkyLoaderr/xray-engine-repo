@@ -195,7 +195,7 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate)
 	//Msg("put item %s in inventory slot %d", *pIItem->cName(), pIItem->GetSlot());
 	if (Game().type != GAME_SINGLE)
 	{
-		bNotActivate = true;
+///		bNotActivate = true;
 	}
 
 	if(!CanPutInSlot(pIItem)) return false;
