@@ -61,5 +61,5 @@ void CRender::Calculate		()
 	pCreator->pHUD->Render_Calculate		();
 	
 	// End calc
-	Device.Statistic.RenderCALC.End	();
+	Device.Statistic.RenderCALC.End			();
 }
