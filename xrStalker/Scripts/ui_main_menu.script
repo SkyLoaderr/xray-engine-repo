@@ -66,9 +66,14 @@ function main_menu:InitControls()
 							 y = btn_load_rect.y + btn_load_rect.height + indent,
 							 width = btn_rect.width,
 							 height = btn_rect.height}
-							 
+	
 	local btn_opt_rect    = {x = btn_rect.x,
 							 y = btn_multi_rect.y + btn_multi_rect.height + indent,
+							 width = btn_rect.width,
+							 height = btn_rect.height}
+							 
+	local btn_quit_rect    = {x = btn_rect.x,
+							 y = main_rect.height - btn_rect.height - indent,
 							 width = btn_rect.width,
 							 height = btn_rect.height}
 	
@@ -146,6 +151,18 @@ function main_menu:InitControls()
 	btn:SetWindowName("btn_options")
 	btn:Init("ui\\ui_button_01", btn_opt_rect.x, btn_opt_rect.y, btn_opt_rect.width, btn_opt_rect.height)
 	btn:SetText("Options")
+	btn:SetFont(GetFontLetterica25())
+	btn:SetTextAlign(CGameFont.alCenter)
+	btn:SetTextY(button_indent)
+	self:Register(btn)
+	main_frame:AttachChild(btn)
+	
+	--------->> QUIT TO WINDOWS
+	btn = CUIButton()
+	btn:SetAutoDelete(true)
+	btn:SetWindowName("btn_quit")
+	btn:Init("ui\\ui_button_01", btn_quit_rect.x, btn_quit_rect.y, btn_quit_rect.width, btn_quit_rect.height)
+	btn:SetText("Quit to Windows")
 	btn:SetFont(GetFontLetterica25())
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(button_indent)
