@@ -35,7 +35,7 @@
 				OptimizeForProcessor="2"
 				OptimizeForWindowsApplication="FALSE"
 				AdditionalIncludeDirectories="..\xrQSlim\src"
-				PreprocessorDefinitions="_USE_MATH_DEFINES,WIN32,_DEBUG,_WINDOWS"
+				PreprocessorDefinitions="_USE_MATH_DEFINES,WIN32,_WINDOWS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
@@ -1617,10 +1617,10 @@
 					RelativePath=".\OpenMesh\Tools\Decimater\CollapseInfoT.hh">
 				</File>
 				<File
-					RelativePath=".\OpenMesh\Tools\Utils\Config.hh">
+					RelativePath=".\OpenMesh\Tools\Geometry\Config.hh">
 				</File>
 				<File
-					RelativePath=".\OpenMesh\Tools\Geometry\Config.hh">
+					RelativePath=".\OpenMesh\Tools\Utils\Config.hh">
 				</File>
 				<File
 					RelativePath=".\OpenMesh\Tools\Utils\conio.cc">
