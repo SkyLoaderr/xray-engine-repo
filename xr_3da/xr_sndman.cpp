@@ -287,8 +287,8 @@ void CSoundManager::OnFrame( )
 
 	Device.Statistic.Sound.Begin();
 	if (Device.bActive) {
-		if (dwFreq			!= psSoundFreq)		SetFreq		();
-		if (dwModel			!= psSoundModel)	SetModel	();
+//		if (dwFreq			!= psSoundFreq)		SetFreq		();
+//		if (dwModel			!= psSoundModel)	SetModel	();
 		if (fMusicVolume	!= psSoundVMusic)	SetVMusic	();
 
 		pMusicStreams->OnMove	();
