@@ -83,16 +83,6 @@ void CObjectHandlerGOAP::reload			(LPCSTR section)
 	CInventoryOwner::reload		(section);
 }
 
-void CObjectHandlerGOAP::update(u32 time_delta)
-{
-	inherited::update			(time_delta);
-	if (!solution().empty()) {
-		Msg						("%6d : solution",Level().timeServer());
-		for (int i=0; i<(int)solution().size(); ++i)
-			Msg					("%d",solution()[i]);
-	}
-}
-
 void CObjectHandlerGOAP::OnItemTake		(CInventoryItem *inventory_item)
 {
 	CInventoryOwner::OnItemTake	(inventory_item);
@@ -410,6 +400,42 @@ void CObjectHandlerGOAP::add_operators		(CEatableItem *eatable_item)
 {
 }
 
+#ifdef DEBUG
+LPCSTR to_string(const u32 id)
+{
+	static	string4096 S;
+	if ((id & 0xffff) != 0xffff)
+		if (Level().Objects.net_Find(id & 0xffff))
+			strcpy	(S,*Level().Objects.net_Find(id & 0xffff)->cName());
+		else
+			strcpy	(S,"no_items");
+	else
+		strcpy	(S,"no_items");
+	strcat		(S,":");
+	switch (id >> 16) {
+		case CObjectHandlerGOAP::eWorldOperatorShow			: {strcat(S,"Show");		break;}
+		case CObjectHandlerGOAP::eWorldOperatorHide			: {strcat(S,"Hide");		break;}
+		case CObjectHandlerGOAP::eWorldOperatorDrop			: {strcat(S,"Drop");		break;}
+		case CObjectHandlerGOAP::eWorldOperatorStrapping	: {strcat(S,"Strapping");	break;}
+		case CObjectHandlerGOAP::eWorldOperatorStrapped		: {strcat(S,"StrappedIdle");break;}
+		case CObjectHandlerGOAP::eWorldOperatorUnstrapping	: {strcat(S,"Unstrapping"); break;}
+		case CObjectHandlerGOAP::eWorldOperatorIdle			: {strcat(S,"Idle");		break;}
+		case CObjectHandlerGOAP::eWorldOperatorAim1			: {strcat(S,"Aim1");		break;}
+		case CObjectHandlerGOAP::eWorldOperatorAim2			: {strcat(S,"Aim2");		break;}
+		case CObjectHandlerGOAP::eWorldOperatorReload1		: {strcat(S,"Reload1");		break;}
+		case CObjectHandlerGOAP::eWorldOperatorReload2		: {strcat(S,"Reload2");		break;}
+		case CObjectHandlerGOAP::eWorldOperatorFire1		: {strcat(S,"Fire1");		break;}
+		case CObjectHandlerGOAP::eWorldOperatorFire2		: {strcat(S,"Fire2");		break;}
+		case CObjectHandlerGOAP::eWorldOperatorSwitch1		: {strcat(S,"Switch1");		break;}
+		case CObjectHandlerGOAP::eWorldOperatorSwitch2		: {strcat(S,"Switch2");		break;}
+		case CObjectHandlerGOAP::eWorldOperatorQueueWait1	: {strcat(S,"QueueWait1");	break;}
+		case CObjectHandlerGOAP::eWorldOperatorQueueWait2	: {strcat(S,"QueueWait1");	break;}
+		default							: NODEFAULT;
+	}
+	return		(S);
+}
+#endif
+
 void CObjectHandlerGOAP::set_goal	(MonsterSpace::EObjectAction object_action, CGameObject *game_object)
 {
 	EWorldProperties		goal = object_property(object_action);
@@ -420,7 +446,18 @@ void CObjectHandlerGOAP::set_goal	(MonsterSpace::EObjectAction object_action, CG
 	else
 		condition_id		= eWorldPropertyNoItemsIdle;
 
+	Msg						("%6d : Goal world state %s",Level().timeServer(),to_string(condition_id));
 	CState					condition;
 	condition.add_condition	(CWorldProperty(condition_id,true));
 	set_target_state		(condition);
+}
+
+void CObjectHandlerGOAP::update(u32 time_delta)
+{
+	inherited::update			(time_delta);
+	if (!solution().empty()) {
+		Msg						("%6d : Solution",Level().timeServer());
+		for (int i=0; i<(int)solution().size(); ++i)
+			Msg					("%s",to_string(solution()[i]));
+	}
 }

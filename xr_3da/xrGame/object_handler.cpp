@@ -417,7 +417,6 @@ void CObjectHandler::update(u32 time_delta)
 //		if ((!dwStartFireAmmo) && (CWeapon::eReload != tpWeapon->STATE))
 //			if (tpWeaponMagazined->IsAmmoAvailable())
 //				stalker->inventory().Action(kWPN_RELOAD,	CMD_START);
-	UpdateInventoryOwner(time_delta);
 	set_current_state	(object_state());
 	inherited::update	(time_delta);
 

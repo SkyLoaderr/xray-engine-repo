@@ -30,9 +30,7 @@ class CObjectHandlerGOAP :
 	public CInventoryOwner
 
 {
-protected:
-	typedef CActionPlanner<CAI_Stalker>	inherited;
-	
+public:
 	enum EWorldProperties {
 		eWorldPropertyHidden		= u32(0),
 		eWorldPropertyStrapping,
@@ -82,6 +80,9 @@ protected:
 		eWorldOperatorNoItemsIdle	= eWorldOperatorIdle | u16(-1),
 		eWorldOperatorDummy			= u32(-1),
 	};
+
+protected:
+	typedef CActionPlanner<CAI_Stalker>	inherited;
 
 private:
 	bool						m_aimed1;
