@@ -9,7 +9,7 @@
 namespace CDB {
 	const u32 edge_open = 0xffffffff;
 
-	class ENGINE_API Collector
+	class XRCDB_API Collector
 	{
 		vector<Fvector>	verts;
 		vector<TRI>		faces;
@@ -74,7 +74,7 @@ namespace CDB {
 
 	const u32 clpMX = 28, clpMY=16, clpMZ=28;
 
-	class ENGINE_API CollectorPacked
+	class XRCDB_API CollectorPacked
 	{
 		typedef vector<u32>		DWORDList;
 		typedef DWORDList::iterator	DWORDIt;
