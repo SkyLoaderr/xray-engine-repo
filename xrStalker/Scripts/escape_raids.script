@@ -46,6 +46,8 @@ local patrol_finished           =   2
 
 local raid_needed               =   false
 
+local time_delay = 0
+
 local current_state             =   wait_for_start_patrol
 -------------------------------------------------------------------------------------------
 function main ()
@@ -92,12 +94,18 @@ function wait_for_start ()
               raid_moved = true
            end   
            patrols[a].on_patrol = true
+           time_delay = device ():time_global () + 300000
         end   
     end
 end
 -------------------------------------------------------------------------------------------
 function wait_for_finish ()
     this.check_for_deaths ()
+    if time_delay ~= 0 then
+       if device ():time_global () - time_delay  > 0 then
+          time_delay = 0
+       end    
+    end    
 end
 -------------------------------------------------------------------------------------------
 function check_for_deaths ()
@@ -115,6 +123,7 @@ function check_for_deaths ()
 end
 -------------------------------------------------------------------------------------------
 function on_enter (zone, obj)
+    if time_delay ~= 0 then return end
     if obj == nil or zone == nil then return end
     for a = 1, table.getn (patrols), 1 do
         for b = 1, table.getn (patrols[a]), 1 do
