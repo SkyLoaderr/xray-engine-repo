@@ -1,13 +1,16 @@
 [ui_global_map]
 texture_small	= ui\ui_global_map_small
 texture_big		= ui\ui_global_map
-width			= 1000				; width on meters
-height			= 2000				; height on meters
+width			= 5000				; width on meters
+height			= 10000				; height on meters
 
 [ui_level_maps_single]
-;<name>			= <texture_name>,	<map size (meters) {w,h}>,	<global map rect (pixels) {x1,y1, x2,y2} >
-_light2_.save	= ui\ui_l2save,		27.35,23.02,				0,0,		200,200
-_light2_		= ui\ui_l2save,		27.35,23.02,				200,200,	400,400
+;----------------------------------------------------------------------------------------------
+;<name>			= <texture_name>,	|real map size |,	|virtual UI global map rect			  |
+;									|(meters) {w,h}|,	|(meters) {x1,y1, x2,y2} from LEFT-TOP|
+;----------------------------------------------------------------------------------------------
+_light2_.save	= ui\ui_l2save,		27.350,23.020,		2400,4900,	2600,5100
+_light2_		= ui\ui_l2save,		27.350,23.020,		2700,4900,	2900,5100
 
 [ui_level_maps_mp]
 ;<name>			= <texture_name>
