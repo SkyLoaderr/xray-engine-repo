@@ -21,7 +21,7 @@ CPhrase::~CPhrase	(void)
 
 LPCSTR CPhrase::GetText		()	const			
 {
-	return m_text.GetBuf();
+	return m_text.c_str();
 }
 
 LPCSTR  CPhrase::GetScriptText	(const CGameObject* pSpeaker1, const CGameObject* pSpeaker2) const

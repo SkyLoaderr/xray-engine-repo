@@ -53,6 +53,11 @@ private:
 
 bool CInventoryOwner::OnReceiveInfo(INFO_INDEX info_index)
 {
+
+#ifdef DEBUG
+	Msg("CInventoryOwner::OnReceiveInfo info id %s", *CInfoPortion::IndexToId(info_index));
+#endif
+
 	//добавить запись в реестр
 	KNOWN_INFO_VECTOR& known_info = m_known_info_registry->registry().objects();
 	KNOWN_INFO_VECTOR_IT it = std::find_if(known_info.begin(), known_info.end(), CFindByIDPred(info_index));

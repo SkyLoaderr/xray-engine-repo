@@ -14,7 +14,7 @@
 SPhraseDialogData::SPhraseDialogData ()
 {
 	m_PhraseGraph.clear();
-	m_eDialogType = eDialogTypeMax;
+	m_eDialogType.zero();
 	m_iPriority = 0;
 }
 
@@ -217,9 +217,18 @@ void CPhraseDialog::load_shared	(LPCSTR)
 
 	uiXml.SetLocalRoot(dialog_node);
 
+	int actor_dialog = uiXml.ReadAttribInt(dialog_node, "actor", 1);
+	if (1 == actor_dialog) 
+		data()->m_eDialogType.set(eDialogTypeActor, TRUE);
+
 	int pda_dialog = uiXml.ReadAttribInt(dialog_node, "pda", 0);
 	if (1 == pda_dialog) 
-		data()->m_eDialogType = eDialogTypePDA;
+		data()->m_eDialogType.set(eDialogTypePDA, TRUE);
+
+	int ai_dialog = uiXml.ReadAttribInt(dialog_node, "ai", 0);
+	if (1 == ai_dialog) 
+		data()->m_eDialogType.set(eDialogTypeAI, TRUE);
+
 
 	data()->m_iPriority = uiXml.ReadAttribInt(dialog_node, "priority", 0);
 
@@ -262,6 +271,11 @@ void CPhraseDialog::AddPhrase	(XML_NODE* phrase_node, PHRASE_ID phrase_id)
 	phrase->SetText(uiXml.Read(phrase_node, "text", 0, ""));
 	//уровень благосклонности
 	phrase->m_iGoodwillLevel = uiXml.ReadInt(phrase_node, "goodwill", 0, -10000);
+
+
+	phrase->m_sound = uiXml.Read	(phrase_node,	"sound", NULL);
+	phrase->m_anim = uiXml.Read		(phrase_node,	"anim", NULL);
+
 	
 	//прочитать действия и предикаты
 	phrase->m_PhraseScript.Load(uiXml, phrase_node);

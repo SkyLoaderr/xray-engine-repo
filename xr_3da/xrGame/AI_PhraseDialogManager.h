@@ -22,8 +22,8 @@ public:
 	virtual void UpdateAvailableDialogs	(CPhraseDialogManager* partner);
 	virtual void AnswerPhrase			(DIALOG_SHARED_PTR& phrase_dialog);
 
-	virtual bool NeedAnswerOnPDA		();
-	virtual void AnswerOnPDA			();
+	virtual bool NeedAnswerOnPending		();
+	virtual void AnswerOnPending			();
 
 	virtual void				SetStartDialog				(PHRASE_DIALOG_ID phrase_dialog);
 	virtual void				SetDefaultStartDialog		(PHRASE_DIALOG_ID phrase_dialog);
@@ -37,5 +37,5 @@ protected:
 
 	DEFINE_VECTOR(DIALOG_SHARED_PTR, DIALOG_SHARED_VECTOR, DIALOG_SHARED_IT);
 	//список диалогов, на которые нужно ответить
-	DIALOG_SHARED_VECTOR m_PendingPdaDialogs;
+	DIALOG_SHARED_VECTOR m_PendingDialogs;
 };

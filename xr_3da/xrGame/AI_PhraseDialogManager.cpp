@@ -26,11 +26,12 @@ CAI_PhraseDialogManager::~CAI_PhraseDialogManager	(void)
 //PhraseDialogManager
 void CAI_PhraseDialogManager::ReceivePhrase (DIALOG_SHARED_PTR& phrase_dialog)
 {
-	if(phrase_dialog->GetDialogType() != eDialogTypePDA)
-		AnswerPhrase(phrase_dialog);
+	if(phrase_dialog->GetDialogType(eDialogTypePDA)|| 
+		phrase_dialog->GetDialogType(eDialogTypeAI))
+		m_PendingDialogs.push_back(phrase_dialog);
 	else
-		m_PendingPdaDialogs.push_back(phrase_dialog);
-
+		AnswerPhrase(phrase_dialog);
+		
 	CPhraseDialogManager::ReceivePhrase(phrase_dialog);
 }
 
@@ -76,19 +77,19 @@ void CAI_PhraseDialogManager::AnswerPhrase (DIALOG_SHARED_PTR& phrase_dialog)
 	}
 }
 
-bool CAI_PhraseDialogManager::NeedAnswerOnPDA		()
+bool CAI_PhraseDialogManager::NeedAnswerOnPending		()
 {
-	return !m_PendingPdaDialogs.empty();
+	return !m_PendingDialogs.empty();
 }
 
-void CAI_PhraseDialogManager::AnswerOnPDA			()
+void CAI_PhraseDialogManager::AnswerOnPending			()
 {
-	for(DIALOG_SHARED_IT it = m_PendingPdaDialogs.begin();
-		 m_PendingPdaDialogs.end() != it; it++)
+	for(DIALOG_SHARED_IT it = m_PendingDialogs.begin();
+		 m_PendingDialogs.end() != it; it++)
 	{
 		AnswerPhrase(*it);
 	}
-	m_PendingPdaDialogs.clear();
+	m_PendingDialogs.clear();
 }
 
 

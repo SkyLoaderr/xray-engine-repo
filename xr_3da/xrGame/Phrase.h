@@ -5,8 +5,6 @@
 
 #pragma once
 
-
-#include "ui/uistring.h"
 #include "ui/xrXMLParser.h"
 
 #include "PhraseScript.h"
@@ -22,7 +20,7 @@ public:
 	CPhrase(void);
 	virtual ~CPhrase(void);
 
-	void			SetText			(LPCSTR text)		{m_text.SetText(text);}
+	void			SetText			(LPCSTR text)		{m_text = text;}
 	LPCSTR			GetText			()	const;
 	LPCSTR			GetScriptText	(const CGameObject* pSpeaker1, const CGameObject* pSpeaker2) const;
 
@@ -33,11 +31,14 @@ public:
 
 	bool			IsDummy()		const;
 
+	shared_str		Sound()			const			{return m_sound;}
+	shared_str		Anim()			const			{return m_anim;}
+
 protected:
 	//уникальный индекс в списке фраз диалога
 	int	m_iIndex;
 	//текстовое представление фразы
-	CUIString m_text;
+	std::string m_text;
 	
 	//минимальный уровень благосклоггости, необходимый для того
 	//чтоб фразу можно было сказать
@@ -46,4 +47,8 @@ protected:
 	//для вызова скриптовых функций
 	CPhraseScript m_PhraseScript;
 
+	//для диалогов между NPC
+	//звуковой файл
+	shared_str m_sound;
+	shared_str m_anim;
 };
