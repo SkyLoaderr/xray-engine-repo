@@ -30,18 +30,18 @@ function main()
   m_gameplay4.last_action = m_gameplay4.action_none  -- изначально он ничего не делалне было никаких действий, поэтому action_none
 
   -- Имена звуковых файлов
-  m_gameplay4.snd_kashel = [[m_gameplay4\kashel]]
-  m_gameplay4.snd_davay_davay = [[m_gameplay4\davay-davay]]
-  m_gameplay4.snd_ey_spryatalsa = [[m_gameplay4\ey-spryatalsa]]
-  m_gameplay4.snd_gav_gav = [[m_gameplay4\gav-gav]]
-  m_gameplay4.snd_ispugalsa = [[m_gameplay4\ispugalsa]]
-  m_gameplay4.snd_kishki = [[m_gameplay4\kishki]]
-  m_gameplay4.snd_napali_v_volnu = [[m_gameplay4\napali-v-volnu]]
-  m_gameplay4.snd_padli = [[m_gameplay4\padli]]
-  m_gameplay4.snd_po_sklonam = [[m_gameplay4\po-sklonam]]
-  m_gameplay4.snd_nashi_podberut = [[m_gameplay4\nashi-podberut]]
-  m_gameplay4.snd_skoti_truslivie = [[m_gameplay4\skoti-truslivie]]
-  m_gameplay4.snd_vihodi_str = [[m_gameplay4\vihodi-str]]
+  m_gameplay4.snd_kashel = [[scripts\m_gameplay\kashel]]
+  m_gameplay4.snd_davay_davay = [[scripts\m_gameplay\davay-davay]]
+  m_gameplay4.snd_ey_spryatalsa = [[scripts\m_gameplay\ey-spryatalsa]]
+  m_gameplay4.snd_gav_gav = [[scripts\m_gameplay\gav-gav]]
+  m_gameplay4.snd_ispugalsa = [[scripts\m_gameplay\ispugalsa]]
+  m_gameplay4.snd_kishki = [[scripts\m_gameplay\kishki]]
+  m_gameplay4.snd_napali_v_volnu = [[scripts\m_gameplay\napali-v-volnu]]
+  m_gameplay4.snd_padli = [[scripts\m_gameplay\padli]]
+  m_gameplay4.snd_po_sklonam = [[scripts\m_gameplay\po-sklonam]]
+  m_gameplay4.snd_nashi_podberut = [[scripts\m_gameplay\nashi-podberut]]
+  m_gameplay4.snd_skoti_truslivie = [[scripts\m_gameplay\skoti-truslivie]]
+  m_gameplay4.snd_vihodi_str = [[scripts\m_gameplay\vihodi-str]]
 
   -- Состояния FSM
   m_gameplay4.state_end = 0               -- завершить работу
