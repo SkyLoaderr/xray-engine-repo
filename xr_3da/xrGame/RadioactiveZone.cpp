@@ -47,17 +47,20 @@ void CRadioactiveZone::Affect(CObject* O)
 		{
 			m_dwDeltaTime = 0;
 			position_in_bone_space.set(0.f,0.f,0.f);
-			NET_Packet		P;
-			CGameObject::u_EventGen	(P,GE_HIT,GO->ID());
-			P.w_u16			(ID());
-			P.w_u16			(ID());
-			P.w_dir			(dir);
-			P.w_float		(power);
-			P.w_s16			(BI_NONE);
-			P.w_vec3		(position_in_bone_space);
-			P.w_float		(impulse);
-			P.w_u16			(ALife::eHitTypeRadiation);
-			CGameObject::u_EventSend	(P);
+			if (OnServer())
+			{
+				NET_Packet		P;
+				CGameObject::u_EventGen	(P,GE_HIT,GO->ID());
+				P.w_u16			(ID());
+				P.w_u16			(ID());
+				P.w_dir			(dir);
+				P.w_float		(power);
+				P.w_s16			(BI_NONE);
+				P.w_vec3		(position_in_bone_space);
+				P.w_float		(impulse);
+				P.w_u16			(ALife::eHitTypeRadiation);
+				CGameObject::u_EventSend	(P);
+			};
 		}
 	}
 }
