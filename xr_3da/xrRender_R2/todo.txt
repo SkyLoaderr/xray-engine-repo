@@ -190,4 +190,16 @@ light	- physic:
 	virtual-size= point/spot
 	color		= 
 	texture		= 
-	
+-----------------------------------------------------------------------------------------------
+struct	def : public def
+{
+	typedef _previous	AAA;
+	typedef _current	BBB;
+}
+struct	def : public def
+{
+	typedef _previous	def::_current;
+	typedef	_current	CCC;
+}
+
+accum	(a,b)
