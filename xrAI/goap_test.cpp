@@ -23521,15 +23521,7 @@ void test_goap	()
 //			}
 //		}
 		u64 start						= CPU::GetCycleCount();
-#ifdef INTENSIVE_MEMORY_USAGE
-		graph_engine->search			(problem_solver,problem_solver.current_state(),problem_solver.target_state(),&path,CBaseParameters());
-#else
-	#ifndef REVERSE_SEARCH
-		graph_engine->search			(problem_solver,CState(),problem_solver.target_state(),&path,CBaseParameters());
-	#else
 		graph_engine->search			(problem_solver,problem_solver.target_state(),problem_solver.current_state(),&path,CBaseParameters());
-	#endif
-#endif
 		u64 finish						= CPU::GetCycleCount();
 		total							+= finish - start;
 		vertex_count					+= graph_engine->solver_algorithm().data_storage().get_visited_node_count();
@@ -23570,23 +23562,14 @@ void test_goap	()
 			VERIFY						(i != problem_solver.operators().end());
 			VERIFY						((*i).m_operator_id == *I);
 			show_operator				(*(*i).m_operator,(*i).m_operator_id);
-#ifdef INTENSIVE_MEMORY_USAGE
-			VERIFY						((*i).m_operator->applicable(world_state));
-			bool						applied = (*i).m_operator->apply(world_state,temp);
-#else
 			VERIFY						((*i).m_operator->applicable(world_state.conditions(),problem_solver.current_state().conditions(),(*i).m_operator->conditions()));
 			bool						applied = (*i).m_operator->apply(world_state,problem_solver.current_state().conditions(),temp,(*i).m_operator->effects());
 			VERIFY						(applied);
 			world_state					= temp;
-#endif
 			show_condition				(world_state);
 		}
 
-#ifdef INTENSIVE_MEMORY_USAGE
-		VERIFY							(world_state.includes(problem_solver.target_state()));
-#else
 		VERIFY							(world_state.includes(problem_solver.target_state(),problem_solver.current_state()));
-#endif
 		Msg								("Max solution length : %d (test %d, vertices %d, solved : %d)",max_length,best_test,vertex_count,total_solved);
 		Msg								("");
 		FlushLog						();
