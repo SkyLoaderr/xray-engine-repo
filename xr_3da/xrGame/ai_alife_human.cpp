@@ -27,7 +27,8 @@ void CSE_ALifeHumanAbstract::spawn_supplies	()
 
 void CSE_ALifeCreatureActor::spawn_supplies	()
 {
-	ai().alife().spawn_item		("device_pda",o_Position,m_tNodeID,m_tGraphID,ID);
+	inherited1::spawn_supplies	();
+	inherited2::spawn_supplies	();
 }
 
 bool CSE_ALifeHumanAbstract::bfCheckIfTaskCompleted(OBJECT_IT &I)

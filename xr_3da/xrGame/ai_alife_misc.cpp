@@ -56,8 +56,20 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 		
 		vfFillCombatGroup		(l_tpALifeSchedulable,1);
 
+		CSE_ALifeTraderAbstract	*trader_abstract0 = dynamic_cast<CSE_ALifeTraderAbstract*>(tpALifeSchedulable);
+		CSE_ALifeTraderAbstract	*trader_abstract1 = dynamic_cast<CSE_ALifeTraderAbstract*>(l_tpALifeSchedulable);
+		bool					add_news = trader_abstract0 || trader_abstract1;
+		ALife::SGameNews		news;
 		switch (m_tpaCombatObjects[l_iGroupIndex]->tfGetActionType(m_tpaCombatObjects[l_iGroupIndex ^ 1],l_iGroupIndex,l_bMutualDetection)) {
 			case eMeetActionTypeAttack : {
+				if (add_news) {
+					CSE_ALifeDynamicObject	*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(tpALifeSchedulable);
+					VERIFY					(dynamic_object);
+					news.m_game_time		= tfGetGameTime();
+					news.m_game_vertex_id	= dynamic_object->m_tGraphID;
+					news.m_object_id[0]		= tpALifeSchedulable->ID;
+					news.m_object_id[1]		= l_tpALifeSchedulable->ID;
+				}
 #ifdef DEBUG
 				if (psAI_Flags.test(aiALife)) {
 					Msg("[LSS] %s started combat versus %s",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
@@ -119,6 +131,40 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 						Msg("[LSS] both combat groups decided not to continue combat");
 				}
 #endif
+				if (add_news) {
+					switch (l_tCombatResult) {
+						case eCombatResultRetreat1 : {
+							news.m_news_type	= eNewsTypeRetreat;
+							break;
+						}
+						case eCombatResultRetreat2 : {
+							news.m_news_type	= eNewsTypeRetreat;
+							news.m_object_id[0]	= l_tpALifeSchedulable->ID;
+							news.m_object_id[1]	= tpALifeSchedulable->ID;
+							break;
+						}
+						case eCombatResultRetreat12 : {
+							news.m_news_type	= eNewsTypeRetreatBoth;
+							break;
+						}
+						case eCombatResult1Kill2 : {
+							news.m_news_type	= eNewsTypeKill;
+							break;
+						}
+						case eCombatResult2Kill1 : {
+							news.m_news_type	= eNewsTypeKill;
+							news.m_object_id[0]	= l_tpALifeSchedulable->ID;
+							news.m_object_id[1]	= tpALifeSchedulable->ID;
+							break;
+						}
+						case eCombatResultBothKilled : {
+							news.m_news_type	= eNewsTypeKillBoth;
+							break;
+						}
+						default			: NODEFAULT;
+					}
+					add					(news);
+				}
 				vfFinishCombat			(l_tCombatResult);
 				break;
 			}

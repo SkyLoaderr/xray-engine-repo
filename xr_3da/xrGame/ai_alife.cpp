@@ -254,11 +254,11 @@ void CSE_ALifeSimulator::vfNewGame(LPCSTR caSaveName)
 	ALife::SGameNews				news;
 	news.m_game_time				= tfGetGameTime();
 	news.m_game_vertex_id			= 0;
-	news.m_news_type				= ALife::eNewsTypeDie;
+	news.m_news_type				= ALife::eNewsTypeKill;
 	news.m_class_id					= CLSID_OBJECT_ACTOR;
 	news.m_object_id				[0] = 0;
 	news.m_object_id				[1] = 0xffff;
-	CSE_ALifeNewsRegistry::add		(news);
+	add								(news);
 	// end of the test
 
 	m_tpServer->PerformIDgen	(0x0000);

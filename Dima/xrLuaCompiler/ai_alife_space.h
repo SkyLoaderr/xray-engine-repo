@@ -264,9 +264,10 @@ namespace ALife {
 	};
 
 	enum ENewsType {
-		eNewsType1Kill2 = u32(0),
-		eNewsTypeDie,
-		eNewsTypeSpottedObject,
+		eNewsTypeRetreat = u32(0),
+		eNewsTypeRetreatBoth,
+		eNewsTypeKill,
+		eNewsTypeKillBoth,
 		eNewsTypeDummy = u32(-1),
 	};
 
