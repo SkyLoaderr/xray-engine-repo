@@ -211,6 +211,9 @@
 		<actor_dialog>rad_find_stalkers_dialog_4</actor_dialog>
 		<actor_dialog>rad_found_stalkers_dialog_1</actor_dialog>
 		<actor_dialog>rad_found_stalkers_dialog_2</actor_dialog>
+		<actor_dialog>rad_find_deputy_dialog_1</actor_dialog>
+		<actor_dialog>rad_found_deputy_dialog_1</actor_dialog>
+		<actor_dialog>rad_found_deputy_dialog_2</actor_dialog>
 	</specific_character>
 
 <!---------------------------STALKER NOVICE----------------------->

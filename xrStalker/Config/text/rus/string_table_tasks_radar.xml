@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
-	<string id="bar_radar_turn_off">
-		<text>Выключить антенны</text>
-	</string>
-	<string id="bar_radar_turn_off_0">
-		<text>Выключить антенны0</text>
-	</string>
-	<string id="bar_radar_turn_off_1">
-		<text>Выключить антенны1</text>
-	</string>
-
 	<string id="rad_antenna">
 		<text>Антенны</text>
 	</string>

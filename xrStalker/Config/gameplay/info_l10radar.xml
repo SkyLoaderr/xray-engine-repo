@@ -7,13 +7,6 @@
 	<info_portion id="rad_wood_controller_dead">
 	</info_portion>
 
-	<info_portion id="bar_radar_turn_off_start">
-		<action>level_tasks.notify_new_task</action>
-		<task>bar_radar_turn_off</task>
-	</info_portion>
-	<info_portion id="bar_radar_turn_off_done">
-	</info_portion>
-
 	<info_portion id="rad_code_door">
 		<article>rad_code_door_info</article>
 	</info_portion>

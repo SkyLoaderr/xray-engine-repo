@@ -715,9 +715,9 @@ function process_map_spot(info_id)
 	-- end of military
 
 	-- radar
-	elseif info_id == "bar_radar_turn_off_start" then
+	elseif info_id == "bar_deactivate_radar_start" then
 		add_location(1000, "rad_antenna_location")
-	elseif info_id == "bar_radar_turn_off_done" then
+	elseif info_id == "bar_deactivate_radar_done" then
 		remove_location (1000, "rad_antenna_location")
 
 	elseif info_id == "rad_code_door" then
