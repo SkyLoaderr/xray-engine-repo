@@ -347,6 +347,12 @@ void CWeaponRPG7Grenade::net_Destroy() {
 	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
 	xr_delete(m_pPhysicsShell);
 	while(m_trailEffectsPSs.size()) { xr_delete(*(m_trailEffectsPSs.begin())); m_trailEffectsPSs.pop_front(); }
+	SoundDestroy(sndExplode);
+	SoundDestroy(sndRicochet[0]);
+	SoundDestroy(sndRicochet[1]);
+	SoundDestroy(sndRicochet[2]);
+	SoundDestroy(sndRicochet[3]);
+	SoundDestroy(sndRicochet[4]);
 	inherited::net_Destroy();
 }
 

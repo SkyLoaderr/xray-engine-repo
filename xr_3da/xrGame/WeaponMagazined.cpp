@@ -412,7 +412,7 @@ void CWeaponMagazined::OnShot		()
 	CPGObject* pStaticPG;/* s32 l_c = m_effects.size();*/
 	pStaticPG = xr_new<CPGObject>("weapons\\generic_shoot",Sector());
 	Fmatrix l_pos; l_pos.set(svTransform); l_pos.c.set(vLastFP);
-	pStaticPG->UpdateParent(l_pos); pStaticPG->Play();
+	pStaticPG->SetTransform(l_pos); pStaticPG->Play();
 }
 
 void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R)

@@ -33,6 +33,7 @@ public:
 
 	virtual bool Action(s32 cmd, u32 flags);
 	virtual bool Useful();
+	virtual u32 State(u32 state);
 
 	CGrenade *m_pFake;
 	f32 m_blast, m_blastR, m_fragsR, m_fragHit;
@@ -42,8 +43,8 @@ public:
 	LPSTR pstrWallmark;
 	Shader* hWallmark;
 	float fWallmarkSize;
-	sound sndRicochet[SND_RIC_COUNT], sndExplode;
-	ESoundTypes m_eSoundRicochet, m_eSoundExplode;
+	sound sndRicochet[SND_RIC_COUNT], sndExplode, sndCheckout;
+	ESoundTypes m_eSoundRicochet, m_eSoundExplode, m_eSoundCheckout;
 	u32 m_expoldeTime;
 	char m_effectsSTR[255];
 	vector<LPCSTR> m_effects;

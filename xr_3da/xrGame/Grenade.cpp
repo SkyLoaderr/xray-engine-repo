@@ -38,6 +38,7 @@ CGrenade::CGrenade(void) {
 	m_fragHit = 50;
 	m_eSoundExplode = ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING);
 	m_eSoundRicochet = ESoundTypes(SOUND_TYPE_WEAPON_BULLET_RICOCHET);
+	m_eSoundCheckout = ESoundTypes(SOUND_TYPE_WEAPON_RECHARGING);
 	m_expoldeTime = 0xffffffff;
 	m_pLight = ::Render->light_create();
 	m_pLight->set_shadow(true);
@@ -77,6 +78,7 @@ void CGrenade::Load(LPCSTR section) {
 	m_lightTime = pSettings->r_u32(section,"light_time");
 
 	SoundCreate(sndExplode, "explode", m_eSoundExplode);
+	SoundCreate(sndCheckout, "checkout", m_eSoundCheckout);
 	SoundCreate(sndRicochet[0], "ric1", m_eSoundRicochet);
 	SoundCreate(sndRicochet[1], "ric2", m_eSoundRicochet);
 	SoundCreate(sndRicochet[2], "ric3", m_eSoundRicochet);
@@ -93,6 +95,7 @@ BOOL CGrenade::net_Spawn(LPVOID DC) {
 void CGrenade::net_Destroy() {
 	if(hWallmark) Device.Shader.Delete(hWallmark);
 	SoundDestroy(sndExplode);
+	SoundDestroy(sndCheckout);
 	SoundDestroy(sndRicochet[0]);
 	SoundDestroy(sndRicochet[1]);
 	SoundDestroy(sndRicochet[2]);
@@ -131,6 +134,13 @@ void CGrenade::OnH_B_Independent() {
 	//else CInventoryItem::OnH_B_Independent();
 }
 
+u32 CGrenade::State(u32 state) {
+	if(state == MS_THREATEN) {
+		Sound->play_at_pos(sndCheckout, 0, vPosition, false);
+	}
+	return inherited::State(state);
+}
+
 bool CGrenade::Activate() {
 	Show();
 	return true;
@@ -158,7 +168,7 @@ void CGrenade::Throw() {
 
 void CGrenade::Destroy() {
 	Explode();
-	m_expoldeTime = 500;
+	m_expoldeTime = 5000;
 	//inherited::Destroy();
 }
 
@@ -316,7 +326,7 @@ void CGrenade::OnEvent(NET_Packet& P, u16 type)
 }
 
 void CGrenade::OnAnimationEnd() {
-	switch(State()) {
+	switch(inherited::State()) {
 		case MS_END : {
 			m_pInventory->Ruck(this); 
 			m_destroyTime = 0;
@@ -342,8 +352,8 @@ void CGrenade::UpdateCL() {
 		inherited::Destroy();
 	} else if(m_expoldeTime < 0xffffffff) {
 		m_expoldeTime -= Device.dwTimeDelta;
-		if(m_expoldeTime > (500 - m_lightTime)) {
-			f32 l_scale = f32(m_expoldeTime - (500 - m_lightTime))/f32(m_lightTime);
+		if(m_expoldeTime > (5000 - m_lightTime)) {
+			f32 l_scale = f32(m_expoldeTime - (5000 - m_lightTime))/f32(m_lightTime);
 			m_pLight->set_color(m_lightColor.r*l_scale, m_lightColor.g*l_scale, m_lightColor.b*l_scale);
 			m_pLight->set_range(m_lightRange*l_scale);
 		} else m_pLight->set_range(0);
