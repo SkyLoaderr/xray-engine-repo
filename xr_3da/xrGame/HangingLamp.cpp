@@ -17,11 +17,14 @@ CHangingLamp::CHangingLamp	()
 	light_render			= ::Render->light_create();
 	light_render->set_type	(IRender_Light::SPOT);
 	light_render->set_shadow(true);
+
+	glow_render				= ::Render->glow_create();
 }
 
 CHangingLamp::~CHangingLamp	()
 {
 	::Render->light_destroy	(light_render);
+	::Render->glow_destroy	(glow_render);
 }
 
 void CHangingLamp::Load		(LPCSTR section)
@@ -51,6 +54,11 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	light_render->set_texture(lamp->spot_texture[0]?lamp->spot_texture:0);
 	light_render->set_active(true);
 
+	glow_render->set_texture(lamp->spot_texture[0]?lamp->spot_texture:0);
+	glow_render->set_color	(clr);
+	glow_render->set_radius	(lamp->spot_range);
+	glow_render->set_active (true);
+
 	lanim					= LALib.FindItem(lamp->color_animator);
 
 	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic))		CreateBody(lamp->mass);
@@ -73,18 +81,25 @@ void CHangingLamp::UpdateCL	()
 	if(m_pPhysicsShell)
 		renderable.xform.set	(m_pPhysicsShell->mXFORM);
 
-	if (Alive()&&light_render->get_active()){
+	if (Alive()&&light_render->get_active())
+	{
 		Fmatrix xf;
-		if (light_bone_idx>=0){
+		if (light_bone_idx>=0)
+		{
 			Fmatrix& M = PKinematics(Visual())->LL_GetTransform(u16(light_bone_idx));
 			xf.mul		(XFORM(),M);
-		} else {
+		} 
+		else 
+		{
 			xf.set		(XFORM());
 		}
 
 		light_render->set_direction	(xf.k);
 		light_render->set_position	(xf.c);
-		if (lanim){
+		glow_render->set_position	(xf.c);
+		
+		if (lanim)
+		{
 			int frame;
 			u32 clr			= lanim->Calculate(Device.fTimeGlobal,frame); // возвращает в формате BGR
 			Fcolor			fclr;
@@ -92,7 +107,8 @@ void CHangingLamp::UpdateCL	()
 			fclr.mul_rgb	(fBrightness/255.f);
 			light_render->set_color(fclr);
 		}
-		if (0){
+		if (0)
+		{
 			u32 clr			= 0xffffffff;
 			Fcolor			fclr;
 			fclr.set		((float)color_get_B(clr),(float)color_get_G(clr),(float)color_get_R(clr),1.f);

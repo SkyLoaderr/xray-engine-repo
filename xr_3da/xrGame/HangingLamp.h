@@ -11,13 +11,17 @@
 // refs
 class CLAItem;
 class CPhysicsElement;
+
 class CHangingLamp: public CGameObject
 {
+private:
 	typedef	CGameObject		inherited;
 private:
 	int				light_bone_idx;
 	IRender_Light*	light_render;
 	CLAItem*		lanim;
+
+	IRender_Glow*	glow_render;
 	
 	float			fHealth;
 	float			fBrightness;
