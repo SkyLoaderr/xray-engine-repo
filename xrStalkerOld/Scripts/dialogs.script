@@ -21,38 +21,22 @@ end
 
 
 --'---------------------------------------------------------------------------------
---' DIALOG ALLOWED CLASS
+--' DIALOG ALLOWED
 --'---------------------------------------------------------------------------------
-class "dialog_manager"
-function dialog_manager:__init()
-	self.ids = {}
-end
-function dialog_manager:set_ids(tt)
-	if tt ~= nil then return false end
-	for k,v in tt do
-		self.ids[v] = true
-	end
-end
-function dialog_manager:check_ids(id)
-	return self.ids[id] == true
-end
-
-dmanager = nil
-
 function dialog_allowed(object, victim, id)
 	if id ~= nil then
-		printf("DIALOG: %s", id)
+		printf("*DIALOGS*: dialog_allowed:%s", id)
 	else
-		printf("DIALOG: nil")
+		printf("*DIALOGS*: dialog_allowed:nil")
 	end
-	return dmanager:check_ids(id)
-end
-function set_ids(tt)
-	if this.dmanager == nil then
-		this.dmanager = this.dialog_manager()
+	if xr_motivator.storage[victim:id()].actor_dialogs ~= nil then
+		for k,v in xr_motivator.storage[victim:id()].actor_dialogs do
+			if v == id then return true end
+		end
 	end
-	this.dmanager:set_ids(tt)
+	return false
 end
+
 
 -----------------------------------------------------------------------------------
 -- LEVELS

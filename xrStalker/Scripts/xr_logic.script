@@ -204,7 +204,11 @@ function set_generic_schemes(ini, npc, stype)
 		if death_section then
 			xr_death.set_death_checker(npc, ini, "death", death_section)
 		end
-    
+
+		--' actor dialogs
+		local dialog_section = utils.cfg_get_string (ini, "logic", "actor_dialogs", npc, false, "")
+		xr_meet.set_actor_dialogs(npc, ini, "actor_dialogs", dialog_section)
+		
 		-- wounded
 		local wounded_section = utils.cfg_get_string (ini, "logic", "wounded", npc, false, "")
 		printf("_bp: npc='%s': wounded section: %s", npc:name(), if_then_else(wounded_section ~= nil, "found",
