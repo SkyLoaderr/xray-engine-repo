@@ -380,7 +380,7 @@ void CRenderDevice::UpdateTimer(){
 void CRenderDevice::DP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWORD pc){
 //	if (!m_CurrentShader) return;
 	::Shader* S 		= m_CurrentShader?m_CurrentShader:m_WireShader;
-    DWORD dwRequired	= S->Passes.size();
+    DWORD dwRequired	= S->lod0->Passes.size();
 	Primitive.setVerticesUC(vs->getFVF(),vs->getStride(),vs->getBuffer());
     for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
         Shader.set_Shader(S,dwPass);
@@ -392,7 +392,7 @@ void CRenderDevice::DP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWOR
 void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWORD vc, CIndexStream* is, DWORD iBase, DWORD pc){
 //	if (!m_CurrentShader) return;
 	::Shader* S 		= m_CurrentShader?m_CurrentShader:m_WireShader;
-    DWORD dwRequired	= S->Passes.size();
+    DWORD dwRequired	= S->lod0->Passes.size();
     Primitive.setIndicesUC	(vBase, is->getBuffer());
     Primitive.setVerticesUC	(vs->getFVF(),vs->getStride(),vs->getBuffer());
     for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){

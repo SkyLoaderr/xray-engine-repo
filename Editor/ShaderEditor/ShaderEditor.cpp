@@ -58,8 +58,6 @@ USELIB("lib\dinput.lib");
 USEUNIT("lib\c_dinput.cpp");
 USEUNIT("engine\pure.cpp");
 USEUNIT("engine\xrImage_Resampler.cpp");
-USEOBJ("Intermediate\cpuid.obj");
-USEOBJ("Intermediate\_math.obj");
 USEFORM("LeftBar.cpp", fraLeftBar); /* TFrame: File Type */
 USEFORM("LogForm.cpp", frmLog);
 USEUNIT("Editor\Library.cpp");
@@ -131,6 +129,9 @@ USEFORM("Editor\NumericVector.cpp", frmNumericVector);
 USEUNIT("Engine\SH_RT.cpp");
 USEUNIT("Engine\SH_VS.cpp");
 USEUNIT("Engine\BLENDERS\Blender_Blur.cpp");
+USEOBJ("Intermediate\cpuid.obj");
+USEOBJ("Intermediate\_math.obj");
+USEUNIT("Engine\BLENDERS\Blender_Model.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
@@ -155,8 +156,8 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 // startup create
 		Application->Title = "Shader Editor";
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
-		Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
-		frmMain->SetHInst(hInst);
+         Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
+         frmMain->SetHInst(hInst);
 
         _DELETE(frmSplash);
 
