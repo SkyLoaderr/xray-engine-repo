@@ -9,34 +9,33 @@
 #include <Forms.hpp>
 #include <Buttons.hpp>
 #include <ExtCtrls.hpp>
-#include "CloseBtn.hpp"
-
-#include "RXCtrls.hpp"
 
 #include "CustomObject.h"
 #include "ui_customtools.h"
 #include "multi_edit.hpp"
-#include "Placemnt.hpp"
+#include "ExtBtn.hpp"
+#include "MXCtrls.hpp"
+#include "mxPlacemnt.hpp"
 class ETextureCore;
 //---------------------------------------------------------------------------
 class TfraDPatch : public TFrame
 {
 __published:	// IDE-managed Components
-    TRxLabel *RxLabel4;
+    TMxLabel *RxLabel4;
 	TPanel *paImage;
 	TPaintBox *pbImage;
-    TRxLabel *RxLabel1;
-    TRxLabel *RxLabel3;
-    TRxLabel *RxLabel5;
+    TMxLabel *RxLabel1;
+    TMxLabel *RxLabel3;
+    TMxLabel *RxLabel5;
 	TLabel *APHeadLabel1;
 	TExtBtn *ExtBtn2;
 	TMultiObjSpinEdit *seBrushDPatchAmount;
 	TMultiObjSpinEdit *seDPatchMin;
 	TMultiObjSpinEdit *seDPatchMax;
 	TExtBtn *ebSelectShader;
-	TRxLabel *lbDPShader;
+	TMxLabel *lbDPShader;
 	TExtBtn *ebSelectTexture;
-	TRxLabel *lbDPTexture;
+	TMxLabel *lbDPTexture;
 	TFormStorage *fsStorage;
     void __fastcall PanelMinClick(TObject *Sender);
     void __fastcall TopClick(TObject *Sender);

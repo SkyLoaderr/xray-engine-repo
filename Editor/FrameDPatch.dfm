@@ -22,7 +22,7 @@ object fraDPatch: TfraDPatch
     Constraints.MinWidth = 123
     ParentColor = True
     TabOrder = 0
-    object RxLabel4: TRxLabel
+    object RxLabel4: TMxLabel
       Left = 2
       Top = 18
       Width = 41
@@ -30,7 +30,7 @@ object fraDPatch: TfraDPatch
       Caption = 'Amount:'
       ShadowColor = 15263976
     end
-    object RxLabel1: TRxLabel
+    object RxLabel1: TMxLabel
       Left = 2
       Top = 38
       Width = 62
@@ -39,7 +39,7 @@ object fraDPatch: TfraDPatch
       ShadowColor = 15263976
       WordWrap = True
     end
-    object RxLabel3: TRxLabel
+    object RxLabel3: TMxLabel
       Left = 12
       Top = 55
       Width = 39
@@ -47,7 +47,7 @@ object fraDPatch: TfraDPatch
       Caption = 'Min (m):'
       ShadowColor = 15263976
     end
-    object RxLabel5: TRxLabel
+    object RxLabel5: TMxLabel
       Left = 12
       Top = 74
       Width = 42
@@ -110,7 +110,7 @@ object fraDPatch: TfraDPatch
       FlatAlwaysEdge = True
       OnClick = ebSelectShaderClick
     end
-    object lbDPShader: TRxLabel
+    object lbDPShader: TMxLabel
       Left = 4
       Top = 167
       Width = 116
@@ -144,7 +144,7 @@ object fraDPatch: TfraDPatch
       FlatAlwaysEdge = True
       OnClick = ebSelectTextureClick
     end
-    object lbDPTexture: TRxLabel
+    object lbDPTexture: TMxLabel
       Left = 4
       Top = 132
       Width = 116

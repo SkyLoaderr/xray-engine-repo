@@ -6,7 +6,6 @@
 #include "CustomObject.h"
 #include "scene.h"
 #include "sceneclasslist.h"
-#include "dpatch.h"
 #include "propertiesglow.h"
 #include "ui_main.h"
 #include "texture.h"
@@ -20,6 +19,12 @@
 #pragma link "RXCtrls"
 #pragma link "multi_edit"
 #pragma link "Placemnt"
+#pragma link "ExtBtn"
+#pragma link "MXCtrls"
+#pragma link "mxPlacemnt"
+#pragma link "ExtBtn"
+#pragma link "MXCtrls"
+#pragma link "mxPlacemnt"
 #pragma resource "*.dfm"
 
 AnsiString TfraDPatch::sTexture = "...";
