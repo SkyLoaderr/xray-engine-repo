@@ -99,7 +99,7 @@ void CLevel::OnFrame	()
 		CTeam&	TD		= Teams[T];
 		for (u32 S=0; S<TD.Squads.size(); S++)
 		{
-			CSquad&	SD	= TD.Squads[S];
+			CSquad&	SD		= TD.Squads[S];
 			objVisible& VIS	= SD.KnownEnemys;
 
 			VIS.clear		();
