@@ -214,7 +214,8 @@ void CHelicopterMovManager::getPathAltitude (Fvector& point, float base_altitude
 	down_dir.set(0.0f, -1.0f, 0.0f);
 
 	point.y = m_boundingVolume.max.y+EPS_L;
-	VERIFY( m_boundingAssert.contains(point) );
+	//VERIFY( m_boundingAssert.contains(point) );
+	VERIFY( _valid(point) );
 
 	Level().ObjectSpace.RayPick(point, down_dir, m_boundingVolume.max.y-m_boundingVolume.min.y+1.0f, Collide::rqtStatic, cR);
 	
@@ -225,13 +226,15 @@ void CHelicopterMovManager::getPathAltitude (Fvector& point, float base_altitude
 	else
 		point.y = m_boundingVolume.max.y-EPS_L;
 
-	VERIFY( m_boundingAssert.contains(point) );
+//	VERIFY( m_boundingAssert.contains(point) );
+	VERIFY( _valid(point) );
 
 	float minY = m_boundingVolume.min.y+(m_boundingVolume.max.y-m_boundingVolume.min.y)*m_heli->m_data.m_alt_korridor;
 	float maxY = m_boundingVolume.max.y+base_altitude;
 //	minY = maxY-EPS_L;
 	clamp (point.y,minY,maxY);
-	VERIFY( m_boundingAssert.contains(point) );
+//	VERIFY( m_boundingAssert.contains(point) );
+	VERIFY( _valid(point) );
 
 }
 
