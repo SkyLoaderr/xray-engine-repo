@@ -72,7 +72,7 @@ IC void CBackend::set_Textures			(STextureList* _T)
 			if (textures[it]!=surf)	{
 				stat.textures	++;
 				textures[it]	=surf;
-				surf->Apply		(it);
+				if (surf)		surf->Apply	(it);
 			}
 		}
 		u32 last				= T->size();
