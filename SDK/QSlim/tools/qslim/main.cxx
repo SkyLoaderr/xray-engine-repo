@@ -14,8 +14,9 @@
 
 // Configuration variables and initial values
 //
+int slim_mode = 0; // 0 - edge, 1 - face, 2 - prop
+
 unsigned int face_target = 0;
-bool will_use_fslim = false;
 int placement_policy = MX_PLACE_OPTIMAL;
 double boundary_weight = 1000.0;
 int weighting_policy = MX_WEIGHT_AREA;
@@ -30,12 +31,13 @@ char *output_filename = NULL;
 // Globally visible variables
 //
 MxSMFReader *smf = NULL;
-MxStdModel *m = NULL;
-MxStdModel *m_orig = NULL;
-MxQSlim *slim = NULL;
+MxStdModel	*m = NULL;
+MxStdModel	*m_orig = NULL;
+MxStdSlim	*slim = NULL;
 MxEdgeQSlim *eslim = NULL;
 MxFaceQSlim *fslim = NULL;
-QSlimLog *history = NULL;
+MxPropSlim	*pslim = NULL;
+QSlimLog	*history = NULL;
 MxDynBlock<MxEdge> *target_edges = NULL;
 
 const char *slim_copyright_notice =
@@ -78,17 +80,19 @@ void slim_init()
 {
     if( !slim )
     {
-	if( will_use_fslim )
-	    slim = fslim = new MxFaceQSlim(*m);
-	else
-	    slim = eslim = new MxEdgeQSlim(*m);
+		switch (slim_mode){
+		case 0: slim = eslim = new MxEdgeQSlim(*m); break;
+		case 1: slim = fslim = new MxFaceQSlim(*m); break;
+		case 2: slim = pslim = new MxPropSlim(m);  break;
+		}
     }
     else
     {
-	if( will_use_fslim )
-	    fslim = (MxFaceQSlim *)slim;
-	else
-	    eslim = (MxEdgeQSlim *)slim;
+		switch (slim_mode){
+		case 0: eslim = new MxEdgeQSlim(*m); break;
+		case 1: fslim = new MxFaceQSlim(*m); break;
+		case 2: pslim = new MxPropSlim(m);  break;
+		}
     }
 
     slim->placement_policy = placement_policy;
@@ -98,12 +102,8 @@ void slim_init()
     slim->meshing_penalty = meshing_penalty;
     slim->will_join_only = will_join_only;
 
-    if( eslim && target_edges )
-    {
-	eslim->initialize(*target_edges, target_edges->length());
-    }
-    else
-	slim->initialize();
+    if( eslim && target_edges )	eslim->initialize	(*target_edges, target_edges->length());
+    else						slim->initialize	();
 
     if( will_record_history )
     {

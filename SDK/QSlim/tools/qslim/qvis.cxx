@@ -402,7 +402,7 @@ main(int argc, char **argv)
     }
 
     slim_init();
-    eslim->contraction_callback = decimate_callback;
+    if (eslim) eslim->contraction_callback = decimate_callback;
 
     include_deferred_files();
 

@@ -15,6 +15,7 @@
  ************************************************************************/
 
 #include <MxQSlim.h>
+#include <MxPropSlim.h>
 #include <MxSMF.h>
 
 #define QSLIM_VERSION 2100
@@ -30,7 +31,7 @@ enum OutputFormat { SMF, PM, MMF, LOG, IV, VRML };
 //
 
 extern unsigned int face_target;
-extern bool will_use_fslim;
+extern int slim_mode;
 extern int placement_policy;
 extern double boundary_weight;
 extern int weighting_policy;
@@ -42,13 +43,14 @@ extern bool be_quiet;
 extern OutputFormat output_format;
 extern char *output_filename;
 
-extern MxSMFReader *smf;
-extern MxStdModel *m;
-extern MxStdModel *m_orig;
-extern MxQSlim *slim;
-extern MxEdgeQSlim *eslim;
-extern MxFaceQSlim *fslim;
-extern QSlimLog *history;
+extern MxSMFReader	*smf;
+extern MxStdModel	*m;
+extern MxStdModel	*m_orig;
+extern MxStdSlim	*slim;
+extern MxEdgeQSlim	*eslim;
+extern MxFaceQSlim	*fslim;
+extern MxPropSlim	*pslim;
+extern QSlimLog		*history;
 extern MxDynBlock<MxEdge> *target_edges;
 
 extern bool (*unparsed_hook)(char *, int, char*[], MxStdModel&); 

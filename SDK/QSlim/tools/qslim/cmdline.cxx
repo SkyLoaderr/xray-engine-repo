@@ -19,7 +19,7 @@
 
 #include "qslim.h"
 
-static char *options = "O:B:W:t:Fo:m:c:rjI:M:qh";
+static char *options = "O:B:W:t:Fo:Po:m:c:rjI:M:qh";
 
 static char *usage_string =
 "-O <n>         Optimal placement policy:\n"
@@ -93,7 +93,8 @@ void process_cmdline(int argc, char **argv)
 
 	case 'B':  boundary_weight = atof(optarg); break;
 	case 't':  face_target = atoi(optarg); break;
-	case 'F':  will_use_fslim = true; break;
+	case 'F':  slim_mode = 1; break;
+	case 'P':  slim_mode = 2; break;
 	case 'o':  output_filename = optarg; break;
 	case 'I':  defer_file_inclusion(optarg); break;
 	case 'm':  meshing_penalty = atof(optarg); break;
