@@ -69,7 +69,7 @@ void CBuild::Flex2OGF()
 						V[fv].N.set(FF->v[fv]->N); 
 						V[fv].T.set(FF->basis_tangent[fv]);
 						V[fv].B.set(FF->basis_binormal[fv]);
-						V[fv].Color=FF->v[fv]->Color.get();
+						V[fv].Color=FF->v[fv]->C.get();
 					}
 					
 					// Normal order

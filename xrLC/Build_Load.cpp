@@ -80,7 +80,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 			Vertex*	pV			= VertexPool.create();
 			F->r_fvector3		(pV->P);
 			pV->N.set			(0,0,0);
-			pV->Color.set		(0,0,0,0);
+			pV->C.set			(0,0,0,0);
 			scene_bb.modify		(pV->P);
 		}
 		Progress			(p_total+=p_cost);

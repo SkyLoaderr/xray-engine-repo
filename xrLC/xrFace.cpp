@@ -69,7 +69,7 @@ Vertex*	Vertex::CreateCopy_NOADJ()
 	Vertex* V	= VertexPool.create();
 	V->P.set	(P);
 	V->N.set	(N);
-	V->Color	= Color;
+	V->C		= C;
 	return		V;
 }
 

@@ -182,16 +182,16 @@ public:
 			{
 				Vertex* V		= F->v[v];
 				R_ASSERT		(V);
-				if (!fis_zero(V->Color.a))	continue;
+				if (!fis_zero(V->C.a))	continue;
 				
 				Fcolor			C;
 				C.set			(0,0,0,0);
 				LightPoint		(&DB, RCAST_Model, C, V->P, V->N, &*Lights.begin(), &*Lights.end(), F);
 				
-				V->Color.r		= C.r*v_inv+v_amb;
-				V->Color.g		= C.g*v_inv+v_amb;
-				V->Color.b		= C.b*v_inv+v_amb;
-				V->Color.a		= F->Shader().vert_translucency;
+				V->C.r			= C.r*v_inv+v_amb;
+				V->C.g			= C.g*v_inv+v_amb;
+				V->C.b			= C.b*v_inv+v_amb;
+				V->C.a			= F->Shader().vert_translucency;
 				g_trans_register(V);
 			}
 
@@ -200,7 +200,7 @@ public:
 	}
 };
 
-#define NUM_THREADS	12
+#define NUM_THREADS				12
 void CBuild::LightVertex()
 {
 	VL_faces				= xr_new<vecFace>	();
@@ -247,26 +247,26 @@ void CBuild::LightVertex()
 		C.set		(0,0,0,0);
 		for (int v=0; v<int(VL.size()); v++)
 		{
-			C.r = _max(C.r,VL[v]->Color.r);
-			C.g = _max(C.g,VL[v]->Color.g);
-			C.b = _max(C.b,VL[v]->Color.b);
+			C.r = _max(C.r,VL[v]->C.r);
+			C.g = _max(C.g,VL[v]->C.g);
+			C.b = _max(C.b,VL[v]->C.b);
 		}
 
 		// Calculate final vertex color
 		for (v=0; v<int(VL.size()); v++)
 		{
 			// trans-level
-			float	level		= VL[v]->Color.a;
+			float	level		= VL[v]->C.a;
 
 			// 
 			Fcolor				R;
-			R.lerp				(VL[v]->Color,C,level);
-			R.r					= _max(R.r,VL[v]->Color.r);
-			R.g					= _max(R.g,VL[v]->Color.g);
-			R.b					= _max(R.b,VL[v]->Color.b);
-			VL[v]->Color.lerp	(R,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
-			VL[v]->Color.mul_rgb(.5f);
-			VL[v]->Color.a		= 1.f;
+			R.lerp				(VL[v]->C,C,level);
+			R.r					= _max(R.r,VL[v]->C.r);
+			R.g					= _max(R.g,VL[v]->C.g);
+			R.b					= _max(R.b,VL[v]->C.b);
+			VL[v]->C.lerp		(R,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
+			VL[v]->C.mul_rgb	(.5f);
+			VL[v]->C.a			= 1.f;
 		}
 	}
 

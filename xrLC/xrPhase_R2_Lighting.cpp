@@ -51,8 +51,8 @@ public:
 			Fcolor			C;
 			C.set			(0,0,0,0);
 			LightPoint		(&DB, RCAST_Model, C, V->P, V->N, &*Lights.begin(), &*Lights.end(), 0);
-			V->Color.set	(C);
-			V->Color.a		= 1.f;
+			V->C.set		(C);
+			V->C.a			= 1.f;
 			thProgress		= float(I - vertStart) / float(vertEnd-vertStart);
 		}
 	}
@@ -66,10 +66,10 @@ void CBuild::Light_R2			()
 
 	// Start threads, wait, continue --- perform all the work
 	Status					("Calculating... (%d lights)",L_hemi.size());
-	u32	start_time		= timeGetTime();
+	u32	start_time			= timeGetTime();
 	CThreadManager			Threads;
-	u32	stride			= g_vertices.size()/NUM_THREADS;
-	u32	last			= g_vertices.size()-stride*(NUM_THREADS-1);
+	u32	stride				= g_vertices.size()/NUM_THREADS;
+	u32	last				= g_vertices.size()-stride*(NUM_THREADS-1);
 	for (u32 thID=0; thID<NUM_THREADS; thID++)
 		Threads.start(xr_new<CR2Light>(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
 	Threads.wait			();
