@@ -138,8 +138,8 @@ void map_mname( int family, int model, const char * v_name, char *m_name)
 			case 3:	strcpy (m_name,"DURON");			break;
 			case 4:	
 			case 5:	strcpy (m_name,"ATHLON T-Bird");	break;
-			case 6:	strcpy (m_name,"ATHLON MP");		break;
-			case 7:	strcpy (m_name,"DURON MP");			break;
+			case 6:	strcpy (m_name,"ATHLON XP");		break;
+			case 7:	strcpy (m_name,"DURON XP");			break;
             default:
                 strcpy (m_name, "K7 Unknown");
             }
