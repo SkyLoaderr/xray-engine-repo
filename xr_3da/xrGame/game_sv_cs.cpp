@@ -463,6 +463,8 @@ void	game_sv_CS::OnPlayerReady	(u32 id)
 		}
 	}
 }
+void game_sv_CS::OnPlayerChangeTeam(u32 id_who) {
+}
 
 void game_sv_CS::OnPlayerConnect	(u32 id_who)
 {
