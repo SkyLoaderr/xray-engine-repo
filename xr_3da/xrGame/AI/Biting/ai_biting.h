@@ -131,8 +131,12 @@ public:
 	virtual	bool			bfAssignObject					(CEntityAction	*tpEntityAction);
 	virtual	bool			bfAssignWatch					(CEntityAction	*tpEntityAction);
 	virtual bool			bfAssignAnimation				(CEntityAction  *tpEntityAction);
-
+	virtual	bool			bfAssignMonsterAction			(CEntityAction	*tpEntityAction);
+	
 	virtual void			ProcessScripts					();
+
+	virtual	CEntity			*GetCurrentEnemy				();
+	virtual	CEntity 		*GetCurrentCorpse				();
 	
 	// ---------------------------------------------------------------------------------
 	
@@ -178,7 +182,7 @@ public:
 	
 	// Velocity management
 			void			TranslateActionToVelocityMasks	(bool force_real_speed);
-			void			UpdateVelocityWithPath			();
+			bool			UpdateVelocityWithPath			();
 			void			UpdateActionWithPath			();
 			void			UpdatePathWithAction			();
 			void			UpdateTargetVelocityWithPath	();
@@ -204,7 +208,7 @@ public:
 	// m_object
 	SEnemy					m_tEnemy;				// Current frame enemy 
 	SEnemy					m_tEnemyPrevFrame;		// Previous frame enemy 
-	
+
 
 	float					m_fCurMinAttackDist;		// according to attack stops
 
@@ -245,18 +249,19 @@ public:
 #endif
 
 	u16						fire_bone_id;
-	float					GetRealDistToEnemy		();
+	float					GetRealDistToEnemy		(const CEntity *pE);
 
 	void					FaceTarget				(const CEntity *entity);
 	void					FaceTarget				(const Fvector &position);
 	
 	float					anim_speed;
-	void					SetAnimSpeed(float val) {anim_speed = val;}
+	void					SetAnimSpeed			(float val) {anim_speed = val;}
 	CBlend					*cur_blend;
 	
 	EActivityState			mental_state;
-	float					GetAcceleration();
+	float					GetAcceleration			();
 
+	bool					b_script_state_must_execute;
 
 #ifdef 	DEEP_TEST_SPEED
 	TTime	time_next_update;

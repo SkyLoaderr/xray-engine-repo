@@ -74,6 +74,7 @@ public:
 	virtual	bool				bfAssignSound			(CEntityAction		*tpEntityAction);
 	virtual	bool				bfAssignParticles		(CEntityAction		*tpEntityAction);
 	virtual	bool				bfAssignObject			(CEntityAction		*tpEntityAction);
+	virtual bool				bfAssignMonsterAction	(CEntityAction		*tpEntityAction);
 
 	virtual void				set_callback			(const luabind::object &lua_object, LPCSTR method, const CScriptMonster::EActionType tActionType);
 	virtual void				set_callback			(const luabind::functor<void> &lua_function, const CScriptMonster::EActionType tActionType);
@@ -98,6 +99,9 @@ public:
 			bool				bfScriptAnimation		();
 			u32					GetActionCount			() const;
 	const CEntityAction			*GetActionByIndex		(u32 action_index) const;
+
+	virtual CEntity				*GetCurrentEnemy		();
+	virtual CEntity				*GetCurrentCorpse		();
 private:
 			void				FreeAll					();
 };

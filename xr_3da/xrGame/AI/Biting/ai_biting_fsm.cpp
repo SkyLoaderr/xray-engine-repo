@@ -62,6 +62,9 @@ void CAI_Biting::Think()
 	
 	// построить путь
 	CMonsterMovement::Frame_Update			();
+
+	MotionMan.FinalizeProcessing			();
+
 	// установить текущую скорость
 	CMonsterMovement::Frame_Finalize		();
 
@@ -107,9 +110,9 @@ void CAI_Biting::UpdateActionWithPath()
 }
 
 // Установить линейную и угловую скорости в соответствии с построенным путем
-void CAI_Biting::UpdateVelocityWithPath()
+bool CAI_Biting::UpdateVelocityWithPath()
 {
-	if (MotionMan.Seq_Active()) return;
+//	if (MotionMan.Seq_Active()) return;
 		
 	if (IsMovingOnPath()) {
 		u32 cur_point_velocity_index = CDetailPathManager::path()[curr_travel_point_index()].velocity;
@@ -129,8 +132,13 @@ void CAI_Biting::UpdateVelocityWithPath()
 
 		m_velocity_linear.target	= _abs((*it).second.linear_velocity);
 		m_velocity_angular.target	= (*it).second.angular_velocity;
+		
+		if (fis_zero((*it).second.linear_velocity)) m_velocity_linear.current = 0.f;
+		
+		return true;
+	} 
 	
-	} else m_velocity_linear.target = 0;
+	return false;
 }
 
 
@@ -167,10 +175,10 @@ void CAI_Biting::SetState(IState *pS, bool bSkipInertiaCheck)
 				if (CurrentState->GetPriority() >= pS->GetPriority()) return;
 			}
 
-			CurrentState->Done();
-			CurrentState->Reset();
-			CurrentState = pS;
-			CurrentState->Activate();
+		CurrentState->Done();
+		CurrentState->Reset();
+		CurrentState = pS;
+		CurrentState->Activate();
 	}
 }
 

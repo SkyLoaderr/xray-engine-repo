@@ -93,6 +93,8 @@ public:
 
 	// выполнить текущий m_tAction
 	void		ProcessAction			();
+	void		FinalizeProcessing		();
+
 	// подготовить текущую анимацию на запрос из SelectAnimation
 	bool		PrepareAnimation		();
 

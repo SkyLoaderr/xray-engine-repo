@@ -110,7 +110,7 @@ void CBitingAttack::Run()
 
 	// определить расстояние до противника
 	dist = m_tEnemy.obj->Position().distance_to(pMonster->Position());
-	if (dist < REAL_DIST_THROUGH_TRACE_THRESHOLD) dist = pMonster->GetRealDistToEnemy();
+	if (dist < REAL_DIST_THROUGH_TRACE_THRESHOLD) dist = pMonster->GetRealDistToEnemy(m_tEnemy.obj);
 	
 	// определить переменные машины состояний
 	bool b_attack_melee		= false;
@@ -181,7 +181,6 @@ void CBitingAttack::Run()
 						if (squad_ai_last_updated !=0 ) {		// новая позиция
 							pMonster->MoveToTarget(target);
 							squad_target_selected = true;
-							pMonster->set_use_dest_orientation	(false);
 						}
 					} else {
 						pMonster->set_dest_direction		(target);
@@ -193,7 +192,6 @@ void CBitingAttack::Run()
 				}
 
 				if (!squad_target_selected) {
-					pMonster->set_use_dest_orientation	(false);
 					pMonster->MoveToTarget(m_tEnemy.obj);
 				}
 			}
@@ -245,7 +243,6 @@ void CBitingAttack::Run()
 			LOG_EX("ATTACK: STEAL");
 			pMonster->MotionMan.m_tAction = ACT_STEAL;
 			pMonster->MoveToTarget(m_tEnemy.obj);
-			pMonster->set_use_dest_orientation	(false);
 
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundSteal, 0,0,pMonster->_sd->m_dwAttackSndDelay);
 			break;
@@ -275,7 +272,6 @@ void CBitingAttack::Run()
 			pMonster->MotionMan.m_tAction = ACT_RUN;
 
 			pMonster->MoveToTarget(m_tEnemy.obj->Position());
-			pMonster->set_use_dest_orientation	(false);
 			
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
 
@@ -288,7 +284,6 @@ void CBitingAttack::Run()
 
 			pMonster->MotionMan.m_tAction		= ACT_WALK_FWD;
 			pMonster->MoveAwayFromTarget		(random_position(m_tEnemy.position, 2.f));
-			pMonster->set_use_dest_orientation	(false);
 			pMonster->CSoundPlayer::play		(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
 		
 			break;
@@ -334,7 +329,6 @@ void CBitingAttack::Done()
 	inherited::Done();
 
 	pMonster->AS_Stop();
-	pMonster->set_use_dest_orientation	(false);
 }
 
 #define THREATEN_TIME  5300
@@ -552,5 +546,15 @@ bool CBitingAttack::CheckRotationJump()
 	if (next_rot_jump_enabled > m_dwCurrentTime)  return false;
 
 	return true;
+}
+
+
+
+bool CBitingAttack::CheckCompletion()
+{
+	VisionElem ve;
+	if (!pMonster->GetEnemy(ve))	return true;
+	
+	return false;
 }
 

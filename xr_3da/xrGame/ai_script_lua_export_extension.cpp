@@ -404,5 +404,7 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("memory",						&CLuaGameObject::memory, adopt(return_value))
 			.def("best_weapon",					&CLuaGameObject::best_weapon)
 			.def("explode",						&CLuaGameObject::explode)
+			.def("get_enemy",					&CLuaGameObject::GetEnemy)
+			.def("get_corpse",					&CLuaGameObject::GetCorpse)
 	];
 }

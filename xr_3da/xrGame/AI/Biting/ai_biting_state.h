@@ -102,6 +102,7 @@ public:
 					CBitingEat		(CAI_Biting *p, bool pmt_can_drag);
 
 	virtual	void	Reset			();
+	virtual	bool	CheckCompletion	();
 
 private:
 	virtual void	Init			();

@@ -196,6 +196,10 @@ void CSoundMemory::UpdateHearing(TTime dt)
 // CVisionMemory implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //---------------------------------------------------------------------------------------------------------
+CVisionMemory::CVisionMemory()
+{
+
+}
 
 void CVisionMemory::Init(TTime mem_time) 
 {
@@ -203,6 +207,8 @@ void CVisionMemory::Init(TTime mem_time)
 
 	timeMemoryDefault	= timeMemory = mem_time;
 	timeLastUpdateIgnoreObjects = 0;
+
+	timeCurrent			= Level().timeServer();
 
 	Selected.obj		= 0;
 
@@ -253,7 +259,7 @@ void CVisionMemory::UpdateVision(TTime dt)
 	
 }
  
-void CVisionMemory::AddObject(const VisionElem &ve)
+void CVisionMemory::AddObject(VisionElem &ve)
 {
 	ITERATOR_VE res;
 
@@ -263,7 +269,7 @@ void CVisionMemory::AddObject(const VisionElem &ve)
 
 }
 
-void CVisionMemory::AddEnemy(const VisionElem &ve)
+void CVisionMemory::AddEnemy(VisionElem &ve)
 {
 	ITERATOR_VE res;
 
@@ -398,7 +404,7 @@ void CVisionMemory::RemoveNonactualElems()
 
 }
 
-void CVisionMemory::AddIgnoreObject(const CEntity *pObj)
+void CVisionMemory::AddIgnoreObject(CEntity *pObj)
 {
 	VisionElem ve;
 	ve.Set(pObj, timeCurrent);

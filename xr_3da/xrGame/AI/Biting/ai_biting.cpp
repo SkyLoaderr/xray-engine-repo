@@ -65,6 +65,7 @@ void CAI_Biting::Init()
 	cur_blend						= 0;
 
 	mental_state					= MS_Calm;
+
 }
 
 void CAI_Biting::reinit()
@@ -443,10 +444,10 @@ void CAI_Biting::OnRender()
 
 // Получить расстояние от fire_bone до врага
 // Выполнить RayQuery от fire_bone в enemy.center
-float CAI_Biting::GetRealDistToEnemy()
+float CAI_Biting::GetRealDistToEnemy(const CEntity *pE)
 {
 	Fvector enemy_center;
-	m_tEnemy.obj->Center(enemy_center);
+	pE->Center(enemy_center);
 	
 	Fmatrix global_transform;
 	global_transform.set(XFORM());
@@ -461,7 +462,7 @@ float CAI_Biting::GetRealDistToEnemy()
 	float ret_val = -1.f;
 
 	setEnabled(false);
-	if (m_tEnemy.obj->CFORM()->_RayQuery(r_query, r_res)) 
+	if (pE->CFORM()->_RayQuery(r_query, r_res)) 
 		if (r_res.r_begin()->O) ret_val = r_res.r_begin()->range;
 	setEnabled(true);		
 			

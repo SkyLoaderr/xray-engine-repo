@@ -36,11 +36,12 @@ void CMonsterMovement::Init()
 // Init Movement
 void CMonsterMovement::Frame_Init()
 {
-	CLevelLocationSelector::set_evaluator	(0);
-	CDetailPathManager::set_path_type		(eDetailPathTypeSmooth);
-	b_try_min_time							= true;		
-	b_enable_movement						= true;
-	set_path_targeted						(false);
+	CLevelLocationSelector::set_evaluator			(0);
+	CDetailPathManager::set_path_type				(eDetailPathTypeSmooth);
+	b_try_min_time									= true;		
+	b_enable_movement								= true;
+	set_path_targeted								(false);
+	//CDetailPathManager::set_use_dest_orientation	(false);
 }
 
 

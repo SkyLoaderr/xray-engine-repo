@@ -495,4 +495,8 @@ public:
 			missile->u_EventSend(P);
 		}
 	}
+
+			CLuaGameObject		*GetEnemy			() const;
+			CLuaGameObject		*GetCorpse			() const;
+
 };

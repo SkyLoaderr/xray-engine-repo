@@ -37,11 +37,12 @@ void CAI_Biting::vfUpdateParameters()
 	// «рение
 	// определить, видит ли мен€ враг
 	I = false;
-
-	SEnemy ve;
-
-	if (GetEnemy(ve)) {
-		const CEntityAlive *pEA = dynamic_cast<const CEntityAlive*>(ve.obj);
+	
+	// Set current enemy
+	GetEnemy(m_tEnemy);
+	
+	if (m_tEnemy.obj) {
+		const CEntityAlive *pEA = dynamic_cast<const CEntityAlive*>(m_tEnemy.obj);
 		if (CVisualMemoryManager::see(pEA, this)) I = true;
 	}
 
@@ -49,7 +50,7 @@ void CAI_Biting::vfUpdateParameters()
 	// веро€тность победы
 	C = D = E = F = G	= false;
 	
-	if (ve.obj) {
+	if (m_tEnemy.obj) {
 		switch (dwfChooseAction(0,m_fAttackSuccessProbability[0],m_fAttackSuccessProbability[1],m_fAttackSuccessProbability[2],m_fAttackSuccessProbability[3],g_Team(),g_Squad(),g_Group(),0,1,2,3,4,this,30.f)) {
 			case 4 : 	C = true;	break;
 			case 3 : 	D = true;	break;
@@ -61,7 +62,7 @@ void CAI_Biting::vfUpdateParameters()
 	K					= C | D | E | F;
 	
 	// K должно быть true, только если корректный ve.obj
-	R_ASSERT(ve.obj || !K);
+	R_ASSERT(m_tEnemy.obj || !K);
 
 	//------------------------------------
 	// враг выгоден ?
@@ -72,9 +73,6 @@ void CAI_Biting::vfUpdateParameters()
 	
 #pragma todo("enemy hiding & enemy runaway flags")
 
-	// Set current enemy
-	m_tEnemy					= ve;
-	
 	if (m_tEnemy.obj && (m_tEnemyPrevFrame.obj == m_tEnemy.obj) && (m_tEnemy.time != m_current_update)) {
 		flagsEnemy |= FLAG_ENEMY_LOST_SIGHT;		// враг потер€н из вида
 	}

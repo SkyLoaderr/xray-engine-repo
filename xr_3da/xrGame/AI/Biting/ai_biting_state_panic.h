@@ -14,7 +14,9 @@ class CBitingPanic : public IState {
 	} m_tAction;
 
 public:
-	CBitingPanic			(CAI_Biting *p, bool invisibility);
+					CBitingPanic	(CAI_Biting *p, bool invisibility);
+	
+	virtual bool	CheckCompletion	();
 
 private:
 	virtual void	Init			();

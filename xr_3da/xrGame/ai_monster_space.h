@@ -132,6 +132,14 @@ namespace MonsterSpace {
 		eAA_NoAction			= u32(-1)
 	};
 
+	enum EScriptMonsterGlobalAction {
+		eGA_Rest				= u32(0),
+		eGA_Eat,
+		eGA_Attack,
+		eGA_Panic,
+		eGA_None				= u32(-1)
+	};
+
 
 	enum EMonsterSounds {
 		eMonsterSoundIdle		= u32(0),

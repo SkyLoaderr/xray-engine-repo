@@ -105,7 +105,7 @@ void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 e
 	else if ((yaw >= 3 * PI_DIV_4) && (yaw <= 5*PI_DIV_4)) hit_side = eSideBack;
 	else if ((yaw >= 5 * PI_DIV_4) && (yaw <= 7*PI_DIV_4)) hit_side = eSideRight;
 
-	//MotionMan.FX_Play(hit_side, 1.0f);
+	MotionMan.FX_Play(hit_side, 1.0f);
 
 	AddDangerousEnemy(who,20000);
 

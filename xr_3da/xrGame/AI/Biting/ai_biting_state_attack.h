@@ -52,6 +52,8 @@ public:
 	virtual	void	Init				();
 	virtual void	Run					();
 	virtual void	Done				();
+	
+	virtual bool	CheckCompletion		();
 
 			bool	CheckStartThreaten	();
 			bool	CheckEndThreaten	();
@@ -66,4 +68,6 @@ public:
 			void	UpdateFrameFlags	(); 
 
 			bool	CheckRotationJump	();
+
+
 };

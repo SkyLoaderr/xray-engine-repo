@@ -133,6 +133,11 @@ void CWatchAction::SetWatchObject(CLuaGameObject *tpObjectToWatch)
 	m_bCompleted		= false;
 }
 
+void CMonsterAction::SetObject(CLuaGameObject *tObj)
+{
+	m_tObject	= tObj->operator CObject*();
+}
+
 CParticleAction::~CParticleAction()
 {
 	//xr_delete			(m_tpParticleSystem);
@@ -238,3 +243,28 @@ CLuaGameObject	*CLuaGameObject::GetObjectByIndex	(int iIndex) const
 		return			(0);	
 	}
 }
+
+CLuaGameObject *CLuaGameObject::GetEnemy() const
+{
+	CCustomMonster		*l_tpCustomMonster = dynamic_cast<CCustomMonster*>(m_tpGameObject);
+	if (l_tpCustomMonster) {
+		if (l_tpCustomMonster->GetCurrentEnemy()) return (l_tpCustomMonster->GetCurrentEnemy()->lua_game_object());
+		else return (0);
+	} else {
+		LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member CheckObjectVisibility!");
+		return			(0);
+	}
+}
+
+CLuaGameObject *CLuaGameObject::GetCorpse() const
+{
+	CCustomMonster		*l_tpCustomMonster = dynamic_cast<CCustomMonster*>(m_tpGameObject);
+	if (l_tpCustomMonster)
+		if (l_tpCustomMonster->GetCurrentCorpse()) return (l_tpCustomMonster->GetCurrentCorpse()->lua_game_object());
+		else return (0);
+	else {
+		LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member CheckObjectVisibility!");
+		return			(0);
+	}
+}
+

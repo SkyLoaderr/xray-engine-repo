@@ -82,3 +82,11 @@ void CBitingPanic::Run()
 
 }
 
+bool CBitingPanic::CheckCompletion()
+{
+	if (!m_tEnemy.obj) return true;
+	if (pMonster->Position().distance_to(m_tEnemy.obj->Position()) > 30.f) return true;
+
+	return false;
+}
+

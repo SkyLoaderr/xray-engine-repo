@@ -279,6 +279,8 @@ void CScriptMonster::ProcessScripts()
 #endif
 
 		vfFinishAction(l_tpEntityAction);
+		
+		Msg("Entity Action removed!!!");
 
 		xr_delete	(l_tpEntityAction);
 		m_tpActionQueue.erase(m_tpActionQueue.begin());
@@ -327,10 +329,21 @@ void CScriptMonster::ProcessScripts()
 
 	if (!l_tpEntityAction->m_tAnimationAction.m_bCompleted)
 		bfScriptAnimation	();
+
+	l_bCompleted	= l_tpEntityAction->m_tMonsterAction.m_bCompleted;
+	bfAssignMonsterAction(l_tpEntityAction);
 }
 
 bool CScriptMonster::bfAssignWatch(CEntityAction *tpEntityAction)
 {
+	return			(true);
+}
+
+bool CScriptMonster::bfAssignMonsterAction(CEntityAction *tpEntityAction)
+{
+	if (GetCurrentAction() && GetCurrentAction()->m_tMonsterAction.m_bCompleted)
+		return		(false);
+
 	return			(true);
 }
 
@@ -735,3 +748,13 @@ void CScriptMonster::hit_callback	(float amount, const Fvector &vLocalDir, const
 			element
 		);
 }
+
+CEntity	*CScriptMonster::GetCurrentEnemy()
+{
+	return (0);
+}
+CEntity	*CScriptMonster::GetCurrentCorpse()
+{
+	return (0);
+}
+

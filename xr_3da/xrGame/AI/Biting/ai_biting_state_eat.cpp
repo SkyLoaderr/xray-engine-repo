@@ -277,4 +277,12 @@ void CBitingEat::Done()
 	}
 }
 
+bool CBitingEat::CheckCompletion()
+{
+	VisionElem ve;
+	if (!pMonster->GetCorpse(ve) || (!ve.obj->m_pPhysicsShell)) return true;
+	if (ve.obj->m_fFood < EPS_L)								return true;
+
+	return false;
+}
 

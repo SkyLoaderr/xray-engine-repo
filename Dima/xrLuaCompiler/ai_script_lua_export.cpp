@@ -620,7 +620,8 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("anim_end",				int(CActionCondition::ANIMATION_FLAG)),
 				value("sound_end",				int(CActionCondition::SOUND_FLAG)),
 				value("object_end",				int(CActionCondition::OBJECT_FLAG)),
-				value("time_end",				int(CActionCondition::TIME_FLAG))
+				value("time_end",				int(CActionCondition::TIME_FLAG)),
+				value("act_end",				int(CActionCondition::ACT_FLAG))
 			]
 			.def(								constructor<>())
 			.def(								constructor<u32>())
@@ -636,6 +637,7 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("set_action",					(void (CEntityAction::*)(const CParticleAction	&tParticleAction))	(CEntityAction::SetAction))
 			.def("set_action",					(void (CEntityAction::*)(const CObjectAction	&tObjectAction))	(CEntityAction::SetAction))
 			.def("set_action",					(void (CEntityAction::*)(const CActionCondition &tActionCondition))	(CEntityAction::SetAction))
+			.def("set_action",					(void (CEntityAction::*)(const CMonsterAction	&tMonsterAction))	(CEntityAction::SetAction))
 			.def("move",						&CEntityAction::CheckIfMovementCompleted)
 			.def("look",						&CEntityAction::CheckIfWatchCompleted)
 			.def("anim",						&CEntityAction::CheckIfAnimationCompleted)
@@ -644,6 +646,19 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("object",						&CEntityAction::CheckIfObjectCompleted)
 			.def("time",						&CEntityAction::CheckIfTimeOver)
 			.def("all",							(bool (CEntityAction::*)())(CEntityAction::CheckIfActionCompleted))
-			.def("completed",					(bool (CEntityAction::*)())(CEntityAction::CheckIfActionCompleted))
+			.def("completed",					(bool (CEntityAction::*)())(CEntityAction::CheckIfActionCompleted)),
+
+		class_<CMonsterAction>("act")
+			.enum_("type")
+			[
+				value("rest",					int(MonsterSpace::eGA_Rest)),
+				value("eat",					int(MonsterSpace::eGA_Eat)),
+				value("attack",					int(MonsterSpace::eGA_Attack)),
+				value("panic",					int(MonsterSpace::eGA_Panic))
+			]
+
+			.def(								constructor<>())
+			.def(								constructor<MonsterSpace::EScriptMonsterGlobalAction>())
+			.def(								constructor<MonsterSpace::EScriptMonsterGlobalAction, CLuaGameObject*>())
 	];
 }

@@ -15,8 +15,6 @@ class CCustomMonster;
 #define TIME_TO_RESELECT_ENEMY			3000
 #define TIME_TO_UPDATE_IGNORE_OBJECTS	3000
 
-#define DEFINE_THIS_CLASS_AS_POLYMORPHIC() virtual void __VirtualFunctionThatMakesClassPolymorphic() {}
-
 typedef enum {
 	WEAPON_SHOOTING = 0,
 	MONSTER_ATTACKING,
@@ -93,9 +91,8 @@ class CSoundMemory
 	friend class CMonsterMemory;
 
 public:
-	
-		DEFINE_THIS_CLASS_AS_POLYMORPHIC();
-
+				CSoundMemory			() {}
+	virtual		~CSoundMemory			() {}
 
 		void	HearSound				(const SoundElem &s);
 		void	HearSound				(const CObject* who, int eType, const Fvector &Position, float power, TTime time);
@@ -162,23 +159,39 @@ class CVisionMemory
 	VECTOR_VE				IgnoreObjects;
 	TTime					timeLastUpdateIgnoreObjects;
 
+	VisionElem				ForcedEnemy;
+	VisionElem				ForcedCorpse;
+	
 	friend class CMonsterMemory;
 		
 public:
-	IC	bool		IsEnemy			() {return (!Enemies.empty());}	 
-	IC	bool		IsObject		() {return (!Objects.empty());}	 
+					CVisionMemory	();
+		virtual		~CVisionMemory	(){}
 
-	IC	bool		GetEnemy		(VisionElem &ve) {if (IsEnemy())  return Get(ve); else return false;} 	
-	IC	bool		GetCorpse		(VisionElem &ve) {if (IsObject()) return Get(ve); else return false;}
+
+	IC	bool		GetEnemy		(VisionElem &ve) {
+		if (ForcedEnemy.obj) { ve = ForcedEnemy; return true; }
+		if (IsEnemy())  return Get(ve); else return false;
+	} 	
 	
-	IC	void		AddCorpse		(const VisionElem &ve) {AddObject(ve);}
+	IC	bool		GetCorpse		(VisionElem &ve) {
+		if (ForcedCorpse.obj) { ve = ForcedCorpse; return true;}
+		if (IsObject()) return Get(ve); else return false;
+	}
+	
+	IC	void		AddCorpse		(VisionElem &ve) {AddObject(ve);}
 
 	IC	void		SetMemoryTime	(TTime t) {timeMemory = t;}
 	IC	void		SetMemoryTimeDef() {timeMemory = timeMemoryDefault;}
 
-		void		AddIgnoreObject	(const CEntity *pObj);
+		void		AddIgnoreObject	(CEntity *pObj);
 		
-		u8			GetEnemyNumber	() {return u8(Enemies.size());}
+	IC	u8			GetEnemyNumber	() {return u8(Enemies.size());}
+
+	IC	void		SetForcedEnemy	(CEntity *pObj) {ForcedEnemy.Set	(pObj, timeCurrent);}
+	IC	void		SetForcedCorpse	(CEntity *pObj) {ForcedCorpse.Set	(pObj, timeCurrent);}
+
+	IC	void		ClearForcedEntities() {ForcedEnemy.obj = ForcedCorpse.obj = 0;}
 
 protected:
 		void		Init			(TTime mem_time);
@@ -187,11 +200,12 @@ protected:
 		// Заполняет массивы Objects и Enemies и Selected
 		void		UpdateVision	(TTime dt);
 	
-		DEFINE_THIS_CLASS_AS_POLYMORPHIC();
-
 private:
-		void		AddObject		(const VisionElem &ve);
-		void		AddEnemy		(const VisionElem &ve);
+	IC	bool		IsEnemy			() {return (!Enemies.empty());}	 
+	IC	bool		IsObject		() {return (!Objects.empty());}	 
+
+		void		AddObject		(VisionElem &ve);
+		void		AddEnemy		(VisionElem &ve);
 	
 		bool		Get				(VisionElem &ve);
 

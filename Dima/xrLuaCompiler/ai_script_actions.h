@@ -770,6 +770,7 @@ public:
 		PARTICLE_FLAG	= u32(1 << 4),
 		OBJECT_FLAG		= u32(1 << 5),
 		TIME_FLAG		= u32(1 << 6),
+		ACT_FLAG		= u32(1 << 7)
 	};
 	u32								m_dwFlags;
 	ALife::_TIME_ID						m_tLifeTime;
@@ -798,6 +799,31 @@ public:
 	}
 };
 
+class CMonsterAction : public CAbstractAction {
+public: 
+	MonsterSpace::EScriptMonsterGlobalAction	m_tAction;
+	CObject										*m_tObject;
+
+	CMonsterAction() {
+		m_tAction		= MonsterSpace::eGA_None;
+	}
+
+	CMonsterAction(MonsterSpace::EScriptMonsterGlobalAction action) {
+		m_tAction		= action;
+		m_bCompleted	= false;
+	}
+	CMonsterAction(MonsterSpace::EScriptMonsterGlobalAction action, CLuaGameObject *tObj) {
+		m_tAction		= action;
+		m_bCompleted	= false;
+		
+		SetObject		(tObj);
+	}
+
+	void	SetObject(CLuaGameObject *tObj);
+};
+
+
+
 class CEntityAction {
 public:
 	CMovementAction					m_tMovementAction;
@@ -807,6 +833,8 @@ public:
 	CParticleAction					m_tParticleAction;
 	CObjectAction					m_tObjectAction;
 	CActionCondition				m_tActionCondition;
+	CMonsterAction					m_tMonsterAction;
+
 	void							*m_user_data;
 
 							CEntityAction		()
@@ -863,6 +891,10 @@ public:
 	{
 		SetAction			(tActionCondition,m_tActionCondition);
 	}
+	IC		void			SetAction(const CMonsterAction &tMonsterAction)
+	{
+		SetAction			(tMonsterAction,m_tMonsterAction);
+	}
 
 	IC		void			SetAction(void *user_data)
 	{
@@ -903,6 +935,10 @@ public:
 	{
 		return				(CheckIfActionCompleted(m_tObjectAction));
 	}
+	IC		bool			CheckIfMonsterActionCompleted() const
+	{
+		return				(CheckIfActionCompleted(m_tMonsterAction));
+	}
 
 	IC		bool			CheckIfTimeOver()
 	{
@@ -926,6 +962,9 @@ public:
 			l_dwFlags		^= CActionCondition::OBJECT_FLAG;
 		if ((CActionCondition::TIME_FLAG		& m_tActionCondition.m_dwFlags)	&& CheckIfTimeOver			())
 			l_dwFlags		^= CActionCondition::TIME_FLAG;
+		if ((CActionCondition::ACT_FLAG			& m_tActionCondition.m_dwFlags)	&& CheckIfMonsterActionCompleted())
+			l_dwFlags		^= CActionCondition::ACT_FLAG;
+
 		if (!m_tActionCondition.m_dwFlags && (m_tActionCondition.m_tLifeTime < 0) 
 			&& CheckIfMovementCompleted()
 			&& CheckIfWatchCompleted()
@@ -933,6 +972,7 @@ public:
 			&& CheckIfSoundCompleted()
 			&& CheckIfParticleCompleted()
 			&& CheckIfObjectCompleted()
+			&& CheckIfMonsterActionCompleted()
 			)
 			return			(true);
 		else
@@ -985,3 +1025,5 @@ public:
 		return				(m_user_data);
 	}
 };
+
+
