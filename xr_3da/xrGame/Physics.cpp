@@ -257,7 +257,7 @@ static dContact contacts[N];
 		  dReal dif=dFabs(contacts[i-1].geom.pos[0]-contacts[i].geom.pos[0])+
 				dFabs(contacts[i-1].geom.pos[1]-contacts[i].geom.pos[1])+
 				dFabs(contacts[i-1].geom.pos[2]-contacts[i].geom.pos[2]);
-		  if(dif==0.f) continue;
+		  if(fis_zero (dif)) continue;
 		}
 
        

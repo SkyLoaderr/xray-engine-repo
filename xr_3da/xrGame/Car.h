@@ -40,9 +40,8 @@ left
 };
 
 eStateSteer e_state_steer;
-
 bool b_wheels_limited;
-
+bool b_exhausts_plaing;
 struct SWheel 
 {
 		int bone_id;
@@ -95,6 +94,26 @@ struct SWheelBreak
 	void Neutral();
 };
 
+struct SExhaust
+{
+	int					bone_id;
+	Fmatrix				transform;
+	CPGObject*			p_pgobject;
+	CPhysicsElement*	pelement;
+	CCar*				pcar;
+	void Init();
+	void Play();
+	void Stop();
+	void Update();
+	void Clear ();
+	SExhaust(CCar* acar)
+	{
+		pcar=acar;
+		p_pgobject=NULL;
+		pelement=NULL;
+	}
+	~SExhaust();
+};
 private:
 	typedef CEntity			inherited;
 private:
@@ -103,12 +122,8 @@ private:
 	CCameraBase*			camera[3];
 	CCameraBase*			active_camera;
 	CActor*					m_owner;
-	Fmatrix					fmPosDriver;
 	Fvector					m_vCamDeltaHP;
 ////////////////////////////////////////////////////
-bool  Breaks;
-int   DriveDirection;
-
 xr_map<int,SWheel>		m_wheels_map;
 xr_vector <SWheelDrive> m_driving_wheels;
 xr_vector <SWheelSteer> m_steering_wheels;
@@ -123,10 +138,10 @@ float					m_idling_rpm;
 float					m_steering_speed;
 float					m_ref_radius;
 float					m_break_torque;
-int	  m_doors_ids[2];
-int	  m_exhaust_ids[2];
-CPGObject* m_pExhaustPG1;
-CPGObject* m_pExhaustPG2;
+size_t					m_current_transmission_num;
+xr_vector<int>			m_doors_ids;
+xr_vector<SExhaust>		m_exhausts;
+xr_vector<Fmatrix>		m_sits_transforms;// m_sits_transforms[0] - driver_place
 ////////////////////////////////////////////////////
 float GetSteerAngle();
 void LimitWheels();
@@ -137,7 +152,7 @@ void SteerRight();
 void SteerLeft();
 void SteerIdle();
 void Transmision(size_t num);
-
+void CircleSwitchTransmission();
 void PressRight();
 void PressLeft();
 void PressForward();
@@ -156,6 +171,11 @@ void Unbreak();
 void ParseDefinitions				();
 void CreateSkeleton					();//creates m_pPhysicsShell
 void InitWheels						();
+
+void PlayExhausts					();
+void StopExhausts					();
+void UpdateExhausts					();
+void ClearExhausts					();
 ////////////////////////////////////////////////////
 
 	void					OnCameraChange		(int type);
@@ -178,7 +198,6 @@ public:
 	virtual void			Load				( LPCSTR section );
 	virtual BOOL			net_Spawn			( LPVOID DC );
 	virtual void			net_Destroy			();
-	virtual void			shedule_Update		( u32 T ); 
 	virtual void			UpdateCL			( ); 
 	virtual void			renderable_Render			( ); 
 	
@@ -205,7 +224,7 @@ public:
 	CCar(void);
 	virtual ~CCar(void);
 private:
-	template <class T> IC void feel_wheel_vector(LPCSTR S,xr_vector<T>& type_wheels)
+	template <class T> IC void fill_wheel_vector(LPCSTR S,xr_vector<T>& type_wheels)
 	{
 		CKinematics* pKinematics	=PKinematics(Visual());
 		string64					S1;
@@ -234,6 +253,29 @@ private:
 			{
 				twheel.pwheel			=	&(m_wheels_map.find(bone_id))->second;
 			}
+		}
+	}
+	IC void fill_exhaust_vector(LPCSTR S,xr_vector<SExhaust>& exhausts)
+	{
+		CKinematics* pKinematics	=PKinematics(Visual());
+		string64					S1;
+		int count =					_GetItemCount(S);
+		for (int i=0 ;i<count; i++) 
+		{
+			_GetItem					(S,i,S1);
+
+			int bone_id	=				pKinematics->LL_BoneID(S1);
+
+			exhausts.push_back		(SExhaust(this));
+			SExhaust& exhaust				= exhausts.back();
+			exhaust.bone_id						= bone_id;
+			
+			BONE_P_PAIR_IT J		= bone_map.find(bone_id);
+			if (J == bone_map.end()) 
+			{
+				bone_map.insert(mk_pair(bone_id,physicsBone()));
+			}
+
 		}
 	}
 };

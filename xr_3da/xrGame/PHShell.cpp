@@ -584,16 +584,6 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 
 			}
 			add_Joint	(J);
-			if(spGetingMap)
-			{
-				const BONE_P_PAIR_IT c_iter= spGetingMap->find(id);
-				if(c_iter!=spGetingMap->end())
-				{
-				c_iter->second.joint=J;
-				c_iter->second.element=E;
-				}
-				
-			}
 		}
 
 	}
@@ -601,6 +591,16 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 	{	
 		B.set_callback(0,root_e);
 		E=root_e;
+	}
+
+	if(spGetingMap)
+	{
+		const BONE_P_PAIR_IT c_iter= spGetingMap->find(id);
+		if(c_iter!=spGetingMap->end())
+		{
+			c_iter->second.joint=J;
+			c_iter->second.element=E;
+		}
 	}
 
 	for (vecBonesIt it=bone_data.children.begin(); it!=bone_data.children.end(); it++)

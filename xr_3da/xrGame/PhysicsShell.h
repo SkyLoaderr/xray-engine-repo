@@ -81,6 +81,7 @@ class	CPhysicsElement		: public CPhysicsBase
 {
 
 public:
+	virtual void			InterpolateGlobalTransform(Fmatrix* m)									= 0;
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback)					= 0;
 	virtual	void			add_Sphere				(const Fsphere&		V)							= 0;
 	virtual	void			add_Box					(const Fobb&		V)							= 0;

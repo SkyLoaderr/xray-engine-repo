@@ -745,11 +745,6 @@ void CActor::UpdateCL()
 {
 	inherited::UpdateCL();
 
-	if (m_vehicle) {
-		m_vehicle->UpdateCL();
-		return;
-	}
-	
 	if (!g_Alive())			
 
 		if(m_phSkeleton)

@@ -115,10 +115,11 @@ public:
 	virtual	void			set_BoxMass						(const Fobb& box, float mass);
 	virtual void			add_Mass						(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass);
 	virtual float			getRadius						();
+	virtual void			InterpolateGlobalTransform		(Fmatrix* m);
 	void			SetShell								(CPHShell* p){m_shell=p;}
 	void			SetPhObjectInGeomData					(CPHObject* O);
 
-	void			InterpolateGlobalTransform				(Fmatrix* m);
+	
 	void			build									(dSpaceID space);
 	void			destroy									();
 	Fvector			get_mc_data								();

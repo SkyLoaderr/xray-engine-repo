@@ -22,8 +22,6 @@ extern CPHWorld*	ph_world;
 
 CCar::CCar(void)
 {
-	m_pExhaustPG1	=NULL;
-	m_pExhaustPG2	=NULL;
 	active_camera	= 0;
 	m_vCamDeltaHP.set(0.f,0.f,0.f);
 	camera[ectFirst]= xr_new<CCameraFirstEye>	(this, pSettings, "car_firsteye_cam",	false); camera[ectFirst]->tag	= ectFirst;
@@ -38,6 +36,7 @@ CCar::CCar(void)
 	//////////////////////////////
 	/////////////////////////////
 	b_wheels_limited=false;
+	b_exhausts_plaing=false;
 	e_state_steer=idle;
 	e_state_drive=neutral;
 	m_current_gear_ratio=dInfinity;
@@ -52,10 +51,8 @@ CCar::~CCar(void)
 	xr_delete			(camera[0]);
 	xr_delete			(camera[1]);
 	xr_delete			(camera[2]);
-	xr_delete			(m_pExhaustPG1);
-	xr_delete			(m_pExhaustPG2);
 	snd_engine.destroy	();
-
+	ClearExhausts();
 }
 
 
@@ -123,19 +120,12 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 	setVisible				(TRUE);
 
 	Sound->play_at_pos				(snd_engine,this,Position(),true);
-	//ActivateJeep();
-	//
+
 	ParseDefinitions				();//parse ini filling in m_driving_wheels,m_steering_wheels,m_breaking_wheels
 	CreateSkeleton					();//creates m_pPhysicsShell & fill in bone_map
 	InitWheels						();//inits m_driving_wheels,m_steering_wheels,m_breaking_wheels values using recieved in ParceDefinitions & from bone_map
 	m_ident=ph_world->AddObject(dynamic_cast<CPHObject*>(this));
-	
 
-
-	//m_pExhaustPG1					= xr_new<CPGObject>			("vehiclefx\\exhaust_1",Sector(),false);
-	//m_pExhaustPG2					= xr_new<CPGObject>			("vehiclefx\\exhaust_1",Sector(),false);
-	//m_pExhaustPG1->SetTransform		(XFORM());
-	//m_pExhaustPG2->SetTransform		(XFORM());
 	m_pPhysicsShell->set_PhysicsRefObject(this);
 	
 	return R;
@@ -145,19 +135,11 @@ void	CCar::net_Destroy()
 {
 	inherited::net_Destroy();
 	if(m_pPhysicsShell)m_pPhysicsShell->Deactivate();
+	ClearExhausts();
 	ph_world->RemoveObject(m_ident);
-	xr_delete(m_pExhaustPG1);
-	xr_delete(m_pExhaustPG2);
 }
 
-void	CCar::shedule_Update				( u32 T )
-{
-	inherited::shedule_Update		(T);
 
-//	XFORM().set(m_pPhysicsShell->mXFORM);
-//	if	(m_owner)
-//		m_owner->XFORM().mul	(XFORM(),fmPosDriver);
-}
 
 void	CCar::UpdateCL				( )
 {
@@ -182,31 +164,13 @@ void	CCar::UpdateCL				( )
 		cam_Update	(Device.fTimeDelta);
 	if(m_owner)
 	{
-		m_owner->XFORM().mul	(XFORM(),fmPosDriver);
+		m_owner->XFORM().mul	(XFORM(),m_sits_transforms[0]);
 		if(m_owner->IsMyCamera()) 
 			cam_Update	(Device.fTimeDelta);
 	}
 
-// 	Fvector ang_vel,res_vel;
-//	Fmatrix exhast,exhast_local;
-	//m_pPhysicsShell->get_AngularVel(ang_vel);
+	UpdateExhausts();
 
-/*
-	exhast_local.set	(PKinematics(Visual())->LL_GetTransform(m_exhaust_ids[0]));
-	exhast.mul			(XFORM(),exhast_local);
-	res_vel.crossproduct(ang_vel,exhast_local.c);
-
-	res_vel.add(lin_vel);
-	m_pExhaustPG1->UpdateParent(exhast,res_vel);
-
-
-	exhast_local.set(PKinematics(Visual())->LL_GetTransform(m_exhaust_ids[1]));
-	exhast.mul(XFORM(),exhast_local);
-	res_vel.crossproduct(ang_vel,exhast_local.c);
-	res_vel.add(lin_vel);
-
-	m_pExhaustPG2->UpdateParent(exhast,res_vel);
-*/
 }
 
 void	CCar::renderable_Render				( )
@@ -236,7 +200,8 @@ void	CCar::IR_OnKeyboardPress		(int cmd)
 	case kCAM_1:	OnCameraChange(ectFirst);	break;
 	case kCAM_2:	OnCameraChange(ectChase);	break;
 	case kCAM_3:	OnCameraChange(ectFree);	break;
-	case kACCEL:	break;
+	case kACCEL:	CircleSwitchTransmission();
+		break;
 	case kRIGHT:	PressRight();
 		m_owner->steer_Vehicle(1);
 		break;
@@ -367,16 +332,18 @@ bool CCar::attach_Actor(CActor* actor)
 {
 	if(m_owner) return false;
 	m_owner=actor;
+	
+	CKinematics* K= PKinematics(Visual());
+	CInifile* ini = K->LL_UserData();
+	int id=K->LL_BoneID(ini->r_string("car_definition","driver_place"));
+	CBoneInstance& instance=K->LL_GetInstance				(id);
+	m_sits_transforms.push_back(instance.mTransform);
 
-
-
-	//////////////////////////////////////////////////////////////////////////
-	CKinematics* M		= PKinematics(Visual());			VERIFY(M);
-	int id=M->LL_BoneID("pos_driver");
-	CBoneInstance& instance=M->LL_GetInstance				(id);
-	/////////////////////////////////////////////////////////////////////////
-	//instance.set_callback(m_phSkeleton->GetBonesCallback(),element);
-	fmPosDriver.set(instance.mTransform);
+	//CBoneData&	bone_data=K->LL_GetData(id);
+	//Fmatrix driver_pos_tranform;
+	//driver_pos_tranform.setHPB(bone_data.bind_hpb.x,bone_data.bind_hpb.y,bone_data.bind_hpb.z);
+	//driver_pos_tranform.c.set(bone_data.bind_translate);
+	//m_sits_transforms.push_back(driver_pos_tranform);
 	return true;
 }
 
@@ -397,10 +364,10 @@ void CCar::ParseDefinitions()
 	CKinematics* pKinematics=PKinematics(Visual());
 	CInifile* ini = pKinematics->LL_UserData();
 	if(! ini) return;
-	feel_wheel_vector			(ini->r_string	("car_definition","driving_wheels"),m_driving_wheels);
-	feel_wheel_vector			(ini->r_string	("car_definition","steering_wheels"),m_steering_wheels);
-	feel_wheel_vector			(ini->r_string	("car_definition","breaking_wheels"),m_breaking_wheels);
-	
+	fill_wheel_vector			(ini->r_string	("car_definition","driving_wheels"),m_driving_wheels);
+	fill_wheel_vector			(ini->r_string	("car_definition","steering_wheels"),m_steering_wheels);
+	fill_wheel_vector			(ini->r_string	("car_definition","breaking_wheels"),m_breaking_wheels);
+	fill_exhaust_vector			(ini->r_string	("car_definition","exhausts"),m_exhausts);
 	m_power				=		ini->r_float("car_definition","engine_power");
 	m_power				*=		(0.8f*1000.f);
 	m_max_rpm			=		ini->r_float("car_definition","max_engine_rpm");
@@ -420,7 +387,8 @@ void CCar::ParseDefinitions()
 	m_gear_ratious.push_back(ini->r_float("transmission_gear_ratio",rat_num));
 	}
 	
-	
+
+
 }
 
 void CCar::CreateSkeleton()
@@ -431,9 +399,10 @@ void CCar::CreateSkeleton()
 	K->PlayCycle("idle");
 	K->Calculate();
 
-	K->LL_GetInstance				(K->LL_BoneID("steer")).set_callback			(cb_Steer,this);
-	m_doors_ids[1]					=K->LL_BoneID("phy_door_left");
-	m_doors_ids[0]					=K->LL_BoneID("phy_door_right");
+	CInifile* ini=K->LL_UserData();
+	K->LL_GetInstance				(K->LL_BoneID(ini->r_string("car_definition","steering_wheel"))).set_callback			(cb_Steer,this);
+	//m_doors_ids[1]					=K->LL_BoneID("phy_door_left");
+	//m_doors_ids[0]					=K->LL_BoneID("phy_door_right");
 	//m_exhaust_ids[0]				=K->LL_BoneID("pos_exhaust_1");
 	//m_exhaust_ids[1]				=K->LL_BoneID("pos_exhaust_2");
 
@@ -456,7 +425,7 @@ ref_wheel.Init();
 m_ref_radius=ref_wheel.radius;
 m_power/=m_driving_wheels.size();
 m_root_transform.set(bone_map.find(0)->second.element->mXFORM);
-
+m_current_transmission_num=0;
 m_pPhysicsShell->set_DynamicScales(1.f,1.f);
 
 {
@@ -491,6 +460,13 @@ i->Init();
 		i->Init();
 }
 
+{
+	xr_vector<SExhaust>::iterator i,e;
+	i=m_exhausts.begin();
+	e=m_exhausts.end();
+	for(;i!=e;i++)
+		i->Init();
+}
 }
 
 void CCar::Revert()
@@ -503,7 +479,7 @@ void CCar::Revert()
 
 void CCar::NeutralDrive()
 {
-
+	StopExhausts();
 	xr_vector<SWheelDrive>::iterator i,e;
 	i=m_driving_wheels.begin();
 	e=m_driving_wheels.end();
@@ -523,6 +499,7 @@ void CCar::Unbreak()
 }
 void CCar::Drive()
 {
+	PlayExhausts();
 	m_pPhysicsShell->Enable();
 	xr_vector<SWheelDrive>::iterator i,e;
 	i=m_driving_wheels.begin();
@@ -684,13 +661,65 @@ void CCar::ReleaseBreaks()
 void CCar::Transmision(size_t num)
 {
 if(num<m_gear_ratious.size())
+{
+m_current_transmission_num=num;
 m_current_gear_ratio=m_gear_ratious[num];
 }
-
+}
+void CCar::CircleSwitchTransmission()
+{
+if(m_current_transmission_num==0)return;
+m_current_transmission_num++;
+m_current_transmission_num=m_current_transmission_num%m_gear_ratious.size();
+m_current_transmission_num==0 ? m_current_transmission_num++ : m_current_transmission_num;
+Transmision(m_current_transmission_num);
+Drive();
+}
 void CCar::PhTune(dReal step)
 {
 	if(m_repairing)Revert();
 	LimitWheels();
+}
+
+void CCar::PlayExhausts()
+{
+	if(b_exhausts_plaing) return;
+	xr_vector<SExhaust>::iterator i,e;
+	i=m_exhausts.begin();
+	e=m_exhausts.end();
+	for(;i!=e;i++)
+		i->Play();
+	b_exhausts_plaing=true;
+}
+
+void CCar::StopExhausts()
+{
+	if(!b_exhausts_plaing) return;
+	xr_vector<SExhaust>::iterator i,e;
+	i=m_exhausts.begin();
+	e=m_exhausts.end();
+	for(;i!=e;i++)
+			i->Stop();
+	b_exhausts_plaing=false;
+}
+
+void CCar::UpdateExhausts()
+{
+	if(!b_exhausts_plaing) return;
+	xr_vector<SExhaust>::iterator i,e;
+	i=m_exhausts.begin();
+	e=m_exhausts.end();
+	for(;i!=e;i++)
+		i->Update();
+}
+
+void CCar::ClearExhausts()
+{
+	xr_vector<SExhaust>::iterator i,e;
+	i=m_exhausts.begin();
+	e=m_exhausts.end();
+	for(;i!=e;i++)
+		i->Clear();
 }
 
 void CCar::SWheel::Init()
@@ -841,4 +870,52 @@ void CCar::SWheelBreak::Neutral()
 {
 	dJointSetHinge2Param(pwheel->joint, dParamFMax2, pwheel->car->m_axle_friction);
 	dJointSetHinge2Param(pwheel->joint, dParamVel2, 0.f);
+}
+
+CCar::SExhaust::~SExhaust()
+{
+	if(p_pgobject)xr_delete(p_pgobject);
+}
+
+void CCar::SExhaust::Init()
+{
+	pelement=(bone_map.find(bone_id))->second.element;
+	CKinematics* K=PKinematics(pcar->Visual());
+	CBoneData&	bone_data=K->LL_GetData(bone_id);
+	transform.setHPB(bone_data.bind_hpb.x,bone_data.bind_hpb.y,bone_data.bind_hpb.z);
+	transform.c.set(bone_data.bind_translate);
+	transform.mulA(pcar->XFORM());
+	Fmatrix element_transform;
+	pelement->InterpolateGlobalTransform(&element_transform);
+	element_transform.invert();
+	transform.mulA(element_transform);
+	p_pgobject=xr_new<CPGObject>("vehiclefx\\exhaust_1",pcar->Sector(),false);
+	p_pgobject->SetTransform(pcar->XFORM());
+}
+
+void CCar::SExhaust::Update()
+{
+	Fmatrix global_transform;
+	pelement->InterpolateGlobalTransform(&global_transform);
+	global_transform.mulB(transform);
+	dVector3 res;
+	Fvector	 res_vel;
+	dBodyGetPointVel(pelement->get_body(),transform.c.x,transform.c.y,transform.c.z,res);
+	Memory.mem_copy (&res_vel,res,sizeof(Fvector));
+	p_pgobject->UpdateParent(global_transform,res_vel);
+}
+
+void CCar::SExhaust::Clear()
+{
+	xr_delete(p_pgobject);
+}
+
+void CCar::SExhaust::Play()
+{
+	p_pgobject->Play();
+}
+
+void CCar::SExhaust::Stop()
+{
+	p_pgobject->Stop();
 }
