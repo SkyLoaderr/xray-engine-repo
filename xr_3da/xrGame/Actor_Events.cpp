@@ -35,6 +35,11 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				////}
 				//if(PIItem(O)->m_slot < 0xffffffff && !m_inventory.m_slots[PIItem(O)->m_slot].m_pIItem)) { m_inventory.Slot(PIItem(O)); }
 				//if(m_inventory.Slot(PIItem(O)) && PIItem(O)->m_slot == 1) m_inventory.Activate(PIItem(O)->m_slot);
+			} else {
+				NET_Packet P;
+				u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
+				P.w_u16(u16(O->ID()));
+				u_EventSend(P);
 			}
 
 			//// Test for Detector
