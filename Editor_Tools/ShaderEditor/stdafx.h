@@ -143,6 +143,7 @@ extern "C" DLL_API LPCSTR InterpretError(HRESULT hr);
 #define DEFINE_SVECTOR(type,sz,lst,it)\
 	typedef svector<type,sz> lst;\
 	typedef lst::iterator it;
+#define _SHOW_REF(msg, x)   	{if(x){ x->AddRef(); Log(msg,x->Release());}}
 
 DEFINE_VECTOR(bool,BOOLVec,BOOLIt);
 DEFINE_VECTOR(BYTE,BYTEVec,BYTEIt);

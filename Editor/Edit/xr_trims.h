@@ -15,6 +15,7 @@ char*						_GetFileExt				( char* name );
 char*						_ChangeSymbol			( char* name, char src, char dest );
 DWORD						_ParseItem				( char* src, xr_token* token_list );
 DWORD						_ParseItem				( char* src, int ind, xr_token* token_list );
+char* 						_ReplaceItem 			( LPCSTR src, int index, LPCSTR new_item, LPSTR dst, char separator );
 AnsiString&					ListToSequence			(AStringVec& lst);
 AnsiString&					ListToSequence2			(AStringVec& lst);
 void 						SequenceToList			(AStringVec& lst, LPCSTR in);

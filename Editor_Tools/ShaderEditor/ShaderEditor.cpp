@@ -78,12 +78,7 @@ USEFORM("PropertiesShader.cpp", frmShaderProperties);
 USEFORM("LogForm.cpp", frmLog);
 USEUNIT("Editor\Library.cpp");
 USEFORM("Editor\ChoseForm.cpp", frmChoseItem);
-USEUNIT("Engine\Blender.cpp");
 USEUNIT("Engine\xr_avi.cpp");
-USEUNIT("Engine\Blender_Recorder.cpp");
-USEUNIT("Engine\Blender_Vertex.cpp");
-USEUNIT("Engine\Blender_Vertex_aref.cpp");
-USEUNIT("Engine\BlenderDefault.cpp");
 USEUNIT("Engine\SH_Constant.cpp");
 USEUNIT("Engine\SH_Matrix.cpp");
 USEUNIT("Engine\SH_Texture.cpp");
@@ -92,10 +87,20 @@ USEUNIT("Engine\Texture.cpp");
 USEUNIT("Engine\TextureManager.cpp");
 USEUNIT("Engine\TextureManager_Loader.cpp");
 USEUNIT("Engine\tss_def.cpp");
-USEUNIT("Engine\Blender_default_aref.cpp");
 USEUNIT("Engine\Image.cpp");
 USEUNIT("Engine\tga.cpp");
 USEFORM("Editor\ShaderFunction.cpp", frmShaderFunction);
+USEUNIT("Engine\BLENDERS\BlenderDefault.cpp");
+USEUNIT("Engine\BLENDERS\Blender_default_aref.cpp");
+USEUNIT("Engine\BLENDERS\Blender_Editor_Selection.cpp");
+USEUNIT("Engine\BLENDERS\Blender_Editor_Wire.cpp");
+USEUNIT("Engine\BLENDERS\Blender_Recorder.cpp");
+USEUNIT("Engine\BLENDERS\Blender_Screen_BLEND.cpp");
+USEUNIT("Engine\BLENDERS\Blender_Screen_GRAY.cpp");
+USEUNIT("Engine\BLENDERS\Blender_Screen_SET.cpp");
+USEUNIT("Engine\BLENDERS\Blender_Vertex.cpp");
+USEUNIT("Engine\BLENDERS\Blender_Vertex_aref.cpp");
+USEUNIT("Engine\BLENDERS\Blender.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

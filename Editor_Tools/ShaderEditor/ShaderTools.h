@@ -39,11 +39,13 @@ class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
 	CBlender*			FindBlender			(LPCSTR name);
     LPCSTR				GenerateBlenderName	(LPSTR name, LPCSTR source);
 
+	void 				AddMatrixRef		(LPSTR name);
 	CMatrix*			FindMatrix			(LPSTR name, bool bDuplicate);
     LPCSTR				GenerateMatrixName	(LPSTR name);
     LPCSTR				AppendMatrix		(CMatrix* src=0, CMatrix** dest=0);
     void				RemoveMatrix		(LPSTR name);
 
+	void 				AddConstantRef		(LPSTR name);
 	CConstant*			FindConstant		(LPSTR name, bool bDuplicate);
     LPCSTR				GenerateConstantName(LPSTR name);
     LPCSTR				AppendConstant		(CConstant* src=0, CConstant** dest=0);
@@ -62,45 +64,51 @@ friend class TfrmShaderProperties;
 
     void 				ParseBlender		(CBlender* B, CParseBlender& P);
 
-	CFS_Memory 			m_BlenderStream;
-    bool 				m_bUpdateCurrent;
+	CFS_Memory 			m_BlenderStream;	// пользоваться функциями обновления стрима для синхронизации
+    bool 				m_bUpdateCurrent;	// если менялся объект непосредственно  Update____From___()
+    bool				m_bCurBlenderChanged;
 public:
     CBlender*			m_CurrentBlender;
+    CBlender*			AppendBlender		(CLASS_ID cls_id, LPCSTR folder_name, CBlender* parent);
+    CBlender* 			CloneBlender		(LPCSTR name);
     void				RemoveBlender		(LPCSTR name);
-    void				ResetSelectedBlender();
+	void				RenameBlender		(LPCSTR old_full_name, LPCSTR ren_part, int level);
+
+    void				ResetCurrentBlender();
+    void				UpdateStreamFromObject();
+    void				UpdateObjectFromStream();
+
+    void 				ClearData			();
 public:
-						CShaderTools	();
-    virtual 			~CShaderTools	();
+						CShaderTools		();
+    virtual 			~CShaderTools		();
 
-//    bool				Save			(LPCSTR name);
+	void				Reload				();
+	void				Load				();
+	void				Save				();
 
-	void				Reload			();
-	void				Load			();
-	void				Save			();
+    void				Render				();
+    void				Update				();
 
-    void				Render			();
-    void				Update			();
+    bool				IfModified			();
+    bool				IsModified			(){return m_bModified;}
+    void				Modified			();
 
-    bool				IfModified		();
-    bool				IsModified		(){return m_bModified;}
-    void				Modified		();
+    void				OnCreate			();
+    void				OnDestroy			();
 
-    void				OnCreate		();
-    void				OnDestroy		();
+    void				ZoomObject			();
 
-    void				ZoomObject		();
+    virtual void		OnDeviceCreate		();
+    virtual void		OnDeviceDestroy		();
 
-    virtual void		OnDeviceCreate	();
-    virtual void		OnDeviceDestroy	();
-
-    void				SelectPreviewObject(int p);
-    void				ResetPreviewObject();
+    void				SelectPreviewObject	(int p);
+    void				ResetPreviewObject	();
 
     // misc
-    void				SetCurrentBlender(CBlender* B);
-    void				SetCurrentBlender(LPCSTR name);
-    CBlender*			AppendBlender	(CLASS_ID cls_id, LPCSTR folder_name, CBlender* parent);
-    void				ApplyChanges	();
+    void				SetCurrentBlender	(CBlender* B);
+    void				SetCurrentBlender	(LPCSTR name);
+    void				ApplyChanges		();
 };
 extern CShaderTools	SHTools;
 //---------------------------------------------------------------------------

@@ -64,7 +64,7 @@ void CEditableMesh::SaveMesh(CFS_Base& F){
 	F.open_chunk	(EMESH_CHUNK_SFACE);
 	F.Wword			(m_SurfFaces.size()); 	/* surface polygon count*/
 	for (SurfFacesPairIt plp_it=m_SurfFaces.begin(); plp_it!=m_SurfFaces.end(); plp_it++){
-    	F.WstringZ	(plp_it->first->name); 	/* surface name*/
+    	F.WstringZ	(plp_it->first->_Name()); 	/* surface name*/
     	INTVec& 	pol_lst = plp_it->second;
         F.Wdword	(pol_lst.size());		/* surface-polygon indices*/
         F.write		(pol_lst.begin(), sizeof(int)*pol_lst.size());
@@ -129,7 +129,7 @@ bool CEditableMesh::LoadMesh(CStream& F){
     for (DWORD sp_i=0; sp_i<sface_cnt; sp_i++){
         F.RstringZ		(surf_name);
         int surf_id;
-        st_Surface* 	surf= m_Parent->FindSurfaceByName(surf_name, &surf_id); VERIFY(surf);
+        CSurface* surf	= m_Parent->FindSurfaceByName(surf_name, &surf_id); VERIFY(surf);
         INTVec&			face_lst = m_SurfFaces[surf];
         face_lst.resize	(F.Rdword());
         F.Read			(face_lst.begin(), face_lst.size()*sizeof(int));

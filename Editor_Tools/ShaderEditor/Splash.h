@@ -11,6 +11,7 @@
 #include "MXCtrls.hpp"
 #include <ExtCtrls.hpp>
 #include <Graphics.hpp>
+#include <jpeg.hpp>
 //---------------------------------------------------------------------------
 class TfrmSplash : public TForm
 {

@@ -17,6 +17,7 @@
 #include "ElXPThemedControl.hpp"
 
 #include "ShaderTools.h"
+#include "ElTreeAdvEdit.hpp"
 
 //---------------------------------------------------------------------------
 class TfraLeftBar : public TFrame
@@ -62,6 +63,8 @@ __published:	// IDE-managed Components
 	TMxPopupMenu *pmBlenderList;
 	TBevel *Bevel1;
 	TBevel *Bevel2;
+	TMenuItem *Rename1;
+	TElTreeInplaceAdvancedEdit *InplaceEdit;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebReloadClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
@@ -87,6 +90,11 @@ __published:	// IDE-managed Components
 	void __fastcall ebShaderRemoveClick(TObject *Sender);
 	void __fastcall tvShadersItemFocused(TObject *Sender);
 	void __fastcall ebShaderCloneClick(TObject *Sender);
+	void __fastcall tvShadersKeyDown(TObject *Sender, WORD &Key,
+          TShiftState Shift);
+	void __fastcall Rename1Click(TObject *Sender);
+	void __fastcall InplaceEditValidateResult(TObject *Sender,
+          bool &InputValid);
 private:	// User declarations
 	void __fastcall TemplateClick(TObject *Sender);
 	void __fastcall ShowPPMenu(TMxPopupMenu* M, TObject* btn);
@@ -101,6 +109,7 @@ public:		// User declarations
     void 			UpdateBar		();
     void 			InitPalette		(TemplateVec& lst);
 	void 			AddBlender		(LPCSTR full_name, bool bLoadMode);
+	void 			ClearBlenderList();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

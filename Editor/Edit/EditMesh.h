@@ -9,7 +9,7 @@
 #include "CustomObject.h"
 
 // refs
-struct st_Surface;
+struct CSurface;
 struct SRayPickInfo;
 struct CFrustum;
 struct FSChunkDef;
@@ -76,12 +76,12 @@ struct st_MeshOptions{
 DEFINE_VECTOR		(INTVec,AdjVec,AdjIt);
 DEFINE_VECTOR		(st_VMap,VMapVec,VMapIt);
 DEFINE_VECTOR		(st_Face,FaceVec,FaceIt);
-DEFINE_MAP			(st_Surface*,INTVec,SurfFaces,SurfFacesPairIt);
+DEFINE_MAP			(CSurface*,INTVec,SurfFaces,SurfFacesPairIt);
 DEFINE_VECTOR		(st_SVert,SVertVec,SVertIt);
 
 //refs
 struct st_RenderBuffer;
-struct st_Surface;
+struct CSurface;
 class CSector;
 
 struct st_RenderBuffer{
@@ -93,7 +93,7 @@ struct st_RenderBuffer{
     st_RenderBuffer	(DWORD sv, DWORD nv):dwStartVertex(sv),dwNumVertex(nv),buffer(0),buffer_size(0){;}
 };
 DEFINE_VECTOR(st_RenderBuffer,RBVector,RBVecIt);
-DEFINE_MAP(st_Surface*,RBVector,RBMap,RBMapPairIt);
+DEFINE_MAP(CSurface*,RBVector,RBMap,RBMapPairIt);
 
 #define EMESH_LS_CF_MODEL	0x0001
 #define EMESH_LS_FNORMALS 	0x0002
@@ -145,7 +145,7 @@ protected:
     VMRefsVec		m_VMRefs;
 
     void			UpdateRenderBuffers		();
-	void 			FillRenderBuffer		(INTVec& face_lst, int start_face, int num_face, const st_Surface* surf, LPBYTE& data);
+	void 			FillRenderBuffer		(INTVec& face_lst, int start_face, int num_face, const CSurface* surf, LPBYTE& data);
     void 			ClearRenderBuffers		();
 
 	void 			RecurseTri				(int id);
@@ -165,9 +165,9 @@ public:
 
 	IC char*		GetName					(){return m_Name;}
 	void            GetBox					(Fbox& box){box.set(m_Box);}
-	st_Surface*		GetSurfaceByFaceID		(int fid);
-	st_Surface*		GetFaceTC				(int fid, const Fvector2* tc[3]);
-	st_Surface*		GetFacePT				(int fid, const Fvector* pt[3]);
+	CSurface*		GetSurfaceByFaceID		(int fid);
+	CSurface*		GetFaceTC				(int fid, const Fvector2* tc[3]);
+	CSurface*		GetFacePT				(int fid, const Fvector* pt[3]);
 	IC BOOL 		Visible					(){return m_Visible; }
 	IC void 		Show					(bool bVisible){m_Visible=bVisible;}
 
@@ -186,7 +186,7 @@ public:
 #endif
 
     // render routine
-	void 			Render					(const Fmatrix& parent, st_Surface* S);
+	void 			Render					(const Fmatrix& parent, CSurface* S);
 	void            RenderList				(const Fmatrix& parent, DWORD color, bool bEdge, DWORDVec& fl);
 	void 			RenderEdge				(Fmatrix& parent, DWORD color);
 	void 			RenderSelection			(Fmatrix& parent, DWORD color);
@@ -194,7 +194,7 @@ public:
     // statistics methods
     int 			GetFaceCount			(bool bMatch2Sided=true);
 	int 			GetVertexCount			(){return m_Points.size();}
-    int 			GetSurfFaceCount		(st_Surface* surf, bool bMatch2Sided=true);
+    int 			GetSurfFaceCount		(CSurface* surf, bool bMatch2Sided=true);
 
     // IO - routine
     void			SaveMesh				(CFS_Base&);

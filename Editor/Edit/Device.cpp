@@ -49,7 +49,6 @@ CRenderDevice::CRenderDevice(){
     mFullTransform.identity();
     mView.identity();
     m_DefaultMat.set(1,1,1);
-	m_NullShader	= 0;
 	m_WireShader	= 0;
 	m_SelectionShader = 0;
 
@@ -72,6 +71,27 @@ CRenderDevice::~CRenderDevice(){
 	VERIFY(!bReady);
 }
 
+void CRenderDevice::Initialize()
+{
+	// load blenders
+	Shader.xrStartUp	();
+	// Startup shaders
+	Create				();
+//	PSLib.xrStartUp		();
+	pHUDFont 			= new CFontHUD();
+}
+
+void CRenderDevice::ShutDown()
+{
+	// destroy context
+	Destroy				();
+	_DELETE				(pHUDFont);
+
+	// destroy shaders
+//	PSLib.xrShutDown	();
+	Shader.xrShutDown	();
+}
+
 void CRenderDevice::InitTimer(){
 	Timer_MM_Delta	= 0;
 	{
@@ -92,14 +112,14 @@ void CRenderDevice::ResetNearer(){
     SetTransform(D3DTS_PROJECTION,mProjection);
 }
 //---------------------------------------------------------------------------
-bool CRenderDevice::Create(HANDLE handle){
+bool CRenderDevice::Create(){
 	if (bReady)	return false;
 	ELog.Msg(mtInformation,"Starting RENDER device...");
 
     m_hWnd				= frmMain->Handle;
-    m_hRenderWnd		= handle;
+    m_hRenderWnd		= frmMain->D3DWindow->Handle;
 
-	HW.CreateDevice		(handle,dwWidth,dwHeight);
+	HW.CreateDevice		(frmMain->D3DWindow->Handle,dwWidth,dwHeight);
 
 	// after creation
 	bReady				= TRUE;
@@ -132,14 +152,13 @@ void CRenderDevice::Destroy(){
 
 void CRenderDevice::OnDeviceCreate(){
 	// Shaders part
-//S	Shader.OnDeviceCreate();
-//S    m_NullShader 		= Shader.Create();
-//S    m_WireShader 		= Shader.Create("$ed_wire");
-//S    m_SelectionShader 	= Shader.Create("$ed_selection");
+	Shader.OnDeviceCreate();
+    m_WireShader 		= Shader.Create("$ed_wire");
+    m_SelectionShader 	= Shader.Create("$ed_selection");
 
 	// General Render States
 	HW.Caps.Update();
-	for (DWORD i=0; i<HW.Caps.dwNumBlendStages; i++)
+	for (DWORD i=0; i<HW.Caps.pixel.dwStages; i++)
 	{
 //		if (psDeviceFlags&rsAnisotropic)	{
 //			Device.SetTSS(i,D3DTSS_MINFILTER,	D3DTEXF_ANISOTROPIC	);
@@ -173,7 +192,6 @@ void CRenderDevice::OnDeviceCreate(){
 	// signal another objects
 	seqDevCreate.Process		(rp_DeviceCreate);
 	Primitive.OnDeviceCreate	();
-//    Scene->OnDeviceCreate		();
 
 #ifdef _EDITOR
     UpdateFog();
@@ -187,7 +205,7 @@ void CRenderDevice::OnDeviceCreate(){
 		const DWORD dwIdxCount = dwTriCount*2*3;
 		WORD	*Indices = 0;
 		DWORD	dwUsage=D3DUSAGE_WRITEONLY;
-		if (HW.Caps.bSoftware)	dwUsage|=D3DUSAGE_SOFTWAREPROCESSING;
+		if (HW.Caps.vertex.bSoftware)	dwUsage|=D3DUSAGE_SOFTWAREPROCESSING;
 		R_CHK(HW.pDevice->CreateIndexBuffer(dwIdxCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_DEFAULT,&Streams_QuadIB));
 		R_CHK(Streams_QuadIB->Lock(0,0,(BYTE**)&Indices,D3DLOCK_NOSYSLOCK));
 		{
@@ -208,20 +226,16 @@ void CRenderDevice::OnDeviceCreate(){
 		}
 		R_CHK(Streams_QuadIB->Unlock());
 	}
-//S	pHUDFont = new CFontHUD();
 }
 
 void CRenderDevice::OnDeviceDestroy(){
     m_CurrentShader		= 0;
 
-	if (m_NullShader) Shader.Delete(m_NullShader);
 	if (m_WireShader) Shader.Delete(m_WireShader);
 	if (m_SelectionShader) Shader.Delete(m_SelectionShader);
 
-//S	_DELETE(pHUDFont);
 	seqDevDestroy.Process		(rp_DeviceDestroy);
 
-//    Scene->OnDeviceDestroy		();
 	Shader.OnDeviceDestroy		();
 
 	Primitive.OnDeviceDestroy	();
@@ -243,20 +257,16 @@ void CRenderDevice::UpdateFog(DWORD color, float fogness, float view_dist){
 	SetRS( D3DRS_FOGCOLOR,	color);
 	float start	= (1.0f - fogness)* 0.85f * view_dist;
 	float end	= 0.91f * view_dist;
+	SetRS( D3DRS_FOGCOLOR,			0					);
+	SetRS( D3DRS_RANGEFOGENABLE,	FALSE				);
 	if (HW.Caps.bTableFog)	{
 		ELog.Msg(mtInformation,"* Using hardware fog...");
-		SetRS( D3DRS_RANGEFOGENABLE,FALSE				);
-		SetRS( D3DRS_FOGTABLEMODE, D3DFOG_LINEAR		);
-		SetRS( D3DRS_FOGVERTEXMODE,D3DFOG_NONE			);
-		if (!HW.Caps.bWFog) {
-			start/=view_dist;
-			end  /=view_dist;
-		}
+		SetRS( D3DRS_FOGTABLEMODE,	D3DFOG_LINEAR		);
+		SetRS( D3DRS_FOGVERTEXMODE,	D3DFOG_NONE			);
 	} else {
 		ELog.Msg(mtInformation,"* Fog is emulated...");
 		SetRS( D3DRS_FOGTABLEMODE,	D3DFOG_NONE			);
-		SetRS( D3DRS_FOGVERTEXMODE,D3DFOG_LINEAR		);
-		SetRS( D3DRS_RANGEFOGENABLE,FALSE				);
+		SetRS( D3DRS_FOGVERTEXMODE,	D3DFOG_LINEAR		);
 	}
 	SetRS( D3DRS_FOGSTART,	*(DWORD *)(&start)	);
 	SetRS( D3DRS_FOGEND,	*(DWORD *)(&end)	);
@@ -280,7 +290,7 @@ void __fastcall CRenderDevice::Resize(int w, int h)
     mProjection.build_projection( m_Camera.m_FOV, m_Camera.m_Aspect, m_Camera.m_Znear, m_Camera.m_Zfar );
     m_fNearer 		= mProjection._43;
 
-    Create			(m_hRenderWnd);
+    Create			();
 
     SetTransform	(D3DTS_PROJECTION,mProjection);
     SetTransform	(D3DTS_WORLD,precalc_identity);
@@ -294,7 +304,7 @@ void CRenderDevice::Begin( ){
     if (HW.pDevice->TestCooperativeLevel()!=D3D_OK){
 		Sleep	(500);
 		Destroy	();
-		Create	(m_hRenderWnd);
+		Create	();
 	}
 
 	CHK_DX(HW.pDevice->BeginScene());
@@ -311,8 +321,8 @@ void CRenderDevice::End(){
 	VERIFY(HW.pDevice);
 	VERIFY(bReady);
 
-//S	Statistic.Show(pHUDFont);
-//S	pHUDFont->OnRender();
+	Statistic.Show(pHUDFont);
+	pHUDFont->OnRender();
 
 	// end scene
 	Shader.OnFrameEnd();
@@ -351,8 +361,7 @@ void CRenderDevice::UpdateTimer(){
 }
 
 void CRenderDevice::DP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWORD pc){
-//S
-/*	R_ASSERT(m_CurrentShader);
+	R_ASSERT(m_CurrentShader);
     DWORD dwRequired	= m_CurrentShader->Passes.size();
 	Primitive.setVertices(vs->getFVF(),vs->getStride(),vs->getBuffer());
     for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
@@ -360,11 +369,10 @@ void CRenderDevice::DP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWOR
 		Primitive.Render(pt,vBase,pc);
     }
     UPDATEC(pc*3,pc,dwRequired);
-*/}
+}
 
 void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWORD vc, CIndexStream* is, DWORD iBase, DWORD pc){
-//S
-/*	R_ASSERT(m_CurrentShader);
+	R_ASSERT(m_CurrentShader);
     DWORD dwRequired	= m_CurrentShader->Passes.size();
     Primitive.setIndicesUC(vBase, is->getBuffer());
     Primitive.setVertices(vs->getFVF(),vs->getStride(),vs->getBuffer());
@@ -373,7 +381,7 @@ void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWO
 		Primitive.Render(pt,vBase,vc,iBase,pc);
     }
     UPDATEC(vc,pc,dwRequired);
-*/}
+}
 
 void CRenderDevice::Validate()
 {
@@ -415,15 +423,14 @@ void CRenderDevice::Validate()
 void CRenderDevice::ReloadShaders(){
 	OnDeviceDestroy();
 	OnDeviceCreate();
+//S
 /*    Lib->OnDeviceDestroy();
 
-	if (m_NullShader) Shader.Delete(m_NullShader);
 	if (m_WireShader) Shader.Delete(m_WireShader);
 	if (m_SelectionShader) Shader.Delete(m_SelectionShader);
 
     Shader.Reload();
 
-    m_NullShader 		= Shader.Create();
     m_WireShader 		= Shader.Create("$ed_wire");
     m_SelectionShader 	= Shader.Create("$ed_selection");
 
@@ -490,71 +497,6 @@ bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height
     _RELEASE(poldRT);
 
     return true;
-/*
-    IDirect3DSurface8* pFB=0;
-	R_CHK(HW.pDevice->CreateImageSurface(Screen->DesktopWidth,Screen->DesktopHeight,D3DFMT_A8R8G8B8,&pFB));
-    if (FAILED(HW.pDevice->GetFrontBuffer(pFB))) return false;
-
-	D3DLOCKED_RECT	D;
-	R_CHK(pFB->LockRect(&D,0,D3DLOCK_NOSYSLOCK));
-
-    width 	= Device.m_RealWidth-2;
-    height 	= Device.m_RealHeight-2;
-	pixels.resize(width*height);
-
-    Ipoint offs;
-    offs.set(1,1);
-    ClientToScreen(Device.m_hRenderWnd,offs.d3d());
-
-	// Image processing
-	DWORD* pPixel	= (DWORD*)D.pBits;
-	DWORD* pEnd		= pPixel+(Screen->DesktopWidth*Screen->DesktopHeight);
-    UI->ProgressStart(height,"Screenshot making");
-    DWORDIt it = pixels.begin();
-    for (DWORD h=offs.y; h<height+offs.y; h++,it+=width){
-        LPDWORD dt 	= LPDWORD(DWORD(pPixel)+DWORD(D.Pitch*h))+offs.x;
-        CopyMemory	(it,dt,sizeof(DWORD)*width);
-	    UI->ProgressInc();
-    }
-    UI->ProgressEnd();
-
-    R_CHK(pFB->UnlockRect());
-	pFB->Release	();
-
-    return true;
-/*
-	if ((pDesc->Format!=32)&&
-	    (pDesc->ddpfPixelFormat.dwRGBBitCount!=16)) return false;
-
-    DDSURFACEDESC2 desc;
-    memset(&desc, 0, sizeof(desc));
-    desc.dwSize = sizeof(desc);
-    if (DD_OK==m_DX->pBackBuffer->Lock(0,&desc,DDLOCK_SURFACEMEMORYPTR|DDLOCK_WAIT|DDLOCK_READONLY,0)){
-        width 	= desc.dwWidth;
-        height 	= desc.dwHeight;
-        pixels.resize(width*height);
-		UI->ProgressStart(height,"Making screenshot");
-        if (desc.ddpfPixelFormat.dwRGBBitCount==32){
-            for (DWORD h=0; h<height; h++){
-                DWORD* dt 	= LPDWORD(DWORD(desc.lpSurface)+DWORD(desc.lPitch*h));
-                CopyMemory	(pixels.begin()+h*width,dt,sizeof(DWORD)*width);
-            }
-        }else{
-	        if (desc.ddpfPixelFormat.dwRGBBitCount==16){
-            	clr_16 C;
-	            for (DWORD h=0; h<height; h++){
-    	            WORD* dt 	= LPWORD(DWORD(desc.lpSurface)+DWORD(desc.lPitch*h));
-        	        for (DWORD w=0; w<width; w++){
-                    	C.set(*dt++);
-            	        pixels[h*width+w] = C.get();
-                    }
-	            }
-            }
-        }
-        m_DX->pBackBuffer->Unlock(0);
-        return true;
-    }
-*/
 }
 
 

@@ -14,12 +14,6 @@ class CFrustum;
 class CStream;
 class CFS_Base;
 
-enum ERenderPriority{
-    rpNormal,
-    rpAlphaNormal,
-    rpAlphaLast
-};
-
 class CCustomObject {
 protected:
 	EObjClass 		m_ClassID;
@@ -45,7 +39,7 @@ public:
     IC int 			GetGroupIndex	()			{return m_GroupIndex;}
 
 	IC virtual bool IsRender		(){return true;}
-	virtual void 	Render			(ERenderPriority flag){};
+	virtual void 	Render			(int priority){};
 	virtual void 	RTL_Update		(float dT)	{};
 
 	virtual bool 	RayPick			(float& dist, Fvector& start,Fvector& dir, SRayPickInfo* pinf=NULL){ return false; };

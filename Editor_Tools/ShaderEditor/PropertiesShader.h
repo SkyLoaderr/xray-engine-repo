@@ -40,17 +40,12 @@ class TfrmShaderProperties : public TForm
 {
 __published:	// IDE-managed Components
 	TElTree *tvProperties;
-	TElTreeInplaceEdit *InplaceEdit;
-	TElTreeInplaceButtonEdit *InplaceCustom1;
 	TElTreeInplaceFloatSpinEdit *InplaceFloat;
 	TElTreeInplaceSpinEdit *InplaceNumber;
-	TElTreeInplaceModalEdit *InplaceEnum;
 	TMxPopupMenu *pmEnum;
 	TFormStorage *fsStorage;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall FormShow(TObject *Sender);
-	void __fastcall InplaceEditAfterOperation(TObject *Sender, bool &Accepted,
-          bool &DefaultConversion);
 	void __fastcall InplaceFloatAfterOperation(TObject *Sender,
           bool &Accepted, bool &DefaultConversion);
 	void __fastcall InplaceNumberAfterOperation(TObject *Sender,
@@ -71,6 +66,7 @@ private:	// User declarations
 	void __fastcall CustomClick(TElTreeItem* item);
 	Graphics::TBitmap* m_BMEllipsis;
 	void __fastcall AddMatrix(TElTreeItem* parent, LPSTR name);
+	void __fastcall RemoveMatrix(TElTreeItem* parent);
 	void __fastcall AddConstant(TElTreeItem* parent, LPSTR name);
 //	void __fastcall AddTexture(TElTreeItem* parent, LPSTR name);
 public:		// User declarations

@@ -56,16 +56,16 @@ object frmShaderProperties: TfrmShaderProperties
     HeaderHeight = 19
     HeaderHotTrack = False
     HeaderSections.Data = {
-      F5FFFFFF02000000C0E4641000000000FFFFFFFF00000100010028427D000000
-      32000000102700000000006C14B29504000000000000645C000000000000016E
-      000000000000000000010000000000006C616E645C436F6D706F6E656E74735C
-      456C646F735C436F64653B523A5C426F726C616E645C436F6D706F6E656E7473
-      5C456C646F735C436F64655C536F757290000000040000004B65790001000000
-      000000000000000000C0E4641000000000FFFFFFFF0000010101002842590000
-      0032000000102700000000006CECB69504010000000000645C00000000000001
-      6E000000000000000000010000000000006C616E645C436F6D706F6E656E7473
-      5C456C646F735C436F64653B523A5C426F726C616E645C436F6D706F6E656E74
-      735C456C646F735C436F64655C536F7572900000000600000056616C75650001
+      F5FFFFFF020000002475004100280000FFFFFFFF00000100010074657D000000
+      32000000102700000000004F14B295040000000000000D0A0000000000000120
+      000000000000000000010000000000006974656D2D3E446174612909213D2074
+      6F6B656E5F6C6973745B6D692D3E4D656E75496E6465785D2E6964297B0D0A09
+      2020202020202020202020206974656D2D3E436F040000004B65790001000000
+      0000000000000000002475004100280000FFFFFFFF0000010101007465590000
+      0032000000102700000000004FECB695040100000000000D0A00000000000001
+      20000000000000000000010000000000006974656D2D3E446174612909213D20
+      746F6B656E5F6C6973745B6D692D3E4D656E75496E6465785D2E6964297B0D0A
+      092020202020202020202020206974656D2D3E436F0600000056616C75650001
       000000000000000000000000}
     HeaderFont.Charset = DEFAULT_CHARSET
     HeaderFont.Color = clWindowText
@@ -138,25 +138,13 @@ object frmShaderProperties: TfrmShaderProperties
     OnClick = tvPropertiesClick
     OnMouseDown = tvPropertiesMouseDown
   end
-  object InplaceEdit: TElTreeInplaceEdit
-    Tree = tvProperties
-    Types = [sftText]
-    OnAfterOperation = InplaceEditAfterOperation
-    Left = 8
-    Top = 152
-  end
-  object InplaceCustom1: TElTreeInplaceButtonEdit
-    Types = [sftCustom]
-    Left = 8
-    Top = 184
-  end
   object InplaceFloat: TElTreeInplaceFloatSpinEdit
     Tree = tvProperties
     Types = [sftFloating]
     DefaultValueAsText = '0'
     OnBeforeOperation = InplaceFloatBeforeOperation
     OnAfterOperation = InplaceFloatAfterOperation
-    Left = 72
+    Left = 8
     Top = 152
   end
   object InplaceNumber: TElTreeInplaceSpinEdit
@@ -165,13 +153,7 @@ object frmShaderProperties: TfrmShaderProperties
     DefaultValueAsText = '0'
     OnBeforeOperation = InplaceNumberBeforeOperation
     OnAfterOperation = InplaceNumberAfterOperation
-    Left = 104
-    Top = 152
-  end
-  object InplaceEnum: TElTreeInplaceModalEdit
-    Tree = tvProperties
-    Types = [sftEnum]
-    Left = 136
+    Left = 40
     Top = 152
   end
   object pmEnum: TMxPopupMenu
@@ -182,12 +164,12 @@ object frmShaderProperties: TfrmShaderProperties
     BKColor = 10528425
     SelColor = clBlack
     SelFontColor = 10526880
-    SepHColor = 7368816
-    SepLColor = 10921638
+    SepHColor = 1644825
+    SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 136
-    Top = 184
+    Left = 72
+    Top = 152
   end
   object fsStorage: TFormStorage
     StoredValues = <>

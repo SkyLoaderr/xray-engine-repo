@@ -16,20 +16,33 @@ class 	COMotion;
 class 	CCustomMotion;
 class	CBone;
 
-struct st_Surface{
-	char			name[MAX_OBJ_NAME];
-    AStringVec		textures;       //
-    AStringVec		vmaps;			// одинаковый размер массивов!!!
-    AnsiString		sh_name;
-    Shader*			shader;
-    BYTE			sideflag;
-    DWORD			dwFVF;
-    bool			has_alpha; 		// use internal (only for render)
-    				st_Surface		(){ZeroMemory(this,sizeof(st_Surface));}
-				    ~st_Surface		();
-    ERenderPriority	RenderPriority	();
+class CSurface
+{
+	AnsiString		m_Name;
+    AStringVec		m_Textures;		//
+    AStringVec		m_VMaps;		// одинаковый размер массивов!!!
+    AnsiString		m_ShaderName;
+    Shader*			m_Shader;
+    BYTE			m_Sideflag;
+    DWORD			m_dwFVF;
+public:
+    				CSurface		(){ZeroMemory(this,sizeof(CSurface));}
+				    ~CSurface		(){ if (m_Shader) Device.Shader.Delete(m_Shader);}
+    int				_Priority		()const {return m_Shader->Flags.iPriority;}
+    IC LPCSTR		_Name			()const {return m_Name.c_str();}
+    IC Shader*		_Shader			()const {return m_Shader;}
+    IC LPCSTR		_ShaderName		()const {return m_ShaderName.c_str();}
+    IC DWORD		_FVF			()const {return m_dwFVF;}
+    IC BOOL			_2Sided			()const {return !!m_Sideflag;}
+    IC AStringVec&	_Textures		(){return m_Textures;}
+    IC AStringVec&	_VMaps			(){return m_VMaps;}
+    IC void			SetName			(LPCSTR name){m_Name=name;}
+    IC void			SetShader		(LPCSTR name, Shader* sh){VERIFY(name&&name[0]&&sh); m_ShaderName=name; m_Shader=sh;}
+    IC void			Set2Sided		(BOOL fl){m_Sideflag=fl;}
+    IC void			SetFVF			(DWORD fvf){m_dwFVF=fvf;}
 };
-DEFINE_VECTOR	(st_Surface*,SurfaceVec,SurfaceIt);
+
+DEFINE_VECTOR	(CSurface*,SurfaceVec,SurfaceIt);
 DEFINE_VECTOR	(CEditableMesh*,EditMeshVec,EditMeshIt);
 DEFINE_VECTOR	(CBone*,BoneVec,BoneIt);
 DEFINE_VECTOR	(COMotion*,OMotionVec,OMotionIt);
@@ -148,7 +161,7 @@ public:
 
     // render methods
 //	virtual bool 	IsRender				(Fmatrix& parent);
-	virtual void 	Render					(Fmatrix& parent, ERenderPriority flag);
+	virtual void 	Render					(Fmatrix& parent, int priority);
 	void 			RenderSelection			(Fmatrix& parent);
 	void 			RenderEdge				(Fmatrix& parent, CEditableMesh* m=0);
 	void 			RenderBones				(const Fmatrix& parent);
@@ -202,7 +215,7 @@ public:
     void			GenerateMeshNames		();
     void			VerifyMeshNames			();
     bool 			ContainsMesh			(const CEditableMesh* m);
-	st_Surface*		FindSurfaceByName		(const char* surf_name, int* s_id=0);
+	CSurface*		FindSurfaceByName		(const char* surf_name, int* s_id=0);
     CBone*			FindBoneByName			(const char* name);
     int				GetBoneIndexByWMap		(const char* wm_name);
     COMotion* 		FindOMotionByName		(const char* name, const COMotion* Ignore=0);

@@ -305,6 +305,7 @@ object fraLeftBar: TfraLeftBar
           OnItemFocused = tvShadersItemFocused
           OnMouseDown = tvShadersMouseDown
           OnDblClick = tvShadersDblClick
+          OnKeyDown = tvShadersKeyDown
         end
       end
       object Panel1: TPanel
@@ -382,6 +383,7 @@ object fraLeftBar: TfraLeftBar
           HotTrack = True
           CloseButton = False
           Caption = 'Import'
+          Enabled = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -401,6 +403,7 @@ object fraLeftBar: TfraLeftBar
           HotTrack = True
           CloseButton = False
           Caption = 'Export'
+          Enabled = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -557,6 +560,10 @@ object fraLeftBar: TfraLeftBar
       Caption = 'Create Folder'
       OnClick = CreateFolder1Click
     end
+    object Rename1: TMenuItem
+      Caption = 'Rename'
+      OnClick = Rename1Click
+    end
     object N1: TMenuItem
       Caption = '-'
     end
@@ -584,5 +591,12 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 13
     Top = 81
+  end
+  object InplaceEdit: TElTreeInplaceAdvancedEdit
+    Tree = tvShaders
+    Types = [sftText]
+    OnValidateResult = InplaceEditValidateResult
+    Left = 10
+    Top = 151
   end
 end

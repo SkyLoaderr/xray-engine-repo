@@ -33,8 +33,10 @@ bool TUI::Command( int _Command, int p1 ){
     	break;
     case COMMAND_RELOAD:
     	if (!SHTools.IfModified()) return false;
-    	SHTools.Reload();
-		Command(COMMAND_UPDATE_CAPTION);
+		if (ELog.DlgMsg(mtConfirmation,"Reload shaders?")==mrYes){
+        	SHTools.Reload();
+			Command(COMMAND_UPDATE_CAPTION);
+        }
     	break;
 	case COMMAND_CLEAR:
 		{

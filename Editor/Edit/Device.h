@@ -20,8 +20,6 @@ class ENGINE_API CRenderDevice{
 
     float 					m_fNearer;
 
-    Shader*					m_NullShader;
-
 	DWORD					Timer_MM_Delta;
 	CTimer					Timer;
 	CTimer					TimerGlobal;
@@ -81,7 +79,7 @@ public:
 							CRenderDevice 	();
     virtual 				~CRenderDevice	();
 
-	bool 					Create			(HANDLE handle);
+	bool 					Create			();
 	void 					Destroy			();
     void 					Resize			(int w, int h);
     void					ReloadShaders	();
@@ -92,6 +90,9 @@ public:
 
 	void 					Begin			();
 	void 					End				();
+
+	void 					Initialize		(void);
+	void 					ShutDown		(void);
 
     IC float				GetRenderArea	(){return m_RenderArea;}
 	// Sprite rendering
@@ -115,7 +116,7 @@ public:
                                		  		   	CHK_DX(HW.pDevice->SetTransform(p1,m.d3d()));
 							   			 	}
 	// draw
-	void			   		SetShader		(Shader* sh){m_CurrentShader = sh;}
+	void			   		SetShader		(Shader* sh){R_ASSERT(sh); m_CurrentShader = sh;}
 	void			   		DP				(D3DPRIMITIVETYPE pt, CVertexStream* VS, DWORD vBase, DWORD pc);
 	void 					DIP				(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWORD vc, CIndexStream* is, DWORD iBase, DWORD pc);
 

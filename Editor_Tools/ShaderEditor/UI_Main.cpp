@@ -49,13 +49,11 @@ TUI::TUI()
     FS.Init			();
 
     Lib             = new ELibrary();
-//S    SHLib			= new CShaderLibrary();
 }
 //---------------------------------------------------------------------------
 TUI::~TUI()
 {
     _DELETE(Lib);
-//S    _DELETE(SHLib);
 }
 
 bool TUI::OnCreate(TD3DWindow* wnd){
@@ -65,13 +63,9 @@ bool TUI::OnCreate(TD3DWindow* wnd){
     VERIFY(m_D3DWindow);
 	InitMath		();
 	FPU::m64r		();
-//S    SHLib->Init		();
 	SHTools.OnCreate();
+    Device.Initialize();
 
-    if (!Device.Create(m_D3DWindow->Handle)){
-        ELog.DlgMsg(mtError,"Can't create DirectX device. Editor halted!");
-        return false;
-     }
 	g_bEditorValid  = true;
 
     Lib->Init       ();
@@ -88,9 +82,8 @@ void TUI::OnDestroy()
 	DU::UninitUtilLibrary();
 	SHTools.OnDestroy	();
     Lib->Clear		();
-//S    SHLib->Clear();
 
-    Device.Destroy();
+    Device.ShutDown	();
     g_bEditorValid = false;
 }
 //------------------------------------------------------------------------------
@@ -101,7 +94,7 @@ void TUI::Redraw(){
 // set render state
     Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
     // filter
-    for (DWORD k=0; k<HW.Caps.dwNumBlendStages; k++){
+    for (DWORD k=0; k<HW.Caps.pixel.dwStages; k++){
         if( psDeviceFlags&rsFilterLinear){
             Device.SetTSS(k,D3DTSS_MAGFILTER,D3DTEXF_LINEAR);
             Device.SetTSS(k,D3DTSS_MINFILTER,D3DTEXF_LINEAR);

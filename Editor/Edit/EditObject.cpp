@@ -14,16 +14,7 @@
 #include "motion.h"
 #include "bone.h"
 #include "Library.h"
-
-//----------------------------------------------------
-ERenderPriority	st_Surface::RenderPriority(){
-//S	if (shader&&shader->shader->Flags.bStrictB2F) return rpAlphaLast;
-	if (shader&&has_alpha) return rpAlphaNormal;
-	return rpNormal;
-}
-st_Surface::~st_Surface(){
-	if (shader) Device.Shader.Delete(shader);
-}
+#include "xr_trims.h"
 
 // mimimal bounding box size
 float g_MinBoxSize 	= 0.05f;
@@ -121,7 +112,7 @@ int CEditableObject::GetFaceCount(){
 
 int CEditableObject::GetSurfFaceCount(const char* surf_name){
 	int cnt=0;
-    st_Surface* surf = FindSurfaceByName(surf_name);
+    CSurface* surf = FindSurfaceByName(surf_name);
     for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
         cnt+=(*m)->GetSurfFaceCount(surf);
 	return cnt;
@@ -160,26 +151,17 @@ void CEditableObject::UpdateBox(){
     }
 }
 //----------------------------------------------------
-void CEditableObject::Render(Fmatrix& parent, ERenderPriority priority){
+void CEditableObject::Render(Fmatrix& parent, int priority){
     if (!(m_LoadState&EOBJECT_LS_RENDERBUFFER)) UpdateRenderBuffers();
 
-    if(psDeviceFlags&rsEdgedFaces&&(priority==rpNormal))
+    if(psDeviceFlags&rsEdgedFaces&&(0==priority))
         RenderEdge(parent);
 
     Device.SetTransform(D3DTS_WORLD,parent);
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
-        if ((priority==rpAlphaNormal)&&((*s_it)->RenderPriority()==rpAlphaNormal)){
-            Device.SetShader((*s_it)->shader);
-            for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
-                (*_M)->Render(parent,*s_it);
-        }
-        if ((priority==rpAlphaLast)&&((*s_it)->RenderPriority()==rpAlphaLast)){
-            Device.SetShader((*s_it)->shader);
-            for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
-                (*_M)->Render(parent,*s_it);
-        }
-        if ((priority==rpNormal)&&((*s_it)->RenderPriority()==rpNormal)){
-            Device.SetShader((*s_it)->shader);
+//    	if (!(*s_it)->Shader) continue;
+        if ((priority==(*s_it)->_Priority())){
+            Device.SetShader((*s_it)->_Shader());
             for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
                 (*_M)->Render(parent,*s_it);
         }
@@ -187,10 +169,11 @@ void CEditableObject::Render(Fmatrix& parent, ERenderPriority priority){
 }
 
 void CEditableObject::RenderSingle(Fmatrix& parent){
-	Render(parent, rpNormal);
+	Render(parent, 0);
     if (fraBottomBar->miDrawObjectBones) RenderBones(precalc_identity);
-	Render(parent, rpAlphaNormal);
-	Render(parent, rpAlphaLast);
+	Render(parent, 1);
+	Render(parent, 2);
+	Render(parent, 3);
 }
 
 void CEditableObject::RenderAnimation(const Fmatrix& parent){
@@ -317,9 +300,9 @@ void CEditableObject::TranslateToWorld(const Fmatrix& parent) {
 	UpdateBox();
 }
 
-st_Surface*	CEditableObject::FindSurfaceByName(const char* surf_name, int* s_id){
+CSurface*	CEditableObject::FindSurfaceByName(const char* surf_name, int* s_id){
 	for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-    	if (strcmp((*s_it)->name,surf_name)==0){ if (s_id) *s_id=s_it-m_Surfaces.begin(); return *s_it;}
+    	if (strcmp((*s_it)->_Name(),surf_name)==0){ if (s_id) *s_id=s_it-m_Surfaces.begin(); return *s_it;}
     return 0;
 }
 
@@ -328,16 +311,16 @@ void CEditableObject::OnDeviceCreate(){
 	// пока буфера не аппаратные не нужно пересоздавать их
     //	UpdateRenderBuffers();
 	// создать заново shaders
-//S    for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-//S        (*s_it)->shader = Device.Shader.Create((*s_it)->sh_name.c_str(),(*s_it)->textures);
+    for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
+       (*s_it)->SetShader((*s_it)->_ShaderName(), Device.Shader.Create((*s_it)->_ShaderName(),ListToSequence((*s_it)->_Textures()).c_str()));
 }
 
 void CEditableObject::OnDeviceDestroy(){
 	// пока буфера не аппаратные не нужно пересоздавать их
     //	ClearRenderBuffers();
 		// удалить shaders
-//S    for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-//S        if ((*s_it)->shader){ Device.Shader.Delete((*s_it)->shader); (*s_it)->shader=0; }
+    for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
+        if ((*s_it)->_Shader()) Device.Shader.Delete((*s_it)->_Shader());
 }
 
 void CEditableObject::LightenObject(){

@@ -34,15 +34,19 @@
       Intermediate\_math.obj Intermediate\LeftBar.obj 
       Intermediate\ShaderTools.obj Intermediate\PropertiesShader.obj 
       Intermediate\LogForm.obj Intermediate\Library.obj 
-      Intermediate\ChoseForm.obj Intermediate\Blender.obj 
-      Intermediate\xr_avi.obj Intermediate\Blender_Recorder.obj 
-      Intermediate\Blender_Vertex.obj Intermediate\Blender_Vertex_aref.obj 
-      Intermediate\BlenderDefault.obj Intermediate\SH_Constant.obj 
-      Intermediate\SH_Matrix.obj Intermediate\SH_Texture.obj 
-      Intermediate\Shader.obj Intermediate\Texture.obj 
-      Intermediate\TextureManager.obj Intermediate\TextureManager_Loader.obj 
-      Intermediate\tss_def.obj Intermediate\Blender_default_aref.obj 
-      Intermediate\Image.obj Intermediate\tga.obj Intermediate\ShaderFunction.obj"/>
+      Intermediate\ChoseForm.obj Intermediate\xr_avi.obj 
+      Intermediate\SH_Constant.obj Intermediate\SH_Matrix.obj 
+      Intermediate\SH_Texture.obj Intermediate\Shader.obj 
+      Intermediate\Texture.obj Intermediate\TextureManager.obj 
+      Intermediate\TextureManager_Loader.obj Intermediate\tss_def.obj 
+      Intermediate\Image.obj Intermediate\tga.obj 
+      Intermediate\ShaderFunction.obj Intermediate\BlenderDefault.obj 
+      Intermediate\Blender_default_aref.obj 
+      Intermediate\Blender_Editor_Selection.obj 
+      Intermediate\Blender_Editor_Wire.obj Intermediate\Blender_Recorder.obj 
+      Intermediate\Blender_Screen_BLEND.obj Intermediate\Blender_Screen_GRAY.obj 
+      Intermediate\Blender_Screen_SET.obj Intermediate\Blender_Vertex.obj 
+      Intermediate\Blender_Vertex_aref.obj Intermediate\Blender.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -56,7 +60,7 @@
     <SPARELIBS value="Vcl50.lib bcbsmp50.lib VCLX50.lib dclusr50.lib elpackB5.lib"/>
     <PACKAGES value="Vcl50.bpi Vclx50.bpi bcbsmp50.bpi TeeUI50.bpi Tee50.bpi Vclbde50.bpi 
       TeeDB50.bpi dclusr50.bpi"/>
-    <PATHCPP value=".;editor;engine;lib;Intermediate"/>
+    <PATHCPP value=".;editor;engine;lib;Intermediate;Engine\BLENDERS"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -66,12 +70,12 @@
     <USERDEFINES value="_SHADER_EDITOR;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL"/>
     <MAINSOURCE value="ShaderEditor.cpp"/>
-    <INCLUDEPATH value="r:\borland\components\alexmx\;editor;lib;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;R:\Borland\Components\Eldos\Code\;&quot;R:\Borland\Components\Eldos\Code\Source\&quot;"/>
-    <LIBPATH value="c:\rad\borland\CBuilder5\Projects\;lib;lib\DX;engine;editor;shared;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components\alexmx\;R:\Borland\Components\Eldos\Code\Source\;&quot;R:\Borland\Components\Eldos\Code\&quot;"/>
+    <INCLUDEPATH value="Engine\BLENDERS;r:\borland\components\alexmx\;editor;lib;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;R:\Borland\Components\Eldos\Code\;&quot;R:\Borland\Components\Eldos\Code\Source\&quot;"/>
+    <LIBPATH value="Engine\BLENDERS;c:\rad\borland\CBuilder5\Projects\;lib;lib\DX;engine;editor;shared;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components\alexmx\;R:\Borland\Components\Eldos\Code\Source\;&quot;R:\Borland\Components\Eldos\Code\&quot;"/>
     <WARNINGS value="-w-par -w-8027"/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Ir:\borland\components\alexmx\. -Ieditor -Ilib -Ilib\DX 
+    <IDLCFLAGS value="-IEngine\BLENDERS -Ir:\borland\components\alexmx\. -Ieditor -Ilib -Ilib\DX 
       -IR:\DirectX8.1\include\. -Ic:\rad\Borland\CBuilder5\Bin\. 
       -Ic:\rad\borland\CBuilder5\Projects\. -I$(BCB)\include 
       -I$(BCB)\include\vcl -Iengine -Iedit -IImport\LWO -ICollide 

@@ -34,7 +34,7 @@ void CEditableMesh::UpdateRenderBuffers(){
 
     for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
 		INTVec& face_lst = sp_it->second;
-        st_Surface* _S = sp_it->first;
+        CSurface* _S = sp_it->first;
         int num_verts=face_lst.size()*3;
         RBVector rb_vec;
 		int v_cnt=num_verts;
@@ -43,16 +43,16 @@ void CEditableMesh::UpdateRenderBuffers(){
         do{
 	        rb_vec.push_back	(st_RenderBuffer(0,(v_cnt<V_LIM)?v_cnt:V_LIM));
             st_RenderBuffer& rb	= rb_vec.back();
-            if (_S->sideflag) 	rb.dwNumVertex *= 2;
+            if (_S->_2Sided()) 	rb.dwNumVertex *= 2;
             num_face			= (v_cnt<V_LIM)?v_cnt/3:F_LIM;
 
-            rb.buffer_size		= D3DXGetFVFVertexSize(_S->dwFVF)*rb.dwNumVertex;
+            rb.buffer_size		= D3DXGetFVFVertexSize(_S->_FVF())*rb.dwNumVertex;
 			rb.buffer			= (LPBYTE)malloc(rb.buffer_size);
-            rb.stream			= Device.Streams.Create(_S->dwFVF,rb.dwNumVertex);
+            rb.stream			= Device.Streams.Create(_S->_FVF(),rb.dwNumVertex);
 
 			FillRenderBuffer	(face_lst,start_face,num_face,_S,rb.buffer);
             v_cnt				-= V_LIM;
-            start_face			+= (_S->sideflag)?rb.dwNumVertex/6:rb.dwNumVertex/3;
+            start_face			+= (_S->_2Sided())?rb.dwNumVertex/6:rb.dwNumVertex/3;
         }while(v_cnt>0);
         if (num_verts>0) m_RenderBuffers.insert(make_pair(_S,rb_vec));
 		UI->ProgressInc();
@@ -61,9 +61,9 @@ void CEditableMesh::UpdateRenderBuffers(){
 	UI->ProgressEnd();
 }
 //----------------------------------------------------
-void CEditableMesh::FillRenderBuffer(INTVec& face_lst, int start_face, int num_face, const st_Surface* surf, LPBYTE& src_data){
+void CEditableMesh::FillRenderBuffer(INTVec& face_lst, int start_face, int num_face, const CSurface* surf, LPBYTE& src_data){
 	LPBYTE data = src_data;
-    DWORD dwFVF = surf->dwFVF;
+    DWORD dwFVF = surf->_FVF();
 	DWORD dwTexCnt = ((dwFVF&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
     for (int fl_i=start_face; fl_i<start_face+num_face; fl_i++){
         DWORD f_index = face_lst[fl_i];
@@ -103,7 +103,7 @@ void CEditableMesh::FillRenderBuffer(INTVec& face_lst, int start_face, int num_f
                 CopyMemory(data,&vmap.getUV(vm_pt.index),sz); data+=sz;
             }
         }
-        if (surf->sideflag){
+        if (surf->_2Sided()){
             for (int k=2; k>=0; k--){
                 st_FaceVert& fv = face.pv[k];
 	            Fvector& PN = m_PNormals[f_index*3+k];
@@ -140,7 +140,7 @@ void CEditableMesh::FillRenderBuffer(INTVec& face_lst, int start_face, int num_f
     }
 }
 //----------------------------------------------------
-void CEditableMesh::Render(const Fmatrix& parent, st_Surface* S){
+void CEditableMesh::Render(const Fmatrix& parent, CSurface* S){
 	// visibility test
     if (!m_Visible) return;
 	// frustum test

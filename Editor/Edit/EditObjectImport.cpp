@@ -48,10 +48,10 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                 for (Isf=I->surf; Isf; Isf=Isf->next){
                     UI->ProgressUpdate(i);
                     Isf->alpha_mode=i; // перетираем для внутренних целей !!!
-                    st_Surface* Osf = new st_Surface();
+                    CSurface* Osf = new CSurface();
                     m_Surfaces.push_back(Osf);
-                    if (Isf->name) strcpy(Osf->name,Isf->name); else strcpy(Osf->name,"Default");
-                    Osf->sideflag = (Isf->sideflags==3)?TRUE:FALSE;
+                    if (Isf->name) Osf->SetName(Isf->name); else Osf->SetName("Default");
+                    Osf->Set2Sided((Isf->sideflags==3)?TRUE:FALSE);
                     AnsiString shader_name;
                     if (Isf->nshaders&&(stricmp(Isf->shader->name,SH_PLUGIN_NAME)==0)){
     //                	XRShader* sh_info = (XRShader*)Isf->shader->data;
@@ -72,7 +72,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                         cidx = -1;
                         if (Itx->type==ID_IMAP) cidx=Itx->param.imap.cindex;
                         else{
-                            ELog.DlgMsg(mtError, "Import LWO (Surface '%s'): 'Texture' is not Image Map!",Osf->name);
+                            ELog.DlgMsg(mtError, "Import LWO (Surface '%s'): 'Texture' is not Image Map!",Osf->_Name());
                             bResult=false;
                             break;
                         }
@@ -84,27 +84,27 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                                     break;
                                 }
                             if (tname[0]==0){
-                                ELog.DlgMsg(mtError, "Import LWO (Surface '%s'): 'Texture' name is empty or non 'STIL' type!",Osf->name);
+                                ELog.DlgMsg(mtError, "Import LWO (Surface '%s'): 'Texture' name is empty or non 'STIL' type!",Osf->_Name());
                                 bResult=false;
                                 break;
                             }
                             char tex_name[_MAX_FNAME];
                             _splitpath( tname, 0, 0, tex_name, 0 );
-                            Osf->textures.push_back(tex_name);
+                            Osf->_Textures().push_back(tex_name);
                             // get vmap refs
-                            Osf->vmaps.push_back(Itx->param.imap.vmap_name);
+                            Osf->_VMaps().push_back(Itx->param.imap.vmap_name);
                         }
                     }
                     if (!bResult) break;
-                    if (Osf->textures.empty()){
-						ELog.DlgMsg(mtError, "Can't create shader. Invalid surface '%s'. Textures empty.",Osf->name);
+                    if (Osf->_Textures().empty()){
+						ELog.DlgMsg(mtError, "Can't create shader. Invalid surface '%s'. Textures empty.",Osf->_Name());
                         bResult = false;
                         break;
                     }
 
 //S                    Osf->shader = Device.Shader.Create(shader_name.c_str(),Osf->textures);
 
-                    Osf->dwFVF = D3DFVF_XYZ|D3DFVF_NORMAL|(dwNumTextures<<D3DFVF_TEXCOUNT_SHIFT);
+                    Osf->SetFVF(D3DFVF_XYZ|D3DFVF_NORMAL|(dwNumTextures<<D3DFVF_TEXCOUNT_SHIFT));
                     i++;
                 }
 		    }

@@ -196,7 +196,7 @@ void CEditableMesh::GenerateSVertices(){
     m_LoadState |= EMESH_LS_SVERTICES;
 }
 
-st_Surface*	CEditableMesh::GetSurfaceByFaceID(int fid){
+CSurface*	CEditableMesh::GetSurfaceByFaceID(int fid){
     for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
 		INTVec& face_lst = sp_it->second;
         if (find(face_lst.begin(),face_lst.end(),fid)!=face_lst.end()) return sp_it->first;
@@ -204,8 +204,8 @@ st_Surface*	CEditableMesh::GetSurfaceByFaceID(int fid){
     return 0;
 }
 
-st_Surface* CEditableMesh::GetFaceTC(int fid, const Fvector2* tc[3]){
-    st_Surface* surf = GetSurfaceByFaceID(fid);
+CSurface* CEditableMesh::GetFaceTC(int fid, const Fvector2* tc[3]){
+    CSurface* surf = GetSurfaceByFaceID(fid);
     VERIFY(surf);
 
 	st_Face& F = m_Faces[fid];
@@ -216,8 +216,8 @@ st_Surface* CEditableMesh::GetFaceTC(int fid, const Fvector2* tc[3]){
     return surf;
 }
 
-st_Surface* CEditableMesh::GetFacePT(int fid, const Fvector* pt[3]){
-    st_Surface* surf = GetSurfaceByFaceID(fid);
+CSurface* CEditableMesh::GetFacePT(int fid, const Fvector* pt[3]){
+    CSurface* surf = GetSurfaceByFaceID(fid);
     VERIFY(surf);
 
 	st_Face& F = m_Faces[fid];
@@ -230,7 +230,7 @@ int CEditableMesh::GetFaceCount(bool bMatch2Sided){
 	int f_cnt = 0;
     for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
     	if (bMatch2Sided){
-	    	if (sp_it->first->sideflag) f_cnt+=sp_it->second.size()*2;
+	    	if (sp_it->first->_2Sided())f_cnt+=sp_it->second.size()*2;
     	    else						f_cnt+=sp_it->second.size();
         }else{
         	f_cnt+=sp_it->second.size();
@@ -239,11 +239,11 @@ int CEditableMesh::GetFaceCount(bool bMatch2Sided){
     return f_cnt;
 }
 
-int CEditableMesh::GetSurfFaceCount(st_Surface* surf, bool bMatch2Sided){
+int CEditableMesh::GetSurfFaceCount(CSurface* surf, bool bMatch2Sided){
 	SurfFacesPairIt sp_it = m_SurfFaces.find(surf);
     if (sp_it==m_SurfFaces.end()) return 0;
 	int f_cnt = sp_it->second.size();
-    if (bMatch2Sided&&sp_it->first->sideflag) f_cnt*=2;
+    if (bMatch2Sided&&sp_it->first->_2Sided()) f_cnt*=2;
     return f_cnt;
 }
 

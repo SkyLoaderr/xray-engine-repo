@@ -15,6 +15,7 @@
 #pragma link "mxPlacemnt"
 #pragma link "ElTree"
 #pragma link "ElXPThemedControl"
+#pragma link "ElTreeAdvEdit"
 #pragma resource "*.dfm"
 TfraLeftBar *fraLeftBar;
 
@@ -71,6 +72,8 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
 {
     char buf[MAX_PATH] = {"shader_ed.ini"};  FS.m_ExeRoot.Update(buf);
     fsStorage->IniFileName = buf;
+    InplaceEdit->Editor->Color		= TColor(0x00A0A0A0);
+    InplaceEdit->Editor->BorderStyle= bsNone;
 }
 //---------------------------------------------------------------------------
 
@@ -235,7 +238,11 @@ TElTreeItem* TfraLeftBar::FindFolder(LPCSTR full_name){
 	return node;
 }
 //---------------------------------------------------------------------------
+void TfraLeftBar::ClearBlenderList(){
+	tvShaders->Items->Clear();
+}
 
+//---------------------------------------------------------------------------
 void TfraLeftBar::AddBlender(LPCSTR full_name, bool bLoadMode){
 	int cnt = _GetItemCount(full_name,'\\');
     R_ASSERT2(cnt,"Blender name empty.");
@@ -288,7 +295,7 @@ void __fastcall TfraLeftBar::GenerateFolderName(TElTreeItem* node,AnsiString& na
 	name = "folder";
     int cnt = 0;
     while (FindFolderItem(node,name))
-    	name.sprintf("%s_%04d","folder",cnt++);
+    	name.sprintf("%s_%02d","folder",cnt++);
 }
 //---------------------------------------------------------------------------
 
@@ -298,6 +305,8 @@ void __fastcall TfraLeftBar::CreateFolder1Click(TObject *Sender)
     GenerateFolderName(tvShaders->Selected,folder);
 	TElTreeItem* node = tvShaders->Items->AddChildObject(tvShaders->Selected,folder,(LPVOID)TYPE_FOLDER);
     if (tvShaders->Selected) tvShaders->Selected->Expand(false);
+    tvShaders->EditItem(node,-1);
+	SHTools.Modified();
 }
 //---------------------------------------------------------------------------
 
@@ -315,7 +324,8 @@ void __fastcall TfraLeftBar::CollapseAll1Click(TObject *Sender)
 
 void __fastcall TfraLeftBar::tvShadersDblClick(TObject *Sender)
 {
-	UI->Command( COMMAND_SHADER_PROPERTIES );
+	if (tvShaders->Selected&&((DWORD)tvShaders->Selected->Data==TYPE_OBJECT))
+		UI->Command( COMMAND_SHADER_PROPERTIES );
 }
 //---------------------------------------------------------------------------
 
@@ -326,11 +336,11 @@ void __fastcall TfraLeftBar::ebShaderRemoveClick(TObject *Sender)
 		AnsiString full_name;
     	if (DWORD(pNode->Data)==TYPE_FOLDER){
 	        if (ELog.DlgMsg(mtConfirmation, "Delete selected folder?") == mrYes){
-            	for (TElTreeItem* item=pNode->GetFirstChild(); item; item=pNode->GetNextChild(item)){
+		        for (TElTreeItem* item=pNode->GetFirstChild(); item&&(item->Level>pNode->Level); item=item->GetNext()){
                     MakeName(item,full_name,true);
                 	if (DWORD(item->Data)==TYPE_OBJECT) SHTools.RemoveBlender(full_name.c_str());
                 }
-				SHTools.ResetSelectedBlender();
+				SHTools.ResetCurrentBlender();
 	            pNode->Delete();
                 SHTools.Modified();
         	}
@@ -338,8 +348,8 @@ void __fastcall TfraLeftBar::ebShaderRemoveClick(TObject *Sender)
     	if (DWORD(pNode->Data)==TYPE_OBJECT){
 	        if (ELog.DlgMsg(mtConfirmation, "Delete selected blender?") == mrYes){
 				MakeName(pNode,full_name,true);
-	            SHTools.RemoveBlender(AnsiString(pNode->Text).c_str());
-				SHTools.ResetSelectedBlender();
+	            SHTools.RemoveBlender(full_name.c_str());
+				SHTools.ResetCurrentBlender();
 	            pNode->Delete();
                 SHTools.Modified();
         	}
@@ -360,6 +370,61 @@ void __fastcall TfraLeftBar::tvShadersItemFocused(TObject *Sender)
 
 void __fastcall TfraLeftBar::ebShaderCloneClick(TObject *Sender)
 {
+    TElTreeItem* pNode = tvShaders->Selected;
+    if (pNode&&(DWORD(pNode->Data)==TYPE_OBJECT)){
+		AnsiString full_name;
+		MakeName(pNode,full_name,true);
+        CBlender* B = SHTools.CloneBlender(full_name.c_str());
+		SHTools.SetCurrentBlender(B);
+		UI->Command(COMMAND_SHADER_PROPERTIES);
+		SHTools.Modified();
+    }else{
+		ELog.DlgMsg(mtInformation, "At first selected blender.");
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::tvShadersKeyDown(TObject *Sender, WORD &Key,
+      TShiftState Shift)
+{
+	if (Key==VK_DELETE) ebShaderRemoveClick(Sender);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::Rename1Click(TObject *Sender)
+{
+	TElTreeItem* node = tvShaders->Selected;
+    if (node) tvShaders->EditItem(node,-1);
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TfraLeftBar::InplaceEditValidateResult(
+      TObject *Sender, bool &InputValid)
+{
+	AnsiString new_text = AnsiString(InplaceEdit->Editor->Text).LowerCase();
+	InplaceEdit->Editor->Text = new_text;
+
+	TElTreeItem* node = InplaceEdit->Item;
+	for (TElTreeItem* item=node->GetFirstSibling(); item; item=item->GetNextSibling()){
+	    if ((item->Text==new_text)&&(item!=InplaceEdit->Item)){
+        	InputValid = false;
+//            ELog.Msg(mtError,"Duplicated item name!");
+            return;
+        }
+	}
+    AnsiString full_name;
+    if (DWORD(node->Data)==TYPE_FOLDER){
+        for (item=node->GetFirstChild(); item&&(item->Level>node->Level); item=item->GetNext()){
+			if (DWORD(item->Data)==TYPE_OBJECT){
+				MakeName(item,full_name,true);
+            	SHTools.RenameBlender(full_name.c_str(),new_text.c_str(),node->Level);
+            }
+        }
+    }else if (DWORD(node->Data)==TYPE_OBJECT){
+        MakeName(node,full_name,true);
+        SHTools.RenameBlender(full_name.c_str(),new_text.c_str(),node->Level);
+    }
 	SHTools.Modified();
 }
 //---------------------------------------------------------------------------

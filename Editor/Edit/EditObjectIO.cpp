@@ -11,6 +11,7 @@
 #include "EditMesh.h"
 #include "bone.h"
 #include "motion.h"
+#include "xr_trims.h"
 
 #define EOBJ_CURRENT_VERSION		0x0010
 //----------------------------------------------------
@@ -71,7 +72,8 @@ bool CEditableObject::Load(CStream& F){
     bool bRes = true;
 	do{
         DWORD version = 0;
-        char buf[1024];
+        char buf[255];
+        char sh_name[255];
         R_ASSERT(F.ReadChunk(EOBJ_CHUNK_VERSION,&version));
         if (version!=EOBJ_CURRENT_VERSION){
             ELog.DlgMsg( mtError, "CEditableObject: unsupported file version. Object can't load.");
@@ -92,24 +94,22 @@ bool CEditableObject::Load(CStream& F){
         DWORD cnt = F.Rdword();
         m_Surfaces.resize(cnt);
         for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
-            *s_it = new st_Surface();
-            F.RstringZ((*s_it)->name);
+            *s_it = new CSurface();
             F.RstringZ(buf);
-            (*s_it)->sh_name	= buf;
-            (*s_it)->sideflag 	= F.Rbyte();
-            (*s_it)->dwFVF 		= F.Rdword();
+            (*s_it)->SetName(buf);
+            F.RstringZ(sh_name);
+            (*s_it)->Set2Sided	(F.Rbyte());
+            (*s_it)->SetFVF		(F.Rdword());
             cnt 				= F.Rdword();
-            (*s_it)->textures.resize(cnt);
-            (*s_it)->vmaps.resize(cnt);
-            for (AStringIt n_it=(*s_it)->textures.begin(); n_it!=(*s_it)->textures.end(); n_it++){
+            (*s_it)->_Textures().resize(cnt);
+            (*s_it)->_VMaps().resize(cnt);
+            for (AStringIt n_it=(*s_it)->_Textures().begin(); n_it!=(*s_it)->_Textures().end(); n_it++){
                 F.RstringZ		(buf); *n_it = buf;
             }
-            for (AStringIt v_it=(*s_it)->vmaps.begin(); v_it!=(*s_it)->vmaps.end(); v_it++){
+            for (AStringIt v_it=(*s_it)->_VMaps().begin(); v_it!=(*s_it)->_VMaps().end(); v_it++){
                 F.RstringZ		(buf); *v_it = buf;
             }
-//S            (*s_it)->shader 	= Device.Shader.Create((*s_it)->sh_name.c_str(),(*s_it)->textures);
-//S            SH_ShaderDef* sh_base = SHLib->FindShader((*s_it)->sh_name);
-//S            if (sh_base)        (*s_it)->has_alpha = (sh_base->Passes_Count)?sh_base->Passes[0].Flags.bABlend:false;
+            (*s_it)->SetShader	(sh_name,Device.Shader.Create(sh_name,ListToSequence((*s_it)->_Textures()).c_str()));
         }
 
         // Load meshes
@@ -212,14 +212,14 @@ void CEditableObject::Save(CFS_Base& F){
     F.open_chunk	(EOBJ_CHUNK_SURFACES);
     F.Wdword		(m_Surfaces.size());
     for (SurfaceIt sf_it=m_Surfaces.begin(); sf_it!=m_Surfaces.end(); sf_it++){
-        F.WstringZ	((*sf_it)->name);
-//S        F.WstringZ	((*sf_it)->shader?(*sf_it)->shader->shader->cName:"");
-        F.Wbyte		((*sf_it)->sideflag);
-        F.Wdword	((*sf_it)->dwFVF);
-        F.Wdword	((*sf_it)->textures.size());
-        for (AStringIt n_it=(*sf_it)->textures.begin(); n_it!=(*sf_it)->textures.end(); n_it++)
+        F.WstringZ	((*sf_it)->_Name());
+        F.WstringZ	((*sf_it)->_ShaderName());
+        F.Wbyte		((*sf_it)->_2Sided());
+        F.Wdword	((*sf_it)->_FVF());
+        F.Wdword	((*sf_it)->_Textures().size());
+        for (AStringIt n_it=(*sf_it)->_Textures().begin(); n_it!=(*sf_it)->_Textures().end(); n_it++)
             F.WstringZ(n_it->c_str());
-        for (AStringIt v_it=(*sf_it)->vmaps.begin(); v_it!=(*sf_it)->vmaps.end(); v_it++)
+        for (AStringIt v_it=(*sf_it)->_VMaps().begin(); v_it!=(*sf_it)->_VMaps().end(); v_it++)
             F.WstringZ(v_it->c_str());
     }
     F.close_chunk	();

@@ -10,7 +10,7 @@ AnsiString& ListToSequence(AStringVec& lst){
     if (lst.size()){
         out			= lst.front();
         for (AStringIt s_it=lst.begin()+1; s_it!=lst.end(); s_it++)
-            out		+= AnsiString(", ")+(*s_it);
+            out		+= AnsiString(",")+(*s_it);
     }
     return out;
 }
@@ -120,6 +120,25 @@ DWORD _ParseItem ( char* src, int ind, xr_token* token_list )
 	char dst[128];
 	_GetItem(src, ind, dst);
 	return _ParseItem(dst, token_list);
+}
+
+char* _ReplaceItem ( LPCSTR src, int index, LPCSTR new_item, LPSTR dst, char separator ){
+	char* n = dst;
+    int level = 0;
+    bool bCopy = true;
+	for (LPCSTR p=src; *p!=0; p++){
+    	if (level==index){
+        	if (bCopy){
+            	for (LPCSTR itm = new_item; *itm!=0;) *n++ = *itm++;
+                bCopy=false;
+            }
+	    	if (*p==separator) *n++ = separator;
+        }else{
+			*n++ = *p;
+        }
+    	if (*p==separator) level++;
+    }
+    *n++ = '\0';
 }
 
 char* _ChangeSymbol ( char* name, char src, char dest )
