@@ -15,6 +15,7 @@
 #include "motion.h"
 #include "bone.h"
 #include "xr_tokens.h"
+#include "BodyInstance.h"
 
 //------------------------------------------------------------------------------
 CActorTools Tools;
@@ -25,6 +26,7 @@ CActorTools Tools;
 CActorTools::CActorTools()
 {
 	m_EditObject		= 0;
+    m_Visual			= 0;
     m_bModified			= false;
     m_bReady			= false;
 }
@@ -32,6 +34,7 @@ CActorTools::CActorTools()
 
 CActorTools::~CActorTools()
 {
+	Device.DeleteVisual	(m_Visual);
 }
 //---------------------------------------------------------------------------
 
@@ -97,6 +100,9 @@ void CActorTools::Render(){
         mTranslate.translate	(m_EditObject->a_vPosition);
         mTransform.mul			(mTranslate,mRotate);
     	m_EditObject->RenderSkeletonSingle(mTransform);
+    }
+    if (m_Visual){
+    	m_Visual->Render(1.f);
     }
 }
 
@@ -165,6 +171,13 @@ bool CActorTools::Load(LPCSTR name)
 	if (O->Load(name)&&O->IsFlag(CEditableObject::eoDynamic)){
     	_DELETE(m_EditObject);
         m_EditObject = O;
+        // visual
+		Device.DeleteVisual(m_Visual);
+        CFS_Memory F;
+        if (m_EditObject->PrepareSkeletonVisual(F)){
+	        CStream R(F.pointer(), F.size());
+    	    m_Visual = Device.CreateVisual(&R);
+        }
         return true;
     }
     _DELETE(O);
@@ -356,22 +369,19 @@ void CActorTools::SetCurrentMotion(LPCSTR name)
     	m_EditObject->SetActiveSMotion(m_EditObject->FindSMotionByName(name));
 }
 
-void __fastcall CActorTools::FloatOnAfterEdit(LPVOID data)
+void __fastcall CActorTools::FloatOnAfterEdit(PropValue* sender, LPVOID edit_val)
 {
-	FloatValue* V = (FloatValue*)data;
-    *V->val = deg2rad(*V->val);
+    *(float*)edit_val = deg2rad(*(float*)edit_val);
 }
 
-void __fastcall CActorTools::FloatOnBeforeEdit(LPVOID data)
+void __fastcall CActorTools::FloatOnBeforeEdit(PropValue* sender, LPVOID edit_val)
 {
-	FloatValue* V = (FloatValue*)data;
-    *V->val = rad2deg(*V->val);
+    *(float*)edit_val = rad2deg(*(float*)edit_val);
 }
 
-LPCSTR __fastcall CActorTools::FloatOnDraw(LPVOID data)
+void __fastcall CActorTools::FloatOnDraw(PropValue* sender, LPVOID draw_val)
 {
-	static_text = rad2deg(*((FloatValue*)data)->val);
-	return static_text.c_str();
+    *(float*)draw_val = rad2deg(*(float*)draw_val);
 }
 
 void CActorTools::FillBaseProperties()
@@ -430,9 +440,9 @@ xr_token					tfx_token		[ ]={
 	{ 0,					0				}
 };
 
-void CActorTools::OnMotionTypeChange	(LPVOID data)
+void CActorTools::MotionOnAfterEdit(PropValue* sender, LPVOID edit_val)
 {
-	TokenValue* V = (TokenValue*)data;
+	TokenValue* V = (TokenValue*)sender;
     if (0==*V->val){
 	    m_pCycleNode->Hidden	= false;
     	m_pFXNode->Hidden		= true;
@@ -455,24 +465,24 @@ void CActorTools::FillMotionProperties()
             m_Props->AddItem(M,PROP_FLOAT, 		"Speed", 	m_Props->MakeFloatValue(&SM->fSpeed,	0.f,20.f,0.01f,2));
             m_Props->AddItem(M,PROP_FLOAT, 		"Accrue", 	m_Props->MakeFloatValue(&SM->fAccrue,	0.f,20.f,0.01f,2));
             m_Props->AddItem(M,PROP_FLOAT, 		"Falloff", 	m_Props->MakeFloatValue(&SM->fFalloff,	0.f,20.f,0.01f,2));
-            TokenValue* TV = m_Props->MakeTokenValue(&SM->bFX,tfx_token,OnMotionTypeChange);
+            TokenValue* TV = m_Props->MakeTokenValue(&SM->bFX,tfx_token,MotionOnAfterEdit);
             m_Props->AddItem(M,PROP_TOKEN, 		"Type", 	TV);
 			m_pCycleNode = m_Props->AddItem(M,PROP_MARKER, "Cycle");
             {
             	AStringVec lst;
                 lst.push_back("--none--");
                 for (BPIt it=m_EditObject->FirstBonePart(); it!=m_EditObject->LastBonePart(); it++) lst.push_back(it->alias);
-            	m_Props->AddItem(m_pCycleNode,PROP_LIST, 	"Bone part",m_Props->MakeListValue(&SM->cBonePart,&lst));
+            	m_Props->AddItem(m_pCycleNode,PROP_TOKEN2, 	"Bone part",m_Props->MakeTokenValue2(&SM->iBoneOrPart,&lst));
 	            m_Props->AddItem(m_pCycleNode,PROP_BOOL,	"Stop at end",&SM->bStopAtEnd);
             }
 			m_pFXNode = m_Props->AddItem(M,PROP_MARKER, "FX");
             {
             	AStringVec lst;
                 for (BoneIt it=m_EditObject->FirstBone(); it!=m_EditObject->LastBone(); it++) lst.push_back((*it)->Name());
-            	m_Props->AddItem(m_pFXNode,PROP_LIST, 	"Start bone",m_Props->MakeListValue(&SM->cStartBone,&lst));
+            	m_Props->AddItem(m_pFXNode,PROP_TOKEN2,	"Start bone",m_Props->MakeListValue(&SM->iBoneOrPart,&lst));
 	            m_Props->AddItem(m_pFXNode,PROP_FLOAT, 	"Power", 	m_Props->MakeFloatValue(&SM->fPower,	0.f,20.f,0.01f,2));
             }
-            OnMotionTypeChange(TV);
+            MotionOnAfterEdit(TV,0);
         }
         M->Expand(true);
     }else{

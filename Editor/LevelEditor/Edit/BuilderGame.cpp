@@ -94,8 +94,8 @@ bool SceneBuilder::BuildGame()
                 WORD fl 			= (rpt->m_Flags.bActive)?M_SPAWN_OBJECT_ACTIVE:0;
                 Packet.w_u16		(fl);
 
-				Packet.w_u16		(0);
                 u32	position		= Packet.w_tell	();
+				Packet.w_u16		(0);
                 // spawn info
                 Packet.w_u8 		(u8(rpt->m_dwTeamID));
                 Packet.w_u8 		(u8(rpt->m_dwSquadID));

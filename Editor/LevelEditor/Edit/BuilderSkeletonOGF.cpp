@@ -70,7 +70,7 @@ struct st_SPLIT
 	void	MakeProgressive(){
 		if (Flist.size()>1) {
 			// Options
-			PM_Options(1,1,4,0.1f,1,1,120,0.15f,0.95f);
+			PM_Init(1,1,4,0.1f,1,1,120,0.15f,0.95f);
 
 			// Transfer vertices
 			for (SVERTIt V=Vlist.begin(); V!=Vlist.end(); V++){

@@ -577,3 +577,5 @@ Karma:
 - плагин по новым шейдерам к LW и Максу
 - поиск + фильтр в листах (ChooseItem)
 
+measure converter 
+http://www.savardsoftware.com/downloads/mcsetup.exe

@@ -6,6 +6,7 @@
 // refs
 class TfrmProperties;
 class CEditableObject;
+class PropValue;
 
 enum EAction{
     eaSelect=0,
@@ -26,6 +27,8 @@ enum EAxis{
 class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 {
 	CEditableObject*	m_EditObject;
+    FBasicVisual*		m_Visual;
+
     bool				m_bModified;
     bool				m_bReady;
 
@@ -44,11 +47,11 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 
     TElTreeItem*		m_pCycleNode;
     TElTreeItem*		m_pFXNode;
-	void __fastcall		OnMotionTypeChange	(LPVOID data);
+	void __fastcall		MotionOnAfterEdit	(PropValue* sender, LPVOID edit_val);
 
-	void __fastcall 	FloatOnAfterEdit(LPVOID data);
-	void __fastcall 	FloatOnBeforeEdit(LPVOID data);
-	LPCSTR __fastcall 	FloatOnDraw(LPVOID data);
+	void __fastcall 	FloatOnAfterEdit	(PropValue* sender, LPVOID edit_val);
+	void __fastcall 	FloatOnBeforeEdit	(PropValue* sender, LPVOID edit_val);
+	void __fastcall 	FloatOnDraw			(PropValue* sender, LPVOID draw_val);
 public:
     TfrmProperties*		m_Props;
 public:

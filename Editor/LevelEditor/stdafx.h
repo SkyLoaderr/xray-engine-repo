@@ -41,6 +41,7 @@
 
 // Std C++ headers
 #include <math.h>
+#include <fastmath.h>
 #include <stdio.h>
 #include <io.h>
 #include <fcntl.h>
@@ -93,6 +94,14 @@ __inline float modff(float a, float *b){
 }
 __inline float expf	(float val)                           	{ return ::exp(val);}
 
+__inline LPVOID _aligned_malloc(size_t sz, int r){
+	return malloc(sz);
+}
+
+__inline _aligned_free(LPVOID ptr){
+	free(ptr);
+}
+
 namespace std{
 __inline float _cpp_min(float a, float b){ return _MIN(a,b);}
 __inline float _cpp_max(float a, float b){ return _MAX(a,b);}
@@ -122,6 +131,7 @@ void __fastcall _verify(const char *expr, char *file, int line);
 
 #define ENGINE_API
 #define DLL_API			__declspec(dllimport)
+#define ALIGN(a)
 
 // float redefine
 #define _PC_24 PC_24
@@ -136,6 +146,7 @@ void __fastcall _verify(const char *expr, char *file, int line);
 #include "engine\FixedVector.h"
 #include "engine\xr_list.h"
 #include "Log.h"
+#include "engine.h"
 
 extern LPCSTR InterpretError(HRESULT hr);
 #define CHK_DX(_expr_)			{HRESULT hr=_expr_; if (FAILED(hr)){char buf[1024]; sprintf(buf,"%s\n\nD3D Error: %s",#_expr_,InterpretError(hr)); _verify(buf, __FILE__, __LINE__);}}
@@ -171,8 +182,6 @@ DEFINE_VECTOR(LPSTR,LPSTRVec,LPSTRIt);
 DEFINE_VECTOR(LPCSTR,LPCSTRVec,LPCSTRIt);
 DEFINE_VECTOR(string64,string64Vec,string64It);
 
-#include "FS.h"
-#include "FileSystem.h"
 #ifdef _EDITOR
 	#include "device.h"
 	#include "properties.h"
@@ -245,7 +254,7 @@ typedef	char FILE_NAME	[ _MAX_PATH	];
 		#endif
     #endif
 #endif
-#define DEFINE_INI(fs) char buf[255];	strcpy(buf,_EDITOR_FILE_NAME_); strcat(buf,".ini"); FS.m_LocalRoot.Update(buf); fs->IniFileName = buf;
+#define DEFINE_INI(fs) char buf[255];	strcpy(buf,_EDITOR_FILE_NAME_); strcat(buf,".ini"); Engine.FS.m_LocalRoot.Update(buf); fs->IniFileName = buf;
 #define NONE_CAPTION "<none>" 
 #define MULTIPLESEL_CAPTION "<multiple selection>" 
 

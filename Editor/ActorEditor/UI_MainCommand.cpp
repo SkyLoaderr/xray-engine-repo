@@ -21,8 +21,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 
 	switch( _Command ){
 	case COMMAND_INITIALIZE:{
-		FS.OnCreate			();
-		InitMath			();
+		Engine.Initialize	();
         // make interface
 	    fraBottomBar		= new TfraBottomBar(0);
     	fraLeftBar  		= new TfraLeftBar(0);
@@ -46,6 +45,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		Tools.OnDestroy	();
 		Lib.OnDestroy	();
         UI.OnDestroy	();
+        Engine.Destroy	();
 		//----------------
         _DELETE(fraLeftBar);
 	    _DELETE(fraTopBar);
@@ -65,7 +65,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         	break;
         }
 		AnsiString fn;
-		if (FS.GetOpenName(FS.m_SMotions,fn)){
+		if (Engine.FS.GetOpenName(Engine.FS.m_SMotions,fn)){
         	Tools.LoadMotions(fn.c_str());
             fraLeftBar->UpdateMotionList();
         }
@@ -77,11 +77,11 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         	break;
         }
 		AnsiString fn;
-		if (FS.GetSaveName(FS.m_SMotions,fn)) Tools.SaveMotions(fn.c_str());
+		if (Engine.FS.GetSaveName(Engine.FS.m_SMotions,fn)) Tools.SaveMotions(fn.c_str());
         }break;
     case COMMAND_SAVEAS:{
 		AnsiString fn = m_LastFileName;
-		if (FS.GetSaveName(FS.m_Objects,fn)) Command(COMMAND_SAVE, (DWORD)fn.c_str());
+		if (Engine.FS.GetSaveName(Engine.FS.m_Objects,fn)) Command(COMMAND_SAVE, (DWORD)fn.c_str());
     	}break;
 	case COMMAND_SAVE:{
     	AnsiString fn;
@@ -93,13 +93,13 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	}break;
     case COMMAND_IMPORT:{
     	AnsiString fn;
-    	if (FS.GetOpenName(FS.m_Import,fn))
+    	if (Engine.FS.GetOpenName(Engine.FS.m_Import,fn))
         	if (Command( COMMAND_LOAD, (DWORD)fn.c_str() ))
             	Command( COMMAND_SAVEAS );
     	}break;
     case COMMAND_EXPORT:{
     	AnsiString fn;
-    	if (FS.GetSaveName(FS.m_GameMeshes,fn))
+    	if (Engine.FS.GetSaveName(Engine.FS.m_GameMeshes,fn))
             if (Tools.Export(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
             else			            	ELog.DlgMsg(mtError,"Export failed.");
     	}break;
@@ -107,17 +107,17 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	AnsiString fn;
         if (p1)	fn = (char*)p1;
         else	fn = m_LastFileName;
-        if( p1 || FS.GetOpenName( FS.m_Objects, fn ) ){
+        if( p1 || Engine.FS.GetOpenName( Engine.FS.m_Objects, fn ) ){
             if (!Tools.IfModified()){
                 bRes=false;
                 break;
             }
-            if ((0!=stricmp(fn.c_str(),m_LastFileName))&&FS.CheckLocking(0,fn.c_str(),false,true)){
+            if ((0!=stricmp(fn.c_str(),m_LastFileName))&&Engine.FS.CheckLocking(0,fn.c_str(),false,true)){
                 bRes=false;
                 break;
             }
-            if ((0==stricmp(fn.c_str(),m_LastFileName))&&FS.CheckLocking(0,fn.c_str(),true,false)){
-                FS.UnlockFile(0,fn.c_str());
+            if ((0==stricmp(fn.c_str(),m_LastFileName))&&Engine.FS.CheckLocking(0,fn.c_str(),true,false)){
+                Engine.FS.UnlockFile(0,fn.c_str());
             }
 	    	if (!Tools.Load(fn.c_str())){
             	ELog.DlgMsg(mtError,"Can't load file '%s'",fn.c_str());

@@ -113,6 +113,7 @@ class CEditableMesh {
     friend class SceneBuilder;
     friend class CDetail;
     friend class CExportSkeleton;
+    friend class TfrmEditLibrary;
 
 	string128		m_Name;
 

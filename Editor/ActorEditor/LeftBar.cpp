@@ -95,7 +95,7 @@ void __fastcall TfraLeftBar::miRecentFilesClick(TObject *Sender)
 {
 	TMenuItem* MI = dynamic_cast<TMenuItem*>(Sender); R_ASSERT(MI&&(MI->Tag==0x1001));
     AnsiString fn = MI->Caption;
-    if (FS.Exist(fn.c_str()))	UI.Command(COMMAND_LOAD,(DWORD)fn.c_str());
+    if (Engine.FS.Exist(fn.c_str()))	UI.Command(COMMAND_LOAD,(DWORD)fn.c_str());
     else						ELog.DlgMsg(mtError, "Error reading file '%s'",fn.c_str());
 }
 //---------------------------------------------------------------------------
@@ -351,7 +351,7 @@ void __fastcall TfraLeftBar::InplaceParticleEditValidateResult(
 void __fastcall TfraLeftBar::eMotionsAppendClick(TObject *Sender)
 {
     AnsiString folder,nm,fn,full_name;
-    if (FS.GetOpenName(FS.m_SMotion,fn)){
+    if (Engine.FS.GetOpenName(Engine.FS.m_SMotion,fn)){
 	    TElTreeItem* node=0;
     	if (tvMotions->Selected&&FOLDER::IsFolder(tvMotions->Selected))
     		node = tvMotions->Selected;

@@ -377,6 +377,57 @@ void __fastcall TfrmEditLibrary::ebExportDOClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmEditLibrary::ebExportHOMClick(TObject *Sender)
+{
+    TElTreeItem* node = tvObjects->Selected;
+    if (node&&FOLDER::IsObject(node)){
+    	AnsiString name; FOLDER::MakeName(node,0,name,false);
+        int age;
+   	    CEditableObject* obj = Lib.CreateEditObject(name.c_str(),&age);
+    	if (obj){
+		    AnsiString save_nm;
+        	if (FS.GetSaveName(FS.m_GameDO,save_nm)){
+//------------------------------------------------------------------------------
+				CFS_Memory FS;
+                FS.open_chunk(0);
+                FS.Wdword(0);
+                FS.close_chunk();
+                FS.open_chunk(1);
+				EditMeshVec& m_lst=obj->Meshes();
+				for (EditMeshIt m_it=m_lst.begin(); m_it!=m_lst.end(); m_it++){
+					for (SurfFacesPairIt sf_it=(*m_it)->m_SurfFaces.begin(); sf_it!=(*m_it)->m_SurfFaces.end(); sf_it++){
+                    	BOOL b2Sided = sf_it->first->_2Sided();
+                        INTVec& i_lst= sf_it->second;
+                        for (INTIt i_it=i_lst.begin(); i_it!=i_lst.end(); i_it++){
+                        	st_Face& F = (*m_it)->m_Faces[*i_it];
+                            for (int k=0; k<3; k++)
+	                            FS.Wvector((*m_it)->m_Points[F.pv[k].pindex]);
+                            FS.Wdword(b2Sided);
+                        }
+                    }
+                }
+                FS.close_chunk();
+                save_nm = ChangeFileExt(save_nm,".hom");
+                FS.SaveTo(save_nm.c_str(),0);
+				ELog.DlgMsg(mtInformation, "Export complete.");
+
+//------------------------------------------------------------------------------
+//                if (!obj->ExportHOM()){
+//                    ELog.DlgMsg(mtInformation, "Can't export object '%s'.", obj->GetName());
+//                }
+            }else{
+	            ELog.DlgMsg(mtError,"Export canceled.");
+            }
+	    }else{
+            ELog.DlgMsg(mtError,"Can't load object.");
+        }
+		Lib.RemoveEditObject(obj);
+    }else{
+        ELog.DlgMsg(mtInformation, "Select object to export.");
+    }
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfrmEditLibrary::ebExportSkelClick(TObject *Sender)
 {
     TElTreeItem* node = tvObjects->Selected;
@@ -452,5 +503,6 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
     }
 }
 //---------------------------------------------------------------------------
+
 
 

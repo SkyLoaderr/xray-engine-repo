@@ -46,8 +46,8 @@ void __fastcall TfrmBonePart::FillBoneParts()
     for (int k=0; k<4; k++){T[k]->Items->Clear();E[k]->Text="";}
 	for (BPIt it=m_BoneParts->begin(); it!=m_BoneParts->end(); it++){
         E[it-m_BoneParts->begin()]->Text = it->alias;
-        for (AStringIt s_it=it->bones.begin(); s_it!=it->bones.end(); s_it++)
-	    	T[it-m_BoneParts->begin()]->Items->Add(0,*s_it);
+        for (INTIt w_it=it->bones.begin(); w_it!=it->bones.end(); w_it++)
+	    	T[it-m_BoneParts->begin()]->Items->Add(0,m_EditObject->BoneNameByID(*w_it));
     }
 }
 //---------------------------------------------------------------------------
@@ -110,7 +110,7 @@ void __fastcall TfrmBonePart::ebSaveClick(TObject *Sender)
             SBonePart& BP = m_BoneParts->back();
             BP.alias = E[k]->Text;
 		    for ( TElTreeItem* node = T[k]->Items->GetFirstNode(); node; node = node->GetNext())
-            	BP.bones.push_back(node->Text);
+            	BP.bones.push_back(m_EditObject->BoneIDByName(AnsiString(node->Text).c_str()));
         }
     }
     Tools.Modified();
@@ -132,7 +132,7 @@ void __fastcall TfrmBonePart::ExtBtn1Click(TObject *Sender)
     SBonePart& BP = m_BoneParts->back();
     BP.alias = "default";
     for (BoneIt it=m_EditObject->FirstBone(); it!=m_EditObject->LastBone(); it++)
-        BP.bones.push_back((*it)->Name());
+        BP.bones.push_back(m_EditObject->BoneIDByName((*it)->Name()));
     FillBoneParts();
 }
 //---------------------------------------------------------------------------

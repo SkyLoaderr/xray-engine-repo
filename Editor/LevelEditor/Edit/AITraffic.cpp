@@ -219,7 +219,7 @@ bool CAITPoint::DeleteLink(CAITPoint* P){
 	if (it!=m_Links.end()){
 		m_Links.erase(it);
         UI.RedrawScene();
-        P->RemoveLink(this);
+//S        P->RemoveLink(this);
     	return true;
     }
     return false;

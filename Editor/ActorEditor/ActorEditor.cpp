@@ -7,7 +7,6 @@ USEUNIT("stdafx.cpp");
 USEUNIT("editor\FileSystem.cpp");
 USEUNIT("editor\D3DUtils.cpp");
 USEUNIT("editor\Log.cpp");
-USE("editor\Fmesh.h", File);
 USE("editor\std_classes.h", File);
 USEUNIT("editor\frustum.cpp");
 USELIB("lib\LWO.lib");
@@ -118,6 +117,18 @@ USEUNIT("Engine\Blenders\Blender_Lm(EbB).cpp");
 USEFORM("BonePart.cpp", frmBonePart);
 USEUNIT("Editor\ExportSkeleton.cpp");
 USELIB("Lib\xrProgressive.lib");
+USEUNIT("Engine\Animations\SkeletonX.cpp");
+USEUNIT("Engine\Animations\FBasicVisual.cpp");
+USEUNIT("Engine\Animations\FHierrarhyVisual.cpp");
+USEUNIT("Engine\Animations\FProgressiveFixedVisual.cpp");
+USEUNIT("Engine\Animations\FVisual.cpp");
+USEUNIT("Engine\Animations\SkeletonCalculate.cpp");
+USEUNIT("Engine\Animations\BodyInstance.cpp");
+USEUNIT("Engine\Animations\xrSkin1W.cpp");
+USEUNIT("Engine\Animations\xrBoneLerp.cpp");
+USEUNIT("Engine\Animations\FProgressive.cpp");
+USEUNIT("Engine\fmesh.cpp");
+USEUNIT("Editor\Engine.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

@@ -165,6 +165,19 @@ bool SceneBuilder::BuildLTX(){
 	            temp += AnsiString(", ") + AnsiString((*it)->GetName());
             pIni->WriteString("ai_traffic",P->GetName(),temp.c_str());
 		}
+
+		i = Scene.FirstObj(OBJCLASS_AITPOINT);
+        _E  = Scene.LastObj(OBJCLASS_AITPOINT);
+        temp="";
+        AnsiString t;
+        for(;i!=_E;){
+        	CAITPoint* P = (CAITPoint*)(*i);
+            t.sprintf("%3.2f,%3.2f,%3.2f", P->m_Position.x,P->m_Position.y,P->m_Position.z);
+        	temp += t;
+            i++;
+            if (i!=_E) temp+=", ";
+        }
+		pIni->WriteString("patrol_path","path_00",temp.c_str());
 	}
 
 
