@@ -25,11 +25,14 @@ function evaluator_leader_present:evaluate ()
        printf ("LEADER SID IS %s",  self.a.leader_name)
        local sim = alife ()
        if sim then
+          printf ("GOT SIM")
           local se_obj = sim:story_object (tonumber(self.a.leader_name))
           if se_obj then
              printf ("LEADER ID %d FROM SID", self.a.leader_id)
              self.a.leader_id = se_obj.id
+             self.a.leader = db.obj_by_id[self.a.leader_id]
           else
+             printf ("OBJECT NOT FOUND")
              return false
           end
        else
@@ -161,7 +164,7 @@ end
 function action_follow:initialize ()
     action_base.initialize (self)
 
-    self.object:set_callback (self, "move_callback", game_object.movement)
+    self.object:set_callback (callback.patrol_path_in_point, self.move_callback, self)
     self.object:clear_animations ()
     
     self.object:set_node_evaluator        ()
@@ -265,7 +268,7 @@ end
 function action_follow:finalize ()
     action_base.finalize (self)
     self.object:clear_animations ()
-    self.object:clear_callback (game_object.movement)
+    self.object:clear_callback (callback.patrol_path_in_point)
 end
 --------------
 function action_follow:move_callback (obj, action_type, index)
