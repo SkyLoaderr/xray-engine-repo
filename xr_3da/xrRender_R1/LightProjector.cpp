@@ -96,8 +96,7 @@ void CLightProjector::set_object	(IRenderable* O)
 // 
 void CLightProjector::setup		(int id)
 {
-	if (id>=int(receivers.size()))
-	{
+	if (id>=int(receivers.size()))	{
 		Log		("! CLightProjector::setup - ID out of range");
 		return;
 	}
