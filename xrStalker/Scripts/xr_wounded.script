@@ -218,6 +218,7 @@ function action_sit_down:initialize ()
     self.object:set_mental_state            (anim.free)
     self.object:set_movement_type           (move.stand)
     self.object:add_animation               ("waunded_sitdawn_0", false)
+    self.object:add_animation               ("waunded_perehod_0", false)
     self.object:add_animation               ("waunded_idle_0", false)
 end
 ------------
