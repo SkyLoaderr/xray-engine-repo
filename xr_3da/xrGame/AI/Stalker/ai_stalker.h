@@ -71,6 +71,9 @@ private:
 		u32					dwTime;
 	} SStalkerStates;
 
+	typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousPoints;
+	typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousForces;
+
 	// firing
 	bool					m_bFiring;
 	u32						m_dwStartFireAmmo;
@@ -101,6 +104,13 @@ private:
 	NodeCompressed*			m_tpSavedEnemyNode;
 	u32						m_dwSavedEnemyNodeID;
 	CWeapon*				m_tpWeaponToTake;
+	// pursuiting
+	int						m_iCurrentSuspiciousNodeIndex;
+	SuspiciousPoints		m_tpaSuspiciousPoints;
+	SuspiciousForces		m_tpaSuspiciousForces;
+	vector<u32>				m_tpaNodeStack;
+	bool					m_bActionStarted;
+
 	//HIT PHYS
 	float					m_saved_impulse;
 	Fvector					m_saved_hit_position;
@@ -223,6 +233,13 @@ private:
 			void			HolsterItemSendMessage			();
 			void			vfUpdateSearchPosition			();
 			void			vfChooseNextGraphPoint			();
+			void			vfMarkVisibleNodes				(CEntity *tpEntity);
+			void			vfFindAllSuspiciousNodes		(u32 StartNode, Fvector tPointPosition, const Fvector& BasePos, float Range, CGroup &Group);
+			void			vfClasterizeSuspiciousNodes		(CGroup &Group);
+			void			vfChooseSuspiciousNode			(CAISelectorBase &tSelector);
+			int				ifGetSuspiciousAvailableNode	(int iLastIndex, CGroup &Group);
+			bool			bfCheckForNodeVisibility		(u32 dwNodeID, bool bIfRyPick = false);
+
 			// physics
 			void			CreateSkeleton					();
 

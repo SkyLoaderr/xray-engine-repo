@@ -56,15 +56,6 @@ void CAI_Stalker::RetreatUnknown()
 	WRITE_TO_LOG("Retreating unknown");
 }
 
-void CAI_Stalker::PursuitKnown()
-{
-	WRITE_TO_LOG("Pursuiting known");
-	
-//	VERIFY(Weapons->ActiveWeapon());
-//	Weapons->ActiveWeapon()->Reload();
-//	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Weapons->ActiveWeapon()->GetAmmoElapsed());
-}
-
 void CAI_Stalker::PursuitUnknown()
 {
 	WRITE_TO_LOG("Pursuiting unknown");
@@ -280,6 +271,41 @@ void CAI_Stalker::RetreatKnown()
 	vfChoosePointAndBuildPath	(m_tSelectorRetreat,true);
 
 	vfSetMovementType			(eBodyStateStand,eMovementTypeRun,eLookTypePoint,m_tEnemy.Enemy->Position());
+	
+	if (m_fCurSpeed < EPS_L)
+		r_torso_target.yaw		= r_target.yaw;
+}
+
+void CAI_Stalker::PursuitKnown()
+{
+	WRITE_TO_LOG("Pursuiting known");
+	
+	if (m_bStateChanged) {
+		m_dwLostEnemyTime = Level().timeServer();
+		getGroup()->m_tpaSuspiciousNodes.clear();
+		vfFindAllSuspiciousNodes(m_dwSavedEnemyNodeID,m_tSavedEnemyPosition,m_tSavedEnemyPosition,_min(20.f,_min(1*8.f*vPosition.distance_to(m_tSavedEnemyPosition)/4.5f,60.f)),*getGroup());
+		vfClasterizeSuspiciousNodes(*getGroup());
+	}
+	
+	vfStopFire();
+
+	SelectEnemy(m_tEnemy);
+
+	// I see enemy
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_tEnemy.Enemy,eStalkerStateAttack);
+
+	// I have to recharge active weapon
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Weapons->ActiveWeapon() && !Weapons->ActiveWeapon()->GetAmmoElapsed(),eStalkerStateRecharge);
+
+	vfCheckForItems();
+
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_tpWeaponToTake,eStalkerStateTakeItem);
+
+	vfChooseSuspiciousNode(m_tSelectorFreeHunting);
+	
+	vfChoosePointAndBuildPath	(m_tSelectorFreeHunting,true);
+
+	vfSetMovementType			(eBodyStateStand,eMovementTypeRun,eLookTypeDanger);
 	
 	if (m_fCurSpeed < EPS_L)
 		r_torso_target.yaw		= r_target.yaw;

@@ -38,9 +38,10 @@ CAI_Stalker::CAI_Stalker			()
 	m_tpSavedEnemyNode				= 0;
 	m_dwSavedEnemyNodeID			= u32(-1);
 	m_tpWeaponToTake				= 0;
+	m_bActionStarted				= false;
 	
-	m_fAccuracy						= 0.f;
-	m_fIntelligence					= 0.f;
+//	m_fAccuracy						= 0.f;
+//	m_fIntelligence					= 0.f;
 	
 	m_pPhysicsShell					= NULL;
 	m_saved_impulse					= 0.f;

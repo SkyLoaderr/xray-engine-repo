@@ -11,6 +11,8 @@
 #include "..\\..\\a_star.h"
 #include "..\\ai_monsters_misc.h"
 
+#define TIME_TO_SEARCH 60000
+
 void CAI_Stalker::vfBuildPathToDestinationPoint(CAISelectorBase *S, bool bCanStraighten, Fvector *tpDestinationPosition)
 {
 	// building a path from and to
@@ -409,4 +411,339 @@ void CAI_Stalker::vfCheckForItems()
 			break;
 		}
 	}
+}
+
+
+void CAI_Stalker::vfMarkVisibleNodes(CEntity *tpEntity)
+{
+	CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(tpEntity);
+	if (!tpCustomMonster)
+		return;
+
+	CAI_Space &AI = getAI();
+	Fvector tDirection;
+	float /**fFov = tpCustomMonster->ffGetFov()*PI/180.f, /**/fRange = tpCustomMonster->ffGetRange();
+	
+	for (float fIncrement = 0; fIncrement < PI_MUL_2; fIncrement += PI/10.f) {
+		tDirection.setHP(fIncrement,0.f);
+		AI.ffMarkNodesInDirection(tpCustomMonster->AI_NodeID,tpCustomMonster->Position(),tDirection,AI.q_mark_bit,fRange,m_tpaNodeStack);
+	}
+}
+
+void CAI_Stalker::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition, const Fvector& BasePos, float Range, CGroup &Group)
+{
+	Device.Statistic.AI_Range.Begin	();
+
+	Group.m_tpaSuspiciousNodes.clear();
+	
+	BOOL bStop = FALSE;
+	
+	CAI_Space &AI = getAI();
+	NodePosition QueryPos;
+	AI.PackPosition(QueryPos,BasePos);
+
+	AI.q_stack.clear();
+	AI.q_stack.push_back(StartNode);
+	AI.q_mark_bit[StartNode] = true;
+	
+//	NodeCompressed*	Base = AI.Node(StartNode);
+	
+	float range_sqr		= Range*Range;
+	float fEyeFov;
+	CEntityAlive *tpEnemy = dynamic_cast<CEntityAlive*>(m_tSavedEnemy);
+	if (tpEnemy)
+		fEyeFov = tpEnemy->ffGetFov();
+	else
+		fEyeFov = ffGetFov();
+	fEyeFov *=PI/180.f;
+
+	/**
+	Fvector tMyDirection;
+	SRotation tMyRotation,tEnemyRotation;
+	tMyDirection.sub(tSavedEnemyPosition,vPosition);
+	mk_rotation(tMyDirection,tMyRotation);
+	tMyDirection.sub(tSavedEnemy->Position(),vPosition);
+	mk_rotation(tMyDirection,tEnemyRotation);
+	if (tEnemyRotation.yaw > tMyRotation.yaw) {
+		if (tEnemyRotation.yaw - tMyRotation.yaw > PI)
+			tMyRotation.yaw += PI_MUL_2;
+	}
+	else
+		if (tMyRotation.yaw > tEnemyRotation.yaw)
+			if (tMyRotation.yaw - tEnemyRotation.yaw > PI)
+				tEnemyRotation.yaw += PI_MUL_2;
+    bool bRotation = tMyRotation.yaw < tEnemyRotation.yaw;
+	/**/
+	INIT_SQUAD_AND_LEADER;
+	m_tpaNodeStack.clear();
+	vfMarkVisibleNodes(Leader);
+	for (int i=0; i<(int)Group.Members.size(); i++)
+		vfMarkVisibleNodes(Group.Members[i]);
+
+	Msg("Nodes being checked for suspicious :");
+	for (u32 it=0; it<AI.q_stack.size(); it++) {
+		u32 ID = AI.q_stack[it];
+
+ 		//if (bfCheckForVisibility(ID,tMyRotation,bRotation) && (ID != StartNode))
+		//	continue;
+
+		NodeCompressed*	N = AI.Node(ID);
+		u32 L_count	= u32(N->links);
+		NodeLink* L_it	= (NodeLink*)(LPBYTE(N)+sizeof(NodeCompressed));
+		NodeLink* L_end	= L_it+L_count;
+		for( ; L_it!=L_end; L_it++) {
+			if (bStop)			
+				break;
+			// test node
+			u32 Test = AI.UnpackLink(*L_it);
+			if (AI.q_mark_bit[Test])
+				continue;
+
+			NodeCompressed*	T = AI.Node(Test);
+
+			float distance_sqr = AI.u_SqrDistance2Node(BasePos,T);
+			if (distance_sqr>range_sqr)	
+				continue;
+
+			// register
+			AI.q_mark_bit[Test]		= true;
+			AI.q_stack.push_back	(Test);
+
+			// estimate
+			SSearchPlace tSearchPlace;
+
+			Fvector tDirection, tNodePosition = AI.tfGetNodeCenter(T);
+			tDirection.sub(tPointPosition,tNodePosition);
+			tDirection.normalize_safe();
+			SRotation tRotation;
+			mk_rotation(tDirection,tRotation);
+			float fCost = ffGetCoverInDirection(tRotation.yaw,T);
+			Msg("%d %.2f",Test,fCost);
+			if (fCost < .35f) {
+				bool bOk = false;
+				float fMax = 0.f;
+				for (int i=0, iIndex = -1; i<(int)Group.m_tpaSuspiciousNodes.size(); i++) {
+					Fvector tP0 = AI.tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID);
+					float fDistance = tP0.distance_to(tNodePosition);
+					if (fDistance < 10.f) {
+						if (fDistance < 3.f) {
+							if (fCost < Group.m_tpaSuspiciousNodes[i].fCost) {
+								Group.m_tpaSuspiciousNodes[i].dwNodeID = Test;
+								Group.m_tpaSuspiciousNodes[i].fCost = fCost;
+							}
+							bOk = true;
+							break;
+						}
+						tDirection.sub(tP0,tNodePosition);
+						tDirection.normalize_safe();
+						mk_rotation(tDirection,tRotation);
+						if (ffGetCoverInDirection(tRotation.yaw,T) > .3f) {
+							if (fCost < Group.m_tpaSuspiciousNodes[i].fCost) {
+								Group.m_tpaSuspiciousNodes[i].dwNodeID = Test;
+								Group.m_tpaSuspiciousNodes[i].fCost = fCost;
+							}
+							bOk = true;
+							break;
+						}
+					}
+					if (fCost > fMax) {
+						fMax = Group.m_tpaSuspiciousNodes[i].fCost;
+						iIndex = i;
+					}
+				}
+				if (!bOk) {
+					if (Group.m_tpaSuspiciousNodes.size() < MAX_SUSPICIOUS_NODE_COUNT) {
+						tSearchPlace.dwNodeID	= Test;
+						tSearchPlace.fCost		= fCost;
+						tSearchPlace.dwSearched	= 0;
+						tSearchPlace.dwGroup	= 0;
+						Group.m_tpaSuspiciousNodes.push_back(tSearchPlace);
+					}
+					else
+						if ((fMax > fCost) && (iIndex >= 0)) {
+							Group.m_tpaSuspiciousNodes[iIndex].dwNodeID = Test;
+							Group.m_tpaSuspiciousNodes[iIndex].fCost = fCost;
+						}
+				}
+			}
+		}
+		if (bStop)
+			break;
+	}
+
+	{
+		vector<u32>::iterator it	= AI.q_stack.begin();
+		vector<u32>::iterator end	= AI.q_stack.end();
+		for ( ; it!=end; it++)	
+			AI.q_mark_bit[*it] = false;
+		
+		it	= m_tpaNodeStack.begin();
+		end	= m_tpaNodeStack.end();
+		for ( ; it!=end; it++)	
+			AI.q_mark_bit[*it] = false;
+	}
+	//AI.q_mark_bit.assign(AI.Header().count,false);
+	
+	Msg("Suspicious nodes :");
+	for (int k=0; k<(int)Group.m_tpaSuspiciousNodes.size(); k++)
+		Msg("%d",Group.m_tpaSuspiciousNodes[k].dwNodeID);
+
+	Device.Statistic.AI_Range.End();
+}
+
+#define GROUP_RADIUS	15.f
+
+void CAI_Stalker::vfClasterizeSuspiciousNodes(CGroup &Group)
+{
+//	u32 N = Group.m_tpaSuspiciousNodes.size();
+//	m_tpaSuspiciousPoints.resize(N);
+//	m_tpaSuspiciousForces.resize(N);
+//	for (int i=0; i<N; i++) {
+//		m_tpaSuspiciousPoints[i] = getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID);
+//		m_tpaSuspiciousForces[i].set(0,0,0);
+//	}
+//	float fK = .05f;
+//	for (int k=0; k<3; k++) {
+//		for (int i=0; i<N; i++) {
+//			for (int j=0; j<N; j++)
+//				if (j != i) {
+//					Fvector tDummy;
+//					tDummy.sub(m_tpaSuspiciousPoints[j],m_tpaSuspiciousPoints[i]);
+//					tDummy.mul(tDummy.magnitude()*fK);
+//					m_tpaSuspiciousForces[i].add(tDummy);
+//				}
+//		}
+//		for (int i=0; i<m_tpaSuspiciousPoints.size(); i++) {
+//			m_tpaSuspiciousForces[i].div(N);
+//			m_tpaSuspiciousPoints[i].add(m_tpaSuspiciousForces[i]);
+//			m_tpaSuspiciousForces[i].set(0,0,0);
+//		}
+//	}
+//	for (int i=0, iGroupCounter = 1; i<N; i++, iGroupCounter++) {
+//		if (!Group.m_tpaSuspiciousNodes[i].dwGroup) 
+//			Group.m_tpaSuspiciousNodes[i].dwGroup = iGroupCounter;
+//		for (int j=0; j<N; j++)
+//			if (!Group.m_tpaSuspiciousNodes[j].dwGroup && (m_tpaSuspiciousPoints[j].distance_to(m_tpaSuspiciousPoints[i]) < GROUP_RADIUS))
+//				Group.m_tpaSuspiciousNodes[j].dwGroup = iGroupCounter;
+//	}
+//	for ( i=0; i<N; i++)
+//		Group.m_tpaSuspiciousNodes[i].dwGroup--;
+//	Group.m_tpaSuspiciousGroups.resize(--iGroupCounter);
+//	for ( i=0; i<iGroupCounter; i++)
+//		Group.m_tpaSuspiciousGroups[i] = 0;
+
+ 	u32 N = Group.m_tpaSuspiciousNodes.size();
+	for (int i=0, iGroupCounter = 1; i<(int)N; i++, iGroupCounter++) {
+		if (!Group.m_tpaSuspiciousNodes[i].dwGroup) 
+			Group.m_tpaSuspiciousNodes[i].dwGroup = iGroupCounter;
+		for (int j=0; j<(int)N; j++)
+			if (!Group.m_tpaSuspiciousNodes[j].dwGroup && (getAI().ffGetDistanceBetweenNodeCenters(Group.m_tpaSuspiciousNodes[j].dwNodeID,Group.m_tpaSuspiciousNodes[i].dwNodeID) < GROUP_RADIUS))
+				Group.m_tpaSuspiciousNodes[j].dwGroup = iGroupCounter;
+	}
+	for ( i=0; i<(int)N; i++)
+		Group.m_tpaSuspiciousNodes[i].dwGroup--;
+	Group.m_tpaSuspiciousGroups.resize(--iGroupCounter);
+	for ( i=0; i<iGroupCounter; i++)
+		Group.m_tpaSuspiciousGroups[i] = 0;
+}
+
+void CAI_Stalker::vfChooseSuspiciousNode(CAISelectorBase &tSelector)
+{
+	CGroup &Group = *getGroup();
+	INIT_SQUAD_AND_LEADER;
+	if ((AI_Path.fSpeed < EPS_L) || (!m_bActionStarted)) {
+		if ((m_iCurrentSuspiciousNodeIndex != -1) && (Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID == AI_NodeID))
+			Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched = 2;
+		if ((m_iCurrentSuspiciousNodeIndex == -1) || (Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched == 2))
+			m_iCurrentSuspiciousNodeIndex = ifGetSuspiciousAvailableNode(m_iCurrentSuspiciousNodeIndex,Group);
+		if (m_iCurrentSuspiciousNodeIndex != -1) {
+			Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched = 1;
+			Group.m_tpaSuspiciousGroups[Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwGroup] = 1;
+			vfInitSelector(tSelector,Squad,Leader);
+			tSelector.m_tpEnemyNode = getAI().Node(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID);
+			tSelector.m_tEnemyPosition = getAI().tfGetNodeCenter(tSelector.m_tpEnemyNode);
+		}
+		else {
+			if (!Group.m_tpaSuspiciousNodes.size())
+				vfInitSelector(m_tSelectorRetreat,Squad,Leader);
+			else
+				vfChoosePointAndBuildPath(m_tSelectorRetreat);
+		}
+		m_bActionStarted = true;
+	}
+	else {
+		for (int i=0, iCount = 0; i<(int)Group.m_tpaSuspiciousNodes.size(); i++)
+			if (Group.m_tpaSuspiciousNodes[i].dwSearched != 2) {
+				if ((Group.m_tpaSuspiciousNodes[i].dwNodeID == AI_NodeID) || bfCheckForNodeVisibility(Group.m_tpaSuspiciousNodes[i].dwNodeID, i == m_iCurrentSuspiciousNodeIndex))
+					Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
+				iCount++;
+			}
+		if ((m_iCurrentSuspiciousNodeIndex != -1) && (Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched == 2))
+			AI_Path.TravelPath.clear();
+		if (!iCount && (m_dwCurrentUpdate - m_dwLostEnemyTime > TIME_TO_SEARCH)) {
+			m_tSavedEnemy = 0;
+			GO_TO_PREV_STATE;
+		}
+		if (m_iCurrentSuspiciousNodeIndex != -1)
+			vfChoosePointAndBuildPath(tSelector,true);
+	}
+}
+
+int CAI_Stalker::ifGetSuspiciousAvailableNode(int iLastIndex, CGroup &Group)
+{
+	int Index = -1;
+	float fMin = 1000, fCost;
+	u32 dwNodeID = AI_NodeID;
+	if (iLastIndex >= 0) {
+		dwNodeID = Group.m_tpaSuspiciousNodes[iLastIndex].dwNodeID;
+		int iLastGroup = Group.m_tpaSuspiciousNodes[iLastIndex].dwGroup;
+		for (int i=0; i<(int)Group.m_tpaSuspiciousNodes.size(); i++) {
+			if (((int)Group.m_tpaSuspiciousNodes[i].dwGroup != iLastGroup) || Group.m_tpaSuspiciousNodes[i].dwSearched)
+				continue;
+//			if (Group.m_tpaSuspiciousNodes[i].dwSearched)
+//				continue;
+//			if (Group.m_tpaSuspiciousNodes[i].fCost < fMin) {
+//				fMin = Group.m_tpaSuspiciousNodes[i].fCost;
+//				Index = i;
+//			}
+			if ((fCost = getAI().ffGetDistanceBetweenNodeCenters(Group.m_tpaSuspiciousNodes[i].dwNodeID,dwNodeID)) < fMin) {
+				fMin = fCost;
+				Index = i;
+			}
+		}
+	}
+	
+	if (Index >= 0)
+		return(Index);
+
+	for (int i=0; i<(int)Group.m_tpaSuspiciousNodes.size(); i++) {
+//		if (Group.m_tpaSuspiciousGroups[Group.m_tpaSuspiciousNodes[i].dwGroup])
+//			continue;
+		if (Group.m_tpaSuspiciousNodes[i].dwSearched)
+			continue;
+		if (Group.m_tpaSuspiciousNodes[i].fCost < fMin) {
+			fMin = Group.m_tpaSuspiciousNodes[i].fCost;
+			Index = i;
+		}
+//		if ((fCost = getAI().ffGetDistanceBetweenNodeCenters(Group.m_tpaSuspiciousNodes[i].dwNodeID,dwNodeID)) < fMin) {
+//			fMin = fCost;
+//			Index = i;
+//		}
+	}
+
+	if (Index == -1) {
+		for (int i=0; i<(int)Group.m_tpaSuspiciousNodes.size(); i++) {
+			if (Group.m_tpaSuspiciousNodes[i].dwSearched)
+				continue;
+			if (Group.m_tpaSuspiciousNodes[i].fCost < fMin) {
+				fMin = Group.m_tpaSuspiciousNodes[i].fCost;
+				Index = i;
+			}
+//			if ((fCost = getAI().ffGetDistanceBetweenNodeCenters(Group.m_tpaSuspiciousNodes[i].dwNodeID,dwNodeID)) < fMin) {
+//				fMin = fCost;
+//				Index = i;
+//			}
+		}
+	}
+	return(Index);
 }

@@ -152,3 +152,16 @@ bool CAI_Stalker::bfCheckIfCanKillMember()
 	}
 	return(bCanKillMember);
 }
+
+bool CAI_Stalker::bfCheckForNodeVisibility(u32 dwNodeID, bool bIfRayPick)
+{
+	Fvector tDirection;
+	tDirection.sub(getAI().tfGetNodeCenter(dwNodeID),vPosition);
+	tDirection.normalize_safe();
+	SRotation tRotation;
+	mk_rotation(tDirection,tRotation);
+	if (getAI().bfTooSmallAngle(r_current.yaw,tRotation.yaw,eye_fov*PI/180.f/2.f))
+		return(getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,dwNodeID));
+	else
+		return(false);
+}
