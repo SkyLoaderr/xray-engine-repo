@@ -136,7 +136,7 @@ function stateAttackThreaten:execute()
                 l_v = level.vertex_in_direction(self.memory.npc:level_vertex_id(), dir, 10)
             end
 
-      action(self.memory.npc, move(move.run_fwd, level.vertex_position(l_v), 0.1, move.force), sound(sound.attack, 500), cond(cond.move_end, 3000))
+      action(self.memory.npc, move(move.run_fwd, level.vertex_position(l_v), 0.3), sound(sound.attack, 500), cond(cond.move_end, 3000))
         end
     end
 end

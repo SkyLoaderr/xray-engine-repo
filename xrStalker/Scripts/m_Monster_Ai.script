@@ -119,6 +119,12 @@ end
 
 function m_Monster:finalize()
 	if( self.curState ) then self.curState:finalize() end
+	printf("bobik finalize")
+	if(self.memory.npc:alive()) then
+		printf("Bobik alive")
+	else
+		printf("Bobik dead")
+	end
 end
 
 --------------------------------------------------------------------------------
