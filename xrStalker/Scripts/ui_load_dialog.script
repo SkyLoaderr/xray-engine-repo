@@ -21,6 +21,7 @@ end
 function load_dialog:SetClGame  (game_cl)
    self.m_game_cl = game_cl
 end
+
 function load_dialog:InitControls()
 	----- DATA ----
 	local indent          = 50
@@ -33,10 +34,11 @@ function load_dialog:InitControls()
 							 y = caption_rect.height/2,
 							 width = 0,
 							 height = 0}
-	local edit_rect       = {x = indent, 
+	local info_rect       = {x = 0, 
 						     y = caption_rect.y + caption_rect.height + indent,
-						     width = caption_rect.width - indent*2, 
+						     width = 150, 
 						     height = 28}
+	info_rect.x = main_rect.width - info_rect.width - indent
 	local btn_ok_rect     = {x = indent,
 							 y = 0,
 							 height = 40,
@@ -47,10 +49,10 @@ function load_dialog:InitControls()
 							 height = btn_ok_rect.height,
 							 width  = btn_ok_rect.width}
 	local list_rect       = {x = indent,
-						     y = edit_rect.y + edit_rect.height + indent,
+						     y = caption_rect.y + caption_rect.height + indent,
 						     width = 0,
 						     height = 0}
-	list_rect.width  = main_rect.width - indent*2
+	list_rect.width  = main_rect.width - indent*3 - info_rect.width
 	list_rect.height = main_rect.height - indent*2 - list_rect.y - btn_ok_rect.height	
 	local message_rect   = {x = 0, y = 0, width = 550, height = 300}
 	--message_rect.x = (main_rect.width - message_rect.width)/2
@@ -65,10 +67,7 @@ function load_dialog:InitControls()
 	local main_frame = CUIFrameWindow()
 	main_frame:SetAutoDelete(true)              --parent will delete this item in destructor
 	main_frame:SetWindowName("main_frame")
-	--init texture and position relatively parent
-	main_frame:Init("ui\\ui_frame",0,0,main_rect.width, main_rect.height)
-    --textures name, root is Gamedata\Textures folder
---	main_static:ClipperOn() --clip texture by window region
+	main_frame:Init("ui\\ui_frame",0,0,main_rect.width, main_rect.height)    
 	self:AttachChild(main_frame)
 	
 	-- CAPTION frame --
@@ -88,18 +87,10 @@ function load_dialog:InitControls()
 	main_frame:AttachChild(txt_caption)
 	
 	-- INFO box --
-	local frame_edit = CUIFrameWindow()  --background for ListView
-    frame_edit:SetAutoDelete(true)
-    frame_edit:Init("ui\\ui_frame_very_small", edit_rect.x, edit_rect.y, edit_rect.width, edit_rect.height)
-    main_frame:AttachChild(frame_edit)
-	
-	local edit_filename = CUIEditBox()
-	edit_filename:SetAutoDelete(true)
-	edit_filename:SetFont(GetFontLetterica25())
-	edit_filename:SetWindowName("edit_filename")
-	edit_filename:SetText("edit_me")
-	edit_filename:Init(edit_rect.x, edit_rect.y, edit_rect.width, edit_rect.height)
-	main_frame:AttachChild(edit_filename)
+	local frame_info = CUIFrameWindow()  --background for ListView
+    frame_info:SetAutoDelete(true)
+    frame_info:Init("ui\\ui_frame_very_small", info_rect.x, info_rect.y, info_rect.width, info_rect.height)
+    main_frame:AttachChild(frame_info)	
 
 
 	------------LIST-----------------
