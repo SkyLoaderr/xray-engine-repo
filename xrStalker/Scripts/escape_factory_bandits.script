@@ -3,6 +3,7 @@
 Чугай Саша
 
 Сделать:
+	- рассинхронизируются
     - стоит в бт
     - не смотрят друг на друга
     - проверить секцию
@@ -10,7 +11,7 @@
     - ходят туда-сюда
 --------------------------------------------------------------------------------------------------------------------]]
 
-local snd_base         = xr_sounds_id.chugai_escape_factory_bandits_base
+--[[local snd_base         = xr_sounds_id.chugai_escape_factory_bandits_base
 local snd_about_novice = snd_base + 0
 local snd_about_zone   = snd_base + 1
 local snd_hiding_place = snd_base + 2
@@ -20,15 +21,24 @@ local snd_idle_2       = snd_base + 5
 local snd_idle_3       = snd_base + 6
 local snd_idle_4       = snd_base + 7
 local snd_idle_5       = snd_base + 8
-
+]]
 
 local rnd_phrases = {
-    idle    = 0,
-    maxidle = 8,
-    sumidle = 2,
-    rnd     = 100,
-    sounds  = {}
+	maxidle = 8,
+	sumidle = 2,
+	themes  = {
+		"weather",
+		"state",
+		"escape_factory_bandits_novice",
+		"escape_factory_bandits_zone",
+		"escape_factory_bandits_place",
+	}
 }
+
+local snd_novice_again =  { themes = { "escape_factory_bandits_novice_again" } }
+local snd_on_actor     =  { themes = { "escape_factory_bandits_on_actor" } }
+
+local the_actor
 
 ---------------------------------------------------------------------------------------------------------------------
 
@@ -38,14 +48,26 @@ function check_enemy( npc )
         npc:set_sound_mask( -1 )
         npc:set_sound_mask( 0 )
 
-        local actor = level.actor()
+        --local actor = level.actor()
 
-        if actor and enemy:id() == actor:id() then
-            npc:play_sound( snd_on_actor, 1, 0 )
-        elseif enemy:name() == "trivial_novice3_0_1" then
-            npc:play_sound( snd_novice_again, 1, 0 )
+        --if actor and enemy:id() == actor:id() then
+            --npc:play_sound( snd_on_actor, 1, 0 )
+        --    xr_sound.sound_update( npc, snd_on_actor, true )
+        if enemy:name() == "trivial_novice3_0_1" then
+            --npc:play_sound( snd_novice_again, 1, 0 )
+            xr_sound.sound_update( npc, snd_novice_again, true )
         end
     end
+end
+
+function check_actor( npc1, a )
+	if npc1:see( the_actor ) then
+		a.enabled  = false
+		xr_motivator.storage[a.partner:id()].escape_factory_bandit.enabled = false
+
+		xr_motivator.storage[npc1:id()].robbers.enabled      = true
+		xr_motivator.storage[a.partner:id()].robbers.enabled = true
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -124,6 +146,10 @@ function action_go_to_pos:initialize()
         self.a.partner = level.object( self.a.partner_name )
     end
 
+    if not the_actor then
+    	the_actor = level.actor()
+    end
+
     self.object:set_node_evaluator      ()
     self.object:set_path_evaluator      ()
     self.object:set_desired_direction   ()
@@ -150,7 +176,10 @@ function action_go_to_pos:execute()
         self.object:set_previous_point( self.lp )
     end
 
-    globals.set_sound( self.object, rnd_phrases, false )
+    check_actor( self.object, self.a )
+
+--    globals.set_sound( self.object, rnd_phrases, false )
+    xr_sound.sound_update( self.object, rnd_phrases )
 end
 
 function action_go_to_pos:finalize()
@@ -260,7 +289,10 @@ function action_stand:execute()
     action_base.execute( self )
 
     if self.a.partner:alive() then
-        globals.set_sound( self.object, rnd_phrases, false )
+    	check_actor( self.object, self.a )
+
+        --globals.set_sound( self.object, rnd_phrases, false )
+        xr_sound.sound_update( self.object, rnd_phrases )
 
         if self.timer <= device():time_global() then
             self.a.dest_vert_id = self.positions[self.next_pos]
@@ -353,7 +385,7 @@ function add_to_binder( obj )
                         way:level_vertex_id( way:count() - 1 ) }
 
     -- звуки
-
+--[[
     obj:add_sound( "script_replics\\bandit_1\\replics\\bandit_about_novice_", 10, snd_type.talk, 2, 1, snd_about_novice )
     obj:add_sound( "script_replics\\bandit_1\\replics\\bandit_about_zone_",    5, snd_type.talk, 2, 1, snd_about_zone )
     obj:add_sound( "script_replics\\bandit_1\\replics\\bandit_hiding_place_",  5, snd_type.talk, 2, 1, snd_hiding_place )
@@ -363,7 +395,7 @@ function add_to_binder( obj )
     obj:add_sound( "script_replics\\bandit_1\\idle\\bandit_idle_3",            1, snd_type.talk, 2, 1, snd_idle_3 )
     obj:add_sound( "script_replics\\bandit_1\\idle\\bandit_idle_4",            1, snd_type.talk, 2, 1, snd_idle_4 )
     obj:add_sound( "script_replics\\bandit_1\\idle\\bandit_idle_5",            1, snd_type.talk, 2, 1, snd_idle_5 )
-    
+
 
     for i = 0, 1 do
         table.insert( rnd_phrases.sounds, { pack = snd_about_novice, id = i } )
@@ -377,7 +409,7 @@ function add_to_binder( obj )
     for i = snd_idle_2, snd_idle_5 do
         table.insert( rnd_phrases.sounds, { pack = i, id = 0 } )
     end
-
+]]
     -- GOAP
 
     local operators  = {}
