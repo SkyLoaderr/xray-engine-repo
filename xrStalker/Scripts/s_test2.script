@@ -8,7 +8,7 @@ function update_action (npc, script, ...)
 	end
 
 	for a = 1, arg.n, 1 do
-		if arg[a] ~= nil then act:set (arg[i]) end
+		if arg[a] ~= nil then act:set_action (arg[i]) end
 	end		
 	reset_action (npc, script)
     npc:command (act, false)
@@ -19,7 +19,7 @@ function main ()
 
 	local mover = get_level_object ("mover")
 	mover:script (true, s_test2.script_name ())
-	action (mover, move (move.standing, move.stand, move.line, patrol ("way0000")),
+	action (mover, move (move.standing, move.walk, move.line, patrol ("way0000")),
 			look (look.search), anim (anim.free), cond (cond.time_end, time_infinite))
 
 	local time = game.time ()
