@@ -22,7 +22,7 @@ function evaluator_new:evaluate()
 
 	self.a.evn:calculate()
 --	self.a.evn:print()
-	
+
 	return self.a.evn:isEvents() or self.a.obj.id ~= nil
 end
 
@@ -43,7 +43,7 @@ function action_wait:initialize()
 
 	self.sound_relax = {idle = 0,
 		     begin = nil,
-		     maxidle = 1, 
+		     maxidle = 1,
 		     sumidle = 1,
    		     rnd = 100,
 		     lastsound = nil,
@@ -51,7 +51,7 @@ function action_wait:initialize()
 					{pack = sounds["relax"], id = 1} }}
 	self.sound_search = {idle = 0,
 		     begin = nil,
-		     maxidle = 5, 
+		     maxidle = 5,
 		     sumidle = 3,
    		     rnd = 100,
 		     lastsound = nil,
@@ -61,7 +61,7 @@ function action_wait:initialize()
 					{pack = sounds["search"], id = 3} }}
 	self.sound_watch = {idle = 0,
 		     begin = nil,
-		     maxidle = 5, 
+		     maxidle = 5,
 		     sumidle = 3,
    		     rnd = 100,
 		     lastsound = nil,
@@ -76,7 +76,7 @@ function action_wait:initialize()
 					{pack = sounds["wait"], id = 8} }}
 	self.anim = {idle = 0,
 		     begin = nil,
-		     maxidle = 4, 
+		     maxidle = 4,
 		     sumidle = 4,
    		     rnd = 100,
 		     lastanim = nil,
@@ -173,6 +173,7 @@ function action_wait:execute()
 end
 function action_wait:finalize()
 	action_base.finalize (self)
+    self.object:clear_animations()
 end
 function action_wait:set_prisluh(prisluh)
 	if prisluh == false then
@@ -256,7 +257,7 @@ function add_to_binder(object, char_ini)
 	action:add_effect		(world_property(properties["event"],		false))
 	manager:add_action (operators["wait"], action)
 
-	action = manager:action (stalker_ids.action_puzzle_solver)	
+	action = manager:action (stalker_ids.action_puzzle_solver)
 	action:add_precondition		(world_property(properties["event"],		false))
 
     if char_ini:section_exist ("reactions") == true then
@@ -281,7 +282,7 @@ function events:__init(npc)
 	self.used = {} -- обработанные объекты, некоторое врем€ раздражители по ним учитыватьс€ не будут
 	self.watch = {}	-- раздражители, за которыми мы следим
 	self.corpse = {} -- найденные трупы
-	self.hear = {} 	-- звуки, которые мы слышали менее чем x секунду назад. “ак как один и тот же звук может приходить несколько раз 
+	self.hear = {} 	-- звуки, которые мы слышали менее чем x секунду назад. “ак как один и тот же звук может приходить несколько раз
 			-- то таким образом мы обрубаем повторное включение одного и того же звука
 
 	self.descr = {	visibility = nil,  -- дескриптор раздражителей
@@ -332,14 +333,14 @@ function events:__init(npc)
 	-- онстанты дл€ настройки реакций
 end
 function events:calculate()  -- ѕроизводить перерасчет и обновление раздражителей дл€ текущего элемента
-	self.arhive = {}	
+	self.arhive = {}
 
 	-- удал€ть обработанные устаревшие раздражители
 	local dt = {}
 	for k,v in self.used do
 		if device():time_global() - v >= self.time_memory then
 			table.insert(dt, k)
-		end		
+		end
 	end
 	for k,v in dt do
 		self:removeFromUsed(v)
@@ -389,21 +390,21 @@ function events:calculate()  -- ѕроизводить перерасчет и обновление раздражителе
 		if continue and self:ruleExist("no_visual") then
 			continue = false
 		end
-		
+
 		type = self:type(vo)
-		
+
 		if continue and type == "item" then
 			continue = false
 		end
 
-		if continue and type == "stalker" and 
-                   vo:squad() == self.npc:squad() 
+		if continue and type == "stalker" and
+                   vo:squad() == self.npc:squad()
 		then
 		   	continue = false
 		end
 
 		if continue and type == "corpse" and
-		   v.value < self.npc:visibility_threshold()		
+		   v.value < self.npc:visibility_threshold()
 		then
 			continue = false
 		end
@@ -481,7 +482,7 @@ function events:get_event(tt)  -- ¬ыдает наиболее приоритетный раздражитель
 		local cc = false
 
 		-- ѕровер€ем есть ли у нас лучший
-		if not cc and prior == nil then 
+		if not cc and prior == nil then
 			prior = key
 			cc = true
 		end
@@ -519,7 +520,7 @@ function events:get_event(tt)  -- ¬ыдает наиболее приоритетный раздражитель
 		if not cc and is_this_vision and not is_prior_vision then
 			prior = key
 			cc = true
-		end                     
+		end
 
 		-- проверка по качеству зрени€
 		if not cc and is_this_vision and is_prior_vision then
@@ -528,11 +529,11 @@ function events:get_event(tt)  -- ¬ыдает наиболее приоритетный раздражитель
 				cc = true
 			end
 		end
-        
+
 		-- проверка по качеству слуха
 		if not cc and not is_this_vision and not is_prior_vision then
 			-- проверка по типу звука
-			if not cc and (value.sound_kat == "type3" and self.arhive[prior].sound_kat ~= "type3") or 
+			if not cc and (value.sound_kat == "type3" and self.arhive[prior].sound_kat ~= "type3") or
 			    (value.sound_kat == "type2" and self.arhive[prior].sound_kat == "type1") then
 				prior = key
 				cc = true
@@ -558,7 +559,7 @@ function events:get_event(tt)  -- ¬ыдает наиболее приоритетный раздражитель
 	if self.arhive[prior].type == "corpse" then
 		-- реакци€ на труп. “руп монстра, труп друга, труп нейтрала, труп врага
 		if self.arhive[prior].corpse.type == "monstr" and
-                   self.arhive[prior].corpse.monstr_power == true 
+                   self.arhive[prior].corpse.monstr_power == true
 		then
 			tt.type = "corpse_monstr"
 		end
@@ -576,12 +577,12 @@ function events:get_event(tt)  -- ¬ыдает наиболее приоритетный раздражитель
                    self.arhive[prior].corpse.relation == game_object.enemy
 		then
 			tt.type = "corpse_enemy"
-		end		
+		end
 	else
 		-- ≈сли мы получаем звуковой раздражитель от объекта за которым следим - тогда идем провер€ть (при условии что объект не виден)
 		if self.arhive[prior].sound_power ~= nil and
 		   self.arhive[prior].visibility == nil and
-		   self.watch[prior] ~= nil 
+		   self.watch[prior] ~= nil
 		then
 			tt.type = "explore"
 		else
@@ -591,33 +592,33 @@ function events:get_event(tt)  -- ¬ыдает наиболее приоритетный раздражитель
 end
 function events:markAsUsed(npc)
 	if npc ~= nil then
-		if self.used[npc] ~= nil then 
+		if self.used[npc] ~= nil then
 			self.used[npc] = device():time_global()
-		else                                                                      
+		else
 			table.insert(self.used, npc, device():time_global())
 		end
 	end
 end
 function events:removeFromUsed(npc)
 	if self.used[npc] ~= nil then
-		table.remove(self.used, npc)	
+		table.remove(self.used, npc)
 	end
 end
 function events:markAsWatch(npc)
 	if npc ~= nil then
-		if self.watch[npc] == nil then 
+		if self.watch[npc] == nil then
 			table.insert(self.watch, npc, npc)
 		end
 	end
 end
 function events:removeFromWatch(npc)
 	if self.watch[npc] ~= nil then
-		table.remove(self.watch, npc)	
+		table.remove(self.watch, npc)
 	end
 end
 function events:markCorpse(npc)
 	if npc ~= nil then
-		if self.corpse[npc] ~= nil then 
+		if self.corpse[npc] ~= nil then
 			self.corpse[npc] = device():time_global()
 		else
 			table.insert(self.corpse, npc, device():time_global())
@@ -626,24 +627,24 @@ function events:markCorpse(npc)
 end
 function events:removeCorpse(npc)
 	if self.corpse[npc] ~= nil then
-		table.remove(self.corpse, npc)	
+		table.remove(self.corpse, npc)
 	end
 end
 function events:isEvents()
-	for key,value in self.arhive do 
+	for key,value in self.arhive do
 		local exst = false
 		for k,v in self.used do
 			if key == k then
 				exst = true
 				break
 			end
-		end		
+		end
 		for k,v in self.corpse do
 			if key == k then
 				exst = true
 				break
 			end
-		end		
+		end
 		if not exst then
 			return true
 		end
@@ -668,11 +669,11 @@ function events:printid(key)
 				else 	printf("Object type: nil") end
 	-- stalker print
 	if value.object_type == "stalker" then
-	if value.stalker.relation == game_object.friend then		printf("Relation: Friend") 
-	elseif value.stalker.relation == game_object.neutral then	printf("Relation: Neutral") 
+	if value.stalker.relation == game_object.friend then		printf("Relation: Friend")
+	elseif value.stalker.relation == game_object.neutral then	printf("Relation: Neutral")
 	elseif value.stalker.relation == game_object.enemy then		printf("Relation: Enemy") end
 	end
-        
+
 	-- monstr print
 	if value.object_type == "monstr" then
 	if value.monstr.power == true then 	printf("Monstr: POWERFULL") end
@@ -687,9 +688,9 @@ function events:printid(key)
 	if value.object_type == "corpse" then
 		printf("Corpse type: %s", value.corpse.type)
 		if value.corpse.type == "stalker" then
-			if value.corpse.relation == game_object.friend then		printf("Corpse relation: Friend") 
-			elseif value.corpse.relation == game_object.neutral then	printf("Corpse relation: Neutral") 
-			elseif value.corpse.relation == game_object.enemy then		printf("Corpse relation: Enemy") end						
+			if value.corpse.relation == game_object.friend then		printf("Corpse relation: Friend")
+			elseif value.corpse.relation == game_object.neutral then	printf("Corpse relation: Neutral")
+			elseif value.corpse.relation == game_object.enemy then		printf("Corpse relation: Enemy") end
 		end
 		if value.corpse.type == "monstr" then
 			if value.corpse.monstr_power == true then 	printf("Monstr corpse: POWERFULL") end
@@ -709,7 +710,7 @@ function events:print()
 	printf("--------------------------------------------------------------")
 	printf("Print Start")
 	printf("--------------------------------------------------------------")
-	for key,value in self.arhive do 
+	for key,value in self.arhive do
 		self:printid(key)
 	end
 end
@@ -721,7 +722,7 @@ function events:type(obj)
   	   	otype == clsid.soldier or
 	   	otype == clsid.stalker or
 	   	otype == clsid.trader
-	then 
+	then
 		type = "stalker"
 	elseif 	otype == clsid.crow or
 		otype == clsid.rat or
@@ -738,7 +739,7 @@ function events:type(obj)
 		otype == clsid.dog_red or
 		otype == clsid.dog_black or
 		otype == clsid.pseudo_gigant
-	then 
+	then
 		type = "monstr"
 	elseif	otype == clsid.wpn_fn2000 or
 		otype == clsid.wpn_ak74 or
@@ -785,7 +786,7 @@ function events:type(obj)
 		otype == clsid.wpn_ammo_vog25 or
 		otype == clsid.wpn_ammo_og7b or
 		otype == clsid.wpn_ammo_m209
-	then 
+	then
 		type = "item"
 	else
 		type = "none"
@@ -809,7 +810,7 @@ function events:corpseType(obj)
   	   	otype == clsid.soldier or
 	   	otype == clsid.stalker or
 	   	otype == clsid.trader
-	then 
+	then
 		type = "stalker"
 	elseif 	otype == clsid.crow or
 		otype == clsid.rat or
@@ -826,7 +827,7 @@ function events:corpseType(obj)
 		otype == clsid.dog_red or
 		otype == clsid.dog_black or
 		otype == clsid.pseudo_gigant
-	then 
+	then
 		type = "monstr"
 	else
 		type = "none"
@@ -848,9 +849,9 @@ function events:monstr_power(obj)
 		otype == clsid.dog_red or
 		otype == clsid.dog_black or
 		otype == clsid.pseudo_gigant
-	then 
+	then
 		return true
-	else 	
+	else
 		return false
 	end
 end
@@ -899,9 +900,9 @@ function events:item_power(obj)
 		otype == clsid.wpn_ammo_vog25 or
 		otype == clsid.wpn_ammo_og7b or
 		otype == clsid.wpn_ammo_m209
-	then 
+	then
 		return true
-	else 	
+	else
 		return false
 	end
 end
@@ -915,7 +916,7 @@ function events:isTrash(obj)
 		otype == clsid.obj_food or
 		otype == clsid.obj_bottle or
 		otype == clsid.obj_document
-	then 
+	then
 		return true
 	else
 		return false

@@ -1,16 +1,17 @@
 --Кабан бродит по мосту, отдыхает, кушает труп
 module( "m_monster_ai" )
 
-function main()
+local boar = nil
 
-   local boar = m_monster_ai.garbage_boar( "jons_boar_1", this.script_name(), "boar_way_1", vector():set( 1, 0, 0 ) )
+function init()
+    boar = m_monster_ai.garbage_boar( "jons_boar_1", this.script_name(), "boar_way_1", vector():set( 1, 0, 0 ) )
+    boar:initialize()
+end
 
-	boar:initialize()
+function execute()
+    return boar:execute()
+end
 
-    while( boar:check_completed() == false ) do
-		boar:execute()
-    	wait()
-    end
-
+function finalize()
     boar:finalize()
 end
