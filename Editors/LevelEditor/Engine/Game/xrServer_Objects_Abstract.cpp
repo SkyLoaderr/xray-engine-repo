@@ -22,6 +22,11 @@ CSE_Shape::~CSE_Shape						()
 {
 }
 
+CSE_Shape*  CSE_Shape::shape				()
+{
+	return		(this);
+}
+
 void CSE_Shape::cform_read					(NET_Packet	&tNetPacket)
 {
 	shapes.clear				();
@@ -73,6 +78,11 @@ CSE_Visual::~CSE_Visual			()
 {
 }
 
+CSE_Visual*  CSE_Visual::visual	()
+{
+	return		(this);
+}
+
 void CSE_Visual::set_visual	   	(LPCSTR name, bool load)
 {
 	string_path tmp;
@@ -101,6 +111,11 @@ CSE_Motion::CSE_Motion			(LPCSTR name)
 
 CSE_Motion::~CSE_Motion			()
 {
+}
+
+CSE_Motion*  CSE_Motion::motion	()
+{
+	return		(this);
 }
 
 void CSE_Motion::set_motion		(LPCSTR name)

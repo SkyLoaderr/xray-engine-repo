@@ -22,23 +22,13 @@
 #pragma warning(push)
 #pragma warning(disable:4005)
 
-struct ISE_Abstract {
-	virtual void		__stdcall	Spawn_Write		(NET_Packet &tNetPacket, BOOL bLocal) = 0;
-	virtual BOOL		__stdcall	Spawn_Read		(NET_Packet &tNetPacket) = 0;
-    virtual void		__stdcall	FillProp		(LPCSTR pref, PropItemVec &items) = 0;
-	virtual LPSTR		__stdcall	name			() = 0;
-	virtual LPSTR		__stdcall	name_replace	() = 0;
-	virtual Fvector&	__stdcall	position		() = 0;
-	virtual Fvector&	__stdcall	angle			() = 0;
-	virtual Flags16&	__stdcall	flags			() = 0;
-};
-
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Shape,CShapeData)
 public:
 	void							cform_read		(NET_Packet& P);
 	void							cform_write		(NET_Packet& P);
 									CSE_Shape		();
 	virtual							~CSE_Shape		();
+	virtual CSE_Shape*  __stdcall	shape			();
 };
 add_to_type_list(CSE_Shape)
 #define script_type_list save_type_list(CSE_Shape)
@@ -55,6 +45,7 @@ public:
 
     void							set_visual		(LPCSTR name, bool load=true);
 	LPCSTR							get_visual		() const {return *visual_name;};
+	virtual CSE_Visual* __stdcall	visual			();
 };
 add_to_type_list(CSE_Visual)
 #define script_type_list save_type_list(CSE_Visual)
@@ -71,9 +62,25 @@ public:
 
     void							set_motion		(LPCSTR name);
 	LPCSTR							get_motion		() const {return *motion_name;};
+
+	virtual CSE_Motion* __stdcall	motion			();
 };
 add_to_type_list(CSE_Motion)
 #define script_type_list save_type_list(CSE_Motion)
+
+struct ISE_Abstract {
+	virtual void		__stdcall	Spawn_Write		(NET_Packet &tNetPacket, BOOL bLocal) = 0;
+	virtual BOOL		__stdcall	Spawn_Read		(NET_Packet &tNetPacket) = 0;
+	virtual void		__stdcall	FillProp		(LPCSTR pref, PropItemVec &items) = 0;
+	virtual LPSTR		__stdcall	name			() = 0;
+	virtual LPSTR		__stdcall	name_replace	() = 0;
+	virtual Fvector&	__stdcall	position		() = 0;
+	virtual Fvector&	__stdcall	angle			() = 0;
+	virtual Flags16&	__stdcall	flags			() = 0;
+	virtual CSE_Visual* __stdcall	visual			() = 0;
+	virtual CSE_Shape*  __stdcall	shape			() = 0;
+	virtual CSE_Motion* __stdcall	motion			() = 0;
+};
 
 #pragma warning(pop)
 
