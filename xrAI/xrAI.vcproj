@@ -1355,6 +1355,9 @@
 			</Filter>
 		</Filter>
 		<File
+			RelativePath=".\seed.dat">
+		</File>
+		<File
 			RelativePath=".\todo.txt">
 		</File>
 	</Files>
