@@ -633,6 +633,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD4(CCC_Float,				"ph_squeeze_velocity",	&psHUD_FOV,		0,500);
 
 		// keyboard binding
+		CCC_RegisterInput			();
 		}
 		GamePersistent		= xr_new<CGamePersistent> ();
 		break;
