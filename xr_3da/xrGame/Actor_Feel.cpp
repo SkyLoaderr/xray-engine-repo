@@ -28,6 +28,15 @@ void CActor::feel_touch_new				(CObject* O)
 	if (W)
 	{
 		// Search if we have similar type of weapon
+		if (Weapons->isSlotEmpty(W->GetSlot()))
+		{
+			// We doesn't have similar weapon - pick up it
+			u_EventGen	(P,GE_OWNERSHIP_TAKE,ID());
+			P.w_u16		(u16(W->ID()));
+			u_EventSend	(P);
+			return;
+		}
+		/*
 		CWeapon* T = Weapons->getWeaponByWeapon	(W);
 		if (T)	
 		{
@@ -44,6 +53,7 @@ void CActor::feel_touch_new				(CObject* O)
 			return;
 		}
 		return;
+		*/
 	}
 
 	// Test for GAME-specific events

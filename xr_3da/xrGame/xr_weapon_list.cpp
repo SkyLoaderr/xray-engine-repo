@@ -20,7 +20,7 @@ CWeaponList::CWeaponList	(CEntity* p)
 	m_iACTboneL			= -1;
 	m_iACTboneR			= -1;
 	m_bZoomed			= FALSE;
-	m_Weapons.resize	(8);
+	for (int i=0; i<8; i++)	m_Weapons.push_back	(0);
 }
 
 CWeaponList::~CWeaponList	( )
@@ -162,12 +162,21 @@ void CWeaponList::Reload()
 
 CWeapon*	CWeaponList::getWeaponByWeapon(CWeapon* W)
 {
+	VERIFY			(W);
+	int slot		= W->GetSlot();
+	return m_Weapons[slot];
+
+	/*
+	if (0==m_Weapons[slot])					return 0;
+	else if 
+
 	for (u32 it=0; it<m_Weapons.size(); it++)
 	{
 		CWeapon* T											= m_Weapons[it];
 		if (typeid(*W).raw_name() == typeid(*T).raw_name())	return	T;
 	}
 	return 0;
+	*/
 }
 
 void CWeaponList::Update	(float dt, BOOL bHUDView)

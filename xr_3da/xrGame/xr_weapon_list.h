@@ -10,11 +10,12 @@ class CEntity;
 
 class				CWeaponList
 {
-	friend class	CWeapon;
+	friend class			CWeapon;
+	enum					{ SLOTs = 8 };
 private:
 	CEntity*				m_pParent;
 
-	svector<CWeapon*,8>		m_Weapons;
+	svector<CWeapon*,SLOTs>	m_Weapons;
 	int						m_iActiveWeapon;		// Current active weapon
 	int						m_iSelectedWeapon;		// Candidate for change to
 	BOOL					m_bZoomed;
@@ -49,7 +50,8 @@ public:
 	int						getAmmoMagazineSize		()	{ CWeapon* W = ActiveWeapon(); if (W) return W->GetAmmoMagSize(); else return 0; }
 	CWeapon*				getWeaponByWeapon		(CWeapon* W);
 	CWeapon*				getWeaponByIndex		(int iIndex)	{ return ((iIndex > -1) && (iIndex < (int)(m_Weapons.size()))) ? m_Weapons[iIndex] : 0; }
-	u32						getWeaponCount			()				{ return (m_Weapons.size()); }
+	u32						getWeaponCount			()				{ return (m_Weapons.size());	}
+	BOOL					isSlotEmpty				(int iSlot)		{ return 0!=m_Weapons[iSlot];	}
 							
 	void					FireStart				();
 	void					FireEnd					();
