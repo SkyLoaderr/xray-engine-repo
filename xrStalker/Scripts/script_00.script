@@ -128,6 +128,10 @@ function main()
 			prof_valim_otsuda:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(2000)			
 
+	while stalker1:action() and stalker2:action() do
+	    wait	()
+
+	end
 
 	event:clear_callback(true)
 	event:clear_callback(false)
