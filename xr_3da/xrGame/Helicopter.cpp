@@ -31,6 +31,8 @@ CHelicopter::~CHelicopter()
 {
 //	xr_delete(m_pParticle);
 	xr_delete		(m_movMngr);
+	HUD_SOUND::DestroySound(m_sndShot);
+	HUD_SOUND::DestroySound(m_sndShotRocket);
 }
 
 void CHelicopter::setState(CHelicopter::EHeliState s)
@@ -146,6 +148,8 @@ void CHelicopter::Load(LPCSTR section)
 	inherited::Load						(section);
 	CShootingObject::Load				(section);
 	HUD_SOUND::LoadSound				(section,"snd_shoot", m_sndShot, TRUE, SOUND_TYPE_WEAPON_SHOOTING);
+	HUD_SOUND::LoadSound				(section,"snd_shoot_rocket", m_sndShotRocket, TRUE, SOUND_TYPE_WEAPON_SHOOTING);
+	
 	CRocketLauncher::Load				(section);
 
 ////////////////////////////////////

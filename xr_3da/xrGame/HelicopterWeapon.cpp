@@ -153,5 +153,7 @@ void CHelicopter::startRocket(u16 idx)
 		dropCurrentRocket();
 
 		m_last_launched_rocket = idx;
+		HUD_SOUND::PlaySound(m_sndShotRocket, xform.c, this, false);
+
 	}
 }

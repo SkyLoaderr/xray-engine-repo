@@ -27,7 +27,6 @@ protected:
 	DEFINE_VECTOR(CCustomRocket*, ROCKET_VECTOR, ROCKETIT);
 	ROCKET_VECTOR		m_rockets;
 	ROCKET_VECTOR		m_launched_rockets;
-//	CCustomRocket*	m_pRocket;
 	
 	CCustomRocket*	getCurrentRocket();
 	void			dropCurrentRocket();

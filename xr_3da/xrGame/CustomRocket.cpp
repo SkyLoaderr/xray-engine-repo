@@ -31,6 +31,7 @@ CCustomRocket::CCustomRocket()
 	m_vPrevVel.set(0,0,0);
 
 	m_pTrailLight = NULL;
+	m_bFlyingSoundPresent = false;
 }
 
 CCustomRocket::~CCustomRocket	()
@@ -221,7 +222,7 @@ void CCustomRocket::Load(LPCSTR section)
 void  CCustomRocket::reload		(LPCSTR section)
 {
 	inherited::reload	(section);
-
+	m_bFlyingSoundPresent = false;
 	m_eState = eInactive;
 
 	m_bEnginePresent = !!pSettings->r_bool(section, "engine_present");
@@ -245,6 +246,13 @@ void  CCustomRocket::reload		(LPCSTR section)
 		m_sEngineParticles	= pSettings->r_string(section,"engine_particles");
 	if(pSettings->line_exist(section,"fly_particles")) 
 		m_sFlyParticles	= pSettings->r_string(section,"fly_particles");
+
+	if(pSettings->line_exist(section,"snd_fly_sound")){
+		m_flyingSound.create(TRUE,pSettings->r_string(section,"snd_fly_sound"));
+		m_bFlyingSoundPresent = true;
+	}
+
+	
 }
 
 void CCustomRocket::Contact(const Fvector &pos, const Fvector &normal)
@@ -444,6 +452,9 @@ void CCustomRocket::PhTune					(float step)
 
 void CCustomRocket::UpdateParticles()
 {
+	if(m_bFlyingSoundPresent)
+		m_flyingSound.play_at_pos(0,XFORM().c,sm_Looped);
+
 	if(!m_pEngineParticles && !m_pFlyParticles) return;
 
 	Fvector vel;
@@ -468,6 +479,8 @@ void CCustomRocket::UpdateParticles()
 	
 	if(m_pFlyParticles)
 		m_pFlyParticles->UpdateParent(particles_xform, vel);
+
+
 }
 
 void CCustomRocket::StartEngineParticles()
@@ -504,6 +517,9 @@ void CCustomRocket::StartFlyParticles()
 }
 void CCustomRocket::StopFlyParticles()
 {
+	if(m_bFlyingSoundPresent)
+		m_flyingSound.stop();
+
 	if(m_pFlyParticles == NULL) return;
 	m_pFlyParticles->Stop();
 	m_pFlyParticles->SetAutoRemove(true);

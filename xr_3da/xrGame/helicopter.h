@@ -137,6 +137,7 @@ protected:
 	EHeliState						m_curState;
 
 	HUD_SOUND						m_sndShot;
+	HUD_SOUND						m_sndShotRocket;
 	ref_sound						m_engineSound;
 	ref_sound						m_explodeSound;
 	ref_light						m_light_render;
