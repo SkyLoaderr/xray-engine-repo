@@ -178,7 +178,7 @@ bool CScriptGameObject::Alive					() const
 {
 	CEntityAlive		*l_tpEntityAlive = smart_cast<CEntityAlive*>(&object());
 	if (!l_tpEntityAlive) {
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CSciptMonster : cannot access class member Alive!");
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CSciptEntity : cannot access class member Alive!");
 		return			(false);
 	}
 	return				(!!l_tpEntityAlive->g_Alive());

@@ -432,6 +432,7 @@ public:
 			bool				is_body_turning			() const;
 			CPhysicsShell*		get_physics_shell		() const;
 			bool				weapon_strapped			() const;
+			void				eat						(CScriptGameObject *item);
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

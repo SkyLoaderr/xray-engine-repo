@@ -93,9 +93,8 @@ u32 CSoundPlayer::load				(xr_vector<ref_sound*> &sounds, LPCSTR prefix, u32 max
 			}
 		}
 	}
-	if (sounds.empty()) {
+	if (sounds.empty())
 		Msg						("! There are no sounds with prefix %s",prefix);
-	}
 	return						((u32)sounds.size());
 }
 

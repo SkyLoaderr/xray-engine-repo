@@ -182,6 +182,7 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("add_animation",				(void (CScriptGameObject::*)(LPCSTR, bool))(CScriptGameObject::add_animation))
 		.def("clear_animations",			&CScriptGameObject::clear_animations)
 		.def("animation_count",				&CScriptGameObject::animation_count)
+		.def("eat",							&CScriptGameObject::eat)
 	
 	;return	(instance);
 }

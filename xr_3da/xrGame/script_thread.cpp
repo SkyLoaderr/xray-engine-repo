@@ -23,7 +23,6 @@ CScriptThread::CScriptThread(LPCSTR caNamespaceName)
 	string256			S;
 	m_bActive			= false;
 	m_script_name		= xr_strdup(caNamespaceName);
-	Msg					("* Loading design script %s",caNamespaceName);
 
 	ai().script_engine().add_file(caNamespaceName);
 	ai().script_engine().process();
