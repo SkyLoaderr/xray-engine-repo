@@ -36,8 +36,20 @@ function se_monster:can_switch_online ()
 		         self.min_distance = self.ini:r_u32 ("spawner", "min_distance")
 		      end   
 		   end   
-		   if self.min_distance == nil then 
-		      self.min_distance = 150
+		   if self.min_distance == nil then
+		      local sys = ini_file ("system.ltx")
+		      if sys ~= nil and sys:line_exist ("alife", "switch_distance") == true then
+		         self.min_distance = sys:r_u32 ("alife", "switch_distance") - 50
+		         if self.min_distance == nil then 
+		            self.min_distance = 150
+		         else 
+		            if self.min_distance <= 50 then
+		               utils.abort ("SE_MONSTER - SWITCH DISTANCE IS TOO SMALL !!!") 
+		            end
+		         end   
+		      else
+		         self.min_distance = 150  
+		      end   
 		   end   
 		end
 	end
