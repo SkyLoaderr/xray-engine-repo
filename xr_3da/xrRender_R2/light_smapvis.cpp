@@ -18,18 +18,17 @@ void	smapvis::invalidate	()
 }
 void	smapvis::begin		()
 {
+	RImplementation.clear_Counters		();
 	switch	(state)
 	{
 	case state_counting:	
 		// do nothing -> we just prepare for testing process
-		RImplementation.clear_Counters	();
 		break;
 	case state_working:
 		// mark already known to be invisible visuals, set breakpoint
 		testQ_V							= 0;
 		testQ_id						= 0;
 		mark							();
-		RImplementation.clear_Counters	();
 		RImplementation.set_Feedback	(this,test_current);
 		break;
 	case state_usingTC:
@@ -38,24 +37,28 @@ void	smapvis::begin		()
 		break;
 	}
 }
-void	smapvis::end		()
+void	smapvis::end		(light* L)
 {
 	switch	(state)			{
 	case state_counting:
 		// switch to 'working'
-		RImplementation.get_Counters	(test_count,test_current);	// test_current - dummy
-		test_current					= 0;
-		state							= state_working;
+		if (sleep())		{
+			RImplementation.get_Counters	(test_count,test_current);	// test_current - dummy
+			test_current					= 0;
+			state							= state_working;
+		}
 		break;
 	case state_working:
 		// feedback should be called at this time -> clear feedback
 		// issue query
-		VERIFY									(testQ_V);
-		RImplementation.occq_begin				(testQ_id);
-		RImplementation.r_dsgraph_insert_static	(testQ_V);
-		RImplementation.r_dsgraph_render_graph	(0);
-		RImplementation.occq_end				(testQ_id);
-		testQ_frame								= Device.dwFrame + 1;	// get result on next frame
+		if (testQ_V)
+		{
+			RImplementation.occq_begin				(testQ_id);
+			RImplementation.r_dsgraph_insert_static	(testQ_V);
+			RImplementation.r_dsgraph_render_graph	(0);
+			RImplementation.occq_end				(testQ_id);
+			testQ_frame								= Device.dwFrame + 1;	// get result on next frame
+		}
 		break;
 	case state_usingTC:
 		// nothing to do
