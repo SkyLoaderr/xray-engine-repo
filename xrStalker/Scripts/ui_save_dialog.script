@@ -22,7 +22,7 @@ function save_dialog:InitControls()
 	main_rect.y = (screen.height - main_rect.height)/2
 	local caption_rect    = {x = 0,      y = 0,      width = main_rect.width, height = indent*2}
 	local captiontxt_rect = {x = caption_rect.x/2,
-							 y = caption_rext.y/2,
+							 y = caption_rect.y/2,
 							 width = 0,
 							 height = 0}
 	local edit_rect       = {x = indent, 
