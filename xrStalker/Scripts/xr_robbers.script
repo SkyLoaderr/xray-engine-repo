@@ -50,14 +50,14 @@ function evaluator_need_robber:evaluate ()
 		-- ≈сли у одного бандита испортилось отношение к игроку, испортить с остальными:
 		local team = this.teams[self.stor.team]
 		if team then
-			utils.trace(this.script_name(), "_bp: xr_robbers: bad_relation_set = %s",
-				utils.to_str(team.bad_relation_set))
+			--utils.trace(this.script_name(), "_bp: xr_robbers: bad_relation_set = %s",
+			--	utils.to_str(team.bad_relation_set))
 			if not team.bad_relation_set then
 				local best_enemy = self.object:best_enemy()
-				utils.trace(this.script_name(), "_bp: xr_robbers: best_enemy=%s, enemy_actor=%s, rel_en=%s",
-					utils.to_str(best_enemy ~= nil),
-					utils.to_str(best_enemy and best_enemy:id() == actor:id()),
-					utils.to_str(self.object:relation(actor) == game_object.enemy))
+				--utils.trace(this.script_name(), "_bp: xr_robbers: best_enemy=%s, enemy_actor=%s, rel_en=%s",
+				--	utils.to_str(best_enemy ~= nil),
+				--	utils.to_str(best_enemy and best_enemy:id() == actor:id()),
+				--	utils.to_str(self.object:relation(actor) == game_object.enemy))
 				if (best_enemy and best_enemy:id() == actor:id()) or
 				   self.object:relation(actor) == game_object.enemy then
 					team.bad_relation_set = true
@@ -65,8 +65,8 @@ function evaluator_need_robber:evaluate ()
 					for key, val in pairs(robbers) do
 						if val.object:relation(actor) ~= game_object.enemy then
 							val.object:set_relation(game_object.enemy, actor)
-							utils.trace(this.script_name(),
-								"_bp: xr_robbers: setting bad relation")
+							--utils.trace(this.script_name(),
+							--	"_bp: xr_robbers: setting bad relation")
 						end
 					end
 				end
@@ -99,7 +99,7 @@ function action_robber_activity:initialize()
 end
 
 function action_robber_activity:reset_scheme()
-	utils.trace(this.script_name(), "xr_robber:reset_scheme called: self.object:name()='%s'", self.object:name())
+	--utils.trace(this.script_name(), "xr_robber:reset_scheme called: self.object:name()='%s'", self.object:name())
 
 	self.object:set_detail_path_type(move.line)
 	self.object:set_body_state(move.standing)
@@ -152,7 +152,7 @@ function action_robber_activity:reset_scheme()
 	self.wpn_activated = true
 	
 	self.state = state_none
-	utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 1 state change: %s", self.object:name(), utils.to_str(self.state))
+	--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 1 state change: %s", self.object:name(), utils.to_str(self.state))
 end
 
 function action_robber_activity:say(what)
@@ -194,9 +194,9 @@ function action_robber_activity:pick_role()
 	local found_helper = nil
 	local found_puncher = nil
 	
-	utils.trace(this.script_name(), "...pick role")
+	--utils.trace(this.script_name(), "...pick role")
 	if robbers[self.object:id()].role ~= role_none then
-		utils.trace(this.script_name(), "...role choice cancelled")
+		--utils.trace(this.script_name(), "...role choice cancelled")
 		return robbers[self.object:id()].role
 	end
 	
@@ -209,13 +209,13 @@ function action_robber_activity:pick_role()
 			end
 		end
 		if val.role == role_leader then
-			utils.trace(this.script_name(), "...found leader")
+			--utils.trace(this.script_name(), "...found leader")
 			found_leader = true
 		elseif val.role == role_helper then
-			utils.trace(this.script_name(), "...found helper")
+			--utils.trace(this.script_name(), "...found helper")
 			found_helper = true
 		elseif val.role == role_puncher then
-			utils.trace(this.script_name(), "...found puncher")
+			--utils.trace(this.script_name(), "...found puncher")
 			found_puncher = true
 		elseif val.role == role_none then
 			if val.dist_to_actor and
@@ -226,8 +226,8 @@ function action_robber_activity:pick_role()
 		end
 	end
 
-	utils.trace(this.script_name(), "...nearest_without_role=%s, self=%s", robbers[nearest_without_role].object:name(),
-		self.object:name())
+	--utils.trace(this.script_name(), "...nearest_without_role=%s, self=%s", robbers[nearest_without_role].object:name(),
+	--	self.object:name())
 	if nearest_without_role ~= self.object:id() then
 		return role_none -- мне пока что не нужна роль, есть лучшие претенденты (ближе чем € к жертве и без роли)
 	end
@@ -311,8 +311,8 @@ function action_robber_activity:fsm_step()
 		if (self.state == state_leader_shouting_drop_your_weapon and not isWeapon(active_item)) or
 		   self.state == state_last then
 			self.state = state_puncher_waiting_for_plr_to_drop_weapon
-			utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 0 state change: %s",
-				self.object:name(), utils.to_str(self.state))
+			--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 0 state change: %s",
+			--	self.object:name(), utils.to_str(self.state))
 		end
 	end
 	----------------------------------------------------------------------------------------------------
@@ -322,8 +322,8 @@ function action_robber_activity:fsm_step()
 		utils.stalker_go_to_waypoint(self.object, self.patrol_rob, 0)
 
 		self.state = state_going_to_camp_point
-		utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 2 state change: %s",
-			self.object:name(), utils.to_str(self.state))
+		--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 2 state change: %s",
+		--	self.object:name(), utils.to_str(self.state))
 		return
 	end
 
@@ -331,8 +331,8 @@ function action_robber_activity:fsm_step()
 		if utils.stalker_at_waypoint(self.object, self.patrol_rob, 0) then
 			utils.stalker_stop(self.object)
 			self.state = state_looking_at_bait
-			utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 3 state change: %s",
-				self.object:name(), utils.to_str(self.state))
+			--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 3 state change: %s",
+			--	self.object:name(), utils.to_str(self.state))
 		end
 		return
 	end
@@ -381,15 +381,15 @@ function action_robber_activity:fsm_step()
 
 		local dist_to_bait = self:distance_to_bait(actor)
 		if team.rob_state == rob_state_rob_victim or
-		   (dist_to_bait and dist_to_bait <= 5) or
-		   (see_actor and distance_between(self.object, actor) <= 10) then
+		   (dist_to_bait and dist_to_bait <= 3) or
+		   (see_actor and not self.stor.bait_self and distance_between(self.object, actor) <= 10) then
 			if self.object:animation_count() > 0 then
 				self.object:clear_animations()
 			end
 			team.rob_state = rob_state_rob_victim
 			self.state = state_rob_victim
-			utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 4 state change: %s",
-				self.object:name(), utils.to_str(self.state))
+			--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 4 state change: %s",
+			--	self.object:name(), utils.to_str(self.state))
 		end
 
 		return
@@ -405,24 +405,24 @@ function action_robber_activity:fsm_step()
 			--utils.trace(this.script_name(), "_bp: xr_robbers: no role for me")
 			utils.stalker_look_at_stalker(self.object, actor)
 		elseif self.role == role_leader then
-			utils.trace(this.script_name(), "_bp: xr_robbers [%s]: I am leader", self.object:name())
+			--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: I am leader", self.object:name())
 			self.expiration_time = device():time_global() + 3000
 			self:say(xr_sounds_id.zmey_robber_stop)
 			self.state = state_leader_waiting_for_plr_to_stop
-			utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 5.2 state change: %s",
-				self.object:name(), utils.to_str(self.state))
+			--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 5.2 state change: %s",
+			--	self.object:name(), utils.to_str(self.state))
 		elseif self.role == role_helper then
-			utils.trace(this.script_name(), "_bp: xr_robbers [%s]: I am helper", self.object:name())
+			--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: I am helper", self.object:name())
 			self.expiration_time = device():time_global() + 1000
 			self.state = state_helper_waiting_for_leader
-			utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 5.3 state change: %s",
-				self.object:name(), utils.to_str(self.state))
+			--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 5.3 state change: %s",
+			--	self.object:name(), utils.to_str(self.state))
 		elseif self.role == role_puncher then
-			utils.trace(this.script_name(), "_bp: xr_robbers [%s]: I am puncher", self.object:name())
+			--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: I am puncher", self.object:name())
 			self.expiration_time = device():time_global() + 12000
 			self.state = state_puncher_waiting_for_plr_to_drop_weapon
-			utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 5.4 state change: %s",
-				self.object:name(), utils.to_str(self.state))
+			--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 5.4 state change: %s",
+			--	self.object:name(), utils.to_str(self.state))
 		end
 		return
 	end
@@ -440,12 +440,12 @@ function action_robber_activity:fsm_step()
 				self:say(xr_sounds_id.zmey_robber_drop_weap)
 				self.expiration_time = device():time_global() + 3000
 				self.state = state_leader_shouting_drop_your_weapon
-				utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 6 state change: %s",
-					self.object:name(), utils.to_str(self.state))
+				--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 6 state change: %s",
+				--	self.object:name(), utils.to_str(self.state))
 			else
 				self.state = state_last
-				utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 6.1 state change: %s",
-					self.object:name(), utils.to_str(self.state))
+				--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 6.1 state change: %s",
+				--	self.object:name(), utils.to_str(self.state))
 			end 
 	
 		end
@@ -459,8 +459,8 @@ function action_robber_activity:fsm_step()
 			self:say(xr_sounds_id.zmey_robber_do_what_i_say)
 			self.expiration_time = device():time_global() + 5000
 			self.state = state_last
-			utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 7 state change: %s",
-				self.object:name(), utils.to_str(self.state))
+			--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 7 state change: %s",
+			--	self.object:name(), utils.to_str(self.state))
 		end
 		return
 	end
@@ -494,6 +494,7 @@ function action_robber_activity:fsm_step()
 	end
 
 	if self.state == state_puncher_approaching then
+		utils.trace(this.script_name(), "_bp: xr_robbers [%s]: puncher approaching", self.object:name())
 		utils.stalker_look_at_stalker(self.object, actor)
 		if self.object:position():distance_to(actor:position()) < 1.5 then
 			self.object:set_movement_type(move.stand)
@@ -508,6 +509,8 @@ function action_robber_activity:fsm_step()
 	end
 	
 	if self.state == state_puncher_waiting_to_grab_money then
+		utils.trace(this.script_name(), "_bp: xr_robbers [%s, %d]: puncher waiting to grab money",
+			self.object:name(), device():time_global())
 		utils.stalker_look_at_stalker(self.object, actor)
 		local time_global = device():time_global()
 		if time_global >= self.expiration_time and time_global - self.expiration_time < 150 then
@@ -518,7 +521,7 @@ function action_robber_activity:fsm_step()
 				h.direction:set(1, 0, 0)
 				h.bone = "bip01_head"
 				h.draftsman = self.object
-				h.impulse = 100 -- was 10 FIXME
+				h.impulse = 10
 				h.type = hit.wound
 				actor:hit(h)
 
@@ -597,8 +600,8 @@ end
 
 -- ¬ключение грабител€
 function set_robber(object, enabled, team, path_rob, bait_path, bait_object, bait_self, bait_radius)
-	utils.trace(this.script_name(), "set_robber called: object:name()='%s', team='%s', path_rob='%s'",
-		utils.to_str(object:name()), utils.to_str(team), utils.to_str(path_rob) )
+	--utils.trace(this.script_name(), "set_robber called: object:name()='%s', team='%s', path_rob='%s'",
+	--	utils.to_str(object:name()), utils.to_str(team), utils.to_str(path_rob) )
 
 	local char_ini = object:spawn_ini()
 	local st = xr_motivator.storage[object:id()].robber
