@@ -16,7 +16,6 @@ class ENGINE_API CMotionDef;
 
 class CWeapon : public CGameObject
 {
-	friend class			CWeaponList;
 private:
 	typedef CGameObject		inherited;
 public:
@@ -45,7 +44,6 @@ protected:
 public:
 	float					GetPrecision();
 protected:
-	CWeaponList*			m_pContainer;
 	CWeaponHUD*				m_pHUD;
 	BOOL					hud_mode;
 							
@@ -93,6 +91,9 @@ protected:
 	float					light_lifetime;
 	DWORD					light_frame;
 	float					light_time;
+
+	DWORD					dwFP_Frame;
+	DWORD					dwXF_Frame;
 protected:
 	void					Light_Start			();
 	void					Light_Render		(Fvector& P);
@@ -101,8 +102,8 @@ protected:
 	virtual void			FireShotmark		(const Fvector& vDir,	const Fvector &vEnd, Collide::ray_query& R);
 	virtual void			UpdatePosition		(const Fmatrix& transform);
 
-	virtual void			UpdateFP			()	= 0;
-	virtual void			UpdateXForm			()	= 0;
+	virtual void			UpdateFP			();
+	virtual void			UpdateXForm			();
 protected:					
 	// Utilities
 	void					SoundCreate			(sound&		dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
@@ -132,7 +133,6 @@ public:
 	virtual void			OnDrawFlame			();
 
 	// logic & effects
-	virtual void			SetParent			(CEntity* parent, CWeaponList* container);
 	virtual void			SetDefaults			();
 	virtual bool			AddAmmo				(int iValue)	{ iAmmoElapsed+=iValue; return true;}
 	virtual void			FireStart			()				{ bWorking=true;	}

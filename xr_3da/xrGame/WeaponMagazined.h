@@ -37,9 +37,6 @@ protected:
 	// General
 	float			fTime;
 	BOOL			bFlame;
-
-	DWORD			dwFP_Frame;
-	DWORD			dwXF_Frame;
 protected:
 	enum EState
 	{
@@ -73,8 +70,8 @@ protected:
 	virtual void	OnAnimationEnd	();
 	void			TryReload		();
 protected:
-	virtual void	UpdateFP		();
-	virtual void	UpdateXForm		();
+//	virtual void	UpdateFP		();
+//	virtual void	UpdateXForm		();
 	virtual void	ReloadMagazine	();
 
 	virtual void	state_Fire		(float dt);

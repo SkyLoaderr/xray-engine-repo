@@ -115,7 +115,14 @@ void CCustomMonster::Load		(LPCSTR section)
 	//
 }
 
-void CCustomMonster::g_fireParams(Fvector &fire_pos, Fvector &fire_dir)
+void CCustomMonster::g_WeaponBones	(int& L, int& R)
+{
+	R_ASSERT	(Weapons);
+	L		=	Weapons->m_iACTboneL;
+	R		=	Weapons->m_iACTboneR;
+}
+
+void CCustomMonster::g_fireParams	(Fvector &fire_pos, Fvector &fire_dir)
 {
 	fire_pos.set			(eye_matrix.c);
 	fire_dir.set			(eye_matrix.k);

@@ -11,22 +11,18 @@ private:
 protected:
 	float			fMaxZoomFactor;
 	float			fGyroSpeed;
+
 	// Media :: sounds
 	sound			sndZoomIn;
 	sound			sndZoomOut;
 	sound			sndGyro;
 	sound			sndShow;
 	sound			sndHide;
+
 	// HUD :: Animations
 	MotionSVec		mhud_idle;
 	MotionSVec		mhud_hide;
 	MotionSVec		mhud_show;
-
-	DWORD			dwFP_Frame;
-	DWORD			dwXF_Frame;
-
-	virtual void	UpdateFP		();
-	virtual void	UpdateXForm		();
 protected:
 	enum EState
 	{

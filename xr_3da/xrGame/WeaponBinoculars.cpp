@@ -74,6 +74,7 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 	animGet				(mhud_hide,		"holster");
 }
 
+/*
 void CWeaponBinoculars::UpdateXForm	()
 {
 	if (Device.dwFrame!=dwXF_Frame){
@@ -81,9 +82,9 @@ void CWeaponBinoculars::UpdateXForm	()
 
 		if (hud_mode){
 			if (m_pHUD){
-				Fmatrix			trans;
-				Level().Cameras.affected_Matrix(trans);
-				m_pHUD->UpdatePosition(trans);
+				Fmatrix							trans;
+				Level().Cameras.affected_Matrix	(trans);
+				m_pHUD->UpdatePosition			(trans);
 			}
 		} else {
 			Fmatrix			mRes;
@@ -140,6 +141,7 @@ void CWeaponBinoculars::UpdateFP		()
 		}
 	}
 }
+*/
 
 void CWeaponBinoculars::OnVisible	()
 {

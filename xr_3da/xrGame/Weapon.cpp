@@ -25,7 +25,6 @@ CWeapon::CWeapon(LPCSTR name)
 	SetDefaults		();
 	m_pHUD			= new CWeaponHUD();
 	m_WpnName		= strupr(xr_strdup(name));
-	m_pContainer	= 0;
 	m_Offset.identity();
 
 	pstrWallmark	= 0;
@@ -158,10 +157,82 @@ float CWeapon::GetPrecision()
 	return prec;
 }
 
-void CWeapon::SetParent	(CEntity* parent, CWeaponList* container)
+void CWeapon::UpdateXForm	()
 {
-	R_ASSERT(parent);		Parent			= parent;
-	R_ASSERT(container);	m_pContainer	= container;
+	if (Device.dwFrame!=dwXF_Frame){
+		dwXF_Frame = Device.dwFrame;
+
+		if (hud_mode)
+		{
+			if (m_pHUD)
+			{
+				Fmatrix							trans;
+				Level().Cameras.affected_Matrix	(trans);
+				m_pHUD->UpdatePosition			(trans);
+			}
+		} else {
+			// Get access to entity and its visual
+			CEntityAlive*	E		= dynamic_cast<CEntityAlive*>(H_Parent());
+			R_ASSERT		(E);
+			CKinematics*	V		= PKinematics	(E->Visual());
+			VERIFY			(V);
+
+			// Get matrices
+			int				boneL,boneR;
+			E->g_WeaponBones(boneL,boneR);
+			V->Calculate	();
+			Fmatrix& mL		= V->LL_GetTransform(boneL);
+			Fmatrix& mR		= V->LL_GetTransform(boneR);
+
+			// Calculate
+			Fmatrix			mRes;
+			Fvector			R,D,N;
+			D.sub			(mL.c,mR.c);	D.normalize_safe();
+			R.crossproduct	(mR.j,D);		R.normalize_safe();
+			N.crossproduct	(D,R);			N.normalize_safe();
+			mRes.set		(R,N,D,mR.c);
+			mRes.mulA_43	(E->clXFORM());
+			UpdatePosition	(mRes);
+		}
+	}
+}
+
+void CWeapon::UpdateFP		()
+{
+	if (Device.dwFrame!=dwFP_Frame) 
+	{
+		dwFP_Frame = Device.dwFrame;
+
+		UpdateXForm		();
+
+		if (hud_mode)	
+		{
+			// 1st person view - skeletoned
+			CKinematics* V			= PKinematics(m_pHUD->Visual());
+			V->Calculate			();
+
+			// fire point&direction
+			Fmatrix& fire_mat		= V->LL_GetTransform(m_pHUD->iFireBone);
+			Fmatrix& parent			= m_pHUD->Transform	();
+			Fvector& fp				= m_pHUD->vFirePoint;
+			Fvector& sp				= m_pHUD->vShellPoint;
+			fire_mat.transform_tiny	(vLastFP,fp);
+			parent.transform_tiny	(vLastFP);
+			fire_mat.transform_tiny	(vLastSP,sp);
+			parent.transform_tiny	(vLastSP);
+			vLastFD.set				(0.f,0.f,1.f);
+			parent.transform_dir	(vLastFD);
+		} else {
+			// 3rd person
+			Fmatrix& parent			= svTransform;
+			Fvector& fp				= vFirePoint;
+			Fvector& sp				= vShellPoint;
+			parent.transform_tiny	(vLastFP,fp);
+			parent.transform_tiny	(vLastSP,sp);
+			vLastFD.set				(0.f,0.f,1.f);
+			parent.transform_dir	(vLastFD);
+		}
+	}
 }
 
 void CWeapon::Load		(LPCSTR section)
@@ -252,6 +323,8 @@ BOOL CWeapon::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o
 	u16						current,elapsed;
 	P.r_u16					(current);	iAmmoCurrent	= current;
 	P.r_u16					(elapsed);	iAmmoElapsed	= elapsed;
+
+	return bResult;
 }
 
 void CWeapon::net_Destroy	()

@@ -85,8 +85,8 @@ public:
 
 	struct SEntityState
 	{
-		DWORD	bJump:1;
-		DWORD	bCrouch:1;
+		DWORD	bJump	:1;
+		DWORD	bCrouch	:1;
 		float	fVelocity;
 	};
 public:
@@ -114,7 +114,7 @@ public:
 	int						g_Group				()	{ return id_Group;	}
 
 	// Health calculations
-	virtual	BOOL			Hit					(int iLost, Fvector &dir, CEntity* who);	// TRUE if died
+	virtual	BOOL			Hit					(int iLost, Fvector &dir, CEntity* who);				// TRUE if died
 	virtual void			HitSignal			(int HitAmount, Fvector& local_dir, CEntity* who)		= 0;
 	virtual void			HitImpulse			(Fvector& vWorldDir, Fvector& vLocalDir, float amount)	= 0;
 	virtual void			Die					()	= 0;
@@ -151,6 +151,8 @@ public:
 	virtual void			Load				(LPCSTR section);
 	virtual BOOL			net_Spawn			(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
 	virtual void			HitImpulse			(Fvector& vWorldDir, Fvector& vLocalDir, float amount);
+
+	virtual void			g_WeaponBones		(int& L, int& R)										= 0;
 
 	// Visibility related
 	virtual void			GetVisible			(objVisible& R)	{};
