@@ -159,15 +159,14 @@ bool Place_Perpixel(_rect& R, CDeflector* D, BOOL bRotate)
 	LPDWORD lm			= D->lm.pSurface;
 	DWORD	s_x			= D->lm.dwWidth+2*BORDER;
 	DWORD	s_y			= D->lm.dwHeight+2*BORDER;
-	CDeflector::span* sp= D->lm_spans;
 	
 	if (!bRotate) {
 		// Normal (and fastest way)
 		for (DWORD y=0; y<s_y; y++)
 		{
-			BYTE*	P = surface+(y+R.a.y)*512+R.a.x+sp[y].first;	// destination scan-line
-			BYTE*	E = P + (sp[y].second-sp[y].first) + 1;
-			DWORD*	S = lm + y*s_x + sp[y].first;
+			BYTE*	P = surface+(y+R.a.y)*512+R.a.x;	// destination scan-line
+			BYTE*	E = P	+ s_x;
+			DWORD*	S = lm	+ y*s_x;
 			for (; P!=E; P++,S++) {
 				if ((*P)&&(RGBA_GETALPHA(*S)>=alpha_ref))	return false;	// overlap detected
 			}

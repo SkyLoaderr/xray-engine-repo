@@ -49,13 +49,11 @@ CDeflector::CDeflector()
 	Deflector	= this;
 	lm.pSurface = 0;
 	lm_rad		= 0;
-	lm_spans	= 0;
 }
 CDeflector::~CDeflector()
 {
 	_FREE		(lm.pSurface);
 	_FREE		(lm_rad);
-	_FREE		(lm_spans);
 }
 
 VOID CDeflector::OA_Export()

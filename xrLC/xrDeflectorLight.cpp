@@ -351,8 +351,9 @@ VOID CDeflector::Light()
 	
 	// Build span-buffer
 /*
-	lm_spans	= (span*)malloc(s_y*sizeof(span));
 	try {
+		lm_spans	= (span*)malloc(s_y*sizeof(span));
+		
 		for (DWORD y=0; y<s_y; y++)
 		{
 			span	spOne;

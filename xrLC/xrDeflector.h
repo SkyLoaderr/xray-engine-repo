@@ -42,9 +42,6 @@ public:
 	b_texture			lm;
 	Fvector*			lm_rad;
 
-	typedef pair<WORD,WORD>	span;
-	span*				lm_spans;
-
 	Fvector				Center;
 	float				Radius;
 	int					iArea;
