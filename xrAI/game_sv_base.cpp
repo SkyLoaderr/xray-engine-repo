@@ -362,6 +362,17 @@ void	game_sv_GameState::assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who)
 	E->o_Angle.set		(r.A);
 }
 
+bool				game_sv_GameState::IsPointFreezed			(RPoint* rp)
+{
+	return rp->TimeToUnfreeze > Level().timeServer();
+};
+
+void				game_sv_GameState::SetPointFreezed		(RPoint* rp)
+{
+	R_ASSERT(rp);
+	rp->TimeToUnfreeze	= Level().timeServer() + m_RPointFreezeTime;
+}
+
 CSE_Abstract*		game_sv_GameState::spawn_begin				(LPCSTR N)
 {
 	CSE_Abstract*	A	=   F_entity_Create(N);	R_ASSERT(A);	// create SE

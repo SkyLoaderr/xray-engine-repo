@@ -428,7 +428,7 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who
 		game_PlayerState*	ps	=	get_it	(it);
 		if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) ) continue;
 		if (ps->team == pA->s_team && !teams.empty()) pFriends.push_back(it);
-//		else pEnemies.push_back(it);
+		else pEnemies.push_back(it);
 	};
 
 //	if (pEnemies.empty()) 
@@ -438,19 +438,57 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who
 //		inherited::assign_RP(E, ps_who);
 		
 		u16 NumRP = u16(rp.size());
-		if (ps_who->pSpawnPointsList.empty())
+		bool UseFreezedPoints = false;
+		while(ps_who->pSpawnPointsList.empty())
 		{
 			for (u16 it=0; it < NumRP; it++)
 			{
-				if (it != ps_who->m_s16LastSRoint)
+				RPoint&				r	= rp[it];
+				if (it != ps_who->m_s16LastSRoint && (!IsPointFreezed(&r) || UseFreezedPoints))
 					ps_who->pSpawnPointsList.push_back(it);
 			}
+			if (ps_who->pSpawnPointsList.empty()) UseFreezedPoints = true;
+		};
+		R_ASSERT(!ps_who->pSpawnPointsList.empty());
+		
+		int PointID;
+		if (!pEnemies.empty())
+		{
+			xr_deque<RPointData>			pRPDist;
+			pRPDist.clear();
+
+			u32 NumRP = ps_who->pSpawnPointsList.size();	
+
+			Fvector DistVect;
+			for (it=0; it < NumRP; it++)
+			{
+				u16 PointID = ps_who->pSpawnPointsList[it];
+				RPoint&				r	= rp[PointID];
+				pRPDist.push_back(RPointData(it, 1000000.0f));
+				for (u32 p=0; p<pEnemies.size(); p++)
+				{
+					xrClientData* xrCData	=	m_server->ID_to_client(get_it_2_id(pEnemies[p]));
+					if (!xrCData || !xrCData->owner) continue;
+
+					CSE_Abstract* pOwner = xrCData->owner;
+					DistVect.sub(pOwner->o_Position, r.P);
+					float Dist = DistVect.square_magnitude();
+					if (pRPDist[it].MinEnemyDist > Dist) pRPDist[it].MinEnemyDist = Dist;
+				};
+			};
+			std::sort(pRPDist.begin(), pRPDist.end());
+			PointID = (pRPDist.back()).PointID;
 		}
-		int PointID = ::Random.randI((int)ps_who->pSpawnPointsList.size());
+		else
+		{
+			PointID = ::Random.randI((int)ps_who->pSpawnPointsList.size());
+		};
 		ps_who->m_s16LastSRoint = ps_who->pSpawnPointsList[PointID];
+		Msg("used %d", ps_who->m_s16LastSRoint);
 		ps_who->pSpawnPointsList.erase(ps_who->pSpawnPointsList.begin()+PointID);
 
 		RPoint&				r	= rp[ps_who->m_s16LastSRoint];
+		SetPointFreezed(&r);
 
 		E->o_Position.set	(r.P);
 		E->o_Angle.set		(r.A);

@@ -86,6 +86,8 @@ public:
 	// Signals
 	virtual		void				signal_Syncronize		();
 	virtual		void				assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who);
+	virtual		bool				IsPointFreezed			(RPoint* rp);
+	virtual		void				SetPointFreezed			(RPoint* rp);
 	
 	virtual		void				OnSwitchPhase			(u32 old_phase, u32 new_phase);	
 				CSE_Abstract*		spawn_begin				(LPCSTR N);
