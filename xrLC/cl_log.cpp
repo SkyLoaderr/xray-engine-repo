@@ -5,15 +5,15 @@
 
 //************************* Log-thread data
 static xrCriticalSection	csLog;
-volatile BOOL				bClose = FALSE;
+volatile BOOL				bClose				= FALSE;
 
-static char					status	[1024	]="";
-static char					phase	[1024	]="";
-static float				progress		= 0.0f;
-static u32				phase_start_time= 0;
-static BOOL					bStatusChange	= FALSE;
-static BOOL					bPhaseChange	= FALSE;
-static u32				phase_total_time= 0;
+static char					status	[1024	]	="";
+static char					phase	[1024	]	="";
+static float				progress			= 0.0f;
+static u32					phase_start_time	= 0;
+static BOOL					bStatusChange		= FALSE;
+static BOOL					bPhaseChange		= FALSE;
+static u32					phase_total_time	= 0;
 
 static HWND hwLog		= 0;
 static HWND hwProgress	= 0;
