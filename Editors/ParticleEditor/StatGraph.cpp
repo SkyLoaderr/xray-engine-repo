@@ -63,9 +63,9 @@ void CStatGraph::OnRender()
         switch (style){
         case stBar:{
             for (ElementsDeqIt it=elements.begin(); it!=elements.end(); it++){
-                float X		= iFloor(float(it-elements.begin())*elem_offs+lt.x);
-                float Y0	= rb.y;  
-                float Y1	= iFloor(lt.y+it->data*elem_factor);
+                float X		= float(it-elements.begin())*elem_offs+lt.x;
+                float Y0	= float(rb.y);
+                float Y1	= lt.y+it->data*elem_factor;
                 pv->set		(X,Y0,it->color); pv++;
                 pv->set		(X,Y1,it->color); pv++;
             }
@@ -73,11 +73,11 @@ void CStatGraph::OnRender()
         case stCurve:{
             for (ElementsDeqIt it=elements.begin()+1; it!=elements.end(); it++){
             	ElementsDeqIt it_prev = it-1;
-                float X0	= iFloor(float(it_prev-elements.begin())*elem_offs+lt.x);
-                float Y0	= iFloor(lt.y+it_prev->data*elem_factor);
+                float X0	= float(it_prev-elements.begin())*elem_offs+lt.x;
+                float Y0	= lt.y+it_prev->data*elem_factor;
                 pv->set		(X0,Y0,it->color); pv++;
-                float X1	= iFloor(float(it-elements.begin())*elem_offs+lt.x);
-                float Y1	= iFloor(lt.y+it->data*elem_factor);
+                float X1	= float(it-elements.begin())*elem_offs+lt.x;
+                float Y1	= lt.y+it->data*elem_factor;
                 pv->set		(X1,Y1,it->color); pv++;
             }
         }break;
