@@ -349,7 +349,7 @@ void CAI_Stalker::Think()
 	vfUpdateDynamicObjects	();
 	vfUpdateParameters		(A,B,C,D,E,F,G,H,I,J,K,L,M);
 	int						iIndex;
-	if (!K && _K && (((iIndex = ifFindDynamicObject(m_tSavedEnemy)) != -1) && (Level().timeServer() - m_tpaDynamicSounds[iIndex].dwTime < m_dwInertion)) && m_tpaDynamicSounds[iIndex].tpEntity->g_Alive()) {
+	if (!K && _K && (((iIndex = ifFindDynamicObject(m_tSavedEnemy)) != -1) && (Level().timeServer() - m_tpaDynamicObjects[iIndex].dwTime < m_dwInertion)) && m_tpaDynamicObjects[iIndex].tpEntity->g_Alive()) {
 		K = true;
 		C = _C;
 		E = _E;

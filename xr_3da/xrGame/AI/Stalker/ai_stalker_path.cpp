@@ -152,8 +152,10 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 						m_tpaPoints.push_back(*tpDestinationPosition);
 					}
 		
-		if ((!tpDestinationPosition) && (tStartPosition.distance_to(getAI().tfGetNodeCenter(AI_Path.Nodes[N - 1])) > getAI().Header().size))
+		if ((!tpDestinationPosition) && (tStartPosition.distance_to(getAI().tfGetNodeCenter(AI_Path.Nodes[N - 1])) > getAI().Header().size)) {
 			m_tpaPoints.push_back(getAI().tfGetNodeCenter(AI_Path.Nodes[N - 1]));
+			m_tpaPointNodes.push_back(AI_Path.Nodes[N - 1]);
+		}
 		
 		m_tpaDeviations.resize	(N = m_tpaPoints.size());
 		
