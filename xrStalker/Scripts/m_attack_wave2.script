@@ -309,45 +309,45 @@ function main ()
 
     local monsters = {
                       m_attack_wave2.Monster (get_level_object ("m_boar_e0000"), patrol ("way0000"), scrname)
---                      m_attack_wave2.Monster (get_level_object ("m_boar_e0001"), patrol ("way0000"), scrname),
---                      m_attack_wave2.Monster (get_level_object ("m_boar_e0002"), patrol ("way0000"), scrname),
---                      m_attack_wave2.Monster (get_level_object ("m_boar_e0003"), patrol ("way0000"), scrname),
---                      m_attack_wave2.Monster (get_level_object ("m_dog_e0000"),  patrol ("way0000"), scrname),
---                      m_attack_wave2.Monster (get_level_object ("m_dog_e0001"),  patrol ("way0000"), scrname),
---                      m_attack_wave2.Monster (get_level_object ("m_dog_e0002"),  patrol ("way0000"), scrname),
---                      m_attack_wave2.Monster (get_level_object ("m_dog_e0003"),  patrol ("way0000"), scrname),
---                      m_attack_wave2.Monster (get_level_object ("m_dog_e0004"),  patrol ("way0000"), scrname),
---                      m_attack_wave2.Monster (get_level_object ("m_dog_e0005"),  patrol ("way0000"), scrname),
---                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0000"),  patrol ("way0000"), scrname),
---                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0001"),  patrol ("way0000"), scrname),
---                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0002"),  patrol ("way0000"), scrname),
---                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0003"),  patrol ("way0000"), scrname),
---                      m_attack_wave2.Monster (get_level_object ("m_flesh_e0000"),  patrol ("way0000"), scrname),
---                      m_attack_wave2.Monster (get_level_object ("m_flesh_e0001"),  patrol ("way0000"), scrname),
---                      m_attack_wave2.Monster (get_level_object ("m_flesh_e0002"),  patrol ("way0000"), scrname),
---                      m_attack_wave2.Monster (get_level_object ("m_flesh_e0003"),  patrol ("way0000"), scrname),
---                      m_attack_wave2.Monster (get_level_object ("m_flesh_e0004"),  patrol ("way0000"), scrname)
+                      m_attack_wave2.Monster (get_level_object ("m_boar_e0001"), patrol ("way0000"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_boar_e0002"), patrol ("way0000"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_boar_e0003"), patrol ("way0000"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_dog_e0000"),  patrol ("way0000"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_dog_e0001"),  patrol ("way0000"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_dog_e0002"),  patrol ("way0000"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_dog_e0003"),  patrol ("way0000"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_dog_e0004"),  patrol ("way0000"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_dog_e0005"),  patrol ("way0000"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0000"),  patrol ("way0000"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0001"),  patrol ("way0000"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0002"),  patrol ("way0000"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0003"),  patrol ("way0000"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_flesh_e0000"),  patrol ("way0000"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_flesh_e0001"),  patrol ("way0000"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_flesh_e0002"),  patrol ("way0000"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_flesh_e0003"),  patrol ("way0000"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_flesh_e0004"),  patrol ("way0000"), scrname)
 					  }
 
 	local stalkers = {
---					 m_attack_wave2.Defender (get_level_object ("stalker_young"), patrol ("way_young"), scrname, monsters, true, true),
---					 m_attack_wave2.Defender (get_level_object ("stalker_veteran"), patrol ("way_veteran"), scrname, monsters, true, false),
---					 m_attack_wave2.Defender (get_level_object ("defender1"), patrol ("way_defender1"), scrname, monsters, true, false),
---					 m_attack_wave2.Defender (get_level_object ("defender2"), patrol ("way_defender2"), scrname, monsters, true, true),
---					 m_attack_wave2.Defender (get_level_object ("defender3"), patrol ("way_defender2"), scrname, monsters, true, true),
---					 m_attack_wave2.Defender (get_level_object ("defender4"), nil, scrname, monsters, true, false),
---					 m_attack_wave2.Defender (get_level_object ("defender5"), nil, scrname, monsters, true, false),
---					 m_attack_wave2.Defender (get_level_object ("tower1"), nil, scrname, monsters, false, false),
---					 m_attack_wave2.Defender (get_level_object ("tower2"), nil, scrname, monsters, false, true),
---					 m_attack_wave2.Defender (get_level_object ("stalker_chief"), nil, scrname, monsters, true, true)
+					 m_attack_wave2.Defender (get_level_object ("stalker_young"), patrol ("way_young"), scrname, monsters, true, true),
+					 m_attack_wave2.Defender (get_level_object ("stalker_veteran"), patrol ("way_veteran"), scrname, monsters, true, false),
+					 m_attack_wave2.Defender (get_level_object ("defender1"), patrol ("way_defender1"), scrname, monsters, true, false),
+					 m_attack_wave2.Defender (get_level_object ("defender2"), patrol ("way_defender2"), scrname, monsters, true, true),
+					 m_attack_wave2.Defender (get_level_object ("defender3"), patrol ("way_defender2"), scrname, monsters, true, true),
+					 m_attack_wave2.Defender (get_level_object ("defender4"), nil, scrname, monsters, true, false),
+					 m_attack_wave2.Defender (get_level_object ("defender5"), nil, scrname, monsters, true, false),
+					 m_attack_wave2.Defender (get_level_object ("tower1"), nil, scrname, monsters, false, false),
+					 m_attack_wave2.Defender (get_level_object ("tower2"), nil, scrname, monsters, false, true),
+					 m_attack_wave2.Defender (get_level_object ("stalker_chief"), nil, scrname, monsters, true, true)
 					 }
 
 	for a = 1, table.getn (monsters), 1 do
 		monsters[a]:set_enemyes (stalkers)
 		monsters[a]:initialize ()
---	    if a <= table.getn (stalkers) then
---		   stalkers[a]:initialize ()
---		end
+	    if a <= table.getn (stalkers) then
+		   stalkers[a]:initialize ()
+		end
 	end
 	
 
@@ -357,9 +357,9 @@ function main ()
 	while true do 
    		  for a = 1, table.getn (monsters), 1 do
 			  monsters[1]:process ()
---	          if a <= table.getn (stalkers) then
---		         stalkers[a]:process ()
---  		      end
+	          if a <= table.getn (stalkers) then
+		         stalkers[a]:process ()
+  		      end
 		  end	
 		  wait (200)
 	end
