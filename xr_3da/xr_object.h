@@ -92,6 +92,7 @@ public:
 	virtual void						spatial_move		();
 
 	IC Fvector&							Direction			() 					{ return renderable.xform.k;		}
+	IC const Fvector&					Direction			() 			const	{ return renderable.xform.k;		}
 	IC Fvector&							Position			() 					{ return renderable.xform.c;		}
 	IC const Fvector&					Position			() 			const	{ return renderable.xform.c;		}
 	virtual float						Radius				()			const;
@@ -121,17 +122,17 @@ public:
 	
 	// Properties
 	void								setVisible			(BOOL _visible);
-	IC BOOL								getVisible			()					{ return FLAGS.bVisible;			}
+	IC BOOL								getVisible			()			const	{ return FLAGS.bVisible;			}
 	void								setEnabled			(BOOL _enabled);
-	IC BOOL								getEnabled			()					{ return FLAGS.bEnabled;			}
+	IC BOOL								getEnabled			()			const	{ return FLAGS.bEnabled;			}
 	IC void								setDestroy			(BOOL _destroy)		{ FLAGS.bDestroy = _destroy?1:0;	}
-	IC BOOL								getDestroy			()					{ return FLAGS.bDestroy;			}
+	IC BOOL								getDestroy			()			const	{ return FLAGS.bDestroy;			}
 	IC void								setLocal			(BOOL _local)		{ FLAGS.net_Local = _local?1:0;		}
-	IC BOOL								getLocal			()					{ return FLAGS.net_Local;			}
+	IC BOOL								getLocal			()			const	{ return FLAGS.net_Local;			}
 	IC void								setSVU				(BOOL _svu)			{ FLAGS.net_SV_Update	= _svu?1:0;	}
-	IC BOOL								getSVU				()					{ return FLAGS.net_SV_Update;		}
+	IC BOOL								getSVU				()			const	{ return FLAGS.net_SV_Update;		}
 	IC void								setReady			(BOOL _ready)		{ FLAGS.net_Ready = _ready?1:0;		}
-	IC BOOL								getReady			()					{ return FLAGS.net_Ready;			}
+	IC BOOL								getReady			()			const	{ return FLAGS.net_Ready;			}
 
 	//---------------------------------------------------------------------
 										CObject				();
