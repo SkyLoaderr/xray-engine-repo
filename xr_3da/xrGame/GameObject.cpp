@@ -41,6 +41,21 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 {
 	switch (type)
 	{
+	case GE_HIT:
+		{
+			u16				id;
+			Fvector			dir;
+			float			power;
+			s16				element;
+			Fvector			position_in_bone_space;
+			P.r_u16			(id);
+			P.r_dir			(dir);
+			P.r_float		(power);
+			P.r_s16			(element);
+			P.r_vec3		(position_in_bone_space);
+			Hit				(power,dir,Level().Objects.net_Find(id),element,position_in_bone_space);
+		}
+		break;
 	case GE_DESTROY:
 		{
 			Log			("-CL_destroy",cName());

@@ -15,7 +15,7 @@ public:
 	virtual void			UpdateCL			();
 	virtual void			OnH_A_Chield		();
 	virtual void			OnH_B_Independent	();
-
+	virtual	void			Hit					(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space){};
 	CCustomTarget();
 	virtual ~CCustomTarget();
 };

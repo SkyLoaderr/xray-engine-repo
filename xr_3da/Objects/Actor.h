@@ -278,6 +278,7 @@ public:
 	// HUD
 	virtual void						OnHUDDraw			(CCustomHUD* hud);
 	CWeaponList*						tpfGetWeapons		()	{return Weapons;}
+	virtual	void						PhHit				(Fvector point,float power,int boneid){};
 
 #ifdef DEBUG
 	virtual void						OnRender			();

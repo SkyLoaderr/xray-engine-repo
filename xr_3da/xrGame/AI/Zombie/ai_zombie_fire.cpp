@@ -33,11 +33,13 @@ void CAI_Zombie::Exec_Action(float dt)
 				m_bActionStarted = true;
 				m_dwStartAttackTime = dwTime;
 				Fvector tDirection;
+				Fvector position_in_bone_space;
+				position_in_bone_space.set(0.f,0.f,0.f);
 				tDirection.sub(m_tSavedEnemy->Position(),this->Position());
 				tDirection.normalize();
 				
 				if ((this->Local()) && (m_tSavedEnemy) && (m_tSavedEnemy->CLS_ID == CLSID_ENTITY))
-					m_tSavedEnemy->Hit(m_fHitPower,tDirection,this,-1);
+					m_tSavedEnemy->Hit(m_fHitPower,tDirection,this,-1,position_in_bone_space);
 			}
 			else
 				m_bActionStarted = false;

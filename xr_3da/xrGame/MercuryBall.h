@@ -18,6 +18,6 @@ public:
 	virtual void OnH_B_Independent();
 	virtual void OnDeviceCreate();
 	virtual void OnDeviceDestroy();
-
+	virtual	void Hit					(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space){};
 	virtual BOOL			net_Spawn			(LPVOID DC);
 };

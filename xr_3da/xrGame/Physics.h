@@ -253,7 +253,7 @@ public:
 		elements.push_back((CPHElement*)E);
 	};
 	virtual	void			add_Joint				(CPhysicsJoint* E, int E1, int E2)					{};
-	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	{};
+	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	;
 
 	virtual void			Update					()	;											
 
@@ -262,8 +262,11 @@ public:
 
 	virtual void			setMass					(float M)									;
 
-	virtual void			applyForce				(const Fvector& dir, float val)				{};
-	virtual void			applyImpulse			(const Fvector& dir, float val)				{};
+	virtual void			applyForce				(const Fvector& dir, float val)				{
+																								if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+																								dBodyAddForce(m_body,dir.x*val,dir.y*val,dir.z*val);
+																								};
+	virtual void			applyImpulse			(const Fvector& dir, float val)				{dBodyAddForce(m_body,dir.x*val/fixed_step,dir.y*val/fixed_step,dir.z*val/fixed_step);};
 	virtual	void PhDataUpdate(dReal step);
 	virtual	void PhTune(dReal step);
 	virtual void InitContact(dContact* c){};

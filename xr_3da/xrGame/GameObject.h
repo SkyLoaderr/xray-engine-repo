@@ -34,7 +34,8 @@ public:
 	virtual void			OnVisible			();
 	virtual void			OnEvent				(NET_Packet& P, u16 type);
 	virtual void			UpdateCL			();
-
+	
+	virtual	void			Hit					(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space)=0;
 	// Position stack
 	virtual	SavedPosition	ps_Element			(u32 ID);
 

@@ -46,7 +46,9 @@ public:
 
 	virtual BOOL						ShadowGenerate	( ) { return TRUE;	}
 	virtual BOOL						ShadowReceive	( ) { return TRUE;	}
-
+	virtual	void		Hit				(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space){
+																													m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,P/5.f);
+																													};
 	void				PlayDemo		( LPCSTR N );
 
 	CDummyObject		();

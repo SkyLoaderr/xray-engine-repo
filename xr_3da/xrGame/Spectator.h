@@ -40,7 +40,7 @@ public:
 	virtual void			OnKeyboardPress			(int dik);
 	virtual void			OnKeyboardRelease		(int dik);
 	virtual void			OnKeyboardHold			(int dik);
-
+	virtual	void			Hit						(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space){};
 	virtual void			Update					( u32 T ); 
 	virtual void			UpdateCL				( );
 };

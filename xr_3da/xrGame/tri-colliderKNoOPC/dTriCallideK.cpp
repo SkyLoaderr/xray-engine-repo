@@ -1213,7 +1213,7 @@ else {//7-12
 	contact->pos[2] = pos[2];	
 }
 
-	if(ret>maxc) ret=maxc;
+	if((int)ret>maxc) ret=(unsigned int)maxc;
 
  for (unsigned int i=0; i<ret; i++) {
     CONTACT(contact,i*skip)->g1 = const_cast<dxGeom*> (o2);

@@ -1150,8 +1150,8 @@ void CPHShell::PhDataUpdate(dReal step){
 				}
 
 				static const dReal u = -0.1f;
-				static const dReal w_limit = M_PI/2.f/0.02f;
-				static const dReal l_limit = 3.f/0.02f;
+				static const dReal w_limit = M_PI/4.f/fixed_step;
+				static const dReal l_limit = 3.f/fixed_step;
 				dReal mag;
 				const dReal* pos = dBodyGetLinearVel(m_body);
 				mag=sqrtf(pos[0]*pos[0]+pos[1]*pos[1]+pos[2]*pos[2]);
@@ -1331,3 +1331,8 @@ if( !dBodyIsEnabled(m_body)) return;
 
 }
 
+void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val){
+	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+	val/=fixed_step;
+	dBodyAddForceAtRelPos       (m_body, dir.x*val,dir.y*val,dir.z*val,pos.x, pos.y, pos.z);
+}

@@ -21,7 +21,9 @@ public:
 	virtual void			UpdateCL			();					// Called each frame, so no need for dt
 	virtual BOOL			ShadowGenerate		()					{ return FALSE;	}
 	virtual BOOL			ShadowReceive		()					{ return FALSE;	}
-
+	virtual	void			Hit					(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space){
+												m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,P/5.f);
+												}
 	void SetPos									(const Fmatrix& pos);
 
 	CPhysicsShell*			m_pPhysicsShell;

@@ -32,19 +32,7 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 
 	switch (type)
 	{
-	case GE_HIT:
-		{
-			u16				id;
-			Fvector			dir;
-			float			power;
-			s16				element;
-			P.r_u16			(id);
-			P.r_dir			(dir);
-			P.r_float		(power);
-			P.r_s16			(element);
-			Hit				(power,dir,Level().Objects.net_Find(id),element);
-		}
-		break;
+
 	case GE_DIE:
 		{
 			u16				id;
@@ -60,7 +48,7 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 	}
 }
 
-void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element) 
+void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element,Fvector position_in_object_space) 
 {
 	// *** process hit calculations
 	// Calc impulse

@@ -277,17 +277,18 @@ void CActor::net_Destroy	()
 void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element)
 {
 	if (g_Alive()<=0) return;
-
+	Fvector position_in_bone_space;
+	position_in_bone_space.set(0.f,0.f,0.f);
 	switch (GameID())
 	{
 	case GAME_SINGLE:		
 		{
 			if (psActorFlags&AF_GODMODE)	return;
-			else inherited::Hit		(iLost,dir,who,element);
+			else inherited::Hit		(iLost,dir,who,element,position_in_bone_space);
 		}
 		break;
 	default:
-		inherited::Hit	(iLost,dir,who,element);
+		inherited::Hit	(iLost,dir,who,element,position_in_bone_space);
 		break;
 	}
 }

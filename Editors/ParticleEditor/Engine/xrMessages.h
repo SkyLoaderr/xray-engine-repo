@@ -251,6 +251,7 @@ GE_HIT									// попадание (пулей)
 	direction	dir;
 	float		power;
 	s16			element;
+	vector3		position_in_bone_space;
 }
 GE_DIE
 {

@@ -662,7 +662,22 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 			float scale		=	1-(RQ.range/fireDistance);	clamp(scale,0.f,1.f);
 			power			*=	_sqrt(scale);
 			CEntity* E		=	dynamic_cast<CEntity*>(RQ.O);
+			//CGameObject* GO	=	dynamic_cast<CGameObject*>(RQ.O);
 			if (E) power	*=	E->HitScale(RQ.element);
+
+			// object-space
+			Fvector p_in_object_space,position_in_bone_space;
+			Fmatrix m_inv;
+			m_inv.invert			(RQ.O->clXFORM());
+			m_inv.transform_tiny	(p_in_object_space, end_point);
+
+			// bone-space
+			CKinematics* V	=	PKinematics(RQ.O->Visual());
+			Fmatrix& m_bone	=	(V->LL_GetInstance(RQ.element)).mTransform;
+			Fmatrix  m_inv_bone;
+			m_inv_bone.invert			(m_bone);
+			m_inv_bone.transform_tiny	(position_in_bone_space, p_in_object_space);
+
 
 			//  
 			NET_Packet		P;
@@ -671,6 +686,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 			P.w_dir			(D);
 			P.w_float		(power);
 			P.w_s16			((s16)RQ.element);
+			P.w_vec3		(position_in_bone_space);
 			u_EventSend		(P);
 		}
 		FireShotmark		(D,end_point,RQ);

@@ -821,7 +821,7 @@ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Co
 
 	// Creating minimum contacts 
 
-	int OutTriCount = 0;
+
 	//UINT TriangleIDCount; // Num of tries
 
 	XRC.box_options                (0);
