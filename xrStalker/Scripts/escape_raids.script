@@ -39,7 +39,7 @@ local patrols = {
                       dead = false,
                       npc = nil
                       }
-                   }
+                   },
                 --command 2
                    {
                    on_patrol = false,
