@@ -21,7 +21,7 @@ CCar::CCar(void)
 	camera[ectFirst]->tag	= ectFirst;
 	camera[ectChase]= xr_new<CCameraLook>		(this, pSettings, "car_look_cam",		CCameraBase::flRelativeLink); 
 	camera[ectChase]->tag	= ectChase;
-	camera[ectFree]	= xr_new<CCameraLook>		(this, pSettings, "car_free_cam",		CCameraBase::flRelativeLink); 
+	camera[ectFree]	= xr_new<CCameraLook>		(this, pSettings, "car_free_cam",		0); 
 	camera[ectFree]->tag	= ectFree;
 	OnCameraChange(ectFirst);
 
