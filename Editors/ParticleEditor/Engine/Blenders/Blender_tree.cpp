@@ -134,7 +134,7 @@ void	CBlender_Tree::Compile	(CBlender_Compile& C)
 		C.r2_End				();
 		break;
 	case 1:		// smap-direct
-		if (oBlend.value)		C.r2_Pass	(r2v("r2_shadow_direct_aref"),r2p("r2_shadow_direct_aref"),TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,TRUE,220);
+		if (oBlend.value)		C.r2_Pass	(r2v("r2_shadow_direct_tree"),r2p("r2_shadow_direct_aref"),TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,TRUE,220);
 		else					C.r2_Pass	(r2v("r2_shadow_direct_base"),r2p("r2_shadow_direct_base"));
 		C.r2_Sampler			("s_base",C.L_textures[0]);
 		C.r2_End				();
@@ -147,7 +147,7 @@ void	CBlender_Tree::Compile	(CBlender_Compile& C)
 		C.r2_End				();
 		break;
 	case 3:		// smap-spot
-		if (oBlend.value)		C.r2_Pass	(r2v("r2_shadow_direct_aref"),r2p("r2_shadow_direct_aref"),TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,TRUE,220);
+		if (oBlend.value)		C.r2_Pass	(r2v("r2_shadow_direct_tree"),r2p("r2_shadow_direct_aref"),TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,TRUE,220);
 		else					C.r2_Pass	(r2v("r2_shadow_direct_base"),r2p("r2_shadow_direct_base"));
 		C.r2_Sampler			("s_base",C.L_textures[0]);
 		C.r2_End				();
