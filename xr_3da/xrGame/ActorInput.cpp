@@ -20,14 +20,18 @@ void CActor::OnKeyboardPress(int cmd)
 		}
 		return;
 	}
+
 	if (!g_Alive())												return;
-	if(m_inventory.Action(cmd, CMD_START))						return;
 
 	if(m_vehicle)
 	{
-									   m_vehicle->OnKeyboardPress(cmd);
-																return;
+		m_vehicle->OnKeyboardPress(cmd);
+		return;
 	}
+
+	if(m_inventory.Action(cmd, CMD_START))						return;
+
+
 	switch(cmd){
 	case kACCEL:	mstate_wishful |= mcAccel;					break;
 	case kR_STRAFE:	mstate_wishful |= mcRStrafe;				break;

@@ -945,7 +945,7 @@ void CPHElement::			add_Box		(const Fobb&		V){
 	m_boxes_data.push_back(V);
 }
 
-void CPHElement::			create_Box		(Fobb&		V){
+void CPHElement::			create_Box	(const Fobb&		V){
 														dGeomID geom,trans;
 
 														dVector3 local_position={
@@ -974,13 +974,12 @@ void CPHElement::			create_Box		(Fobb&		V){
 														dGeomTransformSetGeom(trans,geom);
 														dGeomSetBody(trans,m_body);
 														m_trans.push_back(trans);
+														/////////////////////////////////////////////////////////
 														dGeomGroupAdd(m_group,trans);
+														/////////////////////////////////////////////////////////
 														dGeomTransformSetInfo(trans,1);
-														//dGeomCreateUserData(trans);
 														dGeomCreateUserData(geom);
-														//dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("box_default");
 														dGeomGetUserData(geom)->material=ul_material;
-														//dGeomGetUserData(trans)->friction=friction_table[1];
 														if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
 															}
 														else{
@@ -1009,13 +1008,12 @@ void CPHElement::			create_Box		(Fobb&		V){
 														m_trans.push_back(trans);
 
 														dGeomCreateUserData(geom);
-														//dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("materials\\box_default");
 														dGeomGetUserData(geom)->material=ul_material;
 
 														if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
 														
 														}
-														//dGeomGetUserData(trans)->friction=dInfinity;
+
 														
 														}
 
@@ -1023,7 +1021,7 @@ void CPHElement::			add_Sphere	(const Fsphere&	V){
 	m_spheras_data.push_back(V);
 }
 
-void CPHElement::			create_Sphere	(Fsphere&	V){
+void CPHElement::			create_Sphere	(const Fsphere&	V){
 														dGeomID geom,trans;
 														dVector3 local_position={
 															V.P.x-m_mass_center.x,
@@ -1062,6 +1060,85 @@ void CPHElement::			create_Sphere	(Fsphere&	V){
 														if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
 														}
 														};
+void CPHElement::add_Cylinder(const Fcylinder& V)
+{
+	m_cylinders_data.push_back(V);
+}
+
+void CPHElement::create_Cylinder(const Fcylinder& V)
+{
+	dGeomID geom,trans;
+
+	dVector3 local_position=
+	{
+			V.m_translate.x-m_mass_center.x,
+			V.m_translate.y-m_mass_center.y,
+			V.m_translate.z-m_mass_center.z
+	};
+
+		if(m_group){
+				geom=dCreateCylinder
+					(
+					0,
+					V.m_halflength*2.f,
+					V.m_radius
+					);
+
+				m_geoms.push_back(geom);
+				dGeomSetPosition(geom,
+					local_position[0],
+					local_position[1],
+					local_position[2]);
+				dMatrix3 R;
+				PHDynamicData::FMX33toDMX(V.m_rotate,R);
+				dGeomSetRotation(geom,R);
+				trans=dCreateGeomTransform(0);
+
+				dGeomTransformSetGeom(trans,geom);
+				dGeomSetBody(trans,m_body);
+				m_trans.push_back(trans);
+				/////////////////////////////////////////////////////////
+				dGeomGroupAdd(m_group,trans);
+				/////////////////////////////////////////////////////////
+				dGeomTransformSetInfo(trans,1);
+				dGeomCreateUserData(geom);
+				dGeomGetUserData(geom)->material=ul_material;
+				if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
+			}
+		else{
+				geom=dCreateCylinder
+					(
+					0,
+					V.m_halflength*2.f,
+					V.m_radius
+					);
+
+			m_geoms.push_back(geom);
+
+
+			dGeomSetPosition(geom,
+				local_position[0],
+				local_position[1],
+				local_position[2]);
+
+			dMatrix3 R;
+			PHDynamicData::FMX33toDMX(V.m_rotate,R);
+			dGeomSetRotation(geom,R);
+
+
+			trans=dCreateGeomTransform(0);
+			dGeomTransformSetInfo(trans,1);
+			dGeomTransformSetGeom(trans,geom);
+			dGeomSetBody(trans,m_body);
+			m_trans.push_back(trans);
+
+			dGeomCreateUserData(geom);
+			dGeomGetUserData(geom)->material=ul_material;
+
+			if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
+
+		}
+}
 void CPHElement::			build	(dSpaceID space){
 
 m_body=dBodyCreate(phWorld);
@@ -1084,16 +1161,22 @@ m_inverse_local_transform.identity();
 m_inverse_local_transform.c.set(mc);
 m_inverse_local_transform.invert();
 dBodySetPosition(m_body,mc.x,mc.y,mc.z);
-vector<Fobb>::iterator i_box;
+///////////////////////////////////////////////////////////////////////////////////////
+	vector<Fobb>::iterator i_box;
 	for(i_box=m_boxes_data.begin();i_box!=m_boxes_data.end();i_box++){
 	create_Box(*i_box);
 	}
+///////////////////////////////////////////////////////////////////////////////////////
 	vector<Fsphere>::iterator i_sphere;
 	for(i_sphere=m_spheras_data.begin();i_sphere!=m_spheras_data.end();i_sphere++){
 		create_Sphere(*i_sphere);
 		}
-//////////////////////////////////////
-
+///////////////////////////////////////////////////////////////////////////////////////
+	vector<Fcylinder>::iterator i_cylinder;
+	for(i_cylinder=m_cylinders_data.begin();i_cylinder!=m_cylinders_data.end();i_cylinder++){
+		create_Cylinder(*i_cylinder);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
 }
 
 void CPHElement::RunSimulation()
@@ -1165,12 +1248,23 @@ Fvector CPHElement::			get_mc_data	(){
 	volume+=pv;
 	mc.add(s);
 	}
+
+
+	vector<Fcylinder>::iterator i_cylider;
+	for(i_cylider=m_cylinders_data.begin();i_cylider!=m_cylinders_data.end();i_cylider++){
+		pv=M_PI*(*i_cylider).m_radius*(*i_cylider).m_radius*(*i_cylider).m_halflength*2.f;
+		s.mul((*i_cylider).m_translate,pv);
+		volume+=pv;
+		mc.add(s);
+	}
+
 	m_volume=volume;
 	mc.mul(1.f/volume);
 	m_mass_center=mc;
 	return mc;
 }
 Fvector CPHElement::			get_mc_geoms	(){
+////////////////////to be implemented
 Fvector mc;
 mc.set(0.f,0.f,0.f);
 return mc;
@@ -1187,6 +1281,9 @@ void CPHElement::calculate_it_data(const Fvector& mc,float mas){
 	l.sub(pos,mc);
 	dMassSetBox(&m,1,hside.x*2.f,hside.y*2.f,hside.z*2.f);
 	dMassAdjust(&m,hside.x*hside.y*hside.z*8.f/m_volume*mas);
+	dMatrix3 DMatx;
+	PHDynamicData::FMX33toDMX((*i_box).m_rotate,DMatx);
+	dMassRotate(&m,DMatx);
 	dMassTranslate(&m,l.x,l.y,l.z);
 	dMassAdd(&m_mass,&m);
 	
@@ -1203,26 +1300,38 @@ void CPHElement::calculate_it_data(const Fvector& mc,float mas){
 
 	}
 
+	vector<Fcylinder>::iterator i_cylinder;
+	for(i_cylinder=m_cylinders_data.begin();i_cylinder!=m_cylinders_data.end();i_cylinder++){
+		Fvector& pos=(*i_cylinder).m_translate;
+		Fvector l;
+		l.sub(pos,mc);
+		dMassSetCylinder(&m,mas/m_volume,2,(*i_cylinder).m_radius,2.f*(*i_cylinder).m_halflength);
+		dMatrix3 DMatx;
+		PHDynamicData::FMX33toDMX((*i_cylinder).m_rotate,DMatx);
+		dMassRotate(&m,DMatx);
+		dMassTranslate(&m,l.x,l.y,l.z);
+		dMassAdd(&m_mass,&m);
 
+	}
+//dMassSetCylinder()
 }
 
 
 void CPHElement::calculate_it_data_use_density(const Fvector& mc,float density){
-	//density*=40.f;
-	vector<Fobb>::iterator i_box=m_boxes_data.begin();
-	if(m_boxes_data.size()==1,m_spheras_data.size()==0){
-	Fvector& hside=(*i_box).m_halfsize;
-	//dReal hs=_min(_max(hside.x,hside.y),hside.z);
-	dMassSetBox(&m_mass,1,hside.x*2.f,hside.y*2.f,hside.z*2.f);
-	dMassAdjust(&m_mass,hside.x*hside.y*hside.z*8.f*density);
-	//dMassSetBox(&m_mass,1.f,hs*2.f,hs*2.f,hs*2.f);
-	//dMassAdjust(&m_mass,hs*hs*hs*8.f*density);
-	return;
-	}
+
+//	vector<Fobb>::iterator i_box=m_boxes_data.begin();
+//	if(m_boxes_data.size()==1,m_spheras_data.size()==0){
+//	Fvector& hside=(*i_box).m_halfsize;
+
+//	dMassSetBox(&m_mass,1,hside.x*2.f,hside.y*2.f,hside.z*2.f);
+//	dMassAdjust(&m_mass,hside.x*hside.y*hside.z*8.f*density);
+
+//	return;
+//	}
 
 	dMass m;
 	dMassSetZero(&m_mass);
-	
+	vector<Fobb>::iterator i_box;
 	for(i_box=m_boxes_data.begin();i_box!=m_boxes_data.end();i_box++){
 	Fvector& hside=(*i_box).m_halfsize;
 	Fvector& pos=(*i_box).m_translate;
@@ -1230,7 +1339,9 @@ void CPHElement::calculate_it_data_use_density(const Fvector& mc,float density){
 	l.sub(pos,mc);
 	dMassSetBox(&m,1,hside.x*2.f,hside.y*2.f,hside.z*2.f);
 	dMassAdjust(&m,hside.x*hside.y*hside.z*8.f*density);
-	
+	dMatrix3 DMatx;
+	PHDynamicData::FMX33toDMX((*i_box).m_rotate,DMatx);
+	dMassRotate(&m,DMatx);	
 	dMassTranslate(&m,l.x,l.y,l.z);
 	dMassAdd(&m_mass,&m);
 	
@@ -1248,6 +1359,20 @@ void CPHElement::calculate_it_data_use_density(const Fvector& mc,float density){
 
 	}
 
+	vector<Fcylinder>::iterator i_cylinder;
+	for(i_cylinder=m_cylinders_data.begin();i_cylinder!=m_cylinders_data.end();i_cylinder++){
+		Fvector& pos=(*i_cylinder).m_translate;
+		Fvector l;
+		l.sub(pos,mc);
+		dMassSetCylinder(&m,1.f,2,(*i_cylinder).m_radius,(*i_cylinder).m_halflength*2.f);
+		dMassAdjust(&m,M_PI*(*i_cylinder).m_radius*(*i_cylinder).m_radius*(*i_cylinder).m_halflength*2.f*density);
+		dMatrix3 DMatx;
+		PHDynamicData::FMX33toDMX((*i_box).m_rotate,DMatx);
+		dMassRotate(&m,DMatx);	
+		dMassTranslate(&m,l.x,l.y,l.z);
+		dMassAdd(&m_mass,&m);
+
+	}
 
 }
 
@@ -1293,6 +1418,7 @@ void CPHElement::SetTransform(const Fmatrix &m0){
 CPHElement::~CPHElement	(){
 	m_boxes_data.clear();
 	m_spheras_data.clear();
+	m_cylinders_data.clear();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2159,6 +2285,147 @@ dJointSetHingeParam(m_joint,dParamVel ,axes[0].velocity);
 
 void CPHJoint::CreateHinge2()
 {
+
+	m_joint=dJointCreateHinge2(phWorld,0);
+
+	Fvector pos;
+	Fmatrix first_matrix,second_matrix;
+	Fvector axis;
+	CPHElement* first=dynamic_cast<CPHElement*>(pFirst_element);
+	CPHElement* second=dynamic_cast<CPHElement*>(pSecond_element);
+	first->InterpolateGlobalTransform(&first_matrix);
+	second->InterpolateGlobalTransform(&second_matrix);
+
+	switch(vs_anchor)
+	{
+	case vs_first :first_matrix.transform_tiny(pos,anchor); break;
+	case vs_second:second_matrix.transform_tiny(pos,anchor); break;
+	case vs_global:					
+	default:pos.set(anchor);	
+	}
+	//////////////////////////////////////
+
+
+	dJointAttach(m_joint,first->get_body(),second->get_body());
+	dJointSetHinge2Anchor(m_joint,pos.x,pos.y,pos.z);
+
+	dJointAttach(m_joint,first->get_body(),second->get_body());
+
+	/////////////////////////////////////////////
+
+	Fmatrix first_matrix_inv;
+	first_matrix_inv.set(first_matrix);
+	first_matrix_inv.invert();
+	Fmatrix rotate;
+	rotate.mul(first_matrix_inv,second_matrix);
+	/////////////////////////////////////////////
+	float shift_angle;
+	float lo;
+	float hi;
+	//////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////
+	switch(axes[0].vs)
+	{
+	case vs_first :first_matrix.transform_dir(axis,axes[0].direction);	break;
+	case vs_second:second_matrix.transform_dir(axis,axes[0].direction); break;
+	case vs_global:
+	default:		axis.set(axes[0].direction);							
+	}
+
+
+
+	axis_angleA(rotate,axes[0].direction,shift_angle);
+
+	shift_angle-=axes[0].zero;
+
+	if(shift_angle>M_PI) shift_angle-=2.f*M_PI;
+	if(shift_angle<-M_PI) shift_angle+=2.f*M_PI;
+
+	lo=axes[0].low+shift_angle;
+	hi=axes[0].high+shift_angle;
+	if(lo<-M_PI){ 
+		hi-=(lo+M_PI);
+		lo=-M_PI;
+	}
+	if(lo>0.f) {
+		hi-=lo;
+		lo=0.f;
+	}
+	if(hi>M_PI) {
+		lo-=(hi-M_PI);
+		hi=M_PI;
+	}
+	if(hi<0.f) {
+		lo-=hi;
+		hi=0.f;
+	}
+
+
+
+	dJointSetHinge2Axis1 (m_joint, axis.x, axis.y, axis.z);
+
+
+	dJointSetHinge2Param(m_joint,dParamLoStop ,lo);
+	dJointSetHinge2Param(m_joint,dParamHiStop ,hi);
+
+	if(!(axes[0].force<0.f)){
+		dJointSetHinge2Param(m_joint,dParamFMax,axes[0].force);
+		dJointSetHinge2Param(m_joint,dParamVel ,axes[0].velocity);
+	}
+
+
+
+	switch(axes[1].vs)
+	{
+	case vs_first :first_matrix.transform_dir(axis,axes[1].direction);	break;
+	case vs_second:second_matrix.transform_dir(axis,axes[1].direction); break;
+	case vs_global:
+	default		  :axis.set(axes[1].direction);							
+	}
+
+
+
+	axis_angleA(rotate,axes[1].direction,shift_angle);
+
+	shift_angle-=axes[1].zero;
+
+	if(shift_angle>M_PI) shift_angle-=2.f*M_PI;
+	if(shift_angle<-M_PI) shift_angle+=2.f*M_PI;
+
+
+
+
+
+	lo=axes[1].low+shift_angle;
+	hi=axes[1].high+shift_angle;
+	if(lo<-M_PI){ 
+		hi-=(lo+M_PI);
+		lo=-M_PI;
+	}
+	if(lo>0.f) {
+		hi-=lo;
+		lo=0.f;
+	}
+	if(hi>M_PI) {
+		lo-=(hi-M_PI);
+		hi=M_PI;
+	}
+	if(hi<0.f) {
+
+		lo-=hi;
+		hi=0.f;
+	}
+
+	dJointSetHinge2Axis2 (m_joint, axis.x, axis.y, axis.z);
+
+	dJointSetAMotorParam(m_joint,dParamLoStop2 ,lo);
+	dJointSetAMotorParam(m_joint,dParamHiStop2 ,hi);
+	if(!(axes[1].force<0.f)){
+		dJointSetAMotorParam(m_joint,dParamFMax2 ,axes[1].force);
+		dJointSetAMotorParam(m_joint,dParamVel2 ,axes[1].velocity);
+	}
+	//////////////////////////////////////////////////////////////////
+
 }
 
 void CPHJoint::CreateShoulder1()
@@ -2688,7 +2955,15 @@ void CPHJoint::SetForceAndVelocity		(const float force,const float velocity,cons
 	{
 		switch(eType){
 
-						case hinge2:				;
+						case hinge2:switch(ax)
+									{
+									case -1:
+												dJointSetHinge2Param(m_joint,dParamFMax ,axes[0].force);
+												dJointSetHinge2Param(m_joint,dParamFMax2 ,axes[1].force);
+									case 0:		dJointSetHinge2Param(m_joint,dParamFMax ,axes[0].force);break;
+									case 1:		dJointSetHinge2Param(m_joint,dParamFMax2 ,axes[1].force);break;
+									}
+							break;
 						case universal_hinge:		;
 						case shoulder1:				;
 						case shoulder2:				;

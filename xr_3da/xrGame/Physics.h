@@ -5,6 +5,7 @@
 #include "PhysicsShell.h"
 #include "PHObject.h"
 #include "PHInterpolation.h"
+#include "_cylinder.h"
 ///////////////////////////////////////////////////////////////////////////////
 const dReal fixed_step=0.02f;
 const int dis_frames=11;
@@ -196,6 +197,7 @@ class CPHElement:  public CPhysicsElement {
 	vector <dGeomID>		m_trans;
 	vector <Fsphere>		m_spheras_data;
 	vector <Fobb>			m_boxes_data;
+	vector <Fcylinder>		m_cylinders_data;
 	bool					bActive;
 	bool					bActivating;
 	float					m_start_time;
@@ -240,8 +242,10 @@ static Shader*			hWallmark;
 ContactCallbackFun*			contact_callback;
 ////////////////////////////
 private:
-	void			create_Sphere				(Fsphere&	V);
-	void			create_Box					(Fobb&		V);
+	void			create_Sphere				(const Fsphere&		V);
+	void			create_Box					(const Fobb&		V);
+	void			create_Cylinder				(const Fcylinder&	V);
+
 	void			calculate_it_data			(const Fvector& mc,float mass);
 	void			calculate_it_data_use_density(const Fvector& mc,float density);
 	void			Disabling						();
@@ -261,10 +265,12 @@ public:
 	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	;
 	Fmatrix m_inverse_local_transform;
 	///
-	virtual	void			add_Sphere				(const Fsphere&	V);
+	virtual	void			add_Sphere				(const Fsphere&		V);
 
 	virtual	void			add_Box					(const Fobb&		V);
 
+	virtual	void			add_Cylinder			(const Fcylinder&	V);
+	
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback);
 	void			SetShell		(CPHShell* p){m_shell=p;}
 	void			InterpolateGlobalTransform(Fmatrix* m);

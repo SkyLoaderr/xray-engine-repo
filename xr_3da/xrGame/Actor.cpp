@@ -727,6 +727,7 @@ void CActor::Update	(u32 DT)
 	{
 	m_vehicle->Update(DT);
 	//inherited::Update		(DT);
+	
 	return;
 	}
 	if (!getEnabled())	return;
@@ -1878,6 +1879,9 @@ void CActor::attach_Vehicle(CCar* vehicle)
 	}
 	
 	ph_Movement.DestroyCharacter();
+	m_inventory.ActiveItem()->m_showHUD=false;
+	setVisible(true);
+	//HUD().Render_Calculate()
 }
 void CActor::detach_Vehicle()
 {

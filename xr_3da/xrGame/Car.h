@@ -27,6 +27,9 @@ private:
 	sound					snd_engine;
 
 	bool					HUDview				( ) { return IsFocused(); }
+	
+	void					ActivateJeep		();
+	void					ActivateShell		();
 
 	static void __stdcall	cb_WheelFL			(CBoneInstance* B);
 	static void __stdcall	cb_WheelFR			(CBoneInstance* B);
@@ -37,6 +40,7 @@ private:
 	virtual void PhTune(dReal step);
 	virtual void InitContact(dContact*c){};
 	virtual void StepFrameUpdate(dReal step){};
+
 public:
 
 	void					cam_Update			(float dt);

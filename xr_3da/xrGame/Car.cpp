@@ -24,8 +24,7 @@ CCar::CCar(void)
 	camera[ectChase]= xr_new<CCameraLook>		(this, pSettings, "car_look_cam",		false);	camera[ectChase]->tag	= ectChase;
 	camera[ectFree]	= xr_new<CCameraLook>		(this, pSettings, "car_free_cam",		false);	camera[ectFree]->tag	= ectFree;
 	OnCameraChange(ectChase);
-	m_jeep.Create	(ph_world->GetSpace(),phWorld);
-	ph_world->AddObject((CPHObject*)this);
+
 	m_repairing		=false;
 	m_owner			=NULL;
 }
@@ -165,30 +164,13 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 	BOOL R = inherited::net_Spawn	(DC);
 
 
-	setVisible						(TRUE);
-	m_jeep.SetPosition				(vPosition);
-	dMatrix3						Rot;
-	Fmatrix							ry,mr;
-	ry.rotateY						(deg2rad(90.f));
-	ry.invert						();
-	Fmatrix33 m33;
-	mr.mul							(ry,mRotate);
-	m33.set							(mr);
-	
-	PHDynamicData::FMX33toDMX		(m33,Rot);
-	m_jeep.SetRotation				(Rot);
-	Sound->play_at_pos				(snd_engine,this,vPosition,true);
 
+	setVisible						(TRUE);
+
+	Sound->play_at_pos				(snd_engine,this,vPosition,true);
+	ActivateJeep();
 	//
-	CKinematics*	M				= PKinematics(pVisual);
-	R_ASSERT						(M);
-	M->PlayCycle					("idle");
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontl")).set_callback	(cb_WheelFL,this);
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontr")).set_callback	(cb_WheelFR,this);
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearl")).set_callback	(cb_WheelBL,this);
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearr")).set_callback	(cb_WheelBR,this);
-	// M->LL_GetInstance				(M->LL_BoneID("steer")).set_callback	(cb_WheelBR,this);
-	// clTransform.set					( m_jeep.DynamicData.BoneTransform	);
+
 
 	return R;
 }
@@ -425,4 +407,35 @@ bool CCar::attach_Actor(CActor* actor)
 if(m_owner) return false;
 m_owner=actor;
 return true;
+}
+
+void CCar::ActivateJeep()
+{
+	m_jeep.Create	(ph_world->GetSpace(),phWorld);
+	ph_world->AddObject((CPHObject*)this);
+	m_jeep.SetPosition				(vPosition);
+	dMatrix3						Rot;
+	Fmatrix							ry,mr;
+	ry.rotateY						(deg2rad(90.f));
+	ry.invert						();
+	Fmatrix33 m33;
+	mr.mul							(ry,mRotate);
+	m33.set							(mr);
+
+	PHDynamicData::FMX33toDMX		(m33,Rot);
+	m_jeep.SetRotation				(Rot);
+
+	CKinematics*	M				= PKinematics(pVisual);
+	R_ASSERT						(M);
+	M->PlayCycle					("idle");
+	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontl")).set_callback	(cb_WheelFL,this);
+	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontr")).set_callback	(cb_WheelFR,this);
+	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearl")).set_callback	(cb_WheelBL,this);
+	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearr")).set_callback	(cb_WheelBR,this);
+	// M->LL_GetInstance				(M->LL_BoneID("steer")).set_callback	(cb_WheelBR,this);
+	// clTransform.set					( m_jeep.DynamicData.BoneTransform	);
+}
+
+void CCar::ActivateShell()
+{
 }

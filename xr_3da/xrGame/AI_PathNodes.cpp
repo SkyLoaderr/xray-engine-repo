@@ -459,12 +459,17 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	p_dest.add			(motion);
 
 #ifndef NO_PHYSICS_IN_AI_MOVE
-	if ((tpNearestList.empty())) {
+	if ((tpNearestList.empty())) 
+	{
 		if(!Me->Movement.TryPosition(p_dest))//!Me->Movement.TryPosition(p_dest)
 		{
 			motion.mul			(mdir,speed*10.f/mdir.magnitude());
 			Me->Movement.Calculate(motion,0,0,0,0);
 			Me->Movement.GetPosition(p_dest);
+			if (Me->Movement.gcontact_HealthLost)	
+			{
+				Me->Hit	(Me->Movement.gcontact_HealthLost,mdir,Me,-1,p_dest,0);
+			}
 		}
 
 	}
@@ -473,6 +478,10 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 		motion.mul			(mdir,speed*10.f/mdir.magnitude());
 		Me->Movement.Calculate(motion,0,0,0,0);
 		Me->Movement.GetPosition(p_dest);
+		if (Me->Movement.gcontact_HealthLost)	
+		{
+			Me->Hit	(Me->Movement.gcontact_HealthLost,mdir,Me,-1,p_dest,0);
+		}
 	}
 #endif
 
