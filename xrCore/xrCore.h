@@ -15,8 +15,10 @@
 
 // stl-config
 // *** disable exceptions for both STLport and VC7.1 STL
-#define _STLP_NO_EXCEPTIONS	1
-// #define _HAS_EXCEPTIONS		0	/* predefine as 0 to disable exceptions */
+// #define _STLP_NO_EXCEPTIONS	1
+#ifdef DEBUG
+	#define _HAS_EXCEPTIONS		1	/* predefine as 0 to disable exceptions */
+#endif
 
 // *** try to minimize code bloat of STLport
 #ifdef __BORLANDC__
