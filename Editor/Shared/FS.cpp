@@ -68,7 +68,7 @@ ENGINE_API void *FileDownload(const char *fn, DWORD *pdwSize)
 
 #ifdef _EDITOR
 	hFile	= open(fn,O_RDONLY|O_BINARY);
-	Log->Msg(mtInformation,"* FS: Download %s",fn);
+	ELog.Msg(mtInformation,"* FS: Download %s",fn);
 	R_ASSERT(hFile>0);
 	size	= filelength(hFile);
 #else
