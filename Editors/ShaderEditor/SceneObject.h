@@ -33,6 +33,8 @@ public:
 protected:
 	typedef CCustomObject inherited;
     int				m_iBlinkTime;
+    CSurface*		m_BlinkSurf;
+	void 			RenderBlink				();
 public:
     // constructor/destructor methods
 					CSceneObject			(LPVOID data, LPCSTR name);
@@ -99,6 +101,8 @@ public:
     virtual bool	ExportGame				(SExportStreams& data);
 
     virtual void 	OnShowHint				(AStringVec& dest);
+
+    void			Blink					(CSurface* surf=0);
 };
 //----------------------------------------------------
 #endif /*_INCDEF_EditObject_H_*/

@@ -40,7 +40,7 @@ object frmPropertiesEObject: TfrmPropertiesEObject
     ScrollOpposite = False
     Style = etsAngledTabs
     TabHeight = 15
-    TabIndex = 0
+    TabIndex = 1
     TabPosition = etpBottom
     HotTrackFont.Charset = DEFAULT_CHARSET
     HotTrackFont.Color = clBlue
@@ -48,7 +48,7 @@ object frmPropertiesEObject: TfrmPropertiesEObject
     HotTrackFont.Name = 'MS Sans Serif'
     HotTrackFont.Style = []
     TabBkColor = 10528425
-    ActivePage = tsBasic
+    ActivePage = tsSurfaces
     FlatTabBorderColor = clBtnShadow
     Align = alClient
     ParentColor = False
@@ -60,6 +60,7 @@ object frmPropertiesEObject: TfrmPropertiesEObject
       TabVisible = True
       Caption = 'Main Options'
       Color = 10528425
+      Visible = False
       object paBasic: TPanel
         Left = 0
         Top = 0
@@ -77,7 +78,6 @@ object frmPropertiesEObject: TfrmPropertiesEObject
       TabVisible = True
       Caption = 'Surfaces'
       Color = 10528425
-      Visible = False
       object paSurfaces: TPanel
         Left = 0
         Top = 19

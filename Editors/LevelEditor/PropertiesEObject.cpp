@@ -74,7 +74,9 @@ void TfrmPropertiesEObject::FillSurfProps()
     	CEditableObject* 	O = S->GetReference();
 //        O->FillSurfacesProps("Surfaces",values);
         for (SurfaceIt it=O->FirstSurface(); it!=O->LastSurface(); it++){
-        	AnsiString	pref = AnsiString("Surfaces\\")+(*it)->_Name();
+        	AnsiString	pref	= AnsiString("Surfaces\\")+(*it)->_Name();
+            PropValue* V		= PHelper.CreateCaption(values,pref,"");
+            V->tag				= *it;
         	O->FillSurfaceProps(*it,pref.c_str(),values);
         }
     }
@@ -117,17 +119,27 @@ void __fastcall TfrmPropertiesEObject::OnSurfaceFocused(TElTreeItem* item)
 {
 	xr_delete(m_Thumbnail);
 	if (item&&item->Tag){
+        PropItem* prop		= (PropItem*)item->Tag;
     	EPropType type		= TProperties::GetItemType(item);
     	switch (type){
-        	case PROP_CHOOSE:{
-            	LPCSTR nm = TProperties::GetItemColumn(item,0);
-            	if (nm&&nm[0]){
-	                m_Thumbnail = xr_new<ETextureThumbnail>(nm);
-                    lbWidth->Caption 	= m_Thumbnail->_Width();
-                    lbHeight->Caption 	= m_Thumbnail->_Height();
-                    lbAlpha->Caption 	= (m_Thumbnail->_Alpha())?"present":"absent";
-                    if (m_Thumbnail->_Width()!=m_Thumbnail->_Height()) paImage->Repaint();
-                    paImage->Repaint	();
+        	case PROP_CAPTION:{
+		    	PropValue* V		= prop->GetFrontValue(); VERIFY(V);
+                CSceneObject* O 	= m_pEditObject;
+                CSurface* S			= (CSurface*)V->tag;
+                O->Blink			(S);
+            }break;
+        	case PROP_CHOOSE:{                                                             
+		    	ChooseValueCustom* V	= dynamic_cast<ChooseValueCustom*>(prop->GetFrontValue()); VERIFY(V);
+                if (smTexture==V->choose_mode){
+                    LPCSTR nm 				= TProperties::GetItemColumn(item,0);
+                    if (nm&&nm[0]){
+                        m_Thumbnail = xr_new<ETextureThumbnail>(nm);
+                        lbWidth->Caption 	= m_Thumbnail->_Width();
+                        lbHeight->Caption 	= m_Thumbnail->_Height();
+                        lbAlpha->Caption 	= (m_Thumbnail->_Alpha())?"present":"absent";
+                        if (m_Thumbnail->_Width()!=m_Thumbnail->_Height()) paImage->Repaint();
+                        paImage->Repaint	();
+                    }
                 }
             }break;
         }

@@ -36,6 +36,7 @@ void CSceneObject::Construct(LPVOID data)
 
     m_TBBox.invalidate();
     m_iBlinkTime	= 0;
+    m_BlinkSurf		= 0;
 
     m_Flags.zero	();
 }
@@ -55,7 +56,7 @@ void CSceneObject::EvictObject()
 void CSceneObject::Select(BOOL flag)
 {
 	inherited::Select(flag);
-    if (flag) m_iBlinkTime=Device.dwTimeGlobal+BLINK_TIME+Device.dwTimeDelta;
+    if (flag) Blink();
 }
 
 //----------------------------------------------------
@@ -134,19 +135,31 @@ void CSceneObject::Render(int priority, bool strictB2F)
                 u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
                 DU.DrawSelectionBox(m_pReference->GetBox(),&clr);
             }else{
-                if (m_iBlinkTime>(int)Device.dwTimeGlobal){
-    	            RenderSelection(D3DCOLOR_ARGB(iFloor(sqrtf(float(m_iBlinkTime-Device.dwTimeGlobal)/BLINK_TIME)*48),255,255,255));
-        	        UI->RedrawScene();
-            	}
+                RenderBlink	();
             }
+        }
+    }
+}
+
+void CSceneObject::RenderBlink()
+{
+    if (m_iBlinkTime>0){
+        if (m_iBlinkTime>(int)Device.dwTimeGlobal){
+        	int alpha = iFloor(sqrtf(float(m_iBlinkTime-Device.dwTimeGlobal)/BLINK_TIME)*64);
+			m_pReference->RenderSelection(_Transform(),0, m_BlinkSurf, D3DCOLOR_ARGB(alpha,255,255,255));
+            UI->RedrawScene	();
+        }else{
+            m_iBlinkTime 	= 0;
+            m_BlinkSurf		= 0;
         }
     }
 }
 
 void CSceneObject::RenderSingle()
 {
-	if (!m_pReference) return;
+	if (!m_pReference) 		return;
 	m_pReference->RenderSingle(_Transform());
+    RenderBlink				();
 }
 
 void CSceneObject::RenderBones()
@@ -159,13 +172,13 @@ void CSceneObject::RenderEdge(CEditableMesh* mesh, u32 color)
 {
 	if (!m_pReference) return;
     if (::Render->occ_visible(m_TBBox))
-		m_pReference->RenderEdge(_Transform(), mesh, color);
+		m_pReference->RenderEdge(_Transform(), mesh, 0, color);
 }
 
 void CSceneObject::RenderSelection(u32 color)
 {
 	if (!m_pReference) return;
-	m_pReference->RenderSelection(_Transform(),0,color);
+	m_pReference->RenderSelection(_Transform(),0, 0, color);
 }
 
 bool CSceneObject::FrustumPick(const CFrustum& frustum)
@@ -290,6 +303,13 @@ void CSceneObject::OnShowHint(AStringVec& dest)
         dest.push_back(AnsiString("Game Mtl: ")+AnsiString(surf->_GameMtlName()));
         dest.push_back(AnsiString("2 Sided: ")+AnsiString(surf->m_Flags.is(CSurface::sf2Sided)?"on":"off"));
     }
+}
+//----------------------------------------------------
+
+void CSceneObject::Blink(CSurface* surf)
+{
+	m_BlinkSurf		= surf;
+    m_iBlinkTime	= Device.dwTimeGlobal+BLINK_TIME+Device.dwTimeDelta;
 }
 //----------------------------------------------------
 

@@ -134,7 +134,7 @@ void CSector::Render(int priority, bool strictB2F)
                 Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
                 for (SItemIt it=sector_items.begin();it!=sector_items.end();it++){
                     it->object->GetFullTransformToWorld(matrix);
-                    it->mesh->RenderSelection( matrix, color.get() );
+                    it->mesh->RenderSelection( matrix, 0, color.get() );
                 }
                 Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
             }
@@ -151,8 +151,8 @@ void CSector::Render(int priority, bool strictB2F)
                 Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
                 for (SItemIt it=sector_items.begin();it!=sector_items.end();it++){
                     it->object->GetFullTransformToWorld(matrix);
-                    it->mesh->RenderSelection( matrix, color.get() );
-                    it->mesh->RenderEdge( matrix, color2.get() );
+                    it->mesh->RenderSelection( matrix, 0, color.get() );
+                    it->mesh->RenderEdge( matrix, 0, color2.get() );
                 }
                 Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
             }
