@@ -403,7 +403,7 @@ end
 function animation:update()
 --	printf("update")
 --	printf("		time %s", device():time_global())				
-
+--	printf("		%s", utils.to_str(self.states.current_state))
 	self.is_called = false
 	if self.states.current_state == nil then
 		self:callback_process()
