@@ -68,6 +68,7 @@ public:
 	virtual ~CALifeGraph					()
 	{
 		xr_delete							(m_tpGraphVFS);
+		m_tpaGraph							= 0;
 	};
 
 	IC const SGraphHeader&					GraphHeader()

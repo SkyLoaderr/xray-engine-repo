@@ -205,6 +205,7 @@ void CCustomMonster::net_Export(NET_Packet& P)					// export to server
 	P.w_angle8				(N.o_model);
 	P.w_angle8				(N.o_torso.yaw);
 	P.w_angle8				(N.o_torso.pitch);
+	P.w_float				(N.fHealth);
 }
 
 void CCustomMonster::net_Import(NET_Packet& P)
@@ -214,13 +215,13 @@ void CCustomMonster::net_Import(NET_Packet& P)
 	net_update				N;
 
 	u8 flags;
-//	P.r_advance				(sizeof(float) + sizeof(u16));
 	P.r_u32					(N.dwTimeStamp);
 	P.r_u8					(flags);
 	P.r_vec3				(N.p_pos);
 	P.r_angle8				(N.o_model);
 	P.r_angle8				(N.o_torso.yaw);
 	P.r_angle8				(N.o_torso.pitch);
+	P.r_float				(N.fHealth);
 
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
 		NET.push_back			(N);
@@ -276,6 +277,7 @@ void CCustomMonster::Update	( u32 DT )
 			uNext.o_model			= r_torso_current.yaw;
 			uNext.o_torso			= r_torso_current;
 			uNext.p_pos				= vPosition;
+			uNext.fHealth			= fHealth;
 			NET.push_back			(uNext);
 		}
 		else 
@@ -289,6 +291,7 @@ void CCustomMonster::Update	( u32 DT )
 				uNext.o_model		= r_torso_current.yaw;
 				uNext.o_torso		= r_torso_current;
 				uNext.p_pos			= vPosition;
+				uNext.fHealth		= fHealth;
 				NET.push_back		(uNext);
 			}
 		}
@@ -309,6 +312,7 @@ void CCustomMonster::net_update::lerp(CCustomMonster::net_update& A, CCustomMons
 	o_torso.yaw		= angle_lerp	(A.o_torso.yaw,B.o_torso.yaw,		f);
 	o_torso.pitch	= angle_lerp	(A.o_torso.pitch,B.o_torso.pitch,	f);
 	p_pos.lerp		(A.p_pos,B.p_pos,f);
+	fHealth			= A.fHealth*(1.f - f) + B.fHealth*f;
 }
 
 void CCustomMonster::UpdateCL	()

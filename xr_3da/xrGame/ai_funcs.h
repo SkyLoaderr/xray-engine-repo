@@ -313,6 +313,7 @@ public:
 
 											CAI_DDD()
 	{	
+		Memory.mem_fill						(fpaBaseFunctions,0,sizeof(CBaseFunction*)*AI_MAX_EVALUATION_FUNCTION_COUNT);
 		fpaBaseFunctions[0]					= &pfDistance;
 		
 		fpaBaseFunctions[21]				= &pfPersonalHealth;

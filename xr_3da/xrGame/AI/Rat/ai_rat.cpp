@@ -205,6 +205,7 @@ void CAI_Rat::net_Export(NET_Packet& P)
 	P.w_angle8				(N.o_model);
 	P.w_angle8				(N.o_torso.yaw);
 	P.w_angle8				(N.o_torso.pitch);
+	//P.w_float				(N.fHealth);
 }
 
 void CAI_Rat::net_Import(NET_Packet& P)
@@ -219,6 +220,7 @@ void CAI_Rat::net_Import(NET_Packet& P)
 	P.r_angle8				(N.o_model);
 	P.r_angle8				(N.o_torso.yaw);
 	P.r_angle8				(N.o_torso.pitch);
+	//P.r_float				(N.fHealth);
 
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
 		NET.push_back			(N);

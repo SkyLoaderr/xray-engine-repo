@@ -17,10 +17,10 @@ CAStar::CAStar(u32 dwMaxNodes)
 	m_tpaNodes.clear			();
 	u32 S1						= (_min(dwMaxNodes,_max(getAI().bfCheckIfMapLoaded() ? getAI().Header().count : 0,getAI().bfCheckIfGraphLoaded() ? getAI().GraphHeader().dwVertexCount : 0)) + 2)*sizeof(SNode);
 	m_tpHeap					= (SNode *)xr_malloc(S1);
-	ZeroMemory					(m_tpHeap,S1);
+	Memory.mem_fill				(m_tpHeap,0,S1);
 	u32 S2						= _max(getAI().bfCheckIfMapLoaded() ? getAI().Header().count : 0,getAI().bfCheckIfGraphLoaded() ? getAI().GraphHeader().dwVertexCount : 0)*sizeof(SIndexNode);
 	m_tpIndexes					= (SIndexNode *)xr_malloc(S2);
-	ZeroMemory					(m_tpIndexes,S2);
+	Memory.mem_fill				(m_tpIndexes,0,S2);
 	Msg							("* AI path-finding structures: %d K",(S1 + S2)/(1024));
 	m_tpMapPath					= xr_new<CAStarSearch<CAIMapShortestPathNode,SAIMapData> >		(_min(dwMaxNodes,getAI().Header().count) + 2);
 	m_tpLCDPath					= xr_new<CAStarSearch<CAIMapLCDPathNode,SAIMapDataL> >			(_min(dwMaxNodes,getAI().Header().count) + 2);

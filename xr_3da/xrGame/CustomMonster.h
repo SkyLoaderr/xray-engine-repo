@@ -145,6 +145,7 @@ public:
 		float			o_model;				// model yaw
 		SRotation		o_torso;				// torso in world coords
 		Fvector			p_pos;					// in world coords
+		float			fHealth;
 
 		// non-exported (temporal)
 
@@ -154,6 +155,7 @@ public:
 			o_torso.yaw		= 0;
 			o_torso.pitch	= 0;
 			p_pos.set		(0,0,0);
+			fHealth			= 0.f;
 		}
 		void	lerp	(net_update& A,net_update& B, float f);
 		
