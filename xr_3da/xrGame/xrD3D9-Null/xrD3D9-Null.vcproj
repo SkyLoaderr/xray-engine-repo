@@ -85,7 +85,7 @@
 				Name="VCLinkerTool"
 				OutputFile="x:\D3D9-Null.dll"
 				LinkIncremental="1"
-				ModuleDefinitionFile="D3D9-Null.def"
+				ModuleDefinitionFile="xrD3D9-Null.def"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
