@@ -28,7 +28,7 @@ __published:	// IDE-managed Components
     TPanel *paSnap;
     TExtBtn *ebMSnap;
     TExtBtn *ebASnap;
-    TExtBtn *ebCSLocal;
+	TExtBtn *ebCSWorld;
     TPanel *paAxis;
     TExtBtn *ebAxisX;
     TExtBtn *ebAxisY;
@@ -54,6 +54,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebCameraFly;
 	TExtBtn *ebViewReset;
 	TExtBtn *ebMoveToSnap;
+	TExtBtn *ebNormalAlignment;
     void __fastcall ebEditUndoClick(TObject *Sender);
     void __fastcall ebEditRedoClick(TObject *Sender);
     void __fastcall ActionClick(TObject *Sender);

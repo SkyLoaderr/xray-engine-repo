@@ -159,12 +159,12 @@ void CSceneObject::Scale( Fvector& center, Fvector& amount ){
 	inherited::Scale(center,amount);
 }
 
-void CSceneObject::LocalScale( Fvector& amount ){
+void CSceneObject::WorldScale( Fvector& amount ){
     if (IsDynamic()){
     	ELog.DlgMsg(mtInformation,"Dynamic object %s - can't scale.", Name);
         return;
     }
-	inherited::LocalScale(amount);
+	inherited::WorldScale(amount);
 }
 
 void CSceneObject::GetFullTransformToWorld( Fmatrix& m ){

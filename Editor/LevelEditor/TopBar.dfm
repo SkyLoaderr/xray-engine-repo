@@ -1,13 +1,13 @@
 object fraTopBar: TfraTopBar
   Left = 0
   Top = 0
-  Width = 851
-  Height = 18
+  Width = 443
+  Height = 277
   HorzScrollBar.Visible = False
   VertScrollBar.Visible = False
   Align = alClient
-  Constraints.MaxHeight = 18
-  Constraints.MinHeight = 18
+  Constraints.MaxHeight = 20
+  Constraints.MinHeight = 20
   Color = 10528425
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
@@ -21,7 +21,7 @@ object fraTopBar: TfraTopBar
     Left = 0
     Top = 0
     Width = 51
-    Height = 18
+    Height = 277
     Align = alLeft
     BevelOuter = bvNone
     Color = 10528425
@@ -32,7 +32,7 @@ object fraTopBar: TfraTopBar
       Left = 0
       Top = 0
       Width = 25
-      Height = 18
+      Height = 20
       Hint = 'Undo (Ctrl+Z)'
       Align = alNone
       HotTrack = True
@@ -103,7 +103,7 @@ object fraTopBar: TfraTopBar
       Left = 25
       Top = 0
       Width = 25
-      Height = 18
+      Height = 20
       Hint = 'Redo (Ctrl+Y)'
       Align = alNone
       HotTrack = True
@@ -175,7 +175,7 @@ object fraTopBar: TfraTopBar
     Left = 51
     Top = 0
     Width = 127
-    Height = 18
+    Height = 277
     Align = alLeft
     BevelOuter = bvNone
     Color = 10528425
@@ -186,7 +186,7 @@ object fraTopBar: TfraTopBar
       Left = 50
       Top = 0
       Width = 25
-      Height = 18
+      Height = 20
       Hint = 'Move'
       Align = alNone
       HotTrack = True
@@ -258,7 +258,7 @@ object fraTopBar: TfraTopBar
       Left = 75
       Top = 0
       Width = 25
-      Height = 18
+      Height = 20
       Hint = 'Rotate'
       Align = alNone
       HotTrack = True
@@ -330,7 +330,7 @@ object fraTopBar: TfraTopBar
       Left = 100
       Top = 0
       Width = 25
-      Height = 18
+      Height = 20
       Hint = 'Uniform Scale'
       Align = alNone
       HotTrack = True
@@ -402,7 +402,7 @@ object fraTopBar: TfraTopBar
       Left = 0
       Top = 0
       Width = 25
-      Height = 18
+      Height = 20
       Hint = 'Select'
       Align = alNone
       HotTrack = True
@@ -475,7 +475,7 @@ object fraTopBar: TfraTopBar
       Left = 25
       Top = 0
       Width = 25
-      Height = 18
+      Height = 20
       Hint = 'Add'
       Align = alNone
       HotTrack = True
@@ -547,8 +547,8 @@ object fraTopBar: TfraTopBar
   object paSnap: TPanel
     Left = 282
     Top = 0
-    Width = 205
-    Height = 18
+    Width = 227
+    Height = 277
     Align = alLeft
     BevelOuter = bvNone
     Color = 10528425
@@ -556,10 +556,10 @@ object fraTopBar: TfraTopBar
     ShowHint = True
     TabOrder = 2
     object ebMSnap: TExtBtn
-      Left = 177
+      Left = 200
       Top = 0
       Width = 25
-      Height = 18
+      Height = 20
       Hint = 'Moving Snap Toggle'
       Align = alNone
       AllowAllUp = True
@@ -629,10 +629,10 @@ object fraTopBar: TfraTopBar
       Spacing = 15
     end
     object ebASnap: TExtBtn
-      Left = 152
+      Left = 175
       Top = 0
       Width = 25
-      Height = 18
+      Height = 20
       Hint = 'Angle Snap Toggle'
       Align = alNone
       AllowAllUp = True
@@ -701,12 +701,12 @@ object fraTopBar: TfraTopBar
       ParentFont = False
       Spacing = 15
     end
-    object ebCSLocal: TExtBtn
+    object ebCSWorld: TExtBtn
       Left = 0
       Top = 0
       Width = 25
-      Height = 18
-      Hint = 'Local CS Toggle'
+      Height = 20
+      Hint = 'World CS Toggle'
       Align = alNone
       AllowAllUp = True
       HotTrack = True
@@ -778,7 +778,7 @@ object fraTopBar: TfraTopBar
       Left = 50
       Top = 0
       Width = 25
-      Height = 18
+      Height = 20
       Hint = 'Grid Snap Toggle (G)'
       Align = alNone
       AllowAllUp = True
@@ -848,7 +848,7 @@ object fraTopBar: TfraTopBar
       Left = 75
       Top = 0
       Width = 25
-      Height = 18
+      Height = 20
       Hint = 'Object Snap Toggle (O)'
       Align = alNone
       AllowAllUp = True
@@ -925,7 +925,7 @@ object fraTopBar: TfraTopBar
       Left = 25
       Top = 0
       Width = 25
-      Height = 18
+      Height = 20
       Hint = 'Non-Uniform Scale'
       Align = alNone
       AllowAllUp = True
@@ -994,10 +994,10 @@ object fraTopBar: TfraTopBar
       Spacing = 15
     end
     object ebVSnap: TExtBtn
-      Left = 127
+      Left = 150
       Top = 0
       Width = 25
-      Height = 18
+      Height = 20
       Hint = 'Vertex Snap Toggle (O)'
       Align = alNone
       AllowAllUp = True
@@ -1074,7 +1074,7 @@ object fraTopBar: TfraTopBar
       Left = 100
       Top = 0
       Width = 25
-      Height = 18
+      Height = 20
       Hint = 'Moving Snap To Object Toggle'
       Align = alNone
       AllowAllUp = True
@@ -1147,12 +1147,85 @@ object fraTopBar: TfraTopBar
       ParentFont = False
       Spacing = 15
     end
+    object ebNormalAlignment: TExtBtn
+      Left = 125
+      Top = 0
+      Width = 25
+      Height = 20
+      Hint = 'Normal Alignment'
+      Align = alNone
+      AllowAllUp = True
+      HotTrack = True
+      CloseButton = False
+      GroupIndex = 9
+      Down = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Glyph.Data = {
+        36060000424D3606000000000000360000002800000020000000100000000100
+        18000000000000060000120B0000120B00000000000000000000B9B9B9B9B9B9
+        B9B9B9B9B9B9B9B9B9BCBCBCB9B9B9B9B9B98C8C8C898989919191B9B9B9B9B9
+        B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9BABABABABABAB6B6B6AE
+        AEAEA5A5A5A3A3A3A8A8A8A7A7A7ADADADB9B9B9BBBBBBB9B9B9B9B9B9B9B9B9
+        B9B9B9B9B9B9B9B9B9B9B9B95A5A5A2626261B1B1B1C1C1C2C2C2C6060607B7B
+        7BB9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9BCBCBCB2B2B28E8E8E77
+        77777171717272727A7A7A9292929E9E9EA0A0A0B6B6B6BBBBBBB9B9B9B9B9B9
+        B9B9B9B9B9B9B9B9B92224240A09091211101A18181512120806060403033031
+        31747474B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9BDBDBDB4B4B47575756969696E
+        6E6E7171716E6E6E6969696666667C7C7C9A9A9AA2A2A2BABABAB9B9B9B9B9B9
+        B9B9B9B9B9B93F3E3E1B1515423B3A443E3E433C3C3E38383631312522220505
+        052C2C2C7F7F7FB9B9B9B9B9B9B9B9B9B8B8B8C5C5C58282826F6F6F82828283
+        83838383838181817D7D7D7676766868687A7A7AA0A0A0B4B4B4B9B9B9B8B8B8
+        B9B9B9B9B9B9211C1C5955565B5C605D5F625C5B5F5753554F4746453F3F332F
+        2F0201015C5B5BB9B9B9B9B9B9B8B8B8C0C0C0A4A4A47373738D8D8D90909091
+        91919090908D8D8D8787878484847C7C7C6666668F8F8FBDBDBDB9B9B9BABABA
+        B9B9B9524D4D5351536B747B707D84738086727B826C72776362645850504942
+        421C1717464545B9B9B9B9B9B9BABABAC0C0C08A8A8A8B8B8B9999999D9D9D9E
+        9E9E9D9D9D9999999393938B8B8B858585727272858585C5C5C5B9B9B9BCBCBC
+        B9B9B9544F4F707B848094A08AA2B190AABA90A5B387969F7A7F866C686B5B53
+        533B3535343434B9B9B9BBBABABBBBBBB9B9B98A8A8A9D9D9DA7A7A7ADADADB0
+        B0B0AFAFAFA9A9A9A0A0A09696968C8C8C7F7F7F7D7D7DC0C0C0B9B9B9BBBBBC
+        B9B9B96361648195A092B2C3A4D0E6B5E8F7B7E1F0A7C0CF8E9CA57B7F846A62
+        624A44433A3838B9B9B9BBBBBBBBBBBBB8B8B8929292A7A7A7B3B3B3BFBFBFC7
+        C7C7C5C5C5BBBBBBABABABA0A0A09393938686867F7F7FBEBEBEBABABABABABA
+        B9B9B979787B8CA7B5A2D1EABEFBFFDFFFFFE3FFFFCAEFFBA5B8C58A90997671
+        72524848595656B9B9B9B9B9B9BABABABCBCBC9D9D9DAFAFAFC0C0C0CBCBCBD2
+        D2D2D3D3D3CCCCCCB8B8B8A7A7A79A9A9A8989898E8E8EC1C1C1B9B9B9B8B8B8
+        B9B9B99691928BA3B2BAF4FFD7FFFFEDFFFFF6FFFFDAFEFFB0C7D7919CA2827C
+        7D473D3C898989B9B9B9B8B8B8B9B9B9BDBDBDA8A8A8AEAEAECBCBCBD1D1D1D4
+        D4D4D7D7D7D1D1D1BEBEBEABABAB9F9F9F848484A3A3A3C0C0C0B9B9B9B8B8B8
+        B9B9B9CFCECBA6ADB682A4AD637D7DE4FDFBE2FFFFCCF1FDACC1CF989FA67368
+        69645D5CB9B9B9B9B9B9B9B9B9B9B9B9BABABAC3C3C3B4B4B4AAAAAA989898D3
+        D3D3D3D3D3CDCDCDBBBBBBAEAEAE989898919191BFBFBFB9B9B9B9B9B9BBBBBB
+        B7B7B78C8C8C323232000000788B92CFF6FFBFE8F9B6D0E2A3AEB7837D807269
+        69B9B9B9B9B9B9B8B8B8B9B9B9BABABAB8B8B8A5A5A57C7C7C5F5F5FA1A1A1D0
+        D0D0C9C9C9C2C2C2B4B4B4A0A0A0979797BBBBBBBCBCBCB9B9B9B9B9B9B9B9B9
+        A2A2A2040404020302333131C3C4C7A2A8B0A2A9B39B9CA1938C8D9C9696B9B9
+        B9B9B9B9B8B8B8B9B9B9B9B9B9BEBEBEAFAFAF6666666767677D7D7DBFBFBFB2
+        B2B2B3B3B3ADADADA7A7A7ABABABBCBCBCBCBCBCB9B9B9B9B9B9B8B8B8B9B9B9
+        7575750A0A0A000000939393B9B9B9B8B5B3B6B3B1B6B4B3BBBCBBB9B9B9B9B9
+        B9B8B8B8B9B9B9B9B9B9B9B9B9C3C3C39B9B9B6B6B6B666666A9A9A9C2C2C2B8
+        B8B8B7B7B7B7B7B7BABABABDBDBDBABABAB9B9B9B9B9B9B9B9B9B9B9B9767676
+        0404049F9F9FADADADBBBABAB9BABABABABABBBBBBBABBBBBABABAB8B8B8B9B9
+        B9B9B9B9B9B9B9B8B8B8C1C1C19B9B9B636363AEAEAEB4B4B4BABABABABABABA
+        BABABABABABABABABABABAB9B9B9B9B9B9B9B9B9B9B9B9B9B9B9BDBDBDAFAFAF
+        9F9F9FB9B9B9B9B9B9BABABAB8B8B8B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9
+        B9B9B9B9B9B9B9B9B9B9BABABAB5B5B5AFAFAFC2C2C2BDBDBDBABABAB9B9B9B9
+        B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9B9}
+      Margin = 3
+      NumGlyphs = 2
+      ParentFont = False
+      Spacing = 15
+    end
   end
   object paAxis: TPanel
     Left = 178
     Top = 0
     Width = 104
-    Height = 18
+    Height = 277
     Align = alLeft
     BevelOuter = bvNone
     Color = 10528425
@@ -1163,7 +1236,7 @@ object fraTopBar: TfraTopBar
       Left = 0
       Top = 0
       Width = 25
-      Height = 18
+      Height = 20
       Hint = 'Restrict to X'
       Align = alNone
       HotTrack = True
@@ -1234,7 +1307,7 @@ object fraTopBar: TfraTopBar
       Left = 25
       Top = 0
       Width = 25
-      Height = 18
+      Height = 20
       Hint = 'Restrict to Y'
       Align = alNone
       HotTrack = True
@@ -1305,7 +1378,7 @@ object fraTopBar: TfraTopBar
       Left = 50
       Top = 0
       Width = 25
-      Height = 18
+      Height = 20
       Hint = 'Restrict to Z'
       Align = alNone
       HotTrack = True
@@ -1376,7 +1449,7 @@ object fraTopBar: TfraTopBar
       Left = 75
       Top = 0
       Width = 25
-      Height = 18
+      Height = 20
       Hint = 'Restrict to ZX'
       Align = alNone
       HotTrack = True
@@ -1446,10 +1519,10 @@ object fraTopBar: TfraTopBar
     end
   end
   object paView: TPanel
-    Left = 528
+    Left = 550
     Top = 0
     Width = 179
-    Height = 18
+    Height = 277
     Align = alLeft
     BevelOuter = bvNone
     Color = 10528425
@@ -1460,7 +1533,7 @@ object fraTopBar: TfraTopBar
       Left = 0
       Top = 0
       Width = 15
-      Height = 18
+      Height = 20
       Hint = 'Front View'
       Align = alNone
       HotTrack = True
@@ -1482,7 +1555,7 @@ object fraTopBar: TfraTopBar
       Left = 30
       Top = 0
       Width = 15
-      Height = 18
+      Height = 20
       Hint = 'Left View'
       Align = alNone
       HotTrack = True
@@ -1504,7 +1577,7 @@ object fraTopBar: TfraTopBar
       Left = 60
       Top = 0
       Width = 15
-      Height = 18
+      Height = 20
       Hint = 'Top View'
       Align = alNone
       HotTrack = True
@@ -1526,7 +1599,7 @@ object fraTopBar: TfraTopBar
       Left = 15
       Top = 0
       Width = 15
-      Height = 18
+      Height = 20
       Hint = 'Back View'
       Align = alNone
       HotTrack = True
@@ -1548,7 +1621,7 @@ object fraTopBar: TfraTopBar
       Left = 45
       Top = 0
       Width = 15
-      Height = 18
+      Height = 20
       Hint = 'Right View'
       Align = alNone
       HotTrack = True
@@ -1570,7 +1643,7 @@ object fraTopBar: TfraTopBar
       Left = 75
       Top = 0
       Width = 15
-      Height = 18
+      Height = 20
       Hint = 'Bottom View'
       Align = alNone
       HotTrack = True
@@ -1592,7 +1665,7 @@ object fraTopBar: TfraTopBar
       Left = 109
       Top = 0
       Width = 20
-      Height = 18
+      Height = 20
       Hint = 'Zoom Extents'
       Align = alNone
       HotTrack = True
@@ -1617,7 +1690,7 @@ object fraTopBar: TfraTopBar
       Left = 129
       Top = 0
       Width = 20
-      Height = 18
+      Height = 20
       Hint = 'Zoom Extents Selected'
       Align = alNone
       HotTrack = True
@@ -1641,7 +1714,7 @@ object fraTopBar: TfraTopBar
       Left = 149
       Top = 0
       Width = 20
-      Height = 18
+      Height = 20
       Hint = 'Zoom Extents Selected'
       Align = alNone
       HotTrack = True
@@ -1664,7 +1737,7 @@ object fraTopBar: TfraTopBar
       Left = 90
       Top = 0
       Width = 15
-      Height = 18
+      Height = 20
       Hint = 'Reset View'
       Align = alNone
       HotTrack = True
@@ -1684,10 +1757,10 @@ object fraTopBar: TfraTopBar
     end
   end
   object Panel1: TPanel
-    Left = 487
+    Left = 509
     Top = 0
     Width = 41
-    Height = 18
+    Height = 277
     Align = alLeft
     BevelOuter = bvNone
     Color = 10528425
@@ -1698,7 +1771,7 @@ object fraTopBar: TfraTopBar
       Left = 0
       Top = 0
       Width = 20
-      Height = 18
+      Height = 20
       Hint = 'Zoom Extents'
       Align = alNone
       HotTrack = True
@@ -1769,7 +1842,7 @@ object fraTopBar: TfraTopBar
       Left = 20
       Top = 0
       Width = 20
-      Height = 18
+      Height = 20
       Hint = 'Zoom Extents Selected'
       Align = alNone
       HotTrack = True
@@ -1848,7 +1921,7 @@ object fraTopBar: TfraTopBar
       'ebAxisY.Down'
       'ebAxisZ.Down'
       'ebAxisZX.Down'
-      'ebCSLocal.Down'
+      'ebCSWorld.Down'
       'ebGSnap.Down'
       'ebMSnap.Down'
       'ebNonUniformScale.Down'
@@ -1857,7 +1930,8 @@ object fraTopBar: TfraTopBar
       'ebCameraArcBall.Down'
       'ebCameraFly.Down'
       'ebCameraPlane.Down'
-      'ebMoveToSnap.Down')
+      'ebMoveToSnap.Down'
+      'ebNormalAlignment.Down')
     StoredValues = <>
     Left = 65522
     Top = 65520

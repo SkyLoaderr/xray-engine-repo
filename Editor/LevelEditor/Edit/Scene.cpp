@@ -342,7 +342,7 @@ CCustomObject *EScene::RayPick(const Fvector& start, const Fvector& direction, E
 	if( !valid() )
 		return 0;
 
-	float nearest_dist = flt_max;
+	float nearest_dist = pinf?pinf->inf.range+EPS_L:flt_max;
 	CCustomObject *nearest_object = 0;
 
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){

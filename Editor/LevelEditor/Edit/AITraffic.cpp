@@ -33,7 +33,6 @@ CAITPoint::CAITPoint():CCustomObject(){
 
 void CAITPoint::Construct(){
 	ClassID   	= OBJCLASS_AITPOINT;
-	m_Position.set(0,0,0);
 }
 
 CAITPoint::~CAITPoint(){
@@ -49,7 +48,7 @@ void CAITPoint::OnDestroy(){
 //----------------------------------------------------
 
 bool CAITPoint::GetBox( Fbox& box ){
-	box.set( m_Position, m_Position );
+	box.set( PPosition, PPosition );
 	box.min.x -= AITPOINT_RADIUS;
 	box.min.y -= 0;
 	box.min.z -= AITPOINT_RADIUS;
@@ -61,17 +60,17 @@ bool CAITPoint::GetBox( Fbox& box ){
 
 void CAITPoint::DrawPoint(Fcolor& c){
 	Fvector pos;
-    pos.set	(m_Position.x,m_Position.y+AITPOINT_SIZE*0.85f,m_Position.z);
+    pos.set	(PPosition.x,PPosition.y+AITPOINT_SIZE*0.85f,PPosition.z);
     DU::DrawCross(pos,AITPOINT_RADIUS,AITPOINT_SIZE*0.85f,AITPOINT_RADIUS,AITPOINT_RADIUS,AITPOINT_SIZE*0.15f,AITPOINT_RADIUS,c.get());
 }
 //----------------------------------------------------
 
 void CAITPoint::DrawLinks(Fcolor& c){
 	Fvector p1,p2;
-    p1.set	(m_Position.x,m_Position.y+AITPOINT_SIZE*0.85f,m_Position.z);
+    p1.set	(PPosition.x,PPosition.y+AITPOINT_SIZE*0.85f,PPosition.z);
     for (ObjectIt o_it=m_Links.begin(); o_it!=m_Links.end(); o_it++){
     	CAITPoint* O = (CAITPoint*)(*o_it);
-	    p2.set	(O->m_Position.x,O->m_Position.y+AITPOINT_SIZE*0.85f,O->m_Position.z);
+	    p2.set	(O->PPosition.x,O->PPosition.y+AITPOINT_SIZE*0.85f,O->PPosition.z);
     	DU::DrawLine(p1,p2,c.get());
     }
 }
@@ -79,7 +78,7 @@ void CAITPoint::DrawLinks(Fcolor& c){
 
 void CAITPoint::Render(int priority, bool strictB2F){
     if ((1==priority)&&(false==strictB2F)){
-        if (Device.m_Frustum.testSphere(m_Position,AITPOINT_SIZE)){
+        if (Device.m_Frustum.testSphere(PPosition,AITPOINT_SIZE)){
             Fcolor c1,c2;
             c1.set(0.f,1.f,0.f,1.f);
             c2.set(1.f,1.f,0.f,1.f);
@@ -96,13 +95,13 @@ void CAITPoint::Render(int priority, bool strictB2F){
 //----------------------------------------------------
 
 bool CAITPoint::FrustumPick(const CFrustum& frustum){
-    return (frustum.testSphere(m_Position,AITPOINT_SIZE))?true:false;
+    return (frustum.testSphere(PPosition,AITPOINT_SIZE))?true:false;
 }
 //----------------------------------------------------
 
 bool CAITPoint::RayPick(float& distance, Fvector& S, Fvector& D, SRayPickInfo* pinf){
 	Fvector ray2;
-	ray2.sub( m_Position, S );
+	ray2.sub( PPosition, S );
 
     float d = ray2.dotproduct(D);
     if( d > 0  ){
@@ -132,7 +131,7 @@ bool CAITPoint::Load(CStream& F){
 
     if (version==0x0010){
 	    R_ASSERT(F.FindChunk(AITPOINT_CHUNK_POINT));
-    	F.Rvector	(m_Position);
+    	F.Rvector	(PPosition);
         UpdateTransform();
     }
 
@@ -151,10 +150,6 @@ void CAITPoint::Save(CFS_Base& F){
 
 	F.open_chunk	(AITPOINT_CHUNK_VERSION);
 	F.Wword			(AITPOINT_VERSION);
-	F.close_chunk	();
-
-    F.open_chunk	(AITPOINT_CHUNK_POINT);
-    F.Wvector		(m_Position);
 	F.close_chunk	();
 
     F.open_chunk	(AITPOINT_CHUNK_LINKS);

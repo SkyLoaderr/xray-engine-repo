@@ -230,6 +230,7 @@ bool CLight::Load(CStream& F){
     	        // parse pitch
         	    dir.normalize_safe	();
             	FRotate.y		= asinf(dir.y);
+                FRotate.z		= 0;
             }else{
 	        	FRotate.set(0,0,0);
             }           

@@ -286,7 +286,7 @@ void COccluder::Rotate( Fvector& center, Fvector& axis, float angle ){
     m_vRotate.direct(m_vRotate,axis,axis.z?-angle:angle);
 }
 
-void COccluder::LocalRotate( Fvector& axis, float angle ){
+void COccluder::WorldRotate( Fvector& axis, float angle ){
 	R_ASSERT(!Locked());
     m_vRotate.direct(m_vRotate,axis,angle);
 }
@@ -307,7 +307,7 @@ void COccluder::Scale( Fvector& center, Fvector& amount ){
 	m_vCenter.add( center );
 }
 
-void COccluder::LocalScale( Fvector& amount ){
+void COccluder::WorldScale( Fvector& amount ){
 	R_ASSERT(!Locked());
 	m_vPlaneSize.x+=amount.x;
 	m_vPlaneSize.y+=amount.z;

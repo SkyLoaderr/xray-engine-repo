@@ -39,8 +39,8 @@ public:
 	virtual void    Move        (Fvector& amount);
 	virtual void    Rotate      (Fvector& center, Fvector& axis, float angle);
 	virtual void    Scale       (Fvector& center, Fvector& amount);
-	virtual void    LocalRotate (Fvector& axis, float angle);
-	virtual void    LocalScale  (Fvector& amount);
+	virtual void    WorldRotate (Fvector& axis, float angle);
+	virtual void    WorldScale  (Fvector& amount);
 
   	virtual bool 	Load		(CStream&);
 	virtual void 	Save		(CFS_Base&);

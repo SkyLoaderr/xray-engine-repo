@@ -70,7 +70,7 @@ CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift)
 		Scene.GenObjectName(parent_tool->objclass, namebuffer);
 		obj = NewObjectFromClassID(parent_tool->objclass);
         strcpy(obj->Name,namebuffer);
-		obj->Move( p );
+		obj->PPosition = p;
         Scene.SelectObjects(false,parent_tool->objclass);
 		Scene.AddObject(obj);
 		if (Shift.Contains(ssCtrl)) UI.Command(COMMAND_SHOWPROPERTIES);
@@ -169,17 +169,6 @@ bool __fastcall TUI_CustomControl::DefaultMovingProcess(TShiftState Shift, Fvect
         	CHECK_SNAP(m_MovingReminder.y,amount.y,UI.movesnap());
         	CHECK_SNAP(m_MovingReminder.z,amount.z,UI.movesnap());
         }
-/*
-	    if (fraTopBar->ebMoveToSnap->Down){
-	        SRayPickInfo pinf;
-    		if (Scene.RayPick( s, d, OBJCLASS_SCENEOBJECT, &pinf, false, true)){
-            	float limit=frmEditorPreferences->seSnapMoveTo->Value;
-                if (pinf.inf.range<=limit){
-					//
-                }
-	        }
-	    }
-*/
         if (!fraTopBar->ebAxisX->Down&&!fraTopBar->ebAxisZX->Down) amount.x = 0.f;
         if (!fraTopBar->ebAxisZ->Down&&!fraTopBar->ebAxisZX->Down) amount.z = 0.f;
         if (!fraTopBar->ebAxisY->Down) amount.y = 0.f;
@@ -260,10 +249,11 @@ void __fastcall TUI_CustomControl::RotateProcess(TShiftState _Shift)
                             Scene.GetGroupItem(idx).box.getcenter(C);
                             (*_F)->Rotate( C, m_RotateVector, amount );
                         }else{
-                            if( fraTopBar->ebCSLocal->Down ){
-                                (*_F)->LocalRotate( m_RotateVector, amount );
+                            if( fraTopBar->ebCSWorld->Down ){
+                                (*_F)->WorldRotate( m_RotateVector, amount );
                             } else {
-                                (*_F)->Rotate( m_RotateCenter, m_RotateVector, amount );
+//                                (*_F)->LocalRotate( m_RotateCenter, m_RotateVector, amount );
+                                (*_F)->LocalRotate( m_RotateVector, amount );
                             }
                         }
                     }
@@ -321,8 +311,8 @@ void __fastcall TUI_CustomControl::ScaleProcess(TShiftState _Shift)
                         Scene.GetGroupItem(idx).box.getcenter(C);
                         (*_F)->Scale( C, amount );
                     }else{
-                        if( fraTopBar->ebCSLocal->Down ){
-                            (*_F)->LocalScale( amount );
+                        if( fraTopBar->ebCSWorld->Down ){
+                            (*_F)->WorldScale( amount );
                         } else {
                             (*_F)->Scale( UI.pivot(), amount );
                         }

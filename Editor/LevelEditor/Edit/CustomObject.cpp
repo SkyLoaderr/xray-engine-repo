@@ -8,6 +8,11 @@
 #include "CustomObject.h"
 #include "ui_main.h"
 
+#include "topbar.h"
+#include "editorpref.h"
+#include "scene.h"
+#include "sceneobject.h"
+
 #define SCENEOBJECT_CHUNK_PARAMS 		0xF900
 #define SCENEOBJECT_CHUNK_GROUPINDEX	0xF901
 #define SCENEOBJECT_CHUNK_LOCK	 		0xF902
@@ -90,9 +95,9 @@ void CCustomObject::Save(CFS_Base& F){
 	F.close_chunk	();
 
 	F.open_chunk	(SCENEOBJECT_CHUNK_TRANSFORM);
-    F.Wvector		(FPosition);
-    F.Wvector		(FRotate);
-    F.Wvector		(FScale);
+    F.Wvector		(PPosition);
+    F.Wvector		(PRotate);
+    F.Wvector		(PScale);
 	F.close_chunk	();
 }
 //----------------------------------------------------
@@ -102,11 +107,55 @@ void CCustomObject::OnFrame()
 	if (m_bUpdateTransform) OnUpdateTransform();
 }
 
+static Fvector reminder={0,0,0};
+
 void CCustomObject::Move(Fvector& amount){
 	R_ASSERT(!Locked());
     UI.UpdateScene();
     Fvector v=PPosition;
-    v.add(amount);
+    if (fraTopBar->ebMoveToSnap->Down){
+        SRayPickInfo pinf;
+		Fmatrix	mR;
+		mR.setHPB (PRotate.y, PRotate.x, PRotate.z);
+        Fvector up,dn={0,-1,0};
+        mR.transform_dir(dn);
+        up.invert(dn);
+        Fvector s2,s1=v;
+        s1.add(amount);
+        s2.mad(s1,up,frmEditorPreferences->seSnapMoveTo->Value);
+
+        bool bVis=m_bVisible;
+        m_bVisible=false;
+        pinf.inf.range=frmEditorPreferences->seSnapMoveTo->Value;
+        if (Scene.RayPick( s1, dn, OBJCLASS_SCENEOBJECT, &pinf, false, true)||
+        	Scene.RayPick( s2, dn, OBJCLASS_SCENEOBJECT, &pinf, false, true)){
+	            v.set(pinf.pt);
+    			if (fraTopBar->ebNormalAlignment->Down){
+					Fvector verts[3];
+					pinf.s_obj->GetFaceWorld(pinf.e_mesh,pinf.inf.id,verts);
+                    Fvector vR,vD,vN,r;
+                    vN.mknormal(verts[0],verts[1],verts[2]);
+
+                    vD.set(mR.k);
+					vR.crossproduct	(vN,vD);
+					vD.crossproduct	(vR,vN);
+                    vD.normalize();
+
+			   	   	r.x = asinf( vD.y );
+                    if (vD.x<0)	r.y = acosf(vD.z);
+                    else	 	r.y = 2*PI-acosf(vD.z);
+                    if (vR.y<0)	r.z = -acosf( vN.y / cos( r.x ));
+                    else		r.z = acosf( vN.y / cos( r.x ));
+
+                    PRotate = r;
+				}
+            }
+        else v.add(amount);
+        m_bVisible=bVis;
+    }else{
+	    v.add(amount);
+    }
+
     PPosition = v;
 }
 
@@ -129,11 +178,21 @@ void CCustomObject::Rotate(Fvector& center, Fvector& axis, float angle){
     PRotate		= r;
 }
 
-void CCustomObject::LocalRotate(Fvector& axis, float angle){
+void CCustomObject::WorldRotate(Fvector& axis, float angle){
 	R_ASSERT(!Locked());
     UI.UpdateScene();
     Fvector r	= PRotate;
     r.mad		(axis,angle);
+    PRotate		= r;
+}
+
+void CCustomObject::LocalRotate(Fvector& axis, float angle){
+	Fvector a;
+    Fmatrix m;
+    m.invert(FTransform);
+	m.transform_tiny(a,axis);
+    Fvector r	= PRotate;
+    r.mad		(a,angle);
     PRotate		= r;
 }
 
@@ -159,7 +218,7 @@ void CCustomObject::Scale( Fvector& center, Fvector& amount ){
     PScale		= s;
 }
 
-void CCustomObject::LocalScale( Fvector& amount ){
+void CCustomObject::WorldScale( Fvector& amount ){
 	R_ASSERT(!Locked());
     UI.UpdateScene();
     Fvector s	= PScale;
