@@ -69,8 +69,13 @@ public:
 	DWORD			q_Node			(DWORD PrevNode,  const Fvector& Pos);
 
 	// yet another A* search
-	float			vfFindTheXestPath(DWORD StartNode, DWORD GoalNode, AI::Path& Result);
-	float			vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, NodeCompressed& tEnemyNode, float fOptimalEnemyDistance);
+	#define DEFAULT_LIGHT_WEIGHT		  5.f 
+	#define DEFAULT_COVER_WEIGHT		 10.f 
+	#define DEFAULT_DISTANCE_WEIGHT		 40.f
+	#define DEFAULT_ENEMY_VIEW_WEIGHT	100.f
+	float			vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT);
+	//float			vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT);
+	float			vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, NodeCompressed& tEnemyNode, float fOptimalEnemyDistance, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT, float fEnemyViewWeight = DEFAULT_ENEMY_VIEW_WEIGHT);
 	void			vfLoadSearch();
 	void			vfUnloadSearch();
 	IC const vector<BYTE>	tpfGetNodeMarks() {return(q_mark);};

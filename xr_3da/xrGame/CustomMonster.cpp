@@ -46,9 +46,6 @@ void __stdcall CCustomMonster::TorsoSpinCallback(CBoneInstance* B)
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-#define X_SIZE_2 0.35f
-#define Y_SIZE_2 0.8f
-#define Z_SIZE_2 0.35f
 CCustomMonster::CCustomMonster()
 {
 	Device.seqRender.Add	(this,REG_PRIORITY_LOW-999);
@@ -94,7 +91,7 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	m_fMinSpeed				= ini->ReadFLOAT(section,"min_speed");
 	m_fMaxSpeed				= ini->ReadFLOAT(section,"max_speed");
 	m_fCurSpeed				= m_fMaxSpeed;
-	m_fCrounchCoefficient	= ini->ReadFLOAT(section,"crounch_coefficient");
+	m_fCrouchCoefficient	= ini->ReadFLOAT(section,"crouch_coef");
 
 	// Motions
 	CKinematics* V			= PKinematics(pVisual);

@@ -608,6 +608,10 @@ SOURCE=.\AI\Soldier\ai_soldier.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\AI\Soldier\ai_soldier_patrol.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\AI\Soldier\ai_soldier_selectors.cpp
 # End Source File
 # Begin Source File

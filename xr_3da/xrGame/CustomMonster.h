@@ -62,7 +62,7 @@ public:
 	float				m_fMinSpeed;
 	float				m_fMaxSpeed;
 	float				m_fCurSpeed;
-	float				m_fCrounchCoefficient;
+	float				m_fCrouchCoefficient;
 
 	virtual void		Think() = 0;
 
@@ -80,9 +80,11 @@ public:
 	CMotionDef*			m_idle;
 	SAnimState			m_walk;
 	SAnimState			m_run;
+	CMotionDef*			m_turn;
 	
 	CMotionDef* 		m_crouch_death;
 	CMotionDef* 		m_crouch_idle;
+	CMotionDef* 		m_crouch_turn;
 	SAnimState 			m_crouch_walk;
 	SAnimState 			m_crouch_run;
 

@@ -83,15 +83,15 @@ void CCustomMonster::Exec_Look		( float dt )
 		break;
 	}
 	
-	bool a1 = u_lerp_angle(r_current.yaw,	r_target.yaw,	L->o_look_speed, dt);
-	bool a2 = u_lerp_angle(r_current.pitch,	r_target.pitch,	L->o_look_speed, dt);
+	bool a1 = u_lerp_angle(r_current.yaw,	0+1*r_target.yaw,	L->o_look_speed, dt);
+	bool a2 = u_lerp_angle(r_current.pitch,	0+1*r_target.pitch,	L->o_look_speed, dt);
 	
 	if (a1 && a2) L->setCompleted();
 	
 	if (Device.dwTimeGlobal>=L->o_timeout)	L->setTimeout();
 
-	a1 = u_lerp_angle(r_torso_current.yaw,	r_torso_target.yaw,	r_torso_speed, dt);
-	a2 = u_lerp_angle(r_torso_current.pitch,	r_torso_target.pitch,	r_torso_speed, dt);
+	a1 = u_lerp_angle(r_torso_current.yaw,	r_torso_target.yaw,	0+1*r_torso_speed, dt);
+	a2 = u_lerp_angle(r_torso_current.pitch,	r_torso_target.pitch,	0+1*r_torso_speed, dt);
 	
 	mRotate.setHPB(NET_Last.o_model,0,0);
 }

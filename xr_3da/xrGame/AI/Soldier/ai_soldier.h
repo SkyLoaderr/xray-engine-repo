@@ -45,6 +45,28 @@ class CAI_Soldier : public CCustomMonster
 
 	protected:
 		
+		// macroses
+		#define MIN_RANGE_SEARCH_TIME_INTERVAL	15000.f
+		#define MAX_TIME_RANGE_SEARCH			150000.f
+		#define	FIRE_ANGLE						PI/30
+		#define	FIRE_SAFETY_ANGLE				PI/30
+		#define CUBE(x)							((x)*(x)*(x))
+		#define LEFT_NODE(Index)				((Index + 3) & 3)
+		#define RIGHT_NODE(Index)				((Index + 5) & 3)
+		#define FN(i)							(float(tNode->cover[(i)])/255.f)
+		#define	AMMO_NEED_RELOAD				6
+		#define	MAX_HEAD_TURN_ANGLE				(PI/3.f)
+		#define VECTOR_DIRECTION(i)				(i == 0 ? tLeft : (i == 1 ? tForward : (i == 2 ? tRight : tBack)))
+		#define EYE_WEAPON_DELTA				(PI/30.f)
+		#define TORSO_ANGLE_DELTA				(PI/30.f)
+		#define INIT_SQUAD_AND_LEADER \
+			CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];\
+			CEntity* Leader = Squad.Leader;\
+			if (Leader->g_Health() <= 0)\
+				Leader = this;\
+			R_ASSERT (Leader);
+//#define WRITE_LOG
+
 		// head turns
 		static void __stdcall HeadSpinCallback(CBoneInstance*);
 
@@ -137,6 +159,7 @@ class CAI_Soldier : public CCustomMonster
 		void vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 		void vfBuildPathToDestinationPoint(CSoldierSelectorAttack *S);
 		void vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
+		void vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 		void vfAimAtEnemy();
 		void vfSaveEnemy();
 		bool bfCheckIfCanKillMember();
@@ -160,6 +183,7 @@ class CAI_Soldier : public CCustomMonster
 		virtual void  g_fireParams(Fvector &fire_pos, Fvector &fire_dir);
 		virtual float OnVisible(); 
 		virtual objQualifier* GetQualifier	();
+		
 };
 		
 #endif

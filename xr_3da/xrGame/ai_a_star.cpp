@@ -12,20 +12,15 @@
 #include "ai_a_star.h"
 #include "ai_space.h"
 
-#define ASSIGN_GOODNESS(t)	(t)->f = (t)->g + (t)->h;
-#define SQR(t)				((t)*(t))
-#define OPEN_MASK			1
-#define mNodeStructure(x)	(*(this->Node(x)))
-#define mNode(x)			(this->Node(x))
-#define MAX_VALUE			100000.0
-#define MAX_NODES			4096
-#define fLightWeight		0.f //5
-#define fCoverWeight		0.f //10
-#define fDistanceWeight		40.f
-#define fEnemyViewWeight	100.f
+#define ASSIGN_GOODNESS(t)		(t)->f = (t)->g + (t)->h;
+#define SQR(t)					((t)*(t))
+#define OPEN_MASK				1
+#define mNodeStructure(x)		(*(this->Node(x)))
+#define mNode(x)				(this->Node(x))
+#define MAX_VALUE				100000.0
+#define MAX_NODES				4096
 
-
-float fSize,fYSize,fSize2,fYSize2;
+float fSize,fYSize,fSize2,fYSize2,fCriteriaLightWeight,fCriteriaCoverWeight,fCriteriaDistanceWeight,fCriteriaEnemyViewWeight;
 
 TNode  *taHeap,**tpaIndexes;
 
@@ -56,7 +51,7 @@ __forceinline float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1)
 
 	float fLight = (float)(tNode1.light)/255.f;
 	
-	return(fLight*fLightWeight + fCover*fCoverWeight + fDistanceWeight*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + 0*fYSize2*SQR(y2 - y1))));
+	return(fLight*fCriteriaLightWeight + fCover*fCriteriaCoverWeight + fCriteriaDistanceWeight*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + 0*fYSize2*SQR(y2 - y1))));
 	/**/
 }
 
@@ -92,7 +87,7 @@ __forceinline float ffAttackCriteria(NodeCompressed tNode0, NodeCompressed tNode
 	float fLight = (float)(tNode1.light)/255.f;
 	
 	//return(fLight*10 + fCover*5 + 30*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + fYSize2*SQR(y2 - y1))));
-	return(fEnemyViewWeight*SQR((float)sqrt((float)(fSize2*(SQR(x3 - x1) + SQR(z3 - z1)) + fYSize2*SQR(y3 - y1))) - fOptimalEnemyDistance) + fLight*fLightWeight + fCover*fCoverWeight + fDistanceWeight*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + fYSize2*SQR(y2 - y1))));
+	return(fCriteriaEnemyViewWeight*SQR((float)sqrt((float)(fSize2*(SQR(x3 - x1) + SQR(z3 - z1)) + fYSize2*SQR(y3 - y1))) - fOptimalEnemyDistance) + fLight*fCriteriaLightWeight + fCover*fCriteriaCoverWeight + fCriteriaDistanceWeight*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + fYSize2*SQR(y2 - y1))));
 	/**/
 }
 
@@ -143,10 +138,14 @@ void CAI_Space::vfUnloadSearch()
 	free(tpaIndexes);
 }
 
-float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result)
+float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, float fLightWeight, float fCoverWeight, float fDistanceWeight)
 {
 	Device.Statistic.AI_Path.Begin();
 	// initialization
+	fCriteriaLightWeight = fLightWeight;
+	fCriteriaCoverWeight = fCoverWeight;
+	fCriteriaDistanceWeight = fDistanceWeight;
+
 	uint uiHeap = 0;
 
 	memset(taHeap,0,(this->m_header.count + 1)*sizeof(TNode));
@@ -314,10 +313,15 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 	return(MAX_VALUE);
 }
 
-float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, NodeCompressed& tEnemyNode, float fOptimalEnemyDistance)
+float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, NodeCompressed& tEnemyNode, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight)
 {
 	Device.Statistic.AI_Path.Begin();
 	// initialization
+	fCriteriaLightWeight = fLightWeight;
+	fCriteriaCoverWeight = fCoverWeight;
+	fCriteriaDistanceWeight = fDistanceWeight;
+	fCriteriaEnemyViewWeight = fEnemyViewWeight;
+
 	uint uiHeap = 0;
 
 	memset(taHeap,0,(this->m_header.count + 1)*sizeof(TNode));

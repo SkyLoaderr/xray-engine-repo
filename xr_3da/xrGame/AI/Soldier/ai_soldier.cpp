@@ -14,21 +14,6 @@
 #include "..\\..\\..\\bodyinstance.h"
 #include "..\\..\\..\\xr_trims.h"
 
-//#define WRITE_LOG
-#define MIN_RANGE_SEARCH_TIME_INTERVAL	15000.f
-#define MAX_TIME_RANGE_SEARCH			150000.f
-#define	FIRE_ANGLE						PI/30
-#define	FIRE_SAFETY_ANGLE				PI/30
-#define CUBE(x)							((x)*(x)*(x))
-#define LEFT_NODE(Index)				((Index + 3) & 3)
-#define RIGHT_NODE(Index)				((Index + 5) & 3)
-#define FN(i)							(float(tNode->cover[(i)])/255.f)
-#define	AMMO_NEED_RELOAD				6
-#define	MAX_HEAD_TURN_ANGLE				(PI/3.f)
-#define VECTOR_DIRECTION(i)				(i == 0 ? tLeft : (i == 1 ? tForward : (i == 2 ? tRight : tBack)))
-#define EYE_WEAPON_DELTA				(PI/30.f)
-#define TORSO_ANGLE_DELTA				(PI/30.f)
-
 CAI_Soldier::CAI_Soldier()
 {
 	dwHitTime = 0;
@@ -41,7 +26,7 @@ CAI_Soldier::CAI_Soldier()
 	dwSavedEnemyNodeID = -1;
 	dwLostEnemyTime = 0;
 	bBuildPathToLostEnemy = false;
-	eCurrentState = aiSoldierPatrolDetour;
+	eCurrentState = aiSoldierFollowLeader;
 	m_dwLastRangeSearch = 0;
 	m_dwLastSuccessfullSearch = 0;
 	m_fAggressiveness = ::Random.randF(0,1);
@@ -67,32 +52,6 @@ void __stdcall CAI_Soldier::HeadSpinCallback(CBoneInstance* B)
 
 void CAI_Soldier::Load(CInifile* ini, const char* section)
 { 
-	// patrol path
-	if (Level().pLevel->LineExists("patrol_path","path_00")){
-		
-		LPCSTR buf = Level().pLevel->ReadSTRING("patrol_path","path_00"), buf2 = buf;
-		
-		int path_count = _GetItemCount(buf);
-
-		R_ASSERT(path_count && (path_count % 3 == 0));
-
-		path_count /= 3;
-		tpaPatrolPoints.resize(path_count);
-
-		for (int i=0; i<path_count; i++) {
-			Fvector tTemp;
-			sscanf(buf2,"%f,%f,%f",&(tTemp.x),&(tTemp.y),&(tTemp.z));
-			tpaPatrolPoints[i] = Level().AI.q_LoadSearch(tTemp);
-			for (int komas=0; komas<3; buf2++)
-				if (*buf2 == ',')
-					komas++;
-		}
-
-		m_iCurrentPoint = 0;
-		AI_Path.DestNode = tpaPatrolPoints[m_iCurrentPoint];
-		AI_Path.bNeedRebuild	= TRUE;
-	}
-
 	// load parameters from ".ini" file
 	inherited::Load	(ini,section);
 	
@@ -135,9 +94,41 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 	m_crouch_run.Create(PKinematics(pVisual),"cr_run");
 	m_crouch_idle = PKinematics(pVisual)->ID_Cycle_Safe("cr_idle");
 	m_crouch_death = PKinematics(pVisual)->ID_Cycle_Safe("cr_death");
+	m_crouch_turn = PKinematics(pVisual)->ID_Cycle_Safe("cr_turn");
+	
+	m_turn = PKinematics(pVisual)->ID_Cycle_Safe("norm_turn");
 
 	int head_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_head"));
 	PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback(HeadSpinCallback,this);
+
+	//m_walk.fwd = PKinematics(pVisual)->ID_Cycle_Safe("norm_turn");
+
+	// patrol path
+	//if ((Level().Teams[g_Team()].Squads[g_Squad()].Leader == this) && (Level().pLevel->LineExists("patrol_path","path_00"))) {
+	if (Level().pLevel->LineExists("patrol_path","path_00")) {
+		
+		LPCSTR buf = Level().pLevel->ReadSTRING("patrol_path","path_00"), buf2 = buf;
+		
+		int path_count = _GetItemCount(buf);
+
+		R_ASSERT(path_count && (path_count % 3 == 0));
+
+		path_count /= 3;
+		tpaPatrolPoints.resize(path_count);
+
+		for (int i=0; i<path_count; i++) {
+			Fvector tTemp;
+			sscanf(buf2,"%f,%f,%f",&(tTemp.x),&(tTemp.y),&(tTemp.z));
+			tpaPatrolPoints[i] = Level().AI.q_LoadSearch(tTemp);
+			for (int komas=0; komas<3; buf2++)
+				if (*buf2 == ',')
+					komas++;
+		}
+
+		m_iCurrentPoint = 0;
+		AI_Path.DestNode = tpaPatrolPoints[m_iCurrentPoint];
+		AI_Path.bNeedRebuild	= TRUE;
+	}
 }
 
 void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
@@ -162,10 +153,16 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 	} 
 	else {
 		if (speed<0.2f)
-			if (m_bCrouched)	
-				S = m_crouch_idle;
+			if (r_torso_target.yaw - r_torso_current.yaw > PI/30.f)
+				if (m_bCrouched)	
+					S = m_crouch_turn;
+				else
+					S = m_turn;
 			else
-				S = m_idle;
+				if (m_bCrouched)	
+					S = m_crouch_idle;
+				else
+					S = m_idle;
 		else {
 			Fvector view = _view; view.y=0; view.normalize_safe();
 			Fvector move = _move; move.y=0; move.normalize_safe();
@@ -178,17 +175,17 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 				AState = &m_walk;
 			
 			if (m_bCrouched) {
-				if (speed >= m_fMaxSpeed*m_fCrounchCoefficient)
+				if (speed >= m_fMaxSpeed*m_fCrouchCoefficient)
 					AState = &m_crouch_run;
 			}
 			else		
 				if (speed >= m_fMaxSpeed)
 					AState = &m_run;
 			
-			if (dot>0.7f)
+			if (dot>0.5f)
 				S = AState->fwd;
 			else 
-				if ((dot<=0.7f)&&(dot>=-0.7f)) {
+				if ((dot<=0.5f)&&(dot>=-0.5f)) {
 					Fvector cross; 
 					cross.crossproduct(view,move);
 					if (cross.y > 0)
@@ -444,9 +441,12 @@ void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode)
 
 			r_target.yaw = fBestAngle;
 			q_look.o_look_speed=_FB_look_speed;
-			//r_torso_speed = PI;
+			r_torso_speed = _FB_look_speed;//(r_torso_target.yaw - r_torso_current.yaw);
+			r_target.yaw += PI/6.f;
 		}
 	}
+	r_target.pitch = 0;
+	r_torso_target.pitch = 0;
 }
 
 void CAI_Soldier::SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection)
@@ -492,6 +492,7 @@ void CAI_Soldier::SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection)
 		mk_rotation(tEnemyDirection,r_torso_target);
 		r_target.yaw = r_torso_target.yaw;
 		r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
+		r_target.pitch *= -1;
 		q_look.o_look_speed=8*_FB_look_speed;
 	/**
 	}
@@ -573,6 +574,7 @@ void CAI_Soldier::vfBuildPathToDestinationPoint(CSoldierSelectorAttack *S)
 	if (AI_Path.Nodes.size() > 2) {
 	// if path is long enough then build travel line
 		AI_Path.BuildTravelLine(Position());
+		AI_Path.TravelStart = 0;
 	}
 	else {
 	// if path is too short then clear it (patch for ExecMove)
@@ -585,6 +587,7 @@ void CAI_Soldier::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, C
 {
 	if ((!m_dwLastRangeSearch) || ((S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SEARCH_TIME_INTERVAL) && (::Random.randF(0,1) < float(S.m_dwCurTime - m_dwLastRangeSearch)/MAX_TIME_RANGE_SEARCH))) {
 		
+		bool bLastSearch = m_dwLastRangeSearch != 0;
 		DWORD dwTimeDifference = S.m_dwCurTime - m_dwLastSuccessfullSearch;
 		m_dwLastRangeSearch = S.m_dwCurTime;
 		Device.Statistic.AI_Node.Begin();
@@ -593,7 +596,10 @@ void CAI_Soldier::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, C
 		// search for the best node according to the 
 		// selector evaluation function in the radius N meteres
 		float fOldCost;
-		Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost,dwTimeDifference);
+		if (bLastSearch)
+			Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost,dwTimeDifference);
+		else
+			Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
 		// if search has found new best node then 
 		if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
 			AI_Path.DestNode		= S.BestNode;
@@ -606,6 +612,30 @@ void CAI_Soldier::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, C
 		if (AI_Path.bNeedRebuild)
 			m_dwLastSuccessfullSearch = S.m_dwCurTime;
 	}
+}
+
+void CAI_Soldier::vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
+{
+	DWORD dwTimeDifference = S.m_dwCurTime - m_dwLastSuccessfullSearch;
+	m_dwLastRangeSearch = S.m_dwCurTime;
+	Device.Statistic.AI_Node.Begin();
+	Squad.Groups[g_Group()].GetAliveMemberInfoWithLeader(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this,Leader);
+	Device.Statistic.AI_Node.End();
+	// search for the best node according to the 
+	// selector evaluation function in the radius N meteres
+	float fOldCost;
+	Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
+	// if search has found new best node then 
+	if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
+		AI_Path.DestNode		= S.BestNode;
+		AI_Path.bNeedRebuild	= TRUE;
+	} 
+	
+	if (AI_Path.Nodes.size() <= 2)
+		AI_Path.bNeedRebuild = TRUE;
+
+	if (AI_Path.bNeedRebuild)
+		m_dwLastSuccessfullSearch = S.m_dwCurTime;
 }
 
 void CAI_Soldier::vfAimAtEnemy()
@@ -673,7 +703,7 @@ void CAI_Soldier::vfSetMovementType(bool bCrouched, float fSpeed)
 {
 	if (bCrouched) {
 		Squat();
-		m_fCurSpeed = m_fCrounchCoefficient*fSpeed;
+		m_fCurSpeed = m_fCrouchCoefficient*fSpeed;
 	}
 	else {
 		StandUp();
@@ -697,13 +727,6 @@ void CAI_Soldier::vfCheckForSavedEnemy()
 		dwSavedEnemyNodeID = -1;
 	}
 }
-
-#define INIT_SQUAD_AND_LEADER \
-	CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];\
-	CEntity* Leader = Squad.Leader;\
-	if (Leader->g_Health() <= 0)\
-		Leader = this;\
-	R_ASSERT (Leader);
 
 void CAI_Soldier::AttackFire()
 {
@@ -922,7 +945,7 @@ void CAI_Soldier::FindEnemy()
 
 	vfSetFire(false,Group);
 	
-	vfSetMovementType(true,m_fMaxSpeed);
+	vfSetMovementType(false,m_fMaxSpeed);
 
 	bStopThinking = true;
 	return;
@@ -996,112 +1019,6 @@ void CAI_Soldier::FollowLeader()
 		vfSearchForBetterPosition(SelectorFollowLeader,Squad,Leader);
 		
 	SetLessCoverLook(AI_Node);
-
-	vfSetFire(false,Group);
-
-	vfSetMovementType(false,m_fMinSpeed);
-	// stop processing more rules
-	bStopThinking = true;
-}
-
-void CAI_Soldier::FollowLeaderPatrol()
-{
-	// if no more health then soldier is dead
-#ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"Following leader patrol");
-#endif
-	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
-		return;
-	}
-		
-	SelectEnemy(Enemy);
-	// do I see the enemies?
-	if (Enemy.Enemy)		{
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierAttackFire;
-		m_dwLastRangeSearch = 0;
-		return;
-	}
-	
-	DWORD dwCurTime = Level().timeServer();
-	
-	if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierUnderFire;
-		m_dwLastRangeSearch = 0;
-		return;
-	}
-	
-	if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierSenseSomething;
-		m_dwLastRangeSearch = 0;
-		return;
-	}
-	
-	INIT_SQUAD_AND_LEADER;
-
-	CGroup &Group = Squad.Groups[g_Group()];
-	
-	if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {
-		tHitDir = Group.m_tLastHitDirection;
-		dwHitTime = Group.m_dwLastHitTime;
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierUnderFire;
-		m_dwLastRangeSearch = 0;
-		return;
-	}
-
-	if (Leader == this) {
-		eCurrentState = aiSoldierPatrolDetour;
-		return;
-	}
-
-	SetLessCoverLook(AI_Node);
-	
-	if (AI_Path.bNeedRebuild) {
-		Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
-		if (AI_Path.Nodes.size() > 1)
-			AI_Path.BuildTravelLine(Position());
-		else {
-			AI_Path.TravelPath.clear();
-			AI_Path.bNeedRebuild = FALSE;
-		}
-	}
-	else {
-		if (AI_NodeID == tpaPatrolPoints[m_iCurrentPoint]) {
-			int iSavePoint = m_iCurrentPoint;
-			m_iCurrentPoint = m_iCurrentPoint == tpaPatrolPoints.size() - 1 ? 0 : m_iCurrentPoint + 1;
-			
-			Fvector tTemp0, tTemp1;
-			Level().AI.UnpackPosition(tTemp0,Level().AI.Node(tpaPatrolPoints[m_iCurrentPoint])->p0);
-			Level().AI.UnpackPosition(tTemp1,Level().AI.Node(tpaPatrolPoints[m_iCurrentPoint])->p1);
-			tTemp1.average(tTemp0);
-			tTemp1.sub(vPosition);
-			
-			mk_rotation(tTemp1,r_torso_target);
-
-			if (fabsf(r_torso_current.yaw - r_torso_target.yaw) < TORSO_ANGLE_DELTA) {
-				AI_Path.bNeedRebuild = TRUE;
-				AI_Path.DestNode = tpaPatrolPoints[m_iCurrentPoint];
-			}
-			else {
-				m_iCurrentPoint = iSavePoint;
-				//r_torso_speed = PI/10;
-			}
-		}
-		else {
-			if (AI_Path.DestNode != tpaPatrolPoints[m_iCurrentPoint])
-				AI_Path.bNeedRebuild = TRUE;
-
-			AI_Path.DestNode = tpaPatrolPoints[m_iCurrentPoint];
-
-			if (!bfCheckPath(AI_Path))
-				AI_Path.bNeedRebuild = TRUE;
-
-		}
-	}
 
 	vfSetFire(false,Group);
 
@@ -1234,107 +1151,6 @@ void CAI_Soldier::NoWeapon()
 	bStopThinking = true;
 }
 
-void CAI_Soldier::Patrol()
-{
-	// if no more health then soldier is dead
-#ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"Patrol detour");
-#endif
-	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
-		return;
-	}
-
-	SelectEnemy(Enemy);
-	
-	if (Enemy.Enemy) {
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierAttackFire;
-		m_dwLastRangeSearch = 0;
-		return;
-	}
-
-	DWORD dwCurTime = Level().timeServer();
-	
-	if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierUnderFire;
-		m_dwLastRangeSearch = 0;
-		return;
-	}
-	
-	if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierSenseSomething;
-		m_dwLastRangeSearch = 0;
-		return;
-	}
-	
-	INIT_SQUAD_AND_LEADER;
-
-	CGroup &Group = Squad.Groups[g_Group()];
-	
-	if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {
-		tHitDir = Group.m_tLastHitDirection;
-		dwHitTime = Group.m_dwLastHitTime;
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierUnderFire;
-		m_dwLastRangeSearch = 0;
-		return;
-	}
-
-	if (AI_Path.bNeedRebuild) {
-		Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
-		if (AI_Path.Nodes.size() > 1)
-			AI_Path.BuildTravelLine(Position());
-		else {
-			AI_Path.TravelPath.clear();
-			AI_Path.bNeedRebuild = FALSE;
-		}
-		SetLessCoverLook(AI_Node);
-	}
-	else {
-		if (AI_NodeID == tpaPatrolPoints[m_iCurrentPoint]) {
-			int iSavePoint = m_iCurrentPoint;
-			m_iCurrentPoint = m_iCurrentPoint == tpaPatrolPoints.size() - 1 ? 0 : m_iCurrentPoint + 1;
-			
-			Fvector tTemp0, tTemp1;
-			Level().AI.UnpackPosition(tTemp0,Level().AI.Node(tpaPatrolPoints[m_iCurrentPoint])->p0);
-			Level().AI.UnpackPosition(tTemp1,Level().AI.Node(tpaPatrolPoints[m_iCurrentPoint])->p1);
-			tTemp1.average(tTemp0);
-			tTemp1.sub(vPosition);
-			
-			mk_rotation(tTemp1,r_torso_target);
-
-			if (fabsf(r_torso_current.yaw - r_torso_target.yaw) < TORSO_ANGLE_DELTA) {
-				AI_Path.bNeedRebuild = TRUE;
-				AI_Path.DestNode = tpaPatrolPoints[m_iCurrentPoint];
-				SetLessCoverLook(AI_Node);
-			}
-			else {
-				m_iCurrentPoint = iSavePoint;
-				//r_torso_speed = PI/10;
-			}
-		}
-		else {
-			if (AI_Path.DestNode != tpaPatrolPoints[m_iCurrentPoint])
-				AI_Path.bNeedRebuild = TRUE;
-
-			AI_Path.DestNode = tpaPatrolPoints[m_iCurrentPoint];
-
-			if (!bfCheckPath(AI_Path))
-				AI_Path.bNeedRebuild = TRUE;
-			SetLessCoverLook(AI_Node);
-		}
-	}
-
-	vfSetFire(false,Group);
-
-	vfSetMovementType(false,m_fMinSpeed);
-	
-	bStopThinking = true;
-}
-
 void CAI_Soldier::Pursuit()
 {
 	// if no more health then soldier is dead
@@ -1414,7 +1230,7 @@ void CAI_Soldier::Pursuit()
 
 	vfSetFire(false,Group);
 
-	vfSetMovementType(true,m_fMaxSpeed);
+	vfSetMovementType(false,m_fMaxSpeed);
 	
 	bStopThinking = true;
 }
