@@ -297,6 +297,9 @@
 					RelativePath=".\game_tasks.xml">
 				</File>
 				<File
+					RelativePath=".\string_table_tasks_escape.xml">
+				</File>
+				<File
 					RelativePath=".\tasks_escape.xml">
 				</File>
 			</Filter>

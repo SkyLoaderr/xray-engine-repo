@@ -3,7 +3,7 @@
 <game_tasks_data>
 	<game_task id="blockpost_case">
 		<objective>
-			<text>Steal the case from blockpost</text>
+			<text>escape_steal_blockpost_case</text>
 		</objective>
 	</game_task>
 
