@@ -695,7 +695,7 @@ u32	hsample	(s32 w, s32 h, s32 p, s32 x, s32 y, u8* src)
 	if	(y<0)	y+=h;
 				y%=h;
 
-	return color_get_R( *(((u32*)((u8*)src + (y * pitch)))+x) );
+	return color_get_R( *(((u32*)((u8*)src + (y * p)))+x) );
 }
 
 #include "ETextureParams.h"
@@ -759,7 +759,7 @@ bool DXTCompressBump(LPCSTR out_name, u8* T_height_gloss, u32 w, u32 h, u32 pitc
 			for (s32 y=0; y<h; y++)
 			{
 				u32		p = pitch;
-				u32*	T = T_height_gloss;
+				u8*		T = T_height_gloss;
 				for (s32 x=0; x<w; x++)
 				{
 					u32&	dst		= *	(((u32*)((u8*)T_height_pf + (y * pitch)))+x);
