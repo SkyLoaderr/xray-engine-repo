@@ -59,18 +59,21 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorFindAmmo,
 
 		eWorldOperatorGetReadyToKillVeryAggressive,
-		eWorldOperatorGetReadyToKillAggressive,
-		eWorldOperatorGetReadyToKillModerate,
-		eWorldOperatorGetReadyToKillAvoid,
-
 		eWorldOperatorKillEnemyVeryAggressive,
+		
+		eWorldOperatorGetReadyToKillAggressive,
 		eWorldOperatorKillEnemyAggressive,
-		eWorldOperatorKillEnemyModerate,
+		eWorldOperatorAimEnemy,
+
+		eWorldOperatorGetReadyToKillAvoid,
 		eWorldOperatorKillEnemyAvoid,
+		
 		eWorldOperatorRetreatFromEnemy,
 
-		eWorldOperatorAimEnemy,
+		eWorldOperatorGetReadyToKillModerate,
+		eWorldOperatorKillEnemyModerate,
 		eWorldOperatorCamping,
+		eWorldOperatorGetEnemySeenModerate,
 
 		eWorldOperatorScript,
 		eWorldOperatorDummy			= u32(-1),

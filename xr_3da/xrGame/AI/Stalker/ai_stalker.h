@@ -17,6 +17,7 @@
 #include "../../script_binder.h"
 #include "../../setup_manager.h"
 #include "../../setup_action.h"
+#include "../../cover_manager.h"
 #include "ai_stalker_animations.h"
 #include "ai_stalker_space.h"
 
@@ -38,6 +39,10 @@ class CSE_ALifeSimulator;
 class CCharacterPhysicsSupport;
 class CWeapon;
 class CCoverPoint;
+class CCoverEvaluatorCloseToEnemy;
+class CCoverEvaluatorFarFromEnemy;
+class CCoverEvaluatorBest;
+class CCoverEvaluatorAngle;
 
 //#define LOG_PARAMETERS
 
@@ -211,8 +216,9 @@ public:
 			bool				ready_to_kill					();
 			bool				kill_distance					();
 			void				update_best_item_info			();
-			CCoverPoint			*best_cover_point				(const Fvector &self_position, const Fvector &enemy_position, const ECoverType &cover_type, float radius, float deviation, float min_enemy_distance, float max_enemy_distance);
 	virtual float				GetWeaponAccuracy				() const;
+			template <typename _evaluator_type>
+			CCoverPoint			*best_cover						(const Fvector &position, float radius, _evaluator_type &evaluator);
 
 public:
 	u32							m_last_best_item_frame;
@@ -222,9 +228,11 @@ public:
 	const CInventoryItem		*m_best_found_item_to_kill;
 	const CInventoryItem		*m_best_found_ammo;
 	xr_vector<CCoverPoint*>		m_nearest;
-	u32							m_last_cover_change;
-	u32							m_cover_change_inertia;
-	CCoverPoint					*m_last_cover;
+
+	CCoverEvaluatorCloseToEnemy	*m_ce_close;
+	CCoverEvaluatorFarFromEnemy	*m_ce_far;
+	CCoverEvaluatorBest			*m_ce_best;
+	CCoverEvaluatorAngle		*m_ce_angle;
 };
 
 #include "ai_stalker_inline.h"

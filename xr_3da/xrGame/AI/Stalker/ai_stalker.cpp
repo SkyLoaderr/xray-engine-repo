@@ -18,6 +18,7 @@
 #include "../../artifact.h"
 #include "../../phmovementcontrol.h"
 #include "../../xrserver_objects_alife_monsters.h"
+#include "../../cover_evaluators.h"
 
 #ifdef OLD_DECISION_BLOCK
 CAI_Stalker::CAI_Stalker			() : CStateManagerStalker("StalkerManager")
@@ -77,9 +78,14 @@ void CAI_Stalker::reinit			()
 	m_best_found_item_to_kill		= 0;
 	m_best_found_ammo				= 0;
 	m_item_actuality				= false;
-	m_cover_change_inertia			= 5000;
-	m_last_cover_change				= 0;
-	m_last_cover					= 0;
+	m_ce_close						= xr_new<CCoverEvaluatorCloseToEnemy>();
+	m_ce_far						= xr_new<CCoverEvaluatorFarFromEnemy>();
+	m_ce_best						= xr_new<CCoverEvaluatorBest>();
+	m_ce_angle						= xr_new<CCoverEvaluatorAngle>();
+	m_ce_close->set_inertia			(5000);
+	m_ce_far->set_inertia			(5000);
+	m_ce_best->set_inertia			(5000);
+	m_ce_angle->set_inertia			(5000);
 }
 
 void CAI_Stalker::reload			(LPCSTR section)
@@ -226,6 +232,11 @@ void CAI_Stalker::net_Destroy()
 	CInventoryOwner::net_Destroy		();
 	CScriptBinder::net_Destroy			();
 	m_pPhysics_support->in_NetDestroy	();
+
+	xr_delete							(m_ce_close);
+	xr_delete							(m_ce_far);
+	xr_delete							(m_ce_best);
+	xr_delete							(m_ce_angle);
 }
 
 void CAI_Stalker::net_Export		(NET_Packet& P)

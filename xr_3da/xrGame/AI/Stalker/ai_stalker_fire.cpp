@@ -12,8 +12,6 @@
 #include "../../ai_script_actions.h"
 #include "../../inventory.h"
 #include "../../ef_storage.h"
-#include "../../cover_manager.h"
-#include "../../cover_point.h"
 
 float CAI_Stalker::GetWeaponAccuracy	() const
 {
@@ -256,80 +254,4 @@ bool CAI_Stalker::ready_to_kill			()
 bool CAI_Stalker::kill_distance			()
 {
 	return					(true);
-}
-
-CCoverPoint	*CAI_Stalker::best_cover_point	(
-		const Fvector		&self_position,
-		const Fvector		&enemy_position,
-		const ECoverType	&cover_type,
-		float				radius,
-		float				deviation,
-		float				min_enemy_distance,
-		float				max_enemy_distance
-	)
-{
-	if (m_last_cover && (Level().timeServer() <= m_last_cover_change + m_cover_change_inertia))
-		return									(m_last_cover);
-	
-	m_last_cover_change							= Level().timeServer();
-	m_last_cover								= 0;
-
-	Fvector										direction;
-	direction.sub								(enemy_position,self_position);
-
-	ai().cover_manager().covers().nearest		(self_position,radius,m_nearest);
-	float										best_value = 1000.f;
-	float										best_distance = 1000.f;
-	float										current_distance = self_position.distance_to(enemy_position);
-	xr_vector<CCoverPoint*>::const_iterator	I = m_nearest.begin();
-	xr_vector<CCoverPoint*>::const_iterator	E = m_nearest.end();
-	for ( ; I != E; ++I) {
-		Fvector			direction;
-		float			y,p;
-		direction.sub	(enemy_position,(*I)->position());
-		direction.getHP	(y,p);
-		float			cover_value = ai().level_graph().cover_in_direction(y,(*I)->level_vertex_id());
-		float			enemy_distance = enemy_position.distance_to((*I)->position());
-		float			my_distance = self_position.distance_to((*I)->position());
-
-		if (cover_value >= 2.f*best_value)
-			continue;
-
-		if (enemy_distance <= min_enemy_distance)
-			continue;
-
-		if (my_distance >= max_enemy_distance)
-			continue;
-
-		if ((cover_type != eCoverTypeBest) && (my_distance >= current_distance))
-			continue;
-
-//		if (my_distance*(cover_value + 1.f) > best_distance*(best_value + 1.f))
-//			continue;
-
-		bool			choosed = false;
-		switch (cover_type) {
-			case eCoverTypeCloseToEnemy : {
-				choosed = (enemy_distance < current_distance + deviation);
-				break;
-			}
-			case eCoverTypeFarFromEnemy : {
-				choosed = (enemy_distance >= current_distance - deviation);
-				break;
-			}
-			case eCoverTypeBest : {
-				choosed = (enemy_distance < current_distance + deviation) && (enemy_distance >= current_distance - deviation);
-				break;
-			}
-			default : NODEFAULT;
-		}
-
-		if (choosed) {
-			best_value		= cover_value;
-			best_distance	= my_distance;
-			m_last_cover	= *I;
-		}
-	}
-
-	return				(m_last_cover);
 }

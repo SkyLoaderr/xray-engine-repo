@@ -61,7 +61,7 @@ void CSightManager::SetDirectionLook()
 	MonsterSpace::SBoneRotation		orientation = m_object->m_head, body_orientation = m_object->body_orientation();
 	GetDirectionAngles				(m_object->m_head.target.yaw,m_object->m_head.target.pitch);
 	m_object->m_head.target.yaw		*= -1;
-	m_object->m_head.target.pitch	*= -1;
+	m_object->m_head.target.pitch	*= 0;//-1;
 	m_object->m_body.target			= m_object->m_head.target;
 }
 
@@ -120,6 +120,7 @@ void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, float f
 	}
 
 	m_object->m_head.target.yaw = angle_normalize_signed(fBestAngle + PI);
+	m_object->m_head.target.pitch = 0;
 	VERIFY					(_valid(m_object->m_head.target.yaw));
 }
 

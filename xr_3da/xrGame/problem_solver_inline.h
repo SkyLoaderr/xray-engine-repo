@@ -92,9 +92,25 @@ IC	void CProblemSolverAbstract::add_operator			(const _edge_type &operator_id, C
 {
 	OPERATOR_VECTOR::iterator	I = std::lower_bound(m_operators.begin(), m_operators.end(),operator_id);
 	VERIFY					((I == m_operators.end()) || ((*I).m_operator_id != operator_id));
+#ifdef DEBUG
+	validate_properties		(_operator->conditions());
+	validate_properties		(_operator->effects());
+#endif
 	m_actuality				= false;
 	m_operators.insert		(I,SOperator(operator_id,_operator));
 }
+
+#ifdef DEBUG
+TEMPLATE_SPECIALIZATION
+IC	void CProblemSolverAbstract::validate_properties	(const CState &conditions) const
+{
+	xr_vector<COperatorCondition>::const_iterator	I = conditions.conditions().begin();
+	xr_vector<COperatorCondition>::const_iterator	E = conditions.conditions().end();
+	for ( ; I != E; ++I) {
+		VERIFY				(evaluators().find((*I).condition()) != evaluators().end());
+	}
+}
+#endif
 
 TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::remove_operator		(const _edge_type &operator_id)

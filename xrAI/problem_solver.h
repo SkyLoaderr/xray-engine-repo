@@ -66,6 +66,12 @@ protected:
 	bool						m_solution_changed;
 	bool						m_failed;
 
+protected:
+#ifdef DEBUG
+	IC		void						validate_properties		(const CState &conditions) const;
+#endif
+
+
 public:
 	// common interface
 	IC									CProblemSolver			();
