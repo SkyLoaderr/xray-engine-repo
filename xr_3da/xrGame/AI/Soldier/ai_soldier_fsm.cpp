@@ -1686,10 +1686,6 @@ void CAI_Soldier::Think()
 				OnPointAtSmth();
 				break;
 			}
-//			case aiSoldierLyingDown : {
-//				OnLyingDown();
-//				break;
-//			}
 			case aiSoldierPatrolHurt : {
 				OnPatrolHurt();
 				break;
@@ -1702,10 +1698,6 @@ void CAI_Soldier::Think()
 				OnHurtAloneDefend();
 				break;
 			}
-//			case aiSoldierStandingUp : {
-//				OnStandingUp();
-//				break;
-//			}
 			case aiSoldierWaitForAnimation : {
 				OnWaitingForAnimation();
 				break;
