@@ -1,7 +1,8 @@
 #include "stdafx.h"
-#include "pseudo_gigant.h"
+#include "burer.h"
 
-CPseudoGigant::CPseudoGigant()
+
+CBurer::CBurer()
 {
 	stateRest			= xr_new<CBitingRest>(this);
 	CurrentState		= stateRest;
@@ -9,13 +10,13 @@ CPseudoGigant::CPseudoGigant()
 	Init();
 }
 
-CPseudoGigant::~CPseudoGigant()
+CBurer::~CBurer()
 {
 	xr_delete(stateRest);
 }
 
 
-void CPseudoGigant::Init()
+void CBurer::Init()
 {
 	inherited::Init();
 
@@ -23,7 +24,7 @@ void CPseudoGigant::Init()
 	CurrentState->Reset				();
 }
 
-void CPseudoGigant::Load(LPCSTR section)
+void CBurer::Load(LPCSTR section)
 {
 	inherited::Load	(section);
 
@@ -32,7 +33,7 @@ void CPseudoGigant::Load(LPCSTR section)
 	END_LOAD_SHARED_MOTION_DATA();
 }
 
-void CPseudoGigant::StateSelector()
+void CBurer::StateSelector()
 {	
 	SetState(stateRest);
 }

@@ -1,12 +1,12 @@
 #pragma once
 #include "../../biting/ai_biting.h"
 
-class CPseudoGigant : public CAI_Biting {
+class CChimera : public CAI_Biting {
 	typedef		CAI_Biting	inherited;
 
 public:
-					CPseudoGigant				();
-	virtual			~CPseudoGigant				();	
+					CChimera			();
+	virtual			~CChimera			();	
 
 	virtual void	Load				(LPCSTR section);
 

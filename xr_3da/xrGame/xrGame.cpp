@@ -23,6 +23,10 @@
 #include "ai/pseudodog/ai_pseudodog.h"
 #include "ai/boar/ai_boar.h"
 #include "ai/trader/ai_trader.h"
+#include "ai/monsters/Burer/burer.h"
+#include "ai/monsters/PseudoGigant/pseudo_gigant.h"
+#include "ai/monsters/chimera/chimera.h"
+#include "ai/monsters/controller/controller.h"
 #include "car.h"
 #include "customtarget.h"
 #include "../fdemorecord.h"
@@ -983,6 +987,8 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 
 #include "vehicle_helicopter.h"
 
+
+
 extern "C" {
 	DLL_API DLL_Pure*	__cdecl xrFactory_Create		(CLASS_ID cls)
 	{
@@ -998,7 +1004,7 @@ extern "C" {
 			case CLSID_AI_GRAPH:												break;
 			case CLSID_AI_RAT:				P = xr_new<CAI_Rat>();				break;
 			case CLSID_AI_FLESH:			P = xr_new<CAI_Flesh>();			break;
-			case CLSID_AI_CHIMERA:			P = xr_new<CAI_Chimera>();			break;
+			case CLSID_AI_CHIMERA:			P = xr_new<CChimera>();				break;
 			case CLSID_AI_DOG_RED:			P = xr_new<CAI_Dog>();				break;
 			case CLSID_AI_SOLDIER:			P =	xr_new<CAI_Stalker>();			break;
 			case CLSID_AI_STALKER:			P =	xr_new<CAI_Stalker>();			break;
@@ -1007,6 +1013,9 @@ extern "C" {
 			case CLSID_AI_BLOODSUCKER:		P = xr_new<CAI_Bloodsucker>();		break;
 			case CLSID_AI_BOAR:				P = xr_new<CAI_Boar>();				break;
 			case CLSID_AI_DOG_BLACK:		P = xr_new<CAI_PseudoDog>();		break;
+			case CLSID_AI_BURER:			P = xr_new<CBurer>();				break;
+			case CLSID_AI_GIANT:			P = xr_new<CPseudoGigant>();		break;
+			case CLSID_AI_CONTROLLER:		P = xr_new<CController>();			break;
 
 			// Trader
 			case CLSID_AI_TRADER:			P = xr_new<CAI_Trader>();			break;

@@ -372,7 +372,7 @@ void CAI_Biting::UpdateCL()
 	m_fCurSpeed		= m_velocity_linear.current;
 
 	if (!fis_zero(m_velocity_linear.current))
-		m_body.speed	= 1.5f * m_velocity_angular.target * m_velocity_linear.current / (m_velocity_linear.target + EPS_L);
+		m_body.speed	= m_velocity_angular.target * m_velocity_linear.current / (m_velocity_linear.target + EPS_L);
 	else 
 		m_body.speed	= m_velocity_angular.target;
 

@@ -66,6 +66,9 @@ void CAI_Biting::HitEntity(const CEntity *pEntity, float fDamage, Fvector &dir)
 
 
 		float		impulse = ::Random.randF(_sd->m_fImpulseMin,_sd->m_fImpulseMax);
+		impulse *= dir.magnitude();
+		dir.normalize();
+
 		CEntity		*pEntityNC	= const_cast<CEntity*>(pEntity);
 		VERIFY		(pEntityNC);
 		pEntityNC->Hit(fDamage,dir,this,0,position_in_bone_space,impulse);

@@ -70,6 +70,7 @@ void CAI_Boar::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimDie,				"stand_idle_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
 	MotionMan.AddAnim(eAnimJumpLeft,		"stand_jump_left_",		-1, &inherited::_sd->m_fsVelocityStandTurn,			PS_STAND);
 	MotionMan.AddAnim(eAnimJumpRight,		"stand_jump_right_",	-1, &inherited::_sd->m_fsVelocityStandTurn,			PS_STAND);
+	MotionMan.AddAnim(eAnimAttackRun,		"stand_run_attack_",	-1, &inherited::_sd->m_fsVelocityRunFwdNormal,		PS_STAND);
 
 	// define transitions
 	MotionMan.AddTransition(eAnimStandLieDown,	eAnimSleep,		eAnimLieToSleep,		false);
@@ -77,7 +78,6 @@ void CAI_Boar::Load(LPCSTR section)
 	MotionMan.AddTransition(PS_STAND,			PS_LIE,			eAnimStandLieDown,		false);
 	MotionMan.AddTransition(PS_LIE,				PS_STAND,		eAnimLieStandUp,		false);
 
-	
 
 	// define links from Action to animations
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle, eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
@@ -95,16 +95,10 @@ void CAI_Boar::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);
 	MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, EPS_S); 
 
-	Fvector center;
-	center.set		(0.f,0.f,0.f);
-
-//	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 500,	600,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,2.3f), inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
-//	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 500,	600,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,2.3f), inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
-//	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,3.0f), inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
-
-	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 0, 500,	600,	STANDART_ATTACK, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
-	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 1, 500,	600,	STANDART_ATTACK, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
-	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 2, 500,	600,	STANDART_ATTACK, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
+	MotionMan.AA_PushAttackAnimTest(eAnimAttack,	0, 500,	600,	STANDART_ATTACK, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,1.f));
+	MotionMan.AA_PushAttackAnimTest(eAnimAttack,	1, 500,	600,	STANDART_ATTACK, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,1.f));
+	MotionMan.AA_PushAttackAnimTest(eAnimAttack,	2, 500,	600,	STANDART_ATTACK, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,1.f));
+	MotionMan.AA_PushAttackAnimTest(eAnimAttackRun, 0, 300,	400,	-PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6, 5.5f, inherited::_sd->m_fHitPower,Fvector().set(0.f,1.0f,1.0f));
 
 	END_LOAD_SHARED_MOTION_DATA();
 
@@ -225,6 +219,12 @@ void CAI_Boar::CheckSpecParams(u32 spec_params)
 		new_angular_velocity = 2.5f * delta_yaw / time; 
 
 		MotionMan.ForceAngularSpeed(new_angular_velocity);
+
+		return;
+	}
+
+	if ((spec_params & ASP_ATTACK_RUN) == ASP_ATTACK_RUN) {
+		MotionMan.SetCurAnim(eAnimAttackRun);
 	}
 }
 
@@ -232,6 +232,8 @@ void CAI_Boar::UpdateCL()
 {
 	inherited::UpdateCL();
 	angle_lerp(_cur_delta, _target_delta, _velocity, Device.fTimeDelta);
+
+//	Msg("m_body.cur = [%f], m_body.target = [%f] speed = [%f]", m_body.current.yaw, m_body.target.yaw,m_body.speed);
 }
 
 
@@ -239,7 +241,7 @@ void CAI_Boar::ProcessTurn()
 {
 	float delta_yaw = angle_difference(m_body.target.yaw, m_body.current.yaw);
 	if (delta_yaw < deg(1)) {
-		m_body.current.yaw = m_body.target.yaw;
+		//m_body.current.yaw = m_body.target.yaw;
 		return;
 	}
 	

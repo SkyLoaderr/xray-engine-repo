@@ -2228,6 +2228,36 @@
 						</File>
 					</Filter>
 				</Filter>
+				<Filter
+					Name="Burer"
+					Filter="">
+					<File
+						RelativePath=".\ai\Monsters\Burer\burer.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\Monsters\Burer\burer.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Controller"
+					Filter="">
+					<File
+						RelativePath=".\ai\Monsters\Controller\controller.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\Monsters\Controller\controller.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Chimera"
+					Filter="">
+					<File
+						RelativePath=".\ai\Monsters\Chimera\chimera.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\Monsters\Chimera\chimera.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="ANavigation"

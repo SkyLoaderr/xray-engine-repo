@@ -23,7 +23,6 @@ void CAI_Biting::Think()
 	m_dwLastUpdateTime						= m_current_update;
 	m_current_update						= Level().timeServer();
 
-
 	MotionStats->update						();
 	
 	vfUpdateParameters						();

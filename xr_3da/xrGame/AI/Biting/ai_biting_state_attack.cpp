@@ -35,6 +35,8 @@
 #define AF_CAN_EXEC_ROTATION_JUMP		(1 << 14)
 #define AF_BAD_MOTION					(1 << 15)
 
+#define AF_CAN_ATTACK_RUN				(1 << 16)
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingAttack implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,6 +81,8 @@ void CBitingAttack::Init()
 
 	next_rot_jump_enabled		= 0;
 	time_start_walk_away		= 0;
+
+	time_next_attack_run		= 0;
 }
 
 #define TIME_WALK_PATH						5000
@@ -149,6 +153,8 @@ void CBitingAttack::Run()
 		m_tAction = ACTION_ROTATION_JUMP;
 	
 	bool bNeedRebuild = false;
+
+	//if (flags.is(AF_CAN_ATTACK_RUN)) m_tAction = ACTION_ATTACK_RUN;
 
 	// Выполнение состояния
 	switch (m_tAction) {	
@@ -302,6 +308,32 @@ void CBitingAttack::Run()
 			next_rot_jump_enabled				= m_dwCurrentTime + Random.randI(3000,4000);
 			pMonster->disable_path				();
 			break;
+		
+		// ********************		
+		case ACTION_ATTACK_RUN:
+		// ********************
+			LOG_EX("ATTACK: Attack Run");
+
+			pMonster->CSoundPlayer::play				(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);			
+			pMonster->MotionMan.m_tAction				= ACT_RUN;
+			pMonster->CMonsterMovement::set_try_min_time(false);
+
+			pMonster->MotionMan.accel_activate			(eAT_Aggressive);
+			pMonster->MotionMan.accel_set_braking		(false);
+
+			// продлить путь на некоторое расстояние дальше
+			{
+				Fvector target_point;
+				Fvector dir;
+				dir.sub(m_tEnemy.obj->Position(), pMonster->Position());
+				dir.normalize();
+				target_point.mad(pMonster->Position(),dir,1.0f);
+				pMonster->MoveToTarget(target_point);
+			}
+			
+			pMonster->MotionMan.SetSpecParams(ASP_ATTACK_RUN);
+			
+			break;
 	}
 
 
@@ -324,6 +356,10 @@ void CBitingAttack::Run()
 	
 
 	init_flags.set(AF_NEW_ENEMY,FALSE);
+
+	if ((m_tPrevAction == ACTION_ATTACK_RUN) && (m_tAction != ACTION_ATTACK_RUN))
+		time_next_attack_run = m_dwCurrentTime + Random.randI(1000,2000);
+
 	m_tPrevAction	= m_tAction; 
 	
 }
@@ -530,6 +566,8 @@ void CBitingAttack::UpdateFrameFlags()
 	if (!pMonster->MotionStats->is_good_motion(3))	
 											frame_flags.or(AF_BAD_MOTION);
 
+	if (CanAttackRun())						frame_flags.or(AF_CAN_ATTACK_RUN);
+			
 }
 
 #define MIN_ROTATION_JUMP_ANGLE 2*PI_DIV_3
@@ -561,5 +599,17 @@ bool CBitingAttack::CheckCompletion()
 	if (!pMonster->GetEnemy(ve))	return true;
 	
 	return false;
+}
+
+bool CBitingAttack::CanAttackRun()
+{
+	// 1. монстр находится на небольшом расстоянии 
+	if (dist > m_fDistMax) return false;
+	// 2. видит на врага
+	if (!flags.is(AF_SEE_ENEMY)) return false;
+	// 3. давно не атаковал в беге :)
+	if (time_next_attack_run > m_dwCurrentTime) return false;
+
+	return true;
 }
 

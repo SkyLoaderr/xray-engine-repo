@@ -32,12 +32,15 @@ CSE_Abstract *F_entity_Create			(LPCSTR caSection)
 		case CLSID_AI_RAT_GROUP:		return xr_new<CSE_ALifeGroupTemplate<CSE_ALifeMonsterRat> >	(caSection);	
 		case CLSID_AI_FLESH:			return xr_new<CSE_ALifeMonsterBiting>			(caSection);
 		case CLSID_AI_FLESH_GROUP:		return xr_new<CSE_ALifeGroupTemplate<CSE_ALifeMonsterBiting> >(caSection);
-		case CLSID_AI_CHIMERA:			return xr_new<CSE_ALifeMonsterAbstract>			(caSection);
 		case CLSID_AI_BOAR:				return xr_new<CSE_ALifeMonsterBiting>			(caSection);
 		case CLSID_AI_BLOODSUCKER:		return xr_new<CSE_ALifeMonsterBiting>			(caSection);
 		case CLSID_AI_ZOMBIE:			return xr_new<CSE_ALifeMonsterZombie>			(caSection);            // Visualed
 		case CLSID_AI_DOG_RED:			return xr_new<CSE_ALifeMonsterBiting>			(caSection);			// Visualed
 		case CLSID_AI_DOG_BLACK:		return xr_new<CSE_ALifeMonsterBiting>			(caSection);			// Visualed
+		case CLSID_AI_BURER:			return xr_new<CSE_ALifeMonsterBiting>			(caSection);
+		case CLSID_AI_GIANT:			return xr_new<CSE_ALifeMonsterBiting>			(caSection);
+		case CLSID_AI_CHIMERA:			return xr_new<CSE_ALifeMonsterBiting>			(caSection);
+		case CLSID_AI_CONTROLLER:		return xr_new<CSE_ALifeMonsterBiting>			(caSection);
 		case CLSID_AI_SOLDIER:			return xr_new<CSE_ALifeHumanStalker>			(caSection);           	// Visualed
 		case CLSID_AI_STALKER:			return xr_new<CSE_ALifeHumanStalker>			(caSection);			// Visualed
 		case CLSID_AI_IDOL:				return xr_new<CSE_ALifeObjectIdol>				(caSection);			// Visualed

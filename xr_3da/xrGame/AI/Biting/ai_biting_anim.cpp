@@ -65,7 +65,6 @@ bool CAI_Biting::AA_CheckHit()
 		// перевод из локальных координат в мировые вектора направления импульса
 		Fvector hit_dir;
 		XFORM().transform_dir(hit_dir,apt_anim.hit_dir);
-		hit_dir.normalize();
 
 #ifndef SIMPLE_ENEMY_HIT_TEST
 		if (RayPickEnemy(obj, trace_from, dir, dist, 0.2f, 20)) {

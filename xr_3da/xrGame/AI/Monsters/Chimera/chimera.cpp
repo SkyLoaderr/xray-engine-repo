@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "pseudo_gigant.h"
+#include "chimera.h"
 
-CPseudoGigant::CPseudoGigant()
+CChimera::CChimera()
 {
 	stateRest			= xr_new<CBitingRest>(this);
 	CurrentState		= stateRest;
@@ -9,13 +9,13 @@ CPseudoGigant::CPseudoGigant()
 	Init();
 }
 
-CPseudoGigant::~CPseudoGigant()
+CChimera::~CChimera()
 {
 	xr_delete(stateRest);
 }
 
 
-void CPseudoGigant::Init()
+void CChimera::Init()
 {
 	inherited::Init();
 
@@ -23,7 +23,7 @@ void CPseudoGigant::Init()
 	CurrentState->Reset				();
 }
 
-void CPseudoGigant::Load(LPCSTR section)
+void CChimera::Load(LPCSTR section)
 {
 	inherited::Load	(section);
 
@@ -32,7 +32,7 @@ void CPseudoGigant::Load(LPCSTR section)
 	END_LOAD_SHARED_MOTION_DATA();
 }
 
-void CPseudoGigant::StateSelector()
+void CChimera::StateSelector()
 {	
 	SetState(stateRest);
 }

@@ -137,7 +137,6 @@ bool CAI_Biting::bfAssignMonsterAction(CEntityAction *tpEntityAction)
 
 void CAI_Biting::ProcessScripts()
 {
-	// Инициализировать параметры движения
 	CMonsterMovement::Frame_Init				();
 	
 	// Выполнить скриптовые actions
