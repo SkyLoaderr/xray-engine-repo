@@ -23,12 +23,16 @@ function main()
 	while ( true ) do
 
 		if( monster:action() == nil ) then
+			monster:script( false, script_name() );
+			monster:script( true, script_name() );
+
 			if(stage == 0) then
-				this.action_one( monster )
-				stage = 1
+				this.action_one( monster );
+				stage = 1;
 			else 
-				this.action_two( monster )
-				stage = 0
+				
+				this.action_two( monster );
+				stage = 0;
 			end
 		end
 		wait();
