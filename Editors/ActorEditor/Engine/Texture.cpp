@@ -293,7 +293,7 @@ _BUMP:
 
 		// Create HW-surface
 		R_CHK(D3DXCreateTexture		(HW.pDevice,IMG.Width,IMG.Height,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED, &pTexture2D));
-		R_CHK(D3DXComputeNormalMap	(pTexture2D,T_sysmem,0,0,D3DX_CHANNEL_RED,8.f));
+		R_CHK(D3DXComputeNormalMap	(pTexture2D,T_sysmem,0,0,D3DX_CHANNEL_RED,5.f));
 
 		// Transfer gloss-map
 		if (1)
