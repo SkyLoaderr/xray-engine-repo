@@ -108,6 +108,7 @@ void CLightShadows::calculate	()
 	int	slot_id		= 0;
 	int slot_line	= S_rt_size/S_size;
 	int slot_max	= slot_line*slot_line;
+	const float	eps = 2*EPS_L;
 	for (int o_it=0; o_it<id.size(); o_it++)
 	{
 		caster&	C	= casters[id[o_it]];
@@ -130,8 +131,8 @@ void CLightShadows::calculate	()
 			float		p_R		=	C.O->Radius();
 			float		p_hat	=	p_R/p_dist;
 			float		p_asp	=	1.f;
-			float		p_near	=	p_dist-p_R-EPS_L;	if (p_near<EPS_L)			p_near	= EPS_L;
-			float		p_far	=	L->range;			if (p_far<(p_near+EPS_L))	p_far	= p_near+EPS_L;
+			float		p_near	=	p_dist-p_R-eps;	if (p_near<eps)			p_near	= eps;
+			float		p_far	=	L->range;		if (p_far<(p_near+eps))	p_far	= p_near+eps;
 			mProject.build_projection_HAT	(p_hat,p_asp,p_near,p_far);
 			Device.set_xform_project		(mProject);
 			
