@@ -71,13 +71,13 @@ void CWeaponGroza::FireStart()
 }
 
 void CWeaponGroza::FireEnd(){
-	if (IsWorking()){
-		CWeapon::FireEnd();
-		m_pHUD->FireEnd();
-		st_target = eIdle;
+	if (IsWorking())
+	{
+		CWeapon::FireEnd	();
+		m_pHUD->FireEnd		();
+		st_target			= eIdle;
 	}
 }
-
 
 void CWeaponGroza::UpdateXForm(BOOL bHUDView)
 {
@@ -85,8 +85,10 @@ void CWeaponGroza::UpdateXForm(BOOL bHUDView)
 	{
 		dwXF_Frame = Device.dwFrame;
 
-		if (bHUDView) {
-			if (m_pHUD)	{
+		if (bHUDView) 
+		{
+			if (m_pHUD)	
+			{
 				Fmatrix			trans;
 				trans.set(
 					Device.vCameraRight,
@@ -145,7 +147,8 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 	{
 		if (st_target == eFire) UpdateFP(bHUDView);
 
-		switch(st_target){
+		switch(st_target)
+		{
 		case eIdle:
 			break;
 		case eFire:
