@@ -131,7 +131,11 @@
 	<!-- Используется для отладки скрипта -->
 	<info_portion id="esc_trader_monolog_1">
 	</info_portion>
+	<info_portion id="esc_trader_monolog_1_played">
+	</info_portion>
 	<info_portion id="esc_trader_tutorial_choice">
+	</info_portion>
+	<info_portion id="esc_trader_tutorial_choice_played">
 	</info_portion>
 	<info_portion id="esc_trader_experienced">
 	</info_portion>
