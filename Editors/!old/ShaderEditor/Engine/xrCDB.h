@@ -95,9 +95,8 @@ namespace CDB
 	};
 
 	// Collider result
-	class XRCDB_API RESULT
+	struct XRCDB_API RESULT
 	{
-	public:
 		Fvector			verts	[3];
 		union	{
 			u32			dummy;			
