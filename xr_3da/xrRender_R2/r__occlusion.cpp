@@ -68,7 +68,15 @@ u32		R_occlusion::occq_get		(u32&	ID		)
 	HRESULT hr;
 	// CHK_DX		(used[ID].Q->GetData(&fragments,sizeof(fragments),D3DGETDATA_FLUSH));
 	// Msg			("get  : [%2d] - %d => %d", used[ID].order, ID, fragments);
-	while	((hr=used[ID].Q->GetData(&fragments,sizeof(fragments),D3DGETDATA_FLUSH))==S_FALSE) Sleep(0);
+	CTimer	T;
+	T.Start	();
+	while	((hr=used[ID].Q->GetData(&fragments,sizeof(fragments),D3DGETDATA_FLUSH))==S_FALSE) {
+		Sleep(0);
+		if (T.GetElapsed_ms() > 500)	{
+			fragments	= 0xffffffff;
+			break;
+		}
+	}
 	if		(hr == D3DERR_DEVICELOST)	fragments = 0xffffffff;
 
 	if (0==fragments)	RImplementation.stats.o_culled	++;
