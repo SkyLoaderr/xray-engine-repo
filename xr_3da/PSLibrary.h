@@ -7,7 +7,7 @@
 #include				"PSRuntime.h"
 DEFINE_VECTOR			(PS::SDef_RT, PSList, PSIt);
 
-#define PSLIB_FILENAME	"particles.xr"
+#define PSLIB_FILENAME	"GameData\\particles.xr"
 
 class CPSLibrary
 {

@@ -249,7 +249,7 @@ void CRenderDevice::Create	()
     // Hide the cursor if necessary
 	ShowCursor		(FALSE);
 
-	_Create			("shaders.xr");
+	_Create			("GameData\\shaders.xr");
 }
 
 void CRenderDevice::_Destroy	(BOOL bKeepTextures)

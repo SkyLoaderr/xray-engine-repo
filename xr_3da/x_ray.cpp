@@ -36,7 +36,7 @@ void Startup()
 	
 	// Execute script
 	strcpy						(Console.ConfigFile,"user.ltx");
-	Console.ExecuteScript		("startup.ltx");
+	Console.ExecuteScript		("GameData\\startup.ltx");
 	if (strstr(Engine.Params,"-ltx ")) {
 		string64				c_name;
 		sscanf					(strstr(Engine.Params,"-ltx ")+5,"%s",c_name);
@@ -45,7 +45,7 @@ void Startup()
 	}
 
 	// Creation
-	pSettings					= new CInifile		("system.ltx",TRUE);
+	pSettings					= new CInifile		("GameData\\system.ltx",TRUE);
 
 	BOOL bCaptureInput			= !strstr(Engine.Params,"-i");
 #ifdef DEBUG

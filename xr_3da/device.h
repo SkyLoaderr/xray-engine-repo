@@ -116,7 +116,7 @@ public:
 	void Create			(void);
 	void Run			(void);
 	void Destroy		(void);
-	void Reset			(LPCSTR shName="shaders.xr", BOOL bKeepTextures=FALSE);
+	void Reset			(LPCSTR shName="GameData\\shaders.xr", BOOL bKeepTextures=FALSE);
 
 	void Initialize		(void);
 	void ShutDown		(void);

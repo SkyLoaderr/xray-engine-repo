@@ -4,11 +4,11 @@ ENGINE_API BOOL bDebug	= FALSE;
 
 ENGINE_API FS_Defs		Path =
 {
-	"data\\levels\\",
-	"data\\textures\\",
-	"data\\sounds\\",
-	"data\\cforms\\",
-	"data\\meshes\\",
+	"GameData\\levels\\",
+	"GameData\\textures\\",
+	"GameData\\sounds\\",
+	"GameData\\cforms\\",
+	"GameData\\meshes\\",
 	""
 };
 
@@ -18,10 +18,9 @@ struct _GUID g_AppGUID		= { 0xeb89097, 0x1520, 0x11d4, { 0xb4, 0xe3, 0x48, 0x54,
 // Video
 DWORD	psCurrentMode		= 800;
 DWORD	psCurrentBPP		= 32;
-DWORD	psDeviceFlags		= rsFullscreen|rsNoVSync|mtSound|mtInput;
+DWORD	psDeviceFlags		= rsFullscreen|rsNoVSync|mtSound;
 
 // Network
-int		psProtocol			= 0;
 char	psName[12]			= "";
 
 // textures
@@ -31,6 +30,3 @@ DWORD	psTextureFlags		= 0;
 // users
 char	psUserName[64]		= "";
 BOOL	psUserLevelsDone	[128];
-
-// Game
-DWORD	psNetProtocol	= 0;	// tcp/ip
