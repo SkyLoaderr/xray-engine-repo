@@ -667,6 +667,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	s_Scene2fat_base.compile		(m_pd3dDevice,"shaders\\D\\fat_base.s");
 	s_Scene2fat_bump.compile		(m_pd3dDevice,"shaders\\D\\fat_bump.s");
 	s_Scene2smap_direct.compile		(m_pd3dDevice,"shaders\\D\\smap_direct.s");
+	s_Combine_Normal.compile		(m_pd3dDevice,"shaders\\D\\cm_normal.s");
 	s_CombineDBG_Normals.compile	(m_pd3dDevice,"shaders\\D\\cm_dbg_normals.s");
 	s_CombineDBG_Accumulator.compile(m_pd3dDevice,"shaders\\D\\cm_dbg_accumulator.s");
 	s_CombineDBG_Base.compile		(m_pd3dDevice,"shaders\\D\\cm_dbg_base.s");
@@ -953,9 +954,10 @@ HRESULT CMyD3DApplication::RenderFAT	()
 
 HRESULT CMyD3DApplication::RenderCombine	(COMBINE_MODE M)
 {
-	if (M==CM_DBG_NORMALS)					return RenderCombineDBG_Normals();
-	if (M==CM_DBG_ACCUMULATOR)				return RenderCombineDBG_Accumulator();
-	if (M==CM_DBG_BASE)						return RenderCombineDBG_Base();
+	if (M==CM_NORMAL)						return RenderCombine_Normal			();
+	if (M==CM_DBG_NORMALS)					return RenderCombineDBG_Normals		();
+	if (M==CM_DBG_ACCUMULATOR)				return RenderCombineDBG_Accumulator	();
+	if (M==CM_DBG_BASE)						return RenderCombineDBG_Base		();
 
 	return E_FAIL;
 }
@@ -1276,6 +1278,42 @@ HRESULT CMyD3DApplication::RenderCombineDBG_Accumulator	()
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
+
+	// Shader and params
+	m_pd3dDevice->SetPixelShader			(s_CombineDBG_Accumulator.ps);
+	m_pd3dDevice->SetVertexShader			(s_CombineDBG_Accumulator.vs);
+	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
+	cc.flush								(m_pd3dDevice);
+
+	// Render Quad
+	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE,	D3DCULL_NONE);
+	m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
+	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
+
+	// Cleanup
+	m_pd3dDevice->SetTexture				(0, NULL);
+
+	return S_OK;
+}
+
+//-----------------------------------------------------------------------------
+// Name: RenderCombine_Normal			()
+//-----------------------------------------------------------------------------
+HRESULT CMyD3DApplication::RenderCombine_Normal	()
+{
+	// samplers and texture (diffuse + gloss)
+	m_pd3dDevice->SetTexture				(1, d_Accumulator);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
+
+	// samplers and texture
+	m_pd3dDevice->SetTexture				(1, d_Accumulator);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
 
 	// Shader and params
 	m_pd3dDevice->SetPixelShader			(s_CombineDBG_Accumulator.ps);
