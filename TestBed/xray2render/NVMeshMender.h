@@ -123,11 +123,7 @@ Comments:
 
 ******************************************************************************/
 
-#include <vector>
 #include <string>
-
-
-
 
 class NVMeshMender
 {

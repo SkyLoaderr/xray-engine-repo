@@ -27,8 +27,6 @@ Comments:
 #else
 #include <limits.h>
 #endif
-#include <memory.h>
-#include <stdlib.h>
 #include <float.h>
 
 typedef float nv_scalar;

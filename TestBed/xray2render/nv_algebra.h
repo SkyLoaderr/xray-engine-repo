@@ -150,7 +150,7 @@ struct DECLSPEC_NV_MATH vec3
     }
 	nv_scalar normalize();
 	nv_scalar sq_norm() const { return x * x + y * y + z * z; }
-	nv_scalar norm() const { return sqrtf(sq_norm()); }
+	nv_scalar norm() const { return _sqrt(sq_norm()); }
 
     nv_scalar & operator[](int i)
     {
@@ -566,10 +566,10 @@ inline nv_scalar nv_sq_norm(const vec4 & n)
 
 // Computes the magnitude
 inline nv_scalar nv_norm(const vec3 & n)
-{ return sqrtf(nv_sq_norm(n)); }
+{ return _sqrt(nv_sq_norm(n)); }
 
 inline nv_scalar nv_norm(const vec4 & n)
-{ return sqrtf(nv_sq_norm(n)); }
+{ return _sqrt(nv_sq_norm(n)); }
 
 // computes the cross product ( v cross w) and stores the result in u
 // i.e.     u = v cross w

@@ -94,14 +94,12 @@ Comments:
 
 #ifdef _WIN32
 #  pragma warning (disable : 4786)
-#  pragma comment (lib,"nv_math.lib")
+#  pragma comment (lib,"x:\nv_math.lib")
 #endif
 
-
+#include "stdafx.h"
 #include "NVMeshMender.h"
 #include "nv_math.h"
-#include <map>
-#include <set>
 #include <assert.h>
 
 bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input, 
@@ -321,8 +319,8 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 
 			// Find min and max positions for object bounding box
 
-			vec3 maxPosition( -FLT_MAX, -FLT_MAX, -FLT_MAX  );
-			vec3 minPosition(  FLT_MAX,   FLT_MAX,    FLT_MAX );
+			vec3 maxPosition( -flt_max, -flt_max, -flt_max  );
+			vec3 minPosition(  flt_max,   flt_max,    flt_max );
 
 			// there are 1/3 as many vectors as floats
 			const unsigned int theCount = static_cast<unsigned int>(positions.size() / 3.0f);
@@ -823,7 +821,7 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 						const float sxtAgreement = dot(sxt, sxtVector[(*iter).face]);
 
 						// Check Radian angle split limit
-						const float epsilon = (float)cos( bSmoothCreaseAngleRadians );
+						const float epsilon = _cos( bSmoothCreaseAngleRadians );
 
 						//  if the discontinuity in s, t, or sxt is greater than some epsilon,
 						//   duplicate the vertex so it won't smooth with its neighbor anymore
