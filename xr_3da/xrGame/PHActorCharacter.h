@@ -6,7 +6,9 @@ class CPHActorCharacter :
 	public CPHSimpleCharacter
 {
 	typedef CPHSimpleCharacter	inherited;
-
+	dGeomID				m_restrictor;
+	dGeomID				m_restrictor_transform;
+static void __stdcall RestrictorCallBack (bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2);
 public:
 	virtual	void		SetObjectContactCallback			(ObjectContactCallbackFun* callback);
 	virtual void		Create								(dVector3 sizes);

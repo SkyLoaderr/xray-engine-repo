@@ -82,7 +82,8 @@ CPHSimpleCharacter::CPHSimpleCharacter()
 
 	m_capture_joint=NULL;
 
-
+	m_cap=NULL;
+	m_cap_transform=NULL;
 }
 
 
@@ -99,41 +100,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	b_air_contact_state=false;
 
 	////////////////////////////////////////////////////////
-	/*
-	m_control_force[0]=0.f;
-	m_control_force[1]=0.f;
-	m_control_force[2]=0.f;
 
-	m_depart_position[0]=0.f;
-	m_depart_position[1]=0.f;
-	m_depart_position[2]=0.f;
-	b_external_impulse=false;
-	b_on_object=false;
-	b_was_on_object=true;
-	b_jumping=false;
-	is_contact=false;
-	was_contact=false;
-	is_control=false;
-	b_depart=false;
-	b_meet=false;
-	b_lose_control=true;
-	b_jump=false;
-	b_side_contact=false;
-	b_clamb_jump=false;
-	b_any_contacts=false;
-	b_valide_ground_contact=false;
-	b_valide_wall_contact=false;
-	b_jump=false;
-	b_depart_control=false;
-	b_saved_contact_velocity=false;
-	m_update_time=0.f;
-	b_meet_control=false;
-	m_contact_velocity=0.f;
-	//////////////////////////////////////
-	previous_p[0]=dInfinity;
-	dis_count_f=0;
-	//////////////////////////
-	*/
 	m_radius=_min(sizes[0],sizes[2])/2.f;
 	m_cyl_hight=sizes[1]-2.f*m_radius;
 	if (m_cyl_hight<0.f) m_cyl_hight=0.01f;
@@ -170,34 +137,24 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	dGeomSetPosition(m_geom_shell,0.f,m_cyl_hight/2.f-doun,0.f);
 
 	dGeomTransformSetGeom(m_hat_transform,m_hat);
-	//dGeomTransformSetGeom(m_wheel_transform,m_wheel);
+
 	dGeomTransformSetGeom(m_shell_transform,m_geom_shell);
 	m_body=dBodyCreate(0);
 	Island().AddBody(m_body);
 	dGeomSetBody(m_shell_transform,m_body);
 	dGeomSetBody(m_hat_transform,m_body);
-	//dGeomSetBody(m_wheel_transform,m_body);
+
 	dGeomSetBody(m_wheel,m_body);
-	//dBodySetPosition(m_body,-10,3,0);
-	//dGeomCreateUserData(m_wheel_transform);
-	//dGeomCreateUserData(m_wheel);
-	//dGeomCreateUserData(m_cap_transform);
-	//dGeomCreateUserData(m_shell_transform);
+
 	dGeomCreateUserData(m_geom_shell);
 
 	dGeomCreateUserData(m_wheel);
 	dGeomCreateUserData(m_hat);
 
-
-	//dGeomUserDataSetPhObject(m_wheel_transform,(CPHUpdateObject*)this);
 	dGeomUserDataSetPhObject(m_wheel,(CPHObject*)this);
-	//dGeomUserDataSetPhObject(m_shell_transform,(CPHUpdateObject*)this);
 	dGeomUserDataSetPhObject(m_geom_shell,(CPHObject*)this);
-	//dGeomUserDataSetPhObject(m_cap_transform,(CPHUpdateObject*)this);
-
 	dGeomUserDataSetPhObject(m_hat,(CPHObject*)this);
-	//dGeomGetUserData(m_cap_transform)->friction=0.f;
-	//dGeomGetUserData(m_shell_transform)->friction=0.f;
+
 	/////////////////////////////////////////////////////////////////////////
 	dMass m;
 	dMassSetBox(&m,1,1000000.f,1000000.f,1000000.f);
@@ -232,17 +189,11 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	dGeomUserDataSetObjectContactCallback(m_cap,TestPathCallback);
 	if(m_phys_ref_object)
 	{
-		dGeomUserDataSetPhysicsRefObject(m_geom_shell,m_phys_ref_object);
-		dGeomUserDataSetPhysicsRefObject(m_wheel,m_phys_ref_object);
-		dGeomUserDataSetPhysicsRefObject(m_hat,m_phys_ref_object);
-		dGeomUserDataSetPhysicsRefObject(m_cap,m_phys_ref_object);
+		SetPhysicsRefObject(m_phys_ref_object);
 	}
 	if(m_object_contact_callback)
 	{
-		dGeomUserDataSetObjectContactCallback(m_hat,m_object_contact_callback);
-		dGeomUserDataSetObjectContactCallback(m_geom_shell,m_object_contact_callback);
-		dGeomUserDataSetObjectContactCallback(m_wheel,m_object_contact_callback);
-		//dGeomUserDataSetObjectContactCallback(m_cap,m_object_contact_callback);
+		SetObjectContactCallback(m_object_contact_callback);
 	}
 	CPHObject::activate();
 	spatial_register();

@@ -2,16 +2,16 @@
 #include "phactorcharacter.h"
 #include "Extendedgeom.h"
 #include "PhysicsCommon.h"
-
-
+#include "GameObject.h"
+#include "PhysicsShellHolder.h"
+#include "ai/stalker/ai_stalker.h"
 //const float JUMP_HIGHT=0.5;
 const float JUMP_UP_VELOCITY=6.0f;//5.6f;
 const float JUMP_INCREASE_VELOCITY_RATE=1.2f;
 
 CPHActorCharacter::CPHActorCharacter(void)
 {
-	m_cap=NULL;
-	m_cap_transform=NULL;
+	m_restrictor=NULL;
 }
 
 CPHActorCharacter::~CPHActorCharacter(void)
@@ -21,9 +21,17 @@ CPHActorCharacter::~CPHActorCharacter(void)
 void CPHActorCharacter::Create(dVector3 sizes)
 {
 	if(b_exist) return;
+	m_restrictor=dCreateSphere(0,sizes[1]/2.f);
+	dGeomSetPosition(m_restrictor,0.f,sizes[1]/2.f,0.f);
+	m_restrictor_transform=dCreateGeomTransform(0);
+	dGeomTransformSetCleanup(m_restrictor_transform,0);
+	dGeomTransformSetInfo(m_restrictor_transform,1);
+	dGeomTransformSetGeom(m_restrictor_transform,m_restrictor);
+	dGeomCreateUserData(m_restrictor);
+	dGeomUserDataSetObjectContactCallback(m_restrictor,RestrictorCallBack);
 	inherited::Create(sizes);
-
-
+	dGeomSetBody(m_restrictor_transform,m_body);
+	dSpaceAdd(m_space,m_restrictor_transform);
 }
 
 void CPHActorCharacter::Destroy()
@@ -36,18 +44,8 @@ void CPHActorCharacter::Destroy()
 void CPHActorCharacter::SetPhysicsRefObject(CPhysicsShellHolder* ref_object)
 {
 	inherited::SetPhysicsRefObject(ref_object);
-
-	if(b_exist)
-	{
-
-		dGeomUserDataSetPhysicsRefObject(m_cap,ref_object);
-
-	}
+	dGeomUserDataSetPhysicsRefObject(m_restrictor,ref_object);
 }
-
-
-
-
 
 void CPHActorCharacter::SetAcceleration(Fvector accel)
 {
@@ -77,4 +75,32 @@ void CPHActorCharacter::SetObjectContactCallback(ObjectContactCallbackFun* callb
 void CPHActorCharacter::Disable()
 {
 	inherited::Disable();
+}
+
+void CPHActorCharacter::RestrictorCallBack (bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
+{
+	do_colide=false;
+	dBodyID						b1		=	dGeomGetBody(c.geom.g1);
+	dBodyID						b2		=	dGeomGetBody(c.geom.g2);
+	if(!(b1&&b2))	return;
+	dxGeomUserData				*ud1	=	retrieveGeomUserData(c.geom.g1);
+	dxGeomUserData				*ud2	=	retrieveGeomUserData(c.geom.g2);
+	if(!(ud1&&ud2))return;
+
+	CPhysicsShellHolder			*o1		=	NULL;if(ud1)o1=ud1->ph_ref_object;
+	CPhysicsShellHolder			*o2		=	NULL;if(ud2)o2=ud2->ph_ref_object;
+	
+	if(!(o1&&o2))return;
+	
+	CGameObject*					go1		= static_cast<CGameObject*>(o1);
+	CGameObject*					go2		= static_cast<CGameObject*>(o2);
+	if(go1->cast_actor())
+	{
+		if(smart_cast<CAI_Stalker*>(go2))do_colide=true;
+	}
+	else
+	{
+		if(smart_cast<CAI_Stalker*>(go1))do_colide=true;
+	}
+	
 }
