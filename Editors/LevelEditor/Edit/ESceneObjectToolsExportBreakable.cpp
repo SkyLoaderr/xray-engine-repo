@@ -25,10 +25,11 @@ struct SBFace{
     bool			marked;
     SBFaceVec		adjs;
 // geom
-	Fvector			p[3];
     Fvector			o[3];
-    Fvector2		uv[3];
+//.	Fvector			n[3];
     Fvector			n;
+    Fvector			t,b;
+    Fvector2		uv[3];
     int				bone_id;
     CSurface*		surf;
 public:		
@@ -41,12 +42,14 @@ public:
         uv[1]		= *_uv[1];
         uv[2]		= *_uv[2];
         n.set		(0,0,0);
+        t.set		(0,0,0);
+        b.set		(0,0,0);
     }
     float			CalcArea()
     {
     	Fvector V0,V1;
-        V0.sub		(p[1],p[0]);
-        V1.sub		(p[2],p[0]);
+        V0.sub		(o[1],o[0]);
+        V1.sub		(o[2],o[0]);
         float sqm0	= V0.square_magnitude();
         float sqm1	= V1.square_magnitude();
         return		0.5f*_sqrt(sqm0*sqm1-_sqr(V0.dotproduct(V1)));
@@ -127,7 +130,7 @@ public:
         FvectorVec pts; pts.reserve		(m_Faces.size()*3);
 		for (SBFaceVecIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
         	(*f_it)->marked				= false;
-        	for (int k=0; k<3; k++)		pts.push_back((*f_it)->p[k]);
+        	for (int k=0; k<3; k++)		pts.push_back((*f_it)->o[k]);
         }
         ComputeOBB						(m_OBB,pts);
         // fill adjacent
@@ -158,13 +161,13 @@ public:
 		for (f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
         	SBFace* F					= (*f_it);
             if (F->adjs.empty()){	
-            	ELog.Msg(mtError,"Error face found at pos: [%3.2f,%3.2f,%3.2f]",VPUSH(F->p[0])); 
-                Scene->m_CompilerErrors.AppendFace(F->p[0],F->p[1],F->p[2]);
+            	ELog.Msg(mtError,"Error face found at pos: [%3.2f,%3.2f,%3.2f]",VPUSH(F->o[0])); 
+                Scene->m_CompilerErrors.AppendFace(F->o[0],F->o[1],F->o[2]);
                 m_bValid				= false;
             }
         	for (int k=0; k<3; k++){ 
-            	M.transform_tiny		(F->p[k]);
-                m_BBox.modify			(F->p[k]);
+            	M.transform_tiny		(F->o[k]);
+                m_BBox.modify			(F->o[k]);
             }
         }   
         if (m_bValid){
@@ -238,7 +241,7 @@ public:
             for (f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
                 SBFace* F					= *f_it;
                 SBBone& B					= m_Bones[F->bone_id];
-                for (int k=0; k<3; k++)		B.offset.add(F->p[k]);
+                for (int k=0; k<3; k++)		B.offset.add(F->o[k]);
             }
             for (SBBoneVecIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
                 SBBone& B					= *b_it;
@@ -253,7 +256,6 @@ public:
             for (f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
                 SBFace* F					= (*f_it);	VERIFY(F->bone_id>=0);	
                 SBBone& B					= m_Bones	[F->bone_id]; 
-                for (int k=0; k<3; k++)		F->o[k].sub	(F->p[k],B.offset);
                 F->n.mknormal				(F->o[0],F->o[1],F->o[2]);
             }
         }
@@ -288,14 +290,11 @@ bool SBPart::Export	(IWriter& F)
         }
         SSplit& split=m_Splits[mtl_idx];
         SSkelVert v[3];
-        for (int k=0; k<3; k++){
-            v[k].set	(face->p[k],face->uv[k],1.f);
-            v[k].set0	(face->o[k],face->n,face->bone_id); //. нужно взять нормаль для вертекса
-        }
+        for (int k=0; k<3; k++)
+            v[k].set	(face->o[k],face->n,face->uv[k],1.f,face->bone_id,face->bone_id);//. нужно взять нормаль для вертекса
         split.add_face		(v[0], v[1], v[2]);
         if (face->surf->m_Flags.is(CSurface::sf2Sided)){
-            v[0].N0.invert(); v[1].N0.invert(); v[2].N0.invert();
-            v[0].N1.invert(); v[1].N1.invert(); v[2].N1.invert();
+            v[0].N.invert(); v[1].N.invert(); v[2].N.invert();
             split.add_face(v[0], v[2], v[1]);
         }
     }
@@ -308,9 +307,8 @@ bool SBPart::Export	(IWriter& F)
             break;
         }
 		SkelVertVec& lst = split_it->getV_Verts();
-	    for (SkelVertIt sv_it=lst.begin(); sv_it!=lst.end(); sv_it++){
-		    bone_points[sv_it->B0].push_back(sv_it->O0);
-        }
+	    for (SkelVertIt sv_it=lst.begin(); sv_it!=lst.end(); sv_it++)
+		    bone_points[sv_it->B0].push_back(sv_it->O);
     }
 
     if (!bRes) return false;
@@ -410,7 +408,7 @@ IC void	append_face(VCPacked& verts, SBFaceVec& faces, Fvector* v, const Fvector
     // insert verts
     for (int k=0; k<3; k++){
         F->vert_id[k] 	= verts.add_vert(v[k]);
-	    F->p[k].set		(v[k]);
+	    F->o[k].set		(v[k]);
     }
     faces.push_back		(F);
 }

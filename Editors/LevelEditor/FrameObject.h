@@ -81,7 +81,7 @@ private:	// User declarations
     TItemList* m_Items;
     void __stdcall  OnItemFocused		(ListItemsVec& items);
     LPCSTR m_Current;
-	void __stdcall  OnDrawObjectThumbnail(ListItem* sender, void *Surface, Irect &R);
+	void __stdcall  OnDrawObjectThumbnail(LPCSTR name, HDC hdc, const Irect &R);
 public:		// User declarations
 	ESceneObjectTools* ParentTools;
     void			RefreshList();

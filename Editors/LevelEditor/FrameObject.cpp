@@ -27,9 +27,11 @@ __fastcall TfraObject::TfraObject(TComponent* Owner,ESceneObjectTools* parent_to
     ParentTools	= parent_tools;
 }
 //---------------------------------------------------------------------------
-void TfraObject::OnDrawObjectThumbnail(ListItem* sender, void *Surface, Irect &R)
+void TfraObject::OnDrawObjectThumbnail(LPCSTR name, HDC hdc, const Irect &r)
 {
-	FHelper.DrawThumbnail(Surface,R,sender->Key(),ECustomThumbnail::ETObject);
+	EObjectThumbnail* thm	= xr_new<EObjectThumbnail>(name);
+    thm->Draw				(hdc,r);
+    xr_delete				(thm);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraObject::OnItemFocused(ListItemsVec& items)
