@@ -1036,58 +1036,11 @@ void CActor::ForceTransform(const Fmatrix& m)
 void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);
 void CActor::OnRender	()
 {
-	if (Local())// && Level().CurrentEntity() != this)
-	{
-	};
-	if (Remote())
-	{
-		if (NET_A.size())
-		{
-/*			
-			float size = 0.3f;
-			Fvector Pos;
-
-			Pos = IEndPos;
-			Pos.y += size;
-			RCache.dbg_DrawAABB	(Pos, size, size, size, 0xff0000ff);
-
-			Pos = NET_A.back().State.position;
-			Pos.y += size;
-			RCache.dbg_DrawAABB	(Pos, size, size, size, 0xffff0000);
-
-			Pos = Position();
-			Pos.y += size;
-			RCache.dbg_DrawAABB	(Pos, size, size, size, 0x80ffffff);
-*/
-		};
-
-		////////////////////////////////////
-		CPHSynchronize* pSyncObj = NULL;
-		pSyncObj = PHGetSyncItem(0);
-		if (!pSyncObj) return;
-		////////////////////////////////////
-		SPHNetState		CurState;
-		pSyncObj->get_State(CurState);
-
-		HUD().pFontSmall->OutSet	(170,630);
-		HUD().pFontSmall->SetSize	(16.0f);
-		HUD().pFontSmall->SetColor	(0xffff0000);
-		/*
-		HUD().pFontSmall->OutNext	("NumUpdates:      [%.2f]",g_fNumUpdates);
-		if (!Level().InterpolationDisabled())
-			HUD().pFontSmall->OutNext	("Intepolation:      [%d]",Level().GetInterpolationSteps());
-		else
-			HUD().pFontSmall->OutNext	("Intepolation:      [Disabled]");
-		*/
-
-//		HUD().pFontSmall->OutNext	("Accel:    [%3.2f, %3.2f, %3.2f]",VPUSH(CurState.accel));
-
-		HUD().pFontSmall->SetSize	(8.0f);
-	};
-
 	if (!bDebug)				return;
 
 	m_PhysicMovementControl->dbg_Draw	();
+
+	OnRender_Network();
 }
 #endif
 

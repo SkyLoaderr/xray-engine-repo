@@ -450,33 +450,49 @@ protected:
 	void					NetInput_Send			( );
 	void					NetInput_Apply			(net_input* pNI);
 	void					NetInput_Update			( u32 Time );
-	/*
-	xr_deque<SMemoryPos>	SMemoryPosStack;
-	Fvector					dDesyncVec;
-	SMemoryPos*				FindMemoryPos (u32 Time);
-	*/
+	
 	///////////////////////////////////////////////////////
 	// апдайт с данными физики
 	xr_deque<net_update_A>	NET_A;
 	
 	//---------------------------------------------
 //	bool					m_bHasUpdate;	
+	/// spline coeff /////////////////////
+	float			SCoeff[3][4];			//коэффициэнты дл€ сплайна Ѕизье
+	float			HCoeff[3][4];			//коэффициэнты дл€ сплайна Ёрмита
+	Fvector			IPosS, IPosH, IPosL;	//положение актера после интерпол€ции Ѕизье, Ёрмита, линейной
+
+#ifdef DEBUG
+	DEF_DEQUE		(VIS_POSITION, Fvector);
+
+	VIS_POSITION	LastPosS;
+	VIS_POSITION	LastPosH;
+	VIS_POSITION	LastPosL;
+#endif
+
 	
+	SPHNetState				LastState;
 	SPHNetState				RecalculatedState;
 	SPHNetState				PredictedState;
-
+	
 	InterpData				IStart;
+	InterpData				IRec;
 	InterpData				IEnd;
 	
 	bool					m_bInInterpolation;
-	u32						m_dwLastUpdateTime;
+	bool					m_bInterpolate;
 	u32						m_dwIStartTime;
 	u32						m_dwIEndTime;
-	bool					m_bInterpolate;
+	u32						m_dwILastUpdateTime;
+	//---------------------------------------------
+	void					CalculateInterpolationParams();
 	//---------------------------------------------
 	virtual void			make_Interpolation ();
-
-	
+#ifdef DEBUG
+	//---------------------------------------------
+	virtual void			OnRender_Network();
+	//---------------------------------------------
+#endif
 	//////////////////////////////////////////////////////////////////////////
 	// Actor physics
 	//////////////////////////////////////////////////////////////////////////
@@ -539,6 +555,6 @@ protected:
 
 };
 
-extern float	g_fNumUpdates;
+//extern float	g_fNumUpdates;
 extern const float	s_fFallTime;
 #endif // !defined(AFX_ACTOR_H__C66583EA_EEA6_45F0_AC9F_918B5997F194__INCLUDED_)
