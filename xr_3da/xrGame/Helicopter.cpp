@@ -15,6 +15,8 @@ CHelicopter::~CHelicopter()
 void				
 CHelicopter::init()
 {
+	m_curState = eIdle;
+
 	m_movementMngr.init(this);
 }
 
@@ -80,17 +82,17 @@ CHelicopter::net_Spawn(LPVOID	DC)
 	}
 	
 	CBoneInstance& biX		= PKinematics(Visual())->LL_GetBoneInstance(m_rotate_x_bone);	
-	biX.set_callback		(BoneCallbackX,this);
+	biX.set_callback		(BoneMGunCallbackX,this);
 	CBoneInstance& biY		= PKinematics(Visual())->LL_GetBoneInstance(m_rotate_y_bone);	
-	biY.set_callback		(BoneCallbackY,this);
+	biY.set_callback		(BoneMGunCallbackY,this);
 
 	CSkeletonAnimated	*A= PSkeletonAnimated(Visual());
 	if (A) {
 		A->PlayCycle	(*heli->startup_animation);
 		A->Calculate	();
 	}
-	m_engine_sound.create(TRUE,*heli->engine_sound);
-	m_engine_sound.play_at_pos(0,XFORM().c,sm_Looped);
+	m_engineSound.create(TRUE,*heli->engine_sound);
+	m_engineSound.play_at_pos(0,XFORM().c,sm_Looped);
 
 	setVisible			(true);
 	setEnabled			(true);
@@ -127,7 +129,7 @@ CHelicopter::UpdateCL()
 
 	m_movementMngr.onFrame( XFORM(),Device.fTimeDelta );
 
-	m_engine_sound.set_position(XFORM().c);
+	m_engineSound.set_position(XFORM().c);
 
 	//weapon
 	CKinematics* K	= PKinematics(Visual());
@@ -172,6 +174,9 @@ CHelicopter::Hit(	float P,
 					float impulse,  
 					ALife::EHitType hit_type/* = ALife::eHitTypeWound*/)
 {
+	if(hit_type != ALife::eHitTypeWound)
+		return;
+
 	bonesIt It = m_hitBones.find(element);
 	if(It != m_hitBones.end())
 	{
@@ -179,4 +184,21 @@ CHelicopter::Hit(	float P,
 	else
 		CEntity::Hit(P,dir,who,element,position_in_bone_space,impulse,hit_type );
 
+	CGameObject* GO = dynamic_cast<CGameObject*>(who);
+	if (GO){
+		switch (GO->SUB_CLS_ID){
+			case CLSID_OBJECT_ACTOR: 
+				doHunt(who);
+			break;
+		default:
+			break;
+		}
+	}
+
+}
+
+void					
+CHelicopter::doHunt(CObject* dest)
+{
+	m_movementMngr.buildHuntPath(dest->XFORM().c);
 }

@@ -38,51 +38,25 @@ CHelicopterMovementManager::OnRender()
 		(i!=0)?prev_pos = m_path[i-1].position:prev_pos=pos;
 		
 		
-		if(m_path[i].clockwise)
+//		if(m_path[i].clockwise)
 			RCache.dbg_DrawAABB  (pos,path_box_size,path_box_size,path_box_size,D3DCOLOR_XRGB(0,255,0));
-		else
-			RCache.dbg_DrawAABB  (pos,path_box_size,path_box_size,path_box_size,D3DCOLOR_XRGB(255,0,0));
+//		else
+//			RCache.dbg_DrawAABB  (pos,path_box_size,path_box_size,path_box_size,D3DCOLOR_XRGB(255,0,0));
 		
-		if(m_path[i].angularVelocity>0.0001f)
+/*		if(m_path[i].angularVelocity>0.0001f)
 		{
 			RCache.dbg_DrawAABB  (pos,path_box_size-0.05f,path_box_size-0.05f,path_box_size-0.05f,D3DCOLOR_XRGB(255,255,0));
-		}
+		}*/
 
 		RCache.dbg_DrawLINE  (Fidentity,prev_pos,pos,D3DCOLOR_XRGB(0,255,0));
 
-/*		if ( (i!=0))
-		{
-			u32 c = D3DCOLOR_XRGB(0,255,0);
-			Fvector2 last_dir,new_dir;
-			new_dir = v2d( Fvector().sub(pos, prev_pos) );
-			last_dir = v2d(lastDir);
-			float cp = last_dir.cross_product(new_dir);
-
-			if(_abs(cp)>0.0001 &&cp<0.0f)
-				c = D3DCOLOR_XRGB(255,0,0);
-
-			RCache.dbg_DrawAABB  (pos.add(Fvector().set(0,1,0)),path_box_size,path_box_size,path_box_size,c);
-			
-			lastDir.sub(pos, prev_pos);
-		}
-*/		
-
 	}
 
-	for(u32 i=0;i<m_keyTrajectory.size();++i)
+/*	for(u32 i=0;i<m_keyTrajectory.size();++i)
 	{
-/*		Fvector dir;
-		Fvector dir_pos;
-		dir = m_keyTrajectory[i].direction;
-		dir.mul(10.0f);
-		dir_pos = m_keyTrajectory[i].position;
-		dir_pos.add(dir);
-*/
 		pos = m_keyTrajectory[i].position;
 		RCache.dbg_DrawAABB  (pos,traj_box_size,traj_box_size,traj_box_size,D3DCOLOR_XRGB(255,255,0));
-//		RCache.dbg_DrawLINE  (Fidentity,pos,dir_pos,D3DCOLOR_XRGB(0,0,255));
-
-	}
+	}*/
 
 }
 #endif
@@ -97,7 +71,7 @@ CHelicopterMovementManager::init(CHelicopter* heli)
 	Device.seqRender.Add(this,REG_PRIORITY_LOW-1);
 #endif
 //	m_velocity = 33.0f;//120km4
-	m_velocity = 5.0f;//120km4
+	m_velocity = 10.0f;//120km4
 	m_curState = eIdleState;
 }
 
@@ -115,17 +89,9 @@ CHelicopterMovementManager::onFrame(Fmatrix& xform, float fTimeDelta)
 {
 	if(Device.dwFrame == 1000)
 	{
-		float h = 3.0f;
 		xr_vector<Fvector> t;
+/*		float h = 3.0f;
 		Fvector pos;
-/*		pos.set(-74.7f, h, -44.4f);	t.push_back(pos);
-		pos.set(-57.5f, h, 5.4f);	t.push_back(pos);
-		pos.set(-25.8f, h, 39.7f);	t.push_back(pos);
-		pos.set(2.4f, h, 27.2f);	t.push_back(pos);
-		pos.set(35.5f, h, -2.5f);	t.push_back(pos);
-		pos.set(26.7f, h, -35.8f);	t.push_back(pos);
-		pos.set(-32.6f, h, -57.4f);	t.push_back(pos);
-*/
 		pos.set(57.6f,	h, -81.9f);	t.push_back(pos);
 		pos.set(5.1f,	h, -36.2f);	t.push_back(pos);
 		pos.set(-44.7f, h, -63.3f);	t.push_back(pos);
@@ -135,11 +101,19 @@ CHelicopterMovementManager::onFrame(Fmatrix& xform, float fTimeDelta)
 		pos.set(10.9f,	h, 26.4f);	t.push_back(pos);
 		pos.set(22.7f,	h, -9.9f);	t.push_back(pos);
 		pos.set(53.1f,	h, -36.2f);	t.push_back(pos);
-
+*/
 
 	//	std::reverse( t.begin(), t.end() );
-		setTrajectory(t, true, true);
-		
+	
+		createLevelPatrolTrajectory(50, t);
+		setKeyTrajectory(t, true);
+
+		{
+			m_currKeyIdx = 0;
+			build_smooth_path(0, true, false);
+			if(!m_failed)
+				m_curState = eMovingByPath;
+		}		
 		return;
 	}
 
@@ -160,7 +134,7 @@ CHelicopterMovementManager::onFrame(Fmatrix& xform, float fTimeDelta)
 			Fvector pos,w;
 			pos.set(0.0f,0.0f,0.0f);
 			w.set(0.0f,0.0f,0.0f);
-			if( getPosition(Level().timeServer(),fTimeDelta, xform.c, pos, w) )
+			if( getPathPosition(Level().timeServer(),fTimeDelta, xform.c, pos, w) )
 			{
 					xform.setXYZ(w);
 					xform.c = pos;
@@ -178,7 +152,7 @@ CHelicopterMovementManager::stayIdle()
 }
 
 bool	
-CHelicopterMovementManager::getPosition(u32 timeCurr, 
+CHelicopterMovementManager::getPathPosition(u32 timeCurr, 
 										float fTimeDelta, 
 										const Fvector& src, 
 										Fvector& pos, 
@@ -220,51 +194,69 @@ CHelicopterMovementManager::getPosition(u32 timeCurr,
 	xyz.y = angle_normalize_signed(xyz.y);
 	xyz.z = angle_normalize_signed(xyz.z);
 
-	m_lastXYZ.x = angle_normalize_signed(m_lastXYZ.x);//-PI..PI
+	m_lastXYZ.x = angle_normalize_signed(m_lastXYZ.x);
 	m_lastXYZ.y = angle_normalize_signed(m_lastXYZ.y);
 	m_lastXYZ.z = angle_normalize_signed(m_lastXYZ.z);
 
 	float ang_delta = PI_DIV_3*(fTimeDelta);
+	float h_delta	= 1.0f*(fTimeDelta);
 
-
-	if(!fsimilar(m_lastXYZ.z, xyz.z))
+/*
+  	if( _abs(src.y-pos.y) > h_delta )
+	{
+		(src.y<pos.y)?pos.y=src.y+h_delta: pos.y=src.y-h_delta;
+	}
+*/
+	if( !fsimilar(m_lastXYZ.z, xyz.z) )
 	{
 		if(m_lastXYZ.z < xyz.z)
 		{
 			m_lastXYZ.z += ang_delta;
-		}
-		else			
+		}else			
 		{
 			m_lastXYZ.z -= ang_delta;
 		}
+
 
 		xyz.z = m_lastXYZ.z;
 	}
 
 
 	m_lastXYZ = xyz;
-	m_lastDir.sub(ep, bp);
+//	m_lastDir.sub(ep, bp);
 	
 	return true;
 }
+void	
+CHelicopterMovementManager::addCurrentPosToTrajectory()
+{
+	float h,p,b;
+	m_pHelicopter->XFORM().getHPB(h,p,b);
+	m_lastXYZ.setHP(h,p);
+
+	m_keyTrajectory.push_back( SWayPoint(m_pHelicopter->XFORM().c, m_lastXYZ) );
+}
 
 void 
-CHelicopterMovementManager::setTrajectory(xr_vector<Fvector>& t, bool bGo, bool bFromCurrentPos)
+CHelicopterMovementManager::setKeyTrajectory(xr_vector<Fvector>& t, bool bFromCurrentPos)
 {
 	m_keyTrajectory.clear();
 
 	if(bFromCurrentPos)
 	{
-		m_keyTrajectory.push_back( SWayPoint(m_pHelicopter->XFORM().c) );
-
-		float h,p,b;
+		addCurrentPosToTrajectory();
+/*		float h,p,b;
 		m_pHelicopter->XFORM().getHPB(h,p,b);
-		m_lastDir.setHP(h,p);
+//		m_lastDir.setHP(h,p);
 		m_lastXYZ.setHP(h,p);
+
+		m_keyTrajectory.push_back( SWayPoint(m_pHelicopter->XFORM().c), m_lastXYZ );
+*/
 	}
 
 	m_keyTrajectory.insert(m_keyTrajectory.end(), t.begin(), t.end());
 	
+/*
 	//direction
 	Fvector dir;
 	trajIt B = m_keyTrajectory.begin();
@@ -276,32 +268,31 @@ CHelicopterMovementManager::setTrajectory(xr_vector<Fvector>& t, bool bGo, bool 
 		dir.sub( (*B).position, (*B_).position ).normalize();
 		(*B_).direction = dir;
 	}
-
 	//last ???
 	m_keyTrajectory.back().direction = (*B_).direction;
+*/
 
-
-	if(bGo)
+/*	if(bGo)
 	{
 		m_currKeyIdx = 0;
 		build_smooth_path(0, true);
 
 		if(!m_failed)
 			m_curState = eMovingByPath;
-
 	}
+*/
 }
 
 void		
 CHelicopterMovementManager::shedule_Update(u32 time_delta)
 {
-	if( m_path.size() )
+	if( (m_curState==eMovingByPath)&&(m_path.size()) )
 	{
 		u32 tt = m_path.back().time;
 		u32 lt = Level().timeServer();
 		if( (int)(tt - lt) < 1000 )
 		{
-			build_smooth_path(++m_currKeyIdx, false);
+			build_smooth_path(++m_currKeyIdx, false, false);
 			pathIt b;
 			STravelPathPoint _p;
 			_p.time = lt-2000;
@@ -310,6 +301,18 @@ CHelicopterMovementManager::shedule_Update(u32 time_delta)
 				m_path.erase( m_path.begin(), b);
 		}
 	}
+
+	if( (m_curState==eMovingToEnemy)&&(m_path.size()) )
+	{
+		u32 tt = m_path.back().time;
+		u32 lt = Level().timeServer();
+		if( (int)(tt - lt) < 1000 )
+		{
+			//зайти на атакующую траекторию
+			m_curState = eIdleState;//tmp
+		}
+	}
+
 }
 
 float	

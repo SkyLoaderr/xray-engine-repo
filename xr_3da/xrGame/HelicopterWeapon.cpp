@@ -2,14 +2,14 @@
 #include "helicopter.h"
 
 void __stdcall 
-CHelicopter::BoneCallbackX(CBoneInstance *B)
+CHelicopter::BoneMGunCallbackX(CBoneInstance *B)
 {
-	Fmatrix rX;		rX.rotateX		(PI_DIV_6);
+	Fmatrix rX;		rX.rotateX		(0.0f);
 	B->mTransform.mulB(rX);
 }
 
 void __stdcall 
-CHelicopter::BoneCallbackY(CBoneInstance *B)
+CHelicopter::BoneMGunCallbackY(CBoneInstance *B)
 {
 	Fmatrix rY;		rY.rotateY		(0.0f);
 	B->mTransform.mulB(rY);
@@ -61,22 +61,16 @@ CHelicopter::UpdateFire()
 void 
 CHelicopter::OnShot		()
 {
-//	VERIFY(Owner());
-
 	FireBullet(CurrentFirePoint(),m_fire_dir, 
 		fireDispersionBase,
-		m_CurrentAmmo, /*Owner()->*/ID(),ID());
+		m_CurrentAmmo, 
+		ID(),
+		ID());
 
 	StartFlameParticles();
 	StartSmokeParticles(m_fire_pos, zero_vel);
 	OnShellDrop(m_fire_pos, zero_vel);
 
-/*	bool hud_mode = (Level().CurrentEntity() == dynamic_cast<CObject*>(Owner()));
-	HUD_SOUND::PlaySound(sndShot, fire_pos, Owner(), hud_mode);
-
-	//добавить эффектор стрельбы
-	AddShotEffector		();
-*/
 }
 
 void 
@@ -90,5 +84,4 @@ CHelicopter::FireEnd()
 {
 	CShootingObject::FireEnd();
 	StopFlameParticles	();
-//	RemoveShotEffector ();
 }

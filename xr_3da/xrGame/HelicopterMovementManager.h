@@ -74,8 +74,9 @@ public:
 
 	enum EMovementState {
 		eIdleState		= u32(0),
-		eMovingByPath	= u32(1)
-	};
+		eMovingByPath	= u32(1),
+		eMovingToEnemy	= u32(2)
+	}; 
 
 private:
 	EMovementState					m_curState;
@@ -87,7 +88,7 @@ private:
 	xr_vector<STravelPathPoint>		m_tempPath;
 
 	bool							m_failed;
-	bool							m_useDestOrientation;
+//	bool							m_useDestOrientation;
 	bool							m_cyclePath;
 	bool							m_tryMinTime;
 
@@ -120,13 +121,12 @@ protected:
 	xr_vector<SWayPoint>			m_keyTrajectory;
 	int								m_currKeyIdx;
 
-	Fvector							m_lastDir;
 	Fvector							m_lastXYZ;
 
 
 	CHelicopter*					m_pHelicopter;
 	//smooth path
-	bool	init_build				(int startKeyIdx, STrajectoryPoint &start, STrajectoryPoint &dest, u32 &straight_line_index, u32 &straight_line_index_negative);
+	bool	init_build				(int startKeyIdx, STrajectoryPoint &start, STrajectoryPoint &dest, float& startH, float& destH, u32 &straight_line_index, u32 &straight_line_index_negative);
 	bool	compute_path			(STrajectoryPoint &start, STrajectoryPoint &dest, xr_vector<STravelPathPoint> *m_tpTravelLine, const xr_vector<STravelParamsIndex> &m_start_params, const xr_vector<STravelParamsIndex> &m_dest_params, const u32 straight_line_index, const u32 straight_line_index_negative);
 	void	validate_vertex_position(STrajectoryPoint &point) const;
 	bool	compute_trajectory		(STrajectoryPoint &start, STrajectoryPoint &dest, xr_vector<STravelPathPoint> *path, float &time, const u32 velocity1, const u32 velocity2, const u32 velocity3, const EDirectionType direction_type);
@@ -140,7 +140,9 @@ protected:
 	bool	build_line_trajectory	(const STravelPathPoint &start, const STrajectoryPoint &dest, xr_vector<STravelPathPoint> *path, const u32 velocity, STravelPathPoint& lastAddedPoint);
 	//end smooth path
 	float	computeB(float angVel);
-	bool	getPosition(u32 time, float fTimeDelta, const Fvector& src, Fvector& pos, Fvector& dir);
+	bool	getPathPosition(u32 time, float fTimeDelta, const Fvector& src, Fvector& pos, Fvector& dir);
+
+	void	addCurrentPosToTrajectory();
 
 public:
 	CHelicopterMovementManager();
@@ -148,15 +150,20 @@ public:
 	void		init(CHelicopter* heli);
 	void		deInit();
 	void		shedule_Update(u32 timeDelta);
-	void		build_smooth_path(int startKeyIdx, bool bClearOld);
+	void		build_smooth_path(int startKeyIdx, bool bClearOld, bool bUseDestOrientation);
 	void		onFrame(Fmatrix& xform, float fTimeDelta);
+
 #ifdef DEBUG
 	virtual void OnRender();
 #endif
 
-	void stayIdle();
-	void setTrajectory(xr_vector<Fvector>& t, bool bGo=false, bool bFromCurrentPos=false);
+	void		stayIdle();
+	void		setKeyTrajectory(xr_vector<Fvector>& t, bool bFromCurrentPos=false);
+	void		createLevelPatrolTrajectory(u32 keyCount, xr_vector<Fvector>& keyPoints);
+	Fvector		makeIntermediateKey(Fvector& start, Fvector& dest, float k);
 
+
+	void		buildHuntPath(Fvector& enemyPos);
 };
 
 #include "HelicopterMovementManager_inl.h"

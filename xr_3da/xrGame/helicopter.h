@@ -12,7 +12,13 @@ class CHelicopter :
 {
 	typedef CGameObject inherited;
 protected:
-	ref_sound						m_engine_sound;
+	enum EHeilState{
+		eIdle		=u32(0),
+		ePatrolZone	=u32(1),
+		eHunt		=u32(2)
+	};
+	EHeilState						m_curState;
+	ref_sound						m_engineSound;
 	CHelicopterMovementManager		m_movementMngr;
 	xr_map<s16,float>				m_hitBones;
 
@@ -27,8 +33,8 @@ protected:
 	ref_str							m_sAmmoType;
 	CCartridge						m_CurrentAmmo;
 
-	static void __stdcall	BoneCallbackX		(CBoneInstance *B);
-	static void __stdcall	BoneCallbackY		(CBoneInstance *B);
+	static void __stdcall	BoneMGunCallbackX		(CBoneInstance *B);
+	static void __stdcall	BoneMGunCallbackY		(CBoneInstance *B);
 
 	typedef xr_map<s16,float>::iterator bonesIt;
 public:
@@ -71,4 +77,6 @@ protected:
 	virtual	void			FireEnd		();
 	virtual	void			UpdateFire	();
 	virtual	void			OnShot		();
+
+	void					doHunt(CObject* dest);
 };
