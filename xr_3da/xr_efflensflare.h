@@ -55,7 +55,7 @@ public:
     Shader*			CreateFlareShader(const char* tex_name);
 public:
 					CLensFlare	();
-					~CLensFlare	( );
+	virtual			~CLensFlare	();
 
 	virtual void	OnDeviceDestroy();
 	virtual void	OnDeviceCreate();

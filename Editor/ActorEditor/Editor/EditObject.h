@@ -9,7 +9,6 @@
 struct 	SRayPickInfo;
 class 	CEditableMesh;
 class 	CFrustum;
-class 	Shader;
 class 	CSMotion;
 class 	COMotion;
 class 	CCustomMotion;

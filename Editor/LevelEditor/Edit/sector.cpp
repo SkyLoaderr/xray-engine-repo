@@ -107,7 +107,7 @@ bool CSector::DelMesh	(CSceneObject* O, CEditableMesh* M){
 
 bool CSector::GetBox( Fbox& box ){
 	box.set(m_Box);
-	return false;
+	return true;
 }
 
 void CSector::Render(int priority, bool strictB2F){

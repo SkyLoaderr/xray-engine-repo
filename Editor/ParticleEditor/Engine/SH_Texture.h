@@ -27,6 +27,6 @@ public:
 	IDirect3DTexture8*			surface_get ();
 
 	CTexture					();
-	~CTexture					();
+	virtual ~CTexture			();
 };
 #endif

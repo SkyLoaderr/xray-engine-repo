@@ -75,7 +75,7 @@ CLight::~CLight(){
 
 void CLight::UpdateTransform(){
 	m_D3D.direction.direct(vRotate.y,vRotate.x);
-	m_LensFlare.Update(m_D3D.direction, m_D3D.diffuse);
+	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.Update(m_D3D.direction, m_D3D.diffuse);
 }
 
 void CLight::CopyFrom(CLight* src){
@@ -206,15 +206,17 @@ void CLight::LocalRotate(Fvector& axis, float angle){
 //----------------------------------------------------
 
 void CLight::RTL_Update	(float dT){
-	m_LensFlare.OnMove();
+	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.OnMove();
 }
 //----------------------------------------------------
 
 void CLight::Update(){
 	UpdateTransform();
-	m_LensFlare.Update(m_D3D.direction, m_D3D.diffuse);
-    m_LensFlare.DeleteShaders();
-    m_LensFlare.CreateShaders();
+	if (D3DLIGHT_DIRECTIONAL==m_D3D.type){
+    	m_LensFlare.Update(m_D3D.direction, m_D3D.diffuse);
+	    m_LensFlare.DeleteShaders();
+    	m_LensFlare.CreateShaders();
+    }
 }
 //----------------------------------------------------
 
@@ -269,7 +271,8 @@ bool CLight::Load(CStream& F){
         vRotate.y		= asinf(dir.y);
     }
 
-    m_LensFlare.Load(F);
+	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.Load(F);
+    
 	UpdateTransform	();
 
     return true;
@@ -283,7 +286,7 @@ void CLight::Save(CFS_Base& F){
 	F.Wword			(LIGHT_VERSION);
 	F.close_chunk	();
 
-    m_LensFlare.Save(F);
+	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.Save(F);
 
 	F.write_chunk	(LIGHT_CHUNK_BRIGHTNESS,&m_Brightness,sizeof(m_Brightness));
 	F.write_chunk	(LIGHT_CHUNK_D3D_PARAMS,&m_D3D,sizeof(m_D3D));
@@ -295,13 +298,13 @@ void CLight::Save(CFS_Base& F){
 
 void CLight::OnDeviceCreate()
 {
-	m_LensFlare.OnDeviceCreate();
+	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.OnDeviceCreate();
 }
 //----------------------------------------------------
 
 void CLight::OnDeviceDestroy()
 {
-	m_LensFlare.OnDeviceDestroy();
+	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.OnDeviceDestroy();
 }
 //----------------------------------------------------
 
@@ -377,7 +380,7 @@ void CEditFlare::Save(CFS_Base& F)
 }
 //----------------------------------------------------
 
-void CEditFlare::Render()
+void CEditFlare::Render()  
 {
 	CLensFlare::Render(m_Flags.bSource,m_Flags.bFlare);
 }

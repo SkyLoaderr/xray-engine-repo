@@ -165,8 +165,10 @@ bool SceneBuilder::BuildLTX(){
         AnsiString temp;
         for(;i!=_E;i++){
             CRPoint *rpt = (CRPoint *)(*i);
-            temp.sprintf("%.3f,%.3f,%.3f,%d,%.3f", rpt->m_Position.x,rpt->m_Position.y,rpt->m_Position.z,rpt->m_dwTeamID,rpt->m_fHeading);
-            pIni->WriteString("respawn_point",rpt->GetName(),temp.c_str());
+            if (CRPoint::etPlayer==rpt->m_Type){
+	            temp.sprintf("%.3f,%.3f,%.3f,%d,%.3f", rpt->m_Position.x,rpt->m_Position.y,rpt->m_Position.z,rpt->m_dwTeamID,rpt->m_fHeading);
+    	        pIni->WriteString("respawn_point",rpt->GetName(),temp.c_str());
+            }
 		}
 	}
 

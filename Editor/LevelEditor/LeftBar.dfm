@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 745
+  Height = 277
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -1490,7 +1490,7 @@ object fraLeftBar: TfraLeftBar
       Caption = '-'
     end
     object miRecentFiles: TMenuItem
-      Caption = 'Recent Files'
+      Caption = 'Open Recent'
       Enabled = False
     end
     object N7: TMenuItem

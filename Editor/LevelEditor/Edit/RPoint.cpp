@@ -18,6 +18,11 @@
 #define RPOINT_CHUNK_POSITION			0xE412
 #define RPOINT_CHUNK_TEAMID				0xE413
 #define RPOINT_CHUNK_DIRECTION			0xE414
+#define RPOINT_CHUNK_SQUADID			0xE415
+#define RPOINT_CHUNK_GROUPID			0xE416
+#define RPOINT_CHUNK_TYPE				0xE417
+#define RPOINT_CHUNK_FLAGS				0xE418
+#define RPOINT_CHUNK_ENTITYREFS			0xE419
 //----------------------------------------------------
 #define MAX_TEAM 8
 const DWORD RP_COLORS[MAX_TEAM]={0xff0000,0x00ff00,0x0000ff,0xffff00,0x00ffff,0x7f0000,0x007f00,0x00007f};
@@ -35,7 +40,12 @@ void CRPoint::Construct(){
 	m_ClassID   = OBJCLASS_RPOINT;
 	m_Position.set(0,0,0);
     m_dwTeamID	= 0;
+    m_dwSquadID	= 0;
+    m_dwGroupID	= 0;
     m_fHeading	= 0;
+    m_Type		= etPlayer;
+    ZeroMemory(&m_Flags,sizeof(Flags));
+    m_EntityRefs[0]=0;
 }
 
 CRPoint::~CRPoint(){
@@ -58,7 +68,7 @@ bool CRPoint::GetBox( Fbox& box ){
 void CRPoint::Render( int priority, bool strictB2F ){
     if ((1==priority)&&(false==strictB2F)){
         if (Device.m_Frustum.testSphere(m_Position,RPOINT_SIZE)){
-		    DU::DrawFlag(m_Position,m_fHeading,RPOINT_SIZE*2,RPOINT_SIZE,.3f,RP_COLORS[m_dwTeamID]);
+		    DU::DrawFlag(m_Position,m_fHeading,RPOINT_SIZE*2,RPOINT_SIZE,.3f,RP_COLORS[m_dwTeamID],etEntity==m_Type);
             if( Selected() ){
                 Fbox bb; GetBox(bb);
 	            DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
@@ -141,6 +151,12 @@ bool CRPoint::Load(CStream& F){
     if (F.FindChunk(RPOINT_CHUNK_TEAMID)) 	m_dwTeamID = F.Rdword();
     if (F.FindChunk(RPOINT_CHUNK_DIRECTION))m_fHeading = F.Rfloat();
 
+    // new generation
+    if (F.FindChunk(RPOINT_CHUNK_SQUADID))  	m_dwSquadID = F.Rdword();
+    if (F.FindChunk(RPOINT_CHUNK_GROUPID))  	m_dwGroupID = F.Rdword();
+    if (F.FindChunk(RPOINT_CHUNK_TYPE))     	m_Type 		= F.Rdword();
+    if (F.FindChunk(RPOINT_CHUNK_FLAGS))    	F.Read		(&m_Flags,sizeof(DWORD));     
+    if (F.FindChunk(RPOINT_CHUNK_ENTITYREFS))	F.RstringZ	(m_EntityRefs); 
     return true;
 }
 
@@ -152,8 +168,15 @@ void CRPoint::Save(CFS_Base& F){
 	F.close_chunk	();
 
     F.write_chunk	(RPOINT_CHUNK_POSITION,&m_Position,sizeof(m_Position));
-    F.write_chunk	(RPOINT_CHUNK_TEAMID,&m_dwTeamID,sizeof(m_dwTeamID));
-    F.write_chunk	(RPOINT_CHUNK_DIRECTION,&m_fHeading,sizeof(m_fHeading));
+    F.write_chunk	(RPOINT_CHUNK_TEAMID,&m_dwTeamID,sizeof(DWORD));
+    F.write_chunk	(RPOINT_CHUNK_DIRECTION,&m_fHeading,sizeof(float));
+
+    // new generation
+    F.write_chunk	(RPOINT_CHUNK_SQUADID,&m_dwSquadID,sizeof(DWORD));
+    F.write_chunk	(RPOINT_CHUNK_GROUPID,&m_dwGroupID,sizeof(DWORD));
+    F.write_chunk	(RPOINT_CHUNK_TYPE,&m_Type,sizeof(DWORD));
+    F.write_chunk	(RPOINT_CHUNK_FLAGS,&m_Flags,sizeof(DWORD));
+    F.write_chunk	(RPOINT_CHUNK_ENTITYREFS,&m_EntityRefs,strlen(m_EntityRefs));
 }
 
 //----------------------------------------------------

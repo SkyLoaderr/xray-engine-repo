@@ -7,7 +7,6 @@
 
 #include "CustomObject.h"
 #include "tlsprite.h"
-class Shader;
 class CFrustum;
 
 class CGlow : public CCustomObject {

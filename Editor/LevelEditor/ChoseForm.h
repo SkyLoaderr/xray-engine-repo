@@ -83,6 +83,7 @@ private:	// User declarations
         smShaderXRLC,
         smPS,
         smTexture,
+        smEntity,
         smMaxMode
     };
     ESelectMode Mode;
@@ -100,6 +101,7 @@ public:		// User declarations
     static LPCSTR __fastcall SelectShaderXRLC(LPCSTR init_name=0);
     static LPCSTR __fastcall SelectPS		(LPCSTR start_folder=0, LPCSTR init_name=0);
     static LPCSTR __fastcall SelectTexture	(bool bMulti=false, LPCSTR tex=0);
+    static LPCSTR __fastcall SelectEntity	(LPCSTR init_name=0);
     static bool __fastcall Visible(){return !!form;}
 };
 //---------------------------------------------------------------------------

@@ -66,9 +66,8 @@ CTexture* CShaderManager::_CreateTexture	(LPCSTR Name)
 	{
 		CTexture *T		= new CTexture;
 		T->dwReference	= 1;
-        LPSTR nm		= strdup(Name); char* N	= strext(nm); if (N) *N=0;
-		textures.insert	(make_pair(nm,T));
-		if (Device.bReady && !bDeferredLoad) T->Load(nm);
+		textures.insert	(make_pair(strdup(Name),T));
+		if (Device.bReady && !bDeferredLoad) T->Load(Name);
 		return		T;
 	}
 }
@@ -297,6 +296,7 @@ void	CShaderManager::_ParseList(sh_list& dest, LPCSTR names)
 			N.push_back(0);
 			strcpy(dest.last(),N.begin());
 			strlwr(dest.last());
+            if (strext(dest.last())) *strext(dest.last())=0;
 			dest.inc();
 			N.clear();
 		} else {
@@ -310,6 +310,7 @@ void	CShaderManager::_ParseList(sh_list& dest, LPCSTR names)
 		N.push_back(0);
 		strcpy(dest.last(),N.begin());
 		strlwr(dest.last());
+		if (strext(dest.last())) *strext(dest.last())=0;
 		dest.inc();
 	}
 }

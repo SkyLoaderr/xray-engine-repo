@@ -87,6 +87,8 @@ protected:
 
 	bool BuildLTX                   ();
 
+    bool BuildGame					();
+
 	bool WriteTextures              ();
 	void AddUniqueTexName           (const char *name);
 

@@ -6,8 +6,8 @@
 #include "xr_tokens.h"
 #include "xr_ini.h"
 
-
 #ifdef _LEVEL_EDITOR
+	#include "ELight.h"
 	#include "ui_main.h"
 	#include "scene.h"
 #else
@@ -102,8 +102,8 @@ void CLensFlare::OnDeviceDestroy()
 	P.IB_Destroy();
 	P.VB_Destroy();
 	// shaders
-	if (m_Source.hShader){ Device.Shader.Delete(m_Source.hShader); m_Source.hShader=0; }
-    for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) if (it->hShader){ Device.Shader.Delete(it->hShader); it->hShader=0; }
+	if (m_Source.hShader) Device.Shader.Delete(m_Source.hShader);
+    for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) if (it->hShader) Device.Shader.Delete(it->hShader);
 }
 
 Shader* CLensFlare::CreateSourceShader(const char* tex_name)

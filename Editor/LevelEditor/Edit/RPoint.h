@@ -16,8 +16,22 @@ class CRPoint : public CCustomObject {
 
     Fvector         m_Position;
 public:
+	enum EType{
+    	etPlayer,
+    	etEntity,
+        force_dword=(-1) 
+    };
+    struct Flags{
+    	DWORD		bActive:1;
+    };
+public:
     DWORD			m_dwTeamID;
+    DWORD			m_dwSquadID;
+    DWORD			m_dwGroupID;
     float			m_fHeading;
+    Flags			m_Flags;
+    EType			m_Type;
+    string64		m_EntityRefs;
 public:
 	                CRPoint     ();
 	                CRPoint     ( char *name );

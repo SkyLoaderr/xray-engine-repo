@@ -201,6 +201,7 @@ USEUNIT("Engine\Blenders\Blender_LmBmmD.cpp");
 USEUNIT("Engine\fmesh.cpp");
 USEUNIT("Engine\Blenders\Blender_BmmD.cpp");
 USELIB("lib\FreeImage.lib");
+USEUNIT("edit\BuilderGame.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

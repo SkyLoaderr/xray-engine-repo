@@ -211,7 +211,7 @@ void DrawPointLight(const Fvector& p, float radius, DWORD c)
 	DrawCross(p, radius,radius,radius, radius,radius,radius, c, true);
 }
 
-void DrawFlag(const Fvector& p, float heading, float height, float sz, float sz_fl, DWORD clr){
+void DrawFlag(const Fvector& p, float heading, float height, float sz, float sz_fl, DWORD clr, bool bDrawEntity){
 	// fill VB
 	DWORD			vBase;
 	FVF::L*	pv	 	= (FVF::L*)LStream->Lock(2,vBase);
@@ -221,17 +221,35 @@ void DrawFlag(const Fvector& p, float heading, float height, float sz, float sz_
 	// and Render it as triangle list
     Device.DP		(D3DPT_LINELIST,LStream,vBase,1);
 
-	// fill VB
-	pv	 			= (FVF::L*)LStream->Lock(6,vBase);
-    pv->set			(p.x,p.y+height*(1.f-sz_fl),p.z,clr); pv++;
-    pv->set			(p.x,p.y+height,p.z,clr); pv++;
-    pv->set			(p.x+sin(heading)*sz,((pv-2)->p.y+(pv-1)->p.y)/2,p.z+cos(heading)*sz,clr); pv++;
-    pv->set			(*(pv-3)); pv++;
-    pv->set			(*(pv-2)); pv++;
-    pv->set			(*(pv-4)); pv++;
-	LStream->Unlock	(6);
-	// and Render it as triangle list
-    Device.DP		(D3DPT_TRIANGLELIST,LStream,vBase,2);
+    if (bDrawEntity){
+		// fill VB
+        float rx		= sin(heading);
+        float rz		= cos(heading);
+		pv	 			= (FVF::L*)LStream->Lock(6,vBase);
+        sz				*= 0.8f;
+        pv->set			(p.x,p.y+height,p.z,clr);											pv++;
+        pv->set			(p.x+rx*sz,p.y+height,p.z+rz*sz,clr);                               pv++;
+        sz				*= 0.5f;
+        pv->set			(p.x,p.y+height*(1.f-sz_fl*.5f),p.z,clr);                           pv++;
+        pv->set			(p.x+rx*sz*0.6f,p.y+height*(1.f-sz_fl*.5f),p.z+rz*sz*0.75f,clr);   	pv++;
+        pv->set			(p.x,p.y+height*(1.f-sz_fl),p.z,clr);                               pv++;
+        pv->set			(p.x+rx*sz,p.y+height*(1.f-sz_fl),p.z+rz*sz,clr);                   pv++;
+		LStream->Unlock	(6);
+		// and Render it as line list
+    	Device.DP		(D3DPT_LINELIST,LStream,vBase,3);
+    }else{
+		// fill VB
+		pv	 			= (FVF::L*)LStream->Lock(6,vBase);
+	    pv->set			(p.x,p.y+height*(1.f-sz_fl),p.z,clr); 								pv++;
+    	pv->set			(p.x,p.y+height,p.z,clr); 											pv++;
+	    pv->set			(p.x+sin(heading)*sz,((pv-2)->p.y+(pv-1)->p.y)/2,p.z+cos(heading)*sz,clr); pv++;
+    	pv->set			(*(pv-3)); 															pv++;
+	    pv->set			(*(pv-2)); 															pv++;
+    	pv->set			(*(pv-4)); 															pv++;
+		LStream->Unlock	(6);
+		// and Render it as triangle list
+    	Device.DP		(D3DPT_TRIANGLELIST,LStream,vBase,2);
+    }
 }
 
 //------------------------------------------------------------------------------

@@ -196,6 +196,13 @@ DWORD SceneBuilder::Thread(){
 		}
 
         if (UI.NeedAbort()) break;
+        if( !BuildGame() ){
+			error_text="*ERROR: Failed to build game....";
+			error_flag = true;
+			break;
+        }
+
+        if (UI.NeedAbort()) break;
 		if( !BuildSkyModel() ){
 			error_text="*ERROR: Failed to build OGF model....";
 			error_flag = true;
@@ -263,6 +270,13 @@ DWORD SceneBuilder::ThreadMakeLTX(){
 			error_flag = true;
 			break;
 		}
+
+        if (UI.NeedAbort()) break;
+        if( !BuildGame() ){
+			error_text="*ERROR: Failed to build game....";
+			error_flag = true;
+			break;
+        }
 
         if (UI.NeedAbort()) break;
 		if( !BuildSkyModel() ){

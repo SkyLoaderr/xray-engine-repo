@@ -1,6 +1,6 @@
 object frmPropertiesSound: TfrmPropertiesSound
-  Left = 535
-  Top = 375
+  Left = 537
+  Top = 390
   BorderStyle = bsDialog
   Caption = 'Sound properties'
   ClientHeight = 94
@@ -11,6 +11,7 @@ object frmPropertiesSound: TfrmPropertiesSound
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  FormStyle = fsStayOnTop
   KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter

@@ -245,6 +245,8 @@ typedef	char FILE_NAME	[ _MAX_PATH	];
     #endif
 #endif
 #define DEFINE_INI(fs) char buf[255];	strcpy(buf,_EDITOR_FILE_NAME_); strcat(buf,".ini"); FS.m_LocalRoot.Update(buf); fs->IniFileName = buf;
+#define NONE_CAPTION "<none>" 
+#define MULTIPLESEL_CAPTION "<multiple selection>" 
 
 
 #endif /*_INCDEF_STDAFX_H_*/

@@ -5,6 +5,7 @@
 #include "SceneClassList.h"
 #include "RPoint.h"
 #include "Scene.h"
+#include "ChoseForm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"
@@ -18,6 +19,14 @@ __fastcall TfrmPropertiesRPoint::TfrmPropertiesRPoint(TComponent* Owner)
     : TForm(Owner)
 {
 	bLoadMode = false;
+    bMultiSel = false;
+    ebEntityRefs->Caption = NONE_CAPTION;
+    lbType->Font->Style.Clear();
+    bTypeChanged	= false;
+    bEntityChanged	= false;
+
+    ebTypePlayer->Tag = CRPoint::etPlayer;
+    ebTypeEntity->Tag = CRPoint::etEntity;
 }
 //---------------------------------------------------------------------------
 
@@ -29,22 +38,37 @@ void TfrmPropertiesRPoint::GetObjectsInfo(){
 	ObjectIt _F = m_Objects->begin();
     VERIFY( (*_F)->ClassID()==OBJCLASS_RPOINT );
 
-    CRPoint *_S = (CRPoint *)(*_F);
-	CRPoint *_N = _S;
-	edName->Text= _S->GetName();
-    seTeamID->ObjFirstInit(_S->m_dwTeamID);
-    seHeading->ObjFirstInit(rad2deg(_S->m_fHeading));
+	CRPoint::EType T;
+    {
+        CRPoint *_S = (CRPoint *)(*_F);
+        CRPoint *_N = _S;
+        edName->Text= _S->GetName();
+        seTeamID->ObjFirstInit(_S->m_dwTeamID);
+        seSquadID->ObjFirstInit(_S->m_dwSquadID);
+        seGroupID->ObjFirstInit(_S->m_dwGroupID);
+        seHeading->ObjFirstInit(rad2deg(_S->m_fHeading));
+        cbActive->ObjFirstInit(_S->m_Flags.bActive);
+        SetType(_N->m_Type);
+        T = _N->m_Type;
+		ebEntityRefs->Caption = _N->m_EntityRefs[0]?_N->m_EntityRefs:NONE_CAPTION;
+	}
 
     _F++;
     for(;_F!=m_Objects->end();_F++){
 		VERIFY( (*_F)->ClassID()==OBJCLASS_RPOINT );
-    	_N = (CRPoint *)(*_F);
+    	CRPoint *_N = (CRPoint *)(*_F);
 	    seTeamID->ObjNextInit(_N->m_dwTeamID);
-	    seHeading->ObjNextInit(rad2deg(_S->m_fHeading));
+	    seSquadID->ObjNextInit(_N->m_dwSquadID);
+    	seGroupID->ObjNextInit(_N->m_dwGroupID);
+	    seHeading->ObjNextInit(rad2deg(_N->m_fHeading));
+	    cbActive->ObjNextInit(_N->m_Flags.bActive);
+        if (T!=_N->m_Type) lbType->Font->Style = TFontStyles()<<fsItalic;
+		if (ebEntityRefs->Caption!=_N->m_EntityRefs) ebEntityRefs->Caption=MULTIPLESEL_CAPTION;
+	    bMultiSel = true;
 	}
-    if (_S!=_N){
+    if (bMultiSel){
     	edName->Enabled = false;
-        edName->Text	= "<Multiple selection>";
+        edName->Text	= MULTIPLESEL_CAPTION;
     }else
     	edName->Enabled = true;
 
@@ -65,10 +89,20 @@ bool TfrmPropertiesRPoint::ApplyObjectsInfo(){
 	        _O->SetName(edName->Text.c_str());
         }
         seTeamID->ObjApplyInt(int(_O->m_dwTeamID));
+        seSquadID->ObjApplyInt(int(_O->m_dwSquadID));
+        seGroupID->ObjApplyInt(int(_O->m_dwGroupID));
+        int f=_O->m_Flags.bActive; cbActive->ObjApply(f); _O->m_Flags.bActive=f;
         // orientation
         float a = rad2deg(_O->m_fHeading);
         seHeading->ObjApplyFloat(a);
         _O->m_fHeading = deg2rad(a);
+        // type
+        if (bTypeChanged){
+	        if (ebTypePlayer->Down) 		_O->m_Type=CRPoint::etPlayer;
+        	else if (ebTypeEntity->Down) 	_O->m_Type=CRPoint::etEntity;
+        }
+        // entity
+        if (bEntityChanged)	strcpy(_O->m_EntityRefs,ebEntityRefs->Caption.c_str());
 	}
     return true;
 }
@@ -131,4 +165,30 @@ void __fastcall TfrmPropertiesRPoint::FormClose(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmPropertiesRPoint::ebEntityRefsClick(TObject *Sender)
+{
+	LPCSTR N = TfrmChoseItem::SelectEntity((!bMultiSel&&(ebEntityRefs->Caption!=NONE_CAPTION))?ebEntityRefs->Caption.c_str():0);
+    if (N){
+    	ebEntityRefs->Caption = N;
+		bEntityChanged = true;
+        OnModified(Sender);
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPropertiesRPoint::ebTypeClick(TObject *Sender)
+{
+	bTypeChanged = true;
+    SetType(((TExtBtn*)Sender)->Tag);
+	OnModified(Sender);
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPropertiesRPoint::SetType(CRPoint::EType type)
+{
+    if (type==CRPoint::etPlayer)    	ebTypePlayer->Down=true;
+    else if (type==CRPoint::etEntity) 	ebTypeEntity->Down=true;
+	paEntity->Visible 					= (type==CRPoint::etEntity);
+}
 
