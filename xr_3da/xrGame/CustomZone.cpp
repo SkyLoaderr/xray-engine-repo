@@ -9,7 +9,7 @@
 #include "level.h"
 #include "game_cl_base.h"
 #include "../igame_persistent.h"
-
+#include "artifact.h"
 
 
 
