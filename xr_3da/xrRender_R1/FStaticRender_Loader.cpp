@@ -33,7 +33,7 @@ void CRender::level_Load()
 
 	// Details
 	pApp->LoadTitle		("Loading details...");
-	Details.Load		();
+	Details->Load		();
 
 	// Wallmarks
 	Wallmarks			= xr_new<CWallmarksEngine>	();
@@ -64,7 +64,7 @@ void CRender::level_Unload()
 	xr_delete				(Wallmarks);
 	
 	//*** Details
-	Details.Unload			();
+	Details->Unload			();
 
 	//*** Sectors
 	// 1.
@@ -79,9 +79,9 @@ void CRender::level_Unload()
 	Portals.clear			();
 
 	//*** Lights
-	Glows.Unload			();
-	L_DB.Unload				();
-	L_Dynamic.Destroy		();
+	Glows->Unload			();
+	L_DB->Unload			();
+	L_Dynamic->Destroy		();
 
 	//*** Visuals
 	for (I=0; I<Visuals.size(); I++)
@@ -170,10 +170,10 @@ void CRender::LoadVisuals(IReader *fs)
 
 	while ((chunk=fs->open_chunk(index))!=0)
 	{
-		chunk->r_chunk_safe		(OGF_HEADER,&H,sizeof(H));
-		V = Models.Instance_Create	(H.type);
-		V->Load(0,chunk,0);
-		Visuals.push_back(V);
+		chunk->r_chunk_safe			(OGF_HEADER,&H,sizeof(H));
+		V = Models->Instance_Create	(H.type);
+		V->Load						(0,chunk,0);
+		Visuals.push_back			(V);
 
 		chunk->close();
 		index++;
@@ -183,12 +183,12 @@ void CRender::LoadVisuals(IReader *fs)
 void CRender::LoadLights(IReader *fs)
 {
 	// lights
-	L_DB.Load	(fs);
+	L_DB->Load	(fs);
 
 	// glows
 	IReader*	chunk = fs->open_chunk(fsL_GLOWS);
 	R_ASSERT	(chunk && "Can't find glows");
-	Glows.Load(chunk);
+	Glows->Load	(chunk);
 	chunk->close();
 }
 
