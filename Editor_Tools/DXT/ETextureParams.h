@@ -37,7 +37,8 @@ struct STextureParams{
 		flColorBorder		= (1<<5),
 		flFadeToColor		= (1<<6),
 		flFadeToAlpha		= (1<<7),
-		flDitherColor		= (1<<8)
+		flDitherColor		= (1<<8),
+		flImplicitLighted	= (1<<24)
 	};
 	struct Flags{
 		DWORD bGenerateMipMaps	: 1;
