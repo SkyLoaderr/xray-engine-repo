@@ -302,7 +302,7 @@ void CDetailManager::Render		(Fvector& EYE)
 					mXform.mul_43			(mRot,mScale);
 					mXform.translate_over	(Instance.P);
 				} else {
-					mXform.set				(Instance.mRotY);
+					mXform.mul_43			(Instance.mRotY,mScale);
 					mXform.translate_over	(Instance.P);
 				}
 				Object.Transfer			(mXform, vDest, Instance.C);
