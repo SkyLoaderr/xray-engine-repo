@@ -237,15 +237,16 @@ void CBuild::ImplicitLighting()
 		Status	("Saving base...");
 		{
 			string256				name, out_name;
-			sscanf					(strstr(GetCommandLine(),"-f")+2,"%s",name);
+			sscanf					(strstr(Core.Params,"-f")+2,"%s",name);
+			R_ASSERT				(name[0] && defl.texture);
 			b_BuildTexture& TEX		=	*defl.texture;
 			strconcat				(out_name,"gamedata\\levels\\",name,"\\",TEX.name,".dds");
 			clMsg					("Saving texture '%s'...",out_name);
 			VerifyPath				(out_name);
-			BYTE* raw_data			= LPBYTE(TEX.pSurface);
-			u32	w					= TEX.dwWidth;
-			u32	h					= TEX.dwHeight;
-			u32	pitch				= w*4;
+			BYTE* raw_data			=	LPBYTE(TEX.pSurface);
+			u32	w					=	TEX.dwWidth;
+			u32	h					=	TEX.dwHeight;
+			u32	pitch				=	w*4;
 			STextureParams			fmt	= TEX.THM;
 			fmt.fmt					= STextureParams::tfDXT5;
 			fmt.flags.set			(STextureParams::flDitherColor,		FALSE);
