@@ -4,11 +4,18 @@ function init    (obj)
        xr_motivator.AddToMotivator(obj)
        return
     end
-
-	if string.find(obj:name(), "cmp_") then
-		xr_motivator.AddToMotivator(obj)
-		return
-	end
+    if string.find(obj:name(), "cmp_") then
+       xr_motivator.AddToMotivator(obj)
+       return
+    end
+    if string.find(obj:name(), "slp_") then
+       xr_motivator.AddToMotivator(obj)
+       return
+    end
+    if string.find(obj:name(), "robber_") then
+       xr_motivator.AddToMotivator(obj)
+       return
+    end
 
     local name, command, group, member = str_split (obj:name ())
     if name == "patrol" then
