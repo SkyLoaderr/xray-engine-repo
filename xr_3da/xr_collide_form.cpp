@@ -152,7 +152,6 @@ CCF_Skeleton::CCF_Skeleton(CObject* O) : ICollisionForm(O)
 {
 	CKinematics* K	= PKinematics(O->Visual());
 	model.resize	(K->LL_BoneCount());
-
 	base_box.set	(K->vis.box);
 	bv_box.set		(K->vis.box);
 	bv_box.getsphere(bv_sphere.P,bv_sphere.R);
@@ -164,6 +163,14 @@ void CCF_Skeleton::BuildState()
 	CKinematics* K	= PKinematics(owner->Visual());
 	K->Calculate	();
 	
+	if (K->LL_BoneCount() != model.size())
+	{
+		model.resize	(K->LL_BoneCount());
+		base_box.set	(K->vis.box);
+		bv_box.set		(K->vis.box);
+		bv_box.getsphere(bv_sphere.P,bv_sphere.R);
+	}
+
 	const Fmatrix &L2W	= owner->XFORM();
 	Fmatrix Mbox,T,TW;
 	for (u16 i=0; i<model.size(); i++)
