@@ -18,7 +18,8 @@ class CAI_Rat : public CCustomMonster
 {
 	enum ESoundCcount {
 		SND_HIT_COUNT=8,
-		SND_DIE_COUNT=4
+		SND_DIE_COUNT=4,
+		SND_VOICE_COUNT=2,
 	};
 
 	enum ERatStates 	{
@@ -34,6 +35,11 @@ class CAI_Rat : public CCustomMonster
 
 	protected:
 		
+		vector<SDynamicSound>	tpaDynamicSounds;
+		DWORD					m_dwMaxDynamicSoundsCount;
+		float					m_fSensetivity;
+		int						m_iSoundIndex;
+		DWORD					m_dwLastUpdate;
 		////////////////////////////////////////////////////////////////////////////
 		// normal animations
 		////////////////////////////////////////////////////////////////////////////
@@ -73,6 +79,13 @@ class CAI_Rat : public CCustomMonster
 		// media
 		sound			sndHit[SND_HIT_COUNT];
 		sound			sndDie[SND_DIE_COUNT];
+		sound			sndVoices[SND_VOICE_COUNT];
+		sound*			m_tpSoundBeingPlayed;
+		DWORD			m_dwLastSoundRefresh;
+		float			m_fMinVoiceIinterval;
+		float			m_fMaxVoiceIinterval;
+		float			m_fVoiceRefreshRate;
+		DWORD			m_dwLastVoiceTalk;
 		
 		// events
 		EVENT			m_tpEventSay;

@@ -38,6 +38,14 @@ CAI_Rat::CAI_Rat()
 	m_tpEventAssignPath = Engine.Event.Handler_Attach("level.entity.path.assign",this);
 	m_dwPatrolPathIndex = -1;
 	m_bFiring = false;
+	tpaDynamicSounds.clear();
+	m_fSensetivity = 0.f;
+	m_iSoundIndex = -1;
+	tpaDynamicSounds.clear();
+	m_dwLastUpdate = 0;
+	m_dwLastVoiceTalk = 0;
+	m_tpSoundBeingPlayed = 0;
+	m_dwLastSoundRefresh = 0;
 }
 
 CAI_Rat::~CAI_Rat()
@@ -95,6 +103,11 @@ void CAI_Rat::Load(LPCSTR section)
 	m_fVisibilityThreshold = pSettings->ReadFLOAT(section,"VisibilityThreshold");
 	m_fLateralMutliplier = pSettings->ReadFLOAT(section,"LateralMultiplier");
 	
+	m_dwMaxDynamicSoundsCount = pSettings->ReadINT(section,"DynamicSoundsCount");
+
+	m_fMinVoiceIinterval = pSettings->ReadFLOAT(section,"MinVoiceIinterval");
+	m_fMaxVoiceIinterval = pSettings->ReadFLOAT(section,"MaxVoiceIinterval");
+	m_fVoiceRefreshRate	 = pSettings->ReadFLOAT(section,"VoiceRefreshRate");
 	//fire
 	m_fHitPower       = pSettings->ReadINT(section,"HitPower");
 	m_dwHitInterval   = pSettings->ReadINT(section,"HitInterval");

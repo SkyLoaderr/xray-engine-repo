@@ -52,7 +52,6 @@ CAI_Zombie::CAI_Zombie()
 	m_dwLastVoiceTalk = 0;
 	m_tpSoundBeingPlayed = 0;
 	m_dwLastSoundRefresh = 0;
-
 }
 
 CAI_Zombie::~CAI_Zombie()

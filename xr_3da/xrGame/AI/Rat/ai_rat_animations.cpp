@@ -44,18 +44,20 @@ void __stdcall CAI_Rat::SpineSpinCallback(CBoneInstance* B)
 // sounds
 void CAI_Rat::vfLoadSounds()
 {
-	pSounds->Create(sndHit[0],TRUE,"actor\\bhit_flesh-1");
-	pSounds->Create(sndHit[1],TRUE,"actor\\bhit_flesh-2");
-	pSounds->Create(sndHit[2],TRUE,"actor\\bhit_flesh-3");
-	pSounds->Create(sndHit[3],TRUE,"actor\\bhit_helmet-1");
-	pSounds->Create(sndHit[4],TRUE,"actor\\bullet_hit1");
-	pSounds->Create(sndHit[5],TRUE,"actor\\bullet_hit2");
-	pSounds->Create(sndHit[6],TRUE,"actor\\ric_conc-1");
-	pSounds->Create(sndHit[7],TRUE,"actor\\ric_conc-2");
-	pSounds->Create(sndDie[0],TRUE,"actor\\die0");
-	pSounds->Create(sndDie[1],TRUE,"actor\\die1");
-	pSounds->Create(sndDie[2],TRUE,"actor\\die2");
-	pSounds->Create(sndDie[3],TRUE,"actor\\die3");
+	pSounds->Create(sndHit[0],TRUE,"actor\\bhit_flesh-1",0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	pSounds->Create(sndHit[1],TRUE,"actor\\bhit_flesh-2",0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	pSounds->Create(sndHit[2],TRUE,"actor\\bhit_flesh-3",0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	pSounds->Create(sndHit[3],TRUE,"actor\\bhit_helmet-1",0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	pSounds->Create(sndHit[4],TRUE,"actor\\bullet_hit1",0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	pSounds->Create(sndHit[5],TRUE,"actor\\bullet_hit2",0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	pSounds->Create(sndHit[6],TRUE,"actor\\ric_conc-1",0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	pSounds->Create(sndHit[7],TRUE,"actor\\ric_conc-2",0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	pSounds->Create(sndDie[0],TRUE,"actor\\die0",0,SOUND_TYPE_MONSTER_DYING_HUMAN);
+	pSounds->Create(sndDie[1],TRUE,"actor\\die1",0,SOUND_TYPE_MONSTER_DYING_HUMAN);
+	pSounds->Create(sndDie[2],TRUE,"actor\\die2",0,SOUND_TYPE_MONSTER_DYING_HUMAN);
+	pSounds->Create(sndDie[3],TRUE,"actor\\die3",0,SOUND_TYPE_MONSTER_DYING_HUMAN);
+	pSounds->Create(sndVoices[0],TRUE,"monsters\\rat\\rat_1",0,SOUND_TYPE_MONSTER_TALKING_HUMAN);
+	pSounds->Create(sndVoices[1],TRUE,"monsters\\rat\\rat_2",0,SOUND_TYPE_MONSTER_TALKING_HUMAN);
 }
 
 // animations
