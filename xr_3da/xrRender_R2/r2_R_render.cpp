@@ -145,6 +145,7 @@ void CRender::Render		()
 
 	//******* Z-prefill calc - DEFERRER RENDERER
 	if (ps_r2_ls_flags.test(R2FLAG_ZFILL))		{
+		RCache.set_ColorWriteEnable					(FALSE);
 		Device.Statistic.RenderCALC.Begin			();
 		float		z_distance	= 0.1f;
 		Fmatrix		m_zfill, m_project;
@@ -159,6 +160,7 @@ void CRender::Render		()
 		render_main									(m_zfill)	;
 		r_pmask										(true,false);	// disable priority "1"
 		Device.Statistic.RenderCALC.End				( )			;
+		RCache.set_ColorWriteEnable					( );
 	}
 
 	//******* Main calc - DEFERRER RENDERER
