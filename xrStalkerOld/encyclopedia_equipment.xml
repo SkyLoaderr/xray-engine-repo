@@ -7,40 +7,81 @@
     <!------------------------------ Items ------------------------------>
     <!------------------------------------------------------------------->
 
+    <!-------------------------------- Bread ----------------------------->
 
-    <!-------------------------------- Med ----------------------------->
-
-    <article id="equipment_items_med" name="Med" group="Equipment">
-        <ltx>medkit</ltx>
-        <text>enc_equipment_items_med</text>
+    <article id="equipment_food_bread1" name="Bread" group="Equipment/Food">
+        <ltx>bread</ltx>
+        <text>enc_equipment_food_bread1</text>
     </article>
 
-    <!-------------------------------- Capsule ----------------------------->
+    <!-------------------------------- Kolbasa ----------------------------->
 
-    <article id="equipment_items_capsule" name="Capsule" group="Equipment/Items">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
-        <text>enc_equipment_items_capsule</text>
+    <article id="equipment_food_kolbasa1" name="Kolbasa" group="Equipment/Food">
+        <ltx>kolbasa</ltx>
+        <text>enc_equipment_food_kolbasa1</text>
+    </article>
+
+    <!-------------------------------- Conserva ----------------------------->
+
+    <article id="equipment_food_conserva1" name="Conserva" group="Equipment/Food">
+        <ltx>conserva</ltx>
+        <text>enc_equipment_food_conserva1</text>
+    </article>
+
+    <!-------------------------------- Vodka ----------------------------->
+
+    <article id="equipment_items_vodka1" name="Vodka" group="Equipment/Food">
+        <ltx>vodka</ltx>
+        <text>enc_equipment_items_vodka1</text>
+    </article>
+
+    <!-------------------------------- Antirad ----------------------------->
+
+    <article id="equipment_medi_antirad1" name="Antirad" group="Equipment/Medi">
+        <ltx>antirad</ltx>
+        <text>enc_equipment_medi_antirad1</text>
+    </article>
+
+    <!-------------------------------- Medkit ----------------------------->
+
+    <article id="equipment_medi_medkit1" name="Medkit" group="Equipment/Medi">
+        <ltx>medkit</ltx>
+        <text>enc_equipment_medi_medkit1</text>
+    </article>
+
+    <!-------------------------------- bandage ----------------------------->
+
+    <article id="equipment_medi_bandage1" name="bandage" group="Equipment/Medi">
+        <ltx>bandage</ltx>
+        <text>enc_equipment_medi_bandage1</text>
+    </article>
+
+    <!-------------------------------- device-pda ----------------------------->
+
+    <article id="equipment_devic_device-pda1" name="device-pda" group="Equipment/Devic">
+        <ltx>device_pda</ltx>
+        <text>enc_equipment_devic_device-pda1</text>
+    </article>
+
+    <!-------------------------------- device-torch ----------------------------->
+
+    <article id="equipment_devic_device-torch1" name="device-torch" group="Equipment/Devic">
+        <ltx>device_torch</ltx>
+        <text>enc_equipment_devic_device-torch1</text>
     </article>
 
     <!-------------------------------- Detect1 ----------------------------->
 
-    <article id="equipment_items_detect1" name="Detect1" group="Equipment">
+    <article id="equipment_devic_detect1" name="Detect1" group="Equipment/Devic">
         <ltx>detector_simple</ltx>
-        <text>enc_equipment_items_detect1</text>
+        <text>enc_equipment_devic_detect1</text>
     </article>
 
-    <!-------------------------------- Detect2 ----------------------------->
+    <!-------------------------------- Binocul ----------------------------->
 
-    <article id="equipment_items_detect2" name="Detect2" group="Equipment/Items">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
-        <text>enc_equipment_items_detect2</text>
-    </article>
-
-    <!-------------------------------- Detect3 ----------------------------->
-
-    <article id="equipment_items_detect3" name="Detect3" group="Equipment/Items">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
-        <text>enc_equipment_items_detect3</text>
+    <article id="equipment_devic_binocul1" name="Binocul" group="Equipment/Devic">
+        <ltx>wpn_binoc</ltx>
+        <text>enc_equipment_devic_binocul1</text>
     </article>
 
     <!-------------------------------- Detect4 ----------------------------->
