@@ -40,7 +40,7 @@ public:
 
 class CSpawn : public CThread {
 public:
-	CSE_ALifeGraph::SLevel			m_tLevel;
+	CSE_ALifeGraph::SLevel		m_tLevel;
 	ALIFE_OBJECT_P_VECTOR		m_tpSpawnPoints;
 	u32							m_dwLevelID;
 	CAI_Map						*m_tpAI_Map;
@@ -205,7 +205,7 @@ public:
 			sprintf				(S,"There are no graph vertices in the game graph for the level '%s' !\n",m_tLevel.caLevelName);
 			R_ASSERT2			(dwStart < dwFinish,S);
 		}
-		for (int i=0; i<(int)m_tpSpawnPoints.size(); i++, thProgress = fRelation + float(i)/float(m_tpSpawnPoints.size())*(1.f - fRelation)) {
+		for (int i=0; i<(int)m_tpSpawnPoints.size(); i++, thProgress = .75f*(fRelation + float(i)/float(m_tpSpawnPoints.size())*(1.f - fRelation))) {
 			if ((m_tpSpawnPoints[i]->m_tNodeID = m_tpAI_Map->dwfFindCorrespondingNode(m_tpSpawnPoints[i]->o_Position)) == -1) {
 				string4096 S1;
 				char *S = S1;
@@ -233,9 +233,70 @@ public:
 			}
 			m_tpSpawnPoints[i]->m_tGraphID	= dwBest;
 			m_tpSpawnPoints[i]->m_fDistance	= fCurrentBestDistance;
-			thProgress						= 1.0f;
 		}
+		thProgress				= .75f;
+		vfGenerateArtefactSpawnPositions();
+		thProgress				= 1.0f;
 	};
+
+	void						vfShallowGraphSearch(u32 dwStartNode, float fSearchRange, xr_vector<u32> &tpaStack, xr_vector<bool> &tpaMask)
+	{
+		u32							dwCurNodeID, dwNextNodeID, dwNeighbourCount;
+		NodeCompressed				*tpStartNode = m_tpAI_Map->Node(dwStartNode), *tpCurNode, *tpCurrentNode = tpStartNode;
+		Fvector						tStartPosition = m_tpAI_Map->tfGetNodeCenter(dwStartNode);
+		float						fRangeSquare = fSearchRange*fSearchRange, fDistance = tStartPosition.distance_to(m_tpAI_Map->tfGetNodeCenter(tpStartNode));
+		NodeLink					*I, *E;
+
+		tpaStack.clear				();
+		tpaStack.push_back			(dwStartNode);
+		tpaMask[dwStartNode]		= true;
+
+		// Cycle
+		for (u32 i=0; i<tpaStack.size(); i++) {
+			dwCurNodeID				= tpaStack[i];
+			tpCurNode				= m_tpAI_Map->Node(dwCurNodeID);
+			dwNeighbourCount		= tpCurNode->links;
+			I						= (NodeLink *)((BYTE *)tpCurNode + sizeof(NodeCompressed));
+			E						= I + dwNeighbourCount;
+			for ( ; I != E; I++) {
+				if (tpaMask[dwNextNodeID = m_tpAI_Map->UnpackLink(*I)])
+					continue;
+				tpCurrentNode		= m_tpAI_Map->Node(dwNextNodeID);
+				fDistance			= tStartPosition.distance_to_sqr(m_tpAI_Map->tfGetNodeCenter(tpCurrentNode));
+				if (fDistance >= fRangeSquare)
+					continue;
+				tpaMask[dwNextNodeID] = true;
+				tpaStack.push_back	(dwNextNodeID);
+			}
+		}
+
+		{
+			xr_vector<u32>::iterator I	= tpaStack.begin();
+			xr_vector<u32>::iterator E	= tpaStack.end();
+			for ( ; I!=E; I++)	
+				tpaMask[*I] = false;
+		}
+	}
+	
+	void						vfGenerateArtefactSpawnPositions()
+	{
+		xr_vector<u32>			l_tpaStack;
+		l_tpaStack.reserve		(1024);
+		m_tpAI_Map->q_mark_bit.assign(m_tpAI_Map->q_mark_bit.size(),false);
+		ALIFE_OBJECT_P_IT		B = m_tpSpawnPoints.begin(), I = B;
+		ALIFE_OBJECT_P_IT		E = m_tpSpawnPoints.end();
+		for ( ; I != E; I++) {
+			CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(*I);
+			if (!l_tpALifeAnomalousZone)
+				continue;
+			
+			vfShallowGraphSearch(l_tpALifeAnomalousZone->m_tNodeID,l_tpALifeAnomalousZone->m_fRadius,l_tpaStack,m_tpAI_Map->q_mark_bit);
+
+			if (l_tpALifeAnomalousZone->m_wArtefactSpawnCount >= l_tpaStack.size()) {
+				l_tpALifeAnomalousZone->m_wArtefactSpawnCount = l_tpaStack.size();
+			}
+		}
+	}
 
 	void						Save(CMemoryWriter &fs, u32 &dwID)
 	{
@@ -277,7 +338,7 @@ void xrMergeSpawns(LPCSTR name)
 	tSpawnHeader.dwSpawnCount	= 0;
 	u32							dwGroupOffset = 0;
 	xr_vector<CSpawn *>			tpLevels;
-	CSE_ALifeGraph::SLevel			tLevel;
+	CSE_ALifeGraph::SLevel		tLevel;
     LPCSTR						N,V;
 	R_ASSERT2					(Ini->section_exist("levels"),"Can't find section 'levels' in the 'game.ltx'!");
     for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
@@ -299,7 +360,7 @@ void xrMergeSpawns(LPCSTR name)
 	Phase						("Searching for corresponding graph vertices");
 	for (u32 i=0, N = tpLevels.size(); i<N; i++)
 		tThreadManager.start	(tpLevels[i]);
-	tThreadManager.wait();
+	tThreadManager.wait			();
 	
 	Phase						("Merging spawn files");
 	for (u32 i=0, N = tpLevels.size(); i<N; i++)

@@ -524,8 +524,10 @@ void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		xr_free					(l_dwaWeights);
 		xr_free					(l_cppArtefactSections);
 	}
-	if (m_wVersion > 25)
+	if (m_wVersion > 25) {
 		tNetPacket.r_u16		(m_wArtefactSpawnCount);
+		tNetPacket.r_u32		(m_dwStartIndex);
+	}
 }
 
 void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)
@@ -545,6 +547,7 @@ void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)
 		tNetPacket.w_u32		(m_dwaWeights[i]);
 	}
 	tNetPacket.w_u16			(m_wArtefactSpawnCount);
+	tNetPacket.w_u32			(m_dwStartIndex);
 }
 
 void CSE_ALifeAnomalousZone::UPDATE_Read	(NET_Packet	&tNetPacket)
