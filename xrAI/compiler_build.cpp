@@ -323,7 +323,7 @@ void xrBuildNodes()
 		Pos.y			+=1;
 		Fvector			Dir; Dir.set(0,-1,0);
 		
-		XRC.RayPick		(0,&Level,Pos,Dir,2);
+		XRC.RayPick		(0,&Level,Pos,Dir,3);
 		if (XRC.RayContact.size()==0) {
 			Msg("Can't align emitter");
 			abort();
