@@ -47,7 +47,9 @@ struct ParticleGroup
 	
 	inline void Remove(int i)
 	{
-		list[i] = list[--p_count];
+		Particle& m = list[i];
+		if (m.flags&Particle::DYING) m		 = list[--p_count];
+		else						 m.flags |= Particle::DYING;
 	}
 	
 	inline BOOL Add(const pVector &pos, const pVector &posB,

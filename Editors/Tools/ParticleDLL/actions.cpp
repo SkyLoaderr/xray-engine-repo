@@ -1006,7 +1006,9 @@ void PAMove::Execute(ParticleGroup *group)
 	for(int i = 0; i < group->p_count; i++)
 	{
 		Particle &m = group->list[i];
-		
+		// пропустить (на следующем кадре будет удален)
+		if (m.flags&Particle::DYING) continue;
+		// move
 		m.age	+= dt;
 		m.pos	+= m.vel * dt;
 	}
