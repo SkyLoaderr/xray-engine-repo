@@ -49,7 +49,7 @@ end
 		self.object:object("af_blood") ~= nil 
 	then		
 		self.object:give_info_portion("tutorial_artefact_gain")
-		self.object:set_task_state(task.completed, "tutorial_find_artefact", 0)
+		self.object:set_task_state(task.completed, "tutorial_find_artefact", 1)
 	end 
 
 	if self.object:has_info("tutorial_wounded_help") then
@@ -97,29 +97,6 @@ end
 		self.object:set_task_state(task.completed, "esc_dinamit_to_volk", 1)
 	end       	
 
---[[
-       		if self.object:has_info("escape_need_agroprom_documents") and
-       		   self.object:object("quest_case_02") ~= nil
-       		then
-       			self.object:give_info_portion("agroprom_take_agroprom_documents")
-				self.object:set_task_state(task.completed, "agroprom_get_military_documents", 1)
-       		end       	
-
-			if self.object:has_info("garbage_find_stalker") and
-       			self.object:object("garbage_letter") ~= nil
-       		then
-       			self.object:give_info_portion("garbage_find_dead_stalker")
-       			self.object:give_info_portion("agroprom_meet_gunslinger_band")
-				self.object:set_task_state(task.fail, "garbage_meet_stalker", 0)				
-       		end       	
-
-       		if self.object:has_info("agroprom_meet_gunslinger_band") and
-       		   self.object:object("agroprom_notebook") ~= nil
-       		then
-       			self.object:give_info_portion("agroprom_find_gunslinger_band")
-				self.object:set_task_state(task.fail, "agroprom_meet_gunslinger_band", 0)
-       		end
-]]
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_init    (npc)
