@@ -3,6 +3,8 @@
 #include "xrlevel.h"
 #include "communicate.h"
 #include "cl_rapid.h"
+#include "cl_intersect.h"
+#include "xrThread.h"
 
 #define LT_DIRECT		0
 #define LT_POINT		1
