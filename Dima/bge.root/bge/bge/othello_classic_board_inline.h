@@ -76,7 +76,6 @@ template <COthelloClassicBoard::cell_type opponent_color>
 IC	void COthelloClassicBoard::undo_move		()
 {
 	VERIFY								(!m_flip_stack.empty());
-	m_move_processor.on_undo_move		();
 
 	CStackCell							&stack_cell = m_flip_stack.top();
 	int									flip_count = (int)stack_cell.m_flip_count;
@@ -91,7 +90,7 @@ IC	void COthelloClassicBoard::undo_move		()
 			m_difference				-= 2*flip_count + 1;
 		++m_empties;
 		VERIFY							(!m_flip_stack.empty());
-//		m_free_cells.insert				(m_flip_stack.top().m_cell - m_board);
+		m_move_processor.on_undo_move	(m_flip_stack.top().m_cell - m_board);
 		*m_flip_stack.top().m_cell		= EMPTY;
 		m_flip_stack.pop				();
 		VERIFY							(!m_flip_stack.empty());
@@ -104,19 +103,26 @@ IC	void COthelloClassicBoard::undo_move		()
 		}
 		while (flip_count);
 	}
+	else
+		m_move_processor.on_undo_move	(MOVE_PASS);
 }
 
 IC	void COthelloClassicBoard::undo_move		()
+{
+	if (color_to_move() == BLACK)
+		undo_move<BLACK>			();
+	else
+		undo_move<WHITE>			();
+}
+
+IC	void COthelloClassicBoard::script_undo_move		()
 {
 	if (m_flip_stack.empty()) {
 		ui().error_log				("Undo stack is empty!\n");
 		return;
 	}
 
-	if (color_to_move() == BLACK)
-		undo_move<BLACK>			();
-	else
-		undo_move<WHITE>			();
+	undo_move						();
 }
 
 IC	void COthelloClassicBoard::change_color		()

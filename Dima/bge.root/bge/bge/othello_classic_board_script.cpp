@@ -9,7 +9,6 @@
 #include "stdafx.h"
 #include "othello_classic_board.h"
 #include "script_space.h"
-
 #include <luabind/iterator_policy.hpp>
 
 using namespace luabind;
@@ -25,7 +24,7 @@ void COthelloClassicBoard::script_register(lua_State *L)
 			.def("move",				(void (COthelloClassicBoard::*)(const cell_index &, const cell_index &))(&COthelloClassicBoard::do_move))
 			.def("move",				(void (COthelloClassicBoard::*)(const cell_index &))(&COthelloClassicBoard::do_move))
 			.def("move",				(void (COthelloClassicBoard::*)(LPCSTR))(&COthelloClassicBoard::do_move))
-			.def("undo",				(void (COthelloClassicBoard::*)())(&COthelloClassicBoard::undo_move))
+			.def("undo",				&COthelloClassicBoard::script_undo_move)
 			.def("can_move",			(bool (COthelloClassicBoard::*)(const cell_index &, const cell_index &) const)(&COthelloClassicBoard::can_move))
 			.def("can_move",			(bool (COthelloClassicBoard::*)(LPCSTR) const)(&COthelloClassicBoard::can_move))
 			.def("can_move",			(bool (COthelloClassicBoard::*)() const)(&COthelloClassicBoard::can_move))

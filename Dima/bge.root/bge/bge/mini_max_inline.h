@@ -36,6 +36,7 @@ IC	evaluator_type &_minimax::evaluator	() const
 TEMPLATE_SPECIALIZATION
 IC	typename _minimax::result_type _minimax::search	(int depth)
 {
+#if 1
 	++m_counter;
 
 	if (board().terminal_position())
@@ -59,6 +60,32 @@ IC	typename _minimax::result_type _minimax::search	(int depth)
 	}
 
 	return						(result);
+#else
+	++m_counter;
+
+	if (board().terminal_position())
+		return					(board().score());
+
+	if (!depth)
+		return					(evaluator().evaluate(board()));
+
+	result_type					result = -evaluator_type::infinity, current;
+
+	board_type::move_iterator	I = board().moves().begin();
+	board_type::move_iterator	E = board().moves().end();
+	for ( ; I != E; ++I) {
+		if (!board().try_move(*I))
+			continue;
+
+		current					= search(depth - 1);
+		if (current > result)
+			result				= current;
+
+		board().undo_move		();
+	}
+
+	return						(result);
+#endif
 }
 
 #undef TEMPLATE_SPECIALIZATION

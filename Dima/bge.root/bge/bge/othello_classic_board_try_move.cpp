@@ -104,21 +104,24 @@ IC	bool COthelloClassicBoard::try_move		(const cell_index &index)
 
 bool COthelloClassicBoard::try_move			(const cell_index &index)
 {
-	m_move_processor.on_do_move	();
-
 	if (index != MOVE_PASS) {
-		if (color_to_move() == BLACK)
+		if (color_to_move() == BLACK) {
 			if (!try_move<BLACK>(index))
 				return	(false);
-		else
+		}
+		else {
 			if (!try_move<WHITE>(index))
 				return	(false);
+		}
+		m_move_processor.on_do_move	(index);
+
 		return			(true);
 	}
 	
-	if (!can_move())
+	if (moves().size() > 1)
 		return			(false);
 	
+	m_move_processor.on_do_move		(index);
 	change_color		();
 	m_flip_stack.push	(CStackCell(0,m_passed));
 	m_passed			= true;

@@ -35,8 +35,8 @@ protected:
 public:
 	IC						CMoveProcessor			();
 	IC		void			init					();
-	IC		void			on_do_move				();
-	IC		void			on_undo_move			();
+	IC		void			on_do_move				(const move_type &move);
+	IC		void			on_undo_move			(const move_type &move);
 	IC		CSPositionMoves	&current_position_moves	();
 	IC		move_container	&moves					();
 	IC		bool			actual					() const;

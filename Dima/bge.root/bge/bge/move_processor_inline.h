@@ -26,15 +26,14 @@ IC	void CSMoveProcessor::init			()
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CSMoveProcessor::on_do_move	()
+IC	void CSMoveProcessor::on_do_move	(const move_type &move)
 {
 	VERIFY								(m_position_moves.end() != m_current_position_moves);
-	++m_current_position_moves;
-	(*m_current_position_moves).init	();
+	(*(++m_current_position_moves)).init();
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CSMoveProcessor::on_undo_move	()
+IC	void CSMoveProcessor::on_undo_move	(const move_type &move)
 {
 	VERIFY						(m_position_moves.begin() != m_current_position_moves);
 	--m_current_position_moves;
