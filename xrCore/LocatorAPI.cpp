@@ -32,7 +32,10 @@ FS_Path::FS_Path	(LPCSTR _Root, LPCSTR _Add, LPCSTR _DefExt, LPCSTR _FilterCapti
 	m_Add			= _Add?xr_strdup(_Add):0;
 	m_Root			= _Root?xr_strdup(_Root):0;
     m_Flags.set		(flags);
+#ifdef _EDITOR
+	// Editor(s)/User(s) wants pathes already created in "real" file system :)
 	VerifyPath		(m_Path);
+#endif
 }
 
 LPCSTR FS_Path::_update(LPSTR dest, LPCSTR src)const
@@ -173,7 +176,7 @@ void CLocatorAPI::ProcessOne	(const char* path, LPVOID _F)
 		Register	(N,0xffffffff,0,F.size,0,(u32)F.time_write);
 		Recurse		(N);
 	} else {
-		if (strext(N) && 0==strncmp(strext(N),".xp",3) && !bNoRecurse)	ProcessArchive	(N);
+		if (strext(N) && 0==strncmp(strext(N),".xp",3))					ProcessArchive	(N);
 		else															Register		(N,0xffffffff,0,F.size,0,(u32)F.time_write);
 	}
 }
