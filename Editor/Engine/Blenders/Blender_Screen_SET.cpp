@@ -66,7 +66,7 @@ void	CBlender_Screen_SET::Compile	(CBlender_Recorder& RS, sh_list& L_textures, s
 {
 	RS.PassBegin		();
 	{
-		RS.PassSET_ZB		(FALSE,FALSE);
+		RS.PassSET_ZB		(oZTest.value,oZWrite.value);
 		switch (oBlend.IDselected)
 		{
 		case 0:	// SET
@@ -88,8 +88,8 @@ void	CBlender_Screen_SET::Compile	(CBlender_Recorder& RS, sh_list& L_textures, s
 			RS.PassSET_Blend	(TRUE,	D3DBLEND_SRCALPHA,D3DBLEND_ONE,			FALSE,oAREF.value);
 			break;
 		}
-		RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
-		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(FALSE));
+		RS.R().SetRS		(D3DRS_LIGHTING,					BC(oLighting.value));
+		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(oFog.value));
 		RS.StageBegin		();
 		{
 			RS.StageSET_Address	(D3DTADDRESS_CLAMP);
