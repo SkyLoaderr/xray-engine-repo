@@ -631,10 +631,10 @@ function set_robber(object, enabled, team, path_rob, bait_path, bait_object, bai
 	st.bait_self = utils.conf_get_bool(char_ini, "robber", "bait_self", bait_self, object, false)
 	--st.bait_radius = utils.conf_get_ TODO
 
-	if not st.bait_path and not st.bait_object and not st.bait_self then
-		utils.abort("set_robber: object:name()='%s': please specify one of the following fields in customdata: " ..
-			"bait_path, bait_object, bait_self", utils.to_str(object:name()))
-	end
+	--if not st.bait_path and not st.bait_object and not st.bait_self then
+	--	utils.abort("set_robber: object:name()='%s': please specify one of the following fields in customdata: " ..
+	--		"bait_path, bait_object, bait_self", utils.to_str(object:name()))
+	--end
 	
 	if st.action ~= nil then
 		st.action.reset_scheme(st.action)
