@@ -28,6 +28,6 @@
 	</descr_list>
 
 	<!-- IMAGE STATIC -->
-	<image_static x="-10" y="35" width="320" height="160"/>
+	<image_static x="0" y="35" width="320" height="160"/>
 </window>
 
