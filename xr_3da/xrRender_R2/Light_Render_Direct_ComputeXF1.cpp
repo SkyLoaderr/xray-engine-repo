@@ -82,4 +82,11 @@ void	CLight_Render_Direct::compute_xf_1	()
 	float				dx	= 2*bbd.x;
 	float				dy	= 2*bbd.y;
 	L_project.build_projection_ortho(dx,dy,1.f,DSM_d_range+50);
+
+	// 
+	L_combine.mul			(L_project,L_view);
+}
+
+void CLight_Render_Direct::compute_xf_2()
+{
 }

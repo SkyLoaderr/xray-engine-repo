@@ -23,7 +23,7 @@ void CRender::Render	()
 	Device.Statistic.RenderCALC.End			();
 
 	//******* Main render
-	Device.Statistic.RenderDUMP.Begin();
+	Device.Statistic.RenderDUMP.Begin		();
 	{
 		Target.phase_scene					();
 		rmNormal							();
@@ -34,13 +34,25 @@ void CRender::Render	()
 		// mapSorted.traverseRL				(sorted_L1);
 		mapSorted.clear						();
 	}
-	Device.Statistic.RenderDUMP.End();
+	Device.Statistic.RenderDUMP.End			();
 
-	//******* Direct lighting shadow
-	HOM.Disable								();
-	LR_Direct.compute_xf_1					();
-
+	//******* Direct lighting+shadow		::: Calculate
+	Device.Statistic.RenderCALC.Begin		();
+	{
+		HOM.Disable								();
+		LR_Direct.compute_xf_1					();
+		render_smap_direct						(LR_Direct.L_combine);
+		LR_Direct.compute_xf_2					();
+	}
+	Device.Statistic.RenderCALC.End			();
 	
+	//******* Direct lighting+shadow		::: Render
+	Device.Statistic.RenderCALC.Begin		();
+	{
+		render_scenegraph						();
+	}
+	Device.Statistic.RenderCALC.End			();
+
 	// Postprocess
 	Target.phase_combine					();
 	
