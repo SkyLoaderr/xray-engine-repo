@@ -79,7 +79,7 @@ void	xrMemory::dbg_check		()
 	// Check overrun
 	debug_cs.Enter			();
 	debug_mode				= FALSE;
-	for (int it=0; it<debug_info.size(); it++)
+	for (int it=0; it<int(debug_info.size()); it++)
 	{
 		if (0==debug_info[it]._p)	
 			continue;
