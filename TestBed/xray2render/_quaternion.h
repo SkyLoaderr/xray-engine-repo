@@ -147,7 +147,7 @@ public:
 	typedef Self&			SelfRef;
 	typedef const Self&		SelfCRef;
 private:
-	IC T _asin(T x)
+	IC T _asin_(T x)
 	{
 		const T c1 = 0.892399f;
 		const T c3 = 1.693204f;
@@ -159,9 +159,9 @@ private:
 		
 		return d;
 	}
-	IC T _acos(T x)
+	IC T _acos_(T x)
 	{
-		return PI_DIV_2 - _asin(x);
+		return PI_DIV_2 - _asin_(x);
 	}
 public:
 	T x,y,z,w;
@@ -363,7 +363,7 @@ public:
 		}
 		
 		if ( (1.0f - cosom) > EPS ) {
-			T	omega	= _acos( cosom );
+			T	omega	= _acos_( cosom );
 			T	i_sinom = 1.f / _sin( omega );
 			T	t_omega	= tm*omega;
 			Scale0 = _sin( omega - 	t_omega ) * i_sinom;
