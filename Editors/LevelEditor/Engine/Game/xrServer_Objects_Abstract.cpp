@@ -69,6 +69,7 @@ void CSE_Shape::cform_write					(NET_Packet	&tNetPacket)
 CSE_Visual::CSE_Visual		   	(LPCSTR name)
 {
 	visual_name					= name;
+    startup_animation			= "$editor";
 }
 
 CSE_Visual::~CSE_Visual			()
