@@ -45,7 +45,7 @@ public:
 	{
 		DWORD			id;
 		b_texture		lm;
-
+		
 		Layer()			{ ZeroMemory(this,sizeof(*this)); }
 	};
 	vector<Layer>		layers;
@@ -70,9 +70,9 @@ public:
 	DWORD	GetFaceCount()	{ return tris.size();	};
 
 	VOID	Light			(HASH& H);
-	VOID	L_Direct		(HASH& H);
+	VOID	L_Direct		(HASH& H, DWORD layer);
 	VOID	L_Direct_Edge	(UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size);
-	VOID	L_Calculate		(HASH& H);
+	VOID	L_Calculate		(HASH& H, DWORD layer);
 	VOID	Save			();
 
 	WORD	GetBaseMaterial() { return tris.front().owner->dwMaterial;	}
