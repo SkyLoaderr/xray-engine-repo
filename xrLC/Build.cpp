@@ -396,7 +396,12 @@ void CBuild::Run	(string& P)
 	Phase			("Calculating vertex lighting...");
 	mem_Compact		();
 	LightVertex		();
-	
+
+	FPU::m64r		();
+	Phase			("Destroying collision model...");
+	mem_Compact		();
+	xr_delete		(RCAST_Model);
+
 	FPU::m64r		();
 	Phase			("Merging lightmaps...");
 	mem_Compact		();
