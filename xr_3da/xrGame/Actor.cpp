@@ -461,7 +461,7 @@ void CActor::Update	(DWORD DT)
 		g_Physics			(NET_SavedAccel,Jump,dt);
 		g_cl_ValidateMState	(mstate_wishful);
 		g_SetAnimation		(mstate_real);
-		Level().HUD()->outMessage(0xffffffff,cName(),"%d",AI_NodeID);
+		// Level().HUD()->outMessage(0xffffffff,cName(),"%d",AI_NodeID);
 	} else {
 		// distinguish interpolation/extrapolation
 		DWORD	dwTime		= Level().timeServer()-NET_Latency;
