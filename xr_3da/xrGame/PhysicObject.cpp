@@ -253,7 +253,7 @@ void CPhysicObject::net_Import(NET_Packet& P)
 void CPhysicObject::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
-	if(m_pPhysicsShell&&m_pPhysicsShell->isFractured()) 
+	if ( m_pPhysicsShell && m_pPhysicsShell->isFractured()) //!ai().get_alife() &&
 	{
 		PHSplit();
 	}
@@ -283,13 +283,14 @@ void CPhysicObject::SpawnCopy()
 		CSE_ALifeObjectPhysic		*l_tpALifePhysicObject = dynamic_cast<CSE_ALifeObjectPhysic*>(D);
 		R_ASSERT					(l_tpALifePhysicObject);
 		
+		l_tpALifePhysicObject->m_tGraphID	= game_vertex_id();
 		l_tpALifeDynamicObject->m_tNodeID	= level_vertex_id();
-		l_tpALifePhysicObject->set_visual(*cNameVisual());
-		l_tpALifePhysicObject->type=u32(m_type);
+		l_tpALifePhysicObject->set_visual	(*cNameVisual());
+		l_tpALifePhysicObject->type			= u32(m_type);
 		//char mask=0;
 		//mask&= (1>>1);
-		l_tpALifePhysicObject->flags.set(CSE_ALifeObjectPhysic::flSpawnCopy,1);
-		l_tpALifePhysicObject->source_id		=	u16(ID());
+		l_tpALifePhysicObject->flags.set	(CSE_ALifeObjectPhysic::flSpawnCopy,1);
+		l_tpALifePhysicObject->source_id	= u16(ID());
 		l_tpALifePhysicObject->startup_animation=m_startup_anim;
 		//l_tpALifePhysicObject->flags.set(mask);
 		// Fill
