@@ -59,10 +59,10 @@ void CDetail::Load		(CStream* S)
 
 	// Params
 	flags			= S->Rdword	();
-	number_vertices	= S->Rdword	();
-	number_indices	= S->Rdword	();
 	float s_min		= S->Rfloat	();
 	float s_max		= S->Rfloat	();
+	number_vertices	= S->Rdword	();
+	number_indices	= S->Rdword	();
 	R_ASSERT		(0==(number_indices%3));
 
 	// Vertices
