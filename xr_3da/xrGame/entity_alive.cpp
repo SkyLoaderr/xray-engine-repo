@@ -356,53 +356,31 @@ void CEntityAlive::StartFireParticles(CWound* pWound)
 }
 
 
-//
-class RemoveWoundPred
-{
-private:
-
-	bool	bAlive;
-	float	fStopBurnWoundSize;
-
-public:
-	RemoveWoundPred(bool alive, float stop_burn)
-	{
-		bAlive = alive;
-		fStopBurnWoundSize = stop_burn;
-	}
-
-	bool operator () (CWound* pWound)
-	{
-
-		if(pWound->GetDestroy())
-			return true;
-		else
-		{
-			float burn_size = pWound->TypeSize(ALife::eHitTypeBurn);
-			return (burn_size>0 && (burn_size<fStopBurnWoundSize || !bAlive));
-		}
-	};
-};
 
 
 void CEntityAlive::UpdateFireParticles()
 {
 	if(m_ParticlesWoundList.empty()) return;
 	
-	RemoveWoundPred remove_pred(!!g_Alive(), m_fStopBurnWoundSize);
-	WOUND_LIST_it last_it = remove_if(m_ParticlesWoundList.begin(),
-										m_ParticlesWoundList.end(),
-										remove_pred);
-	
-	for(WOUND_LIST_it it = last_it;  it != m_ParticlesWoundList.end(); it++)
+	WOUND_LIST_it last_it;
+
+	for(WOUND_LIST_it it = m_ParticlesWoundList.begin(); 
+					  it != m_ParticlesWoundList.end();)
 	{
 		CWound* pWound = *it;
+		float burn_size = pWound->TypeSize(ALife::eHitTypeBurn);
 
-		CParticlesPlayer::AutoStopParticles(pWound->GetParticleName(),
-											pWound->GetParticleBoneNum());
+		if(pWound->GetDestroy() || 
+			(burn_size>0 && (burn_size<m_fStopBurnWoundSize || !g_Alive())))
+		{
+			CParticlesPlayer::AutoStopParticles(pWound->GetParticleName(),
+												pWound->GetParticleBoneNum());
+			WOUND_LIST_it current = it; it++;
+			m_ParticlesWoundList.erase(current);
+			continue;
+		}
+		it++;
 	}
-
-	m_ParticlesWoundList.erase(last_it,m_ParticlesWoundList.end());
 }
 
 ALife::ERelationType CEntityAlive::tfGetRelationType	(const CEntityAlive *tpEntityAlive) const

@@ -188,19 +188,19 @@ void CEntityCondition::ChangeBleeding(float percent)
 }
 bool RemoveWoundPred(CWound* pWound)
 {
-	return pWound->GetDestroy();
+	if(pWound->GetDestroy())
+	{
+		xr_delete(pWound);
+		return true;
+	}
+	return false;
 }
 
 void  CEntityCondition::UpdateWounds		()
 {
 	//убрать все зашившие раны из списка
 	WOUND_VECTOR_IT last_it = remove_if(m_WoundVector.begin(), m_WoundVector.end(),RemoveWoundPred);
-	if(m_WoundVector.end() != last_it)
-	{
-		for(WOUND_VECTOR_IT  it = last_it; it != m_WoundVector.end(); it++)
-			xr_delete((*it));
-		m_WoundVector.erase(last_it, m_WoundVector.end());
-	}
+	m_WoundVector.erase(last_it, m_WoundVector.end());
 }
 
 //вычисление параметров с ходом игрового времени
