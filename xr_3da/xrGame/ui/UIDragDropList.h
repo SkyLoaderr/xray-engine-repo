@@ -20,6 +20,10 @@ typedef bool (*CHECK_PROC)(CUIDragDropItem* pItem, CUIDragDropList* pList);
 
 typedef enum{CELL_EMPTY, CELL_FULL} E_CELL_STATE;
 
+
+DEF_LIST (DRAG_DROP_LIST, CUIDragDropItem*);
+
+
 class CUIDragDropList: public CUIWindow
 {
 private:
@@ -35,6 +39,8 @@ public:
 	
 	virtual void AttachChild(CUIWindow* pChild);
 	virtual void DetachChild(CUIWindow* pChild);
+
+	virtual void DetachAll();
 
 	void DropAll();
 		
@@ -72,6 +78,9 @@ public:
 
 	virtual void Draw();
 	virtual void Update();
+
+	DRAG_DROP_LIST& GetDragDropItemsList() {return m_DragDropItemsList;}
+
 protected:
 	//полоса прокрутки
 	CUIScrollBar m_ScrollBar;
@@ -117,6 +126,9 @@ protected:
 	//необходимую для дополнительной проверки
 	//на прием элемента DragDrop себе
 	CHECK_PROC m_pCheckProc;
+
+	//список эл-тов DrapDrop присоединенных в данный момент к списку
+	DRAG_DROP_LIST m_DragDropItemsList;
 };
 
 #endif //_UI_DRAG_DROP_LIST_H_

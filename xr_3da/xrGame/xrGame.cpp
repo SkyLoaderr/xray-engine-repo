@@ -386,21 +386,12 @@ class CCC_ALifeTimeFactor : public CConsoleCommand {
 public:
 	CCC_ALifeTimeFactor(LPCSTR N) : CConsoleCommand(N)  { };
 	virtual void Execute(LPCSTR args) {
-		if (Level().game.type == GAME_SINGLE) {
-			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
-				float id1 = 0.0f;
-				sscanf(args ,"%f",&id1);
-				if (id1 < EPS_L)
-					Msg("Invalid time factor! (%.4f)",id1);
-				else
-					tpGame->m_tpALife->vfSetTimeFactor(id1);
-			}
-			else
-				Log("!ALife simulator is not loaded!");
-		}
+		float id1 = 0.0f;
+		sscanf(args ,"%f",&id1);
+		if (id1 < EPS_L)
+			Msg("Invalid time factor! (%.4f)",id1);
 		else
-			Log("!Not a single player game!");
+			Level().SetGameTimeFactor(id1);
 	}
 };
 
@@ -837,6 +828,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "MercuryBall.h"
 #include "BlackDrops.h"
 #include "Needles.h"
+#include "BastArtifact.h"
 
 #include "customzone.h"
 #include "mosquitobald.h"
@@ -885,7 +877,8 @@ extern "C" {
 			// Artifacts
 			case CLSID_AF_MERCURY_BALL:		P = xr_new<CMercuryBall>();			break;
 			case CLSID_AF_BLACKDROPS:		P = xr_new<CBlackDrops>();			break;
-			case CLSID_AF_NEEDLES:			P = xr_new<CNeedles>();				break;
+			//case CLSID_AF_NEEDLES:			P = xr_new<CNeedles>();				break;
+			case CLSID_AF_NEEDLES:			P = xr_new<CBastArtifact>();		break;
 			case CLSID_AF_GRAVI:	
 			case CLSID_ARTEFACT:			P = xr_new<CGraviArtifact>();		break;
 

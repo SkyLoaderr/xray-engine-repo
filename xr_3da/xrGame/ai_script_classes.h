@@ -357,6 +357,9 @@ public:
 
 	// CInventoryOwner
 	
+	//передача порции информации InventoryOwner
+	bool GiveInfoPortion(int info_index);
+	
 	IC		u32				GetInventoryObjectCount() const
 	{
 		CInventoryOwner		*l_tpInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
@@ -472,4 +475,3 @@ public:
 		return		(!!tpLuaEffector->CLuaEffector::Process(pp));
 	}
 };
-

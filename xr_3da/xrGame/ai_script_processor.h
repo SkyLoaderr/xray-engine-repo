@@ -22,5 +22,8 @@ class CScriptProcessor {
 public:
 						CScriptProcessor			(LPCSTR					caCaption, LPCSTR caScriptString);
 	virtual				~CScriptProcessor			();
-			void		Update						();
+		void			Update						();
+	
+	CLuaVirtualMachine*	GetLuaVirtualMachine() {return m_tpLuaVirtualMachine;}
+
 };

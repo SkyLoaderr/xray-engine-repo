@@ -25,18 +25,21 @@ CUIDragDropList::CUIDragDropList()
 
 	m_iViewRowsNum = 0;
 	m_iCurrentFirstRow = 0;
+
+	m_DragDropItemsList.clear();
 }
 
 CUIDragDropList::~CUIDragDropList()
 {
 	m_vGridState.clear();
 	m_vCellStatic.clear();
+	m_DragDropItemsList.clear();
 	
 }
 
 void CUIDragDropList::AttachChild(CUIDragDropItem* pChild)
 {
-	CUIWindow::AttachChild(pChild);
+	AttachChild((CUIWindow*)pChild);
 	PlaceItemInGrid(pChild);
 
 	pChild->SetWidth(GetCellWidth()*pChild->GetGridWidth());
@@ -63,22 +66,29 @@ void CUIDragDropList::DetachChild(CUIDragDropItem* pChild)
 	if( it != m_ChildWndList.end())
 	{
 		RemoveItemFromGrid(pChild);
-		CUIWindow::DetachChild(pChild);
+		DetachChild((CUIWindow*)pChild);
 	}
 }
 
 void CUIDragDropList::AttachChild(CUIWindow* pChild)
 {
+	CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(pChild);
+	if(pDragDropItem) m_DragDropItemsList.push_back(pDragDropItem);
+
 	inherited::AttachChild(pChild);
 }
 void CUIDragDropList::DetachChild(CUIWindow* pChild)
 {
+	CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(pChild);
+	if(pDragDropItem) m_DragDropItemsList.remove(pDragDropItem);
+
 	inherited::DetachChild(pChild);
 }
 
 void CUIDragDropList::DropAll()
 {
 	CUIWindow::DetachAll();
+	m_DragDropItemsList.clear();
 
 	//освободить фокус мыши, если вдруг кто забыл это сделать!!!!
 	//а ведь забывают, суки!!!!
@@ -89,9 +99,9 @@ void CUIDragDropList::DropAll()
 
 	for(u32 i=0; i<m_vCellStatic.size(); i++)
 	{
-		CUIWindow::AttachChild(&m_vCellStatic[i]);
+		AttachChild(&m_vCellStatic[i]);
 	}
-	CUIWindow::AttachChild(&m_ScrollBar);
+	AttachChild(&m_ScrollBar);
 
 /*	for(WINDOW_LIST_it it=m_ChildWndList.begin(); it!=m_ChildWndList.end(); it++)
 	{
@@ -172,10 +182,18 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			pt_rb.x = pWnd->GetAbsoluteRect().right;
 			pt_rb.y = pWnd->GetAbsoluteRect().bottom;		
 
-			if(PtInRect(&rect, pt_lt) || 
+/*			if(PtInRect(&rect, pt_lt) || 
 			   PtInRect(&rect, pt_lb) ||
 			   PtInRect(&rect, pt_rt) ||
-			   PtInRect(&rect, pt_rb))
+			   PtInRect(&rect, pt_rb))*/
+			POINT pt_center;
+			pt_center.x = (pWnd->GetAbsoluteRect().right+
+						   pWnd->GetAbsoluteRect().left)/2;
+			pt_center.y = (pWnd->GetAbsoluteRect().top+
+						   pWnd->GetAbsoluteRect().bottom)/2;;
+
+
+			if(PtInRect(&rect, pt_center))
 			{
 
 				//отсоединить у прошлого родителя
@@ -200,8 +218,8 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 						pItem->GetParent()->SetCapture(pItem, false);
 						pItem->GetParent()->DetachChild(pItem);
 
-						//присоединить нам
-						CUIWindow::AttachChild(pItem);
+						//присоединить нам (но не помещать снова в сетку)
+						AttachChild((CUIWindow*)pItem);
 						pItem->BringAllToTop(); 
 					}
 					else
@@ -550,4 +568,9 @@ void CUIDragDropList::SetScrollPos(int iScrollPos)
 int CUIDragDropList::GetScrollPos()
 {
 	return m_iCurrentFirstRow;
+}
+void CUIDragDropList::DetachAll()
+{
+	//m_DragDropItemsList.clear();
+	inherited::DetachAll();
 }

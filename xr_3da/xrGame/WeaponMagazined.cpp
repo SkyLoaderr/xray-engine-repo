@@ -513,11 +513,19 @@ void CWeaponMagazined::OnShot		()
 	// Shell Drop
 	OnShellDrop					();
 
-	CParticlesObject* pStaticPG;/* s32 l_c = m_effects.size();*/
+
+	//particles of smoke from the gun
+	CParticlesObject* pStaticPG;
+	//s32 l_c = m_effects.size();
 	pStaticPG = xr_new<CParticlesObject>("weapons\\generic_shoot",Sector());
-	Fmatrix l_pos; l_pos.set(XFORM()); l_pos.c.set(vLastFP);
-	Fvector l_vel; l_vel.sub(Position(),ps_Element(0).vPosition); l_vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
-	pStaticPG->UpdateParent(l_pos, l_vel); pStaticPG->Play();
+	Fmatrix l_pos; 
+	l_pos.set(XFORM()); 
+	l_pos.c.set(vLastFP);
+	Fvector l_vel; 
+	l_vel.sub(Position(),ps_Element(0).vPosition); 
+	l_vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
+	pStaticPG->UpdateParent(l_pos, l_vel); 
+	pStaticPG->Play();
 	//pStaticPG->SetTransform(l_pos); pStaticPG->Play();
 }
 
@@ -548,6 +556,21 @@ void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Col
 		PS->m_Emitter.m_ConeDirection.set(D);
 		PS->play_at_pos		(vEnd);
 		*/
+//		IRender_Sector* S	= ::Render->getSector(pTri->sector);
+		
+		// smoke
+//		LPCSTR ps_gibs		= (Random.randI(5)==0)?"sparks_1":"stones";
+//		CParticlesObject* PS		= xr_new<CParticlesObject> (ps_gibs,S,true);
+		//PS->m_Emitter.m_ConeDirection.set(D);
+//		PS->SetTransform(XFORM());
+//		PS->play_at_pos		(vEnd);
+
+		// stones
+		//PS					= xr_new<CParticlesObject> ("stones",S,true);
+		//PS->m_Emitter.m_ConeDirection.set(D);
+		//PS->play_at_pos		(vEnd);
+
+		
 	}
 }
 

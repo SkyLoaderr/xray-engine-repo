@@ -20,6 +20,7 @@
 #include "luabind\\discard_result_policy.hpp"
 #include "luabind\\iterator_policy.hpp"
 #include "ParticlesObject.h"
+#include "ArtifactMerger.h"
 
 using namespace luabind;
 using namespace Script;
@@ -306,7 +307,8 @@ void Script::vfExportLevel(CLuaVirtualMachine *tpLuaVirtualMachine)
 		// declarations
 		def("cameras",							get_camera_manager),
 		def("object",							get_object_by_name),
-		def("actor",							tpfGetActor)
+		def("actor",							tpfGetActor),
+		def("set_artifact_merge",				&CArtifactMerger::SetArtifactMergeFunctor)
 //		def("get_weather",						Level::get_weather)
 	];
 
@@ -689,6 +691,7 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("object",						(CLuaGameObject *(CLuaGameObject::*)(int))(CLuaGameObject::GetObjectByIndex))
 			.def("set_callback",				&CLuaGameObject::SetCallback)
 			.def("clear_callback",				&CLuaGameObject::ClearCallback)
+			.def("give_info_portion",			&CLuaGameObject::GiveInfoPortion)
 	];
 }
 
@@ -728,4 +731,29 @@ void Script::vfExportEffector(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("finish",						&CLuaEffector::Remove)
 			.def("process",						&CLuaEffectorWrapper::Process_static)
 	];
+}
+
+void Script::vfExportArtifactMerger(CLuaVirtualMachine *tpLuaVirtualMachine)
+{
+	module(tpLuaVirtualMachine)
+	[
+		class_<CArtifactMerger>("artifact_merger")
+		.def("get_mercury_ball_num",	&CArtifactMerger::GetMercuryBallNum)
+		.def("get_gravi_num",			&CArtifactMerger::GetGraviArtifactNum)
+		.def("get_black_drops_num",		&CArtifactMerger::GetBlackDropsNum)
+		.def("get_needles_num",			&CArtifactMerger::GetNeedlesNum)
+
+		.def("destroy_mercury_ball",	&CArtifactMerger::DestroyMercuryBall)
+		.def("destroy_gravi",			&CArtifactMerger::DestroyGraviArtifact)
+		.def("destroy_black_drops",		&CArtifactMerger::DestroyBlackDrops)
+		.def("destroy_needles",			&CArtifactMerger::DestroyNeedles)
+
+		.def("spawn_mercury_ball",	&CArtifactMerger::SpawnMercuryBall)
+		.def("spawn_gravi",			&CArtifactMerger::SpawnGraviArtifact)
+		.def("spawn_black_drops",	&CArtifactMerger::SpawnBlackDrops)
+		.def("spawn_needles",		&CArtifactMerger::SpawnNeedles)
+
+	];
+
+
 }

@@ -299,7 +299,8 @@ void CUIWindow::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	//оповестить дочерние окна
 	for(WINDOW_LIST_it it=m_ChildWndList.begin(); it!=m_ChildWndList.end(); it++)
 	{
-		(*it)->SendMessage(pWnd,msg,pData);
+		if((*it)->IsEnabled())
+			(*it)->SendMessage(pWnd,msg,pData);
 	}
 }
 

@@ -25,6 +25,8 @@ namespace Script {
 	void		vfExportActions				(CLuaVirtualMachine *tpLuaVirtualMachine);
 	void		vfExportObject				(CLuaVirtualMachine *tpLuaVirtualMachine);
 	void		vfExportEffector			(CLuaVirtualMachine *tpLuaVirtualMachine);
+	void		vfExportArtifactMerger		(CLuaVirtualMachine *tpLuaVirtualMachine);
+
 	void		vfLoadStandardScripts		(CLuaVirtualMachine *tpLuaVirtualMachine);
 	void		vfExportToLua				(CLuaVirtualMachine *tpLuaVirtualMachine);
 	bool		bfLoadBuffer				(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caBuffer,		size_t	tSize,				LPCSTR	caScriptName);

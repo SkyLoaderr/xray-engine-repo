@@ -327,7 +327,7 @@ bool CUITradeWnd::IsEnoughtOurRoom(CUIDragDropItem* pItem)
 	//та вещь, что переноситься
 	ruck_list.push_back((PIItem)pItem->GetData());
 	
-	for(WINDOW_LIST_it it = UIOurBagWnd.GetChildWndList().begin(); 
+/*	for(WINDOW_LIST_it it = UIOurBagWnd.GetChildWndList().begin(); 
  	  				   it!= UIOurBagWnd.GetChildWndList().end(); it++)
 	{
 		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
@@ -346,6 +346,21 @@ bool CUITradeWnd::IsEnoughtOurRoom(CUIDragDropItem* pItem)
 		{
 			ruck_list.push_back((PIItem)pDragDropItem->GetData());
 		}
+	}*/
+	for(DRAG_DROP_LIST_it it = UIOurBagList.GetDragDropItemsList().begin(); 
+ 						  it!= UIOurBagList.GetDragDropItemsList().end(); 
+						  it++)
+	{
+		CUIDragDropItem* pDragDropItem = *it;
+		ruck_list.push_back((PIItem)pDragDropItem->GetData());
+	}
+
+	for(DRAG_DROP_LIST_it it = UIOthersTradeList.GetDragDropItemsList().begin(); 
+ 			  			  it!= UIOthersTradeList.GetDragDropItemsList().end(); 
+						  it++)
+	{
+		CUIDragDropItem* pDragDropItem = *it;
+		ruck_list.push_back((PIItem)pDragDropItem->GetData());
 	}
 
 	return FreeRoom(ruck_list,RUCK_WIDTH,RUCK_HEIGHT);
@@ -358,9 +373,26 @@ bool CUITradeWnd::IsEnoughtOthersRoom(CUIDragDropItem* pItem)
 
 	//та вещь, что переноситься
 	ruck_list.push_back((PIItem)pItem->GetData());
-	
+
 	//вещи из рюкзака и окна торговли
-	for(WINDOW_LIST_it it = UIOthersBagList.GetChildWndList().begin(); 
+	for(DRAG_DROP_LIST_it it = UIOthersBagList.GetDragDropItemsList().begin(); 
+ 			  			  it!= UIOthersBagList.GetDragDropItemsList().end(); 
+						  it++)
+	{
+		CUIDragDropItem* pDragDropItem = *it;
+		ruck_list.push_back((PIItem)pDragDropItem->GetData());
+	}
+
+	for(DRAG_DROP_LIST_it it = UIOurTradeList.GetDragDropItemsList().begin(); 
+ 			  			  it!= UIOurTradeList.GetDragDropItemsList().end(); 
+						  it++)
+	{
+		CUIDragDropItem* pDragDropItem = *it;
+		ruck_list.push_back((PIItem)pDragDropItem->GetData());
+	}
+
+
+	/*for(WINDOW_LIST_it it = UIOthersBagList.GetChildWndList().begin(); 
  	  				   it!= UIOthersBagList.GetChildWndList().end(); it++)
 	{
 		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
@@ -378,7 +410,7 @@ bool CUITradeWnd::IsEnoughtOthersRoom(CUIDragDropItem* pItem)
 		{
 			ruck_list.push_back((PIItem)pDragDropItem->GetData());
 		}
-	}
+	}*/
 
 	return FreeRoom(ruck_list, RUCK_WIDTH, RUCK_HEIGHT);
 }
@@ -433,7 +465,7 @@ u32 CUITradeWnd::CalcItemsPrice(CUIDragDropList* pList, CTrade* pTrade)
 {
 	u32 iPrice = 0;
 	
-	for(WINDOW_LIST_it it = pList->GetChildWndList().begin(); 
+	/*for(WINDOW_LIST_it it = pList->GetChildWndList().begin(); 
  	  				   it!= pList->GetChildWndList().end(); it++)
 	{
 		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
@@ -441,7 +473,16 @@ u32 CUITradeWnd::CalcItemsPrice(CUIDragDropList* pList, CTrade* pTrade)
 		{
 			iPrice += pTrade->GetItemPrice((PIItem)pDragDropItem->GetData());
 		}
+	}*/
+	for(DRAG_DROP_LIST_it it = pList->GetDragDropItemsList().begin(); 
+ 			  			  it!= pList->GetDragDropItemsList().end(); 
+						  it++)
+	{
+		CUIDragDropItem* pDragDropItem = *it;
+		iPrice += pTrade->GetItemPrice((PIItem)pDragDropItem->GetData());
 	}
+
+
 
 	return iPrice;
 }
@@ -516,12 +557,17 @@ void CUITradeWnd::SellItems(CUIDragDropList* pSellList,
 							CUIDragDropList* pBuyList,
 							CTrade* pTrade)
 {
-	for(WINDOW_LIST_it it = pSellList->GetChildWndList().begin(); 
-  				   it!=  pSellList->GetChildWndList().end(); it++)
+
+	for(DRAG_DROP_LIST_it it = pSellList->GetDragDropItemsList().begin(); 
+ 			  			  it!= pSellList->GetDragDropItemsList().end(); 
+						  it++)
+//	for(WINDOW_LIST_it it = pSellList->GetChildWndList().begin(); 
+ //				   it!=  pSellList->GetChildWndList().end(); it++)
 	{	
-		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
-		if(pDragDropItem)
-		{
+//		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
+//		if(pDragDropItem)
+//		{
+			CUIDragDropItem* pDragDropItem = *it;
 			pTrade->SellItem((PIItem)pDragDropItem->GetData());
 			
 			//заносим в списко того, кто покупает товар
@@ -529,7 +575,7 @@ void CUITradeWnd::SellItems(CUIDragDropList* pSellList,
 			//вещь обязана появиться у него,
 			//а с  торговцем надо решать.
 			pBuyList->AttachChild(pDragDropItem);
-		}
+//		}
 	}
 
 	pSellList->DropAll();

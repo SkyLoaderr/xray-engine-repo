@@ -1330,26 +1330,6 @@
 							<File
 								RelativePath="WeaponVal.h">
 							</File>
-							<Filter
-								Name="Weapon Vintorez"
-								Filter="">
-								<File
-									RelativePath="WeaponVintorez.cpp">
-								</File>
-								<File
-									RelativePath="WeaponVintorez.h">
-								</File>
-							</Filter>
-						</Filter>
-						<Filter
-							Name="Weapon Walther 99"
-							Filter="">
-							<File
-								RelativePath="WeaponWalther.cpp">
-							</File>
-							<File
-								RelativePath="WeaponWalther.h">
-							</File>
 						</Filter>
 						<Filter
 							Name="Weapon USP45"
@@ -1379,6 +1359,26 @@
 							</File>
 							<File
 								RelativePath=".\WeaponKnife.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Weapon Vintorez"
+							Filter="">
+							<File
+								RelativePath="WeaponVintorez.cpp">
+							</File>
+							<File
+								RelativePath="WeaponVintorez.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Weapon Walther 99"
+							Filter="">
+							<File
+								RelativePath="WeaponWalther.cpp">
+							</File>
+							<File
+								RelativePath="WeaponWalther.h">
 							</File>
 						</Filter>
 					</Filter>
@@ -1463,6 +1463,16 @@
 							</File>
 							<File
 								RelativePath=".\Needles.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="BastArtifact"
+							Filter="">
+							<File
+								RelativePath=".\BastArtifact.cpp">
+							</File>
+							<File
+								RelativePath=".\BastArtifact.h">
 							</File>
 						</Filter>
 					</Filter>
@@ -1993,6 +2003,12 @@
 						Name="InventoryWnd"
 						Filter="">
 						<File
+							RelativePath=".\ui\UIArtifactMergerWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIArtifactMergerWnd.h">
+						</File>
+						<File
 							RelativePath="UIInventory.cpp">
 						</File>
 						<File
@@ -2100,16 +2116,6 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="Diary"
-						Filter="">
-						<File
-							RelativePath=".\ui\UIDiaryWnd.cpp">
-						</File>
-						<File
-							RelativePath=".\ui\UIDiaryWnd.h">
-						</File>
-					</Filter>
-					<Filter
 						Name="TalkWnd"
 						Filter="">
 						<File
@@ -2133,6 +2139,16 @@
 						</File>
 						<File
 							RelativePath=".\ui\UICarBodyWnd.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="Diary"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIDiaryWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIDiaryWnd.h">
 						</File>
 					</Filter>
 				</Filter>

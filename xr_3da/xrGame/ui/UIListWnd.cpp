@@ -100,7 +100,11 @@ void CUIListWnd::RemoveItem(int index)
 	UpdateList();
 
 	//обновить полосу прокрутки
-	m_ScrollBar.SetRange(0,s16(m_ItemList.size()-1>0?m_ItemList.size()-1:0));
+	if(m_ItemList.size()>0)
+		m_ScrollBar.SetRange(0,s16(m_ItemList.size()-1));
+	else
+		m_ScrollBar.SetRange(0,0);
+
 	m_ScrollBar.SetPageSize(s16((u32)m_iRowNum<m_ItemList.size()?
 									 m_iRowNum:m_ItemList.size()));
 	m_ScrollBar.SetScrollPos(s16(m_iFirstShownIndex));

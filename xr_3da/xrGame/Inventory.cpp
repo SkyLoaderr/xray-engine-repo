@@ -420,203 +420,16 @@ CInventory::~CInventory()
 {
 }
 
-
-
-//проверяет есть ли доступное место в рюкзаке
-//для вещи
-//вещи размещаются по тому же принципу, что и 
-//в UIInventoryWnd: сначала самые объемные
-//сравнивает элементы по пространству занимаемому ими в рюкзаке
-/*
-bool CInventory::GreaterRoomInRuck(PIItem item1, PIItem item2)
-{
-	int item1_room = item1->m_iGridWidth*item1->m_iGridHeight;
-	int item2_room = item2->m_iGridWidth*item2->m_iGridHeight;
-
-	if(item1_room > item2_room)
-		return true;
-	else if (item1_room == item2_room)
-	{
-		if(item1->m_iGridWidth >= item2->m_iGridWidth)
-			return true;
-	}
-
-	return false;
-}*/
-
-/*
-bool CInventory::FreeRoom(TIItemList item_list, int width, int height)
-{
-	BOOL* ruck_room = (BOOL*)xr_malloc(width*height);
-	
-	R_ASSERT(ruck_room);
-
-	int i,j,k,m;
-	int place_row = 0,  place_col = 0;
-	bool found_place;
-	bool can_place;
-
-
-	for(i=0; i<height; i++)
-		for(j=0; j<width; j++)
-			ruck_room[i*width + j] = false;
-
-
-	ruck_list = item_list;
-	
-	ruck_list.sort(GreaterRoomInRuck);
-	
-	found_place = true;
-
-	for(PPIItem it = ruck_list.begin(); (it != ruck_list.end()) && found_place; it++) 
-	{
-		PIItem pItem = *it;
-
-		//проверить можно ли разместить элемент,
-		//проверяем последовательно каждую клеточку
-		found_place = false;
-	
-		for(i=0; (i<height - pItem->m_iGridHeight+1) && !found_place; i++)
-		{
-			for(j=0; (j<width - pItem->m_iGridWidth +1) && !found_place; j++)
-			{
-				can_place = true;
-
-				for(k=0; (k<pItem->m_iGridHeight) && can_place; k++)
-				{
-					for(m=0; (m<pItem->m_iGridWidth) && can_place; m++)
-					{
-						if(ruck_room[(i+k)*width + (j+m)])
-								can_place =  false;
-					}
-				}
-			
-				if(can_place)
-				{
-					found_place=true;	
-					place_row = i;
-					place_col = j;
-				}
-
-			}
-		}
-
-		//разместить элемент на найденном месте
-		if(found_place)
-		{
-			for(k=0; k<pItem->m_iGridHeight; k++)
-			{
-				for(m=0; m<pItem->m_iGridWidth; m++)
-				{
-					ruck_room[(place_row+k)*width + place_col+m] = true;
-				}
-			}
-		}
-	}
-
-
-	xr_free(ruck_room);
-
-	//для какого-то элемента места не нашлось
-	if(!found_place) return false;
-
-	return true;
-}
-*/
 //разместились ли вещи в рюкзаке
 bool CInventory::FreeRuckRoom()
 {
 	return FreeRoom(m_ruck,RUCK_WIDTH,RUCK_HEIGHT);
-/*	bool ruck_room[RUCK_HEIGHT][RUCK_WIDTH];
-
-	int i,j,k,m;
-	int place_row = 0,  place_col = 0;
-	bool found_place;
-	bool can_place;
-
-
-	for(i=0; i<RUCK_HEIGHT; i++)
-		for(j=0; j<RUCK_WIDTH; j++)
-			ruck_room[i][j] = false;
-
-
-	ruck_list = m_ruck;
-	
-	ruck_list.sort(GreaterRoomInRuck);
-	
-	found_place = true;
-
-	for(PPIItem it = ruck_list.begin(); (it != ruck_list.end()) && found_place; it++) 
-	{
-		PIItem pItem = *it;
-
-		//проверить можно ли разместить элемент,
-		//проверяем последовательно каждую клеточку
-		found_place = false;
-	
-		for(i=0; (i<RUCK_HEIGHT - pItem->m_iGridHeight+1) && !found_place; i++)
-		{
-			for(j=0; (j<RUCK_WIDTH - pItem->m_iGridWidth +1) && !found_place; j++)
-			{
-				can_place = true;
-
-				for(k=0; (k<pItem->m_iGridHeight) && can_place; k++)
-				{
-					for(m=0; (m<pItem->m_iGridWidth) && can_place; m++)
-					{
-						if(ruck_room[i+k][j+m])
-								can_place =  false;
-					}
-				}
-			
-				if(can_place)
-				{
-					found_place=true;	
-					place_row = i;
-					place_col = j;
-				}
-
-			}
-		}
-
-		//разместить элемент на найденном месте
-		if(found_place)
-		{
-			for(k=0; k<pItem->m_iGridHeight; k++)
-			{
-				for(m=0; m<pItem->m_iGridWidth; m++)
-				{
-					ruck_room[place_row+k][place_col+m] = true;
-				}
-			}
-		}
-	}
-
-	//для какого-то элемента места не нашлось
-	if(!found_place) return false;
-
-	return true;
-//*/
 }
 
 //разместились ли вещи на поясе
 bool CInventory::FreeBeltRoom()
 {
 	return FreeRoom(m_belt, m_maxBelt, 1);
-/*	u32 total_width = 0;
-
-	for(PPIItem it = m_belt.begin(); it != m_belt.end(); it++) 
-	{
-		PIItem pItem = *it;
-		if(pItem->m_iGridHeight>1) return false;
-
-		total_width +=	pItem->m_iGridWidth;
-
-		if(total_width > m_maxBelt) return false;
-	}
-
-	return true;
-//*/
 }
 
 
@@ -718,11 +531,11 @@ bool CInventory::Drop(CGameObject *pObj)
 bool CInventory::DropAll()
 {
 	PSPIItem l_it;
-	
-	for(l_it = m_all.begin(); l_it != m_all.end(); l_it++) 
+
+	for(l_it = m_all.begin(); l_it != m_all.end(); l_it++)
 	{
 		PIItem l_pIItem = *l_it;
-		Ruck(l_pIItem); 
+		Ruck(l_pIItem);
 		l_pIItem->Drop();
 	}
 	return true;
@@ -939,30 +752,16 @@ void CInventory::Update(u32 deltaT)
 		else m_activeSlot = m_nextActiveSlot = 0xffffffff;
 	}
 	
-	/*// Смотрим, что тут можно подобрать
-	CActor *l_pA = dynamic_cast<CActor*>(m_pOwner);
-	if(l_pA) 
-	{
-		l_pA->setEnabled(false);
-		Collide::ray_query	l_rq;
-		if(g_pGameLevel->ObjectSpace.RayPick(Device.vCameraPosition, Device.vCameraDirection, m_takeDist, l_rq)) 
-			m_pTarget = dynamic_cast<PIItem>(l_rq.O);
-		else 
-			m_pTarget = NULL;
-		l_pA->setEnabled(true);
-	}
-	*/
-	
 	//проверить рюкзак и пояс, есть ли вещи, которые нужно выкинуть
-	for(int i = 0; i < 2; i++) 
+	for(int i = 0; i < 2; i++)
 	{
 		TIItemList &l_list = i?m_ruck:m_belt;
 		PPIItem l_it = l_list.begin();
 	
-		while(l_it != l_list.end()) 
+		while(l_it != l_list.end())
 		{
 			PIItem l_pIItem = *l_it;
-			if(l_pIItem->m_drop) 
+			if(l_pIItem->m_drop)
 			{
 				l_pIItem->m_drop = false;
 				if(l_pIItem->H_Parent())
@@ -972,7 +771,7 @@ void CInventory::Update(u32 deltaT)
 										l_pIItem->H_Parent()->ID());
 					P.w_u16(u16(l_pIItem->ID()));
 					l_pIItem->u_EventSend(P);
-				} 
+				}
 				else 
 					Drop(l_pIItem);
 			}
@@ -1239,7 +1038,7 @@ CInventoryItem	*CInventory::tpfGetObjectByIndex(int iIndex)
 CInventoryItem	*CInventory::GetItemFromInventory(LPCSTR caItemName)
 {
 	TIItemSet	&l_list = m_all;
-	for(PSPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++) 
+	for(PSPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++)
 		if (!strcmp((*l_it)->cName(),caItemName))
 			return	(*l_it);
 	LuaOut	(Lua::eLuaMessageTypeError,"Object with name %s is not found in the %s inventory!",caItemName,dynamic_cast<CGameObject*>(m_pOwner)->cName());

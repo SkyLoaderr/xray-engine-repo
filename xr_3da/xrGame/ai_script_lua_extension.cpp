@@ -120,6 +120,7 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 	vfExportActions	(tpLuaVirtualMachine);
 	vfExportObject	(tpLuaVirtualMachine);
 	vfExportEffector(tpLuaVirtualMachine);
+	vfExportArtifactMerger(tpLuaVirtualMachine);
 
 #ifdef DEBUG
 	lua_sethook		(tpLuaVirtualMachine, LuaHookCall,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);

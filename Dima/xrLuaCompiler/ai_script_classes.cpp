@@ -12,6 +12,7 @@
 #include "Inventory.h"
 #include "weapon.h"
 #include "ParticlesObject.h"
+#include "PDA.h"
 
 void CLuaGameObject::Hit(CLuaHit &tLuaHit)
 {
@@ -29,6 +30,22 @@ void CLuaGameObject::Hit(CLuaHit &tLuaHit)
 	P.w_vec3		(Fvector().set(0,0,0));
 	P.w_float		(tLuaHit.m_fImpulse);
 	P.w_u16			(u16(tLuaHit.m_tHitType));
+	m_tpGameObject->u_EventSend(P);
+}
+
+bool CLuaGameObject::GiveInfoPortion(int info_index)
+{
+	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	if(!pInventoryOwner) return false;
+
+	//R_ASSERT2(pInventoryOwner->GetPDA(),"PDA  for InventoryOwner not init yet!");
+	if(!pInventoryOwner->GetPDA()) return false;
+
+	//отправляем от нашему PDA пакет информации с номером
+	NET_Packet		P;
+	m_tpGameObject->u_EventGen(P,GE_INFO_TRANSFER,pInventoryOwner->GetPDA()->ID());
+	P.w_u16			(u16(pInventoryOwner->GetPDA()->ID()));		//отправитель
+	P.w_s32			(info_index);								//сообщение
 	m_tpGameObject->u_EventSend(P);
 }
 
