@@ -1,12 +1,24 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <game_information_portions>
+	<!-- LEVEL LOCATIONS  -->
+	<info_portion id="esc_map_locations">
+		<location>
+			<level>l01_escape</level>
+			<x>105</x>
+			<y>-15</y>
+			<icon name="Заброшенная фабрика" x="0" y="0" width="1" height="1" r="238" g="155" b="23" marker="0" dyn="1">ui\ui_round_map_area</icon>
+			<text>Не ходите дети на фабрику гулять!</text>
+		</location>
+	</info_portion>
+
+
 	
 	<info_portion id="tutorial_artefact_start">
 		<location>
 			<level>l01_escape</level>
 			<object>002</object>			
-			<icon name="" x="2" y="4" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<icon name="" big_icon="1" x="2" y="4" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Артефакт.</text>
 		</location>
 		<task>tutorial_find_artefact</task>

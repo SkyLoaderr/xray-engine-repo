@@ -29,6 +29,7 @@ function actor_binder:reinit()
 	then
 		self.object:give_info_portion("encyclopedy")
 		self.object:give_info_portion("storyline_actor_start")
+		self.object:give_info_portion("esc_map_locations")
 		self.object:give_info_portion("level_changer_icons")
 		
 		local console = get_console()
