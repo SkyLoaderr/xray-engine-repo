@@ -488,7 +488,6 @@ void CDetailManager::UpdateCache	(int limit)
 			alpha255[i][1]	= 255.f*float(DS.items[i].palette.a1)/15.f;
 			alpha255[i][2]	= 255.f*float(DS.items[i].palette.a2)/15.f;
 			alpha255[i][3]	= 255.f*float(DS.items[i].palette.a3)/15.f;
-			D.G[i].id		= DS.items[i].id;
 		}
 		
 		// Prepare to selection
