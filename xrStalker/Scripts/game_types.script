@@ -14,3 +14,4 @@ game_types={
 		GAME_LASTSTANDING     =100,
 		GAME_DUMMY					=255 --max(unsigned8)
 }
+gfhgfhdf
