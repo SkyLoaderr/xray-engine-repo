@@ -404,8 +404,10 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 						tpTorsoAnimation = 0;
 						//. hack
 //						R_ASSERT2(eBodyStateStand == m_object->body_state(),"Cannot run !free! animation when body state is not stand!");
-						if (eBodyStateStand != m_object->body_state())
+						if (eBodyStateStand != m_object->body_state()) {
 							m_object->set_body_state(eBodyStateStand);
+							l_tBodyState	= eBodyStateStand;
+						}
 						if ((eMovementTypeStand == m_object->movement_type()) || fis_zero(m_object->speed()))
 							tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[9].A[0];
 						else
