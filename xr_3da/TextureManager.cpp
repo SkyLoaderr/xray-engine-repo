@@ -322,7 +322,7 @@ CRTC*	CShaderManager::_CreateRTC		(LPCSTR Name, u32 size,	D3DFORMAT f)
 	{
 		CRTC *RT			=	xr_new<CRTC>();
 		RT->dwReference		=	1;
-		m_rtargets.insert		(make_pair(xr_strdup(Name),RT));
+		m_rtargets_c.insert	(make_pair(xr_strdup(Name),RT));
 		if (Device.bReady)	RT->Create	(Name,size,f);
 		return				RT;
 	}

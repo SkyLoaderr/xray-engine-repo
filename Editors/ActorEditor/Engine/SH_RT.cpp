@@ -83,13 +83,13 @@ void CRTC::Create	(LPCSTR Name, u32 size,	D3DFORMAT f)
 
 	// Try to create texture/surface
 	Device.Shader.Evict					();
-	_hr = HW.pDevice->CreateTexture	(size, 1, D3DUSAGE_RENDERTARGET, f, D3DPOOL_DEFAULT, &pSurface,NULL);
+	_hr = HW.pDevice->CreateCubeTexture	(size, 1, D3DUSAGE_RENDERTARGET, f, D3DPOOL_DEFAULT, &pSurface,NULL);
 	if (FAILED(_hr) || (0==pSurface))	return;
 
 	// OK
 	for (u32 face=0; face<6; face++)
-		R_CHK	(pSurface->GetCubeMapSurface	(face, 0, pRT+face));
-	pTexture	= Device.Shader._CreateTexture	(name);
+		R_CHK	(pSurface->GetCubeMapSurface	((D3DCUBEMAP_FACES)face, 0, pRT+face));
+	pTexture	= Device.Shader._CreateTexture	(Name);
 	pTexture->surface_set						(pSurface);
 }
 
