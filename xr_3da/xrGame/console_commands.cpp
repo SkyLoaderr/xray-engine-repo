@@ -32,8 +32,8 @@ extern void show_smart_cast_stats		();
 extern void clear_smart_cast_stats		();
 extern void release_smart_cast_stats	();
 
-extern	u64		m_qwStartGameTime;
-extern	float	m_fTimeFactor;
+extern	u64		g_qwStartGameTime;
+extern	float	g_fTimeFactor;
 
 ENGINE_API
 extern	float	psHUD_FOV;
@@ -1586,14 +1586,45 @@ struct CCC_StartTimeSingle : public IConsole_Command {
 		year				= _max(year,1);
 		month				= _max(month,1);
 		day					= _max(day,1);
-		m_qwStartGameTime	= generate_time	(year,month,day,hours,mins,secs,milisecs);
+		g_qwStartGameTime	= generate_time	(year,month,day,hours,mins,secs,milisecs);
+
+		if (!g_pGameLevel)
+			return;
+
+		if (!Level().Server)
+			return;
+
+		if (!Level().Server->game)
+			return;
+
+		Level().Server->game->SetGameTimeFactor(g_qwStartGameTime,g_fTimeFactor);
 	}
 
 	virtual void	Status	(TStatus& S)
 	{
 		u32 year = 1, month = 1, day = 1, hours = 0, mins = 0, secs = 0, milisecs = 0;
-		split_time	(m_qwStartGameTime, year, month, day, hours, mins, secs, milisecs);
+		split_time	(g_qwStartGameTime, year, month, day, hours, mins, secs, milisecs);
 		sprintf		(S,"%d.%d.%d %d:%d:%d.%d",year,month,day,hours,mins,secs,milisecs);
+	}
+};
+
+struct CCC_TimeFactorSingle : public CCC_Float {
+	CCC_TimeFactorSingle(LPCSTR N, float* V, float _min=0.f, float _max=1.f) : CCC_Float(N,V,_min,_max) {};
+
+	virtual void	Execute	(LPCSTR args)
+	{
+		CCC_Float::Execute	(args);
+		
+		if (!g_pGameLevel)
+			return;
+
+		if (!Level().Server)
+			return;
+
+		if (!Level().Server->game)
+			return;
+
+		Level().Server->game->SetGameTimeFactor(g_fTimeFactor);
 	}
 };
 
@@ -1780,7 +1811,6 @@ void CCC_RegisterCommands()
 	CMD4(CCC_SvControlHit,	"dbg_show_ani_info",	&g_ShowAnimationInfo,	0, 1)	;
 	CMD1(CCC_MainMenu,		"main_menu"				);
 
-	CMD1(CCC_StartTimeSingle,"start_time_single")	;
-	CMD3(CCC_Float,			"time_factor_single",	&m_fTimeFactor,			0.f)	;
+	CMD1(CCC_StartTimeSingle,	"start_time_single");
+	CMD4(CCC_TimeFactorSingle,	"time_factor_single", &g_fTimeFactor, 0.f,flt_max);
 }
-

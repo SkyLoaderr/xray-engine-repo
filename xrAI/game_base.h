@@ -136,8 +136,8 @@ public:
 private:
 	// scripts
 	u64								m_qwStartProcessorTime;
-//	u64								m_qwStartGameTime;
-//	float							m_fTimeFactor;
+	u64								m_qwStartGameTime;
+	float							m_fTimeFactor;
 	//-------------------------------------------------------
 	u64								m_qwEStartProcessorTime;
 	u64								m_qwEStartGameTime;
