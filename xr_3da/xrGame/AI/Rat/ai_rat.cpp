@@ -1,23 +1,23 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_hen.cpp
-//	Created 	: 05.04.2002
-//  Modified 	: 12.04.2002
+//	Module 		: ai_rat.cpp
+//	Created 	: 23.04.2002
+//  Modified 	: 23.04.2002
 //	Author		: Dmitriy Iassenev
-//	Description : AI Behaviour for monster "Hen"
+//	Description : AI Behaviour for monster "Rat"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #include "..\\..\\xr_weapon_list.h"
 #include "..\\..\\..\\3dsound.h"
 
-#include "ai_hen.h"
-#include "ai_hen_selectors.h"
+#include "ai_rat.h"
+#include "ai_rat_selectors.h"
 
 //#define WRITE_LOG
 
 #define SQR(x) ((x)*(x))
 
-CAI_Hen::CAI_Hen()
+CAI_Rat::CAI_Rat()
 {
 	dwHitTime = 0;
 	tHitDir.set(0,0,1);
@@ -26,10 +26,10 @@ CAI_Hen::CAI_Hen()
 	tSavedEnemy = 0;
 	tSavedEnemyPosition.set(0,0,0);
 	dwLostEnemyTime = 0;
-	eCurrentState = aiHenFollowMe;
+	eCurrentState = aiRatFollowMe;
 }
 
-CAI_Hen::~CAI_Hen()
+CAI_Rat::~CAI_Rat()
 {
 	// removing all data no more being neded 
 	int i;
@@ -37,7 +37,7 @@ CAI_Hen::~CAI_Hen()
 	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete3D(sndDie[i]);
 }
 
-void CAI_Hen::Load(CInifile* ini, const char* section)
+void CAI_Rat::Load(CInifile* ini, const char* section)
 { 
 	// load parameters from ".ini" file
 	inherited::Load	(ini,section);
@@ -67,8 +67,8 @@ void CAI_Hen::Load(CInifile* ini, const char* section)
 	SelectorUnderFire.Load(ini,section);
 }
 
-// when someone hit hen
-void CAI_Hen::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
+// when someone hit rat
+void CAI_Rat::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 {
 	// Save event
 	Fvector D;
@@ -84,8 +84,8 @@ void CAI_Hen::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	pSounds->Play3DAtPos(S,vPosition);
 }
 
-// when someone hit hen
-void CAI_Hen::SenseSignal(int amount, Fvector& vLocalDir, CEntity* who)
+// when someone hit rat
+void CAI_Rat::SenseSignal(int amount, Fvector& vLocalDir, CEntity* who)
 {
 	// Save event
 	Fvector D;
@@ -94,13 +94,13 @@ void CAI_Hen::SenseSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	tSenseDir.set(D);
 }
 
-// when hen is dead
-void CAI_Hen::Death()
+// when rat is dead
+void CAI_Rat::Death()
 {
 	// perform death operations
 	inherited::Death( );
 	q_action.setup(AI::AIC_Action::FireEnd);
-	eCurrentState = aiHenDie;
+	eCurrentState = aiRatDie;
 
 	// removing from group
 	//Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].Member_Remove(this);
@@ -113,13 +113,13 @@ void CAI_Hen::Death()
 	pSounds->Play3DAtPos(sndDie[Random.randI(SND_DIE_COUNT)],vPosition);
 }
 
-// hen update
-void CAI_Hen::Update(DWORD DT)
+// Rat update
+void CAI_Rat::Update(DWORD DT)
 {
 	inherited::Update(DT);
 }
 
-float CAI_Hen::EnemyHeuristics(CEntity* E)
+float CAI_Rat::EnemyHeuristics(CEntity* E)
 {
 	if (E->g_Team()  == g_Team())	
 		return flt_max;		// don't attack our team
@@ -134,7 +134,7 @@ float CAI_Hen::EnemyHeuristics(CEntity* E)
 	return  f1*f2;
 }
 
-void CAI_Hen::SelectEnemy(SEnemySelected& S)
+void CAI_Rat::SelectEnemy(SEnemySelected& S)
 {
 	// Initiate process
 	objVisible&	Known	= Level().Teams[g_Team()].KnownEnemys;
@@ -178,14 +178,14 @@ IC bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemb
 	//return(false);
 }
 
-void CAI_Hen::Attack()
+void CAI_Rat::Attack()
 {
-	// if no more health then hen is dead
+	// if no more health then rat is dead
 #ifdef WRITE_LOG
 	Msg("creature : %s, mode : %s",cName(),"Attack");
 #endif
 	if (g_Health() <= 0) {
-		eCurrentState = aiHenDie;
+		eCurrentState = aiRatDie;
 		return;
 	}
 	else {
@@ -202,7 +202,7 @@ void CAI_Hen::Attack()
 			//  no, we lost him
 			else {
 				dwLostEnemyTime = Level().timeServer();
-				eCurrentState = aiHenPursuit;
+				eCurrentState = aiRatPursuit;
 			}
 			return;
 		}
@@ -227,7 +227,7 @@ void CAI_Hen::Attack()
 				bool bWatch = false;
 				// get pointer to the class of node estimator 
 				// for finding the best node in the area
-				CHenSelectorAttack S = SelectorAttack;
+				CRatSelectorAttack S = SelectorAttack;
 				// if i am not a leader then assign leader
 				if (Leader != this) {
 					S.m_tLeader = Leader;
@@ -294,7 +294,7 @@ void CAI_Hen::Attack()
 						float fBestCost = S.BestCost;
 						S.BestCost = MAX_NODE_ESTIMATION_COST;
 						float old_cost = S.Estimate(OLD,Level().AI.u_SqrDistance2Node(Position(),OLD),dummy);
-						// if old cost minus new cost is a little then hen is too lazy
+						// if old cost minus new cost is a little then rat is too lazy
 						// to move there
 						if (fBestCost < (old_cost-S.fLaziness)) {
 							AI_Path.DestNode		= S.BestNode;
@@ -363,7 +363,7 @@ void CAI_Hen::Attack()
 					bool bWatch = false;
 					// get pointer to the class of node estimator 
 					// for finding the best node in the area
-					CHenSelectorAttack S = SelectorAttack;
+					CRatSelectorAttack S = SelectorAttack;
 					// if i am not a leader then assign leader
 					if (Leader != this) {
 						S.m_tLeader = Leader;
@@ -428,17 +428,17 @@ void CAI_Hen::Attack()
 	}
 }
 
-void CAI_Hen::Cover()
+void CAI_Rat::Cover()
 {
 	bStopThinking = true;
 }
 
-void CAI_Hen::Defend()
+void CAI_Rat::Defend()
 {
 	bStopThinking = true;
 }
 
-void CAI_Hen::Die()
+void CAI_Rat::Die()
 {
 	q_look.setup(0,AI::t_None,0,0	);
 	q_action.setup(AI::AIC_Action::FireEnd);
@@ -462,7 +462,7 @@ bool bfCheckPath(AI::Path &Path,MemberNodes &taMembers) {
 #define LEFT_NODE(Index)  ((Index + 3) & 3)
 #define RIGHT_NODE(Index) ((Index + 5) & 3)
 
-void CAI_Hen::SetLessCoverLook(NodeCompressed *tNode)
+void CAI_Rat::SetLessCoverLook(NodeCompressed *tNode)
 {
 	//Fvector tWatchDirection;
 	for (int i=1, iMaxOpenIndex=0, iMaxOpen = tNode->cover[0]; i<4; i++)
@@ -502,14 +502,14 @@ void CAI_Hen::SetLessCoverLook(NodeCompressed *tNode)
 	q_look.o_look_speed=_FB_look_speed;
 }
 
-void CAI_Hen::FollowMe()
+void CAI_Rat::FollowMe()
 {
-	// if no more health then hen is dead
+	// if no more health then rat is dead
 #ifdef WRITE_LOG
 	Msg("creature : %s, mode : %s",cName(),"Follow me");
 #endif
 	if (g_Health() <= 0) {
-		eCurrentState = aiHenDie;
+		eCurrentState = aiRatDie;
 		return;
 	}
 	else {
@@ -519,7 +519,7 @@ void CAI_Hen::FollowMe()
 		// do I see the enemies?
 		if (Enemy.Enemy)		{
 			tStateStack.push(eCurrentState);
-			eCurrentState = aiHenAttack;
+			eCurrentState = aiRatAttack;
 			return;
 		}
 		else {
@@ -527,13 +527,13 @@ void CAI_Hen::FollowMe()
 			DWORD dwCurTime = Level().timeServer();
 			if (dwCurTime - dwHitTime < HIT_JUMP_TIME) {
 				tStateStack.push(eCurrentState);
-				eCurrentState = aiHenUnderFire;
+				eCurrentState = aiRatUnderFire;
 				return;
 			}
 			else {
 				if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
-					eCurrentState = aiHenSenseSomething;
+					eCurrentState = aiRatSenseSomething;
 					return;
 				}
 				else {
@@ -548,14 +548,14 @@ void CAI_Hen::FollowMe()
 						Leader = this;
 					// I am leader then go to state "Free Hunting"
 					if (Leader == this) {
-						eCurrentState = aiHenFreeHunting;
+						eCurrentState = aiRatFreeHunting;
 						return;
 					}
 					else {
 						bool bWatch = false;
 						// get pointer to the class of node estimator 
 						// for finding the best node in the area
-						CHenSelectorFollow S = SelectorFollow;
+						CRatSelectorFollow S = SelectorFollow;
 						if (Leader != this) {
 							S.m_tLeader = Leader;
 							S.m_tLeaderPosition = Leader->Position();
@@ -620,7 +620,7 @@ void CAI_Hen::FollowMe()
 								float fBestCost = S.BestCost;
 								S.BestCost = MAX_NODE_ESTIMATION_COST;
 								float old_cost = S.Estimate(OLD,Level().AI.u_SqrDistance2Node(Position(),OLD),dummy);
-								// if old cost minus new cost is a little then hen is too lazy
+								// if old cost minus new cost is a little then rat is too lazy
 								// to move there
 								if (fBestCost < (old_cost-S.fLaziness)) {
 									AI_Path.DestNode		= S.BestNode;
@@ -688,14 +688,14 @@ void CAI_Hen::FollowMe()
 	}
 }
 
-void CAI_Hen::FreeHunting()
+void CAI_Rat::FreeHunting()
 {
-	// if no more health then hen is dead
+	// if no more health then rat is dead
 #ifdef WRITE_LOG
 	Msg("creature : %s, mode : %s",cName(),"Free hunting");
 #endif
 	if (g_Health() <= 0) {
-		eCurrentState = aiHenDie;
+		eCurrentState = aiRatDie;
 		return;
 	}
 	else {
@@ -705,20 +705,20 @@ void CAI_Hen::FreeHunting()
 		// do I see the enemies?
 		if (Enemy.Enemy)		{
 			tStateStack.push(eCurrentState);
-			eCurrentState = aiHenAttack;
+			eCurrentState = aiRatAttack;
 			return;
 		}
 		else {
 			// checking if I am under fire
 			if (Level().timeServer() - dwHitTime < HIT_JUMP_TIME) {
 				tStateStack.push(eCurrentState);
-				eCurrentState = aiHenUnderFire;
+				eCurrentState = aiRatUnderFire;
 				return;
 			}
 			else {
 				if (Level().timeServer() - dwSenseTime < SENSE_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
-					eCurrentState = aiHenSenseSomething;
+					eCurrentState = aiRatSenseSomething;
 					return;
 				}
 				else {
@@ -735,7 +735,7 @@ void CAI_Hen::FreeHunting()
 					bool bWatch = false;
 					// get pointer to the class of node estimator 
 					// for finding the best node in the area
-					CHenSelectorFreeHunting S = SelectorFreeHunting;
+					CRatSelectorFreeHunting S = SelectorFreeHunting;
 					// if i am not a leader then assign leader
 					if (Leader != this) {
 						S.m_tLeader = Leader;
@@ -799,7 +799,7 @@ void CAI_Hen::FreeHunting()
 							float fBestCost = S.BestCost;
 							S.BestCost = MAX_NODE_ESTIMATION_COST;
 							float old_cost = S.Estimate(OLD,Level().AI.u_SqrDistance2Node(Position(),OLD),dummy);
-							// if old cost minus new cost is a little then hen is too lazy
+							// if old cost minus new cost is a little then rat is too lazy
 							// to move there
 							if (fBestCost < (old_cost-S.fLaziness)) {
 								AI_Path.DestNode		= S.BestNode;
@@ -827,32 +827,32 @@ void CAI_Hen::FreeHunting()
 	}
 }
 
-void CAI_Hen::GoInThisDirection()
+void CAI_Rat::GoInThisDirection()
 {
 }
 
-void CAI_Hen::GoToThisPosition()
+void CAI_Rat::GoToThisPosition()
 {
 }
 
-void CAI_Hen::HoldPositionUnderFire()
+void CAI_Rat::HoldPositionUnderFire()
 {
 	bStopThinking = true;
 }
 
-void CAI_Hen::HoldThisPosition()
+void CAI_Rat::HoldThisPosition()
 {
 	bStopThinking = true;
 }
 
-void CAI_Hen::Pursuit()
+void CAI_Rat::Pursuit()
 {
-	// if no more health then hen is dead
+	// if no more health then rat is dead
 #ifdef WRITE_LOG
 	Msg("creature : %s, mode : %s",cName(),"Pursuit");
 #endif
 	if (g_Health() <= 0) {
-		eCurrentState = aiHenDie;
+		eCurrentState = aiRatDie;
 		return;
 	}
 	else {
@@ -861,7 +861,7 @@ void CAI_Hen::Pursuit()
 		SelectEnemy(Enemy);
 		// do the enemies exist?
 		if (Enemy.Enemy) {
-			eCurrentState = aiHenAttack;
+			eCurrentState = aiRatAttack;
 			return;
 		}
 		else {
@@ -870,13 +870,13 @@ void CAI_Hen::Pursuit()
 				// checking if I am under fire
 				if (dwCurrentTime - dwHitTime < HIT_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
-					eCurrentState = aiHenUnderFire;
+					eCurrentState = aiRatUnderFire;
 					return;
 				}
 				else {
 					if (dwCurrentTime - dwSenseTime < SENSE_JUMP_TIME) {
 						tStateStack.push(eCurrentState);
-						eCurrentState = aiHenSenseSomething;
+						eCurrentState = aiRatSenseSomething;
 						return;
 					}
 					else {
@@ -891,7 +891,7 @@ void CAI_Hen::Pursuit()
 							Leader = this;
 						// get pointer to the class of node estimator 
 						// for finding the best node in the area
-						CHenSelectorPursuit S = SelectorPursuit;
+						CRatSelectorPursuit S = SelectorPursuit;
 						// if i am not a leader then assign leader
 						if (Leader != this) {
 							S.m_tLeader = Leader;
@@ -956,7 +956,7 @@ void CAI_Hen::Pursuit()
 								float fBestCost = S.BestCost;
 								S.BestCost = MAX_NODE_ESTIMATION_COST;
 								float old_cost = S.Estimate(OLD,Level().AI.u_SqrDistance2Node(Position(),OLD),dummy);
-								// if old cost minus new cost is a little then hen is too lazy
+								// if old cost minus new cost is a little then rat is too lazy
 								// to move there
 								if (fBestCost < (old_cost-S.fLaziness)) {
 									AI_Path.DestNode		= S.BestNode;
@@ -993,12 +993,12 @@ void CAI_Hen::Pursuit()
 	}
 }
 
-void CAI_Hen::Retreat()
+void CAI_Rat::Retreat()
 {
 	bStopThinking = true;
 }
 
-void CAI_Hen::SenseSomething()
+void CAI_Rat::SenseSomething()
 {
 	//bStopThinking = true;
 	//dwSenseTime = 0;
@@ -1012,7 +1012,7 @@ void CAI_Hen::SenseSomething()
 	bStopThinking = true;
 }
 
-void CAI_Hen::UnderFire()
+void CAI_Rat::UnderFire()
 {
 #ifdef WRITE_LOG
 	Msg("creature : %s, mode : %s",cName(),"Under fire");
@@ -1030,7 +1030,7 @@ void CAI_Hen::UnderFire()
 	bStopThinking = true;
 	/**/
 	if (g_Health() <= 0) {
-		eCurrentState = aiHenDie;
+		eCurrentState = aiRatDie;
 		return;
 	}
 	else {
@@ -1040,7 +1040,7 @@ void CAI_Hen::UnderFire()
 		// do I see the enemies?
 		if (Enemy.Enemy)		{
 			tStateStack.push(eCurrentState);
-			eCurrentState = aiHenAttack;
+			eCurrentState = aiRatAttack;
 			return;
 		}
 		else {
@@ -1054,7 +1054,7 @@ void CAI_Hen::UnderFire()
 			else {
 				if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
-					eCurrentState = aiHenSenseSomething;
+					eCurrentState = aiRatSenseSomething;
 					return;
 				}
 				else {
@@ -1071,7 +1071,7 @@ void CAI_Hen::UnderFire()
 					bool bWatch = false;
 					// get pointer to the class of node estimator 
 					// for finding the best node in the area
-					CHenSelectorUnderFire S = SelectorUnderFire;
+					CRatSelectorUnderFire S = SelectorUnderFire;
 					if (Leader != this) {
 						S.m_tLeader = Leader;
 						S.m_tLeaderPosition = Leader->Position();
@@ -1138,7 +1138,7 @@ void CAI_Hen::UnderFire()
 							float fBestCost = S.BestCost;
 							S.BestCost = MAX_NODE_ESTIMATION_COST;
 							float old_cost = S.Estimate(OLD,Level().AI.u_SqrDistance2Node(Position(),OLD),dummy);
-							// if old cost minus new cost is a little then hen is too lazy
+							// if old cost minus new cost is a little then rat is too lazy
 							// to move there
 							if (fBestCost < (old_cost-S.fLaziness)) {
 								AI_Path.DestNode		= S.BestNode;
@@ -1188,73 +1188,73 @@ void CAI_Hen::UnderFire()
 	}
 }
 
-void CAI_Hen::WaitOnPosition()
+void CAI_Rat::WaitOnPosition()
 {
 	bStopThinking = true;
 }
 
-void CAI_Hen::Think()
+void CAI_Rat::Think()
 {
 	bStopThinking = false;
 	do {
 		switch(eCurrentState) {
-			case aiHenDie : {
+			case aiRatDie : {
 				Die();
 				break;
 			}
-			case aiHenUnderFire : {
+			case aiRatUnderFire : {
 				UnderFire();
 				break;
 			}
-			case aiHenSenseSomething : {
+			case aiRatSenseSomething : {
 				SenseSomething();
 				break;
 			}
-			case aiHenGoInThisDirection : {
+			case aiRatGoInThisDirection : {
 				GoInThisDirection();
 				break;
 			}
-			case aiHenGoToThisPosition : {
+			case aiRatGoToThisPosition : {
 				GoToThisPosition();
 				break;
 			}
-			case aiHenWaitOnPosition : {
+			case aiRatWaitOnPosition : {
 				WaitOnPosition();
 				break;
 			}
-			case aiHenHoldThisPosition : {
+			case aiRatHoldThisPosition : {
 				HoldThisPosition();
 				break;
 			}
-			case aiHenHoldPositionUnderFire : {
+			case aiRatHoldPositionUnderFire : {
 				HoldPositionUnderFire();
 				break;
 			}
-			case aiHenFreeHunting : {
+			case aiRatFreeHunting : {
 				FreeHunting();
 				break;
 			}
-			case aiHenFollowMe : {
+			case aiRatFollowMe : {
 				FollowMe();
 				break;
 			}
-			case aiHenAttack : {
+			case aiRatAttack : {
 				Attack();
 				break;
 			}
-			case aiHenDefend : {
+			case aiRatDefend : {
 				Defend();
 				break;
 			}
-			case aiHenPursuit : {
+			case aiRatPursuit : {
 				Pursuit();
 				break;
 			}
-			case aiHenRetreat : {
+			case aiRatRetreat : {
 				Retreat();
 				break;
 			}
-			case aiHenCover : {
+			case aiRatCover : {
 				Cover();
 				break;
 			}

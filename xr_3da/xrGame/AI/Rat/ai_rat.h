@@ -1,18 +1,18 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_hen.h
-//	Created 	: 05.04.2002
-//  Modified 	: 12.04.2002
+//	Module 		: ai_rat.h
+//	Created 	: 23.04.2002
+//  Modified 	: 23.04.2002
 //	Author		: Dmitriy Iassenev
-//	Description : AI Behaviour for monster "Hen"
+//	Description : AI Behaviour for monster "Rat"
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef __XRAY_AI_HEN__
-#define __XRAY_AI_HEN__
+#ifndef __XRAY_AI_RAT__
+#define __XRAY_AI_RAT__
 
 #include "..\\..\\CustomMonster.h"
 #include "..\\..\\group.h"
 
-#include "ai_hen_selectors.h"
+#include "ai_rat_selectors.h"
 
 const DWORD _FB_hit_RelevantTime	= 10;
 const DWORD _FB_sense_RelevantTime	= 10;
@@ -26,7 +26,7 @@ struct SEnemySelected
 	float		fCost;
 };
 
-class CAI_Hen : public CCustomMonster  
+class CAI_Rat : public CCustomMonster  
 {
 	enum ESoundCcount {
 		SND_HIT_COUNT=8,
@@ -34,21 +34,21 @@ class CAI_Hen : public CCustomMonster
 	};
 
 	enum EHenStates 	{
-		aiHenDie = 0,
-		aiHenUnderFire,
-		aiHenSenseSomething,
-		aiHenGoInThisDirection,
-		aiHenGoToThisPosition,
-		aiHenWaitOnPosition,
-		aiHenHoldThisPosition,
-		aiHenHoldPositionUnderFire,
-		aiHenFreeHunting,
-		aiHenFollowMe,
-		aiHenAttack,
-		aiHenDefend,
-		aiHenPursuit,
-		aiHenRetreat,
-		aiHenCover,
+		aiRatDie = 0,
+		aiRatUnderFire,
+		aiRatSenseSomething,
+		aiRatGoInThisDirection,
+		aiRatGoToThisPosition,
+		aiRatWaitOnPosition,
+		aiRatHoldThisPosition,
+		aiRatHoldPositionUnderFire,
+		aiRatFreeHunting,
+		aiRatFollowMe,
+		aiRatAttack,
+		aiRatDefend,
+		aiRatPursuit,
+		aiRatRetreat,
+		aiRatCover,
 	};
 	
 	typedef	CCustomMonster inherited;
@@ -91,16 +91,16 @@ class CAI_Hen : public CCustomMonster
 		void Retreat();
 		void Cover();
 	
-		CHenSelectorAttack		SelectorAttack;
-		CHenSelectorFreeHunting SelectorFreeHunting;
-		CHenSelectorFollow		SelectorFollow;
-		CHenSelectorPursuit		SelectorPursuit;
-		CHenSelectorUnderFire	SelectorUnderFire;
+		CRatSelectorAttack		SelectorAttack;
+		CRatSelectorFreeHunting SelectorFreeHunting;
+		CRatSelectorFollow		SelectorFollow;
+		CRatSelectorPursuit		SelectorPursuit;
+		CRatSelectorUnderFire	SelectorUnderFire;
 
 		void SetLessCoverLook(NodeCompressed *tNode);
 	public:
-					  CAI_Hen();
-		virtual		  ~CAI_Hen();
+					  CAI_Rat();
+		virtual		  ~CAI_Rat();
 		virtual void  Update(DWORD DT);
 		virtual void  HitSignal(int amount, Fvector& vLocalDir, CEntity* who);
 		virtual void  SenseSignal(int amount, Fvector& vLocalDir, CEntity* who);

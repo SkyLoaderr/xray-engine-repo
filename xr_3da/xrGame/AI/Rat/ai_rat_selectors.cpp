@@ -1,15 +1,15 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_hen.cpp
-//	Created 	: 05.04.2002
-//  Modified 	: 12.04.2002
+//	Module 		: ai_rat.cpp
+//	Created 	: 23.04.2002
+//  Modified 	: 23.04.2002
 //	Author		: Dmitriy Iassenev
-//	Description : AI Behaviour for monster "Hen"
+//	Description : AI Behaviour for monster "Rat"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #include "..\\..\\entity.h"
 #include "..\\..\\CustomMonster.h"
-#include "ai_hen_selectors.h"
+#include "ai_rat_selectors.h"
 
 //#define OLD_COVER_COST
 #define DEST_POSITIONS
@@ -23,7 +23,7 @@
 const Fvector tLeft = {-1,0,0};
 const Fvector tRight = {1,0,0};
 
-void CHenSelectorBase::Load(CInifile* ini, const char* section)
+void CRatSelectorBase::Load(CInifile* ini, const char* section)
 {
 	sscanf(ini->ReadSTRING(section,Name),
 		"%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f",
@@ -63,12 +63,12 @@ void CHenSelectorBase::Load(CInifile* ini, const char* section)
 	);
 };
 
-CHenSelectorAttack::CHenSelectorAttack()
+CRatSelectorAttack::CRatSelectorAttack()
 { 
 	Name = "selector_attack"; 
 }
 
-void CHenSelectorBase::Init()
+void CRatSelectorBase::Init()
 {
 	for ( m_iCurrentMember = 0, m_iAliveMemberCount=0; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) 
 		if (taMembers[m_iCurrentMember]->g_Health() > 0)
@@ -90,17 +90,17 @@ IC void vfNormalizeSafe(Fvector& Vector)
 	}
 }
 
-IC void CHenSelectorBase::vfAddTravelCost()
+IC void CRatSelectorBase::vfAddTravelCost()
 {
 	m_fResult += m_fDistance*fTravelWeight;
 }
 
-IC void CHenSelectorBase::vfAddLightCost()
+IC void CRatSelectorBase::vfAddLightCost()
 {
 	m_fResult += ((float)(m_tpCurrentNode->light)/255.f)*fLightWeight;
 }
 
-IC void CHenSelectorBase::vfComputeCurrentPosition()
+IC void CRatSelectorBase::vfComputeCurrentPosition()
 {
 	Fvector tTemp0, tTemp1;
 	Level().AI.UnpackPosition(tTemp0,m_tpCurrentNode->p0);
@@ -108,7 +108,7 @@ IC void CHenSelectorBase::vfComputeCurrentPosition()
 	m_tCurrentPosition.lerp(tTemp1,tTemp1,.5f);
 }
 
-IC void CHenSelectorBase::vfAddDistanceToEnemyCost()
+IC void CRatSelectorBase::vfAddDistanceToEnemyCost()
 {
 	float fDistanceToEnemy = m_tCurrentPosition.distance_to(m_tEnemyPosition);
 	if (fDistanceToEnemy < fMinEnemyDistance)
@@ -120,7 +120,7 @@ IC void CHenSelectorBase::vfAddDistanceToEnemyCost()
 			m_fResult += fOptEnemyDistanceWeight*fabs(fDistanceToEnemy - fOptEnemyDistance + 1.f)/(fOptEnemyDistance + 1.f);
 }
 
-IC void CHenSelectorBase::vfAddDistanceToLeaderCost()
+IC void CRatSelectorBase::vfAddDistanceToLeaderCost()
 {
 	float fDistanceToLeader = m_tCurrentPosition.distance_to(m_tLeaderPosition);
 	if (fDistanceToLeader < fMinLeaderDistance)
@@ -132,7 +132,7 @@ IC void CHenSelectorBase::vfAddDistanceToLeaderCost()
 			m_fResult += fOptLeaderDistanceWeight*fabs(fDistanceToLeader - fOptLeaderDistance + 1.f)/(fOptLeaderDistance + 1.f);
 }
 
-IC void CHenSelectorBase::vfAddDistanceToMemberCost()
+IC void CRatSelectorBase::vfAddDistanceToMemberCost()
 {
 #ifdef DEST_POSITIONS
 	float fDistanceToMember = m_tCurrentPosition.distance_to(taDestMemberPositions[m_iCurrentMember]);
@@ -148,7 +148,7 @@ IC void CHenSelectorBase::vfAddDistanceToMemberCost()
 			m_fResult += fOptMemberDistanceWeight*fabs(fDistanceToMember - fOptMemberDistance + 1.f)/(fOptMemberDistance + 1.f)/m_iAliveMemberCount;
 }
 
-IC void CHenSelectorBase::vfAddCoverFromEnemyCost()
+IC void CRatSelectorBase::vfAddCoverFromEnemyCost()
 {
 #ifdef OLD_COVER_COST
 	m_tEnemyDirection.x = m_tEnemyPosition.x - m_tCurrentPosition.x;
@@ -205,7 +205,7 @@ IC void CHenSelectorBase::vfAddCoverFromEnemyCost()
 #endif
 }
 
-IC void CHenSelectorBase::vfAddCoverFromLeaderCost()
+IC void CRatSelectorBase::vfAddCoverFromLeaderCost()
 {
 #ifdef OLD_COVER_COST
 	m_tLeaderDirection.x = m_tLeaderPosition.x - m_tCurrentPosition.x;
@@ -266,7 +266,7 @@ IC void CHenSelectorBase::vfAddCoverFromLeaderCost()
 #endif
 }
 
-IC void CHenSelectorBase::vfAddCoverFromMemberCost()
+IC void CRatSelectorBase::vfAddCoverFromMemberCost()
 {
 #ifdef OLD_COVER_COST
 	m_tCurrentMemberDirection.x = m_tCurrentMemberPosition.x - m_tCurrentPosition.x;
@@ -323,12 +323,12 @@ IC void CHenSelectorBase::vfAddCoverFromMemberCost()
 #endif
 }
 
-IC void CHenSelectorBase::vfAddTotalCoverCost()
+IC void CRatSelectorBase::vfAddTotalCoverCost()
 {
 	m_fResult += fTotalCover*(float(m_tpCurrentNode->cover[0])/255.f + float(m_tpCurrentNode->cover[1])/255.f + float(m_tpCurrentNode->cover[2])/255.f + float(m_tpCurrentNode->cover[3])/255.f);
 }
 
-IC void CHenSelectorBase::vfAddEnemyLookCost()
+IC void CRatSelectorBase::vfAddEnemyLookCost()
 {
 	if (m_dwCurTime - m_dwHitTime < ATTACK_HIT_REACTION_TIME) {
 		Fvector tTempDirection0, tTempDirection1 = m_tHitDir;
@@ -340,7 +340,7 @@ IC void CHenSelectorBase::vfAddEnemyLookCost()
 	}
 }
 
-IC void CHenSelectorBase::vfAssignMemberPositionAndNode()
+IC void CRatSelectorBase::vfAssignMemberPositionAndNode()
 {
 #ifdef DEST_POSITIONS
 	m_tCurrentMemberPosition = taDestMemberPositions[m_iCurrentMember];
@@ -351,7 +351,7 @@ IC void CHenSelectorBase::vfAssignMemberPositionAndNode()
 #endif
 }
 
-IC void CHenSelectorBase::vfComputeMemberDirection()
+IC void CRatSelectorBase::vfComputeMemberDirection()
 {
 #ifdef DEST_POSITIONS
 	m_tCurrentMemberDirection.sub(taDestMemberPositions[m_iCurrentMember],m_tCurrentPosition);
@@ -360,7 +360,7 @@ IC void CHenSelectorBase::vfComputeMemberDirection()
 #endif
 }
 
-IC void CHenSelectorBase::vfComputeSurroundEnemy()
+IC void CRatSelectorBase::vfComputeSurroundEnemy()
 {
 #ifdef DEST_POSITIONS
 	m_tEnemySurroundDirection.x += taDestMemberPositions[m_iCurrentMember].x - m_tCurrentPosition.x;
@@ -373,19 +373,19 @@ IC void CHenSelectorBase::vfComputeSurroundEnemy()
 #endif
 }
 
-IC void CHenSelectorBase::vfAddSurroundEnemyCost()
+IC void CRatSelectorBase::vfAddSurroundEnemyCost()
 {
 	vfNormalizeSafe(m_tEnemySurroundDirection);
 	m_fResult += fEnemySurround*sqrt(SQR(m_tEnemySurroundDirection.x) + SQR(m_tEnemySurroundDirection.y) + SQR(m_tEnemySurroundDirection.z));
 }
 
-IC void CHenSelectorBase::vfCheckForEpsilon(BOOL &bStop)
+IC void CRatSelectorBase::vfCheckForEpsilon(BOOL &bStop)
 {
 	if (m_fResult < EPS)
 		bStop = TRUE;
 }
 
-float CHenSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+float CRatSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
 	// initialization
 	m_fResult = 0.f;
@@ -426,12 +426,12 @@ float CHenSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BOOL&
 	return(m_fResult);
 }
 
-CHenSelectorFreeHunting::CHenSelectorFreeHunting()
+CRatSelectorFreeHunting::CRatSelectorFreeHunting()
 { 
 	Name = "selector_free_hunting"; 
 }
 
-float CHenSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+float CRatSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
 	// initialization
 	m_fResult = 0.f;
@@ -468,12 +468,12 @@ float CHenSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistance, 
 	return(m_fResult);
 }
 
-CHenSelectorFollow::CHenSelectorFollow()
+CRatSelectorFollow::CRatSelectorFollow()
 { 
 	Name = "selector_follow"; 
 }
 
-float CHenSelectorFollow::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+float CRatSelectorFollow::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
 	// initialization
 	m_fResult = 0.f;
@@ -510,12 +510,12 @@ float CHenSelectorFollow::Estimate(NodeCompressed* tNode, float fDistance, BOOL&
 	return(m_fResult);
 }
 
-CHenSelectorPursuit::CHenSelectorPursuit()
+CRatSelectorPursuit::CRatSelectorPursuit()
 { 
 	Name = "selector_pursuit"; 
 }
 
-float CHenSelectorPursuit::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+float CRatSelectorPursuit::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
 	// initialization
 	m_fResult = 0.f;
@@ -555,12 +555,12 @@ float CHenSelectorPursuit::Estimate(NodeCompressed* tNode, float fDistance, BOOL
 	return(m_fResult);
 }
 
-CHenSelectorUnderFire::CHenSelectorUnderFire()
+CRatSelectorUnderFire::CRatSelectorUnderFire()
 { 
 	Name = "selector_under_fire"; 
 }
 
-float CHenSelectorUnderFire::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// min - best, max - worse
+float CRatSelectorUnderFire::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// min - best, max - worse
 {
 	// initialization
 	m_fResult = 0.f;

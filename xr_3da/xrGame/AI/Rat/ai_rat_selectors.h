@@ -1,15 +1,15 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_hen.h
-//	Created 	: 05.04.2002
-//  Modified 	: 12.04.2002
+//	Module 		: ai_rat.h
+//	Created 	: 23.04.2002
+//  Modified 	: 23.04.2002
 //	Author		: Dmitriy Iassenev
-//	Description : AI Behaviour for monster "Hen"
+//	Description : AI Behaviour for monster "Rat"
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef __XRAY_AI_HEN_SELECTORS__
-#define __XRAY_AI_HEN_SELECTORS__
+#ifndef __XRAY_AI_RAT_SELECTORS__
+#define __XRAY_AI_RAT_SELECTORS__
 
-class CHenSelectorBase : public AI::NodeEstimator 
+class CRatSelectorBase : public AI::NodeEstimator 
 {
 	public:
 		
@@ -114,39 +114,39 @@ class CHenSelectorBase : public AI::NodeEstimator
 		IC void vfCheckForEpsilon(BOOL &bStop);
 };
 
-class CHenSelectorAttack : public CHenSelectorBase
+class CRatSelectorAttack : public CRatSelectorBase
 {
 	public:
-		CHenSelectorAttack();
+		CRatSelectorAttack();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CHenSelectorFreeHunting : public CHenSelectorBase
+class CRatSelectorFreeHunting : public CRatSelectorBase
 {
 	public:
-		CHenSelectorFreeHunting();
+		CRatSelectorFreeHunting();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CHenSelectorFollow : public CHenSelectorBase
+class CRatSelectorFollow : public CRatSelectorBase
 {
 	public:
-		CHenSelectorFollow	();
+		CRatSelectorFollow	();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 
 };
 
-class CHenSelectorPursuit : public CHenSelectorBase
+class CRatSelectorPursuit : public CRatSelectorBase
 {
 	public:
-		CHenSelectorPursuit();
+		CRatSelectorPursuit();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CHenSelectorUnderFire : public CHenSelectorBase
+class CRatSelectorUnderFire : public CRatSelectorBase
 {
 	public:
-		CHenSelectorUnderFire();
+		CRatSelectorUnderFire();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 

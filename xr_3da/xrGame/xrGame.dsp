@@ -522,6 +522,26 @@ SOURCE=.\AI\Hen\ai_hen_selectors.cpp
 SOURCE=.\AI\Hen\ai_hen_selectors.h
 # End Source File
 # End Group
+# Begin Group "ai_rat"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\AI\Rat\ai_rat.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Rat\ai_rat.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Rat\ai_rat_selectors.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Rat\ai_rat_selectors.h
+# End Source File
+# End Group
 # End Group
 # Begin Group "Test"
 
