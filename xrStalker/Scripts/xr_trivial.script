@@ -747,7 +747,7 @@ function add_novice3(obj)
     properties["work"]              = xr_evaluators_id.jon_stalker_novice3
     properties["attack"]            = xr_evaluators_id.jon_stalker_attack
     properties["contact"]       	= xr_evaluators_id.stohe_meet_base + 1
-
+--    properties["event"]             = xr_evaluators_id.stohe_reactions_base + 0
 
     operators [ "stalker_novice" ]  = xr_actions_id.jon_stalker_novice3
     operators [ "stalker_attack" ]  = xr_actions_id.jon_stalker_attack
@@ -761,6 +761,7 @@ function add_novice3(obj)
     action:add_precondition     	(world_property(stalker_ids.property_enemy, false))
     action:add_precondition         (world_property ( properties["attack"],     false ) )
 --    action:add_precondition     	(world_property(properties["contact"],      false))
+
     action:add_precondition         (world_property ( properties["work"],     true ) )
     action:add_effect               (world_property ( properties["work"],     false ) )
     manager:add_action              (operators["stalker_novice"], action)
