@@ -4,32 +4,14 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-IC bool	pred_player		(LPVOID v1, LPVOID v2)
-{
-	return ((game_cl_GameState::Player*)v1)->kills>((game_cl_GameState::Player*)v2)->kills;
-};
-
 void	CUIDMPlayerList::Update()
 {
 	CUIStatsWnd::Update();
 
-	xr_map<u32,game_cl_GameState::Player>::iterator I=Game().players.begin();
-	xr_map<u32,game_cl_GameState::Player>::iterator E=Game().players.end();
-
-	// create temporary map (sort by kills)
-	items.clear			();
-	for (;I!=E;++I)		items.push_back(&I->second);
-	std::sort			(items.begin(),items.end(),pred_player);
-
-
-	while (GetItemCount() < items.size())
-	{
-		AddItem();
-	};
+	UpdateItemsList();
 
 	char Text[1024];
 	int ItemIDX = 0;
-	HighlightItem(0xffffffff);
 	for (ItemIt mI=items.begin(); items.end() != mI; ++mI)
 	{
 		game_cl_GameState::Player* P = (game_cl_GameState::Player*)*mI;
@@ -37,7 +19,7 @@ void	CUIDMPlayerList::Update()
 		//		if (P->flags&GAME_PLAYER_FLAG_LOCAL)	color = 0xf0a0ffa0; //H->SetColor(0xf0a0ffa0);
 		//		else									color = 0xf0a0a0ff; //H->SetColor(0xe0a0eea0);
 
-		if (P->flags&GAME_PLAYER_FLAG_LOCAL)	HighlightItem(ItemIDX);
+		if (P->flags&GAME_PLAYER_FLAG_LOCAL)	SelectItem(ItemIDX);
 		CUIStatsListItem *pItem = GetItem(ItemIDX++);
 		if (!pItem) continue;
 
@@ -49,6 +31,16 @@ void	CUIDMPlayerList::Update()
 		else
 			pItem->FieldsVector[2]->SetText("");
 	}
+};
+
+void	CUIDMPlayerList::Show()
+{
+	CUIStatsWnd::Show();
+
+//	HUD().GetUI()->ShowIndicators();
+	HUD().GetUI()->HideCursor();
+
+	CUIStatsWnd::Enable(false);
 };
 /*
 CUIDMPlayerList::CUIDMPlayerList()

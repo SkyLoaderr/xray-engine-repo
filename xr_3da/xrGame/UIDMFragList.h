@@ -13,15 +13,19 @@ protected:
 	ItemVec			items;
 
 public:
-	CUIDMFragList	();
-	~CUIDMFragList	();
+	CUIDMFragList					();
+	~CUIDMFragList					();
 
-	virtual void Show();
+	virtual void Show				();
 
-	virtual void Update();
+	virtual void Update				();
 
 	virtual u32						GetItemCount	()	{return UIStatsList.GetSize();};
 	virtual	CUIStatsListItem*		GetItem			(int index);
+
+
+	virtual void					UpdateItemsList ();
+	virtual void					UpdateItemsNum	();
 
 //	void			Init			();
 //	virtual void	OnFrame			();

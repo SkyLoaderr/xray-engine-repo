@@ -2,17 +2,17 @@
 #define __XR_UITDMPLAYERLIST_H__
 #pragma once
 
-#include "uiListBox.h"
+//#include "uiListBox.h"
+#include "UIDMPlayerList.h"
 
-class CUITDMPlayerList:public CUIListBox
+class CUITDMPlayerList:public CUIDMPlayerList
 {
-	typedef CUIListBox inherited;
+	typedef CUIDMPlayerList inherited;
 private:
-	u8				m_u8Team;
+	u8				m_CurTeam;
 public:
-	CUITDMPlayerList	();
-	void			Init			(u8 Team, u32 X, u32 Y, u32 Width, u32 Height, EUIItemAlign Align);
-	virtual void	OnFrame			();
+	void			Init			(u8 Team);
+	virtual void	UpdateItemsList	();
 };
 
 #endif //__XR_UITDMPLAYERLIST_H__

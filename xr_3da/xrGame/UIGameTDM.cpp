@@ -13,19 +13,44 @@ CUIGameTDM::CUIGameTDM(CUI* parent):CUIGameCustom(parent)
 {
 	pFragListT1	= xr_new<CUITDMFragList>	();
 	pFragListT2	= xr_new<CUITDMFragList>	();
+
+	pFragListT1->Init(1);
+	pFragListT2->Init(2);
+
+	int ScreenW = Device.dwWidth;
+	int ScreenH = Device.dwHeight;
+	//-----------------------------------------------------------
+	RECT FrameRect = pFragListT1->GetFrameRect ();
+	int FrameW	= FrameRect.right - FrameRect.left;
+	int FrameH	= FrameRect.bottom - FrameRect.top;
+
+	pFragListT1->SetWndRect(ScreenW/4-FrameW/2, (ScreenH - FrameH)/2, FrameW, FrameH);
+	//-----------------------------------------------------------
+	FrameRect = pFragListT2->GetFrameRect ();
+	FrameW	= FrameRect.right - FrameRect.left;
+	FrameH	= FrameRect.bottom - FrameRect.top;
+
+	pFragListT2->SetWndRect(ScreenW/4*3-FrameW/2, (ScreenH - FrameH)/2, FrameW, FrameH);
+	//-----------------------------------------------------------
+
 	pPlayerListT1	= xr_new<CUITDMPlayerList>	();
 	pPlayerListT2	= xr_new<CUITDMPlayerList>	();
-	
-	u32 X = Device.dwWidth / 24;
-	u32	Y = Device.dwHeight / 4;
-	u32 Width = Device.dwWidth/2 - X*2;
-	u32 Height = Device.dwHeight/2;
 
-	pFragListT1->Init						(1, Device.dwWidth/2 - X - Width, Y, Width, Height, alNone);
-	pFragListT2->Init						(2, Device.dwWidth/2 + X, Y, Width, Height, alNone);
+	pPlayerListT1->Init(1);
+	pPlayerListT2->Init(2);
+	//-----------------------------------------------------------
+	FrameRect = pPlayerListT1->GetFrameRect ();
+	FrameW	= FrameRect.right - FrameRect.left;
+	FrameH	= FrameRect.bottom - FrameRect.top;
 
-	pPlayerListT1->Init						(1, Device.dwWidth/2 - X - Width, Y, Width, Height, alNone);
-	pPlayerListT2->Init						(2, Device.dwWidth/2 + X, Y, Width, Height, alNone);
+	pPlayerListT1->SetWndRect(ScreenW/4-FrameW/2, (ScreenH - FrameH)/2, FrameW, FrameH);
+	//-----------------------------------------------------------
+	FrameRect = pPlayerListT2->GetFrameRect ();
+	FrameW	= FrameRect.right - FrameRect.left;
+	FrameH	= FrameRect.bottom - FrameRect.top;
+
+	pPlayerListT2->SetWndRect(ScreenW/4*3-FrameW/2, (ScreenH - FrameH)/2, FrameW, FrameH);
+	//-----------------------------------------------------------
 }
 //--------------------------------------------------------------------
 
@@ -44,31 +69,15 @@ void CUIGameTDM::OnFrame()
 
 	switch (Game().phase){
 	case GAME_PHASE_PENDING: 
-		pPlayerListT1->OnFrame();
-		pPlayerListT2->OnFrame();
+		pPlayerListT1->Update();
+		pPlayerListT2->Update();
 		break;
 	case GAME_PHASE_INPROGRESS:
 		if (uFlags&flShowFragList) 
 		{
-			pFragListT1->OnFrame	();
-			pFragListT2->OnFrame	();
+			pFragListT1->Update();
+			pFragListT2->Update();
 		}break;
-		/*
-	case GAME_PHASE_TEAM1_SCORES: 
-		{
-			m_Parent->m_Parent->pFontDI->SetAligment(CGameFont::alCenter);
-			m_Parent->m_Parent->pFontDI->SetColor(0xA0969678);
-			m_Parent->m_Parent->pFontDI->SetSize(0.05f);
-			m_Parent->m_Parent->pFontDI->Out(0,-0.5f,"TEAM 1 SCORES");
-		} break;
-	case GAME_PHASE_TEAM2_SCORES: 
-		{
-			m_Parent->m_Parent->pFontDI->SetAligment(CGameFont::alCenter);
-			m_Parent->m_Parent->pFontDI->SetColor(0xA0969678);
-			m_Parent->m_Parent->pFontDI->SetSize(0.05f);
-			m_Parent->m_Parent->pFontDI->Out(0,-0.5f,"TEAM 2 SCORES");
-		} break;
-		*/
 	}
 }
 //--------------------------------------------------------------------
@@ -79,14 +88,17 @@ void CUIGameTDM::Render()
 
 	switch (Game().phase){
 	case GAME_PHASE_PENDING: 
-		pPlayerListT1->Render();
-		pPlayerListT2->Render();
+		HUD().GetUI()->HideIndicators();
+//		HUD().GetUI()->ShowCursor();
+
+		pPlayerListT1->Draw();
+		pPlayerListT2->Draw();
 		break;
 	case GAME_PHASE_INPROGRESS:
 		if (uFlags&flShowFragList) 
 		{
-			pFragListT1->Render		();
-			pFragListT2->Render		();
+			pFragListT1->Draw	();
+			pFragListT2->Draw	();
 		}break;
 	}
 }

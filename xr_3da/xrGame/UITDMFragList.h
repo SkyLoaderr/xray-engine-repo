@@ -2,20 +2,17 @@
 #define __XR_UITDMFRAGLIST_H__
 #pragma once
 
-#include "uilistbox.h"
+//#include "uilistbox.h"
+#include "UIDMFragList.h"
 
-class CUITDMFragList:public CUIListBox
+class CUITDMFragList:public CUIDMFragList
 {
-	typedef CUIListBox inherited;
+	typedef CUIDMFragList inherited;
 private:
 	u8				m_CurTeam;
-	u32				m_CurPlayerColor;
-	u32				m_PlayerColor;
-
 public:
-	CUITDMFragList	();
-	void			Init			(u8 Team, u32 X, u32 Y, u32 Width, u32 Height, EUIItemAlign Align);
-	virtual void	OnFrame			();
+	void			Init			(u8 Team);
+	virtual void	UpdateItemsList	();
 };
 
 #endif //__XR_UITDMFRAGLIST_H__

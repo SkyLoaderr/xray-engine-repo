@@ -90,7 +90,7 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 
 	ps_killed->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
 	ps_killed->deaths				+=	1;
-	if (ps_killer == ps_killed)	
+	if (ps_killer == ps_killed || ps_killed->team == ps_killer->team)	
 	{
 		// By himself
 		ps_killer->kills			-=	1;

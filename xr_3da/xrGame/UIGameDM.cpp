@@ -11,8 +11,8 @@ CUIGameDM::CUIGameDM(CUI* parent):CUIGameCustom(parent)
 {
 	pFragList	= xr_new<CUIDMFragList>		();
 	pPlayerList	= xr_new<CUIDMPlayerList>	();
-	pFragList->Init							();
-	pPlayerList->Init						();
+///	pFragList->Init							();
+///	pPlayerList->Init						();
 
 	int ScreenW = Device.dwWidth;
 	int ScreenH = Device.dwHeight;
@@ -49,11 +49,13 @@ void CUIGameDM::OnFrame()
 		{
 			pPlayerList->Show();
 		};
-//		pPlayerList->OnFrame();
 	break;
 	case GAME_PHASE_INPROGRESS:
-		if (pPlayerList->IsShown()) pPlayerList->Hide();
-//		if (uFlags&flShowFragList) pFragList->OnFrame	();
+//		if (pPlayerList->IsShown()) pPlayerList->Hide();
+		if (uFlags&flShowFragList) 
+		{
+			pFragList->Update();
+		}break;
 	break;
 	}
 }
@@ -66,11 +68,12 @@ void CUIGameDM::Render()
 	switch (Game().phase){
 	case GAME_PHASE_PENDING: 
 		pPlayerList->Draw();
-//		pPlayerList->Render();
 		break;
 	case GAME_PHASE_INPROGRESS:
-//		if (uFlags&flShowFragList) pFragList->Render		();
-		break;
+		if (uFlags&flShowFragList) 
+		{
+			pFragList->Draw	();
+		}break;
 	}
 }
 //--------------------------------------------------------------------
@@ -92,9 +95,11 @@ bool CUIGameDM::IR_OnKeyboardPress(int dik)
 		// switch pressed keys
 		switch (dik){
 		case DIK_TAB:	
-//			SetFlag		(flShowFragList,TRUE);
+			/*
 			m_pUserMenu = pFragList;
 			pFragList->Show();
+			*/
+			SetFlag		(flShowFragList,TRUE);	return true;
 			return true;
 		}
 	}
@@ -109,10 +114,12 @@ bool CUIGameDM::IR_OnKeyboardRelease(int dik)
 	if (Game().phase==GAME_PHASE_INPROGRESS){
 		// switch pressed keys
 		switch (dik){
-		case DIK_TAB:	
-//			SetFlag		(flShowFragList,FALSE);	
+		case DIK_TAB:
+			/*
 			pFragList->Hide();
 			m_pUserMenu = NULL;			
+			*/
+			SetFlag		(flShowFragList,FALSE);	return true;
 			return true;
 		}
 	}
