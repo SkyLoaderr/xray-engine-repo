@@ -8,9 +8,9 @@
 
 void CActor::OnKeyboardPress(int cmd)
 {
-	if (Remote() || !g_Alive())		return;
+	if (Remote())												return;
 
-	if (GAME_PHASE_PENDING	== Game().phase)
+	if (GAME_PHASE_PENDING	== Game().phase || !g_Alive())
 	{
 		if (kWPN_FIRE == cmd)	
 		{
@@ -21,6 +21,7 @@ void CActor::OnKeyboardPress(int cmd)
 		}
 		return;
 	}
+	if (!g_Alive())												return;
 
 	switch(cmd){
 	case kACCEL:	mstate_wishful |= mcAccel;					break;
