@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding="windows-1251"?>
+
+<game_information_portions>
+    <info_portion id="escape_novice_need_weapon">
+        <location>
+            <level></level>
+            <object>001</object>
+            <icon name="unknown" x="2" y="3" width="1" height="1"></icon>
+            <text>Помочь ограбленному новичку</text>
+        </location>
+        <task>escape_novice_need_weapon</task>        
+    </info_portion>
+    <info_portion id="escape_novice_has_weapon">
+        <disable>escape_novice_need_weapon</disable>
+    </info_portion>
+
+    <info_portion id="escape_factory_bandits_dead">
+    </info_portion>
+
+    <info_portion id="escape_need_blockpost_case">
+        <location>
+            <level></level>
+            <object>000</object>
+			<icon name="Case" x="5" y="1" width="1" height="1" r="0" g="50" b="255"></icon>
+            <text>Украсть ящик с блокпоста</text>
+        </location>
+        <task>escape_blockpost_case</task>
+		<dialog>escape_trader_done_blockpost_box</dialog>
+    </info_portion>
+    <info_portion id="escape_have_blockpost_case">
+        <disable>escape_need_blockpost_case</disable>
+    </info_portion>
+
+</game_information_portions>
