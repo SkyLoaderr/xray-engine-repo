@@ -103,10 +103,6 @@ void CUISkinWindow::Init(CUIXml& xmlDoc, int index, shared_str section){
 		r.right		-= static_cast<long>(f);
 	}
 
-//	UIHighlight.Init(r.left,
-//					r.top,
-//					r.right - r.left,
-//					r.bottom - r.top);
 	UIHighlight.Init(BORDER, BORDER, r.right - r.left, r.bottom - r.top);
 
 	UIHighlight.SetShader(GetMPCharIconsShader());
