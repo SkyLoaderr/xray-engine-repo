@@ -20,7 +20,7 @@ void __cdecl	Intro	( void* fn )
 		openparams.lpstrElementName = filename;
 		me = mciSendCommand(0, MCI_OPEN,
 			MCI_WAIT|MCI_OPEN_TYPE|MCI_OPEN_ELEMENT,
-			(DWORD) &openparams );
+			(uintptr_t) &openparams );
 
 		if( me )		break;
 
@@ -28,7 +28,7 @@ void __cdecl	Intro	( void* fn )
 		ZeroMemory		(&playparams,sizeof(playparams));
 		me = mciSendCommand( openparams.wDeviceID,MCI_PLAY,
 			MCI_MCIAVI_PLAY_FULLSCREEN|MCI_WAIT,
-			(DWORD) &playparams);
+			(uintptr_t) &playparams);
 
 		if( me )		break;
 
@@ -36,7 +36,7 @@ void __cdecl	Intro	( void* fn )
 		ZeroMemory		(&closeparams,sizeof(closeparams));
 		me = mciSendCommand( openparams.wDeviceID,
 			MCI_CLOSE, MCI_WAIT,
-			(DWORD) &closeparams);
+			(uintptr_t) &closeparams);
 
 		if( me )		break;
 	}

@@ -793,11 +793,11 @@ int DXTCompressBump(LPCSTR out_name, u8* T_height_gloss, u8* T_normal_map, u32 w
 
 			// Calculate filtered and corrected height
 			u8*		T_height_pf	=	(u8*) calloc( w * h, sizeof( u32 ));	// filtered for parallax
-			for (s32 y=0; y<h; y++)
+			for (s32 y=0; y<s32(h); y++)
 			{
 				u32		p = pitch;
 				u8*		T = T_height_gloss;
-				for (s32 x=0; x<w; x++)
+				for (s32 x=0; x<s32(w); x++)
 				{
 					u32&	dst		= *	(((u32*)((u8*)T_height_pf + (y * pitch)))+x);
 					u32		val		= 

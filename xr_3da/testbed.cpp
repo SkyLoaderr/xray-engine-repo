@@ -258,8 +258,8 @@ void	testbed(void)
 	};
 
 	// results
-	float	p_fpu	= float(TESTS_M)/sec_fpu;	u32 c_fpu	= u64(cycles_fpu/u64(TESTS));
-	float	p_sse	= float(TESTS_M)/sec_sse;	u32 c_sse	= u64(cycles_sse/u64(TESTS));
+	float	p_fpu	= float(TESTS_M)/sec_fpu;	u32 c_fpu	= u32(u64(cycles_fpu/u64(TESTS)));
+	float	p_sse	= float(TESTS_M)/sec_sse;	u32 c_sse	= u32(u64(cycles_sse/u64(TESTS)));
 	Msg		("! sanity_fail(%d), perf: %f --- fpu(%f Mrs, %dc), sse(%f Mrs, %dc)",_fail,p_sse/p_fpu,p_fpu,c_fpu,p_sse,c_sse,result_fpu,result_fpu_b,result_sse,result_sse_b);
 	FlushLog();
 }
