@@ -4357,6 +4357,19 @@
 								RelativePath=".\script_token_list_script.cpp">
 							</File>
 						</Filter>
+						<Filter
+							Name="ScriptRTokenList"
+							Filter="">
+							<File
+								RelativePath=".\script_rtoken_list.h">
+							</File>
+							<File
+								RelativePath=".\script_rtoken_list_inline.h">
+							</File>
+							<File
+								RelativePath=".\script_rtoken_list_script.cpp">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="ScriptMonsterHitInfo"
