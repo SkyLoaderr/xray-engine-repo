@@ -143,10 +143,10 @@ void CActorTools::RealUpdateProperties()
         m_pEditObject->FillSurfaceList		(SURFACES_PREFIX,items,emSurface);
         // skin
         if (m_pEditObject->IsSkeleton()){
-            if (m_pEditObject->m_SMotionRefs.IsEmpty()){
-            	m_pEditObject->FillMotionList(MOTIONS_PREFIX,items,emMotion);
-            }else{ 
+            if (m_pEditObject->m_SMotionRefs.size()){
 		        m_RenderObject.FillMotionList(MOTIONS_PREFIX,items,emMotion);
+            }else{ 
+            	m_pEditObject->FillMotionList(MOTIONS_PREFIX,items,emMotion);
             }
             m_pEditObject->FillBoneList		(BONES_PREFIX,items,emBone);
         }
@@ -198,19 +198,19 @@ void __fastcall CActorTools::OnMotionRefsChange(PropValue* sender)
 void CActorTools::FillMotionProperties(PropItemVec& items, LPCSTR pref, ListItem* sender)
 {
 	R_ASSERT(m_pEditObject);
-	CSMotion* SM = m_pEditObject->m_SMotionRefs.IsEmpty()?(CSMotion*)sender->m_Object:0;
+	CSMotion* SM = m_pEditObject->m_SMotionRefs.size()?0:(CSMotion*)sender->m_Object;
     PropValue* V;
 
     AnsiString m_cnt;
-    if (m_pEditObject->m_SMotionRefs.IsEmpty()){ 
-    	m_cnt 				= m_pEditObject->SMotionCount();
-    }else{
+    if (m_pEditObject->m_SMotionRefs.size()){ 
 	    if (fraLeftBar->ebRenderEngineStyle->Down){
             CSkeletonAnimated* V	= dynamic_cast<CSkeletonAnimated*>(m_RenderObject.m_pVisual);
             if (V) m_cnt	= V->LL_CycleCount()+V->LL_FXCount();
         }else{
         	m_cnt	 		= AnsiString(m_pEditObject->SMotionCount())+" (Inaccessible)";
         }
+    }else{
+    	m_cnt 				= m_pEditObject->SMotionCount();
     }
     
     PHelper.CreateCaption	(items, FHelper.PrepareKey(pref,"Global\\Motion count"),	m_cnt);

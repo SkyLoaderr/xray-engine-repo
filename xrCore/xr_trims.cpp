@@ -3,30 +3,20 @@
 
 LPSTR _TrimLeft( LPSTR str )
 {
-	LPSTR p = str;
-	while( *p && isspace(*p) ) p++;
-	size_t	num1 = xr_strlen( str );
-	size_t	num2 = xr_strlen( p );
-	if (num1 == num2) return str;
-	for (u32	i = 0; i < num1; i++)
-	{
-		if (i < num2) str[i] = p[i];
-			else str[i] = 0;
-	}
+	LPSTR p 	= str;
+	while( *p && ((*p)<=' ') ) p++;
+    if (p!=str){
+        for (LPSTR t=str; *p; t++,p++) *t=*p;
+        *t = 0;
+    }
 	return str;
 }
 
 LPSTR _TrimRight( LPSTR str )
 {
-	size_t	num = xr_strlen( str );
-    if (num>0){
-     	num-=1;
-        while ( (num > 0)&&(isspace(u8(str[num]))))
-        {
-            num--;
-        }
-        str[num+1] = 0;
-    }
+	LPSTR p 	= str+xr_strlen(str);
+	while( (p!=str) && ((*p)<=' ') ) p--;
+    *(++p) 		= 0;
 	return str;
 }
 

@@ -503,7 +503,6 @@ BOOL SceneBuilder::BuildLight(CLight* e)
     b_light	L;
     L.data.type					= e->m_Type;
     L.data.diffuse.mul_rgb		(e->m_Color,e->m_Brightness);
-    L.data.mul					(e->m_Brightness);
     L.data.position.set			(e->PPosition);
     Fvector dir;    dir.setHP	(e->PRotation.y,e->PRotation.x);
     L.data.direction.set		(dir);
