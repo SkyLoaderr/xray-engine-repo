@@ -16,7 +16,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Debug"
+			OutputDirectory="x:\"
 			IntermediateDirectory="Debug"
 			ConfigurationType="2"
 			UseOfATL="1"
@@ -86,7 +86,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
+			OutputDirectory="x:\"
 			IntermediateDirectory="Release"
 			ConfigurationType="2"
 			UseOfATL="1"
@@ -167,7 +167,7 @@
 		</Configuration>
 		<Configuration
 			Name="Mixed|Win32"
-			OutputDirectory="$(ConfigurationName)"
+			OutputDirectory="x:\"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfATL="1"
