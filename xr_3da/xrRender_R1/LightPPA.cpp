@@ -128,3 +128,10 @@ void CLightPPA_Manager::Render()
 	Device.mProject._43 = _43;
 	RCache.set_xform_project	(Device.mProject);
 }
+
+CLightPPA*		CLightPPA_Manager::Create			()
+{
+}
+void			CLightPPA_Manager::Destroy			(CLightPPA*)
+{
+}

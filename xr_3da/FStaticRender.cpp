@@ -51,9 +51,8 @@ IDirect3DVertexBuffer9*	CRender::getVB					(int id)			{ VERIFY(id<int(VB.size())
 IDirect3DIndexBuffer9*	CRender::getIB					(int id)			{ VERIFY(id<int(IB.size()));		return IB[id];		}
 IRender_Target*			CRender::getTarget				()					{ return &Target;										}
 
-
 IRender_Light*			CRender::light_create			()					{ return L_Dynamic.Create();							}
-void					CRender::light_destroy			(IRender_Light* &L)	{ L_Dynamic.Destroy((CLightPPA*)L)};	L=0;			}
+void					CRender::light_destroy			(IRender_Light* &L)	{ L_Dynamic.Destroy((CLightPPA*)L);	L=0;				}
 void					CRender::L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>& dest)
 {	L_DB.Select	(pos,fRadius,dest);		}
 

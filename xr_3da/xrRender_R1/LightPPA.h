@@ -33,7 +33,8 @@ public:
 
 class CLightPPA_Manager
 {
-	svector<CLightPPA*,128>			container;
+	vector<CLightPPA*>				active;
+	vector<CLightPPA*>				incative;
 	
 	Shader*							hShader;
 	SGeometry*						hGeom;
