@@ -213,7 +213,7 @@ void CStalkerAnimations::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
 		return;
 
 	if ((eMentalStatePanic == stalker->mental_state()) && (stalker->speed() > EPS_L)) {
-		tpGlobalAnimation = m_tAnims.A[stalker->IsLimping() ? eBodyStateStandDamaged : eBodyStateStand].m_tGlobal.A[1].A[0];
+		tpGlobalAnimation	= m_tAnims.A[stalker->IsLimping() ? eBodyStateStandDamaged : eBodyStateStand].m_tGlobal.A[1].A[0];
 		return;
 	}
 
