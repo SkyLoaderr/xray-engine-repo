@@ -128,6 +128,7 @@ void CAI_Zombie::Death()
 		if (Level().timeServer() - m_dwDeathTime > m_dwTimeToLie) {
 			//m_fFood = Movement.GetMass()*100;
 			fHealth = m_fMaxHealthValue;
+			m_tpSoundBeingPlayed = 0;
 			GO_TO_NEW_STATE(aiZombieResurrect);
 		}
 	}
@@ -541,6 +542,18 @@ void CAI_Zombie::Resurrect()
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	vfSetFire(false,Group);
 
+	if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
+		m_tpSoundBeingPlayed = &(m_tpaSoundResurrect[Random.randI(SND_RESURRECT_COUNT)]);
+
+		//if (!m_tpSoundBeingPlayed->feedback)
+			pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
+		//else
+		//	m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
+	}
+	else
+		if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
+			m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
+	
 	if (((m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[0]) || (m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[1]) || (m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[2])) && (!m_tpCurrentGlobalBlend->playing)) {
 		GO_TO_NEW_STATE_THIS_UPDATE(aiZombieFreeHuntingActive);
 	}

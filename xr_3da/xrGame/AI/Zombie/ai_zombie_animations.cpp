@@ -34,23 +34,23 @@ void CAI_Zombie::vfLoadSounds()
 	pSounds->Create(m_tpaSoundIdle[2],TRUE,"monsters\\zombie\\idle\\hh1a0mo3",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
 
 	// notice
-	pSounds->Create(m_tpaSoundIdle[0],TRUE,"monsters\\zombie\\notice\\hh1to1_1",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundNotice[0],TRUE,"monsters\\zombie\\notice\\hh1to1_1",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
 
 	// pursuit
-	pSounds->Create(m_tpaSoundIdle[0],TRUE,"monsters\\zombie\\pursuit\\hh1a1__1",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	pSounds->Create(m_tpaSoundIdle[1],TRUE,"monsters\\zombie\\pursuit\\hh1a1__2",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	pSounds->Create(m_tpaSoundIdle[2],TRUE,"monsters\\zombie\\pursuit\\hh1a1__3",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	pSounds->Create(m_tpaSoundIdle[3],TRUE,"monsters\\zombie\\pursuit\\hh1a1__4",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	pSounds->Create(m_tpaSoundIdle[4],TRUE,"monsters\\zombie\\pursuit\\hh1a1__5",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	pSounds->Create(m_tpaSoundIdle[5],TRUE,"monsters\\zombie\\pursuit\\hh1a1__6",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundPursuit[0],TRUE,"monsters\\zombie\\pursuit\\hh1a1__1",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundPursuit[1],TRUE,"monsters\\zombie\\pursuit\\hh1a1__2",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundPursuit[2],TRUE,"monsters\\zombie\\pursuit\\hh1a1__3",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundPursuit[3],TRUE,"monsters\\zombie\\pursuit\\hh1a1__4",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundPursuit[4],TRUE,"monsters\\zombie\\pursuit\\hh1a1__5",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundPursuit[5],TRUE,"monsters\\zombie\\pursuit\\hh1a1__6",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
 
 	// resurrect
-	pSounds->Create(m_tpaSoundIdle[0],TRUE,"monsters\\zombie\\resurrect\\hh1a3__1",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	pSounds->Create(m_tpaSoundIdle[1],TRUE,"monsters\\zombie\\resurrect\\hh1a3__2",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	pSounds->Create(m_tpaSoundIdle[2],TRUE,"monsters\\zombie\\resurrect\\hh1a3__3",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	pSounds->Create(m_tpaSoundIdle[3],TRUE,"monsters\\zombie\\resurrect\\hh1a3__4",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	pSounds->Create(m_tpaSoundIdle[4],TRUE,"monsters\\zombie\\resurrect\\hh1a3__5",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	pSounds->Create(m_tpaSoundIdle[5],TRUE,"monsters\\zombie\\resurrect\\hh1a3__6",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundResurrect[0],TRUE,"monsters\\zombie\\resurrect\\hh1a3__1",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundResurrect[1],TRUE,"monsters\\zombie\\resurrect\\hh1a3__2",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundResurrect[2],TRUE,"monsters\\zombie\\resurrect\\hh1a3__3",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundResurrect[3],TRUE,"monsters\\zombie\\resurrect\\hh1a3__4",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundResurrect[4],TRUE,"monsters\\zombie\\resurrect\\hh1a3__5",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundResurrect[5],TRUE,"monsters\\zombie\\resurrect\\hh1a3__6",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
 }
 
 // animations
