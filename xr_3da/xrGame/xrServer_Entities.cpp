@@ -1036,6 +1036,19 @@ void	xrSE_Zone::FillProp			(LPCSTR pref, PropItemVec& items)
 }
 #endif
 
+//***** Detector
+void xrSE_Detector::STATE_Read		(NET_Packet& P, u16 size)	{};
+void xrSE_Detector::STATE_Write		(NET_Packet& P)				{};
+void xrSE_Detector::UPDATE_Read		(NET_Packet& P)				{};
+void xrSE_Detector::UPDATE_Write	(NET_Packet& P)				{};
+#ifdef _EDITOR
+void xrSE_Detector::FillProp		(LPCSTR pref, PropItemVec& items)
+{
+  	inherited::FillProp(pref,items);
+}
+#endif
+
+
 #ifdef _EDITOR
 	static TokenValue4::ItemVec loc_base_ids;
 	static TokenValue4::ItemVec loc_aux_ids;
@@ -1151,6 +1164,9 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 	// Zones
 	case CLSID_ZONE:				return xr_new<xrSE_Zone>			();
 	case CLSID_Z_MBALD:				return xr_new<xrSE_Zone>			();
+
+	// Detectors
+	case CLSID_DETECTOR_SIMPLE:		return xr_new<xrSE_Detector>		();
 
 	case CLSID_OBJECT_W_M134:		return xr_new<xrSE_Weapon>			();
 	case CLSID_OBJECT_W_FN2000:		return xr_new<xrSE_Weapon>			();

@@ -354,6 +354,10 @@ class xrSE_Zone : public xrServerEntity, public xrSE_CFormed { typedef xrServerE
 	u32 m_period;
 xrSE_DECLARE_END
 
+//***** Detector
+xrSE_DECLARE_BEGIN(xrSE_Detector,xrServerEntity)
+xrSE_DECLARE_END
+
 xrSE_DECLARE_BEGIN(xrGraphPoint,xrServerEntity)
 public:
 	xrGraphPoint();

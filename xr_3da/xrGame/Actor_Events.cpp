@@ -3,6 +3,7 @@
 #include "weapon.h"
 #include "xr_weapon_list.h"
 #include "targetcs.h"
+#include "customdetector.h"
 
 IC BOOL BE	(BOOL A, BOOL B)
 {
@@ -23,6 +24,15 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			Log("CActor::OnEvent - TAKE - ", cName());
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
+
+			// Test for Detector
+			CCustomDetector* D	= dynamic_cast<CCustomDetector*>	(O);
+			if (D) 
+			{
+				R_ASSERT							(BE(Local(),D->Local()));	// remote can't take local
+				D->H_SetParent(this);
+				return;
+			}
 
 			// Test for Artifact
 			CTargetCS* A	= dynamic_cast<CTargetCS*>	(O);
@@ -77,7 +87,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			{
 				// R_ASSERT							(BE(Local(),A->Local()));	// remote can't eject local
 				A->H_SetParent						(0);
-				feel_touch_deny						(W,1000);
+				feel_touch_deny						(A,1000);
 				return;
 			}
 			Log			("CActor::OnEvent - REJECT - Processed.");

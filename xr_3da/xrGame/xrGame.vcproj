@@ -1109,6 +1109,26 @@
 							</File>
 						</Filter>
 					</Filter>
+					<Filter
+						Name="Detectors"
+						Filter="">
+						<File
+							RelativePath="CustomDetector.cpp">
+						</File>
+						<File
+							RelativePath="CustomDetector.h">
+						</File>
+						<Filter
+							Name="Simple Detector"
+							Filter="">
+							<File
+								RelativePath="SimpleDetector.cpp">
+							</File>
+							<File
+								RelativePath="SimpleDetector.h">
+							</File>
+						</Filter>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Spectator"

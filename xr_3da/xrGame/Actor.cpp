@@ -261,6 +261,32 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	hit_factor				= 1.f;
 
 	m_pArtifact				= 0;
+
+
+// @@@: WT - !!!ВРЕМЕННО!!! - спавним каждому актеру детектор
+	if(Local()) {
+		// Create
+		xrServerEntity*		D	= F_entity_Create("detector_simple");
+		R_ASSERT			(D);
+		// Fill
+		strcpy				(D->s_name,"detector_simple");
+		strcpy				(D->s_name_replace,"");
+		D->s_gameid			=	u8(GameID());
+		D->s_RP				=	0xff;
+		D->ID				=	0xffff;
+		D->ID_Parent		=	E->ID;
+		D->ID_Phantom		=	0xffff;
+		D->s_flags.set		(M_SPAWN_OBJECT_ACTIVE | M_SPAWN_OBJECT_LOCAL);
+		D->RespawnTime		=	0;
+		// Send
+		NET_Packet			P;
+		D->Spawn_Write		(P,TRUE);
+		Level().Send		(P,net_flags(TRUE));
+		// Destroy
+		F_entity_Destroy	(D);
+	}
+// @@@: WT
+
 	return					TRUE;
 }
 
