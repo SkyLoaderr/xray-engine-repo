@@ -241,6 +241,12 @@ class "action_idle" (action_base)
 ------------
 function action_idle:__init (name, storage) super (nil, name)
     self.a = storage
+   	self.sounds = 
+   	            { rnd = 100,
+				  maxidle = 5, 
+				  sumidle = 2,
+				  themes = { "wounded_help" } 
+				}
 end
 ------------
 function action_idle:initialize ()
@@ -254,6 +260,7 @@ function action_idle:execute ()
     if self.object:animation_count () < 2 then 
        self.object:add_animation ("waunded_idle_0", true)
     end    
+    xr_sound.sound_update(self.object, self.sounds)		
 end    
 ------------
 function action_idle:finalize ()
