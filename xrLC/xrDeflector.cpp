@@ -141,6 +141,7 @@ void CDeflector::OA_Place	(vecFace& lst)
 		F->pDeflector	= this;
 	}
 }
+
 VOID CDeflector::GetRect	(UVpoint &min, UVpoint &max)
 {
 	// Calculate bounds
