@@ -516,7 +516,6 @@ void TUI::OnMousePress(TShiftState state){
 
             if(m_Tools->MouseStart(m_ShiftState)){
                 if(m_Tools->HiddenMode()) ShowCursor( FALSE );
-                SetCapture( m_D3DWindow );
                 m_MouseCaptured = true;
             }
         }
@@ -543,7 +542,6 @@ void TUI::OnMouseRelease(TShiftState state){
                     SetCursorPos(m_StartCpH.x,m_StartCpH.y);
                     ShowCursor( TRUE );
                 }
-                ReleaseCapture();
                 m_MouseCaptured = false;
             }
         }
@@ -556,7 +554,10 @@ void TUI::OnMouseMove(int x, int y){
 	if(!g_bEditorValid) return;
     bool bRayUpdated = false;
 
-	if (!Device.m_Camera.Process(m_ShiftState)){
+    if (iGetBtnState(0)) m_ShiftState << ssLeft;
+    if (iGetBtnState(1)) m_ShiftState << ssRight;
+
+	if (!Device.m_Camera.Process(m_ShiftState,x,y)){
         if( m_MouseCaptured || m_MouseMultiClickCaptured ){
             if( m_Tools->HiddenMode() ){
 				m_DeltaCpH.set(x,y);

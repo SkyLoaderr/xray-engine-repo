@@ -36,6 +36,7 @@ public:
 	IC bool 		RefCompare				(CEditableObject *to){return !!(m_pRefs==to); }
 	IC CEditableObject*	GetRef				()	{return m_pRefs; }
 	IC void			SetRef					(CEditableObject* ref)	{m_pRefs = ref;}
+	IC EditMeshVec& Meshes					() {VERIFY(m_pRefs); return m_pRefs->Meshes();}
 
     // statistics methods
 	IC bool 		IsDynamic     			()	{return (m_pRefs->IsDynamic()); }

@@ -271,6 +271,18 @@ CLibObject *ELibrary::SearchObject(const char *name){
 	return 0;
 }
 
+CEditableObject* ELibrary::SearchEditObject(const char *name){
+	if (!name) return 0;
+    CLibObject* LO = SearchObject(name);
+    if (!LO){
+    	ELog.Msg( mtError, "Can't find '%s' in library.", name );
+        return 0;
+    }
+    CEditableObject* EO = LO->GetReference();
+    if (!EO) ELog.Msg( mtError, "Object '%s' can't load.", name );
+    return EO;
+}
+
 CLibObject* ELibrary::FindObjectByName(const char *name, const CLibObject* pass_item){
 	if (!name) return 0;
     for(LibObjIt it=FirstObj(); it!=LastObj(); it++)

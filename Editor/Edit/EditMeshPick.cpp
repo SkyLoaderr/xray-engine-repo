@@ -12,6 +12,19 @@
 #include "EditorPref.h"
 #include "bottombar.h"
 
+bool CEditableMesh::CHullPickMesh(PlaneVec& pl, Fmatrix& parent){
+	DWORD i=0;
+	Fvector p;
+    vector<bool> inside(m_Points.size(),true);
+    for(FvectorIt v_it=m_Points.begin();v_it!=m_Points.end();v_it++){
+        parent.transform_tiny(p,*v_it);
+        for(PlaneIt p_it=pl.begin(); p_it!=pl.end(); p_it++)
+        	if (p_it->classify(p)>EPS_L) { inside[v_it-m_Points.begin()]=false; break; }
+    }
+    for(FaceIt f_it=m_Faces.begin();f_it!=m_Faces.end();f_it++,i++)
+    	if (inside[f_it->pv[0].pindex]&&inside[f_it->pv[1].pindex]&&inside[f_it->pv[2].pindex]) return true;
+}
+/*
 void CEditableMesh::CHullPickFaces(PlaneVec& pl, Fmatrix& parent, DWORDVec& fl){
 	DWORD i=0;
 	Fvector p;
@@ -24,6 +37,7 @@ void CEditableMesh::CHullPickFaces(PlaneVec& pl, Fmatrix& parent, DWORDVec& fl){
     for(FaceIt f_it=m_Faces.begin();f_it!=m_Faces.end();f_it++,i++)
     	if (inside[f_it->pv[0].pindex]&&inside[f_it->pv[1].pindex]&&inside[f_it->pv[2].pindex]) fl.push_back(i);
 }
+*/
 //----------------------------------------------------
 
 static INTVec		sml_processed;

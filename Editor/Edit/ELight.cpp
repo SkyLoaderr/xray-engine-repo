@@ -302,11 +302,11 @@ bool CLight::Load(CStream& F){
         Fvector& dir= m_D3D.direction;
         // parse heading
         Fvector DYaw; DYaw.set(dir.x,0.f,dir.z); DYaw.normalize_safe();
-        if (DYaw.x>=0)	vRotate.x = acosf(DYaw.z);
+        if (DYaw.x<0)	vRotate.x = acosf(DYaw.z);
         else			vRotate.x = 2*PI-acosf(DYaw.z);
         // parse pitch
         dir.normalize_safe	();
-        vRotate.y		= -asinf(dir.y);
+        vRotate.y		= asinf(dir.y);
     }
 
     Update();

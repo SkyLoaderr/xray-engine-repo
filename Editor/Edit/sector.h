@@ -101,7 +101,7 @@ public:
     bool			Contains	(CSceneObject* O, CEditableMesh* M){SItemIt it; return FindSectorItem(O,M,it);}
 
     void			CaptureInsideVolume();
-    void			CaptureAllUnusedFaces();
+    void			CaptureAllUnusedMeshes();
     int 			GetSectorFacesCount();
 	EVisible		TestCHullSphereIntersection(const Fvector&P, float R);
 };

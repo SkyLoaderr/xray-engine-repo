@@ -433,53 +433,46 @@ void CSector::OnSceneUpdate(){
 void CSector::CaptureInsideVolume(){
 	// test all mesh faces
 	// fill object list (test bounding sphere intersection)
-/*    ObjectList lst;
+    ObjectList lst;
 	if (m_bNeedUpdateCHull) MakeCHull();
-	if (Scene->SpherePick(m_SectorCenter, m_SectorRadius, OBJCLASS_EDITOBJECT, lst)){
+	if (Scene->SpherePick(m_SectorCenter, m_SectorRadius, OBJCLASS_SCENEOBJECT, lst)){
     // test all object meshes
-        DWORDVec fl;
         Fmatrix matrix;
-        CEditObject *O_ref=NULL, *O_lib=NULL;
+	    CSceneObject *obj=NULL;
         // ignore dynamic objects
 		for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-            O_ref = (CEditObject*)(*_F); O_lib=(O_ref->IsReference())?O_ref->GetRef():O_ref;
-	        if (O_lib->IsDynamic()) continue;
-            for(EditMeshIt m_def = O_lib->m_Meshes.begin();m_def!=O_lib->m_Meshes.end();m_def++){
-                fl.clear();
-                O_ref->GetFullTransformToWorld(matrix);
-                (*m_def)->CHullPickFaces(m_CHSectorPlanes,matrix,fl);
-                AddFaces(O_ref,*m_def,fl);
+	        obj = (CSceneObject*)(*_F);
+	        if (obj->IsDynamic()) continue;
+	        EditMeshVec& M = obj->Meshes();
+            for(EditMeshIt m_def = M.begin();m_def!=M.end();m_def++){
+                obj->GetFullTransformToWorld(matrix);
+                if ((*m_def)->CHullPickMesh(m_CHSectorPlanes,matrix))
+	                AddMesh(obj,*m_def);
             }
         }
         MakeCHull();
 		UI->RedrawScene();
     }
-*/
-	ELog.DlgMsg(mtInformation,"Function not implemented.");
 }
 //----------------------------------------------------
 
-void CSector::CaptureAllUnusedFaces(){
-/*    DWORDVec fl;
-    CEditObject *O_ref=NULL, *O_lib=NULL;
-    ObjectList& lst=Scene->ListObj(OBJCLASS_EDITOBJECT);
+void CSector::CaptureAllUnusedMeshes(){
+    DWORDVec fl;
+    CSceneObject *obj=NULL;
+    ObjectList& lst=Scene->ListObj(OBJCLASS_SCENEOBJECT);
     // ignore dynamic objects
     UI->ProgressStart(lst.size(),"Capturing unused face...");
     for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
 		UI->ProgressInc();
-        O_ref = (CEditObject*)(*_F); O_lib=(O_ref->IsReference())?O_ref->GetRef():O_ref;
-        if (O_lib->IsDynamic()) continue;
-        for(EditMeshIt m_def = O_lib->m_Meshes.begin();m_def!=O_lib->m_Meshes.end();m_def++){
-            fl.clear();
-            fl.resize((*m_def)->m_Faces.size());
-            for(DWORD i=0; i<fl.size(); i++) fl[i]=i;
-            AddFaces(O_ref,*m_def,fl);
-        }
+        obj = (CSceneObject*)(*_F);
+        if (obj->IsDynamic()) continue;
+        EditMeshVec& M = obj->Meshes();
+        for(EditMeshIt m_def = M.begin(); m_def!=M.end();m_def++)
+        	AddMesh(obj,*m_def);
     }
     UI->ProgressEnd();
     MakeCHull();
     UI->RedrawScene();
-*/	ELog.DlgMsg(mtInformation,"Function not implemented.");
 }
 
 //----------------------------------------------------

@@ -11,9 +11,8 @@ enum ECameraStyle{
 class CUI_Camera{
 	ECameraStyle	m_Style;
     bool			m_bMoving;
-    POINT			m_SavePos;
-    Fvector2		m_CenterPos;
     TShiftState	 	m_Shift;
+    Ipoint			m_StartPos;
     float 			m_FlySpeed;
     float 			m_FlyAltitude;
 
@@ -47,7 +46,7 @@ public:
     bool			MoveStart	(TShiftState Shift);
     bool			MoveEnd		(TShiftState Shift);
     bool			IsMoving	(){return m_bMoving;}
-	bool 			Process		(TShiftState Shift);
+	bool 			Process		(TShiftState Shift, int dx, int dy);
     bool			KeyDown		(WORD Key, TShiftState Shift);
     bool			KeyUp		(WORD Key, TShiftState Shift);
 

@@ -81,6 +81,7 @@ public:
 
 	int 				ObjectCount        	();
 	CLibObject*			SearchObject		(const char *name);
+	CEditableObject*	SearchEditObject	(const char *name);
 	CLibObject*			FindObjectByName	(const char *name, const CLibObject* pass_object);
 public:
 	void 				Init				();

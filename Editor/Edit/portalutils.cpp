@@ -13,6 +13,7 @@
 #include "EditObject.h"
 #include "SceneObject.h"
 #include "UI_Main.h"
+#include "Library.h"
 
 CPortalUtils PortalUtils;
 #define EPS_P 0.001f
@@ -36,141 +37,7 @@ void CPortalUtils::RemoveSectorPortal(CSector* S){
 
 	UI->EndEState();
 }
-/*
-void CPortalUtils::FindSVertexLinks(int sid, CSector* S, SVertexVec& V){
-    Fmatrix parent;
-    int idx[3];
-    Fvector p[3];
-	for (SItemIt s_it=S->sector_items.begin();s_it!=S->sector_items.end();s_it++){
-		s_it->GetTransform(parent);
-		FvectorVec& m_vert=s_it->mesh->m_Points;
-        for (DWORDIt f_it=s_it->Face_IDs.begin(); f_it!=s_it->Face_IDs.end(); f_it++){
-        	st_Face& P=s_it->mesh->m_Faces[*f_it];
-           	for (int k=0; k<3; k++) parent.transform_tiny(p[k],m_vert[P.pv[k].pindex]);
-            idx[0]=idx[1]=idx[2]=-1;
-            for (SVertexIt pv_it=V.begin(); pv_it!=V.end(); pv_it++){
-            	int id=pv_it-V.begin();
-            	if (p[0].similar(*pv_it,EPS_P)) idx[0]=id;
-                else if (p[1].similar(*pv_it,EPS_P)) idx[1]=id;
-                else if (p[2].similar(*pv_it,EPS_P)) idx[2]=id;
-            }
-            if (idx[0]>=0) V[idx[0]].SetLink(sid, idx[1],idx[2]);
-            if (idx[1]>=0) V[idx[1]].SetLink(sid, idx[0],idx[2]);
-            if (idx[2]>=0) V[idx[2]].SetLink(sid, idx[0],idx[1]);
-        }
-    }
-}
 
-int CPortalUtils::CalculatePortals(CSector* SF, CSector* SB){
-    VERIFY(SF!=SB);
-    int bResult=0;
-    if (!SF->SpherePick(SB->m_SectorCenter,SB->m_SectorRadius,precalc_identity)) return bResult;
-	UI->BeginEState(esSceneLocked);
-	if (SF->m_bNeedUpdateCHull) SF->MakeCHull();
-	if (SB->m_bNeedUpdateCHull) SB->MakeCHull();
-//////////////////////////////////////////////////
-    // remove existence sector portal
-    ObjectList& lst = Scene->ListObj(OBJCLASS_PORTAL);
-    ObjectIt _F = lst.begin();
-    while(_F!=lst.end()){
-    	CPortal* P=(CPortal*)(*_F);
-        if(((P->m_SectorFront==SF)&&(P->m_SectorBack==SB))||
-           ((P->m_SectorFront==SB)&&(P->m_SectorBack==SF))){
-            _DELETE((*_F));
-            ObjectIt _D = _F; _F++;
-            lst.remove((*_D));
-        }else{
-            _F++;
-        }
-    }
-
-	// merge sectors geometry
-	SVertexList V;
-
-    // find similar vertices
-    for (FvectorIt sf_it=SF->m_SectorVertices.begin(); sf_it!=SF->m_SectorVertices.end(); sf_it++)
-	    for (FvectorIt sb_it=SB->m_SectorVertices.begin(); sb_it!=SB->m_SectorVertices.end(); sb_it++)
-        	if (sf_it->similar(*sb_it,EPS_P)){
-            	bool bPresent=false;
-			    for (SVertexIt pv_it=V.begin(); pv_it!=V.end(); pv_it++)
-		        	if (pv_it->similar(*sf_it,EPS_P)){ bPresent=true; break; }
-                if (!bPresent) V.push_back(SVertex(*sf_it));
-                break;
-            }
-
-	// find used edges
-	FindSVertexLinks(0, SF,V);
-	FindSVertexLinks(1, SB,V);
-
-    // find consolidate link
-	for (SVertexIt v=V.begin(); v<V.end(); v++){
-     	v->ConsolidateLink();
-    }
-
-    // create portals
-    WORDList wl;
-    int portal_num=0;
-    bool bRight=false;
-	for (DWORD i=0; i<V.size(); i++){
-    	if (V[i].portal==-1){
-            V[i].portal=portal_num;
-            if (bRight) wl.insert(wl.begin(),i);
-            else		wl.push_back(i);
-            int cur_i=V[i].ulink[0]; // левая ветка
-            int prev_i=i;
-            while(true){
-            	try{
-					V[cur_i].portal=portal_num;
-                }catch(...){
-				    ELog.DlgMsg(mtError,"Portal can't create, because has some errors.\nCheck geometry.\n'%s'<->'%s'",SF->GetName(),SB->GetName());
-					UI->EndEState();
-                	return 0;
-                }
-	            if (bRight) wl.insert(wl.begin(),cur_i);
-    	        else		wl.push_back(cur_i);
-            	if (V[cur_i].ulink.size()==2){
-                    int next_i=(prev_i!=V[cur_i].ulink[1])?V[cur_i].ulink[1]:V[cur_i].ulink[0];
-                    prev_i=cur_i;
-                    cur_i=next_i;
-                    if (V[cur_i].portal>=0) break; // закончился цикл выходим
-                }else{
-	                if ((V[i].ulink.size()==2)&&!bRight){
-						cur_i=V[i].ulink[1]; // правая ветка
-	                    prev_i=i;
-                        bRight=true;
-                    }else break;
-                }
-            }
-		    if (wl.size()>2){
-                // append portal
-                char namebuffer[MAX_OBJ_NAME];
-                Scene->GenObjectName( OBJCLASS_PORTAL, namebuffer );
-                CPortal* _O = new CPortal(namebuffer);
-                for (DWORD i=0; i<wl.size(); i++) _O->m_Vertices.push_back(V[wl[i]]);
-                _O->m_SectorFront=SF;
-                _O->m_SectorBack=SB;
-                _O->Update();
-                if (_O->m_Valid){
-	                bResult++;
-    	            Scene->AddObject(_O);
-                }else{
-                	delete _O;
-				    ELog.DlgMsg(mtError,"Portal can't create, because has some errors.\nCheck geometry.\n'%s'<->'%s'",SF->GetName(),SB->GetName());
-                }
-            }else
-			    if (wl.size()<3) ELog.DlgMsg(mtError,"Portal can't create, because has error: '< 3 edges'.\nCheck geometry.\n'%s'<->'%s'",SF->GetName(),SB->GetName());
-
-            wl.clear();
-            portal_num++;
-        }
-    }
-
-	UI->EndEState();
-    Scene->UndoSave();
-    return bResult;
-}
-//---------------------------------------------------------------------------
-*/
 int CPortalUtils::CalculatePortals(char* s_front, char* s_back){
 	CSector* SF;
 	CSector* SB;
@@ -200,7 +67,7 @@ bool CPortalUtils::CreateDefaultSector(){
 		CSector* sector_def=new CSector(DEFAULT_SECTOR_NAME);
         sector_def->sector_color.set(1,0,0,0);
         sector_def->m_bDefault=true;
-        sector_def->CaptureAllUnusedFaces();
+        sector_def->CaptureAllUnusedMeshes();
 		if (sector_def->GetSectorFacesCount()>0){
          	Scene->AddObject(sector_def,false);
             Scene->UndoSave();
@@ -278,7 +145,7 @@ bool CPortalUtils::Validate(bool bMsg){
     bool bResult = false;
 	if (Scene->GetBox(box,OBJCLASS_SCENEOBJECT)){
 		CSector* sector_def=new CSector(DEFAULT_SECTOR_NAME);
-        sector_def->CaptureAllUnusedFaces();
+        sector_def->CaptureAllUnusedMeshes();
         int f_cnt=sector_def->GetSectorFacesCount();
 		if (f_cnt!=0){	if (bMsg) ELog.DlgMsg(mtError,"*ERROR: Scene has '%d' non associated face!",f_cnt);
         }else{
@@ -315,7 +182,7 @@ bool CPortalUtils::Validate(bool bMsg){
 
 void CPortalUtils::CreateDebugCollection(){
 	ELog.DlgMsg(mtError,"TODO: CPortalUtils::CreateDebugCollection");
-/*	VERIFY((Scene->ObjCount(OBJCLASS_SECTOR)==0)&&(Scene->ObjCount(OBJCLASS_PORTAL)==0));
+	VERIFY((Scene->ObjCount(OBJCLASS_SECTOR)==0)&&(Scene->ObjCount(OBJCLASS_PORTAL)==0));
 
     UI->ProgressStart(6,"Create debug sectors and portal...");
 	UI->ProgressInc();
@@ -327,16 +194,11 @@ void CPortalUtils::CreateDebugCollection(){
 	UI->ProgressInc();
 
 	// create debug object
-    CEditableObject* O = new CEditableObject("$debug_object_0x247d05e9");
-    AnsiString fn;
-    fn = "$debug_sector.object";
-    FS.m_Objects.Update(fn);
-    if (!O->Load(fn.c_str())){
-    	ELog.DlgMsg(mtError, "Can't find object '%s'",fn.c_str());
-    	_DELETE(O);
-	    UI->ProgressEnd();
-        return;
-    }
+    CSceneObject* O = new CSceneObject("$debug_object_0x247d05e9");
+    CEditableObject* EO = Lib->SearchEditObject("$debug_sector");
+    if (!EO){ _DELETE(O); UI->ProgressEnd(); return; }
+    O->SetRef(EO);
+
 	UI->ProgressInc();
 
     Fbox lev_box, obj_box;
@@ -351,7 +213,7 @@ void CPortalUtils::CreateDebugCollection(){
 	UI->ProgressInc();
     // create debug sector
     CSector* S = new CSector("$debug_sector_0x247d05e9");
-    S->CaptureAllUnusedFaces();
+    S->CaptureAllUnusedMeshes();
     Scene->AddObject(S,false);
 	UI->ProgressInc();
     // create debug portal
@@ -368,7 +230,6 @@ void CPortalUtils::CreateDebugCollection(){
 	UI->ProgressInc();
 
 	UI->ProgressEnd();
-*/
 }
 
 //--------------------------------------------------------------------------------------------------

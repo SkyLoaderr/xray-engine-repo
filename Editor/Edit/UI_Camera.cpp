@@ -32,10 +32,10 @@ void CUI_Camera::SetStyle(ECameraStyle new_style){
 	if (new_style!=m_Style){
     	if (new_style==cs3DArcBall){
 		    Fvector dir;
-            dir.sub(m_Target,m_Position);
+            dir.sub			(m_Target,m_Position);
 	        // parse heading
     	    Fvector DYaw; DYaw.set(dir.x,0.f,dir.z); DYaw.normalize_safe();
-	        if (DYaw.x>=0)	m_HPB.x = acosf(DYaw.z);
+	        if (DYaw.x<0)	m_HPB.x = acosf(DYaw.z);
     	    else			m_HPB.x = 2*PI-acosf(DYaw.z);
 	        // parse pitch
     	    dir.normalize_safe	();
@@ -147,15 +147,11 @@ void CUI_Camera::Rotate(float dx, float dy){
 
 bool CUI_Camera::MoveStart(TShiftState Shift){
 	if (UI&&!m_bMoving&&Shift.Contains(ssShift)){
-		m_CenterPos.x = GetSystemMetrics(SM_CXSCREEN)/2;
-	    m_CenterPos.y = GetSystemMetrics(SM_CYSCREEN)/2;
-		GetCursorPos(&m_SavePos);
-	    ShowCursor( FALSE );
-	    SetCursorPos( m_CenterPos.x, m_CenterPos.y );
-	    SetCapture( UI->GetD3DWindow() );
+	    ShowCursor	(FALSE);
+        UI->iGetMousePosScreen(m_StartPos);
 		m_bMoving	= true;
-		m_Shift = Shift;
-        Scene->lock();
+		m_Shift 	= Shift;
+        Scene->lock	();
         return true;
     }
 	m_Shift = Shift;
@@ -164,41 +160,35 @@ bool CUI_Camera::MoveStart(TShiftState Shift){
 
 bool CUI_Camera::MoveEnd(TShiftState Shift){
 	if (!Shift.Contains(ssLeft)||!Shift.Contains(ssShift)){
-	    SetCursorPos( m_SavePos.x, m_SavePos.y );
-    	ShowCursor( TRUE );
-	    ReleaseCapture();
+	    SetCursorPos(m_StartPos.x, m_StartPos.y);
+    	ShowCursor	(TRUE);
         Scene->unlock();
 		m_bMoving	= false;
-		m_Shift = Shift;
+		m_Shift 	= Shift;
         return true;
     }
 	m_Shift = Shift;
     return false;
 }
 
-bool CUI_Camera::Process(TShiftState Shift){
+bool CUI_Camera::Process(TShiftState Shift, int dx, int dy){
     if (UI&&m_bMoving){
         m_Shift = Shift;
 // camera move
-		POINT d;
-		GetCursorPos(&d);
-        d.x -= m_CenterPos.x;
-        d.y -= m_CenterPos.y;
-        if( d.x || d.y ){
-            SetCursorPos(m_CenterPos.x,m_CenterPos.y);
+        if( dx || dy ){
             switch (m_Style){
             case csPlaneMove:
-                if (Shift.Contains(ssLeft) && Shift.Contains(ssRight)) Rotate (d.x,d.y);
-                else if (Shift.Contains(ssLeft))			Pan		(d.x,d.y);
-                		else if(Shift.Contains(ssRight))   	Scale  	(d.y);
+                if (Shift.Contains(ssLeft) && Shift.Contains(ssRight)) Rotate (dx,dy);
+                else if (Shift.Contains(ssLeft))			Pan		(dx,dy);
+                		else if(Shift.Contains(ssRight))   	Scale  	(dy);
             break;
             case csFreeFly:
-                if (Shift.Contains(ssLeft)||Shift.Contains(ssRight)) Rotate (d.x,d.y);
+                if (Shift.Contains(ssLeft)||Shift.Contains(ssRight)) Rotate (dx,dy);
 //                if (Shift.Contains(ssLeft)) Rotate (d.x,d.y);
 //                else if (Shift.Contains(ssRight)) Scale(d.y);
             break;
             case cs3DArcBall:
-            	ArcBall(Shift,d.x,d.y);
+            	ArcBall(Shift,dx,dy);
             break;
             }
 		    UI->RedrawScene();
@@ -298,11 +288,13 @@ void CUI_Camera::ArcBall(TShiftState Shift, float dx, float dy){
             vmove.y *= -m_SM;
             m_Target.add( vmove );
         }
-    }else if (Shift.Contains(ssRight)){
-        dist -= dx*m_SM;
     }else{
-        m_HPB.x-=m_SR*dx;
-        m_HPB.y-=m_SR*dy*m_Aspect;
+    	if (Shift.Contains(ssRight)){
+        	dist -= dx*m_SM;
+	    }else{
+    	    m_HPB.x-=m_SR*dx;
+        	m_HPB.y-=m_SR*dy*m_Aspect;
+	    }
     }
 
     Fvector D;
