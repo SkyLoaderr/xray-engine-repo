@@ -33,18 +33,6 @@ static Fvector	vFootExt;
 DWORD			psActorFlags=0;
 
 //--------------------------------------------------------------------
-void __stdcall CActor::SpinCallback(CBoneInstance* B)
-{
-	CActor*	A			= dynamic_cast<CActor*>(static_cast<CObject*>(B->Callback_Param));
-
-	Fmatrix				spin;
-	float				bone_yaw	= A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta;
-	float				bone_pitch	= A->r_torso.pitch;
-	// clamp				(bone_pitch,-PI_DIV_8,PI_DIV_4);
-	spin.setXYZ			(bone_yaw,bone_pitch,0);
-	B->mTransform.mulB_43(spin);
-}
-
 void CActor::net_Export	(NET_Packet& P)					// export to server
 {
 	// export 
@@ -175,8 +163,12 @@ void CActor::Load		(LPCSTR section )
 	pSounds->Create		(sndDie[3],			TRUE,	strconcat(buf,cName(),"\\die3"),0,SOUND_TYPE_MONSTER_DYING_HUMAN);
 
 	// take index spine bone
-	int spine_bone		= PKinematics(pVisual)->LL_BoneID("bip01_spine2");
-	PKinematics(pVisual)->LL_GetInstance(spine_bone).set_callback(SpinCallback,this);
+	int spine_bone		= PKinematics(pVisual)->LL_BoneID("bip01_spine1");
+	int shoulder_bone	= PKinematics(pVisual)->LL_BoneID("bip01_spine2");
+	int head_bone		= PKinematics(pVisual)->LL_BoneID("bip01_head");
+	PKinematics(pVisual)->LL_GetInstance(spine_bone).set_callback	(SpinCallback,this);
+	PKinematics(pVisual)->LL_GetInstance(shoulder_bone).set_callback(ShoulderCallback,this);
+	PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback	(HeadCallback,this);
 
 	Movement.ActivateBox(0);
 	

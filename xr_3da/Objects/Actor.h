@@ -104,6 +104,8 @@ protected:
 	Fvector					patch_position;
 
 	static void	__stdcall SpinCallback(CBoneInstance*);
+	static void	__stdcall ShoulderCallback(CBoneInstance*);
+	static void	__stdcall HeadCallback(CBoneInstance*);
 private:
 	// Motions
 	DWORD					mstate_wishful;	
