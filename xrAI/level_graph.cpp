@@ -93,17 +93,21 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position, bool ful
 
 	if (ai().graph_engine().search(*this,id_prev,id_prev,0,position_params)) {
 		VERIFY				(valid_vertex_id(position_params.m_vertex_id));
+		Device.Statistic.AI_Node.End		();
 		return				(position_params.m_vertex_id);
 	}
 
 	if (position_params.m_distance < 1.f) {
 		VERIFY				(valid_vertex_id(position_params.m_vertex_id));
+		Device.Statistic.AI_Node.End		();
 		return				(position_params.m_vertex_id);
 	}
 	
 	id						= vertex(position);
-	if (valid_vertex_id(id))
+	if (valid_vertex_id(id)) {
+		Device.Statistic.AI_Node.End		();
 		return				(id);
+	}
 
 	Device.Statistic.AI_Node.End		();
 #endif
