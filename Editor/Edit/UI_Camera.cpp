@@ -101,11 +101,13 @@ void CUI_Camera::Update(float dt){
     		if (bLeftDn) 		m_Position.add( vmove );
     		else if (bRightDn) 	m_Position.sub( vmove );
 
+#ifdef _EDITOR
             if (m_Shift.Contains(ssCtrl)){
             	Fvector pos;
             	if (UI->PickGround(pos,m_Position,dir,-1))
                 	m_Position.y = pos.y+m_FlyAltitude;
             }
+#endif            
 
         	UI->RedrawScene();
 	    }
