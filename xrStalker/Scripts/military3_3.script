@@ -1,31 +1,24 @@
--- сталкер у шлагбаума КПП
+-- сталкер у шлагбаума
 function main ()
 
-	local guard5 = get_level_object ("stalker_guard5")
-	local path = 1
+	local stalker = get_level_object ("stalker_sh")
+	stalker:script (true, military3_3.script_name ())
 
-	guard5:script (true, military3_3.script_name ())
+	action (stalker, move (move.standing, move.stand, move.line, patrol ("way_sh1")),
+			look (), anim ("chistit ruje_1"), cond (cond.anim_end))
+	action (stalker, move (move.standing, move.stand, move.line, patrol ("way_sh1")),
+			look (), anim ("chistit ruje_1"), cond (cond.anim_end))
 
-	action (guard5, move (move.standing, move.walk, move.line, patrol ("guard_way51")),
-			anim (anim.free), look (look.search), cond (cond.move_end))
+    while stalker:action () do wait () end
 
-	while true do 
-		  if guard5:action () == nil then
-         	 guard5:script (false, military3_3.script_name ())
-             guard5:script (true, military3_3.script_name ())
-			 if path == 1 then 
-   				action (guard5, move (move.standing, move.walk, move.line, patrol ("guard_way52")),
-						anim (anim.free), look (look.search), cond (cond.move_end))
-			    path = 2
-			 else 
-   				action (guard5, move (move.standing, move.walk, move.line, patrol ("guard_way51")),
-						anim (anim.free), look (look.search), cond (cond.move_end))
-			    path = 1
-			 end
-		   end
-	       wait (1000) 
-    end
+	stalker:script (false, military3_3.script_name ())
+	stalker:script (true, military3_3.script_name ())
+	action (stalker, move (move.standing, move.stand, move.line, patrol ("way_sh1")),
+			look (), anim ("chistit ruje_1"), cond (cond.anim_end))
+	action (stalker, move (move.standing, move.stand, move.line, patrol ("way_sh1")),
+			look (), anim ("chistit ruje_1"), cond (cond.anim_end))
+    while stalker:action () do wait () end
 
-	guard5:script (false, military3_3.script_name ())
+	stalker:script (false, military3_3.script_name ())
 
 end

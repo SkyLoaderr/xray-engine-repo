@@ -1,25 +1,21 @@
---сталкеры у костра
+-- разговаривающие сталкеры
 function main ()
 
-	local zhrun1 = get_level_object ("stalker_zhrun1")
-	local zhrun2 = get_level_object ("stalker_zhrun2")
-	local zhrun3 = get_level_object ("stalker_zhrun3")
+	local stalker1 = get_level_object ("stalker_b1")
+	local stalker2 = get_level_object ("stalker_b2")
 
-	zhrun1:script (true, military3_4.script_name ())
-	zhrun2:script (true, military3_4.script_name ())
-	zhrun3:script (true, military3_4.script_name ())
+	stalker1:script (true, military3_4.script_name ())
+	stalker2:script (true, military3_4.script_name ())
 
-	action (zhrun1, move (move.standing, move.stand, move.line, patrol ("guard_way1")),
-			anim ("kurit sidya_ 0"), look (), cond (cond.time_end, 10000000))
-	action (zhrun2, move (move.standing, move.stand, move.line, patrol ("guard_way1")),
-			anim ("spit_2"), look (), cond (cond.time_end, 10000000))
-	action (zhrun3, move (move.standing, move.stand, move.line, patrol ("guard_way1")),
-			anim ("sidya_boltaet_ 0"), look (), cond (cond.time_end, 10000000))
+	action (stalker1, move (move.standing, move.stand, move.line, patrol ("way_sh1")),
+			look (), anim (anim.free), cond (cond.time_end, 10000000))
 
-	while zhrun1:action () and zhrun2:action () and zhrun3:action () do wait () end
+	action (stalker2, move (move.standing, move.stand, move.line, patrol ("way_sh1")),
+			look (), anim (anim.free), cond (cond.time_end, 10000000))
 
-	zhrun1:script (false, military3_4.script_name ())
-	zhrun2:script (false, military3_4.script_name ())
-	zhrun3:script (false, military3_4.script_name ())
+    while stalker1:action () do wait () end
+
+	stalker1:script (false, military3_4.script_name ())
+	stalker2:script (false, military3_4.script_name ())
 
 end

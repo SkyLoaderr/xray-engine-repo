@@ -1,16 +1,30 @@
--- сталкер на вышке
+-- сталкеры у костра
 function main ()
 
-	local guard4 = get_level_object ("stalker_guard4")
+	local stalker1 = get_level_object ("stalker_eat1")
+	local stalker2 = get_level_object ("stalker_eat2")
+	local stalker3 = get_level_object ("stalker_eat3")
+	local kolbasa = get_level_object ("kolbasa")
+	printf ("object : %s", kolbasa:name ())
 
-	guard4:script (true, military3_2.script_name ())
+	stalker1:script (true, military3_2.script_name ())
+	stalker2:script (true, military3_2.script_name ())
+	stalker3:script (true, military3_2.script_name ())
 
-	action (guard4, move (move.standing, move.stand, move.line, patrol ("guard_way1")),
-			anim (anim.free), look (look.search), cond (cond.time_end, 10000000))
+	action (stalker1, move (move.standing, move.stand, move.line, patrol ("way_tower2")),
+			look (look.direction, kolbasa), anim ("kurit sidya_ 0"), cond (cond.time_end, 10000000))
 
-	while guard4:action () do wait () end
+	action (stalker2, move (move.standing, move.stand, move.line, patrol ("way_tower2")),
+			look (look.direction, kolbasa), anim ("sidya_boltaet_ 0"), cond (cond.time_end, 10000000))
 
-	guard4:script (false, military3_2.script_name ())
+	action (stalker3, move (move.standing, move.stand, move.line, patrol ("way_tower2")),
+			look (look.direction, kolbasa), anim ("spit_ 0"), cond (cond.time_end, 10000000))
+
+	while stalker1:action () do wait () end
+
+	stalker1:script (false, military3_2.script_name ())
+	stalker2:script (false, military3_2.script_name ())
+	stalker3:script (false, military3_2.script_name ())
 
 
 end
