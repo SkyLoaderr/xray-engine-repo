@@ -3,9 +3,9 @@
 <game_tasks_data>
 
 	<game_task id="escape_blockpost_case">
-		<title>escape_steal_blockpost_case</title>
+		<title>Украсть ящик с блокпоста.</title>
 		<objective>
-			<text>escape_steal_blockpost_case</text>
+			<text>Украсть у командира блокпоста ящик с важными документами.</text>
 		</objective>
 		<objective>
 			<text>Украсть ящик с блокпоста.</text>
@@ -16,22 +16,22 @@
 	</game_task>
 
 	<game_task id="escape_novice_need_weapon">
-		<title>escape_novice_need_gun</title>
+		<title>Помочь новичку найти оружие.</title>
 		<objective>
-			<text>escape_novice_need_gun</text>
+			<text>Ограбленный новичок возле разрушенной фабрики ищет оружие, чтобы отомстить бандитам.</text>
 		</objective>
 	</game_task>
 
 	<game_task id="storyline_eliminate_gunslinger">
-		<title>storyline_escape_eliminate_gunslinger</title>
+		<title>Убить Стрелка.</title>
 		<objective>
-			<text>storyline_escape_eliminate_gunslinger</text>
+			<text>Необходимо найти и уничтожить Стрелка.</text>
 		</objective>
 		<objective>
-			<text>storyline_escape_find_gunslinger</text>
+			<text>Найти Стрелка.</text>
 		</objective>
 		<objective>
-			<text>storyline_escape_eliminate_gunslinger</text>
+			<text>Убить Стрелка.</text>
 		</objective>
 	</game_task>
 
