@@ -95,7 +95,7 @@ struct					SActorMotions
 		CMotionDef*		death;
 		SAnimState		m_walk;
 		SAnimState		m_run;
-		STorsoWpn		m_torso[7];
+		STorsoWpn		m_torso[8];
 		CMotionDef*		m_torso_idle;
 		CMotionDef*		m_head_idle;
 

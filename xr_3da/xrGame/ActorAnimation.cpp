@@ -115,6 +115,7 @@ void ACTOR_DEFS::SActorMotions::SActorState::CreateClimb(CSkeletonAnimated* K)
 	m_torso[4].Create(K,base,"_5");
 	m_torso[5].Create(K,base,"_6");
 	m_torso[6].Create(K,base,"_7");
+	m_torso[7].Create(K,base,"_8");
 
 
 	m_head_idle		= NULL;///K->ID_Cycle("head_idle_0");
@@ -143,6 +144,7 @@ void ACTOR_DEFS::SActorMotions::SActorState::Create(CSkeletonAnimated* K, LPCSTR
 	m_torso[4].Create(K,base,"_5");
 	m_torso[5].Create(K,base,"_6");
 	m_torso[6].Create(K,base,"_7");
+	m_torso[7].Create(K,base,"_8");
 	
 	m_torso_idle	= K->ID_Cycle(strconcat(buf,base,"_torso_0_aim_0"));
 	m_head_idle		= K->ID_Cycle("head_idle_0");
