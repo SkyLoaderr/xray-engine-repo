@@ -488,7 +488,7 @@ void CInventoryItem::PH_I_CrPr		()		// actions & operations between two phisic p
 
 	IRecRot.set(xformX);
 	IRecPos.set(xformX.c);
-	VERIFY2								(_valid(IEndPos),*cName());
+	VERIFY2								(_valid(IRecPos),*cName());
 }; 
 
 #ifdef DEBUG
