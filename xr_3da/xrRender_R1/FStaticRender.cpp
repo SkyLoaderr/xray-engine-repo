@@ -77,7 +77,7 @@ void					CRender::add_Patch				(Shader* S, const Fvector& P1, float s, float a, 
 {
 	vecPatches.push_back(SceneGraph::_PatchItem());
 	SceneGraph::_PatchItem& P = vecPatches.back();
-	P.S		= S->lod0;
+	P.S		= S->E[0];
 	P.P		= P1;
 	P.size	= s;
 	P.angle = a;

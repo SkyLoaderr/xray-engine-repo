@@ -52,7 +52,7 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 			C.PassSET_Blend_SET	();
 			C.PassSET_LightFog	(TRUE,TRUE);
 
-			switch (C.iLOD)	
+			switch (C.iElement)	
 			{
 			case 0:	// Highest LOD
 				C.StageBegin		();

@@ -72,7 +72,7 @@ void CBlender_default_aref::Compile(CBlender_Compile& C)
 		}
 		C.PassEnd			();
 	} else {
-		if (C.bLighting)	
+		if (2==C.iElement)	
 		{
 			// Lighting only, not use alpha-channel
 			C.PassBegin		();

@@ -75,7 +75,7 @@ void	CBlender_Vertex_aref::Compile(CBlender_Compile& C)
 		}
 		C.PassEnd			();
 	} else {
-		if (C.bLighting)	
+		if (2==C.iElement)	
 		{
 			C.PassBegin		();
 			{

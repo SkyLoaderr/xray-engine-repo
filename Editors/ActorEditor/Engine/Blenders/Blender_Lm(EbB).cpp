@@ -75,7 +75,7 @@ void	CBlender_LmEbB::Compile(CBlender_Compile& C)
 		}
 		C.PassEnd			();
 	} else {
-		if (C.bLighting)	
+		if (2==C.iElement)	
 		{
 			compile_L	(C);
 		} else {

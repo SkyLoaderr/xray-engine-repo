@@ -30,7 +30,7 @@ void CRender::InsertSG_Dynamic	(IVisual *pVisual, Fvector& Center)
 	float distSQ;	if (CalcSSA(distSQ,Center,pVisual)<=r_ssaDISCARD)	return;
 
 	// Select List and add to it
-	ShaderElement*		sh		= L_Projector.shadowing()?pVisual->hShader->lod0:pVisual->hShader->lod1;
+	ShaderElement*		sh		= L_Projector.shadowing()?pVisual->hShader->E[0]:pVisual->hShader->E[1];
 	if (val_bHUD)	{
 		SceneGraph::mapHUD_Node* N			= mapHUD.insertInAnyWay(distSQ);
 		N->val.pObject			= val_pObject;
@@ -67,7 +67,7 @@ void CRender::InsertSG_Static(IVisual *pVisual)
 		if (SSA<=r_ssaDISCARD)		return;
 
 		// Select List and add to it
-		ShaderElement*		sh		= ((_sqrt(distSQ)-pVisual->vis.sphere.R)<20)?pVisual->hShader->lod0:pVisual->hShader->lod1;
+		ShaderElement*		sh		= ((_sqrt(distSQ)-pVisual->vis.sphere.R)<20)?pVisual->hShader->E[0]:pVisual->hShader->E[1];
 		if (sh->Flags.bStrictB2F) {
 			SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
 			N->val.pVisual			= pVisual;

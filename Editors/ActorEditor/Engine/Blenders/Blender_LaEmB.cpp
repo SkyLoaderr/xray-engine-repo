@@ -51,7 +51,7 @@ void	CBlender_LaEmB::Compile(CBlender_Compile& C)
 		if (bConstant)	compile_EDc	(C);
 		else			compile_ED	(C);
 	} else {
-		if (C.bLighting)
+		if (2==C.iElement)
 		{
 			if (bConstant)	compile_Lc	(C);
 			else			compile_L	(C);
