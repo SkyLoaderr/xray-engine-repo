@@ -208,7 +208,7 @@ void CRender::Render		()
 
 	// Wall marks
 	Target.phase_wallmarks				();
-	Wallmarks.Render					();				// wallmarks has priority as normal geometry
+	Wallmarks->Render					();				// wallmarks has priority as normal geometry
 
 	// Lighting, non dependant on OCCQ
 	Target.phase_accumulator			();
