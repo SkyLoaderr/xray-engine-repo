@@ -1,6 +1,6 @@
 object frmPropertiesLight: TfrmPropertiesLight
-  Left = 616
-  Top = 669
+  Left = 453
+  Top = 446
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsDialog
   Caption = 'Light properties'

@@ -89,7 +89,7 @@ public:
     void 				Save			(CFS_Base& fs);
     IC int				GetID			(){return ID;}
 #ifdef _EDITOR
-    void 				FillProp		(PropValueVec& values);
+    void 				FillProp		(PropItemVec& values);
 #endif
 };
 DEFINE_VECTOR(SGameMtl*,GameMtlVec,GameMtlIt);
@@ -152,7 +152,7 @@ public:
     void				Save			(CFS_Base& fs);
     void				Load			(CStream& fs);
 #ifdef _EDITOR
-	void 				FillProp		(PropValueVec& values);
+	void 				FillProp		(PropItemVec& values);
     void				TransferFromParent(SGameMtlPair* parent);
 #endif
 };

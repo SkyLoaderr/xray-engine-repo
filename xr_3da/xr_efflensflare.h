@@ -41,7 +41,7 @@ public:
     	flSource	= (1<<1),
     	flGradient 	= (1<<2)
     };
-	u32			m_dwFlags;
+	Flags32			m_Flags;
     // source
     SFlare			m_Source;
     // gradient

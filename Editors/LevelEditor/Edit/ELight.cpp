@@ -339,6 +339,12 @@ void CLight::FillSunProp(LPCSTR pref, PropItemVec& items)
 }
 //----------------------------------------------------
 
+PropItem* CLight::piA0			= 0;
+PropItem* CLight::piA1			= 0;
+PropItem* CLight::piA2			= 0;
+PropItem* CLight::piBrightness	= 0;
+PropItem* CLight::piRange		= 0;
+
 void __fastcall	CLight::OnAutoA1Click(PropItem* value)
 {
     float P = 0.1f;
@@ -361,9 +367,6 @@ void __fastcall	CLight::OnAutoA2Click(PropItem* value)
     float a2= (b-P-P*r*a1)/(P*r*r);
     piA0->ApplyValue(&a0);
     piA2->ApplyValue(&a2);
-//    float P = seAutoBMax->Value/100.f;
-//    flPointA0->ApplyValue(1.f);
-//    flPointA2->ApplyValue((flBrightness->GetValue()-P-P*flPointRange->GetValue()*flPointA1->GetValue())/(P*flPointRange->GetValue()*flPointRange->GetValue()));
 	UI.Command		(COMMAND_UPDATE_PROPERTIES);
 }
 void CLight::FillPointProp(LPCSTR pref, PropItemVec& items)
@@ -375,11 +378,11 @@ void CLight::FillPointProp(LPCSTR pref, PropItemVec& items)
     piA0 					= V->Owner();
     V=PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref, "Point", "Attenuation\\Linear"),	&m_D3D.attenuation1,0.f,1.f,0.0001f,6);
     piA1 					= V->Owner();
-    piA1->m_Flags.set		(PropItem::flShowExtBtn);
+    piA1->m_Flags.set		(PropItem::flShowExtBtn,TRUE);
     piA1->OnExtBtnClick		= OnAutoA1Click;
     V=PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref, "Point", "Attenuation\\Quadratic"),&m_D3D.attenuation2,0.f,1.f,0.0001f,6);
     piA2 					= V->Owner();
-    piA2->m_Flags.set		(PropItem::flShowExtBtn);
+    piA2->m_Flags.set		(PropItem::flShowExtBtn,TRUE);
     piA2->OnExtBtnClick		= OnAutoA2Click;
 }
 //----------------------------------------------------

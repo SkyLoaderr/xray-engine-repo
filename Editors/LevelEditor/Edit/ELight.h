@@ -51,11 +51,11 @@ public:
     virtual void	OnUpdateTransform();
     void __fastcall	OnTypeChange	(PropValue* value);
 
-    PropItem*		piA0;
-    PropItem*		piA1;
-    PropItem*		piA2;
-    PropItem*		piBrightness;
-    PropItem*		piRange;
+    static PropItem* piA0;
+    static PropItem* piA1;
+    static PropItem* piA2;
+    static PropItem* piBrightness;
+    static PropItem* piRange;
     
     void __fastcall	OnAutoA1Click	(PropItem* value);
     void __fastcall	OnAutoA2Click	(PropItem* value);

@@ -86,6 +86,7 @@ void __fastcall TUI_Tools::OnFrame(){
 }
 //---------------------------------------------------------------------------
 void __fastcall TUI_Tools::OnObjectsUpdate(){
+	UpdateProperties();
     if(pCurTools->pCurControl) return pCurTools->OnObjectsUpdate();
 }
 //---------------------------------------------------------------------------
@@ -130,9 +131,11 @@ void __fastcall TUI_Tools::SetAction   (int act)
 
 void __fastcall TUI_Tools::ChangeAction(int act){
 	// если мышь захвачена - изменим action после того как она освободится
-	if (!(UI.IsMouseCaptured()||UI.IsMouseInUse())){
+	if (UI.IsMouseCaptured()||UI.IsMouseInUse()){
+	    m_Flags.set	(flChangeAction,TRUE);
+        iNeedAction=act;
+    }else
     	SetAction	(act);
-    }
 }
 //---------------------------------------------------------------------------
 
@@ -168,7 +171,11 @@ void __fastcall TUI_Tools::UnsetSubTarget(int tgt)
 //---------------------------------------------------------------------------
 void __fastcall TUI_Tools::ChangeTarget(int tgt){
 	// если мышь захвачена - изменим target после того как она освободится
-	if (!(UI.IsMouseCaptured()||UI.IsMouseInUse())) SetTarget(tgt);
+	if (UI.IsMouseCaptured()||UI.IsMouseInUse()){
+	    m_Flags.set(flChangeTarget,TRUE);
+        iNeedTarget=tgt;
+    }else
+    	SetTarget(tgt);
 }
 //---------------------------------------------------------------------------
 void __fastcall	TUI_Tools::SetNumPosition(CCustomObject* O){

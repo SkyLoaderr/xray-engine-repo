@@ -70,17 +70,20 @@ private:	// User declarations
     bool bModified;
     AnsiString last_selected_item;
 	// LW style inpl editor
-    void HideLWNumber();
+    void HideLWNumber	();
     void PrepareLWNumber(TElTreeItem* node);
-    void ShowLWNumber(TRect& R);
-    void ApplyLWNumber();
-    void CancelLWNumber();
+    void ShowLWNumber	(TRect& R);
+    void ApplyLWNumber	();
+    void CancelLWNumber	();
 	// text inplace editor
-    void HideLWText();
-    void PrepareLWText(TElTreeItem* node);
-    void ShowLWText(TRect& R);
-    void ApplyLWText();
-    void CancelLWText();
+    void HideLWText		();
+    void PrepareLWText	(TElTreeItem* node);
+    void ShowLWText		(TRect& R);
+    void ApplyLWText	();
+    void CancelLWText	();
+    // Ext Button
+    void ShowExtBtn		(TRect& R);
+    void HideExtBtn		();
 
     PropItemVec 		m_Items;
     TOnModifiedEvent 	OnModifiedEvent;

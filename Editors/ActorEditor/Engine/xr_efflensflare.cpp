@@ -40,7 +40,7 @@ CLensFlare::CLensFlare()
 	bInit						= false;
 	dwFrame						= 0xfffffffe;
 
-    m_dwFlags					= 0;
+    m_Flags.zero();
 	fBlend						= 0.f;
 
     LightColor.set				( 0xFFFFFFFF );
@@ -119,14 +119,14 @@ void CLensFlare::Load( CInifile* pIni, LPSTR section )
 	LPCSTR		T,R,O,P;
 	FILE_NAME	name;
 	float r, o, p;
-	m_dwFlags 	|= pIni->ReadBOOL ( section,"source" )?flSource:0;
-	if (m_dwFlags&flSource){
+	m_Flags.set	(flSource,pIni->ReadBOOL ( section,"source" ));
+	if (m_Flags.is(flSource)){
 		T = pIni->ReadSTRING ( section,"source_texture" );
 		r = pIni->ReadFLOAT	 ( section,"source_radius" );
 		SetSource(r,T);
 	}
-	m_dwFlags 	|= pIni->ReadBOOL ( section,"flares" )?flFlare:0;
-	if (m_dwFlags&flFlare){
+	m_Flags.set	(flFlare,pIni->ReadBOOL ( section,"flares" ));
+	if (m_Flags.is(flFlare)){
 		T = pIni->ReadSTRING ( section,"flare_textures" );
 		R = pIni->ReadSTRING ( section,"flare_radius" );
 		O = pIni->ReadSTRING ( section,"flare_opacity");
@@ -140,8 +140,8 @@ void CLensFlare::Load( CInifile* pIni, LPSTR section )
 			AddFlare(r,o,p,name);
 		}
 	}
-	m_dwFlags 	|= pIni->ReadTOKEN( section, "gradient", BOOL_token )?flGradient:0;
-	if (m_dwFlags&flGradient){
+	m_Flags.set	(flGradient,pIni->ReadTOKEN( section, "gradient", BOOL_token));
+	if (m_Flags.is(flGradient)){
 		T = pIni->ReadSTRING( section,"gradient_texture" );
 		r = pIni->ReadFLOAT	( section,"gradient_radius"  );
 		o = pIni->ReadFLOAT	( section,"gradient_opacity" );
@@ -221,7 +221,7 @@ void CLensFlare::OnFrame()
 	clamp( fBlend, 0.0f, 1.0f );
 	
 	// gradient
-	if (m_dwFlags&flGradient){
+	if (m_Flags.is(flGradient)){
 		Fvector				scr_pos;
 		Device.mFullTransform.transform	( scr_pos, vecLight );
 		float kx = 1, ky = 1;
@@ -258,7 +258,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 	
 	float 	fDistance					= FAR_DIST*0.75f;
 	
-	if (m_dwFlags&flSource&&bSun)
+	if (m_Flags.is(flSource)&&bSun)
 	{
 		vecSx.mul			(vecX, m_Source.fRadius*fDistance);
 		vecSy.mul			(vecY, m_Source.fRadius*fDistance);
@@ -274,7 +274,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 	
 	if (fBlend>=EPS_L)
 	{
-		if(bFlares&&(m_dwFlags&flFlare))
+		if(bFlares&&(m_Flags.is(flFlare)))
 		{
 			vecDx.normalize		(vecAxis);
 			vecDy.crossproduct	(vecDx, vecDir);
@@ -298,7 +298,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 		}
 
 		// gradient
-		if (bGradient && (m_dwFlags&flGradient) && (fGradientValue>=EPS_L))
+		if (bGradient && (m_Flags.is(flGradient)) && (fGradientValue>=EPS_L))
 		{
 			vecSx.mul				(vecX, m_Gradient.fRadius*fGradientValue*fDistance);
 			vecSy.mul				(vecY, m_Gradient.fRadius*fGradientValue*fDistance);

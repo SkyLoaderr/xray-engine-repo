@@ -122,8 +122,9 @@ void __fastcall TProperties::ResetItems()
 //---------------------------------------------------------------------------
 void __fastcall TProperties::ClearProperties()
 {
-	CancelEditControl();
-    ClearParams();
+	HideExtBtn			();
+	CancelEditControl	();
+    ClearParams			();
 }
 //---------------------------------------------------------------------------
 
@@ -184,9 +185,10 @@ void __fastcall TProperties::HideProperties(){
 void __fastcall TProperties::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
-	CancelEditControl();
-    if (OnCloseEvent) OnCloseEvent();
-	ClearParams	();
+	HideExtBtn			();
+	CancelEditControl	();
+    if (OnCloseEvent) 	OnCloseEvent();
+	ClearParams			();
 }
 //---------------------------------------------------------------------------
 
@@ -222,7 +224,8 @@ void __fastcall TProperties::AssignItems(PropItemVec& items, bool full_expand, c
 {
 	// begin fill mode
 	tvProperties->IsUpdating = true;
-	CancelEditControl();
+   	HideExtBtn			();
+	CancelEditControl	();
     // clear values
     if (tvProperties->Selected) FHelper.MakeFullName(tvProperties->Selected,0,last_selected_item);
     ClearParams();
@@ -288,18 +291,11 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             Surface->Font->Color 	= clSilver;
             Surface->Font->Style 	= TFontStyles()<< fsBold;
         }
-        if (Item->Selected){
-            if(prop->m_Flags.is(PropItem::flShowExtBtn)&&prop->OnExtBtnClick){
-            	pbExtBtn->Tag	= (int)prop;
-                pbExtBtn->Height= R.Bottom-R.Top+2;
-                pbExtBtn->Width	= pbExtBtn->Height;
-                pbExtBtn->Left 	= R.Right-pbExtBtn->Width+1;
-                pbExtBtn->Top  	= R.Top+tvProperties->HeaderHeight+1;
-                R.Right			-= pbExtBtn->Width+1;
-                pbExtBtn->Show	();
-            }else
-                pbExtBtn->Hide();
-        }
+
+        if (pbExtBtn->Tag==(int)prop) 
+        	if (!pbExtBtn->Visible) 
+            	ShowExtBtn(R);
+
         if (prop->m_Flags.is(PropItem::flMixed)){ 
             TColor C 		= Surface->Brush->Color;
             TBrushStyle S 	= Surface->Brush->Style;
@@ -1040,6 +1036,23 @@ void __fastcall TProperties::seNumberExit(TObject *Sender)
 	ApplyLWNumber();
 	HideLWNumber();
 }
+
+void TProperties::ShowExtBtn(TRect& R)
+{
+    pbExtBtn->Height= R.Bottom-R.Top+2;
+    pbExtBtn->Width	= pbExtBtn->Height;
+    pbExtBtn->Left 	= R.Right-pbExtBtn->Width+1;
+    pbExtBtn->Top  	= R.Top+tvProperties->HeaderHeight+1;
+    R.Right			-= pbExtBtn->Width+1;
+    pbExtBtn->Show	();
+}
+
+void TProperties::HideExtBtn()
+{
+    pbExtBtn->Tag	= 0;
+	pbExtBtn->Hide	();
+}
+ 
 //---------------------------------------------------------------------------
 
 void __fastcall TProperties::seNumberKeyDown(TObject *Sender, WORD &Key,
@@ -1150,7 +1163,7 @@ void __fastcall TProperties::edTextKeyDown(TObject *Sender, WORD &Key,
 
 void __fastcall TProperties::edTextDblClick(TObject *Sender)
 {
-	TElTreeItem* item = (TElTreeItem*)edText->Tag;
+	TElTreeItem* item 		= (TElTreeItem*)edText->Tag;
     if (item){
 		PropItem* prop 		= (PropItem*)item->Tag;
         edText->Update();
@@ -1172,6 +1185,12 @@ void __fastcall TProperties::edTextDblClick(TObject *Sender)
 void __fastcall TProperties::tvPropertiesItemFocused(TObject *Sender)
 {
 	if (OnItemFocused) OnItemFocused(tvProperties->Selected);
+    HideExtBtn			();
+	if (tvProperties->Selected){
+        PropItem* prop 		= (PropItem*)tvProperties->Selected->Tag;
+        if (prop&&prop->m_Flags.is(PropItem::flShowExtBtn)&&prop->OnExtBtnClick)
+            pbExtBtn->Tag	= (int)prop;
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -1193,8 +1212,8 @@ void TProperties::ApplyEditControl()
 
 void TProperties::CancelEditControl()
 {
-	CancelLWNumber();
-	CancelLWText();
+	CancelLWNumber	();
+	CancelLWText	();
 }
 //---------------------------------------------------------------------------
 
@@ -1246,4 +1265,5 @@ void __fastcall TProperties::fsStorageSavePlacement(TObject *Sender)
 	SaveColumnWidth(fsStorage);
 }
 //---------------------------------------------------------------------------
+
 

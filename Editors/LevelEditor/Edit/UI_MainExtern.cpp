@@ -126,7 +126,6 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
 //----------------------------------------------------
 void TUI::Redraw(){
 	VERIFY(m_bReady);
-    Log("Redraw");
     if (!(psDeviceFlags&rsRenderRealTime)) m_Flags.set(flRedraw,FALSE);
 	if (m_Flags.is(flResize)){ Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); m_Flags.set(flResize,FALSE); }
 // set render state
@@ -226,7 +225,10 @@ void TUI::Idle()
 	Device.UpdateTimer();
     EEditorState est = GetEState();
     if ((est==esEditScene)||(est==esEditLibrary)||(est==esEditLightAnim)){
-	    if (m_Flags.is(flUpdateScene)) RealUpdateScene();
+	    if (m_Flags.is(flUpdateScene)){ 
+	        Tools.UpdateProperties();
+        	RealUpdateScene		();
+        }
     	if (m_Flags.is(flRedraw)){
             Scene.Update(Device.fTimeDelta);
             Render->Calculate	();
