@@ -12,6 +12,7 @@
 #include "ai_space.h"
 #include "alife_simulator.h"
 #include "alife_registry_container.h"
+#include "script_game_object.h"
 
 void  CInventoryOwner::OnEvent (NET_Packet& P, u16 type)
 {
