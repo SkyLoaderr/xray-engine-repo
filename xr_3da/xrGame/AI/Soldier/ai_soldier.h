@@ -334,6 +334,7 @@ class CAI_Soldier : public CCustomMonster
 		bool			bStopThinking;
 		DWORD			m_dwLastUpdate;
 		DWORD			m_dwCurrentUpdate;
+		DWORD			m_dwUpdateCount;
 //		float			m_fAddAngle;
 		
 		// action data

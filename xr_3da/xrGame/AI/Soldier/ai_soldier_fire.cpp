@@ -261,6 +261,8 @@ DWORD CAI_Soldier::tfGetActionType()
 	if (bfAmIDead())
 		return(ACTION_TYPE_DIE);
 
+	SelectEnemy(Enemy);
+	
 	INIT_SQUAD_AND_LEADER;
 
 	CGroup &Group = Squad.Groups[g_Group()];

@@ -1233,8 +1233,9 @@ void CAI_Soldier::OnFollowLeaderPatrol()
 
 void CAI_Soldier::Think()
 {
+	m_dwUpdateCount++;
 	m_dwLastUpdate = m_dwCurrentUpdate;
-	m_dwCurrentUpdate = m_dwCurrentUpdate;
+	m_dwCurrentUpdate = Level().timeServer();
 	bStopThinking = false;
 	do {
 		m_ePreviousState = eCurrentState;

@@ -61,6 +61,7 @@ CAI_Soldier::CAI_Soldier()
 	m_tFightType = FIGHT_TYPE_NONE;
 	m_dwLastUpdate = 0;
 	m_dwCurrentUpdate = Level().timeServer();
+	m_dwUpdateCount = 0;
 }
 
 CAI_Soldier::~CAI_Soldier()
@@ -70,9 +71,10 @@ CAI_Soldier::~CAI_Soldier()
 	for (i=0; i<SND_RADIO_COUNT; i++) pSounds->Delete(sndRadio[i]);
 	Engine.Event.Handler_Detach (m_tpEventSay,this);
 	Engine.Event.Handler_Detach (m_tpEventAssignPath,this);
-	Msg("FSM report for %s",cName());
+	Msg("FSM report for %s :",cName());
 	for (int i=0; i<tStateList.size(); i++)
 		Msg("%3d %6d",tStateList[i].eState,tStateList[i].dwTime);
+	Msg("Total updates : %d",m_dwUpdateCount);
 }
 
 // when soldier is dead
