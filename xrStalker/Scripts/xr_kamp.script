@@ -5,6 +5,7 @@
 ----------------------------------------------------------------------------------------------------------------------
 
 local sounds = {}
+local speeks = {} -- говорит ли кто либо в лагере, чтобы вместе не болтали
 
 ---------------------------------------------------------------------------------------------------------------------
 --Evaluators
@@ -340,22 +341,11 @@ function action_wait:__init (npc_name,action_name,storage) super (nil,action_nam
 		       maxidle = 20,
 		       sumidle = 10 }
 
-end
-function action_wait:initialize()
---	printf("[ACT] Start: Wait")
-	action_base.initialize(self)
-	self.object:set_node_evaluator()
-	self.object:set_path_evaluator()
-	self.object:set_desired_position()
-	self.object:set_desired_direction()    
-
-	self.object:set_item(object.deactivate, self.object:best_weapon())
-
-	self.sound = {idle = 0,
+	self.sound_good = {idle = 0,
 		     begin = nil,
 		     maxidle = 10, 
 		     sumidle = 10,
-   		     rnd = 100,
+   		     rnd = 60,
 		     lastsound = nil,
 		 	sounds = {      {pack = sounds["idle"], id = 0},
 					{pack = sounds["idle"], id = 1}, 
@@ -366,11 +356,11 @@ function action_wait:initialize()
 					{pack = sounds["idle"], id = 11}, 
 					{pack = sounds["idle"], id = 12}, 
 					{pack = sounds["idle"], id = 14} 	}}
-	self.sound_r = {idle = 0,
+	self.sound_bad = {idle = 0,
 		     begin = nil,
 		     maxidle = 10, 
 		     sumidle = 10,
-   		     rnd = 100,
+   		     rnd = 60,
 		     lastsound = nil,
 		 	sounds = {      {pack = sounds["idle"], id = 2},
 					{pack = sounds["idle"], id = 3}, 
@@ -389,6 +379,16 @@ function action_wait:initialize()
 			anim_active = { {name = "item_0_idle_1", hand = true},
 					{name = "item_0_idle_2", hand = true},
 					{name = "item_0_idle_3", hand = true}} }
+end
+function action_wait:initialize()
+--	printf("[ACT] Start: Wait")
+	action_base.initialize(self)
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()    
+
+	self.object:set_item(object.deactivate, self.object:best_weapon())
 end
 function action_wait:execute()
 	action_base.execute (self)
@@ -447,12 +447,20 @@ function action_wait:execute()
 				xr_kamp.set_anim(self.object, self.anim, self.a)
 			end
 
-			-- Саунды
-			if self.object:active_sound_count() == 0 then
+			-- проверка говорит ли кто нибудь в лагере
+			if speeks[self.a.center_point] ~= nil then
+				-- может быть это мы говорили? :))
+				if speeks[self.a.center_point] == self.object:id() then
+					-- и может быть мы закончили говорить
+					if self.object:active_sound_count() == 0 then speeks[self.a.center_point] = nil end
+				end
+			else
+				-- Саунды
+				speeks[self.a.center_point] = self.object:id()
 				if level.rain_factor() < 0.0006 then
-					globals.set_sound(self.object, self.sound, false)
+					globals.set_sound(self.object, self.sound_good, false)
 				else
-					globals.set_sound(self.object, self.sound_r, false)
+					globals.set_sound(self.object, self.sound_bad, false)
 				end
 			end
 		else
