@@ -123,10 +123,20 @@ class "custom_planner" 		(action_planner)
 
 function custom_planner:__init	() super()
 	printf					("planner is constructed!")
+	if self.meet == true then
+		printf				("init first_meet = true")
+	else
+		printf				("init first_meet = false")
+	end
 	self.meet				= true
 end
 
 function custom_planner:set_first_meet	(meet)
+	if meet == true then
+		printf					("setting first_meet to true")
+	else
+		printf					("setting first_meet to false")
+	end
 	self.meet				= meet
 end
 
