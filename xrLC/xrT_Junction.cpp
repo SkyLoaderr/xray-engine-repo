@@ -61,5 +61,6 @@ void CBuild::CorrectTJunctions()
 				}
 			}
 		}
+		Progress(float(I)/float(g_faces.size()));
 	}
 }

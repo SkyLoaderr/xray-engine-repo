@@ -197,6 +197,10 @@ void CBuild::Run()
 	PreOptimize		();
 
 	FPU::m24r();
+	Phase	("Checking T-Junctions...");
+	CorrectTJunctions();
+
+	FPU::m24r();
 	Phase	("Building normals...");
 	CalcNormals		();
 
