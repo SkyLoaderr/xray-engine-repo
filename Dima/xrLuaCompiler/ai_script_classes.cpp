@@ -507,3 +507,17 @@ void CLuaGameObject::set_patrol_path		(LPCSTR path_name, const CMovementManager:
 	else
 		stalker->set_path		(path_name,patrol_start_type,patrol_route_type,random);
 }
+
+void CLuaGameObject::set_dest_level_vertex_id(u32 level_vertex_id)
+{
+	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+	if (!stalker)
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member set_dest_level_vertex_id!");
+	else
+		stalker->set_level_dest_vertex	(level_vertex_id);
+}
+
+u32	CLuaGameObject::level_vertex_id		() const
+{
+	return						(m_tpGameObject->level_vertex_id());
+}

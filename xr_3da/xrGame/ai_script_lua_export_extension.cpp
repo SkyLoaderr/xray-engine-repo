@@ -437,7 +437,8 @@ void CScriptEngine::export_object()
 			.def("set_path_evaluator",			(void (CLuaGameObject::*)())(CLuaGameObject::set_path_evaluator))
 			.def("set_path_evaluator",			(void (CLuaGameObject::*)(CAbstractVertexEvaluator *))(CLuaGameObject::set_path_evaluator))
 			.def("set_patrol_path",				&CLuaGameObject::set_patrol_path)
-
+			.def("set_dest_level_vertex_id",	&CLuaGameObject::set_dest_level_vertex_id)
+			.def("level_vertex_id",				&CLuaGameObject::level_vertex_id)
 			
 			// sound_player
 //			.def("add_sound",					&CLuaGameObject::add_sound)
