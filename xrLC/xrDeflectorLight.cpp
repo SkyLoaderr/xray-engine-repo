@@ -369,8 +369,10 @@ BOOL	compress_RMS			(b_texture& lm, DWORD rms, DWORD& w, DWORD& h)
 	return FALSE;
 }
 
-VOID CDeflector::L_Calculate(HASH& H)
+VOID CDeflector::L_Calculate(HASH& H, DWORD layer)
 {
+	b_texture&		lm = layers[layer].lm;
+
 	// UV & HASH
 	RemapUV			(0,0,lm.dwWidth,lm.dwHeight,lm.dwWidth,lm.dwHeight,FALSE);
 	Fbox2			bounds;
@@ -389,7 +391,7 @@ VOID CDeflector::L_Calculate(HASH& H)
 		lm.pSurface = (DWORD *)malloc(size);
 		ZeroMemory	(lm.pSurface,size);
 	}
-	L_Direct		(H);
+	L_Direct		(H,layer);
 }
 
 VOID CDeflector::Light(HASH& H)
@@ -426,9 +428,11 @@ VOID CDeflector::Light(HASH& H)
 		Layer&	layer_data	= layers.back();
 		layer_data.id		= layer;
 		b_texture& lm		= layer_data.lm;
+		lm.dwWidth			= dwWidth;
+		lm.dwHeight			= dwHeight;
 		
 		// Calculate and fill borders
-		L_Calculate	(H);
+		L_Calculate	(H,layers.size()-1);
 		for (DWORD ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
 		
 		// Compression
@@ -441,7 +445,7 @@ VOID CDeflector::Light(HASH& H)
 			lm.dwWidth	= w;
 			lm.dwHeight	= h;
 			_FREE		(lm.pSurface);
-			L_Calculate	(H);
+			L_Calculate	(H,layers.size()-1);
 		}
 		
 		// Expand with borders

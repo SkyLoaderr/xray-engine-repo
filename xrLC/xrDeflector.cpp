@@ -45,12 +45,12 @@ IC BOOL UVpointInside(UVpoint &P, UVtri &T)
 CDeflector::CDeflector()
 {
 	Deflector	= this;
-	lm.pSurface = 0;
 }
 CDeflector::~CDeflector()
 {
-	_FREE		(lm.pSurface);
-	_FREE		(lm_rad);
+	for (DWORD I=0; I<layers.size(); I++)
+		_FREE	(layers[I].lm.pSurface);
+	layers.clear();
 }
 
 VOID CDeflector::OA_Export()
@@ -108,10 +108,8 @@ VOID CDeflector::OA_Export()
 	size.sub	(max,min);
 
 	// Surface
-	lm.dwWidth  = iCeil(size.u*g_params.m_lm_pixels_per_meter*density+.5f); clamp(lm.dwWidth, 1ul,512ul-2*BORDER);
-	lm.dwHeight = iCeil(size.v*g_params.m_lm_pixels_per_meter*density+.5f); clamp(lm.dwHeight,1ul,512ul-2*BORDER);
-	lm.bHasAlpha= FALSE;
-	iArea		= (lm.dwWidth+2*BORDER)*(lm.dwHeight+2*BORDER);
+	dwWidth		= iCeil(size.u*g_params.m_lm_pixels_per_meter*density+.5f); clamp(dwWidth, 1ul,512ul-2*BORDER);
+	dwHeight	= iCeil(size.v*g_params.m_lm_pixels_per_meter*density+.5f); clamp(dwHeight,1ul,512ul-2*BORDER);
 }
 
 BOOL CDeflector::OA_Place(Face *owner)

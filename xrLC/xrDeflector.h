@@ -46,13 +46,17 @@ public:
 		DWORD			id;
 		b_texture		lm;
 		
+		DWORD			Area ()	{ return (lm.dwWidth+2*BORDER)*(lm.dwHeight+2*BORDER); }
+
 		Layer()			{ ZeroMemory(this,sizeof(*this)); }
 	};
 	vector<Layer>		layers;
 
 	Fvector				Center;
 	float				Radius;
-	int					iArea;
+
+	DWORD				dwWidth;
+	DWORD				dwHeight;
 
 	vector<R_Light>		LightsSelected;
 	RAPID::XRCollide	DB;
@@ -71,7 +75,7 @@ public:
 
 	VOID	Light			(HASH& H);
 	VOID	L_Direct		(HASH& H, DWORD layer);
-	VOID	L_Direct_Edge	(UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size);
+	VOID	L_Direct_Edge	(UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size, DWORD layer);
 	VOID	L_Calculate		(HASH& H, DWORD layer);
 	VOID	Save			();
 
@@ -107,5 +111,3 @@ IC float Lrnd()
 
 extern void		Jitter_Select	(UVpoint* &Jitter, DWORD& Jcount);
 extern void		blit			(LPDWORD dest, DWORD ds_x, DWORD ds_y, LPDWORD src, DWORD ss_x, DWORD ss_y, DWORD px, DWORD py, DWORD aREF);
-
-#define BORDER 1
