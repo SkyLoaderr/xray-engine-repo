@@ -39,10 +39,18 @@ IC	CLevelNavigationGraph::CCellVertex &CLevelNavigationGraph::vertex_by_group_id
 IC	bool CLevelNavigationGraph::connected		(CCellVertex &vertex, VERTEX_VECTOR &vertices, u32 group_id, u32 link, u32 use)
 {
 	u32						_link = this->vertex(vertex.m_vertex_id)->link(link);
+	if (!valid_vertex_id(_link))
+		return				(false);
+	if (this->vertex(_link)->link((link + 2) & 3) != vertex.m_vertex_id)
+		return				(false);
+
 	VERTEX_VECTOR::iterator	I = vertices.begin();
 	VERTEX_VECTOR::iterator	E = vertices.end();
 	for ( ; I != E; ++I)
-		if (!(*I).m_mark && (_link == (*I).m_vertex_id)) {
+		if (_link == (*I).m_vertex_id) {
+			if ((*I).m_mark)
+				return		(false);
+
 			(*I).m_mark		= group_id;
 			(*I).m_use		|= use;
 			m_cross[_link]	= &*I;
@@ -55,13 +63,26 @@ IC	bool CLevelNavigationGraph::connected		(CCellVertex &vertex, VERTEX_VECTOR &v
 IC	bool CLevelNavigationGraph::connected		(CCellVertex &vertex1, CCellVertex &vertex2, VERTEX_VECTOR &vertices, u32 group_id, u32 use)
 {
 	u32						link1 = vertex(vertex1.m_vertex_id)->link(2);
+	if (!valid_vertex_id(link1))
+		return				(false);
+
 	u32						link2 = vertex(vertex2.m_vertex_id)->link(1);
+	if (link1 != link2)
+		return				(false);
+
+	if (vertex(link1)->link(0) != vertex1.m_vertex_id)
+		return				(false);
+
+	if (vertex(link1)->link(3) != vertex2.m_vertex_id)
+		return				(false);
+
 	VERTEX_VECTOR::iterator	I = vertices.begin();
 	VERTEX_VECTOR::iterator	E = vertices.end();
 	for ( ; I != E; ++I)
-		if (!(*I).m_mark && (link1 == (*I).m_vertex_id)) {
-			if (link2 != (*I).m_vertex_id)
+		if (link1 == (*I).m_vertex_id) {
+			if ((*I).m_mark)
 				return		(false);
+
 			(*I).m_mark		= group_id;
 			(*I).m_use		|= use;
 			m_cross[link2]	= &*I;
@@ -112,7 +133,6 @@ IC	void CLevelNavigationGraph::build_sectors	(u32 i, u32 j, CCellVertex &cell_ve
 		v1						= vertex_by_group_id((*i1_1)[j],group_id);
 		if (!connected(v1,table_i1_j,group_id,1,left))
 			goto enough;
-		
 		
 		j1						= (*i1).begin() + j + 1;
 		j1_1					= j1 - 1;
@@ -226,13 +246,17 @@ IC	void CLevelNavigationGraph::build_edges		()
 	const_vertex_iterator		e = end();
 	for ( ; i != e; ++i) {
 		u32						current_vertex_id = u32(i - b);
+		
 		CCellVertex				*current_cell = m_cross[current_vertex_id];
 		VERIFY					(current_cell);
+
 		if (!current_cell->m_use)
 			continue;
+
 		u32						current_mark = current_cell->m_mark - 1;
 		CSectorGraph::CVertex	*sector_vertex = sectors().vertex(current_mark);
-		u32 usage				= current_cell->m_use, I;
+		u32						usage = current_cell->m_use;
+		u32						I;
 		do {
 			I					= usage;
 			usage				&= usage - 1;
@@ -244,7 +268,9 @@ IC	void CLevelNavigationGraph::build_edges		()
 			if (!valid_vertex_id(vertex_id))
 				continue;
 
-			CCellVertex			*cell = m_cross[vertex_id]; VERIFY(cell);
+			CCellVertex			*cell = m_cross[vertex_id];
+			VERIFY				(cell);
+
 			u32					mark = cell->m_mark - 1;
 			VERIFY				(mark != current_mark);
 
@@ -294,10 +320,12 @@ CLevelNavigationGraph::CLevelNavigationGraph	(
 #endif
 	)
 {
+	u64				start, finish;
 	m_sectors		= xr_new<CSectorGraph>();
 #ifdef DEBUG
 	m_global_count	= 0;
 #endif
+	start			= CPU::GetCycleCount();
 	init_marks		();
 	fill_marks		();
 	build_sectors	();
@@ -310,8 +338,9 @@ CLevelNavigationGraph::CLevelNavigationGraph	(
 #endif
 	m_marks.clear	();
 	m_cross.clear	();
+	finish			= CPU::GetCycleCount();
 #ifdef DEBUG
-	Msg				("* Navigation info : %d nodes, %d sectors, %d edges",header().vertex_count(),sectors().vertex_count(),sectors().edge_count());
+	Msg				("* Navigation info : %d nodes, %d sectors, %d edges (%f seconds)",header().vertex_count(),sectors().vertex_count(),sectors().edge_count(),CPU::cycles2seconds*float(finish - start));
 #endif
 }
 

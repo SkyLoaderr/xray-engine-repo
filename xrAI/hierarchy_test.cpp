@@ -38,10 +38,16 @@ IC	CCellVertex &get_vertex_by_group_id(VERTEX_VECTOR &vertices, u32 group_id)
 IC	bool connect(const CLevelGraph &level_graph, CCellVertex &vertex, VERTEX_VECTOR &vertices, u32 group_id, u32 link, CROSS_VECTOR &cross, u32 use)
 {
 	u32						_link = level_graph.vertex(vertex.m_vertex_id)->link(link);
+//	if (!level_graph.valid_vertex_id(_link))
+//		return				(false);
+
 	VERTEX_VECTOR::iterator	I = vertices.begin();
 	VERTEX_VECTOR::iterator	E = vertices.end();
 	for ( ; I != E; ++I)
-		if (!(*I).m_mark && (_link == (*I).m_vertex_id)) {
+		if (_link == (*I).m_vertex_id) {
+			if ((*I).m_mark)
+				return		(false);
+
 			(*I).m_mark		= group_id;
 			(*I).m_use		|= use;
 			cross[_link]	= &*I;
@@ -54,13 +60,20 @@ IC	bool connect(const CLevelGraph &level_graph, CCellVertex &vertex, VERTEX_VECT
 IC	bool connect(const CLevelGraph &level_graph, CCellVertex &vertex1, CCellVertex &vertex2, VERTEX_VECTOR &vertices, u32 group_id, CROSS_VECTOR &cross, u32 use)
 {
 	u32						link1 = level_graph.vertex(vertex1.m_vertex_id)->link(2);
+//	if (!level_graph.valid_vertex_id(link1))
+//		return				(false);
+
 	u32						link2 = level_graph.vertex(vertex2.m_vertex_id)->link(1);
+	if (link1 != link2)
+		return				(false);
+
 	VERTEX_VECTOR::iterator	I = vertices.begin();
 	VERTEX_VECTOR::iterator	E = vertices.end();
 	for ( ; I != E; ++I)
-		if (!(*I).m_mark && (link1 == (*I).m_vertex_id)) {
-			if (link2 != (*I).m_vertex_id)
+		if (link1 == (*I).m_vertex_id) {
+			if ((*I).m_mark)
 				return		(false);
+
 			(*I).m_mark		= group_id;
 			(*I).m_use		|= use;
 			cross[link2]	= &*I;
@@ -344,20 +357,20 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 void test_hierarchy		(LPCSTR name)
 {
 	CLevelGraph					*level_graph = xr_new<CLevelGraph>(name);
-	CLevelNavigationGraph		*level_navigation_graph = xr_new<CLevelNavigationGraph>(name);
 	CSectorGraph				*sector_graph = xr_new<CSectorGraph>();
 
 	Msg							("ai map : %d nodes",level_graph->header().vertex_count());
 
-#if 0
+#if 1
 	SetPriorityClass			(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
 	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	Sleep						(1);
 #endif
-	
+
+	CLevelNavigationGraph		*level_navigation_graph = xr_new<CLevelNavigationGraph>(name);
+
 	s							= CPU::GetCycleCount();
-	for (u32 i=0; i<TEST_COUNT; ++i) 
-	{
+	for (u32 i=0; i<TEST_COUNT; ++i) {
 		build_convex_hierarchy	(*level_graph,*sector_graph);
 		f						= CPU::GetCycleCount();
 		Msg						("Destroy time %f",CPU::cycles2seconds*float(f - s));
