@@ -65,6 +65,9 @@
 #define ID_HELP_VISITHOMEPAGE           32803
 #define ID_HELP_LUAHOMEPAGE             32804
 #define ID_DEBUG_DEBUGBREAK             32805
+#define IDC_THREADS                     32806
+#define ID_VIEW_THREADS                 32807
+#define ID_VIEW_THREADS32807            32807
 
 // Next default values for new objects
 // 
@@ -72,7 +75,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        136
-#define _APS_NEXT_COMMAND_VALUE         32806
+#define _APS_NEXT_COMMAND_VALUE         32808
 #define _APS_NEXT_CONTROL_VALUE         1006
 #define _APS_NEXT_SYMED_VALUE           112
 #endif

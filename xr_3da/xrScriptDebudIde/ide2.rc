@@ -245,6 +245,7 @@ BEGIN
         MENUITEM "&Call Stack",                 ID_VIEW_CALLSTACK
         MENUITEM "&Local Variables",            ID_VIEW_LOCALS
         MENUITEM "W&atches",                    ID_VIEW_WATCHES
+        MENUITEM "Threads",                     ID_VIEW_THREADS
     END
 END
 
@@ -294,6 +295,7 @@ BEGIN
         MENUITEM "&Call Stack",                 ID_VIEW_CALLSTACK
         MENUITEM "&Local Variables",            ID_VIEW_LOCALS
         MENUITEM "W&atches",                    ID_VIEW_WATCHES
+        MENUITEM "Threads",                     ID_VIEW_THREADS32807
     END
     POPUP "&Window"
     BEGIN
