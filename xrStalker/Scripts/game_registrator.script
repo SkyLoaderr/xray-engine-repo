@@ -32,7 +32,7 @@ function get_game_clsid(game_type_option,is_server)
 
 		if(game_type_option == "new_dm") then 
 			return "SV_NEWDM" end
-
+	end	
 
 	if(is_server==false) then
 		if(game_type_option == "single") then 
@@ -52,5 +52,5 @@ function get_game_clsid(game_type_option,is_server)
 
 		if(game_type_option == "new_dm") then 
 			return "CL_DM" end
-
+	end
 end
