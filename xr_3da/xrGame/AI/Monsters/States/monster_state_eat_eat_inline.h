@@ -27,7 +27,7 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterEatingAbstract::execute()
 {
 	CEntityAlive *corpse = const_cast<CEntityAlive*>(object->CorpseMan.get_corpse());
-	VERIFY(corspe);
+	VERIFY(corpse);
 	
 	// Определить позицию ближайшей боны у трупа
 	Fvector nearest_bone_pos;
@@ -67,7 +67,7 @@ void CStateMonsterEatingAbstract::execute()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterEatingAbstract::check_completion()
 {
-	if (object->GetSatiety() >= 0.95f) return true;
+	if (object->GetSatiety() > object->get_sd()->m_fMaxSatiety) return true;
 	return false;
 }
 

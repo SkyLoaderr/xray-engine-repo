@@ -18,7 +18,7 @@ void				PHCaptureObject(CPhysicsShellHolder* object);
 void				PHCaptureObject(CPhysicsShellHolder* object,u16 element);
 CPHCapture*			PHCapture      (){return m_capture;}
 void				PHReleaseObject();
-Fvector				PHCaptureGetNearestElemPos(CPhysicsShellHolder* object);
+Fvector				PHCaptureGetNearestElemPos(const CPhysicsShellHolder* object);
 Fmatrix				PHCaptureGetNearestElemTransform(CPhysicsShellHolder* object);
 void				SetMaterial(u16 material);
 void				SetAirControlParam(float param){fAirControlParam=param;}

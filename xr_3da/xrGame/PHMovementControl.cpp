@@ -737,7 +737,7 @@ void	CPHMovementControl::PHCaptureObject(CPhysicsShellHolder* object,u16 element
 		);
 }
 
-Fvector CPHMovementControl::PHCaptureGetNearestElemPos(CPhysicsShellHolder* object)
+Fvector CPHMovementControl::PHCaptureGetNearestElemPos(const CPhysicsShellHolder* object)
 {
 	R_ASSERT3((object->m_pPhysicsShell != NULL), "NO Phisics Shell for object ", *object->cName());
 

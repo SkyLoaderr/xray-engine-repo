@@ -9,9 +9,10 @@
 TEMPLATE_SPECIALIZATION
 CStateMonsterMoveToPointAbstract::CStateMonsterMoveToPoint(_Object *obj) : inherited(obj, &data)
 {
-	data.point.set		(0.f,0.f,0.f);
-	data.action			= ACT_STAND_IDLE;
-	data.accelerated	= false;
+	data.point.set			(0.f,0.f,0.f);
+	data.action				= ACT_STAND_IDLE;
+	data.accelerated		= false;
+	data.completion_dist	= 1.5f;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -38,13 +39,12 @@ void CStateMonsterMoveToPointAbstract::execute()
 		object->MotionMan.accel_set_braking (data.braking);
 	}
 
-	Msg("*MState :: Move to point action Executed :: time = [%u]", Level().timeServer());
 }
 
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterMoveToPointAbstract::check_completion()
 {	
-	if (object->Position().distance_to(data.point) > 1.5f) return false;
+	if (object->Position().distance_to(data.point) > data.completion_dist) return false;
 	return true;
 }
 

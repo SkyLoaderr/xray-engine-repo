@@ -29,6 +29,6 @@ void CStateMonsterCustomActionAbstract::execute()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterCustomActionAbstract::check_completion()
 {	
-	if (time_state_started + data.time_out > Level().timeServer()) return false;
+	if (time_state_started + data.time_out > object->m_current_update) return false;
 	return true;
 }

@@ -20,7 +20,7 @@ public:
 	virtual void	Load				(LPCSTR section);
 	virtual u8		get_legs_number		() {return BIPEDAL;}
 	
-	
+	virtual	void	CheckSpecParams		(u32 spec_params);
 	virtual bool	UpdateStateManager	();
 
 	// Controller ability
@@ -29,6 +29,6 @@ public:
 			void	UpdateControlled	();
 
 			void	set_controlled_task (u32 task);
-
+	
 };
 

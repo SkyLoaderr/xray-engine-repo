@@ -218,6 +218,7 @@ public:
 	// Cover
 			bool			GetCorpseCover					(Fvector &position, u32 &vertex_id);
 			bool			GetCoverFromEnemy				(const Fvector &enemy_pos, Fvector &position, u32 &vertex_id);
+			bool			GetCoverFromPoint				(const Fvector &pos, Fvector &position, u32 &vertex_id, float min_dist, float max_dist, float radius);
 
 	// Team	
 			void			ChangeTeam						(int team, int squad, int group);

@@ -3,9 +3,12 @@
 #include "controller_state_manager.h"
 #include "../../controlled_entity.h"
 
-//#include "../../../phmovementcontrol.h"
-//#include "../../../PhysicsShell.h"
-//#include "../../../phcapture.h"
+#include "../../../phmovementcontrol.h"
+#include "../../../PhysicsShell.h"
+#include "../../../PHCharacter.h"
+#include "../../../phcapture.h"
+
+#include "../../ai_monster_debug.h"
 
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_rest_sleep.h"
@@ -13,8 +16,8 @@
 #include "controller_state_attack.h"
 #include "../states/monster_state_attack_melee.h"
 #include "../states/monster_state_attack_run.h"
-//#include "../states/monster_state_eat.h"
-//#include "../states/monster_state_eat_eat.h"
+#include "../states/monster_state_eat.h"
+#include "../states/monster_state_eat_eat.h"
 
 //#include "../states/monster_state_find_enemy.h"
 //#include "../states/monster_state_find_enemy_run.h"
@@ -44,12 +47,12 @@ CStateManagerController::CStateManagerController(CController *obj) : inherited(o
 	);
 
 
-	//add_state(
-	//	eStateEat,
-	//	xr_new<CStateMonsterEat<CController> >(obj,
-	//		xr_new<CStateMonsterEating<CController> >(obj)
-	//	)
-	//);
+	add_state(
+		eStateEat,
+		xr_new<CStateMonsterEat<CController> >(obj,
+			xr_new<CStateMonsterEating<CController> >(obj)
+		)
+	);
 
 	//add_state(
 	//	eStateFindEnemy, xr_new<CStateMonsterFindEnemy<CChimera> > (obj,
@@ -95,12 +98,35 @@ void CStateManagerController::execute()
 	//	state_id = eStateEat;	
 	//else state_id = eStateRest;
 
+	const CEntityAlive* corpse = object->CorpseMan.get_corpse();
+	bool can_eat = true;
+
+	if ((prev_substate == eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMaxSatiety)) {
+		can_eat = true;		
+	}
+
+	if ((prev_substate != eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMinSatiety)) {
+		can_eat = true;		
+	}
+
+
 	if (enemy) {
 		state_id = eStateAttack;
-		object->set_controlled_task(eTaskAttack);
+		//object->set_controlled_task(eTaskAttack);
+	} else if (corpse && can_eat){
+		state_id = eStateEat;
+
+#ifdef DEBUG
+		//object->HDebug->M_Add(0, "[Eat State]", D3DCOLOR_XRGB(255,0,0));	
+#endif
+		
 	} else {
 		state_id = eStateRest;
-		object->set_controlled_task(eTaskFollow);
+
+#ifdef DEBUG
+		//object->HDebug->M_Add(0, "[Rest State]", D3DCOLOR_XRGB(255,0,0));	
+#endif
+		//object->set_controlled_task(eTaskFollow);
 	}
 
 

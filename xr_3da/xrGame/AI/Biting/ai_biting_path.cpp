@@ -111,3 +111,16 @@ bool CAI_Biting::GetCoverFromEnemy(const Fvector &enemy_pos, Fvector &position, 
 	vertex_id	= point->m_level_vertex_id;
 	return true;
 }
+
+bool CAI_Biting::GetCoverFromPoint(const Fvector &pos, Fvector &position, u32 &vertex_id, float min_dist, float max_dist, float radius) 
+{
+	m_enemy_cover_evaluator->setup(pos, min_dist,max_dist);
+	CCoverPoint	 *point = ai().cover_manager().best_cover(Position(),radius,*m_enemy_cover_evaluator);
+	if (!point) return false;
+
+	position	= point->m_position;
+	vertex_id	= point->m_level_vertex_id;
+	return true;
+}
+
+

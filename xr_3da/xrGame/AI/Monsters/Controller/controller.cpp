@@ -3,6 +3,8 @@
 #include "../../ai_monster_utils.h"
 #include "controller_state_manager.h"
 #include "../../controlled_entity.h"
+#include "../../ai_monster_debug.h"
+
 
 CController::CController()
 {
@@ -45,28 +47,32 @@ void CController::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimSleep,			"sit_sleep_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_SIT);
 
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
-	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimLieIdle);
-	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimLieIdle);
+	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimSitIdle);
+	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimSitIdle);
 	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_RUN,			eAnimRun);
-	MotionMan.LinkAction(ACT_EAT,			eAnimStandIdle);
+	MotionMan.LinkAction(ACT_EAT,			eAnimEat);
 	MotionMan.LinkAction(ACT_SLEEP,			eAnimSleep);
-	MotionMan.LinkAction(ACT_REST,			eAnimLieIdle);
+	MotionMan.LinkAction(ACT_REST,			eAnimSitIdle);
 	MotionMan.LinkAction(ACT_DRAG,			eAnimStandIdle);
 	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
-	MotionMan.LinkAction(ACT_STEAL,			eAnimWalkFwd);
-	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);
+	MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);
+	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
 	MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle); 
 
-	MotionMan.AddTransition(PS_STAND,	PS_LIE,		eAnimStandSitDown,	false);
-	MotionMan.AddTransition(PS_LIE,		PS_STAND,	eAnimSitStandUp,	false);
+	MotionMan.AddTransition(PS_STAND,	PS_SIT,		eAnimStandSitDown,	false);
+	MotionMan.AddTransition(PS_SIT,		PS_STAND,	eAnimSitStandUp,	false);
 
 	MotionMan.finish_load_shared();
 }
 
 bool CController::UpdateStateManager()
 {
+	string128 s;
+	sprintf(s,"Satiety = [%.3f] Min[%.3f] Max[%.3f]",GetSatiety(),get_sd()->m_fMinSatiety,get_sd()->m_fMaxSatiety);
+	HDebug->M_Add(1,s, D3DCOLOR_XRGB(0,255,255));
+
 	UpdateControlled	();
 	StateMan->execute	();
 	return true;
@@ -110,4 +116,10 @@ void CController::set_controlled_task(u32 task)
 	}
 }
 
- 
+void CController::CheckSpecParams(u32 spec_params)
+{
+	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
+		MotionMan.Seq_Add(eAnimCheckCorpse);
+		MotionMan.Seq_Switch();
+	}
+} 

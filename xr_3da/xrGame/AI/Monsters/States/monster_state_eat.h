@@ -22,7 +22,7 @@ public:
 	virtual				~CStateMonsterEat		();
 
 	virtual void		initialize				();
-	virtual	void		reselect				();
+	virtual	void		reselect_state			();
 	virtual	void		setup_substates			();
 };
 

@@ -10,10 +10,13 @@
 TEMPLATE_SPECIALIZATION
 CStateMonsterHideFromPointAbstract::CStateMonsterHideFromPoint(_Object *obj) : inherited(obj, &data)
 {
-	data.point.set		(0.f,0.f,0.f);
-	data.action			= ACT_STAND_IDLE;
-	data.accelerated	= false;
-	data.dist			= 1.f;
+	data.point.set				(0.f,0.f,0.f);
+	data.action					= ACT_STAND_IDLE;
+	data.accelerated			= false;
+	data.distance				= 1.f;
+	data.cover_min_dist			= 30.f;
+	data.cover_max_dist			= 50.f;
+	data.cover_search_radius	= 40.f;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -38,7 +41,7 @@ void CStateMonsterHideFromPointAbstract::execute()
 	if (object->IsPathEnd(2.5f)) b_reselect_target = true;
 
 	if (b_reselect_target) {
-		if (!object->GetCoverFromEnemy(object->EnemyMan.get_enemy()->Position(), target.position, target.node)) {
+		if (!object->GetCoverFromPoint(data.point,target.position, target.node, data.cover_min_dist,data.cover_max_dist,data.cover_search_radius)) {
 			target.node					= u32(-1);
 			last_time_reselect_cover	= object->m_current_update;
 		}
@@ -62,7 +65,7 @@ TEMPLATE_SPECIALIZATION
 bool CStateMonsterHideFromPointAbstract::check_completion()
 {	
 	float dist = object->Position().distance_to(data.point);
-	if (dist > distance) return true;
+	if (dist > data.distance) return true;
 	return false;
 }
 
