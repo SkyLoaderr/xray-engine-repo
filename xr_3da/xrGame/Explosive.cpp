@@ -240,9 +240,7 @@ void CExplosive::Explode()
 
 		if(l_impuls > .001f) 
 		{
-			setEnabled(false);
 			l_impuls *= l_pGO->ExplosionEffect(pos, m_fBlastRadius, l_elements, l_bs_positions);
-			setEnabled(true);
 		}
 
 		if(l_impuls > .001f) 
