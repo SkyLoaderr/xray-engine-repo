@@ -94,8 +94,9 @@
 // 75 -	CSE_AlifeSpaceRestrictor		new class added, hierarchy changed
 // 76 - CSE_AlifeTraderAbstract			appended with m_iSpecificCharacter
 // 77 - CSE_AlifeTraderAbstract			added CSE_ObjectClimable
+// 78 - CSE_AlifeTraderAbstract			appended with flags for infinite ammo
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(77)
+#define SPAWN_VERSION	u16(78)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

@@ -17,12 +17,17 @@
 #pragma warning(disable:4005)
 
 SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeTraderAbstract)
+	enum eTraderFlags {
+		eTraderFlagInfiniteAmmo		= u32(1) << 0,
+		eTraderFlagDummy			= u32(-1),
+	};
 	float							m_fCumulativeItemMass;
 	int								m_iCumulativeItemVolume;
 	u32								m_dwMoney;
 	ALife::EStalkerRank				m_tRank;
 	float							m_fMaxItemMass;
 	ALife::PERSONAL_EVENT_P_VECTOR	m_tpEvents;
+	Flags32							m_trader_flags;
 
 	////////////////////////////////////////////////////
 	//character profile info

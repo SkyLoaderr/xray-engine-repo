@@ -53,6 +53,8 @@ CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection)
 	m_iCharacterProfile			= NO_PROFILE;
 	m_iSpecificCharacter		= NO_SPECIFIC_CHARACTER;
 	m_character_profile_init	= false;
+	m_trader_flags.zero			();
+	m_trader_flags.set			(eTraderFlagInfiniteAmmo,FALSE);
 }
 
 CSE_Abstract *CSE_ALifeTraderAbstract::init	()
@@ -75,6 +77,7 @@ void CSE_ALifeTraderAbstract::STATE_Write	(NET_Packet &tNetPacket)
 	save_data					(m_tpEvents,tNetPacket);
 	tNetPacket.w_u32			(m_dwMoney);
 	tNetPacket.w_s32			(m_iSpecificCharacter);
+	tNetPacket.w_u32			(m_trader_flags.get());
 }
 
 void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
@@ -89,8 +92,9 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 			tNetPacket.r_u32	(m_dwMoney);
 		if (m_wVersion > 75)
 			tNetPacket.r_s32	(m_iSpecificCharacter);
+		if (m_wVersion > 77)
+			m_trader_flags.assign(tNetPacket.r_u32());
 	}
-
 }
 
 #ifdef XRGAME_EXPORTS
@@ -239,6 +243,7 @@ void CSE_ALifeTraderAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 void CSE_ALifeTraderAbstract::FillProps	(LPCSTR pref, PropItemVec& items)
 {
 	PHelper().CreateU32			(items, PrepareKey(pref,base()->s_name,"Money"), 	&m_dwMoney,	0, u32(-1));
+	PHelper().CreateFlag32		(items,	PrepareKey(pref,base()->s_name,"Trader\\Infinite ammo"),&m_trader_flags, eTraderFlagInfiniteAmmo);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -1516,6 +1521,7 @@ void CSE_ALifeHumanAbstract::FillProps		(LPCSTR pref, PropItemVec& items)
 CSE_ALifeHumanStalker::CSE_ALifeHumanStalker(LPCSTR caSection) : CSE_ALifeHumanAbstract(caSection),CSE_PHSkeleton(caSection)
 {
 	m_dwTotalMoney				= 0;
+	m_trader_flags.set			(eTraderFlagInfiniteAmmo,TRUE);
 }
 
 CSE_ALifeHumanStalker::~CSE_ALifeHumanStalker()

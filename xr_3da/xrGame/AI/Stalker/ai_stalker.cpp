@@ -163,7 +163,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 
 BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 {
-	if (!CInventoryOwner::net_Spawn(DC) ||
+	if (!CObjectHandler::net_Spawn(DC) ||
 		!inherited::net_Spawn(DC) ||  !CStalkerMovementManager::net_Spawn(DC))
 		return						(FALSE);
 

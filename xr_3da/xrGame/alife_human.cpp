@@ -274,7 +274,8 @@ bool CSE_ALifeHumanAbstract::bfPerformAttack()
 		}
 		default : {
 			R_ASSERT2					(m_tpCurrentBestWeapon->m_dwAmmoAvailable,"No ammo for the selected weapon!");
-			--(m_tpCurrentBestWeapon->m_dwAmmoAvailable);
+			if (!m_trader_flags.test(eTraderFlagInfiniteAmmo))
+				--(m_tpCurrentBestWeapon->m_dwAmmoAvailable);
 			if (m_tpCurrentBestWeapon->m_dwAmmoAvailable)
 				return					(true);
 

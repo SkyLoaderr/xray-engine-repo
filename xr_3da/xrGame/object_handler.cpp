@@ -18,6 +18,7 @@
 #include "object_actions.h"
 #include "torch.h"
 #include "xr_level_controller.h"
+#include "xrServer_Objects_ALife_Monsters.h"
 
 using namespace ObjectHandlerSpace;
 
@@ -82,6 +83,19 @@ void CObjectHandler::reload			(LPCSTR section)
 	CInventoryOwner::reload		(section);
 }
 
+BOOL CObjectHandler::net_Spawn		(LPVOID DC)
+{
+	if (!CInventoryOwner::net_Spawn(DC))
+		return					(FALSE);
+
+	CSE_Abstract				*abstract = static_cast<CSE_Abstract*>(DC);
+	CSE_ALifeTraderAbstract		*trader = smart_cast<CSE_ALifeTraderAbstract*>(abstract);
+	VERIFY						(trader);
+
+	m_infinite_ammo				= !!trader->m_trader_flags.test(CSE_ALifeTraderAbstract::eTraderFlagInfiniteAmmo);
+	return						(TRUE);
+}
+
 void CObjectHandler::OnItemTake		(CInventoryItem *inventory_item)
 {
 	CInventoryOwner::OnItemTake	(inventory_item);
@@ -95,9 +109,11 @@ void CObjectHandler::OnItemTake		(CInventoryItem *inventory_item)
 void CObjectHandler::OnItemDrop		(CInventoryItem *inventory_item)
 {
 	CInventoryOwner::OnItemDrop	(inventory_item);
-	CWeaponAmmo					*weapon_ammo = smart_cast<CWeaponAmmo*>(inventory_item);
-	if (weapon_ammo)
-		Level().spawn_item(*weapon_ammo->cNameSect(),m_object->Position(),m_object->level_vertex_id(),m_object->ID());
+	if (m_infinite_ammo) {
+		CWeaponAmmo				*weapon_ammo = smart_cast<CWeaponAmmo*>(inventory_item);
+		if (weapon_ammo)
+			Level().spawn_item	(*weapon_ammo->cNameSect(),m_object->Position(),m_object->level_vertex_id(),m_object->ID());
+	}
 	remove_item					(inventory_item);
 
 	CTorch						*torch = smart_cast<CTorch*>(inventory_item);

@@ -38,6 +38,7 @@ protected:
 
 protected:
 	bool						m_bHammerIsClutched;
+	bool						m_infinite_ammo;
 
 private:
 	// firing
@@ -79,6 +80,7 @@ public:
 	virtual	void			Load					(LPCSTR section);
 	virtual	void			reinit					(CAI_Stalker *object);
 	virtual	void			reload					(LPCSTR section);
+	virtual BOOL			net_Spawn				(LPVOID DC);
 	virtual	void			update					();
 	virtual void			OnItemTake				(CInventoryItem *inventory_item);
 	virtual void			OnItemDrop				(CInventoryItem *inventory_item);
