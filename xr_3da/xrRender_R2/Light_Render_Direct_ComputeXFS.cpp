@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "light_render_direct.h"
 
-void CLight_Render_Direct::compute_xfs_1	(u32 m_phase, light* L)
+void CLight_Render_Direct::compute_xfs	(u32 m_phase, light* L)
 {
 	// Build EYE-space xform
 	Fvector						L_dir,L_up,L_right,L_pos;
@@ -39,6 +39,3 @@ void CLight_Render_Direct::compute_xfs_1	(u32 m_phase, light* L)
 	//Msg		("%8X : ssa(%f), size(%d)",u32(L),ssa,S_size);
 }
 
-void CLight_Render_Direct::compute_xfs_2	(u32 m_phase, light* L)
-{
-}
