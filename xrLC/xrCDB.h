@@ -25,22 +25,24 @@ namespace Opcode {
 namespace CDB
 {
 	// Triangle
-	class XRCDB_API TRI
+	class XRCDB_API TRI					//*** 16 bytes total (was 32 :)
 	{
 	public:
 		Fvector*		verts	[3];	// 3*4 = 12b
-		TRI*			adj		[3];	// 3*4 = 12b	(24b)
-		WORD			material;		// 2b			(26b)
-		WORD			sector;			// 2b			(28b)
-		u32				dummy;			// 4b			(32b)
-
+		union
+		{
+			u32			dummy;			// 4b
+			struct {
+				u16		material;		// 2b
+				u16		sector;			// 2b
+			};
+		};
 	public:
-		IC Fvector&		V(int id)	{ return *(verts[id]); }
+		IC Fvector&		V(u32 id)	{return *(verts[id]);	}
 
-		IC u32*			IDverts()	{ return (u32*)	verts;	}
-		IC u32*			IDadj()		{ return (u32*)	adj;	}
-		void			convert_I2P	(Fvector* pBaseV, TRI* pBaseTri);
-		void			convert_P2I	(Fvector* pBaseV, TRI* pBaseTri);
+		IC u32*			IDverts()	{return (u32*)	verts;	}
+		void			convert_I2P	(Fvector* pBaseV);
+		void			convert_P2I	(Fvector* pBaseV);
 	};
 
 	// Build callback

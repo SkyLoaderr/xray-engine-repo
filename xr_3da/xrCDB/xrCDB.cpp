@@ -32,10 +32,6 @@ void	TRI::convert_I2P	(Fvector* pBaseV, TRI* pBaseTri)
 	verts[0] = pBaseV+pVertsID[0];
 	verts[1] = pBaseV+pVertsID[1];
 	verts[2] = pBaseV+pVertsID[2];
-	DWORD*	pAdjID	= (DWORD*)	adj;	// as indexed form (take care about open-edges)
-	adj	 [0] = (0xffffffff==pAdjID[0])?0:pBaseTri+pAdjID[0];
-	adj	 [1] = (0xffffffff==pAdjID[1])?0:pBaseTri+pAdjID[1];
-	adj	 [2] = (0xffffffff==pAdjID[2])?0:pBaseTri+pAdjID[2];
 }
 void	TRI::convert_P2I	(Fvector* pBaseV, TRI* pBaseTri)	
 {
@@ -43,10 +39,6 @@ void	TRI::convert_P2I	(Fvector* pBaseV, TRI* pBaseTri)
 	pVertsID[0] = verts[0]-pBaseV;
 	pVertsID[1] = verts[1]-pBaseV;
 	pVertsID[2] = verts[2]-pBaseV;
-	DWORD*	pAdjID	= (DWORD*)	adj;	// as indexed form (take care about open-edges)
-	pAdjID	[0]	= (adj[0])?adj[0]-pBaseTri:0xffffffff;
-	pAdjID	[1]	= (adj[1])?adj[1]-pBaseTri:0xffffffff;
-	pAdjID	[2]	= (adj[2])?adj[2]-pBaseTri:0xffffffff;
 }
 
 // Model building
