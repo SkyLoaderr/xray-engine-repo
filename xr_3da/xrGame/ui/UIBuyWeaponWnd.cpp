@@ -234,13 +234,19 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 	// Заполняем массив со списком оружия
 	std::strcpy(m_SectionName, strSectionName);
 	InitWpnSectStorage();
-	FillWpnSubBags();
 }
 
 void CUIBuyWeaponWnd::InitInventory() 
 {
 	m_pMouseCapturer = NULL;
+	static bool firstTime = true;
 
+	if (firstTime)
+	{
+		ClearWpnSubBags();
+		FillWpnSubBags();
+		firstTime = false;
+	}
 /*
 	UIPropertiesBox.Hide();
 	UIArtifactMergerWnd.Hide();
