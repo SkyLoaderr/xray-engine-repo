@@ -192,7 +192,7 @@ CBlend*	CSkeletonAnimated::LL_PlayFX		(u16 bone, u16 motion, float blendAccrue, 
 	Bone->Motion_Start(this,B);
 	
 	B->blend		= CBlend::eAccrue;
-	B->blendAmount	= 0;
+	B->blendAmount	= EPS_S;
 	B->blendAccrue	= blendAccrue;
 	B->blendFalloff	= blendFalloff;
 	B->blendPower	= Power;
@@ -276,7 +276,7 @@ CBlend*	CSkeletonAnimated::LL_PlayCycle(u16 part, u16 motion, BOOL  bMixing,	flo
 	// Setup blend params
 	if (bMixing)	{
 		B->blend		= CBlend::eAccrue;
-		B->blendAmount	= 0;
+		B->blendAmount	= EPS_S;
 	} else {
 		B->blend		= CBlend::eFixed;
 		B->blendAmount	= 1;

@@ -92,8 +92,8 @@ public:
 	void				r_Pass				(LPCSTR vs,		LPCSTR ps,		bool bFog,	BOOL	bZtest=TRUE,				BOOL	bZwrite=TRUE,			BOOL	bABlend=FALSE,			D3DBLEND	abSRC=D3DBLEND_ONE,		D3DBLEND abDST=D3DBLEND_ZERO,	BOOL aTest=FALSE,	u32 aRef=0);
 	void				r_Constant			(LPCSTR name,	R_constant_setup* s);
 	u32					r_Sampler			(LPCSTR name,	LPCSTR texture, bool b_ps1x_ProjectiveDivide=false, u32	address=D3DTADDRESS_WRAP,	u32		fmin=D3DTEXF_LINEAR,	u32		fmip=D3DTEXF_LINEAR,	u32 fmag=D3DTEXF_LINEAR);
-	void				r_Sampler_rtf		(LPCSTR name,	LPCSTR texture,	bool b_ps1x_ProjectiveDivide=false, u32	element=0);
-	void				r_Sampler_clf		(LPCSTR name,	LPCSTR texture,	bool b_ps1x_ProjectiveDivide=false, u32	element=0);
+	void				r_Sampler_rtf		(LPCSTR name,	LPCSTR texture,	bool b_ps1x_ProjectiveDivide=false);
+	void				r_Sampler_clf		(LPCSTR name,	LPCSTR texture,	bool b_ps1x_ProjectiveDivide=false);
 	void				r_End				();
 
 	CBlender_Compile	();
