@@ -11,7 +11,7 @@
 	#include "d3d9.h"
 	#include "d3dx9.h"
 	#include "D3DX_Wrapper.h"    
-	#pragma comment(lib,"ETools.lib")
+	#pragma comment(lib,"EToolsB.lib")
 	static BOOL			bException	= TRUE;
 #else
 	static BOOL			bException	= FALSE;
