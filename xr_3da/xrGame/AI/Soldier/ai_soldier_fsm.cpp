@@ -80,6 +80,7 @@ void CAI_Soldier::OnAttackAlone()
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
 	getGroup()->m_tpaSuspiciousNodes.clear();
+	m_iCurrentSuspiciousNodeIndex = -1;
 	if ((Enemy.Enemy && bfFireEnemy(Enemy.Enemy)) || (tSavedEnemy && bfFireEnemy(tSavedEnemy)))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierAttackAloneFire)
 	else
@@ -93,6 +94,7 @@ void CAI_Soldier::OnDefendAlone()
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
 	getGroup()->m_tpaSuspiciousNodes.clear();
+	m_iCurrentSuspiciousNodeIndex = -1;
 	if ((Enemy.Enemy && bfFireEnemy(Enemy.Enemy)) || (tSavedEnemy && bfFireEnemy(tSavedEnemy)))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierDefendAloneFire)
 	else
@@ -106,6 +108,7 @@ void CAI_Soldier::OnPursuitAlone()
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
 	getGroup()->m_tpaSuspiciousNodes.clear();
+	m_iCurrentSuspiciousNodeIndex = -1;
 	if ((Enemy.Enemy && bfFireEnemy(Enemy.Enemy)) || (tSavedEnemy && bfFireEnemy(tSavedEnemy)))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierPursuitAloneFire)
 	else
@@ -131,6 +134,7 @@ void CAI_Soldier::OnRetreatAlone()
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
 	getGroup()->m_tpaSuspiciousNodes.clear();
+	m_iCurrentSuspiciousNodeIndex = -1;
 	if ((Enemy.Enemy && bfFireEnemy(Enemy.Enemy)) || (tSavedEnemy && bfFireEnemy(tSavedEnemy)))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierRetreatAloneFire)
 	else
@@ -294,112 +298,41 @@ void CAI_Soldier::OnFindAloneFire()
 	if (m_bActionStarted || (this != Leader)) {
 		int iIndex = ifFindDynamicObject(tSavedEnemy);
 		if (iIndex != -1) {
-			if (this == Group.Members[0]) {
-				if (AI_Path.fSpeed < EPS_L) {
-					for (int i=0, iLastIndex = -1; i<Group.m_tpaSuspiciousNodes.size(); i++)
-						if (Group.m_tpaSuspiciousNodes[i].dwNodeID == AI_NodeID) {
-							Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
-							iLastIndex = i;
-							break;
-						}
-					int Index = ifGetSuspiciousAvailableNode(iLastIndex,Group);
-					if (Index != -1) {
-						Group.m_tpaSuspiciousNodes[Index].dwSearched = 1;
-						Group.m_tpaSuspiciousGroups[Group.m_tpaSuspiciousNodes[Index].dwGroup] = 1;
-						AI_Path.DestNode = Group.m_tpaSuspiciousNodes[Index].dwNodeID;
+			if (AI_Path.fSpeed < EPS_L) {
+				if ((m_iCurrentSuspiciousNodeIndex != -1) && (Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID == AI_NodeID))
+					Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched = 2;
+				if ((m_iCurrentSuspiciousNodeIndex == -1) || (Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched == 2))
+					m_iCurrentSuspiciousNodeIndex = ifGetSuspiciousAvailableNode(m_iCurrentSuspiciousNodeIndex,Group);
+				if (m_iCurrentSuspiciousNodeIndex != -1) {
+					Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched = 1;
+					Group.m_tpaSuspiciousGroups[Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwGroup] = 1;
+					AI_Path.DestNode = Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
+					vfInitSelector(SelectorRetreat,Squad,Leader);
+					vfBuildPathToDestinationPoint(0);
+				}
+				else {
+					if (AI_Path.bNeedRebuild) {
+						vfInitSelector(SelectorRetreat,Squad,Leader);
+						SelectorRetreat.m_tEnemyPosition = tpaDynamicObjects[iIndex].tMySavedPosition;
+						SelectorRetreat.m_tpEnemyNode = Level().AI.Node(tpaDynamicObjects[iIndex].dwMyNodeID);
+						SelectorRetreat.m_tMyPosition = vPosition;
+						SelectorRetreat.m_tpMyNode = AI_Node;
 						vfBuildPathToDestinationPoint(0);
 					}
 					else {
-						if (AI_Path.bNeedRebuild) {
-							vfInitSelector(SelectorRetreat,Squad,Leader);
-							SelectorRetreat.m_tEnemyPosition = tpaDynamicObjects[iIndex].tMySavedPosition;
-							SelectorRetreat.m_tpEnemyNode = Level().AI.Node(tpaDynamicObjects[iIndex].dwMyNodeID);
-							SelectorRetreat.m_tMyPosition = vPosition;
-							SelectorRetreat.m_tpMyNode = AI_Node;
-							vfBuildPathToDestinationPoint(0);
-						}
-						else {
-							vfInitSelector(SelectorRetreat,Squad,Leader);
-							SelectorRetreat.m_tEnemyPosition = tpaDynamicObjects[iIndex].tMySavedPosition;
-							SelectorRetreat.m_tpEnemyNode = Level().AI.Node(tpaDynamicObjects[iIndex].dwMyNodeID);
-							SelectorRetreat.m_tMyPosition = vPosition;
-							SelectorRetreat.m_tpMyNode = AI_Node;
-							vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
-						}
+						vfInitSelector(SelectorRetreat,Squad,Leader);
+						SelectorRetreat.m_tEnemyPosition = tpaDynamicObjects[iIndex].tMySavedPosition;
+						SelectorRetreat.m_tpEnemyNode = Level().AI.Node(tpaDynamicObjects[iIndex].dwMyNodeID);
+						SelectorRetreat.m_tMyPosition = vPosition;
+						SelectorRetreat.m_tpMyNode = AI_Node;
+						vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
 					}
 				}
 			}
-			else
-				if (this == Group.Members[1]) {
-					if (AI_Path.fSpeed < EPS_L) {
-						for (int i=0, iLastIndex = -1; i<Group.m_tpaSuspiciousNodes.size(); i++)
-							if (Group.m_tpaSuspiciousNodes[i].dwNodeID == AI_NodeID) {
-								Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
-								iLastIndex = i;
-								break;
-							}
-						int Index = ifGetSuspiciousAvailableNode(iLastIndex,Group);
-						if (Index != -1) {
-							Group.m_tpaSuspiciousNodes[Index].dwSearched = 1;
-							Group.m_tpaSuspiciousGroups[Group.m_tpaSuspiciousNodes[Index].dwGroup] = 1;
-							AI_Path.DestNode = Group.m_tpaSuspiciousNodes[Index].dwNodeID;
-							vfBuildPathToDestinationPoint(0);
-						}
-						else {
-							if (AI_Path.bNeedRebuild) {
-								vfInitSelector(SelectorRetreat,Squad,Leader);
-								SelectorRetreat.m_tEnemyPosition = tpaDynamicObjects[iIndex].tMySavedPosition;
-								SelectorRetreat.m_tpEnemyNode = Level().AI.Node(tpaDynamicObjects[iIndex].dwMyNodeID);
-								SelectorRetreat.m_tMyPosition = vPosition;
-								SelectorRetreat.m_tpMyNode = AI_Node;
-								vfBuildPathToDestinationPoint(0);
-							}
-							else {
-								vfInitSelector(SelectorRetreat,Squad,Leader);
-								SelectorRetreat.m_tEnemyPosition = tpaDynamicObjects[iIndex].tMySavedPosition;
-								SelectorRetreat.m_tpEnemyNode = Level().AI.Node(tpaDynamicObjects[iIndex].dwMyNodeID);
-								SelectorRetreat.m_tMyPosition = vPosition;
-								SelectorRetreat.m_tpMyNode = AI_Node;
-								vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
-							}
-						}
-					}
-				}
-				else { 
-					if (AI_Path.fSpeed < EPS_L) {
-						for (int i=0, iLastIndex = -1; i<Group.m_tpaSuspiciousNodes.size(); i++)
-							if (Group.m_tpaSuspiciousNodes[i].dwNodeID == AI_NodeID) {
-								Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
-								iLastIndex = i;
-								break;
-							}
-						int Index = ifGetSuspiciousAvailableNode(iLastIndex,Group);
-						if (Index != -1) {
-							Group.m_tpaSuspiciousNodes[Index].dwSearched = 1;
-							Group.m_tpaSuspiciousGroups[Group.m_tpaSuspiciousNodes[Index].dwGroup] = 1;
-							AI_Path.DestNode = Group.m_tpaSuspiciousNodes[Index].dwNodeID;
-							vfBuildPathToDestinationPoint(0);
-						}
-						else {
-							if (AI_Path.bNeedRebuild) {
-								vfInitSelector(SelectorRetreat,Squad,Leader);
-								SelectorRetreat.m_tEnemyPosition = tpaDynamicObjects[iIndex].tMySavedPosition;
-								SelectorRetreat.m_tpEnemyNode = Level().AI.Node(tpaDynamicObjects[iIndex].dwMyNodeID);
-								SelectorRetreat.m_tMyPosition = vPosition;
-								SelectorRetreat.m_tpMyNode = AI_Node;
-								vfBuildPathToDestinationPoint(0);
-							}
-							else {
-								vfInitSelector(SelectorRetreat,Squad,Leader);
-								SelectorRetreat.m_tEnemyPosition = tpaDynamicObjects[iIndex].tMySavedPosition;
-								SelectorRetreat.m_tpEnemyNode = Level().AI.Node(tpaDynamicObjects[iIndex].dwMyNodeID);
-								SelectorRetreat.m_tMyPosition = vPosition;
-								SelectorRetreat.m_tpMyNode = AI_Node;
-								vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
-							}
-						}
-					}
-				}
+			else {
+				if ((m_iCurrentSuspiciousNodeIndex != -1) && (Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched == 2))
+					AI_Path.TravelPath.clear();
+			}
 		}
 		else {
 			bool bFoundEnemyInfo = false;

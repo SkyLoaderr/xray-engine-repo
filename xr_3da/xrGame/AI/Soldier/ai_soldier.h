@@ -373,6 +373,7 @@ class CAI_Soldier : public CCustomMonster
 		NodeCompressed* tpSavedEnemyNode;
 		DWORD			dwSavedEnemyNodeID;
 		bool			bBuildPathToLostEnemy;
+		int				m_iCurrentSuspiciousNodeIndex;
 		
 		// performance data
 		DWORD			m_dwLastRangeSearch;

@@ -62,6 +62,7 @@ CAI_Soldier::CAI_Soldier()
 	m_dwLastUpdate = 0;
 	m_dwCurrentUpdate = Level().timeServer();
 	m_dwUpdateCount = 0;
+	m_iCurrentSuspiciousNodeIndex = -1;
 //	for (int i=1; i<Level().AI.GetHeader().count; i++)
 //		vfTestNode(i);
 //	Msg("%d",i);

@@ -1147,9 +1147,10 @@ void CAI_Soldier::vfClasterizeSuspiciousNodes(CGroup &Group)
 //			Group.m_tpaSuspiciousForces[i].set(0,0,0);
 //		}
 //	}
-	DWORD N = Group.m_tpaSuspiciousNodes.size();
+ 	DWORD N = Group.m_tpaSuspiciousNodes.size();
 	for (int i=0, iGroupCounter = 1; i<N; i++, iGroupCounter++) {
-		Group.m_tpaSuspiciousNodes[i].dwGroup = iGroupCounter;
+		if (!Group.m_tpaSuspiciousNodes[i].dwGroup) 
+			Group.m_tpaSuspiciousNodes[i].dwGroup = iGroupCounter;
 		for (int j=0; j<N; j++)
 			if (!Group.m_tpaSuspiciousNodes[j].dwGroup && (Level().AI.ffGetDistanceBetweenNodeCenters(Group.m_tpaSuspiciousNodes[j].dwNodeID,Group.m_tpaSuspiciousNodes[i].dwNodeID) < GROUP_RADIUS))
 				Group.m_tpaSuspiciousNodes[j].dwGroup = iGroupCounter;
@@ -1168,7 +1169,7 @@ int CAI_Soldier::ifGetSuspiciousAvailableNode(int iLastIndex, CGroup &Group)
 	if (iLastIndex >= 0) {
 		int iLastGroup = Group.m_tpaSuspiciousNodes[iLastIndex].dwGroup;
 		for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
-			if ((Group.m_tpaSuspiciousNodes[i].dwGroup != iLastGroup) && !Group.m_tpaSuspiciousNodes[i].dwSearched)
+			if ((Group.m_tpaSuspiciousNodes[i].dwGroup != iLastGroup) || Group.m_tpaSuspiciousNodes[i].dwSearched)
 				continue;
 			if (Group.m_tpaSuspiciousNodes[i].fCost < fMin) {
 				fMin = Group.m_tpaSuspiciousNodes[i].fCost;
