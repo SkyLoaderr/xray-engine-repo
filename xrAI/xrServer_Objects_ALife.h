@@ -221,7 +221,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePHSkeletonObject,CSE_ALifeDynamicObjectVisu
 	Flags8							flags;
 	SPHBonesData					saved_bones;
 	u16								source_id;//for break only
-	
+	virtual bool					can_save				() const;
 	virtual	void					load					(NET_Packet &tNetPacket);
 protected:
 	void							data_load				(NET_Packet &tNetPacket);

@@ -525,6 +525,11 @@ void CSE_ALifePHSkeletonObject::UPDATE_Read(NET_Packet &tNetPacket)
 	inherited::UPDATE_Read		(tNetPacket);
 };
 
+bool CSE_ALifePHSkeletonObject::can_save			() const
+{
+	return						(!flags.test(flNotSave));
+}
+
 #ifdef _EDITOR
 void CSE_ALifePHSkeletonObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
