@@ -343,14 +343,15 @@ void CActor::net_Import		(NET_Packet& P)					// import from server
 	u32 NumI2R = 0;
 	for (u32 I = 0; I<NET_I.size(); I++)
 	{
-		if (NET_I[I].m_dwTimeStamp <= N.dwTimeStamp) NumI2R++;
+		if (NET_I[I].m_dwTimeStamp < N.dwTimeStamp) NumI2R++;
 		else break;
 	};
 	if (NumI2R) 
 	{
 		NET_I.erase(NET_I.begin(), NET_I.begin() + NumI2R);
-		NET_I_NeedReculc = TRUE;
 	};	
+
+	NET_I_NeedReculc = TRUE;
 }
 
 void CActor::net_ImportInput	(NET_Packet &P)
@@ -936,6 +937,7 @@ void CActor::shedule_Update	(u32 DT)
 		if (NET_I_NeedReculc)
 		{
 			R_ASSERT (NET.size());
+			NetUpdate_Apply(NET.back(), dt);
 		};
 
 		NetInput_Save			( );
@@ -1605,4 +1607,22 @@ void CActor::NetInput_Save()
 	{
 		u_EventSend(NP);
 	};
+};
+
+void CActor::NetUpdate_Apply(net_update &NetUpdate, float dt)
+{
+	float Jump = 0;
+	NET_Last				= NetUpdate;
+
+	m_PhysicMovementControl.SetVelocity	(NET_Last.p_velocity);
+	m_PhysicMovementControl.SetVelocity	(NET_Last.p_velocity);
+	Position().set			(NET_Last.p_pos);
+	if(!m_pPhysicsShell)
+		m_PhysicMovementControl.SetPosition	(NET_Last.p_pos);
+
+	g_sv_Orientate				(NET_Last.mstate,dt			);
+	g_Orientate					(NET_Last.mstate,dt			);
+	g_Physics					(NET_Last.p_accel,Jump,dt	);
+	g_SetAnimation				(NET_Last.mstate			);
+
 };

@@ -256,6 +256,7 @@ private:
 	BOOL					NET_WasInterpolating;	// previous update was by interpolation or by extrapolation
 	u32						NET_Time;				// server time of last update
 
+	void					NetUpdate_Apply			( net_update &NetUpdate, float dt);
 	//------------------------------
 	struct					net_input
 	{
