@@ -169,29 +169,53 @@ void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sector
 
 	u64							s,f;
 	s							= CPU::GetCycleCount();
-	for (u32 i = 0; i<n; ++i) {
-		if (level_graph.vertex(i)->position().z(r) > max_z)
-			max_z				= level_graph.vertex(i)->position().z(r);
-		if (level_graph.vertex(i)->position().x(r) > max_x)
-			max_x				= level_graph.vertex(i)->position().x(r);
-		if (level_graph.vertex(i)->position().z(r) < min_z)
-			min_z				= level_graph.vertex(i)->position().z(r);
-		if (level_graph.vertex(i)->position().x(r) < min_x)
-			min_x				= level_graph.vertex(i)->position().x(r);
+	{
+		u32									cur_x, cur_z;
+		CLevelGraph::const_vertex_iterator	I = level_graph.begin();
+		CLevelGraph::const_vertex_iterator	E = level_graph.end();
+		for ( ; I != E; ++I) {
+			const CLevelGraph::CPosition &position = (*I).position();
+			cur_x					= position.x(r);
+			cur_z					= position.z(r);
+			if (cur_z > max_z)
+				max_z				= cur_z;
+			if (cur_x > max_x)
+				max_x				= cur_x;
+			if (cur_z < min_z)
+				min_z				= cur_z;
+			if (cur_x < min_x)
+				min_x				= cur_x;
+		}
 	}
 	f							= CPU::GetCycleCount();
 	Msg							("MinMax time %f",CPU::cycles2seconds*float(f - s));
 
 	// allocating memory
 	VERTEX_VECTOR2				table;
-	table.resize				(max_z - min_z + 1);
-	for (u32 i=min_z; i<=max_z; ++i)
-		table[i].resize			(max_x - min_x + 1);
+
+	{
+		table.resize				(max_z - min_z + 1);
+		u32							size_x = max_x - min_x + 1;
+		VERTEX_VECTOR2::iterator	I = table.begin() + min_z;
+		VERTEX_VECTOR2::iterator	E = table.end();
+		for ( ; I != E; ++I)
+			(*I).resize				(size_x);
+	}
 	f							= CPU::GetCycleCount();
 	Msg							("Allocate time %f",CPU::cycles2seconds*float(f - s));
 
-	for (u32 i = 0; i<n; ++i)
-		table[level_graph.vertex(i)->position().z(r)][level_graph.vertex(i)->position().x(r)].push_back(CCellVertex(i,0));
+	{
+		u32									cur_x, cur_z;
+		CCellVertex							v(0,0);
+		CLevelGraph::const_vertex_iterator	I = level_graph.begin();
+		CLevelGraph::const_vertex_iterator	E = level_graph.end();
+		for ( ; I != E; ++I, ++v.m_vertex_id) {
+			const CLevelGraph::CPosition	&position = (*I).position();
+			cur_x							= position.x(r);
+			cur_z							= position.z(r);
+			table[cur_z][cur_x].push_back	(v);
+		}
+	}
 	f							= CPU::GetCycleCount();
 	Msg							("Fill time %f",CPU::cycles2seconds*float(f - s));
 
