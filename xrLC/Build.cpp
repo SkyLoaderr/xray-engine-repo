@@ -111,6 +111,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 	transfer("shaders_xrlc",shader_compile,		FS,		EB_Shaders_Compile);
 	transfer("glows",		glows,				FS,		EB_Glows);
 	transfer("portals",		portals,			FS,		EB_Portals);
+	transfer("portals",		lods,				FS,		EB_LOD_models);
 
 	// Load lights
 	Status	("Loading lights...");

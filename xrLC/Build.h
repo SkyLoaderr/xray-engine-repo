@@ -63,6 +63,7 @@ public:
 
 	vector<b_glow>			glows;
 	vector<b_portal>		portals;
+	vector<b_lod>			lods;
 
 	vector<R_Layer>			L_layers;
 	vector<b_light_dynamic>	L_dynamic;
