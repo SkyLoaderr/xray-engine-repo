@@ -465,13 +465,11 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 	EBodyState				l_tBodyState = (eBodyStateStand == m_object->body_state()) && m_object->IsLimping() ? eBodyStateStandDamaged : m_object->body_state();
 	if ((m_object->speed() < EPS_L) || (eMovementTypeStand == m_object->movement_type())) {
 		// standing
-		if ((angle_difference(m_object->body_orientation().target.yaw,m_object->body_orientation().current.yaw) <= PI_DIV_4) && 
-			(angle_difference(m_object->head_orientation().current.yaw,m_object->body_orientation().current.yaw) <= PI_DIV_4)
-			) {
-			tpLegsAnimation		= m_tAnims.A[m_object->body_state()].m_tInPlace.A[0];
+		if (angle_difference(m_object->body_orientation().target.yaw,m_object->body_orientation().current.yaw) <= EPS_L) {
+			tpLegsAnimation	= m_tAnims.A[m_object->body_state()].m_tInPlace.A[0];
 		}
 		else {
-			tpLegsAnimation		= m_tAnims.A[m_object->body_state()].m_tInPlace.A[1];
+			tpLegsAnimation	= m_tAnims.A[m_object->body_state()].m_tInPlace.A[1];
 		}
 		return;
 	}
