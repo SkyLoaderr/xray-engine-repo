@@ -172,5 +172,6 @@ function stalker_binder:net_import	(packet)
 end
 
 function init		(obj)
+	return
 	obj:bind_object	(this.stalker_binder(obj))
 end
