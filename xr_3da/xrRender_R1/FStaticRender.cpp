@@ -375,10 +375,7 @@ void CRender::Calculate				()
 					light*			L					= (light*)	spatial->dcast_Light	();
 					VERIFY								(L);
 					vis_data&		vis					= L->get_homdata();
-					if	(HOM.visible(vis))	{
-						L_DB->add_light	(L);
-						vis.frame			= Device.dwFrame;
-					}
+					if	(HOM.visible(vis))	L_DB->add_light	(L);
 				}
 				break;	// exit loop on frustums
 			}
