@@ -80,8 +80,10 @@ void	CTracer::Render	()
 		if (!::Render.ViewBase.testSphereDirty(sC,sR))	continue;
 
 		// Everything OK - build vertices
-		Fvector	P,lineTop;
-		lineTop.crossproduct(vDir,lineD);
+		Fvector	P,lineTop,camDir;
+		camDir.sub			(sC,vCenter);
+		camDir.normalize	();
+		lineTop.crossproduct(camDir,lineD);
 		DWORD	C	= B.color.get	();
 		P.mad(B.pos_trail,lineTop,-TRACER_SIZE);	verts->set(P,C,0,1);	verts++;
 		P.mad(B.pos_trail,lineTop,TRACER_SIZE);		verts->set(P,C,0,0);	verts++;
