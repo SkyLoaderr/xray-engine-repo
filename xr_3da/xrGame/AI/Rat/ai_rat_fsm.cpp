@@ -51,6 +51,17 @@ void CAI_Rat::Think()
 		m_bStateChanged = m_ePreviousState != eCurrentState;
 	}
 	while (!bStopThinking);
+//	if (m_fSpeed > EPS_L) {
+//		AI_Path.TravelPath.resize(2);
+//		AI_Path.TravelPath[0].floating = AI_Path.TravelPath[1].floating = FALSE;
+//		AI_Path.TravelPath[0].P = vPosition;
+//		Fvector tTemp;
+//		tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
+//		tTemp.normalize_safe();
+//		tTemp.mul(10.f);
+//		AI_Path.TravelPath[1].P.add(vPosition,tTemp);
+//		AI_Path.TravelStart = 0;
+//	}
 }
 void CAI_Rat::Die()
 {
