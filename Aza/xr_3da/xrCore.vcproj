@@ -680,6 +680,9 @@
 				RelativePath=".\crc32.cpp">
 			</File>
 			<File
+				RelativePath=".\xr_resource.h">
+			</File>
+			<File
 				RelativePath=".\xrsharedmem.cpp">
 			</File>
 			<File

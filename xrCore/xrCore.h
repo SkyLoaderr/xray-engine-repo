@@ -170,6 +170,7 @@
 #include "_stl_extensions.h"
 #include "xrsharedmem.h"
 #include "xrstring.h"
+#include "xr_resource.h"
 #include "rt_compressor.h"
 
 // stl ext

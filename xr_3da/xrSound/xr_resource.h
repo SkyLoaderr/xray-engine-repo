@@ -3,7 +3,7 @@
 #pragma once
 
 // resource itself, the base class for all derived resources
-class	ENGINE_API	xr_resource	{
+class	XRCORE_API	xr_resource	{
 public:
 	enum			{RF_REGISTERED=1<<0 };
 public:
@@ -12,7 +12,7 @@ public:
 
 	xr_resource()	: dwReference(0), dwFlags(0)	{ }
 };
-class	ENGINE_API	xr_resource_named	:	public xr_resource		{
+class	XRCORE_API	xr_resource_named	:	public xr_resource		{
 public:
 	shared_str		cName;
 
