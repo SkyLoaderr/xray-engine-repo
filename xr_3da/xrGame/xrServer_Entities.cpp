@@ -55,6 +55,13 @@ public:
 			P.w_dir			(f_dir);
 		}
 	};
+	virtual void			STATE_Read			(NET_Packet& P, u16 size)
+	{
+	}
+	virtual void			STATE_Write			(NET_Packet& P)
+	{
+	}
+
 	virtual BOOL			RelevantTo			(xrServerEntity* E)
 	{
 		return TRUE;
@@ -94,6 +101,12 @@ public:
 		P.w_angle8			(o_model);
 		P.w_angle8			(o_torso.yaw);
 		P.w_angle8			(o_torso.pitch);
+	}
+	virtual void			STATE_Read			(NET_Packet& P, u16 size)
+	{
+	}
+	virtual void			STATE_Write			(NET_Packet& P)
+	{
 	}
 	virtual BOOL			RelevantTo			(xrServerEntity* E)
 	{
