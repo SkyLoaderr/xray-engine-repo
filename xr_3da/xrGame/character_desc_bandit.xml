@@ -105,7 +105,7 @@
 			[spawn] \n
 			wpn_pb \n
 			ammo_9x18_pbp = 1 \n
-			wpn_bm16 \n
+			wpn_toz34 \n
 			ammo_12x76_dart = 1 \n
 			device_torch \n
 		</supplies>
