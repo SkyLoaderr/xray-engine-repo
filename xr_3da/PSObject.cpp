@@ -8,7 +8,7 @@
 #include "PSVisual.h"
 #include "render.h"
 
-CPSObject::CPSObject(LPCSTR ps_name, CSector* S, BOOL bAutoRemove)
+CPSObject::CPSObject(LPCSTR ps_name, IRender_Sector* S, BOOL bAutoRemove)
 {
 	m_bAutoRemove	= bAutoRemove;
 
@@ -27,7 +27,7 @@ CPSObject::~CPSObject()
 }
 
 //----------------------------------------------------
-void CPSObject::UpdateSector(CSector* sect)
+void CPSObject::UpdateSector(IRender_Sector* sect)
 {
 	if (sect == m_pCurSector)	return;
 	if (m_pCurSector) m_pCurSector->tempobjRemove(this);

@@ -19,15 +19,15 @@ CVisual*	CRender::model_Create			(LPCSTR name, IReader* data)	{ return Models.Cr
 CVisual*	CRender::model_Duplicate		(CVisual* V)					{ return Models.Instance_Duplicate(V);	}
 void		CRender::model_Delete			(CVisual* &V)					{ Models.Delete(V);						}
 
-int			CRender::getVisualsCount		()					{ return Visuals.size();								}
-CPortal*	CRender::getPortal				(int id)			{ VERIFY(id<int(Portals.size()));	return &Portals[id];}
-CSector*	CRender::getSector				(int id)			{ VERIFY(id<int(Sectors.size()));	return Sectors[id];	}
-CSector*	CRender::getSectorActive		()					{ return pLastSector;									}
-CVisual*	CRender::getVisual				(int id)			{ VERIFY(id<int(Visuals.size()));	return Visuals[id];	}
-D3DVERTEXELEMENT9*		CRender::getVB_Format(int id)		{ VERIFY(id<int(DCL.size()));		return DCL[id].begin();	}
-IDirect3DVertexBuffer9*	CRender::getVB		(int id)			{ VERIFY(id<int(VB.size()));		return VB[id];		}
-IDirect3DIndexBuffer9*	CRender::getIB		(int id)			{ VERIFY(id<int(IB.size()));		return IB[id];		}
-CRender_target* CRender::getTarget			()					{ return &Target;										}
+int						CRender::getVisualsCount		()					{ return Visuals.size();								}
+CPortal*				CRender::getPortal				(int id)			{ VERIFY(id<int(Portals.size()));	return &Portals[id];}
+IRender_Sector*			CRender::getSector				(int id)			{ VERIFY(id<int(Sectors.size()));	return Sectors[id];	}
+IRender_Sector*			CRender::getSectorActive		()					{ return pLastSector;									}
+CVisual*				CRender::getVisual				(int id)			{ VERIFY(id<int(Visuals.size()));	return Visuals[id];	}
+D3DVERTEXELEMENT9*		CRender::getVB_Format			(int id)			{ VERIFY(id<int(DCL.size()));		return DCL[id].begin();	}
+IDirect3DVertexBuffer9*	CRender::getVB					(int id)			{ VERIFY(id<int(VB.size()));		return VB[id];		}
+IDirect3DIndexBuffer9*	CRender::getIB					(int id)			{ VERIFY(id<int(IB.size()));		return IB[id];		}
+IRender_target*			CRender::getTarget				()					{ return &Target;										}
 
 void		CRender::L_add					(CLightPPA* L)		{ VERIFY(L); L_Dynamic.Add(L);							}
 void		CRender::L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>& dest)
@@ -207,7 +207,7 @@ void CRender::Calculate()
 	// Detect camera-sector
 	if (!vLastCameraPos.similar(Device.vCameraPosition,EPS_S)) 
 	{
-		CSector* pSector = detectSector(Device.vCameraPosition);
+		IRender_Sector* pSector = detectSector(Device.vCameraPosition);
 		if (0==pSector) pSector = pLastSector;
 		pLastSector = pSector;
 		vLastCameraPos.set(Device.vCameraPosition);

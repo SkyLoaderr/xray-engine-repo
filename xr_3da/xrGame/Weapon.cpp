@@ -654,7 +654,7 @@ void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::r
 	if (R.O) {
 		if (R.O->CLS_ID==CLSID_ENTITY)
 		{
-			CSector* S = R.O->Sector();
+			IRender_Sector* S	= R.O->Sector();
 			Fvector D;	D.invert(vDir);
 
 			LPCSTR ps_gibs		= "blood_1";//(Random.randI(5)==0)?"sparks_1":"stones";

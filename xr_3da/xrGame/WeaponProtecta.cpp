@@ -249,7 +249,7 @@ void CWeaponProtecta::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Col
 	N.mknormal			(pTri->V(0),pTri->V(1),pTri->V(2));
 	D.reflect			(vDir,N);
 
-	CSector* S			= ::Render.getSector(pTri->sector);
+	IRender_Sector* S	= ::Render.getSector(pTri->sector);
 
 	// stones
 	CPSObject* PS		= xr_new<CPSObject> ("stones",S,true);

@@ -403,7 +403,7 @@ void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Col
 		N.mknormal			(pTri->V(0),pTri->V(1),pTri->V(2));
 		D.reflect			(vDir,N);
 		
-		CSector* S			= ::Render->getSector(pTri->sector);
+		IRender_Sector* S	= ::Render->getSector(pTri->sector);
 		
 		// smoke
 		LPCSTR ps_gibs		= (Random.randI(5)==0)?"sparks_1":"stones";

@@ -211,7 +211,7 @@ void CObject::OnVisible	()
 void CObject::Sector_Detect	()
 {
 	// Detect sector
-	CSector*	P = 0;
+	IRender_Sector*	P = 0;
 	
 	if (pVisual)	{
 		Fvector		Pos;
@@ -224,7 +224,7 @@ void CObject::Sector_Detect	()
 	}
 }
 
-void CObject::Sector_Move	(CSector* P)
+void CObject::Sector_Move	(IRender_Sector* P)
 {
 	// Update
 	if (P!=pSector) {

@@ -8,7 +8,7 @@
 class	ENGINE_API CVisual;
 class	ENGINE_API CCFModel;
 class	ENGINE_API CInifile;
-class	ENGINE_API CSector;
+class	ENGINE_API IRender_Sector;
 class	ENGINE_API CCustomHUD;
 class	ENGINE_API CLightTrack;
 class	ENGINE_API NET_Packet;
@@ -52,7 +52,7 @@ private:
 	LPSTR								NameVisual;
 
 	// Visibility detection
-	CSector*							pSector;
+	IRender_Sector*						pSector;
 	CLightTrack*						pLights;
 protected:
 	// Geometric (transformation)
@@ -102,7 +102,7 @@ public:
 	virtual float						Radius				() const;
 	virtual Fvector&					Position			() 					{ return vPosition;			}
 	
-	IC CSector*							Sector				()					{ return H_Root()->pSector;	}
+	IC IRender_Sector*							Sector				()					{ return H_Root()->pSector;	}
 	IC CLightTrack*						Lights				()					{ return pLights;			}
 	virtual float						Ambient				()					{ return 0.f;		 		}
 	virtual BOOL						ShadowGenerate		()					{ return TRUE;				}
@@ -144,7 +144,7 @@ public:
 
 	virtual void						Load				(LPCSTR section);
 	virtual void						Sector_Detect		();
-	virtual void						Sector_Move			(CSector* P);
+	virtual void						Sector_Move			(IRender_Sector* P);
 	
 	// Update
 	virtual void						OnVisible			(void);								// returns lighting level
