@@ -40,7 +40,6 @@ __published:	// IDE-managed Components
           int Y);
 	void __fastcall tvDOListStartDrag(TObject *Sender,
           TDragObject *&DragObject);
-	void __fastcall tvDOListExit(TObject *Sender);
 	void __fastcall tvDOListItemFocused(TObject *Sender);
 private:	// User declarations
 	TfrmDOShuffle* m_Parent;

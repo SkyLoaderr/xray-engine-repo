@@ -32,8 +32,8 @@ SceneBuilder::~SceneBuilder()
 
 //------------------------------------------------------------------------------
 #define CHECK_BREAK     	if (UI->NeedAbort()) break;
-#define VERIFY_COMPILE(x,c) CHECK_BREAK \
-							if (!x){error_text.sprintf("Error: %s", c); break;}
+#define VERIFY_COMPILE(x,c1,c2) CHECK_BREAK \
+							if (!x){error_text.sprintf("ERROR: %s %s", c1,c2); break;}
 //------------------------------------------------------------------------------
 BOOL SceneBuilder::Compile()
 {
@@ -49,25 +49,25 @@ BOOL SceneBuilder::Compile()
 	        // check debug
             bool bTestPortal = Scene->ObjCount(OBJCLASS_SECTOR)||Scene->ObjCount(OBJCLASS_PORTAL);
 	        // validate scene
-    	    VERIFY_COMPILE(Scene->Validate(false,bTestPortal,true,true,true),"Validation failed. Invalid scene.");
+    	    VERIFY_COMPILE(Scene->Validate(false,bTestPortal,true,true,true),"Validation failed.","Invalid scene.");
         	// build
-            VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.");
-            VERIFY_COMPILE(PrepareFolders(),			"Failed to prepare level folders.");
-            VERIFY_COMPILE(EvictResource(),				"Failed to evict resource.");
-            VERIFY_COMPILE(GetBounding(),				"Failed to acquire level bounding volume.");
-            VERIFY_COMPILE(RenumerateSectors(),			"Failed to renumerate sectors.");
-            VERIFY_COMPILE(CompileStatic(),				"Failed static remote build.");
-            VERIFY_COMPILE(BuildLTX(),					"Failed to build level description.");
-            VERIFY_COMPILE(BuildGame(),					"Failed to build game.");
-            VERIFY_COMPILE(BuildSceneStat(),			"Failed to build scene statistic.");
+            VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path","");
+            VERIFY_COMPILE(PrepareFolders(),			"Failed to prepare level folders","");
+            VERIFY_COMPILE(EvictResource(),				"Failed to evict resource","");
+            VERIFY_COMPILE(GetBounding(),				"Failed to acquire level bounding volume","");
+            VERIFY_COMPILE(RenumerateSectors(),			"Failed to renumerate sectors","");
+            VERIFY_COMPILE(CompileStatic(),				"Failed static remote build","");
+            VERIFY_COMPILE(BuildLTX(),					"Failed to build level description","");
+            VERIFY_COMPILE(BuildGame(),					"Failed to build game","");
+            VERIFY_COMPILE(BuildSceneStat(),			"Failed to build scene statistic","");
             BuildHOMModel	();
     	    // build tools
             SceneToolsMapPairIt _I 	= Scene->FirstTools();
             SceneToolsMapPairIt _E	= Scene->LastTools();
             for (; _I!=_E; _I++){
             	if (_I->first!=OBJCLASS_DUMMY){
-                    if (_I->second->Valid()){
-                        VERIFY_COMPILE(_I->second->Export(m_LevelPath.c_str()),"Export failed.");
+                    if (_I->second->Valid()){                                  
+                        VERIFY_COMPILE(_I->second->Export(m_LevelPath.c_str()),_I->second->ClassDesc(),"export failed.");
                         ELog.Msg(mtInformation,"%s: created successfully.",_I->second->ClassDesc());
                     }else{
                         ELog.Msg(mtError,"%s: validation failed.",_I->second->ClassDesc());
@@ -103,12 +103,12 @@ BOOL SceneBuilder::MakeGame( )
 	        // clear error
 		    Scene->m_CompilerErrors.Clear();
 	        // validate scene
-    	    VERIFY_COMPILE(Scene->Validate(false,false,false,false,false),	"Validation failed. Invalid scene.");
+    	    VERIFY_COMPILE(Scene->Validate(false,false,false,false,false),	"Validation failed.","Invalid scene.");
         	// build
-            VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.");
-            VERIFY_COMPILE(GetBounding(),				"Failed to acquire level bounding volume.");
-            VERIFY_COMPILE(BuildLTX(),					"Failed to build level description.");
-            VERIFY_COMPILE(BuildGame(),					"Failed to build game.");
+            VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.","");
+            VERIFY_COMPILE(GetBounding(),				"Failed to acquire level bounding volume.","");
+            VERIFY_COMPILE(BuildLTX(),					"Failed to build level description.","");
+            VERIFY_COMPILE(BuildGame(),					"Failed to build game.","");
         } while(0);
 
         if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());
@@ -128,8 +128,8 @@ BOOL SceneBuilder::MakeAIMap()
 {
 	AnsiString error_text;
     do{
-		VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.");
-		VERIFY_COMPILE(BuildAIMap(),				"Failed to build AI-Map.");
+		VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.","");
+		VERIFY_COMPILE(BuildAIMap(),				"Failed to build AI-Map.","");
     }while(0);
     if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());
     else if (UI->NeedAbort())	ELog.DlgMsg(mtInformation,"Building terminated.");
@@ -143,9 +143,9 @@ BOOL SceneBuilder::MakeWallmarks()
 {
 	AnsiString error_text;
     do{
-		VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.");
-        VERIFY_COMPILE(GetBounding(),				"Failed to acquire level bounding volume.");
-		VERIFY_COMPILE(BuildWallmarks(),			"Failed to build Wallmarks.");
+		VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.","");
+        VERIFY_COMPILE(GetBounding(),				"Failed to acquire level bounding volume.","");
+		VERIFY_COMPILE(BuildWallmarks(),			"Failed to build Wallmarks.","");
     }while(0);
     if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());
     else if (UI->NeedAbort())	ELog.DlgMsg(mtInformation,"Building terminated.");
@@ -159,9 +159,9 @@ BOOL SceneBuilder::MakeDetails()
 {
 	AnsiString error_text;
     do{
-		VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.");
+		VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.","");
         // save details
-		VERIFY_COMPILE(Scene->GetMTools(OBJCLASS_DO)->Export(m_LevelPath.c_str()), "Export failed.");
+		VERIFY_COMPILE(Scene->GetMTools(OBJCLASS_DO)->Export(m_LevelPath.c_str()), "Export failed.","");
     }while(0);
     if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());
     else if (UI->NeedAbort())	ELog.DlgMsg(mtInformation,"Building terminated.");
@@ -182,8 +182,8 @@ BOOL SceneBuilder::MakeHOM( )
     try{
         do{
         	// build
-            VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.");
-            VERIFY_COMPILE(BuildHOMModel(),				"Failed to build HOM model.");
+            VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.","");
+            VERIFY_COMPILE(BuildHOMModel(),				"Failed to build HOM model.","");
         } while(0);
 
         if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());

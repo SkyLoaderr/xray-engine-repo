@@ -102,17 +102,10 @@ void __fastcall TfrmOneColor::AppendObject(LPCSTR text, LPVOID data)
     tvDOList->Items->AddObject(0,text,data);
 }
 
-void __fastcall TfrmOneColor::tvDOListExit(TObject *Sender)
-{
-    m_Parent->bTHMLockRepaint	= true;
-	tvDOList->Selected 			= 0;
-    m_Parent->bTHMLockRepaint	= false;
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfrmOneColor::tvDOListItemFocused(TObject *Sender)
 {
 	m_Parent->OnItemFocused		(tvDOList);
 }
 //---------------------------------------------------------------------------
+
 

@@ -51,6 +51,7 @@ void __fastcall TfrmDOShuffle::FormCreate(TObject *Sender)
 {
 	m_ObjectProps 		= TProperties::CreateForm("Objects",paObjectProps,alClient,fastdelegate::FastDelegate0(this,&TfrmDOShuffle::OnObjectPropsModified));
     bTHMLockRepaint		= false;
+    bLockFocused		= false;
 }
 //---------------------------------------------------------------------------
 
@@ -181,6 +182,22 @@ void __fastcall TfrmDOShuffle::FormClose(TObject *Sender, TCloseAction &Action)
 
 void TfrmDOShuffle::OnItemFocused(TElTree* tv)
 {
+	if (bLockFocused)		return;
+    bLockFocused			= true;
+
+	// unselect before
+    if (tvItems!=tv)		tvItems->Selected = 0;
+	for (u32 k=0; k<color_indices.size(); k++){
+    	TfrmOneColor* OneColor = color_indices[k];
+        if (OneColor->tvDOList!=tv){
+        	OneColor->tvDOList->IsUpdating 	= true;
+        	OneColor->tvDOList->Selected 	= 0;
+        	OneColor->tvDOList->IsUpdating 	= false;
+        }
+    }
+    bLockFocused			= false;
+    
+    // select
 	TElTreeItem* Item 		= tv->Selected;
     xr_delete(m_Thm);
 
@@ -386,11 +403,4 @@ void __fastcall TfrmDOShuffle::fsStorageSavePlacement(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmDOShuffle::tvItemsExit(TObject *Sender)
-{
-    bTHMLockRepaint		= true;
-	tvItems->Selected = 0;
-    bTHMLockRepaint		= false;
-}
-//---------------------------------------------------------------------------
 

@@ -78,7 +78,6 @@ __published:	// IDE-managed Components
 	void __fastcall FormDestroy(TObject *Sender);
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
-	void __fastcall tvItemsExit(TObject *Sender);
 private:	// User declarations
 	static TfrmDOShuffle* form;
     TElTreeItem* FDragItem;
@@ -104,6 +103,7 @@ private:	// User declarations
     void ClearIndexForms(); 
 
     bool bTHMLockRepaint;
+    bool bLockFocused;
 public:		
 	void OnItemFocused	(TElTree* tv);
 public:		// User declarations
