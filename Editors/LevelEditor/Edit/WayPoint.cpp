@@ -53,16 +53,21 @@ void CWayPoint::Render(bool bParentSelect)
 	// draw links
 	Fvector p1,p2;
     p1.set	(m_vPosition.x,m_vPosition.y+WAYPOINT_SIZE*0.85f,m_vPosition.z);
-    DU.DrawText(m_vPosition,*m_Name,0xffffffff,0xff000000);
+
+    u32 c = m_bSelected?0xFFFFFFFF:0xFF000000;
+    u32 s = m_bSelected?0xFF000000:0xFF909090;
+    u32 l = m_bSelected?0xffffff00:0xff909000;
+
+    DU.DrawText(m_vPosition,*m_Name,c,s);
     for (WPLIt it=m_Links.begin(); it!=m_Links.end(); it++){
     	SWPLink* O = (SWPLink*)(*it);
 	    p2.set	(O->way_point->m_vPosition.x,O->way_point->m_vPosition.y+WAYPOINT_SIZE*0.85f,O->way_point->m_vPosition.z);
-    	DU.DrawLink(p1,p2,0.25f,0xffffff00);
+    	DU.DrawLink(p1,p2,0.25f,l);
         Fvector xx;
         xx.sub(p2,p1);
         xx.mul(0.95f);
         xx.add(p1);
-    	DU.DrawText(xx,AnsiString().sprintf("P: %1.2f",O->probability).c_str(),0xffffffff,0xff000000);
+    	DU.DrawText(xx,AnsiString().sprintf("P: %1.2f",O->probability).c_str(),c,s);
     }
 	if (bParentSelect&&m_bSelected){
     	Fbox bb; GetBox(bb);
@@ -117,7 +122,6 @@ void CWayPoint::InvertLink(CWayPoint* P)
 	WPLIt A=FindLink(P);
     WPLIt B=P->FindLink(this);
     bool a=(A!=m_Links.end()), b=(B!=P->m_Links.end());
-//    if (a&&b) return;
 	float p_a;
 	float p_b;
 	if (a){ p_a = (*A)->probability; xr_delete(*A); m_Links.erase(A);	}
