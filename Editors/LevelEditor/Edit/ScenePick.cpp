@@ -130,7 +130,7 @@ int EScene::GetQueryObjects(ObjectList& lst, EObjClass classfilter, int iSel, in
             if (mt) mt->GetQueryObjects(lst, iSel, iVis, iLock);
         }
     }else{
-        ESceneCustomOTools* mt = GetOTools(classfilter); VERIFY(mt);
+        ESceneCustomOTools* mt = GetOTools(classfilter);
         if (mt) mt->GetQueryObjects(lst, iSel, iVis, iLock);
     }
     return lst.size();

@@ -406,7 +406,8 @@ bool CActorTools::Load(LPCSTR initial, LPCSTR obj_name)
 	CEditableObject* O = xr_new<CEditableObject>(obj_name);
 	if (FS.exist(full_name.c_str())&&O->Load(full_name.c_str())){
         xr_delete(m_pEditObject);
-        m_pEditObject = O;
+        m_pEditObject 			= O;
+        m_pEditObject->Optimize ();
         // delete visual
         m_RenderObject.Clear();
         fraLeftBar->SetRenderStyle(false); 

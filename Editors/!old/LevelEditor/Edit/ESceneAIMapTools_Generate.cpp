@@ -321,7 +321,6 @@ BOOL ESceneAIMapTools::CanTravel(Fvector _from, Fvector _at)
 
 SAINode* ESceneAIMapTools::BuildNode(Fvector& vFrom, Fvector& vAt, bool bIC, bool bSuperIC)	// return node's index
 {
-	if (m_Flags.is(flUpdateSnapList)) RealUpdateSnapList();
 	// *** Test if we can travel this path
 	SnapXZ			(vAt,m_Params.fPatchSize);
 
@@ -556,31 +555,43 @@ bool ESceneAIMapTools::GenerateMap()
         if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Continue generate nodes?"))
         	return false;
 
-        UI->ProgressStart(m_SnapObjects.size(),"Prepare collision model...");
         // prepare collision model
-        CDB::CollectorPacked* CL = xr_new<CDB::CollectorPacked>(m_AIBBox);
-        Fvector verts[3];
+        u32 avg_face_cnt = 0;
+        u32 avg_vert_cnt = 0;
+        u32 mesh_cnt	 = 0;
+        {
+            for (ObjectIt o_it=m_SnapObjects.begin(); o_it!=m_SnapObjects.end(); o_it++){
+                CSceneObject* 		S = dynamic_cast<CSceneObject*>(*o_it); VERIFY(S);
+                avg_face_cnt		+= S->GetFaceCount();
+                avg_vert_cnt		+= S->GetVertexCount();
+                mesh_cnt			+= S->Meshes()->size();
+            }
+    	}
+
+        UI->ProgressStart			(mesh_cnt,"Prepare collision model...");
+
+        CDB::Collector* CL = xr_new<CDB::Collector>();
+		Fvector verts[3];
         for (ObjectIt o_it=m_SnapObjects.begin(); o_it!=m_SnapObjects.end(); o_it++){
         	CSceneObject* 		S = dynamic_cast<CSceneObject*>(*o_it); VERIFY(S);
-        	UI->ProgressInc		(S->Name);
             CEditableObject*    E = S->GetReference(); VERIFY(E);
             EditMeshVec& 		_meshes = E->Meshes();
             for (EditMeshIt m_it=_meshes.begin(); m_it!=_meshes.end(); m_it++){
+	        	UI->ProgressInc	(AnsiString().sprintf("%s [%s]",S->Name,(*m_it)->GetName()).c_str());
             	SurfFaces&	_sfaces = (*m_it)->GetSurfFaces();
-//            	FaceVec&	_faces 	= (*m_it)->GetFaces();
                 for (SurfFacesPairIt sp_it=_sfaces.begin(); sp_it!=_sfaces.end(); sp_it++){
                     IntVec& face_lst = sp_it->second;
                     for (IntIt it=face_lst.begin(); it!=face_lst.end(); it++){
-//                        st_Face&	F = _faces[*it];
 			        	E->GetFaceWorld	(S->_Transform(),*m_it,*it,verts);
-                        CL->add_face_D(verts[0],verts[1],verts[2], *it);
+						CL->add_face_D(verts[0],verts[1],verts[2], *it);
                         if (sp_it->first->m_Flags.is(CSurface::sf2Sided))
-                            CL->add_face_D(verts[2],verts[1],verts[0], *it);
+							CL->add_face_D(verts[2],verts[1],verts[0], *it);
                     }
                 }
             }
         }
-        UI->ProgressStart(m_SnapObjects.size(),"Prepare collision model...");
+        
+        UI->ProgressEnd();
 
         UI->SetStatus		("Building collision model...");
         // create CFModel
@@ -588,7 +599,6 @@ bool ESceneAIMapTools::GenerateMap()
 	    m_CFModel->build	(CL->getV(), CL->getVS(), CL->getT(), CL->getTS());
 		xr_delete			(CL);        
         
-        UI->SetStatus		("Building nodes...");
         // building
         Scene->lock			();
 CTimer tm;
@@ -605,6 +615,8 @@ tm.Stop();
 	
         Scene->UndoSave		();
         bRes = true;
+
+        UI->SetStatus		("");
     }else{ 
     	ELog.DlgMsg(mtError,"Fill snap list before generating slots!");
     }
@@ -632,8 +644,8 @@ bool ESceneAIMapTools::RealUpdateSnapList()
 	fraLeftBar->UpdateSnapList	();
     Fbox nodes_bb;				CalculateNodesBBox(nodes_bb);
 	if (!GetSnapList()->empty()){
-        Fbox snap_bb;			Scene->GetBox(snap_bb,*GetSnapList());
-        Fbox bb;				bb.merge(snap_bb,nodes_bb);
+        Fbox bb,snap_bb;		Scene->GetBox(snap_bb,*GetSnapList());
+        if (nodes_bb.is_valid()) bb.merge(snap_bb,nodes_bb); else bb.set(snap_bb);
         if (!m_AIBBox.similar(bb)){
             m_AIBBox.set		(bb);
             hash_Clear		   	();

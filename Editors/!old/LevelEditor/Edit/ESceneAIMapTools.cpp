@@ -119,6 +119,7 @@ void ESceneAIMapTools::Clear(bool bOnlyNodes)
 	m_Nodes.clear		();
 	if (!bOnlyNodes){
 	    m_SnapObjects.clear	();
+        m_AIBBox.invalidate	();
         ExecCommand		(COMMAND_REFRESH_SNAP_OBJECTS);
     }
 }
@@ -145,6 +146,7 @@ void ESceneAIMapTools::OnFrame()
                     if (N.n[k]) N.n[k]->flags.set(SAINode::flHLSelected,TRUE);
         }
     }
+	if (m_Flags.is(flUpdateSnapList)) RealUpdateSnapList();
 }
 //----------------------------------------------------
 

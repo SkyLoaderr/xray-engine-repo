@@ -34,7 +34,8 @@ void CActorTools::CommandLoad(u32 p1, u32 p2, u32& res)
     AnsiString temp_fn	= AnsiString((char*)p1).LowerCase();
     if(!p1){
         LPCSTR new_val;
-        if (!TfrmChoseItem::SelectItem(smObject,new_val)){ 
+        AnsiString last_nm = ChangeFileExt(m_LastFileName,"");
+        if (!TfrmChoseItem::SelectItem(smObject,new_val,1,last_nm.c_str())){ 
         	res	= FALSE;
         	return;
         }
@@ -78,7 +79,7 @@ void CActorTools::CommandSaveBackup(u32 p1, u32 p2, u32& res)
 }
 void CActorTools::CommandSaveAs(u32 p1, u32 p2, u32& res)
 {
-    std::string temp_fn	= AnsiString((char*)p1).LowerCase().c_str();
+    std::string temp_fn	= p1?AnsiString((char*)p1).LowerCase().c_str();
     res 				= FALSE;
     if(p1||EFS.GetSaveName(_objects_,temp_fn)){
         if (p1||(0==temp_fn.find(FS.get_path(_objects_)->m_Path))){
