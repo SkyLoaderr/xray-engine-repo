@@ -75,7 +75,7 @@ const float p_c		= 32.7f;
 const float p_r		= 25.4f;
 const float p_r2	= 30.4f;
 const float p_a		= 1.f;
-const int	offset	= 60;
+const int	offset	= 160;
 #define ADJ_NONE	((occTri*)0xffffffff)
 
 void edges(occTri& T)
