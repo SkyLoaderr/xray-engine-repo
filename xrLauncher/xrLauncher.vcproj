@@ -156,6 +156,9 @@
 				RelativePath=".\xrLauncher_about_dlg.cpp">
 			</File>
 			<File
+				RelativePath=".\xrLauncher_benchmark_frm.cpp">
+			</File>
+			<File
 				RelativePath=".\xrLauncher_main_frm.cpp">
 			</File>
 			<File
@@ -194,6 +197,25 @@
 						<Tool
 							Name="VCManagedResourceCompilerTool"
 							ResourceFileName="$(IntDir)/xrLauncher.xrLauncher_about_dlg.resources"/>
+					</FileConfiguration>
+				</File>
+			</File>
+			<File
+				RelativePath=".\xrLauncher_benchmark_frm.h"
+				FileType="3">
+				<File
+					RelativePath=".\xrLauncher_benchmark_frm.resX">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCManagedResourceCompilerTool"
+							ResourceFileName="$(IntDir)/xrLauncher.xrLauncher_benchmark_frm.resources"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCManagedResourceCompilerTool"
+							ResourceFileName="$(IntDir)/xrLauncher.xrLauncher_benchmark_frm.resources"/>
 					</FileConfiguration>
 				</File>
 			</File>

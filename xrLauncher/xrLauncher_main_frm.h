@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xrLauncher_about_dlg.h"
+#include "xrLauncher_benchmark_frm.h"
 #include "xrLauncher_utils.h"
 
 using namespace System;
@@ -29,6 +30,7 @@ namespace xrLauncher
 		xrLauncher_main_frm(void)
 		{
 			m_about_dlg			= 0;
+			m_benchmark_dlg		= 0;
 			m_mod_info			= new MOD_INFO();
 			InitializeComponent();
 		}
@@ -47,6 +49,7 @@ namespace xrLauncher
 		}
 	private : MOD_INFO*	m_mod_info;
 	private : xrLauncher_about_dlg* m_about_dlg;
+	private : xrLauncher_benchmark_frm* m_benchmark_dlg;
 	private: System::Windows::Forms::Panel *  panel1;
 	private: System::Windows::Forms::PictureBox *  pictureBox1;
 	private: System::Windows::Forms::Button *  playBtn;
@@ -158,6 +161,7 @@ namespace xrLauncher
 			this->benchmarkBtn->Size = System::Drawing::Size(86, 26);
 			this->benchmarkBtn->TabIndex = 2;
 			this->benchmarkBtn->Text = S"Benchmark";
+			this->benchmarkBtn->Click += new System::EventHandler(this, benchmarkBtn_Click);
 			// 
 			// settingsBtn
 			// 
@@ -273,6 +277,8 @@ private: System::Void btn_key_up(System::Object *  sender, System::Windows::Form
 		 }
 
 private: System::Void aboutBtn_Click(System::Object *  sender, System::EventArgs *  e);
+
+private: System::Void benchmarkBtn_Click(System::Object *  sender, System::EventArgs *  e);
 
 };
 }

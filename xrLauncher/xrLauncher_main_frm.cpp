@@ -24,32 +24,26 @@ void xrLauncher_main_frm::addFileInfo(LPCSTR fn)
 		SmodInfo& info = m_mod_info->back();
 
 		if(ini.line_exist("general","name")){
-			pStr = ini.r_string("general","name");
-			strcpy(info.m_mod_name, pStr);
-			this->modList->Items->Add(new String(info.m_mod_name) );
+			info.m_mod_name = ini.r_string_wb("general","name");
+			this->modList->Items->Add(new String(*info.m_mod_name) );
 		};
 		if(ini.line_exist("general","description_short")){
-			pStr = ini.r_string("general","description_short");
-			strcpy(info.m_descr_short, pStr);
+			info.m_descr_short = ini.r_string_wb("general","description_short");
 		};
 		if(ini.line_exist("general","description_long")){
-			pStr = ini.r_string("general","description_long");
-			strcpy(info.m_descr_long, pStr);
+			info.m_descr_long = ini.r_string_wb("general","description_long");
 		};
 
 		if(ini.line_exist("general","version")){
-			pStr = ini.r_string("general","version");
-			strcpy(info.m_version, pStr);
+			info.m_version = ini.r_string_wb("general","version");
 		};
 
 		if(ini.line_exist("general","www")){
-			pStr = ini.r_string("general","www");
-			strcpy(info.m_www, pStr);
+			info.m_www = ini.r_string_wb("general","www");
 		};
 
 		if(ini.line_exist("general","command_line")){
-			pStr = ini.r_string("general","command_line");
-			strcpy(info.m_cmd_line, pStr);
+			info.m_cmd_line = ini.r_string_wb("general","command_line");
 		};
 
 		info.m_credits->clear();
@@ -62,7 +56,7 @@ void xrLauncher_main_frm::addFileInfo(LPCSTR fn)
 			LPCSTR value;
 			for (int i=0 ;i<lc; ++i){
 				ini.r_line( "creator", i, &name, &value);
-				info.m_credits->at(i) = value;
+				info.m_credits->at(i) = ini.r_string_wb( "creator", name);
 			}
 		}
 }
@@ -121,7 +115,7 @@ System::Void xrLauncher_main_frm::playBtn_Click(System::Object *  sender, System
 
     SmodInfo& info = m_mod_info->at(index);
 	CConsole* con = ::Console;
-	con->Execute(info.m_cmd_line);
+	con->Execute(*info.m_cmd_line);
 	Close();
 }
 
@@ -139,4 +133,14 @@ System::Void xrLauncher_main_frm::aboutBtn_Click(System::Object *  sender, Syste
 
 	m_about_dlg->Init(info);
 	m_about_dlg->ShowDialog();
+}
+
+System::Void xrLauncher_main_frm::benchmarkBtn_Click(System::Object *  sender, System::EventArgs *  e)
+{
+	if(!m_benchmark_dlg)
+		m_benchmark_dlg = new xrLauncher_benchmark_frm();
+
+	m_benchmark_dlg->Init();
+	m_benchmark_dlg->ShowDialog();
+	
 }

@@ -104,32 +104,26 @@ void xrLauncherControl::InitModPage()
 		SmodInfo& info = m_mod_info->back();
 
 		if(ini.line_exist("general","name")){
-			pStr = ini.r_string("general","name");
-			strcpy(info.m_mod_name, pStr);
-			this->modList->Items->Add(new String(info.m_mod_name) );
+			info.m_mod_name = ini.r_string("general","name");
+			this->modList->Items->Add(new String(*info.m_mod_name) );
 		};
 		if(ini.line_exist("general","description_short")){
-			pStr = ini.r_string("general","description_short");
-			strcpy(info.m_descr_short, pStr);
+			info.m_descr_short = ini.r_string("general","description_short");
 		};
 		if(ini.line_exist("general","description_long")){
-			pStr = ini.r_string("general","description_long");
-			strcpy(info.m_descr_long, pStr);
+			info.m_descr_long = ini.r_string("general","description_long");
 		};
 
 		if(ini.line_exist("general","version")){
-			pStr = ini.r_string("general","version");
-			strcpy(info.m_version, pStr);
+			info.m_version = ini.r_string("general","version");
 		};
 
 		if(ini.line_exist("general","www")){
-			pStr = ini.r_string("general","www");
-			strcpy(info.m_www, pStr);
+			info.m_www = ini.r_string("general","www");
 		};
 
 		if(ini.line_exist("general","command_line")){
-			pStr = ini.r_string("general","command_line");
-			strcpy(info.m_cmd_line, pStr);
+			info.m_cmd_line = ini.r_string("general","command_line");
 		};
 
 		info.m_credits->clear();
@@ -169,10 +163,10 @@ System::Void xrLauncherControl::modList_SelectedIndexChanged(System::Object *  s
 	}
 
     SmodInfo& info = m_mod_info->at(index);
-	modShortDescrLbl->Text = String::Concat(modShortDescrLbl->Text, new String(info.m_descr_short) );
-	modLongDescrLbl->Text = String::Concat(modLongDescrLbl->Text, new String(info.m_descr_long) );
-	modLinkLbl->Text = String::Concat(modLinkLbl->Text, new String(info.m_www) );
-	modVersionLbl->Text = String::Concat(modVersionLbl->Text, new String(info.m_version) );
+	modShortDescrLbl->Text = String::Concat(modShortDescrLbl->Text, new String(*info.m_descr_short) );
+	modLongDescrLbl->Text = String::Concat(modLongDescrLbl->Text, new String(*info.m_descr_long) );
+	modLinkLbl->Text = String::Concat(modLinkLbl->Text, new String(*info.m_www) );
+	modVersionLbl->Text = String::Concat(modVersionLbl->Text, new String(*info.m_version) );
 
 	for(u32 i=0; i<info.m_credits->size();++i)
 		modCreditsList->Items->Add(new String(*(info.m_credits->at(i))) );
@@ -188,7 +182,7 @@ System::Void xrLauncherControl::modRunBtn_Click(System::Object *  sender, System
 
     SmodInfo& info = m_mod_info->at(index);
 	CConsole* con = ::Console;
-	con->Execute(info.m_cmd_line);
+	con->Execute(*info.m_cmd_line);
 	Close();
 }
 
