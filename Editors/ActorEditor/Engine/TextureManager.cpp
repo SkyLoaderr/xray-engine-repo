@@ -215,7 +215,7 @@ SPS*	CShaderManager::_CreatePS			(LPCSTR name)
 		// Select target
 		LPCSTR						c_target	= "ps_2_0";
 		LPCSTR						c_entry		= "main";
-		LPSTR						text		= LPCSTR(fs->pointer());
+		LPSTR						text		= LPSTR(fs->pointer());
 		u32							text_size	= fs->length();
 		text[text_size-1]						= 0;
 		if (strstr(text,"main_ps_1_1"))			{ c_target = "ps_1_1"; c_entry = "main_ps_1_1";	}
