@@ -2,7 +2,7 @@
 //#include "GameSpy/QR2/qr2.h"
 #pragma once
 #define GAMESPY_GAMENAME		"stalkersc"
-#define	GAMESPY_BASEPORT		11111
+#define	GAMESPY_BASEPORT		5447
 
 class xrGameSpyServer	: public xrServer
 {

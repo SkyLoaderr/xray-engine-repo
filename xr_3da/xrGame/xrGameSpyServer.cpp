@@ -60,7 +60,7 @@ void			xrGameSpyServer::QR2_Init			()
 {	
 	//--------- QR2 Init -------------------------/
 	//call qr_init with the query port number and gamename, default IP address, and no user data
-	if (qr2_init(NULL,NULL,0/*GAMESPY_BASEPORT*/, GAMESPY_GAMENAME, secret_key, (m_iReportToMasterServer == 0)?0:1, 1,
+	if (qr2_init(NULL,NULL,GAMESPY_BASEPORT, GAMESPY_GAMENAME, secret_key, (m_iReportToMasterServer == 0)?0:1, 1,
 		callback_serverkey, callback_playerkey, callback_teamkey,
 		callback_keylist, callback_count, callback_adderror, this) != e_qrnoerror)
 	{
