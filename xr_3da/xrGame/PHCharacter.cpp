@@ -93,6 +93,7 @@ void CPHCharacter::set_State(const SPHNetState& state)
 	{
 		Disable();
 	};
+	VERIFY2(dBodyStateValide(m_body),"WRONG BODYSTATE WAS SET");
 }
 
 void CPHCharacter::Disable()
