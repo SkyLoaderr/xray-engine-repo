@@ -78,7 +78,7 @@ bool CSoundRender_Environment::load			(IReader* fs)
 {
 	version							= fs->r_u32();
 
-	if (version >= 0x0002){
+	if (version >= 0x0003){
         fs->r_stringZ			    (name);
 
         Room                		= fs->r_float();
@@ -93,7 +93,7 @@ bool CSoundRender_Environment::load			(IReader* fs)
         EnvironmentSize     		= fs->r_float();
         EnvironmentDiffusion		= fs->r_float();
         AirAbsorptionHF     		= fs->r_float();
-		if (version > 0x0002)
+		if (version > 0x0003)
 	        Environment     		= fs->r_u32();
         return true;
     }
