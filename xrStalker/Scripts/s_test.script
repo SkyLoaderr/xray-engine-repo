@@ -1,5 +1,7 @@
 function main ()
 
+	printf (bit_and (-2147221, -2147221))
+
 --	local eater = get_level_object ("eater")
 --	local kolbasa = get_level_object ("kolbasa")
 
