@@ -9,8 +9,8 @@ end
 function load_common (obj, sounds_base)
     -- create patrol commander radio speech
     themes["commander_radio"] = {}
-    local t = {} 
-    t[1] = sounds_base
+    local tttt = {} 
+    tttt[1] = 5
     local num = obj:add_sound ("script_replics\\radio\\message\\radio_turn_on_",  30, snd_type.talk, 2, 1, sounds_base)
     table.insert (t, num)
     table.insert (t, obj:add_sound ("script_replics\\radio\\commander\\radio_start_",  30, snd_type.talk, 2, 1, sounds_base + 1))
@@ -21,7 +21,7 @@ function load_common (obj, sounds_base)
     table.insert (t, obj:add_sound ("script_replics\\radio\\message\\radio_turn_off_", 30, snd_type.talk, 2, 1, sounds_base + 6))
     table.insert (themes["commander_radio"], t)                         
     
-    this.sounds_base = this.sound_base + 7
+    sounds_base = sounds_base + 7
     return sounds_base                             
 end
 -----------------------------------------------------------------------------------------------------------------------------------
