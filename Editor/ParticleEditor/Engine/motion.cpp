@@ -85,7 +85,11 @@ void COMotion::SaveMotion(const char* buf){
 
 bool COMotion::LoadMotion(const char* buf)
 {
+#ifdef _EDITOR
+	destructor<CStream>	F(new CFileStream(buf));
+#else
 	destructor<CStream>	F(Engine.FS.Open(buf));
+#endif
 	R_ASSERT(F().FindChunk(EOBJ_OMOTION));
 	return Load		(F());
 }
@@ -185,7 +189,11 @@ void CSMotion::SaveMotion(const char* buf){
 }
 
 bool CSMotion::LoadMotion(const char* buf){
+#ifdef _EDITOR
+	destructor<CStream>	F(new CFileStream(buf));
+#else
 	destructor<CStream>	F(Engine.FS.Open(buf));
+#endif
 	R_ASSERT		(F().FindChunk(EOBJ_SMOTION));
 	return Load		(F());
 }

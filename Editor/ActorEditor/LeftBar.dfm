@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 662
+  Height = 716
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 662
+    Height = 716
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 308
+      Top = 362
       Width = 210
       Height = 3
       Cursor = crVSplit
@@ -161,7 +161,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 69
       Width = 210
-      Height = 197
+      Height = 251
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -183,13 +183,13 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 208
-        Height = 166
+        Height = 220
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object Bevel2: TBevel
           Left = 0
-          Top = 165
+          Top = 219
           Width = 208
           Height = 1
           Align = alBottom
@@ -207,7 +207,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 50
           Width = 208
-          Height = 115
+          Height = 169
           Cursor = crDefault
           LeftPosition = 0
           DragCursor = crDrag
@@ -424,7 +424,7 @@ object fraLeftBar: TfraLeftBar
       end
       object paAction: TPanel
         Left = 1
-        Top = 180
+        Top = 234
         Width = 208
         Height = 16
         Align = alBottom
@@ -455,7 +455,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paProperties: TPanel
       Left = 1
-      Top = 311
+      Top = 365
       Width = 210
       Height = 350
       Align = alBottom
@@ -528,7 +528,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paCurrentPS: TPanel
       Left = 1
-      Top = 266
+      Top = 320
       Width = 210
       Height = 42
       Hint = 'Scene commands'
@@ -819,6 +819,7 @@ object fraLeftBar: TfraLeftBar
     end
     object Export2: TMenuItem
       Caption = 'Export'
+      OnClick = Export2Click
     end
   end
   object pmShaderList: TMxPopupMenu

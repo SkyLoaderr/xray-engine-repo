@@ -118,6 +118,9 @@ class CEditableObject{
     BPVec			m_BoneParts;
     CSMotion*		m_ActiveSMotion;
     st_AnimParam	m_SMParam;
+
+// params
+	DWORD			m_dwFlags;
 protected:
 	// options
 	int 			m_DynamicObject;
@@ -282,6 +285,7 @@ public:
 	void 			OnDeviceCreate 			();
 	void 			OnDeviceDestroy			();
 
+	bool			ExportSkeletonOGF		(LPCSTR fname);
 #ifdef _MAX_EXPORT
 	CSurface*		CreateSurface			(Mtl* M, DWORD m_id);
 	LPCSTR			GenerateSurfaceName		(const char* base_name);
@@ -298,7 +302,7 @@ public:
 #define EOBJ_CHUNK_OBJECT_BODY		0x7777
 #define EOBJ_CHUNK_VERSION		  	0x0900
 #define EOBJ_CHUNK_REFERENCE     	0x0902
-#define EOBJ_CHUNK_FLAG           	0x0903
+#define EOBJ_CHUNK_FLAGS           	0x0903
 #define EOBJ_CHUNK_SURFACES			0x0905
 #define EOBJ_CHUNK_EDITMESHES      	0x0910
 #define EOBJ_CHUNK_LIB_VERSION     	0x0911

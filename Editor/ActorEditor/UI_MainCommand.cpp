@@ -97,6 +97,12 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         	if (Command( COMMAND_LOAD, (DWORD)fn.c_str() ))
             	Command( COMMAND_SAVEAS );
     	}break;
+    case COMMAND_EXPORT:{
+    	AnsiString fn;
+    	if (FS.GetSaveName(FS.m_GameMeshes,fn))
+            if (Tools.Export(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
+            else			            	ELog.DlgMsg(mtError,"Export failed.");
+    	}break;
     case COMMAND_LOAD:{
     	AnsiString fn;
         if (p1)	fn = (char*)p1;

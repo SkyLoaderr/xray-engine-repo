@@ -127,6 +127,7 @@ __published:	// IDE-managed Components
 	void __fastcall LoadClick(TObject *Sender);
 	void __fastcall miSaveMotionsClick(TObject *Sender);
 	void __fastcall ebMotionsClearClick(TObject *Sender);
+	void __fastcall Export2Click(TObject *Sender);
 private:	// User declarations
 	void __fastcall ShowPPMenu		(TMxPopupMenu* M, TObject* btn);
     TElTreeItem*	DragItem;

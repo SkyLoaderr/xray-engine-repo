@@ -112,6 +112,7 @@ class CEditableMesh {
     friend class CPortalUtils;
     friend class SceneBuilder;
     friend class CDetail;
+    friend class CExportSkeleton;
 
 	string128		m_Name;
 

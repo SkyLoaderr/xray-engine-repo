@@ -173,7 +173,11 @@ struct TGAHeader
 
 void CImage::LoadTGA(LPCSTR name)
 {
+#ifdef _EDITOR
+	destructor<CStream>	TGA(new CFileStream(name));
+#else
 	destructor<CStream>	TGA(Engine.FS.Open(name));
+#endif
 	TGAHeader	hdr;
 	BOOL		hflip, vflip;
 
@@ -260,7 +264,6 @@ void CImage::LoadTGA(LPCSTR name)
 		TGA.Read(pData,hdr.width*hdr.height*4);
 	}
 */
-
 	if (vflip) Vflip();
 	if (hflip) Hflip();
 }

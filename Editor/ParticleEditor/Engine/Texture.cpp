@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "image.h"
+#include "image.h"      
 #include "texture.h"
 #include "std_classes.h"
 #include "xr_avi.h"
@@ -445,7 +445,11 @@ _DDS:
 	{
 		D3DXIMAGE_INFO IMG;
 		
+#ifdef _EDITOR
+		CStream* S	= new CFileStream(fn);
+#else
 		CStream* S	= Engine.FS.Open	(fn);
+#endif
 		R_ASSERT	(S);
 		R_CHK(D3DXGetImageInfoFromFileInMemory	(S->Pointer(),S->Length(),&IMG));
 		R_CHK(D3DXCreateTextureFromFileInMemoryEx(
@@ -467,11 +471,15 @@ _DDS:
 		dwWidth		= IMG.Width;
 		dwHeight	= IMG.Height;
 		fmt			= IMG.Format;
-		
+
+#ifdef _EDITOR
+		_DELETE(S);
+#else
 		Engine.FS.Close(S);
+#endif
 		return		pTexture;
 	}
-	
+
 _TGA:
 	Image.LoadTGA(fn);
 

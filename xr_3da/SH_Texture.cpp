@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #pragma hdrstop
-
+           
 #include "sh_texture.h"
 #include "texture.h"
 #include "xr_avi.h"
@@ -113,14 +113,17 @@ void CTexture::Load(LPCSTR cName)
 	{
 		// Sequence
 		char buffer[256];
+#ifdef _EDITOR
+		destructor<CStream>	fs(new CFileStream(fn));
+#else
 		destructor<CStream>	fs(Engine.FS.Open(fn));
-		// CFileStream fs(fn);
+#endif
 
 		seqCycles	= FALSE;
 		fs().Rstring	(buffer);
 		if (0==stricmp	(buffer,"cycled"))
 		{
-			seqCycles		= TRUE;
+			seqCycles		= TRUE;                    
 			fs().Rstring	(buffer);
 		}
 		DWORD fps	= atoi(buffer);

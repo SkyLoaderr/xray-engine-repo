@@ -72,8 +72,11 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly)
 	}
 #endif
 
+#ifdef _EDITOR
+	destructor<CStream>	file(new CFileStream(szFileName));
+#else
 	destructor<CStream>	file(Engine.FS.Open(szFileName));
-//	CFileStream file(szFileName);
+#endif
 
 	Sect	Current;	Current.Name = 0;
 	char	str			[1024];

@@ -549,4 +549,9 @@ void __fastcall TfraLeftBar::miSaveMotionsClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::Export2Click(TObject *Sender)
+{
+	UI.Command( COMMAND_EXPORT );
+}
+//---------------------------------------------------------------------------
 

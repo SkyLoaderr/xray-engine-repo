@@ -24,7 +24,6 @@ USEFORM("main.cpp", frmMain);
 USELIB("lib\cg32.lib");
 USEUNIT("editor\EditObjectIO.cpp");
 USEUNIT("editor\EditObjectMotions.cpp");
-USELIB("lib\xrProgressive.lib");
 USELIB("lib\MagicFMd.lib");
 USEUNIT("engine\_quaternion.cpp");
 USEUNIT("engine\_compressed_normal.cpp");
@@ -102,7 +101,6 @@ USEUNIT("UI_MainExtern.cpp");
 USEUNIT("Editor\ImageThumbnail.cpp");
 USEUNIT("Editor\ImageManager.cpp");
 USEFORM("Editor\ShaderFunction.cpp", frmShaderFunction);
-USEUNIT("Engine\xrParticlesLib.cpp");
 USEFORM("Editor\FrameEmitter.cpp", fraEmitter); /* TFrame: File Type */
 USEUNIT("Editor\TLSPRITE.CPP");
 USEUNIT("Editor\CustomObject.cpp");
@@ -118,6 +116,8 @@ USEUNIT("Engine\Blenders\Blender_LaEmB.cpp");
 USEUNIT("Engine\Blenders\Blender_BmmD.cpp");
 USEUNIT("Engine\Blenders\Blender_Lm(EbB).cpp");
 USEFORM("BonePart.cpp", frmBonePart);
+USEUNIT("Editor\ExportSkeleton.cpp");
+USELIB("Lib\xrProgressive.lib");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

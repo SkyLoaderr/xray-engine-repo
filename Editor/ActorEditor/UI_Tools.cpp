@@ -170,11 +170,21 @@ bool CActorTools::Save(LPCSTR name)
 {
 	VERIFY(m_bReady);
     ApplyChanges();
-    if (m_EditObject)
+    if (m_EditObject){
     	m_EditObject->SaveObject(name);
-	m_bModified = false;
+		m_bModified = false;
+        return true;
+    }
+	return false;
 }
-                                            
+
+bool CActorTools::Export(LPCSTR name)
+{
+	VERIFY(m_bReady);
+    if (m_EditObject&&m_EditObject->ExportSkeletonOGF(name)) return true;
+    return false;
+}
+
 void CActorTools::Reload()
 {
 	VERIFY(m_bReady);

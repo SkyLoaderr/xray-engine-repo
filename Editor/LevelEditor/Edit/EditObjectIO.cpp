@@ -9,6 +9,7 @@
 #include "EditMesh.h"
 #include "bone.h"
 #include "motion.h"
+#include "exportskeleton.h"
 
 #ifdef _EDITOR
 #include "Shader.h"
@@ -87,7 +88,7 @@ bool CEditableObject::Load(CStream& F){
             break;
         }
 
-        R_ASSERT(F.ReadChunk(EOBJ_CHUNK_FLAG, &m_DynamicObject));
+        R_ASSERT(F.ReadChunk(EOBJ_CHUNK_FLAGS, &m_DynamicObject));
 
         if (F.FindChunk	(EOBJ_CHUNK_CLASSSCRIPT)){
             F.RstringZ	(buf); m_ClassScript=buf;
@@ -220,7 +221,7 @@ void CEditableObject::Save(CFS_Base& F){
 	F.WstringZ		(m_ClassScript.c_str());
 	F.close_chunk	();
 
-    F.write_chunk	(EOBJ_CHUNK_FLAG,&m_DynamicObject,sizeof(m_DynamicObject));
+    F.write_chunk	(EOBJ_CHUNK_FLAGS,&m_DynamicObject,sizeof(m_DynamicObject));
 
     // object version
     F.write_chunk	(EOBJ_CHUNK_LIB_VERSION,&m_ObjVer,m_ObjVer.size());
@@ -326,3 +327,10 @@ COMotion* CEditableObject::LoadOMotion(const char* fname){
 	return 0;
 }
 //------------------------------------------------------------------------------
+
+bool CEditableObject::ExportSkeletonOGF(LPCSTR fn){
+    CExportSkeleton E(this);
+    return E.Export(fn);
+}
+//------------------------------------------------------------------------------
+
