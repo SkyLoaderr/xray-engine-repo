@@ -227,7 +227,8 @@ void CActor::ActorUse()
 
 	if (object){
 		CUsableScriptObject* so=dynamic_cast<CUsableScriptObject*>(object);
-		so->use();
+		if(so) so->use();
+
 		switch (object->SUB_CLS_ID){
 		case CLSID_CAR:					if(use_Vehicle(object))			return;	break;
 		case CLSID_OBJECT_W_MOUNTED:	if(use_MountedWeapon(object))	return;	break;
