@@ -73,9 +73,9 @@ void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fv
 
 void CPHShell::Activate(bool disable)
 { 
-	
-	PresetActive();
 	if(bActive)return;
+	PresetActive();
+	
 	if(!CPHObject::is_active()) vis_update_deactivate();
 	if(!disable)EnableObject();
 
