@@ -132,7 +132,7 @@ BOOL CCreator::Load(DWORD dwNum)
 			Fvector				pos;
 			string128			fname;
 			sscanf				( I->second,"%[^,],%f,%f,%f",fname,&pos.x,&pos.y,&pos.z);
-			if (stricmp(fname,"ambient"))	continue;
+			if (0==stricmp(fname,"ambient"))	continue;
 			Sounds.push_back	(sound3D());
 			pSounds->Create3D	(Sounds.back(),fname);
 			pSounds->Play3DAtPos(Sounds.back(),pos,true);
