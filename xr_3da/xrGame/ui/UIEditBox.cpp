@@ -116,10 +116,10 @@ void CUIEditBox::AddChar(char c)
 	buf[0]=c;
 	buf[1]=0;
 	
-	int text_length;
-	
 	GetFont()->SizeOf(m_str);
-/*	text_length = int(GetFont()->SizeOf(m_str) + 
+/*	
+	int text_length;
+	text_length = int(GetFont()->SizeOf(m_str) + 
 					GetFont()->SizeOf(buf));
 	//строка длинее полосы ввода
 	if(text_length>GetWidth()) return;*/
