@@ -18,10 +18,6 @@ void CRender::level_Load()
 	L_Shadows					= xr_new<CLightShadows>		();
 	L_Projector					= xr_new<CLightProjector>	();
 
-	PSLibrary.OnCreate			();
-	PSLibrary.OnDeviceCreate	();
-	L_Dynamic->Initialize		();
-
 	rmFar						();
 	rmNormal					();
 
@@ -98,7 +94,6 @@ void CRender::level_Unload()
 	//*** Lights
 	Glows->Unload			();
 	L_DB->Unload			();
-	L_Dynamic->Destroy		();
 
 	//*** Visuals
 	for (I=0; I<Visuals.size(); I++)
@@ -122,9 +117,6 @@ void CRender::level_Unload()
 
 	matFogPass._set				(NULL);
 	matDetailTexturing._set		(NULL);
-
-	PSLibrary.OnDeviceDestroy	();
-	PSLibrary.OnDestroy			();
 }
 
 void CRender::LoadBuffers	(IReader *base_fs)

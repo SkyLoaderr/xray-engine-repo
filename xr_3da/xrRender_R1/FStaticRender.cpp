@@ -17,18 +17,17 @@ void					CRender::create					()
 {
 	Models				= xr_new<CModelPool>			();
 	L_Dynamic			= xr_new<CLightPPA_Manager>		();
-	/*
-	Models		
-	L_DB				= xr_new<CLightDB_Static>		();
-	Glows				= xr_new<CGlowManager>			();
-	Wallmarks			= xr_new<CWallmarksEngine>		();
-	Details				= xr_new<CDetailManager>		();
-	*/
+
+	PSLibrary.OnCreate			();
+	PSLibrary.OnDeviceCreate	();
 }
 void					CRender::destroy				()
 {
-	xr_delete			(L_Dynamic);
-	xr_delete			(Models);
+	xr_delete					(L_Dynamic);
+	xr_delete					(Models);
+
+	PSLibrary.OnDeviceDestroy	();
+	PSLibrary.OnDestroy			();
 }
 
 // Implementation
