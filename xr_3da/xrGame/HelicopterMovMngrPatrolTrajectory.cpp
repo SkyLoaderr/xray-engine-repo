@@ -52,21 +52,7 @@ void CHelicopterMovManager::createLevelPatrolTrajectory(u32 keyCount,
 		
 		
 		prevPoint = lastPoint;
-
-/*		if( false )//keys.size() )//intermediate
-		{
-			Fvector prevPoint = keys.back();
-			float dist = prevPoint.distance_to(keyPoint);
-			float k = (dist / m_maxKeyDist) - 1.0f;
-			keys.reserve(keys.size()+(int)k);
-			for( float j=1; j<k; ++j ) {
-				keys.push_back( makeIntermediateKey(prevPoint, keyPoint, (j/(k+1.0f)) ) );
-				VERIFY(Fbox(levelBox).scale(0.05f).contains(keys.back()));
-			}
-		}
-*/
-//		if( keyPoint.distance_to_xz(prevPoint) > 30.0f )
-			keys.push_back(keyPoint);
+		keys.push_back(keyPoint);
 	};
 
 }

@@ -47,6 +47,7 @@ class CHelicopterMovManager :public CHelicopterMotion
 	void	createHuntPathTrajectory(float from_time, const Fvector& fromPos, const Fvector& enemyPos, float dist, xr_vector<Fvector>& keys );
 	void	createStayPathTrajectory(const Fvector& fromPos, xr_vector<Fvector>& keys );
 	Fvector	makeIntermediateKey		(Fvector& start, Fvector& dest, float k);
+	void	fixateKeyPath			(float from_time);
 	void	buildHuntPath			(const Fvector& enemyPos);
 	void	onFrame					();
 	void	onTime					(float t);
