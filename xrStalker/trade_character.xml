@@ -26,7 +26,7 @@
 
 	<!-- COMMUNITY CAPTION -->
 	<community_caption x="15" y="155" width="125" height="16">
-		<text x="0" y="0" font="letterica16" r="216" g="186" b="140">communityyyyyyyyyy</text>
+		<text x="0" y="0" font="letterica16" r="216" g="186" b="140">community</text>
 	</community_caption>
 
 	<!-- RELATION -->
