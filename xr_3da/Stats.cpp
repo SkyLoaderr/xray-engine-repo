@@ -58,7 +58,8 @@ void CStats::Show()
 		Input.FrameEnd				();
 		clRAY.FrameEnd				();	
 		clBOX.FrameEnd				();
-
+		clFRUSTUM.FrameEnd			();
+		
 		netClient.FrameEnd			();
 		netServer.FrameEnd			();
 		
@@ -124,6 +125,7 @@ void CStats::Show()
 		F.OutNext	("Input:       %2.2fms",Input.result);
 		F.OutNext	("clRAY:       %2.2fms, %d",clRAY.result,clRAY.count);
 		F.OutNext	("clBOX:       %2.2fms, %d",clBOX.result,clBOX.count);
+		F.OutNext	("clFRUSTUM:   %2.2fms, %d",clFRUSTUM.result,clFRUSTUM.count);
 		F.OutSkip	();
 		F.OutNext	("netClient:   %2.2fms, %d",netClient.result,netClient.count);
 		F.OutNext	("netServer:   %2.2fms, %d",netServer.result,netServer.count);
@@ -161,6 +163,7 @@ void CStats::Show()
 		Input.FrameStart			();
 		clRAY.FrameStart			();	
 		clBOX.FrameStart			();
+		clFRUSTUM.FrameStart		();
 		
 		netClient.FrameStart		();
 		netServer.FrameStart		();
