@@ -16,7 +16,7 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CWeaponGroza::CWeaponGroza() : CWeapon("Groza")
+CWeaponGroza::CWeaponGroza() : CWeapon("GROZA")
 {
 	pSounds->Create3D(sndFire,		 "weapons\\Groza_fire");
 	pSounds->Create3D(sndRicochet[0],"weapons\\ric1");
