@@ -78,10 +78,13 @@ void CStatGraph::RenderBack	()
 	float elem_factor	= float(rb.y-lt.y)/float(mx-mn);
 	float base_y		= float(rb.y)+(mn*elem_factor);
 
-	int PNum_H_Lines	= int((base_y - float(lt.y)) / grid_step.y) + u32((float(rb.y) - base_y) / grid_step.y);
-	u32 Num_H_Lines = (grid.y < PNum_H_Lines) ? grid.y : PNum_H_Lines;
+	int PNum_H_LinesUp	= int((base_y - float(lt.y)) / (grid_step.y*elem_factor));
+	int PNum_H_LinesDwn = u32((float(rb.y) - base_y) / (grid_step.y*elem_factor));
+	int Num_H_LinesUp = (grid.y < PNum_H_LinesUp) ? grid.y : PNum_H_LinesUp;
+	int Num_H_LinesDwn = (grid.y < PNum_H_LinesUp) ? grid.y : PNum_H_LinesDwn;
 
-	pv_start	= (FVF::TL0uv*)RCache.Vertex.Lock(2 + 2*grid.x + Num_H_Lines*4,hGeomLine->vb_stride,dwOffset);
+	pv_start	= (FVF::TL0uv*)RCache.Vertex.Lock(	2 + 2*grid.x + Num_H_LinesUp*2 + Num_H_LinesDwn*2,
+													hGeomLine->vb_stride,dwOffset);
     pv			= pv_start;
     // base Coordinate Line
 	pv->set					(lt.x, int(base_y), base_color); pv++; // 0
@@ -94,11 +97,14 @@ void CStatGraph::RenderBack	()
 	    pv->set				(int(lt.x + g_x*grid_step.x*elem_factor),lt.y,grid_color); pv++; 	
 	    pv->set				(int(lt.x + g_x*grid_step.x*elem_factor),rb.y,grid_color); pv++; 	
 	}
-	for (int g_y=1; g_y<=grid.y; g_y++)
+	for (int g_y=1; g_y<=Num_H_LinesDwn; g_y++)
 	{
 		pv->set				(lt.x,int(base_y+g_y*grid_step.y*elem_factor),grid_color); pv++;
 		pv->set				(rb.x,int(base_y+g_y*grid_step.y*elem_factor),grid_color); pv++;
-										
+	};
+
+	for (g_y=1; g_y<=Num_H_LinesUp; g_y++)
+	{									
 		pv->set				(lt.x,int(base_y-g_y*grid_step.y*elem_factor),grid_color); pv++; 	
 		pv->set				(rb.x,int(base_y-g_y*grid_step.y*elem_factor),grid_color); pv++; 	
 	}    	
