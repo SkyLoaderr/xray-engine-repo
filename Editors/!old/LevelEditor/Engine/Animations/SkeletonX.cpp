@@ -286,7 +286,7 @@ s16	q_tc	(float v)
 	return	s16	(_v);
 }
 
-static	D3DVERTEXELEMENT9 dwDecl_1W	[] =	// 24bytes
+static	D3DVERTEXELEMENT9 dwDecl_01W	[] =	// 24bytes
 {
 	{ 0, 0,		D3DDECLTYPE_SHORT4,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,		0 },	// : P						: 2	: -12..+12
 	{ 0, 8,		D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,		0 },	// : N, w=index(RC, 0..1)	: 1	:  -1..+1
@@ -346,28 +346,29 @@ struct	vertHW_2W
 	s16			_tc_i	[4];
 	void set(Fvector3& P, Fvector3 N, Fvector3 T, Fvector3 B, Fvector2& tc, int index0, int index1, float w)
 	{
-		N0.normalize_safe();
-		N1.normalize_safe();
-		_P0[0]		= P0.x;	//q_P(P0.x);
-		_P0[1]		= P0.y;	//q_P(P0.y);
-		_P0[2]		= P0.z;	//q_P(P0.z);
-//		_P0[3]		= q_P(1);
-		_P1[0]		= P1.x;	//q_P(P1.x);
-		_P1[1]		= P1.y;	//q_P(P1.y);
-		_P1[2]		= P1.z;	//q_P(P1.z);
-//		_P1[3]		= q_P(1);
-		_N0_w[0]	= N0.x;	//q_N(N0.x);
-		_N0_w[1]	= N0.y;	//q_N(N0.y);
-		_N0_w[2]	= N0.z;	//q_N(N0.z);
-		_N0_w[3]	= w;	//u8(clampr(iFloor(w*255.f+.5f),0,255));
-		_N1[0]		= N1.x;	//q_N(N1.x);
-		_N1[1]		= N1.y;	//q_N(N1.y);
-		_N1[2]		= N1.z;	//q_N(N1.z);
-//		_N1[3]		= 0;
-		_tc_i[0]	= q_tc(tc.x);
-		_tc_i[1]	= q_tc(tc.y);
-		_tc_i[2]	= s16(index0);
-		_tc_i[3]	= s16(index1);
+		N.normalize_safe	();
+		T.normalize_safe	();
+		B.normalize_safe	();
+		_P[0]		= q_P	(P.x);
+		_P[1]		= q_P	(P.y);
+		_P[2]		= q_P	(P.z);
+		_P[3]		= 1;
+		_N_w[0]		= q_N	(N.x);
+		_N_w[1]		= q_N	(N.y);
+		_N_w[2]		= q_N	(N.z);
+		_N_w[3]		= u8	(clampr(iFloor(w*255.f+.5f),0,255));
+		_T[0]		= q_N	(T.x);
+		_T[1]		= q_N	(T.y);
+		_T[2]		= q_N	(T.z);
+		_T[3]		= 0;
+		_B[0]		= q_N	(B.x);
+		_B[1]		= q_N	(B.y);
+		_B[2]		= q_N	(B.z);
+		_B[3]		= 0;
+		_tc_i[0]	= q_tc	(tc.x);
+		_tc_i[1]	= q_tc	(tc.y);
+		_tc_i[2]	= s16	(index0);
+		_tc_i[3]	= s16	(index1);
 	}
 };
 #pragma pack(pop)
@@ -375,8 +376,8 @@ struct	vertHW_2W
 void CSkeletonX::_Load_hw	(Fvisual& V, void *	_verts_)
 {
 	// Create HW VB in case this is possible
-	BOOL	bSoft		= HW.Caps.geometry.bSoftware;
-	u32		dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
+	BOOL	bSoft				= HW.Caps.geometry.bSoftware;
+	u32		dwUsage				= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
 	switch	(RenderMode)
 	{
 	case RM_SKINNING_SOFT:
@@ -384,29 +385,10 @@ void CSkeletonX::_Load_hw	(Fvisual& V, void *	_verts_)
 		V.hGeom.create			(vertRenderFVF, RCache.Vertex.Buffer(), V.pIndices);
 		break;
 	case RM_SINGLE:
-/*		//Msg					("skinning: hw, 0-weight");
-		{
-			u32		vStride		= D3DXGetFVFVertexSize		(vertRenderFVF);
-			BYTE*	bytes		= 0;
-			R_CHK				(HW.pDevice->CreateVertexBuffer(V.vCount*vStride,dwUsage,0,D3DPOOL_MANAGED,&V.pVertices,0));
-			R_CHK				(V.pVertices->Lock(0,0,(void**)&bytes,0));
-			vertRender*		dst	= (vertRender*)bytes;
-			vertBoned1W*	src = (vertBoned1W*)_verts_;
-			for (u32 it=0; it<V.vCount; it++)	{
-				dst->P			= src->P;
-				dst->N			= src->N;
-				dst->u			= src->u;
-				dst->v			= src->v;
-				dst++; src++;
-			}
-			V.pVertices->Unlock	();
-			V.hGeom.create		(vertRenderFVF, V.pVertices, V.pIndices);
-		}*/
-		break;
 	case RM_SKINNING_1B:
-/*		//Msg					("skinning: hw, 1-weight");
+		//Msg					("skinning: hw, 1-weight");
 		{
-			u32		vStride		= D3DXGetDeclVertexSize		(dwDecl_1W,0);
+			u32		vStride		= D3DXGetDeclVertexSize		(dwDecl_01W,0);
 			VERIFY	(vStride==sizeof(vertHW_1W));
 			BYTE*	bytes		= 0;
 			R_CHK				(HW.pDevice->CreateVertexBuffer(V.vCount*vStride,dwUsage,0,D3DPOOL_MANAGED,&V.pVertices,0));
@@ -419,11 +401,11 @@ void CSkeletonX::_Load_hw	(Fvisual& V, void *	_verts_)
 				dst++; src++;
 			}
 			V.pVertices->Unlock	();
-			V.hGeom.create		(dwDecl_1W, V.pVertices, V.pIndices);
-		}    */
+			V.hGeom.create		(dwDecl_01W, V.pVertices, V.pIndices);
+		}  
 		break;
 	case RM_SKINNING_2B:
-/*		//Msg					("skinning: hw, 2-weight");
+		//Msg					("skinning: hw, 2-weight");
 		{
 			u32		vStride		= D3DXGetDeclVertexSize		(dwDecl_2W,0);
 			VERIFY	(vStride==sizeof(vertHW_2W));
@@ -439,7 +421,7 @@ void CSkeletonX::_Load_hw	(Fvisual& V, void *	_verts_)
 			}
 			V.pVertices->Unlock	();
 			V.hGeom.create		(dwDecl_2W, V.pVertices, V.pIndices);
-		}*/
+		}
 		break;
 	}
 }
