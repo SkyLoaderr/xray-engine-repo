@@ -23,19 +23,6 @@
 #include "x_ray.h"
 #include "xr_smallfont.h"
 
-const float music_fade = 1.5f;
-
-void CEnvironment::Zoom(BOOL E) 
-{
-	if (E) {
-		FOV_Dest	=10;
-		MOUSE_Sens	=.1f;
-	} else {
-		FOV_Dest	=90;
-		MOUSE_Sens	=1.f;
-	}
-}
-
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -47,23 +34,14 @@ CEnvironment::CEnvironment()
 	fDayLight				= 1.0f;
 	fWindDir				= PI_DIV_2;
 	fWindStrength			= 2;
-	fFlash					= -1;
 
 	// environment objects
 	Device.seqDevCreate.Add	(this);
 	Device.seqDevDestroy.Add(this);
-	bUpdateBrightness		= false;
 	
-	FOV_Dest				= FOV_Current	= 90.f;
-	MOUSE_Sens				= 1.f;
-	Zoom					(false);
-
-	// Music
-	Music_Active			= -1;
-	Music_Fade				= -1;
-
 	c_Invalidate			();
 }
+
 CEnvironment::~CEnvironment()
 {
 	for(DWORD i=0; i<Suns.size(); i++) delete Suns[i];
@@ -74,8 +52,6 @@ CEnvironment::~CEnvironment()
 
 void CEnvironment::Load(CInifile *pIni, char *section)
 {
-	pm_bug			= FALSE;
-
 	for(int env=0; env<32; env++) {
 		char	name[32];
 		sprintf(name,"env%d",env);
