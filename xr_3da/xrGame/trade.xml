@@ -22,7 +22,7 @@
 	<!-- OUR BAG -->
 	<our_bag_static x="20" y="270" width="290" height="450">
 		<texture>ui\ui_dg_inventory_exchange_trade</texture>
-		<text x="30" y="8" font="graffiti22" r="255" g="255" b="255" a="255">Items List</text>
+		<text x="30" y="8" font="graffiti22" r="255" g="255" b="255" a="128">Items List</text>
 	</our_bag_static>
 
 	<dragdrop_list x="29" y="37" width="240" height="450"
