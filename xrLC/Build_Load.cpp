@@ -37,7 +37,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 	// HANDLE		hLargeHeap	= HeapCreate(0,64*1024*1024,0);
 	// clMsg		("* <LargeHeap> handle: %X",hLargeHeap);
 
-	u32			i			= 0;
+	u32				i			= 0;
 
 	float			p_total		= 0;
 	float			p_cost		= 1.f/3.f;
@@ -45,7 +45,9 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 	IReader*		F			= 0;
 
 	// 
-	shaders.Load				("gamedata\\shaders_xrlc.xr");
+	string256				sh_name;
+	FS.update_path			(sh_name,"$game_data$","\\shaders_xrlc.xr");
+	shaders.Load			(sh_name);
 	
 	//*******
 	Status					("Vertices...");
