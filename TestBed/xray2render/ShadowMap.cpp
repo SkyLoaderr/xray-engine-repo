@@ -250,7 +250,7 @@ CMyD3DApplication::CMyD3DApplication()
 	m_strWindowTitle							= _T	("xray2 : render");
 	m_d3dEnumeration.AppUsesDepthBuffer			= TRUE;
 	m_d3dEnumeration.AppMinStencilBits			= 1;
-	m_d3dEnumeration.AppRequiresFullscreen		= TRUE;
+	m_d3dEnumeration.AppRequiresFullscreen		= FALSE;
 	m_d3dEnumeration.AppMinFullscreenWidth		= OUT_WIDTH;
 	m_d3dEnumeration.AppMinFullscreenHeight		= OUT_HEIGHT;
 	m_dwCreationWidth							= OUT_WIDTH;
@@ -838,8 +838,99 @@ void	CalcGauss	(
 	}
 }
 
-HRESULT CMyD3DApplication::RestoreDeviceObjects()
+float	calc	(int BASE, int a_min, int a_max, int& a, int& k, int& res)
 {
+	int		a_base	=	BASE/12;
+	BASE			/=	2;
+	a_min			=	a_base - a_min;
+	a_max			=	a_base + a_max;
+
+	float fBestDiff = 1000000.0f;
+	for (int a_tmp = a_min; a_tmp <= a_max; a_tmp+=2) {
+		float C = float(BASE)/float(a_tmp);
+		float k_tmp = logf(C)/logf(3);
+		int k_int = iFloor(k_tmp);
+		if (k_int < k_tmp)
+			k_int++;
+		float fDiff = expf(k_int*logf(3))*a_tmp - BASE;
+		if (fDiff < 0.f)
+			fDiff = expf(++k_int*logf(3))*a_tmp - BASE;
+		if (fDiff < fBestDiff) {
+			fBestDiff = fDiff;
+			a = a_tmp;
+			k = k_int;
+			res = iFloor(expf(k_int*logf(3))*a_tmp);
+		}
+	}
+
+	return float(BASE*2) / float(res);
+}
+
+float	calc2	(int BASE, int a_min, int a_max, int& a, int& k, int& res)
+{
+	int		a_base	=	BASE/12;
+	BASE			/=	2;
+	a_min			=	a_base - a_min;
+	a_max			=	a_base + a_max;
+
+	int best_error	= 10000;
+	for (int i=a_min; i<a_max; i++)
+	{
+		if (i%2)	continue;
+
+		int accum	= i;
+		for (int _k=1; _k<10; _k++)
+		{
+			accum	*= 3;
+			if (accum>BASE) break;
+		}
+
+		// i,k,accum
+		int		error	= accum-BASE;
+		if (error<best_error)
+		{
+			best_error	=	error;
+			a			=	i;
+			k			=	_k;
+			res			=	accum;
+		}
+	}
+	return float(BASE*2) / float(res);
+}
+
+HRESULT CMyD3DApplication::RestoreDeviceObjects()
+{	
+	int a,k,res;
+	int a_min	= 8;
+	int a_max	= 16;
+
+	int		_w	[]	= { 1600, 1280, 1280, 1024, 800, 640, 512	};
+	int		_h	[]	= { 1200, 1024, 960,  768,  600, 480, 384	};
+
+	calc	(1280,a_min,a_max,a,k,res);	
+	calc2	(1280,a_min,a_max,a,k,res);	
+
+	calc	(960,a_min,a_max,a,k,res);	
+	calc2	(960,a_min,a_max,a,k,res);	
+
+	calc	(1024,a_min,a_max,a,k,res);	
+	calc2	(1024,a_min,a_max,a,k,res);	
+
+	calc	(768,a_min,a_max,a,k,res);	
+	calc2	(768,a_min,a_max,a,k,res);	
+
+	calc	(800,a_min,a_max,a,k,res);	
+	calc2	(800,a_min,a_max,a,k,res);	
+
+	calc	(600,a_min,a_max,a,k,res);	
+	calc2	(600,a_min,a_max,a,k,res);	
+
+	calc	(640,a_min,a_max,a,k,res);	
+	calc2	(640,a_min,a_max,a,k,res);	
+
+	calc	(480,a_min,a_max,a,k,res);	
+	calc2	(480,a_min,a_max,a,k,res);	
+
 	vLightDir0.set					( 2.0f, .5f, -1.0f );
 	vLightDir1.set					( 2.0f, .5f, -1.0f );
 
