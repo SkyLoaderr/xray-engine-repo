@@ -18,6 +18,15 @@
 	<friend_location hint="friend">
 		<mini_map  spot="friend_mini_spot"></mini_map>
 	</friend_location>
+	
+<!-- test -->
+	<heli_location hint="helicopter">
+		<level_map spot="actor_level_spot" pointer="actor_pointer"></level_map>
+		<mini_map  spot="heli_mini_spot"  pointer="actor_pointer"></mini_map>
+	</heli_location>
+<!-- test -->
+	
+	
 <!-- multiplayer -->
 	<mp_team_base_1_location hint="team_base_1">
 	<!--	<level_map spot="actor_level_spot" pointer="actor_pointer"></level_map> -->
@@ -49,9 +58,10 @@
 		<texture x="0" y="0" width="32" height="32"> ui\ui_map_arrow_02</texture>
 	</actor_level_spot>
 
-	<actor_mini_spot x="0" y="0" width="11" height="13" heading="1" light_anim="ui_pda_contacts" alignment="c"> 
+<!--	<heli_mini_spot x="0" y="0" width="11" height="13" heading="1" light_anim="ui_pda_contacts" alignment="c">  -->
+	<heli_mini_spot x="0" y="0" width="11" height="13" heading="1" alignment="c"> 
 		<texture x="10" y="9" width="11" height="13"> ui\ui_map_arrow_02</texture>
-	</actor_mini_spot>
+	</heli_mini_spot>
 	
 	<enemy_mini_spot width="3" height="3" alignment="c"> 
 		<texture r="255" g="0" b="0">ui\hud_map_point</texture>

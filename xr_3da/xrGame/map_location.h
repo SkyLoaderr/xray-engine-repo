@@ -31,7 +31,7 @@ public:
 							CMapLocation					(LPCSTR type, u16 object_id);
 	virtual					~CMapLocation					();
 	virtual		LPCSTR		GetHint							()					{return m_hint;};
-	void					SetHint							(LPCSTR hint)		{strcat(m_hint,hint);};
+	void					SetHint							(LPCSTR hint)		{strcpy(m_hint,hint);};
 
 	void					UpdateMiniMap					(CUICustomMap* map);
 	void					UpdateLevelMap					(CUICustomMap* map);
