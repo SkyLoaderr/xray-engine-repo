@@ -36,7 +36,9 @@ void CLight_Render_Direct::compute_xfs	(u32 m_phase, light* L)
 	float	ssa					= clampr	(L->range*L->range / (1.f+dist*dist),0.f,1.f);
 
 	// compute intensity
-	float	intensity			= (L->color.r + L->color.g + L->color.b)/3.f;
+	float	intensity0			= (L->color.r + L->color.g + L->color.b)/3.f;
+	float	intensity1			= (L->color.r * 0.2125f + L->color.g * 0.7154f + L->color.b * 0.0721f);
+	float	intensity			= (intensity0+intensity1)/2.f;		// intensity1 tends to underestimate...
 
 	// compute how much duelling frusta occurs	[-1..1]->[-0.5 .. +0.5]  += 1
 	float	duel_dot			= 1.f -	0.5f*Device.vCameraDirection.dotproduct(L_dir);
