@@ -111,7 +111,7 @@ function motivator_binder:reload (section)
             Seller = self.object,
             begin_wait_to_see = { time = 300,
                                 begin = nil },
-            enabled = false,
+            enabled = true,
             over = false,
             actor = nil,
             noweap = false,			--' игнорируем наличие оружия у актора
