@@ -132,8 +132,9 @@ System::Void xrLauncher_main_frm::playBtn_Click(System::Object *  sender, System
 		FS.update_path(pack_path,"$server_root$",*(info.m_archieves->at(i)));
 		FS.register_archieve(pack_path);
 	}
-	CConsole* con = ::Console;
-	con->Execute(*info.m_cmd_line);
+//	CConsole* con = ::Console;
+//	con->Execute(*info.m_cmd_line);
+	strcpy(Core.Params,*info.m_cmd_line);
 	Close();
 }
 
