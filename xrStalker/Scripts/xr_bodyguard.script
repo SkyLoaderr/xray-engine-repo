@@ -43,6 +43,12 @@ function action_bodyguard_activity:initialize()
 
 	self.object:clear_animations()
 
+	self.object:set_item(object.idle, self.object:best_weapon())
+	self.object:set_detail_path_type(move.line)
+	self.object:set_body_state(move.standing)
+	self.object:set_mental_state(anim.danger)
+	self.object:set_movement_type(move.run)
+	self.object:set_path_type(game_object.patrol_path)
 	self.object:set_mental_state(anim.free)
 	self.object:set_sight(look.search, nil, 0)
 	--self.object:set_sight(look.path_dir, nil, 0)
@@ -74,10 +80,10 @@ function action_bodyguard_activity:reset_scheme()
 			self.object:name(), self.st.path_center)
 	end
 
-	self.zone_no_wpn_obj = level.object(self.st.zone_no_wpn)
-	if not self.zone_no_wpn_obj then
-		utils.abort("object '%s': unable to find no_wpn_zone '%s' on the map",
-			self.object:name(), self.st.zone_no_wpn)
+	self.zone_grd_obj = level.object(self.st.zone_grd)
+	if not self.zone_grd_obj then
+		utils.abort("object '%s': unable to find zone_grd '%s' on the map",
+			self.object:name(), self.st.zone_grd)
 	end
 	
 	self.path_active = self.st.path_main
@@ -124,7 +130,14 @@ function action_bodyguard_activity:execute()
 			dist_center = self.patrol_center:point(0):distance_to(actor:position())
 
 			local active_item = actor:active_item()
-			local has_weapon = active_item and isWeapon(active_item)
+			
+			local has_weapon
+			if not self.st.block_unarmed then
+				has_weapon = active_item and isWeapon(active_item)
+			else
+				has_weapon = true
+			end
+			
 		        if has_weapon or dist_center > 5 then
 				if has_weapon and dist_center <= 5 and
 				   bg_wpn_info[self.st.path_center] and
@@ -144,7 +157,7 @@ function action_bodyguard_activity:execute()
 					this.bg_wpn_info[self.st.path_center] = nil
 				end
 
-				if has_weapon and xr_zones.is_in_zone(actor, self.zone_no_wpn_obj:id()) then
+				if has_weapon and xr_zones.is_in_zone(actor, self.zone_grd_obj:id()) then
 					if self.object:relation(actor) ~= game_object.enemy then
 						self.object:set_relation(game_object.enemy, actor)
 					end
@@ -231,8 +244,8 @@ end
 -- path_main - где телохранитель обычно стоит
 -- path_side - куда телохранитель отходит
 -- path_center - центральная точка (от нее вычисляются все расстояния)
--- no_wpn_zone - зона, в пределах которой при обнаружении игрока с оружием, по нему откроют огонь
-function set_bodyguard(object, enable, path_main, path_side, path_center, no_wpn_zone)
+-- zone_grd - зона, в пределах которой при обнаружении игрока с оружием, по нему откроют огонь
+function set_bodyguard(object, enable, path_main, path_side, path_center, zone_grd, never_allow, block_unarmed)
 	local char_ini = object:spawn_ini()
 	local st = xr_motivator.storage[object:id()].bodyguard
 
@@ -240,7 +253,8 @@ function set_bodyguard(object, enable, path_main, path_side, path_center, no_wpn
 	st.path_main = utils.conf_get_string(char_ini, "bodyguard", "path_main", path_main, object, true)
 	st.path_side = utils.conf_get_string(char_ini, "bodyguard", "path_side", path_side, object, true)
 	st.path_center = utils.conf_get_string(char_ini, "bodyguard", "path_center", path_center, object, true)
-	st.zone_no_wpn = utils.conf_get_string(char_ini, "bodyguard", "no_wpn_zone", no_wpn_zone, object, true)
+	st.zone_grd = utils.conf_get_string(char_ini, "bodyguard", "zone_grd", zone_grd, object, true)
+	st.block_unarmed = utils.conf_get_bool(char_ini, "bodyguard", "block_unarmed", block_unarmed, object, true)
 
 	if st.action ~= nil then
 		st.action.reset_scheme(st.action)
