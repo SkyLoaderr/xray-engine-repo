@@ -35,8 +35,14 @@ void CAI_Chimera::Init()
 {
 	inherited::Init();
 
-	CurrentState					= stateRest;
-	CurrentState->Reset				();
+	CurrentState			= stateRest;
+	CurrentState->Reset		();
+
+	fSpinYaw				= 0.f;
+	timeLastSpin			= 0;
+	fStartYaw				= 0.f;
+	fFinishYaw				= 1.f;
+	fPrevMty				= 0.f;
 }
 
 
@@ -136,117 +142,12 @@ void CAI_Chimera::UpdateCL()
 }
 
 
-void CAI_Chimera::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3)
+BOOL CAI_Chimera::net_Spawn (LPVOID DC) 
 {
-	if (this->SUB_CLS_ID == CLSID_AI_CHIMERA) {
-		switch(motion) {
-			case eMotionStandIdle:		index1 = 0; index2 = 0;	 index3 = -1;	break;
-			case eMotionLieIdle:		index1 = 2; index2 = 0;	 index3 = -1;	break;
-			case eMotionStandTurnLeft:	index1 = 0; index2 = 4;	 index3 = -1;	break;
-			case eMotionWalkFwd:		index1 = 0; index2 = 2;	 index3 = -1;	break;
-			case eMotionWalkBkwd:		index1 = 0; index2 = 2;  index3 = -1;	break;
-			case eMotionWalkTurnLeft:	index1 = 0; index2 = 4;  index3 = -1;	break;
-			case eMotionWalkTurnRight:	index1 = 0; index2 = 5;  index3 = -1;	break;
-			case eMotionRun:			index1 = 0; index2 = 6;  index3 = -1;	break;
-			case eMotionRunTurnLeft:	index1 = 0; index2 = 7;  index3 = -1;	break;
-			case eMotionRunTurnRight:	index1 = 0; index2 = 8;  index3 = -1;	break;
-			case eMotionAttack:			index1 = 0; index2 = 9;  index3 = -1;	break;
-			case eMotionAttackRat:		index1 = 0; index2 = 9;	 index3 = -1;	break;
-			case eMotionFastTurnLeft:	index1 = 0; index2 = 8;  index3 = -1;	break;
-			case eMotionEat:			index1 = 2; index2 = 12; index3 = -1;	break;
-			case eMotionStandDamaged:	index1 = 0; index2 = 0;  index3 = -1;	break;
-			case eMotionScared:			index1 = 0; index2 = 0;  index3 = -1;	break;
-			case eMotionDie:			index1 = 0; index2 = 0;  index3 = -1;	break;
-			case eMotionLieDown:		index1 = 0; index2 = 16; index3 = -1;	break;
-			case eMotionStandUp:		index1 = 2; index2 = 17; index3 = -1;	break;
-			case eMotionCheckCorpse:	index1 = 2; index2 = 0;	 index3 = 0;	break;
-			case eMotionLieDownEat:		index1 = 0; index2 = 18; index3 = -1;	break;
-			case eMotionAttackJump:		index1 = 0; index2 = 0;  index3 = -1;	break;
-			default:					NODEFAULT;
-		} 
-	} else if (this->SUB_CLS_ID == CLSID_AI_DOG_RED) {
-		switch(motion) {
-			case eMotionStandIdle:		index1 = 0; index2 = 0;	 index3 = -1;	break;
-			case eMotionLieIdle:		index1 = 2; index2 = 0;	 index3 = -1;	break;
-			case eMotionStandTurnLeft:	index1 = 0; index2 = 0;	 index3 = -1;	break;
-			case eMotionWalkFwd:		index1 = 0; index2 = 2;	 index3 = -1;	break;
-			case eMotionWalkBkwd:		index1 = 0; index2 = 2;  index3 = -1;	break;
-			case eMotionWalkTurnLeft:	index1 = 0; index2 = 2;  index3 = -1;	break;
-			case eMotionWalkTurnRight:	index1 = 0; index2 = 2;  index3 = -1;	break;
-			case eMotionRun:			index1 = 0; index2 = 6;  index3 = -1;	break;
-			case eMotionRunTurnLeft:	index1 = 0; index2 = 6;  index3 = -1;	break;
-			case eMotionRunTurnRight:	index1 = 0; index2 = 6;  index3 = -1;	break;
-			case eMotionAttack:			index1 = 0; index2 = 9;  index3 = -1;	break;
-			case eMotionAttackRat:		index1 = 0; index2 = 9;	 index3 = -1;	break;
-			case eMotionFastTurnLeft:	index1 = 0; index2 = 6;  index3 = -1;	break;
-			case eMotionEat:			index1 = 2; index2 = 12; index3 = -1;	break;
-			case eMotionStandDamaged:	index1 = 0; index2 = 0;  index3 = -1;	break;
-			case eMotionScared:			index1 = 0; index2 = 0;  index3 = -1;	break;
-			case eMotionDie:			index1 = 0; index2 = 0;  index3 = -1;	break;
-			case eMotionLieDown:		index1 = 0; index2 = 16; index3 = -1;	break;
-			case eMotionStandUp:		index1 = 2; index2 = 17; index3 = -1;	break;
-			case eMotionCheckCorpse:	index1 = 0; index2 = 0;	 index3 = 0;	break;
-			case eMotionLieDownEat:		index1 = 0; index2 = 16; index3 = -1;	break;
-			case eMotionAttackJump:		index1 = 0; index2 = 0;  index3 = -1;	break;
-			default:					NODEFAULT;
-		} 
-	}
-}
+	if (!inherited::net_Spawn(DC))
+		return(FALSE);
 
+	vfAssignBones(pSettings,cNameSect());
 
-void CAI_Chimera::FillAttackStructure(u32 i, TTime t)
-{
-	m_tAttack.i_anim		= i;
-	m_tAttack.time_started	= t;
-	m_tAttack.b_fire_anyway = false;
-	m_tAttack.b_attack_rat	= false;
-
-	Fvector tempV;
-
-	switch (m_tAttack.i_anim) {
-		case 0:
-			m_tAttack.time_from = 700;
-			m_tAttack.time_to	= 800;
-			m_tAttack.dist		= 3.f;
-			
-			Center(m_tAttack.TraceFrom);
-			break;
-		case 1:
-			m_tAttack.time_from = 500;
-			m_tAttack.time_to	= 600;
-			m_tAttack.dist		= 2.5f;
-			Center(m_tAttack.TraceFrom);
-			tempV.set(0.3f,0.f,0.f);
-			m_tAttack.TraceFrom.add(tempV);
-			break;
-		case 2:
-			m_tAttack.time_from = 600;
-			m_tAttack.time_to	= 700;
-			m_tAttack.dist		= 3.5f;
-			Center(m_tAttack.TraceFrom);
-			break;
-		case 3:
-			m_tAttack.time_from = 800;
-			m_tAttack.time_to	= 900;
-			m_tAttack.dist		= 1.0f;
-			
-			Center(m_tAttack.TraceFrom);
-			tempV.set(-0.3f,0.f,0.f);
-			m_tAttack.TraceFrom.add(tempV);
-			break;
-		case 4:
-			m_tAttack.time_started = 0;
-			break;
-		case 5:
-			m_tAttack.time_from = 1500;
-			m_tAttack.time_to	= 1600;
-			m_tAttack.dist		= 3.0f;
-			Center(m_tAttack.TraceFrom);
-			tempV.set(0.3f,0.f,0.f);
-			m_tAttack.TraceFrom.add(tempV);
-			break;
-		case 6:
-			m_tAttack.time_started = 0;
-			break;
-	}
+	return TRUE;
 }

@@ -31,6 +31,8 @@
 
 #include "trade.h"
 
+#define	 WOUND_HIT	3  // todo: IF YOU SEE IT DELETE IT!!!
+
 ENGINE_API extern float		psHUD_FOV;
 extern	float				psSqueezeVelocity;
 extern	int					phFPS;

@@ -8,8 +8,6 @@
 
 #include "stdafx.h"
 #include "ai_biting.h"
-#include "..\\rat\\ai_rat.h"
-#include "..\\..\\actor.h"
 
 void CAI_Biting::Think()
 {

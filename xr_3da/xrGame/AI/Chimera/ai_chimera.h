@@ -12,11 +12,24 @@ public:
 
 	virtual void	Init();
 
-	virtual void	Think ();
-	virtual void	UpdateCL();
+	virtual void	Think				();
+	virtual void	UpdateCL			();
+	virtual BOOL	net_Spawn			(LPVOID DC);
+
 
 	virtual	void	MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3);
 	virtual void	FillAttackStructure(u32 i, TTime t);
+
+	// Bone manipulatio
+			void			vfAssignBones		(CInifile *ini, const char *section);
+	static	void __stdcall	SpinCallback		(CBoneInstance *B);
+			void			SpinBone			(CBoneInstance *B);
+
+	// реализация плавного поворота	
+	float	fSpinYaw;				// угол поворота для боны
+	TTime	timeLastSpin;		// последнее время изменения SpinYaw
+	float	fStartYaw, fFinishYaw;	// начальный и конечный углы поворота монстра
+	float	fPrevMty;				// предыдущее значение target.yaw
 
 	// Flesh-specific FSM
 	CChimeraAttack		*stateAttack;

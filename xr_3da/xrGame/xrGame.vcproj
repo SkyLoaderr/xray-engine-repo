@@ -679,8 +679,7 @@
 						<File
 							RelativePath=".\Ai\Chimera\ai_chimera_anim.cpp">
 							<FileConfiguration
-								Name="Debug|Win32"
-								ExcludedFromBuild="TRUE">
+								Name="Debug|Win32">
 								<Tool
 									Name="VCCLCompilerTool"/>
 							</FileConfiguration>
