@@ -313,8 +313,12 @@ void CActor::Die	( )
 	mstate_wishful	&=		~mcAnyMove;
 	mstate_real		&=		~mcAnyMove;
 
-	// Drop active weapon
-	if (Local())			Weapons->weapon_die	();
+	// Drop active weapon(s)
+	/*
+	if (Local())			{
+		Weapons->weapon_die	();
+	}
+	*/
 
 	die_hide				= 1.f;
 }
