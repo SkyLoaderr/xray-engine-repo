@@ -11,7 +11,7 @@
 #include "ai_object_location.h"
 #include "ai_space.h"
 #include "game_graph.h"
-
+#include "PHCollideValidator.h"
 CPHDestroyable::CPHDestroyable()
 {
 	m_flags.flags=0;
@@ -134,6 +134,7 @@ void CPHDestroyable::Load(CInifile* ini,LPCSTR section)
 				}
 			}
 		}
+
 		shell_holder->cNameVisual_set(visual_name);
 }
 void CPHDestroyable::Load(LPCSTR section)
@@ -206,4 +207,8 @@ void CPHDestroyable::NotificateDestroy(CPHDestroyableNotificate *dn)
 		e->set_LinearVel(*(Fvector*)&res_vell);
 	}
 	new_shell->Enable();
+
+	if(own_shell->CollideClassBits().is(CPHCollideValidator::cbNCGroupObject))
+							new_shell->RegisterToCLGroup(own_shell->CollideBits());
+			
 }

@@ -22,7 +22,7 @@ public  CPHDestroyableNotificator
 			{
 				fl_destroyable		= 1<<0,
 				fl_destroyed		= 1<<1,
-				fl_released			= 1<<2
+				fl_released			= 1<<2,
 			};
 	virtual CPhysicsShellHolder*		PPhysicsShellHolder			()																											=0;
 public:
