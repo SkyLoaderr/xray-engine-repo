@@ -345,25 +345,9 @@ bool CAI_Rat::bfComputeNextDirectionPosition(bool bCanAdjustSpeed)
 		m_fSpeed = .1f;
 		if (m_bNoWay)
 			if ((Level().timeServer() - m_dwLastRangeSearch > 1000) || (!m_dwLastRangeSearch)) {
-//				if (m_Enemy.Enemy && (eCurrentState != aiRatRetreat) && (eCurrentState != aiRatReturnHome)) {
-//					if (!::Random.randI(4)) {
-//						float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-//						r_torso_target.yaw = r_torso_current.yaw + fAngle;
-//					}
-//					else {
-//						Fvector tTemp;
-//						tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
-//						tTemp.normalize_safe();
-//						mk_rotation(tTemp,r_torso_target);
-//					}
-//					r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-//				}
-//				else 
-				{
-					float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-					r_torso_target.yaw = r_torso_current.yaw + fAngle;
-					r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-				}
+				float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
+				r_torso_target.yaw = r_torso_current.yaw + fAngle;
+				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
 				Fvector tTemp;
 				tTemp.setHP(-r_torso_target.yaw,-r_torso_target.pitch);
 				tTemp.mul(100.f);
