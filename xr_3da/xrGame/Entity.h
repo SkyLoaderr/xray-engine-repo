@@ -103,6 +103,8 @@ public:
 	EVENT					m_tpEventSay;
 	bool					m_bMobility;
 	u32						m_dwDeathTime;
+	float					m_fAccuracy;
+	float					m_fIntelligence;
 public:
 	// General
 	CEntityAlive			();

@@ -251,7 +251,9 @@ void CEntityAlive::HitImpulse	(float amount, Fvector& vWorldDir, Fvector& vLocal
 
 CEntityAlive::CEntityAlive()
 {
-	m_dwDeathTime = 0;
+	m_dwDeathTime	= 0;
+	m_fAccuracy		= 100.f;
+	m_fIntelligence	= 100.f;
 }
 
 CEntityAlive::~CEntityAlive()

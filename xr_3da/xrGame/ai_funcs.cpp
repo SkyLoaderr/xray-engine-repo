@@ -432,6 +432,24 @@ float CPersonalWeaponTypeFunction::ffGetValue()
 	return(m_fLastValue -= 1.f);
 };
 
+float CPersonalAccuracyFunction::ffGetValue()
+{
+	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
+		return(m_fLastValue);
+	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_tpLastMonster = getAI().m_tpCurrentMember;
+	return(m_fLastValue = getAI().m_tpCurrentMember->m_fAccuracy);
+};
+
+float CPersonalIntelligenceFunction::ffGetValue()
+{
+	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
+		return(m_fLastValue);
+	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_tpLastMonster = getAI().m_tpCurrentMember;
+	return(m_fLastValue = getAI().m_tpCurrentMember->m_fIntelligence);
+};
+
 // enemy inversion functions	
 float CEnemyHealthFunction::ffGetValue()
 {
@@ -442,19 +460,6 @@ float CEnemyHealthFunction::ffGetValue()
 	CEntityAlive *tpEntity = getAI().m_tpCurrentMember;
 	getAI().m_tpCurrentMember = getAI().m_tpCurrentEnemy;
 	m_fLastValue = getAI().pfPersonalHealth.ffGetValue();
-	getAI().m_tpCurrentMember = tpEntity;
-	return(m_fLastValue);
-};
-
-float CEnemyMoraleFunction::ffGetValue()
-{
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentEnemy))
-		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
-	m_tpLastMonster = getAI().m_tpCurrentEnemy;
-	CEntityAlive *tpEntity = getAI().m_tpCurrentMember;
-	getAI().m_tpCurrentMember = getAI().m_tpCurrentEnemy;
-	m_fLastValue = getAI().pfPersonalMorale.ffGetValue();
 	getAI().m_tpCurrentMember = tpEntity;
 	return(m_fLastValue);
 };
