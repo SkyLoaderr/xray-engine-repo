@@ -246,7 +246,7 @@ void	OGF::Save_Cached		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 void	OGF::PreSave			()
 {
 	Shader_xrLC*	SH	=	pBuild->shaders.Get		(pBuild->materials[material].reserved);
-	bool bVertexColors	=	(SH->flags.bLIGHT_Vertex);
+	bool bVertexColored	=	(SH->flags.bLIGHT_Vertex);
 
 	// Vertices
 	VDeclarator		D;
@@ -288,7 +288,7 @@ void	OGF::PreSave			()
 	}
 
 	// Faces
-	g_IB.Register	(LPWORD(&*faces.begin()),LPWORD(&*faces.end()),&ID,&Start);
+	g_IB.Register	(LPWORD(&*faces.begin()),LPWORD(&*faces.end()),&ib_id,&ib_start);
 }
 
 void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
