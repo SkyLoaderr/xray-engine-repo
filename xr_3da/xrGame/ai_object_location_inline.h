@@ -48,7 +48,6 @@ IC	const CGameGraph::CVertex *CAI_ObjectLocation::game_vertex() const
 
 IC	const ALife::_GRAPH_ID CAI_ObjectLocation::game_vertex_id() const
 {
-	VERIFY				(ai().game_graph().valid_vertex_id(m_game_vertex_id));
 	return				(m_game_vertex_id);
 }
 
@@ -72,6 +71,5 @@ IC	const CLevelGraph::CVertex *CAI_ObjectLocation::level_vertex() const
 
 IC	const u32 CAI_ObjectLocation::level_vertex_id() const
 {
-	VERIFY				(ai().level_graph().valid_vertex_id(m_level_vertex_id));
 	return				(m_level_vertex_id);
 }
