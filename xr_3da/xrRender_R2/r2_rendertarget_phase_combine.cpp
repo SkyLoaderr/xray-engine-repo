@@ -22,7 +22,7 @@ void	CRenderTarget::phase_combine	()
 	RCache.set_Stencil	( FALSE		);
 
 	// 
-	if (STENCIL_CULL)	{
+	if (RImplementation.o.bug)	{
 		RCache.set_Stencil					(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0x00);	// stencil should be >= 1
 		if (RImplementation.o.nvstencil)	{
 			u_stencil_optimize				(FALSE);
