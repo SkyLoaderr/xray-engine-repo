@@ -96,19 +96,19 @@ bool CEnemyManager::expedient				(const CEntityAlive *object) const
 
 void CEnemyManager::reload					(LPCSTR section)
 {
-	m_ignore_monster_threshold	= 1.f;
-	m_max_ignore_distance		= 0.f;
-
-	if (pSettings->line_exist(section,"ignore_monster_threshold"))
-		m_ignore_monster_threshold	= pSettings->r_float(section,"ignore_monster_threshold");
-	if (pSettings->line_exist(section,"max_ignore_distance"))
-		m_max_ignore_distance		= pSettings->r_float(section,"max_ignore_distance");
+	m_ignore_monster_threshold	= READ_IF_EXISTS(pSettings,r_float,section,"ignore_monster_threshold",1.f);
+	m_max_ignore_distance		= READ_IF_EXISTS(pSettings,r_float,section,"max_ignore_distance",0.f);
+	m_visible_now				= false;
+	m_last_enemy_time			= 0;
+	VERIFY						(m_ready_to_save);
 }
 
 void CEnemyManager::update					()
 {
-	if (!m_ready_to_save)
+	if (!m_ready_to_save) {
+//		Msg						("%6d %s DEcreased enemy counter for player (%d -> %d)",Device.dwTimeGlobal,*m_object->cName(),Level().autosave_manager().not_ready_count(),Level().autosave_manager().not_ready_count()-1);
 		Level().autosave_manager().dec_not_ready();
+	}
 
 	m_ready_to_save				= true;
 	m_visible_now				= false;
@@ -118,8 +118,10 @@ void CEnemyManager::update					()
 	if (selected())
 		m_last_enemy_time		= Device.dwTimeGlobal;
 
-	if (!m_ready_to_save)
+	if (!m_ready_to_save) {
+//		Msg						("%6d %s INcreased enemy counter for player (%d -> %d)",Device.dwTimeGlobal,*m_object->cName(),Level().autosave_manager().not_ready_count(),Level().autosave_manager().not_ready_count()+1);
 		Level().autosave_manager().inc_not_ready();
+	}
 }
 
 void CEnemyManager::set_ready_to_save		()
@@ -127,6 +129,7 @@ void CEnemyManager::set_ready_to_save		()
 	if (m_ready_to_save)
 		return;
 
+//	Msg							("%6d %s DEcreased enemy counter for player (%d -> %d)",Device.dwTimeGlobal,*m_object->cName(),Level().autosave_manager().not_ready_count(),Level().autosave_manager().not_ready_count()-1);
 	Level().autosave_manager().dec_not_ready();
 	m_ready_to_save				= true;
 }

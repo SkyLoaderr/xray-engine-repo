@@ -18,7 +18,10 @@
 #include "ai/monsters/BaseMonster/base_monster.h"
 #include "level.h"
 
-
+#include "seniority_hierarchy_holder.h"
+#include "team_hierarchy_holder.h"
+#include "squad_hierarchy_holder.h"
+#include "group_hierarchy_holder.h"
 
 //////////////////////////////////////////////////////////////////////////
 

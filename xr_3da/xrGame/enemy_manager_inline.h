@@ -12,7 +12,7 @@ IC	CEnemyManager::CEnemyManager		(CCustomMonster *object)
 {
 	VERIFY						(object);
 	m_object					= object;
-	m_ignore_monster_threshold	= 0.f;
+	m_ignore_monster_threshold	= 1.f;
 	m_max_ignore_distance		= 0.f;
 	m_ready_to_save				= true;
 	m_visible_now				= false;
