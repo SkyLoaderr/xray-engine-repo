@@ -14,8 +14,8 @@
 const int TEXT_INDENTION = 43;
 
 CUITabButtonMP::CUITabButtonMP(){
-	AttachChild(&m_staticNumber);
-	m_staticNumber.SetFont(UI()->Font()->pFontGraffiti32Russian);
+//	AttachChild(&m_staticNumber);
+//	m_staticNumber.SetFont(UI()->Font()->pFontGraffiti32Russian);
 	m_orientation = O_VERTICAL;
 	SetNewRenderMethod(true);
 }
@@ -26,15 +26,15 @@ CUITabButtonMP::~CUITabButtonMP(){
 
 void CUITabButtonMP::Init(int x, int y, int width, int height){
 	CUITabButton::Init(x, y, width, height);
-	m_staticNumber.Init(15, -26, 29, 29);
-	m_staticNumber.SetTextAlign(CGameFont::alCenter);
-	m_staticNumber.SetTextX(13);
-	m_staticNumber.SetTextY(-6);
+//	m_staticNumber.Init(15, -26, 29, 29);
+//	m_staticNumber.SetTextAlign(CGameFont::alCenter);
+//	m_staticNumber.SetTextX(13);
+//	m_staticNumber.SetTextY(-6);
 }
 
-void CUITabButtonMP::SetNumber(LPCSTR num){
-    m_staticNumber.SetText(num);
-}
+//void CUITabButtonMP::SetNumber(LPCSTR num){
+////    m_staticNumber.SetText(num);
+//}
 
 void CUITabButtonMP::SendMessage(CUIWindow* pWnd, s16 msg, void* pData /* = 0 */){
 	if (this == pWnd)
@@ -88,17 +88,17 @@ void CUITabButtonMP::Update(){
 	m_bIsEnabled = m_bCursorOverWindow ? true : m_bIsEnabled;
 	CUITabButton::Update();
 	
-	if (!m_bIsEnabled)
-		m_staticNumber.SetTextColor(color_argb(255, 87, 87, 72));
+	//if (!m_bIsEnabled)
+	//	m_staticNumber.SetTextColor(color_argb(255, 87, 87, 72));
 
-	else if (CUIButton::BUTTON_PUSHED == m_eButtonState)
-		;
-	else if (m_bCursorOverWindow)
-        m_staticNumber.SetTextColor(color_argb(255, 255, 226, 79));
-	else
-		m_staticNumber.SetTextColor(color_argb(255, 255, 255, 0));
+	//else if (CUIButton::BUTTON_PUSHED == m_eButtonState)
+	//	;
+	//else if (m_bCursorOverWindow)
+ //       m_staticNumber.SetTextColor(color_argb(255, 255, 226, 79));
+	//else
+	//	m_staticNumber.SetTextColor(color_argb(255, 255, 255, 0));
 
-	m_staticNumber.Show(!(CUIButton::BUTTON_PUSHED == m_eButtonState));
+	//m_staticNumber.Show(!(CUIButton::BUTTON_PUSHED == m_eButtonState));
 
 
 	m_bIsEnabled = tempEnabled;

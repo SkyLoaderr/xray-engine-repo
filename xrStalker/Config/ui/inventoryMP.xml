@@ -99,7 +99,7 @@
 	<!-- TAB CONTROL FOR WEAPON TYPE SELECT -->
 	<tab x="0" y="701" width="1014" height="200">
 		<!-- BUTTONS -->
-		<button x="18" y="0" width="150" height="52" accel="2">
+		<button x="18" y="0" width="150" height="52">
 			<texture_offset x="-18" y="-62"/>
 			<texture_t>ui\ui_btn_sec_t</texture_t>
 			<texture_e>ui\ui_btn_mp_e</texture_e>
@@ -114,11 +114,17 @@
 			</text_color>
 			<sound_t>weapons\generic_close</sound_t>
 			<hint x="15" y="-26" width="29" height="29">
-				<text font="graffiti32Russian" align="c">1</text>
+				<text font="graffiti32" x="13" y="-6" align="c">1</text>
+				<text_color>
+					<e a="255" r="255" g="255" b="0"/>
+					<d a="255" r="87" g="87" b="72"/>					
+					<h a="255" r="255" g="226" b="79"/>
+					<t a="0" r="0" g="0" b="0"/>
+				</text_color>
 			</hint>
 						
 		</button>
-		<button x="202" y="0" width="150" height="52" accel="3">
+		<button x="202" y="0" width="150" height="52">
 			<texture_offset x="-18" y="-62"/>
 			<texture_t>ui\ui_btn_prim_t</texture_t>
 			<texture_e>ui\ui_btn_mp_e</texture_e>
@@ -132,6 +138,15 @@
 				<h r="255" g="187" b="51"/>
 			</text_color>
 			<sound_t>weapons\generic_close</sound_t>
+			<hint x="15" y="-26" width="29" height="29">
+				<text font="graffiti32" x="13" y="-6" align="c">2</text>
+				<text_color>
+					<e a="255" r="255" g="255" b="0"/>
+					<d a="255" r="87" g="87" b="72"/>					
+					<h a="255" r="255" g="226" b="79"/>
+					<t a="0" r="0" g="0" b="0"/>
+				</text_color>
+			</hint>
 		</button>
 		<button x="386" y="0" width="150" height="52" accel="4">
 			<texture_offset x="-18" y="-62"/>
@@ -147,8 +162,17 @@
 				<h r="255" g="187" b="51"/>
 			</text_color>
 			<sound_t>weapons\generic_close</sound_t>
+						<hint x="15" y="-26" width="29" height="29">
+				<text font="graffiti32" x="13" y="-6" align="c">3</text>
+				<text_color>
+					<e a="255" r="255" g="255" b="0"/>
+					<d a="255" r="87" g="87" b="72"/>					
+					<h a="255" r="255" g="226" b="79"/>
+					<t a="0" r="0" g="0" b="0"/>
+				</text_color>
+			</hint>
 		</button>
-		<button x="570" y="0" width="150" height="52" accel="5">
+		<button x="570" y="0" width="150" height="52">
 			<texture_offset x="-18" y="-62"/>
 			<texture_t>ui\ui_btn_suit_t</texture_t>
 			<texture_e>ui\ui_btn_mp_e</texture_e>
@@ -162,8 +186,17 @@
 				<h r="255" g="187" b="51"/>
 			</text_color>
 			<sound_t>weapons\generic_close</sound_t>
+			<hint x="15" y="-26" width="29" height="29">
+				<text font="graffiti32" x="13" y="-6" align="c">4</text>
+				<text_color>
+					<e a="255" r="255" g="255" b="0"/>
+					<d a="255" r="87" g="87" b="72"/>					
+					<h a="255" r="255" g="226" b="79"/>
+					<t a="0" r="0" g="0" b="0"/>
+				</text_color>
+			</hint>
 		</button>
-		<button x="753" y="0" width="150" height="52" accel="6">
+		<button x="753" y="0" width="150" height="52">
 			<texture_offset x="-18" y="-62"/>
 			<texture_t>ui\ui_btn_equip_t</texture_t>
 			<texture_e>ui\ui_btn_mp_e</texture_e>
@@ -177,6 +210,15 @@
 				<h r="255" g="187" b="51"/>
 			</text_color>
 			<sound_t>weapons\generic_close</sound_t>
+			<hint x="15" y="-26" width="29" height="29">
+				<text font="graffiti32" x="13" y="-6" align="c">5</text>
+				<text_color>
+					<e a="255" r="255" g="255" b="0"/>
+					<d a="255" r="87" g="87" b="72"/>					
+					<h a="255" r="255" g="226" b="79"/>
+					<t a="0" r="0" g="0" b="0"/>
+				</text_color>
+			</hint>
 		</button>
 	</tab>
 		
@@ -275,6 +317,15 @@
 			<t r="255" g="255" b="255"/>
 		</text_color>
 		<sound_t>weapons\generic_close</sound_t>
+		<hint x="-42" y="12" width="29" height="29">
+			<text font="graffiti32" x="13" y="-3" align="c">A</text>
+			<text_color>
+				<e a="255" r="255" g="255" b="0"/>
+				<d a="255" r="87" g="87" b="72"/>					
+				<h a="255" r="255" g="226" b="79"/>
+				<t a="0" r="0" g="0" b="0"/>
+			</text_color>
+		</hint>
 	</autobuy_button>
 	
 	<clear_button x="840" y="611" width="145" height="48">
@@ -289,5 +340,14 @@
 			<t r="255" g="255" b="255"/>
 		</text_color>
 		<sound_t>weapons\generic_close</sound_t>
+		<hint x="-42" y="12" width="29" height="29">
+			<text font="graffiti32" x="13" y="-3" align="c">C</text>
+			<text_color>
+				<e a="255" r="255" g="255" b="0"/>
+				<d a="255" r="87" g="87" b="72"/>					
+				<h a="255" r="255" g="226" b="79"/>
+				<t a="0" r="0" g="0" b="0"/>
+			</text_color>
+		</hint>
 	</clear_button>	
 </window>

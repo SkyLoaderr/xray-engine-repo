@@ -25,7 +25,7 @@ public:
 			void InitTextureEnabled(LPCSTR texture);
 			void InitTextureDisabled(LPCSTR texture);
 			void InitTextureHighlighted(LPCSTR texture);
-			void InitTextureTouched(LPCSTR texture);
+			void InitTextureTouched(LPCSTR texture);			
 			void SetTextColor(u32 color);
 			void SetTextColorH(u32 color);
 			void SetTextColorD(u32 color);
@@ -44,12 +44,14 @@ public:
 	//virtual void Enable(bool bEnable);	
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
 
+
+	CUIStatic		m_hint;
 private:	
 			void PlaySoundH();
 			void PlaySoundT();
 	CUI_IB_Static	m_background;
 	ref_sound		m_sound_h;
-	ref_sound		m_sound_t;
+	ref_sound		m_sound_t;	
 
     // text color
 //	bool m_bUseTextColorD;

@@ -40,8 +40,8 @@ void CUIBuyWeaponTab::Init(CUIXml& xml, char* path){
 	{
 		CUITabButtonMP *newButton = xr_new<CUITabButtonMP>();
 		CUIXmlInit::Init3tButton(xml, "button", i, newButton);
-		char ch[5];
-		newButton->SetNumber(itoa(i+1,ch,10));
+//		char ch[5];
+//		newButton->SetNumber(itoa(i+1,ch,10));
 
 		AddItem(newButton);
 	}

@@ -22,6 +22,7 @@ class CLAItem;
 class CUIStatic : public CUIWindow  
 {
 	friend class CUIXmlInit;
+	friend class CUI3tButton;
 private:
 	typedef CUIWindow inherited;
 	CLAItem*				m_lanim;

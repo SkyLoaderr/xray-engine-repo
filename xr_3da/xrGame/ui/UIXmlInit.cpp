@@ -160,8 +160,8 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 
 	pWnd->Init(x, y, width, height);
 
-	InitTexture	(xml_doc, path, index, pWnd);
-	InitText	(xml_doc, path, index, pWnd);
+	InitTexture	 (xml_doc, path, index, pWnd);
+	InitMultiText(xml_doc, path, index, pWnd);
 	
 	return true;
 }
@@ -223,6 +223,13 @@ bool CUIXmlInit::Init3tButton(CUIXml& xml_doc, const char* path, int index, CUI3
 	int shadowOffsetY	= xml_doc.ReadAttribInt(path, index, "shadow_offset_y", 0);
 
 	pWnd->SetShadowOffset(shadowOffsetX, shadowOffsetY);
+
+	// init hint static
+	string256 hint;
+	strconcat(hint, path, ":hint");
+
+	if (xml_doc.NavigateToNode(hint, index))
+        InitStatic(xml_doc, hint, index, &pWnd->m_hint);
 
 	return true;
 }

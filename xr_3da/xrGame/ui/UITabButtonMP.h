@@ -25,11 +25,11 @@ public:
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData /* = 0 */);
 
 	virtual bool IsEnabled(){ return true; }
-			void SetNumber(LPCSTR num);
+//			void SetNumber(LPCSTR num);
 			void SetOrientation(int orientation);
 
 private:
 
-    CUIStatic	m_staticNumber;
+//    CUIStatic	m_staticNumber;
     int			m_orientation;
 };

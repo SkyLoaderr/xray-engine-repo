@@ -26,6 +26,7 @@ CUI3tButton::CUI3tButton(){
 	m_dwTextColor[T] = 0xFFFFFFFF;
 
 	AttachChild(&m_background);	
+	AttachChild(&m_hint);
 }
 
 CUI3tButton::~CUI3tButton(){
@@ -154,21 +155,34 @@ void CUI3tButton::Update(){
 	}
 
 	u32 textColor;
+	u32 hintColor;
 
 	if (!m_bIsEnabled)
+	{
 		textColor = m_bUseTextColor[D] ? m_dwTextColor[D] : m_dwTextColor[E];
+		hintColor = m_hint.m_bUseTextColor[D] ? m_hint.m_dwTextColor[D] : m_hint.m_dwTextColor[E];
+	}
 	else if (CUIButton::BUTTON_PUSHED == m_eButtonState)
+	{
 		textColor = m_bUseTextColor[T] ? m_dwTextColor[T] : m_dwTextColor[E];
+		hintColor = m_hint.m_bUseTextColor[T] ? m_hint.m_dwTextColor[T] : m_hint.m_dwTextColor[E];
+	}
 	else if (m_bCursorOverWindow)
+	{
 		textColor = m_bUseTextColor[H] ? m_dwTextColor[H] : m_dwTextColor[E];
+		hintColor = m_hint.m_bUseTextColor[H] ? m_hint.m_dwTextColor[H] : m_hint.m_dwTextColor[E];
+	}
 	else
+	{
 		textColor = m_dwTextColor[E];
+		hintColor = m_hint.m_dwTextColor[E];
+	}
 
 	CUIStatic::SetTextColor(textColor);
+	m_hint.SetTextColor(hintColor);
 }
 
 
 void CUI3tButton::SendMessage(CUIWindow *pWnd, s16 msg, void *pData){
 	CUIButton::SendMessage(pWnd, msg, pData);
 }
-
