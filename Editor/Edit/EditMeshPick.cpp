@@ -32,6 +32,41 @@ static Fvector		sml_normal;
 static float		m_fSoftAngle;
 //----------------------------------------------------
 
+//----------------------------------------------------
+// номер face должен соответствовать списку
+//----------------------------------------------------
+void CEditableMesh::GenerateCFModel(){
+	UnloadCForm();
+
+	m_CFModel = new RAPID::Model();    VERIFY(m_CFModel);
+	// Collect faces
+
+	RAPID::Collector CL;
+	// double sided
+/*	не корректно работает с сурфейсами
+	for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
+		INTVec& face_lst = sp_it->second;
+		for (INTIt it=face_lst.begin(); it!=face_lst.end(); it++){
+			st_Face&	F = m_Faces[*it];
+			CL.add_face(m_Points[F.pv[0].pindex],m_Points[F.pv[1].pindex],m_Points[F.pv[2].pindex], 0,0,0, 0,0,0);
+			if (sp_it->first->sideflag)
+				CL.add_face(m_Points[F.pv[2].pindex],m_Points[F.pv[1].pindex],m_Points[F.pv[0].pindex], 0,0,0, 0,0,0);
+		}
+	}
+*/
+	// without double sided
+	for (FaceIt P = m_Faces.begin(); P!=m_Faces.end(); P++){
+		st_Face&	F = *P;
+		CL.add_face(
+       		m_Points[F.pv[0].pindex],m_Points[F.pv[1].pindex],m_Points[F.pv[2].pindex],
+			0,0,0,
+			0,0,0 );
+	}
+
+	m_CFModel->BuildModel(CL.getV(), CL.getVS(), CL.getT(), CL.getTS());
+	m_LoadState |= EMESH_LS_CF_MODEL;
+}
+
 bool CEditableMesh::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
 	if (!m_Visible) return false;
 
