@@ -73,14 +73,17 @@ M_EVENT
 
 M_PLIST_ADD
 {
-	u32			ID;
+	u32			ID;			// client ID, not the standart net-id !!!
 	stringZ		name;
-	s16			frags;
 }
 
 M_PLIST_REMOVE
 {
-	u32			ID;
+	u32			ID;			// client ID, not the standart net_id !!!
+}
+
+M_PLIST_UPDATE
+{
 }
 
 M_SPAWN

@@ -19,13 +19,17 @@ public:
 	xrServerEntity*			owner;
 	BOOL					net_Ready;
 
-	s16						g_frags;
+	s16						g_kills;
+	s16						g_deaths;
+	s32						g_money;
 	
 	xrClientData	()
 	{
 		owner		= NULL;
 		net_Ready	= FALSE;
-		g_frags		= 0;
+		g_kills		= 0;
+		g_deaths	= 0;
+		g_money		= 0;
 	}
 };
 

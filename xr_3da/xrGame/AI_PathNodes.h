@@ -2,23 +2,23 @@
 
 class CCustomMonster;
 
-class CTravelNode
-{
-public:
-	Fvector	P;
-	BOOL	floating;
-};
-struct PContour
-{
-	Fvector v1,v2,v3,v4;
-};
-struct PSegment
-{
-	Fvector v1,v2;
-};
-
 class CPathNodes : public AI::Path
 {
+public:
+	class CTravelNode
+	{
+	public:
+		Fvector	P;
+		BOOL	floating;
+	};
+	struct PContour
+	{
+		Fvector v1,v2,v3,v4;
+	};
+	struct PSegment
+	{
+		Fvector v1,v2;
+	};
 public:
 	BOOL				bNeedRebuild;
 	DWORD				DestNode;

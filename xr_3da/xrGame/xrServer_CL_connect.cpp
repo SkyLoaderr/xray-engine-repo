@@ -74,8 +74,8 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 
 	// Signal to everybody about connect
 	P.w_begin		(M_PLIST_ADD);
-	P.w_u32			(CL->ID);
-	P.w_string		(CL->Name);
+	P.w_u32			(CL->ID		);
+	P.w_string		(CL->Name	);
 	P.w_s16			(CL->g_frags);
 	SendBroadcast	(0xffffffff,P,mode);
 }
