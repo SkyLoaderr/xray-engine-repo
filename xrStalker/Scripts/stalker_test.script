@@ -1,16 +1,17 @@
 function main ()
     stalker			= get_level_object ("m_stalker_e0000")
     stalker:script	(true,stalker_test:script_name());
-	action(                                                                                                       
-	    stalker,                                                                                                      
-	  	look		(look.point,get_level_object("localhost/dima")),
+    
+--	action(                                                                                                       
+--	    stalker,                                                                                                      
+--	  	look		(look.point,get_level_object("localhost/dima")),
 --	 	sound		("simple_detector_noise","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
-		particle	("vehiclefx\\exhaust_1","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
+--		particle	("vehiclefx\\exhaust_1","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
 --		object		(wpn,object.activate),
-	    anim		(anim.danger),
-		move		(move.standing,move.run,move.line,get_level_object("localhost/dima")),
-		cond		(cond.move_end)
-	)
+--	    anim		(anim.danger),
+--		move		(move.standing,move.run,move.line,get_level_object("localhost/dima")),
+--		cond		(cond.move_end)
+--	)
 --	a				= patrol("way0000")
 --	n				= a:count();
 --	i				= 0;
@@ -23,13 +24,13 @@ function main ()
 --	c				= a:point(a:nearest(get_level_object("localhost/dima"):position()));
 --	printf			("nearest : [%f][%f][%f]",c.x,c.y,c.z)
 	
---	action(
---	    stalker,                                                                                                      
---		move		(move.standing, move.run, move.line, patrol ("way0000")),
---      look		(look.fire_point, get_level_object("localhost/dima")),
---      anim		(anim.danger),
---      cond		(cond.move_end)
---	)
+	action(
+	    stalker,                                                                                                      
+		move		(move.standing, move.run, move.line, patrol ("way0000")),
+		look		(look.fire_point, get_level_object("localhost/dima")),
+		anim		(anim.danger),
+		cond		(cond.move_end)
+	)
 	
 	while stalker:action() do
 		wait		();
