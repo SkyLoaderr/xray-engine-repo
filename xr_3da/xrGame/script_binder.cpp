@@ -16,7 +16,7 @@
 #include "script_game_object.h"
 #include "gameobject.h"
 
-#define DBG_DISABLE_SCRIPTS
+//#define DBG_DISABLE_SCRIPTS
 
 CScriptBinder::CScriptBinder		()
 {
