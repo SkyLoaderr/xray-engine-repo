@@ -10,14 +10,17 @@ function evaluator_state_mgr_idle:__init(name, state_manager) super (nil, name)
 	self.st = state_manager
 end
 function evaluator_state_mgr_idle:evaluate()
-	if self.st.combat == true then return true end
-
-	return self.st.target_state == "idle" and 
+	local t = self.st.target_state == "idle" and 
 		   not self.st.planner:evaluator(self.st.properties["locked"]):evaluate() and
 		   self.st.planner:evaluator(self.st.properties["movement"]):evaluate()	and
 		   self.st.planner:evaluator(self.st.properties["animstate"]):evaluate() and
 		   self.st.planner:evaluator(self.st.properties["animation"]):evaluate()
+
+	if t == true then self.st.combat = true end
 	
+	if self.st.combat == true then return true end
+
+	return t	
 end
 --' Мы уже в безраличном состоянии idle или нет ()учет с проверкой alife
 class "evaluator_state_mgr_idle_alife" (property_evaluator)
@@ -43,9 +46,6 @@ function act_state_mgr_to_idle:execute()
 	action_base.execute(self)
 end
 function act_state_mgr_to_idle:finalize()
-	if self.object:best_enemy() ~= nil then
-		self.st.combat = true
-	end
 	action_base.finalize(self)
 end
 
