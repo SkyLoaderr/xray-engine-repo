@@ -3,6 +3,7 @@
 <game_tasks_data>
 	<game_task id="task1">
 		<objective>
+			<title>Task 1. Top priority!</title>
 			<text>test task primary2</text>
 			<script_condition>info_test1.test_task3</script_condition>
 		</objective>
@@ -13,6 +14,7 @@
 	</game_task>
 	<game_task id="task2">
 		<objective>
+			<title>Task 1. What a shame, it's failesd</title>
 			<text>test task primary2</text>
 			<script_condition>info_test1.test_task1</script_condition>
 		</objective>
