@@ -197,7 +197,6 @@ void CEnvironment::OnDeviceCreate()
 	{
 		LPCSTR S			= pCreator->pLevel->ReadSTRING("environment","sky");
 		pSkydome			= Render->model_Create	(S);
-		Log("----------------------- CREATE");
 	} else {
 		pSkydome			= 0;
 	}
@@ -207,7 +206,6 @@ void CEnvironment::OnDeviceCreate()
 
 void CEnvironment::OnDeviceDestroy()
 {
-	Log("----------------------- DESTROY");
 	Render->model_Delete	(pSkydome);
 }
 
