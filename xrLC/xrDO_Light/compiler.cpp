@@ -9,6 +9,13 @@
 
 #define NUM_THREADS		3
 
+float	color_intensity	(Fcolor& c)
+{
+	float	ntsc		= c.r * 0.2125f + c.g * 0.7154f + c.b * 0.0721f;
+	float	absolute	= c.magnitude_rgb() / 1.7320508075688772935274463415059f;
+	return	(ntsc + absolute)/2.f;
+}
+
 //-----------------------------------------------------------------------------------------------------------------
 const int	LIGHT_Count				=	6;
 
@@ -55,20 +62,6 @@ CVirtualFileStreamRW*	dtFS=0;
 DetailHeader			dtH;
 DetailSlot*				dtS;
 b_params				g_params;
-//-----------------------------------------------------------------
-// hemi
-struct		hemi_data
-{
-	vector<R_Light>*	dest;
-	R_Light				T;
-};
-void		__stdcall	hemi_callback(float x, float y, float z, float E, LPVOID P)
-{
-	hemi_data*	H		= (hemi_data*)P;
-	H->T.energy			= E * g_params.area_color.magnitude_rgb();
-	H->T.direction.set	(x,y,z);
-	H->dest->push_back	(H->T);
-}
 
 // 
 void xrLoad(LPCSTR name)
@@ -152,7 +145,7 @@ void xrLoad(LPCSTR name)
 					RL.attenuation0			=	L.attenuation0;
 					RL.attenuation1			=	L.attenuation1;
 					RL.attenuation2			=	L.attenuation2;
-					RL.energy				=	L.diffuse.magnitude_rgb	();
+					RL.energy				=	color_intensity(L.diffuse);
 
 					g_lights.push_back		(RL);
 					// place into layer
@@ -369,19 +362,19 @@ public:
 				}
 				
 				// 
-				if ((0==count[0]) || (0==count[1]) || (0==count[2]) || (0==count[3]))
-					Msg("* failed to calculate slot X%d:Z%d",_x,_z);
+				// if ((0==count[0]) || (0==count[1]) || (0==count[2]) || (0==count[3]))
+					// Msg("* failed to calculate slot X%d:Z%d",_x,_z);
 //				Msg("%dx%d [0:%f, 1:%f, 2:%f, 3:%f]",_x,_z,amount[0],amount[1],amount[2],amount[3]);
 
 				// calculation of luminocity
 				DetailPalette* dc = (DetailPalette*)&DS.color;	int LL; float	res;
-				float amb		= g_params.m_lm_amb_color.magnitude_rgb();
+				float amb		= color_intensity	(g_params.m_lm_amb_color);
 				float f			= g_params.m_lm_amb_fogness;
 				float f_inv		= 1.f - f; 
-				res				= (amount[0]/float(count[0]))*f_inv + amb*f; LL = iFloor(7.f * res); clamp(LL,0,15); dc->a0	= LL;
-				res				= (amount[1]/float(count[1]))*f_inv + amb*f; LL = iFloor(7.f * res); clamp(LL,0,15); dc->a1	= LL;
-				res				= (amount[2]/float(count[2]))*f_inv + amb*f; LL = iFloor(7.f * res); clamp(LL,0,15); dc->a2	= LL;
-				res				= (amount[3]/float(count[3]))*f_inv + amb*f; LL = iFloor(7.f * res); clamp(LL,0,15); dc->a3	= LL;
+				res				= (amount[0]/float(count[0]))*f_inv + amb*f; LL = iFloor(8.f * res); clamp(LL,0,15); dc->a0	= LL;
+				res				= (amount[1]/float(count[1]))*f_inv + amb*f; LL = iFloor(8.f * res); clamp(LL,0,15); dc->a1	= LL;
+				res				= (amount[2]/float(count[2]))*f_inv + amb*f; LL = iFloor(8.f * res); clamp(LL,0,15); dc->a2	= LL;
+				res				= (amount[3]/float(count[3]))*f_inv + amb*f; LL = iFloor(8.f * res); clamp(LL,0,15); dc->a3	= LL;
 				thProgress		= float(_z-Nstart)/float(Nend-Nstart);
 				thPerformance	= float(double(t_count)/double(t_time*CPU::cycles2seconds))/1000.f;
 			}
