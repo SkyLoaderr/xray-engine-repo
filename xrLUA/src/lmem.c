@@ -33,11 +33,11 @@
 ** allocators may use that.)
 */
 #ifndef l_free
-#define l_free(b,os)	free(b)
+#define l_free(b,os)		free(b)
 #endif
 
 
-#define MINSIZEARRAY	4
+#define MINSIZEARRAY		4
 
 
 void *luaM_growaux (lua_State *L, void *block, int *size, int size_elems,

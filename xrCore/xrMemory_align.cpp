@@ -281,7 +281,7 @@ void * __stdcall xr_aligned_offset_realloc(
 *       _aligned_offset_memory
 *
 * Purpose:
-*       Frees the algned memory block which was allocated using _aligned_malloc
+*       Frees the aligned memory block which was allocated using _aligned_malloc
 *       or _aligned_memory.
 *
 * Entry:
