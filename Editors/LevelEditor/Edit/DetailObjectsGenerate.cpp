@@ -307,7 +307,7 @@ u8 EDetailManager::GetRandomObject(u32 color_index)
 u8 EDetailManager::GetObject(ColorIndexPairIt& CI, u8 id)
 {
 	VERIFY(CI!=m_ColorIndices.end());
-    DOIt it = std::find(objects.begin(),objects.end(),CI->second[id]);
+    DetailIt it = std::find(objects.begin(),objects.end(),(CDetail*)CI->second[id]);
     VERIFY(it!=objects.end());
 	return (it-objects.begin());
 }
@@ -422,7 +422,7 @@ bool EDetailManager::UpdateSlotObjects(int x, int z){
         slot->color.a2 = 8;
         slot->color.a3 = 8;
         // density
-        float f = objects[slot->items[k].id]->m_fDensityFactor;
+        float f = ((EDetail*)objects[slot->items[k].id])->m_fDensityFactor;
 
         slot->items[k].palette.a0 	= iFloor(best[k].dens[0]*f*15.f+.5f);
         slot->items[k].palette.a1 	= iFloor(best[k].dens[1]*f*15.f+.5f);
@@ -454,48 +454,42 @@ bool EDetailManager::UpdateObjects(bool bUpdateTex, bool bUpdateSelectedOnly){
     return true;
 }
 
-DOIt EDetailManager::FindObjectByNameIt(LPCSTR name)
+CDetailManager::DetailIt EDetailManager::FindObjectByNameIt(LPCSTR name)
 {
-	for (DOIt it=objects.begin(); it!=objects.end(); it++)
-    	if (stricmp((*it)->GetName(),name)==0) return it;
+	for (DetailIt it=objects.begin(); it!=objects.end(); it++)
+    	if (stricmp(((EDetail*)(*it))->GetName(),name)==0) return it;
     return objects.end();
 }
 
-CDetail* EDetailManager::FindObjectByName(LPCSTR name)
+EDetail* EDetailManager::FindObjectByName(LPCSTR name)
 {
-	DOIt it = FindObjectByNameIt(name);
-	return (it!=objects.end())?*it:0;
-}
-
-void EDetailManager::MarkAllObjectsAsDel()
-{
-	for (DOIt it=objects.begin(); it!=objects.end(); it++)
-    	(*it)->m_bMarkDel = true;
+	DetailIt it = FindObjectByNameIt(name);
+	return (it!=objects.end())?(EDetail*)*it:0;
 }
 
 bool EDetailManager::RemoveObject(LPCSTR name)
 {
-    CDetail* D=0;
-    DOIt it = FindObjectByNameIt(name);
+    DetailIt it = FindObjectByNameIt(name);
     if (it!=objects.end()){
         xr_delete		(*it);
         objects.erase	(it);
+        InvalidateSlots	();
     	return true;
     }else return false;
-    
 }
 
-CDetail* EDetailManager::AppendObject(LPCSTR name, bool bTestUnique)
+EDetail* EDetailManager::AppendObject(LPCSTR name, bool bTestUnique)
 {
-    CDetail* D=0;
-	if (bTestUnique&&(D=FindObjectByName(name))) return D;
+    EDetail* D=0;
+	if (bTestUnique&&(0!=(D=FindObjectByName(name)))) return D;
 
-    D = xr_new<CDetail>();
+    D = xr_new<EDetail>();
     if (!D->Update(name)){
     	xr_delete(D);
         return 0;
     }
-    objects.push_back(D);
+    objects.push_back	(D);
+    InvalidateCache		();
 	return D;
 }
 
@@ -512,24 +506,13 @@ void EDetailManager::InvalidateSlots()
     InvalidateCache();
 }
 
-int EDetailManager::RemoveObjects(bool bOnlyMarked)
+int EDetailManager::RemoveObjects()
 {
 	int cnt=0;
-	if (bOnlyMarked){
-		for (u32 i=0; i<objects.size(); i++){  // не менять int i; на u32
-    		if (objects[i]->m_bMarkDel){
-            	xr_delete(objects[i]);
-	            objects.erase(objects.begin()+i);
-    	        i--;
-                cnt++;
-            }
-        }
-    }else{
-		for (DOIt it=objects.begin(); it!=objects.end(); it++)
-    		xr_delete(*it);
-        cnt = objects.size();
-	    objects.clear();
-    }
+    for (DetailIt it=objects.begin(); it!=objects.end(); it++)
+        xr_delete(*it);
+    cnt = objects.size();
+    objects.clear();
     return cnt;
 }
 
@@ -537,7 +520,7 @@ void EDetailManager::RemoveColorIndices(){
 	m_ColorIndices.clear();
 }
 
-CDetail* EDetailManager::FindObjectInColorIndices(u32 index, LPCSTR name)
+EDetail* EDetailManager::FindObjectInColorIndices(u32 index, LPCSTR name)
 {
 	ColorIndexPairIt CI=m_ColorIndices.find(index);
 	if (CI!=m_ColorIndices.end()){
@@ -551,11 +534,11 @@ CDetail* EDetailManager::FindObjectInColorIndices(u32 index, LPCSTR name)
 void EDetailManager::AppendIndexObject(u32 color,LPCSTR name, bool bTestUnique)
 {
 	if (bTestUnique){
-		CDetail* DO = FindObjectInColorIndices(color,name);
+		EDetail* DO = FindObjectInColorIndices(color,name);
         if (DO)
 			m_ColorIndices[color].push_back(DO);
     }else{
-		CDetail* DO = FindObjectByName(name);
+		EDetail* DO = FindObjectByName(name);
 	    R_ASSERT(DO);
 		m_ColorIndices[color].push_back(DO);
     }

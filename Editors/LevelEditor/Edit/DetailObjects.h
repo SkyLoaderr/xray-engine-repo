@@ -6,12 +6,12 @@
 #define DetailObjectsH
 
 #include "DetailFormat.h"
-#include "DetailModel.h"
+#include "EDetailModel.h"
 #include "Library.h"
 #include "customobject.h"
 #include "DetailManager.h"
 #include "Custom2DProjector.h"
-#include "SceneCustomMTools.H"
+#include "ESceneCustomMTools.H"
 
 class CFrustum;
 class CEditableObject;
@@ -114,6 +114,9 @@ public:
 	// properties
     virtual void		FillProp          		(LPCSTR pref, PropItemVec& items);
 
+    // utils
+	virtual bool 		GetSummaryInfo			(SSceneSummary* inf);
+    
     // other
     bool				UpdateHeader			();
     bool				UpdateSlots  			();
@@ -124,16 +127,15 @@ public:
     bool				Reinitialize			();
     void				InvalidateSlots			();
 
-    CDetail*			AppendObject			(LPCSTR name, bool bTestUnique=true);
+    EDetail*			AppendObject			(LPCSTR name, bool bTestUnique=true);
     bool				RemoveObject			(LPCSTR name);
-    int					RemoveObjects			(bool bOnlyMarked=false);
-    DOIt				FindObjectByNameIt		(LPCSTR name);
-    CDetail*			FindObjectByName		(LPCSTR name);
-    void				MarkAllObjectsAsDel		();
+    int					RemoveObjects			();
+    DetailIt			FindObjectByNameIt		(LPCSTR name);
+    EDetail*			FindObjectByName		(LPCSTR name);
 
     void				RemoveColorIndices		();
 	void				AppendIndexObject		(u32 color,LPCSTR name,bool bTestUnique=true);
-    CDetail*			FindObjectInColorIndices(u32 index, LPCSTR name);
+    EDetail*			FindObjectInColorIndices(u32 index, LPCSTR name);
     void				ExportColorIndices		(LPCSTR fname);
     void				ImportColorIndices		(LPCSTR fname);
 

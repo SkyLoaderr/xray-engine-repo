@@ -71,7 +71,7 @@ int CPortalUtils::CalculateSelectedPortals()
         // transfer from list to vector
         iPCount = CalculateSelectedPortals(s_lst);
     }else{
-		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face!");
+		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face (face without sector)!");
     }
 
 	UI.SetStatus("...");
@@ -146,7 +146,7 @@ int CPortalUtils::CalculateAllPortals2()
 
         Scene.UndoSave();
     }else{
-		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face!");
+		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face (face without sector)!");
     }
 
 	UI.SetStatus("...");
@@ -572,7 +572,7 @@ int CPortalUtils::CalculateAllPortals()
         ObjectList& s_lst=Scene.ListObj(OBJCLASS_SECTOR);
         iPCount = CalculateSelectedPortals(s_lst);
     }else{
-		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face!");
+		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face (face without sector)!");
     }
 
 	UI.ResetStatus();
@@ -592,7 +592,7 @@ int CPortalUtils::CalculatePortals(CSector* SF, CSector* SB)
 
         iPCount = CalculateSelectedPortals(sectors);
     }else{
-		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face!");
+		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face (face without sector)!");
     }
 
 	UI.ResetStatus();

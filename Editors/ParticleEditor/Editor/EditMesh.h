@@ -163,7 +163,6 @@ class CEditableMesh {
     friend class CSector;
     friend class CPortalUtils;
     friend class SceneBuilder;
-    friend class CDetail;
     friend class CExportSkeleton;
     friend class CExportObjectOGF;
     friend class TfrmEditLibrary;

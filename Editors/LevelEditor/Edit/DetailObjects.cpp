@@ -156,21 +156,23 @@ void EDetailManager::OnRender(int priority, bool strictB2F)
 }
 //------------------------------------------------------------------------------
 
-void EDetailManager::OnDeviceCreate(){
+void EDetailManager::OnDeviceCreate()
+{
 	// base texture
     m_Base.CreateShader();
 	// detail objects
 	for (DetailIt it=objects.begin(); it!=objects.end(); it++)
-    	(*it)->OnDeviceCreate();
+    	((EDetail*)(*it))->OnDeviceCreate();
 	soft_Load	();
 }
 
-void EDetailManager::OnDeviceDestroy(){
+void EDetailManager::OnDeviceDestroy()
+{
 	// base texture
     m_Base.DestroyShader();
 	// detail objects
 	for (DetailIt it=objects.begin(); it!=objects.end(); it++)
-    	(*it)->OnDeviceDestroy();
+    	((EDetail*)(*it))->OnDeviceDestroy();
 	soft_Unload	();
 }
 
@@ -201,7 +203,7 @@ void EDetailManager::SaveColorIndices(IWriter& F)
 	F.open_chunk		(DETMGR_CHUNK_OBJECTS);
     for (DetailIt it=objects.begin(); it!=objects.end(); it++){
 		F.open_chunk	(it-objects.begin());
-        (*it)->Save		(F);
+        ((EDetail*)(*it))->Save		(F);
 	    F.close_chunk	();
     }
     F.close_chunk		();
@@ -214,7 +216,7 @@ void EDetailManager::SaveColorIndices(IWriter& F)
 	for(; i_it!=E; i_it++){
 		F.w_u32		(i_it->first);
         F.w_u8			(i_it->second.size());
-	    for (DetailIt d_it=i_it->second.begin(); d_it!=i_it->second.end(); d_it++)
+	    for (DOIt d_it=i_it->second.begin(); d_it!=i_it->second.end(); d_it++)
         	F.w_stringZ	((*d_it)->GetName());
     }
     F.close_chunk		();
@@ -224,14 +226,16 @@ bool EDetailManager::LoadColorIndices(IReader& F)
 {
 	VERIFY				(objects.empty());
     VERIFY  			(m_ColorIndices.empty());
+
+    bool bRes			= true;
     // objects
     IReader* OBJ 		= F.open_chunk(DETMGR_CHUNK_OBJECTS);
     if (OBJ){
         IReader* O   	= OBJ->open_chunk(0);
         for (int count=1; O; count++) {
-            CDetail* DO	= xr_new<CDetail>();
-            if (!DO->Load(*O)) ELog.Msg(mtError,"Can't load detail object.");
-			objects.push_back(DO);
+            EDetail* DO	= xr_new<EDetail>();
+            if (DO->Load(*O)) 	objects.push_back(DO);
+            else				bRes = false;
             O->close();
             O = OBJ->open_chunk(count);
         }
@@ -248,19 +252,20 @@ bool EDetailManager::LoadColorIndices(IReader& F)
         ref_cnt			= F.r_u8();
 		for (int j=0; j<ref_cnt; j++){
         	F.r_stringZ	(buf);
-            CDetail* DO	= FindObjectByName(buf);
+            EDetail* DO	= FindObjectByName(buf);
             if (DO) 	m_ColorIndices[index].push_back(DO);    
-            else		ELog.Msg(mtError,"Can't find library object: '%s'",buf);
+            else		bRes=false;
         }
     }
+	InvalidateCache		();
 
-    return true;
+    return bRes;
 }
 
 bool EDetailManager::Load(IReader& F){
     string256 buf;
     R_ASSERT			(F.find_chunk(DETMGR_CHUNK_VERSION));
-	u32 version		= F.r_u32();
+	u32 version			= F.r_u32();
 
     if (version!=DETMGR_VERSION){
     	ELog.Msg(mtError,"EDetailManager: unsupported version.");
@@ -270,15 +275,18 @@ bool EDetailManager::Load(IReader& F){
 	// header
     R_ASSERT			(F.r_chunk(DETMGR_CHUNK_HEADER,&dtH));
 
-    // objects
-    LoadColorIndices	(F);
-
     // slots
     R_ASSERT			(F.find_chunk(DETMGR_CHUNK_SLOTS));
-    int cnt 			= F.r_u32();
-    dtSlots				= xr_alloc<DetailSlot>(cnt);
-    m_Selected.resize	(cnt);
-	F.r					(dtSlots,cnt*sizeof(DetailSlot));
+    int slot_cnt		= F.r_u32();
+    dtSlots				= xr_alloc<DetailSlot>(slot_cnt);
+    m_Selected.resize	(slot_cnt);
+	F.r					(dtSlots,slot_cnt*sizeof(DetailSlot));
+
+    // objects
+    if (!LoadColorIndices(F)){
+        ELog.DlgMsg		(mtError,"EDetailManager: Some objects removed. Reinitialize objects.",buf);
+        InvalidateSlots	();
+    }
 
     // internal
     // bbox
@@ -286,12 +294,12 @@ bool EDetailManager::Load(IReader& F){
 
 	// snap objects
     if (F.find_chunk(DETMGR_CHUNK_SNAP_OBJECTS)){
-		cnt 			= F.r_u32();
-        if (cnt){
-	        for (int i=0; i<cnt; i++){
+		int snap_cnt 		= F.r_u32();
+        if (snap_cnt){
+	        for (int i=0; i<snap_cnt; i++){
     	    	F.r_stringZ	(buf);
         	    CCustomObject* O = Scene.FindObjectByName(buf,OBJCLASS_SCENEOBJECT);
-            	if (!O)		ELog.Msg(mtError,"DetailManager: Can't find object '%s' in scene.",buf);
+            	if (!O)		ELog.Msg(mtError,"EDetailManager: Can't find object '%s' in scene.",buf);
 	            else		m_SnapObjects.push_back(O);
     	    }
         }
@@ -307,7 +315,7 @@ bool EDetailManager::Load(IReader& F){
 		    m_Base.CreateShader();
 		    m_Base.CreateRMFromObjects(m_BBox,m_SnapObjects);
         }else{
-        	ELog.Msg(mtError,"DetailManager: Can't find base texture '%s'.",buf);
+        	ELog.Msg(mtError,"EDetailManager: Can't find base texture '%s'.",buf);
             ClearSlots();
             ClearBase();
         }
@@ -359,41 +367,96 @@ bool EDetailManager::Export(LPCSTR fn)
 {
     bool bRes=true;
 
-    UI.ProgressStart	(4,"Making details...");
-    dtH.version			= DETAIL_VERSION;
+    UI.ProgressStart	(5,"Making details...");
 	CMemoryWriter F;
-    dtH.object_count	= objects.size();
-	// header
-	F.w_chunk			(DETMGR_CHUNK_HEADER,&dtH,sizeof(DetailHeader));
-	UI.ProgressInc		();
 
-    // objects
-	F.open_chunk		(DETMGR_CHUNK_OBJECTS);
-    for (DetailIt it=objects.begin(); it!=objects.end(); it++){
-		F.open_chunk	(it-objects.begin());
-        if (!(*it)->m_pRefs){
-        	ELog.DlgMsg(mtError, "Bad object or object not found '%s'.", (*it)->m_sRefs.c_str());
-            bRes=false;
-        }else{
-	        (*it)->Export	(F);
+	UI.ProgressInc		("merge textures");
+    Fvector2Vec			offsets;
+    Fvector2Vec			scales;
+    boolVec				rotated;
+    AStringSet 			textures_set;
+    AStringVec 			textures;
+
+    int slot_cnt		= dtH.size_x*dtH.size_z;
+	for (int slot_idx=0; slot_idx<slot_cnt; slot_idx++){
+    	DetailSlot* it = &dtSlots[slot_idx];
+        for (int part=0; part<4; part++){
+        	u8 id		= it->items[part].id;
+        	if (id!=0xff) textures_set.insert(((EDetail*)(objects[id]))->GetTextureName());
         }
-	    F.close_chunk	();
-        if (!bRes) break;
     }
-    F.close_chunk		();
-	UI.ProgressInc();
+    textures.assign		(textures_set.begin(),textures_set.end());
 
+    U8Vec remap_object	(objects.size(),0xff);
+    U8It remap_object_it= remap_object.begin();
+
+    int new_idx			= 0;
+    for (DetailIt d_it=objects.begin(); d_it!=objects.end(); d_it++,remap_object_it++)
+    	*remap_object_it= textures_set.find(((EDetail*)(*d_it))->GetTextureName())==textures_set.end()?0xff:new_idx++;
+//    	textures_set.insert(((EDetail*)(*d_it))->GetTextureName());
+        
+    AnsiString 			do_tex_name = ChangeFileExt(fn,"_details.dds");
+    int res;
+    if (0==(res=ImageManager.CreateMergedTexture(textures,do_tex_name.c_str(),256,256,offsets,scales,rotated)))
+        if (0==(res=ImageManager.CreateMergedTexture(textures,do_tex_name.c_str(),512,256,offsets,scales,rotated)))
+            if (0==(res=ImageManager.CreateMergedTexture(textures,do_tex_name.c_str(),512,512,offsets,scales,rotated)))
+                if (0==(res=ImageManager.CreateMergedTexture(textures,do_tex_name.c_str(),1024,256,offsets,scales,rotated)))
+                    if (0==(res=ImageManager.CreateMergedTexture(textures,do_tex_name.c_str(),1024,512,offsets,scales,rotated)))
+                        res=ImageManager.CreateMergedTexture(textures,do_tex_name.c_str(),1024,1024,offsets,scales,rotated);
+    if (1!=res)		bRes=FALSE;
+
+	UI.ProgressInc		("export geometry");
+    // objects
+    int object_idx= 0;
+    if (bRes){
+	    do_tex_name 	= ChangeFileExt(ExtractFileName(do_tex_name),"");
+        F.open_chunk	(DETMGR_CHUNK_OBJECTS);
+        for (DetailIt it=objects.begin(); it!=objects.end(); it++){
+        	if (remap_object[it-objects.begin()]!=0xff){
+                F.open_chunk	(object_idx++);
+                if (!((EDetail*)(*it))->m_pRefs){
+                    ELog.DlgMsg(mtError, "Bad object or object not found '%s'.", ((EDetail*)(*it))->m_sRefs.c_str());
+                    bRes=false;
+                }else{
+                    LPCSTR tex_name = ((EDetail*)(*it))->GetTextureName();
+                    for (u32 t_idx=0; t_idx<textures.size(); t_idx++) 
+                        if (textures[t_idx]==tex_name) break;
+                    VERIFY(t_idx<textures.size());
+                    ((EDetail*)(*it))->Export	(F,do_tex_name.c_str(),offsets[t_idx],scales[t_idx],rotated[t_idx]);
+                }
+                F.close_chunk	();
+                if (!bRes) break;
+            }
+        }
+        F.close_chunk		();
+    }
+    
+	UI.ProgressInc("export slots");
     // slots
     if (bRes){
+    	xr_vector<DetailSlot> dt_slots(slot_cnt); dt_slots.assign(dtSlots,dtSlots+slot_cnt);
+        for (slot_idx=0; slot_idx<slot_cnt; slot_idx++){
+            DetailSlot& it = dt_slots[slot_idx];
+            for (int part=0; part<4; part++){
+                u8 id		= it.items[part].id;
+                if (id!=0xff) it.items[part].id = remap_object[id];
+            }
+        }
 		F.open_chunk	(DETMGR_CHUNK_SLOTS);
-		F.w				(dtSlots,dtH.size_x*dtH.size_z*sizeof(DetailSlot));
+		F.w				(dt_slots.begin(),dtH.size_x*dtH.size_z*sizeof(DetailSlot));
 	    F.close_chunk	();
 		UI.ProgressInc	();
+
+        // write header
+        dtH.version		= DETAIL_VERSION;
+        dtH.object_count= object_idx;
+
+        F.w_chunk		(DETMGR_CHUNK_HEADER,&dtH,sizeof(DetailHeader));
+
+    	F.save_to(fn);
     }
 
-    if (bRes)			F.save_to(fn);
-
-	UI.ProgressInc();
+    UI.ProgressInc		();
     UI.ProgressEnd		();
     return bRes;
 }
@@ -408,5 +471,17 @@ void EDetailManager::FillProp(LPCSTR pref, PropItemVec& values)
 	PropValue* P;
     P=PHelper.CreateFloat	(values, FHelper.PrepareKey(pref,"Objects per square"),	&psDetailDensity);
     P->OnChangeEvent		= OnDensityChange;
+}
+
+bool EDetailManager::GetSummaryInfo(SSceneSummary* inf)
+{
+	for (DetailIt it=objects.begin(); it!=objects.end(); it++){
+    	((EDetail*)(*it))->OnDeviceCreate();
+        CEditableObject* E 	= ((EDetail*)(*it))->m_pRefs;
+		if (!E)				continue;
+	    CSurface* surf		= *E->FirstSurface(); VERIFY(surf);
+        inf->do_textures.insert(surf->_Texture());
+    }
+    return true;
 }
 

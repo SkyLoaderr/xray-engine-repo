@@ -89,7 +89,7 @@ public:
             F.r				(&*m_Positions.begin(),sizeof(Fvector)*m_PointCount);
         }
     };
-    SFuzzyData		m_FuzzyData;
+    SFuzzyData*		m_FuzzyData;
 
     CLAItem*		m_pAnimRef;
 
@@ -99,9 +99,13 @@ public:
     // spot light
     AnsiString		m_SpotAttTex;
 
+    // controller
+    AnsiString		m_ControlName;
+
     virtual void	OnUpdateTransform();
     void __fastcall	OnTypeChange	(PropValue* value);
 
+    void __fastcall OnFuzzyFlagChange	(PropValue* value);
     void __fastcall	OnFuzzyDataChange	(PropValue* value);
     void __fastcall	OnFuzzyTypeChange	(PropValue* value);
 

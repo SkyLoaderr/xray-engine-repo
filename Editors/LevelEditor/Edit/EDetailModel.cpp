@@ -16,12 +16,11 @@
 #define DETOBJ_VERSION 				0x0001
 //------------------------------------------------------------------------------
 
-CDetail::CDetail()
+EDetail::EDetail()
 {
 	shader				= 0;
 	m_Flags.zero		();
 	m_pRefs				= 0;
-    m_bMarkDel			= false;
     m_fMinScale			= 0.5f;
     m_fMaxScale   		= 2.f;
     m_fDensityFactor	= 1.f;
@@ -32,28 +31,35 @@ CDetail::CDetail()
 	number_indices		= 0;
 }
 
-CDetail::~CDetail()
+EDetail::~EDetail()
 {
 	Unload();
 }
 
-void CDetail::Unload()
+void EDetail::Unload()
 {
-	if (vertices)		{ xr_free(vertices);	vertices=0; }
-	if (indices)		{ xr_free(indices);		indices=0;	}
+	CDetail::Unload		();
     Lib.RemoveEditObject(m_pRefs);
     OnDeviceDestroy		();
 }
-/*
-LPCSTR CDetail::GetName	(){
+
+LPCSTR EDetail::GetName	()
+{
     return m_pRefs?m_pRefs->GetName():m_sRefs.c_str();
 }
-*/
-void CDetail::DefferedLoad()
+
+LPCSTR EDetail::GetTextureName()
+{
+	VERIFY(m_pRefs);
+    CSurface* surf		= *m_pRefs->FirstSurface(); VERIFY(surf);
+    return surf->_Texture();
+}
+
+void EDetail::DefferedLoad()
 {
 }
 
-void CDetail::OnDeviceCreate()
+void EDetail::OnDeviceCreate()
 {
 	if (!m_pRefs)		return;
     CSurface* surf		= *m_pRefs->FirstSurface();
@@ -63,37 +69,38 @@ void CDetail::OnDeviceCreate()
 	shader.create		(s_name.c_str(),t_name.c_str());
 }
 
-void CDetail::OnDeviceDestroy()
+void EDetail::OnDeviceDestroy()
 {
 	shader.destroy();
 }
 
-int CDetail::_AddVert(const Fvector& p, float u, float v)
+int EDetail::_AddVert(const Fvector& p, float u, float v)
 {
-	fvfVertexIn V(p,u,v);
+	EVertexIn V(p,u,v);
     for (u32 k=0; k<number_vertices; k++)
-    	if (vertices[k].similar(V)) return k;
+    	if (V.similar((EVertexIn&)vertices[k])) return k;
     number_vertices++;
     vertices = (fvfVertexIn*)xr_realloc(vertices,number_vertices*sizeof(fvfVertexIn));
     vertices[number_vertices-1] = V;
     return number_vertices-1;
 }
 
-bool CDetail::Update	(LPCSTR name){
+bool EDetail::Update	(LPCSTR name)
+{
 	m_sRefs				= name;
     // update link
     CEditableObject* R	= Lib.CreateEditObject(name);
     if (!R){
-        ELog.DlgMsg		(mtError, "CDetail: '%s' not found in library", name);
+ 		ELog.Msg		(mtError,"Can't load detail object '%s'.", name);
         return false;
     }
     if(R->SurfaceCount()!=1){
-    	ELog.DlgMsg		(mtError,"Object must contain 1 material.");
+    	ELog.Msg		(mtError,"Object must contain 1 material.");
 	    Lib.RemoveEditObject(R);
     	return false;
     }
 	if(R->MeshCount()==0){
-    	ELog.DlgMsg		(mtError,"Object must contain 1 mesh.");
+    	ELog.Msg		(mtError,"Object must contain 1 mesh.");
 	    Lib.RemoveEditObject(R);
     	return false;
     }
@@ -109,13 +116,14 @@ bool CDetail::Update	(LPCSTR name){
     // fill vertices
     bv_bb.invalidate();
     u32 idx			= 0;
-    for (FaceIt f_it=M->m_Faces.begin(); f_it!=M->m_Faces.end(); f_it++){
+    for (FaceIt f_it=M->GetFaces().begin(); f_it!=M->GetFaces().end(); f_it++){
     	for (int k=0; k<3; k++,idx++){
         	WORD& i_it	= indices[idx];
         	st_Face& F 	= *f_it;
-            Fvector& P  = M->m_Points[F.pv[k].pindex];
-            st_VMapPt& vm=M->m_VMRefs[F.pv[k].vmref][0];
-            Fvector2& uv= M->m_VMaps[vm.vmap_index]->getUV(vm.index);
+            Fvector& P  = M->GetPoints()[F.pv[k].pindex];
+            
+            st_VMapPt& vm=M->GetVMRefs()[F.pv[k].vmref][0];
+            Fvector2& uv= M->GetVMaps()[vm.vmap_index]->getUV(vm.index);
         	i_it 		= _AddVert	(P,uv.x,uv.y);
 	        bv_bb.modify(vertices[i_it].P);
         }
@@ -127,12 +135,13 @@ bool CDetail::Update	(LPCSTR name){
     return true;
 }
 
-bool CDetail::Load(IReader& F){
+bool EDetail::Load(IReader& F)
+{
 	// check version
     R_ASSERT			(F.find_chunk(DETOBJ_CHUNK_VERSION));
     u32 version		= F.r_u32();
     if (version!=DETOBJ_VERSION){
-    	ELog.Msg(mtError,"CDetail: unsupported version.");
+    	ELog.Msg(mtError,"EDetail: unsupported version.");
         return false;
     }
 
@@ -157,7 +166,8 @@ bool CDetail::Load(IReader& F){
     return 				Update(buf);
 }
 
-void CDetail::Save(IWriter& F){
+void EDetail::Save(IWriter& F)
+{
 	// version
 	F.open_chunk		(DETOBJ_CHUNK_VERSION);
     F.w_u32				(DETOBJ_VERSION);
@@ -185,13 +195,14 @@ void CDetail::Save(IWriter& F){
     F.close_chunk		();
 }
 
-void CDetail::Export(IWriter& F){
+void EDetail::Export(IWriter& F, LPCSTR tex_name, const Fvector2& offs, const Fvector2& scale, bool rot)
+{
 	R_ASSERT			(m_pRefs);
     CSurface* surf		= *m_pRefs->FirstSurface();
 	R_ASSERT			(surf);
     // write data
 	F.w_stringZ			(surf->_ShaderName());
-	F.w_stringZ			(surf->_Texture());
+	F.w_stringZ			(tex_name);//surf->_Texture());
 
     F.w_u32				(m_Flags.get());
     F.w_float			(m_fMinScale);
@@ -200,7 +211,13 @@ void CDetail::Export(IWriter& F){
     F.w_u32				(number_vertices);
     F.w_u32				(number_indices);
 
-    F.w					(vertices, 	number_vertices*sizeof(fvfVertexIn));
-    F.w					(indices, 	number_indices*sizeof(WORD));
+    // remap UV
+    EVertexIn* rm_vertices = xr_alloc<EVertexIn>(number_vertices);
+    for (u32 k=0; k<number_vertices; k++) rm_vertices[k].remapUV(vertices[k],offs,scale,rot);
+    
+    F.w					(rm_vertices, 	number_vertices*sizeof(fvfVertexIn));
+    F.w					(indices, 		number_indices*sizeof(WORD));
+
+    xr_free				(rm_vertices);
 }
 

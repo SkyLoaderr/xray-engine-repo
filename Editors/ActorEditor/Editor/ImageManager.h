@@ -2,16 +2,20 @@
 #ifndef ImageManagerH
 #define ImageManagerH
 
+#include "folderlib.h"
+#include "etextureparams.h"
+
 class EImageThumbnail;
 
 class CImageManager{
     void		MakeThumbnailImage	(EImageThumbnail* THM, u32* data, u32 w, u32 h, u32 a);
     void		MakeGameTexture		(EImageThumbnail* THM, LPCSTR game_name, u32* data);
+    void		MakeGameTexture		(LPCSTR game_name, u32* data, u32 w, u32 h, STextureParams::ETFormat fmt, bool bGenMipMap);
 public:
 				CImageManager		(){;}
 				~CImageManager		(){;}
 	// texture routines
-    BOOL __fastcall	RemoveTexture	(LPCSTR fname);
+    BOOL __fastcall	RemoveTexture	(LPCSTR fname, EItemType type);
     BOOL		CheckCompliance		(LPCSTR fname, int& compl);
     void		CheckCompliance		(FS_QueryMap& files, FS_QueryMap& compl);
     int			GetTextures			(FS_QueryMap& files);
@@ -26,6 +30,9 @@ public:
     void		CreateLODTexture	(Fbox bbox, LPCSTR tex_name, u32 tgt_w, u32 tgt_h, int samples, int age);
     void		CreateGameTexture	(const AnsiString& src_name, EImageThumbnail* thumb=0);
     bool		LoadTextureData		(const AnsiString& src_name, U32Vec& data, u32& w, u32& h);
+
+    // result 0-can't fit images, 1-ok, -1 can't load image 
+    int			CreateMergedTexture	(AStringVec& src_names, LPCSTR dest_name, int dest_width, int dest_height, Fvector2Vec& dest_offset, Fvector2Vec& dest_scale, boolVec& dest_rotate);
 };
 
 extern CImageManager ImageManager;

@@ -22,7 +22,7 @@
 #include "MxMenus.hpp"
 #include <Menus.hpp>
 #include "MXCtrls.hpp"
-
+#include "FolderLib.h"
 //---------------------------------------------------------------------------
 // refs
 class CLAItem;
@@ -131,7 +131,7 @@ private:	// User declarations
     void	UpdateView();
     int		iMoveKey;
     int 	iTgtMoveKey;
-    void __fastcall OnRenameItem(LPCSTR p0, LPCSTR p1);
+    void __fastcall OnRenameItem(LPCSTR p0, LPCSTR p1, EItemType type);
 
     TProperties*		m_Props;
     void __fastcall		OnModified		(void);

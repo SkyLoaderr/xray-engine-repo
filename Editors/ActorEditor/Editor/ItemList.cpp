@@ -78,6 +78,12 @@ void __fastcall TItemList::ClearList()
     ClearParams			();
 }
 //---------------------------------------------------------------------------
+void __fastcall TItemList::DeselectAll()
+{
+    if (tvItems->MultiSelect) 	tvItems->DeselectAll();
+    else 						tvItems->Selected   = 0;
+}
+//---------------------------------------------------------------------------
 void __fastcall TItemList::SelectItem(const AnsiString& full_name, bool bVal, bool bLeaveSel, bool bExpand)
 {
 	TElTreeItem* item;
@@ -97,6 +103,7 @@ __fastcall TItemList::TItemList(TComponent* Owner) : TForm(Owner)
 {
     DEFINE_INI		(fsStorage);
     m_Flags.zero	();
+    OnItemFocused	= 0;
     OnItemsFocused	= 0;
     OnCloseEvent	= 0;
     OnItemRename	= 0;
@@ -322,6 +329,7 @@ void __fastcall TItemList::tvItemsAfterSelectionChange(TObject *Sender)
 	if (IsLocked()) return;
     ListItemsVec sel_items;
     GetSelected	(0,sel_items,false);
+    if (OnItemFocused)		OnItemFocused(GetSelected());
     if (OnItemsFocused) 	OnItemsFocused(sel_items);
     for (ListItemsIt it=sel_items.begin(); it!=sel_items.end(); it++){
         if ((*it)->OnItemFocused)(*it)->OnItemFocused(*it);
@@ -415,13 +423,33 @@ void __fastcall TItemList::InplaceEditValidateResult(
 }
 //---------------------------------------------------------------------------
 
+void __fastcall	TItemList::RenameItem(LPCSTR fn0, LPCSTR fn1, EItemType type)
+{
+	if (OnItemRename) OnItemRename	(fn0,fn1,type);
+    if (type==TYPE_OBJECT){
+        TElTreeItem* item			= FHelper.FindObject(tvItems,fn0); 	VERIFY(item);
+        ListItem* prop				= (ListItem*)item->Tag; 			VERIFY(prop);
+		prop->SetName				(fn1);
+    }
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TItemList::InplaceEditAfterOperation(TObject *Sender,
       bool &Accepted, bool &DefaultConversion)
 {
 	R_ASSERT(m_Flags.is(ilEditMenu));
 	TElTreeInplaceAdvancedEdit* IE	= InplaceEdit;
     AnsiString new_text 			= AnsiString(IE->Editor->Text).LowerCase();
-    FHelper.RenameItem				(tvItems,IE->Item,new_text,OnItemRename);
+    FHelper.RenameItem				(tvItems,IE->Item,new_text,RenameItem); 
+	if (tvItems->OnAfterSelectionChange) tvItems->OnAfterSelectionChange(0);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TItemList::tvItemsDragDrop(TObject *Sender,
+      TObject *Source, int X, int Y)
+{
+	R_ASSERT(m_Flags.is(ilEditMenu));
+	FHelper.DragDrop(Sender,Source,X,Y,RenameItem);
 	if (tvItems->OnAfterSelectionChange) tvItems->OnAfterSelectionChange(0);
 }
 //---------------------------------------------------------------------------
@@ -434,30 +462,13 @@ void __fastcall TItemList::miCreateFolderClick(TObject *Sender)
 
 void __fastcall TItemList::Rename1Click(TObject *Sender)
 {
-	R_ASSERT(m_Flags.is(ilEditMenu));
-    ElItemsVec sel_items;
-    if (1==GetSelected(sel_items))
-		if (sel_items.back()) tvItems->EditItem(sel_items.back(),-1);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TItemList::tvItemsDragDrop(TObject *Sender,
-      TObject *Source, int X, int Y)
-{
-	R_ASSERT(m_Flags.is(ilEditMenu));
-	FHelper.DragDrop(Sender,Source,X,Y,OnItemRename);
+	RenameSelItem();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TItemList::Delete1Click(TObject *Sender)
 {
-	R_ASSERT(m_Flags.is(ilEditMenu));
-    ElItemsVec sel_items;
-    if (GetSelected(sel_items)){
-        for (ElItemsIt it=sel_items.begin(); it!=sel_items.end(); it++)
-			FHelper.RemoveItem(tvItems,*it,OnItemRemove);
-        tvItemsAfterSelectionChange(Sender);
-    }
+	RemoveSelItems();
 }
 //---------------------------------------------------------------------------
 
@@ -516,6 +527,39 @@ void __fastcall TItemList::tvItemsHeaderResize(TObject *Sender)
     tvItems->HeaderSections->Item[0]->Width = tvItems->Width;
     if (tvItems->VertScrollBarVisible)
     	tvItems->HeaderSections->Item[0]->Width -= tvItems->VertScrollBarStyles->Width;
+}
+//---------------------------------------------------------------------------
+
+void TItemList::RemoveSelItems()
+{
+	R_ASSERT(m_Flags.is(ilEditMenu));
+    ElItemsVec sel_items;
+    if (GetSelected(sel_items)){
+    	tvItems->IsUpdating = true; // LockUpdating нельзя
+    	DeselectAll					();
+        tvItemsAfterSelectionChange	(0);
+        bool bSelChanged=false;
+        for (ElItemsIt it=sel_items.begin(); it!=sel_items.end(); it++)
+			if (!FHelper.RemoveItem(tvItems,*it,OnItemRemove)){
+            	AnsiString fn;
+                FHelper.MakeFullName(*it,0,fn);
+            	SelectItem(fn,true,true,false);
+                bSelChanged=true;
+            }
+        if (bSelChanged) tvItemsAfterSelectionChange(0);
+    	tvItems->IsUpdating = false;
+    }
+}
+//---------------------------------------------------------------------------
+
+void TItemList::RenameSelItem()
+{
+	R_ASSERT(m_Flags.is(ilEditMenu));
+    ElItemsVec sel_items;
+    if (1==GetSelected(sel_items)){
+		if (sel_items.back()) tvItems->EditItem(sel_items.back(),-1);
+        tvItemsAfterSelectionChange	(0);
+    }
 }
 //---------------------------------------------------------------------------
 

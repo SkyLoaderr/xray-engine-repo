@@ -6,6 +6,7 @@
 #include "xrImage_Resampler.h"
 
 //----------------------------------------------------
+/*
 bool DrawThumbnail(HDC hdc, U32Vec& data, int offs_x, int offs_y, int dest_w, int dest_h, int src_w, int src_h)
 {
     BITMAPINFO bi;
@@ -18,13 +19,52 @@ bool DrawThumbnail(HDC hdc, U32Vec& data, int offs_x, int offs_y, int dest_w, in
     bi.bmiHeader.biCompression	= BI_RGB;
     bi.bmiHeader.biSizeImage 	= src_w*src_h*4;
 
-    SetStretchBltMode			(hdc, STRETCH_HALFTONE);
+    int mode					= SetStretchBltMode(hdc, STRETCH_HALFTONE);
+    SetBrushOrgEx				(hdc,0,0,0);	
     int ln = StretchDIBits		(hdc, offs_x,offs_y, dest_w,dest_h, 0,0, src_w,src_h, (u8*)data.begin(), &bi, DIB_RGB_COLORS, SRCCOPY);
-	if (ln==GDI_ERROR){
+    if (ln==0){
+    	int y=0;
+    }
+	if (mode==0||ln==GDI_ERROR){
     	ELog.Msg(mtError,"%s",Engine.LastWindowsError());
     	return false;
     }
 	return true;
+}*/
+//----------------------------------------------------
+void DrawThumbnail(TCanvas* pCanvas, TRect& r, U32Vec& data, bool bDrawWithAlpha)
+{
+    Graphics::TBitmap *pBitmap = xr_new<Graphics::TBitmap>();
+
+    pBitmap->PixelFormat = pf32bit;
+    pBitmap->Height		 = THUMB_HEIGHT;
+    pBitmap->Width		 = THUMB_WIDTH;
+        
+    if (bDrawWithAlpha){
+    	Fcolor back;
+        back.set		(bgr2rgb(pCanvas->Brush->Color));  back.mul_rgb(255.f);
+        for (int y = 0; y < pBitmap->Height; y++)
+        {
+            u32* ptr 		= (u32*)pBitmap->ScanLine[y];
+            for (int x = 0; x < pBitmap->Width; x++){
+                u32 src 	= data[(THUMB_HEIGHT-1-y)*THUMB_WIDTH+x];
+                float a		= float(color_get_A(src))/255.f;
+                float inv_a	= 1.f-a;;
+                u32 r		= iFloor(float(color_get_R(src))*a+back.r*inv_a);
+                u32 g		= iFloor(float(color_get_G(src))*a+back.g*inv_a);
+                u32 b		= iFloor(float(color_get_B(src))*a+back.b*inv_a);
+                ptr[x] 		= color_rgba(r,g,b,0);
+            }
+        }
+    }else{
+        for (int y = 0; y < pBitmap->Height; y++)
+        {
+            u32* ptr 		= (u32*)pBitmap->ScanLine[y];
+            Memory.mem_copy	(ptr,&data[(THUMB_HEIGHT-1-y)*THUMB_WIDTH],THUMB_WIDTH*4);
+        }
+    }
+    pCanvas->StretchDraw(r,pBitmap);
+    xr_delete(pBitmap);
 }
 //----------------------------------------------------
 LPCSTR EImageThumbnail::FormatString()
@@ -252,7 +292,7 @@ void EImageThumbnail::FillProp(PropItemVec& items)
     }
 }
 
-void EImageThumbnail::Draw(TCanvas* pCanvas, const TRect& R, bool bStretch)
+void EImageThumbnail::Draw(TCanvas* pCanvas, const TRect& R, bool bUseAlpha)
 {
 	if (IsTexture()){
         TRect r = R; r.left += 1; r.top += 1;
@@ -262,18 +302,20 @@ void EImageThumbnail::Draw(TCanvas* pCanvas, const TRect& R, bool bStretch)
         if (w!=h)	pCanvas->FillRect(R);
         if (w>h){   r.right = R.left + R.Width()-1; 	r.bottom = R.top + h/w*R.Height()-1;
         }else{      r.right = R.left + w/h*R.Width()-1; r.bottom = R.top + R.Height()-1;}
-        DrawThumbnail(pCanvas->Handle,m_Pixels,r.left,r.top,r.Width(),r.Height(),THUMB_WIDTH,THUMB_HEIGHT);
+//		DrawThumbnail(pCanvas->Handle,m_Pixels,r.left,r.top,r.Width(),r.Height(),THUMB_WIDTH,THUMB_HEIGHT);
+		DrawThumbnail(pCanvas,r,m_Pixels,bUseAlpha);
     }else{
-        TRect r = R; r.left += 1; r.top += 1;
-        r.right -= 1; r.bottom -= 1;
-        DrawThumbnail(pCanvas->Handle,m_Pixels,r.left,r.top,r.Width(),r.Height(),THUMB_WIDTH,THUMB_HEIGHT);
+		TRect r = R; r.left += 1; r.top += 1;
+		r.right -= 1; r.bottom -= 1;
+//		DrawThumbnail(pCanvas->Handle,m_Pixels,r.left,r.top,r.Width(),r.Height(),THUMB_WIDTH,THUMB_HEIGHT);
+		DrawThumbnail(pCanvas,r,m_Pixels,bUseAlpha);
     }
 }
 
-void EImageThumbnail::Draw(TPanel* panel, TPaintBox* pbox, bool bStretch)
+void EImageThumbnail::Draw(TPaintBox* pbox, bool bUseAlpha)
 {
 	if (IsTexture()){
-        RECT r;
+        TRect r;
         r.left = 2; r.top = 2;
         float w, h;
         w = _Width();
@@ -281,15 +323,17 @@ void EImageThumbnail::Draw(TPanel* panel, TPaintBox* pbox, bool bStretch)
         if (w!=h)	pbox->Canvas->FillRect(pbox->BoundsRect);
         if (w>h){   r.right = pbox->Width-1; r.bottom = h/w*pbox->Height-1;
         }else{      r.right = w/h*pbox->Width-1; r.bottom = pbox->Height-1;}
-        HDC hdc 	= GetDC	(panel->Handle);
-        DrawThumbnail(hdc,m_Pixels,r.left,r.top,r.right-r.left,r.bottom-r.top,THUMB_WIDTH,THUMB_HEIGHT);
-        ReleaseDC	(panel->Handle,hdc);
+//		HDC hdc 	= GetDC	(panel->Handle);
+//		DrawThumbnail(hdc,m_Pixels,r.left,r.top,r.right-r.left,r.bottom-r.top,THUMB_WIDTH,THUMB_HEIGHT);
+//		ReleaseDC	(panel->Handle,hdc);
+		DrawThumbnail(pbox->Canvas,r,m_Pixels,bUseAlpha);
     }else{
-        RECT r;		r.left = 2; r.top = 2;
+        TRect r;	r.left = 2; r.top = 2;
         r.right 	= pbox->Width-1; r.bottom = pbox->Height-1;
-        HDC hdc 	= GetDC	(panel->Handle);
-        DrawThumbnail(hdc,m_Pixels,r.left,r.top,r.right-r.left,r.bottom-r.top,THUMB_WIDTH,THUMB_HEIGHT);
-        ReleaseDC	(panel->Handle,hdc);
+//		HDC hdc 	= GetDC	(panel->Handle);
+//		DrawThumbnail(hdc,m_Pixels,r.left,r.top,r.right-r.left,r.bottom-r.top,THUMB_WIDTH,THUMB_HEIGHT);
+//		ReleaseDC	(panel->Handle,hdc);
+		DrawThumbnail(pbox->Canvas,r,m_Pixels,bUseAlpha);
     }
 }
 

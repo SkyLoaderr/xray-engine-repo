@@ -82,27 +82,27 @@ bool CFolderHelper::MakeFullName(TElTreeItem* begin_item, TElTreeItem* end_item,
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* CFolderHelper::FindItemInFolder(u32 type, TElTree* tv, TElTreeItem* start_folder, const AnsiString& name, bool bIgnoreExt)
+TElTreeItem* CFolderHelper::FindItemInFolder(EItemType type, TElTree* tv, TElTreeItem* start_folder, const AnsiString& name, bool bIgnoreExt)
 {
 	if (bIgnoreExt){
         if (start_folder){
             for (TElTreeItem* node=start_folder->GetFirstChild(); node; node=start_folder->GetNextChild(node)){
                 AnsiString nm = ChangeFileExt(node->Text,"");
-                if (type==((u32)(node->Data))&&(nm==name)) return node;
+                if (type==((EItemType)(node->Data))&&(nm==name)) return node;
             }
         }else{
             for (TElTreeItem* node=tv->Items->GetFirstNode(); node; node=node->GetNextSibling()){
                 AnsiString nm = ChangeFileExt(node->Text,"");
-                if (type==((u32)(node->Data))&&(nm==name)) return node;
+                if (type==((EItemType)(node->Data))&&(nm==name)) return node;
             }
         }
     }else{
        if (start_folder){
             for (TElTreeItem* node=start_folder->GetFirstChild(); node; node=start_folder->GetNextChild(node))
-                if (type==((u32)(node->Data))&&(node->Text==name)) return node;
+                if (type==((EItemType)(node->Data))&&(node->Text==name)) return node;
         }else{
             for (TElTreeItem* node=tv->Items->GetFirstNode(); node; node=node->GetNextSibling())
-                if (type==((u32)(node->Data))&&(node->Text==name)) return node;
+                if (type==((EItemType)(node->Data))&&(node->Text==name)) return node;
         }
     }
 
@@ -244,7 +244,7 @@ TElTreeItem* CFolderHelper::AppendFolder(TElTree* tv, AnsiString full_name)
 	node = last_node;
     for (int itm=idx; itm<cnt; itm++){
     	_GetItem(full_name.c_str(),itm,fld,'\\');
-		node=tv->Items->AddChildObject(node,fld,(void*)TYPE_FOLDER);
+        node	= LL_CreateFolder(tv,node,fld);
     }
 	return node;
 }
@@ -264,13 +264,13 @@ TElTreeItem* CFolderHelper::AppendObject(TElTree* tv, AnsiString full_name)
 	    fld_node = last_node;
     	for (int itm=idx; itm<fld_cnt; itm++){
     		_GetItem(full_name.c_str(),itm,fld,'\\');
-			fld_node=tv->Items->AddChildObject(fld_node,fld,(void*)TYPE_FOLDER);
+	        fld_node	= LL_CreateFolder(tv,fld_node,fld);
     	}
     }
 	AnsiString obj;
 	_GetItem(full_name.c_str(),fld_cnt,obj,'\\');
     if (FindItemInFolder(TYPE_OBJECT,tv,fld_node,obj)) return 0;
-	return tv->Items->AddChildObject(fld_node,obj,(void*)TYPE_OBJECT);
+	return LL_CreateObject(tv,fld_node,obj);
 }
 //---------------------------------------------------------------------------
 
@@ -308,6 +308,9 @@ void CFolderHelper::DragDrop(TObject *Sender, TObject *Source, int X, int Y, TOn
 	R_ASSERT(after_drag);
 
 	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(tv);
+
+    tv->IsUpdating = true;
+    
     TSTItemPart IP=(TSTItemPart)0;
     int 		hc=0;
 	TElTreeItem* tgt_folder = tv->GetItemAt(X, Y, IP, hc);
@@ -318,47 +321,59 @@ void CFolderHelper::DragDrop(TObject *Sender, TObject *Source, int X, int Y, TOn
     AnsiString cur_fld_name=base_name;
     TElTreeItem* cur_folder=tgt_folder;
 
-    int drg_level=DragItem->Level;
+    int drg_level		= DragItem->Level;
 
-    TElTreeItem* item = DragItem;
+    // move objects
+    TElTreeItem* item 	= DragItem;
+    bool bFolderMove	= IsFolder(item);
     do{
-    	u32 type = u32(item->Data);
+    	// проверяем есть ли в таргете такой элемент
+    	EItemType type 	= EItemType(item->Data);
 		TElTreeItem* pNode = FindItemInFolder(type,tv,cur_folder,item->Text);
 		if (pNode&&IsObject(item)){
-            item=item->GetNext();
+            ELog.DlgMsg	(mtError,"Item '%s' already exist in folder '%s'.",AnsiString(item->Text).c_str(),AnsiString(cur_folder->Text).c_str());
+            item		= item->GetNext();
         	continue;
         }
-
+		// если нет добавляем
         if (!pNode){ 
-        	pNode = tv->Items->AddChildObject(cur_folder,item->Text,(TObject*)type);
-            pNode->ImageIndex 	= item->ImageIndex;
-            pNode->Tag			= item->Tag;
+        	pNode 				= (type==TYPE_FOLDER)?LL_CreateFolder(tv,cur_folder,item->Text):LL_CreateObject(tv,cur_folder,item->Text);
+            pNode->Assign		(item);
         }
 		if (IsFolder(item)){
-        	cur_folder = pNode;
-		    MakeName(cur_folder,0,cur_fld_name,true);
-            item=item->GetNext();
+        	cur_folder 			= pNode;
+		    MakeName			(cur_folder,0,cur_fld_name,true);
+            item				= item->GetNext();
         }else{
         	// rename
 		    AnsiString old_name, new_name;
-		    MakeName(item,0,old_name,false);
-		    MakeName(pNode,0,new_name,false);
+		    MakeName			(item,0,old_name,false);
+		    MakeName			(pNode,0,new_name,false);
 
-            after_drag(old_name.c_str(),new_name.c_str());
+            after_drag			(old_name.c_str(),new_name.c_str(),TYPE_OBJECT);
 
-            TElTreeItem* parent=item->Parent;
-            // get next item && delete existance
-            TElTreeItem* next=item->GetNext();
-			item->Delete();
+            TElTreeItem* parent	= item->Parent;
+            // get next item && delete existence
+            TElTreeItem* next	= item->GetNext();
+			item->Delete		();
 
             if (parent&&((parent->GetLastChild()==item)||(0==parent->ChildrenCount))){
-	            if (0==parent->ChildrenCount) parent->Delete();
+//	            if (0==parent->ChildrenCount) parent->Delete();
 	        	cur_folder = cur_folder?cur_folder->Parent:0;
             }
 
             item=next;
         }
     }while(item&&(item->Level>drg_level));
+    // delete folders
+    if (bFolderMove){
+        AnsiString 		old_name;
+        MakeName		(DragItem,0,old_name,false);
+        after_drag		(old_name.c_str(),0,TYPE_FOLDER);
+	    DragItem->Delete();
+    }
+
+    tv->IsUpdating = false;
  }
 //---------------------------------------------------------------------------
 
@@ -428,16 +443,20 @@ bool CFolderHelper::RenameItem(TElTree* tv, TElTreeItem* node, AnsiString& new_t
                 VERIFY(node->Level<_GetItemCount(full_name.c_str(),'\\'));
                 AnsiString new_full_name;
                 _ReplaceItem(full_name.c_str(),node->Level,new_text.c_str(),new_full_name,'\\');
-                OnRename(full_name.c_str(),new_full_name.c_str());
+                OnRename(full_name.c_str(),new_full_name.c_str(),TYPE_OBJECT);
             }
         }
+        AnsiString new_full_name;
+        MakeName(node,0,full_name,true);
+        _ReplaceItem(full_name.c_str(),node->Level,new_text.c_str(),new_full_name,'\\');
+		OnRename(full_name.c_str(),new_full_name.c_str(),TYPE_FOLDER);
     }else if (IsObject(node)){
     	// is object - rename only this item
         MakeName(node,0,full_name,false);
         VERIFY(node->Level<_GetItemCount(full_name.c_str(),'\\'));
         AnsiString new_full_name;
         _ReplaceItem(full_name.c_str(),node->Level,new_text.c_str(),new_full_name,'\\');
-		OnRename(full_name.c_str(),new_full_name.c_str());
+		OnRename(full_name.c_str(),new_full_name.c_str(),TYPE_OBJECT);
     }
     tv->Selected=node;
     return true;
@@ -472,9 +491,11 @@ BOOL CFolderHelper::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnItemRemove On
 		        for (TElTreeItem* item=pNode->GetFirstChild(); item&&(item->Level>pNode->Level); item=item->GetNext()){
                     MakeName(item,0,full_name,false);
                 	if (IsObject(item))
-                    	if (!OnRemoveItem(full_name.c_str())) bRes=FALSE;
+                    	if (!OnRemoveItem(full_name.c_str(),TYPE_OBJECT)) bRes=FALSE;
                 }
                 if (bRes){
+                    MakeName(pNode,0,full_name,true);
+                	OnRemoveItem(full_name.c_str(),TYPE_FOLDER);
                 	pNode->Delete();
                     if (OnAfterRemoveItem) OnAfterRemoveItem();
                 }
@@ -483,7 +504,7 @@ BOOL CFolderHelper::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnItemRemove On
     	if (IsObject(pNode)){
 	        if (ELog.DlgMsg(mtConfirmation, TMsgDlgButtons() << mbYes << mbNo,"Delete selected item?") == mrYes){
 				MakeName(pNode,0,full_name,false);
-                bRes = OnRemoveItem(full_name.c_str());
+                bRes = OnRemoveItem(full_name.c_str(),TYPE_OBJECT);
 	            if (bRes){
                 	pNode->Delete();
                     if (OnAfterRemoveItem) OnAfterRemoveItem();
@@ -577,7 +598,7 @@ bool CFolderHelper::DrawThumbnail(TCanvas *Surface, TRect &R, LPCSTR fname, u32 
         int dw 		= R.Width()-R.Height();
         if (dw>=0) 	R.right		-= dw;
         bool bRes 	= m_Thm->Valid();
-        if (bRes) 	m_Thm->Draw(Surface,R,true);
+        if (bRes) 	m_Thm->Draw(Surface,R);
         else{		
         	Surface->Brush->Color 	= clBlack;
         	Surface->FillRect		(R);

@@ -87,15 +87,18 @@ void CEditableMesh::BoxQuery(const Fmatrix& parent, const Fmatrix& inv_parent, S
         pinf.append_mtx(parent,m_CFModel,XRC.r_begin()+r);
 }
 
+static const float _sqrt_flt_max = _sqrt(flt_max*0.5f);
+
 bool CEditableMesh::RayPick(float& distance, const Fvector& start, const Fvector& direction, const Fmatrix& inv_parent, SRayPickInfo* pinf)
 {
 	if (!m_Flags.is(flVisible)) return false;
 
     if (!m_CFModel) GenerateCFModel();
-    float m_r 		= pinf?pinf->inf.range+EPS_L:UI.ZFar();// (bugs: не всегда выбирает) //S ????
+//.	float m_r 		= pinf?pinf->inf.range+EPS_L:UI.ZFar();// (bugs: не всегда выбирает) //S ????
 
 	XRC.ray_options	(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL);
-    XRC.ray_query	(inv_parent, m_CFModel, start, direction, m_r);
+	XRC.ray_query	(inv_parent, m_CFModel, start, direction, _sqrt_flt_max);
+
     if (XRC.r_count()){
 		CDB::RESULT* I	= XRC.r_begin	();
 		if (I->range<distance) {

@@ -68,7 +68,7 @@ void SSceneSummary::FillProp(PropItemVec& items)
 
     PHelper.CreateCaption	(items,"Textures\\Detail\\Count",			det_textures.size());
     PropValue* det_mem		= PHelper.CreateCaption(items,"Textures\\Detail\\Memory Usage",	"");
-    UI.ProgressStart(textures.size(),"Collect detail textures info: ");
+    UI.ProgressStart(det_textures.size(),"Collect detail textures info: ");
     for (t_it=det_textures.begin(); t_it!=det_textures.end(); t_it++){
         UI.ProgressInc	(t_it->c_str());
         EImageThumbnail* T = xr_new<EImageThumbnail>(t_it->c_str(),EImageThumbnail::EITTexture,true);
@@ -94,7 +94,33 @@ void SSceneSummary::FillProp(PropItemVec& items)
     total_count->ApplyValue	(&temp);
     temp.sprintf			("%d Kb",iFloor((det_mem_usage+base_mem_usage)/1024));
     total_mem->ApplyValue	(&temp);
-    
+
+    // detail object textures
+    int do_mem_usage		= 0;
+    PHelper.CreateCaption	(items,"Detail Objects\\Textures\\Count",			do_textures.size());
+    PropValue* do_mem		= PHelper.CreateCaption(items,"Detail Objects\\Textures\\Memory Usage",	"");
+    UI.ProgressStart(do_textures.size(),"Collect detail object textures info: ");
+    for (t_it=do_textures.begin(); t_it!=do_textures.end(); t_it++){
+        UI.ProgressInc		(t_it->c_str());
+        EImageThumbnail* T 	= xr_new<EImageThumbnail>(t_it->c_str(),EImageThumbnail::EITTexture,true);
+        if (!T->Valid()){
+        	ELog.Msg(mtError,"Can't get info from texture: '%s'",t_it->c_str());
+        }else{
+            int tex_mem		= T->MemoryUsage();
+            do_mem_usage	+= tex_mem;
+            AnsiString pref	= AnsiString("Detail Objects\\Textures\\")+*t_it;
+            PropValue*	V	= 0;
+            V=PHelper.CreateATexture(items,FHelper.PrepareKey(pref.c_str(),"Texture"), 		(AnsiString*)&*t_it); 	V->Owner()->Enable(FALSE);
+            PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Format"),			T->FormatString());
+            PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Size"), 			AnsiString().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
+            PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Memory Usage"),	AnsiString().sprintf("%d Kb",iFloor(tex_mem/1024)));
+        }
+        xr_delete			(T);
+    }
+    UI.ProgressEnd			();
+    temp.sprintf			("%d Kb",iFloor(do_mem_usage/1024));
+    do_mem->ApplyValue		(&temp);
+
 	// sound
     PHelper.CreateCaption(items,"Sounds\\Sources",				sound_source_cnt);
     PHelper.CreateCaption(items,"Sounds\\Waves\\Count",			waves.size());

@@ -118,6 +118,7 @@ __published:	// IDE-managed Components
 	TMultiObjSpinEdit *seSnapMoveTo;
 	TLabel *Label2;
 	TMultiObjSpinEdit *seRecentFilesCount;
+	TCheckBox *cbLeaveEmptyRef;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);

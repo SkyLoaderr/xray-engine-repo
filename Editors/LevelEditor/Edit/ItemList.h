@@ -72,12 +72,11 @@ __published:	// IDE-managed Components
 	void __fastcall tvItemsHeaderResize(TObject *Sender);
 public:
 	DEFINE_VECTOR(TElTreeItem*,ElItemsVec,ElItemsIt);
+    typedef void 	__fastcall (__closure *TOnItemFocused)		(TElTreeItem* item);
     typedef void 	__fastcall (__closure *TOnItemsFocused)		(ListItemsVec& items);
     typedef void 	__fastcall (__closure *TOnCloseEvent)		(void);
 private:	// User declarations
     AStringVec 			last_selected_items;
-
-	void __fastcall 	RenameItem				(LPCSTR p0, LPCSTR p1);
 
     ListItemsVec 		m_Items;
     void 				ClearParams				(TElTreeItem* node=0);
@@ -98,6 +97,7 @@ public:
     Flags32				m_Flags;
 	// events
     TOnItemsFocused		OnItemsFocused;
+    TOnItemFocused		OnItemFocused;
     TOnCloseEvent		OnCloseEvent;
     CFolderHelper::TOnItemRename	OnItemRename;
     CFolderHelper::TOnItemRemove	OnItemRemove;
@@ -106,6 +106,7 @@ protected:
 	static  ILVec		ILForms;
 
 	void 				OnFormFrame				();
+    void __fastcall		RenameItem				(LPCSTR fn0, LPCSTR fn1, EItemType type);
 public:		// User declarations
 	__fastcall 			TItemList	       		(TComponent* Owner);
 	static TItemList* 	CreateForm				(TWinControl* parent=0, TAlign align=alNone, u32 flags=ilMultiSelect);
@@ -119,6 +120,7 @@ public:		// User declarations
     void __fastcall 	ClearList				();
     void __fastcall 	RefreshForm				();
 
+    void __fastcall		DeselectAll				();
     void __fastcall		SelectItem				(const AnsiString& full_name, bool bVal, bool bLeaveSel, bool bExpand);
     void __fastcall 	AssignItems				(ListItemsVec& values, bool full_expand, const AnsiString& title="Item List", bool full_sort=false);
     bool __fastcall 	IsFocused				(){return tvItems->Focused();}
@@ -147,6 +149,9 @@ public:		// User declarations
         miDrawThumbnails->Checked				= fs->ReadInteger(AnsiString().sprintf("%s_draw_thm",Name.c_str()),false);
         RefreshForm			();
     }
+
+    void 				RemoveSelItems			();
+    void 				RenameSelItem			();
 };
 //---------------------------------------------------------------------------
 #endif

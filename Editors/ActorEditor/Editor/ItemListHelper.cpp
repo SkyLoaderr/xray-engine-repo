@@ -13,7 +13,7 @@ void CListHelper::DrawThumbnail(TCanvas *Surface, TRect &R, LPCSTR fname)
         EImageThumbnail* m_Thm 	= xr_new<EImageThumbnail>(fname,EImageThumbnail::EITTexture);
         int dw = R.Width()-R.Height();
         if (dw>=0) R.right		-= dw;
-        if (m_Thm->Valid()) 	m_Thm->Draw(Surface,R,true);
+        if (m_Thm->Valid()) 	m_Thm->Draw(Surface,R);
         xr_delete				(m_Thm);
     }
 }

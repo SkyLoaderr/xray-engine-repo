@@ -85,7 +85,7 @@ void CImageManager::CreateTextureThumbnail(EImageThumbnail* THM, const AnsiStrin
     U32Vec data;
     u32 w, h, a;
     if (!Surface_Load(base_name.c_str(),data,w,h,a)){
-    	ELog.DlgMsg(mtError,"Can't load texture '%s'.\nCheck file existance",src_name.c_str());
+    	ELog.DlgMsg(mtError,"Can't load texture '%s'.\nCheck file existence",src_name.c_str());
      	return;
     }
     MakeThumbnailImage(THM,data.begin(),w,h,a);
@@ -121,6 +121,28 @@ void CImageManager::CreateGameTexture(const AnsiString& src_name, EImageThumbnai
 //------------------------------------------------------------------------------
 // создает игровую текстуру
 //------------------------------------------------------------------------------
+void CImageManager::MakeGameTexture(LPCSTR game_name, u32* data, u32 w, u32 h, STextureParams::ETFormat fmt, bool bGenMipMap)
+{
+	VerifyPath(game_name);
+    // fill texture params
+    STextureParams TP;
+    TP.fmt 			= fmt;
+    TP.mip_filter   = STextureParams::dMIPFilterBox;
+    TP.type			= STextureParams::ttImage;
+    TP.width		= w;
+    TP.height		= h;
+    TP.flags.set	(STextureParams::flGenerateMipMaps,bGenMipMap);
+    TP.flags.set	(STextureParams::flDitherColor,TRUE);
+	// compress
+    u32 w4= w*4;
+    bool bRes 		= DXTCompress(game_name, (u8*)data, w, h, w4, &TP, 4);
+    if (!bRes){
+    	FS.file_delete(game_name);
+    	ELog.DlgMsg(mtError,"Can't make game texture '%s'.\nCheck texture size (%dx%d).",game_name,w,h);
+		return;
+    }
+    R_ASSERT(bRes&&FS.file_length(game_name));
+}
 void CImageManager::MakeGameTexture(EImageThumbnail* THM, LPCSTR game_name, u32* load_data)
 {
 	VerifyPath(game_name);
@@ -587,30 +609,35 @@ BOOL CImageManager::CreateOBJThumbnail(LPCSTR tex_name, CEditableObject* obj, in
     return bResult;
 }
 
-BOOL CImageManager::RemoveTexture(LPCSTR fname)
+BOOL CImageManager::RemoveTexture(LPCSTR fname, EItemType type)
 {
-	AnsiString src_name;
-    FS.update_path			(src_name,_textures_,fname);
-	if (FS.exist(src_name.c_str())){
-        AnsiString base_name= ChangeFileExt(fname,"");
-        AnsiString thm_name = ChangeFileExt(fname,".thm");
-        AnsiString game_name= ChangeFileExt(fname,".dds");
-    	// source
-        EFS.BackupFile		(_textures_,fname);
-        FS.file_delete		(src_name.c_str());
-        EFS.WriteAccessLog	(src_name.c_str(),"Remove");
-        // thumbnail
-        EFS.BackupFile		(_textures_,thm_name.c_str());
-        FS.file_delete		(_textures_,thm_name.c_str());
-        // game
-        FS.file_delete		(_game_textures_,game_name.c_str());
-        // assoc
-        AnsiString ltx_nm;
-        FS.update_path		(ltx_nm,_game_textures_,"textures.ltx");
-        CInifile* ltx_ini 	= xr_new<CInifile>(ltx_nm.c_str(), FALSE, TRUE, TRUE);
-		ltx_ini->remove_line("association", base_name.c_str());
-        xr_delete			(ltx_ini);
-        return TRUE;
+	if (TYPE_FOLDER==type){
+    	FS.dir_delete			(fname);
+		return TRUE;
+    }else if (TYPE_OBJECT==type){
+        AnsiString src_name;
+        FS.update_path			(src_name,_textures_,fname);
+        if (FS.exist(src_name.c_str())){
+            AnsiString base_name= ChangeFileExt(fname,"");
+            AnsiString thm_name = ChangeFileExt(fname,".thm");
+            AnsiString game_name= ChangeFileExt(fname,".dds");
+            // source
+            EFS.BackupFile		(_textures_,fname);
+            FS.file_delete		(src_name.c_str());
+            EFS.WriteAccessLog	(src_name.c_str(),"Remove");
+            // thumbnail
+            EFS.BackupFile		(_textures_,thm_name.c_str());
+            FS.file_delete		(_textures_,thm_name.c_str());
+            // game
+            FS.file_delete		(_game_textures_,game_name.c_str());
+            // assoc
+            AnsiString ltx_nm;
+            FS.update_path		(ltx_nm,_game_textures_,"textures.ltx");
+            CInifile* ltx_ini 	= xr_new<CInifile>(ltx_nm.c_str(), FALSE, TRUE, TRUE);
+            ltx_ini->remove_line("association", base_name.c_str());
+            xr_delete			(ltx_ini);
+            return TRUE;
+        }
     }
     return FALSE;
 }

@@ -8,6 +8,7 @@
 #include "blender_clsid.h"
 #include "xrRender_console.h"
 #include "PSLibrary.h"
+#include "IRenderDetailModel.H"
 
 // definition (Renderer)
 class IRender_Target{

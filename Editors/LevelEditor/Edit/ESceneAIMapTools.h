@@ -4,7 +4,7 @@
 #ifndef ESceneAIMapToolsH
 #define ESceneAIMapToolsH
 
-#include "SceneCustomMTools.H"
+#include "ESceneCustomMTools.H"
 #include "xrLevel.H"
 #include "AIMapExport.H"
 
@@ -167,6 +167,7 @@ public:
 
     // utils
     bool				GenerateMap				();
+	virtual bool 		GetSummaryInfo			(SSceneSummary* inf){return false;}
 
 	// properties
     virtual void		FillProp          		(LPCSTR pref, PropItemVec& items);

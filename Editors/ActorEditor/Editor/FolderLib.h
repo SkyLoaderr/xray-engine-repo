@@ -7,14 +7,27 @@
 #include "ExtBtn.hpp"
 #include "MxMenus.hpp"
 
-const u32 TYPE_INVALID= -1;
-const u32 TYPE_FOLDER	= 0;
-const u32 TYPE_OBJECT	= 1;
+enum EItemType{
+	TYPE_INVALID= -1,
+	TYPE_FOLDER	= 0,
+	TYPE_OBJECT	= 1
+};
 class CFolderHelper{
     IC AnsiString		FolderAppend	(LPCSTR val)
     {
     	if (val&&val[0]) return AnsiString(val)+"\\";
         return   		"";
+    }
+    IC TElTreeItem*		LL_CreateFolder	(TElTree* tv, TElTreeItem* parent, const AnsiString& name)
+    {
+    	TElTreeItem* N	= tv->Items->AddChildObject(parent,name,(void*)TYPE_FOLDER);
+        N->ForceButtons	= true;
+        return N;
+    }
+    IC TElTreeItem*		LL_CreateObject	(TElTree* tv, TElTreeItem* parent, const AnsiString& name)
+    {
+    	TElTreeItem* N	= tv->Items->AddChildObject(parent,name,(void*)TYPE_OBJECT);
+        return N;
     }
 public:
     IC AnsiString		PrepareKey		(LPCSTR pref, LPCSTR key)
@@ -33,8 +46,8 @@ public:
         return FolderAppend(pref0)+FolderAppend(pref1)+FolderAppend(pref2)+AnsiString(key);
     }
 public:
-	typedef void 		__fastcall (__closure *TOnItemRename)(LPCSTR p0, LPCSTR p1);
-	typedef BOOL 		__fastcall (__closure *TOnItemRemove)(LPCSTR p0);
+	typedef void 		__fastcall (__closure *TOnItemRename)(LPCSTR p0, LPCSTR p1, EItemType type);
+	typedef BOOL 		__fastcall (__closure *TOnItemRemove)(LPCSTR p0, EItemType type);  
 	typedef void 		__fastcall (__closure *TOnItemAfterRemove)();
     IC bool				IsFolder			(TElTreeItem* node){return node?(TYPE_FOLDER==(u32)node->Data):TYPE_INVALID;}
     IC bool				IsObject			(TElTreeItem* node){return node?(TYPE_OBJECT==(u32)node->Data):TYPE_INVALID;}
@@ -42,7 +55,7 @@ public:
     bool 			 	MakeFullName		(TElTreeItem* begin_item, TElTreeItem* end_item, AnsiString& folder);
     bool 			 	MakeName			(TElTreeItem* begin_item, TElTreeItem* end_item, AnsiString& folder, bool bOnlyFolder);
 	TElTreeItem* 		FindItemInFolder	(TElTree* tv, TElTreeItem* start_folder, const AnsiString& name, bool bIgnoreExt=false);
-	TElTreeItem* 		FindItemInFolder	(u32 type, TElTree* tv, TElTreeItem* start_folder, const AnsiString& name, bool bIgnoreExt=false);
+	TElTreeItem* 		FindItemInFolder	(EItemType type, TElTree* tv, TElTreeItem* start_folder, const AnsiString& name, bool bIgnoreExt=false);
     TElTreeItem* 		AppendFolder		(TElTree* tv, AnsiString full_name);
 	TElTreeItem*		AppendObject		(TElTree* tv, AnsiString full_name);
     TElTreeItem* 		FindObject			(TElTree* tv, AnsiString full_name, TElTreeItem** last_valid_node=0, int* last_valid_idx=0, bool bIgnoreExt=false);

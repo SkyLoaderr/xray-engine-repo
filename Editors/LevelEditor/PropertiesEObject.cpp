@@ -143,7 +143,7 @@ void __fastcall TfrmPropertiesEObject::OnSurfaceFocused(TElTreeItem* item)
 
 void __fastcall TfrmPropertiesEObject::pbImagePaint(TObject *Sender)
 {
-	if (m_Thumbnail) m_Thumbnail->Draw(paImage,pbImage,true);
+	if (m_Thumbnail) m_Thumbnail->Draw(pbImage);
 }
 //---------------------------------------------------------------------------
 

@@ -423,7 +423,7 @@ void __fastcall TfrmEditLightAnim::tvItemsStartDrag(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditLightAnim::OnRenameItem(LPCSTR p0, LPCSTR p1)
+void __fastcall TfrmEditLightAnim::OnRenameItem(LPCSTR p0, LPCSTR p1, EItemType type)
 {
 	LALib.RenameItem(p0,p1);
 	OnModified();

@@ -55,7 +55,7 @@
       intermediate\ColorPicker.obj intermediate\Cursor3D.obj 
       intermediate\Custom2DProjector.obj intermediate\CustomObject.obj 
       intermediate\CustomObjectAnimation.obj intermediate\CustomObjectLE.obj 
-      intermediate\d3dutils.obj intermediate\DetailModel.obj 
+      intermediate\d3dutils.obj intermediate\EDetailModel.obj 
       intermediate\DetailObjects.obj intermediate\DetailObjectsGenerate.obj 
       intermediate\DetailObjectsPick.obj intermediate\Device.obj 
       intermediate\du_box.obj intermediate\du_cone.obj 
@@ -121,7 +121,9 @@
       intermediate\FrameObject.obj intermediate\SceneClassList.obj 
       intermediate\SceneSnap.obj intermediate\SH_Atomic.obj 
       intermediate\ResourceManager_Resources.obj 
-      intermediate\ResourceManager.obj intermediate\ResourceManager_Loader.obj"/>
+      intermediate\ResourceManager.obj intermediate\ResourceManager_Loader.obj 
+      intermediate\Blender_Recorder_StandartBinding.obj 
+      intermediate\DetailModel.obj intermediate\ImageManagerDO.obj"/>
     <RESFILES value="resource.res LevelEditor.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -280,7 +282,7 @@
       <FILE FILENAME="edit\CustomObjectAnimation.cpp" FORMNAME="" UNITNAME="CustomObjectAnimation.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\CustomObjectLE.cpp" FORMNAME="" UNITNAME="CustomObjectLE.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\d3dutils.cpp" FORMNAME="" UNITNAME="d3dutils.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\DetailModel.cpp" FORMNAME="" UNITNAME="DetailModel.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\EDetailModel.cpp" FORMNAME="" UNITNAME="EDetailModel" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\DetailObjects.cpp" FORMNAME="" UNITNAME="DetailObjects.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\DetailObjectsGenerate.cpp" FORMNAME="" UNITNAME="DetailObjectsGenerate.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\DetailObjectsPick.cpp" FORMNAME="" UNITNAME="DetailObjectsPick.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -413,6 +415,9 @@
       <FILE FILENAME="Engine\ResourceManager_Resources.cpp" FORMNAME="" UNITNAME="ResourceManager_Resources.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ResourceManager.cpp" FORMNAME="" UNITNAME="ResourceManager.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ResourceManager_Loader.cpp" FORMNAME="" UNITNAME="ResourceManager_Loader.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Recorder_StandartBinding.cpp" FORMNAME="" UNITNAME="Blender_Recorder_StandartBinding" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\DetailModel.cpp" FORMNAME="" UNITNAME="DetailModel" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ImageManagerDO.cpp" FORMNAME="" UNITNAME="ImageManagerDO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

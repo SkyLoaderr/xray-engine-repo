@@ -350,7 +350,7 @@ void __fastcall TfrmChoseItem::FormClose(TObject *Sender, TCloseAction &Action)
 
 void __fastcall TfrmChoseItem::pbImagePaint(TObject *Sender)
 {
-    if (m_Thm) m_Thm->Draw(paImage,pbImage,true);
+    if (m_Thm) m_Thm->Draw(pbImage);
 }
 //---------------------------------------------------------------------------
 

@@ -630,6 +630,17 @@ object frmEditPrefs: TfrmEditPrefs
           AutoSize = False
           TabOrder = 4
         end
+        object cbLeaveEmptyRef: TCheckBox
+          Left = 187
+          Top = 41
+          Width = 198
+          Height = 17
+          Alignment = taLeftJustify
+          Caption = 'Leave Empty Refs Editable Object'
+          Checked = True
+          State = cbChecked
+          TabOrder = 5
+        end
       end
       object tsEdit: TTabSheet
         Caption = 'Edit'
@@ -1018,7 +1029,8 @@ object frmEditPrefs: TfrmEditPrefs
       'seCameraFlyAltitude.Value'
       'seCameraFlySpeed.Value'
       'seSnapMoveTo.Value'
-      'seRecentFilesCount.Value')
+      'seRecentFilesCount.Value'
+      'cbLeaveEmptyRef.Checked')
     StoredValues = <>
     Left = 273
     Top = 9

@@ -52,6 +52,8 @@ __published:	// IDE-managed Components
 	TExtBtn *ebMakeLWO;
 	TExtBtn *ebSave;
 	TExtBtn *ebCancel;
+	TExtBtn *ExtBtn1;
+	TExtBtn *ExtBtn2;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebCancelClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
@@ -71,6 +73,8 @@ __published:	// IDE-managed Components
 	void __fastcall FormDestroy(TObject *Sender);
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
+	void __fastcall ExtBtn1Click(TObject *Sender);
+	void __fastcall ExtBtn2Click(TObject *Sender);
 private:	// User declarations
     void InitObjects();
     EImageThumbnail* 		m_Thm;
@@ -83,10 +87,10 @@ private:	// User declarations
     void					UpdateObjectProperties();
     void					ChangeReference	(LPCSTR new_name);
 
-	void __fastcall 		OnObjectRename	(LPCSTR p0, LPCSTR p1);
+	void __fastcall 		OnObjectRename	(LPCSTR p0, LPCSTR p1, EItemType type);
 
     TItemList*				m_Items;
-	void __fastcall 		OnItemFocused	(ListItemsVec& items);
+	void __fastcall 		OnItemFocused	(TElTreeItem* item);
 public:		// User declarations
     void __fastcall 		OnModified		();
     __fastcall 				TfrmEditLibrary	(TComponent* Owner);

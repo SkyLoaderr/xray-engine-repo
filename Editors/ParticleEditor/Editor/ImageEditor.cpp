@@ -268,7 +268,7 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
 
 void __fastcall TfrmImageLib::pbImagePaint(TObject *Sender)
 {
-    if (m_Thm) m_Thm->Draw(paImage,pbImage,true);
+    if (m_Thm) m_Thm->Draw(pbImage);
 }
 //---------------------------------------------------------------------------
 

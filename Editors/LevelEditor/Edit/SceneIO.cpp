@@ -141,8 +141,12 @@ void st_LevelOptions::Read(IReader& F)
 //------------------------------------------------------------------------------------------------
 // Scene
 //------------------------------------------------------------------------------------------------
-void EScene::Save(char *_FileName, bool bUndo){
-	VERIFY( _FileName );
+void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
+{
+	VERIFY( map_name );
+
+    AnsiString full_name = (initial)?FS.update_path(full_name,initial,map_name):AnsiString(map_name);
+    
     CMemoryWriter F;
 
 //	Msg("0: %d",F.tell());
@@ -206,12 +210,12 @@ void EScene::Save(char *_FileName, bool bUndo){
 	F.close_chunk	();
 //	Msg("TOTAL: %d",F.tell());
 
-	if (!bUndo) EFS.UnlockFile		(0,_FileName,false);
+	if (!bUndo) EFS.UnlockFile		(0,full_name.c_str(),false);
     // back up previous
-    if (!bUndo) EFS.MarkFile		(_FileName,false);
+    if (!bUndo) EFS.MarkFile		(full_name.c_str(),false);
     // save data
-    F.save_to						(_FileName);
-	if (!bUndo) EFS.LockFile		(0,_FileName,false);
+    F.save_to						(full_name.c_str());
+	if (!bUndo) EFS.LockFile		(0,full_name.c_str(),false);
 }
 //--------------------------------------------------------------------------------------------------
 
@@ -283,15 +287,16 @@ bool EScene::OnLoadAppendObject(CCustomObject* O)
 }
 //----------------------------------------------------
 
-bool EScene::Load(char *_FileName)
+bool EScene::Load(LPCSTR initial, LPCSTR map_name)
 {
     DWORD version = 0;
 
-	VERIFY( _FileName );
-	ELog.Msg( mtInformation, "EScene: loading %s...", _FileName );
+	VERIFY(map_name);
+    AnsiString full_name = (initial)?FS.update_path(full_name,initial,map_name):AnsiString(map_name);
+	ELog.Msg( mtInformation, "EScene: loading %s...", map_name);
 
-    if (FS.exist(_FileName)){
-        IReader* F = FS.r_open(_FileName);
+    if (FS.exist(full_name.c_str())){
+        IReader* F = FS.r_open(full_name.c_str());
         // Version
         R_ASSERT(F->r_chunk(CHUNK_VERSION, &version));
         if (version!=CURRENT_FILE_VERSION){
@@ -362,7 +367,7 @@ bool EScene::Load(char *_FileName)
 
 		return true;
     }else{
-    	ELog.Msg(mtError,"Can't find file: ",_FileName);
+    	ELog.Msg(mtError,"Can't find file: ",map_name);
     }
 	return false;
 }
@@ -370,9 +375,11 @@ bool EScene::Load(char *_FileName)
 //---------------------------------------------------------------------------------------
 //copy/paste utils
 //---------------------------------------------------------------------------------------
-void EScene::SaveSelection( int classfilter, char *filename )
+void EScene::SaveSelection( int classfilter, LPCSTR initial, LPCSTR fname )
 {
-	VERIFY( filename );
+	VERIFY( fname );
+    AnsiString full_name = (initial)?FS.update_path(full_name,initial,fname):AnsiString(fname);
+
     CMemoryWriter F;
 
     F.open_chunk	(CHUNK_VERSION);
@@ -415,7 +422,7 @@ void EScene::SaveSelection( int classfilter, char *filename )
         }
     }
 
-    F.save_to		(filename);
+    F.save_to		(full_name.c_str());
 }
 
 //----------------------------------------------------
@@ -430,19 +437,21 @@ bool EScene::OnLoadSelectionAppendObject(CCustomObject* obj)
 }
 //----------------------------------------------------
 
-bool EScene::LoadSelection( const char *_FileName )
+bool EScene::LoadSelection( LPCSTR initial, LPCSTR fname )
 {
     DWORD version = 0;
 
-	VERIFY( _FileName );
-	ELog.Msg( mtInformation, "EScene: loading %s...", _FileName );
+	VERIFY( fname );
+    AnsiString full_name = (initial)?FS.update_path(full_name,initial,fname):AnsiString(fname);
+
+	ELog.Msg( mtInformation, "EScene: loading %s...", fname );
 
     bool res = true;
 
-    if (FS.exist(_FileName)){
+    if (FS.exist(full_name.c_str())){
 		SelectObjects( false );
 
-        IReader* F = FS.r_open(_FileName);
+        IReader* F = FS.r_open(full_name.c_str());
 
         // Version
         R_ASSERT(F->r_chunk(CHUNK_VERSION, &version));
@@ -494,7 +503,7 @@ int EScene::CopySelection( EObjClass classfilter ){
 
 	sceneclipdata->m_ClassFilter = classfilter;
 	GetTempFileName( FS.get_path(_temp_)->m_Path, "clip", 0, sceneclipdata->m_FileName );
-	SaveSelection( classfilter, sceneclipdata->m_FileName );
+	SaveSelection( classfilter, 0, sceneclipdata->m_FileName );
 
 	GlobalUnlock( hmem );
 
@@ -517,7 +526,7 @@ int EScene::PasteSelection(){
 		HGLOBAL hmem = GetClipboardData(clipformat);
 		if( hmem ){
 			SceneClipData *sceneclipdata = (SceneClipData *)GlobalLock(hmem);
-			LoadSelection( sceneclipdata->m_FileName );
+			LoadSelection( 0, sceneclipdata->m_FileName );
 			GlobalUnlock( hmem );
 		} else {
 			ELog.DlgMsg( mtError, "No data in clipboard" );

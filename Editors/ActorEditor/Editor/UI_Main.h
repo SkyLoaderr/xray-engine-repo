@@ -27,7 +27,7 @@ typedef EStateList::iterator EStateIt;
 class TUI: public IInputReceiver{
     friend class TfrmEditPrefs;
     friend class CRenderDevice;
-	char m_LastFileName[MAX_PATH];
+	AnsiString 	m_LastFileName;
     TD3DWindow* m_D3DWindow;
 
     TShiftState m_ShiftState;
@@ -124,9 +124,9 @@ public:
     bool 			OnCreate		();
     void 			OnDestroy		();
 
-    char* 			GetEditFileName	()	{   return m_LastFileName; }
-    char* 			GetCaption		();
-    char* 			GetTitle		();
+    const AnsiString&	GetEditFileName	()	{ return m_LastFileName; }
+    char* 				GetCaption		();
+    char* 				GetTitle		();
 
     bool 			IsModified		();
 

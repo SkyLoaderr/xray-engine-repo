@@ -382,6 +382,7 @@ void SceneBuilder::BuildHemiLights()
 }
 BOOL SceneBuilder::BuildSun(b_light* b, const Flags32& usage, svector<WORD,16>* sectors)
 {
+    b->controller_ID			= BuildLightControl(LCONTROL_SUN);
     if (usage.is(CLight::flAffectStatic)){
 	    b_params& P			= Scene.m_LevelOp.m_BuildParams;
     	if (!P.area_quality){
@@ -485,7 +486,7 @@ BOOL SceneBuilder::BuildLight(CLight* e)
     b_light	L;
     L.data			= e->m_D3D;
     L.data.mul		(e->m_Brightness);
-    L.controller_ID	= BuildLightControl("all"); // e->controller_name?e->controller_name:"all"
+    L.controller_ID	= BuildLightControl(LCONTROL_STATIC); // e->controller_name?e->controller_name:"all"
 
 	svector<WORD,16>* lpSectors;
     if (e->m_Flags.is(CLight::flAffectDynamic)){
@@ -522,7 +523,7 @@ BOOL SceneBuilder::BuildLight(CLight* e)
 
     switch (e->m_D3D.type){
     case D3DLIGHT_DIRECTIONAL: 	return BuildSun			(&L,e->m_Flags,lpSectors);
-    case D3DLIGHT_POINT:		return BuildPointLight	(&L,e->m_Flags,lpSectors,&e->m_FuzzyData.m_Positions,&e->_Transform());
+    case D3DLIGHT_POINT:		return BuildPointLight	(&L,e->m_Flags,lpSectors,e->m_FuzzyData?&e->m_FuzzyData->m_Positions:0,&e->_Transform());
     default:
     	THROW2("Invalid light type.");
 	    return FALSE;

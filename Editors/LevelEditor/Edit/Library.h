@@ -6,6 +6,7 @@
 #define LibraryH
 
 #include "pure.h"
+#include "FolderLib.h"              
 //----------------------------------------------------
 class CEditableObject;
 
@@ -18,12 +19,13 @@ class ELibrary:	public pureDeviceCreate, public pureDeviceDestroy
 	EditObjMap			m_EditObjects;
 
     CEditableObject*	LoadEditObject		(LPCSTR full_name);
+    void				UnloadEditObject	(LPCSTR full_name);
 public:
 						ELibrary			();
 	virtual 			~ELibrary			();
 
-    BOOL __fastcall		RemoveObject		(LPCSTR fname);
-    void __fastcall		RenameObject		(LPCSTR fn0, LPCSTR fn1);
+    BOOL __fastcall		RemoveObject		(LPCSTR fname, EItemType type);
+    void __fastcall		RenameObject		(LPCSTR fn0, LPCSTR fn1, EItemType type);
 
 	void 				OnCreate			();
 	void 				OnDestroy			();

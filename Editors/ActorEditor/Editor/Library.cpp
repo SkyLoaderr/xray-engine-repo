@@ -9,6 +9,7 @@
 #include "Library.h"
 #include "EditObject.h"
 #include "ui_main.h"
+#include "EditorPref.h"
 
 //----------------------------------------------------
 ELibrary Lib;
@@ -151,8 +152,9 @@ void ELibrary::RemoveEditObject(CEditableObject*& object)
 	if (object){
 	    object->m_RefCount--;
     	R_ASSERT(object->m_RefCount>=0);
+		if ((object->m_RefCount==0)&&!frmEditPrefs->cbLeaveEmptyRef->Checked)
+			UnloadEditObject(object->GetName());
         object=0;
-//S если нужно то удалить физически
 	}
 }
 //---------------------------------------------------------------------------
@@ -176,38 +178,70 @@ int ELibrary::GetObjects(FS_QueryMap& files)
 }
 //---------------------------------------------------------------------------
 
-BOOL ELibrary::RemoveObject(LPCSTR _fname)
+BOOL ELibrary::RemoveObject(LPCSTR _fname, EItemType type)   
 {
-	AnsiString src_name;
-	AnsiString fname		= ChangeFileExt(_fname,".object");
-    FS.update_path			(src_name,_objects_,fname.c_str());
-	if (FS.exist(src_name.c_str())){
-        AnsiString thm_name = ChangeFileExt(fname,".thm");
-    	// source
-        EFS.BackupFile		(_objects_,fname.c_str());
-        FS.file_delete		(src_name.c_str());
-        EFS.WriteAccessLog	(src_name.c_str(),"Remove");
-        // thumbnail
-        EFS.BackupFile		(_objects_,thm_name.c_str());
-        FS.file_delete		(_objects_,thm_name.c_str());
+	if (TYPE_FOLDER==type){
+    	FS.dir_delete			(_objects_,_fname);
+		return TRUE;
+    }else if (TYPE_OBJECT==type){
+        AnsiString src_name;
+        AnsiString fname		= ChangeFileExt(_fname,".object");
+        FS.update_path			(src_name,_objects_,fname.c_str());
+        if (FS.exist(src_name.c_str())){
+            AnsiString thm_name = ChangeFileExt(fname,".thm");
+            // source
+            EFS.BackupFile		(_objects_,fname.c_str());
+            FS.file_delete		(src_name.c_str());
+            EFS.WriteAccessLog	(src_name.c_str(),"Remove");
+            // thumbnail
+            EFS.BackupFile		(_objects_,thm_name.c_str());
+            FS.file_delete		(_objects_,thm_name.c_str());
 
-        return TRUE;
-    }
+	        UnloadEditObject	(_fname);
+            
+            return TRUE;
+        }
+    }else THROW;
     return FALSE;
 }
 //---------------------------------------------------------------------------
 
-void ELibrary::RenameObject(LPCSTR fn0, LPCSTR fn1)
+void ELibrary::RenameObject(LPCSTR nm0, LPCSTR nm1, EItemType type)
 {
-	AnsiString nm0,nm1;
-    // rename base file
-    FS.update_path(nm0,_objects_,fn0);	nm0+=".object";
-    FS.update_path(nm1,_objects_,fn1);	nm1+=".object";
-	FS.file_rename(nm0.c_str(),nm1.c_str(),false);
-    // rename thm
-    FS.update_path(nm0,_objects_,fn0);	nm0+=".thm";
-    FS.update_path(nm1,_objects_,fn1);	nm1+=".thm";
-	FS.file_rename(nm0.c_str(),nm1.c_str(),false);
+	if (TYPE_FOLDER==type){
+    	FS.dir_delete			(_objects_,nm0);
+    }else if (TYPE_OBJECT==type){
+        AnsiString fn0,fn1;
+        // rename base file
+        FS.update_path(fn0,_objects_,nm0);	fn0+=".object";
+        FS.update_path(fn1,_objects_,nm1);	fn1+=".object";
+        FS.file_rename(fn0.c_str(),fn1.c_str(),false);
+        // rename thm
+        FS.update_path(fn0,_objects_,nm0);	fn0+=".thm";
+        FS.update_path(fn1,_objects_,nm1);	fn1+=".thm";
+        FS.file_rename(fn0.c_str(),fn1.c_str(),false);
+
+        // rename in cache
+        EditObjPairIt it 	= m_EditObjects.find(nm0);
+	    if (it!=m_EditObjects.end()){
+            m_EditObjects[nm1]	= it->second;
+            m_EditObjects.erase	(it);
+        }
+	}
+}
+//---------------------------------------------------------------------------
+
+void ELibrary::UnloadEditObject(LPCSTR full_name)
+{
+    EditObjPairIt it 	= m_EditObjects.find(full_name);
+    if (it!=m_EditObjects.end()){
+    	if (0!=it->second->m_RefCount){
+        	ELog.DlgMsg(mtError,"Object '%s' still referenced.",it->first);
+            THROW;
+        }
+    	m_EditObjects.erase(it);
+    	xr_delete		(it->second);
+    }
 }
 //---------------------------------------------------------------------------
 

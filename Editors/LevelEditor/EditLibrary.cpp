@@ -50,7 +50,7 @@ __fastcall TfrmEditLibrary::TfrmEditLibrary(TComponent* Owner)
 	m_pEditObject 	= xr_new<CSceneObject>((LPVOID)0,(LPSTR)0);
     m_Props 		= TfrmPropertiesEObject::CreateProperties(0,alNone,OnModified);
     m_Items			= TItemList::CreateForm(paItems,alClient,TItemList::ilEditMenu|TItemList::ilDragAllowed);
-    m_Items->OnItemsFocused = OnItemFocused;
+    m_Items->OnItemFocused 	= OnItemFocused;
     m_Items->OnItemRemove 	= Lib.RemoveObject;
     m_Items->OnItemRename 	= Lib.RenameObject;
 }
@@ -64,7 +64,8 @@ void __fastcall TfrmEditLibrary::ShowEditor()
     form->Show();
 }
 //---------------------------------------------------------------------------
-CSceneObject* __fastcall TfrmEditLibrary::RayPick(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf){
+CSceneObject* __fastcall TfrmEditLibrary::RayPick(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf)
+{
 	if (!form) return 0;
 	if (form->cbPreview->Checked){
     	float dist=flt_max;
@@ -78,7 +79,8 @@ CSceneObject* __fastcall TfrmEditLibrary::RayPick(const Fvector& start, const Fv
     return 0;
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmEditLibrary::OnRender(){
+void __fastcall TfrmEditLibrary::OnRender()
+{
 	if (!form) return;
 	if (form->cbPreview->Checked){
     	CSceneObject*		S = form->m_pEditObject;
@@ -93,7 +95,8 @@ void __fastcall TfrmEditLibrary::OnRender(){
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmEditLibrary::ZoomObject(){
+void __fastcall TfrmEditLibrary::ZoomObject()
+{
 	if (!form) return;
 	if (form->cbPreview->Checked){
         // get bbox&transform
@@ -105,11 +108,11 @@ void __fastcall TfrmEditLibrary::ZoomObject(){
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::FormShow(TObject *Sender)
 {
+    UI.BeginEState(esEditLibrary);
 	modif_map.clear();
 
     InitObjects();
     ebSave->Enabled = false;
-    UI.BeginEState(esEditLibrary);
     // add directional light
     Flight L;
     ZeroMemory(&L,sizeof(Flight));
@@ -147,23 +150,22 @@ void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action
     // remove directional light                             
 	Device.LightEnable(0,false);
 	Device.LightEnable(1,false);
+
+    xr_delete(form->m_pEditObject);
+	xr_delete(m_Thm);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::FormDestroy(TObject *Sender)
 {
-    xr_delete(form->m_pEditObject);
-
 	TItemList::DestroyForm(m_Items);
     TfrmPropertiesEObject::DestroyProperties(m_Props);
 
 	form = 0;
-	xr_delete(m_Thm);
 
     UI.Command(COMMAND_CLEAR);
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmEditLibrary::FormCloseQuery(TObject *Sender,
-      bool &CanClose)
+void __fastcall TfrmEditLibrary::FormCloseQuery(TObject *Sender, bool &CanClose)
 {
     CanClose = true;
     if (ebSave->Enabled){
@@ -174,14 +176,16 @@ void __fastcall TfrmEditLibrary::FormCloseQuery(TObject *Sender,
     bExitResult = CanClose;
 }
 //---------------------------------------------------------------------------
-bool TfrmEditLibrary::FinalClose(){
+bool TfrmEditLibrary::FinalClose()
+{
 	if (!form) return true;
     bFinalExit = true;
     form->Close();
     return bExitResult;
 }
 //---------------------------------------------------------------------------
-void TfrmEditLibrary::OnModified(){
+void TfrmEditLibrary::OnModified()
+{
 	if (!form) return;
     form->ebSave->Enabled = true;
     CEditableObject* E=form->m_pEditObject->GetReference();
@@ -194,17 +198,14 @@ void TfrmEditLibrary::OnModified(){
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditLibrary::OnItemFocused(ListItemsVec& items)
+void __fastcall TfrmEditLibrary::OnItemFocused(TElTreeItem* item)
 {
-	if (items.size()!=1) return;
-
-    ListItem* item = items.back();
-
 	xr_delete(m_Thm);
     bool mt=false;
-    if (item&&FHelper.IsObject(item->Item())&&UI.ContainEState(esEditLibrary)){
+    if (item&&FHelper.IsObject(item)&&UI.ContainEState(esEditLibrary)){
         // change thm
-        AnsiString nm=item->Key(),obj_fn,thm_fn;
+        ListItem* prop = (ListItem*)item->Tag; VERIFY(prop);
+        AnsiString nm=prop->Key(),obj_fn,thm_fn;
 
         FS.update_path			(obj_fn,_objects_,ChangeFileExt(nm,".object").c_str());
         FS.update_path			(thm_fn,_objects_,ChangeFileExt(nm,".thm").c_str());
@@ -259,17 +260,16 @@ void __fastcall TfrmEditLibrary::cbPreviewClick(TObject *Sender)
     UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
+
 void TfrmEditLibrary::InitObjects()
 {
 	ListItemsVec items;
-
     FS_QueryMap lst;
     Lib.GetObjects(lst);
     FS_QueryPairIt it=lst.begin();
     FS_QueryPairIt _E=lst.end();
     for(; it!=_E; it++)
     	LHelper.CreateItem(items,it->first.c_str(),0,0,0);
-
     m_Items->AssignItems(items,false,"Objects",true);
 }
 //---------------------------------------------------------------------------
@@ -327,7 +327,9 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
             tex_name = ChangeFileExt(obj->GetName(),".thm");
             if (ImageManager.CreateOBJThumbnail(tex_name.c_str(),obj,obj->m_Version)){
 	            ELog.Msg(mtInformation,"Thumbnail successfully created.");
-//.                tvItemsItemFocused(Sender);
+                AnsiString full_name;
+                FHelper.MakeFullName(node,0,full_name);
+                m_Items->SelectItem(full_name,true,false,true);
             }
 	    }else{
             ELog.DlgMsg(mtError,"Can't create thumbnail. Set preview mode.");
@@ -408,7 +410,7 @@ void __fastcall TfrmEditLibrary::RefreshSelected()
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::pbImagePaint(TObject *Sender)
 {
-    if (m_Thm) m_Thm->Draw(paImage,pbImage,true);
+    if (m_Thm) m_Thm->Draw(pbImage);
 }
 //---------------------------------------------------------------------------
 
@@ -448,14 +450,31 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
         _SequenceToList(lst,open_nm.c_str());
 		bool bNeedUpdate=false;
 		bool bNeedBreak=false;
-		AnsiString path; // нужен при multi-open для сохранения последнего пути
+        // folder name
+        AnsiString folder;
+        TElTreeItem* item = m_Items->GetSelected(); 
+        if (item) FHelper.MakeName(item,0,folder,true);
+        //
+//		AnsiString path; // нужен при multi-open для сохранения последнего пути
 		AnsiString m_LastSelection;
         for (AStringIt it=lst.begin(); it!=lst.end(); it++){
         	nm = ChangeFileExt(ExtractFileName(*it),"");
             CEditableObject* O = xr_new<CEditableObject>(nm.c_str());
             if (O->Load(it->c_str())){
                 O->m_Version = FS.get_file_age(it->c_str());
-                save_nm = ChangeFileExt(nm,".object");
+                save_nm = AnsiString(FS.get_path(_objects_)->m_Path)+folder+ChangeFileExt(nm,".object");
+
+                if (FS.exist(save_nm.c_str()))
+			        if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Object '%s' already exist. Owerwrite it?",nm)){
+                    	xr_delete(O);
+                    	break;
+                    }
+                
+                O->SaveObject	(save_nm.c_str());
+                EFS.MarkFile	(*it,true);
+                bNeedUpdate		= true;
+                EFS.WriteAccessLog(save_nm.c_str(),"Import");
+/*                
                 if (EFS.GetSaveName(_objects_,save_nm,path.c_str())){
                 	path = ExtractFilePath(save_nm);
                     O->SaveObject(save_nm.c_str());
@@ -463,6 +482,7 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
                     bNeedUpdate=true;
                     EFS.WriteAccessLog(save_nm.c_str(),"Import");
                 }else bNeedBreak=true;
+*/
             }else{
             	ELog.DlgMsg(mtError,"Can't load file '%s'.",it->c_str());
             }
@@ -470,7 +490,7 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
             if (bNeedBreak) break;
 
             LPCSTR p = FS.get_path(_objects_)->m_Path;
-            if (path.Pos(p)>0) m_LastSelection = AnsiString(AnsiString(path.c_str()+strlen(p))+nm).LowerCase();
+            if (folder.Pos(p)>0) m_LastSelection = AnsiString(AnsiString(folder.c_str()+strlen(p))+nm).LowerCase();
         }
         if (bNeedUpdate){
 			Lib.RefreshLibrary	();
@@ -495,9 +515,9 @@ void __fastcall TfrmEditLibrary::FormActivate(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditLibrary::OnObjectRename(LPCSTR p0, LPCSTR p1)
+void __fastcall TfrmEditLibrary::OnObjectRename(LPCSTR p0, LPCSTR p1, EItemType type)
 {
-	Lib.RenameObject(p0,p1);
+	Lib.RenameObject(p0,p1,type);
 }
 //---------------------------------------------------------------------------
 
@@ -510,6 +530,19 @@ void __fastcall TfrmEditLibrary::fsStorageRestorePlacement(TObject *Sender)
 void __fastcall TfrmEditLibrary::fsStorageSavePlacement(TObject *Sender)
 {
 	m_Items->SaveSelection(fsStorage);
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TfrmEditLibrary::ExtBtn1Click(TObject *Sender)
+{
+	m_Items->RenameSelItem();	
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmEditLibrary::ExtBtn2Click(TObject *Sender)
+{
+	m_Items->RemoveSelItems();	
 }
 //---------------------------------------------------------------------------
 

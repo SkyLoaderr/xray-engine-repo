@@ -49,7 +49,7 @@ TUI::TUI()
  	m_SelectionRect = false;
     bMouseInUse		= false;
 
-	m_LastFileName[0]= 0;
+	m_LastFileName	= "";
 
     m_bHintShowing	= false;
 	m_pHintWindow	= 0;

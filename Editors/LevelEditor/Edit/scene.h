@@ -5,7 +5,7 @@
 #define SceneH
 
 #include "SceneGraph.h"
-#include "SceneCustomMTools.h"
+#include "ESceneCustomMTools.h"
 #include "Communicate.h"
 #include "pure.h"
 #include "ElTree.hpp"
@@ -163,10 +163,10 @@ public:
 	void 			SaveObject			(CCustomObject* O,IWriter& F);
 	void 			SaveObjects			(ObjectList& lst, u32 chunk_id, IWriter& F);
 public:
-	bool 			Load				(char *_FileName);
-	void 			Save				(char *_FileName, bool bUndo);
-	bool 			LoadSelection		(const char *_FileName);
-	void 			SaveSelection		(int classfilter, char *_FileName);
+	bool 			Load				(LPCSTR initial, LPCSTR map_name);
+	void 			Save				(LPCSTR initial, LPCSTR map_name, bool bUndo);
+	bool 			LoadSelection		(LPCSTR initial, LPCSTR fname);
+	void 			SaveSelection		(int classfilter, LPCSTR initial, LPCSTR fname);
 	void 			Unload				();
 	void 			ClearObjects		(bool bDestroy);
 	void 			LoadCompilerError	(LPCSTR fn);

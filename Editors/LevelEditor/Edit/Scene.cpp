@@ -675,7 +675,9 @@ void EScene::OnFrame( float dT )
     GetMTools(OBJCLASS_AIMAP)->OnFrame();
 }
 
-void EScene::ClearObjects(bool bDestroy){
+void EScene::ClearObjects(bool bDestroy)
+{
+    ClearSnapList			(false);
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
         if (bDestroy)
@@ -686,7 +688,6 @@ void EScene::ClearObjects(bool bDestroy){
     GetMTools(OBJCLASS_AIMAP)->Clear();
 
     xr_delete				(m_SkyDome);
-    ClearSnapList			(false);
     m_CompilerErrors.Clear	();
 }
 //----------------------------------------------------
@@ -718,7 +719,7 @@ void EScene::Modified(){
 
 bool EScene::IsModified()
 {
-    return (m_Modified && (ObjCount()||UI.GetEditFileName()[0]));
+    return (m_Modified && (ObjCount()||!UI.GetEditFileName().IsEmpty()));
 }
 
 bool EScene::IfModified()
@@ -727,7 +728,7 @@ bool EScene::IfModified()
         ELog.DlgMsg( mtError, "Scene sharing violation" );
         return false;
     }
-    if (m_Modified && (ObjCount()||UI.GetEditFileName()[0])){
+    if (m_Modified && (ObjCount()||!UI.GetEditFileName().IsEmpty())){
         int mr = ELog.DlgMsg(mtConfirmation, "The scene has been modified. Do you want to save your changes?");
         switch(mr){
         case mrYes: if (!UI.Command(COMMAND_SAVE)) return false; else m_Modified = false; break;
@@ -751,7 +752,7 @@ bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTe
 	bool bRes = true;
 	if (bTestPortal){
 		if (!PortalUtils.Validate(false)){
-			ELog.Msg(mtError,"*ERROR: Scene has non associated face!");
+			ELog.Msg(mtError,"*ERROR: Scene has non associated face (face without sector)!");
             bRes = false;
     	}
     }
@@ -946,6 +947,11 @@ void EScene::ShowSummaryInfo()
             if ((*_F)->GetSummaryInfo(&s_summary)) bRes=true;
         }
 	}
+    for (int i=0; i<OBJCLASS_COUNT; i++){
+        ESceneCustomMTools* mt = m_SceneTools[(EObjClass)i];
+        if (mt) mt->GetSummaryInfo(&s_summary);
+    }
+    
     // append sky dome
 	if (m_SkyDome) m_SkyDome->GetSummaryInfo(&s_summary);
 

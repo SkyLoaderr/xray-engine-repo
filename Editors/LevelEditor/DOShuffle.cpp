@@ -75,8 +75,8 @@ void TfrmDOShuffle::FillData()
     tvItems->Selected = 0;
     tvItems->Items->Clear();
     // objects
-    for (DOIt d_it=DM->objects.begin(); d_it!=DM->objects.end(); d_it++)
-        AddItem(0,(*d_it)->GetName(),(void*)(*d_it));
+    for (CDetailManager::DetailIt d_it=DM->objects.begin(); d_it!=DM->objects.end(); d_it++)
+        AddItem(0,((EDetail*)(*d_it))->GetName(),(void*)(*d_it));
     // indices
     ColorIndexPairIt S = DM->m_ColorIndices.begin();
     ColorIndexPairIt E = DM->m_ColorIndices.end();
@@ -87,8 +87,8 @@ void TfrmDOShuffle::FillData()
 		OneColor->Parent = form->sbDO;
 	    OneColor->ShowIndex(this);
         OneColor->mcColor->Brush->Color = (TColor)rgb2bgr(it->first);
-        for (d_it=it->second.begin(); d_it!=it->second.end(); d_it++)
-	        OneColor->AppendObject((*d_it)->GetName());
+        for (DOIt do_it=it->second.begin(); do_it!=it->second.end(); do_it++)
+	        OneColor->AppendObject((*do_it)->GetName());
     }
     // redraw
     tvItems->IsUpdating = false;
@@ -97,26 +97,6 @@ void TfrmDOShuffle::FillData()
 
 bool TfrmDOShuffle::ApplyChanges()
 {
-/*
-    bool bNeedUpdate = false;
-    // update objects
-    DM->MarkAllObjectsAsDel();
-    for ( TElTreeItem* node = tvItems->Items->GetFirstNode(); node; node = node->GetNext()){
-    	CDetail* DO = DM->FindObjectByName(AnsiString(node->Text).c_str());
-    	if (DO)	DO->m_bMarkDel = false;
-        else{
-        	DO = DM->AppendObject(AnsiString(node->Text).c_str());
-            bNeedUpdate = true;
-        }
-        // update data
-        SDOData* DD 		= (SDOData*)node->Data;
-        DO->s_min		 	= DD->m_fMinScale;
-        DO->s_max		 	= DD->m_fMaxScale;
-        DO->m_fDensityFactor= DD->m_fDensityFactor;
-        DO->flags			= DD->m_Flags;
-    }
-    if (DM->RemoveObjects(true)) bNeedUpdate=true;
-*/    
 	// update indices
 	DM->RemoveColorIndices();
 	for (u32 k=0; k<color_indices.size(); k++){
@@ -201,7 +181,7 @@ void __fastcall TfrmDOShuffle::tvItemsItemFocused(TObject *Sender)
 	if (Item&&Item->Data){
 		AnsiString nm 		= Item->Text;
     	m_Thm 				= xr_new<EImageThumbnail>(nm.c_str(),EImageThumbnail::EITObject);
-        CDetail* dd			= (CDetail*)Item->Data;
+        EDetail* dd			= (EDetail*)Item->Data;
 		PHelper.CreateCaption	(items,"Ref Name",	dd->GetName());
 		PHelper.CreateFloat		(items,"Density",	&dd->m_fDensityFactor, 	0.1f, 1.0f);
 		PHelper.CreateFloat		(items,"Min Scale",	&dd->m_fMinScale, 		0.1f, 100.0f);
@@ -216,7 +196,7 @@ void __fastcall TfrmDOShuffle::tvItemsItemFocused(TObject *Sender)
 
 void __fastcall TfrmDOShuffle::pbImagePaint(TObject *Sender)
 {
-	if (m_Thm) m_Thm->Draw(paImage,pbImage,true);
+	if (m_Thm) m_Thm->Draw(pbImage);
 }
 //---------------------------------------------------------------------------
 
@@ -361,8 +341,8 @@ void __fastcall TfrmDOShuffle::ebLoadListClick(TObject *Sender)
 	AnsiString fname;
 	if (EFS.GetOpenName(_detail_objects_,fname)){
 		bColorIndModif 			= true;
-        DM->InvalidateSlots		();
 		DM->ImportColorIndices	(fname.c_str());
+        DM->InvalidateSlots		();
 		ClearIndexForms			();
         FillData				();
     }
@@ -372,10 +352,12 @@ void __fastcall TfrmDOShuffle::ebLoadListClick(TObject *Sender)
 void __fastcall TfrmDOShuffle::ebClearListClick(TObject *Sender)
 {
     DM->InvalidateSlots		();
-	DM->RemoveObjects		(false);
+    DM->ClearColorIndices	();
     ClearIndexForms			();
+    FillData				();
 	bColorIndModif 			= true;
     bObjectModif			= true;
+    UI.RedrawScene			();
 }
 //---------------------------------------------------------------------------
 

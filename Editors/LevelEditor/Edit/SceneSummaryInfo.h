@@ -6,6 +6,7 @@ DEFINE_SET(AnsiString,AStringSet,AStringSetIt);
 struct SSceneSummary{   	
 	AStringSet	textures;
 	AStringSet	det_textures;
+	AStringSet	do_textures;
 	AStringSet	lod_objects;
 	AStringSet	mu_objects;
 	AStringSet	waves;
@@ -33,6 +34,7 @@ struct SSceneSummary{
     void		FillProp	(PropItemVec& items);
     void		Clear(){
                     textures.clear		();
+                    do_textures.clear	();
                     det_textures.clear	();
                     lod_objects.clear	();
                     mu_objects.clear	();

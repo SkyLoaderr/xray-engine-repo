@@ -1,8 +1,8 @@
 object frmEditLibrary: TfrmEditLibrary
-  Left = 365
-  Top = 245
+  Left = 570
+  Top = 435
   Width = 332
-  Height = 559
+  Height = 468
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'Object Library'
   Color = 10528425
@@ -29,7 +29,7 @@ object frmEditLibrary: TfrmEditLibrary
     Left = 192
     Top = 0
     Width = 132
-    Height = 532
+    Height = 441
     Align = alRight
     BevelOuter = bvNone
     ParentColor = True
@@ -80,7 +80,7 @@ object frmEditLibrary: TfrmEditLibrary
     end
     object Bevel4: TBevel
       Left = 0
-      Top = 166
+      Top = 132
       Width = 132
       Height = 2
       Align = alTop
@@ -116,7 +116,7 @@ object frmEditLibrary: TfrmEditLibrary
     end
     object Panel3: TPanel
       Left = 0
-      Top = 132
+      Top = 134
       Width = 132
       Height = 34
       Align = alTop
@@ -178,16 +178,16 @@ object frmEditLibrary: TfrmEditLibrary
     end
     object Panel2: TPanel
       Left = 0
-      Top = 452
+      Top = 326
       Width = 132
-      Height = 80
+      Height = 115
       Align = alBottom
       BevelOuter = bvNone
       ParentColor = True
       TabOrder = 3
       object ebImport: TExtBtn
         Left = 2
-        Top = 0
+        Top = 40
         Width = 129
         Height = 17
         Align = alNone
@@ -201,7 +201,7 @@ object frmEditLibrary: TfrmEditLibrary
       end
       object ebMakeLWO: TExtBtn
         Left = 2
-        Top = 17
+        Top = 57
         Width = 129
         Height = 17
         Align = alNone
@@ -215,7 +215,7 @@ object frmEditLibrary: TfrmEditLibrary
       end
       object ebSave: TExtBtn
         Left = 2
-        Top = 45
+        Top = 80
         Width = 129
         Height = 17
         Align = alNone
@@ -230,7 +230,7 @@ object frmEditLibrary: TfrmEditLibrary
       end
       object ebCancel: TExtBtn
         Left = 2
-        Top = 62
+        Top = 97
         Width = 129
         Height = 17
         Align = alNone
@@ -242,13 +242,41 @@ object frmEditLibrary: TfrmEditLibrary
         FlatAlwaysEdge = True
         OnClick = ebCancelClick
       end
+      object ExtBtn1: TExtBtn
+        Left = 3
+        Top = 0
+        Width = 129
+        Height = 17
+        Align = alNone
+        BevelShow = False
+        BtnColor = 10528425
+        CloseButton = False
+        Caption = 'Rename Object'
+        Transparent = False
+        FlatAlwaysEdge = True
+        OnClick = ExtBtn1Click
+      end
+      object ExtBtn2: TExtBtn
+        Left = 3
+        Top = 17
+        Width = 129
+        Height = 17
+        Align = alNone
+        BevelShow = False
+        BtnColor = 10528425
+        CloseButton = False
+        Caption = 'Remove Object'
+        Transparent = False
+        FlatAlwaysEdge = True
+        OnClick = ExtBtn2Click
+      end
     end
   end
   object paItems: TPanel
     Left = 0
     Top = 0
     Width = 192
-    Height = 532
+    Height = 441
     Align = alClient
     BevelOuter = bvNone
     ParentColor = True

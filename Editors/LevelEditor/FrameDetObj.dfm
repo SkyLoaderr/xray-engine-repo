@@ -1,7 +1,7 @@
 object fraDetailObject: TfraDetailObject
   Left = 0
   Top = 0
-  Width = 198
+  Width = 443
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -13,7 +13,7 @@ object fraDetailObject: TfraDetailObject
   object paCommand: TPanel
     Left = 0
     Top = 0
-    Width = 198
+    Width = 443
     Height = 157
     Align = alTop
     ParentColor = True
@@ -21,7 +21,7 @@ object fraDetailObject: TfraDetailObject
     object Label1: TLabel
       Left = 1
       Top = 1
-      Width = 196
+      Width = 441
       Height = 13
       Align = alTop
       Alignment = taCenter

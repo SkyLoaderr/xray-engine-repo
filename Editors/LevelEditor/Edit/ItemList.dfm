@@ -1,6 +1,6 @@
 object ItemList: TItemList
-  Left = 593
-  Top = 304
+  Left = 926
+  Top = 540
   Width = 259
   Height = 329
   BiDiMode = bdRightToLeft
@@ -115,11 +115,11 @@ object ItemList: TItemList
     HeaderHeight = 17
     HeaderHotTrack = False
     HeaderSections.Data = {
-      F4FFFFFF010000005828F41000000000FFFFFFFF0000010100000000C3000000
-      0000000010270000000101004014FF040000000001000000FFFFFFFF00000100
-      0000000000000000000100000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000090000000060000004974656D73000100
+      F4FFFFFF0100000070859D1300000000FFFFFFFF000001010000295CC3000000
+      0000000010270000000101504014FF04000000000100623BFFFFFFFF00000167
+      0000000000000000000100000000000074696F6E733B456E67696E655C426C65
+      6E646572733B456E67696E655C47616D653B523A5C426F726C616E645C436F6D
+      706F6E656E7473365C616C65786D783B90000000060000004974656D73000100
       0000000000000000000000}
     HeaderFlat = True
     HeaderFont.Charset = DEFAULT_CHARSET
@@ -221,7 +221,8 @@ object ItemList: TItemList
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Top = 24
+    Left = 112
+    Top = 16
     object N3: TMenuItem
       Caption = '-'
     end
@@ -260,14 +261,16 @@ object ItemList: TItemList
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Top = 56
+    Left = 112
+    Top = 48
   end
   object InplaceEdit: TElTreeInplaceAdvancedEdit
     Tree = tvItems
     Types = [sftText]
     OnAfterOperation = InplaceEditAfterOperation
     OnValidateResult = InplaceEditValidateResult
-    Top = 88
+    Left = 112
+    Top = 80
   end
   object pmEdit: TMxPopupMenu
     Alignment = paCenter
@@ -280,8 +283,8 @@ object ItemList: TItemList
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 32
-    Top = 56
+    Left = 144
+    Top = 48
     object MenuItem1: TMenuItem
       Caption = '-'
     end
@@ -297,7 +300,7 @@ object ItemList: TItemList
       OnClick = Rename1Click
     end
     object MenuItem5: TMenuItem
-      Caption = 'Delete'
+      Caption = 'Remove'
       OnClick = Delete1Click
     end
   end
