@@ -446,7 +446,9 @@ void CObjectHandlerGOAP::set_goal	(MonsterSpace::EObjectAction object_action, CG
 	else
 		condition_id		= eWorldPropertyNoItemsIdle;
 
+#ifdef LOG_ACTION
 	Msg						("%6d : Goal world state %s",Level().timeServer(),to_string(condition_id));
+#endif
 	CState					condition;
 	condition.add_condition	(CWorldProperty(condition_id,true));
 	set_target_state		(condition);
@@ -455,9 +457,11 @@ void CObjectHandlerGOAP::set_goal	(MonsterSpace::EObjectAction object_action, CG
 void CObjectHandlerGOAP::update(u32 time_delta)
 {
 	inherited::update			(time_delta);
+#ifdef LOG_ACTION
 	if (!solution().empty()) {
 		Msg						("%6d : Solution",Level().timeServer());
 		for (int i=0; i<(int)solution().size(); ++i)
 			Msg					("%s",to_string(solution()[i]));
 	}
+#endif
 }
