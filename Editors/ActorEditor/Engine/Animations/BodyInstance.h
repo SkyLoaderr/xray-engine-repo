@@ -80,7 +80,7 @@ public:
 	float			speed;
 
 	BOOL			playing;
-	BOOL			noloop;
+	BOOL			stop_at_end;
 
 	PlayCallback	Callback;
 	void*			CallbackParam;

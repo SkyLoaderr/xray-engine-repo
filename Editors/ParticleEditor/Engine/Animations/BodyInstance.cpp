@@ -190,7 +190,7 @@ CBlend*	CKinematics::LL_PlayFX(int bone, int motion, float blendAccrue, float bl
 	B->bone_or_part	= bone;
 	
 	B->playing		= TRUE;
-	B->noloop		= FALSE;
+	B->stop_at_end	= FALSE;
 	
 	blend_fx.push_back(B);
 	return			B;
@@ -206,11 +206,12 @@ void	CKinematics::LL_FadeCycle(int part, float falloff)
 		B.blend			= CBlend::eFalloff;
 		B.blendFalloff	= falloff;
 //		if (!B.playing)	{
-		if (!B.playing&&!B.noloop){ //.
-			B.playing	= TRUE;
-			B.noloop	= FALSE;
-			B.blendAmount=EPS_S;
+		if (!B.playing&&!B.stop_at_end){ //.
+			B.playing		= TRUE;
+			B.stop_at_end	= FALSE;
+			B.blendAmount	= EPS_S;
 		}
+        if (B.stop_at_end)  B.playing = FALSE;  //.
 	}
 }
 
@@ -277,7 +278,7 @@ CBlend*	CKinematics::LL_PlayCycle(int part, int motion, BOOL  bMixing,	float ble
 	B->timeTotal	= Bone->Motions[motion].GetLength();
 	B->bone_or_part	= part;
 	B->playing		= TRUE;
-	B->noloop		= noloop;
+	B->stop_at_end	= noloop;
 	B->Callback		= Callback;
 	B->CallbackParam= CallbackParam;
 	return			B;
@@ -303,7 +304,7 @@ void CKinematics::Update ()
 		{
 			CBlend& B = *(*I);
 //			if (!B.playing) continue;
-			if (!B.playing&&!B.noloop) 		continue; //.
+			if (!B.playing&&!B.stop_at_end)	continue; //.
 			if (B.dwFrame==Device.dwFrame)	continue;
 			B.dwFrame		=	Device.dwFrame;
 //			B.timeCurrent += dt*B.speed;
@@ -313,15 +314,15 @@ void CKinematics::Update ()
 			case CBlend::eFREE_SLOT: 
 				NODEFAULT;
 			case CBlend::eFixed:	
-				B.blendAmount = B.blendPower; 
-				if (B.noloop && (B.timeCurrent > (B.timeTotal-SAMPLE_SPF) )) {
+				B.blendAmount 		= B.blendPower; 
+				if (B.stop_at_end && (B.timeCurrent > (B.timeTotal-SAMPLE_SPF) )) {
 					B.timeCurrent	= B.timeTotal-SAMPLE_SPF;
 					B.playing		= FALSE;
 					if (B.Callback)	B.Callback(&B);
 				}
 				break;
 			case CBlend::eAccrue:	
-				B.blendAmount += dt*B.blendAccrue*B.blendPower;
+				B.blendAmount 		+= dt*B.blendAccrue*B.blendPower;
 				if (B.blendAmount>=B.blendPower) {
 					// switch to fixed
 					B.blendAmount	= B.blendPower;
@@ -329,17 +330,17 @@ void CKinematics::Update ()
 				}
 				break;
 			case CBlend::eFalloff:
-				B.blendAmount -= dt*B.blendFalloff*B.blendPower;
+				B.blendAmount 		-= dt*B.blendFalloff*B.blendPower;
 				if (B.blendAmount<=0) {
 					// destroy cycle
-					B.blend = CBlend::eFREE_SLOT;
+					B.blend 		= CBlend::eFREE_SLOT;
 
-					CPartDef& P	= (*partition)[B.bone_or_part];
+					CPartDef& P		= (*partition)[B.bone_or_part];
 					for (int i=0; i<int(P.bones.size()); i++)
 						(*bones)[P.bones[i]]->Motion_Stop(this,*I);
 
 					blend_cycles[part].erase(I);
-					E=blend_cycles[part].end(); I--; 
+					E				= blend_cycles[part].end(); I--; 
 				}
 				break;
 			default: 
