@@ -615,6 +615,8 @@ void CObjectHandlerPlanner::setup(CAI_Stalker *object)
 	inherited::setup			(object);
 	CActionBase<CAI_Stalker>	*action;
 
+	clear						();
+
 	m_storage.set_property		(eWorldPropertyAimed1,false);
 	m_storage.set_property		(eWorldPropertyAimed2,false);
 	m_storage.set_property		(eWorldPropertyUseEnough,false);
