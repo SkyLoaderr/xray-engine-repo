@@ -143,19 +143,29 @@ void CSE_ALifeSimulator::vfRestoreItems(CSE_ALifeHumanAbstract *tpALifeHumanAbst
 	}
 }
 
-void CSE_ALifeSimulator::vfAttachGatheredItems(CSE_ALifeHumanAbstract *tpALifeHumanAbstract, OBJECT_VECTOR &tpObjectVector)
+void CSE_ALifeSimulator::vfAttachGatheredItems(CSE_ALifeHumanAbstract *tpALifeHumanAbstract1, CSE_ALifeHumanAbstract *tpALifeHumanAbstract2, OBJECT_VECTOR &tpObjectVector)
 {
 	tpObjectVector.clear();
-	tpObjectVector.insert(tpObjectVector.end(),tpALifeHumanAbstract->children.begin(),tpALifeHumanAbstract->children.end());
-	tpALifeHumanAbstract->children.clear();
-	tpALifeHumanAbstract->m_fCumulativeItemMass = 0.f;
-	tpALifeHumanAbstract->m_iCumulativeItemVolume = 0;
+	tpObjectVector.insert(tpObjectVector.end(),tpALifeHumanAbstract1->children.begin(),tpALifeHumanAbstract1->children.end());
+	tpALifeHumanAbstract1->children.clear();
+	tpALifeHumanAbstract1->m_fCumulativeItemMass	= 0.f;
+	tpALifeHumanAbstract1->m_iCumulativeItemVolume	= 0;
 	OBJECT_IT			I = tpObjectVector.begin();
 	OBJECT_IT			E = tpObjectVector.end();
 	for ( ; I != E; I++) {
-		CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = tpfGetObjectByID(*I);
-		l_tpALifeDynamicObject->ID_Parent = 0xffff;
-		vfAttachItem	(*tpALifeHumanAbstract,dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject),l_tpALifeDynamicObject->m_tGraphID);
+		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*I));
+		if (l_tpALifeInventoryItem->ID_Parent == tpALifeHumanAbstract1->ID) {
+			tpALifeHumanAbstract1->children.push_back		(l_tpALifeInventoryItem->ID);
+			tpALifeHumanAbstract1->m_fCumulativeItemMass	+= l_tpALifeInventoryItem->m_fMass;
+			tpALifeHumanAbstract1->m_iCumulativeItemVolume	+= l_tpALifeInventoryItem->m_iVolume;
+		}
+		else {
+			tpALifeHumanAbstract2->children.push_back		(l_tpALifeInventoryItem->ID);
+			tpALifeHumanAbstract2->m_fCumulativeItemMass	+= l_tpALifeInventoryItem->m_fMass;
+			tpALifeHumanAbstract2->m_iCumulativeItemVolume	+= l_tpALifeInventoryItem->m_iVolume;
+			vfDetachItem(*tpALifeHumanAbstract2,l_tpALifeInventoryItem,tpALifeHumanAbstract1->m_tGraphID);
+			vfAttachItem(*tpALifeHumanAbstract1,l_tpALifeInventoryItem,tpALifeHumanAbstract1->m_tGraphID);
+		}
 	}
 }
 
@@ -519,8 +529,13 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 	sort				(m_tpItems1.begin(),m_tpItems1.end());
 	sort				(m_tpItems2.begin(),m_tpItems2.end());
 
-	tpALifeHumanAbstract1->vfDetachAll();
-	tpALifeHumanAbstract2->vfDetachAll();
+	tpALifeHumanAbstract1->children.clear();
+	tpALifeHumanAbstract1->m_fCumulativeItemMass = 0.f;
+	tpALifeHumanAbstract1->m_iCumulativeItemVolume = 0;
+	
+	tpALifeHumanAbstract2->children.clear();
+	tpALifeHumanAbstract2->m_fCumulativeItemMass = 0.f;
+	tpALifeHumanAbstract2->m_iCumulativeItemVolume = 0;
 
 	for (int j=0, k=0; j<8; j++) {
 		if (m_tpItemVector.empty() || !(tpALifeHumanAbstract1->m_dwTotalMoney + tpALifeHumanAbstract2->m_dwTotalMoney))
@@ -625,13 +640,9 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 	l_iItemCount1		= tpALifeHumanAbstract1->children.size() - l_iItemCount1;
 	l_iItemCount2		= tpALifeHumanAbstract2->children.size() - l_iItemCount2;
 
-	if (m_tpItemVector.empty() && !bfCheckIfCanNullTradersBalance(tpALifeHumanAbstract1,tpALifeHumanAbstract2,l_iItemCount1,l_iItemCount2,ifComputeBalance(tpALifeHumanAbstract1,m_tpItems2) - ifComputeBalance(tpALifeHumanAbstract2,m_tpItems1))) {
-		vfRestoreItems	(tpALifeHumanAbstract1,m_tpItems1);
-		vfRestoreItems	(tpALifeHumanAbstract2,m_tpItems2);
-	}
-	else {
-		vfAttachGatheredItems(tpALifeHumanAbstract1,m_tpBlockedItems1);
-		vfAttachGatheredItems(tpALifeHumanAbstract2,m_tpBlockedItems2);
+	if (m_tpItemVector.empty() && bfCheckIfCanNullTradersBalance(tpALifeHumanAbstract1,tpALifeHumanAbstract2,l_iItemCount1,l_iItemCount2,ifComputeBalance(tpALifeHumanAbstract1,m_tpItems2) - ifComputeBalance(tpALifeHumanAbstract2,m_tpItems1))) {
+		vfAttachGatheredItems(tpALifeHumanAbstract1,tpALifeHumanAbstract2,m_tpBlockedItems1);
+		vfAttachGatheredItems(tpALifeHumanAbstract2,tpALifeHumanAbstract1,m_tpBlockedItems2);
 	}
 	
 #ifdef ALIFE_LOG
