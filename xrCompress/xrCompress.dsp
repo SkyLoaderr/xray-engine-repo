@@ -80,9 +80,13 @@ LINK32=link.exe
 
 # Name "xrCompress - Win32 Release"
 # Name "xrCompress - Win32 Debug"
-# Begin Group "Source Files"
+# Begin Group "Kernel"
 
-# PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+# PROP Default_Filter ""
+# End Group
+# Begin Group "Main"
+
+# PROP Default_Filter ""
 # Begin Source File
 
 SOURCE=.\StdAfx.cpp
@@ -90,24 +94,12 @@ SOURCE=.\StdAfx.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\StdAfx.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\xrCompress.cpp
 # End Source File
 # End Group
-# Begin Group "Header Files"
-
-# PROP Default_Filter "h;hpp;hxx;hm;inl"
-# Begin Source File
-
-SOURCE=.\StdAfx.h
-# End Source File
-# End Group
-# Begin Group "Resource Files"
-
-# PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
-# End Group
-# Begin Source File
-
-SOURCE=.\ReadMe.txt
-# End Source File
 # End Target
 # End Project
