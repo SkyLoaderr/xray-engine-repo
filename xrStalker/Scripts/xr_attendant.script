@@ -124,6 +124,9 @@ function action_follow:execute ()
     end 
     -- проверим нахождение нас в списке
     self:check_list ()
+    
+    xr_logic.try_switch_to_another_section (self.object, self.st, db.actor)
+    
     --получим целевую точку, дистанцию до нее и позицию.
     local vid, vdist, vpos = self:calculate_position ()
     
