@@ -63,7 +63,7 @@ function update()
 			heli_mgr.heliObject:TurnEngineSound( false )
 
 			-- запомнить ID новичков и тут же их спрятать
-			wounded_id = get_level_object( "esc_vagon_wounded" ):id()
+--[[			wounded_id = get_level_object( "esc_vagon_wounded" ):id()
 			table.insert( newbies, get_level_object( "esc_vagon_newbie1" ):id() )
 			table.insert( newbies, get_level_object( "esc_vagon_newbie2" ):id() )
 
@@ -77,7 +77,7 @@ function update()
 
 				sim:set_switch_online(  newbies[2], false )
 				sim:set_switch_offline( newbies[2], true )
-			end
+			end]]
 
 			state_init = false
 		end
@@ -90,19 +90,19 @@ function update()
 	-- ждём рождения новичков
 	if state == state_wait_spawn then
 		if state_init then
-			local sim = alife()
+--[[			local sim = alife()
 			if sim then
 				sim:set_switch_online(  newbies[1], true )
 				sim:set_switch_offline( newbies[1], false )
 
 				sim:set_switch_online(  newbies[2], true )
 				sim:set_switch_offline( newbies[2], false )
-			end
+			end]]
 
 			state_init = false
 		end
 
-		if type( newbies[1] ) == "number" then
+--[[		if type( newbies[1] ) == "number" then
 			newbies[1] = level.debug_object( "esc_vagon_newbie1" ) or newbies[1]
 		end
 
@@ -111,6 +111,18 @@ function update()
 		end
 
 		if type( newbies[1] ) ~= "number" and type( newbies[2] ) ~= "number" then
+			chst( state_heli_fly )
+		end]]
+
+		if not newbies[1] then
+			newbies[1] = level.debug_object( "esc_vagon_newbie1" )
+		end
+
+		if not newbies[2] then
+			newbies[2] = level.debug_object( "esc_vagon_newbie2" )
+		end
+
+		if newbies[1] and newbies[2] then
 			chst( state_heli_fly )
 		end
 	end	
@@ -253,7 +265,6 @@ function main()
 	end
 
 --	actor:give_info_portion( "tutorial_wounded_help" )
-
 	while true do
 		update()
 		heli_mgr:update()
