@@ -68,16 +68,25 @@ void	CSoundRender_Target::_initialize		()
 	case sq_HIGH:		dsBD.guid3DAlgorithm = DS3DALG_HRTF_FULL;			break;
 	default:			Debug.fatal("Unknown 3D-ref_sound algorithm");			break;
 	}
-	dsBD.guid3DAlgorithm	= DS3DALG_DEFAULT;
+//	dsBD.guid3DAlgorithm	= DS3DALG_DEFAULT;
 
 	// Create
+	bDX7				= FALSE;
 	R_CHK	(SoundRender.pDevice->CreateSoundBuffer(&dsBD, &pBuffer_base, NULL));
 	R_CHK	(pBuffer_base->QueryInterface(IID_IDirectSoundBuffer8,(void **)&pBuffer));
-	R_CHK	(pBuffer_base->QueryInterface(IID_IDirectSound3DBuffer8,(void **)&pControl));
+	/*
+	if		(FAILED(pBuffer_base->QueryInterface(IID_IDirectSoundBuffer8,(void **)&pBuffer)))	{
+		Msg					("! WARNING: Can't use DX8 interface for sound control. Reverting to DX7 one.");
+		pBuffer				= (IDirectSoundBuffer8*)pBuffer_base;
+		pBuffer_base->AddRef();
+		bDX7				= TRUE;
+	}
+	*/
+	R_CHK	(pBuffer_base->QueryInterface(IID_IDirectSound3DBuffer8,	(void **)&pControl));
 	R_ASSERT(pBuffer_base && pBuffer && pControl);
 
 	// DMOs
-	if (!psSoundFlags.test(ssHardware))	{
+	if (!psSoundFlags.test(ssHardware) && !bDX7)	{
 		DSEFFECTDESC	desc	[2];
 		desc[0].dwSize			= sizeof(DSEFFECTDESC);
 		desc[0].dwFlags			= DSFX_LOCSOFTWARE;
@@ -97,6 +106,9 @@ void	CSoundRender_Target::_initialize		()
 	} else {
 		pFX_Reverb				= NULL;
 		pFX_Echo				= NULL;
+		if (bDX7)				{
+			Msg			("! WARNING: Can't use DMOs over DX7-sound interface.");
+		}
 	}
 }
 

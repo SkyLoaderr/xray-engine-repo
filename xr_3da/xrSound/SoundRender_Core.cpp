@@ -45,7 +45,7 @@ CSoundRender_Core::~CSoundRender_Core()
 
 void CSoundRender_Core::_initialize	(u64 window)
 {
-	bPresent		= FALSE;
+	bPresent			= FALSE;
 	if (strstr			( Core.Params,"-nosound"))		return;
 	Timer.Start			( );
 

@@ -15,6 +15,8 @@ class CSoundRender_Target
 	IDirectSoundFXEcho8*		pFX_Echo;
 	IDirectSoundFXDistortion8*	pFX_Distortion;
 
+	BOOL						bDX7;
+
 	u32							buf_time;		// ms
 	u32							buf_size;		// bytes
 	u32							buf_block;
@@ -28,6 +30,7 @@ class CSoundRender_Target
 public:
 	float						priority;
 private:
+	BOOL						isDX7			() { return bDX7; };
 	void						fill_block		();
 	u32							calc_interval	(u32 ptr);
 public:
