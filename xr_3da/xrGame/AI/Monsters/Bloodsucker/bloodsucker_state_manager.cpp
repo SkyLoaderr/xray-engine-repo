@@ -35,5 +35,7 @@ void CStateManagerBloodsucker::update()
 
 	set_state(state);
 
+	execute();
+
 	m_object->CEnergyHolder::set_aggressive(get_state(state)->GetStateAggressiveness());
 }

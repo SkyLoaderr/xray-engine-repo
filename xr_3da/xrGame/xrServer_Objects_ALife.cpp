@@ -276,20 +276,6 @@ void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 
 	if (m_wVersion > 61)
 		tNetPacket.r			(&m_story_id,sizeof(m_story_id));
-
-	if (xr_strlen(m_ini_string)) {
-#pragma warning(push)
-#pragma warning(disable:4238)
-		CInifile					ini(
-			&IReader			(
-			(void*)(*(m_ini_string)),
-			m_ini_string.size()
-			)
-			);
-#pragma warning(pop)
-//		if (ini.section_exist("alife") && ini.line_exist("alife","interactive"))
-//			m_flags.set			(flInteractive,ini.r_bool("alife","interactive"));
-	}
 }
 
 void CSE_ALifeObject::UPDATE_Write			(NET_Packet &tNetPacket)

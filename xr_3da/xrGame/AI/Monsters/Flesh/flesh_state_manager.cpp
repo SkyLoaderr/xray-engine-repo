@@ -42,4 +42,6 @@ void CStateManagerFlesh::update()
 	else								state = eStateRest;
 
 	set_state(state);
+
+	execute();
 }

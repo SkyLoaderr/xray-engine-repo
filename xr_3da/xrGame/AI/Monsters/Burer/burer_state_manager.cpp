@@ -44,4 +44,6 @@ void CStateManagerBurer::update()
 	(!m_object->EnemyMan.get_enemy()) ? m_object->TScanner::enable() : m_object->TScanner::disable();
 	
 	set_state(state);
+
+	execute();
 }

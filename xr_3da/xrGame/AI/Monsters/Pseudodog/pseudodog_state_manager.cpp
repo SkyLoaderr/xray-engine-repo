@@ -74,5 +74,7 @@ void CStateManagerPseudodog::update()
 	if ((state != eStateCustom)) m_object->time_growling = 0;
 
 	set_state(state);
+
+	execute();
 }
 

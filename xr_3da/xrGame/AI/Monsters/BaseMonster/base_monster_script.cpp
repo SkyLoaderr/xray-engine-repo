@@ -14,13 +14,13 @@ bool CBaseMonster::bfAssignMovement (CScriptEntityAction *tpEntityAction)
 	CScriptMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
 	if (l_tMovementAction.completed()) return false;
 
-	
 	if (CDetailPathManager::time_path_built() >= tpEntityAction->m_tActionCondition.m_tStartTime) {
 		if ((l_tMovementAction.m_fDistToEnd > 0) && IsPathEnd(l_tMovementAction.m_fDistToEnd))  {
 			l_tMovementAction.m_bCompleted = true;
 			return false;
 		}
 	}
+
 
 	// translate script.action into MotionMan.action
 	switch (l_tMovementAction.m_tMoveAction) {
@@ -227,6 +227,10 @@ void CBaseMonster::ProcessScripts()
 	
 	TranslateActionToPathParams					();
 
+	//if (xr_strcmp(cName(), "m_flesh_e0008") == 0) {
+	//	int a = 0;
+	//}
+	
 	// обновить путь
 	CMonsterMovement::Update_Execute			();
 

@@ -56,4 +56,6 @@ void CStateManagerDog::update()
 	}
 
 	set_state(state);
+
+	execute();
 }

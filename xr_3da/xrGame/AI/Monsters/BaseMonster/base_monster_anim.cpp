@@ -25,6 +25,7 @@ void CBaseMonster::SelectAnimation(const Fvector &/**_view/**/, const Fvector &/
 	
 	if (MotionMan.PrepareAnimation()) {
 		info.blend		= MotionMan.m_tpCurAnim->PlayCycle(smart_cast<CSkeletonAnimated*>(Visual()), bone_part, TRUE, vfPlayEndCallBack, this);
+	//	Msg("Time = [%u], anim_name = [%s]", Level().timeServer(), smart_cast<CSkeletonAnimated*>(Visual())->LL_MotionDefName_dbg(info.blend->motionID));
 	}
 
 	// установить скорость текущей анимации
@@ -37,7 +38,7 @@ void CBaseMonster::SelectAnimation(const Fvector &/**_view/**/, const Fvector &/
 void CBaseMonster::AA_CheckHit()
 {
 	SAAParam params;
-
+	
 	if (!EnemyMan.get_enemy()) return;
 	const CObject *obj = smart_cast<const CObject *>(EnemyMan.get_enemy());
 

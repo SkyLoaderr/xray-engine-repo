@@ -77,3 +77,4 @@ void CStateManagerFirst::set_state(EGlobalStates state)
 	}
 }
 
+
