@@ -95,6 +95,14 @@ SOURCE=.\Occlusion.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\occRasterizer.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\occRasterizer.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\StdAfx.cpp
 # ADD CPP /Yc"stdafx.h"
 # End Source File
