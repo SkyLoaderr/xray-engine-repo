@@ -200,14 +200,23 @@ void game_sv_GameState::OnRoundStart			()
 {
 	switch_Phase	(GAME_PHASE_INPROGRESS);
 	++round;
-
+//---------------------------------------------------
+	if (teams.size())
+	{
+		for (int i=0; i<teams.size(); i++)
+		{
+			teams[i].score			= 0;
+			teams[i].num_targets	= 0;
+		}
+	}
+//---------------------------------------------------
 	// clear "ready" flag
 	u32		cnt		= get_count	();
 	for		(u32 it=0; it<cnt; ++it)	
 	{
 		game_PlayerState*	ps	=	get_it	(it);
 		ps->flags				&=	~(GAME_PLAYER_FLAG_READY + GAME_PLAYER_FLAG_VERY_VERY_DEAD);
-	}
+	};
 
 	// 1. We have to destroy all player-entities and entities
 	Level().Server->SLS_Clear	();

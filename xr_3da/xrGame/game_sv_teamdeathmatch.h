@@ -6,6 +6,7 @@ class	game_sv_TeamDeathmatch			: public game_sv_Deathmatch
 {
 private:
 	typedef game_sv_Deathmatch inherited;
+
 public:
 	virtual		void				Create					(LPSTR &options);
 
@@ -13,6 +14,8 @@ public:
 	virtual		void				OnPlayerConnect			(u32 id_who);
 
 	virtual		void				OnPlayerChangeTeam		(u32 id_who, s16 team);
+	virtual		void				OnRoundStart			();							// старт раунда
+	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed);
 
 	virtual		u8					AutoTeam				( );
 };

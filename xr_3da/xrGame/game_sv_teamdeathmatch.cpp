@@ -8,8 +8,17 @@ void	game_sv_TeamDeathmatch::Create					(LPSTR &options)
 	__super::Create					(options);
 	fraglimit	= get_option_i		(options,"fraglimit",0);
 	timelimit	= get_option_i		(options,"timelimit",0)*60000;	// in (ms)
-//	switch_Phase(GAME_PHASE_PENDING);
-	switch_Phase(GAME_PHASE_INPROGRESS);
+	switch_Phase(GAME_PHASE_PENDING);
+///	switch_Phase(GAME_PHASE_INPROGRESS);
+	
+	teams.push_back(game_TeamState());
+	teams.push_back(game_TeamState());
+
+	teams[0].score			= 0;
+	teams[0].num_targets	= 0;
+
+	teams[1].score			= 0;
+	teams[1].num_targets	= 0;
 }
 
 u8 game_sv_TeamDeathmatch::AutoTeam() 
@@ -69,3 +78,47 @@ void game_sv_TeamDeathmatch::OnPlayerChangeTeam(u32 id_who, s16 team)
 	*/
 }
 
+void	game_sv_TeamDeathmatch::OnRoundStart			()
+{
+	__super::OnRoundStart	();
+
+	// Respawn all players and some info
+	u32		cnt = get_count();
+	for		(u32 it=0; it<cnt; ++it)	
+	{
+		// init
+		game_PlayerState*	ps	=	get_it	(it);
+		ps->kills				=	0;
+		ps->deaths				=	0;
+
+		SpawnActor(get_it_2_id(it), "spectator");
+	}
+}
+
+void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
+{
+	game_PlayerState*	ps_killer	=	get_id	(id_killer);
+	game_PlayerState*	ps_killed	=	get_id	(id_killed);
+	if (!ps_killed || !ps_killer) return;
+
+	inherited::OnPlayerKillPlayer		(id_killer, id_killed);
+
+	if (ps_killed->team != ps_killer->team)
+	{
+	}
+	else
+	{
+		ps_killer->kills -= 2;
+	};
+
+	teams[ps_killer->team-1].score = 0;
+	u32		cnt = get_count();
+	for		(u32 it=0; it<cnt; ++it)	
+	{
+		// init
+		game_PlayerState*	ps	=	get_it	(it);
+		if (ps->team != ps_killer->team) continue;
+
+		teams[ps_killer->team-1].score += ps->kills;
+	}
+}

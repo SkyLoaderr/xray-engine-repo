@@ -205,9 +205,12 @@ void CSpectator::cam_Update	(CActor* A)
 		cam->Update					(point,dangle);
 		g_pGameLevel->Cameras.Update	(cam);
 		// hud output
-		HUD().pFontDI->SetColor		(0xffffffff);
-		HUD().pFontDI->Out			(0.f,0.0f,"SPECTATOR : Free-fly camera");
-	}
+		if (Game().phase != GAME_PHASE_PENDING)
+		{
+			HUD().pFontDI->SetColor		(0xffffffff);
+			HUD().pFontDI->Out			(0.f,0.0f,"SPECTATOR : Free-fly camera");
+		};
+	};
 }
 
 BOOL			CSpectator::net_Spawn				( LPVOID	DC )

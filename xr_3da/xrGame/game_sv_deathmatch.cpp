@@ -366,7 +366,7 @@ bool	game_sv_Deathmatch::GetPosAngleFromActor				(u32 id, Fvector& Pos, Fvector 
 	if (!xrCData || !xrCData->owner) return false;
 	
 	CObject* pObject =  Level().Objects.net_Find(xrCData->owner->ID);
-	R_ASSERT2	((pObject && pObject->SUB_CLS_ID == CLSID_OBJECT_ACTOR),"Dead Player is not Actor");
+///	R_ASSERT2	((pObject && pObject->SUB_CLS_ID == CLSID_OBJECT_ACTOR),"Dead Player is not Actor");
 
 	if (!pObject || pObject->SUB_CLS_ID != CLSID_OBJECT_ACTOR) return false;
 

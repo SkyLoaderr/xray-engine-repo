@@ -53,7 +53,7 @@ struct	game_PlayerState
 
 struct	game_TeamState
 {
-	u16			score;
+	int			score;
 	u16			num_targets;
 
 	game_TeamState();
