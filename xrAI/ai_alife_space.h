@@ -9,8 +9,6 @@
 #ifndef XRAY_AI_ALIFE_SPACE
 #define XRAY_AI_ALIFE_SPACE
 
-#define OFFLINE_LOG
-
 // spawn points
 #define SPAWN_POINT_VERSION			0x0001
 #define SPAWN_POINT_CHUNK_VERSION	0xffff

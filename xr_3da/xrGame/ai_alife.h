@@ -10,7 +10,8 @@
 
 #include "ai_alife_registries.h"
 
-//#define DEBUG_LOG
+#define OFFLINE_LOG
+#define DEBUG_LOG
 
 class CSE_ALifeSimulator : 
 	public CSE_ALifeHeader, 
@@ -73,6 +74,8 @@ class CSE_ALifeSimulator :
 			void					vfSwitchObjectOffline		(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					vfFurlObjectOffline			(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
+			void					vfProcessAllTheSwitches		();
+			void					vfProcessUpdates			();
 	// interaction routines
 			void					vfInitAI_ALifeMembers		();
 			void					vfCheckForInteraction		(CSE_ALifeSchedulable		*tpALifeSchedulable,		_GRAPH_ID				tGraphID);
