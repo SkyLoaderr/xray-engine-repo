@@ -142,8 +142,13 @@ function options_dialog:InitControls()
 	self.main_frame:AttachChild(btn)
 	
 	--------- >> TABS
+	---- >> VIDEO
 	self.tab_video = ui_options_video_tab.options_video_tab()
 	self.tab_video:InitControls(btn_video_rect.x + btn_video_rect.width + self.indent, self.top_alingn_y)
+	self.main_frame:AttachChild(self.tab_video)
+	---- >> SOUND
+	self.tab_sound = ui_options_sound_tab.options_sound_tab()
+	self.tab_sound:InitControls(btn_sound_rect.x + btn_sound_rect.width + self.indent, self.top_alingn_y)
 	self.main_frame:AttachChild(self.tab_video)
 end
 
@@ -167,7 +172,7 @@ end
 
 function options_dialog:OnButton_sound()
 	self:HideAllTabs()
-	
+	self.tab_sound:Show(true)	
 end
 
 function options_dialog:OnButton_game()
