@@ -219,11 +219,16 @@ void CLightShadows::calculate	()
 				Lpos.add	(C.C);
 				Lrange		= 120;
 			} else {
-				Lpos.y				+=	.333f	;		//. hack to avoid light-in-the-center-of-object
-				float		_dist	=	C.C.distance_to(Lpos);
+				VERIFY		(_valid(Lpos));
+				VERIFY		(_valid(C.C));
+				float		_dist	;
+				while		(true)	{
+					dist	=	C.C.distance_to	(Lpos);
+					if (dist>EPS_L)		break;
+					Lpos.y				+=	.01f;	//. hack to avoid light-in-the-center-of-object
+				}
 				float		_R		=	C.O->renderable.visual->vis.sphere.R+0.1f;
 				if (_dist<_R)		{
-					if (_dist<EPS)	Lpos.y	+=	.111f;	//. hack to avoid light-in-the-center-of-object
 					Fvector			Ldir;
 					Ldir.sub		(C.C,Lpos);
 					Ldir.normalize	();
