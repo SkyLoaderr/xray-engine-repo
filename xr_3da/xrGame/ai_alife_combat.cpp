@@ -289,6 +289,7 @@ void CSE_ALifeSimulator::vfAssignDeathPosition(CSE_ALifeCreatureAbstract *tpALif
 	tpALifeCreatureAbstract->m_tGraphID		= tGraphID;
 	tpALifeCreatureAbstract->o_Position		= l_tpaLevelPoints[l_dwDeathpointIndex].tPoint;
 	tpALifeCreatureAbstract->m_tNodeID		= l_tpaLevelPoints[l_dwDeathpointIndex].tNodeID;
+	R_ASSERT2								((getAI().m_tpaGraph[tGraphID].tLevelID != m_tCurrentLevelID) || (u32(tpALifeCreatureAbstract->m_tNodeID) < getAI().Header().count),"Invalid node");
 	tpALifeCreatureAbstract->m_fDistance	= l_tpaLevelPoints[l_dwDeathpointIndex].fDistance;
 }
 
