@@ -42,6 +42,7 @@ float		ps_r2_ls_bloom_kernel	= 3.3f;	// r2-only
 float		ps_r2_ls_dsm_kernel		= .7f;	// r2-only
 float		ps_r2_ls_psm_kernel		= .7f;	// r2-only
 float		ps_r2_ls_bloom_threshold= .3f;	// r2-only
+u32			ps_r2_ls_flags			= R2FLAG_SUN | R2FLAG_SKY;	// r2-only
 
 #ifndef _EDITOR
 #include	"..\xr_ioconsole.h"
@@ -89,5 +90,7 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r2_ls_bloom_threshold",&ps_r2_ls_bloom_threshold,	0.f,	1.f		);
 	CMD4(CCC_Float,		"r2_ls_dsm_kernel",		&ps_r2_ls_dsm_kernel,		.1f,	3.f		);
 	CMD4(CCC_Float,		"r2_ls_psm_kernel",		&ps_r2_ls_psm_kernel,		.1f,	3.f		);
+	CMD3(CCC_Mask,		"r2_sun",				&ps_r2_ls_flags,			R2FLAG_SUN);
+	CMD3(CCC_Mask,		"r2_sky",				&ps_r2_ls_flags,			R2FLAG_SKY);
 }
 #endif
