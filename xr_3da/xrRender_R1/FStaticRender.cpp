@@ -344,25 +344,25 @@ void CRender::Calculate()
 				if (0==renderable)	
 				{
 					// It may be an glow
-					CGlow*		glow			= dynamic_cast<CGlow*>(spatial);
-					VERIFY						(glow);
-					L_Glows->add				(glow);
+					CGlow*		glow				= dynamic_cast<CGlow*>(spatial);
+					VERIFY							(glow);
+					L_Glows->add					(glow);
+				} else {
+					// Occlusion
+					vis_data&		v_orig			= renderable->renderable.visual->vis;
+					vis_data		v_copy			= v_orig;
+					v_copy.box.xform				(renderable->renderable.xform);
+					BOOL			bVisible		= HOM.visible(v_copy);
+					v_orig.frame					= v_copy.frame;
+					v_orig.hom_frame				= v_copy.hom_frame;
+					v_orig.hom_tested				= v_copy.hom_tested;
+					if (!bVisible)					continue;
+
+					// Rendering
+					set_Object						(renderable);
+					renderable->renderable_Render	();
+					set_Object						(0);	//? is it needed at all
 				}
-
-				// Occlusion
-				vis_data&		v_orig			= renderable->renderable.visual->vis;
-				vis_data		v_copy			= v_orig;
-				v_copy.box.xform				(renderable->renderable.xform);
-				BOOL			bVisible		= HOM.visible(v_copy);
-				v_orig.frame					= v_copy.frame;
-				v_orig.hom_frame				= v_copy.hom_frame;
-				v_orig.hom_tested				= v_copy.hom_tested;
-				if (!bVisible)					continue;
-
-				// Rendering
-				set_Object						(renderable);
-				renderable->renderable_Render	();
-				set_Object						(0);	//? is it needed at all
 				break;	// exit loop on frustums
 			}
 		}
