@@ -322,7 +322,7 @@ void CAI_Rat::UnderFire()
 	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
 		m_tGoalDir = m_tSpawnPosition;
 	
-	if (bfComputeNextDirectionPosition())
+	if (bfComputeNewPosition(true,true))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
 }
 
@@ -421,7 +421,7 @@ void CAI_Rat::AttackRun()
 
 	m_fSpeed = m_fAttackSpeed;
 
-	if (bfComputeNextDirectionPosition())
+	if (bfComputeNewPosition(true,true))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
 }
 
@@ -465,7 +465,7 @@ void CAI_Rat::Retreat()
 	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
 		m_tGoalDir = m_tSpawnPosition;
 
-	if (bfComputeNextDirectionPosition())
+	if (bfComputeNewPosition(true,true))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
 }
 
@@ -506,7 +506,7 @@ void CAI_Rat::Pursuit()
 
 	m_fSpeed = m_fAttackSpeed;
 
-	if (bfComputeNextDirectionPosition())
+	if (bfComputeNewPosition(true,true))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
 }
 
@@ -549,7 +549,7 @@ void CAI_Rat::FreeRecoil()
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
 
-	if (bfComputeNextDirectionPosition())
+	if (bfComputeNewPosition(true,true))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
 }
 
@@ -587,7 +587,7 @@ void CAI_Rat::ReturnHome()
 
 	m_fSpeed = m_fAttackSpeed;
 
-	if (bfComputeNextDirectionPosition())
+	if (bfComputeNewPosition())
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
 }
 
@@ -632,7 +632,7 @@ void CAI_Rat::EatCorpse()
 
 	m_fSpeed = m_fMaxSpeed;
 
-	if (bfComputeNextDirectionPosition())
+	if (bfComputeNewPosition(true,true))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
 
 	Fvector tTemp;

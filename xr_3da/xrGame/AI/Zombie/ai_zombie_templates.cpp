@@ -202,14 +202,15 @@ bool CAI_Zombie::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForwar
 //		vPosition.set(tfGetNextCollisionPosition(this,tTemp1));
 //	}
 //	else
-		vPosition.mad(tDirection,m_fSpeed*m_fTimeUpdateDelta);
+//		vPosition.mad(tDirection,m_fSpeed*m_fTimeUpdateDelta);
 
-//	Fvector tAcceleration;
-//	tAcceleration.setHP(r_torso_current.yaw,r_torso_current.pitch);
-//	tAcceleration.mul(m_fSpeed);
-//	Movement.SetPosition(vPosition);
-//	Movement.Calculate	(tAcceleration,0,0,m_fTimeUpdateDelta,false);
-//	Movement.GetPosition(vPosition);
+	Fvector tAcceleration;
+	tAcceleration.setHP(-r_torso_current.yaw,-r_torso_current.pitch);
+	tAcceleration.normalize_safe();
+	tAcceleration.mul(m_fSpeed*12.f);
+	Movement.SetPosition(vPosition);
+	Movement.Calculate	(tAcceleration,0,0,m_fTimeUpdateDelta,false);
+	Movement.GetPosition(vPosition);
 
 	u32 dwNewNode = AI_NodeID;
 	NodeCompressed *tpNewNode = AI_Node;
@@ -235,7 +236,7 @@ bool CAI_Zombie::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForwar
 		UpdateTransform();
 	}
 
-	//UpdateTransform();
+	UpdateTransform();
 
 	bool m_bResult = false;
 	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {

@@ -300,8 +300,7 @@ class CAI_Rat : public CCustomMonster
 		// MISCELLANIOUS FUNCTIONS
 		//////////////////////////
 		void	vfAdjustSpeed();
-		bool	bfComputeNextDirectionPosition(bool bCanAdjustSpeed = true);
-		bool	bfComputeNewPosition(bool bCanAdjustSpeed = true);
+		bool	bfComputeNewPosition(bool bCanAdjustSpeed = true, bool bStraightForward = false);
 		float	CorpHeuristics(CEntity* E);
 		void	SelectCorp(SEnemySelected& S);
 		void	vfUpdateMoraleBroadcast(float fValue, float fRadius);
