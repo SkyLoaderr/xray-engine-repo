@@ -20,7 +20,6 @@ function main ()
     --fill the id's
     for a = 1, table.getn (stalkers), 1 do
         local npc = get_level_object (stalkers[a].name)
-        printf ("GETTING STALKER %s", stalkers[a].name)
         stalkers[a].id = npc:id ()
         this.switch_offline (a)
     end    
@@ -82,16 +81,19 @@ function switch_online (a)
        sim:set_switch_online  (stalkers[a].id, true) 
        sim:set_switch_offline (stalkers[a].id, false)
        printf ("Object %s move to online at %d time", stalkers[a].name, device ():time_global ())
+    else
+       printf ("NO SIMULATION")    
     end       
 end
 -------------------------------------------------------------------------------------------
 function switch_offline (a)
-
     local sim = alife ()
     if sim ~= nil then
        sim:set_switch_online  (stalkers[a].id, false) 
        sim:set_switch_offline (stalkers[a].id, true)
        printf ("Object %s move to offline at %d time", stalkers[a].name, device ():time_global ())
+    else
+       printf ("NO SIMULATION")    
     end       
 end
 -------------------------------------------------------------------------------------
