@@ -342,7 +342,7 @@ end
 function CStateAttackCoward:execute()
     self:check_enemy()
 
-	if(self.angry == false and self.state == attack and self.memory.enemy.health < (self.enemy_health - 0.3)) then
+	if(self.angry == false and self.state == attack and self.memory.enemy.health < (self.enemy_health - 0.2)) then
     	//Немного нанесли повреждение врагу, возращаемся назад
         reset_action(self.npc, this.script_name())
         self.state	= coward
@@ -712,7 +712,7 @@ function CBloodsuckerAmbush:select_state()
     	else
             //Когда мы не на позиции: в зависимости от то, вощел ли враг в зону и на каком он расстоянии выбераем состояние
             if(self.enter) then
-            	if(self.ambush_attack or distance_between(self.npc, self.memory.enemy) < 3 or self.memory.hit.time ~= 0) then
+            	if(self.ambush_attack or distance_between(self.npc, self.memory.enemy) < 5 or self.memory.hit.time ~= 0) then
                 	self:set_state(s_attack)
                     return
                 else
