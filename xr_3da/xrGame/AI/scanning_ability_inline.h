@@ -44,7 +44,7 @@ void CScanningAbilityAbstract::schedule_update()
 		if ( vel > velocity_threshold) {
 			scan_value += vel;
 			
-			if (sound_scan.feedback) sound_scaan.set_position(scan_obj->Position());
+			if (sound_scan.feedback) sound_scan.set_position(scan_obj->Position());
 			else ::Sound->play_at_pos(sound_scan, 0, scan_obj->Position());
 			
 			on_scanning();
