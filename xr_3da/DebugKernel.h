@@ -11,16 +11,18 @@ class CDebugKernel
 private:
 	vector<LPSTR>	Stack;
 
-	BOOL            GetFunctionName(HINSTANCE instance, void *pointer, char* fn_name);
-	int             UpdateStack(EXCEPTION_POINTERS *pex, int iSkip=3 );
-public:
-	BOOL			Start	();
-	BOOL			Stop	();
+	BOOL            GetFunctionName	(HINSTANCE instance, void *pointer, char* fn_name);
+	int             UpdateStack		(EXCEPTION_POINTERS *pex, int iSkip=3 );
 
-	int				LogStack(EXCEPTION_POINTERS *pex);
-	void            Update	();
-	DWORD           GetCount()			{return Stack.size();}
-    LPCSTR			GetName	(DWORD num)	{return Stack[num];  }
+	void			ClearStack		();
+public:
+	BOOL			Start			();
+	BOOL			Stop			();
+
+	int				LogStack		(EXCEPTION_POINTERS *pex);
+	void            Update			();
+	DWORD           GetCount		()			{return Stack.size();}
+    LPCSTR			GetName			(DWORD num)	{return Stack[num];  }
 
 	CDebugKernel();
 	~CDebugKernel();

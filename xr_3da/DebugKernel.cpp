@@ -15,6 +15,14 @@ static const char * dlgExpr = NULL;
 static const char * dlgFile = NULL;
 static char			dlgLine	[16];
 
+CDebugKernel::CDebugKernel()
+{
+}
+CDebugKernel::~CDebugKernel()
+{
+	ClearStack();
+}
+
 static BOOL CALLBACK verifyProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
 {
 	switch( msg ){
@@ -192,6 +200,12 @@ int	CDebugKernel::LogStack(EXCEPTION_POINTERS *pex)
 	return EXCEPTION_EXECUTE_HANDLER;
 }
 //------------------------------------------------------------------------------------------------------------------------
+void	CDebugKernel::ClearStack	()
+{
+	for (u32 i=0; i<Stack.size(); i++)
+		_FREE(Stack[i]);
+}
+
 int		CDebugKernel::UpdateStack	(EXCEPTION_POINTERS *pex, int iSkip)
 {
 	int			count;
@@ -199,7 +213,7 @@ int		CDebugKernel::UpdateStack	(EXCEPTION_POINTERS *pex, int iSkip)
 	BOOL        b_ret=TRUE;
 
 	// Cleanup stack
-	Stack.clear	();
+	ClearStack	();
 
 	//Setup stack frame
 	ZeroMemory(&stack_frame, sizeof(stack_frame));
@@ -234,7 +248,7 @@ int		CDebugKernel::UpdateStack	(EXCEPTION_POINTERS *pex, int iSkip)
 		{
 			sprintf(FNbuf, "%s", "<Unknown Function>");
 		}
-		Stack.push_back(FNbuf);
+		Stack.push_back(xr_strdup(FNbuf));
         b_ret = StackWalk(
 			IMAGE_FILE_MACHINE_I386,
 			GetCurrentProcess(),
