@@ -337,7 +337,7 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 									artefactsNum);
 					m_game_ui->SetScoreCaption(S);
 				};
-	
+	/*
 			if ( (artefactBearerID==0))// && (artefactID!=0) )
 				{
 					m_game_ui->SetTodoCaption("Grab the Artefact");
@@ -360,7 +360,9 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 						};
 					};
 				};
+			*/
 			};
+			
 		}break;
 	case GAME_PHASE_TEAM1_ELIMINATED:
 		{
