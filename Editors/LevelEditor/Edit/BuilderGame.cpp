@@ -28,8 +28,9 @@ bool SceneBuilder::BuildGame()
     	m_LevelPath.Update	(lev_spawn);
 	    SPAWN.SaveTo		(lev_spawn.c_str(),0);
     }
+
 // game
-	CFS_Memory GAME;      
+	CFS_Memory GAME;
 	// way points
 	if (Scene.ObjCount(OBJCLASS_WAY)) {
 		ObjectIt _F  = Scene.FirstObj(OBJCLASS_WAY);

@@ -33,8 +33,10 @@ void CSceneObject::Construct(){
     m_ObjVer.reset();
 
     m_Center.set(0,0,0);
-    m_fRadius = 0;
-    m_iBlinkTime = 0;
+    m_fRadius 	= 0;
+    m_iBlinkTime= 0;
+
+    m_dwFlags	= 0;
 
     m_ActiveOMotion = 0;
     m_vMotionPosition.set(0,0,0);

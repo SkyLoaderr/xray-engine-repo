@@ -522,6 +522,7 @@ bool CWayObject::ExportGame(CFS_Base& F, int chunk_id){
         }
         F.close_chunk	();
     }
+    F.close_chunk		();
     return true;
 }
 //----------------------------------------------------

@@ -45,6 +45,12 @@ void TfrmPropertiesSceneObject::GetObjectsInfo()
 	edName->Text= _S->Name;
     ebReference->Caption=_S->GetReference()->GetName();
 	m_EditObject	= _S;
+    cbDummy->ObjFirstInit((TCheckBoxState)_S->IsFlag(CSceneObject::eDummy));
+
+	_F++;
+	for(;_F!=m_Objects->end();_F++){
+	    cbDummy->ObjNextInit((TCheckBoxState)((CSceneObject*)(*_F))->IsFlag(CSceneObject::eDummy));
+    }
 
     if (m_Objects->size()>1){
 		m_EditObject		= 0;
@@ -68,6 +74,8 @@ bool TfrmPropertiesSceneObject::ApplyObjectsInfo()
     bool bMultiSel = (m_Objects->size()>1);
 	for(;_F!=m_Objects->end();_F++){
     	CSceneObject *_O = (CSceneObject*)(*_F);
+		// apply flags
+        int f=_O->IsFlag(CSceneObject::eDummy); cbDummy->ObjApply(f); _O->SetFlag(CSceneObject::eDummy);
         if (!bMultiSel){
         	if (Scene.FindObjectByName(edName->Text.c_str(),_O)){
             	ELog.DlgMsg(mtError,"Name already exist in scene: '%s'",edName->Text.c_str());

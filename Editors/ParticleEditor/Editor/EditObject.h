@@ -128,7 +128,6 @@ public:
 	enum{
 		eoDynamic 	 	= (1<<0),
 		eoProgressive 	= (1<<1),
-        eoDummy			= (1<<2),
 		eoFORCE32		= DWORD(-1)
     };
 private:

@@ -42,7 +42,7 @@ object frmPropertiesSceneObject: TfrmPropertiesSceneObject
     ScrollOpposite = False
     Style = etsAngledTabs
     TabHeight = 16
-    TabIndex = 1
+    TabIndex = 0
     TabPosition = etpBottom
     HotTrackFont.Charset = DEFAULT_CHARSET
     HotTrackFont.Color = clBlue
@@ -50,7 +50,7 @@ object frmPropertiesSceneObject: TfrmPropertiesSceneObject
     HotTrackFont.Name = 'MS Sans Serif'
     HotTrackFont.Style = []
     TabBkColor = 10528425
-    ActivePage = tsMotions
+    ActivePage = tsBasic
     FlatTabBorderColor = clBtnShadow
     Align = alClient
     ParentColor = False
@@ -62,7 +62,6 @@ object frmPropertiesSceneObject: TfrmPropertiesSceneObject
       TabVisible = True
       Caption = 'Main'
       Color = 10528425
-      Visible = False
       object paBasic: TPanel
         Left = 0
         Top = 0
@@ -123,6 +122,23 @@ object frmPropertiesSceneObject: TfrmPropertiesSceneObject
           TabOrder = 0
           OnChange = OnModified
         end
+        object gbFlags: TGroupBox
+          Left = 3
+          Top = 43
+          Width = 296
+          Height = 42
+          Caption = ' Flags '
+          TabOrder = 1
+          object cbDummy: TMultiObjCheck
+            Left = 8
+            Top = 16
+            Width = 62
+            Height = 17
+            Alignment = taLeftJustify
+            Caption = 'Dummy'
+            TabOrder = 0
+          end
+        end
       end
     end
     object tsMotions: TElTabSheet
@@ -132,6 +148,7 @@ object frmPropertiesSceneObject: TfrmPropertiesSceneObject
       TabVisible = True
       Caption = 'Motions'
       Color = 10528425
+      Visible = False
       object Label1: TLabel
         Left = 104
         Top = 82
@@ -581,8 +598,8 @@ object frmPropertiesSceneObject: TfrmPropertiesSceneObject
     Tree = tvOMotions
     Types = [sftText]
     OnValidateResult = InplaceMotionEditValidateResult
-    Left = 2
-    Top = 37
+    Left = 33
+    Top = 3
   end
   object pmMotions: TMxPopupMenu
     Alignment = paCenter
@@ -596,8 +613,8 @@ object frmPropertiesSceneObject: TfrmPropertiesSceneObject
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 2
-    Top = 71
+    Left = 65
+    Top = 3
     object Rename1: TMenuItem
       Caption = 'Rename'
       OnClick = Rename1Click

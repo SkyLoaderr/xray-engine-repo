@@ -23,6 +23,7 @@
 #define SCENEOBJ_CHUNK_VERSION		  	0x0900
 #define SCENEOBJ_CHUNK_REFERENCE     	0x0902
 #define SCENEOBJ_CHUNK_PLACEMENT     	0x0904
+#define SCENEOBJ_CHUNK_FLAGS			0x0905
 #define SCENEOBJ_CHUNK_OMOTIONS			0xF914
 #define SCENEOBJ_CHUNK_ACTIVE_OMOTIONS	0xF915
 //----------------------------------------------------
@@ -70,6 +71,11 @@ bool CSceneObject::Load(CStream& F){
         if(!CheckVersion())
             ELog.Msg( mtError, "CSceneObject: '%s' different file version! Some objects will work incorrectly.", buf );
 
+        // flags
+        if (F.FindChunk(SCENEOBJ_CHUNK_FLAGS)){
+        	m_dwFlags	= F.Rdword();
+        }
+
         // object motions
         if (F.FindChunk(SCENEOBJ_CHUNK_OMOTIONS)){
             m_OMotions.resize(F.Rdword());
@@ -107,6 +113,10 @@ void CSceneObject::Save(CFS_Base& F){
     F.WstringZ		(m_pRefs->GetName());
     F.close_chunk	();
 
+    F.open_chunk	(SCENEOBJ_CHUNK_FLAGS);
+	F.Wdword		(m_dwFlags);
+    F.close_chunk	();
+
     // object motions
     if (IsOMotionable()){
 	    F.open_chunk	(SCENEOBJ_CHUNK_OMOTIONS);
@@ -126,7 +136,8 @@ void CSceneObject::Save(CFS_Base& F){
 
 bool CSceneObject::ExportSpawn(CFS_Base& F, int chunk_id)
 {
-    if (IsDynamic()){
+    if (IsDynamic()&&IsFlag(eDummy)){
+    	R_ASSERT(m_pRefs);
     	// export spawn packet
         NET_Packet Packet;
         Packet.w_begin		(M_SPAWN);
@@ -146,15 +157,15 @@ bool CSceneObject::ExportSpawn(CFS_Base& F, int chunk_id)
         Packet.w_u8 		((1<<0)|(1<<1)|(1<<3));
 		// esAnimated
         string256 anm_name;
-        Packet.w_string		(Engine.FS.GenerateName(Builder.m_LevelPath.m_Path,Name,Engine.FS.m_OMotions.m_DefExt,anm_name));
+        Packet.w_string		(Engine.FS.GenerateName(Builder.m_LevelPath.m_Path,Name,".anms",anm_name));
         SaveOMotions		(anm_name);
 		// esModel
         string256 mdl_name;
-        Packet.w_string		(Engine.FS.GenerateName(Builder.m_LevelPath.m_Path,Name,Engine.FS.m_GameMeshes.m_DefExt,mdl_name));
+        Packet.w_string		(Engine.FS.GenerateName(Builder.m_LevelPath.m_Path,Name,".ogf",mdl_name));
         if (m_pRefs->IsSkeleton()) m_pRefs->ExportSkeletonOGF(mdl_name); else m_pRefs->ExportObjectOGF(mdl_name);
 		// esSound
         string256 snd_name;
-        Packet.w_string		(Engine.FS.GenerateName(Builder.m_LevelPath.m_Path,Name,Engine.FS.m_GameSounds.m_DefExt,snd_name));
+        Packet.w_string		(Engine.FS.GenerateName(Builder.m_LevelPath.m_Path,Name,".wav",snd_name));
 		Engine.FS.CreateNullFile(snd_name);
         // data size
         u16 size			= u16(Packet.w_tell()-position);

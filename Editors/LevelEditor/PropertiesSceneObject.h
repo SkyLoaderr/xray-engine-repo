@@ -70,6 +70,8 @@ __published:	// IDE-managed Components
 	TMenuItem *N1;
 	TMenuItem *ExpandAll1;
 	TMenuItem *CollapseAll1;
+	TGroupBox *gbFlags;
+	TMultiObjCheck *cbDummy;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);

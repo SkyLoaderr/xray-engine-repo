@@ -101,7 +101,6 @@ void TfrmPropertiesEObject::FillBasicProps()
 			m_Basic->AddItem(M,PROP_MARKER2,MESH->GetName(),t.c_str());
         }
 		M=m_Basic->AddItem	(0,PROP_MARKER,	"Game options");
-		m_Basic->AddItem	(0,PROP_FLAG,	"Dummy object",m_Basic->MakeFlagValue(&O->m_dwFlags,CEditableObject::eoDummy));
 		m_Basic->AddItem	(0,PROP_ANSI_TEXT,"Script",	m_Basic->MakeAnsiTextValue(&O->m_ClassScript));
     }
     m_Basic->EndFillMode(true);

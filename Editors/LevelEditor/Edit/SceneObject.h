@@ -12,6 +12,20 @@ class CSceneObject : public CCustomObject {
 	CEditableObject*m_pRefs;
     st_Version		m_ObjVer;
 public:
+	enum{
+		eDummy 	 	= (1<<0),
+		eFORCE32	= DWORD(-1)
+    };
+private:
+	// options
+	DWORD			m_dwFlags;
+public:
+    // get object properties methods
+	IC DWORD& 		GetFlags	   			(){return m_dwFlags; }
+	IC bool 		IsFlag	     			(DWORD flag){return !!(m_dwFlags&flag); }
+    IC void			SetFlag					(DWORD flag){m_dwFlags|=flag;}
+    IC void			ResetFlag				(DWORD flag){m_dwFlags&=~flag;}
+public:
 	// motions
     st_AnimParam	m_OMParam;
 	OMotionVec		m_OMotions;
