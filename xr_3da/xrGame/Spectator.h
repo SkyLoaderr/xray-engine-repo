@@ -28,6 +28,8 @@ private:
 	EActorCameras			cam_active;
 
 	int						look_idx;
+
+	CActor*					last_actor;
 	//------------------------------
 	void					cam_Set					(EActorCameras style);
 	void					cam_Update				(CActor* A=0);
@@ -42,6 +44,8 @@ public:
 
 	virtual void			Update					( u32 T ); 
 	virtual void			UpdateCL				( );
+
+	virtual void			OnHUDDraw				(CCustomHUD* hud);
 };
 
 #endif // __SPECTATOR_H__

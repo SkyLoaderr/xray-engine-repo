@@ -9,6 +9,7 @@
 #include "..\CameraFirstEye.h"
 #include "..\xr_level_controller.h"
 #include "actor.h"
+#include "hudmanager.h"
 
 //--------------------------------------------------------------------
 //////////////////////////////////////////////////////////////////////
@@ -22,8 +23,9 @@ CSpectator::CSpectator() : CGameObject()
 	cameras[eacFreeLook]	= new CCameraLook		(this, pSettings, "actor_free_cam",	false);
 	cameras[eacFreeFly]		= new CCameraFirstEye	(this, pSettings, "actor_firsteye_cam", false);
 
-	cam_active				= eacFreeFly; //eacFirstEye;//eacFirstEye;//
+	cam_active				= eacFreeLook;
 	look_idx				= 0;
+	last_actor				= 0;
 }
 
 CSpectator::~CSpectator()
@@ -34,6 +36,7 @@ CSpectator::~CSpectator()
 void CSpectator::UpdateCL()
 {
 	inherited::UpdateCL();
+	last_actor = 0;
 	if (pCreator->CurrentViewEntity()==this){
 		if (eacFreeFly!=cam_active){
 			int idx			= 0;
@@ -48,7 +51,8 @@ void CSpectator::UpdateCL()
 							CActor* A = dynamic_cast<CActor*>(G.Members[k]);
 							if (A&&A->g_Alive()){
 								if(idx==look_idx){
-									cam_Update		(A);
+									cam_Update	(A);
+									last_actor	= A;
 									return;
 								}
 								idx++;
@@ -195,5 +199,16 @@ void CSpectator::cam_Update	(CActor* A)
 		CCameraBase* cam			= cameras[eacFreeFly];
 		cam->Update					(point,dangle);
 		pCreator->Cameras.Update	(cam);
+	}
+}
+
+void CSpectator::OnHUDDraw(CCustomHUD* hud)
+{
+	if (last_actor){
+		CHUDManager* HUD			= (CHUDManager*)hud;
+		HUD->pFontDI->SetColor		(0xA0808080);
+		HUD->pFontDI->SetSize		(0.1f);
+		HUD->pFontDI->SetAligment	(CGameFont::alCenter);
+		HUD->pFontDI->Out			(0.f,0.9f,"%s(%d%%)",last_actor->cName(),last_actor->g_Health());
 	}
 }
