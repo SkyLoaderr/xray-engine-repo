@@ -366,7 +366,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 
 				if (Level().CurrentEntity() && Level().CurrentEntity()->CLS_ID == CLSID_SPECTATOR)
 				{
-					if (!pCurBuyMenu || !pCurBuyMenu->IsShown())
+					if (!(pCurBuyMenu && pCurBuyMenu->IsShown()) && !(pCurSkinMenu && pCurSkinMenu->IsShown()))
 					{
 						m_game_ui->SetSpectatorMsgCaption("SPECTATOR : Free-fly camera");
 						m_game_ui->SetPressJumpMsgCaption("Press Jump to start");
