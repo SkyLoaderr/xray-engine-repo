@@ -23,25 +23,25 @@ void	CBlender_deffer_model::Compile(CBlender_Compile& C)
 	switch(C.iElement) 
 	{
 	case 0: 	// deffer
-		C.r_Pass		(r2v("deffer_model_flat"),r2p("deffer_base_flat"),FALSE);
+		C.r_Pass		("deffer_model_flat"),"deffer_base_flat"),FALSE);
 		C.r_Sampler		("s_base",C.L_textures[0]);
 		C.r_End			();
 		break;
 	case 1:		// smap-direct
-		if (RImplementation.b_nv3x)	C.r_Pass	(r2v("shadow_direct_base"),r2p("shadow_direct_base"),FALSE,TRUE,TRUE,TRUE,D3DBLEND_ZERO,D3DBLEND_ONE);
-		else						C.r_Pass	(r2v("shadow_direct_base"),r2p("shadow_direct_base"),FALSE);
+		if (RImplementation.b_nv3x)	C.r_Pass	("shadow_direct_base"),"shadow_direct_base"),FALSE,TRUE,TRUE,TRUE,D3DBLEND_ZERO,D3DBLEND_ONE);
+		else						C.r_Pass	("shadow_direct_base"),"shadow_direct_base"),FALSE);
 		C.r_Sampler		("s_base",C.L_textures[0]);
 		C.r_End			();
 		break;
 	case 2:		// smap-point
-		C.r_Pass		(r2v("shadow_point_base"),r2p("shadow_point_base"),FALSE);
+		C.r_Pass		("shadow_point_base"),"shadow_point_base"),FALSE);
 		C.r_Sampler		("s_base",			C.L_textures[0]);
 		C.r_Constant	("light_position",	&RImplementation.Binders.l_position);
 		C.r_End			();
 		break;
 	case 3:		// smap-spot
-		if (RImplementation.b_nv3x)	C.r_Pass			(r2v("shadow_spot_base"),r2p("shadow_direct_base"),FALSE,TRUE,TRUE,TRUE,D3DBLEND_ZERO,D3DBLEND_ONE);
-		else						C.r_Pass			(r2v("shadow_spot_base"),r2p("shadow_direct_base"),FALSE);
+		if (RImplementation.b_nv3x)	C.r_Pass			("shadow_spot_base"),"shadow_direct_base"),FALSE,TRUE,TRUE,TRUE,D3DBLEND_ZERO,D3DBLEND_ONE);
+		else						C.r_Pass			("shadow_spot_base"),"shadow_direct_base"),FALSE);
 		C.r_Sampler		("s_base",C.L_textures[0]);
 		C.r_End			();
 		break;
