@@ -47,7 +47,7 @@ BOOL CRenderTarget::Create	()
 	Msg				("* SSample: %dx%d",rtWidth,rtHeight);
 
 	// Bufferts
-	RT				= Device.Resources->_CreateRT		(RTname,rtWidth,rtHeight,HW.Caps.fTarget);
+	RT.create		(RTname,rtWidth,rtHeight,HW.Caps.fTarget);
 	if ((rtHeight!=Device.dwHeight) || (rtWidth!=Device.dwWidth))
 	{
 		R_CHK		(HW.pDevice->CreateDepthStencilSurface	(rtWidth,rtHeight,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&ZB,NULL));
@@ -62,13 +62,13 @@ BOOL CRenderTarget::Create	()
 	// Shaders and stream
 	string64	_rt_2_name;
 	strconcat					(_rt_2_name,RTname,",",RTname);
-	pGeom						= Device.Resources->CreateGeom		(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
-	pGeom2						= Device.Resources->CreateGeom		(FVF::F_TL2uv,	RCache.Vertex.Buffer(), RCache.QuadIB);
-	pShaderSet					= Device.Resources->Create			("effects\\screen_set",		RTname);
-	pShaderGray					= Device.Resources->Create			("effects\\screen_gray",	RTname);
-	pShaderBlend				= Device.Resources->Create			("effects\\screen_blend",	RTname);
-	pShaderDuality				= Device.Resources->Create			("effects\\blur",			_rt_2_name);
-	pShaderNoise				= Device.Resources->Create			("effects\\screen_noise",	"fx\\fx_noise2");
+	pGeom.create				(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
+	pGeom2.create				(FVF::F_TL2uv,	RCache.Vertex.Buffer(), RCache.QuadIB);
+	pShaderSet.create			("effects\\screen_set",		RTname);
+	pShaderGray.create			("effects\\screen_gray",	RTname);
+	pShaderBlend.create			("effects\\screen_blend",	RTname);
+	pShaderDuality.create		("effects\\blur",			_rt_2_name);
+	pShaderNoise.create			("effects\\screen_noise",	"fx\\fx_noise2");
 	return	RT->Valid	();
 }
 
@@ -82,14 +82,14 @@ void CRenderTarget::OnDeviceDestroy	()
 {
 	_RELEASE					(pTempZB);
 	_RELEASE					(ZB);
-	Device.Resources->Delete		(pShaderNoise);
-	Device.Resources->Delete		(pShaderDuality);
-	Device.Resources->Delete		(pShaderBlend);
-	Device.Resources->Delete		(pShaderGray);
-	Device.Resources->Delete		(pShaderSet);
-	Device.Resources->_DeleteRT		(RT);
-	Device.Resources->DeleteGeom	(pGeom);
-	Device.Resources->DeleteGeom	(pGeom2);
+	pShaderNoise.destroy		();
+	pShaderDuality.destroy		();
+	pShaderBlend.destroy		();
+	pShaderGray.destroy			();
+	pShaderSet.destroy			();
+	RT.destroy					();
+	pGeom.destroy				();
+	pGeom2.destroy				();
 }
 
 void CRenderTarget::eff_load	(LPCSTR n)

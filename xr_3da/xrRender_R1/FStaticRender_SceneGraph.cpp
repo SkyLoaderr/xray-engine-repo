@@ -28,14 +28,14 @@ void CRender::InsertSG_Dynamic	(IRender_Visual *pVisual, Fvector& Center)
 	float distSQ;	if (CalcSSA(distSQ,Center,pVisual)<=r_ssaDISCARD)	return;
 
 	// Select List and add to it
-	ShaderElement*		sh		= (L_Projector.shadowing()?pVisual->hShader->E[0]:pVisual->hShader->E[1])._get();
+	ShaderElement*		sh		= (L_Projector->shadowing()?pVisual->hShader->E[0]:pVisual->hShader->E[1])._get();
 	if (val_bInvisible){
 		SceneGraph::mapMatrixItem::TNode C;
 		C.val.pObject			= val_pObject;
 		C.val.pVisual			= pVisual;
 		C.val.Matrix			= *val_pTransform;
 		C.val.vCenter.set		(Center);
-		L_Shadows.add_element	(&C);
+		L_Shadows->add_element	(&C);
 	}else if (val_bHUD)	{
 		SceneGraph::mapHUD_Node* N			= mapHUD.insertInAnyWay(distSQ);
 		N->val.pObject			= val_pObject;
@@ -49,7 +49,7 @@ void CRender::InsertSG_Dynamic	(IRender_Visual *pVisual, Fvector& Center)
 		N->val.pVisual			= pVisual;
 		N->val.Matrix			= *val_pTransform;
 		N->val.vCenter.set		(Center);
-		L_Shadows.add_element	(N);
+		L_Shadows->add_element	(N);
 	} else {
 		SceneGraph::mapMatrix_Node* N		= mapMatrix.insert		(sh		);
 		SceneGraph::mapMatrixItem::TNode* C	= N->val.insertInAnyWay	(distSQ	);
@@ -57,7 +57,7 @@ void CRender::InsertSG_Dynamic	(IRender_Visual *pVisual, Fvector& Center)
 		C->val.pVisual			= pVisual;
 		C->val.Matrix			= *val_pTransform;
 		C->val.vCenter.set		(Center);
-		L_Shadows.add_element	(C);
+		L_Shadows->add_element	(C);
 	}
 }
 

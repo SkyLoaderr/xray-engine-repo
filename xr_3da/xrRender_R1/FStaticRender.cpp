@@ -15,10 +15,10 @@ CRender										RImplementation;
 // Implementation
 IRender_ObjectSpecific*	CRender::ros_create				(IRenderable* parent)			{ return xr_new<CLightTrack>();			}
 void					CRender::ros_destroy			(IRender_ObjectSpecific* &p)	{ xr_delete(p);							}
-IRender_Visual*			CRender::model_Create			(LPCSTR name)					{ return Models.Create(name);			}
-IRender_Visual*			CRender::model_Create			(LPCSTR name, IReader* data)	{ return Models.Create(name,data);		}
-IRender_Visual*			CRender::model_Duplicate		(IRender_Visual* V)				{ return Models.Instance_Duplicate(V);	}
-void					CRender::model_Delete			(IRender_Visual* &V)			{ Models.Delete(V);						}
+IRender_Visual*			CRender::model_Create			(LPCSTR name)					{ return Models->Create(name);			}
+IRender_Visual*			CRender::model_Create			(LPCSTR name, IReader* data)	{ return Models->Create(name,data);		}
+IRender_Visual*			CRender::model_Duplicate		(IRender_Visual* V)				{ return Models->Instance_Duplicate(V);	}
+void					CRender::model_Delete			(IRender_Visual* &V)			{ Models->Delete(V);					}
 IRender_DetailModel*	CRender::model_CreateDM			(IReader*	F)
 {
 	CDetail*	D		= xr_new<CDetail> ();

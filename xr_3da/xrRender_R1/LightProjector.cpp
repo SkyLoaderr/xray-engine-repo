@@ -52,15 +52,15 @@ void CLightProjector::OnDeviceCreate	()
 void CLightProjector::OnDeviceDestroy	()
 {
 	// Debug
-	Device.Resources->Delete					(sh_Screen	);
-	Device.Resources->DeleteGeom				(geom_Screen);
+	sh_Screen.destroy							();
+	geom_Screen.destroy							();
 	
 	// 
-	Device.Resources->Delete					(sh_BlurRT	);
-	Device.Resources->Delete					(sh_BlurTR	);
-	Device.Resources->DeleteGeom				(geom_Screen);
-	Device.Resources->_DeleteRT					(RT_temp	);
-	Device.Resources->_DeleteRT					(RT			);
+	sh_BlurRT.destroy							();
+	sh_BlurTR.destroy							();
+	geom_Screen.destroy							();
+	RT_temp.destroy								();
+	RT.destroy									();
 }
 
 void CLightProjector::set_object	(IRenderable* O)
@@ -111,7 +111,7 @@ void CLightProjector::calculate	()
 
 	Device.Statistic.RenderDUMP_Pcalc.Begin	();
 	RCache.set_RT				(RT_temp->pRT);
-	RCache.set_ZB				(RImplementation.Target.pTempZB);
+	RCache.set_ZB				(RImplementation.Target->pTempZB);
 	CHK_DX(HW.pDevice->Clear	(0,0, D3DCLEAR_ZBUFFER | (HW.Caps.bStencil?D3DCLEAR_STENCIL:0), 0,1,0 ));
 	RCache.set_xform_world		(Fidentity);
 
