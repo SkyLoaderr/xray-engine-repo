@@ -1144,124 +1144,6 @@ void CAI_Soldier::OnPatrol()
 	SetDirectionLook();
 }
 
-void CAI_Soldier::OnSenseSomethingAlone()
-{
-	WRITE_TO_LOG("Sense something");
-
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
-	
-	SelectEnemy(Enemy);
-
-	CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiSoldierAttackFireAlone)
-	
-	DWORD dwCurTime = Level().timeServer();
-
-	INIT_SQUAD_AND_LEADER;
-	
-	CGroup &Group = Squad.Groups[g_Group()];
-	
-	int iSoundIndex;
-	
-	SelectSound(iSoundIndex);
-
-	if (iSoundIndex == -1)
-		iSoundIndex = m_iSoundIndex;
-
-	if (iSoundIndex >= 0) {
-		m_iSoundIndex = iSoundIndex;
-		if ((tpaDynamicSounds[iSoundIndex].eSoundType & SOUND_TYPE_WEAPON) == SOUND_TYPE_WEAPON) {
-			if ((tpaDynamicSounds[iSoundIndex].eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) {
-				tHitDir.sub(tpaDynamicSounds[iSoundIndex].tSavedPosition,tpaDynamicSounds[iSoundIndex].tMySavedPosition);
-				Fvector tTemp;
-				tTemp.sub(tpaDynamicSounds[iSoundIndex].tMySavedPosition,tpaDynamicSounds[iSoundIndex].tSavedPosition);
-				SRotation sRot;
-				mk_rotation(tTemp,sRot);
-				float fAngle,fAngle1;
-				if (fabsf(sRot.yaw - tpaDynamicSounds[iSoundIndex].tOrientation.yaw) <= PI + EPS_L)
-					fAngle = fabsf(sRot.yaw - tpaDynamicSounds[iSoundIndex].tOrientation.yaw);
-				else
-					fAngle = PI_MUL_2 - fabsf(sRot.yaw - tpaDynamicSounds[iSoundIndex].tOrientation.yaw);
-				
-				if (fabsf(sRot.pitch - tpaDynamicSounds[iSoundIndex].tOrientation.pitch) <= PI + EPS_L)
-					fAngle1 = fabsf(sRot.pitch - tpaDynamicSounds[iSoundIndex].tOrientation.pitch);
-				else
-					fAngle1 = PI_MUL_2 - fabsf(sRot.pitch - tpaDynamicSounds[iSoundIndex].tOrientation.pitch);
-
-				float fDistance = sinf(fAngle > fAngle1 ? fAngle : fAngle1)*tpaDynamicSounds[iSoundIndex].tMySavedPosition.distance_to(tpaDynamicSounds[iSoundIndex].tSavedPosition);
-
-				if (fDistance < DISTANCE_TO_REACT) {
-					tHitPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
-					dwHitTime = tpaDynamicSounds[iSoundIndex].dwTime;
-					GO_TO_NEW_STATE(aiSoldierPatrolHurt);
-				}
-				else {
-					m_bStateChanged = false;
-					GO_TO_PREV_STATE;
-				}
-			}
-			else {
-				m_bStateChanged = false;
-				GO_TO_PREV_STATE;
-//				Fvector tCurrentPosition = vPosition;
-//				tWatchDirection.sub(tpaDynamicSounds[iSoundIndex].tSavedPosition,tCurrentPosition);
-//				if (tWatchDirection.magnitude() > EPS_L) {
-//					tWatchDirection.normalize();
-//					mk_rotation(tWatchDirection,r_torso_target);
-//					r_target.yaw = r_torso_target.yaw;
-//					ASSIGN_SPINE_BONE;
-//				}
-//				
-//				CHECK_IF_SWITCH_TO_NEW_STATE(fabsf(r_torso_target.yaw - r_torso_current.yaw) > PI_DIV_6,aiSoldierTurnOver)
-//
-//				vfInitSelector(SelectorPatrol,Squad,Leader);
-//		
-//				SelectorPatrol.m_tEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
-//
-//				if (AI_Path.bNeedRebuild) {
-//					vfBuildPathToDestinationPoint(0);
-//				}
-//				else {
-//					//SelectorFindEnemy.m_tLastEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
-//					vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
-//				}
-			}
-		}
-		else {
-			m_bStateChanged = false;
-			GO_TO_PREV_STATE;
-		}
-		/**
-		SOUND_TYPE_WEAPON_RECHARGING
-		SOUND_TYPE_WEAPON_TAKING			
-		SOUND_TYPE_WEAPON_HIDING			
-		SOUND_TYPE_WEAPON_CHANGING			
-		SOUND_TYPE_WEAPON_EMPTY_CLICKING	
-		SOUND_TYPE_WEAPON_BULLET_RICOCHET	
-
-		SOUND_TYPE_MONSTER_DYING			
-		SOUND_TYPE_MONSTER_INJURING			
-		SOUND_TYPE_MONSTER_WALKING_NORMAL	
-		SOUND_TYPE_MONSTER_WALKING_CROUCH	
-		SOUND_TYPE_MONSTER_WALKING_LIE		
-		SOUND_TYPE_MONSTER_RUNNING_NORMAL	
-		SOUND_TYPE_MONSTER_RUNNING_CROUCH	
-		SOUND_TYPE_MONSTER_RUNNING_LIE		
-		SOUND_TYPE_MONSTER_JUMPING_NORMAL	
-		SOUND_TYPE_MONSTER_JUMPING_CROUCH	
-		SOUND_TYPE_MONSTER_FALLING			
-		SOUND_TYPE_MONSTER_TALKING			
-		/**/
-	}
-	else {
-		m_bStateChanged = false;
-		GO_TO_PREV_STATE;
-	}
-
-	vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
-	
-	vfAimAtEnemy();
-}
-
 void CAI_Soldier::OnAttackFireAlone()
 {
 	WRITE_TO_LOG("Shooting enemy alone...");
@@ -1463,6 +1345,103 @@ void CAI_Soldier::OnStandingUp()
 	}
 }
 /**/
+
+void CAI_Soldier::OnSenseSomethingAlone()
+{
+	WRITE_TO_LOG("Sense something");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+	
+	SelectEnemy(Enemy);
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiSoldierAttackFireAlone)
+	
+	DWORD dwCurTime = Level().timeServer();
+
+	INIT_SQUAD_AND_LEADER;
+	
+	CGroup &Group = Squad.Groups[g_Group()];
+	
+	int iSoundIndex;
+	
+	SelectSound(iSoundIndex);
+
+	if (iSoundIndex == -1)
+		iSoundIndex = m_iSoundIndex;
+
+	if (iSoundIndex >= 0) {
+		m_iSoundIndex = iSoundIndex;
+		if ((tpaDynamicSounds[iSoundIndex].eSoundType & SOUND_TYPE_WEAPON) == SOUND_TYPE_WEAPON) {
+			if ((tpaDynamicSounds[iSoundIndex].eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) {
+				tHitDir.sub(tpaDynamicSounds[iSoundIndex].tSavedPosition,tpaDynamicSounds[iSoundIndex].tMySavedPosition);
+				Fvector tTemp;
+				tTemp.sub(tpaDynamicSounds[iSoundIndex].tMySavedPosition,tpaDynamicSounds[iSoundIndex].tSavedPosition);
+				SRotation sRot;
+				mk_rotation(tTemp,sRot);
+				float fAngle,fAngle1;
+				if (fabsf(sRot.yaw - tpaDynamicSounds[iSoundIndex].tOrientation.yaw) <= PI + EPS_L)
+					fAngle = fabsf(sRot.yaw - tpaDynamicSounds[iSoundIndex].tOrientation.yaw);
+				else
+					fAngle = PI_MUL_2 - fabsf(sRot.yaw - tpaDynamicSounds[iSoundIndex].tOrientation.yaw);
+				
+				if (fabsf(sRot.pitch - tpaDynamicSounds[iSoundIndex].tOrientation.pitch) <= PI + EPS_L)
+					fAngle1 = fabsf(sRot.pitch - tpaDynamicSounds[iSoundIndex].tOrientation.pitch);
+				else
+					fAngle1 = PI_MUL_2 - fabsf(sRot.pitch - tpaDynamicSounds[iSoundIndex].tOrientation.pitch);
+
+				float fDistance = sinf(fAngle > fAngle1 ? fAngle : fAngle1)*tpaDynamicSounds[iSoundIndex].tMySavedPosition.distance_to(tpaDynamicSounds[iSoundIndex].tSavedPosition);
+
+				if (fDistance < DISTANCE_TO_REACT) {
+					tHitPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+					dwHitTime = tpaDynamicSounds[iSoundIndex].dwTime;
+					GO_TO_NEW_STATE(aiSoldierPatrolHurt);
+				}
+				else {
+					m_bStateChanged = false;
+					GO_TO_PREV_STATE;
+				}
+			}
+			else {
+				m_bStateChanged = false;
+				GO_TO_PREV_STATE;
+//				Fvector tCurrentPosition = vPosition;
+//				tWatchDirection.sub(tpaDynamicSounds[iSoundIndex].tSavedPosition,tCurrentPosition);
+//				if (tWatchDirection.magnitude() > EPS_L) {
+//					tWatchDirection.normalize();
+//					mk_rotation(tWatchDirection,r_torso_target);
+//					r_target.yaw = r_torso_target.yaw;
+//					ASSIGN_SPINE_BONE;
+//				}
+//				
+//				CHECK_IF_SWITCH_TO_NEW_STATE(fabsf(r_torso_target.yaw - r_torso_current.yaw) > PI_DIV_6,aiSoldierTurnOver)
+//
+//				vfInitSelector(SelectorPatrol,Squad,Leader);
+//		
+//				SelectorPatrol.m_tEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+//
+//				if (AI_Path.bNeedRebuild) {
+//					vfBuildPathToDestinationPoint(0);
+//				}
+//				else {
+//					//SelectorFindEnemy.m_tLastEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+//					vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
+//				}
+			}
+		}
+		else {
+			m_bStateChanged = false;
+			GO_TO_PREV_STATE;
+		}
+	}
+	else {
+		m_bStateChanged = false;
+		GO_TO_PREV_STATE;
+	}
+
+	vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
+	
+	vfAimAtEnemy();
+}
 
 void CAI_Soldier::OnPatrolHurt()
 {
