@@ -107,13 +107,15 @@ void CTorch::OnH_A_Chield()
 //	H_Root()->Center				(Position());
 //	XFORM().c.set					(Position());
 	m_focus.set						(Position());
-	Switch							(false);
+	// commented by Dima
+//	Switch							(false);
+	// end of comments
 }
 
 void CTorch::OnH_B_Independent() 
 {
-	inherited::OnH_B_Independent();
-	time2hide				= TIME_2_HIDE;
+	inherited::OnH_B_Independent	();
+	time2hide						= TIME_2_HIDE;
 	Switch							(false);
 }
 
