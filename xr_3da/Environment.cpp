@@ -48,7 +48,7 @@ void CEnvDescriptor::load	(LPCSTR S)
 	lmap_color				= pSettings->r_fvector3	(S,"lmap_color");
 	hemi_color				= pSettings->r_fvector3	(S,"hemi_color");
 	sun_color				= pSettings->r_fvector3	(S,"sun_color");
-	sun_dir					= pSettings->r_fvector3	(S,"sun_dir");
+	Fvector2 sund			= pSettings->r_fvector2	(S,"sun_dir");	sun_dir.setHP	(deg2rad(sund.y),deg2rad(sund.x));
 }
 void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f)
 {
@@ -63,7 +63,7 @@ void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f)
 	lmap_color.lerp			(A.lmap_color,B.lmap_color,f);
 	hemi_color.lerp			(A.hemi_color,B.hemi_color,f);
 	sun_color.lerp			(A.sun_color,B.sun_color,f);
-	sun_dir.lerp			(A.sun_dir,B.sun_dir,f);					sun_dir.normalize();
+	sun_dir.lerp			(A.sun_dir,B.sun_dir,f).normalize();
 }
 
 void CEnvironment::Load		(CInifile *pIni, char *section)
