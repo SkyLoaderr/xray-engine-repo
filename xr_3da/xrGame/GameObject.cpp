@@ -508,8 +508,6 @@ void __stdcall VisualCallback(CKinematics *tpKinematics)
 		(*I)						(tpKinematics);
 }
 
-
-
 CScriptGameObject *CGameObject::lua_game_object		() const
 {
 	VERIFY							(m_spawned);
@@ -517,7 +515,6 @@ CScriptGameObject *CGameObject::lua_game_object		() const
 		m_lua_game_object			= xr_new<CScriptGameObject>(const_cast<CGameObject*>(this));
 	return							(m_lua_game_object);
 }
-
 
 bool CGameObject::NeedToDestroyObject()	const
 {
