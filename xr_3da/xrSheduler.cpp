@@ -158,7 +158,8 @@ void CSheduler::ProcessStep			()
 
 #ifdef DEBUG
 		void*	dbgaddr				= dynamic_cast<void*>		(T.Object);
-		VERIFY3						(T.Object->dbg_update_shedule == T.Object->dbg_startframe, "Broken sequence of calls to 'shedule_Update'", typeid(T.Object).name() );
+		CObject*	O				= dynamic_cast<CObject*>	(T.Object);
+		VERIFY3						(T.Object->dbg_update_shedule == T.Object->dbg_startframe, "Broken sequence of calls to 'shedule_Update'", O?*O->cName():"unknown object" );
 		u32	execTime				= eTimer.GetElapsed_ms		();
 		if (execTime>3)
 		{
