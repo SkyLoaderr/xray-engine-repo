@@ -17,7 +17,7 @@ class CUITabControl: public CUIWindow
 public:
 	// Ctor and Dtor
 	CUITabControl();
-	~CUITabControl();
+	virtual ~CUITabControl();
 
 	// Инициализация  из XML
 	virtual void Init(int x, int y, int width, int height);
