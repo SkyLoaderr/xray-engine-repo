@@ -56,11 +56,12 @@ IC	const Fvector &CPatrolPathManager::destination_position	() const
 	return					(m_dest_position);
 }
 
-IC	void CPatrolPathManager::set_path	(const CLevel::SPath *path)
+IC	void CPatrolPathManager::set_path	(const CLevel::SPath *path, ref_str path_name)
 {
 	if (m_path == path)
 		return;
 	m_path					= path;
+	m_path_name				= path_name;
 	m_actuality				= false;
 }
 

@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "patrol_path_manager.h"
 #include "ai/script/ai_script_monster.h"
+#include "ai_script_classes.h"
 
 void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_id)
 {
@@ -49,7 +50,7 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 	VERIFY					(m_curr_point_index < m_path->tpaWayPoints.size());
 	
 	if (m_callback)
-		(*m_callback)(u32(CScriptMonster::eActionTypeMovement),m_curr_point_index);
+		(*m_callback)(CLuaGameObject(dynamic_cast<CGameObject*>(this)),u32(CScriptMonster::eActionTypeMovement),m_curr_point_index);
 
 	u32						count = 0;
 	for (u32 i=0, n=m_path->tpaWayLinks.size(); i<n; ++i)

@@ -170,6 +170,9 @@ protected:
 	static	float			hinge_force_factor2;
 	static	float			hinge_vel;
 	static	float			skel_fatal_impulse_factor;
+#ifdef DEBUG
+	friend class CLevelGraph;
+#endif
 protected:
 	Fvector					m_saved_dir;
 	Fvector					m_saved_position;

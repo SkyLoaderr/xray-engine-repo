@@ -488,6 +488,8 @@ public:
 		else
 			l_tpScriptMonster->clear_callback(tActionType);
 	}
+
+	BIND_FUNCTION10	(m_tpGameObject,	GetPatrolPathName,		CScriptMonster,	GetPatrolPathName,		LPCSTR,								"");
 };
 
 class CLuaEffector : public CEffectorPP {

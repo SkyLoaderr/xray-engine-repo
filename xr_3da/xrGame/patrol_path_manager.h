@@ -28,6 +28,7 @@ public:
 	};
 private:
 	const CLevel::SPath							*m_path;
+	ref_str										m_path_name;
 	EPatrolStartType							m_start_type;
 	EPatrolRouteType							m_route_type;
 	bool										m_actuality;
@@ -44,7 +45,7 @@ protected:
 	IC			bool	failed						() const;
 	IC			bool	random						() const;
 	IC			const Fvector &destination_position	() const;
-	IC			void	set_path					(const CLevel::SPath *path);
+	IC			void	set_path					(const CLevel::SPath *path, ref_str path_name);
 	IC			void	set_start_type				(const EPatrolStartType patrol_start_type);
 	IC			void	set_route_type				(const EPatrolRouteType patrol_route_type);
 	IC			void	set_random					(bool random);

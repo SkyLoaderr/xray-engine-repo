@@ -64,4 +64,6 @@ public:
 	virtual void				clear_callback			(const CScriptMonster::EActionType tActionType);
 
 	virtual	void				callback				(const EActionType tActionType);
+
+	virtual LPCSTR				GetPatrolPathName		();
 };

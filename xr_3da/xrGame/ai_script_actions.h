@@ -30,6 +30,7 @@ public:
 class CPatrolPathParams {
 public:
 	const CLevel::SPath						*m_path;
+	ref_str									m_path_name;
 	CPatrolPathManager::EPatrolStartType	m_tPatrolPathStart;
 	CPatrolPathManager::EPatrolRouteType	m_tPatrolPathStop;
 	bool									m_bRandom;
@@ -37,6 +38,7 @@ public:
 							CPatrolPathParams	(LPCSTR caPatrolPathToGo, const CPatrolPathManager::EPatrolStartType tPatrolPathStart = CPatrolPathManager::ePatrolStartTypeNearest, const CPatrolPathManager::EPatrolRouteType tPatrolPathStop = CPatrolPathManager::ePatrolRouteTypeContinue, bool bRandom = true)
 	{
 		VERIFY2				(Level().m_PatrolPaths.find(caPatrolPathToGo) != Level().m_PatrolPaths.end(),caPatrolPathToGo);
+		m_path_name			= caPatrolPathToGo;
 		m_path				= &(Level().m_PatrolPaths.find(caPatrolPathToGo)->second);
 		m_tPatrolPathStart	= tPatrolPathStart;
 		m_tPatrolPathStop	= tPatrolPathStop;
@@ -116,6 +118,7 @@ public:
 		eInputKeyDummy		= u32(1) << 10,
 	};
 
+	ref_str							m_path_name;
 	MonsterSpace::EBodyState		m_tBodyState;
 	MonsterSpace::EMovementType		m_tMovementType;
 	CDetailPathManager::EDetailPathType		m_tPathType;
@@ -137,7 +140,7 @@ public:
 		SetBodyState		(MonsterSpace::eBodyStateStand);
 		SetMovementType		(MonsterSpace::eMovementTypeStand);
 		SetPathType			(CDetailPathManager::eDetailPathTypeSmooth);
-		SetPatrolPath		(0);
+		SetPatrolPath		(0,"");
 		SetPatrolStart		(CPatrolPathManager::ePatrolStartTypeNearest);
 		SetPatrolStop		(CPatrolPathManager::ePatrolRouteTypeContinue);
 		SetPatrolRandom		(true);
@@ -161,7 +164,7 @@ public:
 		SetBodyState		(tBodyState);
 		SetMovementType		(tMovementType);
 		SetPathType			(tPathType);
-		SetPatrolPath		(tPatrolPathParams.m_path);
+		SetPatrolPath		(tPatrolPathParams.m_path,tPatrolPathParams.m_path_name);
 		SetPatrolStart		(tPatrolPathParams.m_tPatrolPathStart);
 		SetPatrolStop		(tPatrolPathParams.m_tPatrolPathStop);
 		SetPatrolRandom		(tPatrolPathParams.m_bRandom);
@@ -200,7 +203,7 @@ public:
 							CMovementAction		(MonsterSpace::EActState tActState, const CPatrolPathParams &tPatrolPathParams)
 	{
 		SetAct				(tActState);
-		SetPatrolPath		(tPatrolPathParams.m_path);
+		SetPatrolPath		(tPatrolPathParams.m_path,tPatrolPathParams.m_path_name);
 		SetPatrolStart		(tPatrolPathParams.m_tPatrolPathStart);
 		SetPatrolStop		(tPatrolPathParams.m_tPatrolPathStop);
 		SetPatrolRandom		(tPatrolPathParams.m_bRandom);
@@ -232,9 +235,10 @@ public:
 
 			void			SetObjectToGo		(CLuaGameObject *tpObjectToGo);
 
-			void			SetPatrolPath		(const CLevel::SPath *path)
+			void			SetPatrolPath		(const CLevel::SPath *path, ref_str path_name)
 	{
 		m_path				= path;
+		m_path_name			= path_name;
 		m_tGoalType			= eGoalTypePatrolPath;
 		m_bCompleted		= false;
 	}

@@ -13,6 +13,7 @@
 #include "../../ai_script_actions.h"
 #include "../../weapon.h"
 #include "../../ParticlesObject.h"
+#include "../../ai_script_classes.h"
 
 CScriptMonster::CScriptMonster()
 {
@@ -314,7 +315,7 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 		}
 		case CMovementAction::eGoalTypePatrolPath : {
 			l_tpMovementManager->set_path_type	(CMovementManager::ePathTypePatrolPath);
-			l_tpMovementManager->set_path		(l_tMovementAction.m_path);
+			l_tpMovementManager->set_path		(l_tMovementAction.m_path,l_tMovementAction.m_path_name);
 			l_tpMovementManager->set_start_type	(l_tMovementAction.m_tPatrolPathStart);
 			l_tpMovementManager->set_route_type	(l_tMovementAction.m_tPatrolPathStop);
 			l_tpMovementManager->set_random		(l_tMovementAction.m_bRandom);
@@ -402,6 +403,13 @@ void CScriptMonster::clear_callback	(const CScriptMonster::EActionType tActionTy
 void CScriptMonster::callback		(const CScriptMonster::EActionType tActionType)
 {
 	if (m_tpCallbacks[tActionType])
-		(*m_tpCallbacks[tActionType])(u32(tActionType));
+		(*m_tpCallbacks[tActionType])(CLuaGameObject(this),u32(tActionType));
 }
 
+LPCSTR CScriptMonster::GetPatrolPathName()
+{
+	VERIFY					(GetScriptControl());
+	if (m_tpActionQueue.empty())
+		return				("");
+	return					(*m_tpActionQueue.back()->m_tMovementAction.m_path_name);
+}
