@@ -88,14 +88,20 @@ void	game_sv_ArtefactHunt::OnRoundStart			()
 	Artefact_PrepareForSpawn();
 }
 
-void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
+void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_killed)
 {
 	game_PlayerState*	ps_killer	=	get_id	(id_killer);
 	game_PlayerState*	ps_killed	=	get_id	(id_killed);
+
+	if(ps_killed){
+		ps_killed->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
+		ps_killed->deaths				+=	1;
+	};
+
 	if (!ps_killed || !ps_killer) return;
 
-//	ps_killed->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
-//	ps_killed->deaths				+=	1;
+	ps_killed->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
+	ps_killed->deaths				+=	1;
 
 	TeamStruct* pTeam		= GetTeamData(u8(ps_killer->team));
 
@@ -133,13 +139,18 @@ void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 	// Send Message About Player Killed
 	SendPlayerKilledMessage(id_killer, id_killed);
 
+	ps_killed->lasthitter			= 0;
+	ps_killed->lasthitweapon		= 0;
+	ClearPlayerItems		(ps_killed);
+	SetPlayersDefItems		(ps_killed);
+
 	if (pTeam)
 		if (ps_killer->money_for_round < pTeam->m_iM_Min) ps_killer->money_for_round = pTeam->m_iM_Min;
 
 	signal_Syncronize();
 }
 
-void	game_sv_ArtefactHunt::OnPlayerReady			(u32 id)
+void	game_sv_ArtefactHunt::OnPlayerReady			(ClientID id)
 {
 	//	if	(GAME_PHASE_INPROGRESS == phase) return;
 	switch (phase)
@@ -331,12 +342,13 @@ BOOL	game_sv_ArtefactHunt::OnTouch				(u16 eid_who, u16 eid_what)
 
 			m_eAState = IN_POSSESSION;
 			xrClientData* xrCData	= e_who->owner;
-			game_PlayerState*	ps_who	=	&xrCData->ps;
+			game_PlayerState*	ps_who	=	xrCData->ps;
 			if (ps_who)
 			{
 				NET_Packet			P;
-				P.w_begin			(M_GAMEMESSAGE);
-				P.w_u32				(GMSG_ARTEFACT_TAKEN);
+				//P.w_begin			(M_GAMEMESSAGE);
+				GenerateGameMessage	(P);
+				P.w_u32				(GAME_EVENT_ARTEFACT_TAKEN);
 				P.w_u16				(ps_who->GameID);
 				P.w_u16				(ps_who->team);
 				u_EventSend(P);
@@ -373,12 +385,13 @@ BOOL	game_sv_ArtefactHunt::OnDetach				(u16 eid_who, u16 eid_what)
 			m_eAState = ON_FIELD;
 
 			xrClientData* xrCData	= e_who->owner;
-			game_PlayerState*	ps_who	=	&xrCData->ps;
+			game_PlayerState*	ps_who	=	xrCData->ps;
 			if (ps_who && !bNoLostMessage)
 			{
 				NET_Packet			P;
-				P.w_begin			(M_GAMEMESSAGE);
-				P.w_u32				(GMSG_ARTEFACT_DROPPED);
+				//P.w_begin			(M_GAMEMESSAGE);
+				GenerateGameMessage (P);
+				P.w_u32				(GAME_EVENT_ARTEFACT_DROPPED);
 				P.w_u16				(ps_who->GameID);
 				P.w_u16				(ps_who->team);
 				u_EventSend(P);
@@ -391,16 +404,16 @@ BOOL	game_sv_ArtefactHunt::OnDetach				(u16 eid_who, u16 eid_what)
 	return inherited::OnDetach(eid_who, eid_what);
 };
 
-void		game_sv_ArtefactHunt::OnObjectEnterTeamBase	(u16 id, u16 id_zone)
+void		game_sv_ArtefactHunt::OnObjectEnterTeamBase	(u16 id, u16 zone_team)
 {
 	CSE_Abstract*		e_who	= m_server->ID_to_entity(id);		VERIFY(e_who	);
-	CSE_Abstract*		e_zone	= m_server->ID_to_entity(id_zone);	VERIFY(e_zone	);
+//	CSE_Abstract*		e_zone	= m_server->ID_to_entity(id_zone);	VERIFY(e_zone	);
 
 	CSE_ALifeCreatureActor* eActor = dynamic_cast<CSE_ALifeCreatureActor*> (e_who);
-	CSE_ALifeTeamBaseZone*	eZoneBase = dynamic_cast<CSE_ALifeTeamBaseZone*> (e_zone);
-	if (eActor && eZoneBase)
+//	CSE_ALifeTeamBaseZone*	eZoneBase = dynamic_cast<CSE_ALifeTeamBaseZone*> (e_zone);
+	if (eActor/* && eZoneBase*/)
 	{
-		if (eActor->g_team() == eZoneBase->m_team)
+		if (eActor->g_team() == zone_team)
 		{
 			xr_vector<u16>& C			= eActor->children;
 			xr_vector<u16>::iterator c	= std::find	(C.begin(),C.end(),m_dwArtefactID);
@@ -415,18 +428,18 @@ void		game_sv_ArtefactHunt::OnObjectEnterTeamBase	(u16 id, u16 id_zone)
 	};
 };
 
-void		game_sv_ArtefactHunt::OnObjectLeaveTeamBase	(u16 id, u16 id_zone)
+void		game_sv_ArtefactHunt::OnObjectLeaveTeamBase	(u16 id, u16 zone_team)
 {
 	CSE_Abstract*		e_who	= m_server->ID_to_entity(id);		
 	if (!e_who)			return;
 
-	CSE_Abstract*		e_zone	= m_server->ID_to_entity(id_zone);	VERIFY(e_zone	);
+//	CSE_Abstract*		e_zone	= m_server->ID_to_entity(id_zone);	VERIFY(e_zone	);
 
 	CSE_ALifeCreatureActor* eActor = dynamic_cast<CSE_ALifeCreatureActor*> (e_who);
-	CSE_ALifeTeamBaseZone*	eZoneBase = dynamic_cast<CSE_ALifeTeamBaseZone*> (e_zone);
-	if (eActor && eZoneBase)
+//	CSE_ALifeTeamBaseZone*	eZoneBase = dynamic_cast<CSE_ALifeTeamBaseZone*> (e_zone);
+	if (eActor /*&& eZoneBase*/)
 	{
-		if (eActor->g_team() == eZoneBase->m_team)
+		if (eActor->g_team() == zone_team)
 		{
 		}
 		else
@@ -435,7 +448,7 @@ void		game_sv_ArtefactHunt::OnObjectLeaveTeamBase	(u16 id, u16 id_zone)
 	};
 };
 
-void		game_sv_ArtefactHunt::OnArtefactOnBase		(u32 id_who)
+void		game_sv_ArtefactHunt::OnArtefactOnBase		(ClientID id_who)
 {
 	game_PlayerState*	ps	=	get_id	(id_who);
 	if (!ps) return;
@@ -449,7 +462,7 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(u32 id_who)
 		ps->money_for_round = ps->money_for_round + pTeam->m_iM_TargetSucceed;
 
 		// Add money to players in this team
-		u32		cnt = get_count();
+		u32		cnt = get_players_count();
 		for		(u32 it=0; it<cnt; ++it)	
 		{
 			// init
@@ -476,8 +489,9 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(u32 id_who)
 	//-----------------------------------------------
 	bNoLostMessage = false;
 	//-----------------------------------------------
-	P.w_begin			(M_GAMEMESSAGE);
-	P.w_u32				(GMSG_ARTEFACT_ONBASE);
+//	P.w_begin			(M_GAMEMESSAGE);
+	GenerateGameMessage (P);
+	P.w_u32				(GAME_EVENT_ARTEFACT_ONBASE);
 	P.w_u16				(ps->GameID);
 	P.w_u16				(ps->team);
 	u_EventSend(P);
@@ -513,8 +527,9 @@ void	game_sv_ArtefactHunt::SpawnArtefact			()
 	m_dwArtefactID = af->ID;
 	//-----------------------------------------------
 	NET_Packet P;
-	P.w_begin			(M_GAMEMESSAGE);
-	P.w_u32				(GMSG_ARTEFACT_SPAWNED);
+//	P.w_begin			(M_GAMEMESSAGE);
+	GenerateGameMessage (P);
+	P.w_u32				(GAME_EVENT_ARTEFACT_SPAWNED);
 	u_EventSend(P);
 	//-----------------------------------------------
 	m_eAState = ON_FIELD;
@@ -536,8 +551,9 @@ void	game_sv_ArtefactHunt::RemoveArtefact			()
 	u_EventGen(P, GE_DESTROY, m_dwArtefactID);
 	Level().Send(P,net_flags(TRUE,TRUE));
 	//-----------------------------------------------
-	P.w_begin			(M_GAMEMESSAGE);
-	P.w_u32				(GMSG_ARTEFACT_DESTROYED);
+//	P.w_begin			(M_GAMEMESSAGE);
+	GenerateGameMessage (P);
+	P.w_u32				(GAME_EVENT_ARTEFACT_DESTROYED);
 	u_EventSend(P);
 	//-----------------------------------------------
 	Artefact_PrepareForSpawn();
@@ -547,7 +563,7 @@ void	game_sv_ArtefactHunt::Update			()
 {
 	inherited::Update	();
 
-	switch(phase) 	
+	switch(Phase()) 	
 	{
 	case GAME_PHASE_TEAM1_SCORES :
 	case GAME_PHASE_TEAM2_SCORES :
@@ -582,16 +598,15 @@ void	game_sv_ArtefactHunt::Update			()
 }
 bool	game_sv_ArtefactHunt::ArtefactSpawn_Allowed		()	
 {
-//	return true;
 	// Check if all players ready
-	u32		cnt		= get_count	();
+	u32		cnt		= get_players_count	();
 	
 	u32		TeamAlived[2] = {0, 0};
 	for		(u32 it=0; it<cnt; ++it)	
 	{
 		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
 //		game_PlayerState* ps		=	get_it	(it);
-		game_PlayerState* ps	= &l_pC->ps;
+		game_PlayerState* ps	= l_pC->ps;
 
 		
 //		if (/*ps->flags & GAME_PLAYER_FLAG_VERY_VERY_DEAD*/!(ps->flags & GAME_PLAYER_FLAG_READY) || ps->Skip)	continue;
@@ -696,7 +711,7 @@ void				game_sv_ArtefactHunt::OnTimelimitExceed		()
 	OnDelayedRoundEnd("Team Final Score");
 };
 
-void				game_sv_ArtefactHunt::net_Export_State		(NET_Packet& P, u32 id_to)
+void				game_sv_ArtefactHunt::net_Export_State		(NET_Packet& P, ClientID id_to)
 {
 	inherited::net_Export_State(P, id_to);
 	P.w_u8			(artefactsNum);
@@ -790,17 +805,18 @@ bool				game_sv_ArtefactHunt::Artefact_MissCheck	()
 
 void				game_sv_ArtefactHunt::RespawnAllNotAlivePlayers()
 {
-	u32		cnt		= get_count	();
+	u32		cnt		= get_players_count	();
 	for		(u32 it=0; it<cnt; ++it)	
 	{
 		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
-		game_PlayerState* ps	= &l_pC->ps;
+		game_PlayerState* ps	= l_pC->ps;
 
 		if (!l_pC->net_Ready || ps->Skip) continue;
 
-		if (ps->flags & GAME_PLAYER_FLAG_VERY_VERY_DEAD)
+		if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) )
 		{
 			RespawnPlayer(l_pC->ID, true);
+			SpawnWeaponsForActor(l_pC->owner, ps);
 		};
 	}
 	signal_Syncronize();
@@ -808,13 +824,13 @@ void				game_sv_ArtefactHunt::RespawnAllNotAlivePlayers()
 
 void				game_sv_ArtefactHunt::CheckForAnyAlivePlayer()
 {
-	u32		cnt		= get_count	();
+	u32		cnt		= get_players_count	();
 	for		(u32 it=0; it<cnt; ++it)	
 	{
 		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
-		game_PlayerState* ps	= &l_pC->ps;
+		game_PlayerState* ps	= l_pC->ps;
 
-		if (ps->flags & GAME_PLAYER_FLAG_VERY_VERY_DEAD || ps->Skip)	continue;
+		if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) || ps->Skip)	continue;
 		// found at least one alive player
 		return;
 	};

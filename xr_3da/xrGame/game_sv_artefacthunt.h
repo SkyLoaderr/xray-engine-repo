@@ -61,9 +61,10 @@ public:
 
 	virtual		LPCSTR				type_name			() const { return "artefacthunt";};
 	// Events	
+	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender );
 	virtual		void				OnRoundStart			();							// старт раунда
-	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed);
-	virtual		void				OnPlayerReady			(u32 id_who);
+	virtual		void				OnPlayerKillPlayer		(ClientID id_killer, ClientID id_killed);
+	virtual		void				OnPlayerReady			(ClientID id_who);
 
 	virtual		void				OnTimelimitExceed		();
 
@@ -75,13 +76,13 @@ public:
 
 //	virtual		void				OnPlayerBuyFinished		(u32 id_who, NET_Packet& P);
 
-	virtual		void				OnObjectEnterTeamBase	(u16 id, u16 id_zone);
-	virtual		void				OnObjectLeaveTeamBase	(u16 id, u16 id_zone);
+	virtual		void				OnObjectEnterTeamBase	(u16 id, u16 zone_team);
+	virtual		void				OnObjectLeaveTeamBase	(u16 id, u16 zone_team);
 	
 ///	bool							IsBuyableItem			(CSE_Abstract* pItem);
 //	BOOL							CheckUpgrades			(CSE_Abstract* pItem, u8 IItem);	
 //	void							RemoveItemFromActor		(CSE_Abstract* pItem);
-	void							OnArtefactOnBase		(u32 id_who);
+	void							OnArtefactOnBase		(ClientID id_who);
 
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_what);
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_what);
@@ -95,7 +96,7 @@ public:
 				void				RemoveArtefact			();
 				void				Assign_Artefact_RPoint	(CSE_Abstract* E);
 
-	virtual		void				net_Export_State		(NET_Packet& P, u32 id_to);				// full state
+	virtual		void				net_Export_State		(NET_Packet& P, ClientID id_to);				// full state
 				bool				ArtefactSpawn_Allowed	();
 	//-------------------------------------------------------------------------------
 	virtual		void				RespawnAllNotAlivePlayers	();

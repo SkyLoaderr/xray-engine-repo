@@ -7,26 +7,30 @@
 #include "level.h"
 #include "xrserver.h"
 #include "ai_space.h"
+#include "game_sv_event_queue.h"
 
 // Main
 game_PlayerState*	game_sv_GameState::get_it					(u32 it)
 {
 	xrClientData*	C	= (xrClientData*)m_server->client_Get			(it);
 	if (0==C)			return 0;
-	else				return &C->ps;
+	else				return C->ps;
 }
 
-game_PlayerState*	game_sv_GameState::get_id					(u32 id)								// DPNID
+game_PlayerState*	game_sv_GameState::get_id					(ClientID id)							
 {
 	xrClientData*	C	= (xrClientData*)m_server->ID_to_client	(id);
 	if (0==C)			return 0;
-	else				return &C->ps;
+	else				return C->ps;
 }
 
-u32					game_sv_GameState::get_it_2_id				(u32 it)
+ClientID				game_sv_GameState::get_it_2_id				(u32 it)
 {
 	xrClientData*	C	= (xrClientData*)m_server->client_Get		(it);
-	if (0==C)			return 0;
+	if (0==C){
+		ClientID clientID;clientID.set(0);
+		return clientID;
+	}
 	else				return C->ID;
 }
 
@@ -37,19 +41,28 @@ LPCSTR				game_sv_GameState::get_name_it				(u32 it)
 	else				return *C->Name;
 }
 
-LPCSTR				game_sv_GameState::get_name_id				(u32 id)								// DPNID
+LPCSTR				game_sv_GameState::get_name_id				(ClientID id)							
 {
 	xrClientData*	C	= (xrClientData*)m_server->ID_to_client	(id);
 	if (0==C)			return 0;
 	else				return *C->Name;
 }
 
-u32					game_sv_GameState::get_count				()
+LPCSTR				game_sv_GameState::get_player_name_id				(ClientID id)								
+{
+	xrClientData* xrCData	=	m_server->ID_to_client(id);
+	if(xrCData)
+		return get_option_s(*xrCData->Name,"name",*xrCData->Name);
+	else 
+		return "unknown";
+}
+
+u32					game_sv_GameState::get_players_count		()
 {
 	return				m_server->client_Count();
 }
 
-u16					game_sv_GameState::get_id_2_eid				(u32 id)
+u16					game_sv_GameState::get_id_2_eid				(ClientID id)
 {
 	xrClientData*	C	= (xrClientData*)m_server->ID_to_client	(id);
 	if (0==C)			return 0xffff;
@@ -57,6 +70,15 @@ u16					game_sv_GameState::get_id_2_eid				(u32 id)
 	if (0==E)			return 0xffff;
 	return E->ID;
 }
+
+game_PlayerState*	game_sv_GameState::get_eid (u16 id) //if exist
+{
+	CSE_Abstract* entity = get_entity_from_eid(id);
+	if (entity && entity->owner->ps->GameID == id)
+		return entity->owner->ps;
+	return NULL;
+}
+
 CSE_Abstract*		game_sv_GameState::get_entity_from_eid		(u16 id)
 {
 	return				m_server->ID_to_entity(id);
@@ -65,17 +87,17 @@ CSE_Abstract*		game_sv_GameState::get_entity_from_eid		(u16 id)
 // Utilities
 u32					game_sv_GameState::get_alive_count			(u32 team)
 {
-	u32		cnt		= get_count	();
+	u32		cnt		= get_players_count	();
 	u32		alive	= 0;
 	for		(u32 it=0; it<cnt; ++it)	
 	{
 		game_PlayerState*	ps	=	get_it	(it);
-		if (u32(ps->team) == team)	alive	+=	(ps->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD)?0:1;
+		if (u32(ps->team) == team)	alive	+=	(ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))?0:1;
 	}
 	return alive;
 }
 
-xr_vector<u16>*		game_sv_GameState::get_children				(u32 id)
+xr_vector<u16>*		game_sv_GameState::get_children				(ClientID id)
 {
 	xrClientData*	C	= (xrClientData*)m_server->ID_to_client	(id);
 	if (0==C)			return 0;
@@ -116,38 +138,21 @@ void				game_sv_GameState::signal_Syncronize		()
 	sv_force_sync	= TRUE;
 }
 
-void				game_sv_GameState::switch_Phase				(u32 new_phase)
-{
-	phase				= u16(new_phase);
-	start_time			= Level().timeServer();//Device.TimerAsync();
-	signal_Syncronize	();
-}
-
 // Network
-void game_sv_GameState::net_Export_State						(NET_Packet& P, u32 to)
+void game_sv_GameState::net_Export_State						(NET_Packet& P, ClientID to)
 {
 	// Generic
-	P.w_u32			(to);
+	P.w_clientID	(to);
 	P.w_s32			(type);
 	P.w_u16			(phase);
 	P.w_s32			(round);
 	P.w_u32			(start_time);
-//	P.w_s32			(fraglimit);
-//	P.w_s32			(timelimit);
-//	P.w_u32			(buy_time);
-
-	// Teams
-//	P.w_u16			(u16(teams.size()));
-//	for (u32 t_it=0; t_it<teams.size(); ++t_it)
-//	{
-//		P.w				(&teams[t_it],sizeof(game_TeamState));
-//	}
 
 	// Players
-	u32	p_count			= get_count() - ((g_pGamePersistent->bDedicatedServer)? 1 : 0);
+	u32	p_count			= get_players_count() - ((g_pGamePersistent->bDedicatedServer)? 1 : 0);
 	P.w_u16				(u16(p_count));
 	game_PlayerState*	Base	= get_id(to);
-	for (u32 p_it=0; p_it<get_count(); ++p_it)
+	for (u32 p_it=0; p_it<get_players_count(); ++p_it)
 	{
 		string64	p_name;
 		xrClientData*	C		=	(xrClientData*)	m_server->client_Get	(p_it);
@@ -163,35 +168,36 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, u32 to)
 		}
 
 		game_PlayerState* A		=	get_it			(p_it);
-		game_PlayerState copy	=	*A;
+		A->setName(p_name);
+		u16 tmp_flags = A->flags;
+
 		if (Base==A)	
-		{
-			copy.flags	|=		GAME_PLAYER_FLAG_LOCAL;
-		}
+			A->setFlag(GAME_PLAYER_FLAG_LOCAL);
 
 		if (A->Skip) continue;
-
-		P.w_u32					(get_it_2_id	(p_it));
-		P.w_stringZ				(p_name);
-		copy.net_Export			(P);
-//		P.w						(&copy,sizeof(game_PlayerState));
+		ClientID clientID = get_it_2_id	(p_it);
+		P.w_clientID			(clientID);
+//		P.w_stringZ				(p_name);
+		A->net_Export			(P);
+		
+		A->flags = tmp_flags;
 	}
 }
 
-void game_sv_GameState::net_Export_Update						(NET_Packet& P, u32 id_to, u32 id)
+void game_sv_GameState::net_Export_Update						(NET_Packet& P, ClientID id_to, ClientID id)
 {
 	game_PlayerState* A		= get_id		(id);
 	if (A)
 	{
-		game_PlayerState copy	=	*A;
+		u16 bk_flags = A->flags;
 		if (id==id_to)	
 		{
-			copy.flags	|=		GAME_PLAYER_FLAG_LOCAL;
+			A->setFlag(GAME_PLAYER_FLAG_LOCAL);
 		}
 
-		P.w_u32	(id);
-//		P.w		(&copy,sizeof(game_PlayerState));
-		copy.net_Export(P);
+		P.w_clientID	(id);
+		A->net_Export(P);
+		A->flags = bk_flags;
 	};
 };
 
@@ -202,43 +208,13 @@ void game_sv_GameState::net_Export_GameTime						(NET_Packet& P)
 	P.w_float(GetGameTimeFactor());
 };
 
-void game_sv_GameState::OnRoundStart			()
-{
-	switch_Phase	(GAME_PHASE_INPROGRESS);
-	++round;
-//---------------------------------------------------
-//	for (u32 i=0; i<m_dm_data.teams.size(); ++i)
-//	{
-//		teams[i].score			= 0;
-//		teams[i].num_targets	= 0;
-//	}
-//---------------------------------------------------
-	// clear "ready" flag
-	u32		cnt		= get_count	();
-	for		(u32 it=0; it<cnt; ++it)	
-	{
-		game_PlayerState*	ps	=	get_it	(it);
-		ps->flags				&=	~(GAME_PLAYER_FLAG_READY + GAME_PLAYER_FLAG_VERY_VERY_DEAD);
-	};
 
-	// 1. We have to destroy all player-entities and entities
-	m_server->SLS_Clear	();
-
-	// 2. We have to create them at respawn points and/or specified positions
-	m_server->SLS_Default	();
-}
-
-void game_sv_GameState::OnRoundEnd				(LPCSTR /**reason/**/)
-{
-	switch_Phase		(GAME_PHASE_PENDING);
-}
-
-void game_sv_GameState::OnPlayerConnect			(u32 /**id_who/**/)
+void game_sv_GameState::OnPlayerConnect			(ClientID /**id_who/**/)
 {
 	signal_Syncronize	();
 }
 
-void game_sv_GameState::OnPlayerDisconnect		(u32 /**id_who/**/)
+void game_sv_GameState::OnPlayerDisconnect		(ClientID /**id_who/**/)
 {
 	signal_Syncronize	();
 }
@@ -330,7 +306,7 @@ CSE_Abstract*		game_sv_GameState::spawn_begin				(LPCSTR N)
 	return A;
 }
 
-CSE_Abstract*		game_sv_GameState::spawn_end				(CSE_Abstract* E, u32 id)
+CSE_Abstract*		game_sv_GameState::spawn_end				(CSE_Abstract* E, ClientID id)
 {
 	NET_Packet						P;
 	u16								skip_header;
@@ -342,6 +318,11 @@ CSE_Abstract*		game_sv_GameState::spawn_end				(CSE_Abstract* E, u32 id)
 	return N;
 }
 
+void game_sv_GameState::GenerateGameMessage (NET_Packet &P)
+{ 
+	P.w_begin(M_GAMEMESSAGE); 
+};
+
 void game_sv_GameState::u_EventGen(NET_Packet& P, u16 type, u16 dest)
 {
 	P.w_begin	(M_EVENT);
@@ -352,7 +333,8 @@ void game_sv_GameState::u_EventGen(NET_Packet& P, u16 type, u16 dest)
 
 void game_sv_GameState::u_EventSend(NET_Packet& P)
 {
-	m_server->SendBroadcast(0xffffffff,P,net_flags(TRUE,TRUE));
+	ClientID clientID; clientID.setBroadcast();
+	m_server->SendBroadcast(clientID,P,net_flags(TRUE,TRUE));
 }
 
 void game_sv_GameState::Update		()
@@ -360,10 +342,11 @@ void game_sv_GameState::Update		()
 	for (u32 it=0; it<m_server->client_Count(); ++it)
 	{
 		xrClientData*	C		= (xrClientData*)	m_server->client_Get(it);
-		C->ps.ping				= u16(C->stats.getPing());
+		C->ps->ping				= u16(C->stats.getPing());
 	}
 	
-	ai().script_engine().script_process("game")->update();
+	if(ai().script_engine().script_process("game"))
+		ai().script_engine().script_process("game")->update();
 }
 
 game_sv_GameState::game_sv_GameState()
@@ -372,11 +355,14 @@ game_sv_GameState::game_sv_GameState()
 	m_qwStartGameTime			= 12*60*60*1000;
 	m_fTimeFactor				= pSettings->r_float("alife","time_factor");
 	m_server					= Level().Server;
+
+	m_event_queue = xr_new<GameEventQueue>();
 }
 
 game_sv_GameState::~game_sv_GameState()
 {
 	ai().script_engine().remove_script_process("game");
+	xr_delete(m_event_queue);
 }
 
 ALife::_TIME_ID game_sv_GameState::GetGameTime()
@@ -401,25 +387,25 @@ void game_sv_GameState::SetGameTime (ALife::_TIME_ID GameTime)
 	m_qwStartGameTime			= GameTime;
 }
 
-bool game_sv_GameState::change_level (NET_Packet &net_packet, DPNID sender)
+bool game_sv_GameState::change_level (NET_Packet &net_packet, ClientID sender)
 {
 	return						(true);
 }
 
-void game_sv_GameState::save_game (NET_Packet &net_packet, DPNID sender)
+void game_sv_GameState::save_game (NET_Packet &net_packet, ClientID sender)
 {
 }
 
-bool game_sv_GameState::load_game (NET_Packet &net_packet, DPNID sender)
+bool game_sv_GameState::load_game (NET_Packet &net_packet, ClientID sender)
 {
 	return						(true);
 }
 
-void game_sv_GameState::reload_game (NET_Packet &net_packet, DPNID sender)
+void game_sv_GameState::reload_game (NET_Packet &net_packet, ClientID sender)
 {
 }
 
-void game_sv_GameState::switch_distance (NET_Packet &net_packet, DPNID sender)
+void game_sv_GameState::switch_distance (NET_Packet &net_packet, ClientID sender)
 {
 }
 
@@ -439,7 +425,87 @@ void game_sv_GameState::OnHit (u16 id_hitter, u16 id_hitted, NET_Packet& P)
 	};
 };
 
-void game_sv_GameState::OnEvent (NET_Packet &tNetPacket, u16 type, u32 time, u32 sender )
+void game_sv_GameState::OnEvent (NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender )
 {
-	R_ASSERT2	(0,"Game Event not implemented!!!");
+	switch	(type)
+	{	
+	case GAME_EVENT_PLAYER_CONNECTED:
+		{
+			ClientID ID;
+			tNetPacket.r_clientID(ID);
+			OnPlayerConnect(ID);
+		}break;
+
+	case GAME_EVENT_PLAYER_DISCONNECTED:
+		{
+			ClientID ID;
+			tNetPacket.r_clientID(ID);
+			OnPlayerDisconnect(ID);
+		}break;
+
+	case GAME_EVENT_PLAYER_KILLED:
+		{
+		}break;
+	case GAME_EVENT_ON_HIT:
+		{
+			u16		id_dest = tNetPacket.r_u16();
+			u16     id_src  = tNetPacket.r_u16();
+			CSE_Abstract*	e_src	= get_entity_from_eid	(id_src	);
+			if(!e_src) break;
+			OnHit(id_src, id_dest, tNetPacket);
+			ClientID clientID;clientID.setBroadcast();
+			m_server->SendBroadcast		(clientID,tNetPacket,net_flags(TRUE,TRUE));
+		}break;
+	case GAME_EVENT_CREATE_CLIENT:
+		{
+			IClient* P = m_server->client_Create();
+			VERIFY(P);
+			P->ID = sender;
+			//tNetPacket.r_clientID(P->ID);
+			tNetPacket.r_stringZ(P->Name);
+			P->flags.bLocal = !!tNetPacket.r_u8();
+			P->flags.bConnected = TRUE;
+			m_server->AttachNewClient(P);
+
+		}break;
+	default:
+		R_ASSERT2	(0,"Game Event not implemented!!!");
+	};
+};
+
+void game_sv_GameState::OnSwitchPhase(u32 old_phase, u32 new_phase)
+{
+	inherited::OnSwitchPhase(old_phase, new_phase);
+	signal_Syncronize	(); 
+}
+
+void game_sv_GameState::AddDelayedEvent(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender )
+{
+//	OnEvent(tNetPacket,type,time,sender);
+	m_event_queue->Create(tNetPacket,type,time,sender);
+}
+
+void game_sv_GameState::ProcessDelayedEvent		()
+{
+	GameEvent* ge = NULL;
+	while ((ge = m_event_queue->Retreive()) != 0) {
+		OnEvent(ge->P,ge->type,ge->time,ge->sender);
+		m_event_queue->Release();
+	}
+}
+
+u32 game_sv_GameState::getRPcount (u16 team_idx)
+{
+	if ( !(team_idx<TEAM_COUNT) )
+		return 0;
+	else
+		return rpoints[team_idx].size();
+}
+
+RPoint game_sv_GameState::getRP (u16 team_idx, u32 rp_idx)
+{
+	if( (team_idx<TEAM_COUNT) && (rp_idx<rpoints[team_idx].size()) )
+	return rpoints[team_idx][rp_idx];
+	else 
+		return RPoint();
 };
