@@ -106,8 +106,9 @@ void CPHCharacter::Disable()
 
 void CPHCharacter::Enable()
 {
+	if(!b_exist) return;
 	CPHObject::activate();
-	if(m_body)dBodyEnable(m_body);
+	dBodyEnable(m_body);
 
 }
 
