@@ -69,6 +69,8 @@ EActorSleep CActor::CanSleepHere()
 
 EActorSleep CActor::GoSleep(ALife::_TIME_ID sleep_time, bool without_check)
 {
+	if(IsSleeping()) return easCanSleep;
+
 	EActorSleep result = without_check?easCanSleep:CanSleepHere();
 	if(easCanSleep != result) 
 		return result;
