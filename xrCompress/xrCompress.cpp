@@ -125,19 +125,18 @@ void	Compress			(LPCSTR path)
 			// Compress into BaseFS
 			c_ptr				= fs->tell();
 			c_size				= 0;
-			c_mode				= 0;		// Normal file
 			BYTE*		c_data	= 0;
 			_compressLZ			(&c_data,&c_size,src.Pointer(),src.Length());
-			if (c_size>=src.Length())
+			if ((c_size+64)>=u32(src.Length()))
 			{
 				// Failed to compress - revert to VFS
-				c_ptr				= fs->tell	();
-				c_size				= src.Length();
 				c_mode				= 1;		// VFS file
+				c_size				= src.Length();
 				fs->write			(src.Pointer(),c_size);
-				printf				("VFS");
+				printf				("VFS (R)");
 			} else {
 				// Compressed OK
+				c_mode				= 0;		// Normal file
 				fs->write			(c_data,c_size);
 				printf				("%3.1f%%",100.f*float(c_size)/float(src.Length()));
 			}
