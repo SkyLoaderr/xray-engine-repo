@@ -17,6 +17,9 @@
 #include <math.h>
 #include <windows.h>
 
+#define  ENGINE_API 
+#define  IC __forceinline
+#include "vector.h"
 // TODO: reference additional headers your program requires here
 
 //{{AFX_INSERT_LOCATION}}
