@@ -757,7 +757,7 @@ int  CSE_ALifeHumanAbstract::ifChooseValuables(OBJECT_VECTOR *tpObjectVector)
 	I						= remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
 	if (!tpObjectVector)
 		m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
-	return					(chilren.size() - l_dwCount);
+	return					(children.size() - l_dwCount);
 }
 
 void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
