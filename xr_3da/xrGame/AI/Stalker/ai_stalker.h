@@ -88,6 +88,8 @@ private:
 	u32						m_dwMaxDynamicSoundsCount;
 	float					m_fSensetivity;
 	int						m_iSoundIndex;
+	int						m_iSuspPoint;
+	EActionState			m_tLastActionState;
 	
 	u32						m_dwDeathTime;
 	bool					m_bHammerIsClutched;

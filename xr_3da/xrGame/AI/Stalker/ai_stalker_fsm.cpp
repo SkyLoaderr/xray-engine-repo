@@ -158,6 +158,7 @@ void CAI_Stalker::Camp(bool bWeapon)
 			CWeapon	*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 			if (tpWeapon && (tpWeapon->GetAmmoElapsed() < tpWeapon->GetAmmoMagSize()/2))
 				m_inventory.Action(kWPN_RELOAD,CMD_START);
+			vfSetParameters		(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateCrouch,eMovementTypeStand,eStateTypeDanger,eLookTypeFirePoint,m_tpaDynamicObjects[iIndex].tSavedPosition);
 		}
 	}
 }
@@ -381,6 +382,11 @@ void CAI_Stalker::SearchEnemy()
 							vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID));
 							if (bfIf_I_SeePosition(getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID)))
 								Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
+							else {
+								m_iSuspPoint = i;
+								m_tLastActionState = m_tActionState;
+								m_tActionState = eActionStateWatch;
+							}
 							break;
 						}
 					}
@@ -394,6 +400,14 @@ void CAI_Stalker::SearchEnemy()
 						AI_Path.DestNode	= m_dwSavedEnemyNodeID;
 						vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
 					}
+			}
+			break;
+		}
+		case eActionStateWatch   : {
+			vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[m_iSuspPoint].dwNodeID));
+			if (bfIf_I_SeePosition(getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[m_iSuspPoint].dwNodeID))) {
+				Group.m_tpaSuspiciousNodes[m_iSuspPoint].dwSearched = 2;
+				m_tActionState = m_tLastActionState;
 			}
 			break;
 		}
@@ -425,6 +439,11 @@ void CAI_Stalker::SearchEnemy()
 							vfSetParameters		(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID));
 							if (bfIf_I_SeePosition(getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID)))
 								Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
+							else {
+								m_iSuspPoint = i;
+								m_tLastActionState = m_tActionState;
+								m_tActionState = eActionStateWatch;
+							}
 							break;
 						}
 					}
@@ -445,17 +464,18 @@ void CAI_Stalker::SearchEnemy()
 			break;
 		}
 		case eActionStateWatchLook : {
-			Msg("Predicting by selector");
-			m_tSelectorRetreat.m_tEnemyPosition = m_tMySavedPosition;
-			m_tSelectorRetreat.m_tpEnemyNode	= getAI().Node(m_dwMyNodeID);
-			m_tSelectorRetreat.m_tMyPosition	= vPosition;
-			m_tSelectorRetreat.m_tpMyNode		= getAI().Node(AI_NodeID);
-			m_tSelectorRetreat.m_fMinEnemyDistance = vPosition.distance_to(m_tMySavedPosition) + 3.f;
-			vfSetParameters		(&m_tSelectorRetreat,0,true,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeDanger);
-			if (m_bIfSearchFailed)
-				m_dwInertion						= 0;
-			else
-				m_dwInertion						= 120000;
+//			Msg("Predicting by selector");
+//			m_tSelectorRetreat.m_tEnemyPosition = m_tMySavedPosition;
+//			m_tSelectorRetreat.m_tpEnemyNode	= getAI().Node(m_dwMyNodeID);
+//			m_tSelectorRetreat.m_tMyPosition	= vPosition;
+//			m_tSelectorRetreat.m_tpMyNode		= getAI().Node(AI_NodeID);
+//			m_tSelectorRetreat.m_fMinEnemyDistance = vPosition.distance_to(m_tMySavedPosition) + 3.f;
+//			vfSetParameters		(&m_tSelectorRetreat,0,true,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeDanger);
+//			if (m_bIfSearchFailed)
+//				m_dwInertion						= 0;
+//			else
+//				m_dwInertion						= 120000;
+			m_dwInertion					= 0;
 			break;
 		}
 	}
