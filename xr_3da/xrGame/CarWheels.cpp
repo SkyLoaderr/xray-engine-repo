@@ -26,6 +26,10 @@ void CCar::SWheelDrive::Init()
 	CBoneData& bone_data= PKinematics(pwheel->car->Visual())->LL_GetData(u16(pwheel->bone_id));
 	switch(bone_data.IK_data.type)
 	{
+	case jtWheel:
+		pos_fvd=bone_map.find(pwheel->bone_id)->second.element->mXFORM.k.x;
+		break;
+/*
 	case jtWheelXZ:	
 	case jtWheelYZ:
 		pos_fvd=bone_map.find(pwheel->bone_id)->second.element->mXFORM.k.x;
@@ -38,6 +42,7 @@ void CCar::SWheelDrive::Init()
 	case jtWheelZX:
 		pos_fvd=bone_map.find(pwheel->bone_id)->second.element->mXFORM.i.x;
 		break;
+*/
 	default: NODEFAULT;
 	}
 
@@ -78,6 +83,10 @@ void CCar::SWheelSteer::Init()
 	CBoneData& bone_data= pKinematics->LL_GetData(u16(pwheel->bone_id));
 	switch(bone_data.IK_data.type)
 	{
+	case jtWheel:	
+		pos_right=bone_map.find(pwheel->bone_id)->second.element->mXFORM.i.dotproduct(pwheel->car->m_root_transform.j);
+		break;
+/*
 	case jtWheelXZ:	
 	case jtWheelXY:
 		pos_right=bone_map.find(pwheel->bone_id)->second.element->mXFORM.i.dotproduct(pwheel->car->m_root_transform.j);
@@ -90,6 +99,7 @@ void CCar::SWheelSteer::Init()
 	case jtWheelZX:
 		pos_right=bone_map.find(pwheel->bone_id)->second.element->mXFORM.k.dotproduct(pwheel->car->m_root_transform.j);
 		break;
+*/
 	default: NODEFAULT;
 	}
 	
