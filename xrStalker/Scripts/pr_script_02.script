@@ -128,21 +128,25 @@ function main()
 			prof_kgm4:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(3000)			
 		end
+		wait()			
 
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then
 			prof_nashel_taynik_a:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(4000)			
 		end
+		wait()			
 
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then
 			prof_kgm3:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
 		end
+		wait()			
 
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then
 			prof_nashel_taynik_b:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(6000)			
 		end
+		wait()			
 
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
