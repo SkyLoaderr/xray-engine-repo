@@ -308,12 +308,15 @@ void CExplosive::Explode()
 			l_S = l_d.x*l_d.y;
 		}
 		
-		float l_impuls	= m_fBlastHitImpulse * (1.f - (l_dst/m_fBlastRadius)*(l_dst/m_fBlastRadius)) * l_S;
-		float l_hit		= m_fBlastHit * (1.f - (l_dst/m_fBlastRadius)*(l_dst/m_fBlastRadius)) * l_S;
+		float l_dist_factor=(1.f - (l_dst/m_fBlastRadius)*(l_dst/m_fBlastRadius)) * l_S;
+		float l_impuls	= m_fBlastHitImpulse * l_dist_factor;
+		float l_hit		= m_fBlastHit * l_dist_factor;
 
 		if(l_impuls > .001f) 
 		{
-			l_impuls *= ExplosionEffect(l_pGO, pos, m_fBlastRadius, l_elements, l_bs_positions);
+			float l_effect=ExplosionEffect(l_pGO, pos, m_fBlastRadius, l_elements, l_bs_positions);
+			l_impuls *= l_effect;
+			l_hit*=l_effect;
 		}
 
 		if(l_impuls > .001f) 
