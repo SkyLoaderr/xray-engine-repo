@@ -46,7 +46,8 @@ void Startup(LPSTR     lpCmdLine)
 	strlwr(cmd);
 	if (strstr(cmd,"-?") || strstr(cmd,"-h"))			{ Help(); return; }
 	if (strstr(cmd,"-f")==0)							{ Help(); return; }
-	if (strstr(cmd,"-o"))								bModifyOptions = TRUE;
+	if (strstr(cmd,"-o"))								bModifyOptions	= TRUE;
+	if (strstr(cmd,"-r2"))								b_R2			= TRUE;
 	
 	// Give a LOG-thread a chance to startup
 	//_set_sbh_threshold(1920);
