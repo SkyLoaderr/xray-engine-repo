@@ -55,14 +55,14 @@ CPHMovementControl::~CPHMovementControl(void)
 
 void CPHMovementControl::Calculate(Fvector& vAccel,float ang_speed,float jump,float dt,bool bLight){
 	
-    vPosition=m_character->IPosition();
+   m_character->IPosition(vPosition);
 
 	vAccel.y=jump;
 	m_character->SetMaximumVelocity(vAccel.magnitude()/10.f);
 	m_character->SetAcceleration(vAccel);
 	
 
- vVelocity =m_character->GetVelocity(); 
+  m_character->GetVelocity(vVelocity); 
  fActualVelocity=vVelocity.magnitude();
 	gcontact_Was=m_character->ContactWas();
 	fContactSpeed=0.f;
@@ -89,14 +89,14 @@ void CPHMovementControl::Calculate(Fvector& vAccel,float ang_speed,float jump,fl
 
 void CPHMovementControl::Calculate(const Fvector& desired,float dt){
 
-	vPosition=m_character->IPosition();
+	m_character->IPosition(vPosition);
 	CPHStalkerCharacter* pStalkerCharacter=dynamic_cast<CPHStalkerCharacter*>(m_character);
 	
 	pStalkerCharacter->SetDesiredPosition(desired);
 	pStalkerCharacter->BringToDesired(dt);
 
 
-	vVelocity =m_character->GetVelocity(); 
+	m_character->GetVelocity(vVelocity); 
 	fActualVelocity=vVelocity.magnitude();
 	gcontact_Was=m_character->ContactWas();
 	fContactSpeed=0.f;

@@ -27,57 +27,12 @@ void dBodyAngAccelFromTorqu(const dBodyID body, dReal* ang_accel, const dReal* t
 
 CPHCharacter::CPHCharacter(void)
 {
-m_acceleration.set(0,0,0);
-b_external_impulse=false;
-m_phys_ref_object=NULL;
-p_lastMaterial=&lastMaterial;
-b_on_object=false;
-b_climb=false;
-b_pure_climb=true;
-m_friction_factor=1.f;
+
 m_body=NULL;
-m_wheel_body=NULL;
-m_geom_shell=NULL;
-m_wheel=NULL;
-m_cap=NULL;
-m_geom_group=NULL;
-m_wheel_transform=NULL;
-m_shell_transform=NULL;
-m_cap_transform=NULL;
+
 m_wheel_joint=NULL;
-m_hat=NULL;
-m_hat_transform=NULL;
-m_control_force[0]=0.f;
-m_control_force[1]=0.f;
-m_control_force[2]=0.f;
 
-m_depart_position[0]=0.f;
-m_depart_position[1]=0.f;
-m_depart_position[2]=0.f;
-is_contact=false;
-was_contact=false;
-is_control=false;
-b_depart=false;
-b_meet=false;
-b_lose_control=true;
-b_jump=false;
-b_side_contact=false;
-b_clamb_jump=false;
-b_any_contacts=false;
-b_valide_ground_contact=false;
-b_valide_wall_contact=false;
-b_jump=false;
-b_exist=false;
-m_mass=70.f;
-m_max_velocity=5.f;
-m_update_time=0.f;
-b_meet_control=false;
-b_jumping=false;
-m_contact_velocity=0.f;
-jump_up_velocity=6.f;
 
-previous_p[0]=dInfinity;
-dis_count_f=0;
 
 }
 
@@ -86,15 +41,68 @@ CPHCharacter::~CPHCharacter(void)
 
 }
 
-void		CPHCharacter::ApplyImpulse(const Fvector& dir,const dReal P){
-if(!b_exist) return;
-if(!dBodyIsEnabled(m_body)) dBodyEnable(m_body);
-b_lose_control=true;
-b_external_impulse=true;
-dBodyAddForce(m_body,dir.x*P/fixed_step,dir.y*P/fixed_step,dir.z*P/fixed_step);
-}
+
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////class//CPHSimpleCharacter////////////////////
+CPHSimpleCharacter::CPHSimpleCharacter()
+{
+	m_wheel_body=NULL;
+	m_geom_shell=NULL;
+	m_wheel=NULL;
+	m_cap=NULL;
+	m_geom_group=NULL;
+	m_wheel_transform=NULL;
+	m_shell_transform=NULL;
+	m_cap_transform=NULL;
+	m_hat=NULL;
+	m_hat_transform=NULL;
+
+	m_acceleration.set(0,0,0);
+	b_external_impulse=false;
+	m_phys_ref_object=NULL;
+	p_lastMaterial=&lastMaterial;
+	b_on_object=false;
+	b_climb=false;
+	b_pure_climb=true;
+	m_friction_factor=1.f;
+
+	m_control_force[0]=0.f;
+	m_control_force[1]=0.f;
+	m_control_force[2]=0.f;
+
+	m_depart_position[0]=0.f;
+	m_depart_position[1]=0.f;
+	m_depart_position[2]=0.f;
+	is_contact=false;
+	was_contact=false;
+	is_control=false;
+	b_depart=false;
+	b_meet=false;
+	b_lose_control=true;
+	b_jump=false;
+	b_side_contact=false;
+	b_clamb_jump=false;
+	b_any_contacts=false;
+	b_valide_ground_contact=false;
+	b_valide_wall_contact=false;
+	b_jump=false;
+	b_exist=false;
+	m_mass=70.f;
+	m_max_velocity=5.f;
+	m_update_time=0.f;
+	b_meet_control=false;
+	b_jumping=false;
+	m_contact_velocity=0.f;
+	jump_up_velocity=6.f;
+
+	previous_p[0]=dInfinity;
+	dis_count_f=0;
+
+}
+
+
+
+
 
 void CPHSimpleCharacter::Create(dVector3 sizes){
 
@@ -294,7 +302,13 @@ void CPHSimpleCharacter::Destroy(){
 	}
 }
 
-
+void		CPHSimpleCharacter::ApplyImpulse(const Fvector& dir,const dReal P){
+	if(!b_exist) return;
+	if(!dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+	b_lose_control=true;
+	b_external_impulse=true;
+	dBodyAddForce(m_body,dir.x*P/fixed_step,dir.y*P/fixed_step,dir.z*P/fixed_step);
+}
 
 void CPHSimpleCharacter::PhDataUpdate(dReal step){
 ///////////////////
@@ -303,7 +317,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal step){
 					return;
 				}
 	if(is_contact&&!is_control)
-							Disable();
+							Disabling();
 ///////////////////////
 	b_external_impulse=false;
 	
@@ -749,15 +763,7 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 	
 }
 
-void CPHSimpleCharacter::StepFrameUpdate(dReal step)
-{
-	
-//m_body_interpolation.UpdatePositions();
-m_position=GetPosition();
-m_velocity=GetVelocity();
-m_update_time=Device.fTimeGlobal;
 
-}
 const float CHWON_ACCLEL_SHIFT=0.1f;
 const float CHWON_AABB_FACTOR =1.f;
 const float CHWON_ANG_COS	  =M_SQRT1_2;
@@ -785,7 +791,7 @@ bool CPHSimpleCharacter::ValidateWalkOn()
 	accel.set(accel_add);
 	accel.div(CHWON_ACCLEL_SHIFT);
 	AABB.mul(CHWON_AABB_FACTOR);
-	center=GetPosition();
+	GetPosition(center);
 	center.add(accel_add);
 	center_forbid.set(center);
 	center_forbid.y+=CHWON_CALL_FB_HIGHT;
@@ -957,7 +963,20 @@ m_control_force[0]*=m_friction_factor;
 m_control_force[1]*=m_friction_factor;
 m_control_force[2]*=m_friction_factor;
 
+}
 
+void	CPHSimpleCharacter::IPosition(Fvector& pos) {
+
+	if(!b_exist){
+		pos.set(m_safe_position[0],
+			m_safe_position[1],
+			m_safe_position[2]);
+		return;
+	}
+
+	m_body_interpolation.InterpolatePosition(pos);
+	pos.y-=m_radius;
+	return;
 }
 
 void CPHSimpleCharacter::SetPosition(Fvector pos){
@@ -983,30 +1002,26 @@ dBodyDisable(m_body);
 return true;
 }
 
-Fvector CPHSimpleCharacter::GetPosition(){
+void CPHSimpleCharacter::GetPosition(Fvector& vpos){
 	if(!b_exist){
-		 Fvector ret;
-		ret.set(m_safe_position[0],m_safe_position[1]-m_radius,m_safe_position[2]);
-		return ret;
+		vpos.set(m_safe_position[0],m_safe_position[1]-m_radius,m_safe_position[2]);
 	}
 	const dReal* pos=dBodyGetPosition(m_body);
-	Fvector vpos;
+
 	
 	Memory.mem_copy(&vpos,pos,sizeof(Fvector));
 	vpos.y-=m_radius;
-	return vpos;
 }
 
-Fvector CPHSimpleCharacter::GetVelocity(){
+void CPHSimpleCharacter::GetVelocity(Fvector& vvel){
 	if(!b_exist){
-		 Fvector ret;
-		ret.set(m_safe_velocity[0],m_safe_velocity[1],m_safe_velocity[2]);
-		return ret;
+
+		vvel.set(m_safe_velocity[0],m_safe_velocity[1],m_safe_velocity[2]);
+		return ;
 	}
 	const dReal* vel=dBodyGetLinearVel(m_body);
-	Fvector vvel;
 	Memory.mem_copy(&vvel,vel,sizeof(Fvector));
-	return vvel;
+	return;
 }
 
 
@@ -1031,7 +1046,8 @@ void CPHSimpleCharacter::OnRender(){
 	m.identity();
 	Fvector n=*(Fvector*)m_ground_contact_normal;
 	n.mul(100.f);
-	Fvector pos=GetPosition();
+	Fvector pos;
+	GetPosition(pos);
 	pos.y+=m_radius;
 	RCache.dbg_DrawLINE(m,pos,*(Fvector*)m_control_force, 0xffffffff);
 	RCache.dbg_DrawLINE(m,pos,n, 0xefffffff);
@@ -1089,14 +1105,15 @@ if(b_exist)
 void CPHWheeledCharacter::Create(dVector3 sizes){
 
 //chRCylinder=dCreateBox(0,0.8f,2.f,0.8f);
-m_radius=_min(sizes[0],sizes[2])/2.f;
-m_cap=dCreateSphere(0,0.5f);
-m_wheel=dCreateSphere(0,0.5f);
-m_geom_shell=dCreateCylinder(0,0.4f,2.f);
+//m_radius=_min(sizes[0],sizes[2])/2.f;
+//m_cap=dCreateSphere(0,0.5f);
+//m_wheel=dCreateSphere(0,0.5f);
+//m_geom_shell=dCreateCylinder(0,0.4f,2.f);
 
 
 //dGeomTransformSetInfo(chTransform1,1);
 //dGeomTransformSetInfo(chTransform2,1);
+/*
 dMatrix3 RZ;
 dRFromAxisAndAngle (RZ,0.f, 0.f, 1.f, M_PI/1800.f);
 //dGeomSetRotation(m_cap,RZ);
@@ -1170,14 +1187,14 @@ dGeomGroupAdd(m_geom_group,m_shell_transform);
 //dGeomGroupAdd(chRGeomGroup,chRCylinder);
 
 
-
+*/
 }
 
 
 
 
 void CPHWheeledCharacter::Destroy(){
-
+/*
 	if(m_body) {
 		dBodyDestroy(m_body);
 		m_body=NULL;
@@ -1227,22 +1244,24 @@ void CPHWheeledCharacter::Destroy(){
 		m_geom_group=NULL;
 	}
 
-
+*/
 }
 
 void CPHWheeledCharacter::SetMas(dReal mass){
+	/*
 dMass m;
 dMassSetBox(&m,1,1000000.f,1000000.f,1000000.f);
 dMassAdjust(&m,mass);
 dBodySetMass(m_body,&m);
+
 }
 EEnvironment	 CPHWheeledCharacter::CheckInvironment(){
 
 	return peOnGround;
-
+*/
 }
 
-void	CPHCharacter::Disable(){
+void	CPHSimpleCharacter::Disabling(){
 				if(b_lose_control) return;
 /////////////////////////////////////////////////////////////////////////////////////
 ////////disabling main body//////////////////////////////////////////////////////////
@@ -1407,7 +1426,7 @@ void CPHStalkerCharacter::		SetPosition							(Fvector pos)
 void CPHStalkerCharacter::BringToDesired(float time,float force)
 {
 	Fvector pos,move;
-	pos=GetPosition();
+	GetPosition(pos);
 
 	move.sub(m_vDesiredPosition,pos);
 	move.y=0.f;

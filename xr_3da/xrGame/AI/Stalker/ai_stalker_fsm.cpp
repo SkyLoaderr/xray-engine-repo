@@ -584,6 +584,11 @@ void CAI_Stalker::SearchEnemy()
 			break;
 		}
 		case eActionStateWatch   : {
+			if ((Group.m_tpaSuspiciousNodes.size() - 1) < m_iSuspPoint) {
+				m_tSavedEnemy = 0;
+				m_dwInertion = 0;
+				return;
+			}
 			vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[m_iSuspPoint].dwNodeID));
 			if (bfIf_I_SeePosition(getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[m_iSuspPoint].dwNodeID))) {
 				Group.m_tpaSuspiciousNodes[m_iSuspPoint].dwSearched = 2;

@@ -139,7 +139,7 @@ public:
 	void				GetPosition		(Fvector &P)
 	{	P.set			(vPosition); }
 	void				GetCharacterPosition(Fvector &P)
-	{ P.set(m_character->GetPosition());}
+	{ m_character->GetPosition(P);}
 
 
 	void				GetBoundingSphere(Fvector &P, float &R)
@@ -153,7 +153,7 @@ public:
 	void				Calculate				(const Fvector& desired,float dt);
 //	void				Move					(Fvector& Dest, Fvector& Motion, BOOL bDynamic=FALSE){};
 	void				SetApplyGravity			(BOOL flag)																{ bIsAffectedByGravity=flag; }
-	void				GetDeathPosition		(Fvector& pos)															{pos.set( m_character->DeathPosition());}
+	void				GetDeathPosition		(Fvector& pos)															{ m_character->DeathPosition(pos);}
 	void				SetEnvironment			( int enviroment,int old_enviroment);
 	void				ApplyImpulse			(const Fvector& dir,const dReal P)										{m_character->ApplyImpulse(dir,P);};
 	void				SetJumpUpVelocity		(float velocity)														{m_character->SetJupmUpVelocity(velocity);}
