@@ -1,0 +1,34 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GemVIPM", "GemVIPM.vcproj", "{E5FF49FA-1EC6-4515-B7F3-E4989FBD8A6B}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 2
+		SccProjectUniqueName0 = GemVIPM.vcproj
+		SccLocalPath0 = ..
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection0 = VIPM\\
+		SccProjectName1 = \u0022$/AlexMX/GemVIPM\u0022,\u0020XAWAAAAA
+		SccLocalPath1 = ..
+		SccProvider1 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection1 = VIPM\\
+		SolutionUniqueID = {8A93ACE2-2DA7-48D2-AD9F-794C2DB049F4}
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{E5FF49FA-1EC6-4515-B7F3-E4989FBD8A6B}.Debug.ActiveCfg = Debug|Win32
+		{E5FF49FA-1EC6-4515-B7F3-E4989FBD8A6B}.Debug.Build.0 = Debug|Win32
+		{E5FF49FA-1EC6-4515-B7F3-E4989FBD8A6B}.Release.ActiveCfg = Release|Win32
+		{E5FF49FA-1EC6-4515-B7F3-E4989FBD8A6B}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
