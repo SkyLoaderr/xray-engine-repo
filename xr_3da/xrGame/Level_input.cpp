@@ -134,7 +134,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 		return;
 	case DIK_L:
 		g_stalker_behaviour = eStalkerBehaviourRetreat;
-		return;
+		break;
 #endif
 	}
 
