@@ -13,8 +13,8 @@ function main ()
   local points1 = {patrol ("project1_point1"):point (0), patrol ("project1_point2"):point (0)}
   local points2 = {patrol ("project2_point1"):point (0), patrol ("project2_point2"):point (0), patrol ("project2_point3"):point (0)}
 
-  local proj1 = classes.Projector (get_level_object ("projector1"), 0.52, 0.22, military3_5.script_name (), points1, false, nil)
-  local proj2 = classes.Projector (get_level_object ("projector2"), 0.52, 0.22, military3_5.script_name (), points2, false, nil)
+  local proj1 = classes.Projector (get_level_object ("projector1"), 0.52, 0.22, m_attack_wave21.script_name (), points1, false, nil)
+  local proj2 = classes.Projector (get_level_object ("projector2"), 0.52, 0.22, m_attack_wave21.script_name (), points2, false, nil)
 
   while true do
       proj1:process ()
