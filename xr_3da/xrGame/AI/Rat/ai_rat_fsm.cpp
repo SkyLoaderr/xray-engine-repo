@@ -253,10 +253,10 @@ void CAI_Rat::FreeHuntingActive()
 			// Play voice-sound
 			m_tpSoundBeingPlayed = &(m_tpaSoundVoice[Random.randI(SND_VOICE_COUNT)]);
 			
-			if (m_tpSoundBeingPlayed->feedback)			
-				return;
-
-			pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
+			if (!m_tpSoundBeingPlayed->feedback)
+				pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
+			else
+				m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
 		}
 	}
 	else

@@ -242,10 +242,10 @@ void CAI_Zombie::FreeHuntingActive()
 			// Play voice-sound
 			m_tpSoundBeingPlayed = &(m_tpaSoundIdle[Random.randI(SND_IDLE_COUNT)]);
 			
-			if (m_tpSoundBeingPlayed->feedback)			
-				return;
-
-			pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
+			if (!m_tpSoundBeingPlayed->feedback)
+				pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
+			else
+				m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
 		}
 	}
 	else
