@@ -37,7 +37,7 @@ OPT:	occlusion culling of light volumes
 		2. employ temporal coherence
 OPT:	precompute invisible list (visuals) for static lights at load time
 
-FEAT:	shadows from transparent particles
+FEAT:	shadows from transparent particles - 2x for light boost + colorful shadows?
 FEAT:	
 
 +FEATURE:	stats:
