@@ -23445,7 +23445,7 @@ CState random_condition(u32 _max = 100, u32 _min = 20, u32 __max = 2, u32 __min 
 
 COperator *random_operator()
 {
-	return		(xr_new<COperator>(0,random_condition().conditions(),random_condition().conditions()));
+	return		(xr_new<COperator>(random_condition().conditions(),random_condition().conditions()));
 }
 
 LPSTR show_condition(const xr_vector<CCondition> &condition, LPSTR s)

@@ -44,7 +44,7 @@ IC	void CConditionStateAbstract::add_condition_back	(const COperatorCondition &c
 TEMPLATE_SPECIALIZATION
 IC	void CConditionStateAbstract::add_condition	(const COperatorCondition &condition)
 {
-	xr_vector<COperatorCondition>::iterator	I = std::lower_bound(m_conditions.begin(),m_conditions.end(),condition.condition());
+	xr_vector<COperatorCondition>::iterator	I = std::lower_bound(m_conditions.begin(),m_conditions.end(),condition);
 	VERIFY					((*I).condition() != condition.condition());
 	m_conditions.insert		(I,condition);
 	m_hash					^= condition.hash_value();

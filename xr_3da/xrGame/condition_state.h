@@ -23,15 +23,13 @@ protected:
 	xr_vector<COperatorCondition>				m_conditions;
 	u32											m_hash;
 
-protected:
-	IC	void									add_condition		(typename xr_vector<COperatorCondition>::const_iterator &J, const COperatorCondition &condition);
-
 public:
 	IC											CConditionState		();
 	virtual										~CConditionState	();
 	IC	const xr_vector<COperatorCondition>		&conditions			() const;
 	IC	u8										weight				(const CConditionState &condition) const;
 	IC	void									add_condition		(const COperatorCondition &condition);
+	IC	void									add_condition		(typename xr_vector<COperatorCondition>::const_iterator &J, const COperatorCondition &condition);
 	IC	void									add_condition_back	(const COperatorCondition &condition);
 	IC	bool									includes			(const CConditionState &condition) const;
 	IC	void									clear				();
