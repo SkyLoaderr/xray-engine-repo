@@ -41,7 +41,7 @@
 <!---------------------------MONOLIT SPECNAZ---------------------->
 	<specific_character id="monolit_specnaz_default" team_default = "1">
 		<name>Неизвестный сталкер "Монолита"</name>
-		<icon x="29" y="8"></icon>
+		<icon x="28" y="8"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Представитель группировки "Монолит".</bio>
 
