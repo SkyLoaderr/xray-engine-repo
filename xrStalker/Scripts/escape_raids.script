@@ -142,13 +142,13 @@ function switch_online (a, b)
     --if npc == nil or npc:alive () == false then return end
     local sim = alife ()
     if sim ~= nil then
-       printf ("ALIFE SIMULATOR FOUNDED") 
        sim:set_switch_online  (patrols[a][b].id, true) 
        sim:set_switch_offline (patrols[a][b].id, false)
        local npc = get_level_object (patrols[a][b].name)
        if b == 1 then xr_patrol.set_patrol (npc, true)
        else xr_follower.set_follower (npc, true) 
        patrols[a][b].npc = npc
+       printf ("Object %s move to online at %d time", npc:name (), device ():time_global ())
        end   
     else
        if b == 1 then 
@@ -166,9 +166,9 @@ function switch_offline (npc, a, b)
     if npc == nil or npc:alive () == false then return end
     local sim = alife ()
     if sim ~= nil then
-       printf ("ALIFE SIMULATOR FOUNDED") 
        sim:set_switch_online  (patrols[a][b].id, false) 
        sim:set_switch_offline (patrols[a][b].id, true)
+       printf ("Object %s move to offline at %d time", npc:name (), device ():time_global ())
     else
        if b == 1 then 
           xr_motivator.storage[patrols[a][b].id].patrol.enabled = false
