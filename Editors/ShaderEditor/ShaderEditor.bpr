@@ -92,7 +92,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_EDITOR;_SHADER_EDITOR"/>
+    <USERDEFINES value="_EDITOR;_SHADER_EDITOR;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="ShaderEditor.cpp"/>
     <INCLUDEPATH value="Engine\Sound;C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;r:\borland\components6\alexmx;editor;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\Elpack\Code;R:\Borland\Components6\Elpack\Code\Source;P:\xrCore;P:\xrSound"/>
@@ -106,13 +106,13 @@
       -IR:\SDK\DirectX9.0\include -I$(BCB)\include -I$(BCB)\include\vcl -Iengine 
       -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\Elpack\Code 
       -IR:\Borland\Components6\Elpack\Code\Source -IP:\xrCore -IP:\xrSound 
-      -src_suffix cpp -D_EDITOR -D_SHADER_EDITOR -no_tie -boa"/>
-    <CFLAG1 value="-O2 -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -ps -a4 -6 
-      -b- -k -vi -He -c -tW -tWM"/>
-    <PFLAGS value="-N2Intermediate -N0Intermediate -$Y- -$R -$Q -$L- -$D- -$A8 -v -JPHNE -M"/>
+      -src_suffix cpp -D_EDITOR -D_SHADER_EDITOR -D_DEBUG -no_tie -boa"/>
+    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps -a4 
+      -6 -b- -k -y -v -vi- -He -c -tW -tWM"/>
+    <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$R -$Q -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mx /w2 /zn"/>
-    <LFLAGS value="-IIntermediate -D&quot;&quot; -aa -Tpe -GD -x"/>
+    <AFLAGS value="/mx /w2 /zi"/>
+    <LFLAGS value="-IIntermediate -D&quot;&quot; -aa -Tpe -GD -x -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -371,8 +371,8 @@ Item2=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
 Count=12
-Item0=_EDITOR;_SHADER_EDITOR
-Item1=_EDITOR;_SHADER_EDITOR;_DEBUG
+Item0=_EDITOR;_SHADER_EDITOR;_DEBUG
+Item1=_EDITOR;_SHADER_EDITOR
 Item2=_EDITORS;_SHADER_EDITOR;_DEBUG
 Item3=_EDITOR_FAMILY;_SHADER_EDITOR;_DEBUG
 Item4=_SHADER_EDITOR;_DEBUG

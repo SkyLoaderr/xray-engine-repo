@@ -34,8 +34,9 @@ void CSHSoundEnvTools::OnActivate()
 
 void CSHSoundEnvTools::OnDeactivate()
 {
-	Ext.m_PreviewProps->ClearProperties();
 	m_PreviewSnd->Stop();
+	m_PreviewSnd->OnFrame();
+	Ext.m_PreviewProps->ClearProperties();
 }
 //---------------------------------------------------------------------------
 
