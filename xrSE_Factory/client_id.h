@@ -1,3 +1,5 @@
+#ifndef client_idH
+#define client_idH
 #pragma once
 
 class ClientID {
@@ -12,4 +14,4 @@ public:
 	bool operator !=(const ClientID& other)const{return value() != other.value();};
 	bool operator < (const ClientID& other)const{return value() < other.value();};
 };
-
+#endif
