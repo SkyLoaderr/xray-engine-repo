@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
+    <string id="mil_bodyguard_dialog_0">
+        <text>Чего тебе.1</text>
+    </string>
+    <string id="mil_bodyguard_dialog_1">
+        <text>Мне к Лукашу.</text>
+    </string>
+    <string id="mil_bodyguard_dialog_2">
+        <text>Ствол прибери и не вздумай доставать - пристрелю.</text>
+    </string>
+    <string id="mil_bodyguard_dialog_3">
+        <text>Проходи, и не вздумай  достать ствол - без башки останешься.</text>
+    </string>
+    <string id="mil_bodyguard_dialog_4">
+        <text>Спасибо.</text>
+    </string>
+    <string id="mil_bodyguard_dialog_5">
+        <text>Ок.</text>
+    </string>
     <string id="mil_dolg_dialog_1000">
         <text>Привет. Что делаем ?</text>
     </string>

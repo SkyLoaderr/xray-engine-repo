@@ -65,3 +65,13 @@ function set_task3_complete (player, stalker)
        db.actor:set_task_state (task.completed, "mil_lukash_job", 3)
     end   
 end
+
+function actor_has_weapon (stalker, player)
+    printf ("STALKER NAME IS : %s", stalker:name ())
+    return xr_conditions.actor_has_weapon (player, stalker)
+end
+
+function actor_dont_has_weapon (stalker, player)
+    printf ("STALKER NAME IS : %s", stalker:name ())
+    return not xr_conditions.actor_has_weapon (player, stalker)
+end

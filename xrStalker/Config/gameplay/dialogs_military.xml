@@ -476,6 +476,133 @@
             </phrase>
         </phrase_list>
     </dialog>
+    <dialog id="mil_max_dialog_start">
+        <phrase_list>
+            <phrase id="23">
+                <text />
+            </phrase>
+            <phrase id="61">
+                <text>mil_max_dialog_start_61</text>
+            </phrase>
+            <phrase id="51">
+                <text>mil_max_dialog_start_51</text>
+            </phrase>
+            <phrase id="41">
+                <text>mil_max_dialog_start_41</text>
+            </phrase>
+            <phrase id="6">
+                <text />
+                <has_info>mil_lukash_job_complete</has_info>
+                <has_info>mil_max_talk2</has_info>
+                <next>62</next>
+            </phrase>
+            <phrase id="5">
+                <text />
+                <dont_has_info>mil_max_flash_get</dont_has_info>
+                <has_info>mil_max_job</has_info>
+                <has_info>mil_lukash_job_failed</has_info>
+                <next>511</next>
+            </phrase>
+            <phrase id="4">
+                <text />
+                <dont_has_info>mil_max_talk2</dont_has_info>
+                <has_info>mil_lukash_job_complete</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="3">
+                <text />
+                <dont_has_info>mil_lukash_job_complete</dont_has_info>
+                <give_info>mil_max_arrive</give_info>
+                <has_info>mil_lukash_get_job</has_info>
+                <has_info>mil_lukash_go_to_max</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="511">
+                <text>mil_max_dialog_start_511</text>
+            </phrase>
+            <phrase id="1">
+                <text />
+                <dont_has_info>mil_max_first</dont_has_info>
+                <dont_has_info>mil_lukash_job_failed</dont_has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="111">
+                <text>mil_max_dialog_start_111</text>
+                <give_info>mil_max_first</give_info>
+                <give_info>mil_max_lukash_call</give_info>
+                <next>1112</next>
+            </phrase>
+            <phrase id="1112">
+                <text>mil_max_dialog_start_1112</text>
+            </phrase>
+            <phrase id="31">
+                <text>mil_max_dialog_start_31</text>
+            </phrase>
+            <phrase id="2">
+                <text />
+                <dont_has_info>mil_lukash_get_job</dont_has_info>
+                <dont_has_info>mil_lukash_job_failed</dont_has_info>
+                <has_info>mil_max_first</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>mil_max_dialog_start_21</text>
+            </phrase>
+            <phrase id="10">
+                <text />
+                <has_info>mil_max_dolg_killed</has_info>
+                <has_info>mil_lukash_final</has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>mil_max_dialog_start_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="9">
+                <text />
+                <has_info>mil_max_job_complete</has_info>
+                <next>91</next>
+            </phrase>
+            <phrase id="91">
+                <text>mil_max_dialog_start_91</text>
+            </phrase>
+            <phrase id="81">
+                <text>mil_max_dialog_start_81</text>
+            </phrase>
+            <phrase id="62">
+                <text>mil_max_dialog_start_62</text>
+            </phrase>
+            <phrase id="0">
+                <text />
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>7</next>
+                <next>5</next>
+                <next>6</next>
+                <next>8</next>
+                <next>9</next>
+                <next>10</next>
+            </phrase>
+            <phrase id="71">
+                <text>mil_max_dialog_start_71</text>
+            </phrase>
+            <phrase id="7">
+                <text />
+                <dont_has_info>mil_max_job</dont_has_info>
+                <has_info>mil_lukash_job_failed</has_info>
+                <next>71</next>
+            </phrase>
+            <phrase id="8">
+                <text />
+                <dont_has_info>mil_max_job_complete</dont_has_info>
+                <has_info>mil_max_job</has_info>
+                <has_info>mil_max_flash_get</has_info>
+                <next>81</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
     <dialog id="mil_dolg_dialog" priority="10">
         <dont_has_info>mil_dolg_mission_complete</dont_has_info>
         <phrase_list>
@@ -691,130 +818,32 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="mil_max_dialog_start">
+    <dialog id="mil_bodyguard_dialog">
         <phrase_list>
-            <phrase id="23">
-                <text></text>
-            </phrase>
-            <phrase id="61">
-                <text>mil_max_dialog_start_61</text>
-            </phrase>
-            <phrase id="51">
-                <text>mil_max_dialog_start_51</text>
-            </phrase>
-            <phrase id="41">
-                <text>mil_max_dialog_start_41</text>
-            </phrase>
-            <phrase id="6">
-                <text></text>
-                <has_info>mil_lukash_job_complete</has_info>
-                <has_info>mil_max_talk2</has_info>
-                <next>62</next>
-            </phrase>
-            <phrase id="5">
-                <text></text>
-                <dont_has_info>mil_max_flash_get</dont_has_info>
-                <has_info>mil_max_job</has_info>
-                <has_info>mil_lukash_job_failed</has_info>
-                <next>511</next>
-            </phrase>
-            <phrase id="4">
-                <text></text>
-                <dont_has_info>mil_max_talk2</dont_has_info>
-                <has_info>mil_lukash_job_complete</has_info>
-                <next>41</next>
-            </phrase>
-            <phrase id="3">
-                <text></text>
-                <dont_has_info>mil_lukash_job_complete</dont_has_info>
-                <give_info>mil_max_arrive</give_info>
-                <has_info>mil_lukash_get_job</has_info>
-                <has_info>mil_lukash_go_to_max</has_info>
-                <next>31</next>
-            </phrase>
-            <phrase id="511">
-                <text>mil_max_dialog_start_511</text>
-            </phrase>
             <phrase id="1">
-                <text></text>
-                <dont_has_info>mil_max_first</dont_has_info>
-                <dont_has_info>mil_lukash_job_failed</dont_has_info>
-                <next>11</next>
-            </phrase>
-            <phrase id="111">
-                <text>mil_max_dialog_start_111</text>
-                <give_info>mil_max_first</give_info>
-                <give_info>mil_max_lukash_call</give_info>
-                <next>1112</next>
-            </phrase>
-            <phrase id="1112">
-                <text>mil_max_dialog_start_1112</text>
-            </phrase>
-            <phrase id="31">
-                <text>mil_max_dialog_start_31</text>
-            </phrase>
-            <phrase id="2">
-                <text></text>
-                <dont_has_info>mil_lukash_get_job</dont_has_info>
-                <dont_has_info>mil_lukash_job_failed</dont_has_info>
-                <has_info>mil_max_first</has_info>
-                <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>mil_max_dialog_start_21</text>
-            </phrase>
-            <phrase id="10">
-                <text></text>
-                <has_info>mil_max_dolg_killed</has_info>
-                <has_info>mil_lukash_final</has_info>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text>mil_max_dialog_start_11</text>
-                <next>111</next>
-            </phrase>
-            <phrase id="9">
-                <text></text>
-                <has_info>mil_max_job_complete</has_info>
-                <next>91</next>
-            </phrase>
-            <phrase id="91">
-                <text>mil_max_dialog_start_91</text>
-            </phrase>
-            <phrase id="81">
-                <text>mil_max_dialog_start_81</text>
-            </phrase>
-            <phrase id="62">
-                <text>mil_max_dialog_start_62</text>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
+                <text>mil_bodyguard_dialog_1</text>
                 <next>2</next>
                 <next>3</next>
-                <next>4</next>
-                <next>7</next>
+            </phrase>
+            <phrase id="0">
+                <text>mil_bodyguard_dialog_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="5">
+                <text>mil_bodyguard_dialog_5</text>
+            </phrase>
+            <phrase id="2">
+                <text>mil_bodyguard_dialog_2</text>
+                <precondition>dialogs_military.actor_has_weapon</precondition>
                 <next>5</next>
-                <next>6</next>
-                <next>8</next>
-                <next>9</next>
-                <next>10</next>
             </phrase>
-            <phrase id="71">
-                <text>mil_max_dialog_start_71</text>
+            <phrase id="3">
+                <text>mil_bodyguard_dialog_3</text>
+                <precondition>dialogs_military.actor_dont_has_weapon</precondition>
+                <next>4</next>
             </phrase>
-            <phrase id="7">
-                <text></text>
-                <dont_has_info>mil_max_job</dont_has_info>
-                <has_info>mil_lukash_job_failed</has_info>
-                <next>71</next>
-            </phrase>
-            <phrase id="8">
-                <text></text>
-                <dont_has_info>mil_max_job_complete</dont_has_info>
-                <has_info>mil_max_job</has_info>
-                <has_info>mil_max_flash_get</has_info>
-                <next>81</next>
+            <phrase id="4">
+                <text>mil_bodyguard_dialog_4</text>
             </phrase>
         </phrase_list>
     </dialog>
