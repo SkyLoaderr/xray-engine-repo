@@ -89,7 +89,7 @@ void CBuild::BuildCForm(CFS_Base &fs)
 	p_cost  = 1.f/(cfFaces.size());
 
 	// Collect faces
-	CDB::CollectorPacked CL(BB);
+	CDB::CollectorPacked CL	(BB,cfVertices.size(),cfFaces.size());
 	for (vecFaceIt F = cfFaces.begin(); F!=cfFaces.end(); F++)
 	{
 		Face*	T = *F;
@@ -107,7 +107,7 @@ void CBuild::BuildCForm(CFS_Base &fs)
 
 	// Saving
 	CFS_Memory		MFS;
-	Status("Saving...");
+	Status			("Saving...");
 
 	// Header
 	hdrCFORM hdr;
