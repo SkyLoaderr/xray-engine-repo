@@ -19,6 +19,8 @@ protected:
 	BOOL			bWorking;		// Weapon fires now
 	BOOL			bPending;		// Weapon needs some time to update itself, even if hidden
 	LPSTR			m_WpnName;
+
+	Fmatrix			m_Offset;
 protected:
 	CEntity*		m_pParent;
 	CWeaponList*	m_pContainer;

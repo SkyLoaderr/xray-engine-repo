@@ -24,6 +24,7 @@ CWeapon::CWeapon(LPCSTR name)
 	m_pHUD		= new CWeaponHUD();
 	m_WpnName	= strupr(strdup(name));
 	m_pContainer= 0;
+	m_Offset.identity();
 }
 
 CWeapon::~CWeapon()
@@ -52,6 +53,15 @@ void CWeapon::Load(CInifile* ini, const char* section)
 
 	SectorMode		= EPM_AT_LOAD;
 	if (pSector)	pSector->objectRemove	(this);
+
+	Fvector			pos,ypr;
+	pos				= ini->ReadVECTOR(section,"position");
+	ypr				= ini->ReadVECTOR(section,"orientation");
+	ypr.mul			(PI/180.f);
+
+	m_Offset.setHPB	(ypr.x,ypr.y,ypr.z);
+	m_Offset.translate_over(pos);
+
 
 	fTimeToFire		= ini->ReadFLOAT	(section,"rpm");
 	fTimeToFire		= 60 / fTimeToFire;
@@ -107,7 +117,7 @@ void CWeapon::SetDefaults()
 
 void CWeapon::UpdatePosition(const Fmatrix& trans){
 	vPosition.set	(trans.c);
-	svTransform.set	(trans);
+	svTransform.mul	(trans,m_Offset);
 }
 
 void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) 
