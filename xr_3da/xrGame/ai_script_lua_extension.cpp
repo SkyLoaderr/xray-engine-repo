@@ -38,6 +38,7 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 	vfExportFmatrix	(tpLuaVirtualMachine);
 	vfExportGame	(tpLuaVirtualMachine);
 	vfExportLevel	(tpLuaVirtualMachine);
+	vfExportDevice	(tpLuaVirtualMachine);
 	vfExportParticles(tpLuaVirtualMachine);
 	vfExportSound	(tpLuaVirtualMachine);
 	vfExportHit		(tpLuaVirtualMachine);
@@ -142,8 +143,16 @@ bool bfDoFile(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName, bool
 	}
 	FS.r_close		(l_tpFileReader);
 
-	if (bCall)
-		lua_call		(tpLuaVirtualMachine,0,0);
+	if (bCall) {
+		int			l_iErrorCode = lua_pcall(tpLuaVirtualMachine,0,0,0);
+		if (l_iErrorCode) {
+#ifdef DEBUG
+			vfPrintOutput	(tpLuaVirtualMachine,caScriptName);
+			vfPrintError	(tpLuaVirtualMachine,l_iErrorCode);
+#endif
+			return	(false);
+		}
+	}
 	else
 		lua_insert		(tpLuaVirtualMachine,-4);
 

@@ -14,7 +14,7 @@
 #include "ai_script_actions.h"
 #include "..\\cameramanager.h"
 #include "..\\effectorpp.h"
-   
+
 using namespace Script;
 
 void LuaLog(LPCSTR caMessage)
@@ -25,6 +25,16 @@ void LuaLog(LPCSTR caMessage)
 double get_time()
 {
 	return((double)Device.TimerAsync());
+}
+
+const CRenderDevice &get_device()
+{
+	return		(Device);
+}
+
+const CCameraManager &get_camera_manager()
+{
+	return		(Level().Cameras);
 }
 
 CLuaGameObject *get_object_by_name(LPCSTR caObjectName)
@@ -222,8 +232,35 @@ void Script::vfExportLevel(CLuaVirtualMachine *tpLuaVirtualMachine)
 	module(tpLuaVirtualMachine,"level")
 	[
 		// declarations
+		def("cameras",							get_camera_manager),
 		def("object",							get_object_by_name)
 //		def("get_weather",						Level::get_weather)
+	];
+
+	module(tpLuaVirtualMachine)
+	[
+		def("device",							get_device)
+	];
+}
+
+void Script::vfExportDevice(CLuaVirtualMachine *tpLuaVirtualMachine)
+{
+	module(tpLuaVirtualMachine)
+	[
+		class_<CRenderDevice>("render_device")
+			.def_readonly("width",					&CRenderDevice::dwWidth)
+			.def_readonly("height",					&CRenderDevice::dwHeight)
+			.def_readonly("time_delta",				&CRenderDevice::dwTimeDelta)
+			.def_readonly("time_global",			&CRenderDevice::dwTimeGlobal)
+			.def_readonly("cam_pos",				&CRenderDevice::vCameraPosition)
+			.def_readonly("cam_dir",				&CRenderDevice::vCameraDirection)
+			.def_readonly("cam_top",				&CRenderDevice::vCameraTop)
+			.def_readonly("cam_right",				&CRenderDevice::vCameraRight)
+			.def_readonly("view",					&CRenderDevice::mView)
+			.def_readonly("projection",				&CRenderDevice::mProject)
+			.def_readonly("full_transform",			&CRenderDevice::mFullTransform)
+			.def_readonly("fov",					&CRenderDevice::fFOV)
+			.def_readonly("aspect_ratio",			&CRenderDevice::fASPECT)
 	];
 }
 
@@ -562,26 +599,33 @@ void Script::vfExportEffector(CLuaVirtualMachine *tpLuaVirtualMachine)
 	[
 		class_<SPPInfo::SDuality>("duality")
 			.def_readwrite("h",					&SPPInfo::SDuality::h)
-			.def_readwrite("v",					&SPPInfo::SDuality::v),
+			.def_readwrite("v",					&SPPInfo::SDuality::v)
+			.def(								constructor<>()),
 
 		class_<SPPInfo::SNoise::SColor>("color")
 			.def_readwrite("r",					&SPPInfo::SNoise::SColor::r)
 			.def_readwrite("g",					&SPPInfo::SNoise::SColor::g)
 			.def_readwrite("b",					&SPPInfo::SNoise::SColor::b)
-			.def_readwrite("a",					&SPPInfo::SNoise::SColor::a),
+			.def_readwrite("a",					&SPPInfo::SNoise::SColor::a)
+			.def(								constructor<>()),
 
 		class_<SPPInfo::SNoise>("noise")
 			.def_readwrite("intensity",			&SPPInfo::SNoise::intensity)
-			.def_readwrite("grain",				&SPPInfo::SNoise::grain),
+			.def_readwrite("grain",				&SPPInfo::SNoise::grain)
+			.def_readwrite("color",				&SPPInfo::SNoise::color)
+			.def(								constructor<>()),
 
 		class_<SPPInfo>("pp_params")
 			.def_readwrite("blur",				&SPPInfo::blur)
 			.def_readwrite("gray",				&SPPInfo::gray)
 			.def_readwrite("dual",				&SPPInfo::duality)
-			.def_readwrite("noise",				&SPPInfo::noise),
+			.def_readwrite("noise",				&SPPInfo::noise)
+			.def(								constructor<>()),
 
-		class_<CEffectorPP>("pp_effector")
-			.def(								constructor<EEffectorPPType,float>())
-			.def("process",						&CEffectorPP::Process)
+		class_<CLuaEffector>("pp_effector")
+			.def(								constructor<int,float>())
+			.def("process",						&CLuaEffector::Process)
+			.def("start",						&CLuaEffector::Add)
+			.def("finish",						&CLuaEffector::Remove)
 	];
 }

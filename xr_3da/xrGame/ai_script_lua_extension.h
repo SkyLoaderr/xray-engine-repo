@@ -18,6 +18,7 @@ namespace Script {
 	void		vfExportFmatrix				(CLuaVirtualMachine *tpLuaVirtualMachine);
 	void		vfExportGame				(CLuaVirtualMachine *tpLuaVirtualMachine);
 	void		vfExportLevel				(CLuaVirtualMachine *tpLuaVirtualMachine);
+	void		vfExportDevice				(CLuaVirtualMachine *tpLuaVirtualMachine);
 	void		vfExportParticles			(CLuaVirtualMachine *tpLuaVirtualMachine);
 	void		vfExportSound				(CLuaVirtualMachine *tpLuaVirtualMachine);
 	void		vfExportHit					(CLuaVirtualMachine *tpLuaVirtualMachine);

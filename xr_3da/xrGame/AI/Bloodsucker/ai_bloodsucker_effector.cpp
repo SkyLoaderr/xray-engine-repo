@@ -32,6 +32,7 @@ void CBloodsuckerEffector::Init ()
 
 BOOL CBloodsuckerEffector::Process(SPPInfo& pp)
 {
+#pragma todo("Dima to Jim : Remove next line, because you substract value 2 times, first by yourself, second - by calling inherited")
 	fLifeTime -= Device.fTimeDelta;
 	inherited::Process(pp);
 	
