@@ -28,6 +28,15 @@ function action_sleeper_activity:__init (npc_name,action_name,storage) super (ni
 	self.ptrname = nil
 	self.points = {}	
 	self.state = 0 --' счетчик FSM
+
+	self.sound_w = { rnd = 60,
+				   maxidle = 10, 
+				   sumidle = 10,
+				   themes = { "weather", "state" } }	
+	self.sound_s = { rnd = 60,
+				   maxidle = 10, 
+				   sumidle = 10,
+				   themes = { "sleep" } }
 end
 function action_sleeper_activity:initialize()
     action_base.initialize(self)
@@ -84,32 +93,30 @@ function action_sleeper_activity:execute()
 			local point = self.ptr:level_vertex_id(self.points[math.random(table.getn(self.points))])
 			local pt = level.vertex_position(point)
 			self.object:set_sight(look.point, pt, 0)
-		end 		
-		xr_state.change_state(self.object, xr_state.sleep)
+		end 
 
-		if self.timer.begin == nil then
-			--начальная инициализация
-			self.timer.begin = device():time_global()/1000
-			self.timer.idle = math.random(self.timer.maxidle) + self.timer.sumidle
-		end
-		
-		if device():time_global()/1000 - self.timer.begin > self.timer.idle then
-			self.timer.begin = device():time_global()/1000
-			self.timer.idle = math.random(self.timer.maxidle) + self.timer.sumidle
-
-			if math.random(100) < self.timer.random then
-				-- добавление рандомных анимаций
-				self.object:clear_animations()
+		if self.a.wakeable ~= nil and self.a.wakeable == true then
+			xr_state.change_state(self.object, xr_state.sit)
+			xr_sound.sound_update(self.object, self.sound_w)
+		else		
+			xr_state.change_state(self.object, xr_state.sleep)
+			if self.timer.begin == nil then
+				self.timer.begin = device():time_global()/1000
+				self.timer.idle = math.random(self.timer.maxidle) + self.timer.sumidle
+			end		
+			if device():time_global()/1000 - self.timer.begin > self.timer.idle then
+				self.timer.begin = device():time_global()/1000
+				self.timer.idle = math.random(self.timer.maxidle) + self.timer.sumidle
+				if math.random(100) < self.timer.random then
+					-- добавление рандомных анимаций
+					self.object:clear_animations()
         			self.object:add_animation("spit_1",true)	
-				a = xr_state.getIdle(4)
-				if a ~= nil then
-					self.object:add_animation(a, true)
+					self.object:add_animation("spit_2",true)
 				end
 			end
+			xr_sound.sound_update(self.object, self.sound_s)
 		end
-		if self.object:active_sound_count() == 0 then
-			self.object:play_sound (sounds["sleep"] , 1, 0, 1, 0, 0)
-		end
+		
 		xr_logic.try_switch_to_another_section(self.object, self.a)		
 	end
 end
@@ -150,9 +157,8 @@ function add_to_binder(npc, ini, scheme, section, storage)
   	action:add_precondition(world_property(properties["need_sleeper"], false))
 end
 function set_scheme(npc, ini, scheme, section, gulag_name)
-
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)		
 	st.path_main = utils.cfg_get_string(ini, section, "path_main", npc, true,  gulag_name)
-		
+	st.wakeable	 = utils.cfg_get_bool(ini, section, "wakeable", npc, false)
 end
