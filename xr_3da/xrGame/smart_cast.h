@@ -9,6 +9,10 @@
 #ifndef SMART_CAST_H
 #define SMART_CAST_H
 
+#define  TL_FAST_COMPILATION
+#undef   STATIC_CHECK
+#include <typelist.h>
+
 //#define PURE_DYNAMIC_CAST
 #define PURE_DYNAMIC_CAST_COMPATIBILITY_CHECK
 

@@ -11,10 +11,6 @@
 #include <_type_traits.h>
 #include "object_type_traits.h"
 
-#define  TL_FAST_COMPILATION
-#undef   STATIC_CHECK
-#include <typelist.h>
-
 namespace SmartDynamicCast {
 	template <typename T1, typename T2>
 	IC	T1* smart_cast(T2 *p);
