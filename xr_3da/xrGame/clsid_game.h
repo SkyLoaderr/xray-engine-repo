@@ -118,3 +118,4 @@
 #define CLSID_GRENADE_F1			MK_CLSID('G','_','F','1',' ',' ',' ',' ')
 #define CLSID_OBJECT_G_RPG7			MK_CLSID('G','_','R','P','G','7',' ',' ')
 #define CLSID_GRENADE_RGD5			MK_CLSID('G','_','R','G','D','5',' ',' ')
+#define CLSID_OBJECT_G_FAKE			MK_CLSID('G','_','F','A','K','E',' ',' ')

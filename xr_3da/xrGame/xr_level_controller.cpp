@@ -48,6 +48,7 @@ _keybind  keybind[]		= {
 	{ "wpn_zoom",		kWPN_ZOOM	},
 	{ "wpn_reload",		kWPN_RELOAD	},
 	{ "wpn_ammo",		kWPN_AMMO	},
+	{ "wpn_func",		kWPN_FUNC	},
 	
 	{ "drop",			kDROP		},	
 	{ "use",			kUSE		},	

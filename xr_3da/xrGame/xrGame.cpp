@@ -678,6 +678,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "weaponwalther.h"
 #include "weaponusp45.h"
 #include "weapongroza.h"
+#include "weaponmagazinedwgrenade.h"
 #include "bolt.h"
 #include "torch.h"
 #include "f1.h"
@@ -752,6 +753,7 @@ extern "C" {
 		case CLSID_GRENADE_F1:			P = xr_new<CF1>();					break;
 		case CLSID_OBJECT_G_RPG7:		P = xr_new<CWeaponRPG7Grenade>();	break;
 		case CLSID_GRENADE_RGD5:		P = xr_new<CRGD5>();				break;
+		case CLSID_OBJECT_G_FAKE:		P = xr_new<CWeaponFakeGrenade>();	break;
 
 		// Zones
 		case CLSID_ZONE:				P = xr_new<CCustomZone>();			break;

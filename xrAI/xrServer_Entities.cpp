@@ -1701,6 +1701,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR caSection)
 	case CLSID_OBJECT_W_RPG7:		return xr_new<xrSE_Weapon>			(caSection);  			// Visualed
 	case CLSID_OBJECT_A_PM:			return xr_new<xrSE_WeaponAmmo>		(caSection);  			// Visualed
 	case CLSID_OBJECT_G_RPG7:		return xr_new<xrSE_TempObject>		(caSection);
+	case CLSID_OBJECT_G_FAKE:		return xr_new<xrSE_TempObject>		(caSection);
 
 	case CLSID_OBJECT_HEALTH:		return xr_new<xrSE_Health>			(caSection);
 	case CLSID_TARGET_ASSAULT:		return xr_new<xrSE_Target_Assault>	(caSection);

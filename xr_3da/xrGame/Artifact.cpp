@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "artifact.h"
+//#include "actor.h"
 
 CArtifact::CArtifact(void)
 {
@@ -118,4 +119,23 @@ void CArtifact::UpdateCL() {
 		svTransform.set			(m_pPhysicsShell->mXFORM);
 		vPosition.set(m_pPhysicsShell->mXFORM.c);
 	} else if(H_Parent()) svTransform.set(H_Parent()->clXFORM());
+}
+
+void CArtifact::OnVisible() {
+	//if(m_pHUD && H_Parent() && dynamic_cast<CActor*>(H_Parent())) {
+	//	Fmatrix trans;
+	//	Level().Cameras.affected_Matrix(trans);
+	//	m_pHUD->UpdatePosition(trans);
+
+	//	PKinematics(m_pHUD->Visual())->Update();
+	//	if(m_showHUD) {
+	//		::Render->set_Transform		(&m_pHUD->Transform());
+	//		::Render->add_Visual		(m_pHUD->Visual());
+	//	} else {
+	//	}
+	//}
+	if(getVisible() && !H_Parent()) {
+		::Render->set_Transform		(&clTransform);
+		::Render->add_Visual		(Visual());
+	}
 }

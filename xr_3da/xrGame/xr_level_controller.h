@@ -40,6 +40,7 @@ enum	EKeyBinding
 	kWPN_RELOAD		,
 	kWPN_ZOOM		,
 	kWPN_AMMO		,
+	kWPN_FUNC		,
 
 	kUSE			,
 	kDROP			,

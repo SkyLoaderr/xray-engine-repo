@@ -898,6 +898,12 @@
 								RelativePath=".\WeaponMagazined.h">
 							</File>
 							<File
+								RelativePath="WeaponMagazinedWGrenade.cpp">
+							</File>
+							<File
+								RelativePath="WeaponMagazinedWGrenade.h">
+							</File>
+							<File
 								RelativePath="WeaponPistol.cpp">
 							</File>
 							<File
