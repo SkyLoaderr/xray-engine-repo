@@ -1,0 +1,442 @@
+---------------------------------------------------------------------------------------------------------------------
+--	Схема озвучки
+--	автор:  Диденко Руслан  (Stohe)
+--	update: Чугай Александр (Chugai)
+----------------------------------------------------------------------------------------------------------------------
+local nstl = 10
+
+theme = {}
+
+snd_files = {
+	weather_bad_stalker            = "characters_voice\\human_01\\weather\\bad_weather\\stalker\\bad_weather_",
+	weather_good_stalker           = "characters_voice\\human_01\\weather\\good_weather\\stalker\\good_weather_",
+	
+	state_idle_stalker             = "characters_voice\\human_01\\states\\idle\\stalker\\idle_",
+	state_health_stalker           = "characters_voice\\human_01\\states\\health\\stalker\\health_",
+	state_fatique_stalker          = "characters_voice\\human_01\\states\\fatique\\stalker\\fatique_",
+	state_starvation_stalker       = "characters_voice\\human_01\\states\\starvation\\stalker\\starvation_",
+	state_sleep_stalker            = "characters_voice\\human_01\\states\\sleep\\stalker\\sleep_",
+	
+	help_stalker                   = "characters_voice\\human_01\\help\\wounded_not_see_helper\\stalker\\help_",
+	help_stalker_see               = "characters_voice\\human_01\\scenario\\tolik\\tolik_help_",
+	help_stalker_tutor             = "characters_voice\\human_01\\scenario\\tolik\\tolik_help_tutor_",
+	help_stalker_thanx             = "characters_voice\\human_01\\scenario\\dramatic_garbage\\dramatic_newbie_thank_you_",
+	
+	hail_stalker                   = "characters_voice\\human_01\\hail\\stalker\\hail_",
+	
+	wait_stalker                   = "characters_voice\\human_01\\waiting\\stalker\\wait_",
+	
+	threat_weap_stalker            = "characters_voice\\human_01\\threat\\drop_weapon\\stalker\\dropweapon_",
+	threat_back_stalker            = "characters_voice\\human_01\\threat\\back_off\\stalker\\backoff_",
+	threat_stop_stalker            = "characters_voice\\human_01\\threat\\stop\\stalker\\stop_",
+	
+	reac_hear_stalker              = "characters_voice\\human_01\\reactions\\hear_something\\stalker\\hear_",
+	reac_see_stalker               = "characters_voice\\human_01\\reactions\\see_something\\stalker\\see_",
+	reac_cmonstr_stalker           = "characters_voice\\human_01\\reactions\\dead_mutant\\stalker\\dead_mutant_",
+	reac_cenemy_stalker            = "characters_voice\\human_01\\reactions\\dead_enemy\\stalker\\dead_enemy_",
+	reac_cneutral_stalker          = "characters_voice\\human_01\\reactions\\dead_neutral\\stalker\\dead_neutral_",
+	reac_cfriend_stalker           = "characters_voice\\human_01\\reactions\\dead_friend\\stalker\\dead_friend_",
+	reac_nothing_stalker           = "characters_voice\\human_01\\reactions\\nothing\\stalker\\nothing_",
+	
+	talk_hello_stalker             = "characters_voice\\human_01\\talk\\neutral_greeting\\stalker\\greeting_",
+	talk_hello_friend_stalker      = "characters_voice\\human_01\\talk\\friendly_greeting\\stalker\\greeting_",
+	talk_bye_stalker               = "characters_voice\\human_01\\talk\\leave\\stalker\\leave_",
+	talk_accept_stalker            = "characters_voice\\human_01\\talk\\accept\\stalker\\accept_",
+	talk_reject_stalker            = "characters_voice\\human_01\\talk\\rejection\\stalker\\rejection_",
+	talk_abuse_stalker             = "characters_voice\\human_01\\talk\\abuse\\stalker\\abuse_",
+	
+	trade_yes_stalker              = "characters_voice\\human_01\\talk\\trade\\yes\\stalker\\yes_",
+	trade_no_stalker               = "characters_voice\\human_01\\talk\\trade\\no\\stalker\\no_",
+
+	novice_camp_guards             = "characters_voice\\human_01\\scenario\\guard_novice_camp\\guard_novice_camp_stop_tutorial_",
+	seq_novice_camp_guards         = "characters_voice\\human_01\\scenario\\guard_novice_camp\\guard_novice_camp_tutorial_",
+
+	volk_greet1                    = "characters_voice\\human_01\\scenario\\wolf\\wolf_thanks_1",
+	volk_greet2                    = "characters_voice\\human_01\\scenario\\wolf\\wolf_thanks_2",
+	
+	military_radio                 = "characters_voice\\human_01\\scenario\\radio\\radio_voice_",
+	
+	patrol_radio_1                 = "characters_voice\\human_01\\scenario\\radio\\talk_1\\radio_",
+	stalker_talk_kampfire          = [[characters_voice\human_01\scenario\camp\stalkers_talking_campfire]],
+	stalker_talk_military          = [[characters_voice\human_01\scenario\military_stalker\military_stalker]],
+	
+	silent_voice                   = "characters_voice\\human_01\\reactions\\hear_something\\stalker\\hear_5",
+	soldier_radio1                 = "characters_voice\\human_01\\scenario\\radio\\radio_voice_1",
+	soldier_radio2                 = "characters_voice\\human_01\\scenario\\radio\\radio_voice_2",
+	soldier_radio3                 = "characters_voice\\human_01\\scenario\\radio\\radio_voice_3",
+	
+
+	gar_dm_bandit_backoff1         = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_bandits_back_off_1_]],
+	gar_dm_bandit_backoff2         = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_bandits_back_off_2_]],
+	gar_dm_bandit_demand           = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_bandits_demand_]],
+	gar_dm_newbie_no_money         = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_newbie_no_money_]],
+	gar_dm_newbie_help_me          = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_newbie_help_me_]],
+	gar_dm_newbie_thank_you        = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_newbie_thank_you_]],
+	
+	val_prisoner_captive_help_me   = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_newbie_help_me_]],
+	val_suicide_before_death       = [[characters_voice\human_01\states\health\stalker\health_]],
+	
+	bar_dolg_base_guard_backoff	   = [[characters_voice\human_01\scenario\guard_novice_camp\guard_novice_camp_stop_tutorial_1]],
+	bar_dolg_base_guard_no_talk	   = [[characters_voice\human_01\talk\rejection\stalker\rejection_2]]
+}
+
+ph_snd_themes = {}           
+ph_snd_themes["music"] = {  "characters_voice\\human_01\\scenario\\megafon\\megafon_music_1",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_2",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_3",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_4",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_5",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_6",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_7",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_8",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_9",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_10",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_11",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_12",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_13",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_14",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_15"
+	                        }
+ph_snd_themes["alarm1"] = { "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_1",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_10",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_11",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_12",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_13"
+	                        }
+ph_snd_themes["alarm2"] = { "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_2",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_3",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_4",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_5",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_6"
+	                      }
+
+-----------------------------------------------------------------------------------------------------------------------------------
+function load_sound(obj)
+	local sounds_base = stalker_ids.sound_script + 10000
+
+	function id()
+		sounds_base = sounds_base + 1			//local t = sounds_base
+		return sounds_base - 1					//sounds_base = sounds_base + 1
+												//return t
+	end
+	-- загрузка звуков, возвращает ИД пачки и количество звуков в пачке.
+	function load_theme(name, seq)
+		if name ~= nil then
+			local file = snd_files[name]
+			if file ~= nil then
+				local sid = id()
+				local t = { id = sid, seq = seq == true, max = obj:add_sound(file, nstl, snd_type.talk, 2, 1, sid) }
+				if t.max == 0 then
+					printf( "No sounds loaded: %s", file )
+				end
+				return t
+			else
+				return nil
+			end
+		end
+		return nil
+	end
+
+	-- фразы о погоде
+	theme["weather"] = { exec = weather_class, types = {}}
+	theme["weather"].types["bad"] = { exec = npc_class, types = {}}
+	theme["weather"].types["bad"].types["stalker"] = load_theme("weather_bad_stalker")
+	theme["weather"].types["good"] = { exec = npc_class, types = {}}
+	theme["weather"].types["good"].types["stalker"] = load_theme("weather_good_stalker")
+
+	-- состояния тела
+	theme["state"] = { exec = state_class, types = {}}
+	theme["state"].types["health"] = { exec = npc_class, types = {}}
+	theme["state"].types["health"].types["stalker"] = load_theme("state_health_stalker")
+	theme["state"].types["fatique"] = { exec = npc_class, types = {}}
+	theme["state"].types["fatique"].types["stalker"] = load_theme("state_fatique_stalker")
+	theme["state"].types["starvation"] = { exec = npc_class, types = {}}
+	theme["state"].types["starvation"].types["stalker"] = load_theme("state_starvation_stalker")
+	theme["state"].types["idle"] = { exec = npc_class, types = {}}
+	theme["state"].types["idle"].types["stalker"] = load_theme("state_idle_stalker")
+	
+	theme["sleep"] = { exec = npc_class, types = {}}
+	theme["sleep"].types["stalker"] = load_theme("state_sleep_stalker")
+
+	-- просьба о помощи
+	theme["help"] = { exec = npc_class, types = {}}
+	theme["help"].types["stalker"] = load_theme("help_stalker")
+	theme["help_see"] = { exec = npc_class, types = {}}
+	theme["help_see"].types["stalker"] = load_theme("help_stalker_see")
+	theme["help_see_tutor"] = { exec = npc_class, types = {}}
+	theme["help_see_tutor"].types["stalker"] = load_theme("help_stalker_tutor")
+	theme["help_stalker_thanx"] = { exec = npc_class, types = {}}
+	theme["help_stalker_thanx"].types["stalker"] = load_theme("help_stalker_thanx")
+
+	-- окрик
+	theme["hail"] = { exec = npc_class, types = {}}
+	theme["hail"].types["stalker"] = load_theme("hail_stalker")
+
+	-- ожидание
+	theme["wait"] = { exec = npc_class, types = {}}
+	theme["wait"].types["stalker"] = load_theme("wait_stalker")
+
+	-- угрозы
+	theme["threat_weap"] = { exec = npc_class, types = {}}
+	theme["threat_weap"].types["stalker"] = load_theme("threat_weap_stalker")
+	theme["threat_back"] = { exec = npc_class, types = {}}
+	theme["threat_back"].types["stalker"] = load_theme("threat_back_stalker")
+	theme["threat_stop"] = { exec = npc_class, types = {}}
+	theme["threat_stop"].types["stalker"] = load_theme("threat_stop_stalker")
+
+	-- реакции
+	theme["reac_hear"] = { exec = npc_class, types = {}}
+	theme["reac_hear"].types["stalker"] = load_theme("reac_hear_stalker")
+	theme["reac_see"] = { exec = npc_class, types = {}}
+	theme["reac_see"].types["stalker"] = load_theme("reac_see_stalker")
+	theme["reac_crps_monstr"] = { exec = npc_class, types = {}}
+	theme["reac_crps_monstr"].types["stalker"] = load_theme("reac_cmonstr_stalker")
+	theme["reac_crps_enemy"] = { exec = npc_class, types = {}}
+	theme["reac_crps_enemy"].types["stalker"] = load_theme("reac_cenemy_stalker")
+	theme["reac_crps_neutral"] = { exec = npc_class, types = {}}
+	theme["reac_crps_neutral"].types["stalker"] = load_theme("reac_cneutral_stalker")
+	theme["reac_crps_friend"] = { exec = npc_class, types = {}}
+	theme["reac_crps_friend"].types["stalker"] = load_theme("reac_cfriend_stalker")
+	theme["reac_nothing"] = { exec = npc_class, types = {}}
+	theme["reac_nothing"].types["stalker"] = load_theme("reac_nothing_stalker")
+
+	-- болтовня
+	theme["talk_hello"] = { exec = npc_class, types = {}}
+	theme["talk_hello"].types["stalker"] = load_theme("talk_hello_stalker")
+	theme["talk_hello_friend"] = { exec = npc_class, types = {}}
+	theme["talk_hello_friend"].types["stalker"] = load_theme("talk_hello_friend_stalker")
+	theme["talk_bye"] = { exec = npc_class, types = {}}
+	theme["talk_bye"].types["stalker"] = load_theme("talk_bye_stalker")
+	theme["talk_accept"] = { exec = npc_class, types = {}}
+	theme["talk_accept"].types["stalker"] = load_theme("talk_accept_stalker")
+	theme["talk_reject"] = { exec = npc_class, types = {}}
+	theme["talk_reject"].types["stalker"] = load_theme("talk_reject_stalker")
+	theme["talk_abuse"] = { exec = npc_class, types = {}}
+	theme["talk_abuse"].types["stalker"] = load_theme("talk_abuse_stalker")
+
+	-- торговля
+	theme["trade_yes"] = { exec = npc_class, types = {}}
+	theme["trade_yes"].types["stalker"] = load_theme("trade_yes_stalker")
+	theme["trade_no"] = { exec = npc_class, types = {}}
+	theme["trade_no"].types["stalker"] = load_theme("trade_no_stalker")
+
+	------------------------------------------------------------------------------------------------
+	-- лагерь новичков на эскейп
+	theme["seq_novice_camp_guards"] = load_theme("seq_novice_camp_guards", true)
+	theme["novice_camp_guards"] = load_theme("novice_camp_guards")
+
+	theme["esc_volk_greet1"] = load_theme("volk_greet1")
+	theme["esc_volk_greet2"] = load_theme("volk_greet2")
+
+	-- radio for military stalkers
+	theme["military_radio"] = load_theme("military_radio")
+
+    -- радио для командира патруля
+    theme["patrol_radio_1"] = load_theme("patrol_radio_1", true)
+
+	-- Garbage DramMoment
+	theme["gar_dm_bandit_backoff1"] = { exec = npc_class, types = {}}
+	theme["gar_dm_bandit_backoff1"].types["stalker"] = load_theme("gar_dm_bandit_backoff1")
+	theme["gar_dm_bandit_backoff2"] = { exec = npc_class, types = {}}
+	theme["gar_dm_bandit_backoff2"].types["stalker"] = load_theme("gar_dm_bandit_backoff2")
+	theme["gar_dm_bandit_demand"] = { exec = npc_class, types = {}}
+	theme["gar_dm_bandit_demand"].types["stalker"] = load_theme("gar_dm_bandit_demand")
+	theme["gar_dm_newbie_no_money"] = { exec = npc_class, types = {}}
+	theme["gar_dm_newbie_no_money"].types["stalker"] = load_theme("gar_dm_newbie_no_money")
+	theme["gar_dm_newbie_help_me"] = { exec = npc_class, types = {}}
+	theme["gar_dm_newbie_help_me"].types["stalker"] = load_theme("gar_dm_newbie_help_me")
+	theme["gar_dm_newbie_thank_you"] = { exec = npc_class, types = {}}
+	theme["gar_dm_newbie_thank_you"].types["stalker"] = load_theme("gar_dm_newbie_thank_you")
+
+	-- DarkValley
+	theme["val_prisoner_captive_help_me"] = { exec = npc_class, types = {}}
+	theme["val_prisoner_captive_help_me"].types["stalker"] = load_theme("val_prisoner_captive_help_me")
+	theme["val_suicide_before_death"] = { exec = npc_class, types = {}}
+	theme["val_suicide_before_death"].types["stalker"] = load_theme("val_suicide_before_death")
+
+	-- Bar Rostok Duty Guards
+	theme["bar_dolg_base_guard_backoff"] = { exec = npc_class, types = {}}
+	theme["bar_dolg_base_guard_backoff"].types["stalker"] = load_theme("bar_dolg_base_guard_backoff")
+	theme["bar_dolg_base_guard_no_talk"] = { exec = npc_class, types = {}}
+	theme["bar_dolg_base_guard_no_talk"].types["stalker"] = load_theme("bar_dolg_base_guard_no_talk")
+
+	------------------------------------------------------------------------------------------------
+	-- radar monolith
+	theme["monolith_mumble"] = load_theme("patrol_radio_1", true)
+	
+	---------------------------------------------------------------------
+	-- ONLY for rolik !!!
+	theme["silent_voice"] = load_theme("silent_voice")
+	theme["stalker_talk_kampfire"] = load_theme("stalker_talk_kampfire")
+	theme["stalker_talk_military"] = load_theme("stalker_talk_military")
+	theme["soldier_radio1"] = load_theme("soldier_radio1")
+	theme["soldier_radio2"] = load_theme("soldier_radio2")
+	theme["soldier_radio3"] = load_theme("soldier_radio3")
+	
+	--printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
+	--print_table(theme)
+end
+-----------------------------------------------------------------------------------------------------------------------------------
+--	Sound Player Function
+-----------------------------------------------------------------------------------------------------------------------------------
+--  Пример конструктора, описывающего звуки
+--
+--  self.sound = {
+--           maxidle = 10, -- максимальное время между звуками (умолчание = 10)
+--           sumidle = 10, -- надбавочное время, добавляется к рандомно выбранному от 1 до максимального. (умолчание = 10)
+--               rnd = 75, -- вероятность, с которой будет проигран звук, если пришло время (умолчание = 100)
+--            themes = { "weather", "state" }  -- список тем для разговора
+--  }
+function sound_update(npc, sound, now)
+	if sound.begin == nil  or  now  or  device():time_global() - sound.begin > sound.idle*1000 then
+		sound.begin = device():time_global()
+
+		if sound.maxidle ~= nil then
+			sound.idle = math.random(sound.maxidle)
+		else
+			sound.idle = math.random(10)
+		end
+
+		if sound.sumidle ~= nil then
+			sound.idle = sound.idle + sound.sumidle
+		else
+			sound.idle = sound.idle + 10
+		end
+
+		if npc:active_sound_count() > 0 then
+			if now then
+				stop_play_sound(npc)
+			else
+				return
+			end
+		end
+
+		function get_sound(path, tt)
+			if path == nil then return nil end
+			if path.exec == nil then
+				if path.max > 0 then
+					tt[path.id] = path.max
+				end
+			else
+				local pe = path.exec(path.types, npc, target)
+				if type(pe) == "table" then
+					for k,v in pe do
+						get_sound(path.types[v], tt)
+					end
+				else
+					get_sound(path.types[pe], tt)
+				end
+			end
+		end
+		function get_sound_count(tt)
+			local n = 0
+			for k,v in tt do
+				n = n + v
+			end
+			return n
+		end
+		--' Разделим заявленные темы на рандомные и последовательные.		
+
+		local sounds_ids = {}
+		local sounds_seq = {}
+
+		for k,v in sound.themes do
+			if theme[v] ~= nil then
+				if theme[v].seq == true then
+					get_sound(theme[v], sounds_seq)
+				else
+					get_sound(theme[v], sounds_ids)
+				end
+			else
+				printf("ERROR: invalid theme %s", v)
+			end
+		end
+		
+		--' проиграть один звук
+		if now or sound.rnd == nil or math.random(100) < sound.rnd then
+			--' играем рандомные звуки
+			local max_seq_cnt = get_sound_count(sounds_seq)
+			if max_seq_cnt > 0 and
+			   (sound["seq_cnt"] == nil or sound["seq_cnt"] <= max_seq_cnt)
+			then						
+				if sound["seq_cnt"] == nil then
+					sound["seq_cnt"] = 0
+				end
+				local n = sound["seq_cnt"]
+				for k,v in sounds_seq do
+					if n < v then
+						--' играем звук
+						npc:play_sound(k, 1, 0, 1, 0, sound["seq_cnt"])
+						sound["seq_cnt"] = sound["seq_cnt"] + 1
+						return
+					else
+						n = n - v
+					end
+				end
+			else
+				local sum = 0
+				local id
+				local num
+
+				for k, w in sounds_ids do
+					sum = sum + w
+				end
+
+				if sum == 0 then
+					return
+				end
+
+				repeat
+					local r = math.random(0, sum - 1)
+					local cur_sum = 0
+
+					for k, w in sounds_ids do
+						cur_sum = cur_sum + w
+
+						if r < cur_sum then
+							id  = k
+							num = r - (cur_sum - w)
+							break
+						end
+					end
+				until id ~= sound.last_id or num ~= sound.last_num or sum == 1
+
+				sound.last_id  = id
+				sound.last_num = num
+
+				npc:play_sound(id, 1, 0, 1, 0, num)
+			end
+		end				
+		
+	end
+end
+
+-----------------------------------------------------------------------------------------------------------------------------------
+--	Theme  functions
+-----------------------------------------------------------------------------------------------------------------------------------
+function npc_class(avail_types, npc, target)
+	--return "soldier"
+	return "stalker"
+end
+function weather_class(avail_types, npc, target)
+	local type = "good"
+	if level.rain_factor() < 0.07 then
+		type = "good"
+	else
+		type = "bad"
+	end
+	return type
+end          
+function state_class(avail_types, npc, target)
+	local type = {"idle"}
+	if npc.health < 0.5 then
+		table.insert(type, "health")
+	end
+	if npc.satiety < 0.5 then
+		table.insert(type, "starvation")
+	end
+	if npc.power < 0.5 then
+		table.insert(type, "fatique")
+	end
+	return type
+end
