@@ -21,6 +21,7 @@ public:
 	IClient(CTimer* timer):stats(timer)	{
 		dwTime_LastUpdate	= 0;
 	}
+	virtual ~IClient(){}
 };
 
 class XRNETSERVER_API IServerStatistic
