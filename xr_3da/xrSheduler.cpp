@@ -171,7 +171,7 @@ void CSheduler::ProcessStep			()
 		T.Object->shedule.b_locked	= FALSE;
 
 #ifdef DEBUG
-		void*	dbgaddr				= dynamic_cast<void*>		(T.Object);
+		//void*	dbgaddr				= dynamic_cast<void*>		(T.Object);
 		CObject*	O				= dynamic_cast<CObject*>	(T.Object);
 		VERIFY3						(T.Object->dbg_update_shedule == T.Object->dbg_startframe, "Broken sequence of calls to 'shedule_Update'", O?*O->cName():"unknown object" );
 		u32	execTime				= eTimer.GetElapsed_ms		();

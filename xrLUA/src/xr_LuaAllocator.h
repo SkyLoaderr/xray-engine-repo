@@ -672,9 +672,9 @@ int  dlmallopt(int, int);
   Some malloc.h's declare alloca, even though it is not part of malloc.
 */
 
-#ifndef _ALLOCA_H
-extern void* alloca(size_t);
-#endif
+//#ifndef _ALLOCA_H
+//extern void* alloca(size_t);
+//#endif
 
 #ifdef __cplusplus
 };  /* end of extern "C" */

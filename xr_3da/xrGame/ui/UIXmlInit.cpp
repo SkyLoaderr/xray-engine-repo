@@ -445,9 +445,9 @@ bool CUIXmlInit::InitTextBanner(CUIXml &xml_doc, const char *path, int index, CU
 	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
 
 	std::map<ref_str, CUITextBanner::TextBannerStyles> conformityTable;
-	conformityTable["none"]		= CUITextBanner::TextBannerStyles::tbsNone;
-	conformityTable["fade"]		= CUITextBanner::TextBannerStyles::tbsFade;
-	conformityTable["flicker"]	= CUITextBanner::TextBannerStyles::tbsFlicker;
+	conformityTable["none"]		= CUITextBanner::tbsNone;
+	conformityTable["fade"]		= CUITextBanner::tbsFade;
+	conformityTable["flicker"]	= CUITextBanner::tbsFlicker;
 
 //	XML_NODE *tab_node = xml_doc.NavigateToNode(path, index);
 //	xml_doc.SetLocalRoot(tab_node);

@@ -10,7 +10,6 @@
 
 #include "script_export_macroses.h"
 #include "xrEProps.h"
-#include <luabind/out_value_policy.hpp>
 
 //#define USE_WRITER_READER
 

@@ -340,7 +340,7 @@ std::string& _TrimLeft( std::string& str )
 std::string& _TrimRight( std::string& str )
 {
 	LPCSTR b		= str.c_str();
-    u32 l			= str.length();
+    size_t l		= str.length();
 	LPCSTR p 		= str.c_str()+l-1;
 	while( (p!=b) && ((*p)<=' ') ) p--;
     if (p!=(str+b))	str.erase	(p-b+1,l-(p-b));
@@ -356,8 +356,8 @@ std::string& _Trim( std::string& str )
 
 LPCSTR _CopyVal ( LPCSTR src, std::string& dst, char separator )
 {
-	LPCSTR	p;
-	u32		n;
+	LPCSTR		p;
+	ptrdiff_t	n;
 	p			= strchr	( src, separator );
 	n			= (p>0) ? (p-src) : xr_strlen(src);
 	dst			= src;

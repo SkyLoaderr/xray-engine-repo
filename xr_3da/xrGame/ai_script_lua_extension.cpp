@@ -328,7 +328,7 @@ bool Script::bfGetNamespaceTable(CLuaVirtualMachine *tpLuaVM, LPCSTR N)
 	lua_pushstring 		(tpLuaVM,"_G"); 
 	lua_gettable 		(tpLuaVM,LUA_GLOBALSINDEX); 
 	string256			S2;	strcpy	(S2,N);
-	LPCSTR				S	= S2;
+	LPSTR				S	= S2;
 	for (;;) { 
 		if (!xr_strlen(S)) return	(false); 
 		LPSTR S1 		= strchr(S,'.'); 
@@ -360,7 +360,7 @@ CLuaVirtualMachine *Script::get_namespace_table(CLuaVirtualMachine *tpLuaVM, LPC
 	lua_gettable 			(tpLuaVM,LUA_GLOBALSINDEX); 
 	string256				S2;
 	strcpy					(S2,N);
-	LPCSTR					S	= S2;
+	LPSTR					S	= S2;
 	for (;;) { 
 		if (!xr_strlen(S))
 			return			(0); 

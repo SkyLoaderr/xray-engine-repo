@@ -1076,9 +1076,9 @@ void CUIMainIngameWnd::DisplayMoneyChange(ref_str deltaMoney)
 	CUIMultiTextStatic::SinglePhrase * sp = UIMoneyIndicator.GetPhraseByIndex(1);
 	sp->str				= deltaMoney;
 	sp->effect.PlayAnimation();
-	EffectParams *eff	= sp->effect.SetStyleParams(CUITextBanner::TextBannerStyles::tbsFade);
+	EffectParams *eff	= sp->effect.SetStyleParams(CUITextBanner::tbsFade);
 	eff->bOn			= true;
-	sp->effect.ResetAnimation(CUITextBanner::TextBannerStyles::tbsFade);
+	sp->effect.ResetAnimation(CUITextBanner::tbsFade);
 }
 
 //////////////////////////////////////////////////////////////////////////

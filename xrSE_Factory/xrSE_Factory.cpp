@@ -68,7 +68,7 @@ BOOL APIENTRY DllMain		(HANDLE module_handle, DWORD call_reason, LPVOID reserved
 			load_prop_helper			();
 			if (_PHelper)
 				g_property_list_helper	= xr_new<CScriptPropertiesListHelper>();
-			ai().script_engine().export	();
+			ai().script_engine().script_export	();
 			break;
 		}
 		case DLL_PROCESS_DETACH: {

@@ -117,7 +117,7 @@ typedef unsigned char   uint8;
 
  */
 
-typedef uint32 intP;
+typedef uintptr_t intP;
 
 
 

@@ -66,7 +66,7 @@
 #define LUABIND_NO_EXCEPTIONS
 #define LUABIND_DONT_COPY_STRINGS
 #define BOOST_THROW_EXCEPTION_HPP_INCLUDED
-namespace boost {	ENGINE_API	void __stdcall throw_exception(const exception &A);	};
+namespace boost {	ENGINE_API	void __stdcall throw_exception(const std::exception &A);	};
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

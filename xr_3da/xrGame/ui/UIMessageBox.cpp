@@ -26,7 +26,7 @@ void CUIMessageBox::Init(LPCSTR base_name, int x, int y, int width, int height)
 {
 	AttachChild(&m_UIStatic);
 	m_UIStatic.Init(0,0, width, height);
-	m_UIStatic.SetTextAlign(CGameFont::EAligment::alLeft);
+	m_UIStatic.SetTextAlign(CGameFont::alLeft);
 
 	AttachChild(&m_UIButton1);
 	AttachChild(&m_UIButton2);

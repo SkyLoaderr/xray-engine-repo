@@ -241,7 +241,7 @@ CEnvironment::~CEnvironment	()
 	OnDeviceDestroy			();
 }
 
-IC bool sort_env_pred		(const CEnvDescriptor*& x, const CEnvDescriptor*& y)
+IC bool sort_env_pred		(const CEnvDescriptor* x, const CEnvDescriptor* y)
 {	return x->exec_time < y->exec_time;	}
 void CEnvironment::load		()
 {
@@ -314,7 +314,7 @@ void CEnvironment::SetWeather(ref_str name)
     }
 }
 
-IC bool lb_env_pred(const CEnvDescriptor*& x, float val)
+IC bool lb_env_pred(const CEnvDescriptor* x, float val)
 {	return x->exec_time < val;	}
 
 void CEnvironment::SelectEnvs(float gt)

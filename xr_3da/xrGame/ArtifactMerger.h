@@ -8,7 +8,7 @@
 #pragma once
 
 #include "inventory_item.h"
-#include "script_space.h"
+//#include "script_space.h"
 #include "Artifact.h"
 #include "MercuryBall.h"
 #include "GraviArtifact.h"
@@ -19,7 +19,7 @@
 
 DEF_LIST (ARTIFACT_LIST, CArtifact*);
 
-void SetArtifactMergeFunctor(const luabind::functor<void> &artifactMergeFunctor);
+// void SetArtifactMergeFunctor(const luabind::functor<void> &artifactMergeFunctor);
 
 class CArtifactMerger : public CInventoryItem
 {
