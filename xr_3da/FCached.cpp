@@ -129,6 +129,9 @@ void FCached::Load(const char* N, CStream *data, DWORD dwFlags)
 		pIndices	= (WORD*)_aligned_malloc(mem_size,64);
 		data->Read	(pIndices,mem_size);
 	}
+	
+	// checking indices range
+
 }
 
 #define PCOPY(a)	a = pFrom->a
