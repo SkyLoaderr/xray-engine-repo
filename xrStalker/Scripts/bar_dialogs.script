@@ -15,3 +15,22 @@ end
 function dont_give_extra_task(actor, npc)
 	return not give_extra_task(actor, npc)
 end
+
+--Долг архивные документы
+function have_dolg_arhive_document(first_speaker, second_speaker)
+  	return first_speaker:object("dolg_arhive_documents") ~= nil
+end
+function give_dolg_arhive_document(first_speaker, second_speaker)
+	local document = first_speaker:object("dolg_arhive_document")
+	first_speaker:transfer_item(document, second_speaker)
+end
+
+--Свобода РГ-6
+function have_rg6(first_speaker, second_speaker)
+  	return first_speaker:object("wpn_rg-6") ~= nil
+end
+function give_rg6(first_speaker, second_speaker)
+	local rg6 = first_speaker:object("wpn_rg-6")
+	first_speaker:transfer_item(rg6, second_speaker)
+end
+

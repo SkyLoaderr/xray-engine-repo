@@ -2463,9 +2463,11 @@
         </phrase_list>
     </dialog>
     <dialog id="bar_dolg_leader_quest_rg6_finish">
+    <precondition>bar_dialogs.have_rg6</precondition>
         <phrase_list>
             <phrase id="1">
                 <text>bar_dolg_leader_quest_rg6_finish_1</text>
+	        <action>bar_dialogs.give_rg6</action>
             </phrase>
             <phrase id="0">
                 <text>bar_dolg_leader_quest_rg6_finish_0</text>
