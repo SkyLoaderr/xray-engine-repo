@@ -1,9 +1,1 @@
-#include "stdafx.h"
-
-#define X void main(int a,char** b) { printf("#define X %s",#X); }
-/*
-#define Y(a) char* str = #a;
-
-Y(aaaaaaaaaaaaaa)
-*/
-X
+extern "C" int printf(const char*,...);char S[]="extern %cC%c int printf(const char*,...);char S[]=%c%s%c;char T[]=%c%s%c%s";char T[]=";main(){printf(S,34,34,34,S,34,34,T,34,T);}";main(){printf(S,34,34,34,S,34,34,T,34,T);}
