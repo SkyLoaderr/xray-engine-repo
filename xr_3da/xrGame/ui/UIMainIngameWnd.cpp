@@ -488,11 +488,12 @@ void CUIMainIngameWnd::Update()
 		}
 
 		// ћинимальное и максимальное значени€ границы
-		int min = 
+		float min = m_Thresholds[i].front();
+		float max = m_Thresholds[i].back();
 
 		if (rit != m_Thresholds[i].rend())
-			SetWarningIconColor(i, RGB_ALPHA(0xFF, clampr<u32>(static_cast<u32>(255 * (*rit * 2)), 0, 255), 
-												   clampr<u32>(static_cast<u32>(255 * (2.0f - *rit * 2)), 0, 255),
+			SetWarningIconColor(i, RGB_ALPHA(0xFF, clampr<u32>(static_cast<u32>(255 * ((*rit - min) / (max - min) * 2)), 0, 255), 
+												   clampr<u32>(static_cast<u32>(255 * (2.0f - (*rit - min) / (max - min) * 2)), 0, 255),
 												   0));
 		else
 			TurnOffWarningIcon(i);
