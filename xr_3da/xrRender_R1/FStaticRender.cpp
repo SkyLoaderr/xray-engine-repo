@@ -701,7 +701,7 @@ void	CRender::Render		()
 	{
 		if (0==mapNormal[pr][0].size())	continue;
 
-		for (u32 pass_id=0; pass_id<8; pass_id++)	
+		for (u32 pass_id=0; pass_id<SHADER_PASSES_MAX; pass_id++)	
 		{
 			mapNormalCodes&		codes		= mapNormal	[pr][pass_id];
 			if (0==codes.size())			break;
