@@ -79,7 +79,7 @@ void CHOM::Load			()
 	CL.calc_adjacency	(adjacency);
 
 	// Create RASTER-triangles
-	m_pTris				= (occTri*) xr_malloc(CL.getTS()*sizeof(occTri));
+	m_pTris				= xr_alloc<occTri>	(CL.getTS());
 	for (u32 it=0; it<CL.getTS(); it++)
 	{
 		CDB::TRI&	clT = CL.getT()[it];
@@ -107,9 +107,9 @@ void CHOM::Load			()
 
 void CHOM::Unload		()
 {
-	xr_delete	(m_pModel);
-	xr_free		(m_pTris);
-	bEnabled	= FALSE;
+	xr_delete			(m_pModel);
+	xr_free				(m_pTris);
+	bEnabled			= FALSE;
 }
 
 void CHOM::Render_DB	(CFrustum& base)

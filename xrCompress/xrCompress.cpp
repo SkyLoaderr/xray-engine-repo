@@ -52,6 +52,9 @@ BOOL	testSKIP		(LPCSTR path)
 	_splitpath			(path, 0, 0, p_name, p_ext );
 
 	if (0==stricmp(p_ext,".key"))	return TRUE;
+	if (0==stricmp(p_ext,".tga"))	return TRUE;
+	if (0==stricmp(p_ext,".txt"))	return TRUE;
+	if (0==stricmp(p_ext,".smf"))	return TRUE;
 	if (0==stricmp(p_name,"build"))	return TRUE;
 	if ('~'==p_ext[1])				return TRUE;
 	if ('_'==p_ext[1])				return TRUE;
@@ -64,7 +67,7 @@ BOOL	testVFS			(LPCSTR path)
 	string256			p_ext;
 	_splitpath			(path, 0, 0, p_name, p_ext );
 
-	if (0==stricmp(p_name,"level") && (0==stricmp(p_ext,".") || 0==p_ext[0]) )	return TRUE;
+	// if (0==stricmp(p_name,"level") && (0==stricmp(p_ext,".") || 0==p_ext[0]) )	return TRUE;	// level.
 	if (0==stricmp(p_name,"level") && 0==stricmp(p_ext,".ai"))					return TRUE;
 	if (0==stricmp(p_name,"level") && 0==stricmp(p_ext,".gct"))					return TRUE;
 	if (0==stricmp(p_ext,".ogg"))												return TRUE;
