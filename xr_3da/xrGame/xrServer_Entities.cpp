@@ -251,9 +251,9 @@ void xrSE_Crow::FillProp			(LPCSTR pref, PropValueVec& values)
 
 //***** Crow
 void xrSE_Health::STATE_Read		(NET_Packet& P, u16 size)	{	P.r_u8(amount); };
-void xrSE_Crow::STATE_Write			(NET_Packet& P)				{	P.w_u8(amount);	};
-void xrSE_Crow::UPDATE_Read			(NET_Packet& P)				{};
-void xrSE_Crow::UPDATE_Write		(NET_Packet& P)				{};
+void xrSE_Health::STATE_Write		(NET_Packet& P)				{	P.w_u8(amount);	};
+void xrSE_Health::UPDATE_Read		(NET_Packet& P)				{};
+void xrSE_Health::UPDATE_Write		(NET_Packet& P)				{};
 #ifdef _EDITOR
 void xrSE_Crow::FillProp			(LPCSTR pref, PropValueVec& values)
 {
