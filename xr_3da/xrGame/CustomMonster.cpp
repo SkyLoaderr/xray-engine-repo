@@ -287,9 +287,6 @@ void CCustomMonster::shedule_Update	( u32 DT )
 		if (fEntityHealth>0) {
 			Exec_Action				(dt);
 			VERIFY				(_valid(Position()));
-			if (!dcast_Rat())
-				Exec_Look			(dt);
-			VERIFY				(_valid(Position()));
 			Exec_Visibility			();
 			VERIFY				(_valid(Position()));
 			//////////////////////////////////////

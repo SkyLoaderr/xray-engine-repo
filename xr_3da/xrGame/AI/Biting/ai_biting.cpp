@@ -354,35 +354,37 @@ void CAI_Biting::UpdateCL()
 		return;
 
 	inherited::UpdateCL();
-	MotionMan.FrameUpdate();
-
-	// Проверка состояния анимации (атака)
+	
 	if (g_Alive()) {
+		
+		MotionMan.FrameUpdate();
+
+		// Проверка состояния анимации (атака)
 		AA_CheckHit();
 		MotionMan.STEPS_Update(get_legs_number());
-	}
-	
-	// Поправка Pitch
-	bool b_need_pitch_correction = true;
-	if (ability_can_jump()) {
-		CJumping *pJumping = dynamic_cast<CJumping *>(this);
-		if (pJumping && pJumping->IsActive()) b_need_pitch_correction = false;
-	}
-	if (b_need_pitch_correction) PitchCorrection();
 
+		// Поправка Pitch
+		bool b_need_pitch_correction = true;
+		if (ability_can_jump()) {
+			CJumping *pJumping = dynamic_cast<CJumping *>(this);
+			if (pJumping && pJumping->IsActive()) b_need_pitch_correction = false;
+		}
+		if (b_need_pitch_correction) PitchCorrection();
+
+		// Обновить угловую и линейную скорости движения
+		CMonsterMovement::update_velocity();
+		m_fCurSpeed		= m_velocity_linear.current;
+		set_desirable_speed(m_fCurSpeed);
+
+		if (!fis_zero(m_velocity_linear.current) && !fis_zero(m_velocity_linear.target))
+			m_body.speed	= m_velocity_angular.target * m_velocity_linear.current / (m_velocity_linear.target + EPS_L);
+		else 
+			m_body.speed	= m_velocity_angular.target;
+
+		Exec_Look			(Device.fTimeDelta);
+	}
 
 	m_pPhysics_support->in_UpdateCL();
-
-	// Обновить угловую и линейную скорости движения
-	CMonsterMovement::update_velocity();
-	m_fCurSpeed		= m_velocity_linear.current;
-	set_desirable_speed(m_fCurSpeed);
-
-	if (!fis_zero(m_velocity_linear.current) && !fis_zero(m_velocity_linear.target))
-		m_body.speed	= m_velocity_angular.target * m_velocity_linear.current / (m_velocity_linear.target + EPS_L);
-	else 
-		m_body.speed	= m_velocity_angular.target;
-
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiMonsterDebug))
