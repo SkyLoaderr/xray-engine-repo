@@ -112,6 +112,9 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 		CGroup& G			= get_group	(s_team,s_squad,s_group);
 		if (S.Leader==0)	S.Leader=E;
 		else				G.Members.push_back(E);
+		if (s_flags&M_SPAWN_OBJECT_ACTIVE)	{
+
+		}
 	}
 }
 
