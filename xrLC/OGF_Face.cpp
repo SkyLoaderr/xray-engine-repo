@@ -89,8 +89,8 @@ void OGF::Optimize()
 			Tmin.min(V.UV[i]);
 			Tmax.max(V.UV[i]);
 		}
-		Tdelta[i].u = floorf((Tmax.u-Tmin.u)/2+Tmin.u);
-		Tdelta[i].v = floorf((Tmax.v-Tmin.v)/2+Tmin.v);
+		Tdelta[i].x = floorf((Tmax.x-Tmin.x)/2+Tmin.x);
+		Tdelta[i].y = floorf((Tmax.y-Tmin.y)/2+Tmin.y);
 	}
 
 	// 2. Recalc UV mapping

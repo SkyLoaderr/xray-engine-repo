@@ -111,13 +111,13 @@ VOID CDeflector::OA_Export()
 	bb.getsphere(Sphere.P,Sphere.R);
 
 	// UV rect
-	Fvector2		min,max,size;
+	Fvector2	min,max,size;
 	GetRect		(min,max);
 	size.sub	(max,min);
 
 	// Surface
-	dwWidth		= iCeil(size.u*g_params.m_lm_pixels_per_meter*density+.5f); clamp(dwWidth, 1u,512u-2*BORDER);
-	dwHeight	= iCeil(size.v*g_params.m_lm_pixels_per_meter*density+.5f); clamp(dwHeight,1u,512u-2*BORDER);
+	dwWidth		= iCeil(size.x*g_params.m_lm_pixels_per_meter*density+.5f); clamp(dwWidth, 1u,512u-2*BORDER);
+	dwHeight	= iCeil(size.y*g_params.m_lm_pixels_per_meter*density+.5f); clamp(dwHeight,1u,512u-2*BORDER);
 }
 
 BOOL CDeflector::OA_Place	(Face *owner)
@@ -172,12 +172,12 @@ void CDeflector::RemapUV	(vector<UVtri>& dest, u32 base_u, u32 base_v, u32 size_
 	
 	// UV rect (dedicated)
 	Fvector2		d_min,d_max,d_size;
-	d_min.u		= (float(base_u)+.5f)/float(lm_u);
-	d_min.v		= (float(base_v)+.5f)/float(lm_v);
-	d_max.u		= (float(base_u+size_u)-.5f)/float(lm_u);
-	d_max.v		= (float(base_v+size_v)-.5f)/float(lm_v);
-	if (d_min.u>=d_max.u)	{ d_min.u=d_max.u=(d_min.u+d_max.u)/2; d_min.u-=EPS_S; d_max.u+=EPS_S; }
-	if (d_min.v>=d_max.v)	{ d_min.v=d_max.v=(d_min.v+d_max.v)/2; d_min.v-=EPS_S; d_max.v+=EPS_S; }
+	d_min.x		= (float(base_u)+.5f)/float(lm_u);
+	d_min.y		= (float(base_v)+.5f)/float(lm_v);
+	d_max.x		= (float(base_u+size_u)-.5f)/float(lm_u);
+	d_max.y		= (float(base_v+size_v)-.5f)/float(lm_v);
+	if (d_min.x>=d_max.x)	{ d_min.x=d_max.x=(d_min.x+d_max.x)/2; d_min.x-=EPS_S; d_max.x+=EPS_S; }
+	if (d_min.y>=d_max.y)	{ d_min.y=d_max.y=(d_min.y+d_max.y)/2; d_min.y-=EPS_S; d_max.y+=EPS_S; }
 	d_size.sub	(d_max,d_min);
 	
 	// Remapping
@@ -190,8 +190,8 @@ void CDeflector::RemapUV	(vector<UVtri>& dest, u32 base_u, u32 base_v, u32 size_
 			tnew.owner	= T.owner;
 			for (int i=0; i<3; i++) 
 			{
-				tc.u = ((T.uv[i].v-a_min.v)/a_size.v)*d_size.u + d_min.u;
-				tc.v = ((T.uv[i].u-a_min.u)/a_size.u)*d_size.v + d_min.v;
+				tc.x = ((T.uv[i].y-a_min.y)/a_size.y)*d_size.x + d_min.x;
+				tc.y = ((T.uv[i].x-a_min.x)/a_size.x)*d_size.y + d_min.y;
 				tnew.uv[i].set(tc);
 			}
 			dest.push_back	(tnew);
@@ -203,8 +203,8 @@ void CDeflector::RemapUV	(vector<UVtri>& dest, u32 base_u, u32 base_v, u32 size_
 			tnew.owner	= T.owner;
 			for (int i=0; i<3; i++) 
 			{
-				tc.u = ((T.uv[i].u-a_min.u)/a_size.u)*d_size.u + d_min.u;
-				tc.v = ((T.uv[i].v-a_min.v)/a_size.v)*d_size.v + d_min.v;
+				tc.x = ((T.uv[i].x-a_min.x)/a_size.x)*d_size.x + d_min.x;
+				tc.y = ((T.uv[i].y-a_min.y)/a_size.y)*d_size.y + d_min.y;
 				tnew.uv[i].set(tc);
 			}
 			dest.push_back	(tnew);

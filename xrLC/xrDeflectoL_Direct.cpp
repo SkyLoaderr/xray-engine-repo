@@ -13,10 +13,10 @@ void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, LSelection* LightsSelected, F
 	b_texture&	lm = layers.back().lm;
 	
 	Fvector2		size; 
-	size.u		= p2.u-p1.u;
-	size.v		= p2.v-p1.v;
-	int	du		= iCeil(_abs(size.u)/texel_size);
-	int	dv		= iCeil(_abs(size.v)/texel_size);
+	size.x		= p2.x-p1.x;
+	size.y		= p2.y-p1.y;
+	int	du		= iCeil(_abs(size.x)/texel_size);
+	int	dv		= iCeil(_abs(size.y)/texel_size);
 	int steps	= _max(du,dv);
 	if (steps<=0)	return;
 	
@@ -24,10 +24,10 @@ void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, LSelection* LightsSelected, F
 	{
 		float	time = float(I)/float(steps);
 		Fvector2	uv;
-		uv.u	= size.u*time+p1.u;
-		uv.v	= size.v*time+p1.v;
-		int	_x  = iFloor(uv.u*float(lm.dwWidth)); 
-		int _y	= iFloor(uv.v*float(lm.dwHeight));
+		uv.x	= size.x*time+p1.x;
+		uv.y	= size.y*time+p1.y;
+		int	_x  = iFloor(uv.x*float(lm.dwWidth)); 
+		int _y	= iFloor(uv.y*float(lm.dwHeight));
 		
 		if ((_x<0)||(_x>=(int)lm.dwWidth))	continue;
 		if ((_y<0)||(_y>=(int)lm.dwHeight))	continue;
@@ -58,11 +58,11 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& 
 	// Setup variables
 	Fvector2		dim,half;
 	dim.set		(float(lm.dwWidth),float(lm.dwHeight));
-	half.set	(.5f/dim.u,.5f/dim.v);
+	half.set	(.5f/dim.x,.5f/dim.y);
 	
 	// Jitter data
 	Fvector2		JS;
-	JS.set		(.499f/dim.u, .499f/dim.v);
+	JS.set		(.499f/dim.x, .499f/dim.y);
 	
 	u32		Jcount;
 	Fvector2*	Jitter;
@@ -84,10 +84,10 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& 
 				{
 					// LUMEL space
 					Fvector2 P;
-					P.u = float(U)/dim.u + half.u + Jitter[J].u * JS.u;
-					P.v = float(V)/dim.v + half.v + Jitter[J].v * JS.v;
+					P.x = float(U)/dim.x + half.x + Jitter[J].x * JS.x;
+					P.y = float(V)/dim.y + half.y + Jitter[J].y * JS.y;
 					
-					vector<UVtri*>&	space	= H.query(P.u,P.v);
+					vector<UVtri*>&	space	= H.query(P.x,P.y);
 					
 					// World space
 					Fvector wP,wN,B;

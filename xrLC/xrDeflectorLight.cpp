@@ -141,13 +141,13 @@ float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L, Face* skip)
 			B.set	(1.0f - rpinf.u - rpinf.v,rpinf.u,rpinf.v);
 			
 			// calc UV
-			_TCF	&C = F->tc[0];
+			Fvector2*	cuv = F->getTC0					();
 			Fvector2 uv;
-			uv.u = C.uv[0].u*B.x + C.uv[1].u*B.y + C.uv[2].u*B.z;
-			uv.v = C.uv[0].v*B.x + C.uv[1].v*B.y + C.uv[2].v*B.z;
+			uv.x = cuv[0].x*B.x + cuv[1].x*B.y + cuv[2].x*B.z;
+			uv.y = cuv[0].y*B.x + cuv[1].y*B.y + cuv[2].y*B.z;
 			
-			int U = iFloor(uv.u*float(T.dwWidth) + .5f);
-			int V = iFloor(uv.v*float(T.dwHeight)+ .5f);
+			int U = iFloor(uv.x*float(T.dwWidth) + .5f);
+			int V = iFloor(uv.y*float(T.dwHeight)+ .5f);
 			U %= T.dwWidth;		if (U<0) U+=T.dwWidth;
 			V %= T.dwHeight;	if (V<0) V+=T.dwHeight;
 			

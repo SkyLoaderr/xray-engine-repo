@@ -117,10 +117,10 @@ public:
 	{
 		Face* F		= faces[ID];
 		_TCF& TC	= F->tc[0];
-		dest.min.set	(TC.uv[0].conv());
-		dest.max.set	(TC.uv[0].conv());
-		dest.modify		(TC.uv[1].conv());
-		dest.modify		(TC.uv[2].conv());
+		dest.min.set	(TC.uv[0]);
+		dest.max.set	(TC.uv[0]);
+		dest.modify		(TC.uv[1]);
+		dest.modify		(TC.uv[2]);
 	}
 	void	Bounds_Summary (Fbox2& bounds)
 	{
@@ -162,11 +162,11 @@ public:
 		// Setup variables
 		Fvector2	dim,half;
 		dim.set		(float(defl.Width()),float(defl.Height()));
-		half.set	(.5f/dim.u,.5f/dim.v);
+		half.set	(.5f/dim.x,.5f/dim.y);
 		
 		// Jitter data
 		Fvector2	JS;
-		JS.set		(g_params.m_lm_jitter/dim.u, g_params.m_lm_jitter/dim.v);
+		JS.set		(g_params.m_lm_jitter/dim.x, g_params.m_lm_jitter/dim.y);
 		u32		Jcount;
 		Fvector2*	Jitter;
 		Jitter_Select(Jitter, Jcount);
@@ -186,9 +186,9 @@ public:
 					{
 						// LUMEL space
 						Fvector2 P;
-						P.u = float(U)/dim.u + half.u + Jitter[J].u * JS.u;
-						P.v	= float(V)/dim.v + half.v + Jitter[J].v * JS.v;
-						vector<Face*>&	space	= ImplicitHash->query(P.u,P.v);
+						P.x = float(U)/dim.x + half.x + Jitter[J].x * JS.x;
+						P.y	= float(V)/dim.y + half.y + Jitter[J].y * JS.y;
+						vector<Face*>&	space	= ImplicitHash->query(P.x,P.y);
 						
 						// World space
 						Fvector wP,wN,B;

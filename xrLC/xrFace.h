@@ -22,6 +22,7 @@ public:
 
 	virtual	Shader_xrLC&	Shader				( );
 	virtual void			CacheOpacity		( );
+	virtual Fvector2*		getTC0				( ) = 0;
 
 	virtual ~base_Face() = 0; 
 };		
@@ -126,6 +127,8 @@ public:
 	svector<CLightmap*,4>	lmap_layers;
 
 
+
+	virtual Fvector2*		getTC0				( ) { return tc[0].uv; }
 
 	void			CalcNormal		();
 	void			CalcNormal2		();
