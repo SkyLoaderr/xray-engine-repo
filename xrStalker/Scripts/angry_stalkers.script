@@ -21,7 +21,6 @@ function main()
 			action(
 				siviy,
 			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
-				look	(look.fire_point, stalker2),
 				anim	(anim.danger),
 				cond	(cond.move_end)
 			)
@@ -34,13 +33,14 @@ function main()
 			action(
 				stalker,
 			  	move	(move.standing, move.stand,move.line,patrol("way0001")),
-				look	(look.fire_point, stalker2),
+				look	(look.fire_point, chert),
 				anim	(anim.free),
 				cond	(cond.move_end)
 			)
 			action(
 				ecolog,
 			  	move	(move.standing, move.stand,move.line,patrol("way0001")),
+				look	(look.fire_point, siviy),
 				anim	(anim.free),
 				cond	(cond.move_end)
 			)
