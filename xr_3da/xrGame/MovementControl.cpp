@@ -248,7 +248,9 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 		float s_dummy	= 0;
 		float s_desired	= motion.y;
 		vVelocity.y		= Integrate1D_to	(fVelocityY,s_dummy,vAccel.y,fOldFriction,s_desired);
+#ifdef _DEBUG		
 		Msg				("o:%f / n:%f",fVelocityY,vVelocity.y);
+#endif
 	}
 
 	//	Don't allow new velocity to go against original velocity unless told otherwise
@@ -309,9 +311,10 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 			float		contact_speed	= Integrate1D_to	(fVelocityBefore,dummy_s,a,fOldFriction,s_res);
 			// s_res, dummy_s ???
 
+#ifdef _DEBUG		
 			Msg	("dummy_s: %2.3f, sres: %2.3f, scalc: %2.1f, old_aspeed: %2.3f, cspeed: %2.3f (min: %2.1f)",
 				dummy_s,s_res,s_calc,fVelocityBefore,contact_speed,fMinCrashSpeed);
-
+#endif
 			// contact with ground
 			gcontact_Power				= contact_speed/fMaxCrashSpeed;
 

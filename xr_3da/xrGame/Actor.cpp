@@ -838,6 +838,7 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 	CWeapon* W			= Weapons->ActiveWeapon();
 	if (W)				W->OnVisible		();
 
+#ifdef _DEBUG
 	CHUDManager* HUD	= (CHUDManager*)hud;
 	string128 buf;
 	HUD->pHUDFont->Color(0xffffffff);
@@ -853,7 +854,7 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 	case CMovementControl::peAtWall:	strcpy(buf,"wall");				break;
 	}
 	HUD->pHUDFont->OutNext	(buf);
-
+#endif
 /**
 	CHUDManager* HUD	= (CHUDManager*)hud;
 	CUI* pUI=HUD->GetUI	();

@@ -209,7 +209,7 @@ void CWeapon::UpdateFP		()
 
 		UpdateXForm		();
 
-		if (hud_mode && (0!=H_Parent()))	
+		if (hud_mode && (0!=H_Parent()) && Local())	
 		{
 			// 1st person view - skeletoned
 			CKinematics* V			= PKinematics(m_pHUD->Visual());
