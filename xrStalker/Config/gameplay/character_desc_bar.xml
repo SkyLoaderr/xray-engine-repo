@@ -400,6 +400,75 @@
 		<actor_dialog>bar_svoboda_volkodav_request_dp</actor_dialog>
 		<actor_dialog>bar_svoboda_volkodav_give_quest_dp</actor_dialog>
 		<actor_dialog>bar_svoboda_volkodav_info_dp</actor_dialog>
+
 	</specific_character>
+
+<!-- ******************* CRAZY VETERANS ********************** -->
+	<specific_character id="bar_crazy_veterans_lucky" team_default = "1">
+		<name>Счастливчик</name>
+		<icon x="24" y="8"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Хрен моржовый.</bio>
+
+		<class>bar_crazy_veterans_lucky</class>
+		<community>bandit</community>
+	
+		<rank>75</rank>
+		<reputation>-40</reputation>
+
+		<visual>actors\bandit\stalker_bandit_master</visual>
+		<supplies>
+			[spawn] \n
+			wpn_groza \n
+			ammo_9x39_ap \n
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+	</specific_character>
+
+	<specific_character id="bar_crazy_veterans" team_default = "1">
+		<name>Сталкер ветеран</name>
+		<icon x="24" y="8"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Хрен моржовый.</bio>
+
+		<class>bar_crazy_veterans</class>
+		<community>bandit</community>
+	
+		<rank>60</rank>
+		<reputation>-40</reputation>
+
+		<visual>actors\neytral\stalker_neytral_hood_8</visual>
+		<supplies>
+			[spawn] \n
+			wpn_mp5 \n
+			ammo_9x19_pbp \n
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+	</specific_character>
+
+	<specific_character id="bar_crazy_veterans" team_default = "1">
+		<name>Сталкер ветеран</name>
+		<icon x="24" y="8"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Хрен моржовый.</bio>
+
+		<class>bar_crazy_veterans</class>
+		<community>bandit</community>
+	
+		<rank>60</rank>
+		<reputation>-40</reputation>
+
+		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
+		<supplies>
+			[spawn] \n
+			wpn_mp5 \n
+			ammo_9x19_pbp \n
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+	</specific_character>
+
 
 </xml>

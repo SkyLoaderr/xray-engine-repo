@@ -308,6 +308,12 @@
 	<character id="bar_svoboda_attack_commander">
 		<class>bar_svoboda_attack_commander</class>
 	</character>
+	<character id="bar_crazy_veterans_lucky">
+		<class>bar_crazy_veterans_lucky</class>
+	</character>
+	<character id="bar_crazy_veterans">
+		<class>bar_crazy_veterans/class>
+	</character>
 
 	<!-- X18 -->
 	<character id="dar_stalker_explorer">
