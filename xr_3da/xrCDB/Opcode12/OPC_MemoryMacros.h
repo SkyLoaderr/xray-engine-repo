@@ -44,8 +44,6 @@
 */
 	#define SIZEOFOBJECT		sizeof(*this)									//!< Gives the size of current object. Avoid some mistakes (e.g. "sizeof(this)").
 	//#define CLEAROBJECT		{ memset(this, 0, SIZEOFOBJECT);	}			//!< Clears current object. Laziness is my business. HANDLE WITH CARE.
-	#define DELETESINGLE(x)		if (x) { delete x;				x = null; }		//!< Deletes an instance of a class.
-	#define DELETEARRAY(x)		if (x) { delete []x;			x = null; }		//!< Deletes an array.
 	#define SAFE_RELEASE(x)		if (x) { (x)->Release();		(x) = null; }	//!< Safe D3D-style release
 	#define SAFE_DESTRUCT(x)	if (x) { (x)->SelfDestruct();	(x) = null; }	//!< Safe ICE-style release
 
@@ -54,8 +52,5 @@
 #else
 	#define CHECKALLOC(x)		if(!x) return false;
 #endif
-
-	//! Standard allocation cycle
-	#define SAFE_ALLOC(ptr, type, count)	DELETEARRAY(ptr);	ptr = new type[count];	CHECKALLOC(ptr);
 
 #endif // __ICEMEMORYMACROS_H__

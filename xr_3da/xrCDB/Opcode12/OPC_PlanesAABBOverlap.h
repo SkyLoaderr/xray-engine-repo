@@ -23,7 +23,7 @@ inline_ BOOL PlanesCollider::PlanesAABBOverlap(const Point& center, const Point&
 	// vertices originally described by Zhang (and later by Möller). Our
 	// variant here uses 3 fabs ops, 6 muls, 7 adds and two floating point
 	// comparisons per plane. The routine early-exits if the AABB is found
-	// to be outside any of the planes. The loop also constructs a new output
+	// to be outside any of the planes. The loop also constructs a _new_ output
 	// clip mask. Most FPUs have a native single-cycle _abs() operation.
 
 	udword Mask				= 1;			// current mask index (1,2,4,8,..)

@@ -112,13 +112,13 @@ static void _BuildCollisionTree(AABBCollisionNode* linear, const udword boxid, u
 	else
 	{
 		// To make the negative one implicit, we must store P and N in successive order
-		udword PosID = curid++;	// Get a new id for positive child
-		udword NegID = curid++;	// Get a new id for negative child
-		// Setup box data as the forthcoming new P pointer
+		udword PosID = curid++;	// Get a _new_ id for positive child
+		udword NegID = curid++;	// Get a _new_ id for negative child
+		// Setup box data as the forthcoming _new_ P pointer
 		linear[boxid].mData = (udword)&linear[PosID];
 		// Make sure it's not marked as leaf
 		ASSERT(!(linear[boxid].mData&1));
-		// Recurse with new IDs
+		// Recurse with _new_ IDs
 		_BuildCollisionTree(linear, PosID, curid, curnode->GetPos());
 		_BuildCollisionTree(linear, NegID, curid, curnode->GetNeg());
 	}
@@ -165,7 +165,7 @@ static void _BuildNoLeafTree(AABBNoLeafNode* linear, const udword boxid, udword&
 	}
 	else
 	{
-		// Get a new id for positive child
+		// Get a _new_ id for positive child
 		udword PosID = curid++;
 		// Setup box data
 		linear[boxid].mData = (udword)&linear[PosID];
@@ -186,7 +186,7 @@ static void _BuildNoLeafTree(AABBNoLeafNode* linear, const udword boxid, udword&
 	}
 	else
 	{
-		// Get a new id for positive child
+		// Get a _new_ id for positive child
 		udword NegID = curid++;
 		// Setup box data
 		linear[boxid].mData2 = (udword)&linear[NegID];
@@ -213,7 +213,7 @@ AABBCollisionTree::AABBCollisionTree() : mNodes(null)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 AABBCollisionTree::~AABBCollisionTree()
 {
-	DELETEARRAY(mNodes);
+	xr_free(mNodes);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -233,9 +233,10 @@ bool AABBCollisionTree::Build(AABBTree* tree)
 	if(NbNodes!=NbTriangles*2-1)	return false;
 
 	// Get nodes
-	mNbNodes = NbNodes;
-	mNodes = new AABBCollisionNode[mNbNodes];
-	CHECKALLOC(mNodes);
+	mNbNodes	= NbNodes;
+	mNodes		= xr_alloc<AABBCollisionNode>(mNbNodes);
+	CHECKALLOC	(mNodes);
+	ZeroMemory	(mNodes,mNbNodes*sizeof(AABBCollisionNode));
 
 	// Build the tree
 	udword CurID = 1;
@@ -266,7 +267,7 @@ AABBNoLeafTree::AABBNoLeafTree() : mNodes(null)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 AABBNoLeafTree::~AABBNoLeafTree()
 {
-	DELETEARRAY(mNodes);
+	xr_free(mNodes);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -286,9 +287,10 @@ bool AABBNoLeafTree::Build(AABBTree* tree)
 	if(NbNodes!=NbTriangles*2-1)	return false;
 
 	// Get nodes
-	mNbNodes = NbTriangles-1;
-	mNodes = new AABBNoLeafNode[mNbNodes];
-	CHECKALLOC(mNodes);
+	mNbNodes	= NbTriangles-1;
+	mNodes		= xr_alloc<AABBNoLeafNode>(mNbNodes);
+	CHECKALLOC	(mNodes);
+	ZeroMemory	(mNodes,mNbNodes*sizeof(AABBNoLeafNode));
 
 	// Build the tree
 	udword CurID = 1;
@@ -415,7 +417,7 @@ AABBQuantizedTree::AABBQuantizedTree() : mNodes(null)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 AABBQuantizedTree::~AABBQuantizedTree()
 {
-	DELETEARRAY(mNodes);
+	xr_free(mNodes);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -435,9 +437,10 @@ bool AABBQuantizedTree::Build(AABBTree* tree)
 	if(NbNodes!=NbTriangles*2-1)	return false;
 
 	// Get nodes
-	mNbNodes = NbNodes;
-	AABBCollisionNode* Nodes = new AABBCollisionNode[mNbNodes];
-	CHECKALLOC(Nodes);
+	mNbNodes					= NbNodes;
+	AABBCollisionNode*	Nodes	= xr_alloc<AABBCollisionNode>(mNbNodes);
+	CHECKALLOC			(Nodes);
+	ZeroMemory			(Nodes,mNbNodes*sizeof(AABBCollisionNode));
 
 	// Build the tree
 	udword CurID = 1;
@@ -445,8 +448,9 @@ bool AABBQuantizedTree::Build(AABBTree* tree)
 
 	// Quantize
 	{
-		mNodes = new AABBQuantizedNode[mNbNodes];
-		CHECKALLOC(mNodes);
+		mNodes		= xr_alloc<AABBQuantizedNode>(mNbNodes);
+		CHECKALLOC	(mNodes);
+		ZeroMemory	(mNodes,mNbNodes*sizeof(AABBQuantizedNode));
 
 		// Get max values
 		FIND_MAX_VALUES
@@ -462,7 +466,7 @@ bool AABBQuantizedTree::Build(AABBTree* tree)
 			REMAP_DATA(mData)
 		}
 
-		DELETEARRAY(Nodes);
+		xr_free(Nodes);
 	}
 
 #ifdef __ICECORE_H__
@@ -490,7 +494,7 @@ AABBQuantizedNoLeafTree::AABBQuantizedNoLeafTree() : mNodes(null)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 AABBQuantizedNoLeafTree::~AABBQuantizedNoLeafTree()
 {
-	DELETEARRAY(mNodes);
+	xr_free(mNodes);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -510,9 +514,10 @@ bool AABBQuantizedNoLeafTree::Build(AABBTree* tree)
 	if(NbNodes!=NbTriangles*2-1)	return false;
 
 	// Get nodes
-	mNbNodes = NbTriangles-1;
-	AABBNoLeafNode* Nodes = new AABBNoLeafNode[mNbNodes];
-	CHECKALLOC(Nodes);
+	mNbNodes				= NbTriangles-1;
+	AABBNoLeafNode* Nodes	= xr_alloc<AABBNoLeafNode>(mNbNodes);
+	CHECKALLOC		(Nodes);
+	ZeroMemory		(Nodes,	mNbNodes*sizeof(AABBNoLeafNode));
 
 	// Build the tree
 	udword CurID = 1;
@@ -521,8 +526,9 @@ bool AABBQuantizedNoLeafTree::Build(AABBTree* tree)
 
 	// Quantize
 	{
-		mNodes = new AABBQuantizedNoLeafNode[mNbNodes];
-		CHECKALLOC(mNodes);
+		mNodes		= xr_alloc<AABBQuantizedNoLeafNode>(mNbNodes);
+		CHECKALLOC	(mNodes);
+		ZeroMemory	(mNodes,mNbNodes*sizeof(AABBQuantizedNoLeafNode));
 
 		// Get max values
 		FIND_MAX_VALUES
@@ -539,7 +545,7 @@ bool AABBQuantizedNoLeafTree::Build(AABBTree* tree)
 			REMAP_DATA(mData2)
 		}
 
-		DELETEARRAY(Nodes);
+		xr_free(Nodes);
 	}
 
 #ifdef __ICECORE_H__

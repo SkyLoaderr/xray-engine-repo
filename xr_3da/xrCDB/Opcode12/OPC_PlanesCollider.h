@@ -66,7 +66,7 @@
 
 								if(worldb)
 								{
-									// Create a new OBB in world space
+									// Create a _new_ OBB in world space
 									OBB WorldBox;
 									box.Rotate(*worldb, WorldBox);
 									// Compute planes from the sides of the box

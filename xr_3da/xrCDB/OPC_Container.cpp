@@ -92,8 +92,8 @@ bool Container::Resize(udword needed)
 	mMaxNbEntries = mMaxNbEntries ? udword(float(mMaxNbEntries)*mGrowthFactor) : 2;	// Default nb Entries = 2
 	if(mMaxNbEntries<mCurNbEntries + needed)	mMaxNbEntries = mCurNbEntries + needed;
 
-	// Get some bytes for new entries
-	udword*	NewEntries = new udword[mMaxNbEntries];
+	// Get some bytes for _new_ entries
+	udword*	NewEntries = xr_alloc<udword>(mMaxNbEntries);
 	CHECKALLOC(NewEntries);
 
 #ifdef CONTAINER_STATS
@@ -105,9 +105,9 @@ bool Container::Resize(udword needed)
 	if(mCurNbEntries)	CopyMemory(NewEntries, mEntries, mCurNbEntries*sizeof(udword));
 
 	// Delete old data
-	DELETEARRAY(mEntries);
+	xr_free(mEntries);
 
-	// Assign new pointer
+	// Assign _new_ pointer
 	mEntries = NewEntries;
 
 	return true;
@@ -131,8 +131,8 @@ bool Container::SetSize(udword nb)
 	// Initialize for nb entries
 	mMaxNbEntries = nb;
 
-	// Get some bytes for new entries
-	mEntries = new udword[mMaxNbEntries];
+	// Get some bytes for _new_ entries
+	mEntries = xr_alloc<udword>(mMaxNbEntries);
 	CHECKALLOC(mEntries);
 
 #ifdef CONTAINER_STATS
@@ -160,7 +160,7 @@ bool Container::Refit()
 	if(!mMaxNbEntries)	return false;
 
 	// Get just enough bytes
-	udword*	NewEntries = new udword[mMaxNbEntries];
+	udword*	NewEntries = xr_alloc<udword>(mMaxNbEntries);
 	CHECKALLOC(NewEntries);
 
 #ifdef CONTAINER_STATS
@@ -172,9 +172,9 @@ bool Container::Refit()
 	CopyMemory(NewEntries, mEntries, mCurNbEntries*sizeof(udword));
 
 	// Delete old data
-	DELETEARRAY(mEntries);
+	xr_free(mEntries);
 
-	// Assign new pointer
+	// Assign _new_ pointer
 	mEntries = NewEntries;
 
 	return true;
@@ -208,7 +208,7 @@ bool Container::Contains(udword entry, udword* location) const
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  *	Deletes an entry. If the container contains such an entry, it's removed.
- *	\param		entry		[in] the value to delete.
+ *	\param		entry		[in] the value to _delete_.
  *	\return		true if the value has been found in the container, else false.
  *	\warning	This method is arbitrary slow (O(n)) and should be used carefully. Insertion order is not preserved.
  */
@@ -231,7 +231,7 @@ bool Container::Delete(udword entry)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  *	Deletes an entry, preserving the insertion order. If the container contains such an entry, it's removed.
- *	\param		entry		[in] the value to delete.
+ *	\param		entry		[in] the value to _delete_.
  *	\return		true if the value has been found in the container, else false.
  *	\warning	This method is arbitrary slow (O(n)) and should be used carefully.
  */

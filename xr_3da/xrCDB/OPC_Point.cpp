@@ -134,7 +134,7 @@ Point& Point::Unfold(Plane& p, Point& a, Point& b)
 	p1t += a;
 	p2t += a;
 
-	// 6) Check new plane
+	// 6) Check _new_ plane
 	Plane pipo(p0t, p1t, p2t);
 	Angle = p.n|pipo.n;	// Must be 1
 

@@ -65,8 +65,8 @@ AABBTreeNode::AABBTreeNode() : mP(null), mN(null), mNbPrimitives(0), mNodePrimit
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 AABBTreeNode::~AABBTreeNode()
 {
-	DELETESINGLE(mP);
-	DELETESINGLE(mN);
+	xr_delete		(mP);
+	xr_delete		(mN);
 	mNodePrimitives	= null;	// This was just a shortcut to the global list => no release
 	mNbPrimitives	= 0;
 }
@@ -267,8 +267,8 @@ bool AABBTreeNode::Subdivide(AABBTreeBuilder* builder)
 	}
 
 	// Now create children and assign their pointers.
-	mP = new AABBTreeNode;	CHECKALLOC(mP);
-	mN = new AABBTreeNode;	CHECKALLOC(mN);
+	mP = xr_new<AABBTreeNode>();	CHECKALLOC(mP);
+	mN = xr_new<AABBTreeNode>();	CHECKALLOC(mN);
 
 	// Update stats
 	builder->IncreaseCount(2);
@@ -319,7 +319,7 @@ AABBTree::AABBTree() : mIndices(null), mTotalNbNodes(0)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 AABBTree::~AABBTree()
 {
-	DELETEARRAY(mIndices);
+	xr_free(mIndices);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -339,8 +339,8 @@ bool AABBTree::Build(AABBTreeBuilder* builder)
 	builder->SetNbInvalidSplits(0);
 
 	// Initialize indices. This list will be modified during build.
-	DELETEARRAY(mIndices);
-	mIndices	= new udword[builder->mNbPrimitives];
+	xr_free(mIndices);
+	mIndices	= xr_alloc<udword>(builder->mNbPrimitives);
 	CHECKALLOC(mIndices);
 	for(udword i=0;i<builder->mNbPrimitives;i++)	mIndices[i] = i;
 
@@ -375,7 +375,7 @@ udword AABBTree::ComputeDepth() const
 		{
 			// Checkings
 			if(!curnode)	return;
-			// Entering a new node => increase depth
+			// Entering a _new_ node => increase depth
 			current++;
 			// Keep track of max depth
 			if(current>depth)	depth = current;

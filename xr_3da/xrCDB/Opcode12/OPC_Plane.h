@@ -93,7 +93,7 @@
 		// Rotate the normal
 		transformed.n = plane.n * Rot;
 
-		// Compute new d
+		// Compute _new_ d
 		Point Trans;
 		transform.GetTrans(Trans);
 		transformed.d = (plane.d * transformed.n - Trans)|transformed.n;
@@ -114,7 +114,7 @@
 		// Rotate the normal
 		plane.n *= Rot;
 
-		// Compute new d
+		// Compute _new_ d
 		Point Trans;
 		transform.GetTrans(Trans);
 		plane.d = (plane.d * plane.n - Trans)|plane.n;

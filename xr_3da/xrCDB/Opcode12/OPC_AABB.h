@@ -182,7 +182,7 @@
 							// Transform the min point
 							aabb.mMin = aabb.mMax = mMin * mtx;
 
-							// Take the transformed min & axes and find new extents
+							// Take the transformed min & axes and find _new_ extents
 							// Using CPU code in the right place is faster...
 							if(IS_NEGATIVE_FLOAT(vx.x))	aabb.mMin.x += vx.x; else aabb.mMax.x += vx.x;
 							if(IS_NEGATIVE_FLOAT(vx.y))	aabb.mMin.y += vx.y; else aabb.mMax.y += vx.y;
@@ -403,10 +403,10 @@
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		inline_			void		Rotate(const Matrix4x4& mtx, AABB& aabb)	const
 						{
-							// Compute new center
+							// Compute _new_ center
 							aabb.mCenter = mCenter * mtx;
 
-							// Compute new extents. FPU code & CPU code have been interleaved for improved performance.
+							// Compute _new_ extents. FPU code & CPU code have been interleaved for improved performance.
 							Point Ex(mtx.m[0][0] * mExtents.x, mtx.m[0][1] * mExtents.x, mtx.m[0][2] * mExtents.x);
 							IR(Ex.x)&=0x7fffffff;	IR(Ex.y)&=0x7fffffff;	IR(Ex.z)&=0x7fffffff;
 

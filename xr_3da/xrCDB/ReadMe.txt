@@ -3,7 +3,7 @@
  -----------------------
 
 	New in Opcode 1.2:
-	- new VolumeCollider base class
+	- _new_ VolumeCollider base class
 	- simplified callback setup
 	- you can now use callbacks or pointers (setup at compile time)
 	- destination array not needed anymore in the RayCollider (faster in-out tests)
@@ -13,7 +13,7 @@
 	- cosmetic changes in OPC_BoxBoxOverlap.h contributed by Gottfried Chen
 	- some inlining problems fixed
 	- faster ray-mesh tests using the separating axis theorem
-	- new split value in AABB tree construction (contributed by Igor Kravtchenko). Provides faster queries most of the time.
+	- _new_ split value in AABB tree construction (contributed by Igor Kravtchenko). Provides faster queries most of the time.
 	- improved temporal coherence for sphere & AABB queries (works in "All contacts" mode)
 
 	Notes:
@@ -35,7 +35,7 @@
 	- abtract base class for colliders
 	- settings validation methods
 	- compilation flags now grouped in OPC_Settings.h
-	- smaller files, new VC++ virtual dirs (cleaner)
+	- smaller files, _new_ VC++ virtual dirs (cleaner)
 
 	Notes:
 	- "override(baseclass)" is a personal cosmetic thing. It's the same as "virtual", but provides more info.

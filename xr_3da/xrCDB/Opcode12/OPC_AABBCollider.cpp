@@ -176,7 +176,7 @@ BOOL AABBCollider::InitQuery(AABBCache& cache, const CollisionAABB& box)
 		}
 		else
 		{
-			// We're interested in all contacts =>test the new real box N(ew) against the previous fat box P(revious):
+			// We're interested in all contacts =>test the _new_ real box N(ew) against the previous fat box P(revious):
 			if(mBox.IsInside(cache.FatBox))
 			{
 				// - if N is included in P, return previous list
