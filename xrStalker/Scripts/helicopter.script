@@ -25,7 +25,7 @@ function main()
 			local vecVia = vector():set(0,0,0)
 			
 			helicopter:heli_go_to_point(vecDst,vecVia,20)
---		end
+		end
 
 --		wait()
 --	end
