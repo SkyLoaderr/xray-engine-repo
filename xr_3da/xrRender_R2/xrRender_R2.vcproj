@@ -535,13 +535,13 @@
 				Name="Sector/Portal"
 				Filter="">
 				<File
-					RelativePath="Portal.cpp">
+					RelativePath=".\r__sector.cpp">
 				</File>
 				<File
-					RelativePath="Portal.h">
+					RelativePath=".\r__sector.h">
 				</File>
 				<File
-					RelativePath=".\Portal_traversal.cpp">
+					RelativePath=".\r__sector_traversal.cpp">
 				</File>
 			</Filter>
 			<Filter
