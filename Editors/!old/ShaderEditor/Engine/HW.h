@@ -19,6 +19,7 @@ public:
 
 	CHWCaps					Caps;
 
+	UINT					DevAdapter;
 	D3DDEVTYPE				DevT;
 
 	CHW()

@@ -53,7 +53,7 @@ void CRT::Create	(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 
 	// Validate render-target usage
 	_hr = HW.pD3D->CheckDeviceFormat(
-		D3DADAPTER_DEFAULT,
+		HW.DevAdapter,
 		HW.DevT,
 		HW.Caps.fTarget,
 		usage,
@@ -120,7 +120,7 @@ void CRTC::Create	(LPCSTR Name, u32 size,	D3DFORMAT f)
 
 	// Validate render-target usage
 	_hr = HW.pD3D->CheckDeviceFormat(
-		D3DADAPTER_DEFAULT,
+		HW.DevAdapter,
 		HW.DevT,
 		HW.Caps.fTarget,
 		D3DUSAGE_RENDERTARGET,
