@@ -173,7 +173,7 @@ void CCustomEvent::OnNear( CObject* O )
 		OnEnter.Signal((DWORD)O);
 		Contacted.push_back(O);
 
-		if (ExecuteOnce)	_DELETE(this);
+		if (ExecuteOnce)	delete this;
 		return;
 	}
 	
