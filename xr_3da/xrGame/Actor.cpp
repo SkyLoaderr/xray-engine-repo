@@ -559,6 +559,7 @@ void CActor::Update	(u32 DT)
 	cam_shift				= 0.f;
 	cam_gray				= 0.f;
 
+	// just for vitya's pleasure
 
 	// 
 	clamp					(DT,0u,100u);
