@@ -291,6 +291,11 @@ void CAI_Biting::UpdateCL()
 	SetText();
 	inherited::UpdateCL();
 
+	if(m_pPhysicsShell&&m_pPhysicsShell->bActive)
+	{
+		XFORM().set(m_pPhysicsShell->mXFORM);
+
+	}
 	// Проверка состояния анимации (атака)
 	TTime cur_time = Level().timeServer();
 	
@@ -325,11 +330,7 @@ void CAI_Biting::UpdateCL()
 		}
 	}
 
-	if(m_pPhysicsShell&&m_pPhysicsShell->bActive)
-	{
-		XFORM().set(m_pPhysicsShell->mXFORM);
 
-	}
 }
 
 // Load sounds
