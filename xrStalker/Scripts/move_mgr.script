@@ -32,7 +32,7 @@ end
 -- »з move_cb вернуть true, чтобы приостановить работу схемы. „тобы продолжить движение,
 -- нужно вызвать метод set_movement_state, который включит перемещение по вейпоинтам с нужной
 -- скоростью.
-function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team, move_cb)
+function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team, mode, move_cb)
 	--xr_reactions.add_rule(self.object, "ignore") -- DELME
 
 	--printf("move_mgr:reset(path_walk=%s, path_look=%s, team=%s)",
@@ -74,8 +74,17 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	self.shall_shoot = nil
 	self.is_shooting = false
 
-	self.running = true
-	self.danger = false
+	if mode == nil then
+		self.crouch = false
+		self.running = true
+		self.danger = false
+	else
+		self.crouch = if_then_else(mode.crouch, true, false)
+		self.running = if_then_else(mode.running, true, false)
+		self.danger = if_then_else(mode.danger, true, false)
+	end
+	self.standing_croush = self.crouch
+	self.standing_danger = self.danger
 
 	self.retval_after_rotation = nil
 
@@ -94,7 +103,6 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	self.object:clear_animations()
 
 	self.object:set_detail_path_type(move.line)
-	self.object:set_body_state(move.standing)
 
 	--self.object:set_mental_state(anim.free)
 	--self.object:set_movement_type(move.run) -- на стартовую точку идти бегом
@@ -284,40 +292,34 @@ function move_mgr:update()
 			self:update_sound()
 		end
 
-		--if self.object:animation_count() <= 0 then
-			if not self.shall_shoot then
-				-- ”же когда прибыли, повернулись и начали играть анимацию - только тогда помечаем
-				-- в синхронизаторе, что прибыли на данную точку
-				if self.team then
-					local sync_id = self.path_walk_info[self.last_index]["n"]
-					if sync_id then
-						sync[self.team][self.object:id()] = tonumber(sync_id)
-					end
-				end
-				xr_state.anim_update(self.cur_anim_set, self.object)
-			else
-				--xr_state.anim_update(self.cur_anim_set, self.object)
-				self.is_shooting = true
+		-- ”же когда прибыли, повернулись и начали играть анимацию - только тогда помечаем
+		-- в синхронизаторе, что прибыли на данную точку
+		if self.team then
+			local sync_id = self.path_walk_info[self.last_index]["n"]
+			if sync_id then
+				sync[self.team][self.object:id()] = tonumber(sync_id)
 			end
+		end
 
-			if self.is_shooting then
-				-- ѕри стрельбе не ждать синхронизации (так весь магазин можно выстрел€ть :))
-				if self.pt_wait_time ~= -1 then
-					self.expiration_time = device():time_global() + self.pt_wait_time
-				else
-					self.expiration_time = nil
-				end
-				self.state = state_anim_playing
-			else
-				self.state = state_before_anim_playing
-			end
-		--end
+		-- ≈сли ждем с анимацией, то играть анимацию, иначе, установить запрошенное положение тела
+		if self.cur_anim_set ~= nil then
+			xr_state.anim_update(self.cur_anim_set, self.object)
+		else
+			self:update_standing_state()
+		end
+
+		self.state = state_before_anim_playing
 	end
 
 	-- ∆дать синхронизации, а только затем включить счетчик анимации
 	if self.state == state_before_anim_playing then
 		if self:sync_ok() then
 		--	printf("_bp [%s]: anim counter activated", self.object:name())
+			-- ѕосле успешной синхронизации можно начинать стрельбу
+			if self.shall_shoot then
+				self.is_shooting = true
+			end
+
 			if self.pt_wait_time ~= -1 then
 				self.expiration_time = device():time_global() + self.pt_wait_time
 			else
@@ -337,7 +339,10 @@ function move_mgr:update()
 		-- ќчищать анимации, только если собираемс€ идти дальше по пути...
 		-- Ќе очищать, если дальше будем сто€ть, т.к. иначе будут рывки
 		elseif patrol_walk_count ~= 1 then
-			xr_state.anim_update(nil, self.object)
+			if self.object:animation_count() ~= 0 then
+				xr_state.anim_update(nil, self.object)
+				-- self:update_standing_state() -- anim_update сбивает crouch -- не надо! все равно дальше пойдем
+			end
 		end
 
 		self.state = state_moving
@@ -385,8 +390,14 @@ end
 -------------------------------------------------------------------------------
 
 function move_mgr:update_movement_state()
-	self.object:set_mental_state(if_then_else(self.danger, anim.danger, anim.free))
+	self.object:set_body_state(if_then_else(self.crouch, move.crouch, move.standing))
+	self.object:set_mental_state(if_then_else(self.danger or self.crouch, anim.danger, anim.free))
 	self.object:set_movement_type(if_then_else(self.running, move.run, move.walk))
+end
+
+function move_mgr:update_standing_state()
+	self.object:set_body_state(if_then_else(self.standing_crouch, move.crouch, move.standing))
+	self.object:set_mental_state(if_then_else(self.standing_danger or self.standing_crouch, anim.danger, anim.free))
 end
 
 function move_mgr:waypoint_callback(obj, action_type, index)
@@ -464,6 +475,14 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	end
 	self.dialog_mgr:update()
 
+	local suggested_crouch = self.path_walk_info[index]["c"]
+	if suggested_crouch == "true" then
+		self.crouch = true
+	else
+		self.crouch = false
+	end
+	self.standing_crouch = self.crouch
+
 	local suggested_running = self.path_walk_info[index]["r"]
 	if suggested_running == "true" then
 		self.running = true
@@ -477,6 +496,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	else
 		self.danger = false
 	end
+	self.standing_danger = self.danger
 
 	if self.move_cb then
 		local retv = self.path_walk_info[index]["ret"]
@@ -533,6 +553,20 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		end
 	end
 	if pt_chosen_idx then
+		local suggested_crouch = self.path_look_info[pt_chosen_idx]["c"]
+		if suggested_crouch == "true" then
+			self.standing_crouch = true
+		else
+			self.standing_crouch = false
+		end
+
+		local suggested_danger = self.path_look_info[pt_chosen_idx]["d"]
+		if suggested_danger == "true" then
+			self.standing_danger = true
+		else
+			self.standing_danger = false
+		end
+
 		local retv = self.path_look_info[pt_chosen_idx]["ret"]
 		if retv then
 			self.retval_after_rotation = tonumber(retv)
@@ -542,15 +576,16 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 
 		local suggested_wait_time = self.path_look_info[pt_chosen_idx]["t"]
 		if suggested_wait_time then
-			printf("_bp1: %s", suggested_wait_time)
 			self.pt_wait_time = tonumber(suggested_wait_time)
 		else
 			self.pt_wait_time = default_wait_time
 		end
-		printf("_bp2: %s", utils.to_str(self.pt_wait_time))
 
 		local suggested_anim_set = self.path_look_info[pt_chosen_idx]["a"]
 		if suggested_anim_set then
+			if suggested_anim_set == "nil" then
+				suggested_anim_set = nil
+			end
 			self.cur_anim_set = suggested_anim_set
 		else
 			self.cur_anim_set = default_anim
@@ -595,7 +630,10 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		end
 
 		if pt_chosen_idx ~= self.last_look_index then
-			xr_state.anim_update(nil, self.object) -- не играть анимацию во врем€ поворота!
+			if self.object:animation_count() ~= 0 then
+				xr_state.anim_update(nil, self.object) -- не играть анимацию во врем€ поворота!
+				--self:update_standing_state() -- anim_update сбивает crouch -- нет, поворачиватьс€ в старом состо€нии
+			end
 			self.expiration_time = device():time_global() + 700 -- дать 700 мс на начало поворота
 			--printf("move_mgr:waypoint_callback(): look_at_waypoint")
 			self:look_at_waypoint(pt_chosen_idx) -- поворачиваемс€
