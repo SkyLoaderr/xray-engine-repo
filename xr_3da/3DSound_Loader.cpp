@@ -330,9 +330,9 @@ void CSound::Load		(const CSound *pOriginal)
 	ps.set				(pOriginal->ps);
 	fVolume				= 1.0f;
 	fRealVolume			= 1.0f;
-	Sound_Implementation.pDevice->DuplicateSoundBuffer	(pOriginal->pBuffer,&pBuffer);
+	CHK_DX				(Sound_Implementation.pDevice->DuplicateSoundBuffer	(pOriginal->pBuffer,&pBuffer));
 	VERIFY				(pBuffer);
-	if (_3D)	
+	if (_3D)
 	{
 		pBuffer->QueryInterface(IID_IDirectSound3DBuffer,(void **)(&pBuffer3D));
 		ps.dwMode			= DS3DMODE_DISABLE;
