@@ -142,71 +142,127 @@
 				Filter="">
 				<File
 					RelativePath=".\luabind\class_rep.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\luabind\create_class.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\luabind\find_best_match.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\luabind\function.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\luabind\implicit_cast.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\luabind\object.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\luabind\open.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\luabind\stack_content_by_name.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
 				</File>
 			</Filter>
 			<Filter
 				Name="game"
 				Filter="">
-				<File
-					RelativePath=".\ai_script.cpp">
-				</File>
-				<File
-					RelativePath=".\ai_script.h">
-				</File>
-				<File
-					RelativePath=".\ai_script_actions.h">
-				</File>
-				<File
-					RelativePath=".\ai_script_classes.cpp">
-				</File>
-				<File
-					RelativePath=".\ai_script_classes.h">
-				</File>
-				<File
-					RelativePath=".\ai_script_lua_debug.cpp">
-				</File>
-				<File
-					RelativePath=".\ai_script_lua_export.cpp">
-				</File>
-				<File
-					RelativePath=".\ai_script_lua_extension.cpp">
-				</File>
-				<File
-					RelativePath=".\ai_script_lua_extension.h">
-				</File>
-				<File
-					RelativePath=".\ai_script_lua_space.h">
-				</File>
-				<File
-					RelativePath=".\ai_script_processor.cpp">
-				</File>
-				<File
-					RelativePath=".\ai_script_processor.h">
-				</File>
-				<File
-					RelativePath=".\ai_script_space.h">
-				</File>
+				<Filter
+					Name="exports"
+					Filter="">
+				</Filter>
+				<Filter
+					Name="script"
+					Filter="">
+					<File
+						RelativePath=".\ai_script.cpp">
+					</File>
+					<File
+						RelativePath=".\ai_script.h">
+					</File>
+					<File
+						RelativePath=".\ai_script_actions.h">
+					</File>
+					<File
+						RelativePath=".\ai_script_classes.cpp">
+					</File>
+					<File
+						RelativePath=".\ai_script_classes.h">
+					</File>
+					<File
+						RelativePath=".\ai_script_lua_debug.cpp">
+					</File>
+					<File
+						RelativePath=".\ai_script_lua_export.cpp">
+					</File>
+					<File
+						RelativePath=".\ai_script_lua_extension.cpp">
+					</File>
+					<File
+						RelativePath=".\ai_script_lua_extension.h">
+					</File>
+					<File
+						RelativePath=".\ai_script_lua_space.h">
+					</File>
+					<File
+						RelativePath=".\ai_script_processor.cpp">
+					</File>
+					<File
+						RelativePath=".\ai_script_processor.h">
+					</File>
+					<File
+						RelativePath=".\ai_script_space.h">
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 	</Files>

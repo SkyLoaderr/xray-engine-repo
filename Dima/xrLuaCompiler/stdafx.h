@@ -8,5 +8,6 @@
 
 #pragma once
 
-#include <iostream>
-#include <tchar.h>
+#include "..\\stdafx.h"
+
+#define _XRAY_LUA_COMPILER_

@@ -10,15 +10,19 @@
 #include "stdafx.h"
 #include "ai_script_space.h"
 #include "ai_script_lua_extension.h"
+#ifndef _XRAY_LUA_COMPILER_
 #include "ai_space.h"
+#endif
 
 using namespace Script;
 
 int __cdecl Lua::LuaOut(Lua::ELuaMessageType tLuaMessageType, LPCSTR caFormat, ...)
 {
 	LPCSTR		S = "", SS = "";
+#ifndef _XRAY_LUA_COMPILER_
 	LPSTR		S1;
 	string4096	S2;
+#endif
 	switch (tLuaMessageType) {
 		case Lua::eLuaMessageTypeInfo : {
 			S	= "* [LUA] ";
@@ -67,6 +71,7 @@ int __cdecl Lua::LuaOut(Lua::ELuaMessageType tLuaMessageType, LPCSTR caFormat, .
 	
 	va_start(l_tMarker,caFormat);
 
+#ifndef _XRAY_LUA_COMPILER_
 	strcpy	(S2,S);
 	S1		= S2 + strlen(S);
 	int		l_iResult = vsprintf(S1,caFormat,l_tMarker);
@@ -76,6 +81,10 @@ int __cdecl Lua::LuaOut(Lua::ELuaMessageType tLuaMessageType, LPCSTR caFormat, .
 	S1		= S2 + strlen(SS);
 	vsprintf(S1,caFormat,l_tMarker);
 	getAI().m_tpLuaOutput->w_string(S2);
+
+#else
+	int		l_iResult = printf	(caFormat,l_tMarker);
+#endif
 
 	va_end	(l_tMarker);
 
@@ -197,7 +206,7 @@ bool Script::bfLoadBuffer(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caBuff
 
 	if (l_iErrorCode) {
 #ifdef DEBUG
-		if (!bfPrintOutput	(tpLuaVirtualMachine,caScriptName,l_iErrorCode));
+		if (!bfPrintOutput	(tpLuaVirtualMachine,caScriptName,l_iErrorCode))
 			vfPrintError(tpLuaVirtualMachine,l_iErrorCode);
 #endif
 		return			(false);
