@@ -85,39 +85,6 @@ void CAI_Rat::SetDirectionLook()
 	//r_torso_target.pitch = 0;
 }
 
-void CAI_Rat::SetLessCoverLook(NodeCompressed *tNode, bool bSpine)
-{
-	int i = ps_Size();
-	if (i > 1) {
-		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
-		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
-		if (tWatchDirection.square_magnitude() > 0.000001) {
-			tWatchDirection.normalize();
-			mk_rotation(tWatchDirection,r_torso_target);
-			
-			float fAngleOfView = eye_fov/180.f*PI, fMaxSquare = -1.f, fBestAngle;
-			
-			for (float fIncrement = r_torso_current.yaw - MAX_HEAD_TURN_ANGLE; fIncrement <= r_torso_current.yaw + MAX_HEAD_TURN_ANGLE; fIncrement += 2*MAX_HEAD_TURN_ANGLE/60.f) {
-				float fSquare = ffCalcSquare(fIncrement,fAngleOfView,FN(1),FN(2),FN(3),FN(0));
-				if (fSquare > fMaxSquare) {
-					fMaxSquare = fSquare;
-					fBestAngle = fIncrement;
-				}
-			}
-			
-			r_target.yaw = fBestAngle;
-			if (bSpine) {
-				ASSIGN_SPINE_BONE;
-			}
-			q_look.o_look_speed = PI_DIV_4;
-			//r_torso_speed = _FB_look_speed;//(r_torso_target.yaw - r_torso_current.yaw);
-			//r_target.yaw += PI_DIV_6;
-		}
-	}
-	//r_target.pitch = 0;
-	//r_torso_target.pitch = 0;
-}
-
 void CAI_Rat::vfAimAtEnemy()
 {
 	Fvector	pos1, pos2;

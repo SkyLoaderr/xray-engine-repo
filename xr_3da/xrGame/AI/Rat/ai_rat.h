@@ -210,7 +210,7 @@ class CAI_Rat : public CCustomMonster
 		void vfAssignBones(CInifile *ini, const char *section);
 		void vfLoadAnimations();
 		bool bfCheckPath(AI::Path &Path);
-		void SetLessCoverLook(NodeCompressed *tNode, bool bSpine = true);
+		//void SetLessCoverLook(NodeCompressed *tNode, bool bSpine = true);
 		void SetDirectionLook();
 		void vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 		void vfBuildPathToDestinationPoint(CRatSelectorAttack *S);

@@ -172,7 +172,7 @@ void CAI_Soldier::Exec_Movement	( float dt )
 		}
 		else {
 			Fvector tAcceleration;
-			tAcceleration.set(0,-m_cBodyState == BODY_STATE_STAND ? m_fJumpSpeed : m_fJumpSpeed*.8f,0);
+			tAcceleration.set(0,m_cBodyState == BODY_STATE_STAND ? m_fJumpSpeed : m_fJumpSpeed*.8f,0);
 			Movement.SetPosition(vPosition);
 			Movement.Calculate	(tAcceleration,0,0,dt > .1f ? .1f : dt,false);
 			Movement.GetPosition(vPosition);
