@@ -25,13 +25,13 @@ CUITabButton::~CUITabButton(){
 }
 
 
-void CUITabButton::InitTexture(char* tex_norm, char* tex_press, char* tex_disable){
+void CUITabButton::InitTexture(LPCSTR tex_norm, LPCSTR tex_press, LPCSTR tex_disable){
 	this->m_siEnabledNormalState.Init (tex_norm,    "hud\\default", m_WndRect.left, m_WndRect.top, alNone);
 	this->m_siEnabledPressedState.Init(tex_press,   "hud\\default", m_WndRect.left, m_WndRect.top, alNone);
 	this->m_siDisabledState.Init      (tex_disable, "hud\\default", m_WndRect.left, m_WndRect.top, alNone);
 }
 
-void CUITabButton::InitTexture(char* tex_name){
+void CUITabButton::InitTexture(LPCSTR tex_name){
 	
 	char tex_norm[256];
 	char tex_press[256];

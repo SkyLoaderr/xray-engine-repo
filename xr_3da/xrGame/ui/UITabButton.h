@@ -17,8 +17,8 @@ public:
 	CUITabButton();
 	virtual ~CUITabButton();
 	// appearence
-	virtual void InitTexture(char* tex_name);
-	virtual void InitTexture(char* tex_norm, char* tex_press, char* tex_disable);	
+	virtual void InitTexture(LPCSTR tex_name);
+	virtual void InitTexture(LPCSTR tex_norm, LPCSTR tex_press, LPCSTR tex_disable);	
 	virtual void SetColor(u32 color_norm, u32 color_press, u32 color_disable);	
 	virtual void SetTextColor(u32 color);
 
