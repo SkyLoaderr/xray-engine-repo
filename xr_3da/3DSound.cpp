@@ -315,7 +315,7 @@ void C3DSound::OnMove()
 			if ((fTimeRested<fTimeTotal)) {
 				// доигрываем
 				pBuffer->Stop();
-				pBuffer->Play(0,0,DSBPLAY_LOCSOFTWARE);
+				pBuffer->Play(0,0,0);
 			}
 		}
 	} else {
@@ -323,7 +323,7 @@ void C3DSound::OnMove()
 			bMustPlay	= false;
 			ps.dwMode	= DS3DMODE_NORMAL;
 			Update		( );
-			pBuffer->Play( 0, 0, DSBPLAY_LOCSOFTWARE | (bMustLoop?DSBPLAY_LOOPING:0));
+			pBuffer->Play( 0, 0, (bMustLoop?DSBPLAY_LOOPING:0));
 			dwStatus	|= DSBSTATUS_PLAYING;
 		} else {
 			if (old_Status&DSBSTATUS_PLAYING) 
