@@ -347,6 +347,9 @@ public:
 
 	// HUD
 	virtual void			OnHUDDraw			(CCustomHUD* hud);
+
+	CCameraBase*			Camera				(){return active_camera;}
+
 public:
 	CCar(void);
 	virtual ~CCar(void);

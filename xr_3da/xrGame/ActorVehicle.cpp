@@ -3,6 +3,7 @@
 
 #include "actor.h"
 #include "Car.h"
+#include "..\CameraBase.h"
 void CActor::attach_Vehicle(CCar* vehicle)
 {
 	if(!vehicle) return;
@@ -33,6 +34,8 @@ void CActor::attach_Vehicle(CCar* vehicle)
 	//PIItem iitem=m_inventory.ActiveItem();
 	//if(iitem)iitem->m_showHUD=false;
 	setVisible(true);
+	//clear actor movement states 
+	mstate_wishful=0;
 }
 
 void CActor::detach_Vehicle()
@@ -41,6 +44,9 @@ void CActor::detach_Vehicle()
 	m_vehicle->detach_Actor();//
 	ph_Movement.CreateCharacter();
 	ph_Movement.SetPosition(m_vehicle->ExitPosition());
+	r_model_yaw=-m_vehicle->Camera()->yaw;
+	r_torso.yaw=r_model_yaw;
+	r_model_yaw_dest=r_model_yaw;
 	m_vehicle=NULL;
 	CKinematics* V		= PKinematics(Visual());
 	R_ASSERT			(V);
@@ -52,6 +58,7 @@ void CActor::detach_Vehicle()
 	V->LL_GetInstance(head_bone).set_callback		(HeadCallback,this);
 	PKinematics(Visual())->PlayCycle(m_anims.m_normal.legs_idle);
 	PKinematics(Visual())->PlayCycle(m_anims.m_normal.m_torso_idle);
+	//mstate_wishful &=~mcAnyMove;
 }
 
 void CActor::use_Vehicle()
