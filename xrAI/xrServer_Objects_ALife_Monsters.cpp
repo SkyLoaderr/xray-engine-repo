@@ -823,10 +823,14 @@ CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTrad
 	R_ASSERT2					((iFloor(getAI().m_pfEquipmentType->ffGetMaxResultValue() + .5f) == 5) && (iFloor(getAI().m_pfMainWeaponType->ffGetMaxResultValue() + .5f) == 4),"Recompile Level Editor and xrAI and rebuild file \"game.spawn\"!");
 #endif
 #endif
-	for (int i=0, n=m_cpEquipmentPreferences.size(); i<n; i++)
-		m_cpEquipmentPreferences[i] = u8(::Random.randI(3));
-	for (int i=0, n=m_cpMainWeaponPreferences.size(); i<n; i++)
-		m_cpMainWeaponPreferences[i] = u8(::Random.randI(3));
+	{
+		for (int i=0, n=m_cpEquipmentPreferences.size(); i<n; i++)
+			m_cpEquipmentPreferences[i] = u8(::Random.randI(3));
+	}
+	{
+		for (int i=0, n=m_cpMainWeaponPreferences.size(); i<n; i++)
+			m_cpMainWeaponPreferences[i] = u8(::Random.randI(3));
+	}
 }
 
 CSE_ALifeHumanAbstract::~CSE_ALifeHumanAbstract()
