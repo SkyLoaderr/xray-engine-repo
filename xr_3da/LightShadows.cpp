@@ -14,7 +14,7 @@ int		psSH_Blur			= 1;
 const	float	S_distance	= 48;
 const	float	S_distance2	= S_distance*S_distance;
 
-const	float	S_fade		= 3;
+const	float	S_fade		= 2;
 const	float	S_fade2		= S_fade*S_fade;
 
 const	float	S_level		= .1f;
@@ -207,7 +207,7 @@ void CLightShadows::calculate	()
 			float		p_far	=	_min(Lrange,_max(p_dist+S_fade,p_dist+p_R));	
 			if (p_near<eps)			p_near	= eps;
 			if (p_far<(p_near+eps))	p_far	= p_near+eps;
-
+			
 			mProject.build_projection_HAT	(p_hat,p_asp,p_near,p_far);
 			Device.set_xform_project		(mProject);
 			
