@@ -600,7 +600,7 @@ void CInventoryItem::reload		(LPCSTR section)
 
 void CInventoryItem::reinit		()
 {
-	if (!frame_check(m_dwFrameReload))
+	if (!frame_check(m_dwFrameReinit))
 		return;
 
 	m_pInventory		= 0;
