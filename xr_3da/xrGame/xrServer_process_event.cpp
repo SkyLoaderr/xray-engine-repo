@@ -66,6 +66,24 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			// Signal to everyone (including sender)
 			SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE));
 		}
+	case GE_HIT:
+		{
+			// Parse message
+			u16					id_dest =destination, id_src;
+			P.r_u16				(id_src);
+			xrServerEntity*		e_dest		= ID_to_entity	(id_dest);
+			xrServerEntity*		e_src		= ID_to_entity	(id_src	);
+			xrClientData*		c_dest		= e_dest->owner;
+			xrClientData*		c_src		= e_src->owner;
+			xrClientData*		c_from		= ID_to_client	(sender);
+			R_ASSERT			(c_src == c_from);		// assure client ownership of event
+
+			// Signal just to destination
+			SendTo				(c_dest->ID,P,net_flags(TRUE,TRUE));
+		}
+		break;
+	default:
+		R_ASSERT2	(0,"Game Event not implemented!!!");
 		break;
 	}
 }
