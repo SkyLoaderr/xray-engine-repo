@@ -196,7 +196,7 @@ void _initialize_cpu	(void)
 		u32(CPU::cycles_overhead)
 		);
 
-	if (strstr(Core.Params,"-fpu"))		{
+	if (strstr(Core.Params,"-x86"))		{
 		CPU::ID.feature	&= ~_CPU_FEATURE_3DNOW	;
 		CPU::ID.feature	&= ~_CPU_FEATURE_SSE	;
 		CPU::ID.feature	&= ~_CPU_FEATURE_SSE2	;
