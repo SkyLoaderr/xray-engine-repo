@@ -326,7 +326,10 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 				i->ID			= m_tpServer->PerformIDgen(0xffff);
 				i->m_tSpawnID	= _SPAWN_ID(j - b);
 				i->m_tGraphID	= l_tpSpawnAnomalousZone->m_tGraphID;
-				i->o_Position	= m_tpArtefactSpawnPositions[l_tpSpawnAnomalousZone->m_dwStartIndex + randI(l_tpSpawnAnomalousZone->m_wArtefactSpawnCount)];
+				u32				l_dwIndex = l_tpSpawnAnomalousZone->m_dwStartIndex + randI(l_tpSpawnAnomalousZone->m_wArtefactSpawnCount);
+				i->o_Position	= m_tpArtefactSpawnPositions[l_dwIndex].tPoint;
+				i->m_tNodeID	= m_tpArtefactSpawnPositions[l_dwIndex].tNodeID;
+				i->m_fDistance	= m_tpArtefactSpawnPositions[l_dwIndex].fDistance;
 				
 				CSE_ALifeItemArtefact *l_tpALifeItemArtefact = dynamic_cast<CSE_ALifeItemArtefact*>(i);
 				R_ASSERT2		(l_tpALifeItemArtefact,"Anomalous zone can't generate non-artefact objects since they don't have an 'anomaly property'!");

@@ -467,7 +467,11 @@ public:
 		}
 		{
 			R_ASSERT2				(0!=(S = tFileStream.open_chunk(id++)),"Can't find artefact spawn points chunk in the 'game.spawn'");
-			load_base_vector		(m_tpArtefactSpawnPositions,tFileStream);
+			m_tpArtefactSpawnPositions.resize(tFileStream.r_u32());
+			LEVEL_POINT_IT			I = m_tpArtefactSpawnPositions.begin();
+			LEVEL_POINT_IT			E = m_tpArtefactSpawnPositions.end();
+			for ( ; I != E; I++)
+				tFileStream.r		(&*I,sizeof(*I));
 		}
 	};
 };
