@@ -31,11 +31,12 @@
 
 CLensFlare::CLensFlare()
 {
+	VS					= 0;
+
 	// Device
 #ifndef _EDITOR
 	Device.seqDevDestroy.Add			(this);
 	Device.seqDevCreate.Add				(this);
-	if (Device.bReady) OnDeviceCreate	();
 #endif
 
 	bInit				= false;
@@ -48,8 +49,6 @@ CLensFlare::CLensFlare()
 
     LightColor.set		( 0xFFFFFFFF );
 	fGradientValue		= 0.f;
-
-    VS					= 0;
 }
 
 
@@ -154,6 +153,10 @@ void CLensFlare::Load( CInifile* pIni, LPSTR section )
 		SetGradient(r,o,T);
 	}
 	bInit			= false;
+
+#ifndef _EDITOR
+	if (Device.bReady) OnDeviceCreate	();
+#endif
 }
 
 void CLensFlare::OnFrame()
