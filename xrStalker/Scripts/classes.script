@@ -350,7 +350,7 @@ function NPC:is_shooting()
 	return self.last_action == self.action_shooting and self.npc:get_script() and self.npc:action()
 end
 
-function NPC:talk(to_whom, snd, animat, bone)
+function NPC:talk(to_whom, snd, animat, waitfor_anim_end, bone)
 	debug_log(self.script_name, 'NPC:talk snd=\"%s\"', if_then_else(snd ~= nil, snd, "<nil>"))
 	-- Всегда отключать looking при начале talking
 	if self:is_looking() then
@@ -377,11 +377,13 @@ function NPC:talk(to_whom, snd, animat, bone)
 	if snd ~= nil then
 		act:set_action( sound(snd, if_then_else(bone ~= nil, bone, "bip01_head"),
 			vector():set(0,0,0), vector():set(0,0,0), false) )
-		act:set_action( cond(cond.sound_end -- FIXME: привязываемся только к длине звука, а не к длине звука+анимации!
-			       -- + cond.anim_end  -- не работает! :-(
-			       )
-			       -- cond  (cond.time_end, 5000)
-		)
+		if not waitfor_anim_end then
+			-- Just wait for sound to end, then interrupt the animation
+			act:set_action( cond(cond.sound_end) )
+		else
+			-- Animation is more important than sound
+			act:set_action( cond(cond.anim_end) )
+		end
 	else
 		act:set_action( cond(cond.time_end, time_infinite) )
 		printf("NPC:talk:snd is nil!")
@@ -403,31 +405,42 @@ function NPC:talk_dialogue(to_whom)
 	printf("NPC:talk_dialogue")
 	if self.dlg_fsm ~= nil then
 		printf("NPC:talk_dialogue:self.dlg_fsm ~= nil")
-		local snd, animat, len, delay, delay_animat = self.dlg_fsm:next_phrase()
+		local snd, animat, snd_len, waitfor_anim_end, delay, delay_animat = self.dlg_fsm:next_phrase()
 		if animat == nil then
 			printf("NPC:talk_dialogue:animat returned by next_phrase() is nil")
 		else
 			printf("NPC:talk_dialogue:animat returned by next_phrase() is --- " .. animat)
 		end
 		if snd ~= nil then
-			self:talk(to_whom, snd, animat, nil)
+			self:talk(to_whom, snd, animat, waitfor_anim_end, nil)
 		else
 			printf("NPC:talk_dialogue:snd is nil (POSSIBLY WRONG STATE???), starting the infinite pause")
 			delay = time_infinite
 		end
 		-- Сделать паузу перед следующей фразой:
-		local act = entity_action()
-		if self.look_at_target_when_talking then
-			act:set_action( look(look.fire_point, to_whom) )
-		end
-		if delay_animat ~= nil then
-			act:set_action( anim(delay_animat) )
-		else
-			act:set_action( anim(self.default_anim) )
-		end
-		act:set_action( cond(cond.time_end, delay) )
-		self.npc:command(act, false)
-		printf("_bp: talk_dialogue: delay=%d", delay)
+		--if delay ~= 0 then -- для 0-й задержки можно даже action с 0-м временем не добавлять - зачем?
+			local act = entity_action()
+			if self.look_at_target_when_talking then
+				act:set_action( look(look.fire_point, to_whom) )
+			end
+			local use_anim = self.default_anim
+			if delay_animat == nil then
+				printf("_bp: talk_dialogue: using DEFAULT anim for idling!")
+			else
+				printf("_bp: talk_dialogue: using \"%s\" anim for idling!", delay_animat)
+				use_anim = delay_animat
+			end
+			act:set_action( anim(use_anim) )
+			if delay ~= nil then
+				printf("_bp: talk_dialogue: condition for idling is TIME_END(%d)!", delay)
+				act:set_action( cond(cond.time_end, delay) )
+			else
+				printf("_bp: talk_dialogue: condition for idling is anim_end!")
+				act:set_action( cond(cond.anim_end) )
+			end
+			self.npc:command(act, false)
+		--end
+		printf("_bp: talk_dialogue: delay=%d", if_then_else(delay ~= nil, delay, -1))
 	end
 end
 
@@ -448,17 +461,23 @@ function DialogueFSM:__init ()
 end
 
 -- Adds a phrase to the FSM.
--- Args: is_repeatable, from_state, to_state, sound, {[delay_range_from, [delay_range_to]]}, [animation], [idling_animation])
+-- Args: flags, from_state, to_state, sound, {[delay_range_from, [delay_range_to]]}, [animation], [idling_animation])
+-- flags состоит из булевых значений: {is_repeatable, waitfor_anim_end}
+--      тут is_repeatable - разрешено ли повторно выбирать этот звук для проигрывания (если состояние осталось старым)
+--          waitfor_anim_end - ждать ли конца анимации (true), или обрывать анимацию по завершении звука (false, nil)
 -- Примечание: если delay_range не задан вообще, персонаж ничего не будет делать пока не доиграет до конца idling_animation
 -- Если же delay_range задан (одним числом, или двумя, т.е. интервалом) - idling_animation будет прервана по истечении этого срока.
-function DialogueFSM:set(repeatable, from, to, snd, delay_after_snd, animat, delay_animat)
+function DialogueFSM:set(flags, from, to, snd, delay_after_snd, animat, delay_animat)
+	local repeatable = flags[1]
+	local waitfor_anim_end = flags[2]
+
 	printf("DialogueFSM:set: snd=\"%s\"", if_then_else(snd, snd, "<nil>"))
 	local snd_obj = sound_object(snd)
 	if snd_obj ~= nil then
 		printf("DialogueFSM:set: snd_obj is NOT nil")
 	end
-	local len = snd_obj:length() -- длительность звука
-	printf("DialogueFSM:set: snd=\"%s\" len=\"%d\"", snd, if_then_else(len, len, 0)) -- nil crashes %d
+	local snd_len = snd_obj:length() -- длительность звука
+	printf("DialogueFSM:set: snd=\"%s\" snd_len=\"%d\"", snd, if_then_else(snd_len, snd_len, 0)) -- nil crashes %d
 	--[[ Это делается не здесь! Это делает сам монстр, который произносит фразу.
 	local use_anim = anim.danger
 	if animat == nil then
@@ -468,8 +487,8 @@ function DialogueFSM:set(repeatable, from, to, snd, delay_after_snd, animat, del
 		use_anim = animat
 	end
 	--]]
-	table.insert(self.trans_tbl, {repeatable=repeatable, from=from, to=to, snd=snd, animat=animat, len=len,
-		delay_after_snd=delay_after_snd, delay_animat=delay_animat})
+	table.insert(self.trans_tbl, {repeatable=repeatable, waitfor_anim_end=waitfor_anim_end, from=from, to=to,
+		snd=snd, animat=animat, snd_len=snd_len, delay_after_snd=delay_after_snd, delay_animat=delay_animat})
 end
 
 function DialogueFSM:clear()
@@ -515,21 +534,21 @@ function DialogueFSM:next_phrase()
 	-- Обработка задержек вида X, X-Y, XdY+Z
 	local delay_num_members = table.getn(self.trans_tbl[pos_chosen].delay_after_snd)
 	local delay = 0
-	if delay_num_members == 1 then
+	if delay_num_members == 0 then
+		delay = nil
+	elseif delay_num_members == 1 then
 		delay = self.trans_tbl[pos_chosen].delay_after_snd[1]
-	else
-		if delay_num_members >= 2  and delay_num_members <= 3 then
-			delay = math.random(self.trans_tbl[pos_chosen].delay_after_snd[1], self.trans_tbl[pos_chosen].delay_after_snd[2])
-			if delay_num_members == 3 then
-				delay = self.trans_tbl[pos_chosen].delay_after_snd[3]
-			end
-		else
-			printf("ERROR: DialogueFSM: next_phrase: wrong delay format (1 to 3 arguments expected, got %d)",
-				delay_num_members)
+	elseif delay_num_members >= 2  and delay_num_members <= 3 then
+		delay = math.random(self.trans_tbl[pos_chosen].delay_after_snd[1], self.trans_tbl[pos_chosen].delay_after_snd[2])
+		if delay_num_members == 3 then
+			delay = self.trans_tbl[pos_chosen].delay_after_snd[3]
 		end
+	else
+		printf("ERROR: DialogueFSM: next_phrase: wrong delay format (1 to 3 arguments expected, got %d). FORCING DELAY TO 0!",
+			delay_num_members)
 	end
-	return self.trans_tbl[pos_chosen].snd, self.trans_tbl[pos_chosen].animat, self.trans_tbl[pos_chosen].len, delay,
-		self.trans_tbl[pos_chosen].delay_animat
+	return self.trans_tbl[pos_chosen].snd, self.trans_tbl[pos_chosen].animat, self.trans_tbl[pos_chosen].snd_len,
+		self.trans_tbl[pos_chosen].waitfor_anim_end, delay, self.trans_tbl[pos_chosen].delay_animat
 end
 
 ----------------------------------------------------------------------------------------------------

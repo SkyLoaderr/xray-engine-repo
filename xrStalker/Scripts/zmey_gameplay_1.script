@@ -12,41 +12,42 @@ function main ()
 	debug_script_name = zmey_gameplay_1.script_name()
 	debug_log(zmey_gameplay_1.script_name(), "SCRIPT ACTIVATED: zmey_gameplay_1")
 
+	-- Для описания аргументов см. комментарий к функции set в файле classes.script
+	--dlg_podoidi:set({false}, 0, 1, snd_prefix .. "wounded-01", {3000}, "govor_1", anim.danger) -- подойди
+
 	-- 1) Подойди 2) Подойди ближе 3) Кашляет 4) Да подойди же ближе! 5) Ты должен выслушать меня 6) Стонет и кашляет
 	dlg_podoidi = classes.DialogueFSM()
-	-- Args: is_repeatable, from_state, to_state, sound, {delay_range_from, [delay_range_to]}, [animation], [idling_animation])
-	--dlg_podoidi:set(false, 0, 1, snd_prefix .. "wounded-01", {3000}, "govor_1", anim.danger) -- подойди
-	dlg_podoidi:set(false, 0, 1, snd_prefix .. "wounded-01", {3000}, "govor_1") -- подойди
-	dlg_podoidi:set(false, 1, 2, snd_prefix .. "wounded-02", {2000}, "zavet") -- подойжи ближе
-	dlg_podoidi:set(false, 2, 3, snd_prefix .. "wounded-16-1", {2000}, "kashel_1") -- кашель1
-	dlg_podoidi:set(false, 3, 4, snd_prefix .. "wounded-06", {3000}, "govor_2") -- да подойди же ближе
-	dlg_podoidi:set(false, 4, 5, snd_prefix .. "wounded-07", {3000}, "govor_4") -- ты должен выслушать меня!
-	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-16-1", {2000, 5000}, "kashel_1")
-	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-16-2", {2000, 5000}, "kashel_2")
-	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-16-3", {2000, 5000}, "kashel_1")
-	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-16-4", {2000, 5000}, "kashel_2")
-	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-16-5", {2000, 5000}, "kashel_1")
-	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-16-6", {2000, 5000}, "kashel_2")
-	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-17-1", {2000, 5000}, "kashel_1")
-	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-17-2", {2000, 5000}, "kashel_2")
-	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-18-1", {2000, 5000}, "kashel_1")
-	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-18-2", {2000, 5000}, "kashel_2")
-	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-19-1", {2000, 5000}, "kashel_1")
-	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-19-2", {2000, 5000}, "kashel_2")
+	dlg_podoidi:set({false      }, 0, 1, snd_prefix .. "wounded-01",   {3000},       "govor_1")              -- подойди
+	dlg_podoidi:set({false, true}, 1, 2, snd_prefix .. "wounded-02",   {2000},       "zavet")                -- подойжи ближе
+	dlg_podoidi:set({false      }, 2, 3, snd_prefix .. "wounded-16-1", {2000},       "idle_raneniy")         -- кашель1
+	dlg_podoidi:set({false      }, 3, 4, snd_prefix .. "wounded-06",   {},           "govor_2",   "pause_6") -- да подойди же ближе
+	dlg_podoidi:set({false      }, 4, 5, snd_prefix .. "wounded-07",   {},           "govor_8",   "pause_7") -- ты должен выслушать меня!
+ 	dlg_podoidi:set({false      }, 5, 5, snd_prefix .. "wounded-16-1", {2000, 5000}, "idle_raneniy")
+	dlg_podoidi:set({false      }, 5, 5, snd_prefix .. "wounded-16-2", {2000, 5000}, "idle_raneniy")
+	dlg_podoidi:set({false      }, 5, 5, snd_prefix .. "wounded-16-3", {2000, 5000}, "idle_raneniy")
+	dlg_podoidi:set({false      }, 5, 5, snd_prefix .. "wounded-16-4", {2000, 5000}, "idle_raneniy")
+	dlg_podoidi:set({false      }, 5, 5, snd_prefix .. "wounded-16-5", {2000, 5000}, "idle_raneniy")
+	dlg_podoidi:set({false      }, 5, 5, snd_prefix .. "wounded-16-6", {2000, 5000}, "idle_raneniy")
+	dlg_podoidi:set({false      }, 5, 5, snd_prefix .. "wounded-17-1", {2000, 5000}, "kashel_1")
+	dlg_podoidi:set({false      }, 5, 5, snd_prefix .. "wounded-17-2", {2000, 5000}, "kashel_2")
+	dlg_podoidi:set({false      }, 5, 5, snd_prefix .. "wounded-18-1", {2000, 5000}, "kashel_1")
+	dlg_podoidi:set({false      }, 5, 5, snd_prefix .. "wounded-18-2", {2000, 5000}, "kashel_2")
+	dlg_podoidi:set({false      }, 5, 6, snd_prefix .. "wounded-19-2", {0},          "kashel_3")
+	dlg_podoidi:set({false      }, 6, 5, snd_prefix .. "wounded-19-1", {2000, 5000}, "kashel_4")
 
 	dlg_postoi = classes.DialogueFSM()
-	dlg_postoi:set(false, 0, 1, snd_prefix .. "wounded-03", {1000}, "govor_3") -- постой!
-	dlg_postoi:set(false, 0, 1, snd_prefix .. "wounded-04", {1000}, "govor_3") -- остановись!
-	dlg_postoi:set(false, 1, 2, snd_prefix .. "wounded-05", {0}, "govor_3") -- не оставляй меня!
+	dlg_postoi:set({false, true}, 0, 1, snd_prefix .. "wounded-03",    {1000},      "zavet")              -- постой!
+	dlg_postoi:set({false, true}, 0, 1, snd_prefix .. "wounded-04",    {1000},      "zavet")              -- остановись!
+	dlg_postoi:set({false      }, 1, 2, snd_prefix .. "wounded-05",    {0},         "govor_1")            -- не оставляй меня!
 
 	dlg_5metrov = classes.DialogueFSM()
-	dlg_5metrov:set(false, 0, 1, snd_prefix .. "wounded-08", {1000}, "govor_1") -- ты должен добить Пса
-	dlg_5metrov:set(false, 1, 2, snd_prefix .. "wounded-09", {1000}, "govor_2") -- он свалился с моста
-	dlg_5metrov:set(false, 2, 3, snd_prefix .. "wounded-10", {2000}, "govor_1") -- во время атаки мутантов
-	dlg_5metrov:set(false, 3, 4, snd_prefix .. "wounded-11", {1000}, "govor_2") -- забери артефакт
-	dlg_5metrov:set(false, 4, 5, snd_prefix .. "wounded-12", {1000}, "govor_1") -- и отнеси торговцу... он ждет
-	dlg_5metrov:set(false, 5, 6, snd_prefix .. "wounded-13", {2000}, "govor_2") -- забирай патроны и уходи
-	dlg_5metrov:set(false, 6, 7, snd_prefix .. "wounded-14", {0}, "govor_2") -- мне уже не поможешь
+	dlg_5metrov:set({false      }, 0, 1, snd_prefix .. "wounded-08",   {1000},      "govor_1")            -- ты должен добить Пса
+	dlg_5metrov:set({false      }, 1, 2, snd_prefix .. "wounded-09",   {1000},      "govor_2")            -- он свалился с моста
+	dlg_5metrov:set({false      }, 2, 3, snd_prefix .. "wounded-10",   {},          "govor_3", "pause_1") -- во время атаки мутантов
+	dlg_5metrov:set({false      }, 3, 4, snd_prefix .. "wounded-11",   {},          "govor_4", "pause_2") -- забери артефакт
+	dlg_5metrov:set({false      }, 4, 5, snd_prefix .. "wounded-12",   {},          "govor_5", "pause_3") -- и отнеси торговцу... он ждет
+	dlg_5metrov:set({false      }, 5, 6, snd_prefix .. "wounded-13",   {},          "govor_6", "pause_4") -- забирай патроны и уходи
+	dlg_5metrov:set({false      }, 6, 7, snd_prefix .. "wounded-14",   {},          "govor_7", "pause_5") -- мне уже не поможешь
 
 ----------------------------------------------------------------------------------------------------
 
