@@ -14,32 +14,28 @@ function main ()
     actor				= get_actor()
     stalker				= get_level_object ("m_stalker_e0000")
     ak					= get_level_object ("wpn_ak0001")
+    vodka				= get_level_object ("vodka0000")
+    
     stalker:script		(true,stalker_test:script_name());
     
-    wait				(1000)
+    wait				(3000)
     
     action				(
 		stalker,
-		anim			("walk_fwd_crawl"),
-		cond			(cond.time_end,5000)
+		object			(vodka,object.activate),
+		cond			(object.obj_end)
     )
     
     action				(
 		stalker,
-		anim			("walk_fwd_crawl_stop"),
-		cond			(cond.anim_end)
+		object			(vodka,object.fire),
+		cond			(object.obj_end)
     )
     
     action				(
 		stalker,
-		anim			("prisluh"),
-		cond			(cond.time_end)
-    )
-    
-    action				(
-		stalker,
-		anim			("prisluh_v_torso_idle_2"),
-		cond			(cond.anim_end)
+		object			(vodka,object.reload),
+		cond			(object.obj_end)
     )
     
     while stalker:action() do
