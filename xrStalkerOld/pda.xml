@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
 	<!-- MAIN PDA WINDOW FRAME -->
-	<background_static x="57" y="56" width="891" height="643">
+	<background_static x="57" y="16" width="891" height="643">
 		<texture>ui\ui_pda_back_big</texture>
 	</background_static>
 
