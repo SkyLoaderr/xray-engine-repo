@@ -24,6 +24,9 @@ void xrMU_Model::Load(CStream& F)
 		b_face&	F			= b_faces[it];
 		load_create_face	(b_vertices[F.v[0]],b_vertices[F.v[1]],b_vertices[F.v[2]],F);
 	}
+
+	// 
+	Msg					("     v(%d/%d), f(%d/%d)",m_vertices.size(),b_vertices.size(),m_faces.size(),b_faces.size());
 }
 
 xrMU_Model::_face* xrMU_Model::load_create_face(Fvector& P1, Fvector& P2, Fvector& P3, b_face& B)
