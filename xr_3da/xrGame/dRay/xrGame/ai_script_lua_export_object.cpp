@@ -195,7 +195,7 @@ void CScriptEngine::export_object()
 			.def("active_sound_count",			&CLuaGameObject::active_sound_count)
 			.def("best_cover",					&CLuaGameObject::best_cover)
 			.def("spawn_ini",					&CLuaGameObject::spawn_ini)
-			.def("visible_objects",				&CLuaGameObject::visible_objects, return_stl_iterator)
+			.def("memory_visible_objects",		&CLuaGameObject::memory_visible_objects, return_stl_iterator)
 
 
 			// sight manager

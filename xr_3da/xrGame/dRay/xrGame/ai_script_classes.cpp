@@ -729,7 +729,7 @@ CScriptIniFile *CLuaGameObject::spawn_ini			() const
 	return			((CScriptIniFile*)m_tpGameObject->spawn_ini());
 }
 
-const xr_vector<CVisibleObject>	&CLuaGameObject::visible_objects	() const
+const xr_vector<CVisibleObject>	&CLuaGameObject::memory_visible_objects	() const
 {
 	CCustomMonster	*monster = dynamic_cast<CCustomMonster*>(m_tpGameObject);
 	if (!monster) {

@@ -668,5 +668,5 @@ public:
 			int					active_sound_count		();
 			const CCoverPoint	*best_cover				(const Fvector &position, const Fvector &enemy_position, float radius, float min_enemy_distance, float max_enemy_distance);
 			CScriptIniFile		*spawn_ini				() const;
-			const xr_vector<CVisibleObject>	&visible_objects	() const;
+			const xr_vector<CVisibleObject>	&memory_visible_objects	() const;
 };
