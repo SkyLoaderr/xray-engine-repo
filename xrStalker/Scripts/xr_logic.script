@@ -114,13 +114,13 @@ function reset_actions(st)
 	end
 end
 
-function pick_section_from_condlist(npc, condlist)
+function pick_section_from_condlist(actor, npc, condlist)
 	local newsect = nil
 	local infop_conditions_met
 	for n, cond in pairs(condlist) do
 		infop_conditions_met = true -- изначально считаем, что все условия переключения удовлетворены
-		for inum, infop in pairs(cond.infop_presence) do
-			if npc:has_info(infop.name) then
+		for inum, infop in pairs(cond.infop_check) do
+			if actor:has_info(infop.name) then
 				if not infop.required then
 					infop_conditions_met = false -- инфопоршен есть, но он не должен присутствовать
 					break
@@ -133,10 +133,26 @@ function pick_section_from_condlist(npc, condlist)
 			end
 		end
 		if infop_conditions_met then
+			-- Условия выполнены. Независимо от того, задана ли секция, нужно проставить требуемые
+			-- infoportions:
+			for inum, infop in pairs(cond.infop_set) do
+				if infop.required then
+					printf("_bp: setting infoportion: %s", infop.name)
+					if not actor:has_info(infop.name) then
+						actor:give_info_portion(infop.name)
+					end
+				else
+					printf("_bp: disabling infoportion: %s", infop.name)
+					if actor:has_info(infop.name) then
+						actor:disable_info_portion(infop.name)
+					end
+				end
+			end
 			return cond.section
 		end
 	end
 
+	printf("_bp: pick_section_from_condlist: nil")
 	return nil
 end
 
@@ -154,17 +170,44 @@ function try_switch_to_another_section(npc, st)
 	local l = st.logic
 	local npc_id = npc:id()
 
+	local actor = level.actor()
+	if not actor then
+		return
+	end
+
 	if not l then
 		utils.abort("Can't find script switching information in storage, scheme '%s'", st.scheme)
 	end
 
-	if l.on_actor_dist_le then
-		local actor = level.actor()
-		if npc:see(actor) and distance_between(actor, npc) <= l.on_actor_dist_le.v1 then
-			switch_to_section(npc, st, pick_section_from_condlist(npc, l.on_actor_dist_le.condlist))
-			return true
+	for n, c in pairs(l) do
+		--printf("_bp: %d: %s", device():time_global(), c.name)
+		if c.name == "on_actor_dist_le" then
+			--printf("_bp: dist=%d (need <= %d), see_actor: %s", distance_between(actor, npc), c.v1, utils.to_str(npc:see(actor)))
+			if npc:see(actor) and distance_between(actor, npc) <= c.v1 then
+				--printf("_bp: conditions met")
+				switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
+				return true
+			end
+		elseif c.name == "on_actor_dist_le_nvis" then
+			if distance_between(actor, npc) <= c.v1 then
+				switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
+				return true
+			end
+		elseif c.name == "on_signal" then
+			--printf("_bp: on_signal (c.v1 = %s)", c.v1)
+			if st.signals and st.signals[c.v1] then
+				--printf("_bp: signalled")
+				switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
+				return true
+			end
+		elseif c.name == "on_info" then
+			switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
+		else
+			printf("WARNING: object '%s': try_switch_to_another_section: unknown condition '%s' encountered",
+				npc:name(), c.name)
 		end
 	end
+
 	return false
 end
 
@@ -181,36 +224,68 @@ function abort_syntax_error_in_cond(npc, section, field)
 		npc:name(), section, field)
 end
 
+-- На входе имеем пустой массив и строку вида "  +infop1  -infop2 +infop3 ... "
+-- Заполнить массив:
+-- { "infop_name" = true/false }.
+function parse_infop(rslt, str) 
+	printf("_bp: parse_infop: %s", utils.to_str(str))
+	local infop_name, sign
+	local infop_n = 1
+	if str then
+		for s in string.gfind(str, "%s*([^%s]+)%s*") do
+			sign = string.sub(s, 1, 1)
+			infop_name = string.sub(s, 2)
+			if sign == "+" then
+				rslt[infop_n] = { name = infop_name, required = true }
+			elseif sign == "-" then
+				rslt[infop_n] = { name = infop_name, required = false }
+			else
+				abort_syntax_error_in_cond(npc, section, field)
+			end
+		end
+	end
+end
+
 -- Распарсивает строку src вида:
--- {+infop1 -infop2} section1, {+infop3 -infop4} section2 ...
+-- {+infop1} section1 %-infop2%, {+infop3 -infop4} section2 ...
 -- в таблицу:
 -- {
---   1 = { infop_presence = { 1 = {"infop1" = true}, 2 = {"infop2" = false} }, section = "section1" },
---   2 = { infop_presence = { 1 = {"infop3" = true}, 2 = {"infop4" = false} }, section = "section2" },
+--   1 = { infop_check = { 1 = {"infop1" = true} }, infop_set = { 1 = {"infop2" = false } }, section = "section1" },
+--   2 = { infop_check = { 1 = {"infop3" = true}, 2 = {"infop4" = false} }, infop_set = {}, section = "section2" },
 -- }
 function parse_condlist(npc, section, field, src)
 	local lst = {}
 
 	-- 1) Разбиваем на разделенные запятыми части:
-	local at, to, infop_lst, newsect, sign, infop_name
+	local at, to, infop_check_lst, remainings, infop_set_lst, newsect
 
 	local n = 1
-	local infop_n
 	for fld in string.gfind(src, "%s*([^,]+)%s*") do
 		-- Здесь fld это набор infoportions в {} и имя секции, на которую переключиться.
 		lst[n] = {}
 		--printf("_bp: %d: %s", n, fld)
 
-		-- Выделяем список infoportions:	
-		at, to, infop_lst = string.find(fld, "{%s*(.*)%s*}")
-		if infop_lst then
-			--print("infop_lst: [" .. infop_lst .. "]")
+		-- Выделяем список infoportions для проверки:	
+		at, to, infop_check_lst = string.find(fld, "{%s*(.*)%s*}")
+		if infop_check_lst then
+			--print("infop_check_lst: [" .. infop_check_lst .. "]")
 
-			-- Выделяем оставшуюся часть поля, т.е. имя секции:
-			newsect = string.sub(fld, 1, at - 1) .. string.sub(fld, to + 1)
+			-- Выделяем оставшуюся часть поля, т.е. имя секции плюс список infoportions для установки:
+			remainings = string.sub(fld, 1, at - 1) .. string.sub(fld, to + 1)
 		else
-			-- Список infoportions не был задан, следовательно, fld и есть имя секции.
-			newsect = fld
+			-- Список infoportions для проверки не был задан, следовательно, ничего не удаляем:
+			remainings = fld
+		end
+		printf("_bp: remainings: %s", remainings)
+
+		-- Выделяем список infoportions для установки из remainings:	
+		at, to, infop_set_lst = string.find(remainings, "%%%s*(.*)%s*%%")
+		if infop_set_lst then
+			-- Выделяем оставшуюся часть поля, т.е. имя секции:
+			newsect = string.sub(remainings, 1, at - 1) .. string.sub(remainings, to + 1)
+		else
+			-- Список infoportions для установки не был задан, следовательно, remainings и есть имя секции.
+			newsect = remainings
 		end
 
 		-- И сразу trim имя секции:
@@ -222,24 +297,15 @@ function parse_condlist(npc, section, field, src)
 		-- Имя секции теперь можно сохранить:
 		lst[n].section = newsect
 
-		-- Теперь нужно распарсить infoportions в строке infop_lst и 
-		-- заполнить массив infop_presence: { "infop_name" = true/false }.
+		-- Теперь нужно распарсить infoportions в строке infop_check_lst и 
+		-- заполнить массив infop_check: { "infop_name" = true/false }.
 		-- На входе имеем строку вида "  +infop1  -infop2 +infop3 ... "
-		lst[n].infop_presence = {}
-		infop_n = 1
-		if infop_lst then
-			for s in string.gfind(infop_lst, "%s*([^%s]+)%s*") do
-				sign = string.sub(s, 1, 1)
-				infop_name = string.sub(s, 2)
-				if sign == "+" then
-					lst[n].infop_presence[infop_n] = { name = infop_name, required = true }
-				elseif sign == "-" then
-					lst[n].infop_presence[infop_n] = { name = infop_name, required = false }
-				else
-					abort_syntax_error_in_cond(npc, section, field)
-				end
-			end
-		end
+		lst[n].infop_check = {}
+		parse_infop(lst[n].infop_check, infop_check_lst)
+
+		-- То же самое для устанавливаемых infoportions:
+		lst[n].infop_set = {}
+		parse_infop(lst[n].infop_set, infop_set_lst)
 
 		n = n + 1
 	end
@@ -260,17 +326,69 @@ function conf_get_number_and_condlist(ini, section, field, npc)
 
 	local t = {}
 
+	t.name = field
 	t.v1 = tonumber(par[1])
 	t.condlist = parse_condlist(npc, section, field, par[2])
 
 	return t
 end
 
+function conf_get_string_and_condlist(ini, section, field, npc)
+	local str = utils.cfg_get_string(ini, section, field, npc, false, "")
+	if not str then
+		return nil
+	end
+
+	local par = utils.parse_params(str)
+	if not par[1] or not par[2] then
+		abort_syntax_error_in_cond(npc, section, field)
+	end
+
+	local t = {}
+
+	t.name = field
+	t.v1 = par[1]
+	t.condlist = parse_condlist(npc, section, field, par[2])
+
+	return t
+end
+
+function conf_get_condlist(ini, section, field, npc)
+	local str = utils.cfg_get_string(ini, section, field, npc, false, "")
+	if not str then
+		return nil
+	end
+
+	local par = utils.parse_params(str)
+	if not par[1] then
+		abort_syntax_error_in_cond(npc, section, field)
+	end
+
+	local t = {}
+
+	t.name = field
+	t.condlist = parse_condlist(npc, section, field, par[1])
+
+	return t
+end
+
+function add_condition(lst, at, cond)
+	if cond then
+		lst[at] = cond
+		return at + 1
+	end
+	return at
+end
+
 function cfg_get_switch_conditions(ini, section, npc)
 	local l = {}
 	local t
+	local n = 1
 
-	l.on_actor_dist_le = conf_get_number_and_condlist(ini, section, "on_actor_dist_le", npc)
+	n = add_condition(l, n, conf_get_number_and_condlist(ini, section, "on_actor_dist_le",       npc))
+	n = add_condition(l, n, conf_get_number_and_condlist(ini, section, "on_actor_dist_le_nvis",  npc))
+	n = add_condition(l, n, conf_get_string_and_condlist(ini, section, "on_signal",              npc))
+	n = add_condition(l, n, conf_get_condlist           (ini, section, "on_info",                npc))
 
 	return l
 end

@@ -4,6 +4,11 @@
 -- Разработчик: Andrey Fidrya (Zmey) af@svitonline.com
 ----------------------------------------------------------------------------------------------------
 
+local state_none = 0
+local state_initial = 1
+local state_going_to_plr = 2
+local state_standing = 3
+
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_need_remark" (property_evaluator)
 
@@ -20,7 +25,6 @@ class "action_remark_activity" (action_base)
 
 function action_remark_activity:__init (npc_name, action_name, storage) super(nil, action_name)
 	self.st = storage
-	self.move_mgr = move_mgr.move_mgr()
 end
 
 function action_remark_activity:initialize()
@@ -31,43 +35,117 @@ function action_remark_activity:initialize()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
 
-	self.move_mgr:initialize(self.object)
-
-	--printf("initiz")
-	self.initialized = true
-
 	self:reset_scheme()
 end
 
 
 function action_remark_activity:reset_scheme()
-	--printf("reset_scheme, initialized=%s", utils.to_str(self.initialized))
-	if not self.initialized then
-		return
-	end
-
 	self.object:clear_animations()
 	
-	if self.st.path_walk_info == nil then
-		self.st.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
-	end
-	if self.st.path_look_info == nil then
-		self.st.path_look_info = utils.path_parse_waypoints(self.st.path_look)
-	end
+	self.state = state_initial
 
-	self.move_mgr:reset(self.st.path_walk, self.st.path_walk_info, self.st.path_look, self.st.path_look_info, self.st.team)
+	self.st.signals = {}
+	self.sound_end_signalled = false
+	self.move_end_signalled = false
 end	
+
+function action_remark_activity:signal_arrival()
+	if not self.move_end_signalled then
+		self.move_end_signalled = true
+		self.st.signals["move_end"] = true
+		printf("xr_remark: signalling move_end")
+	end
+end
 
 function action_remark_activity:execute()
 	action_base.execute(self)
-	self.move_mgr:update()
-	if self.move_mgr:arrived_to_first_waypoint() then
-		xr_logic.try_switch_to_another_section(self.object, self.st)
+
+	-- Scheme finalization conditions:
+	if not self.sound_end_signalled and
+	   self.state ~= state_initial and self.object:active_sound_count() == 0 then
+		self.sound_end_signalled = true
+		self.st.signals["sound_end"] = true
+		printf("xr_remark: signalling sound_end")
+	end
+
+	-- Try to switch to another scheme:
+	xr_logic.try_switch_to_another_section(self.object, self.st)
+
+	local actor = level.actor()
+	if not actor or not actor:alive() then
+		return
+	end
+
+	if self.state == state_initial then
+		xr_state.anim_update(nil, self.object)
+		if not self.st.no_move then
+			self.object:set_path_type(game_object.level_path)
+			self.object:set_desired_direction(actor:direction())
+			self.object:set_dest_level_vertex_id(actor:level_vertex_id())
+			self.object:set_movement_type(move.run)
+			self.object:set_mental_state(anim.danger)
+			self.object:set_body_state(move.standing)
+			self.state = state_going_to_plr
+		else
+			self.object:set_movement_type(move.stand)
+			self.object:set_mental_state(anim.danger)
+			self.object:set_body_state(move.standing)
+			self.state = state_standing
+		end
+		utils.stalker_look_at_stalker(self.object, actor)
+
+		if self.st.hello_snd then
+			local snd = {}
+			snd.rnd = snd_prob
+			snd.maxidle = 1
+			snd.sumidle = -1
+			snd.themes = parse_names(self.st.hello_snd)
+			xr_sound.sound_update(self.object, snd)
+		end
+
+		if self.st.hello_anim then
+			xr_state.anim_update(self.st.hello_anim, self.object)
+		end
+
+		return
+	end
+
+	self.object:set_item(object.idle, self.object:best_weapon())
+	utils.stalker_look_at_stalker(self.object, actor)
+
+	if self.state == state_standing then
+		if not self.st.no_move then
+			if distance_between(self.object, actor) >= 4 then
+				self.object:set_movement_type(move.run)
+				self.object:set_desired_direction(actor:direction())
+				self.object:set_dest_level_vertex_id(actor:level_vertex_id())
+				self.state = state_going_to_plr
+			end
+		else
+			if distance_between(self.object, actor) < 3 then
+				self:signal_arrival()
+				--self:talk_with_plr(actor)
+			end
+		end
+		return
+	end
+
+	if self.state == state_going_to_plr then
+		if distance_between(self.object, actor) >= 3 then
+			self.object:set_movement_type(move.run)
+			self.object:set_desired_direction(actor:direction())
+			self.object:set_dest_level_vertex_id(actor:level_vertex_id())
+		else
+			self.object:set_movement_type(move.stand)
+			self:signal_arrival()
+			--self:talk_with_plr(actor)
+			self.state = state_standing
+		end
+		return
 	end
 end
 
 function action_remark_activity:finalize()
-	self.move_mgr:finalize()
 	self.object:clear_animations()
 	action_base.finalize(self)
 end
@@ -121,12 +199,9 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 
-	st.path_walk = utils.cfg_get_string(ini, section, "path_walk", npc, true,  gulag_name)
-	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, false, gulag_name)
-	st.team      = utils.cfg_get_string(ini, section, "team",      npc, false, gulag_name)
-
-	st.path_walk_info = nil -- Будут инициализированы в reset(), сейчас пути могут быть еще
-	st.path_look_info = nil -- не загружены.
+	st.no_move = utils.cfg_get_bool(ini,       section, "no_move",       npc, false)
+	st.hello_snd = utils.cfg_get_string(ini,   section, "hello_snd",     npc, false, "")
+	st.hello_anim = utils.cfg_get_string(ini,  section, "hello_anim",    npc, false, "")
 
 	-- После изменении настроек, сбросить все actions, нуждающиеся в сбросе:
 	printf("DEBUG: set_scheme: about to call xr_logic.reset_actions()")
