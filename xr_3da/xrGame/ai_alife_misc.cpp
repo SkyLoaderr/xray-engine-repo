@@ -22,11 +22,21 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 		}
 	}
 	if (tpALifeMonsterAbstract->m_tNextGraphID == tpALifeMonsterAbstract->m_tGraphID) {
+		_GRAPH_ID			tGraphID		= tpALifeMonsterAbstract->m_tGraphID;
+		AI::SGraphVertex	*tpaGraph		= Level().AI.m_tpaGraph;
+		u16					wNeighbourCount = (u16)tpaGraph[tGraphID].dwNeighbourCount;
+		AI::SGraphEdge		*tpaEdges		= (AI::SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[tGraphID].dwEdgeOffset);
+		tpALifeMonsterAbstract->m_fDistanceFromPoint	= 0.0f;
 		CALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CALifeHumanAbstract *>(tpALifeMonsterAbstract);
 		if (tpALifeHumanAbstract) {
 			if (tpALifeHumanAbstract->m_tpaVertices.size() > ++(tpALifeHumanAbstract->m_dwCurNode)) {
 				tpALifeHumanAbstract->m_tNextGraphID		= _GRAPH_ID(tpALifeHumanAbstract->m_tpaVertices[tpALifeHumanAbstract->m_dwCurNode]);
-				tpALifeHumanAbstract->m_fCurSpeed			= tpALifeMonsterAbstract->m_fMinSpeed;
+				tpALifeHumanAbstract->m_fCurSpeed			= tpALifeHumanAbstract->m_fMinSpeed;
+				for (int i=0; i<(int)wNeighbourCount; i++)
+					if (tpaEdges[i].dwVertexNumber == tpALifeHumanAbstract->m_tNextGraphID) {
+                        tpALifeMonsterAbstract->m_fDistanceToPoint	= tpaEdges[i].fPathDistance;
+						break;
+					}
 			}
 			else {
 				tpALifeHumanAbstract->m_fCurSpeed			= 0.0f;
@@ -34,10 +44,6 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 			}
 		}
 		else {
-			_GRAPH_ID			tGraphID		= tpALifeMonsterAbstract->m_tGraphID;
-			AI::SGraphVertex	*tpaGraph		= Level().AI.m_tpaGraph;
-			u16					wNeighbourCount = (u16)tpaGraph[tGraphID].dwNeighbourCount;
-			AI::SGraphEdge		*tpaEdges		= (AI::SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[tGraphID].dwEdgeOffset);
 			int					iPointCount		= (int)m_tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID].ucRoutePointCount;
 			GRAPH_VECTOR		&wpaVertexes	= m_tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID].tpRouteGraphPoints;
 			int					iBranches		= 0;
@@ -77,7 +83,6 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 						break;
 				}
 			}
-			tpALifeMonsterAbstract->m_fDistanceFromPoint	= 0.0f;
 			if (!bOk) {
 				tpALifeMonsterAbstract->m_fCurSpeed			= 0.0f;
 				tpALifeMonsterAbstract->m_fDistanceToPoint	= 0.0f;
@@ -89,7 +94,7 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 	}
 }
 
-void CAI_ALife::vfCheckForTheBattle(CALifeMonsterAbstract	*tpALifeMonsterAbstract)
+void CAI_ALife::vfCheckForTheBattle(CALifeMonsterAbstract *tpALifeMonsterAbstract)
 {
 }
 
@@ -142,7 +147,7 @@ void CAI_ALife::vfProcessItems(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraph
 					CALifeItem *tpALifeItemIn = dynamic_cast<CALifeItem *>((*II).second);
 					VERIFY(tpALifeItemIn);
 					tHumanParams.m_fCumulativeItemMass -= tpALifeItemIn->m_fMass;
-					if (tpALifeItemIn->m_fPrice/tpALifeItemIn->m_fMass >= tpALifeItem->m_fPrice/tpALifeItem->m_fMass)
+					if (float(tpALifeItemIn->m_dwCost)/tpALifeItemIn->m_fMass >= float(tpALifeItemIn->m_dwCost)/tpALifeItem->m_fMass)
 						break;
 					if (tHumanParams.m_fCumulativeItemMass + tpALifeItem->m_fMass < fMaxItemMass)
 						break;
@@ -176,4 +181,41 @@ CALifeHuman *CAI_ALife::tpfGetNearestSuitableTrader(CALifeHuman *tpALifeHuman)
 		}
 	}
 	return(tpBestTrader);
+}
+
+void CAI_ALife::vfCommunicateWithTrader(CALifeHuman *tpALifeHuman, CALifeHuman *tpTrader)
+{
+	// update items
+	if (tpALifeHuman->m_tTaskState == eTaskStateReturningSuccess) {
+		TASK_PAIR_IT T = m_tTaskRegistry.m_tpMap.find(tpALifeHuman->m_tpTaskIDs[tpALifeHuman->m_dwCurTask]);
+		if (T != m_tTaskRegistry.m_tpMap.end()) {
+			STask &tCurTask = (*T).second;
+			OBJECT_IT	I = tpALifeHuman->m_tHumanParams.m_tpItemIDs.begin();
+			OBJECT_IT	E = tpALifeHuman->m_tHumanParams.m_tpItemIDs.end();
+			for ( ; I != E; I++)
+				if (m_tObjectRegistry.m_tppMap[*I]->m_tClassID == tCurTask.tClassID) {
+					tpTrader->m_tHumanParams.m_tpItemIDs.push_back(*I);
+					tpALifeHuman->m_tHumanParams.m_tpItemIDs.erase(I);
+					tpALifeHuman->m_tTaskState = eTaskStateNone;
+					CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(m_tObjectRegistry.m_tppMap[*I]);
+					tpALifeHuman->m_tHumanParams.m_dwMoney += tpALifeItem->m_dwCost;
+					m_tTaskRegistry.m_tpMap.erase(T);
+				}
+		}
+	}
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// TEMPORARY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	vfCreateNewDynamicObject	(m_tpSpawnPoints.begin() + ::Random.randI(m_tpSpawnPoints.size() - 2));
+	vfCreateNewTask				(m_tpTraders[0]);
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// END OF TEMPORARY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+	// update events
+	// update tasks
+	m_tpBufferTaskIDs.resize(tpALifeHuman->m_tpTaskIDs.size() + tpTrader->m_tpTaskIDs.size());
+	set_union(tpALifeHuman->m_tpTaskIDs.begin(),tpALifeHuman->m_tpTaskIDs.end(),tpTrader->m_tpTaskIDs.begin(),tpTrader->m_tpTaskIDs.end(),m_tpBufferTaskIDs.begin());
+	// !!! NPC has to choose it
+	tpALifeHuman->m_dwCurTask = 0;
 }

@@ -185,6 +185,7 @@ public:
 			tMemoryStream.write		(&tTask.tTimeID,		sizeof(tTask.tTimeID	));
 			tMemoryStream.write		(&tTask.tGraphID,		sizeof(tTask.tGraphID	));
 			tMemoryStream.write		(&tTask.tCustomerID,	sizeof(tTask.tCustomerID));
+			tMemoryStream.write		(&tTask.tClassID,		sizeof(tTask.tClassID	));
 			tMemoryStream.write		(&tTask.tTaskType,		sizeof(tTask.tTaskType	));
 		}
 	};
@@ -199,6 +200,7 @@ public:
 			tFileStream.Read		(&tTask.tTimeID,		sizeof(tTask.tTimeID	));
 			tFileStream.Read		(&tTask.tGraphID,		sizeof(tTask.tGraphID	));
 			tFileStream.Read		(&tTask.tCustomerID,	sizeof(tTask.tCustomerID));
+			tFileStream.Read		(&tTask.tClassID,		sizeof(tTask.tClassID	));
 			tFileStream.Read		(&tTask.tTaskType,		sizeof(tTask.tTaskType	));
 			m_tpMap.insert			(make_pair(tTask.tTaskID,tTask));
 		}

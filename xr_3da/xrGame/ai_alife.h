@@ -25,6 +25,9 @@ public:
 	SSpawnHeader					m_tSpawnHeader;
 	SALifeHeader					m_tALifeHeader;
 
+	// buffer for union operations
+	TASK_VECTOR						m_tpBufferTaskIDs;
+	
 	// static
 	SPAWN_VECTOR					m_tpSpawnPoints;		// массив spawn-point-ов
 
@@ -107,6 +110,26 @@ public:
 		m_tObjectRegistry.Add(tpALifeDynamicObject);
 	};
 
+	IC void vfCreateNewTask(CALifeHuman *tpTrader)
+	{
+		OBJECT_PAIR_IT	I = m_tObjectRegistry.m_tppMap.begin();
+		OBJECT_PAIR_IT	E = m_tObjectRegistry.m_tppMap.end();
+		for ( ; I != E; I++) {
+			CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>((*I).second);
+			if (tpALifeItem) {
+				STask						tTask;
+				tTask.tCustomerID			= tpTrader->m_tObjectID;
+				tTask.tGraphID				= tpALifeItem->m_tGraphID;
+				tTask.tTimeID				= Level().timeServer();
+				tTask.tTaskType				= eTaskTypeSearchForArtefact;
+				m_tTaskRegistry.Add			(tTask);
+				tpTrader->m_tpTaskIDs.push_back(tTask.tTaskID);
+				break;
+			}
+		}
+	}
+
+	void							vfCommunicateWithTrader	(CALifeHuman *tpALifeHuman, CALifeHuman *tpTrader);
 	CALifeHuman *					tpfGetNearestSuitableTrader(CALifeHuman *tpALifeHuman);
 	void							vfUpdateMonster			(CALifeMonsterAbstract	*tpALifeMonsterAbstract);
 	void							vfUpdateTrader			(CALifeHuman			*tpALifeHuman);

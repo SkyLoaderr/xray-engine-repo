@@ -164,7 +164,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 	CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(tpALifeDynamicObject);
 	if (tpALifeItem) {
 		Msg("* Mass          : %7.2f",tpALifeItem->m_fMass);
-		Msg("* Price         : %7.2f",tpALifeItem->m_fPrice);
+		Msg("* Price         : %d",tpALifeItem->m_dwCost);
 		return;
 	}
 	

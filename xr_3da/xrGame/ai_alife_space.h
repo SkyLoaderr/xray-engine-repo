@@ -119,6 +119,7 @@ namespace ALife {
 		_TIME_ID					tTimeID;
 		_GRAPH_ID					tGraphID;
 		_OBJECT_ID					tCustomerID;
+		_OBJECT_ID					tClassID;
 		ETaskType					tTaskType;
 	} STask;
 

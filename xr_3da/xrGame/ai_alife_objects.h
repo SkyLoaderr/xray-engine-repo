@@ -173,34 +173,34 @@ public:
 	typedef	CALifeDynamicObject inherited;
 	
 	float							m_fMass;
-	float							m_fPrice;
-	float							m_fHealthValue;
+	u32								m_dwCost;
+	s32								m_iHealthValue;
 	
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
 		inherited::Save				(tMemoryStream);
 		tMemoryStream.Wfloat		(m_fMass);
-		tMemoryStream.Wfloat		(m_fPrice);
-		tMemoryStream.Wfloat		(m_fHealthValue);
+		tMemoryStream.Wdword		(m_dwCost);
+		tMemoryStream.Wdword		(m_iHealthValue);
 	};
 	
 	virtual	void					Load(CStream	&tFileStream)
 	{
 		inherited::Load				(tFileStream);
 		m_fMass						= tFileStream.Rfloat();
-		m_fPrice					= tFileStream.Rfloat();
-		m_fHealthValue				= tFileStream.Rfloat();
+		m_dwCost					= tFileStream.Rdword();
+		m_iHealthValue				= tFileStream.Rint();
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
 		inherited::Init				(tSpawnID,tpSpawnPoints);
 		m_fMass						= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "ph_mass");
-		m_fPrice					= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "cost");
+		m_dwCost					= pSettings->ReadINT(tpSpawnPoints[tSpawnID].caModel, "cost");
 		if (pSettings->LineExists	(tpSpawnPoints[tSpawnID].caModel, "health_value"))
-			m_fHealthValue			= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "health_value");
+			m_iHealthValue			= pSettings->ReadINT(tpSpawnPoints[tSpawnID].caModel, "health_value");
 		else
-			m_fHealthValue			= 0;
+			m_iHealthValue			= 0;
 	};
 };
 
@@ -522,6 +522,6 @@ public:
 		VERIFY(tpItem1);
 		CALifeItem *tpItem2 = dynamic_cast<CALifeItem *>((*it2).second);
 		VERIFY(tpItem2);
-		return(tpItem1->m_fPrice/tpItem1->m_fMass > tpItem2->m_fPrice/tpItem2->m_fMass);
+		return(float(tpItem1->m_dwCost)/tpItem1->m_fMass > float(tpItem2->m_dwCost)/tpItem2->m_fMass);
 	};
 };

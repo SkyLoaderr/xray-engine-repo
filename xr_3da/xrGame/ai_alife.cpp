@@ -489,6 +489,7 @@ void CAI_ALife::Generate()
 	vfCreateNewDynamicObject	(m_tpSpawnPoints.begin() + ::Random.randI(m_tpSpawnPoints.size() - 2));
 	vfCreateNewDynamicObject	(m_tpSpawnPoints.end() - 2);
 	vfCreateNewDynamicObject	(m_tpSpawnPoints.end() - 1);
+	vfCreateNewTask				(m_tpTraders[0]);
 
 	m_tALifeHeader.dwVersion	= ALIFE_VERSION;
 	m_tALifeHeader.tTimeID		= 0;
