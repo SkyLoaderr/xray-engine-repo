@@ -76,33 +76,33 @@ IC BOOL shared(occTri* T1, occTri* T2)
 void occRasterizer::propagade	()
 {
 	// Clip-and-propagade zero level
+	occTri**	pFrame	= get_frame	();
+	float*		pDepth	= get_depth	();
 	for (int y=0; y<occ_dim_0; y++)
 	{
 		for (int x=0; x<occ_dim_0; x++)
 		{
-			int					ox=x+2, oy=y+2;
+			int				ox=x+2, oy=y+2;
 			
 			// Y2-connect
-			int	pos		= oy*occ_dim+ox;
-			int	pos_up	= pos-occ_dim;
-			int	pos_up2	= pos_up-occ_dim;
-			int	pos_down= pos+occ_dim;
+			int	pos			= oy*occ_dim+ox;
+			int	pos_up		= pos-occ_dim;
+			int	pos_down	= pos+occ_dim;
+			int	pos_down2	= pos_down+occ_dim;
 			
-			occTri**	pFrame	= get_frame	();
-			float*		pDepth	= get_depth	();
-			occTri* Td1			= pFrame	[pos_down];
-			if (Td1) {
-				// We has pixel 1scan down
-				if (shared(Td1,pFrame[pos_up]))
+			occTri* Tu1		= pFrame	[pos_up];
+			if (Tu1) {
+				// We has pixel 1scan up
+				if (shared(Tu1,pFrame[pos_down]))
 				{
-					// We has pixel 1scan up
-					float ZR			= (pDepth[pos_down]+pDepth[pos_up])/2;
-					if (ZR<pDepth[pos])	{ pFrame[pos] = Td1; pDepth[pos] = ZR; }
+					// We has pixel 1scan down
+					float ZR			= (pDepth[pos_up]+pDepth[pos_down])/2;
+					if (ZR<pDepth[pos])	{ pFrame[pos] = Tu1; pDepth[pos] = ZR; }
 				} else if (shared(Td1,pFrame[pos_up2])) 
 				{
-					// We has pixel 2scan up
-					float ZR			= (pDepth[pos_down]+pDepth[pos_up2])/2;
-					if (ZR<pDepth[pos])	{ pFrame[pos] = Td1; pDepth[pos] = ZR; }
+					// We has pixel 2scan down
+					float ZR			= (pDepth[pos_up]+pDepth[pos_down2])/2;
+					if (ZR<pDepth[pos])	{ pFrame[pos] = Tu1; pDepth[pos] = ZR; }
 				}
 			}
 
