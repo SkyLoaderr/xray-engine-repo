@@ -1,0 +1,140 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[wpn_usp]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\usp"					; option for Level Editor
+$npc			 = on		; option for Level Editor
+$prefetch 			= 8
+scheduled            	= off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_USP45
+min_radius               = 0
+max_radius               = 30
+
+cost					 = 120
+
+ammo_limit		 = 120
+ammo_current		 = 96
+ammo_elapsed		 = 8
+
+ammo_mag_size		 = 8
+ammo_class		 = ammo_11.43x23_hydro, ammo_11.43x23_fmj
+
+resource		= 6000
+
+hand_dependence		 = 1
+
+slot 			 = 1
+inv_name		= USP45
+inv_name_short		= USP45
+inv_weight		= .5
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 11
+inv_grid_y			= 8
+
+cam_relax_speed          = 15; 5.5
+cam_dispersion           = 2
+cam_max_angle		 = 5
+
+fire_dispersion          = 0.12
+fire_dispersion_add      = 2
+fire_dispersion_relax    = 3
+fire_dispersion_base	 = 1.5
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.7
+disp_jump_factor	 = 2
+fire_dispersion_condition_factor = 0.3
+misfire_probability = 0.0
+condition_shot_dec = 0.0003
+
+;cam_relax                = 0.37
+;cam_dispersion           = 2
+
+direction                = 0, 0, 1
+fire_point               = 0.0, 0.14, 0.15
+
+flame_particles		   = weapons\generic_weapon05
+smoke_particles		   = weapons\generic_shoot_00
+
+shell_point		 = 0.05, 0.12, -0.05
+shell_dir		 = 0.0, 0.0, 0.4
+shell_particles	 = weapons\generic_shells
+
+rpm_empty_click 	 = 200
+
+; ttc
+hit_power                = 75
+hit_impulse		 		 = 57
+hit_type = wound
+
+fire_distance            = 120
+bullet_speed			 = 250			;начальная скорость пули
+rpm                      = 300
+; end ttc
+
+hud                      = wpn_usp_hud
+normal                   = 0, 1, 0
+position                 = -0.03, -0.044, 0.12
+orientation              = 0, 0, 0
+;startup_ammo             = 90
+visual                   = weapon\usp_45\wpn_usp_45.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+ui_icon			 = ui\ui_hud_wpn_usp
+tracer_head_speed	 = 250
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.07
+light_color		 = 0.6,0.5,0.3
+light_range		 = 4.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 1
+;cost			 = 350
+
+;addons
+scope_status				= 0
+silencer_status				= 0
+grenade_launcher_status		= 0
+
+zoom_enabled				= true
+scope_zoom_factor	    = 55	;30
+
+;звуки
+snd_draw			= weapons\usp_draw
+snd_holster			= weapons\generic_holster
+snd_shoot			= weapons\usp45_shoot ; usp_shoot
+snd_empty			= weapons\pistol_empty
+snd_reload			= weapons\pm_reload, 0.8
+snd_close			= weapons\generic_close
+
+ 
+[wpn_usp_hud]
+
+shell_point		         = -0.35, -0.06, 0.07
+fire_point               = 0.00, 0.07, 0.05
+fire_bone                = wpn_body
+orientation              = 0,0,0
+position                 = 0,0,0
+visual                   = weapon\usp_45\wpn_usp_45_hud.ogf
+
+anim_holster		= holster
+anim_idle			= idle
+anim_empty			= empty
+anim_reload			= reload_full
+anim_reload_empty	= reload
+anim_draw			= draw
+anim_draw_empty		= draw_empty
+anim_shoot			= shoot1
+anim_shot_last		= shoot_last
+anim_close			= close
+anim_idle_aim			= idle
+
+;смещения HUD для режима приближения
+zoom_offset			= -0.259000,0.058000,0.000000
+zoom_rotate_x		= -0.007000
+zoom_rotate_y		= 0.088000

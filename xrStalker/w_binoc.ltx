@@ -1,0 +1,81 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; BINOCULARS
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[wpn_binoc]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\binocular"					; option for Level Editor
+$npc			 = on				; option for Level Editor
+$prefetch 		 = 8
+scheduled                = off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_BINOC
+hud                      = wpn_BINOC_hud
+position                 = 0, 0, .2
+normal                   = 0, 1, 0
+direction                = 0, 0, 1
+orientation              = -12, 7, 0
+visual                   = weapon\binoculars\wpn_binoculars.ogf
+hand_dependence		 = 1
+slot 			 = 4		; // binocular
+inv_name		 = BINOCULAR
+inv_name_short		 = BINOCULAR
+inv_weight		 = .5
+
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 16
+inv_grid_y			= 8
+
+resource		= 6000
+min_radius               = 100
+max_radius               = 150
+max_zoom_factor			 = 40
+
+cost					 = 200
+
+cam_relax_speed          = 5.5
+cam_dispersion           = 2
+cam_max_angle		 = 5
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+
+ph_mass			 = 1
+;cost			 = 120
+
+;addons
+scope_status				= 1
+silencer_status				= 0
+grenade_launcher_status		= 0
+zoom_enabled				= true
+
+scope_texture		= wpn\wpn_crosshair
+zoom_enabled			= true
+scope_zoom_factor	    = 8
+
+;звуки
+snd_draw		= weapons\generic_draw
+snd_holster		= weapons\generic_holster
+snd_gyro		= weapons\binoculars_gyro
+snd_zoomin		= weapons\binoculars_zoomin
+snd_zoomout		= weapons\binoculars_zoomout
+
+
+
+[wpn_binoc_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.05, 0.0, 0.1
+fire_bone                = binoculars
+orientation              = 10, 0, -2
+position                 = 0.15, -0.14, 0.25
+visual                   = weapon\binoculars\wpn_binoculars_hud.ogf
+
+;смещения HUD для режима приближения
+zoom_offset				= 0,0,0
+zoom_rotate_x			= 0.02
+zoom_rotate_y			= 0.0
+
+
+
+

@@ -1,0 +1,165 @@
+[wpn_groza]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\groza"					; option for Level Editor
+$npc					= on				; option for Level Editor
+$prefetch 				= 16
+scheduled				= off              ; option for ALife Simulator
+cform                   = skeleton
+class                   = W_GROZA
+min_radius              = 30
+max_radius              = 100
+
+cost					= 600	;2700
+
+ammo_limit				= 210
+ammo_current			= 180
+ammo_elapsed			= 20
+
+resource				= 6000
+
+ammo_mag_size		 = 20
+ammo_class		 = ammo_9x39_sp5, ammo_9x39_ap, ammo_9x39_pab9
+
+grenade_class		 = ammo_vog-25, ammo_vog-25p
+
+hand_dependence		 = 2
+
+slot 			 = 2		; // secondary
+inv_name	         = Groza
+inv_name_short		 = Groza
+inv_weight		 = 2.5
+
+inv_grid_width		= 4
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 14
+
+cam_relax_speed          = 12.0; 10
+cam_dispersion           = 2.1
+cam_max_angle		 = 6; 9
+
+fire_dispersion          = 0.067; не менять!!!!
+fire_dispersion_add      = 3.0
+fire_dispersion_relax    = 0.5
+fire_dispersion_base	 = 1.0
+disp_vel_factor		 = 0.2
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3.7
+fire_dispersion_condition_factor = 0.3
+misfire_probability = 0.0
+condition_shot_dec = 0.0003
+
+direction                = 0, 0, 1
+
+fire_point               = 0.0, 0.22, 0.3
+
+flame_particles		    = weapons\generic_weapon05
+smoke_particles			= weapons\generic_shoot_00
+grenade_flame_particles = weapons\generic_weapon01
+
+
+shell_point				= 0.05, 0.2, 0.015
+shell_dir				= 0.0, 0.0, 0.4
+shell_particles			= weapons\generic_shells
+
+rpm_empty_click 		= 200
+
+; ttc
+hit_power                = 55
+hit_impulse		 		 = 73.3
+hit_type = wound
+
+fire_distance            = 350
+bullet_speed			 = 330			;начальная скорость пули
+rpm                      = 700
+
+grenade_vel				 = 76
+; end ttc
+
+hud                      = wpn_groza_hud
+normal                   = 0, 1, 0
+
+;----------------------------------------------------------
+position                 = -0.03, -0.12, 0.12
+orientation              = -3.0, -4.0, -5
+
+startup_ammo             = 90
+visual                   = weapon\groza\wpn_groza.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+ui_icon			 = ui\hud_wpn_groza
+tracer_head_speed	 = 300
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.07
+light_color		 = 0.6,0.5,0.3
+light_range		 = 5
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 5
+;cost			 = 2100
+
+;addons
+scope_status				= 0
+silencer_status				= 0
+grenade_launcher_status		= 1
+
+zoom_enabled				= true
+scope_zoom_factor	    = 50	;30
+
+;звуки
+snd_draw			= weapons\generic_draw
+snd_holster			= weapons\generic_holster
+snd_shoot			= weapons\test2_shoot; was generic_shoot
+snd_empty			= weapons\gen_empty, 0.5
+snd_reload			= weapons\groza_reload, 0.7, 0.45
+snd_shoot_grenade	= weapons\gen_grenshoot
+snd_reload_grenade	= weapons\gen_grenload, 1.0, 0.8
+snd_switch			= weapons\groza_switch, 1.0, 0.45
+
+ 
+[wpn_groza_hud]
+
+shell_point               = -0.25, 0.0, 0.05
+;shell_point		 = -0.15, -0.03, 0.05
+shell_dir		 = 0.0, 1.0, 0.0
+
+fire_point               = 0.05, -0.05, 0.11
+fire_bone                = wpn_body
+orientation              = 0, 0, 0
+position                 = 0, 0, 0
+visual                   = weapon\groza\wpn_groza_hud.ogf
+
+grenade_bone    = grenade_0
+
+anim_idle		= idle
+anim_idle_aim	= idle
+anim_reload		= reload
+anim_draw		= draw
+anim_holster	= holster
+anim_shoot		= shoot
+
+anim_idle_g				= idle_g
+anim_reload_g			= reload_g
+anim_shoot_g			= shoot_g
+anim_switch_grenade_on	= switch_g
+anim_switch_grenade_off	= switch
+anim_draw_g				= draw
+anim_holster_g			= holster
+
+anim_idle_gl			= idle
+anim_reload_gl			= reload
+anim_draw_gl			= draw
+anim_holster_gl			= holster
+anim_shoot_gl			= shoot
+anim_idle_aim	        = idle
+anim_idle_g_aim         = idle
+anim_idle_gl_aim        = idle
+
+;смещения HUD для режима приближения
+zoom_offset			= -0.169000,-0.021000,0.000000
+zoom_rotate_x		= 0.039000
+zoom_rotate_y		= 0.035000
