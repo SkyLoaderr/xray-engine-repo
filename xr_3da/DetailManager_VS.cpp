@@ -37,7 +37,7 @@ void CDetailManager::hw_Load()
 
 	// Analyze batch-size
 	hw_BatchSize	= (u32(HW.Caps.vertex.dwRegisters)-c_hdr)/c_size;
-	clamp			(hw_BatchSize,0u,46u);
+	clamp			(hw_BatchSize,(u32)0,(u32)46);
 	Msg("* [DETAILS] VertexConsts(%d), Batch(%d)",u32(HW.Caps.vertex.dwRegisters),hw_BatchSize);
 
 	// Pre-process objects
