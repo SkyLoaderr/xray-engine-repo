@@ -36,7 +36,8 @@ public:
 	// gradient
     SFlare				m_Gradient;
 
-    float				m_StateBlendSpeed;
+    float				m_StateBlendUpSpeed;
+    float				m_StateBlendDnSpeed;
     
 	void				SetGradient		(float fMaxRadius, float fOpacity, LPCSTR tex_name, LPCSTR sh_name);
     void				SetSource		(float fRadius, BOOL ign_color, LPCSTR tex_name, LPCSTR sh_name);
@@ -45,7 +46,7 @@ public:
 
 	string64			section;
 public:
-    					CLensFlareDescriptor(){m_Flags.zero();section[0]=0;m_StateBlendSpeed=0.1f;}
+    					CLensFlareDescriptor(){m_Flags.zero();section[0]=0;m_StateBlendUpSpeed=m_StateBlendDnSpeed=0.1f;}
     void				load				(CInifile* pIni, LPCSTR section);
 	void 				OnDeviceCreate	();
 	void 				OnDeviceDestroy	();

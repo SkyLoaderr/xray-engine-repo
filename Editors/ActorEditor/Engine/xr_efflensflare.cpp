@@ -96,7 +96,8 @@ void CLensFlareDescriptor::load(CInifile* pIni, LPCSTR sect)
 		float o = pIni->r_float		( section,"gradient_opacity" );
 		SetGradient(r,o,T,S);
 	}
-    m_StateBlendSpeed 	= 1.f/(_max(pIni->r_float( section,"blend_time" ),0.f)+EPS_S);
+    m_StateBlendUpSpeed	= 1.f/(_max(pIni->r_float( section,"blend_rise_time" ),0.f)+EPS_S);
+    m_StateBlendDnSpeed	= 1.f/(_max(pIni->r_float( section,"blend_down_time" ),0.f)+EPS_S);
 
 	OnDeviceCreate();
 }
@@ -163,15 +164,15 @@ void CLensFlare::OnFrame(int id)
     case lfsNone: m_State=lfsShow; m_Current=desc; break;
     case lfsIdle: if (desc!=m_Current) m_State=lfsHide; 	break;
     case lfsShow: 
-        m_StateBlend 	= m_Current?(m_StateBlend + m_Current->m_StateBlendSpeed * Device.fTimeDelta):1.f+EPS;
+        m_StateBlend 	= m_Current?(m_StateBlend + m_Current->m_StateBlendUpSpeed * Device.fTimeDelta):1.f+EPS;
         if (m_StateBlend>=1.f) m_State=lfsIdle;
     break;
     case lfsHide: 
-        m_StateBlend 	= m_Current?(m_StateBlend - m_Current->m_StateBlendSpeed * Device.fTimeDelta):0.f-EPS;
+        m_StateBlend 	= m_Current?(m_StateBlend - m_Current->m_StateBlendDnSpeed * Device.fTimeDelta):0.f-EPS;
         if (m_StateBlend<=0.f){ 	
             m_State		= lfsShow;
             m_Current	= desc;
-	        m_StateBlend= m_Current?m_Current->m_StateBlendSpeed * Device.fTimeDelta:0;
+	        m_StateBlend= m_Current?m_Current->m_StateBlendUpSpeed * Device.fTimeDelta:0;
         }
     break;
     }
