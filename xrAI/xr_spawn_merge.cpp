@@ -83,7 +83,7 @@ public:
 			string64			s_name;
 			P.r_string			(s_name);
 			// create server entity
-			CSE_Abstract*	E	= F_entity_Create	(s_name);
+			CSE_Abstract		*E = F_entity_Create			(s_name);
 			if (!E) {
 				string4096		S;
 				sprintf			(S,"Can't create entity '%s' !\n",E->s_name_replace);
@@ -330,6 +330,22 @@ public:
 	};
 };
 
+LPCSTR cafGetActorLevelName(xr_vector<CSpawn *> &tpLevels, string256 &S)
+{
+	CSE_ALifeCreatureActor	*l_tpActor = 0;
+	for (u32 i=0; i<tpLevels.size(); i++) {
+		ALIFE_OBJECT_P_IT	I = tpLevels[i]->m_tpSpawnPoints.begin();
+		ALIFE_OBJECT_P_IT	E = tpLevels[i]->m_tpSpawnPoints.end();
+		for ( ; I != E; I++)
+			if (!!(l_tpActor = dynamic_cast<CSE_ALifeCreatureActor*>(*I)))
+				break;
+		if (l_tpActor)
+			return			(strconcat(S,tpLevels[i]->m_tLevel.caLevelName,".spawn"));
+	}
+	R_ASSERT2				(false,"There is no actor!");
+	return					("game.spawn");
+}
+
 void xrMergeSpawns(LPCSTR name)
 {
 	xr_vector<SLevelPoint>		l_tpLevelPoints;
@@ -389,7 +405,7 @@ void xrMergeSpawns(LPCSTR name)
 	tMemoryStream.close_chunk	();
 
 	string256					l_caFileName;
-	FS.update_path				(l_caFileName,"$game_data$","game.spawn");
+	FS.update_path				(l_caFileName,"$game_spawns$",cafGetActorLevelName(tpLevels,S));
 	tMemoryStream.save_to		(l_caFileName);
 
 	Phase						("Freeing resources being allocated");
