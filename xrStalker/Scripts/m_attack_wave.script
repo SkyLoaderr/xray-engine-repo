@@ -146,7 +146,7 @@ function main ()
 			end
 		end	
 		
-		if device():time_global () - ctime > 300 then
+		if device():time_global () - ctime > 500 then
 		   ctime =  device():time_global ()
 		   local nz = 0
 		   local pass = 0
