@@ -4,8 +4,6 @@
 #include "..\xrLevel.h"
 #include "..\x_ray.h"
 
-extern Shader*	shDEBUG;
-
 void CRender::level_Load()
 {
 	if (0==g_pGameLevel)	return;

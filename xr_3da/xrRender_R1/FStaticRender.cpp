@@ -93,7 +93,6 @@ void		CRender::set_Object			(IRenderable*		O )
 }
 
 // Misc
-Shader*					shDEBUG = 0;
 _FpsController			QualityControl;
 static	float			g_fGLOD, g_fFarSq, g_fPOWER;
 float					g_fSCREEN;
