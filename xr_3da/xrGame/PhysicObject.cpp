@@ -359,7 +359,17 @@ void CPhysicObject::OnEvent		(NET_Packet& P, u16 type)
 	case GE_OWNERSHIP_TAKE:
 		{
 			P.r_u16		(id);
-			UnsplitSingle( dynamic_cast<CGameObject*>(Level().Objects.net_Find	(id)));
+			CGameObject* O =dynamic_cast<CGameObject*>(Level().Objects.net_Find	(id));
+			O->H_SetParent(this);
+			UnsplitSingle( O );
+			break;
+		}
+	case GE_OWNERSHIP_REJECT:
+		{
+			P.r_u16		(id);
+			CGameObject* O =dynamic_cast<CGameObject*>(Level().Objects.net_Find	(id));
+			O->H_SetParent(NULL);
+			break;
 		}
 	}
 }
@@ -405,7 +415,7 @@ void CPhysicObject::UnsplitSingle(CGameObject* O)
 	u_EventSend				(P);
 
 
-	static_cast<CPhysicObject*>(O)->CopySpawnInit();
+	//static_cast<CPhysicObject*>(O)->CopySpawnInit();
 }
 
 BOOL CPhysicObject::UsedAI_Locations()
@@ -417,7 +427,7 @@ void CPhysicObject::OnH_A_Independent()
 {
 	inherited::OnH_A_Independent();
 	PKinematics(Visual())->Calculate();
-	//CopySpawnInit();
+	CopySpawnInit();
 }
 
 void CPhysicObject::CopySpawnInit()
