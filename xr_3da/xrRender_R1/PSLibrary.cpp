@@ -20,7 +20,7 @@ void CPSLibrary::OnCreate()
     	Msg("Can't find file: '%s'",fn);
     }
 }
-
+ 
 void CPSLibrary::OnDestroy()
 {
 	OnDeviceDestroy	();
