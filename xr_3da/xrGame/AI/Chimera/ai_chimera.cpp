@@ -269,6 +269,7 @@ void CAI_Chimera::UpdateCL()
 void CAI_Chimera::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
+
 	////physics/////////////////////////////////////////////////////////////////////////////////////
 	if(m_pPhysicsShell)
 	{	
@@ -298,6 +299,20 @@ void CAI_Chimera::shedule_Update(u32 dt)
 			//	skel_ddelay--;
 
 
+
+		}
+
+	}
+	else if (!g_Alive())
+	{
+
+		CreateSkeleton();
+#ifndef NO_PHYSICS_IN_AI_MOVE
+
+		Movement.DestroyCharacter();
+		PHSetPushOut();
+#endif
+	}
 
 }
 
