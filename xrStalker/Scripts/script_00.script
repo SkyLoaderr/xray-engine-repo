@@ -24,21 +24,34 @@ function main()
 --  создаем глоб. переменную содержащую id зоны объект который доступен по переменной event 
 	event_zone_id = event:id()
  
+	local stalker1	= get_level_object("m_stalker_e0000")
+	local stalker2	= get_level_object("m_stalker_e0001")
+
 	local actor   	= get_actor()
-	local trader	= get_level_object("m_trader0000")
 
 --  создаем глоб. переменную содержащую id актера который доступен по переменной actor 
 	actor_id = actor:id()
 	local sound_01 = sound_object("scripts\\alarm\\f_side_rustle")
-	local sound_cough = sound_object("scripts\\idle\\cough1")
-	local sound_holodno = sound_object("scripts\\idle\\say_holodno")
-	local sound_chto_s_toboy = sound_object("scripts\\idle\\say_chto_s_toboy")
-	local sound_dai_vipit = sound_object("scripts\\idle\\say_dai_vipit")
-	local sound_ti_pyuaniy = sound_object("scripts\\idle\\say_ti_pyuaniy")
-	local sound_skuchno = sound_object("scripts\\idle\\say_skuchno")
-	local sound_baran = sound_object("scripts\\idle\\say_baran")
-	local sound_wind = sound_object("scripts\\idle\\ew_gusty_over1")
-	local sound_vikladivay = sound_object("scripts\\trader\\vikladivay")
+
+	local prof_kgm4 = sound_object("scripts\\stalker_prof\\prof_kgm4")
+	local prof_nashel_taynik_a = sound_object("scripts\\stalker_prof\\prof_nashel_taynik_a") 
+	local prof_kgm3 = sound_object("scripts\\stalker_prof\\prof_kgm3")
+	local prof_nashel_taynik_b = sound_object("scripts\\stalker_prof\\prof_nashel_taynik_b")
+
+	local rainbow_ya_bi_pomalkival = sound_object("scripts\\stalker_rainbow\\rainbow_ya_bi_pomalkival")
+	local rainbow_v_vagone_mojet_bit_stalker = sound_object("scripts\\stalker_rainbow\\rainbow_v_vagone_mojet_bit_stalker")
+
+	local prof_kgm2 = sound_object("scripts\\stalker_prof\\prof_kgm2")
+	local prof_blin_tochno = sound_object("scripts\\stalker_prof\\prof_blin_tochno")
+	local prof_proveru_ya_vagonchik = sound_object("scripts\\stalker_prof\\prof_proveru_ya_vagonchik")
+	local rainbow_poshutil_ya = sound_object("scripts\\stalker_rainbow\\rainbow_poshutil_ya")
+
+	local prof_teper_ne_uspokous = sound_object("scripts\\stalker_prof\\prof_teper_ne_uspokous")
+	local prof_prikroy = sound_object("scripts\\stalker_prof\\prof_prikroy")
+	local rainbow_nda = sound_object("scripts\\stalker_rainbow_replics\\rainbow_nda")
+	local prof_vrode_nikogo = sound_object("scripts\\stalker_prof\\prof_vrode_nikogo")
+	local prof_vzdoh = sound_object("scripts\\stalker_prof\\prof_vzdoh")
+	local prof_valim_otsuda = sound_object("scripts\\stalker_prof\\prof_valim_otsuda")
 
 	event:clear_callback(true)
 	event:clear_callback(false)
@@ -47,78 +60,92 @@ function main()
 	event:set_callback(this.on_exit,false)
 
 	while true do
-		if is_actor_entered and actor.health > 0 then 
 			printf("entered")
 			flush()
-			sound_ti_pyuaniy:play_at_pos		(trader,trader:position(),0);
-			wait(3000)			
+			prof_kgm4:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(2000)			
+			prof_nashel_taynik_a:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(2000)			
+			prof_kgm3:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(2000)			
+			prof_nashel_taynik_b:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(2000)			
 			break
 		end
 		wait()			
 	end
 
 	while true do
-		if is_actor_entered and actor.health > 0 then 
 			printf("entered")
 			flush()
-			sound_chto_s_toboy:play_at_pos		(trader,trader:position(),0);
-			wait(3000)			
+			rainbow_ya_bi_pomalkival:play_at_pos				(stalker2,stalker2:position(),0);
+			wait(2000)			
+			rainbow_v_vagone_mojet_bit_stalker:play_at_pos	(stalker2,stalker2:position(),0);
+			wait(2000)			
 			break
 		end
 		wait()			
 	end
 
 	while true do
-		if is_actor_entered and actor.health > 0 then 
 			printf("entered")
 			flush()
-			sound_baran:play_at_pos		(trader,trader:position(),0);
-			wait(3000)			
+			prof_kgm2:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(2000)			
+			prof_blin_tochno:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(2000)			
+			prof_proveru_ya_vagonchik:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(2000)			
 			break
 		end
 		wait()			
 	end
 
 	while true do
-		if is_actor_entered == false and actor.health > 0 then 
-			printf("exit")
+			printf("entered")
 			flush()
-			sound_skuchno:play_at_pos		(trader,trader:position(),0);
-			trader_already_saw_actor = false
-			wait(3000)			
+			rainbow_poshutil_ya:play_at_pos				(stalker2,stalker2:position(),0);
+			wait(2000)			
 			break
 		end
 		wait()			
 	end
 
 	while true do
-		if is_actor_entered and actor.health > 0 then 
-			printf("entered 2")
+			printf("entered")
 			flush()
-			sound_vikladivay:play_at_pos		(trader,trader:position(),0);
-			trader_already_saw_actor = true
-			wait(3000)			
+			prof_teper_ne_uspokous:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(2000)			
+			prof_prikroy:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(2000)			
 			break
 		end
 		wait()			
 	end
 
 	while true do
-		if is_actor_entered and actor.health <= 0 then 
-			printf("exit")
+			printf("entered")
 			flush()
-			sound_baran:play_at_pos		(trader,trader:position(),0);
-			wait(3000)			
-			sound_chto_s_toboy:play_at_pos		(trader,trader:position(),0);
-			wait(3000)			
-			sound_ti_pyuaniy:play_at_pos		(trader,trader:position(),0);
-			wait(3000)			
-			trader_already_saw_actor = true
+			rainbow_nda:play_at_pos				(stalker2,stalker2:position(),0);
+			wait(2000)			
 			break
 		end
 		wait()			
 	end
 
+	while true do
+			printf("entered")
+			flush()
+			prof_vrode_nikogo:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(2000)			
+			prof_vzdoh:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(2000)			
+			prof_valim_otsuda:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(2000)			
+			break
+		end
+		wait()			
+	end
 
 	event:clear_callback(true)
 	event:clear_callback(false)
