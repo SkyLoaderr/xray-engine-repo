@@ -1,4 +1,4 @@
-// Blender_Vertex.cpp: implementation of the CBlender_Vertex class.
+// Blender_Vertex.cpp: implementation of the CBlender_LIGHT class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -11,27 +11,27 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CBlender_Vertex::CBlender_Vertex()
+CBlender_LIGHT::CBlender_LIGHT()
 {
 	description.CLS		= B_LIGHT;
 }
 
-CBlender_Vertex::~CBlender_Vertex()
+CBlender_LIGHT::~CBlender_LIGHT()
 {
 
 }
 
-void	CBlender_Vertex::Save	( CFS_Base& FS	)
+void	CBlender_LIGHT::Save	( CFS_Base& FS	)
 {
 	CBlender::Save	(FS);
 }
 
-void	CBlender_Vertex::Load	( CStream& FS	)
+void	CBlender_LIGHT::Load	( CStream& FS	)
 {
 	CBlender::Load	(FS);
 }
 
-void CBlender_Vertex::Compile	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
+void CBlender_LIGHT::Compile	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
 {
 	RS.PassBegin		();
 	{

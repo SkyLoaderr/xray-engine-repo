@@ -1,4 +1,4 @@
-// Blender_Vertex.h: interface for the CBlender_Vertex class.
+// Blender_Vertex.h: interface for the CBlender_LIGHT class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -8,7 +8,7 @@
 
 #include "Blender.h"
 
-class ENGINE_API CBlender_Vertex : public CBlender  
+class ENGINE_API CBlender_LIGHT : public CBlender  
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "base vertex blender";	}
@@ -18,8 +18,8 @@ public:
 
 	virtual		void		Compile			(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param=0, BOOL bEditor=FALSE);
 
-	CBlender_Vertex();
-	virtual ~CBlender_Vertex();
+	CBlender_LIGHT();
+	virtual ~CBlender_LIGHT();
 };
 
 #endif // !defined(AFX_BLENDER_VERTEX_H__D3B42F77_7018_4672_B6A5_6EE6BD947662__INCLUDED_)

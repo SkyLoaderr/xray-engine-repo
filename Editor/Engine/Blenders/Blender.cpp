@@ -72,6 +72,7 @@ void	CBlender::Load(	CStream& FS )
 #include "blender_screen_gray.h"
 #include "blender_editor_wire.h"
 #include "blender_editor_selection.h"
+#include "blender_light.h"
 CBlender*	CBlender::Create	(CLASS_ID cls)
 {	
 	switch (cls)
@@ -84,6 +85,7 @@ CBlender*	CBlender::Create	(CLASS_ID cls)
 	case B_SCREEN_GRAY:		return new CBlender_Screen_GRAY;	break;
 	case B_EDITOR_WIRE:		return new CBlender_Editor_Wire;	break;
 	case B_EDITOR_SEL:		return new CBlender_Editor_Selection;break;
+	case B_LIGHT:			return new CBlender_LIGHT;			break;
 	default:				return 0;
 	}
 }
@@ -98,4 +100,5 @@ void		CBlender::CreatePalette(vector<CBlender*> &palette)
 	palette.push_back(Create(B_SCREEN_GRAY));
 	palette.push_back(Create(B_EDITOR_WIRE));
 	palette.push_back(Create(B_EDITOR_SEL));
+	palette.push_back(Create(B_LIGHT));
 }
