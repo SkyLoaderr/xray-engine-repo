@@ -540,7 +540,7 @@ void CGameObject::DestroyObject()
 
 	NET_Packet			P;
 	u_EventGen			(P,GE_DESTROY,ID());
-	Msg					("DestroyEntity: ge_destroy: [%d] - %s",ID(),*cName());
+	Msg					("DestroyObject: ge_destroy: [%d] - %s",ID(),*cName());
 	if (Local()) u_EventSend			(P);
 }
 

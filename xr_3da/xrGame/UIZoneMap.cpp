@@ -184,14 +184,17 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 				CObject* pObj = Level().Objects.objects[i];
 				if (!pObj) continue;
 				CActor* pObjActor = dynamic_cast<CActor*>(pObj);
-				if (pObjActor && pObjActor != Level().CurrentEntity() && pObjActor->g_Alive())
+				if (GameID() == GAME_TEAMDEATHMATCH)
 				{
-					ConvertToLocal(LM,pObjActor->Position(),P);
+					if (pObjActor && pObjActor != Level().CurrentEntity() && pObjActor->g_Alive())
+					{
+						ConvertToLocal(LM,pObjActor->Position(),P);
 
-					if (pActor->id_Team == pObjActor->id_Team)
-						EntityOut(pObjActor->Position().y-Actor->Position().y,COLOR_SELF,P);
-					else
-						EntityOut(pObjActor->Position().y-Actor->Position().y,COLOR_ENEMY,P);
+						if (pActor->id_Team == pObjActor->id_Team)
+							EntityOut(pObjActor->Position().y-Actor->Position().y,COLOR_SELF,P);
+//						else
+//							EntityOut(pObjActor->Position().y-Actor->Position().y,COLOR_ENEMY,P);
+					};
 				};
 				CInventoryItem* pItem = dynamic_cast<CInventoryItem*>(pObj);
 				if (pItem && !pItem->H_Parent())
