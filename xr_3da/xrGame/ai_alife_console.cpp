@@ -490,12 +490,12 @@ void CAI_ALife::vfGraphVertexInfo(_GRAPH_ID &tGraphID)
 {
 	SGraphVertex &tGraphVertex = Level().AI.m_tpaGraph[tGraphID];
 	Msg("%s->Graph vertex information :",cName());
-	Msg("* Level point                : [%7.2f][%7.2f][%7.2f]",tGraphVertex.tPoint.x,tGraphVertex.tPoint.y,tGraphVertex.tPoint.z);
-	Msg("* Node ID                    : %d",tGraphVertex.dwNodeID);
+	Msg("* Level point                : [%7.2f][%7.2f][%7.2f]",tGraphVertex.tGlobalPoint.x,tGraphVertex.tGlobalPoint.y,tGraphVertex.tGlobalPoint.z);
+	Msg("* Node ID                    : %d",tGraphVertex.tNodeID);
 	Msg("* Location ID                : %d",tGraphVertex.tVertexType);
 	Msg("* Neighbours                 :");
 	SGraphEdge	*tpaEdges = (SGraphEdge *)((BYTE *)Level().AI.m_tpaGraph + tGraphVertex.dwEdgeOffset);
-	for (int i=0; i<(int)tGraphVertex.dwNeighbourCount; i++)
+	for (int i=0; i<(int)tGraphVertex.tNeighbourCount; i++)
 		Msg("*   Vertex %d -> distance %7.2f",tpaEdges[i].dwVertexNumber, tpaEdges[i].fPathDistance);
 }
 #endif

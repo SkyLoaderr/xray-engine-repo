@@ -21,16 +21,19 @@ namespace AI {
 	} SGraphEdge;
 
 	typedef struct tagSGraphVertex {
-		Fvector	tPoint;
-		u32		dwNodeID:24;
-		u32		tVertexType:8;
-		u32		dwNeighbourCount;
+		Fvector	tLocalPoint;
+		Fvector	tGlobalPoint;
+		u32		tNodeID:24;
+		u32		tLevelID:8;
+		u32		tVertexType:24;
+		u32		tNeighbourCount:8;
 		u32		dwEdgeOffset;
 	} SGraphVertex;
 
 	typedef struct tagSGraphHeader {
 		u32		dwVersion;
 		u32		dwVertexCount;
+		u32		dwLevelCount;
 	} SGraphHeader;
 	#pragma pack(pop)
 

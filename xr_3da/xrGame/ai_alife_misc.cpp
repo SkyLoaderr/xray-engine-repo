@@ -51,7 +51,7 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 		}
 		_GRAPH_ID			tGraphID		= tpALifeMonsterAbstract->m_tGraphID;
 		AI::SGraphVertex	*tpaGraph		= Level().AI.m_tpaGraph;
-		u16					wNeighbourCount = (u16)tpaGraph[tGraphID].dwNeighbourCount;
+		u16					wNeighbourCount = (u16)tpaGraph[tGraphID].tNeighbourCount;
 		AI::SGraphEdge		*tpaEdges		= (AI::SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[tGraphID].dwEdgeOffset);
 		tpALifeMonsterAbstract->m_fDistanceFromPoint	= 0.0f;
 		CALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CALifeHumanAbstract *>(tpALifeMonsterAbstract);

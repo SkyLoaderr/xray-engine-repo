@@ -399,11 +399,11 @@ public:
 		CALifeTrader *	tpBestTrader = 0;
 		TRADER_P_IT		I = m_tpTraders.begin();
 		TRADER_P_IT		E = m_tpTraders.end();
-		Fvector			&tPoint = Level().AI.m_tpaGraph[tpALifeHuman->m_tGraphID].tPoint;
+		Fvector			&tGlobalPoint = Level().AI.m_tpaGraph[tpALifeHuman->m_tGraphID].tGlobalPoint;
 		for ( ; I != E; I++) {
 			if ((*I)->m_tRank != tpALifeHuman->m_tRank)
 				break;
-			float fCurDistance = Level().AI.m_tpaGraph[(*I)->m_tGraphID].tPoint.distance_to(tPoint);
+			float fCurDistance = Level().AI.m_tpaGraph[(*I)->m_tGraphID].tGlobalPoint.distance_to(tGlobalPoint);
 			if (fCurDistance < fBestDistance) {
 				fBestDistance = fCurDistance;
 				tpBestTrader = *I;

@@ -354,7 +354,7 @@ CAIGraphShortestPathNode::CAIGraphShortestPathNode(SAIMapData &tAIMapData)
 void CAIGraphShortestPathNode::begin(u32 dwNode, CAIGraphTemplateNode::iterator &tIterator, CAIGraphTemplateNode::iterator &tEnd)
 {
 	tIterator = (AI::SGraphEdge *)((BYTE *)tData.tpAI_Space->m_tpaGraph + tData.tpAI_Space->m_tpaGraph[dwNode].dwEdgeOffset);
-	tEnd = tIterator + tData.tpAI_Space->m_tpaGraph[dwNode].dwNeighbourCount;
+	tEnd = tIterator + tData.tpAI_Space->m_tpaGraph[dwNode].tNeighbourCount;
 }
 
 bool CAIGraphShortestPathNode::bfCheckIfAccessible(u32 dwNode)
@@ -370,10 +370,10 @@ float CAIGraphShortestPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode, it
 
 float CAIGraphShortestPathNode::ffAnticipate(u32 dwStartNode)
 {
-	return(tData.tpAI_Space->m_tpaGraph[dwStartNode].tPoint.distance_to(tData.tpAI_Space->m_tpaGraph[tData.dwFinishNode].tPoint));
+	return(tData.tpAI_Space->m_tpaGraph[dwStartNode].tGlobalPoint.distance_to(tData.tpAI_Space->m_tpaGraph[tData.dwFinishNode].tGlobalPoint));
 }
 
 float CAIGraphShortestPathNode::ffAnticipate()
 {
-	return(tData.tpAI_Space->m_tpaGraph[m_dwLastBestNode].tPoint.distance_to(tData.tpAI_Space->m_tpaGraph[tData.dwFinishNode].tPoint));
+	return(tData.tpAI_Space->m_tpaGraph[m_dwLastBestNode].tGlobalPoint.distance_to(tData.tpAI_Space->m_tpaGraph[tData.dwFinishNode].tGlobalPoint));
 }

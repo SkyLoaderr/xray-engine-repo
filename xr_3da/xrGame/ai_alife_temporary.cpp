@@ -151,7 +151,7 @@ void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFa
 				m_tpSpawnPoints[ii].tpRouteGraphPoints.push_back(m_tpSpawnPoints[ii].tNearestGraphPointID);
 				tpMarks[m_tpSpawnPoints[ii].tNearestGraphPointID] = true;
 				u16				wPoint = m_tpSpawnPoints[ii].tNearestGraphPointID;
-				int				wCount = tpaGraph[wPoint].dwNeighbourCount;
+				int				wCount = tpaGraph[wPoint].tNeighbourCount;
 				AI::SGraphEdge	*tpaEdges = (AI::SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[wPoint].dwEdgeOffset);
 				for ( j=0; j<(int)wCount; j++) {
 					if (!tpMarks[tpaEdges[j].dwVertexNumber]) {
@@ -159,7 +159,7 @@ void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFa
 						tpMarks[tpaEdges[j].dwVertexNumber] = true;
 					}
 					u32				wPoint1 = tpaEdges[j].dwVertexNumber;
-					int				wCount1 = tpaGraph[wPoint1].dwNeighbourCount;
+					int				wCount1 = tpaGraph[wPoint1].tNeighbourCount;
 					AI::SGraphEdge	*tpaEdges1 = (AI::SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[wPoint1].dwEdgeOffset);
 					for (int k=0; k<wCount1; k++)
 						if (!tpMarks[tpaEdges1[k].dwVertexNumber]) {
@@ -265,12 +265,12 @@ void CAI_ALife::vfRandomizeGraphTerrain()
 		if (!tpaGraph[i].tVertexType) {
 			m = (m + 1) & 0xff;
 			tpaGraph[i].tVertexType = (u32)m;
-			int			wCount = tpaGraph[i].dwNeighbourCount;
+			int			wCount = tpaGraph[i].tNeighbourCount;
 			SGraphEdge	*tpaEdges = (SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[i].dwEdgeOffset);
 			for (int j=0; j<(int)wCount; j++)
 				if (!tpaGraph[tpaEdges[j].dwVertexNumber].tVertexType) {
 					tpaGraph[tpaEdges[j].dwVertexNumber].tVertexType = m;
-					int			wCount1 = tpaGraph[tpaEdges[j].dwVertexNumber].dwNeighbourCount;
+					int			wCount1 = tpaGraph[tpaEdges[j].dwVertexNumber].tNeighbourCount;
 					SGraphEdge	*tpaEdges1 = (SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[tpaEdges[j].dwVertexNumber].dwEdgeOffset);
 					for (int k=0; k<wCount1; k++)
 						if (!tpaGraph[tpaEdges1[k].dwVertexNumber].tVertexType)

@@ -83,7 +83,7 @@ void CAI_Space::Load(LPCSTR name)
 	q_mark_bit_x.assign		(m_header.count,false);
 
 	// for graph
-	strconcat				(fName,name,"level.graph");
+	strconcat				(fName,::Path.GameData,"game.graph");
 	if (Engine.FS.Exist(fName)) {
 		m_tpGraphVFS			= Engine.FS.Open	(fName);
 		m_tpGraphVFS->Read		(&m_tGraphHeader,sizeof(AI::SGraphHeader));
@@ -136,12 +136,12 @@ void CAI_Space::Render()
 	{
 		CGameFont* F		= ((CHUDManager*)Level().HUD())->pFontDI;
 		for (int i=0; i<(int)m_tGraphHeader.dwVertexCount; i++) {
-			Fvector t1 = m_tpaGraph[i].tPoint;
+			Fvector t1 = m_tpaGraph[i].tGlobalPoint;
 			t1.y += .6f;
 			NORMALIZE_VECTOR(t1);
 			Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
-			for (int j=0; j<(int)m_tpaGraph[i].dwNeighbourCount; j++) {
-				Fvector t2 = m_tpaGraph[((AI::SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[i].dwEdgeOffset) + j)->dwVertexNumber].tPoint;
+			for (int j=0; j<(int)m_tpaGraph[i].tNeighbourCount; j++) {
+				Fvector t2 = m_tpaGraph[((AI::SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[i].dwEdgeOffset) + j)->dwVertexNumber].tGlobalPoint;
 				t2.y += .6f;
 				NORMALIZE_VECTOR(t2);
 				Device.Primitive.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(0,255,0));
@@ -157,12 +157,12 @@ void CAI_Space::Render()
 			F->Out(S.x,-S.y,"%d",i);
 		}
 		if (m_tpAStar->m_tpaNodes.size()) {
-			Fvector t1 = m_tpaGraph[m_tpAStar->m_tpaNodes[0]].tPoint;
+			Fvector t1 = m_tpaGraph[m_tpAStar->m_tpaNodes[0]].tGlobalPoint;
 			t1.y += .6f;
 			NORMALIZE_VECTOR(t1);
 			Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
 			for (int i=1; i<(int)m_tpAStar->m_tpaNodes.size(); i++) {
-				Fvector t2 = m_tpaGraph[m_tpAStar->m_tpaNodes[i]].tPoint;
+				Fvector t2 = m_tpaGraph[m_tpAStar->m_tpaNodes[i]].tGlobalPoint;
 				t2.y += .6f;
 				NORMALIZE_VECTOR(t2);
 				Device.Primitive.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
@@ -171,7 +171,7 @@ void CAI_Space::Render()
 			}
 //			i=1;
 //			for (; m_tpAStar->m_tpIndexes[m_tpAStar->m_tpHeap[i].iIndex].dwTime == m_tpAStar->m_dwAStarStaticCounter; i++) {
-//				Fvector t2 = m_tpaGraph[m_tpAStar->m_tpHeap[i].iIndex].tPoint;
+//				Fvector t2 = m_tpaGraph[m_tpAStar->m_tpHeap[i].iIndex].tGlobalPoint;
 //				t2.y += .6f;
 //				NORMALIZE_VECTOR(t2);
 //				Device.Primitive.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
@@ -184,7 +184,7 @@ void CAI_Space::Render()
 				OBJECT_PAIR_IT	E = tpGame->m_tALife.m_tObjectRegistry.end();
 				for ( ; I != E; I++) {
 					{
-						Fvector t1 = m_tpaGraph[tpGame->m_tALife.m_tpSpawnPoints[(*I).second->m_tSpawnID]->m_tNearestGraphPointID].tPoint;
+						Fvector t1 = m_tpaGraph[tpGame->m_tALife.m_tpSpawnPoints[(*I).second->m_tSpawnID]->m_tNearestGraphPointID].tGlobalPoint;
 						t1.y += .6f;
 						NORMALIZE_VECTOR(t1);
 						Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,0));
@@ -194,12 +194,12 @@ void CAI_Space::Render()
 						if (tpALifeMonsterAbstract) {
 							CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeMonsterAbstract);
 							if (tpALifeHuman && tpALifeHuman->m_tpaVertices.size()) {
-								Fvector t1 = m_tpaGraph[tpALifeHuman->m_tpaVertices[0]].tPoint;
+								Fvector t1 = m_tpaGraph[tpALifeHuman->m_tpaVertices[0]].tGlobalPoint;
 								t1.y += .6f;
 								NORMALIZE_VECTOR(t1);
 								Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
 								for (int i=1; i<(int)tpALifeHuman->m_tpaVertices.size(); i++) {
-									Fvector t2 = m_tpaGraph[tpALifeHuman->m_tpaVertices[i]].tPoint;
+									Fvector t2 = m_tpaGraph[tpALifeHuman->m_tpaVertices[i]].tGlobalPoint;
 									t2.y += .6f;
 									NORMALIZE_VECTOR(t2);
 									Device.Primitive.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
@@ -208,8 +208,8 @@ void CAI_Space::Render()
 								}
 							}
 							if (tpALifeMonsterAbstract->m_fDistanceToPoint > EPS_L) {
-								Fvector t1 = m_tpaGraph[tpALifeMonsterAbstract->m_tGraphID].tPoint;
-								Fvector t2 = m_tpaGraph[tpALifeMonsterAbstract->m_tNextGraphID].tPoint;
+								Fvector t1 = m_tpaGraph[tpALifeMonsterAbstract->m_tGraphID].tGlobalPoint;
+								Fvector t2 = m_tpaGraph[tpALifeMonsterAbstract->m_tNextGraphID].tGlobalPoint;
 								t2.sub(t1);
 								t2.mul(tpALifeMonsterAbstract->m_fDistanceFromPoint/tpALifeMonsterAbstract->m_fDistanceToPoint);
 								t1.add(t2);
@@ -218,7 +218,7 @@ void CAI_Space::Render()
 								Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
 							}
 							else {
-								Fvector t1 = m_tpaGraph[(*I).second->m_tGraphID].tPoint;
+								Fvector t1 = m_tpaGraph[(*I).second->m_tGraphID].tGlobalPoint;
 								t1.y += .6f;
 								NORMALIZE_VECTOR(t1);
 								Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
@@ -227,7 +227,7 @@ void CAI_Space::Render()
 						else {
 							CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>((*I).second);
 							if (tpALifeItem && !tpALifeItem->m_bAttached) {
-								Fvector t1 = m_tpaGraph[(*I).second->m_tGraphID].tPoint;
+								Fvector t1 = m_tpaGraph[(*I).second->m_tGraphID].tGlobalPoint;
 								t1.y += .6f;
 								NORMALIZE_VECTOR(t1);
 								Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,255,0));
