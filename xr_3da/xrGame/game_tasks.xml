@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding="windows-1251"?>
+
+<game_tasks_data>
+	<game_task id="task1">
+		<objective>
+			<text>test task primary2</text>
+			<script_condition>info_test1.test_task3</script_condition>
+		</objective>
+		<objective>
+			<text>test task secondary 01</text>
+			<script_condition>info_test1.test_task2</script_condition>
+		</objective>
+	</game_task>
+	<game_task id="task2">
+		<objective>
+			<text>test task primary2</text>
+			<script_condition>info_test1.test_task1</script_condition>
+		</objective>
+		<objective>
+			<text>test task secondary 01</text>
+			<script_condition>info_test1.test_task2</script_condition>
+		</objective>
+	</game_task>
+</game_tasks_data>
