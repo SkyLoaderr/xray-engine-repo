@@ -205,7 +205,7 @@ void CSkeletonX_ST::Load(const char* N, IReader *data, u32 dwFlags)
 	_Load_hw						(*this,_verts_);
 }
 
-void CSkeletonX::_Load_hw	(Fvisual& V, void *	_verts_)
+void CSkeletonX_ext::_Load_hw	(Fvisual& V, void *	_verts_)
 {
 	// Create HW VB in case this is possible
 	BOOL	bSoft				= HW.Caps.geometry.bSoftware;
@@ -214,7 +214,7 @@ void CSkeletonX::_Load_hw	(Fvisual& V, void *	_verts_)
 	{
 	case RM_SKINNING_SOFT:
 		//Msg					("skinning: software");
-		V.hGeom.create			(vertRenderFVF, RCache.Vertex.Buffer(), V.pIndices);
+		V.geom.create			(vertRenderFVF, RCache.Vertex.Buffer(), V.pIndices);
 		break;
 	case RM_SINGLE:
 	case RM_SKINNING_1B:
@@ -233,7 +233,7 @@ void CSkeletonX::_Load_hw	(Fvisual& V, void *	_verts_)
 				dst++; src++;
 			}
 			V.pVertices->Unlock	();
-			V.hGeom.create		(dwDecl_01W, V.pVertices, V.pIndices);
+			V.geom.create		(dwDecl_01W, V.pVertices, V.pIndices);
 		}  
 		break;
 	case RM_SKINNING_2B:
@@ -252,7 +252,7 @@ void CSkeletonX::_Load_hw	(Fvisual& V, void *	_verts_)
 				dst++;		src++;
 			}
 			V.pVertices->Unlock	();
-			V.hGeom.create		(dwDecl_2W, V.pVertices, V.pIndices);
+			V.geom.create		(dwDecl_2W, V.pVertices, V.pIndices);
 		}
 		break;
 	}

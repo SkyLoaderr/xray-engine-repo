@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "..\flod.h"
+#include "flod.h"
 
 #ifdef _EDITOR
 #include "igame_persistent.h"

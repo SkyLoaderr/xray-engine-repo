@@ -127,7 +127,7 @@ void CLightShadows::add_element	(NODE& N)
 {
 	if (0==current)										return;
 	VERIFY2	(casters.back()->nodes.size()<24,"Object exceeds limit of 24 renderable parts/materials");
-	if (0==N.pVisual->hShader->E[SE_R1_LMODELS]._get())	return;
+	if (0==N.pVisual->shader->E[SE_R1_LMODELS]._get())	return;
 	casters.back()->nodes.push_back		(N);
 }
 
