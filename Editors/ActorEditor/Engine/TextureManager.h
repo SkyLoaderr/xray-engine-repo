@@ -134,7 +134,6 @@ public:
 	CShaderManager			()
 	{
 		bDeferredLoad		= FALSE;
-		cache.Invalidate	();
 	}
 	
 	void	xrStartUp		();
