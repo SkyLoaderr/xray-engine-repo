@@ -32,6 +32,8 @@ class CEffectorZoomInertion : public CCameraEffector
 	u32		m_dwDeltaTime;
 
 	CRandom		m_Random;
+
+	void			CalcNextPoint		();
 public:
 	CEffectorZoomInertion				();
 	virtual ~CEffectorZoomInertion		();

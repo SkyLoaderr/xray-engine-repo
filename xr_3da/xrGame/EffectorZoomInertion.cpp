@@ -65,6 +65,16 @@ void CEffectorZoomInertion::SetParams	(float disp)
 }
 
 
+void			CEffectorZoomInertion::CalcNextPoint		()
+{
+	m_fEpsilon = 2*m_fFloatSpeed;
+
+	float half_disp_radius = m_fDispRadius/2.f;
+	m_vTargetPoint.x = m_Random.randF(-half_disp_radius,half_disp_radius);
+	m_vTargetPoint.y = m_Random.randF(-half_disp_radius,half_disp_radius);
+
+	m_vTargetVel.sub(m_vTargetPoint, m_vLastPoint);
+};
 
 BOOL CEffectorZoomInertion::Process		(Fvector &p, Fvector &d, Fvector &n, 
 										 float& fFov, float& fFar, float& fAspect)
@@ -79,19 +89,23 @@ BOOL CEffectorZoomInertion::Process		(Fvector &p, Fvector &d, Fvector &n,
 	Fvector dir;
 	dir.sub(m_vCurrentPoint,m_vTargetPoint);
 
-	if(dir.magnitude()<m_fEpsilon || m_dwTimePassed>m_dwDeltaTime)
+
+///	if(dir.magnitude()<m_fEpsilon || m_dwTimePassed>m_dwDeltaTime)
+//	if (m_dwTimePassed>m_dwDeltaTime)
+	if (m_dwTimePassed == 0)
 	{
-		m_dwTimePassed = 0;
-		
-		m_fEpsilon = 2*m_fFloatSpeed;
-
-		float half_disp_radius = m_fDispRadius/2.f;
-		m_vTargetPoint.x = m_Random.randF(-half_disp_radius,half_disp_radius);
-		m_vTargetPoint.y = m_Random.randF(-half_disp_radius,half_disp_radius);
-
-		m_vTargetVel.sub(m_vTargetPoint, m_vCurrentPoint);
-
 		m_vLastPoint.set(m_vCurrentPoint);
+		CalcNextPoint();
+	}
+	else
+	{
+		while (m_dwTimePassed > m_dwDeltaTime)
+		{
+			m_dwTimePassed -= m_dwDeltaTime;
+
+			m_vLastPoint.set(m_vTargetPoint);
+			CalcNextPoint();
+		};
 	}
 
 	m_vCurrentPoint.lerp(m_vLastPoint, m_vTargetPoint, float(m_dwTimePassed)/m_dwDeltaTime);
