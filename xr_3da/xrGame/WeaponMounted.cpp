@@ -246,6 +246,7 @@ bool	CWeaponMounted::attach_Actor		(CActor* actor)
 	XFORM().transform_tiny	(ap,A.c);
 	Fmatrix AP; AP.translate(ap);
 	Owner()->SetPhPosition	(AP);
+	processing_activate		();
 	return true;
 }
 void	CWeaponMounted::detach_Actor		()
@@ -261,6 +262,8 @@ void	CWeaponMounted::detach_Actor		()
 	
 	//закончить стрельбу
 	FireEnd();
+
+	processing_deactivate		();
 }
 
 Fvector	CWeaponMounted::ExitPosition		()
