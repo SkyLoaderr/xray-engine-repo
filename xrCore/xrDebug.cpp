@@ -3,12 +3,15 @@
 #include "resource.h"
 #include "dbghelp.h"
 
+#include "dxerr9.h"
+
 #ifdef __BORLANDC__
-	#include "dxerr8.h"
-	#pragma comment(lib,"dxerr8.lib")
+	#include "d3d9.h"
+	#include "d3dx9.h"
+	#include "D3DX_Wrapper.h"
+	#pragma comment(lib,"ETools.lib")
 	static BOOL			bException	= TRUE;
 #else
-	#include "dxerr9.h"
 	#pragma comment(lib,"dxerr9.lib")
 	static BOOL			bException	= FALSE;
 #endif
@@ -98,11 +101,7 @@ void xrDebug::error		(HRESULT hr, const char* expr, const char *file, int line)
 	string1024	buffer;
 	string1024	reason;
 
-#ifdef __BORLANDC__    
-	const char *desc	= DXGetErrorString8A		(hr);
-#else
 	const char *desc	= DXGetErrorDescription9	(hr);
-#endif
 	if (desc==0) 
 	{
 		FormatMessage	(FORMAT_MESSAGE_FROM_SYSTEM,0,hr,0,buffer,1024,0);
