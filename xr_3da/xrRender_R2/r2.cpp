@@ -206,6 +206,7 @@ CRender::CRender()
 	b_distortion		= (strstr(Core.Params,"-nodistort"))?FALSE:TRUE;
 	b_nvstecil			= (strstr(Core.Params,"-nonvstencil"))?FALSE:TRUE;
 	b_nvstecil			= FALSE;
+	b_disasm			= (strstr(Core.Params,"-disasm"))?TRUE:FALSE;
 }
 
 CRender::~CRender()
@@ -319,5 +320,9 @@ HRESULT	CRender::shader_compile			(
     LPD3DXBUFFER*                   ppShader		= (LPD3DXBUFFER*)		_ppShader;
     LPD3DXBUFFER*                   ppErrorMsgs		= (LPD3DXBUFFER*)		_ppErrorMsgs;
     LPD3DXCONSTANTTABLE*            ppConstantTable	= (LPD3DXCONSTANTTABLE*)_ppConstantTable;
-	return D3DXCompileShader		(pSrcData,SrcDataLen,defines,pInclude,pFunctionName,pTarget,Flags,ppShader,ppErrorMsgs,ppConstantTable);
+	HRESULT		_result	= D3DXCompileShader(pSrcData,SrcDataLen,defines,pInclude,pFunctionName,pTarget,Flags,ppShader,ppErrorMsgs,ppConstantTable);
+	if (b_disasm)
+	{
+	}
+	return		_result;
 }

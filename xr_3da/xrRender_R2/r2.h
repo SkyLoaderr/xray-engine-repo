@@ -40,6 +40,7 @@ public:
 	BOOL						b_Tshadows;						// transluent shadows
 	BOOL						b_distortion;
 	BOOL						b_nvstecil;
+	BOOL						b_disasm;
 public:
 	struct		_stats
 	{
