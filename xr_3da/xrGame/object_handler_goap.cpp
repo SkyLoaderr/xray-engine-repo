@@ -73,8 +73,8 @@ void CObjectHandlerGOAP::reinit			(CAI_Stalker *object)
 	CSObjectActionBase			*action = xr_new<CSObjectActionBase>(m_object,m_object);
 	action->add_effect			(CWorldProperty(eWorldPropertyNoItemsIdle,true));
 	add_operator				(eWorldOperatorNoItemsIdle,action);
-	m_target_state.clear		();
-	m_target_state.add_condition(CWorldProperty(eWorldPropertyNoItemsIdle,true));
+	set_goal					(eObjectActionNoItems);
+	m_current_action_id			= eWorldOperatorNoItemsIdle;
 }
 
 void CObjectHandlerGOAP::reload			(LPCSTR section)
@@ -390,8 +390,8 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_effect			(action,id,eWorldPropertySwitch2,	true);
 	add_operator		(uid(id,eWorldOperatorSwitch2),		action);
 
-	get_operator(uid(id,eWorldOperatorAim1))->set_inertia_time(1000);
-	get_operator(uid(id,eWorldOperatorAim2))->set_inertia_time(1000);
+	this->action(uid(id,eWorldOperatorAim1)).set_inertia_time(1000);
+	this->action(uid(id,eWorldOperatorAim2)).set_inertia_time(1000);
 }
 
 void CObjectHandlerGOAP::add_evaluators		(CMissile *missile)
@@ -412,14 +412,15 @@ void CObjectHandlerGOAP::add_operators		(CEatableItem *eatable_item)
 
 void CObjectHandlerGOAP::set_goal	(MonsterSpace::EObjectAction object_action, CGameObject *game_object)
 {
-	EWorldProperties	goal = object_property(object_action);
-	u32					condition_id = goal;
+	EWorldProperties		goal = object_property(object_action);
+	u32						condition_id = goal;
 
 	if (game_object && (eWorldPropertyNoItemsIdle != goal))
-		condition_id	= uid(game_object->ID(), goal);
+		condition_id		= uid(game_object->ID(), goal);
 	else
-		condition_id	= eWorldPropertyNoItemsIdle;
+		condition_id		= eWorldPropertyNoItemsIdle;
 
-	m_target_state.clear();
-	m_target_state.add_condition(CWorldProperty(condition_id,true));
+	CState					condition;
+	condition.add_condition	(CWorldProperty(condition_id,true));
+	set_target_state		(condition);
 }

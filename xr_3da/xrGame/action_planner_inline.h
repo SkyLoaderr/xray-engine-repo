@@ -108,11 +108,11 @@ void CPlanner::update				(u32 time_delta)
 	VERIFY						(!solution().empty());
 
 	if (initialized() && (current_action_id() != solution().front())) {
-		current_action().finalize();
-		set_current_action		(solution().front());
+		current_action().finalize	();
+		set_current_action			(solution().front());
+		current_action().initialize	();
 	}
 
-	current_action().initialize	();
 	current_action().execute	();
 
 	CPlanner					*action_planner = dynamic_cast<CPlanner*>(&current_action());
@@ -131,7 +131,9 @@ IC	typename CPlanner::COperator &CPlanner::action	(const _action_id_type action_
 TEMPLATE_SPECIALIZATION
 IC	void CPlanner::set_current_action	(const _action_id_type action_id)
 {
+	VERIFY				(!initialized());
 	m_current_action_id	= action_id;
+	m_actuality			= false;
 }
 
 TEMPLATE_SPECIALIZATION
