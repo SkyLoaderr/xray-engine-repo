@@ -52,8 +52,6 @@ function options_base_tab:InitControls(caption, x_pos, y_pos)
 	-- INIT DATA>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	
 	-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< CODE
-	
-	-- CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	-- init self position and size
 	self:Init(self.main_rect.x, 
 			  self.main_rect.y,
@@ -67,6 +65,7 @@ function options_base_tab:InitControls(caption, x_pos, y_pos)
 										 self.main_rect.width, 
 										 self.main_rect.height)
 	self:AttachChild(self.main_frame)
+	-- CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 end
 
 function options_base_tab:OnKeyboard(dik, keyboard_action)
