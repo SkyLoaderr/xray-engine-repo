@@ -474,7 +474,8 @@ bool CScriptDebugger::HasBreakPoint(const char* fileName, s32 lineNum)
 		if(bp.nLine == lineNum)
 			if( xr_strlen(bp.fileName) == xr_strlen(sFileName) )
 			{
-				if( strstr(bp.fileName, sFileName)==bp.fileName )
+				if( strcmp(strlwr(bp.fileName), strlwr(sFileName)) == 0)
+//				if( strstr(bp.fileName, sFileName)==bp.fileName )
 					return true;
 			}
 	}

@@ -116,6 +116,11 @@ BOOL CIdeApp::InitInstance()
 CString ss_ini  = 	GetProfileString("options","sSafeIniFile", "" );
 	if(ss_ini.GetLength()>0)
 		m_ssConnection.b_Connect("","",ss_ini);
+
+
+	m_comparerCmd = GetProfileString("options","fileComaprer", "" );
+	m_comparerFormat = GetProfileString("options","fileComparerFormat", "" );
+
 	return TRUE;
 }
 
@@ -219,9 +224,13 @@ void checkRegVal()
 const char *g_rOptionsKey               = "SOFTWARE\\xrScriptDebugIde\\xRayScriptDebugger\\options";
 const char *g_rSSafeIniName             = "sSafeIniFile";
 const char *g_rSSafeFolder				= "sSafeFolder";
+const char *g_rComparerCmd				= "fileComaprer";
+const char *g_rComparerFormat			= "fileComparerFormat";
 
 const char *g_rSSafeIniDefValue			    = "\\\\X-RAY\\VSS$\\srcsafe.ini";
 const char *g_rSSafeFolderDefValue          = "$/xrStalker/Scripts/";
+const char *g_rComparerCmdDef				= "x:\wincmp.exe";
+const char *g_rComparerFormatDef			= " %s %s";
 
 HKEY hk;
 DWORD keytype = REG_SZ;
@@ -241,6 +250,14 @@ LONG res;
 			if(res == ERROR_FILE_NOT_FOUND)
 				RegSetValueEx(hk,g_rSSafeFolder,0,REG_SZ,(LPBYTE)g_rSSafeFolderDefValue,strlen(g_rSSafeFolderDefValue)+1);
 
-            RegCloseKey( hk );
+			res = RegQueryValueEx(hk,g_rComparerCmd,0,&keytype,(LPBYTE)keyvalue, &keysize );
+			if(res == ERROR_FILE_NOT_FOUND)
+				RegSetValueEx(hk,g_rComparerCmd,0,REG_SZ,(LPBYTE)g_rComparerCmdDef,strlen(g_rComparerCmdDef)+1);
+
+			res = RegQueryValueEx(hk,g_rComparerFormat,0,&keytype,(LPBYTE)keyvalue, &keysize );
+			if(res == ERROR_FILE_NOT_FOUND)
+				RegSetValueEx(hk,g_rComparerFormat,0,REG_SZ,(LPBYTE)g_rComparerFormatDef,strlen(g_rComparerFormatDef)+1);
+
+			RegCloseKey( hk );
     }
 }

@@ -49,6 +49,8 @@ protected:
 	BOOL fileExist(CString path_name);
 public:
 	CSSConnection	m_ssConnection;
+	CString			m_comparerCmd;
+	CString			m_comparerFormat;
 
 };
 

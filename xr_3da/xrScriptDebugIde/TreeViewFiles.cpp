@@ -612,7 +612,7 @@ void CTreeViewFiles::OnVSSUndoCheckOut(){
 }
 void CTreeViewFiles::OnVSSDifference(){
 	HTREEITEM hItem = m_pTree->GetSelectedItem();
-	VSSCheckIn(hItem);
+	VSSDifferences(hItem);
 }
 
 
@@ -678,11 +678,7 @@ void CTreeViewFiles::VSSUndoCheckOut(HTREEITEM itm){
 	CComBSTR file_name = working_folder+str;
 	theApp.m_ssConnection.p_GetSourcesafeDatabase()->get_VSSItem(file_name, FALSE, &vssItem);
 
-	CComBSTR bstr_comment("no comment");
 	CComBSTR bstr_localSpec;
-/*	long flags =	VSSFLAG_CMPCHKSUM|VSSFLAG_DELNO|VSSFLAG_FORCEDIRYES|
-					VSSFLAG_KEEPNO|VSSFLAG_RECURSNO|VSSFLAG_UPDUNCH;
-	*/
 	vssItem->get_LocalSpec(&bstr_localSpec);
 	vssItem->UndoCheckout(bstr_localSpec, 0);
 	if (!b_DisplayAnyError())
@@ -693,6 +689,51 @@ void CTreeViewFiles::VSSUndoCheckOut(HTREEITEM itm){
 }
 
 void CTreeViewFiles::VSSDifferences(HTREEITEM itm){
+	if(!theApp.m_ssConnection.b_IsConnected())
+		return;
+
+	CString str;
+	str = m_pTree->GetItemText(itm);
+
+	IVSSItemPtr vssItem;
+	CComBSTR file_name = working_folder+str;
+	theApp.m_ssConnection.p_GetSourcesafeDatabase()->get_VSSItem(file_name, FALSE, &vssItem);
+
+	CComBSTR bstr_localSpec;
+	vssItem->get_LocalSpec(&bstr_localSpec);
+	VARIANT_BOOL res;
+	vssItem->get_IsDifferent(bstr_localSpec, &res);
+	if (b_DisplayAnyError())
+		return;
+
+	if(res==0){
+		AfxMessageBox("The files are identical");
+		return;
+	}else{
+		CComBSTR bstr_localSpec_ss = bstr_localSpec;//+".ssver";
+		bstr_localSpec_ss.Append(".ssver");
+		vssItem->Get(&bstr_localSpec_ss,0);
+		if (b_DisplayAnyError())
+			return;
+
+		CString f1,f2;
+		f1 = CW2A(bstr_localSpec);
+		f2 = CW2A(bstr_localSpec_ss);
+		CFileStatus fs;
+		CFile::GetStatus(f2,fs);
+		fs.m_attribute &= ~(CFile::readOnly);
+		CFile::SetStatus(f2,fs);
+		CString cmd = ((CIdeApp*)AfxGetApp())->m_comparerCmd;
+		if(cmd.GetLength()==0){
+			AfxMessageBox("File comparer executable not defined");
+			return;
+		}
+
+		CString args;
+		args.Format(((CIdeApp*)AfxGetApp())->m_comparerFormat, f1, f2);
+		spawnl(_P_NOWAIT, cmd.GetBuffer(), args.GetBuffer());
+	}
+
 }
 
 void  CTreeViewFiles::Save(HTREEITEM itm){
