@@ -384,8 +384,8 @@ bool CDetailManager::UpdateHeader(){
     // fill header
     int mn_x 			= iFloor(m_BBox.min.x/DETAIL_SLOT_SIZE);
     int mn_z 			= iFloor(m_BBox.min.z/DETAIL_SLOT_SIZE);
-    int mx_x 			= iFloor(m_BBox.max.x/DETAIL_SLOT_SIZE+0.5f);
-    int mx_z 			= iFloor(m_BBox.max.z/DETAIL_SLOT_SIZE+0.5f);
+    int mx_x 			= iFloor(m_BBox.max.x/DETAIL_SLOT_SIZE)+1;
+    int mx_z 			= iFloor(m_BBox.max.z/DETAIL_SLOT_SIZE)+1;
     m_Header.offs_x 	= -mn_x;
     m_Header.offs_z 	= -mn_z;
 	m_Header.size_x 	= mx_x-mn_x;
@@ -421,6 +421,7 @@ void CDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot){
     bbox.max.set		(rect.x2, slot.y_max, rect.y2);
 
     SBoxPickInfoVec pinf;
+    XRC.box_options(0);
     if (Scene.BoxPick(bbox,pinf,&m_SnapObjects)){
 		bbox.grow		(EPS_L_VAR);
     	Fplane			frustum_planes[4];
@@ -640,10 +641,10 @@ bool CDetailManager::UpdateSlotObjects(int x, int z){
         // density
         float f = m_Objects[slot->items[k].id]->m_fDensityFactor;
 
-        slot->items[k].palette.a0 	= 15;//iFloor(best[k].dens[0]*f*15.f+.5f);
-        slot->items[k].palette.a1 	= 15;//iFloor(best[k].dens[1]*f*15.f+.5f);
-        slot->items[k].palette.a2 	= 15;//iFloor(best[k].dens[2]*f*15.f+.5f);
-        slot->items[k].palette.a3 	= 15;//iFloor(best[k].dens[3]*f*15.f+.5f);
+        slot->items[k].palette.a0 	= iFloor(best[k].dens[0]*f*15.f+.5f);
+        slot->items[k].palette.a1 	= iFloor(best[k].dens[1]*f*15.f+.5f);
+        slot->items[k].palette.a2 	= iFloor(best[k].dens[2]*f*15.f+.5f);
+        slot->items[k].palette.a3 	= iFloor(best[k].dens[3]*f*15.f+.5f);
 /*
 		static bool bFnd=false;
 

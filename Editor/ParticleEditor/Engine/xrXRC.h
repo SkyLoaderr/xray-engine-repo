@@ -48,8 +48,8 @@ public:
     	Fbox dest;
 		dest.xform(src,parent);
         Fvector c,d;
-        src.getcenter(c);
-        src.getradius(d);
+        dest.getcenter(c);
+        dest.getradius(d);
     	box_query(m_def,c,d);
 	}
 

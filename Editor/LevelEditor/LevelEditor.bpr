@@ -98,7 +98,7 @@
       intermediate\FrameEvent.obj intermediate\Blender_Shadow_World.obj 
       intermediate\TextForm.obj intermediate\PropertiesWayPoint.obj 
       intermediate\CustomObjectLE.obj intermediate\Blender_Blur.obj 
-      intermediate\Blender_Model.obj Intermediate\cpuid.obj Intermediate\_math.obj"/>
+      intermediate\Blender_Model.obj intermediate\cpuid.obj intermediate\_math.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -118,10 +118,10 @@
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
       lib\DXT.lib lib\gauss.lib lib\DX\d3d8.lib lib\DX\d3dx8d.lib 
       lib\DX\dinput.lib lib\ETools.lib lib\FreeImage.lib lib\xrCDB.lib"/>
-    <LIBRARIES value="elpackB6.lib editor.lib vclx.lib bcbsmp.lib vcl.lib rtl.lib"/>
+    <LIBRARIES value="elpackB6.lib editor.lib vclx.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
-    <PACKAGES value="rtl.bpi vcl.bpi vclx.bpi DCLUSR.bpi"/>
-    <PATHCPP value=".;edit;edit;edit;edit;edit;edit;edit;EDIT;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;engine;engine;engine;edit;engine;engine;engine;engine;engine;edit;edit;engine;edit;engine;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;engine;edit;edit;edit;engine;engine;engine;engine;edit;engine;engine;engine;engine;lib\DX;engine;edit;edit;edit;engine;Engine;Engine;edit;Engine;Engine;Engine;Engine;Engine;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine;Engine;Engine;edit;edit;Engine;edit;Engine\Blenders;edit;edit;edit;Engine;edit;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine;Engine\Blenders;edit;Engine;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;edit;edit;edit;Engine;edit;edit;edit;Engine\Blenders;Engine\Blenders;edit;Engine\Blenders;Engine\Blenders"/>
+    <PACKAGES value="rtl.bpi vcl.bpi"/>
+    <PATHCPP value=".;edit;edit;edit;edit;edit;edit;edit;EDIT;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;engine;engine;engine;edit;engine;engine;engine;engine;engine;edit;edit;engine;edit;engine;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;engine;edit;edit;edit;engine;engine;engine;engine;edit;engine;engine;engine;engine;lib\DX;engine;edit;edit;edit;engine;Engine;Engine;edit;Engine;Engine;Engine;Engine;Engine;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine;Engine;Engine;edit;edit;Engine;edit;Engine\Blenders;edit;edit;edit;Engine;edit;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine;Engine\Blenders;edit;Engine;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;edit;edit;edit;Engine;edit;edit;edit;Engine\Blenders;Engine\Blenders;edit;Engine\Blenders;Engine\Blenders;Engine;Engine"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -129,7 +129,7 @@
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
     <USERDEFINES value="_EDITOR;_LEVEL_EDITOR;_DEBUG"/>
-    <SYSDEFINES value="NO_STRICT;_RTLDLL"/>
+    <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="LevelEditor.cpp"/>
     <INCLUDEPATH value="lib\DX;R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;edit;engine;Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\alexmx;R:\Borland\Components6\ElPack\Code\Source"/>
     <LIBPATH value="lib\DX;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;edit;engine;Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;R:\Borland\Components6\alexmx"/>
@@ -141,17 +141,17 @@
       -Iedit -Iengine -IEngine\CPU_Pipe -IEngine\Animations -IEngine\Blenders 
       -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\alexmx 
       -IR:\Borland\Components6\ElPack\Code\Source -src_suffix cpp -D_EDITOR 
-      -D_LEVEL_EDITOR -D_DEBUG -no_tie -boa"/>
+      -D_LEVEL_EDITOR -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=c:\rad\borland\CBUILD~2\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF 
       -ff -X- -r- -a4 -6 -b- -d -k -y -v -vi- -He -c -tW -tWM"/>
-    <PFLAGS value="-N2intermediate -N0intermediate -$Y+ -$W -$Q -$O- -$C- -$A8 -v -JPHNE -M"/>
+    <PFLAGS value="-N2intermediate -N0intermediate -$YD -$W -$R -$Q -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mx /mv32 /m2 /kh32768 /w2 /zi"/>
+    <AFLAGS value="/mx /w2 /zd"/>
     <LFLAGS value="-Iintermediate -D&quot;&quot; -aa -Tpe -GD -x -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
-    <ALLOBJ value="c0w32.obj Memmgr.Lib sysinit.obj $(OBJFILES)"/>
+    <ALLOBJ value="c0w32.obj $(PACKAGES) Memmgr.Lib sysinit.obj $(OBJFILES)"/>
     <ALLRES value="$(RESFILES)"/>
     <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
     <OTHERFILES value=""/>
@@ -368,10 +368,10 @@
       <FILE FILENAME="edit\CustomObjectLE.cpp" FORMNAME="" UNITNAME="CustomObjectLE" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Blur.cpp" FORMNAME="" UNITNAME="Blender_Blur" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Model.cpp" FORMNAME="" UNITNAME="Blender_Model" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Intermediate\cpuid.obj" FORMNAME="" UNITNAME="cpuid.obj" CONTAINERID="OBJTool" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Intermediate\_math.obj" FORMNAME="" UNITNAME="_math.obj" CONTAINERID="OBJTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\FreeImage.lib" FORMNAME="" UNITNAME="FreeImage.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\xrCDB.lib" FORMNAME="" UNITNAME="xrCDB.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\cpuid.cpp" FORMNAME="" UNITNAME="cpuid.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\_math.cpp" FORMNAME="" UNITNAME="_math.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -383,7 +383,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=1
-Build=410
+Build=413
 Debug=1
 PreRelease=0
 Special=0
@@ -395,7 +395,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.1.410
+FileVersion=1.0.1.413
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -518,7 +518,7 @@ RemoteDebug=0
 
 [Compiler]
 ShowInfoMsgs=0
-LinkDebugVcl=1
+LinkDebugVcl=0
 LinkCGLIB=0
 
 [CORBA]

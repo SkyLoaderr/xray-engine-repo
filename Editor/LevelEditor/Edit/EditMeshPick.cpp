@@ -153,8 +153,6 @@ void CEditableMesh::GetTiesFaces(int start_id, DWORDVec& fl, float fSoftAngle, b
 bool CEditableMesh::BoxPick(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf){
     if (!m_CFModel) GenerateCFModel();
 
-    XRC.box_options(0);
-
     XRC.box_query(parent, m_CFModel, box);
     if (XRC.r_count()){
     	pinf.push_back(SBoxPickInfo());

@@ -161,7 +161,7 @@ bool CSceneObject::RayPick(float& dist, Fvector& S, Fvector& D, SRayPickInfo* pi
 
 bool CSceneObject::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf){
 	if (!m_pRefs) return false;
-	return m_pRefs->BoxPick(this, box, _Transform(), pinf);
+	return m_pRefs->BoxPick(this, box, _ITransform(), pinf);
 }
 
 void CSceneObject::PivotScale(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& amount ){
