@@ -30,11 +30,12 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 		StartStopMenu(&PdaMenu);
 		return true;
 		break;
-/*	case DIK_M:
-		StartStopMenu(&UISpawnWnd);
+	case DIK_M:
+		StartStopMenu(&PdaMenu);
+		PdaMenu.ChangeActiveTab(CUIPdaWnd::TAB_MAP);
 		return true;
 		break;
-	case DIK_B:
+/*	case DIK_B:
 ///		StartStopMenu(&UIStatsWnd);
 		StartStopMenu(pUIBuyWeaponWnd);
 		return true;
