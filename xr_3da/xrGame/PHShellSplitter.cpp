@@ -60,8 +60,8 @@ void CPHShellSplitterHolder::PassEndSplitters(const CShellSplitInfo& spl_inf,CPH
 	
 	ELEMENT_STORAGE &source_elements=m_pShell->elements;
 	ELEMENT_I i_elem=source_elements.begin(),e_elem=source_elements.begin()+spl_inf.m_start_el_num;
-	u16 shift_e=spl_inf.m_end_el_num-spl_inf.m_start_el_num+1;
-	u16 shift_j=spl_inf.m_end_jt_num-spl_inf.m_start_jt_num+1;
+	u16 shift_e=spl_inf.m_end_el_num-spl_inf.m_start_el_num;
+	u16 shift_j=spl_inf.m_end_jt_num-spl_inf.m_start_jt_num;
 
 	for(;i_elem!=e_elem;i_elem++)	//until start elem in both joint or elem split fractures 
 									//end elems have to be corrected 
@@ -93,7 +93,7 @@ void CPHShellSplitterHolder::PassEndSplitters(const CShellSplitInfo& spl_inf,CPH
 
 //now process diapason that tobe unsplited
 
-	e_elem=source_elements.begin()+spl_inf.m_end_el_num+1;
+	e_elem=source_elements.begin()+spl_inf.m_end_el_num;
 	u16 passed_shift_e=spl_inf.m_start_el_num-el_add_shift;
 	u16 passed_shift_j=spl_inf.m_end_jt_num-jt_add_shift;
 	for(;i_elem!=e_elem;i_elem++)	
@@ -114,7 +114,7 @@ void CPHShellSplitterHolder::PassEndSplitters(const CShellSplitInfo& spl_inf,CPH
 		}
 	}
 	
-	e_joint=source_joints.begin()+spl_inf.m_end_jt_num+1;
+	e_joint=source_joints.begin()+spl_inf.m_end_jt_num;
 	for(;i_joint!=e_joint;i_joint++)	
 	{
 		u16 &end_element	=		(*i_joint)->JointDestroyInfo()->m_end_element;

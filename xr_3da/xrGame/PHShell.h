@@ -8,6 +8,8 @@ class CPHShellSplitterHolder;
 #include "PHJoint.h"
 #include "PHElement.h"
 #include "PHDefs.h"
+
+
 class CPHShell: public CPhysicsShell,public CPHObject {
 
 	friend class CPHShellSplitterHolder;
@@ -116,9 +118,7 @@ virtual ~CPHShell				()
 	virtual void				set_ObjectContactCallback (ObjectContactCallbackFun* callback);
 	virtual void				set_PhysicsRefObject	  (CPhysicsRefObject* ref_object);
 	virtual void				set_PushOut				  (u32 time,PushOutCallbackFun* push_out=PushOutCallback);
-	//breakable
-	virtual void				setEndElementSplitter	  ();
-	virtual void				setEndJointSplitter		  ();
+
 	//breabable interface
 	virtual bool				isBreakable				  ();
 	virtual bool				isFractured				  ();
@@ -168,7 +168,12 @@ virtual ~CPHShell				()
 	void DeleteJoint(u16 joint);
 	void SetTransform(Fmatrix m);
 private:
-	void AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix global_parent);
+	//breakable
+	void setEndElementSplitter	  ();
+	void setElementSplitter		  (u16 element);
+	void setEndJointSplitter	  ();
+	/////////////////////////////////////////
+	void AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix global_parent,u16 element_number);
 	void ZeroCallbacksRecursive(u16 id);
 
 };

@@ -11,6 +11,7 @@ class CPHShellSplitter
 {
 	friend	class CPHShellSplitterHolder;
 	friend	class CPHShell;
+
 public:
 	enum EType				  {splElement,splJoint};
 private:

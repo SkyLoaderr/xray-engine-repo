@@ -1250,7 +1250,7 @@ dGeomID CPHElement::dSpacedGeometry()
 
 void CPHElement::PassEndGeoms(u16 from,u16 to,CPHElement* dest)
 {
-	GEOM_I i_from=m_geoms.begin()+from,e=m_geoms.begin()+to+1;
+	GEOM_I i_from=m_geoms.begin()+from,e=m_geoms.begin()+to;
 
 	for(GEOM_I i=i_from;i!=e;i++)
 	{
@@ -1332,8 +1332,13 @@ void CPHElement::PresetActive()
 	
 }
 
-CPHFracture&	CPHElement::setEndGeomFracturable(CPHFracture& fracture)
+CPHFracture&	CPHElement::setGeomFracturable(CPHFracture& fracture)
 {
 	if(!m_fratures_holder) m_fratures_holder=xr_new<CPHFracturesHolder>();
 	return m_fratures_holder->AddFracture(fracture);
+}
+
+u16	CPHElement::numberOfGeoms()
+{
+	return (u16)m_geoms.size();
 }

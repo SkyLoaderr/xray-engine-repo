@@ -401,27 +401,21 @@ void CPHShell::SmoothElementsInertia(float k)
 static BONE_P_MAP* spGetingMap=NULL;
 void CPHShell::build_FromKinematics(CKinematics* K,BONE_P_MAP* p_geting_map)
 {
-	m_pKinematics=K;
-	spGetingMap=p_geting_map;
-	CBoneData& bone_data= m_pKinematics->LL_GetData(0);
-	AddElementRecursive(0,m_pKinematics->LL_GetBoneRoot(),bone_data.bind_transform);
-	
-	//Activate(true);
+	m_pKinematics			=K;
+	spGetingMap				=p_geting_map;
+	CBoneData& bone_data	= m_pKinematics->LL_GetData(0);
 
+
+
+	AddElementRecursive(0,m_pKinematics->LL_GetBoneRoot(),bone_data.bind_transform,0);
 }
-struct  SplitInfRec
-{
-bool				bActive;
-u16					cur_level;
-CPHShellSplitter	*splitter;
-CShellSplitInfo		*split_info;
-};
-void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix global_parent)
+
+void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix global_parent,u16 element_number)
 {
 
 	CBoneInstance& B	= m_pKinematics->LL_GetBoneInstance(u16(id));
 	CBoneData& bone_data= m_pKinematics->LL_GetData(u16(id));
-
+	SJointIKData& joint_data=bone_data.IK_data;
 	Fmatrix fm_position;
 	fm_position.set(bone_data.bind_transform);
 	fm_position.mulA(global_parent);
@@ -429,9 +423,11 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 	CPhysicsElement* E  = 0;
 	CPhysicsJoint*   J	= 0;
 	if(bone_data.shape.type!=SBoneShape::stNone || !root_e)	//
-	{														
-		if(bone_data.IK_data.type==jtRigid && root_e ) //
+	{	
+		
+		if(joint_data.type==jtRigid && root_e ) //
 		{
+			
 			//Fmatrix inv_root;
 			//inv_root.set(root_e->mXFORM);
 			//inv_root.invert();
@@ -454,9 +450,10 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 			B.set_callback(BonesCallback1,E);
 			E->add_Shape(bone_data.shape);
 			E->setMassMC(bone_data.mass,bone_data.center_of_mass);
+			element_number=u16(elements.size());
 			add_Element(E);
 			
-			SJointIKData& joint_data=bone_data.IK_data;
+
 			
 			if(root_e)
 			{
@@ -730,9 +727,44 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 			c_iter->second.element=E;
 		}
 	}
-
+	
+	bool breakable=joint_data.ik_flags.test(SJointIKData::flBreakable) && root_e;
+	CPHFracture fracture;
+	if(breakable)
+	{
+		if(joint_data.type==jtRigid)
+		{
+			fracture.m_bone_id			=id;
+			fracture.m_start_geom_num	=E->numberOfGeoms()-1;
+			fracture.m_start_el_num		=u16(elements.size()-1);
+			fracture.m_start_jt_num		=u16(joints.size()-1);	 
+			VERIFY(fracture.m_start_geom_num!=u16(-1));
+			setElementSplitter(element_number);
+		}
+		else
+		{
+			setEndJointSplitter();
+		}
+	}
+/////////////////////////////////////////////////////////////////////////////////////
 	for (vecBonesIt it=bone_data.children.begin(); it!=bone_data.children.end(); it++)
-		AddElementRecursive		(E,(*it)->SelfID,fm_position);
+		AddElementRecursive		(E,(*it)->SelfID,fm_position,element_number);
+/////////////////////////////////////////////////////////////////////////////////////
+	if(breakable)
+	{
+		if(joint_data.type==jtRigid)
+		{
+
+			fracture.m_bone_id			=id;
+			fracture.m_end_geom_num		=E->numberOfGeoms();
+			fracture.m_end_el_num		=u16(elements.size());//just after this el = current+1
+			fracture.m_end_jt_num		=u16(joints.size());	 //current+1
+			E->setGeomFracturable(fracture);
+		}
+		else
+		{
+		}
+	}
 
 }
 
@@ -805,7 +837,7 @@ void CPHShell::InterpolateGlobalPosition(Fvector* v)
 
 void CPHShell::GetGlobalPositionDynamic(Fvector* v)
 {
-(*elements.begin())->GetGlobalPositionDynamic(v);
+	(*elements.begin())->GetGlobalPositionDynamic(v);
 }
 
 CPhysicsElement* CPHShell::NearestToPoint(const Fvector& point)
@@ -833,7 +865,7 @@ CPhysicsElement* CPHShell::NearestToPoint(const Fvector& point)
 void CPHShell::PassEndElements(u16 from,u16 to,CPHShell *dest)
 {
 
-	ELEMENT_I i_from=elements.begin()+from,e=elements.begin()+to+1;
+	ELEMENT_I i_from=elements.begin()+from,e=elements.begin()+to;
 	
 	for(ELEMENT_I i=i_from;i!=e;i++)
 	{
@@ -849,7 +881,7 @@ void CPHShell::PassEndElements(u16 from,u16 to,CPHShell *dest)
 
 void CPHShell::PassEndJoints(u16 from,u16 to,CPHShell *dest)
 {
-	JOINT_I i_from=joints.begin()+from,e=joints.begin()+to+1;
+	JOINT_I i_from=joints.begin()+from,e=joints.begin()+to;
 
 	dest->joints.insert(dest->joints.end(),i_from,e);
 	joints.erase(i_from,e);
@@ -874,6 +906,11 @@ void CPHShell::setEndElementSplitter()
 
 	if(!elements.back()->FracturesHolder())//adding fracture for element supposed before adding splitter. Need only one splitter for an element
 					m_spliter_holder->AddSplitter(CPHShellSplitter::splElement,u16(elements.size()-1),u16(joints.size()-1));
+}
+void CPHShell::setElementSplitter(u16 element)
+{
+	if(elements[element]->FracturesHolder())
+					m_spliter_holder->AddSplitter(CPHShellSplitter::splElement,element,element-1);
 }
 void CPHShell::setEndJointSplitter()
 {

@@ -51,27 +51,29 @@ class CShellSplitInfo
 friend class  CPHFracturesHolder;
 friend class  CPHShellSplitterHolder;
 friend class CPHElement;
+friend	class SplitInfRec;
 protected:
 	u16				m_start_el_num;
 	u16				m_end_el_num;
 	u16				m_start_jt_num;
 	u16				m_end_jt_num;
+	u16				m_start_geom_num;
+	u16				m_end_geom_num;
 	u16				m_bone_id;
 };
 class CPHFracture : public CShellSplitInfo
 {
 friend class  CPHFracturesHolder;
 friend class CPHElement;
+friend class CPHShell;
 bool			m_breaked;
-u16				m_start_geom_num;
-u16				m_end_geom_num;
 Fvector			m_position;							//vs body//when fractured is additional linear vel for seccond body
 Fvector			m_direction;						//norm to fracture plane vs body//when fractured is additional angular vel for seccond body
 dMass			m_firstM;
 dMass			m_seccondM;
 float			m_break_force;
 float			m_break_torque;
-				CPHFracture(u16 bone_id,const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque);
+				CPHFracture();
 public:
 bool			Update(PH_IMPACT_STORAGE& impacts,dBodyID body);
 IC bool			Breaked(){return m_breaked;}

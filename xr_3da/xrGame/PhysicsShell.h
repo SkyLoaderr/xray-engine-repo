@@ -110,7 +110,9 @@ public:
 	virtual void			setInertia				(const Fmatrix& M)								= 0;
 	virtual void			setMassMC				(float M,const Fvector& mass_center)			= 0;
 	virtual void			setDensityMC			(float M,const Fvector& mass_center)			= 0;
-	virtual CPHFracture&	setEndGeomFracturable	(CPHFracture &fracture)							= 0;
+	virtual CPHFracture&	setGeomFracturable		(CPHFracture &fracture)							= 0;
+	//get
+	virtual u16				numberOfGeoms			()												= 0;
 	virtual	dBodyID			get_body				()												= 0;
 	virtual const Fvector&	mass_Center				()												= 0;
 	virtual float			getRadius				()												= 0;
@@ -212,8 +214,7 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual void				set_JointResistance		(float force)										= 0;
 	virtual	void				add_Element				(CPhysicsElement* E)								= 0;
 	virtual	void				add_Joint				(CPhysicsJoint* E)									= 0;
-	virtual void				setEndElementSplitter	()													= 0;
-	virtual void				setEndJointSplitter		()													= 0;
+
 	virtual bool				isBreakable				()													= 0;
 	virtual bool				isFractured				()													= 0;
 	virtual void				SplitProcess			(PHSHELL_PAIR_VECTOR &out_shels)							= 0;

@@ -164,7 +164,8 @@ public:
 	virtual void			setMassMC				(float M,const Fvector& mass_center);
 	virtual void			setDensityMC			(float M,const Fvector& mass_center);
 	virtual void			setInertia				(const Fmatrix& M)																					{}
-	virtual CPHFracture&	setEndGeomFracturable	(CPHFracture& fracture);
+	virtual CPHFracture&	setGeomFracturable	(CPHFracture& fracture);
+	virtual u16				numberOfGeoms			();
 	dGeomID					dSpacedGeometry			();
 			void			PassEndGeoms			(u16 from,u16 to,CPHElement* dest);
 

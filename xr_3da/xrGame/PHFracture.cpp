@@ -41,7 +41,7 @@ void CPHFracturesHolder::PassEndFractures(u16 from,CPHElement* dest)
 	u16 end_geom=i_from->m_end_geom_num;
 	u16 begin_geom_num=i_from->m_start_geom_num;
 	u16 leaved_geoms=begin_geom_num+1;
-	u16 passed_geoms=end_geom-begin_geom_num+1;
+	u16 passed_geoms=end_geom-begin_geom_num;
 	if(i_from==e) return;
 	CPHFracturesHolder* &dest_fract_holder=dest->m_fratures_holder;
 	if(!dest_fract_holder) dest_fract_holder=xr_new<CPHFracturesHolder>();
@@ -145,13 +145,13 @@ CPHFracture& CPHFracturesHolder::AddFracture(const CPHFracture& fracture)
 	m_fractures.push_back(fracture);
 	return m_fractures.back();
 }
-CPHFracture::CPHFracture(u16 bone_id,const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque)
+CPHFracture::CPHFracture()
 {
-m_bone_id=bone_id;
-m_position.set(position);
-m_direction.set(direction);
-m_break_force=break_force;
-m_break_torque=break_torque;
+//m_bone_id=bone_id;
+//m_position.set(position);
+//m_direction.set(direction);
+//m_break_force=break_force;
+//m_break_torque=break_torque;
 m_breaked=false;
 }
 bool CPHFracture::Update(PH_IMPACT_STORAGE& impacts,dBodyID body)
