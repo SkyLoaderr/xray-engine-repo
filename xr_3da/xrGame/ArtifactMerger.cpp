@@ -190,7 +190,7 @@ bool CArtifactMerger::PerformMerge()
 void CArtifactMerger::SpawnArtifact(const char* af_section)
 {
 	CSE_Abstract*		D	= F_entity_Create(af_section);
-	R_ASSERT			(D);
+	R_ASSERT		   (D);
 	CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = 
 								 dynamic_cast<CSE_ALifeDynamicObject*>(D);
 	R_ASSERT			(l_tpALifeDynamicObject);
@@ -214,63 +214,3 @@ void CArtifactMerger::SpawnArtifact(const char* af_section)
 	// Destroy
 	F_entity_Destroy	(D);
 }
-
-
-
-
-/*
-		// Спавним болты, чтоб у актера всегда было 5 болтов
-		CSE_Abstract*		D	= F_entity_Create(cNameSect());
-		R_ASSERT			(D);
-		CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
-		R_ASSERT							(l_tpALifeDynamicObject);
-		l_tpALifeDynamicObject->m_tNodeID	= AI_NodeID;
-		// Fill
-		strcpy				(D->s_name,cNameSect());
-		strcpy				(D->s_name_replace,"");
-		D->s_gameid			=	u8(GameID());
-		D->s_RP				=	0xff;
-		D->ID				=	0xffff;
-		D->ID_Parent		=	(u16)ID();
-		D->ID_Phantom		=	0xffff;
-		D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
-		D->RespawnTime		=	0;
-		// Send
-		NET_Packet			P;
-		D->Spawn_Write		(P,TRUE);
-		Level().Send		(P,net_flags(TRUE));
-		// Destroy
-		F_entity_Destroy	(D);
-*/
-
-/*
-	if(Local()) for(u32 i = 0; i < 1; i++) {
-		// Create
-		//CSE_Abstract*		D	= F_entity_Create("detector_simple");
-		//CSE_Abstract*		D	= F_entity_Create("grenade_f1");
-		CSE_Abstract*		D	= F_entity_Create("bolt");
-		R_ASSERT			(D);
-		CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
-		R_ASSERT							(l_tpALifeDynamicObject);
-		l_tpALifeDynamicObject->m_tNodeID	= E->m_tNodeID;
-		
-		
-		// Fill
-		strcpy				(D->s_name,"bolt");
-		strcpy				(D->s_name_replace,"");
-		D->s_gameid			=	u8(GameID());
-		D->s_RP				=	0xff;
-		D->ID				=	0xffff;
-		D->ID_Parent		=	E->ID;
-		D->ID_Phantom		=	0xffff;
-		D->o_Position		=	Position();
-		D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
-		D->RespawnTime		=	0;
-		// Send
-		NET_Packet			P;
-		D->Spawn_Write		(P,TRUE);
-		Level().Send		(P,net_flags(TRUE));
-		// Destroy
-		F_entity_Destroy	(D);
-
-*/
