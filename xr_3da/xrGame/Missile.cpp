@@ -445,7 +445,7 @@ void CMissile::Throw()
 	m_fake_missile->m_fThrowForce		= m_constpower ? m_fConstForce : m_fThrowForce; 
 	m_fThrowForce						= m_fMinForce;
 	
-	if (Local()) {
+	if (Local() && H_Parent()) {
 		NET_Packet						P;
 		u_EventGen						(P,GE_OWNERSHIP_REJECT,ID());
 		P.w_u16							(u16(m_fake_missile->ID()));

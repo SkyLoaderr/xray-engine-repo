@@ -55,14 +55,32 @@ void CGrenade::net_Destroy()
 void CGrenade::OnH_B_Independent() 
 {
 	m_pHUD->StopCurrentAnimWithoutCallback();
+	if (Local() && (m_state == MS_THREATEN || m_state == MS_READY || m_state == MS_THROW))
+	{
+		if (m_fake_missile)
+		{
+			CGrenade					*pGrenade = smart_cast<CGrenade*>(m_fake_missile);
+			if (pGrenade)
+			{
+				m_constpower = false;
+				m_fThrowForce = 0;
+				Throw();
+
+				///////////////////////////////
+
+				NET_Packet			P;
+				u_EventGen			(P,GE_DESTROY,ID());
+				u_EventSend			(P);
+			};
+		};
+	};
 	inherited::OnH_B_Independent();
 }
 
 void CGrenade::OnH_A_Independent() 
 {
-	
 	m_dwGrenadeIndependencyTime = Level().timeServer();
-	inherited::OnH_A_Independent();
+	inherited::OnH_A_Independent();	
 }
 
 void CGrenade::OnH_A_Chield()
@@ -70,7 +88,6 @@ void CGrenade::OnH_A_Chield()
 	m_dwGrenadeIndependencyTime = 0;
 	inherited::OnH_A_Chield();
 }
-
 
 u32 CGrenade::State(u32 state) 
 {
@@ -145,8 +162,6 @@ void CGrenade::Throw()
 void CGrenade::Destroy() 
 {
 	//Generate Expode event
-
-
 	Fvector  normal;
 	FindNormal(normal);
 	CExplosive::GenExplodeEvent(Position(), normal);

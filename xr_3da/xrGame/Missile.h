@@ -69,7 +69,7 @@ protected:
 
 	u32 m_state;
 	bool m_throw;
-	bool m_constpower;
+	
 
 	//время уничтожения
 	u32 m_dwDestroyTime;
@@ -83,9 +83,12 @@ protected:
 	CMissile				*m_fake_missile;
 
 	//параметры броска
-	float m_fThrowForce;
+	
 	float m_fMinForce, m_fConstForce, m_fMaxForce, m_fForceGrowSpeed;
-
+//private:
+	bool m_constpower;
+	float m_fThrowForce;
+protected:
 	//относительная точка и направление вылета гранаты
 	Fvector m_vThrowPoint;
 	Fvector m_vThrowDir;
