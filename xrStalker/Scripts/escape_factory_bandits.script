@@ -1,488 +1,189 @@
 --[[------------------------------------------------------------------------------------------------------------------
-Скрипт "Два бандита на заводе (escape)"
-Чугай Саша
+╤ъЁшяЄ "─тр срэфшЄр эр чртюфх (escape)"
+╫єурщ ╤р°р
 
-Сделать:
-	- !!!!!!!!!!!!!!! если один вышел из офлайна, а другой нет !!!!!!!!!!!!!!!!!
-	- рассинхронизируются
-    - стоит в бт
-    - не смотрят друг на друга
-    - проверить секцию
-    - уразнообразить анимации
-    - ходят туда-сюда
+╤фхырЄ№:
 --------------------------------------------------------------------------------------------------------------------]]
 
---[[local snd_base         = xr_sounds_id.chugai_escape_factory_bandits_base
-local snd_about_novice = snd_base + 0
-local snd_about_zone   = snd_base + 1
-local snd_hiding_place = snd_base + 2
-local snd_novice_again = snd_base + 3
-local snd_on_actor     = snd_base + 4
-local snd_idle_2       = snd_base + 5
-local snd_idle_3       = snd_base + 6
-local snd_idle_4       = snd_base + 7
-local snd_idle_5       = snd_base + 8
-]]
-
+local one_dead    = false -- Їырцюъ ёьхЁЄш юфэюую срэфшЄр
+local repl        = false -- ёърчры ыш ўЄю-Єю юфшэ срэфшЄ эр finalize 
+local team        = "factory_bandits"
 local novice_name = "trivial_novice3_0_1"
-
-local rnd_phrases = {
-	maxidle = 8,
-	sumidle = 2,
-	themes  = {
-		"weather",
-		"state",
-		"escape_factory_bandits_novice",
-		"escape_factory_bandits_zone",
-		"escape_factory_bandits_place",
-	}
-}
+local the_actor
 
 local snd_novice_again =  { themes = { "escape_factory_bandits_novice_again" } }
 local snd_on_actor     =  { themes = { "escape_factory_bandits_on_actor" } }
 
-local the_actor
-
 ---------------------------------------------------------------------------------------------------------------------
-
-function check_enemy( npc )
-    local enemy = npc:best_enemy()
-    if enemy then
-        npc:set_sound_mask( -1 )
-        npc:set_sound_mask( 0 )
-
-        --local actor = level.actor()
-
-        --if actor and enemy:id() == actor:id() then
-            --npc:play_sound( snd_on_actor, 1, 0 )
-        --    xr_sound.sound_update( npc, snd_on_actor, true )
-        if enemy:name() == novice_name then
-            --npc:play_sound( snd_novice_again, 1, 0 )
-            xr_sound.sound_update( npc, snd_novice_again, true )
-        end
-    end
-end
-
-function novice_enemy( s )
-    if not s.novice_enemy then
-	    local novice = level.object( novice_name )
-    	if novice then
-	    	s.object:set_relation( game_object.enemy, novice )
-	    	s.novice_enemy = true
-    	end
-    end
-end
-
-function check_actor( npc1, a )
-	if the_actor and npc1:see( the_actor ) then
-		a.enabled = false
-		xr_motivator.storage[a.partner:id()].escape_factory_bandit.enabled = false
-
-		xr_motivator.storage[npc1:id()].robber.enabled      = true
-		xr_motivator.storage[a.partner:id()].robber.enabled = true
-	end
-end
-
----------------------------------------------------------------------------------------------------------------------
--- Эвалуатор свойства "бандит управляется этим скриптом"
+-- ▌трыєрЄюЁ ётющёЄтр "срэфшЄ єяЁрты хЄё  ¤Єшь ёъЁшяЄюь"
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_factory_bandit" (property_evaluator)
 
 function evaluator_factory_bandit:__init( name, storage ) super ()
-    self.a = storage
+	self.a = storage
 end
 
 function evaluator_factory_bandit:evaluate()
-    --printf( "s1" )
-    local b = self.a.enabled == true
---    if b then sb = "true" else sb = "false" end
---    printf( "s2 "..sb )
-    return b
+	return self.a.enabled == true
 end
 
 ---------------------------------------------------------------------------------------------------------------------
--- Эвалуатор свойства "нахожусь на позиции"
----------------------------------------------------------------------------------------------------------------------
-class "evaluator_in_pos" (property_evaluator)
-
-function evaluator_in_pos:__init( name, npc, storage ) super ()
-    self.a = storage
-    self.npc = npc
-end
-
-function evaluator_in_pos:evaluate()
-    return self.npc:level_vertex_id() == self.a.dest_vert_id
-end
-
----------------------------------------------------------------------------------------------------------------------
--- Эвалуатор свойства "напарник жив"
----------------------------------------------------------------------------------------------------------------------
-class "evaluator_partner_alive" (property_evaluator)
-
-function evaluator_partner_alive:__init( name, storage ) super ()
-    self.a = storage
-end
-
-function evaluator_partner_alive:evaluate()
-    return self.a.partner == nil or self.a.partner:alive()
-end
-
----------------------------------------------------------------------------------------------------------------------
--- Эвалуатор свойства "перехвачено ли уже событие смерти бандюгана?"
+-- ▌трыєрЄюЁ ётющёЄтр "яхЁхїтрўхэю ыш єцх ёюс√Єшх ёьхЁЄш срэф■урэр?"
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_dead_hook" ( property_evaluator )
 
 function evaluator_dead_hook:__init( name, storage ) super()
-    self.a = storage
+	self.a = storage
 end
 
 function evaluator_dead_hook:evaluate()
-    return self.a.dead_hook
+	return self.a.dead_hook
 end
 
 ---------------------------------------------------------------------------------------------------------------------
--- Действие "идти на позицию"
+-- ─хщёЄтшх "яЁюїрцштрЄ№ё "
 ---------------------------------------------------------------------------------------------------------------------
+class "action_walk" (action_base)
 
-class "action_go_to_pos" (action_base)
-
-function action_go_to_pos:__init( name, way_name, storage ) super( nil, name )
-    self.a = storage
-    self.way_name = way_name
-    self.context_snds = { themes = { "weather", "state" } }
+function action_walk:__init( name, storage ) super( nil, name )
+	self.a        = storage
+	self.move_mgr = move_mgr.move_mgr()
 end
 
-function action_go_to_pos:initialize()
-    action_base.initialize( self )
+function action_walk:initialize()
+	action_base.initialize( self )
 
-    if not self.a.partner then
-        self.a.partner = level.object( self.a.partner_name )
-    end
+	self.move_mgr:initialize( self.object )
 
-    novice_enemy( self )
-
-    self.object:set_node_evaluator      ()
-    self.object:set_path_evaluator      ()
-    self.object:set_desired_direction   ()
-    self.object:set_sight               ( look.danger, nil, 0 )
-    self.object:set_item                ( object.idle, self.object:best_weapon() )
-    self.object:set_body_state          ( move.standing )
-    self.object:set_detail_path_type    ( move.line )
-
-    self.object:set_movement_type       ( move.walk )
-    self.object:set_mental_state        ( anim.free )
-    self.object:set_path_type           ( game_object.patrol_path )
-    self.object:set_patrol_path         ( self.way_name, patrol.start, patrol.stop, true )
-
-    self.lp = nil
-    self.object:set_callback( self, "move_callback", game_object.movement )
-
---    printf( "go_to_pos initialized" )
+	self.state = nil
 end
 
-function action_go_to_pos:execute()
-    action_base.execute( self )
+function action_walk:execute()
+	action_base.execute( self )
 
-    if self.lp then
-        self.object:set_previous_point( self.lp )
-    end
+	if self.state ~= one_dead then
+		self.state = one_dead
 
-    check_actor( self.object, self.a )
+		if one_dead then
+			self.move_mgr:reset( self.a.path_walk2, self.a.path_walk_info2, self.a.path_look2, self.a.path_look_info2, team )
+		else
+			self.move_mgr:reset( self.a.path_walk1, self.a.path_walk_info1, self.a.path_look1, self.a.path_look_info1, team )
+		end
+	end
 
---    globals.set_sound( self.object, rnd_phrases, false )
-    xr_sound.sound_update( self.object, rnd_phrases )
+	self.move_mgr:update()
 end
 
-function action_go_to_pos:finalize()
-    action_base.finalize( self )
+function action_walk:finalize()
+	action_base.finalize( self )
 
-    self.object:clear_callback( game_object.movement )
+	self.move_mgr:finalize()
 
-    this.check_enemy( self.object )
-end
+	if not repl then
+		if self.object:alive() then
+			repl = true
 
-function action_go_to_pos:move_callback( obj, action_type, index )
-    --printf( "%d", index )
+			local enemy = self.object:best_enemy()
+			if enemy then
+				stop_play_sound( self.object )
 
-    if index == -1 then return end
+				if not the_actor then
+					the_actor = level.actor()
+				end
 
-    self.lp = index
-    --printf( "index=%d", index )
+				if the_actor and enemy:id() == the_actor:id() then
+					xr_sound.sound_update( self.object, snd_on_actor, true )
+				elseif enemy:name() == novice_name then
+					xr_sound.sound_update( self.object, snd_novice_again, true )
+				end
+			end
+		end
+	else
+		repl = false
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------
--- Действие "бежать в безопасную позицию"
----------------------------------------------------------------------------------------------------------------------
-
-class "action_run_to_safe" (action_base)
-
-function action_run_to_safe:__init( name, storage ) super( nil, name )
-    self.a = storage
-end
-
-function action_run_to_safe:initialize()
-    action_base.initialize( self )
-
-    self.object:set_node_evaluator      ()
-    self.object:set_path_evaluator      ()
-    self.object:set_desired_direction   ()
-    self.object:set_sight               ( look.danger, nil, 0 )
-    self.object:set_item                ( object.idle, self.object:best_weapon() )
-    self.object:set_body_state          ( move.standing )
-    self.object:set_detail_path_type    ( move.line )
-
-    self.object:set_movement_type       ( move.run )
-    self.object:set_mental_state        ( anim.danger )
-    self.object:set_path_type           ( game_object.level_path )
-    self.object:set_dest_level_vertex_id( self.a.dest_vert_id )
-
---    printf( "run_to_safe initialized" )
-end
-
-function action_run_to_safe:execute()
-    action_base.execute( self )
-end
-
-function action_run_to_safe:finalize()
-    action_base.finalize( self )
-
-    this.check_enemy( self.object )
-end
-
----------------------------------------------------------------------------------------------------------------------
--- Действие "стоять и болтать"
----------------------------------------------------------------------------------------------------------------------
-
-class "action_stand" (action_base)
-
-function action_stand:__init( name, positions, storage ) super( nil, name )
-    self.a              = storage
-    self.positions      = positions
-end
-
-function action_stand:initialize()
-    action_base.initialize( self )
-
-    if not self.a.partner then
-        self.a.partner = level.object( self.a.partner_name )
-    end
-
-    novice_enemy( self )
- 
-    self.object:set_node_evaluator      ()
-    self.object:set_path_evaluator      ()
-    self.object:set_desired_direction   ()
-    self.object:set_sight               ( look.danger, nil, 0 )
-    self.object:set_item                ( object.idle, self.object:best_weapon() )
-    self.object:set_movement_type       ( move.stand )
-
-    if is_object_online( self.a.partner:id() ) and self.a.partner:alive() then
-        self.object:set_sight       ( look.direction, vector():set( self.a.partner:position() ):sub( self.object:position() ), 0 )
-        self.object:set_body_state  ( move.standing )
-        self.object:set_mental_state( anim.free )
-    else
-        self.object:set_sight       ( look.direction, self.a.way_safe:point( 1 ):sub( self.object:position() ), 0 )
-        self.object:set_body_state  ( move.crouch )
-        self.object:set_mental_state( anim.danger )
-    end
-    --self.object:set_sight( look.point, self.a.partner:position(), 0 )
-
-    if self.object:level_vertex_id() == self.positions[1] then
-        self.timer = device():time_global() + 15000
-        self.next_pos = 2
-    else
-        self.timer = device():time_global() + 15000
-        self.next_pos = 1
-    end
-
---    printf( "look_around initialized" )
-end
-
-function action_stand:execute()
-    action_base.execute( self )
-
-    if is_object_online( self.a.partner:id() ) and self.a.partner:alive() then
-    	check_actor( self.object, self.a )
-
-        --globals.set_sound( self.object, rnd_phrases, false )
-        xr_sound.sound_update( self.object, rnd_phrases )
-
-        if self.timer <= device():time_global() then
-            self.a.dest_vert_id = self.positions[self.next_pos]
-        else
-    --        if not self.object:is_body_turning() and self.object:animation_count() < 1 then
-            if self.object:animation_count() < 3 then
-                self.object:add_animation(
-                    random_choice_weighted{
-                        ["komandir_4"] = 60,
-                        ["komandir_2"] = 30,
-                        ["komandir_3"] = 20 },
-                    true )
-            end
-        end
-    else
-        -- TODO звуки
-    end
-end
-
-function action_stand:finalize()
-    action_base.finalize( self )
-
-    self.object:clear_animations()
-
-    this.check_enemy( self.object )
-end
-
----------------------------------------------------------------------------------------------------------------------
--- Действие для перехвата смерти
+-- ─хщёЄтшх фы  яхЁхїтрЄр ёьхЁЄш
 ---------------------------------------------------------------------------------------------------------------------
 class "action_dead_hook" ( action_base )
 
 function action_dead_hook:__init( name, storage ) super( nil, name )
-    self.a = storage
+	self.a = storage
 end
 
 function action_dead_hook:initialize()
-    action_base.initialize( self )
+	action_base.initialize( self )
 
-    if not the_actor then
-        the_actor = level.actor()
-    end
+	if one_dead then
+		-- хёыш фю юфшэ єцх с√ы ь╕ЁЄт, Єю фрЄ№ шэЇє, ўЄю юср срэфшЄр ьхЁЄт√
+		if not the_actor then
+			the_actor = level.actor()
+		end
 
-    self.a.dead_hook = true
+		the_actor:give_info_portion( "escape_factory_bandits_dead" )
+	else
+		one_dead = true
+	end
 
-    -- отослать партнёра в безопасную точку и сделать актёра врагом
-    if self.a.partner and is_object_online( self.a.partner:id() ) and self.a.partner:alive() then
-        local pa        = xr_motivator.storage[self.a.partner:id()].escape_factory_bandit
-        pa.way_safe     = patrol( "way_factory_bandits_safe" )
-        pa.dest_vert_id = pa.way_safe:level_vertex_id( 0 )
-
-        self.a.partner:set_relation( game_object.enemy, the_actor )
-    end
-
-    the_actor:give_info_portion( "escape_factory_bandits_dead" )
+	self.a.dead_hook = true
 end
 
 function action_dead_hook:execute()
-    action_base.execute( self )
+	action_base.execute( self )
 end
 
 function action_dead_hook:finalize()
-    action_base.finalize( self )
+	action_base.finalize( self )
 end
 
 ----------------------------------------------------------------------------------------------------------------------
--- Настройка скрипта и GOAP
+-- ═рёЄЁющър ёъЁшяЄр ш GOAP
 ----------------------------------------------------------------------------------------------------------------------
-function add_to_binder( obj )
-    -- скрипт
-    local a = xr_motivator.storage[obj:id()].escape_factory_bandit
-    if not a.enabled then
-        return
-    end
+function add_to_binder( npc )
+	local a = xr_motivator.storage[npc:id()].escape_factory_bandit
+	if not a.enabled then
+	    return
+	end
 
-    a.dead_hook = false
+	a.dead_hook = false
 
-    local name = obj:name()
-    local num  = string.sub( name, string.len( name ) )
-    local way_name = "way_factory_bandit_" .. num
-    local partner_num
+	-- эрёЄЁющър movement manager
+	a.path_walk1 = npc:name() .. "_walk"
+	a.path_look1 = npc:name() .. "_look"
+	a.path_walk_info1 = utils.path_parse_waypoints( a.path_walk1 )
+	a.path_look_info1 = utils.path_parse_waypoints( a.path_look1 )
 
-    if num == "1" then
-        partner_num = 2
-    else
-        partner_num = 1
-    end
+	a.path_walk2 = "factory_bandit_alone_walk"
+	a.path_look2 = "factory_bandit_alone_look"
+	a.path_walk_info2 = utils.path_parse_waypoints( a.path_walk2 )
+	a.path_look_info2 = utils.path_parse_waypoints( a.path_look2 )
 
-    a.partner_name = "factory_bandit_" .. partner_num
+	-- GOAP
 
-    local way = patrol( way_name )
-    local positions = { way:level_vertex_id( 0 ),
-                        way:level_vertex_id( way:count() - 1 ) }
+	local eva_base = xr_evaluators_id.chugai_escape_factory_bandits_base
+	local act_base = xr_actions_id.chugai_escape_factory_bandits_base
 
-    -- звуки
---[[
-    obj:add_sound( "script_replics\\bandit_1\\replics\\bandit_about_novice_", 10, snd_type.talk, 2, 1, snd_about_novice )
-    obj:add_sound( "script_replics\\bandit_1\\replics\\bandit_about_zone_",    5, snd_type.talk, 2, 1, snd_about_zone )
-    obj:add_sound( "script_replics\\bandit_1\\replics\\bandit_hiding_place_",  5, snd_type.talk, 2, 1, snd_hiding_place )
-    obj:add_sound( "script_replics\\bandit_1\\replics\\bandit_novice_again_",  5, snd_type.talk, 2, 1, snd_novice_again )
-    obj:add_sound( "script_replics\\bandit_1\\replics\\bandit_on_actor_",      5, snd_type.talk, 2, 1, snd_on_actor )
-    obj:add_sound( "script_replics\\bandit_1\\idle\\bandit_idle_2",            1, snd_type.talk, 2, 1, snd_idle_2 )
-    obj:add_sound( "script_replics\\bandit_1\\idle\\bandit_idle_3",            1, snd_type.talk, 2, 1, snd_idle_3 )
-    obj:add_sound( "script_replics\\bandit_1\\idle\\bandit_idle_4",            1, snd_type.talk, 2, 1, snd_idle_4 )
-    obj:add_sound( "script_replics\\bandit_1\\idle\\bandit_idle_5",            1, snd_type.talk, 2, 1, snd_idle_5 )
+	local manager = npc:motivation_action_manager()
 
+	manager:add_evaluator( eva_base,     this.evaluator_factory_bandit( "property_enabled", a ) )
+	manager:add_evaluator( eva_base + 1, this.evaluator_dead_hook( "property_dead_hook", a ) )
 
-    for i = 0, 1 do
-        table.insert( rnd_phrases.sounds, { pack = snd_about_novice, id = i } )
-    end
-    for i = 0, 3 do
-        table.insert( rnd_phrases.sounds, { pack = snd_about_zone, id = i } )
-    end
-    for i = 0, 1 do
-        table.insert( rnd_phrases.sounds, { pack = snd_hiding_place, id = i } )
-    end
-    for i = snd_idle_2, snd_idle_5 do
-        table.insert( rnd_phrases.sounds, { pack = i, id = 0 } )
-    end
-]]
-    -- GOAP
+	local action = this.action_walk( "action_walk", a )
+	action:add_precondition( world_property( stalker_ids.property_alive, true  ) )
+	action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
+	action:add_precondition( world_property( xr_evaluators_id.reaction,  false ) )
+	action:add_effect      ( world_property( eva_base,                   false ) )
+	manager:add_action     ( act_base, action )
 
-    local operators  = {}
-    local properties = {}
+	action = manager:action( stalker_ids.action_puzzle_solver )
+	action:add_precondition( world_property( eva_base, false ) )
 
-    local base_id = xr_evaluators_id.chugai_escape_factory_bandits_base
-    properties["escape_factory_bandit"] = base_id + 0
-    properties["in_pos"]                = base_id + 1
-    properties["dead_hook"]             = base_id + 2
-    properties["partner_alive"]         = base_id + 3
-    properties["reaction"]              = xr_evaluators_id.reaction
+	-- яхЁхїтрЄ ёьхЁЄш
+	action = this.action_dead_hook( "action_dead_hook", a )
+	action:add_effect( world_property( eva_base + 1, true ) )
+	manager:add_action( act_base + 1, action )
 
-    base_id = xr_actions_id.chugai_escape_factory_bandits_base
-    operators["go_to_pos"]     = base_id + 0
-    operators["stand"]         = base_id + 1
-    operators["dead_hook"]     = base_id + 2
-    operators["run_to_safe"]   = base_id + 3
-
-    a.dest_vert_id = positions[1]
-
-    local manager = obj:motivation_action_manager()
-    manager:add_evaluator( properties["in_pos"], this.evaluator_in_pos( "property_in_pos", obj, a ) )
-    manager:add_evaluator( properties["escape_factory_bandit"], this.evaluator_factory_bandit( "property_escape_factory_bandit", a ) )
-    manager:add_evaluator( properties["dead_hook"], this.evaluator_dead_hook( "property_dead_hook", a ) )
-    manager:add_evaluator( properties["partner_alive"], this.evaluator_partner_alive( "property_partner_alive", a ) )
-
-    local action = this.action_go_to_pos( "action_go_to_pos", way_name, a )
-    action:add_precondition( world_property( stalker_ids.property_alive, true  ) )
-    action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
-    action:add_precondition( world_property( properties["reaction"],     false ) )
-    action:add_precondition( world_property( properties["partner_alive"], true ) )
-    action:add_effect      ( world_property( properties["in_pos"],       true  ) )
-    manager:add_action     ( operators["go_to_pos"], action )
-    
-    local action = this.action_run_to_safe( "action_run_to_safe", a )
-    action:add_precondition( world_property( stalker_ids.property_alive, true  ) )
-    action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
---    action:add_precondition( world_property( properties["reaction"],     false ) )
-    action:add_precondition( world_property( properties["partner_alive"], false ) )
-    action:add_effect      ( world_property( properties["in_pos"],       true  ) )
-    manager:add_action     ( operators["run_to_safe"], action )
-
-    action = this.action_stand( "action_stand", positions, a )
-    action:add_precondition( world_property( stalker_ids.property_alive, true  ) )
-    action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
-    action:add_precondition( world_property( properties["in_pos"],       true  ) )
-    action:add_precondition( world_property( properties["reaction"],     false ) )
-    action:add_effect      ( world_property( properties["escape_factory_bandit"], false ) )
-    manager:add_action     ( operators["stand"], action )
-
-    action = manager:action( stalker_ids.action_puzzle_solver )
-    action:add_precondition( world_property( properties["escape_factory_bandit"], false ) )
-
-    action = this.action_dead_hook( "action_dead_hook", a )
-    action:add_effect( world_property( properties["dead_hook"], true ) )
-    manager:add_action( operators["dead_hook"], action )
-
-    action = manager:action( stalker_ids.action_death_planner )
-    action:add_precondition( world_property( properties["dead_hook"], true ) )
+	action = manager:action( stalker_ids.action_death_planner )
+	action:add_precondition( world_property( eva_base + 1, true ) )
 end
