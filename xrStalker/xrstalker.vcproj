@@ -1442,6 +1442,9 @@
 					RelativePath=".\scripts\ui_main_menu.script">
 				</File>
 				<File
+					RelativePath=".\Scripts\ui_multiplayer_create.script">
+				</File>
+				<File
 					RelativePath=".\Scripts\ui_multiplayer_dialog.script">
 				</File>
 				<File
