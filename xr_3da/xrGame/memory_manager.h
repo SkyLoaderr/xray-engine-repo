@@ -56,7 +56,8 @@ public:
 
 public:
 			void				enable			(const CObject *object, bool enable);
-			const CMemoryInfo	memory			(const CObject *object) const;
+			CMemoryInfo			memory			(const CObject *object) const;
+			u32					memory_time		(const CObject *object) const;
 
 public:
 	template <typename _predicate>

@@ -43,6 +43,7 @@ template <typename T>
 IC	CMemoryObject<T>::CMemoryObject			()
 {
 	m_squad_mask.one		();
+	m_object				= 0;
 }
 
 template <typename T>
@@ -69,5 +70,5 @@ IC	void CMemoryObject<T>::fill				(const T *game_object, const T *self, const sq
 template <typename T>
 IC	u16 object_id(const T *object)
 {
-	return			(object ? u16(object->ID()) : u16(0xffff));
+	return					(object ? u16(object->ID()) : u16(0xffff));
 }
