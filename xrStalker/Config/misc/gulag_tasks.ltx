@@ -23,10 +23,71 @@ path_main = sleep_1
 ;-------------------------------------------------------------------------------------------------
 ;-- ESCAPE BLOCKPOST
 ;-------------------------------------------------------------------------------------------------
-[sleeper1]
-path_main = sleep1
+[patrol1@esc_blockpost]
+patrol_path = patrol_0
+patrol_look = patrol_look_0
+escape_path = patrol_look_0
 
+[follower1@esc_blockpost]
+escape_path = patrol_look_0
 
+[follower2@esc_blockpost]
+escape_path = patrol_look_0
+
+[walker1@esc_blockpost]
+path_walk = guard_light_walk
+path_look = guard_light_look
+
+[walker2@esc_blockpost]
+path_walk = guard_right_walk
+
+[walker3@esc_blockpost]
+path_walk = guard_left_walk
+
+[kamp1@esc_blockpost]
+center_point = camp
+
+[sleeper1@esc_blockpost]
+path_main = sleep_1
+
+[sleeper2@esc_blockpost]
+path_main = sleep_2
+
+[sleeper3@esc_blockpost]
+path_main = sleep_3
+
+[sleeper4@esc_blockpost]
+path_main = sleep_4
+
+[sleeper5@esc_blockpost]
+path_main = sleep_5
+
+[sleeper6@esc_blockpost]
+path_main = sleep_6
+
+[walker1@esc_blockpost_alarm]
+path_walk = escape_blockpost_alarm_walk1
+path_look = escape_blockpost_alarm_look1
+
+[walker2@esc_blockpost_alarm]
+path_walk = escape_blockpost_alarm_walk2
+path_look = escape_blockpost_alarm_look2
+
+[walker3@esc_blockpost_alarm]
+path_walk = escape_blockpost_alarm_walk3
+path_look = escape_blockpost_alarm_look3
+
+[walker4@esc_blockpost_alarm]
+path_walk = escape_blockpost_alarm_walk4
+path_look = escape_blockpost_alarm_look4
+
+[walker5@esc_blockpost_alarm]
+path_walk = escape_blockpost_alarm_right_walk
+path_look = escape_blockpost_alarm_right_look
+
+[walker6@esc_blockpost_alarm]
+path_walk = escape_blockpost_alarm_left_walk
+path_look = escape_blockpost_alarm_left_look
 
 ;-------------------------------------------------------------------------------------------------
 ;-- GARBAGE BANDITS
