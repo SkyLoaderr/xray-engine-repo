@@ -262,10 +262,13 @@ void CTorch::UpdateCL	()
 		Fmatrix M;
 
 		if (H_Parent()) {
-			smart_cast<CKinematics*>(H_Parent()->Visual())->CalculateBones	();
-
-						
 			CActor* actor = smart_cast<CActor*>(H_Parent());
+
+			if(actor)
+				smart_cast<CKinematics*>(H_Parent()->Visual())->CalculateBones_Invalidate	();
+
+			smart_cast<CKinematics*>(H_Parent()->Visual())->CalculateBones	();
+						
 			M.mul						(XFORM(),BI.mTransform);
 
 			if(actor)
