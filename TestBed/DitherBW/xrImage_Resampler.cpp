@@ -133,9 +133,9 @@ float	B_spline_filter		(float t)	/* box (*) box (*) box (*) box */
 		return((.5f * tt * t) - tt + (2.0f / 3.0f));
 	} else if(t < 2) {
 		t = 2 - t;
-		return((1.0 / 6.0) * (t * t * t));
+		return((1.0f / 6.0f) * (t * t * t));
 	}
-	return(0.0);
+	return(0.0f);
 }
 
 //
@@ -165,10 +165,10 @@ float	Mitchell_filter		(float t)
 	tt = t * t;
 	if(t < 0) t = -t;
 	if(t < 1.0) {
-		t = (((12.0 - 9.0 * B - 6.0 * C) * (t * tt))
-		   + ((-18.0 + 12.0 * B + 6.0 * C) * tt)
-		   + (6.0 - 2 * B));
-		return(t / 6.0);
+		t = (((12.0f - 9.0f * B - 6.0f * C) * (t * tt))
+		   + ((-18.0f + 12.0f * B + 6.0 * C) * tt)
+		   + (6.0f - 2.f * B));
+		return(t / 6.0f);
 	} else if(t < 2.0) {
 		t = (((-1.0 * B - 6.0 * C) * (t * tt))
 		   + ((6.0 * B + 30.0 * C) * tt)
