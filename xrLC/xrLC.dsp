@@ -554,6 +554,10 @@ SOURCE=.\xrSpherical.h
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\hash2D.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\xrDeflectoL_Direct.cpp
 # End Source File
 # Begin Source File
