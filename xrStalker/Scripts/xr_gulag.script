@@ -292,7 +292,7 @@ function changeCasualities(fraction, delta)
 end
 
 function checkNpc(npc_community, gulag_type)
-	printf("COMM %s !! %s", npc_community, gulag_type)
+--	printf("COMM %s !! %s", npc_community, gulag_type)
 
 	if gulag_type == "blockpost"
 	then
@@ -311,8 +311,7 @@ function checkNpc(npc_community, gulag_type)
 	   return npc_community == "dolg"
 	end    
 
-	if gulag_type == "test" or gulag_type == "test1"
-	then
+	if gulag_type == "test" or gulag_type == "test1" then
 		return true
 	end
 
@@ -322,6 +321,10 @@ function checkNpc(npc_community, gulag_type)
 
 	if gulag_type == "esc_fabrika_bandit" then
 		return npc_community == "bandit"
+	end
+
+	if gulag_type == "campers" then
+		return true
 	end
 
 	return false
