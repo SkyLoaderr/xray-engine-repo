@@ -46,28 +46,30 @@ void CLight_DB::Load			(IReader *fs)
 			F->r						(&controller,4);
 			F->r						(&Ldata,sizeof(Flight));
 			if (Ldata.type==D3DLIGHT_DIRECTIONAL)	{
+				Fvector tmp_R;		tmp_R.set(1,0,0);
+
 				// directional (base)
 				sun_base			= L;
 				L->set_type			(IRender_Light::DIRECT);
 				L->set_shadow		(true);
-				L->set_rotation		(Ldata.direction);
+				L->set_rotation		(Ldata.direction,tmp_R);
 				
 				// copy to env-sun
 				sun		=	L		= Create();
 				L->flags.bStatic	= true;
 				L->set_type			(IRender_Light::DIRECT);
 				L->set_shadow		(true);
-				L->set_direction	(Ldata.direction);
+				L->set_direction	(Ldata.direction,tmp_R);
 			}
 			else
 			{
 				// point
 				v_static.push_back	(L);
-				L->set_position		(Ldata.position);
-				L->set_range		(Ldata.range);
-				L->set_color		(Ldata.diffuse);
-				L->set_active		(true);
-				R_ASSERT			(L->spatial.sector);
+				L->set_position		(Ldata.position		);
+				L->set_range		(Ldata.range		);
+				L->set_color		(Ldata.diffuse		);
+				L->set_active		(true				);
+				R_ASSERT			(L->spatial.sector	);
 			}
 		}
 
