@@ -84,6 +84,7 @@ bool SBPart::prepare				(SBAdjVec& adjs, u32 bone_face_min)
             m_bValid				= false;
         }
         for (int k=0; k<3; k++){ 
+            M.transform_dir			(F->n[k]);
             M.transform_tiny		(F->o[k]);
             m_BBox.modify			(F->o[k]);
         }
@@ -201,6 +202,7 @@ bool SBPart::Export	(IWriter& F)
         for (int k=0; k<3; k++)
             v[k].set	(face->o[k],face->n[k],face->uv[k],1.f,face->bone_id,face->bone_id);
         split.add_face		(v[0], v[1], v[2]);
+
         if (face->surf->m_Flags.is(CSurface::sf2Sided)){
             v[0].N.invert(); v[1].N.invert(); v[2].N.invert();
             if (!split.add_face(v[0], v[2], v[1])) split.invalid_faces++;
@@ -298,15 +300,6 @@ bool SBPart::Export	(IWriter& F)
         F.w_fvector3(bone.offset);
         F.w_float   (bone.area);	// mass (для Кости посчитал площадь)
         F.w_fvector3(shape.box.m_translate);	// center of mass        
-        if ((shape.box.m_translate.x<-100.f)||(shape.box.m_translate.x>100.f)){
-        	int y=0;
-        }
-        if ((shape.box.m_translate.y<-100.f)||(shape.box.m_translate.y>100.f)){
-        	int y=0;
-        }
-        if ((shape.box.m_translate.z<-100.f)||(shape.box.m_translate.z>100.f)){
-        	int y=0; 
-        }
     }
     F.close_chunk();
 
