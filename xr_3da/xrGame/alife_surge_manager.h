@@ -20,8 +20,6 @@ protected:
 protected:
 	xr_vector<bool>					m_alive_spawn_objects;
 	ALife::ORGANIZATION_ORDER_MAP	m_tpSoldArtefacts;
-	ALife::_TIME_ID					m_last_surge_time;
-	ALife::_TIME_ID					m_next_surge_time;
 	ALife::ITEM_COUNT_MAP			m_tpTraderItems;
 
 public:
@@ -43,8 +41,6 @@ protected:
 public:
 	IC						CALifeSurgeManager			(xrServer *server, LPCSTR section);
 	virtual					~CALifeSurgeManager			();
-	IC		ALife::_TIME_ID	last_surge_time				() const;
-	IC		ALife::_TIME_ID	next_surge_time				() const;
 };
 
 #include "alife_surge_manager_inline.h"

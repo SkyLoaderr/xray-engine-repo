@@ -12,13 +12,3 @@ IC	CALifeSurgeManager::CALifeSurgeManager				(xrServer *server, LPCSTR section) 
 	inherited		(server,section)
 {
 }
-
-IC	ALife::_TIME_ID	CALifeSurgeManager::last_surge_time	() const
-{
-	return			(m_last_surge_time);
-}
-
-IC	ALife::_TIME_ID	CALifeSurgeManager::next_surge_time	() const
-{
-	return			(m_next_surge_time);
-}

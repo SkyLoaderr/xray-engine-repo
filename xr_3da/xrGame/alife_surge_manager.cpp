@@ -39,7 +39,7 @@ void CALifeSurgeManager::surge		()
 	}
 #endif
 	
-	m_last_surge_time					= time_manager().game_time();
+	time_manager().last_surge_time		(time_manager().game_time());
 
 	random().seed						(u32(CPU::GetCycleCount() & 0xffffffff));
 	
@@ -66,7 +66,7 @@ void CALifeSurgeManager::surge		()
 	update_tasks						();
 	assign_stalker_customers			();
 
-	m_next_surge_time					= m_last_surge_time + 7*24*3600*1000; // a week in milliseconds
+	time_manager().next_surge_time		(time_manager().last_surge_time() + 7*24*3600*1000); // a week in milliseconds
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
