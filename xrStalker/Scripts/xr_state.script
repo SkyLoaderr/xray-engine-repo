@@ -309,6 +309,38 @@ function anims:__init(npc)
 	self.prisluh[4] = { 	{name = "prisluh_4_idle_2", flag = true },
 				{name = "prisluh_4_idle_3", flag = true },
 				{name = "prisluh_4_idle_4", flag = true }}
+	self.poisk = {}
+	self.poisk[0] = { 	{name = "prisluh_0_idle_0", flag = true },
+				{name = "prisluh_0_idle_2", flag = true },
+				{name = "prisluh_0_idle_3", flag = true },
+				{name = "prisluh_0_idle_4", flag = true }}
+	self.poisk[1] = { 	{name = "prisluh_1_idle_0", flag = true },
+				{name = "prisluh_1_idle_2", flag = true },
+				{name = "prisluh_1_idle_3", flag = true },
+				{name = "prisluh_1_idle_4", flag = true }}
+	self.poisk[2] = { 	{name = "prisluh_2_idle_0", flag = true },
+				{name = "prisluh_2_idle_2", flag = true },
+				{name = "prisluh_2_idle_3", flag = true },
+				{name = "prisluh_2_idle_4", flag = true }}
+	self.poisk[3] = { 	{name = "prisluh_3_idle_0", flag = true },
+				{name = "prisluh_3_idle_2", flag = true },
+				{name = "prisluh_3_idle_3", flag = true },
+				{name = "prisluh_3_idle_4", flag = true }}
+	self.poisk[4] = { 	{name = "prisluh_4_idle_0", flag = true },
+				{name = "prisluh_4_idle_2", flag = true },
+				{name = "prisluh_4_idle_3", flag = true },
+				{name = "prisluh_4_idle_4", flag = true }}
+	self.hide = {}
+	self.poisk[0] = { 	{name = "d_0_idle_0", flag = true },
+				{name = "d_0_idle_2", flag = true }}
+	self.poisk[1] = { 	{name = "d_1_idle_0", flag = true },
+				{name = "d_1_idle_2", flag = true }}
+	self.poisk[2] = { 	{name = "d_2_idle_0", flag = true },
+				{name = "d_2_idle_2", flag = true }}
+	self.poisk[3] = { 	{name = "d_3_idle_0", flag = true },
+				{name = "d_3_idle_2", flag = true }}
+	self.poisk[4] = { 	{name = "d_4_idle_0", flag = true },
+				{name = "d_4_idle_2", flag = true }}
 			
 end
 -- основная функция	
@@ -321,6 +353,12 @@ function anims:update(type)
 			end
 			if self.anim.base_state == "prisluh" then
 				self:remove_prisluh()
+			end
+			if self.anim.base_state == "poisk" then
+				self:remove_poisk()
+			end
+			if self.anim.base_state == "hide" then
+				self:remove_hide()
 			end
 		end
 	end
@@ -338,7 +376,9 @@ function anims:update(type)
 
 	-- определяем, относится ли запрашиваемый тип к базовым
 	if type == "idle" or
-	   type == "prisluh"
+	   type == "prisluh" or
+	   type == "poisk" or
+	   type == "hide"
 	then
 		-- если тип соответствует текущей анимации - играть его, если нет - зафиналить предидущий и засетить новый.
 		if type ~= self.anim.base_state then
@@ -349,6 +389,12 @@ function anims:update(type)
 			if self.anim.base_state == "prisluh" then
 				self:remove_prisluh()
 			end
+			if self.anim.base_state == "poisk" then
+				self:remove_poisk()
+			end
+			if self.anim.base_state == "hide" then
+				self:remove_hide()
+			end
 
 			-- устанавливаем новый
 			self.anim.base_state = type
@@ -357,6 +403,12 @@ function anims:update(type)
 			end
 			if self.anim.base_state == "prisluh" then
 				self:set_prisluh()
+			end
+			if self.anim.base_state == "poisk" then
+				self:set_poisk()
+			end
+			if self.anim.base_state == "hide" then
+				self:set_hide()
 			end
 		end
 	end
@@ -396,6 +448,12 @@ function anims:update_base()
 	end
 	if self.anim.base_state == "prisluh" then
 		self:update_prisluh()
+	end
+	if self.anim.base_state == "poisk" then
+		self:update_poisk()
+	end
+	if self.anim.base_state == "hide" then
+		self:update_hide()
 	end
 end
 -- возвращает id оружейного слота
@@ -614,6 +672,146 @@ function anims:remove_prisluh()
 	elseif animslot == 4 then
 		self.npc:add_animation("prisluh_4_idle_5", true)
 	end
+end
+----------------------------------------------------------------------------------------------------------------------
+-- Поиск
+----------------------------------------------------------------------------------------------------------------------
+-- проигрывает идловые анимации
+function anims:set_poisk()
+	-- выбирает нужную анимацию для данного положения тела
+	-- если для данного положения тела нет пачки анимаций - ругается
+	local animslot = self:weapon_slot()
+	self.anim.lastanimslot = animslot
+
+	-- Добавление зацикленного айдла для данного анимслота
+	self:poisk_idle(animslot)
+end
+function anims:poisk_idle(animslot)
+	-- Добавление зацикленного айдла для данного анимслота
+	if animslot == 0 then
+		self.npc:add_animation("poisk_0_idle_1", true)
+	elseif animslot == 1 then
+		self.npc:add_animation("poisk_1_idle_1", true)
+	elseif animslot == 2 then
+		self.npc:add_animation("poisk_2_idle_1", true)
+	elseif animslot == 3 then
+		self.npc:add_animation("poisk_3_idle_1", true)
+	elseif animslot == 4 then
+		self.npc:add_animation("poisk_4_idle_1", true)
+	end
+end
+function anims:update_poisk()
+	-- изменился ли анимслот
+	local animslot = self:weapon_slot()
+
+	if animslot ~= self.anim.lastanimslot then
+		self.anim.begin = nil
+		self.anim.lastanimslot = animslot
+		self.npc:clear_animations()
+		self:poisk_idle(animslot)
+	end
+
+	-- Определяем нужно ли добавлять анимацию или ждать
+	if (self.anim.begin == nil or
+	   device():time_global() - self.anim.begin > self.anim.idle) and
+	   self.npc:animation_count() <= 1
+	then
+		-- Определение промежутков времени между анимациями
+		self.anim.begin = device():time_global()
+		self.anim.idle = (math.random(self.anim.maxidle) + self.anim.sumidle) * 1000
+		if math.random(100) < self.anim.rnd then
+			local r
+			if self.anim.lastanim == nil then
+				r = math.random(table.getn(self.poisk[animslot]))
+			else
+				r = math.random(table.getn(self.poisk[animslot])-1)
+				if r >= self.anim.lastanim then
+					r = r + 1
+				end
+			end
+			self.anim.lastanim = r
+			self.npc:clear_animations()
+			self.npc:add_animation (self.poisk[animslot][r].name, self.poisk[animslot][r].flag)
+			-- Добавление зацикленного айдла для данного анимслота
+			self:poisk_idle(animslot)
+		end
+	end	
+end                            
+function anims:remove_poisk()
+	self.anim.base_state = nil
+	self.anim.lastanim = nil
+	self.anim.lastanimslot = nil 
+	self.npc:clear_animations()
+end
+----------------------------------------------------------------------------------------------------------------------
+-- Ожидание на стреме
+----------------------------------------------------------------------------------------------------------------------
+-- проигрывает идловые анимации
+function anims:set_hide()
+	-- выбирает нужную анимацию для данного положения тела
+	-- если для данного положения тела нет пачки анимаций - ругается
+	local animslot = self:weapon_slot()
+	self.anim.lastanimslot = animslot
+
+	-- Добавление зацикленного айдла для данного анимслота
+	self:hide_idle(animslot)
+end
+function anims:hide_idle(animslot)
+	-- Добавление зацикленного айдла для данного анимслота
+	if animslot == 0 then
+		self.npc:add_animation("d_0_idle_1", true)
+	elseif animslot == 1 then
+		self.npc:add_animation("d_1_idle_1", true)
+	elseif animslot == 2 then
+		self.npc:add_animation("d_2_idle_1", true)
+	elseif animslot == 3 then
+		self.npc:add_animation("d_3_idle_1", true)
+	elseif animslot == 4 then
+		self.npc:add_animation("d_4_idle_1", true)
+	end
+end
+function anims:update_hide()
+	-- изменился ли анимслот
+	local animslot = self:weapon_slot()
+
+	if animslot ~= self.anim.lastanimslot then
+		self.anim.begin = nil
+		self.anim.lastanimslot = animslot
+		self.npc:clear_animations()
+		self:hide_idle(animslot)
+	end
+
+	-- Определяем нужно ли добавлять анимацию или ждать
+	if (self.anim.begin == nil or
+	   device():time_global() - self.anim.begin > self.anim.idle) and
+	   self.npc:animation_count() <= 1
+	then
+		-- Определение промежутков времени между анимациями
+		self.anim.begin = device():time_global()
+		self.anim.idle = (math.random(self.anim.maxidle) + self.anim.sumidle) * 1000
+		if math.random(100) < self.anim.rnd then
+			local r
+			if self.anim.lastanim == nil then
+				r = math.random(table.getn(self.hide[animslot]))
+			else
+				r = math.random(table.getn(self.hide[animslot])-1)
+				if r >= self.anim.lastanim then
+					r = r + 1
+				end
+			end
+			self.anim.lastanim = r
+			self.npc:clear_animations()
+			self.npc:add_animation (self.hide[animslot][r].name, self.hide[animslot][r].flag)
+			-- Добавление зацикленного айдла для данного анимслота
+			self:hide_idle(animslot)
+		end
+	end	
+end                            
+function anims:remove_hide()
+	self.anim.base_state = nil
+	self.anim.lastanim = nil
+	self.anim.lastanimslot = nil 
+	self.npc:clear_animations()
 end
 
 
