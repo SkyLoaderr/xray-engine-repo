@@ -9,12 +9,11 @@ class ENGINE_API 				IGame_ObjectPool
 private:
 	struct str_pred : public std::binary_function<char*, char*, bool> 
 	{	
-		IC bool operator()(LPCSTR x, LPCSTR y) const
+		IC bool operator()(const ref_str& x, const ref_str& y) const
 		{	return xr_strcmp(x,y)<0;	}
 	};
-	typedef xr_multimap<LPCSTR,CObject*,str_pred>	POOL;
+	typedef xr_multimap<ref_str,CObject*,str_pred>	POOL;
 	typedef POOL::iterator							POOL_IT;
-
 private:
 	POOL						map_POOL;
 

@@ -66,7 +66,7 @@ void IGame_ObjectPool::unload	( )
 CObject*	IGame_ObjectPool::create			( LPCSTR	name	)
 {
 	string128			l_name;
-	POOL_IT	it			=	map_POOL.find	(strlwr(strcpy(l_name,name)));
+	POOL_IT	it			=	map_POOL.find	(ref_str(strlwr(strcpy(l_name,name))));
 	if (it!=map_POOL.end())
 	{
 		// Instance found
