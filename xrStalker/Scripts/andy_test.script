@@ -19,8 +19,12 @@ function  _main()
 end
 
 function main()
-	local info = "storyline_actor_start" 
-	db.actor:give_info_portion(info) 
+	level.disable_input()
+	wait(10000)
+	level.enable_input()
+	
+--	local info = "storyline_actor_start" 
+--	db.actor:give_info_portion(info) 
 end
 function main_ ()
 --	local info = "tutorial_artefact_start" 
