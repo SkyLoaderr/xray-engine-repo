@@ -94,7 +94,7 @@ void 	EParticleAction::Load		(IReader& F)
 	u32 vers		= F.r_u32();
     R_ASSERT		(vers==PARTICLE_ACTION_VERSION);
 	F.r_stringZ		(actionName);
-	flags.set		(F.r_u32());
+	flags.assign	(F.r_u32());
     for (PFloatMapIt 	f_it=floats.begin(); 	f_it!=floats.end(); 	f_it++)	f_it->second.val	= F.r_float();
     for (PVectorMapIt 	v_it=vectors.begin();	v_it!=vectors.end(); 	v_it++)	F.r_fvector3(v_it->second.val);
     for (PDomainMapIt 	d_it=domains.begin(); 	d_it!=domains.end(); 	d_it++)	d_it->second.Load	(F);
@@ -487,7 +487,7 @@ void pSource(IWriter& F, float particle_rate, pDomain pos, pDomain vel, pDomain 
 	S.alpha			= alpha;
 	S.age			= age;
 	S.age_sigma		= age_sigma;
-	S.m_Flags.set	((single_size?PASource::flSingleSize:0)|PASource::flVertexB_tracks);
+	S.m_Flags.assign((single_size?PASource::flSingleSize:0)|PASource::flVertexB_tracks);
 	S.parent_vel	= pVector(0,0,0);
 	S.parent_motion	= parent_motion;
 	S.m_Flags.set	(ParticleAction::ALLOW_ROTATE,allow_rotate);

@@ -26,27 +26,27 @@ object frmMain: TfrmMain
   PixelsPerInch = 96
   TextHeight = 13
   object paLeftBar: TPanel
-    Left = 544
+    Left = 524
     Top = 0
-    Width = 218
+    Width = 238
     Height = 402
     Align = alRight
     BevelInner = bvLowered
     BevelOuter = bvNone
-    Constraints.MaxWidth = 218
-    Constraints.MinWidth = 218
+    Constraints.MaxWidth = 238
+    Constraints.MinWidth = 238
     TabOrder = 0
     object paTools: TPanel
       Left = 1
       Top = 1
-      Width = 216
+      Width = 236
       Height = 16
       Align = alTop
       TabOrder = 0
       object APHeadLabel2: TLabel
         Left = 1
         Top = 1
-        Width = 214
+        Width = 234
         Height = 13
         Align = alTop
         Alignment = taCenter
@@ -56,7 +56,7 @@ object frmMain: TfrmMain
         OnClick = TopClick
       end
       object sbToolsMin: TExtBtn
-        Left = 203
+        Left = 223
         Top = 2
         Width = 11
         Height = 11
@@ -120,7 +120,7 @@ object frmMain: TfrmMain
   object paMain: TPanel
     Left = 0
     Top = 0
-    Width = 544
+    Width = 524
     Height = 402
     Align = alClient
     BevelOuter = bvNone
@@ -128,7 +128,7 @@ object frmMain: TfrmMain
     object paTopBar: TPanel
       Left = 0
       Top = 0
-      Width = 544
+      Width = 524
       Height = 18
       Align = alTop
       BevelOuter = bvNone
@@ -137,7 +137,7 @@ object frmMain: TfrmMain
     object paRender: TPanel
       Left = 0
       Top = 18
-      Width = 544
+      Width = 524
       Height = 384
       Align = alClient
       BevelOuter = bvNone
@@ -147,7 +147,7 @@ object frmMain: TfrmMain
       object D3DWindow: TD3DWindow
         Left = 6
         Top = 6
-        Width = 531
+        Width = 513
         Height = 371
         FocusedColor = 9502719
         UnfocusedColor = 9211020
