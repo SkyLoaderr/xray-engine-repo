@@ -13,12 +13,12 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	// Constants
 	Fvector4	J;
 	Fvector		L_pos;
-	float		L_R				= 10; //1/L->sphere.R;
+	float		L_R				= L->sphere.R;
 	Fcolor		L_clr			= L->color;
-	float		np				= 1.f;
+	float		np				= VIEWPORT_NEAR+EPS;
 	float		scale			= 1.f/50.f;
 	Device.mView.transform_tiny	(L_pos,L->sphere.P);
-	RCache.set_c				("light_position",	L_pos.x,L_pos.y,L_pos.z,L_R);
+	RCache.set_c				("light_position",	L_pos.x,L_pos.y,L_pos.z,1/L_R);
 	RCache.set_c				("light_color",		L_clr.r,L_clr.g,L_clr.b,.15f*L_clr.magnitude_rgb());
 	RCache.set_c				("near",			np,np,np,np);
 	R_constant* _C				= RCache.get_c		("jitter");
