@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: action_manager_stalker_inline.h
+//	Module 		: stalker_property_evaluators_inline.h
 //	Created 	: 25.03.2004
-//  Modified 	: 25.03.2004
+//  Modified 	: 26.03.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Stalker action manager class inline functions
+//	Description : Stalker property evaluators classes inline functions
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once

@@ -39,10 +39,11 @@ protected:
 	typedef CActionPlanner<CAI_Stalker>				inherited;
 	typedef CGraphEngine::_solver_value_type		_value_type;
 	typedef CGraphEngine::_solver_condition_type	_condition_type;
+	typedef CGraphEngine::CSolverConditionStorage	CConditionStorage;
 	typedef CActionBase<CAI_Stalker>				CAction;
 
-protected:
-	_value_type				m_dead;
+private:
+	CConditionStorage		m_storage;
 
 public:
 							CActionManagerStalker	();
@@ -54,7 +55,6 @@ public:
 	virtual	void			update					(u32 time_delta);
 			void			add_evaluators			();
 			void			add_actions				();
-	IC		void			set_dead				(const _value_type &value);
 };
 
 #include "action_manager_stalker_inline.h"

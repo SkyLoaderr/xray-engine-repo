@@ -7,16 +7,10 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "action_manager_stalker.h"
 #include "ai/stalker/ai_stalker.h"
-// property evaluators
-#include "stalker_property_evaluator_const.h"
-#include "stalker_property_evaluator_member.h"
-#include "stalker_property_evaluator_alife.h"
-#include "stalker_property_evaluator_alive.h"
-// actions
-#include "stalker_action_dead.h"
-#include "stalker_action_free_no_alife.h"
+#include "action_manager_stalker.h"
+#include "stalker_property_evaluators.h"
+#include "stalker_actions.h"
 
 CActionManagerStalker::CActionManagerStalker	()
 {
@@ -41,8 +35,8 @@ void CActionManagerStalker::Load				(LPCSTR section)
 
 void CActionManagerStalker::reinit				(CAI_Stalker *object)
 {
-	inherited::reinit		(object,false);
-	m_dead					= false;
+	inherited::reinit				(object,false);
+	m_storage[eWorldPropertyDead]	= false;
 }
 
 void CActionManagerStalker::reload				(LPCSTR section)
@@ -67,7 +61,7 @@ void CActionManagerStalker::add_evaluators		()
 {
 	add_evaluator			(eWorldPropertyALife		,xr_new<CStalkerPropertyEvaluatorALife>	());
 	add_evaluator			(eWorldPropertyAlive		,xr_new<CStalkerPropertyEvaluatorAlive>	());
-	add_evaluator			(eWorldPropertyDead			,xr_new<CStalkerPropertyEvaluatorMember>(&m_dead));
+	add_evaluator			(eWorldPropertyDead			,xr_new<CStalkerPropertyEvaluatorMember>(&m_storage,eWorldPropertyDead,true));
 	add_evaluator			(eWorldPropertyAlreadyDead	,xr_new<CStalkerPropertyEvaluatorConst>	(false));
 	add_evaluator			(eWorldPropertyMazeSolved	,xr_new<CStalkerPropertyEvaluatorConst>	(false));
 }
@@ -76,7 +70,7 @@ void CActionManagerStalker::add_actions			()
 {
 	CAction					*action;
 
-	action					= xr_new<CStalkerActionDead>		(m_object,"dead");
+	action					= xr_new<CStalkerActionDead>		(m_object,&m_storage,"dead");
 	add_condition			(action,eWorldPropertyAlive,		false);
 	add_condition			(action,eWorldPropertyDead,			false);
 	add_effect				(action,eWorldPropertyDead,			true);
@@ -87,14 +81,14 @@ void CActionManagerStalker::add_actions			()
 	add_effect				(action,eWorldPropertyAlreadyDead,	true);
 	add_operator			(eWorldOperatorAlreadyDead,			action);
 
-	action					= xr_new<CStalkerActionFreeNoALife>	(m_object,"free_no_alife");
+	action					= xr_new<CStalkerActionFreeNoALife>	(m_object,&m_storage,"free_no_alife");
 	add_condition			(action,eWorldPropertyAlive,		true);
 	add_condition			(action,eWorldPropertyALife,		false);
 	add_condition			(action,eWorldPropertyMazeSolved,	false);
 	add_effect				(action,eWorldPropertyMazeSolved,	true);
 	add_operator			(eWorldOperatorFreeNoALife,			action);
 
-	action					= xr_new<CStalkerActionFreeNoALife>	(m_object,"free_no_alife");
+	action					= xr_new<CStalkerActionFreeNoALife>	(m_object,&m_storage,"free_alife");
 	add_condition			(action,eWorldPropertyAlive,		true);
 	add_condition			(action,eWorldPropertyALife,		true);
 	add_condition			(action,eWorldPropertyMazeSolved,	false);

@@ -84,7 +84,9 @@ void CAI_Space::load				(LPCSTR level_name)
 
 	VERIFY2					((I != game_graph().header().levels().end()),"There is no graph for the current level or current level is not included into the game graph!");
 	
+#ifdef DEBUG
 	validate				((*I).second.id());
+#endif
 
 	level_graph().set_level_id((*I).second.id());
 
