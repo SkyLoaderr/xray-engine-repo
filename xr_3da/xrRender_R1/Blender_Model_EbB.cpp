@@ -104,22 +104,26 @@ void	CBlender_Model_EbB::Compile(CBlender_Compile& C)
 			C.r_End				();
 			break;
 		case SE_R1_LPOINT:
-			sname				= "model_def_point";
-			sname_ps			= "add_point";
-			C.r_Pass			(sname,sname_ps,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE, D3DBLEND_ONE,TRUE);
-			C.r_Sampler			("s_base",	C.L_textures[0]);
-			C.r_Sampler_clf		("s_lmap",	TEX_POINT_ATT);
-			C.r_Sampler_clf		("s_att",	TEX_POINT_ATT);
-			C.r_End				();
+			if (!oBlend.value)	{
+				sname				= "model_def_point";
+				sname_ps			= "add_point";
+				C.r_Pass			(sname,sname_ps,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE, D3DBLEND_ONE,TRUE);
+				C.r_Sampler			("s_base",	C.L_textures[0]);
+				C.r_Sampler_clf		("s_lmap",	TEX_POINT_ATT);
+				C.r_Sampler_clf		("s_att",	TEX_POINT_ATT);
+				C.r_End				();
+			}
 			break;
 		case SE_R1_LSPOT:
-			sname				= "model_def_spot";
-			sname_ps			= "add_spot";
-			C.r_Pass			(sname,sname_ps,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE, D3DBLEND_ONE,TRUE);
-			C.r_Sampler			("s_base",	C.L_textures[0]);
-			C.r_Sampler_clf		("s_lmap",	"internal\\internal_light_att",		true);
-			C.r_Sampler_clf		("s_att",	TEX_SPOT_ATT);
-			C.r_End				();
+			if (!oBlend.value)	{
+				sname				= "model_def_spot";
+				sname_ps			= "add_spot";
+				C.r_Pass			(sname,sname_ps,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE, D3DBLEND_ONE,TRUE);
+				C.r_Sampler			("s_base",	C.L_textures[0]);
+				C.r_Sampler_clf		("s_lmap",	"internal\\internal_light_att",		true);
+				C.r_Sampler_clf		("s_att",	TEX_SPOT_ATT);
+				C.r_End				();
+			}
 			break;
 		case SE_R1_LMODELS:
 			break;
