@@ -479,7 +479,7 @@ void CAI_Soldier::vfAimAtEnemy()
 				if (m_fAddWeaponAngle > PI - EPS_L)
 					m_fAddWeaponAngle -= PI_MUL_2;
 				
-				m_fAddWeaponAngle = (WEAPON_DISTANCE + .15f*fabsf(PI - m_fAddWeaponAngle)/PI)/fDistance;
+				m_fAddWeaponAngle = WEAPON_DISTANCE/fDistance;//(WEAPON_DISTANCE + .15f*fabsf(PI - m_fAddWeaponAngle)/PI)/fDistance;
 				clamp(m_fAddWeaponAngle,-.99999f,+.99999f);
 				m_fAddWeaponAngle = asinf(m_fAddWeaponAngle);
 			}

@@ -296,20 +296,23 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 						}
 					}
 				else
-					switch (m_cBodyState) {
-						case BODY_STATE_STAND : {
-							tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpAim;
-							break;
+					if (speed < EPS_L)
+						switch (m_cBodyState) {
+							case BODY_STATE_STAND : {
+								tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpAim;
+								break;
+							}
+							case BODY_STATE_CROUCH : {
+								tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpAim;
+								break;
+							}
+							case BODY_STATE_LIE : {
+								tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
+								break;
+							}
 						}
-						case BODY_STATE_CROUCH : {
-							tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpAim;
-							break;
-						}
-						case BODY_STATE_LIE : {
-							tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
-							break;
-						}
-					}
+					else
+						tpGlobalAnimation = m_tpaMovementAnimations[m_cBodyState][m_cMovementType];
 				tpTorsoAnimation = tpLegsAnimation = 0;
 				break;
 			}

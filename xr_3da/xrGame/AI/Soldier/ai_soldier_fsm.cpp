@@ -1202,7 +1202,7 @@ void CAI_Soldier::OnAttackFireAlone()
 	
 	vfSaveEnemy();
 
-	if (fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI/30.f) {
+	if ((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI/30.f) || (PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI/30.f)) {
 		vfSetFire(true,Group);
 		CHECK_IF_GO_TO_NEW_STATE((dwCurTime - m_dwNoFireTime > 1000) && !m_bFiring && Weapons->ActiveWeapon() && (float(Weapons->ActiveWeapon()->GetAmmoElapsed()) / float(Weapons->ActiveWeapon()->GetAmmoMagSize()) < RECHARGE_MEDIAN + ::Random.randF(-RECHARGE_EPSILON,+RECHARGE_EPSILON)),aiSoldierRecharge);
 		if (dwCurTime - m_dwNoFireTime > 1000) {
@@ -1212,11 +1212,12 @@ void CAI_Soldier::OnAttackFireAlone()
 				vfBuildPathToDestinationPoint(&SelectorAttack);
 			else
 				vfSearchForBetterPositionWTime(SelectorAttack,Squad,Leader);
+			
 			if (m_cBodyState != BODY_STATE_STAND)
-				vfSetMovementType(WALK_FORWARD_1);
+				vfSetMovementType(WALK_FORWARD_0);
 			else {
 				Squat();
-				vfSetMovementType(WALK_FORWARD_1);
+				vfSetMovementType(WALK_FORWARD_0);
 			}
 		}
 		else {
