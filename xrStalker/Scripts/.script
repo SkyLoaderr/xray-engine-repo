@@ -677,6 +677,10 @@ function random_choice_weighted( a )
         sum = sum + w
     end
 
+    if sum <= 1 then
+        printf( "!!!!!!!!!!!!!! SUM !!!!!!!!!!!!!!!!!!!!" )
+    end
+
     local r = math.random( sum )
     sum = 0
 
@@ -698,19 +702,19 @@ function is_object_online (object_id)
     return obj.online
 end
 function get_clsid(npc)
-	if npc == nil then return nil end
+    if npc == nil then return nil end
 
-	if is_object_online(npc:id()) then
-		return npc:clsid()
-	else
-		return nil
-	end
+    if is_object_online(npc:id()) then
+        return npc:clsid()
+    else
+        return nil
+    end
 end
 
 -- проверяет оружие ли это (передавать game_object)
 function isWeapon(object)
-	local id = get_clsid(object)
-	if id == nil then return false end
+    local id = get_clsid(object)
+    if id == nil then return false end
 
     if id == clsid.wpn_vintorez then return true
     elseif id == clsid.wpn_fn2000 then return true
