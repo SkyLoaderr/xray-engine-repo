@@ -6,8 +6,8 @@
 
 void CCustomMenuItem::Execute()			
 {
-	if (OnExecuteCC)		Console.Execute(OnExecuteCC);
-	else if (OnExecute)		OnExecute(this);
+	if (value1&&(value1[0]=='$'))	Console.Execute(value1+1);
+	else if (OnExecute)				OnExecute(this);
 }
 //--------------------------------------------------------------------
 CCustomMenuItem* UIParseMenu	(CInifile* ini, CCustomMenuItem* root, LPCSTR sect, OnExecuteEvent exec, OnItemDrawEvent draw)

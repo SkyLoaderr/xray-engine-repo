@@ -3,6 +3,7 @@
 #include "HUDManager.h"
 #include "UICustomMenu.h"
 #include "..\\xr_trims.h"
+#include "entity.h"
 
 #define BUY_MENU_OFFS		200
 #define BUY_MENU_OFFS_COL1	0
@@ -67,14 +68,19 @@ void CUIBuyMenu::BuyItem(CCustomMenuItem* sender)
 {
 	CUIGameCustom* G	= Level().HUD()->GetUI()->UIGame();
 	if (G)				G->SetFlag(CUIGameCustom::flShowBuyMenu,FALSE);
-	// buy item
-/*
-	CEntity* E			= Level().GetCurrentEntity();
-	NET_Packet P;
-	E->u_EventGen		(P,GE_BUY,E->ID());
-	P.w_string			("wpn_ak74/cost=100");
-	E->u_EventSend		(P);
-*/
+
+	if (sender->value1){
+		string64 buf;
+		sprintf(buf,"%s/cost=%s",sender->value1,sender->value0);
+		// buy item
+		CEntity* E		= dynamic_cast<CEntity*>(Level().CurrentEntity());
+		if (E){
+			NET_Packet P;
+			E->u_EventGen	(P,GE_BUY,E->ID());
+			P.w_string		(buf);
+			E->u_EventSend	(P);
+		}
+	}
 }
 //--------------------------------------------------------------------
 bool CUIBuyMenu::OnKeyboardPress(int dik)

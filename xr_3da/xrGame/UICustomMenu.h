@@ -12,26 +12,27 @@ class CCustomMenuItem{
 	MIVec				items;
 	OnExecuteEvent		OnExecute;
 	OnItemDrawEvent		OnItemDraw;
-	LPSTR				OnExecuteCC;
+	LPSTR				executeCC;
 public:
 	LPSTR				caption;
-	LPSTR				value;
+	LPSTR				value0;
+	LPSTR				value1;
 	int					tag;
 public:
-	CCustomMenuItem		(CCustomMenuItem* parent, LPCSTR text, LPCSTR val, LPCSTR execCC=0, OnExecuteEvent exec=0, OnItemDrawEvent draw=0)
+	CCustomMenuItem		(CCustomMenuItem* parent, LPCSTR text, LPCSTR val0, LPCSTR val1=0, OnExecuteEvent exec=0, OnItemDrawEvent draw=0)
 	{
 		m_Parent		= parent;
 		caption			= text?xr_strdup(text):0;
-		value			= val?xr_strdup(val):0;
+		value0			= val0?xr_strdup(val0):0;
+		value1			= val1?xr_strdup(val1):0;
 		tag				= 0;
 		OnExecute		= exec;
 		OnItemDraw		= draw;
-		OnExecuteCC		= execCC?xr_strdup(execCC):0;
 	}
 	~CCustomMenuItem	()
 	{
-		_FREE			(OnExecuteCC);
-		_FREE			(value);
+		_FREE			(value0);
+		_FREE			(value1);
 		_FREE			(caption);
 		for (MIIt it=items.begin(); it!=items.end(); it++)
 			_DELETE		(*it);
@@ -47,7 +48,7 @@ public:
 		}else{
 			switch(col){
 			case 0:						F->OutNext	("%d. %s",num,caption);	break;
-			case 1: if (!HasChildren())	F->OutNext	("%s",value);			break;
+			case 1: if (!HasChildren())	F->OutNext	("%s",value0);			break;
 			default: THROW;
 			}
 		}
@@ -56,7 +57,7 @@ public:
 	IC CCustomMenuItem*	Parent				()			{return m_Parent;}
 	IC MIIt				FirstItem			()			{return items.begin();}
 	IC MIIt				LastItem			()			{return items.end();}
-	IC u32			ItemCount			()			{return items.size();}
+	IC u32				ItemCount			()			{return items.size();}
 	IC CCustomMenuItem*	GetItem				(int id)	
 	{
 		id--;

@@ -16,9 +16,9 @@ enum
 	GAME_PLAYER_FLAG_READY				= (1<<1),
 	GAME_PLAYER_FLAG_CS_ON_BASE			= (1<<2),
 	GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE	= (1<<3),
-	GAME_PLAYER_FLAG_CS_HAS_ARTEFACT		= (1<<4),
+	GAME_PLAYER_FLAG_CS_HAS_ARTEFACT	= (1<<4),
 
-	GAME_PLAYER_FLAG_FORCEDWORD	= u32(-1)
+	GAME_PLAYER_FLAG_FORCEDWORD			= u32(-1)
 };
 
 enum
@@ -58,6 +58,7 @@ public:
 	u16								phase;
 	s32								round;
 	u32								start_time;
+	u32								buy_time;
 	s32								fraglimit;
 	s32								timelimit;
 	vector<game_TeamState>			teams;

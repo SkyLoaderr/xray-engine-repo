@@ -24,4 +24,5 @@ game_GameState::game_GameState()
 	round				=	-1;
 	fraglimit			=	-1;
 	timelimit			=	-1;
+	buy_time			=	60000; // 60 sec
 }

@@ -68,15 +68,18 @@ void Startup()
 
 	// ...command line for auto level loading
 	char *	pLevelName			= strstr(Engine.Params,"-server ");
-	char	cmd	[128];
 	if (pLevelName) 
 	{
-		strconcat				(cmd,"server ",pLevelName+8);
+		string128 cmd,c_name;
+		sscanf					(strstr(Engine.Params,"-server ")+8,"%[^ ] ",c_name);
+		strconcat				(cmd,"server ",c_name);
 		Console.Execute			(cmd);
 	} else {
 		pLevelName				= strstr(Engine.Params,"-client ");
 		if (pLevelName)	{
-			strconcat			(cmd,"client ",pLevelName+8);
+			string128 cmd,c_name;
+			sscanf				(strstr(Engine.Params,"-client ")+8,"%[^ ] ",cmd);
+			strconcat			(cmd,"client ",c_name);
 			Console.Execute		(cmd);
 		}
 	}

@@ -17,6 +17,7 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 	P.r_u32			(start_time);
 	P.r_s32			(fraglimit);
 	P.r_s32			(timelimit);
+	P.r_u32			(buy_time);
 
 	// Teams
 	u16 t_count;

@@ -1101,12 +1101,6 @@
 					RelativePath=".\UIHealth.h">
 				</File>
 				<File
-					RelativePath="UILogo.cpp">
-				</File>
-				<File
-					RelativePath="UILogo.h">
-				</File>
-				<File
 					RelativePath=".\UIWeapon.cpp">
 				</File>
 				<File
@@ -1150,6 +1144,12 @@
 					</File>
 					<File
 						RelativePath="UIGameCustom.h">
+					</File>
+					<File
+						RelativePath="UIIcon.cpp">
+					</File>
+					<File
+						RelativePath="UIIcon.h">
 					</File>
 					<File
 						RelativePath="UIListBox.cpp">

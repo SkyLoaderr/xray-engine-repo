@@ -3,16 +3,18 @@
 #pragma once
 
 #include "UIGameCustom.h"
-
-// refs 
-class CUIBuyMenu;
-class CUICSFragList;
-class CUICSPlayerList;
+#include "UIBuyMenu.h"
+#include "UICSFragList.h"
+#include "UICSPlayerList.h"
+#include "UIIcon.h"
 
 class CUIGameCS: public CUIGameCustom{
-	CUIBuyMenu*			pBuyMenu;
-	CUICSFragList*		pFragList;
-	CUICSPlayerList*	pPlayerList;
+	CUIBuyMenu			BuyMenu;
+	CUICSFragList		FragList;
+	CUICSPlayerList		PlayerList;
+	CUIIcon				BuyZone;
+	CUIIcon				Artifact;
+	BOOL				CanBuy				();
 public:
 						CUIGameCS			();
 	virtual 			~CUIGameCS			();

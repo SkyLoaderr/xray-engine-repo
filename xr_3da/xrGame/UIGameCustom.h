@@ -9,6 +9,8 @@ public:
 	enum{
 		flShowBuyMenu	= (1<<0),
 		flShowFragList	= (1<<1),
+		flShowBuyZone	= (1<<2),
+		flShowArtifact	= (1<<3),
 
 		fl_force_dword	= u32(-1)
 	};
