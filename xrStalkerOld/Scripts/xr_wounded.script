@@ -330,7 +330,7 @@ function action_help:initialize ()
     self.first = false
     self.object:enable_talk ()
     if self.a.dialog == nil then
-       self.object:set_start_dialog ("stalker_wounded_friend")
+       self.object:set_start_dialog ("tutorial_wounded")
     else
        self.object:set_start_dialog (self.a.dialog)    
     end   
