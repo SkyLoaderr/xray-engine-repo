@@ -40,7 +40,7 @@ function main ()
 --    wait (2000)
 
 --    reset_action (hero, military4.script_name ())
-    action (hero, anim ("mashina_5"), sound ("prof_do_basi_bi_dobratsya", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false),
+    action (hero, anim ("mashina_5"), sound ("scripts\\stalker_prof\\prof_do_basi_bi_dobratsya", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false),
 			cond (cond.anim_end))
 
     while hero:action () do wait () end
