@@ -146,6 +146,7 @@ class CMyD3DApplication : public CD3DApplication
 	R_shader						s_Scene2fat_bump;
 	R_shader						s_Scene2smap_direct;
 	R_shader						s_Combine_Normal;
+	R_shader						s_Combine_Bloom;
 	R_shader						s_CombineDBG_Normals;
 	R_shader						s_CombineDBG_Accumulator;
 	R_shader						s_CombineDBG_Base;
@@ -692,6 +693,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	s_Scene2fat_bump.compile		(m_pd3dDevice,"shaders\\D\\fat_bump.s");
 	s_Scene2smap_direct.compile		(m_pd3dDevice,"shaders\\D\\smap_direct.s");
 	s_Combine_Normal.compile		(m_pd3dDevice,"shaders\\D\\cm_normal.s");
+	s_Combine_Bloom.compile			(m_pd3dDevice,"shaders\\D\\cm_to_bloom.s");
 	s_CombineDBG_Normals.compile	(m_pd3dDevice,"shaders\\D\\cm_dbg_normals.s");
 	s_CombineDBG_Accumulator.compile(m_pd3dDevice,"shaders\\D\\cm_dbg_accumulator.s");
 	s_CombineDBG_Base.compile		(m_pd3dDevice,"shaders\\D\\cm_dbg_base.s");
@@ -1396,8 +1398,8 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
 
 	// Shader and params
-	m_pd3dDevice->SetPixelShader			(s_Combine_Normal.ps);
-	m_pd3dDevice->SetVertexShader			(s_Combine_Normal.vs);
+	m_pd3dDevice->SetPixelShader			(s_Combine_Bloom.ps);
+	m_pd3dDevice->SetVertexShader			(s_Combine_Bloom.vs);
 	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
 	cc.flush								(m_pd3dDevice);
 
