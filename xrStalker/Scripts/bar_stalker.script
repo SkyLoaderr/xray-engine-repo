@@ -98,7 +98,7 @@ function action_bar:single_talk ()
        return
     end
     
-    printf ("SINGLE PLAY")
+--    printf ("SINGLE PLAY")
     if self.object:active_sound_count () ~= 0 then 
        return
     else
@@ -128,7 +128,7 @@ function action_bar:double_talk ()
        return
     end
     
-    printf ("DOUBLE PLAY")
+--    printf ("DOUBLE PLAY")
     local talker = nil
     if bit_and (self.phrase, 1) == 1 then
        talker = self.object 
@@ -164,7 +164,7 @@ function action_bar:set_animation ()
     end
 
     self.object:add_animation (animations[self.current_animation], false)
-    printf ("Add animation %s", animations[self.current_animation])
+--    printf ("Add animation %s", animations[self.current_animation])
 end
 
 
@@ -172,7 +172,7 @@ end
 ----------------------------------------------------------------------------
 function add_to_binder (npc)
     local manager = npc:motivation_action_manager ()
-    printf ("SET BINDER BAR FOR OBJECT %s", npc:name ())
+--    printf ("SET BINDER BAR FOR OBJECT %s", npc:name ())
     local property = {}
     local operators = {}
     
@@ -182,14 +182,14 @@ function add_to_binder (npc)
     manager:add_evaluator (property["complete"], this.evaluator_complete (xr_motivator.storage[npc:id()].bar_stalker, "property_complete"))
     
     local action = this.action_bar ("action_bar", xr_motivator.storage[npc:id()].bar_stalker)
-    action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
-   	action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
-   	action:add_precondition         (world_property (property["complete"],        false))
-   	action:add_effect               (world_property (property["complete"],        true))
-   	manager:add_action              (operators["bar"], action)
-   	     	   
+    action:add_precondition         (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition         (world_property (stalker_ids.property_enemy,    false))
+    action:add_precondition         (world_property (property["complete"],        false))
+    action:add_effect               (world_property (property["complete"],        true))
+    manager:add_action              (operators["bar"], action)
+               
     action = manager:action (stalker_ids.action_puzzle_solver)
-   	action:add_precondition (world_property (property["complete"],  true))
+    action:add_precondition (world_property (property["complete"],  true))
     
 end
 ----------------------------------------------------------------------------
