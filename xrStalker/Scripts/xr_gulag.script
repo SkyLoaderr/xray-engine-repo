@@ -30,7 +30,8 @@ function fract:__init(name, char_ini)
 
 	-- инициализация территории
         if char_ini:line_exist("fraction", "zone") == true then
-	        self.territory = level.object(char_ini:r_string("fraction", "zone"))
+		self.territory_name = char_ini:r_string("fraction", "zone")
+	        self.territory = level.object(self.territory_name)
         end
 
 	if self.territory ~= nil then
@@ -112,6 +113,9 @@ function fract:calculate() -- просчет лагеря
 	end
 
 	-- рассылка по всем гостям в лагере
+	if self.territory == nil and self.territory_name ~= nil then
+	        self.territory = level.object(self.territory_name)
+	end
 	if self.broadcastBegin == nil or
 	   game.time() - self.broadcastBegin > self.broadcastTime then
 		self:broadcast()
