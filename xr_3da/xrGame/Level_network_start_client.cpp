@@ -29,7 +29,6 @@ BOOL CLevel::net_Start_client	( LPCSTR name_of_server )
 
 		// Load level
 		R_ASSERT(Load						(level_id));
-		pHUD->Load							();
 		ph_world							= new CPHWorld;
 		ph_world->Create					();
 
@@ -38,6 +37,9 @@ BOOL CLevel::net_Start_client	( LPCSTR name_of_server )
 		while (!net_isCompleted_Connect())	Sleep(5);
 		while (!net_isCompleted_Sync())		{ ClientReceive(); Sleep(5); }
 		while (!game_configured)			{ ClientReceive(); Sleep(5); }
+
+		// HUD
+		pHUD->Load							();
 
 		// Textures
 		pApp->LoadTitle						("Loading textures...");
