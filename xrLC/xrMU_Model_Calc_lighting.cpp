@@ -264,6 +264,7 @@ void xrMU_Reference::calc_lighting	()
 	model->calc_lighting	(color,xform,RCAST_Model,0);
 
 	// A*C + D = B
+/**
 	clMsg("-----------------");
 	{
 		vector<vector<REAL> >	A;
@@ -272,7 +273,6 @@ void xrMU_Reference::calc_lighting	()
 		vector<REAL>			D;
 
 		// build data
-/**/
 		A.clear();	A.resize	(color.size());
 		B.clear();	B.resize	(color.size());
 		for (u32 it=0; it<color.size(); it++)
@@ -314,29 +314,6 @@ void xrMU_Reference::calc_lighting	()
 		c_scale.z			= C[0];
 		c_bias.z			= D[0];
 
-/**
-		A.clear();	A.resize	(color.size());
-		B.clear();	B.resize	(color.size());
-		for (u32 it=0; it<color.size(); it++)
-		{
-			Fcolor&		__A		= model->color	[it];
-			A[it].push_back		(__A.r);
-			A[it].push_back		(__A.g);
-			A[it].push_back		(__A.b);
-			Fcolor&		__B		= color			[it];
-			B[it].push_back		(__B.r);
-			B[it].push_back		(__B.g);
-			B[it].push_back		(__B.b);
-		}
-		vfOptimizeParameters	(A,B,C,D);
-		c_scale.x				= C[0];
-		c_scale.y				= C[1];
-		c_scale.z				= C[2];
-		
-		c_bias.x				= D[0];
-		c_bias.y				= D[1];
-		c_bias.z				= D[2];
-/**/
 
 		c_scale.w			= 0;
 		c_bias.w			= 1;
@@ -345,76 +322,82 @@ void xrMU_Reference::calc_lighting	()
 			c_bias.x,c_bias.y,c_bias.z
 			);
 	}
-
-//	//
-//	{
-//		vector<float>			A;
-//		vector<float>			B;
-//		c_scale.set				(1,1,1,0);
-//		c_bias.set				(0,0,0,1);
-//		Fvector					E;
-//
-//		// build data (x)
-//		A.clear();	B.clear();
-//		for (u32 it=0; it<color.size(); it++) {
-//			A.push_back			(model->color	[it].r);
-//			B.push_back			(color			[it].r);
-//		}
-//		E.x	= simple_optimize	(A,B,c_scale.x,c_bias.x);
-//
-//		// build data (y)
-//		A.clear();	B.clear();
-//		for (u32 it=0; it<color.size(); it++) {
-//			A.push_back			(model->color	[it].g);
-//			B.push_back			(color			[it].g);
-//		}
-//		E.y	= simple_optimize	(A,B,c_scale.y,c_bias.y);
-//
-//		// build data (z)
-//		A.clear();	B.clear();
-//		for (u32 it=0; it<color.size(); it++) {
-//			A.push_back			(model->color	[it].b);
-//			B.push_back			(color			[it].b);
-//		}
-//		E.z	= simple_optimize	(A,B,c_scale.z,c_bias.z);
-//
-//		// 
-//		clMsg				("E[%1.5f,%1.5f,%1.5f], scale[%1.5f, %1.5f, %1.5f], bias[%1.5f, %1.5f, %1.5f]",
-//			E.x,E.y,E.z,
-//			c_scale.x,c_scale.y,c_scale.z,
-//			c_bias.x,c_bias.y,c_bias.z
-//			);
-//	}
-}
-
-/*
-	// build data
-	for (u32 it=0; it<color.size(); it++)
+/**
+	//
 	{
-		Fcolor&		__A		= model->color	[it];
-		A[it].push_back		(__A.r);
-		A[it].push_back		(__A.g);
-		A[it].push_back		(__A.b);
+		vector<float>			A;
+		vector<float>			B;
+		c_scale.set				(1,1,1,0);
+		c_bias.set				(0,0,0,1);
+		Fvector					E;
 
-		Fcolor&		__B		= color			[it];
-		B[it].push_back		(__B.r);
-		B[it].push_back		(__B.g);
-		B[it].push_back		(__B.b);
+		// build data (x)
+		A.clear();	B.clear();
+		for (u32 it=0; it<color.size(); it++) {
+			A.push_back			(model->color	[it].r);
+			B.push_back			(color			[it].r);
+		}
+		E.x	= simple_optimize	(A,B,c_scale.x,c_bias.x);
+
+		// build data (y)
+		A.clear();	B.clear();
+		for (u32 it=0; it<color.size(); it++) {
+			A.push_back			(model->color	[it].g);
+			B.push_back			(color			[it].g);
+		}
+		E.y	= simple_optimize	(A,B,c_scale.y,c_bias.y);
+
+		// build data (z)
+		A.clear();	B.clear();
+		for (u32 it=0; it<color.size(); it++) {
+			A.push_back			(model->color	[it].b);
+			B.push_back			(color			[it].b);
+		}
+		E.z	= simple_optimize	(A,B,c_scale.z,c_bias.z);
+
+		// 
+		clMsg				("E[%1.5f,%1.5f,%1.5f], scale[%1.5f, %1.5f, %1.5f], bias[%1.5f, %1.5f, %1.5f]",
+			E.x,E.y,E.z,
+			c_scale.x,c_scale.y,c_scale.z,
+			c_bias.x,c_bias.y,c_bias.z
+			);
 	}
-	vfOptimizeParameters	(A,B,C,D);
+/**/
+	// build data
+	clMsg("-----------------");
+	{
+		vector<vector<REAL> >	A;
+		vector<vector<REAL> >	B;
+		vector<REAL>			C;
+		vector<REAL>			D;
+		for (u32 it=0; it<color.size(); it++)
+		{
+			Fcolor&		__A		= model->color	[it];
+			A[it].push_back		(__A.r);
+			A[it].push_back		(__A.g);
+			A[it].push_back		(__A.b);
 
-	// 
-	c_scale.x			= C[0];
-	c_scale.y			= C[1];
-	c_scale.z			= C[2];
-	c_scale.w			= 0;
+			Fcolor&		__B		= color			[it];
+			B[it].push_back		(__B.r);
+			B[it].push_back		(__B.g);
+			B[it].push_back		(__B.b);
+		}
+		vfOptimizeParameters	(A,B,C,D);
 
-	c_bias.x			= D[0];
-	c_bias.y			= D[1];
-	c_bias.z			= D[2];
-	c_bias.w			= 1;
-	clMsg				("scale[%2.2f, %2.2f, %2.2f], bias[%2.2f, %2.2f, %2.2f]",
-		c_scale.x,c_scale.y,c_scale.z,
-		c_bias.x,c_bias.y,c_bias.z
-		);
- */
+		// 
+		c_scale.x			= C[0];
+		c_scale.y			= C[1];
+		c_scale.z			= C[2];
+		c_scale.w			= 0;
+
+		c_bias.x			= D[0];
+		c_bias.y			= D[1];
+		c_bias.z			= D[2];
+		c_bias.w			= 1;
+		clMsg				("scale[%2.2f, %2.2f, %2.2f], bias[%2.2f, %2.2f, %2.2f]",
+			c_scale.x,c_scale.y,c_scale.z,
+			c_bias.x,c_bias.y,c_bias.z
+			);
+	}
+ /**/
+}

@@ -1,138 +1,100 @@
 ////////////////////////////////////////////////////////////////////////////
 //	Module 		: fitter.cpp
 //	Created 	: 25.03.2002
-//  Modified 	: 09.10.2002
+//  Modified 	: 28.02.2003
 //	Author		: Dmitriy Iassenev
-//	Description : Pattern Configuration Generation and Weight Fitting Algorithms
+//	Description : Weight Fitting Algorithm
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #include "fitter.h"
+#include <functional>
 
-#define EPSILON					0.001f
-#define ALPHA					1.0f
-#define BETA					0.01f
-#define MAX_ITERATION			10000
-
-REAL	dEpsilon				= EPSILON;
-REAL	dAlphaCoefficient		= ALPHA;
-REAL	dBetaCoefficient		= BETA;
-u32		uiMaxIterationCount		= MAX_ITERATION;
-
-REAL	*daTestResults;
-REAL	*daDelta;
-REAL	*daGradient;
-REAL	*daEvalResults;
-
-u32		uiParameterCount;
-u32		uiTestCount;
-
-IC REAL dfEvaluation(vector<REAL> &A, vector<REAL> &C, vector<REAL> &D)
+IC REAL dfEvaluation(REAL &A, REAL &C, REAL &D)
 {
-	REAL dResult = 0.0;
-	u32 N = A.size();
-	for (u32 i=0; i<N; i++)
-		dResult += A[i]*C[i] + D[i];
-	return(dResult);
+	return					(A*C + D);
 }
 
-REAL *dafMultiplicateVectorByConstant(REAL *daParameters, REAL dConstant, REAL *daResult)
+REAL dfComputeEvalResults(vector<vector<REAL> >	&daEvalResults, vector<vector<REAL> > &A, vector<vector<REAL> > &B, vector<REAL> &C, vector<REAL> &D)
 {
-	for (u32 i=0; i<uiParameterCount; i++)
-		daResult[i] = daParameters[i] * dConstant;
-	return(daResult);
-}
-
-REAL *dafAddVectors(REAL *daVector0, REAL *daVector1, REAL *daResult)
-{
-	for (u32 i=0; i<uiParameterCount; i++)
-		daResult[i] = daVector0[i] + daVector1[i];
-	return(daResult);
-}
-
-vector<REAL> &dafAddVectors(vector<REAL> &daVector0, REAL *daVector1, vector<REAL> &daResult)
-{
-	for (u32 i=0; i<uiParameterCount; i++)
-		daResult[i] = daVector0[i] + daVector1[i];
-	return(daResult);
-}
-
-REAL dfComputeEvalResults(vector<vector<REAL> > &A, vector<REAL> &C, vector<REAL> &D)
-{
-	REAL dResult = 0.0;
-	for (u32 i=0; i<uiTestCount; i++) {
-		daEvalResults[i] = dfEvaluation(A[i],C,D);
-		REAL dTemp = daTestResults[i] - daEvalResults[i];
-		dResult += dTemp*dTemp;
-	}
-	return(dResult);
-}
-
-REAL *dafGradient(REAL *daResult)
-{
-	Memory.mem_fill(daResult,0,uiParameterCount*sizeof(REAL));
+	REAL dResult			= 0.0;
+	u32 dwTestCount			= B.size();
+	u32 dwParameterCount	= B[0].size();
 	
-	REAL dNorma = 0.0;
-	for (u32 i=0; i<uiParameterCount; i++) {
-		for (u32 j=0; j<uiTestCount; j++)
-			daResult[i] -= daTestResults[j] - daEvalResults[j];
-		dNorma += _abs(daResult[i]*daResult[i]);
-	}
-	dNorma = _sqrt(dNorma);
-
-	for ( i=0; i<uiParameterCount; i++)
-		daResult[i] /= (dNorma > 1.f ? dNorma : 1.f)*100;
-
-	return(daResult);
-}
-
-void vfOptimizeParameters(vector<vector<REAL> > &A, vector<vector<REAL> > &B, vector<REAL> &C, vector<REAL> &D)
-{
-	uiTestCount = A.size();
-	uiParameterCount = A[0].size();
-	daDelta			= (REAL *)calloc(uiParameterCount,sizeof(REAL));
-	daGradient		= (REAL *)calloc(uiParameterCount,sizeof(REAL));
-	daEvalResults	= (REAL *)malloc(uiTestCount*sizeof(REAL));
-	daTestResults	= (REAL *)malloc(uiTestCount*sizeof(REAL));
-	C.assign(uiParameterCount,0.0f);
-	D.assign(uiParameterCount,0.0f);
-	{
-		for (u32 i=0; i<uiTestCount; i++) {
-			daTestResults[i] = 0;
-			for (u32 j=0; j<uiParameterCount; j++)
-				daTestResults[i] += B[i][j];
+	for (u32 i=0; i<dwTestCount; i++) {
+		for (u32 j=0; j<dwParameterCount; j++) {
+			
+			daEvalResults[i][j] = dfEvaluation(A[i][j],C[j],D[j]);
+			REAL dTemp			= B[i][j] - daEvalResults[i][j];
+			dResult				+= dTemp*dTemp;
 		}
 	}
-	
-	REAL dFunctional = dfComputeEvalResults(A,C,D), dPreviousFunctional;
-	u32 i = 0;
-	do {
-		
-		dPreviousFunctional = dFunctional;
-		
-		dafGradient(daGradient);
-		dafMultiplicateVectorByConstant(daGradient,-dAlphaCoefficient,daGradient);
-		dafMultiplicateVectorByConstant(daDelta,dBetaCoefficient,daDelta);
-		dafAddVectors(daGradient,daDelta,daDelta);
-		dafAddVectors(C,daDelta,C);
-		dafAddVectors(D,daDelta,D);
+	return					(dResult);
+}
 
-		dFunctional = dfComputeEvalResults(A,C,D);
-		i++;
-		clMsg("%6d : %17.8f (%17.8f)",i,dFunctional,dFunctional/uiTestCount);
+vector<REAL> &dafGradient(vector<vector<REAL> >	&daEvalResults, vector<REAL> &daResult, vector<vector<REAL> > &B)
+{
+	REAL					dNorma = 0.0;
+	u32						dwTestCount = B.size();
+	u32 dwParameterCount	= B[0].size();
+	daResult.assign			(dwParameterCount,0);
+	
+	for (u32 i=0; i<dwParameterCount; i++) {
+		for (u32 j=0; j<dwTestCount; j++)
+			daResult[i]		-= B[j][i] - daEvalResults[j][i];
+		dNorma				+= _abs(daResult[i]);
 	}
-	while ((((dPreviousFunctional - dFunctional)/uiTestCount) > dEpsilon) && (i <= uiMaxIterationCount));
+	dNorma					= _sqrt(dNorma);
+
+	for ( i=0; i<dwParameterCount; i++)
+		daResult[i]			/= (dNorma > 1.f ? dNorma : 1.f)*100;
+
+	return					(daResult);
+}
+
+void vfOptimizeParameters(vector<vector<REAL> > &A, vector<vector<REAL> > &B, vector<REAL> &C, vector<REAL> &D, REAL dEpsilon, REAL dAlpha, REAL dBeta, u32 dwMaxIterationCount)
+{
+	u32						dwTestCount	= B.size();
+	vector<REAL>			daGradient;
+	vector<REAL>			daDelta;
+	vector<vector<REAL> >	daEvalResults(dwTestCount);
+	if (!B.size()) {
+		clMsg				("ERROR : there are no parameters to fit!");
+		return;
+	}
+	u32						dwParameterCount = B[0].size();
+	C.assign				(dwParameterCount,0.0f);
+	D.assign				(dwParameterCount,0.0f);
+	daDelta.assign			(dwParameterCount,0);
+	daGradient.assign		(dwParameterCount,0);
+	{
+		for (u32 i=0; i<dwTestCount; i++)
+			daEvalResults[i].resize(dwParameterCount);
+	}
+	
+	REAL					dFunctional = dfComputeEvalResults(daEvalResults,A,B,C,D), dPreviousFunctional;
+	u32						i = 0;
+	do {
+		dPreviousFunctional = dFunctional;
+		dafGradient			(daEvalResults,			daGradient,			B);
+		transform			(daGradient.begin(),	daGradient.end(),	daGradient.begin(),	bind2nd(multiplies<REAL>(), -dAlpha));
+		transform			(daDelta.begin(),		daDelta.end(),		daDelta.begin(),	bind2nd(multiplies<REAL>(), dBeta));
+		transform			(daGradient.begin(),	daGradient.end(),	daDelta.begin(),	daDelta.begin(),	plus<REAL>());
+		transform			(C.begin(),				C.end(),			daDelta.begin(),	C.begin(),			plus<REAL>());
+		transform			(D.begin(),				D.end(),			daDelta.begin(),	D.begin(),			plus<REAL>());
+		dFunctional			= dfComputeEvalResults(daEvalResults,A,B,C,D);
+
+		i++;
+		clMsg				("%6d : %17.8f (%17.8f)",i,dFunctional,dFunctional/dwTestCount);
+	}
+	while ((((dPreviousFunctional - dFunctional)/dwTestCount) > dEpsilon) && (i <= dwMaxIterationCount));
 	
 	if (dPreviousFunctional < dFunctional) {
-		dafMultiplicateVectorByConstant(daDelta,-1.f,daDelta);
-		dafAddVectors(C,daDelta,C);
-		dafAddVectors(D,daDelta,D);
+		transform			(daDelta.begin(),		daDelta.end(),		daDelta.begin(),	bind2nd(multiplies<REAL>(), -1));
+		transform			(C.begin(),				C.end(),			daDelta.begin(),	C.begin(),			plus<REAL>());
+		transform			(D.begin(),				D.end(),			daDelta.begin(),	D.begin(),			plus<REAL>());
 	}
-	dFunctional = dfComputeEvalResults(A,C,D);
-	clMsg("%6d : %17.8f (%17.8f)",i,dFunctional,dFunctional/uiTestCount);
-
-	free(daDelta);
-	free(daGradient);
-	free(daEvalResults);
-	free(daTestResults);
+	
+	dFunctional				= dfComputeEvalResults(daEvalResults,A,B,C,D);
+	clMsg					("%6d : %17.8f (%17.8f)",i,dFunctional,dFunctional/dwTestCount);
 }
