@@ -141,7 +141,7 @@ public:
 				
 				xr_map<LPCSTR,CSE_SpawnGroup*,pred_str>::iterator			J = l_tpSpawnGroupControlsMap.find((*I).first);
 
-				R_ASSERT(J != l_tpSpawnGroupControlsMap.end());
+				R_ASSERT3(J != l_tpSpawnGroupControlsMap.end(),"Specified group control not found! (%s)",(*I).first);
 				R_ASSERT((*I).second);
 				
 				ALIFE_OBJECT_P_IT	i = (*I).second->begin();
