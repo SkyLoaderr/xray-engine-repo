@@ -29,6 +29,7 @@ void CStalkerActionSquad::initialize		()
 
 void CStalkerActionSquad::execute			()
 {
+	inherited::execute		();
 	VERIFY					(m_object->agent_manager().member(m_object).order_type() == AgentManager::eOrderTypeAction);
 	m_object->CSSetupManager::action(0).update(m_object->agent_manager().member(m_object).action());
 }
