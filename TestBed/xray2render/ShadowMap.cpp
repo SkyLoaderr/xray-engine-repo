@@ -1587,16 +1587,19 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	m_pd3dDevice->SetStreamSource			(0, m_pBloom_Filter_VB, 0, sizeof(TVERTEX));
 
 	// setup weights
-	R_constant*	W							= s_Light_Direct_smap.constants.get("jitter");
-	J.set(11, 0,  0);		J.sub(11); J.mul(scale);	cc.seta	(C,0,J.x,J.y,-J.y,-J.x);
-
+	R_constant*	W							= s_Filter_Bloom.constants.get("weight");
+	cc.seta									(W,0,bloom_W[0].x,bloom_W[0].y,bloom_W[0].z,bloom_W[0].w);
+	cc.seta									(W,1,bloom_W[1].x,bloom_W[1].y,bloom_W[1].z,bloom_W[1].w);
+	R_constant* O							= s_Filter_Bloom.constants.get("offset");
+	u32			o_it;
 
 	// TARGET: BLOOM-2
 	m_pd3dDevice->SetRenderTarget			(0, d_Bloom_2_S		);
 	m_pd3dDevice->SetTexture				(0, d_Bloom_1		);
 
 	// Shader-params
-
+	for (o_it=0; o_it<7; o_it++)
+		cc.seta								(O,o_it,bloom_H[o_it].x,bloom_H[o_it].y,bloom_H[o_it].z,bloom_H[o_it].w);
 
 	// Filter over-bright information to BLOOM-2
 	cc.flush								(m_pd3dDevice);
