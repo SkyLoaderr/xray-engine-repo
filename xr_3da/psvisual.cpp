@@ -42,40 +42,46 @@ void CPSVisual::Update(DWORD dt)
 	float fTime		= Device.fTimeGlobal;
 	float dT		= float(dt)/1000.f;
 	
-	// update visual params
-	bv_Position.set	(m_Emitter->m_Position);
-	bv_BBox.set		(m_Emitter->m_Position,m_Emitter->m_Position);
-	bv_BBox.grow	(2.f);
-	
-	// update visual radius
-	bv_Radius		= bv_BBox.getradius();
-
-	// update all particles that we own
-    for (int i=0; i<int(m_Particles.size()); i++)
+	// calculate number of particles to destroy
+	int iCount_Destroy	= 0;
+	for (int i=0; i<int(m_Particles.size()); i++)
+		if (fTime>m_Particles[i].m_Time.end)	iCount_Destroy++;
+		
+		// calculate how many particles we should create from ParticlesPerSec and time elapsed
+	int iCount_Create	= m_Emitter->CalculateBirth(m_Particles.size() - iCount_Destroy, fTime, dT);
+		
+		// create/destroy/simulate particles that we own
+	float TM	 		= fTime-dT;
+	float dT_delta 		= dT/iCount_Create;
+	float p_size		= 0;
+	Fvector Pos; float size;
+	bv_BBox.invalidate	();
+	for (i=0; i<int(m_Particles.size()); i++)
 	{
-    	SParticle& P = m_Particles[i];
- 		if (fTime>P.m_Time.end){
-        	m_Particles.erase(m_Particles.begin()+i);
-            i--;
-        }
-    }
+		if (fTime>m_Particles[i].m_Time.end) {
+			// Need to delete particle
+			if (iCount_Create)	{
+				// Replace
+				m_Emitter->GenerateParticle(m_Particles[i], m_Definition, TM);
+				TM				+= dT_delta;
+				iCount_Create	-= 1;
+			} else {
+				// Erase
+				m_Particles.erase	(m_Particles.begin()+i);
+				i--;
+			}
+		}
+		
+		// Simulate this particle
+		SParticle& P	= m_Particles[i];
+		float T 		= fTime-P.m_Time.start;
+		float k 		= T/(P.m_Time.end-P.m_Time.start);
 
-	// calculate how many particles we should create from ParticlesPerSec and time elapsed taking the
-	int iParticlesCreated = m_Emitter->CalculateBirth(m_Particles.size(),fTime,dT);
-
-    if (iParticlesCreated)
-	{
-        float TM	 	= fTime-dT;
-        float dT_delta 	= dT/iParticlesCreated;
-        // see if actually have any to create
-        for (i=0; i<iParticlesCreated; i++, TM+=dT_delta)
-		{
-            m_Particles.push_back(SParticle());
-            SParticle& P = m_Particles.back();
-
-            m_Emitter->GenerateParticle(P,m_Definition,TM);
-        }
-    }
+		PS::SimulatePosition(Pos, P,T,k);		bv_BBox.modify		(Pos);
+		PS::SimulateSize	(size,P,k,1-k);		if (sz>p_size)		p_size = sz;
+	}
+	bv_BBox.grow		(p_size);
+	bv_BBox.getsphere	(bv_Position,bv_Radius);
 }
 
 //----------------------------------------------------
