@@ -31,7 +31,7 @@ IC LPCSTR get_token_name(xr_token* tokens, int key)
 {
     for (int k=0; tokens[k].name; k++)
     	if (key==tokens[k].id) return tokens[k].name;
-    return 0;
+    return "";
 }
 
 struct XRCORE_API xr_token2
