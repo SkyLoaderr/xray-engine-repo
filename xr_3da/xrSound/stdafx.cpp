@@ -8,6 +8,7 @@
 // and not in this file
 
 #ifdef __BORLANDC__
+    #pragma comment(lib,	"x:\\eaxB.lib"			)
     #pragma comment(lib,	"x:\\oggB.lib"			)
     #pragma comment(lib,	"x:\\vorbisfileB.lib"	)
     #pragma comment(lib,	"xrCoreB.lib"		)

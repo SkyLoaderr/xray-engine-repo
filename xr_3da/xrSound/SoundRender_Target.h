@@ -11,10 +11,6 @@ class CSoundRender_Target
 	IDirectSoundBuffer8*		pBuffer;
 	IDirectSound3DBuffer8*		pControl;
 
-	IDirectSoundFXWavesReverb8*	pFX_Reverb;
-	IDirectSoundFXEcho8*		pFX_Echo;
-	IDirectSoundFXI3DL2Reverb8*	pFX_EReverb;
-
 	BOOL						bDX7;
 
 	u32							buf_time;		// ms

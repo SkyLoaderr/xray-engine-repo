@@ -12,10 +12,6 @@ CSoundRender_Target::CSoundRender_Target(void)
 	pBuffer			= NULL;
 	pControl		= NULL;
 
-	pFX_EReverb		= NULL;
-	pFX_Reverb		= NULL;
-	pFX_Echo		= NULL;
-
 	cache_hw_volume	= DSBVOLUME_MIN;
 	cache_hw_freq	= 11025;
 
@@ -55,7 +51,8 @@ void	CSoundRender_Target::_initialize		()
 		DSBCAPS_CTRLVOLUME |
 		DSBCAPS_GETCURRENTPOSITION2 |
 		(psSoundFlags.test(ssHardware) 	? 0 				: (DSBCAPS_LOCSOFTWARE)) |
-		(psSoundFlags.test(ssFX) 		? (DSBCAPS_CTRLFX) 	: 0)
+        0
+//		(psSoundFlags.test(ssFX) 		? (DSBCAPS_CTRLFX) 	: 0)
 		;
 	dsBD.dwBufferBytes		= buf_size;
 	dsBD.dwReserved			= 0;
@@ -86,49 +83,10 @@ void	CSoundRender_Target::_initialize		()
 	*/
 	R_CHK	(pBuffer->QueryInterface(IID_IDirectSound3DBuffer8,	(void **)&pControl));
 	R_ASSERT(pBuffer_base && pBuffer && pControl);
-
-	// DMOs
-	if (psSoundFlags.test(ssFX) && !bDX7)	{
-		DSEFFECTDESC	desc	[2];
-        if (psSoundFlags.test(ssHardware)){
-            desc[0].dwSize			= sizeof(DSEFFECTDESC);
-            desc[0].dwFlags			= DSFX_LOCSOFTWARE;
-            desc[0].guidDSFXClass	= GUID_DSFX_STANDARD_I3DL2REVERB;
-            desc[0].dwReserved1		= 0;
-            desc[0].dwReserved2		= 0;
-//.			R_CHK	(pBuffer->SetFX(1,desc,NULL));
-//.        	pBuffer->GetObjectInPath(desc[0].guidDSFXClass, 0, IID_IDirectSoundFXI3DL2Reverb8,	(void**)&pFX_EReverb);
-        }else{
-            desc[0].dwSize			= sizeof(DSEFFECTDESC);
-            desc[0].dwFlags			= DSFX_LOCSOFTWARE;
-            desc[0].guidDSFXClass	= GUID_DSFX_WAVES_REVERB;
-            desc[0].dwReserved1		= 0;
-            desc[0].dwReserved2		= 0;
-
-            desc[1].dwSize			= sizeof(DSEFFECTDESC);
-            desc[1].dwFlags			= DSFX_LOCSOFTWARE;
-            desc[1].guidDSFXClass	= GUID_DSFX_STANDARD_ECHO;
-            desc[1].dwReserved1		= 0;
-            desc[1].dwReserved2		= 0;
-			R_CHK	(pBuffer->SetFX(2,desc,NULL));
-			R_CHK	(pBuffer->GetObjectInPath(desc[0].guidDSFXClass, 0, IID_IDirectSoundFXWavesReverb8,	(void**)&pFX_Reverb));
-			R_CHK	(pBuffer->GetObjectInPath(desc[1].guidDSFXClass, 0, IID_IDirectSoundFXEcho8,		(void**)&pFX_Echo));
-        }
-	} else {
-    	pFX_EReverb				= NULL;
-		pFX_Reverb				= NULL;
-		pFX_Echo				= NULL;
-		if (bDX7)				{
-			Msg			("! WARNING: Can't use DMOs over DX7-sound interface.");
-		}
-	}
 }
 
 void	CSoundRender_Target::_destroy		()
 {
-	_RELEASE(pFX_EReverb);
-	_RELEASE(pFX_Echo);
-	_RELEASE(pFX_Reverb);
 	_RELEASE(pControl);
 	_RELEASE(pBuffer);
 	_RELEASE(pBuffer_base);
@@ -254,56 +212,6 @@ void	CSoundRender_Target::fill_parameters()
 			s32		hw_freq_set			= hw_freq;
 			clamp	(hw_freq_set,s32(SoundRender.dsCaps.dwMinSecondarySampleRate),s32(SoundRender.dsCaps.dwMaxSecondarySampleRate));
 			R_CHK	(pBuffer->SetFrequency	( hw_freq_set	));
-		}
-	}
-	
-	// 3. Set FX params (environment)
-	{
-		CSoundRender_Environment& E		= pEmitter->e_current;
-
-		// 1. Environment Reverb
-        if (pFX_EReverb)
-        {
-        	/*
-        	DSFXI3DL2Reverb					para;
-            para.lRoom               		= iFloor(E.L_Room);              
-            para.lRoomHF             		= iFloor(E.L_RoomHF);            
-            para.flRoomRolloffFactor 		= E.L_RoomRolloffFactor;
-            para.flDecayTime         		= E.L_DecayTime;        
-            para.flDecayHFRatio      		= E.L_DecayHFRatio;     
-            para.lReflections        		= iFloor(E.L_Reflections);       
-            para.flReflectionsDelay  		= E.L_ReflectionsDelay; 
-            para.lReverb             		= iFloor(E.L_Reverb);            
-            para.flReverbDelay       		= E.L_ReverbDelay;      
-            para.flDiffusion         		= E.L_Diffusion;        
-            para.flDensity           		= E.L_Density;          
-            para.flHFReference       		= E.L_HFReference;                  
-			pFX_EReverb->SetAllParameters	(&para);
-            pFX_EReverb->SetPreset			(DSFX_I3DL2_ENVIRONMENT_PRESET_CONCERTHALL);
-            */
-        }
-
-		// 2. Wave Reverb
-		if (pFX_Reverb)
-		{
-			DSFXWavesReverb					para;
-			para.fInGain					= E.R_InGain;
-			para.fReverbMix					= E.R_Mix;
-			para.fReverbTime				= E.R_Time;
-			para.fHighFreqRTRatio			= E.R_HFRatio;
-			pFX_Reverb->SetAllParameters	(&para);
-		}
-
-		// 3. Echo
-		if (pFX_Echo)
-		{
-			DSFXEcho						para;
-			para.fWetDryMix					= E.E_WetDry;
-			para.fFeedback					= E.E_FeedBack;
-			para.fLeftDelay					= E.E_Delay;
-			para.fRightDelay				= E.E_Delay;
-			para.lPanDelay					= FALSE;
-			pFX_Echo->SetAllParameters		(&para);
 		}
 	}
 }

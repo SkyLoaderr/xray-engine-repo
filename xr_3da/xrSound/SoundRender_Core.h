@@ -5,6 +5,7 @@
 #include "SoundRender.h"
 #include "SoundRender_Environment.h"
 #include "SoundRender_Cache.h"
+#include "soundrender_environment.h"
 
 class CSoundRender_Core					: public CSound_manager_interface
 {
@@ -20,6 +21,8 @@ private:
 		float			fRolloffFactor;
 		float			fDopplerFactor;
 	};
+	CSoundRender_Environment			e_current;
+	CSoundRender_Environment			e_target;
 public:
 	typedef	std::pair<ref_sound*,float>	event;
 	xr_vector<event>					s_events;

@@ -7,175 +7,91 @@
 CSoundRender_Environment::CSoundRender_Environment(void)
 {
 	version			= sdef_env_version;
-	strcpy			(name,"");
-	set_default		(true,true,true);
+	set_default		();
 }
 
 CSoundRender_Environment::~CSoundRender_Environment(void)
 {
 }
 
-void CSoundRender_Environment::set_default	(bool R, bool E, bool L)
+void CSoundRender_Environment::set_default	()
 {
-	if (L){
-        L_Room			   	= DSFX_I3DL2REVERB_ROOM_DEFAULT;
-        L_RoomHF		   	= DSFX_I3DL2REVERB_ROOMHF_DEFAULT;
-        L_RoomRolloffFactor	= DSFX_I3DL2REVERB_ROOMROLLOFFFACTOR_DEFAULT;
-        L_DecayTime			= DSFX_I3DL2REVERB_DECAYTIME_DEFAULT;
-        L_DecayHFRatio		= DSFX_I3DL2REVERB_DECAYHFRATIO_DEFAULT;
-        L_Reflections	   	= DSFX_I3DL2REVERB_REFLECTIONS_DEFAULT;
-        L_ReflectionsDelay	= DSFX_I3DL2REVERB_REFLECTIONSDELAY_DEFAULT;
-        L_Reverb		   	= DSFX_I3DL2REVERB_REVERB_DEFAULT;
-        L_ReverbDelay	   	= DSFX_I3DL2REVERB_REVERBDELAY_DEFAULT;
-        L_Diffusion			= DSFX_I3DL2REVERB_DIFFUSION_DEFAULT;
-        L_Density		   	= DSFX_I3DL2REVERB_DENSITY_DEFAULT;
-        L_HFReference	   	= DSFX_I3DL2REVERB_HFREFERENCE_DEFAULT;
-    }
-
-	if (R){
-		R_InGain   	        = DSFX_WAVESREVERB_INGAIN_DEFAULT;
-		R_Mix	   	        = DSFX_WAVESREVERB_REVERBMIX_DEFAULT;
-		R_Time	   	        = DSFX_WAVESREVERB_REVERBTIME_DEFAULT;
-		R_HFRatio  	        = DSFX_WAVESREVERB_HIGHFREQRTRATIO_DEFAULT;
-    }
-
-    if (E){
-		E_WetDry   	        = 50;
-		E_FeedBack 	        = 50;
-		E_Delay	   	        = 500;
-    }
+    Room                    = EAXLISTENER_DEFAULTROOM;
+    RoomHF                  = EAXLISTENER_DEFAULTROOMHF;
+    RoomRolloffFactor       = EAXLISTENER_DEFAULTROOMROLLOFFFACTOR;
+    DecayTime               = EAXLISTENER_DEFAULTDECAYTIME;
+    DecayHFRatio            = EAXLISTENER_DEFAULTDECAYHFRATIO;
+    Reflections             = EAXLISTENER_DEFAULTREFLECTIONS;
+    ReflectionsDelay        = EAXLISTENER_DEFAULTREFLECTIONSDELAY;
+    Reverb                  = EAXLISTENER_DEFAULTREVERB;
+    ReverbDelay             = EAXLISTENER_DEFAULTREVERBDELAY;
+    EnvironmentSize         = EAXLISTENER_DEFAULTENVIRONMENTSIZE;
+    EnvironmentDiffusion    = EAXLISTENER_DEFAULTENVIRONMENTDIFFUSION;
+    AirAbsorptionHF         = EAXLISTENER_DEFAULTAIRABSORPTIONHF;
 }
 
-void CSoundRender_Environment::set_identity	(bool R, bool E, bool L)
+void CSoundRender_Environment::set_identity	()
 {
-	set_default				(R,E,L);
-	if (L)
-	{
-        L_Room				= DSFX_I3DL2REVERB_ROOM_DEFAULT;
-        L_RoomHF			= DSFX_I3DL2REVERB_ROOMHF_DEFAULT;
-        L_RoomRolloffFactor	= DSFX_I3DL2REVERB_ROOMROLLOFFFACTOR_DEFAULT;
-        L_DecayTime			= DSFX_I3DL2REVERB_DECAYTIME_DEFAULT;
-        L_DecayHFRatio		= DSFX_I3DL2REVERB_DECAYHFRATIO_DEFAULT;
-        L_Reflections		= DSFX_I3DL2REVERB_REFLECTIONS_DEFAULT;
-        L_ReflectionsDelay	= DSFX_I3DL2REVERB_REFLECTIONSDELAY_DEFAULT;
-        L_Reverb			= DSFX_I3DL2REVERB_REVERB_DEFAULT;
-        L_ReverbDelay		= DSFX_I3DL2REVERB_REVERBDELAY_DEFAULT;
-        L_Diffusion			= DSFX_I3DL2REVERB_DIFFUSION_DEFAULT;
-        L_Density			= DSFX_I3DL2REVERB_DENSITY_DEFAULT;
-        L_HFReference		= DSFX_I3DL2REVERB_HFREFERENCE_DEFAULT;
-	}
-	if (R)
-	{
-		R_InGain		  	= 0;	
-		R_Mix			  	= -96;
-	}
-	if (E)
-	{
-		E_WetDry		  	= 0;
-		E_FeedBack		  	= 0;
-	}
-	clamp				  	(R,E,L);
+	set_default				();
+    Room                    = EAXLISTENER_MINROOM;
+	clamp				  	();
 }
 
 void CSoundRender_Environment::lerp			(CSoundRender_Environment& A, CSoundRender_Environment& B, float f)
 {
 	float	fi				= 1.f-f;
 
-    L_Room					= fi*A.L_Room				+ f*B.L_Room;
-    L_RoomHF				= fi*A.L_RoomHF			 	+ f*B.L_RoomHF;
-    L_RoomRolloffFactor		= fi*A.L_RoomRolloffFactor 	+ f*B.L_RoomRolloffFactor;
-    L_DecayTime				= fi*A.L_DecayTime		 	+ f*B.L_DecayTime;
-    L_DecayHFRatio			= fi*A.L_DecayHFRatio	 	+ f*B.L_DecayHFRatio;
-    L_Reflections			= fi*A.L_Reflections		+ f*B.L_Reflections;
-    L_ReflectionsDelay		= fi*A.L_ReflectionsDelay 	+ f*B.L_ReflectionsDelay;
-    L_Reverb				= fi*A.L_Reverb			 	+ f*B.L_Reverb;
-    L_ReverbDelay			= fi*A.L_ReverbDelay		+ f*B.L_ReverbDelay;
-    L_Diffusion				= fi*A.L_Diffusion		 	+ f*B.L_Diffusion;
-    L_Density				= fi*A.L_Density			+ f*B.L_Density;
-    L_HFReference			= fi*A.L_HFReference		+ f*B.L_HFReference;
+    Room                    = fi*A.Room                	+ f*B.Room;                
+    RoomHF                  = fi*A.RoomHF              	+ f*B.RoomHF;              
+    RoomRolloffFactor       = fi*A.RoomRolloffFactor   	+ f*B.RoomRolloffFactor;
+    DecayTime               = fi*A.DecayTime           	+ f*B.DecayTime;           
+    DecayHFRatio            = fi*A.DecayHFRatio        	+ f*B.DecayHFRatio;        
+    Reflections             = fi*A.Reflections         	+ f*B.Reflections;         
+    ReflectionsDelay        = fi*A.ReflectionsDelay    	+ f*B.ReflectionsDelay;    
+    Reverb                  = fi*A.Reverb              	+ f*B.Reverb;              
+    ReverbDelay             = fi*A.ReverbDelay         	+ f*B.ReverbDelay;         
+    EnvironmentSize         = fi*A.EnvironmentSize     	+ f*B.EnvironmentSize;     
+    EnvironmentDiffusion    = fi*A.EnvironmentDiffusion	+ f*B.EnvironmentDiffusion;
+    AirAbsorptionHF         = fi*A.AirAbsorptionHF     	+ f*B.AirAbsorptionHF;     
 
-	R_InGain	            = fi*A.R_InGain		        + f*B.R_InGain;
-	R_Mix		            = fi*A.R_Mix		        + f*B.R_Mix;
-	R_Time		            = fi*A.R_Time		        + f*B.R_Time;
-	R_HFRatio	            = fi*A.R_HFRatio	        + f*B.R_HFRatio;
-
-	E_WetDry	            = fi*A.E_WetDry		        + f*B.E_WetDry;
-	E_FeedBack	            = fi*A.E_FeedBack	        + f*B.E_FeedBack;
-	E_Delay		            = fi*A.E_Delay		        + f*B.E_Delay;
-
-	clamp					(true,true,true);
+	clamp					();
 }
 
-void CSoundRender_Environment::clamp		(bool R, bool E, bool L)
+void CSoundRender_Environment::clamp		()
 {
-	if (L)
-    {
-		::clamp(L_Room,				(float)DSFX_I3DL2REVERB_ROOM_MIN, 		(float)DSFX_I3DL2REVERB_ROOM_MAX);
-		::clamp(L_RoomHF,			(float)DSFX_I3DL2REVERB_ROOMHF_MIN, 	(float)DSFX_I3DL2REVERB_ROOMHF_MAX);
-		::clamp(L_RoomRolloffFactor,DSFX_I3DL2REVERB_ROOMROLLOFFFACTOR_MIN, DSFX_I3DL2REVERB_ROOMROLLOFFFACTOR_MAX);
-		::clamp(L_DecayTime,		DSFX_I3DL2REVERB_DECAYTIME_MIN, 		DSFX_I3DL2REVERB_DECAYTIME_MAX);
-		::clamp(L_DecayHFRatio,		DSFX_I3DL2REVERB_DECAYHFRATIO_MIN, 		DSFX_I3DL2REVERB_DECAYHFRATIO_MAX);
-		::clamp(L_Reflections,		(float)DSFX_I3DL2REVERB_REFLECTIONS_MIN,(float)DSFX_I3DL2REVERB_REFLECTIONS_MAX);
-		::clamp(L_ReflectionsDelay,	DSFX_I3DL2REVERB_REFLECTIONSDELAY_MIN, 	DSFX_I3DL2REVERB_REFLECTIONSDELAY_MAX);
-		::clamp(L_Reverb,			(float)DSFX_I3DL2REVERB_REVERB_MIN, 	(float)DSFX_I3DL2REVERB_REVERB_MAX);
-		::clamp(L_ReverbDelay,		DSFX_I3DL2REVERB_REVERBDELAY_MIN, 		DSFX_I3DL2REVERB_REVERBDELAY_MAX);
-		::clamp(L_Diffusion,		DSFX_I3DL2REVERB_DIFFUSION_MIN, 		DSFX_I3DL2REVERB_DIFFUSION_MAX);
-		::clamp(L_Density,			DSFX_I3DL2REVERB_DENSITY_MIN, 			DSFX_I3DL2REVERB_DENSITY_MAX);
-		::clamp(L_HFReference,		DSFX_I3DL2REVERB_HFREFERENCE_MIN, 		DSFX_I3DL2REVERB_HFREFERENCE_MAX);       
-    }
-	if (R)
-	{
-		::clamp(R_InGain,			DSFX_WAVESREVERB_INGAIN_MIN,			DSFX_WAVESREVERB_INGAIN_MAX);
-		::clamp(R_Mix,				DSFX_WAVESREVERB_REVERBMIX_MIN,			DSFX_WAVESREVERB_REVERBMIX_MAX);
-		::clamp(R_Time,				DSFX_WAVESREVERB_REVERBTIME_MIN,		DSFX_WAVESREVERB_REVERBTIME_MAX);
-		::clamp(R_HFRatio,			DSFX_WAVESREVERB_HIGHFREQRTRATIO_MIN,	DSFX_WAVESREVERB_HIGHFREQRTRATIO_MAX);
-	}
-	if (E)
-	{
-		::clamp(E_WetDry,			DSFXECHO_WETDRYMIX_MIN,					DSFXECHO_WETDRYMIX_MAX);
-		::clamp(E_FeedBack,			DSFXECHO_FEEDBACK_MIN,					DSFXECHO_FEEDBACK_MAX);
-		::clamp(E_Delay,			DSFXECHO_LEFTDELAY_MIN,					DSFXECHO_LEFTDELAY_MAX);	
-	}
+    ::clamp(Room,             		(float)EAXLISTENER_MINROOM, 	  	(float)EAXLISTENER_MAXROOM			);
+    ::clamp(RoomHF,              	(float)EAXLISTENER_MINROOMHF, 	  	(float)EAXLISTENER_MAXROOMHF		);
+    ::clamp(RoomRolloffFactor,   	EAXLISTENER_MINROOMROLLOFFFACTOR, 	EAXLISTENER_MAXROOMROLLOFFFACTOR	);
+    ::clamp(DecayTime,           	EAXLISTENER_MINDECAYTIME, 			EAXLISTENER_MAXDECAYTIME			);
+    ::clamp(DecayHFRatio,        	EAXLISTENER_MINDECAYHFRATIO, 		EAXLISTENER_MAXDECAYHFRATIO			);
+    ::clamp(Reflections,         	(float)EAXLISTENER_MINREFLECTIONS,	(float)EAXLISTENER_MAXREFLECTIONS	);
+    ::clamp(ReflectionsDelay,    	EAXLISTENER_MINREFLECTIONSDELAY, 	EAXLISTENER_MAXREFLECTIONSDELAY		);
+    ::clamp(Reverb,              	(float)EAXLISTENER_MINREVERB, 	  	(float)EAXLISTENER_MAXREVERB		);
+    ::clamp(ReverbDelay,         	EAXLISTENER_MINREVERBDELAY, 		EAXLISTENER_MAXREVERBDELAY			);
+    ::clamp(EnvironmentSize,     	EAXLISTENER_MINENVIRONMENTSIZE, 	EAXLISTENER_MAXENVIRONMENTSIZE		);
+    ::clamp(EnvironmentDiffusion,	EAXLISTENER_MINENVIRONMENTDIFFUSION,EAXLISTENER_MAXENVIRONMENTDIFFUSION	);
+    ::clamp(AirAbsorptionHF,     	EAXLISTENER_MINAIRABSORPTIONHF, 	EAXLISTENER_MAXAIRABSORPTIONHF		);
 }
 
 void CSoundRender_Environment::load			(IReader* fs)
 {
 	version							= fs->r_u32();
-    if (1 == version){
-    	fs->r_stringZ				(name);
-        R_InGain				    = fs->r_float();
-        R_Mix					    = fs->r_float();
-        R_Time					    = fs->r_float();
-        R_HFRatio				    = fs->r_float();
 
-        E_WetDry				    = fs->r_float();
-        E_FeedBack				    = fs->r_float();
-        E_Delay					    = fs->r_float();
-    }else{
-		R_ASSERT				    (sdef_env_version	== version);
+	if (sdef_env_version == version){
         fs->r_stringZ			    (name);
 
-        L_Room						= fs->r_float();
-        L_RoomHF					= fs->r_float();
-        L_RoomRolloffFactor			= fs->r_float();
-        L_DecayTime					= fs->r_float();
-        L_DecayHFRatio				= fs->r_float();
-        L_Reflections				= fs->r_float();
-        L_ReflectionsDelay			= fs->r_float();
-        L_Reverb					= fs->r_float();
-        L_ReverbDelay				= fs->r_float();
-        L_Diffusion					= fs->r_float();
-        L_Density					= fs->r_float();
-        L_HFReference				= fs->r_float();
-
-        R_InGain				    = fs->r_float();
-        R_Mix					    = fs->r_float();
-        R_Time					    = fs->r_float();
-        R_HFRatio				    = fs->r_float();
-
-        E_WetDry				    = fs->r_float();
-        E_FeedBack				    = fs->r_float();
-        E_Delay					    = fs->r_float();
+        Room                		= fs->r_float();
+        RoomHF              		= fs->r_float();
+        RoomRolloffFactor   		= fs->r_float();
+        DecayTime           		= fs->r_float();
+        DecayHFRatio        		= fs->r_float();
+        Reflections         		= fs->r_float();
+        ReflectionsDelay    		= fs->r_float();
+        Reverb              		= fs->r_float();
+        ReverbDelay         		= fs->r_float();
+        EnvironmentSize     		= fs->r_float();
+        EnvironmentDiffusion		= fs->r_float();
+        AirAbsorptionHF     		= fs->r_float();
     }
 }
 
@@ -184,29 +100,37 @@ void CSoundRender_Environment::save	(IWriter* fs)
 	fs->w_u32 	                    (sdef_env_version);
 	fs->w_stringZ                   (name);
 
-    fs->w_float	                    (L_Room				);
-    fs->w_float	                    (L_RoomHF			);
-    fs->w_float	                    (L_RoomRolloffFactor);
-    fs->w_float	                    (L_DecayTime		);
-    fs->w_float	                    (L_DecayHFRatio		);
-    fs->w_float	                    (L_Reflections		);
-    fs->w_float	                    (L_ReflectionsDelay	);
-    fs->w_float	                    (L_Reverb			);
-    fs->w_float	                    (L_ReverbDelay		);
-    fs->w_float	                    (L_Diffusion		);
-    fs->w_float	                    (L_Density			);
-    fs->w_float	                    (L_HFReference		);
-
-	fs->w_float	                    (R_InGain			);
-	fs->w_float                     (R_Mix				);
-	fs->w_float                     (R_Time				);
-	fs->w_float                     (R_HFRatio			);
-
-	fs->w_float                     (E_WetDry			);
-	fs->w_float                     (E_FeedBack			);
-	fs->w_float                     (E_Delay			);
+    fs->w_float	                    (Room                );
+    fs->w_float	                    (RoomHF              );
+    fs->w_float	                    (RoomRolloffFactor   );
+    fs->w_float	                    (DecayTime           );
+    fs->w_float	                    (DecayHFRatio        );
+    fs->w_float	                    (Reflections         );
+    fs->w_float	                    (ReflectionsDelay    );
+    fs->w_float	                    (Reverb              );
+    fs->w_float	                    (ReverbDelay         );
+    fs->w_float	                    (EnvironmentSize     );
+    fs->w_float	                    (EnvironmentDiffusion);
+    fs->w_float	                    (AirAbsorptionHF     );
 }
 
+void CSoundRender_Environment::fill_eax(EAXLISTENERPROPERTIES& props)
+{
+    props.lRoom						= iFloor(Room)					;	// room effect level at low frequencies
+    props.lRoomHF					= iFloor(RoomHF)				;   // room effect high-frequency level re. low frequency level
+    props.flRoomRolloffFactor		= RoomRolloffFactor				;   // like DS3D flRolloffFactor but for room effect
+    props.flDecayTime				= DecayTime						;   // reverberation decay time at low frequencies
+    props.flDecayHFRatio			= DecayHFRatio					;   // high-frequency to low-frequency decay time ratio
+    props.lReflections				= iFloor(Reflections)			;   // early reflections level relative to room effect
+    props.flReflectionsDelay		= ReflectionsDelay				;   // initial reflection delay time
+    props.lReverb					= iFloor(Reverb)	 			;   // late reverberation level relative to room effect
+    props.flReverbDelay				= ReverbDelay					;   // late reverberation delay time relative to initial reflection
+    props.dwEnvironment				= EAXLISTENER_DEFAULTENVIRONMENT;  	// sets all listener properties
+    props.flEnvironmentSize			= EnvironmentSize				;  	// environment size in meters
+    props.flEnvironmentDiffusion	= EnvironmentDiffusion			; 	// environment diffusion
+    props.flAirAbsorptionHF			= AirAbsorptionHF				;	// change in level per meter at 5 kHz
+    props.dwFlags					= 0								;	// modifies the behavior of properties
+}
 
 //////////////////////////////////////////////////////////////////////////
 void	SoundEnvironment_LIB::Load	(LPCSTR name)
@@ -244,13 +168,13 @@ void	SoundEnvironment_LIB::Unload	()
 int		SoundEnvironment_LIB::GetID		(LPCSTR name)
 {
 	for (SE_IT it=library.begin(); it!=library.end(); it++)
-		if (0==stricmp(name,(*it)->name)) return int(it-library.begin());
+		if (0==stricmp(name,*(*it)->name)) return int(it-library.begin());
 	return -1;
 }
 CSoundRender_Environment*	SoundEnvironment_LIB::Get		(LPCSTR name)
 {
 	for (SE_IT it=library.begin(); it!=library.end(); it++)
-		if (0==stricmp(name,(*it)->name)) return *it;
+		if (0==stricmp(name,*(*it)->name)) return *it;
 	return NULL;
 }
 CSoundRender_Environment*	SoundEnvironment_LIB::Get		(int id)
@@ -265,7 +189,7 @@ CSoundRender_Environment*	SoundEnvironment_LIB::Append	(CSoundRender_Environment
 void						SoundEnvironment_LIB::Remove	(LPCSTR name)
 {
 	for (SE_IT it=library.begin(); it!=library.end(); it++)
-		if (0==stricmp(name,(*it)->name))
+		if (0==stricmp(name,*(*it)->name))
 		{
 			xr_delete		(*it);
 			library.erase	(it);

@@ -99,15 +99,30 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 		Listener.vVelocity.div				(dt);
 //.		
 		Listener.vVelocity.set				(0,0,0);
-		
-		Listener.vPosition.set				(P);
-		//last_pos							= P;
 
+		BOOL bMoved							= FALSE;		
+        if (!Listener.vPosition.similar(P)){
+			Listener.vPosition.set			(P);
+            bMoved							= TRUE;
+        }
+		//last_pos							= P;
 		Listener.vOrientFront.set			(D);
 		Listener.vOrientTop.set				(N);
 		Listener.fDopplerFactor				= psSoundDoppler;
 		Listener.fRolloffFactor				= psSoundRolloff;
 		pListener->SetAllParameters			((DS3DLISTENER*)&Listener, DS3D_DEFERRED );
+        
+// EAX        
+		if (psSoundFlags.test(ssFX)&&pExtensions){
+            if (bMoved)			e_target	= *get_environment	(Listener.vPosition);
+            e_current.lerp					(e_current,e_target,dt);
+
+            EAXLISTENERPROPERTIES eax_props;
+            e_current.fill_eax				(eax_props);
+            R_CHK(pExtensions->Set			(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ALLPARAMETERS, NULL, 0, &eax_props, sizeof(EAXLISTENERPROPERTIES)))
+        }
+
+        // commit deffered settings
 		pListener->CommitDeferredSettings	();
 	}
 

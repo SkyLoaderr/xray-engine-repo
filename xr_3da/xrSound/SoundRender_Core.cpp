@@ -37,12 +37,29 @@ CSoundRender_Core::CSoundRender_Core	()
 	Handler						= NULL;
 	s_targets_pu				= 0;
 	s_emitters_u				= 0;
+    e_current.set_identity		();
+    e_target.set_identity		();
 }
 
 CSoundRender_Core::~CSoundRender_Core()
 {
 }
-
+/*
+BOOL QuerySupport(LPKSPROPERTYSET pExtensions, ULONG ulQuery, DWORD& m_dwSupport)
+{
+    ULONG ulSupport = 0;
+    HRESULT hr 		= pExtensions->QuerySupport(DSPROPSETID_EAX20_ListenerProperties, ulQuery, &ulSupport);
+    if ( FAILED(hr) ) return FALSE;
+ 
+    if ( (ulSupport&(KSPROPERTY_SUPPORT_GET|KSPROPERTY_SUPPORT_SET)) == (KSPROPERTY_SUPPORT_GET|KSPROPERTY_SUPPORT_SET) )
+    {
+        m_dwSupport |= (DWORD)(1 << ulQuery); 
+        return TRUE;
+    }
+ 
+    return FALSE;
+}
+*/
 void CSoundRender_Core::_initialize	(u64 window)
 {
 	bPresent			= FALSE;
@@ -50,7 +67,8 @@ void CSoundRender_Core::_initialize	(u64 window)
 	Timer.Start			( );
 
 	// Device
-	if( FAILED			( DirectSoundCreate8( NULL, &pDevice, NULL ) ) )					return;
+	if( FAILED			( EAXDirectSoundCreate8( NULL, &pDevice, NULL ) ) )
+		if( FAILED		( DirectSoundCreate8( NULL, &pDevice, NULL ) ) )	return;
 	if( FAILED			( pDevice->SetCooperativeLevel(  (HWND)window, DSSCL_PRIORITY ) ) )	
 	{
 		_destroy();
@@ -106,6 +124,45 @@ void CSoundRender_Core::_initialize	(u64 window)
 	Listener.fRolloffFactor		= DS3D_DEFAULTROLLOFFFACTOR;
 	Listener.fDopplerFactor		= DS3D_DEFAULTDOPPLERFACTOR;
 
+    // Create property set
+	{
+        IDirectSoundBuffer*		pTempBuf;
+        WAVEFORMATEX 			wave;
+        Memory.mem_fill			(&wave, 0, sizeof(WAVEFORMATEX));
+        wave.wFormatTag 		= WAVE_FORMAT_PCM;
+        wave.nChannels 			= 1; 
+        wave.nSamplesPerSec 	= 22050; 
+        wave.wBitsPerSample 	= 16; 
+        wave.nBlockAlign 		= wave.wBitsPerSample / 8 * wave.nChannels;
+        wave.nAvgBytesPerSec	= wave.nSamplesPerSec * wave.nBlockAlign;
+
+        DSBUFFERDESC 			desc;
+        Memory.mem_fill			(&desc, 0, sizeof(DSBUFFERDESC));
+        desc.dwSize 			= sizeof(DSBUFFERDESC); 
+        desc.dwFlags 			= DSBCAPS_STATIC|DSBCAPS_CTRL3D; 
+        desc.dwBufferBytes 		= 64;  
+        desc.lpwfxFormat 		= &wave; 
+
+		if (DS_OK==pDevice->CreateSoundBuffer(&desc, &pTempBuf, NULL)){
+        	BOOL bEAXres		= TRUE;
+			if (FAILED(pTempBuf->QueryInterface(IID_IKsPropertySet, (LPVOID *)&pExtensions))){
+                bEAXres			= FALSE;
+            }else{
+                ULONG support	= 0;
+                if (FAILED(pExtensions->QuerySupport(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ALLPARAMETERS, &support)))
+	                bEAXres		= FALSE;
+                if ((support & (KSPROPERTY_SUPPORT_GET|KSPROPERTY_SUPPORT_SET)) != (KSPROPERTY_SUPPORT_GET|KSPROPERTY_SUPPORT_SET))
+	                bEAXres		= FALSE;
+            }
+            if (!bEAXres){
+                Log				("EAX 2.0 not supported");
+                _RELEASE		(pExtensions);
+            }
+        }
+        _RELEASE				(pTempBuf);
+    }
+
+    // load environment
 	env_load					();
 
 	bPresent					=	TRUE;
@@ -123,6 +180,8 @@ void CSoundRender_Core::_initialize	(u64 window)
 	u32		bytes_per_line		= (sdef_target_block/4)*wfm.nAvgBytesPerSec/1000;
     cache.initialize			(psSoundCacheSizeMB*1024,bytes_per_line);
 }
+
+
 
 void CSoundRender_Core::_destroy	()
 {
@@ -336,12 +395,12 @@ CSoundRender_Environment*	CSoundRender_Core::get_environment			( Fvector& P )
 				}
 			} else
 			{
-				identity.set_identity	(true,true,true);
+				identity.set_identity	();
 				return &identity;
 			}
 		} else
 		{
-			identity.set_identity	(true,true,true);
+			identity.set_identity	();
 			return &identity;
 		}
 	}
@@ -391,3 +450,5 @@ void						CSoundRender_Core::refresh_sources()
     }
 }
 #endif
+
+

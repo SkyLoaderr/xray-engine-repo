@@ -11,6 +11,7 @@
 #include <dsound.h>
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
+#include <eax.h>
 
 #define _RELEASE(x)			{ if(x) { (x)->Release();       (x)=NULL; } }
 
