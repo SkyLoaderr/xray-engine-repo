@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
 	OPCC.NbVerts	= gBunny.GetNbVerts();
 	OPCC.Tris		= gBunny.GetFaces();
 	OPCC.Verts		= gBunny.GetVerts();
-//	OPCC.Rules		= SPLIT_COMPLETE | SPLIT_LARGESTAXIS;
+//	OPCC.Rules		= SPLIT_COMPLETE | SPLIT_BESTAXIS;
 	OPCC.Rules		= SPLIT_COMPLETE | SPLIT_SPLATTERPOINTS;
 	OPCC.NoLeaf		= true;
 	OPCC.Quantized	= true;
