@@ -43,7 +43,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			CWeapon* W	= dynamic_cast<CWeapon*>	(O);
 			if (W) 
 			{
-				R_ASSERT							(BE(Local(),W->Local()));	// remote can't take local
+				R_ASSERT							(BE(Local(),W->Local()));	// remote can't eject local
 				int id	= Weapons->weapon_remove	(W);
 				Weapons->ActivateWeaponHistory		();
 				W->H_SetParent						(0);
