@@ -10,6 +10,9 @@
 
 #include "script_binder_object.h"
 #include "script_game_object.h"
+#include "script_space.h"
+
+class CScriptGameObject;
 
 class CScriptBinderObjectWrapper : public CScriptBinderObject, public luabind::wrap_base {
 public:

@@ -10,11 +10,13 @@
 
 #include "script_storage.h"
 #include "script_export_space.h"
+#include "script_space_forward.h"
 
 // #define DBG_DISABLE_SCRIPTS
 
 class CScriptProcess;
 class CScriptThread;
+struct lua_State;
 
 #ifdef USE_DEBUGGER
 	class CScriptDebugger;
@@ -32,16 +34,15 @@ protected:
 	int							m_stack_level;
 	bool						m_reload_modules;
 	ref_str						m_class_registrators;
-	luabind::object				m_return_passed_object_functor;
+	luabind::object				*m_return_passed_object_functor;
 
 public:
 								CScriptEngine				();
 	virtual						~CScriptEngine				();
 	virtual	void				unload						();
-	static	void				lua_hook_call				(CLuaVirtualMachine *L, lua_Debug *tpLuaDebug);
-	static	int					lua_panic					(CLuaVirtualMachine *L);
-	static	void				lua_error					(CLuaVirtualMachine *L);
-	static	void				lua_cast_failed				(CLuaVirtualMachine *L, LUABIND_TYPE_INFO info);
+	static	void				lua_hook_call				(lua_State *L, lua_Debug *tpLuaDebug);
+	static	int					lua_panic					(lua_State *L);
+	static	void				lua_error					(lua_State *L);
 			void				load_common_scripts			();
 			bool				load_file					(LPCSTR	caScriptName,	bool	bCall = true);
 	IC		CScriptProcess		*script_process				(LPCSTR process_name) const;
@@ -55,18 +56,27 @@ public:
 	IC		CScriptStackTracker	&script_stack_tracker		();
 	IC		void				reload_modules				(bool flag);
 
-	IC		bool				function_object				(LPCSTR function_to_call, luabind::object &object);
+			bool				function_object				(LPCSTR function_to_call, luabind::object &object);
+
+//	template <typename _result_type, template <typename T> class A>
+//	IC		bool				functor						(LPCSTR function_to_call, A<_result_type> &lua_function);
+
 	template <typename _result_type>
 	IC		bool				functor						(LPCSTR function_to_call, luabind::functor<_result_type> &lua_function);
 			void				register_script_classes		();
 	IC		void				parse_script_namespace		(LPCSTR function_to_call, LPSTR name_space, LPSTR functor);
 
+//	template <typename _result_type, template <typename A> class T>
+//	IC		T<_result_type>		create_object_creator		(LPCSTR class_name, LPCSTR arguments);
 	template <typename _result_type>
-	IC		luabind::functor<_result_type>	create_object_creator	(LPCSTR class_name, LPCSTR arguments);
+	IC		luabind::functor<_result_type>create_object_creator	(LPCSTR class_name, LPCSTR arguments);
 			
 	template <typename T>
-			T					get_value_from_object		(luabind::object object);
-	IC		void				initialize_return_passed_object();
+	IC		T					get_value_from_object		(luabind::object object);
+
+//	template <typename T, template <typename T> class A>
+//	IC		T					get_value_from_object		(luabind::object object);
+			void				initialize_return_passed_object();
 
 			void				load_class_registrators		();
 	

@@ -7,8 +7,9 @@
 #include "InfoPortion.h"
 #include "PdaMsg.h"
 #include "attachment_owner.h"
-#include "script_callback.h"
+#include "script_space_forward.h"
 
+class CScriptCallback;
 
 class CInventory;
 class CInventoryItem;
@@ -142,8 +143,8 @@ public:
 	void	clear_info_callback	();
 
 protected:
-	CScriptCallback m_pPdaCallback;
-	CScriptCallback m_pInfoCallback;
+	CScriptCallback		*m_pPdaCallback;
+	CScriptCallback		*m_pInfoCallback;
 };
 
 #include "inventory_owner_inline.h"

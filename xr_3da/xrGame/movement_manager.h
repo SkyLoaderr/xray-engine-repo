@@ -20,6 +20,19 @@
 #include "physicsshellholder.h"
 class CPHMovementControl;
 
+namespace MovementManager {
+	enum EPathType {
+		ePathTypeGamePath = u32(0),
+		ePathTypeLevelPath,
+		ePathTypeEnemySearch,
+		ePathTypePatrolPath,
+		ePathTypeNoPath,
+		ePathTypeDummy = u32(-1),
+	};
+};
+
+using namespace MovementManager;
+
 class CMovementManager : 
 	public CBaseLocationSelector<CGameGraph,SVertexType<float,u32,u32>,u32>,
 	public CBasePathManager		<CGameGraph,SBaseParameters<float,u32,u32>,u32,u32>,
@@ -59,16 +72,6 @@ private:
 		ePathStatePathCompleted,
 		
 		ePathStateDummy = u32(-1),
-	};
-
-public:
-	enum EPathType {
-		ePathTypeGamePath = u32(0),
-		ePathTypeLevelPath,
-		ePathTypeEnemySearch,
-		ePathTypePatrolPath,
-		ePathTypeNoPath,
-		ePathTypeDummy = u32(-1),
 	};
 
 private:

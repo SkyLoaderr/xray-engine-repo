@@ -45,11 +45,11 @@ public:
 	ref_str										m_path_name;
 	MonsterSpace::EBodyState					m_tBodyState;
 	MonsterSpace::EMovementType					m_tMovementType;
-	CDetailPathManager::EDetailPathType			m_tPathType;
+	DetailPathManager::EDetailPathType			m_tPathType;
 	CObject										*m_tpObjectToGo;
 	const CPatrolPath							*m_path;
-	CPatrolPathManager::EPatrolStartType		m_tPatrolPathStart;
-	CPatrolPathManager::EPatrolRouteType		m_tPatrolPathStop;
+	PatrolPathManager::EPatrolStartType			m_tPatrolPathStart;
+	PatrolPathManager::EPatrolRouteType			m_tPatrolPathStop;
 	Fvector										m_tDestinationPosition;
 	u32											m_tNodeID;
 	EGoalType									m_tGoalType;
@@ -62,9 +62,9 @@ public:
 
 public:
 	IC				CScriptMovementAction	();
-	IC				CScriptMovementAction	(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, CDetailPathManager::EDetailPathType tPathType, CScriptGameObject *tpObjectToGo, float fSpeed = 0.f);
-	IC				CScriptMovementAction	(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, CDetailPathManager::EDetailPathType tPathType, const CPatrolPathParams &tPatrolPathParams, float fSpeed = 0.f);
-	IC				CScriptMovementAction	(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, CDetailPathManager::EDetailPathType tPathType, const Fvector &tPosition, float fSpeed = 0.f);
+	IC				CScriptMovementAction	(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, DetailPathManager::EDetailPathType tPathType, CScriptGameObject *tpObjectToGo, float fSpeed = 0.f);
+	IC				CScriptMovementAction	(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, DetailPathManager::EDetailPathType tPathType, const CPatrolPathParams &tPatrolPathParams, float fSpeed = 0.f);
+	IC				CScriptMovementAction	(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, DetailPathManager::EDetailPathType tPathType, const Fvector &tPosition, float fSpeed = 0.f);
 	IC				CScriptMovementAction	(const Fvector &tPosition, float fSpeed);
 	IC				CScriptMovementAction	(const EInputKeys tInputKeys, float fSpeed = 0.f);
 	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------						
@@ -76,13 +76,13 @@ public:
 	virtual			~CScriptMovementAction	();
 	IC		void	SetBodyState			(const MonsterSpace::EBodyState tBodyState);
 	IC		void	SetMovementType			(const MonsterSpace::EMovementType tMovementType);
-	IC		void	SetPathType				(const CDetailPathManager::EDetailPathType tPathType);
+	IC		void	SetPathType				(const DetailPathManager::EDetailPathType tPathType);
 			void	SetObjectToGo			(CScriptGameObject *tpObjectToGo);
 	IC		void	SetPatrolPath			(const CPatrolPath *path, ref_str path_name);
 	IC		void	SetPosition				(const Fvector &tPosition);
 	IC		void	SetSpeed				(float fSpeed);
-	IC		void	SetPatrolStart			(CPatrolPathManager::EPatrolStartType tPatrolPathStart);
-	IC		void	SetPatrolStop			(CPatrolPathManager::EPatrolRouteType tPatrolPathStop);
+	IC		void	SetPatrolStart			(PatrolPathManager::EPatrolStartType tPatrolPathStart);
+	IC		void	SetPatrolStop			(PatrolPathManager::EPatrolRouteType tPatrolPathStop);
 	IC		void	SetPatrolRandom			(bool bRandom);
 	IC		void	SetInputKeys			(const EInputKeys tInputKeys);
 	IC		void	initialize				();

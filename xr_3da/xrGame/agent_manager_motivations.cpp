@@ -10,3 +10,4 @@
 #include "agent_manager_motivations.h"
 #include "agent_manager.h"
 #include "agent_manager_space.h"
+#include "entity_alive.h"

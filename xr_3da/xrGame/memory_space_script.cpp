@@ -11,6 +11,7 @@
 #include "script_space.h"
 #include "script_game_object.h"
 #include "gameobject.h"
+#include "entity_alive.h"
 
 using namespace luabind;
 

@@ -11,9 +11,10 @@
 #include "wrapper_abstract.h"
 #include "motivation.h"
 #include "motivation_action.h"
-#include "script_game_object.h"
+//#include "script_game_object.h"
 
 class CAI_Stalker;
+class CScriptGameObject;
 
 typedef CWrapperAbstract<CAI_Stalker,CMotivation>		CStalkerMotivation;
 typedef CWrapperAbstract<CAI_Stalker,CMotivationAction>	CStalkerMotivationAction;

@@ -8,21 +8,15 @@
 
 #pragma once
 
-#define DECLARE_FUNCTION10(A,D)\
-	IC		D				A					() const\
-	{
+#define _DECLARE_FUNCTION10(A,D)		D A () const
+#define _DECLARE_FUNCTION11(A,D,F)		D A (F f)
+#define _DECLARE_FUNCTION12(A,D,F,G)	D A (F f, G g)
+#define _DECLARE_FUNCTION13(A,D,F,G,H)	D A (F f, G g, H h)
 
-#define DECLARE_FUNCTION11(A,D,F)\
-	IC		D				A					(F f) \
-	{
-
-#define DECLARE_FUNCTION12(A,D,F,G)\
-	IC		D				A					(F f, G g) \
-	{
-
-#define DECLARE_FUNCTION13(A,D,F,G,H)\
-	IC		D				A					(F f, G g, H h) \
-	{
+#define DECLARE_FUNCTION10(A,D)			_DECLARE_FUNCTION10(A,D)		{
+#define DECLARE_FUNCTION11(A,D,F)		_DECLARE_FUNCTION11(A,D,F)		{
+#define DECLARE_FUNCTION12(A,D,F,G)		_DECLARE_FUNCTION12(A,D,F,G)	{
+#define DECLARE_FUNCTION13(A,D,F,G,H)	_DECLARE_FUNCTION13(A,D,F,G,H)	{
 
 #define CAST_OBJECT(Z,A,B)\
 		B				*l_tpEntity = dynamic_cast<B*>(Z);\

@@ -13,10 +13,10 @@ IC	CScriptMovementAction::CScriptMovementAction		()
 	SetInputKeys		(eInputKeyNone);
 	SetBodyState		(MonsterSpace::eBodyStateStand);
 	SetMovementType		(MonsterSpace::eMovementTypeStand);
-	SetPathType			(CDetailPathManager::eDetailPathTypeSmooth);
+	SetPathType			(DetailPathManager::eDetailPathTypeSmooth);
 	SetPatrolPath		(0,"");
-	SetPatrolStart		(CPatrolPathManager::ePatrolStartTypeNearest);
-	SetPatrolStop		(CPatrolPathManager::ePatrolRouteTypeContinue);
+	SetPatrolStart		(PatrolPathManager::ePatrolStartTypeNearest);
+	SetPatrolStop		(PatrolPathManager::ePatrolRouteTypeContinue);
 	SetPatrolRandom		(true);
 	SetSpeed			(0);
 	SetObjectToGo		(0);
@@ -25,7 +25,7 @@ IC	CScriptMovementAction::CScriptMovementAction		()
 	m_bCompleted		= true;
 }
 
-IC	CScriptMovementAction::CScriptMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, CDetailPathManager::EDetailPathType tPathType, CScriptGameObject *tpObjectToGo, float fSpeed)
+IC	CScriptMovementAction::CScriptMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, DetailPathManager::EDetailPathType tPathType, CScriptGameObject *tpObjectToGo, float fSpeed)
 {
 	SetBodyState		(tBodyState);
 	SetMovementType		(tMovementType);
@@ -34,7 +34,7 @@ IC	CScriptMovementAction::CScriptMovementAction		(MonsterSpace::EBodyState tBody
 	SetSpeed			(fSpeed);
 }
 
-IC	CScriptMovementAction::CScriptMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, CDetailPathManager::EDetailPathType tPathType, const CPatrolPathParams &tPatrolPathParams, float fSpeed)
+IC	CScriptMovementAction::CScriptMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, DetailPathManager::EDetailPathType tPathType, const CPatrolPathParams &tPatrolPathParams, float fSpeed)
 {
 	SetBodyState		(tBodyState);
 	SetMovementType		(tMovementType);
@@ -46,7 +46,7 @@ IC	CScriptMovementAction::CScriptMovementAction		(MonsterSpace::EBodyState tBody
 	SetSpeed			(fSpeed);
 }
 
-IC	CScriptMovementAction::CScriptMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, CDetailPathManager::EDetailPathType tPathType, const Fvector &tPosition, float fSpeed)
+IC	CScriptMovementAction::CScriptMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, DetailPathManager::EDetailPathType tPathType, const Fvector &tPosition, float fSpeed)
 {
 	SetBodyState		(tBodyState);
 	SetMovementType		(tMovementType);
@@ -59,7 +59,7 @@ IC	CScriptMovementAction::CScriptMovementAction		(const Fvector &tPosition, floa
 {
 	SetBodyState		(MonsterSpace::eBodyStateStand);
 	SetMovementType		(MonsterSpace::eMovementTypeStand);
-	SetPathType			(CDetailPathManager::eDetailPathTypeSmooth);
+	SetPathType			(DetailPathManager::eDetailPathTypeSmooth);
 	SetPosition			(tPosition);
 	SetSpeed			(fSpeed);
 	m_tGoalType			= eGoalTypeNoPathPosition;
@@ -111,7 +111,7 @@ IC	void CScriptMovementAction::SetMovementType		(const MonsterSpace::EMovementTy
 	m_bCompleted		= false;
 }
 
-IC	void CScriptMovementAction::SetPathType			(const CDetailPathManager::EDetailPathType tPathType)
+IC	void CScriptMovementAction::SetPathType			(const DetailPathManager::EDetailPathType tPathType)
 {
 	m_tPathType			= tPathType;
 	m_bCompleted		= false;
@@ -138,13 +138,13 @@ IC	void CScriptMovementAction::SetSpeed			(float fSpeed)
 	m_bCompleted		= false;
 }
 
-IC	void CScriptMovementAction::SetPatrolStart		(CPatrolPathManager::EPatrolStartType tPatrolPathStart)
+IC	void CScriptMovementAction::SetPatrolStart		(PatrolPathManager::EPatrolStartType tPatrolPathStart)
 {
 	m_tPatrolPathStart	= tPatrolPathStart;
 	m_bCompleted		= false;
 }
 
-IC	void CScriptMovementAction::SetPatrolStop		(CPatrolPathManager::EPatrolRouteType tPatrolPathStop)
+IC	void CScriptMovementAction::SetPatrolStop		(PatrolPathManager::EPatrolRouteType tPatrolPathStop)
 {
 	m_tPatrolPathStop	= tPatrolPathStop;
 	m_bCompleted		= false;

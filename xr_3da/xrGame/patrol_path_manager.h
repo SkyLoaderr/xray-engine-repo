@@ -15,10 +15,7 @@
 #include "patrol_path_storage.h"
 #include "patrol_path.h"
 
-class CPatrolPathManager : 
-	virtual public CAI_ObjectLocation
-{
-public:
+namespace PatrolPathManager {
 	enum EPatrolStartType {
 		ePatrolStartTypeFirst = u32(0),
 		ePatrolStartTypeLast,
@@ -32,6 +29,13 @@ public:
 		ePatrolRouteTypeContinue,
 		ePatrolRouteTypeDummy = u32(-1),
 	};
+};
+
+using namespace PatrolPathManager;
+
+class CPatrolPathManager : 
+	virtual public CAI_ObjectLocation
+{
 private:
 	const CPatrolPath		*m_path;
 	ref_str					m_path_name;

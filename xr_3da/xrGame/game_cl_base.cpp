@@ -4,6 +4,7 @@
 #include "level.h"
 #include "UIGameCustom.h"
 #include "script_engine.h"
+#include "script_space.h"
 
 game_cl_GameState::game_cl_GameState()
 {

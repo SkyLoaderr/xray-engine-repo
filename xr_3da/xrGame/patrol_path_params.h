@@ -17,13 +17,13 @@ class CPatrolPathParams {
 public:
 	const CPatrolPath						*m_path;
 	ref_str									m_path_name;
-	CPatrolPathManager::EPatrolStartType	m_tPatrolPathStart;
-	CPatrolPathManager::EPatrolRouteType	m_tPatrolPathStop;
+	PatrolPathManager::EPatrolStartType		m_tPatrolPathStart;
+	PatrolPathManager::EPatrolRouteType		m_tPatrolPathStop;
 	bool									m_bRandom;
 	u32										m_previous_index;
 
 public:
-	IC					CPatrolPathParams	(LPCSTR caPatrolPathToGo, const CPatrolPathManager::EPatrolStartType tPatrolPathStart = CPatrolPathManager::ePatrolStartTypeNearest, const CPatrolPathManager::EPatrolRouteType tPatrolPathStop = CPatrolPathManager::ePatrolRouteTypeContinue, bool bRandom = true, u32 index = u32(-1));
+	IC					CPatrolPathParams	(LPCSTR caPatrolPathToGo, const PatrolPathManager::EPatrolStartType tPatrolPathStart = PatrolPathManager::ePatrolStartTypeNearest, const PatrolPathManager::EPatrolRouteType tPatrolPathStop = PatrolPathManager::ePatrolRouteTypeContinue, bool bRandom = true, u32 index = u32(-1));
 	virtual				~CPatrolPathParams	();
 	IC	u32				count				() const;
 	IC	const Fvector	&point				(u32 index) const;

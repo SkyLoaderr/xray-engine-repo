@@ -9,7 +9,9 @@
 #pragma once
 
 #include "action_planner_action.h"
-#include "script_game_object.h"
+#include "script_space.h"
+
+class CScriptGameObject;
 
 class CScriptActionPlannerActionWrapper : public CScriptActionPlannerAction, public luabind::wrap_base {
 	typedef CScriptActionPlannerAction inherited;

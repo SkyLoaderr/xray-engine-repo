@@ -11,6 +11,7 @@
 #include "ai_space.h"
 #include "object_factory.h"
 #include "script_process.h"
+#include "script_space.h"
 
 #ifdef USE_DEBUGGER
 #	include "script_debugger.h"
@@ -24,6 +25,7 @@ CScriptEngine::CScriptEngine	()
 	m_current_thread		= 0;
 	m_stack_level			= 0;
 	m_reload_modules		= false;
+	m_return_passed_object_functor = 0;
 #ifdef USE_DEBUGGER
 	m_scriptDebugger		= xr_new<CScriptDebugger>();
 #endif
@@ -31,6 +33,7 @@ CScriptEngine::CScriptEngine	()
 
 CScriptEngine::~CScriptEngine			()
 {
+	xr_delete				(m_return_passed_object_functor);
 	while (!m_script_processes.empty())
 		remove_script_process(m_script_processes.begin()->first);
 	flush_log				();
@@ -64,10 +67,10 @@ void CScriptEngine::lua_error(CLuaVirtualMachine *L)
 	Debug.fatal				("LUA error: %s",lua_tostring(L,-1));
 }
 
-void CScriptEngine::lua_cast_failed(CLuaVirtualMachine *L, LUABIND_TYPE_INFO info)
+void lua_cast_failed(CLuaVirtualMachine *L, LUABIND_TYPE_INFO info)
 {
 //	print_output			(L,ai().script_engine().current_thread(),0);
-	print_error				(L,LUA_ERRRUN);
+	ai().script_engine().print_error	(L,LUA_ERRRUN);
 	Debug.fatal				("LUA error: cannot cast lua value to %s",info->name());
 }
 
@@ -85,7 +88,7 @@ void CScriptEngine::script_export()
 		luabind::set_error_callback		(CScriptEngine::lua_error);
 
 
-	luabind::set_cast_failed_callback	(CScriptEngine::lua_cast_failed);
+	luabind::set_cast_failed_callback	(lua_cast_failed);
 	lua_atpanic							(lua(),CScriptEngine::lua_panic);
 	
 	export_classes						(lua());
@@ -212,3 +215,34 @@ void CScriptEngine::load_class_registrators		()
 
 	xr_delete			(l_tpIniFile);
 }
+
+bool CScriptEngine::function_object(LPCSTR function_to_call, luabind::object &object)
+{
+	if (!xr_strlen(function_to_call))
+		return				(false);
+
+	string256				name_space, function;
+
+	parse_script_namespace	(function_to_call,name_space,function);
+	add_file				(name_space);
+	process					();
+
+	if	(!this->object(name_space,function,LUA_TFUNCTION))
+		return				(false);
+
+	luabind::object			lua_namespace	= this->name_space(name_space);
+	object					= lua_namespace[function];
+	return					(true);
+}
+
+void CScriptEngine::initialize_return_passed_object	()
+{
+	static bool			initialized = false;
+	if (!initialized) {
+		initialized		= true;
+		lua_dostring	(lua(),"function return_passed_object(obj) return obj end");
+		m_return_passed_object_functor = xr_new<luabind::object>();
+		R_ASSERT		(function_object("return_passed_object",*m_return_passed_object_functor));
+	}
+}
+

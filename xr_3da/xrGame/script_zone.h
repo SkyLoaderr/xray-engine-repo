@@ -10,13 +10,14 @@
 
 #include "GameObject.h"
 #include "../feel_touch.h"
-#include "script_callback.h"
+#include "script_space_forward.h"
 
 class CScriptGameObject;
+class CScriptCallback;
 
 class CScriptZone : public CGameObject, public Feel::Touch {
-	CScriptCallback m_tpOnEnter;
-	CScriptCallback m_tpOnExit;
+	CScriptCallback *m_tpOnEnter;
+	CScriptCallback *m_tpOnExit;
 public:
 	typedef	CGameObject	inherited;
 

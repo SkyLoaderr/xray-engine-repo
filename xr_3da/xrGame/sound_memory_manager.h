@@ -15,7 +15,7 @@
 class CSoundMemoryManager : public Feel::Sound {
 private:
 	// sound objects
-	xr_vector<CSoundObject>	*m_sounds;
+	xr_vector<MemorySpace::CSoundObject>	*m_sounds;
 	xr_map<ESoundTypes,u32>	m_priorities;
 	u32						m_max_sound_count;
 	
@@ -28,11 +28,11 @@ private:
 	float					m_self_sound_factor;
 
 	// selected sound
-	const CSoundObject		*m_selected_sound;
+	const MemorySpace::CSoundObject		*m_selected_sound;
 
 private:
 	IC		void	update_sound_threshold		();
-	IC		u32		get_priority				(const CSoundObject &sound) const;
+	IC		u32		get_priority				(const MemorySpace::CSoundObject &sound) const;
 
 protected:
 	IC		void	set_sound_type_priority		(ESoundTypes sound_type, u32 priority);
@@ -47,9 +47,9 @@ public:
 	virtual void	feel_sound_new				(CObject* who, int eType, const Fvector &Position, float power);
 	virtual	void	update						();
 			void	add_sound_object			(const CObject *object, int sound_type, const Fvector &position, float sound_power);
-	IC		const xr_vector<CSoundObject>		&sound_objects	() const;
-	IC		const CSoundObject					*sound			() const;
-	IC		void	set_squad_objects			(xr_vector<CSoundObject> *squad_objects);
+	IC		const xr_vector<MemorySpace::CSoundObject>		&sound_objects	() const;
+	IC		const MemorySpace::CSoundObject					*sound			() const;
+	IC		void	set_squad_objects			(xr_vector<MemorySpace::CSoundObject> *squad_objects);
 	IC		void	enable						(const CObject *object, bool enable);
 };
 

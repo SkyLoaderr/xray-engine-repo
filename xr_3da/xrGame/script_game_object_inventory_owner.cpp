@@ -5,11 +5,11 @@
 #include "stdafx.h"
 #include "script_space.h"
 #include "script_game_object.h"
-
 #include "InventoryOwner.h"
 #include "Pda.h"
 #include "xrMessages.h"
 #include "character_info.h"
+#include "ai_phrasedialogmanager.h"
 
 bool CScriptGameObject::GiveInfoPortion(LPCSTR info_id)
 {

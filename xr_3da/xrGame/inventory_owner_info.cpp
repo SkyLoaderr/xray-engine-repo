@@ -4,15 +4,15 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-
 #include "InventoryOwner.h"
 #include "GameObject.h"
 #include "xrMessages.h"
-
 #include "ai_space.h"
 #include "alife_simulator.h"
 #include "alife_registry_container.h"
 #include "script_game_object.h"
+#include "script_callback.h"
+#include "level.h"
 
 void  CInventoryOwner::OnEvent (NET_Packet& P, u16 type)
 {
@@ -54,7 +54,7 @@ void CInventoryOwner::OnReceiveInfo(INFO_ID info_index)
 	CGameObject* pThisGameObject = dynamic_cast<CGameObject*>(this);
 	VERIFY(pThisGameObject);
 
-	SCRIPT_CALLBACK_EXECUTE_2(m_pInfoCallback, pThisGameObject->lua_game_object(), info_index);
+	SCRIPT_CALLBACK_EXECUTE_2(*m_pInfoCallback, pThisGameObject->lua_game_object(), info_index);
 
 	CInfoPortion info_portion;
 	info_portion.Load(info_index);

@@ -93,7 +93,7 @@ IC	bool CMovementManager::path_completed() const
 	return					((m_path_state == ePathStatePathCompleted) && actual());
 }
 
-IC	CMovementManager::EPathType CMovementManager::path_type() const
+IC	MovementManager::EPathType CMovementManager::path_type() const
 {
 	VERIFY					(m_path_type != ePathTypeDummy);
 	return					(m_path_type);

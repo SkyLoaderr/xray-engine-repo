@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "script_sound.h"
 #include "script_game_object.h"
+#include "gameobject.h"
 
 CScriptSound::~CScriptSound		()
 {

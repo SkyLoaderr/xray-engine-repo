@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "script_storage.h"
+#include "script_space.h"
 #include <stdarg.h>
 
 #ifndef ENGINE_BUILD

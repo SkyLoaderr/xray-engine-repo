@@ -10,8 +10,8 @@
 
 IC	CMovementAction::CMovementAction				()
 {
-	m_path_type				= CMovementManager::ePathTypeNoPath;
-	m_detail_path_type		= CMovementManager::eDetailPathTypeSmooth;
+	m_path_type				= MovementManager::ePathTypeNoPath;
+	m_detail_path_type		= DetailPathManager::eDetailPathTypeSmooth;
 	m_body_state			= MonsterSpace::eBodyStateStand;
 	m_movement_type			= MonsterSpace::eMovementTypeStand;
 	m_level_dest_vertex_id	= u32(-1);
@@ -21,7 +21,7 @@ IC	CMovementAction::CMovementAction				()
 	m_path_evaluator		= 0;
 }
 
-IC	CMovementAction::CMovementAction				(const CMovementManager::EPathType &path_type, const CMovementManager::EDetailPathType &detail_path_type, const MonsterSpace::EBodyState &body_state, const MonsterSpace::EMovementType &movement_type, u32 level_vertex_id, Fvector *desired_position, Fvector *desired_direction, CAbstractVertexEvaluator *node_evaluator, CAbstractVertexEvaluator *path_evaluator)
+IC	CMovementAction::CMovementAction				(const MovementManager::EPathType &path_type, const DetailPathManager::EDetailPathType &detail_path_type, const MonsterSpace::EBodyState &body_state, const MonsterSpace::EMovementType &movement_type, u32 level_vertex_id, Fvector *desired_position, Fvector *desired_direction, CAbstractVertexEvaluator *node_evaluator, CAbstractVertexEvaluator *path_evaluator)
 {
 	m_path_type				= path_type;
 	m_detail_path_type		= detail_path_type;
@@ -34,12 +34,12 @@ IC	CMovementAction::CMovementAction				(const CMovementManager::EPathType &path_
 	m_path_evaluator		= path_evaluator;
 }
 
-IC	void CMovementAction::set_path_type				(const CMovementManager::EPathType &path_type)
+IC	void CMovementAction::set_path_type				(const MovementManager::EPathType &path_type)
 {
 	m_path_type				= path_type;
 }
 
-IC	void CMovementAction::set_detail_path_type		(const CMovementManager::EDetailPathType &detail_path_type)
+IC	void CMovementAction::set_detail_path_type		(const DetailPathManager::EDetailPathType &detail_path_type)
 {
 	m_detail_path_type		= detail_path_type;
 }

@@ -11,16 +11,20 @@
 #include "level_graph.h"
 #include "ai_object_location.h"
 
-class CDetailPathManager :
-	virtual public CAI_ObjectLocation
-{
-public:
+namespace DetailPathManager {
 	enum EDetailPathType {
 		eDetailPathTypeSmooth,
 		eDetailPathTypeSmoothDodge,
 		eDetailPathTypeSmoothCriteria,
 	};
+};
 
+using namespace DetailPathManager;
+
+class CDetailPathManager :
+	virtual public CAI_ObjectLocation
+{
+public:
 	struct STravelParams {
 		float			linear_velocity;
 		float			angular_velocity; 

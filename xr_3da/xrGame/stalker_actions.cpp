@@ -14,6 +14,9 @@
 #include "cover_point.h"
 #include "cover_evaluators.h"
 #include "agent_manager.h"
+#include "inventory_item.h"
+#include "missile.h"
+#include "script_game_object.h"
 
 using namespace StalkerDecisionSpace;
 
@@ -105,8 +108,8 @@ void CStalkerActionFreeNoALife::execute		()
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_position	(0);
 	m_object->set_desired_direction	(0);
-	m_object->set_path_type			(CMovementManager::ePathTypeGamePath);
-	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_path_type			(MovementManager::ePathTypeGamePath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateFree);
@@ -128,19 +131,19 @@ void CStalkerActionFreeNoALife::execute		()
 //	direction.normalize_safe		();
 //	m_object->set_desired_direction	(&direction);
 ////	m_object->set_desired_position	(0);
-////	m_object->set_path_type			(CMovementManager::ePathTypePatrolPath);
+////	m_object->set_path_type			(MovementManager::ePathTypePatrolPath);
 ////	m_object->set_path				("way0000",CMovementManager::ePatrolStartTypeFirst,CMovementManager::ePatrolRouteTypeContinue,false);
 ////
 //	CGameObject						*actor = dynamic_cast<CGameObject*>(Level().CurrentEntity());
 //	m_object->set_desired_position	(&actor->Position());
 //	m_object->set_level_dest_vertex	(actor->level_vertex_id());
-//	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
+//	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
 ////	Fvector							look_pos = actor->Position();
 ////	look_pos.y						+= .8f;
 ////	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypePosition,look_pos));
 //
 ////	m_object->set_dest_orientation	(Fvector().set(0.f,0.f,1.f));
-//	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+//	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 //	m_object->set_body_state		(eBodyStateStand);
 //	m_object->set_movement_type		(eMovementTypeWalk);
 //	m_object->set_mental_state		(eMentalStateFree);
@@ -179,8 +182,8 @@ void CStalkerActionGatherItems::execute		()
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_position	(&m_object->item()->Position());
 	m_object->set_desired_direction	(0);
-	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
@@ -219,8 +222,8 @@ void CStalkerActionGetKillDistance::execute	()
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_position	(&m_object->Position());
 	m_object->set_desired_direction	(0);
-	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
@@ -260,8 +263,8 @@ void CStalkerActionGetEnemy::execute	()
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_position	(&m_object->Position());
 	m_object->set_desired_direction	(0);
-	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
@@ -310,8 +313,8 @@ void CStalkerActionGetEnemySeen::execute	()
 
 	m_object->set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
 	m_object->set_desired_position	(&mem_object.m_object_params.m_position);
-	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
@@ -380,8 +383,8 @@ void CStalkerActionGetItemToKill::execute	()
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_position	(&m_object->m_best_found_item_to_kill->Position());
 	m_object->set_desired_direction	(0);
-	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
@@ -424,8 +427,8 @@ void CStalkerActionFindItemToKill::execute	()
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_position	(&m_object->Position());
 	m_object->set_desired_direction	(0);
-	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
@@ -471,8 +474,8 @@ void CStalkerActionMakeItemKilling::execute	()
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_position	(&m_object->m_best_found_ammo->Position());
 	m_object->set_desired_direction	(0);
-	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
@@ -516,8 +519,8 @@ void CStalkerActionFindAmmo::execute	()
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_position	(&m_object->Position());
 	m_object->set_desired_direction	(0);
-	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
@@ -563,8 +566,8 @@ void CStalkerActionGetReadyToKillVeryAggressive::execute	()
 	else
 		m_object->set_movement_type		(eMovementTypeStand);
 
-	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_mental_state		(eMentalStateDanger);
 
@@ -646,8 +649,8 @@ void CStalkerActionKillEnemyVeryAggressive::execute		()
 	else
 		m_object->set_movement_type		(eMovementTypeStand);
 
-	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_mental_state		(eMentalStateDanger);
 
@@ -726,8 +729,8 @@ void CStalkerActionGetReadyToKillAggressive::execute	()
 	}
 
 	m_object->set_desired_direction	(0);
-	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_mental_state		(eMentalStateDanger);
 
@@ -810,8 +813,8 @@ void CStalkerActionKillEnemyAggressive::execute		()
 	m_object->enemy()->Center		(position);
 
 	m_object->set_movement_type		(eMovementTypeStand);
-	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(m_fire_crouch ? eBodyStateCrouch : eBodyStateStand);
 	m_object->set_mental_state		(eMentalStateDanger);
 
@@ -908,8 +911,8 @@ void CStalkerActionAimEnemy::execute		()
 //	else
 		m_object->set_movement_type		(eMovementTypeStand);
 
-//	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-//	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+//	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+//	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 //	m_object->set_body_state		(distance > 10.f ? eBodyStateCrouch : eBodyStateStand);
 	m_object->set_mental_state		(eMentalStateDanger);
 
@@ -966,8 +969,8 @@ void CStalkerActionGetReadyToKillAvoid::execute	()
 //	m_object->set_path_evaluator	(0);
 //	m_object->set_desired_position	(&m_object->Position());
 	m_object->set_desired_direction	(0);
-	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
 //	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
@@ -1036,8 +1039,8 @@ void CStalkerActionKillEnemyAvoid::execute		()
 
 	m_object->set_movement_type		(eMovementTypeStand);
 
-	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_mental_state		(eMentalStateDanger);
 
@@ -1104,8 +1107,8 @@ void CStalkerActionRetreatFromEnemy::execute		()
 
 	m_object->set_movement_type		(eMovementTypeStand);
 
-	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_mental_state		(eMentalStateDanger);
 
@@ -1178,8 +1181,8 @@ void CStalkerActionCamp::execute	()
 		m_object->setup					(CSightAction(SightManager::eSightTypeCover,true,false));//,&position);
 	}
 
-	m_object->set_path_type				(CMovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type		(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_path_type				(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_mental_state			(eMentalStateDanger);
 
 	m_object->CObjectHandler::set_goal	(eObjectActionAim1,m_object->best_weapon());
@@ -1243,8 +1246,8 @@ void CStalkerActionGetReadyToKillModerate::execute	()
 		m_object->set_movement_type	(eMovementTypeStand);
 
 	m_object->set_desired_direction	(0);
-	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_mental_state		(eMentalStateDanger);
 
@@ -1340,8 +1343,8 @@ void CStalkerActionKillEnemyModerate::execute		()
 	m_object->enemy()->Center		(position);
 
 	m_object->set_movement_type		(eMovementTypeStand);
-//	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-//	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+//	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+//	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 //	m_object->set_body_state		(m_fire_crouch ? eBodyStateCrouch : eBodyStateStand);
 	m_object->set_mental_state		(eMentalStateDanger);
 
@@ -1445,8 +1448,8 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 	else
 		m_object->set_movement_type	(eMovementTypeStand);
 
-	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	if (m_object->Position().distance_to(mem_object.m_self_params.m_position) >= 2.f) {
 		m_object->set_body_state	(eBodyStateStand);
 		m_object->set_movement_type		(eMovementTypeWalk);
@@ -1549,8 +1552,8 @@ void CStalkerActionKillEnemyLostModerate::execute		()
 
 	m_object->set_desired_direction	(0);
 	m_object->set_movement_type		(eMovementTypeRun);
-	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_mental_state		(eMentalStateDanger);
 
@@ -1619,8 +1622,8 @@ void CStalkerActionTakeCover::execute	()
 	}
 
 	m_object->set_desired_direction	(0);
-	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_mental_state		(eMentalStateDanger);
 	m_object->set_body_state		(eBodyStateStand);
 	if (!point || !point->position().similar(m_object->Position(),1.5f))

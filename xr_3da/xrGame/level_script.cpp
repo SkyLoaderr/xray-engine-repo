@@ -11,6 +11,7 @@
 #include "script_space.h"
 #include "actor.h"
 #include "script_game_object.h"
+#include "patrol_path_storage.h"
 
 using namespace luabind;
 

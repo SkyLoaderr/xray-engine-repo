@@ -19,24 +19,24 @@ void CPatrolPathParams::script_register(lua_State *L)
 		class_<CPatrolPathParams>("patrol")
 			.enum_("start")
 			[
-				value("start",					int(CPatrolPathManager::ePatrolStartTypeFirst)),
-				value("stop",					int(CPatrolPathManager::ePatrolStartTypeLast)),
-				value("nearest",				int(CPatrolPathManager::ePatrolStartTypeNearest)),
-				value("custom",					int(CPatrolPathManager::ePatrolStartTypePoint)),
-				value("next",					int(CPatrolPathManager::ePatrolStartTypeNext)),
-				value("dummy",					int(CPatrolPathManager::ePatrolStartTypeDummy))
+				value("start",					int(PatrolPathManager::ePatrolStartTypeFirst)),
+				value("stop",					int(PatrolPathManager::ePatrolStartTypeLast)),
+				value("nearest",				int(PatrolPathManager::ePatrolStartTypeNearest)),
+				value("custom",					int(PatrolPathManager::ePatrolStartTypePoint)),
+				value("next",					int(PatrolPathManager::ePatrolStartTypeNext)),
+				value("dummy",					int(PatrolPathManager::ePatrolStartTypeDummy))
 			]
 			.enum_("stop")
 			[
-				value("stop",					int(CPatrolPathManager::ePatrolRouteTypeStop)),
-				value("continue",				int(CPatrolPathManager::ePatrolRouteTypeContinue)),
-				value("dummy",					int(CPatrolPathManager::ePatrolRouteTypeDummy))
+				value("stop",					int(PatrolPathManager::ePatrolRouteTypeStop)),
+				value("continue",				int(PatrolPathManager::ePatrolRouteTypeContinue)),
+				value("dummy",					int(PatrolPathManager::ePatrolRouteTypeDummy))
 			]
 			.def(								constructor<LPCSTR>())
-			.def(								constructor<LPCSTR,const CPatrolPathManager::EPatrolStartType>())
-			.def(								constructor<LPCSTR,const CPatrolPathManager::EPatrolStartType,const CPatrolPathManager::EPatrolRouteType>())
-			.def(								constructor<LPCSTR,const CPatrolPathManager::EPatrolStartType,const CPatrolPathManager::EPatrolRouteType, bool>())
-			.def(								constructor<LPCSTR,const CPatrolPathManager::EPatrolStartType,const CPatrolPathManager::EPatrolRouteType, bool, u32>())
+			.def(								constructor<LPCSTR,const PatrolPathManager::EPatrolStartType>())
+			.def(								constructor<LPCSTR,const PatrolPathManager::EPatrolStartType,const PatrolPathManager::EPatrolRouteType>())
+			.def(								constructor<LPCSTR,const PatrolPathManager::EPatrolStartType,const PatrolPathManager::EPatrolRouteType, bool>())
+			.def(								constructor<LPCSTR,const PatrolPathManager::EPatrolStartType,const PatrolPathManager::EPatrolRouteType, bool, u32>())
 			.def("count",						&CPatrolPathParams::count)
 			.def("level_vertex_id",				&CPatrolPathParams::level_vertex_id)
 			.def("point",						(const Fvector &(CPatrolPathParams::*)(u32)				const)	(CPatrolPathParams::point))

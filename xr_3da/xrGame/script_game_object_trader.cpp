@@ -4,11 +4,12 @@
 
 #include "stdafx.h"
 #include "script_game_object.h"
-
 #include "ai_space.h"
 #include "alife_simulator.h"
 #include "alife_task_registry.h"
 #include "script_task.h"
+#include "script_zone.h"
+#include "ai/trader/ai_trader.h"
 
 
 void CScriptGameObject::SetCallback(const luabind::functor<void> &tpZoneCallback, bool bOnEnter)

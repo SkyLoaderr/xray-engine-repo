@@ -31,11 +31,11 @@ void CScriptMovementAction::script_register(lua_State *L)
 			]
 			.enum_("path")
 			[
-				value("line",					int(CDetailPathManager::eDetailPathTypeSmooth)),
-				value("dodge",					int(CDetailPathManager::eDetailPathTypeSmoothDodge)),
-				value("criteria",				int(CDetailPathManager::eDetailPathTypeSmoothCriteria)),
-				value("curve",					int(CDetailPathManager::eDetailPathTypeSmooth)),
-				value("curve_criteria",			int(CDetailPathManager::eDetailPathTypeSmoothCriteria))
+				value("line",					int(DetailPathManager::eDetailPathTypeSmooth)),
+				value("dodge",					int(DetailPathManager::eDetailPathTypeSmoothDodge)),
+				value("criteria",				int(DetailPathManager::eDetailPathTypeSmoothCriteria)),
+				value("curve",					int(DetailPathManager::eDetailPathTypeSmooth)),
+				value("curve_criteria",			int(DetailPathManager::eDetailPathTypeSmoothCriteria))
 			]
 			.enum_("input")
 			[
@@ -69,12 +69,12 @@ void CScriptMovementAction::script_register(lua_State *L)
 			.def(								constructor<>())
 			.def(								constructor<const CScriptMovementAction::EInputKeys>())
 			.def(								constructor<const CScriptMovementAction::EInputKeys, float>())
-			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CDetailPathManager::EDetailPathType,CScriptGameObject*>())
-			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CDetailPathManager::EDetailPathType,CScriptGameObject*,float>())
-			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CDetailPathManager::EDetailPathType,const CPatrolPathParams &>())
-			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CDetailPathManager::EDetailPathType,const CPatrolPathParams &,float>())
-			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CDetailPathManager::EDetailPathType,const Fvector &>())
-			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CDetailPathManager::EDetailPathType,const Fvector &,float>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,DetailPathManager::EDetailPathType,CScriptGameObject*>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,DetailPathManager::EDetailPathType,CScriptGameObject*,float>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,DetailPathManager::EDetailPathType,const CPatrolPathParams &>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,DetailPathManager::EDetailPathType,const CPatrolPathParams &,float>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,DetailPathManager::EDetailPathType,const Fvector &>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,DetailPathManager::EDetailPathType,const Fvector &,float>())
 			.def(								constructor<const Fvector &,float>())
 			
 			// Monsters 

@@ -24,7 +24,7 @@ IC	void CSoundMemoryManager::update_sound_threshold			()
 	VERIFY		(_valid(m_sound_threshold));
 }
 
-IC	const xr_vector<CSoundObject>	&CSoundMemoryManager::sound_objects() const
+IC	const xr_vector<MemorySpace::CSoundObject>	&CSoundMemoryManager::sound_objects() const
 {
 	return								(*m_sounds);
 }
@@ -36,12 +36,12 @@ IC	void CSoundMemoryManager::set_sound_type_priority			(ESoundTypes sound_type, 
 	m_priorities.insert				(std::make_pair(sound_type,priority));
 }
 
-IC	const CSoundObject *CSoundMemoryManager::sound		() const
+IC	const MemorySpace::CSoundObject *CSoundMemoryManager::sound		() const
 {
 	return				(m_selected_sound);
 }
 
-IC	u32	 CSoundMemoryManager::get_priority				(const CSoundObject &sound) const
+IC	u32	 CSoundMemoryManager::get_priority				(const MemorySpace::CSoundObject &sound) const
 {
 	u32					priority = u32(-1);
 	xr_map<ESoundTypes,u32>::const_iterator	I = m_priorities.begin();
@@ -52,7 +52,7 @@ IC	u32	 CSoundMemoryManager::get_priority				(const CSoundObject &sound) const
 	return				(priority);
 }
 
-IC	void CSoundMemoryManager::set_squad_objects			(xr_vector<CSoundObject> *squad_objects)
+IC	void CSoundMemoryManager::set_squad_objects			(xr_vector<MemorySpace::CSoundObject> *squad_objects)
 {
 	m_sounds			= squad_objects;
 }

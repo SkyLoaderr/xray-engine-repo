@@ -13,8 +13,8 @@
 
 class CMovementAction : public CControlAction {
 protected:
-	CMovementManager::EPathType			m_path_type;
-	CMovementManager::EDetailPathType	m_detail_path_type;
+	MovementManager::EPathType			m_path_type;
+	DetailPathManager::EDetailPathType	m_detail_path_type;
 	MonsterSpace::EBodyState			m_body_state;
 	MonsterSpace::EMovementType			m_movement_type;
 	u32									m_level_dest_vertex_id;
@@ -25,11 +25,11 @@ protected:
 
 public:
 	IC					CMovementAction			();
-	IC					CMovementAction			(const CMovementManager::EPathType &path_type, const CMovementManager::EDetailPathType &detail_path_type, const MonsterSpace::EBodyState &body_state, const MonsterSpace::EMovementType &movement_type, u32 level_vertex_id = u32(-1), Fvector *desired_position = 0, Fvector *desired_direction = 0, CAbstractVertexEvaluator *node_evaluator = 0, CAbstractVertexEvaluator *path_evaluator = 0);
+	IC					CMovementAction			(const MovementManager::EPathType &path_type, const DetailPathManager::EDetailPathType &detail_path_type, const MonsterSpace::EBodyState &body_state, const MonsterSpace::EMovementType &movement_type, u32 level_vertex_id = u32(-1), Fvector *desired_position = 0, Fvector *desired_direction = 0, CAbstractVertexEvaluator *node_evaluator = 0, CAbstractVertexEvaluator *path_evaluator = 0);
 			void		execute					();
 			void		finalize				();
-	IC		void		set_path_type			(const CMovementManager::EPathType &path_type);
-	IC		void		set_detail_path_type	(const CMovementManager::EDetailPathType &detail_path_type);
+	IC		void		set_path_type			(const MovementManager::EPathType &path_type);
+	IC		void		set_detail_path_type	(const DetailPathManager::EDetailPathType &detail_path_type);
 	IC		void		set_body_state			(const MonsterSpace::EBodyState &body_state);
 	IC		void		set_movement_type		(const MonsterSpace::EMovementType &movement_type);
 	IC		void		set_level_dest_vertex_id(u32 level_vertex_id);

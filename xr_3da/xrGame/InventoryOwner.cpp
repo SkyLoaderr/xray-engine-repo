@@ -5,24 +5,19 @@
 
 
 #include "stdafx.h"
-
-
 #include "InventoryOwner.h"
-
 #include "entity_alive.h"
 #include "pda.h"
 #include "actor.h"
 #include "trade.h"
-
 #include "inventory.h"
 #include "xrserver_objects_alife_items.h"
-
 #include "character_info.h"
 #include "script_game_object.h"
-
-
 #include "script_engine.h"
+#include "script_callback.h"
 #include "AI_PhraseDialogManager.h"
+#include "level.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CInventoryOwner class 
@@ -30,6 +25,8 @@
 CInventoryOwner::CInventoryOwner			()
 {
 	Init						();
+	m_pPdaCallback				= xr_new<CScriptCallback>();
+	m_pInfoCallback				= xr_new<CScriptCallback>();
 }
 
 CInventoryOwner::~CInventoryOwner			() 
@@ -37,6 +34,8 @@ CInventoryOwner::~CInventoryOwner			()
 	xr_delete					(m_inventory);
 	xr_delete					(m_pTrade);
 	xr_delete					(m_pCharacterInfo);
+	xr_delete					(m_pPdaCallback);
+	xr_delete					(m_pInfoCallback);
 }
 
 void CInventoryOwner::Init					()
@@ -72,8 +71,8 @@ void CInventoryOwner::reinit				()
 	m_bTalking					= false;
 	m_pTalkPartner				= NULL;
 
-	m_pPdaCallback.clear		();
-	m_pInfoCallback.clear		();
+	m_pPdaCallback->clear		();
+	m_pInfoCallback->clear		();
 
 #ifdef _DEBUG
 	m_KnowInfoWithoutAlife.clear();
@@ -130,8 +129,8 @@ void CInventoryOwner::net_Destroy()
 {
 	CAttachmentOwner::net_Destroy();
 	m_inventory->SetActiveSlot(NO_ACTIVE_SLOT);
-	m_pPdaCallback.clear();
-	m_pInfoCallback.clear();
+	m_pPdaCallback->clear();
+	m_pInfoCallback->clear();
 }
 
 
@@ -203,7 +202,7 @@ void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_index
 		GetPDA()->GetOriginalOwnerID());*/
 
 
- 	SCRIPT_CALLBACK_EXECUTE_4(m_pPdaCallback, 
+ 	SCRIPT_CALLBACK_EXECUTE_4(*m_pPdaCallback, 
 							  pThisGameObject->lua_game_object(),
 							  pWho->lua_game_object(), 
 							  (int)msg,

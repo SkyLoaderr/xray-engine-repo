@@ -58,7 +58,7 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 	VERIFY					(m_path->vertex(m_curr_point_index));
 
 	if (m_callback)
-		SCRIPT_CALLBACK_EXECUTE_3((*m_callback), dynamic_cast<CGameObject*>(this)->lua_game_object(),u32(CScriptMonster::eActionTypeMovement),m_curr_point_index);
+		SCRIPT_CALLBACK_EXECUTE_3((*m_callback), dynamic_cast<CGameObject*>(this)->lua_game_object(),u32(ScriptMonster::eActionTypeMovement),m_curr_point_index);
 
 	u32							count = 0;
 	float						sum = 0.f;

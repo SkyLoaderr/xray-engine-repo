@@ -2,6 +2,7 @@
 #include "game_base.h"
 #include "ai_space.h"
 #include "script_engine.h"
+#include "script_space.h"
 
 game_PlayerState::game_PlayerState()
 {

@@ -11,6 +11,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "stalker_decision_space.h"
 #include "agent_manager.h"
+#include "script_game_object.h"
 
 using namespace StalkerDecisionSpace;
 

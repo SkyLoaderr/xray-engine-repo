@@ -8,7 +8,7 @@
 
 #pragma once
 
-IC	CPatrolPathParams::CPatrolPathParams	(LPCSTR caPatrolPathToGo, const CPatrolPathManager::EPatrolStartType tPatrolPathStart, const CPatrolPathManager::EPatrolRouteType tPatrolPathStop, bool bRandom, u32 index)
+IC	CPatrolPathParams::CPatrolPathParams	(LPCSTR caPatrolPathToGo, const PatrolPathManager::EPatrolStartType tPatrolPathStart, const PatrolPathManager::EPatrolRouteType tPatrolPathStop, bool bRandom, u32 index)
 {
 	m_path_name			= caPatrolPathToGo;
 	m_path				= Level().patrol_paths().path(ref_str(caPatrolPathToGo));

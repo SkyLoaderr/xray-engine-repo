@@ -10,13 +10,21 @@
 #include "script_space.h"
 #include <luabind/adopt_policy.hpp>
 #include <luabind/iterator_policy.hpp>
-#include "script_game_object.h"
 
+#include "script_game_object.h"
 #include "cover_point.h"
 #include "script_hit.h"
 #include "script_binder_object.h"
 #include "script_ini_file.h"
 #include "attachable_item.h"
+#include "ai/script/ai_script_monster.h"
+#include "movement_manager.h"
+#include "pdamsg.h"
+#include "script_sound_info.h"
+#include "script_monster_hit_info.h"
+#include "script_entity_action.h"
+#include "motivation_action_manager.h"
+#include "script_task.h"
 
 using namespace luabind;
 
@@ -42,21 +50,21 @@ void CScriptGameObject::script_register(lua_State *L)
 			]
 			.enum_("action_types")
 			[
-				value("movement",				int(CScriptMonster::eActionTypeMovement)),
-				value("watch",					int(CScriptMonster::eActionTypeWatch)),
-				value("animation",				int(CScriptMonster::eActionTypeAnimation)),
-				value("sound",					int(CScriptMonster::eActionTypeSound)),
-				value("particle",				int(CScriptMonster::eActionTypeParticle)),
-				value("object",					int(CScriptMonster::eActionTypeObject)),
-				value("action_type_count",		int(CScriptMonster::eActionTypeCount))
+				value("movement",				int(ScriptMonster::eActionTypeMovement)),
+				value("watch",					int(ScriptMonster::eActionTypeWatch)),
+				value("animation",				int(ScriptMonster::eActionTypeAnimation)),
+				value("sound",					int(ScriptMonster::eActionTypeSound)),
+				value("particle",				int(ScriptMonster::eActionTypeParticle)),
+				value("object",					int(ScriptMonster::eActionTypeObject)),
+				value("action_type_count",		int(ScriptMonster::eActionTypeCount))
 			]
 			.enum_("EPathType")
 			[
-				value("game_path",				int(CMovementManager::ePathTypeGamePath)),
-				value("level_path",				int(CMovementManager::ePathTypeLevelPath)),
-				value("enemy_search",			int(CMovementManager::ePathTypeEnemySearch)),
-				value("patrol_path",			int(CMovementManager::ePathTypePatrolPath)),
-				value("no_path",				int(CMovementManager::ePathTypeNoPath))
+				value("game_path",				int(MovementManager::ePathTypeGamePath)),
+				value("level_path",				int(MovementManager::ePathTypeLevelPath)),
+				value("enemy_search",			int(MovementManager::ePathTypeEnemySearch)),
+				value("patrol_path",			int(MovementManager::ePathTypePatrolPath)),
+				value("no_path",				int(MovementManager::ePathTypeNoPath))
 			]
 			
 			.property("visible",				&CScriptGameObject::getVisible,		&CScriptGameObject::setVisible)
@@ -111,10 +119,10 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("active_item",					&CScriptGameObject::GetActiveItem)
 			.def("set_callback",				(void (CScriptGameObject::*)(const luabind::functor<void> &, bool))(CScriptGameObject::SetCallback))
 			.def("set_callback",				(void (CScriptGameObject::*)(const luabind::object &, LPCSTR, bool))(CScriptGameObject::SetCallback))
-			.def("set_callback",				(void (CScriptGameObject::*)(const luabind::object &, LPCSTR, const CScriptMonster::EActionType))(CScriptGameObject::SetCallback))
-			.def("set_callback",				(void (CScriptGameObject::*)(const luabind::functor<void> &, const CScriptMonster::EActionType))(CScriptGameObject::SetCallback))
+			.def("set_callback",				(void (CScriptGameObject::*)(const luabind::object &, LPCSTR, const ScriptMonster::EActionType))(CScriptGameObject::SetCallback))
+			.def("set_callback",				(void (CScriptGameObject::*)(const luabind::functor<void> &, const ScriptMonster::EActionType))(CScriptGameObject::SetCallback))
 			.def("clear_callback",				(void (CScriptGameObject::*)(bool))(CScriptGameObject::ClearCallback))
-			.def("clear_callback",				(void (CScriptGameObject::*)(const CScriptMonster::EActionType))(CScriptGameObject::ClearCallback))
+			.def("clear_callback",				(void (CScriptGameObject::*)(const ScriptMonster::EActionType))(CScriptGameObject::ClearCallback))
 			.def("patrol",						&CScriptGameObject::GetPatrolPathName)
 
 			.def("get_ammo_in_magazine",		&CScriptGameObject::GetAmmoElapsed)

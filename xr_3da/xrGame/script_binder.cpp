@@ -8,11 +8,13 @@
 
 #include "stdafx.h"
 #include "script_space.h"
+#include "ai_space.h"
 #include "script_engine.h"
 #include "script_binder.h"
 #include "xrServer_Objects_ALife.h"
 #include "script_binder_object.h"
 #include "script_game_object.h"
+#include "gameobject.h"
 
 CScriptBinder::CScriptBinder		()
 {

@@ -126,12 +126,12 @@ IC const MonsterSpace::EMentalState CStalkerMovementManager::mental_state() cons
 	return						(m_current.m_mental_state);
 }
 
-IC	const CStalkerMovementManager::EPathType CStalkerMovementManager::path_type	() const
+IC	const MovementManager::EPathType CStalkerMovementManager::path_type	() const
 {
 	return						(m_current.m_path_type);
 }
 
-IC	const CStalkerMovementManager::EDetailPathType	CStalkerMovementManager::detail_path_type	() const
+IC	const DetailPathManager::EDetailPathType	CStalkerMovementManager::detail_path_type	() const
 {
 	return						(m_current.m_detail_path_type);
 }

@@ -9,7 +9,9 @@
 #pragma once
 
 #include "action_planner_action.h"
-#include "script_game_object.h"
+//#include "script_game_object.h"
+
+class CScriptGameObject;
 
 template <typename _object_type>
 class CActionPlannerActionScript : public CScriptActionPlannerAction {

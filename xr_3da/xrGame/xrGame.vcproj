@@ -3560,6 +3560,9 @@
 				<File
 					RelativePath=".\script_space.h">
 				</File>
+				<File
+					RelativePath=".\script_space_forward.h">
+				</File>
 				<Filter
 					Name="luabind"
 					Filter="">
@@ -7523,6 +7526,12 @@
 				Filter="">
 				<File
 					RelativePath=".\UICustomItem.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							ShowIncludes="FALSE"/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\UICustomItem.h">

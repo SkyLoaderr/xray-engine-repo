@@ -8,13 +8,7 @@
 
 #pragma once
 
-IC	CScriptStackTracker::CScriptStackTracker		()
-{
-	m_current_stack_level	= 0;
-	m_virtual_machine		= 0;
-}
-
-IC	CLuaVirtualMachine *CScriptStackTracker::lua	()
+IC	lua_State *CScriptStackTracker::lua	()
 {
 	return				(m_virtual_machine);
 }

@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "script_action_planner_action_wrapper.h"
+#include "script_game_object.h"
 
 void CScriptActionPlannerActionWrapper::reinit		(CScriptGameObject *object, CPropertyStorage *storage, bool clear_all)
 {

@@ -5,15 +5,13 @@
 
 #include "stdafx.h"
 #include "PhraseScript.h"
-
 #include "script_engine.h"
 #include "ai_space.h"
 #include "gameobject.h"
 #include "script_game_object.h"
-
 #include "infoportion.h"
 #include "inventoryowner.h"
-
+#include "script_space.h"
 
 CPhraseScript::CPhraseScript	()
 {

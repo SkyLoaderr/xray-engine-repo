@@ -13,6 +13,7 @@
 #include "xr_level_controller.h"
 #include "xrmessages.h"
 #include "fooditem.h"
+#include "weapon.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CObjectActionCommand
