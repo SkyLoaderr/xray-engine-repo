@@ -145,7 +145,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 
 			if (node<=0)			{
 				Msg					("! ERROR: AI node not found for object '%s'. (%f,%f,%f)",cName(),nPos.x,nPos.y,nPos.z);
-				R_ASSERT3			(!getAI().bfCheckIfMapLoaded(),"Cannot find a proper node for object ",cName());
+				//R_ASSERT3			(!getAI().bfCheckIfMapLoaded(),"Cannot find a proper node for object ",cName());
 				AI_NodeID			= u32(-1);
 				AI_Node				= NULL;
 			} else {
