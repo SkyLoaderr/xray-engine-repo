@@ -112,3 +112,4 @@ DWORD CAI_Space::q_Node(DWORD PrevNode, const Fvector& BasePos)
 	Device.Statistic.AI_Node.End		();
 	return PrevNode;
 }
+

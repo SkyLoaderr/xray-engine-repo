@@ -61,6 +61,7 @@ public:
 	void			Load			(LPCSTR name);
 	void			Render			();
 
+	const hdrNODES	GetHeader		(){return m_header;};
 	void			q_Range			(DWORD StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator, float &fOldCost);
 	void			q_Range_Bit		(DWORD StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, DWORD &BestNode, float &BestCost);
 	DWORD			q_Node			(DWORD PrevNode,  const Fvector& Pos);

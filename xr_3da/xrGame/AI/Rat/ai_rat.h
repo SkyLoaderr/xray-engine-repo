@@ -13,6 +13,12 @@
 #include "..\\..\\group.h"
 #include "ai_rat_selectors.h"
 
+typedef struct tagSSubNode {
+	Fvector tLeftDown;
+	Fvector tRightUp;
+	bool	bEmpty;
+} SSubNode;
+
 class CAI_Rat : public CCustomMonster  
 {
 	enum ESoundCcount {
@@ -87,6 +93,8 @@ class CAI_Rat : public CCustomMonster
 		CRatSelectorUnderFire	SelectorUnderFire;
 
 		void SetLessCoverLook(NodeCompressed *tNode);
+		int	ifDivideNode(NodeCompressed* tpCurrentNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes);
+		IC bool bfInsideSubNode(const Fvector &tCenter, const SSubNode &tpSubNode);
 	public:
 					   CAI_Rat();
 		virtual		  ~CAI_Rat();
