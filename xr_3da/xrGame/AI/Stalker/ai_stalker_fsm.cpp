@@ -271,7 +271,7 @@ void CAI_Stalker::ForwardCover()
 	m_dwInertion = 60000;
 
 	if (!m_tEnemy.Enemy) {
-		if (Level().timeServer() - m_dwLostEnemyTime > 6000)
+		if (!E || (vPosition.distance_to(m_tSavedEnemyPosition) < 5.f) || (Level().timeServer() - m_dwLostEnemyTime > 6000))
 			SearchEnemy();
 		else
 			Camp(true);
