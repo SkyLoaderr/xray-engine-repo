@@ -51,8 +51,8 @@ void CAgentManagerActionNoOrders::finalize			()
 
 void CAgentManagerActionNoOrders::execute			()
 {
-	CGraphEngine::CWorldState	goal;
-	goal.add_condition			(CGraphEngine::CWorldProperty(StalkerDecisionSpace::eWorldPropertyEnemy,true));
+//	CGraphEngine::CWorldState	goal;
+//	goal.add_condition			(CGraphEngine::CWorldProperty(StalkerDecisionSpace::eWorldPropertyEnemy,true));
 	CAgentManager::iterator		I = m_object->members().begin();
 	CAgentManager::iterator		E = m_object->members().end();
 	for ( ; I != E; ++I) {
