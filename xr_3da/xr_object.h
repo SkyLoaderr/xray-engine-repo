@@ -101,8 +101,8 @@ public:
 	virtual float						Radius				() const;
 	virtual Fvector&					Position			() 					{ return vPosition;			}
 	
-	IC IRender_Sector*							Sector				()					{ return H_Root()->pSector;	}
-	IC CLightTrack*						Lights				()					{ return pLights;			}
+	IC IRender_Sector*					Sector				()					{ return H_Root()->pSector;	}
+	IC IRender_ObjectSpecific*			ROS					()					{ return pROS;				}
 	virtual float						Ambient				()					{ return 0.f;		 		}
 	virtual BOOL						ShadowGenerate		()					{ return TRUE;				}
 	virtual BOOL						ShadowReceive		()					{ return TRUE;				}
