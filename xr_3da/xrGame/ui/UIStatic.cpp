@@ -853,8 +853,6 @@ void CUIStatic::Elipsis(STRING &str, const Irect &rect, EElipsisPosition elipsis
 
 void CUIStatic::OnMouse(int x, int y, EUIMessages mouse_action)
 {
-	//проверить попадает ли курсор на кнопку
-	//координаты заданы относительно самой кнопки
 	bool cursor_on_window;
 
 	if(x>=0 && x<GetWidth() && y>=0 && y<GetHeight())
@@ -866,21 +864,26 @@ void CUIStatic::OnMouse(int x, int y, EUIMessages mouse_action)
 		cursor_on_window = false;
 	}
 
-
-	if(m_bCursorOverWindow != cursor_on_window)
+	
+	if(m_bCursorOverWindow != m_bCursorOverWindow)
 	{
 		if(cursor_on_window)
-		{
-			GetMessageTarget()->SendMessage(this, STATIC_FOCUS_RECEIVED, NULL);
-		}
+            OnFocusReceive();			
 		else
-		{
-			GetMessageTarget()->SendMessage(this, STATIC_FOCUS_LOST, NULL);
-		}
+			OnFocusLost();			
 	}
+
 	m_bCursorOverWindow = cursor_on_window;
 
 	inherited::OnMouse(x, y, mouse_action);
+}
+
+void CUIStatic::OnFocusReceive(){
+	GetMessageTarget()->SendMessage(this, STATIC_FOCUS_RECEIVED, NULL);
+}
+
+void CUIStatic::OnFocusLost(){
+	GetMessageTarget()->SendMessage(this, STATIC_FOCUS_LOST, NULL);
 }
 
 // Note: you can use "limit = -1" to fit text to 

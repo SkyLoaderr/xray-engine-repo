@@ -36,6 +36,8 @@ public:
 	virtual void	Draw					();
 	virtual void	Update					();
 	virtual void	OnMouse					(int x, int y, EUIMessages mouse_action);
+	virtual void	OnFocusReceive();
+	virtual void	OnFocusLost();
 
 
 	static void		SetText					(LPCSTR str, STRING &arr);
