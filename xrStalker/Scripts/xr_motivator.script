@@ -36,15 +36,19 @@ end
 function motivator_binder:reinit()
     object_binder.reinit(self)
     printf("motivator_binder:reinit(): self.object:name()='%s'", self.object:name())
---  self.object:set_hear_callback(hear_callback)
-    self.object:set_patrol_extrapolate_callback(motivator_binder.extrapolate_callback, self)
+    
+    -- КОЛЛБЕКИ ЗДЕСЬ СТАВИТЬ НЕЛЬЗЯ! Здесь еще неизвестна активная схема.
+    -- Ставьте коллбеки в методе update в отмеченном комментарием месте.
         
     local char_ini = self.object:spawn_ini() or ini_file("scripts\\dummy")
 
     --' Bind other scripts
     printf("Base evaluator ID %d", stalker_ids.property_script)
     printf("Base action ID %d", stalker_ids.action_script)
-    self.object:disable_talk()
+    
+    -- Zmey: Это лучше делать не тут, а в reset_generic_schemes_on_scheme_switch!
+    -- Она вызывается даже если не прописана активная секция в logic. Закомментировал.
+    --self.object:disable_talk()
 
     --' загрузка озвучки
     xr_sound.load_sound(self.object)
@@ -131,12 +135,32 @@ function motivator_binder:net_destroy()
 	object_binder.net_destroy(self)
 end
 
+function motivator_binder:hit_callback(obj, amount, local_direction, who, bone_index)
+	printf("_bp: motivator_binder:hit_callback: obj='%s'", obj:name())
+	-- FIXME: коллбеки неплохо было бы регистрировать в общем storage, а не посхемно...
+	-- просто всегда ставить их при включении схемы и снимать при отключении.
+	xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "hit_callback", obj, amount, local_direction, who, bone_index)
+	if self.st.combat_ignore then
+		xr_logic.issue_event(self.object, self.st.combat_ignore, "hit_callback", obj, amount, local_direction, who, bone_index)
+	end
+	if self.st.hit then
+		xr_logic.issue_event(self.object, self.st.hit, "hit_callback", obj, amount, local_direction, who, bone_index)
+	end
+	
+	xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "hit_callback", obj, amount, local_direction, who, bone_index)
+end
+
 function motivator_binder:update(delta)
 	object_binder.update(self, delta)
 	
 	if not self.initialized and db.actor then
 		self.initialized = true
 		xr_logic.initialize_obj(self.object, self.st, self.loaded, db.actor, modules.stype_stalker)
+		
+		-- Все CALLBACK-и ставить здесь:
+		--  self.object:set_hear_callback(hear_callback)
+		self.object:set_patrol_extrapolate_callback(motivator_binder.extrapolate_callback, self)
+		self.object:set_callback(callback.hit, motivator_binder.hit_callback, self)
 	end
 
 	self.torch:update()

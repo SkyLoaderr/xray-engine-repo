@@ -409,9 +409,17 @@ function subscribe_action_for_events(npc, storage, new_action)
 	storage.actions[new_action] = true
 end
 
+function unsubscribe_action_from_events(npc, storage, new_action)
+	if not storage.actions then
+		storage.actions = {}
+	end
+	
+	storage.actions[new_action] = nil
+end
+
 -- st - storage активной схемы
 function issue_event(npc, st, event_fn, ...)
-	--printf("DEBUG: issue_event: npc='%s', event_fn='%s'", npc:name(), event_fn)
+	printf("DEBUG: issue_event: npc='%s', event_fn='%s'", npc:name(), event_fn)
 	if not st.actions then
 		local global_st = db.storage[npc:id()]
 		printf("WARNING: issue_event: scheme '%s', section '%s': at least one action in a scheme must be " ..
@@ -419,8 +427,8 @@ function issue_event(npc, st, event_fn, ...)
 		return
 	end
 	for action_ptr, is_active in pairs(st.actions) do
-		if action_ptr[event_fn] then
-			--printf("DEBUG: event issued")
+		if is_active and action_ptr[event_fn] then
+			printf("DEBUG: event issued")
 			action_ptr[event_fn](action_ptr, unpack(arg))
 		end
 	end
