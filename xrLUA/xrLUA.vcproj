@@ -1016,6 +1016,10 @@
 				RelativePath=".\StdAfx.h">
 			</File>
 		</Filter>
+		<Filter
+			Name="luabind"
+			Filter="">
+		</Filter>
 	</Files>
 	<Globals>
 		<Global
