@@ -47,7 +47,7 @@ BOOL CAI_Trader::net_Spawn			(LPVOID DC)
 	ARTEFACT_ORDER_IT				B = l_tpTrader->m_tpOrderedArtefacts.begin(), I = B;
 	ARTEFACT_ORDER_IT				E = l_tpTrader->m_tpOrderedArtefacts.end();
 	for (; I != E; I++) {
-		strcpy(tempArtefact.m_caName,pSettings->r_string	(I->m_caSection,"inv_name"));
+		strcpy(tempArtefact.m_caName,pSettings->r_string (I->m_caSection,"inv_name"));
 		tempArtefact.m_dwCount = I->m_dwCount;
 		tempArtefact.m_dwPrice = I->m_dwPrice;
 		m_tArtefactNeeded.push_back(tempArtefact);
