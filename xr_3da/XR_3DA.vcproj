@@ -561,6 +561,9 @@
 					RelativePath="Device_destroy.cpp">
 				</File>
 				<File
+					RelativePath="Device_overdraw.cpp">
+				</File>
+				<File
 					RelativePath="Device_wndproc.cpp">
 				</File>
 				<File
