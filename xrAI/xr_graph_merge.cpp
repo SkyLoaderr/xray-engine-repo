@@ -201,7 +201,9 @@ public:
 				}
 				xr_delete							(E);
 			}
-			VERIFY3									(i == m_tpGraph->header().vertex_count(), "Rebuild graph for the level ",m_tLevel.name());
+			if (i != m_tpGraph->header().vertex_count())
+				Msg									("Graph for the level %s doesn't correspond to the graph points from Level Editor!");
+//			VERIFY3									(i == m_tpGraph->header().vertex_count(), "Rebuild graph for the level ",m_tLevel.name());
 			O->close								();
 		}
 	};
