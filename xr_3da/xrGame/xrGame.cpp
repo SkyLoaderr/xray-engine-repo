@@ -22,7 +22,7 @@ ENGINE_API extern DWORD		psAlwaysRun;
 ENGINE_API extern float		psHUD_FOV;
 extern int	 				psPhysicsFPS;
 extern float				psSqueezeVelocity;
-int							GAME;
+DWORD						GAME;
 
 xr_token					game_type_token						[ ]={
 	{ "single",				GAME_SINGLE								},
