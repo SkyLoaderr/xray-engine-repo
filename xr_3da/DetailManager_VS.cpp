@@ -28,7 +28,9 @@ short QC (float v)
 }
 
 void CDetailManager::VS_Load()
-{
+{	
+	Msg				("*************************************************** LOAD");
+	
 	// Load vertex shader
 	LPD3DXBUFFER	code	= 0;
 	LPD3DXBUFFER	errors	= 0;
@@ -117,6 +119,7 @@ void CDetailManager::VS_Load()
 
 void CDetailManager::VS_Unload()
 {
+	Msg				("*************************************************** UNLOAD");
 	// Destroy VS/VB/IB
 	R_CHK			(HW.pDevice->DeleteVertexShader(VS_Code));	VS_Code = 0;
 	_RELEASE		(VS_IB);
