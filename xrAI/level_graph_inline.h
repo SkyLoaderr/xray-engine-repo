@@ -185,7 +185,7 @@ IC bool CLevelGraph::inside				(const u32 vertex_id, const Fvector &position, co
 	return				(inside(vertex(vertex_id),position,epsilon));
 }
 
-IC float CLevelGraph::vertex_plane_y	(const CLevelGraph::CVertex &vertex, float X, float Z) const
+IC float CLevelGraph::vertex_plane_y	(const CLevelGraph::CVertex &vertex, const float X, const float Z) const
 {
 	Fvector				DUP, normal, v, v1, P;
 	Fplane				PL; 
@@ -206,7 +206,7 @@ IC float CLevelGraph::vertex_plane_y	(const CLevelGraph::CVertex &vertex) const
 	return				(vertex_plane_y(vertex,x,z));
 }
 
-IC float CLevelGraph::vertex_plane_y	(const CLevelGraph::CVertex *vertex, float X, float Z) const
+IC float CLevelGraph::vertex_plane_y	(const CLevelGraph::CVertex *vertex, const float X, const float Z) const
 {
 	return				(vertex_plane_y(*vertex,X,Z));
 }
@@ -216,7 +216,7 @@ IC float CLevelGraph::vertex_plane_y	(const CLevelGraph::CVertex *vertex) const
 	return				(vertex_plane_y(*vertex));
 }
 
-IC float CLevelGraph::vertex_plane_y	(const u32 vertex_id, float X, float Z) const
+IC float CLevelGraph::vertex_plane_y	(const u32 vertex_id, const float X, const float Z) const
 {
 	return				(vertex_plane_y(vertex(vertex_id),X,Z));
 }
