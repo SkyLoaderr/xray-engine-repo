@@ -136,7 +136,7 @@ void CRender::Render	()
 				// rendering
 				if (mapNormal.size())
 				{
-					Target.phase_smap_spot				(0);
+					Target.phase_smap_spot				();
 					RCache.set_xform_world				(Fidentity);			// ???
 					RCache.set_xform_view				(LR_Direct.L_view);
 					RCache.set_xform_project			(LR_Direct.L_project);
