@@ -52,9 +52,9 @@
 		inline_	Point&			Zero()									{ x =			y =			z = 0.0f;			return *this;	}
 
 		//! + infinity
-		inline_	Point&			SetPlusInfinity()						{ x =			y =			z = MAX_FLOAT;		return *this;	}
+		inline_	Point&			SetPlusInfinity()						{ x =			y =			z = flt_max;		return *this;	}
 		//! - infinity
-		inline_	Point&			SetMinusInfinity()						{ x =			y =			z = MIN_FLOAT;		return *this;	}
+		inline_	Point&			SetMinusInfinity()						{ x =			y =			z = flt_min;		return *this;	}
 
 		//! Sets positive unit random vector
 				Point&			PositiveUnitRandomVector();
