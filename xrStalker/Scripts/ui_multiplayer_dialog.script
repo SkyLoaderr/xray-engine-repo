@@ -49,7 +49,7 @@ function multiplayer_dialog:InitControls()
 	btn:SetTextY(self.button_indent)
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)	
-	
+--[[
 	btn = CUIButton()
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_create_server")
@@ -60,6 +60,7 @@ function multiplayer_dialog:InitControls()
 	btn:SetTextY(self.button_indent)
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)	
+	]]
 end
 
 --[[function multiplayer_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
