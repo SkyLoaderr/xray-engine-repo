@@ -50,6 +50,13 @@ struct ENGINE_API	CWallmark {
 			D->tv	= S->tv;
 		}
 	};
+	IC void		Copy	(CWallmark& from)
+	{
+		S		= from.S;
+		hShader	= hShader;
+		verts	= from.verts;
+		ttl		= from.ttl;
+	}
 };
 
 class ENGINE_API	CWallmarksEngine
