@@ -13,15 +13,18 @@
 void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta)
 {
 	Fvector				motion;
+	dest_position		= Position();
 
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	float				precision = 1.f;
 #endif
 
+	Msg					("[%7d] : [%f][%f][%f]",Level().timeServer(),VPUSH(Position()));
 	if (
 			!enabled() || 
 			path_completed() || 
 			!CDetailPathManager::valid() || 
+			(CDetailPathManager::curr_travel_point_index() >= CDetailPathManager::path().size() - 1) ||
 			(CDetailPathManager::dest_position().similar(Position(),.1f))
 		)
 	{
@@ -48,8 +51,6 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	float				speed		=	2.15f;//CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index()].m_linear_speed
 	float				dist		=	speed*time_delta;
 	float				dist_save	=	dist;
-
-	dest_position		=	Position();
 
 	// move full steps
 	Fvector				mdir,target;
