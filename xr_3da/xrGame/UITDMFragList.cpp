@@ -64,7 +64,10 @@ void CUITDMFragList::OnFrame()
 	H->OutNext		("   %-40s %-8s %-10s","Name","Kills", "Ping");
 	H->OutNext		("-------------------------------------------------------------");
 
-	H->OutNext		("   %-40s %-8d","Team Score",Game().teams[m_CurTeam-1].score);
+	if (OnServer())
+		H->OutNext		("   %-40s %-8d","Team Score",Level().Server->game->teams[m_CurTeam-1].score);
+	else
+		H->OutNext		("   %-40s %-8d","Team Score",Game().teams[m_CurTeam-1].score);
 	H->OutNext		("-------------------------------------------------------------");
 
 

@@ -48,8 +48,8 @@ void game_sv_TeamDeathmatch::OnPlayerChangeTeam(u32 id_who, s16 team)
 	if (!ps_who || ps_who->team == team) return;
 	
 	ps_who->team = team;
-	ps_who->kills--;
-	ps_who->deaths++;
+//	ps_who->kills--;
+//	ps_who->deaths++;
 
 	if (OnServer())
 	{
@@ -108,9 +108,11 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 	}
 	else
 	{
-		ps_killer->kills -= 2;
+		if (ps_killed != ps_killer)
+			ps_killer->kills -= 2;
 	};
 
+	game_TeamState* pTeam = &(teams[ps_killer->team-1]);
 	teams[ps_killer->team-1].score = 0;
 	u32		cnt = get_count();
 	for		(u32 it=0; it<cnt; ++it)	
@@ -120,5 +122,6 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 		if (ps->team != ps_killer->team) continue;
 
 		teams[ps_killer->team-1].score += ps->kills;
-	}
+	};
+	pTeam = &(teams[ps_killer->team-1]);
 }

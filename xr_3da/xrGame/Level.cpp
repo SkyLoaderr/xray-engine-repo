@@ -402,6 +402,7 @@ void __stdcall		CLevel::PhisStepsCallback	( u32 Time0, u32 Time1 )
 void				CLevel::SetNumCrSteps		( u32 NumSteps )
 {
 	m_bNeed_CrPr = true;
+	R_ASSERT2(NumSteps != 0xffffffff, "Invalid Steps Num");
 	if (m_dwNumSteps > NumSteps) return;
 	m_dwNumSteps = NumSteps;
 };
