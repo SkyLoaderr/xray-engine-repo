@@ -44,7 +44,7 @@ const dReal world_spring	=1.0f*SPRING	(world_cfm,world_erp);
 const dReal world_damping	=100.0f*DAMPING	(world_cfm,world_erp);
 
 
-const dReal	world_gravity=2.f*9.81f;
+const dReal	world_gravity	= 2.f*9.81f;
 
 int			phFPS			= 50;
 int			phIterations	= 18;
