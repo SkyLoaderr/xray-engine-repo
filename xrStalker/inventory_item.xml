@@ -17,8 +17,10 @@
 		<text x="0" y="0" font="letterica18" r="255" g="255" b="255"></text>
 	</static>
 
-	<!-- 3D STATIC -->
+	<!-- 3D STATIC OLD!!!OLD!!!OLD!! REMOVE ME!!! -->
 	<static_3d x="50" y="-185" width="250" height="190"></static_3d>
 
+	<!-- IMAGE STATIC -->
+	<image_static x="50" y="-185" width="250" height="190"/>
 </window>
 
