@@ -76,6 +76,9 @@ function main()
 		wait()
 	end
 	
+	if level.disable_input ~= nil then
+		level.disable_input()
+	end
 	level.add_dialog_to_render(dlg)
 	level.hide_indicators()
 	snd:play_at_pos(actor,snd_pos)
@@ -85,5 +88,10 @@ function main()
 	level.show_indicators()
 
 	_G.g_start_avi = false
+
+	if level.enable_input ~= nil then
+		level.enable_input()
+	end
+
 end
 

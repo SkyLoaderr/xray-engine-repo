@@ -19,11 +19,10 @@ function  _main()
 end
 
 function main()
-	if level.disable_input ~= nil then
 		level.disable_input()
 		wait(10000)
 		level.enable_input()
-	end
+
 	
 --	local info = "storyline_actor_start" 
 --	db.actor:give_info_portion(info) 
