@@ -132,6 +132,12 @@
 #	include "ai/script/ai_script_monster.h"
 #	include "BreakableObject.h"
 #	include "PhysicsSkeletonObject.h"
+
+#	include "game_sv_single.h"
+#	include "game_sv_deathmatch.h"
+#	include "game_sv_teamdeathmatch.h"
+#	include "game_sv_ArtefactHunt.h"
+#	include "game_sv_CS.h"
 #endif
 
 #ifndef NO_XR_GAME
@@ -148,6 +154,13 @@ void CObjectFactory::register_classes	()
 	add<CGamePersistent>										(CLSID_GAME_PERSISTANT		,"game");
 	add<CHUDManager>											(CLSID_HUDMANAGER			,"hud_manager");
 	add<CCustomTarget>											(CLSID_TARGET				,"custom_target");
+
+	//Game type
+	add<game_sv_Deathmatch>										(CLSID_GAME_DEATHMATCH		,"game_deathmatch");
+	add<game_sv_TeamDeathmatch>									(CLSID_GAME_TEAMDEATHMATCH	,"game_team_deathmatch");
+	add<game_sv_ArtefactHunt>									(CLSID_GAME_ARTEFACTHUNT	,"game_artefact_hunt");
+	add<game_sv_CS>												(CLSID_GAME_CS				,"game_cs");
+
 #endif
 
 	// server entities
@@ -296,4 +309,5 @@ void CObjectFactory::register_classes	()
 	ADD(CScriptMonster			,CSE_ALifeDynamicObjectVisual	,CLSID_SCRIPT_OBJECT		,"script_object");
 	ADD(CBreakableObject		,CSE_ALifeObjectBreakable		,CLSID_OBJECT_BREAKABLE		,"obj_breakable");
 	ADD(CPhysicsSkeletonObject	,CSE_ALifePHSkeletonObject		,CLSID_PH_SKELETON_OBJECT	,"obj_phskeleton");
+
 }
