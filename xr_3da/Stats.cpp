@@ -119,7 +119,7 @@ void CStats::Show()
 		F.OutNext	("POLY:        %d/%d",		RCache.stat.polys,RCache.stat.calls?RCache.stat.polys/RCache.stat.calls:0);
 		F.OutNext	("DIP/DP:      %d",			RCache.stat.calls);
 		F.OutNext	("SH/T/M/C:    %d/%d/%d/%d",RCache.stat.states,RCache.stat.textures,RCache.stat.matrices,RCache.stat.constants);
-		F.OutNext	("PS/VS:       %d/%d",		RCache.stat.ps,RCache.stat.vs);
+		F.OutNext	("RT/PS/VS:    %d/%d",		RCache.stat.target_rt,RCache.stat.ps,RCache.stat.vs);
 		F.OutNext	("DCL/VB/IB:   %d/%d/%d",   RCache.stat.decl,RCache.stat.vb,RCache.stat.ib);
 		F.OutNext	("xforms:      %d",			RCache.stat.xforms);
 		F.OutSkip	();

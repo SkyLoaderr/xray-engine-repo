@@ -375,7 +375,7 @@ _BUMP_from_base:
 						DWORD&	pDst	= *(((DWORD*)((BYTE*)Rdst.pBits + (y * Rdst.Pitch)))+x);
 						u32		occ		= color_get_A(pDst)/3;
 						u32		def		= 8;
-						pDst			= subst_alpha(pDst,(occ+def)/2);
+						pDst			= subst_alpha(pDst,(occ*1+def*3)/4);
 					}
 				}
 
