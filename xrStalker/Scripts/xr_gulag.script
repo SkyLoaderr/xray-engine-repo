@@ -98,6 +98,7 @@ end
 function fract:updateJob()
 	function availState(st, state)
 		for k,v in st do
+			printf("!!! %d %d", k,v)
 			if v == state then return true end
 		end
 		return false

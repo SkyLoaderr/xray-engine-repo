@@ -153,14 +153,6 @@ function loadJob(sj, gname, type)
 			path_main = gname.."_alarm_house",
 			path_hideout = gname.."_alarm_house" }
 		table.insert(sj, t)			
-		t = { name = "guard",
-			object = nil, begin = nil, idle = 0,
-			prior = 5, state = {1},
-			squad = 0, group = 0,
-			in_rest = "", out_rest = gname.."_zone",
-			running = false, search_light = nil,
-			path_main = gname.."_alarm_center",
-			path_hideout = gname.."_alarm_center" }
 	end
 end
 
@@ -189,7 +181,9 @@ function loadStates(st, gname, type)
 	   				end
 				end
 			end
-			rupor:event(0)
+			if rupor ~= nil then
+				rupor:event(0)
+			end			
 			return 0
 		end
 	end
