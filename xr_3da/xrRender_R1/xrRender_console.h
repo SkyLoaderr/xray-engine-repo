@@ -18,9 +18,10 @@ extern ECORE_API	float		ps_r__Tree_w_speed;
 extern ECORE_API	float		ps_r__Tree_w_amp;
 extern ECORE_API	Fvector		ps_r__Tree_Wave;
 
-extern ECORE_API	float		ps_r__WallmarkTTL;
+extern ECORE_API	float		ps_r__WallmarkTTL	;
 extern ECORE_API	float		ps_r__GLOD_ssa_start;
-extern ECORE_API	float		ps_r__GLOD_ssa_end;
+extern ECORE_API	float		ps_r__GLOD_ssa_end	;
+extern ECORE_API	float		ps_r__LOD			;
 
 // R1
 extern ECORE_API	float		ps_r1_ssaDISCARD;

@@ -1,0 +1,406 @@
+
+local threshold     =   20
+
+-------------------------------------------------------------------------------------
+class "evaluator_move" (property_evaluator)
+---------------------
+function evaluator_move:__init (storage, name) super (nil, name)
+  	self.a = storage
+end
+---------------------
+function evaluator_move:evaluate()
+  	return self.a.enabled
+end
+
+-------------------------------------------------------------------------------------
+class "evaluator_wait" (property_evaluator)
+---------------------
+function evaluator_wait:__init (storage, name) super (nil, name)
+  	self.a = storage
+end
+---------------------
+function evaluator_wait:evaluate()
+  	return self.a.wait_enabled
+end
+
+
+-------------------------------------------------------------------------------------
+class "evaluator_actor" (property_evaluator)
+---------------------
+function evaluator_actor:__init (storage, name) super (nil, name)
+    self.a = storage
+end
+---------------------
+function evaluator_actor:evaluate ()
+    local act = level.actor ()
+    if act == nil or act:alive () == false then  return false end
+    return true   
+end
+---------------------
+
+-------------------------------------------------------------------------------------
+class "evaluator_near" (property_evaluator)
+---------------------
+function evaluator_near:__init (storage, name) super (nil, name)
+    self.a = storage
+end
+---------------------
+function evaluator_near:evaluate ()
+    local act = level.actor ()
+    if act == nil then return false end
+    return  self.object:position ():distance_to (act:position ()) < threshold
+end
+---------------------
+
+
+-------------------------------------------------------------------------------------
+class "scienist_move" (action_base)
+---------------------
+function scienist_move:__init (name, storage) super (nil, name)
+	self.st = storage
+	self.move_mgr = move_mgr.move_mgr ()
+end
+---------------------
+function scienist_move:initialize ()
+	action_base.initialize (self)
+	self.object:set_node_evaluator ()
+	self.object:set_path_evaluator ()
+	self.object:set_desired_position ()
+	self.object:set_desired_direction ()
+	self.move_mgr:initialize (self.object)
+	self.initialized = true
+	self:reset_scheme ()
+end
+---------------------
+function scienist_move:reset_scheme ()
+	if not self.initialized then
+		return
+	end
+
+	self.object:clear_animations()
+	
+	if self.st.path_walk_info == nil then
+		self.st.path_walk_info = utils.path_parse_waypoints (self.st.path_walk)
+	end
+	if self.st.path_look_info == nil then
+		self.st.path_look_info = utils.path_parse_waypoints (self.st.path_look)
+	end
+
+	self.move_mgr:reset (self.st.path_walk, self.st.path_walk_info, self.st.path_look, self.st.path_look_info, self.st.team, { crouch = false, running = false, danger = false })
+end	
+---------------------
+function scienist_move:execute()
+	action_base.execute (self)
+	self.move_mgr:update ()
+end
+---------------------
+function scienist_move:finalize ()
+	self.move_mgr:finalize()
+	self.object:clear_animations()
+	action_base.finalize(self)
+end
+
+
+-------------------------------------------------------------------------------------
+class "scienist_escape" (action_base)
+---------------------
+function scienist_escape:__init (name, storage) super (nil, name)
+	self.st = storage
+end
+---------------------
+function scienist_escape:initialize ()
+	action_base.initialize (self)
+	self.object:set_node_evaluator ()
+	self.object:set_path_evaluator ()
+	self.object:set_desired_position ()
+	self.object:set_desired_direction ()
+	self.object:clear_animations ()
+
+    self.object:set_detail_path_type      (move.line)
+    self.object:set_body_state            (move.standing)
+    self.object:set_path_type             (game_object.patrol_path)
+    self.object:set_patrol_path           (self.st.path_walk, patrol.nearest, patrol.continue, true)
+    self.object:set_movement_type         (move.run)
+    self.object:set_mental_state          (anim.danger)
+    self.object:set_sight                 (look.path_dir, nil, 0)
+	
+end
+---------------------
+function scienist_escape:execute()
+	action_base.execute (self)
+end
+---------------------
+function scienist_escape:finalize ()
+	action_base.finalize(self)
+end
+
+
+-------------------------------------------------------------------------------------
+class "scienist_wait" (action_base)
+---------------------
+function scienist_wait:__init (name, storage) super (nil, name)
+    self.a = storage
+    self.dialog_out = false
+end
+---------------------
+function scienist_wait:initialize ()
+    action_base.initialize (self)
+	self.object:set_node_evaluator ()
+	self.object:set_path_evaluator ()
+	self.object:set_desired_position ()
+	self.object:set_desired_direction ()
+    self.object:set_movement_type (move.stand)
+	
+    self.object:set_start_dialog ("hello_dialog")
+    self.object:enable_talk ()
+    
+end
+---------------------
+function scienist_wait:execute ()
+    action_base.execute (self)
+    xr_state.anim_update ("idle", self.object)
+
+    if self.object:is_talking () == true then
+       self.object:set_movement_type (move.stand)
+       self.dialog_out = true
+       return 
+    end    
+    
+    if self.dialog_out == true then
+       self.a.wait_enabled = false
+    end    
+    
+    local act = level.actor ()
+    if act ~= nil then
+       local v1 = self.object:position ()
+       local v2 = act:position ()
+       v1.x = v2.x - v1.x
+       v1.y = v2.y - v1.y
+       v1.z = v2.z - v1.z
+       v1:normalize ()
+       self.object:set_sight (look.direction, v1, 0)
+    end   
+end
+---------------------
+function scienist_wait:finalize ()
+    action_base.finalize (self)
+	self.object:clear_animations()
+	self.object:set_start_dialog ("hello_dialog")
+end
+
+
+
+-------------------------------------------------------------------------------------
+class "scienist_out" (action_base)
+---------------------
+function scienist_out:__init (name, storage) super (nil, name)
+    self.a = storage
+end
+---------------------
+function scienist_out:initialize ()
+    action_base.initialize (self)
+	self.object:set_node_evaluator ()
+	self.object:set_path_evaluator ()
+	self.object:set_desired_position ()
+	self.object:set_desired_direction ()
+    self.object:set_movement_type (move.stand)
+end
+---------------------
+function scienist_out:execute ()
+    action_base.execute (self)
+
+    local act = level.actor ()
+    if act ~= nil then
+       local v1 = self.object:position ()
+       local v2 = act:position ()
+       v1.x = v2.x - v1.x
+       v1.y = v2.y - v1.y
+       v1.z = v2.z - v1.z
+       v1:normalize ()
+       self.object:set_sight (look.direction, v1, 0)
+    end   
+
+    xr_state.anim_update ("idle", self.object)
+    
+end
+---------------------
+function scienist_out:finalize ()
+    action_base.finalize (self)
+	self.object:clear_animations()
+end
+
+
+-------------------------------------------------------------------------------------
+class "scienist_scared" (action_base)
+function scienist_scared:__init (name, storage) super (nil, name)
+    self.a = storage
+    self.vid = -1
+end
+---------------------
+function scienist_scared:initialize ()
+    action_base.initialize (self)
+	self.object:set_node_evaluator ()
+	self.object:set_path_evaluator ()
+	self.object:set_desired_position ()
+	self.object:set_desired_direction ()
+	self.object:clear_animations ()
+	
+	local pth = patrol (self.a.escape)
+	if pth == nil then
+       utils.abort ("No patrol path for scienist")
+       return 
+     end  	
+
+    local founded = -1
+    local min = 100000.0
+    for a = 0, pth:count (), 1 do
+        local dist = self.object:position ():distance_to (pth:point(a))
+        if dist < min then
+           min = dist
+           founded = a
+         end   
+    end    
+    
+    if founded == -1 then
+       utils.abort ("Cover point not found")
+       return
+    end   
+
+    self.object:set_item                  (object.idle, self.object:best_weapon ())
+    
+    self.object:set_detail_path_type      (move.line)
+    self.object:set_body_state            (move.standing)
+    self.object:set_path_type             (game_object.level_path)    
+    self.vid = pth:level_vertex_id (founded)
+    self.object:set_dest_level_vertex_id  (self.vid)
+    self.object:set_movement_type         (move.run)
+    self.object:set_mental_state          (anim.danger)
+    self.object:set_sight                 (look.path_dir, nil, 0)
+    
+end
+---------------------
+function scienist_scared:execute ()
+    action_base.execute (self)
+    if self.vid ~= self.object:level_vertex_id () then return end
+    self.object:set_movement_type (move.stand)
+    
+    local enemy = self.object:best_enemy ()
+    --if enemy == nil or (enemy ~= nil and  enemy:alive () == false) then
+       --for a in self.object:memory_visible_objects () do
+	       --self.object:enable_memory_object (a, false)
+       --end
+       --return
+    --end   
+    
+    if enemy == nil then return end
+    
+    local dir = enemy:position ()
+    self.object:set_sight (look.fire_point, dir, 0)
+    if self.object:see (enemy) == true then
+       self.object:set_item  (object.fire1, self.object:best_weapon ())
+    else   
+       self.object:set_item  (object.idle, self.object:best_weapon ())
+    end   
+    
+end
+---------------------
+function scienist_scared:finalize ()
+    action_base.finalize (self)
+	self.object:clear_animations ()
+    self.object:set_item  (object.idle, self.object:best_weapon ())
+end    
+---------------------
+
+
+
+
+-------------------------------------------------------------------------------------
+function add_to_binder (npc, char_ini)
+    
+    local operators	= {}
+    local properties  = {}
+		
+    local manager = npc:motivation_action_manager()
+
+	properties["enabled"]     = xr_evaluators_id.sidor_yantar
+	properties["wait"]        = xr_evaluators_id.sidor_yantar + 1
+	properties["actor"]       = xr_evaluators_id.sidor_yantar + 2
+	properties["near"]        = xr_evaluators_id.sidor_yantar + 3
+	
+ 	operators["action_move"] = xr_actions_id.sidor_act_yantar
+ 	operators["action_wait"] = xr_actions_id.sidor_act_yantar + 1
+ 	operators["action_out"]  = xr_actions_id.sidor_act_yantar + 2
+ 	operators["action_escape"] = xr_actions_id.sidor_act_yantar + 3
+ 	operators["action_scare"] = xr_actions_id.sidor_act_yantar + 4
+ 	
+    manager:add_evaluator (properties["enabled"], this.evaluator_move (xr_motivator.storage[npc:id()].scienist2, "scienist2_enabled"))
+    manager:add_evaluator (properties["wait"], this.evaluator_wait (xr_motivator.storage[npc:id()].scienist2, "scienist2_wait"))
+    manager:add_evaluator (properties["actor"], this.evaluator_actor (xr_motivator.storage[npc:id()].scienist2, "scienist2_actor"))
+    manager:add_evaluator (properties["near"], this.evaluator_near (xr_motivator.storage[npc:id()].scienist2, "scienist2_near"))
+
+	local action = this.scienist_wait ("scienist_wait", xr_motivator.storage[npc:id()].scienist2)
+	action:add_precondition(world_property(stalker_ids.property_alive, true))
+	action:add_precondition(world_property(properties["enabled"], true))
+	action:add_precondition(world_property(properties["wait"], true))
+	action:add_effect(world_property(properties["wait"], false))
+	manager:add_action(operators["action_wait"], action)
+
+    action = this.scienist_move ("scienist_move", xr_motivator.storage[npc:id()].scienist2)
+	action:add_precondition(world_property(stalker_ids.property_alive, true))
+	action:add_precondition(world_property(stalker_ids.property_enemy, false))
+	action:add_precondition(world_property(properties["enabled"], true))
+	action:add_precondition(world_property(properties["actor"], true))
+	action:add_precondition(world_property(properties["near"], true))
+	action:add_precondition(world_property(properties["wait"], false))
+	action:add_effect(world_property(properties["enabled"], false))
+	manager:add_action(operators["action_move"], action)
+	
+    action = this.scienist_out ("scienist_out", xr_motivator.storage[npc:id()].scienist2)
+	action:add_precondition(world_property(stalker_ids.property_alive, true))
+	action:add_precondition(world_property(stalker_ids.property_enemy, false))
+	action:add_precondition(world_property(properties["enabled"], true))
+	action:add_precondition(world_property(properties["actor"], true))
+	action:add_precondition(world_property(properties["near"], false))
+	action:add_precondition(world_property(properties["wait"], false))
+	action:add_effect(world_property(properties["near"], true))
+	manager:add_action(operators["action_out"], action)
+
+    action = this.scienist_escape ("scienist_escape", xr_motivator.storage[npc:id()].scienist2)
+	action:add_precondition(world_property(stalker_ids.property_alive, true))
+	action:add_precondition(world_property(stalker_ids.property_enemy, false))
+	action:add_precondition(world_property(properties["enabled"], true))
+	action:add_precondition(world_property(properties["actor"], false))
+	action:add_precondition(world_property(properties["wait"], false))
+	action:add_effect(world_property(properties["enabled"], false))
+	manager:add_action(operators["action_escape"], action)
+	
+	action = this.scienist_scared ("scienist_scared", xr_motivator.storage[npc:id()].scienist2)
+	action:add_precondition(world_property(stalker_ids.property_alive, true))
+	action:add_precondition(world_property(stalker_ids.property_enemy, true))
+	action:add_precondition(world_property(properties["enabled"], true))
+	action:add_precondition(world_property(properties["actor"], true))
+	action:add_precondition(world_property(properties["wait"], false))
+	action:add_effect(world_property(properties["enabled"], false))    
+	manager:add_action(operators["action_scare"], action)
+    	
+	action = manager:action (xr_actions_id.alife)
+	action:add_precondition (world_property(properties["enabled"], false))
+	action = manager:action (stalker_ids.action_combat_planner)
+	action:add_precondition (world_property(properties["enabled"], false))
+	
+    if char_ini ~= nil and char_ini:section_exist ("scienist2") == true then
+	   this.load_data (npc, npc:spawn_ini ())
+	end
+end
+-------------------------------------------------------------------------------------
+function load_data (npc, char_ini)
+
+	local st = xr_motivator.storage[npc:id()].scienist2
+	st.enabled = char_ini:r_bool ("scienist2", "enabled")
+	st.path_walk = char_ini:r_string ("scienist2", "path_walk")
+	st.escape = char_ini:r_string ("scienist2", "escape_points")
+	st.path_walk_info = nil 
+	st.path_look_info = nil 
+	st.wait_enabled = true
+	xr_motivator.checkStorage (npc)
+end

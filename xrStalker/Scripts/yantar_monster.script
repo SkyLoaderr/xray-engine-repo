@@ -1,0 +1,25 @@
+//Write : 25.10.2004 Евгение Негробовом
+
+module("small_script")
+
+
+local monsters 		= { "ya_bloodsucker_1", "ya_pseudodog_1", "ya_pseudodog_2", "ya_pseudodog_3" }
+local monsters_id 	= {}
+local zone_name  	= "yantar_4m_fight"
+
+function main()
+	// Запоминаем id монстров
+	while(small_script.GetMonsterId(monsters, monsters_id) == false) do
+		wait()
+	end
+	
+	printf("script yantar_monster started")	
+	local scene = small_script.CMonsterInOffline(monsters_id, zone_name, true)
+	scene:initialize()
+	
+	while(scene:execute()) do
+		wait()
+	end
+	
+	scene:finalize()
+end 

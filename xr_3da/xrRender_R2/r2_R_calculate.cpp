@@ -1,15 +1,15 @@
 #include "stdafx.h"
 #include "..\customhud.h"
 
-float				g_fGLOD, g_fFarSq, g_fPOWER;
-float				g_fSCREEN;
-float				g_fLOD,g_fLOD_scale=1.f;
+float				g_fGLOD			;
+float				g_fSCREEN		;
+float				g_fLOD			;
 
-extern float		r_ssaDISCARD;
-extern float		r_ssaDONTSORT;
-extern float		r_ssaLOD_A;
-extern float		r_ssaLOD_B;
-extern float		r_ssaHZBvsTEX;
+extern float		r_ssaDISCARD	;
+extern float		r_ssaDONTSORT	;
+extern float		r_ssaLOD_A		;
+extern float		r_ssaLOD_B		;
+extern float		r_ssaHZBvsTEX	;
 extern float		r_ssaGLOD_start,	r_ssaGLOD_end;
 
 void CRender::Calculate		()
@@ -17,10 +17,8 @@ void CRender::Calculate		()
 	// Transfer to global space to avoid deep pointer access
 	IRender_Target* T				=	getTarget	();
 	float	fov_factor				=	_sqr		(90.f / Device.fFOV);
-	g_fFarSq						=	75.f;
-	g_fFarSq						*=	g_fFarSq;
 	g_fSCREEN						=	float(T->get_width()*T->get_height())*fov_factor;
-	g_fLOD							=	g_fLOD_scale;
+	g_fLOD							=	ps_r__LOD;
 	r_ssaDISCARD					=	_sqr(ps_r2_ssaDISCARD)		/g_fSCREEN;
 	r_ssaDONTSORT					=	_sqr(ps_r2_ssaDONTSORT)		/g_fSCREEN;
 	r_ssaLOD_A						=	_sqr(ps_r2_ssaLOD_A)		/g_fSCREEN;

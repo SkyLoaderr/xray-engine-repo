@@ -1,0 +1,22 @@
+// биндятся различные одноразовые скрипты для сюжета. Сделано для того, чтоб одноразовые
+// скрипты, не засоряли место биндинга. У всех таких скриптов используется секция 
+// [gameplay], а в поле script идет имя скрипта.
+
+module("bind_escape")
+module("bind_garbage")
+
+function bind(obj, char_ini)
+	local script_name = utils.mob_get_string(char_ini, "gameplay", "script", nil, obj, true)
+	
+	// Плоть на ескейпе, которая при приближении актера бежит в аномалию.
+	if(script_name == "escape_flesh") then
+		obj:bind_object(bind_escape.CDeadFlesh(obj))
+	elseif(script_name == "escape_boar") then
+		obj:bind_object(bind_escape.CBoarPlayWithCorpse(obj))
+	elseif(script_name == "escape_dogs") then
+		obj:bind_object(bind_escape.CDangerDogs(obj))
+	elseif(script_name == "garbage_rush") then
+	    obj:bind_object(bind_garbage.CRushMonster(obj))	
+	end 
+end 
+

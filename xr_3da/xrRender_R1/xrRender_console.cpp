@@ -19,10 +19,11 @@ float		ps_r__Tree_w_speed			= 1.00f	;
 float		ps_r__Tree_w_amp			= 0.01f	;
 Fvector		ps_r__Tree_Wave				= {.1f, .01f, .11f};
 
-float		ps_r__WallmarkTTL			= 90.f;
+float		ps_r__WallmarkTTL			= 90.f	;
 
-float		ps_r__GLOD_ssa_start		= 256.f;
-float		ps_r__GLOD_ssa_end			=  64.f;
+float		ps_r__GLOD_ssa_start		= 256.f	;
+float		ps_r__GLOD_ssa_end			=  64.f	;
+float		ps_r__LOD					=  1.f	;
 
 // R1
 float		ps_r1_ssaDISCARD			= 4.f;
@@ -166,6 +167,8 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r__wallmark_ttl",		&ps_r__WallmarkTTL,			1.0f,	5.f*60.f);
 	CMD4(CCC_Float,		"r__ssa_glod_start",	&ps_r__GLOD_ssa_start,		128,	512		);
 	CMD4(CCC_Float,		"r__ssa_glod_end",		&ps_r__GLOD_ssa_end,		16,		96		);
+	CMD4(CCC_Float,		"r__geometry_lod",		&ps_r__LOD,					0,		2		);
+	
 #ifdef DEBUG
 	CMD4(CCC_Float,		"r__detail_l_ambient",	&ps_r__Detail_l_ambient,	.5f,	.95f	);
 	CMD4(CCC_Float,		"r__detail_l_aniso",	&ps_r__Detail_l_aniso,		.1f,	.5f		);
