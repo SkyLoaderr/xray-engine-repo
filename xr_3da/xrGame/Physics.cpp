@@ -312,10 +312,10 @@ const	dReal k_d=1000.f;
 }
 /////////
 void CPHJeep::Destroy(){
-	for(UINT i=0;i<NofJoints;i++) dJointDestroy(Joints[i]);
-	for(UINT i=0;i<NofBodies;i++) dBodyDestroy(Bodies[i]);
-	for(UINT i=0;i<NofGeoms;i++) dGeomDestroy(Geoms[i]);
-	dGeomDestroy(GeomsGroup);
+//	for(UINT i=0;i<NofJoints;i++) dJointDestroy(Joints[i]);
+//	for(UINT i=0;i<NofBodies;i++) dBodyDestroy(Bodies[i]);
+//	for(UINT i=0;i<NofGeoms;i++) dGeomDestroy(Geoms[i]);
+//	dGeomDestroy(GeomsGroup);
 	DynamicData.Destroy();
 
 }
