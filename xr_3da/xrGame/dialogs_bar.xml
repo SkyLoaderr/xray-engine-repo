@@ -2509,24 +2509,9 @@
                 <text>bar_bar_osvedomitel_trade_info_412</text>
                 <next>4121</next>
             </phrase>
-            <phrase id="41">
-                <text>bar_bar_osvedomitel_trade_info_41</text>
-                <next>411</next>
-                <next>412</next>
-            </phrase>
             <phrase id="212">
                 <text>bar_bar_osvedomitel_trade_info_212</text>
                 <next>2121</next>
-            </phrase>
-            <phrase id="0">
-                <text>bar_bar_osvedomitel_trade_info_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text></text>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
             </phrase>
             <phrase id="31">
                 <text>bar_bar_osvedomitel_trade_info_31</text>
@@ -2565,13 +2550,37 @@
                 <give_info>bar_bar_osvedomitel_info_02</give_info>
                 <next>3111</next>
             </phrase>
+            <phrase id="4111">
+                <text>bar_bar_osvedomitel_trade_info_4111</text>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>99</next>
+            </phrase>
+            <phrase id="0">
+                <text>bar_bar_osvedomitel_trade_info_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="41">
+                <text>bar_bar_osvedomitel_trade_info_41</text>
+                <next>411</next>
+                <next>412</next>
+            </phrase>
             <phrase id="411">
                 <text>bar_bar_osvedomitel_trade_info_411</text>
                 <give_info>bar_bar_osvedomitel_info_03</give_info>
                 <next>4111</next>
             </phrase>
-            <phrase id="4111">
-                <text>bar_bar_osvedomitel_trade_info_4111</text>
+            <phrase id="999">
+                <text>bar_bar_osvedomitel_trade_info_999</text>
+            </phrase>
+            <phrase id="99">
+                <text></text>
+                <has_info>bar_bar_osvedomitel_info_03</has_info>
+                <next>999</next>
             </phrase>
         </phrase_list>
     </dialog>
