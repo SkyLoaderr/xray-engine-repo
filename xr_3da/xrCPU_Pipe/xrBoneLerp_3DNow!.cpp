@@ -190,14 +190,14 @@ scale_it:
 
 	pfsub		mm7,mm6						; mm7 = 0.0 | 1.0 - T
 
-	movq		mm0,QWORD PTR [esi]K1.T.x	; mm0 = p1.y | p1.x
-	movd		mm1,DWORD PTR [esi]K1.T.z	; mm1 = 0.0 | p1.z
+	movq		mm0,QWORD PTR [esi]K1.t.x	; mm0 = p1.y | p1.x
+	movd		mm1,DWORD PTR [esi]K1.t.z	; mm1 = 0.0 | p1.z
 
 	punpckldq	mm6,mm6						; mm6 = T | T
 	punpckldq	mm7,mm7						; mm7 = 1.0 - T | 1.0 - T
 
-	movq		mm2,QWORD PTR [edi]K2.T.x	; mm2 = p2.y | p2.x
-	movd		mm3,DWORD PTR [edi]K2.T.z	; mm3 = 0.0 | p2.z
+	movq		mm2,QWORD PTR [edi]K2.t.x	; mm2 = p2.y | p2.x
+	movd		mm3,DWORD PTR [edi]K2.t.z	; mm3 = 0.0 | p2.z
 
 	pfmul		mm0,mm7						; mm0 = p1.y*invt | p1.x*invt
 	pfmul		mm1,mm7						; mm1 = 0.0 | p1.z*invt

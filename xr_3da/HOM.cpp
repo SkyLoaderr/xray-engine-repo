@@ -244,5 +244,5 @@ BOOL CHOM::Visible		(Fbox& B)
 	B.getpoint(6,src);	if (xform_b(XF,test,src)) return TRUE;	rect.modify	(test);
 	B.getpoint(7,src);	if (xform_b(XF,test,src)) return TRUE;	rect.modify	(test);
 	
-	return FALSE; //Raster.test	(rect.min.x,rect.min.y,rect.max.x,rect.max.y,rect.min.z);
+	return Raster.test	(rect.min.x,rect.min.y,rect.max.x,rect.max.y,rect.min.z);
 }
