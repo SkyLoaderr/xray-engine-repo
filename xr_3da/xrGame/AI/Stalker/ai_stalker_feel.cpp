@@ -44,7 +44,7 @@ bool CAI_Stalker::bfIf_I_SeePosition(Fvector tPosition)
 	tVector.getHP(yaw,pitch);
 	yaw		= angle_normalize_signed(-yaw);
 	pitch	= angle_normalize_signed(-pitch);
-	return	(getAI().bfTooSmallAngle(yaw,r_current.yaw,PI_DIV_6) && getAI().bfTooSmallAngle(pitch,r_current.pitch,PI_DIV_6));
+	return	(getAI().bfTooSmallAngle(yaw,r_current.yaw,PI_DIV_6));// && getAI().bfTooSmallAngle(pitch,r_current.pitch,PI_DIV_6));
 }
 
 bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
@@ -53,7 +53,7 @@ bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
 //	if (Level().iGetKeyState(DIK_RCONTROL))
 //		return(false);
 #ifdef LOG_PARAMETERS
-//	bool		bMessage = g_Alive() && !!dynamic_cast<CActor*>(tpEntity);//!!Level().iGetKeyState(DIK_LALT);
+//	bool		bMessage = g_Alive() && !!dynamic_cast<CActor*>(tpEntity);//!!Levsssssssssssssssssssssel().iGetKeyState(DIK_LALT);
 	int			iLogParameters = (g_Alive() && !!dynamic_cast<CActor*>(tpEntity)) ? (Level().iGetKeyState(DIK_1) ? 2 : Level().iGetKeyState(DIK_0) ? 1 : 0) : 0;
 	string4096	S = "";
 #endif

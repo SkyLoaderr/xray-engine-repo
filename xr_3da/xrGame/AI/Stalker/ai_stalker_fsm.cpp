@@ -216,6 +216,7 @@ void CAI_Stalker::Detour()
 	if (m_bStateChanged) {
 		m_tActionState = eActionStateWatchLook;
 		m_dwActionStartTime = Level().timeServer();
+		AI_Path.TravelPath.clear();
 	}
 	
 	Fvector tPoint;
@@ -376,19 +377,20 @@ void CAI_Stalker::SearchEnemy()
 					if (!Group.m_tpaSuspiciousNodes[i].dwSearched) {
 						if (getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,Group.m_tpaSuspiciousNodes[i].dwNodeID)) {
 							bOk = true;
-							vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypeFirePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID));
+							vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID));
 							if (bfIf_I_SeePosition(getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID)))
 								Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
 							break;
 						}
 					}
 				if (!bOk)
-					if (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,m_tSavedEnemyPosition) == -1)
-						vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeSearch);
-					else {
+//					if (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,m_tSavedEnemyPosition) == -1)
+//						vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeSearch);
+//					else 
+					{
 						Fvector				tPoint = m_tSavedEnemyPosition;
 						tPoint.y			+= 1.5f;
-						vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
+						vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
 					}
 			}
 			break;
@@ -417,7 +419,7 @@ void CAI_Stalker::SearchEnemy()
 					if (!Group.m_tpaSuspiciousNodes[i].dwSearched) {
 						if (getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,Group.m_tpaSuspiciousNodes[i].dwNodeID)) {
 							bOk = true;
-							vfSetParameters		(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypeFirePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID));
+							vfSetParameters		(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID));
 							if (bfIf_I_SeePosition(getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID)))
 								Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
 							break;
@@ -429,7 +431,7 @@ void CAI_Stalker::SearchEnemy()
 					else {
 						Fvector				tPoint = getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID);
 						tPoint.y			+= 1.5f;
-						vfSetParameters		(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
+						vfSetParameters		(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
 					}
 			}
 	
@@ -511,62 +513,70 @@ void CAI_Stalker::ExploreDNE()
 
 void CAI_Stalker::ExploreDE()
 {
-	m_dwInertion			= 60000;
-	Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
-	if (getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID),tPoint))
-		tPoint.y			= getAI().ffGetY(*getAI().Node(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID),tPoint.x,tPoint.z);
-	else
-		tPoint				= getAI().tfGetNodeCenter(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID);
-	if (m_bStateChanged) {
-		m_tActionState		= eActionStateDontWatch;
-		m_dwActionStartTime = Level().timeServer();
-		AI_Path.TravelPath.clear();
-	}
-	m_tSelectorFreeHunting.m_fOptEnemyDistance = max(15.f,vPosition.distance_to(tPoint));
-	switch (m_tActionState) {
-		case eActionStateDontWatch : {
-			WRITE_TO_LOG			("DontWatch : Exploring danger non-expedient sound");
-			AccomplishTask			(&m_tSelectorFreeHunting);
-			if (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) != u32(-1)) {
-				m_tActionState		= eActionStateWatch;
-				m_dwActionStartTime = Level().timeServer();
-			}
-			break;
-		}
-		case eActionStateWatch : {
-			WRITE_TO_LOG			("Watch : Exploring danger non-expedient sound");
-			if (vPosition.distance_to(tPoint) < 5.f)
-				vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeCriteria,eBodyStateCrouch,eMovementTypeStand,eStateTypeDanger,eLookTypeLookFireOver,tPoint,3000);
-			else
-				vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeCriteria,eBodyStateCrouch,eMovementTypeWalk,eStateTypeDanger,eLookTypeLookFireOver,tPoint,3000);
-			if (Level().timeServer() - m_dwActionStartTime > 10000) {
-				m_tActionState		= eActionStateWatchGo;
-				m_dwActionStartTime = Level().timeServer();
-			}
-			break;
-		}
-		case eActionStateWatchGo : {
-			WRITE_TO_LOG			("WatchGo : Exploring danger non-expedient sound");
-			AccomplishTask			(&m_tSelectorFreeHunting);
-			if ((Level().timeServer() - m_dwActionStartTime > 6000) && (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) != u32(-1))) {
-				m_tActionState		= eActionStateWatchLook;
-				m_dwActionStartTime = Level().timeServer();
-			}
-			break;
-		}
-		case eActionStateWatchLook : {
-			WRITE_TO_LOG			("WatchLook : Exploring danger non-expedient sound");
-			vfUpdateSearchPosition	();
-			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
-			vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
-			if ((Level().timeServer() - m_dwActionStartTime > 6000) || (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) == u32(-1))) {
-				m_tActionState		= eActionStateWatchGo;
-				m_dwActionStartTime = Level().timeServer();
-			}
-			break;
-		}
-		default : NODEFAULT;
-	}
+//	m_dwInertion			= 60000;
+//	Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
+//	if (getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID),tPoint))
+//		tPoint.y			= getAI().ffGetY(*getAI().Node(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID),tPoint.x,tPoint.z);
+//	else
+//		tPoint				= getAI().tfGetNodeCenter(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID);
+//	if (m_bStateChanged) {
+//		m_tActionState		= eActionStateDontWatch;
+//		m_dwActionStartTime = Level().timeServer();
+//		AI_Path.TravelPath.clear();
+//	}
+//	m_tSelectorFreeHunting.m_fOptEnemyDistance = max(15.f,vPosition.distance_to(tPoint));
+//	switch (m_tActionState) {
+//		case eActionStateDontWatch : {
+//			WRITE_TO_LOG			("DontWatch : Exploring danger expedient sound");
+//			AccomplishTask			(&m_tSelectorFreeHunting);
+//			if (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) != u32(-1)) {
+//				m_tActionState		= eActionStateWatch;
+//				m_dwActionStartTime = Level().timeServer();
+//			}
+//			break;
+//		}
+//		case eActionStateWatch : {
+//			WRITE_TO_LOG			("Watch : Exploring danger expedient sound");
+//			if (vPosition.distance_to(tPoint) < 5.f)
+//				vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeCriteria,eBodyStateCrouch,eMovementTypeStand,eStateTypeDanger,eLookTypeLookFireOver,tPoint,3000);
+//			else
+//				vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeCriteria,eBodyStateCrouch,eMovementTypeWalk,eStateTypeDanger,eLookTypeLookFireOver,tPoint,3000);
+//			if (Level().timeServer() - m_dwActionStartTime > 10000) {
+//				m_tActionState		= eActionStateWatchGo;
+//				m_dwActionStartTime = Level().timeServer();
+//			}
+//			break;
+//		}
+//		case eActionStateWatchGo : {
+//			WRITE_TO_LOG			("WatchGo : Exploring danger expedient sound");
+//			AccomplishTask			(&m_tSelectorFreeHunting);
+//			if ((Level().timeServer() - m_dwActionStartTime > 6000) && (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) != u32(-1))) {
+//				m_tActionState		= eActionStateWatchLook;
+//				m_dwActionStartTime = Level().timeServer();
+//			}
+//			break;
+//		}
+//		case eActionStateWatchLook : {
+//			WRITE_TO_LOG			("WatchLook : Exploring danger expedient sound");
+//			vfUpdateSearchPosition	();
+//			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+//			vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
+//			if ((Level().timeServer() - m_dwActionStartTime > 6000) || (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) == u32(-1))) {
+//				m_tActionState		= eActionStateWatchGo;
+//				m_dwActionStartTime = Level().timeServer();
+//			}
+//			break;
+//		}
+//		default : NODEFAULT;
+//	}
+	m_tSavedEnemyPosition	= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
+	m_dwSavedEnemyNodeID	= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
+	m_tMySavedPosition		= m_tpaDynamicSounds[m_iSoundIndex].tMySavedPosition;
+	m_dwMyNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwMyNodeID;
+	if (m_tpaDynamicSounds[m_iSoundIndex].dwTime - m_dwLastSoundUpdate > SOUND_UPDATE_DELAY)
+		m_dwLastEnemySearch = 0;
+	m_dwLastSoundUpdate		= m_tpaDynamicSounds[m_iSoundIndex].dwTime;
+	SearchEnemy();
 }
 
 void CAI_Stalker::ExploreNDE()
@@ -712,7 +722,7 @@ void CAI_Stalker::Think()
 	m_bStateChanged = ((_A	!= A) || (_B	!= B) || (_C	!= C) || (_D	!= D) || (_E	!= E) || (_F	!= F) || (_G	!= G) || (_H	!= H) || (_I	!= I) || (_J	!= J) || (_K	!= K) || (_L	!= L));// || (_M	!= M));
 	if (!g_Alive()) {
 		Death				();
-	}
+	}				   
 	else 
  	if ((m_dwParticularState != -1) && (K || (m_dwParticularState == 7))) {
 		switch (m_dwParticularState) {

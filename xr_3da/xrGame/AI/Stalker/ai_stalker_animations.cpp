@@ -248,7 +248,7 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 			//tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[0].A[9].A[0];
 			tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[9].A[0];
 		else
-			tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[7 + m_tMovementType].A[0];
+			tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[7 + m_tMovementType].A[1];
 		return;
 	}
 	if (m_inventory.ActiveItem()) {
