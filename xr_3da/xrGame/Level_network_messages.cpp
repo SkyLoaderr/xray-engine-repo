@@ -13,22 +13,6 @@ void CLevel::ClientReceive()
 		case M_SPAWN:
 			g_sv_Spawn(P);
 			break;
-		case M_DESTROY:
-			{
-				u16 count;
-				P->r_u16				(count);
-				for (; count; count--)	
-				{
-					P->r_u16			(ID);
-					CObject* O			= Objects.net_Find(u32(ID));
-					if (O)	
-					{
-						O->net_Destroy			();
-						Objects.DestroyObject	(O);
-					}
-				}
-			}
-			break;
 		case M_UPDATE:
 			Objects.net_Import	(P);
 			break;

@@ -33,11 +33,24 @@ public:
 		DWORD	dwTime;
 		Fvector	vPosition;
 	};
+	union ObjectFlags
+	{
+		struct 
+		{
+			DWORD	bEnabled		:	1;
+			DWORD	bVisible		:	1;
+			DWORD	bActive			:	1;
+			DWORD	bDestroy		:	1;
+			DWORD	net_Local		:	1;
+			DWORD	net_Ready		:	1;
+		};
+		DWORD	storage;
+	};
 private:
+	ObjectFlags							FLAGS;
+	DWORD								net_ID;
+
 	// Some property variables
-	BOOL								bEnabled;
-	BOOL								bVisible;
-	BOOL								bActive;		// was it activated or not - sleeping, not updating, no network messages etc.
 	LPSTR								NameObject;
 	LPSTR								NameSection;
 
@@ -60,11 +73,6 @@ protected:
 	// Information and status
 	void								StatusBegin			();
 
-	// Network
-	DWORD								net_ID;
-	BOOL								net_Local;
-	BOOL								net_Ready;
-
 	// Geometry xform
 	Fmatrix								svTransform;
 	Fmatrix								clTransform;
@@ -75,10 +83,10 @@ public:
 	DWORD								dwFrame_UpdateCL;
 
 	// Network
-	IC BOOL								Local				()					{ return net_Local;		}
-	IC BOOL								Remote				()					{ return !net_Local;	}
-	IC DWORD							ID					()					{ return net_ID;		}
-	virtual BOOL						Ready				()					{ return net_Ready;		}
+	IC BOOL								Local				()					{ return FLAGS.net_Local;	}
+	IC BOOL								Remote				()					{ return !FLAGS.net_Local;	}
+	IC DWORD							ID					()					{ return net_ID;			}
+	virtual BOOL						Ready				()					{ return FLAGS.net_Ready;	}
 	virtual float						shedule_Scale		()					{ return Device.vCameraPosition.distance_to(Position())/200.f; }
 
 	// Parentness
@@ -119,12 +127,18 @@ public:
 	void								cNameSect_set		(LPCSTR N);
 	
 	// Properties
-	IC void								setVisible			(BOOL _visible)		{ bVisible = _visible;		}
-	IC BOOL								getVisible			()					{ return bVisible;			}
+	IC void								setVisible			(BOOL _visible)		{ FLAGS.bVisible = _visible?1:0;	}
+	IC BOOL								getVisible			()					{ return FLAGS.bVisible;			}
 	void								setEnabled			(BOOL _enabled);
-	IC BOOL								getEnabled			()					{ return bEnabled;			}
-	IC void								setActive			(BOOL _active)		{ bActive  = _active;		}
-	IC BOOL								getActive			()					{ return bActive;			}
+	IC BOOL								getEnabled			()					{ return FLAGS.bEnabled;			}
+	IC void								setActive			(BOOL _active)		{ FLAGS.bActive  = _active?1:0;		}
+	IC BOOL								getActive			()					{ return FLAGS.bActive;				}
+	IC void								setDestroy			(BOOL _destroy)		{ FLAGS.bDestroy = _destroy?1:0;	}
+	IC BOOL								getDestroy			()					{ return FLAGS.bDestroy;			}
+	IC void								setLocal			(BOOL _local)		{ FLAGS.net_Local = _local?1:0;		}
+	IC BOOL								getLocal			()					{ return FLAGS.net_Local;			}
+	IC void								setReady			(BOOL _ready)		{ FLAGS.net_Ready = _ready?1:0;		}
+	IC BOOL								getReady			()					{ return FLAGS.net_Ready;			}
 
 	//---------------------------------------------------------------------
 										CObject				();
@@ -138,13 +152,13 @@ public:
 	virtual void						OnVisible			(void);								// returns lighting level
 	virtual void						Update				(DWORD dt);							// Called by sheduler
 	virtual void						UpdateCL			();									// Called each frame, so no need for dt
-	virtual BOOL						net_Spawn			(LPVOID data)	= 0;
-	virtual void						net_Destroy			()				= 0;
+	virtual BOOL						net_Spawn			(LPVOID data);
+	virtual void						net_Destroy			();
 	virtual void						net_Export			(NET_Packet& P) {};					// export to server
 	virtual void						net_Import			(NET_Packet& P) {};					// import from server
 	virtual BOOL						net_Relevant		()				{ return FALSE; };	// relevant for export to server
-	virtual void						net_MigrateInactive	(NET_Packet& P)	{ net_Local = FALSE;	};
-	virtual void						net_MigrateActive	(NET_Packet& P)	{ net_Local = TRUE;		};
+	virtual void						net_MigrateInactive	(NET_Packet& P)	{ FLAGS.net_Local = FALSE;		};
+	virtual void						net_MigrateActive	(NET_Packet& P)	{ FLAGS.net_Local = TRUE;		};
 
 	// Position stack
 	IC DWORD							ps_Size				()				{ return PositionStack.size(); }

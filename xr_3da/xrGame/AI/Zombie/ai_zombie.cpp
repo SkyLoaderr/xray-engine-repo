@@ -132,7 +132,7 @@ void CAI_Zombie::Update(DWORD DT)
 
 void CAI_Zombie::net_Export(NET_Packet& P)
 {
-	R_ASSERT				(net_Local);
+	R_ASSERT				(Local());
 
 	// export last known packet
 	R_ASSERT				(!NET.empty());

@@ -9,7 +9,6 @@
 enum {
 	M_UPDATE				=0,	// DUAL: Update state
 	M_SPAWN,					// DUAL: Spawning, full state
-	M_DESTROY,					// TO:   Destroying
 
 	M_SV_CONFIG_GAME,
 	M_SV_CONFIG_FINISHED,
@@ -259,6 +258,10 @@ GE_DIE
 	u16			id_entity;				// dest=кто умер, entity=кому обязаны этим счастьем
 	u32			client;					// determined by server
 }
+GE_DESTROY
+{
+}
+
 */
 
 #endif /*_INCDEF_XRMESSAGES_H_*/

@@ -33,7 +33,7 @@ public:
 	virtual float			Ambient				();
 
 	virtual void			OnVisible			();
-	virtual void			OnEvent				(NET_Packet& P, u16 type)	{};
+	virtual void			OnEvent				(NET_Packet& P, u16 type);
 	virtual void			UpdateCL			();
 
 	// Position stack

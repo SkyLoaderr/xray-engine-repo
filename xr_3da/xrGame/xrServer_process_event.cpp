@@ -140,21 +140,18 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			// Parent-signal
 			if (0xffff != e_dest->ID_Parent)
 			{
-				P.w_begin			(M_EVENT);
-				P.w_u32				(timestamp);
-				P.w_u16				(GE_OWNERSHIP_REJECT);
-				P.w_u16				(e_dest->ID_Parent);
-				P.w_u16				(id_dest);
-				SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE));
+				NET_Packet			P2;
+				P2.w_begin			(M_EVENT);
+				P2.w_u32			(timestamp);
+				P2.w_u16			(GE_OWNERSHIP_REJECT);
+				P2.w_u16			(e_dest->ID_Parent);
+				P2.w_u16			(id_dest);
+				SendBroadcast		(0xffffffff,P2,net_flags(TRUE,TRUE));
 			}
 
 			// Everything OK, so perform entity-destroy
 			entity_Destroy		(e_dest);
-			P.w_begin			(M_DESTROY);
-			P.w_u16				(1);
-			P.w_u16				(id_dest);
 			entities.erase		(id_dest);
-
 			SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE));
 		}
 		break;

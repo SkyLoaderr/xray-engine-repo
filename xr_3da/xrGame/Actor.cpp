@@ -36,7 +36,7 @@ DWORD			psActorFlags=0;
 void CActor::net_Export	(NET_Packet& P)					// export to server
 {
 	// export 
-	R_ASSERT			(net_Local);
+	R_ASSERT			(Local());
 	VERIFY				(Weapons);
 
 	u8					flags=0;
@@ -361,7 +361,7 @@ void CActor::g_Physics			(Fvector& accel, float jump, float dt)
 	Movement.GetPosition		(vPosition);
 
 	// Check ground-contact
-	if (net_Local && Movement.gcontact_Was) 
+	if (Local() && Movement.gcontact_Was) 
 	{
 		pSounds->PlayAtPos					(sndLanding,this,Position());
 		pCreator->Cameras.AddEffector		(new CEffectorFall(Movement.gcontact_Power));
@@ -453,7 +453,7 @@ void CActor::UpdateCL()
 void CActor::Update	(DWORD DT)
 {
 	if (!getEnabled())	return;
-	if (!net_Ready)		return;
+	if (!Ready())		return;
 
 	// patch
 	if (patch_frame<patch_frames)	{

@@ -30,6 +30,18 @@ void CGameObject::net_Destroy	()
 	Sector_Move									(0);
 }
 
+void CGameObject::OnEvent(NET_Packet& P, u16 type)
+{
+	switch (type)
+	{
+	case GE_DESTROY:
+		{
+			net_Destroy	();
+		}
+		break;
+	}
+}
+
 BOOL CGameObject::net_Spawn		(LPVOID	DC)
 {
 	xrServerEntity*		E		= (xrServerEntity*)DC;

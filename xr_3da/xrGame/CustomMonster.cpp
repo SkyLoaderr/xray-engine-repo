@@ -229,7 +229,7 @@ void CCustomMonster::SelectAnimation(const Fvector& _view, const Fvector& _move,
 
 void CCustomMonster::net_Export(NET_Packet& P)					// export to server
 {
-	R_ASSERT				(net_Local);
+	R_ASSERT				(Local());
 	VERIFY					(Weapons);
 
 	// export last known packet
@@ -245,7 +245,7 @@ void CCustomMonster::net_Export(NET_Packet& P)					// export to server
 
 void CCustomMonster::net_Import(NET_Packet& P)
 {
-	R_ASSERT				(!net_Local);
+	R_ASSERT				(Remote());
 	VERIFY					(Weapons);
 	net_update				N;
 

@@ -38,7 +38,7 @@ void CObject::cNameSect_set		(LPCSTR N)
 }
 void CObject::setEnabled		(BOOL _enabled)
 {
-	bEnabled = _enabled;	
+	FLAGS.bEnabled = _enabled?1:0;	
 	if (cfModel) cfModel->Enable(_enabled); 
 }
 void	CObject::svCenter			(Fvector& C)	const	{ VERIFY(pVisual); svTransform.transform_tiny(C,pVisual->bv_Position);	}
@@ -62,8 +62,7 @@ CObject::CObject		( )
 	pVisual						= NULL;
 	pVisualName					= NULL;
 
-	bEnabled					= true;
-	bVisible					= true;
+	FLAGS.storage				= 0;
 
 	pSector						= 0;
 	SectorMode					= EPM_AUTO;
@@ -73,8 +72,6 @@ CObject::CObject		( )
 	NameObject					= 0;
 	NameSection					= 0;
 
-	net_Ready					= FALSE;
-	
 	Device.seqDevDestroy.Add	(this);
 	Device.seqDevCreate.Add		(this);
 }
@@ -134,7 +131,16 @@ void CObject::Load				(LPCSTR section )
 		cfModel->OnMove();
 	}
 
-	bVisible					= true;
+	setVisible					(true);
+}
+
+BOOL CObject::net_Spawn			(LPVOID data)
+{
+	return FALSE;
+}
+void CObject::net_Destroy		()
+{
+	FLAGS.bDestroy				= 1;
 }
 
 void CObject::OnDeviceDestroy	()
@@ -237,12 +243,12 @@ void CObject::Sector_Move	(CSector* P)
 
 void CObject::OnActivate	()
 {
-	bActive = TRUE;
+	setActive	(TRUE);
 }
 
 void CObject::OnDeactivate	()
 {
-	bActive = FALSE;
+	setActive	(FALSE);
 }
 
 CObject* CObject::H_SetParent	(CObject* O)
