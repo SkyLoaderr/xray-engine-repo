@@ -18,9 +18,8 @@
       Intermediate\r_constants_cache.obj Intermediate\R_DStreams.obj 
       Intermediate\SH_Constant.obj Intermediate\SH_Matrix.obj 
       Intermediate\SH_RT.obj Intermediate\SH_Texture.obj Intermediate\Shader.obj 
-      Intermediate\Texture.obj Intermediate\TextureManager.obj 
-      Intermediate\TextureManager_Loader.obj Intermediate\tga.obj 
-      Intermediate\tss_def.obj Intermediate\xr_avi.obj Intermediate\Xr_input.obj 
+      Intermediate\Texture.obj Intermediate\tga.obj Intermediate\tss_def.obj 
+      Intermediate\xr_avi.obj Intermediate\Xr_input.obj 
       Intermediate\xrImage_Resampler.obj Intermediate\xrLoadSurface.obj 
       Intermediate\xrRender_console.obj Intermediate\BlenderDefault.obj 
       Intermediate\Blender.obj Intermediate\Blender_B.obj 
@@ -74,7 +73,9 @@
       Intermediate\LeftBar.obj Intermediate\LogForm.obj Intermediate\main.obj 
       Intermediate\PropertiesPSDef.obj Intermediate\Splash.obj 
       Intermediate\stdafx.obj Intermediate\UI_MainExtern.obj 
-      Intermediate\UI_Tools.obj"/>
+      Intermediate\UI_Tools.obj Intermediate\ResourceManager_Resources.obj 
+      Intermediate\ResourceManager.obj Intermediate\ResourceManager_Loader.obj 
+      Intermediate\SH_Atomic.obj"/>
     <RESFILES value="resource.res ParticleEditor.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -157,8 +158,6 @@
       <FILE FILENAME="Engine\SH_Texture.cpp" FORMNAME="" UNITNAME="SH_Texture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Shader.cpp" FORMNAME="" UNITNAME="Shader.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Texture.cpp" FORMNAME="" UNITNAME="Texture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\TextureManager.cpp" FORMNAME="" UNITNAME="TextureManager.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\TextureManager_Loader.cpp" FORMNAME="" UNITNAME="TextureManager_Loader.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\tga.cpp" FORMNAME="" UNITNAME="tga.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\tss_def.cpp" FORMNAME="" UNITNAME="tss_def.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\xr_avi.cpp" FORMNAME="" UNITNAME="xr_avi.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -273,6 +272,10 @@
       <FILE FILENAME="UI_Tools.cpp" FORMNAME="" UNITNAME="UI_Tools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="resource.res" FORMNAME="" UNITNAME="resource.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ParticleEditor.res" FORMNAME="" UNITNAME="ParticleEditor.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\ResourceManager_Resources.cpp" FORMNAME="" UNITNAME="ResourceManager_Resources.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\ResourceManager.cpp" FORMNAME="" UNITNAME="ResourceManager.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\ResourceManager_Loader.cpp" FORMNAME="" UNITNAME="ResourceManager_Loader.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\SH_Atomic.cpp" FORMNAME="" UNITNAME="SH_Atomic" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
