@@ -1589,13 +1589,13 @@
 							Name="Release|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="3"/>
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Mixed|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="3"/>
 						</FileConfiguration>
 					</File>
 					<File
