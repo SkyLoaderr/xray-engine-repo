@@ -65,7 +65,7 @@ void xrDebug::backend(const char* reason, const char *file, int line)
 	sprintf		(dlgLine,"%d",line);
 	INT_PTR res	= DialogBox
 		(
-		GetModuleHandle(NULL),
+		GetModuleHandle("xrCore.dll"),
 		MAKEINTRESOURCE(IDD_STOP),
 		NULL,
 		DialogProc 
