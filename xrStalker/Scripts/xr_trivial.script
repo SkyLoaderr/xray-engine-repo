@@ -46,8 +46,8 @@ function stalker_zombe_action:execute ()
     --Ходим, изредка произносим фразы
     action_base.execute 			(self)
 
-    self.object:set_item            ( object.idle, self.object:best_weapon() )
     self.object:set_mental_state    ( anim.free )
+	self.object:set_item            ( object.idle, self.object:best_weapon() )
 
     if( device():time_global() > self.a.time ) then
 		--Давно уже ничего не говорили
