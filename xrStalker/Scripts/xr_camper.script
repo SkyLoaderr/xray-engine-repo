@@ -121,6 +121,8 @@ function action_patrol:execute()
 		if xr_logic.try_switch_to_another_section (self.object, self.a, db.actor) then
 			return
 		end
+	else
+		return
 	end
 
 	self.enemy = nil
@@ -161,6 +163,7 @@ function action_patrol:execute()
 	if self.enemy ~= nil then 
 		-- отстрел
 		if self.object:see(self.enemy) == true then
+			printf("cp: [%s] see [%s]", self.object:name(), self.enemy:name())
 			if self.a.suggested_state.campering_fire then
 				state_mgr.set_state(self.object, self.a.suggested_state.campering_fire, nil, nil, {look_object = self.enemy})
 			else

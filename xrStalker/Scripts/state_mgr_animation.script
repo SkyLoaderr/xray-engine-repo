@@ -703,34 +703,37 @@ function animation:weapon_slot()
 	if weapon == nil or self.npc:weapon_strapped() == true then
 		return 0
 	end
-	local id = get_clsid(weapon)
-	if id == nil then 
-		return 0
-	end
-	if id == clsid.wpn_pm or
-       id == clsid.wpn_walther or
-	   id == clsid.wpn_hpsa or
-	   id == clsid.wpn_fort or
-	   id == clsid.wpn_usp45 then
-		return 1
-	end
-	if id == clsid.wpn_vintorez or
-	   id == clsid.wpn_val or
-	   id == clsid.wpn_groza or
-	   id == clsid.wpn_fn2000 or   
-	   id == clsid.wpn_ak74 or	
-	   id == clsid.wpn_lr300 or
-	   id == clsid.wpn_svd or
-   	   id == clsid.wpn_svu then
-		return 2
-	end
-	if id == clsid.wpn_shotgun or
-	   id == clsid.wpn_bm16 then
-		return 3
-	end
-    if id == clsid.wpn_rpg7 then
-		return 4
-	end
+--	if self.npc:weapon_unstrapped() == true then
+--		printf("animslot unstrapped")
+		local id = get_clsid(weapon)
+		if id == nil then 
+			return 0
+		end
+		if id == clsid.wpn_pm or
+		id == clsid.wpn_walther or
+		id == clsid.wpn_hpsa or
+		id == clsid.wpn_fort or
+		id == clsid.wpn_usp45 then
+			return 1
+		end
+		if id == clsid.wpn_vintorez or
+		id == clsid.wpn_val or
+		id == clsid.wpn_groza or
+		id == clsid.wpn_fn2000 or   
+		id == clsid.wpn_ak74 or	
+		id == clsid.wpn_lr300 or
+		id == clsid.wpn_svd or
+   		id == clsid.wpn_svu then
+			return 2
+		end
+		if id == clsid.wpn_shotgun or
+		id == clsid.wpn_bm16 then
+			return 3
+		end
+		if id == clsid.wpn_rpg7 then
+			return 4
+		end
+--	end
 	return 0
 end
 
