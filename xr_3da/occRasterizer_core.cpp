@@ -111,15 +111,15 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 	for (; X<maxX; X++, i++, Z+=dZ) 
 	{
 		if (Z < pDepth[i])	{ pFrame[i]	= T; pDepth[i] = Z; }
-		if (shared(T,pFrame[i-occ_dim0]))
+		if (shared(T,pFrame[i-occ_dim0*2]))
 		{
-			float ZR = (Z+pDepth[i-occ_dim0])/2; if (ZR<0)	ZR=0; else if (ZR>1) ZR = 1;
-			if (ZR<pDepth[i])	{ pFrame[i]	= T; pDepth[i]	= ZR; }
+			float ZR = (Z+pDepth[i-occ_dim0*2])/2; if (ZR<0)	ZR=0; else if (ZR>1) ZR = 1;
+			if (ZR<pDepth[i-occ_dim0])	{ pFrame[i-occ_dim0] = T; pDepth[i-occ_dim0] = ZR; }
 		}
-		if (shared(T,pFrame[i+occ_dim0]))
+		if (shared(T,pFrame[i+occ_dim0*2]))
 		{
-			float ZR = (Z+pDepth[i+occ_dim0])/2; if (ZR<0)	ZR=0; else if (ZR>1) ZR = 1;
-			if (ZR<pDepth[i])	{ pFrame[i]	= T; pDepth[i]	= ZR; }
+			float ZR = (Z+pDepth[i+occ_dim0*2])/2; if (ZR<0)	ZR=0; else if (ZR>1) ZR = 1;
+			if (ZR<pDepth[i+occ_dim0])	{ pFrame[i+occ_dim0] = T; pDepth[i+occ_dim0] = ZR; }
 		}
 	}
 	
