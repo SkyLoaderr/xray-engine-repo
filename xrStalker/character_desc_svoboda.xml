@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <xml>
-<!---------------------------STALKER------------------------------>
+<!---------------------------SVOBODA------------------------------>
 	<specific_character id="svoboda_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="0" y="0"></icon>
@@ -19,7 +19,7 @@
 		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
-<!---------------------------STALKER NOVICE----------------------->
+<!---------------------------SVOBODA NOVICE----------------------->
 	<specific_character id="svoboda_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="0" y="0"></icon>
@@ -37,7 +37,7 @@
 		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
-<!---------------------------STALKER GENERAL---------------------->
+<!---------------------------SVOBODA GENERAL---------------------->
 	<specific_character id="svoboda_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="0" y="0"></icon>
@@ -55,7 +55,7 @@
 		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
-<!---------------------------STALKER VETERAN---------------------->
+<!---------------------------SVOBODA VETERAN---------------------->
 	<specific_character id="svoboda_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="0" y="0"></icon>
@@ -73,7 +73,7 @@
 		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
-<!---------------------------STALKER MASTER----------------------->
+<!---------------------------SVOBODA MASTER----------------------->
 	<specific_character id="svoboda_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="0" y="0"></icon>
