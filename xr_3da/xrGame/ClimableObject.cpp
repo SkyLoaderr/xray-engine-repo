@@ -16,7 +16,7 @@ void CClimableObject::	Load				( LPCSTR section)
 BOOL CClimableObject::	net_Spawn			( LPVOID DC)
 {
 	BOOL ret	= inherited::net_Spawn(DC);
-	m_pStaticShell=P_BuildStaticGeomShell(smart_cast<CGameObject*>(this),0);
+	 m_pStaticShell=P_BuildStaticGeomShell(smart_cast<CGameObject*>(this),0);
 	return ret;
 }
 void CClimableObject::	net_Destroy			()
