@@ -103,6 +103,8 @@ struct pred_stri	: public std::binary_function<char*, char*, bool>	{
 DEFINE_VECTOR(bool,boolVec,boolIt);
 DEFINE_VECTOR(BOOL,BOOLVec,BOOLIt);
 DEFINE_VECTOR(BOOL*,LPBOOLVec,LPBOOLIt);
+DEFINE_VECTOR(Frect,FrectVec,FrectIt);
+DEFINE_VECTOR(Irect,IrectVec,IrectIt);
 DEFINE_VECTOR(Fplane,PlaneVec,PlaneIt);
 DEFINE_VECTOR(Fvector2,Fvector2Vec,Fvector2It);
 DEFINE_VECTOR(Fvector,FvectorVec,FvectorIt);
