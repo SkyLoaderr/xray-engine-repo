@@ -185,7 +185,7 @@ function Defender:process ()
 	
 	--если нет врагов, то отпускаем мужика
     if enemy == nil then
-       if self.first_view == true
+       if self.first_view == true then 
 	      self.npc:script (false, self.script)
 	      self.freed = true
 	      printf ("Stalker freed 3")
@@ -292,5 +292,4 @@ function main ()
 		  wait ()
 	end
 
-
-endend
+end
