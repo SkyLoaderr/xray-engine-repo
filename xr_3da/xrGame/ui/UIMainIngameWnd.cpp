@@ -235,7 +235,7 @@ void CUIMainIngameWnd::Init()
 
 	AttachChild(&UIInvincibleIcon);
 	xml_init.InitStatic(uiXml, "invincible_static", 0, &UIInvincibleIcon);
-	UIInvincibleIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
+//	UIInvincibleIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
 
 	shared_str warningStrings[6] = 
 	{	

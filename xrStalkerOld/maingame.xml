@@ -88,7 +88,7 @@
 	<fatigue_static x="940" y="510" width="50" height="50">
 		<texture>ui\ui_mn_fatigue_hard</texture>
 	</fatigue_static>
-	<invincible_static x="940" y="590" width="50" height="50" stretch="1">
+	<invincible_static x="10" y="630" width="50" height="50" stretch="1">
 		<texture>ui\ui_skull</texture>
 	</invincible_static>
 	<!-- MONEY INDICATORS. MP ONLY -->
