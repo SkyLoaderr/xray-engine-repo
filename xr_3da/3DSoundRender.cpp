@@ -50,12 +50,14 @@ CSoundRender::~CSoundRender()
 
 void CSoundRender::OnMove()
 {
+	// Update states
+	defer.clear	();
 	for (DWORD i=0; i<sounds.size(); i++) 
 	{
 		for (DWORD j=0; j<sounds[i].size(); j++) 
 		{
 			CSound *pSnd = sounds[i][j];
-			pSnd->OnMove		();
+			pSnd->OnMove		(defer);
 			if (pSnd->isPlaying	()) 
 			{
 				Device.Statistic.dwSND_Played++;
@@ -82,6 +84,10 @@ void CSoundRender::OnMove()
 	Listener.fRolloffFactor				= psSoundRolloff;
 	pListener->SetAllParameters			((DS3DLISTENER*)&Listener, DS3D_DEFERRED );
 	pListener->CommitDeferredSettings	();
+
+	// Start deferred sounds
+	for (vector<sound_defer>::iterator it=defer.begin(); it!=defer.end(); it++)
+		it->P->Play	(0,0,it->F);
 }
 
 int CSoundRender::FindByName			(LPCSTR name, BOOL _3D, BOOL _Freq) {

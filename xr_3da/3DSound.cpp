@@ -59,7 +59,7 @@ void CSound::Update_Params()
 	{
 		bNeedUpdate		= false;
 		if (_Freq)		pBuffer->SetFrequency			( dwFreq );
-		if (_3D)		pBuffer3D->SetAllParameters		( ps.d3d(), DS3D_DEFERRED );
+		if (_3D)		pBuffer3D->SetAllParameters		( ps.d3d(), DS3D_DEFERRED ); 
 		else			{
 			int	hw_volume		= iFloor(float(DSBVOLUME_MIN)*(1-fVolume*psSoundVEffects));
 			pBuffer->SetVolume	( hw_volume );
@@ -145,11 +145,12 @@ void CSound::PropagadeEvent()
 	}
 }
 
-void CSound::OnMove		()
+void CSound::OnMove		(vector<sound_defer>& plist)
 {
 	DWORD	dwTime			= Device.TimerAsync	();
 
-	switch (dwState)	{
+	switch (dwState)	
+	{
 	case stStopped:
 		if (bMustPlay) {
 			bMustPlay			= false;
@@ -164,7 +165,7 @@ void CSound::OnMove		()
 			}
 			if (Update_Volume())	{
 				// PLAY
-				pBuffer->Play		(0, 0, bMustLoop?DSBPLAY_LOOPING:0);
+				plist.push_back		(sound_defer(pBuffer, bMustLoop?DSBPLAY_LOOPING:0));
 				dwState				= bMustLoop?stPlayingLooped:stPlaying;
 			} else {
 				// SIMULATE
@@ -197,7 +198,7 @@ void CSound::OnMove		()
 			if (Update_Volume()) {
 				// switch to: PLAY
 				pBuffer->SetCurrentPosition	(((dwTime-dwTimeStarted)%dwTimeTotal)*dwBytesPerMS);
-				pBuffer->Play				(0, 0, 0);				// start buffer
+				plist.push_back				(sound_defer(pBuffer, 0));	// start buffer
 				ps.dwMode					=	_3D?DS3DMODE_NORMAL:DS3DMODE_DISABLE;	// enable 3D processing
 				bNeedUpdate					=	true;				// signal to APPLY changes
 				dwState						=	stPlaying;			// switch state
@@ -208,7 +209,7 @@ void CSound::OnMove		()
 	case stPlayingLooped:
 		if (dwTime>=dwTimeToStop)	{
 			// Ordinary play
-			pBuffer->Play					(0,0,0);				// Override flags - play up to the end of buffer
+			plist.push_back					(sound_defer(pBuffer, 0));	// Override flags - play up to the end of buffer
 			dwTimeToStop					+=	dwLoopAheadMS;
 			dwState							=	stPlaying;			// switch state
 		} else {
@@ -231,7 +232,7 @@ void CSound::OnMove		()
 			if (Update_Volume()) {
 				// switch to: PLAY
 				pBuffer->SetCurrentPosition	(((dwTime-dwTimeStarted)%dwTimeTotal)*dwBytesPerMS);
-				pBuffer->Play				(0, 0, DSBPLAY_LOOPING);// start buffer
+				plist.push_back				(sound_defer(pBuffer, DSBPLAY_LOOPING));	// start buffer
 				ps.dwMode					=	_3D?DS3DMODE_NORMAL:DS3DMODE_DISABLE;	// enable 3D processing
 				bNeedUpdate					=	true;				// signal to APPLY changes
 				dwState						=	stPlayingLooped;	// switch state

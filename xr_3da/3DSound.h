@@ -14,7 +14,7 @@ class ENGINE_API CSound
 {
 	friend class CSoundRender;
 public:
-	char*					fName;
+	LPSTR				fName;
 
 	enum State
 	{
@@ -79,7 +79,7 @@ public:
 	void					SetMinMax				(float min, float max);
 	void					SetVolume				(float vol)			{ fVolume = vol; bNeedUpdate = true; }
 
-	void					OnMove					(void);
+	void					OnMove					(vector<sound_defer>& plist);
 	void					Update_Params			(void);
 	void					Update_Occlusion		(void);
 	BOOL					Update_Volume			(void);			// returns TRUE if "audible"

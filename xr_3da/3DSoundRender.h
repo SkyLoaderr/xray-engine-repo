@@ -36,8 +36,9 @@ private:
 	// Containers
 	vector <vector<CSound*> >	sounds;
 	vector <int>				refcounts;
+	vector <sound_defer>		defer;
 private:
-	CSound*					GetFreeSound		(int hSound);
+	CSound*						GetFreeSound		(int hSound);
 	int							FindByName			(LPCSTR name, BOOL _3D, BOOL _Freq);
 	int							FindEmptySlot		();
 	int							Append				(CSound *p);

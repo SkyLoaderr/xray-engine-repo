@@ -20,6 +20,13 @@ struct	sound
 	CObject*	g_object;
 	sound()		{ handle = SND_UNDEFINED; feedback=0; g_type=0; g_object=0; }
 };
+struct 	sound_defer
+{
+	LPDIRECTSOUNDBUFFER	P;
+	DWORD				F;
+
+	sound_defer(LPDIRECTSOUNDBUFFER _P, DWORD _F) : P(_P), F(_F) {};
+};
 
 const DWORD soundEventPulse	= 500;	// ms
 
