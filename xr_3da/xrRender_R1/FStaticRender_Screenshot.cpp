@@ -98,6 +98,6 @@ void CRender::Screenshot		(LPCSTR postfix, BOOL bSquare)
 
 	FS.w_close		(fs);
 	
-	R_CHK(pFB->UnlockRect());
+	R_CHK			(pFB->UnlockRect());
 	pFB->Release	();
 }
