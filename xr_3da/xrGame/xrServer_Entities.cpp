@@ -142,7 +142,6 @@ public:
 			shapes.push_back	(S);
 			count--;
 		}
-		
 	}
 	void					cform_write			(NET_Packet& P)
 	{
