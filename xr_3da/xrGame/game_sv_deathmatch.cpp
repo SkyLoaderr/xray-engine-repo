@@ -1326,6 +1326,16 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 				if (slot == T->get_slot())	
 				{
 					// We've found same slot occupied - disallow ownership
+					//-----------------------------------------------------
+					NET_Packet				P;
+					u_EventGen				(P,GE_OWNERSHIP_REJECT,eid_who);
+					P.w_u16					(T->ID);
+					Level().Send(P,net_flags(TRUE,TRUE));
+					//-----------------------------------------------------
+					u_EventGen				(P,GE_OWNERSHIP_TAKE,eid_who);
+					P.w_u16					(eid_what);
+					Level().Send(P,net_flags(TRUE,TRUE));
+					//-----------------------------------------------------
 					return FALSE;
 				}
 			}
