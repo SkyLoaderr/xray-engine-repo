@@ -19,7 +19,8 @@ function PsyAntenna:__init				()
 // ----------------------------------------------------------------------------------------
 // settings
 // ----------------------------------------------------------------------------------------
-	// phantom gen
+// phantom gen
+// ----------------------------------------------------------------------------------------
 	self.phantom_max 					= 10;	// max phantoms
 	self.phantom_spawn_probability		= 0.1;	// spawn probability (0..1)
 	self.phantom_spawn_radius			= 30.0;	// average radius 30.0m +-15m
@@ -29,6 +30,15 @@ function PsyAntenna:__init				()
 	// pause time [from]=to
 	self.idle_time						= {};
 	self.idle_time[20]					= 21;
+// ----------------------------------------------------------------------------------------
+// postprocess
+// ----------------------------------------------------------------------------------------
+	self.base_amplitude					= color(0.2,0.15,0.0);		// max base color diff			[0.0-0.5]
+	self.gray_amplitude					= 0.5;						// gray max intensity			[0.0-1.0]
+	self.add_factor						= 0.3;						// factor * color_animator(RGB)	[0.0-1.0]
+	self.dual_amplitude					= 0.05;						// H&V same						[0.0-0.2]
+	self.gray_color						= color(0.33,0.33,0.33);	// RGB							[0.0-1.0]
+	self.noise_var						= noise(0.9,0.3,30);		// intensity, grain, fps		[0.0-1.0,0.0-1.0,1-100]
 // ----------------------------------------------------------------------------------------
 // class variables initialize
 	self.phase 							= pa_phase.phIdle;
@@ -66,7 +76,27 @@ function PsyAntenna:is_idle_time		(tm)
 	end;
 	return false;
 end
-
+function PsyAntenna:update_postprocess	()
+	self.pp.params.color_base			= color(0.5+self.base_amplitude.r*self.intensity,0.5+self.base_amplitude.g*self.intensity,0.5+self.base_amplitude.b*self.intensity);
+	self.pp.params.color_gray			= color(self.gray_color.r,self.gray_color.g,self.gray_color.b);
+	self.pp.params.color_add 			= color(self.power_factor.r*self.add_factor,self.power_factor.g*self.add_factor,self.power_factor.b*self.add_factor);
+	self.pp.params.gray					= self.gray_amplitude*self.intensity;
+	self.pp.params.dual					= duality(self.dual_amplitude*self.power_factor.a,self.dual_amplitude*self.power_factor.a);
+//	self.pp.params.noise				= self.noise_var;
+end
+function PsyAntenna:update_psy_hit		(dt)
+	local d_time						= device():time_global()-self.hit_time;
+	if d_time>200 and self.power_factor.a>0.01 then
+		self.hit_time					= device():time_global();
+		local psy_hit 					= hit();
+		psy_hit.power 					= self.power_factor.a*self.hit_amplitude;
+		psy_hit.direction 				= vector():set( 0, 0, 0 );
+		psy_hit.impulse 				= 0;
+		psy_hit.draftsman 				= db.actor; 
+		psy_hit.type 					= hit.telepatic;
+		db.actor:hit					(psy_hit);
+	end;
+end
 function PsyAntenna:generate_phantoms 	()
 	if self.power_factor.a>0.1 then
 		if math.random()<self.phantom_spawn_probability then
@@ -117,28 +147,6 @@ function PsyAntenna:phase_idle			()
 	local h								= level.get_time_hours();
 	if false==self:is_idle_time(h) then 				
 		self:switch_to_phase			(pa_phase.phStarting);
-	end;
-end
-function PsyAntenna:update_postprocess	()
-// postprocess
-	self.pp.params.color_base			= color(0.5+0.2*self.intensity,0.5+0.15*self.intensity,0.5);
-	self.pp.params.color_gray			= color(0.33,0.333,	0.333);
-	self.pp.params.color_add 			= color(self.power_factor.r*0.3,self.power_factor.g*0.3,self.power_factor.b*0.3);
-	self.pp.params.gray					= 0.5*self.intensity;
-	self.pp.params.dual					= duality(0.05*self.power_factor.a,0.05*self.power_factor.a);
-//	self.pp.params.noise				= noise(0.9,0.3,30); // intensity, grain, fps	
-end
-function PsyAntenna:update_psy_hit		(dt)
-	local d_time						= device():time_global()-self.hit_time;
-	if d_time>200 and self.power_factor.a>0.01 then
-		self.hit_time					= device():time_global();
-		local psy_hit 					= hit();
-		psy_hit.power 					= self.power_factor.a*self.hit_amplitude;
-		psy_hit.direction 				= vector():set( 0, 0, 0 );
-		psy_hit.impulse 				= 0;
-		psy_hit.draftsman 				= db.actor; 
-		psy_hit.type 					= hit.telepatic;
-		db.actor:hit					(psy_hit);
 	end;
 end
 function PsyAntenna:update				(dt)
