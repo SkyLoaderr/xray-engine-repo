@@ -6,6 +6,7 @@
 
 #include "DummyObject.h"
 #include "..\ObjectAnimator.h"
+#include "..\psvisual.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -17,7 +18,7 @@ CDummyObject::CDummyObject	()
 	s_animator				= NULL;
 	s_model					= NULL;
 	s_particles				= NULL;
-	s_sound					= NULL;
+	s_sound.feedback		= NULL;
 }
 
 CDummyObject::~CDummyObject	()
@@ -50,7 +51,7 @@ void CDummyObject::Load		(LPCSTR section)
 	*/
 }
 
-void CDummyObject::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
+BOOL CDummyObject::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
 	inherited::Spawn		(bLocal,server_id,o_pos,o_angle,P,flags);
 
@@ -78,11 +79,11 @@ void CDummyObject::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o
 		// Load model
 		string256				fn;
 		P.r_string				(fn);
-		s_particles				= ::Render->model_CreatePS	(fn);
+		s_particles				= ::Render->model_CreatePS	(fn,&s_emitter);
 		CPSVisual* V			= dynamic_cast<CPSVisual*>	(s_particles);
 		if (V)					{
 			s_emitter.m_Position.set	(Position());
-			V->Play						();
+			s_emitter.Play				();
 		}
 	}
 	if (style&esSound)			{
@@ -92,6 +93,7 @@ void CDummyObject::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o
 		pSounds->Create			(s_sound,TRUE,fn);
 		pSounds->PlayAtPos		(s_sound,0,Position(),true);
 	}
+	return TRUE;
 }
 
 void CDummyObject::Update		(DWORD dt)

@@ -16,6 +16,7 @@
 #include "ai\\soldier\\ai_soldier.h"
 #include "ai\\zombie\\ai_zombie.h"
 #include "car.h"
+#include "dummyobject.h"
     
 extern int	 				psPhysicsFPS;
 extern float				psSqueezeVelocity;
@@ -111,7 +112,7 @@ extern "C" {
 //		case CLSID_OBJECT_W_RAIL:	P = new	CWeaponRail();		break;
 //		case CLSID_OBJECT_ITEM_STD:	P = new CCustomItem();		break;
 //		case CLSID_OBJECT_FLYER:	P = new CFlyer();			break;
-//		case CLSID_OBJECT_DUMMY:	P = new CDummyObject();		break;
+		case CLSID_OBJECT_DUMMY:	P = new CDummyObject();		break;
 		case CLSID_EVENT:			P = new CCustomEvent();		break;
 //		case CLSID_OBJECT_DOOR:		P = new CCustomDoor();		break;
 //		case CLSID_OBJECT_LIFT:		P = new CCustomLift();		break;

@@ -28,22 +28,6 @@ CDemoActor::~CDemoActor()
 void CDemoActor::Load	(LPCSTR section)
 {
 	inherited::Load		(section);
-	
-	animator			= new CObjectAnimator();
-	animator->Load		(pSettings, section);
-	if (pSettings->LineExists(section,"track"))
-	{
-		LPCSTR N		= pSettings->ReadSTRING(section,"track");
-		music			= pSounds->CreateStream(N);
-	}
-	if (pSettings->LineExists(section,"attached"))
-	{
-		attached		= strdup(pSettings->ReadSTRING(section,"attached"));
-	}
-	time2start_ltx	= pSettings->ReadFLOAT(section,"time2start");
-	time2start		= time2start_ltx;
-	start_position.set(vPosition);
-	bVisible		= false;
 }
 
 void CDemoActor::Update(DWORD DT)
@@ -71,7 +55,10 @@ void CDemoActor::Update(DWORD DT)
 	if (IsMyCamera()) UpdateCamera();
 }
 
-void CDemoActor::PlayDemo(const char* name){
+void CDemoActor::PlayDemo(const char* name)
+{
+/*
+
 	animator->PlayMotion		(name,false);
 	animator->OnMove			();
 	if (music)	music->Play		(false);
@@ -81,6 +68,7 @@ void CDemoActor::PlayDemo(const char* name){
 		R_ASSERT		(O->SUB_CLS_ID==CLSID_OBJECT_DUMMY);
 		dynamic_cast<CDummyObject*>(O)->PlayDemo(name);
 	}
+*/
 }
 
 void CDemoActor::StopDemo(){

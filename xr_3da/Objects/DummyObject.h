@@ -7,6 +7,7 @@
 #pragma once
 
 #include "gameobject.h"
+#include "..\psruntime.h"
 
 // refs
 class ENGINE_API		CObjectAnimator;
@@ -38,6 +39,7 @@ public:
 	virtual BOOL						Spawn			( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
 	virtual void						Update			( DWORD dt);							// Called by sheduler
 	virtual void						UpdateCL		( );									// Called each frame, so no need for dt
+	virtual void						OnVisible		( );
 
 	void				PlayDemo		( LPCSTR N );
 
