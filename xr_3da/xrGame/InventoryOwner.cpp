@@ -19,6 +19,7 @@
 #include "AI_PhraseDialogManager.h"
 #include "level.h"
 #include "script_space.h"
+#include "PhraseDialog.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CInventoryOwner class 
@@ -90,8 +91,8 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 		init_default_profile = !CharacterInfo().Load(name_id);
 		
 		CAI_PhraseDialogManager* dialog_manager = dynamic_cast<CAI_PhraseDialogManager*>(this);
-		if(dialog_manager && *CharacterInfo().m_sStartDialog != NULL)
-			dialog_manager->SetStartDialog(*CharacterInfo().m_sStartDialog);
+		if(dialog_manager && CharacterInfo().m_iStartDialog != NO_DIALOG)
+			dialog_manager->SetStartDialog(CPhraseDialog::IndexToId(CharacterInfo().m_iStartDialog));
 
 	}
 	
@@ -141,6 +142,8 @@ void	CInventoryOwner::save	(NET_Packet &output_packet)
 		output_packet.w_u8((u8)(-1));
 	else
 		output_packet.w_u8((u8)inventory().GetActiveSlot());
+
+	output_packet.w_u16((u16)CharacterInfo().m_iStartDialog);
 }
 void	CInventoryOwner::load	(IReader &input_packet)
 {
@@ -148,13 +151,9 @@ void	CInventoryOwner::load	(IReader &input_packet)
 	if(active_slot == u8(-1))
 		inventory().SetActiveSlot(NO_ACTIVE_SLOT);
 	else
-	{
 		inventory().SetActiveSlot(active_slot);
-/*		if(!inventory().ActiveItem())
-		{
-			inventory().SetActiveSlot(NO_ACTIVE_SLOT);
-		}*/
-	}
+
+	CharacterInfo().m_iStartDialog = input_packet.r_u16();
 }
 
 

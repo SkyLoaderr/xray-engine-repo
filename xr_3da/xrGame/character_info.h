@@ -5,6 +5,7 @@
 
 #pragma		once
 #include "alife_space.h"
+#include "PhraseDialogDefs.h"
 
 #define DEFAULT_CHARACTER_FILE "npc_profile.xml"
 #define NO_GOODWILL -1
@@ -72,7 +73,7 @@ protected:
 	ref_str m_sRank;
 
 	//начальный диалог
-	ref_str m_sStartDialog;
+	PHRASE_DIALOG_INDEX m_iStartDialog;
 
 
 	//отношения которые мы имеем о других персонажей

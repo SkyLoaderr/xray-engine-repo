@@ -54,7 +54,7 @@ void CAI_PhraseDialogManager::ReceivePhrase (DIALOG_SHARED_PTR& phrase_dialog)
 }
 
 
-void CAI_PhraseDialogManager::SetStartDialog(LPCSTR phrase_dialog)
+void CAI_PhraseDialogManager::SetStartDialog(PHRASE_DIALOG_ID phrase_dialog)
 {
 	m_sStartDialog = phrase_dialog;
 }
