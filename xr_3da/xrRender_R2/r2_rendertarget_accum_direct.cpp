@@ -11,7 +11,7 @@ void CRenderTarget::accum_direct	()
 		0.5f,				0.0f,				0.0f,			0.0f,
 		0.0f,				-0.5f,				0.0f,			0.0f,
 		0.0f,				0.0f,				1.0f,			0.0f,
-		0.5f + fTexelOffs,	0.5f + fTexelOffs,	0.0f - .006f,	1.0f
+		0.5f + fTexelOffs,	0.5f + fTexelOffs,	0.0f - .005f,	1.0f
 	};
 
 	// compute xforms
@@ -22,10 +22,17 @@ void CRenderTarget::accum_direct	()
 	RCache.set_xform_view			(xf_view	);
 	RCache.set_xform_project		(xf_project	);
 
-	// compute c_hpos
-	Fvector4		c_hpos;
-	RCache.xforms.m_wvp.transform	(c_hpos,Device.vCameraPosition);
-	c_hpos.mul						(1/c_hpos.w);
+	// compute fade-plane
+	Fvector4		p_fade;
+	{
+		Fmatrix& M					=	Device.mFullTransform;
+		p_fade.x					=	-(M._14 + M._13);
+		p_fade.y					=	-(M._24 + M._23);
+		p_fade.z					=	-(M._34 + M._33);
+		p_fade.w					=	-(M._44 + M._43);
+		float denom					=	-1.0f / _sqrt(_sqr(p_fade.x)+_sqr(p_fade.y)+_sqr(p_fade.z));
+		p_fade.mul					(denom/DSM_distance);
+	}
 
 	// Draw full-screen quad textured with our scene image
 	{
