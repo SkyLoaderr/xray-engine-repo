@@ -486,8 +486,10 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 			break;
 		}
 		default : {
-			if (l_tpMovementManager)
-				l_tpMovementManager->set_path_type	(CMovementManager::ePathTypeNoPath);
+			if (l_tpMovementManager) {
+				//l_tpMovementManager->set_path_type	(CMovementManager::ePathTypeNoPath);
+				l_tpMovementManager->set_desirable_speed(0.f);
+			}
 			return									(l_tMovementAction.m_bCompleted = true);
 		}
 	}
