@@ -296,17 +296,7 @@ void CActor::Die	( )
 	die_hide				= 1.f;
 
 	// Drop active weapon
-	if (Local()) 
-	{
-		CObject*		O		= Weapons->ActiveWeapon();
-		if (O) 
-		{
-			NET_Packet		P;
-			u_EventGen		(P,GE_OWNERSHIP_REJECT,ID());
-			P.w_u16			(u16(O->ID()));
-			u_EventSend		(P);
-		}
-	}
+	if (Local())			Weapons->weapon_die	();
 }
 
 void CActor::feel_touch_new				(CObject* O)
