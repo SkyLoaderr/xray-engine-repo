@@ -1,12 +1,12 @@
 [game_relations]
 ;реальное разделение на группы репутаций на шкалы
 rating			= novice, 30, experienced, 60, veteran, 90, master
-reputation		= terrible, -1000, very_bad, -500, bad, -200, neutral, 200, good, 500, very_good, 1000, excellent
+reputation		= terrible, -1000, very_bad, -150, bad, -50, neutral, 50, good, 150, very_good, 1000, excellent
 
 ;шкалы дл€ вывода названий вместо чисел 
 ;рейтингов, репутаций и благосклонности в интерфейсе
 rating_names		= novice, 30, experienced, 60, veteran, 90, master
-reputation_names	= terrible, -1000, very_bad, -500, bad, -200, neutral, 200, good, 500, very_good, 1000, excellent
+reputation_names	= terrible, -1000, very_bad, -150, bad, -50, neutral, 50, good, 150, very_good, 1000, excellent
 goodwill_names      = enemy, -1000, hostile, -500, indifferent, 500, companionable, 1000, friendly
 
 ;пороговые значени€ дл€ отношени€ персонажей
@@ -85,7 +85,7 @@ freedom		=		0.01
 bandit		=		0.0
 zombied		=		0.0
 trader		=		0.0
-stranger	=		0.0
+stranger	=		0.01
 
 ;
 ;очки рейтинга, получаемые за убийство персонажа
@@ -122,10 +122,10 @@ enemy_kill_goodwill				= 0
 
 ;убийство члена группировки отражаетс€ на отношении
 ;группировки (умножаетс€ на communities_sympathy)
-community_member_kill_goodwill  = -10000
+community_member_kill_goodwill  = -50000
 
 friend_kill_reputation			= -50
-neutral_kill_reputation			= -30
+neutral_kill_reputation			= -20
 enemy_kill_reputation			= 0
 
 ;
