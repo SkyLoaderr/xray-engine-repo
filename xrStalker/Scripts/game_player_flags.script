@@ -1,0 +1,23 @@
+flags={
+	GAME_PLAYER_FLAG_LOCAL				= (1<<0),
+	GAME_PLAYER_FLAG_READY				= (1<<1),
+	GAME_PLAYER_FLAG_VERY_VERY_DEAD		= (1<<2),
+	GAME_PLAYER_FLAG_CS_ON_BASE			= (1<<3),
+	GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE	= (1<<4),
+	GAME_PLAYER_FLAG_CS_HAS_ARTEFACT	= (1<<5),
+	GAME_PLAYER_FLAG_CS_SPECTATOR		= (1<<6),
+
+	GAME_PLAYER_FLAG_FORCEDWORD			= u32(-1)
+}
+
+function game_sv_LastStanding:OnEvent (P, type, time, cl_id )
+      game_sv_mp_script.OnEvent (self, P, type, time, cl_id )
+   
+--   if type == game_messages.game_messages.GAME_EVENT_PLAYER_READY then
+      --self:player_ready(cl_id)
+
+--   else
+--      game_sv_mp_script.OnEvent (self, P, type, time, cl_id )
+--   end
+
+end
