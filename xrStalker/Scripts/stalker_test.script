@@ -21,9 +21,9 @@ function custom_action:weight(world_state0,world_state1)
 	return					self.m_weight
 end
 
-function custom_action:initialize()
-	action_base.initialize	(self)
-end
+--function custom_action:initialize()
+--	action_base.initialize	(self)
+--end
 
 function custom_action:execute()
 	action_base.execute		(self)
