@@ -257,8 +257,12 @@ function action_state_talk:execute()
 		if overrides.meet_state ~= self.overrides_meet_state then
 			-- новое значение не равно текущему
 			self.overrides_meet_state = overrides.meet_state
-			state_mgr.set_state(self.object, self.overrides_meet_state, nil, nil, {look_object = db.actor, look_position = db.actor:position()})
 		end
+		if self.overrides_meet_state ~= nil then
+			state_mgr.set_state(self.object, self.overrides_meet_state, nil, nil, {look_object = db.actor, look_position = db.actor:position()})
+		else
+			state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor, look_position = db.actor:position()})
+		end			
 	else	
 		if self.overrides_meet_state ~= nil then
 			state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor, look_position = db.actor:position()})	
