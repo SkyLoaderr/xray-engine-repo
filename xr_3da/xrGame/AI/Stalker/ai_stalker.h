@@ -78,6 +78,8 @@ private:
 	u32						m_dwMaxDynamicSoundsCount;
 	float					m_fSensetivity;
 	int						m_iSoundIndex;
+	u32						m_dwDeathTime;
+	bool					m_bHammerIsClutched;
 	// firing
 	bool					m_bFiring;
 	u32						m_dwStartFireAmmo;

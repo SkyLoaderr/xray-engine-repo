@@ -49,6 +49,9 @@ CAI_Stalker::CAI_Stalker			()
 	m_tActionState					= eActionStateStand;
 	m_dwActionStartTime				= 0;
 	m_dwActionEndTime				= 0;
+	m_bHammerIsClutched				= false;
+
+	m_dwDeathTime					= 0;
 
 	AI_Path.TravelStart				= 0;
 	AI_Path.DestNode				= u32(-1);
@@ -77,10 +80,12 @@ void CAI_Stalker::Die				()
 	Fvector	dir;
 	AI_Path.Direction				(dir);
 	SelectAnimation					(clTransform.k,dir,AI_Path.fSpeed);
-	#ifndef NO_PHYSICS_IN_AI_MOVE
+	m_dwDeathTime					= Level().timeServer();
+#ifndef NO_PHYSICS_IN_AI_MOVE
 	Movement.DestroyCharacter();
-	#endif
+#endif
 	inherited::Die					();
+	m_bHammerIsClutched				= !::Random.randI(0,2);
 }
 
 void CAI_Stalker::Load				(LPCSTR section)
@@ -795,13 +800,27 @@ void CAI_Stalker::Update	( u32 DT )
 	
 	// inventory update
 	if (!g_Alive() && (m_inventory.TotalWeight() > 0)) {
-		vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
-		vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
-		for ( ; I != E; I++)
-			m_inventory.Ruck((*I).m_pIItem);
-		TIItemList &l_list = m_inventory.m_ruck;
-		for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++)
-			(**l_it).Drop();
+		CWeapon *tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+		if ((!tpWeapon || !tpWeapon->GetAmmoElapsed() || !m_bHammerIsClutched)) {
+			vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
+			vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
+			for ( ; I != E; I++)
+				m_inventory.Ruck((*I).m_pIItem);
+			TIItemList &l_list = m_inventory.m_ruck;
+			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++)
+				(**l_it).Drop();
+		}
+		else {
+			m_inventory.Action(kWPN_FIRE,	CMD_START);
+			vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
+			vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
+			for ( ; I != E; I++)
+				if ((I - B) != m_inventory.m_activeSlot)
+					m_inventory.Ruck((*I).m_pIItem);
+			TIItemList &l_list = m_inventory.m_ruck;
+			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++)
+				(**l_it).Drop();
+		}
 	}
 	m_inventory.Update(DT);
 

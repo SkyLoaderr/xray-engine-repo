@@ -192,7 +192,7 @@ void CWeapon::UpdateXForm	()
 		// Get matrices
 		int				boneL,boneR,boneR2;
 		E->g_WeaponBones(boneL,boneR,boneR2);
-		if (STATE == eReload)
+		if ((STATE == eReload) || (!E->g_Alive()))
 			boneL = boneR2;
 		V->Calculate	();
 		Fmatrix& mL		= V->LL_GetTransform(boneL);

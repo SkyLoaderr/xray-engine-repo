@@ -197,23 +197,23 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 								m_inventory.Action(kWPN_FIRE, CMD_START);
 								m_bFiring = true;
 							}
-							else {
-								m_inventory.Action(kWPN_FIRE, CMD_STOP);
+							else
 								m_bFiring = false;
-							}
-						else {
-							m_inventory.Action(kWPN_FIRE, CMD_STOP);
+						else
 							m_bFiring = false;
-						}
-					else {
-						m_inventory.Action(kWPN_FIRE, CMD_STOP);
+					else
 						m_bFiring = false;
-					}
+				}
+				else {
+					if (tpWeapon->STATE == CWeapon::eFire)
+						m_inventory.Action(kWPN_FIRE,	CMD_STOP);
+					m_bFiring = false;
 				}
 			}
 		}
 		else {
-			m_inventory.Action(kWPN_FIRE, CMD_STOP);
+			if (tpWeapon->STATE == CWeapon::eFire)
+				m_inventory.Action(kWPN_FIRE,	CMD_STOP);
 			m_bFiring = false;
 		}
 			
@@ -233,15 +233,19 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 		case CWeapon::eHidden	: Msg("%s : hidden",tpWeapon->cNameSect());
 			break;
 	}
+	
 	CWeaponMagazined *tpWeaponMagazined = dynamic_cast<CWeaponMagazined*>(tpWeapon);
 	if (tpWeaponMagazined) {
 		m_dwStartFireAmmo = tpWeaponMagazined->GetAmmoElapsed();
 		if ((!m_dwStartFireAmmo) && (tpWeapon->STATE != CWeapon::eReload))
-			if (tpWeaponMagazined->IsAmmoAvailable())
-				m_inventory.Action(kWPN_FIRE,	CMD_STOP);
+			if (tpWeaponMagazined->IsAmmoAvailable()) {
+				if (tpWeaponMagazined->STATE == CWeapon::eFire)
+					m_inventory.Action(kWPN_FIRE,	CMD_STOP);
+			}
 			else
 				if ((tpWeapon->STATE != CWeapon::eHidden) && (tpWeapon->STATE != CWeapon::eHiding)) {
-					m_inventory.Action(kWPN_FIRE,	CMD_STOP);
+					if (tpWeaponMagazined->STATE == CWeapon::eFire)
+						m_inventory.Action(kWPN_FIRE,	CMD_STOP);
 					vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
 					vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
 					u32 best_slot = -1;
@@ -252,7 +256,6 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 						m_inventory.Activate(best_slot);
 				}
 	}
-
 
 	m_bFiring = (tpWeapon->STATE == CWeapon::eFire) || (tpWeapon->STATE == CWeapon::eFire2);
 
