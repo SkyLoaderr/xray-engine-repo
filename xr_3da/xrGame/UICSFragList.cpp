@@ -34,17 +34,29 @@ void CUICSFragList::OnFrame()
 	CGameFont* H		= Level().HUD()->pFontSmall;
 	H->OutSet			(float(list_rect.lt.x),float(list_rect.lt.y));
 	// global info
-	if (Game().fraglimit)	H->OutNext	("Frag Limit:  %3d",Game().fraglimit);
-	else					H->OutNext	("Frag Limit:  unlimited");
+	//if (Game().fraglimit)	H->OutNext	("Frag Limit:  %3d",Game().fraglimit);
+	//else					H->OutNext	("Frag Limit:  unlimited");
 	if (Game().timelimit)	H->OutNext	("Time remain: %3d (sec)",(Game().timelimit-(Level().timeServer()-Game().start_time))/1000);
 	else					H->OutNext	("Time remain: unlimited");
 	H->OutSkip			(1.5f);
+	H->Color(0xf0ffa0a0); H->OutNext("Team 1: %d", Game().teams[0].num_targets);
 	int k=1;
 	for (ItemIt mI=items.begin(); mI!=items.end(); mI++){
 		game_cl_GameState::Player* P = (game_cl_GameState::Player*)*mI;
+		if(P->team != 0) continue;
 		if (P->flags&GAME_PLAYER_FLAG_LOCAL)	H->Color(0xf0a0ffa0);
 		else									H->Color(0xb0a0a0a0);
-		H->OutNext		("%3d: %-20s %-5d",k++,P->name,P->kills);
+		H->OutNext		("%3d. %-20s %-5d",k++,P->name,P->kills);
+	}
+	H->OutSkip			(3.f);
+	H->Color(0xf0a0a0ff); H->OutNext("Team 2: %d", Game().teams[1].num_targets);
+	k=1;
+	for (ItemIt mI=items.begin(); mI!=items.end(); mI++){
+		game_cl_GameState::Player* P = (game_cl_GameState::Player*)*mI;
+		if(P->team != 1) continue;
+		if (P->flags&GAME_PLAYER_FLAG_LOCAL)	H->Color(0xf0a0ffa0);
+		else									H->Color(0xb0a0a0a0);
+		H->OutNext		("%3d. %-20s %-5d",k++,P->name,P->kills);
 	}
 }
 //--------------------------------------------------------------------
