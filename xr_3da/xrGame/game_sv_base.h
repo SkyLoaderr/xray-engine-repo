@@ -19,7 +19,7 @@ public:
 	virtual		game_PlayerState*	get_id					(u32 id);								// DPNID
 	virtual		LPCSTR				get_name_it				(u32 it);
 	virtual		LPCSTR				get_name_id				(u32 id);								// DPNID
-	virtual		u32					get_id_2_eid			(u32 id)	= 0;
+	virtual		u32					get_id_2_eid			(u32 id)	 { return 0xffff; }; 
 	virtual		u32					get_it_2_id				(u32 it);
 	virtual		u32					get_count				();
 	
