@@ -19,7 +19,7 @@
 //////////////////////////////////////////////////////////////////////
 CWeaponProtecta::CWeaponProtecta() : CWeapon("PROTECTA")
 {
-	pSounds->Create3D(sndFire,		 "weapons\\Protecta_fire");
+	pSounds->Create3D(sndShoot,		 "weapons\\protecta_fire");
 	pSounds->Create3D(sndRicochet[0],"weapons\\ric1");
 	pSounds->Create3D(sndRicochet[1],"weapons\\ric2");
 	pSounds->Create3D(sndRicochet[2],"weapons\\ric3");
@@ -37,7 +37,7 @@ CWeaponProtecta::CWeaponProtecta() : CWeapon("PROTECTA")
 CWeaponProtecta::~CWeaponProtecta()
 {
 	// sounds
-	pSounds->Delete3D(sndFire);
+	pSounds->Delete3D(sndShoot);
 	for (int i=0; i<SND_RIC_COUNT; i++) pSounds->Delete3D(sndRicochet[i]);
 	
 	_DELETE			(m_pShootPS);
@@ -140,7 +140,7 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 		case eIdle:
 			break;
 		case eShoot:
-			pSounds->Play3DAtPos(sndFire,vLastFP,true);
+			pSounds->Play3DAtPos(sndShoot,vLastFP,true);
 			break;
 		}
 		st_current=st_target;
@@ -171,6 +171,8 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 				VERIFY(m_pParent);
 				fTime+=fTimeToFire;
 				
+				bool bHit = false;
+				Fvector vEnd; 
 				for (int i=0; i<iShotCount; i++){
 					// real fire
 					Collide::ray_query RQ;
@@ -183,11 +185,13 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 								E->Hit	(iHitPower,d,m_pParent);
 							}
 						} else {
-							Fvector end; end.direct(p1,d,RQ.range);
-							AddShotmark(d,end,RQ);
+							vEnd.direct(p1,d,RQ.range);
+							AddShotmark(d,vEnd,RQ);
+							bHit = true;
 						}
 					}
 				}
+				if (bHit) pSounds->Play3DAtPos(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);
 				iAmmoElapsed--;
 
 		 		if (iAmmoElapsed==0) { m_pParent->g_fireEnd(); break; }
@@ -195,7 +199,7 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 			}
 
 			// sound fire loop
-			if (sndFire.feedback) sndFire.feedback->SetPosition(vLastFP);
+			if (sndShoot.feedback) sndShoot.feedback->SetPosition(vLastFP);
 		}
 		break;
 	}
@@ -254,7 +258,6 @@ void CWeaponProtecta::Show		()
 void CWeaponProtecta::AddShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
 	inherited::AddShotmark(vDir, vEnd, R);
-	pSounds->Play3DAtPos(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);
 /*
 	// particles
 	RAPID::tri* pTri	= pCreator->ObjectSpace.GetStaticTris()+R.element;
