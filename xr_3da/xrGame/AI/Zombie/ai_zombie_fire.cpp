@@ -19,14 +19,10 @@ void CAI_Zombie::Exec_Action(float dt)
 			
 			DWORD dwTime = Level().timeServer();
 			
-			if (!m_bActionStarted) {
-				m_dwStartAttackTime = dwTime;
-				m_bActionStarted = true;
-			}
-				
 			if (dwTime - m_dwStartAttackTime > m_dwHitInterval) {
 				
 				m_dwStartAttackTime = dwTime;
+				m_bActionStarted = true;
 				
 				Fvector tDirection;
 				tDirection.sub(tSavedEnemy->Position(),this->Position());
@@ -38,6 +34,8 @@ void CAI_Zombie::Exec_Action(float dt)
 					else
 						m_bActionStarted = false;
 			}
+			else
+				m_bActionStarted = false;
 
 			break;
 		}

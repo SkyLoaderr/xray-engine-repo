@@ -19,13 +19,9 @@ void CAI_Rat::Exec_Action(float dt)
 			
 			DWORD dwTime = Level().timeServer();
 			
-			if (!m_bActionStarted) {
-				m_dwStartAttackTime = dwTime;
-				m_bActionStarted = true;
-			}
-				
 			if (dwTime - m_dwStartAttackTime > m_dwHitInterval) {
 				
+				m_bActionStarted = true;
 				m_dwStartAttackTime = dwTime;
 				
 				Fvector tDirection;
@@ -37,6 +33,9 @@ void CAI_Rat::Exec_Action(float dt)
 						tSavedEnemy->Hit(m_fHitPower,tDirection,this);
 					else
 						m_bActionStarted = false;
+			}
+			else {
+				m_bActionStarted = false;
 			}
 
 			break;

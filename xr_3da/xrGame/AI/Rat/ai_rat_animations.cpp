@@ -125,7 +125,6 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 						}
 					}
 					switch (eCurrentState) {
-						/**
 						case aiRatAttackFire : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
@@ -148,7 +147,6 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 							}
 							break;
 						}
-						/**/
 						default : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
@@ -201,7 +199,6 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 							tpGlobalAnimation = AState->back;
 
 					switch (eCurrentState) {
-						/**
 						case aiRatAttackFire : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
@@ -224,7 +221,6 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 							}
 							break;
 						}
-						/**/
 						default : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
@@ -243,19 +239,6 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 				}
 			}
 		}
-	
-	/**
-	if (tpLegsAnimation != m_tpCurrentLegsAnimation) { 
-		//Msg("restarting animation..."); 
-		m_tpCurrentLegsAnimation = tpLegsAnimation;
-		if (tpLegsAnimation) {
-			m_tpCurrentLegsBlend = tpVisualObject->PlayCycle(tpLegsAnimation);
-			if (tpLegsAnimation == m_walk.fwd) {
-				m_tpCurrentLegsBlend->timeCurrent = ::Random.randF(m_tpCurrentLegsBlend->timeTotal);
-			}
-		}
-	}
-	/**/
 	
 	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation) { 
 		m_tpCurrentGlobalAnimation = tpGlobalAnimation;

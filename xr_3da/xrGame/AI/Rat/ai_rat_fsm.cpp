@@ -187,7 +187,8 @@ void CAI_Rat::AttackFire()
 	
 	vfSaveEnemy();
 
-	vfAimAtEnemy();
+	//vfAimAtEnemy();
+	SetDirectionLook();
 
 	vfSetFire(true,Group);
 
@@ -243,7 +244,8 @@ void CAI_Rat::AttackRun()
 
 	GoToPointViaSubnodes(Enemy.Enemy->Position());
 	
-	vfAimAtEnemy();
+	//vfAimAtEnemy();
+	SetDirectionLook();
 	
 	vfSetFire(false,Group);
 
