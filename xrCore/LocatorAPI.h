@@ -66,6 +66,7 @@ DEFINE_MAP(xr_string,FS_QueryItem,FS_QueryMap,FS_QueryPairIt);
 
 class XRCORE_API CLocatorAPI  
 {
+	friend class FS_Path;
 private:
 	struct	file
 	{
