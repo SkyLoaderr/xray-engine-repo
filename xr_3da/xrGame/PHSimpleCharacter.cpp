@@ -609,6 +609,7 @@ const float CHWON_CALL_UP_SHIFT=0.05f;
 const float CHWON_CALL_FB_HIGHT=1.5f;
 const float CHWON_AABB_FB_FACTOR =1.f;
 
+
 bool CPHSimpleCharacter::ValidateWalkOn()
 {
 	Fvector AABB,AABB_forbid,center,center_forbid,accel_add,accel;
@@ -624,7 +625,7 @@ bool CPHSimpleCharacter::ValidateWalkOn()
 	accel_add.set(m_acceleration);
 	float mag=accel_add.magnitude();
 	if(!(mag>0.f)) return 
-		false;
+		true;
 	accel_add.mul(CHWON_ACCLEL_SHIFT/mag);
 	accel.set(accel_add);
 	accel.div(CHWON_ACCLEL_SHIFT);
@@ -1036,20 +1037,20 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 	b_on_object=b_on_object||object;
 	*p_lastMaterial=((dxGeomUserData*)dGeomGetData(m_wheel))->tri_material;
 	bool bo1=(c->geom.g1==m_wheel)||c->geom.g1==m_cap_transform||c->geom.g1==m_shell_transform||c->geom.g1==m_hat_transform;
-	if(c->geom.g1==m_cap_transform||c->geom.g2==m_cap_transform||c->geom.g1==m_shell_transform||c->geom.g2==m_shell_transform)
-	{
-		///dNormalize3(m_control_force);
-		//Fvector2 f={m_control_force[0],m_control_force[2]},cn={c->geom.normal[0],c->geom.normal[2]};
-		//f.normalize(),cn.normalize();
-		//float product=f.x*cn.x+f.y*cn.y;
-		//if(is_control&& (bo1	?	product<-0.0f	:	product>0.0f))
-			b_side_contact=true;
+	//if(object	&&	(c->geom.g1==m_cap_transform||c->geom.g2==m_cap_transform||c->geom.g1==m_shell_transform||c->geom.g2==m_shell_transform))
+	//{
+	//	///dNormalize3(m_control_force);
+	//	//Fvector2 f={m_control_force[0],m_control_force[2]},cn={c->geom.normal[0],c->geom.normal[2]};
+	//	//f.normalize(),cn.normalize();
+	//	//float product=f.x*cn.x+f.y*cn.y;
+	//	//if(is_control&& (bo1	?	product<-0.0f	:	product>0.0f))
+	//		b_side_contact=true;
 
-		//c->surface.soft_cfm*=spring_rate;//0.01f;
-		//c->surface.soft_erp*=dumping_rate;//10.f;
-		MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,spring_rate,dumping_rate);
-		c->surface.mu		=0.00f;
-	}
+	//	//c->surface.soft_cfm*=spring_rate;//0.01f;
+	//	//c->surface.soft_erp*=dumping_rate;//10.f;
+	//	MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,spring_rate,dumping_rate);
+	//	c->surface.mu		=0.00f;
+	//}
  
 
 	if(object){
@@ -1208,7 +1209,7 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 	}
 	else{
 
-		if(c->geom.normal[1]<m_ground_contact_normal[1]||!b_valide_ground_contact)//
+		if(c->geom.normal[1]<-m_ground_contact_normal[1]||!b_valide_ground_contact)//
 		{
 			m_ground_contact_normal[0]=-c->geom.normal[0];
 			m_ground_contact_normal[1]=-c->geom.normal[1];
