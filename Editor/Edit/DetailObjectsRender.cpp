@@ -130,7 +130,7 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 	int s_x	= iFloor			(EYE.x/DETAIL_SLOT_SIZE+0.5f);
 	int s_z	= iFloor			(EYE.z/DETAIL_SLOT_SIZE+0.5f);
 
-	UpdateCache					(3);
+	UpdateCache					(5);
 
 	float fade_limit			= 14.5f;fade_limit=fade_limit*fade_limit;
 	float fade_start			= 1.f;	fade_start=fade_start*fade_start;
@@ -369,12 +369,12 @@ void CDetailManager::UpdateCache	(int limit)
 
 		CRandom				r_selection	(0x12071980);
 		CRandom				r_jitter	(0x12071980);
-		CRandom				r_yaw		(DS.r_yaw);
-		CRandom				r_scale		(DS.r_scale);
+		CRandom				r_yaw		(0x12071980);
+		CRandom				r_scale		(0x12071980);
 
 		// Decompressing itself
-		for (DWORD z=0; z<d_size; z++){
-			for (DWORD x=0; x<d_size; x++){
+		for (DWORD z=0; z<=d_size; z++){
+			for (DWORD x=0; x<=d_size; x++){
 				// shift mask
                 int shift_x = r_jitter.randI(16);
                 int shift_z = r_jitter.randI(16);
@@ -457,8 +457,6 @@ DetailSlot&	CDetailManager::QueryDB(int sx, int sz)
     }else{
     	DS.y_min			= 0;
         DS.y_max			= EPS;
-        DS.r_yaw			= 0xaaaaaaaa;
-        DS.r_scale			= 0xaaaaaaaa;
 
     	DS.items[0].id		= 0xff;
     	DS.items[1].id		= 0xff;

@@ -44,7 +44,7 @@ void __fastcall TfraDetailObject::ExtBtn1Click(TObject *Sender)
 {
 	LPCSTR T = TfrmChoseItem::SelectTexture(false,(Scene->m_DetailObjects->m_pBaseTexture)?Scene->m_DetailObjects->m_pBaseTexture->name():0);
     if (T){
-		Scene->m_DetailObjects->GenerateSlots(T);
+		Scene->m_DetailObjects->Initialize(T);
     	Scene->UndoSave();
     }
 }
@@ -57,25 +57,11 @@ void __fastcall TfraDetailObject::ExtBtn5Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraDetailObject::ExtBtn4Click(TObject *Sender)
-{
-	Scene->m_DetailObjects->UpdateBBox();
-	Scene->UndoSave();
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TfraDetailObject::ebUpdateObjectsClick(TObject *Sender)
 {
 	if (Scene->m_DetailObjects->UpdateObjects(true,false))
 		Scene->UndoSave();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraDetailObject::ebExportDetailsClick(TObject *Sender)
-{
-	AnsiString fn;
-	if (FS.GetSaveName(&FS.m_GameDO,fn))
-	 	Scene->m_DetailObjects->Export(fn.c_str());
 }
 //---------------------------------------------------------------------------
 
@@ -87,17 +73,10 @@ void __fastcall TfraDetailObject::ebReinitializeSlotObjectsClick(
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraDetailObject::ebDORandomScaleClick(TObject *Sender)
+void __fastcall TfraDetailObject::ExtBtn6Click(TObject *Sender)
 {
-	Scene->m_DetailObjects->RandomScale();
-	Scene->UndoSave();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraDetailObject::ebRandomRotateClick(TObject *Sender)
-{
-	Scene->m_DetailObjects->RandomRotate();
-	Scene->UndoSave();
+	if (Scene->m_DetailObjects->Reinitialize())
+		Scene->UndoSave();
 }
 //---------------------------------------------------------------------------
 

@@ -81,7 +81,7 @@ struct st_SPLIT
 			// Convert
 			PM_Result R;
 			I_Current = PM_Convert(Indices.begin(),Indices.size(), &R);
-			if (I_Current) {
+			if (I_Current>=0) {
 				// Permute vertices
 				vSVERT temp_list = Vlist;
 				
@@ -109,7 +109,7 @@ struct st_SPLIT
 		F.open_chunk		(OGF_HEADER);
 		ogf_header			H;
 		H.format_version	= xrOGF_FormatVersion;
-		H.type				= I_Current?MT_SKELETON_PART:MT_SKELETON_PART_STRIPPED;
+		H.type				= (I_Current>=0)?MT_SKELETON_PART:MT_SKELETON_PART_STRIPPED;
 		H.flags				= 0;
 		F.write				(&H,sizeof(H));
 		F.close_chunk		();
@@ -148,7 +148,7 @@ struct st_SPLIT
 		F.close_chunk();
 		
 		// PMap
-		if (I_Current) {
+		if (I_Current>=0) {
 			F.open_chunk(OGF_P_MAP);
 			{
 				F.open_chunk(0x1);
@@ -218,20 +218,27 @@ void ComputeOBB	(Fobb &B, FvectorVec& V){
 bool SceneBuilder::SaveObjectSkeletonLTX(const char* name, CEditObject* obj){
 	FS.DeleteFileByName(name);
 	CInifile ini(name,false);
-    ini.WriteString("general",";general params","");
-    
-    ini.WriteString("cycle",";cycle motions","");
-    ini.WriteString("fx",";fx motions","");
+    ini.WriteString("general",0,0,"general params");
+
+    // temporary partition
+    ini.WriteString("partition",0,0,"list of partitions");
+    ini.WriteString("partition","all",0);
+    for (BoneIt b_it=obj->FirstBone(); b_it!=obj->LastBone(); b_it++)
+	    ini.WriteString("all",(*b_it)->Name(),0);
+
+    ini.WriteString("cycle",0,0,"cycle motions");
+    ini.WriteString("fx",0,0,"fx motions");
     for (SMotionIt m_it=obj->FirstSMotion(); m_it!=obj->LastSMotion(); m_it++){
     	CSMotion* M = *m_it;
         AnsiString sect = AnsiString(M->Name());
         ini.WriteString(M->bFX?"fx":"cycle",sect.c_str(),sect.c_str());
         ini.WriteString(sect.c_str(),"stop@end",M->bStopAtEnd?"on":"off");
         ini.WriteString(sect.c_str(),"bone",(M->cStartBone[0])?M->cStartBone:"ROOT");
+        ini.WriteString(sect.c_str(),"part",(M->cBonePart[0])?M->cBonePart:"--none--");
         ini.WriteString(sect.c_str(),"motion",sect.c_str());
         ini.WriteFloat(sect.c_str(),"speed",M->fSpeed);
         ini.WriteFloat(sect.c_str(),"accrue",M->fAccrue);
-        ini.WriteFloat(sect.c_str(),"falloff",M->fFalloff); 
+        ini.WriteFloat(sect.c_str(),"falloff",M->fFalloff);
         ini.WriteFloat(sect.c_str(),"power",M->fPower);
     }
 

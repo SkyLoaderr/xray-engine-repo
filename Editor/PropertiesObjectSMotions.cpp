@@ -47,6 +47,10 @@ void __fastcall TfrmPropertiesObject::tsSAnimationShow(TObject *Sender)
 	    cbSStartMotionBone->Items->Clear();
     	for(BoneIt it=m_EditObject->FirstBone(); it!=m_EditObject->LastBone(); it++)
 			cbSStartMotionBone->Items->Add(AnsiString((*it)->Name()));
+
+    	// temporary!!! add none bone part
+        cbSBonePart->Items->Clear();
+		cbSBonePart->Items->Add("--none--");
     }
     gbSMotionCommand->Enabled = !bMultiSelection && !m_EditObject->GetRef();
 
@@ -176,13 +180,12 @@ void __fastcall TfrmPropertiesObject::tvSMotionsItemSelectedChange(
         seSMotionAccrue->Value		= M->fAccrue;
         seSMotionFalloff->Value		= M->fFalloff;
         seSMotionPower->Value		= M->fPower;
-        cbSMotionFX->Checked		= M->bFX;
+        pcAnimType->ActivePage		= M->bFX?tsFX:tsCycle;
         cbSMotionStopAtEnd->Checked	= M->bStopAtEnd;
 		cbSStartMotionBone->ItemIndex= 	cbSStartMotionBone->Items->IndexOf(AnsiString(M->cStartBone));
+		cbSBonePart->ItemIndex		= cbSBonePart->Items->IndexOf(AnsiString(M->cBonePart));
 
         selected_smotion 			= M;
-
-        UpdateSMotionDirectBones	();
 
         seSMotionChange				(Sender);
         
@@ -200,18 +203,6 @@ void __fastcall TfrmPropertiesObject::tvSMotionsTryEdit(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesObject::UpdateSMotionDirectBones(){
-    // change direct motion list
-    cbSDirectMotionBone->Items->Clear();
-    cbSDirectMotionBone->Items->Add("");
-    for(BoneIt it=m_EditObject->FirstBone(); it!=m_EditObject->LastBone(); it++){
-        if (strcmp(cbSStartMotionBone->Text.c_str(),(*it)->Parent())==0)
-            cbSDirectMotionBone->Items->Add(AnsiString((*it)->Name()));
-    }
-    cbSDirectMotionBone->ItemIndex	= cbSDirectMotionBone->Items->IndexOf(AnsiString(selected_smotion->cDirectBone));
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfrmPropertiesObject::seSMotionChange(TObject *Sender)
 {
 	if (selected_smotion){
@@ -219,13 +210,11 @@ void __fastcall TfrmPropertiesObject::seSMotionChange(TObject *Sender)
         selected_smotion->fAccrue		= seSMotionAccrue->Value;
         selected_smotion->fFalloff		= seSMotionFalloff->Value;
         selected_smotion->fPower		= seSMotionPower->Value;
-        selected_smotion->bFX			= cbSMotionFX->Checked;
+        selected_smotion->bFX			= (pcAnimType->ActivePage==tsFX);
         selected_smotion->bStopAtEnd	= cbSMotionStopAtEnd->Checked;
         selected_smotion->SetStartBone	(cbSStartMotionBone->Text.c_str());
-        selected_smotion->SetDirectBone	(cbSDirectMotionBone->Text.c_str());
+        selected_smotion->SetBonePart	(cbSBonePart->Text.c_str());
 
-        UpdateSMotionDirectBones		();
-        
 		OnModified(Sender);	
     }
 }

@@ -48,7 +48,7 @@ static CRandom DetailRandom(0x26111975);
 #define DETMGR_CHUNK_COLOR_INDEX 	0x1003
 #define DETMGR_CHUNK_SNAP_OBJECTS 	0x1004
 
-#define DETMGR_VERSION 				0x0001
+#define DETMGR_VERSION 				0x0002
 //------------------------------------------------------------------------------
 CDetail::CDetail(){
 	m_pShader			= 0;
@@ -196,7 +196,6 @@ CDetailManager::CDetailManager(){
 	m_pBaseTexture 		= 0;
     m_pBaseShader		= 0;
     ZeroMemory			(&m_Header,sizeof(DetailHeader));
-    m_Header.version	= DETAIL_VERSION;
     m_Selected.clear	();
     InitRender			();
 }
@@ -291,7 +290,7 @@ void CDetailManager::FindClosestIndex(const Fcolor& C, SIndexDistVec& best){
     }
 }
 
-bool CDetailManager::GenerateSlots(LPCSTR tex_name){
+bool CDetailManager::Initialize(LPCSTR tex_name){
 	if (!fraLeftBar->ebEnableSnapList->Down||Scene->m_SnapObjects.empty()){
     	Log->DlgMsg(mtError,"Fill snap list and activate before generating slots!");
     	return false;
@@ -309,6 +308,26 @@ bool CDetailManager::GenerateSlots(LPCSTR tex_name){
 	if (!UpdateBaseTexture(tex_name))	return false;
     if (!UpdateBBox()) 					return false;
     if (!UpdateObjects(false,false))	return false;
+	return true;
+}
+
+bool CDetailManager::Reinitialize(){
+	if (m_SnapObjects.empty()){
+    	Log->DlgMsg(mtError,"Snap list empty! Initialize at first.");
+    	return false;
+    }
+
+    if (m_Objects.empty()){
+    	Log->DlgMsg(mtError,"Fill object list before reinitialize!");
+    	return false;
+    }
+
+    // create base texture
+    if (!UpdateBBox()) 				return false;
+    if (!UpdateObjects(true,false))	return false;
+
+    InvalidateCache();
+
 	return true;
 }
 
@@ -540,8 +559,6 @@ bool CDetailManager::UpdateSlotObjects(int x, int z){
         }while(bReject);
         slot->color					= 0xffffffff;
     }
-    RandomizeSlotScale	(x,z);
-    RandomizeSlotRotate	(x,z);
     // определим ID незаполненных слотов как пустышки
     for(k=best.size(); k<4; k++)
         slot->items[k].id = 0xff;
@@ -564,40 +581,6 @@ bool CDetailManager::UpdateObjects(bool bUpdateTex, bool bUpdateSelectedOnly){
     InvalidateCache		();
 
     return true;
-}
-
-void CDetailManager::RandomizeSlotScale(int x, int z){
-    m_Slots[z*m_Header.size_x+x].r_scale = DetailRandom.randIs(int_max);
-}
-
-void CDetailManager::RandomizeSlotRotate(int x, int z){
-    m_Slots[z*m_Header.size_x+x].r_yaw = DetailRandom.randIs(int_max);
-}
-
-void CDetailManager::RandomScale(){
-    // update objects
-    UI->ProgressStart	(m_Header.size_x*m_Header.size_z,"Randomize object scale...");
-    for (DWORD z=0; z<m_Header.size_z; z++)
-        for (DWORD x=0; x<m_Header.size_x; x++){
-        	if (m_Selected[z*m_Header.size_x+x])
-	        	RandomizeSlotScale(x,z);
-		    UI->ProgressInc();
-        }
-    UI->ProgressEnd		();
-    InvalidateCache		();
-}
-
-void CDetailManager::RandomRotate(){
-    // update objects
-    UI->ProgressStart	(m_Header.size_x*m_Header.size_z,"Randomize object rotate...");
-    for (DWORD z=0; z<m_Header.size_z; z++)
-        for (DWORD x=0; x<m_Header.size_x; x++){
-        	if (m_Selected[z*m_Header.size_x+x])
-	        	RandomizeSlotRotate(x,z);
-		    UI->ProgressInc();
-        }
-    UI->ProgressEnd		();
-    InvalidateCache		();
 }
 
 void CDetailManager::Clear(){
@@ -695,9 +678,83 @@ void CDetailManager::AppendIndexObject(DWORD color,LPCSTR name, bool bTestUnique
     }
 }
 
+bool CDetailManager::Load_V1(CStream& F){
+	// header
+    R_ASSERT			(F.ReadChunk(DETMGR_CHUNK_HEADER,&m_Header));
+    m_Header.offs_x		= 0;
+    m_Header.offs_z		= 0;
+    m_Header.size_x		= 0;
+    m_Header.size_z		= 0;
+
+    // objects
+    CStream* OBJ 		= F.OpenChunk(DETMGR_CHUNK_OBJECTS);
+    if (OBJ){
+        CStream* O   	= OBJ->OpenChunk(0);
+        for (int count=1; O; count++) {
+            CDetail* DO = new CDetail();
+            if (DO->Load(*O)){
+                m_Objects.push_back(DO);
+            }else{
+                Log->Msg(mtError,"Can't load detail object.");
+                _DELETE(DO);
+            }
+            O->Close();
+            O = OBJ->OpenChunk(count);
+        }
+        OBJ->Close();
+    }
+
+    // slots - not read another format!!!!
+
+    // internal
+    // bbox
+    R_ASSERT			(F.ReadChunk(DETMGR_CHUNK_BBOX,&m_BBox));
+	// base texture
+    char buf[255];
+	if(F.FindChunk(DETMGR_CHUNK_BASE_TEXTURE)){
+	    F.RstringZ		(buf);
+    	m_pBaseTexture	= new ETextureCore(buf);
+	    m_pBaseShader 	= UI->Device.Shader.Create("def_trans",m_pBaseTexture->name(),false);
+    }
+    // color index map
+    R_ASSERT			(F.FindChunk(DETMGR_CHUNK_COLOR_INDEX));
+    int cnt				= F.Rbyte();
+    DWORD index;
+    int ref_cnt;
+    for (int k=0; k<cnt; k++){
+		index			= F.Rdword();
+        ref_cnt			= F.Rbyte();
+		for (int j=0; j<ref_cnt; j++){
+        	F.RstringZ	(buf);
+            CDetail* DO	= FindObjectByName(buf);
+            if (DO) 	m_ColorIndices[index].push_back(DO);
+        }
+    }
+
+	// snap objects
+    if (F.FindChunk(DETMGR_CHUNK_SNAP_OBJECTS)){
+		cnt 			= F.Rdword(); VERIFY(cnt);
+        for (int i=0; i<cnt; i++){
+        	F.RstringZ	(buf);
+            CEditObject* O = (CEditObject*)Scene->FindObjectByName(buf,OBJCLASS_EDITOBJECT);
+            if (!O)		Log->Msg(mtError,"DetailManager: Can't find object '%s' in scene.",buf);
+            else		m_SnapObjects.push_back(O);
+        }
+    }else{
+    	m_SnapObjects	= Scene->m_SnapObjects;
+    }
+
+    InvalidateCache		();
+
+    return true;
+}
+
 bool CDetailManager::Load(CStream& F){
     R_ASSERT			(F.FindChunk(DETMGR_CHUNK_VERSION));
 	DWORD version		= F.Rdword();
+
+    if (version==1) return Load_V1(F);
+
     if (version!=DETMGR_VERSION){
     	Log->Msg(mtError,"CDetailManager: unsupported version.");
         return false;
@@ -737,9 +794,9 @@ bool CDetailManager::Load(CStream& F){
 	// base texture
     char buf[255];
 	if(F.FindChunk(DETMGR_CHUNK_BASE_TEXTURE)){
-	    F.RstringZ			(buf);
-    	m_pBaseTexture		= new ETextureCore(buf);
-	    m_pBaseShader 		= UI->Device.Shader.Create("def_trans",m_pBaseTexture->name(),false);
+	    F.RstringZ		(buf);
+    	m_pBaseTexture	= new ETextureCore(buf);
+	    m_pBaseShader 	= UI->Device.Shader.Create("def_trans",m_pBaseTexture->name(),false);
     }
     // color index map
     R_ASSERT			(F.FindChunk(DETMGR_CHUNK_COLOR_INDEX));
@@ -827,6 +884,7 @@ void CDetailManager::Save(CFS_Base& F){
 }
 
 void CDetailManager::Export(LPCSTR fn){
+    m_Header.version	= DETAIL_VERSION;
 	CFS_Memory F;
     m_Header.object_count=m_Objects.size();
 	// header

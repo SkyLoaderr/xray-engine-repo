@@ -10,35 +10,14 @@ object fraDetailObject: TfraDetailObject
   TabOrder = 0
   object paSelect: TPanel
     Left = 0
-    Top = 79
+    Top = 78
     Width = 123
-    Height = 64
+    Height = 34
     Align = alTop
     Constraints.MaxWidth = 123
     Constraints.MinWidth = 123
     ParentColor = True
     TabOrder = 0
-    object ebDORandomScale: TExtBtn
-      Left = 2
-      Top = 32
-      Width = 119
-      Height = 15
-      Align = alNone
-      AllowAllUp = True
-      BevelShow = False
-      HotTrack = True
-      CloseButton = False
-      Caption = 'Random Scale'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      Margin = 13
-      ParentFont = False
-      Transparent = False
-      OnClick = ebDORandomScaleClick
-    end
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
@@ -69,27 +48,6 @@ object fraDetailObject: TfraDetailObject
         0000}
       OnClick = PaneMinClick
     end
-    object ebRandomRotate: TExtBtn
-      Left = 2
-      Top = 47
-      Width = 119
-      Height = 15
-      Align = alNone
-      AllowAllUp = True
-      BevelShow = False
-      HotTrack = True
-      CloseButton = False
-      Caption = 'Random Rotate'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      Margin = 13
-      ParentFont = False
-      Transparent = False
-      OnClick = ebRandomRotateClick
-    end
     object ebReinitializeSlotObjects: TExtBtn
       Left = 2
       Top = 16
@@ -116,7 +74,7 @@ object fraDetailObject: TfraDetailObject
     Left = 0
     Top = 0
     Width = 123
-    Height = 79
+    Height = 78
     Align = alTop
     Constraints.MaxWidth = 123
     Constraints.MinWidth = 123
@@ -173,27 +131,6 @@ object fraDetailObject: TfraDetailObject
       Transparent = False
       OnClick = ExtBtn1Click
     end
-    object ExtBtn4: TExtBtn
-      Left = 2
-      Top = 47
-      Width = 119
-      Height = 15
-      Align = alNone
-      AllowAllUp = True
-      BevelShow = False
-      HotTrack = True
-      CloseButton = False
-      Caption = 'Reinitialize Slots'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      Margin = 13
-      ParentFont = False
-      Transparent = False
-      OnClick = ExtBtn4Click
-    end
     object ExtBtn5: TExtBtn
       Left = 2
       Top = 17
@@ -215,9 +152,9 @@ object fraDetailObject: TfraDetailObject
       Transparent = False
       OnClick = ExtBtn5Click
     end
-    object ebUpdateObjects: TExtBtn
+    object ExtBtn6: TExtBtn
       Left = 2
-      Top = 62
+      Top = 47
       Width = 119
       Height = 15
       Align = alNone
@@ -225,7 +162,28 @@ object fraDetailObject: TfraDetailObject
       BevelShow = False
       HotTrack = True
       CloseButton = False
-      Caption = 'Reinitialize Objects'
+      Caption = 'Reinitialize'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Margin = 13
+      ParentFont = False
+      Transparent = False
+      OnClick = ExtBtn6Click
+    end
+    object ExtBtn4: TExtBtn
+      Left = 2
+      Top = 61
+      Width = 119
+      Height = 15
+      Align = alNone
+      AllowAllUp = True
+      BevelShow = False
+      HotTrack = True
+      CloseButton = False
+      Caption = 'Update Objects'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -240,6 +198,7 @@ object fraDetailObject: TfraDetailObject
   object fsStorage: TFormStorage
     IniSection = 'FrameDO'
     Options = []
+    Version = 4
     StoredProps.Strings = (
       'paSelect.Height'
       'paSelect.Tag'

@@ -1,10 +1,10 @@
 object frmPropertiesObject: TfrmPropertiesObject
-  Left = 593
-  Top = 450
+  Left = 369
+  Top = 357
   BorderStyle = bsDialog
   Caption = 'Object properties'
   ClientHeight = 365
-  ClientWidth = 371
+  ClientWidth = 372
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
@@ -23,7 +23,7 @@ object frmPropertiesObject: TfrmPropertiesObject
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 371
+    Width = 372
     Height = 342
     Align = alClient
     BevelOuter = bvNone
@@ -31,9 +31,9 @@ object frmPropertiesObject: TfrmPropertiesObject
     object pcObjects: TPageControl
       Left = 0
       Top = 0
-      Width = 371
+      Width = 372
       Height = 342
-      ActivePage = tsSurfaces
+      ActivePage = tsSAnimation
       Align = alClient
       MultiLine = True
       TabOrder = 0
@@ -176,16 +176,16 @@ object frmPropertiesObject: TfrmPropertiesObject
             ActiveFilterColor = clBlack
             Flat = True
             Sections.Data = {
-              F8FFFFFF04000000F09A1A0600000000FFFFFFFF000001000000064046000000
-              0000000010270000000001400000000000000740000000000000014000000000
-              000000000001000002000000230001000000000000000000000000F09A1A0600
-              000000FFFFFFFF00000100000006403200000000000000102700000000014001
-              0000000000074000000000000001400000000000000000000100000200000058
-              0001000000000000000000000000F09A1A0600000000FFFFFFFF000001000000
-              0640320000000000000010270000000001400200000000000740000000000000
-              0140000000000000000000010000020000005900010000000000000000000000
-              00F09A1A0600000000FFFFFFFF00000100000006403200000000000000102700
-              0000000140030000000000074000000000000001400000000000000000000100
+              F8FFFFFF04000000BCAF8B0400000000FFFFFFFF000001000000746446000000
+              000000001027000000000150000000000000742C000000000000016500000000
+              000000000001000002000000230001000000000000000000000000BCAF8B0400
+              000000FFFFFFFF00000100000074643200000000000000102700000000015001
+              0000000000742C00000000000001650000000000000000000100000200000058
+              0001000000000000000000000000BCAF8B0400000000FFFFFFFF000001000000
+              746432000000000000001027000000000150020000000000742C000000000000
+              0165000000000000000000010000020000005900010000000000000000000000
+              00BCAF8B0400000000FFFFFFFF00000100000074643200000000000000102700
+              0000000150030000000000742C00000000000001650000000000000000000100
               00020000005A0001000000000000000000000000}
             Tracking = True
             AllowDrag = True
@@ -245,19 +245,19 @@ object frmPropertiesObject: TfrmPropertiesObject
             ActiveFilterColor = clBlack
             Flat = True
             Sections.Data = {
-              F8FFFFFF05000000F09A1A0600000000FFFFFFFF000001000000064014000000
-              0000000010270000000000400400000000000740000000000000014000000000
-              0000000000010000010000000001000000000000000000000000F09A1A060000
-              0000FFFFFFFF00000100000006403C0000000000000010270000000001400000
-              0000000007400000000000000140000000000000000000010000080000004D69
-              6E696D756D0001000000000000000000000000F09A1A0600000000FFFFFFFF00
-              000100000006403C000000000000001027000000000140010000000000074000
-              00000000000140000000000000000000010000080000004D6178696D756D0001
-              000000000000000000000000F09A1A0600000000FFFFFFFF0000010000000640
-              3C00000000000000102700000000014002000000000007400000000000000140
+              F8FFFFFF050000000493AB0500000000FFFFFFFF0000010000000C0614000000
+              000000001027000000000005040000000000AE05000000000000010600000000
+              00000000000100000100000000010000000000000000000000000493AB050000
+              0000FFFFFFFF0000010000000C063C0000000000000010270000000001050000
+              00000000AE050000000000000106000000000000000000010000080000004D69
+              6E696D756D00010000000000000000000000000493AB0500000000FFFFFFFF00
+              00010000000C063C000000000000001027000000000105010000000000AE0500
+              00000000000106000000000000000000010000080000004D6178696D756D0001
+              0000000000000000000000000493AB0500000000FFFFFFFF0000010000000C06
+              3C000000000000001027000000000105020000000000AE050000000000000106
               0000000000000000000100000500000053697A65000100000000000000000000
-              0000F09A1A0600000000FFFFFFFF00000100000006403C000000000000001027
-              0000000001400300000000000740000000000000014000000000000000000001
+              00000493AB0500000000FFFFFFFF0000010000000C063C000000000000001027
+              000000000105030000000000AE05000000000000010600000000000000000001
               00000700000043656E7465720001000000000000000000000000}
             Tracking = True
             AllowDrag = True
@@ -437,7 +437,7 @@ object frmPropertiesObject: TfrmPropertiesObject
         object Panel2: TPanel
           Left = 227
           Top = 0
-          Width = 136
+          Width = 137
           Height = 296
           Align = alClient
           BevelOuter = bvNone
@@ -504,7 +504,7 @@ object frmPropertiesObject: TfrmPropertiesObject
         object tvSurfaces: TElTree
           Left = 0
           Top = 0
-          Width = 209
+          Width = 210
           Height = 296
           LeftPosition = 0
           ActiveBorderType = fbtSunken
@@ -640,7 +640,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           OnItemSelectedChange = tvSurfacesItemSelectedChange
         end
         object paTex_Surf: TPanel
-          Left = 209
+          Left = 210
           Top = 0
           Width = 154
           Height = 296
@@ -1080,7 +1080,7 @@ object frmPropertiesObject: TfrmPropertiesObject
         ImageIndex = 5
         OnShow = tsOAnimationShow
         object gbOMotion: TGroupBox
-          Left = 223
+          Left = 224
           Top = 0
           Width = 140
           Height = 235
@@ -1297,7 +1297,7 @@ object frmPropertiesObject: TfrmPropertiesObject
         object Panel4: TPanel
           Left = 0
           Top = 235
-          Width = 363
+          Width = 364
           Height = 61
           Align = alBottom
           BevelOuter = bvNone
@@ -1588,9 +1588,9 @@ object frmPropertiesObject: TfrmPropertiesObject
           OnItemSelectedChange = tvSMotionsItemSelectedChange
         end
         object gbSMotion: TGroupBox
-          Left = 223
+          Left = 225
           Top = 0
-          Width = 140
+          Width = 139
           Height = 235
           Align = alRight
           Caption = ' Current Motion '
@@ -1662,29 +1662,15 @@ object frmPropertiesObject: TfrmPropertiesObject
             ParentFont = False
             ShadowColor = 15263976
           end
-          object RxLabel25: TRxLabel
-            Left = 5
-            Top = 53
-            Width = 54
-            Height = 13
-            Caption = 'Start bone:'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'MS Sans Serif'
-            Font.Style = []
-            ParentFont = False
-            ShadowColor = 15263976
-          end
           object Bevel1: TBevel
             Left = 2
             Top = 52
-            Width = 136
+            Width = 135
             Height = 2
           end
           object RxLabel30: TRxLabel
             Left = 5
-            Top = 126
+            Top = 139
             Width = 36
             Height = 13
             Caption = 'Speed:'
@@ -1692,7 +1678,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           end
           object RxLabel31: TRxLabel
             Left = 5
-            Top = 143
+            Top = 156
             Width = 39
             Height = 13
             Caption = 'Accrue:'
@@ -1700,53 +1686,16 @@ object frmPropertiesObject: TfrmPropertiesObject
           end
           object RxLabel32: TRxLabel
             Left = 5
-            Top = 161
+            Top = 174
             Width = 33
             Height = 13
             Caption = 'Falloff:'
             ShadowColor = 15263976
           end
-          object RxLabel33: TRxLabel
-            Left = 5
-            Top = 179
-            Width = 35
-            Height = 13
-            Caption = 'Power:'
-            ShadowColor = 15263976
-          end
-          object RxLabel13: TRxLabel
-            Left = 5
-            Top = 88
-            Width = 60
-            Height = 13
-            Caption = 'Direct bone:'
-            ShadowColor = 15263976
-          end
-          object cbSMotionFX: TMultiObjCheck
-            Left = 4
-            Top = 196
-            Width = 53
-            Height = 15
-            Alignment = taLeftJustify
-            Caption = 'FX:'
-            TabOrder = 0
-            OnClick = seSMotionChange
-          end
-          object cbSStartMotionBone: TComboBox
-            Left = 16
-            Top = 68
-            Width = 121
-            Height = 19
-            Style = csOwnerDrawVariable
-            ItemHeight = 13
-            Sorted = True
-            TabOrder = 1
-            OnChange = seSMotionChange
-          end
           object seSMotionSpeed: TMultiObjSpinEdit
             Left = 44
-            Top = 124
-            Width = 93
+            Top = 137
+            Width = 92
             Height = 18
             Hint = 
               'speed scale (in units), 1.0 = full speed, 0.0 = not playing at a' +
@@ -1757,7 +1706,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             ValueType = vtFloat
             Value = 1
             AutoSize = False
-            TabOrder = 2
+            TabOrder = 0
             OnLWChange = seSMotionSpeedLWChange
             OnChange = seSMotionChange
             OnExit = seSMotionChange
@@ -1765,8 +1714,8 @@ object frmPropertiesObject: TfrmPropertiesObject
           end
           object seSMotionAccrue: TMultiObjSpinEdit
             Left = 44
-            Top = 142
-            Width = 93
+            Top = 155
+            Width = 92
             Height = 18
             Hint = 'accruation speed'
             LWSensitivity = 1
@@ -1775,13 +1724,13 @@ object frmPropertiesObject: TfrmPropertiesObject
             ValueType = vtFloat
             Value = 2
             AutoSize = False
-            TabOrder = 3
+            TabOrder = 1
             OnChange = seSMotionChange
           end
           object seSMotionFalloff: TMultiObjSpinEdit
             Left = 44
-            Top = 160
-            Width = 93
+            Top = 173
+            Width = 92
             Height = 18
             Hint = 
               'CYCLE: falloff speed (of PREVIOUS animation)'#13#10'FX: falloff speed ' +
@@ -1792,50 +1741,108 @@ object frmPropertiesObject: TfrmPropertiesObject
             ValueType = vtFloat
             Value = 2
             AutoSize = False
-            TabOrder = 4
+            TabOrder = 2
             OnChange = seSMotionChange
           end
-          object seSMotionPower: TMultiObjSpinEdit
-            Left = 44
-            Top = 178
-            Width = 93
-            Height = 18
-            Hint = 
-              'CYCLE: power must ALWAYS be 1.0'#13#10'FX: power of modification of cu' +
-              'rrent cycle+fx'
-            LWSensitivity = 1
-            ButtonKind = bkLightWave
-            ValueType = vtFloat
-            Value = 1
-            AutoSize = False
-            TabOrder = 5
+          object pcAnimType: TPageControl
+            Left = 2
+            Top = 55
+            Width = 135
+            Height = 81
+            ActivePage = tsCycle
+            Style = tsFlatButtons
+            TabOrder = 3
             OnChange = seSMotionChange
-          end
-          object cbSMotionStopAtEnd: TMultiObjCheck
-            Left = 58
-            Top = 197
-            Width = 75
-            Height = 15
-            Alignment = taLeftJustify
-            Caption = 'Stop at end'
-            TabOrder = 6
-            OnClick = seSMotionChange
-          end
-          object cbSDirectMotionBone: TComboBox
-            Left = 16
-            Top = 101
-            Width = 121
-            Height = 19
-            Style = csOwnerDrawVariable
-            ItemHeight = 13
-            TabOrder = 7
-            OnChange = seSMotionChange
+            object tsCycle: TTabSheet
+              Caption = 'Cycle'
+              object RxLabel39: TRxLabel
+                Left = 0
+                Top = -2
+                Width = 51
+                Height = 13
+                Caption = 'Bone part:'
+                ShadowColor = 15263976
+              end
+              object cbSBonePart: TComboBox
+                Left = 12
+                Top = 12
+                Width = 118
+                Height = 19
+                Style = csOwnerDrawVariable
+                ItemHeight = 13
+                TabOrder = 0
+                OnChange = seSMotionChange
+              end
+              object cbSMotionStopAtEnd: TMultiObjCheck
+                Left = 0
+                Top = 35
+                Width = 75
+                Height = 15
+                Alignment = taLeftJustify
+                Caption = 'Stop at end'
+                TabOrder = 1
+                OnClick = seSMotionChange
+              end
+            end
+            object tsFX: TTabSheet
+              Caption = 'FX'
+              ImageIndex = 1
+              object RxLabel40: TRxLabel
+                Left = 0
+                Top = -2
+                Width = 54
+                Height = 13
+                Caption = 'Start bone:'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -11
+                Font.Name = 'MS Sans Serif'
+                Font.Style = []
+                ParentFont = False
+                ShadowColor = 15263976
+              end
+              object RxLabel34: TRxLabel
+                Left = 0
+                Top = 35
+                Width = 35
+                Height = 13
+                Caption = 'Power:'
+                ShadowColor = 15263976
+              end
+              object cbSStartMotionBone: TComboBox
+                Left = 12
+                Top = 12
+                Width = 118
+                Height = 19
+                Style = csOwnerDrawVariable
+                ItemHeight = 13
+                Sorted = True
+                TabOrder = 0
+                OnChange = seSMotionChange
+              end
+              object seSMotionPower: TMultiObjSpinEdit
+                Left = 38
+                Top = 32
+                Width = 91
+                Height = 18
+                Hint = 
+                  'CYCLE: power must ALWAYS be 1.0'#13#10'FX: power of modification of cu' +
+                  'rrent cycle+fx'
+                LWSensitivity = 1
+                ButtonKind = bkLightWave
+                ValueType = vtFloat
+                Value = 1
+                AutoSize = False
+                TabOrder = 1
+                OnChange = seSMotionChange
+              end
+            end
           end
         end
         object paSAnimBottom: TPanel
           Left = 0
           Top = 235
-          Width = 363
+          Width = 364
           Height = 61
           Align = alBottom
           BevelOuter = bvNone
@@ -1843,7 +1850,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           object GroupBox5: TGroupBox
             Left = 0
             Top = 0
-            Width = 222
+            Width = 223
             Height = 61
             Align = alClient
             Caption = ' Summary Info '
@@ -1916,7 +1923,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             end
           end
           object gbSMotionCommand: TGroupBox
-            Left = 222
+            Left = 223
             Top = 0
             Width = 141
             Height = 61
@@ -1932,6 +1939,12 @@ object frmPropertiesObject: TfrmPropertiesObject
               BevelShow = False
               CloseButton = False
               Caption = 'Append'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
               Transparent = False
               FlatAlwaysEdge = True
               OnClick = ebSAppendMotionClick
@@ -1945,6 +1958,12 @@ object frmPropertiesObject: TfrmPropertiesObject
               BevelShow = False
               CloseButton = False
               Caption = 'Rename'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
               Transparent = False
               FlatAlwaysEdge = True
               OnClick = ebSRenameMotionClick
@@ -1958,6 +1977,12 @@ object frmPropertiesObject: TfrmPropertiesObject
               BevelShow = False
               CloseButton = False
               Caption = 'Delete'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
               Transparent = False
               FlatAlwaysEdge = True
               OnClick = ebSDeleteMotionClick
@@ -1971,6 +1996,12 @@ object frmPropertiesObject: TfrmPropertiesObject
               BevelShow = False
               CloseButton = False
               Caption = 'Clear'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
               Transparent = False
               FlatAlwaysEdge = True
               OnClick = ebSMotionClearClick
@@ -1984,6 +2015,12 @@ object frmPropertiesObject: TfrmPropertiesObject
               BevelShow = False
               CloseButton = False
               Caption = 'Save'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
               Transparent = False
               FlatAlwaysEdge = True
               OnClick = ebSMotionSaveClick
@@ -1997,6 +2034,12 @@ object frmPropertiesObject: TfrmPropertiesObject
               BevelShow = False
               CloseButton = False
               Caption = 'Load'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
               Transparent = False
               FlatAlwaysEdge = True
               OnClick = ebSMotionLoadClick
@@ -2121,7 +2164,7 @@ object frmPropertiesObject: TfrmPropertiesObject
   object paBottom: TPanel
     Left = 0
     Top = 342
-    Width = 371
+    Width = 372
     Height = 23
     Align = alBottom
     BevelOuter = bvNone

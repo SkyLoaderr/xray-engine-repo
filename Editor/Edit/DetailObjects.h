@@ -20,9 +20,9 @@ struct SIndexDist{
 };
 DEFINE_SVECTOR		(SIndexDist,4,SIndexDistVec,SIndexDistIt);
 
-const int		dm_max_objects	= 32;
+const int		dm_max_objects	= 64;
 const int		dm_obj_in_slot	= 4;
-const int		dm_size			= 4;
+const int		dm_size			= 8;
 const int		dm_cache_line	= 1+dm_size+1+dm_size+1;
 const int		dm_cache_size	= dm_cache_line*dm_cache_line;
 
@@ -162,6 +162,7 @@ public:
 						CDetailManager			();
     virtual 			~CDetailManager			();
 
+    bool				Load_V1					(CStream&);
     bool				Load            		(CStream&);
     void				Save            		(CFS_Base&);
     void				Export          		(LPCSTR fn);
@@ -170,11 +171,8 @@ public:
     bool				UpdateBaseTexture		(LPCSTR tex_name=0);
     bool				UpdateSlotObjects		(int x, int z);
     bool				UpdateObjects			(bool bUpdateTex, bool bUpdateSelectedOnly);
-    bool				GenerateSlots			(LPCSTR tex_name);
-    void				RandomizeSlotScale		(int x, int z);
-    void				RandomizeSlotRotate		(int x, int z);
-    void				RandomScale				();
-    void				RandomRotate			();
+    bool				Initialize				(LPCSTR tex_name);
+    bool				Reinitialize			();
     void				InvalidateSlots			();
 
     CDetail*			AppendObject			(LPCSTR name, bool bTestUnique=true);

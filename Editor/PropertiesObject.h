@@ -100,21 +100,15 @@ __published:	// IDE-managed Components
 	TRxLabel *lbSMotionFrames;
 	TRxLabel *RxLabel27;
 	TRxLabel *lbSMotionFPS;
-	TRxLabel *RxLabel25;
 	TBevel *Bevel1;
 	TRxLabel *RxLabel30;
 	TRxLabel *RxLabel31;
 	TRxLabel *RxLabel32;
-	TRxLabel *RxLabel33;
-	TMultiObjCheck *cbSMotionFX;
-	TComboBox *cbSStartMotionBone;
 	TMultiObjSpinEdit *seSMotionSpeed;
 	TMultiObjSpinEdit *seSMotionAccrue;
 	TMultiObjSpinEdit *seSMotionFalloff;
-	TMultiObjSpinEdit *seSMotionPower;
 	TExtBtn *ExtBtn3;
 	TExtBtn *ExtBtn4;
-	TMultiObjCheck *cbSMotionStopAtEnd;
 	TPanel *paTex_Surf;
 	TPanel *paTexture;
 	TGroupBox *GroupBox2;
@@ -181,8 +175,16 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn1;
 	TExtBtn *ExtBtn2;
 	TFormStorage *fsStorage;
-	TRxLabel *RxLabel13;
-	TComboBox *cbSDirectMotionBone;
+	TPageControl *pcAnimType;
+	TTabSheet *tsCycle;
+	TRxLabel *RxLabel39;
+	TComboBox *cbSBonePart;
+	TTabSheet *tsFX;
+	TRxLabel *RxLabel40;
+	TRxLabel *RxLabel34;
+	TComboBox *cbSStartMotionBone;
+	TMultiObjSpinEdit *seSMotionPower;
+	TMultiObjCheck *cbSMotionStopAtEnd;
     void __fastcall ebEditMeshClick(TObject *Sender);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
@@ -268,7 +270,6 @@ private:	// User declarations
 	// skeleton motion
 	void __fastcall ebSResetActiveMotion(TElTreeItem* ignore_item);
     TElTreeItem* FindSMotionItem(const char* name);
-    void UpdateSMotionDirectBones();
 public:		// User declarations
     __fastcall TfrmPropertiesObject(TComponent* Owner);
     int __fastcall Run(ObjectList* pObjects, bool& bChange);
