@@ -521,7 +521,18 @@ void CAI_Stalker::SearchEnemy()
 					m_iCurrentSuspiciousNodeIndex = -1;
 				}
 			}
-			if ((getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,m_tSavedEnemyPosition) != -1) && (bfIf_I_SeePosition(m_tSavedEnemyPosition) || (AI_NodeID == m_dwSavedEnemyNodeID)))
+			bool bB = m_bStateChanged && !::Random.randI(2);
+			if (bB) {
+				Msg("Going to the position being anticipated");
+				SSearchPlace tSearchPlace;
+				tSearchPlace.dwSearched = 0;
+				tSearchPlace.dwNodeID = m_dwSavedEnemyNodeID;
+				tSearchPlace.fCost = 0;
+				tSearchPlace.dwGroup = Group.m_tpaSuspiciousGroups.size();
+				Group.m_tpaSuspiciousGroups.push_back(false);
+				Group.m_tpaSuspiciousNodes.push_back(tSearchPlace);
+			}
+			if (bB || ((getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,m_tSavedEnemyPosition) != -1) && (bfIf_I_SeePosition(m_tSavedEnemyPosition))) || (AI_NodeID == m_dwSavedEnemyNodeID))
 				m_tActionState = eActionStateWatchGo;
 			else {
 				bool bOk = false;	
