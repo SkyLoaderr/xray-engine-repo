@@ -186,7 +186,7 @@ function add_to_binder(object)
 	local manager = object:motivation_action_manager()
 
 	properties["state_end"]		= xr_evaluators_id.state_change
-	properties["event"] 		= xr_evaluators_id.stohe_reactions_base + 0
+	properties["event"] 		= xr_evaluators_id.reactions
 
 	operators["wait"] 		= xr_actions_id.stohe_reactions_base + 0
 
