@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "build.h"
 
+extern void		Detach		(vecFace* S);
+
 void CBuild::xrPhase_Subdivide()
 {
 	Status("Subdividing in space...");
@@ -96,10 +98,8 @@ void CBuild::xrPhase_Subdivide()
 			// Delete old SPLIT and push two new
 			g_XSplit[X].clear	();
 			g_XSplit.erase		(g_XSplit.begin()+X); X--;
-			g_XSplit.push_back	(s1);
-			g_XSplit.push_back	(s2);
-			
-			// Detach
+			g_XSplit.push_back	(s1);	Detach(&s1);
+			g_XSplit.push_back	(s2);	Detach(&s2);
 		}
 		s1.clear	();
 		s2.clear	();
