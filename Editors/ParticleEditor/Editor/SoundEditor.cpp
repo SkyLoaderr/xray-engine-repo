@@ -59,24 +59,22 @@ void __fastcall TfrmSoundLib::EditLib(AnsiString& title, bool bImport)
 
         if (!form->bImportMode)  SndLib.GetSounds(sound_map);
 		form->modif_map.clear	();
-
-        form->paSoundCount->Caption = AnsiString(" Sounds in list: ")+AnsiString(sound_map.size());
     }
 
-    form->ShowModal();
-    UI.RedrawScene();
+    form->ShowModal			();
+    UI.RedrawScene			();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmSoundLib::ImportSounds()
 {
-	sound_map.clear();
-    int new_cnt = SndLib.GetLocalNewSounds(sound_map);
+	sound_map.clear			();
+    int new_cnt 			= SndLib.GetLocalNewSounds(sound_map);
     if (new_cnt){
     	if (ELog.DlgMsg(mtInformation,"Found %d new sound(s)",new_cnt))
-    		EditLib(AnsiString("Update sounds"),true);
+    		EditLib			(AnsiString("Update sounds"),true);
     }else{
-    	ELog.DlgMsg(mtInformation,"Can't find new sounds.");
+    	ELog.DlgMsg			(mtInformation,"Can't find new sounds.");
     }
 }
 

@@ -79,6 +79,7 @@ BOOL CSoundManager::RemoveSound(LPCSTR fname, EItemType type)
     }else if (TYPE_OBJECT==type){
         AnsiString src_name;
         FS.update_path			(src_name,_sounds_,fname);
+        src_name				= ChangeFileExt(src_name,".wav");
         if (FS.exist(src_name.c_str())){
             AnsiString thm_name = ChangeFileExt(fname,".thm");
             AnsiString game_name= ChangeFileExt(fname,".ogg");

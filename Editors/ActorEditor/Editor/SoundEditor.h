@@ -31,7 +31,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ebOk;
 	TPanel *paProperties;
 	TPanel *paItems;
-	TPanel *paSoundCount;
 	TSplitter *Splitter1;
 	TBevel *Bevel2;
 	TImageList *ImageList;

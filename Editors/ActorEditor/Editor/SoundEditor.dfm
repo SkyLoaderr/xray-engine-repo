@@ -128,18 +128,6 @@ object frmSoundLib: TfrmSoundLib
     BevelOuter = bvNone
     ParentColor = True
     TabOrder = 1
-    object paSoundCount: TPanel
-      Left = 0
-      Top = 412
-      Width = 168
-      Height = 16
-      Align = alBottom
-      Alignment = taLeftJustify
-      BevelOuter = bvNone
-      Caption = 'Sound: 123'
-      Color = 10528425
-      TabOrder = 0
-    end
   end
   object fsStorage: TFormStorage
     Version = 1
