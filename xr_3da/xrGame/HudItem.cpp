@@ -389,3 +389,7 @@ void CHudItem::OnH_B_Independent	()
 	
 	StopHUDSounds();
 }
+
+void CHudItem::OnH_A_Independent	()
+{
+}

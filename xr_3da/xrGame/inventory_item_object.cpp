@@ -78,6 +78,13 @@ void CInventoryItemObject::OnH_B_Independent()
 	CPhysicItem::OnH_B_Independent		();
 }
 
+void CInventoryItemObject::OnH_A_Independent()
+{
+	CInventoryItem::OnH_A_Independent	();
+	CPhysicItem::OnH_A_Independent		();
+}
+
+
 void CInventoryItemObject::OnH_B_Chield		()
 {
 	CPhysicItem::OnH_B_Chield			();

@@ -71,6 +71,12 @@ void CHudItemObject::OnH_B_Independent	()
 	CInventoryItemObject::OnH_B_Independent	();
 }
 
+void CHudItemObject::OnH_A_Independent	()
+{
+	CHudItem::OnH_A_Independent				();
+	CInventoryItemObject::OnH_A_Independent	();
+}
+
 BOOL CHudItemObject::net_Spawn			(CSE_Abstract* DC)
 {
 	return						(

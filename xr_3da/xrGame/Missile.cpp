@@ -164,6 +164,12 @@ void CMissile::OnH_A_Chield()
 		spawn_fake_missile	();
 }
 
+void CMissile::OnH_A_Independent() 
+{
+	inherited::OnH_A_Independent();
+}
+
+
 void CMissile::OnH_B_Independent() 
 {
 	inherited::OnH_B_Independent();

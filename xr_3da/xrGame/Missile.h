@@ -36,6 +36,7 @@ public:
 	virtual void OnH_B_Chield();
 	virtual void OnH_A_Chield();
 	virtual void OnH_B_Independent();
+	virtual void OnH_A_Independent();
 
 	virtual void OnEvent(NET_Packet& P, u16 type);
 

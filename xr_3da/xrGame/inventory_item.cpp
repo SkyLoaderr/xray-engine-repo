@@ -204,6 +204,11 @@ bool CInventoryItem::Merge(PIItem /**pIItem/**/)
 
 void CInventoryItem::OnH_B_Independent	()
 {
+	m_eItemPlace = eItemPlaceUndefined ;
+}
+
+void CInventoryItem::OnH_A_Independent	()
+{
 	m_eItemPlace = eItemPlaceUndefined;
 }
 
