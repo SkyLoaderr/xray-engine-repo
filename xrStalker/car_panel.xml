@@ -13,11 +13,14 @@
 	</car_health_progress_bar>
 
 
-	<speedometer x="-140" y="0" width="150" height="100" align="rb">
+	<speedometer x="-150" y="0" width="150" height="100" align="rb">
 		<text x="80" y="5" font="small" r="255" g="255" b="255" a="130">speed</text>
 		<texture>ui\ui_mn_health</texture>
 	</speedometer>
 
-
+	<tachometer x="-300" y="0" width="150" height="100" align="rb">
+		<text x="80" y="5" font="small" r="255" g="255" b="255" a="130">RPM</text>
+		<texture>ui\ui_mn_health</texture>
+	</tachometer>
 
 </window>
