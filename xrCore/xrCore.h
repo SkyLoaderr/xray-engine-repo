@@ -93,6 +93,23 @@
     #endif
 #endif
 
+// inline control - redefine to use compiler's heuristics ONLY
+// it seems "IC" is misused in many places which cause code-bloat
+// ...and VC7.1 really don't miss opportunities for inline :)
+#define _inline			inline
+#define __inline		inline
+#define __forceinline	inline
+#define IC				inline
+
+#ifndef DEBUG
+	#pragma inline_depth	( 254 )
+	#pragma inline_recursion( on )
+	#ifndef __BORLANDC__
+		#pragma intrinsic	(abs, fabs, fmod, sin, cos, tan, asin, acos, atan, sqrt, exp, log, log10, strcpy, strcat)
+	#endif
+#endif
+
+// work-around dumb borland compiler
 #ifdef __BORLANDC__
 	#define ALIGN(a)
 
@@ -101,19 +118,8 @@
 	#include <utime.h>
 	#define _utimbuf utimbuf
 	#define MODULE_NAME 		"xrCoreB.dll"
-    #ifndef DEBUG
-    	#pragma inline_depth	( 254 )
-	    #pragma inline_recursion( on )
-//	    #pragma intrinsic		(abs, fabs, fmod, sin, cos, tan, asin, acos, atan, sqrt, exp, log, log10, strcpy, strcat)
-	    #define __forceinline	inline
-	    #define _inline			inline
-	    #define __inline		inline
-	    #define IC				inline
-    #else
-	    #define __forceinline	inline
-	    #define IC				inline
-    #endif
-    // function redefinition
+
+	// function redefinition
     #define fabsf(a) fabs(a)
     #define sinf(a) sin(a)
     #define asinf(a) asin(a)
@@ -133,27 +139,9 @@
 	#define _RC_CHOP RC_CHOP
 	#define _RC_NEAR RC_NEAR
 #else
-	#define ALIGN(a) __declspec(align(a))
+	#define ALIGN(a)		__declspec(align(a))
 	#include <sys\utime.h>
 	#define MODULE_NAME 	"xrCore.dll"
-	
-	#ifdef __VECTORC__
-		#define IC					inline
-		#define M_NOSTDCONTAINERS_EXT
-	#else
-		// msvc
-		#ifndef DEBUG
-			#pragma inline_depth	( 254 )
-			#pragma inline_recursion( on )
-			#pragma intrinsic		(abs, fabs, fmod, sin, cos, tan, asin, acos, atan, sqrt, exp, log, log10, strcpy, strcat)
-			#define inline			__forceinline
-			#define _inline			__forceinline
-			#define __inline		__forceinline
-			#define IC				__forceinline
-		#else
-			#define IC				__forceinline
-		#endif
-	#endif
 #endif
 
 // Warnings
