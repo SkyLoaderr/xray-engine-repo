@@ -104,6 +104,11 @@ void CSoundRender_Source::LoadWaveAs2D	(LPCSTR pName)
 
 	//	2411252 - Andy
 	SoundRender.pBuffer->GetFormat(&wfxdest,sizeof(wfxdest),0);
+	if ((pFormat->wFormatTag!=1)||(pFormat->nChannels!=2)||(pFormat->nSamplesPerSec!=44100)||(pFormat->wBitsPerSample!=16))
+	{
+		if (0==strstr(Core.Params,"-sound_any_fmt"))	Debug.fatal	("! Invalid wave format (must be 44KHz,16bit,stereo), file: %s",pName);
+		else											Msg			("! Invalid wave format (must be 44KHz,16bit,stereo), file: %s",pName);
+	}
 	if ((pFormat->wFormatTag!=1)&&(pFormat->nSamplesPerSec!=wfxdest.nSamplesPerSec)) {
 		// Firstly convert to PCM with SRC freq and Channels; BPS = as Dest
 		wfxdest.nChannels		= pFormat->nChannels;
