@@ -215,12 +215,13 @@ void CObject::Sector_Detect	()
 	// Detect sector
 	CSector*	P = 0;
 	
-	VERIFY		(pVisual);
-	Fvector		Pos;
-	pVisual->bv_BBox.getcenter(Pos);
-	Pos.add		(vPosition);
-	P			= Render.detectSector(vPosition);
-	Sector_Move	(P);
+	if (pVisual)	{
+		Fvector		Pos;
+		pVisual->bv_BBox.getcenter(Pos);
+		Pos.add		(vPosition);
+		P			= Render.detectSector(vPosition);
+		Sector_Move	(P);
+	}
 }
 
 void CObject::Sector_Move	(CSector* P)
