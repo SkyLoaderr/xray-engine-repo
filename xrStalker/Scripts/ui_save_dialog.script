@@ -26,7 +26,7 @@ function save_dialog:InitControls()
 							 y = 0,
 							 height = 40,
 							 width  = 135}
-	btn_ok_rect.y = btn_ok_rect.height + indent
+	btn_ok_rect.y = main_rect.height - (btn_ok_rect.height + indent)
 	local btn_cancel_rect = {x = btn_ok_rect.x + btn_ok_rect.width + indent,
 							 y = btn_ok_rect.y,
 							 height = btn_ok_rect.height,
