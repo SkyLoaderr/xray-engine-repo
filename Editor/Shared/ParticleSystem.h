@@ -337,7 +337,7 @@ public:
 		float fParticlesNeeded = m_fBirthRate * fBK * dT + m_fEmissionResidue;
 
 		// cast the float fparticlesNeeded to a INT to see how many particles we really need to create.
-		int iParticlesCreated = DWORD(fParticlesNeeded);
+		int iParticlesCreated = iFloor(fParticlesNeeded);
 
 		if (p_present+iParticlesCreated>=m_ParticleLimit)
 			iParticlesCreated = iFloor(m_ParticleLimit)-p_present;
