@@ -669,6 +669,16 @@
 								RelativePath=".\dijkstra_inline.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="DijkstraBidirectional"
+							Filter="">
+							<File
+								RelativePath=".\dijkstra_bidirectional.h">
+							</File>
+							<File
+								RelativePath=".\dijkstra_bidirectional_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="data_storages"
@@ -766,30 +776,6 @@
 							</Filter>
 						</Filter>
 						<Filter
-							Name="vertex_allocators"
-							Filter="">
-							<Filter
-								Name="fixed"
-								Filter="">
-								<File
-									RelativePath=".\vertex_allocator_fixed.h">
-								</File>
-								<File
-									RelativePath=".\vertex_allocator_fixed_inline.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="generic"
-								Filter="">
-								<File
-									RelativePath=".\vertex_allocator_generic.h">
-								</File>
-								<File
-									RelativePath=".\vertex_allocator_generic_inline.h">
-								</File>
-							</Filter>
-						</Filter>
-						<Filter
 							Name="data_storage_constructors"
 							Filter="">
 							<File
@@ -837,6 +823,30 @@
 								</File>
 								<File
 									RelativePath=".\vertex_path_inline.h">
+								</File>
+							</Filter>
+						</Filter>
+						<Filter
+							Name="vertex_allocators"
+							Filter="">
+							<Filter
+								Name="fixed"
+								Filter="">
+								<File
+									RelativePath=".\vertex_allocator_fixed.h">
+								</File>
+								<File
+									RelativePath=".\vertex_allocator_fixed_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="generic"
+								Filter="">
+								<File
+									RelativePath=".\vertex_allocator_generic.h">
+								</File>
+								<File
+									RelativePath=".\vertex_allocator_generic_inline.h">
 								</File>
 							</Filter>
 						</Filter>
