@@ -92,7 +92,7 @@ void CSoundRender_CoreA::_initialize	(u64 window)
 
 void CSoundRender_CoreA::_clear	()
 {
-	inherited::_destroy			();
+	inherited::_clear			();
     // remove targets
 	CSoundRender_Target*	T	= 0;
 	for (u32 tit=0; tit<s_targets.size(); tit++)

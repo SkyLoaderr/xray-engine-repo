@@ -133,7 +133,7 @@ void CSoundRender_CoreD::_initialize	(u64 window)
 
 void CSoundRender_CoreD::_clear	()
 {
-	inherited::_destroy			();
+	inherited::_clear			();
 
     // remove targets
 	CSoundRender_Target*	T	= 0;
