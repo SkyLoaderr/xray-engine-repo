@@ -190,7 +190,7 @@ end
 
 -- сохранение
 function se_smart_terrain:STATE_Write( packet )
-	log( "se_smart_terrain::STATE_Write called!" )
+--	log( "se_smart_terrain::STATE_Write called!" )
 	cse_alife_smart_zone.STATE_Write( self, packet )
 
 	self:print()
@@ -227,7 +227,7 @@ end
 
 -- восстановление
 function se_smart_terrain:STATE_Read( packet, size )
-	log( "se_smart_terrain::STATE_Read called!" )
+--	log( "se_smart_terrain::STATE_Read called!" )
 	cse_alife_smart_zone.STATE_Read( self, packet, size )
 
 --	printf( "before read" )
@@ -278,7 +278,7 @@ function se_smart_terrain:STATE_Read( packet, size )
 end
 
 function se_smart_terrain:FillProps( pref, items )
-	log( "se_smart_terrain::FillProps called!" )
+--	log( "se_smart_terrain::FillProps called!" )
 	cse_alife_smart_zone.FillProps( self, pref, items )
 
 --	local prefix = pref .. "\\" .. self.section_name .. "\\smart terrain\\"
@@ -367,7 +367,7 @@ end
 
 -- сохранение клиентского объекта, обновляем серверный
 function cl_smart_terrain:save()
-	printf( "smart terrain client save" )
+--	printf( "smart terrain client save" )
 	sim = alife()
 	o   = sim:object( self.id )
 
