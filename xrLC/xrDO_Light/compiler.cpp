@@ -5,6 +5,7 @@
 #include "cl_rapid.h"
 #include "cl_intersect.h"
 #include "xrThread.h"
+#include "detailformat.h"
 
 #define LT_DIRECT		0
 #define LT_POINT		1
@@ -238,7 +239,7 @@ public:
 
 		Fvector			P,D,PLP;
 		D.set			(0,1,0);
-		float coeff		= 0.5f*g_params.fPatchSize/float(LIGHT_Count);
+		float coeff		= 0.5f*DETAIL_SLOT_SIZE/float(LIGHT_Count);
 		
 		LSelection		Selected;
 		float			LperN	= float(g_lights.size());

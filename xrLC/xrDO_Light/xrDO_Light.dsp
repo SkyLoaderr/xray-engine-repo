@@ -416,6 +416,10 @@ SOURCE=.\compiler.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\DetailFormat.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\light.h
 # End Source File
 # Begin Source File
