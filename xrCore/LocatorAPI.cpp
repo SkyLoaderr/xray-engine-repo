@@ -22,7 +22,7 @@ CLocatorAPI*	xr_FS	= NULL;
 FS_Path::FS_Path	(LPCSTR _Root, LPCSTR _Add, LPCSTR _DefExt, LPCSTR _FilterCaption, u32 flags)
 {
 	VERIFY			(_Root&&_Root[0]);
-	string256		temp;
+	string_path		temp;
     strcpy			(temp,_Root); 
     if (_Add) 		strcat(temp,_Add);
 	if (temp[0] && temp[xr_strlen(temp)-1]!='\\') strcat(temp,"\\");
@@ -55,7 +55,7 @@ void	FS_Path::_set	(LPSTR add)
 	m_Add			= strlwr(xr_strdup(add));
 
 	// m_Path
-	string256		temp;
+	string_path		temp;
 	strconcat		(temp,m_Root,m_Add);
 	if (temp[xr_strlen(temp)-1]!='\\') strcat(temp,"\\");
 	xr_free			(m_Path);
@@ -67,7 +67,7 @@ LPCSTR FS_Path::_update(LPSTR dest, LPCSTR src)const
 {
 	R_ASSERT(dest);
     R_ASSERT(src);
-	string256		temp;
+	string_path		temp;
 	strcpy			(temp,src);
 	return strlwr	(strconcat(dest,m_Path,temp));
 }
@@ -127,9 +127,9 @@ void CLocatorAPI::Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size_real, u32 s
 	files.insert		(desc); 
 	
 	// Try to register folder(s)
-	string256			temp;	strcpy(temp,desc.name);
-	string256			path;
-	string256			folder;
+	string_path			temp;	strcpy(temp,desc.name);
+	string_path			path;
+	string_path			folder;
 	while (temp[0]) 
 	{
 		_splitpath		(temp, path, folder, 0, 0 );
@@ -167,7 +167,7 @@ void CLocatorAPI::ProcessArchive(const char* path)
 	IReader*	hdr		= A.vfs->open_chunk(1);
 	while (!hdr->eof())
 	{
-		string512		name,full;
+		string_path		name,full;
 		hdr->r_stringZ	(name);
 		strconcat		(full,base,name);
 
@@ -187,7 +187,7 @@ void CLocatorAPI::ProcessOne	(const char* path, LPVOID _F)
 {
 	_finddata_t& F	= *((_finddata_t*)_F);
 
-	string256	N;
+	string_path	N;
 	strcpy		(N,path);
 	strcat		(N,F.name);
 	strlwr		(N);
@@ -218,7 +218,7 @@ bool CLocatorAPI::Recurse		(const char* path)
     _finddata_t		sFile;
     intptr_t		hFile;
 
-	string256		N;
+	string_path		N;
 	strcpy			(N,path);
 	strcat			(N,"*.*");
 
@@ -257,7 +257,7 @@ void CLocatorAPI::_initialize	(BOOL bBuildCopy)
 
 	// append appliction path
     {
-        string256		app_root,fn,dr,di;
+        string_path		app_root,fn,dr,di;
         GetModuleFileName(GetModuleHandle(MODULE_NAME),fn,sizeof(fn));
         _splitpath		(fn,dr,di,0,0);
         strconcat		(app_root,dr,di);                                       
@@ -345,7 +345,7 @@ const CLocatorAPI::file* CLocatorAPI::exist			(const char* F)
 	// проверить нужно ли пересканировать пути
     check_pathes	();
 
-	string256		N;
+	string_path		N;
 	strcpy			(N,F);
 	strlwr			(N);
 	file			desc;
@@ -357,7 +357,7 @@ const CLocatorAPI::file* CLocatorAPI::exist			(const char* F)
 
 const CLocatorAPI::file* CLocatorAPI::exist			(const char* path, const char* name)
 {
-	string256		temp;       
+	string_path		temp;       
     update_path		(temp,path,name);
 	return exist(temp);
 }
@@ -370,7 +370,7 @@ const CLocatorAPI::file* CLocatorAPI::exist			(char* fn, const char* path, const
 
 const CLocatorAPI::file* CLocatorAPI::exist				(char* fn, const char* path, const char* name, const char* ext)
 {
-	string256 nm;
+	string_path nm;
 	strconcat		(nm,name,ext);
     update_path		(fn,path,nm);
 	return exist(fn);
@@ -378,7 +378,7 @@ const CLocatorAPI::file* CLocatorAPI::exist				(char* fn, const char* path, cons
 
 xr_vector<char*>* CLocatorAPI::file_list_open			(const char* initial, const char* folder, u32 flags)
 {
-	string256		N;
+	string_path		N;
 	R_ASSERT		(initial&&initial[0]);
 	update_path		(N,initial,folder);
 	return			file_list_open(N,flags);
@@ -441,7 +441,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
     check_pathes	();
 
 	// correct path
-	string512		fname;
+	string_path		fname,fname_copy;
 	strcpy			(fname,_fname);
 	strlwr			(fname);
 	if (path&&path[0]) update_path(fname,path,fname);
@@ -452,7 +452,9 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 	files_it	I 	= files.find(desc_f);
 	if (I == files.end()) return NULL;
 
-	const file& desc	= *I;
+	const	file& desc	= *I;
+	LPCSTR	source_name = &fname[0];
+
 	// OK, analyse
 	if (0xffffffff == desc.vfs)
 	{
@@ -470,7 +472,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 				if (0==memcmp(path_base,fname,len_base))	{
 					BOOL		bCopy	= FALSE;
 
-					string512	fname_in_cache	;
+					string_path	fname_in_cache	;
 					update_path	(fname_in_cache,"$cache$",path_file+len_base);
 					files_it	fit	= file_find(fname_in_cache);
 					if (fit!=files.end())	
@@ -502,7 +504,9 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 					}
 
 					// Use
-					strcpy	(fname,fname_in_cache);
+					source_name	= &fname_copy[0];
+					strcpy		(fname_copy,fname);
+					strcpy		(fname,fname_in_cache);
 				}
 			}
 		}
@@ -526,7 +530,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 
 	if ( R && m_Flags.is(flBuildCopy|flReady) )
 	{
-		string512	cpy_name;
+		string_path	cpy_name;
 		FS_Path* 	P; 
 		if (fname==strstr(fname,(P=get_path("$server_root$"))->m_Path)||
         	fname==strstr(fname,(P=get_path("$server_data_root$"))->m_Path)){
@@ -546,7 +550,7 @@ void	CLocatorAPI::r_close	(IReader* &fs)
 
 IWriter* CLocatorAPI::w_open	(LPCSTR path, LPCSTR _fname)
 {
-	string512	fname;
+	string_path	fname;
 	strlwr(strcpy(fname,_fname));//,".$");
 	if (path&&path[0]) update_path(fname,path,fname);
 	return xr_new<CFileWriter>(fname);
@@ -555,7 +559,7 @@ IWriter* CLocatorAPI::w_open	(LPCSTR path, LPCSTR _fname)
 void	CLocatorAPI::w_close(IWriter* &S)
 {
 	R_ASSERT	(S->fName&&S->fName[0]);
-	string256	fname;
+	string_path	fname;
 	strcpy		(fname,S->fName);
 	xr_delete	(S);
     struct _stat st;
@@ -577,7 +581,7 @@ CLocatorAPI::files_it CLocatorAPI::file_find(LPCSTR fname)
 
 BOOL CLocatorAPI::dir_delete(LPCSTR path,LPCSTR nm,BOOL remove_files)
 {
-	string512	fpath;
+	string_path	fpath;
 	if (path&&path[0]) 	update_path(fpath,path,nm);
     else				strcpy(fpath,nm);
 
@@ -617,7 +621,7 @@ BOOL CLocatorAPI::dir_delete(LPCSTR path,LPCSTR nm,BOOL remove_files)
 
 void CLocatorAPI::file_delete(LPCSTR path, LPCSTR nm)
 {
-	string512	fname;
+	string_path	fname;
 	if (path&&path[0]) 	update_path(fname,path,nm);
     else				strcpy(fname,nm);
 
