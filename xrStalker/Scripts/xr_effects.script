@@ -17,7 +17,7 @@ function gar_dm_bandits_fight(actor, npc)
 		end
 	end
 
-	local bandit2 = level.object("gar_dramscene_bandit2")
+	local bandit2 = utils.obj_by_sid(302)
 	if bandit2 then
 		novice:set_relation(game_object.enemy, bandit2)
 		bandit2:set_relation(game_object.enemy, novice)
@@ -26,7 +26,7 @@ function gar_dm_bandits_fight(actor, npc)
 		end
 	end
 
-	local bandit3 = level.object("gar_dramscene_bandit3")
+	local bandit3 = utils.obj_by_sid(303)
 	if bandit3 then
 		novice:set_relation(game_object.enemy, bandit3)
 		bandit3:set_relation(game_object.enemy, novice)
