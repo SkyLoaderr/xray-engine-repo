@@ -59,19 +59,6 @@ void UpdatePanel(TPanel* p){
 }
 //---------------------------------------------------------------------------
 
-void GetHeight(int& h, TFrame* f){
-    if (f){
-        TPanel* pa;
-        for (int j=0; j<f->ControlCount; j++){
-            TComponent* temp = f->Controls[j];
-            GetHeight(h,dynamic_cast<TFrame*>(temp));
-            pa = dynamic_cast<TPanel*>(temp);
-            if (pa&&pa->Visible){ h+=pa->Height; UpdatePanel(pa);}
-        }
-    }
-}
-//---------------------------------------------------------------------------
-
 void TfraLeftBar::UpdateBar(){
     int i, j, h=0;
     for (i=0; i<fraLeftBar->ComponentCount; i++){
@@ -79,16 +66,13 @@ void TfraLeftBar::UpdateBar(){
         if (dynamic_cast<TExtBtn *>(temp) != NULL)
             ((TExtBtn*)temp)->UpdateMouseInControl();
     }
-    for (i=0; i<paFrames->ControlCount; i++)
-        GetHeight(h,dynamic_cast<TFrame*>(paFrames->Controls[i]));
-    paFrames->Height = h+2;
-    h=0;
+/*
     for (j=0; j<paLeftBar->ControlCount; j++){
         TPanel* pa = dynamic_cast<TPanel*>(paLeftBar->Controls[j]);
         if (pa&&pa->Visible) h+=pa->Height;
     }
     paLeftBar->Height = h+2;
-    paFrames->Top = paLeftBar->Top+paLeftBar->Height;
+*/
 }
 //---------------------------------------------------------------------------
 
@@ -110,19 +94,19 @@ void __fastcall TfraLeftBar::ebSaveClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebSaveAsClick(TObject *Sender)
+void __fastcall TfraLeftBar::ebReloadClick(TObject *Sender)
 {
 	UI->Command( COMMAND_SAVEAS );
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebRefreshEditorClick(TObject *Sender)
+void __fastcall TfraLeftBar::ebRefreshTexturesClick(TObject *Sender)
 {
 	UI->Command( COMMAND_REFRESH_TEXTURES );
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::PanelMimimizeClickClick(TObject *Sender)
+void __fastcall TfraLeftBar::PanelMimimizeClick(TObject *Sender)
 {
     PanelMinimizeClick(Sender);
     UpdateBar();
@@ -158,7 +142,7 @@ void __fastcall TfraLeftBar::ShowPPMenu(TMxPopupMenu* M, TObject* B){
     POINT pt;
     GetCursorPos(&pt);
 	M->Popup(pt.x,pt.y-10);
-    TExtBtn* btn = dynamic_cast<TExtBtn*>(B); VERIFY(btn); btn->MouseManualUp();
+    TExtBtn* btn = dynamic_cast<TExtBtn*>(B); if(btn) btn->MouseManualUp();
 }
 //---------------------------------------------------------------------------
 
@@ -172,7 +156,15 @@ void __fastcall TfraLeftBar::ebSceneFileMouseDown(TObject *Sender,
 void __fastcall TfraLeftBar::ebSceneCommandsMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	ShowPPMenu(pmSceneCommands,Sender);
+	ShowPPMenu(pmPreviewObject,Sender);
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::ElTree1MouseDown(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+	if (Button==mbRight)	ShowPPMenu(pmShaderList,Sender);
+}
+//---------------------------------------------------------------------------
+
 
