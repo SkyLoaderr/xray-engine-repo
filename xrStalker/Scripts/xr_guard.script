@@ -118,6 +118,8 @@ function action_guard_activity:reset_scheme()
 	--self.object:set_sight(look.search, nil, 0)
 	self.object:set_sight(look.danger, nil, 0)
 
+	self.cur_anim_set = "idle"
+
 	self.state = self.state_moving
 
 	self.last_index = -1
@@ -144,6 +146,28 @@ function action_guard_activity:waypoint_callback(obj, action_type, index)
 	end
 	
 	local ptr = patrol(self.path_active)
+
+	if ptr:flag(index, 20) then
+		if not self.st.anim_set_1 then
+			abort("object '%s': waypoint flag 20 set, but anim_set_1 field is not specified in customdata",
+				self.object:name())
+		end
+		self.cur_anim_set = self.st.anim_set_1
+	elseif ptr:flag(index, 21) then
+		if not self.st.anim_set_2 then
+			abort("object '%s': waypoint flag 20 set, but anim_set_2 field is not specified in customdata",
+				self.object:name())
+		end
+		self.cur_anim_set = self.st.anim_set_2
+	elseif ptr:flag(index, 22) then
+		if not self.st.anim_set_3 then
+			abort("object '%s': waypoint flag 20 set, but anim_set_3 field is not specified in customdata",
+				self.object:name())
+		end
+		self.cur_anim_set = self.st.anim_set_3
+	else
+		self.cur_anim_set = "idle"
+	end
 
 	if ptr:flag(index, 30) then
 		self.st.running = false
@@ -182,9 +206,7 @@ function action_guard_activity:waypoint_callback(obj, action_type, index)
 	end
 
 	local flagnum = nil
-	for f = 2, 20 do -- точка 0 зарезервирована для начала пути, 1 - для задания пути, состоящего из одной точки
-	-- 30 и 31 зарезервированы для состояний ходьбы и бега
-	-- 29 зарезервирована для звука
+	for f = 2, 19 do
 		if ptr:flag(index, f) then
 			flagnum = f
 		end
@@ -208,8 +230,8 @@ function action_guard_activity:waypoint_callback(obj, action_type, index)
 
 		if pt_chosen then
 			if pt_chosen ~= self.last_look_index then
-			  self.object:clear_animations () -- не играть анимацию во время поворота!
-			  self.expiration_time = device():time_global() + 1500; -- дать 100 мс на поворот
+			  xr_state.anim_update(nil, self.object) -- не играть анимацию во время поворота!
+			  self.expiration_time = device():time_global() + 700; -- дать 700 мс на начало поворота
 			  self:look_at_waypoint(pt_chosen) -- поворачиваемся
 		   else
 			  self.expiration_time = 0 -- сразу же стартовать анимацию, уже смотрим в нужную сторону
@@ -283,32 +305,12 @@ function action_guard_activity:execute()
 	
 	self.object:set_item(object.idle, self.object:best_weapon())
 
-	if self.state == self.state_standing_before_anim and self.expiration_time and
-			device():time_global() >= self.expiration_time then
+	if self.state == self.state_standing_before_anim and
+	   self.expiration_time and device():time_global() >= self.expiration_time and
+	   self.object:is_body_turning() then
 		--printf("_debug_guard [%s]: adding animations", self.object:name())
-		while self.object:animation_count() <= 1 do
-			local animate = math.random(1, 10)
-			if animate == 1 then
-				self.object:add_animation("stoya_ruje_ 0", true)
-			elseif animate == 2 then
-				self.object:add_animation("vishka_3", false)
-			elseif animate == 3 then
-				self.object:add_animation("norm_torso_2_idle_1", false)
-			elseif animate == 4 then
-				self.object:add_animation("norm_torso_2_idle_2", true)
-			elseif animate == 5 then
-				self.object:add_animation("norm_torso_2_idle_3", false)
-			elseif animate == 6 then
-				self.object:add_animation("chasovoy_0", true)
-			elseif animate == 7 then
-				self.object:add_animation("chasovoy_1", true)
-			elseif animate == 8 then
-				self.object:add_animation("chasovoy_2", true)
-			elseif animate == 9 then
-				self.object:add_animation("chasovoy_3", true)
-			elseif animate == 10 then
-				self.object:add_animation("chasovoy_4", true)
-			end
+		if self.object:animation_count() <= 1 then
+			xr_state.anim_update(self.cur_anim_set, self.object)
 
 			if self.loudspeaker_enabled then
 				if not self.st.loudspeaker_name then
@@ -333,17 +335,19 @@ function action_guard_activity:execute()
 					self.loudspeaker_enabled = false
 				end
 			end
+			self.expiration_time = device():time_global() + 5000
+			self.state = self.state_anim_playing
 		end
-		self.state = self.state_anim_playing
 	end
 
 	local suggested_path = self:pick_path()
-	if (self.state == self.state_anim_playing and self.object:animation_count() <= 1) or
-	    suggested_path ~= self.path_active then
+	if (self.state == self.state_anim_playing and device():time_global() >= self.expiration_time and
+	    xr_state.anim_safe_to_break(self.object)) or
+	   suggested_path ~= self.path_active then
 		-- Очищать анимации, только если собираемся идти дальше по пути...
 		-- Не очищать, если дальше будем стоять, т.к. иначе будут рывки
 		if not self.arrived_to_single_point_path then
-			self.object:clear_animations ()
+			xr_state.anim_update(nil, self.object)
 		end
 
 		local need_callback = false
@@ -381,7 +385,7 @@ function action_guard_activity:finalize()
 	self.last_look_index = nil -- воможно уходим с точки, последнее неправление взгляда уже не актуально
 
 	self.object:clear_callback(game_object.movement)
-	self.object:clear_animations()
+	xr_state.anim_update(nil, self.object)
 
 	local enemy = self.object:best_enemy()
 	if enemy then
