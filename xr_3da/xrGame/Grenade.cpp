@@ -174,14 +174,14 @@ bool CGrenade::Action(s32 cmd, u32 flags)
 					//ищем на поясе такую же гранату
 					PPIItem it = m_pInventory->m_belt.begin();
 					while(m_pInventory->m_belt.end() != it && 
-						  strcmp((*it)->cNameSect(), cNameSect())) ++it;
+						  xr_strcmp((*it)->cNameSect(), cNameSect())) ++it;
 					
 					if(m_pInventory->m_belt.end() != it) 
 					{
 						while(m_pInventory->m_belt.end() != it) 
 						{
 							CGrenade *pGrenade = dynamic_cast<CGrenade*>(*it);
-							if(pGrenade && strcmp(pGrenade->cNameSect(), cNameSect())) 
+							if(pGrenade && xr_strcmp(pGrenade->cNameSect(), cNameSect())) 
 							{
 								m_pInventory->Ruck(this); 
 								m_pInventory->Slot(pGrenade); 
@@ -198,7 +198,7 @@ bool CGrenade::Action(s32 cmd, u32 flags)
 
 						while(this != pGrenade) 
 						{
-							if(pGrenade && strcmp(pGrenade->cNameSect(), cNameSect())) 
+							if(pGrenade && xr_strcmp(pGrenade->cNameSect(), cNameSect())) 
 							{
 								m_pInventory->Ruck(this); 
 								m_pInventory->Slot(pGrenade); 

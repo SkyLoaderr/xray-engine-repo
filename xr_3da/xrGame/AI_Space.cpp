@@ -52,7 +52,7 @@ void CAI_Space::load				(LPCSTR level_name)
 	CGameGraph::LEVEL_MAP::const_iterator	I = game_graph().header().levels().begin();
 	CGameGraph::LEVEL_MAP::const_iterator	E = game_graph().header().levels().end();
 	for ( ; I != E; ++I)
-		if (!strcmp((*I).second.name(),level_name))
+		if (!xr_strcmp((*I).second.name(),level_name))
 			break;
 
 #ifdef DEBUG

@@ -158,7 +158,7 @@ s32 CWeaponAmmo::Sort(PIItem pIItem)
 	// перед - -1. Если пофиг то 0.
 	CWeaponAmmo *l_pA = dynamic_cast<CWeaponAmmo*>(pIItem);
 	if(!l_pA) return 0;
-	if(strcmp(cNameSect(), l_pA->cNameSect())) return 0;
+	if(xr_strcmp(cNameSect(), l_pA->cNameSect())) return 0;
 	if(m_boxCurr <= l_pA->m_boxCurr) return 1;
 	else return -1;
 }
@@ -169,7 +169,7 @@ bool CWeaponAmmo::Merge(PIItem pIItem)
 	if(m_boxCurr == m_boxSize) return false;
 	CWeaponAmmo *l_pA = dynamic_cast<CWeaponAmmo*>(pIItem);
 	if(!l_pA) return false;
-	if(strcmp(cNameSect(), l_pA->cNameSect())) return false;
+	if(xr_strcmp(cNameSect(), l_pA->cNameSect())) return false;
 	u16 l_free = m_boxSize - m_boxCurr;
 	m_boxCurr = m_boxCurr + (l_free < l_pA->m_boxCurr ? l_free : l_pA->m_boxCurr);
 	l_pA->m_boxCurr = l_pA->m_boxCurr - (l_free < l_pA->m_boxCurr ? l_free : l_pA->m_boxCurr);

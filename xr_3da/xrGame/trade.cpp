@@ -266,7 +266,7 @@ void CTrade::ShowItems()
 	PSPIItem	E = GetTradeInv(pThis).m_all.end();
 
 	for ( ; I != E; ++I) {
-		if (0 != strcmp(CurName, (*I)->Name())) {
+		if (0 != xr_strcmp(CurName, (*I)->Name())) {
 			if (!num) {
 				Msg("--TRADE:: [%s]: %i. %s ($%i) /%i items/ ",
 					pThis.base->cName(),++i,
@@ -339,7 +339,7 @@ void CTrade::SellItem(int id)
 
 	PSPIItem first_in_group_it;
 	for (PSPIItem  it = first_in_group_it = pThisInv.m_all.begin(); pThisInv.m_all.end() != it; ++it) {
-		if ((it != first_in_group_it) && (strcmp((*first_in_group_it)->Name(), (*it)->Name()) != 0)) {
+		if ((it != first_in_group_it) && (xr_strcmp((*first_in_group_it)->Name(), (*it)->Name()) != 0)) {
 			++i;
 			first_in_group_it = it;
 		}
@@ -354,7 +354,7 @@ void CTrade::SellItem(int id)
 				(pPartnerInv.m_all.find(l_pIItem) == pPartnerInv.m_all.end()) && 
 				(pPartner.inv_owner->m_dwMoney >= dwTransferMoney )) {
 				
-				if (strcmp(l_pIItem->Name(),"Bolt") == 0) {
+				if (xr_strcmp(l_pIItem->Name(),"Bolt") == 0) {
 					Msg("Cannot sell bolt!");
 					break;
 				}

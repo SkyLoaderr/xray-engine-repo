@@ -200,7 +200,7 @@ void CEntity::Load		(LPCSTR section)
 			{
 				CInifile::Item& item = *(sect.begin()+i);
 				
-				if(!strcmp(*item.first,"bone"))
+				if(!xr_strcmp(*item.first,"bone"))
 				{
 					bone_info.index = pKinematics->LL_BoneID(_GetItem(*item.second,0,str_buf));
 					R_ASSERT3(bone_info.index != BI_NONE, "Particles bone not found", _GetItem(*item.second,0,str_buf));
@@ -210,7 +210,7 @@ void CEntity::Load		(LPCSTR section)
 					bone_info.offset.z = (float)atof(_GetItem(*item.second,3,str_buf));
 
 				}
-				R_ASSERT2(!strcmp(*item.first,"bone"), "wrong format for 'particles bones section'");
+				R_ASSERT2(!xr_strcmp(*item.first,"bone"), "wrong format for 'particles bones section'");
 				m_ParticlesBonesList.push_back(bone_info);
 			}
 		}

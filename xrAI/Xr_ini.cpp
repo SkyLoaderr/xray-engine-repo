@@ -13,13 +13,13 @@ void CInifile::Destroy(CInifile* ini)
 
 bool sect_pred(const CInifile::Sect& x, LPCSTR val)
 {
-	return strcmp(*x.Name,val)<0;
+	return xr_strcmp(*x.Name,val)<0;
 };
 
 bool item_pred(const CInifile::Item& x, LPCSTR val)
 {
     if ((!x.first) || (!val))	return x.first<val;
-    else				   		return strcmp(*x.first,val)<0;
+    else				   		return xr_strcmp(*x.first,val)<0;
 }
 
 //------------------------------------------------------------------------------
@@ -67,7 +67,7 @@ XRCORE_API void _decorate(LPSTR dest, LPCSTR src)
 BOOL	CInifile::Sect::line_exist( LPCSTR L, LPCSTR* val )
 {
 	SectIt A = std::lower_bound(Data.begin(),Data.end(),L,item_pred);
-    if (A!=Data.end() && strcmp(*A->first,L)==0){
+    if (A!=Data.end() && xr_strcmp(*A->first,L)==0){
     	if (val) *val = *A->second;
     	return TRUE;
     }
@@ -240,7 +240,7 @@ void	CInifile::save_as( LPCSTR new_fname )
 BOOL	CInifile::section_exist( LPCSTR S )
 {
 	RootIt I = std::lower_bound(DATA.begin(),DATA.end(),S,sect_pred);
-	return (I!=DATA.end() && strcmp(*I->Name,S)==0);
+	return (I!=DATA.end() && xr_strcmp(*I->Name,S)==0);
 }
 
 BOOL	CInifile::line_exist( LPCSTR S, LPCSTR L )
@@ -248,7 +248,7 @@ BOOL	CInifile::line_exist( LPCSTR S, LPCSTR L )
 	if (!section_exist(S)) return FALSE;
 	Sect&	I = r_section(S);
 	SectIt A = std::lower_bound(I.begin(),I.end(),L,item_pred);
-	return (A!=I.end() && strcmp(*A->first,L)==0);
+	return (A!=I.end() && xr_strcmp(*A->first,L)==0);
 }
 
 u32	CInifile::line_count(LPCSTR Sname)
@@ -267,7 +267,7 @@ CInifile::Sect& CInifile::r_section( LPCSTR S )
 {
 	char	section[256]; strcpy(section,S); strlwr(section);
 	RootIt I = std::lower_bound(DATA.begin(),DATA.end(),section,sect_pred);
-	if (!(I!=DATA.end() && strcmp(*I->Name,section)==0))	Debug.fatal("Can't open section '%s'",S);
+	if (!(I!=DATA.end() && xr_strcmp(*I->Name,section)==0))	Debug.fatal("Can't open section '%s'",S);
 	return	*I;
 }
 
@@ -275,7 +275,7 @@ LPCSTR	CInifile::r_string(LPCSTR S, LPCSTR L )
 {
 	Sect&	I = r_section(S);
 	SectIt	A = std::lower_bound(I.begin(),I.end(),L,item_pred);
-	if (A!=I.end() && strcmp(*A->first,L)==0)	return *A->second;
+	if (A!=I.end() && xr_strcmp(*A->first,L)==0)	return *A->second;
 	else										Debug.fatal("Can't find variable %s in [%s]",L,S);
 	return 0;
 }
@@ -437,7 +437,7 @@ void	CInifile::w_string	( LPCSTR S, LPCSTR L, LPCSTR			V, LPCSTR comment)
 
     if (it != data.end()) {
 	    // Check for "first" matching
-    	if (0==strcmp(*it->first,*I.first)) {
+    	if (0==xr_strcmp(*it->first,*I.first)) {
             *it  = I;
         } else {
 			data.Data.insert(it,I);
@@ -540,7 +540,7 @@ void	CInifile::remove_line	( LPCSTR S, LPCSTR L )
     if (line_exist(S,L)){
 		Sect&	data	= r_section	(S);
 		SectIt A = std::lower_bound(data.begin(),data.end(),L,item_pred);
-    	R_ASSERT(A!=data.end() && strcmp(*A->first,L)==0);
+    	R_ASSERT(A!=data.end() && xr_strcmp(*A->first,L)==0);
         data.Data.erase(A);
     }
 }

@@ -16,7 +16,7 @@ struct		XRCORE_API	str_value
 };
 struct		XRCORE_API	str_value_cmp	// less
 {
-	IC bool		operator ()	(const str_value* A, const str_value* B) const	{ return strcmp(A->value,B->value)<0;	};
+	IC bool		operator ()	(const str_value* A, const str_value* B) const	{ return xr_strcmp(A->value,B->value)<0;	};
 };
 #pragma warning(default : 4200)
 

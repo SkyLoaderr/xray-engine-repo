@@ -824,7 +824,7 @@ int CWeapon::GetAmmoCurrent()
 			{
 				CWeaponAmmo *l_pAmmo = dynamic_cast<CWeaponAmmo*>(*l_it);
 				
-				if(l_pAmmo && !strcmp(l_pAmmo->cNameSect(), l_ammoType)) 
+				if(l_pAmmo && !xr_strcmp(l_pAmmo->cNameSect(), l_ammoType)) 
 				{
 					l_count = l_count + l_pAmmo->m_boxCurr;
 				}
@@ -835,7 +835,7 @@ int CWeapon::GetAmmoCurrent()
 		for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
 		{
 			CWeaponAmmo *l_pAmmo = dynamic_cast<CWeaponAmmo*>(*l_it);
-			if(l_pAmmo && !strcmp(l_pAmmo->cNameSect(), l_ammoType)) 
+			if(l_pAmmo && !xr_strcmp(l_pAmmo->cNameSect(), l_ammoType)) 
 			{
 				l_count = l_count + l_pAmmo->m_boxCurr;
 			}

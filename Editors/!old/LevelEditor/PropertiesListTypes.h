@@ -302,11 +302,11 @@ public:
     virtual bool		Equal			(PropValue* val)
     { 
     	if (OnTestEqual) return OnTestEqual(this,val);
-    	return (0==strcmp((LPSTR)value,((TextValue*)val)->value)); 
+    	return (0==xr_strcmp((LPSTR)value,((TextValue*)val)->value)); 
     }
     virtual bool		ApplyValue		(LPVOID val)
     {
-        if (0!=strcmp(value,LPCSTR(val))){
+        if (0!=xr_strcmp(value,LPCSTR(val))){
             strcpy(value,LPCSTR(val));
             return		true;
         }

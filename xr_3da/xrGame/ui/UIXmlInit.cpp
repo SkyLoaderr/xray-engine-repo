@@ -144,39 +144,39 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, const char* path,
 	{
 		pWnd->SetTextColor(color);
 
-		if(!strcmp(*font_name, HEADER_FONT_NAME))
+		if(!xr_strcmp(*font_name, HEADER_FONT_NAME))
 		{
 			pWnd->SetFont(HUD().pFontHeaderRussian);
 		}
-		else if(!strcmp(*font_name, NORMAL_FONT_NAME) || !strcmp(*font_name, GRAFFITI19_FONT_NAME))
+		else if(!xr_strcmp(*font_name, NORMAL_FONT_NAME) || !xr_strcmp(*font_name, GRAFFITI19_FONT_NAME))
 		{
 			pWnd->SetFont(HUD().pFontGraffiti19Russian);
 		}
-		else if(!strcmp(*font_name, GRAFFITI22_FONT_NAME))
+		else if(!xr_strcmp(*font_name, GRAFFITI22_FONT_NAME))
 		{
 			pWnd->SetFont(HUD().pFontGraffiti22Russian);
 		}
-		else if(!strcmp(*font_name, ARIAL_FONT_NAME))
+		else if(!xr_strcmp(*font_name, ARIAL_FONT_NAME))
 		{
 			pWnd->SetFont(HUD().pArialN21Russian);
 		}
-		else if(!strcmp(*font_name, BIG_FONT_NAME))
+		else if(!xr_strcmp(*font_name, BIG_FONT_NAME))
 		{
 			pWnd->SetFont(HUD().pFontBigDigit);
 		}
-		else if(!strcmp(*font_name, MEDIUM_FONT_NAME))
+		else if(!xr_strcmp(*font_name, MEDIUM_FONT_NAME))
 		{
 			pWnd->SetFont(HUD().pFontMedium);
 		}
-		else if(!strcmp(*font_name, SMALL_FONT_NAME))
+		else if(!xr_strcmp(*font_name, SMALL_FONT_NAME))
 		{
 			pWnd->SetFont(HUD().pFontSmall);
 		}
-		else if(!strcmp(*font_name, LETTERICA16_FONT_NAME))
+		else if(!xr_strcmp(*font_name, LETTERICA16_FONT_NAME))
 		{
 			pWnd->SetFont(HUD().pFontLetterica16Russian);
 		}
-		else if(!strcmp(*font_name, LETTERICA18_FONT_NAME))
+		else if(!xr_strcmp(*font_name, LETTERICA18_FONT_NAME))
 		{
 			pWnd->SetFont(HUD().pFontLetterica18Russian);
 		}

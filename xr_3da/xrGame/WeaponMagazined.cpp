@@ -183,7 +183,7 @@ void CWeaponMagazined::UnloadMagazine()
 		xr_map<LPCSTR, u16>::iterator l_it;
 		for(l_it = l_ammo.begin(); l_ammo.end() != l_it; ++l_it) 
 		{
-            if(!strcmp(*l_cartridge.m_ammoSect, l_it->first)) 
+            if(!xr_strcmp(*l_cartridge.m_ammoSect, l_it->first)) 
             { 
 				 ++(l_it->second); 
 				 break; 
@@ -249,7 +249,7 @@ void CWeaponMagazined::ReloadMagazine()
 
 	//разрядить магазин, если загружаем патронами другого типа
 	if(!l_lockType && !m_magazine.empty() && 
-		(!m_pAmmo || strcmp(m_pAmmo->cNameSect(), 
+		(!m_pAmmo || xr_strcmp(m_pAmmo->cNameSect(), 
 					 *m_magazine.top().m_ammoSect)))
 		UnloadMagazine();
 	
@@ -547,12 +547,12 @@ bool CWeaponMagazined::CanAttach(PIItem pIItem)
 	if(pScope &&
 	   m_eScopeStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) == 0 &&
-	   !strcmp(*m_sScopeName, pIItem->cNameSect()))
+	   !xr_strcmp(*m_sScopeName, pIItem->cNameSect()))
        return true;
 	else if(pSilencer &&
 	   m_eSilencerStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) == 0 &&
-	   !strcmp(*m_sSilencerName, pIItem->cNameSect()))
+	   !xr_strcmp(*m_sSilencerName, pIItem->cNameSect()))
        return true;
 	else
 		return inherited::CanAttach(pIItem);
@@ -562,11 +562,11 @@ bool CWeaponMagazined::CanDetach(const char* item_section_name)
 {
 	if( m_eScopeStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) &&
-	   strcmp(*m_sScopeName, item_section_name))
+	   xr_strcmp(*m_sScopeName, item_section_name))
        return true;
 	else if(m_eSilencerStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) &&
-	   strcmp(*m_sSilencerName, item_section_name))
+	   xr_strcmp(*m_sSilencerName, item_section_name))
        return true;
 	else
 		return inherited::CanDetach(item_section_name);
@@ -582,7 +582,7 @@ bool CWeaponMagazined::Attach(PIItem pIItem)
 	if(pScope &&
 	   m_eScopeStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) == 0 &&
-	   !strcmp(*m_sScopeName, pIItem->cNameSect()))
+	   !xr_strcmp(*m_sScopeName, pIItem->cNameSect()))
 	{
 		m_flagsAddOnState |= CSE_ALifeItemWeapon::eWeaponAddonScope;
 		result = true;
@@ -590,7 +590,7 @@ bool CWeaponMagazined::Attach(PIItem pIItem)
 	else if(pSilencer &&
 	   m_eSilencerStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) == 0 &&
-	   !strcmp(*m_sSilencerName, pIItem->cNameSect()))
+	   !xr_strcmp(*m_sSilencerName, pIItem->cNameSect()))
 	{
 		m_flagsAddOnState |= CSE_ALifeItemWeapon::eWeaponAddonSilencer;
 		result = true;
@@ -618,7 +618,7 @@ bool CWeaponMagazined::Detach(const char* item_section_name)
 {
 	if(m_eScopeStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) &&
-	   !strcmp(*m_sScopeName, item_section_name))
+	   !xr_strcmp(*m_sScopeName, item_section_name))
 	{
 		m_flagsAddOnState &= ~CSE_ALifeItemWeapon::eWeaponAddonScope;
 		UpdateAddonsVisibility();
@@ -627,7 +627,7 @@ bool CWeaponMagazined::Detach(const char* item_section_name)
 	}
 	else if(m_eSilencerStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) &&
-	   !strcmp(*m_sSilencerName, item_section_name))
+	   !xr_strcmp(*m_sSilencerName, item_section_name))
 	{
 		m_flagsAddOnState &= ~CSE_ALifeItemWeapon::eWeaponAddonSilencer;
 

@@ -57,14 +57,14 @@ void CPSLibrary::OnDeviceDestroy		()
 PS::SDef* CPSLibrary::FindPS			(LPCSTR Name)
 {
 	for (PS::PSIt it=m_PSs.begin(); it!=m_PSs.end(); it++)
-    	if (0==strcmp(it->m_Name,Name)) return &*it;
+    	if (0==xr_strcmp(it->m_Name,Name)) return &*it;
 	return NULL;
 }
 
 PS::PEDIt CPSLibrary::FindPEDIt(LPCSTR Name)
 {
 	for (PS::PEDIt it=m_PEDs.begin(); it!=m_PEDs.end(); it++)
-    	if (0==strcmp((*it)->m_Name,Name)) return it;
+    	if (0==xr_strcmp((*it)->m_Name,Name)) return it;
 	return m_PEDs.end();
 }
 
@@ -77,7 +77,7 @@ PS::CPEDef* CPSLibrary::FindPED(LPCSTR Name)
 PS::PGDIt CPSLibrary::FindPGDIt(LPCSTR Name)
 {
 	for (PS::PGDIt it=m_PGDs.begin(); it!=m_PGDs.end(); it++)
-    	if (0==strcmp((*it)->m_Name,Name)) return it;
+    	if (0==xr_strcmp((*it)->m_Name,Name)) return it;
 	return m_PGDs.end();
 }
 

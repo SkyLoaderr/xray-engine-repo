@@ -83,7 +83,7 @@ public:
 	struct	file_pred		: public std::binary_function<file&, file&, bool> 
 	{	
 		IC bool operator()	(const file& x, const file& y) const
-		{	return strcmp(x.name,y.name)<0;	}
+		{	return xr_strcmp(x.name,y.name)<0;	}
 	};
 	struct	archive
 	{

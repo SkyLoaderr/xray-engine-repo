@@ -205,7 +205,7 @@ namespace PS
 			string64 new_name;
 			strcpy(new_name,N);
 			strlwr(new_name);
-			if (strcmp(m_Name,new_name)!=0){
+			if (xr_strcmp(m_Name,new_name)!=0){
 				strcpy(m_Name,new_name);
 
 				// Computer

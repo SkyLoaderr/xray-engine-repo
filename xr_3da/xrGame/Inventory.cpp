@@ -520,7 +520,7 @@ PIItem CInventory::Same(const PIItem pIItem, bool bSearchRuck) const
 		const PIItem l_pIItem = *it;
 		
 		if((l_pIItem != pIItem) && 
-				!strcmp(l_pIItem->cNameSect(), 
+				!xr_strcmp(l_pIItem->cNameSect(), 
 				pIItem->cNameSect())) 
 			return l_pIItem;
 	}
@@ -551,7 +551,7 @@ PIItem CInventory::Get(const char *name, bool bSearchRuck) const
 	for(TIItemList::const_iterator it = list.begin(); list.end() != it; ++it) 
 	{
 		PIItem pIItem = *it;
-		if(!strcmp(pIItem->cNameSect(), name) && 
+		if(!xr_strcmp(pIItem->cNameSect(), name) && 
 								pIItem->Useful()) 
 				return pIItem;
 	}
@@ -609,7 +609,7 @@ u32 CInventory::dwfGetSameItemCount(LPCSTR caSection)
 	for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
 	{
 		PIItem	l_pIItem = *l_it;
-		if (!strcmp(l_pIItem->cNameSect(), caSection))
+		if (!xr_strcmp(l_pIItem->cNameSect(), caSection))
             ++l_dwCount;
 	}
 	
@@ -789,7 +789,7 @@ CInventoryItem	*CInventory::GetItemFromInventory(LPCSTR caItemName)
 {
 	TIItemSet	&l_list = m_all;
 	for(PSPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
-		if (!strcmp((*l_it)->cName(),caItemName))
+		if (!xr_strcmp((*l_it)->cName(),caItemName))
 			return	(*l_it);
 	LuaOut	(Lua::eLuaMessageTypeError,"Object with name %s is not found in the %s inventory!",caItemName,dynamic_cast<CGameObject*>(m_pOwner)->cName());
 	return	(0);

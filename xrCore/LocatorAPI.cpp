@@ -196,8 +196,8 @@ void CLocatorAPI::ProcessOne	(const char* path, LPVOID _F)
 
 	if (F.attrib&_A_SUBDIR) {
 		if (bNoRecurse)				return;
-		if (0==strcmp(F.name,"."))	return;
-		if (0==strcmp(F.name,"..")) return;
+		if (0==xr_strcmp(F.name,"."))	return;
+		if (0==xr_strcmp(F.name,"..")) return;
 		strcat		(N,"\\");
 		Register	(N,0xffffffff,0,F.size,F.size,(u32)F.time_write);
 		Recurse		(N);
@@ -210,7 +210,7 @@ void CLocatorAPI::ProcessOne	(const char* path, LPVOID _F)
 DEFINE_VECTOR(_finddata_t,FFVec,FFIt);
 IC bool pred_str_ff(const _finddata_t& x, const _finddata_t& y)
 {	
-	return strcmp(x.name,y.name)<0;	
+	return xr_strcmp(x.name,y.name)<0;	
 }
 
 bool CLocatorAPI::Recurse		(const char* path)
@@ -297,7 +297,7 @@ void CLocatorAPI::_initialize	(BOOL bBuildCopy, LPCSTR root_path)
         _GetItem	(temp,3,add);
         _GetItem	(temp,4,def);
         _GetItem	(temp,5,capt);
-		strlwr		(id);			if (!m_Flags.is(flBuildCopy)&&(0==strcmp(id,"$build_copy$"))) continue;
+		strlwr		(id);			if (!m_Flags.is(flBuildCopy)&&(0==xr_strcmp(id,"$build_copy$"))) continue;
 		strlwr		(root);
 		lp_add		=(cnt>=4)?strlwr(add):0;
 		lp_def		=(cnt>=5)?def:0;
