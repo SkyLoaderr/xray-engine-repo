@@ -100,8 +100,10 @@ public:
 					CEditableObject			(CLibObject* parent);
 	virtual 		~CEditableObject		();
 
+#ifdef _EDITOR
     LPCSTR			GetName					();
     void			SetName					(LPCSTR name);
+#endif
 
     IC EditMeshIt	FirstMesh				()	{return m_Meshes.begin();}
     IC EditMeshIt	LastMesh				()	{return m_Meshes.end();}
@@ -161,11 +163,12 @@ public:
 	void		    LightenObject			();
 
     // pick methods
+#ifdef _EDITOR
     void 			BoxPick					(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf);
 	bool 			RayPick					(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf=0);
 	bool 			FrustumPick				(const CFrustum& frustum, const Fmatrix& parent);
     bool 			SpherePick				(const Fvector& center, float radius, const Fmatrix& parent);
-
+#endif
     // change position/orientation methods
 	void 			TranslateToWorld		(const Fmatrix& parent);
 

@@ -51,6 +51,7 @@ CEditableObject::~CEditableObject(){
 }
 //----------------------------------------------------
 
+#ifdef _EDITOR
 LPCSTR CEditableObject::GetName(){
 	return m_LibParent->GetName();
 }
@@ -60,6 +61,7 @@ void CEditableObject::SetName(LPCSTR name){
 	m_LibParent->SetName(name);
 }
 //----------------------------------------------------
+#endif
 
 void CEditableObject::VerifyMeshNames(){
 	int idx=0;
@@ -160,29 +162,25 @@ void CEditableObject::UpdateBox(){
     }
 }
 //----------------------------------------------------
-void CEditableObject::Render(Fmatrix& parent, ERenderPriority flag){
-    if(flag==rpNormal){
-		if (fraBottomBar->miDrawObjectBones->Checked) RenderBones(parent);
-		if (fraBottomBar->miDrawObjectAnimPath->Checked) RenderAnimation(parent);
-    }
+void CEditableObject::Render(Fmatrix& parent, ERenderPriority priority){
     if (!(m_LoadState&EOBJECT_LS_RENDERBUFFER)) UpdateRenderBuffers();
 
-    if(psDeviceFlags&rsEdgedFaces&&(flag==rpNormal))
+    if(psDeviceFlags&rsEdgedFaces&&(priority==rpNormal))
         RenderEdge(parent);
 
     Device.SetTransform(D3DTS_WORLD,parent);
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
-        if ((flag==rpAlphaNormal)&&((*s_it)->RenderPriority()==rpAlphaNormal)){
+        if ((priority==rpAlphaNormal)&&((*s_it)->RenderPriority()==rpAlphaNormal)){
             Device.Shader.Set((*s_it)->shader);
             for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
                 (*_M)->Render(parent,*s_it);
         }
-        if ((flag==rpAlphaLast)&&((*s_it)->RenderPriority()==rpAlphaLast)){
+        if ((priority==rpAlphaLast)&&((*s_it)->RenderPriority()==rpAlphaLast)){
             Device.Shader.Set((*s_it)->shader);
             for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
                 (*_M)->Render(parent,*s_it);
         }
-        if ((flag==rpNormal)&&((*s_it)->RenderPriority()==rpNormal)){
+        if ((priority==rpNormal)&&((*s_it)->RenderPriority()==rpNormal)){
             Device.Shader.Set((*s_it)->shader);
             for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
                 (*_M)->Render(parent,*s_it);
@@ -192,6 +190,7 @@ void CEditableObject::Render(Fmatrix& parent, ERenderPriority flag){
 
 void CEditableObject::RenderSingle(Fmatrix& parent){
 	Render(parent, rpNormal);
+    if (fraBottomBar->miDrawObjectBones) RenderBones(precalc_identity);
 	Render(parent, rpAlphaNormal);
 	Render(parent, rpAlphaLast);
 }
@@ -268,6 +267,7 @@ void CEditableObject::RenderSelection(Fmatrix& parent){
     Device.ResetNearer();
 }
 
+#ifdef _EDITOR
 bool CEditableObject::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
 	for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
 		if((*m)->FrustumPick(frustum, parent))	return true;
@@ -288,6 +288,7 @@ void CEditableObject::BoxPick(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec&
     for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
         (*m)->BoxPick(box, parent, pinf);
 }
+#endif
 
 void CEditableObject::ClearRenderBuffers(){
 	for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)

@@ -28,23 +28,21 @@ CUI_Camera::~CUI_Camera(){
 }
 
 void CUI_Camera::SetStyle(ECameraStyle new_style){
-	if (new_style!=m_Style){
-    	if (new_style==cs3DArcBall){
-		    Fvector dir;
-            dir.sub			(m_Target,m_Position);
-	        // parse heading
-    	    Fvector DYaw; DYaw.set(dir.x,0.f,dir.z); DYaw.normalize_safe();
-	        if (DYaw.x<0)	m_HPB.x = acosf(DYaw.z);
-    	    else			m_HPB.x = 2*PI-acosf(DYaw.z);
-	        // parse pitch
-    	    dir.normalize_safe	();
-	        m_HPB.y			= asinf(dir.y);
+  	if (new_style==cs3DArcBall){
+	    Fvector dir;
+        dir.sub			(m_Target,m_Position);
+        // parse heading
+   	    Fvector DYaw; DYaw.set(dir.x,0.f,dir.z); DYaw.normalize_safe();
+        if (DYaw.x<0)	m_HPB.x = acosf(DYaw.z);
+   	    else			m_HPB.x = 2*PI-acosf(DYaw.z);
+        // parse pitch
+   	    dir.normalize_safe	();
+        m_HPB.y			= asinf(dir.y);
 
-            BuildCamera		();
-        }
-		m_Style=new_style;
+        BuildCamera		();
+		m_Style			= new_style;
     }
-    UI->RedrawScene();
+    if (UI) UI->RedrawScene();
 }
 
 void CUI_Camera::Reset(){

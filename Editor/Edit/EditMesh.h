@@ -176,12 +176,14 @@ public:
 	void            Transform				(const Fmatrix& parent);
 
     // pick routine
+#ifdef _EDITOR
 	bool            RayPick					(float& dist, Fvector& start, Fvector& dir, Fmatrix& parent, SRayPickInfo* pinf = NULL);
     void 			BoxPick					(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf);
 	bool            FrustumPick				(const CFrustum& frustum, const Fmatrix& parent);
     void            FrustumPickFaces		(const CFrustum& frustum, Fmatrix& parent, DWORDVec& fl);
     bool			CHullPickMesh			(PlaneVec& pl, Fmatrix& parent);
 	void 			GetTiesFaces			(int start_id, DWORDVec& fl, float fSoftAngle, bool bRecursive);
+#endif
 
     // render routine
 	void 			Render					(const Fmatrix& parent, st_Surface* S);
