@@ -264,6 +264,35 @@ end
 
 
 ----------------------------------------------------------------------------------------------------------------------
+class "action_no_food" (action_base)
+----------------------
+function action_no_food:__init (name, storage) super (nil, name)
+    self.st = storage
+    self.rest_end_signalled = false
+end
+----------------------
+function action_no_food:initialize ()
+    action_base.initialize (self)
+    self.rest_end_signalled = false
+end
+----------------------
+function action_no_food:execute ()
+    action_base.execute (self)
+    if self.rest_end_signalled == false then
+       self.st.signals["rest_end"] = true
+       self.rest_end_signalled = true
+    end   
+    xr_logic.try_switch_to_another_section (self.object, self.st)
+end
+----------------------
+function action_no_food:finalize ()
+    action_base.finalize (self)
+end        
+----------------------------------------------------------------------------------------------------------------------
+
+
+
+----------------------------------------------------------------------------------------------------------------------
 function add_to_binder (npc, ini, scheme, section, st)
 
     local operators		= {}
@@ -276,6 +305,7 @@ function add_to_binder (npc, ini, scheme, section, st)
     
     operators["action_position"]    = xr_actions_id.sidor_act_rest     + 0
     operators["action_rest"]        = xr_actions_id.sidor_act_rest     + 1
+    operators["action_no_food"]     = xr_actions_id.sidor_act_rest     + 2 
 
 	local manager  = npc:motivation_action_manager ()
    	
@@ -286,7 +316,7 @@ function add_to_binder (npc, ini, scheme, section, st)
     local action = this.action_position ("action_position", st)
     action:add_precondition     (world_property (stalker_ids.property_alive,    true))
    	action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
-   	action:add_precondition     (world_property (properties["food"],            true))
+   	--action:add_precondition     (world_property (properties["food"],            true))
    	action:add_precondition     (world_property (properties["rest"],            true))
    	action:add_precondition     (world_property (properties["on_position"],     false))
    	action:add_effect           (world_property (properties["on_position"],     true))
@@ -302,6 +332,15 @@ function add_to_binder (npc, ini, scheme, section, st)
    	action:add_precondition     (world_property (properties["on_position"],     true))
    	action:add_effect           (world_property (properties["rest"],            false))
    	manager:add_action          (operators["action_rest"], action)
+
+    action = this.action_no_food ("action_no_food", st)
+    action:add_precondition     (world_property (stalker_ids.property_alive,    true))
+   	action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
+   	action:add_precondition     (world_property (properties["food"],            false))
+   	action:add_precondition     (world_property (properties["rest"],            true))
+   	action:add_precondition     (world_property (properties["on_position"],     true))
+   	action:add_effect           (world_property (properties["rest"],            false))
+   	manager:add_action          (operators["action_no_food"], action)
    	     	   
     manager:action (xr_actions_id.alife):add_precondition (world_property (properties["rest"],  false))
     
