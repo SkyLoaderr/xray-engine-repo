@@ -20,24 +20,24 @@
 typedef unsigned char uchar;
 typedef unsigned int  uint;
 
-#pragma pack(4)
-typedef struct tagSNode {
-	int			ucOpenCloseMask:8;
-	int			iIndex:24;
-	float		f;
-	float		g;
-	float		h;
-	tagSNode	*tpNext;
-	tagSNode	*tpForward;
-	tagSNode	*tpBack;
-	tagSNode	*tpOpenedNext;
-	tagSNode	*tpOpenedPrev;
-} SNode;
-
-typedef struct tagSIndexNode {
-	SNode	*tpNode;
-	u32	dwTime;
-} SIndexNode;
-#pragma pack()
+//#pragma pack(4)
+//typedef struct tagSNode {
+//	int			ucOpenCloseMask:8;
+//	int			iIndex:24;
+//	float		f;
+//	float		g;
+//	float		h;
+//	tagSNode	*tpNext;
+//	tagSNode	*tpForward;
+//	tagSNode	*tpBack;
+//	tagSNode	*tpOpenedNext;
+//	tagSNode	*tpOpenedPrev;
+//} SNode;
+//
+//typedef struct tagSIndexNode {
+//	SNode	*tpNode;
+//	u32	dwTime;
+//} SIndexNode;
+//#pragma pack()
 
 #endif

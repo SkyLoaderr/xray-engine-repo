@@ -108,15 +108,15 @@ public:
 	CAStarSearch<CAIMapEnemyPathNode>		*tpEnemyPath;
 	CAStarSearch<CAIGraphShortestPathNode>	*tpGraphPath;
 //	// yet another A* search
-//	#define DEFAULT_LIGHT_WEIGHT		  5.f 
-//	#define DEFAULT_COVER_WEIGHT		 10.f 
-//	#define DEFAULT_DISTANCE_WEIGHT		 40.f
-//	#define DEFAULT_ENEMY_VIEW_WEIGHT	100.f
-//	float			vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT);
-//	float			vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, NodeCompressed& tEnemyNode, float fOptimalEnemyDistance, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT, float fEnemyViewWeight = DEFAULT_ENEMY_VIEW_WEIGHT);
-//	float			vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight);
-//	void			vfLoadSearch();
-//	void			vfUnloadSearch();
+	#define DEFAULT_LIGHT_WEIGHT		  5.f 
+	#define DEFAULT_COVER_WEIGHT		 10.f 
+	#define DEFAULT_DISTANCE_WEIGHT		 40.f
+	#define DEFAULT_ENEMY_VIEW_WEIGHT	100.f
+	float			vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT);
+	float			vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, NodeCompressed& tEnemyNode, float fOptimalEnemyDistance, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT, float fEnemyViewWeight = DEFAULT_ENEMY_VIEW_WEIGHT);
+	float			vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight);
+	void			vfLoadSearch();
+	void			vfUnloadSearch();
 	// 
 
 	// yet another best node search
