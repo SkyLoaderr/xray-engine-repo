@@ -8,8 +8,6 @@
 
 #pragma once
 
-#include "ai_space.h"
-
 class CAI_Space;
 
 typedef struct tagSAIMapData {
