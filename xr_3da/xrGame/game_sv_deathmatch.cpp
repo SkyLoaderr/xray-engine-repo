@@ -54,7 +54,8 @@ void	game_sv_Deathmatch::Update					()
 		break;
 	case GAME_PHASE_PENDING:
 		{
-
+			if ((Device.TimerAsync()-start_time)>u32(10*1000))
+				OnRoundStart();
 		}
 		break;
 	}
