@@ -145,6 +145,7 @@
         </phrase_list>
     </dialog>
     <dialog id="companion_management_dialog" priority="10">
+		<precondition>dialogs.is_companion</precondition>
         <phrase_list>
             <phrase id="11">
                 <text>companion_management_dialog_11</text>
