@@ -57,6 +57,16 @@ end
 		self.object:set_task_state(task.fail, "tutorial_help_wounded", 0)
 	end
 
+	if	self.object:has_info("escape_artefact_start") and
+		self.object:dont_has_info("escape_artefact_gain") and 
+		(self.object:object("af_vyvert") ~= nil or
+		 self.object:object("af_gravi") ~= nil or
+		 self.object:object("af_gold_fish") ~= nil)
+	then		
+		self.object:give_info_portion("escape_artefact_gain")
+		self.object:set_task_state(task.completed, "esc_trader_need_electra_artefact", 1)
+	end 
+
 --[[
        		if self.object:has_info("escape_need_blockpost_case") and
        		   self.object:object("quest_case_01") ~= nil

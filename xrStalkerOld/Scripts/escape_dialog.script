@@ -52,6 +52,14 @@ end
 
 --' Escape trader artefact
 function have_artefact_nightstar(first_speaker, second_speaker)
+	local actor = level.actor()
+	if actor ~= nil and
+	   (actor:object("af_vyvert") ~= nil or
+	   actor:object("af_gravi") ~= nil or
+	   actor:object("af_gold_fish") ~= nil)
+	then
+		return true
+	end
   	return false
 end
 function give_artefact_nightstar(first_speaker, second_speaker)
