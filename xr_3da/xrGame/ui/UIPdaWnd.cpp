@@ -126,21 +126,26 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			{
 			case eptEvents:
 				m_pActiveDialog = smart_cast<CUIWindow*>(&UIDiaryWnd);
+				InventoryUtilities::SendInfoToActor("ui_pda_events");
 				break;
 			case eptComm:
 				m_pActiveDialog = smart_cast<CUIWindow*>(&UIPdaCommunication);
+				InventoryUtilities::SendInfoToActor("ui_pda_contacts");
 				break;
 			case eptMap:
 				m_pActiveDialog = smart_cast<CUIWindow*>(&UIMapWnd);
 				break;
 			case eptEncyclopedia:
 				m_pActiveDialog = smart_cast<CUIWindow*>(&UIEncyclopediaWnd);
+				InventoryUtilities::SendInfoToActor("ui_pda_encyclopedia");
 				break;
 			case eptActorStatistic:
 				m_pActiveDialog = smart_cast<CUIWindow*>(&UIActorInfo);
+				InventoryUtilities::SendInfoToActor("ui_pda_actor_info");
 				break;
 			case eptRanking:
 				m_pActiveDialog = smart_cast<CUIWindow*>(&UIStalkersRanking);
+				InventoryUtilities::SendInfoToActor("ui_pda_ranking");
 				break;
 			default:
 				NODEFAULT;
@@ -256,20 +261,17 @@ void CUIPdaWnd::SetActiveSubdialog(EPdaSections section, int addiotionalValue)
 		break;
 	case epsContacts:
 		UITabControl.SetNewActiveTab	(eptComm);
-		InventoryUtilities::SendInfoToActor("ui_pda_contacts");
 		break;
 	case epsEncyclopedia:
 		UITabControl.SetNewActiveTab	(eptEncyclopedia);
 		UIEncyclopediaWnd.OpenTree		(addiotionalValue);
 		UIEncyclopediaWnd.UIBack.Show	(true);
-		InventoryUtilities::SendInfoToActor("ui_pda_encyclopedia");
 		break;
 	case epsDiaryArticle:
 		UITabControl.SetNewActiveTab	(eptEvents);
 		UIDiaryWnd.SetActiveSubdialog	(section);
 		UIDiaryWnd.OpenDiaryTree		(addiotionalValue);
 		UIEncyclopediaWnd.UIBack.Show	(true);
-		InventoryUtilities::SendInfoToActor("ui_pda_diary");
 		break;
 	default:
 		NODEFAULT;

@@ -224,7 +224,7 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 
 			case idActorDiary:
 				m_pActiveSubdialog = &UIActorDiaryWnd;
-				InventoryUtilities::SendInfoToActor("ui_pda_events_diary");
+				InventoryUtilities::SendInfoToActor("ui_pda_diary");
 				break;
 			default:
 				NODEFAULT;

@@ -87,7 +87,6 @@ void CUIActorInfoWnd::Show(bool status)
 	{
 		UICharacterInfo.InitCharacter(&pActor->CharacterInfo());
 		UICharIconHeader.UITitleText.SetText(UICharacterInfo.UIName.GetText());
-		InventoryUtilities::SendInfoToActor("ui_pda_actor_info");
 	}
 }
 
