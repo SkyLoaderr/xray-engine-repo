@@ -51,11 +51,11 @@ void CRender::InsertSG_Dynamic	(IRender_Visual *pVisual, Fvector& Center)
 		// Normal
 		SPass&									pass	= *sh->Passes.front();
 		mapMatrix_T&				map		= mapMatrix;
-		mapMatrixVS::TNode*			Nvs		= map.insert		(pass.vs);
-		mapMatrixPS::TNode*			Nps		= Nvs->val.insert	(pass.ps);
-		mapMatrixCS::TNode*			Ncs		= Nps->val.insert	(pass.constants);
-		mapMatrixStates::TNode*		Nstate	= Ncs->val.insert	(pass.state);
-		mapMatrixTextures::TNode*	Ntex	= Nstate->val.insert(pass.T);
+		mapMatrixVS::TNode*			Nvs		= map.insert		(pass.vs->vs);
+		mapMatrixPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);
+		mapMatrixCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
+		mapMatrixStates::TNode*		Nstate	= Ncs->val.insert	(pass.state->state);
+		mapMatrixTextures::TNode*	Ntex	= Nstate->val.insert(pass.T._get());
 		mapMatrixVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
 		mapMatrixItems&				item	= Nvb->val;
 
@@ -104,7 +104,7 @@ void CRender::InsertSG_Static	(IRender_Visual *pVisual)
 	if (SSA<=r_ssaDISCARD)		return;
 
 	// Select List and add to it
-	ShaderElement*		sh		= pVisual->hShader->E[RImplementation.phase];
+	ShaderElement*		sh		= (pVisual->hShader->E[RImplementation.phase])._get();
 	if (sh->Flags.bStrictB2F) {
 		mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
 		N->val.pVisual			= pVisual;
@@ -113,11 +113,11 @@ void CRender::InsertSG_Static	(IRender_Visual *pVisual)
 	} else {
 		SPass&						pass	= *sh->Passes.front();
 		mapNormal_T&				map		= mapNormal;		//	[sh->Flags.iPriority];
-		mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs);
-		mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps);
-		mapNormalCS::TNode*			Ncs		= Nps->val.insert	(pass.constants);
-		mapNormalStates::TNode*		Nstate	= Ncs->val.insert	(pass.state);
-		mapNormalTextures::TNode*	Ntex	= Nstate->val.insert(pass.T);
+		mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs->vs);
+		mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);
+		mapNormalCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
+		mapNormalStates::TNode*		Nstate	= Ncs->val.insert	(pass.state->state);
+		mapNormalTextures::TNode*	Ntex	= Nstate->val.insert(pass.T._get());
 		mapNormalVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
 		mapNormalItems&				item	= Nvb->val;
 
