@@ -1296,6 +1296,9 @@
 				RelativePath="xrServer_process_event_ownership.cpp">
 			</File>
 			<File
+				RelativePath="xrServer_process_event_reject.cpp">
+			</File>
+			<File
 				RelativePath="xrServer_process_spawn.cpp">
 			</File>
 			<File

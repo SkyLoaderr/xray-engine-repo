@@ -116,6 +116,14 @@ void	game_sv_CS::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 		u32 alive					=	get_alive_count	(ps_killed->team);
 		if (0==alive)				OnTeamScore(ps_killer->team);
 	}
+
+	// Drop everything
+	vector<u16>*	C				=	get_children(id_killed);
+	if (0==C)						return;
+	for (u32 it=0; it<C->size(); it++)
+	{
+		u16		id						= (*C)[it];
+	}
 }
 
 void	game_sv_CS::OnTimelimitExceed	()

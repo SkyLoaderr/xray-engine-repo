@@ -38,3 +38,16 @@ void xrServer::Perform_transfer(xrServerEntity* what, xrServerEntity* from, xrSe
 	SendBroadcast			(0xffffffff,P,MODE);
 	Log						("C");
 }
+
+void xrServer::Perform_reject(xrServerEntity* what, xrServerEntity* from)
+{
+	R_ASSERT	(what && from);
+	R_ASSERT	(what->ID_Parent == from->ID);
+
+	NET_Packet	P;
+	u32			time		= Device.dwTimeGlobal;
+	DWORD		MODE		= net_flags(TRUE,TRUE);
+
+	P.w_begin				(what->ID);
+	Process_event_reject	(P,0xffffffff,time,from->ID);
+}
