@@ -253,6 +253,8 @@ function npc_class(avail_types, npc, target)
 	then
 		type = "fraction"
 	end
+	type = "soldier"
+--	printf( "npc type = %s", type )
 	return type
 end
 function weather_class(avail_types, npc, target)
