@@ -73,13 +73,12 @@ public:
 	virtual ~IPureClient	();
 	HRESULT					net_Handler				(DWORD dwMessageType, PVOID pMessage);
 	
-	BOOL					net_Connect				(LPCSTR server_name);
-	void					net_Syncronize			();
-	void					net_Disconnect			();
+	BOOL					Connect					(LPCSTR server_name);
+	void					Disconnect				();
 
+	void					net_Syncronize			();
 	BOOL					net_isCompleted_Connect	()	{ return net_Connected;		}
 	BOOL					net_isCompleted_Sync	()	{ return net_Syncronised;	}
-	
 	LPCSTR					net_SessionName			()	{ return net_Hosts.front().dpSessionName; }
 
 	// receive

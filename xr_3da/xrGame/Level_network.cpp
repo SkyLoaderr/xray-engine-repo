@@ -133,10 +133,10 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 	return FALSE;
 }
 
-void CLevel::net_Disconnect	( )
+void CLevel::net_Disconnect		()
 {
-	Msg				("- Disconnect");
-	net_Disconnect	();
+	Msg							("- Disconnect");
+	IPureClient::Disconnect		();
 	if (Server)
 	{
 		Server->Disconnect	();

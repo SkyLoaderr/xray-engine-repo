@@ -49,7 +49,7 @@ IPureClient::~IPureClient	()
 {
 }
 
-BOOL IPureClient::net_Connect(LPCSTR server_name)
+BOOL IPureClient::Connect(LPCSTR server_name)
 {
 	R_ASSERT(server_name);
 
@@ -183,7 +183,7 @@ BOOL IPureClient::net_Connect(LPCSTR server_name)
 	return	TRUE;
 }
 
-void IPureClient::net_Disconnect()
+void IPureClient::Disconnect()
 {
     if( NET )	NET->Close(0);
 
@@ -299,9 +299,12 @@ HRESULT	IPureClient::net_Handler(DWORD dwMessageType, PVOID pMessage)
 			}
 		}
 		break;
-	case DPN_MSGID_TERMINATE_SESSION:
-		Engine.Event.Defer	("kernel:disconnect");
-		break;
+//	case DPN_MSGID_TERMINATE_SESSION:
+//		{
+//			Log					("**@@@@@@@@@*********###########$$$$$$$$$$$$$$$****************************");
+//			Engine.Event.Defer	("kernel:disconnect");
+//		}
+//		break;
 	default:
 		{
 			LPSTR	msg;	
