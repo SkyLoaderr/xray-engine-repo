@@ -284,15 +284,15 @@ public:
 
         if (fis_zero(x)&& fis_zero(z)){
             h = 0.0f;
-            if (!fis_zero(y))	p = (y>0.0f)?PI_DIV_2:-PI_DIV_2;
-            else            	p = 0.0f;
+            if (!fis_zero(float(y)))	p = (y>0.0f)?PI_DIV_2:-PI_DIV_2;
+            else            			p = 0.0f;
         }else{
-            if (fis_zero(z))	h = (x>0.0f)?-PI_DIV_2:PI_DIV_2;
-            else if (z<0.0f)	h = -(atan(x/z)-PI);
-            else            	h = -atan(x/z);
+            if (fis_zero(z))			h = (x>0.0f)?-PI_DIV_2:PI_DIV_2;
+            else if (z<0.0f)			h = -(atanf(x/z)-PI);
+            else            			h = -atanf(x/z);
             hyp = _sqrt(x*x+z*z);
-            if (fis_zero(hyp))	p = (y>0.0f)?PI_DIV_2:-PI_DIV_2;
-            else				p = atan(y/hyp);
+            if (fis_zero(float(hyp)))	p = (y>0.0f)?PI_DIV_2:-PI_DIV_2;
+            else						p = atanf(y/hyp);
         }
     }
 

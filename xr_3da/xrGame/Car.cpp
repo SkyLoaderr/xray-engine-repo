@@ -87,7 +87,7 @@ void	CCar::cam_Update			(float dt)
 
 	float yaw	= 0,p;
 	clXFORM().k.getHP(yaw,p);
-	camera->yaw						= yaw;
+	camera->yaw						= -yaw;
 	camera->Update					(P,Da);
 	Level().Cameras.Update			(camera);
 }
