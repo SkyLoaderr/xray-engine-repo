@@ -39,7 +39,7 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 	if (SSA<=r_ssaDISCARD)		return;
 
 	// Select shader
-	ShaderElement*		sh		= rimp_select_sh_dynamic(pVisual,distSQ);
+	ShaderElement*	sh		= rimp_select_sh_dynamic(pVisual,distSQ);
 	if (!pmask[sh->Flags.iPriority/2])		return;
 
 	// Create common node
