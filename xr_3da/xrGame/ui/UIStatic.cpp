@@ -60,7 +60,10 @@ CUIStatic::~ CUIStatic()
 //////////////////////////////////////////////////////////////////////////
 void CUIStatic::SetLightAnim(LPCSTR lanim)
 {
-	m_lanim	= LALib.FindItem(lanim);
+	if(lanim&&xr_strlen(lanim))
+		m_lanim	= LALib.FindItem(lanim);
+	else
+		m_lanim	= NULL;
 }
 
 void CUIStatic::Init(LPCSTR tex_name, int x, int y, int width, int height)

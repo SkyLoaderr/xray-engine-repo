@@ -696,8 +696,7 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 					{
 						l_newType = (l_newType+1)%m_ammoTypes.size();
 					} while(l_newType != m_ammoType && 
-							!m_pInventory->Get(*m_ammoTypes[l_newType],
-												!smart_cast<CActor*>(H_Parent())));
+							!m_pInventory->GetAny(*m_ammoTypes[l_newType] ));
 				
 					if(l_newType != m_ammoType) 
 					{

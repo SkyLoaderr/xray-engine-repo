@@ -151,8 +151,7 @@ bool CWeaponMagazined::TryReload()
 {
 	if(m_pInventory) 
 	{
-		m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[m_ammoType],
-											!smart_cast<CActor*>(H_Parent())));
+		m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->GetAny(*m_ammoTypes[m_ammoType] ));
 
 		
 		if(IsMisfire())
@@ -170,8 +169,7 @@ bool CWeaponMagazined::TryReload()
 		} 
 		else for(u32 i = 0; i < m_ammoTypes.size(); ++i) 
 		{
-			m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[i],
-																   !smart_cast<CActor*>(H_Parent())));
+			m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->GetAny( *m_ammoTypes[i] ));
 			if(m_pAmmo) 
 			{ 
 				m_ammoType = i; 
@@ -189,11 +187,11 @@ bool CWeaponMagazined::TryReload()
 
 bool CWeaponMagazined::IsAmmoAvailable()
 {
-	if (smart_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[m_ammoType],!smart_cast<CActor*>(H_Parent()))))
+	if (smart_cast<CWeaponAmmo*>(m_pInventory->GetAny(*m_ammoTypes[m_ammoType])))
 		return	(true);
 	else
 		for(u32 i = 0; i < m_ammoTypes.size(); ++i)
-			if (smart_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[i],!smart_cast<CActor*>(H_Parent()))))
+			if (smart_cast<CWeaponAmmo*>(m_pInventory->GetAny(*m_ammoTypes[i])))
 				return	(true);
 	return		(false);
 }
@@ -242,8 +240,7 @@ void CWeaponMagazined::UnloadMagazine()
 	xr_map<LPCSTR, u16>::iterator l_it;
 	for(l_it = l_ammo.begin(); l_ammo.end() != l_it; ++l_it) 
 	{
-		CWeaponAmmo *l_pA = smart_cast<CWeaponAmmo*>(m_pInventory->Get(l_it->first,
-														!smart_cast<CActor*>(H_Parent())));
+		CWeaponAmmo *l_pA = smart_cast<CWeaponAmmo*>(m_pInventory->GetAny(l_it->first));
 		if(l_pA) 
 		{
 			u16 l_free = l_pA->m_boxSize - l_pA->m_boxCurr;
@@ -276,16 +273,14 @@ void CWeaponMagazined::ReloadMagazine()
 	if(!unlimited_ammo()) 
 	{
 		//попытатьс€ найти в инвентаре патроны текущего типа 
-		m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[m_ammoType],
-														   !smart_cast<CActor*>(H_Parent())));
+		m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->GetAny(*m_ammoTypes[m_ammoType]));
 		
 		if(!m_pAmmo && !m_bLockType) 
 		{
 			for(u32 i = 0; i < m_ammoTypes.size(); ++i) 
 			{
 				//проверить патроны всех подход€щих типов
-				m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[i],
-													!smart_cast<CActor*>(H_Parent())));
+				m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->GetAny(*m_ammoTypes[i]));
 				if(m_pAmmo) 
 				{ 
 					m_ammoType = i; 

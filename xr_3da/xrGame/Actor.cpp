@@ -1316,7 +1316,8 @@ void CActor::MoveArtefactBelt(const CArtefact* artefact, bool on_belt)
 	if (Level().CurrentViewEntity() == this)
 		HUD().GetUI()->UIMainIngameWnd->m_artefactPanel.InitIcons(m_ArtefactsOnBelt);
 }
-#define ARTEFACTS_UPDATE_TIME 1000
+#define ARTEFACTS_UPDATE_TIME 100
+//old==1000
 
 void CActor::UpdateArtefactsOnBelt()
 {
@@ -1341,11 +1342,11 @@ void CActor::UpdateArtefactsOnBelt()
 		CArtefact*	artefact = smart_cast<CArtefact*>(*it);
 		if(artefact && artefact->m_bActorPropertiesEnabled)
 		{
-			conditions().ChangeBleeding(artefact->m_fBleedingRestoreSpeed*f_update_time);
-			conditions().ChangeHealth(artefact->m_fHealthRestoreSpeed*f_update_time);
-			conditions().ChangePower(artefact->m_fPowerRestoreSpeed*f_update_time);
-			conditions().ChangeSatiety(artefact->m_fSatietyRestoreSpeed*f_update_time);
-			conditions().ChangeRadiation(artefact->m_fRadiationRestoreSpeed*f_update_time);
+			conditions().ChangeBleeding			(artefact->m_fBleedingRestoreSpeed*f_update_time);
+			conditions().ChangeHealth			(artefact->m_fHealthRestoreSpeed*f_update_time);
+			conditions().ChangePower			(artefact->m_fPowerRestoreSpeed*f_update_time);
+			conditions().ChangeSatiety			(artefact->m_fSatietyRestoreSpeed*f_update_time);
+			conditions().ChangeRadiation		(artefact->m_fRadiationRestoreSpeed*f_update_time);
 		}
 	}
 }
@@ -1373,7 +1374,7 @@ void	CActor::SpawnAmmoForWeapon	(CInventoryItem *pIItem)
 	CWeaponMagazined* pWM = smart_cast<CWeaponMagazined*> (pIItem);
 	if (!pWM || !pWM->AutoSpawnAmmo()) return;
 
-	CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*>(inventory().Get(*(pWM->m_ammoTypes[0]), false));
+	CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*>(inventory().GetAny( *(pWM->m_ammoTypes[0]) ));
 	if (!pAmmo) 
 		pWM->SpawnAmmo(0xffffffff, NULL, ID());
 };
@@ -1385,7 +1386,7 @@ void	CActor::RemoveAmmoForWeapon	(CInventoryItem *pIItem)
 	CWeaponMagazined* pWM = smart_cast<CWeaponMagazined*> (pIItem);
 	if (!pWM || !pWM->AutoSpawnAmmo()) return;
 
-	CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*>(inventory().Get(*(pWM->m_ammoTypes[0]), false));
+	CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*>(inventory().GetAny(*(pWM->m_ammoTypes[0]) ));
 	if (!pAmmo) return;
 	//--- мы нашли патроны к текущему оружию	
 	/*

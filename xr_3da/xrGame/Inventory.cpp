@@ -779,6 +779,15 @@ PIItem CInventory::Get(const u16 id, bool bSearchRuck) const
 	return NULL;
 }
 
+//search both (ruck and belt)
+PIItem CInventory::GetAny(const char *name) const
+{
+	PIItem itm = Get(name, false);
+	if(!itm)
+		itm = Get(name, true);
+	return itm;
+}
+
 PIItem CInventory::item(CLASS_ID cls_id) const
 {
 	const TIItemContainer &list = m_all;

@@ -314,16 +314,14 @@ bool CWeaponShotgun::HaveCartridgeInInventory		(u8 cnt)
 	if(m_pInventory) 
 	{
 		//попытатьс€ найти в инвентаре патроны текущего типа 
-		m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[m_ammoType],
-														   !smart_cast<CActor*>(H_Parent())));
+		m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->GetAny(*m_ammoTypes[m_ammoType]));
 		
 		if(!m_pAmmo )
 		{
 			for(u32 i = 0; i < m_ammoTypes.size(); ++i) 
 			{
 				//проверить патроны всех подход€щих типов
-				m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[i],
-													!smart_cast<CActor*>(H_Parent())));
+				m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->GetAny(*m_ammoTypes[i]));
 				if(m_pAmmo) 
 				{ 
 					m_ammoType = i; 
