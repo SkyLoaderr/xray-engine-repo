@@ -92,7 +92,7 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position, bool ful
 #ifndef AI_COMPILER
 	Device.Statistic.AI_Node.Begin	();
 	
-	if (!m_valid_nodes[vertex_position(position).xz()])
+	if (valid_vertex_id(current_node_id) && !m_valid_nodes[vertex_position(position).xz()])
 		return				(current_node_id);
 
 	u32						id;
