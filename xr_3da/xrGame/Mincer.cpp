@@ -7,9 +7,9 @@ f32 g_pp_fade = 2000.f;
 
 CMincer::CMincer(void) 
 {
-	m_time = 0;
+	m_dwDeltaTime = 0;
 	m_pp_time = 0;
-	//m_hitImpulseScale = 1.f;
+	//m_fHitImpulseScale = 1.f;
 }
 
 CMincer::~CMincer(void) 
@@ -19,7 +19,6 @@ CMincer::~CMincer(void)
 void CMincer::Load(LPCSTR section) 
 {
 	inherited::Load(section);
-	m_hitImpulseScale = pSettings->r_float(section,"hit_impulse_scale");
 
 	LPCSTR l_PP = pSettings->r_string(section,"postprocess");
 	m_pp.duality_h = pSettings->r_float(l_PP,"duality_h");
@@ -37,10 +36,10 @@ BOOL CMincer::net_Spawn(LPVOID DC)
 	BOOL bOk = inherited::net_Spawn(DC);
 
 	m_fCurrentPower = 0;
-	m_fPowerMin = m_maxPower*0.9f;
+	m_fPowerMin = m_fMaxPower*0.9f;
 	m_bDischarging = false;
-	m_ready = false;
-	m_fSpecificDischarge = m_maxPower*0.01f;
+	m_bZoneReady = false;
+	m_fSpecificDischarge = m_fMaxPower*0.01f;
 
 
 	return bOk;
@@ -49,7 +48,7 @@ BOOL CMincer::net_Spawn(LPVOID DC)
 float CMincer::Power(float dist, float)// mass)
 {
 	float radius = CFORM()->getRadius()*3/4.f;
-	//f32 l_pow = l_r < dist ? 0 : m_fCurrentPower * (1.f - m_attn*(dist/l_r)*(dist/l_r));
+	//f32 l_pow = l_r < dist ? 0 : m_fCurrentPower * (1.f - m_fAttenuation*(dist/l_r)*(dist/l_r));
 	
 	
 	float power;
@@ -101,7 +100,7 @@ void CMincer::Affect(CObject* O)
 		
 		//l_pO->m_PhysicMovementControl.ApplyImpulse(l_dir, 50.f*Power(l_pO->Position().distance_to(P)));
 		float power = Power(pObject->Position().distance_to(position), pObject->GetMass());
-		float impulse = power*pObject->GetMass()/**m_hitImpulseScale*/;
+		float impulse = power*pObject->GetMass()/**m_fHitImpulseScale*/;
 		//float impulse = Impulse(power, l_pO->GetMass());
 
 		
@@ -128,18 +127,18 @@ void CMincer::Affect(CObject* O)
 void CMincer::UpdateCL() 
 {
 	u32 dt = Device.dwTimeDelta;
-	m_time += dt;
+	m_dwDeltaTime += dt;
 	
-	if(m_time > m_period) 
+	if(m_dwDeltaTime > m_dwPeriod) 
 	{
-		while(m_time > m_period) m_time -= m_period;
-//		m_ready = true;
+		while(m_dwDeltaTime > m_dwPeriod) m_dwDeltaTime -= m_dwPeriod;
+//		m_bZoneReady = true;
 	}
 
-	if(m_fCurrentPower<m_maxPower && !m_bDischarging)
+	if(m_fCurrentPower<m_fMaxPower && !m_bDischarging)
 	{
-		m_fCurrentPower += dt*(m_maxPower/m_period);
-		if(m_fCurrentPower>m_maxPower) m_fCurrentPower = m_maxPower;
+		m_fCurrentPower += dt*(m_fMaxPower/m_dwPeriod);
+		if(m_fCurrentPower>m_fMaxPower) m_fCurrentPower = m_fMaxPower;
 	}
 
 	//зона разрядилась полностью
@@ -147,14 +146,14 @@ void CMincer::UpdateCL()
 	{
 		m_fCurrentPower = 0;
 		m_bDischarging = false;
-		m_ready = false;
+		m_bZoneReady = false;
 	}
 	
 	//готова ли зона к разряду
 	if(m_fCurrentPower<m_fPowerMin && m_bDischarging==false)
-		m_ready = false;
+		m_bZoneReady = false;
 	else
-		m_ready = true;
+		m_bZoneReady = true;
 
 	
 	if(m_inZone.empty())

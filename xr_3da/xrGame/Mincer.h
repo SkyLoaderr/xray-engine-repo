@@ -3,7 +3,7 @@
 // При попадании живого объекта в зону происходит 
 // электрический разряд
 // Зона восстанавливает заряд через определенное время
-// (через m_period заряжается с 0 до m_maxPower)
+// (через m_dwPeriod заряжается с 0 до m_fMaxPower)
 //
 /////////////////////////////////////////////////////
 #pragma once
@@ -31,10 +31,9 @@ protected:
 	float Impulse(float power, float mass);
 
 
-	float m_hitImpulseScale;
+	float m_fHitImpulseScale;
 
-	u32 m_time, m_pp_time;
-	//float m_hitImpulseScale;
+	u32 m_dwDeltaTime, m_pp_time;
 	SZonePPInfo m_pp;
 
 

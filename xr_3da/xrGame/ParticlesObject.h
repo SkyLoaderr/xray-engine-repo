@@ -25,15 +25,18 @@ public:
 	Fvector&			Position			();
 	void				SetXFORM			(const Fmatrix& m);
 	void				UpdateParent		(const Fmatrix& m, const Fvector& vel);
+
 	void				play_at_pos			(const Fvector& pos, BOOL xform=FALSE);
 	void				Play				();
 	void				Stop				();
 	
 	bool				IsLooped			() {return m_bLooped;}
 	bool				IsAutoRemove		();
+	bool				IsPlaying			();
 	void				SetAutoRemove		(bool auto_remove);
 
 	LPCSTR				dbg_ref_name		();
+
 protected:
 	bool m_bLooped;
 };

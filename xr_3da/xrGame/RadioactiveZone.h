@@ -16,9 +16,9 @@ public:
 
 	virtual void Postprocess(f32 val);
 
-	u32 m_time;
+	u32 m_dwDeltaTime;
 	u32 m_pp_time;
-	float m_hitImpulseScale;
+	float m_fHitImpulseScale;
 	SZonePPInfo m_pp;
 	ref_str m_pHitEffect;
 };

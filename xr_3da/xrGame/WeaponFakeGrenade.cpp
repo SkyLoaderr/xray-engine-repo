@@ -515,7 +515,8 @@ void CWeaponFakeGrenade::UpdateCL()
 				//m_pPhysicsShell->applyImpulse(l_dir, l_force);
 				xr_list<CParticlesObject*>::iterator l_it;
 				Fvector vel;
-				m_pPhysicsShell->get_LinearVel(vel);
+				PHGetLinearVell(vel);
+				//m_pPhysicsShell->get_LinearVel(vel);
 				// обновить эффекты
 				//for(l_it = m_trailEffectsPSs.begin(); m_trailEffectsPSs.end() != l_it; ++l_it) (*l_it)->UpdateParent(XFORM(),vel);
 			}

@@ -136,7 +136,7 @@ void CCustomDetector::shedule_Update(u32 dt)
         else
 			l_dst = 0;*/
 
-		f32 l_relPow = l_pZ->Power(l_dst) / l_pZ->m_maxPower;
+		f32 l_relPow = l_pZ->Power(l_dst) / l_pZ->GetMaxPower();
 		if(l_relPow > 0 && l_pZ->feel_touch_contact(this)) l_buzzer = true;
 		l_maxPow = _max(l_maxPow, l_relPow);
 		l_relPow = 1.f - l_relPow;

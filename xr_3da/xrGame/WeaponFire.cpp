@@ -224,8 +224,9 @@ void CWeapon::StartSmokeParticles	()
 	CParticlesObject* pSmokeParticles = NULL;
 
 	Fvector vel; 
-	vel.sub(Position(),ps_Element(0).vPosition); 
-	vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
+	PHGetLinearVell(vel);
+//	vel.sub(Position(),ps_Element(0).vPosition); 
+//	vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
 
 	StartParticles(pSmokeParticles, m_sSmokeParticles, vLastFP, vel, true);
 	/*if(!m_sSmokeParticles) return;
@@ -254,8 +255,9 @@ void CWeapon::OnShellDrop	()
 	pos.c.set(vLastSP);
 
 	Fvector vel; 
-	vel.sub(Position(),ps_Element(0).vPosition); 
-	vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
+	PHGetLinearVell(vel);
+	//vel.sub(Position(),ps_Element(0).vPosition); 
+	//vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
 
 
 	pShellParticles->UpdateParent(pos, vel); 

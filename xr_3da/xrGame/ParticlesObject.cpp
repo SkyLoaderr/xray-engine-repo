@@ -172,3 +172,12 @@ void CParticlesObject::SetAutoRemove(bool auto_remove)
 {
 	m_bAutoRemove = auto_remove;
 }
+
+//играются ли партиклы, отличается от PSI_Alive, тем что после
+//остановки Stop партиклы могут еще доигрывать анимацию IsPlaying = true
+bool CParticlesObject::IsPlaying()
+{
+	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); 
+	VERIFY(V);
+	return V->IsPlaying();
+}

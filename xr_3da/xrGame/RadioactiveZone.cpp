@@ -6,9 +6,9 @@ static f32 g_pp_fade = 2000.f;
 
 CRadioactiveZone::CRadioactiveZone(void) 
 {
-	m_time = 0;
+	m_dwDeltaTime = 0;
 	m_pp_time = 0;
-	m_hitImpulseScale = 1.f;
+	m_fHitImpulseScale = 1.f;
 }
 
 CRadioactiveZone::~CRadioactiveZone(void) 
@@ -18,7 +18,7 @@ CRadioactiveZone::~CRadioactiveZone(void)
 void CRadioactiveZone::Load(LPCSTR section) 
 {
 	inherited::Load(section);
-	m_hitImpulseScale = pSettings->r_float(section,"hit_impulse_scale");
+	m_fHitImpulseScale = pSettings->r_float(section,"hit_impulse_scale");
 
 	LPCSTR l_PP = pSettings->r_string(section,"postprocess");
 	m_pp.duality_h = pSettings->r_float(l_PP,"duality_h");
@@ -33,7 +33,7 @@ void CRadioactiveZone::Load(LPCSTR section)
 	m_pHitEffect = pSettings->r_string(section,"hit_effect");
 
 
-	m_hitImpulseScale = 0.01f;
+	m_fHitImpulseScale = 0.01f;
 }
 
 void CRadioactiveZone::Affect(CObject* O) 
@@ -59,12 +59,12 @@ void CRadioactiveZone::Affect(CObject* O)
 		//l_pO->ph_Movement.ApplyImpulse(l_dir, 50.f*Power(l_pO->Position().distance_to(P)));
 		
 		Fvector position_in_bone_space;
-		float power = Power(l_pO->Position().distance_to(P))*m_hitImpulseScale;
-		//float impulse = m_hitImpulseScale*power*l_pO->GetMass();
+		float power = Power(l_pO->Position().distance_to(P))*m_fHitImpulseScale;
+		//float impulse = m_fHitImpulseScale*power*l_pO->GetMass();
 		float impulse = 0;
 		if(power > 0.01f) 
 		{
-			m_time = 0;
+			m_dwDeltaTime = 0;
 			position_in_bone_space.set(0.f,0.f,0.f);
 			NET_Packet		l_P;
 			l_pO->u_EventGen	(l_P,GE_HIT,l_pO->ID());
@@ -87,16 +87,16 @@ void CRadioactiveZone::Affect(CObject* O)
 //void CRadioactiveZone::Update(u32 dt) {
 void CRadioactiveZone::UpdateCL() 
 {
-//	m_period = 50;
+//	m_dwPeriod = 50;
 
 	u32 dt = Device.dwTimeDelta;
-	m_time += dt;
+	m_dwDeltaTime += dt;
 
-	if(m_time > m_period) 
+	if(m_dwDeltaTime > m_dwPeriod) 
 	{
-		m_time = m_period;
-		//while(m_time > m_period) m_time -= m_period;
-		m_ready = true;
+		m_dwDeltaTime = m_dwPeriod;
+		//while(m_dwDeltaTime > m_dwPeriod) m_dwDeltaTime -= m_dwPeriod;
+		m_bZoneReady = true;
 	}
 	
 	if(m_pLocalActor && m_pLocalActor->g_Alive()) 

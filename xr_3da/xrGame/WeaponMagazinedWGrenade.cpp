@@ -163,9 +163,11 @@ void CWeaponMagazinedWGrenade::OnShot		()
 		Fmatrix pos; 
 		pos.set(XFORM()); 
 		pos.c.set(vLastFP2);
+		
 		Fvector vel; 
-		vel.sub(Position(),ps_Element(0).vPosition); 
-		vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
+		PHGetLinearVell(vel);
+		//vel.sub(Position(),ps_Element(0).vPosition); 
+		//vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
 		pStaticPG->UpdateParent(pos, vel); 
 		pStaticPG->Play();
 	} 

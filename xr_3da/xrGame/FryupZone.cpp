@@ -35,9 +35,9 @@ void CFryupZone::OnRender()
 //	if (bOk) 
 //	{
 //		l_pShape->ComputeBounds		();
-//		m_maxPower					= Z->m_maxPower;
-//		m_attn						= Z->m_attn;
-//		m_period					= Z->m_period;
+//		m_maxPower					= Z->m_fMaxPower;
+//		m_fAttenuation						= Z->m_attn;
+//		m_dwPeriod					= Z->m_period;
 //
 //		Fvector						P;
 //		XFORM().transform_tiny		(P,CFORM()->getSphere().P);

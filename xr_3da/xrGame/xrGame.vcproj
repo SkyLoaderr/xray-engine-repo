@@ -1959,6 +1959,16 @@
 								RelativePath="PhysicObject.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="ParticlesPlayer"
+							Filter="">
+							<File
+								RelativePath=".\ParticlesPlayer.cpp">
+							</File>
+							<File
+								RelativePath=".\ParticlesPlayer.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="_door"
