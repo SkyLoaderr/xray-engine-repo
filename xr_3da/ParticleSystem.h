@@ -343,7 +343,6 @@ public:
             pos.add			(m_Position);
 			dir.random_dir	();
             break;
-        default: THROW;
 		}
 	}
 

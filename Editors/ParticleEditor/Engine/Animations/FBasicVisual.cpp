@@ -44,7 +44,7 @@ void CVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 		VERIFY	(hdr.format_version==xrOGF_FormatVersion);
 		Type	= hdr.type;
 	} else {
-		THROW;
+		Debug.fatal	("Invalid visual");
 	}
 
 	// BBox

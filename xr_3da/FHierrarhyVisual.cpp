@@ -96,7 +96,7 @@ void FHierrarhyVisual::Load(const char* N, IReader *data, u32 dwFlags)
                 }
                 bDontDelete = FALSE;
             } else {
-                THROW;
+				Debug.fatal	("Invalid visual");
             }
     	}
 	}
