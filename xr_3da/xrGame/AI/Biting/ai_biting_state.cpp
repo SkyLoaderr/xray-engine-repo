@@ -125,7 +125,7 @@ void CBitingRest::Replanning()
 		m_tAction = ACTION_LIE;
 		// проверить лежит уже?
 		if (pMonster->m_tAnim != eMotionLieIdle) {
-			pMonster->Motion.m_tSeq.Add(eMotionLieDown,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pMonster->Motion.m_tSeq.Add(eMotionLieDown,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
 			pMonster->Motion.m_tSeq.Switch();
 		}
 
@@ -275,7 +275,7 @@ void CBitingAttack::Run()
 
 				if (m_dwSuperMeleeStarted + 600 < m_dwCurrentTime) {
 					// прыгнуть
-					pMonster->Motion.m_tSeq.Add(eMotionAttackJump,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+					pMonster->Motion.m_tSeq.Add(eMotionAttackJump,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
 					pMonster->Motion.m_tSeq.Switch();
 					m_dwSuperMeleeStarted = 0;
 				}
@@ -373,8 +373,8 @@ void CBitingEat::Run()
 
 	bStartEating = bStartEating && (m_tAction == ACTION_EAT);
 	if (bStartEating) {	// если монстр подбежал к трупу, необходимо отыграть проверку трупа и лечь
-		pMonster->Motion.m_tSeq.Add(eMotionCheckCorpse,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-		pMonster->Motion.m_tSeq.Add(eMotionLieDownEat,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+		pMonster->Motion.m_tSeq.Add(eMotionCheckCorpse,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
+		pMonster->Motion.m_tSeq.Add(eMotionLieDownEat,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
 		pMonster->Motion.m_tSeq.Switch();
 	}
 
@@ -569,7 +569,7 @@ void CBitingPanic::Run()
 
 		pMonster->r_torso_target.yaw = angle_normalize(pMonster->r_torso_target.yaw + PI);
 
-		pMonster->Motion.m_tSeq.Add(eMotionFastTurnLeft,0,pMonster->m_ftrScaredRSpeed * 2.0f,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);		
+		pMonster->Motion.m_tSeq.Add(eMotionFastTurnLeft,0,pMonster->m_ftrScaredRSpeed * 2.0f,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);		
 		pMonster->Motion.m_tSeq.Switch();
 	} 
 
@@ -648,8 +648,8 @@ void CBitingExploreDNE::Init()
 	
 	// проиграть анимацию испуга
 
-	pMonster->Motion.m_tSeq.Add(eMotionFastTurnLeft,0,pMonster->m_ftrScaredRSpeed * 2.0f,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);
-	pMonster->Motion.m_tSeq.Add(eMotionScared,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+	pMonster->Motion.m_tSeq.Add(eMotionFastTurnLeft,0,pMonster->m_ftrScaredRSpeed * 2.0f,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW, STOP_ANIM_END);
+	pMonster->Motion.m_tSeq.Add(eMotionScared,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
 	pMonster->Motion.m_tSeq.Switch();
 
 	SetInertia(20000);
@@ -668,7 +668,7 @@ void CBitingExploreDNE::Run()
 
 		pMonster->r_torso_target.yaw = angle_normalize(pMonster->r_torso_target.yaw + PI);
 
-		pMonster->Motion.m_tSeq.Add(eMotionFastTurnLeft,0,pMonster->m_ftrScaredRSpeed * 2.0f,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);		
+		pMonster->Motion.m_tSeq.Add(eMotionFastTurnLeft,0,pMonster->m_ftrScaredRSpeed * 2.0f,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED,STOP_ANIM_END);		
 		pMonster->Motion.m_tSeq.Switch();
 	} 
 

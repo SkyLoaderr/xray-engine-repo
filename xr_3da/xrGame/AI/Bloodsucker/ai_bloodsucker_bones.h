@@ -11,14 +11,15 @@ struct bonesAxis {
 	float			r_speed;
 };
 
-
 // бона с параметрами движения по осям
 struct bonesBone {
 	CBoneInstance	*bone;
 	bonesAxis		axis[3];
 	u32				axis_used;
 	
-	bonesBone		() {bone = 0; axis_used = 0;}
+			bonesBone	() {bone = 0; axis_used = 0;}
+	bool	NeedTurn	(u32 p_axis);					// необходим поворот по оси p_axis
+	void	Turn		(u32 dt, u32 p_axis);			// выполнить поворот по оси p_axis
 };
 
 // массив бон для движения нескольких бон дновременно + параметры движения
@@ -35,15 +36,11 @@ class bonesManipulation {
 	xr_vector<bonesMotion>				motions; 
 	xr_vector<bonesMotion>::iterator	cur_motion;
 
-	bonesMotion							return_params;
-
+	bool growth;						// если идёт прирост по углам
 public:
 	void Update				();
 	void AddMotion			(bonesMotion m);
-	void SetreturnParams	(bonesMotion m);
+	void SetReturnParams	(bonesMotion m);
 	void Stop				();
 };
-
-
-
 

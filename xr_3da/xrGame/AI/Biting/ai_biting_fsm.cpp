@@ -78,7 +78,7 @@ void CBitingMotion::SetFrameParams(CAI_Biting *pData)
 
 		//!- проверить необходимо ли устанавливать специфич. параметры (kinda StandUp)
 		if ((pData->m_tAnimPrevFrame == eMotionLieIdle) && (pData->m_tAnim != eMotionLieIdle)){
-			m_tSeq.Add(eMotionStandUp,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			m_tSeq.Add(eMotionStandUp,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED,STOP_ANIM_END);
 			m_tSeq.Switch();
 		}
 
