@@ -102,19 +102,6 @@ float maxp(float a, float b)
 float minp(float a, float b)
 {	return a<b ? a:b;		}
 
-void i_iterate	(occRasterizer* OCC, occTri* T, int startY, int endY, float leftX, float left_dX, float rightX, float right_dX, float leftZ, float left_dZ, float rightZ, float right_dZ)
-{
-	// Now scan all lines in this section
-	float lhx = left_dX/2;	leftX	+= lhx;	// half pixel
-	float rhx = right_dX/2;	rightX	+= rhx;	// half pixel
-	for (; startY<=endY; startY++) 
-	{
-		i_scan	(OCC, T, int(startY), maxp(leftX-lhx,leftX+lhx), minp(rightX-rhx,rightX+rhx), leftZ, rightZ);
-		leftX	+= left_dX; rightX += right_dX;
-		leftZ	+= left_dZ; rightZ += right_dZ;
-	}
-}
-
 __forceinline void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int Sect, BOOL bMiddle)
 {
 	// Find the start/end Y pixel coord, set the starting pts for scan line ends
@@ -127,7 +114,7 @@ __forceinline void i_section	(occRasterizer* OCC, float *A, float *B, float *C, 
 		startp1 = startp2 = A;
 		if (bMiddle)	endY ++;
 		
-		// check 'endY' for out-of-tiangle 
+		// check 'endY' for out-of-triangle 
 		int test = maxPixel(C[1]);
 		if (endY>=test) endY --;
 		if (startY > endY) return;
@@ -142,7 +129,7 @@ __forceinline void i_section	(occRasterizer* OCC, float *A, float *B, float *C, 
 		startp1 = A; startp2 = B;
 		if (bMiddle)	startY --;
 		
-		// check 'startY' for out-of-tiangle 
+		// check 'startY' for out-of-triangle 
 		int test = minPixel(A[1]);
 		if (startY<test) startY ++;
 		if (startY > endY) return;
