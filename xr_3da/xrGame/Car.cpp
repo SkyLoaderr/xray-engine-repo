@@ -660,7 +660,7 @@ void CCar::SteerIdle()
 	i=m_steering_wheels.begin();
 	e=m_steering_wheels.end();
 	for(;i!=e;i++)
-		i->SteerLeft();
+		i->SteerIdle();
 	e_state_steer=idle;
 }
 
@@ -696,13 +696,22 @@ void CCar::Break()
 void CCar::PressRight()
 {
 	if(lsp)
-		SteerIdle();
+	{
+		if(!fwp)SteerIdle();
+	}
 	else
 		SteerRight();
 	rsp=true;
 }
 void CCar::PressLeft()
 {
+	if(rsp)
+	{
+		if(!fwp)SteerIdle();
+	}
+	else
+		SteerLeft();
+	lsp=true;
 }
 void CCar::PressForward()
 {
@@ -749,12 +758,13 @@ void CCar::ReleaseLeft()
 void CCar::ReleaseForward()
 {
 if(bkp)
-	NeutralDrive();
-else
-	{
+{
 	Transmision(0);
 	Drive();
-	}
+}
+else
+	NeutralDrive();
+
 fwp=false;
 }
 void CCar::ReleaseBack()
@@ -805,9 +815,11 @@ pos_fvd=pos_fvd>0.f ? -1.f : 1.f;
 }
 void CCar::SWheelDrive::Drive()
 {
-float cur_speed=pwheel->car->m_max_rpm/gear_factor/pwheel->car->m_current_gear_ratio; 
-dJointSetHinge2Param(pwheel->joint, dParamFMax2, pwheel->car->m_power/cur_speed);
+float cur_speed=pwheel->car->m_max_rpm/gear_factor/pwheel->car->m_current_gear_ratio;
 dJointSetHinge2Param(pwheel->joint, dParamVel2, pos_fvd*cur_speed);
+(cur_speed<0.f) ? (cur_speed=-cur_speed) :cur_speed;
+dJointSetHinge2Param(pwheel->joint, dParamFMax2, pwheel->car->m_power/cur_speed);
+
 }
 
 void CCar::SWheelDrive::Neutral()
