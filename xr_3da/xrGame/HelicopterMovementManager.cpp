@@ -161,7 +161,6 @@ void CHelicopterMovManager::insertKeyPoints(	float from_time,
 		updatePathHPB(from_time);
 
 	CHelicopterMotion::GetKeyTime	(CHelicopterMotion::KeyCount()-1, m_endTime);
-//	m_endTime = t;
 }
 
 void CHelicopterMovManager::shedule_Update(u32 timeDelta, CHelicopter* heli)
@@ -345,10 +344,6 @@ void	CHelicopterMovManager::addHuntPath2(float from_time, const Fvector& enemyPo
 	Fvector T,R;
 	CHelicopterMotion::_Evaluate(m_endTime-0.1f,T,R);
 	dir.sub(dstPos,T).normalize_safe();
-/*	dstPos2.mad(dstPos,dir,1.0f);
-	vAddedKeys.clear();
-	vAddedKeys.push_back(dstPos);
-	vAddedKeys.push_back(dstPos2);*/
 
 	vAddedKeys.clear();
 	createRocking(dstPos, dir, vAddedKeys, m_hunt_time);
@@ -460,13 +455,11 @@ void CHelicopterMovManager::addGoToPointPath(float from_time)
 	createHuntPathTrajectory(from_time, fromPos, m_via_point, vAddedKeys);
 	getPathAltitude(m_to_point,m_baseAltitude);
 	vAddedKeys.push_back(m_to_point);
-	insertKeyPoints(safe_time, vAddedKeys, m_basePatrolSpeed, false, true);
+	insertKeyPoints(safe_time, vAddedKeys, m_basePatrolSpeed, false, false);
 	
-	key_count = CHelicopterMotion::KeyCount();
 	
 	fixateKeyPath(safe_time);
 	
-	key_count = CHelicopterMotion::KeyCount();
 
 	Fvector dstPos;
 	dstPos = vAddedKeys.back();
@@ -478,8 +471,6 @@ void CHelicopterMovManager::addGoToPointPath(float from_time)
 	vAddedKeys.clear();
 	createRocking(dstPos, dir, vAddedKeys, m_wait_in_point);
 	insertKeyPoints(m_endTime, vAddedKeys, 0.1f, false, false);
-
-	key_count = CHelicopterMotion::KeyCount();
 
 	updatePathHPB(safe_time);
 
@@ -559,6 +550,11 @@ void CHelicopterMovManager::buildHPB(const Fvector& p_prev,
 									 Fvector& p0_phb_res,
 									 float time)
 {
+	if( fis_zero(time) ){
+		p0_phb_res = p_prev_phb;
+		return;
+	}
+
 	float s1 = p_prev.distance_to (p0);
 	float s2 = p0.distance_to (p_next);
 
@@ -682,7 +678,7 @@ void CHelicopterMovManager::fixateKeyPath(float from_time)
 
 	for(float t=from_time; t<m_endTime; t+=dTime){
 		FindNearestKey(t, min_t, max_t, min_idx, max_idx);
-		if( (_abs(t-min_t)<2.5f)||(_abs(t-max_t)<2.5f) )
+		if( (_abs(t-min_t)<1.5f)||(_abs(t-max_t)<1.5f) )
 			continue;
 		CHelicopterMotion::_Evaluate(t,T,R);
 		getPathAltitude(T,m_baseAltitude);

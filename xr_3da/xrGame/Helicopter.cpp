@@ -442,6 +442,7 @@ if(who==this)
 		switch (who->SUB_CLS_ID){
 			case CLSID_OBJECT_ACTOR: 
 				doHunt(who);
+//				doHunt2(who, 5, 5);
 			break;
 		default:
 			break;
