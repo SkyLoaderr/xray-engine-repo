@@ -63,30 +63,22 @@ void CUIStatic::Init(int x, int y, int width, int height)
 //прорисовка
 void  CUIStatic::Draw()
 {
-	if(!m_bAvailableTexture)
+	if(m_bAvailableTexture)
 	{
-		inherited::Draw();
-		return;
+
+		RECT rect = GetAbsoluteRect();
+		m_UIStaticItem.SetPos(rect.left, rect.top);
+
+		if(m_bClipper) TextureClipper();
+
+		if(m_bStretchTexture)
+			//растягиваем текстуру, Clipper в таком случае игнорируется (пока)
+			m_UIStaticItem.Render(0, 0, rect.right-rect.left, rect.bottom-rect.top);
+		else
+			m_UIStaticItem.Render();
 	}
-	
-	RECT rect = GetAbsoluteRect();
-	m_UIStaticItem.SetPos(rect.left, rect.top);
-
-	if(m_bClipper) TextureClipper();
-
-	if(m_bStretchTexture)
-		//растягиваем текстуру, Clipper в таком случае игнорируется (пока)
-		m_UIStaticItem.Render(0, 0, rect.right-rect.left, rect.bottom-rect.top);
-	else
-		m_UIStaticItem.Render();
 
 	inherited::Draw();
-}
-
-
-void CUIStatic::Update()
-{
-	inherited::Update();
 
 	// Вывод текста
 
@@ -187,7 +179,13 @@ void CUIStatic::Update()
 			AddLetter(m_str[i]);
 		}
 	}
-//	GetFont()->OnRender();
+	GetFont()->OnRender();
+}
+
+
+void CUIStatic::Update()
+{
+	inherited::Update();
 }
 
 void CUIStatic::WordOut()

@@ -215,28 +215,27 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 
 }
 
-
-
-
 //прорисовка кнопки
 void  CUIButton::Draw()
 {
-	if(!m_bAvailableTexture) return;
+	CUIWindow::Draw();
 
 	RECT rect = GetAbsoluteRect();
-		
 
-	if(m_eButtonState == BUTTON_UP || m_eButtonState == BUTTON_NORMAL)
+	if(m_bAvailableTexture)
 	{
-		m_UIStaticItem.SetPos(rect.left + m_iTexOffsetX, rect.top + m_iTexOffsetY);
-	}
-	else
-	{
-		m_UIStaticItem.SetPos(rect.left + m_iPushOffsetX + m_iTexOffsetX, 
-								rect.top + m_iPushOffsetY + m_iTexOffsetY);
-	}
+		if(m_eButtonState == BUTTON_UP || m_eButtonState == BUTTON_NORMAL)
+		{
+			m_UIStaticItem.SetPos(rect.left + m_iTexOffsetX, rect.top + m_iTexOffsetY);
+		}
+		else
+		{
+			m_UIStaticItem.SetPos(rect.left + m_iPushOffsetX + m_iTexOffsetX, 
+				rect.top + m_iPushOffsetY + m_iTexOffsetY);
+		}
 
-	m_UIStaticItem.Render();
+		m_UIStaticItem.Render();
+	}
 
 	CUIWindow::Draw();
 
@@ -318,7 +317,7 @@ bool CUIButton::IsHighlightText()
 
 void  CUIButton::Update()
 {
-	inherited::Update();
+	CUIWindow::Update();
 }
 
 void CUIButton::UpdateTextAlign()
