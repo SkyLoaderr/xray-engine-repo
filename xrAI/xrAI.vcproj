@@ -330,15 +330,6 @@
 			Name="Compiler"
 			Filter="">
 			<File
-				RelativePath="AIMapExport.cpp">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="AIMapExport.h">
 			</File>
 			<File
