@@ -524,7 +524,7 @@ void CWeapon::UpdateCL		()
 
 void CWeapon::SwitchState(u32 S)
 {
-	if (Local() && /*???????*/ (S!=STATE) /*???????*/ && (S!=NEXT_STATE))	
+	if (Local() && /*??????? (S!=STATE) ??????? &&*/ (S!=NEXT_STATE))	
 	{
 		/// sdlkajdklsjaskldjlkasjdkljaskljdklasjldkjasklj
 

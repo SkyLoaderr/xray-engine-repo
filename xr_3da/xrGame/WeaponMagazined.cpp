@@ -186,6 +186,7 @@ void CWeaponMagazined::OnStateSwitch	(u32 S)
 		break;
 	}
 	STATE = S;
+	if(Remote()) NEXT_STATE = S;
 }
 
 void CWeaponMagazined::UpdateCL			()
@@ -194,7 +195,7 @@ void CWeaponMagazined::UpdateCL			()
 	float dt			= Device.fTimeDelta;
 	
 	// cycle update
-	switch (STATE)
+	switch (NEXT_STATE)
 	{
 	case eShowing:
 	case eHiding:
