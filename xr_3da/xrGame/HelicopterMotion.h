@@ -43,7 +43,7 @@ public:
 	void			GetKeyTime		(u32 idx, float& time);
 #ifdef DEBUG
 	virtual void	OnRender		();
-	void			drawPath		();
+	void			DrawPath		(bool bDrawInterpolated, bool bDrawKeys, float dTime=0.5f);
 #endif
 };
 

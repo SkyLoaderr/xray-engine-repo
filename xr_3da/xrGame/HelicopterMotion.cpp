@@ -140,10 +140,10 @@ BOOL CHelicopterMotion::NormalizeKeys(float from_time, float to_time, float spee
 }
 
 #ifdef DEBUG
-void CHelicopterMotion::drawPath()
+void CHelicopterMotion::DrawPath(bool bDrawInterpolated, bool bDrawKeys, float dTime)
 {
-	return;
-// motion path
+	if(bDrawInterpolated){
+	
 	FvectorVec path_points;
 	FvectorVec path_rot;
 
@@ -152,7 +152,7 @@ void CHelicopterMotion::drawPath()
 
 	Fvector 				T,r;
 	path_points.clear		();
-	for (float t=min_t; (t<max_t)||fsimilar(t,max_t,EPS_L); t+=1.0f/3.0f){
+	for (float t=min_t; (t<max_t)||fsimilar(t,max_t,EPS_L); t+=dTime){
 		_Evaluate(t,T,r);
 		path_points.push_back(T);
 		path_rot.push_back(r);
@@ -161,7 +161,7 @@ void CHelicopterMotion::drawPath()
 	float path_box_size = .05f;
 	for(u32 i = 0; i<path_points.size (); ++i) {
 		RCache.dbg_DrawAABB  (path_points[i],path_box_size,path_box_size,path_box_size,D3DCOLOR_XRGB(0,255,0));
-		
+	}	
 /*		r.setHP(path_rot[i].y, path_rot[i].x );
 		r.mul (3.0f);
 		T.add (path_points[i],r);
@@ -169,23 +169,26 @@ void CHelicopterMotion::drawPath()
 */
 	}
 
-/*	u32 cnt = KeyCount();
-	for(u32 ii=0;ii<cnt;++ii) {
-		Fvector _t, TT;
-		Fvector _r;
-		GetKey (ii,_t,_r);
-		RCache.dbg_DrawAABB  (_t,path_box_size+.1f,path_box_size+.1f,path_box_size+.1f,D3DCOLOR_XRGB(0,255,255));
+	if(bDrawKeys){
+		float key_box_size = .25f;
+		u32 cnt = KeyCount();
+		for(u32 ii=0;ii<cnt;++ii) {
+			Fvector _t, TT;
+			Fvector _r;
+			GetKey (ii,_t,_r);
+			RCache.dbg_DrawAABB  (_t,key_box_size,key_box_size,key_box_size,D3DCOLOR_XRGB(0,255,255));
 
-		_r.setHP(_r.y, _r.x );
-		_r.mul (6.0f);
-		TT.add (_t,_r);
-		RCache.dbg_DrawLINE (Fidentity, _t, TT, D3DCOLOR_XRGB(255,0,0));
-	}*/
+//			_r.setHP(_r.y, _r.x );
+//			_r.mul (6.0f);
+//			TT.add (_t,_r);
+//			RCache.dbg_DrawLINE (Fidentity, _t, TT, D3DCOLOR_XRGB(255,0,0));
+		}
+	}
 
 }
 void CHelicopterMotion::OnRender()
 {
-	drawPath ();
+	DrawPath (true, true);
 }
 #endif
 
@@ -202,15 +205,18 @@ void CHelicopterMotion::DropTailKeys(u32 cnt)
 
 void CHelicopterMotion::DropHeadKeys(u32 cnt)
 {
-	VERIFY(KeyCount()>(int)cnt+2);
+//	VERIFY(KeyCount()>(int)cnt+2);
 
 	CEnvelope*	env = Envelope();
 	for(u32 i=0; i<cnt; ++i) {
 		DeleteKey(env->keys.back()->time);
 	};
 
-	VERIFY(KeyCount()>4);
-	GetKeyTime(KeyCount()-1, m_endTime);
+//	VERIFY(KeyCount()>4);
+	if(KeyCount())
+		GetKeyTime(KeyCount()-1, m_endTime);
+	else
+		m_endTime = 0.0f;
 }
 
 void CHelicopterMotion::GetKey(u32 idx, Fvector& T, Fvector& R)

@@ -8,9 +8,6 @@
 
 
 
-#define HELI_PITCH_K (-0.006f)
-#define HELI_VELOCITY_ROLL_K (0.03f)
-
 class CHelicopter : 
 	public CEntity,
 	public CShootingObject,
