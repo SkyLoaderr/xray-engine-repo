@@ -301,6 +301,9 @@
 						RelativePath=".\Config\gameplay\tasks_agroprom.xml">
 					</File>
 					<File
+						RelativePath=".\Config\gameplay\tasks_bar.xml">
+					</File>
+					<File
 						RelativePath=".\Config\gameplay\tasks_darkvalley.xml">
 					</File>
 					<File
