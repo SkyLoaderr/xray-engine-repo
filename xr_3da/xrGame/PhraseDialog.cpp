@@ -166,7 +166,7 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 	}
 	else
 	{
-		//обновить список фраз, которые можно сейчас говорить
+		//обновить список фраз, которые сейчас сможет говорить собеседник
 		for(xr_vector<CPhraseGraph::CEdge>::const_iterator it = phrase_vertex->edges().begin();
 			it != phrase_vertex->edges().end();
 			it++)
@@ -175,7 +175,7 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 			CPhraseGraph::CVertex* next_phrase_vertex = phrase_dialog->dialog_data()->m_PhraseGraph.vertex(edge.vertex_id());
 			VERIFY(next_phrase_vertex);
 
-			if(next_phrase_vertex->data()->m_PhraseScript.Precondition(pSpeakerGO1, pSpeakerGO2))
+			if(next_phrase_vertex->data()->m_PhraseScript.Precondition(pSpeakerGO2, pSpeakerGO1))
 				phrase_dialog->m_PhraseVector.push_back(next_phrase_vertex->data());
 		}
 

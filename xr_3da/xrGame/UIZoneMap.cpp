@@ -49,7 +49,7 @@
 //////////////////////////////////////////////////////////////////////
 CUIZoneMap::CUIZoneMap()
 {    
-	heading = 0.f;
+	heading = 0;
 	m_fScale  = 1.0f;
 }
 //--------------------------------------------------------------------
@@ -63,6 +63,8 @@ void CUIZoneMap::Init()
 	DWORD align = alLeft|alTop;
 //	back.Init	("ui\\hud_map_back",	"hud\\default",BASE_LEFT,BASE_TOP,align);
 //	back.SetRect(0,0,153,148);
+
+	compass.Init("ui\\hud_map_arrow",	"hud\\default",125,118,align);
 	entity.Init	("ui\\hud_map_point",	"hud\\default");
 	entity_up.Init	("ui\\ui_hud_map_point_up",		"hud\\default");
 	entity_down.Init("ui\\ui_hud_map_point_down",	"hud\\default");
@@ -76,10 +78,7 @@ void CUIZoneMap::Init()
 	HUD().ClientToScreen(map_center,MAP_LEFT+BASE_LEFT,MAP_TOP+BASE_TOP,align);
 	map_radius = iFloor(MAP_RADIUS*HUD().GetScale());
 
-	LPCSTR actor_arrow	= pSettings->r_string	("game_map", "actor_arrow_small");
-	u32 arrow_size		= pSettings->r_u32		("game_map", "actor_arrow_small_size");
-	compass.Init(actor_arrow,	"hud\\default",  map_center.x - arrow_size/2,
-		                                         map_center.y - arrow_size/2, align);
+
 
 	back.Init	("ui\\ui_mg_back_map",	"hud\\default",BASE_LEFT,BASE_TOP,align);
 	back.SetRect(0,0,180,180);
@@ -158,8 +157,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	Ivector2 P;
 
 	Fmatrix LM,T;
-	//T.rotateY			(heading); 
-	T.rotateY			(0.f); 
+	T.rotateY			(heading); 
 	T.translate_over	(Actor->Position());
 	LM.invert			(T);
 
@@ -304,8 +302,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 
 	// draw self
 	ConvertToLocal	(LM,Actor->Position(),P);
-	//entity.Out		(map_center.x,P.y,COLOR_SELF);
-	
+	entity.Out		(map_center.x,P.y,COLOR_SELF);
 
 	/////////////////////
 	// calc coord for the part of the landscape texture to show
@@ -329,8 +326,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	Fvector p;
 	Fmatrix m;
 	m.identity();
-	m.rotateY(0.f); 
-	//m.rotateY(-heading);
+	m.rotateY(-heading);
 
 	src.x =  - w/2;
 	src.y = 0;
@@ -385,7 +381,7 @@ void CUIZoneMap::Render()
 					 landscape_x4, landscape_y4);
 	
 	//////////////////////////////////////////
-	compass.Render		(-heading);
+	compass.Render		(heading);
 	entity.Render		();
 	entity_up.Render	();
 	entity_down.Render	();
