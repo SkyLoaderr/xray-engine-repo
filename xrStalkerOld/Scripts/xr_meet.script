@@ -114,7 +114,7 @@ function action_weapon:__init (npc_name,action_name, storage) super (nil, action
 	self.a = storage
 
 	self.sound_e = { rnd = 100,
-				   maxidle = 3, 
+				   maxidle = 5, 
 				   sumidle = 5,
 				   themes = { "threat_weap" } }
 end
@@ -291,10 +291,10 @@ function dialog_manager_reset(npc, stype)
 		if overrides ~= nil then
 			if overrides.meet_talk_enabled then
 				printf("*DIALOGS*: Enable talk")
-				npc:enable_talk()
+				enable_talk(npc)
 			else
 				printf("*DIALOGS*: Disable talk")
-				npc:disable_talk()
+				disable_talk(npc)
 			end
 
 			if overrides.meet_dialog then
@@ -308,7 +308,7 @@ function dialog_manager_reset(npc, stype)
 --			printf("*DIALOGS*: SCHEME HAS NO OVERRIDES: Restore start dialog")
 			npc:restore_default_start_dialog()
 --			printf("*DIALOGS*: SCHEME HAS NO OVERRIDES: Disable talk", overrides.meet_dialog)
-			npc:disable_talk()
+			disable_talk(npc)
 		end
 	end
 end
@@ -343,3 +343,10 @@ function disable_scheme(npc, scheme)
 	db.storage[npc:id()].actor_disable = nil
 end
 
+function enable_talk(npc)
+	npc:enable_talk()
+end
+
+function disable_talk(npc)
+	npc:disable_talk()
+end
