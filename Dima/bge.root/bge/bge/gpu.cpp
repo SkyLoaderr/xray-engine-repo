@@ -1,15 +1,14 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: bge.cpp
-//	Created 	: 01.10.2004
-//  Modified 	: 01.10.2004
+//	Module 		: gpu.cpp
+//	Created 	: 12.11.2004
+//  Modified 	: 12.11.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Board game engine
+//	Description : GPU namespace
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "hardware.h"
+#include "gpu.h"
 
-void main(char *argc, char *argv[])
+void GPU::detect	()
 {
-	Hardware::detect();
 }

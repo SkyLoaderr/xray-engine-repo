@@ -25,5 +25,5 @@ namespace CPU {
 	}
 	#pragma warning(default:4035)
 
-		void			init	();
+		void			detect	();
 }

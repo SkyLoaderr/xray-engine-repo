@@ -75,13 +75,13 @@ IC	void detect				()
 	CPU::cycles2milisec	= f32(f64(a/b));
 }
 
-void CPU::init	() 
+void CPU::detect	() 
 {
 	char features[128]	= "RDTSC";
 
 	ui().log			("Detecting hardware...");
 	
-	detect				();
+	::detect			();
 	
 	ui().log			("completed\n  Detected CPU: %s %s, F%d/M%d/S%d, %d mhz, %d-clk\n",
 		CPU::processor_info.vendor_name(),

@@ -200,6 +200,14 @@
 			<Filter
 				Name="hardware"
 				>
+				<File
+					RelativePath=".\hardware.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\hardware.h"
+					>
+				</File>
 				<Filter
 					Name="cpu"
 					>
@@ -229,8 +237,16 @@
 					</Filter>
 				</Filter>
 				<Filter
-					Name="video"
+					Name="gpu"
 					>
+					<File
+						RelativePath=".\gpu.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\gpu.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="fpu"

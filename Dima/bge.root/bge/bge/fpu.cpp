@@ -24,7 +24,7 @@ IC	u16 fpu_sw				()
 	return	SW;
 }
 
-void FPU::init()
+void FPU::detect()
 {
 	_clear87();
 
