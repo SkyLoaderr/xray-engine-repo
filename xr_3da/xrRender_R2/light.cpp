@@ -104,8 +104,9 @@ void	light::set_rotation		(const Fvector& D, const Fvector& R)	{
 
 void	light::spatial_move			()
 {
-	//spatial.center				= position;
-	//spatial.radius				= range;
+	frame_sleep						=	Device.dwFrame + ps_r__LightSleepFrames;
+	//spatial.center				=	position;
+	//spatial.radius				=	range;
 	switch(flags.type)	{
 	case IRender_Light::REFLECTED	:	
 	case IRender_Light::POINT		:	
