@@ -14,8 +14,10 @@
 CBlender_Model_EbB::CBlender_Model_EbB	()
 {
 	description.CLS		= B_MODEL_EbB;
+	description.version	= 0x1;
 	strcpy				(oT2_Name,	"$null");
 	strcpy				(oT2_xform,	"$null");
+	oBlend.value		= FALSE;
 }
 
 CBlender_Model_EbB::~CBlender_Model_EbB	()
@@ -25,10 +27,12 @@ CBlender_Model_EbB::~CBlender_Model_EbB	()
 
 void	CBlender_Model_EbB::Save(	IWriter& fs )
 {
+	description.version	= 0x1;
 	IBlender::Save	(fs);
 	xrPWRITE_MARKER	(fs,"Environment map");
 	xrPWRITE_PROP	(fs,"Name",				xrPID_TEXTURE,	oT2_Name);
 	xrPWRITE_PROP	(fs,"Transform",		xrPID_MATRIX,	oT2_xform);
+	xrPWRITE_PROP	(fs,"Alpha-Blend",		xrPID_BOOL,		oBlend);
 }
 
 void	CBlender_Model_EbB::Load(	IReader& fs, u16 version )
@@ -37,6 +41,9 @@ void	CBlender_Model_EbB::Load(	IReader& fs, u16 version )
 	xrPREAD_MARKER	(fs);
 	xrPREAD_PROP	(fs,xrPID_TEXTURE,	oT2_Name);
 	xrPREAD_PROP	(fs,xrPID_MATRIX,	oT2_xform);
+	if (version>=0x1)	{
+		xrPREAD_PROP	(fs,xrPID_BOOL,	oBlend);
+	}
 }
 
 void	CBlender_Model_EbB::Compile(CBlender_Compile& C)
@@ -45,8 +52,8 @@ void	CBlender_Model_EbB::Compile(CBlender_Compile& C)
 	if (C.bEditor)	{
 		C.PassBegin		();
 		{
-			C.PassSET_ZB		(TRUE,TRUE);
-			C.PassSET_Blend_SET	();
+			if (oBlend.value)	{ C.PassSET_ZB		(TRUE,FALSE);	C.PassSET_Blend_BLEND	(); }
+			else				{ C.PassSET_ZB		(TRUE,TRUE);	C.PassSET_Blend_SET		(); }
 			C.PassSET_LightFog	(TRUE,TRUE);
 			
 			// Stage1 - Env texture
@@ -81,7 +88,8 @@ void	CBlender_Model_EbB::Compile(CBlender_Compile& C)
 		{
 		case SE_R1_NORMAL_HQ:	
 			sname				= "model_env_hq"; 
-			C.r_Pass			(sname,sname,TRUE);
+			if (oBlend.value)	C.r_Pass	(sname,sname,TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,0);
+			else				C.r_Pass	(sname,sname,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
 			C.r_Sampler			("s_env",	oT2_Name,false,D3DTADDRESS_CLAMP);
 			C.r_Sampler_clf		("s_lmap",	"$user$projector",true);
@@ -89,7 +97,8 @@ void	CBlender_Model_EbB::Compile(CBlender_Compile& C)
 			break;
 		case SE_R1_NORMAL_LQ:
 			sname				= "model_env_lq"; 
-			C.r_Pass			(sname,sname,TRUE);
+			if (oBlend.value)	C.r_Pass	(sname,sname,TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,0);
+			else				C.r_Pass	(sname,sname,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
 			C.r_Sampler			("s_env",	oT2_Name,false,D3DTADDRESS_CLAMP);
 			C.r_End				();
