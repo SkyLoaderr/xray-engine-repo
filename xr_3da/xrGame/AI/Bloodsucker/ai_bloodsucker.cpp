@@ -67,7 +67,7 @@ BOOL CAI_Bloodsucker::net_Spawn (LPVOID DC)
 	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	0,						0,							PS_STAND);
 	MotionMan.AddAnim(eAnimEat,				"sit_eat_",				-1, 0,						0,							PS_SIT);
 	MotionMan.AddAnim(eAnimDie,				"stand_idle_",			-1, 0,						0,							PS_STAND);
-	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, 0,						0,							PS_STAND);
+	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, 0,						m_ftrRunRSpeed,				PS_STAND);
 	MotionMan.AddAnim(eAnimLookAround,		"stand_look_around_",	-1, 0,						0,							PS_STAND);
 	MotionMan.AddAnim(eAnimSitIdle,			"sit_idle_",			-1, 0,						0,							PS_SIT);
 	MotionMan.AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, 0,						0,							PS_SIT);
@@ -77,27 +77,27 @@ BOOL CAI_Bloodsucker::net_Spawn (LPVOID DC)
 	// define transitions
 	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
 	
-	MotionMan.AddTransition(eAnimStandSitDown,	eAnimSleep,	eAnimSitToSleep,	false);
-	MotionMan.AddTransition(PS_STAND,			eAnimSleep,	eAnimStandSitDown,	true);
-	MotionMan.AddTransition(PS_STAND,	PS_SIT,		eAnimStandSitDown,		false);
-	MotionMan.AddTransition(PS_STAND,	PS_LIE,		eAnimStandSitDown,		false);
-	MotionMan.AddTransition(PS_SIT,		PS_STAND,	eAnimSitStandUp,		false);
-	MotionMan.AddTransition(PS_LIE,		PS_STAND,	eAnimSitStandUp,		false);
+	MotionMan.AddTransition_A2A(eAnimStandSitDown,	eAnimSleep,	eAnimSitToSleep,	false);
+	MotionMan.AddTransition_S2A(PS_STAND,			eAnimSleep,	eAnimStandSitDown,	true);
+	MotionMan.AddTransition_S2S(PS_STAND,			PS_SIT,		eAnimStandSitDown,		false);
+	MotionMan.AddTransition_S2S(PS_STAND,			PS_LIE,		eAnimStandSitDown,		false);
+	MotionMan.AddTransition_S2S(PS_SIT,				PS_STAND,	eAnimSitStandUp,		false);
+	MotionMan.AddTransition_S2S(PS_LIE,				PS_STAND,	eAnimSitStandUp,		false);
 
 	// define links from Action to animations
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
 	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimSitIdle);
 	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimSitIdle);
-	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
+	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd,	eAnimWalkFwd,		eAnimWalkFwd,		PI_DIV_6);
 	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimWalkBkwd);
-	MotionMan.LinkAction(ACT_RUN,			eAnimRun);
+	MotionMan.LinkAction(ACT_RUN,			eAnimRun,		eAnimRun,			eAnimRun,			PI_DIV_6);
 	MotionMan.LinkAction(ACT_EAT,			eAnimEat);
 	MotionMan.LinkAction(ACT_SLEEP,			eAnimSleep);
 	MotionMan.LinkAction(ACT_REST,			eAnimSitIdle);
 	MotionMan.LinkAction(ACT_DRAG,			eAnimWalkBkwd);
-	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
+	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack,	eAnimAttack,		eAnimAttack,		PI_DIV_6/6);
 	MotionMan.LinkAction(ACT_STEAL,			eAnimWalkFwd);
-	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);	
+	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround); 
 
 	Fvector center;
 	center.set		(0.f,0.f,0.f);

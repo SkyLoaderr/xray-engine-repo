@@ -69,7 +69,7 @@ bool CActor::use_Vehicle(CGameObject* object)
 	Center(center);
 	if(m_vehicle){
 		if(!vehicle&& m_vehicle->Use(Device.vCameraPosition, Device.vCameraDirection,center)) detach_Vehicle();
-		else
+		elsed
 		{
 			if(m_vehicle==vehicle)
 				if(m_vehicle->Use(Device.vCameraPosition, Device.vCameraDirection,center))detach_Vehicle();

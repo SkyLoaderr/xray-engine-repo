@@ -90,18 +90,18 @@ BOOL CAI_Dog::net_Spawn (LPVOID DC)
 
 	// define transitions
 	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
-	MotionMan.AddTransition(PS_STAND,	PS_LIE,		eAnimStandLieDown,		false);
-	MotionMan.AddTransition(PS_LIE,		PS_STAND,	eAnimLieStandUp,		false);
-	MotionMan.AddTransition(PS_SIT,		PS_STAND,	eAnimSitStandUp,		false);
-	MotionMan.AddTransition(PS_SIT,		PS_LIE,		eAnimSitLieDown,		false);
-	MotionMan.AddTransition(PS_LIE,		PS_SIT,		eAnimLieSitUp,			false);
-	MotionMan.AddTransition(PS_STAND,	PS_SIT,		eAnimStandSitDown,		false);
+	MotionMan.AddTransition_S2S(PS_STAND,	PS_LIE,		eAnimStandLieDown,		false);
+	MotionMan.AddTransition_S2S(PS_LIE,		PS_STAND,	eAnimLieStandUp,		false);
+	MotionMan.AddTransition_S2S(PS_SIT,		PS_STAND,	eAnimSitStandUp,		false);
+	MotionMan.AddTransition_S2S(PS_SIT,		PS_LIE,		eAnimSitLieDown,		false);
+	MotionMan.AddTransition_S2S(PS_LIE,		PS_SIT,		eAnimLieSitUp,			false);
+	MotionMan.AddTransition_S2S(PS_STAND,	PS_SIT,		eAnimStandSitDown,		false);
 
 	// define links from Action to animations
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
 	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimSitIdle);
 	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimLieIdle);
-	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
+	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd, eAnimWalkFwd, eAnimWalkFwd, PI_DIV_6);
 	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_RUN,			eAnimRun);
 	MotionMan.LinkAction(ACT_EAT,			eAnimEat);

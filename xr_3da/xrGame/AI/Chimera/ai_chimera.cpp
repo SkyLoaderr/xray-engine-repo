@@ -113,8 +113,8 @@ BOOL CAI_Chimera::net_Spawn (LPVOID DC)
 
 	// define transitions
 	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
-	MotionMan.AddTransition(PS_STAND,	PS_LIE,		eAnimStandLieDown,		false);
-	MotionMan.AddTransition(PS_LIE,		PS_STAND,	eAnimLieStandUp,		false);
+	MotionMan.AddTransition_S2S(PS_STAND,	PS_LIE,		eAnimStandLieDown,		false);
+	MotionMan.AddTransition_S2S(PS_LIE,		PS_STAND,	eAnimLieStandUp,		false);
 
 	// define links from Action to animations
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
@@ -127,7 +127,7 @@ BOOL CAI_Chimera::net_Spawn (LPVOID DC)
 	MotionMan.LinkAction(ACT_SLEEP,			eAnimSleep);
 	MotionMan.LinkAction(ACT_REST,			eAnimLieIdle);
 	MotionMan.LinkAction(ACT_DRAG,			eAnimWalkFwd);
-	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
+	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack, eAnimAttack, eAnimAttack, PI_DIV_6/6);
 	MotionMan.LinkAction(ACT_STEAL,			eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
 

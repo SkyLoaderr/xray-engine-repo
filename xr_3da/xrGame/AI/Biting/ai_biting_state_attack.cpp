@@ -3,7 +3,6 @@
 #include "ai_biting_state.h"
 
 #include "..\\rat\\ai_rat.h"
-
 #include "..\\bloodsucker\\ai_bloodsucker.h"
 
 

@@ -112,15 +112,16 @@ void CMotionManager::AddAnim(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, 
 	m_tAnims.insert			(std::make_pair(ma, new_item));
 }
 
-void CMotionManager::AddTransition(EMotionAnim from, EMotionAnim to, EMotionAnim trans, bool chain)
+void CMotionManager::AddTransition_A2A(EMotionAnim from, EMotionAnim to, EMotionAnim trans, bool chain)
 {
 	STransition new_item;
 
-	new_item.ps_from_used		= false;
-	new_item.anim_from			= from;
+	new_item.from.state_used	= false;
+	new_item.from.anim			= from;
 
-	new_item.ps_target_used		= false;
-	new_item.anim_target		= to;
+	new_item.target.state_used	= false;
+	new_item.target.anim		= to;
+
 	new_item.anim_transition	= trans;
 	new_item.chain				= chain;
 
@@ -128,15 +129,15 @@ void CMotionManager::AddTransition(EMotionAnim from, EMotionAnim to, EMotionAnim
 }
 
 
-void CMotionManager::AddTransition(EMotionAnim from, EPState to, EMotionAnim trans, bool chain)
+void CMotionManager::AddTransition_A2S(EMotionAnim from, EPState to, EMotionAnim trans, bool chain)
 {
 	STransition new_item;
 
-	new_item.ps_from_used		= false;
-	new_item.anim_from			= from;
+	new_item.from.state_used	= false;
+	new_item.from.anim			= from;
 
-	new_item.ps_target_used		= true;
-	new_item.state_target		= to;
+	new_item.target.state_used	= true;
+	new_item.target.state		= to;
 	
 	new_item.anim_transition	= trans;
 	new_item.chain				= chain;
@@ -144,31 +145,32 @@ void CMotionManager::AddTransition(EMotionAnim from, EPState to, EMotionAnim tra
 	m_tTransitions.push_back(new_item);
 }
 
-void CMotionManager::AddTransition(EPState from, EMotionAnim to, EMotionAnim trans, bool chain)
+void CMotionManager::AddTransition_S2A(EPState from, EMotionAnim to, EMotionAnim trans, bool chain)
 {
 	STransition new_item;
 
-	new_item.ps_from_used		= true;
-	new_item.state_from			= from;
+	new_item.from.state_used	= true;
+	new_item.from.state			= from;
 
-	new_item.ps_target_used		= false;
-	new_item.anim_target		= to;
-	
+	new_item.target.state_used	= false;
+	new_item.target.anim		= to;
+
+
 	new_item.anim_transition	= trans;
 	new_item.chain				= chain;
 
 	m_tTransitions.push_back(new_item);
 }
 
-void CMotionManager::AddTransition(EPState from, EPState to, EMotionAnim trans, bool chain)
+void CMotionManager::AddTransition_S2S(EPState from, EPState to, EMotionAnim trans, bool chain)
 {
 	STransition new_item;
 
-	new_item.ps_from_used		= true;
-	new_item.state_from			= from;
+	new_item.from.state_used	= true;
+	new_item.from.state			= from;
 
-	new_item.ps_target_used		= true;
-	new_item.state_target		= to;
+	new_item.target.state_used	= true;
+	new_item.target.state		= to;
 
 	new_item.anim_transition	= trans;
 	new_item.chain				= chain;
@@ -247,13 +249,13 @@ void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 	EPState		state_to	= GetState(to);
 
 	TRANSITION_ANIM_VECTOR_IT I = m_tTransitions.begin();
-	bool bVectEmpty = !m_tTransitions.empty();
+	bool bVectEmpty = m_tTransitions.empty();
 
 	
 	while (!bVectEmpty) {		// вход в цикл, если вектор переходов не пустой
 		
-		bool from_is_good	= ((I->ps_from_used) ? (I->state_from == state_from) : (I->anim_from == cur_from));
-		bool target_is_good = ((I->ps_target_used) ? (I->state_target == state_to) : (I->anim_target == to));
+		bool from_is_good	= ((I->from.state_used) ? (I->from.state == state_from) : (I->from.anim == cur_from));
+		bool target_is_good = ((I->target.state_used) ? (I->target.state == state_to) : (I->target.anim == to));
 
 		if (from_is_good && target_is_good) {
 
@@ -285,7 +287,7 @@ void CMotionManager::ProcessAction()
 		// установить target.yaw
 		if (!pMonster->AI_Path.TravelPath.empty()) pMonster->SetDirectionLook( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
 
-		// проверить необходимость поворота
+		// проверить необходимость установки анимации поворота
 		float &cur_yaw		= pMonster->r_torso_current.yaw;
 		float &target_yaw	= pMonster->r_torso_target.yaw;
 		if (MI.is_turn_params) {
@@ -414,7 +416,8 @@ void CMotionManager::Seq_Switch()
 void CMotionManager::Seq_Finish()
 {
 	Seq_Init(); 
-	ProcessAction();	// выполнить текущие установки
+
+	prev_anim = cur_anim = m_tMotions[m_tAction].anim;
 }
 
 

@@ -23,6 +23,7 @@ enum EMotionAnim {
 	eAnimLieIdle,
 
 	eAnimSitToSleep,
+	eAnimLieToSleep,
 	eAnimStandSitDown,
 	eAnimStandLieDown,
 	eAnimLieStandUp,
@@ -89,6 +90,7 @@ enum EPState {
 
 DEFINE_VECTOR	(CMotionDef*, ANIM_VECTOR, ANIM_IT);
 
+// элемент анимации
 struct SAnimItem {
 
 	anim_string	target_name;	// "stand_idle_"
@@ -104,19 +106,20 @@ struct SAnimItem {
 	EPState		pos_state;
 };
 
+// описание перехода
 struct STransition {
-	bool			ps_from_used;
-	EMotionAnim		anim_from;
-	EPState			state_from;
 	
-	bool			ps_target_used;
-	EMotionAnim		anim_target;
-	EPState			state_target;
+	struct {
+		bool		state_used;
+		EMotionAnim anim;
+		EPState		state;
+	} from, target;
 
 	EMotionAnim		anim_transition;
 	bool			chain;
 };
 
+// элемент движения
 struct SMotionItem {
 	EMotionAnim		anim;
 	bool			is_turn_params;
@@ -209,14 +212,20 @@ public:
 	// создание карты анимаций, переходов 
 	void		AddAnim					(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, float r_speed, EPState p_s);
 	
-	void		AddTransition			(EMotionAnim from,	EMotionAnim to, EMotionAnim trans, bool chain);
-	void		AddTransition			(EMotionAnim from,	EPState to,		EMotionAnim trans, bool chain);
-	void		AddTransition			(EPState from,		EMotionAnim to, EMotionAnim trans, bool chain);
-	void		AddTransition			(EPState from,		EPState to,		EMotionAnim trans, bool chain);
 	
+	// добавить анимацию перехода (A - Animation, S - Position)
+	void		AddTransition_A2A		(EMotionAnim from,	EMotionAnim to, EMotionAnim trans, bool chain);
+	void		AddTransition_A2S		(EMotionAnim from,	EPState to,		EMotionAnim trans, bool chain);
+	void		AddTransition_S2A		(EPState from,		EMotionAnim to, EMotionAnim trans, bool chain);
+	void		AddTransition_S2S		(EPState from,		EPState to,		EMotionAnim trans, bool chain);
+	
+	// -------------------------------------
+
 	void		LinkAction				(EAction act, EMotionAnim pmt_motion, EMotionAnim pmt_left, EMotionAnim pmt_right, float pmt_angle);
 	void		LinkAction				(EAction act, EMotionAnim pmt_motion);
 	
+	// -------------------------------------
+
 	void		CheckTransition			(EMotionAnim from, EMotionAnim to);
 	void		ApplyParams				();
 
