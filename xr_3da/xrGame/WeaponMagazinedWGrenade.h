@@ -25,6 +25,7 @@ public:
 	virtual bool	Detach(const char* item_section_name);
 	virtual bool	CanAttach(PIItem pIItem);
 	virtual bool	CanDetach(const char* item_section_name);
+	virtual void	InitAddons();
 
 	
 	virtual void	OnStateSwitch	(u32 S);
@@ -43,6 +44,7 @@ public:
 
 	//переключение в режим подствольника
 	void			SwitchMode		();
+	void			PerformSwitch	();
 	void			OnAnimationEnd	();
 
 	//виртуальные функции для проигрывания анимации HUD

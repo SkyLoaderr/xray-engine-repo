@@ -290,6 +290,8 @@ public:
 
 	//обновление видимости для косточек аддонов
 	virtual void UpdateAddonsVisibility();
+	//инициализация свойств присоединенных аддонов
+	virtual void InitAddons();
 
 
 	//для отоброажения иконок апгрейдов в интерфейсе
@@ -323,20 +325,23 @@ public:
 	/////////////////////////////////
 
 	//имя пратиклов для огня
+	LPCSTR				m_sFlameParticlesCurrent;
+	//для выстрела 1м и 2м видом стрельбы
 	LPCSTR				m_sFlameParticles;
 	LPCSTR				m_sFlameParticles2;
 	
-	#define PARTICLES_CACHE_SIZE 4
+//	#define PARTICLES_CACHE_SIZE 4
 	//объект партиклов огня
 	CParticlesObject*	m_pFlameParticles;
-	CParticlesObject*	m_pFlameParticlesCache[PARTICLES_CACHE_SIZE];
-	int					m_iNextParticle;
+//	CParticlesObject*	m_pFlameParticlesCache[PARTICLES_CACHE_SIZE];
+//	int					m_iNextParticle;
 
 
 	//объект партиклов для стрельбы из 2-го ствола
 	CParticlesObject*	m_pFlameParticles2;
 
 	//имя пратиклов для дыма
+	LPCSTR				m_sSmokeParticlesCurrent;
 	LPCSTR				m_sSmokeParticles;
 
 	//точка и направление вылета партиклов гильз

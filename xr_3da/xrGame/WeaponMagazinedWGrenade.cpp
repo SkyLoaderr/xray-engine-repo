@@ -152,6 +152,19 @@ void CWeaponMagazinedWGrenade::SwitchMode()
 	}
 	m_bPending = true;
 
+	PerformSwitch();
+	
+	UpdateFP();
+	PlaySound(sndSwitch,vLastFP);
+	
+	if(m_bGrenadeMode)
+		m_pHUD->animPlay(mhud_switch_g[Random.randI(mhud_switch_g.size())],FALSE,this);
+	else 
+		m_pHUD->animPlay(mhud_switch[Random.randI(mhud_switch.size())],FALSE,this);
+}
+
+void  CWeaponMagazinedWGrenade::PerformSwitch()
+{
 	m_bGrenadeMode = !m_bGrenadeMode;
 
 	iMagazineSize = m_bGrenadeMode?1:iMagazineSize2;
@@ -166,14 +179,6 @@ void CWeaponMagazinedWGrenade::SwitchMode()
 	while(m_magazine2.size()) { m_magazine.push(m_magazine2.top()); m_magazine2.pop(); }
 	while(l_magazine.size()) { m_magazine2.push(l_magazine.top()); l_magazine.pop(); }
 	iAmmoElapsed = (int)m_magazine.size();
-	
-	UpdateFP();
-	PlaySound(sndSwitch,vLastFP);
-	
-	if(m_bGrenadeMode)
-		m_pHUD->animPlay(mhud_switch_g[Random.randI(mhud_switch_g.size())],FALSE,this);
-	else 
-		m_pHUD->animPlay(mhud_switch[Random.randI(mhud_switch.size())],FALSE,this);
 }
 
 bool CWeaponMagazinedWGrenade::Action(s32 cmd, u32 flags) 
@@ -388,13 +393,30 @@ bool CWeaponMagazinedWGrenade::Detach(const char* item_section_name)
 	   !xr_strcmp(*m_sGrenadeLauncherName, item_section_name))
 	{
 		m_flagsAddOnState &= ~CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher;
-		m_bGrenadeMode = false;
+		if(m_bGrenadeMode)
+		{
+			UnloadMagazine();
+			PerformSwitch();
+		}
 
 		UpdateAddonsVisibility();
 		return CInventoryItem::Detach(item_section_name);
 	}
 	else
 		return inherited::Detach(item_section_name);;
+}
+
+void CWeaponMagazinedWGrenade::InitAddons()
+{	
+	inherited::InitAddons();
+
+	if(GrenadeLauncherAttachable())
+	{
+		if(IsGrenadeLauncherAttached())
+		{
+			m_fGrenadeVel = pSettings->r_float(*m_sGrenadeLauncherName,"grenade_vel");
+		}
+	}
 }
 
 

@@ -78,8 +78,8 @@ CWeapon::CWeapon(LPCSTR name)
 	m_shotLight = true;
 
 
-	m_sFlameParticles = m_sFlameParticles2 = NULL;
-	m_sSmokeParticles = NULL;
+	m_sFlameParticlesCurrent = m_sFlameParticles = m_sFlameParticles2 = NULL;
+	m_sSmokeParticlesCurrent = m_sSmokeParticles = NULL;
 	m_sShellParticles = NULL;
 
 }
@@ -377,6 +377,11 @@ void CWeapon::Load		(LPCSTR section)
 		//vShellDir	= pSettings->r_fvector3	(section,"shell_dir");
 	}
 
+	//текущие партиклы
+	m_sFlameParticlesCurrent = m_sFlameParticles;
+	m_sSmokeParticlesCurrent = m_sSmokeParticles;
+
+
 
 	// hands
 	eHandDependence		= EHandDependence(pSettings->r_s32(section,"hand_dependence"));
@@ -389,6 +394,8 @@ void CWeapon::Load		(LPCSTR section)
 	m_eScopeStatus			 = (CSE_ALifeItemWeapon::EAddonStatus)pSettings->r_s32(section,"scope_status");
 	m_eSilencerStatus		 = (CSE_ALifeItemWeapon::EAddonStatus)pSettings->r_s32(section,"silencer_status");
 	m_eGrenadeLauncherStatus = (CSE_ALifeItemWeapon::EAddonStatus)pSettings->r_s32(section,"grenade_launcher_status");
+
+
 
 	
 	if(m_eScopeStatus == CSE_ALifeItemWeapon::eAddonAttachable)
@@ -421,8 +428,9 @@ void CWeapon::Load		(LPCSTR section)
 		m_sSilencerName = pSettings->r_string(section,"silencer_name");
 		m_iSilencerX = pSettings->r_s32(section,"silencer_x");
 		m_iSilencerY = pSettings->r_s32(section,"silencer_y");
-
 	}
+
+    
 	if(m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddonAttachable)
 	{
 		m_sGrenadeLauncherName = pSettings->r_string(section,"grenade_launcher_name");
@@ -478,9 +486,10 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 
 
 	UpdateAddonsVisibility();
+	InitAddons();
 
 	//подготовить объекты партиклов
-	if(m_sFlameParticles)
+/*	if(m_sFlameParticles)
 	{
 		for(int i=0; i<PARTICLES_CACHE_SIZE; i++)
 		{
@@ -488,7 +497,7 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 				xr_new<CParticlesObject>(m_sFlameParticles,Sector(),false);
 		}
 		m_iNextParticle = 0;
-	}
+	}*/
 
 	return bResult;
 }
@@ -504,7 +513,7 @@ void CWeapon::net_Destroy	()
 
 
 	//удалить объекты партиклов
-	if(m_sFlameParticles)
+/*	if(m_sFlameParticles)
 	{
 		for(int i=0; i<PARTICLES_CACHE_SIZE; i++)
 		{
@@ -513,7 +522,7 @@ void CWeapon::net_Destroy	()
 			m_pFlameParticlesCache[i] = NULL;
 		}
 		m_iNextParticle = 0;
-	}
+	}*/
 }
 
 void CWeapon::net_Export	(NET_Packet& P)
@@ -970,6 +979,10 @@ void CWeapon::UpdateAddonsVisibility()
 			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_launcher"),FALSE,TRUE);
 		}
 	}
+}
+
+void CWeapon::InitAddons()
+{
 }
 
 

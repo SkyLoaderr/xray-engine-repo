@@ -28,6 +28,8 @@ CWeaponMagazined::CWeaponMagazined(LPCSTR name, ESoundTypes eSoundType) : CWeapo
 	
 	fTime				= 0;
 	m_queueSize = m_shotNum = 0;
+
+	m_pSndShotCurrent = NULL;
 }
 
 CWeaponMagazined::~CWeaponMagazined()
@@ -58,6 +60,7 @@ void CWeaponMagazined::Load	(LPCSTR section)
 	LoadSound(section,"snd_empty"	, sndEmptyClick	, TRUE, m_eSoundEmptyClick	);
 	LoadSound(section,"snd_reload"	, sndReload		, TRUE, m_eSoundReload		);
 	
+	m_pSndShotCurrent = &sndShot;
 		
 	
 	// HUD :: Anims
@@ -67,6 +70,16 @@ void CWeaponMagazined::Load	(LPCSTR section)
 	animGet				(mhud_show,		pSettings->r_string(*hud_sect, "anim_draw"));
 	animGet				(mhud_hide,		pSettings->r_string(*hud_sect, "anim_holster"));
 	animGet				(mhud_shots,	pSettings->r_string(*hud_sect, "anim_shoot"));
+
+	//звуки и партиклы глушителя, еслит такой есть
+	if(m_eSilencerStatus == CSE_ALifeItemWeapon::eAddonAttachable)
+	{
+		if(pSettings->line_exist(section, "silencer_flame_particles"))
+			m_sSilencerFlameParticles = pSettings->r_string(section, "silencer_flame_particles");
+		if(pSettings->line_exist(section, "silencer_smoke_particles"))
+			m_sSilencerSmokeParticles = pSettings->r_string(section, "silencer_smoke_particles");
+		LoadSound(section,"snd_silncer_shot", sndSilencerShot, TRUE, m_eSoundShot);
+	}
 }
 
 void CWeaponMagazined::FireStart		()
@@ -440,7 +453,7 @@ void CWeaponMagazined::OnShot		()
 	// Sound
 	UpdateFP();
 
-	PlaySound(sndShot,vLastFP);
+	PlaySound(*m_pSndShotCurrent,vLastFP);
 
 	// Camera
 	if (hud_mode)	
@@ -611,6 +624,7 @@ bool CWeaponMagazined::Attach(PIItem pIItem)
 		u_EventSend(P);
 
 		UpdateAddonsVisibility();
+		InitAddons();
 
 		return true;
 	}
@@ -626,7 +640,9 @@ bool CWeaponMagazined::Detach(const char* item_section_name)
 	   !xr_strcmp(*m_sScopeName, item_section_name))
 	{
 		m_flagsAddOnState &= ~CSE_ALifeItemWeapon::eWeaponAddonScope;
+		
 		UpdateAddonsVisibility();
+		InitAddons();
 
 		return CInventoryItem::Detach(item_section_name);
 	}
@@ -637,10 +653,30 @@ bool CWeaponMagazined::Detach(const char* item_section_name)
 		m_flagsAddOnState &= ~CSE_ALifeItemWeapon::eWeaponAddonSilencer;
 
 		UpdateAddonsVisibility();
+		InitAddons();
 		return CInventoryItem::Detach(item_section_name);
 	}
 	else
 		return inherited::Detach(item_section_name);;
+}
+
+void CWeaponMagazined::InitAddons()
+{
+	if(IsSilencerAttached() && SilencerAttachable())
+	{		
+		m_sFlameParticlesCurrent = m_sSilencerFlameParticles;
+		m_sSmokeParticlesCurrent = m_sSilencerSmokeParticles;
+		m_pSndShotCurrent = &sndSilencerShot;
+	}
+	else
+	{
+		m_sFlameParticlesCurrent = m_sFlameParticles;
+		m_sSmokeParticlesCurrent = m_sSmokeParticles;
+		m_pSndShotCurrent = &sndShot;
+	}
+
+
+	inherited::InitAddons();
 }
 
 

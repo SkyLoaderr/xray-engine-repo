@@ -17,6 +17,13 @@ protected:
 	HUD_SOUND		sndShot;
 	HUD_SOUND		sndEmptyClick;
 	HUD_SOUND		sndReload;
+	//звук текущего выстрела
+	HUD_SOUND*		m_pSndShotCurrent;
+
+	//дополнительная информация о глушителе
+	LPCSTR			m_sSilencerFlameParticles;
+	LPCSTR			m_sSilencerSmokeParticles;
+	HUD_SOUND		sndSilencerShot;
 
 	ESoundTypes		m_eSoundShow;
 	ESoundTypes		m_eSoundHide;
@@ -36,7 +43,7 @@ protected:
 	BOOL			bFlame;
 
 	//кадр момента пересчета UpdateSounds
-	u32						dwUpdateSounds_Frame;
+	u32				dwUpdateSounds_Frame;
 protected:
 	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R, u16 target_material);
 	virtual void	OnMagazineEmpty	();
@@ -86,10 +93,12 @@ public:
 
 	virtual void	net_Destroy		();
 
-	virtual bool	Attach			(PIItem pIItem);
+	virtual bool	Attach(PIItem pIItem);
 	virtual bool	Detach(const char* item_section_name);
 	virtual bool	CanAttach(PIItem pIItem);
 	virtual bool	CanDetach(const char* item_section_name);
+
+	virtual void	InitAddons();
 
 	virtual bool	Action			(s32 cmd, u32 flags);
 	bool			IsAmmoAvailable	();
@@ -103,7 +112,6 @@ public:
 	virtual void	PlayAnimReload();
 	virtual void	PlayAnimIdle();
 	virtual void	PlayAnimShoot();
-
 };
 
 #endif //__XR_WEAPON_MAG_H__

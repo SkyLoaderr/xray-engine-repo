@@ -78,7 +78,7 @@ void CWeaponPistol::OnShot		()
 {
 	// Sound
 	UpdateFP();
-	PlaySound(sndShot,vLastFP);
+	PlaySound(*m_pSndShotCurrent,vLastFP);
 
 	// Camera
 	if (hud_mode)	

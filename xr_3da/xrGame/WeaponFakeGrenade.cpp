@@ -43,6 +43,8 @@ CWeaponFakeGrenade::~CWeaponFakeGrenade	()
 void __stdcall CWeaponFakeGrenade::ObjectContactCallback(bool& do_colide,dContact& c) 
 {
 	do_colide = false;
+
+
 	dxGeomUserData *l_pUD1 = NULL;
 	dxGeomUserData *l_pUD2 = NULL;
 	l_pUD1 = retrieveGeomUserData(c.geom.g1);
@@ -134,7 +136,7 @@ BOOL CWeaponFakeGrenade::net_Spawn(LPVOID DC)
 		// Physics (Box)
 		Fobb								obb;
 		Visual()->vis.box.get_CD			(obb.m_translate,obb.m_halfsize);
-		obb.m_translate.set(0, 0, 0); obb.m_halfsize.set(.07f, .07f, .35f);
+		obb.m_translate.set(0, 0, 0); obb.m_halfsize.set(.035f, .035f, .07f);
 		obb.m_rotate.identity				();
 
 		// Physics (Elements)
