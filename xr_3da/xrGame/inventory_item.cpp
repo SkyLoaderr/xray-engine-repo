@@ -729,6 +729,7 @@ void CInventoryItem::UpdateXForm	()
 	E->g_WeaponBones(boneL,boneR,boneR2);
 	//	if ((HandDependence() == hd1Hand) || (STATE == eReload) || (!E->g_Alive()))
 	//		boneL = boneR2;
+#pragma todo("TO ALL: serious performance problem")
 	V->Calculate	();
 	Fmatrix& mL		= V->LL_GetTransform(u16(boneL));
 	Fmatrix& mR		= V->LL_GetTransform(u16(boneR));
