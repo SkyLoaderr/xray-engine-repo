@@ -46,6 +46,11 @@ void CRender::level_Load()
 	Wallmarks					= xr_new<CWallmarksEngine>	();
 	Details						= xr_new<CDetailManager>	();
 
+	// Static wallmarks
+	string_path fn_wm;
+	if (FS.exist(fn_wm, "$level$", "level.wallmarks"))
+		Wallmarks->load_LevelWallmarks(fn_wm);
+
 	rmFar						();
 	rmNormal					();
 
@@ -74,11 +79,6 @@ void CRender::level_Load()
 	// Lights
 	pApp->LoadTitle				("Loading lights...");
 	LoadLights					(fs);
-
-	// static wallmarks
-	string_path fn_wm;
-	if (FS.exist(fn_wm, "$level$", "level.wallmarks"))
-		Wallmarks->load_LevelWallmarks(fn_wm);
 
 	// HOM
 	HOM.Load					();

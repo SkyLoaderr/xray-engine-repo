@@ -39,6 +39,14 @@ void CRender::level_Load()
 		chunk->close();
 	}
 
+	// Components
+	Wallmarks						= xr_new<CWallmarksEngine>	();
+
+	// Static wallmarks
+	string_path fn_wm;
+	if (FS.exist(fn_wm, "$level$", "level.wallmarks"))
+		Wallmarks->load_LevelWallmarks(fn_wm);
+
 	if	(!g_pGamePersistent->bDedicatedServer)	{
 		// VB
 		pApp->LoadTitle		("Loading geometry...");
@@ -79,6 +87,9 @@ void CRender::level_Unload()
 	// HOM
 	HOM.Unload				();
 
+	// walmmarks
+	Wallmarks->unload_LevelWallmarks();
+
 	//*** Details
 	Details.Unload			();
 
@@ -109,9 +120,15 @@ void CRender::level_Unload()
 	//*** VB/IB
 	for (I=0; I<VB.size(); I++)	_RELEASE(VB[I]);
 	for (I=0; I<IB.size(); I++)	_RELEASE(IB[I]);
-	DCL.clear				();
-	VB.clear				();
-	IB.clear				();
+	DCL.clear					();
+	VB.clear					();
+	IB.clear					();
+
+	//*** Components
+	xr_delete					(Wallmarks);
+
+	//*** Shaders
+	Shaders.clear_and_free		();
 }
 
 void CRender::LoadBuffers	(IReader *base_fs)

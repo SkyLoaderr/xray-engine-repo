@@ -74,7 +74,7 @@ public:
 
 	CDetailManager												Details;
 	CModelPool													Models;
-	CWallmarksEngine											Wallmarks;
+	CWallmarksEngine*											Wallmarks;
 
 	CRenderTarget												Target;			// Render-target
 
