@@ -442,8 +442,8 @@ function add_to_binder (object, char_ini)
     operators["stand"]          =   xr_actions_id.sidor_act_wounded_base + 7
     
     --this.set_wounded (object)
-    xr_motivator.storage[npc:id()].wounded.sit = false
-    xr_motivator.storage[npc:id()].wounded.cover = false
+    xr_motivator.storage[object:id()].wounded.sit = false
+    xr_motivator.storage[object:id()].wounded.cover = false
     
     local manager = object:motivation_action_manager ()
     manager:add_evaluator (properties["enable"],    this.evaluator_enable       ("enabled", xr_motivator.storage[object:id()].wounded))
