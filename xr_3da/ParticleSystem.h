@@ -391,10 +391,11 @@ IC void SimulatePosition(Fvector& pos, const SParticle* P, float T, float k)
 IC void SimulateColor(DWORD& C, const SParticle* P, float k, float k_inv, float alpha_factor)
 {
     // adjust current Color from calculated Deltas and time elapsed.
-	C = D3DCOLOR_RGBA(	iFloor(P->m_Color.start.r*k_inv+P->m_Color.end.r*k),
-						iFloor(P->m_Color.start.g*k_inv+P->m_Color.end.g*k),
-						iFloor(P->m_Color.start.b*k_inv+P->m_Color.end.b*k),
-						iFloor((P->m_Color.start.a*k_inv+P->m_Color.end.a*k)*alpha_factor));
+	int r = iFloor(P->m_Color.start.r*k_inv+P->m_Color.end.r*k);				clamp(r,0,255);
+	int g = iFloor(P->m_Color.start.g*k_inv+P->m_Color.end.g*k);				clamp(g,0,255);
+	int b = iFloor(P->m_Color.start.b*k_inv+P->m_Color.end.b*k);				clamp(b,0,255);
+	int a = iFloor((P->m_Color.start.a*k_inv+P->m_Color.end.a*k)*alpha_factor);	clamp(a,0,255);
+	C = D3DCOLOR_RGBA(r,g,b,a);
 }
 IC void SimulateSize(float& sz, const SParticle* P, float k, float k_inv)
 {
