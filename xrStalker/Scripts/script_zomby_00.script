@@ -18,7 +18,7 @@ function main()
 		stalker1,
 		  	move	(move.standing, move.walk,move.line,patrol("way0003")),
 			anim	(anim.free),
-			cond	(cond.time_end, 100000000)
+			cond	(cond.time_end)
 		)
 
 	while stalker1:action() do	
@@ -32,14 +32,14 @@ function main()
 				anim	(anim.danger),
 				cond	(cond.time_end, 10000)
 			)
-			prof_privet_hosh_potorgovat2:play_at_pos		(stalker1,stalker1:position(),0);
+			prof_privet_hosh_potorgovat2:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(3000)			
-			prof_privet_hosh_potorgovat:play_at_pos	(stalker1,stalker1:position(),0);
+			prof_privet_hosh_potorgovat:play_at_pos		(stalker1,stalker1:position(),0);
 			wait(2000)			
-			prof_zomby:play_at_pos	(stalker1,stalker1:position(),0);
+			prof_zomby:play_at_pos						(stalker1,stalker1:position(),0);
+		break
 		end
 		wait()			
-		break
 	end
 
 	while true do
@@ -66,8 +66,8 @@ function main()
 			prof_privet_hosh_potorgovat:play_at_pos		(stalker1,stalker1:position(),0);
 		wait(3000)			
 		stalker1:script	(false, this.script_name())
+		break
 		end
 		wait()			
-		break
 	end
 end
