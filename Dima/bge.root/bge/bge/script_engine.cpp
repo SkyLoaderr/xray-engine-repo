@@ -42,7 +42,7 @@ CScriptEngine::~CScriptEngine	()
 
 void CScriptEngine::init		()
 {
-	ui().log			("Scripting engine is initializing... ");
+	ui().log			("Script engine is initializing... ");
 #ifdef _DEBUG
 	ui().log			("\n");
 #endif
