@@ -1,6 +1,6 @@
 // Do NOT build this file seperately. It is included in dTriList.cpp automatically.
 
-//#define GENERATEBODIES
+
 #include "..\..\cl_intersect.h"
 
 
@@ -11,7 +11,6 @@ dcTriListCollider::dcTriListCollider(dxGeom* Geometry)
 
 	GeomData = (dxTriList*)dGeomGetClassData(Geometry);
 
-	//memset(BoxContacts, 0, sizeof(BoxContacts));
 }
 
 
@@ -41,14 +40,18 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 
 
 	/* Get box */
-
-	Fvector BoxCenter,BoxExtents,AABB;
-	dVector3 BoxSides;
-	memcpy( &BoxCenter,dGeomGetPosition(Box),sizeof(Fvector));
+	Fvector AABB;
+	Fvector BoxExtents;
+	
+	Fvector* BoxCenter=(Fvector*)const_cast<dReal*>(dGeomGetPosition(Box));
+	dVector3 BoxSides;///=(dReal*)BoxExtents;
+	//memcpy( &BoxCenter,dGeomGetPosition(Box),sizeof(Fvector));
+	
 	dGeomBoxGetLengths(Box, BoxSides);
 	memcpy( &BoxExtents,&BoxSides,sizeof(Fvector));
 	Fmatrix33 RM;
-	const dReal* R=dGeomGetRotation(Box);
+	dReal* R=const_cast<dReal*>(dGeomGetRotation(Box));
+
 	memcpy( &RM.i,R+0,sizeof(Fvector));
 	memcpy( &RM.j,R+4,sizeof(Fvector));
 	memcpy( &RM.k,R+8,sizeof(Fvector));
@@ -60,7 +63,7 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 
 	        //
         XRC.box_options                (0);
-        XRC.box_query                  (Level().ObjectSpace.GetStaticModel(),BoxCenter,AABB);
+        XRC.box_query                  (Level().ObjectSpace.GetStaticModel(),*BoxCenter,AABB);
 
         // 
         int count                                       =XRC.r_count   ();
@@ -79,10 +82,10 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
                // T->verts[2];
               
                 // 
-                if(CDB::TestBBoxTri(RM,BoxCenter,BoxExtents,T->verts,false))
+                if(CDB::TestBBoxTri(RM,*BoxCenter,BoxExtents,T->verts,false))
                 {
-
-				OutTriCount+=dTriBox (reinterpret_cast<dReal*> (&(*(T->verts))[0]),reinterpret_cast<dReal*> (&(*(T->verts))[1]),reinterpret_cast<dReal*> (&(*(T->verts))[2]),
+///reinterpret_cast<dReal*> (&(*(T->verts))[1])
+				OutTriCount+=dTriBox ((dReal*)T->verts[0],(dReal*)T->verts[1],(dReal*)T->verts[2],
 								  Box,
 								  Geometry,
 								  3,
@@ -284,8 +287,6 @@ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Co
 			}
 
 		}
-
-
 
 		if (OutTriCount != 0){
 

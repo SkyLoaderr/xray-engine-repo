@@ -31,7 +31,20 @@ public:
 	PHDynamicData(unsigned int numOfchilds,dBodyID body);
 	PHDynamicData();
 	virtual ~PHDynamicData();
+	void GetWorldMX(Fmatrix& transform){
+	
+	//DMXPStoFMX(QtoR(dBodyGetQuaternion(body)),dBodyGetPosition(body),transform);
 
+	}
+	static inline DMXPStoFMX(const dReal* R,const dReal* pos,Fmatrix& transform){
+
+			memcpy(&transform,R,sizeof(Fmatrix));
+			memcpy(&transform.c,pos,sizeof(Fvector));
+			transform._14=0.f;
+			transform._24=0.f;
+			transform._34=0.f;
+			transform._44=1.f;
+		};
 private:
 	void CalculateR_N_PosOfChilds(dBodyID parent);
 };

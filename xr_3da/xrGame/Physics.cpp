@@ -3,7 +3,17 @@
 #include "PHDynamicData.h"
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
-#include "contrib/dRay/include/dRay.h"
+#include "dRay/include/dRay.h"
+
+/////////////////////////////////////////
+static dContact bulletContact;
+static bool isShooting;
+static dVector3 RayD;
+static dVector3 RayO;
+/////////////////////////////////////
+static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);
+
+
 
 void CPHWorld::Render()
 {
@@ -18,21 +28,7 @@ void CPHWorld::Render()
 
 void CPHMesh ::Create(dSpaceID space, dWorldID world){
 Geom = dCreateTriList(space, 0, 0);
-/*
- uint i,j;
-  for( i=0,j=0; i<FACE_COUNT;i++){
-	  Indices[j++]= GroundFacesC[i][0];
-	  Indices[j++]= GroundFacesC[i][1];
-	  Indices[j++]= GroundFacesC[i][2];
-  }
-  for( i=0; i<POINT_COUNT;i++){
-	   Vertices[i][0]=GroundVerticesC[i][0];
-	    Vertices[i][1]=GroundVerticesC[i][1];
-		 Vertices[i][2]=GroundVerticesC[i][2];
-  }
 
-  dGeomTriListBuild(TriList, Vertices, VertexCount, Indices, IndexCount);
-  */
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -56,26 +52,11 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	static const dReal wheelRadius = REAL(0.28)* scaleParam, wheelWidth = REAL(0.25)* scaleParam;
 	static const wheelSegments = 24;
 
-	static const dVector3 startPosition={0,3,15};
+	static const dVector3 startPosition={0.f,15.f,0.f};
 	static const dReal weelSepX=jeepBox[0]/2.f-jeepBox[0]/8.f,weelSepZ=jeepBox[2]/2.f-wheelRadius/2.f,weelSepY=jeepBox[2];
 
 	dMass m;
 
-
-//	dMassSetBox(&m, 1, 5,1, 5); // density,lx,ly,lz
-//	dMassAdjust(&m, 1); // mass
-/*
-	bodytestGeom = dBodyCreate(world);
-	dBodySetMass(bodytestGeom, &m);
-
-	testGeom=dCreateBox(space,1,1,1);
-		dGeomSetBody(testGeom,bodytestGeom);
-	dGeomSetPosition(testGeom,startPosition[0]-1, startPosition[1]+2.33, startPosition[2]);
-
-
-	testGeomMesh.CreateBox(oVector3(1,1,1));
-	dynamicMeshes.Push(new GeomMesh(testGeom, &testGeomMesh));
-*/
 	// car body
 	//dMass m;
 	dMassSetBox(&m, 1, jeepBox[0], jeepBox[1], jeepBox[2]); // density,lx,ly,lz
@@ -119,22 +100,13 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 		dGeomSetBody(Geoms[i], Bodies[i]);
 	}
 
-///uuu
-//	const dReal* qq=dBodyGetQuaternion(Bodies[1]);
+
 
 
 	dBodySetPosition(Bodies[1], startPosition[0]-weelSepX, startPosition[1]-weelSepY,  startPosition[2]+weelSepZ); // x,y,z
 	dBodySetPosition(Bodies[2], startPosition[0]-weelSepX, startPosition[1]-weelSepY,  startPosition[2]-weelSepZ); // x,y,z-0.9, 2.6,   9.3); // x,y,z
 	dBodySetPosition(Bodies[3], startPosition[0]+weelSepX, startPosition[1]-weelSepY,  startPosition[2]+weelSepZ); // x,y,z 0.9, 2.6,  10.7); // x,y,z
 	dBodySetPosition(Bodies[4], startPosition[0]+weelSepX, startPosition[1]-weelSepY,  startPosition[2]-weelSepZ); // x,y,z 0.9, 2.6,   9.3); // x,y,z
-
-	//cabin body
-//	dMassSetBox(&m, 1, cabinBox[0], cabinBox[1], cabinBox[2]); // density,lx,ly,lz
-//	dMassAdjust(&m, 1); // mass
-
-	//Bodies[5] = dBodyCreate(world);
-	//dBodySetMass(Bodies[5], &m);
-	//dBodySetPosition(Bodies[5], startPosition[0]-jeepBox[0]/2+cabinBox[0]/2, startPosition[1]+cabinBox[1]/2+jeepBox[1]/2, startPosition[2]); // x,y,z
 
 
 
@@ -158,20 +130,10 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 		dJointSetHinge2Param(Joints[i], dParamSuspensionERP, 0.4f);
 		dJointSetHinge2Param(Joints[i], dParamSuspensionCFM, 0.005f);
 	}
-	//cabin joint
-	/*
-	Joints[4]=dJointCreateSlider(world,0);
-	dJointAttach(Joints[4],Bodies[0],Bodies[5]);
-	dJointSetSliderAxis (Joints[4],0,1,0);
-	dJointSetSliderParam (Joints[4], dParamLoStop, 0);
-	dJointSetSliderParam (Joints[4], dParamHiStop, 0);
-	// geometry goup for the jeep
-	*/
+
 	GeomsGroup = dCreateGeomGroup(space);  
 	for(i = 0; i < NofGeoms-1; ++i)
 		dGeomGroupAdd(GeomsGroup, Geoms[i]);
-//	dGeomGroupAdd(GeomsGroup, Geoms[7]);
-//	dGeomSetBody(GeomsGroup,Bodies[0]);
 
 
 
@@ -187,6 +149,7 @@ void CPHJeep::Destroy(){
 	for(UINT i=0;i<NofJoints;i++) dJointDestroy(Joints[i]);
 	for(UINT i=0;i<NofBodies;i++) dBodyDestroy(Bodies[i]);
 	for(UINT i=0;i<NofGeoms;i++) dGeomDestroy(Geoms[i]);
+	//dGeomDestroy(GeomsGroup);
 	DynamicData.Destroy();
 
 }
@@ -261,14 +224,15 @@ DynamicData.SetChild(3,0,Bodies[4]);
 
 void CPHWorld::Create(){
 
-	World = dWorldCreate();
+	phWorld = dWorldCreate();
 	Space = dHashSpaceCreate();
 	ContactGroup = dJointGroupCreate(0);		
-	dWorldSetGravity(World, 0, -9.81f, 0);
-	Mesh.Create(Space,World);
-	Jeep.Create(Space,World);
-	dWorldSetCFM(World, 0.001f);
-	dWorldSetERP(World, 0.99f);
+	dWorldSetGravity(phWorld, 0, -9.81f, 0);
+	Mesh.Create(Space,phWorld);
+	Jeep.Create(Space,phWorld);
+	//Gun.Create(Space);
+	dWorldSetCFM(phWorld, 0.001f);
+	dWorldSetERP(phWorld, 0.99f);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -276,9 +240,10 @@ void CPHWorld::Create(){
 void CPHWorld::Destroy(){
 	Mesh.Destroy();
 	Jeep.Destroy();
+	//Gun.Destroy();
 	dJointGroupEmpty(ContactGroup);
 	dSpaceDestroy(Space);
-	dWorldDestroy(World);
+	dWorldDestroy(phWorld);
 	dCloseODE();
 
 }
@@ -290,24 +255,137 @@ void CPHWorld::Step(dReal step){
 			dSpaceCollide(Space, 0, &NearCallback);
 		
 			
-			/*if(isShootting&&bulletContact.geom.pos[0]!=dInfinity){
-				
-				dJointAttach(bulletJoint, dGeomGetBody(bulletContact.geom.g1), dGeomGetBody(bulletContact.geom.g2));
-		
-
-				dJointID c = dJointCreateContact(world, contactGroup, &bulletContact);
-	
+			if(isShooting&&bulletContact.geom.pos[0]!=dInfinity){
+				dJointID c = dJointCreateContact(phWorld, ContactGroup, &bulletContact);
+				dJointAttach(c, dGeomGetBody(bulletContact.geom.g1), dGeomGetBody(bulletContact.geom.g2));
 				
 				}
-				*/
+				
 
-			dWorldStep(World, step);
+			dWorldStep(phWorld, step);
 			dJointGroupEmpty(ContactGroup);
 	
-			//isShootting=false;
-			//bulletContact.geom.pos[0]=dInfinity;
+			isShooting=false;
+			bulletContact.geom.pos[0]=dInfinity;
 		}
 
+
+
+static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
+		const ULONG N = 100;
+		dContact contacts[N];
+		// get the contacts up to a maximum of N contacts
+		ULONG n = dCollide(o1, o2, N, &contacts[0].geom, sizeof(dContact));	
+		
+
+		if(
+			dGeomGetClass(o1)==dRayClass||dGeomGetClass(o2)==dRayClass
+			){
+	
+			if(isShooting){
+				dVector3 norm={RayD[0],RayD[1],RayD[2]};
+				dNormalize3(norm);
+			//	ulong n = dCollide(o1, o2, N, &bulletContact.geom, sizeof(dContact));
+				for(int i = 0; i < n; ++i)
+				{
+			
+					if(dDOT(contacts[i].geom.pos,norm)<dDOT(bulletContact.geom.pos,norm))
+
+					{
+					memcpy(&bulletContact,&contacts[i],sizeof(dContact));
+					bulletContact.geom.normal[0]=norm[0];
+					bulletContact.geom.normal[1]=norm[1];
+					bulletContact.geom.normal[2]=norm[2];
+				
+					bulletContact.geom.depth=0.5;
+				
+					bulletContact.surface.mode = dContactBounce;
+					bulletContact.surface.mu = 0.f;
+					bulletContact.surface.bounce = 0.3f;
+					bulletContact.surface.bounce_vel = 0.05f;
+					}
+				}
+	
+			}
+		return;
+	}
+		
+
+
+	if(n>N)
+		n=N;
+	ULONG i;
+
+if(dGeomGetClass(o1)==dGeomTransformClass){
+	for(i = 0; i < n; ++i)
+	{
+
+        contacts[i].surface.mode = dContactBounce;
+		contacts[i].surface.mu = 500;
+		contacts[i].surface.bounce = 0.3f;
+		contacts[i].surface.bounce_vel = 0.05f;
+		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
+		dJointAttach(c, dGeomGetBody(o1), dGeomGetBody(contacts[i].geom.g2));
+		}
+
+	}
+else if(dGeomGetClass(o2)==dGeomTransformClass){
+		for(i = 0; i < n; ++i)
+		{
+
+        contacts[i].surface.mode = dContactBounce;
+		contacts[i].surface.mu = 500.f;
+		contacts[i].surface.bounce = 0.3f;
+		contacts[i].surface.bounce_vel = 0.05f;
+		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
+		dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(o2));
+		}
+	}
+
+else
+	for(i = 0; i < n; ++i)
+	{
+
+        contacts[i].surface.mode = dContactBounce;
+		contacts[i].surface.mu = 250.f;
+		contacts[i].surface.bounce = 0.3f;
+		contacts[i].surface.bounce_vel =0.05f;
+		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
+		dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
+		}
+}
 //////////////////////////////////////////////////////////////////////////////////
+//////////////////CPHGun//////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+void CPHGun::Create(dSpaceID space){
+	
+	dVector3 rayO={0.f,0.f,0.f};
+	dVector3 rayD={0.f,1.f,0.f};
+	Ray=dGeomCreateRay(space,1.f);
+	dGeomRaySet(Ray,rayO,rayD);
+	isShooting=false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+void CPHGun::Destroy(){
+dGeomDestroy(Ray);
+}
 
 
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+
+void CPHGun::Shoot(const dReal* rayO,const dReal*  rayD){
+bulletContact.geom.pos[0]=dInfinity;
+RayO[0]=rayO[0];
+RayO[1]=rayO[1];
+RayO[2]=rayO[2];
+RayD[0]=rayD[0];
+RayD[1]=rayD[1];
+RayD[2]=rayD[2];
+dGeomRaySet(Ray,RayO,RayD);
+
+isShooting=true;
+}
+///////////////////////////////

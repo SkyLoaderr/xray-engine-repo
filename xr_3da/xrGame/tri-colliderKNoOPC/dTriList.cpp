@@ -60,7 +60,7 @@ inline bool ValidateCollision(dxGeom* o1, dxGeom* o2){
 
 
 
-int dCollideSTL(dxGeom* TriList, dxGeom* Sphere, int Flags, dContactGeom* Contact, int Stride) throw()
+int FUNCCALL dCollideSTL(dxGeom* TriList, dxGeom* Sphere, int Flags, dContactGeom* Contact, int Stride) throw()
 {
 
 	if (ValidateCollision(Sphere, TriList)){
@@ -75,7 +75,7 @@ int dCollideSTL(dxGeom* TriList, dxGeom* Sphere, int Flags, dContactGeom* Contac
 
 
 
-int dCollideBTL(dxGeom* TriList, dxGeom* Box, int Flags, dContactGeom* Contact, int Stride)throw()
+int FUNCCALL dCollideBTL(dxGeom* TriList, dxGeom* Box, int Flags, dContactGeom* Contact, int Stride)throw()
 {
 
 	if (ValidateCollision(Box, TriList)){
@@ -92,13 +92,14 @@ int dCollideBTL(dxGeom* TriList, dxGeom* Box, int Flags, dContactGeom* Contact, 
 
 
 
+   dColliderFn* FUNCCALL dTriListColliderFn(int num){
 
-dColliderFn* FUNCCALL dTriListColliderFn(int num){
-
-	if (num == dBoxClass) return (dColliderFn*)&dCollideBTL;
-
-	if (num == dSphereClass) return (dColliderFn*)&dCollideSTL;
-
+	   if (num ==1/* dBoxClass*/){ 
+		return 	(dColliderFn*)&dCollideBTL;
+	   }
+	   if (num == 3/*dSphereClass*/) {
+		return (dColliderFn*)&dCollideSTL;
+	   }
 	
 
 	return 0;
