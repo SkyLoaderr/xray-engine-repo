@@ -109,6 +109,8 @@ function motivator_binder:reload (section)
     properties["trade_init"]    = xr_evaluators_id.final_trade_init
 
     -- Bind other scripts
+    printf("Base evaluator ID %d", stalker_ids.property_script)
+    printf("Base action ID %d", stalker_ids.action_script)
     self.object:disable_talk()
 
     --загрузка озвучки
