@@ -47,3 +47,13 @@ void	CSoundRender_Core::i_rewind		(CSoundRender_Emitter* E)
 	R_ASSERT			(E == E->target->get_emitter());
 	E->target->rewind	();
 }
+
+BOOL	CSoundRender_Core::i_allow_play	(CSoundRender_Emitter* E)
+{
+	// Search available target
+	for (u32 it=0; it<s_targets.size(); it++)
+	{
+		if (0==s_targets[it]->get_emitter())	return TRUE;
+	}
+	return FALSE;
+}
