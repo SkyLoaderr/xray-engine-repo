@@ -102,18 +102,6 @@ void save_map(xr_map<T1,T2 *,T3> &tpMap, M &tNetPacket)
 };
 
 template <class T, class M>
-void load_vector(xr_vector<T *> &tpVector, M &tNetPacket)
-{
-	tpVector.resize				(tNetPacket.r_u32());
-	xr_vector<T *>::iterator	I = tpVector.begin();
-	xr_vector<T *>::iterator	E = tpVector.end();
-	for ( ; I != E; I++) {
-		*I						= xr_new<T>();
-		(*I)->UPDATE_Read		(tNetPacket);
-	}
-};
-
-template <class T, class M>
 void load_vector(xr_vector<T> &tpVector, M &tNetPacket)
 {
 	tpVector.resize				(tNetPacket.r_u32());
