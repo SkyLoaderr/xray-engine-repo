@@ -2,7 +2,7 @@
 #define __XR_WEAPON_LR300_H__
 #pragma once
 
-#include "WeaponAutoRiffle.h"
+#include "WeaponAutoRifle.h"
 
 class CWeaponLR300: public CWeaponAutoRifle
 {

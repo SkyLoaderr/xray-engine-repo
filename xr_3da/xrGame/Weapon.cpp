@@ -46,16 +46,16 @@ CWeapon::~CWeapon()
 	if (hWallmark) Device.Shader.Delete(hWallmark);
 }
 
-void CWeapon::SoundCreate(sound3D& dest, LPCSTR name)
+void CWeapon::SoundCreate(sound3D& dest, LPCSTR s_name)
 {
 	string256	name,temp;
-	strconcat	(name,"weapons\\",GetName(),"_",name);
+	strconcat	(name,"weapons\\",GetName(),"_",s_name);
 	if (Engine.FS.Exist(temp,Path.Sounds,name,".wav"))	
 	{
 		pSounds->Create3D(dest,name);
 		return;
 	}
-	strconcat	(name,"weapons\\","generic_",name);
+	strconcat	(name,"weapons\\","generic_",s_name);
 	if (Engine.FS.Exist(temp,Path.Sounds,name,".wav"))	
 	{
 		pSounds->Create3D(dest,name);
