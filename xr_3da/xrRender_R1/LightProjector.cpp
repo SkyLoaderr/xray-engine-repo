@@ -7,14 +7,15 @@
 #include "..\xr_object.h"
 #include "lighttrack.h"
 
-const	int		P_rt_size	= 512;
-const	int		P_o_size	= 56;
-const	int		P_o_line	= P_rt_size/P_o_size;
-const	int		P_o_count	= P_o_line*P_o_line;
-const	float	P_distance	= 48;
-const	float	P_distance2	= P_distance*P_distance;
-const	float	P_cam_dist	= 200;
-const	float	P_cam_range = 5.f;
+const	int			P_rt_size	= 512;
+const	int			P_o_size	= 56;
+const	int			P_o_line	= P_rt_size/P_o_size;
+const	int			P_o_count	= P_o_line*P_o_line;
+const	float		P_distance	= 48;
+const	float		P_distance2	= P_distance*P_distance;
+const	float		P_cam_dist	= 200;
+const	float		P_cam_range = 5.f;
+const	D3DFORMAT	P_rtf		= D3DFMT_A8R8G8B8;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -31,8 +32,8 @@ CLightProjector::CLightProjector()
 	string128 RTtemp2;	strconcat(RTtemp2,RTtemp,",",RTtemp);
 
 	// 
-	RT.create			(RTname,P_rt_size,P_rt_size,HW.Caps.fTarget);
-	RT_temp.create		(RTtemp,P_rt_size,P_rt_size,HW.Caps.fTarget);
+	RT.create			(RTname,P_rt_size,P_rt_size,P_rtf);
+	RT_temp.create		(RTtemp,P_rt_size,P_rt_size,P_rtf);
 	sh_BlurTR.create	("effects\\blur",			RTtemp2);
 	sh_BlurRT.create	("effects\\blur",			RTname2);
 	geom_Blur.create	(FVF::F_TL2uv,	RCache.Vertex.Buffer(), RCache.QuadIB);

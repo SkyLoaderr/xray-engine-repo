@@ -9,19 +9,20 @@
 #include "..\fbasicvisual.h"
 #include "..\CustomHUD.h"
  
-const	float	S_distance	= 48;
-const	float	S_distance2	= S_distance*S_distance;
+const	float		S_distance	= 48;
+const	float		S_distance2	= S_distance*S_distance;
 
-const	float	S_fade		= 3.5;
-const	float	S_fade2		= S_fade*S_fade;
+const	float		S_fade		= 3.5;
+const	float		S_fade2		= S_fade*S_fade;
 
-const	float	S_level		= .1f;
-const	int		S_size		= 102;
-const	int		S_rt_size	= 512;
-const	int		batch_size	= 128;
-const	float	S_tess		= .5f;
-const	int 	S_ambient	= 64;
-const	int 	S_clip		= 256-24;
+const	float		S_level		= .1f;
+const	int			S_size		= 102;
+const	int			S_rt_size	= 512;
+const	int			batch_size	= 128;
+const	float		S_tess		= .5f;
+const	int 		S_ambient	= 64;
+const	int 		S_clip		= 256-24;
+const	D3DFORMAT	S_rtf		= D3DFMT_A8R8G8B8;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -38,8 +39,8 @@ CLightShadows::CLightShadows()
 	string128 RTtemp2;		strconcat(RTtemp2,RTtemp,",",RTtemp);
 
 	// 
-	RT.create				(RTname,S_rt_size,S_rt_size,HW.Caps.fTarget);
-	RT_temp.create			(RTtemp,S_rt_size,S_rt_size,HW.Caps.fTarget);
+	RT.create				(RTname,S_rt_size,S_rt_size,S_rtf);
+	RT_temp.create			(RTtemp,S_rt_size,S_rt_size,S_rtf);
 	sh_Texture.create		("effects\\shadow_texture");
 	sh_World.create			("effects\\shadow_world",	RTname);
 	geom_World.create		(FVF::F_LIT,	RCache.Vertex.Buffer(), NULL);
