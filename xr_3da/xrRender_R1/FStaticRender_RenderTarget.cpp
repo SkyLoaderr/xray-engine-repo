@@ -138,6 +138,7 @@ BOOL CRenderTarget::Perform		()
 	return Available() && ( NeedPostProcess() || (ps_r__Supersample>1) || (frame_distort==(Device.dwFrame-1)));
 }
 
+#include <dinput.h>
 #define SHOW(a)	Log(#a,a);
 void CRenderTarget::Begin		()
 {
