@@ -374,7 +374,7 @@ xr_motivator.storage[self.object:id()].reactions = {
         end
 	local i = 1
         while char_ini:line_exist("reactions", "rule_"..i) == true do
-	    table.insert(xr_motivator.storage[self.object:id()].reactions.rules, i, char_ini:r_string("reactions", "rule_"..i))
+	    table.insert(xr_motivator.storage[self.object:id()].reactions.rules, char_ini:r_string("reactions", "rule_"..i))
             i = i + 1
         end
     end
