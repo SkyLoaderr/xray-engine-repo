@@ -17,15 +17,34 @@ function action2(obj,...)
 	return  entity_action(act)
 end
 
+local sync = {}
+
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_need_guard" (property_evaluator)
 
-function evaluator_need_guard:__init(storage) super ()
+function evaluator_need_guard:__init(storage) super()
   	self.st = storage
 end
 
-function evaluator_need_guard:evaluate ()
+function evaluator_need_guard:evaluate()
+	--printf("guard [%s] best_enemy = ", self.object:name()--[[,
+	--	if_then_else(self.object:best_enemy(), self.object:best_enemy():name(), "none")]])
   	return self.st.enabled == true
+end
+
+---------------------------------------------------------------------------------------------------------------------
+class "evaluator_override_fight" (property_evaluator)
+
+function evaluator_override_fight:__init(storage) super()
+  	self.st = storage
+end
+
+function evaluator_override_fight:evaluate()
+	--local best_enemy = self.object:best_enemy()
+	--if best_enemy then
+		--printf("guard [%s] best_enemy = %s", self.object:name(), best_enemy:name())
+	--end
+  	return false
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -37,7 +56,8 @@ function action_guard_activity:__init (npc_name,action_name,storage) super (nil,
 	self.state_none = 0
 	self.state_standing_before_anim = 1
 	self.state_anim_playing = 3
-	self.state_moving = 4
+	self.state_before_anim_playing = 4
+	self.state_moving = 5
 end
 
 function action_guard_activity:initialize()
@@ -128,6 +148,18 @@ function action_guard_activity:reset_scheme()
 	self.state = self.state_moving
 
 	self.last_index = -1
+	
+	if self.st.sync_id then
+		printf("_bp: sync_id found")
+		local s = sync[self.st.sync_id]
+		if not s then
+			printf("_bp: s NOT found")
+			sync[self.st.sync_id] = {}
+			s = sync[self.st.sync_id]
+		end
+		printf("_bp: s found")
+		s[self.object:id()] = last_index
+	end
 
 	self:simulate_callback_if_neccessary()
 end	
@@ -224,11 +256,19 @@ function action_guard_activity:waypoint_callback(obj, action_type, index)
 	for f = 2, 19 do
 		if ptr:flag(index, f) then
 			flagnum = f
+			if self.st.sync_id then
+				local s = sync[self.st.sync_id]
+				if s then
+					printf("_bp [%s]: syncing at flag: %d", self.object:name(), flagnum)
+					s[self.object:id()] = flagnum
+				end
+			end
+			break
 		end
 	end
 
-	-- Выбрать случайно одну из точек, помеченных тем же самым флагом, чтобы посмотреть в нее:
 	if flagnum then
+		-- Выбрать случайно одну из точек, помеченных тем же самым флагом, чтобы посмотреть в нее:
 		local pt_chosen = nil
 		local pt_found = 0
 
@@ -292,6 +332,60 @@ function action_guard_activity:pick_path()
 	end
 end
 
+-- Сравнивает порядок двух вейпоинтов, считая, что последний вейпоинт меньше первого (для зацикленных маршрутов с
+-- синхронизацией)
+function action_guard_activity:wayp_lesser(arg1, arg2)
+	local ptr = patrol(self.path_active)
+	local num_points = ptr:count()
+	if arg1 == num_points and arg2 == 0 then
+		return true
+	elseif arg1 == 0 and arg2 == num_points then
+		return false
+	else
+		return arg1 < arg2
+	end
+end
+
+-- Проверка синхронизации с остальными солдатами на пути.
+-- Возвращает true, если дальнейшее движение разрешено.
+function action_guard_activity:sync_ok()
+	if self.st.sync_id then
+		local s = sync[self.st.sync_id]
+		--printf("_bp: sync=%s", if_then_else(s, "true", "false"))
+		local self_id = self.object:id()
+		--printf("_bp: self_id=%s", if_then_else(self_id, self_id, "false"))
+		
+		-- Если только бежим на путь (еще не были в точках синхронизации), то разрешить движение:
+		if s[self_id] == -1 then
+			printf("_bp: at point -1, true")
+			return true
+		end
+		
+		local highest = -1
+
+		local prev = nil
+		local all_equal = true
+		for k, v in pairs(s) do
+			if v ~= nil then
+				if prev ~= nil and prev ~= v then
+					all_equal = false
+				end
+				if self:wayp_lesser(highest, v) then
+					highest = v
+				end
+				prev = v
+			end
+		end
+
+		-- В этом месте highest ~= -1 благодаря проверке до цикла
+
+		printf("_bp: sync [%s]: %s", self.object:name(), if_then_else(all_equal, "true", "false"))
+		return all_equal or self:wayp_lesser(s[self_id], highest)
+	end
+	printf("_bp: sync: true")
+	return true
+end
+
 function action_guard_activity:execute()
 	if self.team then
 		local team = xr_robbers.teams[self.team]
@@ -339,7 +433,7 @@ function action_guard_activity:execute()
 			if not self.shall_shoot then
 				xr_state.anim_update(self.cur_anim_set, self.object)
 			else
-				xr_state.anim_update(self.cur_anim_set, self.object)
+				--xr_state.anim_update(self.cur_anim_set, self.object)
 				self.is_shooting = true
 			end
 
@@ -366,6 +460,21 @@ function action_guard_activity:execute()
 					self.loudspeaker_enabled = false
 				end
 			end
+			--self.expiration_time = device():time_global() + 5000
+			if self.is_shooting then
+				-- При стрельбе не ждать синхронизации (так весь магазин можно выстрелять :))
+				self.expiration_time = device():time_global() + 5000
+				self.state = self.state_anim_playing
+			else
+				self.state = self.state_before_anim_playing
+			end
+		end
+	end
+
+	-- Ждать синхронизации, а только затем включить счетчик анимации
+	if self.state == self.state_before_anim_playing then
+		if self:sync_ok() then
+			printf("_bp [%s]: anim counter activated", self.object:name())
 			self.expiration_time = device():time_global() + 5000
 			self.state = self.state_anim_playing
 		end
@@ -373,7 +482,7 @@ function action_guard_activity:execute()
 
 	local suggested_path = self:pick_path()
 	if (self.state == self.state_anim_playing and device():time_global() >= self.expiration_time and
-	    (self.is_shooting or xr_state.anim_safe_to_break(self.object))) or
+	    (self.is_shooting or true --[[xr_state.anim_safe_to_break(self.object)]]) ) or
 	   suggested_path ~= self.path_active then
 		if self.is_shooting then
 			self.is_shooting = false
@@ -438,6 +547,14 @@ function action_guard_activity:finalize()
 
 	self.object:set_item(object.idle, self.object:best_weapon())
 
+	if self.st.sync_id then
+		local s = sync[self.st.sync_id]
+		if s then
+			-- FIXME: таблица будет рости т.к. ключ остается в ней...
+			s[self.object:id()] = nil
+		end
+	end
+
 	action_base.finalize(self)
 end
 
@@ -478,23 +595,39 @@ function add_to_binder(npc, char_ini)
 		properties["event"] = xr_evaluators_id.reaction
 		properties["state_end"] = xr_evaluators_id.state_change
 	 	properties["need_guard"] = xr_evaluators_id.zmey_guard_base + 1
+		properties["override_fight"] = xr_evaluators_id.zmey_guard_base + 2
 
 	 	operators["action_guard"] = xr_actions_id.zmey_guard_base + 1
+	 	operators["action_guard_2"] = xr_actions_id.zmey_guard_base + 2
 
 	   	-- // evaluators
-			manager:add_evaluator (properties["need_guard"],   this.evaluator_need_guard  (xr_motivator.storage[npc:id()].guard))
+		manager:add_evaluator(properties["need_guard"], this.evaluator_need_guard(xr_motivator.storage[npc:id()].guard))
+		manager:add_evaluator(properties["override_fight"], this.evaluator_override_fight(xr_motivator.storage[npc:id()].guard))
 
 		local new_action = this.action_guard_activity(npc, "action_guard_activity", xr_motivator.storage[npc:id()].guard)
 		new_action:add_precondition(world_property(stalker_ids.property_alive, true))
 		new_action:add_precondition(world_property(stalker_ids.property_enemy, false))
-	  	new_action:add_precondition(world_property(properties["need_guard"], true))
-		new_action:add_precondition(world_property(properties["event"], false))
+	new_action:add_precondition(world_property(properties["need_guard"], true))
+	new_action:add_precondition(world_property(properties["event"], false))
 		new_action:add_precondition(world_property(properties["state_end"], true))
 	   	new_action:add_effect(world_property(properties["need_guard"], false))
 		manager:add_action(operators["action_guard"], new_action)
 
+		local new_action = this.action_guard_activity(npc, "action_guard_activity", xr_motivator.storage[npc:id()].guard)
+		new_action:add_precondition(world_property(stalker_ids.property_alive, true))
+	  	--new_action:add_precondition(world_property(properties["need_guard"], true))
+--	new_action:add_precondition(world_property(properties["event"], false))
+--	new_action:add_precondition(world_property(properties["state_end"], true))
+		new_action:add_precondition(world_property(properties["override_fight"], true))
+	   	new_action:add_effect(world_property(stalker_ids.property_enemy, false))
+		manager:add_action(operators["action_guard_2"], new_action)
+
 	  	new_action = manager:action(stalker_ids.action_puzzle_solver)
 	  	new_action:add_precondition(world_property(properties["need_guard"], false))
+
+		new_action = manager:action(stalker_ids.action_combat_planner)
+		new_action:add_precondition(world_property(properties["override_fight"], false))
+		--new_action:add_precondition(world_property(properties["need_guard"], false))
 
 		if char_ini ~= nil then
 			xr_guard.set_guard(npc)
@@ -549,7 +682,7 @@ end
 -- 31 - начиная с этой точки и дальше охранник побежит
 function set_guard(object, enable, path_main, path_hideout, running, search_light, path_camp, loudspeaker_name,
 	anim_set_1, anim_set_2, anim_set_3, sound_set_1, sound_set_2, sound_set_3, switch_to_guide_distance,
-	switch_to_robber_guard_distance)
+	switch_to_robber_guard_distance, sync_id)
 
 	utils.trace(script_name(), "set_guard called: object:name()='%s', path_main='%s', path_hideout='%s', " ..
 		"running='%s', search_light='%s', path_camp='%s', loudspeaker='%s'",
@@ -581,6 +714,7 @@ function set_guard(object, enable, path_main, path_hideout, running, search_ligh
 		switch_to_guide_distance, object, false)
 	st.switch_to_robber_guard_distance = utils.conf_get_number(char_ini, "guard", "switch_to_robber_guard_distance",
 		switch_to_robber_guard_distance, object, false)
+	st.sync_id = utils.conf_get_string(char_ini, "guard", "sync_id", sync_id, object, false)
 
 	if st.action ~= nil then
 		st.action.reset_scheme(st.action)

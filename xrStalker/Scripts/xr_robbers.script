@@ -22,7 +22,9 @@ local state_puncher_waiting_for_plr_to_drop_weapon = 8
 local state_puncher_approaching = 9
 local state_puncher_waiting_to_grab_money = 10
 
-local state_last = 11 -- просто смотреть на игрока, больше никаких активных действий
+local state_no_more_actions = 11 -- просто смотреть на игрока, больше никаких активных действий (но если нет панчера - в этот момент лидер сам становится им)
+
+local state_end_of_script = 12
 
 -- Роли
 local role_none = 0
@@ -315,7 +317,7 @@ function action_robber_activity:fsm_step()
 
 	if self.role == role_leader and self:no_role(role_puncher) then
 		if (self.state == state_leader_shouting_drop_your_weapon and not isWeapon(active_item)) or
-		   self.state == state_last then
+		   self.state == state_no_more_actions then
 			self.state = state_puncher_waiting_for_plr_to_drop_weapon
 			--utils.trace(script_name(), "_bp: xr_robbers [%s]: 0 state change: %s",
 			--	self.object:name(), utils.to_str(self.state))
@@ -457,7 +459,7 @@ function action_robber_activity:fsm_step()
 				--utils.trace(script_name(), "_bp: xr_robbers [%s]: 6 state change: %s",
 				--	self.object:name(), utils.to_str(self.state))
 			else
-				self.state = state_last
+				self.state = state_no_more_actions
 				--utils.trace(script_name(), "_bp: xr_robbers [%s]: 6.1 state change: %s",
 				--	self.object:name(), utils.to_str(self.state))
 			end 
@@ -472,7 +474,7 @@ function action_robber_activity:fsm_step()
 		   isWeapon(active_item) then
 			self:say(xr_sounds_id.zmey_robber_do_what_i_say)
 			self.expiration_time = device():time_global() + 5000
-			self.state = state_last
+			self.state = state_no_more_actions
 			--utils.trace(script_name(), "_bp: xr_robbers [%s]: 7 state change: %s",
 			--	self.object:name(), utils.to_str(self.state))
 		end
@@ -483,7 +485,7 @@ function action_robber_activity:fsm_step()
 		utils.stalker_look_at_stalker(self.object, actor)
 		if device():time_global() >= self.expiration_time then
 			self:say(xr_sounds_id.zmey_robber_do_not_move)
-			self.state = state_last
+			self.state = state_no_more_actions
 		end
 		return
 	end
@@ -530,8 +532,8 @@ function action_robber_activity:fsm_step()
 		if time_global >= self.expiration_time --[[and time_global - self.expiration_time < 150]] then
 			local anim_count = self.object:animation_count()
 			if anim_count > 0 and self.object:position():distance_to(actor:position()) < 2 then
-				printf("SLEEP")
-				actor:actor_sleep(10, 30)
+				--printf("SLEEP")
+				actor:actor_sleep(2, 30)
 
 				--local h = hit()
 				--h.power = 1000
@@ -542,7 +544,9 @@ function action_robber_activity:fsm_step()
 				--h.type = hit.wound
 				--actor:hit(h)
 
-				self.state = state_last
+				--printf("END1")
+				self.state = state_end_of_script
+				--printf("END2")
 			elseif anim_count == 0 then
 				self.object:set_path_type(game_object.level_path)
 				self.object:set_desired_direction(actor:direction())
@@ -553,11 +557,18 @@ function action_robber_activity:fsm_step()
 		end
 		return
 	end
-	if self.state == state_last then
+	if self.state == state_no_more_actions then
+		printf("state_no_more_actions")
 		utils.stalker_look_at_stalker(self.object, actor)
 		-- больше ничего не делать
 		return
 	end
+	if self.state == state_end_of_script then
+		utils.stalker_look_at_stalker(self.object, actor)
+		-- ничего не делать
+		return
+	end
+
 end
 
 function action_robber_activity:execute()
