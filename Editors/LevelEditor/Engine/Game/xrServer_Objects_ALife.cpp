@@ -469,6 +469,8 @@ CSE_ALifePHSkeletonObject::CSE_ALifePHSkeletonObject(LPCSTR caSection) : CSE_ALi
 {
 	source_id					= u16(-1);
 	flags.zero					();
+	m_flags.set					(flUseSwitches,FALSE);
+	m_flags.set					(flSwitchOffline,FALSE);
 }
 
 CSE_ALifePHSkeletonObject::~CSE_ALifePHSkeletonObject()
@@ -530,6 +532,11 @@ void CSE_ALifePHSkeletonObject::UPDATE_Read(NET_Packet &tNetPacket)
 bool CSE_ALifePHSkeletonObject::can_save			() const
 {
 	return						(!flags.test(flNotSave));
+}
+
+bool CSE_ALifePHSkeletonObject::used_ai_locations () const
+{
+	return false;
 }
 
 #ifdef _EDITOR
