@@ -124,11 +124,12 @@ end
 function load_common (obj, sounds_base)
 
     -- create patrol commander radio speech
-    themes["commander_radio"] = {
+    themes["commander_radio"] = 
+               {
                --speech 1
                {
                sounds_base, 
-               obj:add_sound ("script_replics\\radio\\message\\radio_turn_on_",  30, snd_type.talk, 2, 1, sounds_base),  
+               obj:add_sound ("script_replics\\radio\\message\\radio_turn_on_",  30, snd_type.talk, 2, 1, sounds_base + 0),  
                obj:add_sound ("script_replics\\radio\\commander\\radio_start_",  30, snd_type.talk, 2, 1, sounds_base + 1),
                obj:add_sound ("script_replics\\radio\\message\\radio_voice_",    30, snd_type.talk, 2, 1, sounds_base + 2), 
                obj:add_sound ("script_replics\\radio\\commander\\radio_reply_",  30, snd_type.talk, 2, 1, sounds_base + 3),
@@ -138,5 +139,17 @@ function load_common (obj, sounds_base)
               }
               }
     sounds_base = sounds_base + table.getn (themes["commander_radio"][1])
+    themes["commander_agroprom"] = 
+              {
+              {
+              sounds_base,
+              obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, sounds_base + 0),
+              obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, sounds_base + 1),
+              obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, sounds_base + 2),
+              obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, sounds_base + 3),
+              obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, sounds_base + 4)
+              }
+              }
+    sounds_base = sounds_base + table.getn (themes["commander_agroprom"][1])          
     return sounds_base                             
 end

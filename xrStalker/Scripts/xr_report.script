@@ -1,14 +1,8 @@
 
 
-local timeout = 60000
+local timeout = 1000
 local dist_for_report = 20
 local min_dist_to_report = 1
-
-local report_soldier_start      =   xr_sounds_id.sound_report_base  +   0
-local report_commander_start    =   report_soldier_start + 1
-local report_soldier            =   report_soldier_start + 2
-local report_commander          =   report_soldier_start + 3
-local report_soldier_end        =   report_soldier_start + 4
 
 local operators		= {}
 local properties	= {}
@@ -93,7 +87,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 class "action_report_soldier" (action_base) 
 ----------------------
-function action_report_soldier:__init (name, leader_name) super (nil, name)
+function action_report_soldier:__init (name, leader_name, theme) super (nil, name)
     self.leader_name = leader_name
     self.leader = nil
     self.stage = 0
@@ -101,6 +95,7 @@ function action_report_soldier:__init (name, leader_name) super (nil, name)
     self.phrases = {}
     self.current_phrase = 1
     self.time = 0
+    self.theme = theme
 end
 ----------------------
 function action_report_soldier:initialize ()
@@ -170,9 +165,11 @@ function action_report_soldier:stage2 ()
     if self.sub_stage == 0 and size == 1 then
        self.sub_stage = 1
        if self.phrases[self.current_phrase].our == true then
-          self.object:play_sound (self.phrases[self.current_phrase].namespace, 1, 0, 1, 0, self.phrases[self.current_phrase].phrase)
+--          self.object:play_sound (self.phrases[self.current_phrase].namespace, 1, 0, 1, 0, self.phrases[self.current_phrase].phrase)
+          xr_sounds.play_sound (self.object, 0, self.theme, nil, self.current_phrase)
        else
-          self.leader:play_sound (self.phrases[self.current_phrase].namespace, 1, 0, 1, 0, self.phrases[self.current_phrase].phrase)
+--          self.leader:play_sound (self.phrases[self.current_phrase].namespace, 1, 0, 1, 0, self.phrases[self.current_phrase].phrase)
+          xr_sounds.play_sound (self.leader, 0, self.theme, nil, self.current_phrase)
        end   
        return
     end
@@ -189,7 +186,7 @@ function action_report_soldier:stage2 ()
        end  
        
        self.current_phrase = self.current_phrase + 1
-       if self.current_phrase >= table.getn (self.phrases) then
+       if self.current_phrase > table.getn (self.phrases) then
           self.sub_stage = 2
           self.object:clear_animations ()
           self.object:add_animation ("chest_2", false)
@@ -197,9 +194,11 @@ function action_report_soldier:stage2 ()
           return
        else
           if self.phrases[self.current_phrase].our == true then
-             self.object:play_sound (self.phrases[self.current_phrase].namespace, 1, 0, 1, 0, self.phrases[self.current_phrase].phrase)
+             xr_sounds.play_sound (self.object, 0, self.theme, nil, self.current_phrase)
+             --self.object:play_sound (self.phrases[self.current_phrase].namespace, 1, 0, 1, 0, self.phrases[self.current_phrase].phrase)
           else
-             self.leader:play_sound (self.phrases[self.current_phrase].namespace, 1, 0, 1, 0, self.phrases[self.current_phrase].phrase)
+             xr_sounds.play_sound (self.leader, 0, self.theme, nil, self.current_phrase)
+--             self.leader:play_sound (self.phrases[self.current_phrase].namespace, 1, 0, 1, 0, self.phrases[self.current_phrase].phrase)
           end   
        end
        return
@@ -336,24 +335,17 @@ end
 
 function AddScheme (obj, property_id)
 
-    obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, report_soldier_start)
-    obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, report_commander_start)
-    obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, report_soldier)
-    obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, report_commander)
-    obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, report_soldier_end)
-
-    printf ("REPORT BASE %d", xr_evaluators_id.sidor_report_leader)
-    
 	local manager  = obj:motivation_action_manager ()
 
    	local ini = obj:spawn_ini ()
-   	if ini == nil then return end
+   	if ini == nil or ini:section_exist ("report") == false then return end
    	
    	if ini:line_exist ("report", "leader_name") == true then
    	   local leader_name = ini:r_string ("report", "leader_name")
-   	   --if manager:evaluator (properties["timeout_soldier"]) ~= nil then return end
+       if ini:line_exist ("report", "theme") == false then return end
+       local theme = ini:r_string ("report", "theme")
        manager:add_evaluator (properties["timeout_soldier"], this.evaluator_timeout ("evaluator_timeout_soldier", leader_name))
-   	   local action = this.action_report_soldier ("action_report_soldier", leader_name)
+   	   local action = this.action_report_soldier ("action_report_soldier", leader_name, theme)
        action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
    	   action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
    	   action:add_precondition      (world_property (properties["timeout_soldier"], true))
@@ -367,7 +359,6 @@ function AddScheme (obj, property_id)
        if ini:line_exist ("report", "is_leader") == false or ini:r_bool ("report", "is_leader") == false then
           return
        end     
-       --if manager:evaluator (properties["leader_report"]) ~= nil then return end
        manager:add_evaluator (properties["leader_report"], this.evaluator_report ("evaluator_leader_report"))
        local action = this.action_report_leader ("action_report_leader")
        action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
