@@ -66,6 +66,9 @@ void CExplosive::Load(LPCSTR section)
 
 	ref_str snd_name = pSettings->r_string(section,"snd_explode");
 	sndExplode.create(TRUE,*snd_name, m_eSoundExplode);
+
+
+	m_dwExplodeDurationMax= EXPLODE_TIME_MAX;
 }
 
 /////////////////////////////////////////////////////////
@@ -86,8 +89,15 @@ void CExplosive::Explode()
 
 	
 	//включаем подсветку от взрыва
-	m_pLight->set_position(Position()); 
-	m_pLight->set_active(true);
+	if(m_lightTime>0)
+	{
+		m_pLight->set_color(m_lightColor.r, 
+			m_lightColor.g, 
+			m_lightColor.b);
+		m_pLight->set_range(m_lightRange);
+		m_pLight->set_position(Position()); 
+		m_pLight->set_active(true);
+	}
 
 	//trace frags
 	Fvector frag_dir; 
@@ -126,32 +136,6 @@ void CExplosive::Explode()
 		// добавить трассеры для полета осколков
 		Level().Tracers.Add	(m_vCurrentShootPos,m_vEndPoint,tracerHeadSpeed,
 							 tracerTrailCoeff,tracerStartLength,tracerWidth);
-/*
-		if(Level().ObjectSpace.RayPick(Position(), l_dir, m_fFragsRadius, Collide::rqtBoth, RQ)) 
-		{
-			Fvector l_end, l_bs_pos; 
-			l_end.mad(Position(),l_dir,RQ.range); 
-			l_bs_pos.set(0, 0, 0);
-	
-
-			if(RQ.O && Local()) 
-			{
-				f32 l_hit = m_fFragHit * (1.f - (RQ.range/m_fFragsRadius)*(RQ.range/m_fFragsRadius));
-				CEntity* E = dynamic_cast<CEntity*>(RQ.O);
-				if(E) l_hit *= E->HitScale(RQ.element);
-				NET_Packet		P;
-				u_EventGen		(P,GE_HIT,RQ.O->ID());
-				P.w_u16			(u16(ID()));
-				P.w_dir			(l_dir);
-				P.w_float		(l_hit);
-				P.w_s16			((s16)RQ.element);
-				P.w_vec3		(l_bs_pos);
-				P.w_float		(l_hit/(E?E->HitScale(RQ.element):1.f));
-				P.w_u16			(eHitTypeWound);
-				u_EventSend		(P);
-			}
-			FragWallmark(l_dir, l_end, RQ);
-		}*/
 	}	
 	setEnabled(true);
 
@@ -184,7 +168,7 @@ void CExplosive::Explode()
 		l_dst = l_dir.magnitude(); 
 		l_dir.div(l_dst); 
 		l_dir.y += m_fUpThrowFactor;
-		//l_dir.normalize();
+
 		f32 l_S = (l_pGO->Visual()?l_pGO->Radius()*l_pGO->Radius():0);
 		
 		if(l_pGO->Visual()) 
@@ -249,9 +233,9 @@ void CExplosive::feel_touch_new(CObject* O)
 
 void CExplosive::UpdateCL() 
 {
-	if(m_expoldeTime > 0 && m_expoldeTime <= Device.dwTimeDelta) 
+	if(m_dwExplodeDuration > 0 && m_dwExplodeDuration <= Device.dwTimeDelta) 
 	{
-		m_expoldeTime = 0;
+		m_dwExplodeDuration = 0;
 		m_pLight->set_active(false);
 		
 		//ликвидировать сам объект 
@@ -259,23 +243,40 @@ void CExplosive::UpdateCL()
 		u_EventGen			(P,GE_DESTROY,ID());
 		if (Local()) u_EventSend			(P);
 	} 
-	else if(m_expoldeTime>0 && m_expoldeTime < 0xffffffff) 
+	else if(m_dwExplodeDuration>0 && m_dwExplodeDuration < 0xffffffff) 
 	{
-		m_expoldeTime -= Device.dwTimeDelta;
+		m_dwExplodeDuration -= Device.dwTimeDelta;
 		
-		if(m_expoldeTime > (EXPLODE_TIME_MAX - m_lightTime)) 
+		if(m_dwExplodeDuration > (m_dwExplodeDurationMax - m_lightTime)) 
 		{
-			f32 l_scale = f32(m_expoldeTime - (EXPLODE_TIME_MAX - m_lightTime))/f32(m_lightTime);
-			m_pLight->set_color(m_lightColor.r*l_scale, 
-								m_lightColor.g*l_scale, 
-								m_lightColor.b*l_scale);
-			
-			m_pLight->set_range(m_lightRange*l_scale);
+			if(m_lightTime>0)
+			{
+				float scale = float(m_dwExplodeDuration - 
+					(m_dwExplodeDurationMax - m_lightTime))/float(m_lightTime);
+				m_pLight->set_color(m_lightColor.r*scale, 
+					m_lightColor.g*scale, 
+					m_lightColor.b*scale);
+
+				m_pLight->set_range(m_lightRange*scale);
+			}
 		} 
 //		else m_pLight->set_range(0);
 	} 
 	else m_pLight->set_active(false);
 }
+
+void CExplosive::OnEvent(NET_Packet& P, u16 type) 
+{
+	switch (type) {
+		case GE_GRENADE_EXPLODE : {
+			Explode();
+			m_dwExplodeDuration = m_dwExplodeDurationMax;
+			break;
+		}
+	}
+}
+
+
 
 void CExplosive::net_Import			(NET_Packet& P)
 {

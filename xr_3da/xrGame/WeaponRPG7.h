@@ -1,73 +1,12 @@
 #pragma once
 #include "weaponpistol.h"
-#include "../feel_touch.h"
 
-class CWeaponRPG7Grenade :
-	public CGameObject,
-	public Feel::Touch
-{
-	typedef CGameObject inherited;
-public:
-	CWeaponRPG7Grenade(void);
-	virtual ~CWeaponRPG7Grenade(void);
-
-	virtual void Load(LPCSTR section);
-	virtual BOOL net_Spawn(LPVOID DC);
-	virtual void net_Destroy();
-	virtual void OnH_B_Independent();
-	virtual void UpdateCL();
-	virtual BOOL UsedAI_Locations	()
-	{
-		return	(FALSE);
-	}
-
-	virtual void feel_touch_new(CObject* O);
-
-	void Explode(const Fvector &pos, const Fvector &normal);
-	virtual void FragWallmark(const Fvector& vDir, const Fvector &vEnd, Collide::rq_result& R);
-
-	Fvector					m_pos, m_vel;
-	CGameObject*			m_pOwner;
-
-	f32						m_fBlastHit, m_fBlastRadius, m_fFragsRadius, m_fFragHit;
-	s32						m_iFragsNum;
-	xr_list<CGameObject*>	m_blasted;
-
-	enum EState{
-		stInactive,
-		stEngine,
-		stFlying,
-		stExplode,
-		stDestroying
-	};
-	EState				m_state;
-
-	ref_str				pstrWallmark;
-	ref_shader			hWallmark;
-	float				fWallmarkSize;
-	
-	ref_sound			sndExplode;
-	ESoundTypes			m_eSoundExplode;
-
-	s32					m_engineTime, m_explodeTime, m_flashTime;
-	xr_vector<ref_str>	m_effects;
-	xr_vector<ref_str>	m_trailEffects;
-	xr_list<CParticlesObject*>	m_trailEffectsPSs;
-	IRender_Light*		m_pLight;
-	Fcolor				m_lightColor;
-	Fcolor				m_curColor;
-	f32					m_lightRange;
-	u32					m_lightTime;
-	f32					m_mass, m_engine_f, m_engine_u;
-
-	static void __stdcall ObjectContactCallback(bool& do_colide,dContact& c);
-};
+class CWeaponRPG7Grenade;
 
 class CWeaponRPG7 :	public CWeaponCustomPistol
 {
 private:
 	typedef CWeaponCustomPistol inherited;
-	float			fMaxZoomFactor;
 public:
 	CWeaponRPG7(void);
 	virtual ~CWeaponRPG7(void);
@@ -86,7 +25,9 @@ public:
 
 	static void	__stdcall GrenadeCallback(CBoneInstance*);
 
-	bool m_hideGrenade;
+	
 	CWeaponRPG7Grenade *m_pGrenade;
 	Fvector *m_pGrenadePoint;
+	float	fMaxZoomFactor;
+	bool m_hideGrenade;
 };

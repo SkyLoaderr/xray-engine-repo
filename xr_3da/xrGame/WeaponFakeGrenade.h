@@ -32,8 +32,8 @@ public:
 
 	virtual BOOL UsedAI_Locations	()	{return	(FALSE);}
 
-	void Explode(const Fvector &pos, const Fvector &normal);
-	void Destroy();
+	virtual void Explode(const Fvector &pos, const Fvector &normal);
+	virtual void Destroy();
 
 	virtual void renderable_Render() {inherited::renderable_Render();}
 	
@@ -45,13 +45,12 @@ protected:
 		stInactive,
 		stEngine,
 		stFlying,
-		stExplode,
-		stDestroying
+		stExplode
 	};
 
 	EState	m_state;
 	
-	int	m_engineTime, m_explodeTime, m_flashTime;
+	int	m_dwEngineTime, m_explodeTime, m_flashTime;
 	float m_mass, m_engine_f, m_engine_u;
 	
 

@@ -2440,6 +2440,12 @@
 								<File
 									RelativePath="WeaponRPG7.h">
 								</File>
+								<File
+									RelativePath=".\WeaponRPG7Grenade.cpp">
+								</File>
+								<File
+									RelativePath=".\WeaponRPG7Grenade.h">
+								</File>
 							</Filter>
 							<Filter
 								Name="Grenade F1"

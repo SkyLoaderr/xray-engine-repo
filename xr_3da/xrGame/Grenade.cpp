@@ -71,7 +71,7 @@ void CGrenade::Throw()
 	VERIFY						(pGrenade);
 	
 	if (pGrenade) {
-		pGrenade->m_dwDestroyTime = 3500;
+		pGrenade->m_dwDestroyTime = m_dwDestroyTimeMax;
 		//установить ID того кто кинул гранату
 		pGrenade->m_iCurrentParentID = H_Parent()->ID();
 	}
@@ -101,14 +101,7 @@ bool CGrenade::Useful()
 void CGrenade::OnEvent(NET_Packet& P, u16 type) 
 {
 	inherited::OnEvent(P,type);
-
-	switch (type) {
-		case GE_GRENADE_EXPLODE : {
-			Explode();
-			m_expoldeTime = EXPLODE_TIME_MAX;
-			break;
-		}
-	}
+	CExplosive::OnEvent(P,type);
 }
 
 void CGrenade::OnAnimationEnd() 

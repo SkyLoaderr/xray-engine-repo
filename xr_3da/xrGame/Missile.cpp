@@ -43,6 +43,8 @@ void CMissile::Load(LPCSTR section)
 	m_fMinForce			= pSettings->r_float(section,"force_min");
 	m_fMaxForce			= pSettings->r_float(section,"force_max");
 	m_fForceGrowSpeed	= pSettings->r_float(section,"force_grow_speed");
+
+	m_dwDestroyTimeMax	= pSettings->r_float(section,"destroy_time");
 	
 	Fvector				position_offset, angle_offset;
 	position_offset		= pSettings->r_fvector3(section,"position_offset");

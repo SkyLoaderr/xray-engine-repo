@@ -59,7 +59,10 @@ protected:
 
 	u32 m_state;
 	bool m_throw;
+
+	//время уничтожения
 	u32 m_dwDestroyTime;
+	u32 m_dwDestroyTimeMax;
 
 	Fmatrix					m_offset;
 

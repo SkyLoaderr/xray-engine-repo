@@ -33,11 +33,10 @@ public:
 	virtual void feel_touch_new(CObject* O);
 
 	virtual void Explode();
-	virtual void Destroy()	=	0;
 
 	virtual void OnH_B_Chield		() {inherited::OnH_B_Chield();}
 	virtual void OnH_B_Independent	() {inherited::OnH_B_Independent();}
-	virtual void OnEvent (NET_Packet& P, u16 type) {inherited::OnEvent( P, type);}
+	virtual void OnEvent (NET_Packet& P, u16 type) ;//{inherited::OnEvent( P, type);}
 	virtual	void Hit	(float P, Fvector &dir,	CObject* who, s16 element,
 						 Fvector position_in_object_space, float impulse, 
 						 ALife::EHitType hit_type = eHitTypeWound)	{inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);}
@@ -63,7 +62,9 @@ protected:
 	xr_list<CGameObject*> m_blasted;
 
 	//продолжительность взрыва
-	u32	m_expoldeTime;
+	u32	m_dwExplodeDuration;
+	//время взрыва
+	u32 m_dwExplodeDurationMax;
 
 	//////////////////////////////////////////////
 	//для разлета осколков
@@ -86,7 +87,7 @@ protected:
 	//подсветка
 	IRender_Light*		m_pLight;
 	Fcolor m_lightColor;
-	f32 m_lightRange;
+	float m_lightRange;
 	u32 m_lightTime;
 
 public:

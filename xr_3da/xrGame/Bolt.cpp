@@ -40,7 +40,7 @@ void CBolt::Throw()
 {
 	CBolt						*l_pBolt = dynamic_cast<CBolt*>(m_fake_missile);
 	VERIFY						(l_pBolt);
-	l_pBolt->m_dwDestroyTime		= 100000;
+	l_pBolt->m_dwDestroyTime = m_dwDestroyTimeMax;
 	inherited::Throw			();
 	spawn_fake_missile			();
 }

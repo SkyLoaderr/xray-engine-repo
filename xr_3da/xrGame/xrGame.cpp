@@ -853,6 +853,7 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 #include "weaponsvd.h"
 #include "weaponsvu.h"
 #include "weaponrpg7.h"
+#include "weaponrpg7grenade.h"
 #include "weaponval.h"
 #include "weaponvintorez.h"
 #include "weaponwalther.h"
