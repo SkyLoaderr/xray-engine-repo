@@ -85,6 +85,7 @@ typedef __int64 s64;
 		TIMER_PRINT(CheckPositionInDirection)\
 		TIMER_PRINT(CreateStraightPath)\
 		TIMER_PRINT(BCT_CPID)\
+		TIMER_PRINT(BCT_AP)\
 		PRINT_PROFILE_TIME\
 	}
 	#define RESET_ALL_TIMERS {\
@@ -129,6 +130,7 @@ TIMER_EXTERN_DECLARE(CheckVertexInDirection)
 TIMER_EXTERN_DECLARE(CheckPositionInDirection)
 TIMER_EXTERN_DECLARE(CreateStraightPath)
 TIMER_EXTERN_DECLARE(BCT_CPID)
+TIMER_EXTERN_DECLARE(BCT_AP)
 
 #ifdef __PROFILE__
 	IC void init_timers()

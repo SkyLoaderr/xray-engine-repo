@@ -9,18 +9,18 @@ struct STravelParams {
 };
 
 struct STravelPoint {
-	Fvector			position;
+	Fvector2		position;
 	u32				vertex_id;
 };
 
 struct SPathPoint : public STravelParams, public STravelPoint {
-	Fvector			direction;
+	Fvector2		direction;
 };
 
 struct SCirclePoint {
-	Fvector			center;
+	Fvector2		center;
 	float			radius;
-	Fvector			point;
+	Fvector2		point;
 	float			angle;
 };
 
@@ -30,17 +30,27 @@ struct STrajectoryPoint :
 {
 };
 
+IC  Fvector v3d(const Fvector2 &vector2d)
+{
+	return			(Fvector().set(vector2d.x,0.f,vector2d.y));
+}
+
+IC  Fvector2 v2d(const Fvector &vector3d)
+{
+	return			(Fvector2().set(vector3d.x,vector3d.z));
+}
+
 IC	void adjust_point(
-	const Fvector		&source, 
+	const Fvector2		&source, 
 	float				yaw, 
 	float				magnitude, 
-	Fvector				&dest
+	Fvector2			&dest
 )
 {
 	TIMER_START(AdjustPoint)
-	dest.setHP			(yaw,0);
-	dest.mul			(magnitude);
-	dest.add			(source);
+	dest.x				= -_sin(yaw);
+	dest.y				= _cos(yaw);
+	dest.mad			(source,dest,magnitude);
 	TIMER_STOP(AdjustPoint)
 }
 
@@ -66,9 +76,10 @@ IC	void assign_angle(
 
 	if (!start)
 		if (angle < 0.f)
-			angle = -angle - PI_MUL_2;
+			angle = angle + PI_MUL_2;
 		else
-			angle = PI_MUL_2 - angle;
+			angle = angle - PI_MUL_2;
+	VERIFY(_valid(angle));
 	TIMER_STOP(AssignAngle)
 }
 
@@ -81,23 +92,12 @@ IC	void compute_circles(
 	VERIFY				(!fis_zero(point.angular_velocity));
 	point.radius		= point.linear_velocity/point.angular_velocity;
 	circles[0].radius	= circles[1].radius = point.radius;
-	float				yaw, pitch;
-	VERIFY				(!fis_zero(point.direction.square_magnitude()));
-	point.direction.getHP(yaw,pitch);
-	adjust_point		(point.position,yaw + PI_DIV_2,point.radius,circles[0].center);
-	adjust_point		(point.position,yaw - PI_DIV_2,point.radius,circles[1].center);
+	VERIFY				(fsimilar(point.direction.square_magnitude(),1.f));
+	circles[0].center.x =  point.direction.y*point.radius + point.position.x;
+	circles[0].center.y = -point.direction.x*point.radius + point.position.y;
+	circles[1].center.x = -point.direction.y*point.radius + point.position.x;
+	circles[1].center.y =  point.direction.x*point.radius + point.position.y;
 	TIMER_STOP(ComputeCircles)
-}
-
-IC	float cross_product_2D_y(
-	const Fvector &point1,
-	const Fvector &point2
-)
-{
-	TIMER_START(CrossProduct2D)
-	float				f = point1.z*point2.x - point1.x*point2.z;
-	TIMER_STOP(CrossProduct2D)
-	return				(f);
 }
 
 IC	bool compute_tangent(
@@ -109,28 +109,29 @@ IC	bool compute_tangent(
 )
 {
 	TIMER_START(ComputeTangent)
-	float				start_cp, dest_cp, distance, alpha, start_yaw, dest_yaw, pitch, yaw1, yaw2;
-	Fvector				direction, temp;
+	float				start_cp, dest_cp, distance, alpha, start_yaw, dest_yaw, yaw1, yaw2;
+	Fvector2			direction, temp;
 	
 	// computing 2D cross product for start point
 	direction.sub		(start.position,start_circle.center);
 	if (fis_zero(direction.square_magnitude()))
 		direction		= start.direction;
-	direction.getHP		(start_yaw,pitch);
+
+	start_yaw			= direction.getH();
 	start_yaw			= angle_normalize(start_yaw);
-	start_cp			= cross_product_2D_y(start.direction,direction);
+	start_cp			= start.direction.cross_product(direction);
 	
 	// computing 2D cross product for dest point
 	direction.sub		(dest.position,dest_circle.center);
 	if (fis_zero(direction.square_magnitude()))
 		direction		= dest.direction;
-	direction.getHP		(dest_yaw,pitch);
+	dest_yaw			= direction.getH();
 	dest_yaw			= angle_normalize(dest_yaw);
-	dest_cp				= cross_product_2D_y(dest.direction,direction);
+	dest_cp				= dest.direction.cross_product(direction);
 
 	// direction from the first circle to the second one
 	direction.sub		(dest_circle.center,start_circle.center);
-	direction.getHP		(yaw1,pitch);
+	yaw1				= direction.getH();
 	yaw1 = yaw2			= angle_normalize(yaw1);
 
 	if (start_cp*dest_cp >= 0.f) {
@@ -160,23 +161,31 @@ IC	bool compute_tangent(
 		}
 		else {
 			// distance between circle centers
-			distance		= start_circle.center.distance_to_xz(dest_circle.center);
+			distance		= start_circle.center.distance_to(dest_circle.center);
 			// radius difference
 			float			r_diff = start_circle.radius - dest_circle.radius;
+			if ((r_diff > distance) && !fsimilar(r_diff,distance)) {
+				TIMER_STOP(ComputeTangent)
+				return		(false);
+			}
 			// angle between external tangents and circle centers segment
-			alpha			= angle_normalize(acosf(r_diff/distance));
+			float			temp = r_diff/distance;
+			clamp			(temp,-.99999f,.99999f);
+			alpha			= angle_normalize(acosf(temp));
 		}
 	}
 	else {
-		distance		= start_circle.center.distance_to_xz(dest_circle.center);
+		distance		= start_circle.center.distance_to(dest_circle.center);
 		// so, our tangents are inside (crossing)
-		if (start_circle.radius + dest_circle.radius >= distance) {
+		if ((start_circle.radius + dest_circle.radius > distance) && !fsimilar(start_circle.radius + dest_circle.radius,distance)) {
 			TIMER_STOP(ComputeTangent)
 			return		(false);
 		}
 	
 		// angle between internal tangents and circle centers segment
-		alpha			= angle_normalize(acosf((start_circle.radius + dest_circle.radius)/distance));
+		float			temp = (start_circle.radius + dest_circle.radius)/distance;
+		clamp			(temp,-.99999f,.99999f);
+		alpha			= angle_normalize(acosf(temp));
 		yaw2			= angle_normalize(yaw1 + PI);
 	}
 
@@ -191,7 +200,7 @@ IC	bool compute_tangent(
 
 	direction.sub		(tangents[1].point,tangents[0].point);
 	temp.sub			(tangents[0].point,start_circle.center);
-	float				tangent_cp = cross_product_2D_y(direction,temp);
+	float				tangent_cp = direction.cross_product(temp);
 	if (start_cp*tangent_cp >= 0) {
 		assign_angle	(tangents[0].angle,start_yaw,angle_normalize(yaw1 + alpha),start_cp >= 0);
 		assign_angle	(tangents[1].angle,dest_yaw, angle_normalize(yaw2 + alpha),dest_cp  >= 0,false);
@@ -209,112 +218,75 @@ IC	bool compute_tangent(
 	return				(true);
 }
 
+template<
+	typename T
+>
+IC	T sin_apb(T sina, T cosa, T sinb, T cosb)
+{
+	return				(sina*cosb + cosa*sinb);
+}
+
+template<
+	typename T
+>
+IC	T cos_apb(T sina, T cosa, T sinb, T cosb)
+{
+	return				(cosa*cosb - sina*sinb);
+}
+
 IC	bool build_circle_trajectory(
 	CLevelGraph							&level_graph,
 	const STrajectoryPoint				&position, 
 	xr_vector<Fvector>					*path,
-	bool								start_point
+	u32									*vertex_id
 )
 {
-//	TIMER_START(BuildCircleTrajectory)
-//	Fvector				direction, curr_pos;
-//	u32					curr_vertex_id;
-//	direction.sub		(position.position,position.center);
-//	curr_pos			= position.position;
-//	curr_vertex_id		= position.vertex_id;
-//	float				angle = position.angle;
-//	u32					size = path ? path->size() : u32(-1);
-//	if (!start_point)
-//		angle			*= -1;
-//
-//	float				yaw,pitch;
-//	direction.getHP		(yaw,pitch);
-//	yaw					= angle_normalize(yaw);
-//	u32					m = iFloor(_abs(angle)/position.angular_velocity*10.f +.5f);
-//	for (u32 i=start_point ? 0 : 1, n=fis_zero(position.angular_velocity) ? 1 : m; i<=n; ++i) {
-//		Fvector			t;
-//		TIMER_START(BCT_AP)
-//		adjust_point	(position.center,yaw + float(i)*angle/float(n),position.radius,t);
-//		TIMER_STOP(BCT_AP)
-//		TIMER_START(BCT_CPID)
-//		curr_vertex_id	= level_graph.check_position_in_direction(curr_vertex_id,curr_pos,t);
-//		TIMER_STOP(BCT_CPID)
-//		if (!level_graph.valid_vertex_id(curr_vertex_id))
-//			return		(false);
-//		if (path) {
-//			t.y			= level_graph.vertex_plane_y(curr_vertex_id,t.x,t.z);
-//			path->push_back(t);
-//		}
-//		curr_pos		= t;
-//	}
-//	
-//	if (path && !start_point)
-//		reverse			(path->begin() + size,path->end());
-//
-//	TIMER_STOP(BuildCircleTrajectory)
-//	return				(true);
-	static a=0;
-	a++;
-	if (a==40) {
-		a=a;
-	}
 	TIMER_START(BuildCircleTrajectory)
-	Fvector				direction, curr_pos;
+	Fvector2			direction;
+	Fvector				curr_pos;
 	u32					curr_vertex_id;
 	direction.sub		(position.position,position.center);
-	curr_pos			= position.position;
+	curr_pos.set		(position.position.x,0.f,position.position.y);
+	curr_pos.y			= level_graph.vertex_plane_y(position.vertex_id,position.position.x,position.position.y);
 	curr_vertex_id		= position.vertex_id;
 	float				angle = position.angle;
 	u32					size = path ? path->size() : u32(-1);
-	if (!start_point)
-		angle			*= -1;
 
 	if (!fis_zero(direction.square_magnitude()))
 		direction.normalize	();
 	else
-		direction.set	(1,0,0);
+		direction.set	(1.f,0.f);
 
-	//////////////////////////////////////////////////////////////////////////
-	float				yaw,pitch;
-	direction.getHP		(yaw,pitch);
-	yaw					= angle_normalize(yaw);
-	//////////////////////////////////////////////////////////////////////////
-
-//	float				sina, cosa, sinb, cosb, sini, cosi, temp;
+	float				sina, cosa, sinb, cosb, sini, cosi, temp;
 	u32					m = fis_zero(position.angular_velocity) ? 1 : iFloor(_abs(angle)/position.angular_velocity*10.f +1.5f);
 	u32					n = fis_zero(position.angular_velocity) || !m ? 1 : m;
 	if (path)
 		path->reserve	(size + n);
 
-//	sina				= -direction.x;
-//	cosa				= direction.z;
-//	sinb				= _sin(angle/float(n));
-//	cosb				= _cos(angle/float(n));
-//	sini				= start_point ? 0.f : sinb;
-//	cosi				= start_point ? 1.f : cosb;
+	sina				= -direction.x;
+	cosa				= direction.y;
+	sinb				= _sin(angle/float(n));
+	cosb				= _cos(angle/float(n));
+	sini				= vertex_id ? 0.f : sinb;
+	cosi				= vertex_id ? 1.f : cosb;
 
-	for (u32 i=start_point ? 0 : 1; i<=n; ++i) {
+	for (u32 i=vertex_id ? 0 : 1; i<=n; ++i) {
 		TIMER_START(BCT_AP)
 		Fvector			t;
-//		t.x				= -(sina*cosi + cosa*sini)*position.radius + position.center.x;
-//		t.z				= (cosa*cosi - sina*sini)*position.radius + position.center.z;
-		adjust_point	(position.center,yaw + float(i)*angle/float(n),position.radius,t);
-//		t.y				= position.center.y;
-//		if (!t.similar(t1)) {
-//			t.x			= -(sina*cosi + cosa*sini)*position.radius + position.center.x;
-//			t.z			= (cosa*cosi - sina*sini)*position.radius + position.center.z;
-//			adjust_point(position.center,yaw + float(i)*angle/float(n),position.radius,t1);
-//		}
-//		temp			= sinb*cosi + cosb*sini;
-//		cosi			= cosb*cosi - sinb*sini;
-//		sini			= temp;
+		t.x				= -sin_apb(sina,cosa,sini,cosi)*position.radius + position.center.x;
+		t.z				= cos_apb(sina,cosa,sini,cosi)*position.radius + position.center.y;
+		temp			= sin_apb(sinb,cosb,sini,cosi);
+		cosi			= cos_apb(sinb,cosb,sini,cosi);
+		sini			= temp;
 
 		TIMER_STOP(BCT_AP)
 		TIMER_START(BCT_CPID)
 		curr_vertex_id	= level_graph.check_position_in_direction(curr_vertex_id,curr_pos,t);
 		TIMER_STOP(BCT_CPID)
-		if (!level_graph.valid_vertex_id(curr_vertex_id))
+		if (!level_graph.valid_vertex_id(curr_vertex_id)) {
+			TIMER_STOP(BuildCircleTrajectory)
 			return		(false);
+		}
 		if (path) {
 			t.y			= level_graph.vertex_plane_y(curr_vertex_id,t.x,t.z);
 			path->push_back(t);
@@ -322,8 +294,11 @@ IC	bool build_circle_trajectory(
 		curr_pos		= t;
 	}
 	
-	if (path && !start_point)
-		reverse			(path->begin() + size,path->end());
+	if (vertex_id)
+		*vertex_id		= curr_vertex_id;
+	else
+		if (path)
+			reverse		(path->begin() + size,path->end());
 
 	TIMER_STOP(BuildCircleTrajectory)
 	return				(true);
@@ -333,23 +308,24 @@ IC	bool build_line_trajectory(
 	CLevelGraph							&level_graph,
 	const STrajectoryPoint				&start, 
 	const STrajectoryPoint				&dest, 
+	u32									vertex_id,
 	xr_vector<Fvector>					*path
 )
 {
 	TIMER_START(BuildLineTrajectory)
-	xr_vector<u32>		node_path;
-	if (level_graph.inside(start.vertex_id,dest.point)) {
-		if (path)
-			path->push_back	(dest.point);
+	xr_vector<u32>			node_path;
+	VERIFY					(level_graph.valid_vertex_id(vertex_id));
+	if (level_graph.inside(vertex_id,v3d(dest.point))) {
+		if (path) {
+			Fvector			t = v3d(dest.point);
+			t.y				= level_graph.vertex_plane_y(vertex_id,dest.point.x,dest.point.y);
+			path->push_back	(t);
+		}
 		TIMER_STOP(BuildLineTrajectory)
 		return			(true);
 	}
-	u32					vertex_id = level_graph.check_position_in_direction(start.vertex_id,start.position,start.point);
-	if (!level_graph.valid_vertex_id(vertex_id)) {
-		TIMER_STOP(BuildLineTrajectory)
-		return			(false);
-	}
-	bool				b = path ? level_graph.create_straight_PTN_path(vertex_id,start.point,dest.point,*path,node_path,false,false) : level_graph.valid_vertex_id(level_graph.check_position_in_direction(vertex_id,start.point,dest.point));
+	Fvector				start_point = v3d(start.point), dest_point = v3d(dest.point);
+	bool				b = path ? level_graph.create_straight_PTN_path(vertex_id,start_point,dest_point,*path,node_path,false,false) : level_graph.valid_vertex_id(level_graph.check_position_in_direction(vertex_id,start_point,dest_point));
 	TIMER_STOP(BuildLineTrajectory)
 	return				(b);
 }
@@ -362,17 +338,18 @@ IC	bool build_trajectory(
 )
 {
 	TIMER_START(BuildTrajectory2)
-	if (!build_circle_trajectory(level_graph,start,path,true)) {
+	u32					vertex_id;
+	if (!build_circle_trajectory(level_graph,start,path,&vertex_id)) {
 //		Msg				("FALSE : Circle 0");
 		TIMER_STOP(BuildTrajectory2)
 		return			(false);
 	}
-	if (!build_line_trajectory(level_graph,start,dest,path)) {
+	if (!build_line_trajectory(level_graph,start,dest,vertex_id,path)) {
 //		Msg				("FALSE : Line");
 		TIMER_STOP(BuildTrajectory2)
 		return			(false);
 	}
-	if (!build_circle_trajectory(level_graph,dest,path,false)) {
+	if (!build_circle_trajectory(level_graph,dest,path,0)) {
 //		Msg				("FALSE : Circle 1");
 		TIMER_STOP(BuildTrajectory2)
 		return			(false);
@@ -412,7 +389,7 @@ IC	bool build_trajectory(
 			dist[i].time = 
 				_abs(tangents[i][0].angle)/start.angular_velocity +
 				_abs(tangents[i][1].angle)/dest.angular_velocity +
-				tangents[i][0].point.distance_to_xz(tangents[i][1].point)*
+				tangents[i][0].point.distance_to(tangents[i][1].point)*
 				(fis_zero(straight_velocity) ? 0 : 1.f/straight_velocity); 
 		}
 	}
@@ -539,6 +516,8 @@ void build_detail_path(
 	xr_vector<STravelPoint>					key_points;
 	STrajectoryPoint						s,d,t,p;
 
+	start.direction.normalize				();
+	dest.direction.normalize				();
 	m_tpTravelLine.clear					();
 
 	VERIFY									(!m_tpaNodes.empty());
@@ -560,7 +539,7 @@ void build_detail_path(
 		start_point.position				= start.position;
 
 		for (int _i=0, i=0, n=(int)m_tpaNodes.size() - 1, j = n, m=j; _i < n; ) {
-			if (!level_graph.check_vertex_in_direction(start_point.vertex_id,start_point.position,m_tpaNodes[j])) {
+			if (!level_graph.check_vertex_in_direction(start_point.vertex_id,v3d(start_point.position),m_tpaNodes[j])) {
 				m							= j;
 				j							= (i + j)/2;
 			}
@@ -574,7 +553,7 @@ void build_detail_path(
 				_i							= i;
 				key_points.push_back		(start_point);
 				if (i == n) {
-					if (level_graph.valid_vertex_id(level_graph.check_position_in_direction(start_point.vertex_id,start_point.position,dest.position))) {
+					if (level_graph.valid_vertex_id(level_graph.check_position_in_direction(start_point.vertex_id,v3d(start_point.position),v3d(dest.position)))) {
 						key_points.push_back(dest);
 						break;
 					}
@@ -582,7 +561,7 @@ void build_detail_path(
 						return;
 				}
 				start_point.vertex_id		= m_tpaNodes[_i];
-				start_point.position		= level_graph.vertex_position(start_point.vertex_id);
+				start_point.position		= v2d(level_graph.vertex_position(start_point.vertex_id));
 				j = m						= n;
 			}
 		}
@@ -596,6 +575,7 @@ void build_detail_path(
 				(STravelPoint&)d = *I;
 				d.direction.sub				((I + 1)->position,d.position);
 				VERIFY						(!fis_zero(d.direction.magnitude()));
+				d.direction.normalize		();
 			}
 			else
 				d							= dest;
@@ -610,6 +590,7 @@ void build_detail_path(
 				(STravelPoint&)d = *(I - 1);
 				d.direction.sub				((*I).position,d.position);
 				VERIFY						(!fis_zero(d.direction.magnitude()));
+				d.direction.normalize		();
 				if (!compute_path(level_graph,s,d,start_set,dest_set,&m_tpTravelLine)) {
 					VERIFY					(false);
 				}
@@ -686,13 +667,13 @@ void test_smooth_path(LPCSTR name)
 	CGraphEngine				*graph_engine = xr_new<CGraphEngine>(level_graph->header().vertex_count());
 	xr_vector<u32>				m_tpaNodes;
 	
-	start.position.set			(-30.799995f,-0.000439f,-15.400002f);
-	start.direction.set			(35.700005f,-0.021492f,0.000000);
-	start.vertex_id				= level_graph->vertex(start.position);
+	start.position.set			(-30.799995f,-15.400002f);
+	start.direction.set			(35.700005f,0.000000f);
+	start.vertex_id				= level_graph->vertex(v3d(start.position));
 
-	dest.position.set			(5.010808f,-0.000005f,3.826570f);
-	dest.direction.set			(-0.012606f,0.000000f,-0.999921f);
-	dest.vertex_id				= level_graph->vertex(dest.position);
+	dest.position.set			(5.010808f,3.826570f);
+	dest.direction.set			(-0.012606f,-0.999921f);
+	dest.vertex_id				= level_graph->vertex(v3d(dest.position));
 	
 	fill_params					(start,dest,start_set,dest_set);
 

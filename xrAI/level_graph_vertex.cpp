@@ -133,166 +133,6 @@ void CLevelGraph::choose_point(const Fvector &start_point, const Fvector &finish
 	}
 }
 
-bool CLevelGraph::check_vertex_in_direction(u32 start_vertex_id, const Fvector &start_position, u32 finish_vertex_id) const
-{
-	TIMER_START(CheckVertexInDirection)
-	if (start_vertex_id == finish_vertex_id) {
-		TIMER_STOP(CheckVertexInDirection)
-		return				(true);
-	}
-
-	Fvector					finish_position = vertex_position(finish_vertex_id);
-	u32						cur_vertex_id = start_vertex_id, prev_vertex_id = u32(-1);
-	Fbox2					box;
-	Fvector2				identity, start, dest, dir;
-
-	identity.x = identity.y	= header().cell_size()/2.f;
-	start.set				(start_position.x,start_position.z);
-	dest.set				(finish_position.x,finish_position.z);
-	dir.sub					(dest,start);
-	Fvector					temp = vertex_position(cur_vertex_id), t = temp;
-
-	{
-		const_iterator		I,E;
-		begin				(cur_vertex_id,I,E);
-		bool				found = false;
-		for ( ; I != E; ++I) {
-			u32				next_vertex_id = value(cur_vertex_id,I);
-			if (!valid_vertex_id(next_vertex_id))
-				continue;
-			temp			= vertex_position(next_vertex_id);
-			box.min			= box.max = Fvector2().set(temp.x,temp.z);
-			box.grow		(identity);
-			if (box.Pick(start,dir)) {
-				
-				if (
-					(box.max.x < _min(start.x,dest.x)) ||
-					(box.min.x > _max(start.x,dest.x)) ||
-					(box.max.y < _min(start.y,dest.y)) ||
-					(box.min.y > _max(start.y,dest.y)))
-				{
-					prev_vertex_id	= next_vertex_id;
-				}
-				else {
-					if (box.contains(dest)) {
-						VERIFY	(next_vertex_id == finish_vertex_id);
-						TIMER_STOP(CheckVertexInDirection)
-						return(true);
-					}
-				}
-			}
-		}
-	}
-
-	for (;;) {
-		const_iterator		I,E;
-		begin				(cur_vertex_id,I,E);
-		bool				found = false;
-		for ( ; I != E; ++I) {
-			u32				next_vertex_id = value(cur_vertex_id,I);
-			if ((next_vertex_id == prev_vertex_id) || !valid_vertex_id(next_vertex_id))
-				continue;
-			temp			= vertex_position(next_vertex_id);
-			box.min			= box.max = Fvector2().set(temp.x,temp.z);
-			box.grow		(identity);
-			if (box.Pick(start,dir)) {
-				if (box.contains(dest)) {
-					VERIFY	(next_vertex_id == finish_vertex_id);
-					TIMER_STOP(CheckVertexInDirection)
-					return		(true);
-				}
-				found			= true;
-				prev_vertex_id	= cur_vertex_id;
-				cur_vertex_id	= next_vertex_id;
-				break;
-			}
-		}
-		if (!found) {
-			TIMER_STOP(CheckVertexInDirection)
-			return			(false);
-		}
-	}
-	TIMER_STOP(CheckVertexInDirection)
-}
-
-u32 CLevelGraph::check_position_in_direction(u32 start_vertex_id, const Fvector &start_position, const Fvector &finish_position) const
-{
-	TIMER_START(CheckPositionInDirection)
-	if (inside(start_vertex_id,finish_position)) {
-		TIMER_STOP(CheckPositionInDirection)
-		return				(start_vertex_id);
-	}
-
-	u32						cur_vertex_id = start_vertex_id, prev_vertex_id = u32(-1);
-	Fbox2					box;
-	Fvector2				identity, start, dest, dir;
-
-	identity.x = identity.y	= header().cell_size()/2.f;
-	start.set				(start_position.x,start_position.z);
-	dest.set				(finish_position.x,finish_position.z);
-	dir.sub					(dest,start);
-	Fvector					temp = vertex_position(cur_vertex_id), t = temp;
-
-	{
-		const_iterator		I,E;
-		begin				(cur_vertex_id,I,E);
-		bool				found = false;
-		for ( ; I != E; ++I) {
-			u32				next_vertex_id = value(cur_vertex_id,I);
-			if (!valid_vertex_id(next_vertex_id))
-				continue;
-			temp			= vertex_position(next_vertex_id);
-			box.min			= box.max = Fvector2().set(temp.x,temp.z);
-			box.grow		(identity);
-			if (box.Pick(start,dir)) {
-				
-				if (
-					(box.max.x < _min(start.x,dest.x)) ||
-					(box.min.x > _max(start.x,dest.x)) ||
-					(box.max.y < _min(start.y,dest.y)) ||
-					(box.min.y > _max(start.y,dest.y)))
-				{
-					prev_vertex_id	= next_vertex_id;
-				}
-				else {
-					if (box.contains(dest)) {
-						TIMER_STOP(CheckPositionInDirection)
-						return(next_vertex_id);
-					}
-				}
-			}
-		}
-	}
-
-	for (;;) {
-		const_iterator		I,E;
-		begin				(cur_vertex_id,I,E);
-		bool				found = false;
-		for ( ; I != E; ++I) {
-			u32				next_vertex_id = value(cur_vertex_id,I);
-			if ((next_vertex_id == prev_vertex_id) || !valid_vertex_id(next_vertex_id))
-				continue;
-			temp			= vertex_position(next_vertex_id);
-			box.min			= box.max = Fvector2().set(temp.x,temp.z);
-			box.grow		(identity);
-			if (box.Pick(start,dir)) {
-				if (box.contains(dest)) {
-					TIMER_STOP(CheckPositionInDirection)
-					return		(next_vertex_id);
-				}
-				found			= true;
-				prev_vertex_id	= cur_vertex_id;
-				cur_vertex_id	= next_vertex_id;
-				break;
-			}
-		}
-		if (!found) {
-			TIMER_STOP(CheckPositionInDirection)
-			return			(u32(-1));
-		}
-	}
-}
-
 float CLevelGraph::check_position_in_direction(u32 start_vertex_id, const Fvector &start_position, const Fvector &finish_position, const float max_distance) const
 {
 	SContour				_contour;
@@ -509,3 +349,170 @@ void CLevelGraph::find_game_point_in_direction(u32 start_vertex_id, const Fvecto
 	}
 }
 #endif
+
+u32	 CLevelGraph::check_position_in_direction	(u32 start_vertex_id, const Fvector2 &start_position, const Fvector2 &finish_position) const
+{
+	TIMER_START(CheckPositionInDirection)
+	if (inside(start_vertex_id,finish_position)) {
+		TIMER_STOP(CheckPositionInDirection)
+		return				(start_vertex_id);
+	}
+
+	u32						cur_vertex_id = start_vertex_id, prev_vertex_id = u32(-1);
+	Fbox2					box;
+	Fvector2				identity, start, dest, dir;
+
+	identity.x = identity.y	= header().cell_size()/2.f;
+	start					= start_position;
+	dest					= finish_position;
+	dir.sub					(dest,start);
+	Fvector					temp = vertex_position(cur_vertex_id), t = temp;
+
+	{
+		const_iterator		I,E;
+		begin				(cur_vertex_id,I,E);
+		bool				found = false;
+		for ( ; I != E; ++I) {
+			u32				next_vertex_id = value(cur_vertex_id,I);
+			if (!valid_vertex_id(next_vertex_id))
+				continue;
+			temp			= vertex_position(next_vertex_id);
+			box.min			= box.max = Fvector2().set(temp.x,temp.z);
+			box.grow		(identity);
+			if (box.Pick(start,dir)) {
+				
+				if (
+					(box.max.x < _min(start.x,dest.x)) ||
+					(box.min.x > _max(start.x,dest.x)) ||
+					(box.max.y < _min(start.y,dest.y)) ||
+					(box.min.y > _max(start.y,dest.y)))
+				{
+					prev_vertex_id	= next_vertex_id;
+				}
+				else {
+					if (box.contains(dest)) {
+						TIMER_STOP(CheckPositionInDirection)
+						return(next_vertex_id);
+					}
+				}
+			}
+		}
+	}
+
+	for (;;) {
+		const_iterator		I,E;
+		begin				(cur_vertex_id,I,E);
+		bool				found = false;
+		for ( ; I != E; ++I) {
+			u32				next_vertex_id = value(cur_vertex_id,I);
+			if ((next_vertex_id == prev_vertex_id) || !valid_vertex_id(next_vertex_id))
+				continue;
+			temp			= vertex_position(next_vertex_id);
+			box.min			= box.max = Fvector2().set(temp.x,temp.z);
+			box.grow		(identity);
+			if (box.Pick(start,dir)) {
+				if (box.contains(dest)) {
+					TIMER_STOP(CheckPositionInDirection)
+					return		(next_vertex_id);
+				}
+				found			= true;
+				prev_vertex_id	= cur_vertex_id;
+				cur_vertex_id	= next_vertex_id;
+				break;
+			}
+		}
+		if (!found) {
+			TIMER_STOP(CheckPositionInDirection)
+			return			(u32(-1));
+		}
+	}
+}
+
+bool CLevelGraph::check_vertex_in_direction		(u32 start_vertex_id, const Fvector2 &start_position, u32 finish_vertex_id) const
+{
+	TIMER_START(CheckVertexInDirection)
+	if (start_vertex_id == finish_vertex_id) {
+		TIMER_STOP(CheckVertexInDirection)
+		return				(true);
+	}
+
+	Fvector					finish_position = vertex_position(finish_vertex_id);
+	u32						cur_vertex_id = start_vertex_id, prev_vertex_id = u32(-1);
+	Fbox2					box;
+	Fvector2				identity, start, dest, dir;
+
+	identity.x = identity.y	= header().cell_size()/2.f;
+	start					= start_position;
+	dest.set				(finish_position.x,finish_position.z);
+	dir.sub					(dest,start);
+	Fvector					temp = vertex_position(cur_vertex_id), t = temp;
+
+	{
+		const_iterator		I,E;
+		begin				(cur_vertex_id,I,E);
+		bool				found = false;
+		for ( ; I != E; ++I) {
+			u32				next_vertex_id = value(cur_vertex_id,I);
+			if (!valid_vertex_id(next_vertex_id))
+				continue;
+			temp			= vertex_position(next_vertex_id);
+			box.min			= box.max = Fvector2().set(temp.x,temp.z);
+			box.grow		(identity);
+			if (box.Pick(start,dir)) {
+				if (
+					(box.max.x < _min(start.x,dest.x)) ||
+					(box.min.x > _max(start.x,dest.x)) ||
+					(box.max.y < _min(start.y,dest.y)) ||
+					(box.min.y > _max(start.y,dest.y)))
+				{
+					prev_vertex_id	= next_vertex_id;
+				}
+				else {
+					if (next_vertex_id == finish_vertex_id) {
+						TIMER_STOP(CheckVertexInDirection)
+						return(true);
+					}
+				}
+			}
+		}
+	}
+
+	for (;;) {
+		const_iterator		I,E;
+		begin				(cur_vertex_id,I,E);
+		bool				found = false;
+		for ( ; I != E; ++I) {
+			u32				next_vertex_id = value(cur_vertex_id,I);
+			if ((next_vertex_id == prev_vertex_id) || !valid_vertex_id(next_vertex_id))
+				continue;
+			temp			= vertex_position(next_vertex_id);
+			box.min			= box.max = Fvector2().set(temp.x,temp.z);
+			box.grow		(identity);
+			if (box.Pick(start,dir)) {
+				if (next_vertex_id == finish_vertex_id) {
+					TIMER_STOP(CheckVertexInDirection)
+					return		(true);
+				}
+				found			= true;
+				prev_vertex_id	= cur_vertex_id;
+				cur_vertex_id	= next_vertex_id;
+				break;
+			}
+		}
+		if (!found) {
+			TIMER_STOP(CheckVertexInDirection)
+			return			(false);
+		}
+	}
+	TIMER_STOP(CheckVertexInDirection)
+}
+
+u32 CLevelGraph::check_position_in_direction(u32 start_vertex_id, const Fvector &start_position, const Fvector &finish_position) const
+{
+	return					(check_position_in_direction(start_vertex_id,Fvector2().set(start_position.x,start_position.z),Fvector2().set(finish_position.x,finish_position.z)));
+}
+
+bool CLevelGraph::check_vertex_in_direction(u32 start_vertex_id, const Fvector &start_position, u32 finish_vertex_id) const
+{
+	return					(check_vertex_in_direction(start_vertex_id,Fvector2().set(start_position.x,start_position.z),finish_vertex_id));
+}

@@ -201,6 +201,13 @@ IC bool CLevelGraph::inside				(const u32 vertex_id, const Fvector &position, co
 	return				(inside(vertex(vertex_id),position,epsilon));
 }
 
+IC bool	CLevelGraph::inside				(const u32 vertex_id,	const Fvector2 &position) const
+{
+	float				sp = 1/header().cell_size();
+	int					pxz	= iFloor(((position.x - header().box().min.x)*sp + EPS_S + .5f))*m_row_length + iFloor((position.y - header().box().min.z)*sp   + EPS_S + .5f);
+	return				(vertex(vertex_id)->position().xz() == pxz);
+}
+
 IC float CLevelGraph::vertex_plane_y	(const CLevelGraph::CVertex &vertex, const float X, const float Z) const
 {
 	TIMER_START			(VertexPlaneY)
