@@ -132,14 +132,14 @@ CSE_ALifeEventRegistry::CSE_ALifeEventRegistry()
 
 CSE_ALifeEventRegistry::~CSE_ALifeEventRegistry()
 {
-	delete_map					(m_tEventRegistry);
+	delete_data					(m_tEventRegistry);
 }
 
 void CSE_ALifeEventRegistry::Save(IWriter &tMemoryStream)
 {
 	tMemoryStream.open_chunk	(EVENT_CHUNK_DATA);
 	tMemoryStream.w				(&m_tEventID,sizeof(m_tEventID));
-//	save_map					(m_tEventRegistry,tMemoryStream);
+//	save_data					(m_tEventRegistry,tMemoryStream);
 	tMemoryStream.close_chunk	();
 }
 
@@ -166,14 +166,14 @@ CSE_ALifeTaskRegistry::CSE_ALifeTaskRegistry()
 
 CSE_ALifeTaskRegistry::~CSE_ALifeTaskRegistry()
 {
-	delete_map					(m_tTaskRegistry);
+	delete_data					(m_tTaskRegistry);
 }
 
 void CSE_ALifeTaskRegistry::Save(IWriter &tMemoryStream)
 {
 	tMemoryStream.open_chunk	(TASK_CHUNK_DATA);
 	tMemoryStream.w				(&m_tTaskID,sizeof(m_tTaskID));
-//	save_map					(m_tTaskRegistry,tMemoryStream);
+//	save_data					(m_tTaskRegistry,tMemoryStream);
 	tMemoryStream.close_chunk	();
 }
 
@@ -510,7 +510,7 @@ void CSE_ALifeSpawnRegistry::Load(IReader	&tFileStream)
 	}
 	{
 		R_ASSERT2				(0!=(S = tFileStream.open_chunk(id++)),"Can't find artefact spawn points chunk in the 'game.spawn'");
-		load_vector				(m_tpArtefactSpawnPositions,tFileStream);
+		load_data				(m_tpArtefactSpawnPositions,tFileStream);
 	}
 }
 
@@ -524,10 +524,7 @@ CSE_ALifeAnomalyRegistry::CSE_ALifeAnomalyRegistry()
 
 CSE_ALifeAnomalyRegistry::~CSE_ALifeAnomalyRegistry()
 {
-	ANOMALY_P_VECTOR_IT			I = m_tpAnomalies.begin();
-	ANOMALY_P_VECTOR_IT			E = m_tpAnomalies.end();
-	for ( ; I != E; I++)
-		delete_vector		(*I);
+	delete_data					(m_tpAnomalies);
 }
 
 void CSE_ALifeAnomalyRegistry::Save(IWriter &tMemoryStream)
@@ -537,7 +534,7 @@ void CSE_ALifeAnomalyRegistry::Save(IWriter &tMemoryStream)
 	ANOMALY_P_VECTOR_IT			I = m_tpAnomalies.begin();
 	ANOMALY_P_VECTOR_IT			E = m_tpAnomalies.end();
 	for ( ; I != E; I++)
-		save_vector				(*I,tMemoryStream);
+		save_data				(*I,tMemoryStream);
 	tMemoryStream.close_chunk	();
 }
 
@@ -548,7 +545,7 @@ void CSE_ALifeAnomalyRegistry::Load(IReader &tFileStream)
 	ANOMALY_P_VECTOR_IT			I = m_tpAnomalies.begin();
 	ANOMALY_P_VECTOR_IT			E = m_tpAnomalies.end();
 	for ( ; I != E; I++)
-		load_vector				(*I,tFileStream);
+		load_data				(*I,tFileStream);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -587,24 +584,24 @@ CSE_ALifeOrganizationRegistry::CSE_ALifeOrganizationRegistry()
 
 CSE_ALifeOrganizationRegistry::~CSE_ALifeOrganizationRegistry()
 {
-	delete_map					(m_tOrganizationRegistry);
-	delete_map					(m_tDiscoveryRegistry);
-	free_vector					(m_tArtefactRegistry);
+	delete_data					(m_tOrganizationRegistry);
+	delete_data					(m_tDiscoveryRegistry);
+	delete_data					(m_tArtefactRegistry);
 }
 
 void CSE_ALifeOrganizationRegistry::Save(IWriter &tMemoryStream)
 {
 	tMemoryStream.open_chunk	(DISCOVERY_CHUNK_DATA);
-	save_map					(m_tOrganizationRegistry,tMemoryStream);
-	save_map					(m_tDiscoveryRegistry,tMemoryStream);
-	save_vector					(m_tArtefactRegistry,tMemoryStream);
+	save_data					(m_tOrganizationRegistry,tMemoryStream);
+	save_data					(m_tDiscoveryRegistry,tMemoryStream);
+	save_data					(m_tArtefactRegistry,tMemoryStream);
 	tMemoryStream.close_chunk	();
 }
 
 void CSE_ALifeOrganizationRegistry::Load(IReader &tFileStream)
 { 
 	R_ASSERT2					(tFileStream.find_chunk(DISCOVERY_CHUNK_DATA),"Can't find chunk DISCOVERY_CHUNK_DATA!");
-	load_initialized_map		(m_tOrganizationRegistry,tFileStream);
-	load_initialized_map		(m_tDiscoveryRegistry,tFileStream);
-	load_vector					(m_tArtefactRegistry,tFileStream);
+	load_data					(m_tOrganizationRegistry,tFileStream);
+	load_data					(m_tDiscoveryRegistry,tFileStream);
+	load_data					(m_tArtefactRegistry,tFileStream);
 }

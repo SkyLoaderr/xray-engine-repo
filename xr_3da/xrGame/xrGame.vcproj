@@ -2024,6 +2024,9 @@
 					RelativePath="ai_alife_switch.cpp">
 				</File>
 				<File
+					RelativePath=".\ai_alife_templates.cpp">
+				</File>
+				<File
 					RelativePath="ai_alife_templates.h">
 				</File>
 			</Filter>

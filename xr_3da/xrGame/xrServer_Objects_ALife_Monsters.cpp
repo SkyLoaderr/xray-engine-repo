@@ -21,20 +21,20 @@
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeTraderAbstract::~CSE_ALifeTraderAbstract()
 {
-	delete_vector				(m_tpEvents);
+	delete_data					(m_tpEvents);
 }
 
 void CSE_ALifeTraderAbstract::STATE_Write	(NET_Packet &tNetPacket)
 {
-	save_vector					(m_tpEvents,tNetPacket);
-	save_vector					(m_tpTaskIDs,tNetPacket);
+	save_data					(m_tpEvents,tNetPacket);
+	save_data					(m_tpTaskIDs,tNetPacket);
 }
 
 void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 {
 	if (m_wVersion > 19) {
-		load_vector				(m_tpEvents,tNetPacket);
-		load_vector				(m_tpTaskIDs,tNetPacket);
+		load_data				(m_tpEvents,tNetPacket);
+		load_data				(m_tpTaskIDs,tNetPacket);
 	}
 }
 
@@ -647,16 +647,16 @@ void CSE_ALifeMonsterBiting::FillProp	(LPCSTR pref, PropItemVec& values)
 //////////////////////////////////////////////////////////////////////////
 CSE_ALifeHumanAbstract::~CSE_ALifeHumanAbstract()
 {
-	delete_vector			(m_tpTasks);
+	delete_data					(m_tpTasks);
 }
 
 void CSE_ALifeHumanAbstract::STATE_Write	(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
 	inherited2::STATE_Write		(tNetPacket);
-	save_vector					(m_tpaVertices,tNetPacket);
-	save_vector					(m_baVisitedVertices,tNetPacket);
-	save_vector					(m_tpTasks,tNetPacket);
+	save_data					(m_tpaVertices,tNetPacket);
+	save_data					(m_baVisitedVertices,tNetPacket);
+	save_data					(m_tpTasks,tNetPacket);
 }
 
 void CSE_ALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
@@ -664,9 +664,9 @@ void CSE_ALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 	inherited1::STATE_Read		(tNetPacket, size);
 	inherited2::STATE_Read		(tNetPacket, size);
 	if (m_wVersion > 19) {
-		load_vector				(m_tpaVertices,tNetPacket);
-		load_vector				(m_baVisitedVertices,tNetPacket);
-		load_vector				(m_tpTasks,tNetPacket);
+		load_data				(m_tpaVertices,tNetPacket);
+		load_data				(m_baVisitedVertices,tNetPacket);
+		load_data				(m_tpTasks,tNetPacket);
 	}
 }
 

@@ -10,6 +10,7 @@
 #include "ai_funcs.h"
 #include "ai_primary_funcs.h"
 #include "ai_space.h"
+#include "ai_alife_templates.h"
 
 //#define WRITE_TO_LOG
 
@@ -189,6 +190,7 @@ CAI_DDD::CAI_DDD()
 
 CAI_DDD::~CAI_DDD()
 {
-	for (int i=0; i<AI_MAX_EVALUATION_FUNCTION_COUNT; i++)
-		xr_delete						(m_fpaBaseFunctions[i]);
+	delete_data							(m_fpaBaseFunctions);
+//	for (int i=0; i<AI_MAX_EVALUATION_FUNCTION_COUNT; i++)
+//		xr_delete						(m_fpaBaseFunctions[i]);
 }
