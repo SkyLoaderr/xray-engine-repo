@@ -849,7 +849,6 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
         }
     }
 
-
 	// Init blend pool
 	IBlend_Startup();
 }
