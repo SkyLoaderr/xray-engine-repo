@@ -29,7 +29,7 @@ public:
 	struct	Pair
 	{
 		xrP_BOOL	bOnce;
-		xrP_TOKEN	
+		xrP_CLSID	Target;
 		Action		OnEnter;
 		Action		OnExit;
 	};
