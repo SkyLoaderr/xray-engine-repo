@@ -75,13 +75,14 @@ void CHUDCursor::CursorOnFrame ()
 	
 	// Render cursor
 	float		dist=g_pGamePersistent->Environment.CurrentEnv.far_plane*0.99f;
-	
-	Level().CurrentEntity()->setEnabled(false);
+	if(Level().CurrentEntity()){
+		Level().CurrentEntity()->setEnabled(false);
 
-	if (Level().ObjectSpace.RayPick( p1, dir, dist, collide::rqtBoth, RQ ))
-		dist = RQ.range;
+		if (Level().ObjectSpace.RayPick( p1, dir, dist, collide::rqtBoth, RQ ))
+			dist = RQ.range;
 
-	Level().CurrentEntity()->setEnabled(true);
+		Level().CurrentEntity()->setEnabled(true);
+	}
 }
 
 void CHUDCursor::Render()
