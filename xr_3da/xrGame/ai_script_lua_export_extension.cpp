@@ -13,6 +13,7 @@
 #include "../effectorpp.h"
 #include "luabind/return_reference_to_policy.hpp"
 #include "luabind/out_value_policy.hpp"
+#include "luabind/adopt_policy.hpp"
 #include "ParticlesObject.h"
 #include "ArtifactMerger.h"
 #include "actor.h"
@@ -22,7 +23,7 @@ using namespace luabind;
 using namespace Script;
 
 
-const CRenderDevice &get_device()
+CRenderDevice &get_device()
 {
 	return		(Device);
 }
@@ -36,7 +37,7 @@ CLuaGameObject *tpfGetActor()
 		return(0);
 }
 
-const CCameraManager &get_camera_manager()
+CCameraManager &get_camera_manager()
 {
 	return		(Level().Cameras);
 }
@@ -129,8 +130,8 @@ void Script::vfExportLevel(CLuaVirtualMachine *tpLuaVirtualMachine)
 	[
 		// declarations
 		def("cameras",							get_camera_manager),
-		def("object",							get_object_by_name),
-		def("actor",							tpfGetActor),
+		def("object",							get_object_by_name, adopt(return_value)),
+		def("actor",							tpfGetActor, adopt(return_value)),
 		def("set_artifact_merge",				&CArtifactMerger::SetArtifactMergeFunctor),
 		def("get_weather",						get_weather),
 		def("set_weather",						set_weather)
