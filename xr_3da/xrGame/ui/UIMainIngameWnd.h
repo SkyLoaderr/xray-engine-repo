@@ -96,6 +96,7 @@ protected:
 	CUIStatic			UIStaticArmor;
 	CUIStatic			UIStaticMapBack;
 	CUIStatic			UIStaticBattery;
+	CUIStatic			UIStaticPower;
 
 
 	// —татик контрол дл€ отображени€ подсказок действий при наведении прицела на объект
@@ -107,6 +108,7 @@ protected:
 	CUIProgressBar		UIBatteryBar;
 	CUICarPanel			UICarPanel;
 	CUIMotionIcon		UIMotionIcon;
+	CUIProgressBar		UIPowerBar;
 	CUIZoneMap			UIZoneMap;
 
 	//иконка, показывающа€ количество активных PDA

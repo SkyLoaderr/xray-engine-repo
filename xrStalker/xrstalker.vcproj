@@ -985,6 +985,9 @@
 					RelativePath=".\scripts\ce_new_game_dm.script">
 				</File>
 				<File
+					RelativePath=".\Scripts\ce_switcher.script">
+				</File>
+				<File
 					RelativePath=".\scripts\class_registrator.script">
 				</File>
 				<File
