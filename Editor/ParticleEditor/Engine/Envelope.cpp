@@ -49,7 +49,7 @@ void CEnvelope::LoadA(CStream& F){
     		keys[i]	= new st_Key();
             st_Key& K=*keys[i];
 			F.Rstring(buf);
-            int cnt = sscanf	(buf,"Key %f %f %f %f %f %f %f %f %f", f[0], f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8]);
+            int cnt = sscanf	(buf,"Key %f %f %f %f %f %f %f %f %f", f+0, f+1, f+2, f+3, f+4, f+5, f+6, f+7, f+8);
             R_ASSERT(cnt==9);
 			K.value = f[ 0 ];
       		K.time  = f[ 1 ];
