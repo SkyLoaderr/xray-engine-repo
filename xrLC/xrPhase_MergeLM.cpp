@@ -78,7 +78,7 @@ void	dumb_sort	(vecDefl& L)
 	for (int n1=0; n1<int(L.size()); n1++)
 	{
 		Progress(float(n1)/float(L.size()));
-		for (int n2=1; n2<int(L.size()); n2++)
+		for (int n2=2; n2<int(L.size()); n2++)
 			if (compare2_defl(L[n2],L[n2-1]))	swap(L[n2],L[n2-1]);
 	}
 }
@@ -119,8 +119,8 @@ void CBuild::xrPhase_MergeLM()
 			Deflector	= Layer[0];
 			R_ASSERT	(Deflector);
 			if (Layer.size()>2)	{
-				// dumb_sort(Layer);
-				std::sort	(Layer.begin()+1,Layer.end(),compare2_defl);
+				dumb_sort	(Layer);
+				// std::sort(Layer.begin()+1,Layer.end(),compare2_defl);
 			}
 
 			// Select first deflectors which can fit

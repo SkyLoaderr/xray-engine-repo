@@ -180,7 +180,6 @@ public:
 			{
 				DWORD		Fcount	= 0;
 				
-				/*
 				try {
 					for (J=0; J<Jcount; J++) 
 					{
@@ -215,7 +214,7 @@ public:
 				{
 					Msg("* THREAD #%d: Access violation. Possibly recovered.",thID);
 				}
-				*/
+				/*
 				C[0].set(1,1,1,1);
 				C[1].set(1,1,1,1);
 				C[2].set(1,1,1,1);
@@ -226,6 +225,7 @@ public:
 				C[7].set(1,1,1,1);
 				C[8].set(1,1,1,1);
 				Fcount		= 1;
+				*/
 				if (Fcount) {
 					// Calculate lighting amount
 					Fcolor		Lumel,R;
