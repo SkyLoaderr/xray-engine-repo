@@ -23,7 +23,7 @@ void*	xrMemory::mem_alloc		(size_t size)
 
 	//
 	void* _ptr					= 0;
-	if (!mem_initialized)		
+	if (!mem_initialized || debug_mode)		
 	{
 		// generic
 		void*	_real			= xr_aligned_offset_malloc	(size,16,0x1);
@@ -46,7 +46,6 @@ void*	xrMemory::mem_alloc		(size_t size)
 		_ptr					= (void*)(((u8*)_real)+1);
 		*acc_header(_ptr)		= (u8)pool;
 	}
-	if (debug_mode)				mem_fill	(_ptr,0xCC,size);
 	return	_ptr;
 }
 
@@ -62,7 +61,6 @@ void	xrMemory::mem_free		(void* P)
 	} else {
 		// pooled
 		R_ASSERT2					(pool<mem_pools_count,"Memory corruption");
-		if (debug_mode)				mem_fill32	(_real,0xCCCCCCCC,mem_pools[pool].get_element()/4);
 		mem_pools[pool].destroy		(_real);
 	}
 }
