@@ -189,68 +189,33 @@ void CRenderDevice::Run			()
 					float				p_A					= fASPECT;
 					float				p_FAR				= 30.f;
 					Fvector				camD,camN,camR,camP;
-					Fvector				_F	[12];
-
-					// 1
 					camD.set			(mCam.k);
 					camN.set			(mCam.j);
 					camR.set			(mCam.i);
 					camP.set			(mCam.c);
-					ComputeFrustum		(_F+0,p_FOV,p_A,p_FAR,camD,camN,camR,camP);
-
-					// 2
-					camD.set			(mCam.k);	camD.y = 0; camD.normalize	();
-					camN.crossproduct	(camD,camR);			camN.normalize	();
-					camR.crossproduct	(camN,camD);			camR.normalize	();
-					ComputeFrustum		(_F+6,p_FOV,p_A,p_FAR,camD,camN,camR,camP);
 
 					{
+						// Calc center of "sphere"
+						float	_alpha			= deg2rad		(p_FOV/2.f);
+						float	_a				= p_FAR;
+						float	_b				= _a/_cos		(_alpha);
+						float	_x				= (_b/2)/_cos	(_alpha);
+
+						Fvector	sC;				sC.mad			(camP,camD,_x);
+						float	sR				= _x;
+ 
 						// Build L-view vectors
 						Fvector					L_dir,L_up,L_right,L_pos;
-						float					cs	= 1000;
-						
+						float					cs 	= 1000;
 						L_dir.set				(-0.071f, -0.574f, -0.816f);	L_dir.normalize		();
-						L_up.set				(mCam.i);						L_right.normalize	();
+						L_up.set				(0,0,-1);						L_up.normalize		();
 						L_right.crossproduct	(L_up,L_dir);					L_right.normalize	();
 						L_up.crossproduct		(L_dir,L_right);				L_up.normalize		();
-						L_pos.set				(0,0,0);
+						L_pos.mad				(sC,L_dir,-cs);
 						L_view.build_camera_dir	(L_pos,L_dir,L_up);
-
-						//
-						Fbox bb;
-						Fvector bbc,bbd;
-
-						// L-view corner points and box
-						Fvector	T;
-						bb.invalidate			();
-						for (int i=0; i<12; i++)
-						{
-							L_view.transform_tiny	(T,_F[i]);
-							bb.modify				(T);
-						}
-						bb.get_CD				(bbc,bbd);
-
-						// Back project center
-						Fmatrix inv;
-						inv.invert				(L_view);
-						inv.transform_tiny		(L_pos,bbc);
-
-						// L-view matrix
-						L_pos.mad				(L_dir, -cs);
-						L_view.build_camera_dir	(L_pos,L_dir,L_up);
-
-						// L-view corner points and box
-						bb.invalidate			();
-						for (int i=0; i<12; i++)
-						{
-							L_view.transform_tiny	(T,_F[i]);
-							bb.modify				(T);
-						}
-						bb.get_CD				(bbc,bbd);
 
 						// L_project
-						float				d			= 2*_max(bbd.x,bbd.y);
-						D3DXMatrixOrthoLH				((D3DXMATRIX*)&L_project,d,d,cs-50.f,cs+50.f);
+						D3DXMatrixOrthoLH		((D3DXMATRIX*)&L_project,2*sR,2*sR,cs-50.f,cs+50.f);
 					}
 
 					mView	= L_view;
