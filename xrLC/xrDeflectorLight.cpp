@@ -319,7 +319,7 @@ void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color_c &C, Fvector &P,
 				if( D <=0 ) continue;
 
 				// Trace Light
-				Fvector		PMoved;	PMoved.mad	(Pnew,Ldir,0.01f);
+				Fvector		PMoved;	PMoved.mad	(Pnew,Ldir,0.001f);
 				float scale	=	L->energy*rayTrace(DB,MDL, *L,PMoved,Ldir,1000.f,skip,bUseFaceDisable);
 				C.hemi		+=	scale;
 			}else{
