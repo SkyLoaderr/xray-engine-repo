@@ -5,17 +5,18 @@
  
 // Common
 //int			ps_r__Supersample			= 1;
-int			ps_r__Anisotropic			= 4;
-int			ps_r__LightSleepFrames		= 10;
+int			ps_r__tf_Anisotropic		= 4		;
+float		ps_r__tf_Mipbias			= -0.5f	;
+int			ps_r__LightSleepFrames		= 10	;
 
-float		ps_r__Detail_l_ambient		= 0.9f;
-float		ps_r__Detail_l_aniso		= 0.25f;
-float		ps_r__Detail_density		= 0.3f;
-float		ps_r__Detail_rainbow_hemi	= 0.75f;
+float		ps_r__Detail_l_ambient		= 0.9f	;
+float		ps_r__Detail_l_aniso		= 0.25f	;
+float		ps_r__Detail_density		= 0.3f	;
+float		ps_r__Detail_rainbow_hemi	= 0.75f	;
 
-float		ps_r__Tree_w_rot			= 10.0f;
-float		ps_r__Tree_w_speed			= 1.00f;
-float		ps_r__Tree_w_amp			= 0.01f;
+float		ps_r__Tree_w_rot			= 10.0f	;
+float		ps_r__Tree_w_speed			= 1.00f	;
+float		ps_r__Tree_w_amp			= 0.01f	;
 Fvector		ps_r__Tree_Wave				= {.1f, .01f, .11f};
 
 // R1
@@ -76,15 +77,26 @@ float		ps_r2_gmaterial				= 0.f;				//
 #include	"..\xr_ioc_cmd.h"
 
 //-----------------------------------------------------------------------
-class CCC_Aniso		: public CCC_Integer
+class CCC_tf_Aniso	: public CCC_Integer
 {
 public:
-	CCC_Aniso(LPCSTR N, int*	v) : CCC_Integer(N, v, 2, 16) { *v = 4; };
+	CCC_tf_Aniso(LPCSTR N, int*	v) : CCC_Integer(N, v, 2, 16) { *v = 4; };
 	virtual void Execute(LPCSTR args)
 	{
 		CCC_Integer::Execute	(args);
 		for (u32 i=0; i<HW.Caps.raster.dwStages; i++)
 			CHK_DX(HW.pDevice->SetSamplerState( i, D3DSAMP_MAXANISOTROPY, *value	));
+	}
+};
+class CCC_tf_MipBias: public CCC_Float
+{
+public:
+	CCC_tf_MipBias(LPCSTR N, float*	v) : CCC_Float(N, v, -3, +3)	{ *v = -0.5f; };
+	virtual void Execute(LPCSTR args)
+	{
+		CCC_Float::Execute	(args);
+		for (u32 i=0; i<HW.Caps.raster.dwStages; i++)
+			CHK_DX(HW.pDevice->SetSamplerState( i, D3DSAMP_MIPMAPLODBIAS, *((LPDWORD) value)));
 	}
 };
 class CCC_R2GM		: public CCC_Float
