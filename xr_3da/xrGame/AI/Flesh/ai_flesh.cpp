@@ -2,9 +2,6 @@
 #include "ai_flesh.h"
 #include "../../ai_space.h"
 
-#define TEST_EAT_STATE
-
-
 CAI_Flesh::CAI_Flesh()
 {
 	stateRest			= xr_new<CBitingRest>		(this);

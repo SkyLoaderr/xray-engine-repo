@@ -41,6 +41,8 @@
 
 #define STANDART_ATTACK -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,3.5f
 #define SIMPLE_ENEMY_HIT_TEST
+//#define TEST_EAT_STATE
+
 
 
 class CCharacterPhysicsSupport;

@@ -67,6 +67,7 @@ void CAI_Boar::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimDragCorpse,		"stand_drag_",			-1, inherited::_sd->m_fsDrag,			inherited::_sd->m_fsWalkAngular,	PS_STAND);
 	MotionMan.AddAnim(eAnimLookAround,		"stand_idle_",			 2, 0,									0,									PS_STAND);
 	MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, inherited::_sd->m_fsSteal,			inherited::_sd->m_fsWalkAngular,	PS_STAND);
+	MotionMan.AddAnim(eAnimDie,				"stand_idle_",			-1, 0,									0,									PS_STAND);
 
 	// define transitions
 	MotionMan.AddTransition(eAnimStandLieDown,	eAnimSleep,		eAnimLieToSleep,		false);
