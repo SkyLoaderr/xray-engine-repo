@@ -140,6 +140,13 @@ void CUIGameDM::OnFrame()
 					TimeMsgDyn.Update			();
 				}
 			};
+			if (!m_bSkinSelected)
+			{
+				SetCurrentSkinMenu();
+				
+				if (!pCurSkinMenu->IsShown())
+					StartStopMenu(pCurSkinMenu);
+			}
 		}break;
 	}
 

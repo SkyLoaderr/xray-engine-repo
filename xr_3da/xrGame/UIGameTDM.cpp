@@ -21,7 +21,7 @@ CUIGameTDM::CUIGameTDM(CUI* parent):CUIGameDM(parent)
 	pSkinMenuTeam1 = NULL;
 	pSkinMenuTeam2 = NULL;
 
-	m_bTeamSelected	= FALSE;
+	m_bTeamSelected	= TRUE;
 }
 //--------------------------------------------------------------------
 void		CUIGameTDM::Init				()
@@ -145,11 +145,14 @@ void CUIGameTDM::SetCurrentBuyMenu	()
 
 void		CUIGameTDM::SetCurrentSkinMenu	()
 {
-	if (!pCurSkinMenu || !pCurSkinMenu->IsShown())
-	{
-		if (Game().local_player->team == 1) pCurSkinMenu = pSkinMenuTeam1;
-		else pCurSkinMenu = pSkinMenuTeam2;
-	};
+	CUISkinSelectorWnd* pNewSkinMenu;
+	if (Game().local_player->team == 1) pNewSkinMenu = pSkinMenuTeam1;
+	else pNewSkinMenu = pSkinMenuTeam2;
+
+	if (pNewSkinMenu != pCurSkinMenu)
+		if (pCurSkinMenu && pCurSkinMenu->IsShown()) StartStopMenu(pCurSkinMenu);
+
+	pCurSkinMenu = pNewSkinMenu;
 };
 
 bool		CUIGameTDM::CanBeReady				()
