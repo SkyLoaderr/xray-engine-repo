@@ -104,6 +104,7 @@ BOOL CCustomEvent::Spawn		( BOOL bLocal, int server_id, Fvector& o_pos, Fvector&
 			}
 			count--;
 		}
+		shape->ComputeBounds		();
 		pCreator->ObjectSpace.Object_Register		(this);
 		cfModel->OnMove				();
 	}

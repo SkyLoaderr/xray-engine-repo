@@ -365,7 +365,7 @@ void CCF_Shape::ComputeBounds()
 			break;
 		}
 	}
-	s_box.getsphere(Sphere);
+	s_box.getsphere(Sphere.P,Sphere.R);
 }
 
 BOOL CCF_Shape::Contact		( CObject* O )
