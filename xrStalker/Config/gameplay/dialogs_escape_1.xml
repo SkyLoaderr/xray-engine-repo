@@ -539,7 +539,6 @@
             <phrase id="111">
                 <text>napad_111</text>
                 <action>dialogs.break_dialog</action>
-                <give_info>move_to_factory</give_info>
             </phrase>
             <phrase id="112">
                 <text>napad_112</text>
@@ -576,7 +575,7 @@
             </phrase>
             <phrase id="1121211">
                 <text>napad_1121211</text>
-                <give_info>kill_em_all</give_info>
+                <give_info>sniper_dead</give_info>
             </phrase>
         </phrase_list>
     </dialog>
