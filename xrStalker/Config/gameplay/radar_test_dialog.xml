@@ -6,10 +6,6 @@
                 <text>radar_test_dialog_20</text>
                 <next>2</next>
             </phrase>
-            <phrase id="1">
-                <text>radar_test_dialog_1</text>
-                <next>20</next>
-            </phrase>
             <phrase id="2">
                 <text>radar_test_dialog_2</text>
                 <next>30</next>
@@ -22,16 +18,28 @@
                 <text>radar_test_dialog_3</text>
                 <next>40</next>
             </phrase>
-            <phrase id="0">
-                <text>radar_test_dialog_0</text>
-                <next>1</next>
-            </phrase>
             <phrase id="40">
                 <text>radar_test_dialog_40</text>
                 <next>4</next>
             </phrase>
             <phrase id="4">
                 <text>radar_test_dialog_4</text>
+            </phrase>
+            <phrase id="0">
+                <text>radar_test_dialog_0</text>
+                <next>1</next>
+                <next>100</next>
+                <next>1000</next>
+            </phrase>
+            <phrase id="1000">
+                <text>radar_test_dialog_1000</text>
+            </phrase>
+            <phrase id="1">
+                <text>radar_test_dialog_1</text>
+                <next>20</next>
+            </phrase>
+            <phrase id="100">
+                <text>radar_test_dialog_100</text>
             </phrase>
         </phrase_list>
     </dialog>
