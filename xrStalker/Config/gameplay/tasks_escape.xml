@@ -127,15 +127,15 @@
 		<title>agroprom_get_military_documents</title>
 		<objective>
 			<text>agroprom_get_military_documents_0</text>
-			<icon x="350" y="0" width="50" height="50">ui\ui_icons_task</icon>			
+			<icon x="250" y="50" width="50" height="50">ui\ui_icons_task</icon>			
 		</objective>
 		<objective>
 			<text>agroprom_get_military_documents_1</text>
-			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="350" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
 			<text>agroprom_get_military_documents_2</text>
-			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="400" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
 
