@@ -40,39 +40,6 @@ function action_wait:initialize()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
 
-	self.sound_relax = {idle = 0,
-		     begin = nil,
-		     maxidle = 1,
-		     sumidle = 1,
-   		     rnd = 100,
-		     lastsound = nil,
-		 	sounds = {      {pack = sounds["relax"], id = 0},
-					{pack = sounds["relax"], id = 1} }}
-	self.sound_search = {idle = 0,
-		     begin = nil,
-		     maxidle = 5,
-		     sumidle = 3,
-   		     rnd = 100,
-		     lastsound = nil,
-		 	sounds = {      {pack = sounds["search"], id = 0},
-					{pack = sounds["search"], id = 1},
-					{pack = sounds["search"], id = 2},
-					{pack = sounds["search"], id = 3} }}
-	self.sound_watch = {idle = 0,
-		     begin = nil,
-		     maxidle = 5,
-		     sumidle = 3,
-   		     rnd = 100,
-		     lastsound = nil,
-		 	sounds = {      {pack = sounds["wait"], id = 0},
-					{pack = sounds["wait"], id = 1},
-					{pack = sounds["wait"], id = 2},
-					{pack = sounds["wait"], id = 3},
-					{pack = sounds["wait"], id = 4},
-					{pack = sounds["wait"], id = 5},
-					{pack = sounds["wait"], id = 6},
-					{pack = sounds["wait"], id = 7},
-					{pack = sounds["wait"], id = 8} }}
 	self.anim = {idle = 0,
 		     begin = nil,
 		     maxidle = 4,
@@ -83,7 +50,22 @@ function action_wait:initialize()
 				  "prisluh_2_idle_3",
 				  "prisluh_2_idle_4",
 				  "prisluh_2_idle_6" }}
-
+	
+	self.sound_crps_neutral = {idle = 0,
+		     begin = nil,
+		     maxidle = 2, 
+		     sumidle = 1,
+   		     rnd = 100,
+		     lastsound = nil,	
+		     themes = {"reac_crps_neutral"} }
+	self.sound_watch = {idle = 0,
+		     begin = nil,
+		     maxidle = 5, 
+		     sumidle = 7,
+   		     rnd = 80,
+		     lastsound = nil,	
+		     themes = {"reac_see", "reac_hear"} }
+	
 	xr_state.change_state(self.object, 0)
 end
 function action_wait:execute()
@@ -98,12 +80,14 @@ function action_wait:execute()
 		--' если мы можем идентицифировать объект - отмечаем как известный и идем дальше
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
 			self.a.evn:markAsUsed(self.a.obj.id)
+			self:set_prisluh(false)	
 			return
 		end
 
 		--' если прошло много времени, прекращаем
 		if game.time() - self.a.obj.time >= self.a.time_wait then
 			self.a.evn:removeFromWatch(self.a.obj.id)
+			self:set_prisluh(false)	
 			return
 		end
 
@@ -113,15 +97,14 @@ function action_wait:execute()
 		self.object:set_sight(look.point, level.vertex_position(self.a.obj.position), 0)
 		self:set_prisluh(true)
 		--' озвучка на поиск
-		if self.a.evn:ruleExist("silence") ~= true then
-			globals.set_sound(self.object, self.sound_watch, false)
-		end
+		if self.a.evn:ruleExist("silence") ~= true then xr_sound.sound_update(self.object, self.sound_watch) end
 	end
 
 	if self.a.obj.type == "explore" then
 		--' если мы можем идентицифировать объект - отмечаем как известный и идем дальше
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
 			self.a.evn:markAsUsed(self.a.obj.id)
+			self:set_prisluh(false)	
 			return
 		end
 	end
@@ -145,7 +128,20 @@ function action_wait:execute()
 	if self.a.obj.type == "corpse_neutral" then
 		--' если мы можем идентицифировать объект - отмечаем как известный и идем дальше
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
-			self.a.evn:markCorpse(self.a.obj.id)
+			self:set_prisluh(false)
+			--' подойти к трупу
+			if self.object:animation_count() == 0 then
+				self.object:set_path_type(game_object.level_path)
+				self.object:set_dest_level_vertex_id(self.a.obj.position)
+				self.object:set_movement_type(move.walk)
+				self.object:set_sight(look.path_dir, nil, 0)
+				self.object:set_desired_direction()
+				--' Если мы подошли к трупу - поплакать и уйти			
+				if self.object:position():distance_to_sqr(level.vertex_position(self.a.obj.position)) < 10 then
+					if self.a.evn:ruleExist("silence") ~= true then xr_sound.sound_update(self.object, self.sound_crps_neutral) end
+					self.a.evn:markCorpse(self.a.obj.id)
+				end
+			end			
 			return
 		end
 	end
@@ -160,7 +156,6 @@ function action_wait:execute()
 	action_base.execute(self)
 end
 function action_wait:finalize()	
-	self:set_prisluh(false)	
 	action_base.finalize (self)
 end
 function action_wait:set_prisluh(prisluh)
@@ -276,7 +271,7 @@ function events:__init(npc)
 			snd_type.monster
 			}
 	self.time_reaction = 60*1000 	-- 1.5 секунд
-	self.time_memory = 5*60*1000
+	self.time_memory = 20*60*1000
 	self.visio	= 0.25 		-- если объект виден
 	self.hear_distance = 100 	-- на каком расстоянии мы слышим
 	--Константы для настройки реакций
@@ -497,42 +492,38 @@ function events:get_event(tt)  -- Выдает наиболее приоритетный раздражитель
 	end
 	if prior == nil then return end
 
-	-- позицию раздражителя
-	tt.position = self.arhive[prior].point
-	-- id раздражителя
 	tt.id = prior
-	-- время раздражителя
-	tt.time = self.arhive[prior].time
-	-- видимость раздражителя
-	tt.visibility = self.arhive[prior].visibility
+	tt.position = self.arhive[tt.id].point
+	tt.time = self.arhive[tt.id].time
+	tt.visibility = self.arhive[tt.id].visibility
 
-	if self.arhive[prior].type == "corpse" then
+	if self.arhive[tt.id].object_type == "corpse" then
 		-- реакция на труп. Труп монстра, труп друга, труп нейтрала, труп врага
-		if self.arhive[prior].corpse.type == "monstr" and
-                   self.arhive[prior].corpse.monstr_power == true
+		if self.arhive[tt.id].corpse.type == "monstr" and
+                   self.arhive[tt.id].corpse.monstr_power == true
 		then
 			tt.type = "corpse_monstr"
 		end
-		if self.arhive[prior].corpse.type == "stalker" and
-                   self.arhive[prior].corpse.relation == game_object.friend
+		if self.arhive[tt.id].corpse.type == "stalker" and
+                   self.arhive[tt.id].corpse.relation == game_object.friend
 		then
 			tt.type = "corpse_friend"
 		end
-		if self.arhive[prior].corpse.type == "stalker" and
-                   self.arhive[prior].corpse.relation == game_object.neutral
+		if self.arhive[tt.id].corpse.type == "stalker" and
+                   self.arhive[tt.id].corpse.relation == game_object.neutral
 		then
 			tt.type = "corpse_neutral"
 		end
-		if self.arhive[prior].corpse.type == "stalker" and
-                   self.arhive[prior].corpse.relation == game_object.enemy
+		if self.arhive[tt.id].corpse.type == "stalker" and
+                   self.arhive[tt.id].corpse.relation == game_object.enemy
 		then
 			tt.type = "corpse_enemy"
 		end
 	else
 		-- Если мы получаем звуковой раздражитель от объекта за которым следим - тогда идем проверять (при условии что объект не виден)
-		if self.arhive[prior].sound_power ~= nil and
-		   self.arhive[prior].visibility == nil and
-		   self.watch[prior] ~= nil
+		if self.arhive[tt.id].sound_power ~= nil and
+		   self.arhive[tt.id].visibility == nil and
+		   self.watch[tt.id] ~= nil
 		then
 			tt.type = "explore"
 		else

@@ -205,7 +205,7 @@ function sound_update(npc, sound, target)
 			end
 
 			repeat
-				local r = math.random(0, sum - 1)
+				local r = math.random(sum - 1)
 				local cur_sum = 0
 
 				for k, w in sounds_ids do
