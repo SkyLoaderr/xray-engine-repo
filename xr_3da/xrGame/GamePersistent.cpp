@@ -42,7 +42,12 @@ void CGamePersistent::RegisterModel(IRender_Visual* V)
 		int cnt = K->LL_BoneCount();
 		for (u16 k=0; k<cnt; k++){
 			CBoneData& bd	= K->LL_GetData(k); 
-			bd.game_mtl_id	= *(bd.game_mtl)?GMLib.GetMaterialIdx(*bd.game_mtl):GAMEMTL_NONE;
+			if (*(bd.game_mtl)){
+				bd.game_mtl_id	= GMLib.GetMaterialIdx(*bd.game_mtl);
+				R_ASSERT2(GMLib.GetMaterial(bd.game_mtl_id)->Flags.is(SGameMtl::flDynamic));
+			}else{
+				bd.game_mtl_id	= GAMEMTL_NONE;
+			}
 		}
 	}break;
 	}
