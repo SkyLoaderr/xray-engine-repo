@@ -93,7 +93,8 @@ BOOL CInventoryOwner::net_Spawn		(CSE_Abstract* DC)
 		if(E) pTrader = smart_cast<CSE_ALifeTraderAbstract*>(E);
 		if(!pTrader) return FALSE;
 
-		R_ASSERT(NO_PROFILE != pTrader->character_profile());
+//		R_ASSERT(NO_PROFILE != pTrader->character_profile());
+		R_ASSERT( xr_strlen(pTrader->character_profile()) );
 
 		//синхронизируем параметры персонажа с серверным объектом
 		CharacterInfo().m_CurrentCommunity.set(pTrader->m_community_index);
