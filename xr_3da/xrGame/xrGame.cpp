@@ -101,6 +101,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "weaponPM.h"
 #include "weaponFORT.h"
 #include "weaponBINOCULARS.h"
+#include "weaponShotgun.h"
 
 extern "C" {
 	DLL_API DLL_Pure*	__cdecl xrFactory_Create		(CLASS_ID cls)
