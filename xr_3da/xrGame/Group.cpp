@@ -39,7 +39,9 @@ CGroup::CGroup()
 CGroup::CGroup	(const CGroup &group)
 {
 	*this = group;
-	m_agent_manager = xr_new<CAgentManager>(*m_agent_manager);
+#pragma todo("Dima to all : This is a hack, we have to restructure team/squad/group hirarchy!")
+	const_cast<CGroup*>(&group)->m_agent_manager = 0;
+//	m_agent_manager = xr_new<CAgentManager>(*m_agent_manager);
 }
 
 CGroup::~CGroup()
