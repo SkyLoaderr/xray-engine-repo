@@ -3,7 +3,7 @@
 #include "PHDynamicData.h"
 #include "Physics.h"
 #include "level.h"
-
+#include "MathUtils.h"
 CPHInterpolation::CPHInterpolation(){
 m_body=NULL;
 //fTimeDelta=0.f;
@@ -31,11 +31,14 @@ void CPHInterpolation::UpdateRotations(){
 	if(!m_body)
 		return;
 	//VERIFY2(dM_valid(dBodyGetRotation(m_body)),"invalid body rotation in update interpolation");
-	//qRotations.pop_front();
+	//qRotations.pop _front();
 	const dReal* dQ=dBodyGetQuaternion(m_body);
 	Fquaternion fQ;
 	fQ.set(-dQ[0],dQ[1],dQ[2],dQ[3]);
 	qRotations.push_back(fQ);
+	//Fvector w;
+	//twoq_2w(qRotations[0],qRotations[1],fixed_step,w);
+	//w=w;
 }
 
 void CPHInterpolation::InterpolatePosition(Fvector& pos)
