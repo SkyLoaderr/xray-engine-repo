@@ -3904,6 +3904,7 @@ cform						= skeleton
 class						= AI_TRADE
 visual						= monsters\trader\trader
 rank						= 0
+; format : section{,section},count,min_factor,max_factor, ...
 supplies					= m_bread,50,0.5,1.5, CANNED,30,0.5,1.5, MEDI_KIT,7,0,0.7, DET_SMPL,3,0,0.6, WPN_BINC,2,0,0.56, WPN_FORT,WPN_HPSA,3,0,0.6, WPN_LR30,WPN_AK47,2,0,0.56, WPN_SVD,1,0,0.53, WPN_RPG7,1,0,0.53, WPN_RPG1,WPN_RPG2,WPN_RPG3,WPN_RPG4,10,0,0.70
 max_item_mass				= 40.0
 
@@ -3984,8 +3985,8 @@ class						= AI_SPGRP
 	destroy_probability		= 0.2											; a probability to make an excident during investigations
 	result_probability		= 0.7											; discovery getting result probability
 	unfreeze_probability	= 0.8											; discovery freeze probability after destruction
-	demand_on_success		= af_magnet,4,8,50,150,af_magnet,6,12,100,300	; artefacts per week (section, count, price)
-	artefacts				= af_magnet,6,100,af_magnet,6,100				; artefacts to make a discovery
+	demand_on_success		= af_magnet,4,8,50,150,af_magnet,6,12,100,300	; artefacts per week (section, count_min, count_max, price_min, price_max)
+	artefacts				= af_magnet,6,100,af_magnet,6,100				; artefacts to make a discovery (section, count, price)
 	discovery_dependence	= discovery_magnet								; if this discoveries are invented, then this 
 	class_ids				= m_detector									; class identifiers of the objects being invented after this discovery
 	already_invented		= 0												; bool, if discovery has been already invented
