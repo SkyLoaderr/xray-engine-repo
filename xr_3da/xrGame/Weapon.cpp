@@ -248,11 +248,46 @@ void CWeapon::Load		(LPCSTR section)
 BOOL CWeapon::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
 	return inherited::net_Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
+
 }
 
 void CWeapon::net_Destroy	()
 {
 	inherited::net_Destroy	();
+}
+
+void CWeapon::net_Export	(NET_Packet& P)
+{
+	u8 flags				=	(IsUpdating()? M_UPDATE_WEAPON_wfVisible:0);
+	flags					|=	(IsWorking() ? M_UPDATE_WEAPON_wfWorking:0);
+
+	P.w_u32					(Level().timeServer());
+	P.w_u8					(flags);
+
+	P.w_u16					(iAmmoCurrent);
+	P.w_u16					(iAmmoElapsed);
+
+	if ((0==H_Parent()) || (flags&M_UPDATE_WEAPON_wfVisible) )
+	{
+		P.w_vec3			(svTransform.c);
+
+		float				_x,_y,_z;
+		svTransform.getHPB	(_y,_x,_z);
+		P.w_angle8			(_x);
+		P.w_angle8			(_y);
+		P.w_angle8			(_z);
+	}
+	if (flags& (M_UPDATE_WEAPON_wfVisible+M_UPDATE_WEAPON_wfWorking))
+	{
+		UpdateFP			();
+		P.w_vec3			(vLastFP);
+		P.w_dir				(vLastFD);
+	}
+}
+
+void CWeapon::net_Import	(NET_Packet& P)
+{
+	
 }
 
 void CWeapon::Update		(DWORD dT)

@@ -60,12 +60,12 @@ BOOL CEntity::Hit(int perc, Fvector &dir, CEntity* who)
 		// send, update
 		// *** signal to everyone
 		NET_Packet	P;
-		P.w_begin	(M_FIRE_HIT);
-		P.w_u16		(u16(net_ID));
-		P.w_u16		(u16(who->net_ID));
-		P.w_u8		(perc	);
-		P.w_dir		(dir	);
-		Level().Send(P,net_flags(TRUE));
+		P.w_begin	(M_HIT				);
+		P.w_u16		(u16(net_ID)		);
+		P.w_u16		(u16(who->net_ID)	);
+		P.w_u8		(perc				);
+		P.w_dir		(dir				);
+		Level().Send(P,net_flags(TRUE)	);
 	} else {
 		// *** we are REMOTE/LOCAL, attacker is REMOTE
 		// update

@@ -35,16 +35,19 @@ public:
 	BOOL					net_Ready;
 
 	u16						ID;				// internal ID
+	u16						ID_Parent;		// internal ParentID, 0xffff means no parent
 	xrClientData*			owner;
 
 	// spawn data
 	string64				s_name;
 	string64				s_name_replace;
 	u8						s_RP;
+	u16						s_flags;		// state flags
+
+	// update data
 	Fvector					o_Position;
 	Fvector					o_Angle;
-	u16						s_flags;		// state flags
-	
+
 	virtual void			UPDATE_Read		(NET_Packet& P)				= 0;
 	virtual void			UPDATE_Write	(NET_Packet& P)				= 0;
 	virtual void			STATE_Read		(NET_Packet& P, u16 size)	= 0;
@@ -65,6 +68,7 @@ public:
 		P.w_vec3			(o_Position		);
 		P.w_vec3			(o_Angle		);
 		P.w_u16				(ID				);
+		P.w_u16				(ID_Parent		);
 		if (bLocal)			P.w_u16(s_flags	| M_SPAWN_OBJECT_LOCAL );
 		else				P.w_u16(s_flags );
 
@@ -86,6 +90,7 @@ public:
 		P.r_vec3			(o_Position		);
 		P.r_vec3			(o_Angle		);
 		P.r_u16				(ID				);
+		P.r_u16				(ID_Parent		);
 		P.r_u16				(s_flags		); s_flags&=~M_SPAWN_OBJECT_LOCAL;
 
 		// read specific data
@@ -113,7 +118,15 @@ class xrServer	: public IPureServer
 private:
 	xrS_entities			entities;
 	vector<bool>			ids_used;
-	BOOL					ProcessRP			(xrServerEntity* E);
+	BOOL					PerformRP			(xrServerEntity* E);
+	void					PerformMigration	(xrServerEntity* E, xrClientData* from, xrClientData* to);
+	void					Process_spawn		(NET_Packet& P, DPNID sender);
+	void					Process_update		(NET_Packet& P, DPNID sender);
+	void					Process_ownership	(NET_Packet& P, DPNID sender);
+	void					Process_rejecting	(NET_Packet& P, DPNID sender);
+
+	xrClientData*			SelectBestClientToMigrateTo		(xrServerEntity* E);
+
 public:
 	// constr / destr
 	xrServer				();
@@ -147,13 +160,14 @@ public:
 	}
 	IC xrServerEntity*		ID_to_entity		(u16 ID)
 	{
+		if (0xffff==ID)				return 0;
 		xrS_entities::iterator	I	= entities.find	(ID);
 		if (I!=entities.end())		return I->second;
 		else						return 0;
 	}
 
 	// main
-	void					Update			();
+	void					Update				();
 };
 
 #endif // !defined(AFX_XRSERVER_H__65728A25_16FC_4A7B_8CCE_D798CA5EC64E__INCLUDED_)

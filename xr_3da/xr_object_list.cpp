@@ -99,7 +99,7 @@ void CObjectList::net_Export	(NET_Packet* Packet)
 		CObject* P = *O;
 		if (P->net_Relevant())	{
 			Packet->w_u16			(u16(P->ID()));
-			P->net_Export			(Packet);
+			P->net_Export			(*Packet);
 		}
 	}
 }
@@ -110,7 +110,7 @@ void CObjectList::net_Import	(NET_Packet* Packet)
 	{
 		u16 ID;		Packet->r_u16	(ID);
 		CObject* P  = net_Find		(DWORD(ID));
-		if (P) P->net_Import		(Packet);
+		if (P) P->net_Import		(*Packet);
 	}
 }
 

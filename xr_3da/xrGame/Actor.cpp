@@ -52,8 +52,6 @@ void CActor::net_Export(NET_Packet* P)					// export to server
 	VERIFY				(Weapons);
 
 	u8					flags=0;
-	if (Weapons->isWorking())	flags|=MF_FIREPARAMS;
-
 	P->w_u32			(Level().timeServer());
 	P->w_u8				(flags);
 	P->w_vec3			(vPosition);
@@ -64,17 +62,17 @@ void CActor::net_Export(NET_Packet* P)					// export to server
 	P->w_sdir			(NET_SavedAccel);
 	P->w_sdir			(Movement.GetVelocity());
 
-	int w_id = Weapons->SelectedWeaponID	();
-	if (w_id<0)			P->w_u8(0xff);
-	else				P->w_u8(u8(w_id));
-
-	if (flags&MF_FIREPARAMS)
-	{
-		Fvector			pos,dir;
-		g_fireParams	(pos,dir);
-		P->w_vec3		(pos);
-		P->w_dir		(dir);
-	}
+//	int w_id = Weapons->SelectedWeaponID	();
+//	if (w_id<0)			P->w_u8(0xff);
+//	else				P->w_u8(u8(w_id));
+//
+//	if (flags&MF_FIREPARAMS)
+//	{
+//		Fvector			pos,dir;
+//		g_fireParams	(pos,dir);
+//		P->w_vec3		(pos);
+//		P->w_dir		(dir);
+//	}
 }
 
 void CActor::net_Import(NET_Packet* P)					// import from server
@@ -83,7 +81,7 @@ void CActor::net_Import(NET_Packet* P)					// import from server
 	R_ASSERT		(!net_Local);
 	net_update		N;
 
-	u8	 flags, wpn, tmp;
+	u8	 flags, tmp;
 	P->r_u32		(N.dwTimeStamp	);
 	P->r_u8			(flags			);
 	P->r_vec3		(N.p_pos		);
@@ -94,15 +92,15 @@ void CActor::net_Import(NET_Packet* P)					// import from server
 	P->r_sdir		(N.p_accel		);
 	P->r_sdir		(N.p_velocity	);
 
-	P->r_u8			(wpn);
-	if (0xff==wpn)	N.weapon		= -1;
-	else			N.weapon		= int(wpn);
-
-	if (flags&MF_FIREPARAMS)
-	{
-		P->r_vec3	(N.f_pos);
-		P->r_dir	(N.f_dir);
-	}
+//	P->r_u8			(wpn);
+//	if (0xff==wpn)	N.weapon		= -1;
+//	else			N.weapon		= int(wpn);
+//
+//	if (flags&MF_FIREPARAMS)
+//	{
+//		P->r_vec3	(N.f_pos);
+//		P->r_dir	(N.f_dir);
+//	}
 
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
 		NET.push_back			(N);
@@ -751,7 +749,8 @@ void CActor::g_cl_fireStart	( )
 {
 	VERIFY	(Local());
 	Weapons->FireStart	( );
-	
+
+	/*
 	NET_Packet	P;
 	P.w_begin	(M_FIRE_BEGIN);
 	P.w_u8		(u8(net_ID));
@@ -762,6 +761,7 @@ void CActor::g_cl_fireStart	( )
 	P.w_dir		(dir);
 
 	Level().Send(P,net_flags(TRUE));
+	*/
 }
 
 void CActor::g_sv_fireStart	(NET_Packet* P)
@@ -769,23 +769,26 @@ void CActor::g_sv_fireStart	(NET_Packet* P)
 	VERIFY	(Remote());
 
 	// Correct last packet if available
+	/*
 	if (!NET.empty())	
 	{
 		P->r_vec3		(NET.back().f_pos);
 		P->r_dir		(NET.back().f_dir);
 	}
-
+	*/
 	Weapons->FireStart	( );
 }
 
 void CActor::g_fireEnd	( )
 {
+	/*
 	if (Local())	{
 		NET_Packet	P;
 		P.w_begin	(M_FIRE_END);
 		P.w_u8		(u8(net_ID));
 		Level().Send(P,net_flags(TRUE));
 	}
+	*/
 	Weapons->FireEnd	( );
 }
 

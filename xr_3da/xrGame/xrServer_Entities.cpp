@@ -4,6 +4,72 @@
 
 // EDITOR, NETWORK, SAVE, LOAD, DEMO
 
+class xrSE_Weapon : public xrServerEntity
+{
+public:
+	u32						timestamp;
+	u8						flags;
+
+	u16						a_current;
+	u16						a_elapsed;
+
+	Fvector					f_pos;
+	Fvector					f_dir;
+public:
+
+	virtual void			UPDATE_Read		(NET_Packet& P)
+	{
+		P.r_u32				(timestamp);
+		P.r_u8				(flags);
+
+		P.r_u16				(a_current);
+		P.r_u16				(a_elapsed);
+
+		if ((0xffff==ID_Parent) && (flags&M_UPDATE_WEAPON_wfVisible))
+		{
+			P.r_vec3		(o_Position	);
+			P.r_angle8		(o_Angle.x	);
+			P.r_angle8		(o_Angle.y	);
+			P.r_angle8		(o_Angle.z	);
+		}
+		if (flags & (M_UPDATE_WEAPON_wfVisible + M_UPDATE_WEAPON_wfWorking))
+		{
+			P.r_vec3		(f_pos);
+			P.r_dir			(f_dir);
+		}
+	}
+
+	virtual void			UPDATE_Write	(NET_Packet& P)
+	{
+		P.w_u32				(timestamp);
+		P.w_u8				(flags);
+
+		P.w_u16				(a_current);
+		P.w_u16				(a_elapsed);
+
+		if ((0xffff==ID_Parent) && (flags&M_UPDATE_WEAPON_wfVisible))
+		{
+			P.w_vec3		(o_Position	);
+			P.w_angle8		(o_Angle.x	);
+			P.w_angle8		(o_Angle.y	);
+			P.w_angle8		(o_Angle.z	);
+		}
+		if (flags & (M_UPDATE_WEAPON_wfVisible + M_UPDATE_WEAPON_wfWorking))
+		{
+			P.w_vec3		(f_pos);
+			P.w_dir			(f_dir);
+		}
+	}
+
+	virtual void			STATE_Read		(NET_Packet& P, u16 size)
+	{
+	}
+
+	virtual void			STATE_Write		(NET_Packet& P)
+	{
+	}
+};
+
 class xrSE_Teamed : public xrServerEntity
 {
 public:
@@ -119,9 +185,6 @@ public:
 	SRotation				torso;
 	Fvector					accel;
 	Fvector					velocity;
-	Fvector					f_pos;
-	Fvector					f_dir;
-	u8						weapon;
 
 	xrSE_Actor() {};
 
@@ -136,12 +199,6 @@ public:
 		P.r_angle8			(torso.pitch);
 		P.r_sdir			(accel		);
 		P.r_sdir			(velocity	);
-		P.r_u8				(weapon		);
-		if (flags&MF_FIREPARAMS)
-		{
-			P.r_vec3		(f_pos);
-			P.r_dir			(f_dir);
-		};
 	};
 	virtual void			UPDATE_Write		(NET_Packet& P)
 	{
@@ -154,12 +211,6 @@ public:
 		P.w_angle8			(torso.pitch);
 		P.w_sdir			(accel		);
 		P.w_sdir			(velocity	);
-		P.w_u8				(weapon		);
-		if (flags&MF_FIREPARAMS)
-		{
-			P.w_vec3		(f_pos);
-			P.w_dir			(f_dir);
-		}
 	};
 };
 

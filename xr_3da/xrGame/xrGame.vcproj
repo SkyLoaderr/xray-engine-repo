@@ -990,6 +990,24 @@
 			<File
 				RelativePath=".\xrServer_Entities.cpp">
 			</File>
+			<File
+				RelativePath="xrServer_balance.cpp">
+			</File>
+			<File
+				RelativePath="xrServer_perform_migration.cpp">
+			</File>
+			<File
+				RelativePath="xrServer_process_ownership.cpp">
+			</File>
+			<File
+				RelativePath="xrServer_process_rejection.cpp">
+			</File>
+			<File
+				RelativePath="xrServer_process_spawn.cpp">
+			</File>
+			<File
+				RelativePath="xrServer_process_update.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Effects"

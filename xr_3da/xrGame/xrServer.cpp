@@ -75,7 +75,7 @@ void xrServer::Update	()
 	csPlayers.Leave		();
 }
 
-BOOL xrServer::ProcessRP	(xrServerEntity* EEE)
+BOOL xrServer::PerformRP	(xrServerEntity* EEE)
 {
 	// Get list of respawn points
 	if (EEE->g_team() >= int(Level().Teams.size()))	return FALSE;
@@ -135,97 +135,18 @@ BOOL xrServer::ProcessRP	(xrServerEntity* EEE)
 	return TRUE;
 }
 
-DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)	// Non-Zero means broadcasting with "flags" as returned
+DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadcasting with "flags" as returned
 {
-	u16 type;
+	u16			type;
 	P.r_begin	(type);
 
 	switch (type)
 	{
-	case M_UPDATE:
-		{
-			xrClientData* CL		= ID_to_client(sender);
-			CL->net_Ready			= TRUE;
-
-			// while has information
-			while (!P.r_eof())
-			{
-				// find entity
-				u16		ID;
-				P.r_u16	(ID);
-				xrServerEntity* E	= ID_to_entity(ID);
-				if (E)				{
-					E->net_Ready	= TRUE;
-					E->UPDATE_Read	(P);
-				}
-			}
-		}
-		return 0;		// No broadcast
-
-	case M_FIRE_BEGIN:
-	case M_FIRE_END:
-	case M_FIRE_HIT:	// Simply broadcast this message to everyone except sender
-		return net_flags(TRUE);
-	case M_SPAWN:
-		{
-			// read spawn information
-			string64	s_name;
-			P.r_string	(s_name);
-			
-			// generate/find new ID for entity
-			u16 ID		= 0xffff;
-			if (ids_used.size())	
-			{
-				for (vector<bool>::iterator I=ids_used.begin(); I!=ids_used.end(); I++)
-				{
-					if (!(*I))	{ ID = I-ids_used.begin(); break; }
-				}
-				if (0xffff==ID)	{
-					ID			= ids_used.size	();
-					ids_used.push_back			(false);
-				}
-			} else {
-				ID		= 0;
-				ids_used.push_back	(false);
-			}
-			
-			// create server entity
-			xrClientData* CL	= ID_to_client	(sender);
-			xrServerEntity*	E	= entity_Create	(s_name);
-			R_ASSERT			(E);
-			E->Spawn_Read		(P);
-			
-			// ID, owner, etc
-			E->ID				= ID;
-			E->owner			= CL;
-
-			// PROCESS NAME; Name this entity
-			LPCSTR				NameReplace = 0;
-			if (0 == CL->owner)	{
-				CL->owner		= E;
-				strcpy			(E->s_name_replace,CL->Name);
-			}
-			
-			// PROCESS RP;	 3D position/orientation
-			ProcessRP			(E);
-			
-			// REGISTER new ENTITY
-			entities.insert		(make_pair(ID,E));
-			ids_used[ID]		= true;	
-			
-			// log
-			Level().HUD()->outMessage	(0xffffffff,"SERVER","Spawning '%s'(%d,%d,%d) as #%d, on '%s'", E->s_name_replace, E->g_team(), E->g_squad(), E->g_group(), E->ID, CL->Name);
-
-			// create packet and broadcast packet to everybody
-			NET_Packet			Packet;
-
-			E->Spawn_Write		(Packet,TRUE	);
-			SendTo				(sender,Packet,net_flags(TRUE));
-
-			E->Spawn_Write		(Packet,FALSE	);
-			SendBroadcast		(sender,Packet,net_flags(TRUE));
-		}
-		return 0;
+	case M_UPDATE:				Process_update		(P,sender);	return 0;		// No broadcast
+	case M_SPAWN:				Process_spawn		(P,sender);	return 0;
+	case M_REQUEST_OWNERSHIP:	Process_ownership	(P,sender); return 0;
+	case M_REQUEST_REJECTION:	Process_rejecting	(P,sender); return 0;
+	case M_HIT:					return net_flags	(TRUE);
 	}
 
 	return 0;
@@ -233,7 +154,7 @@ DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)	// Non-Zero means broadca
 
 void xrServer::OnCL_Connected		(IClient* CL)
 {
-	Level().HUD()->outMessage(0xffffffff,"SERVER","Player '%s' connected",CL->Name);
+	Level().HUD()->outMessage		(0xffffffff,"SERVER","Player '%s' connected",CL->Name);
 	
 	// Replicate current entities on to this client
 	NET_Packet		P;

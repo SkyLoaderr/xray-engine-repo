@@ -4,28 +4,24 @@
 // SV	== server 2 client message
 
 enum {
-	M_UPDATE			=0,
-	M_FIRE_BEGIN,
-	M_FIRE_END,
-	M_FIRE_HIT,
-	
-	M_DIE,
-	M_CHAT,
+	M_UPDATE				=0,	// DUAL: Update state
+	M_SPAWN,					// DUAL: Spawning, full state
+	M_DESTROY,					// TO:   Destroying
+	M_REQUEST_OWNERSHIP,		// FROM: Client request for ownership of an item
+	M_REQUEST_REJECTION,		// FROM: Client request ownership rejection
+	M_MIGRATE_DEACTIVATE,		// TO:   Changing server, just deactivate
+	M_MIGRATE_ACTIVATE,			// TO:   Changing server, full state
+	M_HIT,						// 
+	M_DIE,						// 
+
+	M_CHAT,						// DUAL:
 
 	M_SV_CONFIG,
-	M_SPAWN,
-	M_DESTROY,
 	M_SV_CONFIG_FINISHED,
 
-	MSG_FORCEDWORD		= DWORD(-1)
+	MSG_FORCEDWORD				= DWORD(-1)
 };
 
-enum 
-{
-	MF_FIREPARAMS				= (1<<0),
-
-	MF_FORCEDWORD				= DWORD(-1)
-};
 enum
 {
 	M_SPAWN_OBJECT_LOCAL		= (1<<0),
@@ -33,18 +29,36 @@ enum
 
 	M_SPAWN_OBJECT_FORCEDWORD	= DWORD(-1)
 };
+enum
+{
+	M_UPDATE_WEAPON_wfWorking	= (1<<0),
+	M_UPDATE_WEAPON_wfVisible	= (1<<1),
+
+	M_UPDATE_WEAPON_FORCEDWORD	= DWORD(-1)
+};
 
 /*
+M_REQUEST_OWNERSHIP
+{
+	u16			id_parent;
+	u16			id_entity;
+}
+M_REQUEST_REJECTION
+{
+	u16			id_parent;
+	u16			id_entity;
+}
 M_SPAWN
 {	
-	stringZ		Name_section;	// section in SYSTEM.LTX
-	stringZ		Name_replace;	// Name of EDITOR's object, user can change this
+	stringZ		Name_section;		// section in SYSTEM.LTX
+	stringZ		Name_replace;		// Name of EDITOR's object, user can change this
 
-	u8			o_Point;		// [0..0xFD] = NumberOfRespawnPoint 0xFF = AutoSelect, 0xFE = UseSupplied
+	u8			o_Point;			// [0..0xFD] = NumberOfRespawnPoint 0xFF = AutoSelect, 0xFE = UseSupplied
 	vec3		o_Position;
 	vec3		o_Angle;
 
-	u16			server_id;
+	u16			server_id;			// 0xffff = Unknown/None/Invalid
+	u16			server_id_parent;	// 0xffff = Unknown/None/Invalid
 	u16			flags;
 	
 	u16			data_size;
@@ -52,7 +66,8 @@ M_SPAWN
 
 	event
 	{
-		cform {
+		cform 
+		{
 			u8				count;
 
 			element {
@@ -66,7 +81,8 @@ M_SPAWN
 				}
 			}
 		}
-		actions {
+		actions 
+		{
 			u8				count;
 
 			action {
@@ -83,12 +99,6 @@ M_SPAWN
 		u8			g_team;			// user defined
 		u8			g_squad;		// user defined
 		u8			g_group;		// user defined
-
-		weapons
-		{	weapon0	{
-				name
-			}
-		}
 	}
 	dummy
 	{
@@ -130,7 +140,6 @@ M_SPAWN
 	}
 };
 
-
 M_UPDATE
 {
 	DWORD	server_time;	// only for server2client update
@@ -139,20 +148,14 @@ M_UPDATE
 		DWORD		timestamp;
 		u8			flags;
 		vec3		pos;
-		u8			mstate;	// checked and verified keyboard/motion state
-		angle8		m_yaw;	// model's yaw
-		angle8		t_yaw;	// torso's yaw
-		angle8		t_pitch;// torso's pitch
+		u8			mstate;		// checked and verified keyboard/motion state
+		angle8		m_yaw;		// model's yaw
+		angle8		t_yaw;		// torso's yaw
+		angle8		t_pitch;	// torso's pitch
 		direction	accel;
 		float		accel_magnitude;
-
-		u8			weapon;
-
-		if (flags&MF_FIREPARAMS) {
-			vec3		f_pos;
-			direction	f_dir;
-		}
 	}
+
 	enemy
 	{
 		DWORD		timestamp;
@@ -162,36 +165,42 @@ M_UPDATE
 		
 		?...?		state_data
 
-		if (flags&MF_FIREPARAMS) {
+	}
+
+	weapon
+	{
+		DWORD		timestamp;
+		u8			flags;				// wf_working, wf_visible=selected or independent,  
+
+		u16			a_current;
+		u16			a_elapsed;
+
+		if (0xffff==parent && wf_visible) 
+		{
+			vec3		pos;			// position
+			angle8		aX;				// X: orientation
+			angle8		aY;				// Y: 
+			angle8		aZ;				// Z: 
+		}
+
+		if (flags&wf_working || wf_visible) 
+		{
 			vec3		f_pos;
 			direction	f_dir;
 		}
 	}
-	weapon
-	{
-		DWORD		timestamp;
-		u8			flags;
-	}
 }
 
-M_FIRE_HIT
+M_HIT
 {  
-		P.w_begin	(M_FIRE_HIT);
-		P.w_u16		(u8(net_ID));
-		P.w_u16		(u8(who->net_ID));
-		P.w_u8		(perc	);
-		P.w_dir		(dir	);
-}
-
-M_FIRE_BEGIN
-{
-		P.w_u8		(u8(net_ID));
-		pos
-		direction
+		P.w_begin	(M_HIT		);
+		P.w_u16		(net_ID		);
+		P.w_u16		(who->net_ID);
+		P.w_u8		(perc		);
+		P.w_dir		(dir		);
 }
 
 M_DIE
 {
 }
-
 */

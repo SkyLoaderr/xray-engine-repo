@@ -176,7 +176,7 @@ void CLevel::ClientReceive()
 		case M_UPDATE:
 			Objects.net_Import	(P);
 			break;
-		case M_FIRE_HIT:
+		case M_HIT:
 			{
 				P->r_u16		(ID);
 				CObject*	O	= Objects.net_Find	(ID);
@@ -188,27 +188,7 @@ void CLevel::ClientReceive()
 					Fvector		dir;	P->r_dir	(dir);
 
 					CEntity*	E	= dynamic_cast<CEntity*>	(O);
-					E->Hit		(u32(perc),dir,WHO);
-				}
-			}
-			break;
-		case M_FIRE_BEGIN:
-			{
-				P->r_u16		(ID);
-				CObject*	O	= Objects.net_Find	(ID);
-				if (O) {
-					CEntity*	E	= dynamic_cast<CEntity*>(O);
-					E->g_sv_fireStart	(P);
-				}
-			}
-			break;
-		case M_FIRE_END:
-			{
-				P->r_u16		(ID);
-				CObject*	O	= Objects.net_Find	(ID);
-				if (O) {
-					CEntity*	E	= dynamic_cast<CEntity*>(O);
-					E->g_fireEnd	();
+					if (E)		E->Hit(u32(perc),dir,WHO);
 				}
 			}
 			break;

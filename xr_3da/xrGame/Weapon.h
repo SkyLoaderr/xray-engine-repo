@@ -125,7 +125,9 @@ public:
 	virtual void			Load				(LPCSTR section);
 	virtual BOOL			net_Spawn			(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
 	virtual void			net_Destroy			();
-	virtual void			Update				(DWORD dt);	
+	virtual void			net_Export			(NET_Packet& P);	// export to server
+	virtual void			net_Import			(NET_Packet& P);	// import from server
+	virtual void			Update				(DWORD dt);
 	virtual void			OnVisible			();
 	virtual void			OnDrawFlame			();
 

@@ -131,8 +131,8 @@ public:
 	virtual void						UpdateCL		();									// Called each frame, so no need for dt
 	virtual BOOL						net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
 	virtual void						net_Destroy		();
-	virtual void						net_Export		(NET_Packet* P) {};					// export to server
-	virtual void						net_Import		(NET_Packet* P) {};					// import from server
+	virtual void						net_Export		(NET_Packet& P) {};					// export to server
+	virtual void						net_Import		(NET_Packet& P) {};					// import from server
 	virtual BOOL						net_Relevant	()				{ return FALSE; };	// relevant for export to server
 
 	// Position stack
