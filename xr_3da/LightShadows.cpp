@@ -34,7 +34,8 @@ void CLightShadows::OnDeviceCreate	()
 	LPCSTR	RTname	= "$user$shadow";
 	
 	// 
-	RT			= Device.Shader._CreateRT	(RTname,S_rt_size,S_rt_size);
+	RT			= Device.Shader._CreateRT	("$user$temp",S_rt_size,S_rt_size);
+	RT_Blur		= Device.Shader._CreateRT	(RTname,S_rt_size,S_rt_size);
 	sh_Texture	= Device.Shader.Create		("effects\\shadow_texture");
 	sh_World	= Device.Shader.Create		("effects\\shadow_world",RTname);
 	vs_World	= Device.Streams.Create		(FVF::F_LIT, 4*batch_size*3);
@@ -97,8 +98,8 @@ void CLightShadows::calculate	()
 {
 	if (id.empty())	return;
 
-	Device.Shader.set_RT		(RT->pRT,0);
 	Device.Statistic.TEST.Begin	();
+	Device.Shader.set_RT		(RT->pRT,0);
 	HW.pDevice->Clear			(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(255,255,255),1,0);
 	
 	// set shader
@@ -180,6 +181,10 @@ void CLightShadows::calculate	()
 	casters.clear	();
 	id.clear		();
 	
+	// Blur
+	Device.Shader.set_RT		(RT->pRT,0);
+	
+	// Finita la comedia
 	Device.Statistic.TEST.End	();
 
 	Device.set_xform_project	(Device.mProject);
