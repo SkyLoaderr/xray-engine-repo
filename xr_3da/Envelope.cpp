@@ -15,8 +15,10 @@ CEnvelope::CEnvelope(CEnvelope* source)
     	keys[i]	= new st_Key(*source->keys[i]);
 }
 
-void CEnvelope::RotateKeys(float h, float p, float b)
+void CEnvelope::RotateKeys(float angle)
 {
+	for (DWORD i=0; i<keys.size(); i++)
+    	keys[i]->value += angle;
 }
 
 

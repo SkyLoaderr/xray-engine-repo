@@ -187,13 +187,11 @@ void CSMotion::Evaluate(int bone_idx, float t, Fvector& T, Fvector& R){
 void CSMotion::WorldRotate(int boneId, float h, float p, float b)
 {
 	R_ASSERT((boneId>=0)&&(boneId<(int)bone_mots.size()));
-//    st_BoneMotion& BM = bone_mots[boneId];
+    st_BoneMotion& BM = bone_mots[boneId];
 
-//	CEnvelope* eh = BM.envs[ctRotationH];
-//    for (eh->)
-//	,
-//	ctRotationP,
-//	ctRotationB,
+	BM.envs[ctRotationH]->RotateKeys(h);
+	BM.envs[ctRotationP]->RotateKeys(p);
+	BM.envs[ctRotationB]->RotateKeys(b);
 }
 
 void CSMotion::SaveMotion(const char* buf){

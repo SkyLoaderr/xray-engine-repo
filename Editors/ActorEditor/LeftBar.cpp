@@ -13,6 +13,7 @@
 #include "PropertiesList.h"
 #include "BonePart.h"
 #include "FolderLib.h"
+#include "NumericVector.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"
@@ -209,46 +210,38 @@ void __fastcall TfraLeftBar::ebResetAnimationClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ShowPPMenu(TMxPopupMenu* M, TObject* B){
-    POINT pt;
-    GetCursorPos(&pt);
-	M->Popup(pt.x,pt.y-10);
-    TExtBtn* btn = dynamic_cast<TExtBtn*>(B); if(btn) btn->MouseManualUp();
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::ebActorMotionsFileMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	ShowPPMenu(pmMotionsFile,Sender);
+	FOLDER::ShowPPMenu(pmMotionsFile,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebSceneFileMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	ShowPPMenu(pmSceneFile,Sender);
+	FOLDER::ShowPPMenu(pmSceneFile,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebSceneCommands1MouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	ShowPPMenu(pmImages,Sender);
+	FOLDER::ShowPPMenu(pmImages,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebPreviewObjectClickMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	ShowPPMenu(pmPreviewObject,Sender);
+	FOLDER::ShowPPMenu(pmPreviewObject,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::tvMotionsMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	if (Button==mbRight)	ShowPPMenu(pmShaderList,Sender);
+	if (Button==mbRight)	FOLDER::ShowPPMenu(pmShaderList,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
@@ -321,6 +314,7 @@ void __fastcall TfraLeftBar::ebMotionsRemoveClick(TObject *Sender)
     }else{
 		ELog.DlgMsg(mtInformation, "At first select item.");
     }
+	lbMotionCount->Caption = tvMotions->Items->Count;	
 }
 //---------------------------------------------------------------------------
 
@@ -331,6 +325,7 @@ void __fastcall TfraLeftBar::ebMotionsClearClick(TObject *Sender)
     	object->ClearSMotions();
         UpdateMotionList();
 		Tools.MotionModified();
+		lbMotionCount->Caption = tvMotions->Items->Count;	
     }
 }
 //---------------------------------------------------------------------------
@@ -390,7 +385,7 @@ void __fastcall TfraLeftBar::InplaceParticleEditValidateResult(
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::eMotionsAppendClick(TObject *Sender)
+void __fastcall TfraLeftBar::ebMotionsAppendClick(TObject *Sender)
 {
     AnsiString folder,nm,fnames,full_name;
     if (Engine.FS.GetOpenName(Engine.FS.m_SMotion,fnames,true)){
@@ -412,6 +407,7 @@ void __fastcall TfraLeftBar::eMotionsAppendClick(TObject *Sender)
         tvMotions->IsUpdating = false;
         tvMotions->EnsureVisibleBottom(tvMotions->Selected);
     }
+	lbMotionCount->Caption = tvMotions->Items->Count;	
 }
 //---------------------------------------------------------------------------
 
@@ -450,6 +446,7 @@ void TfraLeftBar::UpdateMotionList()
         	FOLDER::AppendObject(tvMotions,(*it)->Name());
     }
     UpdateProperties();
+	lbMotionCount->Caption = tvMotions->Items->Count;	
 }
 //---------------------------------------------------------------------------
 
@@ -604,7 +601,16 @@ void __fastcall TfraLeftBar::SkeletonPartEnabled(bool bFlag)
 }
 //---------------------------------------------------------------------------
 
-
-
-
+void __fastcall TfraLeftBar::ebRotateMotionClick(TObject *Sender)
+{
+	Fvector R;
+    CSMotion* M = Tools.GetCurrentMotion();
+	if (M&&NumericVectorRun("Rotate motion",&R,1,0,0,0,0,0)){
+    	R.x = deg2rad(R.x);
+    	R.y = deg2rad(R.y);
+    	R.z = deg2rad(R.z);
+    	Tools.WorldMotionRotate(R);
+    }
+}
+//---------------------------------------------------------------------------
 

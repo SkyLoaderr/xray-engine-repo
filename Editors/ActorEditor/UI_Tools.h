@@ -27,6 +27,9 @@ enum EAxis{
     eAxisZX
 };
 
+// refs
+class CSMotion;
+
 class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 {
     class PreviewModel{
@@ -142,6 +145,7 @@ public:
 
     CEditableObject*	CurrentObject		(){return m_pEditObject;}
     void				SetCurrentMotion	(LPCSTR name);
+    CSMotion*			GetCurrentMotion	();
     void				FillObjectProperties();
 	void				FillMotionProperties();
     void				PlayMotion			();
@@ -162,6 +166,7 @@ public:
     bool				AppendMotion		(LPCSTR name, LPCSTR fn);
     bool				RemoveMotion		(LPCSTR name);
     void				Reload				();
+    void 				WorldMotionRotate	(const Fvector& R);
 
     virtual void		OnDeviceCreate		();
     virtual void		OnDeviceDestroy		();

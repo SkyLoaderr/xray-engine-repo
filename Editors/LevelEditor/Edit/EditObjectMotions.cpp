@@ -260,6 +260,12 @@ int CEditableObject::BoneIDByName(LPCSTR name){
     return (bone!=m_Bones.end())?(bone-m_Bones.begin()):-1;
 }
 
+int CEditableObject::GetRootBoneID(){
+    for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
+    	if (-1==(*b_it)->ParentIndex()) return b_it-m_Bones.begin();
+    THROW;
+}
+
 int CEditableObject::PartIDByName(LPCSTR name){
 	for (BPIt it=m_BoneParts.begin(); it!=m_BoneParts.end(); it++)
     	if (it->alias==name) return it-m_BoneParts.begin();
@@ -312,7 +318,7 @@ bool CEditableObject::CheckBoneCompliance(CSMotion* M){
     for(BoneMotionIt bm_it=lst.begin(); bm_it!=lst.end(); bm_it++)
     	if (!FindBoneByName(bm_it->name)) return false;
     for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
-    	if (!M->FindBoneMotion(bm_it->name)) return false;
+    	if (!M->FindBoneMotion((*b_it)->Name())) return false;
     return true;
 }
 

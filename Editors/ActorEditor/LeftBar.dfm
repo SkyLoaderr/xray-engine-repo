@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 565
+  Height = 700
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 565
+    Height = 700
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object spProps: TSplitter
       Left = 1
-      Top = 80
+      Top = 215
       Width = 210
       Height = 2
       Cursor = crVSplit
@@ -43,7 +43,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paSkeletonPart: TPanel
       Left = 1
-      Top = 82
+      Top = 217
       Width = 210
       Height = 482
       Align = alBottom
@@ -198,9 +198,9 @@ object fraLeftBar: TfraLeftBar
               OnClick = ebCurrentStopClick
             end
             object lbCurFrames: TMxLabel
-              Left = 148
+              Left = 169
               Top = 1
-              Width = 59
+              Width = 40
               Height = 13
               AutoSize = False
               Caption = '...'
@@ -213,9 +213,9 @@ object fraLeftBar: TfraLeftBar
               ShadowColor = 10528425
             end
             object lbCurFPS: TMxLabel
-              Left = 148
+              Left = 169
               Top = 13
-              Width = 59
+              Width = 40
               Height = 13
               AutoSize = False
               Caption = '...'
@@ -228,7 +228,7 @@ object fraLeftBar: TfraLeftBar
               ShadowColor = 10528425
             end
             object RxLabel2: TMxLabel
-              Left = 108
+              Left = 129
               Top = 13
               Width = 25
               Height = 13
@@ -242,7 +242,7 @@ object fraLeftBar: TfraLeftBar
               ShadowColor = 10528425
             end
             object RxLabel1: TMxLabel
-              Left = 108
+              Left = 129
               Top = 1
               Width = 39
               Height = 13
@@ -308,6 +308,26 @@ object fraLeftBar: TfraLeftBar
               Spacing = 0
               FlatAlwaysEdge = True
               OnClick = ebCurrentStopClick
+            end
+            object ebRotateMotion: TExtBtn
+              Left = 102
+              Top = 5
+              Width = 25
+              Height = 19
+              Align = alNone
+              AllowAllUp = True
+              BevelShow = False
+              CloseButton = False
+              Caption = 'R'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+              Spacing = 0
+              FlatAlwaysEdge = True
+              OnClick = ebRotateMotionClick
             end
           end
           object paMotionProps: TPanel
@@ -562,7 +582,7 @@ object fraLeftBar: TfraLeftBar
               Margin = 13
               ParentFont = False
               Spacing = 3
-              OnClick = eMotionsAppendClick
+              OnClick = ebMotionsAppendClick
             end
           end
         end
@@ -612,7 +632,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 1
       Width = 210
-      Height = 79
+      Height = 214
       Align = alClient
       BevelOuter = bvNone
       ParentColor = True
@@ -840,7 +860,7 @@ object fraLeftBar: TfraLeftBar
         Left = 0
         Top = 149
         Width = 210
-        Height = 52
+        Height = 65
         Align = alClient
         ParentShowHint = False
         ShowHint = False
@@ -893,7 +913,7 @@ object fraLeftBar: TfraLeftBar
           Left = 1
           Top = 15
           Width = 208
-          Height = 36
+          Height = 49
           Align = alClient
           BevelOuter = bvNone
           Color = 10528425

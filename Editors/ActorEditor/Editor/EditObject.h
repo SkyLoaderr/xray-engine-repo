@@ -205,6 +205,7 @@ public:
 	IC BoneVec&		Bones					()	{return m_Bones;}
     IC int			BoneCount				()	{return m_Bones.size();}
     LPCSTR			BoneNameByID			(int id);
+    int				GetRootBoneID			();
     int				BoneIDByName			(LPCSTR name);
     int				PartIDByName			(LPCSTR name);
     IC CBone*		GetBone					(DWORD idx){VERIFY(idx<m_Bones.size()); return m_Bones[idx];}

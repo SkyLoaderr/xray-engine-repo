@@ -483,6 +483,20 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
 //    m_PSProps->fraEmitter->GetInfoFirst(m_EditPS.m_DefaultEmitter);
 }
 
+void CActorTools::WorldMotionRotate(const Fvector& R)
+{
+	R_ASSERT(m_pEditObject&&m_pEditObject->GetActiveSMotion());
+	CSMotion* M = m_pEditObject->GetActiveSMotion();
+    int rootId = m_pEditObject->GetRootBoneID();
+    M->WorldRotate(rootId,R.y,R.x,R.z);
+    MotionModified();
+}
+
+CSMotion* CActorTools::GetCurrentMotion()
+{
+	return m_pEditObject?m_pEditObject->GetActiveSMotion():0;
+}
+
 void CActorTools::SetCurrentMotion(LPCSTR name)
 {
 	if (m_pEditObject){

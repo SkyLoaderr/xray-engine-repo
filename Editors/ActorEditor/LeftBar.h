@@ -115,6 +115,7 @@ __published:	// IDE-managed Components
 	TMenuItem *N9;
 	TMxLabel *lbMotionCount;
 	TMxLabel *MxLabel2;
+	TExtBtn *ebRotateMotion;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
     void __fastcall PanelMaximizeClick(TObject *Sender);
@@ -136,7 +137,7 @@ __published:	// IDE-managed Components
 	void __fastcall Rename1Click(TObject *Sender);
 	void __fastcall InplaceParticleEditValidateResult(TObject *Sender,
           bool &InputValid);
-	void __fastcall eMotionsAppendClick(TObject *Sender);
+	void __fastcall ebMotionsAppendClick(TObject *Sender);
 	void __fastcall tvMotionsStartDrag(TObject *Sender,
           TDragObject *&DragObject);
 	void __fastcall tvMotionsDragOver(TObject *Sender, TObject *Source, int X,
@@ -172,6 +173,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebSceneCommands1MouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall ImageEditor1Click(TObject *Sender);
+	void __fastcall ebRotateMotionClick(TObject *Sender);
 private:	// User declarations
 	void __fastcall ShowPPMenu		(TMxPopupMenu* M, TObject* btn);
 	void __fastcall RenameItem		(LPCSTR p0, LPCSTR p1);
