@@ -55,8 +55,24 @@ void	CBlender_complex2::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 			RS.StageBegin		();
 			{
 				RS.StageSET_Address	(D3DTADDRESS_WRAP);
-				RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
-				RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
+				switch (oBlend.IDselected)	{
+				case 0:	// light *  (tex0 ^  tex1)
+					RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_BLENDTEXTUREALPHA,	D3DTA_CURRENT);
+					RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,		D3DTA_CURRENT);
+					break;
+				case 1:	// light *  (tex0 +  tex1)
+					RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_ADD,				D3DTA_CURRENT);
+					RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,		D3DTA_CURRENT);
+					break;
+				case 2:	// light *  (tex0 *  tex1)
+					RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,			D3DTA_CURRENT);
+					RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,		D3DTA_CURRENT);
+					break;
+				case 3:	// light *  (tex0 ** tex1) 
+					RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,		D3DTA_CURRENT);
+					RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,		D3DTA_CURRENT);
+					break;
+				}
 				RS.Stage_Texture	(oT2_Name,		L_textures	);
 				RS.Stage_Matrix		(oT2_xform,		L_matrices,	0);
 				RS.Stage_Constant	(oT2_Constant,	L_constants	);
@@ -66,11 +82,13 @@ void	CBlender_complex2::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 		RS.PassEnd			();
 	} else {
 		switch (oBlend.IDselected)	{
-		case 0:	// blend	(usually cubemap^base)
+		case 0:	// light *  (tex0 ^  tex1)
 			break;
-		case 1:	// add		(usually some type of "light" + base)
+		case 1:	// light *  (tex0 +  tex1)
 			break;
-		case 2:	// mul2X	(usually detail)
+		case 2:	// light *  (tex0 *  tex1)
+			break;
+		case 3:	// light *  (tex0 ** tex1) 
 			switch (HW.Caps.caps_Texturing.dwStages)
 			{
 			case 2:		// Geforce1/2/MX
