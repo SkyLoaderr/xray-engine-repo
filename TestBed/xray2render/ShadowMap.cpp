@@ -37,6 +37,12 @@ D3DVERTEXELEMENT9 decl_vert2D[] =
 };
 
 // 3D
+struct meshVERTEX
+{
+	D3DXVECTOR3 p;
+	D3DXVECTOR3 n;
+	FLOAT       tu, tv;
+};
 struct VERTEX
 {
 	D3DXVECTOR3 p;
@@ -294,7 +300,138 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	Mesh.SetFVF			(m_pd3dDevice, D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1);
 
 	// ************************************* Perform mungle
-	
+	{
+		unsigned int i;
+
+		// Retrieve vertices and texture coordinates from the mesh vertex buffer
+		LPD3DXMESH gMesh	= Mesh.GetSysMemMesh();
+		u32 numVertices		= gMesh->GetNumVertices();
+		meshVERTEX*			vertexBuffer;
+		std::vector<float>	position;
+		std::vector<float>	texCoord;
+		std::vector<float>	normals;
+		gMesh->LockVertexBuffer	(D3DLOCK_READONLY, (BYTE**)&vertexBuffer);
+		for (i = 0; i < numVertices; ++i) {
+			position.push_back	(vertexBuffer[i].p.x);
+			position.push_back	(vertexBuffer[i].p.y);
+			position.push_back	(vertexBuffer[i].p.z);
+			normals.push_back	(vertexBuffer[i].n.x);
+			normals.push_back	(vertexBuffer[i].n.y);
+			normals.push_back	(vertexBuffer[i].n.z);
+			texCoord.push_back	(vertexBuffer[i].tu);
+			texCoord.push_back	(vertexBuffer[i].tv);
+			texCoord.push_back	(0);
+		}
+		gMesh->UnlockVertexBuffer();
+
+		// Retrieve triangle indices from the index buffer
+		u32 numTriangles	= gMesh->GetNumFaces();
+		WORD (*indexBuffer)[3];
+		std::vector<int> index;
+		HRESULT hr = gMesh->LockIndexBuffer(D3DLOCK_READONLY, (BYTE**)&indexBuffer);
+		for (i = 0; i < numTriangles; ++i) {
+			index.push_back(indexBuffer[i][0]);
+			index.push_back(indexBuffer[i][1]);
+			index.push_back(indexBuffer[i][2]);
+		}
+		gMesh->UnlockIndexBuffer();
+
+		// Prepare the parameters to the mesh mender
+
+		// Fill in the input to the mesh mender
+		// Positions
+		NVMeshMender::VertexAttribute positionAtt;
+		positionAtt.Name_ = "position";
+		positionAtt.floatVector_ = position;
+		// Indices
+		NVMeshMender::VertexAttribute indexAtt;
+		indexAtt.Name_ = "indices";
+		indexAtt.intVector_ = index;
+		// Texture coordinates
+		NVMeshMender::VertexAttribute texCoordAtt;
+		texCoordAtt.Name_ = "tex0";
+		texCoordAtt.floatVector_ = texCoord;
+		// Fill in input list
+		std::vector<NVMeshMender::VertexAttribute> inputAtts;
+		inputAtts.push_back(positionAtt);
+		inputAtts.push_back(indexAtt);
+		inputAtts.push_back(texCoordAtt);
+
+		// Specify the requested output
+		// Tangents
+		NVMeshMender::VertexAttribute tangentAtt;
+		tangentAtt.Name_ = "tangent";
+		// Binormals
+		NVMeshMender::VertexAttribute binormalAtt;
+		binormalAtt.Name_ = "binormal";
+		// Normals
+		NVMeshMender::VertexAttribute normalAtt;
+		normalAtt.Name_ = "normal";
+		// Fill in output list
+		std::vector<NVMeshMender::VertexAttribute> outputAtts;
+		unsigned int n = 0;
+		outputAtts.push_back(positionAtt); ++n;
+		outputAtts.push_back(indexAtt); ++n;
+		outputAtts.push_back(texCoordAtt); ++n;
+		outputAtts.push_back(tangentAtt); ++n;
+		outputAtts.push_back(binormalAtt); ++n;
+		outputAtts.push_back(normalAtt); ++n;
+
+		// Mender!!!!
+		NVMeshMender mender;
+		if (!mender.Munge(
+			inputAtts,								// input attributes
+			outputAtts,								// outputs attributes
+			3.141592654f / 3.0f,					// tangent space smooth angle
+			0,										// no texture matrix applied to my texture coordinates
+			NVMeshMender::FixTangents,				// fix degenerate bases & texture mirroring
+			NVMeshMender::FixCylindricalTexGen,		// handle cylindrically mapped textures via vertex duplication
+			NVMeshMender::WeightNormalsByFaceSize	// weigh vertex normals by the triangle's size
+			))
+		{
+			fprintf(stderr, "NVMeshMender failed\n");
+			exit(-1);
+		}
+
+		// Retrieve outputs
+		--n; std::vector<float> normal = outputAtts[n].floatVector_;
+		--n; std::vector<float> binormal = outputAtts[n].floatVector_;
+		--n; std::vector<float> tangent = outputAtts[n].floatVector_;
+		--n; texCoord = outputAtts[n].floatVector_;
+		--n; index = outputAtts[n].intVector_;
+		--n; position = outputAtts[n].floatVector_;
+
+		// Create the new vertex buffer
+		gNumVertices = position.size() / 3;
+		unsigned int size = gNumVertices * sizeof(Vertex);
+		gD3DDevice->CreateVertexBuffer(size, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &gVertexBuffer);
+		Vertex* vertexBufferNew;
+		gVertexBuffer->Lock(0, size, (BYTE**)&vertexBufferNew, 0);
+		for (i = 0; i < gNumVertices; ++i) {
+			vertexBufferNew[i].position.x = position[3 * i + 0];
+			vertexBufferNew[i].position.y = position[3 * i + 1];
+			vertexBufferNew[i].position.z = position[3 * i + 2];
+			vertexBufferNew[i].texCoord.x = texCoord[3 * i + 0];
+			vertexBufferNew[i].texCoord.y = texCoord[3 * i + 1];
+			vertexBufferNew[i].normal.x = normal[3 * i + 0];
+			vertexBufferNew[i].normal.y = normal[3 * i + 1];
+			vertexBufferNew[i].normal.z = normal[3 * i + 2];
+		}
+		gVertexBuffer->Unlock();
+
+		// Create the new index buffer
+		gNumTriangles = index.size() / 3;
+		size = index.size() * sizeof(unsigned int);
+		gD3DDevice->CreateIndexBuffer(size, D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, D3DPOOL_MANAGED, &gIndexBuffer);
+		gIndexBuffer->Lock(0, size, (BYTE**)&indexBuffer, 0);
+		for (i = 0; i < gNumTriangles; ++i) {
+			indexBuffer[i][0] = index[3 * i + 0];
+			indexBuffer[i][1] = index[3 * i + 1];
+			indexBuffer[i][2] = index[3 * i + 2];
+		}
+		gIndexBuffer->Unlock();
+	}
+
 
 	// Create model VB
 	m_dwModelNumVerts	= Mesh.GetSysMemMesh()->GetNumVertices();
