@@ -54,20 +54,21 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 		break;
 	case GE_TRANSFER_AMMO:
 		{
-			u16			from,to;
-			P.r_u16		(from);
+			u16					from,to;
+			P.r_u16				(from);
 
-			CObject* Ofrom	= Level().Objects.net_Find	(from);
-			if (0==Ofrom)	break;
-			CWeapon* Wfrom	= dynamic_cast<CWeapon*>	(Ofrom);
-			if (0==Wfrom)	break;
-			CWeapon* Wto	= Weapons->getWeaponByWeapon(Wfrom);
-			if (0==Wto)		break;
+			CObject* Ofrom		= Level().Objects.net_Find	(from);
+			if (0==Ofrom)		break;
+			CWeapon* Wfrom		= dynamic_cast<CWeapon*>	(Ofrom);
+			if (0==Wfrom)		break;
+			CWeapon* Wto		= Weapons->getWeaponByWeapon(Wfrom);
+			if (0==Wto)			break;
 
 			// Test for locality
-			R_ASSERT		(BE(Local(),Wfrom->Local()));
-			R_ASSERT		(BE(Local(),Wto->Local()));
-			Wto->Ammo_add	(Wfrom->Ammo_eject());
+			R_ASSERT			(BE(Local(),Wfrom->Local()));
+			R_ASSERT			(BE(Local(),Wto->Local()));
+			Wto->Ammo_add		(Wfrom->Ammo_eject());
+			Wfrom->setDestroy	(TRUE);
 		}
 		break;
 	}
