@@ -2,7 +2,7 @@ function main()
     actor				= get_actor()
     stalker				= get_level_object("m_stalker_e")
     
-    stalker:script		(true,stalker_test:script_name());
+    stalker:script		(true,stalker_test.script_name());
     
     action(
 		stalker,
@@ -14,5 +14,5 @@ function main()
 		wait			()
     end
     
-    stalker:script		(false,stalker_test:script_name());
+    stalker:script		(false,stalker_test.script_name());
 end
