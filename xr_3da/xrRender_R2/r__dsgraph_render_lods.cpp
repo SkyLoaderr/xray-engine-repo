@@ -88,8 +88,8 @@ ulate direction and shift
 		// Now we have two "best" planes, calculate factor, and approx normal
 		float	f0			float	f0	=	dot_best,	f1 = dot_next;
 =	f0+f1;		f0 /= ft; f1 /= ft;
-		Fvector	N		Fvector	N	=	{0,0,0};	N.mad(facets[id_best],f0).mad(facets[id_next],f1).normalize();
-1;			N.normalize	();
+		Fvector	N	=	{0,0,0};	N.mad(facets[id_best].N,f0).mad(facets[id_next].N,f1).normalize();
+				N.y	+=	1;			N.normalize	();
 
 		// Fill VB
 		FLOD::_fa		FLOD::_face&	F				= facets[id_best];
