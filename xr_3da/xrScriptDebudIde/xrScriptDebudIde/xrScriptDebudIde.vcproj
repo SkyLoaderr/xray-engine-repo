@@ -459,6 +459,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\ScriptThreadsBar.h">
+			</File>
+			<File
 				RelativePath="StdAfx.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -631,6 +634,9 @@
 			</File>
 			<File
 				RelativePath="ScintillaView.h">
+			</File>
+			<File
+				RelativePath=".\ScriptThreadsBar.cpp">
 			</File>
 			<File
 				RelativePath="StdAfx.h">
