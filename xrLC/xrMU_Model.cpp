@@ -89,6 +89,19 @@ BOOL			xrMU_Model::_face::isDegenerated()
 {
 	return (v[0]==v[1] || v[0]==v[2] || v[1]==v[2]);
 };
+
+BOOL			xrMU_Model::_face::isEqual		(_face& F)
+{
+	// Test for 6 variations
+	if ((v[0]==F.v[0]) && (v[1]==F.v[1]) && (v[2]==F.v[2])) return true;
+	if ((v[0]==F.v[0]) && (v[2]==F.v[1]) && (v[1]==F.v[2])) return true;
+	if ((v[2]==F.v[0]) && (v[0]==F.v[1]) && (v[1]==F.v[2])) return true;
+	if ((v[2]==F.v[0]) && (v[1]==F.v[1]) && (v[0]==F.v[2])) return true;
+	if ((v[1]==F.v[0]) && (v[0]==F.v[1]) && (v[2]==F.v[2])) return true;
+	if ((v[1]==F.v[0]) && (v[2]==F.v[1]) && (v[0]==F.v[2])) return true;
+	return false;
+}
+
 float			xrMU_Model::_face::EdgeLen		(int edge)
 {
 	_vertex*	V1 = v[edge2idx[edge][0]];

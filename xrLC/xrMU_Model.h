@@ -43,6 +43,7 @@ public:
 		void			VSet				( int idx, _vertex* V);
 		void			VSet				( _vertex *V1, _vertex *V2, _vertex *V3);
 		BOOL			isDegenerated		( );
+		BOOL			isEqual				( _face* F );
 		float			EdgeLen				( int edge);
 		void			EdgeVerts			( int e, _vertex** A, _vertex** B);
 		void			CalcNormal			( );
@@ -74,7 +75,9 @@ public:
     Flags32				flags;
 	u16					sector;
 public:
-	void				Load	(CStream& FS);
+	void				Load				(CStream& FS);
+	void				export_cform_rcast	(CDB::CollectorPacked& CL);
+	void				export_cform_game	(CDB::CollectorPacked& CL);
 };
 
 extern	poolSS<xrMU_Model::_vertex,256>	mu_vertices;

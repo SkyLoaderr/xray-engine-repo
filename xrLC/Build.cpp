@@ -27,7 +27,7 @@ void transfer(const char *name, vector<T> &dest, CStream& F, u32 chunk)
 	if (O)		O->Close	();
 }
 
-extern u32*	Surface_Load	(char* name, u32& w, u32& h);
+extern u32*		Surface_Load	(char* name, u32& w, u32& h);
 extern void		Surface_Init	();
 
 CBuild::CBuild	(const b_params& Params, const CStream& _in_FS)
