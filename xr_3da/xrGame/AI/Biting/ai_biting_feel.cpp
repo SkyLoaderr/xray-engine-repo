@@ -10,6 +10,7 @@
 #include "ai_biting.h"
 #include "../../actor.h"
 
+#include "../ai_monster_effector.h"
 
 void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position, float power)
 {
@@ -59,6 +60,8 @@ void CAI_Biting::HitEntity(const CEntity *pEntity, float fDamage, Fvector &dir)
 		CEntity		*pEntityNC	= const_cast<CEntity*>(pEntity);
 		VERIFY		(pEntityNC);
 		pEntityNC->Hit(fDamage,dir,this,0,position_in_bone_space,impulse);
+		
+		if (dynamic_cast<CActor *>(pEntityNC)) SetAttackEffector();
 	}
 }
 
@@ -133,5 +136,10 @@ bool CAI_Biting::RayPickEnemy(const CObject *target_obj, const Fvector &trace_fr
 
 	this->setEnabled(true);	
 	return ret_val;
+}
+
+void CAI_Biting::SetAttackEffector() 
+{
+	Level().Cameras.AddEffector(xr_new<CMonsterEffector>(_sd->m_attack_effector.ppi, _sd->m_attack_effector.time, _sd->m_attack_effector.time_attack, _sd->m_attack_effector.time_release));
 }
 

@@ -22,6 +22,13 @@ struct SStepSound {
 DEFINE_MAP(EMotionAnim, SStepSound, STEP_SOUND_MAP, STEP_SOUND_MAP_IT);
 //////////////////////////////////////////////////////////////////////////
 
+struct SAttackEffector {
+	SPPInfo	ppi;
+	float	time;
+	float	time_attack;
+	float	time_release;
+};
+
 
 class _biting_shared : public CSharedResource {
 public:
@@ -84,6 +91,8 @@ public:
 	STEP_SOUND_MAP			step_sounds;
 
 	u8						m_bUsedSquadAttackAlg;
+
+	SAttackEffector			m_attack_effector;
 };
 
 

@@ -192,6 +192,25 @@ void CAI_Biting::LoadShared(LPCSTR section)
 	AddStepSound(section, eAnimRunTurnLeft,		"step_snd_run");
 	AddStepSound(section, eAnimRunTurnRight,	"step_snd_run");
 
+	// Load attack postprocess --------------------------------------------------------
+	LPCSTR ppi_section = pSettings->r_string(section, "attack_postprocess");
+	_sd->m_attack_effector.ppi.duality.h		= pSettings->r_float(ppi_section,"duality_h");
+	_sd->m_attack_effector.ppi.duality.v		= pSettings->r_float(ppi_section,"duality_v");
+	_sd->m_attack_effector.ppi.gray				= pSettings->r_float(ppi_section,"gray");
+	_sd->m_attack_effector.ppi.blur				= pSettings->r_float(ppi_section,"blur");
+	_sd->m_attack_effector.ppi.noise.intensity	= pSettings->r_float(ppi_section,"noise_intensity");
+	_sd->m_attack_effector.ppi.noise.grain		= pSettings->r_float(ppi_section,"noise_grain");
+	_sd->m_attack_effector.ppi.noise.fps		= pSettings->r_float(ppi_section,"noise_fps");
+
+	sscanf(pSettings->r_string(ppi_section,"color_base"),	"%f,%f,%f", &_sd->m_attack_effector.ppi.color_base.r, &_sd->m_attack_effector.ppi.color_base.g, &_sd->m_attack_effector.ppi.color_base.b);
+	sscanf(pSettings->r_string(ppi_section,"color_gray"),	"%f,%f,%f", &_sd->m_attack_effector.ppi.color_gray.r, &_sd->m_attack_effector.ppi.color_gray.g, &_sd->m_attack_effector.ppi.color_gray.b);
+	sscanf(pSettings->r_string(ppi_section,"color_add"),	"%f,%f,%f", &_sd->m_attack_effector.ppi.color_add.r,	&_sd->m_attack_effector.ppi.color_add.g,&_sd->m_attack_effector.ppi.color_add.b);
+	
+	_sd->m_attack_effector.time			= pSettings->r_float(ppi_section,"time");
+	_sd->m_attack_effector.time_attack	= pSettings->r_float(ppi_section,"time_attack");
+	_sd->m_attack_effector.time_release	= pSettings->r_float(ppi_section,"time_release");
+	// --------------------------------------------------------------------------------
+
 	R_ASSERT2 (100 == (_sd->m_dwProbRestWalkFree + _sd->m_dwProbRestStandIdle + _sd->m_dwProbRestLieIdle + _sd->m_dwProbRestTurnLeft), "Probability sum isn't 1");
 }
 

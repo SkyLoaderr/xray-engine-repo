@@ -15,7 +15,7 @@ CAI_Bloodsucker::CAI_Bloodsucker()
 {
 	stateRest			= xr_new<CBitingRest>			(this);
 	stateEat			= xr_new<CBitingEat>			(this, false);
-	stateAttack			= xr_new<CBitingAttack>			(this, /*true*/ false);
+	stateAttack			= xr_new<CBitingAttack>			(this, true);
 	statePanic			= xr_new<CBitingPanic>			(this, /*true*/ false);
 	stateExploreDNE		= xr_new<CBitingExploreDNE>		(this, /*true*/ false);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>		(this);
@@ -220,7 +220,7 @@ void CAI_Bloodsucker::LookPosition(Fvector to_point, float angular_speed)
 
 void CAI_Bloodsucker::ActivateEffector(float life_time)
 {
-	Level().Cameras.AddEffector(xr_new<CMonsterEffector>(pp_effector, 2.0f));
+	Level().Cameras.AddEffector(xr_new<CMonsterEffector>(pp_effector, life_time, 0.3f, 0.9f));
 }
 
 

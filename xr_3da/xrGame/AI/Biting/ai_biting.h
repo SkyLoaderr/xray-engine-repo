@@ -140,6 +140,8 @@ public:
 	virtual void			renderable_Render				()							{return inherited::renderable_Render();} 
 	virtual	void			PitchCorrection					();
 
+	virtual	void			SetAttackEffector				();
+
 	// ---------------------------------------------------------------------------------
 	// Process scripts
 	virtual	bool			bfAssignMovement				(CEntityAction	*tpEntityAction);
