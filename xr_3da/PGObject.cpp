@@ -75,14 +75,17 @@ void CPGObject::shedule_Update	(u32 dt)
 	PS::CParticleEffect* V	= dynamic_cast<PS::CParticleEffect*>(renderable.visual); R_ASSERT(V);
 	V->OnFrame			(dt);
 
-	// spatial
-	spatial.center		= V->vis.sphere.P;
-	spatial.radius		= V->vis.sphere.R;
-	if (0==spatial.type)	{
-		spatial.type		= STYPE_RENDERABLE;
-		spatial_register	();
-	} else {
-		spatial_move		();
+	// spatial	(+ workaround occasional bug inside particle-system)
+	if (_valid(V->vis.sphere))
+	{
+		spatial.center		= V->vis.sphere.P;
+		spatial.radius		= V->vis.sphere.R;
+		if (0==spatial.type)	{
+			spatial.type		= STYPE_RENDERABLE;
+			spatial_register	();
+		} else {
+			spatial_move		();
+		}
 	}
 
 	// Msg	("update(%s): %3.1f,%3.1f,%3.1f,%3.1f",V->GetDefinition()->m_Name,VPUSH(spatial.center),spatial.radius);
