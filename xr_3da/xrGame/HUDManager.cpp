@@ -34,7 +34,6 @@ CHUDManager::CHUDManager()
 	pFontLetterica25		= xr_new<CGameFont> ("ui_font_letter_25");
 	
 	pUI						= 0;
-	Device.seqDevCreate.Add	(this);
 	if (Device.bReady) OnDeviceCreate();
 
 	m_pHUDCursor			= xr_new<CHUDCursor>();
@@ -42,7 +41,6 @@ CHUDManager::CHUDManager()
 //--------------------------------------------------------------------
 CHUDManager::~CHUDManager()
 {
-	Device.seqDevCreate.Remove(this);
 	xr_delete			(pUI);
 	xr_delete			(pFontBigDigit);
 	xr_delete			(pFontSmall);
