@@ -45,7 +45,6 @@ public:
 	float						Query		(float x, float z);				// 2D query
 	
 	CHM_Static					();
-	~CHM_Static					();
 };
 
 //
