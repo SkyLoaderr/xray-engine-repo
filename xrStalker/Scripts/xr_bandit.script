@@ -228,6 +228,7 @@ function bandit:clearAllJob(npc)
 		   k == "follower" or
 		   k == "patrol" or
 		   k == "guard" or
+		   k == "walker" or
 		   k == "kamp" or
 		   k == "ambush"
 		then

@@ -165,7 +165,8 @@ xr_kamp.add_to_binder(self.object, char_ini)
                 path_main = nil
         }
 xr_sleeper.add_to_binder(self.object, char_ini)
-    -- часовые
+
+    -- Часовые
     xr_motivator.storage[self.object:id()].guard = {
             enabled = false,
             action = nil,
@@ -173,6 +174,11 @@ xr_sleeper.add_to_binder(self.object, char_ini)
             path_hideout = nil
         }
 xr_guard.add_to_binder(self.object, char_ini)
+
+    -- Сталкер, который ходит (версия часовых на новой схеме)
+    xr_motivator.storage[self.object:id()].walker = { }
+    xr_walker.add_to_binder(self.object, char_ini)
+
     xr_motivator.storage[self.object:id()].bodyguard = {
             enabled = false,
             action = nil,
@@ -311,12 +317,14 @@ function AddToMotivator(npc)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function checkStorage(npc)
+    -- FIXME: Zmey: надо бы вынести общую часть кода в отдельную функцию
     local count = 0
     for k,v in xr_motivator.storage[npc:id()] do
         if	k == "sleeper" or
 			k == "follower" or
 			k == "patrol" or
 			k == "guard" or
+			k == "walker" or
 			k == "bodyguard" or
 			k == "commander" or
 			k == "ambush" or
@@ -336,6 +344,7 @@ function checkStorage(npc)
 				k == "follower" or
 				k == "patrol" or
 				k == "guard" or
+				k == "walker" or
 				k == "bodyguard" or
 				k == "commander" or
 				k == "ambush" or

@@ -729,6 +729,11 @@ function fract:setJob(npc, job)
 		job.begin = game.time()
 	    xr_guard.set_guard(npc, true, job.path_main, job.path_hideout, job.running, job.search_light)
 	end
+	if job.name == "walker" then
+		job.object = npc
+		job.begin = game.time()
+	    xr_walker.set_walker(npc, true, job.path_main, job.path_look, job.team)
+	end
 	if job.name == "bodyguard" then
 		job.object = npc
 		job.begin = game.time()
@@ -807,6 +812,7 @@ function fract:clearAllJob(npc)
 		   k == "follower" or
 		   k == "patrol" or
 		   k == "guard" or
+		   k == "walker" or
 		   k == "bodyguard" or
 		   k == "sniper" or
 		   k == "kamp"
@@ -964,6 +970,8 @@ function addMember(name, npc, char_ini)
 		        xr_sleeper.add_to_binder (npc, nil)
 		elseif v == "guard" then
 		        xr_guard.add_to_binder   (npc, nil)
+		elseif v == "walker" then
+		        xr_walker.add_to_binder   (npc, nil)
 		elseif v == "patrol" then
 		        xr_patrol.add_to_binder  (npc, nil)
 		elseif v == "follower" then

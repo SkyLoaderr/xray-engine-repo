@@ -47,17 +47,18 @@ chugai_ambush_base                  = chugai_evaluators + 70
 chugai_formation_base               = chugai_evaluators + 80
 
 -- эвалуаторы Змея
-zmey_evaluators = stalker_ids.property_script + 4000
-zmey_guard_base      = zmey_evaluators + 0
+zmey_evaluators                     = stalker_ids.property_script + 4000
+zmey_guard_base                     = zmey_evaluators + 0
 zmey_property_guard_activity_end    = zmey_evaluators + 100
-zmey_robber_base     = zmey_evaluators + 150
-zmey_camper_base     = zmey_evaluators + 200
-zmey_sleeper_base    = zmey_evaluators + 250
-zmey_talker_base     = zmey_evaluators + 300
-zmey_bodyguard_base  = zmey_evaluators + 350
-zmey_punch_base      = zmey_evaluators + 400
-zmey_guide_base      = zmey_evaluators + 450
-zmey_robber_guard_base = zmey_evaluators + 500
+zmey_robber_base                    = zmey_evaluators + 150
+zmey_camper_base                    = zmey_evaluators + 200
+zmey_sleeper_base                   = zmey_evaluators + 250
+zmey_talker_base                    = zmey_evaluators + 300
+zmey_bodyguard_base                 = zmey_evaluators + 350
+zmey_punch_base                     = zmey_evaluators + 400
+zmey_guide_base                     = zmey_evaluators + 450
+zmey_robber_guard_base              = zmey_evaluators + 500
+zmey_walker_base                    = zmey_evaluators + 550
 
 --  эвалуоторы Жени
 jon_evaluators          = stalker_ids.property_script + 5000

@@ -16,8 +16,9 @@ function to_str(what)
 function vector_copy_by_val(vec)
 
 -- Настройка параметров игровых объектов:
-bool param_get_bool(char_ini, section, field, override, object)
-string conf_get_string(char_ini, section, field, override, object)
+function conf_get_bool(char_ini, section, field, override, object, mandatory)
+function conf_get_string(char_ini, section, field, override, object, mandatory)
+function conf_get_number(char_ini, section, field, override, object, mandatory)
 
 -- Проверяет, находится ли stalker рядом с точкой path_point пути patrol_path
 function stalker_at_waypoint(stalker, patrol_path, path_point)
@@ -212,3 +213,19 @@ end
 
 --При попытке поюзать незапертую дверь она просто силой открывается до максимально допустимого состояния.
 
+function init_path(pathname)
+	local path_info = {}
+	local ptr = patrol(self.path_active)
+	local num_points = ptr:count()
+
+	local flag_id = 0
+	for pt = 0, num_points - 1 do
+		for flg = 0, 31 do
+			if ptr:flag(pt, flg) then
+				flag_id = flag_id + 2 ^ flg
+			end
+		end
+		path_info[pt] = {}
+		path_info[pt].flag_id = flag_id
+	end
+end

@@ -49,7 +49,7 @@ chugai_ambush_base                  = chugai_actions + 70
 chugai_formation_base               = chugai_actions + 80
 
 -- «мей
-zmey_actions = stalker_ids.action_script + 10000
+zmey_actions = chugai_actions + 1024
 zmey_action_guard_activity = zmey_actions + 100
 zmey_guard_base        = zmey_actions + 200
 zmey_robber_base       = zmey_actions + 250
@@ -59,7 +59,8 @@ zmey_talker_base       = zmey_actions + 400
 zmey_bodyguard_base    = zmey_actions + 450
 zmey_punch_base        = zmey_actions + 500
 zmey_guide_base        = zmey_actions + 550
-zmey_robber_guard_base = zmey_actions + 555
+zmey_robber_guard_base = zmey_actions + 600
+zmey_walker_base       = zmey_actions + 650
 
 -- ∆ен€
 jon_actions = zmey_actions + 1024
