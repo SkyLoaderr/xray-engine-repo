@@ -4,40 +4,39 @@
 -- Разработчик: Andrey Fidrya (Zmey) af@svitonline.com
 ----------------------------------------------------------------------------------------------------
 
-function gulag_activate(npc, ini, section, gulag_name)
+stype_stalker = 0
+stype_mobile = 1
+stype_item = 2
+
+function gulag_activate(npc, ini, section, gulag_name, stype)
 	if npc == nil then
 		utils.abort("gulag_activate: npc is nil")
 	end
 	if section == nil then
 		utils.abort("gulag_activate: section is nil")
 	end
+	if stype == nil then
+		utils.abort("gulag_activate: please specify a script type")
+	end
 
 	local npc_id = npc:id()
 
-	local old_active_section = xr_motivator.storage[npc_id]["active_section"]
-	if old_active_section then
-		deactivate_actions_event(xr_motivator.storage[npc_id][utils.get_scheme_by_section(old_active_section)])
-	end
-
 	xr_motivator.storage[npc_id]["active_section"] = nil
 	xr_motivator.storage[npc_id]["gulag_name"] = if_then_else(gulag_name, gulag_name, "")
+	xr_motivator.storage[npc_id]["stype"] = stype
 
 	activate_by_section(npc, ini, section)
 end
 
-function stalker_enable_scripts(npc, ini)
+function enable_scripts(npc, ini, stype)
 	printf("DEBUG: stalker_enable_scripts")
-	printf("_bp: physic_object: obj:name()=%s, obj:id()=%s", npc:name(), npc:id())
+	printf("_bp: obj:name()=%s, obj:id()=%s", npc:name(), npc:id())
 
 	local npc_id = npc:id()
 
-	local old_active_section = xr_motivator.storage[npc_id]["active_section"]
-	if old_active_section then
-		deactivate_actions_event(xr_motivator.storage[npc_id][utils.get_scheme_by_section(old_active_section)])
-	end
-
 	xr_motivator.storage[npc_id]["active_section"] = nil
 	xr_motivator.storage[npc_id]["gulag_name"] = ""
+	xr_motivator.storage[npc_id]["stype"] = stype
 
 	if ini:section_exist("logic") then
 		local active_section = utils.cfg_get_string(ini, "logic", "active", npc, true, "")
@@ -97,7 +96,7 @@ function activate_by_section(npc, ini, section)
 		printf("DEBUG: activate_by_section: scheme '%s' activated from section '%s'", scheme, section)
 		xr_motivator.storage[npc_id]["active_section"] = section
 
-		reset_actions_event(xr_motivator.storage[npc_id][utils.get_scheme_by_section(section)])
+		reset_actions_event(xr_motivator.storage[npc_id])
 	else
 		utils.abort("object '%s': activate_by_section: section '%s' does not exist",
 			npc:name(), section)
@@ -105,7 +104,11 @@ function activate_by_section(npc, ini, section)
 end
 
 function reset_generic_schemes_on_scheme_switch(npc)
-	xr_meet.dialog_manager_reset(npc)
+	local st = xr_motivator.storage[npc:id()]
+
+	if st.stype == stype_stalker then
+		xr_meet.dialog_manager_reset(npc)
+	end
 end
 
 function assign_storage_and_bind(npc, ini, scheme, section)
@@ -132,19 +135,22 @@ function assign_storage_and_bind(npc, ini, scheme, section)
 	return st
 end
 
-function subscribe_action_for_events(st, new_action)
-	printf("DEBUG: registering new action for reset event")
-	if not st.actions then
-		st.actions = {}
+function subscribe_action_for_events(npc, new_action)
+	printf("DEBUG: registering new action for reset event (npc:name() = '%s')", npc:name())
+
+	local npc_id = npc:id()
+	if not xr_motivator.storage[npc_id].actions then
+		xr_motivator.storage[npc_id].actions = {}
 	end
-	st.actions[new_action] = true
+	
+	xr_motivator.storage[npc_id].actions[new_action] = true
 end
 
 function reset_actions_event(st)
 	printf("DEBUG: reset_actions_event")
 	if not st.actions then
 		printf("WARNING: reset_actions: scheme '%s', section '%s': at least one action in a scheme must be " ..
-			"subscribed for events", st.scheme, st.section)
+			"subscribed for events", utils.get_scheme_by_section(st.active_section), st.active_section)
 		return
 	end
 	for action_ptr, is_active in pairs(st.actions) do
@@ -152,18 +158,15 @@ function reset_actions_event(st)
 	end
 end
 
-function deactivate_actions_event(st)
-	printf("DEBUG: reset_actions")
+function non_goap_update_actions_event(st)
+	printf("DEBUG: non_goap_update_actions_event [%s]", st.active_section)
 	if not st.actions then
-		printf("reset_actions: scheme '%s', section '%s': at least one action in a scheme must be " ..
-			"subscribed for events", st.scheme, st.section)
+		printf("WARNING: reset_actions: scheme '%s', section '%s': at least one action in a scheme must be " ..
+			"subscribed for events", utils.get_scheme_by_section(st.active_section), st.active_section)
 		return
 	end
 	for action_ptr, is_active in pairs(st.actions) do
-		if action_ptr.deactivate_scheme then
-			printf("WARNING: scheme '%s' has no deactivation event handler", st.scheme)
-			action_ptr:deactivate_scheme()
-		end
+		action_ptr:update()
 	end
 end
 

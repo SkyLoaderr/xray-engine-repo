@@ -6,6 +6,16 @@
 ----------------------------------------------------------------------------------------------------
 
 local snd = {
+	trader_come_here = {
+		-- Подойди-ка... Надо бы ситуацию прояснить.
+		[[characters_voice\human_01\scenario\trader\trader1a]]
+	},
+
+	trader_come_here2 = {
+		-- Ну, че стоишь? Подходи - не кусаюсь.
+		[[characters_voice\human_01\scenario\trader\trader1b]]
+	},
+
 	hello = {
 			[[characters_voice\human_01\scenario\trader\trader_script1a_1]],
 			[[characters_voice\human_01\scenario\trader\trader_script1a_2]],
@@ -54,6 +64,7 @@ local snd = {
 function pick_sound_from_set(npc, set, last_sound_info)
 	local sndset = snd[set]
 	if not sndset then
+		printf("_bp: no sndset")
 		return nil
 	end
 	-- 1) Выбираем случайный звук из набора:
@@ -65,6 +76,7 @@ function pick_sound_from_set(npc, set, last_sound_info)
 		end
 		chance = chance + 1
 	end
+	printf("_bp: picked_snd")
 	return picked_snd
 end
 

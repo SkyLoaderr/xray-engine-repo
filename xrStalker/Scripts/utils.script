@@ -384,7 +384,7 @@ function parse_params(params)
 	local rslt = {}
 	local n = 1
 	for fld in string.gfind(params, "%s*([^|]+)%s*") do
-		printf("_bp: parse_params iter=%d, fld=%s", n, fld)
+		--printf("_bp: parse_params iter=%d, fld=%s", n, fld)
 		rslt[n] = fld
 		n = n + 1
 	end

@@ -117,7 +117,7 @@ function add_to_binder(npc, ini, scheme, section, storage)
 	npc:bind_object(new_binder)
 
 	-- Зарегистрировать все actions, в которых должен быть вызван метод reset_scheme при изменении настроек схемы:
-	xr_logic.subscribe_action_for_events(storage, new_binder)
+	xr_logic.subscribe_action_for_events(npc, new_binder)
 end
 
 function set_scheme(npc, ini, scheme, section, gulag_name)

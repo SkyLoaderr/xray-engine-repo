@@ -416,7 +416,7 @@ function add_to_binder (npc, ini, scheme, section, storage)
     action:add_effect (world_property(properties["enabled"], false))
     manager:add_action (operators["patrol"], action)
 
-    xr_logic.subscribe_action_for_events (storage, action)
+    xr_logic.subscribe_action_for_events (npc, action)
     
     action = this.action_escape ("escape", storage)
     action:add_precondition (world_property(stalker_ids.property_alive, true))
@@ -435,7 +435,7 @@ function add_to_binder (npc, ini, scheme, section, storage)
     action_new:add_effect (world_property(properties["raid"], false))
     manager:add_action (operators["raid"], action_new)
     
-    xr_logic.subscribe_action_for_events (storage, action_new)
+    xr_logic.subscribe_action_for_events (npc, action_new)
     
     action = manager:action (xr_actions_id.alife)
     action:add_precondition (world_property(properties["enabled"], false))

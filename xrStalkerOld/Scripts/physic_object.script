@@ -28,7 +28,7 @@ function init(obj)
 	-- Новые схемы
 	----------------------------------------------------------------------------------------
 
-	xr_logic.stalker_enable_scripts(obj, ini)
+	xr_logic.enable_scripts(obj, ini, xr_logic.stype_item)
 end
 
 class "door_binder" (object_binder)
@@ -63,7 +63,7 @@ function door_binder:initialize()
 	//self.locked		= utils.mob_get_bool(ini, "door", "locked", nil, self.object, false, false)
 	
 	if(ini:line_exist("door", "opened")) then
-		//'Есть данные о том, закрыта или открыта дверь
+		-- Есть данные о том, закрыта или открыта дверь
 		variable = ini:r_bool("door", "opened")
 
 		if(variable) then
