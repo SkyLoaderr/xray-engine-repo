@@ -234,9 +234,11 @@ void CObject::OnH_A_Chield		()
 }
 void CObject::OnH_B_Chield		()
 {
+	setVisible	(false);
 }
 void CObject::OnH_A_Independent	()
 {
+	setVisible	(true);
 }
 void CObject::OnH_B_Independent	()
 {
