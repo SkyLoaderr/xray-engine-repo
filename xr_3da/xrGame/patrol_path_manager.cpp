@@ -31,10 +31,6 @@ void CPatrolPathManager::reinit				(CRestrictedObject *object)
 	m_callback				= 0;
 	m_object				= object;
 	VERIFY					(m_object);
-#ifdef DEBUG
-	m_game_object			= smart_cast<CGameObject*>(object);
-	VERIFY					(m_game_object);
-#endif
 }
 
 IC	bool CPatrolPathManager::accessible	(const Fvector &position) const

@@ -49,7 +49,7 @@ protected:
 	IC			bool				accessible				(const CPatrolPath::CVertex *vertex) const;
 
 public:
-	IC								CPatrolPathManager		();
+	IC								CPatrolPathManager		(CGameObject *game_object);
 	IC	virtual						~CPatrolPathManager		();
 		virtual	void				reinit					(CRestrictedObject *object);
 	IC	virtual	void				set_callback			(CScriptCallback &callback);
