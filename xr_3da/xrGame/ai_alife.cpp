@@ -80,14 +80,13 @@ void CSE_ALifeSimulator::vfUpdateDynamicData(bool bReserveID)
 			(*I).second->ID	= m_tpServer->PerformIDgen(l_tObjectID);
 			R_ASSERT2		(l_tObjectID == (*I).second->ID,"Can't reserve a particular object identifier");
 		}
-	}
-
-	// update events
-	{
-		EVENT_PAIR_IT			I = m_tEventRegistry.begin();
-		EVENT_PAIR_IT			E = m_tEventRegistry.end();
-		for ( ; I != E; I++)
-			vfAddEventToGraphPoint((*I).second,(*I).second->m_tGraphID);
+		// update events
+		{
+			EVENT_PAIR_IT			I = m_tEventRegistry.begin();
+			EVENT_PAIR_IT			E = m_tEventRegistry.end();
+			for ( ; I != E; I++)
+				vfAddEventToGraphPoint((*I).second,(*I).second->m_tGraphID);
+		}
 	}
 
 	vfSetupScheduledObjects();

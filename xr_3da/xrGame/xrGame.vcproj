@@ -1582,9 +1582,6 @@
 				RelativePath=".\ContextMenu.h">
 			</File>
 			<File
-				RelativePath=".\HitMarker.cpp">
-			</File>
-			<File
 				RelativePath=".\HUDCursor.cpp">
 			</File>
 			<File
