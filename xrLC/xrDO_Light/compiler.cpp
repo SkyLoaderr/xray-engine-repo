@@ -120,10 +120,11 @@ extern void		Surface_Init	();
 // 
 void xrLoad(LPCSTR name)
 {
-	g_shaders_xrlc.Load			("shaders_xrlc.xr");
+	string256					N;
+	FS.update_path				(N,"$game_data$","shaders_xrlc.xr");
+	g_shaders_xrlc.Load			(N);
 
 	// Load CFORM
-	string256			N;
 	{
 		strconcat			(N,name,"build.cform");
 		IReader*			fs = FS.r_open(N);
