@@ -51,6 +51,8 @@ protected:
 	bool							Artefact_NeedToSpawn	();
 	bool							Artefact_NeedToRemove	();
 	bool							Artefact_MissCheck		();
+
+	void							CheckForAnyAlivePlayer	();
     	
 public:
 

@@ -564,6 +564,8 @@ void	game_sv_ArtefactHunt::Update			()
 					m_dwNextReinforcementTime = CurTime + m_iReinforcementTime;
 				}
 			};
+			if (m_iReinforcementTime == -1 && m_dwArtefactID != 0)
+				CheckForAnyAlivePlayer();
 			//---------------------------------------------------
 			if (Artefact_NeedToSpawn()) return;
 			if (Artefact_NeedToRemove()) return;
@@ -796,3 +798,20 @@ void				game_sv_ArtefactHunt::RespawnAllNotAlivePlayers()
 	}
 	signal_Syncronize();
 };
+
+void				game_sv_ArtefactHunt::CheckForAnyAlivePlayer()
+{
+	u32		cnt		= get_count	();
+	for		(u32 it=0; it<cnt; ++it)	
+	{
+		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+		game_PlayerState* ps	= &l_pC->ps;
+
+		if (ps->flags & GAME_PLAYER_FLAG_VERY_VERY_DEAD || ps->Skip)	continue;
+		// found at least one alive player
+		return;
+	};
+
+	// no alive players found
+	RespawnAllNotAlivePlayers();
+}
