@@ -696,7 +696,7 @@ void CLocatorAPI::rescan_path(LPCSTR full_path, BOOL bRecurse)
 	}
     bNoRecurse	= !bRecurse;
     Recurse		(full_path);
-    Log			("Rescan path: ",full_path);
+//.    Log			("Rescan path: ",full_path);
 }
 
 void  CLocatorAPI::rescan_pathes()
