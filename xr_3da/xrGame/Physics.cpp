@@ -48,6 +48,7 @@ const dReal	world_gravity=2.f*9.81f;
 
 int			phFPS			= 50;
 int			phIterations	= 18;
+float		phTimefactor	= 1.f;
 int			phIterationCycle= 5;
 
 static int IterationCycleI= 0;
@@ -263,7 +264,7 @@ u32 CPHWorld::CalcNumSteps (u32 dTime)
 void CPHWorld::FrameStep(dReal step)
 {
 	VERIFY	(_valid(step));
-	//step*=0.1f;
+	step*=phTimefactor;
 	// compute contact joints and forces
 
 	//step+=astep;

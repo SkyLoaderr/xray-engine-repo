@@ -40,6 +40,7 @@ ENGINE_API extern float		psHUD_FOV;
 extern	float				psSqueezeVelocity;
 extern	int					phFPS;
 extern	int					phIterations;
+extern	float				phTimefactor;
 extern	int					lvInterp;
 
 // console commands
@@ -803,9 +804,9 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD1(CCC_Trader,			"trade");		
 
 		// Physics
-		CMD4(CCC_Integer,			"ph_fps",				&phFPS,			10,100);
-		CMD4(CCC_Integer,			"ph_iterations",		&phIterations,	1,50);
-
+		CMD4(CCC_Integer,			"ph_fps",				&phFPS,			10,		100);
+		CMD4(CCC_Integer,			"ph_iterations",		&phIterations,	1,		50)	;
+		CMD4( CCC_Float,			"ph_timefactor",		&phTimefactor,	0.0001f,1000.f);
 		// Mad Max
 		// Net Interpolation
 		CMD4(CCC_Net_CL_Interpolation,		"net_cl_interpolation",	&lvInterp,			-1,100);
