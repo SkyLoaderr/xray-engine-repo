@@ -388,7 +388,7 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 	if vtable == nil then return false end
 	for v in vtable do
 		local vo = v:object()
-		local vo_id = vo:clsid()
+		local vo_id
 		local continue = true
 
 		if self.used[vo:id()] ~= nil then
@@ -626,6 +626,7 @@ function events:print()
 	end
 end
 function events:type(obj)
+	pintf("clsid type")
 	local otype = obj:clsid()
 
 	if 	otype == clsid.actor or
@@ -703,6 +704,7 @@ function events:type(obj)
 	end
 end
 function events:monstr_power(obj)
+	pintf("clsid monstr")
 	local otype = obj:clsid()
 
 	if	otype == clsid.zombie or
@@ -724,6 +726,7 @@ function events:monstr_power(obj)
 	end
 end
 function events:item_power(obj)
+	pintf("clsid item")
 	local otype = obj:clsid()
 
 	if	otype == clsid.wpn_fn2000 or
