@@ -744,9 +744,9 @@ void CCustomMonster::SetDirectionLook()
 			if (tWatchDirection.magnitude() > EPS_L) {
 				tWatchDirection.normalize();
 				mk_rotation(tWatchDirection,r_torso_target);
+				r_torso_target.pitch = 0;
 			}
 		}
-		else r_torso_target.pitch = 0;
 	}
 
 	r_target = r_torso_target;

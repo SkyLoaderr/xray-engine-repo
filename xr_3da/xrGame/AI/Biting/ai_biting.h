@@ -98,7 +98,7 @@ public:
 	virtual BOOL			feel_vision_isRelevant			(CObject* O);
 
 	// path routines
-			void			vfInitSelector					(IBaseAI_NodeEvaluator &S, CSquad &Squad);
+			void			vfInitSelector					(IBaseAI_NodeEvaluator &S, bool hear_sound = false);
 			void			vfSearchForBetterPosition		(IBaseAI_NodeEvaluator &tNodeEvaluator, CSquad &Squad, CEntity* &Leader);
 			void			vfBuildPathToDestinationPoint	(IBaseAI_NodeEvaluator *tpNodeEvaluator);
 			void			vfBuildTravelLine				(Fvector *tpDestinationPosition);
@@ -109,7 +109,7 @@ public:
 			
 			void			vfUpdateParameters				();
 		
-			void			DoDamage						(CEntity *pEntity, float fDamage, Fvector dir, float impulse);
+			void			DoDamage						(CEntity *pEntity, float fDamage, float yaw, float pitch, float impulse);
 			void			SetState						(IState *pS, bool bSkipInertiaCheck = false);
 
 	// Animation control

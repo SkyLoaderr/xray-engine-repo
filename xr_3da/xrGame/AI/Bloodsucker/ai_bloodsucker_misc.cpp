@@ -86,7 +86,8 @@ void CAI_Bloodsucker::MotionToAnim(EMotionAnim motion, int &index1, int &index2,
 	switch(motion) {
 		case eMotionStandIdle:		index1 = 0; index2 = 0;	 break;
 		case eMotionLieIdle:		index1 = 1; index2 = 0;	 break;
-		case eMotionStandTurnLeft:	index1 = 0; index2 = 0;	 break;
+		case eMotionStandTurnLeft:	index1 = 0; index2 = 20; break;
+		case eMotionStandTurnRight:	index1 = 0; index2 = 1;  break;
 		case eMotionWalkFwd:		index1 = 0; index2 = 2;	 break;
 		case eMotionWalkBkwd:		index1 = 0; index2 = 3;  break;
 		case eMotionWalkTurnLeft:	index1 = 0; index2 = 0;  break;

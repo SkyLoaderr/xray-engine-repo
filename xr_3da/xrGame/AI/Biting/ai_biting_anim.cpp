@@ -39,6 +39,7 @@ LPCSTR caBitingGlobalNames		[] = {
 	"stand_up_",			// 17
 	"liedown_eat_",			// 18
 	"attack_jump_",			// 19
+	"idle_ls_",				// 20	
 	0
 };
 
@@ -144,7 +145,7 @@ void CAI_Biting::CheckAttackHit()
 
 		if (Level().ObjectSpace.RayPick(trace_from, Direction(), apt_anim.dist, l_rq)) {
 			if ((l_rq.O == obj) && (l_rq.range < apt_anim.dist)) {
-				DoDamage(ve.obj, apt_anim.damage,apt_anim.dir,apt_anim.impulse);
+				DoDamage(ve.obj, apt_anim.damage,apt_anim.dir_yaw,apt_anim.dir_pitch,apt_anim.impulse);
 				m_tAttackAnim.UpdateLastAttack(cur_time);
 			}
 		}
@@ -171,7 +172,7 @@ void CAttackAnim::PushAttackAnim(SAttackAnimation AttackAnim)
 	m_all.push_back(AttackAnim);
 }
 
-void CAttackAnim::PushAttackAnim(u32 i1, u32 i2, u32 i3, TTime from, TTime to, Fvector &ray, float dist, float damage, Fvector dir, float impulse, u32 flags)
+void CAttackAnim::PushAttackAnim(u32 i1, u32 i2, u32 i3, TTime from, TTime to, Fvector &ray, float dist, float damage, float yaw, float pitch, float impulse, u32 flags)
 {
 	SAttackAnimation anim;
 
@@ -186,7 +187,8 @@ void CAttackAnim::PushAttackAnim(u32 i1, u32 i2, u32 i3, TTime from, TTime to, F
 	anim.dist			= dist;
 
 	anim.damage			= damage;
-	anim.dir			= dir;
+	anim.dir_yaw		= yaw;
+	anim.dir_pitch		= pitch;
 	anim.impulse		= impulse;
 	anim.flags			= flags;
 

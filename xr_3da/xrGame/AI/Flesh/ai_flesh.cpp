@@ -15,6 +15,7 @@ CAI_Flesh::CAI_Flesh()
 	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this);
 	stateExploreDE		= xr_new<CBitingExploreDE>	(this);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
+	stateCapture		= xr_new<CFleshCapture>		(this);
 	CurrentState		= stateRest;
 
 	Init();
@@ -31,6 +32,7 @@ CAI_Flesh::~CAI_Flesh()
 	xr_delete(stateExploreDNE);
 	xr_delete(stateExploreDE);
 	xr_delete(stateExploreNDE);
+	xr_delete(stateCapture);
 }
 
 
@@ -100,7 +102,8 @@ void CAI_Flesh::Think()
 		else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
 		else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
 		else if (GetCorpse(ve) && ve.obj->m_fFood > 1)	
-			SetState(stateEat);
+			//SetState(stateEat);
+			SetState(stateCapture);
 		else						SetState(stateRest); 
 		//-
 		
@@ -168,28 +171,24 @@ void CAI_Flesh::LoadAttackAnim()
 	special_side.set(-0.5f,0.f,0.5f);
 
 	float	impulse = 120.f;
-	Fvector	dir;
-	dir.set(XFORM().k);
-	dir.invert();
-
 
 	// 1 //
-	m_tAttackAnim.PushAttackAnim(0, 9, 0, 700,	800,	center,		2.f, m_fHitPower, dir, impulse);
+	m_tAttackAnim.PushAttackAnim(0, 9, 0, 700,	800,	center,		2.f, m_fHitPower, 0.f, 0.f, impulse);
 
 	// 2 //
-	m_tAttackAnim.PushAttackAnim(0, 9, 1, 600,	800,	center,		2.5f, m_fHitPower, dir, impulse);
+	m_tAttackAnim.PushAttackAnim(0, 9, 1, 600,	800,	center,		2.5f, m_fHitPower, 0.f, 0.f, impulse);
 
 	// 3 // 
-	m_tAttackAnim.PushAttackAnim(0, 9, 2, 1100,	1250,	right_side,	1.5f, m_fHitPower, dir, impulse);
+	m_tAttackAnim.PushAttackAnim(0, 9, 2, 1100,	1250,	right_side,	1.5f, m_fHitPower, 0.f, 0.f, impulse);
 
 	// 4 // 
-	m_tAttackAnim.PushAttackAnim(0, 9, 3, 1300,	1400,	left_side,	0.6f, m_fHitPower, dir, impulse);
+	m_tAttackAnim.PushAttackAnim(0, 9, 3, 1300,	1400,	left_side,	0.6f, m_fHitPower, 0.f, 0.f, impulse);
 
 	// 5 // 
-	m_tAttackAnim.PushAttackAnim(0, 10, 0, 600, 800,	special_side,	2.6f, m_fHitPower, dir, impulse, AA_FLAG_ATTACK_RAT);
+	m_tAttackAnim.PushAttackAnim(0, 10, 0, 600, 800,	special_side,	2.6f, m_fHitPower, 0.f, 0.f, impulse, AA_FLAG_ATTACK_RAT);
 
 	// 6 //
-	m_tAttackAnim.PushAttackAnim(0, 19, 0, 700, 850,	center,		2.6f, m_fHitPower, dir, impulse, AA_FLAG_FIRE_ANYWAY);
+	m_tAttackAnim.PushAttackAnim(0, 19, 0, 700, 850,	center,		2.6f, m_fHitPower, 0.f, 0.f,impulse, AA_FLAG_FIRE_ANYWAY);
 
 }
 
@@ -212,7 +211,7 @@ void CAI_Flesh::CheckAttackHit()
 
 		// трассировка нужна?
 		if ((apt_anim.flags & AA_FLAG_FIRE_ANYWAY) == AA_FLAG_FIRE_ANYWAY) {
-			DoDamage(ve.obj, apt_anim.damage,apt_anim.dir, apt_anim.impulse);	// не нужна
+			DoDamage(ve.obj, apt_anim.damage,apt_anim.dir_yaw, apt_anim.dir_pitch, apt_anim.impulse);	// не нужна
 			m_tAttackAnim.UpdateLastAttack(cur_time);
 		} else if ((apt_anim.flags & AA_FLAG_ATTACK_RAT) == AA_FLAG_ATTACK_RAT) {
 
@@ -221,7 +220,7 @@ void CAI_Flesh::CheckAttackHit()
 			Fvector vC;		ve.obj->Center(vC);			// центр сферы
 
 			if (ConeSphereIntersection(trace_from, PI_DIV_6, dir, vC, ve.obj->Radius())) {
-				DoDamage(ve.obj,apt_anim.damage,apt_anim.dir, apt_anim.impulse);
+				DoDamage(ve.obj,apt_anim.damage,apt_anim.dir_yaw, apt_anim.dir_pitch, apt_anim.impulse);
 				m_tAttackAnim.UpdateLastAttack(cur_time);
 			}
 
@@ -231,7 +230,7 @@ void CAI_Flesh::CheckAttackHit()
 			
 			if (Level().ObjectSpace.RayPick(trace_from, Direction(), apt_anim.dist, l_rq)) {
 				if ((l_rq.O == obj) && (l_rq.range < apt_anim.dist)) {
-					DoDamage(ve.obj, apt_anim.damage,apt_anim.dir, apt_anim.impulse);
+					DoDamage(ve.obj, apt_anim.damage,apt_anim.dir_yaw, apt_anim.dir_pitch,apt_anim.impulse);
 					m_tAttackAnim.UpdateLastAttack(cur_time);
 				}
 			}
@@ -311,7 +310,7 @@ void CAI_Flesh::OnRender()
 }
 #endif
 
-
+///////////////////////////////////////////////////////////////////////////////////
 // TEMP
 void CAI_Flesh::SetPoints()
 {
@@ -423,4 +422,80 @@ void CAI_Flesh::MoveInAxis(Fvector &Pos, const Fvector &dir,  float dx)
 	shift.mul(dir, dx);
 	Pos.add(shift);
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CFleshCapture class
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+CFleshCapture::CFleshCapture(CAI_Flesh *p)  
+{
+	pMonster = p;
+	Reset();
+	SetLowPriority();
+}
+
+
+void CFleshCapture::Reset()
+{
+	IState::Reset();
+	m_tAction			= ACTION_RUN;
+	pCorpse				= 0;
+}
+
+void CFleshCapture::Init()
+{
+	IState::Init();
+
+	// Получить инфо о трупе
+	VisionElem ve;
+	if (!pMonster->GetCorpse(ve)) R_ASSERT(false);
+	pCorpse = ve.obj;
+
+	m_fDistToCorpse = 1.5f;
+	flag_once_1 = false;
+
+	SavedNodeID		= pMonster->AI_NodeID;
+	SavedPosition	= pMonster->Position();
+}
+
+void CFleshCapture::Run()
+{
+	// Если новый труп, снова инициализировать состояние 
+	VisionElem ve;
+	if (!pMonster->GetEnemy(ve)) R_ASSERT(false);
+	if (pCorpse != ve.obj) Init();
+
+	// Выполнение состояния
+	switch (m_tAction) {
+		case ACTION_RUN:	// бежать к трупу
+
+			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
+			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0,2000);
+
+			pMonster->Motion.m_tParams.SetParams(eMotionRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
+
+			if (pCorpse->Position().distance_to(pMonster->Position()) < m_fDistToCorpse) m_tAction = ACTION_CAPTURE;
+			break;
+		case ACTION_CAPTURE:
+			DO_ONCE_BEGIN(flag_once_1); // если монстр подбежал к трупу, необходимо отыграть проверку трупа и лечь
+				pMonster->Motion.m_tSeq.Add(eMotionCheckCorpse,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
+				pMonster->Motion.m_tSeq.Switch();
+
+				pMonster->Movement.PHCaptureObject(pCorpse);
+				m_tAction = ACTION_CARRY_BACK;
+			DO_ONCE_END();
+			break;
+		case ACTION_CARRY_BACK:
+			pMonster->AI_Path.DestNode = SavedNodeID;
+			pMonster->vfChoosePointAndBuildPath(0,&SavedPosition, true, 0,2000);
+
+			pMonster->Motion.m_tParams.SetParams(eMotionWalkFwd,pMonster->m_ftrWalkSpeed,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pMonster->Motion.m_tTurn.Set(eMotionWalkTurnLeft, eMotionWalkTurnRight,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
+			break;
+	}
+}
+
+
+
 

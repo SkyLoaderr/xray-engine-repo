@@ -34,6 +34,7 @@ enum EMotionAnim {
 	eMotionStandIdle = 0,
 	eMotionLieIdle,
 	eMotionStandTurnLeft,
+	eMotionStandTurnRight,
 	eMotionWalkFwd,
 	eMotionWalkBkwd,
 	eMotionWalkTurnLeft,

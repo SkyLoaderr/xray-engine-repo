@@ -199,8 +199,8 @@ public:
 	IC	bool		IsEnemy			() {return (!Enemies.empty());}	 
 	IC	bool		IsObject		() {return (!Objects.empty());}	 
 
-	IC	bool		GetEnemy		(VisionElem &ve) {return Get(ve);} 	
-	IC	bool		GetCorpse		(VisionElem &ve) {return Get(ve);}
+	IC	bool		GetEnemy		(VisionElem &ve) {if (IsEnemy())  return Get(ve); else return false;} 	
+	IC	bool		GetCorpse		(VisionElem &ve) {if (IsObject()) return Get(ve); else return false;}
 	
 	IC	void		AddCorpse		(const VisionElem &ve) {AddObject(ve);}
 

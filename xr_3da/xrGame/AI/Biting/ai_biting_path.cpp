@@ -40,23 +40,21 @@ void CAI_Biting::SetReversedDirectionLook()
 /////////////////////////////////////////////////////////////////////////////////////
 // Функция InitSelector
 
-void CAI_Biting::vfInitSelector(IBaseAI_NodeEvaluator &S, CSquad &Squad)
+void CAI_Biting::vfInitSelector(IBaseAI_NodeEvaluator &S, bool hear_sound)
 {
 	S.m_dwCurTime		= m_dwCurrentUpdate;
 	S.m_tMe				= this;
 	S.m_tpMyNode		= AI_Node;
 	S.m_tMyPosition		= Position();
 
-
-	VisionElem ve;
-	GetEnemy(ve);
-	//R_ASSERT(ve.obj);
-	if (!ve.obj) return;
-
-	S.m_tEnemy			= ve.obj;
-	S.m_tEnemyPosition	= ve.position;
-	S.m_dwEnemyNode		= ve.node_id;
-	S.m_tpEnemyNode		= ve.node;
+	if (!hear_sound) {
+		S.m_tEnemy			= m_tEnemy.obj;
+		S.m_tEnemyPosition	= m_tEnemy.position;
+		S.m_dwEnemyNode		= m_tEnemy.node_id;
+		S.m_tpEnemyNode		= m_tEnemy.node;
+	}
+	
+	INIT_SQUAD_AND_LEADER;
 
 	S.m_taMembers		= &(Squad.Groups[g_Group()].Members);
 	S.m_dwStartNode		= AI_NodeID;		// текущий узел
@@ -243,14 +241,12 @@ void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluato
 		m_tPathState = PATH_STATE_SEARCH_NODE;
 	}
 
-
 	INIT_SQUAD_AND_LEADER;
 
-	if (tpNodeEvaluator) {
-		vfInitSelector			(*tpNodeEvaluator,Squad);
-		if (!tpNodeEvaluator->m_tEnemy) return;
-	}
-
+//	if (tpNodeEvaluator) {
+//		vfInitSelector			(*tpNodeEvaluator,Squad);
+//		if (!tpNodeEvaluator->m_tEnemy) return;
+//	}
 
 	Fvector tempV;
 

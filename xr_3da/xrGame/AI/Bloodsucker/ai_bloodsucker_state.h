@@ -99,14 +99,38 @@ class CBloodsuckerHearDNE : public IState {
 	CAI_Bloodsucker	*pMonster;
 
 	enum {
-		ACTION_LOOK_AROUND,
+		ACTION_LOOK_DESTINATION,
+		ACTION_GOTO_SOUND_SOURCE,
 	} m_tAction;
 
 	SoundElem		m_tSound;
-	bool			look_left;
+	bool			flag_once_1, flag_once_2;
+
+	
 
 public:
 					CBloodsuckerHearDNE	(CAI_Bloodsucker *p);
+	virtual void	Reset			();
+private:
+	virtual	void	Init			();
+	virtual	void	Run				();
+
+			void	Restart			();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// State Hear NDE Sound
+//////////////////////////////////////////////////////////////////////////
+class CBloodsuckerHearNDE : public IState {
+	typedef	IState inherited;
+	CAI_Bloodsucker	*pMonster;
+
+	enum {
+		ACTION_DO_NOTHING,
+	} m_tAction;
+
+public:
+					CBloodsuckerHearNDE	(CAI_Bloodsucker *p);
 	virtual void	Reset			();
 private:
 	virtual	void	Init			();

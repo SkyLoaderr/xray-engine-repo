@@ -11,6 +11,7 @@ CAI_Bloodsucker::CAI_Bloodsucker()
 	stateAttack			= xr_new<CBloodsuckerAttack>	(this);
 	statePanic			= xr_new<CBitingPanic>			(this);
 	stateHearDNE		= xr_new<CBloodsuckerHearDNE>	(this);
+	stateHearNDE		= xr_new<CBloodsuckerHearNDE>	(this);
 
 	Init();
 }
@@ -22,6 +23,7 @@ CAI_Bloodsucker::~CAI_Bloodsucker()
 	xr_delete(stateAttack);
 	xr_delete(statePanic);
 	xr_delete(stateHearDNE);
+	xr_delete(stateHearNDE);
 }
 
 
@@ -46,6 +48,8 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	m_fInvisibilityDist = pSettings->r_float(section,"InvisibilityDist");
 	m_ftrPowerDown		= pSettings->r_float(section,"PowerDownFactor");	
 	m_fPowerThreshold	= pSettings->r_float(section,"PowerThreshold");	
+
+	m_tSelectorHearSnd.Load(section,"selector_hear_sound");				// like free hunting
 }
 
 
@@ -66,10 +70,10 @@ void CAI_Bloodsucker::UpdateCL()
 	HUD().pFontSmall->OutSet	(300,400);
 	HUD().pFontSmall->OutNext("Satiety = [%f]",GetSatiety());
 
-	//	// Blink processing
-	//	bool PrevVis	=	m_tVisibility.IsCurrentVisible();
-	//	bool NewVis		=	m_tVisibility.Update();
-	//	if (NewVis != PrevVis) setVisible(NewVis);
+//	// Blink processing
+//	bool PrevVis	=	m_tVisibility.IsCurrentVisible();
+//	bool NewVis		=	m_tVisibility.Update();
+//	if (NewVis != PrevVis) setVisible(NewVis);
 
 }
 
@@ -81,7 +85,6 @@ void CAI_Bloodsucker::Think()
 		CurrentState->Reset();
 		SetState(stateRest);
 	}
-
 
 //	int bone1		= PKinematics(Visual())->LL_BoneID("bip01_spine");
 //	int bone2		= PKinematics(Visual())->LL_BoneID("bip01_head");
@@ -99,7 +102,6 @@ void CAI_Bloodsucker::Think()
 //		Bones.SetMotion(&PKinematics(Visual())->LL_GetInstance(bone1), AXIS_Z, look_k * PI_DIV_4 , PI, 1);
 //		Bones.SetMotion(&PKinematics(Visual())->LL_GetInstance(bone1), AXIS_Y, look_k * PI_DIV_3 , PI_DIV_2 , 1);
 //	}
-//
 
 	VisionElem ve;
 
@@ -107,29 +109,30 @@ void CAI_Bloodsucker::Think()
 		Motion.m_tSeq.Cycle(m_dwCurrentUpdate);
 	}else {
 		
-		//- FSM 1-level 
-		if (C && H && I)			SetState(statePanic);
-		else if (C && H && !I)		SetState(statePanic);
-		else if (C && !H && I)		SetState(statePanic);
-		else if (C && !H && !I) 	SetState(statePanic);
-		else if (D && H && I)		SetState(stateAttack);
-		else if (D && H && !I)		SetState(stateAttack);  
-		else if (D && !H && I)		SetState(statePanic);
-		else if (D && !H && !I) 	SetState(statePanic);	
-		else if (E && H && I)		SetState(stateAttack); 
-		else if (E && H && !I)  	SetState(stateAttack);  
-		else if (E && !H && I) 		SetState(stateAttack); 
-		else if (E && !H && !I)		SetState(stateAttack); 
-		else if (F && H && I) 		SetState(stateAttack); 		
-		else if (F && H && !I)  	SetState(stateAttack); 
-		else if (F && !H && I)  	SetState(stateAttack); 
-		else if (F && !H && !I) 	SetState(stateAttack);		
-		else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))
-			SetState(stateEat);	
-		else SetState(stateRest);
-		//-
+//		//- FSM 1-level 
+//		if (C && H && I)			SetState(statePanic);
+//		else if (C && H && !I)		SetState(statePanic);
+//		else if (C && !H && I)		SetState(statePanic);
+//		else if (C && !H && !I) 	SetState(statePanic);
+//		else if (D && H && I)		SetState(stateAttack);
+//		else if (D && H && !I)		SetState(stateAttack);  
+//		else if (D && !H && I)		SetState(statePanic);
+//		else if (D && !H && !I) 	SetState(statePanic);	
+//		else if (E && H && I)		SetState(stateAttack); 
+//		else if (E && H && !I)  	SetState(stateAttack);  
+//		else if (E && !H && I) 		SetState(stateAttack); 
+//		else if (E && !H && !I)		SetState(stateAttack); 
+//		else if (F && H && I) 		SetState(stateAttack); 		
+//		else if (F && H && !I)  	SetState(stateAttack); 
+//		else if (F && !H && I)  	SetState(stateAttack); 
+//		else if (F && !H && !I) 	SetState(stateAttack);		
+//		else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))
+//			SetState(stateEat);	
+//		else SetState(stateRest);
+//		//-
 
-		//SetState(stateHearDNE);
+		if (A | B) SetState(stateHearDNE);
+		else SetState(stateHearNDE);
 
 		CurrentState->Execute(m_dwCurrentUpdate);
 
@@ -159,13 +162,18 @@ void CAI_Bloodsucker::vfAssignBones()
 
 	// Bones settings
 	Bones.Reset();
-	Bones.AddBone(&PKinematics(Visual())->LL_GetInstance(bone1), AXIS_X);
-	Bones.AddBone(&PKinematics(Visual())->LL_GetInstance(bone1), AXIS_Z);
-	Bones.AddBone(&PKinematics(Visual())->LL_GetInstance(bone1), AXIS_Y);
-	Bones.AddBone(&PKinematics(Visual())->LL_GetInstance(bone2), AXIS_X);
-	Bones.AddBone(&PKinematics(Visual())->LL_GetInstance(bone2), AXIS_Y);
-	Bones.AddBone(&PKinematics(Visual())->LL_GetInstance(bone2), AXIS_Z);
+	Bones.AddBone(GetBone(bone1), AXIS_X); Bones.AddBone(GetBone(bone1), AXIS_Y); Bones.AddBone(GetBone(bone1), AXIS_Z);
+	Bones.AddBone(GetBone(bone2), AXIS_X); Bones.AddBone(GetBone(bone2), AXIS_Y); Bones.AddBone(GetBone(bone2), AXIS_Z);
+}
 
+CBoneInstance *CAI_Bloodsucker::GetBone(LPCTSTR bone_name)
+{
+	int bone = PKinematics(Visual())->LL_BoneID(bone_name);
+	return (&PKinematics(Visual())->LL_GetInstance(bone));
+}
+CBoneInstance *CAI_Bloodsucker::GetBone(int bone_id)
+{
+	return (&PKinematics(Visual())->LL_GetInstance(bone_id));
 }
 
 void CAI_Bloodsucker::LoadAttackAnim()
@@ -174,25 +182,51 @@ void CAI_Bloodsucker::LoadAttackAnim()
 	center.set		(0.f,0.f,0.f);
 
 	float	impulse = 1200.f;
-	
-	Fvector	dir;
-	Fvector tdir;
-	float yaw, pitch;
-	
-	dir.set(XFORM().k);
-	dir.getHP(yaw,pitch);
-	dir.invert();
 
 	// 1 //
-	tdir = dir;		// работаем с временной копией
-	tdir.setHP(angle_normalize(yaw+PI_DIV_6),pitch);
-	m_tAttackAnim.PushAttackAnim(0, 9, 0, 600,	700,	center,		1.3f, m_fHitPower, tdir, impulse);
+	m_tAttackAnim.PushAttackAnim(0, 9, 0, 500,	600,	center,		1.3f, m_fHitPower, -PI_DIV_6, PI_DIV_6, impulse);
 
 	// 2 //
-	m_tAttackAnim.PushAttackAnim(0, 9, 1, 600,	700,	center,		1.3f, m_fHitPower, dir, impulse);
+	m_tAttackAnim.PushAttackAnim(0, 9, 1, 600,	700,	center,		1.3f, m_fHitPower, 0.f, PI_DIV_6, impulse);
 
 	// 3 // 
-	tdir = dir;
-	tdir.setHP(angle_normalize(yaw-PI_DIV_3),pitch);
-	m_tAttackAnim.PushAttackAnim(0, 9, 2, 600,	700,	center,		1.4f, m_fHitPower, tdir, impulse);
+	m_tAttackAnim.PushAttackAnim(0, 9, 2, 500,	600,	center,		1.4f, m_fHitPower, PI_DIV_3, PI_DIV_6, impulse);
 }
+
+
+void CAI_Bloodsucker::LookDirection(Fvector to_dir, float bone_turn_speed)
+{
+	// получаем вектор направления к источнику звука и его мировые углы
+	float		yaw,p;
+	to_dir.getHP(yaw,p);
+
+	float cur_yaw = -r_torso_current.yaw;						// текущий мировой угол монстра
+	float bone_angle;											// угол для боны	
+	float k;													// знаковый коэф. для боны (лево/право)
+
+	float max_bone_angle = PI_DIV_4;									
+	float dy = _abs(angle_normalize_signed(yaw - cur_yaw));		// дельта, на которую нужно поворачиваться
+
+	if (getAI().bfTooSmallAngle(cur_yaw,yaw, max_bone_angle)) {	// bone turn only
+		bone_angle = dy;
+	} else {													// torso & bone turn 
+		r_torso_target.yaw = angle_normalize(-yaw);
+		if (dy / 2 < max_bone_angle) bone_angle = dy / 2;
+		else bone_angle = max_bone_angle;
+	}
+
+	if (angle_normalize_signed(yaw - cur_yaw) > 0) k = -1.f; // right side
+	else k = 1.f;	 // left side
+
+	Bones.SetMotion(GetBone("bip01_spine"), AXIS_X, bone_angle * k, bone_turn_speed, 1);
+}
+
+void CAI_Bloodsucker::LookPosition(Fvector to_point, float bone_turn_speed)
+{
+	Fvector	dir;
+	dir.set(to_point);
+	dir.sub(Position());
+	LookDirection(dir,bone_turn_speed);
+}
+
+

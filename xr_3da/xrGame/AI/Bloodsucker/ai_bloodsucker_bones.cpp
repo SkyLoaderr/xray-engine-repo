@@ -32,8 +32,6 @@ void bonesBone::Turn(u32 dt)
 	
 	float cur_speed = params.r_speed * _cos(PI_DIV_2m - PIm * _abs(params.target_yaw - params.cur_yaw) / params.dist_yaw);
 
-	Msg("Cur speed = [%f]", cur_speed);
-	
 	float dy;
 	dy =  cur_speed * dt / 1000;  // учитываем милисек и радианную меры
 	
@@ -155,7 +153,6 @@ void bonesManipulation::Update(CBoneInstance *bone, u32 cur_time)
 	// Установить параметры из m_Bones
 	for (u32 i = 0; i<m_Bones.size(); i++) {
 		if (m_Bones[i].bone == bone) m_Bones[i].Apply();
-		Msg("Bone[%i] [address = %i]: CY = [%f]  TY = [%f] RS = [%f]", i, m_Bones[i].bone, m_Bones[i].params.cur_yaw, m_Bones[i].params.target_yaw, m_Bones[i].params.r_speed);
 	}
 }
 

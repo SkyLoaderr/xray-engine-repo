@@ -3,6 +3,7 @@
 #include "ai_bloodsucker_state.h"
 #include "..\\rat\\ai_rat.h"
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Bloodsucker Rest implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -367,7 +368,7 @@ void CBloodsuckerHearDNE::Reset()
 {
 	IState::Reset();
 
-	m_tAction = ACTION_LOOK_AROUND;
+	Msg("[ RESET ]");
 }
 
 void CBloodsuckerHearDNE::Init()
@@ -377,18 +378,82 @@ void CBloodsuckerHearDNE::Init()
 	bool bTemp;
 	pMonster->GetSound(m_tSound, bTemp);
 
-	look_left	= true;
+	flag_once_1 = false;
+	flag_once_2 = false;
 
+	m_tAction = ACTION_LOOK_DESTINATION;
+
+	Msg("[ INIT ]");
 }
 
 void CBloodsuckerHearDNE::Run()
 {
+	// если новый звук, restart
+	SoundElem	se;
+	bool		bTemp;
+	pMonster->GetSound(se, bTemp);
+	if (m_tSound.time + 2000 < se.time) Init();
+	
 	switch (m_tAction) {
-	case ACTION_LOOK_AROUND:
+	case ACTION_LOOK_DESTINATION:
+		DO_ONCE_BEGIN(flag_once_1);
+			pMonster->AI_Path.TravelPath.clear();
+			pMonster->LookPosition(m_tSound.position, PI_DIV_3);
+		DO_ONCE_END();
+		
+		pMonster->Motion.m_tParams.SetParams(eMotionStandIdle, 0, 0, 0, 0, MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+		pMonster->Motion.m_tTurn.Set(eMotionStandTurnLeft, eMotionStandTurnRight, 0, PI_DIV_3, PI_DIV_6/20);
 
+		if (m_dwStateStartedTime + 3000 < m_dwCurrentTime) m_tAction = ACTION_GOTO_SOUND_SOURCE;
+		Msg("[ ACTION_LOOK_DESTINATION ]  :: CurrentTime = [%i] CurYaw = [%f] TargetYaw = [%f]  SoundPos = [%f,%f,%f]", m_dwCurrentTime, pMonster->r_torso_current.yaw, pMonster->r_torso_target.yaw,VPUSH(m_tSound.position));
+
+		break;
+	case ACTION_GOTO_SOUND_SOURCE:
+		DO_ONCE_BEGIN(flag_once_2);
+			pMonster->vfInitSelector(pMonster->m_tSelectorHearSnd, true);
+			pMonster->m_tSelectorHearSnd.m_tEnemyPosition		= m_tSound.position;
+		DO_ONCE_END();
+		
+		pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorHearSnd,0, true, 0, 300);
+
+		pMonster->Motion.m_tParams.SetParams(eMotionWalkFwd,pMonster->m_ftrWalkSpeed,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);		
+		pMonster->Motion.m_tTurn.Set(eMotionWalkTurnLeft, eMotionWalkTurnRight,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
+		Msg("[ ACTION_GOTO_SOUND_SOURCE ]");		
 		break;
 	}
 }
 
+void CBloodsuckerHearDNE::Restart()
+{
 
+}
+
+//////////////////////////////////////////////////////////////////////////
+// State Hear NDE Sound
+//////////////////////////////////////////////////////////////////////////
+
+CBloodsuckerHearNDE::CBloodsuckerHearNDE(CAI_Bloodsucker *p)
+{
+	pMonster = p;
+	Reset();
+	SetHighPriority();
+}
+
+void CBloodsuckerHearNDE::Reset()
+{
+	IState::Reset();
+	m_tAction = ACTION_DO_NOTHING;
+}
+
+void CBloodsuckerHearNDE::Init()
+{	
+	IState::Init();	
+	Msg("[ DO NOTHING ]");		
+}
+
+void CBloodsuckerHearNDE::Run()
+{
+	pMonster->Motion.m_tParams.SetParams(eMotionStandIdle, 0, 0, 0, 0, MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+	pMonster->Motion.m_tTurn.Clear();
+}
 

@@ -2,6 +2,8 @@
 
 #include "..\\biting\\ai_biting.h"
 
+class CFleshCapture;
+
 class CAI_Flesh : public CAI_Biting {
 
 	typedef		CAI_Biting	inherited;
@@ -31,6 +33,7 @@ public:
 	CBitingExploreDNE	*stateExploreDNE;
 	CBitingExploreDE	*stateExploreDE;
 	CBitingExploreNDE	*stateExploreNDE;
+	CFleshCapture		*stateCapture;
 
 	friend	class		CBitingRest;
 	friend  class 		CBitingAttack;
@@ -41,6 +44,7 @@ public:
 	friend	class 		CBitingExploreDNE;
 	friend	class 		CBitingExploreDE;
 	friend	class 		CBitingExploreNDE;
+	friend	class		CFleshCapture;
 
 // TEMP
 	FvectorVec			PTurn;
@@ -59,4 +63,33 @@ public:
 #endif
 
 };
+
+
+
+class CFleshCapture : public IState {
+
+	CAI_Flesh	*pMonster;
+
+	enum {
+		ACTION_RUN,
+		ACTION_CAPTURE,
+		ACTION_CARRY_BACK,
+	} m_tAction;
+
+	CEntity			*pCorpse;
+	float			m_fDistToCorpse;			//!< дистанция до трупа
+
+	bool			flag_once_1;
+	
+	u32				SavedNodeID;
+	Fvector			SavedPosition;
+
+public:
+					CFleshCapture	(CAI_Flesh *p);
+	virtual	void	Reset			();
+private:
+	virtual void	Init			();
+	virtual void	Run				();
+};
+
 
