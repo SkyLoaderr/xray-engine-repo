@@ -610,11 +610,11 @@ public:
 	CCC_DemoRecord(LPCSTR N) : IConsole_Command(N) {};
 	virtual void Execute(LPCSTR args) {
 		//#ifndef	DEBUG
-		if (GameID() != GAME_SINGLE) 
-		{
-			Msg("For this game type Demo Record is disabled.");
-			return;
-		};
+		//if (GameID() != GAME_SINGLE) 
+		//{
+		//	Msg("For this game type Demo Record is disabled.");
+		//	return;
+		//};
 		//#endif
 		Console->Hide	();
 		char fn[256]; strconcat(fn,args,".xrdemo");
