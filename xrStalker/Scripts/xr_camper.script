@@ -88,9 +88,11 @@ function action_patrol:reset_scheme()
 		utils.path_parse_waypoints(self.a.path_look),
 		nil,nil,{obj=self,func=self.process_point})
 	self.was_reset = true
+	printf("reset for %s", self.object:name())
 end
 function action_patrol:activate_scheme()
-        self.was_reset = false
+	printf("activate for %s", self.object:name())
+    self.was_reset = false
 end
 function action_patrol:execute()
 	action_base.execute (self)
