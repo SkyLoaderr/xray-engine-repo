@@ -13,7 +13,7 @@
 		<rank>90</rank>
 		<reputation>0</reputation>
  
-		<visual>actors\neutral\stalker_bar_security</visual>
+		<visual>actors\neytral\stalker_bar_security</visual>
 		<supplies>
 			[spawn] \n
 			wpn_ak74 \n
