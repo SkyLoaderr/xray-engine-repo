@@ -24,7 +24,7 @@ class "eva_state_mgr_weapon_strapped" (property_evaluator)
 function eva_state_mgr_weapon_strapped:__init(name) super (nil, name)
 end
 function eva_state_mgr_weapon_strapped:evaluate()
---	printf("eva_state_mgr_weapon_strapped:evaluate() %s", str_bool(self.object:weapon_strapped()))
+--	printf("eva_state_mgr_weapon_strapped:evaluate() %s", utils.to_str(self.object:weapon_strapped()))
 	return self.object:weapon_strapped()
 end
 --' Держит ли он оружие в руках
@@ -32,7 +32,7 @@ class "eva_state_mgr_weapon_unstrapped" (property_evaluator)
 function eva_state_mgr_weapon_unstrapped:__init(name) super (nil, name)
 end
 function eva_state_mgr_weapon_unstrapped:evaluate()
---	printf("eva_state_mgr_weapon_unstrapped:evaluate() %s", str_bool(self.object:weapon_unstrapped()))
+--	printf("eva_state_mgr_weapon_unstrapped:evaluate() %s", utils.to_str(self.object:weapon_unstrapped()))
 	return self.object:weapon_unstrapped()
 end
 --' Лочим ли мы все это для оружия или нет?

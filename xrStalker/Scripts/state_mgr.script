@@ -97,9 +97,11 @@ function state_manager:__init(npc)
 
 	self.properties["mental"]				= 31
 	self.properties["mental_free"]			= 32
-	self.properties["mental_danger"]		= 33
-	self.properties["mental_free_now"]		= 34
+	self.properties["mental_free_now"]		= 33
+	self.properties["mental_danger"]		= 34
 	self.properties["mental_danger_now"]	= 35
+	self.properties["mental_panic"]			= 36
+	self.properties["mental_panic_now"]		= 37
 
 	self.properties["bodystate"]			= 41
 	self.properties["bodystate_crouch"]		= 42
@@ -144,9 +146,11 @@ function state_manager:__init(npc)
 
 	self.planner:add_evaluator(self.properties["mental"],					state_mgr_mental.eva_state_mgr_mental("state_mgr_mental", self))
 	self.planner:add_evaluator(self.properties["mental_free"],				state_mgr_mental.eva_state_mgr_mental_free("state_mgr_mental_free", self))
-	self.planner:add_evaluator(self.properties["mental_danger"],			state_mgr_mental.eva_state_mgr_mental_danger("state_mgr_mental_danger", self))
 	self.planner:add_evaluator(self.properties["mental_free_now"],			state_mgr_mental.eva_state_mgr_mental_free_now("state_mgr_mental_free_now", self))
+	self.planner:add_evaluator(self.properties["mental_danger"],			state_mgr_mental.eva_state_mgr_mental_danger("state_mgr_mental_danger", self))
 	self.planner:add_evaluator(self.properties["mental_danger_now"],		state_mgr_mental.eva_state_mgr_mental_danger_now("state_mgr_mental_danger_now", self))
+	self.planner:add_evaluator(self.properties["mental_panic"],				state_mgr_mental.eva_state_mgr_mental_panic("state_mgr_mental_panic", self))
+	self.planner:add_evaluator(self.properties["mental_panic_now"],			state_mgr_mental.eva_state_mgr_mental_panic_now("state_mgr_mental_panic_now", self))
 
 	self.planner:add_evaluator(self.properties["bodystate"],				state_mgr_bodystate.eva_state_mgr_bodystate("state_mgr_bodystate", self))
 	self.planner:add_evaluator(self.properties["bodystate_crouch"],			state_mgr_bodystate.eva_state_mgr_bodystate_crouch("state_mgr_bodystate_crouch", self))
@@ -193,6 +197,7 @@ function state_manager:__init(npc)
 
 	self.operators["mental_free"]			= 31
 	self.operators["mental_danger"]			= 32	
+	self.operators["mental_panic"]			= 33
 	
 	self.operators["bodystate_crouch"]		= 41
 	self.operators["bodystate_standing"]	= 42	
@@ -274,6 +279,13 @@ function state_manager:__init(npc)
 	action:add_effect 			(world_property(self.properties["mental_danger_now"],	true))
 	self.planner:add_action(self.operators["mental_danger"], action)
 
+	action = state_mgr_mental.act_state_mgr_mental_panic("state_mgr_mental_panic")
+	action:add_precondition		(world_property(self.properties["mental"],				false))
+	action:add_precondition		(world_property(self.properties["mental_panic_now"],	false))
+	action:add_precondition		(world_property(self.properties["mental_panic"],		true))
+	action:add_effect 			(world_property(self.properties["mental"],				true))
+	action:add_effect 			(world_property(self.properties["mental_panic_now"],	true))
+	self.planner:add_action(self.operators["mental_panic"], action)
 
 
 	action = state_mgr_bodystate.act_state_mgr_bodystate_crouch("state_mgr_bodystate_crouch")
