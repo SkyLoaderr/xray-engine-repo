@@ -547,6 +547,22 @@ public:
 		else l_tpTrader->clear_callback(bOnEnter);
 	}
 
+	void SetTradeCallback(const luabind::functor<void> &tpTradeCallback) {
+		CAI_Trader	*l_tpTrader		= dynamic_cast<CAI_Trader*>	(m_tpGameObject);
+
+		if (!l_tpTrader) 
+			LuaOut			(Lua::eLuaMessageTypeError,"CAI_Trader : cannot access class member set_trade_callback!");
+		else l_tpTrader->set_trade_callback(tpTradeCallback);
+	}
+	
+	void ClearTradeCallback() {
+		CAI_Trader	*l_tpTrader		= dynamic_cast<CAI_Trader*>	(m_tpGameObject);
+
+		if (!l_tpTrader) 
+			LuaOut			(Lua::eLuaMessageTypeError,"CAI_Trader : cannot access class member clear_trade_callback!");
+		else l_tpTrader->clear_trade_callback();
+	}
+
 	BIND_FUNCTION10	(m_tpGameObject,	GetPatrolPathName,		CScriptMonster,	GetPatrolPathName,		LPCSTR,								"");
 
 	void SetCallback(const luabind::object &lua_object, LPCSTR method, const CScriptMonster::EActionType tActionType)

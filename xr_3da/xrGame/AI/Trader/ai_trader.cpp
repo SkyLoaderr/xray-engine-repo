@@ -12,6 +12,7 @@
 
 #include "../../trade.h"
 #include "../../ai_script_actions.h"
+#include "../../ai_script_classes.h"
 
 CAI_Trader::CAI_Trader()
 {
@@ -20,7 +21,7 @@ CAI_Trader::CAI_Trader()
 	InitTrade();
 	Init();
 
-	m_tpOnStart = m_tpOnStop = 0;
+	m_tpOnStart = m_tpOnStop = m_tpOnTrade = 0;
 
 } 
 
@@ -30,6 +31,7 @@ CAI_Trader::~CAI_Trader()
 
 	if (m_tpOnStart)	xr_delete(m_tpOnStart);
 	if (m_tpOnStop)		xr_delete(m_tpOnStop);
+	if (m_tpOnTrade)	xr_delete(m_tpOnTrade);
 }
 
 void CAI_Trader::Load(LPCSTR section)
@@ -337,5 +339,20 @@ void CAI_Trader::OnStopTrade()
 	if (m_tpOnStop) (*m_tpOnStop)();
 }
 
+void CAI_Trader::set_trade_callback(const luabind::functor<void> &tpTradeCallback)
+{
+	if (m_tpOnTrade) xr_delete(m_tpOnTrade);
+	if (tpTradeCallback.is_valid())	 m_tpOnTrade	= xr_new<luabind::functor<void> >(tpTradeCallback);
+}
+
+void CAI_Trader::clear_trade_callback()
+{
+	m_tpOnTrade = 0;
+}
+
+void CAI_Trader::OnTradeAction(CGameObject *O, bool bSell)
+{
+	if (m_tpOnTrade) (*m_tpOnTrade)(xr_new<CLuaGameObject>(O),bSell);
+}
 
 

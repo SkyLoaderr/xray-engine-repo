@@ -77,7 +77,7 @@ bool CTrade::CanTrade()
 
 	// Объект рядом
 	float dist = pPartner.base->Position().distance_to(pThis.base->Position());
-	if (dist < 0.5f || dist > 1.5f)  
+	if (dist < 0.5f || dist > 4.5f)  
 	{
 		RemovePartner();
 		return false;
@@ -378,6 +378,9 @@ void CTrade::SellItem(int id)
 				pPartner.inv_owner->m_dwMoney -= dwTransferMoney;
 				
 				Msg("--TRADE:: [%s]: Ok, item sold!",pThis.base->cName());
+
+				if (pThis.type == TT_TRADER) dynamic_cast<CAI_Trader*>(pThis.base)->OnTradeAction(l_pIItem, true);
+				else if (pPartner.type == TT_TRADER) dynamic_cast<CAI_Trader*>(pPartner.base)->OnTradeAction(l_pIItem, false);
 			}
 			break;
 		}
@@ -414,6 +417,9 @@ void CTrade::SellItem(CInventoryItem* pItem)
 
 	// уменьшить денег у партнера
 	pPartner.inv_owner->m_dwMoney -= dwTransferMoney;
+
+	if (pThis.type == TT_TRADER) dynamic_cast<CAI_Trader*>(pThis.base)->OnTradeAction(pItem, true);
+	else if (pPartner.type == TT_TRADER) dynamic_cast<CAI_Trader*>(pPartner.base)->OnTradeAction(pItem, false);
 }
 
 

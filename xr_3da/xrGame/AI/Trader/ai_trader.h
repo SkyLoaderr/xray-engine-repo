@@ -17,6 +17,7 @@
 class CAI_Trader : public CEntityAlive, public CInventoryOwner, public CScriptMonster {
 	luabind::functor<void>	*m_tpOnStart;
 	luabind::functor<void>	*m_tpOnStop;
+	luabind::functor<void>	*m_tpOnTrade;
 
 public:
 	typedef CEntityAlive inherited;
@@ -77,7 +78,11 @@ public:
 			void			set_callback			(const luabind::functor<void> &tpTradeCallback, bool bOnStart);
 			void			clear_callback			(bool bOnStart);
 
+			void			set_trade_callback		(const luabind::functor<void> &tpTradeCallback);
+			void			clear_trade_callback	();
+
 			void			OnStartTrade			();
 			void			OnStopTrade				();
+			void			OnTradeAction			(CGameObject *O, bool bSell);
 
 };

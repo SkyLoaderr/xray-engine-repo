@@ -663,7 +663,8 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("give_info_portion",			&CLuaGameObject::GiveInfoPortion)
 			.def("give_info_portion_via_pda",	&CLuaGameObject::GiveInfoPortionViaPda)
 			.def("patrol",						&CLuaGameObject::GetPatrolPathName)
-			//.def("set_trade_callback",			(void (CLuaGameObject::*)(const luabind::object &, LPCSTR, const CScriptMonster::EActionType))(CLuaGameObject::SetCallback))
+			.def("set_trade_callback",			(void (CLuaGameObject::*)(const luabind::functor<void> &))(CLuaGameObject::SetTradeCallback))
+			.def("clear_trade_callback",		(void (CLuaGameObject::*)())(CLuaGameObject::ClearTradeCallback))
 	];
 }
 
