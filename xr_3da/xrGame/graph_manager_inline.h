@@ -91,9 +91,11 @@ void CAbstractGraphManager::update	(u32 time_delta)
 		return;
 	m_actuality				= true;
 	m_path.clear			();
+#ifdef DEBUG
 	bool					successfull = ai().graph_engine().search(graph(),graph().vertex_index(current_vertex_id()),graph().vertex_index(dest_vertex_id()),&m_path,CGraphEngine::CBaseParameters());
 	VERIFY					(successfull);
 	VERIFY					(!m_path.empty());
+#endif
 
 	xr_vector<u32>::iterator I = m_path.begin();
 	xr_vector<u32>::iterator E = m_path.end();
