@@ -87,10 +87,14 @@ function proceed(actor)
 	end
 
 	--' GARBAGE
-	if actor:has_info("garbage_meetstalker_die") then
+	if actor:has_info("garbage_meetstalker_start") and
+		actor:has_info("garbage_meetstalker_die") 
+	then
 		actor:set_task_state(task.fail, "garbage_meet_stalker", 0)
 	end       	
-	if actor:has_info("garbage_meetstalker_done") then
+	if actor:has_info("garbage_meetstalker_start") and
+		actor:has_info("garbage_meetstalker_done") 
+	then
 		actor:set_task_state(task.completed, "garbage_meet_stalker", 0)
 	end       	
 	
