@@ -26,7 +26,7 @@ function multiplayer_create_base_tab:__finalize()
 end
 
 
-function multiplayer_create_base_tab:InitConrols(caption, x_pos, y_pos)
+function multiplayer_create_base_tab:InitControls(caption, x_pos, y_pos)
 		--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< INIT DATA
 	self.indent = 10
 	self.button_indent = -1
