@@ -85,13 +85,7 @@ void CALifeUpdateManager::shedule_Update	(u32 dt)
 		return;
 	}
 
-	Msg								("[LSS] Schedule update started at %d",Level().timeServer());
-	FlushLog						();
-
 	update							(true);
-	
-	Msg								("[LSS] Schedule update finished at %d",Level().timeServer());
-	FlushLog						();
 
 	Device.Statistic.TEST3.End		();
 }
@@ -147,9 +141,6 @@ void CALifeUpdateManager::update(bool switch_objects)
 
 	switch (header().state()) {
 		case eZoneStateSurge : {
-			Msg							("[LSS] Schedule update surge started at %d",Level().timeServer());
-			FlushLog					();
-
 			surge						();
 			save						();
 			header().set_state			(eZoneStateBetweenSurges);
@@ -157,9 +148,6 @@ void CALifeUpdateManager::update(bool switch_objects)
 		}
 		case eZoneStateBetweenSurges : {
 			if (time_manager().game_time() > time_manager().next_surge_time()) {
-				Msg						("[LSS] Schedule update preparing for surge started at %d",Level().timeServer());
-				FlushLog				();
-
 				header().set_state		(eZoneStateSurge);
 				if (!switch_objects)
 					return;
@@ -168,25 +156,12 @@ void CALifeUpdateManager::update(bool switch_objects)
 				break;
 			}
 			
-			if (switch_objects) {
-				Msg						("[LSS] Schedule update switch started at %d",Level().timeServer());
-				FlushLog				();
-				
+			if (switch_objects)
 				graph().level().update	(CSwitchPredicate(this));
-				
-				Msg						("[LSS] Schedule update switch finished at %d",Level().timeServer());
-				FlushLog				();
-			}
-
-			Msg							("[LSS] Schedule update schedule started at %d",Level().timeServer());
-			FlushLog					();
 
 			Device.Statistic.TEST2.Begin();
 			scheduled().update			();
 			Device.Statistic.TEST2.End	();
-			
-			Msg							("[LSS] Schedule update schedule finished at %d",Level().timeServer());
-			FlushLog					();
 
 			break;
 		}
