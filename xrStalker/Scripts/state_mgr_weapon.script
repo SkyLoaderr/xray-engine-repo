@@ -18,10 +18,10 @@ function eva_state_mgr_weapon:evaluate()
 		
 		)
 	then
-		printf("eva_state_mgr_weapon:evaluate() TRUE")
+		--printf("eva_state_mgr_weapon:evaluate() TRUE")
 		return true
 	end
-	printf("eva_state_mgr_weapon:evaluate() FALSE")
+	--printf("eva_state_mgr_weapon:evaluate() FALSE")
 	return false
 end
 --' Лочим ли мы все это для оружия или нет?
