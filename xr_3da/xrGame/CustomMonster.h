@@ -18,11 +18,9 @@
 class  CBaseFunction;
 class  CPatternFunction;
 class  CHealthFunction;
-class  CArmorFunction;
 class  CMoraleFunction;
-class  CStrengthFunction;
-class  CAccuracyFunction;
-class  CReactionFunction;
+class  CCreatureTypeFunction;
+class  CWeaponTypeFunction;
 
 class ENGINE_API CMotionDef;
 class ENGINE_API CKinematics;
@@ -120,6 +118,7 @@ public:
 	float				m_fSoundPower;
 	float				m_fStartPower;
 	CLevel::SPath		*m_tpPath;
+	CCustomMonster		*m_tpCurrentEnemy;
 
 	virtual void		Think() = 0;
 
@@ -260,15 +259,15 @@ public:
 	virtual	void			feel_touch_new		(CObject* O);
 	virtual	void			OnEvent				(NET_Packet& P, u16 type);
 
-	// Data driven design properties
-	static	bool				bPatternFunctionLoaded;
-	static  CBaseFunction		*fpaBaseFunctions[MAX_FUNCTION_COUNT];
-	static  CHealthFunction		pfHealth;
-	static  CArmorFunction		pfArmor;
-	static  CMoraleFunction		pfMorale;
-	static  CStrengthFunction	pfStrength;
-	static  CAccuracyFunction	pfAccuracy;
-	static  CReactionFunction	pfReaction;
+// Data driven design properties
+	// primary functions
+	static	bool					bPatternFunctionLoaded;
+	static  CBaseFunction			*fpaBaseFunctions[MAX_FUNCTION_COUNT];
+	static  CHealthFunction			pfHealth;
+	static  CMoraleFunction			pfMorale;
+	static  CCreatureTypeFunction	pfCreatureType;
+	static  CWeaponTypeFunction		pfWeaponType;
+	// complex functions
 	static  CPatternFunction	pfRelation;
 };
 

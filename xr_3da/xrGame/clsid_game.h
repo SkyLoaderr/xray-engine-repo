@@ -4,11 +4,34 @@
 #define CLSID_OBJECT_ACTOR			MK_CLSID('O','_','A','C','T','O','R',' ')
 #define CLSID_OBJECT_DUMMY			MK_CLSID('O','_','D','U','M','M','Y',' ')
 #define CLSID_ENTITY				MK_CLSID('E','N','T','I','T','Y',' ',' ')
+
+// dummy monster
 #define CLSID_AI_HEN				MK_CLSID('A','I','_','H','E','N',' ',' ')
-#define CLSID_AI_RAT				MK_CLSID('A','I','_','R','A','T',' ',' ')
-#define CLSID_AI_SOLDIER			MK_CLSID('A','I','_','S','O','L','D',' ')
-#define CLSID_AI_ZOMBIE				MK_CLSID('A','I','_','Z','O','M','B','Y')
+
+// all the monsters
 #define CLSID_AI_CROW				MK_CLSID('A','I','_','C','R','O','W',' ')
+#define CLSID_AI_RAT				MK_CLSID('A','I','_','R','A','T',' ',' ')
+#define CLSID_AI_RAT_WOLF			MK_CLSID('A','I','_','R','A','T','_','W')
+#define CLSID_AI_ZOMBIE				MK_CLSID('A','I','_','Z','O','M',' ',' ')
+#define CLSID_AI_ZOMBIE_HUMAN		MK_CLSID('A','I','_','Z','O','M','_','H')
+#define CLSID_AI_POLTERGEIST		MK_CLSID('A','I','_','P','O','L','T','R')
+#define CLSID_AI_DOG				MK_CLSID('A','I','_','D','O','G',' ',' ')
+#define CLSID_AI_FLESH				MK_CLSID('A','I','_','F','L','E','S','H')
+#define CLSID_AI_DWARF				MK_CLSID('A','I','_','D','W','A','R','F')
+#define CLSID_AI_SCIENTIST			MK_CLSID('A','I','_','S','C','I','E','N')
+#define CLSID_AI_PHANTOM			MK_CLSID('A','I','_','P','H','A','N','T')
+#define CLSID_AI_SPONGER			MK_CLSID('A','I','_','S','P','O','N','G')
+#define CLSID_AI_CONTROLLER			MK_CLSID('A','I','_','C','O','N','T','R')
+#define CLSID_AI_BLOODSUCKER		MK_CLSID('A','I','_','B','L','O','O','D')
+#define CLSID_AI_SOLDIER			MK_CLSID('A','I','_','S','O','L','D','R')
+#define CLSID_AI_STALKER_DARK		MK_CLSID('A','I','_','S','T','L','_','D')
+#define CLSID_AI_STALKER_MILITARY	MK_CLSID('A','I','_','S','T','L','_','M')
+#define CLSID_AI_STALKER			MK_CLSID('A','I','_','S','T','L',' ',' ')
+#define CLSID_AI_BURER				MK_CLSID('A','I','_','B','U','R','E','R')
+#define CLSID_AI_GIANT				MK_CLSID('A','I','_','G','I','A','N','T')
+#define CLSID_AI_CHIMERA			MK_CLSID('A','I','_','H','I','M','E','R')
+#define CLSID_AI_FRACTURE			MK_CLSID('A','I','_','F','R','A','C','T')
+#define CLSID_AI_DOG_BLACK			MK_CLSID('A','I','_','D','O','G','_','B')
 
 #define CLSID_CAR_NIVA				MK_CLSID('C','_','N','I','V','A',' ',' ')
 
