@@ -39,7 +39,7 @@ void CTeleWhirlwind::draw_out_impact(Fvector& dir,float& val)
 	m_saved_impacts.erase(m_saved_impacts.begin());
 }
 
-bool RemovePred(CTelekineticObject *tele_object)
+static bool RemovePred(CTelekineticObject *tele_object)
 {
 	return (!tele_object->get_object() || 
 		tele_object->get_object()->getDestroy());
