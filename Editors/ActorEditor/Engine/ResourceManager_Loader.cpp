@@ -53,6 +53,9 @@ void	CResourceManager::OnDeviceDestroy(BOOL bKeepTextures)
 		xr_delete	(_t->second.cs);
 	}
 	m_td.clear		();
+
+	// scripting
+	LS_Unload				();
 }
 
 void	CResourceManager::OnDeviceCreate	(IReader* F)
@@ -60,6 +63,9 @@ void	CResourceManager::OnDeviceCreate	(IReader* F)
 	if (!Device.bReady) return;
 
 	string256	name;
+
+	// scripting
+	LS_Load					();
 
 	// Load constants
 	{

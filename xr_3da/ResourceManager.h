@@ -6,9 +6,13 @@
 #define ResourceManagerH
 #pragma once
 
-#include "shader.h"
-#include "tss_def.h"
+#include	"shader.h"
+#include	"tss_def.h"
 
+// refs
+struct		lua_State;
+
+// defs
 class ENGINE_API CResourceManager
 {
 private:
@@ -59,8 +63,12 @@ private:
 
 	// misc
 public:
+	lua_State*						LSVM;
 	BOOL							bDeferredLoad;
 	string256						HLSL_Path;
+private:
+	void							LS_Load				();
+	void							LS_Unload			();
 public:
 	// Miscelaneous
 	void							_ParseList			(sh_list& dest, LPCSTR names);

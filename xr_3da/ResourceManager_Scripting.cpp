@@ -56,9 +56,22 @@ public:
 };
 
 // export
-void	export	(lua_State*	LS)
+void	CResourceManager::LS_Load			()
 {
-	open	(LS);
+	LSVM			= lua_open();
+	if (!LSVM)		{
+		Msg			("! ERROR : Cannot initialize LUA VM!");
+		return;
+	}
+
+	// initialize lua standard library functions 
+	luaopen_base	(LSVM); 
+	luaopen_table	(LSVM);
+	luaopen_string	(LSVM);
+	luaopen_math	(LSVM);
+	luaopen_debug	(LSVM);
+
+	luabind::open	(LSVM);
 	class_<adopt_sampler>("_sampler")
 		.def(								constructor<const adopt_sampler&>())
 		.def("texture",						&adopt_sampler::_texture		)
@@ -91,4 +104,10 @@ void	export	(lua_State*	LS)
 		.def("aref",						&adopt_compiler::_aref			)
 		.def("sampler",						&adopt_compiler::_sampler		)
 		;
+}
+
+void	CResourceManager::LS_Unload			()
+{
+	lua_close	(LSVM);
+	LSVM		= NULL;
 }
