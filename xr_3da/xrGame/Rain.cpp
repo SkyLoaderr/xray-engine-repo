@@ -17,10 +17,10 @@
 #endif
 
 const int	max_desired_items	= 2500;
-const float	drop_length			= 1.5f;
+const float	drop_length			= 3.f;
 const float drop_width			= 0.04f;
 const float drop_angle			= 3.01f;
-const float drop_max_angle		= PI_DIV_6*.5f;
+const float drop_max_angle		= PI_DIV_4;
 const float drop_max_wind_vel	= 20.0f;
 const float drop_speed_min		= 40.f;
 const float drop_speed_max		= 80.f;
@@ -234,7 +234,7 @@ void	CEffect_Rain::Render	()
 		break;
 	}
 	snd_Ambient.set_volume		(factor);
-	u32 desired_items			= iFloor	(factor*float(max_desired_items));
+	u32 desired_items			= iFloor	(0.5f*(1.f+factor)*float(max_desired_items));
 
 	// Sound pos
 	Fvector						sndP;
@@ -263,7 +263,7 @@ void	CEffect_Rain::Render	()
 	FVF::LIT	*verts		= (FVF::LIT	*) RCache.Vertex.Lock(desired_items*4,hGeom_Rain->vb_stride,vOffset);
 	FVF::LIT	*start		= verts;
 	float		dt			= Device.fTimeDelta;
-	Fvector		vCenter		= Device.vCameraPosition;
+	const Fvector&	vCenter	= Device.vCameraPosition;
 	for (u32 I=0; I<items.size(); I++)
 	{
 		// Physics and time control
@@ -281,12 +281,13 @@ void	CEffect_Rain::Render	()
 			// Perform wrapping
 			wdir.div	(wlen);
 			one.P.mad	(one.P, wdir, -(wlen+b_radius));
-			RayTest		(one, b_height);
+            if ((vCenter.y-one.P.y)>b_height) 	Born	(one,b_radius,b_height);
+			else								RayTest	(one, b_height);
 		}
 
 		// Build line
 		Fvector&	pos_head	= one.P;
-		Fvector		pos_trail;	pos_trail.mad	(pos_head,one.D,-drop_length);
+		Fvector		pos_trail;	pos_trail.mad	(pos_head,one.D,-drop_length*factor);
 		
 		// Culling
 		Fvector sC,lineD;	float sR; 
