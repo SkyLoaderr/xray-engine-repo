@@ -22,6 +22,7 @@ enum EWayType{
 
 enum ERPpointType{		// [0..255]
 	rptActorSpawn		= 0,
+	rptArtefactSpawn	,
 };
 extern xr_token rpoint_type[];
 
