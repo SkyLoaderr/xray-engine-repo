@@ -402,7 +402,6 @@ void	CRender::Render		()
 	Device.Statistic.RenderDUMP.End();
 }
 
-
 void	CRender::ApplyBlur4		(FVF::TL4uv* pv, u32 w, u32 h, float k)
 {
 	float	_w					= float(w);

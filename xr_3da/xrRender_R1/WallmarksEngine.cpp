@@ -261,7 +261,7 @@ void CWallmarksEngine::Render()
 	FVF::LIT*			w_verts = (FVF::LIT*)	RCache.Vertex.Lock	(MAX_TRIS*3,hGeom->vb_stride,w_offset);
 	FVF::LIT*			w_start = w_verts;
 
-	ref_shader	w_S			= marks.front()->shader;
+	ref_shader	w_S		= marks.front()->shader;
 	float	ssaCLIP		= r_ssaDISCARD/4;
 	for (u32 i=0; i<marks.size(); i++)
 	{
