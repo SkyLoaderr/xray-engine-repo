@@ -1,4 +1,4 @@
-/*
+#ifndef _EDITOR
 //---------------------------------------------------------------------------
 #include "stdafx.h"
 #pragma hdrstop
@@ -654,10 +654,8 @@ void CParticleEffect::ApplyExplosion()
 	pExplosion			(0,0,0, 1, 8, 3, 0.1f, 1.0f);
 	pEndActionList		();
 }
-
+#else
 //------------------------------------------------------------------------------
-/*/
-//---------------------------------------------------------------------------
 #include "stdafx.h"
 #pragma hdrstop
 
@@ -1288,4 +1286,5 @@ void CParticleEffect::ApplyExplosion()
 	pExplosion			(0,0,0, 1, 8, 3, 0.1f, 1.0f);
 	pEndActionList		();
 }
-//*/
+#endif
+

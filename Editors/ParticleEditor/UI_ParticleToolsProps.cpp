@@ -33,7 +33,7 @@ void __fastcall CParticleTools::OnParticleItemFocused(ListItemsVec& items)
 	if (!items.empty()){
 	    for (ListItemsIt it=items.begin(); it!=items.end(); it++){
             ListItem* item = *it;
-            if (item){
+            if (item){         
                 m_EditMode 			= EEditMode(item->Type());
                 switch(m_EditMode){
                 case emEffect:{

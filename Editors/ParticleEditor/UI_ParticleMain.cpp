@@ -1,14 +1,14 @@
 //---------------------------------------------------------------------------
 #include "stdafx.h"
-#pragma hdrstop
+#pragma hdrstop       
 
 #include "UI_ParticleMain.h"
 #include "UI_ParticleTools.h"
 #include "topbar.h"
-#include "leftbar.h"
+#include "leftbar.h"           
 #include "EditorPreferences.h"
 #include "D3DUtils.h"
-#include "bottombar.h"
+#include "bottombar.h"                  
 #include "xr_trims.h"
 #include "main.h"
 #include "xr_input.h"
@@ -17,7 +17,7 @@
 CParticleMain*&	PUI=(CParticleMain*)UI;
 //---------------------------------------------------------------------------
 
-CParticleMain::CParticleMain()
+CParticleMain::CParticleMain()  
 {
 }
 //---------------------------------------------------------------------------

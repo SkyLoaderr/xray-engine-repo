@@ -9,6 +9,13 @@
 
 #define _game_data_			"$game_data$"
 
+bool ps_sort_pred	(const PS::SDef& a, 	const PS::SDef& b)		{	return xr_strcmp(a.m_Name,b.m_Name)<0;	}
+bool ped_sort_pred	(const PS::CPEDef* a, 	const PS::CPEDef* b)	{	return xr_strcmp(a->m_Name,b->m_Name)<0;}
+bool pgd_sort_pred	(const PS::CPGDef* a, 	const PS::CPGDef* b)	{	return xr_strcmp(a->m_Name,b->m_Name)<0;}
+
+bool ps_find_pred	(const PS::SDef& a, 	LPCSTR b)				{	return xr_strcmp(a.m_Name,b)<0;	}
+bool ped_find_pred	(const PS::CPEDef* a, 	LPCSTR b)				{	return xr_strcmp(a->m_Name,b)<0;}
+bool pgd_find_pred	(const PS::CPGDef* a, 	LPCSTR b)				{	return xr_strcmp(a->m_Name,b)<0;}
 //----------------------------------------------------
 void CPSLibrary::OnCreate()
 {
@@ -56,16 +63,28 @@ void CPSLibrary::OnDeviceDestroy		()
 }
 PS::SDef* CPSLibrary::FindPS			(LPCSTR Name)
 {
+#ifdef _EDITOR
 	for (PS::PSIt it=m_PSs.begin(); it!=m_PSs.end(); it++)
     	if (0==xr_strcmp(it->m_Name,Name)) return &*it;
 	return NULL;
+#else                                       
+	PS::PSIt I = std::lower_bound(m_PSs.begin(),m_PSs.end(),Name,ps_find_pred);
+	if (I==m_PSs.end() || (0!=xr_strcmp(I->m_Name,Name)))	return 0;
+	else													return &*I;
+#endif
 }
 
 PS::PEDIt CPSLibrary::FindPEDIt(LPCSTR Name)
 {
+#ifdef _EDITOR
 	for (PS::PEDIt it=m_PEDs.begin(); it!=m_PEDs.end(); it++)
     	if (0==xr_strcmp((*it)->m_Name,Name)) return it;
 	return m_PEDs.end();
+#else
+	PS::PEDIt I = std::lower_bound(m_PEDs.begin(),m_PEDs.end(),Name,ped_find_pred);
+	if (I==m_PEDs.end() || (0!=xr_strcmp((*I)->m_Name,Name)))	return m_PEDs.end();
+	else														return I;
+#endif
 }
 
 PS::CPEDef* CPSLibrary::FindPED(LPCSTR Name)
@@ -76,9 +95,15 @@ PS::CPEDef* CPSLibrary::FindPED(LPCSTR Name)
 
 PS::PGDIt CPSLibrary::FindPGDIt(LPCSTR Name)
 {
+#ifdef _EDITOR
 	for (PS::PGDIt it=m_PGDs.begin(); it!=m_PGDs.end(); it++)
     	if (0==xr_strcmp((*it)->m_Name,Name)) return it;
 	return m_PGDs.end();
+#else
+	PS::PGDIt I = std::lower_bound(m_PGDs.begin(),m_PGDs.end(),Name,pgd_find_pred);
+	if (I==m_PGDs.end() || (0!=xr_strcmp((*I)->m_Name,Name)))	return m_PGDs.end();
+	else														return I;
+#endif
 }
 
 PS::CPGDef* CPSLibrary::FindPGD(LPCSTR Name)
@@ -126,8 +151,8 @@ void CPSLibrary::Remove(const char* nm)
         }
     }
 }
-
 //----------------------------------------------------
+
 bool CPSLibrary::Load(const char* nm)
 {
 	IReader*	F			= FS.r_open(nm);
@@ -180,6 +205,11 @@ bool CPSLibrary::Load(const char* nm)
 
     // final
 	FS.r_close			(F);
+
+	std::sort			(m_PSs.begin(),m_PSs.end(),ps_sort_pred);
+	std::sort			(m_PEDs.begin(),m_PEDs.end(),ped_sort_pred);
+	std::sort			(m_PGDs.begin(),m_PGDs.end(),pgd_sort_pred);
+   
     return bRes;
 }
 //----------------------------------------------------
