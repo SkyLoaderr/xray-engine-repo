@@ -81,11 +81,11 @@ void CActorTools::OnMotionEditClick(PropValue* sender, bool& bModif, bool& bSafe
 {
 	R_ASSERT(m_pEditObject);
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
-    std::string fn;
+    xr_string fn;
     switch (V->btn_num){
     case 0:{ // append
         AnsiString folder,nm,full_name;
-        std::string fnames;
+        xr_string fnames;
         if (EFS.GetOpenName(_smotion_,fnames,true)){
             AStringVec lst;
             _SequenceToList(lst,fnames.c_str());
@@ -335,7 +335,7 @@ void  CActorTools::OnBoneFileClick(PropValue* sender, bool& bModif, bool& bSafe)
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
     case 0:{ 
-    	std::string fn;
+    	xr_string fn;
     	if (EFS.GetOpenName("$sbones$",fn)){
         	IReader* R = FS.r_open(fn.c_str());
 	    	if (m_pEditObject->LoadBoneData(*R))	ELog.DlgMsg(mtInformation,"Bone data succesfully loaded.");
@@ -346,7 +346,7 @@ void  CActorTools::OnBoneFileClick(PropValue* sender, bool& bModif, bool& bSafe)
         }
     }break;
     case 1:{ 
-    	std::string fn;
+    	xr_string fn;
     	if (EFS.GetSaveName("$sbones$",fn)){
         	IWriter* W = FS.w_open(fn.c_str());
 	    	m_pEditObject->SaveBoneData(*W);

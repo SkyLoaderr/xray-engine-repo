@@ -73,18 +73,18 @@ void CActorTools::CommandLoad(u32 p1, u32 p2, u32& res)
 }
 void CActorTools::CommandSaveBackup(u32 p1, u32 p2, u32& res)
 {
-    std::string fn = std::string(Core.UserName)+"_backup.object";
+	xr_string fn = xr_string(Core.UserName)+"_backup.object";
     FS.update_path(fn,"$objects$",fn.c_str());
     ExecCommand(COMMAND_SAVEAS,(int)fn.c_str());
 }
 void CActorTools::CommandSaveAs(u32 p1, u32 p2, u32& res)
 {
-    std::string temp_fn	= AnsiString((char*)p1).LowerCase().c_str();
+    xr_string temp_fn	= AnsiString((char*)p1).LowerCase().c_str();
     res 				= FALSE;
     if(p1||EFS.GetSaveName(_objects_,temp_fn)){
         if (p1||(0==temp_fn.find(FS.get_path(_objects_)->m_Path))){
             if (!p1){ 
-                temp_fn = std::string(temp_fn.c_str()+strlen(FS.get_path(_objects_)->m_Path));
+                temp_fn = xr_string(temp_fn.c_str()+strlen(FS.get_path(_objects_)->m_Path));
                 xr_strlwr(temp_fn);
             }
             res=ExecCommand			(COMMAND_SAVE, (u32)temp_fn.c_str());
@@ -111,7 +111,7 @@ void CActorTools::CommandSave(u32 p1, u32 p2, u32& res)
         ELog.Msg(mtInformation,"Object '%s' successfully saved. Saving time - %3.2f(s).",m_LastFileName,T.GetElapsed_sec());
         ExecCommand(COMMAND_UPDATE_CAPTION);
         EPrefs.AppendRecentFile(temp_fn.c_str());
-        std::string mfn;
+        xr_string mfn;
         FS.update_path(mfn,_objects_,temp_fn.c_str());
 //.            EFS.MarkFile(mfn.c_str(),false);
         EFS.BackupFile(_objects_,temp_fn.c_str());
@@ -122,10 +122,10 @@ void CActorTools::CommandSave(u32 p1, u32 p2, u32& res)
 }
 void CActorTools::CommandImport(u32 p1, u32 p2, u32& res)
 {
-    std::string temp_fn;
+    xr_string temp_fn;
     if(EFS.GetOpenName(_import_,temp_fn)){
         if (0==temp_fn.find(FS.get_path(_import_)->m_Path)){
-            temp_fn = std::string(temp_fn.c_str()+strlen(FS.get_path(_import_)->m_Path));
+            temp_fn = xr_string(temp_fn.c_str()+strlen(FS.get_path(_import_)->m_Path));
             xr_strlwr(temp_fn);
             if (!Tools->IfModified()){
                 res=FALSE;
@@ -141,7 +141,7 @@ void CActorTools::CommandImport(u32 p1, u32 p2, u32& res)
             m_LastFileName = temp_fn.c_str();
             ELog.Msg(mtInformation,"Object '%s' successfully imported. Loading time - %3.2f(s).",m_LastFileName,T.GetElapsed_sec());
             if (ExecCommand( COMMAND_SAVEAS )){
-                std::string mfn;
+                xr_string mfn;
                 FS.update_path(mfn,_import_,temp_fn.c_str());
                 EFS.MarkFile(mfn.c_str(),true);
                 EFS.BackupFile(_objects_,temp_fn.c_str());
@@ -155,7 +155,7 @@ void CActorTools::CommandImport(u32 p1, u32 p2, u32& res)
 }
 void CActorTools::CommandExportDM(u32 p1, u32 p2, u32& res)
 {
-    std::string fn;
+    xr_string fn;
     if (EFS.GetSaveName("$game_dm$",fn)){
         if (ExportDM(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
         else        		    	ELog.DlgMsg(mtError,"Export failed.");
@@ -163,7 +163,7 @@ void CActorTools::CommandExportDM(u32 p1, u32 p2, u32& res)
 }
 void CActorTools::CommandExportOBJ(u32 p1, u32 p2, u32& res)
 {
-    std::string fn;
+    xr_string fn;
     if (EFS.GetSaveName("$import$",fn,0,5)){
     	
         if (ExportOBJ(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
@@ -172,7 +172,7 @@ void CActorTools::CommandExportOBJ(u32 p1, u32 p2, u32& res)
 }
 void CActorTools::CommandExportOGF(u32 p1, u32 p2, u32& res)
 {
-    std::string fn;
+    xr_string fn;
     if (EFS.GetSaveName("$game_meshes$",fn,0,0)){
         if (ATools->ExportOGF(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
         else		        		    	ELog.DlgMsg(mtError,"Export failed.");
@@ -180,7 +180,7 @@ void CActorTools::CommandExportOGF(u32 p1, u32 p2, u32& res)
 }
 void CActorTools::CommandExportOMF(u32 p1, u32 p2, u32& res)
 {
-    std::string fn;
+    xr_string fn;
     if (EFS.GetSaveName("$game_meshes$",fn,0,1)){
         if (ExportOMF(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
         else        		    	ELog.DlgMsg(mtError,"Export failed.");
@@ -221,7 +221,7 @@ void CActorTools::CommandMakeThumbnail(u32 p1, u32 p2, u32& res)
 }
 void CActorTools::CommandBatchConvert(u32 p1, u32 p2, u32& res)
 {
-    std::string fn;
+    xr_string fn;
     if (EFS.GetOpenName("$import$",fn,false,0,6)){
         if (BatchConvert(fn.c_str()))	ELog.DlgMsg(mtInformation,"Convert complete.");
         else		        		    ELog.DlgMsg(mtError,"Convert failed.");

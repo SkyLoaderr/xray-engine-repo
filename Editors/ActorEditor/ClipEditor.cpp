@@ -551,7 +551,7 @@ void TClipMaker::AppendClip()
 
 void TClipMaker::LoadClips()
 {
-	std::string fn;
+ 	xr_string fn;
     bool bRes=true;
 	if (EFS.GetOpenName("$clips$",fn)){
     	Clear		();
@@ -585,7 +585,7 @@ void TClipMaker::LoadClips()
 void TClipMaker::SaveClips()
 {
     if (!clips.empty()){
-		std::string fn;
+		xr_string fn;
         if (EFS.GetSaveName("$clips$",fn)){
             IWriter* F	= FS.w_open(fn.c_str()); VERIFY(F);
 

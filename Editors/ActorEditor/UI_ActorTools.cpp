@@ -377,7 +377,7 @@ void CActorTools::Clear()
 
 bool CActorTools::Import(LPCSTR initial, LPCSTR obj_name)
 {
-    std::string 	full_name;
+	xr_string 	full_name;
     if (initial)	FS.update_path	(full_name,initial,obj_name);
     else			full_name 		= obj_name;
     
@@ -403,7 +403,7 @@ bool CActorTools::Import(LPCSTR initial, LPCSTR obj_name)
 
 bool CActorTools::Load(LPCSTR initial, LPCSTR obj_name)
 {
-    std::string 	full_name;
+    xr_string 	full_name;
     if (initial)	FS.update_path	(full_name,initial,obj_name);
     else			full_name		= obj_name;
 
@@ -429,7 +429,7 @@ bool CActorTools::Load(LPCSTR initial, LPCSTR obj_name)
 
 bool CActorTools::Save(LPCSTR initial, LPCSTR obj_name, bool bInternal)
 {
-    std::string full_name;
+    xr_string full_name;
     if (initial)	FS.update_path	(full_name,initial,obj_name);
     else			full_name 		= obj_name;
 	VERIFY(m_bReady);
@@ -758,8 +758,8 @@ bool CActorTools::BatchConvert(LPCSTR fn)
     	CInifile::Sect& sect	= ini->r_section("ogf");
         Msg						("Start converting %d items...",sect.size());
         for (CInifile::Item* it=sect.begin(); it!=sect.end(); it++){
-        	std::string 		src_name;
-            std::string 		tgt_name;
+        	xr_string 		src_name;
+            xr_string 		tgt_name;
             FS.update_path		(src_name,_objects_,		it->first.c_str());	
             FS.update_path		(tgt_name,_game_meshes_, 	it->second.c_str());
             src_name			= EFS.ChangeFileExt	(src_name,".object");
