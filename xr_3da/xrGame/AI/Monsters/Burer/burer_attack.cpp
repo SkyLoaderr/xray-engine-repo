@@ -157,10 +157,7 @@ void CBurerAttack::ReselectState()
 	if (prev_state_run_around) {
 		if (enable_gravi) select_state(stateGravi);
 		else select_state(stateTele);
-
 	} else {
 		select_state(stateRunAround);
 	}
-	
-	select_state(stateFaceEnemy);
 }
