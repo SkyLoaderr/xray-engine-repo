@@ -99,4 +99,19 @@
     <string id="val_prisoner_hello_152">
         <text>Подожди еще немного.</text>
     </string>
+    <string id="val_rob_dialog_11">
+        <text>Привет. Нужна пушка?</text>
+    </string>
+    <string id="val_rob_dialog_111">
+        <text>Я согласен.</text>
+    </string>
+    <string id="val_rob_dialog_112">
+        <text>Не хочу, спасибо.</text>
+    </string>
+    <string id="val_rob_dialog_113">
+        <text>Нету денег. Буду богатый - куплю обязательно.</text>
+    </string>
+    <string id="val_rob_dialog_21">
+        <text>Ну что, надумал купить пушку?</text>
+    </string>
 </string_table>
