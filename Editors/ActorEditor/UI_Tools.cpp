@@ -248,7 +248,8 @@ void CActorTools::Update(){
     if (m_KeyBar) m_KeyBar->UpdateBar();
     m_PreviewObject.Update();
 	if (m_pEditObject){
-    	if (m_RenderObject.IsRenderable()) PKinematics(m_RenderObject.m_pVisual)->Calculate(1.f);
+    	if (m_RenderObject.IsRenderable()&&m_pEditObject->IsSkeleton())
+        	PKinematics(m_RenderObject.m_pVisual)->Calculate(1.f);
     	m_pEditObject->OnFrame();
     }
 }
@@ -310,6 +311,9 @@ void CActorTools::Clear(){
     _DELETE(m_pEditObject);
     m_RenderObject.Clear();
 //	m_PreviewObject.Clear();
+    m_ObjectProps->ClearProperties();
+    m_MotionProps->ClearProperties();
+    fraLeftBar->SkeletonPartEnabled(false);
 
     UI.RedrawScene();
 }
@@ -325,6 +329,7 @@ bool CActorTools::Load(LPCSTR name)
         // delete visual
         m_RenderObject.Clear();
         fraLeftBar->SetRenderStyle(false);
+		fraLeftBar->SkeletonPartEnabled(m_pEditObject->IsSkeleton());
         return true;
     }
     _DELETE(O);

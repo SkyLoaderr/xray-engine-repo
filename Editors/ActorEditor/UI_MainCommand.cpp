@@ -11,6 +11,7 @@
 #include "UI_Tools.h"
 #include "Library.h"
 #include "D3DUtils.h"
+#include "ImageEditor.h"
 
 #include "UI_Main.h"
 
@@ -172,6 +173,14 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_REFRESH_TEXTURES:
 		Device.RefreshTextures(0);
 		break;
+
+    case COMMAND_CHECK_TEXTURES:
+    	TfrmImageLib::CheckImageLib();
+    	break;
+
+	case COMMAND_IMAGE_EDITOR:
+    	TfrmImageLib::EditImageLib(AnsiString("Image Editor"));
+    	break;
 
 	case COMMAND_ZOOM_EXTENTS:
 		Tools.ZoomObject();

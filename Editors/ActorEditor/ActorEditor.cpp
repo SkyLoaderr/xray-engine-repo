@@ -15,6 +15,7 @@ USEFORM("BonePart.cpp", frmBonePart);
 USEFORM("KeyBar.cpp", frmKeyBar);
 USEFORM("Editor\NumericVector.cpp", frmNumericVector);
 USEFORM("Editor\TextForm.cpp", frmText);
+USEFORM("Editor\ImageEditor.cpp", frmImageLib);
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

@@ -71,7 +71,7 @@ public:
         return true;
     }
 	void add_face	(SOGFVert& v0, SOGFVert& v1, SOGFVert& v2){
-		if (v0.P.similar(v1.P,EPS_L) || v0.P.similar(v2.P,EPS_L) || v1.P.similar(v2.P,EPS_L)){
+		if (v0.P.similar(v1.P,EPS) || v0.P.similar(v2.P,EPS) || v1.P.similar(v2.P,EPS)){
 			ELog.Msg(mtError,"Degenerate face found. Removed.");
             return;
         }
@@ -80,7 +80,7 @@ public:
         F.v[1]	= VPack(v1);
         F.v[2]	= VPack(v2);
         if (check(F)) 	m_Faces.push_back(F);
-        else			ELog.Msg(mtError,"Dublicate(degenerate) face found. Removed.");
+        else			ELog.Msg(mtError,"Duplicate(degenerate) face found. Removed.");
     }
     OGFVertVec& 	getV_Verts()	{return m_Verts;}
     OGFFaceVec& 	getV_Faces()	{return m_Faces;}

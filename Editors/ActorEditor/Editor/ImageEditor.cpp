@@ -5,7 +5,6 @@
 
 #include "ImageEditor.h"
 #include "UI_Main.h"
-#include "scene.h"
 #include "ImageThumbnail.h"
 #include "ImageManager.h"
 #include "PropertiesList.h"
@@ -52,9 +51,6 @@ void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bCheck){
         form->m_SelectedName = "";
 
         form->paTextureCount->Caption = AnsiString(" Images in list: ")+AnsiString(texture_map.size());
-
-        // scene locking
-        Scene.lock();
     }
 
     form->ShowModal();
@@ -118,7 +114,6 @@ bool __fastcall TfrmImageLib::HideImageLib(){
 void __fastcall TfrmImageLib::FormShow(TObject *Sender)
 {
     InitItemsList(m_LastSelection.IsEmpty()?0:m_LastSelection.c_str());
-    UI.BeginEState(esEditImages);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmImageLib::FormClose(TObject *Sender, TCloseAction &Action)
@@ -133,9 +128,6 @@ void __fastcall TfrmImageLib::FormClose(TObject *Sender, TCloseAction &Action)
 
 	form = 0;
 	Action = caFree;
-
-	Scene.unlock();
-    UI.EndEState(esEditImages);
 }
 //---------------------------------------------------------------------------
 void TfrmImageLib::InitItemsList(const char* nm)

@@ -54,6 +54,7 @@ LPCSTR TfraLeftBar::FirstRecentFile()
 {
 	if (miRecentFiles->Count>0)
     	return miRecentFiles->Items[0]->Caption.c_str();
+    return 0;
 }
 
 //---------------------------------------------------------------------------
@@ -158,9 +159,21 @@ void __fastcall TfraLeftBar::ebSaveClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebRefreshTexturesClick(TObject *Sender)
+void __fastcall TfraLeftBar::Refresh1Click(TObject *Sender)
 {
 	UI.Command( COMMAND_REFRESH_TEXTURES );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
+{
+	UI.Command( COMMAND_CHECK_TEXTURES );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::ImageEditor1Click(TObject *Sender)
+{
+	UI.Command( COMMAND_IMAGE_EDITOR );
 }
 //---------------------------------------------------------------------------
 
@@ -211,12 +224,18 @@ void __fastcall TfraLeftBar::ebActorMotionsFileMouseDown(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebSceneCommandsMouseDown(TObject *Sender,
+void __fastcall TfraLeftBar::ebSceneFileMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	ShowPPMenu(pmSceneFile,Sender);
 }
+//---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::ebSceneCommands1MouseDown(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+	ShowPPMenu(pmImages,Sender);
+}
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebPreviewObjectClickMouseDown(TObject *Sender,
@@ -573,6 +592,14 @@ void __fastcall TfraLeftBar::Preferences1Click(TObject *Sender)
 	UI.Command( COMMAND_PREVIEW_OBJ_PREF );
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::SkeletonPartEnabled(bool bFlag)
+{
+	paSkeletonPart->Visible = bFlag;
+    spProps->Visible = bFlag;
+}
+//---------------------------------------------------------------------------
+
 
 
 
