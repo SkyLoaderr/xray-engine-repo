@@ -40,6 +40,8 @@ public:
 	virtual		string64&			get_option_s			(LPCSTR lst, LPCSTR name, LPCSTR def = 0);
 	virtual		u32					get_alive_count			(u32 team);
 	virtual		vector<u16>*		get_children			(u32 id_who);
+	void							u_EventGen				(NET_Packet& P, u16 type, u16 dest	);
+	void							u_EventSend				(NET_Packet& P);
 
 	// Events
 	virtual		void				OnPlayerConnect			(u32 id_who);

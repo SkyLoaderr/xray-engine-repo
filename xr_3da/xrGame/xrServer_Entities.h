@@ -128,6 +128,10 @@ xrSE_DECLARE_BEGIN(xrSE_Weapon,xrServerEntity)
 	xrSE_Weapon				();
 
 	u8						get_slot		();
+	u16						get_ammo_limit	();
+	u16						get_ammo_total	();
+	u16						get_ammo_elapsed();
+	u16						get_ammo_magsize();
 xrSE_DECLARE_END
 
 //***** Teamed

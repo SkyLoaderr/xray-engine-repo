@@ -125,11 +125,28 @@ u8		xrSE_Weapon::get_slot		()
 {
 	return (u8) pSettings->ReadINT	(s_name,"slot");
 }
+u16		xrSE_Weapon::get_ammo_limit	()
+{
+	return (u16) pSettings->ReadINT	(s_name,"ammo_limit");
+}
+u16		xrSE_Weapon::get_ammo_total	()
+{
+	return (u16) a_current;
+}
+u16		xrSE_Weapon::get_ammo_elapsed()
+{
+	return (u16) a_elapsed;
+}
+u16		xrSE_Weapon::get_ammo_magsize()
+{
+	return (u16) pSettings->ReadINT	(s_name,"ammo_mag_size");
+}
+
 #ifdef _EDITOR
 void	xrSE_Weapon::FillProp		(LPCSTR pref, PropValueVec& values)
     {
     	inherited::FillProp(pref, values);
-      	FILL_PROP_EX(values,PHelper.PrepareKey(pref,s_name), "Ammo: total",		&a_current, PHelper.CreateU16(0,1000,1));
+      	FILL_PROP_EX(values,PHelper.PrepareKey(pref,s_name), "Ammo: total",			&a_current, PHelper.CreateU16(0,1000,1));
         FILL_PROP_EX(values,PHelper.PrepareKey(pref,s_name), "Ammo: in magazine",	&a_elapsed, PHelper.CreateU16(0,30,1));
     }
 #endif

@@ -350,37 +350,19 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 {
 	__super::OnPlayerBuy	(id_who,eid_who,what);
 
-	// entity-name
-	string64				name;
-	strcpy					(name,what);
-	if ( strchr(name,'/') )	*strchr(name,'/') = 0;
-
-	// initialize spawn
-	xrServerEntity*		E	=	spawn_begin	(name);														// create SE
-	strcpy					(E->s_name_replace,name);													// name
-	E->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL;							// flags
-	E->ID_Parent			=	u16(eid_who);
-
 	// cost
-	int cost				= get_option_i	(what,"cost",0);
-	if (0==cost)			
-	{
-		F_entity_Destroy	(E);
-		return;
-	}
+	int cost				=	get_option_i	(what,"cost",0);
+	if (0==cost)			return;
+	int iAmmoMagCount		= 	get_option_i	(what,"ammo",0);
+	if (iAmmoMagCount)	
+	{ 
+		// Buy ammo
+		int		slot			=	get_option_i(what,"primary") ? 3:2;
 
-	// check if has same-slot-weapon(s)
-	xrSE_Weapon*		W	=	dynamic_cast<xrSE_Weapon*>(E);
-	if (W)
-	{
+		// Search weapon slot
 		xrServer*		S		=	Level().Server;
 		vector<u16>*	C		=	get_children(id_who);
-		if (0==C)				
-		{
-			F_entity_Destroy	(E);
-			return;
-		}
-		u8 slot					=	W->get_slot	();
+		if (0==C)				return;
 		for (u32 it=0; it<C->size(); it++)
 		{
 			xrServerEntity*		Et	= S->ID_to_entity				((*C)[it]);
@@ -389,20 +371,74 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 			if (0==T)				continue;
 			if (slot == T->get_slot())	
 			{
-				// We've found same slot occupied - don't buy anything
-				F_entity_Destroy	(E);
+				// We've found this slot - buy something :)
+
+				// TO: WONDERLAND: I didn't bother to check all conditions, money, etc. Sorry :)))
+				xrSE_Weapon*		W	= T;
+				u16		a_limit			= W->get_ammo_limit		();
+				u16		a_total			= W->get_ammo_total		();
+				u16		a_magsize		= W->get_ammo_magsize	();
+				while (iAmmoMagCount && (iAmmoMagCount*a_magsize+a_total)>(a_limit+a_magsize-1))	iAmmoMagCount--;
+				if		(0==iAmmoMagCount)	return;
+				int		a_cost			= iAmmoMagCount*cost;
+
+				// Event
+				u_EventGen			(P, GE_ADD_AMMO, W->eid_who);
+				P.w_u16				(iAmmoMagCount * a_magsize);	// Amount of ammo to add
+				u_EventSend			(P);
 				return;
 			}
 		}
+	} 
+	else 
+	{
+		// Buy weapon
+		// entity-name
+		string64				name;
+		strcpy					(name,what);
+		if ( strchr(name,'/') )	*strchr(name,'/') = 0;
+
+		// initialize spawn
+		xrServerEntity*		E	=	spawn_begin	(name);														// create SE
+		strcpy					(E->s_name_replace,name);													// name
+		E->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL;							// flags
+		E->ID_Parent			=	u16(eid_who);
+
+		// check if has same-slot-weapon(s)
+		xrSE_Weapon*		W	=	dynamic_cast<xrSE_Weapon*>(E);
+		if (W)
+		{
+			xrServer*		S		=	Level().Server;
+			vector<u16>*	C		=	get_children(id_who);
+			if (0==C)				
+			{
+				F_entity_Destroy	(E);
+				return;
+			}
+			u8 slot					=	W->get_slot	();
+			for (u32 it=0; it<C->size(); it++)
+			{
+				xrServerEntity*		Et	= S->ID_to_entity				((*C)[it]);
+				if (0==Et)				continue;
+				xrSE_Weapon*		T	= dynamic_cast<xrSE_Weapon*>	(Et);
+				if (0==T)				continue;
+				if (slot == T->get_slot())	
+				{
+					// We've found same slot occupied - don't buy anything
+					F_entity_Destroy	(E);
+					return;
+				}
+			}
+		}
+
+		// check if has money to pay
+		game_PlayerState*	ps_who	=	get_id	(id_who);
+		if(ps_who->money_total < cost)	{ F_entity_Destroy(E); return; }
+		ps_who->money_total		= ps_who->money_total - s16(cost);
+
+		// Spawn item
+		spawn_end				(E,	id_who);
 	}
-
-	// check if has money to pay
-	game_PlayerState*	ps_who	=	get_id	(id_who);
-	if(ps_who->money_total < cost)	{ F_entity_Destroy(E); return; }
-	ps_who->money_total		= ps_who->money_total - s16(cost);
-
-	// Spawn item
-	spawn_end				(E,	id_who);
 }
 
 u8 game_sv_CS::AutoTeam() 

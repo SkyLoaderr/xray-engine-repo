@@ -266,3 +266,16 @@ void				game_sv_GameState::spawn_end				(xrServerEntity* E, u32 id)
 	Level().Server->Process_spawn	(P,id);
 	F_entity_Destroy				(E);
 }
+
+void game_sv_GameState::u_EventGen(NET_Packet& P, u16 type, u16 dest)
+{
+	P.w_begin	(M_EVENT);
+	P.w_u32		(Device.dwTimeGlobal);
+	P.w_u16		(type);
+	P.w_u16		(dest);
+}
+
+void game_sv_GameState::u_EventSend(NET_Packet& P)
+{
+	Level().Server->SendBroadcast(0xfffffffff,P,net_flags(TRUE,TRUE));
+}

@@ -32,6 +32,7 @@ enum {
 	GE_DESTROY,					// authorative client request for entity-destroy
 
 	GE_BUY,
+	GE_ADD_AMMO,
 
 	GEG_SIGNAL,
 	GEG_PLAYER_READY,
