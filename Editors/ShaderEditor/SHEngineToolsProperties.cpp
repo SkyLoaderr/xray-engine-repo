@@ -62,7 +62,7 @@ void __fastcall CSHEngineTools::AddMatrixProps(TElTreeItem* item, LPSTR name)
     CMatrix* M = FindMatrix(name,true);
     R_ASSERT(M);
 	Tools.m_Props->BeginEditMode();
-    TElTreeItem* node = Tools.m_Props->AddItem(item,"Mode",&M->dwMode,PROP::CreateToken(mode_token,&ModeOnAfterEdit));
+    TElTreeItem* node = Tools.m_Props->AddItem(item,"Mode",&M->dwMode,PROP::CreateToken(mode_token,sizeof(M->dwMode),&ModeOnAfterEdit));
     UpdateMatrixModeProps(node,M,M->dwMode);
 	Tools.m_Props->EndEditMode(item);
 }
