@@ -46,7 +46,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeTask,CPureServerObject)
 	float							m_fCost;
 	ETaskType						m_tTaskType;
 	union {
-		_CLASS_ID					m_caSection;
+		string32					m_caSection;
 		_OBJECT_ID					m_tObjectID;
 	};
 	union {
