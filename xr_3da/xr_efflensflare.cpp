@@ -10,6 +10,7 @@
 #else
 	#include "xr_object.h"
 	#include "igame_level.h"
+	#include "igame_persistant.h"
 	#include "Environment.h"
 #endif
 

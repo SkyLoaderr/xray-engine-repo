@@ -8,7 +8,6 @@
 class ENGINE_API CSun;
 class ENGINE_API IRender_Visual;
 class ENGINE_API CInifile;
-class ENGINE_API CSoundStream;
 
 enum {
 	effSunGlare		= (1ul<<0ul),
@@ -54,7 +53,7 @@ public:
 					CEnvironment		();
 					~CEnvironment		();
 
-	void			Load				(CInifile *pIni, char* section);
+	void			load				();
 
 	void			OnFrame				();
 
