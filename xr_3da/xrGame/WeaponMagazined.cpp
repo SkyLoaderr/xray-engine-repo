@@ -301,7 +301,7 @@ void CWeaponMagazined::MediaLOAD		()
 	// flame textures
 	LPCSTR S		= pSettings->ReadSTRING	(cName(),"flame");
 	DWORD scnt		= _GetItemCount(S);
-	string256 name;
+	string256		name;
 	for (DWORD i=0; i<scnt; i++)
 	{
 		Shader* SH			= 0;
