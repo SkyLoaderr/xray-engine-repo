@@ -257,7 +257,7 @@ function action_idle:execute ()
 end    
 ------------
 function action_idle:finalize ()
-    action_base.finalize (self)
+    action_base.finalize (self) 
 end    
 ------------------------------------------------------------------------------------------
 
