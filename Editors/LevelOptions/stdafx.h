@@ -178,6 +178,7 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 #define _textures_			"$textures$"
 #define _objects_			"$objects$"
 #define _maps_				"$maps$"
+#define _groups_			"$groups$"
 #define _temp_				"$temp$"
 #define _omotion_			"$omotion$"
 #define _omotions_			"$omotions$"
