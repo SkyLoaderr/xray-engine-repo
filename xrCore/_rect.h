@@ -43,8 +43,8 @@ public:
 	IC	void	getcenter(_vector2<T>& center)				{ center.add(rb,lt); center.div(2); }
 	IC	void	getsize(_vector2<T>& sz)					{ sz.sub(rb,lt); }
 
-	IC	T		width()										{return rb.x-lt.x;}
-	IC	T		height()									{return rb.y-lt.y;}
+	IC	T		width()		const							{return rb.x-lt.x;}
+	IC	T		height()	const							{return rb.y-lt.y;}
 
 	IC	SelfRef	shrink(T x, T y)							{ lt.x+=x; lt.y+=y; rb.x-=x; rb.y-=y;	return *this;	};
 	IC	SelfRef	grow(T x, T y)								{ lt.x-=x; lt.y-=y; rb.x+=x; rb.y+=y;	return *this;	};
