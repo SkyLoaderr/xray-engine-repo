@@ -176,7 +176,7 @@ bool CScriptStorage::load_buffer	(CLuaVirtualMachine *L, LPCSTR caBuffer, size_t
 	int				l_iErrorCode;
 	if (caNameSpaceName) {
 		string256		insert;
-		sprintf			(insert,"local this = %s\n",caNameSpaceName);
+		sprintf			(insert,"local this = %s\n\nfunction %s.script_name()\nreturn \"%s\"\nend\n",caNameSpaceName,caNameSpaceName,caNameSpaceName);
 		size_t			str_len = xr_strlen(insert);
 		LPSTR			script = (LPSTR)xr_malloc((str_len + tSize)*sizeof(char));
 		strcpy			(script,insert);

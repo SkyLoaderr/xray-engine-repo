@@ -12,11 +12,11 @@
 
 class CScript {
 	CLuaVirtualMachine	*m_tpLuaThread;
-	ref_str				m_caScriptFileName;
+	LPSTR				m_script_name;
 public:
 	bool				m_bActive;
 
-						CScript						(LPCSTR caFileName);
+						CScript						(LPCSTR caNamespaceName);
 	virtual				~CScript					();
 			bool		Update						();
 };

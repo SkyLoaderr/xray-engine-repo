@@ -33,15 +33,16 @@ CScriptProcessor::~CScriptProcessor()
 
 void CScriptProcessor::run_scripts()
 {
-	string256		S,S1 = "";
+	LPSTR			S;
 	for ( ; !m_scripts_to_run.empty(); ) {
 		LPSTR		I = m_scripts_to_run.back();
-		FS.update_path(S,"$game_scripts$",strconcat(S1,I,".script"));
-		R_ASSERT3	(FS.exist(S),"Script file not found!",S);
+		S			= xr_strdup(I);
 		xr_free		(I);
 		m_scripts_to_run.pop_back();
 
 		CScript		*l_tpScript = xr_new<CScript>(S);
+		xr_free		(S);
+
 		if (l_tpScript->m_bActive)
 			m_tpScripts.push_back(l_tpScript);
 		else

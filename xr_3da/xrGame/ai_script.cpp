@@ -11,55 +11,48 @@
 #include "script_engine.h"
 #include "ai_script.h"
 
-CScript::CScript(LPCSTR caFileName)
+CScript::CScript(LPCSTR caNamespaceName)
 {
+	string256			S;
 	m_bActive			= false;
-	m_caScriptFileName	= caFileName;
-	Msg					("* Loading design script %s",caFileName);
+	m_script_name		= xr_strdup(caNamespaceName);
+	Msg					("* Loading design script %s",caNamespaceName);
 
-	if (!ai().script_engine().load_file(caFileName,true))
-		return;
+	ai().script_engine().add_file(caNamespaceName);
+	ai().script_engine().process();
 
-	string256		l_caNamespaceName, S;
-	_splitpath		(caFileName,0,0,l_caNamespaceName,0);
-	sprintf			(S,"\nfunction %s.script_name()\nreturn \"%s\"\nend\n",l_caNamespaceName,l_caNamespaceName);
-
-	if (!ai().script_engine().load_buffer(ai().script_engine().lua(),S,xr_strlen(S),caFileName))
-		return;
+	m_tpLuaThread		= lua_newthread(ai().script_engine().lua());
 	
-	lua_call		(ai().script_engine().lua(),0,0);
-
-	m_tpLuaThread	= lua_newthread(ai().script_engine().lua());
-	
-	sprintf			(S,"\n%s.main()\n",l_caNamespaceName);
+	sprintf				(S,"\n%s.main()\n",caNamespaceName);
 	if (!ai().script_engine().load_buffer(m_tpLuaThread,S,xr_strlen(S),"@internal.script")) {
-		lua_pop		(ai().script_engine().lua(),2);
+		lua_pop			(ai().script_engine().lua(),2);
 		return;
 	}
 
 #ifdef DEBUG
-	lua_sethook		(m_tpLuaThread, CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
+	lua_sethook			(m_tpLuaThread, CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
 #endif
 
-	m_bActive		= true;
+	m_bActive			= true;
 }
 
 CScript::~CScript()
 {
+	xr_delete			(m_script_name);
 }
 
 bool CScript::Update()
 {
 	if (!m_bActive)
-		R_ASSERT2	(false,"Cannot resume dead Lua thread!");
-	int				l_iErrorCode = lua_resume(m_tpLuaThread,0);
+		R_ASSERT2		(false,"Cannot resume dead Lua thread!");
+	int					l_iErrorCode = lua_resume(m_tpLuaThread,0);
 	if (l_iErrorCode) {
 #ifdef DEBUG
-		if (!ai().script_engine().print_output(m_tpLuaThread,*m_caScriptFileName,l_iErrorCode))
+		if (!ai().script_engine().print_output(m_tpLuaThread,m_script_name,l_iErrorCode))
 			ai().script_engine().print_error(m_tpLuaThread,l_iErrorCode);
-		m_bActive	= false;
-		return		(false);
+		m_bActive		= false;
+		return			(false);
 #endif
 	}
-	return			(true);
+	return				(true);
 }
