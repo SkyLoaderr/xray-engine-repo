@@ -67,6 +67,7 @@ void CMincer::net_Destroy()
 }
 void CMincer::feel_touch_new				(CObject* O)
 {
+	
 	inherited::feel_touch_new(O);
 	if( m_eZoneState==eZoneStateBlowout && (m_dwBlowoutExplosionTime>(u32)m_iStateTime) )
 	{
@@ -74,7 +75,10 @@ void CMincer::feel_touch_new				(CObject* O)
 		Telekinesis().activate(GO, m_fThrowInImpulse, m_fTeleHeight, 100000);
 	}
 }
-
+BOOL	CMincer::feel_touch_contact				(CObject* O)
+{
+	return inherited::feel_touch_contact(O)&&smart_cast<CPhysicsShellHolder *>(O);
+}
 void CMincer:: AffectThrow	(SZoneObjectInfo* O, CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist)
 {
 	inherited::AffectThrow(O,GO,throw_in_dir,dist);

@@ -26,7 +26,7 @@ public:
 	virtual CTelekinesis& Telekinesis		(){return m_telekinetics;}
 //	virtual void SwitchZoneState			(EZoneState new_state);
 	virtual void OnStateSwitch				(EZoneState new_state);
-
+	virtual		BOOL	feel_touch_contact	(CObject* O);
 	virtual void feel_touch_new				(CObject* O);
 	virtual void Load						(LPCSTR section);
 	virtual bool BlowoutState				();

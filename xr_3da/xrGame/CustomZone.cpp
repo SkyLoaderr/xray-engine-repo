@@ -524,8 +524,8 @@ void CCustomZone::shedule_Update(u32 dt)
 
 void CCustomZone::feel_touch_new(CObject* O) 
 {
-	if (smart_cast<CCustomZone*>(O))				return;
-	if (0==smart_cast<CKinematics*>(O->Visual()))	return;
+//	if (smart_cast<CCustomZone*>(O))				return;
+//	if (0==smart_cast<CKinematics*>(O->Visual()))	return;
 	
 	if(bDebug) HUD().outMessage(0xffffffff,O->cName(),"entering a zone.");
 	if(smart_cast<CActor*>(O) && O == Level().CurrentEntity())
@@ -583,6 +583,9 @@ void CCustomZone::feel_touch_delete(CObject* O)
 
 BOOL CCustomZone::feel_touch_contact(CObject* O) 
 {
+	if (smart_cast<CCustomZone*>(O))				return FALSE;
+	if (0==smart_cast<CKinematics*>(O->Visual()))	return FALSE;
+
 	if (O->ID() == ID())
 		return		(FALSE);
 
