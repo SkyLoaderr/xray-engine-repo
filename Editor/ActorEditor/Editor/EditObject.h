@@ -18,8 +18,9 @@ class	Mtl;
 struct	FSChunkDef;
 struct	st_ObjectDB;
 
-#ifdef _IMPORT
+#ifdef _LW_IMPORT
 #include <lwobjimp.h>
+#include <lwsurf.h>
 #endif
 
 class CSurface
@@ -67,6 +68,9 @@ public:
 	DWORD			mat_id;
 	Mtl*			pMtlMain;
 #endif
+#ifdef _LW_IMPORT
+	LWSurfaceID		surf_id;
+#endif 
 };
 
 DEFINE_VECTOR	(CSurface*,SurfaceVec,SurfaceIt);
@@ -319,6 +323,7 @@ public:
 #endif
 #ifdef _LW_IMPORT
 	bool			Export_LW				(LWObjectImport *local);
+	bool			ExportLWO				();
 #endif
 };
 //----------------------------------------------------
