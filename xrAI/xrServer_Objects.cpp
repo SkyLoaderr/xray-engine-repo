@@ -9,9 +9,9 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-//#ifdef AI_COMPILER
+#ifdef AI_COMPILER
 	#include "net_utils.h"
-//#endif
+#endif
 
 #include "xrServer_Objects.h"
 #include "game_base.h"
@@ -281,75 +281,6 @@ void CSE_Event::STATE_Write					(NET_Packet	&tNetPacket)
 #ifdef _EDITOR
 void CSE_Event::FillProp	(LPCSTR pref, PropItemVec& values)
 {
-}
-#endif
-
-////////////////////////////////////////////////////////////////////////////
-// CSE_Dummy
-////////////////////////////////////////////////////////////////////////////
-CSE_Dummy::CSE_Dummy						(LPCSTR caSection) : CSE_Abstract(caSection)
-{
-	s_Animation					= 0;
-	s_Model						= 0;
-	s_Particles					= 0;
-	s_Sound						= 0;
-}
-CSE_Dummy::~CSE_Dummy()
-{
-	xr_free						(s_Animation	);
-	xr_free						(s_Model		);
-	xr_free						(s_Particles	);
-	xr_free						(s_Sound		);
-}
-void CSE_Dummy::STATE_Read					(NET_Packet	&tNetPacket, u16 size)
-{
-	tNetPacket.r_u8				(s_style);
-
-	if (s_style&esAnimated)		{
-		// Load animator
-		string256				fn;
-		tNetPacket.r_string		(fn);
-		s_Animation				= xr_strdup(fn);
-	}
-	if (s_style & esModel) {
-		// Load model
-		string256				fn;
-		tNetPacket.r_string		(fn);
-		s_Model					= xr_strdup(fn);
-	}
-	if (s_style & esParticles) {
-		// Load model
-		string256				fn;
-		tNetPacket.r_string		(fn);
-		s_Particles				= xr_strdup(fn);
-	}
-	if (s_style & esSound) {
-		// Load model
-		string256				fn;
-		tNetPacket.r_string		(fn);
-		s_Sound					= xr_strdup(fn);
-	}
-}
-void CSE_Dummy::STATE_Write					(NET_Packet	&tNetPacket)
-{
-	tNetPacket.w_u8				(s_style		);
-	if (s_style&esAnimated)		tNetPacket.w_string			(s_Animation	);
-	if (s_style&esModel)		tNetPacket.w_string			(s_Model		);
-	if (s_style&esParticles)	tNetPacket.w_string			(s_Particles	);
-	if (s_style&esSound)		tNetPacket.w_string			(s_Sound		);
-}
-void CSE_Dummy::UPDATE_Read					(NET_Packet	&tNetPacket)
-{
-}
-
-void CSE_Dummy::UPDATE_Write				(NET_Packet	&tNetPacket)
-{
-}
-
-#ifdef _EDITOR
-void CSE_Dummy::FillProp					(LPCSTR pref, PropItemVec& values)
-{
-  	inherited::FillProp			(pref,values);
 }
 #endif
 

@@ -10,9 +10,9 @@
 
 #pragma hdrstop
 
-//#ifdef AI_COMPILER
+#ifdef AI_COMPILER
 	#include "net_utils.h"
-//#endif
+#endif
 
 #include "xrServer_Objects_ALife.h"
 #include "game_base.h"
@@ -290,27 +290,27 @@ void CSE_ALifeGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 			}
 		}
 
-		if(level_ids.empty()) {
-			R_ASSERT				(Ini->section_exist("levels"));
-			LPCSTR					N,V;
-			for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
-				R_ASSERT			(Ini->section_exist(N));
-				level_ids.push_back	(TokenValue4::Item());
-				TokenValue4::Item	&val = level_ids.back();
-				LPCSTR				S = Ini->r_string(N,"caption");
-				val.str				= S;
-				val.ID				= Ini->r_u32(N,"id");
-			}
+	if(level_ids.empty()) {
+		R_ASSERT				(Ini->section_exist("levels"));
+		LPCSTR					N,V;
+		for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
+			R_ASSERT			(Ini->section_exist(N));
+			level_ids.push_back	(TokenValue4::Item());
+			TokenValue4::Item	&val = level_ids.back();
+			LPCSTR				S = Ini->r_string(N,"caption");
+			val.str				= S;
+			val.ID				= Ini->r_u32(N,"id");
 		}
-		if (Ini)
-			xr_delete				(Ini);
+	}
+	if (Ini)
+		xr_delete				(Ini);
 
-		PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\1"),				(u32*)&m_tLocations[0],			&locations[0],					1);
-		PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\2"),				(u32*)&m_tLocations[1],			&locations[1],					1);
-		PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\3"),				(u32*)&m_tLocations[2],			&locations[2],					1);
-		PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\4"),				(u32*)&m_tLocations[3],			&locations[3],					1);
-		PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Connection\\Level name"),	(u32*)&m_tLevelID,				&level_ids,						1);
-		PHelper.CreateText			(items,	FHelper.PrepareKey(pref,s_name,"Connection\\Point name"),	m_caConnectionPointName,		sizeof(m_caConnectionPointName));
+	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\1"),				(u32*)&m_tLocations[0],			&locations[0],					1);
+	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\2"),				(u32*)&m_tLocations[1],			&locations[1],					1);
+	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\3"),				(u32*)&m_tLocations[2],			&locations[2],					1);
+	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\4"),				(u32*)&m_tLocations[3],			&locations[3],					1);
+	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Connection\\Level name"),	(u32*)&m_tLevelID,				&level_ids,						1);
+	PHelper.CreateText			(items,	FHelper.PrepareKey(pref,s_name,"Connection\\Point name"),	m_caConnectionPointName,		sizeof(m_caConnectionPointName));
 }
 #endif
 

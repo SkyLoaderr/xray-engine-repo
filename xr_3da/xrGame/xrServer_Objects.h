@@ -142,23 +142,6 @@ public:
 #endif
 };
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_Dummy,CSE_Abstract)
-	enum SStyle{
-		esAnimated					=	1<<0,	
-		esModel						=	1<<1, 
-		esParticles					=	1<<2, 
-		esSound						=	1<<3,
-		esRelativePosition			=	1<<4
-	};
-	u8								s_style;
-	char*							s_Animation;
-	char*							s_Model;
-	char*							s_Particles;
-	char*							s_Sound;
-									CSE_Dummy		(LPCSTR caSection);
-    virtual							~CSE_Dummy		();
-SERVER_ENTITY_DECLARE_END
-
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Spectator,CSE_Abstract)
 									CSE_Spectator	(LPCSTR caSection) : CSE_Abstract(caSection)
 	{

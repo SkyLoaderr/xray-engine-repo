@@ -21,7 +21,6 @@ CSE_Abstract *F_entity_Create			(LPCSTR caSection)
 
 	switch (cls) {
 		case CLSID_OBJECT_ACTOR:		return xr_new<CSE_ALifeCreatureActor>			(caSection);          	// Visualed
-		case CLSID_OBJECT_DUMMY:		return xr_new<CSE_Dummy>						(caSection);
 		case CLSID_OBJECT_HLAMP:		return xr_new<CSE_ALifeObjectHangingLamp>		(caSection);            // Visualed
 		
 		case CLSID_AI_SPAWN_GROUP:		return xr_new<CSE_SpawnGroup>					(caSection);

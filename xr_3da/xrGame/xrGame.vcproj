@@ -786,21 +786,6 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="_dummy"
-					Filter="">
-					<File
-						RelativePath=".\DummyObject.cpp">
-					</File>
-					<File
-						RelativePath=".\DummyObject.h">
-						<FileConfiguration
-							Name="Debug|Win32">
-							<Tool
-								Name="VCCustomBuildTool"/>
-						</FileConfiguration>
-					</File>
-				</Filter>
-				<Filter
 					Name="Events"
 					Filter="">
 					<File

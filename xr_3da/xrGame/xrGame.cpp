@@ -850,8 +850,6 @@ extern "C" {
 		case CLSID_TARGET_CS_CASK:		P = xr_new<CTargetCSCask>();		break;
 		case CLSID_TARGET_CS:			P = xr_new<CTargetCS>();			break;
 			
-		case CLSID_OBJECT_DUMMY:		P = xr_new<CDummyObject>();			break;
-
 		case CLSID_OBJECT_W_FN2000:		P = xr_new<CWeaponFN2000>();		break;
 		case CLSID_OBJECT_W_AK74:		P = xr_new<CWeaponAK74>();			break;
 		case CLSID_OBJECT_W_LR300:		P = xr_new<CWeaponLR300>();			break;
