@@ -22,9 +22,9 @@ function dont_give_extra_task(actor, npc)
 end
 
 function barman_dont_has_room_job(actor,npc)
-	return not barman_has_job(actor,npc)
+	return not barman_has_room_job(actor,npc)
 end
-function barman_has_room_job(actor,npc)
+function barman_has_room_job(actor,npc)	
 	if barman_need_darklab_documents(actor,npc) or
 	   barman_need_decoding(actor,npc) or
 	   barman_need_radar(actor,npc)
@@ -103,16 +103,20 @@ function barman_need_decoding_given(actor,npc)
 	end
 	return false
 end
-function give_documents_to_decoding(first_speaker, second_speaker)
-	local darklab_documents = second_speaker:object("bar_darklab_documents")
-	second_speaker:transfer_item(darklab_documents, first_speaker)
+function give_documents_to_decoding(npc, actor)
+	local darklab_documents = npc:object("bar_darklab_documents")
+	if darklab_documents then
+		npc:transfer_item(darklab_documents, actor)
+	end
 end
 function have_decoding_documents(first_speaker, second_speaker)
   	return first_speaker:object("bar_decoding_documents") ~= nil
 end
 function give_decoding_documents(first_speaker, second_speaker)
 	local decoding_documents = first_speaker:object("bar_decoding_documents")
-	first_speaker:transfer_item(decoding_documents, second_speaker)
+	if decoding_documents then
+		first_speaker:transfer_item(decoding_documents, second_speaker)
+	end
 	level_tasks.set_task_state(task.completed, "bar_decoding_documents", 0)
 end
 
