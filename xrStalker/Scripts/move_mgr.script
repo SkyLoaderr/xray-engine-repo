@@ -531,7 +531,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		self.danger = false
 	end
 	self.standing_danger = self.danger
-
+	
 	local retv = self.path_walk_info[index]["ret"]
 	if retv then
 		if not self.move_cb_func then
@@ -542,6 +542,25 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		if self.move_cb_func(self.move_cb_obj, this.arrival_before_rotation, tonumber(retv)) then
 			return
 		end
+	end
+
+	local new_path_walk = self.path_walk_info[index]["w"]
+	if new_path_walk then
+		self.path_walk = new_path_walk
+
+		local new_path_look = self.path_walk_info[index]["l"]
+		self.path_look = new_path_look -- can also be nil, it's ok
+
+		self.path_walk_info = utils.path_parse_waypoints(self.path_walk)
+		if self.path_look then
+			self.st.path_look_info = utils.path_parse_waypoints(self.st.path_look)
+		else
+			self.path_look_info = nil
+		end
+		self:reset(self.path_walk, self.path_walk_info, self.path_look, self.path_look_info, self.team,
+			{ crouch = self.crouch, running = self.running, danger = self.danger },
+			{ obj = self.move_cb_obj, func = self.move_cb_func })
+		return
 	end
 
 	if not self.patrol_look then
