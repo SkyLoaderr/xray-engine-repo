@@ -46,18 +46,37 @@ function action_bobik:initialize()
     	self.object:set_path_evaluator()
     	self.object:set_desired_position()
     	self.object:set_desired_direction()
+
+	self.sound_alarm = {idle = 0,
+		     begin = nil,
+		     maxidle = 1, 
+		     sumidle = 1,
+   		     rnd = 100,
+		     lastsound = nil,
+		 	sounds = {      {pack = sounds["bobik"], id = 0},
+					{pack = sounds["bobik"], id = 1},
+					{pack = sounds["bobik"], id = 2}}}
+	self.sound_die = {idle = 0,
+		     begin = nil,
+		     maxidle = 1, 
+		     sumidle = 1,
+   		     rnd = 100,
+		     lastsound = nil,
+		 	sounds = {      {pack = sounds["bobik"], id = 3},
+					{pack = sounds["bobik"], id = 4},
+					{pack = sounds["bobik"], id = 5}}}
 end
 function action_bobik:execute()
    	action_base.execute(self)
 	if this.alarm == true then
 		if self.time == nil or device():time_global() - self.time > self.timer then
-			printf("GAF gAF")
+			globals.set_sound(self.object, self.sound_alarm, true)
 			escape_bobic.alarm = false
 			self.time = device():time_global()
 		end
 	end
 	if this.die == true then
-		printf("bobika ubili suki")
+		globals.set_sound(self.object, self.sound_die, true)
 		escape_bobic.die = false
 	end
 end
@@ -77,6 +96,10 @@ function add_to_binder(object)
 	properties["bobik"] 		= xr_evaluators_id.stohe_bobik_base + 0
 
 	operators["bobik"] 		= xr_actions_id.stohe_bobik_base + 0
+
+	sounds["bobik"] 	= xr_sounds_id.stohe_bobik_base + 1
+
+	object:add_sound("script_replics\\soldier_1\\replics\\bobik_replic_", 20, snd_type.talk, 2, 1, sounds["bobik"])
 
 	-- Evaluators
 	manager:add_evaluator (properties["bobik"], 		this.evaluator_bobik())
