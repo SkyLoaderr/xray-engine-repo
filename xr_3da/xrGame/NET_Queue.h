@@ -16,7 +16,6 @@ public:
 		u16				ID;	
 		P.r_begin		(ID			);	VERIFY(M_EVENT==ID);
 		P.r_u32			(timestamp	);
-		timestamp	= Level().timeServer();
 		P.r_u16			(type		);
 		P.r_u16			(destination);
 
@@ -59,7 +58,7 @@ public:
 	}
 	IC BOOL				available	(u32 T)
 	{
-		if (queue.empty() || (T<queue.begin()->timestamp))	return FALSE;
+		if (queue.empty()/* || (T<queue.begin()->timestamp)*/)	return FALSE;
 		else												return TRUE;
 	}
 	IC void				get			(u16& dest, u16& type, NET_Packet& P)
