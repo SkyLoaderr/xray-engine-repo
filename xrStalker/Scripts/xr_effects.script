@@ -1,0 +1,19 @@
+
+function gar_bandits_fight(actor, npc)
+	local bandit1 = level.object("gar_dramscene_1")
+	local bandit2 = level.object("gar_dramscene_2")
+	local bandit3 = level.object("gar_dramscene_3")
+
+	if bandit1 then
+		npc:set_relation(game_object.enemy, bandit1)
+	end
+
+	if bandit2 then
+		npc:set_relation(game_object.enemy, bandit2)
+	end
+
+	if bandit3 then
+		npc:set_relation(game_object.enemy, bandit3)
+	end
+end
+
