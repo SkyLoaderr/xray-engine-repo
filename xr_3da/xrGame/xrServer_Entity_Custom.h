@@ -13,7 +13,7 @@ public:
 	BOOL							net_Ready;
 	BOOL							net_Processed;	// Internal flag for connectivity-graph
 	
-	u8								m_ucVersion;
+	u16								m_wVersion;
 	u16								RespawnTime;
 
 	u16								ID;				// internal ID
@@ -52,7 +52,7 @@ public:
         o_Angle.set					(0.f,0.f,0.f);
         o_Position.set				(0.f,0.f,0.f);
 		m_bALifeControl				= false;
-		m_ucVersion					= SPAWN_VERSION;
+		m_wVersion					= SPAWN_VERSION;
 	}
 	
 	virtual							~xrServerEntity()

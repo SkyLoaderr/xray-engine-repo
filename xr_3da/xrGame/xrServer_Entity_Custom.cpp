@@ -23,7 +23,7 @@ void	xrServerEntity::Spawn_Write		(NET_Packet& P, BOOL bLocal)
 	if (bLocal)			P.w_u16(u16(s_flags.flags|M_SPAWN_OBJECT_LOCAL) );
 	else				P.w_u16(u16(s_flags.flags&~(M_SPAWN_OBJECT_LOCAL|M_SPAWN_OBJECT_ASPLAYER)));
 	
-	P.w_u8				(m_ucVersion = SPAWN_VERSION);
+	P.w_u16				(SPAWN_VERSION);
 
 	// write specific data
 	u32	position		= P.w_tell		();
@@ -50,12 +50,15 @@ void	xrServerEntity::Spawn_Read		(NET_Packet& P)
 	P.r_u16				(ID_Parent		);
 	P.r_u16				(ID_Phantom		);
 	P.r_u16				(s_flags.flags	); 
+	// dangerous!!!!!!!!!
 	if (s_flags.is(M_SPAWN_VERSION))
-		P.r_u8			(m_ucVersion);
-	if (m_ucVersion > SPAWN_VERSION) {
-		P.r_pos--;
-		m_ucVersion = 0;
+		P.r_u16			(m_wVersion);
+	
+	if (m_wVersion > SPAWN_VERSION) {
+		P.r_pos -= sizeof(u16);
+		m_wVersion = 0;
 	}
+	// this is "zaplatka"
 
 	// read specific data
 	u16					size;
