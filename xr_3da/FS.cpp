@@ -76,7 +76,7 @@ ENGINE_API void *FileDownload(const char *fn, DWORD *pdwSize)
 	return buf;
 }
 
-typedef char MARK[8];
+typedef char MARK[9];
 IC void mk_mark(MARK& M, const char* S)
 {	strncpy(M,S,8); }
 
@@ -97,6 +97,9 @@ ENGINE_API void *	FileDecompress	(const char *fn, const char* sign, DWORD* size)
 
 	int	H = open	(fn,O_BINARY|O_RDONLY);
 	_read	(H,&F,8);
+	if (strncmp(M,F,8)!=0)		{
+		F[8]=0;		Msg("FATAL: signatures doesn't match, file(%s) / requested(%s)",F,sign);
+	}
     R_ASSERT(strncmp(M,F,8)==0);
 
 	void* ptr = 0; DWORD SZ;
