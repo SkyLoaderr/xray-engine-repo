@@ -11,6 +11,7 @@
 #include "level.h"
 #include "string_table.h"
 #include "PhraseDialog.h"
+#include "character_info.h"
 
 #include "ai_space.h"
 #include "alife_simulator.h"
@@ -200,6 +201,11 @@ void   CActor::UpdateAvailableDialogs	(CPhraseDialogManager* partner)
 				AddAvailableDialog(*info_portion.DialogNames()[i], partner);
 		}
 	}
+
+	//добавить актерский диалог собеседника
+	CInventoryOwner* pInvOwnerPartner = dynamic_cast<CInventoryOwner*>(partner); VERIFY(pInvOwnerPartner);
+	AddAvailableDialog(CPhraseDialog::IndexToId(pInvOwnerPartner->CharacterInfo().ActorDialog()), partner);
+
 	CPhraseDialogManager::UpdateAvailableDialogs(partner);
 }
 
