@@ -45,7 +45,7 @@ void CRender::level_Load()
 	Wallmarks			= xr_new<CWallmarksEngine>	();
 
 	// Streams
-	hGeomPatches		= Device.Shader.CreateGeom	(FVF::F_TL, RCache.Vertex.Buffer(), 0);
+	hGeomPatches		= Device.Shader.CreateGeom	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 	
 	// HOM
 	HOM.Load			();

@@ -392,8 +392,8 @@ void CRender::flush_Patches	()
 		RCache.set_Element		(vecPatches[current].S);
 		RCache.set_Geometry		(hGeomPatches);
 		RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,4*p_count,0,2*p_count);
-		current	+=	p_count;
-		vOffset	+=	4*p_count;
+		current					+=	p_count;
+		vOffset					+=	4*p_count;
 	}
 
 	// *** Cleanup
