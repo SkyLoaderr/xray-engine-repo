@@ -11,6 +11,7 @@ class CParticlesObject		:	public CPS_Instance
 	typedef CPS_Instance	inherited;
 
 	u32					dwLastTime;
+	u32					dwFrameDisableSheduleUpdate;
 	void				Init				(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove);
 	void				UpdateSpatial		();
 protected:

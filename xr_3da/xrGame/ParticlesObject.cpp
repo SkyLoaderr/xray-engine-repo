@@ -77,10 +77,10 @@ void CParticlesObject::UpdateSpatial()
 		spatial.radius					= renderable.visual->vis.sphere.R;
 		if (0==spatial.type)	{
 			// First 'valid' update - register
-			spatial.type						= STYPE_RENDERABLE;
-			spatial_register					();
+			spatial.type			= STYPE_RENDERABLE;
+			spatial_register		();
 		} else {
-			spatial_move		();
+			spatial_move			();
 		}
 	}
 }
@@ -106,12 +106,12 @@ void CParticlesObject::play_at_pos(const Fvector& pos, BOOL xform)
 {
 	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	Fmatrix m; m.identity(); m.c.set(pos); 
-	V->UpdateParent	(m,zero_vel,xform);
-	V->Play			();
-	dwLastTime		= Device.dwTimeGlobal-33ul;
-	shedule_Update	(0);
-
-	m_bStoppig = false;
+	V->UpdateParent				(m,zero_vel,xform);
+	V->Play						();
+	dwLastTime					= Device.dwTimeGlobal-33ul;
+	shedule_Update				(0);
+	dwFrameDisableSheduleUpdate	= Device.dwFrame;
+	m_bStoppig					= false;
 }
 
 void CParticlesObject::Stop(BOOL bDefferedStop)
@@ -124,7 +124,8 @@ void CParticlesObject::Stop(BOOL bDefferedStop)
 
 void CParticlesObject::shedule_Update	(u32 _dt)
 {
-	inherited::shedule_Update	(_dt);
+	if (Device.dwFrame==dwFrameDisableSheduleUpdate)	return;	//. hack
+	inherited::shedule_Update		(_dt);
 
 	// visual
 	u32 dt							= Device.dwTimeGlobal - dwLastTime;
