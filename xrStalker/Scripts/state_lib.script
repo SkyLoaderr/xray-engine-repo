@@ -5,11 +5,31 @@
 ----------------------------------------------------------------------------------------------------------------------
 
 states = {
-	idle = { weapon = "strapped"
+	idle = {	weapon = "strapped",
+				movement = nil,
+				mental = nil,
+				bodystate = nil,
+				direction = nil,
+				animstate = "stand",
+				animation = nil
 			},
 	
-	wait = { weapon = "unstrapped"
-			}
+	wait = {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				direction = "object",
+				animstate = "sit",
+				animation = "eating"
+			},
 
+	threat = {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				direction = "object",
+				animstate = "wounded",
+				animation = nil
+			}
 
 }
