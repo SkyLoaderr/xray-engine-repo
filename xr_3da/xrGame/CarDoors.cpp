@@ -431,6 +431,9 @@ bool CCar::SDoor::TestPass(const Fvector& pos,const Fvector& dir)
 	add.set(dir);
 	sub.sub(pos,door_pos);
 	add.mul(-sub.dotproduct(closed_door_norm)/(dir.dotproduct(closed_door_norm)));
+	
+	if(add.dotproduct(dir)<0.f) return false;
+
 	point_on_door.add(pos,add);
 
 	float center_prg=door_pos.dotproduct(door_dir);
