@@ -174,18 +174,6 @@ xr_motivator.storage[self.object:id()].sleeper = {
         enabled = false,
             path_main = nil
     }
-        if char_ini:section_exist ("sleeper") == true then
-        printf("_bp: npc is sleeper = %s", self.object:name())
-        if char_ini:line_exist("sleeper", "enabled") == true then
-                xr_motivator.storage[self.object:id()].sleeper.enabled = char_ini:r_bool("sleeper", "enabled")
-            printf("_bp: enabled = true")
-        end
-        if char_ini:line_exist("sleeper", "path_main") == true then
-                xr_motivator.storage[self.object:id()].sleeper.path_main = char_ini:r_string("sleeper", "path_main")
-        else
-            xr_motivator.storage[self.object:id()].sleeper.enabled = false
-        end
-    end
 xr_motivator.storage[self.object:id()].robber = {
         enabled = false,
     leader = false,
@@ -501,6 +489,7 @@ xr_motivator.storage[self.object:id()].reactions = {
         -- включение схем
         xr_kamp.set_kamp(self.object)
         xr_guard.set_guard(self.object)
+	xr_sleeper.set_sleeper(self.object)
         xr_patrol.set_patrol (self.object)
         xr_follower.set_follower (self.object)
     end
@@ -520,7 +509,6 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function checkStorage(npc)
     local count = 0
---[[
     for k,v in xr_motivator.storage[npc:id()] do
         if k == "sleeper" or
            k == "camper" or
@@ -552,7 +540,6 @@ function checkStorage(npc)
             end
         end     
     end
-]]
 end
 ----------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------
