@@ -75,7 +75,7 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 			J.set(13, 15, 7,  13);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,5,J.x,J.y,J.w,J.z);
 		}
 
-		CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,		0x01	));
+		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0x00);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 }

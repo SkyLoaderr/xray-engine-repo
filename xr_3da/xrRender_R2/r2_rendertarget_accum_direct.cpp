@@ -73,7 +73,7 @@ void CRenderTarget::shadow_direct	(u32 dls_phase)
 			J.set(9,  7,  15, 9);	J.sub(11); J.mul(scale);	RCache.set_ca	(_C,4,J.x,J.y,J.w,J.z);
 			J.set(13, 15, 7,  13);	J.sub(11); J.mul(scale);	RCache.set_ca	(_C,5,J.x,J.y,J.w,J.z);
 		}
-		CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,		0x02	));
+		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,0x02,0xff,0x00);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 }
@@ -112,6 +112,6 @@ void CRenderTarget::accum_direct()
 	RCache.set_c				("light_color",		L_clr.x,L_clr.y,L_clr.z,L_spec);
 
 	// Render if stencil >= 0x2
-	CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,		0x02	));
+	RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,0x02,0xff,0x00);
 	RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 }
