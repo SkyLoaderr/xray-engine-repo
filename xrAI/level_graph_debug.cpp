@@ -559,7 +559,7 @@ IC	bool compute_tangent(
 	CLevelGraph::SCirclePoint			*tangents
 )
 {
-	float				start_cp, dest_cp, distance, alpha1, alpha2, start_yaw, dest_yaw, pitch, yaw1, yaw2;
+	float				start_cp, dest_cp, distance, alpha, start_yaw, dest_yaw, pitch, yaw1, yaw2;
 	Fvector				direction, temp;
 	
 	// computing 2D cross product for start point
@@ -611,7 +611,7 @@ IC	bool compute_tangent(
 			// radius difference
 			float			r_diff = start_circle.radius - dest_circle.radius;
 			// angle between external tangents and circle centers segment
-			alpha1 = alpha2	= angle_normalize(acosf(r_diff/distance));
+			alpha			= angle_normalize(acosf(r_diff/distance));
 		}
 	}
 	else {
@@ -621,8 +621,7 @@ IC	bool compute_tangent(
 			return		(false);
 	
 		// angle between internal tangents and circle centers segment
-		alpha1			= angle_normalize(acosf((start_circle.radius + dest_circle.radius)/distance));
-		alpha2			= alpha1;;
+		alpha			= angle_normalize(acosf((start_circle.radius + dest_circle.radius)/distance));
 		yaw2			= angle_normalize(yaw1 + PI);
 	}
 
@@ -632,23 +631,23 @@ IC	bool compute_tangent(
 	dest_yaw			= angle_normalize(dest_yaw);
 
 	// compute external tangent points
-	adjust_point		(start_circle.center,yaw1 + alpha1,	start_circle.radius,tangents[0].point);
-	adjust_point		(dest_circle.center,yaw2  + alpha2,	dest_circle.radius, tangents[1].point);
+	adjust_point		(start_circle.center,yaw1 + alpha,	start_circle.radius,tangents[0].point);
+	adjust_point		(dest_circle.center, yaw2 + alpha,	dest_circle.radius, tangents[1].point);
 
 	direction.sub		(tangents[1].point,tangents[0].point);
 	temp.sub			(tangents[0].point,start_circle.center);
 	float				tangent_cp = cross_product_2D_y(direction,temp);
 	if (start_cp*tangent_cp >= 0) {
-		assign_angle	(tangents[0].angle,start_yaw,angle_normalize(yaw1 + alpha1),start_cp >= 0);
-		assign_angle	(tangents[1].angle,dest_yaw, angle_normalize(yaw2 + alpha2),dest_cp  >= 0,false);
+		assign_angle	(tangents[0].angle,start_yaw,angle_normalize(yaw1 + alpha),start_cp >= 0);
+		assign_angle	(tangents[1].angle,dest_yaw, angle_normalize(yaw2 + alpha),dest_cp  >= 0,false);
 		return			(true);
 	}
 
 	// compute external tangent points
-	adjust_point		(start_circle.center,yaw1 - alpha1,	start_circle.radius,tangents[0].point);
-	adjust_point		(dest_circle.center,yaw2  - alpha2,	dest_circle.radius, tangents[1].point);
-	assign_angle		(tangents[0].angle,start_yaw,angle_normalize(yaw1 - alpha1),start_cp >= 0);
-	assign_angle		(tangents[1].angle,dest_yaw, angle_normalize(yaw2 - alpha2),dest_cp  >= 0,false);
+	adjust_point		(start_circle.center,yaw1 - alpha,	start_circle.radius,tangents[0].point);
+	adjust_point		(dest_circle.center, yaw2 - alpha,	dest_circle.radius, tangents[1].point);
+	assign_angle		(tangents[0].angle,start_yaw,angle_normalize(yaw1 - alpha),start_cp >= 0);
+	assign_angle		(tangents[1].angle,dest_yaw, angle_normalize(yaw2 - alpha),dest_cp  >= 0,false);
 
 	return				(true);
 }

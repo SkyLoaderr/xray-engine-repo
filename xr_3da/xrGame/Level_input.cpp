@@ -81,10 +81,10 @@ void CLevel::IR_OnKeyboardPress(int key)
 	case DIK_F9:
 		return;
 	case DIK_F10:
-//		ai().level_graph().set_start_point();
+		ai().level_graph().set_start_point();
 		return;
 	case DIK_F11:
-//		ai().level_graph().compute_path();
+		ai().level_graph().compute_path();
 		return;
 #endif
 	}
