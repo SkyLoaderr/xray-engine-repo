@@ -210,6 +210,10 @@ public:
 		}
 		strcpy					(original,origin);
 		strcat					(original,"level.graph");
+		if (!FS.exist(original)) {
+			xr_delete			(level_graph);
+			return;
+		}
 		CGameGraph				*game_graph = xr_new<CGameGraph>(original,XRAI_CURRENT_VERSION - VERSION_OFFSET);
 		if (game_graph->header().version() != XRAI_CURRENT_VERSION - VERSION_OFFSET) {
 			xr_delete			(level_graph);
@@ -218,6 +222,10 @@ public:
 		}
 		strcpy					(original,origin);
 		strcat					(original,"level.gct.raw");
+		if (!FS.exist(original)) {
+			xr_delete			(level_graph);
+			return;
+		}
 		CGameLevelCrossTable	*cross_table = xr_new<CGameLevelCrossTable>(original,XRAI_CURRENT_VERSION - VERSION_OFFSET);
 		if (cross_table->header().version() != XRAI_CURRENT_VERSION - VERSION_OFFSET) {
 			xr_delete			(level_graph);
@@ -227,8 +235,9 @@ public:
 		}
 		for (ALife::_GRAPH_ID i=0, n = game_graph->header().vertex_count(); i<n; ++i)
 			if ((!level_graph->valid_vertex_id(game_graph->vertex(i)->level_vertex_id()) ||
-				(cross_table->vertex(game_graph->vertex(i)->level_vertex_id()).game_vertex_id() != i) ||
-				!level_graph->inside(game_graph->vertex(i)->level_vertex_id(),game_graph->vertex(i)->level_point()))) {
+				(cross_table->vertex(game_graph->vertex(i)->level_vertex_id()).game_vertex_id() != i)
+//				!level_graph->inside(game_graph->vertex(i)->level_vertex_id(),game_graph->vertex(i)->level_point())
+				)) {
 					Msg				("! Graph doesn't correspond to the cross table");
 					R_ASSERT2		(false,"Graph doesn't correspond to the cross table");
 				}
@@ -256,16 +265,42 @@ public:
 		}
 		hdrNODES				level_header = level_graph->header();
 		u32						N = level_header.count;
+		NodeCompressed6			*nodes = (NodeCompressed6*)(level_graph->m_nodes);
 		compressed_nodes.resize	(N);
-		for (u32 i=0; i<N; ++i)
-			compressed_nodes[i] = *level_graph->vertex(i);
+		for (u32 i=0; i<N; ++i) {
+			NodeCompressed6				node = nodes[i];
+			compressed_nodes[i].cover0	= node.cover0;
+			compressed_nodes[i].cover1	= node.cover1;
+			compressed_nodes[i].cover2	= node.cover2;
+			compressed_nodes[i].cover3	= node.cover3;
+			compressed_nodes[i].plane	= node.plane;
+			compressed_nodes[i].p		= node.p;
+			compressed_nodes[i].link	(0,node.link(0) == 0x001fffff ? u32(-1) : node.link(0));
+			compressed_nodes[i].link	(1,node.link(1) == 0x001fffff ? u32(-1) : node.link(1));
+			compressed_nodes[i].link	(2,node.link(2) == 0x001fffff ? u32(-1) : node.link(2));
+			compressed_nodes[i].link	(3,node.link(3) == 0x001fffff ? u32(-1) : node.link(3));
+			compressed_nodes[i].light	(node.light());
+
+			VERIFY						(compressed_nodes[i].cover0	  == node.cover0);
+			VERIFY						(compressed_nodes[i].cover1	  == node.cover1);
+			VERIFY						(compressed_nodes[i].cover2	  == node.cover2);
+			VERIFY						(compressed_nodes[i].cover3	  == node.cover3);
+			VERIFY						(compressed_nodes[i].plane	  == node.plane);
+			VERIFY						(compressed_nodes[i].p.xz()	  == node.p.xz());
+			VERIFY						(compressed_nodes[i].p.y()	  == node.p.y());
+			VERIFY						((compressed_nodes[i].link(0) == node.link(0)) || ((node.link(0) == 0x001fffff) && (compressed_nodes[i].link(0) == 0x007fffff)));
+			VERIFY						((compressed_nodes[i].link(1) == node.link(1)) || ((node.link(1) == 0x001fffff) && (compressed_nodes[i].link(1) == 0x007fffff)));
+			VERIFY						((compressed_nodes[i].link(2) == node.link(2)) || ((node.link(2) == 0x001fffff) && (compressed_nodes[i].link(2) == 0x007fffff)));
+			VERIFY						((compressed_nodes[i].link(3) == node.link(3)) || ((node.link(3) == 0x001fffff) && (compressed_nodes[i].link(3) == 0x007fffff)));
+			VERIFY						(compressed_nodes[i].light()  == node.light());
+		}
 		xr_delete				(level_graph);
 
-		// renumbering level nodes
-		xr_vector<u32>			sorted;
-		xr_vector<u32>			renumbering;
-		CNodeRenumberer			A(compressed_nodes,sorted,renumbering);
-
+//		// renumbering level nodes
+//		xr_vector<u32>			sorted;
+//		xr_vector<u32>			renumbering;
+//		CNodeRenumberer			A(compressed_nodes,sorted,renumbering);
+//
 		// changing level
 		level_header.version	= XRAI_CURRENT_VERSION;
 		// writing level copy
@@ -292,8 +327,6 @@ public:
 		CGameGraph::CHeader		game_header = game_graph->header();
 		xr_vector<CGameGraph::CVertex>	game_nodes;
 		xr_vector<CGameGraph::CEdge>	game_edges;
-//		game_nodes.insert		(game_nodes.begin(),game_graph->m_nodes,game_graph->m_nodes + game_graph->header().vertex_count());
-//		game_edges.insert		(game_edges.begin(),(CGameGraph::CEdge*)(game_graph->m_nodes + game_graph->header().vertex_count()),(CGameGraph::CEdge*)(game_graph->m_nodes + game_graph->header().vertex_count()) + game_graph->header().edge_count());
 		u32						edge_count = 0;
 		game_nodes.resize		(game_header.vertex_count());
 		for (u32 i=0; i<game_header.vertex_count(); ++i) {
@@ -308,8 +341,8 @@ public:
 
 		// changing game graph
 		game_header.dwVersion	= XRAI_CURRENT_VERSION;
-		for (u32 i=0; i<game_header.vertex_count(); ++i)
-			game_nodes[i].tNodeID = renumbering[game_nodes[i].tNodeID];
+//		for (u32 i=0; i<game_header.vertex_count(); ++i)
+//			game_nodes[i].tNodeID = renumbering[game_nodes[i].tNodeID];
 
 		// writing graph copy
 		{
@@ -350,7 +383,8 @@ public:
 		xr_vector<CGameLevelCrossTable::CCell>	cross_nodes;
 		cross_nodes.resize		(cross_header.level_vertex_count());
 		for (u32 i=0; i<cross_header.level_vertex_count(); ++i)
-			cross_nodes[renumbering[i]]	= cross_table->m_tpaCrossTable[i];
+//			cross_nodes[renumbering[i]]	= cross_table->m_tpaCrossTable[i];
+			cross_nodes[i]		= cross_table->m_tpaCrossTable[i];
 		xr_delete				(cross_table);
 
 		// changing cross header
@@ -399,8 +433,11 @@ public:
 
 void xrConvertMaps	()
 {
-//	CRenumbererConverter	A("fog_dima\\");
-	VERIFY				(XRAI_CURRENT_VERSION == 6);
+	VERIFY				(XRAI_CURRENT_VERSION == 7);
+//	CRenumbererConverter("fog_dima\\");
+//	CRenumbererConverter("fog_dima1\\");
+//	CRenumbererConverter("critical\\podval_np_04_r2\\");
+
 	string256			path,drive,folder,file,extension;
 	FS.update_path		(path,"$game_levels$","");
 	xr_vector<char*>	*file_list = FS.file_list_open(path);
@@ -412,7 +449,7 @@ void xrConvertMaps	()
 		_splitpath		(*I,drive,folder,file,extension);
 		if (xr_strcmp(".ai",extension))
 			continue;
-		Msg				("%s",*I);
+		Msg						("%s",*I);
 		CRenumbererConverter	A(folder);
 	}
 	xr_delete			(file_list);
