@@ -130,7 +130,7 @@ bool CRPoint::Load(CStream& F){
 
     R_ASSERT(F.ReadChunk(RPOINT_CHUNK_VERSION,&version));
     if( version!=RPOINT_VERSION ){
-        Log->DlgMsg( mtError, "RPOINT: Unsuported version.");
+        Log->DlgMsg( mtError, "RPOINT: Unsupported version.");
         return false;
     }
     

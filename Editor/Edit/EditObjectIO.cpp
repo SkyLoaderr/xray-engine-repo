@@ -78,7 +78,7 @@ bool CEditObject::Load(CStream& F){
         char buf[1024];        
         R_ASSERT(F.ReadChunk(EOBJ_CHUNK_VERSION,&version));
         if (version!=EOBJ_CURRENT_VERSION){
-            Log->DlgMsg( mtError, "CEditObject: unsuported file version. Object can't load.");
+            Log->DlgMsg( mtError, "CEditObject: unsupported file version. Object can't load.");
             bRes = false;
             break;
         }

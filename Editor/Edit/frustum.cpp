@@ -100,6 +100,22 @@ bool CFrustum::CreateFromClipPoly(Fvector* p, int count, CFrustum& clip)
 	} else return false;
 }
 
+void CFrustum::CreateFromPlanes(Fplane* p, int count){
+	for (int k=0; k<count; k++)
+		planes[k].set(p[k]);
+
+	for (int i=0;i<count;i++)
+	{
+		float denom = 1.0f / planes[i].n.magnitude();// Get magnitude of Vector
+		planes[i].n.x	*= denom;
+		planes[i].n.y	*= denom;
+		planes[i].n.z	*= denom;
+		planes[i].d		*= denom;
+	}
+
+	p_count = count;
+}
+
 void CFrustum::CreateFromViewMatrix()
 {
 	Fmatrix &M	= UI->Device.m_FullTransform;

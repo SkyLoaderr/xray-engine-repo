@@ -112,9 +112,6 @@ EScene::EScene(){
 EScene::~EScene(){
 	VERIFY( m_Valid == false );
     m_SnapObjects.clear();
-    _DELETE(m_DetailPatches);
-    _DELETE(m_DetailObjects);
-    _DELETE(m_SkyDome);
 }
 
 void EScene::Init(){
@@ -130,6 +127,9 @@ void EScene::Clear(){
 	Log->Msg( mtInformation, "Scene: cleared" );
 	m_LastAvailObject = 0;
 	m_Valid = false;
+    _DELETE(m_DetailPatches);
+    _DELETE(m_DetailObjects);
+    _DELETE(m_SkyDome);
 }
 
 void EScene::AddObject( SceneObject* object, bool bManual ){

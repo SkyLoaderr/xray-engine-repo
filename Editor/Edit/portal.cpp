@@ -381,7 +381,7 @@ bool CPortal::Load(CStream& F){
     char buf[64];
     R_ASSERT(F.ReadChunk(PORTAL_CHUNK_VERSION,&version));
     if( version!=PORTAL_VERSION ){
-        Log->Msg( mtError, "CPortal: Unsuported version.");
+        Log->Msg( mtError, "CPortal: Unsupported version.");
         return false;
     }
     

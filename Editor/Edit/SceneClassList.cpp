@@ -35,7 +35,7 @@ SceneObject *NewObjectFromClassID( int _ClassID ){
         case OBJCLASS_PORTAL:	return new CPortal();
         case OBJCLASS_EVENT:	return new CEvent();
         case OBJCLASS_PS:		return new CPSObject();
-        case OBJCLASS_DOCLUSTER:return new CDOCluster();
+//        case OBJCLASS_DOCLUSTER:return new CDOCluster();
         default: throw -1;
 	}
 }

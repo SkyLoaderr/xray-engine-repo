@@ -215,7 +215,7 @@ bool CEvent::Load(CStream& F){
 
     R_ASSERT(F.ReadChunk(EVENT_CHUNK_VERSION,&version));
     if( version!=EVENT_VERSION ){
-        Log->DlgMsg( mtError, "Event: Unsuported version.");
+        Log->DlgMsg( mtError, "Event: Unsupported version.");
         return false;
     }
 

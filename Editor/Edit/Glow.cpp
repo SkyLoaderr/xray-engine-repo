@@ -139,7 +139,7 @@ bool CGlow::Load(CStream& F){
 
     R_ASSERT(F.ReadChunk(GLOW_CHUNK_VERSION,&version));
     if( version!=GLOW_VERSION ){
-        Log->DlgMsg( mtError, "CGlow: Unsuported version.");
+        Log->DlgMsg( mtError, "CGlow: Unsupported version.");
         return false;
     }
     

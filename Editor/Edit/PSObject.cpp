@@ -332,7 +332,7 @@ bool CPSObject::Load(CStream& F){
 
     R_ASSERT(F.ReadChunk(CPSOBJECT_CHUNK_VERSION,&version));
     if( version!=CPSOBJECT_VERSION ){
-        Log->DlgMsg( mtError, "PSObject: Unsuported version.");
+        Log->DlgMsg( mtError, "PSObject: Unsupported version.");
         return false;
     }
     

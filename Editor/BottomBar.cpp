@@ -39,15 +39,21 @@ void TUI::ProgressEnd(){
 void TUI::ProgressUpdate(float val){
 	fraBottomBar->fStatusProgress=val;
     if (fraBottomBar->fMaxVal>=0){
-		fraBottomBar->cgProgress->Progress=(int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
-        fraBottomBar->cgProgress->Repaint();
+    	int new_val = (int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
+        if (new_val!=fraBottomBar->cgProgress->Progress){
+			fraBottomBar->cgProgress->Progress=(int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
+    	    fraBottomBar->cgProgress->Repaint();
+        }
     }
 }
 void TUI::ProgressInc(){
 	fraBottomBar->fStatusProgress++;
     if (fraBottomBar->fMaxVal>=0){
-		fraBottomBar->cgProgress->Progress=(int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
-        fraBottomBar->cgProgress->Repaint();
+    	int val = (int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
+        if (val!=fraBottomBar->cgProgress->Progress){
+			fraBottomBar->cgProgress->Progress=val;
+	        fraBottomBar->cgProgress->Repaint();
+        }
     }
 }
 //---------------------------------------------------------------------------

@@ -188,10 +188,8 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
         frmSplash->SetStatus("Loading...");
 
 // startup create
-		Application->Title = "Editor";
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
 		Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
-		Application->CreateForm(__classid(TfrmOneColor), &frmOneColor);
 		frmMain->SetHInst(hInst);
 
         _DELETE(frmSplash);

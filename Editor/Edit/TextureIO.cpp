@@ -51,7 +51,7 @@ bool ETextureCore::GetBMPParams(){
 	m_Width = bi.biWidth;
 	m_Height = bi.biHeight;
     if (!btwIsPow2(m_Width)||!btwIsPow2(m_Height)){
-		Log->DlgMsg(mtError,"'%s' Unsuported texture format!\nPlease convert width and height to size power 2.",name.c_str());
+		Log->DlgMsg(mtError,"'%s' Unsupported texture format!\nPlease convert width and height to size power 2.",name.c_str());
 		_close( hfile );
         return false;
     }
@@ -96,7 +96,7 @@ bool ETextureCore::LoadBMP(){
 	m_Width = bi.biWidth;
 	m_Height = bi.biHeight;
     if (!btwIsPow2(m_Width)||!btwIsPow2(m_Height)){
-		Log->DlgMsg(mtError,"'%s' Unsuported texture format!\nPlease convert width and height to size power 2.",name.c_str());
+		Log->DlgMsg(mtError,"'%s' Unsupported texture format!\nPlease convert width and height to size power 2.",name.c_str());
 		_close( hfile );
         return false;
     }
@@ -160,14 +160,14 @@ bool ETextureCore::GetTGAParams(){
     if (!TGA.Length()) return false;
 	TGA.Read(&hdr,sizeof(TGAHeader));
     if (!((hdr.pixsize==24)||(hdr.pixsize==32))){
-        Log->DlgMsg(mtError, "'%s' Unsuported texture format!\nPlease convert to 24 bit or 32(if texture contain alpha channel).",name.c_str());
+        Log->DlgMsg(mtError, "'%s' Unsupported texture format!\nPlease convert to 24 bit or 32(if texture contain alpha channel).",name.c_str());
         return false;
     }
 
 //	VERIFY((hdr.imgtype==2)||(hdr.imgtype==10));
 	VERIFY((hdr.pixsize==24)||(hdr.pixsize==32));	// 24bpp/32bpp
     if (!btwIsPow2(hdr.width)||!btwIsPow2(hdr.height)){
-		Log->DlgMsg(mtError,"'%s' Unsuported texture format!\nPlease convert width and height to size power 2.",name.c_str());
+		Log->DlgMsg(mtError,"'%s' Unsupported texture format!\nPlease convert width and height to size power 2.",name.c_str());
         return false;
     }
 
@@ -194,7 +194,7 @@ bool ETextureCore::LoadTGA( )
 	TGA.Read(&hdr,sizeof(TGAHeader));
     if (!((hdr.pixsize==24)||(hdr.pixsize==32))){
         AnsiString temp;
-        temp.sprintf("'%s' Unsuported texture format!\nPlease convert to 24 bit or 32(if texture contain alpha channel).",m_ShortName);
+        temp.sprintf("'%s' Unsupported texture format!\nPlease convert to 24 bit or 32(if texture contain alpha channel).",m_ShortName);
         MessageDlg(temp, mtError, TMsgDlgButtons() << mbOK, 0);
         return false;
     }
@@ -202,7 +202,7 @@ bool ETextureCore::LoadTGA( )
 //	VERIFY((hdr.imgtype==2)||(hdr.imgtype==10));
 	VERIFY((hdr.pixsize==24)||(hdr.pixsize==32));	// 24bpp/32bpp
     if (!btwIsPow2(hdr.width)||!btwIsPow2(hdr.height)){
-		Log->DlgMsg(mtError,"'%s' Unsuported texture format!\nPlease convert width and height to size power 2.",m_ShortName);
+		Log->DlgMsg(mtError,"'%s' Unsupported texture format!\nPlease convert width and height to size power 2.",m_ShortName);
         return false;
     }
 

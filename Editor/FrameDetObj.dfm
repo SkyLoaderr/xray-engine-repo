@@ -1,7 +1,7 @@
 object fraDetailObject: TfraDetailObject
   Left = 0
   Top = 0
-  Width = 443
+  Width = 123
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -10,7 +10,7 @@ object fraDetailObject: TfraDetailObject
   TabOrder = 0
   object paSelect: TPanel
     Left = 0
-    Top = 97
+    Top = 79
     Width = 123
     Height = 99
     Align = alTop
@@ -35,6 +35,7 @@ object fraDetailObject: TfraDetailObject
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
+      Margin = 13
       ParentFont = False
       Transparent = False
     end
@@ -84,6 +85,7 @@ object fraDetailObject: TfraDetailObject
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
+      Margin = 13
       ParentFont = False
       Transparent = False
     end
@@ -148,8 +150,8 @@ object fraDetailObject: TfraDetailObject
   object paCommand: TPanel
     Left = 0
     Top = 0
-    Width = 443
-    Height = 97
+    Width = 123
+    Height = 79
     Align = alTop
     Constraints.MaxWidth = 123
     Constraints.MinWidth = 123
@@ -158,7 +160,7 @@ object fraDetailObject: TfraDetailObject
     object Label1: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 121
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -187,7 +189,7 @@ object fraDetailObject: TfraDetailObject
     end
     object ExtBtn1: TExtBtn
       Left = 2
-      Top = 17
+      Top = 32
       Width = 119
       Height = 15
       Align = alNone
@@ -201,13 +203,14 @@ object fraDetailObject: TfraDetailObject
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
+      Margin = 13
       ParentFont = False
       Transparent = False
       OnClick = ExtBtn1Click
     end
     object ExtBtn4: TExtBtn
       Left = 2
-      Top = 32
+      Top = 47
       Width = 119
       Height = 15
       Align = alNone
@@ -221,9 +224,52 @@ object fraDetailObject: TfraDetailObject
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
+      Margin = 13
       ParentFont = False
       Transparent = False
       OnClick = ExtBtn4Click
+    end
+    object ExtBtn5: TExtBtn
+      Left = 2
+      Top = 17
+      Width = 119
+      Height = 15
+      Align = alNone
+      AllowAllUp = True
+      BevelShow = False
+      HotTrack = True
+      CloseButton = False
+      Caption = 'Object List'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Margin = 13
+      ParentFont = False
+      Transparent = False
+      OnClick = ExtBtn5Click
+    end
+    object ExtBtn6: TExtBtn
+      Left = 2
+      Top = 62
+      Width = 119
+      Height = 15
+      Align = alNone
+      AllowAllUp = True
+      BevelShow = False
+      HotTrack = True
+      CloseButton = False
+      Caption = 'Update Objects'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Margin = 13
+      ParentFont = False
+      Transparent = False
+      OnClick = ExtBtn6Click
     end
   end
   object fsStorage: TFormStorage

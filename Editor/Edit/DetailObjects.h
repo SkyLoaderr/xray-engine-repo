@@ -13,72 +13,6 @@ class CFrustum;
 class CEditObject;
 class Shader;
 
-#define MAX_DETOBJECTS 4
-struct SDetailObject{
-	CEditObject*	obj;
-    DWORD			flag;
-};
-
-struct SDOClusterDef{
-    // properties
-    SDetailObject	m_DetObj[MAX_DETOBJECTS];
-    int  			m_Density;	// штук на метр
-    //random scale
-    Fvector2		m_YScale;	// min/max value
-    Fvector2		m_XZScale;	// min/max value
-    s32				m_ScaleSeed;
-    // random rotate
-    s32				m_RotateSeed;
-
-    SDOClusterDef	(){
-    	ZeroMemory	(m_DetObj,4*sizeof(SDetailObject));
-        m_Density	= 10;
-        m_YScale.set(1.f,1.f);
-        m_XZScale.set(1.f,1.f);
-        m_ScaleSeed	= Random.randF();
-        m_RotateSeed= Random.randF();
-    }
-};
-
-#pragma pack( push,1 )
-struct SDOCeil{
-	BYTE			m_Alt:6;
-	BYTE			m_Obj:2;
-};
-#pragma pack( pop )
-
-DEFINE_VECTOR(SDOCeil,DOCeilVec,DOCeilIt);
-
-class CDOCluster: public SceneObject, public SDOClusterDef{
-    Fvector         m_Position;
-    float			m_MinHeight;
-    float			m_MaxHeight;
-    DOCeilVec		m_Objects;
-
-    void            DrawCluster		(Fcolor& c);
-    void			DrawObjects		();
-	DWORD 			DetermineColor	(CEditMesh* mesh, int id, float u, float v);
-    void			ChangeDensity	(int new_density);
-public:
-	                CDOCluster		();
-	                CDOCluster  	(char *name);
-    void            Construct   	();
-	virtual         ~CDOCluster  	();
-
-    const Fvector&	Position		(){return m_Position;}
-
-	virtual void    Render      	(Fmatrix& parent, ERenderPriority flag);
-	virtual bool    RayPick		   	(float& distance, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf = NULL);
-    virtual bool 	FrustumPick		(const CFrustum& frustum, const Fmatrix& parent);
-	virtual void    Move        	(Fvector& amount);
-  	virtual bool 	Load			(CStream&);
-	virtual void 	Save			(CFS_Base&);
-	virtual bool    GetBox      	(Fbox& box);
-
-    bool     		AppendCluster	(int density);
-	void 			Update			();
-};
-
 class CDetail{
 	struct fvfVertexIn{
 		Fvector 		P;
@@ -94,8 +28,6 @@ class CDetail{
 
     // references
 	CEditObject*		m_pRefs;
-
-    DWORD				m_dwColor;
 public:
 						CDetail			();
 	virtual             ~CDetail		();
@@ -104,7 +36,7 @@ public:
 	void				Save            (CFS_Base&);
     void				Export			(CFS_Base&);
 
-	bool				Update			(DWORD color, LPCSTR name);
+	bool				Update			(LPCSTR name);
 
     IC LPCSTR			GetName			(){R_ASSERT(m_pRefs); return m_pRefs->GetName();}
 };
@@ -118,10 +50,11 @@ DEFINE_MAP(DWORD,DOVec,ColorIndexMap,ColorIndexPairIt);
 #define DETAIL_SLOT_SIZE_2 DETAIL_SLOT_SIZE*0.5f
 
 class CDetailManager{
+	friend class TfrmDOShuffle;
+
 	DetailHeader		m_Header;
     DSVec		 		m_Slots;
 	DOVec				m_Objects;
-    ColorIndexMap		m_ColorIndices;
 
     Fbox				m_BBox;
 
@@ -131,38 +64,56 @@ class CDetailManager{
 	IC float			fromSlotZ		(int z)		{return (z-m_Header.offs_z)*DETAIL_SLOT_SIZE+DETAIL_SLOT_SIZE_2;}
 
 	DWORD 				DetermineColor	(CEditMesh* mesh, int id, float u, float v);
-    void				GenerateOneSlot	(int x, int z, DetailSlot& slot);
+
+    void				UpdateSlotBBox	(int x, int z, DetailSlot& slot);
 
 	struct SIndexDist{
 		DWORD 	index;
 	    float 	dist;
-	}IDS[3];
-    int IDS_count;
+        int		count[4];
+	};
+    DEFINE_SVECTOR		(SIndexDist,4,SIndexDistVec,SIndexDistIt);
 
-	void 				FindClosestApproach(const Fcolor& C);
+    void				GetSlotRect		(Frect& rect, int sx, int sz);
+    void				GetSlotTCRect	(Irect& rect, int sx, int sz);
+
+	void 				CalcClosestCount(int part, const Fcolor& C, SIndexDistVec& best);
+	void 				FindClosestIndex(const Fcolor& C, SIndexDistVec& best);
+
 	DWORD				GetColor		(float x, float z);
+	DWORD 				GetColor		(DWORD U, DWORD V);
+
+    DWORD				GetUFromX		(float x);
+    DWORD				GetVFromZ		(float z);
 public:
+    ColorIndexMap		m_ColorIndices;
 //	DetailSlot*			m_SelSlot;
 	ETextureCore*		m_pBaseTexture;
 public:
 						CDetailManager	();
     virtual 			~CDetailManager	();
 
-    void				Load            (CStream&);
+    bool				Load            (CStream&);
     void				Save            (CFS_Base&);
     void				Export          (CFS_Base&);
 
+    bool				UpdateBBox		();
+    bool				UpdateObjects	();
     bool				GenerateSlots	(LPCSTR tex_name);
 
-    void				AppendObject	(DWORD color, LPCSTR name);
-    void				RemoveObject	(DWORD color, LPCSTR name);
-    void				ChangeObjectColor(LPCSTR name, DWORD dest_color);
+    void				AppendObject	(LPCSTR name, bool bTestUnique=true);
+    void				RemoveObjects	();
+    CDetail*			FindObjectByName(LPCSTR name);
+
+    void				RemoveColorIndices();
+	void				AppendIndexObject(DWORD color,LPCSTR name,bool bTestUnique=true);
+    CDetail*			FindObjectInColorIndices(DWORD index, LPCSTR name);
 
     int					ObjCount		(){return m_Slots.size();}
     void				Render			(ERenderPriority flag);
     void				Clear			();
 
-    bool				Valid			(){return !!m_Slots.size();}
+    bool				Valid			(){return !!m_Slots.size()||!!m_Objects.size();}
 };
 #endif /*_INCDEF_DetailObjects_H_*/
 

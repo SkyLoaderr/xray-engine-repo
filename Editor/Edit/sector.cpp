@@ -609,7 +609,7 @@ bool CSector::Load(CStream& F){
     char buf[1024];
     R_ASSERT(F.ReadChunk(SECTOR_CHUNK_VERSION,&version));
     if( version!=SECTOR_VERSION ){
-        Log->Msg( mtError, "CSector: Unsuported version.");
+        Log->Msg( mtError, "CSector: Unsupported version.");
         return false;
     }
     

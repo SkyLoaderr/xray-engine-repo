@@ -127,7 +127,7 @@ bool CSound::Load(CStream& F){
 
     R_ASSERT(F.ReadChunk(SOUND_CHUNK_VERSION,&version));
     if( version!=SOUND_VERSION ){
-        Log->DlgMsg( mtError, "CSound: Unsuported version.");
+        Log->DlgMsg( mtError, "CSound: Unsupported version.");
         return false;
     }
     

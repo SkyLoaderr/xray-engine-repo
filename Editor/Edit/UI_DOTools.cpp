@@ -41,7 +41,7 @@ void __fastcall TUI_ControlDOAdd::OnExit()
 }
 
 bool __fastcall TUI_ControlDOAdd::Start(TShiftState Shift){
-	if (Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_DOCLUSTER); return 0;}
+/*	if (Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_DOCLUSTER); return 0;}
     Fvector p;
     if (UI->PickGround(p,UI->m_CurrentRStart,UI->m_CurrentRNorm)){
         char namebuffer[MAX_OBJ_NAME];
@@ -60,6 +60,7 @@ bool __fastcall TUI_ControlDOAdd::Start(TShiftState Shift){
 //        }
 
     }
+*/
     return false;
 }
 
@@ -80,7 +81,7 @@ void __fastcall TUI_ControlDOSelect::OnExit()
 }
 
 bool __fastcall TUI_ControlDOSelect::Start(TShiftState Shift){
-	EObjClass cls = UI->CurrentClassID();
+/*	EObjClass cls = UI->CurrentClassID();
     if (Shift==ssRBOnly){UI->Command(COMMAND_SHOWCONTEXTMENU,parent_tool->ObjClass()); return false;}
     Scene->SelectObjects(false, cls);
 
@@ -88,6 +89,6 @@ bool __fastcall TUI_ControlDOSelect::Start(TShiftState Shift){
     bBoxSelection    = (obj && Shift.Contains(ssCtrl)) || !obj;
 
 	if( obj ) obj->Select(obj->Selected()?false:true);
-
+*/
     return false;
 }

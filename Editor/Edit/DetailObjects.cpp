@@ -20,345 +20,33 @@
 #include "DetailFormat.h"
 #include "XRShader.h"
 #include "Texture.h"
+#include "frustum.h"
 
-static Fvector down_vec={0.f,-1.f,0.f};
-
-#define DOALT_QUANT 					63.f
-
-#define DOCLUSTER_VERSION				0x0010
-//----------------------------------------------------
-#define DOCLUSTER_CHUNK_VERSION			0xE701
-#define DOCLUSTER_CHUNK_POINT			0xE702
-#define DOCLUSTER_CHUNK_LINKS			0xE703
-
-#define DO_PACK(a,mn,sz)((a-mn)/sz*DOALT_QUANT)
-#define DO_UNPACK(a,mn,sz)(float(a)*sz/DOALT_QUANT+mn)
+static Fvector down_vec	={0.f,-1.f,0.f};
+static Fvector left_vec	={-1.f,0.f,0.f};
+static Fvector right_vec={1.f,0.f,0.f};
+static Fvector fwd_vec	={0.f,0.f,1.f};
+static Fvector back_vec	={0.f,0.f,-1.f};
 //------------------------------------------------------------------------------
-// DO Cluster
+
+#define DETOBJ_CHUNK_REFERENCE 		0x0100
+
+#define DETMGR_CHUNK_VERSION		0x1000
+
+#define DETMGR_CHUNK_HEADER 		0x0000
+#define DETMGR_CHUNK_OBJECTS 		0x0001
+#define DETMGR_CHUNK_SLOTS			0x0002
+#define DETMGR_CHUNK_BBOX			0x1001
+#define DETMGR_CHUNK_BASE_TEXTURE	0x1002
+#define DETMGR_CHUNK_COLOR_INDEX 	0x1003
+
+#define DETMGR_VERSION 				0x0001
 //------------------------------------------------------------------------------
-CDOCluster::CDOCluster(char *name):SceneObject(){
-	Construct();
-	strcpy( m_Name, name );
-}
-
-CDOCluster::CDOCluster():SceneObject(){
-	Construct();
-}
-
-void CDOCluster::Construct(){
-	m_ClassID   = OBJCLASS_DOCLUSTER;
-	m_Position.set(0,0,0);
-}
-
-CDOCluster::~CDOCluster(){
-}
-//----------------------------------------------------
-class FindSimilar{
-	CDOCluster* obj;
-public:
-    FindSimilar(CDOCluster* cl):obj(cl){;}
-	IC bool operator()(ObjectIt it) { 
-		return (fsimilar(((CDOCluster*)*it)->Position().x,obj->Position().x,EPS_L)&&
-        		fsimilar(((CDOCluster*)*it)->Position().z,obj->Position().z,EPS_L));
-    }
-};
-//----------------------------------------------------
-bool CDOCluster::AppendCluster(int density){
-	m_Position.x = snapto(m_Position.x,Scene->m_LevelOp.m_DOClusterSize);
-	m_Position.z = snapto(m_Position.z,Scene->m_LevelOp.m_DOClusterSize);
-    ObjectList lst;
-    if (Scene->GetQueryObjects_if(lst,OBJCLASS_DOCLUSTER,FindSimilar(this))){
-    	Log->Msg(mtError,"Cluster already occupied.");
-    	return false;
-    }
-
-	ChangeDensity(density);
-    Update();
-	return true;
-}
-//----------------------------------------------------
-static FloatVec alt;
-static DWORDVec clr;
-IC bool TestTris(CEditMesh*& M, int& id, float& h, float& u, float& v, const Fvector& start, SBoxPickInfoVec& tris){
-	h	= flt_max;
-    id	= -1;
-	for (SBoxPickInfoIt it=tris.begin(); it!=tris.end(); it++){
-    	float range;
-		if (RAPID::TestRayTri(start,down_vec,it->bp_inf.p,u,v,range,true))
-        	if (range<h){
-            	h	= range;
-                id 	= it->bp_inf.id;
-                M	= it->mesh;
-            }
-    }
-    if (id>=0){
-    	h = start.y-h;
-		return true;
-    }
-    return false;
-}
-void CDOCluster::Update(){
-	Fvector pos;
-    int cnt = Scene->m_LevelOp.m_DOClusterSize*m_Density;
-    int cnt2 = cnt*cnt;
-    float cl_size = Scene->m_LevelOp.m_DOClusterSize;
-    float delta = cl_size/cnt;
-    float offs = frmEditorPreferences->seDORayPickHeight->Value;
-    alt.resize(cnt2);
-    clr.resize(cnt2);
-    m_MinHeight = flt_max;
-    m_MaxHeight = flt_min;
-    pos.x = m_Position.x-cl_size*0.5f+delta*.5f;
-
-    //
-    Fbox bb;
-    SBoxPickInfoVec pinf;
-    float h_size = cl_size*0.5f;
-    bb.set(m_Position,m_Position);
-    bb.min.x-=h_size; bb.min.y-=offs; bb.min.z-=h_size;
-    bb.max.x+=h_size; bb.max.y+=offs; bb.max.z+=h_size;
-
-    bool bPick = !!Scene->BoxPick(bb,pinf,fraLeftBar->ebEnableSnapList->Down);
-
-    for (int x=0; x<cnt; x++,pos.x+=delta){
-	    pos.z = m_Position.z-h_size+delta*0.5f;
-	    for (int z=0; z<cnt; z++,pos.z+=delta){
-        	pos.y = m_Position.y+offs;
-			float H,U,V;
-            int id;
-            CEditMesh* M;
-            if (bPick&&TestTris(M,id,H,U,V,pos,pinf)){
-				clr[x*cnt+z]=DetermineColor(M,id,U,V);
-                alt[x*cnt+z]=H;
-                if (H>m_MaxHeight) m_MaxHeight = H;
-                if (H<m_MinHeight) m_MinHeight = H;
-            }else{
-				alt[x*cnt+z]=0;
-            }
-        }
-    }
-    float sz = m_MaxHeight-m_MinHeight+EPS;
-    for (int k=0; k<cnt2; k++) m_Objects[k].m_Alt = DO_PACK(alt[k],m_MinHeight,sz);
-}
-//----------------------------------------------------
-DWORD CDOCluster::DetermineColor(CEditMesh* M, int id, float u, float v){
-    // barycentric coords
-    // note: W,U,V order
-    Fvector B;
-    B.set(1.0f - u - v,u,v);
-
-    // calc UV
-    const Fvector2* TC[3];
-    st_Surface* surf = M->GetFaceTC(id,TC);
-    Fvector2 uv;
-    uv.x = TC[0]->x*B.x + TC[1]->x*B.y + TC[2]->x*B.z;
-    uv.y = TC[0]->y*B.x + TC[1]->y*B.y + TC[2]->y*B.z;
-
-    AnsiString& t_name = surf->textures[0];
-    VERIFY(!t_name.IsEmpty());
-    ETextureCore* tex = UI->Device.Shader.FindTexture(t_name.c_str());
-    VERIFY(tex);
-
-    int U = tex->ConvertU(uv.x);
-    int V = tex->ConvertV(uv.y);
-
-	Fcolor SUM;
-    DWORD c;
-    int cnt=0;
-    for (int dx=-1; dx<=1; dx++){
-	    for (int dy=-1; dy<=1; dy++){
-			if (tex->GetPixel(c,U+dx,V+dy)){
-            	if (cnt==0){
-                    SUM.r = RGBA_GETRED(c)/255.f;
-                    SUM.g = RGBA_GETGREEN(c)/255.f;
-                    SUM.b = RGBA_GETBLUE(c)/255.f;
-                    SUM.a = RGBA_GETALPHA(c)/255.f;
-                }else{
-                    SUM.r += RGBA_GETRED(c)/255.f;
-                    SUM.g += RGBA_GETGREEN(c)/255.f;
-                    SUM.b += RGBA_GETBLUE(c)/255.f;
-                    SUM.a += RGBA_GETALPHA(c)/255.f;
-                }
-                cnt++;
-            }
-        }
-    }
-    VERIFY(cnt);
-    SUM.r/=cnt;
-    SUM.g/=cnt;
-    SUM.b/=cnt;
-    SUM.a/=cnt;
-
-    return SUM.get();
-}
-//----------------------------------------------------
-void CDOCluster::ChangeDensity(int new_density){
-    m_Density = new_density;
-    int cnt = Scene->m_LevelOp.m_DOClusterSize*m_Density;
-    m_Objects.resize(cnt*cnt);
-}
-//----------------------------------------------------
-bool CDOCluster::GetBox( Fbox& box ){
-	box.set( m_Position, m_Position );
-	box.min.x -= Scene->m_LevelOp.m_DOClusterSize*0.5f;
-	box.min.y = m_MinHeight;
-	box.min.z -= Scene->m_LevelOp.m_DOClusterSize*0.5f;
-	box.max.x += Scene->m_LevelOp.m_DOClusterSize*0.5f;
-	box.max.y = m_MaxHeight;
-	box.max.z += Scene->m_LevelOp.m_DOClusterSize*0.5f;
-	return true;
-}
-
-static FLvertexVec V;
-
-void CDOCluster::DrawCluster(Fcolor& c){
-	Fvector pos,dir;
-    dir.set(0.f,-1.f,0.f);
-    float cl_size = Scene->m_LevelOp.m_DOClusterSize;
-    int cnt = Scene->m_LevelOp.m_DOClusterSize*m_Density;
-    int cnt2 = cnt*cnt;
-    float delta = cl_size/cnt;
-
-    FVF::L v;
-    v.color = c.get();
-    V.resize(cnt2,v);
-
-    UI->Device.RenderNearer(0.001f);
-    float sz = m_MaxHeight-m_MinHeight+EPS;
-    pos.x = m_Position.x-cl_size*0.5f+delta*.5f;
-    for (int x=0; x<cnt; x++,pos.x+=delta){
-	    pos.z = m_Position.z-cl_size*0.5f+delta*.5f;
-	    for (int z=0; z<cnt; z++,pos.z+=delta)
-	    	V[x*cnt+z].p.set(pos.x,DO_UNPACK(m_Objects[x*cnt+z].m_Alt,m_MinHeight,sz),pos.z);
-    }
-	UI->Device.DP(D3DPT_POINTLIST,FVF::F_L,V.begin(),V.size());
-    UI->Device.ResetNearer();
-}
-//----------------------------------------------------
-
-void CDOCluster::DrawObjects(){
-}
-//----------------------------------------------------
-
-void CDOCluster::Render( Fmatrix& parent, ERenderPriority flag ){
-    if (flag==rpNormal){
-    	st_LevelOptions& opt = Scene->m_LevelOp;
-		if(UI->Device.m_Frustum.testSphere(m_Position,opt.m_DOClusterSize)){
-        	float dist = frmEditorPreferences->seDOHideDistance->Value;
-	        if(UI->Device.m_Camera.GetPosition().distance_to_sqr(m_Position)<=(dist*dist)){
-    	        Fcolor c1; c1.set(1.f,1.f,0.f,1.f);
-	            DrawCluster(c1);
-    	    }
-	        if(Selected()){
-    	        Fbox bb; GetBox(bb);
-        	    DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-	            DU::DrawSelectionBox(bb,&clr);
-    	    }
-        }
-    }
-//            DrawObjects(c2);
-}
-//----------------------------------------------------
-
-bool CDOCluster::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
-//    return (frustum.testSphere(m_Position,AITPOINT_SIZE))?true:false;
-    return false;
-}
-//----------------------------------------------------
-
-bool CDOCluster::RayPick(float& distance, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf){
-/*	Fvector transformed;
-	parent.transform_tiny(transformed, m_Position);
-
-	Fvector ray2;
-	ray2.sub( transformed, S );
-
-    float d = ray2.dotproduct(D);
-    if( d > 0  ){
-        float d2 = ray2.magnitude();
-        if( ((d2*d2-d*d) < (AITPOINT_SIZE*AITPOINT_SIZE)) && (d>AITPOINT_SIZE) ){
-        	if (d<distance){
-	            distance = d;
-    	        return true;
-            }
-        }
-    }
-*/
-	return false;
-}
-//----------------------------------------------------
-
-void CDOCluster::Move( Fvector& amount ){
-	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
-    UI->UpdateScene();
-	m_Position.add( amount );
-}
-//----------------------------------------------------
-
-bool CDOCluster::Load(CStream& F){
-	DWORD version = 0;
-	char buf[1024];
-/*
-    R_ASSERT(F.ReadChunk(AITPOINT_CHUNK_VERSION,&version));
-    if( version!=AITPOINT_VERSION ){
-        Log->DlgMsg( mtError, "CAITPoint: Unsuported version.");
-        return false;
-    }
-*/    
-	SceneObject::Load(F);
-/*
-    R_ASSERT(F.FindChunk(AITPOINT_CHUNK_POINT));
-    F.Rvector		(m_Position);
-
-    R_ASSERT(F.FindChunk(AITPOINT_CHUNK_LINKS));
-    m_NameLinks.resize(F.Rdword());
-    for (AStringIt s_it=m_NameLinks.begin(); s_it!=m_NameLinks.end(); s_it++){
-		F.RstringZ	(buf); *s_it = buf;
-    }
-*/
-    return true;
-}
-//----------------------------------------------------
-
-void CDOCluster::Save(CFS_Base& F){
-	SceneObject::Save(F);
-
-/*
-	F.open_chunk	(AITPOINT_CHUNK_VERSION);
-	F.Wword			(AITPOINT_VERSION);
-	F.close_chunk	();
-
-    F.open_chunk	(AITPOINT_CHUNK_POINT);
-    F.Wvector		(m_Position);
-	F.close_chunk	();
-
-    F.open_chunk	(AITPOINT_CHUNK_LINKS);
-    F.Wdword		(m_Links.size());
-    for (ObjectIt o_it=m_Links.begin(); o_it!=m_Links.end(); o_it++)
-    	F.WstringZ	((*o_it)->GetName());
-	F.close_chunk	();
-*/
-}
-//----------------------------------------------------
-
-#define DETOBJ_REFERENCE 	0x0100
-#define DETOBJ_COLOR	 	0x0101
-
-#define DETMGR_HEADER 		0x0000
-#define DETMGR_OBJECTS 		0x0001
-#define DETMGR_SLOTS		0x0002
-#define DETMGR_BBOX			0x1000
-#define DETMGR_BASE_TEXTURE	0x1001
-
 CDetail::CDetail(){
 	m_pShader			= 0;
 	m_dwFlags			= 0;
 	m_fRadius			= 0;
 	m_pRefs				= 0;
-    m_dwColor			= 0;
 }
 
 CDetail::~CDetail(){
@@ -366,7 +54,7 @@ CDetail::~CDetail(){
 	m_Vertices.clear	();
 }
 
-bool CDetail::Update(DWORD color, LPCSTR name){
+bool CDetail::Update	(LPCSTR name){
     // update link
     CLibObject* LO 		= Lib->SearchObject(name);
     if (!LO){
@@ -391,6 +79,7 @@ bool CDetail::Update(DWORD color, LPCSTR name){
     R_ASSERT			(surf);
 
     // create shader
+	if (m_pShader) 		UI->Device.Shader.Delete(m_pShader);
     m_pShader			= UI->Device.Shader.Create(surf->shader->shader->cName,surf->textures);
     R_ASSERT			(m_pShader);
 
@@ -415,33 +104,23 @@ bool CDetail::Update(DWORD color, LPCSTR name){
             }
         }
     }
-
-    m_dwColor = color;
-
     return true;
 }
 
 bool CDetail::Load(CStream& F){
 	char buf[255];
 	// references
-    R_ASSERT			(F.FindChunk(DETOBJ_REFERENCE));
+    R_ASSERT			(F.FindChunk(DETOBJ_CHUNK_REFERENCE));
     F.RstringZ			(buf);
 
-    R_ASSERT			(F.FindChunk(DETOBJ_COLOR));
-    m_dwColor			= F.Rdword();
-
     // update object
-    return 				Update(m_dwColor,buf);
+    return 				Update(buf);
 }
 
 void CDetail::Save(CFS_Base& F){
 	R_ASSERT			(m_pRefs);
-	F.open_chunk		(DETOBJ_REFERENCE);
+	F.open_chunk		(DETOBJ_CHUNK_REFERENCE);
     F.WstringZ			(m_pRefs->GetName());
-    F.close_chunk		();
-
-	F.open_chunk		(DETOBJ_COLOR);
-    F.Wdword			(m_dwColor);
     F.close_chunk		();
 }
 
@@ -461,38 +140,36 @@ void CDetail::Export(CFS_Base& F){
 //------------------------------------------------------------------------------
 CDetailManager::CDetailManager(){
 	m_pBaseTexture 		= 0;
+    ZeroMemory			(&m_Header,sizeof(DetailHeader));
+    m_Header.version	= DETAIL_VERSION;
 }
 
 CDetailManager::~CDetailManager(){
-	for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
-    	_DELETE(*it);
-    _DELETE(m_pBaseTexture);
+	Clear();
 }
 
 DWORD CDetailManager::GetColor(float x, float z){
-	float u = (x-m_BBox.min.x)/(m_BBox.max.x-m_BBox.min.x);
-	float v = (z-m_BBox.min.z)/(m_BBox.max.z-m_BBox.min.z);
-	int U = iFloor(u*m_pBaseTexture->width()+0.5f); 	U %= m_pBaseTexture->width();
-	int V = iFloor(v*m_pBaseTexture->height()+0.5f);	V %= m_pBaseTexture->height();
+	return m_pBaseTexture->GetPixel(GetUFromX(x),GetVFromZ(z));
+}
+
+DWORD CDetailManager::GetColor(DWORD U, DWORD V){
 	return m_pBaseTexture->GetPixel(U,V);
 }
 
-IC bool TestTris(float& h, const Fvector& start, SBoxPickInfoVec& tris){
-	h	= flt_max;
-    bool bRes=false;
-	for (SBoxPickInfoIt it=tris.begin(); it!=tris.end(); it++){
-    	float range;
-		if (RAPID::TestRayTri2(start,down_vec,it->bp_inf.p,range))
-        	if (range<h){
-            	h	= range;
-                bRes= true;
-            }
-    }
-    if (bRes) h = start.y-h;
-    return bRes;
+DWORD CDetailManager::GetUFromX(float x){
+	float u = (x-m_BBox.min.x)/(m_BBox.max.x-m_BBox.min.x);
+	int U = iFloor(u*(m_pBaseTexture->width()-1)+0.5f); 	U %= m_pBaseTexture->width();
+    return U;
 }
 
-void CDetailManager::FindClosestApproach(const Fcolor& C){
+DWORD CDetailManager::GetVFromZ(float z){
+	float v = (z-m_BBox.min.z)/(m_BBox.max.z-m_BBox.min.z);
+	int V = iFloor(v*(m_pBaseTexture->height()-1)+0.5f);
+    V %= m_pBaseTexture->height();
+    return V;
+}
+
+void CDetailManager::FindClosestIndex(const Fcolor& C, SIndexDistVec& best){
 	DWORD index;
     float dist = flt_max;
     Fcolor src;
@@ -512,48 +189,49 @@ void CDetailManager::FindClosestApproach(const Fcolor& C){
     }
 
     if (bRes){
-        if (IDS_count<3){
+        if (best.size()<4){
             bool bFound=false;
-            for (int k=0; k<IDS_count; k++){
-                if (IDS[k].index==index){
-                	if(dist<IDS[k].dist){
-	                    IDS[k].dist 	= dist;
-    	                IDS[k].index    = index;
+            for (int k=0; k<best.size(); k++){
+                if (best[k].index==index){
+                	if(dist<best[k].dist){
+	                    best[k].dist 	= dist;
+    	                best[k].index	= index;
                     }
                     bFound = true;
                     break;
                 }
             }
             if (!bFound){
-                IDS[IDS_count].dist = dist;
-                IDS[IDS_count].index= index;
-                IDS_count++;
+                best.inc();
+                best[best.size()-1].dist = dist;
+                best[best.size()-1].index= index;
             }
         }else{
             int i=-1;
             float dd=flt_max;
             bool bFound=false;
-            for (int k=0; k<3; k++){
-                float d = dist-IDS[k].dist;
+            for (int k=0; k<4; k++){
+                float d = dist-best[k].dist;
                 if ((d<0)&&(d<dd)){ i=k; dd=d;}
-                if (IDS[k].index==index){
-                	if(dist<IDS[k].dist){
-	                    IDS[k].dist 	= dist;
-    	                IDS[k].index    = index;
+                if (best[k].index==index){
+                	if(dist<best[k].dist){
+	                    best[k].dist 	= dist;
+    	                best[k].index    = index;
                     }
                     bFound = true;
                     break;
                 }
             }
             if (!bFound&&(i>=0)){
-                IDS[i].dist 	= dist;
-                IDS[i].index    = index;
+                best[i].dist 	= dist;
+                best[i].index	= index;
             }
         }
     }
 }
 
 //static BYTEVec alpha;
+/*
 void CDetailManager::GenerateOneSlot(int sx, int sz, DetailSlot& slot){
 	Fvector 			center;
     Fbox				bbox;
@@ -606,20 +284,7 @@ void CDetailManager::GenerateOneSlot(int sx, int sz, DetailSlot& slot){
     	slot.items[3].id=0xff;
     }
 }
-
-void CDetailManager::AppendObject(DWORD color, LPCSTR name){
-	for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
-    	if (stricmp((*it)->GetName(),name)==0) return;
-
-    color = DU::subst_a(color,0);
-    CDetail* D = new CDetail();
-    if (!D->Update(color,name)){
-    	_DELETE(D);
-        return;
-    }
-    m_Objects.push_back(D);
-    m_ColorIndices[color].push_back(D);
-}
+*/
 
 bool CDetailManager::GenerateSlots(LPCSTR tex_name){
 	if (!fraLeftBar->ebEnableSnapList->Down||Scene->m_SnapObjects.empty()){
@@ -641,12 +306,60 @@ bool CDetailManager::GenerateSlots(LPCSTR tex_name){
     	return false;
     }
 
+    UpdateBBox();
+
+	return true;
+}
+
+void CDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot){
+	Fbox bbox;
+    Frect rect;
+    GetSlotRect			(rect,sx,sz);
+    bbox.min.set		(rect.x1, slot.y_min, rect.y1);
+    bbox.max.set		(rect.x2, slot.y_max, rect.y2);
+
+    SBoxPickInfoVec pinf;
+    if (Scene->BoxPick(bbox,pinf,true)){
+		bbox.grow		(EPS_L);
+    	Fplane			frustum_planes[4];
+		frustum_planes[0].build(bbox.min,left_vec);
+		frustum_planes[1].build(bbox.min,back_vec);
+		frustum_planes[2].build(bbox.max,right_vec);
+		frustum_planes[3].build(bbox.max,fwd_vec);
+
+        CFrustum frustum;
+        frustum.CreateFromPlanes(frustum_planes,4);
+
+        slot.y_min		= flt_max;
+        slot.y_max		= flt_min;
+		for (SBoxPickInfoIt it=pinf.begin(); it!=pinf.end(); it++){
+    		float range;
+            sPoly sSrc	(it->bp_inf.p,3);
+            sPoly sDest;
+            sPoly* sRes = frustum.ClipPoly(sSrc, sDest);
+            if (sRes){
+            	for (int k=0; k<sRes->size(); k++){
+                	float H = (*sRes)[k].y;
+                    if (H>slot.y_max) slot.y_max = H;
+                    if (H<slot.y_min) slot.y_min = H;
+                }
+            }
+	    }
+    }else{
+    	ZeroMemory(&slot,sizeof(DetailSlot));
+    	slot.items[0].id=0xff;
+    	slot.items[1].id=0xff;
+    	slot.items[2].id=0xff;
+    	slot.items[3].id=0xff;
+    }
+}
+
+bool CDetailManager::UpdateBBox(){
     // get bounding box
 	ObjectList& lst=Scene->m_SnapObjects;
 	if (!Scene->GetBox(m_BBox,lst)) return false;
 
     // fill header
-    m_Header.version	= DETAIL_VERSION;
     int mn_x 			= iFloor(m_BBox.min.x/DETAIL_SLOT_SIZE+0.5f);
     int mn_z 			= iFloor(m_BBox.min.z/DETAIL_SLOT_SIZE+0.5f);
     int mx_x 			= iFloor(m_BBox.max.x/DETAIL_SLOT_SIZE+0.5f);
@@ -656,26 +369,100 @@ bool CDetailManager::GenerateSlots(LPCSTR tex_name){
 	m_Header.size_x 	= mx_x-mn_x;
 	m_Header.size_z 	= mx_z-mn_z;
 
-    UI->ProgressStart	(m_Header.size_x*m_Header.size_z,"Updating...");
-
     m_Slots.clear		();
     m_Slots.resize		(m_Header.size_x*m_Header.size_z);
+
+    UI->ProgressStart	(m_Header.size_x*m_Header.size_z,"Updating bbox...");
     for (int z=0; z<m_Header.size_z; z++){
         for (int x=0; x<m_Header.size_x; x++){
         	DSIt slot	= m_Slots.begin()+z*m_Header.size_x+x;
         	slot->y_min	= m_BBox.min.y;
         	slot->y_max	= m_BBox.max.y;
-        	GenerateOneSlot(x,z,*slot);
-            UI->ProgressInc();
+        	UpdateSlotBBox(x,z,*slot);
+			UI->ProgressInc();
         }
     }
     UI->ProgressEnd		();
+}
 
-	return true;
+void CDetailManager::GetSlotRect(Frect& rect, int sx, int sz){
+    float x 			= fromSlotX(sx);
+    float z 			= fromSlotZ(sz);
+    rect.x1				= x-DETAIL_SLOT_SIZE_2;
+    rect.y1				= z-DETAIL_SLOT_SIZE_2;
+    rect.x2				= x+DETAIL_SLOT_SIZE_2;
+    rect.y2				= z+DETAIL_SLOT_SIZE_2;
+}
+
+void CDetailManager::GetSlotTCRect(Irect& rect, int sx, int sz){
+	Frect R;
+	GetSlotRect			(R,sx,sz);
+	rect.x1 			= GetUFromX(R.x1);
+	rect.x2 			= GetUFromX(R.x2);
+	rect.y1 			= GetVFromZ(R.y1);
+	rect.y2 			= GetVFromZ(R.y2);
+}
+
+void CDetailManager::CalcClosestCount(int part, const Fcolor& C, SIndexDistVec& best){
+    float dist = flt_max;
+    Fcolor src;
+    float inv_a = 1-C.a;
+    int idx = -1;
+
+    for (int k=0; k<best.size(); k++){
+		src.set(best[k].index);
+        float d = inv_a+sqrtf((C.r-src.r)*(C.r-src.r)+(C.g-src.g)*(C.g-src.g)+(C.b-src.b)*(C.b-src.b));
+        if (d<dist){
+        	dist 	= d;
+            idx 	= k;
+        }
+    }
+    if (idx>=0) best[idx].count[part]++;
+}
+
+bool CDetailManager::UpdateObjects(){
+    UI->ProgressStart	(m_Header.size_x*m_Header.size_z,"Updating slot objects...");
+    for (int z=0; z<m_Header.size_z; z++){
+        for (int x=0; x<m_Header.size_x; x++){
+        	DSIt slot	= m_Slots.begin()+z*m_Header.size_x+x;
+            Irect		R;
+            GetSlotTCRect(R,x,z);
+            SIndexDistVec best;
+            // find best color index
+            {
+                for (DWORD v=R.y1; v<R.y2; v++){
+                    for (DWORD u=R.x1; u<R.x2; u++){
+                        Fcolor C;
+                        C.set(GetColor(u,v));
+                        FindClosestIndex(C,best);
+                    }
+                }
+            }
+            // sum
+            Irect P[4];
+            float dx=(R.x2-R.x1)/2;
+            float dy=(R.y2-R.y1)/2;
+            P[0].x1=R.x1; 					P[0].y1=R.y1; 					P[0].x2=R.x1+dx; 	P[0].y2=R.y1+dy;
+            P[1].x1=iFloor(R.x1+dx+0.5f); 	P[1].y1=R.y1;					P[1].x2=R.x2; 		P[1].y2=R.y1+dx;
+            P[2].x1=R.x1; 					P[2].y1=iFloor(R.y1+dy+0.5f); 	P[2].x2=R.x1+dx;	P[2].y2=R.y2;
+            P[3].x1=iFloor(R.x1+dx+0.5f);	P[3].y1=iFloor(R.y1+dy+0.5f);	P[3].x2=R.x2; 		P[3].y2=R.y2;
+            for (int k=0; k<4; k++){
+	            for (DWORD v=P[k].y1; v<P[k].y2; v++){
+		            for (DWORD u=P[k].x1; u<P[k].x2; u++){
+                        Fcolor C;
+                        C.set(GetColor(u,v));
+                        CalcClosestCount(k,C,best);
+                    }
+                }
+            }
+			UI->ProgressInc();
+        }
+    }
+    UI->ProgressEnd		();
 }
 
 void CDetailManager::Render(ERenderPriority flag){
-	if (Valid()){
+	if (m_Slots.size()){
     	switch (flag){
 		case rpNormal:{
             Fvector 		center;
@@ -700,17 +487,132 @@ void CDetailManager::Render(ERenderPriority flag){
 }
 
 void CDetailManager::Clear(){
+	RemoveObjects		();
+	m_ColorIndices.clear();
+    _DELETE				(m_pBaseTexture);
     m_Slots.clear		();
 }
 
-void CDetailManager::Load(CStream& F){
+
+CDetail* CDetailManager::FindObjectByName(LPCSTR name){
+	for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
+    	if (stricmp((*it)->GetName(),name)==0) return *it;
+}
+
+void CDetailManager::AppendObject(LPCSTR name, bool bTestUnique){
+	if (bTestUnique&&FindObjectByName(name)) return;
+
+    CDetail* D = new CDetail();
+    if (!D->Update(name)){
+    	_DELETE(D);
+        return;
+    }
+    m_Objects.push_back(D);
+}
+
+void CDetailManager::RemoveObjects(){
+	for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
+    	_DELETE(*it);
+    m_Objects.clear();
+}
+
+void CDetailManager::RemoveColorIndices(){
+	m_ColorIndices.clear();
+}
+
+CDetail* CDetailManager::FindObjectInColorIndices(DWORD index, LPCSTR name){
+	ColorIndexPairIt CI=m_ColorIndices.find(index);
+	if (CI!=m_ColorIndices.end()){
+    	DOVec& lst = CI->second;
+		for (DOIt it=lst.begin(); it!=lst.end(); it++)
+    		if (stricmp((*it)->GetName(),name)==0) return *it;
+    }
+    return 0;
+}
+
+void CDetailManager::AppendIndexObject(DWORD color,LPCSTR name, bool bTestUnique){
+	if (bTestUnique){
+		CDetail* DO = FindObjectInColorIndices(color,name);
+        if (DO)
+			m_ColorIndices[color].push_back(DO);
+    }else{
+		CDetail* DO = FindObjectByName(name);
+	    R_ASSERT(DO);
+		m_ColorIndices[color].push_back(DO);
+    }
+}
+
+bool CDetailManager::Load(CStream& F){
+    R_ASSERT			(F.FindChunk(DETMGR_CHUNK_VERSION));
+	DWORD version		= F.Rdword();
+    if (version!=DETMGR_VERSION){
+    	Log->Msg(mtError,"CDetailManager: unsupported version.");
+        return false;
+    }
+
+	// header
+    R_ASSERT			(F.ReadChunk(DETMGR_CHUNK_HEADER,&m_Header));
+
+    // objects
+    CStream* OBJ 		= F.OpenChunk(DETMGR_CHUNK_OBJECTS);
+    if (OBJ){
+        CStream* O   	= OBJ->OpenChunk(0);
+        for (int count=1; O; count++) {
+            CDetail* DO = new CDetail();
+            if (DO->Load(*O)){
+                m_Objects.push_back(DO);
+            }else{
+                Log->Msg(mtError,"Can't load detail object.");
+                _DELETE(DO);
+            }
+            O->Close();
+            O = OBJ->OpenChunk(count);
+        }
+        OBJ->Close();
+    }
+
+    // slots
+    R_ASSERT			(F.FindChunk(DETMGR_CHUNK_SLOTS));
+    DWORD cnt 			= F.Rdword();
+    m_Slots.resize		(cnt);
+	F.Read				(m_Slots.begin(),m_Slots.size()*sizeof(DetailSlot));
+
+    // internal
+    // bbox
+    R_ASSERT			(F.ReadChunk(DETMGR_CHUNK_BBOX,&m_BBox));
+	// base texture
+    char buf[255];
+	if(F.FindChunk(DETMGR_CHUNK_BASE_TEXTURE)){
+	    F.RstringZ			(buf);
+    	m_pBaseTexture		= new ETextureCore(buf);
+    }
+    // color index map
+    R_ASSERT			(F.FindChunk(DETMGR_CHUNK_COLOR_INDEX));
+    cnt					= F.Rbyte();
+    DWORD index;
+    int ref_cnt;
+    for (int k=0; k<cnt; k++){
+		index			= F.Rdword();
+        ref_cnt			= F.Rbyte();
+		for (int j=0; j<ref_cnt; j++){
+        	F.RstringZ	(buf);
+            CDetail* DO	= FindObjectByName(buf);
+            R_ASSERT	(DO);
+        	m_ColorIndices[index].push_back(DO);
+        }
+    }
 }
 
 void CDetailManager::Save(CFS_Base& F){
+	// version
+	F.open_chunk		(DETMGR_CHUNK_VERSION);
+    F.Wdword			(DETMGR_VERSION);
+    F.close_chunk		();
+
 	// header
-	F.write_chunk		(DETMGR_HEADER,&m_Header,sizeof(DetailHeader));
+	F.write_chunk		(DETMGR_CHUNK_HEADER,&m_Header,sizeof(DetailHeader));
     // objects
-	F.open_chunk		(DETMGR_OBJECTS);
+	F.open_chunk		(DETMGR_CHUNK_OBJECTS);
     for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
 		F.open_chunk	(it-m_Objects.begin());
         (*it)->Save		(F);
@@ -718,25 +620,40 @@ void CDetailManager::Save(CFS_Base& F){
     }
     F.close_chunk		();
     // slots
-	F.open_chunk		(DETMGR_SLOTS);
+	F.open_chunk		(DETMGR_CHUNK_SLOTS);
+    F.Wdword			(m_Slots.size());
 	F.write				(m_Slots.begin(),m_Slots.size()*sizeof(DetailSlot));
     F.close_chunk		();
 
     // internal
     // bbox
-	F.write_chunk		(DETMGR_BBOX,&m_BBox,sizeof(Fbox));
+	F.write_chunk		(DETMGR_CHUNK_BBOX,&m_BBox,sizeof(Fbox));
 	// base texture
-    R_ASSERT			(m_pBaseTexture);
-	F.open_chunk		(DETMGR_BASE_TEXTURE);
-    F.WstringZ			(m_pBaseTexture->name());
+    if (m_pBaseTexture){
+		F.open_chunk	(DETMGR_CHUNK_BASE_TEXTURE);
+    	F.WstringZ		(m_pBaseTexture->name());
+	    F.close_chunk	();
+    }
+    // color index map
+	F.open_chunk		(DETMGR_CHUNK_COLOR_INDEX);
+    F.Wbyte				(m_ColorIndices.size());
+    ColorIndexPairIt S 	= m_ColorIndices.begin();
+    ColorIndexPairIt E 	= m_ColorIndices.end();
+    ColorIndexPairIt i_it= S;
+	for(; i_it!=E; i_it++){
+		F.Wdword		(i_it->first);
+        F.Wbyte			(i_it->second.size());
+	    for (DOIt do_it=i_it->second.begin(); do_it!=i_it->second.end(); do_it++)
+        	F.WstringZ	((*do_it)->GetName());
+    }
     F.close_chunk		();
 }
 
 void CDetailManager::Export(CFS_Base& F){
 	// header
-	F.write_chunk		(DETMGR_HEADER,&m_Header,sizeof(DetailHeader));
+	F.write_chunk		(DETMGR_CHUNK_HEADER,&m_Header,sizeof(DetailHeader));
     // objects
-	F.open_chunk		(DETMGR_OBJECTS);
+	F.open_chunk		(DETMGR_CHUNK_OBJECTS);
     for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
 		F.open_chunk	(it-m_Objects.begin());
         (*it)->Export	(F);
@@ -744,7 +661,7 @@ void CDetailManager::Export(CFS_Base& F){
     }
     F.close_chunk		();
     // slots
-	F.open_chunk		(DETMGR_SLOTS);
+	F.open_chunk		(DETMGR_CHUNK_SLOTS);
 	F.write				(m_Slots.begin(),m_Slots.size()*sizeof(DetailSlot));
     F.close_chunk		();
 }

@@ -30,7 +30,8 @@ ETextureThumbnail::~ETextureThumbnail(){
 
 STextureParams* ETextureThumbnail::GetTextureParams(){
 	if (!m_TexParams){
-        return LoadTexParams()?m_TexParams:0;
+    	if (!LoadTexParams())
+        	m_TexParams=new STextureParams();
     }
     return m_TexParams;
 }
@@ -158,7 +159,7 @@ bool ETextureThumbnail::LoadTexParams(){
 
     R_ASSERT(F.ReadChunk(THM_CHUNK_VERSION,&version));
     if( version!=THM_CURRENT_VERSION ){
-        Log->DlgMsg( mtError, "Thumbnail: Unsuported version.");
+        Log->DlgMsg( mtError, "Thumbnail: Unsupported version.");
 		m_bLoadFailed = true;
         return false;
     }
@@ -187,7 +188,7 @@ bool ETextureThumbnail::Load(){
 
     R_ASSERT(F.ReadChunk(THM_CHUNK_VERSION,&version));
     if( version!=THM_CURRENT_VERSION ){
-        Log->DlgMsg( mtError, "Thumbnail: Unsuported version.");
+        Log->DlgMsg( mtError, "Thumbnail: Unsupported version.");
 		m_bLoadFailed = true;
         return false;
     }

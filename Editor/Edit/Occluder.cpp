@@ -342,7 +342,7 @@ bool COccluder::Load(CStream& F){
 
     R_ASSERT(F.ReadChunk(OCCLUDER_CHUNK_VERSION,&version));
     if( version!=OCCLUDER_VERSION ){
-        Log->DlgMsg( mtError, "Occluder: Unsuported version.");
+        Log->DlgMsg( mtError, "Occluder: Unsupported version.");
         return false;
     }
 

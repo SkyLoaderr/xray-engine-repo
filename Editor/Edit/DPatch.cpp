@@ -287,7 +287,7 @@ bool CDPatchSystem::Load(CStream& F){
 
     R_ASSERT(F.ReadChunk(DPATCH_CHUNK_VERSION,&version));
     if( version!=DPATCH_VERSION ){
-        Log->DlgMsg( mtError, "DetailPatch: Unsuported version.");
+        Log->DlgMsg( mtError, "DetailPatch: Unsupported version.");
         return false;
     }
     

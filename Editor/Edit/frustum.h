@@ -61,6 +61,7 @@ public:
 	}
 
 	void			CreateFromPoints	(Fvector* p, int count);
+    void			CreateFromPlanes	(Fplane* p, int count);
 	void			CreateFromViewMatrix();
 	void			CreateFromMatrix	(Fmatrix &M);
 	bool			CreateFromClipPoly	(Fvector* p, int count, CFrustum& clip);	// returns 'false' if creation failed

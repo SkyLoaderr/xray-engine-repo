@@ -42,7 +42,7 @@ void CPSLibrary::Init(){
     fn = PSLIB_FILENAME;
     FS.m_GameRoot.Update(fn);
 	if (FS.Exist(fn.c_str(),true)){
-    	if (!Load(fn.c_str())) Log->DlgMsg(mtInformation,"PS Library: Unsuported version.");
+    	if (!Load(fn.c_str())) Log->DlgMsg(mtInformation,"PS Library: Unsupported version.");
     }
 }
 

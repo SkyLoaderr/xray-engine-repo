@@ -268,7 +268,7 @@ bool CLight::Load(CStream& F){
     char buf[1024];
     R_ASSERT(F.ReadChunk(LIGHT_CHUNK_VERSION,&version));
     if( version!=LIGHT_VERSION ){
-        Log->DlgMsg( mtError, "CLight: Unsuported version.");
+        Log->DlgMsg( mtError, "CLight: Unsupported version.");
         return false;
     }
 

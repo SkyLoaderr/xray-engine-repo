@@ -37,10 +37,14 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn3;
 	TExtBtn *ExtBtn1;
 	TExtBtn *ExtBtn4;
+	TExtBtn *ExtBtn5;
+	TExtBtn *ExtBtn6;
     void __fastcall PaneMinClick(TObject *Sender);
     void __fastcall ExpandClick(TObject *Sender);
 	void __fastcall ExtBtn1Click(TObject *Sender);
+	void __fastcall ExtBtn5Click(TObject *Sender);
 	void __fastcall ExtBtn4Click(TObject *Sender);
+	void __fastcall ExtBtn6Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TfraDetailObject(TComponent* Owner);

@@ -59,7 +59,7 @@ bool SceneBuilder::BuildObjectDO( CFS_Base& F, CEditObject *O, const char* name,
         ResetStructures();
     	return false;
     }
-
+/*
     // fill data
 	DOVertVec do_verts;
 	do_verts.resize(l_faces_cnt*3);
@@ -76,8 +76,49 @@ bool SceneBuilder::BuildObjectDO( CFS_Base& F, CEditObject *O, const char* name,
 	F.WstringZ	(l_textures	[M.surfidx[0]].name);
 
     F.Wdword	(0); // flags
+
     F.Wdword	(do_verts.size());
     F.write		(do_verts.begin(), do_verts.size()*sizeof(fvfVertexIn));
+*/
+    // fill data
+	DOVertVec do_verts;
+	do_verts.resize(l_vertices_cnt);
+    DOVertIt v_it=do_verts.begin();
+    for (int v=0; v<l_vertices_cnt; v++){
+		v_it->P.set(l_vertices[v]);
+        for (int f=0; f<l_faces_cnt; f++){
+	    	b_face& face = l_faces[f];
+            if (face.v[0]==v){
+                v_it->u=face.t[0][0].tu;
+                v_it->v=face.t[0][0].tv;
+                break;
+            }else if (face.v[1]==v){
+                v_it->u=face.t[0][1].tu;
+                v_it->v=face.t[0][1].tv;
+                break;
+            }else if (face.v[2]==v){
+                v_it->u=face.t[0][2].tu;
+                v_it->v=face.t[0][2].tv;
+                break;
+            }
+        }
+        v_it++;
+    }
+    // write data
+	F.WstringZ	(l_shaders	[M.shader].name);
+	F.WstringZ	(l_textures	[M.surfidx[0]].name);
+
+    F.Wdword	(0); // flags
+    F.Wdword	(l_vertices_cnt);
+    if (1){
+    F.Wdword	(l_faces_cnt/2*3);
+	}
+
+    F.write		(do_verts.begin(), do_verts.size()*sizeof(fvfVertexIn));
+    for (int f=0; f<l_faces_cnt; f++)
+    	if (!(f%2))
+	    	for (int k=0; k<3; k++)
+		        F.Wword(l_faces[f].v[k]);
 
     WriteTextures();
 

@@ -151,7 +151,7 @@ bool CAITPoint::Load(CStream& F){
 
     R_ASSERT(F.ReadChunk(AITPOINT_CHUNK_VERSION,&version));
     if( version!=AITPOINT_VERSION ){
-        Log->DlgMsg( mtError, "CAITPoint: Unsuported version.");
+        Log->DlgMsg( mtError, "CAITPoint: Unsupported version.");
         return false;
     }
     

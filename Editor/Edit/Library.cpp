@@ -166,7 +166,7 @@ bool ELibrary::Load(){
 		R_ASSERT(F.ReadChunk(CHUNK_VERSION, &version));
 
 	    if (version!=CURRENT_LIBRARY_VERSION){
-    	    Log->DlgMsg( mtError, "Object Library: unsuported file version. Can't load library.");
+    	    Log->DlgMsg( mtError, "Object Library: unsupported file version. Can't load library.");
 	        return false;
     	}
 

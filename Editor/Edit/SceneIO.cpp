@@ -138,7 +138,7 @@ void EScene::Save(char *_FileName, bool bUndo){
 		F.close_chunk	();
     }
 
-    if (m_DetailObjects->ObjCount()){
+    if (m_DetailObjects->Valid()){
 		F.open_chunk	(CHUNK_DETAILOBJECTS);
     	m_DetailObjects->Save(F);
 		F.close_chunk	();
@@ -222,7 +222,7 @@ bool EScene::Load(char *_FileName){
         // Version
         R_ASSERT(F->ReadChunk(CHUNK_VERSION, &version));
         if (version!=CURRENT_FILE_VERSION){
-            Log->DlgMsg( mtError, "EScene: unsuported file version. Can't load Level.");
+            Log->DlgMsg( mtError, "EScene: unsupported file version. Can't load Level.");
             UI->UpdateScene();
         	_DELETE(F);
             return false;
@@ -360,7 +360,7 @@ bool EScene::LoadSelection(const char *_FileName,ObjectList& lst){
         // Version
         R_ASSERT(F.ReadChunk(CHUNK_VERSION, &version));
         if (version!=CURRENT_FILE_VERSION){
-            Log->DlgMsg( mtError, "EScene: unsuported file version. Can't load Level.");
+            Log->DlgMsg( mtError, "EScene: unsupported file version. Can't load Level.");
             UI->UpdateScene();
             return false;
         }
