@@ -286,7 +286,10 @@ void CCustomMonster::Update	( DWORD DT )
 		// here is monster AI call
 		m_fTimeUpdateDelta = dt;
 		Think();
-		
+		if (m_fCurSpeed < EPS_L) {
+			AI_Path.TravelPath.clear();
+			AI_Path.TravelStart = 0;
+		}
 		// Look and action streams
 		if (iHealth>0) {
 			Exec_Look		(dt);
