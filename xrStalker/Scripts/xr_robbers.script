@@ -86,6 +86,9 @@ function action_robber_activity:execute()
 	if not self.actor then
 		self.actor = level.actor()
 	end
+
+	local distance = self.actor:position():distance_to(self.patrol_rob:point(0))
+	printf("distance to corpse = %d", distance)
 		
 	if self.state == self.state_waiting_for_plr_to_come then
 		--printf("_debug_robber [%s]: adding animations", self.object:name())
@@ -115,11 +118,11 @@ function action_robber_activity:execute()
 		end
 
 		if self.actor then
-			local distance = self.actor:position():distance_to(self.patrol_rob:point(0))
 			if distance <= 1 then
 				self.expiration_time = device():time_global() + 5000
-				-- TODO: крикнуть "СТОЙ!"
 				printf("STOI !!!")
+				self.object:play_sound(xr_sounds_id.zmey_robber_base, 1, 0, 1, 0,
+						xr_sounds_id.zmey_robber_do_not_move)
 				self.state = self.state_shout_stop
 			end
 		end
@@ -127,7 +130,8 @@ function action_robber_activity:execute()
 	elseif self.state == self.state_shout_stop then
 		if device():time_global() >= self.expiration_time then
 			self.expiration_time = device():time_global() + 5000
-			-- TODO: "bros orujie"
+			self.object:play_sound(xr_sounds_id.zmey_robber_base, 1, 0, 1, 0,
+					xr_sounds_id.zmey_robber_drop_weapon)
 			printf("BROS ORUJIE !!!")
 			self.state = self.state_shout_drop_your_weapon
 		end
@@ -154,25 +158,12 @@ function add_to_binder(npc)
 	local operators    = {}
 	local properties  = {}
 
-	local sounds = {}
-	sounds["commander_snd"]        = xr_sounds_id.zmey_robber_base + 1
-	sounds["soldiers_idle_snd"]     = xr_sounds_id.zmey_robber_base + 2
-	sounds["soldiers_idle2_snd"]    = xr_sounds_id.zmey_robber_base + 3
-	sounds["soldiers_replics_snd"]  = xr_sounds_id.zmey_robber_base + 4
-	sounds["soldiers_hear_snd"]     = xr_sounds_id.zmey_robber_base + 5
-	sounds["soldier_alarm"]         = xr_sounds_id.zmey_robber_base + 6
-
-	npc:add_sound("Scripts\\Patrol\\Commander1_",           20, snd_type.talk, 2, 1, sounds["commander_snd"])
-	npc:add_sound("Scripts\\Patrol\\soldier_idle_",         20, snd_type.talk, 2, 1, sounds["soldiers_idle_snd"])
-	npc:add_sound("script_replics\\soldier_1\\idle\\soldier_idle_", 20, snd_type.talk, 2, 1, sounds["soldiers_idle2_snd"])
-	npc:add_sound("script_replics\\soldier_1\\replics\\soldier_replic_",     20, snd_type.talk, 2, 1, sounds["soldiers_replics_snd"])
-	npc:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_",   20, snd_type.talk, 2, 1, sounds["soldiers_hear_snd"])
-	npc:add_sound ("script_replics\\soldier_1\\alarm\\soldier_alarm_",     20, snd_type.talk, 2, 2, sounds["soldier_alarm"])
+	-- FIXME: тут будет robber
+	npc:add_sound("Scripts\\Patrol\\Commander1_",           20, snd_type.talk, 2, 1, xr_sounds_id.zmey_robber_base)
 
 	local manager = npc:motivation_action_manager()
 
 	properties["need_robber"]   = xr_evaluators_id.zmey_robber_base + 1
-
 	operators["action_robber"]   = xr_actions_id.zmey_robber_base + 1
 
 	-- // evaluators

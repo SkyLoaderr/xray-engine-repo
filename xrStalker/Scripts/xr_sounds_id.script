@@ -25,6 +25,13 @@ stohe_reaction_base         = sound_stohe_base + 30
 sound_zmey_base             =   global_sounds + 3000
 zmey_guard_base             = sound_zmey_base + 0
 zmey_robber_base            = sound_zmey_base + 100
+zmey_robber_do_not_move     = --[[zmey_robber_base +]] 0 -- Не двигаться!
+zmey_robber_drop_weapon     = --[[zmey_robber_base +]] 1 -- Брось оружие, если хочешь жить
+zmey_robber_do_it           = --[[zmey_robber_base +]] 2 -- Делай что говорю!
+zmey_robber_look_at_me      = --[[zmey_robber_base +]] 3 -- На меня смотри!
+zmey_robber_shoot_him_1     = --[[zmey_robber_base +]] 4 -- Стреляйте в него
+zmey_robber_shoot_him_2     = --[[zmey_robber_base +]] 5 -- Стреляйте в него
+zmey_robber_you_will_pay    = --[[zmey_robber_base +]] 6 -- Ты за это заплатишь
 zmey_camper_base            = sound_zmey_base + 200
 zmey_sleeper_base           = sound_zmey_base + 300
 
