@@ -83,7 +83,7 @@ function fract:calculate()
 			v.object = nil				
 		end
 	end
-	if self.calculateStates ~= nil then self.calculateStates(self.Object) end
+	if self.calculateStates ~= nil then self.calculateStates(self.Object, self.music) end
 
 	--' Апдейт матюгальника
 	if self.music ~= nil then

@@ -257,7 +257,7 @@ function loadStates(st, gname, type, calculateState)
 		t = { id = 2,
 		    timeout = 1*60*60*1000 }
 		table.insert(st, t)			
-		calculateState = function(obj)
+		calculateState = function(obj, rupor)
 			for k,v in obj do
 				enemy = v:best_enemy()
 				if enemy ~= nil then
@@ -267,10 +267,14 @@ function loadStates(st, gname, type, calculateState)
 		   				enemy_type == clsid.stalker or
 	   					enemy_type == clsid.trader
 	   				then
+	   					if rupor ~= nil then
+	   						rupor:event(1)
+	   					end
 	   					return 1
 	   				end
 				end
 			end
+			rupor:event(0)
 			return 0
 		end
 	end
