@@ -56,11 +56,10 @@ function save_dialog:InitCallBacks()
 end
 
 function save_dialog:OnButton_ok_clicked()
-	printf("ok")
-
+	
 end
 
 function save_dialog:OnButton_cansel_clicked()
-	printf("cancel")
+	
 
 end
