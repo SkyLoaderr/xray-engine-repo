@@ -7,14 +7,14 @@
 // ZFar  - always 1.0f
 
 class	ENGINE_API	CResourceManager;
+class	ENGINE_API	CGammaControl;
 
 #include "pure.h"
-#include "hwcaps.h"
 #include "hw.h"
 #include "ftimer.h"
 #include "stats.h"
-#include "xr_effgamma.h"
 
+#include "shader.h"
 #include "R_Backend.h"
 
 #define VIEWPORT_NEAR 0.2f
@@ -59,7 +59,7 @@ public:
 	CRegistrator	<pureAppCycleEnd	 >	seqAppCycleEnd;
 
 	// Dependent classes
-	CResourceManager*							Shader;
+	CResourceManager*						Shader;
 	CStats									Statistic;
 	CGammaControl							Gamma;
 
@@ -125,9 +125,9 @@ public:
 	volatile BOOL		mt_bMustExit;
 };
 
-extern		ENGINE_API CRenderDevice Device;
+extern		ENGINE_API		CRenderDevice		Device;
 
-#include "R_Backend_Runtime.h"
+#include	"R_Backend_Runtime.h"
 
 #define		REQ_CREATE()	if (!Device.bReady)	return;
 #define		REQ_DESTROY()	if (Device.bReady)	return;
