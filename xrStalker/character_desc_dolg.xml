@@ -84,7 +84,7 @@
 		<rank>90</rank>
 		<reputation>50</reputation>
 
-		<visual>actors\dolg\stalker_dolg_nauchniy</visual>
+		<visual>actors\dolg\stalker_dolg_nauchaniy</visual>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
