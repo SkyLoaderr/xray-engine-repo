@@ -237,7 +237,7 @@ class CGraphThread : public CThread
 	CAStarSearch<CAIMapShortestPathNode,SAIMapData> m_tpMapPath;
 
 public:
-	CGraphThread(u32 ID, u32 dwStart, u32 dwEnd, float fMaxDistance, xrCriticalSection &tCriticalSection) : CThread(ID)
+	CGraphThread(u32 ID, u32 dwStart, u32 dwEnd, float fMaxDistance, xrCriticalSection *tpCriticalSection) : CThread(ID)
 	{
 		m_dwAStarStaticCounter	= 0;
 		u32 S1					= (m_header.count + 2)*sizeof(SNode);
@@ -253,7 +253,7 @@ public:
 		m_dwStart				= dwStart;
 		m_dwEnd					= dwEnd;
 		m_fMaxDistance			= fMaxDistance;
-		m_tpCriticalSection		= &tCriticalSection;
+		m_tpCriticalSection		= tpCriticalSection;
 	}
 
 	~CGraphThread()
@@ -271,9 +271,9 @@ public:
 		u32 N = tpaGraph.size() - 1, M = N + 1, K = N*M/2;
 		u32 a = M*m_dwStart - m_dwStart*(m_dwStart + 1)/2, b = M*m_dwEnd - m_dwEnd*(m_dwEnd + 1)/2, c = b - a;
 		thProgress = 0.0f;
-		for (int i=(int)m_dwStart*1 + 0*1; i<(int)m_dwEnd; i++) {
+		for (int i=(int)m_dwStart; i<(int)m_dwEnd; i++) {
 			SGraphVertex &tCurrentGraphVertex = tpaGraph[i];
-			for (int j = (i + 1)*1 + 0*274; j<(int)M; thProgress = (float(M)*i - i*(i + 1)/2 + ++j - i - 1 - a)/c) {
+			for (int j = (i + 1); j<(int)M; thProgress = (float(M)*i - i*(i + 1)/2 + ++j - i - 1 - a)/c) {
 				SGraphVertex &tNeighbourGraphVertex = tpaGraph[j];
 				if (tCurrentGraphVertex.tPoint.distance_to(tNeighbourGraphVertex.tPoint) < m_fMaxDistance) {
 					try {

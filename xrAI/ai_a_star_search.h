@@ -116,18 +116,20 @@ public:
 				float fCumulativeDistance = 0, fLastDirectDistance = 0, fDirectDistance;
 				Fvector tPosition = tStartPosition;
 				
-				u32 dwNode = tpaNodes[0];
-				for (i=1; i<(int)tpaNodes.size(); i++) {
-					fDirectDistance = ffCheckPositionInDirection(dwNode,tPosition,tfGetNodeCenter(tpaNodes[i]),fMaxValue);
+				vector<u32>::iterator	I = tpaNodes.begin();
+				vector<u32>::iterator	E = tpaNodes.end();
+				u32 dwNode = *I;
+				for (I++; I != E; I++) {
+					fDirectDistance = ffCheckPositionInDirection(dwNode,tPosition,tfGetNodeCenter(*I),fMaxValue);
 					if (fDirectDistance == MAX_VALUE) {
 						if (fLastDirectDistance == 0) {
-							fCumulativeDistance += ffGetDistanceBetweenNodeCenters(dwNode,tpaNodes[i]);
-							dwNode = tpaNodes[i];
+							fCumulativeDistance += ffGetDistanceBetweenNodeCenters(dwNode,*I);
+							dwNode = *I;
 						}
 						else {
 							fCumulativeDistance += fLastDirectDistance;
 							fLastDirectDistance = 0;
-							dwNode = tpaNodes[i-- - 1];
+							dwNode = *--I;
 						}
 						tPosition = tfGetNodeCenter(dwNode);
 					}
@@ -138,31 +140,6 @@ public:
 						return;
 					}
 				}
-
-//				vector<u32>::iterator	I = tpaNodes.begin();
-//				vector<u32>::iterator	E = tpaNodes.end();
-//				u32 dwNode = *I;
-//				for (I++; I != E; I++) {
-//					fDirectDistance = ffCheckPositionInDirection(dwNode,tPosition,tfGetNodeCenter(*I),fMaxValue);
-//					if (fDirectDistance == MAX_VALUE) {
-//						if (fLastDirectDistance == 0) {
-//							fCumulativeDistance += ffGetDistanceBetweenNodeCenters(dwNode,*I);
-//							dwNode = *I;
-//						}
-//						else {
-//							fCumulativeDistance += fLastDirectDistance;
-//							fLastDirectDistance = 0;
-//							dwNode = *--I;
-//						}
-//						tPosition = tfGetNodeCenter(dwNode);
-//					}
-//					else 
-//						fLastDirectDistance = fDirectDistance;
-//					if (fCumulativeDistance + fLastDirectDistance >= fMaxValue) {
-//						fValue = MAX_VALUE;
-//						return;
-//					}
-//				}
 
 				fDirectDistance = ffCheckPositionInDirection(dwNode,tPosition,tFinishPosition,fMaxValue);
 				if (fDirectDistance == MAX_VALUE)
