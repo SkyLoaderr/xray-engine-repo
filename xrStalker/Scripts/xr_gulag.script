@@ -10,6 +10,9 @@ function fract:__init(name, char_ini)
 	self.checkTime = 60*60*1000 	-- 1 игровой час
 	self.checkBegin = nil
 
+	self.broadcastTime = 2*60*1000
+	self.broadcastBegin = nil 
+
 	self.casualities = 0  	-- потери на блокпосте
 
 	self.Object = {}        -- список ресурсов
@@ -31,24 +34,44 @@ function fract:__init(name, char_ini)
         end
 
 	if self.territory ~= nil then
-        	self.territory:set_callback (self.zone_enter, true)
-        	self.territory:set_callback (self.zone_exit, false)
+        	self.territory:set_callback (self, "zone_enter", true)
+        	self.territory:set_callback (self, "zone_exit", false)
 	end
 
 end
 function fract:zone_enter(zone, obj)
 	printf("ENTER")
 	-- нужно определить свой это или чужой. Если чужой - добавить его в список гостей
+	if obj ~= nil and (get_clsid(obj) == clsid.stalker or get_clsid(obj) == clsid.actor ) then
+		if self.Guest[obj:id()] == nil then
+			-- отметить как гостя
+			local t = {	object = obj,
+					time = nil,
+					vertex = nil }
+			table.insert(self.Guest, obj:id(), t)
+		end
+	end
 end
 function fract:zone_exit(zone, obj)
 	printf("EXIT")
 	-- нужно удалить чудака из списка гостей, если он там есть.
+	if obj ~= nil and (get_clsid(obj) == clsid.stalker or get_clsid(obj) == clsid.actor ) then
+		if self.Guest[obj:id()] ~= nil then
+			self.Guest[obj:id()] = nil
+		end
+	end
 end
 function fract:addObject(npc)
 	if self.Object[npc:id()] == nil then
 		table.insert(self.Object, npc:id(), npc)
 		self:updateJob()
 	end
+end
+function fract:broadcast()
+	self.broadcastBegin = game.time()
+	for k,v in self.Guest do
+	        v.object:give_info_portion_via_pda("dolg_territory", v.object) 
+	end	
 end
 function fract:calculate() -- просчет лагеря
 	-- проверка не закончилось ли время особого состояния
@@ -89,6 +112,13 @@ function fract:calculate() -- просчет лагеря
 		end
 	end
 
+	-- рассылка по всем гостям в лагере
+	if self.broadcastBegin == nil or
+	   game.time() - self.broadcastBegin > self.broadcastTime then
+		self:broadcast()
+	end		
+
+	-- пересчет работ
 	if self.checkBegin == nil or
 	   game.time() - self.checkBegin > self.checkTime then
 		self:updateJob()
@@ -575,7 +605,6 @@ function addMember(name, npc, char_ini)
         xr_gulag.add_to_binder(npc)
 	local jj = xr_gulag.fraction[name]:getJobLabel()
 	for k,v in jj do
-		printf("%s", v)
 		if v == "sleeper" then
 		        xr_sleeper.add_to_binder (npc, nil)
 		elseif v == "guard" then
