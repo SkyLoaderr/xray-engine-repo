@@ -247,7 +247,6 @@ void CUIMainIngameWnd::Init()
 	// Flashing icons initialize
 	uiXml.SetLocalRoot(uiXml.NavigateToNode("flashing_icons"));
 	InitFlashingIcons(uiXml);
-	SetFlashIconState(efiPdaTask, true);
 }
 
 void CUIMainIngameWnd::Draw()
