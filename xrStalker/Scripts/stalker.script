@@ -48,20 +48,12 @@ function actor_binder:update(delta)
 				actor:set_task_state(task.completed, "agroprom_get_military_documents", 1)
        		end       	
 
-       		if actor:has_info("garbage_find_stalker") then
-       			printf("[SsL] has info")
-       		end
-       		if actor:object("garbage_letter") ~= nil then
-       			printf("[SsL] has letter")
-       		end
-       		
 			if actor:has_info("garbage_find_stalker") and
        			actor:object("garbage_letter") ~= nil
        		then
-       			printf("[SsL] find_garbage_letter")
        			actor:give_info_portion("garbage_find_dead_stalker")
-				actor:set_task_state(task.fail, "garbage_meet_stalker", 0)
-				actor:give_info_portion("agroprom_meet_gunslinger_band")
+       			actor:give_info_portion("agroprom_meet_gunslinger_band")
+				actor:set_task_state(task.fail, "garbage_meet_stalker", 0)				
        		end       	
 
        		if actor:has_info("agroprom_meet_gunslinger_band") and
@@ -69,9 +61,7 @@ function actor_binder:update(delta)
        		then
        			actor:give_info_portion("agroprom_find_gunslinger_band")
 				actor:set_task_state(task.fail, "agroprom_meet_gunslinger_band", 0)
-       		end       	
-
-	
+       		end       		
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_init    (npc)
