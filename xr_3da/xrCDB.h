@@ -11,18 +11,33 @@
 #define XRCDB_API __declspec(dllimport)
 #endif
 
-// This class is exported from the xrCDB.dll
-class XRCDB_API CDB 
+namespace CDB
 {
-public:
-	CDB		();
-	~CDB	();
-
-	void	oRAY
-
+	enum {
+		RAY_CULL		= (1<<0),
+		RAY_ONLYFIRST	= (1<<1),
+		RAY_ONLYNEAREST	= (1<<2)
+	};
+	
+	class XRCDB_API Model;
+		
+	class XRCDB_API Collider 
+	{
+		DWORD	ray_mode;
+		DWORD	box_mode;
+		DWORD	frustum_mode;
+	public:
+		CDB		();
+		~CDB	();
+		
+		void	ray_mode		(DWORD f)	{	ray_mode = f;		}
+		void	ray_query		(const Fmatrix* parent, const Model *o, const Fvector& start,  const Fvector& dir, float max_range = 10000.f);
+		
+		
+		void	box_mode		(DWORD f)	{	box_mode = f;		}
+		
+		
+		void	frustum_mode	(DWORD f)	{	frustum_mode = f;	}
+	};
 };
-
-extern XRCDB_API int nXrCDB;
-
-XRCDB_API int fnXrCDB(void);
 
