@@ -7,7 +7,101 @@
 --
 -- Copyright:   2004 GSC Game World
 
+function main()
+	local dlg = ui_base_dialog.base_dialog()
+	level.start_stop_menu(dlg,true)
+		while true do
+		wait(3000)
+	end
+end
+
 
 class "base_dialog" (CUIScriptWnd)
 
+function base_dialog:__init() super()
+	self:SetFont(GetFontMendium())	
+	self:InitControls("base dialog")
+end
 
+function base_dialog:__finalize()
+end
+
+function base_dialog:InitControls(txt_caption)
+	-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< INIT DATA 
+	self.indent = 18	
+	self.button_indent = 7	
+	self.screen    = {x = 0, y = 0, width = 1024, height = 768}
+	
+	-- rect of main window
+	self.main_rect = {x = 0, y = 0,
+					  width  = 600,
+					  height = 400}
+	self.main_rect.x = (self.screen.width  - self.main_rect.width )/2
+	self.main_rect.y = (self.screen.height - self.main_rect.height)/2
+	-----------------------------------------------------------------
+	self.left_align_x   = indent
+	self.right_align_x  = main_rect.width - indent
+	self.top_aling_y    = indent
+	self.bottom_align_y = main_rect.height - indent
+	------------------------------------------------------------------
+	
+	-- button template
+	self.btn_rect  = {x = 0, 
+					  y = 0, 
+					  width = 135, 
+					  height = 40 }
+	--------------------------------------------------
+	-- special button aling
+	
+--		| _main form_	     |
+--		|                    |
+--		|          ________  |
+		----------| cancel |--
+		          ``````````
+	self.btn_special_rect = { x = 0, y = 0, width = self.btn_rect.width, height = self.btn_rect.height}
+	self.btn_special_rect.x = self.right_aling_x - self.btn_special_rect.width
+	self.btn_special_rect.y = self.main_rect.height - self.btn_special_rect.height/2
+	---------------------------------------------------
+	
+	-- Left Top Frame
+	self.lt_frame_indent = {x = 20, y = 45}
+	-- Caption text rect
+	self.caption_text_rect = {x = 60, y = -45, width = 500, height = 50 }
+	
+	-- Fonts
+	self.caption_font = GetFontLetterica25()
+	self.button_font  = GetFontLetterica25()
+	self.list_file_font = GetFontMedium()
+	self.list_date_font = GetFontMedium()
+	
+	-- Message Box
+	local message_rect = {x = 0, y = 0, width = 400, height = 300}
+	
+	
+	-- INIT DATA >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	
+	-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< CODE
+	
+	-- init self position and size
+	self:Init(main_rect.x, main_rect.y, main_rect.width, main_rect.height)
+	
+	-- MAIN FRAME WINDOW
+	self.main_frame = CUIFrameWindow()
+	main_frame:SetAutoDelete(true)
+	main_frame:SetWindowName("main_frame")
+	main_frame:Init("ui\\ui_frame", main_rect.x, main_rect.y, main_rect.width, main_rect.height)
+	main_frame:InitLeftTop("ui\\ui_frame_over_lt", 20, 45)
+	self:AttachChild(main_frame)
+	
+	-- CAPTION --
+	self.txt_caption = CUIStatic()
+	txt_caption:SetAutoDelete(true)
+	txt_caption:SetWindowName("txt_caption")
+	txt_caption:SetFont(self.caption_font)
+	txt_caption:SetTextAlign(CGameFont.alLeft)
+	txt_caption:SetText(txt_caption)
+	txt_caption:Init(caption_text_rect.x, caption_text_rect.y, caption_text_rect.width, caption_text_rect.height)
+	main_frame:AttachChild(txt_caption)		
+	-- CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	
+	
+end
