@@ -21,7 +21,7 @@ void	CBlender_combine::Compile(CBlender_Compile& C)
 		C.r2_Sampler			("s_bloom",			r2_RT_bloom1,	D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR);
 		C.r2_Sampler			("s_sky",			r2_RT_bloom2,	D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR);
 		C.r2_End				();
-		break
+		break;
 	case 1:
 	case 2:
 		C.r2_Pass				("null",			"r2_combine_2",	FALSE,	FALSE);

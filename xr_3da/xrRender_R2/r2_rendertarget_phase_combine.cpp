@@ -47,14 +47,14 @@ void	CRenderTarget::phase_combine	()
 
 		// Draw COLOR
 		float dr					= ps_r2_ls_dynamic_range;
-		RCache.set_Shader			(s_combine);
+		RCache.set_Element			(s_combine->E[0]);
 		RCache.set_c				("light_dynamic_range",	dr,dr,dr,dr);
 		RCache.set_c				("light_hemi",			.5f,.5f,.5f,0.f);
 		RCache.set_Geometry			(g_combine);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 
-	// Prepare skybox rendering
+	// Prepare skybox rendering (only, where stencil==0)
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		TRUE				));
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_EQUAL		));
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,			0x00				));
@@ -82,10 +82,7 @@ void	CRenderTarget::phase_combine	()
 		RCache.Vertex.Unlock		(4,g_combine->vb_stride);
 
 		// Draw COLOR
-		float dr					= ps_r2_ls_dynamic_range;
-		RCache.set_Shader			(s_combine);
-		RCache.set_c				("light_dynamic_range",	dr,dr,dr,dr);
-		RCache.set_c				("light_hemi",			.5f,.5f,.5f,0.f);
+		RCache.set_Element			(s_combine->E[1]);
 		RCache.set_Geometry			(g_combine);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
