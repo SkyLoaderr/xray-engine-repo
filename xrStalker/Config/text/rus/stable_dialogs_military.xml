@@ -153,6 +153,21 @@
     <string id="mil_dolg_dialog_9001">
         <text>Ты завалил Лукаша ?!! Ну ты даешь ! Спасибо, братан.</text>
     </string>
+    <string id="mil_guard_arsenal_dialog_1000">
+        <text>Стой. Доступ к арсеналу разрешен только членам группировки.</text>
+    </string>
+    <string id="mil_guard_arsenal_dialog_2000">
+        <text>Ну, вот. Теперь ты с нами и можешь войти в арсенал. Но есть одна проблема...</text>
+    </string>
+    <string id="mil_guard_arsenal_dialog_2001">
+        <text>Опять ? И что случилось ?</text>
+    </string>
+    <string id="mil_guard_arsenal_dialog_2002">
+        <text>Не пугайся, ничего страшного. Просто замок заклинило. Хе-хе. Если очень печет, то отстрели его нахрен, а я позже новый повешу.</text>
+    </string>
+    <string id="mil_guard_arsenal_dialog_2003">
+        <text>Понятно.</text>
+    </string>
     <string id="mil_leader_start_dialog_1001">
         <text>Привет, сталкер. Что, захотел к нам присоединиться ?</text>
     </string>

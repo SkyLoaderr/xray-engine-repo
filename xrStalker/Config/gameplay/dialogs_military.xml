@@ -1279,4 +1279,42 @@
             </phrase>
         </phrase_list>
     </dialog>
+    <dialog id="mil_guard_arsenal_dialog">
+        <phrase_list>
+            <phrase id="1000">
+                <text>mil_guard_arsenal_dialog_1000</text>
+                <dont_has_info>mil_leader_attach_community</dont_has_info>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <next>1000</next>
+                <next>2000</next>
+            </phrase>
+            <phrase id="2000">
+                <text>mil_guard_arsenal_dialog_2000</text>
+                <has_info>mil_leader_attach_community</has_info>
+                <next>2001</next>
+            </phrase>
+            <phrase id="2001">
+                <text>mil_guard_arsenal_dialog_2001</text>
+                <next>2002</next>
+            </phrase>
+            <phrase id="2002">
+                <text>mil_guard_arsenal_dialog_2002</text>
+                <next>2003</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+            </phrase>
+            <phrase id="2003">
+                <text>mil_guard_arsenal_dialog_2003</text>
+                <next>2004</next>
+            </phrase>
+            <phrase id="2004">
+                <text></text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
 </game_dialogs>
