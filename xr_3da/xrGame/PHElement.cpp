@@ -1197,7 +1197,7 @@ void CPHElement::CallBack(CBoneInstance* B){
 	}
 	Fmatrix parent;
 	if(bActivating){
-
+	if(ph_world->GetSpace()->lock_count) return;
 		if(!m_parent_element)
 		{	
 			m_shell->Activate();
