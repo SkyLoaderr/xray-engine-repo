@@ -17,12 +17,13 @@ public:
 	{
 		ref_shader		shader;
 		StaticWMVec		static_items;
-		xr_vector<CSkeletonWallmark*>	skeleton_items;
+		StaticWMVec		level_items;
+		xr_vector<CSkeletonWallmark*> skeleton_items;
 						wm_slot		(ref_shader sh)	{shader=sh;static_items.reserve(256);skeleton_items.reserve(256);}
 	};
 	DEFINE_VECTOR		(wm_slot*,WMSlotVec,WMSlotVecIt);
 private:
-	StaticWMVec							static_pool;
+	StaticWMVec			static_pool;
 	WMSlotVec			marks;
 	ref_geom			hGeom;
 
@@ -48,12 +49,14 @@ private:
 	void				static_wm_render		(static_wallmark*	W, FVF::LIT* &V);
 	void				static_wm_destroy		(static_wallmark*	W	);
 
+	void				level_wm_render			(static_wallmark*	W, FVF::LIT* &V);
+
 	void				skeleton_wm_render		(CSkeletonWallmark*	W, FVF::LIT* &V);
 
 	void				clear					();
 public:
-	CWallmarksEngine							();
-	~CWallmarksEngine							();
+						CWallmarksEngine		();
+						~CWallmarksEngine		();
 	// edit wallmarks
 	void				AddStaticWallmark		(CDB::TRI* pTri, const Fvector* pVerts, const Fvector &contact_point, ref_shader hTexture, float sz);
 	void				AddSkeletonWallmark		(CSkeletonWallmark* wm);
