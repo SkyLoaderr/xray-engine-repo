@@ -177,20 +177,18 @@ void CRenderTarget::End		()
 	curWidth				= Device.dwWidth;
 	curHeight				= Device.dwHeight;
 	
-	/*
-	Msg	("blur:%f, gray:%f, dh:%f, dv:%f, noise:%f",
-		param_blur,param_gray,param_duality_h,param_duality_v,param_noise
-		);
-	*/
 	if (!Perform())							return;
 	if (!psDeviceFlags.test(rsPostprocess))	return;
 	RCache.set_Shader	(s_postprocess);
 
-	int		gblend		= clamp			(iFloor(param_gray*255.f),0,255);
-	int		nblend		= clamp			(iFloor(param_noise*255.f),0,255);
+	int		gblend		= clamp			(iFloor((1-param_gray)*255.f),0,255);
+	int		nblend		= clamp			(iFloor((1-param_noise)*255.f),0,255);
 	u32					p_color			= subst_alpha		(param_color_base,nblend);
 	u32					p_gray			= subst_alpha		(param_color_gray,gblend);
 	u32					p_brightness	= param_color_add	;
+	Msg					("base: %d,%d,%d",	color_get_R(p_color),		color_get_G(p_color),		color_get_B(p_color));
+	Msg					("gray: %d,%d,%d",	color_get_R(p_gray),		color_get_G(p_gray),		color_get_B(p_gray));
+	Msg					("add:  %d,%d,%d",	color_get_R(p_brightness),	color_get_G(p_brightness),	color_get_B(p_brightness));
 	
 	// Draw full-screen quad textured with our scene image
 	u32		Offset;
