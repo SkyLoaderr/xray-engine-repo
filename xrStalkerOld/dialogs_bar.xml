@@ -2312,71 +2312,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="bar_dolg_petrenko_start">
-        <phrase_list>
-            <phrase id="1">
-                <text />
-                <dont_has_info>bar_dolg_community_start</dont_has_info>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text>bar_dolg_petrenko_start_11</text>
-            </phrase>
-            <phrase id="21">
-                <text>bar_dolg_petrenko_start_21</text>
-            </phrase>
-            <phrase id="3">
-                <text />
-                <has_info>bar_dolg_community_leader_done</has_info>
-                <next>31</next>
-            </phrase>
-            <phrase id="31">
-                <text>bar_dolg_petrenko_start_31</text>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-            </phrase>
-            <phrase id="2">
-                <text />
-                <dont_has_info>bar_dolg_community_leader_done</dont_has_info>
-                <has_info>bar_dolg_community_start</has_info>
-                <next>21</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_dolg_petrenko_join">
-        <dont_has_info>bar_dolg_community_start</dont_has_info>
-        <phrase_list>
-            <phrase id="0">
-                <text>bar_dolg_petrenko_join_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>bar_dolg_petrenko_join_1</text>
-                <next>3</next>
-                <next>4</next>
-            </phrase>
-            <phrase id="3">
-                <text>bar_dolg_petrenko_join_3</text>
-                <has_info>test_bar_bad_reputation</has_info>
-                <next>31</next>
-            </phrase>
-            <phrase id="31">
-                <text>bar_dolg_petrenko_join_31</text>
-            </phrase>
-            <phrase id="41">
-                <text>bar_dolg_petrenko_join_41</text>
-            </phrase>
-            <phrase id="4">
-                <text>bar_dolg_petrenko_join_4</text>
-                <give_info>bar_dolg_community_start</give_info>
-                <next>41</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="bar_dolg_ivancov_test_start">
         <has_info>bar_dolg_community_start</has_info>
         <dont_has_info>bar_dolg_veteran_start</dont_has_info>
@@ -2892,41 +2827,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="bar_bar_barman_ecolog_flash_done">
-        <precondition>bar_dialogs.actor_have_research</precondition>
-        <phrase_list>
-            <phrase id="3">
-                <text></text>
-                <action>bar_dialogs.barman_ecolog_fail</action>
-                <give_info>bar_resque_research_fail</give_info>
-                <has_info>bar_get_research_done</has_info>
-                <next>31</next>
-            </phrase>
-            <phrase id="1">
-                <text></text>
-                <next>2</next>
-                <next>3</next>
-            </phrase>
-            <phrase id="2">
-                <text></text>
-                <action>bar_dialogs.barman_ecolog_done</action>
-                <dont_has_info>bar_get_research_done</dont_has_info>
-                <give_info>bar_resque_research_done</give_info>
-                <next>21</next>
-            </phrase>
-            <phrase id="31">
-                <text>bar_bar_barman_ecolog_flash_done_31</text>
-            </phrase>
-            <phrase id="21">
-                <text>bar_bar_barman_ecolog_flash_done_21</text>
-            </phrase>
-            <phrase id="0">
-                <text>bar_bar_barman_ecolog_flash_done_0</text>
-                <action>bar_dialogs.actor_transfer_research</action>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="bar_bar_barmen_jobs">
         <has_info>bar_barman_stay_hole</has_info>
         <phrase_list>
@@ -2990,7 +2890,7 @@
                 <next>231111111</next>
             </phrase>
             <phrase id="231">
-                <text></text>
+                <text />
                 <dont_has_info>bar_kill_veteran_start</dont_has_info>
                 <next>2311</next>
             </phrase>
@@ -3014,12 +2914,12 @@
                 <text>bar_bar_barmen_jobs_32</text>
             </phrase>
             <phrase id="23">
-                <text></text>
+                <text />
                 <next>24</next>
                 <next>231</next>
             </phrase>
             <phrase id="24">
-                <text></text>
+                <text />
                 <dont_has_info>bar_resque_research_start</dont_has_info>
                 <next>210</next>
             </phrase>
@@ -3094,7 +2994,7 @@
                 <next>1111111</next>
             </phrase>
             <phrase id="77">
-                <text></text>
+                <text />
                 <precondition>bar_dialogs.barman_need_darklab_documents</precondition>
                 <next>1</next>
             </phrase>
@@ -3115,7 +3015,7 @@
                 <text>bar_bar_barmen_jobs_room_11121</text>
             </phrase>
             <phrase id="99">
-                <text></text>
+                <text />
                 <precondition>bar_dialogs.barman_need_radar</precondition>
                 <next>3</next>
             </phrase>
@@ -3190,7 +3090,7 @@
                 <next>111111</next>
             </phrase>
             <phrase id="7">
-                <text></text>
+                <text />
                 <next>77</next>
                 <next>88</next>
                 <next>99</next>
@@ -3223,7 +3123,7 @@
                 <next>21</next>
             </phrase>
             <phrase id="88">
-                <text></text>
+                <text />
                 <precondition>bar_dialogs.barman_need_decoding</precondition>
                 <next>2</next>
             </phrase>
@@ -3336,6 +3236,106 @@
                 <action>bar_dialogs.give_decoding_documents</action>
                 <give_info>bar_decoding_done</give_info>
                 <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_barman_ecolog_flash_done">
+        <precondition>bar_dialogs.actor_have_research</precondition>
+        <phrase_list>
+            <phrase id="3">
+                <text></text>
+                <action>bar_dialogs.barman_ecolog_fail</action>
+                <give_info>bar_resque_research_fail</give_info>
+                <has_info>bar_get_research_done</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="2">
+                <text></text>
+                <action>bar_dialogs.barman_ecolog_done</action>
+                <dont_has_info>bar_get_research_done</dont_has_info>
+                <give_info>bar_resque_research_done</give_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="31">
+                <text>bar_bar_barman_ecolog_flash_done_31</text>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_barman_ecolog_flash_done_21</text>
+            </phrase>
+            <phrase id="0">
+                <text>bar_bar_barman_ecolog_flash_done_0</text>
+                <action>bar_dialogs.actor_transfer_research</action>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_dolg_petrenko_join">
+        <dont_has_info>bar_dolg_community_start</dont_has_info>
+        <phrase_list>
+            <phrase id="1">
+                <text>bar_dolg_petrenko_join_1</text>
+                <next>3</next>
+                <next>4</next>
+            </phrase>
+            <phrase id="3">
+                <text>bar_dolg_petrenko_join_3</text>
+                <has_info>test_bar_bad_reputation</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="31">
+                <text>bar_dolg_petrenko_join_31</text>
+            </phrase>
+            <phrase id="41">
+                <text>bar_dolg_petrenko_join_41</text>
+            </phrase>
+            <phrase id="4">
+                <text>bar_dolg_petrenko_join_4</text>
+                <give_info>bar_dolg_community_start</give_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="0">
+                <text>bar_dolg_petrenko_join_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_dolg_petrenko_start">
+        <phrase_list>
+            <phrase id="1">
+                <text></text>
+                <dont_has_info>bar_dolg_community_start</dont_has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_dolg_petrenko_start_11</text>
+            </phrase>
+            <phrase id="3">
+                <text></text>
+                <has_info>bar_dolg_community_leader_done</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="31">
+                <text>bar_dolg_petrenko_start_31</text>
+            </phrase>
+            <phrase id="2">
+                <text></text>
+                <dont_has_info>bar_dolg_community_leader_done</dont_has_info>
+                <has_info>bar_dolg_community_start</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="21">
+                <text>bar_dolg_petrenko_start_21</text>
             </phrase>
         </phrase_list>
     </dialog>
