@@ -68,8 +68,9 @@ CAI_Soldier::~CAI_Soldier()
 	for (i=0; i<SND_RADIO_COUNT; i++) pSounds->Delete(sndRadio[i]);
 	Engine.Event.Handler_Detach (m_tpEventSay,this);
 	Engine.Event.Handler_Detach (m_tpEventAssignPath,this);
+	Msg("FSM report for %s",cName());
 	for (int i=0; i<tStateList.size(); i++)
-		Msg("%s : %d %d",cName(),tStateList[i].eState,tStateList[i].dwTime);
+		Msg("%3d %6d",tStateList[i].eState,tStateList[i].dwTime);
 }
 
 // when soldier is dead
