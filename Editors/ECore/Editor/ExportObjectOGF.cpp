@@ -529,9 +529,9 @@ bool CExportObjectOGF::Prepare()
     	return 			false;
     }
     
-    UI->SetStatus("Make progressive...");
     // fill per bone vertices
 	if (m_Source->m_Flags.is(CEditableObject::eoProgressive)){
+        UI->SetStatus("Make progressive...");
         for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
             (*split_it)->MakeProgressive();
 			pb->Inc		();
@@ -540,6 +540,7 @@ bool CExportObjectOGF::Prepare()
     pb->Inc				();
 
     // calculate TB
+    UI->SetStatus("Calculate TB...");
     for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
 		(*split_it)->CalculateTB();
         pb->Inc		();
@@ -610,25 +611,32 @@ bool CExportObjectOGF::ExportAsWavefrontOBJ(IWriter& F, LPCSTR fn)
 	    _splitpath			((*split_it)->m_Surf->_Texture(), 0, 0, tex_name, 0 );
         sprintf				(tmp,"g %d",split_it-m_Splits.begin());				F.w_string	(tmp);
         sprintf				(tmp,"usemtl %s",tex_name);							F.w_string	(tmp);
+        Fvector 			mV;
+        Fmatrix 			mZ;
+        mZ.mirrorZ			();
         for (COGFCPIt it=(*split_it)->m_Parts.begin(); it!=(*split_it)->m_Parts.end(); it++){
             CObjectOGFCollectorPacked* part = *it;
             // vertices
             OGFVertVec& VERTS	= part->getV_Verts();
             OGFVertIt 			v_it;
             for (v_it=VERTS.begin(); v_it!=VERTS.end(); v_it++){
-                sprintf			(tmp,"v %f %f %f",v_it->P.x,v_it->P.y,-v_it->P.z); 		F.w_string	(tmp);
+            	mZ.transform_tiny(mV,v_it->P);
+                sprintf			(tmp,"v %f %f %f",mV.x,mV.y,mV.z); 		F.w_string	(tmp);
             }
             for (v_it=VERTS.begin(); v_it!=VERTS.end(); v_it++){
                 sprintf			(tmp,"vt %f %f",v_it->UV.x,_abs(1.f-v_it->UV.y));		F.w_string	(tmp);
             }
             for (v_it=VERTS.begin(); v_it!=VERTS.end(); v_it++){
-                sprintf			(tmp,"vn %f %f %f",-v_it->N.x,-v_it->N.y,-v_it->N.z);	F.w_string	(tmp);
+            	mZ.transform_dir(mV,v_it->N);
+                sprintf			(tmp,"vn %f %f %f",mV.x,mV.y,mV.z);		F.w_string	(tmp);
             }
             for (v_it=VERTS.begin(); v_it!=VERTS.end(); v_it++){
-                sprintf			(tmp,"vg %f %f %f",-v_it->T.x,-v_it->T.y,-v_it->T.z);	F.w_string	(tmp);
+            	mZ.transform_dir(mV,v_it->T);
+                sprintf			(tmp,"vg %f %f %f",mV.x,mV.y,mV.z);		F.w_string	(tmp);
             }
             for (v_it=VERTS.begin(); v_it!=VERTS.end(); v_it++){
-                sprintf			(tmp,"vb %f %f %f",-v_it->B.x,-v_it->B.y,-v_it->B.z);	F.w_string	(tmp);
+            	mZ.transform_dir(mV,v_it->B);
+                sprintf			(tmp,"vb %f %f %f",mV.x,mV.y,mV.z);		F.w_string	(tmp);
             }
             // faces
             OGFFaceVec& FACES	= part->getV_Faces();
