@@ -56,14 +56,6 @@ void CBuild::Flex2OGF()
 			V2.P.set(FF->v[1]->P);	V2.N.set(FF->v[1]->N); V2.Color = FF->v[1]->Color;
 			V3.P.set(FF->v[2]->P);	V3.N.set(FF->v[2]->N); V3.Color = FF->v[2]->Color;
 
-			// Textures
-			if (FF->pDeflector) {
-				// Move last stage TC at first stage
-				_TCF T = FF->tc.back();
-				FF->tc.pop_back();
-				FF->tc.insert(0,T);
-			}
-
 			// Normal order
 			svector<_TCF,8>::iterator TC=FF->tc.begin(); 
 			for (;TC!=FF->tc.end(); TC++)

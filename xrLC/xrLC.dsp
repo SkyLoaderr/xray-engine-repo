@@ -570,10 +570,6 @@ SOURCE=.\xrDeflector.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\xrDeflectorL_Radiosity.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\xrDeflectorLight.cpp
 # End Source File
 # Begin Source File

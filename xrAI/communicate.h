@@ -1,8 +1,6 @@
 #ifndef _XR_COMM_
 #define _XR_COMM_
 
-#include "Light.h"
-
 #pragma pack(push,8)
 
 const DWORD XR_MAX_UVMAPS		= 1;
@@ -43,8 +41,12 @@ struct b_texture
 	BOOL	bHasAlpha;
 	DWORD*	pSurface;
 };
-struct b_light : public xrLIGHT
+struct b_light : public Flight
 {
+	struct {
+		DWORD		bAffectDynamic	: 1;
+		DWORD		bProcedural		: 1;
+	}				flags;
 	DWORD			s_count;
 	WORD			s_sectors[XRLIGHT_MAX_SECTORS];
 };
