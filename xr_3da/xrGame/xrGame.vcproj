@@ -4972,6 +4972,16 @@
 							RelativePath=".\fs_registrator_script.cpp">
 						</File>
 					</Filter>
+					<Filter
+						Name="Console"
+						Filter="">
+						<File
+							RelativePath=".\console_registrator.h">
+						</File>
+						<File
+							RelativePath=".\console_registrator_script.cpp">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ScriptDebugger"

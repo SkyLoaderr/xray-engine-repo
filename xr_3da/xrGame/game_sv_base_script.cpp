@@ -11,24 +11,79 @@
 #include "script_space.h"
 #include "level.h"
 #include <luabind/iterator_policy.hpp>
+#include <luabind/operator.hpp>
 #include "xrMessages.h"
+#include "ui/UIInventoryUtilities.h"
 
 using namespace luabind;
+
+#define sec2ms		1000
+#define min2ms		60*sec2ms
+#define hour2ms		60*min2ms
+#define day2ms		24*hour2ms
+
+class xrTime{
+ALife::_TIME_ID		m_time;
+public:
+	xrTime():m_time(0){}
+	xrTime(const xrTime& other):m_time(other.m_time){}
+	xrTime(ALife::_TIME_ID t):m_time(t){}
+
+	bool	operator <	(const xrTime& other)	const			{ return m_time < other.m_time;			}
+	bool	operator ==	(const xrTime& other)	const			{ return m_time == other.m_time;		}
+	xrTime	operator +	(const xrTime& other)					{return xrTime(m_time+other.m_time);	}
+
+	void	setHMS		(int h, int m, int s)			{ m_time=0; m_time+=(h*hour2ms+m*min2ms+s*sec2ms);}
+	void	setHMSms	(int h, int m, int s, int ms)	{ m_time=0; m_time+=(h*hour2ms+m*min2ms+s*sec2ms+ms);}
+//	void	add			(xrTime* other)					{m_time+=other->m_time;}
+//	void	set			(xrTime* other)					{m_time=other->m_time;}
+	LPCSTR	dateToString	(int mode){ return *InventoryUtilities::GetDateAsString(m_time,(InventoryUtilities::EDatePrecision)mode);}
+	LPCSTR	timeToString	(int mode){ return *InventoryUtilities::GetTimeAsString(m_time,(InventoryUtilities::ETimePrecision)mode);}
+};
 
 u32 get_time()
 {
 	return u32(Level().GetGameTime() & u32(-1));
 }
 
+xrTime get_time_struct()
+{
+	return xrTime( Level().GetGameTime() );
+}
 void game_sv_GameState::script_register(lua_State *L)
 {
 
 	module(L,"game")
 	[
+	class_< xrTime >("time_struct")
+		.enum_("date_format")
+		[
+			value("DateToDay",		int(InventoryUtilities::edpDateToDay)),
+			value("DateToMonth",	int(InventoryUtilities::edpDateToMonth)),
+			value("DateToYear",		int(InventoryUtilities::edpDateToYear))
+		]
+		.enum_("time_format")
+		[
+			value("TimeToHours",	int(InventoryUtilities::etpTimeToHours)),
+			value("TimeToMinutes",	int(InventoryUtilities::etpTimeToMinutes)),
+			value("TimeToSeconds",	int(InventoryUtilities::etpTimeToSeconds)),
+			value("TimeToMilisecs",	int(InventoryUtilities::etpTimeToMilisecs))
+		]
+		.def(						constructor<>()				)
+		.def(						constructor<const xrTime&>())
+		.def(const_self <			xrTime()					)
+		.def(const_self ==			xrTime()					)
+		.def(self +					xrTime()					)
+
+		.def("setHMS"				,&xrTime::setHMS)
+		.def("setHMSms"				,&xrTime::setHMSms)
+		.def("dateToString"			,&xrTime::dateToString)
+		.def("timeToString"			,&xrTime::timeToString),
 		// declarations
-		def("time",								get_time),
-//		def("get_surge_time",					Game::get_surge_time),
-//		def("get_object_by_name",				Game::get_object_by_name),
+		def("time",					get_time),
+		def("time2",				get_time_struct),
+//		def("get_surge_time",	Game::get_surge_time),
+//		def("get_object_by_name",Game::get_object_by_name),
 	
 	class_< game_sv_GameState, game_GameState >("game_sv_GameState")
 
