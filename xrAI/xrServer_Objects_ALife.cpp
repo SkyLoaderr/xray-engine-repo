@@ -7,16 +7,21 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+
 #pragma hdrstop
 
 #include "xrServer_Objects_ALife.h"
 #include "game_base.h"
-#include "BodyInstance.h"
+
+#ifdef _EDITOR
+	#include "BodyInstance.h"
+#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeGraphPoint
 ////////////////////////////////////////////////////////////////////////////
 #ifdef _EDITOR
+	#include "BodyInstance.h"
 	static TokenValue4::ItemVec locations[4];
 	static TokenValue4::ItemVec	level_ids;
 #endif
@@ -148,6 +153,11 @@ void CSE_ALifeEvent::UPDATE_Read			(NET_Packet &tNetPacket)
 	m_tpMonsterGroup2->UPDATE_Read(tNetPacket);
 };
 
+#ifdef _EDITOR
+void CSE_ALifeEvent::FillProp	(LPCSTR pref, PropItemVec& values)
+{
+}
+#endif
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifePersonalEvent
 ////////////////////////////////////////////////////////////////////////////
@@ -179,6 +189,11 @@ void CSE_ALifePersonalEvent::UPDATE_Read	(NET_Packet &tNetPacket)
 	tNetPacket.r				(&m_tRelation,		sizeof(m_tRelation));
 };
 
+#ifdef _EDITOR
+void CSE_ALifePersonalEvent::FillProp	(LPCSTR pref, PropItemVec& values)
+{
+}
+#endif
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeTask
 ////////////////////////////////////////////////////////////////////////////
@@ -258,6 +273,11 @@ void CSE_ALifeTask::UPDATE_Read				(NET_Packet &tNetPacket)
 	};
 }
 
+#ifdef _EDITOR
+void CSE_ALifeMonsterBiting::FillProp	(LPCSTR pref, PropItemVec& values)
+{
+}
+#endif
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifePersonalTask
 ////////////////////////////////////////////////////////////////////////////
@@ -283,6 +303,12 @@ void CSE_ALifePersonalTask::UPDATE_Read		(NET_Packet &tNetPacket)
 	tNetPacket.r_u32			(m_dwTryCount);
 };
 
+#ifdef _EDITOR
+void CSE_ALifeMonsterBiting::FillProp	(LPCSTR pref, PropItemVec& values)
+{
+	inherited::FillProp			(pref,values);
+}
+#endif
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeObject
 ////////////////////////////////////////////////////////////////////////////
@@ -384,6 +410,12 @@ void CSE_ALifeDynamicObject::UPDATE_Read	(NET_Packet &tNetPacket)
 	inherited::UPDATE_Read		(tNetPacket);
 };
 
+#ifdef _EDITOR
+void CSE_ALifeDynamicObject::FillProp	(LPCSTR pref, PropItemVec& values)
+{
+	inherited::FillProp			(pref,values);
+}
+#endif
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeDynamicObjectVisual
 ////////////////////////////////////////////////////////////////////////////

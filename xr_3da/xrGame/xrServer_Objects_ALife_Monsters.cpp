@@ -44,6 +44,11 @@ void CSE_ALifeTraderAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 	m_tRank						= EStalkerRank(m_tRank);
 };
 
+#ifdef _EDITOR
+void CSE_ALifeTraderAbstract::FillProp	(LPCSTR pref, PropItemVec& values)
+{
+}
+#endif
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeTrader
 ////////////////////////////////////////////////////////////////////////////
@@ -525,6 +530,12 @@ void CSE_ALifeMonsterBiting::UPDATE_Write	(NET_Packet	&tNetPacket)
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
+#ifdef _EDITOR
+void CSE_ALifeMonsterBiting::FillProp	(LPCSTR pref, PropItemVec& values)
+{
+	inherited::FillProp			(pref,values);
+}
+#endif
 //////////////////////////////////////////////////////////////////////////
 // CSE_ALifeHumanAbstract
 //////////////////////////////////////////////////////////////////////////
@@ -599,6 +610,12 @@ void CSE_ALifeHumanStalker::UPDATE_Read		(NET_Packet &tNetPacket)
 	inherited::UPDATE_Read		(tNetPacket);
 };
 
+#ifdef _EDITOR
+void CSE_ALifeHumanStalker::FillProp	(LPCSTR pref, PropItemVec& values)
+{
+	inherited::FillProp			(pref,values);
+}
+#endif
 //////////////////////////////////////////////////////////////////////////
 // CSE_ALifeObjectIdol
 //////////////////////////////////////////////////////////////////////////
