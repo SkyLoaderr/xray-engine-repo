@@ -273,6 +273,11 @@ void  CUIButton::Update()
 	}
 
 	GetFont()->SetColor(0xFFEEEEEE);
+
+	float a;
+	a = GetFont()->SizeOf("aaa", 0.001f);
+
+
 	GetFont()->Out((float)rect.left + right_offset  +  TEXT_OFFSET_RIGHT, 
 				   (float)rect.top + down_offset  + TEXT_OFFSET_DOWN,
 				    m_str);

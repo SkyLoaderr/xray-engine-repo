@@ -49,6 +49,10 @@ protected:
 
 	CUIDragDropItem		UIDragDropItem1;
 	CUIDragDropItem		UIDragDropItem2;
+	CUIDragDropItem		UIDragDropItem3;
+	CUIDragDropItem		UIDragDropItem4;
+	CUIDragDropItem		UIDragDropItem5;
+	CUIDragDropItem		UIDragDropItem6;
 
 	
 };

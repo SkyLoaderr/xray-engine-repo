@@ -12,8 +12,10 @@
 #include "uiframewindow.h"
 #include "uidragdropitem.h"
 
+#include "uistatic.h"
 
-class CUIDragDropList: public CUIFrameWindow
+
+class CUIDragDropList: public CUIWindow
 {
 public:
 	////////////////////////////////////
@@ -28,7 +30,7 @@ public:
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 
 	
-	virtual void InitGrid(int iRowsNum, int iColsNum);
+	virtual void InitGrid(int iRowsNum, int iColsNum, bool bGridVisible = true);
 	int GetCols() {return m_iColsNum;}
 	int GetRows() {return m_iRowsNum;}
 	
@@ -56,6 +58,10 @@ protected:
     
 	//состояние клеточек сетки
 	GRID_STATE_VECTOR m_vGridState;
+
+	//для изображения клеточек сетки
+	DEFINE_VECTOR	(CUIStatic, CELL_STATIC_VECTOR, CELL_STATIC_IT);
+	CELL_STATIC_VECTOR m_vCellStatic;
 
 		
 	//размеры сетки для элементов

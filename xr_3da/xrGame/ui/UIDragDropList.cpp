@@ -13,11 +13,16 @@ CUIDragDropList::CUIDragDropList()
 {
 	SetCellHeight(50);
 	SetCellWidth(50);
+
+	m_vCellStatic.clear();
+	m_vGridState.clear();
 }
 
 CUIDragDropList::~CUIDragDropList()
 {
 	m_vGridState.clear();
+	m_vCellStatic.clear();
+	
 }
 
 void CUIDragDropList::AttachChild(CUIDragDropItem* pChild)
@@ -106,13 +111,41 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 
 //инициализация сетки Drag&Drop
-void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum)
+void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum, bool bGridVisible)
 {
 	m_iColsNum=iColsNum;
 	m_iRowsNum=iRowsNum;
 
-	m_vGridState.resize(0);
+	
 	m_vGridState.resize(m_iRowsNum*m_iColsNum, CELL_EMPTY);
+
+	if(bGridVisible)
+	{
+		m_vCellStatic.resize(m_iRowsNum*m_iColsNum);
+
+		int i,j;
+
+		
+		CELL_STATIC_IT it=m_vCellStatic.begin();
+		
+		for(i=0; i<GetRows(); i++)
+		{
+			for(j=0; j<GetCols(); j++)
+			{
+
+				(*it).Init("ui\\ui_inv_lattice", 
+									j*GetCellWidth(),
+									i*GetCellHeight(),
+									GetCellWidth(),
+									GetCellHeight());
+
+				CUIWindow::AttachChild(&(*it));
+				it++;
+			}
+		}
+
+	}
+	
   
 }
 
