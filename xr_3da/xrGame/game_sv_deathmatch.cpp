@@ -80,7 +80,7 @@ void	game_sv_Deathmatch::Update					()
 		break;
 	}
 }
-
+	
 BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 {
 	xrServer*			S		= Level().Server;
