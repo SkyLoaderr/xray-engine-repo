@@ -1957,7 +1957,7 @@ void CAI_Soldier::Think()
 				Jumping();
 				break;
 			}
-			/**
+			/**/
 			case aiSoldierDie : {
 				Die();
 				break;
@@ -2039,7 +2039,7 @@ void CAI_Soldier::Think()
 				break;
 			}
 			/**/
-			default : Test();
+			//default : Test();
 		}
 		m_bStateChanged = m_ePreviousState != eCurrentState;
 	}
