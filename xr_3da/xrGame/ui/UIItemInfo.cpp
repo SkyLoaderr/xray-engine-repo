@@ -56,7 +56,7 @@ void CUIItemInfo::Init(int x, int y, int width, int height, const char* xml_name
 	xml_init.InitListWnd(uiXml, "descr_list", 0, &UIDesc);
 	UIDesc.EnableScrollBar(true);
 	UIDesc.ActivateList(false);
-	UIDesc.SetRightIndention(static_cast<int>(5 * UI()->GetScale()));
+	UIDesc.SetRightIndention(static_cast<int>(5 * UI()->GetScaleX()));
 
 	if (uiXml.NavigateToNode("image_static", 0))
 	{
@@ -120,13 +120,13 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 		if ((r2.right - r2.left >= r.width()) && (r2.bottom - r2.top >= r.height()))
 		{
 			UIItemImage.SetTextureOffset((r2.right - r2.left - r.width()) / 2, (r2.bottom - r2.top - r.height()) / 2);
-			UIItemImage.SetTextureScale(1.0f);
+			UIItemImage.SetTextureScaleXY(1.0f,1.0f);
 		}
 		else
 		{
 			float xFactor = (r2.right - r2.left) / static_cast<float>(r.width()) ;
 			float yFactor = (r2.bottom - r2.top) / static_cast<float>(r.height());
-			float scale = std::min(xFactor, yFactor);
+//			float scale = std::min(xFactor, yFactor);
 
 			int xOffset = 0, yOffset = 0;
 
@@ -140,7 +140,7 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 			}
 
 			UIItemImage.SetTextureOffset(xOffset, yOffset);
-			UIItemImage.SetTextureScale(scale);
+			UIItemImage.SetTextureScaleXY(xFactor, yFactor);
 		}
 
 //		UIItemImage.SetTextureOffset((r.right - r.left - m_iGridWidth * INV_GRID_WIDTH) / 2,

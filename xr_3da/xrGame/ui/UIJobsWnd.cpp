@@ -139,7 +139,7 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 		{
 			pJobItem->SetAdditionalMaterialID	(task->ObjectiveArticle(i));
 		}
-		if (i > 0) pJobItem->ScalePicture	(secondaryObjectiveScaleFactor);
+		if (i > 0) pJobItem->ScalePictureXY	(secondaryObjectiveScaleFactor,secondaryObjectiveScaleFactor);
 
 		if(pActor && pActor->encyclopedia_registry->registry().objects_ptr())
 		{

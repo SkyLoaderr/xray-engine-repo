@@ -12,21 +12,28 @@ CUICustomItem::CUICustomItem()
 	iVisRect.lt.set	(0,0); iVisRect.rb.set(0,0);
 	eMirrorMode		= tmNone;
 
-	fScale = 1.f;
+	fScaleX = 1.f;
+	fScaleY = 1.f;
 }
 //--------------------------------------------------------------------
 
 CUICustomItem::~CUICustomItem()
 {
 }
-void CUICustomItem::SetScale(float new_scale)
+void CUICustomItem::SetScaleXY(float x, float y)
 {
-	fScale = 1.f/new_scale;
+	fScaleX = 1.f/x;
+	fScaleY = 1.f/y;
 }
 
-float CUICustomItem::GetScale()
+float CUICustomItem::GetScaleX()
 {
-	return 1.f/fScale;
+	return 1.f/fScaleX;
+}
+
+float CUICustomItem::GetScaleY()
+{
+	return 1.f/fScaleY;
 }
 //--------------------------------------------------------------------
 //для вывода части изображения
@@ -60,9 +67,10 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color,
 	Fvector2 LTt,RBt;
 	
 	//координаты на экране в пикселях
-	float sc		= UI()->GetScale();
-	LTp.set			(pos.x+x1*sc,pos.y+y1*sc);
-	RBp.set			(pos.x+x2*sc,pos.y+y2*sc);
+	float scX		= UI()->GetScaleX();
+	float scY		= UI()->GetScaleY();
+	LTp.set			(pos.x+x1*scX,pos.y+y1*scY);
+	RBp.set			(pos.x+x2*scX,pos.y+y2*scY);
 
 /*	LTp.set			(float(pos.x+x1),float(pos.y+y1));
 	RBp.set			(pos.x + x1 + float(x2-x1)/fScale,
@@ -75,13 +83,13 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color,
 	RBt.set			(fScale*float(x2)/float(ts.x)+hp.x,
 					 fScale*float(y2)/float(ts.y)+hp.y);*/
 	
-	LTt.set			( float(iOriginalRect.x1+fScale*x1)/float(iTextureRect.width())+hp.x,
-					  float(iOriginalRect.y1+fScale*y1)/float(iTextureRect.height())+hp.y);
-	RBt.set			((float(iOriginalRect.x1+fScale*x1)+
-					  fScale*float(x2-x1))/
+	LTt.set			( float(iOriginalRect.x1+fScaleX*x1)/float(iTextureRect.width())+hp.x,
+					  float(iOriginalRect.y1+fScaleY*y1)/float(iTextureRect.height())+hp.y);
+	RBt.set			((float(iOriginalRect.x1+fScaleX*x1)+
+					  fScaleX*float(x2-x1))/
 					  float(iTextureRect.width())+hp.x,
-					 (float(iOriginalRect.y1+fScale*y1)+
-					  fScale*float(y2-y1))/
+					 (float(iOriginalRect.y1+fScaleY*y1)+
+					  fScaleY*float(y2-y1))/
 					  float(iTextureRect.height())+hp.y);
 /*	RBt.set			((float(iOriginalRect.x1+x1)+
 					  float(x2-x1))/
@@ -138,23 +146,25 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, fl
 	Fvector2 C;
 	Ivector2 RS;
 	iVisRect.getsize(RS);
-	float sc		= UI()->GetScale();
-	float sz		= sc*((RS.x>RS.y)?RS.x:RS.y)*0.7071f;
+	float scX		= UI()->GetScaleX();
+	float scY		= UI()->GetScaleY();
+	float szX		= scX*(RS.x)*0.7071f;
+	float szY		= scY*(RS.y)*0.7071f;
 
 	Fvector2 LTt,RBt;
-	LTt.set			(fScale*float(iVisRect.x1)/float(ts.x)+hp.x,
-					 fScale*float(iVisRect.y1)/float(ts.y)+hp.y);
-	RBt.set			(fScale*float(iVisRect.x2)/float(ts.x)+hp.x,
-					 fScale*float(iVisRect.y2)/float(ts.y)+hp.y);
+	LTt.set			(fScaleX*float(iVisRect.x1)/float(ts.x)+hp.x,
+					 fScaleY*float(iVisRect.y1)/float(ts.y)+hp.y);
+	RBt.set			(fScaleX*float(iVisRect.x2)/float(ts.x)+hp.x,
+					 fScaleY*float(iVisRect.y2)/float(ts.y)+hp.y);
 
 	// Rotation
 	iVisRect.getcenter(RS); 
-	C.set			(RS.x*sc+pos.x,RS.y*sc+pos.y);
+	C.set			(RS.x*scX+pos.x,RS.y*scY+pos.y);
 
-	Pointer->set	(C.x+_sin1*sz,	C.y+_cos1*sz,	color, LTt.x, RBt.y); ++Pointer;
-	Pointer->set	(C.x-_sin2*sz,	C.y-_cos2*sz,	color, LTt.x, LTt.y); ++Pointer;
-	Pointer->set	(C.x+_sin2*sz,	C.y+_cos2*sz,	color, RBt.x, RBt.y); ++Pointer;
-	Pointer->set	(C.x-_sin1*sz,	C.y-_cos1*sz,	color, RBt.x, LTt.y); ++Pointer;
+	Pointer->set	(C.x+_sin1*szX,	C.y+_cos1*szY,	color, LTt.x, RBt.y); ++Pointer;
+	Pointer->set	(C.x-_sin2*szX,	C.y-_cos2*szY,	color, LTt.x, LTt.y); ++Pointer;
+	Pointer->set	(C.x+_sin2*szX,	C.y+_cos2*szY,	color, RBt.x, RBt.y); ++Pointer;
+	Pointer->set	(C.x-_sin1*szX,	C.y-_cos1*szY,	color, RBt.x, LTt.y); ++Pointer;
 }
 //--------------------------------------------------------------------
 //render in a rect a specified part of texture
@@ -187,9 +197,10 @@ void CUICustomItem::RenderTexPart(FVF::TL*& Pointer, const Ivector2& pos, u32 co
 
 	Fvector2 LTp,RBp;
 	Fvector2 LTt,RBt, LBt, RTt;
-	float sc		= UI()->GetScale();
-	LTp.set			(pos.x+iVisRect.x1*sc,pos.y+iVisRect.y1*sc);
-	RBp.set			(pos.x+iVisRect.x2*sc,pos.y+iVisRect.y2*sc);
+	float scX		= UI()->GetScaleX();
+	float scY		= UI()->GetScaleY();
+	LTp.set			(pos.x+iVisRect.x1*scX,pos.y+iVisRect.y1*scY);
+	RBp.set			(pos.x+iVisRect.x2*scX,pos.y+iVisRect.y2*scY);
 
 	LBt.set(x2 + hp.x, y2 + hp.y);
 	LTt.set(x1 + hp.x, y1 + hp.y);
@@ -207,8 +218,8 @@ Irect CUICustomItem::GetOriginalRectScaled()
 	Irect rect;
 	rect.x1 = iOriginalRect.x1;
 	rect.y1 = iOriginalRect.y1;
-	rect.x2 = iFloor(0.5f + rect.x1 + float(iOriginalRect.x2-iOriginalRect.x1)*GetScale());
-	rect.y2 = iFloor(0.5f + rect.y1 + float(iOriginalRect.y2-iOriginalRect.y1)*GetScale());
+	rect.x2 = iFloor(0.5f + rect.x1 + float(iOriginalRect.x2-iOriginalRect.x1)*GetScaleX());
+	rect.y2 = iFloor(0.5f + rect.y1 + float(iOriginalRect.y2-iOriginalRect.y1)*GetScaleY());
 
 	return rect;
 }

@@ -37,7 +37,7 @@ void CUIOutfitSlot::Init(int x, int y, int width, int height)
 	// Немного ублюдочный способ прорескейлить текстуру иконки персонажа, чтобы изображение
 	// полностью влазило в статик контрол. Коэфициент подобран методом тыка. :( Других способов
 	// пока не вижу.
-	UIOutfitIcon.SetTextureScale(0.64f);
+	UIOutfitIcon.SetTextureScaleXY(0.64f,0.64f);
 	UIOutfitIcon.Show(true);
 	UIOutfitIcon.Enable(false);
 	UIOutfitIcon.ClipperOn();

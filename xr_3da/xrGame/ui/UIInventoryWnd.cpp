@@ -151,7 +151,7 @@ void CUIInventoryWnd::Init()
 		
 	UIBagWnd.AttachChild(&UIBagList);	
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 1, &UIBagList);
-	UIBagList.SetItemsScale(TRADE_ICONS_SCALE);
+	UIBagList.SetItemsScaleXY(TRADE_ICONS_SCALE,TRADE_ICONS_SCALE);
 
 	AttachChild(&UITopList[0]);
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 2, &UITopList[0]);
@@ -564,7 +564,7 @@ bool CUIInventoryWnd::UndressOutfit()
 		m_pCurrentDragDropItem = UIOutfitSlot.GetCurrentOutfit();
 
 		status = ToBag();
-		m_pCurrentDragDropItem->Rescale(UIBagList.GetItemsScale());
+		m_pCurrentDragDropItem->Rescale(UIBagList.GetItemsScaleX(),UIBagList.GetItemsScaleY());
 
 		// восстанавливам предыдущее состояние
 		SetCurrentItem(pCurrentItem);

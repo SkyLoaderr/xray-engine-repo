@@ -73,7 +73,7 @@ void CUIPdaListItem::InitCharacter(CInventoryOwner* pInvOwner)
 {
 	VERIFY(pInvOwner);
 	UIInfo.InitCharacter(pInvOwner);
-	UIInfo.UIIcon.GetUIStaticItem().SetScale(1.0/CHAR_ICON_HEIGHT); // SetScale((ICON_GRID_HEIGHT)/(CHAR_ICON_HEIGHT*ICON_GRID_HEIGHT))
+	UIInfo.UIIcon.GetUIStaticItem().SetScaleXY(1.0/CHAR_ICON_WIDTH, 1.0/CHAR_ICON_HEIGHT);
 	UIInfo.UIIcon.SetWidth(ICON_GRID_HEIGHT);
 	UIInfo.UIIcon.SetHeight(ICON_GRID_HEIGHT);
 	UIInfo.UIIcon.ClipperOn();

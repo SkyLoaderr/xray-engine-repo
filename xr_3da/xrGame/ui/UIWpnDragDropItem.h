@@ -24,7 +24,7 @@ public:
 
 	virtual void SetData(void* pData);
 	virtual void Draw();
-	virtual void SetTextureScale(float new_scale);
+	virtual void SetTextureScaleXY(float x, float y);
 
 
 protected:

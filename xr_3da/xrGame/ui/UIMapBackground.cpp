@@ -67,7 +67,7 @@ void CUIMapBackground::Init(int x, int y, int width, int height)
 	m_fogOfWarCell.Show(false);
 	m_fogOfWarCell.Enable(false);
 	
-	m_fogOfWarCell.SetTextureScale((float)fog_cell_size/(FOG_TEX_SIZE-2));
+	m_fogOfWarCell.SetTextureScaleXY((float)fog_cell_size/(FOG_TEX_SIZE-2),(float)fog_cell_size/(FOG_TEX_SIZE-2));
 }
 
 //-----------------------------------------------------------------------------/

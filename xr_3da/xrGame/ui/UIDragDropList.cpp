@@ -1,4 +1,4 @@
-// UIDragDropList.cpp: список элементов Drag&Drop
+m_fItemsScale// UIDragDropList.cpp: список элементов Drag&Drop
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -36,7 +36,8 @@ CUIDragDropList::CUIDragDropList()
 
 	m_bScrollBarEnabled			= true;
 
-	m_fItemsScale				= 1.0f;
+	m_fItemsScaleX				= 1.0f;
+	m_fItemsScaleY				= 1.0f;
 
 	m_iColsNum = m_iRowsNum		= 0;
 
@@ -271,7 +272,7 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 						//((CUIDragDropList*)pItem->GetParent())->DetachChild(pItem);
 						pItem->GetParent()->DetachChild(pItem);
 						AttachChild(pItem);
-						pItem->Rescale(m_fItemsScale);
+						pItem->Rescale(m_fItemsScaleX,m_fItemsScaleY);
 						pItem->Highlight(true);
 
 						pItem->BringAllToTop(); 
@@ -295,7 +296,7 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			PlaceItemInGrid(pItem);
 			OffCustomPlacement();
 
-			pItem->Rescale(m_fItemsScale);
+			pItem->Rescale(m_fItemsScaleX,m_fItemsScaleY);
 
 			ScrollBarRecalculate(false);
 
@@ -367,7 +368,8 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum,
 
 		//временно!
 		//установить масштаб для клеточки
-		float scale = (GetCellWidth() - 1)/51.f;
+		float scaleX = (GetCellWidth() - 1)/51.f;
+		float scaleY = (GetCellHeight() - 1)/51.f;
 //		float scale = GetCellWidth()/52.f;
 		
 		CELL_STATIC_IT it=m_vCellStatic.begin();
@@ -388,7 +390,7 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum,
 				if (!IsChild(&(*it)))
 					AttachChild(&(*it));
 				
-				(*it).SetTextureScale(scale);
+				(*it).SetTextureScaleXY(scaleX, scaleY);
 
 				++it;
 			}
@@ -688,11 +690,12 @@ bool CUIDragDropList::CanPlaceItem(CUIDragDropItem *pDDItem)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIDragDropList::SetItemsScale(float fItemsScale)
+void CUIDragDropList::SetItemsScaleXY(float fItemsScaleX, float fItemsScaleY)
 {
-	R_ASSERT(fItemsScale > 0);
+	R_ASSERT(fItemsScaleX > 0 && fItemsScaleY > 0);
 
-	m_fItemsScale = fItemsScale;
+	m_fItemsScaleX = fItemsScaleX;
+	m_fItemsScaleY = fItemsScaleY;
 }
 
 //////////////////////////////////////////////////////////////////////////

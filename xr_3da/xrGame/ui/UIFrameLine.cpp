@@ -51,6 +51,7 @@ void CUIFrameLine::SetColor(u32 cl)
 
 void CUIFrameLine::UpdateSize()
 {
+	VERIFY(g_bRendering);
 	CTexture	*T;
 
 //	float		fScale = HUD().GetScale();

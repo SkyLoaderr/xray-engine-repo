@@ -113,6 +113,7 @@ void CHUDCursor::CursorOnFrame ()
 
 void CHUDCursor::Render()
 {
+	VERIFY(g_bRendering);
 	Fvector		p1,p2,dir;
 
 	CObject*	O		= Level().CurrentEntity();

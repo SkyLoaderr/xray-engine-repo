@@ -179,7 +179,7 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName)
 		pNewDDList->SetMessageTarget(this);
 		m_WeaponSubBags.push_back(pNewDDList);
 		// Устанавливаем скейл для элементов этого листа
-		pNewDDList->SetItemsScale(SECTION_ICON_SCALE);
+		pNewDDList->SetItemsScaleXY(SECTION_ICON_SCALE, SECTION_ICON_SCALE);
 
 		xml_init.InitDragDropList(uiXml, "dragdrop_list", 1, pNewDDList);
 	}
@@ -252,7 +252,7 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName)
 	AttachChild(&UIOutfitIcon);
 	xml_init.InitStatic(uiXml, "outfit_static", 0, &UIOutfitIcon);
 	UIOutfitIcon.SetShader(GetMPCharIconsShader());
-	UIOutfitIcon.SetTextureScale(0.68f);
+	UIOutfitIcon.SetTextureScaleXY(0.68f,0.68f);
 	UIOutfitIcon.ClipperOn();
 
 	UIDescWnd.AttachChild(&UIItemInfo);
@@ -305,7 +305,7 @@ void CUIBuyWeaponWnd::InitWeaponBoxes()
 		CUIDragDropItemMP &UIDragDropItem = m_vDragDropItems[GetFirstFreeIndex()];
 //		UIDragDropItem.SetShader(GetMPCharIconsShader());
 		UIDragDropItem.CUIStatic::Init(*boxesDefs[i].texName, 0, 0, INV_GRID_WIDTH, INV_GRID_HEIGHT);
-		UIDragDropItem.SetTextureScale(SECTION_ICON_SCALE);
+		UIDragDropItem.SetTextureScaleXY(SECTION_ICON_SCALE, SECTION_ICON_SCALE);
 		UIDragDropItem.SetColor(0xffffffff);
 		UIDragDropItem.EnableDragDrop(false);
 
@@ -634,7 +634,7 @@ bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	pDDItemMP->GetOwner()->AttachChild(pDDItemMP);
 
 	// Применяем скейл
-	pDDItemMP->Rescale(pDDItemMP->GetOwner()->GetItemsScale());
+	pDDItemMP->Rescale(pDDItemMP->GetOwner()->GetItemsScaleX(), pDDItemMP->GetOwner()->GetItemsScaleY());
 
 	// Если сняли костюм, то изменить цвет на белый иконки с изображением персонажа
 	if (OUTFIT_SLOT == pDDItemMP->GetSlot())
@@ -720,7 +720,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		// Cкейлим и увеличиваем текстуру если разрещено перетаскивание
 		if (m_pCurrentDragDropItem->IsDragDropEnabled())
 		{
-			m_pCurrentDragDropItem->Rescale(1.0f);
+			m_pCurrentDragDropItem->Rescale(1.0f,1.0f);
 		}
 
 		// Disable highliht in all DD lists
@@ -763,7 +763,8 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 							DetachChild(m_pCurrentDragDropItem);
 						((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->
 							AttachChild(m_pCurrentDragDropItem);
-						m_pCurrentDragDropItem->Rescale(((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->GetItemsScale());
+						m_pCurrentDragDropItem->Rescale(	((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->GetItemsScaleX(),
+															((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->GetItemsScaleY()	);
 					}
 		}
 	}
@@ -1296,7 +1297,7 @@ void CUIBuyWeaponWnd::FillWpnSubBag(const u32 slotNum)
 
 		UIDragDropItem.CUIStatic::Init(0, 0, INV_GRID_WIDTH, INV_GRID_HEIGHT);
 		UIDragDropItem.SetShader(GetEquipmentIconsShader());
-		UIDragDropItem.SetTextureScale(SECTION_ICON_SCALE);
+		UIDragDropItem.SetTextureScaleXY(SECTION_ICON_SCALE, SECTION_ICON_SCALE);
 		UIDragDropItem.SetColor(0xffffffff);
 
 		//properties used by inventory menu
@@ -2397,13 +2398,13 @@ void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 		if ((r2.right - r2.left >= r.width()) && (r2.bottom - r2.top >= r.height()))
 		{
 			UIItemInfo.UIItemImage.SetTextureOffset((r2.right - r2.left - r.width()) / 2, (r2.bottom - r2.top - r.height()) / 2);
-			UIItemInfo.UIItemImage.SetTextureScale(1.0f);
+			UIItemInfo.UIItemImage.SetTextureScaleXY(1.0f,1.0f);
 		}
 		else
 		{
 			float xFactor = (r2.right - r2.left) / static_cast<float>(r.width()) ;
 			float yFactor = (r2.bottom - r2.top) / static_cast<float>(r.height());
-			float scale = std::min(xFactor, yFactor);
+//			float scale = std::min(xFactor, yFactor);
 	
 			int xOffset = 0, yOffset = 0;
 
@@ -2417,7 +2418,7 @@ void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 			}
 
 			UIItemInfo.UIItemImage.SetTextureOffset(xOffset, yOffset);
-			UIItemInfo.UIItemImage.SetTextureScale(scale);
+			UIItemInfo.UIItemImage.SetTextureScaleXY(xFactor, yFactor);
 		}
 
 		//	string128 buf;

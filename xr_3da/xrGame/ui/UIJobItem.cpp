@@ -72,15 +72,17 @@ void CUIJobItem::SetPicture(LPCSTR texName, const Irect &originalRect, u32 color
 	UIPicture.ClipperOn();
 	RECT r = UIPicture.GetWndRect();
 
-	float m = 1.0f;
+	float mx = 1.0f;
+	float my = 1.0f;
 	if (r.right - r.left < originalRect.x2 || r.bottom - r.top < originalRect.y2)
 	{
-		m = std::min(static_cast<float>(r.right - r.left) / originalRect.x2, static_cast<float>(r.bottom - r.top) / originalRect.y2);
-		UIPicture.SetTextureScale(m);
+		mx = static_cast<float>(r.right - r.left) / originalRect.x2;
+		my = static_cast<float>(r.bottom - r.top) / originalRect.y2;
+		UIPicture.SetTextureScaleXY(mx, my);
 	}
 
-	int offX = static_cast<int>(r.right - r.left - originalRect.x2 * m) / 2;
-	int offY = static_cast<int>(r.bottom - r.top - originalRect.y2 * m) / 2;
+	int offX = static_cast<int>(r.right - r.left - originalRect.x2 * mx) / 2;
+	int offY = static_cast<int>(r.bottom - r.top - originalRect.y2 * my) / 2;
 	clamp<int>(offX, 0, r.right - r.left);
 	clamp<int>(offY, 0, r.bottom - r.top);
 	UIPicture.SetTextureOffset(offX, offY);

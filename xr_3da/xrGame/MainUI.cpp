@@ -176,13 +176,15 @@ void	CMainUI::OnFrame		(void)
 
 void CMainUI::OnDeviceCreate()
 {
-	if (Device.dwWidth!=UI_BASE_WIDTH)	SetScale(float(Device.dwWidth)/float(UI_BASE_WIDTH));
-	else								SetScale(1.f);
+/*	if (Device.dwWidth!=UI_BASE_WIDTH)	SetScaleXY(float(Device.dwWidth)/float(UI_BASE_WIDTH), float(Device.dwHeight)/float(UI_BASE_HEIGHT));
+	else								SetScaleXY(1.f,1.f);
+*/
 }
-
-void CMainUI::SetScale(float s){
-	m_fDevScale			= s;
-}
+/*
+void CMainUI::SetScaleXY(float x, float y){
+	m_fDevScaleX			= x;
+	m_fDevScaleY			= y;
+}*/
 
 void CMainUI::ClientToScreenScaled(Irect& r, u32 align)
 {
@@ -199,18 +201,20 @@ void CMainUI::ClientToScreenScaled(Ivector2& dest, int left, int top, u32 align)
 
 int CMainUI::ClientToScreenScaledX(int left, u32 align)
 {
-	return iFloor(left*m_fDevScale);
+	return iFloor( left * GetScaleX() );
 
-	if (align&alRight)	return iFloor(Device.dwWidth-UI_BASE_WIDTH*m_fDevScale + left*m_fDevScale);
-	else				return iFloor(left*m_fDevScale);
+/*	if (align&alRight)	return iFloor(Device.dwWidth-UI_BASE_WIDTH*m_fDevScaleX + left*m_fDevScaleX);
+	else				return iFloor(left*m_fDevScaleX);
+*/
 }
 
 int CMainUI::ClientToScreenScaledY(int top, u32 align)
 {
-	return iFloor(top*m_fDevScale);
-
-	if (align&alBottom)	return iFloor(Device.dwHeight-UI_BASE_HEIGHT*m_fDevScale + top*m_fDevScale);
-	else				return iFloor(top*m_fDevScale);
+	return iFloor( top * GetScaleY() );
+/*
+	if (align&alBottom)	return iFloor(Device.dwHeight-UI_BASE_HEIGHT*m_fDevScaleY + top*m_fDevScaleY);
+	else				return iFloor(top*m_fDevScaleY);
+*/
 }
 
 void CMainUI::ClientToScreen(Ivector2& dest, int left, int top, u32 align)
@@ -229,17 +233,17 @@ void CMainUI::ClientToScreen(Irect& r, u32 align)
 int CMainUI::ClientToScreenX(int left, u32 align)
 {
 	return left;
-
-	if (align&alRight)	return iFloor(Device.dwWidth-UI_BASE_WIDTH*m_fDevScale + left);
-	else				return left;
+/*
+	if (align&alRight)	return iFloor(Device.dwWidth-UI_BASE_WIDTH*m_fDevScaleX + left);
+	else				return left;*/
 }
 
 int CMainUI::ClientToScreenY(int top, u32 align)
 {
 	return top;
-
-	if (align&alBottom)	return iFloor(Device.dwHeight-UI_BASE_HEIGHT*m_fDevScale + top);
-	else				return top;
+/*
+	if (align&alBottom)	return iFloor(Device.dwHeight-UI_BASE_HEIGHT*m_fDevScaleY + top);
+	else				return top;*/
 }
 
 void CMainUI::OutText(CGameFont *pFont, Irect r, float x, float y, LPCSTR fmt, ...)
@@ -260,8 +264,8 @@ void CMainUI::OutText(CGameFont *pFont, Irect r, float x, float y, LPCSTR fmt, .
 		// Rescale position in lower resolution
 		if (x >= 1.0f && y >= 1.0f)
 		{
-			x *= GetScale();
-			y *= GetScale();
+			x *= GetScaleX();
+			y *= GetScaleY();
 		}
 
 		pFont->Out(x, y, str.c_str());

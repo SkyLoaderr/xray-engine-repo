@@ -204,24 +204,24 @@ void CUIMainIngameWnd::Init()
 	// Загружаем иконки 
 	AttachChild(&UIWeaponJammedIcon);
 	xml_init.InitStatic(uiXml, "weapon_jammed_static", 0, &UIWeaponJammedIcon);
-	UIWeaponJammedIcon.GetStaticItem()->SetScale(0.75);
+	UIWeaponJammedIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
 	UIWeaponJammedIcon.ClipperOn();
 
 	AttachChild(&UIRadiaitionIcon);
 	xml_init.InitStatic(uiXml, "radiation_static", 0, &UIRadiaitionIcon);
-	UIRadiaitionIcon.GetStaticItem()->SetScale(0.75);
+	UIRadiaitionIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
 
 	AttachChild(&UIWoundIcon);
 	xml_init.InitStatic(uiXml, "wound_static", 0, &UIWoundIcon);
-	UIWoundIcon.GetStaticItem()->SetScale(0.75);
+	UIWoundIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
 
 	AttachChild(&UIStarvationIcon);
 	xml_init.InitStatic(uiXml, "starvation_static", 0, &UIStarvationIcon);
-	UIStarvationIcon.GetStaticItem()->SetScale(0.75);
+	UIStarvationIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
 
 	AttachChild(&UIFatigueIcon);
 	xml_init.InitStatic(uiXml, "fatigue_static", 0, &UIFatigueIcon);
-	UIFatigueIcon.GetStaticItem()->SetScale(0.75);
+	UIFatigueIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
 
 	shared_str warningStrings[5] = 
 	{	
@@ -377,7 +377,7 @@ void CUIMainIngameWnd::Draw()
 		//m_ClawsTexture.SetRect	(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 		m_ClawsTexture.Render	(PI_DIV_3);
-		m_ClawsTexture.SetScale	(0.5f);
+		m_ClawsTexture.SetScaleXY	(0.5f, 0.5f);
 	}
 
 	UIPdaMsgListWnd.Draw();
@@ -502,10 +502,10 @@ void CUIMainIngameWnd::Update()
 					float scale_y = float(m_iWeaponIconHeight)/
 						float(m_iGridHeight*INV_GRID_HEIGHT);
 
-					float scale = scale_x<scale_y?scale_x:scale_y;
-					UIWeaponIcon.SetTextureScale(scale);
-					UIWeaponIcon.SetWidth(iFloor(0.5f+ m_iGridWidth*INV_GRID_WIDTH*scale));
-					UIWeaponIcon.SetHeight(iFloor(0.5f+ m_iGridHeight*INV_GRID_HEIGHT*scale));
+//					float scale = scale_x<scale_y?scale_x:scale_y;
+					UIWeaponIcon.SetTextureScaleXY(scale_x, scale_y);
+					UIWeaponIcon.SetWidth(iFloor(0.5f+ m_iGridWidth*INV_GRID_WIDTH*scale_x));
+					UIWeaponIcon.SetHeight(iFloor(0.5f+ m_iGridHeight*INV_GRID_HEIGHT*scale_y));
 
 					UIWeaponIcon.MoveWindow(m_iWeaponIconX + 
 						(m_iWeaponIconWidth - UIWeaponIcon.GetWidth())/2,
@@ -1294,7 +1294,7 @@ void CUIMainIngameWnd::InitFlashingIcons(CUIXml &node)
 		switch (type)
 		{
 		case efiPdaTask:
-			pIcon->GetUIStaticItem().SetScale(0.5f);
+			pIcon->GetUIStaticItem().SetScaleXY(0.5f, 0.5f);
 			break;
 		default:
 			NODEFAULT;

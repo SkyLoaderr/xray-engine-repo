@@ -5,6 +5,8 @@
 #include "stdafx.h"
 
 #include "HUDCrosshair.h"
+#include "UIStaticItem.h"
+#include "MainUI.h"
 
 CHUDCrosshair::CHUDCrosshair	()
 {
@@ -12,7 +14,7 @@ CHUDCrosshair::CHUDCrosshair	()
 	hShader.create				("editor\\wire");
 
 	//вычислить и запомнить центр экрана
-	center.set(int(Device.dwWidth)/2,int(Device.dwHeight)/2);
+//	center.set(int(Device.dwWidth)/2,int(Device.dwHeight)/2);
 	radius = 0;
 }
 
@@ -62,6 +64,10 @@ void CHUDCrosshair::SetDispersion	(float disp)
 
 void CHUDCrosshair::OnRender ()
 {
+	VERIFY(g_bRendering);
+
+	center.set(int(Device.dwWidth)/2,int(Device.dwHeight)/2);
+
 	// draw back
 	u32			dwOffset,dwCount;
 	FVF::TL0uv* pv_start				= (FVF::TL0uv*)RCache.Vertex.Lock(8,hGeomLine->vb_stride,dwOffset);
@@ -69,11 +75,14 @@ void CHUDCrosshair::OnRender ()
 	
 	u32 color = cross_color.get			();
 
-	int x_min = min_radius + radius		;
-	int x_max = x_min + cross_length	;
+	int x_min = min_radius + radius		; x_min *= UI()->GetScaleX();
+	int x_max = x_min + cross_length	; x_max *= UI()->GetScaleX();
 
-	int y_min = x_min;
-	int y_max = x_max;
+//	int y_min = x_min;
+//	int y_max = x_max;
+
+	int y_min = min_radius + radius		; y_min *= UI()->GetScaleY();
+	int y_max = y_min + cross_length	; y_max *= UI()->GetScaleX();
 
 
 	//int y_min = iFloor(0.5f + float(x_min)*Device.fASPECT);

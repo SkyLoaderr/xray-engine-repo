@@ -419,16 +419,21 @@ void CUIStatic::ClipperOff()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIStatic::SetTextureScale(float new_scale)
+void CUIStatic::SetTextureScaleXY(float x, float y)
 {
-	m_UIStaticItem.SetScale(new_scale);
+	m_UIStaticItem.SetScaleXY(x, y);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-float CUIStatic::GetTextureScale()
+float CUIStatic::GetTextureScaleX()
 {
-	return m_UIStaticItem.GetScale();
+	return m_UIStaticItem.GetScaleX();
+}
+
+float CUIStatic::GetTextureScaleY()
+{
+	return m_UIStaticItem.GetScaleY();
 }
 
 //////////////////////////////////////////////////////////////////////////

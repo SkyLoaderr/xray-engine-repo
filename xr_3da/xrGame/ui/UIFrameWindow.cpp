@@ -145,6 +145,7 @@ void CUIFrameWindow::FrameClip(const RECT parentAbsR)
 {
 	using std::min;
 	using std::max;
+	VERIFY(g_bRendering);
 
 	// Если нет границ клиппанья, то скипаем
 	if (!GetParent()) return;

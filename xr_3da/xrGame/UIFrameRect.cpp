@@ -36,17 +36,19 @@ void CUIFrameRect::Init(LPCSTR base_name, int x, int y, int w, int h, DWORD alig
 
 void CUIFrameRect::UpdateSize()
 {
+	VERIFY(g_bRendering);
 	// texture size
 	CTexture* T;
 	Ivector2  ts;
 	int rem_x, rem_y, tile_x, tile_y;
 
-	float fScale	= UI()->GetScale();
+	float fScaleX	= UI()->GetScaleX();
+	float fScaleY	= UI()->GetScaleY();
 	// center align
 	if (GetAlign()&alCenter)
-		iPos.set	(iFloor((Device.dwWidth-fScale*iSize.x)*.5f),iFloor((Device.dwHeight-fScale*iSize.y)*.5f));
+		iPos.set	(iFloor((Device.dwWidth-fScaleX*iSize.x)*.5f),iFloor((Device.dwHeight-fScaleY*iSize.y)*.5f));
 
-	list_rect.set	(iPos.x,iPos.y,iFloor(iPos.x+fScale*iSize.x),iFloor(iPos.y+fScale*iSize.y));
+	list_rect.set	(iPos.x,iPos.y,iFloor(iPos.x+fScaleX*iSize.x),iFloor(iPos.y+fScaleY*iSize.y));
 	list_rect.shrink(32,32);
 
 

@@ -84,11 +84,11 @@ void CUICarBodyWnd::Init()
 	//Списки Drag&Drop
 	UIOurBagWnd.AttachChild(&UIOurBagList);	
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 0, &UIOurBagList);
-	UIOurBagList.SetItemsScale(TRADE_ICONS_SCALE);
+	UIOurBagList.SetItemsScaleXY(TRADE_ICONS_SCALE, TRADE_ICONS_SCALE);
 
 	UIOthersBagWnd.AttachChild(&UIOthersBagList);	
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 1, &UIOthersBagList);
-	UIOthersBagList.SetItemsScale(TRADE_ICONS_SCALE);
+	UIOthersBagList.SetItemsScaleXY(TRADE_ICONS_SCALE, TRADE_ICONS_SCALE);
 
 
 	//информация о предмете
@@ -202,7 +202,7 @@ void CUICarBodyWnd::UpdateLists()
 
 
 			//установить коэффициент масштабирования
-			UIDragDropItem.SetTextureScale(TRADE_ICONS_SCALE);
+			UIDragDropItem.SetTextureScaleXY(TRADE_ICONS_SCALE, TRADE_ICONS_SCALE);
 				
 			UIOurBagList.AttachChild(&UIDragDropItem);
 	//		++m_iUsedItems;
@@ -247,7 +247,7 @@ void CUICarBodyWnd::UpdateLists()
 			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
 
 			//установить коэффициент масштабирования
-			UIDragDropItem.SetTextureScale(TRADE_ICONS_SCALE);
+			UIDragDropItem.SetTextureScaleXY(TRADE_ICONS_SCALE,TRADE_ICONS_SCALE);
 			UIOthersBagList.AttachChild(&UIDragDropItem);
 //			++m_iUsedItems;
 		}
@@ -268,7 +268,7 @@ void CUICarBodyWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
 		SetCurrentItem(pInvItem);
-		m_pCurrentDragDropItem->Rescale(1.0f);
+		m_pCurrentDragDropItem->Rescale(1.0f, 1.0f);
 	}
 	else if(msg == DRAG_DROP_ITEM_DB_CLICK)
 	{

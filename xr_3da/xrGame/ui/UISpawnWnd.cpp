@@ -47,7 +47,7 @@ void CUISpawnWnd::Init(	const char *strCaptionPrimary, const u32 ColorPrimary,
 
 	CUIWindow::Init(CUIXmlInit::ApplyAlignX(0, alCenter),
 					CUIXmlInit::ApplyAlignY(0, alCenter),
-					Device.dwWidth, Device.dwHeight);
+					UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 	// Читаем из xml файла параметры окна и контролов
 	AttachChild(&UIFrameWndPrimary);
@@ -96,14 +96,14 @@ void CUISpawnWnd::SetDisplayMode(bool bDual)
 	RECT frameCoords = UIFrameWndSecondary.GetWndRect();
 	int updatedX, updatedY;
 
-	updatedY = Device.dwHeight / 2 - (frameCoords.bottom - frameCoords.top) / 2;
+	updatedY = UI_BASE_HEIGHT / 2 - (frameCoords.bottom - frameCoords.top) / 2;
 
 	if (m_bDual)
 	{
 		// Если окна 2, то аттачим вторичные контролы
 		AttachChild(&UIFrameWndSecondary);
 		
-		updatedX = Device.dwWidth / 4 - (frameCoords.right - frameCoords.left) / 2;
+		updatedX = UI_BASE_WIDTH / 4 - (frameCoords.right - frameCoords.left) / 2;
 		updatedX += updatedX / 2;
 		// обновить второе окно
 		UIFrameWndSecondary.SetWndRect(2 * updatedX + frameCoords.right, updatedY, frameCoords.right, frameCoords.bottom);
@@ -111,7 +111,7 @@ void CUISpawnWnd::SetDisplayMode(bool bDual)
 	else
 	{
 		DetachChild(&UIFrameWndSecondary);
-		updatedX = Device.dwWidth / 2 - (frameCoords.right - frameCoords.left) / 2;
+		updatedX = UI_BASE_WIDTH / 2 - (frameCoords.right - frameCoords.left) / 2;
 	}
 	// обновить первое окно
 	UIFrameWndPrimary.SetWndRect(updatedX, updatedY, frameCoords.right, frameCoords.bottom);

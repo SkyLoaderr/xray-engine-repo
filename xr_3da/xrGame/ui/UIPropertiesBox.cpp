@@ -9,8 +9,8 @@
 #include "../hudmanager.h"
 #include "../level.h"
 
-#define OFFSET_X 20
-#define OFFSET_Y 18
+#define OFFSET_X (20*UI()->GetScaleX())
+#define OFFSET_Y (18*UI()->GetScaleY())
 #define FRAME_BORDER_WIDTH	20
 #define FRAME_BORDER_HEIGHT	22
 
@@ -88,12 +88,12 @@ void CUIPropertiesBox::Show(int x, int y)
 	if(x+GetWidth()<(int)Device.dwWidth)
 		x_pos = x;
 	else
-		x_pos = x - (x+GetWidth()-(int)Device.dwWidth);
+		x_pos = x - (x+GetWidth()-(int)Device.dwWidth/UI()->GetScaleX());
 	
 	if(y+GetHeight()<(int)Device.dwHeight)
 		y_pos = y;
 	else
-		y_pos = y - (y+GetHeight()-(int)Device.dwHeight);
+		y_pos = y - (y+GetHeight()-(int)Device.dwHeight/UI()->GetScaleY());
 		
 	MoveWindow(x_pos,y_pos);
 

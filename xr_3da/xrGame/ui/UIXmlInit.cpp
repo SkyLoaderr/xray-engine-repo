@@ -149,7 +149,7 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 	shared_str scale_str = xml_doc.ReadAttrib(path, index, "scale", NULL);
 	float scale = 1.f;
 	if(*scale_str) scale = (float)atof(*scale_str);
-	pWnd->SetTextureScale(scale);
+	pWnd->SetTextureScaleXY(scale,scale);
 
 	int stretch_flag = xml_doc.ReadAttribInt(path, index, "stretch");
 	if(stretch_flag) 
@@ -807,6 +807,6 @@ bool CUIXmlInit::InitArtefactPanel(CUIXml &xml_doc, const char* path, int index,
 
 	LPCSTR strScale = xml_doc.ReadAttrib(path, index, "scale");
 	float fScale = static_cast<float>(atof(strScale));
-	pWnd->SetScale(fScale);
+	pWnd->SetScaleXY(fScale,fScale);
 	return true;
 }

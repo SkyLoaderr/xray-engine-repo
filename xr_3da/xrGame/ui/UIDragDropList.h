@@ -84,8 +84,9 @@ public:
 
 	bool CanPlaceItem(CUIDragDropItem *pDDItem);
 
-	void SetItemsScale(float fItemsScale);
-	float GetItemsScale() const { return m_fItemsScale; }
+	void SetItemsScaleXY(float fItemsScale_x, float fItemsScale_y);
+	float GetItemsScaleX() const { return m_fItemsScaleX; }
+	float GetItemsScaleY() const { return m_fItemsScaleY; }
 
 	// Подсветить указанную клеточку в листе
 	void HighlightCell(int row, int col, bool on);
@@ -162,7 +163,8 @@ protected:
 	DRAG_DROP_LIST m_DragDropItemsList;
 
 	// Для возможности изменения размера лежащих на листе элементов, запомним скейл
-	float		m_fItemsScale;
+	float		m_fItemsScaleX;
+	float		m_fItemsScaleY;
 
 	// Видима ли сетка?
 	bool		m_bGridVisible;

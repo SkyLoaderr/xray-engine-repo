@@ -294,7 +294,7 @@ void CUISkinSelectorWnd::InitializeSkins()
 			static_cast<int>(5.07f*ICON_GRID_WIDTH));
 
 		m_vSkinWindows[i].UIHighlight.ClipperOn();
-		m_vSkinWindows[i].UIHighlight.SetTextureScale(stretchKoeff);
+		m_vSkinWindows[i].UIHighlight.SetTextureScaleXY(stretchKoeff,stretchKoeff);
 	}
 
 	m_vSkinWindows[0].UIHighlight.GetUIStaticItem().SetColor(clActive);

@@ -55,7 +55,7 @@ public:
 
 	void			UpdateRadar		(CActor* Actor);
 
-	void			SetScale		(float scale)						{m_fScale = scale;}
+	void			SetScale		(float s)							{m_fScale = s;}
 	float			GetScale		()									{return m_fScale;}
 
 	bool			ZoomIn			();

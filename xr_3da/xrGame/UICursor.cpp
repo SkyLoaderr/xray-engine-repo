@@ -3,6 +3,7 @@
 #include "uicursor.h"
 
 #include "../CustomHUD.h"
+#include "UI.h"
 
 #define C_DEFAULT	D3DCOLOR_XRGB(0xff,0xff,0xff)
 
@@ -57,8 +58,11 @@ void CUICursor::Render	()
 //move cursor to screen coordinates
 void CUICursor::SetPos(int x, int y)
 {
-	vPos.x =(float)2*x/(float)Device.dwWidth - 1.0f;
-	vPos.y =(float)2*y/(float)Device.dwHeight - 1.0f;
+//	vPos.x =(float)2*x/(float)Device.dwWidth - 1.0f;
+//	vPos.y =(float)2*y/(float)Device.dwHeight - 1.0f;
+
+	vPos.x =(float)2*x/(float)UI_BASE_WIDTH - 1.0f;
+	vPos.y =(float)2*y/(float)UI_BASE_HEIGHT - 1.0f;
 
 	if(vPos.x<-1) vPos.x=-1;
 	if(vPos.x>1) vPos.x=1;
@@ -68,8 +72,11 @@ void CUICursor::SetPos(int x, int y)
 
 void CUICursor::GetPos(int& x, int& y)
 {
-	x = (int)((vPos.x+1.0f)*(float)Device.dwWidth/2);
-	y = (int)((vPos.y+1.0f)*(float)Device.dwHeight/2);
+//	x = (int)((vPos.x+1.0f)*(float)Device.dwWidth/2);
+	x = (int)((vPos.x+1.0f)*(float)UI_BASE_WIDTH/2);
+	
+//	y = (int)((vPos.y+1.0f)*(float)Device.dwHeight/2);
+	y = (int)((vPos.y+1.0f)*(float)UI_BASE_HEIGHT/2);
 }
 
 POINT CUICursor::GetPos()
@@ -87,8 +94,10 @@ POINT CUICursor::GetPos()
 
 void CUICursor::MoveBy(int dx, int dy)
 {
-	vPos.x +=(float)m_fSensitivity*dx/(float)Device.dwWidth;
-	vPos.y +=(float)m_fSensitivity*dy/(float)Device.dwHeight;
+//	vPos.x +=(float)m_fSensitivity*dx/(float)Device.dwWidth;
+//	vPos.y +=(float)m_fSensitivity*dy/(float)Device.dwHeight;
+ 	vPos.x +=(float)m_fSensitivity*dx/(float)UI_BASE_WIDTH;
+	vPos.y +=(float)m_fSensitivity*dy/(float)UI_BASE_HEIGHT;
 
 	if(vPos.x<-1) vPos.x=-1;
 	if(vPos.x>1) vPos.x=1;

@@ -2,7 +2,6 @@
 #include "stdafx.h"
 #include "uistaticitem.h"
 #include "hudmanager.h"
-extern ENGINE_API BOOL g_bRendering; 
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -67,8 +66,8 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 	FVF::TL*		pv				= (FVF::TL*)RCache.Vertex.Lock	(4*(iTileX+1)*(iTileY+1),hGeom.stride(),vOffset);
 
 	Ivector2		pos;
-	float fw			= iVisRect.width()  * UI()->GetScale();
-	float fh			= iVisRect.height() * UI()->GetScale();
+	float fw			= iVisRect.width()  * UI()->GetScaleX();
+	float fh			= iVisRect.height() * UI()->GetScaleY();
 
 	int				x,y;
 	for (x=0; x<iTileX; ++x){
@@ -84,7 +83,7 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 //			pos.set					(static_cast<int>(bp.x+iTileX*fw),static_cast<int>(bp.y+y*fh));
 			if (bReverseRemX)
 			{
-				pos.x -= static_cast<int>((iVisRect.x2 - iRemX) * UI()->GetScale() + 0.5f);
+				pos.x -= static_cast<int>((iVisRect.x2 - iRemX) * UI()->GetScaleX() + 0.5f);
 				inherited::Render		(pv,pos,dwColor,iVisRect.x2 - iRemX,iVisRect.y1,iVisRect.x2,iVisRect.y2);	
 			}
 			else
@@ -98,7 +97,7 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 //			pos.set					(static_cast<int>(bp.x+x*fw),static_cast<int>(bp.y+iTileY*fh));
 			if (bReverseRemY)
 			{
-				pos.y -= static_cast<int>((iVisRect.y2 - iRemY) * UI()->GetScale() + 0.5f);
+				pos.y -= static_cast<int>((iVisRect.y2 - iRemY) * UI()->GetScaleY() + 0.5f);
 				inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y2 - iRemY,iVisRect.x2,iVisRect.y2);	
 			}
 			else
@@ -111,18 +110,18 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 //		pos.set						(static_cast<int>(bp.x+iTileX*fw),static_cast<int>(bp.y+iTileY*fh));
 		if (bReverseRemY && bReverseRemX)
 		{
-			pos.x -= static_cast<int>((iVisRect.x2 - iRemX) * UI()->GetScale() + 0.5f);
-			pos.y -= static_cast<int>((iVisRect.y2 - iRemY) * UI()->GetScale() + 0.5f);
+			pos.x -= static_cast<int>((iVisRect.x2 - iRemX) * UI()->GetScaleX() + 0.5f);
+			pos.y -= static_cast<int>((iVisRect.y2 - iRemY) * UI()->GetScaleY() + 0.5f);
 			inherited::Render		(pv,pos,dwColor,iVisRect.x2 - iRemX, iVisRect.y2 - iRemY, iVisRect.x2, iVisRect.y2);	
 		}
 		else if (bReverseRemY)
 		{
-			pos.y -= static_cast<int>((iVisRect.y2 - iRemY) * UI()->GetScale() + 0.5f);
+			pos.y -= static_cast<int>((iVisRect.y2 - iRemY) * UI()->GetScaleY() + 0.5f);
 			inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y2 - iRemY, iRemX, iVisRect.y2);
 		}
 		else if (bReverseRemX)
 		{
-			pos.x -= static_cast<int>((iVisRect.x2 - iRemX) * UI()->GetScale() + 0.5f);
+			pos.x -= static_cast<int>((iVisRect.x2 - iRemX) * UI()->GetScaleX() + 0.5f);
 			inherited::Render		(pv,pos,dwColor,iVisRect.x2 - iRemX,iVisRect.y1,iVisRect.x2,iRemY);	
 		}
 		else

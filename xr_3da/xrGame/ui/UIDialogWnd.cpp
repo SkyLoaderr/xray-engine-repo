@@ -45,15 +45,15 @@ bool CUIDialogWnd::IR_OnKeyboardPress(int dik)
 	//mouse click
 	if(dik==MOUSE_1)
 	{
-		OnMouse(static_cast<int>(GetUICursor()->GetPos().x / UI()->GetScale()),
-				static_cast<int>(GetUICursor()->GetPos().y / UI()->GetScale()),
+		OnMouse(static_cast<int>(GetUICursor()->GetPos().x /* / UI()->GetScaleX() */),
+				static_cast<int>(GetUICursor()->GetPos().y /* / UI()->GetScaleY() */),
                 WINDOW_LBUTTON_DOWN);
 		return true;
 	}
 	else if(dik==MOUSE_2)
 	{
-		OnMouse(static_cast<int>(GetUICursor()->GetPos().x / UI()->GetScale()),
-				static_cast<int>(GetUICursor()->GetPos().y / UI()->GetScale()),
+		OnMouse(static_cast<int>(GetUICursor()->GetPos().x /* / UI()->GetScaleX() */),
+				static_cast<int>(GetUICursor()->GetPos().y /* / UI()->GetScaleY() */),
                 WINDOW_RBUTTON_DOWN);
 		return true;
 	}
@@ -61,23 +61,23 @@ bool CUIDialogWnd::IR_OnKeyboardPress(int dik)
 	
 	return 	OnKeyboard(dik,	WINDOW_KEY_PRESSED);
 }
+
 bool CUIDialogWnd::IR_OnKeyboardRelease(int dik)
 {
 	if(!IsEnabled()) return false;
-			
+	
+
 	//mouse click
-	if(dik==MOUSE_1)
+	if(dik==MOUSE_1 || dik==MOUSE_2)
 	{
-			OnMouse(static_cast<int>(GetUICursor()->GetPos().x / UI()->GetScale()),
-			 	    static_cast<int>(GetUICursor()->GetPos().y / UI()->GetScale()),	
-					WINDOW_LBUTTON_UP);
-		return true;
-	}
-	else if(dik==MOUSE_2)
-	{
-			OnMouse(static_cast<int>(GetUICursor()->GetPos().x / UI()->GetScale()),
-			 	    static_cast<int>(GetUICursor()->GetPos().y / UI()->GetScale()),	
-					WINDOW_RBUTTON_UP);
+		int x = static_cast<int>(GetUICursor()->GetPos().x /* / UI()->GetScaleX() */);
+		int y = static_cast<int>(GetUICursor()->GetPos().y /* / UI()->GetScaleY() */);
+		
+		if(dik==MOUSE_1)
+			OnMouse(x,   y,	WINDOW_LBUTTON_UP);
+		else
+			OnMouse(x,   y,	WINDOW_RBUTTON_UP);
+
 		return true;
 	}
 
@@ -97,8 +97,8 @@ bool CUIDialogWnd::IR_OnMouseMove(int dx, int dy)
 	if (GetUICursor()->IsVisible())
 	{ 
 		GetUICursor()->MoveBy(dx, dy);
-		OnMouse(static_cast<int>(GetUICursor()->GetPos().x / UI()->GetScale()), 
-				static_cast<int>(GetUICursor()->GetPos().y / UI()->GetScale()), 
+		OnMouse(static_cast<int>(GetUICursor()->GetPos().x /* / UI()->GetScaleX() */), 
+				static_cast<int>(GetUICursor()->GetPos().y /* / UI()->GetScaleY() */), 
 				WINDOW_MOUSE_MOVE);
 	}
 

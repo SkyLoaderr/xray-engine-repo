@@ -30,8 +30,9 @@ void CUIStatic::script_register(lua_State *L)
 
 		.def("SetOriginalRect",		&CUIStatic::SetOriginalRect)
 
-		.def("SetTextureScale",		&CUIStatic::SetTextureScale)
-		.def("GetTextureScale",		&CUIStatic::GetTextureScale)
+		.def("SetTextureScaleXY",	&CUIStatic::SetTextureScaleXY)
+		.def("GetTextureScaleX",	&CUIStatic::GetTextureScaleX)
+		.def("GetTextureScaleY",	&CUIStatic::GetTextureScaleY)
 
 		.def("SetStretchTexture",	&CUIStatic::SetStretchTexture)
 		.def("GetStretchTexture",	&CUIStatic::GetStretchTexture)

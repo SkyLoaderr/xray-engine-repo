@@ -249,12 +249,12 @@ void CUIDragDropItem::Update()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIDragDropItem::Rescale(float scale)
+void CUIDragDropItem::Rescale(float scale_x, float scale_y)
 {
 	float offsetCorrection = 0.0f;//scale * 2;
-	SetTextureScale(scale);
-	int newW	= static_cast<int>(GetGridWidth() * scale * (INV_GRID_WIDTH + offsetCorrection));
-	int newH	= static_cast<int>(GetGridHeight() * scale * (INV_GRID_HEIGHT + offsetCorrection));
+	SetTextureScaleXY(scale_x, scale_y);
+	int newW	= static_cast<int>(GetGridWidth() * scale_x * (INV_GRID_WIDTH + offsetCorrection));
+	int newH	= static_cast<int>(GetGridHeight() * scale_y * (INV_GRID_HEIGHT + offsetCorrection));
 	int deltaW	= (GetWndRect().right - GetWndRect().left - newW) / 2;
 	int deltaH	= (GetWndRect().bottom - GetWndRect().top - newH) / 2;
 

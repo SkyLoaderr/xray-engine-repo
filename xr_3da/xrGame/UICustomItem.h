@@ -34,7 +34,8 @@ protected:
 	Irect			iTextureRect;
 
 
-	float			fScale;
+	float			fScaleX;
+	float			fScaleY;
 
 	u32				uFlags;
 	u32				uAlign;
@@ -72,6 +73,7 @@ public:
 	IC EUIMirroring GetMirrorMode	()							{ return eMirrorMode; }
 
 	//для пропорционального масштабирования выводимой текстуры
-	void			SetScale		(float new_scale);
-	float			GetScale		();
+	void			SetScaleXY		(float x, float y);
+	float			GetScaleX		();
+	float			GetScaleY		();
 };

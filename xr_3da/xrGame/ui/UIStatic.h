@@ -72,8 +72,9 @@ public:
 						RECT* pClipRect, 
 						CUIStaticItem& UIStaticItem);
 
-	virtual void	SetTextureScale		(float new_scale);
-	virtual float	GetTextureScale		();
+	virtual void	SetTextureScaleXY		(float new_scale_x, float new_scale_y);
+	virtual float	GetTextureScaleX		();
+	virtual float	GetTextureScaleY		();
 	
 	void	SetShader			(const ref_shader& sh);
 	CUIStaticItem& GetUIStaticItem() {return m_UIStaticItem;}

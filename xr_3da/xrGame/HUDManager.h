@@ -50,11 +50,6 @@ private:
 	// hud cursor
 	CHUDCursor*				m_pHUDCursor;
 
-//	float					fScale;
-//	CFontManager			m_fontManager;
-public:
-
-//	void					OutText(CGameFont *pFont, Irect r, float x, float y, LPCSTR fmt, ...);
 
 public:
 							CHUDManager			();
@@ -75,21 +70,7 @@ public:
 	CFontManager&			Font				()							{return *(UI()->Font());}
 	//текущий предмет на который смотрит HUD
 	collide::rq_result&		GetCurrentRayQuery	();
-/*
-	virtual		void		OnDeviceCreate		();
 
-	float					GetScale			(){return fScale;}
-	void					SetScale			(float s);
-
-	void					ClientToScreenScaled(Irect& r, u32 align);
-	void					ClientToScreenScaled(Ivector2& dest, int left, int top, u32 align);
-	int						ClientToScreenScaledX(int left, u32 align);
-	int						ClientToScreenScaledY(int top, u32 align);
-	void					ClientToScreen		(Irect& r, u32 align);
-	void					ClientToScreen		(Ivector2& dest, int left, int top, u32 align);
-	int						ClientToScreenX		(int left, u32 align);
-	int						ClientToScreenY		(int top, u32 align);
-*/	
 	void __cdecl 			outMessage			(u32 C, LPCSTR from, LPCSTR msg, ...);
 	void __cdecl 			outMessage			(u32 C, const shared_str& from, LPCSTR msg, ...);
 

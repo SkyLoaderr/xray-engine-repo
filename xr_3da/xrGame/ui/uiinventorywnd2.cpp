@@ -221,7 +221,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
 		// Cкейлим и увеличиваем текстуру
-		m_pCurrentDragDropItem->Rescale(1.0f);
+		m_pCurrentDragDropItem->Rescale(1.0f,1.0f);
 	}
 	else if(msg == DRAG_DROP_ITEM_DB_CLICK)
 	{
@@ -244,7 +244,8 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 					((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->
 										AttachChild(m_pCurrentDragDropItem);
 				}
-		m_pCurrentDragDropItem->Rescale(((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->GetItemsScale());
+		m_pCurrentDragDropItem->Rescale(((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->GetItemsScaleX(),
+										((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->GetItemsScaleY());
     }
 	//по нажатию правой кнопки
 	else if(msg == DRAG_DROP_ITEM_RBUTTON_CLICK)
@@ -428,7 +429,7 @@ void CUIInventoryWnd::InitInventory()
 									pInv->m_slots[i].m_pIItem->GetGridHeight()*INV_GRID_HEIGHT);
 
 			UITopList[i].AttachChild(&UIDragDropItem);
-			UIDragDropItem.Rescale(UITopList[i].GetItemsScale());
+			UIDragDropItem.Rescale(UITopList[i].GetItemsScaleX(), UITopList[i].GetItemsScaleY());
 			UIDragDropItem.SetData(pInv->m_slots[i].m_pIItem);
 			UIDragDropItem.Show(true);
 
@@ -508,7 +509,7 @@ void CUIInventoryWnd::InitInventory()
 			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
 
 			UIBeltList.AttachChild(&UIDragDropItem);
-			UIDragDropItem.Rescale(UIBeltList.GetItemsScale());
+			UIDragDropItem.Rescale(UIBeltList.GetItemsScaleX(), UIBeltList.GetItemsScaleY());
 			UIDragDropItem.SetData(*it);
 			UIDragDropItem.Show(true);
 
@@ -560,7 +561,7 @@ void CUIInventoryWnd::InitInventory()
 			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
 
 			UIBagList.AttachChild(&UIDragDropItem);
-			UIDragDropItem.Rescale(UIBagList.GetItemsScale());
+			UIDragDropItem.Rescale(UIBagList.GetItemsScaleX(), UIBagList.GetItemsScaleY());
 			UIDragDropItem.SetData((*it));
 			UIDragDropItem.Show(true);
 			UIBagList.HighlightAllCells(false);

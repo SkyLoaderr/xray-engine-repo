@@ -25,7 +25,7 @@ public:
 
 	virtual void InitIcons(const xr_vector<const CArtefact*>& artefacts);
 	virtual void Draw();
-	virtual void SetScale(float fScale);
+	virtual void SetScaleXY(float x, float y);
 
 protected:
 	xr_vector<RECT>           m_vRects;

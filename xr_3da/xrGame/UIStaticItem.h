@@ -54,4 +54,7 @@ public:
 	IC void			SetReverseRem	(bool valueX, bool valueY)	{bReverseRemX = valueX; bReverseRemY = valueY;}
 };
 
+extern ENGINE_API BOOL g_bRendering; 
+
 #endif //__XR_UISTATICITEM_H__
+

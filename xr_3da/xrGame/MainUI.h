@@ -7,6 +7,7 @@ class CUICursor;
 #include "../IInputReceiver.h"
 #include "../IGame_Persistent.h"
 #include "UIDialogHolder.h"
+#include "UI.h"
 
 class CMainUI :
 	public IMainUI,
@@ -20,7 +21,8 @@ class CMainUI :
 
 	CUIDialogWnd*									m_startDialog;
 
-	float											m_fDevScale;
+//	float											m_fDevScaleX;
+//	float											m_fDevScaleY;
 
 	enum{
 		flRestoreConsole	= (1<<0),
@@ -62,8 +64,9 @@ public:
 
 	void			OnDeviceCreate					();
 
-	float			GetScale						()							{return m_fDevScale;}
-	void			SetScale						(float f);
+	float			GetScaleX						()							{return float(Device.dwWidth)/float(UI_BASE_WIDTH);   }
+	float			GetScaleY						()							{return float(Device.dwHeight)/float(UI_BASE_HEIGHT); }
+//	void			SetScaleXY						(float f_x, float f_y);
 
 	void			ClientToScreenScaled			(Irect& r, u32 align);
 	void			ClientToScreenScaled			(Ivector2& dest, int left, int top, u32 align);

@@ -48,7 +48,8 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 				m_pAddon[ID]->EnableDragDrop(false);
 				m_pAddon[ID]->Enable(false);
 				m_pAddon[ID]->m_bHasRealRepresentation = bRealRepresentationSet;
-				m_pAddon[ID]->Rescale(smart_cast<CUIDragDropList*>(m_pAddon[ID]->GetParent())->GetItemsScale());
+				m_pAddon[ID]->Rescale(  smart_cast<CUIDragDropList*>(m_pAddon[ID]->GetParent())->GetItemsScaleX(),
+										smart_cast<CUIDragDropList*>(m_pAddon[ID]->GetParent())->GetItemsScaleY());
 
 				// Отнимаем денежку
 				this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - 
@@ -65,7 +66,8 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 				m_pAddon[ID]->Show(true);
 				m_pAddon[ID]->EnableDragDrop(true);
 				m_pAddon[ID]->Enable(true);
-				m_pAddon[ID]->Rescale(smart_cast<CUIDragDropList*>(m_pAddon[ID]->GetParent())->GetItemsScale());
+				m_pAddon[ID]->Rescale(  smart_cast<CUIDragDropList*>(m_pAddon[ID]->GetParent())->GetItemsScaleX(),
+										smart_cast<CUIDragDropList*>(m_pAddon[ID]->GetParent())->GetItemsScaleY());
 				// Прибавляем денежку
 				if (m_pAddon[ID]->GetColor() != cUnableToBuy)
 				{
@@ -148,11 +150,11 @@ void CUIDragDropItemMP::Draw()
 			nfo			= m_AddonInfo[i];
 
 			// А теперь отрисовка
-			pDDItemMP->GetUIStaticItem().SetPos(rect.left + right_offset + iFloor(0.5f+(float)nfo.x * GetTextureScale()),
-				rect.top + down_offset + iFloor(0.5f+(float)nfo.y * GetTextureScale()));
+			pDDItemMP->GetUIStaticItem().SetPos(rect.left + right_offset + iFloor(0.5f+(float)nfo.x * GetTextureScaleX()),
+				rect.top + down_offset + iFloor(0.5f+(float)nfo.y * GetTextureScaleY()));
 
-			if(m_bClipper) TextureClipper(right_offset + iFloor(0.5f+(float)nfo.x * GetTextureScale()),
-				down_offset +  iFloor(0.5f+(float)nfo.y * GetTextureScale()), 
+			if(m_bClipper) TextureClipper(right_offset + iFloor(0.5f+(float)nfo.x * GetTextureScaleX()),
+				down_offset +  iFloor(0.5f+(float)nfo.y * GetTextureScaleY()), 
 				NULL, pDDItemMP->GetUIStaticItem());
 
 //			if (pDDItemMP->m_bHasRealRepresentation)
