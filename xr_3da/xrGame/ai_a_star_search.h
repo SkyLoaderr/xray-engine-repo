@@ -33,7 +33,6 @@ template<class CTemplateNode> class CAStarSearch {
 private:
 
 	u32			m_dwMaxNodeCount;
-	u32			dwAStarStaticCounter;
 
 	IC void vfUpdateSuccessors(SNode *tpList, float dDifference)
 	{
@@ -69,16 +68,20 @@ private:
 
 
 public:
+	CAStarSearch()
+	{
+		m_dwMaxNodeCount = 65535;
+	}
+
 	CAStarSearch(u32 dwMaxNodeCount)
 	{
-		m_dwMaxNodeCount		= dwMaxNodeCount;
-		dwAStarStaticCounter	= 0;
+		m_dwMaxNodeCount = dwMaxNodeCount;
 	}
 	
 	void vfFindOptimalPath(
 			SNode	*tpHeap,
 			SIndexNode	*tpIndexes,
-			u32 &dwAStarStaticCounter1,
+			u32 &dwAStarStaticCounter,
 			u32 dwStartNode, 
 			u32 dwGoalNode, 
 			float fMaxValue, 
@@ -107,7 +110,7 @@ public:
 		tpOpenedList->tpOpenedNext = tpTemp;
 		tpTemp->iIndex = dwStartNode;
 		tpTemp->g = 0.0;
-		tpTemp->h = tTemplateNode.ffEvaluate(dwStartNode,dwGoalNode);
+		tpTemp->h = tTemplateNode.ffAnticipate(dwStartNode,dwGoalNode);
 		tpTemp->tpOpenedPrev = tpOpenedList;
 		tpTemp->ucOpenCloseMask = 1;
 		tpTemp->f = tpTemp->g + tpTemp->h;
@@ -124,9 +127,10 @@ public:
 			tpBestNode->ucOpenCloseMask = 0;
 
 			// check if that node is our goal
-			if (tpBestNode->iIndex == (int)dwGoalNode) {
+			int iBestIndex = tpBestNode->iIndex;
+			if (iBestIndex == (int)dwGoalNode) {
 
-				fValue = 0.0;
+				fValue = tpBestNode->f;
 				tpTemp1 = tpBestNode;
 				tpTemp = tpTemp1->tpBack;
 				for (u32 i=1; tpTemp; tpTemp1 = tpTemp, tpTemp = tpTemp->tpBack, i++) ;
@@ -143,7 +147,6 @@ public:
 				return;
 			}
 			
-			int iBestIndex = tpBestNode->iIndex;
 			CTemplateNode::iterator tIterator;
 			CTemplateNode::iterator tEnd;
 			tTemplateNode.begin(iBestIndex,tIterator,tEnd);
@@ -158,7 +161,6 @@ public:
 					bool bOk = true;
 					tpTemp = tpIndexes[iNodeIndex].tpNode;
 					if (!(tpTemp->ucOpenCloseMask)) {
-						int iBestIndex = tpBestNode->iIndex;
 						tpTemp2 = tpTemp->tpForward;
 						while (tpTemp2) {
 							if (tpTemp2->iIndex == iBestIndex) {
@@ -172,7 +174,7 @@ public:
 					}
 					
 					// initialize node
-					float dG = tpBestNode->g + tTemplateNode.ffEvaluate(tpBestNode->iIndex,iNodeIndex);
+					float dG = tpBestNode->g + tTemplateNode.ffEvaluate(iBestIndex,iNodeIndex);
 					
 					// check if this node is already in the opened list
 					if (tpTemp->ucOpenCloseMask) {
@@ -218,10 +220,10 @@ public:
 
 					tpTemp2->iIndex = iNodeIndex;
 					tpTemp2->tpBack = tpBestNode;
-					tpTemp2->g = tpBestNode->g + tTemplateNode.ffEvaluate(tpBestNode->iIndex,iNodeIndex);
+					tpTemp2->g = tpBestNode->g + tTemplateNode.ffEvaluate(iBestIndex,iNodeIndex);
 
 					// put that node to the opened list if wasn't found there and in the closed one
-					tpTemp2->h = tTemplateNode.ffEvaluate(dwGoalNode,iNodeIndex);
+					tpTemp2->h = tTemplateNode.ffAnticipate(dwGoalNode,iNodeIndex);
 					tpTemp2->f = tpTemp2->g + tpTemp2->h;
 					
 					tpTemp  = tpOpenedList;

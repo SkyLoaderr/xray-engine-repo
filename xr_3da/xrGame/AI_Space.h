@@ -184,10 +184,10 @@ public:
 	SIndexNode								*m_tpIndexes;
 	u32										m_dwAStarStaticCounter;
 	float									m_fSize,m_fYSize,m_fSize2,m_fYSize2;
-	CAStarSearch<CAIMapShortestPathNode>	*m_tpMapPath;
-	CAStarSearch<CAIMapLCDPathNode>			*m_tpLCDPath;
-	CAStarSearch<CAIMapEnemyPathNode>		*m_tpEnemyPath;
-	CAStarSearch<CAIGraphShortestPathNode>	*m_tpGraphPath;
+	CAStarSearch<CAIMapShortestPathNode>	m_tpMapPath;
+	CAStarSearch<CAIMapLCDPathNode>			m_tpLCDPath;
+	CAStarSearch<CAIMapEnemyPathNode>		m_tpEnemyPath;
+	CAStarSearch<CAIGraphShortestPathNode>	m_tpGraphPath;
 //	// yet another A* search
 	#define DEFAULT_LIGHT_WEIGHT		  5.f 
 	#define DEFAULT_COVER_WEIGHT		 10.f 
