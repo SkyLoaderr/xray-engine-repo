@@ -148,7 +148,7 @@ class CAI_Soldier : public CCustomMonster
 		ACTION_TYPE_NONE,
 	};
 
-	#define MAX_STATE_LIST_SIZE 32
+	#define MAX_STATE_LIST_SIZE 256
 
 	typedef struct tagSSoldierStates {
 		ESoldierStates	eState;
