@@ -21,7 +21,7 @@ union dInfBytes dInfinityValue = {{0,0,0x80,0x7f}};
 Shader* CPHElement::hWallmark=NULL;
 
 // #include "contacts.h"
-
+//#define ODE_SLOW_SOLVER
 
 
 
@@ -31,6 +31,7 @@ Shader* CPHElement::hWallmark=NULL;
 //static bool isShooting;
 //static dVector3 RayD;
 //static dVector3 RayO;
+void BodyCutForce(dBodyID body);
 
 dWorldID phWorld;
 /////////////////////////////////////
@@ -761,10 +762,12 @@ void CPHWorld::Step(dReal step)
 		dSpaceCollide		(Space, 0, &NearCallback); 
 		Device.Statistic.ph_collision.End	();
 
+
+
+		Device.Statistic.ph_core.Begin		();
 		for(iter=m_objects.begin();iter!=m_objects.end();iter++)
 			(*iter)->PhTune(fixed_step);	
 
-		Device.Statistic.ph_core.Begin		();
 		#ifdef ODE_SLOW_SOLVER
 		dWorldStep			(phWorld, fixed_step);
 		#else
@@ -1750,6 +1753,9 @@ bActive=false;
 bActivating=false;
 }
 
+static const dReal w_limit = M_PI/16.f/fixed_step;
+static const dReal l_limit = 3.f/fixed_step;
+
 void CPHShell::PhDataUpdate(dReal step){
 
 vector<CPHElement*>::iterator i;
@@ -1793,8 +1799,7 @@ void CPHElement::PhDataUpdate(dReal step){
 //////////////////limit velocity & secure /////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				static const dReal u = -0.1f;
-				static const dReal w_limit = M_PI/16.f/fixed_step;
-				static const dReal l_limit = 3.f/fixed_step;
+
 ////////////////limit linear vel////////////////////////////////////////////////////////////////////////////////////////
 				const dReal* pos = dBodyGetLinearVel(m_body);
 				dReal mag;
@@ -2112,7 +2117,10 @@ void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, fl
 	val/=fixed_step;
 	Fvector body_pos;
 	body_pos.sub(pos,m_inverse_local_transform.c);
+
 	dBodyAddForceAtRelPos       (m_body, dir.x*val,dir.y*val,dir.z*val,body_pos.x, body_pos.y, body_pos.z);
+
+	BodyCutForce(m_body);
 }
 
 void __stdcall CPHShell:: BonesCallback				(CBoneInstance* B){
@@ -2703,8 +2711,11 @@ if(!(body1&&body2))
 	m_joint=dJointCreateHinge(phWorld,0);
 	dJointAttach(m_joint,body1,body2);
 	dJointSetHingeAnchor(m_joint,pos.x,pos.y,pos.z);
-	dJointSetHingeParam(m_joint,dParamLoStop ,0);
-	dJointSetHingeParam(m_joint,dParamHiStop ,0);
+	dJointSetHingeParam(m_joint,dParamLoStop ,0.00f);
+	dJointSetHingeParam(m_joint,dParamHiStop ,0.00f);
+	dJointSetHingeParam(m_joint,dParamCFM,world_cfm/10.f);
+	//dJointSetHingeParam(m_joint,dParamStopERP,world_erp/10.f);
+	dJointSetHingeParam(m_joint,dParamStopCFM,world_cfm/10.f);
 	return;
 }
 
@@ -3479,3 +3490,154 @@ void CPHElement::unset_Pushout()
 	push_untill=0;
 }
 
+
+
+
+
+
+
+//half square time
+
+/*
+void BodyCutForce(dBodyID body)
+{
+	dReal linear_limit=l_limit;
+//applyed force
+const dReal* force=	dBodyGetForce(body);
+
+//body mass
+dMass m;
+dBodyGetMass(body,&m);
+
+//accceleration correspondent to the force
+dVector3 a={force[0]/m.mass,force[1]/m.mass,force[2]/m.mass};
+
+//current velocity
+const dReal* start_vel=dBodyGetLinearVel(body);
+
+//velocity adding during one step
+dVector3 add_vel={a[0]*fixed_step,a[1]*fixed_step,a[2]*fixed_step};
+
+//result velocity
+dVector3 vel={start_vel[0]+add_vel[0],start_vel[1]+add_vel[1],start_vel[2]+add_vel[2]};
+
+//result velocity magnitude
+dReal speed=dSqrt(dDOT(vel,vel));
+
+if(speed>linear_limit) //then we need to cut applied force
+{
+//solve the triangle - cutted velocity - current veocity - add velocity 
+//to find cutted adding velocity
+
+//add_vell magnitude
+dReal add_speed=dSqrt(dDOT(add_vel,add_vel));
+
+//current velocity magnitude
+dReal start_speed=dSqrt(dDOT(start_vel,start_vel));
+
+//cosinus of the angle between vel ang add_vell
+dReal cosinus1=dFabs(dDOT(add_vel,start_vel)/start_speed/add_speed);
+
+dReal cosinus1_2=cosinus1*cosinus1;
+if(cosinus1_2>1.f)
+		cosinus1_2=1.f;
+dReal cutted_add_speed;
+if(cosinus1_2==1.f)
+  cutted_add_speed=linear_limit-start_speed;
+else
+{
+//sinus 
+dReal sinus1_2=1.f-cosinus1_2;
+
+
+dReal sinus1=dSqrt(sinus1_2);
+
+
+//sinus of the angle between cutted velocity and adding velociity (sinus theorem)
+dReal sinus2=sinus1/linear_limit*start_speed;
+dReal sinus2_2=sinus2*sinus2;
+if(sinus2_2>1.f)sinus2_2=1.f;
+
+dReal cosinus2_2=1.f-sinus2_2;
+dReal cosinus2=dSqrt(cosinus2_2);
+
+//sinus of 180-ang1-ang2
+dReal sinus3=sinus1*cosinus2+cosinus1*sinus2;
+
+//cutted adding velocity magnitude (sinus theorem)
+
+cutted_add_speed=linear_limit/sinus1*sinus3;
+}
+//substitude force
+
+dBodyAddForce(body,
+			  cutted_add_speed/add_speed/fixed_step*m.mass*add_vel[0]-force[0],
+			  cutted_add_speed/add_speed/fixed_step*m.mass*add_vel[1]-force[1],
+			  cutted_add_speed/add_speed/fixed_step*m.mass*add_vel[2]-force[2]	  
+			  );
+}
+
+}
+*/
+//limit for angular accel
+const dReal wa_limit=w_limit/fixed_step;
+
+void BodyCutForce(dBodyID body)
+{
+
+	const dReal* force=	dBodyGetForce(body);
+	dReal force_mag=dSqrt(dDOT(force,force));
+
+	//body mass
+	dMass m;
+	dBodyGetMass(body,&m);
+
+	dReal force_limit =l_limit/fixed_step*m.mass;
+
+	if(force_mag>force_limit)
+	{
+	dBodySetForce(body,
+				  force[0]/force_mag*force_limit,
+				  force[1]/force_mag*force_limit,
+				  force[2]/force_mag*force_limit
+				  );
+	}
+
+
+	const dReal* torque=dBodyGetTorque(body);
+	dReal torque_mag=dSqrt(dDOT(torque,torque));
+
+	if(torque_mag<0.001f) return;
+
+    dMatrix3 tmp,invI,I;
+
+   // compute inertia tensor in global frame
+	dMULTIPLY2_333 (tmp,m.I,body->R);
+	dMULTIPLY0_333 (I,body->R,tmp);
+
+	// compute inverse inertia tensor in global frame
+	dMULTIPLY2_333 (tmp,body->invI,body->R);
+	dMULTIPLY0_333 (invI,body->R,tmp);
+
+	//angular accel
+	dVector3 wa;
+	dMULTIPLY0_331(wa,invI,torque);
+	dReal wa_mag=dSqrt(dDOT(wa,wa));
+
+	if(wa_mag>wa_limit)
+	{
+		//scale w 
+		for(int i=0;i<3;i++)wa[i]*=wa_limit/wa_mag;
+		dVector3 new_torqu;
+
+		dMULTIPLY0_331(new_torqu,I,wa);
+
+		 dBodySetTorque 
+			(
+			body,
+			new_torqu[0],
+			new_torqu[1],
+			new_torqu[2]
+			);
+	}
+}
