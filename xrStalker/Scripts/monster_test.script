@@ -1,3 +1,8 @@
+--------------------------------------------------------------------------------
+-- Author:	Jim 
+-- Desc:	script for monster tests
+-- Updated:	21 dec 2004	
+--------------------------------------------------------------------------------
 
 function action_one( npc )
 	action( npc, anim("spinka"), cond(cond.anim_end));
