@@ -427,14 +427,15 @@ void CDetailManager::UpdateCache	(int limit)
 				// Color
 				DetailPalette*	c_pal	= (DetailPalette*)&DS.color;
 				float gray255	[4];
-				gray255[0]		= 255.f*float(c_pal->a0)/15.f;
-				gray255[1]		= 255.f*float(c_pal->a1)/15.f;
-				gray255[2]		= 255.f*float(c_pal->a2)/15.f;
-				gray255[3]		= 255.f*float(c_pal->a3)/15.f;
-				Item.C			= Interpolate		(gray255,x,z,d_size)+.5f;
-				DWORD c_dw		= iFloor			(Item.C);
-				Item.C_dw		= D3DCOLOR_RGBA		(c_dw,c_dw,c_dw,255);
-				clamp			(Item.C,0.f,1.f);
+				gray255[0]		=	255.f*float(c_pal->a0)/15.f;
+				gray255[1]		=	255.f*float(c_pal->a1)/15.f;
+				gray255[2]		=	255.f*float(c_pal->a2)/15.f;
+				gray255[3]		=	255.f*float(c_pal->a3)/15.f;
+				float c_f		=	Interpolate		(gray255,x,z,d_size)+.5f;
+				int c_dw		=	iFloor			(c_f);
+				clamp			(c_dw,0,255);
+				Item.C_dw		=	D3DCOLOR_RGBA		(c_dw,c_dw,c_dw,255);
+				Item.C			=	c_f/255.f;
 				
 				// Save it
 				D.G[index].items.push_back(Item);

@@ -217,19 +217,19 @@ void CSector::DebugDump()
 	Log("-------------",SelfID);
 	for (DWORD i=0; i<Portals.size(); i++)
 	{
-		CPortal* P = Portals[i];
-		vector<Fvector>& V = P->getPoly();
-		Fplane PL; PL.build(V[0],V[1],V[2]);
+		CPortal* P			= Portals[i];
+		vector<Fvector>& V	= P->getPoly();
+		Fplane PL;			PL.build(V[0],V[1],V[2]);
 
-		Msg("#%d --- verts: %d, front(%d), back(%d), F(%d), B(%d)",
+		Msg("#%d --- verts: %d, front(%d), back(%d), F(%d), B(%d), (%.2f,%.2f,%.2f)",
 			i,
 			V.size(),
 			P->Front()->SelfID,
 			P->Back()->SelfID,
 			P->getSectorFacing(C)->SelfID,
-			P->getSectorBack(C)->SelfID
+			P->getSectorBack(C)->SelfID,
+			VPUSH(PL.n)
 			);
-//		if (i==2 || i==3 || i==4) reverse(V.begin(),V.end());
 	}
 }
 

@@ -45,6 +45,7 @@ public:
 	IC		void					set_Frustum				(CFrustum*	O	)			{ VERIFY(O);	View = O;			}
 	IC		void					set_Transform			(Fmatrix*	M	)			{ VERIFY(M);	val_pTransform = M;	}
 	IC		void					set_HUD					(BOOL 		V	)			{ val_bHUD		= V;				}
+	IC		BOOL					get_HUD					()							{ return val_bHUD;					}
 	virtual void					flush					()					= 0;	
 	virtual void					set_Object				(CObject*	O	)	= 0;
 	virtual void					add_Visual				(CVisual*	V	)	= 0;	// add visual leaf	(no culling performed at all)

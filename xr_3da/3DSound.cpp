@@ -109,6 +109,7 @@ void C3DSound::PropagadeEvent()
 	float	limitV			= .05f;
 	float	clip			= (ps.flMinDistance*fVolume) / (psSoundRolloff*limitV); // (Dmin*V)/(R*V')
 	float	range			= _min(ps.flMaxDistance,clip);
+	if	(clip<0)			return;
 
 	// Query objects
 	pCreator->ObjectSpace.GetNearest	(ps.vPosition,range);
@@ -126,8 +127,10 @@ void C3DSound::PropagadeEvent()
 		Fvector				Oc;
 		O->clCenter			(Oc);
 		float D				= ps.vPosition.distance_to(Oc);
-		float Power			= (ps.flMinDistance*fVolume)/(psSoundRolloff*D);		// (Dmin*V)/(R*D) 
-		L->soundEvent		(owner->g_object,owner->g_type,ps.vPosition,Power);
+		float A				= ps.flMinDistance/(psSoundRolloff*D);					// (Dmin*V)/(R*D) 
+		clamp				(A,0.f,1.f);
+		float Power			= A*fVolume;
+		if (Power>EPS)		L->soundEvent		(owner->g_object,owner->g_type,ps.vPosition,Power);
 	}
 }
 
