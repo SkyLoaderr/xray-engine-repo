@@ -6,7 +6,7 @@
 #include "FileSystem.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "mxPlacemnt"
+#pragma link "Placemnt"
 #pragma resource "*.dfm"
 TfrmLog *TfrmLog::form=0;
 //---------------------------------------------------------------------------
