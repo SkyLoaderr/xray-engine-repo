@@ -91,7 +91,7 @@ function main()
 	
 	-- update cycle
 	while true do
-		planner:update		(1000)
+--		planner:update		(1000)
 		wait				(1000)
 	end
 	
