@@ -37,7 +37,7 @@ private:
 	struct CStatsPredicate {
 		IC	bool	operator()	(const CStats &_1, const CStats &_2) const
 		{
-			return					(_1.m_count > _2.m_count);
+			return					(_1.m_count < _2.m_count);
 		}
 	};
 
