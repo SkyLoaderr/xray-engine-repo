@@ -17,8 +17,7 @@
 #define OPEN_MASK				1
 #define mNodeStructure(x)		(*(Node(x)))
 #define mNode(x)				(Node(x))
-#define MAX_VALUE				100000.0
-#define MAX_NODES				65535
+#define MAX_VALUE				1000000.0
 
 float fSize,fYSize,fSize2,fYSize2,fCriteriaLightWeight,fCriteriaCoverWeight,fCriteriaDistanceWeight,fCriteriaEnemyViewWeight;
 
@@ -30,7 +29,7 @@ void vfLoadSearch()
 {
 	fSize2		= _sqr(fSize = m_header.size)/4;
 	fYSize2		= _sqr(fYSize = (float)(m_header.size_y/32767.0))/4;
-	u32 S1	= (MAX_NODES + 1)*sizeof(TNode);
+	u32 S1	= (m_header.count)*sizeof(TNode);
 	taHeap		= (TNode *)xr_malloc(S1);
 	ZeroMemory(taHeap,S1);
 	u32 S2	= (m_header.count)*sizeof(TIndexNode);
@@ -90,7 +89,7 @@ IC void vfUpdateSuccessors(TNode *tpList, float dDifference)
 	}
 }
 
-float vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, float &fDistance)
+float vfFindTheShortestPath(u32 dwStartNode, u32 dwGoalNode, float &fDistance)
 {
 	// initialization
 	dwAStarStaticCounter++;
@@ -128,15 +127,8 @@ float vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, float &fDistance)
 		tpBestNode->ucOpenCloseMask = 0;
 
 		// check if that node is our goal
-		if (tpBestNode->iIndex == (int)dwGoalNode) {
-
-			float fDistance = 0.0;
-			tpTemp1 = tpBestNode;
-			tpTemp = tpTemp1->tpBack;
-			for (u32  i=1; tpTemp; tpTemp1 = tpTemp, tpTemp = tpTemp->tpBack, i++) ;
-
-			return(fDistance);
-		}
+		if (tpBestNode->iIndex == (int)dwGoalNode)
+			return(tpTemp1->g);
 		
 		NodeLink *taLinks = (NodeLink *)((unsigned char *)mNode(tpBestNode->iIndex) + sizeof(NodeCompressed));
 		int iCount = iCount = mNode(tpBestNode->iIndex)->links, iNodeIndex;
@@ -145,9 +137,6 @@ float vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, float &fDistance)
 			for (int i=0; i<iCount; i++) {
 				// checking if that node is in the path of the BESTNODE ones
 				iNodeIndex = UnpackLink(taLinks[i]);
-				// checking if that node the node of the moving object 
-//				if (q_mark[iNodeIndex])
-//					continue;
 				// checking if that node is in the path of the BESTNODE ones
 				if (tpaIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
 					bool bOk = true;
@@ -208,7 +197,6 @@ float vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, float &fDistance)
 				else {
 					tpTemp2 = tpaIndexes[iNodeIndex].tpNode = taHeap + uiHeap++;
 					tpTemp2->tpNext = tpTemp2->tpForward = tpTemp2->tpOpenedNext = tpTemp2->tpOpenedPrev = 0;
-					//*(u32 *)(tpTemp2) = 0;
 					tpaIndexes[iNodeIndex].dwTime = dwAStarStaticCounter;
 
 					tpTemp2->iIndex = iNodeIndex;
@@ -248,7 +236,7 @@ float vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, float &fDistance)
 				}
 			}
 		}
-		if (uiHeap > MAX_NODES)
+		if (uiHeap > m_header.count)
 			break;
 	}
 	

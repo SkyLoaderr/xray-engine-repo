@@ -11,7 +11,7 @@
 
 extern CStream*					vfs;			// virtual file
 extern hdrNODES					m_header;		// m_header
-extern BYTE*						m_nodes;		// virtual nodes DATA array
+extern BYTE*					m_nodes;		// virtual nodes DATA array
 extern NodeCompressed**			m_nodes_ptr;	// pointers to node's data
 extern vector<bool>				q_mark_bit;		// temporal usage mark for queries
 

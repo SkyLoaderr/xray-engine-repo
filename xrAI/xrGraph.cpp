@@ -34,13 +34,13 @@ typedef struct tagSGraphVertex {
 	tagSGraphEdge		*tpaEdges;
 } SGraphVertex;
 
-CStream*					vfs;			// virtual file
-hdrNODES					m_header;		// m_header
-BYTE*						m_nodes;		// virtual nodes DATA array
-NodeCompressed**			m_nodes_ptr;	// pointers to node's data
-vector<bool>				q_mark_bit;		// temporal usage mark for queries
+CStream*				vfs;			// virtual file
+hdrNODES				m_header;		// m_header
+BYTE*					m_nodes;		// virtual nodes DATA array
+NodeCompressed**		m_nodes_ptr;	// pointers to node's data
+vector<bool>			q_mark_bit;		// temporal usage mark for queries
 
-vector<SGraphVertex>			tpaGraph;		// graph
+vector<SGraphVertex>	tpaGraph;		// graph
 
 void vfLoafAIMap(LPCSTR name)
 {
