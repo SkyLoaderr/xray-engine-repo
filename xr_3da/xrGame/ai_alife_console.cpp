@@ -273,7 +273,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 		Msg("* Current point : %7.2f",tpALifeHumanAbstract->m_dwCurTaskLocation);
 		Msg("* Current task  :");
 		if (tpALifeHumanAbstract->m_tpTaskIDs.size()) {
-			CALifeTask	&tTask = tpALifeHumanAbstract->m_tCurTask;
+			CALifePersonalTask	&tTask = *(tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]);
 			Msg("* Task  ID    : %d",tTask.m_tTaskID);
 			vfPrintTime("* Time  ID  :",tTask.m_tTimeID);
 			Msg("* Customer ID : %d",tTask.m_tCustomerID);

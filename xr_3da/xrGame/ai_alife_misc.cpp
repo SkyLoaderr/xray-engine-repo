@@ -18,8 +18,8 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 			vfChangeObjectGraphPoint(tpALifeMonsterAbstract,tpALifeMonsterAbstract->m_tGraphID,tpALifeMonsterAbstract->m_tNextGraphID);
 			CALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CALifeHumanAbstract *>(tpALifeMonsterAbstract);
 			if (tpALifeHumanAbstract && (tpALifeHumanAbstract->m_tTaskState == eTaskStateSearching)) {
-				GRAPH_IT	B = m_tpTerrain[tpALifeHumanAbstract->m_tCurTask.m_tLocationID].begin();
-				GRAPH_IT	E = m_tpTerrain[tpALifeHumanAbstract->m_tCurTask.m_tLocationID].end();
+				GRAPH_IT	B = m_tpTerrain[tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]->m_tLocationID].begin();
+				GRAPH_IT	E = m_tpTerrain[tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]->m_tLocationID].end();
 				GRAPH_IT	I = B;
 				for (; I != E; I++) {
 					if (*I == tpALifeHumanAbstract->m_tGraphID)
@@ -65,10 +65,10 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 						break;
 					}
 				if ((tpALifeHumanAbstract->m_tTaskState == eTaskStateSearching) || (tpALifeHumanAbstract->m_tTaskState == eTaskStateGoing)) {
-					switch (tpALifeHumanAbstract->m_tCurTask.m_tTaskType) {
+					switch (tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]->m_tTaskType) {
 						case eTaskTypeSearchForItemCG :
 						case eTaskTypeSearchForItemOG : {
-							if (tpALifeHumanAbstract->m_tNextGraphID == tpALifeHumanAbstract->m_tCurTask.m_tGraphID) {
+							if (tpALifeHumanAbstract->m_tNextGraphID == tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]->m_tGraphID) {
 								tpALifeHumanAbstract->m_tTaskState = eTaskStateSearching;
 								tpALifeHumanAbstract->m_fCurSpeed  = tpALifeHumanAbstract->m_fSearchSpeed;
 							}
@@ -80,8 +80,8 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 						}
 						case eTaskTypeSearchForItemCL :
 						case eTaskTypeSearchForItemOL : {
-							VERIFY(m_tpTerrain[tpALifeHuman->m_tCurTask.m_tLocationID].size());
-							if (Level().AI.m_tpaGraph[tpALifeHumanAbstract->m_tNextGraphID].tVertexType == tpALifeHuman->m_tCurTask.m_tLocationID) {
+							VERIFY(m_tpTerrain[tpALifeHuman->m_tpTasks[tpALifeHuman->m_dwCurTask]->m_tLocationID].size());
+							if (Level().AI.m_tpaGraph[tpALifeHumanAbstract->m_tNextGraphID].tVertexType == tpALifeHuman->m_tpTasks[tpALifeHuman->m_dwCurTask]->m_tLocationID) {
 								tpALifeHumanAbstract->m_tTaskState = eTaskStateSearching;
 								tpALifeHumanAbstract->m_fCurSpeed  = tpALifeHumanAbstract->m_fSearchSpeed;
 							}
@@ -178,27 +178,6 @@ bool CAI_ALife::bfCheckForItems(CALifeHumanAbstract	*tpALifeHumanAbstract)
 	}
 }
 
-void CAI_ALife::vfAttachItem(CALifeHumanParams &tHumanParams, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID)
-{
-	tHumanParams.m_tpItemIDs.push_back(tpALifeItem->m_tObjectID);
-	tpALifeItem->m_bAttached = true;
-	DYNAMIC_OBJECT_P_IT		I = m_tpGraphObjects[tGraphID].tpObjects.begin();
-	DYNAMIC_OBJECT_P_IT		E = m_tpGraphObjects[tGraphID].tpObjects.end();
-	for ( ; I != E; I++)
-		if (*I == tpALifeItem) {
-			m_tpGraphObjects[tGraphID].tpObjects.erase(I);
-			break;
-		}
-	tHumanParams.m_fCumulativeItemMass += tpALifeItem->m_fMass;
-}
-
-void CAI_ALife::vfDetachItem(CALifeHumanParams &tHumanParams, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID)
-{
-	tpALifeItem->m_bAttached = true;
-	m_tpGraphObjects[tGraphID].tpObjects.push_back(tpALifeItem);
-	tHumanParams.m_fCumulativeItemMass -= tpALifeItem->m_fMass;
-}
-
 bool CAI_ALife::bfProcessItems(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraphID, float fMaxItemMass, float fProbability)
 {
 	DYNAMIC_OBJECT_P_IT		I = m_tpGraphObjects[tGraphID].tpObjects.begin();
@@ -252,29 +231,10 @@ bool CAI_ALife::bfProcessItems(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraph
 	return(false);
 }
 
-CALifeTrader *CAI_ALife::tpfGetNearestSuitableTrader(CALifeHuman *tpALifeHuman)
-{
-	float			fBestDistance = MAX_NODE_ESTIMATION_COST;
-	CALifeTrader *	tpBestTrader = 0;
-	TRADER_P_IT		I = m_tpTraders.begin();
-	TRADER_P_IT		E = m_tpTraders.end();
-	Fvector			&tPoint = Level().AI.m_tpaGraph[tpALifeHuman->m_tGraphID].tPoint;
-	for ( ; I != E; I++) {
-		if ((*I)->m_tRank != tpALifeHuman->m_tRank)
-			break;
-		float fCurDistance = Level().AI.m_tpaGraph[(*I)->m_tGraphID].tPoint.distance_to(tPoint);
-		if (fCurDistance < fBestDistance) {
-			fBestDistance = fCurDistance;
-			tpBestTrader = *I;
-		}
-	}
-	return(tpBestTrader);
-}
-
 void CAI_ALife::vfCommunicateWithTrader(CALifeHuman *tpALifeHuman, CALifeTrader *tpTrader)
 {
 	// update items
-	TASK_PAIR_IT T = m_tTaskRegistry.find(tpALifeHuman->m_tCurTask.m_tTaskID);
+	TASK_PAIR_IT T = m_tTaskRegistry.find(tpALifeHuman->m_tpTasks[tpALifeHuman->m_dwCurTask]->m_tTaskID);
 	if (T != m_tTaskRegistry.end()) {
 		OBJECT_IT	I;
 		if (bfCheckIfTaskCompleted(tpALifeHuman, I)) {

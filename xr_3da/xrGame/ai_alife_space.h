@@ -21,6 +21,7 @@
 #define OBJECT_CHUNK_DATA			0x0002
 #define EVENT_CHUNK_DATA			0x0003
 #define TASK_CHUNK_DATA				0x0004
+#define GAME_TIME_CHUNK_DATA		0x0005
 
 #define ALIFE_ITEM_ID				0x00
 #define ALIFE_MONSTER_ID			0x01
@@ -155,5 +156,12 @@ namespace ALife {
 		eAnomalousZoneTypeRustyHair,
 		eAnomalousZoneTypeRustyWhistlers,
 		eAnomalousZoneTypeDummy = u32(-1),
+	};
+
+	enum EZoneState {
+		eZoneStateNone = u32(0),
+		eZoneStateSurge,
+		eZoneStateAfterSurge,
+		eZoneStateDummy = u32(-1),
 	};
 };

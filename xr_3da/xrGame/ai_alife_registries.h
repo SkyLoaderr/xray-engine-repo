@@ -8,9 +8,9 @@
 
 #pragma once
 
-using namespace ALife;
+#include "ai_alife_predicates.h"
 
-class CAI_ALife;
+using namespace ALife;
 
 class CALifeObjectRegistry : public IPureALifeLSObject {
 public:
@@ -25,11 +25,7 @@ public:
 
 	virtual							~CALifeObjectRegistry()
 	{
-		OBJECT_PAIR_IT it			= m_tObjectRegistry.begin();
-		OBJECT_PAIR_IT E			= m_tObjectRegistry.end();
-		for ( ; it != E; it++)
-			xr_delete((*it).second);
-		m_tObjectRegistry.clear();
+		free_map					(m_tObjectRegistry);
 	};
 	
 	virtual	void					Save(CFS_Memory &tMemoryStream)
@@ -132,6 +128,42 @@ public:
 		m_tObjectRegistry.insert				(make_pair(tpALifeDynamicObject->m_tObjectID = m_tObjectID++,tpALifeDynamicObject));
 	};
 
+	IC bool bfCheckIfTaskCompleted(CALifeHumanParams &tHumanParams, CALifeHumanAbstract *tpALifeHumanAbstract, OBJECT_IT &I)
+	{
+		if (tpALifeHumanAbstract->m_dwCurTask >= tpALifeHumanAbstract->m_tpTasks.size())
+			return(false);
+		I = tHumanParams.m_tpItemIDs.begin();
+		OBJECT_IT	E = tHumanParams.m_tpItemIDs.end();
+		CALifePersonalTask	&tPersonalTask = *(tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]);
+		for ( ; I != E; I++) {
+			switch (tPersonalTask.m_tTaskType) {
+				case eTaskTypeSearchForItemCL :
+				case eTaskTypeSearchForItemCG : {
+					if (m_tObjectRegistry[*I]->m_tClassID == tPersonalTask.m_tClassID)
+						return(true);
+					break;
+				}
+				case eTaskTypeSearchForItemOL :
+				case eTaskTypeSearchForItemOG : {
+					if (m_tObjectRegistry[*I]->m_tObjectID == tPersonalTask.m_tObjectID)
+						return(true);
+					break;
+				}
+			};
+		}
+		return(false);
+	};
+
+	IC bool bfCheckIfTaskCompleted(CALifeHuman *tpALifeHuman, OBJECT_IT &I)
+	{
+		return(bfCheckIfTaskCompleted(*tpALifeHuman,tpALifeHuman,I));
+	};
+
+	IC bool bfCheckIfTaskCompleted(CALifeHuman *tpALifeHuman)
+	{
+		OBJECT_IT I;
+		return(bfCheckIfTaskCompleted(tpALifeHuman,I));
+	};
 };
 
 class CALifeEventRegistry : public IPureALifeLSObject {
@@ -147,33 +179,14 @@ public:
 
 	virtual							~CALifeEventRegistry()
 	{
-		EVENT_PAIR_IT it			= m_tEventRegistry.begin();
-		EVENT_PAIR_IT E				= m_tEventRegistry.end();
-		for ( ; it != E; it++) {
-			xr_delete((*it).second->m_tpMonsterGroup1);
-			xr_delete((*it).second->m_tpMonsterGroup2);
-		}
-		m_tEventRegistry.clear();
+		free_map					(m_tEventRegistry);
 	};
 	
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
 		tMemoryStream.open_chunk	(EVENT_CHUNK_DATA);
 		tMemoryStream.write			(&m_tEventID,sizeof(m_tEventID));
-		tMemoryStream.Wdword		(m_tEventRegistry.size());
-		EVENT_PAIR_IT it			= m_tEventRegistry.begin();
-		EVENT_PAIR_IT E				= m_tEventRegistry.end();
-		for ( ; it != E; it++) {
-			CALifeEvent				*tpEvent = (*it).second;
-			tMemoryStream.write		(&(tpEvent->m_tEventID),		sizeof(tpEvent->m_tEventID		));
-			tMemoryStream.write		(&(tpEvent->m_tTimeID),			sizeof(tpEvent->m_tTimeID		));
-			tMemoryStream.write		(&(tpEvent->m_tGraphID),		sizeof(tpEvent->m_tGraphID		));
-			tMemoryStream.write		(&(tpEvent->m_tBattleResult),	sizeof(tpEvent->m_tBattleResult	));
-			tpEvent->m_tpMonsterGroup1 = xr_new<CALifeEventGroup> ();
-			tpEvent->m_tpMonsterGroup2 = xr_new<CALifeEventGroup> ();
-			tpEvent->m_tpMonsterGroup1->Save(tMemoryStream);
-			tpEvent->m_tpMonsterGroup2->Save(tMemoryStream);
-		}
+		save_map					(m_tEventRegistry,tMemoryStream);
 		tMemoryStream.close_chunk	();
 	};
 
@@ -181,20 +194,7 @@ public:
 	{
 		R_ASSERT(tFileStream.FindChunk(EVENT_CHUNK_DATA));
 		tFileStream.Read(&m_tEventID,sizeof(m_tEventID));
-		m_tEventRegistry.clear();
-		u32 dwCount = tFileStream.Rdword();
-		for (u32 i=0; i<dwCount; i++) {
-			CALifeEvent				*tpEvent = xr_new<CALifeEvent> ();
-			tFileStream.Read		(&tpEvent->m_tEventID,		sizeof(tpEvent->m_tEventID		));
-			tFileStream.Read		(&tpEvent->m_tTimeID,		sizeof(tpEvent->m_tTimeID		));
-			tFileStream.Read		(&tpEvent->m_tGraphID,		sizeof(tpEvent->m_tGraphID		));
-			tFileStream.Read		(&tpEvent->m_tBattleResult,	sizeof(tpEvent->m_tBattleResult	));
-			tpEvent->m_tpMonsterGroup1	= xr_new<CALifeEventGroup> ();
-			tpEvent->m_tpMonsterGroup2	= xr_new<CALifeEventGroup> ();
-			tpEvent->m_tpMonsterGroup1->Load(tFileStream);
-			tpEvent->m_tpMonsterGroup2->Load(tFileStream);
-			m_tEventRegistry.insert	(make_pair(tpEvent->m_tEventID,tpEvent));
-		}
+		load_map					(m_tEventRegistry,tFileStream,tfChooseEventKeyPredicate);
 	};
 	
 	virtual	void					Add	(CALifeEvent	*tpEvent)
@@ -211,18 +211,19 @@ public:
 	CALifeTaskRegistry()
 	{
 		m_tTaskID					= 0;
-		m_tTaskRegistry.clear				();
+		m_tTaskRegistry.clear		();
 	};
 
+	virtual							~CALifeTaskRegistry()
+	{
+		free_map					(m_tTaskRegistry);
+	};
+	
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
 		tMemoryStream.open_chunk	(TASK_CHUNK_DATA);
 		tMemoryStream.write			(&m_tTaskID,sizeof(m_tTaskID));
-		tMemoryStream.Wdword		(m_tTaskRegistry.size());
-		TASK_PAIR_IT it				= m_tTaskRegistry.begin();
-		TASK_PAIR_IT E				= m_tTaskRegistry.end();
-		for ( ; it != E; it++)
-			(*it).second->Save(tMemoryStream);
+		save_map					(m_tTaskRegistry,tMemoryStream);
 		tMemoryStream.close_chunk	();
 	};
 	
@@ -230,13 +231,7 @@ public:
 	{
 		R_ASSERT(tFileStream.FindChunk(TASK_CHUNK_DATA));
 		tFileStream.Read			(&m_tTaskID,sizeof(m_tTaskID));
-		m_tTaskRegistry.clear		();
-		u32 dwCount = tFileStream.Rdword();
-		for (u32 i=0; i<dwCount; i++) {
-			CALifeTask				*tpTask = xr_new<CALifeTask> ();
-			tpTask->Load			(tFileStream);
-			m_tTaskRegistry.insert	(make_pair(tpTask->m_tTaskID,tpTask));
-		}
+		load_map					(m_tTaskRegistry,tFileStream,tfChooseTaskKeyPredicate);
 	};
 	
 	virtual	void					Add	(CALifeTask	*tpTask)
@@ -251,10 +246,175 @@ public:
 	
 	SPAWN_P_VECTOR					m_tpSpawnPoints;
 	
+	CALifeSpawnRegistry()
+	{
+		m_tpSpawnPoints.clear		();
+	};
+
+	virtual							~CALifeSpawnRegistry()
+	{
+		free_vector					(m_tpSpawnPoints);
+	};
+	
 	virtual void					Load(CStream	&tFileStream)
 	{
 		inherited::Load(tFileStream);
 		R_ASSERT(tFileStream.FindChunk(SPAWN_POINT_CHUNK_DATA));
 		load_vector(m_tpSpawnPoints,tFileStream);
+	};
+};
+
+class CALifeGraphRegistry {
+public:
+	GRAPH_POINT_VECTOR				m_tpGraphObjects;		// по точке графа получить все 
+															//  динамические объекты
+	void							Init()
+	{
+		m_tpGraphObjects.resize		(Level().AI.GraphHeader().dwVertexCount);
+		{
+			GRAPH_POINT_IT				I = m_tpGraphObjects.begin();
+			GRAPH_POINT_IT				E = m_tpGraphObjects.end();
+			for ( ; I != E; I++) {
+				(*I).tpObjects.clear();
+				(*I).tpEvents.clear();
+			}
+		}
+	};
+
+	IC void vfRemoveObjectFromGraphPoint(CALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphID)
+	{
+		DYNAMIC_OBJECT_P_IT				I = m_tpGraphObjects[tGraphID].tpObjects.begin();
+		DYNAMIC_OBJECT_P_IT				E = m_tpGraphObjects[tGraphID].tpObjects.end();
+		for ( ; I != E; I++)
+			if ((*I) == tpALifeDynamicObject) {
+				m_tpGraphObjects[tGraphID].tpObjects.erase(I);
+				break;
+			}
+	};
+	
+	IC void vfAddObjectToGraphPoint(CALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tNextGraphPointID)
+	{
+		m_tpGraphObjects[tNextGraphPointID].tpObjects.push_back(tpALifeDynamicObject);
+	};
+
+	IC void vfChangeObjectGraphPoint(CALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
+	{
+		vfRemoveObjectFromGraphPoint	(tpALifeDynamicObject,tGraphPointID);
+		vfAddObjectToGraphPoint			(tpALifeDynamicObject,tNextGraphPointID);
+	};
+
+	// events
+	IC void vfRemoveEventFromGraphPoint(CALifeEvent *tpEvent, _GRAPH_ID tGraphID)
+	{
+		EVENT_P_IT						I = m_tpGraphObjects[tGraphID].tpEvents.begin();
+		EVENT_P_IT						E = m_tpGraphObjects[tGraphID].tpEvents.end();
+		for ( ; I != E; I++)
+			if ((*I) == tpEvent) {
+				m_tpGraphObjects[tGraphID].tpEvents.erase(I);
+				break;
+			}
+	};
+	
+	IC void vfAddEventToGraphPoint(CALifeEvent *tpEvent, _GRAPH_ID tNextGraphPointID)
+	{
+		m_tpGraphObjects[tNextGraphPointID].tpEvents.push_back(tpEvent);
+	};
+
+	IC void vfChangeEventGraphPoint(CALifeEvent *tpEvent, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
+	{
+		vfRemoveEventFromGraphPoint	(tpEvent,tGraphPointID);
+		vfAddEventToGraphPoint		(tpEvent,tNextGraphPointID);
+	};
+
+	IC void vfAttachItem(CALifeHumanParams &tHumanParams, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID)
+	{
+		tHumanParams.m_tpItemIDs.push_back(tpALifeItem->m_tObjectID);
+		tpALifeItem->m_bAttached = true;
+		DYNAMIC_OBJECT_P_IT		I = m_tpGraphObjects[tGraphID].tpObjects.begin();
+		DYNAMIC_OBJECT_P_IT		E = m_tpGraphObjects[tGraphID].tpObjects.end();
+		for ( ; I != E; I++)
+			if (*I == tpALifeItem) {
+				m_tpGraphObjects[tGraphID].tpObjects.erase(I);
+				break;
+			}
+		tHumanParams.m_fCumulativeItemMass += tpALifeItem->m_fMass;
+	}
+
+	IC void vfDetachItem(CALifeHumanParams &tHumanParams, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID)
+	{
+		tpALifeItem->m_bAttached = true;
+		m_tpGraphObjects[tGraphID].tpObjects.push_back(tpALifeItem);
+		tHumanParams.m_fCumulativeItemMass -= tpALifeItem->m_fMass;
+	}
+
+	IC void							Update(CALifeDynamicObject *tpALifeDynamicObject)
+	{
+		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(tpALifeDynamicObject);
+		if (tpALifeItem) {
+			if (!tpALifeItem->m_bAttached)
+				m_tpGraphObjects[tpALifeItem->m_tGraphID].tpObjects.push_back(tpALifeItem);
+			return;
+		}
+		if (!dynamic_cast<CALifeTrader *>(tpALifeDynamicObject))
+			m_tpGraphObjects[tpALifeDynamicObject->m_tGraphID].tpObjects.push_back(tpALifeDynamicObject);
+	}
+};
+
+class CALifeOwnerRegistry {
+public:
+	ALIFE_MONSTER_P_VECTOR_VECTOR	m_tpLocationOwners;		// массив списков : по точке графа 
+															//  получить список её владельцев
+	void							Init()
+	{
+		m_tpLocationOwners.resize	(Level().AI.GraphHeader().dwVertexCount);
+		{
+			ALIFE_MONSTER_P_VECTOR_IT	I = m_tpLocationOwners.begin();
+			ALIFE_MONSTER_P_VECTOR_IT	E = m_tpLocationOwners.end();
+			for ( ; I != E; I++)
+				(*I).clear();
+		}
+	};
+	
+	IC void							Update(_GRAPH_ID tGraphID, CALifeMonsterAbstract *tpALifeMonsterAbstract)
+	{
+		m_tpLocationOwners[tGraphID].push_back(tpALifeMonsterAbstract);
+	}
+};
+
+class CALifeTraderRegistry {
+public:
+	TRADER_P_VECTOR					m_tpTraders;			// массив торговцев
+
+	void							Init()
+	{
+		m_tpTraders.clear			();
+	};
+	
+	IC void							Update(CALifeDynamicObject *tpALifeDynamicObject)
+	{
+		CALifeTrader *tpALifeTrader = dynamic_cast<CALifeTrader *>(tpALifeDynamicObject);
+		if (tpALifeTrader) {
+			m_tpTraders.push_back(tpALifeTrader);
+			sort(m_tpTraders.begin(),m_tpTraders.end(),CCompareTraderRanksPredicate());
+		}
+	};
+
+	IC CALifeTrader *				tpfGetNearestSuitableTrader(CALifeHuman *tpALifeHuman)
+	{
+		float			fBestDistance = MAX_NODE_ESTIMATION_COST;
+		CALifeTrader *	tpBestTrader = 0;
+		TRADER_P_IT		I = m_tpTraders.begin();
+		TRADER_P_IT		E = m_tpTraders.end();
+		Fvector			&tPoint = Level().AI.m_tpaGraph[tpALifeHuman->m_tGraphID].tPoint;
+		for ( ; I != E; I++) {
+			if ((*I)->m_tRank != tpALifeHuman->m_tRank)
+				break;
+			float fCurDistance = Level().AI.m_tpaGraph[(*I)->m_tGraphID].tPoint.distance_to(tPoint);
+			if (fCurDistance < fBestDistance) {
+				fBestDistance = fCurDistance;
+				tpBestTrader = *I;
+			}
+		}
+		return(tpBestTrader);
 	};
 };
