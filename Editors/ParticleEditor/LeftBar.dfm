@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 277
+  Height = 721
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 277
+    Height = 721
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -182,7 +182,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 81
       Width = 210
-      Height = 234
+      Height = 247
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -204,13 +204,13 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 208
-        Height = 203
+        Height = 216
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object Bevel2: TBevel
           Left = 0
-          Top = 201
+          Top = 214
           Width = 208
           Height = 2
           Align = alBottom
@@ -226,24 +226,48 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 36
           Width = 208
-          Height = 165
+          Height = 178
+          Cursor = crDefault
+          LeftPosition = 0
+          DragCursor = crDrag
           Align = alClient
+          AutoCollapse = False
+          DockOrientation = doNoOrient
+          DefaultSectionWidth = 120
           BorderStyle = bsNone
+          BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
           CustomPlusMinus = True
           DragAllowed = True
           DrawFocusRect = False
           DragTrgDrawMode = dtdDownColorLine
+          ExplorerEditMode = False
           FocusedSelectColor = 10526880
           FocusedSelectTextColor = clBlack
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          GradientSteps = 64
           HeaderHeight = 19
           HeaderHotTrack = False
           HeaderSections.Data = {F4FFFFFF00000000}
+          HeaderFont.Charset = DEFAULT_CHARSET
+          HeaderFont.Color = clWindowText
+          HeaderFont.Height = -11
+          HeaderFont.Name = 'MS Sans Serif'
+          HeaderFont.Style = []
           HorizontalLines = True
           HorzDivLinesColor = 7368816
           HorzScrollBarStyles.ShowTrackHint = False
           HorzScrollBarStyles.Width = 16
           HorzScrollBarStyles.ButtonSize = 16
+          IgnoreEnabled = False
+          IncrementalSearch = False
           ItemIndent = 14
+          KeepSelectionWithinLevel = False
+          LineBorderActiveColor = clBlack
+          LineBorderInactiveColor = clBlack
           LineHeight = 16
           MinusPicture.Data = {
             F6000000424DF600000000000000360000002800000008000000080000000100
@@ -254,7 +278,9 @@ object fraLeftBar: TfraLeftBar
             E0E0E0E0E0E0E0E0E0808080808080808080808080E0E0E0E0E0E0E0E0E0E0E0
             E0E0E0E0808080808080808080E0E0E0E0E0E0E0E0E0E0E0E0E0E0E080808080
             8080808080808080808080808080808080808080808080808080}
+          MouseFrameSelect = True
           MultiSelect = False
+          OwnerDrawMask = '~~@~~'
           PlusMinusTransparent = True
           PlusPicture.Data = {
             F6000000424DF600000000000000360000002800000008000000080000000100
@@ -265,6 +291,7 @@ object fraLeftBar: TfraLeftBar
             E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0808080808080E0E0E0E0E0E0E0E0E0E0E0
             E0808080808080808080808080E0E0E0E0E0E080808080808080808080808080
             8080808080808080808080808080808080808080808080808080}
+          ScrollbarOpposite = False
           ScrollTracking = True
           ShowLeafButton = False
           ShowLines = False
@@ -277,6 +304,7 @@ object fraLeftBar: TfraLeftBar
           VertScrollBarStyles.ShowTrackHint = True
           VertScrollBarStyles.Width = 16
           VertScrollBarStyles.ButtonSize = 16
+          VirtualityLevel = vlNone
           BkColor = clGray
           OnItemFocused = tvParticlesItemFocused
           OnDragDrop = OnDragDrop
@@ -391,7 +419,7 @@ object fraLeftBar: TfraLeftBar
       end
       object paAction: TPanel
         Left = 1
-        Top = 217
+        Top = 230
         Width = 208
         Height = 16
         Align = alBottom
@@ -422,7 +450,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paProperties: TPanel
       Left = 1
-      Top = -74
+      Top = 370
       Width = 210
       Height = 350
       Hint = 'Scene commands'
@@ -480,7 +508,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paCurrentPS: TPanel
       Left = 1
-      Top = -116
+      Top = 328
       Width = 210
       Height = 42
       Hint = 'Scene commands'

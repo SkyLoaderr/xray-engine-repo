@@ -119,12 +119,6 @@ void __fastcall TfraLeftBar::ebEditorPreferencesClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebResetAnimationClick(TObject *Sender)
-{
-	UI.Command( COMMAND_RESET_ANIMATION );
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::ShowPPMenu(TMxPopupMenu* M, TObject* B){
     POINT pt;
     GetCursorPos(&pt);

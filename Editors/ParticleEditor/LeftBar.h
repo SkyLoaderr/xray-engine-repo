@@ -86,7 +86,6 @@ __published:	// IDE-managed Components
     void __fastcall PanelMaximizeClick(TObject *Sender);
     void __fastcall ebEditorPreferencesClick(TObject *Sender);
     void __fastcall ebRefreshTexturesClick(TObject *Sender);
-	void __fastcall ebResetAnimationClick(TObject *Sender);
 	void __fastcall ebEngineShaderFileMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
 	void __fastcall ebSceneCommandsMouseDown(TObject *Sender,

@@ -16,8 +16,7 @@
       Intermediate\Envelope.obj Intermediate\motion.obj Intermediate\bone.obj 
       Intermediate\clsid.obj Intermediate\cl_collector.obj 
       Intermediate\Xr_ini.obj Intermediate\ColorPicker.obj 
-      Intermediate\LzHuf.obj Intermediate\UI_Camera.obj 
-      Intermediate\UI_MainCommand.obj Intermediate\FS.obj 
+      Intermediate\LzHuf.obj Intermediate\UI_Camera.obj Intermediate\FS.obj 
       Intermediate\HWCaps.obj Intermediate\PrimitivesR.obj 
       Intermediate\SharedPrimitive.obj Intermediate\EditObject.obj 
       Intermediate\Xr_input.obj Intermediate\fcontroller.obj 
@@ -68,7 +67,8 @@
       Intermediate\Blender_Model_EbB.obj Intermediate\HW.obj 
       Intermediate\du_sphere.obj Intermediate\du_box.obj 
       Intermediate\PropertiesListHelper.obj Intermediate\ParticleGroup.obj 
-      Intermediate\ParticleGroupParser.obj Intermediate\c_dinput.obj"/>
+      Intermediate\ParticleGroupParser.obj Intermediate\c_dinput.obj 
+      Intermediate\UI_MainCommand.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -152,7 +152,6 @@
       <FILE FILENAME="editor\ColorPicker.cpp" FORMNAME="" UNITNAME="ColorPicker" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\LzHuf.cpp" FORMNAME="" UNITNAME="LzHuf" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="editor\UI_Camera.cpp" FORMNAME="" UNITNAME="UI_Camera" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="UI_MainCommand.cpp" FORMNAME="" UNITNAME="UI_MainCommand" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\FS.cpp" FORMNAME="" UNITNAME="FS" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\HWCaps.cpp" FORMNAME="" UNITNAME="HWCaps" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\PrimitivesR.cpp" FORMNAME="" UNITNAME="PrimitivesR" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -255,6 +254,7 @@
       <FILE FILENAME="Engine\ParticleGroup.cpp" FORMNAME="" UNITNAME="ParticleGroup" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ParticleGroupParser.cpp" FORMNAME="" UNITNAME="ParticleGroupParser" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\c_dinput.cpp" FORMNAME="" UNITNAME="c_dinput" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\UI_MainCommand.cpp" FORMNAME="" UNITNAME="UI_MainCommand" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

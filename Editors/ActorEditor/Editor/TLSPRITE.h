@@ -1,5 +1,5 @@
-#ifndef __TLSPRITE_H__
-#define __TLSPRITE_H__
+#ifndef TLSpriteH
+#define TLSpriteH
 
 #define TO_REAL(_X_, _S_)	((_X_)+1.f)*float(_S_/2)
 
@@ -73,7 +73,7 @@ public:
     	mesh.settex	(lt.x,lt.y,rb.x,rb.y);
     	Render		(pos,color,radius,D);
     }
-	void			Render		( Fvector &pos, float radius, bool bFixedSize );
+	void			Render		( Fvector &pos, float radius, bool bFixedSize, DWORD clr=0xffffffff );
 };
 
 #endif //__TLSPRITE_H__

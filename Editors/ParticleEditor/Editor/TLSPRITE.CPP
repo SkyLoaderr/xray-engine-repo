@@ -20,7 +20,7 @@ CTLSprite::~CTLSprite( )
 {
 }
 
-void CTLSprite::Render(Fvector &pos, float radius, bool bFixedSize)
+void CTLSprite::Render(Fvector &pos, float radius, bool bFixedSize, DWORD clr)
 {
 	FVF::TL			P;
     float 			cx,cy,sz;
@@ -35,7 +35,7 @@ void CTLSprite::Render(Fvector &pos, float radius, bool bFixedSize)
     mesh.m[3].p.x = cx+sz;	mesh.m[3].p.y = cy-sz;
     mesh.m[2].p.x = cx+sz;	mesh.m[2].p.y = cy+sz;
     mesh.setdepth	( P.p.z, P.p.w );
-    mesh.setcolor	( 0xffffffff );
+    mesh.setcolor	( clr );
 
     DU::DrawPrimitiveTL(D3DPT_TRIANGLESTRIP,2,(FVF::TL*)&mesh,4,false,false);
 }

@@ -42,7 +42,6 @@ LPCSTR 	TokenValue2::GetText(TOnDrawEvent OnDraw)
 
 LPCSTR TokenValue3::GetText(TOnDrawEvent OnDraw)
 {
-	VERIFY(GetValue()<cnt);
 	u32 draw_val 	= GetValue();
     if (OnDraw)OnDraw(this, &draw_val);
 	for(u32 i=0; i<cnt; i++) if (items[i].ID==draw_val) return items[i].str;
@@ -52,7 +51,6 @@ LPCSTR TokenValue3::GetText(TOnDrawEvent OnDraw)
 
 LPCSTR TokenValue4::GetText(TOnDrawEvent OnDraw)
 {
-	VERIFY(GetValue()<items->size());
 	u32 draw_val 	= GetValue();
     if (OnDraw)OnDraw(this, &draw_val);
 	for (ItemVec::const_iterator it=items->begin(); it!=items->end(); it++)

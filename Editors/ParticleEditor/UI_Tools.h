@@ -52,7 +52,7 @@ class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
     float				m_fRotateSnapAngle;
     
     AnsiString			m_CommandList;
-    CParticleGroup		m_EditGroup;
+    CParticleGroup*		m_EditGroup;
     void __fastcall		OnApplyClick		();
 public:
 	void				EditActionList		();
@@ -110,6 +110,15 @@ public:
     bool __fastcall 	KeyPress    		(WORD Key, TShiftState Shift){return false;}
 
     bool				Pick				(){return false;}
+
+    void				GetCurrentFog		(u32& fog_color, float& s_fog, float& e_fog);
+    LPCSTR				GetInfo				();
+	void				SetNumPosition		(CCustomObject* p1){;}
+	void				SetNumRotation		(CCustomObject* p1){;}
+	void				SetNumScale			(CCustomObject* p1){;}
+
+    void				ShowProperties		(){;}
+    void				UpdateProperties	(){;}
 };
 extern CParticleTools	Tools;
 //---------------------------------------------------------------------------

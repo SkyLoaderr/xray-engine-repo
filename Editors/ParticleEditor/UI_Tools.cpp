@@ -65,6 +65,9 @@ bool CParticleTools::OnCreate(){
 
 	// lock
     Engine.FS.LockFile(0,fn.c_str());
+
+	m_EditGroup	= xr_new<CParticleGroup>();
+
     return true;
 }
 
@@ -73,6 +76,7 @@ void CParticleTools::OnDestroy(){
     m_bReady			= false;
 	// unlock
     Engine.FS.UnlockFile(&Engine.FS.m_GameRoot,"particles.xr");
+	xr_delete			(m_EditGroup);
 
 	Lib.RemoveEditObject(m_EditObject);
 	xr_delete(m_TestObject);
@@ -107,7 +111,7 @@ void CParticleTools::Render(){
 	if (m_TestObject)	m_TestObject->RenderSingle();
 
 	// Draw the particles.
-    m_EditGroup.Render();
+    m_EditGroup->Render();
 }
 
 void CParticleTools::OnFrame(){
@@ -121,7 +125,7 @@ void CParticleTools::OnFrame(){
 	if (m_EditObject)
     	m_EditObject->OnFrame();
         
-    m_EditGroup.OnFrame();
+    m_EditGroup->OnFrame();
 }
 
 void CParticleTools::ZoomObject(BOOL bObjectOnly){
@@ -485,11 +489,23 @@ void __fastcall CParticleTools::MouseMove(TShiftState Shift)
 
 void __fastcall	CParticleTools::OnApplyClick()
 {
-	m_EditGroup.ParseCommandList(m_CommandList.c_str());
+	m_EditGroup->ParseCommandList(m_CommandList.c_str());
 }
 
 void __fastcall CParticleTools::EditActionList()
 {
 	TfrmText::Run(m_CommandList,"Edit action list",false,0,false,OnApplyClick);
+}
+
+void CParticleTools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
+{
+	s_fog		= UI.ZFar();
+	e_fog		= UI.ZFar();
+	fog_color	= DEFAULT_CLEARCOLOR;
+}
+
+LPCSTR CParticleTools::GetInfo()
+{
+	return 0;
 }
 
