@@ -6,35 +6,28 @@
 #define AFX_CUSTOMEVENT_H__092059D7_D2E8_4BC3_95C5_F2B3D48AAE5C__INCLUDED_
 #pragma once
 
-struct EV_LIST	{
-	// t-defs
-	struct EV_DEF	{
-		EVENT	E;
-		LPSTR	P1;
-	};
-	typedef svector<EV_DEF,8>	EV;
-	typedef EV_LIST::iterator	EV_IT;
-	
-	// data
-	EV		List;
-	
-	// methods
-	void	_CreateOne	(const char* DEF);
-	void	Create		(const char* DEF);
-	void	Destroy		();
-	void	Signal		(DWORD P2);
-};
-
 class CCustomEvent		: public CObject, public pureRender
 {
 private:
 	typedef CObject			inherited;
 protected:
-	EV_LIST					OnEnter;
-	EV_LIST					OnExit;
-	CLASS_ID				clsid_Target;
+	// t-defs
+	struct DEF_EVENT	{
+		EVENT	E;
+		LPSTR	P1;
+	};
+	struct DEF_ACTION	{
+		DEF_EVENT	OnEnter;
+		DEF_EVENT	OnLeave;
+		CLASS_ID	CLS;
+		u8			bOnce;
+	};
+	typedef svector<DEF_ACTION,16>	tActions;
+
+	tActions				Actions;
 	vector<CObject*>		Contacted;
-	BOOL					ExecuteOnce;
+protected:
+	DEF_EVENT				Parse				(LPCSTR DEF);
 public:
 	CCustomEvent();
 	virtual ~CCustomEvent();

@@ -5,31 +5,6 @@
 #include "stdafx.h"
 #include "CustomEvent.h"
 
-void	EV_LIST::_CreateOne(const char* DEF)
-{
-	char	Event[1280],Param[1280];
-	Event[0]=0; Param[0]=0;
-	sscanf	(DEF,"%[^,],%s",Event,Param);
-	if (Event[0]) {
-		// Parse param's macroses
-		char	Parsed	[1280], sBegin[1280], sName[1280], sEnd[1280], sBuf[128];
-		sscanf	(Param,"%[^$]$rp$%[^$]$%s",sBegin,sName,sEnd);
-		if (sName[0])	{
-			int id		= Level().get_RPID(sName);
-			R_ASSERT	(id>=0);
-			strconcat	(Parsed,sBegin,itoa(id,sBuf,10),sEnd);
-		} else {
-			strcpy		(Parsed,Param);
-		}
-
-		// Create
-		EV_DEF	D;
-		D.E  = Engine.Event.Create(Event); 
-		D.P1 = strdup	(Parsed); 
-		List.push_back	(D);
-	}
-}
-
 void	EV_LIST::Create	(const char* DEF)
 {
 	if (0==DEF || 0==strlen(DEF)) return;
@@ -127,39 +102,78 @@ void CCustomEvent::Load			(CInifile* ini, const char * section)
 	dwMaxUpdate					= 1000;
 }
 
+void CCustomEvent::Parse		(LPCSTR DEF)
+{
+	string512	Event[1280],Param[1280];
+	Event[0]=0; Param[0]=0;
+	sscanf	(DEF,"%[^,],%s",Event,Param);
+	if (Event[0]) {
+		// Parse param's macroses
+		char	Parsed	[1280], sBegin[1280], sName[1280], sEnd[1280], sBuf[128];
+		sscanf	(Param,"%[^$]$rp$%[^$]$%s",sBegin,sName,sEnd);
+		if (sName[0])	{
+			int id		= Level().get_RPID(sName);
+			R_ASSERT	(id>=0);
+			strconcat	(Parsed,sBegin,itoa(id,sBuf,10),sEnd);
+		} else {
+			strcpy		(Parsed,Param);
+		}
+		
+		// Create
+		EV_DEF	D;
+		D.E  = Engine.Event.Create(Event); 
+		D.P1 = strdup	(Parsed); 
+		List.push_back	(D);
+	}
+}
+
+
 BOOL CCustomEvent::Spawn		( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags )
 {
 	inherited::Spawn			(bLocal,server_id,o_pos,o_angle,P,flags);
 
 	// Read CFORM
-	CCF_Shape*	shape			= new CCF_Shape	(this);
-	cfModel						= shape;
-	u8 count;	P.r_u8			(count);
-	while (count)	{
-		u8 type; P.r_u8	(type);
-		switch (type)	{
-		case 0:
-			{
-				Fsphere data;
-				P.r					(&data,sizeof(data));
-				shape->add_sphere	(data);
+	{
+		CCF_Shape*	shape			= new CCF_Shape	(this);
+		cfModel						= shape;
+		u8 count;	P.r_u8			(count);
+		while (count)	{
+			u8 type; P.r_u8	(type);
+			switch (type)	{
+			case 0:
+				{
+					Fsphere data;
+					P.r					(&data,sizeof(data));
+					shape->add_sphere	(data);
+				}
+				break;
+			case 1:
+				{
+					Fmatrix data;
+					P.r_matrix			(data);
+					shape->add_box		(data);
+				}
+				break;
 			}
-			break;
-		case 1:
-			{
-				Fmatrix data;
-				P.r_matrix			(data);
-				shape->add_sphere	(data);
-			}
-			break;
+			count--;
 		}
-		count--;
+		pCreator->ObjectSpace.Object_Register		(this);
+		cfModel->OnMove				();
 	}
-	pCreator->ObjectSpace.Object_Register		(this);
-	cfModel->OnMove				();
-
+	
 	// Read actions
-
+	{
+		u8 count;	P.r_u8			(count);
+		while (count)	{
+			DEF_ACTION		A;
+			string256		str;
+			P.r_u8			(A.bOnce);
+			P.r_u64			(A.CLS);
+			P.r_string		(str);		A.OnEnter	= Parse(str);
+			P.r_string		(str);		A.OnLeave	= Parse(str);
+			count--;
+		}
+	}
 
 	return TRUE;
 }
