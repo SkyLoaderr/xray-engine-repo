@@ -229,7 +229,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 			case fcvFully:		// addition
 				{
 					if (!::Render->occ_visible(S.BB))		continue;
-					for (int sp_id=0; sp_id<3; sp_id++)
+					for (int sp_id=0; sp_id<dm_obj_in_slot; sp_id++)
 					{
 						SlotPart&			sp	= S.G		[sp_id];
 						if (sp.id==0xff)	continue;
