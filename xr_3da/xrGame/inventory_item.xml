@@ -1,4 +1,4 @@
-﻿<?xml version='1.0' encoding="UTF-8"?>
+<?xml version='1.0' encoding="UTF-8"?>
 <!-- ITEM INFO IN THE INVENTORY MENU -->
 <window>
 
@@ -18,7 +18,7 @@
 	</static>
 
 	<!-- 3D STATIC -->
-	<static_3d x="0" y="-185" width="250" height="190"></static_3d>
+	<static_3d x="50" y="-185" width="250" height="190"></static_3d>
 
 </window>
 
