@@ -196,8 +196,8 @@ void CEffect_Thunderbolt::OnFrame(BOOL enabled, float period, float duration)
         lightning_phase	= 1.5f*(current_time/life_time);
         clamp			(lightning_phase,0.f,1.f);
 
-        g_pGamePersistent->Environment.CurrentEnv.sky_color.add(lightning_phase*p_sky_color*5.f);	//.
-        g_pGamePersistent->Environment.CurrentEnv.sun_color.add(lightning_phase*p_sun_color*2.f);	//.
+        g_pGamePersistent->Environment.CurrentEnv.sky_color.add(lightning_phase*p_sky_color*2.f);	//.
+        g_pGamePersistent->Environment.CurrentEnv.sun_color.add(lightning_phase*p_sun_color*1.f);	//.
 
 		if (::Render->get_generation()==IRender_interface::GENERATION_R2)	{
 			g_pGamePersistent->Environment.CurrentEnv.sun_dir = current_direction;
