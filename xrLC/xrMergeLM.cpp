@@ -300,12 +300,12 @@ void CBuild::MergeLM()
 				deflNew.push_back(pDEFL);
 				
 				// Cleanup
-				SEL.clear();
-				collected.clear();
-				selected.clear();
-				perturb.clear();
-				best.clear();
-				best_seq.clear();
+				SEL.clear			();
+				collected.clear		();
+				selected.clear		();
+				perturb.clear		();
+				best.clear			();
+				best_seq.clear		();
 				brect.iArea = INT_MAX;
 			}
 		} else {
