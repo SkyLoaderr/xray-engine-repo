@@ -4,10 +4,11 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 {
 	// *** assume accumulator setted up ***
 	// *****************************	Mask by stencil		*************************************
+	if (1)
 	{
-		float		s			= 2.f*L->range*tanf(L->cone);
-		Fmatrix		mScale;		mScale.scale(s,L->range,s);		// make range and radius
-		Fmatrix		mR_Z;		mR_Z.rotateX(deg2rad(90.f));	// align with Z
+		// scale to account range and angle
+		float		s			= 2.f*L->range*tanf(L->cone/2.f);	
+		Fmatrix		mScale;		mScale.scale(s,s,L->range);		// make range and radius
 		
 		// build final rotation / translation
 		Fvector					L_dir,L_up,L_right;
@@ -15,6 +16,7 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		L_up.set				(0,1,0);				if (_abs(L_up.dotproduct(L_dir))>.99f)	L_up.set(0,0,1);
 		L_right.crossproduct	(L_up,L_dir);			L_right.normalize	();
 		L_up.crossproduct		(L_dir,L_right);		L_up.normalize		();
+
 		Fmatrix		mR;
 		mR.i					= L_right;		mR._14		= 0;
 		mR.j					= L_up;			mR._24		= 0;
@@ -22,10 +24,7 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		mR.c					= L->position;	mR._44		= 1;
 
 		// final xform
-		Fmatrix		xf;
-		xf.mul		(mR_Z,mScale);
-		xf.mulA		(mR);
-		xf.translate(L->position);
+		Fmatrix		xf;			xf.mul			(mR,mScale);
 
 		// setup xform
 		RCache.set_xform_world			(xf					);
