@@ -69,6 +69,7 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 					news.m_game_vertex_id	= dynamic_object->m_tGraphID;
 					news.m_object_id[0]		= tpALifeSchedulable->ID;
 					news.m_object_id[1]		= l_tpALifeSchedulable->ID;
+					news.m_class_id			= 0;
 				}
 #ifdef DEBUG
 				if (psAI_Flags.test(aiALife)) {
