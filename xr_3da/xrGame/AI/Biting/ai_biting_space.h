@@ -106,21 +106,6 @@ namespace AI_Biting {
 		eHearSoundDangerous,
 	};
 	
-	enum EStateFSM {
-		eNoState, 
-		eRestIdle,			// стоять/лежать/сидеть на месте, отдыхать
-		eRestIdleTurn,
-		eWalkAround,	    // обход территории
-		eAttack	
-	};
-
-	enum EEnemyType {
-		eWeak = 0,
-		eEqual,
-		eDangerous,
-		eVeryDangerous,
-	};
-
 	enum EActionState {
 		eActionStateRun = 0,
 		eActionStateStand,
