@@ -1,0 +1,16 @@
+printf("Started!")
+
+local a={b={c={d={foo = "foo"}}}}
+
+function main()
+	printf("SCRIPT_NAME : %s",script_name())
+	printf("SCRIPT_NAME : %s",this.script_name())
+	while true do
+		printf("Working!")
+		wait(1000)
+		printf("Working : %s!",a.b.c.d.foo)
+		wait(1000)
+		printf("Working : %s!",foo)
+		wait(1000)
+	end
+end

@@ -1,0 +1,153 @@
+module("m_manager")
+module("m_monster_ai")
+
+local sounds = {}
+
+local bobik_home = nil
+
+function main()
+
+  local scene = m_manager.Easy()
+
+  scene:insert(m_monster_ai.m_MonsterBobik("dog_bobik1", script_name(), "point_bobik1", 8 ))
+  scene:insert(m_monster_ai.m_MonsterBobik("dog_bobik2", script_name(), "point_bobik2", 8 ))
+  scene:insert(m_monster_ai.m_MonsterBobik("dog_bobik3", script_name(), "point_bobik3", 8 ))
+  scene:insert(m_monster_ai.m_MonsterBobik("dog_bobik4", script_name(), "point_bobik4", 8 ))
+  scene:insert(m_monster_ai.m_MonsterBobik("dog_bobik5", script_name(), "point_bobik5", 8 ))
+  scene:insert(m_monster_ai.m_MonsterBobik("dog_bobik6", script_name(), "point_bobik6", 8 ))
+  scene:insert(m_monster_ai.m_MonsterBobik("dog_bobik7", script_name(), "point_bobik7", 8 ))
+  scene:insert(m_monster_ai.m_MonsterBobik("dog_bobik8", script_name(), "point_bobik8", 8 ))
+  scene:insert(m_monster_ai.m_MonsterBobik("dog_bobik9", script_name(), "point_bobik9", 8 ))
+  scene:insert(m_monster_ai.m_MonsterBobik("dog_bobik10", script_name(), "point_bobik10", 8 ))
+
+  while(scene:execute()) do
+    wait()
+  end
+
+  bobik_die()
+  scene:finalize()
+end
+
+local alarm   = false
+local die   = false
+
+---------------------------------------------------------------------------------------------------------------------
+--Evaluators
+----------------------------------------------------------------------------------------------------------------------
+class "evaluator_bobik" (property_evaluator)
+function evaluator_bobik:__init() super ()
+end
+function evaluator_bobik:evaluate ()
+  -- слышим ли мы бобика
+
+  local pp = self.object:position()
+
+  if pp ~= nil and bobik_home ~= nil then
+    if bobik_home:distance_to(pp) > 100 then
+      return false
+    end
+  end
+
+  if this.alarm == true or this.die == true then
+    return true
+  else
+    return false
+  end
+end
+
+----------------------------------------------------------------------------------------------------------------------
+--Actions
+----------------------------------------------------------------------------------------------------------------------
+class "action_bobik" (action_base)
+function action_bobik:__init (npc_name,action_name) super (nil, action_name)
+  self.timer = 10000
+  self.time = nil
+end
+function action_bobik:initialize()
+      action_base.initialize(self)
+      self.object:set_node_evaluator()
+      self.object:set_path_evaluator()
+      self.object:set_desired_position()
+      self.object:set_desired_direction()
+
+  self.sound_alarm = {idle = 0,
+         begin = nil,
+         maxidle = 1,
+         sumidle = 1,
+            rnd = 100,
+         lastsound = nil,
+       sounds = {      {pack = sounds["bobik"], id = 0},
+          {pack = sounds["bobik"], id = 1},
+          {pack = sounds["bobik"], id = 2}}}
+  self.sound_die = {idle = 0,
+         begin = nil,
+         maxidle = 1,
+         sumidle = 1,
+            rnd = 100,
+         lastsound = nil,
+       sounds = {      {pack = sounds["bobik"], id = 3},
+          {pack = sounds["bobik"], id = 4},
+          {pack = sounds["bobik"], id = 5}}}
+end
+function action_bobik:execute()
+     action_base.execute(self)
+  if this.alarm == true then
+    if self.time == nil or device():time_global() - self.time > self.timer then
+      globals.set_sound(self.object, self.sound_alarm, true)
+      escape_bobik.alarm = false
+      self.time = device():time_global()
+    end
+  end
+  if this.die == true then
+    globals.set_sound(self.object, self.sound_die, true)
+    escape_bobik.die = false
+  end
+end
+function action_bobik:finalize()
+      action_base.finalize(self)
+end
+
+----------------------------------------------------------------------------------------------------------------------
+-- binder
+----------------------------------------------------------------------------------------------------------------------
+function add_to_binder(object)
+  local operators    = {}
+  local properties  = {}
+
+  local manager = object:motivation_action_manager()
+
+  properties["bobik"]     = xr_evaluators_id.stohe_bobik_base + 0
+
+  operators["bobik"]     = xr_actions_id.stohe_bobik_base + 0
+
+  sounds["bobik"]   = xr_sounds_id.stohe_bobik_base + 1
+
+  object:add_sound("script_replics\\soldier_1\\replics\\bobik_replic_", 20, snd_type.talk, 2, 1, sounds["bobik"])
+
+  -- Evaluators
+  manager:add_evaluator (properties["bobik"],     this.evaluator_bobik())
+
+  -- Actions
+  local action = this.action_bobik (object:name(),"action_bobik")
+  action:add_precondition    (world_property(stalker_ids.property_alive,   true))
+  action:add_precondition    (world_property(properties["bobik"],    true))
+  action:add_effect    (world_property(properties["bobik"],    false))
+  manager:add_action (operators["bobik"], action)
+
+  action = manager:action (stalker_ids.action_puzzle_solver)
+  action:add_precondition    (world_property(properties["bobik"],    false))
+
+--  object:set_hear_callback(this.bobik_callback)
+end
+
+function bobik_callback(self, who, sound_type, sound_position, sound_power)
+  printf("BOBIK")
+end
+
+function bobik_alarm()
+  this.alarm = true
+end
+
+function bobik_die()
+  this.die = true
+end

@@ -1,0 +1,73 @@
+module( "m_manager" )
+local start_time  = 0
+
+local ohrana  = {
+                    "trivial_novice_1_1",
+                    "grd_0_0",
+                    "grd_0_2",
+                    "patrol_soldier_2_1",
+                    "patrol_soldier_3_2"
+                }
+
+class "del"
+function del:__init( stalker, script_name )
+    self.npc_name  = stalker
+    self.scr_name  = script_name
+    self.npc       = nil
+    self.on_line   = false
+end
+
+function del:execute()
+    if( self.on_line == false ) then
+        if( level.object( self.npc_name ) == nil ) then return end
+        self.npc = level.object( self.npc_name )
+        self.on_line = true
+    end
+end
+
+function del:finalize()
+end
+
+function del:check_completed()
+    if( self.on_line ) then
+        if( self.npc:alive() == false ) then
+            start_time       = device():time_global()
+            return true
+            end
+    end
+
+    return false
+end
+
+function main()
+    local block_post = m_manager.Easy()
+    local state      = 0
+    local time       = device():time_global()
+    start_time       = time - 100000
+    for i = 1, table.getn( ohrana ) do
+        block_post:insert( this.del( ohrana[i], this.script_name() ) )
+    end
+
+    while( block_post:execute() ) do
+        time = device():time_global()
+        if( time > start_time and time <  start_time + 30000 ) then  --Начальная атака
+            if( state ~= 1 ) then
+                gramofon_event = 1
+                state  = 1
+            end
+        elseif( time > start_time and time <  start_time + 90000 ) then  --Продолжение атаки
+            if( state ~= 2 ) then
+                gramofon_event = 2
+                state  = 2
+            end
+        end
+
+        --Звучит сирена уже давно
+        if( state ~= 0 and time > start_time + 90000 ) then
+                gramofon_event = 0
+                state  = 0
+        end
+
+        wait()
+    end
+end
