@@ -7,7 +7,7 @@ IC	bool CMovementManager::actual() const
 
 IC	void CMovementManager::set_path_type(EPathType path_type)
 {
-	m_path_actuality		= m_path_actuality && (m_path_type != path_type);
+	m_path_actuality		= m_path_actuality && (m_path_type == path_type);
 	m_path_type				= path_type;
 }
 

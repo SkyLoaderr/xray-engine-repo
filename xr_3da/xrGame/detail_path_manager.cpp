@@ -162,5 +162,5 @@ bool CDetailPathManager::actual() const
 
 bool CDetailPathManager::completed() const
 {
-	return				(true);
+	return				(m_detail_path.empty() || m_detail_dest_position.similar(m_detail_path.back().m_position));
 }
