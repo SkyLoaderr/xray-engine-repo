@@ -211,7 +211,7 @@ float CSoldierSelectorUnderFire::Estimate(NodeCompressed* tNode, float fDistance
 	}
 	/**/
 	// checking for epsilon
-	vfCheckForEpsilon(bStop);
+	//vfCheckForEpsilon(bStop);
 	// returning a value
 	return(m_fResult);
 }
