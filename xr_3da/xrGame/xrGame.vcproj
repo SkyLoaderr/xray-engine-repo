@@ -831,6 +831,16 @@
 							RelativePath=".\Ai\script\ai_script_monster.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="ai_pseudodog"
+						Filter="">
+						<File
+							RelativePath=".\ai\pseudodog\ai_pseudodog.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\pseudodog\ai_pseudodog.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="_actor"

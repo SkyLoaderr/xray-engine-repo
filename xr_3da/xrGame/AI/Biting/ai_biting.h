@@ -1,4 +1,4 @@
-	////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //	Module 		: ai_biting.h
 //	Created 	: 21.05.2003
 //  Modified 	: 21.05.2003
@@ -57,6 +57,15 @@ enum EBitingPathState {
 };
 
 typedef VisionElem SEnemy;
+
+//extern u32		mem_used		= 0;
+//extern u32		mem_used_cur	= 0;
+//
+//#define MEM_COUNT_START()		{Memory.mem_counter_set(0);mem_used_cur = 0;} 
+//#define MEM_COUNT_STOP()		{mem_used_cur = Memory.mem_counter_get(); mem_used += mem_used_cur;} 
+//#define MEM_COUNT_OUT(s)		{Msg(#s" [mem_used_current = %u]",mem_used_cur);}
+//#define MEM_COUNT_OUT_TOTAL()	{Msg("Total Memory Used = %u",mem_used);} 
+
 
 class CAI_Biting : public CCustomMonster, 
 				   public CMonsterMemory,
@@ -300,6 +309,7 @@ public:
 	float			m_fMoraleBroadcastDistance;			// мораль уменьшается, если в данном радиусе умер монстр из команды
 
 	// -----------------------------------------------------------
+
 };
 
 

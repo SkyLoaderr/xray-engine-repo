@@ -92,7 +92,7 @@ void CAI_Biting::Load(LPCSTR section)
 	}
 
 	// Загрузка параметров из LTX
-
+	
 	m_fGoingSpeed					= pSettings->r_float	(section, "going_speed");
 
 	m_tSelectorFreeHunting.Load		(section,"selector_free_hunting");
@@ -155,10 +155,9 @@ void CAI_Biting::Load(LPCSTR section)
 	m_fMaxAttackDist				= pSettings->r_float(section,"MaxAttackDist");
 
 	m_fDamagedThreshold				= pSettings->r_float(section,"DamagedThreshold");
-
 	m_fCurMinAttackDist				= m_fMinAttackDist;
 
-	LoadSounds						(section);
+
 
 	m_dwIdleSndDelay				= pSettings->r_u32(section,"idle_sound_delay");
 	m_dwEatSndDelay					= pSettings->r_u32(section,"eat_sound_delay");
@@ -174,6 +173,8 @@ void CAI_Biting::Load(LPCSTR section)
 
 	m_pPhysics_support				->in_Load(section);
 	R_ASSERT2 ((m_dwProbRestWalkFree + m_dwProbRestStandIdle + m_dwProbRestLieIdle + m_dwProbRestTurnLeft) == 100, "Probability sum isn't 1");
+
+	LoadSounds						(section);
 }
 
 BOOL CAI_Biting::net_Spawn (LPVOID DC) 
