@@ -428,6 +428,16 @@ MonsterSpace::EMovementType CScriptGameObject::movement_type			() const
 	return			(stalker->movement().movement_type());
 }
 
+MonsterSpace::EMovementType CScriptGameObject::target_movement_type		() const
+{
+	CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker) {
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member target_movement_type!");
+		return		(MonsterSpace::eMovementTypeStand);
+	}
+	return			(stalker->movement().target_movement_type());
+}
+
 MonsterSpace::EMentalState CScriptGameObject::mental_state				() const
 {
 	CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(&object());

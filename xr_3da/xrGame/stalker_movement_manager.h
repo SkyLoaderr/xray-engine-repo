@@ -124,6 +124,11 @@ public:
 	IC		CAbstractVertexEvaluator				*path_evaluator			() const;
 	IC		bool									use_desired_position	() const;
 	IC		bool									use_desired_direction	() const;
+
+public:
+	IC		const MonsterSpace::EMovementType		target_movement_type	() const;
+
+public:
 	IC		CAI_Stalker								&object					() const;
 };
 

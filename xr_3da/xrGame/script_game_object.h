@@ -326,6 +326,7 @@ public:
 
 	MonsterSpace::EBodyState			body_state			() const;
 	MonsterSpace::EMovementType			movement_type		() const;
+	MonsterSpace::EMovementType			target_movement_type() const;
 	MonsterSpace::EMentalState			mental_state		() const;
 	MovementManager::EPathType			path_type			() const;
 	DetailPathManager::EDetailPathType	detail_path_type	() const;

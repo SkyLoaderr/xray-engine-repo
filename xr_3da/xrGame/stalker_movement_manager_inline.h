@@ -204,3 +204,8 @@ IC	float CStalkerMovementManager::damaged_panic_factor		() const
 {
 	return						(m_damaged_panic_factor);
 }
+
+IC	const MonsterSpace::EMovementType CStalkerMovementManager::target_movement_type	() const
+{
+	return						(m_target.m_movement_type);
+}
