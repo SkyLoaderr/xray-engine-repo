@@ -9,8 +9,7 @@ function main()
 	local 	actor = get_actor()
 	GiveInfoViaPda(actor, actor, "actor_start")
 
-
-	trader:set_start_dialog("trader_hello_dialog")
+--	trader:set_start_dialog("trader_hello_dialog")
 
 	while true do
 	wait()
