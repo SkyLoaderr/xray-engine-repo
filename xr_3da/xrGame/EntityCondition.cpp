@@ -4,9 +4,9 @@
 
 #include "stdafx.h"
 #include "entitycondition.h"
-#include "../inventoryowner.h"
-#include "../customoutfit.h"
-#include "../inventory.h"
+#include "inventoryowner.h"
+#include "customoutfit.h"
+#include "inventory.h"
 
 
 #define MAX_HEALTH 1.0f
