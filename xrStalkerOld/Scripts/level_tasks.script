@@ -217,8 +217,12 @@ function proceed(actor)
 		
 	end
 	
-	---------------------------------------------------
-	
+	-- Radar
+	if actor:dont_has_info("rad_code_door") and
+	   actor:object("rad_scientist_flash")
+	then
+		actor:give_info_portion("rad_code_door") 
+	end
 end
 
 function set_task_state(id_state, id_task, id_subtask)
@@ -409,10 +413,15 @@ function process_map_spot(info_id)
 	-- end of military
 
 	-- radar
-    elseif info_id == "bar_radar_turn_off_start" then
-           add_location(1000, "rad_antenna_location")
-    elseif info_id == "bar_radar_turn_off_done" then
-           remove_location (1000, "rad_antenna_location")
+	elseif info_id == "bar_radar_turn_off_start" then
+		add_location(1000, "rad_antenna_location")
+	elseif info_id == "bar_radar_turn_off_done" then
+		remove_location (1000, "rad_antenna_location")
+
+	elseif info_id == "rad_code_door" then
+		add_location(1001, "rad_code_door_location")
+	elseif info_id == "rad_code_door_open" then
+		remove_location (1001, "rad_code_door_location")
 	
 	end	
 
