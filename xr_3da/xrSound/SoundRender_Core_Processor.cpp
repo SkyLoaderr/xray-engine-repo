@@ -141,7 +141,7 @@ BOOL	CSoundRender_Core::get_occlusion(Fvector& P, float R, Fvector* occ)
 	if (0==geom_MODEL)		return FALSE;
 
 	// Calculate RAY params
-	Fvector base			= Listener.vPosition;
+	Fvector base			= listener_position();
 	Fvector	pos,dir;
 	float	range;
 	pos.random_dir			();

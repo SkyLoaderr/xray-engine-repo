@@ -31,8 +31,8 @@ void CSoundRender_CoreA::_initialize	(u64 window)
     // OpenAL device
     ALCdevice*	pDevice	        = alcOpenDevice		(deviceName);
     // Get the device sp        ecifier.
-//      deviceSpecifier         	= alcGetString		(pDevice, ALC_DEVICE_SPECIFIER);
-//		Msg				        	("OpenAL: Using device '%s'.", deviceSpecifier);
+    deviceSpecifier         	= alcGetString		(pDevice, ALC_DEVICE_SPECIFIER);
+	Msg				        	("OpenAL: Using device '%s'.", deviceSpecifier);
     // Create context
     ALCcontext*	pContext        = alcCreateContext	(pDevice,NULL);
     // Set active contex        t
@@ -45,12 +45,12 @@ void CSoundRender_CoreA::_initialize	(u64 window)
     A_CHK				        (alListenerfv		(AL_ORIENTATION,&orient[0].x));
     A_CHK				        (alListenerf		(AL_GAIN,psSoundVMaster));
 
-    // Check for EAX ext        ension
-    bEAX 				        = alIsExtensionPresent("EAX");
+    // Check for EAX extension
+    bEAX 				        = alIsExtensionPresent		((ALubyte*)"EAX");
 
-    eaxSet 				        = (EAXSet)alGetProcAddress("EAXSet");
+    eaxSet 				        = (EAXSet)alGetProcAddress	((ALubyte*)"EAXSet");
     if (eaxSet==NULL) bEAX 		= false;
-    eaxGet 				        = (EAXGet)alGetProcAddress("EAXGet");
+    eaxGet 				        = (EAXGet)alGetProcAddress	((ALubyte*)"EAXGet");
     if (eaxGet==NULL) bEAX 		= false;
 
 	ZeroMemory					( &wfm, sizeof( WAVEFORMATEX ) );
@@ -140,28 +140,34 @@ void	CSoundRender_CoreA::i_get_eax			(CSound_environment* _E)
     CSoundRender_Environment* E = static_cast<CSoundRender_Environment*>(_E);
     EAXLISTENERPROPERTIES 		ep;
     A_CHK(eaxGet      			(&DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ALLPARAMETERS,NULL, &ep, sizeof(EAXLISTENERPROPERTIES)));
-    E->Room						= ep.lRoom					;
-    E->RoomHF					= ep.lRoomHF				;
-    E->RoomRolloffFactor		= ep.flRoomRolloffFactor	;
-    E->DecayTime			   	= ep.flDecayTime			;
-    E->DecayHFRatio				= ep.flDecayHFRatio			;
-    E->Reflections				= ep.lReflections			;
-    E->ReflectionsDelay			= ep.flReflectionsDelay		;
-    E->Reverb					= ep.lReverb				;
-    E->ReverbDelay				= ep.flReverbDelay			;
-    E->EnvironmentSize			= ep.flEnvironmentSize		;
-    E->EnvironmentDiffusion		= ep.flEnvironmentDiffusion	;
-    E->AirAbsorptionHF			= ep.flAirAbsorptionHF		;
+    E->Room						= (float)ep.lRoom					;
+    E->RoomHF					= (float)ep.lRoomHF					;
+    E->RoomRolloffFactor		= (float)ep.flRoomRolloffFactor		;
+    E->DecayTime			   	= (float)ep.flDecayTime				;
+    E->DecayHFRatio				= (float)ep.flDecayHFRatio			;
+    E->Reflections				= (float)ep.lReflections			;
+    E->ReflectionsDelay			= (float)ep.flReflectionsDelay		;
+    E->Reverb					= (float)ep.lReverb					;
+    E->ReverbDelay				= (float)ep.flReverbDelay			;
+    E->EnvironmentSize			= (float)ep.flEnvironmentSize		;
+    E->EnvironmentDiffusion		= (float)ep.flEnvironmentDiffusion	;
+    E->AirAbsorptionHF			= (float)ep.flAirAbsorptionHF		;
 }
 
 void CSoundRender_CoreA::update_listener( const Fvector& P, const Fvector& D, const Fvector& N, float dt )
 {
 	inherited::update_listener(P,D,N,dt);
 
-    A_CHK						(alListener3f		(AL_POSITION,Listener.vPosition.x,Listener.vPosition.y,-Listener.vPosition.z));
-    A_CHK						(alListener3f		(AL_VELOCITY,0.f,0.f,0.f));
-    Fvector	orient[2]			= {{D.x,D.y,-D.z},{N.x,N.y,-N.z}};
-    A_CHK						(alListenerfv		(AL_ORIENTATION,&orient[0].x));
+	if (!Listener.position.similar(P)){
+		Listener.position.set	(P);
+		bListenerMoved			= TRUE;
+	}
+	Listener.orientation[0].set	(D.x,D.y,-D.z);
+	Listener.orientation[1].set	(N.x,N.y,-N.z);
+
+	A_CHK						(alListener3f	(AL_POSITION,Listener.position.x,Listener.position.y,-Listener.position.z));
+    A_CHK						(alListener3f	(AL_VELOCITY,0.f,0.f,0.f));
+    A_CHK						(alListenerfv	(AL_ORIENTATION,&Listener.orientation[0].x));
 }
 
 #ifdef _EDITOR

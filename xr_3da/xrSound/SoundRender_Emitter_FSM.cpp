@@ -125,7 +125,7 @@ void CSoundRender_Emitter::update	(float dt)
 BOOL	CSoundRender_Emitter::update_culling	(float dt)
 {
 	// Check range
-	float	dist		= SoundRender->Listener.vPosition.distance_to	(p_source.position);
+	float	dist		= SoundRender->listener_position().distance_to	(p_source.position);
 	if (dist>p_source.max_distance)										{ smooth_volume = 0; return FALSE; }
 
 	// Calc attenuated volume
@@ -151,7 +151,7 @@ BOOL	CSoundRender_Emitter::update_culling	(float dt)
 
 float	CSoundRender_Emitter::priority				()
 {
-	float	dist		= SoundRender->Listener.vPosition.distance_to	(p_source.position);
+	float	dist		= SoundRender->listener_position().distance_to	(p_source.position);
 	float	att			= p_source.min_distance/(psSoundRolloff*dist);	clamp(att,0.f,1.f);
 	return	smooth_volume*att;
 }

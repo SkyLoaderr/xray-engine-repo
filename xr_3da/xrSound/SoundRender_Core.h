@@ -10,17 +10,6 @@
 class CSoundRender_Core					: public CSound_manager_interface
 {
 protected:
-	struct SListener 
-	{
-		u32				dwSize;
-		Fvector			vPosition;
-		Fvector			vVelocity;
-		Fvector			vOrientFront; 
-		Fvector			vOrientTop; 
-		float			fDistanceFactor;
-		float			fRolloffFactor;
-		float			fDopplerFactor;
-	};
     BOOL								bListenerMoved;
 
 	CSoundRender_Environment			e_current;
@@ -35,7 +24,6 @@ public:
     BOOL								bReady;
 
     WAVEFORMATEX						wfm;
-	SListener							Listener;
 	CTimer								Timer;
 	sound_event*						Handler;
 protected:
@@ -82,6 +70,8 @@ public:
 	virtual void						update_events			( );
 	virtual void						statistic				( CSound_stats&  dest );
 
+	// listener
+	virtual const Fvector&				listener_position		( )=0;
 #ifdef _EDITOR
 	virtual SoundEnvironment_LIB*		get_env_library			()																{ return s_environment; }
 	virtual void						refresh_env_library		();

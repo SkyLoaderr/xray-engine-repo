@@ -308,6 +308,18 @@
 			<File
 				RelativePath="SoundRender_Core_StartStop.cpp">
 			</File>
+			<File
+				RelativePath=".\SoundRender_CoreA.cpp">
+			</File>
+			<File
+				RelativePath=".\SoundRender_CoreA.h">
+			</File>
+			<File
+				RelativePath=".\SoundRender_CoreD.cpp">
+			</File>
+			<File
+				RelativePath=".\SoundRender_CoreD.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Emitter"
@@ -349,6 +361,18 @@
 			</File>
 			<File
 				RelativePath="SoundRender_Target.h">
+			</File>
+			<File
+				RelativePath=".\SoundRender_TargetA.cpp">
+			</File>
+			<File
+				RelativePath=".\SoundRender_TargetA.h">
+			</File>
+			<File
+				RelativePath=".\SoundRender_TargetD.cpp">
+			</File>
+			<File
+				RelativePath=".\SoundRender_TargetD.h">
 			</File>
 		</Filter>
 		<Filter

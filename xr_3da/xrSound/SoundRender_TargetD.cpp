@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#ifndef OPENAL
+
 #include "soundrender_targetD.h"
 #include "soundrender.h"
 #include "soundrender_coreD.h"
@@ -196,3 +198,4 @@ void	CSoundRender_TargetD::fill_block		()
 	R_CHK			(pBuffer->Unlock(ptr1, bytes1, ptr2, bytes2));
 }
 
+#endif

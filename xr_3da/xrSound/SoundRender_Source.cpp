@@ -6,7 +6,7 @@
 
 CSoundRender_Source::CSoundRender_Source	()
 {
-	m_fMinDist		= DS3D_DEFAULTMINDISTANCE;
+	m_fMinDist		= 1.f;
 	m_fMaxDist		= 300.f;
 	m_fVolume		= 1.f;
 	m_uGameType		= 0;

@@ -43,16 +43,6 @@ void CSoundRender_Core::_initialize	(u64 window)
 {
 	Timer.Start			( );
 
-	// Initialize listener data
-	Listener.dwSize				= sizeof(DS3DLISTENER);
-	Listener.vPosition.set		( 0.0f, 0.0f, 0.0f );
-	Listener.vVelocity.set		( 0.0f, 0.0f, 0.0f );
-	Listener.vOrientFront.set	( 0.0f, 0.0f, 1.0f );
-	Listener.vOrientTop.set		( 0.0f, 1.0f, 0.0f );
-	Listener.fDistanceFactor	= 1.0f;
-	Listener.fRolloffFactor		= DS3D_DEFAULTROLLOFFFACTOR;
-	Listener.fDopplerFactor		= DS3D_DEFAULTDOPPLERFACTOR;
-
     // load environment
 	env_load					();
 
@@ -308,17 +298,6 @@ void						CSoundRender_Core::env_apply		()
 void CSoundRender_Core::update_listener( const Fvector& P, const Fvector& D, const Fvector& N, float dt )
 {
     clamp							(dt,EPS_S,1.f/10.f);
-    Listener.vVelocity.sub			(P, Listener.vPosition );
-    Listener.vVelocity.div			(dt);
-    if (!Listener.vPosition.similar(P)){
-        Listener.vPosition.set		(P);
-        bListenerMoved				= TRUE;
-    }
-    //last_pos						= P;
-    Listener.vOrientFront.set		(D);
-    Listener.vOrientTop.set			(N);
-    Listener.fDopplerFactor			= EPS_S;
-    Listener.fRolloffFactor			= psSoundRolloff;
 }
 
 #ifdef _EDITOR

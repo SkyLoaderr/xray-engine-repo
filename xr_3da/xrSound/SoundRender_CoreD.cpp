@@ -112,6 +112,16 @@ void CSoundRender_CoreD::_initialize	(u64 window)
         _RELEASE				(pTempBuf);
     }
 
+	// Initialize listener data
+	Listener.dwSize				= sizeof(DS3DLISTENER);
+	Listener.vPosition.set		( 0.0f, 0.0f, 0.0f );
+	Listener.vVelocity.set		( 0.0f, 0.0f, 0.0f );
+	Listener.vOrientFront.set	( 0.0f, 0.0f, 1.0f );
+	Listener.vOrientTop.set		( 0.0f, 1.0f, 0.0f );
+	Listener.fDistanceFactor	= 1.0f;
+	Listener.fRolloffFactor		= DS3D_DEFAULTROLLOFFFACTOR;
+	Listener.fDopplerFactor		= DS3D_DEFAULTDOPPLERFACTOR;
+
     // inherited initialize
     inherited::_initialize		(window);
 
@@ -185,23 +195,34 @@ void	CSoundRender_CoreD::i_get_eax			(CSound_environment* _E)
     // get all params
     unsigned long total_bytes;
     R_CHK(pExtensions->Get		(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ALLPARAMETERS, NULL, 0, &ep, sizeof(EAXLISTENERPROPERTIES), &total_bytes));
-    E->Room						= ep.lRoom					;
-    E->RoomHF					= ep.lRoomHF				;
-    E->RoomRolloffFactor		= ep.flRoomRolloffFactor	;
-    E->DecayTime			   	= ep.flDecayTime			;
-    E->DecayHFRatio				= ep.flDecayHFRatio			;
-    E->Reflections				= ep.lReflections			;
-    E->ReflectionsDelay			= ep.flReflectionsDelay		;
-    E->Reverb					= ep.lReverb				;
-    E->ReverbDelay				= ep.flReverbDelay			;
-    E->EnvironmentSize			= ep.flEnvironmentSize		;
-    E->EnvironmentDiffusion		= ep.flEnvironmentDiffusion	;
-    E->AirAbsorptionHF			= ep.flAirAbsorptionHF		;
+    E->Room						= (float)ep.lRoom					;
+    E->RoomHF					= (float)ep.lRoomHF					;
+    E->RoomRolloffFactor		= (float)ep.flRoomRolloffFactor		;
+    E->DecayTime			   	= (float)ep.flDecayTime				;
+    E->DecayHFRatio				= (float)ep.flDecayHFRatio			;
+    E->Reflections				= (float)ep.lReflections			;
+    E->ReflectionsDelay			= (float)ep.flReflectionsDelay		;
+    E->Reverb					= (float)ep.lReverb					;
+    E->ReverbDelay				= (float)ep.flReverbDelay			;
+    E->EnvironmentSize			= (float)ep.flEnvironmentSize		;
+    E->EnvironmentDiffusion		= (float)ep.flEnvironmentDiffusion	;
+    E->AirAbsorptionHF			= (float)ep.flAirAbsorptionHF		;
 }
 
 void CSoundRender_CoreD::update_listener( const Fvector& P, const Fvector& D, const Fvector& N, float dt )
 {
 	inherited::update_listener(P,D,N,dt);
+	Listener.vVelocity.sub			(P, Listener.vPosition );
+	Listener.vVelocity.div			(dt);
+	if (!Listener.vPosition.similar(P)){
+		Listener.vPosition.set		(P);
+		bListenerMoved				= TRUE;
+	}
+	//last_pos						= P;
+	Listener.vOrientFront.set		(D);
+	Listener.vOrientTop.set			(N);
+	Listener.fDopplerFactor			= EPS_S;
+	Listener.fRolloffFactor			= psSoundRolloff;
 	// apply listener params
     pListener->SetAllParameters		((DS3DLISTENER*)&Listener, DS3D_DEFERRED );
     // commit deffered settings

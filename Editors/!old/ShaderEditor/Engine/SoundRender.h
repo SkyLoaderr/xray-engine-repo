@@ -20,11 +20,4 @@ const	u32		sdef_env_version		= 4;									// current version of env-def
 const	u32		sdef_level_version		= 1;									// current version of level-def
 const	u32		sdef_event_pulse		= 500;									// ms
 
-//A
-#include <AL/al.h>
-#include <AL/alc.h>
-#include <AL/alut.h>
-
-#define A_CHK(expr) { expr; ALCenum error=alGetError(); VERIFY2(error==AL_NO_ERROR,(LPCSTR)alGetString(error)); }
-
 #endif

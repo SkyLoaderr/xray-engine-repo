@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#ifdef OPENAL
+
 #include "soundrender_TargetA.h"
 #include "soundrender_emitter.h"
 #include "soundrender_source.h"
@@ -140,3 +142,4 @@ void	CSoundRender_TargetA::fill_block	(ALuint BufferID)
     A_CHK				(alBufferData(BufferID, format, &buf_temp_data.front(), buf_block, wfx.nSamplesPerSec));
 }
 
+#endif
