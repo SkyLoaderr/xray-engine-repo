@@ -88,9 +88,11 @@ public:
 	{	vFootCenter.set	(C); vFootExt.set	(E); 	}
 	void				SetCrashSpeeds	(float min, float max)
 	{	fMinCrashSpeed	= min; 	fMaxCrashSpeed	= max; 	}
-	void				SetPosition	(Fvector &P)
+	void				SetPosition		(Fvector &P)
 	{	vPosition.set	(P); 	}
-	void				GetPosition	(Fvector &P)
+	void				SetPosition		(float x, float y, float z)
+	{	vPosition.set	(x,y,z); 	}
+	void				GetPosition		(Fvector &P)
 	{	P.set			(vPosition); }
 	void				GetBoundingSphere(Fvector &P, float &R)
 	{
