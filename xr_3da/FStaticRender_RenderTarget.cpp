@@ -146,7 +146,6 @@ void CRenderTarget::End		()
 				Device.Primitive.setVertices	(pVS->dwHandle, pVS->dwStride,Device.Streams.Vertex.Buffer());
 				Device.Primitive.setIndices		(Offset+4, Device.Streams.QuadIB);
 				Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
-				UPDATEC							(4,2,1);
 			}
 		} else {
 			// Draw COLOR
@@ -154,7 +153,6 @@ void CRenderTarget::End		()
 			Device.Primitive.setVertices	(pVS->dwHandle,pVS->dwStride,Device.Streams.Vertex.Buffer());
 			Device.Primitive.setIndices		(Offset+4,Device.Streams.QuadIB);
 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
-			UPDATEC							(4,2,1);
 		}
 	}
 }

@@ -183,7 +183,6 @@ void CDetailManager::hw_Render()
 				DWORD dwCNT_prims				= (dwBatch * Object.number_indices)/3;
 				Device.Primitive.setIndices		(vOffset, hw_IB);
 				Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,dwCNT_verts,iOffset,dwCNT_prims);
-				UPDATEC							(dwCNT_verts,dwCNT_prims,2);
 			}
 			
 			// Clean up

@@ -81,6 +81,5 @@ void CUIDynamicItem::Render(float angle)
 	Device.Primitive.setVertices	(hVS->dwHandle,hVS->dwStride,Device.Streams.Vertex.Buffer());
 	Device.Primitive.setIndices		(vOffset,Device.Streams.QuadIB);
 	Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,item_cnt*4,0,item_cnt*2);
-	UPDATEC							(item_cnt*4,item_cnt*2,1);
 }
 //--------------------------------------------------------------------

@@ -373,7 +373,6 @@ void	CEffect_Rain::Render	()
 					_IS.Unlock						(iCount_Lock);
 					Device.Primitive.setIndices		(v_offset, _IS.Buffer());
 					Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,i_offset,dwNumPrimitives);
-					UPDATEC							(vCount_Lock,dwNumPrimitives,2);
 					
 					v_ptr							= (CDetail::fvfVertexOut*) Device.Streams.Vertex.Lock	(vCount_Lock, VS_Drops->dwStride, v_offset);
 					i_ptr							= _IS.Lock												(iCount_Lock, i_offset);
@@ -394,7 +393,6 @@ void	CEffect_Rain::Render	()
 		if (pcount)	{
 			Device.Primitive.setIndices		(v_offset, _IS.Buffer());
 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,i_offset,dwNumPrimitives);
-			UPDATEC							(vCount_Lock,dwNumPrimitives,2);
 		}
 	}
 }

@@ -78,7 +78,6 @@ void CHitMarker::Render()
 			Device.Primitive.setVertices(hVS->dwHandle,hVS->dwStride,Device.Streams.Vertex.Buffer());
 			Device.Primitive.setIndices	(0,0);
 			Device.Primitive.Render		(D3DPT_TRIANGLELIST,dwOffset,Count/3);
-			UPDATEC						(Count,Count/3,1);
 		}
 	}
 }
