@@ -47,6 +47,7 @@ void CUICharacterInfo::Init(int x, int y, int width, int height, const char* xml
 	{
 		xml_init.InitStatic(uiXml, "icon_static", 0, &UIIcon);
 		UIIcon.ClipperOn();
+//.		UIIcon.SetStretchTexture(true);
 		UIIcon.Show(true);
 		UIIcon.Enable(true);
 	}
@@ -57,13 +58,10 @@ void CUICharacterInfo::Init(int x, int y, int width, int height, const char* xml
 	}
 
 	AttachChild(&UIName);
-	if(uiXml.NavigateToNode("name_static", 0))
-	{
+	if(uiXml.NavigateToNode("name_static", 0)){
 		xml_init.InitStatic(uiXml, "name_static", 0, &UIName);
 		UIName.SetElipsis(CUIStatic::eepEnd, 0);
-	}
-	else
-	{
+	}else{
 		UIName.Show(false);
 		UIName.Enable(false);
 	}

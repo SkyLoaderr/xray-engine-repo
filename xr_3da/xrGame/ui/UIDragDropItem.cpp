@@ -244,25 +244,13 @@ void CUIDragDropItem::Update()
 	//вызвать дополнительную функцию обновления
 	if(m_pCustomUpdateProc) (*m_pCustomUpdateProc)(this);
 }
-
 //////////////////////////////////////////////////////////////////////////
 
 void CUIDragDropItem::Rescale(float scale_x, float scale_y)
 {
-	float offsetCorrection = 0.0f;//scale * 2;
-//.	SetTextureScaleXY(scale_x, scale_y);
-
-	int newW	= static_cast<int>(GetGridWidth() * scale_x * (INV_GRID_WIDTH + offsetCorrection));
-	int newH	= static_cast<int>(GetGridHeight() * scale_y * (INV_GRID_HEIGHT + offsetCorrection));
-	int deltaW	= (GetWndRect().right - GetWndRect().left - newW) / 2;
-	int deltaH	= (GetWndRect().bottom - GetWndRect().top - newH) / 2;
-
-	SetWidth(newW);
-	SetHeight(newH);
-//.	MoveWndDelta(deltaW,deltaH);
-//	SetWndPos(GetWndRect().left + deltaW, GetWndRect().top + deltaH);
+	SetWidth	(iFloor(GetGridWidth() * scale_x * INV_GRID_WIDTH));
+	SetHeight	(iFloor(GetGridHeight() * scale_y * INV_GRID_HEIGHT));
 }
-
 //////////////////////////////////////////////////////////////////////////
 
 void CUIDragDropItem::Highlight(bool on)

@@ -27,20 +27,17 @@ void CUIOutfitSlot::Init(int x, int y, int width, int height)
 	inherited::Init(x, y, width, height);
 	
 	inherited::AttachChild(&UIOutfitIcon);
-	UIOutfitIcon.Init(0,0,width,height);
+	UIOutfitIcon.Init				(0,0,width,height);
 
-	m_iNoOutfitX = pSettings->r_u32("without_outfit", "full_scale_icon_x");
-	m_iNoOutfitY = pSettings->r_u32("without_outfit", "full_scale_icon_y");
+	m_iNoOutfitX					= pSettings->r_u32("without_outfit", "full_scale_icon_x");
+	m_iNoOutfitY					= pSettings->r_u32("without_outfit", "full_scale_icon_y");
 
-	SetOriginalOutfit();
+	SetOriginalOutfit				();
 
-	// Немного ублюдочный способ прорескейлить текстуру иконки персонажа, чтобы изображение
-	// полностью влазило в статик контрол. Коэфициент подобран методом тыка. :( Других способов
-	// пока не вижу.
-	UIOutfitIcon.SetTextureScaleXY(0.64f,0.64f);
-	UIOutfitIcon.Show(true);
-	UIOutfitIcon.Enable(false);
-	UIOutfitIcon.ClipperOn();
+	UIOutfitIcon.SetStretchTexture	(true);
+	UIOutfitIcon.Show				(true);
+	UIOutfitIcon.Enable				(false);
+	UIOutfitIcon.ClipperOn			();
 }
 
 void CUIOutfitSlot::AttachChild(CUIWindow *pChild)

@@ -82,7 +82,6 @@ void CUIInventoryWnd::Init()
 	AttachChild(&UIStaticBottom);
 	UIStaticBottom.Init("ui\\ui_bottom_background", 0, UI_BASE_HEIGHT-32, UI_BASE_WIDTH,32);
 
-
 	AttachChild(&UIStaticBelt);
 	xml_init.InitStatic(uiXml, "static", 0, &UIStaticBelt);
 	UIStaticBelt.SetText(*string_table("belt"));
@@ -150,7 +149,6 @@ void CUIInventoryWnd::Init()
 	//Элементы автоматического добавления
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
 
-
 	//окошко для диалога параметров сна
 	AttachChild(&UISleepWnd);
 	xml_init.InitStatic(uiXml, "sleep_window", 0, &UISleepWnd);
@@ -188,7 +186,6 @@ void CUIInventoryWnd::Init()
 	AttachChild(&UIOutfitSlot);
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 7, &UIOutfitSlot);
 	UIOutfitSlot.BlockCustomPlacement();
-
 
 	UITopList[0].SetCheckProc(SlotProc0);
 	UITopList[1].SetCheckProc(SlotProc1);
