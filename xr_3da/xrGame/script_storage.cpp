@@ -446,7 +446,7 @@ void CScriptStorage::print_error(CLuaVirtualMachine *L, int iErrorCode)
 	}
 
 #ifndef ENGINE_BUILD
-	ai().script_engine().script_stack_tracker().print_error(L);
+	ai().script_engine().script_stack_tracker().print_stack(L);
 #endif
 }
 

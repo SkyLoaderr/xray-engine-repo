@@ -15,6 +15,7 @@ CScriptEngine::CScriptEngine	()
 	lua_setgcthreshold		(lua(),64*1024);
 	m_current_thread		= 0;
 	m_stack_level			= 0;
+	m_reload_modules		= false;
 }
 
 CScriptEngine::~CScriptEngine			()
@@ -137,21 +138,15 @@ void CScriptEngine::load_common_scripts()
 void CScriptEngine::process	()
 {
 	string256					S,S1;
-	while (!m_load_queue.empty()) {
-//		print_table				(lua(),"_G");
-//		print_stack				(lua());
+	for (u32 i=0, n=m_load_queue.size(); !m_load_queue.empty(); ++i) {
 		LPSTR					S2 = m_load_queue.front();
 		m_load_queue.pop_front	();
-		if (!xr_strlen(S2) || !xr_strcmp(S2,"_G") || !namespace_loaded(S2)) {
+		if (!xr_strlen(S2) || !xr_strcmp(S2,"_G") || (m_reload_modules && i<n) || !namespace_loaded(S2)) {
 			FS.update_path		(S,"$game_scripts$",strconcat(S1,S2,".script"));
 			Msg					("* loading script %s",S1);
 			load_file			(S,true);
 		}
-
-
 		xr_free					(S2);
-		
-//		print_table				(lua(),"_G");
-//		print_stack				(lua());
 	}
+	m_reload_modules			= false;
 }

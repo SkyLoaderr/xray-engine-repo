@@ -27,6 +27,7 @@ protected:
 	xr_deque<LPSTR>				m_load_queue;
 	CScriptStackTracker 		*m_current_thread;
 	int							m_stack_level;
+	bool						m_reload_modules;
 
 protected:
 			void				export_globals				();
@@ -66,6 +67,7 @@ public:
 	IC		void				set_current_thread			(CScriptStackTracker *new_thread);
 	IC		CScriptStackTracker	*current_thread				();
 	IC		CScriptStackTracker	&script_stack_tracker		();
+	IC		void				reload_modules				(bool flag);
 };
 
 #include "script_engine_inline.h"

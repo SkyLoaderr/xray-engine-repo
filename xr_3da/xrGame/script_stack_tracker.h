@@ -25,7 +25,7 @@ public:
 	IC							CScriptStackTracker		();
 	virtual						~CScriptStackTracker	();
 			void				script_hook				(CLuaVirtualMachine *L, lua_Debug *dbg);
-			void				print_error				(CLuaVirtualMachine *L);
+			void				print_stack				(CLuaVirtualMachine *L);
 	IC		CLuaVirtualMachine	*lua					();
 };
 

@@ -42,3 +42,9 @@ IC	CScriptStackTracker	&CScriptEngine::script_stack_tracker	()
 		return								(*this);
 	return									(*current_thread());
 }
+
+IC	void CScriptEngine::reload_modules		(bool flag)
+{
+	m_reload_modules						= flag;
+}
+

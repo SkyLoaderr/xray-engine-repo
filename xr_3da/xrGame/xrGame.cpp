@@ -748,8 +748,10 @@ public:
 		if (!xr_strlen(S))
 			Log("* Specify script name!");
 		else {
-			if (ai().script_engine().script_processor("level"))
+			if (ai().script_engine().script_processor("level")) {
 				ai().script_engine().script_processor("level")->add_script(S);
+				ai().script_engine().reload_modules(true);
+			}
 		}
 	}
 };
@@ -761,8 +763,10 @@ public:
 		if (!xr_strlen(args))
 			Log("* Specify string to run!");
 		else {
-			if (ai().script_engine().script_processor("level"))
+			if (ai().script_engine().script_processor("level")) {
 				ai().script_engine().script_processor("level")->add_string(args);
+				ai().script_engine().reload_modules(true);
+			}
 		}
 	}
 };

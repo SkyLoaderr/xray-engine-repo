@@ -52,7 +52,7 @@ void CScriptStackTracker::script_hook	(CLuaVirtualMachine *L, lua_Debug *dbg)
 	}
 }
 
-void CScriptStackTracker::print_error	(CLuaVirtualMachine *L)
+void CScriptStackTracker::print_stack	(CLuaVirtualMachine *L)
 {
 	VERIFY					(L && (m_virtual_machine == L));
 
