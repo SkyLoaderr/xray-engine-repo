@@ -609,7 +609,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 
 	//m_PhysicMovementControl->SetPosition		(Position());
 
-	m_PhysicMovementControl->Calculate			(_accel,0,jump,dt,false);
+	m_PhysicMovementControl->Calculate			(accel,0,jump,dt,false);
 	m_PhysicMovementControl->GetPosition		(Position());
 	m_PhysicMovementControl->bSleep				=false;
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -763,8 +763,6 @@ void CActor::UpdateCL()
 	//-------------------------------------------------------------------
 }
 
-
-
 void CActor::shedule_Update	(u32 DT)
 {
 	setSVU(OnServer());
@@ -825,13 +823,12 @@ void CActor::shedule_Update	(u32 DT)
 		if (NET.size())
 		{
 //			NET_Last = NET.back();
-
+			mstate_real = mstate_wishful = NET_Last.mstate;
 			g_sv_Orientate				(NET_Last.mstate,dt			);
-			mstate_real = NET_Last.mstate;
 			g_Orientate					(NET_Last.mstate,dt			);
 			g_Physics					(NET_Last.p_accel,Jump,dt	);
 			g_cl_ValidateMState			(dt,mstate_wishful);
-			g_SetAnimation				(NET_Last.mstate);
+			g_SetAnimation				(mstate_real);
 
 			if (NET_Last.mstate & mcCrouch)
 				m_PhysicMovementControl->ActivateBox(1, true);

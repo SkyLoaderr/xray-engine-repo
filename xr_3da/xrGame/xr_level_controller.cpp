@@ -15,6 +15,7 @@ _keybind  keybind[]		= {
 	{ "down",			kDOWN			},
 	{ "jump",			kJUMP			},	
 	{ "crouch",			kCROUCH			},
+	{ "crouch_toggle",	kCROUCH_TOGGLE	},
 	{ "accel",			kACCEL			},
 
 	{ "forward",		kFWD			},	

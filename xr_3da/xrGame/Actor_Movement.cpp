@@ -98,27 +98,22 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 		}
 	}
 	if(m_PhysicMovementControl->Environment()==CPHMovementControl::peAtWall)
-
+	{
 		mstate_real				|=mcClimb;
-
+	}
 	else
 	{
 		if (mstate_real & mcClimb)
 		{
-			if (inventory().GetActiveSlot() == NO_ACTIVE_SLOT)
-			{
-
-				NET_Packet	P;
-				u_EventGen(P, GEG_PLAYER_RESTORE_CURRENT_SLOT, ID());
-				u_EventSend(P);
-			};
+			RestoreHidedWeapon();
 		}
 		mstate_real				&=~mcClimb;		
 	};
 
 	if(!CanAccelerate()&&isAccelerated(mstate_real))
-
+	{
 		mstate_real				^=mcAccel;
+	};		
 }
 
 void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Jump, float dt)
@@ -226,22 +221,11 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 	{
 		if (mstate_real&mcAnyMove)
 		{
-			if (inventory().ActiveItem()&&inventory().ActiveItem()->HandDependence()==hd2Hand)
-			{
-				NET_Packet	P;
-				u_EventGen(P, GEG_PLAYER_DEACTIVATE_CURRENT_SLOT, ID());
-				u_EventSend(P);
-			};
+			HideCurrentWeapon();
 		}
 		else
 		{
-			if (inventory().GetActiveSlot() == NO_ACTIVE_SLOT)
-			{
-
-				NET_Packet	P;
-				u_EventGen(P, GEG_PLAYER_RESTORE_CURRENT_SLOT, ID());
-				u_EventSend(P);
-			};
+			RestoreHidedWeapon();
 		};
 	};
 	/*

@@ -38,6 +38,13 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	case kBACK:		mstate_wishful |= mcBack;					break;
 	case kJUMP:		mstate_wishful |= mcJump;					break;
 	case kCROUCH:	mstate_wishful |= mcCrouch;					break;
+	case kCROUCH_TOGGLE:	
+		{
+			if (mstate_wishful & mcCrouch)
+				mstate_wishful &=~mcCrouch;
+			else
+				mstate_wishful |= mcCrouch;					
+		}break;
 
 	case kCAM_1:	cam_Set			(eacFirstEye);				break;
 	case kCAM_2:	cam_Set			(eacLookAt);				break;

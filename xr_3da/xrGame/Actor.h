@@ -585,6 +585,9 @@ protected:
 #ifdef DEBUG
 		friend class CLevelGraph;
 #endif
+		virtual void					HideCurrentWeapon		();
+		virtual	void					RestoreHidedWeapon		();
+
 
 };
 

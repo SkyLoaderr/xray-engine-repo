@@ -61,6 +61,8 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	P.w_sdir			(v);//m_PhysicMovementControl.GetVelocity());
 	P.w_float_q16		(fArmor,-500,1000);
 
+
+
 	P.w_u8				(u8(inventory().GetActiveSlot()));
 
 	/////////////////////////////////////////////////
@@ -1455,3 +1457,24 @@ void	CActor::OnRender_Network()
 };
 
 #endif
+
+void		CActor::HideCurrentWeapon		()
+{
+	if (inventory().ActiveItem()&&inventory().ActiveItem()->HandDependence()==hd2Hand)
+	{
+		NET_Packet	P;
+		u_EventGen(P, GEG_PLAYER_DEACTIVATE_CURRENT_SLOT, ID());
+		u_EventSend(P);
+	};
+};
+
+void		CActor::RestoreHidedWeapon		()
+{
+	if (inventory().GetActiveSlot() == NO_ACTIVE_SLOT)
+	{
+
+		NET_Packet	P;
+		u_EventGen(P, GEG_PLAYER_RESTORE_CURRENT_SLOT, ID());
+		u_EventSend(P);
+	};
+}
