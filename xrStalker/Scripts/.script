@@ -756,12 +756,12 @@ end
 -- min_radius от текущей позиции(если это получится). center_id - центр позиции, вокруг которой живем,
 -- position_id - тукущая позиция, radius - в каком радиусе выбирать точку, min_radius - минимальное расстояние, от текущей позиции до новой точки.
 function new_point(center_id, position_id,radius, min_radius)
-    local dir = vector():set(math.random(-1000, 1000)/1000, 0, math.random(-1000, 1000)/1000)
+    local dir = vector():set(math.random(-1000, 1000)/1000.0, 0.0001, math.random(-1000, 1000)/1000.0)
     local pos = level.vertex_in_direction(center_id, dir, radius)
     local i   = 1
 
     while(level.vertex_position(position_id):distance_to(level.vertex_position(pos) ) < min_radius and i < 20) do
-        dir = vector():set(math.random(-1000, 1000)/1000, 0, math.random(-1000, 1000)/1000)
+        dir = vector():set(math.random(-1000, 1000)/1000.0, 0.0001, math.random(-1000, 1000)/1000.0)
         pos = level.vertex_in_direction(center_id, dir, radius)
         i   = i + 1
     end
