@@ -119,6 +119,13 @@ LPCSTR	CShaderManager::DBG_GetMatrixName	(CMatrix* T)
 		if (I->second == T)	return I->first;
 	return 0;
 }
+void	CShaderManager::ED_UpdateMatrix		(LPCSTR Name, CMatrix* data)
+{
+	CMatrix*	M	= _CreateMatrix	(Name);
+	DWORD		ref = M->dwReference;
+	*M				= *data;
+	M->dwReference	= ref-1;
+}
 //--------------------------------------------------------------------------------------------------------------
 CConstant*	CShaderManager::_CreateConstant	(LPCSTR Name) 
 {
@@ -152,18 +159,39 @@ LPCSTR	CShaderManager::DBG_GetConstantName	(CConstant* T)
 	R_ASSERT(T);
 	for (map<LPSTR,CConstant*,str_pred>::iterator I=constants.begin(); I!=constants.end(); I++)
 		if (I->second == T)	return I->first;
-	return 0;
+		return 0;
+}
+void	CShaderManager::ED_UpdateConstant	(LPCSTR Name, CConstant* data)
+{
+	CConstant*	C	= _CreateConstant	(Name);
+	DWORD		ref = C->dwReference;
+	*C				= *data;
+	C->dwReference	= ref-1;
 }
 //--------------------------------------------------------------------------------------------------------------
 CBlender* CShaderManager::_GetBlender		(LPCSTR Name) 
 {
 	R_ASSERT(Name && Name[0]);
-
+	
 	LPSTR N = LPSTR(Name);
 	map<LPSTR,CBlender*,str_pred>::iterator I = blenders.find	(N);
 	if (I==blenders.end())	Device.Fatal("Shader '%s' not found in library.",Name);
 	else					return I->second;
 }
+
+void	CShaderManager::ED_UpdateBlender	(LPCSTR Name, CBlender* data)
+{
+	LPSTR N = LPSTR(Name);
+	map<LPSTR,CBlender*,str_pred>::iterator I = blenders.find	(N);
+	if (I!=blenders.end())	{
+		R_ASSERT	(data->getDescription().CLS == I->second->getDescription().CLS);
+		_DELETE		(I->second);
+		I->second	= data;
+	} else {
+		blenders.insert	(make_pair(strdup(Name),data));
+	}
+}
+
 //--------------------------------------------------------------------------------------------------------------
 STextureList*	CShaderManager::_CreateTextureList(STextureList& L)
 {
