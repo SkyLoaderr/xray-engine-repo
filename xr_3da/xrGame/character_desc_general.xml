@@ -48,7 +48,11 @@
 		<map_icon x="2" y="5"></map_icon>
 
 		<team>Actor</team>
-
+		<supplies>
+			[spawn] \n
+			wpn_ak74 = 2, 1 ,1, 1 \n
+			ammo_7.62x54_7h1 = 1 \n
+		</supplies>
 		<class>actor</class>
 		<community>stalker</community>
 	
