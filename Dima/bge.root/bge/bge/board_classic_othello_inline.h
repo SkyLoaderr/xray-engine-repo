@@ -72,7 +72,7 @@ IC	void CBoardClassicOthello::undo_move		()
 	int									flip_count = (int)stack_cell.m_flip_count;
 	m_passed							= stack_cell.m_passed;
 	m_flip_stack.pop					();
-	m_color_to_move						= opponent_color;
+	m_color_to_move						= opponent_color == BLACK ? WHITE : BLACK;
 	
 	if (flip_count) {
 		VERIFY							(!m_flip_stack.empty());
