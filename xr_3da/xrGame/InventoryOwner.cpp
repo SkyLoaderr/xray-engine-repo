@@ -18,10 +18,11 @@
 #include "script_callback.h"
 #include "AI_PhraseDialogManager.h"
 #include "level.h"
+#include "game_base_space.h"
 #include "script_space.h"
 #include "PhraseDialog.h"
-
 #include "xrServer_Objects_ALife_Monsters.h"
+
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -88,37 +89,45 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	CGameObject			*pThis = smart_cast<CGameObject*>(this);
 	if(!pThis) return FALSE;
 
-	//-------------------------------------
-	known_info_registry.init(pThis->ID());
-	CharacterInfo().Relations().Init(pThis->ID());
-	//-------------------------------------
-
-
-
-	CSE_Abstract* E	= (CSE_Abstract*)(DC);
-	CSE_ALifeTraderAbstract* pTrader = NULL;
-	if(E) pTrader = smart_cast<CSE_ALifeTraderAbstract*>(E);
-	if(!pTrader) return FALSE;
-
-	R_ASSERT(NO_PROFILE != pTrader->character_profile());
-
-	CharacterInfo().Load(pTrader->character_profile());
-	CharacterInfo().InitSpecificCharacter (pTrader->specific_character());
-
-	CAI_PhraseDialogManager* dialog_manager = smart_cast<CAI_PhraseDialogManager*>(this);
-	if(dialog_manager && CharacterInfo().StartDialog() != NO_PHRASE_DIALOG)
+	if (GameID() == GAME_SINGLE)
 	{
-		dialog_manager->SetStartDialog(CPhraseDialog::IndexToId(CharacterInfo().StartDialog()));
-		dialog_manager->SetDefaultStartDialog(CPhraseDialog::IndexToId(CharacterInfo().StartDialog()));
+		//-------------------------------------
+		known_info_registry.init(pThis->ID());
+		CharacterInfo().Relations().Init(pThis->ID());
+		//-------------------------------------
+
+		CSE_Abstract* E	= (CSE_Abstract*)(DC);
+		CSE_ALifeTraderAbstract* pTrader = NULL;
+		if(E) pTrader = smart_cast<CSE_ALifeTraderAbstract*>(E);
+		if(!pTrader) return FALSE;
+
+		R_ASSERT(NO_PROFILE != pTrader->character_profile());
+
+		CharacterInfo().Load(pTrader->character_profile());
+		CharacterInfo().InitSpecificCharacter (pTrader->specific_character());
+
+		CAI_PhraseDialogManager* dialog_manager = smart_cast<CAI_PhraseDialogManager*>(this);
+		if(dialog_manager && CharacterInfo().StartDialog() != NO_PHRASE_DIALOG)
+		{
+			dialog_manager->SetStartDialog(CPhraseDialog::IndexToId(CharacterInfo().StartDialog()));
+			dialog_manager->SetDefaultStartDialog(CPhraseDialog::IndexToId(CharacterInfo().StartDialog()));
+		}
+	}
+	else
+	{
+		CharacterInfo().m_SpecificCharacter.Load(0);
+		CharacterInfo().InitSpecificCharacter (0);
+		CharacterInfo().m_SpecificCharacter.data()->m_sGameName = *pThis->cName();
+		CEntity* pEntity = dynamic_cast<CEntity*>(pThis); VERIFY(pEntity);
+		CharacterInfo().m_SpecificCharacter.data()->m_iIconX = pEntity->GetTradeIconX();
+		CharacterInfo().m_SpecificCharacter.data()->m_iIconY = pEntity->GetTradeIconY();
+
+		CharacterInfo().m_SpecificCharacter.data()->m_iMapIconX = pEntity->GetMapIconX();
+		CharacterInfo().m_SpecificCharacter.data()->m_iMapIconY = pEntity->GetMapIconY();
 	}
 	
 	if(!pThis->Local())  return TRUE;
 
-#ifdef DEBUG
-	//CSE_Abstract			*E	= (CSE_Abstract*)(DC);
-	CSE_ALifeDynamicObject	*dynamic_object = smart_cast<CSE_ALifeDynamicObject*>(E);
-	VERIFY					(dynamic_object);
-#endif
 
 	return TRUE;
 }

@@ -55,7 +55,7 @@ struct SSpecificCharacterData : CSharedResource
 	bool m_bDefaultForCommunity;
 };
 
-
+class CInventoryOwner;
 class CCharacterInfo;
 class CSE_ALifeTraderAbstract;
 
@@ -68,6 +68,7 @@ private:
 	typedef CXML_IdToIndex	<SPECIFIC_CHARACTER_ID, SPECIFIC_CHARACTER_INDEX, CSpecificCharacter>	id_to_index;
 
 	friend id_to_index;
+	friend CInventoryOwner;
 	friend CCharacterInfo;
 	friend CSE_ALifeTraderAbstract;
 public:

@@ -107,8 +107,13 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 }
 
 #ifdef XRGAME_EXPORTS
+#include "game_base_space.h"
+#include "Level.h"
+
 SPECIFIC_CHARACTER_INDEX CSE_ALifeTraderAbstract::specific_character()
 {
+	if (GameID() != GAME_SINGLE) return m_iSpecificCharacter;
+
 	if(NO_SPECIFIC_CHARACTER != m_iSpecificCharacter) 
 		return m_iSpecificCharacter;
 
