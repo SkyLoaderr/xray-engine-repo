@@ -53,6 +53,11 @@ function options_base_tab:InitControls(caption, x_pos, y_pos)
 	-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< CODE
 	
 	-- CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	-- init self position and size
+	self:Init(self.main_rect.x, 
+			  self.main_rect.y,
+			  self.main_rect.width,
+			  self.main_rect.height)
 	-- MAIN FRAME WINDOW
 	self.main_frame = CUIFrameWindow()
 	self.main_frame:SetAutoDelete(true)
