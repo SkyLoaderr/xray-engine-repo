@@ -1005,6 +1005,9 @@
 				<File
 					RelativePath=".\script_process.h">
 				</File>
+				<File
+					RelativePath=".\script_process_inline.h">
+				</File>
 			</Filter>
 			<Filter
 				Name="ScriptThread"
