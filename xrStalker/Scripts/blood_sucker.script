@@ -596,6 +596,7 @@ function CBloodsuckerBox:__init(_npc) super(_npc)
 	local ini 	 = self.npc:spawn_ini()
 	self.box     = level.object(ini:r_string("blood_sucker", "box"))
     self.zone    = level.object(ini:r_string("blood_sucker", "zone"))
+	self.dir	 = ini:r_vector("blood_sucker", "direction")
     self.is_box  = true
     self.enter	 = false
     self.impulse = ini:r_float("blood_sucker", "impulse")
@@ -625,9 +626,7 @@ function CBloodsuckerBox:execute()
 	    self.hit             = hit()
 	    self.hit.power       = 1
 	    self.hit.impulse     = self.impulse
-	    local dir            = level.actor():position():sub(self.box:position()):normalize()
-	    dir.y                = 10
-	    self.hit.direction   = dir
+	    self.hit.direction   = self.dir
 	    self.hit.bone        = "bone01"
 	    self.hit.draftsman   = self.npc
 	    self.hit.type        = hit.wound
