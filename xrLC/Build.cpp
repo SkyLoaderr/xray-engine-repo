@@ -77,11 +77,11 @@ CBuild::CBuild(b_transfer * L)
 		}
 
 		// transfer TC
-			UVpoint uv1,uv2,uv3;
-			uv1.set(B->t[0].tu,B->t[0].tv);
-			uv2.set(B->t[1].tu,B->t[1].tv);
-			uv3.set(B->t[2].tu,B->t[2].tv);
-			F->AddChannel( uv1, uv2, uv3 );
+		UVpoint uv1,uv2,uv3;
+		uv1.set(B->t[0].tu,B->t[0].tv);
+		uv2.set(B->t[1].tu,B->t[1].tv);
+		uv3.set(B->t[2].tu,B->t[2].tv);
+		F->AddChannel( uv1, uv2, uv3 );
 	}
 	Progress(p_total+=p_cost);
 	Msg("%d faces processed.",g_faces.size());

@@ -11,19 +11,16 @@ void CBuild::Tesselate	()
 	while (bTesselate)	
 	{
 		bTesselate		= FALSE;
-		for (DWORD I=0; I<g_faces.size(); I++)
+		for (int I=0; I<int(g_faces.size()); I++)
 		{
-			Face* F = g_faces[I];
+			Face* F				= g_faces[I];
 			
 			// Iterate on edges - select longest
 			float	max_len		= -1;
 			int		max_id		= -1;
 			for (DWORD e=0; e<3; e++)
 			{
-				Vertex			*vA,*vB;
-				F->EdgeVerts	(e,&vA,&vB);
-				
-				float len		= vA->P.distance_to(vB->P);
+				float len		= F->EdgeLen(e);
 				if (len>max_len)	
 				{
 					max_len = len;
@@ -36,7 +33,30 @@ void CBuild::Tesselate	()
 			bTesselate			= TRUE;
 			cnt_splits	++;
 
-			// 
+			// indices
+			int id1				= edge2idx[e][0];
+			int id2				= edge2idx[e][1];
+			int idB				= 3-(id1+id2);
+
+			// lerp
+			Vertex*		V		= new Vertex;
+			V->P.lerp			(F->v[id1]->P, F->v[id2]->P, .5f);
+			UVpoint		UV;
+			UV.averageA			(F->tc.front()[id1],F->tc.front()[id2]);
+
+			// F1
+			Face* F1			= new Face;
+			F1->dwMaterial		= F->dwMaterial;
+			F1->SetVertices		(F->v[idB],F->v[id1],V);
+			F1->AddChannel		(F->tc.front()[idB],F->tc.front()[id1],UV);
+			
+			// F2
+			Face* F2			= new Face;
+			F2->dwMaterial		= F->dwMaterial;
+			F2->SetVertices		(F->v[idB],V,F->v[id2]);
+			F2->AddChannel		(F->tc.front()[idB],UV,F->tc.front()[id2]);
+
+			// Destroy old face
 		}
 	}
 }
