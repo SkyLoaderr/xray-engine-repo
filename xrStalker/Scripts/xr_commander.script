@@ -327,7 +327,8 @@ function action_commander:exec_look_box()
     if self.box then
         if self.time_end then
             if self.time_end <= device():time_global() then
-                if not self.object:see( self.box ) then
+--                if not self.object:see( self.box ) then
+                if self.object:position():distance_to_sqr( self.box:position() ) > 25 then
                     printf( "[commander] : ящик украли! “ревога!!!" )
                     self.act     = box_alarm
                     self.pos     = nil
@@ -482,7 +483,7 @@ function action_commander:exec_look_outside()
                 self.object:set_item( object.idle, nil )
 
                 self.object:add_animation( "komandir_3", true )
-                self.object:add_animation( "komandir_2", true )
+--                self.object:add_animation( "komandir_2", true )
 
                 self.object:play_sound( snd_look_outside, 1, 0 )
 
@@ -535,7 +536,10 @@ function action_commander:exec_radio_talk()
 
         if not xr_state.change_state( self.object, 0 ) then
             self.object:clear_animations()
---            self:stop()
+
+            if self.last_act == walk_outside then
+                self:stop()
+            end
 
             self:radio()
 
