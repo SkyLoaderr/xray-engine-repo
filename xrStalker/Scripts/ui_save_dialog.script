@@ -268,7 +268,7 @@ function save_dialog:AddItemToList(item)
 	local parse = true
 	
 	list_box:AddText(item, shift, GetARGB(255,0,255,255), GetFontLetterica25(), parse)
-	
+	printf("------------------")
 end
 
 function save_dialog:ItemIsInList(item)
