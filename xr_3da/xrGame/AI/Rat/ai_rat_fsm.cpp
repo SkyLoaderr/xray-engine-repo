@@ -738,6 +738,9 @@ void CAI_Rat::EatCorp()
 
 	SelectCorp(m_Enemy);
 
+	if (!m_Enemy.Enemy)
+		m_fGoalChangeTime = m_fGoalChangeDelta+m_fGoalChangeDelta*::Random.randF(-0.5f,0.5f);
+
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!m_Enemy.Enemy || (m_fMorale < m_fMoraleNormalValue));
 
 	vfSaveEnemy();
@@ -782,8 +785,12 @@ void CAI_Rat::EatCorp()
 	vfSetFire(false,Group);
 	
 	if (m_Enemy.Enemy->Position().distance_to(vPosition) <= m_fAttackDistance) {
-		if (Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle))
-			m_Enemy.Enemy->m_fFood -= m_fHitPower;
+		if (Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle)) {
+			if (Level().timeServer() - m_dwLastRangeSearch > 1000) {
+				m_dwLastRangeSearch = Level().timeServer();
+				m_Enemy.Enemy->m_fFood -= 1.f;
+			}
+		}
 		else {
 			r_torso_target.yaw = sTemp.yaw;
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
