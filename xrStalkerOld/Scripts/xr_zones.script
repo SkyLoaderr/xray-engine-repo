@@ -138,10 +138,16 @@ function zone_binder:net_spawn( server_object )
 
 	if ini:section_exist( "tips" ) then
 		if ini:line_exist("tips", "name") then
+			local news = true
+			if ini:line_exist("tips", "news") then
+				news = ini:r_bool("tips", "news")
+			end
+
 			level_tips.fill_tips(self.object, 
 								ini:r_string("tips", "name"), 
 								ini:r_s32("tips", "distance"),
-								xr_logic.cfg_get_condlist(ini,"tips","conditions",self.object))
+								xr_logic.cfg_get_condlist(ini,"tips","conditions",self.object),
+								news)
 		end
 	end
 
