@@ -700,6 +700,9 @@
 					RelativePath=".\OGF_Face_Save.cpp">
 				</File>
 				<File
+					RelativePath="OGF_Face_Sphere.cpp">
+				</File>
+				<File
 					RelativePath=".\OGF_Face_Stripify.cpp">
 				</File>
 				<File

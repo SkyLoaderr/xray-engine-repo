@@ -83,48 +83,7 @@ struct OGF_Base
 
 	virtual void		Save		(CFS_Base &fs);
 	virtual void		GetGeometry	(vector<Fvector> &RES) = 0;
-	void				CalcBounds	() 
-	{
-		// get geometry
-		vector<Fvector>				V;
-		vector<Fvector>::iterator	I;
-		V.reserve					(4096);
-		GetGeometry					(V);
-		FPU::m64					();
-
-		// calc first variation
-		Fsphere	S1;
-		S1.compute					(V.begin(),V.size());
-
-		// calc ordinary algorithm
-		Fsphere	S2;
-		bbox.invalidate				();
-		for (I=V.begin(); I!=V.end(); I++)	bbox.modify(*I);
-		bbox.grow					(EPS_S);
-		bbox.getsphere				(S2.P,S2.R);
-		S2.R = -1;
-		for (I=V.begin(); I!=V.end(); I++)	{
-			float d = S2.P.distance_to(*I);
-			if (d>S2.R) S2.R=d;
-		}
-
-		// select best one
-		if (fis_gremlin(S1.R) || fis_denormal(S1.R) || fis_gremlin(S1.P.x) || fis_denormal(S1.P.x))
-		{
-			// sphere 2 selected
-			C.set	(S2.P);
-			R	=	S2.R;
-		} else {
-			if (S1.R<S2.R)			
-			{
-				C.set	(S1.P);
-				R	=	S1.R;
-			} else {
-				C.set	(S2.P);
-				R	=	S2.R;
-			}
-		}
-	}
+	void				CalcBounds	(); 
 };
 extern vector<OGF_Base *>		g_tree;
 
