@@ -92,13 +92,13 @@ class ENGINE_API CCameraManager
 	SPPInfo					pp_affected;
 public:
 	void					Dump				(void);
-	CEffector*				AddEffector			(CEffector* ef);
-	CEffector*				GetEffector			(EEffectorType type);
-	void					RemoveEffector		(EEffectorType type);
+	CEffector*				AddEffector			(CEffector*			ef);
+	CEffector*				GetEffector			(EEffectorType		type);
+	void					RemoveEffector		(EEffectorType		type);
 
-	CEffectorPP*			GetEffector			(EEffectorPPType type);
-	CEffectorPP*			AddEffector			(CEffectorPP* ef);
-	void					RemoveEffector		(EEffectorPPType type);
+	CEffectorPP*			GetEffector			(EEffectorPPType	type);
+	CEffectorPP*			AddEffector			(CEffectorPP*		ef);
+	void					RemoveEffector		(EEffectorPPType	type);
 
 	IC Fmatrix&				unaffected_View		()	{ return unaffected_mView;		}
 	IC Fvector&				unaffected_Pos		()	{ return unaffected_vPosition;	}

@@ -353,7 +353,7 @@ HRESULT	CRender::shader_compile			(
 	HRESULT		_result	= D3DXCompileShader(pSrcData,SrcDataLen,defines,pInclude,pFunctionName,pTarget,Flags,ppShader,ppErrorMsgs,ppConstantTable);
 	if (SUCCEEDED(_result) && o.disasm)
 	{
-		ID3DXBuffer*		code	= (LPD3DXBUFFER*)_ppShader;
+		ID3DXBuffer*		code	= (LPD3DXBUFFER)_ppShader;
 		ID3DXBuffer*		disasm	= 0;
 		D3DXDisassembleShader		(LPDWORD(code->GetBufferPointer()), FALSE, 0, &disasm );
 		string_path			dname;
