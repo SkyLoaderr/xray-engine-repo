@@ -140,7 +140,7 @@ BOOL IPureServer::Connect(LPCSTR options)
     CHK_DX(net_Address_device->SetSP		(&CLSID_DP8SP_TCPIP ));
 	CHK_DX(net_Address_device->AddComponent	(DPNA_KEY_PORT, &psNET_Port, sizeof(psNET_Port), DPNA_DATATYPE_DWORD ));
 	
-	dump_URL		("! sv ",	net_Address_device);
+	// dump_URL		("! sv ",	net_Address_device);
 
 	// Set server-player info
     DPN_APPLICATION_DESC		dpAppDesc;

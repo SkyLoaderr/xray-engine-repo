@@ -941,7 +941,6 @@ void	CShaderManager::_GetMemoryUsage(u32& m_base, u32& c_base, u32& m_lmaps, u32
 
 void	CShaderManager::Evict()
 {
-	Msg		("********************* Resource EVICT");
 	CHK_DX	(HW.pDevice->EvictManagedResources());
 }
 
