@@ -10,8 +10,6 @@
 #include "detail_path_manager.h"
 #include "ai_space.h"
 
-#define SMOOTH_PATH
-
 template <typename T>
 IC	T sin_apb(T sina, T cosa, T sinb, T cosb)
 {
@@ -257,7 +255,7 @@ bool CDetailPathManager::build_line_trajectory(
 		}
 		return			(true);
 	}
-	return				(path ? ai().level_graph().create_straight_PTN_path<false>(vertex_id,start.point,dest.point,*path,t,false,false) : ai().level_graph().valid_vertex_id(ai().level_graph().check_position_in_direction(vertex_id,start.point,dest.point)));
+	return				(path ? ai().level_graph().create_straight_path<false>(vertex_id,start.point,dest.point,*path,t,false,false) : ai().level_graph().valid_vertex_id(ai().level_graph().check_position_in_direction(vertex_id,start.point,dest.point)));
 }
 
 bool CDetailPathManager::build_trajectory(
@@ -309,7 +307,7 @@ bool CDetailPathManager::build_trajectory(
 		}
 	}
 	
-	std::sort	(dist,dist + tangent_count);
+	std::sort		(dist,dist + tangent_count);
 
 	{
 		for (u32 i=0, j = path ? path->size() : 0; i<tangent_count; ++i) {
@@ -569,6 +567,15 @@ bool CDetailPathManager::fill_key_points(
 	return								(true);
 }
 
+void CDetailPathManager::postprocess_key_points(
+	const xr_vector<u32>	&level_path, 
+	u32						intermediate_index,
+	STrajectoryPoint		&start,
+	STrajectoryPoint		&dest
+	)
+{
+}
+
 void CDetailPathManager::build_path_via_key_points(
 	STrajectoryPoint		&start,
 	STrajectoryPoint		&dest,
@@ -579,7 +586,7 @@ void CDetailPathManager::build_path_via_key_points(
 {
 	STrajectoryPoint					s,d,p;
 	s 									= start;
-//	m_dest_params						= m_start_params;
+	m_dest_params						= m_start_params;
 	xr_vector<STravelPoint>::const_iterator	I = m_key_points.begin(), P = I;
 	xr_vector<STravelPoint>::const_iterator	E = m_key_points.end();
 	for ( ; I != E; ++I) {
@@ -665,7 +672,7 @@ void CDetailPathManager::add_patrol_point()
 		v.mul							(4.f);
 		t								= m_path.back();
 		t.position.add					(v);
-		ai().level_graph().create_straight_PTN_path<false>(
+		ai().level_graph().create_straight_path<false>(
 			m_path.back().vertex_id,
 			ai().level_graph().v2d(m_path.back().position),
 			ai().level_graph().v2d(t.position),
@@ -683,14 +690,15 @@ void CDetailPathManager::build_smooth_path		(
 )
 {
 	Device.Statistic.AI_Range.Begin		();
-#ifndef SMOOTH_PATH
-	build_straight_path					(level_path,intermediate_index);
-	m_current_travel_point				= 0;
-	m_last_patrol_point					= m_path.size() - 1;
-#else
 	m_failed							= true;
-	u32									straight_line_index, straight_line_index_negative;
+	
+	if (level_path.size() == 1) {
+		m_path.clear					();
+		Device.Statistic.AI_Range.End	();
+		return;
+	}
 
+	u32									straight_line_index, straight_line_index_negative;
 	STrajectoryPoint					start,dest;
 
 	if (!init_build(level_path,intermediate_index,start,dest,straight_line_index,straight_line_index_negative)) {
@@ -708,18 +716,14 @@ void CDetailPathManager::build_smooth_path		(
 		return;
 	}
 	
-	if (level_path.size() == 1) {
-		m_path.clear					();
-		Device.Statistic.AI_Range.End	();
-		return;
-	}
-
 	if (!fill_key_points(level_path,intermediate_index,start,dest)) {
 		Device.Statistic.AI_Range.End	();
 		return;
 	}
+
+	postprocess_key_points				(level_path,intermediate_index,start,dest);
 	
 	build_path_via_key_points			(start,dest,finish_params,straight_line_index,straight_line_index_negative);
-#endif
+
 	Device.Statistic.AI_Range.End		();
 }

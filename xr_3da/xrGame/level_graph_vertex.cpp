@@ -250,9 +250,9 @@ float CLevelGraph::find_farthest_node_in_direction(u32 start_vertex_id, const Fv
 	return					(fCurDistance);
 }
 
-bool CLevelGraph::create_straight_PTN_path(u32 start_vertex_id, const Fvector &start_point, const Fvector &finish_point, xr_vector<Fvector> &tpaOutputPoints, xr_vector<u32> &tpaOutputNodes, bool bAddFirstPoint, bool bClearPath) const
+bool CLevelGraph::create_straight_path(u32 start_vertex_id, const Fvector &start_point, const Fvector &finish_point, xr_vector<Fvector> &tpaOutputPoints, xr_vector<u32> &tpaOutputNodes, bool bAddFirstPoint, bool bClearPath) const
 {
-	return					(create_straight_PTN_path(start_vertex_id,v2d(start_point),v2d(finish_point),tpaOutputPoints,tpaOutputNodes,bAddFirstPoint,bClearPath));
+	return					(create_straight_path(start_vertex_id,v2d(start_point),v2d(finish_point),tpaOutputPoints,tpaOutputNodes,bAddFirstPoint,bClearPath));
 }
 
 #ifndef AI_COMPILER
@@ -403,7 +403,7 @@ IC  Fvector2 v2d(const Fvector &vector3d)
 	return			(Fvector2().set(vector3d.x,vector3d.z));
 }
 
-bool CLevelGraph::create_straight_PTN_path(u32 start_vertex_id, const Fvector2 &start_point, const Fvector2 &finish_point, xr_vector<Fvector> &tpaOutputPoints, xr_vector<u32> &tpaOutputNodes, bool bAddFirstPoint, bool bClearPath) const
+bool CLevelGraph::create_straight_path(u32 start_vertex_id, const Fvector2 &start_point, const Fvector2 &finish_point, xr_vector<Fvector> &tpaOutputPoints, xr_vector<u32> &tpaOutputNodes, bool bAddFirstPoint, bool bClearPath) const
 {
 	TIMER_START(CreateStraightPath)
 	u32						cur_vertex_id = start_vertex_id, prev_vertex_id = start_vertex_id;

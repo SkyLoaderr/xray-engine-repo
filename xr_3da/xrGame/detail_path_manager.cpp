@@ -13,14 +13,14 @@
 
 CDetailPathManager::CDetailPathManager	()
 {
-	Init					();
+	init					();
 }
 
 CDetailPathManager::~CDetailPathManager	()
 {
 }
 
-void CDetailPathManager::Init			()
+void CDetailPathManager::init			()
 {
 }
 
@@ -45,7 +45,6 @@ bool CDetailPathManager::valid			() const
 {
 	bool					b = true;
 	b						= b && !m_path.empty();
-	//b						= b && fis_zero(m_path.front().position.distance_to_xz_sqr(m_start_position));
 	if (m_state_patrol_path)
 		b					= b && (fis_zero(m_path[m_last_patrol_point].position.distance_to_xz_sqr(m_dest_position)));
 	else
@@ -58,7 +57,7 @@ bool CDetailPathManager::valid			(const Fvector &position) const
 	return					(!!_valid(position));
 }
 
-const Fvector CDetailPathManager::direction()
+const Fvector &CDetailPathManager::direction()
 {
 	if ((m_path.size() < 2) || (m_path.size() <= m_current_travel_point + 1))
 		return				(Fvector().set(0,0,1));
@@ -83,11 +82,11 @@ void CDetailPathManager::build_path(const xr_vector<u32> &level_path, u32 interm
 				break;
 			}
 			case eDetailPathTypeSmoothDodge : {
-				build_dodge_path(level_path,intermediate_index);
+				build_smooth_path(level_path,intermediate_index);
 				break;
 			}
 			case eDetailPathTypeSmoothCriteria : {
-				build_criteria_path(level_path,intermediate_index);
+				build_smooth_path(level_path,intermediate_index);
 				break;
 			}
 		}
