@@ -128,11 +128,6 @@ void CLevel::OnFrame	()
 			objVisible& VIS	= SD.KnownEnemys;
 
 			VIS.clear		();
-			if (SD.Leader)	{
-				CEntityAlive* E	= dynamic_cast<CEntityAlive*>(SD.Leader);
-				if (E && E->g_Alive())		E->GetVisible(VIS);
-			}
-
 			for (u32 G=0; G<SD.Groups.size(); G++)
 			{
 				CGroup& GD = SD.Groups[G];

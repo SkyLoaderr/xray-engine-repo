@@ -226,6 +226,7 @@ void CAI_Rat::vfUpdateMorale()
 
 void CAI_Rat::vfUpdateMoraleBroadcast(float fValue, float fRadius)
 {
+#pragma todo("Leadership changed")
 	CEntity *tpLeader = Level().Teams[g_Team()].Squads[g_Squad()].Leader;
 	if (tpLeader->g_Alive())
 		tpLeader->m_fMorale += fValue;

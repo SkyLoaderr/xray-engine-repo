@@ -159,16 +159,11 @@ void CEntity::net_Destroy	()
 {
 	CSquad& S			= Level().get_squad	(g_Team(),g_Squad());
 	CGroup& G			= Level().get_group	(g_Team(),g_Squad(),g_Group());
+	G.Member_Remove		(this);
 	if (this==S.Leader)	
 	{
 		S.Leader		= 0;
-		if (!G.Members.empty())	{
-			S.Leader	= G.Members.back();
-			G.Member_Remove(S.Leader);
-		}
-	}
-	else {
-		G.Member_Remove	(this);
+		if (!G.Members.empty())	S.Leader	= G.Members.back();
 	}
 
 	for (u32 T=0; T<Level().Teams.size(); T++)
@@ -180,18 +175,6 @@ void CEntity::net_Destroy	()
 			objVisible& VIS	= SD.KnownEnemys;
 
 			VIS.clear		();
-			if (SD.Leader)	{
-				CEntityAlive* E	= dynamic_cast<CEntityAlive*>(SD.Leader);
-				if (E && E->g_Alive()) {
-					E->GetVisible(VIS);
-//					for (int i=0; i<(int)VIS.size(); i++)
-//						if (VIS[i].key == this) {
-//							VIS.erase(i);
-//						}
-				}
-
-			}
-
 			for (u32 G=0; G<SD.Groups.size(); G++)
 			{
 				CGroup& GD = SD.Groups[G];

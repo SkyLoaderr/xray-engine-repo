@@ -572,6 +572,7 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability, u32 dwTeam, 
 			default: return(a3);
 		}
 
+#pragma todo("Leadership changed")
 	EntityVec	Members;
 	Members.push_back(Level().Teams[dwTeam].Squads[dwSquad].Leader);
 	for (int k=0; k<(int)Group.Members.size(); k++) {
