@@ -11,27 +11,27 @@ u16			getFPUsw()		{ return 0;	}
 
 namespace FPU 
 {
-	XRCORE_API void 	m24		(u16 p)	{
+	XRCORE_API void 	m24		(void)	{
 		_control87	( _PC_24,   MCW_PC );
 		_control87	( _RC_CHOP, MCW_RC );
 	}
-	XRCORE_API void 	m24r	(u16 p)	{
+	XRCORE_API void 	m24r	(void)	{
 		_control87	( _PC_24,   MCW_PC );
 		_control87	( _RC_NEAR, MCW_RC );
 	}
-	XRCORE_API void 	m53		(u16 p)	{
+	XRCORE_API void 	m53		(void)	{
 		_control87	( _PC_53,   MCW_PC );
 		_control87	( _RC_CHOP, MCW_RC );
 	}
-	XRCORE_API void 	m53r	(u16 p)	{
+	XRCORE_API void 	m53r	(void)	{
 		_control87	( _PC_53,   MCW_PC );
 		_control87	( _RC_NEAR, MCW_RC );
 	}
-	XRCORE_API void 	m64		(u16 p)	{
+	XRCORE_API void 	m64		(void)	{
 		_control87	( _PC_64,   MCW_PC );
 		_control87	( _RC_CHOP, MCW_RC );
 	}
-	XRCORE_API void 	m64r	(u16 p)	{
+	XRCORE_API void 	m64r	(void)	{
 		_control87	( _PC_64,   MCW_PC );
 		_control87	( _RC_NEAR, MCW_RC );
 	}
