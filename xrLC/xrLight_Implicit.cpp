@@ -161,7 +161,7 @@ public:
 	{
 		R_ASSERT				(DATA);
 		ImplicitDeflector& defl = *DATA;
-		vector<R_Light>	Lights	= pBuild->lights_soften;
+		vector<R_Light>	Lights	= pBuild->lights[0].lights;
 		RAPID::XRCollide		DB;
 		
 		// Setup variables

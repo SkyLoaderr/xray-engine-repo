@@ -3,7 +3,7 @@
 #include "OGF_Face.h"
 #include "vbm.h"
 #include "std_classes.h"
-#include "xrOcclusion.h"
+#include "lightmap.h"
 
 void CBuild::Flex2OGF()
 {
@@ -16,8 +16,7 @@ void CBuild::Flex2OGF()
 	{
 		R_ASSERT( ! it->empty() );
 
-		DWORD MODEL_ID = it-g_XSplit.begin();
-//		set_status	("Converting",MODEL_ID,it->size(),0);
+		DWORD MODEL_ID		= it-g_XSplit.begin();
 
 		OGF*		pOGF	= new OGF;
 		Face*		F		= *(it->begin());				// first face
@@ -31,16 +30,16 @@ void CBuild::Flex2OGF()
 		pOGF->shader		= M->shader;
 		pOGF->shader_xrlc	= &F->Shader();
 
-		strcpy				(T.name,textures[M->surfidx].name);
-		T.pSurface			= &(textures[M->surfidx]);
+		strcpy					(T.name,textures[M->surfidx].name);
+		T.pSurface				= &(textures[M->surfidx]);
 		pOGF->textures.push_back(T);
-		if (F->pDeflector)
+		for (DWORD lmit=0; lmit<F->lmap_layers.size(); lmit++)
 		{
 			// If lightmaps persist
-			CDeflector* D = (CDeflector*)F->pDeflector;
+			CLightmap* LM	= F->lmap_layers[lmit];
 			
-			strcpy(T.name, D->lm.name);
-			T.pSurface = &(D->lm);
+			strcpy			(T.name, LM->lm.name);
+			T.pSurface		= &(LM->lm);
 			pOGF->textures.push_back(T);
 		}
 

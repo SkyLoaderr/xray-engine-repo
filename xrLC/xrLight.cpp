@@ -92,7 +92,7 @@ public:
 		RAPID::XRCollide	DB;
 		DB.RayMode			(RAY_CULL);
 		
-		vector<R_Light>	Lights = pBuild->lights_soften;
+		vector<R_Light>	Lights = pBuild->lights[0].lights;
 		if (Lights.empty())		return;
 		
 		for (DWORD I = faceStart; I<faceEnd; I++)

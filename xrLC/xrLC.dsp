@@ -582,10 +582,6 @@ SOURCE=.\xrDeflectorLight.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\xrDeflectorSave.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\xrImage_Filter.cpp
 # End Source File
 # Begin Source File
