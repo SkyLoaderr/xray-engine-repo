@@ -9,15 +9,15 @@ const	int						lmap_size	= 1024;
 #include "vbm.h"
 #include "OGF_Face.h"
 
-typedef xr_vector<vecFace*>		vec2Face;
-typedef vec2Face::iterator		splitIt;
+typedef xr_vector<vecFace*>				vec2Face;
+typedef vec2Face::iterator				splitIt;
 
-typedef xr_vector<CDeflector*>		vecDefl;
-typedef vecDefl::iterator		vecDeflIt;
+typedef xr_vector<CDeflector*>			vecDefl;
+typedef vecDefl::iterator				vecDeflIt;
 
-typedef pair<Vertex*, Vertex *> PAIR_VV;
-typedef xr_map<Vertex*,Vertex*>	map_v2v;	// vertex to vertex translation
-typedef map_v2v::iterator		map_v2v_it;
+typedef std::pair<Vertex*, Vertex *>	PAIR_VV;
+typedef xr_map<Vertex*,Vertex*>			map_v2v;	// vertex to vertex translation
+typedef map_v2v::iterator				map_v2v_it;
 
 // Globals
 extern vecVertex				g_vertices;

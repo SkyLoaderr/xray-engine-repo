@@ -11,10 +11,10 @@ typedef vecW::iterator	vecW_IT;
 typedef xr_vector<BOOL>	vecB;
 typedef vecB::iterator	vecB_IT;
 
-typedef xr_multimap<DWORD,DWORD>		treeCompress;
-typedef treeCompress::iterator		treeCompressIt;
-typedef treeCompress::value_type	treeCompressType;
-typedef pair<treeCompressIt,treeCompressIt> treeCompressPair;
+typedef xr_multimap<DWORD,DWORD>					treeCompress;
+typedef treeCompress::iterator						treeCompressIt;
+typedef treeCompress::value_type					treeCompressType;
+typedef std::pair<treeCompressIt,treeCompressIt>	treeCompressPair;
 
 xr_vector<vecW>	g_pvs;
 

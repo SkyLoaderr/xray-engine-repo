@@ -79,7 +79,7 @@ public:
 	}
 	IC	void	prep_remove			(Face* F)
 	{
-		vecFaceIt	I = find(adjacent.begin(),adjacent.end(),F);
+		vecFaceIt	I = std::find(adjacent.begin(),adjacent.end(),F);
 		if (I!=adjacent.end())	adjacent.erase(I);
 	}
 
