@@ -48,7 +48,10 @@ void xrServer::Perform_reject(xrServerEntity* what, xrServerEntity* from)
 	u32			time		= Device.dwTimeGlobal;
 	u16			dummy;
 
-	P.w_begin				(0);
+	P.w_begin				(M_EVENT);
+	P.w_u32					(time);
+	P.w_u16					(GE_OWNERSHIP_REJECT);
+	P.w_u16					(from->ID);
 	P.w_u16					(what->ID);
 	P.r_begin				(dummy);
 	Process_event_reject	(P,0xffffffff,time,from->ID);
