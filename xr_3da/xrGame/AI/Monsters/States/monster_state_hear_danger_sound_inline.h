@@ -41,7 +41,14 @@ void CStateMonsterHearDangerousSoundAbstract::setup_substates()
 
 	if (current_substate == eStateHide) {
 		SStateHideFromPoint data;
-		data.point				= object->SoundMemory.GetSound().position;
+
+		Fvector run_away_point;
+		Fvector dir;
+		dir.sub	(object->Position(), object->SoundMemory.GetSound().position);
+		dir.normalize_safe();
+		run_away_point.mad(object->Position(), dir, 1.f);
+		
+		data.point				= run_away_point;
 		data.accelerated		= true;
 		data.braking			= false;
 		data.accel_type			= eAT_Aggressive;

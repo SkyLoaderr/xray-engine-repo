@@ -38,7 +38,8 @@ TEMPLATE_SPECIALIZATION
 bool CStateMonsterHideFromPointAbstract::check_completion()
 {	
 	if (data.action.time_out !=0) {
-		if (time_state_started + data.action.time_out < object->m_current_update) return true;
+		if (time_state_started + data.action.time_out < object->m_current_update) 
+			return true;
 	} 
 
 	if (!fis_zero(data.distance)) {
