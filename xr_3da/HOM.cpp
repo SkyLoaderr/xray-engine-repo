@@ -32,7 +32,7 @@ struct HOM_poly
 };
 #pragma pack(pop)
 
-IC float	Area (Fvector& v0, Fvector& v1, Fvector& v2)
+IC float	Area		(Fvector& v0, Fvector& v1, Fvector& v2)
 {
 	float	e1 = v0.distance_to(v1);
 	float	e2 = v0.distance_to(v2);
