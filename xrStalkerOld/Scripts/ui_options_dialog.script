@@ -149,7 +149,7 @@ function options_dialog:InitControls()
 	---- >> SOUND
 	self.tab_sound = ui_options_sound_tab.options_sound_tab()
 	self.tab_sound:InitControls(btn_sound_rect.x + btn_sound_rect.width + self.indent, self.top_alingn_y)
-	self.main_frame:AttachChild(self.tab_video)
+	self.main_frame:AttachChild(self.tab_sound)
 end
 
 function options_dialog:InitCallBacks()
