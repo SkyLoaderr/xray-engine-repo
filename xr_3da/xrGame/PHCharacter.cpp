@@ -11,6 +11,7 @@ const float JUMP_INCREASE_VELOCITY_RATE=1.2f;
 
 CPHCharacter::CPHCharacter(void)
 {
+m_friction_factor=1.f;
 m_body=NULL;
 m_wheel_body=NULL;
 m_geom_shell=NULL;
@@ -400,7 +401,11 @@ if(b_valide_wall_contact && (m_contact_count>1)&& b_clamb_jump)
 				dMass m;
 				dBodyGetMass(m_body,&m);
 				dBodyAddForce(m_body,m_control_force[0],m_control_force[1],m_control_force[2]);//+2.f*9.8f*70.f
-				dBodyAddForce(m_body,-sidedir[0]*vProj*(500.f+200.f*b_clamb_jump),-m.mass*50.f*(!b_lose_control&&!is_contact),-sidedir[2]*vProj*(500.f+200.f*b_clamb_jump));
+				dBodyAddForce(m_body,
+					-sidedir[0]*vProj*(500.f+200.f*b_clamb_jump)*m_friction_factor,
+					-m.mass*50.f*(!b_lose_control&&!is_contact),
+					-sidedir[2]*vProj*(500.f+200.f*b_clamb_jump)*m_friction_factor
+					);
 				//if(b_clamb_jump){
 				//dNormalize3(m_control_force);
 				//dReal proj=dDOT(m_control_force,chVel);
@@ -437,7 +442,8 @@ if(b_valide_wall_contact && (m_contact_count>1)&& b_clamb_jump)
 			
 		
 }
-
+const dReal spring_rate=0.5f;
+const dReal dumping_rate=20.1f;
 void CPHSimpleCharacter::InitContact(dContact* c){
 	
 	
@@ -450,13 +456,18 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 		}
 		if(is_control&& (dDOT(m_control_force,c->geom.normal))<-M_SQRT1_2)
 															b_side_contact=true;
-		}
+
 
 	c->surface.mode =dContactApprox1|dContactSoftCFM|dContactSoftERP;
-	c->surface.soft_cfm=0.0001f;
-	c->surface.soft_erp=0.2f;
-	c->surface.mode =dContactApprox0;
+	//c->surface.soft_cfm=0.0001f;
+	//c->surface.soft_erp=0.2f;
+	c->surface.soft_cfm*=spring_rate;//0.01f;
+	c->surface.soft_erp*=dumping_rate;//10.f;
+	//c->surface.mode =dContactApprox0;
 	c->surface.mu = 0.00f;
+		}
+
+
 
 
 	//bool bo1=(c->geom.g1==m_wheel_transform);
@@ -539,14 +550,16 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 		}
 	}
 
-        
+	m_friction_factor=c->surface.mu<1.f ? c->surface.mu : 1.f;
+
 	if(is_control&&!b_lose_control){
 					c->surface.mode =dContactApprox1|dContactSoftCFM|dContactSoftERP;// dContactBounce;|dContactFDir1
 					c->surface.mu = 0.00f;
 					//c->surface.mu2 = dInfinity;
-					c->surface.soft_cfm=0.0001f;
-					c->surface.soft_erp=0.2f;
-
+					//c->surface.soft_cfm=0.0001f;
+					//c->surface.soft_erp=0.2f;
+					c->surface.soft_cfm*=spring_rate;//0.01f;
+					c->surface.soft_erp*=dumping_rate;//10.f;
 					//memcpy(c->fdir1,m_control_force,sizeof(dVector3));
 					//dNormalize3(c->fdir1);
 					
@@ -554,10 +567,11 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 		else
 		{
 		c->surface.mode =dContactApprox1|dContactSoftCFM|dContactSoftERP;
-		c->surface.soft_cfm=0.0001f;
-		c->surface.soft_erp=0.2f;
-		
-		c->surface.mu = 1.f+b_clamb_jump*10.f;
+		//c->surface.soft_cfm=0.0001f;
+		//c->surface.soft_erp=0.2f;
+		c->surface.soft_cfm*=spring_rate;//0.01f;
+		c->surface.soft_erp*=dumping_rate;//10.f;
+		c->surface.mu *= 1.f+b_clamb_jump*3.f;
 
 		}
 	
@@ -630,6 +644,8 @@ else{
 		m_control_force[1]+=fvdir[1]*m.mass*10.f;
 		m_control_force[2]+=fvdir[2]*m.mass*10.f;
 		}
+
+
 }
 
 
@@ -649,6 +665,9 @@ m_control_force[0]=m_control_force[0]*accel[0]>0.f ? m_control_force[0] : -m_con
 m_control_force[2]=m_control_force[2]*accel[2]>0.f ? m_control_force[2] : -m_control_force[2];
 }
 	
+m_control_force[0]*=m_friction_factor;
+m_control_force[1]*=m_friction_factor;
+m_control_force[2]*=m_friction_factor;
 
 
 }

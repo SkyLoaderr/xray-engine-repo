@@ -70,7 +70,7 @@ bool b_jumping;
 UINT m_contact_count;
 dReal m_radius;
 dReal m_cyl_hight;
-
+dReal m_friction_factor;
 /////disable///////////////////////
 dVector3 previous_p;
 dVector3 previous_p1;

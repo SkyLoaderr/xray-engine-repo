@@ -784,10 +784,10 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 				contacts[i].surface.soft_erp*=GMLib.GetMaterial(usr_data_2->material)->fPHDumping;
 			if(usr_data_2->ph_object){
 					usr_data_2->ph_object->InitContact(&contacts[i]);
-					if(pushing_neg) contacts[i].surface.mu=dInfinity;
-					dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
-					dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
-					continue;
+					//if(pushing_neg) contacts[i].surface.mu=dInfinity;
+					//dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
+					//dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
+					//continue;
 			}
 		}
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -800,10 +800,10 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 				contacts[i].surface.soft_erp*=GMLib.GetMaterial(usr_data_1->material)->fPHDumping;
 			if(usr_data_1->ph_object){
 					usr_data_1->ph_object->InitContact(&contacts[i]);
-					if(pushing_neg) contacts[i].surface.mu=dInfinity;
-					dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
-					dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
-					continue;
+					//if(pushing_neg) contacts[i].surface.mu=dInfinity;
+					//dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
+					//dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
+					//continue;
 				}
 
 		}
@@ -816,6 +816,7 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 
 
 		if(pushing_neg) contacts[i].surface.mu=dInfinity;
+
 		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
 		dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
 		}
