@@ -65,7 +65,7 @@
 		<article>two</article>
 		<location >
 			<object story_id = "0"></object>
-			<icon name="Quest1" x="2" y="8" width="1" height="1"></icon>
+			<icon name="брод€га сталкер" x="2" y="8" width="1" height="1"></icon>
 			<text>object location</text>
 		</location>
 		<location >
