@@ -119,13 +119,6 @@ enum	SE_R1				{
 	SE_R1_LSPOT				= 3,	// add:	spot light
 	SE_R1_LMODELS			= 4,	// lighting info for models or shadowing from models
 };
-enum	SE_R2				{
-	SE_R2_NORMAL_HQ			= 0,	// high quality/detail
-	SE_R2_NORMAL_LQ			= 1,	// normal or low quality
-	SE_R2_LPOINT			= 2,	// add: point light
-	SE_R2_LSPOT				= 3,	// add:	spot light
-	SE_R2_LDIRECT			= 4,	// lighting info for models or shadowing from models
-};
 
 #pragma pack(pop)
 
