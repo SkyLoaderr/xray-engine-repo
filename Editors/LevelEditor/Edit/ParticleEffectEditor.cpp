@@ -2,6 +2,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#ifdef _PARTICLE_EDITOR
+
 #include "ParticleEffect.h"
 #include "PropertiesListHelper.h"
 #include "ui_tools.h"
@@ -34,5 +36,5 @@ void PS::CPEDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
     B=::PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Source Text"),"Edit");
     B->OnBtnClickEvent		= OnSourceTextEdit;
 }
-
+#endif
 
