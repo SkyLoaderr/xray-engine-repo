@@ -22,8 +22,10 @@ void CBuild::BuildRapid()
 			);
 		Progress(p_total+=p_cost);
 	}
+
 	Status				("Building OBB tree..");
 	RCAST_Model			= new CDB::MODEL;
+	Msg					("aaa");
 	RCAST_Model->build	(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
 	Msg					("%d K memory usage",RCAST_Model->memory()/1024);
 	
