@@ -217,7 +217,7 @@ void CLevel::net_Disconnect	( )
 	}
 }
 
-#include "testphysics.h"
+// #include "testphysics.h"
 BOOL CLevel::Load_GameSpecific_Before()
 {
 	// AI space

@@ -94,6 +94,7 @@ void CTestPhysics::OnRender()
 	::Render.set_Transform		(&mXForm);
 	::Render.add_leafs_Dynamic	(V);
 }
+
 void CTestPhysics::OnEvent(	EVENT _E, DWORD P1, DWORD P2)
 {
 	VERIFY(E==_E);
