@@ -30,7 +30,9 @@ float CSpaceRestrictor::Radius		() const
 
 BOOL CSpaceRestrictor::net_Spawn	(CSE_Abstract* data)
 {
+#ifdef PRECOMPUTED_INSIDE
 	actual							(false);
+#endif
 
 	CSE_Abstract					*abstract = (CSE_Abstract*)data;
 	CSE_ALifeSpaceRestrictor		*se_shape = smart_cast<CSE_ALifeSpaceRestrictor*>(abstract);
