@@ -104,8 +104,8 @@ public:
 	{
 		if (_size==_count)	return;
 		_size				= _count;
-		if (0==_size)		_FREE	(data);
-		else				data	= (T *) realloc(data,_size*sizeof(T));
+		if (0==_size)		{ _FREE	(data); }
+		else				{ data	= (T *) realloc(data,_size*sizeof(T)); }
 	}
 
 	IC	T&			operator[]				( int i )	const	{ VERIFY(i>=0 && i<_count); return data[i]; };
