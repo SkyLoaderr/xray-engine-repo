@@ -101,12 +101,12 @@ class Face
 public:
 	Vertex*					v[3];			// vertices
 	Fvector					N;				// face normal
-	svector<_TCF,8>			tc;				// TC
+	svector<_TCF,4>			tc;				// TC
 
 	WORD					dwMaterial;		// index of material
 
 	void*					pDeflector;		// does the face has LM-UV map?
-	svector<CLightmap*,8>	lmap_layers;
+	svector<CLightmap*,4>	lmap_layers;
 
 	union			{
 		bool				bSplitted;		//
@@ -251,5 +251,5 @@ extern poolVertices				VertexPool;
 typedef poolSS<Face,16384>		poolFaces;
 extern poolFaces				FacePool;
 
-extern bool					g_bUnregister;
+extern bool						g_bUnregister;
 
