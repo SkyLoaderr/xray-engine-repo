@@ -27,7 +27,7 @@ void SGameMtl::FillProp		(PropItemVec& items, ListItem* owner)
     PHelper().CreateFlag32			(items,	"Flags\\Bounceable",		&Flags,	flBounceable);
     PHelper().CreateFlag32			(items,	"Flags\\Skidmark",			&Flags,	flSkidmark);
     PHelper().CreateFlag32			(items,	"Flags\\Bloodmark",			&Flags,	flBloodmark);
-    PHelper().CreateFlag32			(items,	"Flags\\Climbable",			&Flags,	flClimbable);
+    PHelper().CreateFlag32			(items,	"Flags\\Climable",			&Flags,	flClimable);
     // physics part
     PHelper().CreateFloat			(items,	"Physics\\Friction",		&fPHFriction,			0.f, 	100.f, 	0.001f, 3); 
     PHelper().CreateFloat			(items,	"Physics\\Damping",			&fPHDamping,			0.001f,	100.f, 	0.001f, 3); 

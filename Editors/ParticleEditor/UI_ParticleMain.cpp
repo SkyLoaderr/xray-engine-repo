@@ -163,56 +163,32 @@ void CParticleMain::SetStatus(LPSTR s, bool bOutLog)
     	if (bOutLog&&s&&s[0]) ELog.Msg(mtInformation,s);
     }
 }
-void CParticleMain::ProgressInfo(LPCSTR text, bool bWarn)
+void CParticleMain::PBDraw()
 {
-	if (text){
-		fraBottomBar->paStatus->Caption=fraBottomBar->sProgressTitle+" ("+text+")";
-    	fraBottomBar->paStatus->Repaint();
-	    ELog.Msg(bWarn?mtError:mtInformation,fraBottomBar->paStatus->Caption.c_str());
-    }
-}
-void CParticleMain::ProgressStart(float max_val, const char* text)
-{
-	VERIFY(m_bReady);
-    fraBottomBar->sProgressTitle = text;
-	fraBottomBar->paStatus->Caption=text;
-    fraBottomBar->paStatus->Repaint();
-	fraBottomBar->fMaxVal=max_val;
-	fraBottomBar->fStatusProgress=0;
-	fraBottomBar->cgProgress->Progress=0;
-	fraBottomBar->cgProgress->Visible=true;
-    ELog.Msg(mtInformation,text);
-}
-void CParticleMain::ProgressEnd()
-{
-	VERIFY(m_bReady);
-    fraBottomBar->sProgressTitle = "";
-	fraBottomBar->paStatus->Caption="";
-    fraBottomBar->paStatus->Repaint();
-	fraBottomBar->cgProgress->Visible=false;
-}
-void CParticleMain::ProgressUpdate(float val)
-{
-	VERIFY(m_bReady);
-	fraBottomBar->fStatusProgress=val;
-    if (fraBottomBar->fMaxVal>=0){
-    	int new_val = (int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
-        if (new_val!=fraBottomBar->cgProgress->Progress){
-			fraBottomBar->cgProgress->Progress=(int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
-    	    fraBottomBar->cgProgress->Repaint();
-        }
-    }
-}
-void CParticleMain::ProgressInc(const char* info, bool bWarn)
-{
-	VERIFY(m_bReady);
-    ProgressInfo(info,bWarn);
-	fraBottomBar->fStatusProgress++;
-    if (fraBottomBar->fMaxVal>=0){
-    	int val = (int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
+	SPBItem* pbi 	= PBLast();
+	if (pbi){
+        AnsiString 	txt;
+        float 		p,m;
+        pbi->GetInfo(txt,p,m);
+        // status line
+        fraBottomBar->paStatus->Caption			= txt;
+        fraBottomBar->paStatus->Repaint			();
+        // progress
+    	int val = (int)((p/m)*100);
         if (val!=fraBottomBar->cgProgress->Progress){
-			fraBottomBar->cgProgress->Progress=val;
-	        fraBottomBar->cgProgress->Repaint();
+			fraBottomBar->cgProgress->Progress	= val;
+	        fraBottomBar->cgProgress->Repaint	();
+        }
+    	if (false==fraBottomBar->cgProgress->Visible) 
+        	fraBottomBar->cgProgress->Visible 	= true;
+    }else{
+    	if (fraBottomBar->cgProgress->Visible){
+            // status line
+            fraBottomBar->paStatus->Caption			= "";
+            fraBottomBar->paStatus->Repaint			();
+	        // progress
+	        fraBottomBar->cgProgress->Progress	= 0;
+        	fraBottomBar->cgProgress->Visible 	= false;
         }
     }
 }
