@@ -54,7 +54,7 @@ public:
 	void				phase_scene			();
 	void				phase_smap_direct	();
 	void				phase_accumulator	();
-	void				accum_direct		();
+	void				accum_direct		(u32 dls_phase);
 	void				phase_combine		();
 
 	virtual void		eff_load			(LPCSTR n)		{};

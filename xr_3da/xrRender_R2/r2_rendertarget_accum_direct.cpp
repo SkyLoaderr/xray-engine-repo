@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-void CRenderTarget::accum_direct	()
+void CRenderTarget::accum_direct	(u32 dls_phase)
 {
 	// *** assume accumulator setted up ***
 
@@ -49,7 +49,7 @@ void CRenderTarget::accum_direct	()
 			Fvector4 J; float scale		= circle/11.f;
 
 			// 1
-			RCache.set_Element			(s_accum_direct->E[0]);
+			RCache.set_Element			(s_accum_direct->E[dls_phase]);
 			R_constant* _C				= RCache.get_c			("jitter");
 			J.set(11, 0,  0);			J.sub(11); J.mul(scale);	RCache.set_ca	(_C,0,J.x,J.y,-J.y,-J.x);
 			J.set(19, 3,  0);			J.sub(11); J.mul(scale);	RCache.set_ca	(_C,1,J.x,J.y,-J.y,-J.x);
@@ -64,12 +64,12 @@ void CRenderTarget::accum_direct	()
 			// 1
 			RCache.set_Element			(s_accum_direct->E[0]);
 			R_constant* _C1				= RCache.get_c			("jitter");
-			J.set(21, 2,  33, 2 );	J.sub(27); J.mul(scale); RCache.set_ca	(_C1,0,J.x,J.y,J.w,J.z);
-			J.set(9,  9,  45, 9 );	J.sub(27); J.mul(scale); RCache.set_ca	(_C1,1,J.x,J.y,J.w,J.z);
-			J.set(20, 12, 34, 12);	J.sub(27); J.mul(scale); RCache.set_ca	(_C1,2,J.x,J.y,J.w,J.z);
-			J.set(12, 20, 27, 20);	J.sub(27); J.mul(scale); RCache.set_ca	(_C1,3,J.x,J.y,J.w,J.z);
-			J.set(42, 20, 2,  21);	J.sub(27); J.mul(scale); RCache.set_ca	(_C1,4,J.x,J.y,J.w,J.z);
-			J.set(52, 21, 20, 27);	J.sub(27); J.mul(scale); RCache.set_ca	(_C1,5,J.x,J.y,J.w,J.z);
+			J.set(21, 2,  33, 2 );		J.sub(27); J.mul(scale); RCache.set_ca	(_C1,0,J.x,J.y,J.w,J.z);
+			J.set(9,  9,  45, 9 );		J.sub(27); J.mul(scale); RCache.set_ca	(_C1,1,J.x,J.y,J.w,J.z);
+			J.set(20, 12, 34, 12);		J.sub(27); J.mul(scale); RCache.set_ca	(_C1,2,J.x,J.y,J.w,J.z);
+			J.set(12, 20, 27, 20);		J.sub(27); J.mul(scale); RCache.set_ca	(_C1,3,J.x,J.y,J.w,J.z);
+			J.set(42, 20, 2,  21);		J.sub(27); J.mul(scale); RCache.set_ca	(_C1,4,J.x,J.y,J.w,J.z);
+			J.set(52, 21, 20, 27);		J.sub(27); J.mul(scale); RCache.set_ca	(_C1,5,J.x,J.y,J.w,J.z);
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 
 			// 2
