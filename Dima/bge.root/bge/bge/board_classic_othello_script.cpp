@@ -18,7 +18,7 @@ void CBoardClassicOthello::script_register(lua_State *L)
 	[
 		class_<CBoardClassicOthello>("board_othello_classic")
 			.def(constructor<>())
-			.def("move", &CBoardClassicOthello::do_move)
+			.def("move", (bool (CBoardClassicOthello::*)(const u8 &,const u8 &))(&CBoardClassicOthello::do_move))
 			.def("show", &CBoardClassicOthello::show)
 	];
 }
