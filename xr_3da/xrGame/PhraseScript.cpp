@@ -52,24 +52,35 @@ bool  CPhraseScript::CheckInfo		(const CInventoryOwner* pOwner) const
 {
 	THROW(pOwner);
 
-	for(u32 i=0; i<m_HasInfo.size(); i++)
-		if(!pOwner->HasInfo(CInfoPortion::IdToIndex(m_HasInfo[i])))
-		{
+	for(u32 i=0; i<m_HasInfo.size(); i++) {
+		INFO_INDEX	result = CInfoPortion::IdToIndex(m_HasInfo[i],NO_INFO_INDEX,true);
+		if (result == NO_INFO_INDEX) {
+			ai().script_engine().script_log(eLuaMessageTypeError,"XML item not found : \"%s\"",*m_HasInfo[i]);
+			break;
+		}
+
+		if (!pOwner->HasInfo(result)) {
 #ifdef DEBUG
 			Msg("[%s] has info %s", pOwner->Name(), *m_HasInfo[i]);
 #endif
 			return false;
 		}
+	}
 
-	for(i=0; i<m_DontHasInfo.size(); i++)
-		if(pOwner->HasInfo(CInfoPortion::IdToIndex(m_DontHasInfo[i])))
-		{
+	for(i=0; i<m_DontHasInfo.size(); i++) {
+		INFO_INDEX	result = CInfoPortion::IdToIndex(m_DontHasInfo[i],NO_INFO_INDEX,true);
+		if (result == NO_INFO_INDEX) {
+			ai().script_engine().script_log(eLuaMessageTypeError,"XML item not found : \"%s\"",*m_DontHasInfo[i]);
+			break;
+		}
+
+		if (pOwner->HasInfo(result)) {
 #ifdef DEBUG
 			Msg("[%s] dont has info %s", pOwner->Name(), *m_DontHasInfo[i]);
 #endif
 			return false;
 		}
-
+	}
 	return true;
 }
 
