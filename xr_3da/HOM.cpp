@@ -159,4 +159,6 @@ BOOL CHOM::Visible		(Fbox& B)
 	B.getpoint(5,src);	XF.transform(test,src); rect.modify	(test);
 	B.getpoint(6,src);	XF.transform(test,src); rect.modify	(test);
 	B.getpoint(7,src);	XF.transform(test,src); rect.modify	(test);
+	
+	return Raster.test	(rect.min.x+1,rect.min.y+1,rect.max.x+1,rect.max.y+1,rect.min.z);
 }

@@ -19,20 +19,20 @@ void __stdcall fillDW_8x	(LPDWORD ptr, DWORD size, DWORD value)
 
 IC void propagade_depth			(LPVOID p_dest, LPVOID p_src, int dim)
 {
-	float*	dest = (float*)p_dest;
-	float*	src	 = (float*)p_src;
+	int*	dest = (int*)p_dest;
+	int*	src	 = (int*)p_src;
 
 	for (int y=0; y<dim; y++)
 	{
 		for (int x=0; x<dim; x++)
 		{
-			float*	base0		= src + (y*2+0)*(dim*2) + (x*2);
-			float*  base1		= src + (y*2+1)*(dim*2) + (x*2);
-			float	f1			= base0[0];
-			float	f2			= base0[1];
-			float	f3			= base1[0];
-			float	f4			= base1[1];
-			float	f			= f1;
+			int*	base0		= src + (y*2+0)*(dim*2) + (x*2);
+			int*	base1		= src + (y*2+1)*(dim*2) + (x*2);
+			int		f1			= base0[0];
+			int		f2			= base0[1];
+			int		f3			= base1[0];
+			int		f4			= base1[1];
+			int		f			= f1;
 			if (f2>f)	f		= f2;
 			if (f3>f)	f		= f3;
 			if (f4>f)	f		= f4;
@@ -71,8 +71,7 @@ void occRasterizer::propagade	()
 	{
 		for (int x=0; x<occ_dim_0; x++)
 		{
-			float	d			= bufDepth[y+1][x+1];
-			bufDepth_0[y][x]	= d;
+			bufDepth_0[y][x]	= d2int(bufDepth[y+1][x+1]);
 		}
 	}
 
@@ -80,4 +79,9 @@ void occRasterizer::propagade	()
 	propagade_depth	(bufDepth_1,bufDepth_0,occ_dim_1);
 	propagade_depth	(bufDepth_2,bufDepth_1,occ_dim_2);
 	propagade_depth	(bufDepth_3,bufDepth_2,occ_dim_3);
+}
+
+void occRasterizer::test		(float x0, float y0, float x1, float y1, float z)
+{
+	
 }
