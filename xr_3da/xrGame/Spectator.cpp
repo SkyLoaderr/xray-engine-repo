@@ -131,10 +131,17 @@ void CSpectator::OnKeyboardRelease(int cmd)
 
 void CSpectator::OnKeyboardHold(int cmd)
 {
-	if (Remote())		return;
+//	if (Remote())		return;
 
 	switch(cmd)
 	{
+	case kFWD:			
+		Fvector vmove;
+		vmove.set( clTransform.k );
+		vmove.mul( 5.f*Device.fTimeDelta );
+		svTransform.c.add( vmove );
+		Log("T",svTransform.c);
+		break;
 	case kUP:
 	case kDOWN: 
 	case kCAM_ZOOM_IN: 
