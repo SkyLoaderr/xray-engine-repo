@@ -81,16 +81,12 @@ void	CBuild::xrPhase_UVmap()
 				}
 			}
 			if (msF) {
-				DWORD M0	= mem_Usage();
 				g_deflectors.push_back	(new CDeflector);
-				Log("-- new CDeflector: ",mem_Usage()-M0);
 				
 				// Start recursion from this face
-				DWORD M1	= mem_Usage();
 				affected				= 1;
 				Deflector->OA_SetNormal	(msF->N);
 				msF->OA_Unwarp			();
-				Log("-- OA_Unwarp: ",mem_Usage()-M1);
 				
 				// break the cycle to startup again
 				Deflector->OA_Export	();
@@ -109,9 +105,7 @@ void	CBuild::xrPhase_UVmap()
 				}
 				
 				// detaching itself
-				DWORD M2	= mem_Usage();
 				Detach				(&faces_affected);
-				Log("-- Detach: ",mem_Usage()-M2);
 				g_XSplit.push_back	(new vecFace(faces_affected));
 			} else {
 				if (g_XSplit[SP]->empty()) 
@@ -126,7 +120,10 @@ void	CBuild::xrPhase_UVmap()
 		}
 	}
 	Msg("%d subdivisions...",g_XSplit.size());
+	DWORD M1	= mem_Usage();
 	mem_CompactSubdivs	();
+	DWORD M2	= mem_Usage();
+	Msg("Compact: %d / %d (%d)",M1,M2,M1-M2);
 }
 
 void CBuild::mem_CompactSubdivs()
