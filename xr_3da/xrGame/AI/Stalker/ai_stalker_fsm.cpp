@@ -1158,6 +1158,10 @@ void CAI_Stalker::Think()
 //	_L	= L;
 //	_M	= M;
 	CSStateInternal::update			(Level().timeServer() - m_dwLastUpdateTime);
+#ifdef OLD_DECISION_BLOCK
 	CStateManagerStalker::update	(Level().timeServer() - m_dwLastUpdateTime);
+#else
+	CActionManagerStalker::update	(Level().timeServer() - m_dwLastUpdateTime);
+#endif
 //	CObjectHandler::update			(Level().timeServer() - m_dwLastUpdateTime);
 }

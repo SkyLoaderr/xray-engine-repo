@@ -25,6 +25,7 @@ IC	CPlanner::CActionPlanner			()
 TEMPLATE_SPECIALIZATION
 IC	CPlanner::~CActionPlanner			()
 {
+	m_object				= 0;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -129,26 +130,38 @@ void CPlanner::update				(u32 time_delta)
 TEMPLATE_SPECIALIZATION
 IC	typename CPlanner::COperator &CPlanner::action	(const _action_id_type action_id)
 {
-	return				(*get_operator(action_id));
+	return					(*get_operator(action_id));
 }
 
 TEMPLATE_SPECIALIZATION
 IC	typename CPlanner::_action_id_type CPlanner::current_action_id	() const
 {
-	VERIFY				(initialized());
-	return				(m_current_action_id);
+	VERIFY					(initialized());
+	return					(m_current_action_id);
 }
 
 TEMPLATE_SPECIALIZATION
 IC	typename CPlanner::COperator &CPlanner::current_action	()
 {
-	return				(action(current_action_id()));
+	return					(action(current_action_id()));
 }
 
 TEMPLATE_SPECIALIZATION
 IC	bool CPlanner::initialized	() const
 {
-	return				(m_initialized);
+	return					(m_initialized);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CPlanner::add_condition	(_world_operator *action, _condition_type condition_id, _value_type condition_value)
+{
+	action->add_condition	(CWorldProperty(condition_id,condition_value));
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CPlanner::add_effect		(_world_operator *action, _condition_type condition_id, _value_type condition_value)
+{
+	action->add_effect		(CWorldProperty(condition_id,condition_value));
 }
 
 #undef TEMPLATE_SPECIALIZATION

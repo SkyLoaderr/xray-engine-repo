@@ -322,6 +322,36 @@
 						<File
 							RelativePath=".\property_evaluator_inline.h">
 						</File>
+						<Filter
+							Name="const"
+							Filter="">
+							<File
+								RelativePath=".\property_evaluator_const.h">
+							</File>
+							<File
+								RelativePath=".\property_evaluator_const_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="member"
+							Filter="">
+							<File
+								RelativePath=".\property_evaluator_member.h">
+							</File>
+							<File
+								RelativePath=".\property_evaluator_member_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="member_function"
+							Filter="">
+							<File
+								RelativePath=".\property_evaluator_member_function.h">
+							</File>
+							<File
+								RelativePath=".\property_evaluator_member_function_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="ObjectHandler"
@@ -417,134 +447,268 @@
 						<Filter
 							Name="actions"
 							Filter="">
+							<File
+								RelativePath=".\object_actions.cpp">
+							</File>
+							<File
+								RelativePath=".\object_actions.h">
+							</File>
+							<File
+								RelativePath=".\object_actions_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="properties"
+							Filter="">
+							<File
+								RelativePath=".\object_property_evaluators.cpp">
+							</File>
+							<File
+								RelativePath=".\object_property_evaluators.h">
+							</File>
+							<File
+								RelativePath=".\object_property_evaluators_inline.h">
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="StateManagers"
+						Filter="">
+						<File
+							RelativePath=".\state_manager_stalker.cpp">
+						</File>
+						<File
+							RelativePath=".\state_manager_stalker.h">
+						</File>
+						<File
+							RelativePath=".\state_manager_stalker_inline.h">
+						</File>
+						<Filter
+							Name="StateManagerALife"
+							Filter="">
+							<File
+								RelativePath=".\state_manager_alife.cpp">
+							</File>
+							<File
+								RelativePath=".\state_manager_alife.h">
+							</File>
+							<File
+								RelativePath=".\state_manager_alife_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="StateManagerCombat"
+							Filter="">
+							<File
+								RelativePath=".\state_manager_combat.cpp">
+							</File>
+							<File
+								RelativePath=".\state_manager_combat.h">
+							</File>
+							<File
+								RelativePath=".\state_manager_combat_inline.h">
+							</File>
 							<Filter
-								Name="base"
+								Name="StateCombatAttackWeak"
 								Filter="">
 								<File
-									RelativePath=".\object_action_base.h">
+									RelativePath=".\state_combat_attack_weak.cpp">
 								</File>
 								<File
-									RelativePath=".\object_action_base_inline.h">
+									RelativePath=".\state_combat_attack_weak.h">
+									<FileConfiguration
+										Name="Debug|Win32">
+										<Tool
+											Name="VCCustomBuildTool"/>
+									</FileConfiguration>
+								</File>
+								<File
+									RelativePath=".\state_combat_attack_weak_inline.h">
+									<FileConfiguration
+										Name="Debug|Win32">
+										<Tool
+											Name="VCCustomBuildTool"/>
+									</FileConfiguration>
 								</File>
 							</Filter>
 							<Filter
-								Name="command"
+								Name="StateCombatCover"
 								Filter="">
 								<File
-									RelativePath=".\object_action_command.cpp">
+									RelativePath=".\state_combat_cover.cpp">
 								</File>
 								<File
-									RelativePath=".\object_action_command.h">
+									RelativePath=".\state_combat_cover.h">
+								</File>
+								<File
+									RelativePath=".\state_combat_cover_inline.h">
+								</File>
+							</Filter>
+						</Filter>
+						<Filter
+							Name="StateManagerDeath"
+							Filter="">
+							<File
+								RelativePath=".\state_manager_death.cpp">
+							</File>
+							<File
+								RelativePath=".\state_manager_death.h">
+							</File>
+							<File
+								RelativePath=".\state_manager_death_inline.h">
+							</File>
+							<Filter
+								Name="StateRecentlyDead"
+								Filter="">
+								<File
+									RelativePath=".\state_death_recently_dead.cpp">
+								</File>
+								<File
+									RelativePath=".\state_death_recently_dead.h">
+								</File>
+								<File
+									RelativePath=".\state_death_recently_dead_inline.h">
 								</File>
 							</Filter>
 							<Filter
-								Name="show"
+								Name="StateAlreadyDead"
 								Filter="">
 								<File
-									RelativePath=".\object_action_show.cpp">
+									RelativePath=".\state_death_already_dead.cpp">
 								</File>
 								<File
-									RelativePath=".\object_action_show.h">
+									RelativePath=".\state_death_already_dead.h">
+								</File>
+								<File
+									RelativePath=".\state_death_already_dead_inline.h">
+								</File>
+							</Filter>
+						</Filter>
+						<Filter
+							Name="StateManagerNoALife"
+							Filter="">
+							<File
+								RelativePath=".\state_manager_no_alife.cpp">
+							</File>
+							<File
+								RelativePath=".\state_manager_no_alife.h">
+							</File>
+							<File
+								RelativePath=".\state_manager_no_alife_inline.h">
+							</File>
+							<Filter
+								Name="StateAnomalyCheck"
+								Filter="">
+								<File
+									RelativePath=".\state_anomaly_check.cpp">
+								</File>
+								<File
+									RelativePath=".\state_anomaly_check.h">
+								</File>
+								<File
+									RelativePath=".\state_anomaly_check_inline.h">
 								</File>
 							</Filter>
 							<Filter
-								Name="hide"
+								Name="StateBackEnemyCheck"
 								Filter="">
 								<File
-									RelativePath=".\object_action_hide.cpp">
+									RelativePath=".\state_back_enemy_check.cpp">
 								</File>
 								<File
-									RelativePath=".\object_action_hide.h">
+									RelativePath=".\state_back_enemy_check.h">
+								</File>
+								<File
+									RelativePath=".\state_back_enemy_check_inline.h">
 								</File>
 							</Filter>
 							<Filter
-								Name="reload"
+								Name="StateFreeNoALife"
 								Filter="">
 								<File
-									RelativePath=".\object_action_reload.cpp">
+									RelativePath=".\state_free_no_alife.cpp">
 								</File>
 								<File
-									RelativePath=".\object_action_reload.h">
+									RelativePath=".\state_free_no_alife.h">
+								</File>
+								<File
+									RelativePath=".\state_free_no_alife_inline.h">
 								</File>
 							</Filter>
 							<Filter
-								Name="fire"
+								Name="StateGatherItems"
 								Filter="">
 								<File
-									RelativePath=".\object_action_fire.cpp">
+									RelativePath=".\state_gather_items.cpp">
 								</File>
 								<File
-									RelativePath=".\object_action_fire.h">
+									RelativePath=".\state_gather_items.h">
+								</File>
+								<File
+									RelativePath=".\state_gather_items_inline.h">
 								</File>
 							</Filter>
 							<Filter
-								Name="aim"
+								Name="StateHiddenEnemyCheck"
 								Filter="">
 								<File
-									RelativePath=".\object_action_aim.cpp">
+									RelativePath=".\state_hidden_enemy_check.cpp">
 								</File>
 								<File
-									RelativePath=".\object_action_aim.h">
+									RelativePath=".\state_hidden_enemy_check.h">
+								</File>
+								<File
+									RelativePath=".\state_hidden_enemy_check_inline.h">
 								</File>
 							</Filter>
 							<Filter
-								Name="strapping"
+								Name="StateWatchOver"
 								Filter="">
 								<File
-									RelativePath=".\object_action_strapping.cpp">
+									RelativePath=".\state_watch_over.cpp">
 								</File>
 								<File
-									RelativePath=".\object_action_strapping.h">
+									RelativePath=".\state_watch_over.h">
+								</File>
+								<File
+									RelativePath=".\state_watch_over_inline.h">
+								</File>
+							</Filter>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="ActionManagers"
+						Filter="">
+						<File
+							RelativePath=".\action_manager_stalker.cpp">
+						</File>
+						<File
+							RelativePath=".\action_manager_stalker.h">
+						</File>
+						<File
+							RelativePath=".\action_manager_stalker_inline.h">
+						</File>
+						<Filter
+							Name="actions"
+							Filter="">
+							<Filter
+								Name="dead"
+								Filter="">
+								<File
+									RelativePath=".\stalker_action_dead.cpp">
+								</File>
+								<File
+									RelativePath=".\stalker_action_dead.h">
 								</File>
 							</Filter>
 							<Filter
-								Name="unstrapping"
+								Name="free_no_alife"
 								Filter="">
 								<File
-									RelativePath=".\object_action_unstrapping.cpp">
+									RelativePath=".\stalker_action_free_no_alife.cpp">
 								</File>
 								<File
-									RelativePath=".\object_action_unstrapping.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="queue_wait"
-								Filter="">
-								<File
-									RelativePath=".\object_action_queue_wait.cpp">
-								</File>
-								<File
-									RelativePath=".\object_action_queue_wait.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="switch"
-								Filter="">
-								<File
-									RelativePath=".\object_action_switch.cpp">
-								</File>
-								<File
-									RelativePath=".\object_action_switch.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="drop"
-								Filter="">
-								<File
-									RelativePath=".\object_action_drop.cpp">
-								</File>
-								<File
-									RelativePath=".\object_action_drop.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="threaten"
-								Filter="">
-								<File
-									RelativePath=".\object_action_threaten.cpp">
-								</File>
-								<File
-									RelativePath=".\object_action_threaten.h">
+									RelativePath=".\stalker_action_free_no_alife.h">
 								</File>
 							</Filter>
 						</Filter>
@@ -552,93 +716,43 @@
 							Name="properties"
 							Filter="">
 							<Filter
-								Name="base"
+								Name="alife"
 								Filter="">
 								<File
-									RelativePath=".\object_property_evaluator_base.h">
+									RelativePath=".\stalker_property_evaluator_alife.cpp">
 								</File>
 								<File
-									RelativePath=".\object_property_evaluator_base_inline.h">
+									RelativePath=".\stalker_property_evaluator_alife.h">
 								</File>
 							</Filter>
 							<Filter
 								Name="const"
 								Filter="">
 								<File
-									RelativePath=".\object_property_evaluator_const.cpp">
+									RelativePath=".\stalker_property_evaluator_const.cpp">
 								</File>
 								<File
-									RelativePath=".\object_property_evaluator_const.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="state"
-								Filter="">
-								<File
-									RelativePath=".\object_property_evaluator_state.cpp">
-								</File>
-								<File
-									RelativePath=".\object_property_evaluator_state.h">
+									RelativePath=".\stalker_property_evaluator_const.h">
 								</File>
 							</Filter>
 							<Filter
 								Name="member"
 								Filter="">
 								<File
-									RelativePath=".\object_property_evaluator_member.cpp">
+									RelativePath=".\stalker_property_evaluator_member.cpp">
 								</File>
 								<File
-									RelativePath=".\object_property_evaluator_member.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="ammo"
-								Filter="">
-								<File
-									RelativePath=".\object_property_evaluator_ammo.cpp">
-								</File>
-								<File
-									RelativePath=".\object_property_evaluator_ammo.h">
+									RelativePath=".\stalker_property_evaluator_member.h">
 								</File>
 							</Filter>
 							<Filter
-								Name="empty"
+								Name="alive"
 								Filter="">
 								<File
-									RelativePath=".\object_property_evaluator_empty.cpp">
+									RelativePath=".\stalker_property_evaluator_alive.cpp">
 								</File>
 								<File
-									RelativePath=".\object_property_evaluator_empty.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="ready"
-								Filter="">
-								<File
-									RelativePath=".\object_property_evaluator_ready.cpp">
-								</File>
-								<File
-									RelativePath=".\object_property_evaluator_ready.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="no_items"
-								Filter="">
-								<File
-									RelativePath=".\object_property_evaluator_no_items.cpp">
-								</File>
-								<File
-									RelativePath=".\object_property_evaluator_no_items.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="missile"
-								Filter="">
-								<File
-									RelativePath=".\object_property_evaluator_missile.cpp">
-								</File>
-								<File
-									RelativePath=".\object_property_evaluator_missile.h">
+									RelativePath=".\stalker_property_evaluator_alive.h">
 								</File>
 							</Filter>
 						</Filter>
@@ -1732,211 +1846,6 @@
 						<File
 							RelativePath=".\Ai\Stalker\ai_stalker_space.h">
 						</File>
-					</Filter>
-					<Filter
-						Name="StateManagers"
-						Filter="">
-						<File
-							RelativePath=".\state_manager_stalker.cpp">
-						</File>
-						<File
-							RelativePath=".\state_manager_stalker.h">
-						</File>
-						<File
-							RelativePath=".\state_manager_stalker_inline.h">
-						</File>
-						<Filter
-							Name="StateManagerALife"
-							Filter="">
-							<File
-								RelativePath=".\state_manager_alife.cpp">
-							</File>
-							<File
-								RelativePath=".\state_manager_alife.h">
-							</File>
-							<File
-								RelativePath=".\state_manager_alife_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="StateManagerCombat"
-							Filter="">
-							<File
-								RelativePath=".\state_manager_combat.cpp">
-							</File>
-							<File
-								RelativePath=".\state_manager_combat.h">
-							</File>
-							<File
-								RelativePath=".\state_manager_combat_inline.h">
-							</File>
-							<Filter
-								Name="StateCombatAttackWeak"
-								Filter="">
-								<File
-									RelativePath=".\state_combat_attack_weak.cpp">
-								</File>
-								<File
-									RelativePath=".\state_combat_attack_weak.h">
-									<FileConfiguration
-										Name="Debug|Win32">
-										<Tool
-											Name="VCCustomBuildTool"/>
-									</FileConfiguration>
-								</File>
-								<File
-									RelativePath=".\state_combat_attack_weak_inline.h">
-									<FileConfiguration
-										Name="Debug|Win32">
-										<Tool
-											Name="VCCustomBuildTool"/>
-									</FileConfiguration>
-								</File>
-							</Filter>
-							<Filter
-								Name="StateCombatCover"
-								Filter="">
-								<File
-									RelativePath=".\state_combat_cover.cpp">
-								</File>
-								<File
-									RelativePath=".\state_combat_cover.h">
-								</File>
-								<File
-									RelativePath=".\state_combat_cover_inline.h">
-								</File>
-							</Filter>
-						</Filter>
-						<Filter
-							Name="StateManagerDeath"
-							Filter="">
-							<File
-								RelativePath=".\state_manager_death.cpp">
-							</File>
-							<File
-								RelativePath=".\state_manager_death.h">
-							</File>
-							<File
-								RelativePath=".\state_manager_death_inline.h">
-							</File>
-							<Filter
-								Name="StateRecentlyDead"
-								Filter="">
-								<File
-									RelativePath=".\state_death_recently_dead.cpp">
-								</File>
-								<File
-									RelativePath=".\state_death_recently_dead.h">
-								</File>
-								<File
-									RelativePath=".\state_death_recently_dead_inline.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="StateAlreadyDead"
-								Filter="">
-								<File
-									RelativePath=".\state_death_already_dead.cpp">
-								</File>
-								<File
-									RelativePath=".\state_death_already_dead.h">
-								</File>
-								<File
-									RelativePath=".\state_death_already_dead_inline.h">
-								</File>
-							</Filter>
-						</Filter>
-						<Filter
-							Name="StateManagerNoALife"
-							Filter="">
-							<File
-								RelativePath=".\state_manager_no_alife.cpp">
-							</File>
-							<File
-								RelativePath=".\state_manager_no_alife.h">
-							</File>
-							<File
-								RelativePath=".\state_manager_no_alife_inline.h">
-							</File>
-							<Filter
-								Name="StateAnomalyCheck"
-								Filter="">
-								<File
-									RelativePath=".\state_anomaly_check.cpp">
-								</File>
-								<File
-									RelativePath=".\state_anomaly_check.h">
-								</File>
-								<File
-									RelativePath=".\state_anomaly_check_inline.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="StateBackEnemyCheck"
-								Filter="">
-								<File
-									RelativePath=".\state_back_enemy_check.cpp">
-								</File>
-								<File
-									RelativePath=".\state_back_enemy_check.h">
-								</File>
-								<File
-									RelativePath=".\state_back_enemy_check_inline.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="StateFreeNoALife"
-								Filter="">
-								<File
-									RelativePath=".\state_free_no_alife.cpp">
-								</File>
-								<File
-									RelativePath=".\state_free_no_alife.h">
-								</File>
-								<File
-									RelativePath=".\state_free_no_alife_inline.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="StateGatherItems"
-								Filter="">
-								<File
-									RelativePath=".\state_gather_items.cpp">
-								</File>
-								<File
-									RelativePath=".\state_gather_items.h">
-								</File>
-								<File
-									RelativePath=".\state_gather_items_inline.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="StateHiddenEnemyCheck"
-								Filter="">
-								<File
-									RelativePath=".\state_hidden_enemy_check.cpp">
-								</File>
-								<File
-									RelativePath=".\state_hidden_enemy_check.h">
-								</File>
-								<File
-									RelativePath=".\state_hidden_enemy_check_inline.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="StateWatchOver"
-								Filter="">
-								<File
-									RelativePath=".\state_watch_over.cpp">
-								</File>
-								<File
-									RelativePath=".\state_watch_over.h">
-								</File>
-								<File
-									RelativePath=".\state_watch_over_inline.h">
-								</File>
-							</Filter>
-						</Filter>
 					</Filter>
 				</Filter>
 				<Filter
@@ -4136,16 +4045,16 @@
 							<File
 								RelativePath=".\RadioactiveZone.h">
 							</File>
-							<Filter
-								Name="ScriptZone"
-								Filter="">
-								<File
-									RelativePath=".\script_zone.cpp">
-								</File>
-								<File
-									RelativePath=".\script_zone.h">
-								</File>
-							</Filter>
+						</Filter>
+						<Filter
+							Name="ScriptZone"
+							Filter="">
+							<File
+								RelativePath=".\script_zone.cpp">
+							</File>
+							<File
+								RelativePath=".\script_zone.h">
+							</File>
 						</Filter>
 						<Filter
 							Name="ZoneEffector"

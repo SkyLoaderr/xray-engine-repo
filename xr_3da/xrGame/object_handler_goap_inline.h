@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "object_action_base.h"
+//#include "object_action_base.h"
 
 IC	bool CObjectHandlerGOAP::firing		() const
 {

@@ -9,6 +9,7 @@
 #pragma once
 
 //#define OLD_OBJECT_HANDLER
+#define OLD_DECISION_BLOCK
 
 #include "../../CustomMonster.h"
 #include "../../stalker_movement_manager.h"
@@ -18,7 +19,11 @@
 	#include "../../object_handler_goap.h"
 #endif
 #include "../../sight_manager.h"
-#include "../../state_manager_stalker.h"
+#ifdef OLD_DECISION_BLOCK
+	#include "../../state_manager_stalker.h"
+#else
+	#include "../../action_manager_stalker.h"
+#endif
 #include "../../state_internal.h"
 #include "../../motivation_manager.h"
 #include "../../motivation.h"
@@ -39,16 +44,20 @@ extern FILE	*ST_VF;
 
 class CAI_Stalker : 
 	public CCustomMonster, 
-	public CSightManager,
-	public CStalkerAnimations, 
-	public CStalkerMovementManager,
-	public CStateManagerStalker,
-	public CStateInternal<CAI_Stalker>,
 #ifdef OLD_OBJECT_HANDLER
 	public CObjectHandler,
 #else
 	public CObjectHandlerGOAP,
 #endif
+	public CSightManager,
+	public CStalkerAnimations, 
+	public CStalkerMovementManager,
+#ifdef OLD_DECISION_BLOCK
+	public CStateManagerStalker,
+#else
+	public CActionManagerStalker,
+#endif
+	public CStateInternal<CAI_Stalker>,
 	public CMotivationManager<CMotivation,CAI_Stalker>
 {
 private:

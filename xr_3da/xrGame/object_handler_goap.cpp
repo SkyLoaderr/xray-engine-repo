@@ -14,26 +14,28 @@
 #include "ai/stalker/ai_stalker.h"
 #include "inventory.h"
 #include "object_handler_goap.h"
-#include "object_property_evaluator_const.h"
-#include "object_property_evaluator_state.h"
-#include "object_property_evaluator_member.h"
-#include "object_property_evaluator_ammo.h"
-#include "object_property_evaluator_empty.h"
-#include "object_property_evaluator_ready.h"
-#include "object_property_evaluator_no_items.h"
-#include "object_property_evaluator_missile.h"
-#include "object_action_command.h"
-#include "object_action_show.h"
-#include "object_action_hide.h"
-#include "object_action_reload.h"
-#include "object_action_fire.h"
-#include "object_action_aim.h"
-#include "object_action_strapping.h"
-#include "object_action_unstrapping.h"
-#include "object_action_queue_wait.h"
-#include "object_action_switch.h"
-#include "object_action_drop.h"
-#include "object_action_threaten.h"
+//#include "object_property_evaluator_const.h"
+//#include "object_property_evaluator_state.h"
+//#include "object_property_evaluator_member.h"
+//#include "object_property_evaluator_ammo.h"
+//#include "object_property_evaluator_empty.h"
+//#include "object_property_evaluator_ready.h"
+//#include "object_property_evaluator_no_items.h"
+//#include "object_property_evaluator_missile.h"
+//#include "object_action_command.h"
+//#include "object_action_show.h"
+//#include "object_action_hide.h"
+//#include "object_action_reload.h"
+//#include "object_action_fire.h"
+//#include "object_action_aim.h"
+//#include "object_action_strapping.h"
+//#include "object_action_unstrapping.h"
+//#include "object_action_queue_wait.h"
+//#include "object_action_switch.h"
+//#include "object_action_drop.h"
+//#include "object_action_threaten.h"
+#include "object_property_evaluators.h"
+#include "object_actions.h"
 
 CObjectHandlerGOAP::CObjectHandlerGOAP	()
 {
@@ -76,7 +78,7 @@ void CObjectHandlerGOAP::reinit			(CAI_Stalker *object)
 	m_aimed2			= false;
 	m_threaten			= false;
 	add_evaluator		(u32(eWorldPropertyNoItems),			xr_new<CObjectPropertyEvaluatorNoItems>(m_object));
-	add_evaluator		(u32(eWorldPropertyNoItemsIdle),		xr_new<CObjectPropertyEvaluatorConst>(m_object,m_object,false));
+	add_evaluator		(u32(eWorldPropertyNoItemsIdle),		xr_new<CObjectPropertyEvaluatorConst>(false));
 	action				= xr_new<CSObjectActionBase>(m_object,m_object,"no items idle");
 	add_condition		(action,0xffff,eWorldPropertyItemID,true);
 	add_effect			(action,0xffff,eWorldPropertyIdle,	true);
@@ -324,21 +326,21 @@ void CObjectHandlerGOAP::add_evaluators		(CWeapon *weapon)
 	add_evaluator		(uid(id,eWorldPropertyReady1)		,xr_new<CObjectPropertyEvaluatorReady>(weapon,m_object,0));
 	add_evaluator		(uid(id,eWorldPropertyReady2)		,xr_new<CObjectPropertyEvaluatorReady>(weapon,m_object,1));
 	// temporarile const properties
-	add_evaluator		(uid(id,eWorldPropertyQueueWait1)	,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertyQueueWait2)	,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertySwitch1)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,true));
-	add_evaluator		(uid(id,eWorldPropertySwitch2)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertyStrapping)	,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertyStrapped)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertyUnstrapping)	,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyQueueWait1)	,xr_new<CObjectPropertyEvaluatorConst>(false));
+	add_evaluator		(uid(id,eWorldPropertyQueueWait2)	,xr_new<CObjectPropertyEvaluatorConst>(false));
+	add_evaluator		(uid(id,eWorldPropertySwitch1)		,xr_new<CObjectPropertyEvaluatorConst>(true));
+	add_evaluator		(uid(id,eWorldPropertySwitch2)		,xr_new<CObjectPropertyEvaluatorConst>(false));
+	add_evaluator		(uid(id,eWorldPropertyStrapping)	,xr_new<CObjectPropertyEvaluatorConst>(false));
+	add_evaluator		(uid(id,eWorldPropertyStrapped)		,xr_new<CObjectPropertyEvaluatorConst>(false));
+	add_evaluator		(uid(id,eWorldPropertyUnstrapping)	,xr_new<CObjectPropertyEvaluatorConst>(false));
 	// const properties
-	add_evaluator		(uid(id,eWorldPropertyFiring1)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertyFiring2)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertyIdle)			,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertyIdleStrap)	,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertyDropped)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertyAiming1)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertyAiming2)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyFiring1)		,xr_new<CObjectPropertyEvaluatorConst>(false));
+	add_evaluator		(uid(id,eWorldPropertyFiring2)		,xr_new<CObjectPropertyEvaluatorConst>(false));
+	add_evaluator		(uid(id,eWorldPropertyIdle)			,xr_new<CObjectPropertyEvaluatorConst>(false));
+	add_evaluator		(uid(id,eWorldPropertyIdleStrap)	,xr_new<CObjectPropertyEvaluatorConst>(false));
+	add_evaluator		(uid(id,eWorldPropertyDropped)		,xr_new<CObjectPropertyEvaluatorConst>(false));
+	add_evaluator		(uid(id,eWorldPropertyAiming1)		,xr_new<CObjectPropertyEvaluatorConst>(false));
+	add_evaluator		(uid(id,eWorldPropertyAiming2)		,xr_new<CObjectPropertyEvaluatorConst>(false));
 }
 
 void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
@@ -512,9 +514,9 @@ void CObjectHandlerGOAP::add_evaluators		(CMissile *missile)
 	add_evaluator		(uid(id,eWorldPropertyThrow)		,xr_new<CObjectPropertyEvaluatorMissile>(missile,m_object,MS_END));
 
 	// const properties
-	add_evaluator		(uid(id,eWorldPropertyDropped)		,xr_new<CObjectPropertyEvaluatorConst>(missile,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertyFiring1)		,xr_new<CObjectPropertyEvaluatorConst>(missile,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertyIdle)			,xr_new<CObjectPropertyEvaluatorConst>(missile,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyDropped)		,xr_new<CObjectPropertyEvaluatorConst>(false));
+	add_evaluator		(uid(id,eWorldPropertyFiring1)		,xr_new<CObjectPropertyEvaluatorConst>(false));
+	add_evaluator		(uid(id,eWorldPropertyIdle)			,xr_new<CObjectPropertyEvaluatorConst>(false));
 }
 
 void CObjectHandlerGOAP::add_operators		(CMissile *missile)

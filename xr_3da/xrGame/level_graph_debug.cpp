@@ -1384,16 +1384,18 @@ void CLevelGraph::select_cover_point		()
 	float									y, p, best_value = flt_max;
 	xr_vector<CCoverPoint*>					nearest;
 
-	ai().cover_manager().covers().nearest	(position,50.f,nearest);
+	ai().cover_manager().covers().nearest	(position,30.f,nearest);
 	m_best_point							= 0;
 	xr_vector<CCoverPoint*>::const_iterator	I = nearest.begin();
 	xr_vector<CCoverPoint*>::const_iterator	E = nearest.end();
 	for ( ; I != E; ++I) {
 		direction.sub	(target,position);
 		direction.getHP	(y,p);
-		float			value = ai().level_graph().cover_in_direction(y,(*I)->level_vertex_id());
-		if (value < best_value) {
-			best_value		= value;
+		float			cover_value			= ai().level_graph().cover_in_direction(y,(*I)->level_vertex_id());
+		float			enemy_distance		= target.distance_to((*I)->position());
+		float			my_distance			= position.distance_to((*I)->position());
+		if ((cover_value < best_value) && (enemy_distance > 5.f) && (my_distance < 30.f)) {
+			best_value		= cover_value;
 			m_best_point	= *I;
 		}
 	}

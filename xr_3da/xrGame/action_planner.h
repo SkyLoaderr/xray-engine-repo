@@ -38,6 +38,8 @@ protected:
 	typedef typename inherited::_edge_type			_action_id_type;
 	typedef CGraphEngine::CWorldProperty			CWorldProperty;
 	typedef CGraphEngine::CWorldState				CWorldState;
+	typedef CWorldProperty::_condition_type			_condition_type;
+	typedef CWorldProperty::_value_type				_value_type;
 
 protected:
 	bool					m_initialized;
@@ -56,6 +58,8 @@ public:
 	IC		_action_id_type	current_action_id		() const;
 	IC		COperator		&current_action			();
 	IC		bool			initialized				() const;
+	IC		void			add_condition			(_world_operator *action, _condition_type condition_id, _value_type condition_value);
+	IC		void			add_effect				(_world_operator *action, _condition_type condition_id, _value_type condition_value);
 };
 
 #include "action_planner_inline.h"

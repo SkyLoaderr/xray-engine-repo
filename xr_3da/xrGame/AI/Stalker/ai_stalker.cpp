@@ -19,7 +19,11 @@
 #include "../../phmovementcontrol.h"
 #include "../../xrserver_objects_alife_monsters.h"
 
+#ifdef OLD_DECISION_BLOCK
 CAI_Stalker::CAI_Stalker			() : CStateManagerStalker("StalkerManager")
+#else
+CAI_Stalker::CAI_Stalker			()
+#endif
 {
 	Init							();
 	InitTrade						();
@@ -51,7 +55,11 @@ void CAI_Stalker::reinit			()
 	CSightManager::reinit			();
 	CStalkerAnimations::reinit		();
 	CStalkerMovementManager::reinit	();
+#ifdef OLD_DECISION_BLOCK
 	CStateManagerStalker::reinit	(this);
+#else
+	CActionManagerStalker::reinit	(this);
+#endif
 	CSStateInternal::reinit			(this);
 	CSMotivationManager::reinit		(this,false);
 
@@ -80,7 +88,11 @@ void CAI_Stalker::reload			(LPCSTR section)
 //	CSightManager::reload			(section);
 //	CStalkerAnimations::reload		(section);
 	CStalkerMovementManager::reload	(section);
+#ifdef OLD_DECISION_BLOCK
 	CStateManagerStalker::reload	(section);
+#else
+	CActionManagerStalker::reload	(section);
+#endif
 	CSStateInternal::reload			(section);
 	CSMotivationManager::reload		(section);
 }
@@ -109,7 +121,11 @@ void CAI_Stalker::Load				(LPCSTR section)
 #endif
 	CSightManager::Load				(section);
 	CStalkerMovementManager::Load	(section);
+#ifdef OLD_DECISION_BLOCK
 	CStateManagerStalker::Load		(section);
+#else
+	CActionManagerStalker::Load		(section);
+#endif
 	CSStateInternal::Load			(section);
 	CSMotivationManager::Load		(section);
 
