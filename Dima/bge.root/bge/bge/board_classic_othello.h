@@ -65,14 +65,20 @@ public:
 	IC		void			undo_move				();
 
 public:
+	IC		const cell_type	&color_to_move			() const;
+	IC		u8				empties					() const;
+	IC		int				difference				() const;
+
+public:
 	IC		cell_index		index					(const cell_index &index0, const cell_index &index1) const;
 	IC		void			cell					(const cell_index &index,  const cell_type &value);
 	IC		void			cell					(const cell_index &index0, const cell_index &index1, const cell_type &value);
 	IC		const cell_type	&cell					(const cell_index &index) const;
 	IC		const cell_type	&cell					(const cell_index &index0, const cell_index &index1) const;
-	IC		const cell_type	&color_to_move			() const;
-	IC		u8				empties					() const;
-	IC		int				difference				() const;
+
+public:
+	
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CBoardClassicOthello)

@@ -33,6 +33,8 @@ IC	void detect				()
 
 	// setting realtime priority
 	SetPriorityClass	(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+	Sleep(1);
 
 	// Detecting frequency
 	dwTest				= timeGetTime();
@@ -59,6 +61,7 @@ IC	void detect				()
 	CPU::cycles_per_second	-= CPU::cycles_per_rdtsc;
 	
 	// setting normal priority
+	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
 	SetPriorityClass	(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 
 	_control87			(_PC_64,MCW_PC);
