@@ -3,7 +3,7 @@
 #define PropertiesListHelperH
 
 #include "PropertiesListTypes.h"
-#include "FolderLib.h"
+#include "FolderLib.h"                 
 
 //---------------------------------------------------------------------------
 class CPropHelper{
@@ -60,7 +60,7 @@ public:
 
 //------------------------------------------------------------------------------
 // predefind event routines
-    IC void __fastcall 	FvectorRDOnAfterEdit(PropValue* sender, LPVOID edit_val)
+    IC void __fastcall 	FvectorRDOnAfterEdit(PropItem* sender, LPVOID edit_val)
     {
         Fvector* V = (Fvector*)edit_val;
         V->x = deg2rad(V->x);
@@ -72,7 +72,7 @@ public:
         P->lim_mn.z = deg2rad(P->lim_mn.z);  P->lim_mx.z = deg2rad(P->lim_mx.z);
     }
 
-    IC void __fastcall 	FvectorRDOnBeforeEdit(PropValue* sender, LPVOID edit_val)
+    IC void __fastcall 	FvectorRDOnBeforeEdit(PropItem* sender, LPVOID edit_val)
     {
         Fvector* V = (Fvector*)edit_val;
         V->x = rad2deg(V->x);
@@ -91,17 +91,17 @@ public:
         V->y = rad2deg(V->y);
         V->z = rad2deg(V->z);
     }
-    IC void __fastcall 	floatRDOnAfterEdit(PropValue* sender, LPVOID edit_val)
+    IC void __fastcall 	floatRDOnAfterEdit(PropItem* sender, LPVOID edit_val)
     {
         *(float*)edit_val = deg2rad(*(float*)edit_val);
-        FloatValue* P 	= dynamic_cast<FloatValue*>(sender); R_ASSERT(P);
+        FloatValue* P 	= dynamic_cast<FloatValue*>(sender->GetFrontValue()); R_ASSERT(P);
         P->lim_mn = deg2rad(P->lim_mn); P->lim_mx = deg2rad(P->lim_mx);
     }
 
-    IC void __fastcall 	floatRDOnBeforeEdit(PropValue* sender, LPVOID edit_val)
+    IC void __fastcall 	floatRDOnBeforeEdit(PropItem* sender, LPVOID edit_val)
     {
         *(float*)edit_val = rad2deg(*(float*)edit_val);
-        FloatValue* P 	= dynamic_cast<FloatValue*>(sender); R_ASSERT(P);
+        FloatValue* P 	= dynamic_cast<FloatValue*>(sender->GetFrontValue()); R_ASSERT(P);
         P->lim_mn = rad2deg(P->lim_mn); P->lim_mx = rad2deg(P->lim_mx);
     }
 
@@ -109,6 +109,10 @@ public:
     {
         *(float*)draw_val = rad2deg(*(float*)draw_val);
     }
+
+    void __fastcall		NameAfterEdit	(PropItem* sender, LPVOID edit_val);
+    void __fastcall		NameBeforeEdit	(PropItem* sender, LPVOID edit_val);
+    void __fastcall		NameDraw		(PropValue* sender, LPVOID draw_val);
 public:
     IC CaptionValue*	CreateCaption	(PropItemVec& items, LPCSTR key, AnsiString val)
     {	return			(CaptionValue*)	AppendValue		(items,key,xr_new<CaptionValue>(val),PROP_CAPTION);		}
@@ -207,24 +211,24 @@ public:
     
     IC FloatValue* 		CreateAngle		(PropItemVec& items, LPCSTR key, float* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2)
     {   FloatValue* V	= (FloatValue*)	AppendValue		(items,key,xr_new<FloatValue>(val,mn,mx,inc,decim),PROP_FLOAT);
-    	V->OnAfterEditEvent			= floatRDOnAfterEdit;
-        V->OnBeforeEditEvent		= floatRDOnBeforeEdit; 
-	    V->Owner()->OnDrawTextEvent = floatRDOnDraw;
+    	V->Owner()->OnAfterEditEvent	= floatRDOnAfterEdit;
+        V->Owner()->OnBeforeEditEvent	= floatRDOnBeforeEdit; 
+	    V->Owner()->OnDrawTextEvent 	= floatRDOnDraw;
         return V;						
     }
     IC VectorValue* 	CreateAngle3	(PropItemVec& items, LPCSTR key, Fvector* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2)
     {   VectorValue* V	= (VectorValue*)	AppendValue		(items,key,xr_new<VectorValue>(val,mn,mx,inc,decim),PROP_VECTOR);
-    	V->OnAfterEditEvent			= FvectorRDOnAfterEdit;
-        V->OnBeforeEditEvent		= FvectorRDOnBeforeEdit;
-	    V->Owner()->OnDrawTextEvent	= FvectorRDOnDraw;
+    	V->Owner()->OnAfterEditEvent	= FvectorRDOnAfterEdit;
+        V->Owner()->OnBeforeEditEvent	= FvectorRDOnBeforeEdit;
+	    V->Owner()->OnDrawTextEvent		= FvectorRDOnDraw;
         return V;					
     }
     IC TextValue* 		CreateName		(PropItemVec& items, LPCSTR key, LPSTR val, int lim, int tag)  
-    {   TextValue* V	= (TextValue*)		CreateText	(items,key,val,lim);
-        V->OnAfterEditEvent			= FHelper.NameAfterEdit;
-        V->OnBeforeEditEvent		= FHelper.NameBeforeEdit;
-        V->Owner()->OnDrawTextEvent = FHelper.NameDraw;
-        V->Owner()->tag				= tag;
+    {   TextValue* V	= (TextValue*) 	CreateText	(items,key,val,lim);
+        V->Owner()->OnAfterEditEvent   	= NameAfterEdit;
+        V->Owner()->OnBeforeEditEvent  	= NameBeforeEdit;
+        V->Owner()->OnDrawTextEvent 	= NameDraw;
+        V->Owner()->tag					= tag;
         return V;					
     }
 

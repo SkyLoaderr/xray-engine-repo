@@ -821,7 +821,8 @@ void CDrawUtilities::DrawSelectionRect(const Ivector2& m_SelStart, const Ivector
     Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
 }
 
-void CDrawUtilities::DrawPrimitiveL	(D3DPRIMITIVETYPE pt, u32 pc, Fvector* vertices, int vc, u32 color, bool bCull, bool bCycle){
+void CDrawUtilities::DrawPrimitiveL	(D3DPRIMITIVETYPE pt, u32 pc, Fvector* vertices, int vc, u32 color, bool bCull, bool bCycle)
+{
 	// fill VB
 	_VertexStream*	Stream	= &RCache.Vertex;
 	u32			vBase, dwNeed=(bCycle)?vc+1:vc;
@@ -836,7 +837,8 @@ void CDrawUtilities::DrawPrimitiveL	(D3DPRIMITIVETYPE pt, u32 pc, Fvector* verti
     if (!bCull) Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
 }
 
-void CDrawUtilities::DrawPrimitiveTL(D3DPRIMITIVETYPE pt, u32 pc, FVF::TL* vertices, int vc, bool bCull, bool bCycle){
+void CDrawUtilities::DrawPrimitiveTL(D3DPRIMITIVETYPE pt, u32 pc, FVF::TL* vertices, int vc, bool bCull, bool bCycle)
+{
 	// fill VB
 	_VertexStream*	Stream	= &RCache.Vertex;
 	u32			vBase, dwNeed=(bCycle)?vc+1:vc;
@@ -887,7 +889,7 @@ void CDrawUtilities::DrawLink(const Fvector& p0, const Fvector& p1, float sz, u3
     DrawLine(p1,pp[1],clr);
 }
 
-void CDrawUtilities::DrawBone(const Fvector& p, const Fvector& d, float len, float radius, u32 clr)
+void CDrawUtilities::DrawJoint(const Fvector& p, float radius, u32 clr)
 {
 	DrawLineSphere(p,radius,clr,false);
 }

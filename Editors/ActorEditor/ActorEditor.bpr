@@ -71,7 +71,9 @@
       Intermediate\Blender_Recorder_R2.obj Intermediate\R_Backend_xform.obj 
       Intermediate\du_cone.obj Intermediate\EditObjectSkin.obj 
       Intermediate\EditObjectProps.obj Intermediate\UI_ToolsProps.obj 
-      Intermediate\du_cylinder.obj Intermediate\BoneEditor.obj"/>
+      Intermediate\du_cylinder.obj Intermediate\BoneEditor.obj 
+      Intermediate\ItemListTypes.obj Intermediate\ItemList.obj 
+      Intermediate\ItemListHelper.obj"/>
     <RESFILES value="ActorEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -79,7 +81,8 @@
     <RESDEPEN value="$(RESFILES) BottomBar.dfm EditorPref.dfm Splash.dfm main.dfm LeftBar.dfm 
       LogForm.dfm Editor\ChoseForm.dfm Editor\TopBar.dfm 
       Editor\PropertiesList.dfm BonePart.dfm KeyBar.dfm Editor\NumericVector.dfm 
-      Editor\TextForm.dfm Editor\ImageEditor.dfm Editor\ShaderFunction.dfm"/>
+      Editor\TextForm.dfm Editor\ImageEditor.dfm Editor\ShaderFunction.dfm 
+      Editor\ItemList.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="editor.lib elpackB6.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib elpackB6.lib editor.lib"/>
@@ -264,6 +267,9 @@
       <FILE FILENAME="UI_ToolsProps.cpp" FORMNAME="" UNITNAME="UI_ToolsProps" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\du_cylinder.cpp" FORMNAME="" UNITNAME="du_cylinder" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\BoneEditor.cpp" FORMNAME="" UNITNAME="BoneEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ItemListTypes.cpp" FORMNAME="" UNITNAME="ItemListTypes.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ItemList.cpp" FORMNAME="ItemList" UNITNAME="ItemList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ItemListHelper.cpp" FORMNAME="" UNITNAME="ItemListHelper.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

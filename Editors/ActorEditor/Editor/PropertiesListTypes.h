@@ -53,13 +53,13 @@ enum EPropType{
 	PROP_WAVE
 };
 // refs
-struct 	xr_token;
+struct 	xr_token;        
 class PropValue;
 class PropItem;
 
 //------------------------------------------------------------------------------
-typedef void 	__fastcall (__closure *TBeforeEdit)			(PropValue* sender, LPVOID edit_val);
-typedef void 	__fastcall (__closure *TAfterEdit)			(PropValue* sender, LPVOID edit_val);
+typedef void 	__fastcall (__closure *TBeforeEdit)			(PropItem* sender, LPVOID edit_val);
+typedef void 	__fastcall (__closure *TAfterEdit)			(PropItem* sender, LPVOID edit_val);
 typedef void 	__fastcall (__closure *TOnDrawTextEvent)	(PropValue* sender, LPVOID draw_val);
 typedef void 	__fastcall (__closure *TOnDrawCanvasEvent)	(PropValue* sender, TCanvas* canvas, const TRect& rect);
 typedef void 	__fastcall (__closure *TOnChange)			(PropValue* sender);
@@ -76,13 +76,11 @@ class PropValue{
 	PropItem*			m_Owner;
 	// base events
 public:
-    TAfterEdit			OnAfterEditEvent;
-    TBeforeEdit			OnBeforeEditEvent;
     TOnChange			OnChangeEvent;
     TOnClick			OnExtClickEvent;
     TOnClick			OnClickEvent;
 public:
-						PropValue		():m_Owner(0),OnAfterEditEvent(0),OnBeforeEditEvent(0),OnChangeEvent(0),OnClickEvent(0),OnExtClickEvent(0){;}
+						PropValue		():m_Owner(0),OnChangeEvent(0),OnClickEvent(0),OnExtClickEvent(0){;}
     virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText)=0;
     virtual void		ResetValue		()=0;
     virtual bool		Equal			(PropValue* prop)=0;
@@ -140,6 +138,8 @@ class PropItem{
     PropValueVec		values;
 // events
 public:
+    TAfterEdit			OnAfterEditEvent;
+    TBeforeEdit			OnBeforeEditEvent;
     TOnDrawTextEvent	OnDrawTextEvent;
     TOnDrawCanvasEvent	OnDrawCanvasEvent;
     TOnPropItemFocused	OnItemFocused;
@@ -158,7 +158,7 @@ public:
     };
     Flags32				m_Flags;
 public:
-						PropItem		(EPropType _type):type(_type),item(0),key(0),tag(0),subitem(1),OnDrawTextEvent(0),OnDrawCanvasEvent(0),OnItemFocused(0){m_Flags.zero();}
+						PropItem		(EPropType _type):type(_type),item(0),key(0),tag(0),subitem(1),OnAfterEditEvent(0),OnBeforeEditEvent(0),OnDrawTextEvent(0),OnDrawCanvasEvent(0),OnItemFocused(0){m_Flags.zero();}
 	virtual 			~PropItem		()
     {
     	for (PropValueIt it=values.begin(); it!=values.end(); it++)
@@ -166,7 +166,7 @@ public:
     	xr_free			(key);
     };
     void				SetItemHeight	(int height){item->OwnerHeight=false; item->Height=height;}
-    void				SetName			(LPCSTR name){key=xr_strdup(name);}
+    void				SetName			(LPCSTR name){xr_free(key);key=xr_strdup(name);}
     IC void				ResetValues		()
     {
     	for (PropValueIt it=values.begin(); it!=values.end(); it++)
@@ -218,13 +218,11 @@ public:
 
 	IC void				OnBeforeEdit	(LPVOID edit_val)
     {
-    	for (PropValueIt it=values.begin(); it!=values.end(); it++)
-        	if ((*it)->OnBeforeEditEvent) (*it)->OnBeforeEditEvent(*it,edit_val);
+    	if (OnBeforeEditEvent) OnBeforeEditEvent(this,edit_val);
     }
 	IC void				OnAfterEdit		(LPVOID edit_val)
     {
-    	for (PropValueIt it=values.begin(); it!=values.end(); it++)
-        	if ((*it)->OnAfterEditEvent) 	(*it)->OnAfterEditEvent(*it,edit_val);
+    	if (OnAfterEditEvent) OnAfterEditEvent(this,edit_val);
     }
 	IC void				OnChange		()
     {
@@ -254,7 +252,7 @@ public:
 						CaptionValue	(AnsiString val){value=val;}
     virtual LPCSTR		GetText			(TOnDrawTextEvent){return value.c_str();}
     virtual	void		ResetValue		(){;}
-    virtual	bool		Equal			(PropValue* val){return true;}
+    virtual	bool		Equal			(PropValue* val){ return (value==((CaptionValue*)val)->value); }
     virtual	bool		ApplyValue		(LPVOID val){value=*(AnsiString*)val; return false;}
 };
 

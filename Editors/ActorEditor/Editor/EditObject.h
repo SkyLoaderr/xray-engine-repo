@@ -333,7 +333,8 @@ public:
 
     // bone
 	CBone* 			PickBone				(const Fvector& S, const Fvector& D, const Fmatrix& parent);
-	void 			SelectBone				(CBone* b);
+	void 			SelectBones				(bool bVal);
+	void 			SelectBone				(CBone* b, bool bVal);
 #endif
     // change position/orientation methods
 	void 			TranslateToWorld		(const Fmatrix& parent);
@@ -359,9 +360,9 @@ public:
   	bool 			Load					(IReader&);
 	void 			Save					(IWriter&);
 #ifdef _EDITOR
-	void 			FillMotionsProps		(LPCSTR pref, PropItemVec& items, int modeID);
-	void 			FillBonesProps			(LPCSTR pref, PropItemVec& items, int modeID);
-    void			FillSurfacesProps		(LPCSTR pref, PropItemVec& items, int modeID);
+	void 			FillMotionList			(LPCSTR pref, ListItemsVec& items, int modeID);
+	void 			FillBoneList			(LPCSTR pref, ListItemsVec& items, int modeID);
+    void			FillSurfaceList			(LPCSTR pref, ListItemsVec& items, int modeID);
     void			FillSurfaceProps		(CSurface* surf, LPCSTR pref, PropItemVec& items);
 	void 			FillBasicProps			(LPCSTR pref, PropItemVec& items);
 	void 			FillSummaryProps		(LPCSTR pref, PropItemVec& items);
@@ -380,7 +381,7 @@ public:
     int				GetBoneIndexByWMap		(LPCSTR wm_name);
     CSMotion* 		FindSMotionByName		(LPCSTR name, const CSMotion* Ignore=0);
     void			GenerateSMotionName		(char* buffer, LPCSTR start_name, const CSMotion* M);
-    bool			GenerateBoneShapes		(bool bSelOnly);
+    bool			GenerateBoneShape		(bool bSelOnly);
 
     // device dependent routine
 	void 			OnDeviceCreate 			();

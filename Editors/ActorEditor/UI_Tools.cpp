@@ -11,6 +11,7 @@
 #include "leftbar.h"
 #include "topbar.h"
 #include "PropertiesList.h"               
+#include "ItemList.h"
 #include "motion.h"
 #include "bone.h"
 #include "library.h"
@@ -118,7 +119,7 @@ CActorTools::CActorTools()
 {
 	m_pEditObject		= 0;
     m_bObjectModified	= false;
-    m_ObjectProps 		= 0;
+    m_ObjectItems 		= 0;
     m_ItemProps 		= 0;
     m_bReady			= false;
     m_KeyBar			= 0;
@@ -138,7 +139,7 @@ bool CActorTools::OnCreate()
     Device.seqDevDestroy.Add(this);
 
     // props
-    m_ObjectProps 	= TProperties::CreateForm(fraLeftBar->paObjectProps,alClient,OnObjectModified,OnObjectItemFocused);
+    m_ObjectItems 	= TItemList::CreateForm(fraLeftBar->paObjectProps,alClient,OnObjectItemFocused);
     m_ItemProps 	= TProperties::CreateForm(fraLeftBar->paItemProps,alClient,OnMotionDefsModified);
     m_PreviewObject.OnCreate();
 
@@ -158,7 +159,7 @@ void CActorTools::OnDestroy()
     m_bReady			= false;
 
 	// unlock
-	TProperties::DestroyForm(m_ObjectProps);
+	TItemList::DestroyForm(m_ObjectItems);
 	TProperties::DestroyForm(m_ItemProps);
     m_PreviewObject.OnDestroy();
 
@@ -269,7 +270,9 @@ void CActorTools::OnFrame()
     }
     if (m_Flags.is(flRefreshSubProps)){
     	m_Flags.set(flRefreshSubProps,FALSE);
-		OnObjectItemFocused(m_ObjectProps->tvProperties->Selected);
+        ListItemsVec items;
+        m_ObjectItems->GetSelected(items);
+		OnObjectItemFocused(items);
     }
 	if (m_Flags.is(flRefreshProps))
         RealUpdateProperties();
@@ -335,7 +338,7 @@ void CActorTools::Clear()
     xr_delete(m_pEditObject);
     m_RenderObject.Clear();
 //	m_PreviewObject.Clear();
-    m_ObjectProps->ClearProperties();
+    m_ObjectItems->ClearList();
     m_ItemProps->ClearProperties();
 
 	m_bObjectModified 	= false;
@@ -427,7 +430,8 @@ bool __fastcall CActorTools::MouseStart(TShiftState Shift)
     	switch (m_EditMode){
         case emBone:{
 	        CBone* B 	= m_pEditObject->PickBone(UI.m_CurrentRStart,UI.m_CurrentRNorm,m_AVTransform);
-        	SelectItemProperties("Skin\\Bones",B?MakeFullBoneName(m_pEditObject->Bones(),B).c_str():0);
+            bool bVal 	= B?Shift.Contains(ssAlt)?false:(Shift.Contains(ssCtrl)?!B->Selected():true):false;
+            SelectListItem(BONES_PREFIX,B?MakeFullBoneName(m_pEditObject->Bones(),B).c_str():0,bVal,Shift.Contains(ssCtrl)||Shift.Contains(ssAlt),true);
         }break;
         }
     return false;
@@ -467,7 +471,7 @@ bool __fastcall CActorTools::MouseEnd(TShiftState Shift)
     case eaMove:{
     	switch (m_EditMode){
         case emObject:
-            m_ObjectProps->RefreshForm();
+//.            m_ObjectItems->RefreshForm();
         break;
         case emBone:
 	        OnBoneModified();
@@ -477,7 +481,7 @@ bool __fastcall CActorTools::MouseEnd(TShiftState Shift)
     case eaRotate:{
     	switch (m_EditMode){
         case emObject:
-            m_ObjectProps->RefreshForm();
+//.            m_ObjectItems->RefreshForm();
         break;
         case emBone:
 	        OnBoneModified();
@@ -552,9 +556,15 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
         	BoneVec lst;
             Fvector rot;
             rot.mul(m_RotateVector,amount);
-	        if (m_pEditObject->GetSelectedBones(lst))
-            	for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
-                	(*b_it)->ShapeRotate(rot);
+	        if (m_pEditObject->GetSelectedBones(lst)){
+            	if (Shift.Contains(ssCtrl)){
+                    for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
+                        (*b_it)->ShapeRotate(rot);
+                }else{
+                    for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
+                        (*b_it)->BoneRotate(rot);
+                }
+            }
 //	        OnBoneModified();
         }break;
         }

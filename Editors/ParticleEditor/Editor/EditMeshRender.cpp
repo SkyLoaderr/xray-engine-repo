@@ -214,7 +214,8 @@ void CEditableMesh::RenderList(const Fmatrix& parent, u32 color, bool bEdge, U32
 }
 //----------------------------------------------------
 
-void CEditableMesh::RenderEdge(const Fmatrix& parent, u32 color){
+void CEditableMesh::RenderEdge(const Fmatrix& parent, u32 color)
+{
     if (!m_LoadState.is(LS_RBUFFERS)) CreateRenderBuffers();
 //	if (!m_Visible) return;
 	RCache.set_xform_world(parent);
@@ -236,7 +237,8 @@ void CEditableMesh::RenderEdge(const Fmatrix& parent, u32 color){
 }
 //----------------------------------------------------
 
-void CEditableMesh::RenderSelection(const Fmatrix& parent, u32 color){
+void CEditableMesh::RenderSelection(const Fmatrix& parent, u32 color)
+{
     if (!m_LoadState.is(LS_RBUFFERS)) CreateRenderBuffers();
 //	if (!m_Visible) return;
     Fbox bb; bb.set(m_Box);
@@ -253,4 +255,62 @@ void CEditableMesh::RenderSelection(const Fmatrix& parent, u32 color){
     }
     Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
 }
+//----------------------------------------------------
+
+struct svertRender
+{
+	Fvector		P;
+	Fvector		N;
+	Fvector2 	uv;
+};
+
+#define SKEL_MAX_VERT_COUNT 10000
+
+void CEditableMesh::RenderSkeleton(const Fmatrix& parent, CSurface* S)
+{
+    if (!m_LoadState.is(CEditableMesh::LS_SVERTICES)) GenerateSVertices();
+
+	const u32 FVF_SV	= D3DFVF_XYZ | D3DFVF_TEX1 | D3DFVF_NORMAL;
+	SGeometry* 	vs_SV 	= Device.Shader.CreateGeom(FVF_SV,RCache.Vertex.Buffer(),RCache.Index.Buffer());
+
+	R_ASSERT2(!m_SVertices.empty(),"SVertices empty!");
+	SurfFacesPairIt sp_it 	= m_SurfFaces.find(S); R_ASSERT(sp_it!=m_SurfFaces.end());
+    IntVec& face_lst 		= sp_it->second;
+	_VertexStream*	Stream	= &RCache.Vertex;
+	u32				vBase;
+	svertRender*	pv		= (svertRender*)Stream->Lock(face_lst.size()*3,vs_SV->vb_stride,vBase);
+	Fvector			P0,N0,P1,N1;
+    
+    for (IntIt i_it=face_lst.begin(); i_it!=face_lst.end(); i_it++){
+        st_Face& face = m_Faces[*i_it];
+        for (int k=0; k<3; k++,pv++){
+        	st_SVert& SV = m_SVertices[face.pv[k].pindex];
+            if (SV.bone1!=-1){
+                Fmatrix& M0		= m_Parent->m_Bones[SV.bone0]->LTransform();
+                Fmatrix& M1		= m_Parent->m_Bones[SV.bone1]->LTransform();
+                M0.transform_tiny(P0,SV.offs0);
+                M0.transform_dir (N0,SV.norm0);
+                M1.transform_tiny(P1,SV.offs1);
+                M1.transform_dir (N1,SV.norm1);
+                pv->P.lerp		(P0,P1,SV.w);
+                pv->N.lerp		(N0,N1,SV.w);
+                pv->uv.set		(SV.uv);
+            }else{
+                Fmatrix& M0		= m_Parent->m_Bones[SV.bone0]->LTransform();
+                M0.transform_tiny(P0,SV.offs0);
+                M0.transform_dir (N0,SV.norm0);
+                M0.transform_tiny(pv->P,SV.offs0);
+                M0.transform_dir (pv->N,SV.norm0);
+                pv->uv.set		(SV.uv);
+            }
+        }
+    }
+
+	Stream->Unlock	(face_lst.size()*3,vs_SV->vb_stride);
+    Device.DP		(D3DPT_TRIANGLELIST,vs_SV,vBase,face_lst.size());
+
+	Device.Shader.DeleteGeom(vs_SV);
+}
+//----------------------------------------------------
+
 

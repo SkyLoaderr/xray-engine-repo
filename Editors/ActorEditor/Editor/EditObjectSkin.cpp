@@ -11,10 +11,12 @@
 #include "bottombar.h"
 #include "PropertiesListHelper.h"
 
-static const u32 bone_sel_color	=0xFFFFFFFF;
-static const u32 bone_norm_color=0xFFFFFF00;
-static const u32 bone_link_color=0xFF909000;
-static const float joint_size=0.025f;
+static const u32 color_bone_sel_color	=0xFFFFFFFF;
+static const u32 color_bone_norm_color	=0xFFFFFF00;
+static const u32 color_bone_link_color	=0xFF909000;
+static const u32 color_bone_sel_cm		=0xFFFF0000;
+static const u32 color_bone_norm_cm		=0xFF700000;
+static const float joint_size=0.035f;
 
 /*
 bool testRayBox(float& dist, const Fvector& start, const Fvector& dir, const Fbox& pos, float radius)
@@ -47,13 +49,23 @@ void CEditableObject::RenderBones(const Fmatrix& parent)
         // render
 		BoneVec& lst = m_Bones;
         for(BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++){
-	        Device.SetShader(Device.m_WireShader);
+	        Device.SetShader(Device.m_WireShader);    
 	        RCache.set_xform_world(parent);
             Fmatrix& M 		= (*b_it)->LTransform();
             Fvector p1		= M.c;
-            u32 c_joint		= (*b_it)->flags.is(CBone::flSelected)?bone_sel_color:bone_norm_color;
+            u32 c_joint		= (*b_it)->flags.is(CBone::flSelected)?color_bone_sel_color:color_bone_norm_color;
             Fvector p2,d; 	d.set	(0,0,1);
-            DU.DrawBone		(p1,d,0,joint_size,c_joint);
+            DU.DrawJoint	(p1,joint_size,c_joint);
+            // center of mass
+            Fvector cm;
+            M.transform_tiny(cm,(*b_it)->center_of_mass);
+            if ((*b_it)->flags.is(CBone::flSelected)){
+            	float sz 	= joint_size*2.f;
+            	DU.DrawCross	(cm, sz,sz,sz, sz,sz,sz, 0xFFFFFFFF, false);
+	            DU.DrawRomboid	(cm,joint_size*0.5f,color_bone_sel_cm);
+            }else{
+	            DU.DrawRomboid	(cm,joint_size*0.5f,color_bone_norm_cm);
+            }
             if (0){
 	            M.transform_dir	(d);
     	        p2.mad			(p1,d,(*b_it)->Length());
@@ -62,7 +74,7 @@ void CEditableObject::RenderBones(const Fmatrix& parent)
             if ((*b_it)->ParentIndex()>-1){
 		        Device.SetShader(Device.m_SelectionShader);
 				Fvector& p2 = lst[(*b_it)->ParentIndex()]->LTransform().c;
-        	    DU.DrawLine	(p1,p2,bone_link_color);
+        	    DU.DrawLine	(p1,p2,color_bone_link_color);
             }
 			if (fraBottomBar->miDrawBoneAxis->Checked){ 
             	Fmatrix mat; mat.mul(parent,M);
@@ -98,16 +110,19 @@ CBone* CEditableObject::PickBone(const Fvector& S, const Fvector& D, const Fmatr
     	if ((*b_it)->Pick(dist,S,D,parent))
         	sel 	= *b_it;
     }
-    SelectBone		(sel);
     return sel;
 }
 
-void CEditableObject::SelectBone(CBone* b)
+void CEditableObject::SelectBones(bool bVal)
 {
     BoneVec& lst 	= m_Bones;
     for(BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
-        (*b_it)->Select(FALSE);
-    if (b)			b->Select(TRUE);
+        (*b_it)->Select(bVal);
+}
+
+void CEditableObject::SelectBone(CBone* b, bool bVal)
+{
+    if (b)			b->Select(bVal);
 }
  
 int CEditableObject::GetSelectedBones(BoneVec& sel_bones)
@@ -293,7 +308,7 @@ void ComputeCylinder(Fcylinder& C, Fobb& B, FvectorVec& V)
 }
 
 
-bool CEditableObject::GenerateBoneShapes(bool bSelOnly)
+bool CEditableObject::GenerateBoneShape(bool bSelOnly)
 {
 	R_ASSERT(IsSkeleton());
     xr_vector<FvectorVec>	bone_points;
@@ -319,6 +334,7 @@ bool CEditableObject::GenerateBoneShapes(bool bSelOnly)
         ComputeOBB		((*b_it)->shape.box,bone_points[b_it-lst.begin()]);
         ComputeSphere	((*b_it)->shape.sphere,bone_points[b_it-lst.begin()]);
         ComputeCylinder	((*b_it)->shape.cylinder,(*b_it)->shape.box,bone_points[b_it-lst.begin()]);
+        (*b_it)->center_of_mass.set((*b_it)->shape.sphere.P);
     }
     return true;
 }

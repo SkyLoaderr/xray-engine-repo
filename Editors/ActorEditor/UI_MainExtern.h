@@ -13,6 +13,7 @@ enum {
     COMMAND_SELECT_PREVIEW_OBJ,
     COMMAND_RESET_ANIMATION,
 
+    COMMAND_FILE_MENU,
     COMMAND_LOAD_FIRSTRECENT,
 };
 //------------------------------------------------------------------------------

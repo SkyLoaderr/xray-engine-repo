@@ -62,7 +62,7 @@ void CEditableObject::OnFrame()
             }
             m_SMParam.Update(Device.fTimeDelta,m_ActiveSMotion->fSpeed);
         }else{
-		    for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++) (*b_it)->Reset();
+		    //for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++) (*b_it)->Reset();
         }
         CalculateAnimation();
     }

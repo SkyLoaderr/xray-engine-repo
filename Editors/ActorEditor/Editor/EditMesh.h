@@ -115,6 +115,7 @@ struct st_SVert{
     int				bone0;
     int				bone1;
     float			w;
+    Fvector2		uv;
 };
 // faces
 struct st_FaceVert{
@@ -269,6 +270,7 @@ public:
 
     // render routine
 	void 			Render					(const Fmatrix& parent, CSurface* S);
+	void 			RenderSkeleton			(const Fmatrix& parent, CSurface* S);
 	void            RenderList				(const Fmatrix& parent, u32 color, bool bEdge, U32Vec& fl);
 	void 			RenderEdge				(const Fmatrix& parent, u32 color);
 	void 			RenderSelection			(const Fmatrix& parent, u32 color);

@@ -101,7 +101,8 @@ void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F
                 for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
                     if ((priority==(*s_it)->_Priority())&&(strictB2F==(*s_it)->_StrictB2F())){
                         for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
-                            (*_M)->Render(parent,*s_it);
+                            if (IsSkeleton()) 	(*_M)->RenderSkeleton(parent,*s_it);
+                            else				(*_M)->Render(parent,*s_it);
                     }
                 }
             }
@@ -113,7 +114,8 @@ void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F
                 if ((priority==(*s_it)->_Priority())&&(strictB2F==(*s_it)->_StrictB2F())){
                     Device.SetShader((*s_it)->_Shader());
                     for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
-                        (*_M)->Render(parent,*s_it);
+                        if (IsSkeleton()) 	(*_M)->RenderSkeleton(parent,*s_it);
+                        else				(*_M)->Render(parent,*s_it);
                 }
             }
         }

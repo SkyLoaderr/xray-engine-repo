@@ -21,7 +21,6 @@
 #include "ElBtnCtl.hpp"
 #include "ElPopBtn.hpp"
 
-
 class TProperties : public TForm
 {
 __published:	// IDE-managed Components
@@ -151,10 +150,9 @@ public:		// User declarations
         RefreshForm			();
     }
 
-    void 				IsUpdating				(bool bVal)
-    {
-    	tvProperties->IsUpdating = bVal;
-    }
+    void 				LockUpdating			(){ tvProperties->IsUpdating = true; }
+    void 				UnlockUpdating			(){ tvProperties->IsUpdating = false; }
+
     // auxiliary routines
 	static IC LPVOID	GetItemData				(TElTreeItem* item){return (void*)item->Tag;}
 	static IC bool 		IsItemType				(TElTreeItem* item, EPropType type){return item->Tag&&(((PropItem*)item->Tag)->Type()==type);}

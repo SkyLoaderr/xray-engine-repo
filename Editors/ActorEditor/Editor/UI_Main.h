@@ -215,5 +215,7 @@ public:
 extern TUI UI;
 //---------------------------------------------------------------------------
 void ResetActionToSelect();
+#define COMMAND0(cmd)		{Command(cmd);bExec=true;}
+#define COMMAND1(cmd,p0)	{Command(cmd,p0);bExec=true;}
 //---------------------------------------------------------------------------
 #endif

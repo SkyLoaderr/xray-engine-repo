@@ -101,6 +101,9 @@ struct astr_pred : public std::binary_function<AnsiString&, AnsiString&, bool>
 	class PropItem;
 	DEFINE_VECTOR(PropItem*,PropItemVec,PropItemIt);
 
+	class ListItem;
+	DEFINE_VECTOR(ListItem*,ListItemsVec,ListItemsIt);
+
 	#include "device.h"
 	#include "properties.h"
 	#include "render.h"

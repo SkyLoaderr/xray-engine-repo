@@ -133,6 +133,10 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     case COMMAND_SET_NUMERIC_SCALE:
     	Tools.SetNumScale((CCustomObject*)p1);
     	break;
+    case COMMAND_RENDER_WIRE:
+    	if (p1)	Device.dwFillMode 	= D3DFILL_WIREFRAME;
+        else 	Device.dwFillMode 	= D3DFILL_SOLID;
+	    break;
     case COMMAND_RENDER_FOCUS:
 		if (frmMain->Visible&&m_bReady)
         	m_D3DWindow->SetFocus();
@@ -191,9 +195,6 @@ char* TUI::GetTitle()
 }
 
 //---------------------------------------------------------------------------
-#define COMMAND0(cmd)		{Command(cmd);bExec=true;}
-#define COMMAND1(cmd,p0)	{Command(cmd,p0);bExec=true;}
-//---------------------------------------------------------------------------
 bool TUI::ApplyShortCut(WORD Key, TShiftState Shift)
 {
 	VERIFY(m_bReady);
@@ -223,6 +224,7 @@ bool TUI::ApplyShortCut(WORD Key, TShiftState Shift)
         	else if (Key=='P')		COMMAND0(COMMAND_EDITOR_PREF)
             else if (Key==VK_OEM_4)	COMMAND1(COMMAND_GRID_SLOT_SIZE,false)
             else if (Key==VK_OEM_6)	COMMAND1(COMMAND_GRID_SLOT_SIZE,true)
+        	else if (Key=='W')		COMMAND1(COMMAND_RENDER_WIRE, !(Device.dwFillMode==D3DFILL_WIREFRAME))
         }
     }
     return bExec;

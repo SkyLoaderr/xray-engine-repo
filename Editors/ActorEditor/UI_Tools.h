@@ -5,6 +5,7 @@
 #include "eltree.hpp"
 #include "mxplacemnt.hpp"
 #include "BodyInstance.h"
+#include "ItemListHelper.h"
 // refs
 class TProperties;
 class CEditableObject;
@@ -126,17 +127,19 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 	void __fastcall		OnMotionTypeChange		(PropValue* sender);
 
 	void __fastcall 	OnChangeTransform		(PropValue* sender);
-	void __fastcall 	BPOnAfterEdit			(PropValue* sender, LPVOID edit_val);
-	void __fastcall 	BPOnBeforeEdit			(PropValue* sender, LPVOID edit_val);
+	void __fastcall 	BPOnAfterEdit			(PropItem* sender, LPVOID edit_val);
+	void __fastcall 	BPOnBeforeEdit			(PropItem* sender, LPVOID edit_val);
 	void __fastcall 	BPOnDraw				(PropValue* sender, LPVOID draw_val);
 	void __fastcall 	OnMotionNameChange		(PropValue* sender);
 
+	void __fastcall 	OnMotionFileClick		(PropValue* sender);
+	void __fastcall 	OnMotionEditClick		(PropValue* sender);
 	void __fastcall 	OnMotionControlClick	(PropValue* sender);
 
-    void __fastcall 	OnObjectItemFocused		(TElTreeItem* item);
+    void __fastcall 	OnObjectItemFocused		(ListItemsVec& items);
 
-	void __fastcall 	OnMotionsFileClick		(PropValue* sender);
-    void __fastcall		OnBonesFileClick		(PropValue* sender);
+    void __fastcall		OnBoneEditClick			(PropValue* sender);
+    void __fastcall		OnBoneGotoClick			(PropValue* sender);
     
 	void __fastcall 	OnJointTypeChange		(PropValue* sender);
 	void __fastcall 	OnShapeTypeChange		(PropValue* sender);
@@ -162,7 +165,7 @@ public:
 	EngineModel			m_RenderObject;
     PreviewModel		m_PreviewObject;
 
-    TProperties*		m_ObjectProps;
+    TItemList*			m_ObjectItems;
     TProperties*		m_ItemProps;
 
     TfrmKeyBar* 		m_KeyBar;
@@ -191,9 +194,9 @@ public:
     CEditableObject*	CurrentObject		(){return m_pEditObject;}
     void				SetCurrentMotion	(LPCSTR name);
     CSMotion*			GetCurrentMotion	();       
-	void				FillSurfaceProperties(PropItemVec& items, PropItem* sender);
-	void				FillMotionProperties(PropItemVec& items, PropItem* sender);
-    void				FillBoneProperties	(PropItemVec& items, PropItem* sender);
+	void				FillSurfaceProperties(PropItemVec& items, LPCSTR pref, ListItem* sender);
+	void				FillMotionProperties(PropItemVec& items, LPCSTR pref, ListItem* sender);
+    void				FillBoneProperties	(PropItemVec& items, LPCSTR pref, ListItem* sender);
     void				PlayMotion			();
     void				StopMotion			();
     void				PauseMotion			();
@@ -240,7 +243,7 @@ public:
     void 				SelectPreviewObject	(bool bClear);
     void				SetPreviewObjectPrefs();
 
-    void				SelectItemProperties(LPCSTR pref, LPCSTR name);
+    void				SelectListItem		(LPCSTR pref, LPCSTR name, bool bVal, bool bLeaveSel, bool bExpand);
 
     void				ShowProperties		(){;}
     void				UpdateProperties	(bool bForced=false){m_Flags.set(flRefreshProps,TRUE); if (bForced) RealUpdateProperties();}
@@ -249,5 +252,10 @@ public:
 	void				GetStatTime			(float& a, float& b, float& c);
 };
 extern CActorTools	Tools;
+
+#define SURFACES_PREFIX "Surfaces"
+#define BONES_PREFIX 	"Bones"
+#define MOTIONS_PREFIX 	"Motions"
+#define OBJECT_PREFIX 	"Object"
 //---------------------------------------------------------------------------
 #endif

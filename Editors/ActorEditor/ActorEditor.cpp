@@ -15,6 +15,7 @@ USEFORM("Editor\NumericVector.cpp", frmNumericVector);
 USEFORM("Editor\TextForm.cpp", frmText);
 USEFORM("Editor\ImageEditor.cpp", frmImageLib);
 USEFORM("Editor\ShaderFunction.cpp", frmShaderFunction);
+USEFORM("Editor\ItemList.cpp", ItemList);
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
@@ -24,14 +25,13 @@ USEFORM("Editor\ShaderFunction.cpp", frmShaderFunction);
 WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {
 //    try{
-    	Core._initialize	(_EDITOR_FILE_NAME_,ELogCallback);
-        TfrmLog::CreateLog();
-
         frmSplash = xr_new<TfrmSplash>((TComponent*)0);
         frmSplash->Show();
         frmSplash->Repaint();
+        frmSplash->SetStatus("Core initialize...");
 
-        frmSplash->SetStatus("Initializing");
+    	Core._initialize	(_EDITOR_FILE_NAME_,ELogCallback);
+        TfrmLog::CreateLog();
 
         Application->Initialize();
 

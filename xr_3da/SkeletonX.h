@@ -2,8 +2,8 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_SKELETONX_H__24A6DC9C_8CE0_4A45_AF43_DBFF8EA3638A__INCLUDED_)
-#define AFX_SKELETONX_H__24A6DC9C_8CE0_4A45_AF43_DBFF8EA3638A__INCLUDED_
+#ifndef SkeletonXH
+#define SkeletonXH
 #pragma once
 
 #include "FVisual.h"
@@ -91,4 +91,4 @@ public:
 	virtual void			Release			();
 };
 
-#endif // !defined(AFX_SKELETONX_H__24A6DC9C_8CE0_4A45_AF43_DBFF8EA3638A__INCLUDED_)
+#endif // SkeletonXH

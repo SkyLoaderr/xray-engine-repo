@@ -46,12 +46,9 @@ public:
     // folder text edit
     // name
  	bool 				NameAfterEdit		(TElTreeItem* node, LPCSTR value, AnsiString& edit_val);
-    void __fastcall		NameAfterEdit		(PropValue* sender, LPVOID edit_val);
-    void __fastcall		NameBeforeEdit		(PropValue* sender, LPVOID edit_val);
-    void __fastcall		NameDraw			(PropValue* sender, LPVOID draw_val);
     // last selection
-    TElTreeItem*		RestoreSelection	(TElTree* tv, TElTreeItem* node);
-    TElTreeItem*		RestoreSelection	(TElTree* tv, LPCSTR full_name);
+    TElTreeItem*		RestoreSelection	(TElTree* tv, TElTreeItem* node, bool bLeaveSel);
+    TElTreeItem*		RestoreSelection	(TElTree* tv, LPCSTR full_name, bool bLeaveSel);
     TElTreeItem*		ExpandItem			(TElTree* tv, TElTreeItem* node);
     TElTreeItem*		ExpandItem			(TElTree* tv, LPCSTR full_name);
 //------------------------------------------------------------------------------

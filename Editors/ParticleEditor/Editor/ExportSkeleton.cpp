@@ -259,26 +259,13 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     xr_vector<FvectorVec>	bone_points;
 	bone_points.resize	(m_Source->BoneCount());
 
-    FvectorVec vnormals;
     u32 mtl_cnt=0;
 	UI.SetStatus("Split meshes...");
     for(EditMeshIt mesh_it=m_Source->FirstMesh();mesh_it!=m_Source->LastMesh();mesh_it++){
         CEditableMesh* MESH = *mesh_it;
         // generate vertex offset
         if (!MESH->m_LoadState.is(CEditableMesh::LS_SVERTICES)) MESH->GenerateSVertices();
-        // generate normals
-        if (!MESH->m_LoadState.is(CEditableMesh::LS_FNORMALS)) MESH->GenerateFNormals();
-        vnormals.resize(MESH->m_Points.size());
-        for(FvectorIt pt=MESH->m_Points.begin();pt!=MESH->m_Points.end();pt++)
-        {
-        	Fvector& N = vnormals[pt-MESH->m_Points.begin()];
-            N.set(0,0,0);
-            IntVec& a_lst = MESH->m_Adjs[pt-MESH->m_Points.begin()];
-            VERIFY(a_lst.size());
-            for (IntIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++)
-                N.add(MESH->m_FNormals[*i_it]);
-            N.normalize_safe();
-        }
+        if (!MESH->m_LoadState.is(CEditableMesh::LS_PNORMALS)) MESH->GeneratePNormals();
 	    UI.ProgressInc();
         // fill faces
         for (SurfFacesPairIt sp_it=MESH->m_SurfFaces.begin(); sp_it!=MESH->m_SurfFaces.end(); sp_it++){
@@ -293,32 +280,24 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
             }
             SSplit& split=m_Splits[mtl_idx];
             for (IntIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
-                st_Face& face = MESH->m_Faces[*f_it];
+            	int f_idx = *f_it;
+                st_Face& face = MESH->m_Faces[f_idx];
                 {
                     SSkelVert v[3];
                     for (int k=0; k<3; k++){
                         st_FaceVert& 	fv = face.pv[k];
                         st_SVert& 		sv = MESH->m_SVertices[fv.pindex];
-                        int offs = 0;
-                        Fvector2* 		uv = 0;
-                        for (u32 t=0; t<dwTexCnt; t++){
-                            st_VMapPt& vm_pt 	= MESH->m_VMRefs[fv.vmref][t+offs];
-                            st_VMap& vmap		= *MESH->m_VMaps[vm_pt.vmap_index];
-                            if (vmap.type!=vmtUV){ offs++; t--; continue; }
-                            uv					= &vmap.getUV(vm_pt.index);
-                        }
-                        R_ASSERT2(uv,"uv empty");
-                        v[k].set(MESH->m_Points[fv.pindex],*uv,sv.w);
+                        v[k].set(MESH->m_Points[fv.pindex],sv.uv,sv.w);
 
                         Fvector N0,N1;
 		                CBone* B;
                         B = m_Source->GetBone(sv.bone0);
-        		        B->LITransform().transform_dir(N0,vnormals[fv.pindex]);
+        		        B->LITransform().transform_dir(N0,MESH->m_PNormals[f_idx*3+k]);
                         v[k].set0(sv.offs0,N0,sv.bone0);
                         if (sv.bone1!=-1){
                         	b2Link = TRUE;
 			                B = m_Source->GetBone(sv.bone1);
-    	    		        B->LITransform().transform_dir(N1,vnormals[fv.pindex]);
+    	    		        B->LITransform().transform_dir(N1,MESH->m_PNormals[f_idx*3+k]);
         	                v[k].set1(sv.offs1,N1,sv.bone1);
                         }else{
         	                v[k].set1(sv.offs0,N0,sv.bone0);
@@ -401,9 +380,12 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
         F.w_stringZ(B->game_mtl);
         F.w(&B->shape,sizeof(SBoneShape));
         F.w(&B->IK_data,sizeof(SJointIKData));
-        Fvector hpb; hpb.mul(B->Rotate(),-1.f);
+        Fvector hpb; B->LTransform().getHPB(hpb);
+//        hpb.mul(B->Rotate(),-1.f);
         F.w_fvector3(hpb);
-        F.w_fvector3(B->Offset());
+        F.w_fvector3(B->LTransform().c);
+        F.w_float	(B->mass);
+        F.w_fvector3(B->center_of_mass);
     }
     F.close_chunk();
     

@@ -146,6 +146,9 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
         	bRes = Command(COMMAND_LOAD,(int)fraLeftBar->FirstRecentFile());
         }
     	break;
+    case COMMAND_FILE_MENU:
+		FHelper.ShowPPMenu(fraLeftBar->pmSceneFile,0);
+    	break;
     default:
 		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
         bRes = false;
@@ -161,6 +164,14 @@ char* TUI::GetCaption()
 bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
 {
 	bool bExec = false;
+    if (Shift.Empty()){
+    	if (Key=='B') 					{ Tools.SelectListItem(BONES_PREFIX,0,true,false,true); bExec=true;}
+        else if (Key=='M') 				{ Tools.SelectListItem(MOTIONS_PREFIX,0,true,false,true); bExec=true;}
+        else if (Key=='O') 				{ Tools.SelectListItem(OBJECT_PREFIX,0,true,false,true); bExec=true;}
+        else if (Key=='F') 				{ Tools.SelectListItem(SURFACES_PREFIX,0,true,false,true); bExec=true;}
+    }else if (Shift.Contains(ssAlt)){
+		if (Key=='F')   				COMMAND0(COMMAND_FILE_MENU);
+    }
     return bExec;
 }
 //---------------------------------------------------------------------------
@@ -169,7 +180,7 @@ bool __fastcall TUI::ApplyGlobalShortCutExt(WORD Key, TShiftState Shift)
 {
 	bool bExec = false;
     if (Shift.Contains(ssCtrl)){
-		if (Key=='R')					{Command(COMMAND_LOAD_FIRSTRECENT);     bExec=true;}
+		if (Key=='R')					COMMAND0(COMMAND_LOAD_FIRSTRECENT);
     }
     return bExec;
 }

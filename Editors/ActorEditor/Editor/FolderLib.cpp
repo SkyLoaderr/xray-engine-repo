@@ -419,27 +419,6 @@ bool CFolderHelper::NameAfterEdit(TElTreeItem* node, LPCSTR value, AnsiString& N
 }
 //---------------------------------------------------------------------------
 
-void CFolderHelper::NameAfterEdit(PropValue* sender, LPVOID edit_val)
-{
-	NameAfterEdit((TElTreeItem*)sender->Owner()->tag,((TextValue*)sender)->GetValue(),*(AnsiString*)edit_val);
-}
-//---------------------------------------------------------------------------
-
-void CFolderHelper::NameBeforeEdit(PropValue* sender, LPVOID edit_val)
-{
-	AnsiString& N = *(AnsiString*)edit_val;
-	int cnt=_GetItemCount(N.c_str(),'\\');
-	N = _SetPos(N.c_str(),cnt-1,'\\');
-}
-//------------------------------------------------------------------------------
-void CFolderHelper::NameDraw(PropValue* sender, LPVOID draw_val)
-{
-	AnsiString& N = *(AnsiString*)draw_val;
-	int cnt=_GetItemCount(N.c_str(),'\\');
-	N = _SetPos(N.c_str(),cnt-1,'\\');
-}
-//------------------------------------------------------------------------------
-
 bool CFolderHelper::RenameItem(TElTree* tv, TElTreeItem* node, AnsiString& new_text, TOnRenameItem OnRename){
     new_text = new_text.LowerCase();
 
@@ -548,19 +527,29 @@ TElTreeItem* CFolderHelper::ExpandItem(TElTree* tv, LPCSTR full_name)
     FindItem(tv,full_name,&last_valid);
 	return ExpandItem(tv,last_valid);
 }
-TElTreeItem* CFolderHelper::RestoreSelection(TElTree* tv, TElTreeItem* node)
+TElTreeItem* CFolderHelper::RestoreSelection(TElTree* tv, TElTreeItem* node, bool bLeaveSel)
 {
-	tv->Selected 			= node;
+	if (tv->MultiSelect){
+        if (bLeaveSel){
+            if (node) node->Selected = true;
+        }else{
+            tv->DeselectAll();
+            if (node) node->Selected = true;
+        }
+		if (tv->OnAfterSelectionChange) tv->OnAfterSelectionChange(tv);
+    }else{
+		tv->Selected 		= node;
+    }
 	if (node){
 		tv->EnsureVisible	(node);
     }
     return node;
 }
-TElTreeItem* CFolderHelper::RestoreSelection(TElTree* tv, LPCSTR full_name)
+TElTreeItem* CFolderHelper::RestoreSelection(TElTree* tv, LPCSTR full_name, bool bLeaveSel)
 {
 	TElTreeItem* last_valid=0;
     FindItem(tv,full_name,&last_valid);
-	return RestoreSelection(tv,last_valid);
+	return RestoreSelection(tv,last_valid,bLeaveSel);
 }
 //------------------------------------------------------------------------------
 

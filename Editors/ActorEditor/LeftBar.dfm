@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 593
+  Height = 703
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 300
-    Height = 593
+    Height = 703
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -34,14 +34,14 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 1
       Width = 298
-      Height = 591
+      Height = 701
       Align = alClient
       BevelOuter = bvNone
       ParentColor = True
       TabOrder = 0
       object Splitter1: TSplitter
         Left = 0
-        Top = 350
+        Top = 460
         Width = 298
         Height = 2
         Cursor = crVSplit
@@ -251,7 +251,7 @@ object fraLeftBar: TfraLeftBar
         Left = 0
         Top = 161
         Width = 298
-        Height = 189
+        Height = 299
         Align = alClient
         Color = 10528425
         ParentShowHint = False
@@ -264,7 +264,7 @@ object fraLeftBar: TfraLeftBar
           Height = 13
           Align = alTop
           Alignment = taCenter
-          Caption = 'Object Properties'
+          Caption = 'Object Items'
           Color = clGray
           ParentColor = False
           OnClick = PanelMaximizeClick
@@ -281,7 +281,7 @@ object fraLeftBar: TfraLeftBar
           Left = 1
           Top = 15
           Width = 296
-          Height = 173
+          Height = 283
           Align = alClient
           BevelOuter = bvNone
           Color = 10528425
@@ -449,7 +449,7 @@ object fraLeftBar: TfraLeftBar
       end
       object paCurrentMotion: TPanel
         Left = 0
-        Top = 352
+        Top = 462
         Width = 298
         Height = 239
         Align = alBottom

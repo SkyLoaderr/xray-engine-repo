@@ -113,20 +113,9 @@ void CEditableMesh::GenerateFNormals()
 void CEditableMesh::GeneratePNormals()
 {
 	if (!m_LoadState.is(LS_FNORMALS)) GenerateFNormals();
-/*
-    m_VNormals.resize(m_Points.size());
-    FvectorIt n_it	= m_VNormals.begin();
-    AdjIt	  a_it	= m_Adjs.begin();
-    for(FvectorIt pt=m_Points.begin();pt!=m_Points.end();pt++,n_it++,a_it++){
-        n_it->set	(0,0,0); VERIFY(a_it->size());
-        for (IntIt i_it=a_it->begin(); i_it!=a_it->end(); i_it++)
-            n_it->add(m_FNormals[*i_it]);
-        n_it->normalize_safe();
-    }
-*/
+
     m_PNormals.resize	(m_Faces.size()*3);
 	// vertex normals
-//	float m_fSoftAngle = _cos(deg2rad(89.f));
     for (u32 f_i=0; f_i<m_Faces.size(); f_i++ ){
     	u32 sg			= m_SGs[f_i];
 		Fvector& FN 	= m_FNormals[f_i];
@@ -137,9 +126,6 @@ void CEditableMesh::GeneratePNormals()
                 IntVec& a_lst=m_Adjs[m_Faces[f_i].pv[k].pindex];
                 VERIFY(a_lst.size());
                 for (IntIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++){
-    //            	Fvector& TN = m_FNormals[*i_it];
-    //	            float cosa 	= TN.dotproduct(FN);
-    //    	        if (cosa<m_fSoftAngle) continue;
                     if (sg != m_SGs[*i_it]) continue;
                     N.add	(m_FNormals[*i_it]);
                 }
@@ -163,8 +149,24 @@ void CEditableMesh::GenerateSVertices()
     m_Parent->CalculateAnimation(true);
 	m_SVertices.resize(m_Points.size());
 
+    FvectorVec vnormals;
+    // generate normals
+    if (!m_LoadState.is(CEditableMesh::LS_FNORMALS)) GenerateFNormals();
+    vnormals.resize(m_Points.size());
+    for(FvectorIt pt=m_Points.begin();pt!=m_Points.end();pt++)
+    {
+        Fvector& N = vnormals[pt-m_Points.begin()];
+        N.set(0,0,0);
+        IntVec& a_lst = m_Adjs[pt-m_Points.begin()];
+        VERIFY(a_lst.size());
+        for (IntIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++)
+            N.add(m_FNormals[*i_it]);
+        N.normalize_safe();
+    }
+
     for (u32 i=0; i<m_Points.size(); i++){
     	Fvector&  P =m_Points[i];
+    	Fvector&  N =vnormals[i];
     	st_SVert& SV=m_SVertices[i];
     	IntVec& a_lst = m_Adjs[i];
         VERIFY2(a_lst.size(),"Karma pidaras!!! Uberi degenerats.");
@@ -186,6 +188,9 @@ void CEditableMesh::GenerateSVertices()
                                 THROW2("Editor crashed.");
                                 return;
                             }
+                        }else if(VM.type==vmtUV){	
+//                        	R_ASSERT2(!uv,"More than 1 uv per vertex found.");
+                        	SV.uv.set(VM.getUV(vmpt_it->index));
                         }
                     }
                     wb.normalize_weights(2);
@@ -202,6 +207,7 @@ void CEditableMesh::GenerateSVertices()
                             SV.w	   	= 0.f;
 	                        CBone* B 	= m_Parent->m_Bones[SV.bone0];
     	                    B->LITransform().transform_tiny(SV.offs0,P);
+    	                    B->LITransform().transform_dir(SV.norm0,N);
                         }break;
                         case 2:{
 		                    bRes 		= true;
@@ -210,12 +216,16 @@ void CEditableMesh::GenerateSVertices()
                             SV.w	   	= wb[1].weight/(wb[0].weight+wb[1].weight);
 	                        B		 	= m_Parent->m_Bones[SV.bone0];
     	                    B->LITransform().transform_tiny(SV.offs0,P);
+    	                    B->LITransform().transform_dir(SV.norm0,N);
 	                        B		 	= m_Parent->m_Bones[SV.bone1];
     	                    B->LITransform().transform_tiny(SV.offs1,P);
+    	                    B->LITransform().transform_dir(SV.norm1,N);
                         }break;
                         default:
                         	THROW2("More than 2 weight per vertex found!");
                     }
+                    // uv mapping
+                    
                     break;
                 }
             }

@@ -87,7 +87,7 @@ public:
     void DrawEntity(u32 clr, Shader* s);
     void DrawFlag(const Fvector& p, float heading, float height, float sz, float sz_fl, u32 clr, bool bDrawEntity);
     void DrawRomboid(const Fvector& p, float radius, u32 clr);
-    void DrawBone(const Fvector& p, const Fvector& d, float len, float radius, u32 clr);
+    void DrawJoint(const Fvector& p, float radius, u32 clr);
 
     void DrawSpotLight(const Fvector& p, const Fvector& d, float range, float phi, u32 clr);
     void DrawDirectionalLight(const Fvector& p, const Fvector& d, float radius, float range, u32 clr);

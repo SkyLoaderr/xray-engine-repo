@@ -43,8 +43,8 @@ const LPSTR TEXTUREString[TSTRING_COUNT]={"Custom...","-","$null","$base0"};
 //---------------------------------------------------------------------------
 TElTreeItem* __fastcall TProperties::BeginEditMode(LPCSTR section)
 {
-	tvProperties->IsUpdating = true;
-	CancelEditControl();
+	LockUpdating		();
+	CancelEditControl	();
     if (section) return FHelper.FindFolder(tvProperties,section);
     return 0;
 }
@@ -53,13 +53,13 @@ TElTreeItem* __fastcall TProperties::BeginEditMode(LPCSTR section)
 void __fastcall TProperties::EndEditMode(TElTreeItem* expand_node)
 {
 	if (expand_node) expand_node->Expand(true);
-    tvProperties->IsUpdating = false;
+	UnlockUpdating		();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TProperties::BeginFillMode(const AnsiString& title, LPCSTR section)
 {
-	tvProperties->IsUpdating = true;
+	LockUpdating		();
 	CancelEditControl();
     if (section){
     	TElTreeItem* node = FHelper.FindFolder(tvProperties,section);
@@ -80,8 +80,8 @@ void __fastcall TProperties::EndFillMode(bool bFullExpand)
     bModified=false;
     // end fill mode
 	if (bFullExpand) tvProperties->FullExpand();
-    tvProperties->IsUpdating 	= false;
-    FHelper.RestoreSelection	(tvProperties,last_selected_item.c_str());
+	UnlockUpdating		();
+    FHelper.RestoreSelection	(tvProperties,last_selected_item.c_str(),false);
 };
 //---------------------------------------------------------------------------
 void TProperties::ClearParams(TElTreeItem* node)
@@ -103,13 +103,13 @@ void TProperties::ClearParams(TElTreeItem* node)
 		}
 */
     }else{
+	    if (tvProperties->Selected) FHelper.MakeFullName(tvProperties->Selected,0,last_selected_item);
 	    for (PropItemIt it=m_Items.begin(); it!=m_Items.end(); it++)
     		xr_delete	(*it);
 		m_Items.clear();
-	    if (tvProperties->Selected) FHelper.MakeFullName(tvProperties->Selected,0,last_selected_item);
-		tvProperties->IsUpdating 	= true;
+		LockUpdating				();
 	    tvProperties->Items->Clear	();
-    	tvProperties->IsUpdating 	= false;
+		UnlockUpdating				();
     }
 }
 //---------------------------------------------------------------------------
@@ -128,7 +128,7 @@ void __fastcall TProperties::ClearProperties()
 //---------------------------------------------------------------------------
 void __fastcall TProperties::SelectItem(const AnsiString& full_name)
 {
-	m_FirstClickItem	= FHelper.RestoreSelection	(tvProperties,FHelper.ExpandItem(tvProperties,full_name.c_str()));
+	m_FirstClickItem	= FHelper.RestoreSelection	(tvProperties,FHelper.ExpandItem(tvProperties,full_name.c_str()),false);
 }
 //---------------------------------------------------------------------------
 
@@ -238,7 +238,7 @@ TElTreeItem* __fastcall TProperties::AddItem(TElTreeItem* parent, LPCSTR key, LP
 void __fastcall TProperties::AssignItems(PropItemVec& items, bool full_expand, const AnsiString& title)
 {
 	// begin fill mode
-	tvProperties->IsUpdating = true;
+	LockUpdating		();
    	HideExtBtn			();
 	CancelEditControl	();
     // clear values
@@ -275,7 +275,7 @@ void __fastcall TProperties::AssignItems(PropItemVec& items, bool full_expand, c
 
     SelectItem		(last_selected_item);
 
-    tvProperties->IsUpdating= false;
+	UnlockUpdating	();
 
     Caption 		= title;
 }
@@ -1461,13 +1461,13 @@ void __fastcall TProperties::miDrawThumbnailsClick(TObject *Sender)
 
 void __fastcall TProperties::RefreshForm()
 {
-	tvProperties->IsUpdating 	= true;
+	LockUpdating		();
     for (PropItemIt it=m_Items.begin(); it!=m_Items.end(); it++){
     	PropItem* prop = *it;
     	if (prop->m_Flags.is(PropItem::flDrawThumbnail)) 
         	prop->item->OwnerHeight = !miDrawThumbnails->Checked;
     }
-	tvProperties->IsUpdating 	= false;
+	UnlockUpdating		();
 	tvProperties->Repaint();
 }
 

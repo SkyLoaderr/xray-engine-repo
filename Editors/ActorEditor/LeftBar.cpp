@@ -108,7 +108,7 @@ void __fastcall TfraLeftBar::miRecentFilesClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
 {
-    Tools.m_ObjectProps->SaveParams(fsStorage);
+//.    Tools.m_ObjectProps->SaveParams(fsStorage);
     Tools.m_ItemProps->SaveParams(fsStorage);
     Tools.m_PreviewObject.SaveParams(fsStorage);
     Tools.m_RenderObject.SaveParams(fsStorage);
@@ -122,7 +122,7 @@ void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
 
 void __fastcall TfraLeftBar::fsStorageRestorePlacement(TObject *Sender)
 {
-    Tools.m_ObjectProps->RestoreParams(fsStorage);
+//.    Tools.m_ObjectProps->RestoreParams(fsStorage);
     Tools.m_ItemProps->RestoreParams(fsStorage);
     Tools.m_PreviewObject.RestoreParams(fsStorage);
     Tools.m_RenderObject.RestoreParams(fsStorage);
