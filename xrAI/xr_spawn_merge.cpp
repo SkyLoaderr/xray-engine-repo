@@ -299,7 +299,9 @@ public:
 		NET_Packet		P;
 		for (u32 i=0 ; i<m_tpSpawnPoints.size(); i++, dwID++) {
 			CSE_Abstract		*E = m_tpSpawnPoints[i];
-
+			CSE_ALifeObject		*l_tpALifeObject = dynamic_cast<CSE_ALifeObject*>(E);
+			R_ASSERT2			(l_tpALifeObject,"Non-ALife object!");
+			strcpy				(l_tpALifeObject->m_caGroupControl,"");
 			CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(E);
 			if (l_tpALifeAnomalousZone) {
 				u32									l_dwStartIndex = tpLevelPoints.size();
