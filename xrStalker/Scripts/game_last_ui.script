@@ -19,4 +19,9 @@ function ui_game_LastStanding:SetClGame(cl_game)
    self.m_cl_game = cl_game
 end
 
+function ui_game_LastStanding:IR_OnKeyboardPress(key)
+   local r = UIGame_custom_script.IR_OnKeyboardPress(self, key)
+   printf("--------------------IR_OnKeyboardPress")
+   return r
+end
 

@@ -46,8 +46,15 @@ end
 
 function game_cl_LastStanding:GetMapEntities(ent_container)
    local D = SZoneMapEntityData()
-   D.pos:set(10,10,10)
-   ent_container:push_back(D)
+
+   local players_count = self:GetPlayersCount()
+   for it=0,players_count-1 do
+
+      D.pos = vector():set(10,11,12)
+      ent_container:push_back(D)
+   end
+
+
 end
 
 function game_cl_LastStanding:TranslateGameMessage(msg, P)
