@@ -105,13 +105,14 @@ void CWeaponList::weapon_die		()
 
 	for (int it=0; it<m_Weapons.size(); it++)
 	{
+		CWeapon* W	= m_Weapons[it];
 		if (it==m_iActiveWeapon)
 		{
-			m_pParent->u_EventGen		(P,GE_OWNERSHIP_REJECT,ID());
-			P.w_u16						(u16(O->ID()));
+			m_pParent->u_EventGen		(P,GE_OWNERSHIP_REJECT,m_pParent->ID());
+			P.w_u16						(u16(W->ID()));
 			m_pParent->u_EventSend		(P);
 		} else {
-			m_pParent->u_EventGen		(P,GE_DESTROY,ID());
+			m_pParent->u_EventGen		(P,GE_DESTROY,m_pParent->ID());
 			m_pParent->u_EventSend		(P);
 		}
 	}
