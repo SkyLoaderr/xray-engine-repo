@@ -55,9 +55,9 @@ IC void GET(
 	u32 pixel = lm.pSurface[y*lm.dwWidth + x];
 	if (color_get_A(pixel)<=ref) return;
 	
-	r+=color_get_R	(pixel);
-	g+=color_get_G	(pixel);
-	b+=color_get_B	(pixel);
+	r	+=	color_get_R	(pixel);
+	g	+=	color_get_G	(pixel);
+	b	+=	color_get_B	(pixel);
 	count++;
 }
 
