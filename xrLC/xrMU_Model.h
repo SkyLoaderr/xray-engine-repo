@@ -65,6 +65,9 @@ public:
 	string128			m_name;
 	v_vertices			m_vertices;
 	v_faces				m_faces;
+private:
+	_face*				load_create_face	(Fvector& P1, Fvector& P2, Fvector& P3, b_face& F);
+	_vertex*			load_create_vertex	(Fvector& P);
 public:
 	void		Load	(CStream& FS);
 };
