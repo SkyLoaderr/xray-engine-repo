@@ -481,6 +481,14 @@ void CFileSystem::VerifyPath(LPCSTR path)
 	}
 }
 
+AnsiString&	CFileSystem::UpdateTextureNameWithFolder(AnsiString& tex_name)
+{
+	string1024 nm;
+    strcpy(nm,tex_name.c_str());
+    tex_name = UpdateTextureNameWithFolder(nm);
+    return tex_name;
+}
+
 LPSTR CFileSystem::UpdateTextureNameWithFolder(LPSTR tex_name)
 {
 	string256 _fn;

@@ -58,19 +58,18 @@
       intermediate\DetailObjectsRender.obj 
       intermediate\PropertiesDetailObject.obj intermediate\DetailObjectsPick.obj 
       intermediate\HW.obj intermediate\HWCaps.obj intermediate\PrimitivesR.obj 
-      intermediate\Primitive.obj intermediate\SharedPrimitive.obj 
-      intermediate\EditObject.obj intermediate\Xr_input.obj 
-      intermediate\fcontroller.obj intermediate\XR_CustomFont.obj 
-      intermediate\XR_HUDFont.obj intermediate\c_dinput.obj 
-      intermediate\pure.obj intermediate\CustomObject.obj 
-      intermediate\SceneObject.obj intermediate\SceneObjectIO.obj 
-      intermediate\xrImage_Resampler.obj intermediate\TextureManager_Loader.obj 
-      intermediate\Texture.obj intermediate\Cursor3D.obj 
-      intermediate\SH_Matrix.obj intermediate\SH_Texture.obj 
-      intermediate\Shader.obj intermediate\SH_Constant.obj 
-      intermediate\xr_avi.obj intermediate\Blender_Recorder.obj 
-      intermediate\Blender.obj intermediate\Blender_Vertex.obj 
-      intermediate\Blender_Editor_Selection.obj 
+      intermediate\SharedPrimitive.obj intermediate\EditObject.obj 
+      intermediate\Xr_input.obj intermediate\fcontroller.obj 
+      intermediate\XR_CustomFont.obj intermediate\XR_HUDFont.obj 
+      intermediate\c_dinput.obj intermediate\pure.obj 
+      intermediate\CustomObject.obj intermediate\SceneObject.obj 
+      intermediate\SceneObjectIO.obj intermediate\xrImage_Resampler.obj 
+      intermediate\TextureManager_Loader.obj intermediate\Texture.obj 
+      intermediate\Cursor3D.obj intermediate\SH_Matrix.obj 
+      intermediate\SH_Texture.obj intermediate\Shader.obj 
+      intermediate\SH_Constant.obj intermediate\xr_avi.obj 
+      intermediate\Blender_Recorder.obj intermediate\Blender.obj 
+      intermediate\Blender_Vertex.obj intermediate\Blender_Editor_Selection.obj 
       intermediate\Blender_Editor_Wire.obj intermediate\Blender_Screen_GRAY.obj 
       intermediate\Blender_Screen_SET.obj intermediate\Blender_default_aref.obj 
       intermediate\Blender_Vertex_aref.obj intermediate\BlenderDefault.obj 
@@ -86,11 +85,11 @@
       intermediate\fmesh.obj intermediate\Blender_BmmD.obj 
       intermediate\BuilderGame.obj intermediate\EventOneAction.obj 
       intermediate\xrXRC.obj intermediate\FBasicVisual.obj 
-      intermediate\FHierrarhyVisual.obj intermediate\FProgressive.obj 
-      intermediate\FProgressiveFixedVisual.obj intermediate\FVisual.obj 
-      intermediate\SkeletonCalculate.obj intermediate\SkeletonX.obj 
-      intermediate\BodyInstance.obj intermediate\ExportSkeleton.obj 
-      intermediate\Engine.obj intermediate\ModelPool.obj intermediate\SH_RT.obj 
+      intermediate\FHierrarhyVisual.obj intermediate\FProgressiveFixedVisual.obj 
+      intermediate\FVisual.obj intermediate\SkeletonCalculate.obj 
+      intermediate\SkeletonX.obj intermediate\BodyInstance.obj 
+      intermediate\ExportSkeleton.obj intermediate\Engine.obj 
+      intermediate\ModelPool.obj intermediate\SH_RT.obj 
       intermediate\EditLightAnim.obj intermediate\LightAnimLibrary.obj 
       intermediate\PropertiesEObject.obj intermediate\GroupObject.obj 
       intermediate\UI_GroupTools.obj intermediate\FrameGroup.obj 
@@ -100,7 +99,8 @@
       intermediate\CustomObjectLE.obj intermediate\Blender_Blur.obj 
       intermediate\Blender_Model.obj intermediate\cpuid.obj 
       intermediate\_math.obj intermediate\xrSkin1W.obj 
-      intermediate\ExportObjectOGF.obj intermediate\SoundManager.obj"/>
+      intermediate\ExportObjectOGF.obj intermediate\SoundManager.obj 
+      intermediate\tga.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -123,7 +123,7 @@
     <LIBRARIES value="elpackB6.lib editor.lib vclx.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
     <PACKAGES value="rtl.bpi vcl.bpi"/>
-    <PATHCPP value=".;edit;edit;edit;edit;edit;edit;edit;EDIT;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;engine;engine;engine;edit;engine;engine;engine;engine;engine;edit;edit;engine;edit;engine;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;engine;edit;edit;edit;engine;engine;engine;engine;edit;engine;engine;engine;engine;lib\DX;engine;edit;edit;edit;engine;Engine;Engine;edit;Engine;Engine;Engine;Engine;Engine;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine;Engine;Engine;edit;edit;Engine;edit;Engine\Blenders;edit;edit;edit;Engine;edit;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine;Engine\Blenders;edit;Engine;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;edit;edit;edit;Engine;edit;edit;edit;Engine\Blenders;Engine\Blenders;edit;Engine\Blenders;Engine\Blenders;Engine;Engine;Engine\Animations;edit;edit"/>
+    <PATHCPP value=".;edit;edit;edit;edit;edit;edit;edit;EDIT;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;engine;engine;engine;edit;engine;engine;engine;engine;engine;edit;edit;engine;edit;engine;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;engine;edit;edit;edit;engine;engine;engine;edit;engine;engine;engine;engine;lib\DX;engine;edit;edit;edit;engine;Engine;Engine;edit;Engine;Engine;Engine;Engine;Engine;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine;Engine;Engine;edit;edit;Engine;edit;Engine\Blenders;edit;edit;edit;Engine;edit;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine;Engine\Blenders;edit;Engine;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;edit;edit;edit;Engine;edit;edit;edit;Engine\Blenders;Engine\Blenders;edit;Engine\Blenders;Engine\Blenders;Engine;Engine;Engine\Animations;edit;edit;Engine"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -285,7 +285,6 @@
       <FILE FILENAME="edit\HW.cpp" FORMNAME="" UNITNAME="HW" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\HWCaps.cpp" FORMNAME="" UNITNAME="HWCaps" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\PrimitivesR.cpp" FORMNAME="" UNITNAME="PrimitivesR" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\Primitive.cpp" FORMNAME="" UNITNAME="Primitive" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\SharedPrimitive.cpp" FORMNAME="" UNITNAME="SharedPrimitive" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\DX\d3d8.lib" FORMNAME="" UNITNAME="d3d8" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\DX\d3dx8d.lib" FORMNAME="" UNITNAME="d3dx8d" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -345,7 +344,6 @@
       <FILE FILENAME="Engine\xrXRC.cpp" FORMNAME="" UNITNAME="xrXRC" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\FBasicVisual.cpp" FORMNAME="" UNITNAME="FBasicVisual" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\FHierrarhyVisual.cpp" FORMNAME="" UNITNAME="FHierrarhyVisual" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\FProgressive.cpp" FORMNAME="" UNITNAME="FProgressive" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\FProgressiveFixedVisual.cpp" FORMNAME="" UNITNAME="FProgressiveFixedVisual" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\FVisual.cpp" FORMNAME="" UNITNAME="FVisual" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\SkeletonCalculate.cpp" FORMNAME="" UNITNAME="SkeletonCalculate" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -377,6 +375,7 @@
       <FILE FILENAME="Engine\Animations\xrSkin1W.cpp" FORMNAME="" UNITNAME="xrSkin1W" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ExportObjectOGF.cpp" FORMNAME="" UNITNAME="ExportObjectOGF" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\SoundManager.cpp" FORMNAME="" UNITNAME="SoundManager" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\tga.cpp" FORMNAME="" UNITNAME="tga" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

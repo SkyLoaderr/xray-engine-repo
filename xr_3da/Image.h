@@ -18,6 +18,7 @@ public:
 	~CImage	()			{ _FREE(pData); }
 
 	void	Create		(DWORD w, DWORD h);
+	void	Create		(DWORD w, DWORD h, DWORD* data);
 	void	LoadT		(LPCSTR name);
 	bool	LoadTGA		(LPCSTR name);
 	void	SaveTGA		(LPCSTR name, BOOL b24=FALSE);

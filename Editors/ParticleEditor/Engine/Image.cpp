@@ -8,6 +8,12 @@
 #include "Image.h"
 #include "tga.h"
 
+void CImage::Create(DWORD w, DWORD h, DWORD* data)
+{
+	Create(w,h);
+    CopyMemory(pData,data,w*h*sizeof(DWORD));
+}
+
 void CImage::Create(DWORD w, DWORD h)
 {
 	_FREE		(pData);

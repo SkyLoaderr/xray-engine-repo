@@ -10,6 +10,42 @@
 #include "ExportSkeleton.h"
 #include "ExportObjectOGF.h"
 
+#define EPS_LOD 1.f/64.f
+
+static FVF::LIT LOD[24]={
+	-1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.0f,	0.0f, // F 0
+	 1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.5f,	0.0f, // F 1
+	 1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 0.5f,	0.5f, // F 2
+	-1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.0f,	0.0f, // F 0
+	 1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 0.5f,	0.5f, // F 2
+	-1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 0.0f,	0.5f, // F 3
+
+	 1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.5f,0.0f, // B
+	-1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 1.0f,0.0f, // B
+    -1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 1.0f,0.5f, // B
+	 1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.5f,0.0f, // B
+    -1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 1.0f,0.5f, // B
+     1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 0.5f,0.5f, // B
+
+	 0.0f, 1.0f,  1.0f, 0xFFFFFFFF, 0.0f,0.5f, // L
+	 0.0f, 1.0f, -1.0f, 0xFFFFFFFF, 0.5f,0.5f, // L
+     0.0f,-1.0f, -1.0f, 0xFFFFFFFF, 0.5f,1.0f, // L
+
+	 0.0f, 1.0f,  1.0f, 0xFFFFFFFF, 0.0f,0.5f, // L
+     0.0f,-1.0f, -1.0f, 0xFFFFFFFF, 0.5f,1.0f, // L
+
+     0.0f,-1.0f,  1.0f, 0xFFFFFFFF, 0.0f,1.0f, // L
+
+	 0.0f, 1.0f, -1.0f, 0xFFFFFFFF, 0.5f,0.5f, // R
+	 0.0f, 1.0f,  1.0f, 0xFFFFFFFF, 1.0f,0.5f, // R
+     0.0f,-1.0f,  1.0f, 0xFFFFFFFF, 1.0f,1.0f, // R
+
+	 0.0f, 1.0f, -1.0f, 0xFFFFFFFF, 0.5f,0.5f, // R
+     0.0f,-1.0f,  1.0f, 0xFFFFFFFF, 1.0f,1.0f, // R
+
+     0.0f,-1.0f, -1.0f, 0xFFFFFFFF, 0.5f,1.0f, // R
+};
+
 bool CEditableObject::Reload()
 {
 	ClearGeometry();
@@ -50,24 +86,27 @@ void CEditableObject::UpdateRenderBuffers(){
     m_LoadState |= EOBJECT_LS_RENDERBUFFER;
 }
 
-void CEditableObject::Render(Fmatrix& parent, int priority, bool strictB2F){
+void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F){
     if (!(m_LoadState&EOBJECT_LS_RENDERBUFFER)) UpdateRenderBuffers();
 
-    if(psDeviceFlags&rsEdgedFaces&&(1==priority)&&(false==strictB2F))
-        RenderEdge(parent);
+    if (IsFlag(eoUsingLOD)){
+    	RenderLOD(parent);
+    }else{
+        if(psDeviceFlags&rsEdgedFaces&&(1==priority)&&(false==strictB2F))
+            RenderEdge(parent);
 
-    Device.SetTransform(D3DTS_WORLD,parent);
-    for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
-//    	if (!(*s_it)->Shader) continue;
-        if ((priority==(*s_it)->_Priority())&&(strictB2F==(*s_it)->_StrictB2F())){
-            Device.SetShader((*s_it)->_Shader());
-            for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
-                (*_M)->Render(parent,*s_it);
+        Device.SetTransform(D3DTS_WORLD,parent);
+        for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
+            if ((priority==(*s_it)->_Priority())&&(strictB2F==(*s_it)->_StrictB2F())){
+                Device.SetShader((*s_it)->_Shader());
+                for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
+                    (*_M)->Render(parent,*s_it);
+            }
         }
     }
 }
 
-void CEditableObject::RenderSkeletonSingle(Fmatrix& parent)
+void CEditableObject::RenderSkeletonSingle(const Fmatrix& parent)
 {
 	RenderSingle(parent);
 //	for (int i=0; i<4; i++){
@@ -77,7 +116,7 @@ void CEditableObject::RenderSkeletonSingle(Fmatrix& parent)
     if (fraBottomBar->miDrawObjectBones->Checked) RenderBones(parent);
 }
 
-void CEditableObject::RenderSingle(Fmatrix& parent)
+void CEditableObject::RenderSingle(const Fmatrix& parent)
 {
 	for (int i=0; i<4; i++){
 		Render(parent, i, false);
@@ -109,7 +148,7 @@ void CEditableObject::RenderBones(const Fmatrix& parent){
     }
 }
 
-void CEditableObject::RenderEdge(Fmatrix& parent, CEditableMesh* mesh, DWORD color){
+void CEditableObject::RenderEdge(const Fmatrix& parent, CEditableMesh* mesh, DWORD color){
     if (!(m_LoadState&EOBJECT_LS_RENDERBUFFER)) UpdateRenderBuffers();
 
     Device.SetShader(Device.m_WireShader);
@@ -118,7 +157,8 @@ void CEditableObject::RenderEdge(Fmatrix& parent, CEditableMesh* mesh, DWORD col
             (*_M)->RenderEdge(parent, color);
 }
 
-void CEditableObject::RenderSelection(Fmatrix& parent, CEditableMesh* mesh, DWORD color){
+void CEditableObject::RenderSelection(const Fmatrix& parent, CEditableMesh* mesh, DWORD color)
+{
     if (!(m_LoadState&EOBJECT_LS_RENDERBUFFER)) UpdateRenderBuffers();
 
     Device.SetTransform(D3DTS_WORLD,parent);
@@ -128,6 +168,27 @@ void CEditableObject::RenderSelection(Fmatrix& parent, CEditableMesh* mesh, DWOR
     else for(EditMeshIt _M = m_Meshes.begin();_M!=m_Meshes.end();_M++)
          	(*_M)->RenderSelection(parent, color);
     Device.ResetNearer();
+}
+
+void CEditableObject::RenderLOD(const Fmatrix& parent)
+{
+/*	Fvector offs, size;
+	m_Box.get_CD(offs,size);
+	Device.SetShader(Device.m_WireShader);
+	DU::DrawBox(offs,size,true,0xFFFFFFFF);
+*/
+    Shader* S = Device.Shader.Create("def_shaders\\def_aref_v_lod","lod\\lod_trees_tree_green3");
+    Fvector P,R;
+    m_Box.get_CD(P,R);
+    Fmatrix matrix;
+    matrix.translate(P);
+    matrix.scale_over(R);
+    matrix.mulA(parent);
+    Device.SetTransform(D3DTS_WORLD,matrix);
+    Device.SetShader(S);
+//	if (!m_TexName.IsEmpty()&&!m_ShaderName.IsEmpty()) m_GShader = Device.Shader.Create(m_ShaderName.c_str(),m_TexName.c_str());
+    DU::DrawPrimitiveLIT(D3DPT_TRIANGLELIST, 8, LOD, 24, true, false);
+    Device.Shader.Delete(S);
 }
 
 void CEditableObject::OnDeviceCreate(){

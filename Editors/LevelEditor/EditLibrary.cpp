@@ -21,6 +21,7 @@
 #include "DetailObjects.h"
 #include "xr_trims.h"
 #include "SceneObject.h"
+#include "Image.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ElTree"
@@ -174,6 +175,7 @@ void TfrmEditLibrary::OnModified(){
     	E->Modified();
 		form->m_pEditObject->UpdateTransform();
     }
+    UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
 
@@ -219,6 +221,7 @@ void __fastcall TfrmEditLibrary::tvObjectsItemFocused(TObject *Sender)
     UpdateObjectProperties();
     UI.RedrawScene();
     ebMakeThm->Enabled = mt;
+    ebMakeLOD->Enabled = mt;
 }
 
 //---------------------------------------------------------------------------
@@ -233,6 +236,7 @@ void __fastcall TfrmEditLibrary::cbPreviewClick(TObject *Sender)
         mt = true;
     }
 	ebMakeThm->Enabled = mt;
+    ebMakeLOD->Enabled = mt;
     UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
@@ -292,7 +296,7 @@ void __fastcall TfrmEditLibrary::tvObjectsDblClick(TObject *Sender)
 void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
 {
 	DWORDVec pixels;
-    DWORD w,h;
+    DWORD w=256,h=256;
     int src_age = 0;
 	if (tvObjects->Selected&&FOLDER::IsObject(tvObjects->Selected)){
     	AnsiString name; FOLDER::MakeName(tvObjects->Selected,0,name,false);
@@ -317,6 +321,32 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
             ELog.DlgMsg(mtError,"Can't create thumbnail. Set preview mode.");
         }
 		Lib.RemoveEditObject(obj);
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmEditLibrary::ebMakeLODClick(TObject *Sender)
+{
+	if (tvObjects->Selected&&FOLDER::IsObject(tvObjects->Selected)){
+    	AnsiString name; FOLDER::MakeName(tvObjects->Selected,0,name,false);
+        int age;
+    	if (m_pEditObject->GetReference()&&cbPreview->Checked){
+            AnsiString obj_name, tex_name, full_tex_name;
+            obj_name = ChangeFileExt(name,".object");
+            tex_name = ChangeFileExt(obj_name,".tga");
+            string256 nm; strcpy(nm,tex_name.c_str()); _ChangeSymbol(nm,'\\','_');
+            tex_name = "lod_"+AnsiString(nm);
+            tex_name = Engine.FS.UpdateTextureNameWithFolder(tex_name);
+            full_tex_name = tex_name;
+            Engine.FS.m_Textures.Update(full_tex_name);
+            Engine.FS.VerifyPath(full_tex_name.c_str());
+            Engine.FS.m_Objects.Update(obj_name);
+            ImageManager.CreateLODTexture(m_pEditObject->GetReference()->GetBox(), full_tex_name.c_str(),128,128,age);
+            ImageManager.CreateGameTexture(tex_name);
+        	tvObjectsItemFocused(Sender);
+	    }else{
+            ELog.DlgMsg(mtError,"Can't create LOD texture. Set preview mode.");
+        }
     }
 }
 //---------------------------------------------------------------------------
@@ -573,4 +603,5 @@ void __fastcall TfrmEditLibrary::ExtBtn1Click(TObject *Sender)
     }
 }
 //---------------------------------------------------------------------------
+
 

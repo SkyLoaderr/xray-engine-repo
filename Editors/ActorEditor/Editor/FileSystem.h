@@ -109,6 +109,7 @@ public:
     int			GetFileList		(LPCSTR path, FileMap& items, bool bClampPath, bool bClampExt, bool bRootOnly, LPCSTR ext_mask="*.*"); // return item count
 
     void		VerifyPath		(LPCSTR path);
+	AnsiString&	UpdateTextureNameWithFolder(AnsiString& tex_name);
 	LPSTR		UpdateTextureNameWithFolder(LPSTR tex_name);
 	LPSTR		UpdateTextureNameWithFolder(LPCSTR src_name, LPSTR dest_name);
 

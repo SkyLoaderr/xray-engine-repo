@@ -143,6 +143,7 @@ public:
 	enum{
 		eoDynamic 	 	= (1<<0),
 		eoProgressive 	= (1<<1),
+        eoUsingLOD		= (1<<2),	
 		eoFORCE32		= DWORD(-1)
     };
 private:
@@ -246,13 +247,14 @@ public:
     int 			GetSurfFaceCount		(LPCSTR surf_name);
 
     // render methods
-	void 			Render					(Fmatrix& parent, int priority, bool strictB2F);
-	void 			RenderSelection			(Fmatrix& parent, CEditableMesh* m=0, DWORD c=0x40E64646);
-	void 			RenderEdge				(Fmatrix& parent, CEditableMesh* m=0, DWORD c=0xFFC0C0C0);
+	void 			Render					(const Fmatrix& parent, int priority, bool strictB2F);
+	void 			RenderSelection			(const Fmatrix& parent, CEditableMesh* m=0, DWORD c=0x40E64646);
+	void 			RenderEdge				(const Fmatrix& parent, CEditableMesh* m=0, DWORD c=0xFFC0C0C0);
 	void 			RenderBones				(const Fmatrix& parent);
 	void 			RenderAnimation			(const Fmatrix& parent);
-	void 			RenderSingle			(Fmatrix& parent);
-	void 			RenderSkeletonSingle	(Fmatrix& parent);
+	void 			RenderSingle			(const Fmatrix& parent);
+	void 			RenderSkeletonSingle	(const Fmatrix& parent);
+	void 			RenderLOD				(const Fmatrix& parent);
 
     // update methods
 	void 			OnFrame					();

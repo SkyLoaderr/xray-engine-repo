@@ -13,7 +13,7 @@ CRenderDevice 		Device;
 
 int psTextureLOD	= 0;
 DWORD psDeviceFlags = rsStatistic|rsFilterLinear|rsFog|rsDrawGrid;
-DWORD dwClearColor	= 0x00555555;
+DWORD dwClearColor	= DEFAULT_CLEARCOLOR;
 
 //---------------------------------------------------------------------------
 void CRenderDevice::Error(HRESULT hr, const char *file, int line)
@@ -414,12 +414,12 @@ void CRenderDevice::UnloadTextures(){
 bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height){
 	if (!bReady) return false;
 
-    width 	= 256;
-    height 	= 256;
+    dwClearColor = 0x0000000;
 
     IDirect3DSurface8* pZB=0;
     IDirect3DSurface8* pRT=0;
     IDirect3DSurface8* poldRT=0;
+    SetRS(D3DRS_COLORWRITEENABLE,D3DCOLORWRITEENABLE_ALPHA|D3DCOLORWRITEENABLE_BLUE|D3DCOLORWRITEENABLE_GREEN|D3DCOLORWRITEENABLE_RED);
     HW.pDevice->GetRenderTarget(&poldRT);
 	HW.pDevice->GetDepthStencilSurface(&pZB);
 	HW.pDevice->CreateRenderTarget(width,height,D3DFMT_A8R8G8B8,D3DMULTISAMPLE_NONE,TRUE,&pRT);
@@ -427,6 +427,10 @@ bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height
 
     DWORD old_flag = psDeviceFlags;
 	psDeviceFlags &=~rsStatistic;
+    psDeviceFlags &=~rsDrawGrid;
+    psDeviceFlags |= rsFilterLinear;
+    psDeviceFlags &=~rsLighting;
+    psDeviceFlags &=~rsFog;
 	UI.Redraw();
     psDeviceFlags = old_flag;
 
@@ -451,6 +455,8 @@ bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height
     _RELEASE(pZB);
     _RELEASE(pRT);
     _RELEASE(poldRT);
+
+    dwClearColor = DEFAULT_CLEARCOLOR;
 
     return true;
 }

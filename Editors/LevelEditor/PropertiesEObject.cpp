@@ -85,15 +85,16 @@ void TfrmPropertiesEObject::FillBasicProps()
     if (S->GetReference()){
     	CEditableObject* 	O = S->GetReference();
 		m_Basic->AddItem	(0,PROP_MARKER2,"Name",(LPVOID)S->GetRefName());
-		m_Basic->AddItem	(0,PROP_FLAG,	"Dynamic",m_Basic->MakeFlagValue(&O->m_dwFlags,CEditableObject::eoDynamic));
+		m_Basic->AddItem	(0,PROP_FLAG,	"Dynamic",		m_Basic->MakeFlagValue(&O->m_dwFlags,CEditableObject::eoDynamic));
+        m_Basic->AddItem	(0,PROP_FLAG,	"Using LOD", 	m_Basic->MakeFlagValue(&O->m_dwFlags,CEditableObject::eoUsingLOD));
         TElTreeItem* M;
 		M=m_Basic->AddItem	(0,PROP_MARKER,	"Transformation");
-		m_Basic->AddItem	(M,PROP_VECTOR,	"Position",	m_Basic->MakeVectorValue(&S->FPosition,	-10000,	10000,0.01,2,OnAfterTransformation));
-		m_Basic->AddItem	(M,PROP_VECTOR,	"Rotation",	m_Basic->MakeVectorValue(&S->FRotation,	-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
-		m_Basic->AddItem	(M,PROP_VECTOR,	"Scale",	m_Basic->MakeVectorValue(&S->FScale,	0.01,	10000,0.01,2,OnAfterTransformation));
+		m_Basic->AddItem	(M,PROP_VECTOR,	"Position",		m_Basic->MakeVectorValue(&S->FPosition,	-10000,	10000,0.01,2,OnAfterTransformation));
+		m_Basic->AddItem	(M,PROP_VECTOR,	"Rotation",		m_Basic->MakeVectorValue(&S->FRotation,	-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
+		m_Basic->AddItem	(M,PROP_VECTOR,	"Scale",		m_Basic->MakeVectorValue(&S->FScale,	0.01,	10000,0.01,2,OnAfterTransformation));
 		M=m_Basic->AddItem	(0,PROP_MARKER,	"Summary");
         AnsiString t; t.sprintf("V: %d, F: %d",S->GetVertexCount(),S->GetFaceCount());
-		m_Basic->AddItem	(M,PROP_MARKER2,"Object",t.c_str());
+		m_Basic->AddItem	(M,PROP_MARKER2,"Object",		t.c_str());
 		M=m_Basic->AddItem	(M,PROP_MARKER,	"Meshes");
         for (EditMeshIt m_it=O->FirstMesh(); m_it!=O->LastMesh(); m_it++){
         	CEditableMesh* MESH=*m_it;
@@ -101,7 +102,7 @@ void TfrmPropertiesEObject::FillBasicProps()
 			m_Basic->AddItem(M,PROP_MARKER2,MESH->GetName(),t.c_str());
         }
 		M=m_Basic->AddItem	(0,PROP_MARKER,	"Game options");
-		m_Basic->AddItem	(M,PROP_ANSI_TEXT,"Script",	m_Basic->MakeAnsiTextValue(&O->m_ClassScript));
+		m_Basic->AddItem	(M,PROP_ANSI_TEXT,"Script",		m_Basic->MakeAnsiTextValue(&O->m_ClassScript));
     }
     m_Basic->EndFillMode(true);
 }
