@@ -4,6 +4,7 @@ module("game_messages")
 
 module("game_last_ui")
 module("game_last_ps")
+module("key_bindings")
 
 class "game_cl_LastStanding" (game_cl_mp_script)
 
@@ -41,6 +42,7 @@ function game_cl_LastStanding:createGameUI ()
    self.m_game_ui:SetClGame(self)
    self.m_game_ui:Init()
    
+   self.m_inventory_wnd = CUIInventoryWnd()
    return self.m_game_ui
 end
 
@@ -71,3 +73,48 @@ function game_cl_LastStanding:TranslateGameMessage(msg, P)
 end
 
 
+function game_cl_LastStanding:OnKeyboardPress(key)
+
+	if key_bindings.keys.kWPN_FIRE == key  then
+	
+		local b_need_to_send_ready = false
+
+		local ps_local	= self:GetLocalPlayer()
+
+      local game_object = self:GetObjectByGameID(ps_local.GameID)
+		if game_object == nil then return false end
+
+		local is_actor = curr->SUB_CLS_ID==CLSID_OBJECT_ACTOR;
+		local is_spectator = curr->SUB_CLS_ID==CLSID_SPECTATOR;
+		
+
+		b_need_to_send_ready =	
+		( is_actor and  (ps:testFlag(game_player_flags.flags.GAME_PLAYER_FLAG_VERY_VERY_DEAD)) )		or
+		( self:Phase() == game_phases.game_phases.GAME_PHASE_PENDING		)								or
+		( is_spectator and self:CanBeReady()	)
+		
+		if b_need_to_send_ready then
+				local P = net_packet()
+				self:u_EventGen	(P,game_messages.game_messages.GE_GAME_EVENT, ps_local.GameID	)
+				P:w_u16(game_messages.game_messages.GAME_EVENT_PLAYER_READY);
+				self:u_EventSend	(P)
+            return true
+		
+		else
+			return false
+      end
+
+	end
+
+	if (self:Phase() ~= game_phases.game_phases.GAME_PHASE_INPROGRESS) and 
+      (key_bindings.keys.kQUIT ~= key) ) then	
+         return  true
+      end
+
+	return inherited::OnKeyboardPress(key)
+
+end
+
+function game_cl_LastStanding:OnKeyboardRelease(key)
+   return false
+end
