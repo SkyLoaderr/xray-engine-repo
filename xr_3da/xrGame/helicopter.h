@@ -4,6 +4,7 @@
 #include "HelicopterMovementManager.h"
 #include "shootingobject.h"
 #include "weaponammo.h"
+#include "rocketlauncher.h"
 
 #define HELI_HUNT_RADIUS 30.0f
 //#define HELI_MAX_ANGULAR_VELOCITY PI
@@ -13,7 +14,8 @@
 
 class CHelicopter : 
 	public CEntity,
-	public CShootingObject
+	public CShootingObject,
+	public CRocketLauncher
 
 {
 	typedef CGameObject inherited;
@@ -60,6 +62,7 @@ protected:
 	u16								m_rotate_y_bone;
 
 	ref_str							m_sAmmoType;
+	ref_str							m_sRocketSection;
 	CCartridge						m_CurrentAmmo;
 
 	CObject*						m_destEnemy;
@@ -105,6 +108,7 @@ public:
 
 	virtual void		renderable_Render	();
 
+	virtual void		OnEvent				(NET_Packet& P, u16 type);
 	virtual void		UpdateCL			();
 	virtual void		shedule_Update		(u32		time_delta);
 

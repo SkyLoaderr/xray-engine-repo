@@ -2,6 +2,8 @@
 #include "helicopter.h"
 #include "xrserver_objects_alife.h"
 #include "PhysicsShell.h"
+#include "CustomRocket.h"
+#include "ExplosiveRocket.h"
 
 CHelicopter::CHelicopter()
 {
@@ -123,9 +125,12 @@ CHelicopter::Load(LPCSTR section)
 {
 	inherited::Load			(section);
 	CShootingObject::Load	(section);
+	CRocketLauncher::Load	(section);
 
 	m_sAmmoType = pSettings->r_string(section, "ammo_class");
 	m_CurrentAmmo.Load(*m_sAmmoType);
+
+	m_sRocketSection		= pSettings->r_string	(section,"rocket_class");
 
 	m_HitTypeK[ALife::eHitTypeBurn]			= pSettings->r_float(section,"burn_immunity");
 	m_HitTypeK[ALife::eHitTypeStrike]		= pSettings->r_float(section,"strike_immunity");
@@ -151,6 +156,7 @@ CHelicopter::net_Spawn(LPVOID	DC)
 	if (!inherited::net_Spawn(DC))
 		return			(FALSE);
 
+	CRocketLauncher::SpawnRocket(*m_sRocketSection, dynamic_cast<CGameObject*>(this/*H_Parent()*/));
 
 	// assigning m_animator here
 	CSE_Abstract		*abstract=(CSE_Abstract*)(DC);
@@ -307,9 +313,23 @@ CHelicopter::shedule_Update(u32	time_delta)
 		updateMGunDir();
 		
 		if(m_allow_fire)
+		{
 			FireStart();
+			
+			if(m_pRocket)
+			{
+				CExplosiveRocket* pGrenade = dynamic_cast<CExplosiveRocket*>(m_pRocket);
+				VERIFY(pGrenade);
+				pGrenade->SetCurrentParentID(H_Parent()->ID());
+				LaunchRocket(ParticlesXFORM(),  m_fire_dir, m_fire_dir);
+			}
+		}
+
 	}else
 		FireEnd();
+
+	if(!m_pRocket)
+		CRocketLauncher::SpawnRocket(*m_sRocketSection, this);
 }
 
 void		
@@ -373,4 +393,21 @@ CHelicopter::doHunt(CObject* dest)
 	setState(CHelicopter::eInitiateHunt);
 //
 //		m_movementMngr.buildHuntPath(dest->XFORM().c);
+}
+
+void 
+CHelicopter::OnEvent(NET_Packet& P, u16 type) 
+{
+	inherited::OnEvent(P,type);
+	u16 id;
+	switch (type) {
+		case GE_OWNERSHIP_TAKE : {
+			P.r_u16(id);
+			CRocketLauncher::AttachRocket(id, this);
+								 } break;
+		case GE_OWNERSHIP_REJECT : {
+			P.r_u16(id);
+			CRocketLauncher::DetachRocket(id);
+								   } break;
+	}
 }
