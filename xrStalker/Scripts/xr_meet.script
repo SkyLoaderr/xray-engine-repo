@@ -19,45 +19,22 @@ function evaluator_contact:evaluate()
 
 	if self.a.enabled == false then return false end
 
-	local vtable = self.object:memory_visible_objects ()
-	if vtable == nil then return false end
-	
-	for a in vtable do
-        	local vo = a:object ()
-		local id = vo:clsid ()
-		if (id == clsid.stalker or id == clsid.actor) and	-- если видим сталкера или актера
-		    a.visible == true and				-- и видим в данный момент
-		    vo:alive() == true and				-- и он живой
-		    self.object:squad()	~= vo:squad() and		-- он в другом скваде
-		    self.object:position():distance_to(vo:position()) < self.a.distance then 	-- он ближе заданного предела		
-			-- ¬ставить проверку на приоритеты - нейтрал более приоритетен, чем дружественный, приоритет от рассто€ни€
-			if nearest == nil or
-			   (self.object:relation(vo) == game_object.neutral and 
-			    distance_between(self.object, nearest) > distance_between(self.object, vo) )
-			then
-				nearest = vo
-			end			
-		end
-	end
+	local actor = level.actor()
 
-	local tt = false
-
-	if nearest == nil then 
-		tt = false
-	else
-		if self.a.nearest == nil then
-			self.a.nearest = nearest
-			self.a.done = false			
+	if actor then
+		if actor:alive() and 
+		   self.object:see(actor) and
+		   self.object:position():distance_to(actor:position()) < self.a.distance
+		then
+			self.a.actor = actor
 		else
-			if self.a.nearest:id() == nearest:id() and self.a.done == true then 
-				tt = false 
-			else
-				self.a.nearest = nearest
-				self.a.done = false
-				tt = self.a.nearest ~= nil
-			end
+			self.a.actor = nil
 		end
-	end
+	else
+		self.a.actor = nil
+	end	
+
+	local tt = self.a.actor ~= nil
 
 
 --	if tt then
@@ -77,101 +54,175 @@ function action_contact:__init (npc_name,action_name, storage) super (nil, actio
 	self.a = storage
 end
 function action_contact:initialize()
-	printf("[ACT] Start: Contact process")
 	action_base.initialize(self)
 	self.object:set_node_evaluator()
 	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()    
 
-	self.timer = { 	begin = nil,         -- врем€ до реакции
-			idle = nil,
-			maxidle = 1000,
-			sumidle = 1000 }
-
-	self.sound_f = {idle = 0,
+	self.sound_trend = {idle = 0,
 		     begin = nil,
 		     maxidle = 1, 
+		     sumidle = 0,
+   		     rnd = 100,
+		     lastsound = nil,
+		 	sounds = {      {pack = sounds["trade"], id = 12},
+					{pack = sounds["trade"], id = 13}, 
+					{pack = sounds["trade"], id = 14} 	}}
+	self.sound_trstart = {idle = 0,
+		     begin = nil,
+		     maxidle = 1, 
+		     sumidle = 0,
+   		     rnd = 100,
+		     lastsound = nil,
+		 	sounds = {      {pack = sounds["tradeseller_talk"], id = 7},
+					{pack = sounds["tradeseller_talk"], id = 8} }}
+	self.sound_w = {idle = 0,
+		     begin = nil,
+		     maxidle = 3, 
+		     sumidle = 3,
+   		     rnd = 100,
+		     lastsound = nil,
+		 	sounds = {      {pack = sounds["trade"], id = 2},
+					{pack = sounds["trade"], id = 3}, 
+					{pack = sounds["trade"], id = 4} 	}}
+	self.sound_e = {idle = 0,
+		     begin = nil,
+		     maxidle = 5, 
 		     sumidle = 1,
    		     rnd = 100,
 		     lastsound = nil,
-		 	sounds = {      {pack = sounds["friend"], id = 0},
-					{pack = sounds["friend"], id = 1} }}
-
-	self.sound_s = {idle = 0,
-		     begin = nil,
-		     maxidle = 3, 
-		     sumidle = 2,
-   		     rnd = 100,
-		     lastsound = nil,
-		 	sounds = {      {pack = sounds["neutral"], id = 14},
-					{pack = sounds["neutral"], id = 15}, 
-					{pack = sounds["neutral"], id = 16}, 
-					{pack = sounds["neutral"], id = 17}, 
-					{pack = sounds["neutral"], id = 18}, 
- 					{pack = sounds["neutral"], id = 19} }}
-	self.sound_n = {idle = 0,
+		 	sounds = {      {pack = sounds["trade"], id = 5},
+					{pack = sounds["trade"], id = 6}, 
+					{pack = sounds["trade"], id = 7}, 
+					{pack = sounds["trade"], id = 8}, 
+					{pack = sounds["trade"], id = 9}, 
+					{pack = sounds["trade"], id = 10} 	}}
+	self.sound_f = {idle = 0,
 		     begin = nil,
 		     maxidle = 5, 
-		     sumidle = 5,
+		     sumidle = 1,
    		     rnd = 100,
 		     lastsound = nil,
-		 	sounds = {      {pack = sounds["neutral"], id = 19},
-					{pack = sounds["neutral"], id = 20}, 
-					{pack = sounds["neutral"], id = 21}, 
-					{pack = sounds["neutral"], id = 22}, 
-					{pack = sounds["neutral"], id = 23} }}
+		 	sounds = {      {pack = sounds["tradeseller_talk"], id = 14},
+					{pack = sounds["tradeseller_talk"], id = 15}, 
+					{pack = sounds["tradeseller_talk"], id = 16}, 
+					{pack = sounds["tradeseller_talk"], id = 17}, 
+					{pack = sounds["tradeseller_talk"], id = 18} 	}}
+	self.anim = {	idle = 0,
+			begin = nil,
+			maxidle = 1,
+			sumidle = 0,
+			rnd = 100,
+			anim_active = { {name = "torg_1", hand = true},
+					{name = "torg_2", hand = true},
+					{name = "torg_3", hand = true},
+					{name = "torg_4", hand = true}} }
 
+	self.talking = nil
 
-	self.timer.idle = math.random(self.timer.maxidle) + self.timer.sumidle
-	self.timer.begin = device():time_global()
-	self.object:set_item(object.idle, self.object:best_weapon())
+	self.object:set_body_state(move.standing)
+	self.object:set_movement_type(move.stand)
 end
 function action_contact:execute ()
-	if device():time_global() - self.timer.begin > self.timer.idle then
-                if self.object:relation(self.a.nearest) == game_object.friend then
-			-- что мы делаем, если видим друга
-			globals.set_sound(self.object, self.sound_f, true)
-			self.a.done = true
+	local weap = self.a.actor:active_item()
+	local weap_id
+	if weap ~= nil then
+		weap_id = weap:clsid()
+	end
+	local ww = self.object:active_item()
+	local ww_id
+	if ww ~= nil then
+		ww_id = ww:clsid()
+	end
+	
+	-- нужно остановитьс€ и посмотреть в сторону актора
+	local pos = self.a.actor:position()
 
-		elseif self.object:relation(self.a.nearest) == game_object.neutral then
-			-- что мы делаем, если видим нейтрала
-			-- угрожаем ему автоматом и просим убратьс€
+	if isWeapon(weap_id) then
+		if isWeapon(ww_id) == false then
 			self.object:set_mental_state(anim.danger)
-			self.object:set_movement_type(move.walk)
+			self.object:clear_animations()
+			self.object:disable_talk()
+		end
+      		pos.y = pos.y + 1
+      		self.object:set_sight(look.fire_point, pos, 0)
 
-			local d = distance_between(self.object, self.a.nearest)
-			self.object:set_path_type(game_object.level_path)
-
-			-- медленно отходим от него
-	      		local pos = self.a.nearest:position()
-			local spos = self.object:position()
-
-			local dir = vector():sub(spos,pos)
-
-   			local pp = level.vertex_in_direction(self.object:level_vertex_id(), dir, 2.0)
-
-			if pp ~= self.object:level_vertex_id() then
-				self.object:set_dest_level_vertex_id(pp)
+		-- если актер ближе какого-то радиуса - открывать огонь
+		if self.object:position():distance_to(self.a.actor:position()) < self.a.shoot_distance then
+      			self.object:set_item(object.fire1, self.object:best_weapon())
+			if self.object:active_sound_count() == 0 then
+				globals.set_sound(self.object, self.sound_f, false)
 			end
-
-			pos.y = pos.y + 0.8
-      			self.object:set_sight(look.fire_point, pos, 0)
-			if d < self.a.shoot_distance then             			
-	      			self.object:set_item(object.fire1, self.object:best_weapon())
-				-- и громко ругаемс€ матом
-				globals.set_sound(self.object, self.sound_s, false)
-			else
-				-- предлагаем культурно разойтись
-				globals.set_sound(self.object, self.sound_n, false)
+		else
+     			self.object:set_item(object.idle, self.object:best_weapon())
+			-- «вуки
+			if self.object:active_sound_count() == 0 then
+				globals.set_sound(self.object, self.sound_e, false)
 			end
 		end
-	end       
+	else
+		if isWeapon(ww_id) == true then
+			self.object:set_mental_state(anim.free)
+			self.object:clear_animations()
+			self.object:add_animation("torg_0", true)
+     			self.object:set_item(object.deactivate, self.object:best_weapon())
+			self.object:enable_talk()
+		end
+		pos.y = pos.y + 1.4
+		self.object:set_sight(look.point, pos, 0)
+
+		--болтаем ли мы или еще нет
+		if self.object:is_talking() then
+			if self.talking == true then
+			else
+				-- сказать фразу о начале тороговли
+				globals.set_sound(self.object, self.sound_trstart, true)
+				self.talking = true
+			end
+		else
+			if self.talking == true then
+				-- сказать фразу о конце тороговли
+				globals.set_sound(self.object, self.sound_trend, true)
+				self.talking = false
+			else
+			end
+		end
+
+	        -- јнимации
+		if self.object:animation_count() <= 1 then
+			xr_meet.set_anim(self.object, self.anim)
+		end
+	
+		-- «вуки
+		if self.object:active_sound_count() == 0 then
+			globals.set_sound(self.object, self.sound_w, false)
+		end
+	end
+
 	action_base.execute (self)
 end
 function action_contact:finalize ()
-	printf("[ACT] Finish: Contact process")
 	action_base.finalize (self)
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+-- Functions
+----------------------------------------------------------------------------------------------------------------------
+-- ѕроигрыш анимашек
+function set_anim(npc, anim)
+	if anim.begin == nil or
+	   (device():time_global()/1000 - anim.begin) > anim.idle 
+	then
+		anim.begin = device():time_global()/1000
+		anim.idle = math.random(anim.maxidle) + anim.sumidle
+
+		if math.random(100) < anim.rnd then
+			local r = math.random(table.getn(anim.anim_active))
+			npc:add_animation(anim.anim_active[r].name,anim.anim_active[r].hand)
+		end
+	end		
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -182,11 +233,11 @@ function add_to_binder(object)
 	local operators		= {}
 	local properties	= {}
 
-	sounds["neutral"] 		= xr_sounds_id.stohe_meet_base + 1
-	sounds["friend"] 		= xr_sounds_id.stohe_meet_base + 2
+	sounds["trade"] 			= xr_sounds_id.stohe_tradeseller_base + 1
+	sounds["tradeseller_talk"] 		= xr_sounds_id.stohe_tradeseller_base + 2
 
-	object:add_sound("script_replics\\stalker_1\\talk\\stalker_talk_", 30, snd_type.talk, 2, 1, sounds["neutral"])
-	object:add_sound("script_replics\\stalker_1\\talk\\stalker_talk_", 30, snd_type.talk, 2, 1, sounds["friend"])
+	object:add_sound("script_replics\\stalker_1\\trade\\stalker_trade_", 30, snd_type.talk, 2, 1, sounds["trade"])
+	object:add_sound("script_replics\\stalker_1\\talk\\stalker_talk_", 30, snd_type.talk, 2, 1, sounds["tradeseller_talk"])
 
 	local manager = object:motivation_action_manager()
 
