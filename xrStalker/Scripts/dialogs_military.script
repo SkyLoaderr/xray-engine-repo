@@ -69,7 +69,7 @@ end
 function set_courier_task_complete (player, stalker)
     if db.actor:has_info ("mil_leader_quest2_start") then
        db.actor:set_task_state (task.completed, "mil_courier_job", 0)
-       db.actor:set_task_state (task.completed, "mil_courier_job", 2)
+       db.actor:set_task_state (task.completed, "mil_courier_job", 3)
        player:transfer_item (player:object("mil_courier_doc"), stalker)
        level_tasks.remove_location (707, "mil_lukash_location")
     end   

@@ -349,11 +349,18 @@ function military_lukash_dead (actor, npc)
     end
 end
 
+function military_courier_dead (actor, npc)
+    if db.actor:dont_has_info ("mil_khutor_visited") then
+       db.actor:set_task_state (task.fail, "mil_courier_job", 1)
+    end    
+end
+
 function val_suicide_stalker_died(actor, npc)
 	if not db.actor:has_info_portion("val_suicide_artefact_given") then
 		db.actor:set_task_state(task.fail, "val_suicide_find_lost_stalker", 0)
 	end
 end
+
 
 
 -- GARBAGE
