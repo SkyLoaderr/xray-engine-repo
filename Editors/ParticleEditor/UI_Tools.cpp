@@ -551,8 +551,8 @@ void __fastcall CParticleTools::MouseMove(TShiftState Shift)
 void CParticleTools::RealApplyParent()
 {
     switch(m_EditMode){
-    case emEffect:	m_EditPE->UpdateParent(m_Transform,zero_vec); break;
-    case emGroup:	m_EditPG->UpdateParent(m_Transform,zero_vec); break;
+    case emEffect:	m_EditPE->UpdateParent(m_Transform,zero_vec,FALSE); break;    
+    case emGroup:	m_EditPG->UpdateParent(m_Transform,zero_vec,FALSE); break;
     default: THROW;
     }
 	m_Flags.set		(flApplyParent,FALSE);

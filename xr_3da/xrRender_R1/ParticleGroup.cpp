@@ -151,11 +151,11 @@ void CParticleGroup::OnFrame(u32 u_dt)
 	}
 }
 
-void CParticleGroup::UpdateParent(const Fmatrix& m, const Fvector& velocity)
+void CParticleGroup::UpdateParent(const Fmatrix& m, const Fvector& velocity, BOOL bXFORM)
 {
 	m_InitialPosition		= m.c;
     for (u32 i=0; i<children.size(); i++)
-        ((CParticleEffect*)children[i])->UpdateParent(m,velocity);
+        ((CParticleEffect*)children[i])->UpdateParent(m,velocity,bXFORM);
 }
 
 BOOL CParticleGroup::Compile(CPGDef* def)

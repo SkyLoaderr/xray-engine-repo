@@ -74,7 +74,7 @@ namespace PS
 		virtual void 		OnDeviceCreate	();
 		virtual void 		OnDeviceDestroy	();
 
-		virtual void		UpdateParent	(const Fmatrix& m, const Fvector& velocity);
+		virtual void		UpdateParent	(const Fmatrix& m, const Fvector& velocity, BOOL bXFORM);
 
 		BOOL				Compile			(CPGDef* def);
 
@@ -86,7 +86,7 @@ namespace PS
 
 		virtual float		GetTimeLimit	(){VERIFY(m_Def); return m_Def->m_fTimeLimit;}
 
-		virtual LPCSTR		Name				(){VERIFY(m_Def); return m_Def->m_Name;}
+		virtual LPCSTR		Name			(){VERIFY(m_Def); return m_Def->m_Name;}
 	};
 
 }
