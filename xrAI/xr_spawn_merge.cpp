@@ -274,6 +274,7 @@ public:
 				for ( ; I != E; I++, i++) {
 					(*I).tNodeID	= *i;
 					(*I).tPoint		= m_tpAI_Map->tfGetNodeCenter(*i);
+					(*I).fDistance	= m_tpCrossTable->m_tpaCrossTable[*i].fDistance;
 				}
 			}
 			else {
@@ -286,6 +287,7 @@ public:
 				for ( ; I != E; I++, i++) {
 					(*I).tNodeID	= *i;
 					(*I).tPoint		= m_tpAI_Map->tfGetNodeCenter(*i);
+					(*I).fDistance	= m_tpCrossTable->m_tpaCrossTable[*i].fDistance;
 				}
 			}
 		}

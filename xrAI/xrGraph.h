@@ -14,6 +14,7 @@
 typedef struct tagSLevelPoint {
 	Fvector		tPoint;
 	u32			tNodeID;
+	float		fDistance;	
 } SLevelPoint;
 
 typedef struct tagSDynamicGraphVertex {
