@@ -303,7 +303,7 @@ void CBurer::UpdateGraviObject()
 
 	// установить направление
 	pos.k.set(Fvector().set(dir));
-	Fvector::generate_orthonormal_basis(pos.k, pos.i, pos.j);
+	Fvector::generate_orthonormal_basis(pos.k, pos.j, pos.i);
 	// установить позицию
 	pos.c.set(m_gravi_object.cur_pos);
 

@@ -324,7 +324,7 @@ void CAI_Bloodsucker::shedule_Update(u32 dt)
 
 		// установить направление
 		pos.k.set(Fvector().set(0.0f,1.0f,0.0f));
-		Fvector::generate_orthonormal_basis(pos.k, pos.i, pos.j);
+		Fvector::generate_orthonormal_basis(pos.k, pos.j, pos.i);
 		// установить позицию
 		pos.c.set(get_foot_position(eFrontLeft));
 

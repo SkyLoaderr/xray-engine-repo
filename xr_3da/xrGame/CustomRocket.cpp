@@ -386,8 +386,8 @@ void CCustomRocket::UpdateParticles()
 	particles_xform.k.set(XFORM().k);
 	particles_xform.k.mul(-1.f);
 	Fvector::generate_orthonormal_basis(particles_xform.k, 
-										particles_xform.i, 
-										particles_xform.j);
+										particles_xform.j, 
+										particles_xform.i);
     particles_xform.c.set(XFORM().c);
 
 

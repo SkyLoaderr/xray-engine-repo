@@ -339,7 +339,7 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 					Fmatrix pos; 
 					Fvector zero_vel = {0.f,0.f,0.f};
 					pos.k.set(*((Fvector*)c->normal));
-					Fvector::generate_orthonormal_basis(pos.k, pos.i, pos.j);
+					Fvector::generate_orthonormal_basis(pos.k, pos.j, pos.i);
 					pos.c.set(*((Fvector*)c->pos));
 
 					ps->UpdateParent(pos,zero_vel);

@@ -156,7 +156,7 @@ NULL:*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.siz
 
 		Fmatrix pos;
 		pos.k.normalize(particle_dir);
-		Fvector::generate_orthonormal_basis(pos.k, pos.i, pos.j);
+		Fvector::generate_orthonormal_basis(pos.k, pos.j, pos.i);
 		pos.c.set(vEnd);
 
 		ps->UpdateParent(pos,zero_vel);

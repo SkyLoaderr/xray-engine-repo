@@ -287,7 +287,7 @@ void CWeaponMagazinedWGrenade::SwitchState(u32 S)
 		launch_matrix.identity();
 		launch_matrix.k.set(d);
 		Fvector::generate_orthonormal_basis(launch_matrix.k,
-											launch_matrix.i, launch_matrix.j);
+											launch_matrix.j, launch_matrix.i);
 		launch_matrix.c.set(p1);
 
 		d.normalize();

@@ -604,7 +604,7 @@ void CMotionManager::STEPS_Update(u8 legs_num)
 
 				// установить направление
 				pos.k.set(Fvector().set(0.0f,1.0f,0.0f));
-				Fvector::generate_orthonormal_basis(pos.k, pos.i, pos.j);
+				Fvector::generate_orthonormal_basis(pos.k, pos.j, pos.i);
 				
 				// установить позицию
 				pos.c.set(pMonster->get_foot_position(ELegType(i)));

@@ -135,7 +135,7 @@ void CExplosive::Explode()
 	Fmatrix explode_matrix;
 	explode_matrix.identity();
 	explode_matrix.j.set(dir);
-	Fvector::generate_orthonormal_basis(explode_matrix.j, explode_matrix.k, explode_matrix.i);
+	Fvector::generate_orthonormal_basis(explode_matrix.j, explode_matrix.i, explode_matrix.k);
 	explode_matrix.c.set(pos);
 
 	pStaticPG->UpdateParent(explode_matrix,vel);
@@ -222,7 +222,7 @@ void CExplosive::Explode()
 			l_b2.invalidate();
 			Fmatrix l_m; l_m.identity(); 
 			l_m.k.set(l_dir); 
-			Fvector::generate_orthonormal_basis(l_m.k, l_m.i, l_m.j);
+			Fvector::generate_orthonormal_basis(l_m.k, l_m.j, l_m.i);
 			
 			for(int i = 0; i < 8; ++i) 
 			{ 

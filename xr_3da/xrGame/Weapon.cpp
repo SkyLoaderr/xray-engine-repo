@@ -184,7 +184,7 @@ void CWeapon::UpdateFP		()
 			m_FireParticlesXForm.identity();
 			m_FireParticlesXForm.k.set(vLastFD);
 			Fvector::generate_orthonormal_basis(m_FireParticlesXForm.k,
-									m_FireParticlesXForm.i, m_FireParticlesXForm.j);
+									m_FireParticlesXForm.j, m_FireParticlesXForm.i);
 		} else {
 			// 3rd person or no parent
 			Fmatrix& parent			= XFORM();

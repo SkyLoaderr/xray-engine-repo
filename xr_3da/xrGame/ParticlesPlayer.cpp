@@ -237,7 +237,7 @@ void CParticlesPlayer::MakeXFORM	(CObject* pObject, u16 bone_id, const Fvector& 
 
 	result.identity		();
 	result.k.normalize	(dir);
-	Fvector::generate_orthonormal_basis(result.k, result.i, result.j);
+	Fvector::generate_orthonormal_basis(result.k, result.j, result.i);
 
 
 	Fvector pos;
