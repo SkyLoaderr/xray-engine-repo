@@ -64,6 +64,9 @@ void CHelicopterMovManager::init(CHelicopter* heli)
 {
 //	m_heli->m_data.m_desiredXFORM = heli_xform;
 	m_heli = heli;
+	m_currPatrolVertex	= NULL;
+	m_currPatrolVertex	= NULL;
+	m_currPatrolPath	= NULL;
 }
 
 void CHelicopterMovManager::onTime(float t, Fvector& P, Fvector& R)
@@ -732,15 +735,14 @@ void CHelicopterMovManager::insertRounding(const Fvector& fromPos,
 float CHelicopterMovManager::EndTime()
 {
 	return m_endTime;
-
 }
 
 void CHelicopterMovManager::GoBySpecifiedPatrolPath()
 {
-	m_heli->m_data.m_currPatrolPath = Level().patrol_paths().path(m_heli->m_data.m_patrol_path_name);
-	m_heli->m_data.m_currPatrolVertex =  m_heli->m_data.m_currPatrolPath->vertex(m_heli->m_data.m_patrol_begin_idx);
+	m_currPatrolPath = Level().patrol_paths().path(m_heli->m_data.m_patrol_path_name);
+	m_currPatrolVertex =  m_currPatrolPath->vertex(m_heli->m_data.m_patrol_begin_idx);
 
-	m_heli->m_data.m_desiredP = m_heli->m_data.m_currPatrolVertex->data().position();
+	m_heli->m_data.m_desiredP = m_currPatrolVertex->data().position();
 	getPathAltitude(m_heli->m_data.m_desiredP, m_heli->m_data.m_wrk_altitude);
 }
 
@@ -748,12 +750,12 @@ void CHelicopterMovManager::UpdatePatrolPath()
 {
 	if(m_heli->GetDistanceToDestPosition() < m_heli->m_on_point_range_dist){
 		CPatrolPath::const_iterator b,e;
-		m_heli->m_data.m_currPatrolPath->begin(m_heli->m_data.m_currPatrolVertex->vertex_id(),b,e);
+		m_currPatrolPath->begin(m_currPatrolVertex->vertex_id(),b,e);
 		if(b!=e){
-			m_heli->m_data.m_currPatrolVertex =  m_heli->m_data.m_currPatrolPath->vertex((*b).vertex_id());
-//			m_heli->m_data.m_desiredP = m_heli->m_data.m_currPatrolVertex->data().position();
+			m_currPatrolVertex =  m_currPatrolPath->vertex((*b).vertex_id());
+//			m_heli->m_data.m_desiredP = m_currPatrolVertex->data().position();
 //			getPathAltitude(m_heli->m_data.m_desiredP, m_heli->m_data.m_wrk_altitude);
-			Fvector p = m_heli->m_data.m_currPatrolVertex->data().position();
+			Fvector p = m_currPatrolVertex->data().position();
 			m_heli->SetDestPosition(&p);
 		}else
 			m_heli->setState(CHelicopter::eIdleState);

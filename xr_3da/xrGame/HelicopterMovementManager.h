@@ -12,6 +12,11 @@ class CHelicopterMovManager :public CHelicopterMotion
 #endif
 
 {
+public:
+	const CPatrolPath*				m_currPatrolPath;
+	const CPatrolPath::CVertex*		m_currPatrolVertex;
+
+private:
 	CHelicopter*					m_heli;
 
 //	Fmatrix							m_XFORM;

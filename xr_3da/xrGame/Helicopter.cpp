@@ -8,6 +8,7 @@
 #include "HudManager.h"
 #include "script_game_object.h"
 #include "../LightAnimLibrary.h"
+#include "HelicopterMovementManager.h"
 
 CHelicopter::CHelicopter()
 {
@@ -19,11 +20,13 @@ CHelicopter::CHelicopter()
 	ISpatial*		self				=	smart_cast<ISpatial*> (this);
 	if (self)		self->spatial.type &=~STYPE_VISIBLEFORAI;;	
 
+	m_movMngr		= xr_new<CHelicopterMovManager>();
 }
 
 CHelicopter::~CHelicopter()
 {
 //	xr_delete(m_pParticle);
+	xr_delete		(m_movMngr);
 }
 
 void CHelicopter::setState(CHelicopter::EHeliState s)
@@ -171,7 +174,7 @@ void CHelicopter::Load(LPCSTR section)
 	m_data.m_wrk_altitude = m_data.m_baseAltitude;
 	m_maxLinearSpeed = m_data.m_basePatrolSpeed;
 ////////////////////////////////////
-	m_movMngr.load (section);
+	m_movMngr->load (section);
 
 	m_sAmmoType = pSettings->r_string(section, "ammo_class");
 	m_CurrentAmmo.Load(*m_sAmmoType);
@@ -314,12 +317,10 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 	m_data.m_to_point		= m_currP;
 	m_curLinearSpeed		= 0.0f;
 	m_curLinearAcc			= m_LinearAcc_fw;
-	m_data.m_currPatrolVertex	= NULL;
-	m_data.m_currPatrolVertex	= NULL;
-	m_data.m_currPatrolPath		= NULL;
+	
 	XFORM().getHPB(m_currBodyH, m_currBodyP, m_currBodyB);
 
-    m_movMngr.init		(this);
+    m_movMngr->init			(this);
 
 //lighting
 	m_light_render			= ::Render->light_create();
@@ -591,14 +592,14 @@ void CHelicopter::shedule_Update(u32 time_delta)
 			P.w_float(dist);
 			P.w_vec3(m_currP);
 			s16 curr_idx = -1;
-			if(m_data.m_currPatrolVertex)
-				curr_idx = (s16)m_data.m_currPatrolVertex->vertex_id();
+			if(m_movMngr->m_currPatrolVertex)
+				curr_idx = (s16)m_movMngr->m_currPatrolVertex->vertex_id();
 			
 			P.w_s16(curr_idx);
 			lua_game_object()->OnEventRaised(CHelicopter::EV_ON_POINT,P);
 		}
 
-		m_movMngr.shedule_Update (time_delta);
+		m_movMngr->shedule_Update (time_delta);
 
 
 	if(getRocketCount()<4)
@@ -784,7 +785,7 @@ void CHelicopter::goToPoint(Fvector* to, Fvector* via, float time)
 
 float CHelicopter::getLastPointTime	()
 {
-	return m_movMngr.EndTime();
+	return m_movMngr->EndTime();
 
 }
 

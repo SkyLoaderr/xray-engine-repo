@@ -925,6 +925,9 @@
 							<File
 								RelativePath=".\patrol_path_manager_inline.h">
 							</File>
+							<File
+								RelativePath=".\patrol_path_manager_space.h">
+							</File>
 						</Filter>
 					</Filter>
 					<Filter

@@ -14,24 +14,9 @@
 #include "script_engine.h"
 #include "patrol_path_storage.h"
 #include "patrol_path.h"
+#include "patrol_path_manager_space.h"
 
 class CRestrictedObject;
-
-namespace PatrolPathManager {
-	enum EPatrolStartType {
-		ePatrolStartTypeFirst = u32(0),
-		ePatrolStartTypeLast,
-		ePatrolStartTypeNearest,
-		ePatrolStartTypePoint,
-		ePatrolStartTypeNext,
-		ePatrolStartTypeDummy = u32(-1),
-	};
-	enum EPatrolRouteType {
-		ePatrolRouteTypeStop = u32(0),
-		ePatrolRouteTypeContinue,
-		ePatrolRouteTypeDummy = u32(-1),
-	};
-};
 
 using namespace PatrolPathManager;
 

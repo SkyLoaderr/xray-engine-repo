@@ -25,7 +25,7 @@ protected:
 
 public:
 	virtual					~CPatrolPath	();
-			CPatrolPath		&load			(IReader &stream);
+			CPatrolPath		&load_path		(IReader &stream);
 	IC		const CVertex	*point			(shared_str name) const;
 	template <typename T>
 	IC		const CVertex	*point			(const Fvector &position, const T &evaluator) const;

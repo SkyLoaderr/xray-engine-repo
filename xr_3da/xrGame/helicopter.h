@@ -1,16 +1,17 @@
 #pragma once
 
-#include "HelicopterMovementManager.h"
 #include "shootingobject.h"
 #include "weaponammo.h"
 #include "rocketlauncher.h"
 #include "entity.h"
 #include "phskeleton.h"
 #include "hit_immunity.h"
-
 #include "script_export_space.h"
+
 class CScriptGameObject;
 class CLAItem;
+class CHelicopterMovManager;
+
 struct SHeliShared{
 	CObject*						m_destEnemy;
 	Fvector							m_destEnemyPos; //lastEnemyPos
@@ -47,8 +48,6 @@ struct SHeliShared{
 
 	int								m_patrol_begin_idx;
 	shared_str						m_patrol_path_name;
-	const CPatrolPath*				m_currPatrolPath;
-	const CPatrolPath::CVertex*		m_currPatrolVertex;
 };
 
 class CHelicopter : 
@@ -131,9 +130,9 @@ protected:
 	float							m_light_brightness;
 	float							m_light_range;
 	Fcolor							m_light_color;
-	shared_str							m_l_anim;
+	shared_str						m_l_anim;
 
-	CHelicopterMovManager			m_movMngr;
+	CHelicopterMovManager			*m_movMngr;
 
 	xr_map<s16,float>				m_hitBones;
 
@@ -157,17 +156,17 @@ protected:
 	u32								m_last_rocket_attack;
 
 
-	shared_str							m_sAmmoType;
-	shared_str							m_sRocketSection;
+	shared_str						m_sAmmoType;
+	shared_str						m_sRocketSection;
 	CCartridge						m_CurrentAmmo;
 
-	shared_str							m_smoke_particle;
-	shared_str							m_explode_particle;
+	shared_str						m_smoke_particle;
+	shared_str						m_explode_particle;
 	CParticlesObject*				m_pParticle;
 	Fmatrix							m_particleXFORM;
 	u16								m_smoke_bone;
 
-	shared_str							m_death_bones_to_hide;
+	shared_str						m_death_bones_to_hide;
 	static void __stdcall	BoneMGunCallbackX		(CBoneInstance *B);
 	static void __stdcall	BoneMGunCallbackY		(CBoneInstance *B);
 
