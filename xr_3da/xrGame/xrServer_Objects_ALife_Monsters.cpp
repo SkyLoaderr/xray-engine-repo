@@ -1332,7 +1332,7 @@ void CSE_ALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 			tNetPacket.r_string	(caKnownCustomers);
 			m_caKnownCustomers	= caKnownCustomers;
 			load_data			(m_tpKnownCustomers,tNetPacket);
-			if (m_wVersion > 37) {
+			if (m_wVersion > 68) {
 				load_data		(m_cpEquipmentPreferences,tNetPacket);
 				load_data		(m_cpMainWeaponPreferences,tNetPacket);
 			}
