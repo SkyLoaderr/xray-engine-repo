@@ -87,14 +87,18 @@ function action_reaction_wait:initialize()
 		     lastsound = nil,	
 		     themes = {"reac_see", "reac_hear"} }
 	
-	xr_state.change_state(self.object, 0)
+	xr_state.change_state(self.object, xr_state.stand)
 end
 function action_reaction_wait:execute()
 	action_base.execute(self)
 	self.object:set_item(object.idle, self.object:best_weapon())
 	self.a.evn:get_event(self.a.obj)
 	self.near_object = false
-	
+
+	if xr_state.finish_state(self.object) == false then
+		return
+	end
+		
 --	if self.a.obj.id ~= nil and
 --	   self.a.obj.type ~= nil then
 --	   printf("Process obj %d, type: %s",self.a.obj.id, self.a.obj.type)

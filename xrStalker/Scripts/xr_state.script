@@ -31,6 +31,153 @@ function body_state:__init(npc)
 		[xr_state.sit_wait] = "stalker_3_2",
 		[xr_state.sleep] = "spit_2"
 	}
+	self.states = {
+		last_id = nil,
+		current_state = nil,
+		begin = nil,
+		idle = nil
+	}					
+	self.animations = {
+		idle		= {	state_id = xr_state.stand,
+						prop	= { maxidle = 5,
+									sumidle = 3,
+									rnd = 80 },	
+						into	= nil,
+						out		= nil,
+						idle	= { [0]	= "idle_0_idle_1",
+									[1]	= "idle_1_idle_1",
+									[2]	= "idle_2_idle_1",
+									[3]	= "idle_3_idle_1",
+									[4]	= "idle_4_idle_1" },
+						rnd		= {	[0]	= {	"idle_0_idle_0",
+											"idle_0_idle_2",
+											"idle_0_idle_3",
+											"idle_0_idle_4" },
+									[1]	= {	"idle_1_idle_0",
+											"idle_1_idle_2",
+											"idle_1_idle_3",
+											"idle_1_idle_4" },
+									[2]	= {	"idle_2_idle_0",
+											"idle_2_idle_2",
+											"idle_2_idle_3",
+											"idle_2_idle_4",
+											"idle_2_idle_5",
+											"idle_2_idle_6",
+											"idle_2_idle_7",
+											"idle_2_idle_8",
+											"idle_2_idle_9" },	
+									[3]	= { "idle_3_idle_0",
+											"idle_3_idle_2",
+											"idle_3_idle_3",
+											"idle_3_idle_4" },
+									[4]	= {	"idle_4_idle_0",
+											"idle_4_idle_2",
+											"idle_4_idle_3",
+											"idle_4_idle_4" }}},
+		prisluh	= {		state_id = xr_state.stand,
+						prop	= { maxidle = 5,
+									sumidle = 3,
+									rnd = 80 },	
+						into	= { [0]	= "prisluh_0_idle_0",
+									[1]	= "prisluh_1_idle_0",
+									[2]	= "prisluh_2_idle_0",
+									[3]	= "prisluh_3_idle_0",
+									[4]	= "prisluh_4_idle_0" },
+						out		= { [0]	= "prisluh_0_idle_5",
+									[1]	= "prisluh_1_idle_5",
+									[2]	= "prisluh_2_idle_6",
+									[3]	= "prisluh_3_idle_5",
+									[4]	= "prisluh_4_idle_5" },
+						idle	= { [0]	= "prisluh_0_idle_1",
+									[1]	= "prisluh_1_idle_1",
+									[2]	= "prisluh_2_idle_1",
+									[3]	= "prisluh_3_idle_1",
+									[4]	= "prisluh_4_idle_1" },
+						rnd		= { [0]	= {	"prisluh_0_idle_2",
+											"prisluh_0_idle_3",
+											"prisluh_0_idle_4" },
+									[1]	= {	"prisluh_1_idle_2",
+											"prisluh_1_idle_3",
+											"prisluh_1_idle_4" },
+									[2]	= {	"prisluh_2_idle_2",
+											"prisluh_2_idle_3",
+											"prisluh_2_idle_4",
+											"prisluh_2_idle_5" },
+									[3]	= {	"prisluh_3_idle_2",
+											"prisluh_3_idle_3",
+											"prisluh_3_idle_4" },
+									[4]	= {	"prisluh_4_idle_2",
+											"prisluh_4_idle_3",
+											"prisluh_4_idle_4" }}},
+		poisk		= {	state_id = xr_state.stand,
+						prop	= { maxidle = 5,
+									sumidle = 3,
+									rnd = 80 },
+						into	= nil,
+						out		= nil,
+						idle	= { [0]	= "poisk_0_idle_1",
+									[1]	= "poisk_1_idle_1",
+									[2]	= "poisk_2_idle_1",
+									[3]	= "poisk_3_idle_1",
+									[4]	= "poisk_4_idle_1" },
+						rnd		= { [0]	= {	"poisk_0_idle_0",
+											"poisk_0_idle_2",
+											"poisk_0_idle_3",
+											"poisk_0_idle_4" },
+									[1]	= {	"poisk_1_idle_0",
+											"poisk_1_idle_2",
+											"poisk_1_idle_3",
+											"poisk_1_idle_4" },
+									[2]	= {	"poisk_2_idle_0",
+											"poisk_2_idle_2",
+											"poisk_2_idle_3",
+											"poisk_2_idle_4" },
+									[3]	= { "poisk_3_idle_0",
+											"poisk_3_idle_2",
+											"poisk_3_idle_3",
+											"poisk_3_idle_4" },
+									[4]	= {	"poisk_4_idle_0",
+											"poisk_4_idle_2",
+											"poisk_4_idle_3",
+											"poisk_4_idle_4" }}},
+		hide		= {	state_id = xr_state.stand,
+						prop	= { maxidle = 5,
+									sumidle = 3,
+									rnd = 80 },
+						into	= nil,
+						out		= nil,
+						idle	= { [0]	= "d_0_idle_1",
+									[1]	= "d_1_idle_1",
+									[2]	= "d_2_idle_1",
+									[3]	= "d_3_idle_1",
+									[4]	= "d_4_idle_1" },
+						rnd		= { [0] = { "d_0_idle_0",
+											"d_0_idle_2" },
+									[1] = { "d_1_idle_0",
+											"d_1_idle_2" },
+									[2] = { "d_2_idle_0",
+											"d_2_idle_2" },
+									[3] = { "d_3_idle_0",
+											"d_3_idle_2" },
+									[4] = { "d_4_idle_0",
+											"d_4_idle_2" }}},
+		hello		= {	state_id = xr_state.stand,
+						prop	= { maxidle = 5,
+									sumidle = 3,
+									rnd = 80 },
+						into	= nil,
+						out		= nil,
+						idle	= { [0]	= "idle_0_idle_1",
+									[1]	= "idle_1_idle_1",
+									[2]	= "idle_2_idle_1",
+									[3]	= "idle_3_idle_1",
+									[4]	= "idle_4_idle_1" },
+						rnd		= {	[0]	= {	"hello_0_idle_0" },
+									[1]	= {	"hello_1_idle_0" },
+									[2]	= {	"hello_2_idle_0" },
+									[3]	= { "hello_3_idle_0" },
+									[4]	= {	"hello_4_idle_0" }}}
+	}
 end
 --' Проверяет закончили ли мы изменение положения тела
 function body_state:finish_state()
@@ -69,6 +216,104 @@ function body_state:transanim(object, target_state)
 		object:add_animation(self.ianim[target_state], true)
 	end
 end
+function body_state:weapon_slot()
+	local weapon = self.npc:active_item()
+	if weapon == nil then
+		return 0
+	end
+	local id = get_clsid(weapon)
+	if id == nil then 
+		return 0
+	end
+	if id == clsid.wpn_pm or
+    	   id == clsid.wpn_walther or
+	   id == clsid.wpn_hpsa or
+	   id == clsid.wpn_fort or
+	   id == clsid.wpn_usp45 then
+		return 1
+	end
+	if id == clsid.wpn_vintorez or
+	   id == clsid.wpn_val or
+	   id == clsid.wpn_groza or
+	   id == clsid.wpn_fn2000 or   
+	   id == clsid.wpn_ak74 or	
+	   id == clsid.wpn_lr300 or
+	   id == clsid.wpn_svd or
+   	   id == clsid.wpn_svu then
+		return 2
+	end
+	if id == clsid.wpn_shotgun then
+		return 3
+	end
+    if id == clsid.wpn_rpg7 then
+		return 4
+	end
+	return 0
+end
+function body_state:anim_update(type)
+	--' Определяем - это у нас включение новой анимации или продолжение старой
+	if type ~= self.states.current_state then
+		if type ~= nil then
+			printf("ANIMS: |%s| for %s", type, self.npc:name())
+		else
+			printf("ANIMS: |nil| for %s", self.npc:name())
+		end
+		--' завершение старой
+		self.npc:clear_animations()
+		if self.states.current_state ~= nil then		
+			if self.animations[self.states.current_state].out ~= nil then
+				self.npc:add_animation(self.animations[self.states.current_state].out[self:weapon_slot()], true)
+			end
+		end
+		
+		--' простановка новой
+		if type ~= nil then
+			--' Проверка соответствия состояния.
+			if self.current_state ~= self.animations[type].state_id then
+				self:set_state(self.animations[type].state_id)
+			end
+		
+			if self.animations[type].into ~= nil then
+				self.npc:add_animation(self.animations[type].into[self:weapon_slot()], true)				
+			end	
+			self.npc:add_animation(self.animations[type].idle[self:weapon_slot()], true)
+		else
+			self:set_state(xr_state.stand)
+		end
+		self.states.current_state = type
+		self.states.last_id = nil
+	end
+
+	--' Определяем нужно ли добавлять анимацию или ждать
+	if (self.states.begin == nil or
+	   device():time_global() - self.states.begin > self.states.idle) and
+	   self.npc:animation_count() <= 1 and
+	   self.states.current_state ~= nil
+	then
+		--' Определение промежутков времени между анимациями
+		self.states.begin = device():time_global()
+		self.states.idle = (math.random(self.animations[self.states.current_state].prop.maxidle) + 
+										self.animations[self.states.current_state].prop.sumidle) * 1000
+		if math.random(100) < self.animations[self.states.current_state].prop.rnd then
+			local r
+			if self.states.last_id == nil then
+				r = math.random(table.getn(self.animations[self.states.current_state].rnd))
+			else
+				r = math.random(table.getn(self.animations[self.states.current_state].rnd)-1)
+				if r >= self.states.last_id then
+					r = r + 1
+				end
+			end
+			self.states.last_id = r
+			self.npc:clear_animations()
+			self.npc:add_animation (self.animations[self.states.current_state].rnd[self:weapon_slot()][r], true)
+			self.npc:add_animation (self.animations[self.states.current_state].idle[self:weapon_slot()], true)
+		end
+	end
+	printf("animcount %d", self.npc:animation_count())
+	
+	return self:finish_state() and self.npc:animation_count() == 0
+end                            
 
 ----------------------------------------------------------------------------------------------------------------------
 -- Functions
@@ -81,612 +326,6 @@ function change_state(npc, id)
 	return xr_motivator.storage[npc:id()].state:set_state(id)
 end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
---'--------------------------------------------------------------------------------------------------------------------
---' General animation scheme
---'--------------------------------------------------------------------------------------------------------------------
-class "anims"
-function anims:__init(npc)
-	self.npc = npc
-
-	self.anim = {	idle = 0,
-		     	begin = nil,
-		     	maxidle = 4,
-		     	sumidle = 4,
-   		     	rnd = 30,
-			lastanim = nil,
-			lastanimslot = nil, 	-- проверка изменился ли анимслот
-		     	base_state = nil,  	-- базовая анимация ( nil - никаких базовых анимаций нет)
-			current_state = nil	-- оверрайдинг базового состояния. Если он nil - то играем базовую
-			}
-	self.idle = {}
-	self.idle[0] = { 	{name = "idle_0_idle_0", flag = true },
-				{name = "idle_0_idle_2", flag = true },
-				{name = "idle_0_idle_3", flag = true },
-				{name = "idle_0_idle_4", flag = true }}
-	self.idle[1] = { 	{name = "idle_1_idle_0", flag = true },
-				{name = "idle_1_idle_2", flag = true },
-				{name = "idle_1_idle_3", flag = true },
-				{name = "idle_1_idle_4", flag = true }}
-	self.idle[2] = { 	{name = "idle_2_idle_0", flag = true },
-				{name = "idle_2_idle_2", flag = true },
-				{name = "idle_2_idle_3", flag = true },
-				{name = "idle_2_idle_4", flag = true },
-				{name = "idle_2_idle_5", flag = true },
-				{name = "idle_2_idle_6", flag = true },
-				{name = "idle_2_idle_7", flag = true },
-				{name = "idle_2_idle_8", flag = true },
-				{name = "idle_2_idle_9", flag = true }}
-	self.idle[3] = { 	{name = "idle_3_idle_0", flag = true },
-				{name = "idle_3_idle_2", flag = true },
-				{name = "idle_3_idle_3", flag = true },
-				{name = "idle_3_idle_4", flag = true }}
-	self.idle[4] = { 	{name = "idle_4_idle_0", flag = true },
-				{name = "idle_4_idle_2", flag = true },
-				{name = "idle_4_idle_3", flag = true },
-				{name = "idle_4_idle_4", flag = true }}
-	self.hello = {}
-	self.hello[0] =  	{name = "hello_0_idle_0", flag = true }
-	self.hello[1] =  	{name = "hello_1_idle_0", flag = true }
-	self.hello[2] =  	{name = "hello_2_idle_0", flag = true }
-	self.hello[3] =  	{name = "hello_3_idle_0", flag = true }
-	self.hello[4] =  	{name = "hello_4_idle_0", flag = true }
-	self.prisluh = {}
-	self.prisluh[0] = { 	{name = "prisluh_0_idle_2", flag = true },
-				{name = "prisluh_0_idle_3", flag = true },
-				{name = "prisluh_0_idle_4", flag = true }}
-	self.prisluh[1] = { 	{name = "prisluh_1_idle_2", flag = true },
-				{name = "prisluh_1_idle_3", flag = true },
-				{name = "prisluh_1_idle_4", flag = true }}
-	self.prisluh[2] = { 	{name = "prisluh_2_idle_2", flag = true },
-				{name = "prisluh_2_idle_3", flag = true },
-				{name = "prisluh_2_idle_4", flag = true },
-				{name = "prisluh_2_idle_5", flag = true }}
-	self.prisluh[3] = { 	{name = "prisluh_3_idle_2", flag = true },
-				{name = "prisluh_3_idle_3", flag = true },
-				{name = "prisluh_3_idle_4", flag = true }}
-	self.prisluh[4] = { 	{name = "prisluh_4_idle_2", flag = true },
-				{name = "prisluh_4_idle_3", flag = true },
-				{name = "prisluh_4_idle_4", flag = true }}
-	self.poisk = {}
-	self.poisk[0] = { 	{name = "poisk_0_idle_0", flag = true },
-				{name = "poisk_0_idle_2", flag = true },
-				{name = "poisk_0_idle_3", flag = true },
-				{name = "poisk_0_idle_4", flag = true }}
-	self.poisk[1] = { 	{name = "poisk_1_idle_0", flag = true },
-				{name = "poisk_1_idle_2", flag = true },
-				{name = "poisk_1_idle_3", flag = true },
-				{name = "poisk_1_idle_4", flag = true }}
-	self.poisk[2] = { 	{name = "poisk_2_idle_0", flag = true },
-				{name = "poisk_2_idle_2", flag = true },
-				{name = "poisk_2_idle_3", flag = true },
-				{name = "poisk_2_idle_4", flag = true }}
-	self.poisk[3] = { 	{name = "poisk_3_idle_0", flag = true },
-				{name = "poisk_3_idle_2", flag = true },
-				{name = "poisk_3_idle_3", flag = true },
-				{name = "poisk_3_idle_4", flag = true }}
-	self.poisk[4] = { 	{name = "poisk_4_idle_0", flag = true },
-				{name = "poisk_4_idle_2", flag = true },
-				{name = "poisk_4_idle_3", flag = true },
-				{name = "poisk_4_idle_4", flag = true }}
-	self.hide = {}
-	self.hide[0] = { 	{name = "d_0_idle_0", flag = true },
-				{name = "d_0_idle_2", flag = true }}
-	self.hide[1] = { 	{name = "d_1_idle_0", flag = true },
-				{name = "d_1_idle_2", flag = true }}
-	self.hide[2] = { 	{name = "d_2_idle_0", flag = true },
-				{name = "d_2_idle_2", flag = true }}
-	self.hide[3] = { 	{name = "d_3_idle_0", flag = true },
-				{name = "d_3_idle_2", flag = true }}
-	self.hide[4] = { 	{name = "d_4_idle_0", flag = true },
-				{name = "d_4_idle_2", flag = true }}
-			
-end
--- основная функция	
-function anims:update(type)
-	if type == nil then
-		if type ~= self.anim.base_state then
-			-- финалим предидущий
-			if self.anim.base_state == "idle" then
-				self:remove_idle()
-			end
-			if self.anim.base_state == "prisluh" then
-				self:remove_prisluh()
-			end
-			if self.anim.base_state == "poisk" then
-				self:remove_poisk()
-			end
-			if self.anim.base_state == "hide" then
-				self:remove_hide()
-			end
-		end
-	end
-
-	--Определяем, относится ли запрашиваемых тип ко временным
-	if type == "hello"
-	then
-		-- меняем настройки временной анимации
-		if self.anim.current_state ~= nil then
-			-- финалайзим предидущий каррент стэйт
-			self.npc:clear_animations()
-		end
-		self.anim.current_state = type
-	end
-
-	-- определяем, относится ли запрашиваемый тип к базовым
-	if type == "idle" or
-	   type == "prisluh" or
-	   type == "poisk" or
-	   type == "hide"
-	then
-		-- если тип соответствует текущей анимации - играть его, если нет - зафиналить предидущий и засетить новый.
-		if type ~= self.anim.base_state then
-			-- финалим предидущий
-			if self.anim.base_state == "idle" then
-				self:remove_idle()
-			end
-			if self.anim.base_state == "prisluh" then
-				self:remove_prisluh()
-			end
-			if self.anim.base_state == "poisk" then
-				self:remove_poisk()
-			end
-			if self.anim.base_state == "hide" then
-				self:remove_hide()
-			end
-
-			-- устанавливаем новый
-			self.anim.base_state = type
-			if self.anim.base_state == "idle" then
-				self:set_idle()
-			end
-			if self.anim.base_state == "prisluh" then
-				self:set_prisluh()
-			end
-			if self.anim.base_state == "poisk" then
-				self:set_poisk()
-			end
-			if self.anim.base_state == "hide" then
-				self:set_hide()
-			end
-		end
-	end
-
-	-- Определяем, закончился ли каррент стейт
-	if self.anim.current_state ~= nil and
-	   self.npc:animation_count() <= 1 
-	then
-		self.anim.current_state = nil 
-	end
-
-	-- если curent_state не нулевой - играем его.
-	-- если он нулевой - играем base_state
-	if self.anim.current_state ~= nil then
-		if self.anim.current_state == "hello" then			
-			self:update_hello()
-		end
-	else
-		self:update_base()
-	end
-
-
-end
--- проигрывается ли щас цикленный айдл или нет
-function anims:safe_to_break()
-	if self.anim.current_state ~= nil then
-		return false
-	end
-	if self.npc:animation_count() <= 1 then
-		return true
-	end
-end
--- апдейт базового класса
-function anims:update_base()
-	if self.anim.base_state == "idle" then
-		self:update_idle()
-	end
-	if self.anim.base_state == "prisluh" then
-		self:update_prisluh()
-	end
-	if self.anim.base_state == "poisk" then
-		self:update_poisk()
-	end
-	if self.anim.base_state == "hide" then
-		self:update_hide()
-	end
-end
--- возвращает id оружейного слота
-function anims:weapon_slot()
-	local weapon = self.npc:active_item()
-	if weapon == nil then
-		return 0
-	end
-
-	local id = get_clsid(weapon)
-	if id == nil then 
-		return 0
-	end
-
-	if id == clsid.wpn_pm or
-    	   id == clsid.wpn_walther or
-	   id == clsid.wpn_hpsa or
-	   id == clsid.wpn_fort or
-	   id == clsid.wpn_usp45 then
-		return 1
-	end
-
-	if id == clsid.wpn_vintorez or
-	   id == clsid.wpn_val or
-	   id == clsid.wpn_groza or
-	   id == clsid.wpn_fn2000 or   
-	   id == clsid.wpn_ak74 or	
-	   id == clsid.wpn_lr300 or
-	   id == clsid.wpn_svd or
-   	   id == clsid.wpn_svu then
-		return 2
-	end
-
-	if id == clsid.wpn_shotgun then
-		return 3
-	end
-
-    if id == clsid.wpn_rpg7 then
-		return 4
-	end
-	return 0
-end
-----------------------------------------------------------------------------------------------------------------------
--- Стоячий идл
-----------------------------------------------------------------------------------------------------------------------
--- проигрывает идловые анимации
-function anims:set_idle()
-	-- выбирает нужную анимацию для данного положения тела
-	-- если для данного положения тела нет пачки анимаций - ругается
-	local animslot = self:weapon_slot()
-	self.anim.lastanimslot = animslot
-
-	-- Добавление зацикленного айдла для данного анимслота
-	self:cycled_idle(animslot)
-end
-function anims:cycled_idle(animslot)
-	-- Добавление зацикленного айдла для данного анимслота
-	if animslot == 0 then
-		self.npc:add_animation("idle_0_idle_1", true)
-	elseif animslot == 1 then
-		self.npc:add_animation("idle_1_idle_1", true)
-	elseif animslot == 2 then
-		self.npc:add_animation("idle_2_idle_1", true)
-	elseif animslot == 3 then
-		self.npc:add_animation("idle_3_idle_1", true)
-	elseif animslot == 4 then
-		self.npc:add_animation("idle_4_idle_1", true)
-	end
-end
-function anims:update_idle()
-	-- изменился ли анимслот
-	local animslot = self:weapon_slot()
-
-	if animslot ~= self.anim.lastanimslot then
-		self.anim.begin = nil
-		self.anim.lastanimslot = animslot
-		self.npc:clear_animations()
-		self:cycled_idle(animslot)
-	end
-
-	-- Определяем нужно ли добавлять анимацию или ждать
-	if (self.anim.begin == nil or
-	   device():time_global() - self.anim.begin > self.anim.idle) and
-	   self.npc:animation_count() <= 1
-	then
-		-- Определение промежутков времени между анимациями
-		self.anim.begin = device():time_global()
-		self.anim.idle = (math.random(self.anim.maxidle) + self.anim.sumidle) * 1000
-		if math.random(100) < self.anim.rnd then
-			local r
-			if self.anim.lastanim == nil then
-				r = math.random(table.getn(self.idle[animslot]))
-			else
-				r = math.random(table.getn(self.idle[animslot])-1)
-				if r >= self.anim.lastanim then
-					r = r + 1
-				end
-			end
-			self.anim.lastanim = r
-			self.npc:clear_animations()
-			self.npc:add_animation (self.idle[animslot][r].name, self.idle[animslot][r].flag)
-			-- Добавление зацикленного айдла для данного анимслота
-			self:cycled_idle(animslot)
-		end
-	end	
-end                            
-function anims:remove_idle()
-	self.anim.base_state = nil
-	self.anim.lastanim = nil
-	self.anim.lastanimslot = nil 
-	self.npc:clear_animations()
-end
-----------------------------------------------------------------------------------------------------------------------
--- Приветствие
-----------------------------------------------------------------------------------------------------------------------
-function anims:update_hello()
-	self.anim.begin = nil
-	local animslot = self:weapon_slot()
-
-	self.anim.lastanim = nil
-	self.npc:clear_animations()
-	self.npc:add_animation (self.hello[animslot].name, self.hello[animslot].flag)
-
-	-- Вызвать апдейт базового класса
-	self:update_base()
-end                            
-----------------------------------------------------------------------------------------------------------------------
--- Прислухи
-----------------------------------------------------------------------------------------------------------------------
--- проигрывает идловые анимации
-function anims:set_prisluh()
-	-- выбирает нужную анимацию для данного положения тела
-	-- если для данного положения тела нет пачки анимаций - ругается
-	local animslot = self:weapon_slot()
-	self.anim.lastanimslot = animslot
-
-	if animslot == 0 then
-		self.npc:add_animation("prisluh_0_idle_0", true)
-	elseif animslot == 1 then
-		self.npc:add_animation("prisluh_1_idle_0", true)
-	elseif animslot == 2 then
-		self.npc:add_animation("prisluh_2_idle_0", true)
-	elseif animslot == 3 then
-		self.npc:add_animation("prisluh_3_idle_0", true)
-	elseif animslot == 4 then
-		self.npc:add_animation("prisluh_4_idle_0", true)
-	end
-	-- Добавление зацикленного айдла для данного анимслота
-	self:cycled_prisluh(animslot)
-end
-function anims:cycled_prisluh(animslot)
-	-- Добавление зацикленного айдла для данного анимслота
-	if animslot == 0 then
-		self.npc:add_animation("prisluh_0_idle_1", true)
-	elseif animslot == 1 then
-		self.npc:add_animation("prisluh_1_idle_1", true)
-	elseif animslot == 2 then
-		self.npc:add_animation("prisluh_2_idle_1", true)
-	elseif animslot == 3 then
-		self.npc:add_animation("prisluh_3_idle_1", true)
-	elseif animslot == 4 then
-		self.npc:add_animation("prisluh_4_idle_1", true)
-	end
-end
-function anims:update_prisluh()
-	-- изменился ли анимслот
-	local animslot = self:weapon_slot()
-
-	if animslot ~= self.anim.lastanimslot then
-		self.anim.begin = nil
-		self.anim.lastanimslot = animslot
-		self.npc:clear_animations()
-		self:cycled_prisluh(animslot)
-	end
-
-	-- Определяем нужно ли добавлять анимацию или ждать
-	if (self.anim.begin == nil or
-	   device():time_global() - self.anim.begin > self.anim.idle) and
-	   self.npc:animation_count() <= 1
-	then
-		-- Определение промежутков времени между анимациями
-		self.anim.begin = device():time_global()
-		self.anim.idle = (math.random(self.anim.maxidle) + self.anim.sumidle) * 1000
-		if math.random(100) < self.anim.rnd then
-			local r
-			if self.anim.lastanim == nil then
-				r = math.random(table.getn(self.prisluh[animslot]))
-			else
-				r = math.random(table.getn(self.prisluh[animslot])-1)
-				if r >= self.anim.lastanim then
-					r = r + 1
-				end
-			end
-			self.anim.lastanim = r
-			self.npc:clear_animations()
-			self.npc:add_animation (self.prisluh[animslot][r].name, self.prisluh[animslot][r].flag)
-			-- Добавление зацикленного айдла для данного анимслота
-			self:cycled_prisluh(animslot)
-		end
-	end	
-end                            
-function anims:remove_prisluh()
-	local animslot = self:weapon_slot()
-	self.anim.base_state = nil
-	self.anim.lastanim = nil
-	self.anim.lastanimslot = nil
-	self.npc:clear_animations()
-	if animslot == 0 then
-		self.npc:add_animation("prisluh_0_idle_5", true)
-	elseif animslot == 1 then
-		self.npc:add_animation("prisluh_1_idle_5", true)
-	elseif animslot == 2 then
-		self.npc:add_animation("prisluh_2_idle_6", true)
-	elseif animslot == 3 then
-		self.npc:add_animation("prisluh_3_idle_5", true)
-	elseif animslot == 4 then
-		self.npc:add_animation("prisluh_4_idle_5", true)
-	end
-end
-----------------------------------------------------------------------------------------------------------------------
--- Поиск
-----------------------------------------------------------------------------------------------------------------------
--- проигрывает идловые анимации
-function anims:set_poisk()
-	-- выбирает нужную анимацию для данного положения тела
-	-- если для данного положения тела нет пачки анимаций - ругается
-	local animslot = self:weapon_slot()
-	self.anim.lastanimslot = animslot
-
-	-- Добавление зацикленного айдла для данного анимслота
-	self:poisk_idle(animslot)
-end
-function anims:poisk_idle(animslot)
-	-- Добавление зацикленного айдла для данного анимслота
-	if animslot == 0 then
-		self.npc:add_animation("poisk_0_idle_1", true)
-	elseif animslot == 1 then
-		self.npc:add_animation("poisk_1_idle_1", true)
-	elseif animslot == 2 then
-		self.npc:add_animation("poisk_2_idle_1", true)
-	elseif animslot == 3 then
-		self.npc:add_animation("poisk_3_idle_1", true)
-	elseif animslot == 4 then
-		self.npc:add_animation("poisk_4_idle_1", true)
-	end
-end
-function anims:update_poisk()
-	-- изменился ли анимслот
-	local animslot = self:weapon_slot()
-
-	if animslot ~= self.anim.lastanimslot then
-		self.anim.begin = nil
-		self.anim.lastanimslot = animslot
-		self.npc:clear_animations()
-		self:poisk_idle(animslot)
-	end
-
-	-- Определяем нужно ли добавлять анимацию или ждать
-	if (self.anim.begin == nil or
-	   device():time_global() - self.anim.begin > self.anim.idle) and
-	   self.npc:animation_count() <= 1
-	then
-		-- Определение промежутков времени между анимациями
-		self.anim.begin = device():time_global()
-		self.anim.idle = (math.random(self.anim.maxidle) + self.anim.sumidle) * 1000
-		if math.random(100) < self.anim.rnd then
-			local r
-			if self.anim.lastanim == nil then
-				r = math.random(table.getn(self.poisk[animslot]))
-			else
-				r = math.random(table.getn(self.poisk[animslot])-1)
-				if r >= self.anim.lastanim then
-					r = r + 1
-				end
-			end
-			self.anim.lastanim = r
-			self.npc:clear_animations()
-			self.npc:add_animation (self.poisk[animslot][r].name, self.poisk[animslot][r].flag)
-			-- Добавление зацикленного айдла для данного анимслота
-			self:poisk_idle(animslot)
-		end
-	end	
-end                            
-function anims:remove_poisk()
-	self.anim.base_state = nil
-	self.anim.lastanim = nil
-	self.anim.lastanimslot = nil 
-	self.npc:clear_animations()
-end
-----------------------------------------------------------------------------------------------------------------------
--- Ожидание на стреме
-----------------------------------------------------------------------------------------------------------------------
--- проигрывает идловые анимации
-function anims:set_hide()
-	-- выбирает нужную анимацию для данного положения тела
-	-- если для данного положения тела нет пачки анимаций - ругается
-	local animslot = self:weapon_slot()
-	self.anim.lastanimslot = animslot
-
-	-- Добавление зацикленного айдла для данного анимслота
-	self:hide_idle(animslot)
-end
-function anims:hide_idle(animslot)
-	-- Добавление зацикленного айдла для данного анимслота
-	if animslot == 0 then
-		self.npc:add_animation("d_0_idle_1", true)
-	elseif animslot == 1 then
-		self.npc:add_animation("d_1_idle_1", true)
-	elseif animslot == 2 then
-		self.npc:add_animation("d_2_idle_1", true)
-	elseif animslot == 3 then
-		self.npc:add_animation("d_3_idle_1", true)
-	elseif animslot == 4 then
-		self.npc:add_animation("d_4_idle_1", true)
-	end
-end
-function anims:update_hide()
-	-- изменился ли анимслот
-	local animslot = self:weapon_slot()
-
-	if animslot ~= self.anim.lastanimslot then
-		self.anim.begin = nil
-		self.anim.lastanimslot = animslot
-		self.npc:clear_animations()
-		self:hide_idle(animslot)
-	end
-
-	-- Определяем нужно ли добавлять анимацию или ждать
-	if (self.anim.begin == nil or
-	   device():time_global() - self.anim.begin > self.anim.idle) and
-	   self.npc:animation_count() <= 1
-	then
-		-- Определение промежутков времени между анимациями
-		self.anim.begin = device():time_global()
-		self.anim.idle = (math.random(self.anim.maxidle) + self.anim.sumidle) * 1000
-		if math.random(100) < self.anim.rnd then
-			local r
-			if self.anim.lastanim == nil then
-				r = math.random(table.getn(self.hide[animslot]))
-			else
-				r = math.random(table.getn(self.hide[animslot])-1)
-				if r >= self.anim.lastanim then
-					r = r + 1
-				end
-			end
-			self.anim.lastanim = r
-			self.npc:clear_animations()
-			self.npc:add_animation (self.hide[animslot][r].name, self.hide[animslot][r].flag)
-			-- Добавление зацикленного айдла для данного анимслота
-			self:hide_idle(animslot)
-		end
-	end	
-end                            
-function anims:remove_hide()
-	self.anim.base_state = nil
-	self.anim.lastanim = nil
-	self.anim.lastanimslot = nil 
-	self.npc:clear_animations()
-end
-
-
-
-
 function anim_update(type, npc)
-	local st = xr_motivator.storage[npc:id()].state.anim
-
-	if st ~= nil then
-		st:update(type)
-	end
+	return xr_motivator.storage[npc:id()].state:anim_update(type)
 end
-function anim_safe_to_break(npc)
-	local st = xr_motivator.storage[npc:id()].state.anim
-
-	if st ~= nil then
-		return st:safe_to_break()
-	end
-	return true
-end
-
