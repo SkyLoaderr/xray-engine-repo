@@ -25,6 +25,9 @@ sidor_wounded_base                  =   sidor_evaluator + 10
 sidor_bandits_base                  =   sidor_evaluator + 20
 sidor_swat_base                     =   sidor_evaluator + 40
 sidor_follower_base                 =   sidor_evaluator + 50
+sidor_report_leader                 =   sidor_evaluator + 60
+sidor_report_soldier                =   sidor_evaluator + 70
+
 
 -- эвалуаторы Чугай
 chugai_evaluators    = stalker_ids.property_script + 3000
