@@ -234,5 +234,5 @@ void CRenderTarget::End		()
 		}
 	}
 
-	if ((psDeviceFlags&rsPostprocess) && (param_noise>0.01f))	e_render_noise	();
+	if (psDeviceFlags.test(rsPostprocess)) && (param_noise>0.01f))	e_render_noise	();
 }

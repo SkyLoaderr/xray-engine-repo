@@ -57,8 +57,8 @@ void CSoundManager::Restart				()
 
 	if (bPresent) {
 		// create new ones based on values
-		if (psDeviceFlags&mtSound)	Device.seqFrameMT.Add	(this,REG_PRIORITY_HIGH);
-		else						Device.seqFrame.Add		(this,REG_PRIORITY_LOW);
+		if (psDeviceFlags.test(mtSound))	Device.seqFrameMT.Add	(this,REG_PRIORITY_HIGH);
+		else								Device.seqFrame.Add		(this,REG_PRIORITY_LOW);
 	}
 }
 
