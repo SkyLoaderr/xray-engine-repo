@@ -59,7 +59,7 @@ void CCustomObject::RotateLocal(Fvector& axis, float angle)
     PRotation		= r;
 }
 
-void CCustomObject::PivotScale( const Fmatrix& prev_inv, const Fmatrix& current, Fvector& amount )
+void CCustomObject::ScalePivot( const Fmatrix& prev_inv, const Fmatrix& current, Fvector& amount )
 {
 	R_ASSERT(!Locked());
     UI->UpdateScene();
