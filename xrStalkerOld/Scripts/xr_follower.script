@@ -278,7 +278,7 @@ end
 --------------
 function action_follow:check_path ()
 
-    if self.a.leader:alive () == false or self.a.leader_command == leader_return then 
+    if is_object_online (self.a.leader_id) == false or self.a.leader:alive () == false or self.a.leader_command == leader_return then 
        if self.a.escape_path == nil then 
           self.a.enabled = false
           return false
