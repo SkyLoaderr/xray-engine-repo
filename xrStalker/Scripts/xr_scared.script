@@ -12,7 +12,7 @@ local state_hideout = 3
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_need_scared" (property_evaluator)
 
-function evaluator_need_scared:__init(storage) super()
+function evaluator_need_scared:__init(storage, name) super(nil, name)
   	self.st = storage
 end
 
@@ -155,7 +155,7 @@ function add_to_binder(npc, char_ini)
 	 	operators["action_scared"] = xr_actions_id.zmey_scared_base + 1
 
 	   	-- // evaluators
-		manager:add_evaluator(properties["need_scared"], this.evaluator_need_scared(xr_motivator.storage[npc:id()].scared))
+		manager:add_evaluator(properties["need_scared"], this.evaluator_need_scared(xr_motivator.storage[npc:id()].scared, "scared_need"))
 
 		local new_action = this.action_scared_activity(npc, "action_scared_activity", xr_motivator.storage[npc:id()].scared)
 		new_action:add_precondition(world_property(stalker_ids.property_alive, true))
