@@ -28,6 +28,10 @@ void CCar::SCarSound::Init()
 		{
 			snd_transmission.create(TRUE,ini->r_string("car_sound","transmission_switch"));
 		}
+		if(ini->line_exist("car_sound","explosion_sound"))
+		{
+			snd_explosion.create(TRUE,ini->r_string("car_sound","explosion_sound"));
+		}
 	
 	} else {
 		Msg					("! Car doesn't contain sound params");
@@ -125,5 +129,15 @@ void CCar::SCarSound::TransmissionSwitch()
 	if(snd_transmission.handle)
 	{
 		snd_transmission.play_at_pos(pcar,pos);
+	}
+}
+
+void CCar::SCarSound::Explosion()
+{
+	Fvector pos;
+	pcar->XFORM().transform_tiny(pos,relative_pos);
+	if(snd_explosion.handle)
+	{
+		snd_explosion.play_at_pos(pcar,pos);
 	}
 }

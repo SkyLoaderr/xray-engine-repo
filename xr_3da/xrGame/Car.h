@@ -89,6 +89,8 @@ public:
 	float   m_break_start;
 	float	m_break_time;
 	float	m_breaks_to_back_rate;
+	u32		m_death_time;
+	u32		m_time_to_explode;
 
 	struct SWheel: 
 	public CDamagableHealthItem
@@ -265,6 +267,7 @@ virtual void ApplyDamage(u16 level);
 	{
 		ref_sound					snd_engine;
 		ref_sound					snd_transmission;
+		ref_sound					snd_explosion;
 		enum 
 		{
 			sndOff,
@@ -283,6 +286,7 @@ virtual void ApplyDamage(u16 level);
 		void Stall();
 		void Drive();
 		void TransmissionSwitch();
+		void Explosion();
 		SCarSound(CCar* car);
 		~SCarSound();
 		u32		time_state_start;
@@ -428,6 +432,7 @@ IC	size_t CurrentTransmission(){return m_current_transmission_num;}
 	void ClearExhausts					();
 	void UpdateFuel						(float time_delta);
 	float AddFuel						(float ammount); //ammount - fuel to load, ret - fuel loaded
+	void Explode						();
 	////////////////////////////////////////////////////
 
 	void					OnCameraChange		(int type);

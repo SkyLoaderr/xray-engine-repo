@@ -60,6 +60,8 @@ CCar::CCar(void)
 	m_break_start=0.f;
 	m_break_time=1.;
 	m_breaks_to_back_rate=1.f;
+	m_death_time=u32(-1);
+	m_time_to_explode=5000;
 }
 
 CCar::~CCar(void)
@@ -167,6 +169,7 @@ void	CCar::net_Destroy()
 	CPHSkeleton::RespawnInit();
 	m_damage_particles.Clear();
 	CPHCollisionDamageReceiver::Clear();
+	m_death_time=u32(-1);
 	b_breaks=false;
 }
 
@@ -268,6 +271,10 @@ void CCar::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
 	CPHSkeleton::Update(dt);
+	if(fEntityHealth<=0.f && m_death_time!=u32(-1)&& Device.dwTimeGlobal-m_death_time>m_time_to_explode)
+	{
+		Explode();
+	}
 }
 
 void	CCar::UpdateCL				( )
@@ -398,7 +405,8 @@ void CCar::ApplyDamage(u16 level)
 				m_damage_particles.Play2(this);
 			}
 											   break;
-		case 3: m_fuel=0.f;					   break;	
+		case 3: m_fuel=0.f;
+				m_death_time=Device.dwTimeGlobal; break;	
 	}
 
 }
@@ -1486,6 +1494,30 @@ BOOL CCar::UsedAI_Locations()
 u16 CCar::DriverAnimationType()
 {
 	return m_driver_anim_type;
+}
+
+void CCar::Explode()
+{
+	m_damage_particles.PlayExplosion(this);
+	m_car_sound->Explosion();
+	m_death_time=u32(-1);
+	if (Owner()&&OnServer())
+	{
+		NET_Packet	l_P;
+		u_EventGen	(l_P,GE_HIT, Owner()->ID());
+		l_P.w_u16	(u16(Owner()->ID()));
+		l_P.w_u16	(ID());
+		l_P.w_dir	(Fvector().set(0.f,-1.f,0.f));//dir
+		l_P.w_float	(100.f);
+		l_P.w_s16	(0/*(s16)BI_NONE*/);
+		Fvector		position_in_bone_space={0.f,0.f,0.f};
+		l_P.w_vec3	(position_in_bone_space);
+		l_P.w_float	(0.f);
+		l_P.w_u16	(ALife::eHitTypeExplosion);
+		u_EventSend	(l_P);
+		/////////////////////////////////////////////////////////
+		return;
+	};
 }
 //void CCar::object_contactCallbackFun(bool& do_colide,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
 //{

@@ -3,10 +3,11 @@
 
 #include "actor.h"
 #include "../skeletoncustom.h"
-
+#include "Car.h"
 void CActor::create_Skeleton(){
 	if(m_pPhysicsShell) return;
 	
+	if(smart_cast<CCar*>(m_holder)) return;
 	m_PhysicMovementControl->GetDeathPosition	(Position());
 	m_PhysicMovementControl->DestroyCharacter();
 	//Position().y+=.1f;
