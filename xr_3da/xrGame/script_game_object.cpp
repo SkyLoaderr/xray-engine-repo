@@ -1157,6 +1157,11 @@ int  CScriptGameObject::active_sound_count		(bool only_playing)
 		return								(sound_player->active_sound_count(only_playing));
 }
 
+int  CScriptGameObject::active_sound_count		()
+{
+	return									(active_sound_count(false));
+}
+
 const CCoverPoint *CScriptGameObject::best_cover	(const Fvector &position, const Fvector &enemy_position, float radius, float min_enemy_distance, float max_enemy_distance)
 {
 	CAI_Stalker		*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
