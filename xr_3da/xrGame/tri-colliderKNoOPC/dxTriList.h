@@ -306,7 +306,7 @@ struct dcVector3{
 
 	float Magnitude() const{
 
-		return sqrtf(MagnitudeSq());
+		return _sqrt(MagnitudeSq());
 
 	}
 

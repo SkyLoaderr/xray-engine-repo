@@ -75,7 +75,7 @@ extern "C" int dSortTriBoxCollide (
 	hside[0]/=2.f;hside[2]/=2.f;hside[2]/=2.f;
 	const dReal *R = dGeomGetRotation(o1);
 
-	//if(last_pos[0]==dInfinity) memcpy(last_pos,p,sizeof(dVector3));
+	//if(last_pos[0]==dInfinity) PSGP.memCopy(last_pos,p,sizeof(dVector3));
 
 	if(*pushing_neg){
 		dReal sidePr=
@@ -279,7 +279,7 @@ extern "C" int dSortTriBoxCollide (
 		}
 
 	}
-	memcpy(last_pos,p,sizeof(dVector3));
+	PSGP.memCopy(last_pos,p,sizeof(dVector3));
 	return ret;
 }
 
@@ -308,7 +308,7 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 
 	dVector3 BoxSides;
 	dGeomBoxGetLengths(Box,BoxSides);
-	memcpy( &BoxExtents,&BoxSides,sizeof(Fvector));
+	PSGP.memCopy( &BoxExtents,&BoxSides,sizeof(Fvector));
 
 	dReal* R=const_cast<dReal*>(dGeomGetRotation(Box));
 
@@ -678,7 +678,7 @@ extern "C" int dSortTriSphereCollide (
 	
 	dReal sidePr=dGeomSphereGetRadius(o1);
 
-	//if(last_pos[0]==dInfinity) memcpy(last_pos,p,sizeof(dVector3));
+	//if(last_pos[0]==dInfinity) PSGP.memCopy(last_pos,p,sizeof(dVector3));
 
 	if(*pushing_neg){
 		neg_tri->dist=dDOT(p,neg_tri->norm)-neg_tri->pos;
@@ -844,7 +844,7 @@ extern "C" int dSortTriSphereCollide (
 		}
 
 	}
-	memcpy(last_pos,p,sizeof(dVector3));
+	PSGP.memCopy(last_pos,p,sizeof(dVector3));
 	return ret;
 }
 ///////////////////////////////////////////////////////////////////////////
@@ -861,7 +861,7 @@ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Co
 	Fvector AABB;
 	Fvector SphereCenterF;
 
-	memcpy(&SphereCenterF,SphereCenter,sizeof(Fvector));
+	PSGP.memCopy(&SphereCenterF,SphereCenter,sizeof(Fvector));
 
 
 	// Make AABB 
@@ -920,7 +920,7 @@ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Co
 
 	Fvector AABB;
 	Fvector SphereCenterF;
-	memcpy(&SphereCenterF,&SphereCenter,sizeof(Fvector));
+	PSGP.memCopy(&SphereCenterF,&SphereCenter,sizeof(Fvector));
 
 
 	//Make AABB 

@@ -301,10 +301,10 @@ void CPHSimpleCharacter::PhDataUpdate(dReal step){
 							 m_safe_position[1]-m_safe_velocity[1]*fixed_step,
 							 m_safe_position[2]-m_safe_velocity[2]*fixed_step);
 
-		memcpy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
+		PSGP.memCopy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
 
 
-		memcpy(m_safe_velocity,dBodyGetPosition(m_body),sizeof(dVector3));
+		PSGP.memCopy(m_safe_velocity,dBodyGetPosition(m_body),sizeof(dVector3));
 	
 
 	
@@ -332,7 +332,7 @@ void CPHSimpleCharacter::PhTune(dReal step){
 
 //save depart position
 	if(b_depart) 
-		memcpy(m_depart_position,dBodyGetPosition(m_body),sizeof(dVector3));
+		PSGP.memCopy(m_depart_position,dBodyGetPosition(m_body),sizeof(dVector3));
 
 	if(is_contact) b_lose_control=false;
 	if(b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2) b_jumping=false;
@@ -385,7 +385,7 @@ if(b_valide_wall_contact && (m_contact_count>1)&& b_clamb_jump)
 			dFabs((m_wall_contact_position[0]-m_ground_contact_position[0])+		//*m_control_force[0]
 		   (m_wall_contact_position[2]-m_ground_contact_position[2]))>0.0f &&//0.01f//*m_control_force[2]
 		    m_wall_contact_position[1]-m_ground_contact_position[1]>0.0f)
-									memcpy(m_clamb_depart_position,dBodyGetPosition(m_body),sizeof(dVector3));
+									PSGP.memCopy(m_clamb_depart_position,dBodyGetPosition(m_body),sizeof(dVector3));
 //jump	
 	if(b_jump){
 				b_lose_control=true;
@@ -394,7 +394,7 @@ if(b_valide_wall_contact && (m_contact_count>1)&& b_clamb_jump)
 				if(amag<1.f)amag=1.f;
 				//dBodySetLinearVel(m_body,vel[0]*JUMP_INCREASE_VELOCITY_RATE+m_acceleration.x/amag*0.2f,vel[1]+JUMP_UP_VELOCITY,vel[2]*JUMP_INCREASE_VELOCITY_RATE +m_acceleration.z/amag*0.2f);
 				dBodySetLinearVel(m_body,vel[0]*JUMP_INCREASE_VELOCITY_RATE+m_acceleration.x/amag*0.2f,vel[1]+jump_up_velocity,vel[2]*JUMP_INCREASE_VELOCITY_RATE +m_acceleration.z/amag*0.2f);
-				memcpy(m_jump_depart_position,dBodyGetPosition(m_body),sizeof(dVector3));
+				PSGP.memCopy(m_jump_depart_position,dBodyGetPosition(m_body),sizeof(dVector3));
 				m_jump_accel=m_acceleration;
 				b_jump=false;
 				b_jumping=true;
@@ -532,7 +532,7 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 
 
 ///////////////////////////////////
-		memcpy(m_death_position,dGeomGetPosition(c->geom.g1),sizeof(dVector3));
+		PSGP.memCopy(m_death_position,dGeomGetPosition(c->geom.g1),sizeof(dVector3));
 		m_death_position[1]+=c->geom.depth;
 		if(dGeomGetUserData(c->geom.g1)->pushing_neg)
 			m_death_position[1]=dGeomGetUserData(c->geom.g1)->neg_tri.pos;
@@ -545,7 +545,7 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 		m_ground_contact_normal[0]=c->geom.normal[0];
 		m_ground_contact_normal[1]=c->geom.normal[1];
 		m_ground_contact_normal[2]=c->geom.normal[2];
-		memcpy(m_ground_contact_position,c->geom.pos,sizeof(dVector3));
+		PSGP.memCopy(m_ground_contact_position,c->geom.pos,sizeof(dVector3));
 		b_valide_ground_contact=true;
 		}
 
@@ -558,7 +558,7 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 		m_wall_contact_normal[0]=c->geom.normal[0];
 		m_wall_contact_normal[1]=c->geom.normal[1];
 		m_wall_contact_normal[2]=c->geom.normal[2];
-		memcpy(m_wall_contact_position,c->geom.pos,sizeof(dVector3));
+		PSGP.memCopy(m_wall_contact_position,c->geom.pos,sizeof(dVector3));
 		b_valide_wall_contact=true;
 		}
 
@@ -570,8 +570,8 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 		m_ground_contact_normal[0]=-c->geom.normal[0];
 		m_ground_contact_normal[1]=-c->geom.normal[1];
 		m_ground_contact_normal[2]=-c->geom.normal[2];
-		memcpy(m_ground_contact_position,c->geom.pos,sizeof(dVector3));
-		memcpy(m_wall_contact_position,c->geom.pos,sizeof(dVector3));
+		PSGP.memCopy(m_ground_contact_position,c->geom.pos,sizeof(dVector3));
+		PSGP.memCopy(m_wall_contact_position,c->geom.pos,sizeof(dVector3));
 		b_valide_ground_contact=true;
 		}
 		if(c->geom.normal[0]*m_acceleration.x+
@@ -597,7 +597,7 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 					//c->surface.soft_erp=0.2f;
 					c->surface.soft_cfm*=spring_rate;//0.01f;
 					c->surface.soft_erp*=dumping_rate;//10.f;
-					//memcpy(c->fdir1,m_control_force,sizeof(dVector3));
+					//PSGP.memCopy(c->fdir1,m_control_force,sizeof(dVector3));
 					//dNormalize3(c->fdir1);
 					
 					}
@@ -677,7 +677,7 @@ else{
 	}
 	else{
 		//fvdir[0]=0.f;fvdir[1]=0.f;fvdir[2]=0.f;//
-		memcpy(fvdir,accel,sizeof(dVector3));
+		PSGP.memCopy(fvdir,accel,sizeof(dVector3));
 		dNormalize3(fvdir);
 		m_control_force[0]+=fvdir[0]*m.mass*10.f;
 		m_control_force[1]+=fvdir[1]*m.mass*10.f;
@@ -738,7 +738,7 @@ Fvector CPHSimpleCharacter::GetPosition(){
 	const dReal* pos=dBodyGetPosition(m_body);
 	Fvector vpos;
 	
-	memcpy(&vpos,pos,sizeof(Fvector));
+	PSGP.memCopy(&vpos,pos,sizeof(Fvector));
 	vpos.y-=m_radius;
 	return vpos;
 }
@@ -751,7 +751,7 @@ Fvector CPHSimpleCharacter::GetVelocity(){
 	}
 	const dReal* vel=dBodyGetLinearVel(m_body);
 	Fvector vvel;
-	memcpy(&vvel,vel,sizeof(Fvector));
+	PSGP.memCopy(&vvel,vel,sizeof(Fvector));
 	return vvel;
 }
 
@@ -997,8 +997,8 @@ void	CPHCharacter::Disable(){
 				}
 				if(previous_p[0]==dInfinity&&ph_world->disable_count==0){
 					const dReal* position=dBodyGetPosition(m_body);
-					memcpy(previous_p,position,sizeof(dVector3));
-					memcpy(previous_p1,position,sizeof(dVector3));	
+					PSGP.memCopy(previous_p,position,sizeof(dVector3));
+					PSGP.memCopy(previous_p1,position,sizeof(dVector3));	
 					previous_v=0;
 					dis_count_f=1;
 					dis_count_f1=0;
@@ -1028,7 +1028,7 @@ void	CPHCharacter::Disable(){
 					else{
 					previous_v=0;
 					dis_count_f=1;
-					memcpy(previous_p,current_p,sizeof(dVector3));
+					PSGP.memCopy(previous_p,current_p,sizeof(dVector3));
 					}
 
 					{
@@ -1045,7 +1045,7 @@ void	CPHCharacter::Disable(){
 					if(mag_v<0.04* dis_frames )
 						dis_count_f1++;
 					else{
-						memcpy(previous_p1,current_p,sizeof(dVector3));
+						PSGP.memCopy(previous_p1,current_p,sizeof(dVector3));
 						}
 
 					if(dis_count_f1>10) dis_count_f*=10;

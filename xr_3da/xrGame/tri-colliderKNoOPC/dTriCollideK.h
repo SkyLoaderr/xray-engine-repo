@@ -117,7 +117,7 @@ inline dReal FragmentonSphereTest(const dReal* center, const dReal radius,
 
 	if((centerR[0]-pt1R[0])*(centerR[0]-pt2R[0])>0.f) return -1;
 
-	dReal depth=-sqrtf(
+	dReal depth=-_sqrt(
 				 (pt1R[1]-centerR[1])*(pt1R[1]-centerR[1])+
 				 (pt1R[2]-centerR[2])*(pt1R[2]-centerR[2])
 				 )
@@ -139,7 +139,7 @@ inline dReal PointSphereTest(const dReal* center, const dReal radius,
 						   const dReal* pt, dVector3 norm)
 {
 
-	dReal depth=-sqrtf(
+	dReal depth=-_sqrt(
 				 (pt[0]-center[0])*(pt[0]-center[0])+
 				 (pt[1]-center[1])*(pt[1]-center[1])+
 				 (pt[2]-center[2])*(pt[2]-center[2])

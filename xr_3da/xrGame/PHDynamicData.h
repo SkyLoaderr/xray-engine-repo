@@ -63,8 +63,8 @@ public:
 			DMXPStoFMX(dGeomGetRotation(dGeomTransformGetGeom(transform)),P0,Transform);
 	
 
-			memcpy(&Translate,dGeomGetPosition(dGeomTransformGetGeom(transform)),sizeof(Fvector));
-			memcpy(&Translate1,dBodyGetPosition(body),sizeof(Fvector));
+			PSGP.memCopy(&Translate,dGeomGetPosition(dGeomTransformGetGeom(transform)),sizeof(Fvector));
+			PSGP.memCopy(&Translate1,dBodyGetPosition(body),sizeof(Fvector));
 
 			aTransform.identity();
 			aTransform.translate_over(Translate);
@@ -84,9 +84,9 @@ public:
 			}
 	static inline DMXPStoFMX(const dReal* R,const dReal* pos,Fmatrix& aTransform){
 
-			memcpy(&aTransform,R,sizeof(Fmatrix));
+			PSGP.memCopy(&aTransform,R,sizeof(Fmatrix));
 			aTransform.transpose();
-			memcpy(&aTransform.c,pos,sizeof(Fvector));
+			PSGP.memCopy(&aTransform.c,pos,sizeof(Fvector));
 			aTransform._14=0.f;
 			aTransform._24=0.f;
 			aTransform._34=0.f;
