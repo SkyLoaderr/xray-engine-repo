@@ -33,7 +33,8 @@ void CStateManagerBurer::update()
 			case eNormal:
 			case eWeak:						state = eStateAttack; break;
 		}
-	} else if (m_object->HitMemory.is_hit() && (last_hit_time + 10000 > m_object->m_current_update)) state = eStateHitted;
+	} else if (m_object->HitMemory.is_hit() && (last_hit_time + 10000 > m_object->m_current_update)) //state = eStateHitted;
+		state = eStateHearDangerousSound;
 	else if (m_object->hear_dangerous_sound || m_object->hear_interesting_sound) {
 		state = eStateHearInterestingSound;
 	} else if (m_object->time_last_scan + SCAN_STATE_TIME > m_object->m_current_update){
