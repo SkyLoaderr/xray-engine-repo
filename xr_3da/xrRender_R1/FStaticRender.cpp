@@ -200,7 +200,6 @@ void					CRender::apply_object			(IRenderable*		O )
 // Misc
 float					g_fGLOD;
 float					g_fSCREEN;
-float					g_fLOD;
 static	BOOL			gm_Nearer	= 0;
 
 IC		void			gm_SetNearer		(BOOL bNearer)
@@ -244,8 +243,7 @@ void CRender::Calculate				()
 	// Transfer to global space to avoid deep pointer access
 	IRender_Target* T				=	getTarget	();
 	float	fov_factor				=	_sqr		(90.f / Device.fFOV);
-	g_fSCREEN						=	float(T->get_width()*T->get_height())*fov_factor;
-	g_fLOD							=	ps_r__LOD;
+	g_fSCREEN						=	float(T->get_width()*T->get_height())*fov_factor*(EPS_S+ps_r__LOD);
 	r_ssaDISCARD					=	_sqr(ps_r1_ssaDISCARD)		/g_fSCREEN;
 	r_ssaDONTSORT					=	_sqr(ps_r1_ssaDONTSORT)		/g_fSCREEN;
 	r_ssaLOD_A						=	_sqr(ps_r1_ssaLOD_A)		/g_fSCREEN;
