@@ -103,14 +103,14 @@ namespace CDB
 	}
 
 	//-- Ray-Triangle(always return range) : 1st level of indirection --------------------------------
-	IC bool TestRayTri2(const Fvector& C, const Fvector& D, Fvector* p, float& range)
+	IC bool TestRayTri2(const Fvector& C, const Fvector& D, Fvector& p0, Fvector& p1, Fvector& p2, float& range)
 	{
 		Fvector edge1, edge2, tvec, pvec, qvec;
 		float det,inv_det,u,v;
 
 		// find vectors for two edges sharing vert0
-		edge1.sub(p[1], p[0]);
-		edge2.sub(p[2], p[0]);
+		edge1.sub(p1, p0);
+		edge2.sub(p2, p0);
 		// begin calculating determinant - also used to calculate U parameter
 		pvec.crossproduct(D, edge2);
 		// if determinant is near zero, ray lies in plane of triangle
@@ -118,7 +118,7 @@ namespace CDB
 
 		if (_abs(det) < EPS_S)		{ range=-1; return false; }
 		inv_det = 1.0f / det;
-		tvec.sub(C, p[0]);					// calculate distance from vert0 to ray origin
+		tvec.sub(C, p0);					// calculate distance from vert0 to ray origin
 		u = tvec.dotproduct(pvec)*inv_det;	// calculate U parameter and test bounds
 		qvec.crossproduct(tvec, edge1);		// prepare to test V parameter
 		range = edge2.dotproduct(qvec)*inv_det;// calculate t, ray intersects plane
@@ -127,7 +127,10 @@ namespace CDB
 		if (v < 0.0f || u + v > 1.0f) return false;
 		return true;
 	}
-
+	IC bool TestRayTri2(const Fvector& C, const Fvector& D, Fvector* p, float& range)
+	{
+		return TestRayTri2(C,D,p[0],p[1],p[2],range);
+	}
 	//---------------------------------------------------------------------------
 	// macros for fast arithmetic
 	//---------------------------------------------------------------------------
