@@ -105,6 +105,8 @@ void CStats::Show()
 		r_ps						= .99f*r_ps + .01f*(clRAY.count/clRAY.result);
 		b_ps						= .99f*b_ps + .01f*(clBOX.count/clBOX.result);
 
+		CSound_stats				snd;
+		::Sound->statistic			(snd);
 		
 		CGameFont&	F = *((CGameFont*)pFont);
 		float			f_base_size	= F.GetSize();
@@ -163,7 +165,8 @@ void CStats::Show()
 		F.OutNext	("  S_render:  %2.2fms",RenderDUMP_Srender.result);
 		F.OutSkip	();
 		F.OutNext	("*** SOUND:   %2.2fms",Sound.result);
-		F.OutNext	("  REND/SIM:  %d/%d",  ::Sound->stat_render(),::Sound->stat_simulate());
+		F.OutNext	("  REND/SIM:  %d/%d",  snd._rendered, snd._simulated);
+		F.OutNext	("  HIT/MISS:  %d/%d",  snd._cache_hits, snd._cache_misses);
 		F.OutSkip	();
 		F.OutNext	("Input:       %2.2fms",Input.result);
 		F.OutNext	("clRAY:       %2.2fms, %d, %2.0fK",clRAY.result,clRAY.count,r_ps);
