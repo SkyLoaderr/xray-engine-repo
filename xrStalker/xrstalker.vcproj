@@ -267,6 +267,9 @@
 						RelativePath=".\Config\gameplay\dialogs_bar.xml">
 					</File>
 					<File
+						RelativePath=".\Config\gameplay\dialogs_darkvalley.xml">
+					</File>
+					<File
 						RelativePath=".\Config\gameplay\dialogs_escape.xml">
 					</File>
 					<File
@@ -470,6 +473,9 @@
 					</File>
 					<File
 						RelativePath=".\Config\text\rus\stable_dialogs_bar.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\rus\stable_dialogs_darkvalley.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\rus\stable_dialogs_escape.xml">
