@@ -33,13 +33,18 @@ public:
 		if (FVF!=vCurShader)HW.pDevice->SetVertexShader(vCurShader=FVF);
 		if (VB!=pCurVB)		HW.pDevice->SetStreamSource(0,pCurVB=VB,STRIDE);
 	}
+	IC void setVerticesUC	(DWORD FVF,  DWORD STRIDE, IDirect3DVertexBuffer8* VB)
+	{
+		HW.pDevice->SetVertexShader	(vCurShader=FVF);
+		HW.pDevice->SetStreamSource	(0,pCurVB=VB,STRIDE);
+	}
 	IC void setIndices		(DWORD BASE, IDirect3DIndexBuffer8* IB)
 	{
 		if (IB!=pCurIB)		HW.pDevice->SetIndices(pCurIB=IB,BASE);
 	}
 	IC void setIndicesUC	(DWORD BASE, IDirect3DIndexBuffer8* IB)
 	{
-		HW.pDevice->SetIndices	(pCurIB=IB,BASE);
+		HW.pDevice->SetIndices		(pCurIB=IB,BASE);
 	}
 	IC void Render			(D3DPRIMITIVETYPE T, DWORD SV, DWORD CV, DWORD SI, DWORD PC)
 	{	HW.pDevice->DrawIndexedPrimitive(T,SV,CV,SI,PC);	}
