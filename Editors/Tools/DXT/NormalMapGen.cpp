@@ -706,7 +706,7 @@ bool DXTCompressBump(LPCSTR out_name, u8* T_height_gloss, u32 w, u32 h, u32 pitc
 	TW_Iterate_1OP		(w,h,pitch,T_normal_1,T_height_gloss,it_gloss_rev);
 
 	STextureParams		fmt0;
-	fmt0.flags.set		(STextureParams::flGenerateMipMaps);
+	fmt0.flags.assign	(STextureParams::flGenerateMipMaps);
 	fmt0.type			= STextureParams::ttImage;
 	fmt0.fmt			= STextureParams::tfDXT5;
 	bool bRes			= DXTCompressImage(out_name, T_normal_1, w, h, pitch, &fmt0, depth);
@@ -729,7 +729,7 @@ bool DXTCompressBump(LPCSTR out_name, u8* T_height_gloss, u32 w, u32 h, u32 pitc
 			
 			// Compress
 			STextureParams	fmt0;
-			fmt0.flags.set	(STextureParams::flGenerateMipMaps);
+			fmt0.flags.assign(STextureParams::flGenerateMipMaps);
 			fmt0.type		= STextureParams::ttImage;
 			fmt0.fmt		= STextureParams::tfDXT5;
 			string256		out_name1;
