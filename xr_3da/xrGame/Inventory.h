@@ -178,7 +178,7 @@ protected:
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Съедобная вещь
-class CEatableItem : public CInventoryItem 
+class CEatableItem : virtual public CInventoryItem 
 {
 private:
 	typedef CInventoryItem	inherited;
@@ -246,12 +246,13 @@ public:
 	bool Activate(u32 slot);								// Активировать объект в указанном слоте
 	PIItem ActiveItem() const;								// Возвращает указатель на объект в актовном слоте
 	bool Action(s32 cmd, u32 flags);						// true если известная команда, иначе false
-	void Update(u32 deltaT);								// Обновление
+	void Update();											// Обновление
 	PIItem Same(const PIItem pIItem, bool bSearchRuck);		// Ищет на поясе аналогичный IItem
 	PIItem SameSlot(u32 slot,	 bool bSearchRuck);			// Ищет на поясе IItem для указанного слота
 	PIItem Get(const char *name, bool bSearchRuck);			// Ищет на поясе или в рюкзаке IItem с указанным именем (cName())
 	PIItem Get(const u32  id,	 bool bSearchRuck);			// Ищет на поясе или в рюкзаке IItem с указанным именем (id)
 	PIItem Get(CLASS_ID cls_id,  bool bSearchRuck);			// Ищет на поясе или в рюкзаке IItem с указанным CLS_ID
+	
 	void   Clear();											// clearing Inventory
 	virtual u32		dwfGetSameItemCount(LPCSTR caSection);	// get all the items with the same section name
 	virtual bool	bfCheckForObject(_OBJECT_ID tObjectID);	// get all the items with the same object id

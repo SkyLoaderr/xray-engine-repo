@@ -150,9 +150,7 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 
 void CInventoryOwner::UpdateInventoryOwner(u32 deltaT)
 {
-
-	
-	m_inventory.Update(deltaT);
+	m_inventory.Update();
 	if(m_pTrade) m_pTrade->UpdateTrade();
 
 	if(IsTalking())

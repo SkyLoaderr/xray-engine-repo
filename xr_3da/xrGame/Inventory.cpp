@@ -670,44 +670,22 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 	//сначала закинуть вещь в рюкзак
 	if(pIItem->Ruck()) m_ruck.insert(m_ruck.end(), pIItem); 
 		
-//	l_subs.insert(l_subs.end(), l_pIItem->m_subs.begin(), l_pIItem->m_subs.end());
-		
-	/*while(l_subs.size())
-	{
-		l_pIItem = *l_subs.begin();
-		l_pIItem->m_pInventory = this;
-		m_all.insert(l_pIItem);
-		l_subs.insert(l_subs.end(), l_pIItem->m_subs.begin(), l_pIItem->m_subs.end());
-		l_subs.erase(l_subs.begin());
-	}*/
-		
+
 	//поытаться закинуть в слот
 	if(!Slot(pIItem,bNotActivate)) 
 	{
 		if(pIItem->GetSlot() < NO_ACTIVE_SLOT) 
 		{
-			/*if(m_slots[pIItem->m_slot].m_pIItem &&
-			   m_slots[pIItem->m_slot].m_pIItem->Attach(pIItem))
-			{
-				m_ruck.erase(std::find(m_ruck.begin(), m_ruck.end(), pIItem));
-				return true;
-			} 
-			else */
-			if(!Belt(pIItem)/* || !FreeBeltRoom()*/) 
+			if(!Belt(pIItem)) 
 				 if(m_ruck.size() > m_maxRuck || 
 					!pIItem->Ruck() || !FreeRuckRoom()) 
 			{
-				//return true;
-				//else 
 				return !Drop(pIItem,false);
 			}
 		} 
-		else if(!Belt(pIItem)/* || !FreeBeltRoom()*/) 
+		else if(!Belt(pIItem)) 
 				  if(m_ruck.size() > m_maxRuck || !FreeRuckRoom()) 
 		{
-//				if(Belt(l_pIItem)) 
-//					return true;
-//				else 
 				return !Drop(pIItem,false);
 		}
 	} 
@@ -770,52 +748,28 @@ void CInventory::ClearAll()
 	m_all.clear();
 }
 
+//положить вещь в слот
 bool CInventory::Slot(PIItem pIItem, bool bNotActivate) 
 {
 	if(!m_bSlotsUseful) return false;
 
-	if(pIItem->GetSlot() < m_slots.size()) 
+	if(pIItem->GetSlot() < m_slots.size() && 
+		!m_slots[pIItem->GetSlot()].m_pIItem) 
 	{
-		//if(m_slots[pIItem->m_slot].m_pIItem && !Belt(m_slots[pIItem->m_slot].m_pIItem)) Ruck(m_slots[pIItem->m_slot].m_pIItem);
-		if(!m_slots[pIItem->GetSlot()].m_pIItem) 
-		{
-			m_slots[pIItem->GetSlot()].m_pIItem = pIItem;
-			PPIItem it = std::find(m_ruck.begin(), m_ruck.end(), pIItem); 
-			
-			if(m_ruck.end() != it) m_ruck.erase(it);
-			
-			//by Dandy, also perform search on the belt
-			 it = std::find(m_belt.begin(), m_belt.end(), pIItem); 
-			 if(m_belt.end() != it) m_belt.erase(it);
-			
-			if ((m_activeSlot == NO_ACTIVE_SLOT) && (!bNotActivate)) Activate(pIItem->GetSlot());
-			return true;
-		} 
-		else 
-		{
-			/*if(m_slots[pIItem->m_slot].m_pIItem->Attach(pIItem)) 
-			{
-				PPIItem it = std::find(m_ruck.begin(), m_ruck.end(), pIItem); 
-				if(m_ruck.end() != it) m_ruck.erase(it);
+		m_slots[pIItem->GetSlot()].m_pIItem = pIItem;
 
-				//by Dandy, also perform search on the belt
-				 it = std::find(m_belt.begin(), m_belt.end(), pIItem); 
-				 if(m_belt.end() != it) m_belt.erase(it);
+		//удалить из рюкзака или пояса
+		PPIItem it = std::find(m_ruck.begin(), m_ruck.end(), pIItem);
+		if(m_ruck.end() != it) m_ruck.erase(it);
+		it = std::find(m_belt.begin(), m_belt.end(), pIItem);
+		if(m_belt.end() != it) m_belt.erase(it);
 
-				return true;
-			}*/
-		}
+		if ((m_activeSlot == NO_ACTIVE_SLOT) && (!bNotActivate))
+			Activate(pIItem->GetSlot());
+
+		return true;
 	} 
-	else 
-	{
-		/*for(u32 i = 0; i < m_slots.size(); ++i) 
-			if(m_slots[i].m_pIItem && m_slots[i].m_pIItem->Attach(pIItem)) 
-			{
-				PPIItem it = std::find(m_ruck.begin(), m_ruck.end(), pIItem);
-				if(m_ruck.end() != it) m_ruck.erase(it);
-				return true;
-			}*/
-	}
+
 	return false;
 }
 
@@ -886,9 +840,7 @@ bool CInventory::Activate(u32 slot)
 		return false;
 	} 
 
-	if(/*(slot == NO_ACTIVE_SLOT) || /*(slot == m_activeSlot) || */
-		(slot < m_slots.size() && m_slots[slot].m_pIItem == NULL)) 
-        return false;
+	if(slot < m_slots.size() && m_slots[slot].m_pIItem == NULL) return false;
 
 	//если активный слот чем-то занят, неразрешать его деактивацию 
 	if(m_activeSlot < m_slots.size() && m_slots[m_activeSlot].m_pIItem &&
@@ -1001,7 +953,7 @@ bool CInventory::Action(s32 cmd, u32 flags)
 	return false;
 }
 
-void CInventory::Update(u32 /**deltaT/**/) 
+void CInventory::Update() 
 {
 	bool bActiveSlotVisible;
 	
@@ -1015,7 +967,6 @@ void CInventory::Update(u32 /**deltaT/**/)
 	{
 		bActiveSlotVisible = true;
 	}
-		
 
 
 	if((m_nextActiveSlot < m_slots.size()) && !bActiveSlotVisible)
