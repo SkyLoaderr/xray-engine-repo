@@ -4,7 +4,7 @@
 
 #include "Blender.h"
 
-class ENGINE_API CBlender_Editor_Wire : public CBlender  
+class CBlender_Editor_Wire : public CBlender  
 {
 	string64	oT_Factor;
 public:

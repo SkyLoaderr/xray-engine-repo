@@ -8,7 +8,7 @@
 
 #include "blender.h"
 
-class ENGINE_API CBlender_Model : public CBlender  
+class CBlender_Model : public CBlender  
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "MODEL: Default"; }

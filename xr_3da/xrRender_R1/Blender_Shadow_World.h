@@ -4,7 +4,7 @@
 
 #include "Blender.h"
 
-class ENGINE_API CBlender_ShWorld : public CBlender  
+class CBlender_ShWorld : public CBlender  
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "INTERNAL: shadow projecting";	}

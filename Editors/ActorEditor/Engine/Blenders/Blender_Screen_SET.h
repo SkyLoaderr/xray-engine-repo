@@ -8,7 +8,7 @@
 
 #include "blender.h"
 
-class ENGINE_API CBlender_Screen_SET : public CBlender  
+class CBlender_Screen_SET : public CBlender  
 {
 	xrP_TOKEN	oBlend;
 	xrP_Integer	oAREF;

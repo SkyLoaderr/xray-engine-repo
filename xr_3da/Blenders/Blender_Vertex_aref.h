@@ -8,7 +8,7 @@
 
 #include "Blender.h"
 
-class ENGINE_API CBlender_Vertex_aref : public CBlender  
+class CBlender_Vertex_aref : public CBlender  
 {
 public:
 	xrP_Integer	oAREF;

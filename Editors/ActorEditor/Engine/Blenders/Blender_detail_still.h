@@ -8,7 +8,7 @@
 
 #include "Blender.h"
 
-class ENGINE_API CBlender_Detail_Still : public CBlender  
+class CBlender_Detail_Still : public CBlender  
 {
 public:
 	xrP_BOOL	oBlend;

@@ -8,7 +8,7 @@
 
 #include "blender.h"
 
-class ENGINE_API CBlender_Screen_GRAY : public CBlender  
+class CBlender_Screen_GRAY : public CBlender  
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "INTERNAL: gray-scale effect"; }

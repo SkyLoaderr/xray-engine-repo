@@ -8,7 +8,7 @@
 
 #include "Blender.h"
 
-class ENGINE_API CBlender_LaEmB : public CBlender  
+class CBlender_LaEmB : public CBlender  
 {
 public:
 	string64	oT2_Name;		// name of secondary texture

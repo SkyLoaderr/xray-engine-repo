@@ -8,7 +8,7 @@
 
 #include "Blender.h"
 
-class ENGINE_API CBlender_LIGHT : public CBlender  
+class CBlender_LIGHT : public CBlender  
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "INTERNAL: lighting effect";	}

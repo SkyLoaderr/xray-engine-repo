@@ -8,7 +8,7 @@
 
 #include "Blender.h"
 
-class ENGINE_API CBlender_Vertex : public CBlender  
+class CBlender_Vertex : public CBlender  
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "LEVEL: diffuse*base";	}

@@ -4,7 +4,7 @@
 
 #include "Blender.h"
 
-class ENGINE_API CBlender_Blur : public CBlender  
+class CBlender_Blur : public CBlender  
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "INTERNAL: blur";	}

@@ -8,7 +8,7 @@
 
 #include "Blender.h"
 
-class ENGINE_API CBlender_default : public CBlender  
+class CBlender_default : public CBlender  
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "LEVEL: lmap*base (default)";	}
