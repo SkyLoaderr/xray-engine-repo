@@ -118,7 +118,7 @@ function stalker_script:reinit		()
 	operators["free"]		= 1
 
 	-- // motivations
-	manager:add_motivation	(motivations["global"],		stalker.motivation_global(self.object,motivations))
+	manager:add_motivation	(motivations["global"],		this.motivation_global(self.object,motivations))
 
 	goal:clear				()
 	goal:add_property		(world_property(properties["dead"],	true))
@@ -132,9 +132,9 @@ function stalker_script:reinit		()
 	manager:add_connection	(motivations["global"],		motivations["alive"])
 
 	-- // evaluators
-	manager:add_evaluator	(properties["alive"],		stalker.evaluator_alive	(self.object))
-	manager:add_evaluator	(properties["dead"],		stalker.evaluator_const	(false))
-	manager:add_evaluator	(properties["solved"],		stalker.evaluator_const	(false))
+	manager:add_evaluator	(properties["alive"],		this.evaluator_alive	(self.object))
+	manager:add_evaluator	(properties["dead"],		this.evaluator_const	(false))
+	manager:add_evaluator	(properties["solved"],		this.evaluator_const	(false))
 
 	-- // operators/actions
 	local					action = action_base(self.object,"dead")
@@ -143,7 +143,7 @@ function stalker_script:reinit		()
 	action:add_effect		(world_property(properties["dead"],		true))
 	manager:add_action		(operators["dead"],			action)
 
-	local					action = stalker.action_alive(self.object,"free")
+	local					action = this.action_alive(self.object,"free")
 	action:add_precondition	(world_property(properties["alive"],	true))
 	action:add_precondition	(world_property(properties["solved"],	false))
 	action:add_effect		(world_property(properties["solved"],	true))
@@ -174,5 +174,5 @@ function stalker_script:net_import	(packet)
 end
 
 function init		(obj)
-	obj:bind_object	(stalker.stalker_script(obj))
+	obj:bind_object	(this.stalker_script(obj))
 end
