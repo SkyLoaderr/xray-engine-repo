@@ -94,7 +94,7 @@ struct b_lod
 /*
 	NUMBER-OF-OBJECTS
 
-	name
+	nameZ
 	vert_count
 	vertices[]
 	face_count

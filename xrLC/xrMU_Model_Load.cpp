@@ -3,7 +3,7 @@
 
 void xrMU_Model::Load(CStream& F)
 {
-	F.Read				(&m_name,128);
+	F.RstringZ			(m_name);
 	Msg					("* Loading model: '%s'...",m_name);
 
 	// READ: vertices
