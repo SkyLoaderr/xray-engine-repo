@@ -82,10 +82,10 @@ void CLevel::IR_OnKeyboardPress(int key)
 
 	switch (key_binding[key]) {
 	case kCONSOLE:
-		Console.Show				();
+		Console->Show				();
 		break;
 	case kQUIT:	
-		Console.Execute				("quit");
+		Console->Execute			("quit");
 		break;
 	default:
 		if (CurrentEntity())		CurrentEntity()->IR_OnKeyboardPress(key_binding[key]);

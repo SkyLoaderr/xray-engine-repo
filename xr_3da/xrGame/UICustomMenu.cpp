@@ -5,8 +5,8 @@
 
 void CUICustomMenuItem::Execute()			
 {
-	if (value0&&(value0[0]=='$'))		Console.Execute(value0+1);
-	else if (value1&&(value1[0]=='$'))	Console.Execute(value1+1);
+	if (value0&&(value0[0]=='$'))		Console->Execute(value0+1);
+	else if (value1&&(value1[0]=='$'))	Console->Execute(value1+1);
 	else if (OnExecute)					OnExecute(this);
 }
 //--------------------------------------------------------------------

@@ -518,7 +518,7 @@ class CCC_DemoRecord : public CConsoleCommand
 public:
 	CCC_DemoRecord(LPCSTR N) : CConsoleCommand(N) {};
 	virtual void Execute(LPCSTR args) {
-		Console.Hide	();
+		Console->Hide	();
 		char fn[256]; strconcat(fn,args,".xrdemo");
 		g_pGameLevel->Cameras.AddEffector(xr_new<CDemoRecord> (fn));
 	}
@@ -534,7 +534,7 @@ public:
 		  {
 			  Msg	("! There are no level(s) started");
 		  } else {
-			  Console.Hide				();
+			  Console->Hide				();
 			  char fn[256]; strconcat	(fn,args,".xrdemo");
 			  g_pGameLevel->Cameras.AddEffector(xr_new<CDemoPlay> (fn,1.0f));
 		  }

@@ -14,8 +14,8 @@
 
 #define  LDIST .05f
 
-ENGINE_API CConsole		Console;
-const char *			ioc_prompt=">>> ";
+ENGINE_API CConsole*	Console		=	NULL;
+const char *			ioc_prompt	=	">>> ";
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

@@ -150,9 +150,9 @@ BOOL CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float
 		m_vAngularVelocity.lerp	(m_vAngularVelocity,m_vR,0.3f);
 
 		float acc = 1.f, acc_angle = 1.f;
-		if (Console.IR_GetKeyState(DIK_LSHIFT)){ acc=.025f; acc_angle=.025f;}
-		else if (Console.IR_GetKeyState(DIK_LALT)) acc=4.0;
-		else if (Console.IR_GetKeyState(DIK_LCONTROL)) acc=10.0;
+		if (Console->IR_GetKeyState(DIK_LSHIFT)){ acc=.025f; acc_angle=.025f;}
+		else if (Console->IR_GetKeyState(DIK_LALT)) acc=4.0;
+		else if (Console->IR_GetKeyState(DIK_LCONTROL)) acc=10.0;
 		m_vT.mul				(m_vVelocity, Device.fTimeDelta * g_fSpeed * acc);
 		m_vR.mul				(m_vAngularVelocity, Device.fTimeDelta * g_fAngularSpeed * acc_angle);
 

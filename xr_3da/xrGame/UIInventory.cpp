@@ -187,7 +187,7 @@ bool CUIInventory::IR_OnKeyboardPress(int dik)
 				m_pUICursor->Hide();
 				m_pUI->ShowIndicators();
 				if(m_bCrosshair)
-					Console.Execute("hud_crosshair 1");
+					Console->Execute("hud_crosshair 1");
 				return true;*/
 
 			case DIK_RSHIFT :
@@ -298,7 +298,7 @@ void CUIInventory::Show()
 	UIInventoryWnd.Show(); 
 
 	//remove crosshair if it was shown
-/*	if(Console.GetBool("hud_crosshair"))
+/*	if(Console->GetBool("hud_crosshair"))
 		m_bCrosshair = true;
 	else
 		m_bCrosshair = false;
@@ -306,7 +306,7 @@ void CUIInventory::Show()
 	m_bCrosshair = true;
 
 	if(m_bCrosshair)
-		Console.Execute("hud_crosshair 0");
+		Console->Execute("hud_crosshair 0");
 
 }
 void CUIInventory::Hide() 
@@ -315,6 +315,6 @@ void CUIInventory::Hide()
 	UIInventoryWnd.Hide(); 
 
 	if(m_bCrosshair)
-			Console.Execute("hud_crosshair 1");
+			Console->Execute("hud_crosshair 1");
 
 }

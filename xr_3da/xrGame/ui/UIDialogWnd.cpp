@@ -27,7 +27,7 @@ void CUIDialogWnd::Show()
 	inherited::Show(true);
 
 	m_bCrosshair = true;
-	if(m_bCrosshair) Console.Execute("hud_crosshair 0");
+	if(m_bCrosshair) Console->Execute("hud_crosshair 0");
 }
 
 
@@ -39,7 +39,7 @@ void CUIDialogWnd::Hide()
 	inherited::Enable(false);
 	inherited::Show(false);
 	
-	if(m_bCrosshair) Console.Execute("hud_crosshair 1");
+	if(m_bCrosshair) Console->Execute("hud_crosshair 1");
 }
 
 

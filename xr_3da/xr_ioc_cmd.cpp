@@ -48,7 +48,7 @@ class CCC_Quit : public CConsoleCommand
 public:
 	CCC_Quit(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) {
-		Console.Hide();
+		Console->Hide();
 		Engine.Event.Defer("KERNEL:disconnect");
 		Engine.Event.Defer("KERNEL:quit");
 	}
@@ -90,7 +90,7 @@ public:
 	virtual void Execute(LPCSTR args) {
 		Log("- --- Command listing: start ---");
 		CConsole::vecCMD_IT it;
-		for (it=Console.Commands.begin(); it!=Console.Commands.end(); it++)
+		for (it=Console->Commands.begin(); it!=Console->Commands.end(); it++)
 		{
 			CConsoleCommand &C = *(it->second);
 			TStatus _S; C.Status(_S);
@@ -108,13 +108,13 @@ public:
 	CCC_SaveCFG(LPCSTR N) : CConsoleCommand(N) { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) 
 	{
-		LPCSTR	c_name		= Console.ConfigFile;
+		LPCSTR	c_name		= Console->ConfigFile;
 		SetFileAttributes	(c_name,FILE_ATTRIBUTE_NORMAL);
 		IWriter* F			= FS.w_open(c_name);
 		R_ASSERT			(F);
 
 		CConsole::vecCMD_IT it;
-		for (it=Console.Commands.begin(); it!=Console.Commands.end(); it++)
+		for (it=Console->Commands.begin(); it!=Console->Commands.end(); it++)
 			it->second->Save(F);
 
 		FS.w_close			(F);
@@ -137,7 +137,7 @@ public:
 		if (F!=NULL) {
 			while (!F->eof()) {
 				F->r_string		(str);
-				Console.Execute	(str);
+				Console->Execute	(str);
 			}
 			FS.r_close(F);
 		} else {

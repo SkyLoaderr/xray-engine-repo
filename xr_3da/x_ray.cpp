@@ -47,20 +47,21 @@ void Startup				( )
 	FS.update_path				(fname,"$game_data$","system.ltx");
 	pSettings					= xr_new<CInifile>	(fname,TRUE);
 
-	Console.Initialize			( );
+	Console						= xr_new<CConsole>	();
+	Console->Initialize			( );
 	Engine.External.Initialize	( );
 	
 	// Execute script
 	{
-		strcpy						(Console.ConfigFile,"user.ltx");
+		strcpy						(Console->ConfigFile,"user.ltx");
 		if (strstr(Core.Params,"-ltx ")) {
 			string64				c_name;
 			sscanf					(strstr(Core.Params,"-ltx ")+5,"%[^ ] ",c_name);
-			strcpy					(Console.ConfigFile,c_name);
+			strcpy					(Console->ConfigFile,c_name);
 		}
-		if (!FS.exist(Console.ConfigFile))
-			strcpy					(Console.ConfigFile,"user.ltx");
-		Console.ExecuteScript		(Console.ConfigFile);
+		if (!FS.exist(Console->ConfigFile))
+			strcpy					(Console->ConfigFile,"user.ltx");
+		Console->ExecuteScript		(Console->ConfigFile);
 	}
 
 	BOOL bCaptureInput			= !strstr(Core.Params,"-i");
@@ -70,7 +71,7 @@ void Startup				( )
 
 	// ...command line for auto start
 	LPCSTR	pStartup			= strstr		(Core.Params,"-start ");
-	if (pStartup)				Console.Execute	(pStartup+1);
+	if (pStartup)				Console->Execute	(pStartup+1);
 
 	// Initialize APP
 	Device.Create				( );
@@ -98,7 +99,8 @@ void Startup				( )
 	xr_delete					( pSettings		);
 
 	LALib.OnDestroy				( );
-	Console.Destroy				( );
+	Console->Destroy				( );
+	xr_delete					(Console);
 	Device.Destroy				( );
 	Engine.Destroy				( );
 }
@@ -226,12 +228,12 @@ CApplication::CApplication()
 	Device.seqFrame.Add			(this, REG_PRIORITY_HIGH+1000);
 	if (psDeviceFlags.test(mtSound))	Device.seqFrameMT.Add		(&SoundProcessor);
 	else								Device.seqFrame.Add			(&SoundProcessor);
-	Console.Show				( );
+	Console->Show				( );
 }
 
 CApplication::~CApplication()
 {
-	Console.Hide				( );
+	Console->Hide				( );
 
 	Device.seqFrameMT.Remove	(&SoundProcessor);
 	Device.seqFrame.Remove		(&SoundProcessor);
@@ -259,7 +261,7 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 			xr_free(Levels[i].name	);
 		}
 	} else if (E==eStart) {
-		Console.Hide();
+		Console->Hide();
 		LPSTR		op_server		= LPSTR	(P1);
 		LPSTR		op_client		= LPSTR	(P2);
 		R_ASSERT	(0==g_pGameLevel);
@@ -273,14 +275,14 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 			string128			buf,cmd,param;
 			sscanf				(strstr(Core.Params,"-$")+2,"%[^ ] %[^ ] ",cmd,param);
 			strconcat			(buf,cmd," ",param);
-			Console.Execute		(buf);
+			Console->Execute		(buf);
 		}
 	} else if (E==eDisconnect) {
 		if (g_pGameLevel) {
-			Console.Hide			();
+			Console->Hide			();
 			g_pGameLevel->net_Stop	();
 			DEL_INSTANCE			(g_pGameLevel);
-			Console.Show			();
+			Console->Show			();
 		}
 	}
 }
