@@ -193,36 +193,36 @@ wakeable = true
 ;-------------------------------------------------------------------------------------
 ;-- GARBAGE DOLG
 ;-------------------------------------------------------------------------------------
-[walker1@gar_dolg]
-path_walk = guard_path1
-path_look = guard_look1
+;[walker1@gar_dolg]
+;path_walk = guard_path1
+;path_look = guard_look1
 
-[walker2@gar_dolg]
-path_walk = guard_path2
-path_look = guard_look2
+;[walker2@gar_dolg]
+;path_walk = guard_path2
+;path_look = guard_look2
 
-[walker3@gar_dolg]
-path_walk = guard_path3
-path_look = guard_look3
+;[walker3@gar_dolg]
+;path_walk = guard_path3
+;path_look = guard_look3
 
 [kamp1@gar_dolg]
-center_point = camp
+center_point = gar_dolg_kamp_center
 
 [patrol1@gar_dolg]
 patrol_path = patrol_path
 patrol_look = patrol_look
-escape_path = escape_path
+escape_path = patrol_look
 raid_enabled = true
 
 [follower1@gar_dolg]
-escape_path = escape_path
+escape_path = patrol_look
 
 [zoneguard1@gar_dolg]
 path_walk = guard_way1
 path_look = guard_look1
 team = team_0
-zone_warn = warning_zone
-zone_guard = kill_zone
+zone_warn = zone_warn
+zone_guard = zone_kill
 no_move = false
 enable_dialog = true
 
@@ -230,11 +230,19 @@ enable_dialog = true
 path_walk = guard_way2
 path_look = guard_look2
 team = team_0
-zone_warn = warning_zone
-zone_guard = kill_zone
+zone_warn = zone_warn
+zone_guard = zone_kill
 no_move = false
 enable_dialog = true
 
+[zoneguard3@gar_dolg]
+path_walk = guard_way3
+path_look = guard_look3
+team = team_0
+zone_warn = zone_warn
+zone_guard = zone_kill
+no_move = false
+enable_dialog = true
 
 ;-------------------------------------------------------------------------------------------------
 ;-- AGROPROM MILITARY
