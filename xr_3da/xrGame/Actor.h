@@ -85,10 +85,27 @@ public:
 	/////////////////////////////////////////////////////////////////
 	// Inventory Owner 
 
+public:
 	//information receive & dialogs
 	virtual void OnReceiveInfo		(INFO_ID info_index);
 	virtual void OnDisableInfo		(INFO_ID info_index);
 	virtual void ReceivePdaMessage	(u16 who, EPdaMsg msg, INFO_ID info_index);
+
+	virtual void StartTalk			(CInventoryOwner* talk_partner);
+
+	//возвращает существующий вектор из реестра, или добавляет новый
+	TALK_CONTACT_VECTOR&		Contacts		();
+	//возвращает NULL, если вектора с контактами не добавлено
+	const TALK_CONTACT_VECTOR*	ContactsPtr		() const;
+
+	virtual	void				UpdateContact	(u16 contact_id);
+protected:
+#ifdef _DEBUG
+	//для отладки без alife simulator
+	TALK_CONTACT_VECTOR m_ContactsWithoutAlife;
+#endif	
+
+public:
 	//PhraseDialogManager
 	virtual void ReceivePhrase			(DIALOG_SHARED_PTR& phrase_dialog);
 	virtual void UpdateAvailableDialogs	(CPhraseDialogManager* partner);

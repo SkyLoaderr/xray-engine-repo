@@ -33,6 +33,7 @@ public:
 	IC BOOL			GetHUDmode			()				{	return hud_mode;							}
 	
 	virtual bool	IsPending			()		const	{   return m_bPending;}
+	virtual void	StopHUDSounds		()				{};
 	
 	//для предачи команд владельцем
 	virtual bool	Action				(s32 cmd, u32 flags);

@@ -25,6 +25,8 @@ protected:
 	//звук текущего выстрела
 	HUD_SOUND*		m_pSndShotCurrent;
 
+	virtual void	StopHUDSounds		();
+
 	//дополнительная информация о глушителе
 	LPCSTR			m_sSilencerFlameParticles;
 	LPCSTR			m_sSilencerSmokeParticles;

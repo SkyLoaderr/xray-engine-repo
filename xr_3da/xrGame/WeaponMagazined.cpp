@@ -32,7 +32,7 @@ CWeaponMagazined::CWeaponMagazined(LPCSTR name, ESoundTypes eSoundType) : CWeapo
 
 	m_bFireSingleShot = false;
 	m_iShotNum = 0;
-	m_iQueueSize = WEAPON_ININITE_QUEUE;	
+	m_iQueueSize = WEAPON_ININITE_QUEUE;
 }
 
 CWeaponMagazined::~CWeaponMagazined()
@@ -43,6 +43,22 @@ CWeaponMagazined::~CWeaponMagazined()
 	HUD_SOUND::DestroySound(sndShot);
 	HUD_SOUND::DestroySound(sndEmptyClick);
 	HUD_SOUND::DestroySound(sndReload);
+}
+
+
+void CWeaponMagazined::StopHUDSounds		()
+{
+	HUD_SOUND::StopSound(sndShow);
+	HUD_SOUND::StopSound(sndHide);
+	
+	HUD_SOUND::StopSound(sndEmptyClick);
+	HUD_SOUND::StopSound(sndReload);
+
+	//HUD_SOUND::StopSound(sndShot);
+	if(sndShot.enable && sndShot.snd.feedback)
+		sndShot.snd.feedback->switch_to_3D();
+
+	inherited::StopHUDSounds();
 }
 
 void CWeaponMagazined::net_Destroy()
@@ -163,7 +179,9 @@ bool CWeaponMagazined::TryReload()
 			}
 		}
 	}
+	
 	SwitchState(eIdle);
+
 	return false;
 }
 
@@ -180,6 +198,13 @@ bool CWeaponMagazined::IsAmmoAvailable()
 
 void CWeaponMagazined::OnMagazineEmpty() 
 {
+	//попытка стрелять когда нет патронов
+	if(STATE == eIdle) 
+	{
+		OnEmptyClick			();
+		return;
+	}
+
 	if( NEXT_STATE != eMagEmpty && NEXT_STATE != eReload)
 	{
 		SwitchState(eMagEmpty);
@@ -804,7 +829,9 @@ void CWeaponMagazined::PlayAnimReload()
 void CWeaponMagazined::PlayAnimIdle()
 {
 	if(IsZoomed())
+	{
 		m_pHUD->animPlay(mhud_idle_aim[Random.randI(mhud_idle_aim.size())], TRUE);
+	}
 	else
 		m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())], TRUE);
 }
@@ -812,6 +839,8 @@ void CWeaponMagazined::PlayAnimShoot()
 {
 	m_pHUD->animPlay(mhud_shots[Random.randI(mhud_shots.size())],TRUE,this);
 }
+
+
 
 
 void CWeaponMagazined::OnZoomIn			()
@@ -834,6 +863,8 @@ void CWeaponMagazined::OnZoomIn			()
 }
 void CWeaponMagazined::OnZoomOut		()
 {
+	if(!m_bZoomMode) return;
+
 	inherited::OnZoomOut();
 
 	if(STATE == eIdle)

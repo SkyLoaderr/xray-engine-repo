@@ -31,6 +31,8 @@ struct HUD_SOUND
 								const CObject* parent,
 								bool hud_mode);
 
+	static void		StopSound	(HUD_SOUND& snd);
+
 
 	void set_position(const Fvector& pos) {snd.set_position(pos);}
 

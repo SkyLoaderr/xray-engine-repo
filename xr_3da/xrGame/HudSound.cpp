@@ -75,5 +75,9 @@ void HUD_SOUND::PlaySound	(HUD_SOUND&		hud_snd,
 							hud_snd.delay);
 }
 
-
-
+void HUD_SOUND::StopSound	(HUD_SOUND& hud_snd)
+{
+	if(!hud_snd.enable)		return;
+	VERIFY2					(hud_snd.snd.handle,"Trying to stop non-existant or destroyed sound");
+	hud_snd.snd.stop();
+}

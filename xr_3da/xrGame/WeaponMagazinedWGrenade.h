@@ -43,6 +43,7 @@ public:
 	virtual bool	Action			(s32 cmd, u32 flags);
 
 	virtual void	UpdateSounds	();
+	virtual void	StopHUDSounds	();
 
 	//переключение в режим подствольника
 	virtual void	SwitchMode		();

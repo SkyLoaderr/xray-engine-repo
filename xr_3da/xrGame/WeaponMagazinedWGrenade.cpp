@@ -27,6 +27,15 @@ CWeaponMagazinedWGrenade::~CWeaponMagazinedWGrenade(void)
 	HUD_SOUND::DestroySound(sndSwitch);
 }
 
+void CWeaponMagazinedWGrenade::StopHUDSounds		()
+{
+	HUD_SOUND::StopSound(sndShotG);
+	HUD_SOUND::StopSound(sndReloadG);
+	HUD_SOUND::StopSound(sndSwitch);
+
+	inherited::StopHUDSounds();
+}
+
 void CWeaponMagazinedWGrenade::Load	(LPCSTR section)
 {
 	inherited::Load			(section);

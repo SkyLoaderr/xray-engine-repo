@@ -48,3 +48,17 @@ typedef struct tagSPdaMessage
 	ALife::_TIME_ID	time;
 		
 } SPdaMessage;
+
+
+//информация о контактах персонажей по PDA и во время диалога
+struct TALK_CONTACT_DATA
+{
+	TALK_CONTACT_DATA():id(u16(-1)),time(0){};
+	TALK_CONTACT_DATA(u16 contact_id, ALife::_TIME_ID contact_time):id(contact_id),time(contact_time){};
+	//id персонажа с которым говорили
+	u16				id;
+	//время контакта
+	ALife::_TIME_ID	time;
+};
+
+DEFINE_VECTOR(TALK_CONTACT_DATA, TALK_CONTACT_VECTOR, TALK_CONTACT_VECTOR_IT);

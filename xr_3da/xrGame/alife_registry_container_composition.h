@@ -10,27 +10,22 @@
 
 #include "alife_abstract_registry.h"
 #include "InfoPortionDefs.h"
+#include "PdaMsg.h"
+
 
 #pragma warning(push)
 #pragma warning(disable:4005)
 
-typedef CALifeAbstractRegistry<u16,KNOWN_INFO_VECTOR > CInfoPortionRegistry;
+typedef CALifeAbstractRegistry<u16, KNOWN_INFO_VECTOR > CInfoPortionRegistry;
 add_to_registry_type_list(CInfoPortionRegistry);
 #define info_portions define_constant(CInfoPortionRegistry) 
 #define registry_type_list save_registry_type_list(CInfoPortionRegistry)
 
-/*
-//how to use
-xr_vector<u16>* pData = ai().alife().registry(info_portions).object(u16, true);
-if(!pData)
-{
-	//add new registry entry
-	ai().alife().registry(info_portions).add(u16,xr_vector<u16>)
-}
-else
-	pData->add...
-
-*/
+//для актеров, список персонажей с которыми были разговоры
+typedef CALifeAbstractRegistry<u16, TALK_CONTACT_VECTOR > CKnownContactsRegistry;
+add_to_registry_type_list(CKnownContactsRegistry);
+#define known_contacts define_constant(CKnownContactsRegistry) 
+#define registry_type_list save_registry_type_list(CKnownContactsRegistry)
 
 
 #pragma warning(pop)

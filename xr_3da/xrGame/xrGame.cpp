@@ -32,6 +32,7 @@
 #include "script_debugger.h"
 #include "ai/ai_monster_group.h"
 #include "xrMessages.h"
+#include "string_table.h"
 
 #pragma comment(lib,"ode.lib" )
 
@@ -83,6 +84,9 @@ void clear_singletons ()
 	//static shader for blood
 	CEntityAlive::UnloadBloodyWallmarks	();
 	CEntityAlive::UnloadFireParticles ();
+
+	//очищение памяти таблицы строк
+	CStringTable::Destroy();
 }
 
 // console commands

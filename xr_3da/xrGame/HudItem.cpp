@@ -194,6 +194,8 @@ void CHudItem::OnH_B_Independent	()
 	hud_mode = FALSE;
 	if (m_pHUD)
 		m_pHUD->SetCurrentEntityHud(false);
+	
+	StopHUDSounds();
 
 	inherited::OnH_B_Independent	();
 }
