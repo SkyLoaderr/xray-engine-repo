@@ -53,6 +53,7 @@ void*	xrMemory::mem_alloc		(size_t size)
 		_ptr					= (void*)(((u8*)_real)+1);
 		*acc_header(_ptr)		= (u8)pool;
 	}
+	if (debug_mode)				mem_fill	(_ptr,0xCC,size);
 	return	_ptr;
 }
 
