@@ -1215,8 +1215,13 @@ struct vB : virtual public vA{virtual ~vB(){}};
 //	printf("%s",y);
 //}
 //
+#define z(x) #x
+#define y(x) z(x)
+#define x y(__LINE__)
+
 void test1()
 {
+	printf("%s",y(__LINE__));
 //	aa(z(x));
 //	test0();
 //	box_collision_test	();
