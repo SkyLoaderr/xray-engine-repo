@@ -58,14 +58,15 @@ void CAttachableItem::enable		(bool value)
 	if (value && !enabled() && H_Parent()) {
 		CAttachmentOwner	*owner = dynamic_cast<CAttachmentOwner*>(H_Parent());
 		VERIFY				(owner);
+		m_enabled			= value;
 		owner->attach		(this);
 		setVisible			(true);
 	}
 	if (!value && enabled() && H_Parent()) {
 		CAttachmentOwner	*owner = dynamic_cast<CAttachmentOwner*>(H_Parent());
 		VERIFY				(owner);
+		m_enabled			= value;
 		owner->detach		(this);
 		setVisible			(false);
 	}
-	m_enabled				= value;
 }
