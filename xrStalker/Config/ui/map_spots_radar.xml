@@ -5,7 +5,7 @@
 	</rad_antenna_location>
 
     <rad_antenna_spot x="0" y="0" width="32" height="32" alignment="c">
-		<texture x="64" y="128" width="32" height="32">ui\ui_icons_map</texture>
+		<texture x="192" y="32" width="32" height="32">ui\ui_icons_map</texture>
 	</rad_antenna_spot>
 
 	<rad_code_door_location hint="rad_code_door" store="1">
@@ -14,6 +14,6 @@
 	</rad_code_door_location>
 
     <rad_code_door_spot x="0" y="0" width="32" height="32" alignment="c">
-		<texture x="64" y="128" width="32" height="32">ui\ui_icons_map</texture>
+		<texture x="32" y="192" width="32" height="32">ui\ui_icons_map</texture>
 	</rad_code_door_spot>
 	
