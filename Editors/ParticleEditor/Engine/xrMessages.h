@@ -45,6 +45,7 @@ enum {
 	GE_WPN_STATE_CHANGE,
 	
 	GE_GRENADE_EXPLODE,
+	GE_INV_ACTION,				//a action beign taken on inventory
 
 	GEG_SIGNAL,
 	GEG_PLAYER_READY,

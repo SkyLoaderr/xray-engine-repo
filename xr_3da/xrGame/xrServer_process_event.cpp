@@ -56,6 +56,12 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 	case GE_PDA:
 		SendBroadcast			(0xffffffff,P,MODE);
 		break;
+	case GE_INV_ACTION:
+		{
+			xrClientData* CL		= ID_to_client(sender);
+			if (CL)	CL->net_Ready	= TRUE;
+			if (SV_Client) SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
+		}break;
 	case GE_BUY:
 		{
 			string64			i_name;
