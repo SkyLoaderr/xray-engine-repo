@@ -124,7 +124,7 @@ protected:
 			IBannedClient*	GetBannedClient		(const char* Address);			
 			void			BannedAddress_Save	(u32 it, IWriter* fs);
 			void			BannedList_Save		();
-			void			BannedList_Load		()	{};
+	virtual	void			BannedList_Load		()	{};
 			LPCSTR			GetBannedListName	();
 
 public:
