@@ -35,7 +35,7 @@ vector<R_Layer>*	CBuild::LLayer_by_name	(LPCSTR N)
 {
 	for (u32 L=0; L<L_layers.size(); L++)
 	{
-		if (0==stricmp(L_layers[L].control.name,N))	return &L_layers[L].lights;
+		if (0==stricmp(L_layers[L].control.name,N))	return &(L_layers[L].lights);
 	}
 	return 0;
 }
