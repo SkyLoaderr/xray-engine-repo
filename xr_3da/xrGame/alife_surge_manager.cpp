@@ -495,7 +495,7 @@ void CALifeSurgeManager::update_tasks()
 	TRADER_SET_MAP::const_iterator	I = organizations().cross_traders().begin();
 	TRADER_SET_MAP::const_iterator	E = organizations().cross_traders().end();
 	for ( ; I != E; ++I) {
-		ITEM_SET_MAP::const_iterator	J = spawns().artefact_anomaly_map().find((*I).first);
+		ITEM_SET_MAP::const_iterator	J = spawns().artefact_anomaly_map().find((LPSTR)(*I).first);
 		if (spawns().artefact_anomaly_map().end() == J)
 			continue;
 		// iterating on the anomaly types that can generate this type of artefact
