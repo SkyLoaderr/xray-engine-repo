@@ -61,14 +61,16 @@ p2f 	p_main	( v2p_in IN )
   float4 s1		= tex2D		(s_shadowmap,uv0+jitter[1]);
   float4 s2		= tex2D		(s_shadowmap,uv0+jitter[2]);
   float4 s3		= tex2D		(s_shadowmap,uv0+jitter[3]);
+
   float4 s4		= tex2D		(s_shadowmap,uv0-jitter[0]);
   float4 s5		= tex2D		(s_shadowmap,uv0-jitter[1]);
   float4 s6		= tex2D		(s_shadowmap,uv0-jitter[2]);
   float4 s7		= tex2D		(s_shadowmap,uv0-jitter[3]);
-  float4 s8		= tex2D		(s_shadowmap,uv0-jitter[0]);
-  float4 s9		= tex2D		(s_shadowmap,uv0-jitter[1]);
-  float4 s10	= tex2D		(s_shadowmap,uv0-jitter[2]);
-  float4 s11	= tex2D		(s_shadowmap,uv0-jitter[3]);
+
+  float4 s8		= tex2D		(s_shadowmap,uv0+jitter[4]);
+  float4 s9		= tex2D		(s_shadowmap,uv0+jitter[5]);
+  float4 s10	= tex2D		(s_shadowmap,uv0+jitter[6]);
+  float4 s11	= tex2D		(s_shadowmap,uv0+jitter[7]);
   
   // Compare (if (depth_pixel > depth_smap) then in shadow)
   float4 sC0	= step		(float4(depth-s0.x,depth-s1.x,depth-s2.x,depth-s3.x),	0);
@@ -98,6 +100,6 @@ p2f 	p_main	( v2p_in IN )
   float4 C		= shadow*light_color*D;
   C.w			= shadow*light_color.w*S;
 
-  OUT.C 	= C;
+  OUT.C 		= C;
   return OUT;
 }
