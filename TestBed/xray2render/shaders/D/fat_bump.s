@@ -1,10 +1,10 @@
 struct 	a2v
 {
   float4 Position: 	POSITION;	// Object-space position
-  float4 N: 		NORMAL;		// Object-space normal
-  float4 TexCoords: TEXCOORD0;	// Texture coordinates
-  float4 T:			TEXCOORD1;	// tangent
-  float4 B:			TEXCOORD2;	// binormal
+  float3 N: 		NORMAL;		// Object-space normal
+  float2 TexCoords: TEXCOORD0;	// Texture coordinates
+  float3 T:			TEXCOORD1;	// tangent
+  float3 B:			TEXCOORD2;	// binormal
 };
 
 struct 	v2p_out
