@@ -52,8 +52,8 @@ protected:
 	u32						cache_vCount;
 	u32						cache_vOffset;
 
-	u32						RenderMode;		
-	u32						RMS_boneid;
+	u16						RenderMode;		
+	u16						RMS_boneid;
 	
 	void					_Copy			(CSkeletonX *V);
 	void					_Render			(ref_geom& hGeom,	u32 vCount,		u32 pCount);
