@@ -79,7 +79,7 @@ void	MODEL::build_thread		(void *params)
 	P.M->build_internal			(P.V,P.Vcnt,P.T,P.Tcnt,P.BC,P.BCP);
 	P.M->status					= S_READY;
 	P.M->cs.Leave				();
-	Msg							("* xrCDB: cform build completed, memory usage: %d K",P.M->memory()/1024);
+	//Msg						("* xrCDB: cform build completed, memory usage: %d K",P.M->memory()/1024);
 }
 
 void	MODEL::build			(Fvector* V, int Vcnt, TRI* T, int Tcnt, build_callback* bc, void* bcp)
