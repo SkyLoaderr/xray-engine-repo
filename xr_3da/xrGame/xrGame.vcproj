@@ -368,16 +368,6 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="EventMemoryManager"
-					Filter="">
-					<File
-						RelativePath=".\event_memory_manager.cpp">
-					</File>
-					<File
-						RelativePath=".\event_memory_manager.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="LocationManager"
 					Filter="">
 					<File
@@ -429,6 +419,16 @@
 						</File>
 						<File
 							RelativePath=".\enemy_manager_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="EventMemoryManager"
+						Filter="">
+						<File
+							RelativePath=".\event_memory_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\event_memory_manager.h">
 						</File>
 					</Filter>
 					<Filter
@@ -794,6 +794,53 @@
 							</Filter>
 						</Filter>
 					</Filter>
+					<Filter
+						Name="StateManagement"
+						Filter="">
+						<File
+							RelativePath=".\state_management_config.h">
+						</File>
+						<Filter
+							Name="StateBase"
+							Filter="">
+							<File
+								RelativePath=".\state_base.h">
+							</File>
+							<File
+								RelativePath=".\state_base_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="StateInternal"
+							Filter="">
+							<File
+								RelativePath=".\state_internal.h">
+							</File>
+							<File
+								RelativePath=".\state_internal_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="StateManagerAbstract"
+							Filter="">
+							<File
+								RelativePath=".\state_manager_abstract.h">
+							</File>
+							<File
+								RelativePath=".\state_manager_abstract_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="StateManagerState"
+							Filter="">
+							<File
+								RelativePath=".\state_manager_state.h">
+							</File>
+							<File
+								RelativePath=".\state_manager_state_inline.h">
+							</File>
+						</Filter>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="MovementManager"
@@ -1135,53 +1182,6 @@
 					<File
 						RelativePath=".\sound_player_inline.h">
 					</File>
-				</Filter>
-				<Filter
-					Name="StateManagement"
-					Filter="">
-					<File
-						RelativePath=".\state_management_config.h">
-					</File>
-					<Filter
-						Name="StateBase"
-						Filter="">
-						<File
-							RelativePath=".\state_base.h">
-						</File>
-						<File
-							RelativePath=".\state_base_inline.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="StateInternal"
-						Filter="">
-						<File
-							RelativePath=".\state_internal.h">
-						</File>
-						<File
-							RelativePath=".\state_internal_inline.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="StateManagerAbstract"
-						Filter="">
-						<File
-							RelativePath=".\state_manager_abstract.h">
-						</File>
-						<File
-							RelativePath=".\state_manager_abstract_inline.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="StateManagerState"
-						Filter="">
-						<File
-							RelativePath=".\state_manager_state.h">
-						</File>
-						<File
-							RelativePath=".\state_manager_state_inline.h">
-						</File>
-					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
