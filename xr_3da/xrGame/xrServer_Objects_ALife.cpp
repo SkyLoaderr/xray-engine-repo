@@ -898,14 +898,13 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
     PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Brightness"),		&spot_brightness,	0.1f, 5.f);
     PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Mass"),			&mass,				1.f, 1000.f);
 
+    // motions
     if (visual && PSkeletonAnimated(visual))
     {
-    	CSkeletonAnimated::accel		*ll_bones	= PSkeletonAnimated(visual)->LL_Bones();
     	CSkeletonAnimated::accel		*ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
         CSkeletonAnimated::accel::iterator _I, _E;
         AStringVec				vec;
         bool					bFound;
-        // bones
         _I						= ll_motions->begin();
         _E						= ll_motions->end();
         bFound					= false;
@@ -920,8 +919,15 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
 			startup_animation[0]= 0;
         PropValue				*tNetPacket = PHelper.CreateList	(values,	FHelper.PrepareKey(pref,s_name,"Startup animation"), startup_animation, sizeof(startup_animation), &vec);
         tNetPacket->OnChangeEvent			= OnChangeAnim;
-		// motions
-        vec.clear				();
+    }
+
+    // bones
+    if (visual && PKinematics(visual))
+    {
+    	CSkeletonAnimated::accel		*ll_bones	= PSkeletonAnimated(visual)->LL_Bones();
+        CSkeletonAnimated::accel::iterator _I, _E;
+        AStringVec				vec;
+        bool					bFound;
         _I						= ll_bones->begin();
         _E						= ll_bones->end();
         bFound					= false;
