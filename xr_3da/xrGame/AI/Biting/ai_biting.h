@@ -227,4 +227,8 @@ public:
 
 	CMotionManager			MotionMan; 
 
+	u32						m_dwDayTimeBegin;
+	u32						m_dwDayTimeEnd;
+	float					m_fMinSatiety;
+	float					m_fMaxSatiety;
 };

@@ -138,6 +138,13 @@ void CAI_Biting::Load(LPCSTR section)
 	m_dwProbRestStandIdle			= pSettings->r_u32   (section,"ProbRestStandIdle");
 	m_dwProbRestLieIdle				= pSettings->r_u32   (section,"ProbRestLieIdle");
 	m_dwProbRestTurnLeft			= pSettings->r_u32   (section,"ProbRestTurnLeft");
+
+	m_dwDayTimeBegin				= pSettings->r_u32	(section,"DayTime_Begin");
+	m_dwDayTimeEnd					= pSettings->r_u32	(section,"DayTime_End");		
+	m_fMinSatiety					= pSettings->r_float(section,"Min_Satiety");
+	m_fMaxSatiety					= pSettings->r_float(section,"Max_Satiety");
+
+
 	m_pPhysics_support				->in_Load(section);
 	R_ASSERT2 ((m_dwProbRestWalkFree + m_dwProbRestStandIdle + m_dwProbRestLieIdle + m_dwProbRestTurnLeft) == 100, "Probability sum isn't 1");
 }
