@@ -29,6 +29,9 @@ protected:
 	int					iHealth,	iMAX_Health;
 	int					iArmor,		iMAX_Armor;
 	float				fAccuracy;
+	
+	float				eye_fov;
+	float				eye_range;
 protected:	
 	// EVENT: health lost 
 	EVENT				eHealthLost_Begin;
@@ -113,6 +116,9 @@ public:
 	int						g_Squad				()	{ return id_Squad; }
 	int						g_Group				()	{ return id_Group; }
 
+	IC			float		ffGetFov			()  { return eye_fov;}
+	IC			float		ffGetRange			()  { return eye_range;}
+	
 	// Health calculations
 	virtual	BOOL			Hit					(int iLost, Fvector &dir, CEntity* who);	// TRUE if died
 	virtual void			HitSignal			(int HitAmount, Fvector& local_dir, CEntity* who) = 0;

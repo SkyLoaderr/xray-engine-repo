@@ -349,7 +349,7 @@ void CAI_Soldier::vfUpdateSounds(DWORD dwTimeDelta)
 void CAI_Soldier::soundEvent(CObject* who, int eType, Fvector& Position, float power)
 {
 	#ifdef WRITE_LOG
-		Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
+		//Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 	#endif
 
 	/**/
@@ -424,3 +424,31 @@ void CAI_Soldier::SelectSound(int &iIndex)
 		}
 }
 
+/**/
+bool CAI_Soldier::bfCheckForEntityVisibility(CEntity *tpEntity)
+{
+	Fvector tMonsterDirection, tDirection;
+	
+	CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(tpEntity);
+	if (tpCustomMonster)
+		tMonsterDirection.setHP(tpCustomMonster->r_torso_current.yaw,0);
+	else {
+		CActor *tpActor = dynamic_cast<CActor *>(tpEntity);
+		if (tpActor)
+			tMonsterDirection.setHP(tpActor->Orientation().yaw,0);
+		else
+			R_ASSERT(false);
+	}
+	
+	tDirection.sub(vPosition,tpEntity->Position());
+	float fDistance = tDirection.magnitude();
+	if (fDistance > tpEntity->ffGetRange() + EPS_L)
+		return(false);
+	tDirection.normalize_safe();
+	float fAlpha = tDirection.dotproduct(tMonsterDirection);
+	clamp(fAlpha,-.99999f,+.99999f);
+	fAlpha = acosf(fAlpha);
+	bool bVisible = fAlpha <= tpEntity->ffGetFov()/180.f*PI + EPS_L;
+	return(bVisible);
+}
+/**/

@@ -746,6 +746,39 @@ void CAI_Soldier::OnRecharge()
         vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
 }
 
+void CAI_Soldier::OnNoWeapon()
+{
+	WRITE_TO_LOG("Searching for weapon");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+		
+	SelectEnemy(Enemy);
+	
+	DWORD dwCurTime = Level().timeServer();
+	
+	INIT_SQUAD_AND_LEADER;
+
+	CGroup &Group = Squad.Groups[g_Group()];
+	
+	vfInitSelector(SelectorNoWeapon,Squad,Leader);
+
+	if (AI_Path.bNeedRebuild)
+		vfBuildPathToDestinationPoint(0);
+	else {
+		m_dwLastRangeSearch = 0;
+		vfSearchForBetterPosition(SelectorNoWeapon,Squad,Leader);
+	}
+
+	if (Enemy.Enemy)
+		vfAimAtEnemy();
+	else
+		SetLessCoverLook(AI_Node);
+
+	vfSetFire(false,Group);
+
+	vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
+}
+
 void CAI_Soldier::OnLookingOver()
 {
 	WRITE_TO_LOG("Looking over...");
@@ -1208,7 +1241,6 @@ void CAI_Soldier::OnSenseSomethingAlone()
 		m_bStateChanged = false;
 		GO_TO_PREV_STATE;
 	}
-
 	vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
 }
 
@@ -1243,6 +1275,8 @@ void CAI_Soldier::OnAttackFireAlone()
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == 0),aiSoldierRecharge)
 
+	CHECK_IF_SWITCH_TO_NEW_STATE(bfCheckForEntityVisibility(Enemy.Enemy),aiSoldierSteal);
+
 	AI_Path.TravelPath.clear();
 	
 	vfSaveEnemy();
@@ -1252,14 +1286,64 @@ void CAI_Soldier::OnAttackFireAlone()
 	
 	vfSetFire(true,Group);
 	
-	//vfSetMovementType(m_cBodyState,0);
-	/**
 	if (m_cBodyState != BODY_STATE_STAND)
 		vfSetMovementType(m_cBodyState,0);
 	else
 		vfSetMovementType(BODY_STATE_CROUCH,0);
-	/**/
-	vfSetMovementType(BODY_STATE_CROUCH,0);
+}
+
+void CAI_Soldier::OnSteal()
+{
+	WRITE_TO_LOG("Stealing to enemy...");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+	
+	SelectEnemy(Enemy);
+	
+	DWORD dwCurTime = Level().timeServer();
+	
+	//CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime) && (m_cBodyState != BODY_STATE_LIE),aiSoldierLyingDown)
+	
+	if (!(Enemy.Enemy)) {
+		vfSetFire(false,getGroup());
+		CHECK_IF_GO_TO_PREV_STATE(((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) || (!tSavedEnemy))
+		dwLostEnemyTime = Level().timeServer();
+		//GO_TO_NEW_STATE(aiSoldierPursuit);
+		GO_TO_PREV_STATE;
+	}
+	
+	//CHECK_IF_SWITCH_TO_NEW_STATE(!(Enemy.bVisible),aiSoldierFindEnemy)
+		
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+
+	Fvector tDistance;
+	tDistance.sub(Position(),Enemy.Enemy->Position());
+
+	//CHECK_IF_GO_TO_NEW_STATE((tDistance.square_magnitude() >= 25.f) && ((Group.m_dwFiring > 1) || ((Group.m_dwFiring == 1) && (!m_bFiring))),aiSoldierAttackRun)
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == 0),aiSoldierRecharge)
+
+	CHECK_IF_GO_TO_PREV_STATE(!bfCheckForEntityVisibility(Enemy.Enemy));
+
+	vfSaveEnemy();
+
+	INIT_SQUAD_AND_LEADER;
+	
+	vfInitSelector(SelectorPatrol,Squad,Leader);
+
+	if (AI_Path.bNeedRebuild)
+		vfBuildPathToDestinationPoint(0);
+	else
+		vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
+
+	vfAimAtEnemy();
+	
+	vfSetFire(true,Group);
+	
+	if (m_cBodyState != BODY_STATE_STAND)
+		vfSetMovementType(m_cBodyState,0);
+	else
+		vfSetMovementType(BODY_STATE_CROUCH,0);
 }
 
 void CAI_Soldier::Think()
@@ -1345,10 +1429,6 @@ void CAI_Soldier::Think()
 				LyingDown();
 				break;
 			}
-			case aiSoldierNoWeapon : {
-				NoWeapon();
-				break;
-			}
 			/**/
 			case aiSoldierDie : {
 				Die();
@@ -1384,6 +1464,14 @@ void CAI_Soldier::Think()
 			}
 			case aiSoldierRecharge : {
 				OnRecharge();
+				break;
+			}
+			case aiSoldierNoWeapon : {
+				OnNoWeapon();
+				break;
+			}
+			case aiSoldierSteal : {
+				OnSteal();
 				break;
 			}
 		}

@@ -48,7 +48,6 @@ class CAI_Soldier : public CCustomMonster
 		
 		aiSoldierJumping,
 		aiSoldierLyingDown,
-		aiSoldierNoWeapon,
 		aiSoldierRecharge,
 		/**/
 		aiSoldierDie,
@@ -60,6 +59,8 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierLookingOver,
 		aiSoldierAttackFireAlone,
 		aiSoldierRecharge,
+		aiSoldierNoWeapon,
+		aiSoldierSteal,
 	};
 	
 	enum EGestureStates {
@@ -350,7 +351,6 @@ class CAI_Soldier : public CCustomMonster
 		void OnUnderFire();
 		void OnJumping();
 		void OnLyingDown();
-		void OnNoWeapon();
 		/**/
 		void Die();
 		void OnPatrol();
@@ -361,10 +361,13 @@ class CAI_Soldier : public CCustomMonster
 		void OnLookingOver();
 		void OnAttackFireAlone();
 		void OnRecharge();
+		void OnNoWeapon();
+		void OnSteal();
 		// miscellanious funtions	
 		void SelectSound(int &iIndex);
 		void vfUpdateSounds(DWORD dwTimeDelta);
 	IC  CGroup getGroup() {return Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];};
+		bool bfCheckForEntityVisibility(CEntity *tpEntity);
 		bool bfCheckForVisibility(CEntity* tpEntity);
 		void vfLoadSounds();
 		void vfLoadSelectors(CInifile *ini, const char *section);

@@ -310,6 +310,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 									switch (m_cGestureState) {
 										case GESTURE_STATE_NONE: {
 											switch (eCurrentState) {
+												case aiSoldierRecharge :
 												case aiSoldierAttackFireAlone : {
 													tpGlobalAnimation = tSoldierAnimations.tNormal.tTorso.tpAim;
 												}
@@ -335,6 +336,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 									switch (m_cGestureState) {
 										case GESTURE_STATE_NONE: {
 											switch (eCurrentState) {
+												case aiSoldierRecharge :
 												case aiSoldierAttackFireAlone : {
 													tpGlobalAnimation = tSoldierAnimations.tCrouch.tTorso.tpAim;
 												}
@@ -408,6 +410,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 									switch (m_cGestureState) {
 										case GESTURE_STATE_NONE: {
 											switch (eCurrentState) {
+												case aiSoldierRecharge :
 												case aiSoldierAttackFireAlone : {
 													tpGlobalAnimation = tSoldierAnimations.tNormal.tTorso.tpAim;
 												}
@@ -433,6 +436,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 									switch (m_cGestureState) {
 										case GESTURE_STATE_NONE: {
 											switch (eCurrentState) {
+												case aiSoldierRecharge :
 												case aiSoldierAttackFireAlone : {
 													tpGlobalAnimation = tSoldierAnimations.tCrouch.tTorso.tpAim;
 												}
@@ -478,7 +482,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 									break;
 								}
 								case BODY_STATE_CROUCH : {
-									tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpReload;
+									tpTorsoAnimation = tSoldierAnimations.tCrouch.tTorso.tpReload;
 									break;
 								}
 								case BODY_STATE_LIE : {
@@ -697,7 +701,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 								}
 					//torso
 					switch (eCurrentState) {
-						/**
+						/**/
 						case aiSoldierRecharge : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
@@ -715,6 +719,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 							}
 							break;
 						}
+						/**
 						case aiSoldierAttackFire : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
