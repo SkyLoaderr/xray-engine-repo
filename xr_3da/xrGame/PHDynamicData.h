@@ -2,9 +2,8 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#pragma warning(disable:4995)
-#include <ode\ode.h>
-#pragma warning(default:4995)
+
+#include "ode_include.h"
 #include "PHInterpolation.h"
 #if !defined(AFX_PHDynamicData_H__ACC01646_B581_4639_B78C_30311432021B__INCLUDED_)
 #define AFX_PHDynamicData_H__ACC01646_B581_4639_B78C_30311432021B__INCLUDED_

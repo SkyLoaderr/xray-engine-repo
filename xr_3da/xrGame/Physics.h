@@ -322,6 +322,7 @@ public:
 			void			Activate				(const Fmatrix& start_from, bool disable=false);
 	virtual void			Deactivate				();
 	virtual void			setMass					(float M);
+	virtual float			getMass					(){return m_mass.mass;}
 	virtual void			setDensity				(float M);
 	virtual void			setInertia				(const Fmatrix& M)																					{}
 
@@ -511,6 +512,7 @@ public:
 	virtual void			Deactivate				()		;
 
 	virtual void			setMass					(float M)									;
+	virtual float			getMass					()											;
 	virtual void			setDensity				(float M)									;
 
 	virtual void			applyForce				(const Fvector& dir, float val)				{

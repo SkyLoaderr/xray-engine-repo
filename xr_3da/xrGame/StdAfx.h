@@ -24,9 +24,8 @@
 #include "..\fmesh.h"
 #include "..\BodyInstance.h"
 
-#pragma warning(disable:4995)
-#include <ode/ode.h>
-#pragma warning(default:4995)
+
+#include "ode_include.h"
 
 #include "Level.h"
 #include "GameMtlLib.h"

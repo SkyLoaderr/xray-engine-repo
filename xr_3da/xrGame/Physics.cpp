@@ -1491,6 +1491,16 @@ void CPHShell::setMass(float M){
 					);
 }
 
+float CPHShell::getMass()
+{
+float m=0.f;
+
+vector<CPHElement*>::iterator i;
+
+for(i=elements.begin();i!=elements.end();i++)	m+=(*i)->getMass();
+
+return m;
+}
 void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disable){
 	if(bActive)
 		return;

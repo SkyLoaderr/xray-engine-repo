@@ -26,6 +26,8 @@ public:
 	
 	virtual void			setMass					(float M)									= 0;
 	virtual void			setDensity				(float M)									= 0;
+	virtual float			getMass					()											= 0;
+
 	
 	virtual void			applyForce				(const Fvector& dir, float val)				= 0;
 	virtual void			applyImpulse			(const Fvector& dir, float val)				= 0;

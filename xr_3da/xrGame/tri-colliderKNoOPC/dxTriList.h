@@ -4,10 +4,8 @@
 #define __DXTRILIST_INCLUDED__
 
 
+#include "..\ode_include.h"
 
-#pragma warning(disable:4995)
-#include <ode\\ode.h>
-#pragma warning(default:4995)
 
 
 
