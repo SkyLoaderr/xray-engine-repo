@@ -172,11 +172,6 @@ void CAI_Crow::shedule_Update(u32 DT)
 
 	inherited::shedule_Update(DT);
 
-	if (m_pPhysicsShell) {
-		m_pPhysicsShell->Update	();
-		XFORM().set				(m_pPhysicsShell->mXFORM);
-	}
-
 	if (st_target!=st_current) {
 		switch(st_target){
 		case eFlyUp: 
@@ -294,6 +289,11 @@ void CAI_Crow::state_DeathFall()
 void CAI_Crow::UpdateCL()
 {
 	inherited::UpdateCL();
+
+	if (m_pPhysicsShell) {
+		m_pPhysicsShell->Update	();
+		XFORM().set				(m_pPhysicsShell->mXFORM);
+	}
 
 	switch (st_current){
 	case eFlyIdle:
