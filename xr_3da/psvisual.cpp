@@ -179,7 +179,7 @@ u32 CPSVisual::RenderTO	(FVF::TL* dest)
 	Fmatrix mSpriteTransform	= Device.mFullTransform;
 
 	float	w_2					= float(::Render->getTarget()->get_width()) / 2;
-	float	h_2					= float(::Render->getTarget()->get_heigth()) / 2;
+	float	h_2					= float(::Render->getTarget()->get_height()) / 2;
 	float	fov_scale			= float(::Render->getTarget()->get_width()) / (Device.fFOV/90.f);
 	
     int 	mb_samples 			= 1;
