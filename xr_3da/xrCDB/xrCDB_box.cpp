@@ -195,6 +195,10 @@ public:
 		if (!_tri())			return;
 		RESULT& R	= dest->r_add();
 		R.id		= prim;
+		R.verts[0]	= v0;
+		R.verts[1]	= v1;
+		R.verts[2]	= v2;
+		R.dummy		= T.dummy;
 	}
 	void			_stab		(const AABBNoLeafNode* node)
 	{

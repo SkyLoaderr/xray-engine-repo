@@ -43,10 +43,18 @@ public:
 			{
 				RESULT& R	= dest->r_add();
 				R.id		= prim;
+				R.verts[0]	= verts[ tris[prim].verts[0] ];
+				R.verts[1]	= verts[ tris[prim].verts[1] ];
+				R.verts[2]	= verts[ tris[prim].verts[2] ];
+				R.dummy		= tris[prim].dummy;
 			}
 		} else {
 			RESULT& R	= dest->r_add();
 			R.id		= prim;
+			R.verts[0]	= verts[ tris[prim].verts[0] ];
+			R.verts[1]	= verts[ tris[prim].verts[1] ];
+			R.verts[2]	= verts[ tris[prim].verts[2] ];
+			R.dummy		= tris[prim].dummy;
 		}
 	}
 	
