@@ -162,9 +162,9 @@ function body_state:__init(npc)
 									[4] = { "d_4_idle_0",
 											"d_4_idle_2" }}},
 		hello		= {	state_id = xr_state.stand,
-						prop	= { maxidle = 5,
-									sumidle = 3,
-									rnd = 80 },
+						prop	= { maxidle = 3,
+									sumidle = 1,
+									rnd = 100 },
 						into	= nil,
 						out		= nil,
 						idle	= { [0]	= "idle_0_idle_1",
@@ -178,6 +178,7 @@ function body_state:__init(npc)
 									[3]	= { "hello_3_idle_0" },
 									[4]	= {	"hello_4_idle_0" }}}
 	}
+	--print_table(self.animations)
 end
 --' ѕровер€ет закончили ли мы изменение положени€ тела
 function body_state:finish_state()
@@ -296,21 +297,26 @@ function body_state:anim_update(type)
 										self.animations[self.states.current_state].prop.sumidle) * 1000
 		if math.random(100) < self.animations[self.states.current_state].prop.rnd then
 			local r
-			if self.states.last_id == nil then
-				r = math.random(table.getn(self.animations[self.states.current_state].rnd))
-			else
-				r = math.random(table.getn(self.animations[self.states.current_state].rnd)-1)
-				if r >= self.states.last_id then
-					r = r + 1
+			if table.getn(self.animations[self.states.current_state].rnd[self:weapon_slot()]) > 1 then			
+				if self.states.last_id == nil then
+					r = math.random(table.getn(self.animations[self.states.current_state].rnd))
+				else
+					r = math.random(table.getn(self.animations[self.states.current_state].rnd)-1)
+					if r >= self.states.last_id then
+						r = r + 1
+					end
 				end
+				self.states.last_id = r
+			else
+				r = 1
 			end
-			self.states.last_id = r
+			
 			self.npc:clear_animations()
 			self.npc:add_animation (self.animations[self.states.current_state].rnd[self:weapon_slot()][r], true)
 			self.npc:add_animation (self.animations[self.states.current_state].idle[self:weapon_slot()], true)
 		end
 	end
-	printf("animcount %d", self.npc:animation_count())
+	--printf("animcount %d", self.npc:animation_count())
 	
 	return self:finish_state() and self.npc:animation_count() == 0
 end                            
