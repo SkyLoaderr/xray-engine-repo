@@ -42,12 +42,14 @@ public:
 	typedef CALifeMonsterParams inherited;
 
 	float							m_fCumulativeItemMass;
+	u32								m_dwMoney;
 	OBJECT_VECTOR					m_tpItemIDs;
 
 	virtual void					Save(CFS_Memory	&tMemoryStream)
 	{
 		inherited::Save				(tMemoryStream);
 		tMemoryStream.Wfloat		(m_fCumulativeItemMass);
+		tMemoryStream.Wdword		(m_dwMoney);
 		tMemoryStream.Wdword		(m_tpItemIDs.size());
 		OBJECT_IT					I = m_tpItemIDs.begin();
 		OBJECT_IT					E = m_tpItemIDs.end();
@@ -59,6 +61,7 @@ public:
 	{
 		inherited::Load				(tFileStream);
 		m_fCumulativeItemMass		= tFileStream.Rfloat();
+		m_dwMoney					= tFileStream.Rdword();
 		m_tpItemIDs.resize			(tFileStream.Rdword());
 		OBJECT_IT					I = m_tpItemIDs.begin();
 		OBJECT_IT					E = m_tpItemIDs.end();
@@ -70,6 +73,7 @@ public:
 	{
 		inherited::Init				(tSpawnID,tpSpawnPoints);
 		m_fCumulativeItemMass		= 0.0f;
+		m_dwMoney					= 0;
 		m_tpItemIDs.clear			();
 	};
 };

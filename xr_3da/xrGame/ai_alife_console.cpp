@@ -211,6 +211,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 		Msg("* Max item mass : %7.2f",tpALifeHuman->m_fMaxItemMass);
 		
 		Msg("* Health        : %d",tpALifeHuman->m_tHumanParams.m_iHealth);
+		Msg("* Money         : %d",tpALifeHuman->m_tHumanParams.m_dwMoney);
 		Msg("* Item mass     : %7.2f",tpALifeHuman->m_tHumanParams.m_fCumulativeItemMass);
 		Msg("* Items         :");
 		{
@@ -253,6 +254,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 		for (int i=0; I != E; I++, i++) {
 			Msg("* Member ID [%d]: %d",i,*I);
 			Msg("* Health        : %d",(*I).m_iHealth);
+			Msg("* Health        : %d",(*I).m_dwMoney);
 			Msg("* Item mass     : %7.2f",(*I).m_fCumulativeItemMass);
 			Msg("* Items         :");
 			{
