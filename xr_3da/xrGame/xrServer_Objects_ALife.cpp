@@ -118,12 +118,12 @@ void CSE_ALifeTask::UPDATE_Write			(NET_Packet &tNetPacket)
 	tNetPacket.w				(&m_tTaskType,		sizeof(m_tTaskType));
 	switch (m_tTaskType) {
 		case eTaskTypeSearchForItemCL : {
-			tNetPacket.w		(&m_tClassID,		sizeof(m_tClassID));
+			tNetPacket.w		(&m_caSection,		sizeof(m_caSection));
 			tNetPacket.w		(&m_tLocationID,	sizeof(m_tLocationID));
 			break;
 		}
 		case eTaskTypeSearchForItemCG : {
-			tNetPacket.w		(&m_tClassID,		sizeof(m_tClassID));
+			tNetPacket.w		(&m_caSection,		sizeof(m_caSection));
 			tNetPacket.w		(&m_tGraphID,		sizeof(m_tGraphID));
 			break;
 		}
@@ -152,12 +152,12 @@ void CSE_ALifeTask::UPDATE_Read				(NET_Packet &tNetPacket)
 	tNetPacket.r				(&m_tTaskType,	sizeof(m_tTaskType));
 	switch (m_tTaskType) {
 		case eTaskTypeSearchForItemCL : {
-			tNetPacket.r		(&m_tClassID,	sizeof(m_tClassID));
+			tNetPacket.r		(&m_caSection,	sizeof(m_caSection));
 			tNetPacket.r		(&m_tLocationID,sizeof(m_tLocationID));
 			break;
 		}
 		case eTaskTypeSearchForItemCG : {
-			tNetPacket.r		(&m_tClassID,	sizeof(m_tClassID));
+			tNetPacket.r		(&m_caSection,	sizeof(m_caSection));
 			tNetPacket.r		(&m_tGraphID,	sizeof(m_tGraphID));
 			break;
 		}
@@ -321,7 +321,7 @@ CSE_ALifeObject::CSE_ALifeObject			(LPCSTR caSection) : CSE_Abstract(caSection)
 {
 	m_bOnline					= false;
 	m_fDistance					= 0.0f;
-	m_tClassID					= _CLASS_ID(-1);
+	m_caSection					= _CLASS_ID(-1);
 	ID							= _OBJECT_ID(-1);
 	m_tGraphID					= _GRAPH_ID(-1);
 	m_tGraphID					= _SPAWN_ID(-1);

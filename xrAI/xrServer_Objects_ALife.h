@@ -46,7 +46,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeTask,CPureServerObject)
 	float							m_fCost;
 	ETaskType						m_tTaskType;
 	union {
-		_CLASS_ID					m_tClassID;
+		_CLASS_ID					m_caSection;
 		_OBJECT_ID					m_tObjectID;
 	};
 	union {
@@ -79,7 +79,7 @@ SERVER_ENTITY_DECLARE_END
 class CSE_ALifeObject : virtual public CSE_Abstract {
 public:
 	typedef CSE_Abstract inherited;
-	_CLASS_ID						m_tClassID;
+	_CLASS_ID						m_caSection;
 	_GRAPH_ID						m_tGraphID;
 	_SPAWN_ID						m_tSpawnID;
 	float							m_fDistance;

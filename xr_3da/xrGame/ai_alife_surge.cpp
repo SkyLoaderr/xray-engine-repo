@@ -685,7 +685,6 @@ void CSE_ALifeSimulator::vfUpdateTasks()
 		U32_SET_IT				i = (*J).second.begin();
 		U32_SET_IT				e = (*J).second.end();
 		for ( ; i != e; i++) {
-			CLASS_ID			l_tClassID = pSettings->r_clsid((*I).first,"class");
 			// iterating on all the active anomalies by the particular type
 			ANOMALY_P_IT		II = m_tpCrossAnomalies[*i].begin();
 			ANOMALY_P_IT		EE = m_tpCrossAnomalies[*i].end();
@@ -705,7 +704,7 @@ void CSE_ALifeSimulator::vfUpdateTasks()
 				// creating new task
 				CSE_ALifeTask				*l_tpALifeTask = xr_new<CSE_ALifeTask>();
 				l_tpALifeTask->m_tTaskType	= eTaskTypeSearchForItemCG;
-				l_tpALifeTask->m_tClassID	= l_tClassID;
+				strcpy						(l_tpALifeTask->m_caSection,(*I).first);
 				l_tpALifeTask->m_tGraphID	= (*jj)->m_tGraphID;
 				l_tpALifeTask->m_tTimeID	= tfGetGameTime();
 				l_tpALifeTask->m_tCustomerID= (*jj)->ID;

@@ -102,7 +102,7 @@ bool CSE_ALifeObjectRegistry::bfCheckIfTaskCompleted(CSE_Abstract &CSE_Abstract,
 		switch (tPersonalTask.m_tTaskType) {
 			case eTaskTypeSearchForItemCL :
 			case eTaskTypeSearchForItemCG : {
-				if (m_tObjectRegistry[*I]->m_tClassID == tPersonalTask.m_tClassID)
+				if (!strcmp(m_tObjectRegistry[*I]->s_name,tPersonalTask.m_caSection))
 					return(true);
 				break;
 			}
