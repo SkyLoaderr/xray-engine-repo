@@ -254,7 +254,7 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
         {
             PDPNMSG_RECEIVE	msg = PDPNMSG_RECEIVE(pMessage);
 			void*	m_data		= msg->pReceiveData;
-			u32	m_size		= msg->dwReceiveDataSize;
+			u32		m_size		= msg->dwReceiveDataSize;
 			DPNID   m_sender	= msg->dpnidSender;
 
 			MSYS_PING*	m_ping	= (MSYS_PING*)m_data;
