@@ -55,7 +55,7 @@ HRESULT WriteCompressedData(void* data, int miplevel, DWORD size){
 	FillMemory(data,size,0xff);
 	return 0;
 }
-
+  
 ENGINE_API DWORD* Build32MipLevel(DWORD &_w, DWORD &_h, DWORD &_p, DWORD *pdwPixelSrc)
 {
 	R_ASSERT(pdwPixelSrc);
