@@ -15,24 +15,30 @@ function main ()
     wait (10000)
 
 	action (stalker1, anim ("sidya_kurit_2"), cond (cond.anim_end))
-	action (stalker3, anim ("spit_ 0"), cond (cond.time_end, 10000000))
+	action (stalker3, anim ("spit_ 0"), cond (cond.time_end, time_infinite))
+    printf ("Bazar1 start")
 	action (stalker2, sound ("scripts\\rolik\\story1", "bip01_head", vector ():set (0, 0, 0), vector ():set (0, 0, 0), false),
             anim ("stalker_3_1"), cond (cond.sound_end))
 
     while stalker2:action () do wait () end
+    printf ("Bazar1 end")
     reset_action (stalker2, military3_2.script_name ())
     action (stalker2, anim ("stalker_3_2"), cond (cond.time_end, time_infinite))
     
     wait (3000)
     
+    printf ("Bazar2 start")
     update_action (stalker1, military3_2.script_name, 
                    sound ("scripts\\rolik\\hm", "bip01_head", vector ():set (0, 0, 0), vector ():set (0, 0, 0), false))
                    
     wait (2000)
+    printf ("Bazar2 end")
     
+    printf ("Bazar3 start")
     update_action (stalker3, military3_2.script_name,                    
                    sound ("scripts\\rolik\\crazy_man", "bip01_head", vector ():set (0, 0, 0), vector ():set (0, 0, 0), false))
 
+    printf ("Bazar3 end")
 
     wait (time_infinite)                   
 
