@@ -12,12 +12,14 @@
 #include "luabind/return_reference_to_policy.hpp"
 #include "luabind/out_value_policy.hpp"
 #include "luabind/adopt_policy.hpp"
+
+#include "ai_script_classes.h"
+
 #include "script_world_property.h"
 #include "script_world_state.h"
-#include "script_property_evaluator.h"
-#include "script_action.h"
-#include "script_action_planner.h"
-#include "ai_script_classes.h"
+#include "script_property_evaluator_wrapper.h"
+#include "script_action_wrapper.h"
+#include "script_action_planner_wrapper.h"
 
 using namespace luabind;
 using namespace Script;
