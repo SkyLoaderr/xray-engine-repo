@@ -7,11 +7,14 @@
 #include "ParticleSystem.h"
 #include "ParticleGroup.h"
 
+#include				"PSRuntime.h"
+DEFINE_VECTOR			(PS::SDef_RT, PSList, PSIt);
+
 class CPSLibrary{
-    PS::PSVec			m_PSs;
+    PSList				m_PSs;
     bool 				Load			(LPCSTR nm);
     void				Save			(LPCSTR nm);
-    AnsiString			m_CurrentPS;
+    string256			m_CurrentPS;
 
     PS::PGVec			m_PGs;
 public:
@@ -39,11 +42,14 @@ public:
     void				RenamePS		(PS::SDef* src, LPCSTR new_name);
     void				RenamePG		(PS::CPGDef* src, LPCSTR new_name);
 
-	PS::SDef*			GetCurrentPS	(){return m_CurrentPS.IsEmpty()?0:FindPS(m_CurrentPS.c_str());}
+	PS::SDef*			GetCurrentPS	(){return m_CurrentPS[0]?0:FindPS(m_CurrentPS);}
     PS::SDef*			ChoosePS		(bool bSetCurrent=true);
 
     void				Reload			();
     void				Save			();
+
+	void				OnDeviceCreate	();
+	void				OnDeviceDestroy	();
 };
 
 #define PSLIB_FILENAME 			"particles2.xr"

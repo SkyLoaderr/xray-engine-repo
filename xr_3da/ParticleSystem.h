@@ -147,6 +147,7 @@ struct ENGINE_API SDef: public SParams
     string64			m_TextureName;
 	u32  				m_dwCreationTime;
     SEmitterDef			m_DefaultEmitter;
+	Shader*				m_CachedShader;
 
     void 				Reset()
 	{
@@ -156,6 +157,7 @@ struct ENGINE_API SDef: public SParams
 		m_TextureName[0]= 0;
 		m_dwCreationTime= 0;
 		m_DefaultEmitter.Reset();
+		m_CachedShader	= 0;
 	}
     void				InitDefault()
 	{

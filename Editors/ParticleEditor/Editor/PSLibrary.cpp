@@ -9,21 +9,36 @@
 
 CPSLibrary PSLib;
 
+#define _game_data_			"$game_data$"
+
 //----------------------------------------------------
 void CPSLibrary::OnCreate()
 {
-	AnsiString fn;
+	m_CurrentPS[0]	= 0;
+	string256 fn;
     FS.update_path(fn,_game_data_,PSLIB_FILENAME);
-	if (FS.exist(fn.c_str())){
-    	if (!Load(fn.c_str())) Msg("PS Library: Unsupported version.");
+	if (FS.exist(fn)){
+    	if (!Load(fn)) Msg("PS Library: Unsupported version.");
     }else{
-    	ELog.Msg(mtError,"Can't find file: '%s'",fn.c_str());
+    	Msg("Can't find file: '%s'",fn);
     }
 }
 
 void CPSLibrary::OnDestroy()
 {
     m_PSs.clear();
+}
+
+//----------------------------------------------------
+void CPSLibrary::OnDeviceCreate	()
+{
+	for (PSIt it = m_PSs.begin(); it!=m_PSs.end(); it++)
+		it->m_CachedShader	= Device.Shader.Create(it->m_ShaderName,it->m_TextureName);
+}
+void CPSLibrary::OnDeviceDestroy()
+{
+	for (PSIt it = m_PSs.begin(); it!=m_PSs.end(); it++)
+		Device.Shader.Delete(it->m_CachedShader);
 }
 
 PS::SDef* CPSLibrary::FindPS(LPCSTR Name)
