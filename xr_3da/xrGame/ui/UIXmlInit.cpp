@@ -159,8 +159,20 @@ bool CUIXmlInit::InitButton(CUIXml& xml_doc, const char* path,
 	
 	pWnd->Init(texture, x, y, width, height);
 	pWnd->SetAccelerator(accel);
-	
-	char* text = xml_doc.Read(strconcat(buf,path,":text"), index, NULL);
+
+	// Init font from xml config file
+	CGameFont *LocalFont = NULL;
+	u32 cl;
+
+	ref_str text_path = strconcat(buf,path,":text");
+	InitFont(xml_doc, *text_path, index, cl, LocalFont);
+	if (LocalFont)
+	{
+		pWnd->SetFont(LocalFont);
+		pWnd->SetTextColor(cl);
+	}
+
+	char* text = xml_doc.Read(buf, index, NULL);
 	pWnd->SetText(text);
 
 	return true;
@@ -220,8 +232,10 @@ bool CUIXmlInit::InitListWnd(CUIXml& xml_doc, const char* path,
 	ref_str text_path = strconcat(buf,path,":font");
 	InitFont(xml_doc, *text_path, index, cl, LocalFont);
 	if (LocalFont)
+	{
 		pWnd->SetFont(LocalFont);
-	pWnd->SetTextColor(cl);
+		pWnd->SetTextColor(cl);
+	}
 
 	pWnd->Init(x,y, width,height,item_height);
 	pWnd->EnableActiveBackground(!!active_background);
