@@ -18,11 +18,11 @@ namespace FOLDER{
 
     bool 			 	MakeFullName		(TElTreeItem* begin_item, TElTreeItem* end_item, AnsiString& folder);
     bool 			 	MakeName			(TElTreeItem* begin_item, TElTreeItem* end_item, AnsiString& folder, bool bOnlyFolder);
-	TElTreeItem* 		FindItemInFolder	(TElTree* tv, TElTreeItem* start_folder, const AnsiString& name);
-	TElTreeItem* 		FindItemInFolder	(DWORD type, TElTree* tv, TElTreeItem* start_folder, const AnsiString& name);
+	TElTreeItem* 		FindItemInFolder	(TElTree* tv, TElTreeItem* start_folder, const AnsiString& name, bool bIgnoreExt=false);
+	TElTreeItem* 		FindItemInFolder	(DWORD type, TElTree* tv, TElTreeItem* start_folder, const AnsiString& name, bool bIgnoreExt=false);
     TElTreeItem* 		AppendFolder		(TElTree* tv, LPCSTR full_name);
 	TElTreeItem*		AppendObject		(TElTree* tv, LPCSTR full_name);
-    TElTreeItem* 		FindObject			(TElTree* tv, LPCSTR full_name, TElTreeItem** last_valid_node=0, int* last_valid_idx=0);
+    TElTreeItem* 		FindObject			(TElTree* tv, LPCSTR full_name, TElTreeItem** last_valid_node=0, int* last_valid_idx=0, bool bIgnoreExt=false);
     TElTreeItem* 		FindFolder			(TElTree* tv, LPCSTR full_name, TElTreeItem** last_valid_node=0, int* last_valid_idx=0);
     TElTreeItem* 		FindItem			(TElTree* tv, LPCSTR full_name, TElTreeItem** last_valid_node=0, int* last_valid_idx=0);
     void 				GenerateFolderName	(TElTree* tv, TElTreeItem* node,AnsiString& name,LPCSTR pref="folder");
@@ -31,8 +31,6 @@ namespace FOLDER{
 	LPCSTR		 		GetObjectName		(const AnsiString& full_name, AnsiString& dest);
     LPCSTR				ReplacePart			(LPCSTR old_name, LPCSTR ren_part, int level, LPSTR dest);
     // drag'n'drop
-    TElTreeItem*		DragItem;
-    TOnAfterDrag		DragAction;
 	void 				DragDrop			(TObject *Sender, TObject *Source, int X, int Y);
 	void 				DragOver			(TObject *Sender, TObject *Source, int X, int Y, TDragState State, bool &Accept);
 	void 				StartDrag			(TObject *Sender, TDragObject *&DragObject, TOnAfterDrag after_drag);

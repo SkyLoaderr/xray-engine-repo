@@ -292,7 +292,7 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
 	if (bMultiSel&&(itm_cnt>1)){
 	    char T[MAX_OBJ_NAME];
         for (int i=0; i<itm_cnt; i++){
-            TElTreeItem* itm_node = FOLDER::FindObject(tvItems,_GetItem(m_LastSelection[form->Mode].c_str(),i,T));
+            TElTreeItem* itm_node = FOLDER::FindObject(tvItems,_GetItem(m_LastSelection[form->Mode].LowerCase().c_str(),i,T),0,0,true);
 	        TElTreeItem* fld_node = 0;
             if (itm_node){
 				tvMulti->Items->AddObject(0,_GetItem(m_LastSelection[form->Mode].c_str(),i,T),(void*)FOLDER::TYPE_OBJECT);
@@ -303,7 +303,7 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
             }
         }
     }else{
-        TElTreeItem* itm_node = FOLDER::FindObject(tvItems,m_LastSelection[form->Mode].c_str());
+        TElTreeItem* itm_node = FOLDER::FindObject(tvItems,m_LastSelection[form->Mode].LowerCase().c_str(),0,0,true);
         TElTreeItem* fld_node = 0;
         if (itm_node){
         	if (bMultiSel){

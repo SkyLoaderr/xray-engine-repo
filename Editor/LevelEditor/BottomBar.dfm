@@ -27,7 +27,7 @@ object fraBottomBar: TfraBottomBar
       object paStatus: TPanel
         Left = 150
         Top = 0
-        Width = 192
+        Width = 201
         Height = 15
         Align = alClient
         Alignment = taLeftJustify
@@ -40,7 +40,7 @@ object fraBottomBar: TfraBottomBar
         ParentFont = False
         TabOrder = 0
         object cgProgress: TCGauge
-          Left = 63
+          Left = 72
           Top = 2
           Width = 127
           Height = 11

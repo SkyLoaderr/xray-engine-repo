@@ -18,6 +18,29 @@
 #include "ElTreeAdvEdit.hpp"
 #include <Mask.hpp>
 
+enum EPropType{
+	PROP_WAVE 			= 0x1000,
+	PROP_FLAG,
+	PROP_TOKEN,
+	PROP_TOKEN2,
+    PROP_TOKEN3,
+	PROP_LIST,
+	PROP_INTEGER,
+	PROP_FLOAT,
+    PROP_VECTOR,
+	PROP_BOOL,
+	PROP_MARKER,
+	PROP_MARKER2,
+	PROP_COLOR,
+	PROP_TEXT,
+	PROP_SH_ENGINE,
+	PROP_SH_COMPILE,
+	PROP_TEXTURE,
+	PROP_TEXTURE2,
+	PROP_ANSI_SH_ENGINE,
+	PROP_ANSI_SH_COMPILE,
+	PROP_ANSI_TEXTURE
+};
 // refs
 struct 	xr_token;
 class PropValue;
@@ -26,6 +49,7 @@ typedef void 	__fastcall (__closure *TBeforeEdit)		(TElTreeItem* item, PropValue
 typedef void 	__fastcall (__closure *TAfterEdit)		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
 typedef void 	__fastcall (__closure *TOnDrawValue)	(PropValue* sender, LPVOID draw_val);
 typedef void 	__fastcall (__closure *TOnModifiedEvent)(void);
+typedef void 	__fastcall (__closure *TOnItemFocused)	(TElTreeItem* item);
 
 class PropValue{
 public:
@@ -41,6 +65,12 @@ class TextValue: public PropValue{
 public:
 	LPSTR				val;
 						TextValue		(LPSTR value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),PropValue(after,before,draw){};
+    virtual LPCSTR		GetText			();
+};
+class AnsiTextValue: public PropValue{
+public:
+	AnsiString*			val;
+						AnsiTextValue	(AnsiString* value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),PropValue(after,before,draw){};
     virtual LPCSTR		GetText			();
 };
 class IntValue: public PropValue{
@@ -159,17 +189,15 @@ __published:	// IDE-managed Components
 	void __fastcall edTextExit(TObject *Sender);
 	void __fastcall edTextKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
+	void __fastcall tvPropertiesItemFocused(TObject *Sender);
 private:	// User declarations
     void __fastcall PMItemClick(TObject *Sender);
 	void __fastcall CustomClick(TElTreeItem* item);
-	void __fastcall TextureClick(TElTreeItem* item);
-	void __fastcall ShaderEngineClick(TElTreeItem* item);
-	void __fastcall ShaderCompileClick(TElTreeItem* item);
-	void __fastcall STextureClick(TElTreeItem* item);
-	void __fastcall SShaderEngineClick(TElTreeItem* item);
-	void __fastcall SShaderCompileClick(TElTreeItem* item);
 	void __fastcall ColorClick(TElTreeItem* item);
 	void __fastcall VectorClick(TElTreeItem* item);
+
+	void __fastcall CustomTextClick(TElTreeItem* item);
+	void __fastcall CustomAnsiTextClick(TElTreeItem* item);
 
 	Graphics::TBitmap* m_BMCheck;
 	Graphics::TBitmap* m_BMDot;
@@ -191,11 +219,12 @@ private:	// User declarations
     void CancelLWText();
 
     PropValVec m_Params;
-    TOnModifiedEvent OnModifiedEvent;
+    TOnModifiedEvent 	OnModifiedEvent;
+    TOnItemFocused      OnItemFocused;
     void Modified(){bModified=true; if (OnModifiedEvent) OnModifiedEvent();}
 public:		// User declarations
 	__fastcall TfrmProperties		        (TComponent* Owner);
-	static TfrmProperties* CreateProperties	(TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0);
+	static TfrmProperties* CreateProperties	(TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0, TOnItemFocused focused=0);
 	static void 	DestroyProperties		(TfrmProperties*& props);
     void __fastcall ShowPropertiesModal		();
     void __fastcall ShowProperties			();
@@ -210,7 +239,7 @@ public:		// User declarations
     void __fastcall EndFillMode				(bool bFullExpand=true);
     TElTreeItem* __fastcall BeginEditMode	(LPCSTR section=0);
     void __fastcall EndEditMode				(TElTreeItem* expand_node=0);
-	TElTreeItem* __fastcall AddItem			(TElTreeItem* parent, DWORD type, LPCSTR key, LPVOID value=0);
+	TElTreeItem* __fastcall AddItem			(TElTreeItem* parent, EPropType type, LPCSTR key, LPVOID value=0);
     void __fastcall GetColumnWidth			(int& c0, int& c1)
     {
     	c0=tvProperties->HeaderSections->Item[0]->Width;
@@ -274,6 +303,12 @@ public:		// User declarations
         m_Params.push_back(V);
     	return V;
     }
+	AnsiTextValue* 	MakeAnsiTextValue		(LPVOID val, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+    {
+    	AnsiTextValue* V=new AnsiTextValue((AnsiString*)val,after,before,draw);
+        m_Params.push_back(V);
+    	return V;
+    }
 	IntValue* 		MakeIntValue			(LPVOID val, int mn=0, int mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
     	IntValue* V	=new IntValue((int*)val,mn,mx,inc,after,before,draw);
@@ -296,31 +331,14 @@ public:		// User declarations
     {
     	tvProperties->IsUpdating = bVal;
     }
-};
-//---------------------------------------------------------------------------
-
-enum EProperties{
-	PROP_WAVE 			= 0x1000,
-	PROP_FLAG,
-	PROP_TOKEN,
-	PROP_TOKEN2,
-    PROP_TOKEN3,
-	PROP_LIST,
-	PROP_INTEGER,
-	PROP_FLOAT,
-    PROP_VECTOR,
-	PROP_BOOL,
-	PROP_MARKER,
-	PROP_MARKER2,
-	PROP_COLOR,
-	PROP_TEXT,
-	PROP_SH_ENGINE,
-	PROP_SH_COMPILE,
-	PROP_TEXTURE,
-	PROP_TEXTURE2,
-	PROP_S_SH_ENGINE,
-	PROP_S_SH_COMPILE,
-	PROP_S_TEXTURE
+	static IC LPVOID		GetItemData		(TElTreeItem* item){return item->Data;}
+	static IC bool 			IsItemType		(TElTreeItem* item, EPropType type){return item->Tag==type;}
+	static IC EPropType 	GetItemType		(TElTreeItem* item){return (EPropType)item->Tag;}
+	static IC LPCSTR	 	GetItemColumn	(TElTreeItem* item, int col){
+    	static AnsiString t;
+        if (col<item->ColumnText->Count) t=item->ColumnText->Strings[col];
+        return t.c_str();
+    }
 };
 //---------------------------------------------------------------------------
 #endif

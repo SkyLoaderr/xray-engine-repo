@@ -45,7 +45,7 @@ __fastcall TfrmEditLibrary::TfrmEditLibrary(TComponent* Owner)
 {
     DEFINE_INI(fsStorage);
 	m_pEditObject = new CSceneObject();
-    m_Props = TfrmPropertiesEObject::CreateProperties();
+    m_Props = TfrmPropertiesEObject::CreateProperties(0,alNone,OnModified);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::ShowEditor()
@@ -63,7 +63,7 @@ CSceneObject* __fastcall TfrmEditLibrary::RayPick(const Fvector& start, const Fv
     	float dist=flt_max;
         if (form->m_pEditObject->RayPick(dist,start,direction,pinf)){
         	R_ASSERT(pinf&&pinf->e_mesh&&pinf->e_obj);
-//S        	TfrmPropertiesObject::OnPick(*pinf);
+        	form->m_Props->OnPick(*pinf);
 			pinf->s_obj=form->m_pEditObject;
 	        return form->m_pEditObject;
         }
@@ -168,7 +168,10 @@ bool TfrmEditLibrary::FinalClose(){
 void TfrmEditLibrary::OnModified(){
 	if (!form) return;
     form->ebSave->Enabled = true;
-    if (form->m_pEditObject->GetReference()) modif_map.insert(make_pair(form->m_pEditObject->GetRefName(),0));
+    if (form->m_pEditObject->GetReference()){
+    	modif_map.insert(make_pair(form->m_pEditObject->GetRefName(),0));
+		form->m_pEditObject->UpdateTransform();
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -202,6 +205,7 @@ void __fastcall TfrmEditLibrary::tvObjectsItemFocused(TObject *Sender)
         	if (m_Props->IsModified()&&m_pEditObject->GetReference())
             	modif_map.insert(make_pair(m_pEditObject->GetRefName(),0));
             m_pEditObject->SetReference(nm.c_str());
+            m_pEditObject->UpdateTransform();
 //            ZoomObject();
 		    ebMakeThm->Enabled = true;
         }
@@ -223,6 +227,7 @@ void __fastcall TfrmEditLibrary::cbPreviewClick(TObject *Sender)
 	    AnsiString name;
     	FOLDER::MakeName(node,0,name,false);
 		m_pEditObject->SetReference(name.c_str());
+		m_pEditObject->UpdateTransform();
 	    ebMakeThm->Enabled = true;
         ZoomObject();
     }
@@ -257,10 +262,9 @@ void __fastcall TfrmEditLibrary::ebPropertiesClick(TObject *Sender)
 	    AnsiString name;
     	FOLDER::MakeName(node,0,name,false);
 		m_pEditObject->SetReference(name.c_str());
+		m_pEditObject->UpdateTransform();
         UpdateObjectProperties();
         m_Props->ShowProperties();
-    }else{
-        ELog.DlgMsg(mtInformation,"Select object to edit.");
     }
 }
 //---------------------------------------------------------------------------

@@ -25,9 +25,7 @@ struct	st_ObjectDB;
 
 class CSurface
 {
-#ifdef _ACTOR_EDITOR
 public:
-#endif
 	AnsiString		m_Name;
     AnsiString		m_Texture;	//
     AnsiString		m_VMap;		//

@@ -147,6 +147,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebSelectShaderXRLCClick(TObject *Sender);
 	void __fastcall tvMeshesItemFocused(TObject *Sender);
 	void __fastcall tvSurfacesItemFocused(TObject *Sender);
+	void __fastcall FormCreate(TObject *Sender);
 private:	// User declarations
     CSMotion* 				selected_smotion;
     COMotion* 				selected_omotion;
@@ -162,7 +163,6 @@ private:	// User declarations
     TElTreeItem* 			FindSMotionItem(const char* name);
 
     // static part
-    static EImageThumbnail*	m_Thumbnail;
 	static CEditableObject* m_LibObject;
     static SurfInstVec 		m_EditSurfaces;
 

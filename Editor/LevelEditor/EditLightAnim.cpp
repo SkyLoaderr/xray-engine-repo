@@ -98,6 +98,7 @@ bool TfrmEditLightAnim::FinalClose(){
 		form->Close();
         return true;
     }
+    return false;
 }
 //---------------------------------------------------------------------------
 
@@ -157,7 +158,7 @@ void TfrmEditLightAnim::UpdateView()
         pbG->Repaint();
 
 //        stStartFrame->Caption = m_CurrentItem->Keys.size();
-		sePointer->Color = m_CurrentItem->IsKey(sePointer->Value)?0x00BFFFFF:0x00A0A0A0;
+		sePointer->Color = TColor(m_CurrentItem->IsKey(sePointer->Value)?0x00BFFFFF:0x00A0A0A0);
     }
 }
 //---------------------------------------------------------------------------
@@ -479,7 +480,6 @@ void __fastcall TfrmEditLightAnim::InplaceTextEditValidateResult(
       TObject *Sender, bool &InputValid)
 {
 	TElTreeInplaceAdvancedEdit* IE=0;
-    TElTree* TV=0;
     IE=InplaceTextEdit;
 
     AnsiString new_text = AnsiString(IE->Editor->Text).LowerCase();
@@ -573,7 +573,7 @@ void __fastcall TfrmEditLightAnim::OnIdle(){
 	if (form){
 		if (form->m_CurrentItem){
         	int frame;
-			form->paColor->Color=form->m_CurrentItem->Calculate(Device.fTimeGlobal,frame);
+			form->paColor->Color=TColor(form->m_CurrentItem->Calculate(Device.fTimeGlobal,frame));
             form->lbCurFrame->Caption=frame;
         }
     }
@@ -581,7 +581,7 @@ void __fastcall TfrmEditLightAnim::OnIdle(){
 
 void __fastcall TfrmEditLightAnim::sePointerChange(TObject *Sender)
 {
-	sePointer->Color = m_CurrentItem->IsKey(sePointer->Value)?0x00BFFFFF:0x00A0A0A0;
+	sePointer->Color = TColor(m_CurrentItem->IsKey(sePointer->Value)?0x00BFFFFF:0x00A0A0A0);
 }
 //---------------------------------------------------------------------------
 

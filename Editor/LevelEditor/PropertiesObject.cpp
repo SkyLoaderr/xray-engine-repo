@@ -71,9 +71,9 @@ void __fastcall TfrmPropertiesObject::FormShow(TObject *Sender)
 
 void __fastcall TfrmPropertiesObject::FormClose(TObject *Sender, TCloseAction &Action)
 {
-    _DELETE(m_Thumbnail);
 	Action = caFree;
     form = 0;
+    _DELETE(m_Thumbnail);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmPropertiesObject::OnModified(TObject *Sender)
@@ -360,9 +360,6 @@ void __fastcall TfrmPropertiesObject::ExtBtn2Click(TObject *Sender)
 	tvSurfaces->FullCollapse();
 }
 //---------------------------------------------------------------------------
-
-
-
 
 
 
