@@ -74,7 +74,7 @@ public:
 	string					path;
 
 	DWORD	mem_Usage				();
-	void	mem_Compact				();
+	void	mem_Compact				(LPDWORD blocks=0);
 	void	mem_CompactSubdivs		();
 public:
 	void	Run						(string& path);

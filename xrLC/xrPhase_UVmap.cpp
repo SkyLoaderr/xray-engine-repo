@@ -143,17 +143,28 @@ void CBuild::mem_Compact()
 {
 	_heapmin			();
 	HeapCompact			(GetProcessHeap(),0);
+	DWORD				bytes,blocks_used,blocks_free;
+	bytes				= mem_Usage(&blocks_used,&blocks_free);
+	Msg					("***MEMORY*** %d MB, %d Bused, %d Bfree", bytes/(1024*1024),blocks_used,blocks_free);
 }
-DWORD CBuild::mem_Usage()
+DWORD CBuild::mem_Usage	(LPDWORD pBlocks=0)
 {
-	_HEAPINFO		hinfo;
-	int				heapstatus;
-	hinfo._pentry	= NULL;
-	DWORD	total	= 0;
+	_HEAPINFO			hinfo;
+	int					heapstatus;
+	hinfo._pentry		= NULL;
+	DWORD	total		= 0;
+	DWORD	blocks_free	= 0;
+	DWORD	blocks_used	= 0;
 	while( ( heapstatus = _heapwalk( &hinfo ) ) == _HEAPOK )
 	{ 
-		if (hinfo._useflag == _USEDENTRY)	total += hinfo._size;
+		if (hinfo._useflag == _USEDENTRY)	{
+			total		+= hinfo._size;
+			blocks_used	+= 1;
+		} else {
+			blocks_free	+= 1;
+		}
 	}
+	if (pBlocks)		*pBlocks	= blocks;
 	
 	switch( heapstatus )
 	{
