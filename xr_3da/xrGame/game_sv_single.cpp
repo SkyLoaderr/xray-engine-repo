@@ -59,12 +59,10 @@ void	game_sv_Single::Update			()
 	__super::Update	();
 	switch(phase) 	{
 		case GAME_PHASE_PENDING : {
-			if ((Device.TimerAsync()-start_time)>u32(5*1000)) {
-				OnRoundStart();
-				switch_Phase(GAME_PHASE_INPROGRESS);
-			}
+			OnRoundStart();
+			switch_Phase(GAME_PHASE_INPROGRESS);
+			break;
 		}
-		break;
 	}
 }
 
