@@ -28,6 +28,10 @@ CGlow::CGlow()				{
 	dwFrame			= 0;
 	spatial.type	= STYPE_RENDERABLE;
 }
+CGlow::~CGlow()
+{
+	shader.destroy	();
+}
 
 void	CGlow::set_active		(bool a)				
 {

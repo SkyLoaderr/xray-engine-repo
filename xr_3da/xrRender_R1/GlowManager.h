@@ -31,6 +31,7 @@ public:
 	u32					qid_total	;
 public:
 	CGlow();
+	virtual	~CGlow();
 
 	virtual void					set_active			(bool);
 	virtual bool					get_active			();
