@@ -23,7 +23,6 @@ private:
 	typedef struct tagSUsefulObject {
 		u16						wSpawnPoint;
 		u16						wCount;
-		float					fMass;
 	} SUsefulObject;
 	
 	typedef struct tagSSpawnHeader {
@@ -32,6 +31,7 @@ private:
 	} SSpawnHeader;
 
 	typedef struct tagSSpawnPoint {
+		u16						wGraphPoint;
 		string64				caModel;
 		u8						ucTeam;
 		u8						ucSquad;
@@ -52,6 +52,7 @@ private:
 	} SNPCHeader;
 
 	typedef struct tagSALifeNPC {
+		u16						wGraphPoint;
 		u16						wCount;
 		u16						wSpawnPoint;
 		u32						dwLastUpdateTime;
@@ -75,15 +76,18 @@ private:
 	vector<vector<u16> >		m_tpGraphObject;		// по точке графа получить все динамические
 
 	void						vfProcessNPC		(u32 dwNPCIndex);
+	void						vfInitTerrain		();
+	void						vfInitLocationOwners();
+	void						vfInitGraph			();
 
 public:
-								CAI_ALife();
-	virtual						~CAI_ALife();
+								CAI_ALife			();
+	virtual						~CAI_ALife			();
+	virtual float				shedule_Scale		()					{return .5f;};
+	virtual BOOL				Ready				()					{return TRUE;};
+	virtual LPCSTR				cName				()					{return "ALife simulator";}; 
 	virtual void				Load				();
 	virtual void				Update				(u32 dt);	
-			void				Save();
-			void				Generate();
-	virtual float				shedule_Scale		()			{return .5f;};
-	virtual BOOL				Ready				()			{return TRUE;};
-	virtual LPCSTR				cName				()			{return "ALife simulator";}; 
+			void				Save				();
+			void				Generate			();
 };

@@ -9,6 +9,8 @@
 #include "stdafx.h"
 #include "ai_alife.h"
 
+//#define WRITE_TO_LOG
+
 CAI_ALife::CAI_ALife()
 {
 	m_bLoaded					= false;
@@ -31,6 +33,11 @@ void CAI_ALife::Load()
 	m_tNPCHeader.dwCount		= 0;
 	m_bLoaded					= true;
 
+	// checking if graph is loaded
+	if (!Level().AI.m_tpaGraph)
+		return;
+
+	// loading spawn-points
 	FILE_NAME	caFileName;
 	if (!Engine.FS.Exist(caFileName, Path.GameData, "game.spawn"))
 //		THROW;
@@ -44,6 +51,7 @@ void CAI_ALife::Load()
 	R_ASSERT(tpStream->FindChunk(NPC_SPAWN_POINT_CHUNK_DATA));
 	m_tpSpawnPoint.resize(m_tSpawnHeader.dwCount);
 	for (int i=0; i<(int)m_tSpawnHeader.dwCount; i++) {
+		m_tpSpawnPoint[i].wGraphPoint				= tpStream->Rword();
 		tpStream->Rstring							(m_tpSpawnPoint[i].caModel);
 		m_tpSpawnPoint[i].ucTeam					= tpStream->Rbyte();
 		m_tpSpawnPoint[i].ucSquad					= tpStream->Rbyte();
@@ -59,12 +67,13 @@ void CAI_ALife::Load()
 		for (int j=0; j<(int)m_tpSpawnPoint[i].ucRoutePointCount; j++)
 			m_tpSpawnPoint[i].wpRouteGraphPoints[j] = tpStream->Rword();
 	}
+	Engine.FS.Close(tpStream);
 
+	// loading NPCs
 	if (!Engine.FS.Exist(caFileName, Path.GameData, "game.alife")) {
 		Generate();
 		Save();
 	}
-	Engine.FS.Close(tpStream);
 	
 	if (!Engine.FS.Exist(caFileName, Path.GameData, "game.alife"))
 		THROW;
@@ -76,6 +85,7 @@ void CAI_ALife::Load()
 	R_ASSERT(tpStream->FindChunk(ALIFE_CHUNK_DATA));
 	m_tpNPC.resize(m_tNPCHeader.dwCount);
 	for (int i=0; i<(int)m_tNPCHeader.dwCount; i++) {
+		m_tpNPC[i].wGraphPoint			= tpStream->Rword();
 		m_tpNPC[i].wCount				= tpStream->Rword();
 		m_tpNPC[i].wSpawnPoint			= tpStream->Rword();
 		m_tpNPC[i].dwLastUpdateTime		= tpStream->Rdword();
@@ -84,6 +94,10 @@ void CAI_ALife::Load()
 			tpStream->Read(&(m_tpNPC[i].tpUsefulObject[j]),sizeof(SUsefulObject));
 	}
 	Engine.FS.Close(tpStream);
+
+	vfInitGraph();
+	vfInitTerrain();
+	vfInitLocationOwners();
 }
 
 void CAI_ALife::Save()
@@ -98,6 +112,7 @@ void CAI_ALife::Save()
 	// data chunk
 	tStream.open_chunk	(ALIFE_CHUNK_DATA);
 	for (int i=0; i<(int)m_tNPCHeader.dwCount; i++) {
+		tStream.Wword		(m_tpNPC[i].wGraphPoint);
 		tStream.Wword		(m_tpNPC[i].wCount);
 		tStream.Wword		(m_tpNPC[i].wSpawnPoint);
 		tStream.Wdword		(m_tpNPC[i].dwLastUpdateTime);
@@ -128,6 +143,7 @@ void CAI_ALife::Generate()
 			}
 		}
 		SALifeNPC tALifeNPC;
+		tALifeNPC.wGraphPoint			= m_tpSpawnPoint[k].wGraphPoint;
 		tALifeNPC.wSpawnPoint			= (u16)k;
 		tALifeNPC.wCount				= m_tpSpawnPoint[k].wCount;
 		tALifeNPC.dwLastUpdateTime		= Level().timeServer();
@@ -144,7 +160,9 @@ void CAI_ALife::Update(u32 dt)
 	inherited::Update(dt);
 	if (!m_bLoaded)
 		return;
-	//Msg("* %7.2fs",Level().timeServer()/1000.f);
+#ifdef WRITE_TO_LOG
+	Msg("* %7.2fs",Level().timeServer()/1000.f);
+#endif
 	u64	qwStartTime = CPU::GetCycleCount();
 	if (m_tNPCHeader.dwCount)
 		for (int i=1; ; i++, m_dwNPCBeingProcessed = (m_dwNPCBeingProcessed + 1) % m_tNPCHeader.dwCount) {
@@ -152,11 +170,35 @@ void CAI_ALife::Update(u32 dt)
 			if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i > m_qwMaxProcessTime)
 				break;
 		}
-	//u64 t2x = CPU::GetCycleCount() - qwStartTime;
-	//Msg("* %.3f microseconds",CPU::cycles2microsec*t2x);
+#ifdef WRITE_TO_LOG
+	u64 t2x = CPU::GetCycleCount() - qwStartTime;
+	Msg("* %.3f microseconds",CPU::cycles2microsec*t2x);
+#endif
 }
 
 void CAI_ALife::vfProcessNPC(u32 dwNPCIndex)
 {
-	
+		
+}
+
+void CAI_ALife::vfInitTerrain()
+{
+	m_tpTerrain.resize(256);
+	for (u16 i=0; i<Level().AI.GraphHeader().dwVertexCount; i++)
+		m_tpTerrain[Level().AI.m_tpaGraph[i].ucVertexType].push_back(i);
+}
+
+void CAI_ALife::vfInitLocationOwners()
+{
+	m_tpLocationOwner.resize(Level().AI.GraphHeader().dwVertexCount);
+	for (u16 i=0; i<m_tNPCHeader.dwCount; i++)
+		for (int j=0; j<(int)m_tpSpawnPoint[m_tpNPC[i].wSpawnPoint].ucRoutePointCount; j++)
+			m_tpGraphObject[m_tpSpawnPoint[m_tpNPC[i].wSpawnPoint].wpRouteGraphPoints[j]].push_back(i);
+}
+
+void CAI_ALife::vfInitGraph()
+{
+	m_tpGraphObject.resize(Level().AI.GraphHeader().dwVertexCount);
+	for (u16 i=0; i<m_tNPCHeader.dwCount; i++)
+		m_tpGraphObject[m_tpNPC[i].wGraphPoint].push_back(i);
 }
