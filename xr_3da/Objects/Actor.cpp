@@ -69,6 +69,7 @@ CActor::CActor() : CEntityAlive()
 	bStep					= FALSE;
 
 	b_DropActivated			= 0;
+	f_DropPower				= 0.f;
 
 	m_fRunFactor			= 2.f;
 	m_fCrouchFactor			= 0.2f;
