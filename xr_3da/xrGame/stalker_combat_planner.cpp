@@ -101,7 +101,7 @@ void CStalkerCombatPlanner::react_on_grenades		()
 	m_object->agent_manager().add_danger_location(reaction.m_game_object->Position(),Device.dwTimeGlobal,interval,GRENADE_RADIUS);
 
 	if (missile && m_object->agent_manager().group_behaviour()) {
-		Msg						("%6d : Stalker %s : grenade reaction",Device.dwTimeGlobal,*m_object->cName());
+//		Msg						("%6d : Stalker %s : grenade reaction",Device.dwTimeGlobal,*m_object->cName());
 		CEntityAlive			*initiator = smart_cast<CEntityAlive*>(Level().Objects.net_Find(reaction.m_grenade->CurrentParentID()));
 		if (m_object->tfGetRelationType(initiator) == ALife::eRelationTypeEnemy)
 			m_object->sound().play	(StalkerSpace::eStalkerSoundGrenadeAlarm);
