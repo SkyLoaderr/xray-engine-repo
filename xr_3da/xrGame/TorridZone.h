@@ -1,9 +1,9 @@
 #pragma once
-#include "customzone.h"
+#include "mosquitobald.h"
 
 class CObjectAnimator;
 
-class CTorridZone :public CCustomZone
+class CTorridZone :public CMosquitoBald
 {
 private:
 	typedef	CCustomZone	inherited;

@@ -856,17 +856,25 @@ void  CCustomZone::OnMove	()
 		float time_delta = float(Device.dwTimeGlobal - m_dwLastTimeMoved)/1000.f;
 		m_dwLastTimeMoved = Device.dwTimeGlobal;
 		//скорость движения
+		
 		Fvector vel;
-		vel.sub(Position(), m_vPrevPos);
-		vel.div(time_delta);
+			
+		if(fis_zero(time_delta))
+			vel = zero_vel;
+		else
+		{
+			vel.sub(Position(), m_vPrevPos);
+			vel.div(time_delta);
+		}
 
 		if (m_pIdleParticles)
 			m_pIdleParticles->UpdateParent(XFORM(), vel);
 
 		if(m_pLight && m_pLight->get_active())
-		{
 			m_pLight->set_position(Position());
-		}
+
+		if(m_pIdleLight && m_pIdleLight->get_active())
+			m_pIdleLight->set_position(Position());
      }
 }
 
