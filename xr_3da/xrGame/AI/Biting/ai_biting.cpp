@@ -13,7 +13,7 @@
 
 CAI_Biting::CAI_Biting()
 {
-	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
+	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
 	m_pPhysics_support=xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etBitting,this);
 }
 
