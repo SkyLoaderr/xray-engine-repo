@@ -47,15 +47,21 @@ void				OGF_Base::CalcBounds	()
 	// 3: calc magic-fm
 	Mgc::Sphere _S3				= Mgc::MinSphere(V.size(), (const Mgc::Vector3*) V.begin());
 	Fsphere	S3;
-	S3.P.set	(_S3.)
+	S3.P.set					(_S3.Center().x,_S3.Center().y,_S3.Center().z);
+	S3.R						= _S3.Radius();
+	BOOL B3						= SphereValid(V,S3);
 
-	Log	("---");
+	Log	("--- MiniBall");
 	Log	("pos",S1.P);
 	Log	("r  ",S1.R);
 
-	Log	("---2n");
+	Log	("--- Basic");
 	Log	("pos",S2.P);
 	Log	("r  ",S2.R);
+
+	Log	("--- MagicFM");
+	Log	("pos",S3.P);
+	Log	("r  ",S3.R);
 
 	// select best one
 	if (B1 && (S1.R<S2.R))
