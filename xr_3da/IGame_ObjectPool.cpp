@@ -37,6 +37,7 @@ void IGame_ObjectPool::load	()
 			{
 				CObject* pObject	= (CObject*) NEW_INSTANCE(CLS);
 				pObject->Load		(*S->Name);
+				VERIFY2				(*pObject->cNameSect(),*S->Name);
 				map_POOL.insert		(mk_pair(pObject->cNameSect(),pObject));
 			}
 		}
