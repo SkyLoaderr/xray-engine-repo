@@ -47,6 +47,9 @@ void CScriptEngine::init		()
 	ui().log			("\n");
 #endif
 	export_classes		(lua());
+
+	lua_dostring		(lua(),"function printf(fmt,...) ui():log(string.format(fmt,unpack(arg))) end");
+	
 	ui().log			("completed\n\n");
 }
 
