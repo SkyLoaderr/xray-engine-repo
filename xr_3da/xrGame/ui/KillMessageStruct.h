@@ -5,6 +5,7 @@
 //
 // Copyright 2005 GSC Game World
 
+#pragma once
 #include "stdafx.h"
 
 struct PlayerInfo{
@@ -14,7 +15,7 @@ struct PlayerInfo{
 
 struct IconInfo{
 	Irect		m_rect;
-	ref_shader& m_shader;
+	ref_shader	m_shader;
 };
 
 struct KillMessageStruct{

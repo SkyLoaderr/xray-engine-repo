@@ -10,6 +10,7 @@
 #include "UIXmlInit.h"
 #include "UIMainIngameWnd.h"
 #include "UIPdaMsgListItem.h"
+#include "UIPdaKillMessage.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -22,11 +23,9 @@ const char * const	CHAT_LOG_ITEMS_ANIMATION	= "ui_mp_chat";
 void CUIGameLog::AddLogMessage(const shared_str &msg)
 {
 	CUIColorAnimatorWrapper	*animation	= xr_new<CUIColorAnimatorWrapper>(CHAT_LOG_ITEMS_ANIMATION);
-//	UILogList.AddItem<CUIListItem>(msg.c_str(), 0, animation);
 	CUIPdaMsgListItem* pItem = NULL;
 	
 	pItem = xr_new<CUIPdaMsgListItem>(-1);
-	
 
 	UILogList.AddItem(pItem, -1); 
 	CUIListItem	*item = UILogList.GetItem(UILogList.GetSize() - 1);
@@ -35,11 +34,25 @@ void CUIGameLog::AddLogMessage(const shared_str &msg)
 	pItem->UIMsgText.SetText(msg.c_str());	
 	pItem->UIMsgText.SetWndPos(0, 0);	
 	pItem->SetData(animation);
-//	item->SetData(animation);
-//	item->SetText(msg.c_str());
 
 	item->Show(true);
 	animation->SetColorToModify(&item->GetTextColorRef());
+	animation->Cyclic(false);
+}
+
+void CUIGameLog::AddLogMessage(KillMessageStruct& msg){
+	CUIColorAnimatorWrapper	*animation	= xr_new<CUIColorAnimatorWrapper>(CHAT_LOG_ITEMS_ANIMATION);
+	CUIPdaKillMessage* pItem = NULL;
+	
+	pItem = xr_new<CUIPdaKillMessage>(-1);
+
+	UILogList.AddItem(pItem, -1); 
+	
+	pItem->Init(msg);	
+	pItem->SetData(animation);
+
+	pItem->Show(true);
+	animation->SetColorToModify(&pItem->GetTextColorRef());
 	animation->Cyclic(false);
 }
 

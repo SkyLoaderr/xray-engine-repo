@@ -10504,6 +10504,12 @@
 					<File
 						RelativePath=".\ui\KillMessageStruct.h">
 					</File>
+					<File
+						RelativePath=".\ui\UIPdaKillMessage.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIPdaKillMessage.h">
+					</File>
 				</Filter>
 			</Filter>
 		</Filter>

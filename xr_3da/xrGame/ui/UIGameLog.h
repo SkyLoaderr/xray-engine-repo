@@ -15,6 +15,7 @@
 
 #include "UIDialogWnd.h"
 #include "UIListWnd.h"
+#include "KillMessageStruct.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -23,7 +24,8 @@ class CUIGameLog: public CUIDialogWnd
 	typedef CUIDialogWnd inherited;
 
 public:
-	void					AddLogMessage	(const shared_str &msg);
+	void					AddLogMessage	(const shared_str& msg);
+	void					AddLogMessage	(KillMessageStruct& msg);
 	CUIListWnd &			GetLogList		()	{ return UILogList; }
 	void					Init			();
 	virtual void			Update			();
