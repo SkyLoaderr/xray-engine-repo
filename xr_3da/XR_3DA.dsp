@@ -384,6 +384,10 @@ SOURCE=.\_vector4.h
 
 SOURCE=.\_vertex.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\vector.h
+# End Source File
 # End Group
 # Begin Group "Devices"
 
