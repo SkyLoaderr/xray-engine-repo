@@ -108,10 +108,11 @@ void CSpawnPoint::CLE_Motion::PlayMotion()
 //------------------------------------------------------------------------------
 // SpawnData
 //------------------------------------------------------------------------------
-void CSpawnPoint::SSpawnData::Create(LPCSTR entity_ref)
+void CSpawnPoint::SSpawnData::Create(LPCSTR _entity_ref)
 {
-    m_Data 	= create_entity(entity_ref);
+    m_Data 	= create_entity	(_entity_ref);
     if (m_Data){
+    	m_Data->set_name	(_entity_ref);
         if (m_Data->visual()){
             m_Visual	= xr_new<CLE_Visual>(m_Data->visual());
             m_Data->set_editor_flag(ISE_Abstract::flVisualChange|ISE_Abstract::flVisualAnimationChange);
@@ -120,13 +121,12 @@ void CSpawnPoint::SSpawnData::Create(LPCSTR entity_ref)
             m_Motion	= xr_new<CLE_Motion>(m_Data->motion());
             m_Data->set_editor_flag(ISE_Abstract::flMotionChange);
         }
-        if (pSettings->line_exist(entity_ref,"$player")){
-            if (pSettings->r_bool(entity_ref,"$player")){
+        if (pSettings->line_exist(m_Data->name(),"$player")){
+            if (pSettings->r_bool(m_Data->name(),"$player")){
 				m_Data->flags().set(M_SPAWN_OBJECT_ASPLAYER,TRUE);
             }
         }
-        m_ClassID 			= pSettings->r_clsid(entity_ref,"class");
-        m_Data->set_name	(entity_ref);
+        m_ClassID 			= pSettings->r_clsid(m_Data->name(),"class");
     }
 }
 void CSpawnPoint::SSpawnData::Destroy()
