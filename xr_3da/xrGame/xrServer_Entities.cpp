@@ -5,7 +5,10 @@
 class xrSE_Actor : public xrServerEntity
 {
 public:
-
+	u8						s_team;
+	u8						s_squad;
+	u8						s_group;
+public:	
 	u32						timestamp;
 	u8						flags;
 	Fvector					pos;
@@ -58,6 +61,9 @@ public:
 	};
 	virtual void			STATE_Read			(NET_Packet& P, u16 size)
 	{
+		P.r_u8				(s_team	);
+		P.r_u8				(s_squad);
+		P.r_u8				(s_group);
 	}
 	virtual void			STATE_Write			(NET_Packet& P)
 	{
