@@ -979,7 +979,7 @@ function print_table(table, subs)
 	for k,v in table do
 		if type(v) == "table" then
 			printf(sub.."%s:", k)
-			this.print_table(v, sub.."    ")
+			print_table(v, sub.."    ")
 		elseif type(v) == "function" then
 			printf(sub.."%s:function", k)
 		else
