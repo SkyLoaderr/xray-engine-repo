@@ -67,8 +67,8 @@ void Startup(LPSTR     lpCmdLine)
 	name[0]=0;			sscanf(strstr(cmd,"-f")+2,"%s",name);
 	string prjName		= "x:\\game\\data\\levels\\"+string(name)+"\\build.prj";
 	Phase				("Reading project...");
-	CVirtualFileStream	FS(prjName.c_str());
-	void*				data = FS.Pointer();
+	CVirtualFileStream*	FS	= new CVirtualFileStream(prjName.c_str());
+	void*				data= FS->Pointer();
 
 	b_transfer	Header		= *((b_transfer *) data);
 	R_ASSERT(XRCL_CURRENT_VERSION==Header._version);
@@ -100,6 +100,7 @@ void Startup(LPSTR     lpCmdLine)
 	}
 	
 	pBuild	= new CBuild(&Header);
+	_DELETE	(FS);
 	
 	// Call for builder
 	pBuild->Run();
