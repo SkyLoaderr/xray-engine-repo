@@ -493,3 +493,20 @@ function set_current_time (hour, min, sec)
 
 	level.set_time_factor (current_time_factor)
 end
+
+
+
+----------------------------------------------------------------------------------------------------------------------
+-- Evaluators
+----------------------------------------------------------------------------------------------------------------------
+
+--Constant evaluator
+class "const_evaluator" (property_evaluator)
+
+function const_evaluator:__init (value) super ()
+  	self.value = value
+end
+
+function const_evaluator:evaluate()
+  	return          self.value
+end
