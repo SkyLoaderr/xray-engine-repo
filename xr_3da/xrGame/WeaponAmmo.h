@@ -8,10 +8,11 @@ public:
 	void Load(LPCSTR section);
 
 	ref_str	m_ammoSect;
-	f32		m_kDist, m_kDisp, m_kHit, m_kImpulse, m_kPierce;
+	float	m_kDist, m_kDisp, m_kHit, m_kImpulse, m_kPierce;
 	bool	m_tracer;
 	int		m_buckShot;
-	f32		m_impair;
+	float	m_impair;
+	float	fWallmarkSize;
 };
 
 class CWeaponAmmo :	public CInventoryItem
@@ -40,10 +41,11 @@ public:
 
 	bool Get(CCartridge &cartridge);
 
-	f32 m_kDist, m_kDisp, m_kHit, m_kImpulse, m_kPierce;
+	float m_kDist, m_kDisp, m_kHit, m_kImpulse, m_kPierce;
 	bool m_tracer;
 	int	m_buckShot;
-	f32 m_impair;
+	float m_impair;
+	float fWallmarkSize;
 
 	u16			m_boxSize;			// Размер коробки (Сколько патронов игрок берет за раз)
 	u16			m_boxCurr;			// Сколько патронов осталось в коробке (включая текущий магазин)

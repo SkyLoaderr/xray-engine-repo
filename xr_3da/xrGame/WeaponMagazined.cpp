@@ -89,7 +89,7 @@ void CWeaponMagazined::FireStart		()
 	
 	if(IsValid() && !IsMisfire()) 
 	{
-		if(!IsWorking())
+		if(!IsWorking() || AllowFireWhileWorking())
 		{
 			if(STATE==eReload) return;
 			if(STATE==eShowing) return;
@@ -684,6 +684,18 @@ void CWeaponMagazined::InitAddons()
 		iHitPower			= pSettings->r_s32		(cNameSect(),"silencer_hit_power"		);
 		fHitImpulse			= pSettings->r_float	(cNameSect(),"silencer_hit_impulse"		);
 		fireDistance		= pSettings->r_float	(cNameSect(),"silencer_fire_distance"	);
+
+		//подсветка от выстрела
+		if(m_shotLight) 
+		{
+			Fvector clr			= pSettings->r_fvector3		(cNameSect(),"silencer_light_color"		);
+			light_base_color.set(clr.x,clr.y,clr.z,1);
+			light_base_range	= pSettings->r_float		(cNameSect(),"silencer_light_range"		);
+			light_var_color		= pSettings->r_float		(cNameSect(),"silencer_light_var_color"	);
+			light_var_range		= pSettings->r_float		(cNameSect(),"silencer_light_var_range"	);
+			light_lifetime		= pSettings->r_float		(cNameSect(),"silencer_light_time"		);
+			light_time			= -1.f;
+		}
 	}
 	else
 	{
@@ -695,8 +707,19 @@ void CWeaponMagazined::InitAddons()
 		iHitPower			= pSettings->r_s32		(cNameSect(),"hit_power"		);
 		fHitImpulse			= pSettings->r_float	(cNameSect(),"hit_impulse"		);
 		fireDistance		= pSettings->r_float	(cNameSect(),"fire_distance"	);
-	}
 
+		//подсветка от выстрела
+		if(m_shotLight) 
+		{
+			Fvector clr			= pSettings->r_fvector3		(cNameSect(),"light_color"		);
+			light_base_color.set(clr.x,clr.y,clr.z,1);
+			light_base_range	= pSettings->r_float		(cNameSect(),"light_range"		);
+			light_var_color		= pSettings->r_float		(cNameSect(),"light_var_color"	);
+			light_var_range		= pSettings->r_float		(cNameSect(),"light_var_range"	);
+			light_lifetime		= pSettings->r_float		(cNameSect(),"light_time"		);
+			light_time			= -1.f;
+		}
+	}
 
 	inherited::InitAddons();
 }

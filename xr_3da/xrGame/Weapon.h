@@ -58,7 +58,6 @@ protected:
 
 protected:
 	ref_shader				hUIIcon;
-	float					fWallmarkSize;
 									
 	int						iAmmoElapsed;		// ammo in magazine, currently
 	int						iMagazineSize;		// size (in bullets) of magazine

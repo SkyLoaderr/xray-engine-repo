@@ -49,6 +49,7 @@ void CWeaponAmmo::Load(LPCSTR section)
 	m_tracer = !!pSettings->r_bool(section, "tracer");
 	m_buckShot = pSettings->r_s32(section, "buck_shot");
 	m_impair = pSettings->r_float(section, "impair");
+	fWallmarkSize = pSettings->r_float(section,"wm_size");
 
 	m_boxSize = (u16)pSettings->r_s32(section, "box_size");
 	m_boxCurr = m_boxSize;
@@ -188,6 +189,7 @@ bool CWeaponAmmo::Get(CCartridge &cartridge)
 	cartridge.m_tracer = m_tracer;
 	cartridge.m_buckShot = m_buckShot;
 	cartridge.m_impair = m_impair;
+	cartridge.fWallmarkSize = fWallmarkSize;
 	--m_boxCurr;
 	return true;
 }
@@ -228,4 +230,3 @@ void CWeaponAmmo::net_Import(NET_Packet& P)
 
 	P.r_u16(m_boxCurr);
 }
-

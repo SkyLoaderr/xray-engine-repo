@@ -27,6 +27,8 @@ public:
 
 	virtual void	UpdateSounds	();
 protected:	
+	virtual bool	AllowFireWhileWorking() {return true;}
+
 	HUD_SOUND		sndClose;
 	ESoundTypes		m_eSoundClose;
 

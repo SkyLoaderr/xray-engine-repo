@@ -52,10 +52,17 @@ void CWeaponHUD::Load			(LPCSTR section)
 	R_ASSERT					(pVisual->Type==MT_SKELETON_ANIM);
 
 	// fire bone	
-	LPCSTR fire_bone			= pSettings->r_string					(section,"fire_bone");
-	iFireBone					= PKinematics(Visual())->LL_BoneID	(fire_bone);
-	if (iFireBone<0)			Debug.fatal	("There is no 'fire_bone' for weapon '%s'.",section);
-	vFirePoint					= pSettings->r_fvector3					(section,"fire_point");
+	if(dynamic_cast<CWeapon*>(m_pParentWeapon))
+	{
+		LPCSTR fire_bone			= pSettings->r_string					(section,"fire_bone");
+		iFireBone					= PKinematics(Visual())->LL_BoneID	(fire_bone);
+		if (iFireBone<0)			Debug.fatal	("There is no 'fire_bone' for weapon '%s'.",section);
+		vFirePoint					= pSettings->r_fvector3					(section,"fire_point");
+	}
+	else
+	{
+		iFireBone = -1;
+	}
 	
 	if(pSettings->line_exist(section,"fire_point2")) 
 		vFirePoint2 = pSettings->r_fvector3(section,"fire_point2");

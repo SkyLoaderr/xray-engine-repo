@@ -120,6 +120,7 @@ void CExplosive::Explode()
 		m_fCurrentFireDist = m_fFragsRadius;
 		m_fCurrentHitPower = m_fFragHit;
 		m_fCurrentHitImpulse = m_fFragHit;
+		m_fCurrentWallmarkSize = fWallmarkSize;
 		m_pCurrentCartridge = NULL;
 		m_vCurrentShootDir = frag_dir;
 		m_vCurrentShootPos = Position();

@@ -286,8 +286,6 @@ void CWeapon::Load		(LPCSTR section)
 	fTimeToFire			= pSettings->r_float		(section,"rpm");
 	fTimeToFire			= 60 / fTimeToFire;
 
-	fWallmarkSize		= pSettings->r_float		(section,"wm_size");
-
 	// load ammo classes
 	m_ammoTypes.clear	(); 
 	LPCSTR				S = pSettings->r_string(section,"ammo_class");

@@ -61,6 +61,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 		//инициализипровать текущие параметры выстрела перед запуском RayPick
 		m_fCurrentHitPower	= float(iHitPower);
 		m_fCurrentHitImpulse = fHitImpulse;
+		m_fCurrentWallmarkSize = l_cartridge.fWallmarkSize;
 		m_pCurrentCartridge = &l_cartridge;
 		m_vCurrentShootDir = D;
 		m_vCurrentShootPos = P;

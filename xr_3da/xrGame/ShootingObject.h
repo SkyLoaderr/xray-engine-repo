@@ -43,6 +43,7 @@ protected:
 	float		m_fCurrentFireDist;
 	float		m_fCurrentHitPower;
 	float		m_fCurrentHitImpulse;
+	float		m_fCurrentWallmarkSize;
 	CCartridge*	m_pCurrentCartridge;
 	Fvector		m_vCurrentShootDir;
 	Fvector		m_vCurrentShootPos;

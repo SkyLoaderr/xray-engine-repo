@@ -20,6 +20,7 @@ CShootingObject::CShootingObject(void)
 	m_fCurrentHitPower = 0.0f;
 	m_fCurrentHitImpulse = 0.0f;
 	m_fCurrentFireDist = 0.0f;
+	m_fCurrentWallmarkSize = WALLMARK_SIZE;
 	m_pCurrentCartridge = NULL;
 	m_vCurrentShootDir = Fvector().set(0,0,0);
 	m_vCurrentShootPos = Fvector().set(0,0,0);
@@ -63,7 +64,7 @@ void CShootingObject::FireShotmark (const Fvector& vDir, const Fvector &vEnd, Co
 		{
 			//добавить отметку на материале
 			::Render->add_Wallmark	(*pWallmarkShader, vEnd,
-										WALLMARK_SIZE, pTri, pVerts);
+										m_fCurrentWallmarkSize, pTri, pVerts);
 		}
 	}		
 	

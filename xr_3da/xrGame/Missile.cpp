@@ -573,10 +573,12 @@ void CMissile::Throw()
 	CActor* pActor = dynamic_cast<CActor*>(H_Parent());
 	if(pActor && pActor->HUDview())
 	{
+		UpdateFP();
 		Fmatrix trans;
 		Level().Cameras.unaffected_Matrix(trans);
 		m_throw_direction.set(trans.k);
 		
+//		m_throw_matrix.set(m_pHUD->Transform());
 		m_throw_matrix.identity();
 		m_throw_matrix.c.set(m_vHudThrowPoint);
 		m_throw_matrix.mulA(m_pHUD->Transform());
