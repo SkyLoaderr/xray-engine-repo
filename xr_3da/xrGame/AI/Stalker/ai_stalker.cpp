@@ -899,7 +899,17 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		// here is monster AI call
 		m_fTimeUpdateDelta				= dt;
 		Device.Statistic.AI_Think.Begin	();
+
+		Msg("--------------------------------------------------------------------------------");
+		Msg("BEFOR:: time = [%i]  current = [%f]  target = [%f]", m_dwCurrentUpdate, 
+			R2D(r_torso_current.yaw), R2D(r_torso_target.yaw));
+
 		Think							();
+
+		Msg("AFTER:: time = [%i]  current = [%f]  target = [%f]", m_dwCurrentUpdate, 
+			R2D(r_torso_current.yaw), R2D(r_torso_target.yaw));
+
+
 		m_dwLastUpdateTime = Level().timeServer();
 		Device.Statistic.AI_Think.End	();
 		//

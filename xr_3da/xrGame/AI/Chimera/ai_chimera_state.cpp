@@ -228,7 +228,6 @@ void CChimeraAttack::Run()
 	switch (m_tAction) {
 		case ACTION_RUN:		// бежать на врага
 			pMonster->AI_Path.DestNode = pEnemy->AI_NodeID;
-			pMonster->m_tPrevPathType = pMonster->m_tPathType = ePathTypeStraight;
 			pMonster->vfChoosePointAndBuildPath(0,&pEnemy->Position(), false, 0);
 
 			pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfChimeraRunAttackSpeed,m_cfChimeraRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);

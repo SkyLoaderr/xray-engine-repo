@@ -284,7 +284,7 @@ void CBitingEat::Init()
 	CAI_Rat	*tpRat = dynamic_cast<CAI_Rat *>(pCorpse);
 	m_fDistToCorpse = ((tpRat)? 1.0f : 1.5f);
 
-	SetInertia(20000);
+	SetInertia(27000);
 	// Test
 	Msg("_ Eat Init _");
 
@@ -338,6 +338,7 @@ bool CBitingEat::CheckCompletion()
 {
 	// если труп съеден || монстр достаточно сыт
 	if (pCorpse && (pCorpse->m_fFood <= 0.f) || (!IsInertia())) {
+//		pMonster->RemoveObjectFromMem(pCorpse);
 		Msg("--Eating complete! -- ");
 		return true;
 	}

@@ -242,11 +242,16 @@ void CCustomMonster::Exec_Physics( float dt )
 
 void CCustomMonster::shedule_Update	( u32 DT )
 {
+	if (!Remote()) {
+		if ((fHealth>0) || bfExecMovement())
+			Exec_Movement				(float(DT)/1000.f);
+	}
+
 	// *** general stuff
 	inherited::shedule_Update	(DT);
 
 	// Queue shrink
-	u32	dwTimeCL	= Level().timeServer()-NET_Latency;
+	u32	dwTimeCL		= Level().timeServer()-NET_Latency;
 	VERIFY				(!NET.empty());
 	while ((NET.size()>2) && (NET[1].dwTimeStamp<dwTimeCL)) NET.pop_front();
 	
@@ -270,7 +275,6 @@ void CCustomMonster::shedule_Update	( u32 DT )
 		if (fHealth>0) {
 			Exec_Action				(dt);
 			Exec_Look				(dt);
-			Exec_Movement			(dt);
 			Exec_Visibility			();
 			//////////////////////////////////////
 			Fvector C; float R;
@@ -296,7 +300,7 @@ void CCustomMonster::shedule_Update	( u32 DT )
 			Exec_Physics			(dt);
 			if (bfExecMovement()) 
 			{
-				Exec_Movement		(dt);
+				//Exec_Movement		(dt);
 				net_update			uNext;
 				uNext.dwTimeStamp	= Level().timeServer();
 				uNext.o_model		= r_torso_current.yaw;

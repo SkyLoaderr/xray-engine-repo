@@ -79,20 +79,6 @@ private:
 			void			vfAddHurt						(const SHurt &tHurt);
 			void			vfUpdateHurt					(const SHurt &tHurt);
 
-			void			Death							();
-			void			BackCover						(bool bFire = true);
-			void			ForwardStraight					();
-			void			Panic							();
-			void			Hide							();
-			void			Detour							();
-			void			ExploreDE						();
-			void			ExploreDNE						();
-			void			ExploreNDE						();
-			void			ExploreNDNE						();
-			void			AccomplishTask					(IBaseAI_NodeEvaluator *tpNodeEvaluator = 0);
-			void			Scared							();
-
-
 			void			vfSetFireBones					(CInifile *ini, const char *section);
 			
 			// Eat corpse

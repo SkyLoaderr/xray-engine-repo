@@ -92,9 +92,11 @@ void CSoundMemory::UpdateHearing(TTime dt)
 }
 
 
+//---------------------------------------------------------------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CVisionMemory implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//---------------------------------------------------------------------------------------------------------
 
 void CVisionMemory::Init(TTime mem_time) 
 {
@@ -116,7 +118,6 @@ void CVisionMemory::UpdateVision(TTime dt, xr_vector<CObject*> &Visible_Objects)
 	VisionElem ve;
 
 	xr_vector<CObject*>::iterator I, E;
-//	pV->feel_vision_get(Visible_Objects);
 
 	I= Visible_Objects.begin();
 	E = Visible_Objects.end();
@@ -132,7 +133,6 @@ void CVisionMemory::UpdateVision(TTime dt, xr_vector<CObject*> &Visible_Objects)
 		ve.Set(pE,CurrentTime);
 
 		if (!pE->g_Alive()) {
-			//if (pE->g_Team() == pM->g_Team()) continue;	// труп своего
 			AddObject(ve);
 		} else AddEnemy(ve);
 	}

@@ -433,7 +433,6 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	mdir.sub		(target, p_dest);
 	float	mdist	=	mdir.magnitude();
 
-
 	while (dist>mdist) 
 	{
 		p_dest.set	(target);
@@ -470,6 +469,7 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	p_dest.add			(motion);
 	//Msg("Before : [%f][%f][%f]",VPUSH(p_dest));
 
+
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	if ((tpNearestList.empty())) 
 	{
@@ -504,6 +504,7 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	float	real_speed	= real_motion/dt;
 	fSpeed				= 0.5f*fSpeed + 0.5f*real_speed;
 	Device.Statistic.Physics.End	();
+
 }
 
 void CPathNodes::Direction(Fvector& dest)
