@@ -43,14 +43,14 @@ void CRender::flush_LODs()
 		float	scale					= ssaDiff/ssaRange;
 		int		iA						= iFloor((1-scale)*255.f);	clamp(iA,0,255);
 		DWORD	uA						= DWORD(iA);
-		float	shift_scale				= scale;					clamp(shift_scale,0.f,1.f);
+		// float	shift_scale				= scale;					clamp(shift_scale,0.f,1.f);
 
 		// calculate direction and shift
 		FLOD*							lodV		= (FLOD*)P.pVisual;
 		Fvector							Ldir,shift,_P;
 		Ldir.sub						(lodV->bv_Position,Device.vCameraPosition);
 		Ldir.normalize					();
-		shift.mul						(Ldir,-lodV->bv_Radius/*shift_scale*/);
+		shift.mul						(Ldir,-.5f * lodV->bv_Radius);
 
 		// gen geometry
 		FLOD::_face*					facets		= lodV->facets;

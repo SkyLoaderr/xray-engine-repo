@@ -17,8 +17,8 @@ float ssaLIMIT_SS		= 16.f;
 float ssaDONTSORT_SS	= 25.f*25.f;
 float ssaLIMIT;
 float ssaDONTSORT;
-const float ssLOD_A		= 96.f;
-const float ssLOD_B		= 64.f;
+const float ssLOD_A		= 64.f;
+const float ssLOD_B		= 48.f;
 float ssaLOD_A			= (ssLOD_A*ssLOD_A)/(800*600);
 float ssaLOD_B			= (ssLOD_B*ssLOD_B)/(800*600);
 
