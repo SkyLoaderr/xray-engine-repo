@@ -59,16 +59,14 @@ public:
 	IC void 		w_float_q16	(float a, float min, float max)
 	{
 		VERIFY		(a>=min && a<=max);
-		float eps	= ((max-min)/65535.f)/2.f;
 		float q		= (a-min)/(max-min);
-		w_u16		( u16(iFloor(q*65535.f+eps)));
+		w_u16		(u16(iFloor(q*65535.f+.5f)));
 	}
 	IC void 		w_float_q8	(float a, float min, float max)
 	{
 		VERIFY		(a>=min && a<=max);
-		float eps	= ((max-min)/255.f)/2.f;
 		float q		= (a-min)/(max-min);
-		w_u8( u8(iFloor(q*255.f+eps)));
+		w_u8		(u8(iFloor(q*255.f+.5f)));
 	}
 	IC void 		w_angle16	(float a)		    {	w_float_q16	(angle_normalize(a),0,PI_MUL_2);}
 	IC void 		w_angle8	(float a)		    {	w_float_q8	(angle_normalize(a),0,PI_MUL_2);}
@@ -176,20 +174,18 @@ public:
 	IC void			r_ivector4	(Ivector2 &v){	r(&v,sizeof(Ivector2));	}
 	IC void			r_fcolor	(Fcolor &v)	{	r(&v,sizeof(Fcolor));	}
 	
-	IC float		r_float_q16	(float min, float max, BOOL h_error=FALSE)
+	IC float		r_float_q16	(float min, float max)
 	{
 		u16	val 	= r_u16();
-		float A		= (float(val)/65535.f)*(max-min) + min;
-		VERIFY		((A >= min - EPS) && (A <= max + EPS));
-		if (h_error)A += ((max-min)/65535.f)/2.f;
+		float A		= (float(val)*(max-min))/65535.f + min;
+		VERIFY		((A >= min) && (A <= max));
         return A;
 	}
-	IC float		r_float_q8	(float min, float max, BOOL h_error=FALSE)
+	IC float		r_float_q8	(float min, float max)
 	{
 		u8 val		= r_u8();
-		float A		= (float(val)/255.f)*(max-min) + min;
-		VERIFY		((A >= min - EPS) && (A <= max + EPS));
-		if (h_error)A += ((max-min)/255.f)/2.f;
+		float A		= (float(val)*(max-min))/255.f + min;
+		VERIFY		((A >= min) && (A <= max));
         return A;
 	}
 	IC float		r_angle16	()			{ return r_float_q16(0,PI_MUL_2);	}
