@@ -160,6 +160,7 @@ CAI_DDD::CAI_DDD()
 	m_tpCurrentALifeObject				= 0;
 	m_tpCurrentALifeMember				= 0;
 	m_tpCurrentALifeEnemy				= 0;
+	m_tpALife							= 0;
 
 	Memory.mem_fill						(m_fpaBaseFunctions,0,sizeof(CBaseFunction*)*AI_MAX_EVALUATION_FUNCTION_COUNT);
 	
@@ -197,6 +198,7 @@ CAI_DDD::CAI_DDD()
 	m_pfTerrainType						= xr_new<CPatternFunction>	("alife\\TerrainType.efd",				this);
 	m_pfNoticability					= xr_new<CPatternFunction>	("alife\\Noticability.efd",				this);
 	m_pfNoticeProbability				= xr_new<CPatternFunction>	("alife\\NoticeProbability.efd",		this);
+	m_pfRetreatProbability				= xr_new<CPatternFunction>	("alife\\RetreatProbability.efd",		this);
 }
 
 CAI_DDD::~CAI_DDD()

@@ -90,6 +90,7 @@ public:
 	CSE_ALifeObject							*m_tpCurrentALifeObject;
 	CSE_ALifeMonsterAbstract				*m_tpCurrentALifeMember;
 	CSE_ALifeMonsterAbstract				*m_tpCurrentALifeEnemy;
+	CSE_ALifeSimulator						*m_tpALife;
 	// primary functions
 	CBaseFunction							*m_fpaBaseFunctions		[AI_MAX_EVALUATION_FUNCTION_COUNT];
 
@@ -128,6 +129,7 @@ public:
 	CPatternFunction						*m_pfTerrainType;
 	CPatternFunction						*m_pfNoticability;
 	CPatternFunction						*m_pfNoticeProbability;
+	CPatternFunction						*m_pfRetreatProbability;
 
 											CAI_DDD();
 	virtual									~CAI_DDD();

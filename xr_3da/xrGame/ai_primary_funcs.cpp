@@ -10,8 +10,9 @@
 #include "ai_primary_funcs.h"
 #include "weapon.h"
 #include "ai_space.h"
-#include "Entity.h"
+#include "entity.h"
 #include "inventory.h"
+#include "ai_alife.h"
 
 float CDistanceFunction::ffGetValue()
 {
@@ -467,7 +468,21 @@ float CMaxMonsterHealth::ffGetValue()
 {
 	if (bfCheckForCachedResult())
 		return(m_fLastValue);
-	return(m_fLastValue = getAI().m_tpCurrentALifeMember->m_fEyeRange);
+	
+	CSE_ALifeAbstractGroup	*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(getAI().m_tpCurrentALifeMember);
+	if (!l_tpALifeAbstractGroup)
+		return(m_fLastValue = getAI().m_tpCurrentALifeMember->m_fMaxHealthValue);
+	else {
+		m_fLastValue		= 0; 
+		OBJECT_IT			I = l_tpALifeAbstractGroup->children.begin();
+		OBJECT_IT			E = l_tpALifeAbstractGroup->children.end();
+		for ( ; I != E; I++) {
+			CSE_ALifeMonsterAbstract *l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(getAI().m_tpALife->tpfGetObjectByID(*I));
+			R_ASSERT2		(l_tpALifeMonsterAbstract,"Invalid group member!");
+			m_fLastValue	+= l_tpALifeMonsterAbstract->m_fMaxHealthValue;
+		}
+		return(m_fLastValue);
+	}
 }
 
 u32 CMaxMonsterHealth::dwfGetDiscreteValue(u32 dwDiscretizationValue)

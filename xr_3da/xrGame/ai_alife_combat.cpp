@@ -66,13 +66,24 @@ ECombatAction CSE_ALifeSimulator::tfChooseCombatAction(int iCombatGroupIndex)
 
 bool CSE_ALifeSimulator::bfCheckForCombat(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract1, CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract2, int &iCombatGroupIndex)
 {
-#pragma todo("Dima to Dima: Append relationships and monster noticability")
 #pragma todo("Dima to Dima: Monster can't notice another monster if it is asleep")
-	iCombatGroupIndex	= 0;
-	if ((tpALifeMonsterAbstract1->g_team() != tpALifeMonsterAbstract2->g_team()) && randI(2))
-		return(true);
-	else
-		return(false);
+	if ((tpALifeMonsterAbstract1->g_team() != tpALifeMonsterAbstract2->g_team()) && randI(2)) {
+		getAI().m_tpCurrentALifeMember = tpALifeMonsterAbstract1;
+		getAI().m_tpCurrentALifeEnemy = tpALifeMonsterAbstract2;
+		if (randI(100) < (int)getAI().m_pfNoticeProbability->dwfGetDiscreteValue(100)) {
+			iCombatGroupIndex	= 0;
+			return				(true);
+		}
+		else {
+			getAI().m_tpCurrentALifeMember = tpALifeMonsterAbstract2;
+			getAI().m_tpCurrentALifeEnemy = tpALifeMonsterAbstract1;
+			if (randI(100) < (int)getAI().m_pfNoticeProbability->dwfGetDiscreteValue(100)) {
+				iCombatGroupIndex	= 1;
+				return				(true);
+			}
+		}
+	}
+	return(false);
 }
 
 void CSE_ALifeSimulator::vfPerformAttackAction(int iCombatGroupIndex)

@@ -18,10 +18,11 @@ CSE_ALifeSimulator::CSE_ALifeSimulator(xrServer *tpServer)
 	m_caSaveName[0]		= 0;
 	shedule_register	();
 	m_bFirstUpdate		= true;
-	m_tpaCombatGroups[0].clear();
-	m_tpaCombatGroups[1].clear();
-	m_tpaCombatGroups[0].reserve(255);
-	m_tpaCombatGroups[1].reserve(255);
+	for (int i=0; i<2; i++) {
+		m_tpaCombatGroups[i].clear();
+		m_tpaCombatGroups[i].reserve(255);
+	}
+	getAI().m_tpALife	= this;
 }
 
 CSE_ALifeSimulator::~CSE_ALifeSimulator()
