@@ -332,7 +332,8 @@ function checkStorage(npc)
            k == "patrol" or
            k == "guard" or
            k == "bodyguard" or
-           k == "commander"
+           k == "commander" or
+	   k == "ambush"
         then
             if v.enabled == true then
                 count = count + 1
@@ -346,8 +347,9 @@ function checkStorage(npc)
                k == "follower" or
                k == "patrol" or
                k == "guard" or
-           	   k == "bodyguard" or
-               k == "commander"
+               k == "bodyguard" or
+               k == "commander" or
+	       k == "ambush"
             then
                 if v.enabled == true then
                     printf("ERROR: %s", k)
