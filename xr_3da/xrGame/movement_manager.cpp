@@ -219,6 +219,11 @@ void CMovementManager::process_game_path()
 				break;
 		}
 		case ePathStateBuildDetailPath : {
+			m_detail_start_position = Position();
+			m_detail_dest_position  = 
+				ai().level_graph().vertex_position(
+					CLevelPathManager::get_intermediate_vertex_id()
+				);
 			CDetailPathManager::build_path(
 				CLevelPathManager::path(),
 				CLevelPathManager::get_intermediate_index(),
@@ -227,8 +232,7 @@ void CMovementManager::process_game_path()
 				)
 			);
 			m_path_state		= ePathStatePathVerification;
-			if (time_over())
-				break;
+			break;
 		}
 		case ePathStatePathVerification : {
 			if (!CGameLocationSelector::location_selection_actual(m_tGameVertexID))
