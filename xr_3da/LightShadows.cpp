@@ -196,6 +196,16 @@ void CLightShadows::calculate	()
 				Lpos.mul	(L.L.direction,-100);
 				Lpos.add	(C.C);
 				Lrange		= 120;
+			} else {
+				float		_dist	=	C.C.distance_to(Lpos);
+				float		_R		=	C.O->Radius()+0.1f;
+				if (_dist<_R)		
+				{
+					Fvector			Ldir;
+					Ldir.sub		(C.C,Lpos);
+					Ldir.normalize	();
+					Lpos.mad		(Lpos,Ldir,_dist-_R);
+				}
 			}
 			
 			// calculate projection-matrix
