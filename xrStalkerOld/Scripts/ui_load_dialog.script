@@ -57,6 +57,10 @@ function load_dialog:InitControls()
 						     y = self.top_align_y,
 						     width = 148, 
 						     height = 148}
+	local pict_rect       = {x = info_rect.x + 58,
+							 y = info_rect.y + 16,
+							 width = 128,
+							 height = 128}
 	
 							 
 							 
@@ -79,10 +83,17 @@ function load_dialog:InitControls()
 	----- CODE -------
 	
 	-- INFO box --
+	
+	local pict_info = CUIStatic() 
+    pict_info:SetAutoDelete(true)
+	pict_info:SetWindowName("static_pict")
+    pict_info:Init(pict_rect.x, pict_rect.y, pict_rect.width, pict_rect.height)
+	self.main_frame:AttachChild(pict_info)
+	
 	local frame_info = CUIStatic() 
     frame_info:SetAutoDelete(true)
     frame_info:Init("ui\\ui_static_loadgameinfo", info_rect.x, info_rect.y, info_rect.width, info_rect.height)
-	self.main_frame:AttachChild(frame_info)	
+	self.main_frame:AttachChild(frame_info)			
 
 	------------LIST-----------------
     local txt_list   = CUIFrameWindow()  --background for ListView
@@ -145,6 +156,27 @@ function load_dialog:InitCallBacks()
 	self:AddCallback("message_box",		ui_events.MESSAGE_BOX_CANCEL_CLICKED, self,"OnMsgCancel")
 	self:AddCallback("message_box",		ui_events.MESSAGE_BOX_YES_CLICKED,    self,"OnMsgYes")
 	self:AddCallback("message_box",		ui_events.MESSAGE_BOX_NO_CLICKED,     self,"OnMsgNo")
+	// list box click
+	self:AddCallback("list_window", ui_events.LIST_ITEM_CLICKED, self, "OnListItemClicked")
+end
+
+function load_dialog:OnListItemClicked()
+	local list_box = self:GetListWnd("list_window")
+	local picture  = self:GetStatic("static_pict")	
+	local item = list_box:GetItem(list_box:GetFocusedItem())
+	
+	local item_text = item:GetText()
+	
+	local f = getFS();
+	local flist = f:file_list_open_ex("$game_saves$",FS.FS_ListFiles, item_text .. ".dds")
+	local f_cnt = flist:Size()
+	
+	if f_cnt > 0 then
+		picture:InitTexture(item_text)
+	else
+		picture:InitTexture("ui\\ui_no_screenshot")
+	end
+		
 end
 
 function load_dialog:OnMsgOk()
