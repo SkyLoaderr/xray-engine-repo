@@ -106,6 +106,7 @@ IC void CObjectSpace::Object_Unregister		( CObject *O )
 //----------------------------------------------------------------------
 IC int	CObjectSpace::GetNearest ( const Fvector &point, float range )
 {
+	dwQueryID			++;
 	nearest_list.clear	( );
 	Irect				rect;
 
