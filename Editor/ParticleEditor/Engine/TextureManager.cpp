@@ -414,7 +414,7 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 	CBlender_Compile	C;
 	C.Initialize		(&S);
 	C.bEditor			= FALSE;
-	C.bLighting			= FALSE;
+	C.bLighting			= TRUE;
 	C.iLayers			= 1;
 	
 	// Parse names
