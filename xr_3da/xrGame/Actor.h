@@ -448,11 +448,11 @@ protected:
 	void					NetInput_Send			( );
 	void					NetInput_Apply			(net_input* pNI);
 	void					NetInput_Update			( u32 Time );
-	
+	/*
 	xr_deque<SMemoryPos>	SMemoryPosStack;
 	Fvector					dDesyncVec;
 	SMemoryPos*				FindMemoryPos (u32 Time);
-
+	*/
 	///////////////////////////////////////////////////////
 	// апдайт с данными физики
 	xr_deque<net_update_A>	NET_A;
@@ -486,7 +486,7 @@ public:
 	virtual void			PH_B_CrPr		(); // actions & operations before physic correction-prediction steps
 	virtual void			PH_I_CrPr		(); // actions & operations after correction before prediction steps
 	virtual void			PH_A_CrPr		(); // actions & operations after phisic correction-prediction steps
-	virtual void			UpdatePosStack	( u32 Time0, u32 Time1 );
+//	virtual void			UpdatePosStack	( u32 Time0, u32 Time1 );
 
 	virtual void			SpawnAmmoForWeapon		(CInventoryItem *pIItem);
 	virtual void			RemoveAmmoForWeapon		(CInventoryItem *pIItem);

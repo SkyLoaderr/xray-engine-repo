@@ -521,10 +521,11 @@ bool				CLevel::InterpolationDisabled	()
 
 void __stdcall		CLevel::PhisStepsCallback	( u32 Time0, u32 Time1 )
 {
-	if (Game().type == 1)	return;
+	if (Game().type == GAME_SINGLE)	return;
 
 //#pragma todo("Oles to all: highly inefficient and slow!!!")
 //fixed (Andy)
+	/*
 	for (xr_vector<CObject*>::iterator O=Level().Objects.objects.begin(); O!=Level().Objects.objects.end(); ++O) 
 	{
 		if( (*O)->SUB_CLS_ID == CLSID_OBJECT_ACTOR){
@@ -532,10 +533,8 @@ void __stdcall		CLevel::PhisStepsCallback	( u32 Time0, u32 Time1 )
 			if (!pActor || pActor->Remote()) continue;
 				pActor->UpdatePosStack(Time0, Time1);
 		}
-/*		CActor* pActor = dynamic_cast<CActor*>(*O);
-		if (!pActor || pActor->Remote()) continue;
-		pActor->UpdatePosStack(Time0, Time1);*/
 	};
+	*/
 };
 
 void				CLevel::SetNumCrSteps		( u32 NumSteps )

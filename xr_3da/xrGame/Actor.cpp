@@ -142,7 +142,7 @@ CActor::CActor() : CEntityAlive()
 
 	////////////////////////////////////
 	pStatGraph = NULL;
-	dDesyncVec.set(0, 0, 0);
+//	dDesyncVec.set(0, 0, 0);
 
 	m_pActorEffector = NULL;
 

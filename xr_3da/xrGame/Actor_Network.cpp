@@ -64,9 +64,12 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	if (!NumItems)		return;
 
 	SPHNetState	State;
-	State.enabled = false;
+//	State.enabled = false;
+	CPHSynchronize* pSyncObj = NULL;
+	pSyncObj = PHGetSyncItem(0);
+	pSyncObj->get_State(State);
+	/*
 	u32 Time0, Time1;
-
 	if (SMemoryPosStack.empty())
 	{
 		CPHSynchronize* pSyncObj = NULL;
@@ -80,6 +83,7 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 		Time0 = SMemoryPosStack.back().dwTime0;
 		Time1 = SMemoryPosStack.back().dwTime1;
 	};
+	*/
 
 	P.w_u8					( State.enabled );
 
@@ -96,8 +100,8 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	P.w_float				( State.quaternion.z );
 	P.w_float				( State.quaternion.w );
 
-	P.w_u32					( Time0 );
-	P.w_u32					( Time1 );
+//	P.w_u32					( Time0 );
+//	P.w_u32					( Time1 );
 }
 
 float g_fMaxDesyncLen		= 1.0f;
@@ -230,7 +234,7 @@ void	CActor::net_Import_Base_proceed		( )
 	if (Remote()) return;
 
 	net_update N		= NET.back();
-
+/*
 	SMemoryPos* pMemPos = FindMemoryPos(N.dwTimeStamp);
 	if (pMemPos)
 	{
@@ -261,6 +265,7 @@ void	CActor::net_Import_Base_proceed		( )
 			pSyncObj->set_State(State);
 		};
 	};
+	*/
 };
 
 void		CActor::net_Import_Physic			( NET_Packet& P)
@@ -287,14 +292,15 @@ void		CActor::net_Import_Physic			( NET_Packet& P)
 	P.r_float				( N_A.State.quaternion.z );
 	P.r_float				( N_A.State.quaternion.w );
 
-	P.r_u32					( N_A.dwTime0 );
-	P.r_u32					( N_A.dwTime1 );
+//	P.r_u32					( N_A.dwTime0 );
+//	P.r_u32					( N_A.dwTime1 );
 
 	N_A.State.previous_position	= N_A.State.position;
 	N_A.State.previous_quaternion = N_A.State.quaternion;
 	//----------- for E3 -----------------------------
 	if (Local() && OnClient()) return;
 	//-----------------------------------------------
+	/*
 	if (!NET_A.empty() && N_A.dwTime1 < NET_A.back().dwTime1) return;
 	if (!NET_A.empty() && N_A.dwTime1 == NET_A.back().dwTime1)
 	{
@@ -305,6 +311,17 @@ void		CActor::net_Import_Physic			( NET_Packet& P)
 		NET_A.push_back			(N_A);
 		if (NET_A.size()>5) NET_A.pop_front();
 	}
+	*/
+	if (!NET_A.empty() && N_A.dwTimeStamp < NET_A.back().dwTimeStamp) return;
+	if (!NET_A.empty() && N_A.dwTimeStamp == NET_A.back().dwTimeStamp)
+	{
+		NET_A.back() = N_A;
+	}
+	else
+	{
+		NET_A.push_back			(N_A);
+		if (NET_A.size()>5) NET_A.pop_front();
+	};
 
 	if (!NET_A.empty()) m_bInterpolate = true;
 	//-----------------------------------------------
@@ -316,8 +333,8 @@ void		CActor::net_Import_Physic			( NET_Packet& P)
 
 void	CActor::net_Import_Physic_proceed	( )
 {
-	net_update N		= NET.back();
-	net_update_A N_A	= NET_A.back();
+//	net_update N		= NET.back();
+//	net_update_A N_A	= NET_A.back();
 
 	Level().AddObject_To_Objects4CrPr(this);
 	CrPr_SetActivated(false);
@@ -330,6 +347,7 @@ void	CActor::net_Import_Physic_proceed	( )
 	}
 	else
 	{
+		/*
 		if (NET_InputStack.empty()) return;
 
 		//----------------------------------------------
@@ -355,6 +373,7 @@ void	CActor::net_Import_Physic_proceed	( )
 
 			NetInput_Save();
 		};
+		*/
 	};
 };
 
@@ -847,7 +866,7 @@ void CActor::make_Interpolation	()
 			m_bInInterpolation = false;
 	};
 };
-
+/*
 void		CActor::UpdatePosStack	( u32 Time0, u32 Time1 )
 {
 		//******** Storing Last Position in stack ********
@@ -890,4 +909,4 @@ ACTOR_DEFS::SMemoryPos*				CActor::FindMemoryPos (u32 Time)
 
 	return &(*I);
 };
-
+*/

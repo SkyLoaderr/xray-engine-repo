@@ -112,7 +112,7 @@ struct					SActorMotions
 	SActorState			m_climb;
 	void				Create(CSkeletonAnimated* K);
 };
-
+/*
 //буфер сохраненных данных физики по актеру
 struct SMemoryPos
 {
@@ -137,7 +137,7 @@ struct SMemoryPos
 		return u64WorldStep < Step;
 	};
 };
-
+*/
 //---------------------------------------------
 // ввод с клавиатуры и мыши
 struct					net_input

@@ -838,8 +838,8 @@ void CSE_ALifeCreatureActor::UPDATE_Read	(NET_Packet	&tNetPacket)
 	tNetPacket.r_float				( State.quaternion.z );
 	tNetPacket.r_float				( State.quaternion.w );
 
-	tNetPacket.r_u32				( m_dwTime0 );
-	tNetPacket.r_u32				( m_dwTime1 );
+//	tNetPacket.r_u32				( m_dwTime0 );
+//	tNetPacket.r_u32				( m_dwTime1 );
 	////////////////////////////////////////////////////
 };
 void CSE_ALifeCreatureActor::UPDATE_Write	(NET_Packet	&tNetPacket)
@@ -870,8 +870,8 @@ void CSE_ALifeCreatureActor::UPDATE_Write	(NET_Packet	&tNetPacket)
 	tNetPacket.w_float				( State.quaternion.z );
 	tNetPacket.w_float				( State.quaternion.w );	
 
-	tNetPacket.w_u32				( m_dwTime0 );
-	tNetPacket.w_u32				( m_dwTime1 );
+///	tNetPacket.w_u32				( m_dwTime0 );
+//	tNetPacket.w_u32				( m_dwTime1 );
 	////////////////////////////////////////////////////
 }
 
