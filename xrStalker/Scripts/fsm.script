@@ -49,9 +49,27 @@ function FSM:run()
 end
 
 
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+class 'lua_testclass'
+
+function lua_testclass:__init(name)
+	self.name = name
+end
+
+function lua_testclass:print()
+	print(self.name)
+end
+
+
+
 function main()
 	log	("script don't want to work!")
 	local stalker1	= get_level_object("m_stalker_e0001")
+
+	a = lua_testclass('example')
+	a:print()
+
 
 	local fsm1 = FSM(stalker1)
 	log	("and?!")
