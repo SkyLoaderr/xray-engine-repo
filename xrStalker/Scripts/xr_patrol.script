@@ -132,12 +132,12 @@ function action_single_patrol:initialize ()
     self.object:set_item                  (object.activate, self.object:best_weapon ())
     self.object:set_detail_path_type      (move.line)
     self.object:set_body_state            (move.standing)
-    self.object:set_movement_type         (move.walk)
+    self.object:set_movement_type         (move.run)
     self.object:set_path_type             (game_object.patrol_path)
     if self.a.first_init == true then self.path_type = patrol.start
     else  self.path_type = patrol.nearest end 
     self.object:set_patrol_path           (self.a.patrol_path, self.path_type, patrol.continue, true)
-    self.object:set_mental_state          (anim.free)
+    self.object:set_mental_state          (anim.danger)
     self.object:set_sight                 (look.path_dir, nil, 0)
     
     if self.stage ~= 3 then self.stage = 0 end
@@ -217,6 +217,7 @@ function action_single_patrol:execute ()
         if self.object:animation_count () == 0 then
            self.stage = 0
            self.object:set_movement_type (move.walk)  
+           self.object:set_mental_state  (anim.free)
            --self.object:set_patrol_path   (self.a.patrol_path, self.path_type, patrol.continue, true) --!!!
            self.object:set_previous_point (self.waypoint)
            if patrol (self.object:patrol()):flag (self.waypoint, 0) == true and table.getn (xr_motivator.storage[self.object:id()].followers) ~= 0 then
@@ -227,6 +228,7 @@ function action_single_patrol:execute ()
         if self:process_radio () == true then
            self.stage = 0
            self.object:set_movement_type (move.walk)
+           self.object:set_mental_state  (anim.free)
            --self.object:set_patrol_path   (self.a.patrol_path, self.path_type, patrol.continue, true)    --!!!
            if patrol (self.object:patrol()):flag (self.waypoint, 2) == true and table.getn (xr_motivator.storage[self.object:id()].followers) ~= 0 then
            	  self:speak (commander_snd, 1, 0)
