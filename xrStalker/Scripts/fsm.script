@@ -89,7 +89,7 @@ function main()
 	a[0] = 2
 	a[1] = 3
 	printf("a %d", a[0])
-	table.foreach(a, log)
+	table.foreach(a, print)
 
 --	fsm_stalker:add_transition(0, 1, fsm.if_see_actor)
 
