@@ -381,11 +381,6 @@
         <phrase_list>
             <phrase id="11">
                 <text>tutorial_wounded_11</text>
-                <next>12</next>
-            </phrase>
-            <phrase id="12">
-                <text>tutorial_wounded_12</text>
-                <give_info>tutorial_wounded_help</give_info>
             </phrase>
             <phrase id="3">
                 <text>tutorial_wounded_3</text>
@@ -394,6 +389,7 @@
             <phrase id="1">
                 <text>tutorial_wounded_1</text>
                 <precondition>dialogs.medikit_yes</precondition>
+                <give_info>tutorial_wounded_help</give_info>
                 <action>dialogs.transfer_medikit2</action>
                 <next>11</next>
             </phrase>
