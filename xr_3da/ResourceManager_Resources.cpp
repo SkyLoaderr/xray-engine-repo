@@ -3,7 +3,9 @@
 
 #pragma warning(disable:4995)
 #include <d3dx9.h>
-#pragma comment( lib, "d3dx9.lib"		)
+#ifndef _EDITOR
+	#pragma comment( lib, "d3dx9.lib"		)
+#endif
 #pragma warning(default:4995)
 
 #include "render.h"

@@ -96,6 +96,8 @@ namespace PS
 		virtual float		GetTimeLimit	(){VERIFY(m_Def); return m_Def->m_fTimeLimit;}
 
 		virtual LPCSTR		Name			(){VERIFY(m_Def); return m_Def->m_Name;}
+
+        virtual u32 		ParticlesCount	();
 	};
 
 }

@@ -85,7 +85,8 @@
       Intermediate\SkeletonAnimated.obj Intermediate\SkeletonCustom.obj 
       Intermediate\SoundEditor.obj Intermediate\EThumbnailTexture.obj 
       Intermediate\EThumbnail.obj Intermediate\EThumbnailObject.obj 
-      Intermediate\EThumbnailSound.obj Intermediate\EditorPreferences.obj"/>
+      Intermediate\EThumbnailSound.obj Intermediate\EditorPreferences.obj 
+      Intermediate\fmesh.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -303,6 +304,7 @@
       <FILE FILENAME="Editor\EThumbnailObject.cpp" FORMNAME="" UNITNAME="EThumbnailObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\EThumbnailSound.cpp" FORMNAME="" UNITNAME="EThumbnailSound.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\EditorPreferences.cpp" FORMNAME="" UNITNAME="EditorPreferences" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\fmesh.cpp" FORMNAME="" UNITNAME="fmesh" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

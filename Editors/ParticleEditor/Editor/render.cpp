@@ -133,3 +133,24 @@ IRender_Visual*	CRender::model_Duplicate	(IRender_Visual* V)					{ return Models
 void 			CRender::model_Render		(IRender_Visual* m_pVisual, const Fmatrix& mTransform, int priority, bool strictB2F, float m_fLOD){Models->Render(m_pVisual, mTransform, priority, strictB2F, m_fLOD);}
 void 			CRender::model_RenderSingle	(IRender_Visual* m_pVisual, const Fmatrix& mTransform, float m_fLOD){Models->RenderSingle(m_pVisual, mTransform, m_fLOD);}
 
+//#pragma comment(lib,"d3dx_r1")
+HRESULT	CRender::CompileShader			(
+		LPCSTR                          pSrcData,
+		UINT                            SrcDataLen,
+		void*							_pDefines,
+		void*							_pInclude,
+		LPCSTR                          pFunctionName,
+		LPCSTR                          pTarget,
+		DWORD                           Flags,
+		void*							_ppShader,
+		void*							_ppErrorMsgs,
+		void*							_ppConstantTable)
+{
+        CONST D3DXMACRO*                pDefines		= (CONST D3DXMACRO*)	_pDefines;
+        LPD3DXINCLUDE                   pInclude		= (LPD3DXINCLUDE)		_pInclude;
+        LPD3DXBUFFER*                   ppShader		= (LPD3DXBUFFER*)		_ppShader;
+        LPD3DXBUFFER*                   ppErrorMsgs		= (LPD3DXBUFFER*)		_ppErrorMsgs;
+        LPD3DXCONSTANTTABLE*            ppConstantTable	= (LPD3DXCONSTANTTABLE*)_ppConstantTable;
+		return D3DXCompileShader		(pSrcData,SrcDataLen,pDefines,pInclude,pFunctionName,pTarget,Flags,ppShader,ppErrorMsgs,ppConstantTable);
+}
+

@@ -34,7 +34,9 @@ CPEDef::CPEDef()
     m_fCollideResilience		= 0.f;
     m_fCollideSqrCutoff			= 0.f;
     // velocity scale
-    m_VelocityScale.set	(0.f,0.f,0.f);
+    m_VelocityScale.set			(0.f,0.f,0.f);
+    // align to path
+    m_APDefaultRotation.set		(-PI_DIV_2,0.f,0.f);
 	// flags
     m_Flags.zero		();
 }
@@ -49,9 +51,10 @@ void CPEDef::SetName(LPCSTR name)
 {
     strcpy				(m_Name,name);
 }
-void CPEDef::pAlignToPath()
+void CPEDef::pAlignToPath(float rot_x, float rot_y, float rot_z)
 {
 	m_Flags.set			(dfAlignToPath,TRUE);
+    m_APDefaultRotation.set(rot_x,rot_y,rot_z);
 }
 void CPEDef::pVelocityScale(float scale_x, float scale_y, float scale_z)
 {
@@ -226,6 +229,12 @@ BOOL CPEDef::Load(IReader& F)
         F.r_fvector3				(m_VelocityScale);
     }
 
+    if (m_Flags.is(dfAlignToPath)){
+    	if (F.find_chunk(PED_CHUNK_ALIGN_TO_PATH)){
+	        F.r_fvector3			(m_APDefaultRotation);
+        }
+    }
+    
 //    m_Flags.and(dfAllFlags);
     
 #ifdef _PARTICLE_EDITOR
@@ -303,6 +312,12 @@ void CPEDef::Save(IWriter& F)
     if (m_Flags.is(dfVelocityScale)){
         F.open_chunk	(PED_CHUNK_VEL_SCALE);
         F.w_fvector3	(m_VelocityScale);
+        F.close_chunk	();
+    }
+
+    if (m_Flags.is(dfAlignToPath)){
+        F.open_chunk	(PED_CHUNK_ALIGN_TO_PATH);
+        F.w_fvector3	(m_APDefaultRotation);
         F.close_chunk	();
     }
 #ifdef _PARTICLE_EDITOR
@@ -604,7 +619,7 @@ void CParticleEffect::Render(float LOD)
                     Fvector 	dir;
                     float speed	= m.vel.magnitude();
                     if (speed>=EPS_S)	dir.div	(m.vel,speed);
-                    else				dir.set	(0.f,1.f,0.f);
+                    else				dir.setHP(-m_Def->m_APDefaultRotation.y,-m_Def->m_APDefaultRotation.x);
                     FillSprite	(pv,mSpriteTransform,m.pos,lt,rb,r_x,r_y,m.color,dir,fov_scale_w,factor_r,w_2,h_2);
                 }else{
                     FillSprite	(pv,mSpriteTransform,m.pos,lt,rb,r_x,r_y,m.color,m.rot.x,fov_scale_w,w_2,h_2);
@@ -618,6 +633,12 @@ void CParticleEffect::Render(float LOD)
             }
         }
     }
+}
+
+u32 CParticleEffect::ParticlesCount()
+{
+	ParticleEffect *pe 		= _GetEffectPtr(m_HandleEffect);
+	return pe?pe->p_count:0;
 }
 
 void CParticleEffect::ApplyExplosion()

@@ -80,6 +80,18 @@ public:
 	virtual void			rmNormal				();
 
     virtual LPCSTR			getShaderPath			(){return "XR1\\";}
+
+	virtual HRESULT			CompileShader			(
+		LPCSTR          	pSrcData,
+		UINT                SrcDataLen,
+		void*				pDefines,
+		void*				pInclude,
+		LPCSTR              pFunctionName,
+		LPCSTR              pTarget,
+		DWORD               Flags,
+		void*				ppShader,
+		void*				ppErrorMsgs,
+		void*				ppConstantTable);
 };
 
 IC  float   CalcSSA(Fvector& C, float R)

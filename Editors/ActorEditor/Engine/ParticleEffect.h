@@ -102,8 +102,10 @@ namespace PS
 
 		ref_shader			m_CachedShader;
 
-    // align to path
+    // velocity scale
 	    Fvector				m_VelocityScale;
+    // align to path
+	    Fvector				m_APDefaultRotation;
 	protected:
     // collision
 	    float 				m_fCollideOneMinusFriction;
@@ -134,7 +136,7 @@ namespace PS
 		void				pSprite				(string128& sh_name, string128& tex_name);
 		void				pFrame				(BOOL random_frame=TRUE, u32 frame_count=16, u32 texture_width=128, u32 texture_height=128, u32 frame_width=32, u32 frame_height=32);
         void				pVelocityScale		(float scale_x=0.f, float scale_y=0.f, float scale_z=0.f);
-		void 				pAlignToPath		();
+		void 				pAlignToPath		(float rot_x=-PI_DIV_2, float rot_y=0.f, float rot_z=0.f);
         void				pCollision			(float friction, float resilience, float cutoff, BOOL destroy_on_contact=FALSE);
 		// action api
 		void 				pAnimate			(float speed=24.f, BOOL random_playback=FALSE);
@@ -225,6 +227,8 @@ namespace PS
         void				SetCollisionCB		(CollisionCallback	collision_cb)	{m_CollisionCallback= collision_cb;}
 
         void				ApplyExplosion		();
+
+	    virtual u32			ParticlesCount		();
 	};
 	DEFINE_VECTOR			(PS::CPEDef*,PEDVec,PEDIt);
 }
@@ -244,6 +248,7 @@ namespace PS
 #define PED_CHUNK_VEL_SCALE		0x0022
 #define PED_CHUNK_OWNER			0x0023
 #define PED_CHUNK_EDATA			0x0024
+#define PED_CHUNK_ALIGN_TO_PATH	0x0025
 
 //---------------------------------------------------------------------------
 #endif

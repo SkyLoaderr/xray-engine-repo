@@ -289,7 +289,7 @@ public:
         else if (command=="pTimeStep")	  		pTimeStep	   	(P1);
         else if (command=="pSetMaxParticles")	pSetMaxParticles(P1);
 //        else if (command=="pObject")       		parent->pObject	(P1);
-		else if (command=="pAlignToPath")		parent->pAlignToPath();
+		else if (command=="pAlignToPath")		parent->pAlignToPath(P3);
 		else if (command=="pVelocityScale")		parent->pVelocityScale(P3);
 		else if (command=="pCollision")			parent->pCollision(P4);
         else if (command=="pSprite")        	parent->pSprite	(P2);
@@ -371,7 +371,7 @@ static LPCSTR PStateCommands[]={
 	"pSetMaxParticles(int max_count);",
 // our     
 	"pParentMotion(float scale);",
-	"pAlignToPath();",
+	"pAlignToPath(float rot_x=-1.57f, float rot_y=0.f, float rot_z=0.f);",
     "pVelocityScale(float scale_x=0.f, float scale_y=0.f, float scale_z=0.f);",
     "pCollision(float friction, float resilience, float cutoff, BOOL destroy_on_contact=FALSE);",
 //    "pObject(LPCSTR obj_name);",

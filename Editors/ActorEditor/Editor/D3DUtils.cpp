@@ -368,10 +368,12 @@ void CDrawUtilities::DrawIdentCone	(bool bSolid, bool bWire, u32 clr_s, u32 clr_
 {
     if (bSolid){
 		Device.SetRS		(D3DRS_TEXTUREFACTOR,	clr_s);
+        Device.SetShader	(Device.m_SelectionShader);
     	m_SolidCone.Render	();
     }
     if (bWire){
 		Device.SetRS		(D3DRS_TEXTUREFACTOR,	clr_w);
+        Device.SetShader	(Device.m_WireShader);
     	m_WireCone.Render	();
     }
 	Device.SetRS	(D3DRS_TEXTUREFACTOR,	0xffffffff);
@@ -381,10 +383,12 @@ void CDrawUtilities::DrawIdentSphere	(bool bSolid, bool bWire, u32 clr_s, u32 cl
 {
     if (bSolid){
 		Device.SetRS		(D3DRS_TEXTUREFACTOR,	clr_s);
+        Device.SetShader	(Device.m_SelectionShader);
     	m_SolidSphere.Render();
     }
     if (bWire){
 		Device.SetRS		(D3DRS_TEXTUREFACTOR,	clr_w);
+        Device.SetShader	(Device.m_WireShader);
      	m_WireSphere.Render	();
     }
 	Device.SetRS	(D3DRS_TEXTUREFACTOR,	0xffffffff);
@@ -394,10 +398,12 @@ void CDrawUtilities::DrawIdentCylinder	(bool bSolid, bool bWire, u32 clr_s, u32 
 {
     if (bSolid){
 		Device.SetRS			(D3DRS_TEXTUREFACTOR,	clr_s);
+        Device.SetShader		(Device.m_SelectionShader);
     	m_SolidCylinder.Render	();
     }
     if (bWire){
 		Device.SetRS			(D3DRS_TEXTUREFACTOR,	clr_w);
+        Device.SetShader		(Device.m_WireShader);
     	m_WireCylinder.Render	();
     }
 	Device.SetRS	(D3DRS_TEXTUREFACTOR,	0xffffffff);
@@ -407,10 +413,12 @@ void CDrawUtilities::DrawIdentBox(bool bSolid, bool bWire, u32 clr_s, u32 clr_w)
 {
     if (bSolid){
 		Device.SetRS		(D3DRS_TEXTUREFACTOR,	clr_s);
+        Device.SetShader	(Device.m_SelectionShader);
     	m_SolidBox.Render	();
     }
     if (bWire){
 		Device.SetRS		(D3DRS_TEXTUREFACTOR,	clr_w);
+        Device.SetShader	(Device.m_WireShader);
     	m_WireBox.Render	();
     }
 	Device.SetRS	(D3DRS_TEXTUREFACTOR,	0xffffffff);

@@ -216,7 +216,7 @@ void CSE_ALifeItemTorch::FillProp			(LPCSTR pref, PropItemVec& values)
     {
         AStringVec				vec;
         u16 cnt					= PKinematics(visual)->LL_Bones()->size();
-        for (u16 k=0; k<cnt; k++) vec.push_back(PKinematics(visual)->LL_BoneName(k));
+        for (u16 k=0; k<cnt; k++) vec.push_back(PKinematics(visual)->LL_BoneName_dbg(k));
 		PHelper.CreateToken2<u16>(values, FHelper.PrepareKey(pref,s_name,"Guide bone"),		&guid_bone,	&vec);
     }
 }

@@ -186,10 +186,20 @@ void CParticleTools::OnFrame()
 	if (m_Flags.is(flApplyParent))
     	RealApplyParent();
 
-//    m_EditPE->
+    AnsiString tmp;
     switch(m_EditMode){
-    case emEffect:	if (m_EditPE->IsPlaying())UI.SetStatus(" PE Playing...",false); else UI.SetStatus(" Stopped.",false); break;
-    case emGroup:	if (m_EditPG->IsPlaying())UI.SetStatus(" PG Playing...",false); else UI.SetStatus(" Stopped.",false); break;
+    case emEffect:	
+    	if (m_EditPE->IsPlaying())
+        	UI.SetStatus(AnsiString().sprintf(" PE Playing...[%d]",m_EditPE->ParticlesCount()).c_str(),false); 
+        else 
+        	UI.SetStatus(" Stopped.",false); 
+    break;
+    case emGroup:	
+    	if (m_EditPG->IsPlaying())
+        	UI.SetStatus(AnsiString().sprintf(" PE Playing...[%d]",m_EditPG->ParticlesCount()).c_str(),false); 
+        else 
+        	UI.SetStatus(" Stopped.",false); 
+    break;
     default: THROW;
     }
 }

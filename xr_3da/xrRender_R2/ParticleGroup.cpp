@@ -221,3 +221,11 @@ void CParticleGroup::OnDeviceDestroy()
         ((CParticleEffect*)children[i])->OnDeviceDestroy();
 }
 
+u32 CParticleGroup::ParticlesCount()
+{
+	int p_count=0;
+    for (u32 i=0; i<children.size(); i++)
+        p_count 	+= ((CParticleEffect*)children[i])->ParticlesCount();
+	return p_count;
+}
+
