@@ -537,6 +537,8 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 	end
 end
 function events:isRuled(obj)
+	if self.npc == nil then return false end
+
 	local tt = xr_motivator.storage[self.npc:id()].reactions.rules
 
 	for k,v in tt do
@@ -549,7 +551,7 @@ function events:isRuled(obj)
 	return false
 end
 function events:ruleExist(rule)
-	if not is_object_online(self.npc:id()) then return false end
+	if self.npc == nil then return false end
 
 	local tt = xr_motivator.storage[self.npc:id()].reactions.rules
 
