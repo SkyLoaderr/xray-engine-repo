@@ -311,6 +311,8 @@ function add_novice(obj)
 
     properties["state_end"]     	  = xr_evaluators_id.state_change
     properties[ "work" ]              = xr_evaluators_id.jon_stalker_novice
+    properties["contact"]           = xr_evaluators_id.stohe_meet_base + 1
+
     operators [ "stalker_novice" ]    = xr_actions_id.jon_stalker_novice
 
     local manager  = obj:motivation_action_manager ()
@@ -320,6 +322,7 @@ function add_novice(obj)
 
     action:add_precondition         ( world_property ( properties["state_end"],   	 true ) )
     action:add_precondition         (world_property(stalker_ids.property_enemy,      false))
+    action:add_precondition         (world_property (properties["event"],            false))
     action:add_precondition         ( world_property ( properties[ "work" ],         true ) )
     action:add_effect               ( world_property ( properties[ "work" ],         false ) )
     manager:add_action              ( operators[ "stalker_novice" ], action)
@@ -468,6 +471,8 @@ function add_novice2(obj)
     local properties    = {}
 
     properties[ "novice2_alife" ]      = xr_evaluators_id.jon_stalker_novice2
+    properties["contact"]           = xr_evaluators_id.stohe_meet_base + 1
+
     operators [ "stalker_novice2" ]    = xr_actions_id.jon_stalker_novice2
 
 
@@ -477,6 +482,7 @@ function add_novice2(obj)
     local action = this.stalker_novice2_action ( "stalker_novice2_action", xr_motivator.storage[obj:id()].novice2 )
 
     action:add_precondition         ( world_property ( properties[ "novice2_alife" ], true ) )
+    action:add_precondition         (world_property (properties["event"],             false))
     action:add_precondition         (world_property(stalker_ids.property_enemy,       false))
     action:add_effect               ( world_property ( properties[ "novice2_alife" ], false ) )
     manager:add_action              ( operators[ "stalker_novice2" ], action)
