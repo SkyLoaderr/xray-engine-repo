@@ -1,4 +1,6 @@
 #include <ode/ode.h>
+#include "dCylinder/dCylinder.h"
+#include "PhysicsShell.h"
 #ifndef PHYSICS_H
 #define PHYSICS_H
 
@@ -11,6 +13,7 @@ public:
 	void Destroy();
 };
 ///////////////////////////////////////////////////////////////////////////////////
+
 class CPHJeep {
 	dGeomID GeomsGroup;
 	static const	UINT NofGeoms=8;
@@ -87,22 +90,69 @@ public:
 
 /////////////////////////////////////////////////////////////////////////////
 static dWorldID phWorld;
+/////////////////////////////////
 static dJointGroupID ContactGroup;
+/////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////Implemetation//for//CPhysicsElement//////////////////
+////////////////////////////////////////////////////////////////////////////////
+//using namespace std;
+class CPHElement: public CPhysicsElement {
+vector <dGeomID> m_geoms;
+vector <dGeomID> m_trans;
+vector <Fsphere> m_spheras_data;
+vector <Fobb>    m_boxes_data;
+float m_volume;
+dMass m_mass;
+dSpaceID m_space;
+//Fvector m_start;
+dBodyID m_body;
+dGeomID m_group;
+void			create_Sphere				(Fsphere&	V);
+void			create_Box					(Fobb&		V);
+void			calculate_it_data			(const Fvector& mc,float mass);
+public:
+///
+	virtual	void			add_Sphere				(Fsphere&	V);
+														
+	virtual	void			add_Box					(Fobb&		V);
+
+	void			build(dSpaceID space);
+	Fvector			get_mc_data();
+	Fvector			get_mc_geoms();
+//////////////////////////////////////////////////////
+	virtual void			Activate				(Fmatrix& m0, float dt01, Fmatrix& m2){;};
+	virtual void			Deactivate				(){;};
+	virtual void			setMass					(float M);
+	virtual void			applyForce				(Fvector& dir, float val){;};
+	virtual void			applyImpulse			(Fvector& dir, float val){;};
+	virtual void			Update					(){;};
+	CPHElement(dSpaceID a_space){ m_space=a_space;};
+	//CPHElement(){ m_space=ph_world->GetSpace();};
+	virtual ~CPHElement	();
+};
+///////////////////////////////////////////////////////////////////////
 
 class CPHWorld {
 	dSpaceID Space;
-
-	CPHMesh Mesh;
 	
-
+	CPHMesh Mesh;
 public:
 	CPHGun Gun;
 	CPHJeep Jeep;
+	
+	vector<CPHElement*> elements;
 //	CPhysicsWorld(){};
 	~CPHWorld(){};
 
+	dSpaceID GetSpace(){return Space;};
+	
 	void Create();
-
+	CPHElement* AddElement(){
+	CPHElement* phelement=new CPHElement(Space);
+	elements.push_back(phelement);
+	return phelement;
+	}
 	void Destroy();
 
 	void Step(dReal step=0.025f);
@@ -112,5 +162,6 @@ public:
 //private:
 //static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);
 };
+
 
 #endif PHYSICS_H

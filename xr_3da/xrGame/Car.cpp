@@ -7,7 +7,7 @@
 #include "PHDynamicData.h"
 #include "Physics.h"
 
-const float drive_force		= 700;
+const float drive_force		= 1000;
 
 extern CPHWorld*	ph_world;
 

@@ -83,6 +83,21 @@ public:
 			aTransform._34=0.f;
 			aTransform._44=1.f;
 		};
+	static inline FMX33toDMX(const Fmatrix33& aTransform,dReal* R){
+			dReal tmp;
+			memcpy(R,&aTransform,sizeof(dMatrix3));
+			tmp=R[4];
+			R[4]=R[1];
+			R[1]=tmp;
+
+			tmp=R[8];
+			R[8]=R[2];
+			R[2]=tmp;
+
+			tmp=R[9];
+			R[9]=R[6];
+			R[6]=tmp;
+		};
 private:
 	void CalculateR_N_PosOfChilds(dBodyID parent);
 public:

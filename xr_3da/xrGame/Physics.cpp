@@ -532,6 +532,10 @@ void CPHWorld::Destroy(){
 	Mesh.Destroy();
 	Jeep.Destroy();
 	Gun.Destroy();
+	vector<CPHElement*>::iterator i;
+	for(i=elements.begin();i!=elements.end();i++){
+	delete(*i);
+	}
 	dJointGroupEmpty(ContactGroup);
 	dSpaceDestroy(Space);
 	dWorldDestroy(phWorld);
@@ -720,4 +724,137 @@ dGeomRaySet(Ray,RayO,RayD);
 
 isShooting=true;
 }
-///////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////Implementation for CPhysicsElement
+void CPHElement::			add_Box		(Fobb&		V){
+	m_boxes_data.push_back(V);
+}
+
+void CPHElement::			create_Box		(Fobb&		V){
+														dGeomID geom,trans;
+														geom=dCreateBox(0,
+																		V.m_halfsize.x*2.f,
+																		V.m_halfsize.y*2.f,
+																		V.m_halfsize.z*2.f);
+														m_geoms.push_back(geom);
+														dGeomSetPosition(geom,
+																		 V.m_translate.x,
+																		 V.m_translate.y,
+																		 V.m_translate.z);
+														dMatrix3 R;
+														PHDynamicData::FMX33toDMX(V.m_rotate,R);
+														dGeomSetRotation(geom,R);
+														trans=dCreateGeomTransform(0);
+														dGeomTransformSetGeom(trans,m_geoms.back());
+														dGeomSetBody(trans,m_body);
+														m_trans.push_back(trans);
+														dGeomGroupAdd(m_group,m_trans.back());
+														dGeomTransformSetInfo(m_trans.back(),1);
+														}
+
+void CPHElement::			add_Sphere	(Fsphere&	V){
+	m_spheras_data.push_back(V);
+}
+
+void CPHElement::			create_Sphere	(Fsphere&	V){
+														dGeomID geom,trans;
+														geom=dCreateSphere(0,V.R);
+														m_geoms.push_back(geom);
+														dGeomSetPosition(geom,V.P.x,V.P.y,V.P.z);
+														trans=dCreateGeomTransform(0);
+														dGeomTransformSetGeom(trans,m_geoms.back());
+														dGeomSetBody(trans,m_body);
+														m_trans.push_back(trans);
+														dGeomGroupAdd(m_group,m_trans.back());
+														dGeomTransformSetInfo(m_trans.back(),1);		
+														};
+void CPHElement::			build	(dSpaceID space){
+m_body=dBodyCreate(phWorld);
+m_group=dCreateGeomGroup(space);
+Fvector mc=get_mc_data();
+//m_start=mc;
+dBodySetPosition(m_body,mc.x,mc.y,mc.z);
+vector<Fobb>::iterator i_box;
+	for(i_box=m_boxes_data.begin();i_box!=m_boxes_data.end();i_box++){
+	create_Box(*i_box);
+	}
+	vector<Fsphere>::iterator i_sphere;
+	for(i_sphere=m_spheras_data.begin();i_sphere!=m_spheras_data.end();i_sphere++){
+		create_Sphere(*i_sphere);
+		}
+}
+
+Fvector CPHElement::			get_mc_data	(){
+	Fvector mc,s;
+	float pv,volume=0.f;
+	mc.set(0,0,0);
+	vector<Fobb>::iterator i_box;
+	for(i_box=m_boxes_data.begin();i_box!=m_boxes_data.end();i_box++){
+	pv=(*i_box).m_halfsize.x*(*i_box).m_halfsize.y*(*i_box).m_halfsize.z*8;
+	s.mul((*i_box).m_translate,pv);
+	volume+=pv;
+	mc.add(s);
+	}
+	vector<Fsphere>::iterator i_sphere;
+	for(i_sphere=m_spheras_data.begin();i_sphere!=m_spheras_data.end();i_sphere++){
+	pv=(*i_sphere).R*(*i_sphere).R*(*i_sphere).R*4/3*M_PI;
+	s.mul((*i_sphere).P,pv);
+	volume+=pv;
+	mc.add(s);
+	}
+	m_volume=volume;
+	mc.mul(1.f/volume);
+	return mc;
+}
+Fvector CPHElement::			get_mc_geoms	(){
+Fvector mc;
+return mc;
+}
+
+void CPHElement::calculate_it_data(const Fvector& mc,float mas){
+	dMass m;
+	dMassSetZero(&m_mass);
+	vector<Fobb>::iterator i_box;
+	for(i_box=m_boxes_data.begin();i_box!=m_boxes_data.end();i_box++){
+	Fvector& hside=(*i_box).m_halfsize;
+	Fvector& pos=(*i_box).m_translate;
+	Fvector l;
+	l.sub(pos,mc);
+	dMassSetBox(&m,mas/m_volume,hside.x*2.f,hside.y*2.f,hside.z*2.f);
+	dMassTranslate(&m,l.x,l.y,l.z);
+	dMassAdd(&m_mass,&m);
+	
+	}
+
+	vector<Fsphere>::iterator i_sphere;
+	for(i_sphere=m_spheras_data.begin();i_sphere!=m_spheras_data.end();i_sphere++){
+	Fvector& pos=(*i_sphere).P;
+	Fvector l;
+	l.sub(pos,mc);
+	dMassSetSphere(&m,mas/m_volume,(*i_sphere).R);
+	dMassTranslate(&m,l.x,l.y,l.z);
+	dMassAdd(&m_mass,&m);
+
+	}
+
+
+}
+void		CPHElement::	setMass		(float M){
+
+build(m_space);
+calculate_it_data(get_mc_data(),M);
+dBodySetMass(m_body,&m_mass);
+
+}
+
+CPHElement::~CPHElement	(){
+	vector<dGeomID>::iterator i;
+	for(i=m_geoms.begin();i!=m_geoms.end();i++){
+	dGeomDestroy(*i);
+	}
+	for(i=m_trans.begin();i!=m_trans.end();i++){
+	dGeomDestroy(*i);
+	}
+	dGeomDestroy(m_group);
+	dBodyDestroy(m_body);
+}
