@@ -686,7 +686,7 @@ function novice3_attack:__init (name, storage) super (nil, name)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function novice3_attack:initialize ()
-    action_base.initialize          (self)
+    action_base.initialize(self)
 
 	self.move_mgr:initialize(self.object)
 	
@@ -717,6 +717,7 @@ function novice3_attack:initialize ()
 end
 ---------------------------------------------------------------------------------------------------------------------
 function novice3_attack:execute ()
+	action_base.execute(self)
 
     self.object:set_item             ( object.idle, self.object:best_weapon() )
 
@@ -730,7 +731,7 @@ function novice3_attack:execute ()
 end
 ---------------------------------------------------------------------------------------------------------------------
 function novice3_attack:finalize ()
-	action_base.finalize (self)
+	action_base.finalize(self)
 	self.move_mgr:finalize()
 	
 	--Если схема заканчивает работу, то включаем встречу
