@@ -34,7 +34,7 @@ void CRender::InsertSG_Dynamic	(IVisual *pVisual, Fvector& Center)
 	if (SSA<=r_ssaDISCARD)		return;
 
 	// Select List and add to it
-	ShaderElement*		sh		= pVisual->hShader->lod0;
+	ShaderElement*		sh		= pVisual->hShader->E[RImplementation.phase];
 	if (val_bHUD)	{
 		// HUD
 		mapHUD_Node* N			= mapHUD.insertInAnyWay(distSQ);
@@ -104,7 +104,7 @@ void CRender::InsertSG_Static	(IVisual *pVisual)
 	if (SSA<=r_ssaDISCARD)		return;
 
 	// Select List and add to it
-	ShaderElement*		sh		= pVisual->hShader->lod0;
+	ShaderElement*		sh		= pVisual->hShader->E[RImplementation.phase];
 	if (sh->Flags.bStrictB2F) {
 		mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
 		N->val.pVisual			= pVisual;
