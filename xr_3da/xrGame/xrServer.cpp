@@ -204,12 +204,12 @@ void			xrServer::Find_Server_Client	( )
 		string256	aaaa;
 		DWORD		aaaa_s			= sizeof(aaaa);
 		R_CHK		(pAddr->GetURLA(aaaa,&aaaa_s));
-		aaaa_s = strlen(aaaa);
+		aaaa_s		= xr_strlen(aaaa);
 
 		LPSTR ClientIP = NULL;
 		if (strstr(aaaa, "hostname="))
 		{
-			ClientIP = strstr(aaaa, "hostname=")+ strlen("hostname=");
+			ClientIP = strstr(aaaa, "hostname=")+ xr_strlen("hostname=");
 			if (strstr(ClientIP, ";")) strstr(ClientIP, ";")[0] = 0;
 		};
 		if (!ClientIP || !ClientIP[0]) return;
@@ -218,7 +218,7 @@ void			xrServer::Find_Server_Client	( )
 		NET->GetLocalHostAddresses(NULL, &NumAdresses, 0);
 
 		IDirectPlay8Address* p_pAddr[256];
-		memset(p_pAddr, 0, sizeof(p_pAddr));
+		Memory.mem_fill(p_pAddr, 0, sizeof(p_pAddr));
 
 		NumAdresses = 256;
 		R_CHK(NET->GetLocalHostAddresses(p_pAddr, &NumAdresses, 0));
@@ -230,12 +230,12 @@ void			xrServer::Find_Server_Client	( )
 			string256	bbbb;
 			DWORD		bbbb_s			= sizeof(bbbb);
 			R_CHK		(p_pAddr[i]->GetURLA(bbbb,&bbbb_s));
-			bbbb_s = strlen(bbbb);
+			bbbb_s		= xr_strlen(bbbb);
 
 			LPSTR ServerIP = NULL;
 			if (strstr(aaaa, "hostname="))
 			{
-				ServerIP = strstr(bbbb, "hostname=")+ strlen("hostname=");
+				ServerIP = strstr(bbbb, "hostname=")+ xr_strlen("hostname=");
 				if (strstr(ServerIP, ";")) strstr(ServerIP, ";")[0] = 0;
 			};
 			if (!ServerIP || !ServerIP[0]) continue;

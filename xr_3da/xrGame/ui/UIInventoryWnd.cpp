@@ -816,7 +816,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	UIPropertiesBox.RemoveAll();
 	
 	CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>(m_pCurrentItem);
-	CCustomOutfit* pOutfit = dynamic_cast<CCustomOutfit*>(m_pCurrentItem);
+//	CCustomOutfit* pOutfit = dynamic_cast<CCustomOutfit*>(m_pCurrentItem);
 	CArtifactMerger* pArtifactMerger = dynamic_cast<CArtifactMerger*>(m_pCurrentItem);
 	
 	CWeapon* pWeapon = dynamic_cast<CWeapon*>(m_pCurrentItem);

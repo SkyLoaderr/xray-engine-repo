@@ -19,7 +19,7 @@ void CBitingSquadTask::Init()
 void CBitingSquadTask::Run()
 {
 	// Get task
-	CMonsterSquad *pSquad = Level().SquadMan.GetSquad(pMonster->g_Squad());
+	CMonsterSquad *pSquad = Level().SquadMan.GetSquad((u8)pMonster->g_Squad());
 	GTask &task = pSquad->GetTask(pMonster);
 
 	switch (task.state.command) {
