@@ -46,8 +46,12 @@ BOOL CRenderTarget::Create	()
 	if (FAILED(_hr))													return FALSE;
 	
 	// Try to create texture/surface
+	DWORD m1 = DWORD(HW.pDevice->GetAvailableTextureMem())/1024;
 	_hr = HW.pDevice->CreateTexture(Device.dwWidth,Device.dwHeight,1,D3DUSAGE_RENDERTARGET,HW.Caps.fTarget,D3DPOOL_DEFAULT,&pSurface);
 	if (FAILED(_hr) || (0==pSurface))									return FALSE;
+	DWORD m2 = DWORD(HW.pDevice->GetAvailableTextureMem())/1024;
+	DWORD mE = (Device.dwWidth*Device.dwWidth*2)/1024;
+	Msg	("--- Estimated:  %d, Real: %d",mE,m1-m2);
 	
 	// OK
 	R_CHK	(pSurface->GetSurfaceLevel			(0,&pRT));
