@@ -5,7 +5,6 @@
 #include "vis_common.h"
 
 // refs
-class ENGINE_API	CStream;
 class ENGINE_API	CSector;
 class ENGINE_API	CPortal;
 class ENGINE_API	CVisual;
@@ -86,7 +85,7 @@ public:
 	// Models
 	virtual CVisual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E)	= 0;
 	virtual CVisual*				model_Create			(LPCSTR name)					= 0;
-	virtual CVisual*				model_Create			(LPCSTR name, CStream* data)	= 0;
+	virtual CVisual*				model_Create			(LPCSTR name, IReader* data)	= 0;
 	virtual CVisual*				model_Duplicate			(CVisual* V)					= 0;
 	virtual void					model_Delete			(CVisual* &V)					= 0;
 
