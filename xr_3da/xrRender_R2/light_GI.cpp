@@ -1,6 +1,11 @@
 #include "StdAfx.h"
 #include "light.h"
 
+IC bool		pred_LI			(light_indirect& A, light_indirect& B)
+{
+	return A.E > B.E;
+}
+
 void	light::gi_generate	()
 {
 	indirect.clear		();
@@ -15,7 +20,7 @@ void	light::gi_generate	()
 	Fvector*	verts	= g_pGameLevel->ObjectSpace.GetStaticVerts	();
 	xrc.ray_options		(CDB::OPT_CULL|CDB::OPT_ONLYNEAREST);
 
-	for (int it=0; it<int(indirect_photons); it++)	{
+	for (int it=0; it<int(indirect_photons*8); it++)	{
 		Fvector	dir,idir;
 		switch	(flags.type)		{
 		case IRender_Light::POINT		:	dir.random_dir(random);					break;
@@ -34,12 +39,17 @@ void	light::gi_generate	()
 		light_indirect		LI;
 		LI.P.mad			(position,dir,R->range);
 		LI.D.reflect		(dir,TN);
-		LI.E				= dot * (1-R->range/range) / float(indirect_photons);
-		if (LI.E < ps_r2_GI_clip/10.f)			continue;
-		LI.S				= spatial.sector;	//BUG
+		LI.E				= dot * (1-R->range/range);
+		if (LI.E < ps_r2_GI_clip)				continue;
+		LI.S				= spatial.sector;	//. BUG
 
 		indirect.push_back	(LI);
 	}
+
+	// sort & clip
+	std::sort				(indirect.begin(),indirect.end(), pred_LI);
+	if (indirect.size()>indirect_photons)
+		indirect.erase(indirect.begin()+indirect_photons,indirect.end());
 
 	// normalize
 	if (indirect.size())	{
