@@ -39,10 +39,10 @@ IC void mk_vertex					(CLightR_Vertex& D, Fvector& P, Fvector& N, Fvector& C, fl
 
 void CLightR_Manager::render_point	()
 {
-	// Implementation banned / non-working
-	return;
+	// Implementation banned / non-working ?
+	// return;
 
-	// Worl/View/Projection
+	// World/View/Projection
 	float _43					 = Device.mProject._43;
 	Device.mProject._43			-= 0.001f; 
 	RCache.set_xform_world		(Fidentity);
@@ -64,7 +64,7 @@ void CLightR_Manager::render_point	()
 		Device.Statistic.RenderDUMP_Lights.Begin();
 		Fcolor				factor;
 		factor.mul_rgba		(PPL.color,(1-alpha));
-		CHK_DX				(HW.pDevice->SetRenderState(D3DRS_TEXTUREFACTOR,factor.get()));
+		RCache.set_c		(hPPAcolor,factor.r,factor.g,factor.b,1);
 		{
 			// Build bbox
 			float				size_f	= PPL.range+EPS_L;
@@ -209,7 +209,8 @@ void CLightR_Manager::add			(light* L)
 
 CLightR_Manager::CLightR_Manager	()
 {
-//	hShader.create					("effects\\light","internal\\internal_light_att,internal\\internal_light_att");
+	hPPAcolor						= "L_dynamic_color";
+	hShader.create					("ppalight","internal\\internal_light_att,internal\\internal_light_att");
 	hGeom.create					(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX2, RCache.Vertex.Buffer(), NULL);
 }
 
