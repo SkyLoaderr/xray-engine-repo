@@ -186,19 +186,27 @@ BOOL CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float
 		fAspect = 1.f;
 	}else{
 		if (psHUD_Flags.test(HUD_DRAW)){
-			if ((Device.dwTimeGlobal/500)%2==0) {
+			if ((Device.dwTimeGlobal/750)%3!=0) {
 				pApp->pFontSystem->SetSize	(0.02f);
-//.				pApp->pFontSystem->SetAligment(CGameFont::alCenter);
 				pApp->pFontSystem->SetColor	(color_rgba(255,0,0,255));
-				pApp->pFontSystem->OutSet	(0,+.035f);
+				pApp->pFontSystem->SetAligment(CGameFont::alCenter);
+				pApp->pFontSystem->OutSet	(0,-.05f);
 				pApp->pFontSystem->OutNext	("%s","RECORDING");
 				pApp->pFontSystem->OutNext	("Key frames count: %d",iCount);
-				pApp->pFontSystem->OutSkip	();
-				pApp->pFontSystem->OutNext	("SPACE = Append Key");
-				pApp->pFontSystem->OutNext	("BACK  = Cube Map");
-				pApp->pFontSystem->OutNext	("ESC   = Quit");
-				pApp->pFontSystem->OutNext	("F11   = Level Map ScreenShot");
-				pApp->pFontSystem->OutNext	("F12   = ScreenShot");
+				pApp->pFontSystem->SetAligment(CGameFont::alLeft);
+				pApp->pFontSystem->OutSet	(-0.2f,+.05f);
+				pApp->pFontSystem->OutNext	("SPACE");
+				pApp->pFontSystem->OutNext	("BACK");
+				pApp->pFontSystem->OutNext	("ESC");
+				pApp->pFontSystem->OutNext	("F11");
+				pApp->pFontSystem->OutNext	("F12");
+				pApp->pFontSystem->SetAligment(CGameFont::alLeft);
+				pApp->pFontSystem->OutSet	(0,+.05f);
+				pApp->pFontSystem->OutNext	("= Append Key");
+				pApp->pFontSystem->OutNext	("= Cube Map");
+				pApp->pFontSystem->OutNext	("= Quit");
+				pApp->pFontSystem->OutNext	("= Level Map ScreenShot");
+				pApp->pFontSystem->OutNext	("= ScreenShot");
 			}
 		}
 
