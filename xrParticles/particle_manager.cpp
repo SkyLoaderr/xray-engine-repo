@@ -140,7 +140,6 @@ void CParticleManager::Transform(int alist_id, const Fmatrix& full, const Fvecto
 	// Step through all the actions in the action list.
 	for(PAVecIt it=pa->begin(); it!=pa->end(); it++){
 		BOOL r 			= (*it)->m_Flags.is(ParticleAction::ALLOW_ROTATE);
-		if (!r) 		continue;
 		const Fmatrix& m = r?full:mT;
         (*it)->Transform(m);
 		switch((*it)->type)
