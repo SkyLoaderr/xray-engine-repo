@@ -36,10 +36,11 @@ protected:
 	float			fireDispersion;
 
 	BOOL			FireTrace		(Fvector& P, Fvector& D, Collide::ray_query& R);
-
 	void			UpdatePosition	(const Fmatrix& transform);
-
 	virtual void	AddShotmark		(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R);
+
+	void			signal_HideComplete		();
+	void			signal_PendingComplete	();
 public:
 					CWeapon			(LPCSTR name);
 	virtual			~CWeapon		();

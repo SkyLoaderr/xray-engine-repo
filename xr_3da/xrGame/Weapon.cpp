@@ -76,7 +76,14 @@ void CWeapon::Hide		()
 	FireEnd			();
 	bPending		= TRUE;
 }
-
+void CWeapon::signal_HideComplete()
+{
+	bVisible		= FALSE;
+}
+void CWeapon::signal_PendingComplete()
+{
+	bPending		= FALSE;
+}
 void CWeapon::Show		()
 {
 	bVisible		= TRUE;
