@@ -34,18 +34,11 @@ void xrServer::Perform_connect_spawn(CSE_Abstract* E, xrClientData* CL, NET_Pack
 	E->net_Processed	= TRUE;
 }
 
-void xrServer::OnCL_Connected		(IClient* _CL)
+void xrServer::SendConnectionData	(IClient* _CL)
 {
-	csPlayers.Enter					();
 	xrClientData*	CL				= (xrClientData*)_CL;
-
-	//. HUD().outMessage			(0xffffffff,"SERVER","Player '%s' connected",CL->Name);
 	NET_Packet		P;
 	u32			mode				= net_flags(TRUE,TRUE);
-
-	// Game config (all, info includes _new_ player)
-	Perform_game_export				();
-
 	// Replicate current entities on to this client
 	xrS_entities::iterator	I=entities.begin(),E=entities.end();
 	for (; I!=E; ++I)						I->second->net_Processed	= FALSE;
@@ -54,7 +47,29 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 	// Send "finished" signal
 	P.w_begin						(M_SV_CONFIG_FINISHED);
 	SendTo							(CL->ID,P,mode);
+};
 
+void xrServer::OnCL_Connected		(IClient* _CL)
+{
+	xrClientData*	CL				= (xrClientData*)_CL;
+	csPlayers.Enter					();
+
+	//. HUD().outMessage			(0xffffffff,"SERVER","Player '%s' connected",CL->Name);
+//	NET_Packet		P;
+
+	// Game config (all, info includes _new_ player)
+	Perform_game_export				();
+/*
+	u32			mode				= net_flags(TRUE,TRUE);
+	// Replicate current entities on to this client
+	xrS_entities::iterator	I=entities.begin(),E=entities.end();
+	for (; I!=E; ++I)						I->second->net_Processed	= FALSE;
+	for (I=entities.begin(); I!=E; ++I)		Perform_connect_spawn		(I->second,CL,P);
+
+	// Send "finished" signal
+	P.w_begin						(M_SV_CONFIG_FINISHED);
+	SendTo							(CL->ID,P,mode);
+*/
 	// 
 	game->OnPlayerConnect			(CL->ID);
 	csPlayers.Leave					();

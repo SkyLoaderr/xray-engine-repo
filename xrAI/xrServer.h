@@ -76,6 +76,8 @@ public:
 
 	xrClientData*			SelectBestClientToMigrateTo		(CSE_Abstract* E, BOOL bForceAnother=FALSE);
 
+	void					SendConnectionData		(IClient* _CL);
+
 public:
 	// constr / destr
 	xrServer				();
