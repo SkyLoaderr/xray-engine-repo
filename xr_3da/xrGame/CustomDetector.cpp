@@ -191,6 +191,8 @@ void CCustomDetector::UpdateCL()
 
 void CCustomDetector::feel_touch_new(CObject* O) 
 {
+	if (!H_Parent() || H_Parent() != Level().CurrentViewEntity()) return;
+
 	CCustomZone *pZone = smart_cast<CCustomZone*>(O);
 	if(pZone && pZone->IsEnabled()) 
 	{
