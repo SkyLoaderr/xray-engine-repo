@@ -238,7 +238,7 @@ IC float PLC_energy	(Fvector& P, Fvector& N, xrLIGHT* L, float E)
 		if( D <=0 )						return 0;
 		
 		// Trace Light
-		float A		= D*E*.5f;
+		float A		= D*E;
 		return A;
 	} else {
 		// Distance
@@ -260,7 +260,7 @@ IC float PLC_energy	(Fvector& P, Fvector& N, xrLIGHT* L, float E)
 
 IC DWORD PLC_calc	(Fvector& P, Fvector& N, xrLIGHT* L, float E)
 {
-	float	A		= 1.f-PLC_energy	(P,N,L,E);
+	float	A		= 1.f-.5f*PLC_energy(P,N,L,E);
 	int		iA		= iCeil(255.f*A);
 	clamp	(iA,0,255);
 	return	D3DCOLOR_RGBA	(iA,iA,iA,iA);
