@@ -82,13 +82,13 @@ class CPHWorld	: public pureFrame
 	xr_list<CPHObject*> m_objects;
 public:
 	double m_frame_sum;
-	dReal frame_time;
+	dReal m_frame_time;
 	float m_update_time;
 	//CPHGun Gun;
 	//CPHJeep Jeep;
 	unsigned int disable_count;
 	//xr_vector<CPHElement*> elements;
-	CPHWorld(){disable_count=0;frame_time=0.f;m_steps_num=0;m_frame_sum=0.f;
+	CPHWorld(){disable_count=0;m_frame_time=0.f;m_steps_num=0;m_frame_sum=0.f;
 	m_delay=0; m_previous_delay=0;m_reduce_delay=0;m_update_delay_count=0;}
 	virtual ~CPHWorld(){};
 	//double Time(){return m_start_time+m_steps_num*fixed_step;}

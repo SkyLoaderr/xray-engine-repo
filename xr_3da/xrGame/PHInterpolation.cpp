@@ -38,15 +38,15 @@ void CPHInterpolation::UpdateRotations(){
 
 void CPHInterpolation::InterpolatePosition(Fvector& pos)
 {
-	pos.lerp(qPositions[0],qPositions[1],ph_world->frame_time/fixed_step);
+	pos.lerp(qPositions[0],qPositions[1],ph_world->m_frame_time/fixed_step);
 }
 
 
 
 void CPHInterpolation::InterpolateRotation(Fmatrix& rot){
 	Fquaternion q;
-
-	q.slerp(qRotations[0],qRotations[1],ph_world->frame_time/fixed_step);
+	float t=ph_world->m_frame_time/fixed_step;
+	q.slerp(qRotations[0],qRotations[1],t);
 	rot.rotation(q);
 }
 

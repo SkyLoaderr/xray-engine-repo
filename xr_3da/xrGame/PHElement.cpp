@@ -1306,8 +1306,7 @@ void CPHElement::CreateSimulBase()
 		dSpaceSetCleanup(m_group,0);
 	}
 }
-
-void CPHElement::ReInitDynamics(const Fmatrix &shift_pivot,float density)
+void CPHElement::ReAdjustMassPositions(const Fmatrix &shift_pivot,float density)
 {
 	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
 	for(;i!=e;i++)
@@ -1320,9 +1319,36 @@ void CPHElement::ReInitDynamics(const Fmatrix &shift_pivot,float density)
 	m_inverse_local_transform.identity();
 	m_inverse_local_transform.c.set(m_mass_center);
 	m_inverse_local_transform.invert();
-	dBodySetPosition(m_body,m_mass_center.x,m_mass_center.y,m_mass_center.z);
+	//dBodySetPosition(m_body,m_mass_center.x,m_mass_center.y,m_mass_center.z);
+}
+void CPHElement::ResetMass(float density)
+{
+	Fvector tmp,shift_mc;
 
-	i=m_geoms.begin();
+	tmp.set(m_mass_center);
+	
+	
+	setDensity(density);
+	dBodySetMass(m_body,&m_mass);
+	m_inverse_local_transform.c.set(m_mass_center);
+	m_inverse_local_transform.invert();
+	shift_mc.sub(m_mass_center,tmp);
+	tmp.set(*(Fvector *)dBodyGetPosition(m_body));
+	tmp.add(shift_mc);
+	//dBodySetPosition(m_body,tmp.x,tmp.y,tmp.z);
+
+	bActivating = true;
+
+	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
+	for(;i!=e;i++)
+	{
+		(*i)->set_position(m_mass_center);
+	}
+}
+void CPHElement::ReInitDynamics(const Fmatrix &shift_pivot,float density)
+{
+	ReAdjustMassPositions(shift_pivot,density);
+	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
 	for(;i!=e;i++)
 	{
 		(*i)->set_position(m_mass_center);

@@ -119,7 +119,7 @@ public:
 	virtual void			add_Shape						(const SBoneShape& shape);
 	virtual void			add_Shape						(const SBoneShape& shape,const Fmatrix& offset);
 	virtual CODEGeom*		last_geom						(){return m_geoms.back();}
-
+	
 	virtual void			set_ContactCallback				(ContactCallbackFun* callback);
 	virtual void			set_DynamicLimits				(float l_limit=default_l_limit,float w_limit=default_w_limit);
 	virtual void			set_DynamicScales				(float l_scale=default_l_scale,float w_scale=default_w_scale);
@@ -138,9 +138,10 @@ public:
 	virtual void			InterpolateGlobalPosition		(Fvector* v);
 	virtual void			GetGlobalTransformDynamic		(Fmatrix* m);
 	virtual void			GetGlobalPositionDynamic		(Fvector* v);
-	void			SetShell								(CPHShell* p){m_shell=p;}
-	void			SetPhObjectInGeomData					(CPHObject* O);
-
+	void					SetShell						(CPHShell* p){m_shell=p;}
+	//virtual CKinematics*	PKinematics						(){return m_shell->PKinematics();}
+	void					SetPhObjectInGeomData			(CPHObject* O);
+	
 	
 	void			build									();
 	void			destroy									();
@@ -183,6 +184,8 @@ public:
 
 			void			CreateSimulBase			();//create body & cpace
 			void			ReInitDynamics			(const Fmatrix &shift_pivot,float density);//set body & geom positions
+			void			ReAdjustMassPositions	(const Fmatrix &shift_pivot,float density);
+			void			ResetMass				(float density);
 			void			SplitProcess			(ELEMENT_PAIR_VECTOR &new_elements);
 			void			PresetActive			();
 virtual		dMass*			getMassTensor			()

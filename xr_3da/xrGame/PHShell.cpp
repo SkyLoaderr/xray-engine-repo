@@ -464,6 +464,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 			{
 				CPHFracture fracture;
 				fracture.m_bone_id					=id;
+				R_ASSERT2(id<64,"ower 64 bones in breacable are not supported");
 				fracture.m_start_geom_num			=E->numberOfGeoms();
 				fracture.m_end_geom_num				=u16(-1);
 				fracture.m_start_el_num				=u16(elements.size());

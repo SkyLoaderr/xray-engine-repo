@@ -259,13 +259,25 @@ void CPhysicObject::SpawnCopy()
 		F_entity_Destroy	(D);
 	}
 }
+PHSHELL_PAIR_VECTOR new_shells;
 void CPhysicObject::PHSplit()
 {
-	u16 sponed=u16(m_unsplited_shels.size());
-	m_pPhysicsShell->SplitProcess(m_unsplited_shels);
-	u16 i=u16(m_unsplited_shels.size())-sponed;
-//	Msg("%o,spawned,%d",this,i);
-	for(;i;i--) SpawnCopy();
+	if(m_unsplited_shels.empty())
+	{
+		m_pPhysicsShell->SplitProcess(m_unsplited_shels);
+		u16 i=u16(m_unsplited_shels.size());
+		//	Msg("%o,spawned,%d",this,i);
+		for(;i;i--) SpawnCopy();
+	}
+	else
+	{
+		new_shells.clear();
+		m_pPhysicsShell->SplitProcess(new_shells);
+		m_unsplited_shels.insert(m_unsplited_shels.begin(),new_shells.begin(),new_shells.end());
+		u16 i=u16(new_shells.size());
+		//	Msg("%o,spawned,%d",this,i);
+		for(;i;i--) SpawnCopy();
+	}
 }
 
 void CPhysicObject::OnEvent		(NET_Packet& P, u16 type)
@@ -294,21 +306,23 @@ void CPhysicObject::UnsplitSingle(CGameObject* O)
 	CKinematics *pKinematics  =PKinematics(Visual());
 
 	Flags64 mask0,mask1;
+	u16 split_bone=m_unsplited_shels.back().second;
 	mask1.set(pKinematics->LL_GetBonesVisible());//source bones mask
-	pKinematics->LL_SetBoneVisible(m_unsplited_shels.back().second,FALSE,TRUE);
+	pKinematics->LL_SetBoneVisible(split_bone,FALSE,TRUE);
 
 	mask0.set(pKinematics->LL_GetBonesVisible());//first part mask
-	Msg("mask0- %x",mask0.flags);
+	R_ASSERT2(mask0.flags,"mask0 -Zero");
 	mask0.invert();
 	mask1.and(mask0.flags);//second part mask
-	
+	R_ASSERT2(mask1.flags,"mask1 -Zero");
+
 	newPhysicsShell->set_Kinematics(newKinematics);
-	newPhysicsShell->ResetCallbacks(m_unsplited_shels.back().second,mask1);
+	newPhysicsShell->ResetCallbacks(split_bone,mask1);
 	newKinematics->Calculate();
 	newPhysicsShell->ObjectInRoot().identity();
-	newKinematics->LL_SetBoneRoot		(m_unsplited_shels.back().second);
+	newKinematics->LL_SetBoneRoot		(split_bone);
 	newKinematics->LL_SetBonesVisible	(mask1.flags);
-	Msg("mask1- %x",mask1.flags);
+
 	newPhysicsShell->set_PushOut(5000,PushOutCallback2);
 	m_unsplited_shels.erase(m_unsplited_shels.end()-1);
 

@@ -140,15 +140,21 @@ void CPHWorld::Step(dReal step)
 	//const  dReal k_p=24000000.f;//550000.f;///1000000.f;
 	//const dReal k_d=400000.f;
 	u32 it_number;
+	float frame_time=m_frame_time;
 	frame_time+=step;
 	//m_frame_sum+=step;
-
+	
 	if(!(frame_time<fixed_step))
 	{
 		it_number	=	iFloor	(frame_time/fixed_step);
 		frame_time	-=	it_number*fixed_step;
+		m_frame_time=frame_time;
 	}
-	else return;
+	else
+	{
+		m_frame_time=frame_time;
+		return;
+	}
 	/*
 	m_update_delay_count++;
 

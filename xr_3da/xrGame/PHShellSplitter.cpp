@@ -237,7 +237,7 @@ shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &sp
 	PassEndSplitters(split_elem.second,new_shell_last_desc,1,0);
 
 	new_shell_last_desc->AfterSetActive();
-
+	R_ASSERT2(split_elem.second.m_bone_id<64,"strange root");
 	return mk_pair(new_shell_last,split_elem.second.m_bone_id);
 
 }
@@ -281,6 +281,7 @@ void CPHShellSplitterHolder::SplitProcess(PHSHELL_PAIR_VECTOR &out_shels)
 		default: NODEFAULT;
 		}
 	}
+	m_has_breaks=false;
 }
 void CPHShellSplitterHolder::InitNewShell(CPHShell* shell)
 {
