@@ -562,6 +562,16 @@ void	CRender::Render		()
 
 		for (u32 pass_id=0; pass_id<8; pass_id++)	
 		{
+			/*
+			mapNormalCodes		
+			mapNormalVS			
+			mapNormalConstants	
+			mapNormalTextures	
+			mapNormalVB			
+			mapNormalMatrices	
+			mapNormalItems		
+			*/
+
 			SceneGraph::mapNormalCodes&		codes	= mapNormal	[pr][pass_id];
 			if (0==codes.size())			break;
 			BOOL sort						= (pass_id==0);
@@ -590,12 +600,12 @@ void	CRender::Render		()
 						
 						SceneGraph::mapNormalTextures&	tex			= Ncs->val;		tex.ssa	= 0;
 						sort_tlist		(lstTextures,lstTexturesTemp,tex,sort);
-						for (u32 tex_id=0; tex_id<lstCS.size(); tex_id++)
+						for (u32 tex_id=0; tex_id<lstTextures.size(); tex_id++)
 						{
 							SceneGraph::mapNormalTextures::TNode*	Ntex = lstTextures[tex_id];
 							RCache.set_Textures						(Ntex->key);	
 
-							SceneGraph::mapNormalVB&	vb			= Ntex->val;		vb.ssa	= 0;
+							SceneGraph::mapNormalVB&		vb		= Ntex->val;		vb.ssa	= 0;
 							vb.getANY_P		(lstVB);	if (sort)	std::sort	(lstVB.begin(),lstVB.end(),cmp_vb);
 							for (u32 vb_id=0; vb_id<lstVB.size(); vb_id++)
 							{
