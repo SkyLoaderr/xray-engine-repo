@@ -43,12 +43,12 @@
 		<text ln="rus">ящик с блокпоста.</text>
 	</string>
 	<string id="alife_news_kill">
-		<text>%%s kill %%s</text>
-		<text ln="rus">%%s убил %%s</text>
+		<text>%s kill %s</text>
+		<text ln="rus">%s убил %s</text>
 	</string>
 	<string id="alife_news_retreat">
-		<text>%%s retreat from battlefield</text>
-		<text ln="rus">%%s отступил с места бо€</text>
+		<text>%s retreat from battlefield</text>
+		<text ln="rus">%s отступил с места бо€</text>
 	</string>
 </string_table>
 
