@@ -223,7 +223,11 @@ void  CUIButton::Draw()
 				rect.top + m_iPushOffsetY + m_iTexOffsetY);
 		}
 
-		m_UIStaticItem.Render();
+		if(m_bStretchTexture)
+			//растягиваем текстуру, Clipper в таком случае игнорируется (пока)
+			m_UIStaticItem.Render(0, 0, rect.right-rect.left, rect.bottom-rect.top);
+		else
+			m_UIStaticItem.Render();
 	}
 
 	CUIWindow::Draw();
