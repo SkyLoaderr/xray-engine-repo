@@ -171,6 +171,27 @@ void	IWriter::w_chunk(u32 type, void* data, u32 size)
 	else							w			(data,size);
 	close_chunk	();
 }
+void 	IWriter::w_sdir	(const Fvector& D) 
+{
+	Fvector C;
+	float mag		= D.magnitude();
+	if (mag>EPS_S)	{
+		C.div		(D,mag);
+	} else {
+		C.set		(0,0,1);
+		mag			= 0;
+	}
+	w_dir	(C);
+	w_float (mag);
+}
+void	IWriter::w_printf(const char* format, ...)
+{
+	va_list mark;
+	char buf[1024];
+	va_start( mark, format );
+	vsprintf( buf, format, mark );
+	w		( buf, strlen(buf) );
+}
 
 //---------------------------------------------------
 // base stream
