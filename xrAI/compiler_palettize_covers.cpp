@@ -361,7 +361,6 @@ void learn()
 }
 
 extern BYTE	compress(float c, int max_value);
-extern void xrPalettizeCovers(u32 *data, u32 N);
 
 void xrPalettizeCovers()
 {
@@ -375,67 +374,30 @@ void xrPalettizeCovers()
 		for (int i=0; i<dimension; ++i)
 			data[dimension*(I - B) + i] = compress((*I).cover[i],255);
 
-//	initnet		(data,dimension*N,30);
-//	learn		();
-//	unbiasnet	();
-//
-//	for (int i=0; i<(int)N; ++i)
-//		g_nodes[i].cover_index = inxsearch((u8*)(data + i));
-//
-//	g_covers_palette.resize(netsize);
-//	{
-//		Msg		("Palette");
-//		xr_vector<SCover>::iterator					I = g_covers_palette.begin(), B = I;
-//		xr_vector<SCover>::iterator					E = g_covers_palette.end();
-//		for ( ; I != E; ++I) {
-//			for (int i=0; i<dimension; ++i)
-//				(*I).cover[i]	= network[I - B][i];
-//			Msg	(
-//				"[%.3f][%.3f][%.3f][%.3f]",
-//				float((*I).cover[0])/255.f,
-//				float((*I).cover[1])/255.f,
-//				float((*I).cover[2])/255.f,
-//				float((*I).cover[3])/255.f
-//			);
-//		}
-//	}
-//
-	u32				*l_data = (u32*)data;
-	xrPalettizeCovers(l_data,N);
+	initnet		(data,dimension*N,30);
+	learn		();
+	unbiasnet	();
 
-	xr_map<u32,u32>	l_map;
-	u32				l_palette_size = 0;
-	for (u32 i=0; i<N; ++i)
-		if (l_map.find(l_data[i]) == l_map.end()) {
-			l_map.insert(std::make_pair(l_data[i],l_palette_size));
-			g_nodes[i].cover_index = l_palette_size++;
-		}
-		else
-			g_nodes[i].cover_index = l_map.find(l_data[i])->second;
+	for (int i=0; i<(int)N; ++i)
+		g_nodes[i].cover_index = inxsearch((u8*)(data + i));
 
-	VERIFY	(l_palette_size == l_map.size());
-
-	Msg		("Palette size : %d",l_palette_size);
-
-//	g_covers_palette.resize(netsize);
-	g_covers_palette.resize(l_palette_size);
+	g_covers_palette.resize(netsize);
 	{
 		Msg		("Palette");
-		xr_map<u32,u32>::iterator					i = l_map.begin();
 		xr_vector<SCover>::iterator					I = g_covers_palette.begin(), B = I;
 		xr_vector<SCover>::iterator					E = g_covers_palette.end();
-		for ( ; I != E; ++I, ++i) {
-			Memory.mem_copy((*I).cover,&(*i).first,sizeof((*I).cover));
+		for ( ; I != E; ++I) {
+			for (int i=0; i<dimension; ++i)
+				(*I).cover[i]	= network[I - B][i];
 			Msg	(
 				"[%.3f][%.3f][%.3f][%.3f]",
 				float((*I).cover[0])/255.f,
 				float((*I).cover[1])/255.f,
 				float((*I).cover[2])/255.f,
 				float((*I).cover[3])/255.f
-				);
+			);
 		}
 	}
-
 
 	float		l_sum_sqr = 0.f;
 	float		l_sum = 0.f;

@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "compiler.h"
 
-IC BYTE	compress(float c)
+IC BYTE	compress(float c, int max_value)
 {
-	int	cover = iFloor(c*15.f+EPS_L);
-	clamp(cover,0,15);
+	int	cover = iFloor(c*float(max_value)+EPS_L);
+	clamp(cover,0,max_value);
 	return BYTE(cover);
 }
 
@@ -14,7 +14,7 @@ struct CNodeCompressed {
 
 IC void	CNodeCompressed::compress_node(NodeCompressed& Dest, vertex& Src)
 {
-	Dest.light	(compress(Src.LightLevel));
+	Dest.light	(compress(Src.LightLevel,15));
 	for	(u32 L=0; L<4; L++)
 		Dest.link(L,Src.n[L]);
 }
@@ -100,7 +100,5 @@ void xrSaveNodes(LPCSTR N)
 
 	// Stats
 	u32	SizeTotal	= fs->tell();
-	u32	SizeData	= g_nodes.size()*sizeof(CLevelGraph::CVertex);
-	u32	SizeLinks	= SizeTotal-SizeData;
-	Msg		("%dK saved (D:%d / L:%d)",SizeTotal/1024,SizeData/1024,SizeLinks/1024);
+	Msg				("%dK saved",SizeTotal/1024);
 }
