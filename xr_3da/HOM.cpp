@@ -177,7 +177,7 @@ void CHOM::Render		(CFrustum& base)
 
 void CHOM::Debug		()
 {
-	// return;
+	return;
 	
 	// Texture
 	D3DLOCKED_RECT		R;
