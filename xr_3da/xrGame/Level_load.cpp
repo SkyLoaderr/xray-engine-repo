@@ -12,6 +12,29 @@
 #include "gamemtllib.h"
 #include "PhysicsCommon.h"
 
+//#define	OLES_REMAPPING
+//#define	ALEX_REMAPPING
+#define	DIMA_REMAPPING
+
+#ifndef OLES_REMAPPING
+#	ifndef ALEX_REMAPPING
+#		ifndef DIMA_REMAPPING
+			STATIC_CHECK(false,You_should_define_one_of_the_three_macroses_OLES_REMAPPING_ALEX_REMAPPING_DIMA_REMAPPING)
+#		endif
+#	else
+#		ifdef DIMA_REMAPPING
+			STATIC_CHECK(false,Only_single_of_three_macroses_should_be_defined_OLES_REMAPPING_ALEX_REMAPPING_DIMA_REMAPPING)
+#		endif
+#	endif
+#else
+#	ifdef ALEX_REMAPPING
+		STATIC_CHECK	(false,Only_single_of_three_macroses_should_be_defined_OLES_REMAPPING_ALEX_REMAPPING_DIMA_REMAPPING)
+#	endif
+#	ifdef DIMA_REMAPPING
+		STATIC_CHECK	(false,Only_single_of_three_macroses_should_be_defined_OLES_REMAPPING_ALEX_REMAPPING_DIMA_REMAPPING)
+#	endif
+#endif
+
 BOOL CLevel::Load_GameSpecific_Before()
 {
 	// AI space
@@ -113,8 +136,53 @@ BOOL CLevel::Load_GameSpecific_After()
 	return TRUE;
 }
 
+#ifdef ALEX_REMAPPING
+struct mtl_predicate {
+	int					m_material_id;
+
+	IC					mtl_predicate	(const u16 &material_id)
+	{
+		m_material_id	= material_id;
+	}
+
+	IC	bool			operator()		(SGameMtl *material) const
+	{
+		return			(material->GetID() == m_material_id);
+	}
+};
+#endif // ALEX_REMAPPING
+
+#ifdef DIMA_REMAPPING
+struct translation_pair {
+	u32			m_id;
+	u16			m_index;
+
+	IC			translation_pair	(u32 id, u16 index)
+	{
+		m_id	= id;
+		m_index	= index;
+	}
+
+	IC	bool	operator==	(u16 id) const
+	{
+		return	(m_id == id);
+	}
+
+	IC	bool	operator<	(const translation_pair &pair) const
+	{
+		return	(m_id < pair.m_id);
+	}
+
+	IC	bool	operator<	(u16 id) const
+	{
+		return	(m_id < id);
+	}
+};
+#endif // DIMA_REMAPPING
+
 void CLevel::Load_GameSpecific_CFORM	( CDB::TRI* tris, u32 count )
 {
+#ifdef OLES_REMAPPING
 	// 1.
 	u16		default_id	= (u16)GMLib.GetMaterialIdx("default");
 
@@ -134,6 +202,63 @@ void CLevel::Load_GameSpecific_CFORM	( CDB::TRI* tris, u32 count )
 			Debug.fatal	("Game material '%d' not found",T->material);
 		T->material						= index->second;
 	}
+#endif
+
+#ifdef ALEX_REMAPPING
+	for (u32 it=0; it<count; ++it) {
+		CDB::TRI			*T = tris + it;
+		GameMtlIt			I = std::find_if(GMLib.FirstMaterial(),GMLib.LastMaterial(),mtl_predicate(T->material));
+		if (I==GMLib.LastMaterial())
+			Debug.fatal		("Game material '%d' not found",T->material);
+		T->material			= u16(I - GMLib.FirstMaterial());
+	}
+#endif
+
+#ifdef DIMA_REMAPPING
+	typedef xr_vector<translation_pair>	ID_INDEX_PAIRS;
+	ID_INDEX_PAIRS						translator;
+	translator.reserve					(GMLib.CountMaterial());
+	u16									default_id = (u16)GMLib.GetMaterialIdx("default");
+	translator.push_back				(translation_pair(u32(-1),default_id));
+
+	u16									index = 0, static_mtl_count = 1;
+	for (GameMtlIt I=GMLib.FirstMaterial(); GMLib.LastMaterial()!=I; ++I, ++index) {
+		if (!(*I)->Flags.test(SGameMtl::flDynamic)) {
+			++static_mtl_count;
+			translator.push_back		(translation_pair((*I)->GetID(),index));
+		}
+	}
+	
+	if (static_mtl_count < 128) {
+		CDB::TRI						*I = tris;
+		CDB::TRI						*E = tris + count;
+		for ( ; I != E; ++I) {
+			ID_INDEX_PAIRS::iterator	i = std::find(translator.begin(),translator.end(),(*I).material);
+			if (i != translator.end()) {
+				(*I).material			= (*i).m_index;
+				continue;
+			}
+
+			Debug.fatal					("Game material '%d' not found",(*I).material);
+		}
+		return;
+	}
+
+	std::sort							(translator.begin(),translator.end());
+	{
+		CDB::TRI						*I = tris;
+		CDB::TRI						*E = tris + count;
+		for ( ; I != E; ++I) {
+			ID_INDEX_PAIRS::iterator	i = std::lower_bound(translator.begin(),translator.end(),(*I).material);
+			if ((i != translator.end()) && ((*i).m_id == (*I).material)) {
+				(*I).material			= (*i).m_index;
+				continue;
+			}
+
+			Debug.fatal					("Game material '%d' not found",(*I).material);
+		}
+	}
+#endif
 }
 
 void CLevel::BlockCheatLoad()
