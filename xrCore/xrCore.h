@@ -68,6 +68,12 @@
 #include <assert.h>
 #include <typeinfo.h>
 
+#ifndef DEBUG
+	#ifdef _DEBUG
+    	#define DEBUG
+    #endif
+#endif
+
 #ifdef __BORLANDC__
 	#define MODULE_NAME 	"xrCoreB.dll"
     #ifndef DEBUG
