@@ -215,6 +215,18 @@
 				RelativePath=".\xrXMLParser.h">
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\ChilkatDbgDll.lib">
+		</File>
+		<File
+			RelativePath=".\ChilkatRelDll.lib">
+		</File>
+		<File
+			RelativePath=".\CkBaseDbgDll.lib">
+		</File>
+		<File
+			RelativePath=".\CkBaseRelDll.lib">
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
