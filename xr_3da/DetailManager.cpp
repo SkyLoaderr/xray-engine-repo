@@ -167,8 +167,8 @@ void CDetailManager::Render		(Fvector& vecEYE)
 
 	UpdateCache					(4);
 
-	float fade_limit			= 21.5f;fade_limit=fade_limit*fade_limit;
-	float fade_start			= 1.f;	fade_start=fade_start*fade_start;
+	float fade_limit			= dm_fade;	fade_limit=fade_limit*fade_limit;
+	float fade_start			= 1.f;		fade_start=fade_start*fade_start;
 	float fade_range			= fade_limit-fade_start;
 
 	// Collect objects for rendering

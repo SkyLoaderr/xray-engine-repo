@@ -15,6 +15,7 @@ const int		dm_obj_in_slot	= 4;
 const int		dm_size			= 10;
 const int		dm_cache_line	= 1+dm_size+1+dm_size+1;
 const int		dm_cache_size	= dm_cache_line*dm_cache_line;
+const float		dm_fade			= float(2*dm_size)-.5f;
 
 DEFINE_SVECTOR(CDetail*,dm_max_objects,DetailVec,DetailIt);
 
