@@ -14,7 +14,7 @@
 #define FRAME_BORDER_WIDTH	20
 #define FRAME_BORDER_HEIGHT	22
 
-#define ITEM_HEIGHT ((int)GetFont()->CurrentHeight()+2)
+#define ITEM_HEIGHT (GetFont()->CurrentHeight()+2.0f)
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -37,9 +37,11 @@ void CUIPropertiesBox::Init(LPCSTR base_name, int x, int y, int width, int heigh
 
 	AttachChild(&m_UIListWnd);
 	
-	m_UIListWnd.Init(OFFSET_X, OFFSET_Y, 
-					 width - OFFSET_X*2, 
-					 height - OFFSET_Y*2, ITEM_HEIGHT);
+	m_UIListWnd.Init(iFloor(OFFSET_X),
+					 iFloor(OFFSET_Y), 
+					 width - iFloor(OFFSET_X*2), 
+					 height - iFloor(OFFSET_Y*2),
+					 iFloor(ITEM_HEIGHT) );
 	m_UIListWnd.EnableActiveBackground(true);
 	m_UIListWnd.EnableScrollBar(false);
 
@@ -88,12 +90,12 @@ void CUIPropertiesBox::Show(int x, int y)
 	if(x+GetWidth()<(int)Device.dwWidth)
 		x_pos = x;
 	else
-		x_pos = x - (x+GetWidth()-(int)Device.dwWidth/UI()->GetScaleX());
+		x_pos = x - (x+GetWidth()-iFloor( Device.dwWidth/UI()->GetScaleX() )  );
 	
 	if(y+GetHeight()<(int)Device.dwHeight)
 		y_pos = y;
 	else
-		y_pos = y - (y+GetHeight()-(int)Device.dwHeight/UI()->GetScaleY());
+		y_pos = y - (y+GetHeight()-iFloor( Device.dwHeight/UI()->GetScaleY() )  );
 		
 	MoveWindow(x_pos,y_pos);
 
