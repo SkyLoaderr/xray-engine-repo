@@ -425,6 +425,12 @@ void CScriptGameObject::SetGameTaskState	(ETaskState state, LPCSTR task_id, int 
 	R_ASSERT3(tasks.end() != it, "actor does not has task", task_id);
 	R_ASSERT3((std::size_t)objective_num < (*it).states.size(), "wrong objective num", task_id);
 	(*it).states[objective_num] = state;
+	
+	if(0 == objective_num){//setState for task and all sub-tasks
+		TASK_STATE_IT iit =(*it).states.begin();
+		for(;iit!=(*it).states.end();++iit)
+			(*iit)=state;
+	}
 
 	//если мы устанавливаем финальное состояние для основного задания, то
 	//запомнить время выполнения

@@ -701,7 +701,7 @@ int CUIDragDropList::GetLastBottomFullCell()
 //////////////////////////////////////////////////////////////////////////
 void CUIDragDropList::ScrollBarRecalculateTotal()
 {
-	const int bottom = GetLastBottomFullCell();
+	const int bottom = GetLastBottomFullCell() ;
 
 	// Если все элементы помещаются в видимую область, то скроллбар не требуется
 	if (bottom < GetViewRows())
@@ -715,12 +715,12 @@ void CUIDragDropList::ScrollBarRecalculateTotal()
 		// Иначе требуется и необходим пересчет
 		EnableScrollBar(true);
 
-		int min, max;
+		u32 min, max;
 		m_ScrollBar.GetRange(min, max);
 		m_ScrollBar.SetRange(0, bottom);
 		m_ScrollBar.SetPageSize(m_iViewRowsNum);
 //.		
-		if (max > bottom) 
+		if (max > u32(bottom) ) 
 		{
 			SetScrollPos(m_ScrollBar.GetScrollPos() - max + bottom);
 		}

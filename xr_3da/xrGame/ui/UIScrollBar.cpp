@@ -19,6 +19,7 @@ CUIScrollBar::CUIScrollBar(void)
 	m_iPageSize		= 0;
 	m_iStepSize		= 1;
 	m_iScrollPos	= 0;
+	m_b_enabled		= true;
 }
 
 CUIScrollBar::~CUIScrollBar(void)
@@ -66,23 +67,34 @@ void CUIScrollBar::SetHeight(int height)
 	inherited::SetHeight(height);
 }
 
-void CUIScrollBar::SetStepSize(int step)
+void CUIScrollBar::SetStepSize(u32 step)
 {
 	m_iStepSize				= step;
 	UpdateScrollBar			();
 }
 
-void CUIScrollBar::SetRange(int iMin, int iMax) 
+void CUIScrollBar::SetRange(u32 iMin, u32 iMax) 
 {
 	m_iMinPos				= iMin;  
 	m_iMaxPos				= iMax;
 	R_ASSERT				(iMax>=iMin);
 	UpdateScrollBar			();
 }
+void CUIScrollBar::Show(bool b)
+{
+	if(!m_b_enabled)return;
+	inherited::Show(b);
+}
+
+void CUIScrollBar::Enable(bool b)
+{
+	if(!m_b_enabled)return;
+	inherited::Enable(b);
+}
 
 void CUIScrollBar::UpdateScrollBar()
 {	
-	Show						(!!(0!=ScrollSize()));
+	Show						( !!(0!=ScrollSize()) );
 	if (IsShown()){
 		//уcтановить размер и положение каретки
 		int box_sz				= iFloor(float(m_ScrollWorkArea)*float(m_iPageSize)/float(m_iMaxPos-m_iMinPos));
@@ -141,7 +153,7 @@ void CUIScrollBar::ClampByViewRect()
 
 void CUIScrollBar::SetPosScrollFromView(int view_pos, int view_size, int view_offs)
 {
-	int scroll_size	= ScrollSize();
+	u32 scroll_size	= ScrollSize();
 	int pos			= view_pos-view_offs;
 	int work_size	= m_ScrollWorkArea-view_size;
 	SetScrollPosClamped	(work_size?iFloor(((float(pos)/float(work_size))*(scroll_size) + m_iMinPos)):0);
@@ -150,7 +162,7 @@ void CUIScrollBar::SetPosScrollFromView(int view_pos, int view_size, int view_of
 int CUIScrollBar::PosViewFromScroll(int view_size, int view_offs)
 {
 	int work_size	= m_ScrollWorkArea-view_size;
-	int scroll_size	= ScrollSize();
+	u32 scroll_size	= ScrollSize();
 	return			scroll_size?(m_iScrollPos*work_size+scroll_size*view_offs-m_iMinPos*work_size)/scroll_size:0;
 }
 

@@ -87,12 +87,12 @@ public:
 	void Reset();
 
 	void EnableScrollBar(bool enable);
-	bool IsScrollBarEnabled() {return m_bScrollBarEnabled;}
+	bool IsScrollBarEnabled() {return m_ScrollBar.GetEnabled();}
 	void UpdateScrollBar();
 
 	void ScrollToBegin();
 	void ScrollToEnd();
-	void ScrollToPos(int position);
+	void ScrollToPos(u32 position);
 	
 	bool IsActiveBackgroundEnabled() {return m_bActiveBackgroundEnable;}
 	void EnableActiveBackground(bool enable) {m_bActiveBackgroundEnable = enable;}
@@ -149,7 +149,6 @@ protected:
 
 	//полоса прокрутки
 	CUIScrollBar	m_ScrollBar;
-	bool	m_bScrollBarEnabled;
 
 	//обновления елементов списка, вызвается
 	//если произошли изменения

@@ -39,33 +39,37 @@ protected:
 	CUIStaticItem	m_StaticBackground;
 
 	//текущая позиция
-	int				m_iScrollPos;
+	u32				m_iScrollPos;
 
 	// step size
-	int				m_iStepSize;
+	u32				m_iStepSize;
 
 	//границы отображения
-	int				m_iMinPos;
-	int				m_iMaxPos;
+	u32				m_iMinPos;
+	u32				m_iMaxPos;
 
 	//размер отображаемой страницы
-	int				m_iPageSize;
+	u32				m_iPageSize;
 
 	// internal use
-	int				m_ScrollWorkArea;
+	u32				m_ScrollWorkArea;
+	bool			m_b_enabled;
 protected:
-	int				ScrollSize			(){return _max(0,m_iMaxPos-m_iMinPos-m_iPageSize+1);}
+	u32				ScrollSize			(){return _max(0,m_iMaxPos-m_iMinPos-m_iPageSize+1);}
 	void			ClampByViewRect		();
 	void			SetPosScrollFromView(int view_pos, int view_width, int view_offs);
 	int				PosViewFromScroll	(int view_size, int view_offs);
-	void			SetScrollPosClamped	(int iPos) { 
+	void			SetScrollPosClamped	(u32 iPos) { 
 														m_iScrollPos = iPos; 
 														clamp(m_iScrollPos,m_iMinPos,m_iMaxPos-m_iPageSize+1); }
 public:
 					CUIScrollBar	(void);
 	virtual			~CUIScrollBar	(void);
 
-
+			void	SetEnabled		(bool b)			{m_b_enabled = b;if(!m_b_enabled)Show(m_b_enabled);}
+			bool	GetEnabled		()					{return m_b_enabled;}
+	virtual void	Show			(bool b);
+	virtual void	Enable			(bool b);
 	virtual void	Init			(int x, int y, int length, bool bIsHorizontal);
 
 	//сообщения, отправляемые родительскому окну
@@ -85,17 +89,17 @@ public:
 	void			Refresh			();
 	// скролинг
 	// величина шага при нажатии кнопок или колеса мыши
-	void			SetStepSize		(int step);
+	void			SetStepSize		(u32 step);
 	// диапазон значений 
-	void 			SetRange		(int iMin, int iMax);
-	void 			GetRange		(int& iMin, int& iMax) {iMin = m_iMinPos;  iMax = m_iMaxPos;}
-	int 			GetMaxRange		() {return m_iMaxPos;}
-	int 			GetMinRange		() {return m_iMinPos;}
+	void 			SetRange		(u32 iMin, u32 iMax);
+	void 			GetRange		(u32& iMin, u32& iMax) {iMin = m_iMinPos;  iMax = m_iMaxPos;}
+	u32 			GetMaxRange		() {return m_iMaxPos;}
+	u32 			GetMinRange		() {return m_iMinPos;}
 	// размер страницы (влияет на диапазон каретки от (m_iMinPos .. m_iMaxPos-m_iPageSize) )
-	void			SetPageSize		(int iPage) { m_iPageSize = _max(0,iPage); UpdateScrollBar();}
-	int				GetPageSize		() {return m_iPageSize;}
+	void			SetPageSize		(u32 iPage) { m_iPageSize = _max(0,iPage); UpdateScrollBar();}
+	u32				GetPageSize		() {return m_iPageSize;}
 	// положение каретки
-	void			SetScrollPos	(int iPos) { SetScrollPosClamped(iPos); UpdateScrollBar();}
+	void			SetScrollPos	(u32 iPos) { SetScrollPosClamped(iPos); UpdateScrollBar();}
 	int				GetScrollPos	() {return _max(m_iMinPos,m_iScrollPos);}
 	// базовые размеры для кнопок
 	enum {SCROLLBAR_WIDTH = 16, SCROLLBAR_HEIGHT = 16};

@@ -19,7 +19,6 @@ static const char	cSeparatorChar				= '%';
 
 CUIListWnd::CUIListWnd()
 {
-	m_bScrollBarEnabled			= false;
 	m_bActiveBackgroundEnable	= false;
 	m_bListActivity				= true;
 	m_iFocusedItem				= -1;
@@ -515,19 +514,20 @@ int CUIListWnd::GetLongestSignWidth()
 void CUIListWnd::UpdateScrollBar()
 {
 	//спрятать скорлинг, если он не нужен
-	if(m_bScrollBarEnabled)
-		if(m_ItemList.size()<=m_ScrollBar.GetPageSize())
-			m_ScrollBar.Show(false);
-		else
-			m_ScrollBar.Show(true);
-	
+	if(m_ItemList.size()<=m_ScrollBar.GetPageSize())
+		m_ScrollBar.Show(false);
+	else
+		m_ScrollBar.Show(true);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUIListWnd::EnableScrollBar(bool enable)
 {
-	m_bScrollBarEnabled = enable;
+	m_ScrollBar.SetEnabled(enable);
+	UpdateScrollBar();
+
+/*	m_bScrollBarEnabled = enable;
 
 	if(m_bScrollBarEnabled)
 	{
@@ -541,6 +541,7 @@ void CUIListWnd::EnableScrollBar(bool enable)
 	}
 
 	UpdateScrollBar();
+*/
 }
 
 void CUIListWnd::ActivateList(bool activity)
@@ -561,12 +562,12 @@ void CUIListWnd::ScrollToBegin()
 
 void CUIListWnd::ScrollToEnd()
 {
-	int pos = m_ScrollBar.GetMaxRange()- m_ScrollBar.GetPageSize() + 1;
+	u32 pos = m_ScrollBar.GetMaxRange()- m_ScrollBar.GetPageSize() + 1;
 
 	if(pos > m_ScrollBar.GetMinRange())
-		m_ScrollBar.SetScrollPos((s16)pos);
+		m_ScrollBar.SetScrollPos(pos);
 	else
-		m_ScrollBar.SetScrollPos((s16)m_ScrollBar.GetMinRange());
+		m_ScrollBar.SetScrollPos(m_ScrollBar.GetMinRange());
 
 	m_iFirstShownIndex = m_ScrollBar.GetScrollPos();
 	UpdateList();
@@ -574,13 +575,13 @@ void CUIListWnd::ScrollToEnd()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIListWnd::ScrollToPos(int position)
+void CUIListWnd::ScrollToPos(u32 position)
 {
 	if (IsScrollBarEnabled())
 	{
-		int pos = position;
-		clamp(pos, m_ScrollBar.GetMinRange(), int(m_ScrollBar.GetMaxRange() - m_ScrollBar.GetPageSize() + 1));
-		m_ScrollBar.SetScrollPos(static_cast<s16>(pos));
+		u32 pos = position;
+		clamp(pos, m_ScrollBar.GetMinRange(), (m_ScrollBar.GetMaxRange() - m_ScrollBar.GetPageSize() + 1));
+		m_ScrollBar.SetScrollPos(pos);
 		m_iFirstShownIndex = m_ScrollBar.GetScrollPos();
 		UpdateList();
 	}

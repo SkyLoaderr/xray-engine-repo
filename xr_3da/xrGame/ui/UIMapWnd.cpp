@@ -130,14 +130,14 @@ bool CUICustomMap::GetPointerTo(const Ivector2& src, int item_radius, Ivector2& 
 	rect.sub(map_rect_abs.lt.x,map_rect_abs.lt.y);
 
 	Fbox2 f_clip_rect_local;
-	f_clip_rect_local.set(rect.x1, rect.y1, rect.x2, rect.y2);
+	f_clip_rect_local.set(float(rect.x1), float(rect.y1), float(rect.x2), float(rect.y2) );
 
 	Fvector2 f_center;
 	f_clip_rect_local.getcenter(f_center);
 
 	Fvector2 f_dir, f_src;
 
-	f_src.set(src.x, src.y);
+	f_src.set(float(src.x), float(src.y) );
 	f_dir.sub(f_center, f_src );
 	f_dir.normalize_safe();
 	Fvector2 f_intersect_point;
@@ -147,7 +147,7 @@ bool CUICustomMap::GetPointerTo(const Ivector2& src, int item_radius, Ivector2& 
 
 	heading = -f_dir.getH();
 
-	f_intersect_point.mad(f_intersect_point,f_dir,item_radius);
+	f_intersect_point.mad(f_intersect_point,f_dir,float(item_radius) );
 
 	pos.set( iFloor(f_intersect_point.x), iFloor(f_intersect_point.y) );
 	return true;

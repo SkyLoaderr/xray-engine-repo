@@ -166,7 +166,9 @@ void CUIMainIngameWnd::Init()
 //	m_iPdaMessagesFade_mSec = uiXml2.ReadAttribInt("list", 0, "fade", 0);
 
 	UIPdaMsgListWnd.SetVertFlip(true);
+	UIPdaMsgListWnd.EnableScrollBar(false);
 	UIPdaMsgListWnd2.SetVertFlip(true);
+	UIPdaMsgListWnd2.EnableScrollBar(false);
 
 	// Для информационных сообщений
 	AttachChild(&UIInfoMessages);
