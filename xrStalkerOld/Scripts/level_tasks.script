@@ -60,5 +60,26 @@ function proceed(actor)
 	then
 		actor:give_info_portion("escape_dynamite_have")
 		actor:set_task_state(task.completed, "esc_dinamit_to_volk", 1)
+	end
+
+	--' GARBAGE
+	if actor:has_info("garbage_meetstalker_start") and
+	   actor:object("garbage_letter") ~= nil
+	then
+		actor:give_info_portion("garbage_meetstalker_done")
+		actor:give_info_portion("agroprom_gunslinger_band")
+		actor:set_task_state(task.completed, "garbage_meet_stalker", 0)
 	end       	
+
+
+	--' AGROPROM
+	if actor:has_info("agroprom_gunslinger_band") and
+	   actor:object("agroprom_notebook") ~= nil
+	then
+		actor:give_info_portion("agroprom_gunslinger_band_done")
+		actor:give_info_portion("agroprom_find_gunslinger_hide")
+		actor:set_task_state(task.fail, "agroprom_meet_gunslinger_band", 0)
+	end       	
+
+	
 end

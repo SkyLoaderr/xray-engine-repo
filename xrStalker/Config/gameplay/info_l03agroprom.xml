@@ -9,6 +9,24 @@
     <info_portion id="agroprom_military_case_done">
     </info_portion>
 
+    <info_portion id="agroprom_gunslinger_band">
+		<location>
+			<level>l03_agroprom</level>
+			<x>-6</x>
+			<y>10</y>
+			<icon name="" x="3" y="6" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<text>Встретиться со сталкерами.</text>
+		</location>    
+		<task>agroprom_meet_gunslinger_band</task>
+    </info_portion>
+	<info_portion id="agroprom_gunslinger_band_find">
+    </info_portion>
+    <info_portion id="agroprom_gunslinger_band_done">
+    </info_portion>
+
+    <info_portion id="agroprom_find_gunslinger_hide">
+		<task>agroprom_find_gunslinger_hide</task>
+    </info_portion>
 
 
     <info_portion id="agroprom_factory_combat">

@@ -1,9 +1,19 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <game_information_portions>
-  <info_portion id="garbage_meetstalker_start">
-	<task>garbage_meet_stalker</task>
-  </info_portion>
+	<info_portion id="garbage_meetstalker_start">
+		<location>
+			<level>l02_garbage</level>
+			<x>-45</x>
+			<y>262</y>
+			<icon name="" x="3" y="6" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<text>Встретиться с Серым.</text>
+		</location>
+		<task>garbage_meet_stalker</task>	
+	</info_portion>
+	<info_portion id="garbage_meetstalker_done">
+		<disable>garbage_meetstalker_start</disable>
+	</info_portion>
 
   <!-- Драм-момент -->
   <info_portion id="gar_dm_novice_asked_for_help"></info_portion>

@@ -940,6 +940,9 @@
 					RelativePath=".\scripts\arbug.script">
 				</File>
 				<File
+					RelativePath=".\scripts\avi_start.script">
+				</File>
+				<File
 					RelativePath=".\scripts\bar_stalker.script">
 				</File>
 				<File

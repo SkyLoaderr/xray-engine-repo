@@ -24,7 +24,6 @@ end
 function trader_dont_has_job(first_speaker, second_speaker)
     if trader_need_blockpost_box(first_speaker, second_speaker) == false and
 	   trader_need_artefact(first_speaker, second_speaker) == false and
-	   trader_need_military_document(first_speaker, second_speaker) == false and
 	   trader_need_fox_info(first_speaker, second_speaker) == false
 	then
 		return true
