@@ -10,14 +10,6 @@ class CWeaponMagazined: public CWeapon
 {
 private:
 	typedef CWeapon inherited;
-public:
-	enum EState
-	{
-		eIdle,
-		eFire,
-		eMagEmpty,
-		eReload
-	};
 private:
 	// General
 	float			fTime;
@@ -28,6 +20,14 @@ private:
 	DWORD			dwFP_Frame;
 	DWORD			dwXF_Frame;
 
+protected:
+	enum EState
+	{
+		eIdle,
+		eFire,
+		eMagEmpty,
+		eReload
+	};
 	EState			st_current, st_target;
 protected:
 	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
