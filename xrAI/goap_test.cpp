@@ -195,10 +195,10 @@ void test_goap	()
 	CSProblemSolver						problem_solver;
 	CSProblemSolver::CState				condition;
 	for (u32 i=0; i<world_complexity; ++i) {
-		condition.add_condition			(CCondition(i,true));
-		problem_solver.add_evaluator	(i,xr_new<CConstConditionEvaluator>(false));
+		condition.add_condition			(CCondition(i,false));
+		problem_solver.add_evaluator	(i,xr_new<CConstConditionEvaluator>(true));
 		COperator						*op = xr_new<COperator>();
-		op->add_effect					(CCondition(i,true));
+		op->add_effect					(CCondition(i,false));
 		problem_solver.add_operator		(i,op);
 	}
 
