@@ -14,10 +14,21 @@
 #include "../../ai_script_actions.h"
 #include "../../ef_storage.h"
 
-void CAI_Stalker::vfSetParameters(PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EObjectAction tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EMentalState tMentalState, ELookType tLookType)
+void CAI_Stalker::vfSetParameters(
+	PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator, 
+	Fvector *tpDesiredPosition, 
+	bool bSearchNode, 
+	EObjectAction tWeaponState, 
+	EPathType tGlobalPathType, 
+	EDetailPathType tPathType, 
+	EBodyState tBodyState, 
+	EMovementType tMovementType, 
+	EMentalState tMentalState, 
+	ELookType tLookType
+)
 {
 	R_ASSERT		(eLookTypePoint != tLookType);
-	vfSetParameters	(tpNodeEvaluator,tpDesiredPosition,bSearchNode,tWeaponState,tPathType,tBodyState,tMovementType,tMentalState, tLookType, Fvector().set(0,0,0));
+	vfSetParameters	(tpNodeEvaluator,tpDesiredPosition,bSearchNode,tWeaponState,tGlobalPathType,tPathType,tBodyState,tMovementType,tMentalState, tLookType, Fvector().set(0,0,0));
 }
 
 void CAI_Stalker::vfSetParameters(
@@ -25,7 +36,8 @@ void CAI_Stalker::vfSetParameters(
 	Fvector									*tpDesiredPosition, 
 	bool									bSearchNode, 
 	EObjectAction							tWeaponState, 
-	EPathType								tPathType, 
+	EPathType								tGlobalPathType,
+	EDetailPathType							tPathType, 
 	EBodyState								tBodyState, 
 	EMovementType							tMovementType, 
 	EMentalState							tMentalState, 
@@ -34,185 +46,184 @@ void CAI_Stalker::vfSetParameters(
 	u32										dwLookOverDelay
 )
 {
-//	CMovementManager::set_path_type(tPathType)
-//	m_tPathType		= ;
-//	m_tBodyState	= tBodyState;
-//	m_tMovementType = tMovementType;
-//	m_tMentalState	= tMentalState;
-//	bool			bLookChanged = (m_tLookType != tLookType);
-//	m_tLookType		= tLookType;
-//
-//	if (!GetScriptControl() || !GetCurrentAction() || (CMovementAction::eGoalTypeNoPathPosition != GetCurrentAction()->m_tMovementAction.m_tGoalType))
-//		vfChoosePointAndBuildPath(tpNodeEvaluator,tpDesiredPosition, bSearchNode);
-//
-//	m_fCurSpeed		= 1.f;
-//
-//	if (CDetailPathManager::path().size() && ((CDetailPathManager::path().size() - 1) > CDetailPathManager::m_current_travel_point)) {
-//		if (GetScriptControl() && GetCurrentAction() && (_abs(GetCurrentAction()->m_tMovementAction.m_fSpeed) > EPS_L))
-//			m_fCurSpeed = GetCurrentAction()->m_tMovementAction.m_fSpeed;
-//		else {
-//		// if linear speed is too big for a turn 
-//		// then decrease linear speed and 
-//		// increase angular speed
-////			if ((CDetailPathManager::path().size() - 2) > CDetailPathManager::m_current_travel_point) {
-////				Fvector tPoint1, tPoint2;
-////				float	yaw1, pitch1, yaw2, pitch2;
-//////				tPoint1.sub(CDetailPathManager::path()[CDetailPathManager::m_current_travel_point].P,CDetailPathManager::path()[CDetailPathManager::m_current_travel_point + 1].P);
-//////				tPoint2.sub(CDetailPathManager::path()[CDetailPathManager::m_current_travel_point + 1].P,CDetailPathManager::path()[CDetailPathManager::m_current_travel_point + 2].P);
-//////				tPoint1.getHP(yaw1,pitch1);
-//////				tPoint2.getHP(yaw2,pitch2);
-////				if (ps_Size() > 2) {
-////					tPoint1.sub(ps_Element(ps_Size() - 2).Position(),ps_Element(ps_Size() - 3).Position());
-////					tPoint2.sub(ps_Element(ps_Size() - 1).Position(),ps_Element(ps_Size() - 2).Position());
-////					tPoint1.getHP(yaw1,pitch1);
-////					tPoint2.getHP(yaw2,pitch2);
-////					//Msg("%f -> %f",yaw1/PI*180.f,yaw2/PI*180.f);
-////					//GetDirectionAngles(yaw1,pitch1);
-////					if (!angle_difference(yaw1,yaw2,1*PI_DIV_6)) {
-////						m_tMovementType = eMovementTypeWalk;
-////						if (m_tMentalState == eMentalStatePanic)
-////							m_tMentalState = eMentalStateDanger;
-////					}
-////				}
-////			}
-//
-//			switch (m_tBodyState) {
-//				case eBodyStateCrouch : {
-//					m_fCurSpeed *= m_fCrouchFactor;
-//					break;
-//				}
-//				case eBodyStateStand : {
-//					break;
-//				}
-//				default : NODEFAULT;
-//			}
-//			switch (m_tMovementType) {
-//				case eMovementTypeWalk : {
-//					switch (m_tMentalState) {
-//						case eMentalStateDanger : {
-//							m_fCurSpeed *= IsLimping() ? m_fDamagedWalkFactor : m_fWalkFactor;
-//							break;
-//						}
-//						case eMentalStateFree : {
-//							m_fCurSpeed *= IsLimping() ? m_fDamagedWalkFreeFactor : m_fWalkFreeFactor;
-//							break;
-//						}
-//						case eMentalStatePanic : {
-//							Debug.fatal("");
-//							break;
-//						}
+	CMovementManager::set_path_type(tGlobalPathType);
+	CDetailPathManager::set_path_type(tPathType);
+	m_tBodyState	= tBodyState;
+	m_tMovementType = tMovementType;
+	m_tMentalState	= tMentalState;
+	bool			bLookChanged = (m_tLookType != tLookType);
+	m_tLookType		= tLookType;
+
+	update_path		();
+
+	m_fCurSpeed		= 1.f;
+
+	if (CDetailPathManager::path().size() && ((CDetailPathManager::path().size() - 1) > CDetailPathManager::curr_travel_point_index())) {
+		if (GetScriptControl() && GetCurrentAction() && (_abs(GetCurrentAction()->m_tMovementAction.m_fSpeed) > EPS_L))
+			m_fCurSpeed = GetCurrentAction()->m_tMovementAction.m_fSpeed;
+		else {
+		// if linear speed is too big for a turn 
+		// then decrease linear speed and 
+		// increase angular speed
+//			if ((CDetailPathManager::path().size() - 2) > CDetailPathManager::m_current_travel_point) {
+//				Fvector tPoint1, tPoint2;
+//				float	yaw1, pitch1, yaw2, pitch2;
+////				tPoint1.sub(CDetailPathManager::path()[CDetailPathManager::m_current_travel_point].P,CDetailPathManager::path()[CDetailPathManager::m_current_travel_point + 1].P);
+////				tPoint2.sub(CDetailPathManager::path()[CDetailPathManager::m_current_travel_point + 1].P,CDetailPathManager::path()[CDetailPathManager::m_current_travel_point + 2].P);
+////				tPoint1.getHP(yaw1,pitch1);
+////				tPoint2.getHP(yaw2,pitch2);
+//				if (ps_Size() > 2) {
+//					tPoint1.sub(ps_Element(ps_Size() - 2).Position(),ps_Element(ps_Size() - 3).Position());
+//					tPoint2.sub(ps_Element(ps_Size() - 1).Position(),ps_Element(ps_Size() - 2).Position());
+//					tPoint1.getHP(yaw1,pitch1);
+//					tPoint2.getHP(yaw2,pitch2);
+//					//Msg("%f -> %f",yaw1/PI*180.f,yaw2/PI*180.f);
+//					//GetDirectionAngles(yaw1,pitch1);
+//					if (!angle_difference(yaw1,yaw2,1*PI_DIV_6)) {
+//						m_tMovementType = eMovementTypeWalk;
+//						if (m_tMentalState == eMentalStatePanic)
+//							m_tMentalState = eMentalStateDanger;
 //					}
-//					m_body.speed	= PI_MUL_2;
-//					m_head.speed	= 3*PI_DIV_2;
-//					break;
 //				}
-//				case eMovementTypeRun : {
-//					switch (m_tMentalState) {
-//						case eMentalStateDanger : {
-//							m_fCurSpeed *= IsLimping() ? m_fDamagedRunFactor : m_fRunFactor;
-//							break;
-//						}
-//						case eMentalStateFree : {
-//							m_fCurSpeed *= IsLimping() ? m_fDamagedRunFreeFactor : m_fRunFreeFactor;
-//							break;
-//						}
-//						case eMentalStatePanic : {
-//							m_fCurSpeed *= IsLimping() ? m_fDamagedPanicFactor : m_fPanicFactor;
-//							break;
-//						}
-//					}
-//					m_body.speed	= PI_MUL_2;
-//					m_head.speed	= 3*PI_DIV_2;
-//					break;
-//				}
-//				default : m_fCurSpeed = 0.f;
 //			}
-//		}
-//	}
-//	else {
-//		m_tMovementType = eMovementTypeStand;
-//		m_body.speed	= PI_MUL_2;
-//		m_head.speed	= 3*PI_DIV_2;
-//		m_fCurSpeed		= 0.f;
-//	}
-//	
-//	switch (m_tLookType) {
-//		case eLookTypePathDirection : {
-//			SetDirectionLook();
-//			break;
-//		}
-//		case eLookTypeDirection : {
-//			tPointToLook.getHP	(m_head.target.yaw,m_head.target.pitch);
-//			m_head.target.yaw		*= -1;
-//			m_head.target.pitch		*= -1;
-//			break;
-//		}
-//		case eLookTypeSearch : {
-//			SetLessCoverLook(level_vertex(),true);
-//			break;
-//		}
-//		case eLookTypeDanger : {
-//			SetLessCoverLook(level_vertex(),PI,true);
-//			break;
-//		}
-//		case eLookTypePoint : {
-//			SetPointLookAngles(tPointToLook,m_head.target.yaw,m_head.target.pitch);
-//			break;
-//		}
-//		case eLookTypeFirePoint : {
-//			SetFirePointLookAngles(tPointToLook,m_head.target.yaw,m_head.target.pitch);
-//			break;
-//		}
-//		case eLookTypeLookOver : {
-//			if (bLookChanged)
-//				m_dwLookChangedTime = Level().timeServer();
-//			Fvector tTemp;
-//			tTemp.sub	(tPointToLook,eye_matrix.c);
-//			tTemp.getHP	(m_head.target.yaw,m_head.target.pitch);
-//			VERIFY					(_valid(m_head.target.yaw));
-//			VERIFY					(_valid(m_head.target.pitch));
-//			if (Level().timeServer() - m_dwLookChangedTime > dwLookOverDelay)
-//				if (Level().timeServer() - m_dwLookChangedTime < 2*dwLookOverDelay)
-//					m_head.target.yaw += PI_DIV_6*2;
-//				else {
-//					if (Level().timeServer() - m_dwLookChangedTime >= 3*dwLookOverDelay)
-//						m_dwLookChangedTime = Level().timeServer();
-//					m_head.target.yaw -= PI_DIV_6*2;
-//				}
-//			m_head.target.yaw *= -1;
-//			m_head.target.pitch *= -1;
-//			break;
-//		}
-//		case eLookTypeLookFireOver : {
-//			if (bLookChanged)
-//				m_dwLookChangedTime = Level().timeServer();
-//			Fvector tTemp;
-//			Center(tTemp);
-//			tTemp.sub	(tPointToLook,tTemp);
-//			tTemp.getHP	(m_head.target.yaw,m_head.target.pitch);
-//			VERIFY					(_valid(m_head.target.yaw));
-//			VERIFY					(_valid(m_head.target.pitch));
-//			if (Level().timeServer() - m_dwLookChangedTime > dwLookOverDelay)
-//				if (Level().timeServer() - m_dwLookChangedTime < 2*dwLookOverDelay)
-//					m_head.target.yaw += PI_DIV_6*2;
-//				else {
-//					if (Level().timeServer() - m_dwLookChangedTime >= 3*dwLookOverDelay)
-//						m_dwLookChangedTime = Level().timeServer();
-//					m_head.target.yaw -= PI_DIV_6*2;
-//				}
-//			m_head.target.yaw *= -1;
-//			m_head.target.pitch *= -1;
-//			break;
-//		}
-//		default : NODEFAULT;
-//	}
-//	
-//	if (speed() < EPS_L)
-//		if (angle_difference(m_body.target.yaw,m_head.target.yaw) > 2*PI_DIV_6)
-//			m_body.target.yaw = m_head.target.yaw;
-//	
-//	if (!GetScriptControl())
-//		vfSetWeaponState(tWeaponState);
+
+			switch (m_tBodyState) {
+				case eBodyStateCrouch : {
+					m_fCurSpeed *= m_fCrouchFactor;
+					break;
+				}
+				case eBodyStateStand : {
+					break;
+				}
+				default : NODEFAULT;
+			}
+			switch (m_tMovementType) {
+				case eMovementTypeWalk : {
+					switch (m_tMentalState) {
+						case eMentalStateDanger : {
+							m_fCurSpeed *= IsLimping() ? m_fDamagedWalkFactor : m_fWalkFactor;
+							break;
+						}
+						case eMentalStateFree : {
+							m_fCurSpeed *= IsLimping() ? m_fDamagedWalkFreeFactor : m_fWalkFreeFactor;
+							break;
+						}
+						case eMentalStatePanic : {
+							Debug.fatal("");
+							break;
+						}
+					}
+					m_body.speed	= PI_MUL_2;
+					m_head.speed	= 3*PI_DIV_2;
+					break;
+				}
+				case eMovementTypeRun : {
+					switch (m_tMentalState) {
+						case eMentalStateDanger : {
+							m_fCurSpeed *= IsLimping() ? m_fDamagedRunFactor : m_fRunFactor;
+							break;
+						}
+						case eMentalStateFree : {
+							m_fCurSpeed *= IsLimping() ? m_fDamagedRunFreeFactor : m_fRunFreeFactor;
+							break;
+						}
+						case eMentalStatePanic : {
+							m_fCurSpeed *= IsLimping() ? m_fDamagedPanicFactor : m_fPanicFactor;
+							break;
+						}
+					}
+					m_body.speed	= PI_MUL_2;
+					m_head.speed	= 3*PI_DIV_2;
+					break;
+				}
+				default : m_fCurSpeed = 0.f;
+			}
+		}
+	}
+	else {
+		m_tMovementType = eMovementTypeStand;
+		m_body.speed	= PI_MUL_2;
+		m_head.speed	= 3*PI_DIV_2;
+		m_fCurSpeed		= 0.f;
+	}
+	
+	switch (m_tLookType) {
+		case eLookTypePathDirection : {
+			SetDirectionLook();
+			break;
+		}
+		case eLookTypeDirection : {
+			tPointToLook.getHP	(m_head.target.yaw,m_head.target.pitch);
+			m_head.target.yaw		*= -1;
+			m_head.target.pitch		*= -1;
+			break;
+		}
+		case eLookTypeSearch : {
+			SetLessCoverLook(level_vertex(),true);
+			break;
+		}
+		case eLookTypeDanger : {
+			SetLessCoverLook(level_vertex(),PI,true);
+			break;
+		}
+		case eLookTypePoint : {
+			SetPointLookAngles(tPointToLook,m_head.target.yaw,m_head.target.pitch);
+			break;
+		}
+		case eLookTypeFirePoint : {
+			SetFirePointLookAngles(tPointToLook,m_head.target.yaw,m_head.target.pitch);
+			break;
+		}
+		case eLookTypeLookOver : {
+			if (bLookChanged)
+				m_dwLookChangedTime = Level().timeServer();
+			Fvector tTemp;
+			tTemp.sub	(tPointToLook,eye_matrix.c);
+			tTemp.getHP	(m_head.target.yaw,m_head.target.pitch);
+			VERIFY					(_valid(m_head.target.yaw));
+			VERIFY					(_valid(m_head.target.pitch));
+			if (Level().timeServer() - m_dwLookChangedTime > dwLookOverDelay)
+				if (Level().timeServer() - m_dwLookChangedTime < 2*dwLookOverDelay)
+					m_head.target.yaw += PI_DIV_6*2;
+				else {
+					if (Level().timeServer() - m_dwLookChangedTime >= 3*dwLookOverDelay)
+						m_dwLookChangedTime = Level().timeServer();
+					m_head.target.yaw -= PI_DIV_6*2;
+				}
+			m_head.target.yaw *= -1;
+			m_head.target.pitch *= -1;
+			break;
+		}
+		case eLookTypeLookFireOver : {
+			if (bLookChanged)
+				m_dwLookChangedTime = Level().timeServer();
+			Fvector tTemp;
+			Center(tTemp);
+			tTemp.sub	(tPointToLook,tTemp);
+			tTemp.getHP	(m_head.target.yaw,m_head.target.pitch);
+			VERIFY					(_valid(m_head.target.yaw));
+			VERIFY					(_valid(m_head.target.pitch));
+			if (Level().timeServer() - m_dwLookChangedTime > dwLookOverDelay)
+				if (Level().timeServer() - m_dwLookChangedTime < 2*dwLookOverDelay)
+					m_head.target.yaw += PI_DIV_6*2;
+				else {
+					if (Level().timeServer() - m_dwLookChangedTime >= 3*dwLookOverDelay)
+						m_dwLookChangedTime = Level().timeServer();
+					m_head.target.yaw -= PI_DIV_6*2;
+				}
+			m_head.target.yaw *= -1;
+			m_head.target.pitch *= -1;
+			break;
+		}
+		default : NODEFAULT;
+	}
+	
+	if (speed() < EPS_L)
+		if (angle_difference(m_body.target.yaw,m_head.target.yaw) > 2*PI_DIV_6)
+			m_body.target.yaw = m_head.target.yaw;
+	
+	if (!GetScriptControl())
+		vfSetWeaponState(tWeaponState);
 }
 
 void CAI_Stalker::vfSelectItemToTake(CInventoryItem *&tpItemToTake)

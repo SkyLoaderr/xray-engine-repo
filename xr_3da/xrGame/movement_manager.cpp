@@ -47,7 +47,7 @@ void CMovementManager::Load			(LPCSTR caSection)
 	CGameLocationSelector::Load		(caSection);
 }
 
-void CMovementManager::build_path()
+void CMovementManager::update_path()
 {
 	Device.Statistic.AI_Path.Begin();
 	time_start				();

@@ -22,7 +22,7 @@ CDetailPathManager::~CDetailPathManager	()
 void CDetailPathManager::Init			()
 {
 	CAI_ObjectLocation::Init();
-	m_actual				= false;
+	m_actuality				= false;
 	m_failed				= false;
 	m_start_position		= Fvector().set(0,0,0);
 	m_dest_position			= Fvector().set(0,0,0);
@@ -72,7 +72,7 @@ void CDetailPathManager::build_path(const xr_vector<u32> &level_path, u32 interm
 			}
 		}
 		if (valid()) {
-			m_actual				= true;
+			m_actuality				= true;
 			m_current_travel_point	= 0;
 		}
 	}
@@ -144,7 +144,7 @@ void CDetailPathManager::build_criteria_path	(const xr_vector<u32> &level_path, 
 
 bool CDetailPathManager::actual() const
 {
-	return					(true);
+	return					(m_actuality);
 }
 
 void CDetailPathManager::build_dodge_path		(const xr_vector<u32> &level_path, u32 intermediate_index)

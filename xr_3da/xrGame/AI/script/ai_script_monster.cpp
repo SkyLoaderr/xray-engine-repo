@@ -261,11 +261,13 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 		case CMovementAction::eGoalTypeObject : {
 			CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(l_tMovementAction.m_tpObjectToGo);
 			R_ASSERT		(l_tpGameObject);
+			l_tpMovementManager->set_path_type(CMovementManager::ePathTypeLevelPath);
 			l_tpMovementManager->set_dest_position(l_tpGameObject->Position());
 			l_tpMovementManager->set_level_dest_vertex(l_tpGameObject->level_vertex_id());
 			break;
 		}
 		case CMovementAction::eGoalTypePatrolPath : {
+			l_tpMovementManager->set_path_type	(CMovementManager::ePathTypePatrolPath);
 			l_tpMovementManager->set_path		(l_tMovementAction.m_caPatrolPathToGo);
 			l_tpMovementManager->set_start_type	(l_tMovementAction.m_tPatrolPathStart);
 			l_tpMovementManager->set_route_type	(l_tMovementAction.m_tPatrolPathStop);
@@ -273,14 +275,15 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 			break;
 		}
 		case CMovementAction::eGoalTypePathPosition : {
+			l_tpMovementManager->set_path_type(CMovementManager::ePathTypeLevelPath);
 			l_tpMovementManager->set_dest_position(l_tMovementAction.m_tDestinationPosition);
 			l_tpMovementManager->set_level_dest_vertex(ai().level_graph().vertex(l_tpMovementManager->level_vertex_id(),l_tMovementAction.m_tDestinationPosition,true));
 			l_tpMovementManager->CLevelLocationSelector::set_evaluator(0);
-			l_tpMovementManager->set_path_type(CMovementManager::ePathTypeLevelPath);
 			break;
 		}
 		case CMovementAction::eGoalTypeNoPathPosition : {
 			if (l_tpMovementManager) {
+				l_tpMovementManager->set_path_type(CMovementManager::ePathTypeLevelPath);
 				if (l_tpMovementManager->CDetailPathManager::path().empty() || (l_tpMovementManager->CDetailPathManager::path()[l_tpMovementManager->CDetailPathManager::path().size() - 1].m_position.distance_to(l_tMovementAction.m_tDestinationPosition) > .1f)) {
 					l_tpMovementManager->CDetailPathManager::m_path.resize(2);
 					l_tpMovementManager->CDetailPathManager::m_path[0].m_position = Position();
@@ -290,12 +293,13 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 			}
 			break;
 		}
-		default :
-			return(l_tMovementAction.m_bCompleted = true);
+		default : {
+			l_tpMovementManager->set_path_type	(CMovementManager::ePathTypeNoPath);
+			return								(l_tMovementAction.m_bCompleted = true);
+		}
 	}
 
-	l_tpMovementManager->build_path();
-	if (l_tpMovementManager->path_completed())
+	if (l_tpMovementManager->actual() && l_tpMovementManager->path_completed())
 		l_tMovementAction.m_bCompleted = true;
 
 	return		(!l_tMovementAction.m_bCompleted);

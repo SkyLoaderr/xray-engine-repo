@@ -130,13 +130,13 @@ void CAI_Stalker::SetDirectionLook()
 	m_body.target = m_head.target;
 }
 
-void CAI_Stalker::SetLessCoverLook(CLevelGraph::CVertex *tpNode, bool bDifferenceLook)
+void CAI_Stalker::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, bool bDifferenceLook)
 {
 	SetDirectionLook();
 	SetLessCoverLook(tpNode,MAX_HEAD_TURN_ANGLE,bDifferenceLook);
 }
 
-void CAI_Stalker::SetLessCoverLook(CLevelGraph::CVertex *tpNode, float fMaxHeadTurnAngle, bool bDifferenceLook)
+void CAI_Stalker::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, float fMaxHeadTurnAngle, bool bDifferenceLook)
 {
 	float fAngleOfView = eye_fov/180.f*PI, fMaxSquare = -1.f, fBestAngle = m_head.target.yaw;
 	

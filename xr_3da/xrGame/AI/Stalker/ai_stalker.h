@@ -257,12 +257,36 @@ private:
 			void			SetPointLookAngles				(const Fvector &tPosition, float &yaw, float &pitch);
 			void			SetFirePointLookAngles			(const Fvector &tPosition, float &yaw, float &pitch);
 			void			SetDirectionLook				();
-			void			SetLessCoverLook				(CLevelGraph::CVertex *tpNode, bool bDifferenceLook);
-			void			SetLessCoverLook				(CLevelGraph::CVertex *tpNode, float fMaxHeadTurnAngle, bool bDifferenceLook);
+			void			SetLessCoverLook				(const CLevelGraph::CVertex *tpNode, bool bDifferenceLook);
+			void			SetLessCoverLook				(const CLevelGraph::CVertex *tpNode, float fMaxHeadTurnAngle, bool bDifferenceLook);
 			void			vfValidateAngleDependency		(float x1, float &x2, float x3);
 			// movement and look
-			void			vfSetParameters					(PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EObjectAction tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EMentalState tMentalState, ELookType tLookType);
-			void			vfSetParameters					(PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EObjectAction tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EMentalState tMentalState, ELookType tLookType, const Fvector &tPointToLook, u32 dwLookOverDelay = 2000);
+			void			vfSetParameters					(
+				PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator, 
+				Fvector *tpDesiredPosition, 
+				bool bSearchNode, 
+				EObjectAction tWeaponState, 
+				EPathType		tGlobalPathType,
+				EDetailPathType	tPathType, 
+				EBodyState tBodyState, 
+				EMovementType tMovementType, 
+				EMentalState tMentalState, 
+				ELookType tLookType
+			);
+			void			vfSetParameters					(
+				PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator, 
+				Fvector *tpDesiredPosition, 
+				bool bSearchNode, 
+				EObjectAction tWeaponState, 
+				EPathType		tGlobalPathType,
+				EDetailPathType	tPathType, 
+				EBodyState tBodyState, 
+				EMovementType tMovementType, 
+				EMentalState tMentalState, 
+				ELookType tLookType, 
+				const Fvector &tPointToLook, 
+				u32 dwLookOverDelay = 2000
+			);
 			// fire
 			bool			bfCheckForMember				(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 			bool			bfCheckIfCanKillEnemy			();

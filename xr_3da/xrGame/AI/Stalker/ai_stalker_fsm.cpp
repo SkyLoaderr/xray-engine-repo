@@ -913,7 +913,7 @@ void CAI_Stalker::Think()
 //		if (ai().game_graph().vertex(v_id).level_point().distance_to(Position())) {
 //			set_game_dest_node	(ALife::_GRAPH_ID(v_id));
 //			set_path_type		(ePathTypeGamePath);
-//			build_path			();
+//			update_path			();
 //			break;
 //		}
 //	}
@@ -923,7 +923,7 @@ void CAI_Stalker::Think()
 //	m_tMentalState		= eMentalStateDanger;
 //	set_path_type		(ePathTypeGamePath);
 //	CMovementManager::CGameLocationSelector::set_selection_type	(eSelectionTypeRandomBranching);
-//	build_path			();
+//	update_path			();
 //	m_tMovementType		= eMovementTypeWalk;
 //	m_tMentalState		= eMentalStateDanger;
 //	CMovementManager::set_path_type		(ePathTypePatrolPath);
@@ -931,7 +931,7 @@ void CAI_Stalker::Think()
 //	CPatrolPathManager::set_start_type	(ePatrolStartTypeNearest);
 //	CPatrolPathManager::set_route_type	(ePatrolRouteTypeContinue);
 //	CPatrolPathManager::set_random		(true);
-//	build_path			();
+//	update_path			();
 //	SetDirectionLook	();
 	return;
 //	if (!m_dwLastUpdate) {

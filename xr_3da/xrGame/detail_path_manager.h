@@ -41,7 +41,7 @@ public:
 
 private:
 	u32											m_current_travel_point;
-	bool										m_actual;
+	bool										m_actuality;
 	bool										m_failed;
 	bool										m_collision;
 
@@ -71,7 +71,6 @@ protected:
 			bool	actual					() const;
 	IC		bool	failed					() const;
 	IC		bool	completed				(const Fvector &position) const;
-			bool	valid					() const;
 			bool	valid					(const Fvector &position) const;
 	IC		const xr_vector<STravelPoint> &path() const;
 	IC		const STravelPoint &curr_travel_point() const;
@@ -80,6 +79,7 @@ protected:
 	IC		void	set_dest_position		(const Fvector &dest_position);
 	IC		const Fvector &start_position	() const;
 	IC		const Fvector &dest_position	() const;
+	IC		void	set_path_type			(const EDetailPathType path_type);
 
 	friend class CMovementManager;
 #ifdef DEBUG
@@ -90,6 +90,7 @@ public:
 					CDetailPathManager		();
 	virtual			~CDetailPathManager		();
 	virtual void	Init					();
+			bool	valid					() const;
 };
 
 #include "detail_path_manager_inline.h"

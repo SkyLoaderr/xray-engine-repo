@@ -108,7 +108,7 @@ public:
 	IC		u32		level_dest_vertex_id	() const;
 	IC		bool	enabled					() const;
 
-			void	build_path				();
+			void	update_path				();
 			void	move_along_path			(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta);
 			float	speed					() const;
 	IC		bool	path_completed			() const;

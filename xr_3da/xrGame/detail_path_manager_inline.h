@@ -41,6 +41,7 @@ IC	void CDetailPathManager::set_start_position	(const Fvector &start_position)
 
 IC	void CDetailPathManager::set_dest_position	(const Fvector &dest_position)
 {
+	m_actuality				= m_actuality && m_dest_position.similar(dest_position);
 	m_dest_position			= dest_position;
 }
 
@@ -52,4 +53,10 @@ IC	const Fvector &CDetailPathManager::start_position	() const
 IC	const Fvector &CDetailPathManager::dest_position	() const
 {
 	return					(m_dest_position);
+}
+
+IC	void CDetailPathManager::set_path_type				(const EDetailPathType path_type)
+{
+	m_actuality				= m_actuality && (path_type == m_path_type);
+	m_path_type				= path_type;
 }
