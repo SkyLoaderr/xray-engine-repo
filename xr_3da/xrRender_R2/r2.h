@@ -78,6 +78,7 @@ public:
 	IRender_Portal*					getPortal					(int id);
 	IRender_Sector*					getSectorActive				();
 	IRender_Visual*					model_CreatePE				(LPCSTR name);
+	IRender_Sector*					detectSector				(Fvector& P, Fvector& D);
 public:
 	// Loading / Unloading
 	virtual void					create						();
