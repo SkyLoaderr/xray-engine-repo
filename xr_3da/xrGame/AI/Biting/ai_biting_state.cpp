@@ -52,7 +52,7 @@ CBitingRest::CBitingRest(CAI_Biting *p)
 	pMonster = p;
 	Reset();
 
-	SetLowPriority();			// удиноразовая утановка приоритета
+	SetLowPriority();			// единоразовая утановка приоритета
 }
 
 
@@ -74,25 +74,21 @@ void CBitingRest::Run()
 
 	// FSM 2-го уровня
 	switch (m_tAction) {
-		case ACTION_WALK:
-			// Построить путь обхода точек графа
-			pMonster->vfUpdateDetourPoint();	
-			pMonster->AI_Path.DestNode	= getAI().m_tpaGraph[pMonster->m_tNextGP].tNodeID;
-			
+		case ACTION_WALK:		// обход точек графа
 			pMonster->vfChoosePointAndBuildPath(0,0, false, 0);
 
 			pMonster->Motion.m_tParams.SetParams(eMotionWalkFwd,m_cfBitingWalkSpeed,m_cfBitingWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Set(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfBitingWalkTurningSpeed,m_cfBitingWalkTurnRSpeed,m_cfBitingWalkMinAngle);
 			break;
-		case ACTION_STAND:
+		case ACTION_STAND:     // стоять, ничего не делать
 			pMonster->Motion.m_tParams.SetParams(eMotionStandIdle,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Clear();
 			break;
-		case ACTION_LIE:
+		case ACTION_LIE:		// лежать
 			pMonster->Motion.m_tParams.SetParams(eMotionLieIdle,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Clear();
 			break;
-		case ACTION_TURN:
+		case ACTION_TURN:		// повернуться на 90 град.
 			pMonster->Motion.m_tParams.SetParams(eMotionStandTurnLeft,0,m_cfBitingStandTurnRSpeed, 0, 0, MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Clear();
 			break;
@@ -110,6 +106,9 @@ void CBitingRest::Replanning()
 
 	if (rand_val < 50) {	
 		m_tAction = ACTION_WALK;
+		// Построить путь обхода точек графа
+		pMonster->vfUpdateDetourPoint();	
+		pMonster->AI_Path.DestNode	= getAI().m_tpaGraph[pMonster->m_tNextGP].tNodeID;
 
 		dwMinRand = 3000;
 		dwMaxRand = 5000;
@@ -310,12 +309,14 @@ void CBitingEat::Run()
 	// Выполнение состояния
 	switch (m_tAction) {
 		case ACTION_RUN:
+//
+//			if (pMonster->m_tPathState != ePathStateBuilt) {
+//				pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
+//				pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0);
+//			}
+			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
+			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0);
 
-			if (pMonster->m_tPathState != ePathStateBuilt) {
-				pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
-				pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0);
-			}
-			
 			pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfBitingRunAttackSpeed,m_cfBitingRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfBitingRunAttackTurnSpeed,m_cfBitingRunAttackTurnRSpeed,m_cfBitingRunAttackMinAngle);
 
@@ -337,7 +338,7 @@ void CBitingEat::Run()
 bool CBitingEat::CheckCompletion() 
 {
 	// если труп съеден || монстр достаточно сыт
-	if (pCorpse && (pCorpse->m_fFood <= 0.f) || (!IsInertia())) {
+	if ((pCorpse->m_fFood <= 0.f) || !IsInertia()) {
 //		pMonster->RemoveObjectFromMem(pCorpse);
 		Msg("--Eating complete! -- ");
 		return true;
