@@ -209,7 +209,7 @@ void CEnvironment::RenderFirst	()
 		RCache.Vertex.Unlock		(4,sh_2geom.stride());
 		RCache.set_Geometry			(sh_2geom);
 		RCache.set_Shader			(sh_2sky);
-		RCache.set_Textures			(Current.sky_r_textures);
+		RCache.set_Textures			(&Current.sky_r_textures);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 

@@ -18,7 +18,7 @@ enum {
 class ENGINE_API	CEnvDescriptor
 {
 public:
-	ref_texture_list	sky_r_textures;			// C
+	STextureList		sky_r_textures;	// C
 	float				sky_factor;		// C
 
 	ref_texture			sky_texture;
