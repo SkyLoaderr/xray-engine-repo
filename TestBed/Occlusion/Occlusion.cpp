@@ -88,6 +88,8 @@ int __cdecl main	(int argc, char* argv[])
 {
 	occRasterizer	occ;
 
+	InitMath		();
+	printf			("\n");
 	occ.clear		();
 	for (int test=0; test<=3600; test++)
 	{
