@@ -1,1 +1,20 @@
-ddd
+class "game_last_playerState"(game_PlayerState)
+
+function game_last_playerState:__init() super()
+
+end
+
+function game_last_playerState:clear ()
+
+end
+
+function game_last_playerState:net_Export (P)
+
+end
+
+function game_last_playerState:net_Import (P)
+
+end
+			.def("clear",						&BaseType::clear, &WrapType::clear_static)
+			.def("net_Export",					&BaseType::net_Export, &WrapType::net_Export_static)
+			.def("net_Import",					&BaseType::net_Import, &WrapType::net_Import_static)

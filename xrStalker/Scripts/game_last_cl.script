@@ -3,6 +3,7 @@ module("game_phases")
 module("game_messages")
 
 module("game_last_ui")
+module("game_last_ps")
 
 class "game_cl_LastStanding" (game_cl_mp_script)
 
@@ -11,6 +12,10 @@ end
 
 
 function game_cl_LastStanding:__finalize()
+end
+
+function game_cl_LastStanding:createPlayerState()
+   return game_last_ps.game_last_playerState()
 end
 
 function game_cl_LastStanding:Init()
