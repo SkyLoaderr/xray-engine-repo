@@ -1424,6 +1424,12 @@ antirad = 0.3					;временно! вместо антирада
 material				= creatures\human
 camera_height_factor	= 0.85
 
+;дисперсия во время ходьбы и бега
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+
+
 body_remove_time = 600000	;время уничтожения трупа (с учетом TimeFactor)
 weapon_remove_time = 600000	;время уничтожения оружия (с учетом TimeFactor) для мультиплеера
 
@@ -1740,6 +1746,12 @@ hit_type				= strike
 
 material				= creatures\human
 
+;дисперсия во время ходьбы и бега
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+
+
 [m_stalker_demo]
 GroupControlSection	= spawn_group
 $spawn                   = "monsters\stalker-demo"		; option for Level Editor
@@ -1887,6 +1899,12 @@ sleep_satiety = 1.0		;0.8
 sleep_radiation = 1.0	;1.1
 
 material				= creatures\human
+
+;дисперсия во время ходьбы и бега
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+
 
 [rat_group]
 GroupControlSection	= spawn_group
