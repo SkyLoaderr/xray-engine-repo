@@ -12,30 +12,24 @@
 #include "condition_evaluator.h"
 
 template <
-	typename _condition_type,
-	typename _value_type,
-	typename _edge_value_type,
+	typename _operator_condition,
+	typename _condition_state,
+	typename _operator,
+	typename _condition_evaluator,
 	typename _operator_id_type
 >
 class CProblemSolver {
 public:
-	typedef COperatorConditionAbstract<
-		_condition_type,
-		_value_type
-	>											COperatorCondition;
-	typedef COperatorAbstract<
-		_condition_type,
-		_value_type,
-		_edge_value_type
-	>											COperator;
-	typedef CConditionState<
-		_condition_type,
-		_value_type
-	>											CState;
-	typedef IConditionEvaluator<_value_type>	CConditionEvaluator;
-	typedef CState								_index_type;
-	typedef _operator_id_type					_edge_type;
-	typedef _edge_value_type					_edge_value_type;
+	typedef _operator_condition								COperatorCondition;
+	typedef _operator										COperator;
+	typedef _condition_state								CState;
+	typedef _condition_evaluator							CConditionEvaluator;
+	typedef typename _operator_condition::_condition_type	_condition_type;
+	typedef typename _operator_condition::_value_type		_value_type;
+	typedef typename _operator::_edge_value_type			_edge_value_type;
+	typedef CState											_index_type;
+	typedef _operator_id_type								_edge_type;
+
 	struct SOperator {
 		_operator_id_type	m_operator_id;
 		COperator			*m_operator;
@@ -65,7 +59,6 @@ protected:
 	OPERATOR_VECTOR				m_operators;
 	EVALUATOR_MAP				m_evaluators;
 	xr_vector<_edge_type>		m_solution;
-	_edge_type					m_current_operator;
 	CState						m_target_state;
 	mutable CState				m_current_state;
 	mutable CState				m_temp;
@@ -92,7 +85,6 @@ public:
 	// operator interface
 	IC		void						add_operator			(COperator			*_operator,		const _edge_type	&operator_id);
 	IC		void						remove_operator			(const _edge_type	&operator_id);
-	IC		const _edge_type			&current_operator		() const;
 	IC		COperator					*get_operator			(const _operator_id_type &operator_id);
 	IC		const OPERATOR_VECTOR		&operators				() const;
 

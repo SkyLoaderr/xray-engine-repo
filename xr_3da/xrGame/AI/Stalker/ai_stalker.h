@@ -8,9 +8,15 @@
 
 #pragma once
 
+#define OLD_OBJECT_HANDLER
+
 #include "../../CustomMonster.h"
 #include "../../stalker_movement_manager.h"
-#include "../../object_handler.h"
+#ifdef OLD_OBJECT_HANDLER
+	#include "../../object_handler.h"
+#else
+	#include "../../object_handler_goap.h"
+#endif
 #include "../../sight_manager.h"
 #include "../../state_manager_stalker.h"
 #include "../../state_internal.h"
@@ -29,10 +35,13 @@ class CWeapon;
 extern FILE	*ST_VF;
 #endif
 
-
 class CAI_Stalker : 
 	public CCustomMonster, 
+#ifdef OLD_OBJECT_HANDLER
 	public CObjectHandler,
+#else
+	public CObjectHandlerGOAP,
+#endif
 	public CSightManager,
 	public CStalkerAnimations, 
 	public CStalkerMovementManager,

@@ -33,3 +33,8 @@ IC	u32	CObjectHandler::current_state_state_id	() const
 {
 	return				(current_state_id() >> 16);
 }
+
+IC	bool CObjectHandler::goal_reached	() const
+{
+	return				(current_state_id() == dest_state_id());
+}

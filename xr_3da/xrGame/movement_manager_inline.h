@@ -134,12 +134,12 @@ IC	const xr_vector<CDetailPathManager::STravelPathPoint>	&CMovementManager::path
 	return					(CDetailPathManager::path());
 }
 
-IC	void CMovementManager::set_body_orientation(const CMovementManager::SBoneRotation &orientation)
+IC	void CMovementManager::set_body_orientation(const MonsterSpace::SBoneRotation &orientation)
 {
 	m_body				= orientation;
 }
 
-IC	const CMovementManager::SBoneRotation &CMovementManager::body_orientation() const
+IC	const MonsterSpace::SBoneRotation &CMovementManager::body_orientation() const
 {
 	return				(m_body);
 }

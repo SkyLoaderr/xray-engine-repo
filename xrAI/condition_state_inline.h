@@ -8,12 +8,8 @@
 
 #pragma once
 
-#define TEMPLATE_SPECIALIZATION template<\
-	typename T2,\
-	typename T3\
->
-
-#define CConditionStateAbstract CConditionState<T2,T3>
+#define TEMPLATE_SPECIALIZATION template<typename _world_property>
+#define CConditionStateAbstract CConditionState<_world_property>
 
 TEMPLATE_SPECIALIZATION
 IC	CConditionStateAbstract::CConditionState	()
@@ -127,7 +123,7 @@ IC	bool CConditionStateAbstract::operator==	(const CConditionState &condition)
 }
 
 TEMPLATE_SPECIALIZATION
-IC	typename CConditionStateAbstract::CSConditionState &CConditionStateAbstract::operator-=(const CConditionState &condition)
+IC	CConditionState<_world_property> &CConditionStateAbstract::operator-=(const CConditionState &condition)
 {
 	m_hash							= 0;
 	xr_vector<COperatorCondition>	temp;

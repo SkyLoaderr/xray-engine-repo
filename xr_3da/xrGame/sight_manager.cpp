@@ -65,7 +65,7 @@ void CSightManager::SetDirectionLook()
 {
 	CAI_Stalker						*stalker = dynamic_cast<CAI_Stalker*>(this);
 	VERIFY							(stalker);
-	CMovementManager::SBoneRotation	orientation = stalker->m_head, body_orientation = stalker->body_orientation();
+	MonsterSpace::SBoneRotation		orientation = stalker->m_head, body_orientation = stalker->body_orientation();
 	GetDirectionAngles				(stalker->m_head.target.yaw,stalker->m_head.target.pitch);
 	stalker->m_head.target.yaw		*= -1;
 	stalker->m_head.target.pitch	*= -1;

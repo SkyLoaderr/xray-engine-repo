@@ -18,6 +18,7 @@
 #include "detail_path_manager.h"
 #include "enemy_location_predictor.h"
 #include "patrol_path_manager.h"
+#include "ai_monster_space.h"
 
 class CPHMovementControl;
 
@@ -72,13 +73,6 @@ public:
 		ePathTypeDummy = u32(-1),
 	};
 
-public:
-	struct SBoneRotation {
-		SRotation		current;
-		SRotation		target;
-		float			speed;
-	};
-
 private:
 	EPathState								m_path_state;
 	EPathType								m_path_type;
@@ -97,7 +91,7 @@ private:
 	u32										m_last_update;
 
 public:
-	SBoneRotation							m_body;
+	MonsterSpace::SBoneRotation				m_body;
 
 private:
 
@@ -135,8 +129,8 @@ public:
 	IC		void	use_selector_path		(bool selector_path_usage);
 	IC		bool	selector_path_used		() const;
 	IC		const xr_vector<STravelPathPoint>	&path	() const;
-	IC		void	set_body_orientation(const CMovementManager::SBoneRotation &orientation);
-	IC		const CMovementManager::SBoneRotation &body_orientation() const;
+	IC		void	set_body_orientation(const MonsterSpace::SBoneRotation &orientation);
+	IC		const MonsterSpace::SBoneRotation &body_orientation() const;
 	IC		CGraphEngine::CBaseParameters	*base_game_selector();
 	IC		CGraphEngine::CBaseParameters	*base_level_selector();
 	IC		void	set_refresh_rate		(u32 refresh_rate);

@@ -140,4 +140,9 @@ namespace MonsterSpace {
 		eMonsterSoundDummy		= u32(-1),
 	};
 
+	struct SBoneRotation {
+		SRotation		current;
+		SRotation		target;
+		float			speed;
+	};
 };

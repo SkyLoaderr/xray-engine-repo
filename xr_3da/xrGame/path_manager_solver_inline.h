@@ -14,6 +14,7 @@
 		typename T2,\
 		typename T3,\
 		typename T4,\
+		typename T5,\
 		typename _DataStorage,\
 		typename _Parameters,\
 		typename _dist_type,\
@@ -21,7 +22,7 @@
 		typename _iteration_type\
 	>
 
-#define CSolverPathManager CPathManager<CProblemSolver<T1,T2,T3,T4>,_DataStorage,_Parameters,_dist_type,_index_type,_iteration_type>
+#define CSolverPathManager CPathManager<CProblemSolver<T1,T2,T3,T4,T5>,_DataStorage,_Parameters,_dist_type,_index_type,_iteration_type>
 
 TEMPLATE_SPECIALIZATION
 IC	CSolverPathManager::~CSolverPathManager			()

@@ -10,14 +10,10 @@
 
 #include "operator_condition.h"
 
-template <
-	typename T2,
-	typename T3
->
+template <typename _world_property>
 class CConditionState {
 protected:
-	typedef CConditionState<T2,T3>				CSConditionState;
-	typedef COperatorConditionAbstract<T2,T3>	COperatorCondition;
+	typedef _world_property						COperatorCondition;
 
 protected:
 	xr_vector<COperatorCondition>				m_conditions;
@@ -34,7 +30,7 @@ public:
 	IC	bool									includes			(const CConditionState &condition) const;
 	IC	void									clear				();
 	IC	bool									operator<			(const CConditionState &condition) const;
-	IC	CSConditionState						&operator-=			(const CConditionState &condition);
+	IC	CConditionState<_world_property>		&operator-=			(const CConditionState &condition);
 	IC	bool 									operator==			(const CConditionState &condition);
 	IC											operator u32		() const;
 	IC	u32										hash_value			() const;

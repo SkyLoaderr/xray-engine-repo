@@ -92,7 +92,9 @@ void CStalkerMovementManager::reinit				()
 	m_tBodyState					= eBodyStateStand;
 	m_tMovementType					= eMovementTypeStand;
 	m_tMentalState					= eMentalStateFree;
-	m_body.speed					= PI_MUL_2;
+	CCustomMonster					*custom_monster = dynamic_cast<CCustomMonster*>(this);
+	VERIFY							(custom_monster);
+	custom_monster->m_body.speed	= PI_MUL_2;
 	m_head.speed					= 3*PI_DIV_2;
 }
 
@@ -104,13 +106,13 @@ void CStalkerMovementManager::reload				(LPCSTR section)
 void CStalkerMovementManager::update(
 	CAbstractVertexEvaluator	*tpNodeEvaluator,
 	CAbstractVertexEvaluator	*tpPathEvaluator,
-	const Fvector							*tpDesiredPosition,
-	const Fvector							*tpDesiredDirection,
-	EPathType								tGlobalPathType,
-	EDetailPathType							tPathType,
-	EBodyState								tBodyState,
-	EMovementType							tMovementType,
-	EMentalState							tMentalState
+	const Fvector				*tpDesiredPosition,
+	const Fvector				*tpDesiredDirection,
+	EPathType					tGlobalPathType,
+	EDetailPathType				tPathType,
+	EBodyState					tBodyState,
+	EMovementType				tMovementType,
+	EMentalState				tMentalState
 )
 {
 	CMovementManager::set_path_type						(tGlobalPathType);
@@ -226,7 +228,7 @@ void CStalkerMovementManager::update(
 //			I					= J;
 	}
 	custom_monster->m_fCurSpeed		= (*I).second.linear_velocity;
-	m_body.speed					= 2.f*(*I).second.angular_velocity;
+	custom_monster->m_body.speed	= 2.f*(*I).second.angular_velocity;
 	m_head.speed					= 3*PI_DIV_2;
 
 	if (m_tMovementType != eMovementTypeStand)

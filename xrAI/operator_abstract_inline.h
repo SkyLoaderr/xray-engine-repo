@@ -9,12 +9,11 @@
 #pragma once
 
 #define TEMPLATE_SPECIALIZATION template<\
-	typename _condition_type,\
-	typename _value_type,\
+	typename _world_property,\
 	typename _edge_value_type\
 >
 
-#define CAbstractOperator COperatorAbstract<_condition_type,_value_type,_edge_value_type>
+#define CAbstractOperator COperatorAbstract<_world_property,_edge_value_type>
 
 TEMPLATE_SPECIALIZATION
 IC	CAbstractOperator::COperatorAbstract	()

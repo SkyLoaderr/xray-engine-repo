@@ -439,7 +439,7 @@ void CCustomMonster::eye_pp_s0			( )
 	Fmatrix		X;							X.mul_43	(XFORM(),mEye);
 	VERIFY									(_valid(mEye));
 	const CAI_Stalker						*stalker = dynamic_cast<const CAI_Stalker*>(this);
-	const CMovementManager::SBoneRotation	&rotation = stalker ? stalker->head_orientation() : m_body;
+	const MonsterSpace::SBoneRotation		&rotation = stalker ? stalker->head_orientation() : m_body;
 	eye_matrix.setHPB						(-rotation.current.yaw + m_fEyeShiftYaw,-rotation.current.pitch,0);
 	eye_matrix.c.add						(X.c,m_tEyeShift);
 }

@@ -12,7 +12,8 @@
 #define CBaseAction				CActionBase<_object_type>
 
 TEMPLATE_SPECIALIZATION
-CBaseAction::CActionBase		(LPCSTR action_name)
+CBaseAction::CActionBase		(const xr_vector<COperatorCondition> &conditions, const xr_vector<COperatorCondition> &effects, LPCSTR action_name) :
+	inherited			(conditions,effects)
 {
 	init				(action_name);
 }
@@ -43,7 +44,7 @@ void CBaseAction::Load			(LPCSTR section)
 }
 
 TEMPLATE_SPECIALIZATION
-void CBaseAction::reinit		(_object_type *object)
+void CBaseAction::reinit		(_object_type *object, bool clear_all)
 {
 	VERIFY				(object);
 	m_object			= object;
@@ -131,7 +132,7 @@ IC	u32	CBaseAction::priority			() const
 
 #ifdef LOG_STATE
 TEMPLATE_SPECIALIZATION
-IC	void CBaseAction::debug_log			(const EStateActions state_state) const
+IC	void CBaseAction::debug_log			(const EActionStates state_state) const
 {
 	switch (state_state) {
 		case eActionStateConstructed : {

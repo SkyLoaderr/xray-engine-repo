@@ -192,9 +192,21 @@ IC	bool CGraphEngine::search			(
 //	return						(successfull);
 //}
 //
-template <typename _Parameters>
-IC	bool CGraphEngine::search				(
-		const CSProblemSolver			&graph, 
+template <
+	typename T1,
+	typename T2,
+	typename T3,
+	typename T4,
+	typename T5,
+	typename _Parameters>
+IC	bool CGraphEngine::search(
+		const CProblemSolver<
+			T1,
+			T2,
+			T3,
+			T4,
+			T5
+		>								&graph, 
 		const _solver_index_type		&start_node,
 		const _solver_index_type		&dest_node, 
 		xr_vector<_solver_edge_type>	*node_path,
@@ -204,6 +216,7 @@ IC	bool CGraphEngine::search				(
 #ifndef AI_COMPILER
 	Device.Statistic.AI_Path.Begin();
 #endif
+	typedef CProblemSolver<T1,T2,T3,T4,T5>	CSProblemSolver;
 	typedef CPathManager<CSProblemSolver,CSolverAlgorithm::CDataStorage,_Parameters,_solver_dist_type,_solver_index_type,_iteration_type>	CSolverPathManager;
 
 	CSolverPathManager			path_manager;

@@ -151,15 +151,25 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 
 	if (!inherited::bfAssignObject(tpEntityAction) || !l_tObjectAction.m_tpObject || !l_tpInventoryItem) {
 		if (!inventory().ActiveItem()) {
+#ifdef OLD_OBJECT_HANDLER
 			CObjectHandler::set_dest_state	(eObjectActionNoItems);
+#else
+			CObjectHandlerGOAP::set_goal	(eObjectActionNoItems);
+#endif
 		}
 		else {
-//			inventory().Action	(kWPN_FIRE,	CMD_STOP);
+#ifdef OLD_OBJECT_HANDLER
 			CObjectHandler::set_dest_state	(eObjectActionIdle,inventory().ActiveItem());
-//			CObjectHandler::set_dest_state	(eObjectActionNoItems);
+#else
+			CObjectHandlerGOAP::set_goal	(eObjectActionIdle,inventory().ActiveItem());
+#endif
 		}
 
-		return	((l_tObjectAction.m_bCompleted = (CObjectHandler::current_state_id() == CObjectHandler::dest_state_id())) == false);
+#ifdef OLD_OBJECT_HANDLER
+		return	((l_tObjectAction.m_bCompleted = (CObjectHandler::goal_reached())) == false);
+#else
+		return	((l_tObjectAction.m_bCompleted = (CObjectHandlerGOAP::goal_reached())) == false);
+#endif
 	}
 
 	if (!l_tpInventoryItem->H_Parent())
@@ -175,13 +185,25 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 		case eObjectActionIdle : {
 			if (!l_tpWeapon)
 				return	((l_tObjectAction.m_bCompleted = true) == false);
+#ifdef OLD_OBJECT_HANDLER
 			CObjectHandler::set_dest_state	(eObjectActionIdle,l_tpInventoryItem);
+#else
+			CObjectHandlerGOAP::set_goal	(eObjectActionIdle,l_tpInventoryItem);
+#endif
 //			inventory().Action	(kWPN_FIRE,	CMD_STOP);
-			return	((l_tObjectAction.m_bCompleted = (CObjectHandler::current_state_id() == CObjectHandler::dest_state_id())) == false);
+#ifdef OLD_OBJECT_HANDLER
+			return	((l_tObjectAction.m_bCompleted = (CObjectHandler::goal_reached())) == false);
+#else
+			return	((l_tObjectAction.m_bCompleted = (CObjectHandlerGOAP::goal_reached())) == false);
+#endif
 			break;
 		}
 		case eObjectActionFire1 : {
+#ifdef OLD_OBJECT_HANDLER
 			CObjectHandler::set_dest_state	(eObjectActionFire1,l_tpInventoryItem);
+#else
+			CObjectHandlerGOAP::set_goal	(eObjectActionFire1,l_tpInventoryItem);
+#endif
 //			if (!l_tpWeapon)
 //				return	((l_tObjectAction.m_bCompleted = true) == false);
 			if (inventory().ActiveItem() && l_tpWeapon) {
@@ -195,7 +217,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 				else {
 //					inventory().Action(kWPN_FIRE,	CMD_STOP);
 					if (l_tpWeapon->GetAmmoCurrent()) {
-//						CObjectHandler::set_dest_state	(eObjectActionFire1,l_tObjectAction.m_tpObject);
+//						CObjectHandlerGOAP::set_goal	(eObjectActionFire1,l_tObjectAction.m_tpObject);
 //						inventory().Action(kWPN_RELOAD, CMD_START);
 					}
 					else
@@ -205,7 +227,11 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 			break;
 		}
 		case eObjectActionFire2 : {
+#ifdef OLD_OBJECT_HANDLER
 			CObjectHandler::set_dest_state	(eObjectActionFire2,l_tpInventoryItem);
+#else
+			CObjectHandlerGOAP::set_goal	(eObjectActionFire2,l_tpInventoryItem);
+#endif
 //			if (!l_tpWeapon)
 //				return	((l_tObjectAction.m_bCompleted = true) == false);
 			if (inventory().ActiveItem()) {
@@ -219,7 +245,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 				else {
 //					inventory().Action(kWPN_FIRE,	CMD_STOP);
 					if (l_tpWeapon->GetAmmoCurrent()) {
-//						CObjectHandler::set_dest_state	(eObjectActionFire1,l_tObjectAction.m_tpObject);
+//						CObjectHandlerGOAP::set_goal	(eObjectActionFire1,l_tObjectAction.m_tpObject);
 //						inventory().Action(kWPN_RELOAD, CMD_START);
 					}
 					else
@@ -232,7 +258,11 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 		case eObjectActionReload1 : {
 			if (!l_tpWeapon)
 				return	((l_tObjectAction.m_bCompleted = true) == false);
+#ifdef OLD_OBJECT_HANDLER
 			CObjectHandler::set_dest_state	(eObjectActionReload1,l_tpInventoryItem);
+#else
+			CObjectHandlerGOAP::set_goal	(eObjectActionReload1,l_tpInventoryItem);
+#endif
 			if (inventory().ActiveItem()->ID() == l_tObjectAction.m_tpObject->ID()) {
 //				inventory().Action(kWPN_FIRE,	CMD_STOP);
 				if (CWeapon::eReload != l_tpWeapon->STATE) {
@@ -261,13 +291,21 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 				torch->Switch(true);
 				break;
 			}
-			CObjectHandler::set_dest_state(eObjectActionIdle,l_tpInventoryItem);
+#ifdef OLD_OBJECT_HANDLER
+			CObjectHandler::set_dest_state	(eObjectActionIdle,l_tpInventoryItem);
+#else
+			CObjectHandlerGOAP::set_goal	(eObjectActionIdle,l_tpInventoryItem);
+#endif
 //				inventory().Slot(l_tpInventoryItem);
 //				inventory().Activate(l_tpInventoryItem->GetSlot());
 //			if (inventory().ActiveItem() && (inventory().ActiveItem()->ID() == l_tpInventoryItem->ID()))
 //				if (l_tpWeapon && (CWeapon::eIdle == l_tpWeapon->STATE))
 //				l_tObjectAction.m_bCompleted = true;
-			return	((l_tObjectAction.m_bCompleted = (CObjectHandler::current_state_id() == CObjectHandler::dest_state_id())) == false);
+#ifdef OLD_OBJECT_HANDLER
+			return	((l_tObjectAction.m_bCompleted = (CObjectHandler::goal_reached())) == false);
+#else
+			return	((l_tObjectAction.m_bCompleted = (CObjectHandlerGOAP::goal_reached())) == false);
+#endif
 
 			break;
 		}
@@ -278,8 +316,16 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 				break;
 			}
 //				inventory().Activate(u32(-1));
-			CObjectHandler::set_dest_state(eObjectActionNoItems);
-			return	((l_tObjectAction.m_bCompleted = (CObjectHandler::current_state_id() == CObjectHandler::dest_state_id())) == false);
+#ifdef OLD_OBJECT_HANDLER
+			CObjectHandler::set_dest_state	(eObjectActionNoItems);
+#else
+			CObjectHandlerGOAP::set_goal	(eObjectActionNoItems);
+#endif
+#ifdef OLD_OBJECT_HANDLER
+			return	((l_tObjectAction.m_bCompleted = (CObjectHandler::goal_reached())) == false);
+#else
+			return	((l_tObjectAction.m_bCompleted = (CObjectHandlerGOAP::goal_reached())) == false);
+#endif
 			break;
 		}
 		case eObjectActionUse : {

@@ -43,7 +43,11 @@ void CAI_Stalker::reinit			()
 {
 	m_pPhysics_support->in_NetSpawn	();
 	CCustomMonster::reinit			();
+#ifdef OLD_OBJECT_HANDLER
 	CObjectHandler::reinit			(this);
+#else
+	CObjectHandlerGOAP::reinit		(this);
+#endif
 	CSightManager::reinit			();
 	CStalkerAnimations::reinit		();
 	CStalkerMovementManager::reinit	();
@@ -69,7 +73,9 @@ void CAI_Stalker::reload			(LPCSTR section)
 {
 	CCustomMonster::reload			(section);
 	CInventoryOwner::reload			(section);
-//	CObjectHandler::reload			(section);
+#ifndef OLD_OBJECT_HANDLER
+	CObjectHandlerGOAP::reload		(section);
+#endif
 //	CSightManager::reload			(section);
 //	CStalkerAnimations::reload		(section);
 	CStalkerMovementManager::reload	(section);
@@ -94,7 +100,11 @@ void CAI_Stalker::Load				(LPCSTR section)
 	setEnabled						(false);
 	
 	CCustomMonster::Load			(section);
+#ifdef OLD_OBJECT_HANDLER
 	CObjectHandler::Load			(section);
+#else
+	CObjectHandlerGOAP::Load		(section);
+#endif
 	CSightManager::Load				(section);
 	CStalkerMovementManager::Load	(section);
 	CStateManagerStalker::Load		(section);
@@ -284,7 +294,11 @@ void CAI_Stalker::UpdateCL(){
 	m_pPhysics_support->in_UpdateCL();
 
 	if (g_Alive()) {
+#ifdef OLD_OBJECT_HANDLER
 		CObjectHandler::update			(Level().timeServer() - m_dwLastUpdateTime);
+#else
+		CObjectHandlerGOAP::update		(Level().timeServer() - m_dwLastUpdateTime);
+#endif
 		float							s_k		= ((eBodyStateCrouch == m_tBodyState) ? CROUCH_SOUND_FACTOR : 1.f);
 		float							s_vol	= s_k*((eMovementTypeRun == m_tMovementType) ? 1.f : ACCELERATED_SOUND_FACTOR);
 		float							step_time = !fis_zero(CMovementManager::speed()) ? .725f/CMovementManager::speed() : 1.f;

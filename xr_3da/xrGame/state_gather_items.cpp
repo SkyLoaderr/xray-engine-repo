@@ -65,7 +65,11 @@ void CStateGatherItems::execute			()
 		eMentalStateDanger
 	);
 	m_object->CSightManager::update				(eLookTypePathDirection);
+#ifdef OLD_OBJECT_HANDLER
 	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
+#else
+	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionNoItems);
+#endif
 }
 
 void CStateGatherItems::finalize		()

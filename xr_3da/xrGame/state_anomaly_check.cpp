@@ -63,7 +63,11 @@ void CStateAnomalyCheck::execute			()
 		eMovementTypeStand,
 		eMentalStateDanger
 	);
-	m_object->CObjectHandler::set_dest_state(eObjectActionFire1,m_object->inventory().m_slots[5].m_pIItem);
+#ifdef OLD_OBJECT_HANDLER
+	m_object->CObjectHandler::set_dest_state	(eObjectActionFire1,m_object->inventory().m_slots[5].m_pIItem);
+#else
+	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionFire1,m_object->inventory().m_slots[5].m_pIItem);
+#endif
 }
 
 void CStateAnomalyCheck::finalize		()

@@ -17,8 +17,8 @@ class CActionPlannerAction :
 	public CActionBase<_object_type>
 {
 protected:
-	typedef	CActionPlanner				inherited_planner;
-	typedef	CActionBase<_object_type>	inherited_action;
+	typedef	CActionPlanner<_object_type>	inherited_planner;
+	typedef	CActionBase<_object_type>		inherited_action;
 public:
 						CActionPlannerAction	();
 	virtual				~CActionPlannerAction	();

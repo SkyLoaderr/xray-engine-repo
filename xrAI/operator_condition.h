@@ -13,8 +13,13 @@ template <
 	typename _value_type
 >
 class COperatorConditionAbstract {
+public:
+	typedef _condition_type _condition_type;
+	typedef _value_type		_value_type;
+
 protected:
 	typedef COperatorConditionAbstract<_condition_type,_value_type>	COperatorCondition;
+
 protected:
 	_condition_type		m_condition;
 	_value_type			m_value;

@@ -34,20 +34,25 @@
 //		path_managers
 #include "path_manager.h"
 
+//
+#include "operator_condition.h"
+#include "condition_state.h"
+#include "operator_abstract.h"
+
 class CGraphEngine {
 public:
 	typedef float																_dist_type;
 	typedef u32																	_index_type;
 	typedef u32																	_iteration_type;
-
-	typedef CProblemSolver<u32,bool,u16,u32>									CSProblemSolver;
-	typedef CSProblemSolver::COperatorCondition									COperatorCondition;
-	typedef CSProblemSolver::COperator											COperator;
-	typedef CSProblemSolver::CState												CWorldState;
 	typedef u16																	_solver_dist_type;
-	typedef CSProblemSolver::_index_type										_solver_index_type;
-	typedef CSProblemSolver::_edge_type											_solver_edge_type;
 
+	typedef COperatorConditionAbstract<u32,bool>								CWorldProperty;
+	typedef CConditionState<CWorldProperty>										CWorldState;
+	typedef COperatorAbstract<CWorldProperty,_solver_dist_type>					CWorldOperator;
+	typedef CWorldState															_solver_index_type;
+	typedef u32																	_solver_edge_type;
+
+	typedef SBaseParameters<_solver_dist_type,_solver_index_type,_iteration_type>	CSolverBaseParameters;
 	typedef SBaseParameters<_dist_type,_index_type,_iteration_type>				CBaseParameters;
 	typedef SFlooder<_dist_type,_index_type,_iteration_type>					CFlooder;
 	typedef SObstacleParams<_dist_type,_index_type,_iteration_type>				CObstacleParams;
@@ -138,9 +143,21 @@ public:
 				_Parameters				&parameters
 			);
 
-	template <typename _Parameters>
+	template <
+		typename T1,
+		typename T2,
+		typename T3,
+		typename T4,
+		typename T5,
+		typename _Parameters>
 	IC		bool	search					(
-		const CSProblemSolver			&graph, 
+		const CProblemSolver<
+			T1,
+			T2,
+			T3,
+			T4,
+			T5
+		>								&graph, 
 		const _solver_index_type		&start_node,
 		const _solver_index_type		&dest_node,
 		xr_vector<_solver_edge_type>	*node_path,

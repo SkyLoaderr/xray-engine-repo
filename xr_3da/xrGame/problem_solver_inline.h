@@ -11,13 +11,21 @@
 #include "graph_engine.h"
 
 #define TEMPLATE_SPECIALIZATION template<\
-	typename _condition_type,\
-	typename _value_type,\
-	typename _operator_id_type,\
-	typename _edge_value_type\
+	typename _operator_condition,\
+	typename _operator,\
+	typename _condition_state,\
+	typename _condition_evaluator,\
+	typename _operator_id_type\
 >
 
-#define CProblemSolverAbstract CProblemSolver<_condition_type,_value_type,_operator_id_type,_edge_value_type>
+#define CProblemSolverAbstract \
+	CProblemSolver<\
+		_operator_condition,\
+		_operator,\
+		_condition_state,\
+		_condition_evaluator,\
+		_operator_id_type\
+	>
 
 TEMPLATE_SPECIALIZATION
 IC	CProblemSolverAbstract::CProblemSolver				()
@@ -53,7 +61,6 @@ void CProblemSolverAbstract::reinit						(bool clear_all)
 	m_temp.clear			();
 	m_solution.clear		();
 	m_applied				= false;
-	m_current_operator		= _operator_id_type(-1);
 
 	if (!clear_all)
 		return;
@@ -94,12 +101,6 @@ IC	void CProblemSolverAbstract::remove_operator		(const _edge_type &operator_id)
 	xr_delete				((*I).m_operator);
 	m_actuality				= false;
 	m_operators.erase		(I);
-}
-
-TEMPLATE_SPECIALIZATION
-IC	const typename CProblemSolverAbstract::_edge_type &CProblemSolverAbstract::current_operator	() const
-{
-	return					(m_current_operator);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -234,7 +235,7 @@ IC	void CProblemSolverAbstract::solve			()
 #ifndef AI_COMPILER
 	if (m_actuality)
 		return;
-	bool						successful = ai().graph_engine().search(*this,target_state(),CState(),&m_solution,CBaseParameters());
+	bool						successful = ai().graph_engine().search(*this,target_state(),CState(),&m_solution,CGraphEngine::CSolverBaseParameters());
 	m_actuality					= successful;
 #endif
 }
@@ -250,7 +251,7 @@ IC	typename CProblemSolverAbstract::COperator *CProblemSolverAbstract::get_opera
 {
 	OPERATOR_VECTOR::iterator	I = std::lower_bound(m_operators.begin(), m_operators.end(),operator_id);
 	VERIFY						(m_operators.end() != I);
-	return						((*I).second);
+	return						((*I).get_operator());
 }
 
 #undef TEMPLATE_SPECIALIZATION

@@ -401,7 +401,11 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 				dwCurrentAniSlot	= 0;
 
 		if (!tpTorsoAnimation) {
-			switch (stalker->CObjectHandler::current_state_state_id()) {
+#ifdef OLD_OBJECT_HANDLER
+			switch (stalker->CObjectHandler::current_state_id()) {
+#else
+			switch (stalker->CObjectHandlerGOAP::current_action_id()) {
+#endif
 				case eObjectActionAim1 :
 				case eObjectActionAim2 :
 				case eObjectActionFire1 :
@@ -564,7 +568,7 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 //		m_tMovementDirection = eMovementDirectionForward;
 
 	tpLegsAnimation					= m_tAnims.A[l_tBodyState].m_tMoves.A[stalker->movement_type()].A[m_tMovementDirection].A[0];
-	CMovementManager::SBoneRotation	body_orientation = stalker->body_orientation();
+	MonsterSpace::SBoneRotation		body_orientation = stalker->body_orientation();
 	body_orientation.target.yaw		= angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
 	stalker->set_body_orientation	(body_orientation);
 //	Msg("[W=%7.2f][TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",yaw,stalker->body_orientation().target.yaw,stalker->body_orientation().current.yaw,stalker->head_orientation().target.yaw,stalker->head_orientation().current.yaw);

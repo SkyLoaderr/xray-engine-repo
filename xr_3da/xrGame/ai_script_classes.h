@@ -469,7 +469,11 @@ public:
 
 	CLuaGameObject *best_weapon()
 	{
-		CObjectHandler	*object_handler = dynamic_cast<CObjectHandler*>(m_tpGameObject);
+#ifdef OLD_OBJECT_HANDLER
+		CObjectHandler		*object_handler = dynamic_cast<CObjectHandler*>(m_tpGameObject);
+#else
+		CObjectHandlerGOAP	*object_handler = dynamic_cast<CObjectHandlerGOAP*>(m_tpGameObject);
+#endif
 		if (!object_handler) {
 			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member best_weapon!");
 			return			(0);

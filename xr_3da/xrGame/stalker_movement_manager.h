@@ -126,7 +126,7 @@ protected:
 	EMentalState						m_tMentalState;
 
 public:
-	CMovementManager::SBoneRotation		m_head;
+	MonsterSpace::SBoneRotation			m_head;
 
 public:
 					CStalkerMovementManager	();
@@ -148,8 +148,8 @@ public:
 						EMentalState							tMentalState
 					);
 
-	IC		void	set_head_orientation	(const CMovementManager::SBoneRotation &orientation);
-	IC		const CMovementManager::SBoneRotation	&head_orientation	() const;
+	IC		void									set_head_orientation(const MonsterSpace::SBoneRotation &orientation);
+	IC		const MonsterSpace::SBoneRotation		&head_orientation	() const;
 	IC		const MonsterSpace::EMovementType		movement_type		() const;
 	IC		const MonsterSpace::EMentalState		mental_state		() const;
 	IC		void									set_mental_state	(const MonsterSpace::EMentalState mental_state);

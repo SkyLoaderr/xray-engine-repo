@@ -11,15 +11,17 @@
 #include "condition_state.h"
 
 template <
-	typename _condition_type,
-	typename _value_type,
+	typename _world_property,
 	typename _edge_value_type
 >
-class COperatorAbstract : public CConditionState<_condition_type,_value_type> {
+class COperatorAbstract : public CConditionState<_world_property> {
+public:
+	typedef _edge_value_type					_edge_value_type;
+
 protected:
-	typedef CConditionState<_condition_type,_value_type>			inherited;
-	typedef inherited												CSConditionState;
-	typedef COperatorConditionAbstract<_condition_type,_value_type>	COperatorCondition;
+	typedef CConditionState<_world_property>	inherited;
+	typedef inherited							CSConditionState;
+	typedef _world_property						COperatorCondition;
 
 protected:
 	xr_vector<COperatorCondition>				m_effects;

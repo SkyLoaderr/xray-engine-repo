@@ -9,11 +9,13 @@
 #pragma once
 
 #include "action_management_config.h"
+#include "graph_engine.h"
 
 template <typename _object_type>
-class CActionBase : public CGraphEngine::COperator {
+class CActionBase : public CGraphEngine::CWorldOperator {
 protected:
-	typedef CGraphEngine::COperatorCondition	COperatorCondition;
+	typedef CGraphEngine::CWorldOperator	inherited;
+	typedef CGraphEngine::CWorldProperty	COperatorCondition;
 
 protected:
 	enum EActionStates {
@@ -28,7 +30,6 @@ protected:
 	};
 
 protected:
-	u32						m_priority;
 	_object_type			*m_object;
 	u32						m_start_level_time;
 	ALife::_TIME_ID			m_start_game_time;
@@ -42,11 +43,11 @@ protected:
 #endif
 
 public:
-	IC						CActionBase			(u32 m_priority, const xr_vector<COperatorCondition> &conditions, const xr_vector<COperatorCondition> &effects, LPCSTR action_name = "");
+	IC						CActionBase			(const xr_vector<COperatorCondition> &conditions, const xr_vector<COperatorCondition> &effects, LPCSTR action_name = "");
 	virtual					~CActionBase		();
 			void			init				(LPCSTR action_name);
 	virtual	void			Load				(LPCSTR section);
-	virtual	void			reinit				(_object_type *object);
+	virtual	void			reinit				(_object_type *object, bool clear_all);
 	virtual	void			reload				(LPCSTR section);
 	virtual void			initialize			();
 	virtual void			execute				();

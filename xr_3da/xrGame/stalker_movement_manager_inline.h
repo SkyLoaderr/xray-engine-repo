@@ -8,7 +8,7 @@
 
 #pragma once
 
-IC const CMovementManager::SBoneRotation &CStalkerMovementManager::head_orientation() const
+IC const MonsterSpace::SBoneRotation &CStalkerMovementManager::head_orientation() const
 {
 	return				(m_head);
 }
@@ -23,7 +23,7 @@ IC const MonsterSpace::EMentalState CStalkerMovementManager::mental_state() cons
 	return				(m_tMentalState);
 }
 
-IC void CStalkerMovementManager::set_head_orientation(const CMovementManager::SBoneRotation &orientation)
+IC void CStalkerMovementManager::set_head_orientation(const MonsterSpace::SBoneRotation &orientation)
 {
 	m_head				= orientation;
 }
