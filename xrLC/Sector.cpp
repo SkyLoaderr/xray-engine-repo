@@ -55,7 +55,7 @@ void CSector::BuildHierrarhy	()
 	delimiter		=	_max(scene_size.x,_max(scene_size.y,scene_size.z));
 	delimiter		*=	2;
 
-	int		iLevel					=	2;
+	int		iLevel					= 2;
 	float	SizeLimit				= c_SS_maxsize/4.f;
 	if		(SizeLimit<4.f)			SizeLimit=4.f;
 	if		(delimiter<=SizeLimit)	delimiter*=2;		// just very small level
