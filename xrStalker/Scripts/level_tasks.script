@@ -299,67 +299,67 @@ function process_map_spot(info_id)
 	
 	-- military	
 	elseif info_id == "mil_max_job" then
-	       add_location (1003, "mil_crazy_location")
+	       add_location (703, "mil_crazy_location")
 	       
 	elseif info_id == "mil_max_flash_get" then       
-		   remove_location (1003, "mil_crazy_location")
+		   remove_location (703, "mil_crazy_location")
 		   if db.actor:has_info ("mil_max_job") then
-		      add_location (1002, "mil_max_location") 
+		      add_location (702, "mil_max_location") 
 		   end     
 		   
 	elseif info_id == "mil_max_job_complete" then   
-	       add_location (1006, "mil_rg6_location") 	 
-	       remove_location (1002, "mil_max_location")  
+	       add_location (706, "mil_rg6_location") 	 
+	       remove_location (702, "mil_max_location")  
 	       
 	elseif info_id == "mil_rg6_gain" then       
-		   remove_location (1006, "mil_rg6_location")
+		   remove_location (706, "mil_rg6_location")
 		   
 	elseif info_id == "mil_bandit_flash_get" then
-	       add_location (1005, "mil_secret_location")
+	       add_location (705, "mil_secret_location")
 	elseif info_id == "mil_bandit_secret_found" then
-           remove_location (1005, "mil_secret_location")
+           remove_location (705, "mil_secret_location")
 	    
 	elseif info_id == "mil_lukash_go_to_max" then
-	       add_location (1002, "mil_max_location") 
-	       remove_location (1007, "mil_lukash_location")
+	       add_location (702, "mil_max_location") 
+	       remove_location (707, "mil_lukash_location")
 	elseif info_id == "mil_max_arrive" then
-		   remove_location (1002, "mil_max_location")
+		   remove_location (702, "mil_max_location")
 		   
     elseif info_id == "mil_max_job_complete" then
-           remove_location (1002, "mil_max_location")
-	       add_location (1006, "mil_rg6_location") 
+           remove_location (702, "mil_max_location")
+	       add_location (706, "mil_rg6_location") 
 	elseif info_id == "mil_rg6_gain" then
-		   remove_location (1006, "mil_rg6_location")
+		   remove_location (706, "mil_rg6_location")
 		   
 	elseif info_id == "mil_max_lukash_call" then
-	       add_location (1007, "mil_lukash_location")
+	       add_location (707, "mil_lukash_location")
 	elseif info_id == "mil_lukash_arrive" or info_id == "mil_lukash_job_failed" then
-	       remove_location (1007, "mil_lukash_location")
+	       remove_location (707, "mil_lukash_location")
 
 	elseif info_id == "mil_lukash_job_complete" then
 	       if db.actor:dont_has_info ("mil_lukash_dead") then 
-	          add_location (1007, "mil_lukash_location")
+	          add_location (707, "mil_lukash_location")
 	       end   
-	       remove_location (1008, "mil_dolg_location")
+	       remove_location (708, "mil_dolg_location")
 	elseif info_id == "mil_lukash_arrive" or info_id == "mil_lukash_job_failed" then
-	       remove_location (1007, "mil_lukash_location")
+	       remove_location (707, "mil_lukash_location")
 
 	elseif info_id == "mil_freedom_attack" then
-	       add_location (1008, "mil_dolg_location")
-	       remove_location (1002, "mil_max_location")
+	       add_location (708, "mil_dolg_location")
+	       remove_location (702, "mil_max_location")
 	       
 	--elseif info_id == "mil_lukash_job_complete" then
 	       --remove_location (1008, "mil_dolg_location")
 	       
     elseif info_id == "mil_sniper_get_job" then
-           add_location (1004, "mil_sniper_location")
+           add_location (704, "mil_sniper_location")
     elseif info_id == "mil_sniper_dead" and db.actor:has_info ("mil_sniper_get_job") then
-           remove_location (1004, "mil_sniper_location")
-           add_location (1008, "mil_dolg_location")
+           remove_location (704, "mil_sniper_location")
+           add_location (708, "mil_dolg_location")
     elseif info_id == "mil_sniper_job_complete" then
-		   remove_location (1008, "mil_dolg_location")
+		   remove_location (708, "mil_dolg_location")
 	elseif info_id == "mil_sniper_job_failed" then
-	       remove_location (1004, "mil_sniper_location") 
+	       remove_location (704, "mil_sniper_location") 
         		   
 	-- end of military
 
