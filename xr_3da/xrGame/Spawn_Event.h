@@ -28,8 +28,8 @@ public:
 		Action() {
 			type.IDselected	= typeNone;
 			type.Count		= 4;
-			target			= "";
-			custom			= "";
+			strcpy			(target,"");
+			strcpy			(custom,"");
 		}
 	};
 	struct	Pair
