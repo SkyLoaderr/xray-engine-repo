@@ -806,9 +806,6 @@ namespace PAPI{
 	PARTICLEDLL_API void pTargetColor(float color_x, float color_y, float color_z,
 		float alpha, float scale);
 
-	PARTICLEDLL_API void pTargetColorD(float color_x, float color_y, float color_z,
-		float alpha, float scale);
-
 	PARTICLEDLL_API void pTargetSize(float size_x, float size_y, float size_z,
 		float scale_x = 0.0f, float scale_y = 0.0f, float scale_z = 0.0f);
 
