@@ -51,33 +51,33 @@ void CStateFreeNoAlife::initialize		()
 void CStateFreeNoAlife::execute			()
 {
 #ifndef NO_AI
-//	m_object->play								(eStalkerSoundHumming,60000,10000);
-//	m_object->CStalkerMovementManager::update	(
-//		0,
-//		0,
-//		0,
-//		0,
-//		CMovementManager::ePathTypeGamePath,
-//		CMovementManager::eDetailPathTypeSmooth,
-//		eBodyStateStand,
-//		eMovementTypeWalk,
-//		eMentalStateFree
-//	);
-//	m_object->CSightManager::update				(eLookTypePathDirection);
-//	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
-#endif
-	m_object->set_level_dest_vertex(dynamic_cast<CAI_ObjectLocation*>(Level().CurrentEntity())->level_vertex_id());
+	m_object->play								(eStalkerSoundHumming,60000,10000);
 	m_object->CStalkerMovementManager::update	(
 		0,
 		0,
-		&Level().CurrentEntity()->Position(),
 		0,
-		CMovementManager::ePathTypeLevelPath,
+		0,
+		CMovementManager::ePathTypeGamePath,
 		CMovementManager::eDetailPathTypeSmooth,
 		eBodyStateStand,
 		eMovementTypeWalk,
 		eMentalStateFree
 	);
+	m_object->CSightManager::update				(eLookTypePathDirection);
+	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
+#endif
+//	m_object->set_level_dest_vertex(dynamic_cast<CAI_ObjectLocation*>(Level().CurrentEntity())->level_vertex_id());
+//	m_object->CStalkerMovementManager::update	(
+//		0,
+//		0,
+//		&Level().CurrentEntity()->Position(),
+//		0,
+//		CMovementManager::ePathTypeLevelPath,
+//		CMovementManager::eDetailPathTypeSmooth,
+//		eBodyStateStand,
+//		eMovementTypeWalk,
+//		eMentalStateFree
+//	);
 //	m_object->CSightManager::update				(eLookTypePoint,&Level().CurrentEntity()->Position());
 //	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
 }
