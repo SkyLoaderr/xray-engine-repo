@@ -139,7 +139,7 @@ IC int PLC_calc	(Fvector& P, Fvector& N, xrLIGHT* L, float energy, Fvector& O)
 	float	E		= PLC_energy(P,N,L,energy);
 	float	C1		= Device.vCameraPosition.distance_to_sqr(P)/S_distance2;
 	float	C2		= O.distance_to_sqr(P)/S_fade2;
-	float	A		= 1.f-.5f*E*(1.f-C1)*(1.f-C2);
+	float	A		= 1.f-.7f*E*(1.f-C1)*(1.f-C2);
 	return			iCeil(255.f*A);
 }
 
