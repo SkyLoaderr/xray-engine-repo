@@ -9,6 +9,10 @@
 		<bio>Ничем себя проявить еще не успел.</bio>
 
 		<team>Stalker_novice</team>
+		
+		<class>Stalker_novice</class>
+		<community>stalker</community>
+		
 		<rank>30</rank>
 		<reputation>50</reputation>
 
@@ -27,6 +31,10 @@
 		<bio>Об этом сталкере ничего не известно.</bio>
 
 		<team>Stalker_general</team>
+		
+		<class>Stalker_general</class>
+		<community>stalker</community>
+		
 		<rank>50</rank>
 		<reputation>50</reputation>
 
@@ -45,6 +53,11 @@
 		<bio>Этот сталкер явно не первый день в Зоне.</bio>
 
 		<team>Stalker_veteran</team>
+		
+		<class>Stalker_veteran</class>
+		<community>stalker</community>
+	
+		
 		<rank>70</rank>
 		<reputation>50</reputation>
 
@@ -63,6 +76,11 @@
 		<bio>Этот сталкер знает Зону как своих пять пальцев.</bio>
 
 		<team>Stalker_master</team>
+
+		<class>Stalker_master</class>
+		<community>stalker</community>
+		
+		
 		<rank>90</rank>
 		<reputation>50</reputation>
 
