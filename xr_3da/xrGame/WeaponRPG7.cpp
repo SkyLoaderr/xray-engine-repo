@@ -33,7 +33,7 @@ CWeaponRPG7Grenade::CWeaponRPG7Grenade() {
 	m_pos.set(0, 0, 0); m_vel.set(0, 0, 0);
 	m_pOwner = NULL;
 	m_eSoundExplode = ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING);
-	m_eSoundRicochet = ESoundTypes(SOUND_TYPE_WEAPON_BULLET_RICOCHET);
+	m_eSoundRicochet = 0;//ESoundTypes(SOUND_TYPE_WEAPON_BULLET_RICOCHET);
 	m_pLight = ::Render->light_create();
 	m_pLight->set_shadow(true);
 	m_expoldeTime = m_engineTime = 0xffffffff;

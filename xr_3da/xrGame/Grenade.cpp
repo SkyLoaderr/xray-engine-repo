@@ -37,7 +37,7 @@ CGrenade::CGrenade(void) {
 	m_fragsR = 30.f;
 	m_fragHit = 50;
 	m_eSoundExplode = ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING);
-	m_eSoundRicochet = ESoundTypes(SOUND_TYPE_WEAPON_BULLET_RICOCHET);
+	m_eSoundRicochet = 0;//ESoundTypes(SOUND_TYPE_WEAPON_BULLET_RICOCHET);
 	m_eSoundCheckout = ESoundTypes(SOUND_TYPE_WEAPON_RECHARGING);
 	m_expoldeTime = 0xffffffff;
 	m_pLight = ::Render->light_create();
