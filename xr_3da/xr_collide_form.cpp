@@ -9,6 +9,7 @@
 #include "xrLevel.h"
 #include "fmesh.h"
 #include "bodyinstance.h"
+#include "frustum.h"
 
 using namespace	Collide;
 
@@ -407,8 +408,8 @@ BOOL CCF_Shape::Contact		( CObject* O )
 	S.R				= O->Radius();
 	
 	// Get our matrix
-	Fmatrix& XF		= Owner()->svTransform;
-	CFrustum	F;
+	const Fmatrix& XF	= Owner()->svXFORM();
+	CFrustum			F;
 	
 	// Iterate
 	for (u32 el=0; el<shapes.size(); el++)

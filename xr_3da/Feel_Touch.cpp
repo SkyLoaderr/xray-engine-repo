@@ -4,6 +4,11 @@
 #include "xr_object.h"
 using namespace Feel;
 
+BOOL Touch::feel_touch_contact	(CObject* O)
+{ 
+	return TRUE; 
+}
+
 void Touch::feel_touch_deny		(CObject* O, DWORD T)
 {
 	DenyTouch						D;
