@@ -171,7 +171,7 @@ const Fmatrix CScriptMonster::GetUpdatedMatrix(LPCSTR caBoneName, const Fvector 
 	l_tMatrix.c		= tPositionOffset;
 
 	if (caBoneName && xr_strlen(caBoneName)) {
-		CBoneInstance	&l_tBoneInstance = PKinematics(Visual())->LL_GetInstance(PKinematics(Visual())->LL_BoneID(caBoneName));
+		CBoneInstance	&l_tBoneInstance = PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID(caBoneName));
 //#pragma todo("Dima to Dima : null callbacks after completion")
 //		if (fpBoneCallback)
 //			l_tBoneInstance.set_callback(fpBoneCallback,this);

@@ -99,13 +99,13 @@ LPCSTR caGlobalNames		[] = {
 void CAI_Stalker::vfAssignBones(CInifile *ini, const char *section)
 {
 	int head_bone		= PKinematics(Visual())->LL_BoneID(ini->r_string(section,"bone_head"));
-	PKinematics(Visual())->LL_GetInstance(u16(head_bone)).set_callback(HeadCallback,this);
+	PKinematics(Visual())->LL_GetBoneInstance(u16(head_bone)).set_callback(HeadCallback,this);
 	
 	int shoulder_bone	= PKinematics(Visual())->LL_BoneID(ini->r_string(section,"bone_shoulder"));
-	PKinematics(Visual())->LL_GetInstance(u16(shoulder_bone)).set_callback(ShoulderCallback,this);
+	PKinematics(Visual())->LL_GetBoneInstance(u16(shoulder_bone)).set_callback(ShoulderCallback,this);
 	
 	int spin_bone		= PKinematics(Visual())->LL_BoneID(ini->r_string(section,"bone_spin"));
-	PKinematics(Visual())->LL_GetInstance(u16(spin_bone)).set_callback(SpinCallback,this);
+	PKinematics(Visual())->LL_GetBoneInstance(u16(spin_bone)).set_callback(SpinCallback,this);
 }
 
 void __stdcall CAI_Stalker::HeadCallback(CBoneInstance *B)
@@ -446,7 +446,7 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 
 void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {
-	CKinematics				&tVisualObject		=	*(PKinematics(Visual()));
+	CSkeletonAnimated		&tVisualObject		=	*(PSkeletonAnimated(Visual()));
 
 	if (m_tAnims.A.empty())
 		return;

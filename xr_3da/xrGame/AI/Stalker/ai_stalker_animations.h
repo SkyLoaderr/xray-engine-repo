@@ -33,7 +33,7 @@ public:
 	CAniCollection<CMovementActions,caMovementNames>	m_tMoves;
 	CAniFVector	  <caInPlaceNames>						m_tInPlace;
 
-	IC	void		Load(CKinematics *tpKinematics, LPCSTR caBaseName)
+	IC	void		Load(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName)
 	{
 		string256		S;
 		m_tGlobal.Load	(tpKinematics,caBaseName);
@@ -61,7 +61,7 @@ public:
 		m_tpCurrentLegsAnimation = 0;
 	};
 	
-	virtual	void	Load(CKinematics *tpKinematics)
+	virtual	void	Load(CSkeletonAnimated *tpKinematics)
 	{
 		m_tAnims.Load	(tpKinematics,"");
 	};

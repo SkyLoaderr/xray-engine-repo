@@ -15,10 +15,10 @@
 void CAI_Soldier::vfAssignBones(CInifile *ini, const char *section)
 {
 	int head_bone = PKinematics(Visual())->LL_BoneID(ini->r_string(section,"bone_head"));
-	PKinematics(Visual())->LL_GetInstance(u16(head_bone)).set_callback(HeadSpinCallback,this);
+	PKinematics(Visual())->LL_GetBoneInstance(u16(head_bone)).set_callback(HeadSpinCallback,this);
 	
 //	int legs_bone = PKinematics(Visual())->LL_BoneID(ini->r_string(section,"bone_legs"));
-//	PKinematics(Visual())->LL_GetInstance(u16(head_bone)).set_callback(LegsSpinCallback,this);
+//	PKinematics(Visual())->LL_GetBoneInstance(u16(head_bone)).set_callback(LegsSpinCallback,this);
 }
 
 void __stdcall CAI_Soldier::HeadSpinCallback(CBoneInstance* B)
@@ -68,7 +68,7 @@ void CAI_Soldier::vfLoadSounds()
 // animations
 void CAI_Soldier::vfLoadAnimations()
 {
-	CKinematics* tpVisualObject = PKinematics(Visual());
+	CSkeletonAnimated* tpVisualObject = PSkeletonAnimated(Visual());
 	
 	// loading normal animations
 	tSoldierAnimations.tNormal.tGlobal.tpaDeath[0] = tpVisualObject->ID_Cycle("norm_death_0");
