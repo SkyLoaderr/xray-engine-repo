@@ -321,6 +321,8 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
     if (0==s_textures) 	s_textures 	= "$null";
     if (0==s_constants) s_constants = "$null";
     if (0==s_matrices) 	s_matrices 	= "$null";
+	
+//	Msg("--- %s --- %s",s_shader,s_textures);
 
 	// Parse names
 	sh_list				L_textures,L_constants,L_matrices;
