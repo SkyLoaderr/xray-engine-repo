@@ -21,6 +21,8 @@ public:
 	virtual u32	Run()=0;
 };
 
-ETOOLS_API CTestInterface* CreateTestClass();
+extern "C" {
+	ETOOLS_API CTestInterface* CreateTestClass();
+};
 
 #endif // EToolsH
