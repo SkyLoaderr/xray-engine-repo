@@ -1,55 +1,51 @@
-<?xml version='1.0' encoding="windows-1251"?>
+<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
-	<string id="general_help">
-		<text>Срочно нужна аптечка, помираю!!!</text>
-	</string>
-	<string id="general_new_task">
-		<text>Задания обновлены.</text>
-	</string>
-	
-	
-
-	<string id="tips_esc_trader_how_to_talk">
-		<text>Для того, чтобы поговорить с кем-либо, наведите на него прицел и нажмите 'E'.</text>
-	</string>
-	<string id="tips_esc_trader_activate_pda">
-		<text>Для того, чтобы активировать PDA, нажмите 'P'.</text>
-	</string>
-	<string id="tips_esc_trader_activate_map">
-		<text>Для того, чтобы активировать карту, нажмите 'M'.</text>
-	</string>
-	<string id="tips_esc_trader_quest_1">
-		<text>Найдите артефакт в месте, отмеченном на карте, и принесите торговцу.</text>
-	</string>
-	<string id="tutorial_trader_search_corpses">
-		<text>Обыщи трупы, там может быть что-нибудь полезное.</text>
-	</string>
-	<string id="tutorial_trader_give_medikit">
-		<text>Дай аптечку этому придурку.</text>
-	</string>
-	<string id="tips_esc_trader_about_pda">
-		<text>Нажми Contact (С). В контактах и на минимапе на лицевом визоре ты видишь людей в радиусе 250 метров с включенными ПДА. Там указывается их отношение к тебе. Будь внимателен если там появляются враги. Впрочем бандиты и гы-ыы, мутанты не включают обычно ПДА так, что будь внимателен в Зоне.</text>
-	</string>	
-	<string id="tips_esc_trader_about_anomalies">
-		<text>Осторожней! Ты рядом с аномалиями. Используй болты, чтобы определить их границы.</text>
-	</string>	
-	<string id="tutorial_flash_anomaly_alarm">
-		<text>Меченый, смотри внимательней. В следующий раз на ее месте можешь быть ты!</text>
-	</string>	
-	<string id="escape_wounded_start">
-		<text>Эй, Меченый. Там недалеко от тебя сталкер находится, так вот он из глубокого рейда в зоны возвращается, ранен сильно. Помоги ему, вполне возможно он знает что-то о Стрелке.</text>
-	</string>	
-	<string id="escape_stalker_help">
-		<text>Эй, Меченый. Там недалеко от тебя сталкер находится, так вот он из глубокого рейда в зоны возвращается, ранен сильно. Помоги ему, вполне возможно он знает что-то о Стрелке.</text>
-	</string>
-	<string id="tutorial_trader_look_vagon">
-		<text>Меченый, там недалеко от тебя мои ребята под обстрел попали. Один вроде еще живой. Помоги ему.</text>
-	</string>
-	<string id="escape_stalker_killed">
-		<text>Ну, Меченый, зря ты так. Так или иначе, проверку ты прошел, а вот с Волком и его бригадой теперь сам разбирайся как знаешь. Вообщем я тебя жду, дело есть.</text>
-	</string>
-	<string id="escape_stalker_helped">
-		<text>Молодец, Меченый. Если так будешь продолжать, то заведешь много друзей. Зайди ко мне, поговорим по-деловому.</text>
-	</string>
-	
+    <string id="general_help">
+        <text>Срочно нужна аптечка, помираю!!!</text>
+    </string>
+    <string id="general_new_task">
+        <text>Получены новые указания.</text>
+    </string>
+    <string id="tips_esc_trader_how_to_talk">
+        <text>Для того, чтобы поговорить с кем-либо, наведите на него прицел и нажмите 'E'.</text>
+    </string>
+    <string id="tips_esc_trader_activate_pda">
+        <text>Для того, чтобы активировать PDA, нажмите 'P'.</text>
+    </string>
+    <string id="tips_esc_trader_activate_map">
+        <text>Для того, чтобы активировать карту, нажмите 'M'.</text>
+    </string>
+    <string id="tips_esc_trader_quest_1">
+        <text>Найдите артефакт в месте, отмеченном на карте, и принесите торговцу.</text>
+    </string>
+    <string id="tutorial_trader_search_corpses">
+        <text>Обыщи трупы, там может быть что-нибудь полезное.</text>
+    </string>
+    <string id="tutorial_trader_give_medikit">
+        <text>Дай аптечку этому придурку.</text>
+    </string>
+    <string id="tips_esc_trader_about_pda">
+        <text>Нажми Contact (С). В контактах и на минимапе на лицевом визоре ты видишь людей в радиусе 250 метров с включенными ПДА. Там указывается их отношение к тебе. Будь внимателен если там появляются враги. Впрочем бандиты и гы-ыы, мутанты не включают обычно ПДА так, что будь внимателен в Зоне.</text>
+    </string>
+    <string id="tips_esc_trader_about_anomalies">
+        <text>Осторожней! Ты рядом с аномалиями. Используй болты, чтобы определить их границы.</text>
+    </string>
+    <string id="tutorial_flash_anomaly_alarm">
+        <text>Меченый, смотри внимательней. В следующий раз на ее месте можешь быть ты!</text>
+    </string>
+    <string id="escape_wounded_start">
+        <text>Эй, Меченый. Там недалеко от тебя сталкер находится, так вот он из глубокого рейда в зоны возвращается, ранен сильно. Помоги ему, вполне возможно он знает что-то о Стрелке.</text>
+    </string>
+    <string id="escape_stalker_help">
+        <text>Эй, Меченый. Там недалеко от тебя сталкер находится, так вот он из глубокого рейда в зоны возвращается, ранен сильно. Помоги ему, вполне возможно он знает что-то о Стрелке.</text>
+    </string>
+    <string id="tutorial_trader_look_vagon">
+        <text>Недалеко от тебя возле вагончика какая-то шумиха... Ща тебе координаты скину. Глянь, что там.</text>
+    </string>
+    <string id="escape_stalker_killed">
+        <text>Ну, Меченый, зря ты так. Так или иначе, проверку ты прошел, а вот с Волком и его бригадой теперь сам разбирайся как знаешь. Вообщем я тебя жду, дело есть.</text>
+    </string>
+    <string id="escape_stalker_helped">
+        <text>Молодец, Меченый. Если так будешь продолжать, то заведешь много друзей. Зайди ко мне, поговорим по-деловому.</text>
+    </string>
 </string_table>

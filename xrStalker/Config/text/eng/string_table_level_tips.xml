@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
+    <string id="general_help">
+        <text>Help me!!! I need medikit.</text>
+    </string>
+    <string id="general_new_task">
+        <text>New tasks received.</text>
+    </string>
     <string id="tips_esc_trader_how_to_talk">
         <text>To talk to someone point sight at him and press ‘E’ button.</text>
     </string>
@@ -16,26 +22,30 @@
         <text>Search dead bodies, you may find some useful staff.</text>
     </string>
     <string id="tutorial_trader_give_medikit">
-        <text>Give this boy a medkit.</text>
+        <text>Hand a medikit to this dunce.</text>
     </string>
     <string id="tips_esc_trader_about_pda">
-        <text>Press Contact (С). In and on minimap on the screen other stalkers with activated PDA will appear. Their attitude to you will also be stated on the screen. Be careful if you see enemies on the screen. However bandits and monsters usually don`t use PDA, so you better watch out in the Zone.</text>
+        <text>Press Contact (С). In and on minimap on the screen other stalkers with activated PDA will appear. Their attitude to you will also be stated on the screen. Be careful if you see enemies on the screen. However bandits and, heh, monsters usually don’t use PDA, so you better watch out in the Zone.</text>
     </string>
     <string id="tips_esc_trader_about_anomalies">
-        <text>Watch out! Anomaly is near. Use screw-bolt to define their borders.</text>
+        <text>Watch out! You’re nearby anomalies. Use bolts to define their borders.</text>
+    </string>
+    <string id="tutorial_flash_anomaly_alarm">
+        <text>Marked, watch out. Next time it may be you!</text>
+    </string>
+    <string id="escape_wounded_start">
+        <text>Hey, Marked, one stalker just returned from deep raid into Zone. He is wounded and can't move anymore. Help him, may be he know something about Gunslinger.</text>
     </string>
     <string id="escape_stalker_help">
-        <text>Hey, Sighned. There is a badly wounded stalker not far from you, he was coming back after a trip deep inside the Zone. Help him, he may know something about the Sniper.</text>
+        <text>Hey, Marked. There is a badly wounded stalker not far from you, he was coming back after a trip deep inside the Zone. Help him, he may know something about the Gunslinger.</text>
     </string>
-
-	<string id="general_help">
-		<text>Help me!!! I need medikit.</text>
-	</string>
-	<string id="escape_wounded_start">
-		<text>Hey, Sighned, one stalker just returned from deep raid into Zone. He is wounded and can't move anymore. Help him, may be he know something about Gunslinger</text>
-	</string>	
-	<string id="tutorial_trader_look_vagon">
-		<text>Hey, there is some kind of action near you. I send coordinates to you. Check, what are going there.</text>
-	</string>
-	    
+    <string id="tutorial_trader_look_vagon">
+        <text>Hey, there is some kind of action near you. I send coordinates to you. Check, what are going there.</text>
+    </string>
+    <string id="escape_stalker_killed">
+        <text>Well, Marked, it’s up to you. This way or another, you’ve passed the examination, but deal with Wolf and his team on your own. Generally I’m waiting for you, got some job.</text>
+    </string>
+    <string id="escape_stalker_helped">
+        <text>Well done, Marked. If it continues, you’ll acquire many friends. Come into mine, we’ll have a chat.</text>
+    </string>
 </string_table>

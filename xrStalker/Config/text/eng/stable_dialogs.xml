@@ -1,9 +1,42 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
-    <string id="hello_dialog_0">
-        <text>Hi!</text>
-    </string>
     <string id="actor_break_dialog_0">
         <text>See you!</text>
+    </string>
+    <string id="actor_help_wounded_0">
+        <text>What’s up?</text>
+    </string>
+    <string id="actor_help_wounded_1">
+        <text>Can’t you see I’m off color? Need medicine kit or at least bandage.</text>
+    </string>
+    <string id="actor_help_wounded_11">
+        <text>Take the kit.</text>
+    </string>
+    <string id="actor_help_wounded_111">
+        <text>Thanks, bro, I’ll consider this.</text>
+    </string>
+    <string id="actor_help_wounded_12">
+        <text>Take the bandage.</text>
+    </string>
+    <string id="actor_help_wounded_13">
+        <text>Sorry, I’m all out.</text>
+    </string>
+    <string id="actor_help_wounded_131">
+        <text>Hiking without medicines? Catch infection and die?</text>
+    </string>
+    <string id="actor_help_wounded_14">
+        <text>Heh, why so bad? Sorry, I won’t give you mine, otherwise I’ll stay quite out.</text>
+    </string>
+    <string id="actor_help_wounded_141">
+        <text>You choose, but don’t think it does an honor for you.</text>
+    </string>
+    <string id="hello_dialog_2">
+        <text>Hi!</text>
+    </string>
+    <string id="hello_dialog_3">
+        <text>Listen, dude, help me!</text>
+    </string>
+    <string id="hello_dialog_0">
+        <text>Hi!</text>
     </string>
 </string_table>

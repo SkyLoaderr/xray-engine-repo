@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="windows-1251" ?>
+<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
     <string id="actor_break_dialog_0">
         <text>До встречи!</text>
@@ -35,5 +35,8 @@
     </string>
     <string id="hello_dialog_3">
         <text>Слышь, браток, помоги!</text>
+    </string>
+    <string id="hello_dialog_0">
+        <text>Привет</text>
     </string>
 </string_table>

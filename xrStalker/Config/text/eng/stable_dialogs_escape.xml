@@ -1,5 +1,44 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
+    <string id="escape_factory_assault_hello_2">
+        <text>You are supposed to be that guy Wolf has been talking about? Well it’s up to you now, basically there are not so many bandits there. Although we can hardly penetrate it together. Sniper has settled on the first floor staring at all passing nearby. If it were not for him – we would punish them swiftly.</text>
+    </string>
+    <string id="escape_factory_assault_hello_3">
+        <text>So, will you take out the sniper? In other way we won’t poke a sinlge nose there. At least soberly.</text>
+    </string>
+    <string id="escape_factory_assault_talk_0">
+        <text>Now, gentlemen, what would you say?</text>
+    </string>
+    <string id="escape_factory_assault_talk_1">
+        <text>All standing. Bandits are still at the ruins. Few people plus sentry on the first floor.</text>
+    </string>
+    <string id="escape_factory_assault_talk_11">
+        <text>I suggest attacking the factory altogether.</text>
+    </string>
+    <string id="escape_factory_assault_talk_111">
+        <text>No way we will have felt this on our own skins. But don’t think that we’re afraid of. We aren’t scared at all. Unless occasionally… maybe it’s a bit scary now… well, okay, we are afraid. And won’t you be afraid of soberly penetrating the factory with the dug in bandits inside? And that sniper there. I’d say that vodka can encourage us, in other way it’s impossible.</text>
+    </string>
+    <string id="escape_factory_assault_talk_112">
+        <text>Oh, I see that you’ve brought “fire-water”. Well if it continues as it is, we’ll not only drive all the bandits away from the factory, but even clear the whole Zone! So, attack?</text>
+    </string>
+    <string id="escape_factory_assault_talk_1121">
+        <text>Well, I’ll tell you when. Now take this bottle.</text>
+    </string>
+    <string id="escape_factory_assault_talk_1122">
+        <text>Wait a second. “Fire-water” isn’t for you.</text>
+    </string>
+    <string id="escape_factory_assault_talk_12">
+        <text>Okay.</text>
+    </string>
+    <string id="escape_factory_assault_talk_2">
+        <text>Ready and waiting. You just give an order.</text>
+    </string>
+    <string id="escape_factory_assault_talk_21">
+        <text>Well, fellows! Let’s kick arses! Assault!</text>
+    </string>
+    <string id="escape_factory_assault_talk_22">
+        <text>So be it! I’ll return in a moment.</text>
+    </string>
     <string id="escape_factory_attackers_11">
         <text>At last Wolf has sent help! Okay, listen, we’re going to knock bandits out of the factory, but the 2nd floor is ocupated by one prudent goggleeyed bastard and looks right into our direction. Silence won’t make any good there. Your task – to insensibly infiltrate the factory and give him a beat. As soon as we notice him missing, we’ll force our way in.</text>
     </string>
@@ -16,7 +55,7 @@
         <text>Ah, I wish I had vodka now.</text>
     </string>
     <string id="escape_factory_attackers_112111">
-        <text>Perhaps you should visit merchant then? If you don’t want to make a silent assault.</text>
+        <text>Perhaps you should visit trader then? If you don’t want to make a silent assault.</text>
     </string>
     <string id="escape_factory_attackers_1121111">
         <text>Fine. I’ll be back soon.</text>
@@ -36,173 +75,290 @@
     <string id="escape_factory_attackers_12">
         <text>Well, have you thought it out? Able to take off that basterd from the 2nd floor? No other chances to approach, I think.</text>
     </string>
-    <string id="escape_lager_hlam_flame_0">
+    <string id="escape_fox_flame_dialog_0">
         <text>Got few questions.</text>
     </string>
-    <string id="escape_lager_hlam_flame_1">
-        <text>Shoot, maybe you’ll sell me something on a way?</text>
-    </string>
-    <string id="escape_lager_hlam_flame_10">
-        <text>I think it’s enough.</text>
-    </string>
-    <string id="escape_lager_hlam_flame_11">
-        <text>Haven’t you heard about the Sniper?</text>
-    </string>
-    <string id="escape_lager_hlam_flame_111">
-        <text>I’ve once occurred to see the suit with &amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;Sniper grouping &amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot; inscription. Resolt with good benefits. If you see something like this, grab it to me.</text>
-    </string>
-    <string id="escape_lager_hlam_flame_12">
-        <text>How’s life? What are you doing?</text>
-    </string>
-    <string id="escape_lager_hlam_flame_121">
-        <text>Life sucks. No glimpse at all. Приходится всяким хламом барыговать. Got anything to sell? Come on, I’ll pay worthy money.</text>
-    </string>
-    <string id="escape_lager_hlam_flame_13">
-        <text>Who is in charge in this camp?</text>
-    </string>
-    <string id="escape_lager_hlam_flame_131">
-        <text>Wolf. He’s there near the fire in stalker’s suit. I begged him to sell the suit for almost 20 times. That damn greedy doesn&amp;apos;t want to.Не хочет, жлоб махровый.</text>
-    </string>
-    <string id="escape_lager_hlam_hello_0">
-        <text>Greetings. Can you sell anything?</text>
-    </string>
-    <string id="escape_lager_volk_dynamite_done_0">
-        <text>Take dymanite. Now you’re free.</text>
-    </string>
-    <string id="escape_lager_volk_dynamite_done_1">
-        <text>Yeah! I&amp;apos;ll use the very single possibility to get a hell out of this zone, sell the bribe and go on vacation to the sea!</text>
-    </string>
-    <string id="escape_lager_volk_flame_0">
-        <text>Can I set some questions?</text>
-    </string>
-    <string id="escape_lager_volk_flame_1">
+    <string id="escape_fox_flame_dialog_1">
         <text>Shoot.</text>
     </string>
-    <string id="escape_lager_volk_flame_10">
-        <text>Thanks, another time.</text>
+    <string id="escape_fox_flame_dialog_10">
+        <text>Thanks.</text>
     </string>
-    <string id="escape_lager_volk_flame_11">
-        <text>How did that Sniper manage to infiltrate the center of the Zone?</text>
+    <string id="escape_fox_flame_dialog_2">
+        <text>Fox, tell me whether you have been to the Zone. What have you seen?</text>
     </string>
-    <string id="escape_lager_volk_flame_111">
-        <text>I don’t know. Barman must know about that. Maybe even in scientific camp they know this.</text>
+    <string id="escape_fox_flame_dialog_21">
+        <text>Such a story may take a few days to tell, and my time costs a lot. Can only give you a piece of advice. "Dump" – located 3 kilometers to the North from where I stand, where all the radioactive trash had been taken to from stations in 86th. Heavy radiation, host of anomalies, and ultimately – abundance of artifacts, admittedly not valuable. Beware of the bandits and try not to swear at “Duty” patrols. Scientific research institute “Agroprom” is to the west from the “Dump”. Region is quite poor regarding the artifacts, so I don’t go there often. “Dark Valley” to the east. Sort of weird place. Like it’s rather quiet in there, but bandits and stuff can now and then be met. Yet I sense that not everything is so simple there as it seems. Further beyond the Dump is “Rostok” factory territory – stalkership heart. Besides many experienced guys you can come across with.</text>
     </string>
-    <string id="escape_lager_volk_flame_1111">
-        <text>Who’s that Barman?</text>
+    <string id="escape_fox_flame_dialog_211">
+        <text>What do one have to beware of in these lands?</text>
     </string>
-    <string id="escape_lager_volk_flame_11111">
-        <text>There is a stalker bar at &amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;Rostok&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot; factory. He is in charge there. But the enterance is opened only for veterans.</text>
+    <string id="escape_fox_flame_dialog_2111">
+        <text>Hey, Marked, you look like an experienced guy, but for such foolish questions. Be wary of everything! This is the bloody Zone, can’t you see?! However bloodsuckers appeared at the night on the Dump, they haven’t been seen so far away from the center. Eerie vermins. It’s quite hard to see them during the day, if not to mention the night.</text>
     </string>
-    <string id="escape_lager_volk_flame_1112">
-        <text>Where is the Scientific camp?</text>
+    <string id="escape_fox_flame_dialog_3">
+        <text>Trader said that you can know something about the Gunslinger.</text>
     </string>
-    <string id="escape_lager_volk_flame_11121">
-        <text>Their base is situated on the dead Yantar lake.</text>
+    <string id="escape_fox_flame_dialog_31">
+        <text>Many have been interested in him recently. Truthfully I don’t know him personally. But I do have err.. “contact” experience. His grouping has once fired upon my boys. No one was hurt – they’ve been probably waiting for the other ones, thus I consider it to me a misunderstanding. Fouled each other over the ravine and left. O, by the way, Grey is waiting for me at the garage at the Dump, I’ll send you the coordinates, chat with him. We knows a lot more.</text>
     </string>
-    <string id="escape_lager_volk_flame_12">
-        <text>My everyone is so eager to come to the center of Zone?</text>
+    <string id="escape_fox_flash_dialog_0">
+        <text>I’m from the trader, you have to hand something to him.</text>
     </string>
-    <string id="escape_lager_volk_flame_121">
-        <text>The majority wants to be rich – they hunt for artifacts. However there is something better than the amundance of the artifacts… Wishes executor much more expensive than any wealth.</text>
+    <string id="escape_fox_flash_dialog_1">
+        <text>Take it, and try not to lose. Important information.</text>
     </string>
-    <string id="escape_lager_volk_flame_1211">
-        <text>&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;Wish executor &amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;? What a hell is this?</text>
+    <string id="escape_fox_hello_dialog_2">
+        <text>Hey, I’m waiting for a man here, so you’d better to get out of here sooner the better.</text>
     </string>
-    <string id="escape_lager_volk_flame_12111">
-        <text>I don’t have a clue. But it is there… I hope…</text>
+    <string id="escape_fox_hello_dialog_3">
+        <text>Hi.</text>
     </string>
-    <string id="escape_lager_volk_flame_1212">
-        <text>What prevents you from deeper penetration in the Zone?</text>
+    <string id="escape_lager_access_0">
+        <text>Why can’t I get into the camp?</text>
     </string>
-    <string id="escape_lager_volk_flame_12121">
-        <text>Something burns out stalkers&amp;apos; brains to the north and prevents from breaking deeper into the zone.</text>
+    <string id="escape_lager_access_1">
+        <text>One has to be a total dunce to let a man from the “death truck” in. First prove that you can be trusted.</text>
     </string>
-    <string id="escape_lager_volk_flame_2">
-        <text>What do you know about someone called Sniper?</text>
+    <string id="escape_lager_access_11">
+        <text>What’s the “death truck”? I can’t remember anything.</text>
     </string>
-    <string id="escape_lager_volk_flame_21">
-        <text>I’ve heard obscure stories. He seemed to be gone few months ago, after infiltrating the center of Zone. His grouping has fallen to pieces and has been destroyed by someone… This is all I know.</text>
+    <string id="escape_lager_access_111">
+        <text>I know few, but this few is something really really bad. Ultimately talking on this topic, especially with you, is not what I’m gonna do. Call it superstition if you wish. So begone, Marked, in an amicable way.</text>
     </string>
-    <string id="escape_lager_volk_flame_3">
-        <text>Have you heard anything about Spectral stalker?</text>
+    <string id="escape_lager_access_12">
+        <text>What must I do to make you believe me?</text>
     </string>
-    <string id="escape_lager_volk_flame_31">
-        <text>Wait a minute… I remember. He was one of the Sniper’s grouping. It is said that the whole grouping got into the ceter of Zone and only Spectral returned. But I don’t have a clue where he is now.</text>
+    <string id="escape_lager_access_121">
+        <text>The trader must examine you, and we’ll just get acquainted. If you are a normal one, don’t grip the gun naively and generally familiar with your reason, we’ll find common language.</text>
+    </string>
+    <string id="escape_lager_guard_start_dialog_2">
+        <text>Marked, stop, there is no way for you to the camp now!</text>
+    </string>
+    <string id="escape_lager_guard_start_dialog_3">
+        <text>Hi, Marked. What do you need?</text>
+    </string>
+    <string id="escape_lager_hlam_hello_0">
+        <text>Greetings. Wish to sell something?</text>
+    </string>
+    <string id="escape_lager_hlam_talk_people_0">
+        <text>You are familiar with majority here. What has this crowd gathered here for?</text>
+    </string>
+    <string id="escape_lager_hlam_talk_people_1">
+        <text>Yeah, it’s hard to say unambiguously, from doctors of science to laid-back bandits. Everyone receives the task to its wit. Militaries usually guard the perimeter, rarely entering the Zone. Bandits are settled on the stalkers’ paths. May bereave of bribe or even life. Scientists are set somewhere deep inside it, searching for the bloody truth, idiots! There are several stalkers’ clans, but that’s another matter. People here in the camp are rather quiet and peaceful this is understood – freshly, anxious newbies. Unless the “Wolf” is familiar in here. This one has seen a lot, but to my mind he’s a bit freaky with stalkership and all, he wants to cut off.</text>
+    </string>
+    <string id="escape_lager_hlam_talk_people_2">
+        <text>You’ve mentioned some stalkers’ clans. Can you give more specified information?</text>
+    </string>
+    <string id="escape_lager_hlam_talk_people_21">
+        <text>You see, it’s really hard to survive in the Zone by yourself. So such clans are gathering here and there. Some for convictions, some for money. But there are  lots of free stalkers, as I am. Everyone is free to chose: join someone or act alone on own hazard and fear. Concerning groupings I can give roundup on the “Duty”, “Mercenaries” and “Monolith”</text>
+    </string>
+    <string id="escape_lager_hlam_talk_people_3">
+        <text>Concerning the bandits. Why not to perish them once and for all? Admittedly everyone has weapons.</text>
+    </string>
+    <string id="escape_lager_hlam_talk_people_31">
+        <text>Well, generally we’re trying to do that. But if ones are shot, another come.</text>
+    </string>
+    <string id="escape_lager_hlam_talk_people_4">
+        <text>Tell me about the “Duty” grouping.</text>
+    </string>
+    <string id="escape_lager_hlam_talk_people_41">
+        <text>These consider themselves to be Zone hags. They think that the Zone is the malignant growth on the Earth body, and going to clear the Earth from the Zone and its inhabitants, haven’t yet decided how indeed. Thus shot all the mutants without distinction.</text>
+    </string>
+    <string id="escape_lager_hlam_talk_people_5">
+        <text>Tell me about the “Mercanaries” grouping.</text>
+    </string>
+    <string id="escape_lager_hlam_talk_people_51">
+        <text>Generally those have gathered there are not satisfied by the war in the “outer world”. Extreme Zone conditions shooting enthusiasts. Ready to fulfil any, even the most dirty work. Well equipped, by occidental weapons in majority.</text>
+    </string>
+    <string id="escape_lager_hlam_talk_people_6">
+        <text>Tell me about the “Monolith” grouping.</text>
+    </string>
+    <string id="escape_lager_hlam_talk_people_61">
+        <text>Why they’re kind of strange ones. Don’t gather artifacts. Don’t make any liaisons. Don’t trade. Believe in some crap like aliens and evolutional module inside the center of the zone, which shall change the civilization on the earth for good. But these are rumors. I haven’t had personal contacts with them.</text>
+    </string>
+    <string id="escape_lager_hlam_talk_people_611">
+        <text>And do you yourself believe in something? What’s in the center of Zone?</text>
+    </string>
+    <string id="escape_lager_hlam_talk_people_6111">
+        <text>I believe that even the most intimate dreams are granted in the center of the Zone. But I don’t have a clue what’s in there. I trust that some day I will be able to make it there.</text>
+    </string>
+    <string id="escape_lager_novice_start_dialog_2">
+        <text>Hi, Marked. How can I be useful?</text>
+    </string>
+    <string id="escape_lager_novice_start_dialog_3">
+        <text>How did you get here!? You mustn’t be at the camp!</text>
+    </string>
+    <string id="escape_lager_volk_dynamite_done_0">
+        <text>Take this present. Sorry that it isn’t packed properly.</text>
+    </string>
+    <string id="escape_lager_volk_dynamite_done_1">
+        <text>Hehe. Thanks. My compliments with splendid fireworks. Take the money.</text>
     </string>
     <string id="escape_lager_volk_hello_11">
-        <text>Well hi. Че надо?</text>
+        <text>Well, hi. Whatcha want?</text>
     </string>
     <string id="escape_lager_volk_hello_12">
-        <text>Hola. I was told that you’ve saved one of ours from the very death. Thank you. Take this artifact as the sign of our gratitude – you can exchange it at Merchant’s to the weapons, cartriges and food.</text>
+        <text>Hello. I was told that you had saved one of ours from mere death. Thanks, man. Take this artifact as the sign of our gratitude. You can exchange it at Trader’s on weapons, shell or food.</text>
+    </string>
+    <string id="escape_lager_volk_hello_13">
+        <text>How did you pass the guards!? You can’t go inside the camp, Marked! Leave, while you’re alive!</text>
+    </string>
+    <string id="escape_lager_volk_info_0">
+        <text>Got a few questions.</text>
+    </string>
+    <string id="escape_lager_volk_info_1">
+        <text>Shoot. I’ll do my best to help ya.</text>
+    </string>
+    <string id="escape_lager_volk_info_10">
+        <text>Thanks.</text>
+    </string>
+    <string id="escape_lager_volk_info_2">
+        <text>What do you know about the Zone?</text>
+    </string>
+    <string id="escape_lager_volk_info_21">
+        <text>Well, quite a lot. What do you particularly need.</text>
+    </string>
+    <string id="escape_lager_volk_info_211">
+        <text>What’s inside the Zone?</text>
+    </string>
+    <string id="escape_lager_volk_info_2111">
+        <text>This is the very question, which I wanted to find the answer to last two years. But the safe path to the center of the Zone hasn’t been found yet. Several times I tried to break through with my friends. I have hardly made it to return, my friends haven’t. If you ask how we got there, I’ll tell ya that we were seeking for the dream, for the wish master.</text>
+    </string>
+    <string id="escape_lager_volk_info_21111">
+        <text>Why do you think that the dreams are to come true there?</text>
+    </string>
+    <string id="escape_lager_volk_info_211111">
+        <text>There is a stalkers’ legend of the “wish master”. A place located in the center of the Zone, where all, even the most incredible, wishes come true. But you know what I’ll tell ya, I do know that there is the mere death in the center of the Zone, and that “master” is noteworthy. So, don’t run risks in vain.</text>
+    </string>
+    <string id="escape_lager_volk_info_212">
+        <text>Where has the Zone come from?</text>
+    </string>
+    <string id="escape_lager_volk_info_2121">
+        <text>Well, something boomed in 2006. Then it came. I know that this is barely an answer, but believe me that the truth is clear to very few.</text>
+    </string>
+    <string id="escape_lager_volk_info_213">
+        <text>What has led you inside the Zone?</text>
+    </string>
+    <string id="escape_lager_volk_info_2131">
+        <text>You unprofitable mine has been closed in 2008. Insufficient money. Then the rumors came about the Zone to give a chance to grow rich. I had no lack of army experience, so I ventured to do it. I can’t say that I an extremely rich now, but I’ve got a fair bit of brass behind my back. Typical story, as well as many others.</text>
+    </string>
+    <string id="escape_lager_volk_info_214">
+        <text>What’s the most dangerous in the Zone?</text>
+    </string>
+    <string id="escape_lager_volk_info_2141">
+        <text>Well, it’s hard to say. There are so many things still dangerous and unknown that I’ve hardly seen the whole enchilada. My body is the vivid example of the Zone’s dangers: bit off toe, thinned hair over the radiation, right hip burnt in “Zharka”, bloody thing by the way. Anomaly which isn’t standing on the same place, but flying. Had a face to face contact with the bloodsucker once. I dread even recollecting it. Basically we can talk it through and through, but if you haven’t felt it on your skin – you won’t understand. Just one advice – be careful.</text>
+    </string>
+    <string id="escape_lager_volk_info_3">
+        <text>Have you heard anything about the Gunslinger?</text>
+    </string>
+    <string id="escape_lager_volk_info_31">
+        <text>Kind of tough stalker to my mind. Not really familiar with him. However I’ve been wandering at the center of the Zone too long ago, and here to the boundsthere are quite a lot of newbies. You ought to talk to somebody working in the depth of the Zone.</text>
+    </string>
+    <string id="escape_lager_volk_info_4">
+        <text>What do you know about the “death trucks”?</text>
+    </string>
+    <string id="escape_lager_volk_info_41">
+        <text>I don’t know anything at all. Sorry, I see that you’re from there. But it’s too mystified. But working a bit in the Zone makes you superstitious indeed. Corpses in the body, dead men at the wheels… Who they are? Where have they come from… Hope not from the other side.</text>
     </string>
     <string id="escape_lager_volk_job_0">
-        <text>Got anything to do?</text>
+        <text>Got any work?</text>
     </string>
     <string id="escape_lager_volk_job_1">
-        <text>I’ve been here for too long. And I’m sick and tired of all that. Thought even about jerking. Planned everything, even how to get through those militaries. The only thing remaining is dynamite. My guys were bringing it to me, but bandits caught them and cleaned out. Now I have to return it. Bandits now settled near the factory, my boys are keeping watch over them now. So the point is – you bring the dynamite – I won’t stay in debt.</text>
+        <text>I’ve been too long inside the Zone. And I’m really sick and tired of it. And that will do! I got friends in the “outer world”. But before that I’d like to leave the present to one of my friends. Guys were carrying it to me, but those bandits perished them. So this present must be returned. I just don’t want to hazard my life before leaving. And you’re new here, and most certainly need money. I’ll pay you few grands. Well… those bandits are now settle at the factory.</text>
     </string>
     <string id="escape_lager_volk_job_11">
-        <text>Fine, deal.</text>
+        <text>Okay, deal. Just tell what to fetch.</text>
     </string>
     <string id="escape_lager_volk_job_111">
-        <text>Deal. Be cautious.</text>
+        <text>Agree. Ah, the present… nothing extraordinary, just a case with dynamite… If you need any help – there are our guys nearby the factory making an ambush to the bandits. Talk to them – they may help.</text>
     </string>
     <string id="escape_lager_volk_job_12">
-        <text>No, you try to do it yourself.</text>
+        <text>No way, deal with it yourself.</text>
     </string>
     <string id="escape_lager_volk_job_121">
-        <text>You are a coward like anyone else.</text>
+        <text>What’s up, too scared? Well it’s okay, I’m not offended.</text>
     </string>
     <string id="escape_lager_volk_job_2">
         <text>There is nothing.</text>
     </string>
-    <string id="escape_raid_wounded_0">
-        <text>I’m feeling unwell. Just returned from the deep raid , almost reached the dead city, seen a lot of interesting. And when I was returning I run into the bloodsucker, barely escaped. Share medicine chest, if you got one.</text>
-    </string>
-    <string id="escape_raid_wounded_1">
-        <text>Easily, take it, I don’t mean it.</text>
-    </string>
-    <string id="escape_raid_wounded_11">
-        <text>Thanks for your help. Me and my workmate have dicovered a lot during this raid. Mate remained at the Dump to defend the bribe, and I decided to visit merchant quickly, to buy medicines, besides I had to deliver more info to him. So please hand this to the merchant</text>
-    </string>
-    <string id="escape_raid_wounded_2">
-        <text>No, I can’t.</text>
-    </string>
     <string id="escape_talk_about_escape_0">
-        <text>Tell me about that place.</text>
+        <text>Tell me about this place.</text>
     </string>
     <string id="escape_talk_about_escape_1">
-        <text>This is the road to the Zone. One can find merchant in cellar near the army blockpost. But butting into the soldiers’ view won’t do any good, they are ordered to shoot everyone without warning… You can kill soldiers only at the worst, merchant has to pay per each killed and he won’t be satisfied with such course of events. The planes are overcrowded by blind dogs, if I were a new one I would stay away from that place. Even mutants can sometimes be seen here.</text>
+        <text>This is the road inside the Zone. Trader can be found in the cellar beyond the village near the army post. I don’t advise you to poke your nose in the army post, cos soldiers are directed to fire on sight… Killing soldiers isn’t allowed, only if worst comes to worst, trader will pay off on his own and he won’t be satisfied with that. Packs of blind dogs on the plains, perilously for the newbies. Mutants visit it now and then.</text>
     </string>
     <string id="escape_talk_about_escape_10">
         <text>Thanks.</text>
     </string>
     <string id="escape_talk_about_escape_2">
-        <text>And what is along that way to the north?</text>
+        <text>And what is further to the north?</text>
     </string>
     <string id="escape_talk_about_escape_21">
-        <text>There is the Dump. Gloomy place. Here to there you can’t even pass cos of the garbage.</text>
+        <text>Dump is there. Gloomy place. Garbage even pesters sometimes.</text>
     </string>
     <string id="escape_trader_done_artefact_0">
-        <text>Here is your artifact!</text>
+        <text>Here is your artifact! Okay?</text>
     </string>
     <string id="escape_trader_done_artefact_2">
-        <text>Well, thanks for assistance.</text>
+        <text>Yeah, sure. Client will be satisfied.</text>
     </string>
     <string id="escape_trader_done_blockpost_box_0">
-        <text>There is you case.</text>
+        <text>Done. Take this case.</text>
     </string>
     <string id="escape_trader_done_blockpost_box_2">
-        <text>Weeeell, 1000 or not, 500 rubles and we’re done.</text>
+        <text>Well done, thanks a lot. Not that you can be stuffed with the mere “thanks”. Weeell, 1000, no let it be 500 rubles and we’re done.</text>
     </string>
     <string id="escape_trader_done_gift_0">
-        <text>That stalker who returned wounded from the Zone handed over this package to you</text>
+        <text>Here is what Fox handed to you.</text>
     </string>
     <string id="escape_trader_done_gift_1">
-        <text>Yeah, thanks.</text>
+        <text>Perfect, not everything is much clearer.</text>
+    </string>
+    <string id="escape_trader_done_gift_11">
+        <text>What’s so important in there? Frankly speaking I understood nothing.</text>
+    </string>
+    <string id="escape_trader_done_gift_111">
+        <text>Well cut it off. The time will come and you’ll get everything. Can only admit that I need a “special” man for the “special” job. Don’t you know such guy? Hehe.</text>
+    </string>
+    <string id="escape_trader_done_gift_2">
+        <text>Sydorovich, don’t waste your time… close to the case.</text>
+    </string>
+    <string id="escape_trader_done_gift_21">
+        <text>Generally speaking, “Agroprom” handed the thing I really need to the army post. White plastic case. It has to be stolen. Just be careful. When miliraties resent they make so much noise here, that even rats scatter. If I were you I would try to make it at night and as quiet as possible. </text>
+    </string>
+    <string id="escape_trader_done_gift_211">
+        <text>What kinda case is it?</text>
+    </string>
+    <string id="escape_trader_done_gift_2111">
+        <text>Nothing special in it. Plastic white grip-sack. Why I do need the very thing inside it. These documents – preliminary report on the military expedition to “Agroprom”.</text>
+    </string>
+    <string id="escape_trader_done_gift_21111">
+        <text>Ok. I'll try.</text>
+    </string>
+    <string id="escape_trader_done_gift_211111">
+        <text>Well bring the case first, then we'll deal with money.</text>
+    </string>
+    <string id="escape_trader_done_gift_21112">
+        <text>No, I don't agree.</text>
+    </string>
+    <string id="escape_trader_done_gift_211121">
+        <text>As you wish.</text>
+    </string>
+    <string id="escape_trader_done_tutorial_artefact_0">
+        <text>Well okay, take my first artifact.</text>
+    </string>
+    <string id="escape_trader_done_tutorial_artefact_1">
+        <text>Marked, listen to my messages carefully next time. Thanks for the artifact but wounded needs  your urgent help. Take this medikit and don't you lose it.</text>
+    </string>
+    <string id="escape_trader_done_tutorial_artefact_2">
+        <text>Okay then. Goods shouldn’t be wasted. </text>
+    </string>
+    <string id="escape_trader_done_tutorial_artefact_3">
+        <text>Marked!!! Move it to the trailer nearby the road. You'll find wounded stalkers who were returning from my mission. Why a hell did they put fire on that helicopter... now they call SOS all the time... Hand this medikit, move it...</text>
     </string>
     <string id="escape_trader_jobs_0">
-        <text>What work have you got?</text>
+        <text>What kinda work have you got?</text>
     </string>
     <string id="escape_trader_jobs_12">
         <text>No, nothing yet.</text>
@@ -214,207 +370,204 @@
         <text>All as usual. First of all I need artifacts. I pay usual price not more, not less.\n Sometimes I need specail people for special work.</text>
     </string>
     <string id="escape_trader_jobs_3">
-        <text>Really, everything is as usual. Okay – if I find something, I’ll try not to forget and bring it to you.</text>
+        <text>Deal. Well if I find something, I’ll try not to forget and bring it to you. </text>
     </string>
     <string id="escape_trader_jobs_4">
         <text>Maybe you’ve got a special work for a special person?</text>
     </string>
     <string id="escape_trader_jobs_5">
-        <text>Need to bag an artifact. There is an accumulation of Elektra anomalies nearby, artifacts must be somewhere there. Bring any one to me – and we’re done. By the way if there will be no artifacts, just wait until someone traps into the anomaly, dog of human, doesn’t matter. Anomaly will make artifact out of him in a moment.</text>
+        <text>Got an order on “Gravity” or “Twist” anomalies. I don’t really care where you find it, but I can aim ya: there is an accumulation of Gravity anomalies to the north from the factory, artifacts may be often found somewhere there. By the way if there will be no artifacts, just wait until someone traps into the anomaly, dog of human, doesn’t matter. Anomaly will make artifact out of him in a moment. </text>
     </string>
     <string id="escape_trader_jobs_51">
-        <text>There is something else. You need to steal a case from the blockpost. But be careful. When they resent they make so much noise here, that even rats scatter.</text>
+        <text>Generally speaking, “Agroprom” handed the thing I really need to the army post. White plastic case. It has to be stolen. Just be careful. When miliraties resent they make so much noise here, that even rats scatter. If I were you I would try to make it at night and as quiet as possible. </text>
     </string>
-    <string id="escape_trader_jobs_52">
-        <text>There is one more thing to do. Barman from the stalker bar asked to find an “Agroprom” research institute document case. Although there is one BUT. Now the building is occupied by militaries. They are searching for something there.</text>
+    <string id="escape_trader_jobs_511">
+        <text>What kinda case is it?</text>
+    </string>
+    <string id="escape_trader_jobs_5111">
+        <text>Nothing special in it. Plastic white grip-sack. Why I do need the very thing inside it. These documents – preliminary report on the military expedition to “Agroprom”.</text>
+    </string>
+    <string id="escape_trader_jobs_53">
+        <text>Well, has just appeared. I’m conducting kind of investigation. Tell you later. Well, you must contact the person, who’s carrying important information. He’s called Fox. He doesn’t want to be put on view here, so meet him at the khutor behind the bridge. I’ll send you the coordinated. By the way, Marked. He isn’t a newbie so far so you can ask him on your matter. That’s it. Move out. </text>
+    </string>
+    <string id="escape_trader_jobs_531">
+        <text>I’m off.</text>
+    </string>
+    <string id="escape_trader_jobs_5311">
+        <text>Good luck.</text>
+    </string>
+    <string id="escape_trader_jobs_532">
+        <text>Aha… dream on… Breakneck pace. Am I a pushover or what? Another time. </text>
+    </string>
+    <string id="escape_trader_jobs_5321">
+        <text>Do as you wish, but I thought that it was really important for you to know about yourself, who you are and what has happened. </text>
     </string>
     <string id="escape_trader_jobs_6">
-        <text>Affirmative.</text>
+        <text>Agreed.</text>
     </string>
     <string id="escape_trader_jobs_61">
-        <text>Right, I’ll try to do that imperceptibly.</text>
-    </string>
-    <string id="escape_trader_jobs_62">
-        <text>Okay, I’m on it, just explain where to go.</text>
+        <text>Okay, I’ll try.</text>
     </string>
     <string id="escape_trader_jobs_7">
         <text>No, I don’t want.</text>
     </string>
     <string id="escape_trader_jobs_71">
-        <text>No, I don’t agree.</text>
-    </string>
-    <string id="escape_trader_jobs_72">
-        <text>Sorry, I’m not ready for that.</text>
+        <text>No, I don’t agree. </text>
     </string>
     <string id="escape_trader_jobs_8">
         <text>Deal.</text>
     </string>
     <string id="escape_trader_jobs_81">
-        <text>Well bring the case – then we’ll have a deal. But I want to outmark that if you start killing soldiers, I will anounce you to be outlawed. I don’t need infinites here. У нас тут хрупкий мир образовался, солдаты конечно все равно постреливают сталкеров, но крупного противостояния нет и есть каналы куда сбывать хабар, если кто-то начнет бучу враз все изменится, а мне такой расклад совсем не нравится. Cheaper and faster will be to bring your head to blockpost commander. I hope you understand me right.</text>
-    </string>
-    <string id="escape_trader_jobs_82">
-        <text>Go to the center of the Zone, through the Dump, then turn westward – agroprom is right there. When you reach agroprom, use your PDA to reach an institute. I’ve sent you coordinates.</text>
+        <text>Well, bring it first, then we’ll dole out.</text>
     </string>
     <string id="escape_trader_jobs_9">
-        <text>You choose.</text>
+        <text>You pick.</text>
     </string>
     <string id="escape_trader_jobs_91">
-        <text>Well, as you want.</text>
-    </string>
-    <string id="escape_trader_jobs_92">
-        <text>Come back when ready.</text>
+        <text>As you wish.</text>
     </string>
     <string id="escape_trader_start_dialog_2">
-        <text>To make it short, Labelled, I’ve saved you and I won’t play dignified. Conduct some tasks for me and we’re done. Besides we’ll see how fast will your head restore from amnesia, and I’ll try to find about your case. A hell knows why do you need that Sniper, I don’t care of the outside problems. If you want to kill him, then there is for what.</text>
+        <text>To make it short, Marked, I’ve saved you and I won’t play dignified. Conduct some tasks for me and we’re done. Besides we’ll see how fast will your head restore from amnesia, and I’ll try to find about your case. A hell knows why do you need that Gunslinger, I don’t care of the outside problems. If you want to kill him, then there is the reason.</text>
     </string>
     <string id="escape_trader_start_dialog_21">
-        <text>well?</text>
+        <text>closer to the point.</text>
     </string>
     <string id="escape_trader_start_dialog_3">
-        <text>Now choose how shall I treat with you. Either I should wash newcomers’ brains or I’ll treat with you like with skilled stalker – received the task, carry out.</text>
+        <text>Oh, I like it that way. \n Now choose how shall I treat with you. Either I should wash newcomers’ brains or I’ll treat with you like with skilled stalker – received the task, carry out.</text>
     </string>
     <string id="escape_trader_start_dialog_31">
-        <text>Let it be like with the newcomer.</text>
-    </string>
-    <string id="escape_trader_start_dialog_311">
-        <text>Alright, have it your way. Listen then.</text>
+        <text>Let it be like with the newcomer. I remember nothing.</text>
     </string>
     <string id="escape_trader_start_dialog_32">
         <text>Better like with skilled, while it isn’t effaced from the memory.</text>
     </string>
     <string id="escape_trader_start_dialog_321">
-        <text>О! That’s how we do that. Listen then.</text>
+        <text>О! That’s how we do that. Listen then: \n There is the “Mincer” anomaly field nearby. And the artifact in the center. Local novices from the camp are afraid to poke in there. Well it’s scattered somewhere there for about a week. It’s written all over your face that you’re not a newbie, although you remember nothing. So even in such condition you’ll manage to bag it. Okay. Get to the job. I’ve sent the coordinates of that place to your PDA along with the information on the Mincer and its artifacts. </text>
+    </string>
+    <string id="escape_trader_start_dialog_3211">
+        <text>It’s all settled.</text>
     </string>
     <string id="escape_trader_start_dialog_4">
-        <text>Hi! How’s life? I hope you are fine.\nGot a work for you on weekends.</text>
+        <text>Hi, Marked. Glad to see you alive. </text>
     </string>
-    <string id="escape_trader_talk_about_0">
-        <text>Tell me about…</text>
+    <string id="escape_trader_start_dialog_5">
+        <text>Hi, Marked. How is it going? </text>
     </string>
-    <string id="escape_trader_talk_about_1">
-        <text>Ask, but I don’t know much. You understand, I sit here all the time and the whole life is outside.</text>
+    <string id="escape_trader_start_dialog_6">
+        <text>Listen, Marked, I've told you everything, now get to your job.</text>
     </string>
-    <string id="escape_trader_talk_about_10">
-        <text>Thanks, that’s it for today.</text>
+    <string id="escape_trader_talk_info_0">
+        <text>I need answers on several questions. </text>
     </string>
-    <string id="escape_trader_talk_about_2">
-        <text>Tell me about the military stalkers.</text>
+    <string id="escape_trader_talk_info_1">
+        <text>Shoot, but I know few. You see, I’m stuck here for the eternity, while the real life is outside in the Zone. </text>
     </string>
-    <string id="escape_trader_talk_about_21">
-        <text>Militaries as they are. Kind of presumptuous guys make themselves out to be gods. No respect for the customs, can&amp;apos;t expect help from them, try as you might. Unless they shoot you not because of pity, because this is their nature – shoot first, them think. But I’ve found common with them. You understand what I mean.</text>
+    <string id="escape_trader_talk_info_10">
+        <text>Thanks for the information. </text>
     </string>
-    <string id="escape_trader_talk_about_22">
-        <text>What are the militaries doing in the Zone?</text>
+    <string id="escape_trader_talk_info_2">
+        <text>What are the militaries doing in the Zone? </text>
     </string>
-    <string id="escape_trader_talk_about_221">
-        <text>Protect, what else. Either the Zone or the world from the Zone, it is incomprehensible. Sometimes even military expeditions enter the zone. Searching for something, perhaps. Here what I can tell you. Militaries don’t respect the zone. Every now and then take away zinc coffins.</text>
+    <string id="escape_trader_talk_info_21">
+        <text>Military guard it, what else can they do. The one thing I don’t get is whether they protect outside world form the Zone, or Zone from the outside world. Yep, I still don`t get it. Military expeditions sometimes come here. Must be searching for something. But I tell you, military men do not respect the Zone, and Zone pays back the same. Lots of then found they dead end here. Yep, dead.\nWhat, tell more? Well, those guys look down on us all, like some kind of supreme beings. Don`t give a damn about stalker laws, never help, even in the worst possible situation. No, lying, they can soot you, but not out of pity. Its just runs in their blood: Shoot first, think later. But I and they deal pretty well. Vodka, men magazines, in exchange for my private peace. So I advise you not to bother them in vain.</text>
     </string>
-    <string id="escape_trader_talk_about_3">
+    <string id="escape_trader_talk_info_3">
         <text>Tell me about the Zone.</text>
     </string>
-    <string id="escape_trader_talk_about_31">
-        <text>It’s too dangerous in the zone without weapons… you can always buy some at mine at the cheapest… well, almost at… Zone’s center contains a klondike of artifacts for sure, the one who reaches it becomes wealthy. Do you see what I am driving at?</text>
+    <string id="escape_trader_talk_info_31">
+        <text>Zone... is not just a peace of territory 40 kilometers in diameter, with its center near the nuclear plant. Zone is really strange being. I don`t think there is a person in this world who can give you a definite answer on your question. Because Zone is something not from this reality. I think it`s another world. Dangerous, strange, but, damn, it`s attractive. It`s like Eldorado, there even the most miserable bum can became very, very rich. And the deeper you go into the Zone, the closer you come to your fortune.</text>
     </string>
-    <string id="escape_trader_talk_flame_0">
-        <text>Can you answer several questions?</text>
+    <string id="escape_trader_talk_info_311">
+        <text>And what’s so dangerous in this “other world”?</text>
     </string>
-    <string id="escape_trader_talk_flame_1">
-        <text>Sure.</text>
+    <string id="escape_trader_talk_info_3111">
+        <text>He, he. Nothing dangerous, besides that you can die any second. And not from the bullet of stupid military, by the way there are a lot of this guys lately. Must also tell, that be killed with a shot is the nicest death here. Really nice, compared with dying in anomaly - invisible death is the scariest one. Even mutants try to avoid them. Mutants, yes, “children” of the Zone. \nNasty creatures, tell ya. So you better don`t go to the Zone without a gun.  And talk to stalkers, they are good advisers as for the Zone.</text>
     </string>
-    <string id="escape_trader_talk_flame_10">
-        <text>Fine, thanks.</text>
+    <string id="escape_trader_talk_info_312">
+        <text>Rich? I would like to know more about getting rich...</text>
     </string>
-    <string id="escape_trader_talk_flame_2">
-        <text>What do you know about the Sniper?</text>
+    <string id="escape_trader_talk_info_3121">
+        <text>Dude, don`t tell me you know nothing about artifacts. They are the source of your wealth. People outside pay good dough for these souvenirs form the Zone. They are more dear then gold and diamonds. Because no gold can draw aside bullet that heads right into your belly. And artifacts do this, and many other funny and useful things. You can get most common ones even here, but to find a treasure, you`ll have to go to heart the Zone.</text>
     </string>
-    <string id="escape_trader_talk_flame_21">
-        <text>There was suc ha stalker but I haven’t seen him myself. Where did he come from and where did he go – it remains unclear. Rumors say that he made it to the center of the Zone. Try to find out more from stalkers.</text>
+    <string id="escape_trader_talk_info_313">
+        <text>And what lies there, in the heart of the Zone?</text>
     </string>
-    <string id="escape_trader_talk_flame_211">
-        <text>What`s so interesting in the center of the Zone?</text>
+    <string id="escape_trader_talk_info_3131">
+        <text>People tell a lot, if interested, ask other stalkers. But I don`t believe in this mystic staff. I do believe that in the center of the Zone lies an Eldorado, a place rich in artifacts. But I met no people who could either confirm, or deny it.</text>
     </string>
-    <string id="escape_trader_talk_flame_2111">
-        <text>What a stupid question! In the center of the Zone there are tons of artifacts, the one who gets there, becomes very-very rich. Got my idea?</text>
+    <string id="escape_trader_talk_info_4">
+        <text>Any ideas of what happened to me?</text>
     </string>
-    <string id="escape_trader_talk_flame_212">
-        <text>And how did Sniper get to the center of the Zone?</text>
+    <string id="escape_trader_talk_info_41">
+        <text>Son, you ask hell of questions. Everything is shady about it. You where found in the death truck - vehicles loaded with corpses sometimes appear from the center of the Zone.  Where they head to, no one know. You truck crashed – bad luck, but you stayed alive. This is the most intriguing fact to me. Stalkers often find broken death trucks, but never found any survivals. Sorry, have nothing more to tell. You`ll have to figure it out yourself.</text>
     </string>
-    <string id="escape_trader_talk_flame_2121">
-        <text>No idea. The Barmen of someone of veteran stalkers may know.</text>
+    <string id="escape_trader_talk_info_5">
+        <text>Who is Gunslinger? You know this guy?</text>
     </string>
-    <string id="escape_trader_talk_flame_21211">
-        <text>Who is Barman and where can I find him?</text>
+    <string id="escape_trader_talk_info_51">
+        <text>I think I heard of this stalker. Rumors tell he is one of few, who got to the center of Zone. Well, there are a lot of legends about “stalker who made it to the center and back”. So, can`t guaranty the story is true, I personally had no business with him. Maybe he works with other dealers. Want to find him, ask stalkers, maybe some of them will tell you a way.</text>
     </string>
-    <string id="escape_trader_talk_flame_212111">
-        <text>That’s my pal. He takes care of the Stalker bar on the factory. But only veterans are allowed there, so make no haste.</text>
+    <string id="escape_trader_talk_info_6">
+        <text>Spectral stalker, heard of him?</text>
     </string>
-    <string id="escape_trader_talk_flame_213">
-        <text>OK, thanks.</text>
-    </string>
-    <string id="escape_trader_talk_flame_2131">
-        <text>Always happy to help a client.</text>
-    </string>
-    <string id="escape_trader_talk_flame_3">
-        <text>I need some equipment, where can I get it? Are there any stores nearby?</text>
-    </string>
-    <string id="escape_trader_talk_flame_31">
-        <text>Well, you`re standing right inside one f them, buddy. Best staff best prices. Ammunition isn`t cheap, it`s pretty hard to get such things in the Zone.</text>
-    </string>
-    <string id="escape_trader_talk_flame_4">
-        <text>I need some cash, how can I earn them?</text>
-    </string>
-    <string id="escape_trader_talk_flame_41">
-        <text>Very simple. You render other people services, either they kill you, or they give you money. You can also sell me artifacts. I give good price, unlike those cheapjacks.</text>
-    </string>
-    <string id="escape_trader_talk_flame_5">
-        <text>Spectral stalker. Heard something about him?\n\n*** After information about Spectral stalker was found on Agroprom ***</text>
-    </string>
-    <string id="escape_trader_talk_flame_51">
-        <text>Ye, there was such a person, one of Sniper gang. They went together to the center of the Zone. When all guys died there, Spectral was the only survival. I too would like to know where he is. But no one has no information on his whereabouts.</text>
-    </string>
-    <string id="escape_trader_talk_flame_6">
-        <text>Do you know stalker named Gray?\n\n*** After receiving Gray quest in the garage ***</text>
-    </string>
-    <string id="escape_trader_talk_flame_61">
-        <text>Ye, he is a famous fellow, old-timer in the Zone. Brings exclusive artifacts, not some trinkets, but real staff, and brings them rather often. Grow pretty rich on it. I think he goes far deep into the Zone, maybe he even knows something about the Sniper.</text>
+    <string id="escape_trader_talk_info_61">
+        <text>Its another legendary man. Not heard about him for a long time. He must have died somewhere deep in the Zone.</text>
     </string>
     <string id="escape_trader_talk_level_0">
         <text>Tell me about this place.</text>
     </string>
     <string id="escape_trader_talk_level_1">
-        <text>Suburbs of the Zone, military cordon. Troops of blind dogs wonder around. From time to time other mutants drop in. But in general it is usually calm and quite here, just military guys have fun sometimes. Stalkers only pass by, only freshmen linger on. No worthy loot here. What else, there is a demolished bridge and an abandoned factory. That`s all, I guess.</text>
+        <text>Suburbs of the Zone, military cordon. In general it is usually calm and quite here, just military guys have fun sometimes. Stalkers only pass by, only freshmen linger on, and sometimes forever, hehe. There is the novices’ camp set nearby me in the village. They can pull the trigger sometimes though. No worthy loot here. Abandoned factory by the road. Farm remnants to the North, blockpost to the South. By the way, militaries has set landmines in some places, watch it. There has been the bridge in the center, but in has been ruined. That`s it, I guess.</text>
     </string>
     <string id="escape_trader_talk_level_10">
-        <text>OK, thanks.</text>
+        <text>Okay, thanks.</text>
     </string>
     <string id="escape_trader_talk_level_2">
-        <text>Tell me more about military blockpost.</text>
+        <text>Tell me more on the army post. </text>
     </string>
     <string id="escape_trader_talk_level_21">
         <text>Few dozens of soldiers, they are allowed to shoot on sight. So you better pass them by. When military guys are too worried, start calling help from special forces. Those fellows are really tough. After their visits I have no clients for months. So you better not to disturb them. I know their commander a little. He is a total drunkard. Only thanks to his I`m still here.</text>
     </string>
     <string id="escape_trader_talk_level_3">
-        <text>Tell me more about demolished bridge.</text>
+        <text>Tell me more about the ruined bridge.</text>
     </string>
     <string id="escape_trader_talk_level_31">
-        <text>Further along the road inside the zone you&amp;apos;ll find a railway embankment. It was once an expensive bridge, but had been destroyed during the surge. Militaries like to lie in wait for stalkers, returning with the bribe there.</text>
+        <text>300-400 meters to the North. You can’t miss it. It was once an expensive bridge, but had been destroyed during the surge. Militaries like to lie in wait for stalkers, returning with the bribe there. So you’d better avoid that embankment, if not crucial.</text>
     </string>
     <string id="escape_trader_talk_level_4">
-        <text>Tell me more about the abandond factory.</text>
+        <text>Give me the picture on the factory?</text>
     </string>
     <string id="escape_trader_talk_level_41">
-        <text>When you cross the road you&amp;apos;ll see it. White building. Things that could be stolen had been stolen long ago, everything else became rusty. The favourite bandits&amp;apos; place. There is a depression in the ground nearby that can provide one with artifacts.</text>
+        <text>As you cross the road, you’ll notice it. Ruined brick building. Everything that could be stolen, has already been stolen, so the only half-tumbled down core remains. The favorite bandits place. I am not aware if they’re still there, but in any case stay prudent. You’ve still got nothing to take away, but do you really need it? </text>
     </string>
-    <string id="tutorial_wounded_0">
-        <text>Mate, help me with a medikit, I&amp;apos;m dying!</text>
+    <string id="escape_trader_talk_level_5">
+        <text>Give me a wrap-up on the farm? </text>
     </string>
-    <string id="tutorial_wounded_1">
-        <text>Sure, that&amp;apos;s no question.</text>
+    <string id="escape_trader_talk_level_51">
+        <text>What a boring one you are. Simple farm as every other one. Pigs pegged out until the Perestroika.</text>
     </string>
-    <string id="tutorial_wounded_11">
-        <text>Thanks, mate! Talk to Wolf near the merchnt camp, you can be useful to him.</text>
+    <string id="tutorial_wounded_give_medkit_0">
+        <text>How are you, alive?</text>
     </string>
-    <string id="tutorial_wounded_3">
-        <text>No, I ain&amp;apos;t got any.</text>
+    <string id="tutorial_wounded_give_medkit_1">
+        <text>Oh, damn, I’m bleeding. Hand a first-aid please!? </text>
+    </string>
+    <string id="tutorial_wounded_give_medkit_2">
+        <text>Have it.</text>
+    </string>
+    <string id="tutorial_wounded_give_medkit_21">
+        <text>Thanks bro. I won’t forget it. I’ll pass it to the Wolf, he is senior in the village camp. He’ll appreciate it. </text>
+    </string>
+    <string id="tutorial_wounded_give_medkit_3">
+        <text>Sorry bro, I’m all out.</text>
+    </string>
+    <string id="tutorial_wounded_give_medkit_31">
+        <text>Search the corpses… Guys from our grouping must have had it. </text>
+    </string>
+    <string id="tutorial_wounded_give_medkit_4">
+        <text>You’ll kick the bucket anyway why should I spend kit on you. </text>
+    </string>
+    <string id="tutorial_wounded_give_medkit_41">
+        <text>What kind of bastard are you, don’t you understand that next time you can be in my shoes?</text>
     </string>
 </string_table>
