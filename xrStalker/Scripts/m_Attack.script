@@ -247,6 +247,7 @@ function stateAttackArtful:actor()
 	--ƒалеко от точки-нычки
         if(self.memory.npc:action() == nil) then
         	action(self.memory.npc, move(move.run_fwd, self.way), sound(sound.idle), cond(cond.move_end))
+            printf( "Attack ____________________________________________________________" )
         end
     else
 	--—идим, если видим актера, то атакуем, также атакуем если получили хит, или слышим р€дом звук
