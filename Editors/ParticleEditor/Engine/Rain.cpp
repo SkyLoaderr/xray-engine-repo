@@ -238,7 +238,7 @@ void	CEffect_Rain::Render	()
 
 	// Sound pos
 	Fvector						sndP;
-	sndP.mad					(Device.vCameraPosition,Device.vCameraDirection,.1f);
+	sndP.mad					(Device.vCameraPosition,Device.vCameraTop,.1f);
 	snd_Ambient.set_position	(sndP);
 
 	// 
