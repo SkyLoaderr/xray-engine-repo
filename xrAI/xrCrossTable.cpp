@@ -157,10 +157,6 @@ void					xrBuildCrossTable(LPCSTR caProjectName)
 					tCrossTableCell.tGraphIndex = I - B;
 				}
 			
-			for (int j=0; j<iVertexCount; j++)
-				if ((tGraph.m_tpaGraph[j].tNodeID == i) && (tCrossTableCell.tGraphIndex != j)) {
-					j=j;
-				}
 			tMemoryStream.w(&tCrossTableCell,sizeof(tCrossTableCell));
 		}
 	}
