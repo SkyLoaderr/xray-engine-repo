@@ -30,7 +30,7 @@ void AddOne				(const char *split)
 {
 	logCS.Enter			();
 
-#ifdef _DEBUG
+#ifdef DEBUG
 	OutputDebugString	(split);
 	OutputDebugString	("\n");
 #endif
