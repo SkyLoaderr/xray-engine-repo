@@ -154,8 +154,8 @@ void CWeaponAutoRifle::OnAnimationEnd()
 	switch (st_current)
 	{
 	case eReload:	ReloadMagazine();		break;	// End of reload animation
-	case eHiding:	signal_HideComplete();	break;
-	case eShowing:	st_target = eIdle;		break;
+	case eHiding:	signal_HideComplete();	break;	// End of Hide
+	case eShowing:	st_target = eIdle;		break;	// End of Show
 	}
 }
 
