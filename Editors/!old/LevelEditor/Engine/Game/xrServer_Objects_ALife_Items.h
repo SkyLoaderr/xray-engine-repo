@@ -169,4 +169,10 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeItemBolt,CSE_ALifeDynamicObject,CSE_ALifeI
 	virtual bool					can_switch_offline	() const;
 	virtual bool					can_save			() const;
 SERVER_ENTITY_DECLARE_END
+
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemCustomOutfit,CSE_ALifeItem)
+									CSE_ALifeItemCustomOutfit(LPCSTR caSection);
+	virtual							~CSE_ALifeItemCustomOutfit();
+SERVER_ENTITY_DECLARE_END
+
 #endif

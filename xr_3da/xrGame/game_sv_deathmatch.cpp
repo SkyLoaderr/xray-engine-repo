@@ -177,8 +177,8 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 			return TRUE;
 		};
 
-		CSE_ALifeInventoryItem* pIItem		= dynamic_cast<CSE_ALifeInventoryItem*> (e_what);
-		if (pIItem)
+		CSE_ALifeItemCustomOutfit* pOutfit		= dynamic_cast<CSE_ALifeItemCustomOutfit*> (e_what);
+		if (pOutfit)
 		{
 			//Possibly Addons and/or Outfits
 			return TRUE;

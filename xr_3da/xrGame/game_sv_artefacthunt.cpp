@@ -134,6 +134,8 @@ bool	game_sv_ArtefactHunt::IsBuyableItem				(CSE_Abstract* pItem)
 	if (pWeapon) return true;
 	CSE_ALifeItemGrenade* pGrenade = dynamic_cast<CSE_ALifeItemGrenade*> (pItem);
 	if (pGrenade) return true;
+	CSE_ALifeItemCustomOutfit* pOutfit = dynamic_cast<CSE_ALifeItemCustomOutfit*> (pItem);
+	if (pOutfit) return true;
 	return false;
 };
 
@@ -194,6 +196,7 @@ void	game_sv_ArtefactHunt::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 		u8 SectID, ItemID;
 		P.r_u8(SectID);
 		P.r_u8(ItemID);
+		if (SectID == OUTFIT_SLOT) SectID = APPARATUS_SLOT;
 		ItemsDesired.push_back(game_PlayerState::BeltItem(SectID, ItemID));
 	};
 	//-------------------------------------------------------------

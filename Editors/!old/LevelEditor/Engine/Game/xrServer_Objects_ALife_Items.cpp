@@ -784,3 +784,42 @@ void CSE_ALifeItemBolt::FillProp			(LPCSTR pref, PropItemVec& values)
 	inherited2::FillProp		(pref,	 values);
 }
 #endif
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeItemCustomOutfit
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeItemCustomOutfit::CSE_ALifeItemCustomOutfit	(LPCSTR caSection): CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+{
+	m_dwTimeStamp = 0;
+}
+
+CSE_ALifeItemCustomOutfit::~CSE_ALifeItemCustomOutfit	()
+{
+}
+
+void CSE_ALifeItemCustomOutfit::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited::STATE_Read		(tNetPacket,size);
+}
+
+void CSE_ALifeItemCustomOutfit::STATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited::STATE_Write		(tNetPacket);
+}
+
+void CSE_ALifeItemCustomOutfit::UPDATE_Read		(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Read		(tNetPacket);
+}
+
+void CSE_ALifeItemCustomOutfit::UPDATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Write		(tNetPacket);
+}
+
+#ifdef _EDITOR
+void CSE_ALifeItemCustomOutfit::FillProp			(LPCSTR pref, PropItemVec& items)
+{
+	inherited::FillProp			(pref,items);
+}
+#endif

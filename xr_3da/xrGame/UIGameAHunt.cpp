@@ -215,7 +215,7 @@ void CUIGameAHunt::OnBuyMenu_Ok	()
 	l_pPlayer->u_EventGen		(P,GEG_PLAYER_BUY_FINISHED,l_pPlayer->ID()	);
 //-------------------------------------------------------------------------------
 	u8 NumItems = pCurBuyMenu->GetBeltSize();
-	for (u8 Slot=KNIFE_SLOT; Slot<APPARATUS_SLOT; Slot++)
+	for (u8 Slot=KNIFE_SLOT; Slot<PDA_SLOT; Slot++)
 	{
 		if (pCurBuyMenu->GetWeaponIndex(Slot) != 0xff) NumItems++;
 	}
@@ -223,7 +223,7 @@ void CUIGameAHunt::OnBuyMenu_Ok	()
 	//-------------------------------------------------------------------------------
 	P.w_u8		(NumItems);
 	//-------------------------------------------------------------------------------
-	for (Slot=KNIFE_SLOT; Slot<APPARATUS_SLOT; Slot++)
+	for (Slot=KNIFE_SLOT; Slot<PDA_SLOT; Slot++)
 	{
 		u8 ItemID = pCurBuyMenu->GetWeaponIndex(Slot);
 		if (ItemID == 0xff) continue;
