@@ -736,7 +736,6 @@ function novice3_attack:initialize ()
 
     local enemy = level.object(self.a.enemy)
     self.object:clear_animations()
-    self.object:set_relation     (game_object.enemy, enemy)
     self.object:set_desired_direction()
     self.object:set_detail_path_type ( move.line )
     self.object:set_movement_type    ( move.walk )
