@@ -36,7 +36,7 @@ CAI_Rat::CAI_Rat()
 	m_dwLastUpdate = 0;
 	m_fSpin = 0.0;
 	m_fMultiplier = sinf(m_fSpin);
-	AI_Path.m_bCollision = false;
+	//AI_Path.m_bCollision = false;
 }
 
 CAI_Rat::~CAI_Rat()
@@ -52,8 +52,19 @@ void __stdcall CAI_Rat::SpinCallback(CBoneInstance* B)
 	CAI_Rat*		M = dynamic_cast<CAI_Rat*> (static_cast<CObject*>(B->Callback_Param));
 	Fmatrix				spin;
 
-	float fAlpha = PI/4;//acosf(M->tWatchDirection.dotproduct(M->Direction()))/3;
-	spin.rotateZ(fAlpha*M->m_fMultiplier);
+	Fvector tTorsoDirection = M->Direction();
+	tTorsoDirection.invert();
+	float fAlpha = acosf(M->tWatchDirection.dotproduct(tTorsoDirection));
+	
+	Fvector tOne;
+	tOne.set(1,0,0);
+	float fAlpha1 = tOne.dotproduct(tTorsoDirection);
+	float fAlpha2 = tOne.dotproduct(M->tWatchDirection);
+	if (fAlpha1 > fAlpha2)
+		spin.rotateZ(fAlpha);
+	else 
+		spin.rotateZ(-fAlpha);
+	
 	B->mTransform.mul_43(spin);
 }
 
@@ -97,7 +108,7 @@ void CAI_Rat::Load(CInifile* ini, const char* section)
 	m_tpaDeathAnimations[1] = PKinematics(pVisual)->ID_Cycle_Safe("norm_death_2");
 	
 	int spine_bone			= PKinematics(pVisual)->LL_BoneID("bip01_spine2");
-	//PKinematics(pVisual)->LL_GetInstance(spine_bone).set_callback(SpinCallback,this);
+	PKinematics(pVisual)->LL_GetInstance(spine_bone).set_callback(SpinCallback,this);
 }
 
 BOOL CAI_Rat::Hit(int perc, Fvector &dir, CEntity* who) 
@@ -620,7 +631,7 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition, const float fMinDistance, c
 				if ((M) && (M->g_Health() <= 0))
 					continue;
 
-				float fRadius = tpCurrentObject->Radius();
+				float fRadius = 0.35f;//tpCurrentObject->Radius();
 				tpCurrentObject->clCenter(tCenter);
 				
 				//bool bFront=0,bBack=0,bLeft=0,bRight=0;
@@ -684,7 +695,7 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition, const float fMinDistance, c
 
 		if (bMobility) {
 			m_bMobility = true;
-			/**
+			/**/
 			if (iBestI < 0)
 				if (dwTime - m_dwLastUpdate > 3000) {
 					m_dwLastUpdate = dwTime;
@@ -855,7 +866,12 @@ void CAI_Rat::Attack()
 					FollowLeader(Enemy.Enemy->Position(),SelectorAttack.fMinEnemyDistance);				
 					float fDistance = ffGetDistance(Position(),Enemy.Enemy->Position());
 					q_action.setup(AI::AIC_Action::AttackEnd);
-					SetDirectionLook();
+					if (fDistance > SelectorAttack.fMaxEnemyDistance)
+						SetDirectionLook();
+					else {
+						q_look.setup(AI::AIC_Look::Look, AI::t_Object, &(Enemy.Enemy), 1000);
+						q_look.o_look_speed=8*_FB_look_speed;
+					}
 					// checking flag to stop processing more states
 					m_fCurSpeed = m_fMaxSpeed;
 					bStopThinking = true;
