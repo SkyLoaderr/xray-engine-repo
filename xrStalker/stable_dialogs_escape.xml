@@ -5,4 +5,127 @@
 		<text ln="rus">Привет! Как здоровье? Надеюсь не прихворал.\n У меня для тебя есть работка на выходных.</text>
 	</string>
 
+	<string id="escape_trader_jobs__0">
+		<text ln="rus">Какая у тебя есть работа?</text>
+		<text>What kind of job?</text>						
+	</string>
+	
+	<string id="escape_trader_jobs__2">
+		<text ln="rus">Все как обычно. Прежде всего мне нужны артефакты. Плачу обычную цену, ни больше, ни меньше.\n Ну и иногда мне нужны "особые" люди для "особой" работы.</text>
+		<text>Usual stuff. First off, I need artefacts. Paying normal price, not more, no less.\n And well, now and then I need СspecialТ people for СspecialТ kind of job.</text>
+	</string>
+	
+	<string id="escape_trader_jobs__3">			
+		<text ln="rus">Действительно, все как обычно. Ладно - если что-то найду, постараюсь не забыть принести.</text>
+		<text>Indeed, the usual stuff. Okay - if I find something will try not to forget to bring it.</text>
+	</string>
+				
+	<string id="escape_trader_jobs__4">			
+		<text ln="rus">А может у тебя найдется "особая" работа для "особого" человека?</text>
+		<text>And, would you have a "special" job for a "special" man?</text>
+	</string>
+				
+	<string id="escape_trader_jobs__5">			
+		<text ln="rus">Есть одно дельце. По слухам недалеко тут есть место. Там лежит артефакт редкий. Но не новичков же посылать туда. Принеси мне артефакт, а я пока о Стрелке твоем попытаюсь разузнать. За артефакт само собой заплачу как полагается.</text>
+		<text>There is one thing here. As rumours go, there's a place nearby. It has a rare artefact. But I wouldnТt send newbies there, if you know what I mean. Deliver me the artefact, and in the meantime, IТll try to clarify about your Gunslinger. The artefact will be rewarded decently, of course.</text>
+	</string>
+			
+	<string id="escape_trader_jobs__6">			
+		<text ln="rus">Согласен.[Задание]</text>
+		<text>Deal.[Objective]</text>
+	</string>
+			
+	<string id="escape_trader_jobs__7">			
+		<text ln="rus">Нет, не хочу.</text>
+		<text>No, thanks.</text>
+	</string>
+			
+	<string id="escape_trader_jobs__8">			
+		<text ln="rus">По рукам.</text>
+		<text>Agreed.</text>
+	</string>
+			
+	<string id="escape_trader_jobs__9">			
+		<text ln="rus">Твое право.</text>
+		<text>It's up to you.</text>
+	</string>
+			
+	<string id="escape_trader_jobs__51">			
+		<text ln="rus">Есть кое что. Нужно спереть ящик с блокпоста. Только осторожно. Они когда обижаются, то вокруг такой шмон наводят, что даже крысы разбегаются.</text>
+		<text>There's a thing. I need you to steal a case from the army post. Carefully though. When they are offended, they make mince of everything around, making even rats hell scared.</text>
+	</string>
+	
+	<string id="escape_trader_jobs__61">
+		<text ln="rus">Хорошо, я постараюсь сделать все незаметно.[Задание]</text>
+		<text>Okay, I'll try to be discreet.[Objective]</text>
+	</string>
+			
+	<string id="escape_trader_jobs__71">			
+		<text ln="rus">Нет, я не согласен.</text>
+		<text>No, I'm not up to it.</text>
+	</string>
+	
+	<string id="escape_trader_jobs__81">
+		<text ln="rus">Ну принесешь ящик, тогда и рассчитаемся. Хочу сразу предупредить, если начнешь убивать солдат, 
+		тогда я тебя объявлю вне закона. Беспредельщики мне не нужны. У нас тут хрупкий мир образовался, солдаты 
+		конечно все равно постреливают сталкеров, но крупного противостояния нет и есть каналы куда сбывать хабар, 
+		если кто-то начнет бучу враз все изменится, а мне такой расклад совсем не нравится. Проще и дешевле 
+		принести твою голову командиру блокпоста. Надеюсь ты меня понимаешь правильно.</text>
+		<text>When you bring the case, I'll do the payment. Let me warn you though, if you start killing soldiers,
+		 I'll proclaim you out of law. I don't need recklessness. We've built a fragile world here. Soldiers shoot 
+		 stalkers now and then, of course, but there's no severe opposition and we have channels to vend the loot 
+		 to. If someone starts raising up a storm here, it will all instantly change and such a scenario does not 
+		 make excited at all. It's simpler and cheaper to bring your head to the army post commander. I hope you 
+		 read me.</text>
+	</string>
+	
+	<string id="escape_trader_jobs__91">
+		<text ln="rus">Ну как хочешь.</text>
+		<text>As you wish.</text>
+	</string>
+	
+	<string id="escape_trader_jobs__52">
+		<text ln="rus">Есть одно дельце. Бармен из бара сталкеров просил достать для него папку
+		с документами из НИИ "Агропром". Только одно "но". Сейчас здание института занято
+		военными. Ищут они там чего-то.</text>
+		<text>There's a thing. Bartender from stalker bar asked to locate a folder with 
+		documents from "Agroprom" SRI for him. There is one "but" here. Currently the building 
+		of the institute is occupied by the military. They are looking for something there.</text>
+	</string>
+	
+	<string id="escape_trader_jobs__62">	
+		<text ln="rus">Ладно, я берусь за это дело, только объясни как туда пройти.[Задание]</text>
+		<text>Alright, I'll pick that up, but you need to explain me how to get there.[Objective]</text>
+	</string>
+	
+	<string id="escape_trader_jobs__72">
+		<text ln="rus">Извини, я еще не готов для этого.</text>
+		<text>Sorry, I'm not yet ready for it.</text>
+	</string>
+	
+	<string id="escape_trader_jobs__82">
+		<text ln="rus">Иди к центру зоны, через свалку, потом свернешь на запад - там и есть агропром.
+		Выйдешь к агропрому, а там по ПДА выйдешь к институту. Координаты я тебе скинул. Да, и еще.
+		Я нашел сталкера, который знает что-то о группировке Стрелка. Он сейчас обитает в гаражах
+		на северной оконечности свалки. Я ему рассказал о тебе. Он готов с тобой встретиться.</text>
+		<text>Go to the zone center, through dumps, then turn to the west - you'll find agroprom there.
+		When you see agroprom, use your PDA to locate the institute. I dropped you the coordinates. And, something more here. 
+		I found a stalker, who knows bits and pieces about the grouping of Gunslinger. You can locate him in garages in the 
+		north edge of the dump. I told him about you. HeТs prepared to meet with you.</text>
+	</string>
+	
+	<string id="escape_trader_jobs__92">
+		<text ln="rus">Ну будешь готов - приходи.</text>
+		<text>Come back when you are done.</text>
+	</string>
+	
+	<string id="escape_trader_jobs__12">
+		<text ln="rus">Не, пока ничего нет.</text>
+		<text>No, nothing for now.</text>
+	</string>
+	
+	<string id="escape_trader_jobs__15">
+		<text ln="rus">Ну вот и ладненько. Что нибудь еще?</text>
+		<text>Good, good. Anything else there?</text>
+	</string>
 </string_table>
