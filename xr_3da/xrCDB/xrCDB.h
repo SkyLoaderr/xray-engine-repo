@@ -53,4 +53,5 @@ namespace CDB
 		int				r_count			()	{	return rd_count;			};
 		void			r_clear			()	{	rd_count = 0;				};
 		void			r_free			();
+	};
 };
