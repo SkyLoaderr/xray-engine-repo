@@ -17,7 +17,7 @@
 #include "std_classes.h"
 #include "GameFont.h"
 #include <crtdbg.h>
-  
+   
 // global variables
 ENGINE_API	CApplication*	pApp			= NULL;
 ENGINE_API	CCreator*		pCreator		= NULL;
