@@ -14,15 +14,14 @@ class				CWeaponList
 private:
 	DEFINE_VECTOR	(CWeapon*,WeaponVec,WeaponIt);
 
-	CWeapon*		LoadOne				(CLASS_ID cls);
-
 	CEntity*		m_pParent;
 
 	WeaponVec		m_Weapons;
 	int				m_iActiveWeapon;
 	
-	bool 			WeaponChange		(int idx);
+	CWeapon*		LoadOne				(CLASS_ID cls);
 	int				FindWeapon			(CLASS_ID cls);
+	bool 			WeaponChange		(int idx);
 
 public:
 	int				m_iHUDboneL, m_iHUDboneR;
