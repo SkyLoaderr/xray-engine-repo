@@ -13,6 +13,7 @@
 
 #include "specific_character.h"
 #include "relation_registry.h"
+#include "character_community.h"
 
 
 
@@ -84,15 +85,16 @@ protected:
 
 public:
 
-	LPCSTR					Name()				const;
-	LPCSTR					Bio()				const;
-	CHARACTER_COMMUNITY		Community()			const;
-	CHARACTER_RANK			Rank()				const;
-	CHARACTER_REPUTATION	Reputation()		const;
+	LPCSTR						Name()				const;
+	LPCSTR						Bio()				const;
+	const CHARACTER_COMMUNITY&	Community()			const;
 
-	void	SetRank			(CHARACTER_RANK rank);
-	void	SetReputation	(CHARACTER_REPUTATION reputation);
-	void	SetCommunity	(CHARACTER_COMMUNITY community);
+	CHARACTER_RANK				Rank()				const;
+	CHARACTER_REPUTATION		Reputation()		const;
+
+	void	SetRank			(CHARACTER_RANK				rank);
+	void	SetReputation	(CHARACTER_REPUTATION		reputation);
+	void	SetCommunity	(const CHARACTER_COMMUNITY&	community);
 
 
 	int		TradeIconX	()	const;
@@ -108,7 +110,7 @@ protected:
 	//наши отношения с другими персонажами
 	RELATION_REGISTRY relation_registry;
 
-	CHARACTER_RANK			m_CurrentRank;
-	CHARACTER_REPUTATION	m_CurrentReputation;
-	CHARACTER_COMMUNITY		m_CurrentCommunity;
+	CHARACTER_RANK					m_CurrentRank;
+	CHARACTER_REPUTATION			m_CurrentReputation;
+	CHARACTER_COMMUNITY				m_CurrentCommunity;
 };

@@ -277,14 +277,16 @@ LPCSTR CScriptGameObject::CharacterCommunity	()
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
 	VERIFY(pInventoryOwner);
-	return *pInventoryOwner->CharacterInfo().Community();
+	return *pInventoryOwner->CharacterInfo().Community().id();
 }
 
 void CScriptGameObject::SetCharacterCommunity	(LPCSTR comm)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
 	VERIFY(pInventoryOwner);
-	return pInventoryOwner->CharacterInfo().SetCommunity(comm);
+	CHARACTER_COMMUNITY	community;
+	community.set(comm);
+	return pInventoryOwner->CharacterInfo().SetCommunity(community);
 }
 
 //////////////////////////////////////////////////////////////////////////

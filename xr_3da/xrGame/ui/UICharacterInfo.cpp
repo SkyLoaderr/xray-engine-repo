@@ -183,7 +183,7 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 	}
 	UIRelation.SetText(str);
 
-	sprintf(str, "%s", *pCharInfo->Community());
+	sprintf(str, "%s", CStringTable()(pCharInfo->Community().id()));
 	if (m_bInfoAutoAdjust)
 	{
 		if (UICommunityCaption.IsEnabled() && UICommunityCaption.GetFont())

@@ -8,6 +8,7 @@
 
 #include "character_info_defs.h"
 #include "PhraseDialogDefs.h"
+#include "character_community.h"
 
 #include "shared_data.h"
 #include "xml_str_id_loader.h"
@@ -41,11 +42,11 @@ struct SSpecificCharacterData : CSharedResource
 	int	m_iMapIconX, m_iMapIconY;
 
 	//команда 
-	CHARACTER_COMMUNITY		m_Community;
+	CHARACTER_COMMUNITY			m_Community;
 	//ранг
-	CHARACTER_RANK			m_Rank;
+	CHARACTER_RANK				m_Rank;
 	//репутация
-	CHARACTER_REPUTATION	m_Reputation;
+	CHARACTER_REPUTATION		m_Reputation;
 
 	//указание на то что персонаж не предназначен для случайного выбора
 	//и задается только через явное указание ID
@@ -91,11 +92,11 @@ protected:
 	SPECIFIC_CHARACTER_INDEX m_iOwnIndex;
 public:
 
-	LPCSTR					Name		() const ;
-	LPCSTR					Bio			() const ;
-	LPCSTR					Community	() const ;
-	CHARACTER_RANK			Rank		() const ;
-	CHARACTER_REPUTATION	Reputation	() const ;
+	LPCSTR						Name		() const ;
+	LPCSTR						Bio			() const ;
+	const CHARACTER_COMMUNITY&	Community	() const ;
+	CHARACTER_RANK				Rank		() const ;
+	CHARACTER_REPUTATION		Reputation	() const ;
 
 	LPCSTR					Visual		() const ;
 	LPCSTR					SupplySpawn	() const ;

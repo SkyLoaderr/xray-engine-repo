@@ -14,10 +14,9 @@
 //////////////////////////////////////////////////////////////////////////
 SCharacterProfile::SCharacterProfile()
 {
-	m_iCharacterIndex = NO_SPECIFIC_CHARACTER;
-	m_Community		= NO_COMMUNITY;
-	m_Rank			= NO_RANK;
-	m_Reputation	= NO_REPUTATION;
+	m_iCharacterIndex	= NO_SPECIFIC_CHARACTER;
+	m_Rank				= NO_RANK;
+	m_Reputation		= NO_REPUTATION;
 }
 
 SCharacterProfile::~SCharacterProfile()
@@ -35,8 +34,6 @@ CCharacterInfo::CCharacterInfo()
 
 	m_CurrentRank = NO_RANK;
 	m_CurrentReputation = NO_REPUTATION;
-	m_CurrentCommunity = NO_COMMUNITY;
-
 }
 
 
@@ -74,7 +71,7 @@ void CCharacterInfo::InitSpecificCharacter (SPECIFIC_CHARACTER_INDEX new_index)
 		SetRank(m_SpecificCharacter.Rank());
 	if(Reputation() == NO_REPUTATION)
 		SetReputation(m_SpecificCharacter.Reputation());
-	if(Community() == NO_COMMUNITY)
+	if(Community().index() == NO_COMMUNITY_INDEX)
 		SetCommunity(m_SpecificCharacter.Community());
 }
 
@@ -95,16 +92,18 @@ void CCharacterInfo::load_shared	(LPCSTR)
 
 	uiXml.SetLocalRoot(item_node);
 
-	//игровое имя персонажа
-	data()->m_Community		= uiXml.Read("team", 0, *NO_COMMUNITY);
-	data()->m_Rank			= uiXml.ReadInt("rank", 0, NO_RANK);
-	data()->m_Reputation	= uiXml.ReadInt("reputation", 0, NO_REPUTATION);
 
-	 LPCSTR spec_char = uiXml.Read("specific_character", 0, NULL);
-	 if(!spec_char)
-         data()->m_iCharacterIndex = NO_SPECIFIC_CHARACTER;
-	 else
-		 data()->m_iCharacterIndex = CSpecificCharacter::IdToIndex(spec_char);
+
+	LPCSTR spec_char = uiXml.Read("specific_character", 0, NULL);
+	if(!spec_char)
+	{
+		data()->m_iCharacterIndex = NO_SPECIFIC_CHARACTER;
+		data()->m_Community.set((CHARACTER_COMMUNITY_ID)uiXml.Read("team", 0, *NO_COMMUNITY_ID));
+		data()->m_Rank			= uiXml.ReadInt	("rank",		0,	NO_RANK);
+		data()->m_Reputation	= uiXml.ReadInt	("reputation",	0,	NO_REPUTATION);
+	}
+	else
+		data()->m_iCharacterIndex = CSpecificCharacter::IdToIndex(spec_char);
 }
 
 
@@ -123,7 +122,8 @@ CHARACTER_RANK CCharacterInfo::Rank() const
 {
 	return	m_CurrentRank;
 }
-CHARACTER_COMMUNITY CCharacterInfo::Community() const
+
+const CHARACTER_COMMUNITY& CCharacterInfo::Community() const
 {
 	return	m_CurrentCommunity;
 }
@@ -142,7 +142,7 @@ void CCharacterInfo::SetReputation (CHARACTER_REPUTATION reputation)
 	m_CurrentReputation = reputation;
 }
 
-void CCharacterInfo::SetCommunity	(CHARACTER_COMMUNITY community)
+void CCharacterInfo::SetCommunity	(const CHARACTER_COMMUNITY& community)
 {
 	m_CurrentCommunity = community;
 }

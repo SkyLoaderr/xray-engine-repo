@@ -145,8 +145,8 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 		}
 	}
 
-	data()->m_Community		= uiXml.Read("team", 0, *NO_COMMUNITY);
-	R_ASSERT3(data()->m_Community != NO_COMMUNITY, "not all fields fulfiled for specific character", *IndexToId(m_iOwnIndex));
+	data()->m_Community.set((CHARACTER_COMMUNITY_ID)uiXml.Read("team", 0, *NO_COMMUNITY_ID));
+	R_ASSERT3(data()->m_Community.index() != NO_COMMUNITY_INDEX, "not all fields fulfiled for specific character", *IndexToId(m_iOwnIndex));
 	data()->m_Rank			= uiXml.ReadInt("rank", 0, NO_RANK);
 	R_ASSERT3(data()->m_Rank != NO_RANK, "not all fields fulfiled for specific character", *IndexToId(m_iOwnIndex));
 	data()->m_Reputation	= uiXml.ReadInt("reputation", 0, NO_REPUTATION);
@@ -168,9 +168,9 @@ CHARACTER_RANK CSpecificCharacter::Rank() const
 {
 	return	data()->m_Rank;
 }
-LPCSTR CSpecificCharacter::Community() const 
+const CHARACTER_COMMUNITY& CSpecificCharacter::Community() const 
 {
-	return	*data()->m_Community;
+	return	data()->m_Community;
 }
 
 CHARACTER_REPUTATION	 CSpecificCharacter::Reputation	() const 

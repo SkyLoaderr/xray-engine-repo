@@ -14,6 +14,7 @@
 #include "encyclopedia_article.h"
 #include "character_info.h"
 #include "specific_character.h"
+#include "character_community.h"
 
 extern void show_smart_cast_stats					();
 extern void clear_smart_cast_stats					();
@@ -39,6 +40,7 @@ void clean_game_globals()
 	CEncyclopediaArticle::DeleteIdToIndexData		();
 	CCharacterInfo::DeleteIdToIndexData				();
 	CSpecificCharacter::DeleteIdToIndexData			();
+	CHARACTER_COMMUNITY::DeleteCommunitiesNames		();
 	CPhraseDialog::DeleteIdToIndexData				();
 	CGameTask::DeleteIdToIndexData					();
 
