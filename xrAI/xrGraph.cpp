@@ -88,27 +88,29 @@ void vfLoadGraphPoints(LPCSTR name)
 	Status									("Vertexes being read : %d",i);
 }
 
+class CSortGraphPointsPredicate {
+public:
+	xr_vector<SDynamicGraphVertex>	*m_tpaGraph;
+
+	CSortGraphPointsPredicate(xr_vector<SDynamicGraphVertex> &tpaGraph)
+	{
+		m_tpaGraph = &tpaGraph;
+	}
+
+	bool							operator()							(const u32 dw1, const u32 dw2) const
+	{
+		return						((*m_tpaGraph)[dw1].tLocalPoint.square_magnitude() < (*m_tpaGraph)[dw2].tLocalPoint.square_magnitude());
+	};
+
+};
+
 void vfRemoveDuplicateAIPoints()
 {
 	Progress(0.0f);
 	u32 N = tpaGraph.size(), *dwpSortOrder = (u32 *)xr_malloc(N*sizeof(u32)), *dwpGraphOrder  = (u32 *)xr_malloc(N*sizeof(u32));
 	for (int i=0; i<(int)N; i++)
 		dwpSortOrder[i] = i;
-	bool bOk;
-	do {
-		bOk = true;
-		for ( i=1; i<(int)N; i++) {
-			Fvector &p1 = tpaGraph[dwpSortOrder[i - 1]].tLocalPoint;
-			Fvector &p2 = tpaGraph[dwpSortOrder[i]].tLocalPoint;
-			if ((p1.x > p2.x) || ((_abs(p1.x - p2.x) < EPS_L) && ((p1.y > p2.y) || ((_abs(p1.y - p2.y) < EPS_L) && (p1.z > p2.z))))) {
-				int k = dwpSortOrder[i - 1];
-				dwpSortOrder[i - 1] = dwpSortOrder[i];
-				dwpSortOrder[i] = k;
-				bOk = false;
-			}
-		}
-	}
-	while (!bOk);
+	std::sort	(dwpSortOrder,dwpSortOrder+N,CSortGraphPointsPredicate(tpaGraph));
 
 	int j = 0;
 	for ( i=1; i<(int)N; i++) {
@@ -118,6 +120,7 @@ void vfRemoveDuplicateAIPoints()
 			dwpGraphOrder[j++] = dwpSortOrder[i];
 	}
 	
+	bool bOk;
 	do {
 		bOk = true;
 		for ( i=1; i<j; i++) {
