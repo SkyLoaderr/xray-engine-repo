@@ -74,6 +74,7 @@ bool CInventoryOwner::OnReceiveInfo(INFO_ID info_id) const
 	VERIFY(pThisGameObject);
 
 //	SCRIPT_CALLBACK_EXECUTE_2(*m_pInfoCallback, pThisGameObject->lua_game_object(), info_index);
+//	pThisGameObject->callback(GameObject::eInventoryInfo)(pThisGameObject->lua_game_object(), *info_id);
 	
 
 	CInfoPortion info_portion;
@@ -86,7 +87,6 @@ bool CInventoryOwner::OnReceiveInfo(INFO_ID info_id) const
 	for(u32 i=0; i<info_portion.DisableInfos().size(); i++)
 		TransferInfo(info_portion.DisableInfos()[i], false);
 
-	pThisGameObject->callback(GameObject::eInventoryInfo)(pThisGameObject->lua_game_object(), *info_id);
 
 	return true;
 }

@@ -211,6 +211,7 @@ bool CActor::OnReceiveInfo(INFO_ID info_id) const
 	AddEncyclopediaArticle	(&info_portion);
 	AddGameTask				(&info_portion);
 
+	callback(GameObject::eInventoryInfo)(lua_game_object(), *info_id);
 
 	if(!HUD().GetUI())
 		return false;
@@ -429,23 +430,7 @@ void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 		return;
 	}
 
-	xr_string location_type;
-
-	switch(relation)
-	{
-	case ALife::eRelationTypeEnemy:
-		location_type = "enemy_location";
-		break;
-	case ALife::eRelationTypeNeutral:
-		location_type = "neutral_location";
-		break;
-	case ALife::eRelationTypeFriend:
-		location_type = "friend_location";
-		break;
-	default:
-		location_type = "friend_location";
-	}
-	Level().MapManager().AddMapLocation(location_type.c_str(), GO->ID() );
+	Level().MapManager().AddMapLocation(RELATION_REGISTRY().GetSpotName(relation), GO->ID() );
 
 /*
 	static LPCSTR	m_sMapSpotAnimEnemy		= pSettings->r_string("game_map", "map_spots_enemy");	
