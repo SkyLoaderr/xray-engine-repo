@@ -3,7 +3,7 @@
 
 #include "ui/UIInventoryWnd.h"
 #include "ui/UITradeWnd.h"
-#include "ui/UIPdaWnd.h"
+#include "ui/UIPdaCommunication.h"
 #include "ui/UIMapWnd.h"
 #include "ui/UIDiaryWnd.h"
 #include "ui/UITalkWnd.h"
@@ -26,7 +26,7 @@ public:
 
 	CUIInventoryWnd		InventoryMenu;
 	CUITradeWnd			TradeMenu;
-	CUIPdaWnd			PdaMenu;
+	CUIPdaCommunication	PdaMenu;
 	CUIMapWnd			MapMenu;
 	CUIDiaryWnd			DiaryMenu;
 	CUITalkWnd			TalkMenu;
