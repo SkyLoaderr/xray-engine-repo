@@ -105,7 +105,21 @@ void CCustomDetector::Update(u32 dt) {
 		if(l_maxPow > 0) {
 			if(!m_noise.feedback) Sound->PlayAtPos(m_noise, this, P, true);
 			if(m_noise.feedback) {
-				m_noise.feedback->SetVolume(2.f*l_maxPow);
+				//m_noise.feedback->SetVolume(2.f*l_maxPow);
+				//s32 l_iPow; f32 f = l_maxPow;
+				//if (f <= .5f) {
+				//	l_iPow = 100 - long(floor(100*exp(log(100)*f)));
+				//	m_noise.feedback->SetVolume(f32(l_iPow)/-10000.f);
+				//}
+				//else {
+				//	l_iPow = 100 - long(floor(100*exp(log(100)*f)));
+				//	m_noise.feedback->SetVolume(f32(l_iPow)/-10000.f);
+				//}
+				l_maxPow = log(l_maxPow)*1000.f; if(l_maxPow<-5000.f) l_maxPow = -5000.f;
+				l_maxPow = (l_maxPow + 5000.f)/5000.f;
+
+				m_noise.feedback->SetVolume(l_maxPow);
+
 				m_noise.feedback->SetPosition(P);
 			}
 		} else if(m_noise.feedback) m_noise.feedback->Stop();
