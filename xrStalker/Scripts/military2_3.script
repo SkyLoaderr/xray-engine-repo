@@ -35,7 +35,7 @@ function main ()
 	reset_action (hero, military2_3.script_name ())
 	action (hero, anim ("raciya_0"), cond (cond.anim_end))
 	action (hero, anim ("raciya_1"), cond (cond.anim_end))
-	action (hero, anim ("raciya_2"), sound ("scripts\\Rolik\\hurry_up_minus1", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false), cond (cond.anim_end))
+	action (hero, anim ("raciya_2"), sound ("scripts\\Rolik\\they_got_the_artifact", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false), cond (cond.anim_end))
 	action (hero, anim ("raciya_3"), cond (cond.anim_end))
 	
 	while hero:action () do wait () end
