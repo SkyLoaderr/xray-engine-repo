@@ -75,10 +75,14 @@ void CAI_Zombie::vfLoadAnimations()
 	m_tZombieAnimations.tNormal.tGlobal.tWalk.ls	 = tpVisualObject->ID_Cycle("norm_walk_ls");
 	m_tZombieAnimations.tNormal.tGlobal.tWalk.rs	 = tpVisualObject->ID_Cycle("norm_walk_rs");
 	
-	m_tZombieAnimations.tNormal.tGlobal.tWalkForwardCSIP = tpVisualObject->ID_Cycle("norm_walk_fwd_1");
+	m_tZombieAnimations.tNormal.tGlobal.tpWalkForwardCSIP = tpVisualObject->ID_Cycle("norm_walk_fwd_1");
 
-	m_tZombieAnimations.tNormal.tGlobal.tRunForward	 = tpVisualObject->ID_Cycle("norm_run_fwd");
+	m_tZombieAnimations.tNormal.tGlobal.tpRunForward	 = tpVisualObject->ID_Cycle("norm_run_fwd");
 	
+	m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[0] = tpVisualObject->ID_Cycle("norm_death_idle_0");
+	m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[1] = tpVisualObject->ID_Cycle("norm_death_idle_1");
+	m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[2] = tpVisualObject->ID_Cycle("norm_death_idle_2");
+
 	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[0] = tpVisualObject->ID_Cycle("norm_stand_up_0");
 	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[1] = tpVisualObject->ID_Cycle("norm_stand_up_1");
 	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[2] = tpVisualObject->ID_Cycle("norm_stand_up_2");
@@ -98,17 +102,27 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 	CMotionDef*	tpGlobalAnimation=0;
 
 	if (fHealth <= 0) {
-		for (int i=0 ;i<SND_DEATH_COUNT; i++)
-			if (m_tZombieAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
+		bool bOk = false;
+		for (int i=0; i<3; i++)
+			if (m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[i] == m_tpCurrentGlobalAnimation) {
+				bOk = true;
 				tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 				break;
 			}
-		if (!tpGlobalAnimation)
-			if (m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaIdle[1])
-				tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeath[0];
-			else
+
+		if (!bOk) {
+			for (int i=0 ;i<3; i++)
+				if (m_tZombieAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
+					tpGlobalAnimation = m_tpCurrentGlobalAnimation;
+					if (!m_tpCurrentGlobalBlend->playing)
+						tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[i];
+					break;
+				}
+			if (!tpGlobalAnimation)
 				tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,SND_DEATH_COUNT)];
-		//tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeath[2];
+		}
+		else
+			tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 	}
 	else
 		if (m_bFiring) {
@@ -145,10 +159,10 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 						}
 						else
 							if (_abs(m_fSpeed - m_fAttackSpeed) < EPS_L)
-								tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tRunForward;
+								tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpRunForward;
 							else
 								if (_abs(m_fSpeed - m_fMaxSpeed) < EPS_L)
-									tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tWalkForwardCSIP;
+									tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpWalkForwardCSIP;
 								else
 									tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tWalk.fwd;
 				else
@@ -163,10 +177,10 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 						}
 						else
 							if (_abs(m_fSpeed - m_fAttackSpeed) < EPS_L)
-								tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tRunForward;
+								tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpRunForward;
 							else
 								if (_abs(m_fSpeed - m_fMaxSpeed) < EPS_L)
-									tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tWalkForwardCSIP;
+									tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpWalkForwardCSIP;
 								else
 									tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tWalk.fwd;
 	
