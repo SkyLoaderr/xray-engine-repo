@@ -431,5 +431,17 @@ function load_common (obj, sounds_base)
               }
               }
 
+    themes["wounded"] =
+             {
+             {
+             sounds_base,
+             obj:add_sound ("script_sound\\help\\soldier\\soldier_help_1",  1, snd_type.talk, 2, 1, id ()),
+             obj:add_sound ("script_sound\\help\\soldier\\soldier_help_2",  1, snd_type.talk, 2, 1, id ()),
+             obj:add_sound ("script_sound\\help\\soldier\\soldier_help_3",  1, snd_type.talk, 2, 1, id ()),
+             obj:add_sound ("script_sound\\help\\soldier\\soldier_help_4",  1, snd_type.talk, 2, 1, id ()),
+             obj:add_sound ("script_sound\\help\\soldier\\soldier_help_5",  1, snd_type.talk, 2, 1, id ())
+             }
+             }
+
     return sounds_base
 end

@@ -283,6 +283,7 @@ function action_help:execute ()
        self.first = true
        self.object:clear_animations ()
        self.object:add_animation ("waunded_ruka_0", true)
+       xr_sounds.play_sound (self.object, 1500, "wounded", 2)
     end
         
     if self.object:animation_count () < 2 then 
@@ -351,6 +352,7 @@ function action_enemy:execute ()
        self.first = true
        self.object:clear_animations ()
        self.object:add_animation ("waunded_monser_0", true)
+       xr_sounds.play_sound (self.object, 0, "wounded", 1)
     end
         
     if self.object:animation_count () < 2 then 
