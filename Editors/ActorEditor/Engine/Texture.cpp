@@ -477,9 +477,6 @@ _DDS_CUBE:
 			FS.r_close				(S);
 
 			// Log
-#ifdef DEBUG
-			Msg						("* T_C [%d-%d] (%dK): %s",IMG.Width,IMG.Height,mem/1024,fn);
-#endif
 			// OK
 			dwWidth					= IMG.Width;
 			dwHeight				= IMG.Height;
@@ -552,10 +549,6 @@ _DDS_2D:
 
 			_RELEASE				(T_sysmem);
 
-			// Log
-#ifdef DEBUG
-			Msg						("* T_2 [%d-%d] (%dK): %s",top_width,top_height,mem/1024,fn);
-#endif
 			// OK
 			dwWidth					= top_width;
 			dwHeight				= top_height;
