@@ -81,9 +81,9 @@ public:
     ETAction			GetAction			()						{return m_Action;}				
     ETAxis				GetAxis				()						{return m_Axis;}				
     BOOL				GetSettings			(u32 mask)				{return m_Settings.is(mask);}				
-    void				SetAction			(ETAction act);
-    void				SetAxis				(ETAxis axis);
-    void				SetSettings			(u32 mask, BOOL val);
+    virtual void		SetAction			(ETAction act);
+    virtual void		SetAxis				(ETAxis axis);
+    virtual void		SetSettings			(u32 mask, BOOL val);
     
 	void				SetFog				(u32 fog_color, float fogness){dwFogColor=fog_color;fFogness=fogness;}
     void				GetCurrentFog		(u32& fog_color, float& s_fog, float& e_fog);
