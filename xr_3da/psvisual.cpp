@@ -224,7 +224,7 @@ DWORD CPSVisual::RenderTO	(FVF::TL* dest)
             Fvector Pos;
             
             PS::SimulatePosition(Pos,P,T,k);		// this moves the particle using the last known velocity and the time that has passed
-            
+			bv_BBox.modify		(Pos);
             PS::SimulateColor	(C,P,k,k_inv,mb_v);	// adjust current Color from calculated Deltas and time elapsed.
             PS::SimulateSize	(sz,P,k,k_inv);		// adjust current Size & Angle
 			if (sz>p_size)		p_size = sz;
@@ -237,22 +237,25 @@ DWORD CPSVisual::RenderTO	(FVF::TL* dest)
                 PS::SimulatePosition(p,P,PT,kk);
 				D.sub				(Pos,p);
                 D.normalize_safe	();
+				
+				if (m_Definition->m_dwFlag&PS_FRAME_ENABLED){
+					int frame;
+					if (m_Definition->m_dwFlag&PS_FRAME_ANIMATE)PS::SimulateAnimation(frame,m_Definition,P,T);
+					else										frame = P->m_iAnimStartFrame;
+					m_Definition->m_Animation.CalculateTC(frame,lt,rb);
+				}
+				FillSprite(pv,mSpriteTransform,Pos,lt,rb,sz*.5f,C,D,fov_scale);
 			}else{
 				PS::SimulateAngle	(angle,P,T,k,k_inv);
+				
+				if (m_Definition->m_dwFlag&PS_FRAME_ENABLED){
+					int frame;
+					if (m_Definition->m_dwFlag&PS_FRAME_ANIMATE)PS::SimulateAnimation(frame,m_Definition,P,T);
+					else										frame = P->m_iAnimStartFrame;
+					m_Definition->m_Animation.CalculateTC(frame,lt,rb);
+				}
+				FillSprite(pv,mSpriteTransform,Pos,lt,rb,sz*.5f,C,angle,fov_scale);
             }
-			
-			// Animation
-			if (m_Definition->m_dwFlag&PS_FRAME_ENABLED){
-				int frame;
-				if (m_Definition->m_dwFlag&PS_FRAME_ANIMATE)PS::SimulateAnimation(frame,m_Definition,P,T);
-				else										frame = P->m_iAnimStartFrame;
-                m_Definition->m_Animation.CalculateTC(frame,lt,rb);
-            }
-			if (m_Definition->m_dwFlag&PS_ALIGNTOPATH) 	FillSprite(pv,mSpriteTransform,Pos,lt,rb,sz*.5f,C,D,fov_scale);
-			else                                     	FillSprite(pv,mSpriteTransform,Pos,lt,rb,sz*.5f,C,angle,fov_scale);
-			
-			// modify visual bbox
-			bv_BBox.modify(Pos);
         }
     }
 	if (m_Particles.empty())	{
