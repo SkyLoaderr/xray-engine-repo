@@ -48,7 +48,7 @@ void	CBlender_deffer_aref::Compile(CBlender_Compile& C)
 		C.r_End			();
 		break;
 	case 2:		// smap-point
-		C.r_Pass		("shadow_point_base","shadow_point_base",FALSE);
+		C.r_Pass		("shadow_point_base","shadow_point_aref",FALSE);
 		C.r_Sampler		("s_base",			C.L_textures[0]);
 		C.r_Constant	("Ldynamic_pos",	&RImplementation.Binders.l_position);
 		C.r_End			();
