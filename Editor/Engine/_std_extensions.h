@@ -59,7 +59,7 @@ IC char*						strconcat				( char* dest, const char* S1, const char* S2, const c
 {	return strcat(strcat(strcat(strcat(strcat(strcpy(dest,S1),S2),S3),S4),S5),S6); }
 
 // return pointer to ".ext"
-IC const char*					strext					( const char* S )
+IC char*						strext					( char* S )
 {	return strchr(S,'.'); }
 
 #endif
