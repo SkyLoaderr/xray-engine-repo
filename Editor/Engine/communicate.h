@@ -44,11 +44,10 @@ struct b_texture
 struct b_light : public Flight
 {
 	struct {
-		DWORD		bAffectDynamic	: 1;
-		DWORD		bProcedural		: 1;
-	}				flags;
-	DWORD			s_count;
-	WORD			s_sectors[XRLIGHT_MAX_SECTORS];
+		DWORD			bAffectDynamic	: 1;
+		DWORD			bProcedural		: 1;
+	}					flags;
+	svector<WORD,16>	sectors;
 };
 struct b_glow
 {
