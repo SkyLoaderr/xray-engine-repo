@@ -74,7 +74,7 @@
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
 			CharacterSet="2"
-			WholeProgramOptimization="TRUE">
+			WholeProgramOptimization="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/Qvc7 /Qwp_ipo /O3 /QxiM "
@@ -100,6 +100,7 @@
 				ProgramDataBaseFileName=".\Release/"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="3"
 				CallingConvention="2"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
@@ -107,10 +108,11 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 "
 				AdditionalDependencies="odbc32.lib odbccp32.lib"
-				ShowProgress="2"
+				ShowProgress="0"
 				OutputFile=".\Release/Occlusion.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
+				GenerateDebugInformation="TRUE"
 				SubSystem="1"
 				TargetMachine="1"/>
 			<Tool
