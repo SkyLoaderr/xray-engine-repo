@@ -259,7 +259,10 @@ public:
 	int							LL_PartID		(LPCSTR B);
 
 	IC CBoneInstance&			LL_GetInstance	(int bone_id)
-	{	return bone_instances[bone_id];	}
+	{
+		VERIFY((bone_id>=0)&&(bone_id<LL_BoneCount())); 
+		return bone_instances[bone_id];	
+	}
 	IC int						LL_BoneRoot		()
 	{	return iRoot; }
 	IC int						LL_BoneCount	()
@@ -267,10 +270,11 @@ public:
 
 	Fmatrix&					LL_GetTransform	(int bone_id)
 	{
-		return bone_instances[bone_id].mTransform; 
+		return LL_GetInstance(bone_id).mTransform; 
 	}
 	IC Fobb&					LL_GetBox		(int bone_id)
 	{
+		VERIFY((bone_id>=0)&&(bone_id<LL_BoneCount())); 
 		return (*bones)[bone_id]->obb;
 	}
 
