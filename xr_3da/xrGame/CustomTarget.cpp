@@ -38,31 +38,12 @@ void CCustomTarget::UpdateCL			()
 {
 	inherited::UpdateCL();
 }
-/*
-void CCustomTarget::OnEvent				()
-{
-	inherited::OnVisible();
-}
-*/
+
 void CCustomTarget::OnH_A_Chield		()
 {
 	inherited::OnH_A_Chield		();
 	setVisible					(false);
 	setEnabled					(false);
-
-	if (Local()) 
-	{
-		NET_Packet		P;
-
-		switch (GAME)
-		{
-		case GAME_ASSAULT:
-			{
-				u_EventGen		(P,GEG_ASSAULT_ACOMPLISHED,ID());
-				u_EventSend		(P);
-			}
-		}
-	}
 }
 void CCustomTarget::OnH_B_Independent	()
 {

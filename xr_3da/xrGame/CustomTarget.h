@@ -13,7 +13,6 @@ public:
 	virtual void			net_Import			(NET_Packet& P);	// import from server
 	virtual void			Update				(DWORD dt);
 	virtual void			UpdateCL			();
-//	virtual void			OnEvent				(NET_Packet& P, u16 type);
 	virtual void			OnH_A_Chield		();
 	virtual void			OnH_B_Independent	();
 
