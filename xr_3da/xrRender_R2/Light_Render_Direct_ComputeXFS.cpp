@@ -18,12 +18,8 @@ void CLight_Render_Direct::compute_xfs	(u32 m_phase, light* L)
 		L_right.crossproduct		(L_up,L_dir);			L_right.normalize	();
 		L_up.crossproduct			(L_dir,L_right);		L_up.normalize		();
 	}
-
 	L_pos.set						(L->position);
-	L->X.S.view.build_camera_dir	(L_pos,L_dir,L_up);
-	L->X.S.project.build_projection	(L->cone + deg2rad(2.5f),1.f,SMAP_near_plane,L->range+EPS_S);
-	L->X.S.combine.mul				(L->X.S.project,L->X.S.view);
-
+	
 	// 
 	L->X.S.posX	= L->X.S.posY	= 0;
 	L->X.S.size					= SMAP_adapt_max;
@@ -53,9 +49,21 @@ void CLight_Render_Direct::compute_xfs	(u32 m_phase, light* L)
 	float	factor3				= powf	(sizefactor,1.f/4.f);		// this shouldn't make much difference
 	float	factor				= ps_r2_ls_squality * factor0 * factor1 * factor2 * factor3;
 	
-	// 
+	// final size calc
 	L->X.S.size					= iFloor( factor * SMAP_adapt_optimal );
 	if (L->X.S.size<SMAP_adapt_min)		L->X.S.size	= SMAP_adapt_min;
 	if (L->X.S.size>SMAP_adapt_max)		L->X.S.size	= SMAP_adapt_max;
-	// Msg		("%8X : factor(%f), size(%d)",u32(L),factor,L->X.S.size);
+
+	// make N pixel border
+	L->X.S.view.build_camera_dir	(L_pos,L_dir,L_up);
+	float	n			= 3.6f						;
+	float	x			= float(L->X.S.size)		;
+	float	alpha		= L->cone/2					;
+	float	tan_beta	= (x+2*n)*tanf(alpha) / x	;
+	//float	g_alpha		= 2*rad2deg		(alpha);
+	//float	g_beta		= 2*rad2deg		(atanf(tan_beta));
+	//Msg				("x(%f) : a(%f), b(%f)",x,g_alpha,g_beta);
+	L->X.S.project.build_projection_HAT	(tan_beta, 1.f,SMAP_near_plane,L->range+EPS_S);
+	L->X.S.combine.mul					(L->X.S.project,L->X.S.view);
 }
+
