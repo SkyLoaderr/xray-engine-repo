@@ -148,6 +148,7 @@ function motivator_binder:use_callback(obj, who)
 end
 
 function motivator_binder:stalker_death_impulse(victim, who)
+	--[[
 	local actor_pos = utils.vector_copy_by_val(who:position())
 	local npc_pos = victim:position()
 
@@ -166,6 +167,20 @@ function motivator_binder:stalker_death_impulse(victim, who)
 	h.impulse = 2000
 	h.type = hit.wound
 	victim:hit(h)
+	--]]
+	
+	local actor_pos = utils.vector_copy_by_val(who:position())
+	local npc_pos = victim:position()
+
+	if actor_pos.y >= npc_pos.y - 3.0 then
+		-- Если игрок несущественно ниже, или выше - не давать толчек
+		return
+	end
+	actor_pos.y = npc_pos.y + 1.0
+	local pshell = victim:get_physics_shell()
+	local dir = actor_pos:sub(npc_pos)
+	local constant = 5000
+	pshell:apply_force(constant * dir.x, constant * dir.y, constant * dir.z)
 end
 
 function motivator_binder:update(delta)
