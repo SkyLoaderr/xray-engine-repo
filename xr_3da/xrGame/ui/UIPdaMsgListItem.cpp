@@ -39,10 +39,16 @@ void CUIPdaMsgListItem::Init(int x, int y, int width, int height)
 	UIIcon.ClipperOn();
 
 	AttachChild(&UIName);
-	xml_init.InitStatic(uiXml, "static", 0, &UIName);
+	if(uiXml.NavigateToNode("name_static",0))
+		xml_init.InitStatic(uiXml, "name_static", 0, &UIName);
+	else
+	{
+		UIName.Show(false);
+		UIName.Enable(false);
+	}
 	
 	AttachChild(&UIMsgText);
-	xml_init.InitStatic(uiXml, "static", 1, &UIMsgText);
+	xml_init.InitStatic(uiXml, "text_static", 0, &UIMsgText);
 }
 void CUIPdaMsgListItem::Update()
 {
