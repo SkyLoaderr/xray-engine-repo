@@ -154,7 +154,7 @@ function action_follow:execute ()
     if db.storage[self.st.leader_id].active_section ~= nil then    
        printf ("!_!FOLLOWER %s, LEADER SECTION %s, LEADER NEW SECTION %s", self.object:name (), self.st.leader_section, db.storage[self.st.leader_id].active_section)
     else   
-       printf ("!_!FOLLOWER %s, LEADER SECTION %s, LEADER NEW SECTION nil", self.object:name (), self.st.leader_section)
+       printf ("!_!FOLLOWER %s, LEADER SECTION %s, LEADER NEW SECTION NULL", self.object:name (), self.st.leader_section)
     end       
     
     if xr_logic.try_switch_to_another_section (self.object, self.st, db.actor) then
