@@ -57,7 +57,7 @@ void	CBlender_Compile::r2_Sampler	(LPCSTR name, LPCSTR texture, u32 address, u32
 {
 	// Find index
 	R_constant*	C			= ctable.get(name);
-	R_ASSERT				(C);
+	if (0==C)				return;
 	R_ASSERT				(C->type == RC_sampler);
 	u32 stage				= C->samp.index;
 	R_ASSERT				(stage<16);
