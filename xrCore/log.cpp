@@ -18,8 +18,10 @@ void FlushLog			()
 		logCS.Enter			();
         IWriter *f			= FS.w_open(logFName);
         if (f) {
-            for (u32 it=0; it<LogFile.size(); it++)
-                f->w_string	(*(LogFile[it]));
+            for (u32 it=0; it<LogFile.size(); it++)	{
+				LPCSTR		s	= *(LogFile[it]);
+				f->w_string	(s?s:"");
+			}
             FS.w_close		(f);
         }
 		logCS.Leave			();

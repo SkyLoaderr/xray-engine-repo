@@ -94,27 +94,29 @@ void CConsole::OnRender	()
 	float ypos=fMaxY-LDIST-LDIST;
 	for (int i=LogFile.size()-1-scroll_delta; i>=0; i--) {
 		ypos-=LDIST;
-		if (ypos<-1.f) break;
+		if (ypos<-1.f)	break;
+		LPCSTR			ls = *LogFile[i];
+		if	(0==ls)		ls = "";
 		switch (LogFile[i][0]) {
 		case '~':
 			pFont->SetColor(color_rgba(0  ,0  ,255, 255));
-			pFont->Out  (-1.f,ypos,"%s",&(*LogFile[i])[2]);
+			pFont->Out  (-1.f,ypos,"%s",&ls[2]);
 			break;
 		case '!':
 			pFont->SetColor(color_rgba(255,0  ,0  , 255));
-			pFont->Out  (-1.f,ypos,"%s",&(*LogFile[i])[2]);
+			pFont->Out  (-1.f,ypos,"%s",&ls[2]);
 			break;
 		case '*':
 			pFont->SetColor(color_rgba(128,128,128, 255));
-			pFont->Out  (-1.f,ypos,"%s",&(*LogFile[i])[2]);
+			pFont->Out  (-1.f,ypos,"%s",&ls[2]);
 			break;
 		case '-':
 			pFont->SetColor(color_rgba(0  ,255,0  , 255));
-			pFont->Out  (-1.f,ypos,"%s",&(*LogFile[i])[2]);
+			pFont->Out  (-1.f,ypos,"%s",&ls[2]);
 			break;
 		default:
 			pFont->SetColor(color_rgba(255,255,255, 255));
-			pFont->Out  (-1.f,ypos,"%s",*LogFile[i]);
+			pFont->Out  (-1.f,ypos,"%s",ls);
 		}
 	}
 	pFont->OnRender();
