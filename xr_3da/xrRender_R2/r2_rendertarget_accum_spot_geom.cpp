@@ -21,7 +21,7 @@ Fvector du_cone_vertices[DU_CONE_NUMVERTEX]=
 	0.4619f,   -0.1913f, 1.0000f,
 	0.0000f,   0.0000f,	 1.0000f+EPS_L
 };
-WORD du_cone_faces[DU_CONE_NUMFACES*3]=
+u16 du_cone_faces[DU_CONE_NUMFACES*3]=
 {
 	0,	2,	1,
 	0,	3,	2,

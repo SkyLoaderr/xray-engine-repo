@@ -10,7 +10,7 @@ void	CBlender_deffer_model::Save	(	IWriter& fs )
 {
 	IBlender::Save	(fs);
 }
-void	CBlender_deffer_model::Load	(	IReader& fs, WORD version )
+void	CBlender_deffer_model::Load	(	IReader& fs, u16 version )
 {
 	IBlender::Load	(fs,version);
 }
