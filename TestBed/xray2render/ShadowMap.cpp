@@ -882,21 +882,17 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 	D3DXVec3Normalize						(&vLightDir, &vLightDir);
 
 	cc.set									(s_Light_Direct_smap.constants.get("light_direction"),	vLightDir.x,vLightDir.y,vLightDir.z,0	);
-	cc.set									(s_Light_Direct_smap.constants.get("light_color"),		.3f,		.3f,		1.,			.9	);
+	cc.set									(s_Light_Direct_smap.constants.get("light_color"),		.3f/2,		.3f/2,		1./2,		.9/2);
 	cc.set									(s_Light_Direct_smap.constants.get("light_xform"),		*(Fmatrix*)&dm_model2world2view2projection_light	);
 
 	R_constant*	C							= s_Light_Direct_smap.constants.get("jitter");
 	Fvector4 J; float scale					= (1.f / SHADOW_MAP_SIZE)/27.f;
-	J.set(11,0,0);	J.sub(11); J.div(22); J.mul(scale);	cc.seta	(C,0,J.x,J.y,0,0);
-	J.set(19,3,0);	J.sub(11); J.div(22); J.mul(scale);	cc.seta	(C,1,J.x,J.y,0,0);
-	J.set(22,11,0); J.sub(11); J.div(22); J.mul(scale);	cc.seta	(C,2,J.x,J.y,0,0);
-	J.set(19,19,0); J.sub(11); J.div(22); J.mul(scale);	cc.seta	(C,3,J.x,J.y,0,0);
-
-	J.set(9,7,0);	J.sub(11); J.div(22); J.mul(scale);	cc.seta	(C,4,J.x,J.y,0,0);
-	J.set(15,9,0);	J.sub(11); J.div(22); J.mul(scale);	cc.seta	(C,5,J.x,J.y,0,0);
-	J.set(13,15,0); J.sub(11); J.div(22); J.mul(scale);	cc.seta	(C,6,J.x,J.y,0,0);
-	J.set(7,13,0);	J.sub(11); J.div(22); J.mul(scale);	cc.seta	(C,7,J.x,J.y,0,0);
-
+	J.set(21, 2,  33, 2 );	J.sub(27); J.mul(scale); cc.seta	(C,0,J.x,J.y,J.w,J.z);
+	J.set(9,  9,  45, 9 );	J.sub(27); J.mul(scale); cc.seta	(C,1,J.x,J.y,J.w,J.z);
+	J.set(20, 12, 34, 12);	J.sub(27); J.mul(scale); cc.seta	(C,2,J.x,J.y,J.w,J.z);
+	J.set(12, 20, 27, 20);	J.sub(27); J.mul(scale); cc.seta	(C,3,J.x,J.y,J.w,J.z);
+	J.set(42, 20, 2,  21);	J.sub(27); J.mul(scale); cc.seta	(C,4,J.x,J.y,J.w,J.z);
+	J.set(52, 21, 20, 27);	J.sub(27); J.mul(scale); cc.seta	(C,5,J.x,J.y,J.w,J.z);
 	cc.flush								(m_pd3dDevice);
 
 	// Blend mode - directional light comes first - means no blending
@@ -905,6 +901,25 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 	// Render Quad
 	m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
+
+	// Second part
+	J.set(34, 27, 2,  33);	J.sub(27); J.mul(scale); cc.seta	(C,0,J.x,J.y,J.w,J.z);
+	J.set(52, 33, 12, 34);	J.sub(27); J.mul(scale); cc.seta	(C,1,J.x,J.y,J.w,J.z);
+	J.set(27, 34, 42, 34);	J.sub(27); J.mul(scale); cc.seta	(C,2,J.x,J.y,J.w,J.z);
+	J.set(20, 42, 34, 42);	J.sub(27); J.mul(scale); cc.seta	(C,3,J.x,J.y,J.w,J.z);
+	J.set(9,  45, 45, 45);	J.sub(27); J.mul(scale); cc.seta	(C,4,J.x,J.y,J.w,J.z);
+	J.set(21, 52, 33, 52);	J.sub(27); J.mul(scale); cc.seta	(C,5,J.x,J.y,J.w,J.z);
+	cc.flush								(m_pd3dDevice);
+
+	// Blend mode - directional light comes first - means no blending
+	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, TRUE);
+	m_pd3dDevice->SetRenderState			(D3DRS_SRCBLEND,	D3DBLEND_ONE);
+	m_pd3dDevice->SetRenderState			(D3DRS_DESTBLEND,	D3DBLEND_ONE);
+
+	// Render Quad
+	m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
+	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
+	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
 
 	// Cleanup
 	m_pd3dDevice->SetTexture				(0, NULL);

@@ -17,6 +17,12 @@ public:
 	IC void 		set(T _x, T _y, T _z, T _w=1)		{ x=_x; y=_y; z=_z; w=_w;		}
 	IC void 		set(const Self& v)					{ x=v.x; y=v.y; z=v.z; w=v.w;	}
 
+	IC void 		sub(T _x, T _y, T _z, T _w=1)		{ x-=_x; y-=_y; z-=_z; w-=_w;	}
+	IC void 		sub(T _a)							{ x-=_a; y-=_a; z-=_a; w-=_a;	}
+
+	IC void 		mul(T _x, T _y, T _z, T _w=1)		{ x*=_x; y*=_y; z*=_z; w*=_w;	}
+	IC void 		mul(T _a)							{ x*=_a; y*=_a; z*=_a; w*=_a;	}
+
 	IC BOOL 		similar(const Self& v, T E=EPS_L)	{ return _abs(x-v.x)<E && _abs(y-v.y)<E && _abs(z-v.z)<E && _abs(w-v.w)<E;};
 };
 
