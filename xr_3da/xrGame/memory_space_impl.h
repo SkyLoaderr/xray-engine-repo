@@ -25,7 +25,7 @@ IC	void CObjectParams<T>::fill				(const T *game_object)
 {
 	m_orientation			= orientation(game_object);
 	m_level_vertex_id		= game_object->level_vertex_id();
-	if (ai().level_graph().valid_vertex_id(m_level_vertex_id) && !ai().level_graph().inside(m_level_vertex_id,game_object->Position())) {
+	if (ai().get_level_graph() && ai().level_graph().valid_vertex_id(m_level_vertex_id) && !ai().level_graph().inside(m_level_vertex_id,game_object->Position())) {
 		m_position			= ai().level_graph().vertex_position(m_level_vertex_id);
 		return;
 	}
