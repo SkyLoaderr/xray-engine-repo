@@ -45,6 +45,10 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 	*/
 	if (mstate_wf&mcLookout)	mstate_real		|= mstate_wf&mcLookout;
 	else						mstate_real		&= ~mcLookout;
+	
+	if (mstate_real&(mcJump|mcFall|mcLanding|mcLanding2))
+		mstate_real		&= ~mcLookout;
+
 	// закончить приземление
 	if (mstate_real&(mcLanding|mcLanding2)){
 		m_fLandingTime		-= dt;
