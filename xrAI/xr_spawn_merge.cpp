@@ -201,7 +201,7 @@ public:
 		}
 	};
 
-	void						Save(CFS_Memory &FS, u32 &dwOffset)
+	void						Save(CFS_Memory &FS)
 	{
 		NET_Packet		P;
 		u32				position;
@@ -267,10 +267,8 @@ void xrMergeSpawns()
 	tSpawnHeader.dwSpawnCount	= 0;
 	vector<CSpawn *>			tpLevels;
 	SLevel						tLevel;
-	
-	
+    LPCSTR						N,V;
 	R_ASSERT					(Ini->SectionExists("levels"));
-    LPCSTR N,V;
     for (u32 k = 0; Ini->ReadLINE("levels",k,&N,&V); k++) {
 		R_ASSERT				(Ini->SectionExists(N));
 		V						= Ini->ReadSTRING(N,"name");
@@ -285,7 +283,7 @@ void xrMergeSpawns()
 
 	Phase						("Searching for corresponding graph vertices");
 	for (u32 i=0, N = tpLevels.size(); i<N; i++)
-		tThreadManager.start(tpLevels[i]);
+		tThreadManager.start	(tpLevels[i]);
 		//tpLevels[i]->Execute();
 	tThreadManager.wait();
 	
@@ -295,11 +293,11 @@ void xrMergeSpawns()
 	
 	CFS_Memory					tMemoryStream;
 	tMemoryStream.write			(&tSpawnHeader,sizeof(tSpawnHeader));
-	for (u32 i=0, dwOffset = 0, N = tpLevels.size(); i<N; i++)
-		tpLevels[i]->Save(tMemoryStream,dwOffset);
-	tMemoryStream.SaveTo("game.spawn",0);
+	for (u32 i=0, N = tpLevels.size(); i<N; i++)
+		tpLevels[i]->Save		(tMemoryStream);
+	tMemoryStream.SaveTo		("game.spawn",0);
 
 	Phase						("Freeing resources being allocated");
 	for (u32 i=0, N = tpLevels.size(); i<N; i++)
-		xr_delete(tpLevels[i]);
+		xr_delete				(tpLevels[i]);
 }
