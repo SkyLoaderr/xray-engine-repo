@@ -86,6 +86,8 @@ void  CUIStatic::Draw()
 
 void CUIStatic::Update()
 {
+	inherited::Update();
+
 	// Вывод текста
 
 	if(m_str == NULL) return;
@@ -186,8 +188,6 @@ void CUIStatic::Update()
 		}
 	}
 //	GetFont()->OnRender();
-
-	inherited::Update();
 }
 
 void CUIStatic::WordOut()

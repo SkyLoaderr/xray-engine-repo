@@ -318,7 +318,7 @@ bool CUIButton::IsHighlightText()
 
 void  CUIButton::Update()
 {
-	CUIWindow::Update();
+	inherited::Update();
 }
 
 void CUIButton::UpdateTextAlign()
