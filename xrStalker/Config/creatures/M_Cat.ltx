@@ -155,7 +155,7 @@ satiety_health_v 	= 0.001	;0.03			;єтхышўхэшх чфюЁют№  яЁш єьхэ№°хэшш ёvЄюёЄш
 satiety_critical 	= -1.0		;0.25			;ъЁшЄшўхёъюх чэрўхэш  ёvЄюёЄш (т яЁюЎхэЄрї юЄ 0..1) ъюуфр чфюЁют№х эрўшрэрхЄ єьхэ№°рЄ№ё 
 radiation_health_v 	= 0.01	;0.006			;єьхэ№°хэшх чфюЁют№  яЁш тючфхщёЄтшш ЁрфшрЎшш
 morale_v		= 0.01					;ёъюЁюёЄ№ тюёёЄрэютыхэш  ьюЁрыш
-health_hit_part 	= 0.7		;0.8			;яЁюЎхэЄ їшЄр, єїюф шщ эр юЄэшьрэшх чфюЁют№ 
+health_hit_part 	= 1.0		;0.8			;яЁюЎхэЄ їшЄр, єїюф шщ эр юЄэшьрэшх чфюЁют№ 
 power_hit_part 		= 1.0		;0.9			;яЁюЎхэЄ їшЄр, єїюф шщ эр юЄэшьрэшх ёшыv
 
 burn_immunity = 1.0				;ъю¤ЇЇшЎшхэЄv шььєэшЄхЄр 
@@ -166,7 +166,7 @@ radiation_immunity = 0.01	;1.0
 telepatic_immunity = 1.0
 chemical_burn_immunity = 1.0
 explosion_immunity = 1.0
-fire_wound_immunity  = 0.5
+fire_wound_immunity  = 0.8
 
 ;открытые раны
 bleeding_v					= 0						;потеря крови при номинальной ране в секунду
@@ -230,6 +230,7 @@ attack_effector			= m_cat_attack_effector
 
 attack_params			= m_cat_attack_params
 step_params				= m_cat_step_params
+damage					= m_cat_damage
 
 LegsCount				= 4
 
@@ -238,10 +239,10 @@ LegsCount				= 4
 ;<hit_scale>	- коэфф. изменения хита (уменьшения здоровья) 
 ;<wound_scale>	- коэфф. изменения величины открытой раны
 
-default				= 1.00,	-1,	1.00
+default				= 1.00,	-1,	0.10
 
-bip01_pelvis 		= 0.01, -1, 0.5
-bip01_spine 		= 0.01, -1, 0.5
-bip01_spine1 		= 0.2, -1, 0.5
-bip01_neck 			= 0.5, -1, 0.5
-bip01_head 			= 10.0, -1, 10.00
+bip01_pelvis 		= 1, -1, 0.1
+bip01_spine 		= 1, -1, 0.1
+bip01_spine1 		= 1, -1, 0.1
+bip01_neck 			= 1.0, -1, 0.1
+bip01_head 			= 10.0, -1, 0.30
