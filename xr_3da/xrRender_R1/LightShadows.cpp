@@ -203,6 +203,7 @@ void CLightShadows::calculate	()
 			float		Lrange	= L.source->range;
 			if (L.source->flags.type==IRender_Light::DIRECT)
 			{
+				Msg			(" -direct- : %f",L.energy);
 				Lpos.mul	(L.source->direction,-100);
 				Lpos.add	(C.C);
 				Lrange		= 120;
