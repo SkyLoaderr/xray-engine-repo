@@ -48,6 +48,8 @@ public:
 	void*			CallbackParam;
 	
 	u32				dwFrame;
+
+	u32				mem_usage			(){ return sizeof(*this); }
 };
 typedef svector<CBlend*,MAX_BLENDED>	BlendList;
 typedef BlendList::iterator				BlendListIt;
@@ -62,6 +64,14 @@ public:
 	void				construct		();
 	void				blend_add		(CBlend* H);
 	void				blend_remove	(CBlend* H);
+
+	u32					mem_usage		()
+	{
+		u32 sz			= sizeof(*this);
+		for (BlendListIt it=Blend.begin(); it!=Blend.end(); it++)
+			sz			+= (*it)->mem_usage();
+		return			sz;
+	}
 };
 #pragma pack(pop)
 
@@ -171,7 +181,7 @@ public:
 
 	virtual u32					mem_usage			()
 	{
-		u32 sz					= CKinematics::mem_usage()+sizeof(*this);
+		u32 sz					= CKinematics::mem_usage()+sizeof(*this)+blend_instances->mem_usage();
 		return sz;
 	}
 };
