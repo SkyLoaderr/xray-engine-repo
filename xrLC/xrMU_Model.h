@@ -43,6 +43,7 @@ public:
 		void		prep_remove			(_face* F);
 		void		calc_normal_adjacent();
 
+		_vertex()			{ };
 		virtual ~_vertex()	{ };
 	};
 
@@ -73,6 +74,7 @@ public:
 		void			CalcCenter			( Fvector &C );
 		BOOL			RenderEqualTo		( Face *F );
 
+		_face()				{ };
 		virtual ~_face()	{ };
 	};
 public:
