@@ -15,7 +15,7 @@
 #pragma link "ExtBtn"          
 #pragma link "MxMenus"
 #pragma link "mxPlacemnt"
-#pragma resource "*.dfm"
+#pragma resource "*.dfm"     
 TfraBottomBar *fraBottomBar=0;
 //---------------------------------------------------------------------------
 __fastcall TfraBottomBar::TfraBottomBar(TComponent* Owner)
