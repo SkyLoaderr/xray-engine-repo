@@ -222,7 +222,7 @@ bool CUIXmlInit::InitListWnd(CUIXml& xml_doc, const char* path,
 	pWnd->SetTextColor(cl);
 
 	pWnd->Init(x,y, width,height,item_height);
-	pWnd->EnableActiveBackground(static_cast<bool>(active_background));
+	pWnd->EnableActiveBackground(!!active_background);
 
 	return true;
 }
