@@ -288,13 +288,14 @@ xrSE_DECLARE_END
 xrSE_DECLARE_BEGIN(xrSE_Detector,CALifeDynamicObject)
 xrSE_DECLARE_END
 
+#define LOCATION_TYPE_COUNT	4
+#define SECTION_HEADER		"location_"
 xrSE_DECLARE_BEGIN(xrGraphPoint,xrServerEntity)
 public:
 	xrGraphPoint();
 	string32				m_caConnectionPointName;
 	u32						m_tLevelID;
-	u32						m_tLocBaseID;
-	u32						m_tLocAuxID;
+	u8						m_tLocations[LOCATION_TYPE_COUNT];
 xrSE_DECLARE_END
 
 // 

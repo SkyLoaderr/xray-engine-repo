@@ -50,9 +50,8 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 //			return;
 //		}
 //		_GRAPH_ID			tGraphID		= tpALifeMonsterAbstract->m_tGraphID;
-//		AI::SGraphVertex	*tpaGraph		= Level().AI.m_tpaGraph;
-//		u16					wNeighbourCount = (u16)tpaGraph[tGraphID].tNeighbourCount;
-//		AI::SGraphEdge		*tpaEdges		= (AI::SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[tGraphID].dwEdgeOffset);
+//		u16					wNeighbourCount = (u16)m_tpaGraph[tGraphID].tNeighbourCount;
+//		SGraphEdge			*tpaEdges		= (SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[tGraphID].dwEdgeOffset);
 //		tpALifeMonsterAbstract->m_fDistanceFromPoint	= 0.0f;
 //		CALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CALifeHumanAbstract *>(tpALifeMonsterAbstract);
 //		if (tpALifeHumanAbstract) {
@@ -81,7 +80,7 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 //						case eTaskTypeSearchForItemCL :
 //						case eTaskTypeSearchForItemOL : {
 //							VERIFY(m_tpTerrain[tpALifeHuman->m_tpTasks[tpALifeHuman->m_dwCurTask]->m_tLocationID].size());
-//							if (Level().AI.m_tpaGraph[tpALifeHumanAbstract->m_tNextGraphID].tVertexType == tpALifeHuman->m_tpTasks[tpALifeHuman->m_dwCurTask]->m_tLocationID) {
+//							if (m_tpaGraph[tpALifeHumanAbstract->m_tNextGraphID].tVertexType == tpALifeHuman->m_tpTasks[tpALifeHuman->m_dwCurTask]->m_tLocationID) {
 //								tpALifeHumanAbstract->m_tTaskState = eTaskStateSearching;
 //								tpALifeHumanAbstract->m_fCurSpeed  = tpALifeHumanAbstract->m_fSearchSpeed;
 //							}

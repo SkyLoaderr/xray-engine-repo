@@ -987,8 +987,7 @@ void xrSE_Detector::FillProp		(LPCSTR pref, PropItemVec& items)
 
 
 #ifdef _EDITOR
-	static TokenValue4::ItemVec loc_base_ids;
-	static TokenValue4::ItemVec loc_aux_ids;
+	static TokenValue4::ItemVec locations[4];
 	static TokenValue4::ItemVec	level_ids;
 #endif
 
@@ -996,24 +995,30 @@ xrGraphPoint::xrGraphPoint() {
 	s_gameid					= GAME_DUMMY;
 	m_caConnectionPointName[0]	= 0;
 	m_tLevelID					= 0;
-	m_tLocBaseID				= 0;
-	m_tLocAuxID					= 0;
+	m_tLocations[0]				= 0;
+	m_tLocations[1]				= 0;
+	m_tLocations[2]				= 0;
+	m_tLocations[3]				= 0;
 }
 
 void xrGraphPoint::STATE_Read		(NET_Packet& P, u16 size)
 {
 	P.r_string	(m_caConnectionPointName);
 	P.r_u32		(m_tLevelID);
-	P.r_u32		(m_tLocBaseID);
-	P.r_u32		(m_tLocAuxID);
+	P.r_u8		(m_tLocations[0]);
+	P.r_u8		(m_tLocations[1]);
+	P.r_u8		(m_tLocations[2]);
+	P.r_u8		(m_tLocations[3]);
 };
 
 void xrGraphPoint::STATE_Write		(NET_Packet& P)
 {
 	P.w_string	(m_caConnectionPointName);
 	P.w_u32		(m_tLevelID);
-	P.w_u32		(m_tLocBaseID);
-	P.w_u32		(m_tLocAuxID);
+	P.w_u8		(m_tLocations[0]);
+	P.w_u8		(m_tLocations[1]);
+	P.w_u8		(m_tLocations[2]);
+	P.w_u8		(m_tLocations[3]);
 };
 void xrGraphPoint::UPDATE_Read		(NET_Packet& P)				{}
 void xrGraphPoint::UPDATE_Write		(NET_Packet& P)				{}
@@ -1028,27 +1033,19 @@ void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
     	R_ASSERT2(Engine.FS.Exist(gm_name),"Couldn't find file 'game.ltx'");
 		Ini							= xr_new<CInifile>(gm_name);
     }
-    if(loc_base_ids.empty()){
-		R_ASSERT					(Ini->SectionExists("location_base"));
-        LPCSTR N,V;
-        for (u32 k = 0; Ini->ReadLINE("location_base",k,&N,&V); k++) {
-   			loc_base_ids.push_back	(TokenValue4::Item());
-            TokenValue4::Item& val	= loc_base_ids.back();
-            val.str					= V;
-            val.ID					= atoi(N);
-        }
-    }
-    
-	if(loc_aux_ids.empty()){
-        R_ASSERT					(Ini->SectionExists("location_aux"));
-        LPCSTR N,V;
-        for (u32 k = 0; Ini->ReadLINE("location_aux",k,&N,&V); k++) {
-   			loc_aux_ids.push_back	(TokenValue4::Item());
-            TokenValue4::Item& val	= loc_aux_ids.back();
-            val.str					= V;
-            val.ID					= atoi(N);
-        }
-    }
+    for (int i=0; i<LOCATION_TYPE_COUNT; i++)
+		if(m_tLocations[i].empty()){
+			string256					caSection, T;
+			strconcat					(caSection,SECTION_HEADER,itoa(i,T,10))
+			R_ASSERT					(Ini->SectionExists(caSection));
+			LPCSTR						N,V;
+			for (u32 k = 0; Ini->ReadLINE(caSection,k,&N,&V); k++) {
+   				m_tLocations[i].push_back(TokenValue4::Item());
+				TokenValue4::Item& val	= m_tLocations[i].back();
+				val.str					= V;
+				val.ID					= atoi(N);
+			}
+		}
     
 	if(level_ids.empty()){
 		R_ASSERT					(Ini->SectionExists("levels"));
@@ -1064,8 +1061,10 @@ void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
     }
     if (Ini)	xr_delete(Ini);
 	
-	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"Location\\Base"),			&m_tLocBaseID,			&loc_base_ids);
-	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"Location\\Auxilary"),		&m_tLocAuxID,			&loc_aux_ids);
+	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"Location\\1"),			&m_tLocations[0],			&locations[0]);
+	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"Location\\2"),			&m_tLocations[1],			&locations[1]);
+	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"Location\\3"),			&m_tLocations[2],			&locations[2]);
+	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"Location\\4"),			&m_tLocations[3],			&locations[3]);
 	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"Connection\\Level name"),	&m_tLevelID,			&level_ids);
 	PHelper.CreateText		(items,	PHelper.PrepareKey(pref,s_name,"Connection\\Point name"),	m_caConnectionPointName,sizeof(m_caConnectionPointName));
 }
