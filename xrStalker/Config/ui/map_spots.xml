@@ -304,7 +304,7 @@
 <!-- bar spots -->
 	<hunter's_rifle_spot x="0" y="0" width="32" height="32" alignment="c">
                 <texture x="96" y="128" width="32" height="32">ui\ui_icons_map</texture>
-        </hunters_rifle_spot>
+        </hunter's_rifle_spot>
 
 
 </map_spots>
