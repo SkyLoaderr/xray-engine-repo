@@ -633,6 +633,40 @@ SOURCE=.\OGF_Face_Save.cpp
 SOURCE=.\OGF_Face_Stripify.cpp
 # End Source File
 # End Group
+# Begin Group "- OLD -"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\xrHierrarhy.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrPVS.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrResolveMaterials.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrTesselate.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrUVmapping.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrVis.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\Build.cpp
@@ -668,11 +702,6 @@ SOURCE=.\xrDetailPatch.cpp
 # Begin Source File
 
 SOURCE=.\xrFlex2OGF.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrHierrarhy.cpp
-# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
@@ -720,16 +749,6 @@ SOURCE=.\xrPreOptimize.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\xrPVS.cpp
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrResolveMaterials.cpp
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
 SOURCE=.\xrSaveLights.cpp
 # End Source File
 # Begin Source File
@@ -747,21 +766,6 @@ SOURCE=.\xrSoftenLights.cpp
 # Begin Source File
 
 SOURCE=.\xrT_Junction.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrTesselate.cpp
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrUVmapping.cpp
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrVis.cpp
-# PROP Exclude_From_Build 1
 # End Source File
 # End Target
 # End Project
