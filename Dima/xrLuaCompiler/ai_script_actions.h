@@ -589,6 +589,8 @@ public:
 	{
 		SetBone				(caBoneName);
 		SetSound			(caSoundToPlay);		
+		m_tSoundPosition.set(0,0,0);
+		m_tSoundAngles.set	(0,0,0);
 		m_bCompleted		= false;
 		m_bLooped			= false;
 		m_tHeadAnimType		= head_anim_type;
