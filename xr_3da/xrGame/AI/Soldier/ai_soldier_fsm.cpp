@@ -23,6 +23,7 @@
 #define EYE_WEAPON_DELTA				(0*PI/30.f)
 #define TORSO_START_SPEED				PI_DIV_4
 #define DISTANCE_NEAR					0.f
+#define DISTANCE_TO_REACT				2.14f
 
 /**
 void CAI_Soldier::OnAttackFire()
@@ -1169,38 +1170,61 @@ void CAI_Soldier::OnSenseSomethingAlone()
 	if (iSoundIndex >= 0) {
 		m_iSoundIndex = iSoundIndex;
 		if ((tpaDynamicSounds[iSoundIndex].eSoundType & SOUND_TYPE_WEAPON) == SOUND_TYPE_WEAPON) {
-//			if ((tpaDynamicSounds[iSoundIndex].eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) {
-//				tHitDir.sub(tpaDynamicSounds[iSoundIndex].tSavedPosition,tpaDynamicSounds[iSoundIndex].tMySavedPosition);				
-//				tHitPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
-//				dwHitTime = tpaDynamicSounds[iSoundIndex].dwTime;
-//				GO_TO_NEW_STATE(aiSoldierPatrolHurt);
-//			}
-//			else {
-//				m_bStateChanged = false;
-//				GO_TO_PREV_STATE;
-				Fvector tCurrentPosition = vPosition;
-				tWatchDirection.sub(tpaDynamicSounds[iSoundIndex].tSavedPosition,tCurrentPosition);
-				if (tWatchDirection.magnitude() > EPS_L) {
-					tWatchDirection.normalize();
-					mk_rotation(tWatchDirection,r_torso_target);
-					r_target.yaw = r_torso_target.yaw;
-					ASSIGN_SPINE_BONE;
-				}
+			if ((tpaDynamicSounds[iSoundIndex].eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) {
+				tHitDir.sub(tpaDynamicSounds[iSoundIndex].tSavedPosition,tpaDynamicSounds[iSoundIndex].tMySavedPosition);
+				Fvector tTemp;
+				tTemp.sub(tpaDynamicSounds[iSoundIndex].tMySavedPosition,tpaDynamicSounds[iSoundIndex].tSavedPosition);
+				SRotation sRot;
+				mk_rotation(tTemp,sRot);
+				float fAngle,fAngle1;
+				if (fabsf(sRot.yaw - tpaDynamicSounds[iSoundIndex].tOrientation.yaw) <= PI + EPS_L)
+					fAngle = fabsf(sRot.yaw - tpaDynamicSounds[iSoundIndex].tOrientation.yaw);
+				else
+					fAngle = PI_MUL_2 - fabsf(sRot.yaw - tpaDynamicSounds[iSoundIndex].tOrientation.yaw);
 				
-				CHECK_IF_SWITCH_TO_NEW_STATE(fabsf(r_torso_target.yaw - r_torso_current.yaw) > PI_DIV_6,aiSoldierTurnOver)
+				if (fabsf(sRot.pitch - tpaDynamicSounds[iSoundIndex].tOrientation.pitch) <= PI + EPS_L)
+					fAngle1 = fabsf(sRot.pitch - tpaDynamicSounds[iSoundIndex].tOrientation.pitch);
+				else
+					fAngle1 = PI_MUL_2 - fabsf(sRot.pitch - tpaDynamicSounds[iSoundIndex].tOrientation.pitch);
 
-				vfInitSelector(SelectorPatrol,Squad,Leader);
-		
-				SelectorPatrol.m_tEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+				float fDistance = sinf(fAngle > fAngle1 ? fAngle : fAngle1)*tpaDynamicSounds[iSoundIndex].tMySavedPosition.distance_to(tpaDynamicSounds[iSoundIndex].tSavedPosition);
 
-				if (AI_Path.bNeedRebuild) {
-					vfBuildPathToDestinationPoint(0);
+				if (fDistance < DISTANCE_TO_REACT) {
+					tHitPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+					dwHitTime = tpaDynamicSounds[iSoundIndex].dwTime;
+					GO_TO_NEW_STATE(aiSoldierPatrolHurt);
 				}
 				else {
-					//SelectorFindEnemy.m_tLastEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
-					vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
+					m_bStateChanged = false;
+					GO_TO_PREV_STATE;
 				}
-//			}
+			}
+			else {
+				m_bStateChanged = false;
+				GO_TO_PREV_STATE;
+//				Fvector tCurrentPosition = vPosition;
+//				tWatchDirection.sub(tpaDynamicSounds[iSoundIndex].tSavedPosition,tCurrentPosition);
+//				if (tWatchDirection.magnitude() > EPS_L) {
+//					tWatchDirection.normalize();
+//					mk_rotation(tWatchDirection,r_torso_target);
+//					r_target.yaw = r_torso_target.yaw;
+//					ASSIGN_SPINE_BONE;
+//				}
+//				
+//				CHECK_IF_SWITCH_TO_NEW_STATE(fabsf(r_torso_target.yaw - r_torso_current.yaw) > PI_DIV_6,aiSoldierTurnOver)
+//
+//				vfInitSelector(SelectorPatrol,Squad,Leader);
+//		
+//				SelectorPatrol.m_tEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+//
+//				if (AI_Path.bNeedRebuild) {
+//					vfBuildPathToDestinationPoint(0);
+//				}
+//				else {
+//					//SelectorFindEnemy.m_tLastEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+//					vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
+//				}
+			}
 		}
 		else {
 			m_bStateChanged = false;
