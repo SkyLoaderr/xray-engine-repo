@@ -1307,6 +1307,15 @@
 					Name="Particles"
 					Filter="">
 					<File
+						RelativePath="ParticleGroup.cpp">
+					</File>
+					<File
+						RelativePath="ParticleGroup.h">
+					</File>
+					<File
+						RelativePath="ParticleGroup_Engine.cpp">
+					</File>
+					<File
 						RelativePath=".\psvisual.cpp">
 						<FileConfiguration
 							Name="Release|Win32">
@@ -1422,19 +1431,22 @@
 				Name="Particle system"
 				Filter="">
 				<File
-					RelativePath=".\PSLibrary.cpp">
+					RelativePath="PGObject.cpp">
 				</File>
 				<File
-					RelativePath=".\PSLibrary.h">
+					RelativePath="PGObject.h">
+				</File>
+				<File
+					RelativePath="PSLibrary.cpp">
+				</File>
+				<File
+					RelativePath="PSLibrary.h">
 				</File>
 				<File
 					RelativePath=".\PSObject.cpp">
 				</File>
 				<File
 					RelativePath=".\PSObject.h">
-				</File>
-				<File
-					RelativePath="PSRuntime.h">
 				</File>
 				<File
 					RelativePath=".\PSystem.cpp">

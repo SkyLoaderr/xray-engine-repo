@@ -7,6 +7,7 @@
 
 #pragma warning(disable:4995)
 #include <io.h>
+#include <direct.h>
 #include <fcntl.h>
 #include <sys\stat.h>
 #pragma warning(default:4995)
@@ -479,6 +480,42 @@ CLocatorAPI::files_it CLocatorAPI::file_find(LPCSTR fname)
     files_it I		= files.find(desc_f);
     xr_free			(desc_f.name);
 	return I;
+}
+
+void CLocatorAPI::dir_delete(LPCSTR path,LPCSTR nm)
+{
+	string512	fpath;
+	if (path&&path[0]) 	update_path(fpath,path,nm);
+    else				strcpy(fpath,nm);
+
+    files_set 	folders;
+    files_it I;
+	// remove files
+    I					= file_find(fpath);
+    if (I!=files.end()){
+        size_t base_len			= strlen(fpath);
+        for (; I!=files.end(); ){
+            files_it cur_item	= I;
+            const file& entry 	= *cur_item;
+            I					= cur_item; I++;
+            if (0!=strncmp(entry.name,fpath,base_len))	break;	// end of list
+			const char* end_symbol = entry.name+strlen(entry.name)-1;
+			if ((*end_symbol) !='\\'){
+		        const char* entry_begin = entry.name+base_len;
+		    	unlink		(entry.name);
+	        }else{
+            	folders.insert(entry);
+            }
+			files.erase		(cur_item);
+        }
+    }
+    // remove folders
+    files_set::reverse_iterator r_it = folders.rbegin();
+    for (;r_it!=folders.rend();r_it++){
+	    const char* end_symbol = r_it->name+strlen(r_it->name)-1;
+    	if ((*end_symbol) =='\\')
+        	_rmdir			(r_it->name);
+    }
 }
 
 void CLocatorAPI::file_delete(LPCSTR path, LPCSTR nm)

@@ -153,6 +153,8 @@ public:
 	const file*					exist			(LPSTR fn, LPCSTR path, LPCSTR name, LPCSTR ext);
 
 	files_it					file_find		(LPCSTR n);
+    void 						dir_delete		(LPCSTR path,LPCSTR nm);
+    void 						dir_delete		(LPCSTR full_path){dir_delete(0,full_path);}
     void 						file_delete		(LPCSTR path,LPCSTR nm);
     void 						file_delete		(LPCSTR full_path){file_delete(0,full_path);}
 	void 						file_copy		(LPCSTR src, LPCSTR dest);

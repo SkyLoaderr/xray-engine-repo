@@ -27,16 +27,21 @@ void CPSLibrary::OnCreate()
 void CPSLibrary::OnDestroy()
 {
     m_PSs.clear();
+	m_PGs.clear();
 }
 
 //----------------------------------------------------
 void CPSLibrary::OnDeviceCreate	()
 {
-	for (PS::PSIt it = m_PSs.begin(); it!=m_PSs.end(); it++)
-		it->m_CachedShader	= Device.Shader.Create(it->m_ShaderName,it->m_TextureName);
+	for (PS::PSIt s_it = m_PSs.begin(); s_it!=m_PSs.end(); s_it++)
+		s_it->m_CachedShader	= Device.Shader.Create(s_it->m_ShaderName,s_it->m_TextureName);
+	for (PS::PGIt g_it = m_PGs.begin(); g_it!=m_PGs.end(); g_it++)
+		(*g_it)->m_CachedShader	= Device.Shader.Create((*g_it)->m_ShaderName,(*g_it)->m_TextureName);
 }
 void CPSLibrary::OnDeviceDestroy()
 {
+	for (PS::PSIt it = m_PSs.begin(); it!=m_PSs.end(); it++)
+		Device.Shader.Delete(it->m_CachedShader);
 	for (PS::PSIt it = m_PSs.begin(); it!=m_PSs.end(); it++)
 		Device.Shader.Delete(it->m_CachedShader);
 }

@@ -67,7 +67,7 @@ public:
 	void			Load				(CInifile *pIni, char* section);
 	void			Load_Music			(CInifile* INI);
 
-	void			OnMove				();
+	void			OnFrame				();
 
 	void			RenderFirst			();
 	void			RenderLast			();

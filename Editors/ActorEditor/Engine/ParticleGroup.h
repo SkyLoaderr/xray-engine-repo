@@ -2,10 +2,12 @@
 #ifndef ParticleGroupH
 #define ParticleGroupH
 
+#include "FBasicVisual.h"
+
 // refs
 namespace PAPI{
-class Particle;
-class ParticleGroup;
+struct Particle;
+struct ParticleGroup;
 struct PAHeader;
 }
 
@@ -43,7 +45,7 @@ struct SFrame
     }
 };
 
-class CPGDef
+class ENGINE_API CPGDef
 {
 public:
     enum{
@@ -68,6 +70,8 @@ public:
 
     int					m_ActionCount;
     PAPI::PAHeader*		m_ActionList;
+
+	Shader*				m_CachedShader;
 #ifdef _PARTICLE_EDITOR
 public:
 	AnsiString			m_SourceText;
@@ -99,7 +103,7 @@ public:
 #endif
 };
 
-class CParticleGroup
+class ENGINE_API CParticleGroup: public IVisual
 {
 	friend class PFunction;
 	CPGDef*				m_Def;
@@ -108,8 +112,6 @@ class CParticleGroup
 
 	int					m_HandleGroup;
 	int					m_HandleActionList;
-
-    Shader*				m_Shader;
 protected:
 	BOOL 				SaveActionList		(IWriter& F);
 	BOOL 				LoadActionList		(IReader& F);
@@ -118,18 +120,18 @@ protected:
 public:
 						CParticleGroup		();
 	virtual 			~CParticleGroup		();
-	void	 			OnFrame				();
+	void	 			OnFrame				(u32 dt);
 
-	void	 			Render				();
 	void 				RenderEditor		();
+
+	u32					RenderTO			(FVF::TL* V);
+	virtual void		Render				(float LOD);
+	virtual void		Copy				(IVisual* pFrom);
 
     void 				OnDeviceCreate		();
     void 				OnDeviceDestroy		();
 
     void				UpdateParent		(const Fmatrix& m, const Fvector& velocity);
-
-//   	void 				Save				(IWriter& F);
-//   	BOOL 				Load				(IReader& F);
 
     BOOL				Compile				(CPGDef* def);
 

@@ -3,8 +3,8 @@
 #pragma hdrstop
 
 #include "ParticleGroup.h"
-#include "particles/papi.h"
-#include "particles/general.h"
+#include "papi.h"
+#include "general.h"
 
 using namespace PAPI;
 using namespace PS;
@@ -21,6 +21,7 @@ CPGDef::CPGDef()
     m_ActionCount		= 0;
     m_ActionList		= 0;
     m_MaxParticles		= 0;
+	m_CachedShader		= 0;
 }
 CPGDef::~CPGDef()
 {
@@ -160,12 +161,11 @@ void CPGDef::Save(IWriter& F)
 //------------------------------------------------------------------------------
 // class CParticleGroup
 //------------------------------------------------------------------------------
-CParticleGroup::CParticleGroup()
+CParticleGroup::CParticleGroup():IVisual()
 {
 	m_HandleGroup 		= pGenParticleGroups(1, 1);
     m_HandleActionList	= pGenActionLists();
-    m_Shader			= 0;
-    m_bPlaying			= TRUE;//FALSE;
+    m_bPlaying			= FALSE;
     m_Def				= 0;
 }
 CParticleGroup::~CParticleGroup()
@@ -177,13 +177,12 @@ CParticleGroup::~CParticleGroup()
 
 void CParticleGroup::OnDeviceCreate()
 {
-	if (m_Def&&m_Def->m_ShaderName&&m_Def->m_TextureName)
-    	m_Shader 		= Device.Shader.Create(m_Def->m_ShaderName,m_Def->m_TextureName);
+	hGeom				= Device.Shader.CreateGeom	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 }
 
 void CParticleGroup::OnDeviceDestroy()
 {
-	Device.Shader.Delete(m_Shader);
+	Device.Shader.DeleteGeom(hGeom);
 }
 
 void CParticleGroup::RefreshShader()
@@ -194,13 +193,13 @@ void CParticleGroup::RefreshShader()
 
 void CParticleGroup::UpdateParent(const Fmatrix& m, const Fvector& velocity)
 {
-    pSetActionListParenting(m_HandleActionList,m,velocity);
+	pSetActionListParenting(m_HandleActionList,m,velocity);
 }
 
-void CParticleGroup::OnFrame()
+void CParticleGroup::OnFrame(u32 dt)
 {
 	if (m_Def&&m_bPlaying){
-        pTimeStep			(Device.fTimeDelta);
+        pTimeStep			(float(dt)/1000.f);
         pCurrentGroup		(m_HandleGroup);
 
         // execute action list
@@ -210,42 +209,18 @@ void CParticleGroup::OnFrame()
         if (m_Def->m_Flags.is(CPGDef::flFramed))    		  		m_Def->pFrameInitExecute(pg);
         if (m_Def->m_Flags.is(CPGDef::flFramed|CPGDef::flAnimated))	m_Def->pAnimateExecute	(pg);
         //-move action
+		vis.box.invalidate	();
+		float p_size = 0.f;
         for(int i = 0; i < pg->p_count; i++){
-            Particle &m 	= pg->list[i];
+            Particle &m 	= pg->list[i]; 
             if (m.flags.is(Particle::DYING)){}
             if (m.flags.is(Particle::BIRTH))m.flags.set(Particle::BIRTH,FALSE);
+			vis.box.modify((Fvector&)m.pos);
+			if (m.size.x>p_size) p_size = m.size.x;
         }
+		vis.box.grow		(p_size);
+		vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
     }
-}
-
-void CParticleGroup::Render()
-{
-/*	// Get a pointer to the particles in gp memory
-	ParticleGroup *pg = _GetGroupPtr(m_HandleGroup);
-
-	if(pg == NULL)		return; // ERROR
-	if(pg->p_count < 1)	return;
-
-	Device.SetShader	(m_Shader);
-    Device.SetTransform	(D3DTS_WORLD,Fidentity);
-    CTLSprite 			m_Sprite;
-    for(int i = 0; i < pg->p_count; i++){
-        Particle &m = pg->list[i];
-
-        Fvector p;
-        Fcolor c;
-        p.set(m.pos.x,m.pos.y,m.pos.z);
-        c.set(m.color.x,m.color.y,m.color.z,m.alpha);
-		if (m_Flags.is(flFramed)){
-//        	||m_Flags.test(flAnimated)){
-			Fvector2 lt,rb;
-        	m_Animation.CalculateTC(m.frame,lt,rb);
-			m_Sprite.Render(p,c.get(),m.size.x,m.rot.x,lt,rb);
-        }else
-			m_Sprite.Render(p,c.get(),m.size.x,m.rot.x);
-//		DU::DrawCross(p,m.size.x,m.size.y,m.size.z,m.size.x,m.size.y,m.size.z,c.get(),false);
-    }
-*/
 }
 
 BOOL CParticleGroup::Compile(CPGDef* def)
@@ -272,7 +247,8 @@ BOOL CParticleGroup::Compile(CPGDef* def)
         // end append action
         pEndActionList();
     }
-
+	hShader 		= def->m_CachedShader;
+	RefreshShader	();
 	return TRUE;
 }
 

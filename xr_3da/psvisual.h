@@ -2,7 +2,7 @@
 #define _INCDEF_PSVisual_H_
 
 #include "FBasicVisual.h"
-#include "PSRuntime.h"
+#include "ParticleSystem.h"
 
 #define MAX_PARTICLES	1024
 
@@ -18,13 +18,13 @@ public:
 	virtual				~CPSVisual		();
 
 	// Visual
-	u32				RenderTO		(FVF::TL* V);
+	u32					RenderTO		(FVF::TL* V);
 	virtual void		Render			(float LOD);
 	virtual void		Copy			(IVisual* pFrom);
 
 	// Functionality
 	void				Update			(u32 dt);
-	void				Compile			(PS::SDef_RT* source, PS::SEmitter* E);
+	void				Compile			(PS::SDef* source, PS::SEmitter* E);
 	IC int				ParticleCount	()	{ return m_Particles.size();}
 	IC void				Stop			()	{ m_Particles.clear();      }
 };

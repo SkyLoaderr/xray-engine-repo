@@ -7,7 +7,7 @@
 #include "ParticleSystem.h"
 #include "ParticleGroup.h"
 
-class CPSLibrary{
+class ENGINE_API CPSLibrary{
     PS::PSVec			m_PSs;
     bool 				Load			(LPCSTR nm);
     void				Save			(LPCSTR nm);

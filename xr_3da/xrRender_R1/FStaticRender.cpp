@@ -37,9 +37,15 @@ void					CRender::model_Delete			(IRender_DetailModel* & F)
 }
 IVisual*				CRender::model_CreatePS			(LPCSTR name, PS::SEmitter* E)	
 { 
-	PS::SDef_RT*	source	= PSystems.FindPS	(name);
+	PS::SDef*	source		= PSystems.FindPS	(name);
 	VERIFY					(source);
 	return Models.CreatePS	(source,E);
+}
+IVisual*				CRender::model_CreatePG			(LPCSTR name)	
+{ 
+	PS::CPGDef*	source		= PSystems.FindPG	(name);
+	VERIFY					(source);
+	return Models.CreatePG	(source);
 }
 
 int						CRender::getVisualsCount		()					{ return Visuals.size();								}
@@ -694,7 +700,7 @@ void CRender::OnDeviceCreate	()
 	L_Shadows.OnDeviceCreate	();
 	L_Projector.OnDeviceCreate	();
 
-	PSystems.xrStartUp			();
+	PSystems.OnCreate			();
 	PSystems.OnDeviceCreate		();
 	level_Load					();
 	L_Dynamic.Initialize		();
@@ -714,7 +720,7 @@ void CRender::OnDeviceDestroy	()
 	L_Dynamic.Destroy			();
 	level_Unload				();
 	PSystems.OnDeviceDestroy	();
-	PSystems.xrShutDown			();
+	PSystems.OnDestroy			();
 
 	L_Projector.OnDeviceDestroy	();
 	L_Shadows.OnDeviceDestroy	();

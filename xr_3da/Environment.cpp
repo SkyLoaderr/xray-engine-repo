@@ -141,7 +141,7 @@ void CEnvironment::Music_Play(int id)
 	*/
 }
 
-void CEnvironment::OnMove()
+void CEnvironment::OnFrame()
 {
 	// ******************** Viewport params
 	// float src = 10*Device.fTimeDelta;	clamp(src,0.f,1.f);

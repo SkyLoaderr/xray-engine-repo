@@ -5,6 +5,7 @@
 
 #pragma warning(disable:4995)
 #include <io.h>
+#include <direct.h>
 #include <fcntl.h>
 #include <sys\stat.h>
 #pragma warning(default:4995)
@@ -24,7 +25,7 @@ void VerifyPath(LPCSTR path)
 			continue;
 		Memory.mem_copy( tmp, path, i );
 		tmp[i] = 0;
-		CreateDirectory( tmp, 0 );
+        _mkdir(tmp);
 	}
 }
 void* __stdcall FileDownload(LPCSTR fn, u32* pdwSize)

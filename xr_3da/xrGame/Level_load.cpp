@@ -3,6 +3,7 @@
 #include "LevelGameDef.h"
 #include "ai_space.h"
 #include "ai\ai_selector_template.h"
+#include "..\PGObject.h"
 
 void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 {
@@ -249,6 +250,23 @@ BOOL CLevel::Load_GameSpecific_Before()
 
 BOOL CLevel::Load_GameSpecific_After()
 {
+	// loading static particles
+	{
+		IRender_Sector* S;
+		CPGObject* pStaticPG;
+		Fvector p0				= {2,1,2};
+		S						= ::Render->detectSector	(p0);
+		pStaticPG				= xr_new<CPGObject>("test",S,false);
+		pStaticPG->play_at_pos	(p0);
+		m_StaticParticles.push_back(pStaticPG);
+/*
+		Fvector p1				= {2,1,2};
+		S						= ::Render->detectSector	(p1);
+		pStaticPG				= xr_new<CPGObject>("test",S,false);
+		pStaticPG->play_at_pos	(p1);
+		m_StaticParticles.push_back(pStaticPG);
+*/	}
+
 	return TRUE;
 }
 

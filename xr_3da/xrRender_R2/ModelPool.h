@@ -31,7 +31,8 @@ public:
 	void				Instance_Register	(LPCSTR N, IVisual* V);
 	IVisual*			Instance_Find		(LPCSTR N);
 
-	IVisual*			CreatePS			(PS::SDef_RT* source, PS::SEmitter* E);
+	IVisual*			CreatePS			(PS::SDef* source, PS::SEmitter* E);
+	IVisual*			CreatePG			(PS::CPGDef* source);
 	IVisual*			Create				(LPCSTR name);
 	IVisual*			Create				(LPCSTR name, IReader* data);
 	void				Delete				(IVisual* &V);

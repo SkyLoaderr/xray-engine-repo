@@ -11,6 +11,7 @@
 #include "..\fhierrarhyvisual.h"
 #include "..\bodyinstance.h"
 #include "..\PSVisual.h"
+#include "..\ParticleGroup.h"
 #include "..\fcached.h"
 #include "..\flod.h"
 #include "..\ftreevisual.h"
@@ -41,6 +42,9 @@ IVisual*	CModelPool::Instance_Create(u32 type)
 		break;
 	case MT_PARTICLE_SYSTEM:
 		V	= xr_new<CPSVisual> ();
+		break;
+	case MT_PARTICLE_GROUP:
+		V	= xr_new<PS::CParticleGroup> ();
 		break;
 	case MT_CACHED:
 		V	= xr_new<FCached> ();
@@ -201,10 +205,17 @@ void	CModelPool::Delete(IVisual* &V)
 	xr_delete			(V);
 }
 
-IVisual* CModelPool::CreatePS	(PS::SDef_RT* source, PS::SEmitter* E)
+IVisual* CModelPool::CreatePS	(PS::SDef* source, PS::SEmitter* E)
 {
 	CPSVisual* V	= (CPSVisual*)Instance_Create(MT_PARTICLE_SYSTEM);
 	V->Compile		(source,E);
+	return V;
+}
+
+IVisual* CModelPool::CreatePG	(PS::CPGDef* source)
+{
+	PS::CParticleGroup* V	= (PS::CParticleGroup*)Instance_Create(MT_PARTICLE_GROUP);
+	V->Compile		(source);
 	return V;
 }
 

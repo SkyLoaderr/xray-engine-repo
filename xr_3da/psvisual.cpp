@@ -6,7 +6,6 @@
 
 #include "render.h"
 #include "PSVisual.h"
-#include "PSRuntime.h"
 #include "PSLibrary.h"
 
 CPSVisual::CPSVisual():IVisual()
@@ -268,7 +267,7 @@ u32 CPSVisual::RenderTO	(FVF::TL* dest)
 }
 
 //----------------------------------------------------
-void CPSVisual::Compile(PS::SDef_RT* source, PS::SEmitter* E)
+void CPSVisual::Compile(PS::SDef* source, PS::SEmitter* E)
 {
 	VERIFY				(source);
     hShader				= source->m_CachedShader;
