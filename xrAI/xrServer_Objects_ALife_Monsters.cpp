@@ -22,7 +22,7 @@
 #ifndef _EDITOR
 #ifndef AI_COMPILER
 	#include "ai_space.h"
-	#include "ai_primary_funcs.h"
+	#include "ef_storage.h"
 #endif
 #endif
 
@@ -114,7 +114,7 @@ void CSE_ALifeTrader::STATE_Write			(NET_Packet &tNetPacket)
 		tNetPacket.w_u32		(m_tpOrderedArtefacts.size());
 		ARTEFACT_TRADER_ORDER_PAIR_IT	I = m_tpOrderedArtefacts.begin();
 		ARTEFACT_TRADER_ORDER_PAIR_IT	E = m_tpOrderedArtefacts.end();
-		for ( ; I != E; I++) {
+		for ( ; I != E; ++I) {
 			tNetPacket.w_string	((*I).second->m_caSection);
 			tNetPacket.w_u32	((*I).second->m_dwTotalCount);
 			save_data			((*I).second->m_tpOrders,tNetPacket);
@@ -124,7 +124,7 @@ void CSE_ALifeTrader::STATE_Write			(NET_Packet &tNetPacket)
 		tNetPacket.w_u32		(m_tpSupplies.size());
 		TRADER_SUPPLY_IT		I = m_tpSupplies.begin();
 		TRADER_SUPPLY_IT		E = m_tpSupplies.end();
-		for ( ; I != E; I++) {
+		for ( ; I != E; ++I) {
 			tNetPacket.w_string	((*I).m_caSections);
 			tNetPacket.w_u32	((*I).m_dwCount);
 			tNetPacket.w_float	((*I).m_fMinFactor);
@@ -143,7 +143,7 @@ void CSE_ALifeTrader::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 	if (m_wVersion > 29) {
 		m_tpOrderedArtefacts.clear();
 		u32							l_dwCount	= tNetPacket.r_u32();
-		for (int i=0 ; i<(int)l_dwCount; i++) {
+		for (int i=0 ; i<(int)l_dwCount; ++i) {
 			SArtefactTraderOrder	*l_tpArtefactOrder = xr_new<SArtefactTraderOrder>();
 			tNetPacket.r_string	(l_tpArtefactOrder->m_caSection);
 			tNetPacket.r_u32	(l_tpArtefactOrder->m_dwTotalCount);
@@ -155,7 +155,7 @@ void CSE_ALifeTrader::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 		m_tpSupplies.resize		(tNetPacket.r_u32());
 		TRADER_SUPPLY_IT		I = m_tpSupplies.begin();
 		TRADER_SUPPLY_IT		E = m_tpSupplies.end();
-		for ( ; I != E; I++) {
+		for ( ; I != E; ++I) {
 			tNetPacket.r_string	((*I).m_caSections);
 			tNetPacket.r_u32	((*I).m_dwCount);
 			tNetPacket.r_float	((*I).m_fMinFactor);
@@ -199,7 +199,7 @@ void CSE_ALifeTrader::FillProp				(LPCSTR _pref, PropItemVec& items)
     
 	TRADER_SUPPLY_IT			B = m_tpSupplies.begin(), I = B;
 	TRADER_SUPPLY_IT			E = m_tpSupplies.end();
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
     	S.sprintf				("Slot #%d",I-B+1).c_str();
 		V=PHelper.CreateEntity	(items, FHelper.PrepareKey(pref.c_str(),S.c_str(),"Sections"), 	(*I).m_caSections, sizeof((*I).m_caSections));
         V->Owner()->subitem		= 8;
@@ -229,7 +229,7 @@ CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeSche
 	m_faWeights					= (float*)xr_malloc(m_wItemCount*sizeof(float));
 	m_cppArtefactSections		= (string64*)xr_malloc(m_wItemCount*sizeof(string64));
 	string512					l_caBuffer;
-	for (u16 i=0; i<m_wItemCount; i++) {
+	for (u16 i=0; i<m_wItemCount; ++i) {
 		strcpy					(m_cppArtefactSections[i],_GetItem(l_caParameters,i << 1,l_caBuffer));
 		m_faWeights[i]			= (float)atof(_GetItem(l_caParameters,(i << 1) | 1,l_caBuffer));
 	}
@@ -269,7 +269,7 @@ void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		float					*l_faWeights			= (float*)xr_malloc(l_wItemCount*sizeof(float));
 		string64				*l_cppArtefactSections	= (string64*)xr_malloc(l_wItemCount*sizeof(string64));
 
-		for (u16 i=0; i<l_wItemCount; i++) {
+		for (u16 i=0; i<l_wItemCount; ++i) {
 			tNetPacket.r_string	(l_cppArtefactSections[i]);
 			if (m_wVersion > 26)
 				tNetPacket.r_float	(l_faWeights[i]);
@@ -280,8 +280,8 @@ void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 			}
 		}
 
-		for ( i=0; i<l_wItemCount; i++)
-			for (u16 j=0; j<m_wItemCount; j++)
+		for ( i=0; i<l_wItemCount; ++i)
+			for (u16 j=0; j<m_wItemCount; ++j)
 				if (!strstr(l_cppArtefactSections[i],m_cppArtefactSections[j])) {
 					m_faWeights[j] = l_faWeights[i];
 					break;
@@ -315,7 +315,7 @@ void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)
 	tNetPacket.w_float			(m_fRadius);
 	tNetPacket.w_float			(m_fBirthProbability);
 	tNetPacket.w_u16			(m_wItemCount);
-	for (u16 i=0; i<m_wItemCount; i++) {
+	for (u16 i=0; i<m_wItemCount; ++i) {
 		tNetPacket.w_string		(m_cppArtefactSections[i]);
 		tNetPacket.w_float		(m_faWeights[i]);
 	}
@@ -356,10 +356,10 @@ void CSE_ALifeAnomalousZone::FillProp		(LPCSTR pref, PropItemVec& items)
 	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Attenuation"),						&m_attn,0.f,100.f);
 	PHelper.CreateU32			(items,FHelper.PrepareKey(pref,s_name,"Period"),							&m_period,20,10000);
 	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Radius"),							&m_fRadius,0.f,100.f);
-	for (u16 i=0; i<m_wItemCount; i++)
-		PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,s_name,"ALife/Artefact Weights",			m_cppArtefactSections[i]), m_faWeights + i,0.f,1.f);
-	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"ALife/Artefact birth probability"),	&m_fBirthProbability,0.f,1.f);
-	PHelper.CreateU16			(items,FHelper.PrepareKey(pref,s_name,"ALife/Artefact spawn places count"),&m_wArtefactSpawnCount,32,256);
+	for (u16 i=0; i<m_wItemCount; ++i)
+		PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,s_name,"ALife\\Artefact Weights",			m_cppArtefactSections[i]), m_faWeights + i,0.f,1.f);
+	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"ALife\\Artefact birth probability"),	&m_fBirthProbability,0.f,1.f);
+	PHelper.CreateU16			(items,FHelper.PrepareKey(pref,s_name,"ALife\\Artefact spawn places count"),&m_wArtefactSpawnCount,32,256);
 }
 #endif
 
@@ -483,7 +483,7 @@ CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALife
 		m_fpImmunityFactors.resize	(eHitTypeMax);
 		svector<float,eHitTypeMax>::iterator	B = m_fpImmunityFactors.begin(), I = B;
 		svector<float,eHitTypeMax>::iterator	E = m_fpImmunityFactors.end();
-		for ( ; I != E; I++)
+		for ( ; I != E; ++I)
 			*I					= pSettings->r_float(caSection,strcat(strcpy(S,g_cafHitType2String(EHitType(I - B))),"_immunity"));
 	}
 
@@ -501,7 +501,7 @@ CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALife
 	tTerrainPlace.tMask.resize	(LOCATION_TYPE_COUNT);
 	string16					I;
 	for (u32 i=0; i<N;) {
-		for (u32 j=0; j<LOCATION_TYPE_COUNT; j++, i++)
+		for (u32 j=0; j<LOCATION_TYPE_COUNT; ++j, ++i)
 			tTerrainPlace.tMask[j] = _LOCATION_ID(atoi(_GetItem(S,i,I)));
 		tTerrainPlace.dwMinTime	= atoi(_GetItem(S,i++,I))*1000;
 		tTerrainPlace.dwMaxTime	= atoi(_GetItem(S,i++,I))*1000;
@@ -965,17 +965,17 @@ CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTrad
 	m_cpMainWeaponPreferences.resize(4);
 #ifndef _EDITOR
 #ifndef AI_COMPILER
-	m_cpEquipmentPreferences.resize(iFloor(getAI().m_pfEquipmentType->ffGetMaxResultValue() + .5f));
-	m_cpMainWeaponPreferences.resize(iFloor(getAI().m_pfMainWeaponType->ffGetMaxResultValue() + .5f));
-	R_ASSERT2					((iFloor(getAI().m_pfEquipmentType->ffGetMaxResultValue() + .5f) == 5) && (iFloor(getAI().m_pfMainWeaponType->ffGetMaxResultValue() + .5f) == 4),"Recompile Level Editor and xrAI and rebuild file \"game.spawn\"!");
+	m_cpEquipmentPreferences.resize(iFloor(ai().ef_storage().m_pfEquipmentType->ffGetMaxResultValue() + .5f));
+	m_cpMainWeaponPreferences.resize(iFloor(ai().ef_storage().m_pfMainWeaponType->ffGetMaxResultValue() + .5f));
+	R_ASSERT2					((iFloor(ai().ef_storage().m_pfEquipmentType->ffGetMaxResultValue() + .5f) == 5) && (iFloor(ai().ef_storage().m_pfMainWeaponType->ffGetMaxResultValue() + .5f) == 4),"Recompile Level Editor and xrAI and rebuild file \"game.spawn\"!");
 #endif
 #endif
 	{
-		for (int i=0, n=m_cpEquipmentPreferences.size(); i<n; i++)
+		for (int i=0, n=m_cpEquipmentPreferences.size(); i<n; ++i)
 			m_cpEquipmentPreferences[i] = u8(::Random.randI(3));
 	}
 	{
-		for (int i=0, n=m_cpMainWeaponPreferences.size(); i<n; i++)
+		for (int i=0, n=m_cpMainWeaponPreferences.size(); i<n; ++i)
 			m_cpMainWeaponPreferences[i] = u8(::Random.randI(3));
 	}
 	m_fGoingSuccessProbability	= pSettings->r_float(caSection, "going_item_detect_probability");

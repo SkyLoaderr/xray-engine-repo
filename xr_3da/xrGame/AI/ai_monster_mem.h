@@ -1,7 +1,11 @@
 #pragma once
 
-#include "..\\CustomMonster.h"
 #include "ai_monster_defs.h"
+#include "../entity.h"
+#include "../level_graph.h"
+
+class CCustomMonster;
+
 //*********************************************************************************************************
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // MEMORY MANAGMENT
@@ -63,7 +67,7 @@ typedef struct tagSoundElement
 	TSoundDangerValue ConvertSoundType(ESoundTypes stype);
 } SoundElem;
 
-// удаление звуков от объектов перешедших в оффлайн
+// удаление звуков от объектов, перешедших в оффлайн
 struct remove_offline_sound_pred {
 	bool operator() (const SoundElem &x){ return (x.who && x.who->getDestroy()); }
 };
@@ -75,10 +79,10 @@ struct predicate_remove_old_sounds {
 	bool operator() (const SoundElem &x) { return (x.time < new_time); }
 };
 
-// удалить все звуки принадлежащие данному объекту
+// удалить все звуки, принадлежащие данному объекту
 struct remove_sound_owner_pred {
 	CObject *pO;
-	remove_sound_owner_pred(CObject *o) {pO = o;}
+	remove_sound_owner_pred(CObject *o) {o = pO;}
 	bool operator() (const SoundElem &x){ return (x.who == pO); }
 };
 
@@ -126,23 +130,23 @@ private:
 
 typedef struct tagVisionElem
 {
-	CEntity			*obj;
-	Fvector			position;
-	NodeCompressed	*node;
-	u32				node_id;
-	TTime			time;
+	CEntity						*obj;
+	Fvector						position;
+	const CLevelGraph::CVertex	*vertex;
+	u32							node_id;
+	TTime						time;
 
 	tagVisionElem() {obj = 0;}
 
 	IC void Set(CEntity *pE, TTime t) {
-		obj = pE; 	position = pE->Position(); 	node = pE->AI_Node;  node_id = pE->AI_NodeID; time = t; 
+		obj = pE; 	position = pE->Position(); 	vertex = pE->level_vertex();  node_id = pE->level_vertex_id(); time = t; 
 	}
 	void operator = (const tagVisionElem &ve) {
-		obj = ve.obj; 	position = ve.position; node = ve.node;  node_id = ve.node_id; time = ve.time; 
+		obj = ve.obj; 	position = ve.position; vertex = ve.vertex;  node_id = ve.node_id; time = ve.time; 
 	}
 
 	bool operator == (const tagVisionElem &ve) {
-		return (obj == ve.obj);
+		return (ve.obj == obj);
 	}
 
 } VisionElem;

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ai_monster_jump.h"
-#include "..\\custommonster.h"
+#include "../custommonster.h"
 
 CJumping::CJumping()
 {
@@ -49,7 +49,7 @@ void CJumping::Start()
 	active		= true;
 
 	ApplyParams();
-	if (ptr_cur->type == JT_GLIDE) Execute();
+	if (JT_GLIDE == ptr_cur->type) Execute();
 
 }
 
@@ -62,7 +62,7 @@ void CJumping::Stop()
 // вызывается на каждом SelectAnimation
 bool CJumping::PrepareAnimation(CMotionDef **m)
 {
-	if (cur_motion != 0) return false;
+	if (0 != cur_motion) return false;
 
 	*m = cur_motion = ptr_cur->motion;
 	return true;
@@ -76,13 +76,13 @@ void CJumping::OnAnimationEnd()
 void CJumping::ApplyParams()
 {
 	pMonster->m_fCurSpeed		= ptr_cur->speed.linear;
-	pMonster->r_torso_speed		= ptr_cur->speed.angular;
+	pMonster->m_body.speed		= ptr_cur->speed.angular;
 }
 
 void CJumping::NextState()
 {
-	ptr_cur++;
-	if (ptr_cur == bank.end()) {
+	++ptr_cur;
+	if (bank.end() == ptr_cur) {
 		Stop();
 		return;
 	}
@@ -90,7 +90,7 @@ void CJumping::NextState()
 	cur_motion = 0;
 	ApplyParams();
 
-	if (ptr_cur->type == JT_GLIDE) Execute();
+	if (JT_GLIDE == ptr_cur->type) Execute();
 }
 
 void CJumping::Execute()
@@ -108,9 +108,9 @@ void CJumping::Execute()
 	}
 
 	// получить время физ.прыжка
-	ph_time = pMonster->Movement.JumpMinVelTime(target_pos);
+	ph_time = pMonster->m_PhysicMovementControl.JumpMinVelTime(target_pos);
 	// выполнить прыжок в соответствии с делителем времени
-	pMonster->Movement.Jump(target_pos,ph_time/m_fJumpFactor);
+	pMonster->m_PhysicMovementControl.Jump(target_pos,ph_time/m_fJumpFactor);
 
 	time_started		= pMonster->m_dwCurrentTime;
 	time_next_allowed	= time_started + m_dwDelayAfterJump;
@@ -147,7 +147,7 @@ bool CJumping::Check(Fvector from_pos, Fvector to_pos, CObject *pO)
 	dest_yaw = angle_normalize(dest_yaw);
 
 	// проверка на max_angle и на dist
-	if (!getAI().bfTooSmallAngle(pMonster->r_torso_current.yaw, dest_yaw, m_fJumpMaxAngle) || !(m_fJumpMinDist <=dist && dist <= m_fJumpMaxDist)) return false;
+	if ((angle_difference(pMonster->m_body.current.yaw, dest_yaw) > m_fJumpMaxAngle)|| !(m_fJumpMinDist <=dist && dist <= m_fJumpMaxDist)) return false;
 
 	// можно прыгать; инициализировать параметры прыжка
 	active			= true;
@@ -158,8 +158,8 @@ bool CJumping::Check(Fvector from_pos, Fvector to_pos, CObject *pO)
 	entity			= pO;
 	ph_time			= 0.f;
 
-	pMonster->r_torso_target.yaw = target_yaw;
-	pMonster->AI_Path.TravelPath.clear();
+	pMonster->m_body.target.yaw = target_yaw;
+	pMonster->enable_movement(false);
 
 	Start();
 	return true;
