@@ -49,8 +49,8 @@ void CWeaponAutoRifle::Load	(CInifile* ini, const char* section)
 	fFlameSize			= ini->ReadFLOAT(section,"flame_size");
 
 	// Sounds
-	SoundCreate			(sndShow,		"show");
-	SoundCreate			(sndHide,		"hide");
+	SoundCreate			(sndShow,		"draw");
+	SoundCreate			(sndHide,		"holster");
 	SoundCreate			(sndShot,		"shoot");
 	SoundCreate			(sndEmptyClick,	"empty");
 	SoundCreate			(sndReload,		"reload");
