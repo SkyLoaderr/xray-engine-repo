@@ -143,7 +143,7 @@ void CPHWorld::Create()
 	dSpaceSetCleanup(Space,0);
 #ifdef ODE_SLOW_SOLVER
 #else
-	dWorldSetAutoEnableDepth(phWorld, 300);
+	dWorldSetAutoEnableDepthSF1(phWorld, 300);
 #endif
 	ContactGroup = dJointGroupCreate(0);		
 	dWorldSetGravity(phWorld, 0,-world_gravity, 0);//-2.f*9.81f
@@ -227,7 +227,7 @@ void CPHWorld::Step()
 #else
 	//IterationCycleI=(++IterationCycleI)%phIterationCycle;
 
-	dWorldStepFast	(phWorld,	fixed_step,	phIterations/*+Random.randI(0,phIterationCycle)*/);
+	dWorldStepFast1	(phWorld,	fixed_step,	phIterations/*+Random.randI(0,phIterationCycle)*/);
 #endif
 	Device.Statistic.ph_core.End		();
 
