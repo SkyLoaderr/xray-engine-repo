@@ -414,7 +414,7 @@ function action_single_patrol:move_callback (obj, action_type, index)
        
     
     if ptr:flag (index, 0) == true then
-       self.move_type = move.stand
+       self.move_type = move.walk
        self.mental_state = anim.free
        self.object:set_movement_type (move.stand)
        self.object:clear_animations ()
