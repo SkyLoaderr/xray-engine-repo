@@ -135,8 +135,8 @@ void CAI_Flesh::Load(LPCSTR section)
 void CAI_Flesh::StateSelector()
 {
 	
-	HDebug->SetActive(true);  
-	
+	LOG_EX("Oh no :(");
+
 	VisionElem ve;
 
 	if (C && H && I)			SetState(statePanic);

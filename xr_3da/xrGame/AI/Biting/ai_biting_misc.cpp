@@ -214,29 +214,16 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 	enable_movement(true);
 	CLevelLocationSelector::set_evaluator(0);
 
-	bool bEnablePath = true;
-	u32 vel_mask = 0;
-	u32 des_mask = 0;
-
-	set_path_type (CMovementManager::ePathTypeLevelPath);
+	CDetailPathManager::set_path_type(eDetailPathTypeSmooth);
+	CDetailPathManager::set_try_min_time(true);
 	SetupVelocityMasks();
-
-	if (bEnablePath) {
-		CDetailPathManager::set_path_type(eDetailPathTypeSmooth);
-		CDetailPathManager::set_try_min_time(true);
 		
-		bStanding = false;
-	} else {
-		enable_movement(false);
-	}
-
 	update_path				();
-
 	
 	PreprocessAction();
 	MotionMan.ProcessAction();
 
-	if (IsMovingOnPath()) UpdateVelocities(STravelParams(m_fCurSpeed,m_body.speed));
+	//if (IsMovingOnPath()) UpdateVelocities(STravelParams(m_fCurSpeed,m_body.speed));
 
 	SetVelocity();
 

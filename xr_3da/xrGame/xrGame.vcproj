@@ -2923,6 +2923,16 @@
 								RelativePath=".\script_zone.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="FryUpZone"
+							Filter="">
+							<File
+								RelativePath=".\FryupZone.cpp">
+							</File>
+							<File
+								RelativePath=".\FryupZone.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="_lamp"
@@ -4087,6 +4097,10 @@
 			<File
 				RelativePath=".\weapons.ltx">
 			</File>
+			<Filter
+				Name="Monsters"
+				Filter="">
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>
