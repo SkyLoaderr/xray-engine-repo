@@ -89,16 +89,16 @@ function action_go_position:initialize()
 	self.object:set_body_state(move.standing)
 	self.object:set_mental_state(anim.free)
 
-	xr_state.change_state(self.object, xr_state.stand)
+--	xr_state.change_state(self.object, xr_state.stand)
 	
 	self.begin = false
 end
 function action_go_position:execute ()
 	action_base.execute (self)
 	
-	if xr_state.finish_state(self.object) ~= true then
-		return
-	end
+	--if xr_state.finish_state(self.object) ~= true then
+		--return
+	--end
 	
 	if self.begin == false then
 		self.begin = true
@@ -176,7 +176,7 @@ function action_go_patrol:initialize()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()    
 
-	xr_state.change_state(self.object, xr_state.stand)
+--	xr_state.change_state(self.object, xr_state.stand)
 	self.begin = false
 end
 function action_go_patrol:reset_scheme()
@@ -191,9 +191,9 @@ end
 function action_go_patrol:execute()
 	action_base.execute (self)
 	
-	if xr_state.finish_state(self.object) ~= true then
-		return
-	end
+	--if xr_state.finish_state(self.object) ~= true then
+		--return
+	--end
 
 	if self.begin == false then
 		self.begin = true
@@ -288,10 +288,10 @@ function action_wait:execute()
 	end
 	if self.a.action == 5 then
 		--'!!! ПРОСТО СИДИМ И ВТЫКАЕМ
-		xr_state.change_state(self.object, xr_state.sit_wait)
-		if xr_state.finish_state(self.object) ~= true then
-			return
-		end
+--		xr_state.change_state(self.object, xr_state.sit_wait)
+--		if xr_state.finish_state(self.object) ~= true then
+--			return
+--		end
 		--' повернуть его лицом к центру
 		local pp = patrol(self.a.center_point):point(0)
 		pp.y = pp.y + 0.7
