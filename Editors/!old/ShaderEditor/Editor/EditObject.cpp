@@ -193,8 +193,15 @@ bool CEditableObject::VerifyBoneParts()
 {
 	U8Vec b_use(BoneCount(),0);
     for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++)
-        for (int i=0; i<int(bp_it->bones.size()); i++)
-        	b_use[bp_it->bones[i]]++;
+        for (int i=0; i<int(bp_it->bones.size()); i++){
+        	int idx = FindBoneByNameIdx(bp_it->bones[i].c_str());
+            if (idx==-1){
+            	bp_it->bones.erase(bp_it->bones.begin()+i);
+            	i--;
+            }else{
+	        	b_use[idx]++;
+            }
+        }
 
     for (U8It u_it=b_use.begin(); u_it!=b_use.end(); u_it++)
     	if (*u_it!=1) return false;

@@ -79,6 +79,7 @@ int __fastcall TfrmChoseItem::SelectItem(EChooseMode mode, LPCSTR& dest, int sel
     case smLAnim: 		form->FillLAnim();		break;
     case smGameObject: 	form->FillGameObject();	break;
     case smGameMaterial:form->FillGameMaterial();break;
+    case smGameAnim:	form->FillGameAnim();	break;
     default:
     	THROW2("ChooseForm: Unknown Item Type");
     }
@@ -167,6 +168,17 @@ void __fastcall TfrmChoseItem::FillGameObject()
     form->Caption					= "Select OGF";
     FS_QueryMap lst;
     if (FS.file_list(lst,_game_meshes_,FS_ListFiles|FS_ClampExt,".ogf")){
+	    FS_QueryPairIt	it			= lst.begin();
+    	FS_QueryPairIt	_E			= lst.end();
+	    for (; it!=_E; it++)		AppendItem(it->first.c_str());
+    }
+}
+//---------------------------------------------------------------------------
+void __fastcall TfrmChoseItem::FillGameAnim()
+{
+    form->Caption					= "Select Anim";
+    FS_QueryMap lst;
+    if (FS.file_list(lst,_game_meshes_,FS_ListFiles|FS_ClampExt,".anm")){
 	    FS_QueryPairIt	it			= lst.begin();
     	FS_QueryPairIt	_E			= lst.end();
 	    for (; it!=_E; it++)		AppendItem(it->first.c_str());

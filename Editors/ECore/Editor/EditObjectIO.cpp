@@ -132,12 +132,13 @@ void CEditableObject::Save(IWriter& F)
 
     // bone parts
     if (!m_BoneParts.empty()){
-        F.open_chunk	(EOBJ_CHUNK_BONEPARTS);
+        F.open_chunk	(EOBJ_CHUNK_BONEPARTS2);
         F.w_u32			(m_BoneParts.size());
         for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
             F.w_stringZ	(bp_it->alias.c_str());
             F.w_u32		(bp_it->bones.size());
-            F.w			(&*bp_it->bones.begin(),bp_it->bones.size()*sizeof(int));
+            for (AStringIt s_it=bp_it->bones.begin(); s_it!=bp_it->bones.end(); s_it++)
+	            F.w_stringZ(s_it->c_str());
         }
         F.close_chunk	();
     }
@@ -270,65 +271,95 @@ bool CEditableObject::Load(IReader& F)
 		}
 
 		// bones
-		IReader* B_CHUNK = F.open_chunk(EOBJ_CHUNK_BONES2);
-		if (B_CHUNK){
-			int chunk = 0;
-			IReader* O;
-			while (0!=(O=B_CHUNK->open_chunk(chunk++))){
-				m_Bones.push_back(xr_new<CBone>());
-				m_Bones.back()->Load_1(*O);
-				O->close();
-			}
-			B_CHUNK->close();
-			PrepareBones();
-		}else if (F.find_chunk(EOBJ_CHUNK_BONES)){
-			m_Bones.resize(F.r_u32());
-			for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
-				*b_it = xr_new<CBone>();
-				(*b_it)->Load_0(F);
-			}
-			PrepareBones();
-		}
+        if (bRes){
+            IReader* B_CHUNK = F.open_chunk(EOBJ_CHUNK_BONES2);
+            if (B_CHUNK){
+                int chunk = 0;
+                IReader* O;
+                while (0!=(O=B_CHUNK->open_chunk(chunk++))){
+                    m_Bones.push_back(xr_new<CBone>());
+                    m_Bones.back()->Load_1(*O);
+                    O->close();
+                }
+                B_CHUNK->close();
+                PrepareBones();
+            }else if (F.find_chunk(EOBJ_CHUNK_BONES)){
+                m_Bones.resize(F.r_u32());
+                for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
+                    *b_it = xr_new<CBone>();
+                    (*b_it)->Load_0(F);
+                }
+                PrepareBones();
+            }
+        }
 
 		// skeleton motions
-		if (F.find_chunk(EOBJ_CHUNK_SMOTIONS)){
-			m_SMotions.resize(F.r_u32());
-			for (SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end(); s_it++){
-				*s_it = xr_new<CSMotion>();
-				if (!(*s_it)->Load(F)){
-					ELog.Msg(mtError,"Motions has different version. Load failed.");
-					xr_delete(*s_it);
-					m_SMotions.clear();
-					break;
-				}
-			}
-		}
+        if (bRes){
+            if (F.find_chunk(EOBJ_CHUNK_SMOTIONS)){
+                m_SMotions.resize(F.r_u32());
+                for (SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end(); s_it++){
+                    *s_it = xr_new<CSMotion>();
+                    if (!(*s_it)->Load(F)){
+                        ELog.Msg(mtError,"Motions has different version. Load failed.");
+                        xr_delete(*s_it);
+                        m_SMotions.clear();
+                        break;
+                    }
+                }
+            }
+        }
 
 		// bone parts
-		if (F.find_chunk(EOBJ_CHUNK_BONEPARTS)){
-			m_BoneParts.resize(F.r_u32());
-			for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
-				F.r_stringZ	(buf); bp_it->alias=buf;
-				bp_it->bones.resize(F.r_u32());
-				F.r(&*bp_it->bones.begin(),bp_it->bones.size()*sizeof(int));
-			}
-			if (!m_BoneParts.empty()&&!VerifyBoneParts())
-	        	ELog.Msg	(mtError,"Invalid bone parts. Found duplicate bones in object '%s'.",GetName());
-		}
+        if (bRes){
+            if (F.find_chunk(EOBJ_CHUNK_BONEPARTS)){
+                m_BoneParts.resize(F.r_u32());
+                bool bBPok = true;
+                for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
+                    F.r_stringZ	(buf); bp_it->alias=buf;
+                    bp_it->bones.resize(F.r_u32());
+                    for (AStringIt s_it=bp_it->bones.begin(); s_it!=bp_it->bones.end(); s_it++){
+                        int idx		= F.r_u32();
+                        if ((idx>=0)&&(idx<(int)m_Bones.size())){
+                            *s_it	= m_Bones[idx]->Name();
+                        }else{
+		                    ELog.Msg(mtError,"Invalid bone parts.",GetName());
+                            bBPok = false;
+                            break;
+                        }
+                    }
+                    if (!bBPok) break;
+                }
+				if (!bBPok)	m_BoneParts.clear();
+                if (!m_BoneParts.empty()&&!VerifyBoneParts())
+                    ELog.Msg	(mtError,"Invalid bone parts. Found duplicate bones in object '%s'.",GetName());
+            }else if (F.find_chunk(EOBJ_CHUNK_BONEPARTS2)){
+                m_BoneParts.resize(F.r_u32());
+                for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
+                    F.r_stringZ	(buf); bp_it->alias=buf;
+                    bp_it->bones.resize(F.r_u32());
+                    for (AStringIt s_it=bp_it->bones.begin(); s_it!=bp_it->bones.end(); s_it++)
+                        F.r_stringZ(*s_it);
+                }
+                if (!m_BoneParts.empty()&&!VerifyBoneParts())
+                    ELog.Msg	(mtError,"Invalid bone parts. Found duplicate bones in object '%s'.",GetName());
+            }
+        }
 
-		if (F.find_chunk	(EOBJ_CHUNK_ACTORTRANSFORM)){
-			F.r_fvector3	(a_vPosition);
-			F.r_fvector3	(a_vRotate);
-		}
+        if (bRes){
+            if (F.find_chunk	(EOBJ_CHUNK_ACTORTRANSFORM)){
+                F.r_fvector3	(a_vPosition);
+                F.r_fvector3	(a_vRotate);
+            }
 
-	    if (F.find_chunk	(EOBJ_CHUNK_DESC)){
-		    F.r_stringZ		(m_CreateName);
-		    F.r				(&m_CreateTime,sizeof(m_CreateTime));
-		    F.r_stringZ		(m_ModifName);
-		    F.r				(&m_ModifTime,sizeof(m_ModifTime));
-    	}
+            if (F.find_chunk	(EOBJ_CHUNK_DESC)){
+                F.r_stringZ		(m_CreateName);
+                F.r				(&m_CreateTime,sizeof(m_CreateTime));
+                F.r_stringZ		(m_ModifName);
+                F.r				(&m_ModifTime,sizeof(m_ModifTime));
+            }
 	
-		ResetSAnimation();
+            ResetSAnimation();
+        }
 
 		if (!bRes) break;
 		UpdateBox();

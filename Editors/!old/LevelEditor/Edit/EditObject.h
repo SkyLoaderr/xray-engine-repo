@@ -139,7 +139,7 @@ DEFINE_VECTOR	(CSMotion*,SMotionVec,SMotionIt);
 
 struct ECORE_API SBonePart{
 	AnsiString 		alias;
-    IntVec 			bones;
+    AStringVec 		bones;
 };
 DEFINE_VECTOR(SBonePart,BPVec,BPIt);
 
@@ -267,7 +267,6 @@ public:
     IC int			BoneCount				()	{return m_Bones.size();}
     LPCSTR			BoneNameByID			(int id);
     int				GetRootBoneID			();
-    int				BoneIDByName			(LPCSTR name);
     int				PartIDByName			(LPCSTR name);
     IC CBone*		GetBone					(u32 idx){VERIFY(idx<m_Bones.size()); return m_Bones[idx];}
     void			GetBoneWorldTransform	(u32 bone_idx, float t, CSMotion* motion, Fmatrix& matrix);
@@ -376,6 +375,8 @@ public:
     void			VerifyMeshNames			();
     bool 			ContainsMesh			(const CEditableMesh* m);
 	CSurface*		FindSurfaceByName		(LPCSTR surf_name, int* s_id=0);
+    int				FindBoneByNameIdx		(LPCSTR name);
+    BoneIt			FindBoneByNameIt		(LPCSTR name);
     CBone*			FindBoneByName			(LPCSTR name);
     int				GetSelectedBones		(BoneVec& sel_bones);
     int				GetBoneIndexByWMap		(LPCSTR wm_name);
@@ -434,7 +435,7 @@ public:
 #define EOBJ_CHUNK_REFERENCE     	0x0902
 #define EOBJ_CHUNK_FLAGS           	0x0903
 #define EOBJ_CHUNK_SURFACES			0x0905
-#define EOBJ_CHUNK_SURFACES2		0x0906
+#define EOBJ_CHUNK_SURFACES2		0x0906                                 
 #define EOBJ_CHUNK_SURFACES3		0x0907
 #define EOBJ_CHUNK_EDITMESHES      	0x0910
 #define EOBJ_CHUNK_LIB_VERSION     	0x0911
@@ -447,6 +448,7 @@ public:
 #define EOBJ_CHUNK_ACTORTRANSFORM	0x0920
 #define EOBJ_CHUNK_BONES2			0x0921
 #define EOBJ_CHUNK_DESC				0x0922
+#define EOBJ_CHUNK_BONEPARTS2		0x0923
 //----------------------------------------------------
 
 

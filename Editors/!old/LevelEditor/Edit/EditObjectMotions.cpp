@@ -297,16 +297,21 @@ void CEditableObject::PrepareBones()
     CalculateAnimation		(0,false,true);
 }
 
-CBone* CEditableObject::FindBoneByName(const char* name)
+BoneIt CEditableObject::FindBoneByNameIt(const char* name)
 {
-	BoneIt parent = std::find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ(name));
-    return (parent==m_Bones.end())?0:*parent;
+	return std::find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ(name));
 }
 
-int CEditableObject::BoneIDByName(LPCSTR name)
+int CEditableObject::FindBoneByNameIdx(LPCSTR name)
 {
-	BoneIt bone = std::find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ(name));
-    return (bone!=m_Bones.end())?(bone-m_Bones.begin()):-1;
+	BoneIt b_it = FindBoneByNameIt(name);
+    return (b_it==m_Bones.end())?-1:b_it-m_Bones.begin();
+}
+
+CBone* CEditableObject::FindBoneByName(const char* name)
+{
+	BoneIt b_it = FindBoneByNameIt(name);
+    return (b_it==m_Bones.end())?0:*b_it;
 }
 
 int CEditableObject::GetRootBoneID()

@@ -16,6 +16,7 @@ enum EChooseMode{
     smLAnim,
     smGameObject,
     smGameMaterial,
+    smGameAnim,
     smMaxMode
 };
  

@@ -248,6 +248,16 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 {
     if( m_Source->MeshCount() == 0 ) return false;
 
+    if (m_Source->BoneCount()<1){
+    	ELog.Msg(mtError,"There are no bones in the object.");
+     	return false;
+    }
+
+    if (m_Source->BoneCount()>64){
+    	ELog.Msg(mtError,"Object cannot handle more than 64 bones.");
+     	return false;
+    }
+
     // mem active motion
     CSMotion* active_motion=m_Source->ResetSAnimation();
 
@@ -565,8 +575,10 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
             for (BPIt bp_it=bp_lst.begin(); bp_it!=bp_lst.end(); bp_it++){
                 F.w_stringZ(bp_it->alias.c_str());
                 F.w_u16(bp_it->bones.size());
-                for (int i=0; i<int(bp_it->bones.size()); i++)
-                    F.w_u32(bp_it->bones[i]);
+                for (int i=0; i<int(bp_it->bones.size()); i++){
+		        	int idx = m_Source->FindBoneByNameIdx(bp_it->bones[i].c_str()); VERIFY(idx>=0);
+                    F.w_u32	(idx);
+                }
             }
         }else{
             ELog.Msg	(mtError,"Invalid bone parts (missing or duplicate bones).");
