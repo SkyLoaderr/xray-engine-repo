@@ -1,15 +1,27 @@
 function main ()
 
-	local eater = get_level_object ("eater")
-	local kolbasa = get_level_object ("kolbasa")
+--	local eater = get_level_object ("eater")
+--	local kolbasa = get_level_object ("kolbasa")
 
-	eater:script (true, s_test.script_name ())
+--	eater:script (true, s_test.script_name ())
 	
-	action (eater, object (kolbasa, object.take), cond (cond.time_end, 5000))
-	action (eater, object (kolbasa, object.activate), cond (cond.time_end, 5000))
-	action (eater, object (kolbasa, object.fire1), cond (cond.time_end, 5000))
-	action (eater, object (kolbasa, object.reload), cond (cond.time_end, 5000))
-	action (eater, object (kolbasa, object.deactivate), cond (cond.time_end, 5000))
+--	action (eater, object (kolbasa, object.take), cond (cond.time_end, 5000))
+--	action (eater, object (kolbasa, object.activate), cond (cond.time_end, 5000))
+--	action (eater, object (kolbasa, object.fire1), cond (cond.time_end, 5000))
+--	action (eater, object (kolbasa, object.reload), cond (cond.time_end, 5000))
+--	action (eater, object (kolbasa, object.deactivate), cond (cond.time_end, 5000))
 
-	while true do wait () end	
+--	while true do wait () end	
+
+	local boar = get_level_object ("boar")
+	boar:script (true, s_test.script_name ())
+	
+	action (boar, move (move.act_walk_fwd, move.default, patrol ("boar_way")), cond (cond.move_end))
+
+	while true do
+		  printf ("Boar health : %f", boar.health)
+		  wait ()
+	end		
+
+	boar:script (false, s_test.script_name ())
 end
