@@ -507,6 +507,7 @@ void CAI_Soldier::Attack()
 	}
 	else {
 		
+		/**
 		INIT_SQUAD_AND_LEADER;
 		
 		vfCheckForSavedEnemy();
@@ -526,6 +527,25 @@ void CAI_Soldier::Attack()
 		
 		bStopThinking = true;
 		return;
+		/**/
+		INIT_SQUAD_AND_LEADER;
+		
+		vfInitSelector(SelectorFindEnemy,Squad,Leader);
+		
+		if (AI_Path.bNeedRebuild)
+			vfBuildPathToDestinationPoint(0);
+		else
+			vfSearchForBetterPosition(SelectorFindEnemy,Squad,Leader);
+		
+		vfAimAtEnemy();
+		
+		vfSetFire(true,SelectorFindEnemy,Leader);
+		
+		vfSetMovementType(false,m_fMaxSpeed);
+
+		bStopThinking = true;
+		return;
+		/**/
 	}
 }
 
