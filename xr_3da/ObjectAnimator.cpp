@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "ObjectAnimator.h"
 #include "motion.h"
 #include "xr_ini.h"
