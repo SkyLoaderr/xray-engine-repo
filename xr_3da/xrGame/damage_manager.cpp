@@ -33,10 +33,8 @@ void CDamageManager::reload				(LPCSTR section,CInifile* ini)
 
 	//инициализировать default параметрами
 	init_bones();
-	if (ini->line_exist(section,"damage")) 
-	{
+	if (ini->line_exist(section,"damage"))
 		load_section(ini->r_string(section,"damage"),ini);
-	}
 }
 void CDamageManager::init_bones()
 {

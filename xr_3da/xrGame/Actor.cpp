@@ -349,30 +349,15 @@ void CActor::Load	(LPCSTR section )
 	m_fDispAccelFactor		= pSettings->r_float		(section,"disp_accel_factor" );
 	m_fDispCrouchFactor		= pSettings->r_float		(section,"disp_crouch_factor");
 
-	if (pSettings->line_exist(section, "default_outfit"))
-		SetDefaultVisualOutfit(pSettings->r_string(section, "default_outfit"));
-	else
-		SetDefaultVisualOutfit(NULL);
+	LPCSTR							default_outfit = READ_IF_EXISTS(pSettings,r_string,section,"default_outfit",0);
+	SetDefaultVisualOutfit			(default_outfit);
 
-	invincibility_fire_shield_1st			= NULL;
-	if (pSettings->line_exist(section,"Invincibility_Shield_1st"))
-	{
-		invincibility_fire_shield_1st			= pSettings->r_string(section,"Invincibility_Shield_1st");
-	};	
-	invincibility_fire_shield_3rd			= NULL;
-	if (pSettings->line_exist(section,"Invincibility_Shield_3rd"))
-	{
-		invincibility_fire_shield_3rd			= pSettings->r_string(section,"Invincibility_Shield_3rd");
-	};	
+	invincibility_fire_shield_1st	= READ_IF_EXISTS(pSettings,r_string,section,"Invincibility_Shield_1st",0);
+	invincibility_fire_shield_3rd	= READ_IF_EXISTS(pSettings,r_string,section,"Invincibility_Shield_3rd",0);
 
 	//-----------------------------------------
-	m_AutoPickUp_AABB.set(0.02f, 0.02f, 0.02f);
-	if (pSettings->line_exist(section, "AutoPickUp_AABB"))
-		m_AutoPickUp_AABB = pSettings->r_fvector3(section, "AutoPickUp_AABB");
-
-	m_AutoPickUp_AABB_Offset.set(0, 0, 0);
-	if (pSettings->line_exist(section, "AutoPickUp_AABB_offs"))
-		m_AutoPickUp_AABB_Offset = pSettings->r_fvector3(section, "AutoPickUp_AABB_offs");
+	m_AutoPickUp_AABB				= READ_IF_EXISTS(pSettings,r_fvector3,section,"AutoPickUp_AABB",Fvector().set(0.02f, 0.02f, 0.02f));
+	m_AutoPickUp_AABB_Offset		= READ_IF_EXISTS(pSettings,r_fvector3,section,"AutoPickUp_AABB_offs",Fvector().set(0, 0, 0));
 }
 
 void CActor::PHHit(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type /* = ALife::eHitTypeWound */)

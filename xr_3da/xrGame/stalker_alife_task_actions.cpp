@@ -135,16 +135,9 @@ CStalkerActionAccomplishTask::CStalkerActionAccomplishTask	(CAI_Stalker *object,
 
 void CStalkerActionAccomplishTask::setup	(CAI_Stalker *object, CPropertyStorage *storage)
 {
-	inherited::setup					(object,storage);
-	
-	m_inertia_time						= 60000;
-	m_max_search_distance				= 30.f;
-	
-	if (pSettings->line_exist(*object->cNameSect(),"time_to_search_for_artefacts"))
-		m_inertia_time					= pSettings->r_u32(*object->cNameSect(),"time_to_search_for_artefacts");
-
-	if (pSettings->line_exist(*object->cNameSect(),"distance_to_search_for_artefacts"))
-		m_max_search_distance			= pSettings->r_float(*object->cNameSect(),"distance_to_search_for_artefacts");
+	inherited::setup		(object,storage);
+	m_inertia_time			= READ_IF_EXISTS(pSettings,r_u32,*object->cNameSect(),"time_to_search_for_artefacts",60000);
+	m_max_search_distance	= READ_IF_EXISTS(pSettings,r_float,*object->cNameSect(),"distance_to_search_for_artefacts",30.f);
 }
 
 void CStalkerActionAccomplishTask::initialize	()

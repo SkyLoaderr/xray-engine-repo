@@ -143,14 +143,11 @@ void CCustomMonster::Load		(LPCSTR section)
 
 	//	m_current			= 0;
 
-	if (pSettings->line_exist(section,"eye_fov"))
-		eye_fov						= pSettings->r_float(section,"eye_fov");
-	else
-		eye_fov						= pSettings->r_float(section,"EyeFov");
-	eye_range						= pSettings->r_float(section,"eye_range");
+	eye_fov					= pSettings->r_float(section,"eye_fov");
+	eye_range				= pSettings->r_float(section,"eye_range");
 
 	// Health & Armor
-	fArmor				= 0;
+	fArmor					= 0;
 
 	// Sheduler
 	shedule.t_min			= 50;

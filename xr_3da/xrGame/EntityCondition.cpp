@@ -105,11 +105,7 @@ void CEntityCondition::ClearWounds()
 
 void CEntityCondition::LoadCondition(LPCSTR entity_section)
 {
-	LPCSTR section = entity_section;
-	if(pSettings->line_exist(entity_section, "condition_sect"))
-	{
-		section = pSettings->r_string(section, "condition_sect");
-	}
+	LPCSTR				section = READ_IF_EXISTS(pSettings,r_string,entity_section,"condition_sect",entity_section);
 
 
 	//скорости изменения характеристик состояния
@@ -138,8 +134,7 @@ void CEntityCondition::LoadCondition(LPCSTR entity_section)
 	m_fK_SleepRadiation = pSettings->r_float(section,"sleep_radiation");
 	m_fK_SleepPsyHealth = pSettings->r_float(section,"sleep_psy_health");
 
-	m_use_limping_state = pSettings->line_exist(section,"use_limping_state") ? !!pSettings->r_bool(section,"use_limping_state") : false;
-
+	m_use_limping_state = !!(READ_IF_EXISTS(pSettings,r_bool,section,"use_limping_state",FALSE));
 	m_limping_threshold	= READ_IF_EXISTS(pSettings,r_float,section,"limping_threshold",.5f);
 }
 

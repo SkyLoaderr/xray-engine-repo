@@ -39,12 +39,7 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 {
 	inherited::LoadCondition(entity_section);
 
-	LPCSTR section = entity_section;
-	if(pSettings->line_exist(entity_section, "condition_sect"))
-	{
-		section = pSettings->r_string(section, "condition_sect");
-	}
-
+	LPCSTR				section = READ_IF_EXISTS(pSettings,r_string,entity_section,"condition_sect",entity_section);
 	m_fJumpPower		= pSettings->r_float(section,"jump_power");
 	m_fStandPower		= pSettings->r_float(section,"stand_power");
 	m_fWalkPower		= pSettings->r_float(section,"walk_power");

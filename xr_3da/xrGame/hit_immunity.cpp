@@ -19,46 +19,27 @@ CHitImmunity::~CHitImmunity()
 }
 void CHitImmunity::InitImmunities(LPCSTR imm_sect,CInifile* ini)
 {
-	for(int i=0; i<ALife::eHitTypeMax; i++)
-		m_HitTypeK[i] = 1.0f;
+	R_ASSERT2	(ini->section_exist(imm_sect), imm_sect);
 
-	R_ASSERT2(ini->section_exist(imm_sect), imm_sect);
-
-	if(ini->line_exist(imm_sect,"burn_immunity"))
-		m_HitTypeK[ALife::eHitTypeBurn]			= ini->r_float(imm_sect,"burn_immunity");
-	if(ini->line_exist(imm_sect,"burn_immunity"))
-		m_HitTypeK[ALife::eHitTypeStrike]		= ini->r_float(imm_sect,"strike_immunity");
-	if(ini->line_exist(imm_sect,"shock_immunity"))
-		m_HitTypeK[ALife::eHitTypeShock]		= ini->r_float(imm_sect,"shock_immunity");
-	if(ini->line_exist(imm_sect,"wound_immunity"))
-		m_HitTypeK[ALife::eHitTypeWound]		= ini->r_float(imm_sect,"wound_immunity");
-	if(ini->line_exist(imm_sect,"radiation_immunity"))
-		m_HitTypeK[ALife::eHitTypeRadiation]	= ini->r_float(imm_sect,"radiation_immunity");
-	if(ini->line_exist(imm_sect,"telepatic_immunity"))
-		m_HitTypeK[ALife::eHitTypeTelepatic]	= ini->r_float(imm_sect,"telepatic_immunity");
-	if(ini->line_exist(imm_sect,"chemical_burn_immunity"))
-		m_HitTypeK[ALife::eHitTypeChemicalBurn] = ini->r_float(imm_sect,"chemical_burn_immunity");
-	if(ini->line_exist(imm_sect,"fire_wound_immunity"))
-		m_HitTypeK[ALife::eHitTypeFireWound]	= ini->r_float(imm_sect,"fire_wound_immunity");
-	if(ini->line_exist(imm_sect,"explosion_immunity"))
-		m_HitTypeK[ALife::eHitTypeExplosion]	= ini->r_float(imm_sect,"explosion_immunity");
+	m_HitTypeK[ALife::eHitTypeBurn]			= READ_IF_EXISTS(ini,r_float,imm_sect,"burn_immunity",			1.f);
+	m_HitTypeK[ALife::eHitTypeStrike]		= READ_IF_EXISTS(ini,r_float,imm_sect,"strike_immunity",		1.f);
+	m_HitTypeK[ALife::eHitTypeShock]		= READ_IF_EXISTS(ini,r_float,imm_sect,"shock_immunity",			1.f);
+	m_HitTypeK[ALife::eHitTypeWound]		= READ_IF_EXISTS(ini,r_float,imm_sect,"wound_immunity",			1.f);
+	m_HitTypeK[ALife::eHitTypeRadiation]	= READ_IF_EXISTS(ini,r_float,imm_sect,"radiation_immunity",		1.f);
+	m_HitTypeK[ALife::eHitTypeTelepatic]	= READ_IF_EXISTS(ini,r_float,imm_sect,"telepatic_immunity",		1.f);
+	m_HitTypeK[ALife::eHitTypeChemicalBurn] = READ_IF_EXISTS(ini,r_float,imm_sect,"chemical_burn_immunity",	1.f);
+	m_HitTypeK[ALife::eHitTypeExplosion]	= READ_IF_EXISTS(ini,r_float,imm_sect,"explosion_immunity",		1.f);
+	m_HitTypeK[ALife::eHitTypeFireWound]	= READ_IF_EXISTS(ini,r_float,imm_sect,"fire_wound_immunity",	1.f);
 }
 
 void CHitImmunity::LoadImmunities (LPCSTR section, LPCSTR line)
 {
-	LPCSTR imm_sect = section;
-
-	if(pSettings->line_exist(section, line))
-	{
-		imm_sect = pSettings->r_string(section, line);
-	}
-
-	InitImmunities (imm_sect,pSettings);
+	InitImmunities	(READ_IF_EXISTS(pSettings,r_string,section,line,section),pSettings);
 }
 
 void CHitImmunity::LoadImmunities(LPCSTR section)
 {
-	LoadImmunities(section, "immunities_sect");
+	LoadImmunities	(section, "immunities_sect");
 }
 
 

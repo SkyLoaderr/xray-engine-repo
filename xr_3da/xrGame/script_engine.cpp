@@ -261,17 +261,14 @@ void CScriptEngine::load_class_registrators		()
 	FS.update_path	(S,"$game_config$","script.ltx");
 	CInifile		*l_tpIniFile = xr_new<CInifile>(S);
 	R_ASSERT		(l_tpIniFile);
+
 	if (!l_tpIniFile->section_exist("common")) {
 		xr_delete			(l_tpIniFile);
 		return;
 	}
 
-	if (l_tpIniFile->line_exist("common","class_registrators"))
-		m_class_registrators = l_tpIniFile->r_string("common","class_registrators");
-	else
-		m_class_registrators = "";
-
-	xr_delete			(l_tpIniFile);
+	m_class_registrators	= READ_IF_EXISTS(l_tpIniFile,r_string,"common","class_registrators","");
+	xr_delete				(l_tpIniFile);
 }
 
 bool CScriptEngine::function_object(LPCSTR function_to_call, luabind::object &object, int type)

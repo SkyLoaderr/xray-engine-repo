@@ -142,12 +142,12 @@ void CEntity::Load		(LPCSTR section)
 	m_fMaxHealthValue = fEntityHealth = 100;
 	
 	// Team params
-	id_Team = -1; if (pSettings->line_exist(section,"team"))	id_Team		= pSettings->r_s32	(section,"team");
-	id_Squad= -1; if (pSettings->line_exist(section,"squad"))	id_Squad	= pSettings->r_s32	(section,"squad");
-	id_Group= -1; if (pSettings->line_exist(section,"group"))	id_Group	= pSettings->r_s32	(section,"group");
+	id_Team				= READ_IF_EXISTS(pSettings,r_s32,section,"team",-1);
+	id_Squad			= READ_IF_EXISTS(pSettings,r_s32,section,"squad",-1);
+	id_Group			= READ_IF_EXISTS(pSettings,r_s32,section,"group",-1);
 	
 #pragma todo("Jim to Dima: no specific figures or comments needed")	
-	m_fMorale = 66.f;
+	m_fMorale			= 66.f;
 
 
 	//загрузить параметры иконки торговли
@@ -173,10 +173,7 @@ void CEntity::Load		(LPCSTR section)
 
 	//////////////////////////////////////
 	//время убирания тела с уровня
-	if(pSettings->line_exist(section,"body_remove_time"))
-		m_dwBodyRemoveTime = pSettings->r_u32(section,"body_remove_time");
-	else
-		m_dwBodyRemoveTime = BODY_REMOVE_TIME;
+	m_dwBodyRemoveTime	= READ_IF_EXISTS(pSettings,r_u32,section,"body_remove_time",BODY_REMOVE_TIME);
 	//////////////////////////////////////
 }
 
