@@ -113,6 +113,7 @@ class CMyD3DApplication : public CD3DApplication
 
 	LPDIRECT3DVERTEXDECLARATION9	m_pDeclVert;
 	LPDIRECT3DVERTEXDECLARATION9	m_pDeclVert2D;
+	LPDIRECT3DVERTEXDECLARATION9	m_pDeclVert2Dbloom;
 
 	// xr2
 	R_constants						cc;
@@ -670,6 +671,8 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	if (FAILED(m_pd3dDevice->CreateVertexDeclaration(decl_vert, &m_pDeclVert)))
 		return E_FAIL;
 	if (FAILED(m_pd3dDevice->CreateVertexDeclaration(decl_vert2D, &m_pDeclVert2D)))
+		return E_FAIL;
+	if (FAILED(m_pd3dDevice->CreateVertexDeclaration(decl_vert2Dbloom, &m_pDeclVert2Dbloom)))
 		return E_FAIL;
 
 	return S_OK;
@@ -1514,12 +1517,13 @@ HRESULT CMyD3DApplication::RenderCombine_Normal	()
 	// Shader and params
 	m_pd3dDevice->SetPixelShader			(s_Combine_Normal.ps);
 	m_pd3dDevice->SetVertexShader			(s_Combine_Normal.vs);
-	m_pd3dDevice->SetFVF					(TVERTEXbloom_FVF);
-	cc.flush								(m_pd3dDevice);
+	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
 
 	// Render Quad
 	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE,	D3DCULL_NONE);
 	m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
+
+	cc.flush								(m_pd3dDevice);
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
 	// Cleanup
@@ -1564,12 +1568,13 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	// Shader and params
 	m_pd3dDevice->SetPixelShader			(s_Combine_Bloom.ps);
 	m_pd3dDevice->SetVertexShader			(s_Combine_Bloom.vs);
-	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
-	cc.flush								(m_pd3dDevice);
+	m_pd3dDevice->SetFVF					(TVERTEXbloom_FVF);
 
 	// Transfer over-bright information to BLOOM-1
 	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE,	D3DCULL_NONE);
-	m_pd3dDevice->SetStreamSource			(0, m_pBloom_Combine_VB, 0, sizeof(TVERTEX));
+	m_pd3dDevice->SetStreamSource			(0, m_pBloom_Combine_VB, 0, sizeof(TVERTEXbloom));
+
+	cc.flush								(m_pd3dDevice);
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
 	m_pd3dDevice->SetTexture				(1, NULL);
