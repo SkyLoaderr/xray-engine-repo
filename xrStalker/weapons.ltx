@@ -139,7 +139,9 @@ ph_mass			 = 5
 scope_status				= 0
 silencer_status				= 0
 grenade_launcher_status		= 1
-zoom_enabled				= false
+
+zoom_enabled				= true
+scope_zoom_factor	    = 50	;30
 
 ;звуки
 snd_draw			= weapons\generic_draw
@@ -186,7 +188,12 @@ anim_reload_gl			= reload
 anim_draw_gl			= draw
 anim_holster_gl			= holster
 anim_shoot_gl			= shoot
+anim_idle_aim	         	= idle
 
+;смещения HUD для режима приближения
+zoom_offset			=0,0,0.000000
+zoom_rotate_x		= 0.001000
+zoom_rotate_y		= 0.007000
 
 [wpn_hpsa]
 GroupControlSection	= spawn_group
@@ -284,7 +291,7 @@ ph_mass			 = 1
 scope_status				= 0
 silencer_status				= 0
 grenade_launcher_status		= 0
-zoom_enabled				= false
+zoom_enabled				= true
 
 ;звуки
 snd_draw			= weapons\pm_draw
@@ -316,6 +323,12 @@ anim_draw_empty		= draw_empty
 anim_shoot			= shoot1
 anim_shot_last		= shoot_last
 anim_close			= close
+anim_idle_aim			= idle
+
+;смещения HUD для режима приближения
+zoom_offset			=0,0,0.000000
+zoom_rotate_x		= 0.001000
+zoom_rotate_y		= 0.007000
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [wpn_pm]
@@ -449,6 +462,12 @@ anim_draw_empty		= draw_empty
 anim_shoot			= shoot1
 anim_shot_last		= shoot_last
 anim_close			= close
+anim_idle_aim			= idle
+
+;смещения HUD для режима приближения
+zoom_offset			=0,0,0.000000
+zoom_rotate_x		= 0
+zoom_rotate_y		= 0
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -552,7 +571,8 @@ scope_status				= 0
 silencer_status				= 1
 grenade_launcher_status		= 0
 
-zoom_enabled				= false
+zoom_enabled				= true
+scope_zoom_factor	    = 50	;30
 
 ;звуки
 snd_draw			= weapons\generic_draw
@@ -583,7 +603,12 @@ anim_draw_empty		= draw_empty
 anim_shoot			= shoot1
 anim_shot_last		= shoot_last
 anim_close			= empty
+anim_idle_aim			= idle
 
+;смещения HUD для режима приближения
+zoom_offset			= 0,0,0.000000
+zoom_rotate_x		= 0
+zoom_rotate_y		= 0
 
 
 
@@ -690,7 +715,8 @@ scope_status				= 0
 silencer_status				= 0
 grenade_launcher_status		= 0
 
-zoom_enabled				= false
+zoom_enabled				= true
+scope_zoom_factor	    = 50	;30
 
 ;звуки
 snd_draw			= weapons\walther_draw
@@ -719,6 +745,13 @@ anim_draw_empty		= draw_empty
 anim_shoot			= shoot1
 anim_shot_last		= shoot_last
 anim_close			= close
+anim_idle_aim		= idle
+
+;смещения HUD для режима приближения
+zoom_offset			= 0,0,0.000000
+zoom_rotate_x		= 0
+zoom_rotate_y		= 0
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [wpn_usp]
@@ -823,7 +856,8 @@ scope_status				= 0
 silencer_status				= 0
 grenade_launcher_status		= 0
 
-zoom_enabled				= false
+zoom_enabled				= true
+scope_zoom_factor	    = 50	;30
 
 ;звуки
 snd_draw			= weapons\usp_draw
@@ -853,7 +887,12 @@ anim_draw_empty		= draw_empty
 anim_shoot			= shoot1
 anim_shot_last		= shoot_last
 anim_close			= close
+anim_idle_aim			= idle
 
+;смещения HUD для режима приближения
+zoom_offset			= 0,0,0.000000
+zoom_rotate_x		= 0
+zoom_rotate_y		= 0
 
 
 
@@ -955,7 +994,9 @@ ph_mass			 = 1
 scope_status				= 0
 silencer_status				= 0
 grenade_launcher_status		= 0
-zoom_enabled				= false
+
+zoom_enabled				= true
+scope_zoom_factor	    = 50	;30
 
 ;звуки
 snd_draw			= weapons\fort_draw
@@ -985,6 +1026,12 @@ anim_draw_empty		= draw_empty
 anim_shoot			= shoot1
 anim_shot_last		= shoot_last
 anim_close			= close
+anim_idle_aim			= idle
+
+;смещения HUD для режима приближения
+zoom_offset			= 0,0,0.000000
+zoom_rotate_x		= 0
+zoom_rotate_y		= 0
 
 [wpn_m134]
 GroupControlSection	= spawn_group
@@ -1194,7 +1241,9 @@ ph_mass			 = 3
 scope_status				= 0
 silencer_status				= 0
 grenade_launcher_status		= 0
-zoom_enabled				= false
+
+zoom_enabled				= true
+scope_zoom_factor	    = 50	;30
 
 ;звуки
 snd_draw			= weapons\generic_draw
@@ -1220,6 +1269,12 @@ anim_draw		= draw
 anim_holster	= holster
 anim_shoot		= shoot
 anim_shoot_both = shoot_both
+anim_idle_aim	= idle
+
+;смещения HUD для режима приближения
+zoom_offset			= 0,0,0.000000
+zoom_rotate_x		= 0
+zoom_rotate_y		= 0
 
 
 [wpn_svd]
