@@ -1,9 +1,5 @@
-//----------------------------------------------------
-// file: Light.h
-//----------------------------------------------------
-
-#ifndef _INCDEF_Sector_H_
-#define _INCDEF_Sector_H_
+#ifndef SectorH
+#define SectorH
 
 #include "portalutils.h"                                 
 enum EVisible{

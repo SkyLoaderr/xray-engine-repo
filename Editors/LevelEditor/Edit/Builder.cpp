@@ -16,12 +16,12 @@ SceneBuilder Builder;
 //----------------------------------------------------
 SceneBuilder::SceneBuilder(){
     m_iDefaultSectorNum = 0;
-    l_vertices	= 0;
-    l_faces		= 0;
-    l_vertices_cnt	= 0;
-    l_faces_cnt 	= 0;
-	l_vertices_it 	= 0;
-	l_faces_it		= 0;
+    l_verts			= 0;
+    l_faces			= 0;
+    l_vert_cnt		= 0;
+    l_face_cnt 		= 0;
+	l_vert_it	 	= 0;
+	l_face_it		= 0;
 }
 
 SceneBuilder::~SceneBuilder(){

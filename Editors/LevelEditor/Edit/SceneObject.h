@@ -1,8 +1,6 @@
 //----------------------------------------------------
-// file: SceneObject.h
-//----------------------------------------------------
-#ifndef _INCDEF_SceneObject_H_
-#define _INCDEF_SceneObject_H_
+#ifndef SceneObjectH
+#define SceneObjectH
 
 #include "EditObject.h"
 #include "customobject.h"
@@ -99,6 +97,7 @@ public:
     // statistics methods
 	IC bool 		IsDynamic     			()	{return (m_pReference?m_pReference->IsDynamic():false); }
 	IC bool 		IsStatic     			()	{return (m_pReference?m_pReference->IsStatic():false); }
+	IC bool 		IsMUStatic     			()	{return (m_pReference?m_pReference->IsMUStatic():false); }
     int 			GetFaceCount			();
     void			GetFaceWorld			(CEditableMesh* M, int idx, Fvector* verts);
 	int 			GetVertexCount			();

@@ -1,8 +1,8 @@
 //----------------------------------------------------
 // file: CustomObject.h
 //----------------------------------------------------
-#ifndef _INCDEF_CustomObject_H_
-#define _INCDEF_CustomObject_H_
+#ifndef CustomObjectH
+#define CustomObjectH
 
 #include "SceneClassList.h"
 
@@ -125,6 +125,7 @@ public:
 	virtual bool 	GetUTBox		(Fbox& box){return false;}
 	virtual void 	OnSceneUpdate	(){;}
 	virtual void 	OnDestroy		(){;}
+    virtual void 	OnObjectRemove	(const CCustomObject* object){;}
 
 	virtual void 	OnDeviceCreate	(){;}
 	virtual void 	OnDeviceDestroy	(){;}

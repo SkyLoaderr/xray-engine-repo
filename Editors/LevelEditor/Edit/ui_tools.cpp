@@ -129,9 +129,9 @@ void __fastcall TUI_Tools::SetAction   (int act)
     m_Flags.set	(flChangeAction,FALSE);
 }
 
-void __fastcall TUI_Tools::ChangeAction(int act){
+void __fastcall TUI_Tools::ChangeAction(int act, bool forced){
 	// если мышь захвачена - изменим action после того как она освободится
-	if (UI.IsMouseCaptured()||UI.IsMouseInUse()){
+	if (UI.IsMouseCaptured()||UI.IsMouseInUse()||!forced){
 	    m_Flags.set	(flChangeAction,TRUE);
         iNeedAction=act;
     }else
@@ -169,9 +169,9 @@ void __fastcall TUI_Tools::UnsetSubTarget(int tgt)
     pCurTools->UnsetSubTarget(tgt);
 }
 //---------------------------------------------------------------------------
-void __fastcall TUI_Tools::ChangeTarget(int tgt){
+void __fastcall TUI_Tools::ChangeTarget(int tgt, bool forced){
 	// если мышь захвачена - изменим target после того как она освободится
-	if (UI.IsMouseCaptured()||UI.IsMouseInUse()){
+	if (UI.IsMouseCaptured()||UI.IsMouseInUse()||!forced){
 	    m_Flags.set(flChangeTarget,TRUE);
         iNeedTarget=tgt;
     }else
@@ -241,7 +241,6 @@ bool TUI_Tools::Pick()
 }
 //---------------------------------------------------------------------------
 
-#include "PropertiesLight.h"
 #include "PropertiesEvent.h"
 #include "PropertiesPS.h"
 #include "PropertiesWayPoint.h"
@@ -253,7 +252,6 @@ void TUI_Tools::ShowProperties()
     if (Scene.GetQueryObjects		(lst,cls_id)){
         bool bChange				= false;
         switch(cls_id){
-//        case OBJCLASS_LIGHT:    	frmPropertiesLightRun(&lst,bChange);	   	break;
         case OBJCLASS_EVENT:   		frmPropertiesEventRun(&lst,bChange);		break;
         case OBJCLASS_WAY:   		TfrmPropertiesWayPoint::Run(&lst,bChange);	break;
         case OBJCLASS_PS:			TfrmPropertiesPS::Run(&lst,bChange);		break;

@@ -91,8 +91,8 @@ public:
     void __fastcall SetSubTarget	(int tgt);
     void __fastcall UnsetSubTarget	(int tgt);
 
-    void __fastcall ChangeTarget	(int tgt);
-    void __fastcall ChangeAction	(int act);
+    void __fastcall ChangeTarget	(int tgt, bool forced=false);
+    void __fastcall ChangeAction	(int act, bool forced=false);
     void __fastcall OnFrame			();
     void __fastcall OnObjectsUpdate	();
 

@@ -225,6 +225,7 @@ void TUI::Idle()
 	Device.UpdateTimer();
     EEditorState est = GetEState();
     if ((est==esEditScene)||(est==esEditLibrary)||(est==esEditLightAnim)){
+		Tools.OnFrame();
 	    if (m_Flags.is(flUpdateScene)){ 
 	        Tools.UpdateProperties();
         	RealUpdateScene		();
@@ -235,7 +236,6 @@ void TUI::Idle()
             Render->Render		();
         	Redraw();
         }
-		Tools.OnFrame();
         if (est==esEditLightAnim) TfrmEditLightAnim::OnIdle();
     }
         // show hint

@@ -22,29 +22,6 @@
 // !!! использовать prefix если нужно имя !!! (Связано с группами)
 //------------------------------------------------------------------------------
 
-/*
-// hemi
-struct          hemi_data
-{
-    vector<R_Light>* 	dest;
-    R_Light				T;
-};
-void __stdcall 	hemi_callback(float x, float y, float z, float E, LPVOID P)
-{
-    hemi_data*	H		= (hemi_data*)P;
-    H->T.energy     	= E;
-    H->T.direction.set  (x,y,z);
-    H->dest->push_back  (H->T);
-}
-if (g_params.area_quality)      
-{
-        hemi_data                               h_data;
-        h_data.dest                             = dest;
-        h_data.T                                = RL;
-        h_data.T.diffuse.set    (g_params.area_color);
-        xrHemisphereBuild               (g_params.area_quality,FALSE,0.5f,g_params.area_energy_summary,hemi_callback,&h_data);
-}
-*/
 void SceneBuilder::SaveBuild()
 {
 	CFS_Memory F;
@@ -57,11 +34,11 @@ void SceneBuilder::SaveBuild()
     F.close_chunk	();
 
     F.open_chunk	(EB_Vertices);    
-    F.write			(l_vertices,sizeof(b_vertex)*l_vertices_cnt);
+    F.write			(l_verts,sizeof(b_vertex)*l_vert_cnt);
     F.close_chunk	();
     
     F.open_chunk	(EB_Faces);
-    F.write			(l_faces,sizeof(b_face)*l_faces_cnt);
+    F.write			(l_faces,sizeof(b_face)*l_face_cnt);
     F.close_chunk	();
 
     F.open_chunk	(EB_Materials);
@@ -108,6 +85,25 @@ void SceneBuilder::SaveBuild()
     F.write			(l_lods.begin(),sizeof(b_lod)*l_lods.size());
     F.close_chunk	();
 
+    F.open_chunk	(EB_MU_models);
+    F.Wdword		(l_mu_models.size());
+    for (int k=0; k<(int)l_mu_models.size(); k++){
+    	b_mu_model&	m= l_mu_models[k];
+        // name
+        F.WstringZ	(m.name);
+        // vertices
+        F.Wdword	(m.vert_cnt);
+	    F.write		(m.verts,sizeof(b_vertex)*m.vert_cnt);
+        // faces
+        F.Wdword	(m.face_cnt);
+	    F.write		(m.faces,sizeof(b_face)*m.face_cnt);
+    }
+    F.close_chunk	();
+    
+    F.open_chunk	(EB_MU_refs);
+	F.write			(l_mu_refs.begin(),sizeof(b_mu_model)*l_mu_refs.size());
+    F.close_chunk	();
+
     AnsiString fn	= "build.prj";
 	m_LevelPath.Update(fn);
     F.SaveTo		(fn.c_str(),BUILD_PROJECT_MARK);
@@ -126,12 +122,19 @@ int SceneBuilder::CalculateSector(const Fvector& P, float R){
 }
 
 void SceneBuilder::ResetStructures (){
-    l_vertices_cnt 			= 0;
-	l_faces_cnt				= 0;
-	l_vertices_it 			= 0;
-	l_faces_it				= 0;
-    _DELETEARRAY			(l_vertices);
+    l_vert_cnt 				= 0;
+	l_face_cnt				= 0;
+	l_vert_it 				= 0;
+	l_face_it				= 0;
+    _DELETEARRAY			(l_verts);
     _DELETEARRAY			(l_faces);
+    for (int k=0; k<(int)l_mu_models.size(); k++){
+    	b_mu_model&	m 		= l_mu_models[k];
+        _DELETEARRAY		(m.verts);
+        _DELETEARRAY		(m.faces);
+    }
+    l_mu_models.clear		();
+    l_mu_refs.clear			();
     l_lods.clear			();
     l_light_static.clear	();
     l_light_dynamic.clear	();
@@ -149,16 +152,17 @@ void SceneBuilder::ResetStructures (){
 //------------------------------------------------------------------------------
 // CEditObject build functions
 //------------------------------------------------------------------------------
-BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEditableMesh* mesh, int sect_num, int lod_id)
+BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEditableMesh* mesh, int sect_num, int lod_id, 
+							b_vertex* verts, int& vert_cnt, int& vert_it, b_face* faces, int& face_cnt, int& face_it)
 {
 	BOOL bResult = TRUE;
     int point_offs;
-    point_offs = l_vertices_it;  // save offset
+    point_offs = vert_it;  // save offset
 
     // fill vertices
 	for (FvectorIt pt_it=mesh->m_Points.begin(); pt_it!=mesh->m_Points.end(); pt_it++){
-    	R_ASSERT(l_vertices_it<l_vertices_cnt);
-    	parent.transform_tiny(l_vertices[l_vertices_it++],*pt_it);
+    	R_ASSERT(vert_it<vert_cnt);
+    	parent.transform_tiny(verts[vert_it++],*pt_it);
     }
 
     if (object->IsDynamic()){
@@ -186,8 +190,8 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
         R_ASSERT(dwTexCnt==1);
 	    for (IntIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
 			st_Face& face = mesh->m_Faces[*f_it];
-            R_ASSERT(l_faces_it<l_faces_cnt);
-            b_face& first_face 		= l_faces[l_faces_it++];
+            R_ASSERT(face_it<face_cnt);
+            b_face& first_face 		= faces[face_it++];
         	{
                 int m_id			= BuildMaterial(surf,sect_num,lod_id);
                 if (m_id<0){
@@ -216,8 +220,8 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
             }
 
 	        if (surf->m_Flags.is(CSurface::sf2Sided)){
-		    	R_ASSERT(l_faces_it<l_faces_cnt);
-                b_face& second_face 		= l_faces[l_faces_it++];
+		    	R_ASSERT(face_it<face_cnt);
+                b_face& second_face 		= faces[face_it++];
                 second_face.dwMaterial 		= first_face.dwMaterial;
                 second_face.dwMaterialGame 	= first_face.dwMaterialGame;
                 for (int k=0; k<3; k++){
@@ -244,7 +248,8 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
     return bResult;
 }
 
-BOOL SceneBuilder::BuildObject(CSceneObject* obj){
+BOOL SceneBuilder::BuildObject(CSceneObject* obj)
+{
 	CEditableObject *O = obj->GetReference();
     AnsiString temp; temp.sprintf("Building object: %s",obj->Name);
     UI.SetStatus(temp.c_str());
@@ -258,8 +263,57 @@ BOOL SceneBuilder::BuildObject(CSceneObject* obj){
     for(EditMeshIt M=O->FirstMesh();M!=O->LastMesh();M++){
 		CSector* S = PortalUtils.FindSector(obj,*M);
 	    int sect_num = S?S->sector_num:m_iDefaultSectorNum;
-    	if (!BuildMesh(T,O,*M,sect_num,lod_id)) return FALSE;
+    	if (!BuildMesh(T,O,*M,sect_num,lod_id,l_verts,l_vert_cnt,l_vert_it,l_faces,l_face_cnt,l_face_it)) return FALSE;
     }
+    return TRUE;
+}
+
+BOOL SceneBuilder::BuildMUObject(CSceneObject* obj)
+{
+	CEditableObject *O = obj->GetReference();
+    AnsiString temp; temp.sprintf("Building object: %s",obj->Name);
+    UI.SetStatus(temp.c_str());
+
+    int model_idx		= -1;
+    
+    for (int k=0; k<(int)l_mu_models.size(); k++){
+    	b_mu_model&	m 	= l_mu_models[k];
+    	if (0==strcmp(m.name,O->GetName())){
+        	model_idx	= k;
+            break;
+        }
+    }
+	// detect sector
+	CSector* S 			= PortalUtils.FindSector(obj,*O->FirstMesh());
+    int sect_num 		= S?S->sector_num:m_iDefaultSectorNum;
+
+    // build LOD           
+	int	lod_id 			= BuildObjectLOD(Fidentity,O,sect_num);
+    if (lod_id==-2)    	return FALSE;
+
+    // build model
+    if (-1==model_idx){
+        model_idx		= l_mu_models.size();
+	    l_mu_models.push_back(b_mu_model());
+		b_mu_model&	M	= l_mu_models.back();
+        int vert_it=0, face_it=0;
+        M.face_cnt		= obj->GetFaceCount();
+        M.vert_cnt		= obj->GetVertexCount();
+        strcpy			(M.name,O->GetName());
+        M.verts			= new b_vertex[M.vert_cnt];
+        M.faces			= new b_face[M.face_cnt];
+		// parse mesh data
+	    for(EditMeshIt MESH=O->FirstMesh();MESH!=O->LastMesh();MESH++)
+	    	if (!BuildMesh(Fidentity,O,*MESH,sect_num,lod_id,M.verts,M.vert_cnt,vert_it,M.faces,M.face_cnt,face_it)) return FALSE;
+    }
+    
+    l_mu_refs.push_back	(b_mu_reference());
+	b_mu_reference&	R	= l_mu_refs.back();
+    R.model_index		= model_idx;
+    R.transform			= obj->_Transform();
+    R.flags.zero		();
+	R.sector			= sect_num;
+
     return TRUE;
 }
 
@@ -687,7 +741,8 @@ BOOL SceneBuilder::ParseStaticObjects(ObjectList& lst, LPCSTR prefix)
             break;
         case OBJCLASS_SCENEOBJECT:{
             CSceneObject *obj = (CSceneObject*)(*_F);
-            if (obj->IsStatic()) bResult = BuildObject(obj);
+            if (obj->IsStatic()) 		bResult = BuildObject(obj);
+            else if (obj->IsMUStatic()) bResult = BuildMUObject(obj);
         }break;
         case OBJCLASS_GROUP:{ 
             CGroupObject* group = (CGroupObject*)(*_F);
@@ -710,17 +765,17 @@ BOOL SceneBuilder::CompileStatic()
 	if( objcount <= 0 )	return FALSE;
 
 // compute vertex/face count
-    l_vertices_cnt	= 0;
-    l_faces_cnt 	= 0;
-	l_vertices_it 	= 0;
-	l_faces_it		= 0;
+    l_vert_cnt	= 0;
+    l_face_cnt 	= 0;
+	l_vert_it 	= 0;
+	l_face_it	= 0;
     ObjectIt _O = Scene.FirstObj(OBJCLASS_SCENEOBJECT);
     ObjectIt _E = Scene.LastObj(OBJCLASS_SCENEOBJECT);
     for(;_O!=_E;_O++){
     	CSceneObject* obj = (CSceneObject*)(*_O);
 		if (obj->IsStatic()){
-			l_faces_cnt		+= obj->GetFaceCount();
-    	    l_vertices_cnt  += obj->GetVertexCount();
+			l_face_cnt	+= obj->GetFaceCount();
+    	    l_vert_cnt  += obj->GetVertexCount();
         }
     }
     _O = Scene.FirstObj	(OBJCLASS_GROUP);
@@ -732,13 +787,13 @@ BOOL SceneBuilder::CompileStatic()
 	    for(;_O1!=_E1;_O1++){
 	    	CSceneObject* obj = dynamic_cast<CSceneObject*>(*_O1);
 			if (obj&&obj->IsStatic()){
-				l_faces_cnt		+= obj->GetFaceCount();
-    	    	l_vertices_cnt  += obj->GetVertexCount();
+				l_face_cnt	+= obj->GetFaceCount();
+    	    	l_vert_cnt  += obj->GetVertexCount();
 	        }
         }
     }
-	l_faces		= new b_face[l_faces_cnt];
-	l_vertices	= new b_vertex[l_vertices_cnt];
+	l_faces		= new b_face[l_face_cnt];
+	l_verts		= new b_vertex[l_vert_cnt];
 
     UI.ProgressStart(Scene.ObjCount(),"Parse static objects...");
 // make hemisphere

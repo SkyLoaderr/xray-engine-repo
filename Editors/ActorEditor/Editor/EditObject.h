@@ -1,8 +1,5 @@
-//----------------------------------------------------
-// file: CEditObject.h
-//----------------------------------------------------
-#ifndef _INCDEF_Object_H_
-#define _INCDEF_Object_H_
+#ifndef EditObjectH
+#define EditObjectH
                                       
 #include "Bone.h"                     
 #include "SceneClassList.h"
@@ -180,10 +177,12 @@ public:
 		eoProgressive 	= (1<<1),
         eoUsingLOD		= (1<<2),	
         eoHOM			= (1<<3),
+        eoMultipleUsage	= (1<<4),
 		eoFORCE32		= DWORD(-1)
     };
     IC bool			IsDynamic				(){return m_Flags.is(eoDynamic);}
-    IC bool			IsStatic				(){return !m_Flags.is(eoDynamic)&&!m_Flags.is(eoHOM);}
+    IC bool			IsStatic				(){return !m_Flags.is(eoDynamic)&&!m_Flags.is(eoHOM)&&!m_Flags.is(eoMultipleUsage);}
+    IC bool			IsMUStatic				(){return !m_Flags.is(eoDynamic)&&!m_Flags.is(eoHOM)&&m_Flags.is(eoMultipleUsage);}
 private:
 	// bounding volume
 	Fbox 			m_Box;

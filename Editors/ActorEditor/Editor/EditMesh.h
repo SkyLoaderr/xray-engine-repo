@@ -1,8 +1,8 @@
 //----------------------------------------------------
 // file: StaticMesh.h
 //----------------------------------------------------
-#ifndef _INCDEF_EditableMesh_H_
-#define _INCDEF_EditableMesh_H_
+#ifndef EditMeshH
+#define EditMeshH
 
 //----------------------------------------------------
 // refs

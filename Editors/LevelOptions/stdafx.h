@@ -1,8 +1,8 @@
 //----------------------------------------------------
 // file: stdafx.h
 //----------------------------------------------------
-#ifndef _INCDEF_STDAFX_H_
-#define _INCDEF_STDAFX_H_
+#ifndef stdafxH
+#define stdafxH
 
 #pragma once
 
@@ -283,7 +283,7 @@ typedef	char FILE_NAME	[ _MAX_PATH	];
 #define MULTIPLESEL_CAPTION "<multiple selection>" 
 
 
-#endif /*_INCDEF_STDAFX_H_*/
+#endif /*stdafxH*/
 
 
 

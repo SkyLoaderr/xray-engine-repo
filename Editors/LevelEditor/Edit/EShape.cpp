@@ -8,7 +8,8 @@
 #include "du_box.h"
 #include "Scene.h"
 
-#define SHAPE_COLOR_TRANSP		0x1800FF00
+#define SHAPE_COLOR_TRANSP_NORM	0x1800FF00
+#define SHAPE_COLOR_TRANSP_SEL	0x3600FF00
 #define SHAPE_COLOR_EDGE		0xFF202020
 //---------------------------------------------------------------------------
 
@@ -297,17 +298,17 @@ void CEditShape::Render(int priority, bool strictB2F)
                     case stSphere:{
 		                Device.SetTransform	(D3DTS_WORLD,_Transform());
                     	Fsphere& S			= it->data.sphere;
-		                Device.SetShader	(Device.m_SelectionShader);
-                        DU::DrawSphere		(S.P,S.R,SHAPE_COLOR_TRANSP);
 		                Device.SetShader	(Device.m_WireShader);
                         DU::DrawLineSphere	(S.P,S.R,SHAPE_COLOR_EDGE,true);
+		                Device.SetShader	(Device.m_SelectionShader);
+                        DU::DrawSphere		(S.P,S.R,Selected()?SHAPE_COLOR_TRANSP_SEL:SHAPE_COLOR_TRANSP_NORM);
                     }break;
                     case stBox:		
                     	Fmatrix B			= it->data.box;
                         B.mulA				(_Transform());
 		                Device.SetTransform	(D3DTS_WORLD,B);
 		                Device.SetShader	(Device.m_SelectionShader);
-				        DU::DrawIdentBox	(true,false,SHAPE_COLOR_TRANSP);
+				        DU::DrawIdentBox	(true,false,Selected()?SHAPE_COLOR_TRANSP_SEL:SHAPE_COLOR_TRANSP_NORM);
 		                Device.SetShader	(Device.m_WireShader);
 				        DU::DrawIdentBox	(false,true,SHAPE_COLOR_EDGE);
                     break;

@@ -334,6 +334,11 @@ void CSector::LoadSectorDef( CStream* F ){
         m_bHasLoadError = true;
         return;
     }
+    if (!sitem.object->IsStatic()){
+    	ELog.Msg(mtError,"Sector Item contains object '%s' - can't load.\nObject is dynamic.",o_name);
+        m_bHasLoadError = true;
+        return;
+    }
 //    if (!sitem.object->CheckVersion()){
 //    	ELog.Msg(mtError,"Sector Item contains object '%s' - can't load.\nDifferent object version.",o_name);
 //        m_bHasLoadError = true;

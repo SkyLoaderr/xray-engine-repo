@@ -24,9 +24,8 @@
       intermediate\TopBar.obj intermediate\LeftBar.obj 
       intermediate\BottomBar.obj intermediate\FrameObject.obj 
       intermediate\FrameSector.obj intermediate\FramePortal.obj 
-      intermediate\PropertiesLight.obj intermediate\SceneProperties.obj 
-      intermediate\ObjectList.obj intermediate\EditorPref.obj 
-      intermediate\Splash.obj intermediate\main.obj 
+      intermediate\SceneProperties.obj intermediate\ObjectList.obj 
+      intermediate\EditorPref.obj intermediate\Splash.obj intermediate\main.obj 
       intermediate\PropertiesEvent.obj intermediate\LogForm.obj 
       intermediate\EditObjectIO.obj intermediate\EditObjectMotions.obj 
       intermediate\FrameLight.obj intermediate\OneEnvironment.obj 
@@ -57,14 +56,14 @@
       intermediate\SharedPrimitive.obj intermediate\EditObject.obj 
       intermediate\Xr_input.obj intermediate\fcontroller.obj 
       intermediate\c_dinput.obj intermediate\pure.obj 
-      intermediate\CustomObject.obj intermediate\SceneObject.obj 
-      intermediate\SceneObjectIO.obj intermediate\xrImage_Resampler.obj 
-      intermediate\TextureManager_Loader.obj intermediate\Texture.obj 
-      intermediate\Cursor3D.obj intermediate\SH_Matrix.obj 
-      intermediate\SH_Texture.obj intermediate\Shader.obj 
-      intermediate\SH_Constant.obj intermediate\xr_avi.obj 
-      intermediate\Blender_Recorder.obj intermediate\Blender.obj 
-      intermediate\Blender_Vertex.obj intermediate\Blender_Editor_Selection.obj 
+      intermediate\CustomObject.obj intermediate\SceneObjectIO.obj 
+      intermediate\xrImage_Resampler.obj intermediate\TextureManager_Loader.obj 
+      intermediate\Texture.obj intermediate\Cursor3D.obj 
+      intermediate\SH_Matrix.obj intermediate\SH_Texture.obj 
+      intermediate\Shader.obj intermediate\SH_Constant.obj 
+      intermediate\xr_avi.obj intermediate\Blender_Recorder.obj 
+      intermediate\Blender.obj intermediate\Blender_Vertex.obj 
+      intermediate\Blender_Editor_Selection.obj 
       intermediate\Blender_Editor_Wire.obj intermediate\Blender_Screen_GRAY.obj 
       intermediate\Blender_Screen_SET.obj intermediate\Blender_default_aref.obj 
       intermediate\Blender_Vertex_aref.obj intermediate\BlenderDefault.obj 
@@ -107,21 +106,21 @@
       intermediate\Blender_B.obj intermediate\du_sphere.obj 
       intermediate\EShape.obj intermediate\UI_ShapeTools.obj 
       intermediate\FrameShape.obj intermediate\du_box.obj 
-      intermediate\PropertiesListHelper.obj"/>
+      intermediate\PropertiesListHelper.obj intermediate\SceneObject.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) EditLibrary.dfm NumericVector.dfm ShaderFunction.dfm 
       TopBar.dfm LeftBar.dfm BottomBar.dfm FrameObject.dfm FrameSector.dfm 
-      FramePortal.dfm PropertiesLight.dfm SceneProperties.dfm ObjectList.dfm 
-      EditorPref.dfm Splash.dfm main.dfm PropertiesEvent.dfm LogForm.dfm 
-      FrameLight.dfm OneEnvironment.dfm PropertiesPS.dfm ChoseForm.dfm 
-      ImageEditor.dfm FramePS.dfm previewimage.dfm FrameEmitter.dfm 
-      FrameRPoint.dfm FrameWayPoint.dfm FrameDetObj.dfm DOShuffle.dfm 
-      DOOneColor.dfm PropertiesDetailObject.dfm PropertiesList.dfm 
-      EventOneAction.dfm EditLightAnim.dfm PropertiesEObject.dfm FrameGroup.dfm 
-      FrameEvent.dfm TextForm.dfm PropertiesWayPoint.dfm FrameShape.dfm"/>
+      FramePortal.dfm SceneProperties.dfm ObjectList.dfm EditorPref.dfm 
+      Splash.dfm main.dfm PropertiesEvent.dfm LogForm.dfm FrameLight.dfm 
+      OneEnvironment.dfm PropertiesPS.dfm ChoseForm.dfm ImageEditor.dfm 
+      FramePS.dfm previewimage.dfm FrameEmitter.dfm FrameRPoint.dfm 
+      FrameWayPoint.dfm FrameDetObj.dfm DOShuffle.dfm DOOneColor.dfm 
+      PropertiesDetailObject.dfm PropertiesList.dfm EventOneAction.dfm 
+      EditLightAnim.dfm PropertiesEObject.dfm FrameGroup.dfm FrameEvent.dfm 
+      TextForm.dfm PropertiesWayPoint.dfm FrameShape.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
       lib\DXT.lib lib\gauss.lib lib\DX\d3d8.lib lib\DX\d3dx8d.lib 
       lib\DX\dinput.lib lib\ETools.lib lib\FreeImage.lib lib\xrCDB.lib 
@@ -212,7 +211,6 @@
       <FILE FILENAME="FrameObject.cpp" FORMNAME="fraObject" UNITNAME="FrameObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameSector.cpp" FORMNAME="fraSector" UNITNAME="FrameSector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FramePortal.cpp" FORMNAME="fraPortal" UNITNAME="FramePortal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="PropertiesLight.cpp" FORMNAME="frmPropertiesLight" UNITNAME="PropertiesLight" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SceneProperties.cpp" FORMNAME="frmSceneProperties" UNITNAME="SceneProperties" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ObjectList.cpp" FORMNAME="frmObjectList" UNITNAME="ObjectList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="EditorPref.cpp" FORMNAME="frmEditorPreferences" UNITNAME="EditorPref" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -293,7 +291,6 @@
       <FILE FILENAME="lib\DX\c_dinput.cpp" FORMNAME="" UNITNAME="c_dinput" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\pure.cpp" FORMNAME="" UNITNAME="pure" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\CustomObject.cpp" FORMNAME="" UNITNAME="CustomObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\SceneObject.cpp" FORMNAME="" UNITNAME="SceneObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\SceneObjectIO.cpp" FORMNAME="" UNITNAME="SceneObjectIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\xrImage_Resampler.cpp" FORMNAME="" UNITNAME="xrImage_Resampler" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\TextureManager_Loader.cpp" FORMNAME="" UNITNAME="TextureManager_Loader" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -401,6 +398,7 @@
       <FILE FILENAME="FrameShape.cpp" FORMNAME="fraShape" UNITNAME="FrameShape" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\du_box.cpp" FORMNAME="" UNITNAME="du_box" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesListHelper.cpp" FORMNAME="" UNITNAME="PropertiesListHelper" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\SceneObject.cpp" FORMNAME="" UNITNAME="SceneObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

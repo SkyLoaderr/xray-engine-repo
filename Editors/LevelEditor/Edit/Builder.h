@@ -2,8 +2,8 @@
 // file: Builder.h
 //----------------------------------------------------
 
-#ifndef _INCDEF_Builder_H_
-#define _INCDEF_Builder_H_
+#ifndef BuilderH
+#define BuilderH
 
 #include "communicate.h"
 #include "EditMesh.h"
@@ -29,11 +29,13 @@ struct sb_light_control						// controller or "layer", 30fps
     DWORDVec			data;
 };
 class SceneBuilder{
-	int						l_vertices_cnt, l_vertices_it;
-	int						l_faces_cnt, l_faces_it;
-    b_vertex*		        l_vertices;
+	int						l_vert_cnt, l_vert_it;
+	int						l_face_cnt, l_face_it;
+    b_vertex*		        l_verts;
     b_face*  		        l_faces;
     SVertVec				l_svertices;
+    vector<b_mu_model>		l_mu_models;
+    vector<b_mu_reference>	l_mu_refs;
     vector<b_lod>			l_lods;
     vector<sb_light_control>l_light_control;
     vector<b_light_static>	l_light_static;
@@ -51,8 +53,11 @@ class SceneBuilder{
 
     void    BuildGlow       (CGlow* e);
     void    BuildPortal   	(b_portal* b, CPortal* e);
-    BOOL    BuildMesh       (const Fmatrix& parent, CEditableObject* object, CEditableMesh* mesh, int sector_num, int lod_id);
+    BOOL    BuildMesh       (const Fmatrix& parent, CEditableObject* object, CEditableMesh* mesh, int sector_num, int lod_id, 
+    						b_vertex* verts, int& vert_cnt, int& vert_it, 
+                            b_face* faces, int& face_cnt, int& face_it);
     BOOL    BuildObject     (CSceneObject* obj);
+    BOOL    BuildMUObject   (CSceneObject* obj);
 
     void    ResetStructures ();
 

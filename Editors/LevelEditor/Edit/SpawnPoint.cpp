@@ -22,15 +22,105 @@
 #define SPAWNPOINT_CHUNK_GROUPID		0xE416
 #define SPAWNPOINT_CHUNK_TYPE			0xE417
 #define SPAWNPOINT_CHUNK_FLAGS			0xE418
-#define SPAWNPOINT_CHUNK_ENTITYREF		0xE419
 
+#define SPAWNPOINT_CHUNK_ENTITYREF		0xE419
 #define SPAWNPOINT_CHUNK_SPAWNDATA		0xE420
+#define SPAWNPOINT_CHUNK_SPAWNDATA_EXT	0xE421
 //----------------------------------------------------
 #define MAX_TEAM 6
 const DWORD RP_COLORS[MAX_TEAM]={0xff0000,0x00ff00,0x0000ff,0xffff00,0x00ffff,0xff00ff};
 
 ShaderMap CSpawnPoint::m_Icons;
 //----------------------------------------------------
+
+void CSpawnPoint::SSpawnData::Create(LPCSTR entity_ref)
+{
+    m_Data 	= F_entity_Create(entity_ref);
+    if (m_Data){ 
+        if (pSettings->LineExists(entity_ref,"$player")){
+            if (pSettings->ReadBOOL(entity_ref,"$player"))
+                m_Data->s_flags.set(M_SPAWN_OBJECT_ASPLAYER,TRUE);
+        }
+        m_ClassID = pSettings->ReadCLSID(entity_ref,"class");
+        strcpy(m_Data->s_name,entity_ref);
+    }
+}
+void CSpawnPoint::SSpawnData::Destroy()
+{
+    F_entity_Destroy(m_Data);
+}
+void CSpawnPoint::SSpawnData::Render(const Fvector& pos)
+{
+    if (fraBottomBar->miSpawnPointDrawText->Checked&&m_Data->s_name){
+        FVF::TL	P;
+        float 			cx,cy;
+        P.transform		( pos, Device.mFullTransform );
+        cx				= iFloor(Device._x2real(P.p.x));
+        cy				= iFloor(Device._y2real(P.p.y));
+        Device.pSystemFont->SetColor(0xffffffff);
+        Device.pSystemFont->Out		(cx,cy,m_Data->s_name);
+    }
+    Shader* s = GetIcon	(m_Data->s_name);
+    DU::DrawEntity		(0xffffffff,s);
+}
+void CSpawnPoint::SSpawnData::Save(CFS_Base& F)
+{
+    F.open_chunk		(SPAWNPOINT_CHUNK_ENTITYREF);
+    F.WstringZ			(m_Data->s_name);
+    F.close_chunk		();
+    
+    F.open_chunk		(SPAWNPOINT_CHUNK_SPAWNDATA);
+    NET_Packet 			Packet;
+    m_Data->Spawn_Write	(Packet,TRUE);
+    F.Wdword			(Packet.B.count);
+    F.write				(Packet.B.data,Packet.B.count);
+    F.close_chunk		();
+
+    F.open_chunk		(SPAWNPOINT_CHUNK_SPAWNDATA_EXT);
+    F.WstringZ			(m_Refs?m_Refs->Name:0);
+    F.close_chunk		();
+}
+bool CSpawnPoint::SSpawnData::Load(CStream& F)
+{
+    string64 			temp;
+    F.RstringZ			(temp);
+
+    NET_Packet 			Packet;
+    R_ASSERT(F.FindChunk(SPAWNPOINT_CHUNK_SPAWNDATA));
+    Packet.B.count 		= F.Rdword();
+    F.Read				(Packet.B.data,Packet.B.count);
+    Create				(temp);
+    if (Valid())		m_Data->Spawn_Read	(Packet);
+
+    if (F.FindChunk(SPAWNPOINT_CHUNK_SPAWNDATA_EXT)){
+    	F.RstringZ		(temp);
+        
+	    F.close_chunk		();
+    }
+
+    return Valid();
+}
+bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, LPCSTR name)
+{
+    strcpy	  			(m_Data->s_name_replace,name);
+    NET_Packet			Packet;
+    m_Data->Spawn_Write	(Packet,TRUE);
+        
+    F.spawn.stream.open_chunk	(F.spawn.chunk++);
+    F.spawn.stream.write		(Packet.B.data,Packet.B.count);
+    F.spawn.stream.close_chunk	();
+    return true;
+}
+void CSpawnPoint::SSpawnData::FillProp(LPCSTR pref, PropItemVec& items)
+{
+	m_Data->FillProp	(pref,items);
+}
+void CSpawnPoint::SSpawnData::OnObjectRemove(const CCustomObject* object)
+{
+	if (m_Refs==object) m_ Refs = 0;
+}
+//------------------------------------------------------------------------------
+
 CSpawnPoint::CSpawnPoint(LPVOID data, LPCSTR name):CCustomObject(data,name)
 {
 	Construct(data);
@@ -38,13 +128,11 @@ CSpawnPoint::CSpawnPoint(LPVOID data, LPCSTR name):CCustomObject(data,name)
 
 void CSpawnPoint::Construct(LPVOID data){
 	ClassID		= OBJCLASS_SPAWNPOINT;
-    m_SpawnData	= 0;
-    m_SpawnClassID = 0;
     m_dwTeamID	= 0;
     m_Type		= ptRPoint;
     if (data){
 	    CreateSpawnData(LPCSTR(data));
-    	if (!m_SpawnData){
+    	if (!m_SpawnData.Valid()){
     		if (strcmp(LPSTR(data),RPOINT_CHOOSE_NAME)==0){
 	        	m_Type = ptRPoint;
     	    }else if (strcmp(LPSTR(data),AIPOINT_CHOOSE_NAME)==0){
@@ -60,27 +148,16 @@ void CSpawnPoint::Construct(LPVOID data){
 
 CSpawnPoint::~CSpawnPoint()
 {
-	F_entity_Destroy(m_SpawnData);
+	F_entity_Destroy(m_SpawnData.m_Data);
     OnDeviceDestroy();
 }
 
 bool CSpawnPoint::CreateSpawnData(LPCSTR entity_ref)
 {
 	R_ASSERT(entity_ref&&entity_ref[0]);
-	F_entity_Destroy(m_SpawnData);
-	m_SpawnData = F_entity_Create(entity_ref);
-    if (m_SpawnData){ 
-        if (pSettings->LineExists(entity_ref,"$player")){
-			if (pSettings->ReadBOOL(entity_ref,"$player"))
-            	m_SpawnData->s_flags.set(M_SPAWN_OBJECT_ASPLAYER,TRUE);
-        }
-		m_SpawnClassID = pSettings->ReadCLSID(entity_ref,"class");
-    	strcpy(m_SpawnData->s_name,entity_ref);
-        OnDeviceCreate();
-    }else{
-    	ELog.Msg(mtError,"Can't create entity: '%s'",entity_ref);
-    }
-    return !!m_SpawnData;
+    m_SpawnData.Destroy	();
+    m_SpawnData.Create	(entity_ref);
+    return m_SpawnData.Valid();
 }
 
 //----------------------------------------------------
@@ -105,18 +182,8 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
 		if (::Render->occ_visible(bb)){
             if (strictB2F){
                 Device.SetTransform(D3DTS_WORLD,_Transform());
-                if (m_SpawnData){
-                    if (fraBottomBar->miSpawnPointDrawText->Checked&&m_SpawnData->s_name){
-                        FVF::TL	P;
-                        float 			cx,cy;
-                        P.transform		( PPosition, Device.mFullTransform );
-                        cx				= iFloor(Device._x2real(P.p.x));
-                        cy				= iFloor(Device._y2real(P.p.y));
-                        Device.pSystemFont->SetColor(0xffffffff);
-                        Device.pSystemFont->Out		(cx,cy,m_SpawnData->s_name);
-                    }
-                    Shader* s = GetIcon(m_SpawnData->s_name);
-                    DU::DrawEntity(0xffffffff,s);
+                if (m_SpawnData.Valid()){
+                	m_SpawnData.Render(PPosition);
                 }else{
                 	float k = 1.f/(float(m_dwTeamID+1)/float(MAX_TEAM));
                     int r = m_dwTeamID%MAX_TEAM;
@@ -193,19 +260,10 @@ bool CSpawnPoint::Load(CStream& F){
 
     // new generation
     if (F.FindChunk(SPAWNPOINT_CHUNK_ENTITYREF)){
-        string64 entity_ref;
-        F.RstringZ	(entity_ref);
-
-        NET_Packet 	Packet;
-        R_ASSERT(F.FindChunk(SPAWNPOINT_CHUNK_SPAWNDATA));
-        Packet.B.count = F.Rdword();
-        F.Read		(Packet.B.data,Packet.B.count);
-		CreateSpawnData(entity_ref);
-        if (!m_SpawnData){
+        if (!m_SpawnData.Valid()){
             ELog.Msg( mtError, "SPAWNPOINT: Can't find CLASS_ID.");
             return false;
         }
-        m_SpawnData->Spawn_Read(Packet);
         SetValid	(true);
     }else{
 	    if (F.FindChunk(SPAWNPOINT_CHUNK_TYPE))     m_Type 		= (EPointType)F.Rdword();
@@ -235,17 +293,8 @@ void CSpawnPoint::Save(CFS_Base& F){
 	F.Wword			(SPAWNPOINT_VERSION);
 	F.close_chunk	();
 
-	if (m_SpawnData){
-        F.open_chunk	(SPAWNPOINT_CHUNK_ENTITYREF);
-        F.WstringZ		(m_SpawnData->s_name);
-        F.close_chunk	();
-    
-        F.open_chunk	(SPAWNPOINT_CHUNK_SPAWNDATA);
-        NET_Packet 		Packet;
-        m_SpawnData->Spawn_Write(Packet,TRUE);
-        F.Wdword		(Packet.B.count);
-        F.write			(Packet.B.data,Packet.B.count);
-        F.close_chunk	();
+	if (m_SpawnData.Valid()){
+    	m_SpawnData.Save(F);
     }else{
 		F.write_chunk	(SPAWNPOINT_CHUNK_TYPE,		&m_Type,	sizeof(DWORD));
     	switch (m_Type){
@@ -263,14 +312,8 @@ void CSpawnPoint::Save(CFS_Base& F){
 bool CSpawnPoint::ExportGame(SExportStreams& F)
 {
 	// spawn
-	if (m_SpawnData){
-        strcpy	  					(m_SpawnData->s_name_replace,Name);
-        NET_Packet					Packet;
-        m_SpawnData->Spawn_Write	(Packet,TRUE);
-        
-        F.spawn.stream.open_chunk	(F.spawn.chunk++);
-        F.spawn.stream.write		(Packet.B.data,Packet.B.count);
-        F.spawn.stream.close_chunk	();
+	if (m_SpawnData.Valid()){
+    	m_SpawnData.ExportGame	(F,Name);
     }else{
         // game
         switch (m_Type){
@@ -296,8 +339,8 @@ void CSpawnPoint::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp(pref,items);
     
-    if (m_SpawnData){
-    	m_SpawnData->FillProp(pref,items);
+    if (m_SpawnData.Valid()){
+    	m_SpawnData.FillProp(pref,items);
     }else{
     	switch (m_Type){
         case ptRPoint:{
@@ -347,4 +390,9 @@ Shader* CSpawnPoint::GetIcon(LPCSTR name)
 }
 //----------------------------------------------------
 
+void CSpawnPoint::OnObjectRemove(CCustomObject* object)
+{
+	m_SpawnData.OnObjectRemove(object);
+}
+//----------------------------------------------------
 

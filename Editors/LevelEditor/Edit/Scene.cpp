@@ -152,6 +152,12 @@ void EScene::RemoveObject( CCustomObject* object, bool bUndo ){
     	m_SnapObjects.remove(object);
 		if (m_DetailObjects) m_DetailObjects->RemoveFromSnapList(object);
 		UpdateSnapList();
+        // signal everyone "I'm deleting"
+	    for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
+    	    ObjectList& lst = (*it).second;
+			for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
+            	(*_F)->OnObjectRemove(object);
+        }
     }
     // remove from scene list
     lst.remove( object );

@@ -3,28 +3,28 @@
 
 #pragma pack(push,4)
 
-const DWORD XR_MAX_TEXTURES		= 32;
-const DWORD XR_MAX_PORTAL_VERTS	= 6;
+const u32 XR_MAX_TEXTURES		= 32;
+const u32 XR_MAX_PORTAL_VERTS	= 6;
 
 // All types to interact with xrLC
 typedef Fvector			b_vertex;
 
 struct b_face
 {
-	DWORD				v[3];				// vertices
+	u32					v[3];				// vertices
 	Fvector2			t[3];				// TC
-	WORD				dwMaterial;			// index of material
-	DWORD				dwMaterialGame;		// unique-ID of game material
+	u16					dwMaterial;			// index of material
+	u32					dwMaterialGame;		// unique-ID of game material
 };
 
 struct b_material
 {
-	WORD				surfidx;			// indices of texture surface
-	WORD				shader;				// index of shader that combine them
-	WORD				shader_xrlc;		// compiler options
-	WORD				sector;				// ***
-	WORD				lod_id;				// WORD(-1) = no lod, just static geometry
-	WORD				reserved;			// 
+	u16					surfidx;			// indices of texture surface
+	u16					shader;				// index of shader that combine them
+	u16					shader_xrlc;		// compiler options
+	u16					sector;				// ***
+	u16					lod_id;				// u16(-1) = no lod, just static geometry
+	u16					reserved;			// 
 };
 
 struct b_shader
@@ -35,22 +35,22 @@ struct b_shader
 struct b_texture
 {
 	string128			name;
-	DWORD				dwWidth;
-	DWORD				dwHeight;
+	u32					dwWidth;
+	u32					dwHeight;
 	BOOL				bHasAlpha;
-	DWORD*				pSurface;
+	u32*				pSurface;
 };
 
 struct b_light_control						// controller or "layer", 30fps
 {
 	string64			name;				// empty for base layer
-	DWORD				count;				// 0 for base layer
-	// DWORD			data[];
+	u32					count;				// 0 for base layer
+	// u32			data[];
 };
 
 struct b_light
 {
-	DWORD				controller_ID;		// 0 = base layer
+	u32					controller_ID;		// 0 = base layer
 	Flight				data;
 };
 
@@ -60,21 +60,21 @@ struct b_light_static	: public b_light	// For static lighting
 
 struct b_light_dynamic	: public b_light	// For dynamic models
 {
-	svector<WORD,16>	sectors;
+	svector<u16,16>		sectors;
 };
 
 struct b_glow
 {
 	Fvector				P;
 	float				size;
-	DWORD				flags;				// 0x01 = non scalable
-	DWORD				dwMaterial;			// index of material
+	u32					flags;				// 0x01 = non scalable
+	u32					dwMaterial;			// index of material
 };
 
 struct b_portal
 {
-	WORD				sector_front;
-	WORD				sector_back;
+	u16					sector_front;
+	u16					sector_back;
 	svector<Fvector,XR_MAX_PORTAL_VERTS>	vertices;
 };
 
@@ -87,7 +87,25 @@ struct b_lod_face
 struct b_lod
 {
 	b_lod_face			faces	[8];
-	DWORD				dwMaterial;
+	u32					dwMaterial;
+};
+
+struct b_mu_model
+{
+	string128			name;
+    int					vert_cnt;
+    b_vertex*			verts;
+    int					face_cnt;
+    b_face*				faces;
+};
+
+struct b_mu_reference
+{
+	u32					model_index;
+    Fmatrix				transform;
+    Flags32				flags;
+	u16					sector;
+    u32					reserved[8];
 };
 
 struct b_params
@@ -97,8 +115,8 @@ struct b_params
 	float		m_weld_distance;	// by default 0.005f		- 5mm
 
 	// Vertex buffers
-	DWORD		m_VB_maxSize;		// by default: 8mb
-	DWORD		m_VB_maxVertices;	// by default: 64k
+	u32			m_VB_maxSize;		// by default: 8mb
+	u32			m_VB_maxVertices;	// by default: 64k
 
 	// Subdivision & PVS
 	float		m_SS_maxsize;		// max object size - by default: 48m
@@ -116,8 +134,8 @@ struct b_params
 	int			m_lm_jitter_samples;// 1/4/9 - by default		- 4
 	Fcolor		m_lm_amb_color;		// color of lightmaps ambinet lighting  (def: 1,1,1)
 	float		m_lm_amb_fogness;	// in percents
-	DWORD		m_lm_rms_zero;		// RMS - after what the lightmap will be shrinked to ZERO pixels
-	DWORD		m_lm_rms;			// RMS - shrink and recalc
+	u32			m_lm_rms_zero;		// RMS - after what the lightmap will be shrinked to ZERO pixels
+	u32			m_lm_rms;			// RMS - shrink and recalc
 	
 	// Area(hemi-sphere) lighting
 	Fcolor		area_color;			//
@@ -237,8 +255,10 @@ enum EBUILD_CHUNKS
 	EB_Light_static,
 	EB_Light_dynamic,
 	EB_LOD_models,
+    EB_MU_models,
+    EB_MU_refs,
 
-	EB_FORCE_DWORD = DWORD(-1)
+	EB_FORCE_DWORD = u32(-1)
 };
 
 #define BUILD_PROJECT_MARK "xrLC"
