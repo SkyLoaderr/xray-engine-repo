@@ -32,6 +32,9 @@ public:
 	u32				timeReceive;
 public:
 	// writing - main
+	IC void write_start(){
+		B.count=0;
+	}
 	IC void	w_begin	( u16 type		)				// begin of packet 'type'
 	{
 		B.count=0;
@@ -131,6 +134,9 @@ public:
 	}
 
 	// reading
+	IC u32		read_start(){
+		r_pos		= 0;
+	}
 	IC u32		r_begin			( u16& type	)	// returns time of receiving
 	{
 		r_pos		= 0;
