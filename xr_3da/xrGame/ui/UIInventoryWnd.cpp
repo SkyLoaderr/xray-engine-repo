@@ -34,7 +34,8 @@ using namespace InventoryUtilities;
 #include "../InfoPortion.h"
 #include "../level.h"
 #include "../game_base_space.h"
-#include "../entitycondition.h"
+
+//#include "../string_table.h"
 
 #define MAX_ITEMS	70
 
@@ -235,10 +236,10 @@ void CUIInventoryWnd::Update()
 
 	if(pEntityAlive) 
 	{
-		UIProgressBarHealth.SetProgressPos(s16(pEntityAlive->conditions().GetHealth()*1000));
-		UIProgressBarSatiety.SetProgressPos(s16(pEntityAlive->conditions().GetSatiety()*1000));
-		UIProgressBarPower.SetProgressPos(s16(pEntityAlive->conditions().GetPower()*1000));
-		UIProgressBarRadiation.SetProgressPos(s16(pEntityAlive->conditions().GetRadiation()*1000));
+		UIProgressBarHealth.SetProgressPos(s16(pEntityAlive->GetHealth()*1000));
+		UIProgressBarSatiety.SetProgressPos(s16(pEntityAlive->GetSatiety()*1000));
+		UIProgressBarPower.SetProgressPos(s16(pEntityAlive->GetPower()*1000));
+		UIProgressBarRadiation.SetProgressPos(s16(pEntityAlive->GetRadiation()*1000));
 
 		
 		//убрать объект drag&drop для уже использованной вещи
