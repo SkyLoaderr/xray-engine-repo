@@ -1033,11 +1033,35 @@
 									<Tool
 										Name="VCCLCompilerTool"/>
 								</FileConfiguration>
+								<FileConfiguration
+									Name="Mixed|Win32"
+									ExcludedFromBuild="TRUE">
+									<Tool
+										Name="VCCLCompilerTool"/>
+								</FileConfiguration>
+								<FileConfiguration
+									Name="Release|Win32"
+									ExcludedFromBuild="TRUE">
+									<Tool
+										Name="VCCLCompilerTool"/>
+								</FileConfiguration>
 							</File>
 							<File
 								RelativePath=".\Explosive.h">
 								<FileConfiguration
 									Name="Debug|Win32"
+									ExcludedFromBuild="TRUE">
+									<Tool
+										Name="VCCustomBuildTool"/>
+								</FileConfiguration>
+								<FileConfiguration
+									Name="Mixed|Win32"
+									ExcludedFromBuild="TRUE">
+									<Tool
+										Name="VCCustomBuildTool"/>
+								</FileConfiguration>
+								<FileConfiguration
+									Name="Release|Win32"
 									ExcludedFromBuild="TRUE">
 									<Tool
 										Name="VCCustomBuildTool"/>
@@ -2689,9 +2713,6 @@
 					</File>
 					<File
 						RelativePath="ai_alife_console.cpp">
-					</File>
-					<File
-						RelativePath=".\ai_alife_interfaces.cpp">
 					</File>
 					<File
 						RelativePath="ai_alife_interfaces.h">
