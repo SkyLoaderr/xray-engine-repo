@@ -96,7 +96,7 @@ function save_dialog:InitControls()
 	----- CODE -------
 	
 	-- init self position and size
-	self:Init(screen_rect.x, screen_rect.y, screen_rect.width, screen_rect.height)
+	self:Init(0, 0, screen.width, screen.height)
 	
 	-- MAIN FRAME WINDOW		
 	local main_frame = CUIFrameWindow()
