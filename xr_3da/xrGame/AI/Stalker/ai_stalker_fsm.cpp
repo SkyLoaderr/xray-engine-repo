@@ -40,95 +40,108 @@ void CAI_Stalker::Think()
 	if (!g_Alive())
 		Death				();
 	else
-	if (C && H && I) {
-		ForwardStraight	();
-	} else
-	if (C && H && !I) {
-		ForwardStraight	();
-	} else
-	if (C && !H && I) {
-		ForwardStraight	();
-	} else
-	if (C && !H && !I) {
-		ForwardStraight	();
-	} else
-	
-	if (D && H && I) {
-		ForwardStraight	();
-	} else
-	if (D && H && !I) {
-		ForwardStraight	();
-	} else
-	if (D && !H && I) {
-		ForwardStraight	();
-	} else
-	if (D && !H && !I) {
-		ForwardStraight	();
-	} else
-	
-	if (E && H && I) {
-		ForwardStraight	();
-	} else
-	if (E && H && !I) {
-		ForwardStraight	();
-	} else
-	if (E && !H && I) {
-		ForwardStraight	();
-	} else
-	if (E && !H && !I) {
-		ForwardStraight	();
-	} else
-	
-	if (F && H && I) {
-		ForwardStraight	();
-	} else
-	if (F && H && !I) {
-		ForwardStraight	();
-	} else
-	if (F && !H && I) {
-		ForwardStraight	();
-	} else
-	if (F && !H && !I) {
-		ForwardStraight	();
-	} else
-	
-	if (G && H && I) {
-		ForwardStraight	();
-	} else
-	if (G && H && !I) {
-		ForwardStraight	();
-	} else
-	if (G && !H && I) {
-		ForwardStraight	();
-	} else
-	if (G && !H && !I) {
-		ForwardStraight	();
-	} else
-	
-	if (A && !K && !H && !L) {
-		ForwardStraight	();
-	} else
-	if (A && !K && H && !L) {
-		ForwardStraight	();
-	} else
-	if (A && !K && !H && L) {
-		ForwardStraight	();
-	} else
-	if (A && !K && H && L) {
-		ForwardStraight	();
-	} else
-	
-	if (B && !K && !H && !L) {
-		ForwardStraight	();
-	} else
-	if (B && !K && H && !L) {
-		ForwardStraight	();
-	} else
-	if (B && !K && !H && L) {
-		ForwardStraight	();
-	} else
-	if (B && !K && H && L) {
-		ForwardStraight	();
+//	if (C && H && I) {
+//		ForwardStraight	();
+//	} else
+//	if (C && H && !I) {
+//		ForwardStraight	();
+//	} else
+//	if (C && !H && I) {
+//		ForwardStraight	();
+//	} else
+//	if (C && !H && !I) {
+//		ForwardStraight	();
+//	} else
+//	
+//	if (D && H && I) {
+//		ForwardStraight	();
+//	} else
+//	if (D && H && !I) {
+//		ForwardStraight	();
+//	} else
+//	if (D && !H && I) {
+//		ForwardStraight	();
+//	} else
+//	if (D && !H && !I) {
+//		ForwardStraight	();
+//	} else
+//	
+//	if (E && H && I) {
+//		ForwardStraight	();
+//	} else
+//	if (E && H && !I) {
+//		ForwardStraight	();
+//	} else
+//	if (E && !H && I) {
+//		ForwardStraight	();
+//	} else
+//	if (E && !H && !I) {
+//		ForwardStraight	();
+//	} else
+//	
+//	if (F && H && I) {
+//		ForwardStraight	();
+//	} else
+//	if (F && H && !I) {
+//		ForwardStraight	();
+//	} else
+//	if (F && !H && I) {
+//		ForwardStraight	();
+//	} else
+//	if (F && !H && !I) {
+//		ForwardStraight	();
+//	} else
+//	
+//	if (G && H && I) {
+//		ForwardStraight	();
+//	} else
+//	if (G && H && !I) {
+//		ForwardStraight	();
+//	} else
+//	if (G && !H && I) {
+//		ForwardStraight	();
+//	} else
+//	if (G && !H && !I) {
+//		ForwardStraight	();
+//	} else
+//	
+//	if (A && !K && !H && !L) {
+//		ForwardStraight	();
+//	} else
+//	if (A && !K && H && !L) {
+//		ForwardStraight	();
+//	} else
+//	if (A && !K && !H && L) {
+//		ForwardStraight	();
+//	} else
+//	if (A && !K && H && L) {
+//		ForwardStraight	();
+//	} else
+//	
+//	if (B && !K && !H && !L) {
+//		ForwardStraight	();
+//	} else
+//	if (B && !K && H && !L) {
+//		ForwardStraight	();
+//	} else
+//	if (B && !K && !H && L) {
+//		ForwardStraight	();
+//	} else
+//	if (B && !K && H && L) {
+//		ForwardStraight	();
+//	} else
+	if (K) {
+//		BackDodge();
+
+//		BackCover();
+
+//		if ((m_tActionState != eActionStateStand) && (m_tActionState != eActionStateRun))
+//			m_bStateChanged = true;
+//		ForwardCover();
+		
+//		ForwardDodge();
+		
+		ForwardStraight();
 	} else
 	if (M) {
 		m_tSelectorFreeHunting.m_fMaxEnemyDistance	= vPosition.distance_to(m_tpItemToTake->Position());
@@ -172,26 +185,46 @@ void CAI_Stalker::Death()
 
 void CAI_Stalker::BackDodge()
 {
-	WRITE_TO_LOG("Back dodging");
+	WRITE_TO_LOG				("Back dodging");
 	
-	m_tEnemy.Enemy				= dynamic_cast<CEntity *>(Level().CurrentEntity());
+	SelectEnemy					(m_tEnemy);
+
+	m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tEnemy.Enemy->Position().distance_to(vPosition) + m_tSelectorRetreat.m_fSearchRange;
+	m_tSelectorFreeHunting.m_fOptEnemyDistance = m_tSelectorFreeHunting.m_fMaxEnemyDistance;
+	m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tEnemy.Enemy->Position().distance_to(vPosition) + 3.f;
 
 	Fvector						tPoint;
 	m_tEnemy.Enemy->svCenter	(tPoint);
-	vfSetParameters				(&m_tSelectorRetreat,0,eWeaponStateIdle,ePathTypeDodge,eBodyStateStand,eMovementTypeRun,eLookTypeDirection,tPoint);
+	vfSetParameters				(
+		&m_tSelectorFreeHunting,
+		0,
+		eWeaponStateIdle,
+		ePathTypeDodge,
+		eBodyStateStand,
+		eMovementTypeWalk,
+		eLookTypeFirePoint,
+		tPoint);
 }
 
 void CAI_Stalker::BackCover()
 {
-	WRITE_TO_LOG("Back cover");
+	WRITE_TO_LOG				("Back cover");
 	
-	m_tEnemy.Enemy				= dynamic_cast<CEntity *>(Level().CurrentEntity());
+	SelectEnemy					(m_tEnemy);
 
 	m_tSelectorCover.m_fMinEnemyDistance = m_tEnemy.Enemy->Position().distance_to(vPosition) + 3.f;
 
 	Fvector						tPoint;
 	m_tEnemy.Enemy->svCenter	(tPoint);
-	vfSetParameters				(&m_tSelectorCover,0,eWeaponStateIdle,ePathTypeCriteria,eBodyStateStand,eMovementTypeRun,eLookTypeFirePoint,tPoint);
+	vfSetParameters				(
+		&m_tSelectorCover,
+		0,
+		eWeaponStateIdle,
+		ePathTypeCriteria,
+		eBodyStateStand,
+		eMovementTypeRun,
+		eLookTypeFirePoint,
+		tPoint);
 }
 
 void CAI_Stalker::ForwardCover()
