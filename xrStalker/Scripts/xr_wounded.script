@@ -132,7 +132,7 @@ function action_cover:initialize ()
     action_base.initialize (self)
     
     local pt = self.object:safe_cover (self.object:position (), 50, 0)
-    if pt == nil then
+    if pt == nil or self.a.immediate == true then
        self.pos = self.object:position ()
        self.vid = self.object:level_vertex_id ()
     else
@@ -159,6 +159,10 @@ function action_cover:execute ()
     action_base.execute (self)
     if self.stage == 0 then
        if self.object:level_vertex_id () == self.vid and self.pos:distance_to (self.object:position ()) < 1.0 then
+          if self.a.immediate == true then 
+             self.a.cover = true
+             return
+          end   
           self.stage = 1
           local dir = self.object:direction ()
           dir.x = -dir.x
@@ -290,6 +294,7 @@ function action_help:initialize ()
     self.first = false
     self.object:enable_talk ()
     self.object:set_start_dialog ("stalker_wounded_friend")
+    xr_meet.override_meet (self.object, true)
 end
 ------------
 function action_help:execute ()
@@ -317,6 +322,7 @@ end
 ------------
 function action_help:finalize ()
     action_base.finalize (self)
+    xr_meet.override_meet (self.object, false)
 end    
 ------------------------------------------------------------------------------------------
 
@@ -332,6 +338,7 @@ end
 function action_stand:initialize ()
     action_base.initialize (self)
     self.first = false
+    xr_meet.override_meet (self.object, true)
 end
 ------------
 function action_stand:execute ()
@@ -351,6 +358,7 @@ end
 ------------
 function action_stand:finalize ()
     action_base.finalize (self)
+    xr_meet.override_meet (self.object, false)
 end    
 ------------------------------------------------------------------------------------------
 
@@ -372,6 +380,7 @@ function action_enemy:initialize ()
     action_base.initialize (self)
     self.object:set_movement_type         (move.stand)
     self.first = false
+    xr_meet.override_meet (self.object, true)
 end
 ------------
 function action_enemy:execute ()
@@ -398,6 +407,7 @@ function action_enemy:finalize ()
     action_base.finalize (self)
     self.object:clear_animations ()
     self.object:add_animation ("waunded_monser_2", true)
+    xr_meet.override_meet (self.object, false)
 end    
 ------------------------------------------------------------------------------------------
 
@@ -533,7 +543,7 @@ function add_to_binder (object, char_ini)
 end
 ------------
 
-function set_wounded (npc, enabled, threshold)
+function set_wounded (npc, enabled, threshold, immediate)
 
 	local char_ini = npc:spawn_ini()
 	local st = xr_motivator.storage[npc:id()].wounded
@@ -555,6 +565,16 @@ function set_wounded (npc, enabled, threshold)
        end
     else
        st.threshold = threshold
+    end
+    
+    if immediate == nil then
+       if char_ini:section_exist ("wounded") == true and char_ini:line_exist("wounded", "immediate") == true then
+          st.immediate = char_ini:r_bool ("wounded", "immediate")
+       else 
+          st.immediate = false 
+       end
+    else
+       st.immediate = immediate
     end
    
     st.sit = false 
