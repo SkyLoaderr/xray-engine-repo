@@ -16,6 +16,7 @@ ENGINE_API	CRender_interface*	Render = &Render_Implementation;
 CVisual*	CRender::model_CreatePS		(LPCSTR name, PS::SEmitter* E)	{ return Models.CreatePS(name,E);	}
 CVisual*	CRender::model_Create		(LPCSTR name)					{ return Models.Create(name);		}
 CVisual*	CRender::model_Create		(CStream* data)					{ return Models.Create(data);		}
+CVisual*	CRender::model_Duplicate	(CVisual* V)					{ return Models.Instance_Duplicate(V);}
 void		CRender::model_Delete		(CVisual* &V)					{ Models.Delete(V);					}
 
 int			CRender::getVisualsCount	()					{ return Visuals.size();							}

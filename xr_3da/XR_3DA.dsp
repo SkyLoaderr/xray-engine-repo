@@ -2269,20 +2269,7 @@ SOURCE=.\FHierrarhyVisual.h
 # Begin Source File
 
 SOURCE=.\FastSprite.cpp
-
-!IF  "$(CFG)" == "XR_3DA - Win32 Release"
-
-# ADD CPP /FAs
-
-!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
-
-# ADD BASE CPP /FAs
-# ADD CPP /FAs
-
-!ENDIF 
-
+# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
@@ -2291,6 +2278,7 @@ SOURCE=.\FastSprite.h
 # Begin Source File
 
 SOURCE=.\FastSpriteRail.cpp
+# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 

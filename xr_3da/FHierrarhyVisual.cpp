@@ -38,7 +38,7 @@ void FHierrarhyVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 #ifdef _EDITOR
 			THROW;
 #else
-			chields[i]	= ::Render.Visuals[ID];
+			chields[i]	= ::Render->getVisual(ID);
 #endif
 		}
 		bDontDelete = TRUE;
@@ -51,7 +51,7 @@ void FHierrarhyVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 #ifdef _EDITOR
                     chields.push_back	(::Device.Models.Create(O));
 #else
-					chields.push_back	(::Render.Models.Create(O));
+					chields.push_back	(::Render->model_Create(O));
 #endif
                     O->Close();
                     O = OBJ->OpenChunk(count);
@@ -73,7 +73,7 @@ void FHierrarhyVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 #ifdef _EDITOR
                     chields.push_back	(::Device.Models.Create(fn_full));
 #else
-                    chields.push_back	(::Render.Models.Create(fn_full));
+                    chields.push_back	(::Render->model_Create(fn_full));
 #endif
                 }
                 bDontDelete = FALSE;
@@ -96,7 +96,7 @@ void	FHierrarhyVisual::Copy(CVisual *pSrc)
 #ifdef _EDITOR
 		CVisual *p = ::Device.Models.Instance_Duplicate(pFrom->chields[i]);
 #else
-		CVisual *p = ::Render.Models.Instance_Duplicate(pFrom->chields[i]);
+		CVisual *p = ::Render->model_Duplicate	(pFrom->chields[i]);
 #endif
 		chields.push_back(p);
 	}

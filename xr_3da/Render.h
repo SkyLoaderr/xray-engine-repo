@@ -31,11 +31,13 @@ public:
 	virtual CPortal*				getPortal				(int id);
 	virtual CSector*				getSector				(int id);
 	virtual CVisual*				getVisual				(int id);
+	virtual DWORD					getFVF					(int id);
+	virtual IDirect3DVertexBuffer8*	getVB					(int id);
 	virtual CSector*				detectSector			(Fvector& P);
 	
 	// Main 
 	IC		void					set_Frustum				(CFrustum*	O	)			{ VERIFY(O);	View = O;			}
-	IC		void					set_Transform			(Fmatrix*	M	)			{ VERIFY(pM);	pTransform = M;		}
+	IC		void					set_Transform			(Fmatrix*	M	)			{ VERIFY(M);	pTransform = M;		}
 	IC		void					set_LightLevel			(int		L	)			{ iLightLevel = L;					}
 	virtual void					set_Object				(CObject*	O	);
 	virtual void					add_Visual				(CVisual*	V	);			// add visual leaf (no culling performed at all)
@@ -47,6 +49,7 @@ public:
 	virtual CVisual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E);
 	virtual CVisual*				model_Create			(LPCSTR name);
 	virtual CVisual*				model_Create			(CStream* data);
+	virtual CVisual*				model_Duplicate			(CVisual* V);
 	virtual void					model_Delete			(CVisual* &V);
 	
 	// Main

@@ -102,6 +102,7 @@ public:
 	virtual CVisual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E);
 	virtual CVisual*				model_Create			(LPCSTR name);
 	virtual CVisual*				model_Create			(CStream* data);
+	virtual CVisual*				model_Duplicate			(CVisual* V);
 	virtual void					model_Delete			(CVisual* &V);
 	
 	// Main

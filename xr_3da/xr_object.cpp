@@ -151,7 +151,7 @@ BOOL CObject::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_ang
 
 void CObject::OnDeviceDestroy	()
 {
-	if (pVisual)				Render.Models.Delete	(pVisual);
+	if (pVisual)				Render->model_Delete	(pVisual);
 	if (sh_Shader)				Device.Shader.Delete	(sh_Shader);
 }
 
@@ -159,7 +159,7 @@ void CObject::OnDeviceCreate	()
 {
 	// visual and shadow
 	REQ_CREATE					();
-	pVisual						= Render.Models.Create	(pVisualName);
+	pVisual						= Render->model_Create	(pVisualName);
 	sh_Shader					= Device.Shader.Create	("effects\\shadow","fx\\shadow",false);
 	sh_Size						= Radius()/2;
 }
@@ -225,7 +225,7 @@ void CObject::Sector_Detect	()
 		Fvector		Pos;
 		pVisual->bv_BBox.getcenter(Pos);
 		Pos.add		(vPosition);
-		P			= Render.detectSector(vPosition);
+		P			= Render->detectSector(vPosition);
 		Sector_Move	(P);
 	}
 }

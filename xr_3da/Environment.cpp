@@ -198,7 +198,7 @@ void CEnvironment::OnDeviceCreate()
 	if (pCreator->pLevel->LineExists("environment","sky"))
 	{
 		LPCSTR S = pCreator->pLevel->ReadSTRING("environment","sky");
-		pSkydome = Render.Models.Create(S);
+		pSkydome = Render->model_Create(S);
 	} else pSkydome = NULL;
 	
 	c_Invalidate	();
@@ -206,7 +206,7 @@ void CEnvironment::OnDeviceCreate()
 
 void CEnvironment::OnDeviceDestroy()
 {
-	Render.Models.Delete	(pSkydome);
+	Render->model_Delete	(pSkydome);
 }
 
 extern float psHUD_FOV;

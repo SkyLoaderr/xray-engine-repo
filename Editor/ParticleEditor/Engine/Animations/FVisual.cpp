@@ -43,7 +43,7 @@ void Fvisual::Load(const char* N, CStream *data, DWORD dwFlags)
 			dwVertStart		= data->Rdword();
 			dwVertCount		= data->Rdword();
 #ifndef _EDITOR
-			P.VB_Attach		(::Render.FVF[ID],::Render.VB[ID]);
+			P.VB_Attach		(::Render->getFVF(ID),::Render->getVB(ID));
 #endif
 		} else {
 			R_ASSERT(data->FindChunk(OGF_VERTICES));

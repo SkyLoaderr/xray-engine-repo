@@ -37,9 +37,9 @@ CCreator::~CCreator	( )
 	if (Sounds_Ambience>=0)		pSounds->Delete2D(Sounds_Ambience);
 
 	// Render-level unload
-	Render.OnDeviceDestroy		( );
-	Device.seqDevDestroy.Remove	(&Render);
-	Device.seqDevCreate.Remove	(&Render);
+	Render->OnDeviceDestroy		( );
+	Device.seqDevDestroy.Remove	(Render);
+	Device.seqDevCreate.Remove	(Render);
 
 	// Unload sounds
 	for (DWORD i=0; i<Sounds.size(); i++)
@@ -113,9 +113,9 @@ BOOL CCreator::Load(DWORD dwNum)
 	chunk->Close				();
 
 	// Render-level Load
-	Device.seqDevDestroy.Add	(&Render);
-	Device.seqDevCreate.Add		(&Render);
-	Render.OnDeviceCreate		();
+	Device.seqDevDestroy.Add	(Render);
+	Device.seqDevCreate.Add		(Render);
+	Render->OnDeviceCreate		();
 	
 	// Objects
 	pApp->LoadTitle				("Loading entities...");
@@ -178,8 +178,8 @@ void CCreator::OnRender()
 	if (fabsf(Device.fTimeDelta)<EPS_S) return;
 
 	// Level render
-	Render.Calculate			();
-	Render.Render				();
+	Render->Calculate			();
+	Render->Render				();
 
 	// Font
 	pApp->pFont->OnRender		();

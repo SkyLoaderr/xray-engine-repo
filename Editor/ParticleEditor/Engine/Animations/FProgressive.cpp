@@ -58,7 +58,7 @@ void FProgressive::Load		(const char* N, CStream *data, DWORD dwFlags)
 			DWORD ID		= ONE->Rdword();
 			dwVertStart		= ONE->Rdword();
 			LOD.dwVertCount	= ONE->Rdword();
-			LOD.P.VB_Attach	(::Render.FVF[ID],::Render.VB[ID]);
+			LOD.P.VB_Attach	(::Render->getFVF(ID),::Render->getVB(ID));
 #endif
 		} else {
 			R_ASSERT(ONE->FindChunk(OGF_VERTICES));
