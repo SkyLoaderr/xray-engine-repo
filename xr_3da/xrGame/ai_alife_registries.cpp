@@ -592,7 +592,7 @@ CSE_ALifeOrganizationRegistry::CSE_ALifeOrganizationRegistry()
 		_GetItem				(S,i,S1);
 		LPSTR					S2 = (LPSTR)xr_malloc((strlen(S1) + 1)*sizeof(char));
 		strcpy					(S2,S1);
-		m_tArtefactRegistry.push_back(S2);
+		m_tArtefactRegistry.insert(std::make_pair(S2,false));
 	}
 }
 

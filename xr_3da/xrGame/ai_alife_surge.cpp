@@ -362,15 +362,9 @@ void CSE_ALifeSimulator::vfUpdateOrganizations()
 						ARTEFACT_ORDER_IT			ee = (*j).second->m_tpArtefactNeed.end();
 						bool						l_bIsReadyForInvention = true;
 						for ( ; ii != ee; ii++) {
-							bool					l_bFound = false;
-							LPSTR_IT				iii = m_tArtefactRegistry.begin();
-							LPSTR_IT				eee = m_tArtefactRegistry.end();
-							for ( ; iii != eee; ii++)
-								if (!strcmp(*iii,(*ii).m_caSection)) {
-									l_bFound = true;
-									break;
-								}
-							if (!l_bFound) {
+							LPSTR_BOOL_PAIR_IT		iii = m_tArtefactRegistry.find((*ii).m_caSection);
+							R_ASSERT3				(iii != m_tArtefactRegistry.end(),"Unknown artefact",(*ii).m_caSection);
+							if ((*iii).second) {
 								l_bFoundDiscovery	= false;
 								break;
 							}

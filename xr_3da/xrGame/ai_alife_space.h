@@ -254,6 +254,7 @@ namespace ALife {
 		eResearchStateDummy = u32(-1),
 	};
 	
+	DEFINE_MAP_PRED	(LPSTR,						bool,							LPSTR_BOOL_MAP,				LPSTR_BOOL_PAIR_IT,	pred_str);
 	DEFINE_SET		(EAnomalousZoneType,		U32_SET,						U32_SET_IT);
 	DEFINE_MAP_PRED	(LPSTR,						U32_SET,						ITEM_SET_MAP,				ITEM_SET_PAIR_IT,	pred_str);
 	DEFINE_SET		(CSE_ALifeTrader*,			TRADER_SET,						TRADER_SET_IT);

@@ -168,7 +168,7 @@ class CSE_ALifeOrganizationRegistry : public IPureALifeLSObject {
 public:
 	ORGANIZATION_P_MAP				m_tOrganizationRegistry;
 	DISCOVERY_P_MAP					m_tDiscoveryRegistry;
-	LPSTR_VECTOR					m_tArtefactRegistry;
+	LPSTR_BOOL_MAP					m_tArtefactRegistry;
 
 									CSE_ALifeOrganizationRegistry();
 	virtual							~CSE_ALifeOrganizationRegistry();
