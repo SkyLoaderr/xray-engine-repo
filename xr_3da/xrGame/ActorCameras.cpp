@@ -97,54 +97,54 @@ void CActor::cam_Update(float dt, float fFOV)
 	xform.translate_over(XFORM().c);
 
 	// lookout
-	if (!fis_zero(r_torso_tgt_roll)){
-		Fvector src_pt,tgt_pt;
-		float radius		= point.y*0.5f;
-		float alpha			= r_torso_tgt_roll/2.f;
-		float dZ			= ((PI_DIV_2-((PI+alpha)/2)));
-		calc_point			(tgt_pt,radius,0,alpha);
-		src_pt.set			(0,tgt_pt.y,0);
-		// init valid angle
-		float valid_angle	= alpha;
-		// xform with roll
-		xformR.setXYZ		(-r_torso.pitch,r_torso.yaw,-dZ);
-		Fmatrix33			mat; 
-		mat.i				= xformR.i;
-		mat.j				= xformR.j;
-		mat.k				= xformR.k;
-		// get viewport params
-		float w,h;
-		float c				= viewport_near(w,h); w/=2.f;h/=2.f;
-		// find tris
-		Fbox box;
-		box.invalidate		();
-		box.modify			(src_pt);
-		box.modify			(tgt_pt);
-		box.grow			(c);
-		g_pGameLevel->ObjectSpace.BoxQuery(box,xform,clGET_TRIS|clQUERY_STATIC);
-		u32 tri_count		= g_pGameLevel->ObjectSpace.q_result.tris.size();	
-		if (tri_count){
-			float da		= 0.f;
-			BOOL bIntersect	= FALSE;
-			Fvector	ext		= {w,h,VIEWPORT_NEAR/2};
-			if (test_point(xform,mat,ext,radius,alpha)){
-				da			= PI/1000.f;
-				if (!fis_zero(r_torso.roll))
-					da		*= r_torso.roll/_abs(r_torso.roll);
-				for (float angle=0.f; _abs(angle)<_abs(alpha); angle+=da)
-					if (test_point(xform,mat,ext,radius,angle)){ bIntersect=TRUE; break; } 
-				valid_angle	= bIntersect?angle:alpha;
-			} 
-		}
-		r_torso.roll		= valid_angle*2.f;
-		r_torso_tgt_roll	= r_torso.roll;
-//		calc_point			(point,radius,0,valid_angle);
-//		dangle.z			= (PI_DIV_2-((PI+valid_angle)/2));
-	}
-	else
+	if (this == Level().CurrentControlEntity())
 	{
-		if (this == Level().CurrentViewEntity())
-		{
+		if (!fis_zero(r_torso_tgt_roll)){
+			Fvector src_pt,tgt_pt;
+			float radius		= point.y*0.5f;
+			float alpha			= r_torso_tgt_roll/2.f;
+			float dZ			= ((PI_DIV_2-((PI+alpha)/2)));
+			calc_point			(tgt_pt,radius,0,alpha);
+			src_pt.set			(0,tgt_pt.y,0);
+			// init valid angle
+			float valid_angle	= alpha;
+			// xform with roll
+			xformR.setXYZ		(-r_torso.pitch,r_torso.yaw,-dZ);
+			Fmatrix33			mat; 
+			mat.i				= xformR.i;
+			mat.j				= xformR.j;
+			mat.k				= xformR.k;
+			// get viewport params
+			float w,h;
+			float c				= viewport_near(w,h); w/=2.f;h/=2.f;
+			// find tris
+			Fbox box;
+			box.invalidate		();
+			box.modify			(src_pt);
+			box.modify			(tgt_pt);
+			box.grow			(c);
+			g_pGameLevel->ObjectSpace.BoxQuery(box,xform,clGET_TRIS|clQUERY_STATIC);
+			u32 tri_count		= g_pGameLevel->ObjectSpace.q_result.tris.size();	
+			if (tri_count){
+				float da		= 0.f;
+				BOOL bIntersect	= FALSE;
+				Fvector	ext		= {w,h,VIEWPORT_NEAR/2};
+				if (test_point(xform,mat,ext,radius,alpha)){
+					da			= PI/1000.f;
+					if (!fis_zero(r_torso.roll))
+						da		*= r_torso.roll/_abs(r_torso.roll);
+					for (float angle=0.f; _abs(angle)<_abs(alpha); angle+=da)
+						if (test_point(xform,mat,ext,radius,angle)){ bIntersect=TRUE; break; } 
+						valid_angle	= bIntersect?angle:alpha;
+				} 
+			}
+			r_torso.roll		= valid_angle*2.f;
+			r_torso_tgt_roll	= r_torso.roll;
+			//		calc_point			(point,radius,0,valid_angle);
+			//		dangle.z			= (PI_DIV_2-((PI+valid_angle)/2));
+		}
+		else
+		{	
 			r_torso_tgt_roll = 0.f;
 			r_torso.roll = 0.f;
 		}
