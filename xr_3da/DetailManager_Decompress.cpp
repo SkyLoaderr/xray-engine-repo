@@ -1,7 +1,13 @@
 #include "stdafx.h"
 #include "DetailManager.h"
-#include "xr_creator.h"
 #include "cl_intersect.h"
+
+#ifdef _EDITOR
+	#include "scene.h"
+	#include "sceneobject.h"
+#else
+	#include "xr_creator.h"
+#endif
 
 float		psDetailDensity		= 0.15f;
 

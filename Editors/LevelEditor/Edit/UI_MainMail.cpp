@@ -70,7 +70,7 @@ void TUI::OnReceiveMail(LPCSTR msg)
                 }
             }
         }else if (p[0]=="quit"){ 
-        	ELog.DlgMsg(mtInformation,"'%s EDITOR': Super critical update!",AnsiString(_EDITOR_FILE_NAME_).UpperCase());
+        	ELog.Msg(mtInformation,"'%s EDITOR': Super critical update!",AnsiString(_EDITOR_FILE_NAME_).UpperCase());
         	Command(COMMAND_QUIT);
         }else if (p[0]=="info"){
         	if (cnt>1) ELog.DlgMsg(mtInformation,"'%s EDITOR': %s",AnsiString(_EDITOR_FILE_NAME_).UpperCase(),p[1].c_str());

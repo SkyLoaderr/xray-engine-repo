@@ -107,11 +107,6 @@ __inline void _aligned_free(LPVOID ptr){
 	free(ptr);
 }
 
-#define _RELEASE( _Object_ )\
-	if( (_Object_) ){\
-		(_Object_)->Release();\
-		(_Object_) = 0; };
-
 #define MAKE_FOURCC(_0,_1,_2,_3)\
 	( (DWORD)(_0) | ((DWORD)(_1)<<8) | ((DWORD)(_2)<<16) | ((DWORD)(_3)<<24) )
 
@@ -120,13 +115,8 @@ void __fastcall _verify(const char *expr, char *file, int line);
 #define VERIFY2(expr, info) if (!(expr)) { char buf[128]; sprintf(buf,"%s, %s",#expr,info); _verify(buf, __FILE__, __LINE__); }
 #define R_ASSERT(expr) 	if (!(expr)) _verify(#expr, __FILE__, __LINE__)
 #define R_ASSERT2(expr, info) if (!(expr)) { char buf[128]; sprintf(buf,"%s, %s",#expr,info); _verify(buf, __FILE__, __LINE__); }
-#define THROW 			_verify("ERROR", __FILE__, __LINE__)
 #define THROW2(expr) 	_verify(#expr, __FILE__, __LINE__)
 #define NODEFAULT THROW
-
-#define _FREE(x)		{ if(x) { free(x); (x)=NULL; } }
-#define _DELETE(a)      {delete(a); (a)=NULL;}
-#define _DELETEARRAY(a) {delete[](a); (a)=NULL;}
 
 #define ENGINE_API
 #define DLL_API			__declspec(dllimport)
@@ -184,6 +174,7 @@ DEFINE_VECTOR(u32*,LPU32Vec,LPU32It);
 
 #include "Log.h"
 #include "engine.h"
+#include "defines.h"
 
 #include "engine\xr_list.h"
 
@@ -194,7 +185,6 @@ extern LPCSTR InterpretError(HRESULT hr);
 #define DEFINE_SVECTOR(type,sz,lst,it)\
 	typedef svector<type,sz> lst;\
 	typedef lst::iterator it;
-#define _SHOW_REF(msg, x)   	{if(x){ x->AddRef(); Log(msg,x->Release());}}
 
 struct str_pred : public binary_function<char*, char*, bool>
 {

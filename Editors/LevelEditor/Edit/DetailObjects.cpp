@@ -92,17 +92,19 @@ void EDetailManager::Clear()
 }
 //------------------------------------------------------------------------------
 
-void EDetailManager::InvalidateCache(){
-	for (DWORD s=0; s<cache.size(); s++)    cache[s].type 	= stInvalid;
+void EDetailManager::InvalidateCache()
+{
+	cache_Initialize	();
 }
 
 extern void bwdithermap	(int levels, int magic[16][16] );
 void EDetailManager::InitRender()
 {
 	// Initialize 'vis' and 'cache'
-	ZeroMemory(&visible,sizeof(visible));	visible.resize	(dm_max_objects);
-	ZeroMemory(&cache,sizeof(cache));		cache.resize	(dm_cache_size);	
-    InvalidateCache();
+	visible[0].resize	(objects.size());	// dump(visible[0]);
+	visible[1].resize	(objects.size());	// dump(visible[1]);
+	visible[2].resize	(objects.size());	// dump(visible[2]);
+	cache_Initialize	();
 
 	// Make dither matrix
 	bwdithermap		(2,dither);

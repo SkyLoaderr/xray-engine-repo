@@ -66,20 +66,12 @@ DWORD CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
 	// General 
 	BOOL  bWindowed	= !(psDeviceFlags&rsFullscreen);
 
+	DWORD dwWindowStyle=0;
+#ifndef _EDITOR
 	// Set window properties depending on what mode were in.
-	DWORD dwWindowStyle;
 	if (bWindowed)	SetWindowLong( m_hWnd, GWL_STYLE, dwWindowStyle=(WS_BORDER|WS_DLGFRAME|WS_VISIBLE) );
 	else			SetWindowLong( m_hWnd, GWL_STYLE, dwWindowStyle=(WS_POPUP|WS_VISIBLE) );
-
-	// Display the name of video board
-	D3DADAPTER_IDENTIFIER8	adapterID;
-	R_CHK(pD3D->GetAdapterIdentifier(D3DADAPTER_DEFAULT,D3DENUM_NO_WHQL_LEVEL,&adapterID));
-	Msg("* Video board: %s",adapterID.Description);
-
-	// Retreive windowed mode
-	D3DDISPLAYMODE mWindowed;
-	R_CHK(pD3D->GetAdapterDisplayMode(D3DADAPTER_DEFAULT, &mWindowed));
-
+    
 	// Select width/height
 	dwWidth	= psCurrentMode;
 	switch (dwWidth) {
@@ -91,6 +83,15 @@ DWORD CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
 	case 1600:	dwHeight = 1200;	break;
 	default:	dwWidth  = 800; dwHeight = 600; break;
 	}
+#endif
+	// Display the name of video board
+	D3DADAPTER_IDENTIFIER8	adapterID;
+	R_CHK(pD3D->GetAdapterIdentifier(D3DADAPTER_DEFAULT,D3DENUM_NO_WHQL_LEVEL,&adapterID));
+	Msg("* Video board: %s",adapterID.Description);
+
+	// Retreive windowed mode
+	D3DDISPLAYMODE mWindowed;
+	R_CHK(pD3D->GetAdapterDisplayMode(D3DADAPTER_DEFAULT, &mWindowed));
 
 	// Select back-buffer & depth-stencil format
 	D3DFORMAT&	fTarget	= Caps.fTarget;

@@ -2,6 +2,7 @@
 #define DeviceH
 
 #include "ui_camera.h"
+#include "hwcaps.h"
 #include "hw.h"
 #include "texturemanager.h"
 #include "pure.h"
@@ -170,19 +171,14 @@ extern ENGINE_API CRenderDevice Device;
 
 // video
 enum {
-    rsFilterLinear		= (1ul<<0ul),
-    rsEdgedFaces		= (1ul<<1ul),
-	rsRenderTextures	= (1ul<<2ul),
-	rsLighting			= (1ul<<3ul),
-    rsFog				= (1ul<<4ul),
-    rsRenderRealTime	= (1ul<<5ul),
-    rsDrawGrid			= (1ul<<6ul),
-	rsStatistic			= (1ul<<7ul),
-    rsForceHWTransform	= (1ul<<8ul),
-    rsCompressLMAPs		= (1ul<<9ul),
-
-	mtSound				= (1ul<<24ul),
-	mtInput				= (1ul<<25ul)
+	rsFilterLinear		= (1ul<<20ul),
+    rsEdgedFaces		= (1ul<<21ul),
+	rsRenderTextures	= (1ul<<22ul),
+	rsLighting			= (1ul<<23ul),
+    rsFog				= (1ul<<24ul),
+    rsRenderRealTime	= (1ul<<25ul),
+    rsDrawGrid			= (1ul<<26ul),
+    rsForceHWTransform	= (1ul<<27ul)
 };
 
 extern DWORD psDeviceFlags;

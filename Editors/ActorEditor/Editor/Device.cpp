@@ -11,8 +11,6 @@
 
 CRenderDevice 		Device;
 
-int psTextureLOD	= 0;
-DWORD psDeviceFlags = rsStatistic|rsFilterLinear|rsFog|rsDrawGrid;
 DWORD dwClearColor	= DEFAULT_CLEARCOLOR;
 
 extern int	rsDVB_Size;
@@ -43,7 +41,9 @@ void __cdecl CRenderDevice::Fatal(const char* F,...)
 }
 
 //---------------------------------------------------------------------------
-CRenderDevice::CRenderDevice(){
+CRenderDevice::CRenderDevice()
+{
+	psDeviceFlags 	= rsStatistic|rsFilterLinear|rsFog|rsDrawGrid;
 // dynamic buffer size
 	rsDVB_Size		= 2048;
 	rsDIB_Size		= 2048;
