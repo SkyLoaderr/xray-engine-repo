@@ -196,7 +196,6 @@ void CDetailManager::Render		(Fvector& EYE)
 			case fcvNone:		// nothing to do
 				break;
 			case fcvPartial:	// addition with TEST
-			case fcvFully:		// addition
 				{
 					for (int sp_id=0; sp_id<dm_obj_in_slot; sp_id++)
 					{
@@ -228,20 +227,35 @@ void CDetailManager::Render		(Fvector& EYE)
 					}
 				}
 				break;
-/*
+			case fcvFully:		// addition
 				{
 					for (int sp_id=0; sp_id<3; sp_id++)
 					{
 						SlotPart&			sp	= S.G		[sp_id];
-						CList<SlotItem>&	vis = visible	[sp.id];
+						if (sp.id==0xff)	continue;
+						CList<SlotItem*>&	vis = visible	[sp.id];
 						float				R   = objects	[sp.id].radius;
 						
 						SlotItem			*siIT=sp.items.begin(), *siEND=sp.items.end();
-						for (; siIT!=siEND; siIT++)	vis.push_back(*siIT);
+						for (; siIT!=siEND; siIT++) 
+						{
+							SlotItem& Item	= *siIT;
+
+							float	dist_sq = Device.vCameraPosition.distance_to_sqr(Item.P);
+							if (dist_sq>fade_limit)	continue;
+							
+							float	alpha	= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/fade_range;
+							float	scale	= Item.scale*(1-alpha);
+							float	radius	= R*scale;
+
+							if (g_fSCREEN*radius*radius/dist_sq < ssaLIMIT) continue;
+
+							Item.scale_calculated = scale; //alpha;
+							vis.push_back	(siIT);
+						}
 					}
 				}
 				break;
-*/
 			}
 		}
 	}
