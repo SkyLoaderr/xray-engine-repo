@@ -91,7 +91,7 @@ public:
 				dst.type			= LT_SECONDARY;
 				dst.level			++;
 				task_it				++;
-				thProgress			= float(task_it)/float(task->size());
+				thProgress			= float(task_it)/float(task->size())/float(GI_THREADS);
 			}
 			task_cs.Leave				();
 			if (dst.level>gi_maxlevel)	continue;
@@ -184,8 +184,8 @@ void	CBuild::xrPhase_Radiosity	()
 	// perform all the work
 	u32	setup_old			= task->size	();
 	for (int t=0; t<GI_THREADS; t++)	{
-		Sleep	(111);
 		gi.start(xr_new<CGI>(t));
+		Sleep	(10);
 	}
 	gi.wait					();
 	u32 setup_new			= task->size	();
