@@ -74,7 +74,7 @@ function action_remark_activity:activate_sound()
 	self.snd_scheduled = true
 
 	local snd = {}
-	snd.rnd = snd_prob
+	--snd.rnd = snd_prob
 	snd.maxidle = 1
 	snd.sumidle = -1
 	snd.themes = parse_names(self.st.snd)

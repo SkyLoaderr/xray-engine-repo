@@ -68,7 +68,16 @@ function action_zoneguard_activity:reset_scheme()
 		self.st.walker_team)
 
 	self.talked = false
-		
+
+	self.snd = {}
+	if self.st.snd_greet then
+		--self.snd.rnd = snd_prob
+		self.snd.maxidle = 3
+		self.snd.sumidle = 2
+		self.snd.themes = parse_names(self.st.snd_greet)
+	end
+	self.sound_activated = false
+
 	self.state = state_walking
 end	
 
@@ -116,6 +125,11 @@ function action_zoneguard_activity:execute()
 	if not actor then
 		return
 	end
+
+	if self.sound_activated then
+		printf("_bp: zoneguard: sound_update: maxidle = %d, sumidle = %s", self.snd.maxidle, self.snd.sumidle)
+		xr_sound.sound_update(self.object, self.snd)
+	end
 	
 	local see_actor = self.object:see(actor)
 	if self.st.zone_guard_obj then
@@ -162,13 +176,9 @@ function action_zoneguard_activity:execute()
 			utils.stalker_look_at_stalker(self.object, actor)
 			teams[self.st.team].triggered = self.object:id()
 
-			if self.st.snd_greet then
-				local snd = {}
-				snd.rnd = snd_prob
-				snd.maxidle = 1
-				snd.sumidle = -1
-				snd.themes = parse_names(self.st.snd_greet)
-				xr_sound.sound_update(self.object, snd, true)
+			if self.st.snd_greet and not self.sound_activated then
+				xr_sound.sound_update(self.object, self.snd)
+				self.sound_activated = true
 			end
 		else
 			self.move_mgr:update()
