@@ -106,7 +106,16 @@ void CSoundRender_Core::_initialize	(u32 window)
 
 	env_load					();
 
-	bPresent					= TRUE;
+	bPresent					=	TRUE;
+
+	// Pre-create targets
+	CSoundRender_Target*	T	= 0;
+	for (u32 tit=0; tit<32; tit++)
+	{
+		T							=	xr_new<CSoundRender_Target>();
+		T->_initialize				();	
+		s_targets.push_back			(T);
+	}
 }
 
 void CSoundRender_Core::_destroy	()
