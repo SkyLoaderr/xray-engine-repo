@@ -73,10 +73,10 @@ void FTreeVisual::Load		(const char* N, CStream *data, u32 dwFlags)
 	c_m_w2v2p			= T.get	("m_w2v2p");
 }
 
-float	psTree_w_rot		= 30.f;
-float	psTree_w_speed		= 2.f;
-float	psTree_w_amp		= .1f;
-Fvector psTree_Wave			= {1.f/5.f, 1.f/7.f, 1.f/3.f};
+float	psTree_w_rot		= 10.0f;
+float	psTree_w_speed		= 1.00f;
+float	psTree_w_amp		= 0.01f;
+Fvector psTree_Wave			= {.1, .01, .11};
 
 void FTreeVisual::Render	(float LOD)
 {

@@ -152,7 +152,7 @@ SVS*	CShaderManager::_CreateVS		(LPCSTR name)
 		else 													target="vs_1_1";
 
 		// vertex
-		_hr = D3DXCompileShaderFromFile	(cname, NULL, NULL, "main", "vs_1_1", D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
+		_hr = D3DXCompileShaderFromFile	(cname, NULL, NULL, "main", target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
 		if (SUCCEEDED(_hr))
 		{
 			if (pShaderBuf) 
