@@ -51,6 +51,8 @@ void CCreator::net_Stop			()
 }
 
 //-------------------------------------------------------------------------------------------
+extern CStatTimer				tscreate;
+
 BOOL CCreator::Load(u32 dwNum) 
 {
 //	Device.Reset				();
@@ -101,6 +103,8 @@ BOOL CCreator::Load(u32 dwNum)
 	Device.seqDevDestroy.Add	(Render);
 	Device.seqDevCreate.Add		(Render);
 	Render->OnDeviceCreate		();
+	tscreate.FrameEnd			();
+	Msg							("* S-CREATE: %f ms, %d times",tscreate.result,tscreate.count);
 	
 	// Objects
 	pApp->LoadTitle				("Loading entities...");

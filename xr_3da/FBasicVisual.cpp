@@ -34,6 +34,8 @@ void IVisual::Release	()
 	Device.Shader.DeleteGeom	(hGeom	);
 }
 
+CStatTimer				tscreate;
+
 void IVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 {
 	// header
@@ -68,12 +70,14 @@ void IVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 		data->r(&vis.sphere.R,sizeof(float));
 	}
 
-	// textures
+	// Shader
 	if (data->find_chunk(OGF_TEXTURE_L)) {
 #ifndef _EDITOR
+		tscreate.Begin	();
 		u32 T = data->r_u32();
 		u32 S = data->r_u32();
 		hShader = pCreator->LL_CreateShader(S,T,-1,-1);
+		tscreate.End	();
 #endif
 	} else {
 		if (data->find_chunk(OGF_TEXTURE)) {

@@ -4,9 +4,7 @@
 
 class CStatTimer
 {
-	friend class CStats;
-	friend class CRenderDevice;
-private:
+public:
 	CTimer		T;
 	__int64		accum;
 	float		result;
