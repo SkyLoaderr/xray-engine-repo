@@ -16,16 +16,16 @@
 
 //----------------------------------------------------
 class fBoneNameEQ {
-	AnsiString	name;
+	shared_str	name;
 public:
-	fBoneNameEQ(const char *N) : name(N) {};
-	IC bool operator() (CBone* B) { return (stricmp(B->Name(),name.c_str())==0); }
+	fBoneNameEQ(shared_str N) : name(N) {};
+	IC bool operator() (CBone* B) { return (xr_strcmp(B->Name(),name)==0); }
 };
 class fBoneWMNameEQ {
-	AnsiString	wm_name;
+	shared_str	wm_name;
 public:
-	fBoneWMNameEQ(const char *N) : wm_name(N) {};
-	IC bool operator() (CBone* B) { return (stricmp(B->WMap(),wm_name.c_str())==0); }
+	fBoneWMNameEQ(shared_str N) : wm_name(N) {};
+	IC bool operator() (CBone* B) { return (xr_strcmp(B->WMap(),wm_name)==0); }
 };
 //----------------------------------------------------
 #ifdef _EDITOR
@@ -316,13 +316,27 @@ void CEditableObject::GenerateSMotionName(char* buffer, const char* start_name, 
     strlwr(buffer);
 }
 
+bool	pred_sort_B(const CBone* A, const CBone* B)	
+{
+	int idxA	= A->parent?A->parent->index:-1;
+	int idxB	= B->parent?B->parent->index:-1;
+	return (idxA<idxB)||((idxA==idxB)&&(xr_strcmp(A->Name(),B->Name())));
+}
+
 void CEditableObject::PrepareBones()
 {
     // update parenting
     for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
         (*b_it)->index 		= b_it-m_Bones.begin();
-        LPCSTR parent		= (*b_it)->ParentName();
-        if (parent&&parent[0]){
+        if ((*b_it)->ParentName().size()){
+            BoneIt parent	= std::find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ((*b_it)->ParentName()));
+            (*b_it)->parent	= (parent==m_Bones.end())?0:*parent;
+        }
+    }
+    std::sort		(m_Bones.begin(),m_Bones.end(),pred_sort_B);
+    for (b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
+        (*b_it)->index 		= b_it-m_Bones.begin();
+        if ((*b_it)->ParentName().size()){
             BoneIt parent	= std::find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ((*b_it)->ParentName()));
             (*b_it)->parent	= (parent==m_Bones.end())?0:*parent;
         }
@@ -362,7 +376,7 @@ int CEditableObject::PartIDByName(LPCSTR name)
     return -1;
 } 
 
-LPCSTR CEditableObject::BoneNameByID(int id)
+shared_str CEditableObject::BoneNameByID(int id)
 {
 	VERIFY((id>=0)&&(id<(int)m_Bones.size()));
     return m_Bones[id]->Name();
@@ -421,7 +435,7 @@ bool CEditableObject::CheckBoneCompliance(CSMotion* M)
 */
     for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
     	if (!M->FindBoneMotion((*b_it)->Name())){
-        	Log		("!Can't find bone '%s' in motion.",(*b_it)->Name());
+        	Log		("!Can't find bone '%s' in motion.",*(*b_it)->Name());
         	return false;
         }
     return true;
