@@ -51,7 +51,7 @@ static class cl_decodeZ01		: public R_constant_setup		{	virtual void setup	(R_co
 }}	binder_decodeZ01;
 static class cl_parallax		: public R_constant_setup		{	virtual void setup	(R_constant* C)
 {
-	float			h			= ps_r2_ls_flags.test(R2FLAG_PARALLAX) ? ps_r2_df_parallaxh:0;
+	float			h			= ps_r2_df_parallaxh;
 	RCache.set_c	(C,h,-h/2,0.f,0.f);
 }}	binder_parallax;
 static class cl_lhdrscale		: public R_constant_setup		{	virtual void setup	(R_constant* C)

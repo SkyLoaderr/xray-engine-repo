@@ -196,6 +196,7 @@ void CRender::render_sun				()
 	}
 
 	// Compute approximate ortho transform for light-source
+	const D3DXMATRIX&	m_View		= *((D3DXMATRIX*)(&Device.mView));
 	D3DXMATRIX	lightSpaceBasis	;  
 	D3DXMATRIX	lightSpaceOrtho	;
 	D3DXMATRIX	m_LightViewProj	;
@@ -203,7 +204,6 @@ void CRender::render_sun				()
 	{
 		//	Prepare to interact with D3DX code
 		D3DXVECTOR3			m_lightDir	= D3DXVECTOR3(fuckingsun->direction.x,fuckingsun->direction.y,fuckingsun->direction.z);
-		const D3DXMATRIX&	m_View		= *((D3DXMATRIX*)(&Device.mView));
 
 		//  we need to transform the eye into the light's post-projective space.
 		//  however, the sun is a directional light, so we first need to find an appropriate
@@ -444,7 +444,7 @@ void CRender::render_sun				()
 		// refit?
 		const float EPS				= 0.001f;
 		D3DXMATRIX					refit;
-		D3DXMatrixOrthoOffCenterLH	( &refit, b_receivers.min.x, b_receivers.max.x, b_receivers.min.y, b_receivers.max.y, b_casters.min.z-EPS, b_casters.maxPt.z+EPS );
+		D3DXMatrixOrthoOffCenterLH	( &refit, b_receivers.min.x, b_receivers.max.x, b_receivers.min.y, b_receivers.max.y, b_casters.min.z-EPS, b_casters.max.z+EPS );
 		D3DXMatrixMultiply			( &m_LightViewProj, &m_LightViewProj, &refit);
 	}
 
