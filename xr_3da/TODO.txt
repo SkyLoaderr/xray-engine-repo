@@ -21,6 +21,7 @@
 		*	более точное освещение моделей
 		*	string-docking / sharing
 		*	C++ LUA + xr_malloc, etc.
+		*	xrRenderR1/R2 - statistical flow analysis LOG (datch levels - yarigra, etc.)
 
 	bugs/features:
 		*	models/model_trans 			- черный
@@ -64,13 +65,13 @@
 		*	кровь, следы от машин
 
 		*	xrLC - optimize cform 				( )
-		*	xrRenderR1/R2 - statistical flow analysis (yarigra :()
 		*	hierrarchical profiler
 		*	R2 - shaders			(ATI rm/ nvCG FX)
 		*	R2 - light materials	(3D tex)
 
 		*	пригибание травы + ветер
 		*	дальность для травы
+		*	move 90% of per-object info/calc into per-slot (vis-detection, etc)
 
 		*	'fast' strings
 
