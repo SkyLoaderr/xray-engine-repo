@@ -81,7 +81,7 @@ public:
 	void	TexturesUnload	();
 
 	// API
-	IC void	set_ShaderCode	(DWORD dwCode)
+	IC void	set_Code		(DWORD dwCode)
 	{
 		if (cache.pass.dwStateBlock!=dwCode)
 		{
@@ -141,7 +141,7 @@ public:
 	IC void set_Shader		(Shader& S, DWORD pass=0)
 	{
 		CPass&	P = S.Passes[pass];
-		set_ShaderCode	(P.dwStateBlock);
+		set_Code		(P.dwStateBlock);
 		set_Textures	(P.T);
 		set_Matrices	(P.M);
 		set_Constants	(P.C,S.Flags.bPixelShader);
