@@ -91,15 +91,10 @@ private:	// User declarations
     TProperties*	m_SunProps;
     TProperties*	m_Props;
 
-    TextValue*		txName;
-    ColorValue*		clDiffuse;
     FloatValue*		flBrightness;
-    BOOLValue* 		blUseInD3D;
-    FlagValue* 		fgTargetLM;
-    FlagValue* 		fgTargetDyn;
-    FlagValue* 		fgTargetAnm;
-    FlagValue* 		fgBreaking;
+
 	void __fastcall OnBrightnessAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+    void __fastcall OnModified();
 public:		// User declarations
     __fastcall TfrmPropertiesLight(TComponent* Owner);
     void __fastcall Run(ObjectList* pObjects, bool& bChange);

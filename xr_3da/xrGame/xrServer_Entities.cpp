@@ -60,6 +60,7 @@ void	xrServerEntity::P_Read			(CStream& FS)
 	if (dB.value)		s_flags|=	(M_SPAWN_OBJECT_ACTIVE); 
 	else				s_flags&=~	(M_SPAWN_OBJECT_ACTIVE); 
 }
+
 void	xrServerEntity::P_Write			(CFS_Base& FS)
 {
 //	FS.write			(&desc,sizeof(desc));

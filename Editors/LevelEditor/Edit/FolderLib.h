@@ -46,6 +46,9 @@ namespace FOLDER{
     bool 				AfterTextEdit		(TElTreeItem* node, LPCSTR value, AnsiString& edit_val);
     void 				BeforeTextEdit		(LPCSTR value, AnsiString& edit_val);
     void 				TextDraw			(LPCSTR value, AnsiString& show_val);
+    // last selection
+    TElTreeItem*		RestoreSelection	(TElTree* tv, TElTreeItem* node);
+    TElTreeItem*		RestoreSelection	(TElTree* tv, LPCSTR full_name);
 //------------------------------------------------------------------------------
 }
 #endif

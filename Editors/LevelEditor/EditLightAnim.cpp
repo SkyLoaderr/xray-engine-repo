@@ -186,10 +186,13 @@ void TfrmEditLightAnim::GetItemData()
 {
 	if (m_CurrentItem){
     	m_Props->BeginFillMode	();
+/*
+//p
         m_Props->AddTextItem	(0,"Name",			m_CurrentItem->cName,sizeof(m_CurrentItem->cName),NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw);
         m_Props->AddFloatItem	(0,"FPS",			&m_CurrentItem->fFPS,0.1f,1000,1.f,1);
         m_Props->AddIntItem		(0,"Frame Count",	&m_CurrentItem->iFrameCount,1,100000,1);
     	m_Props->EndFillMode	();
+*/
         UpdateView				();
     }
 }

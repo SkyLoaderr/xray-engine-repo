@@ -5,6 +5,7 @@
 #define _INCDEF_CustomObject_H_
 
 #include "SceneClassList.h"
+#include "PropertiesListTypes.h"
 
 #define CHUNK_OBJECT_BODY   0x7777
 //----------------------------------------------------
@@ -68,8 +69,7 @@ public:
     IC BOOL			Valid			(){return m_bValid;}
 
 	// editor integration
-	virtual void	PropWrite		(CFS_Base& F){;}
-	virtual void	PropRead		(CStream& F){;}
+	virtual bool	FillProp		(PropValueMap& values, bool bFirstInit){return false;}
 
 	virtual void 	Select			(int  flag);
 	virtual void 	Show			(BOOL flag);

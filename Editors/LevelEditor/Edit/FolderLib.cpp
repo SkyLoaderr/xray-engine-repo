@@ -297,7 +297,9 @@ void FOLDER::DragDrop(TObject *Sender, TObject *Source, int X, int Y, TOnRenameI
 	R_ASSERT(after_drag);
 
 	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(Sender);
-	TElTreeItem* tgt_folder = tv->GetItemAt(X, Y, 0, 0);
+    TSTItemPart IP=(TSTItemPart)0;
+    int 		hc=0;
+	TElTreeItem* tgt_folder = tv->GetItemAt(X, Y, IP, hc);
     if (tgt_folder&&(IsObject(tgt_folder))) tgt_folder=tgt_folder->Parent;
 
     AnsiString base_name;
@@ -498,6 +500,20 @@ bool FOLDER::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnRemoveItem OnRemoveI
 		ELog.DlgMsg(mtInformation, "At first select item.");
     }
     return bRes;
+}
+TElTreeItem* FOLDER::RestoreSelection(TElTree* tv, TElTreeItem* node)
+{
+	if (node){
+	    tv->Selected 		= node;
+		tv->EnsureVisible	(node);
+    	TElTreeItem* folder	= node->Parent;
+		if (folder) folder->Expand(false);
+    }
+    return node;
+}
+TElTreeItem* FOLDER::RestoreSelection(TElTree* tv, LPCSTR full_name)
+{
+	return RestoreSelection(tv,FindItem(tv,full_name));
 }
 //------------------------------------------------------------------------------
 

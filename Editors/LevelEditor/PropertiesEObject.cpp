@@ -84,6 +84,8 @@ void TfrmPropertiesEObject::FillBasicProps()
 	m_Basic->BeginFillMode();
     if (S->GetReference()){
     	CEditableObject* 	O = S->GetReference();
+/*
+//p        
 		m_Basic->AddMarkerItem	(0,"Name",		S->GetRefName());
 		m_Basic->AddFlagItem	(0,"Dynamic",	&O->m_dwFlags,CEditableObject::eoDynamic);
 		m_Basic->AddFlagItem	(0,"HOM",		&O->m_dwFlags,CEditableObject::eoHOM);
@@ -104,6 +106,7 @@ void TfrmPropertiesEObject::FillBasicProps()
         }
 		M=m_Basic->AddMarkerItem(0,"Game options")->item;
 		m_Basic->AddAnsiTextItem(M,"Script",	&O->m_ClassScript);
+*/
     }
     m_Basic->EndFillMode(true);
 }
@@ -116,6 +119,8 @@ void TfrmPropertiesEObject::FillSurfProps()
 	CSceneObject* 		S = m_pEditObject;
     if (S->GetReference()){
     	CEditableObject* 	O = S->GetReference();
+/*
+//p        
         TElTreeItem* M;
         for (SurfaceIt s_it=O->FirstSurface(); s_it!=O->LastSurface(); s_it++){
         	CSurface* SURF=*s_it;
@@ -124,6 +129,7 @@ void TfrmPropertiesEObject::FillSurfProps()
 			m_Surfaces->AddAnsiCShaderItem(M,"Compile",	&SURF->m_ShaderXRLCName);
             m_Surfaces->AddAnsiTextureItem(M,"Texture",	&SURF->m_Texture,		OnAfterTextureEdit);
         }
+*/
     }
     m_Surfaces->EndFillMode(true);
 }
@@ -168,7 +174,7 @@ void __fastcall TfrmPropertiesEObject::OnSurfaceFocused(TElTreeItem* item)
         TElTreeItem* parent	= item->Parent?item->Parent:item;
 		CSurface* surf 		= (CSurface*)parent->Data;
     	switch (type){
-        	case PROP_ANSI_TEXTURE:
+        	case PROP_A_TEXTURE:
                 m_Thumbnail = new EImageThumbnail(TProperties::GetItemColumn(item,0),EImageThumbnail::EITTexture);
                 lbWidth->Caption 	= m_Thumbnail->_Width();
                 lbHeight->Caption 	= m_Thumbnail->_Height();

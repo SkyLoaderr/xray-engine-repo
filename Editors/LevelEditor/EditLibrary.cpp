@@ -110,13 +110,8 @@ void __fastcall TfrmEditLibrary::FormShow(TObject *Sender)
 	Device.SetLight(1,L);
 	Device.LightEnable(1,true);
 
-    if (!m_LastSelection.IsEmpty()){
-    	TElTreeItem *node=FOLDER::FindObject(tvObjects,m_LastSelection.c_str());
-	    if (node){
-    	    tvObjects->Selected = node;
-        	tvObjects->EnsureVisible(node);
-	    }
-    }
+    if (!m_LastSelection.IsEmpty())
+    	FOLDER::RestoreSelection(tvObjects,m_LastSelection.c_str());
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action)
@@ -381,10 +376,7 @@ extern bool __fastcall LookupFunc(TElTreeItem* Item, void* SearchDetails);
 void __fastcall TfrmEditLibrary::tvObjectsKeyPress(TObject *Sender, char &Key){
 	TElTreeItem* node = tvObjects->Items->LookForItemEx(tvObjects->Selected,-1,false,false,false,&Key,LookupFunc);
     if (!node) node = tvObjects->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);
-    if (node){
-    	tvObjects->Selected = node;
-		tvObjects->EnsureVisible(node);
-    }
+    FOLDER::RestoreSelection(tvObjects,node);
 }
 //---------------------------------------------------------------------------
 

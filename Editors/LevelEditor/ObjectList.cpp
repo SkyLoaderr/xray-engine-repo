@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "leftbar.h"
 #include "ui_main.h"
+#include "folderlib.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -236,10 +237,7 @@ void __fastcall TfrmObjectList::tvItemsKeyPress(TObject *Sender,
 {
 	TElTreeItem* node = tvItems->Items->LookForItemEx(tvItems->Selected,-1,false,false,false,&Key,LookupFunc);
     if (!node) node = tvItems->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);
-    if (node){
-    	tvItems->Selected = node;
-		tvItems->EnsureVisible(node);
-    }
+    FOLDER::RestoreSelection(tvItems,node);
 }
 //---------------------------------------------------------------------------
 

@@ -310,6 +310,7 @@ void SceneBuilder::BuildHemiLights()
             b_light_static& sl	= l_light_static.back();
             sl.controller_ID 	= 0; //?
             sl.data			    = it->light;
+            sl.data.mul			(it->energy);
         }
     }
 }
@@ -338,8 +339,8 @@ BOOL SceneBuilder::BuildSun(b_light* b, DWORD usage, svector<WORD,16>* sectors)
 
             Fcolor color		= b->data.diffuse;
             color.normalize_rgb(b->data.diffuse);
-            float energy		= (b->data.diffuse.magnitude_rgb())/float(samples*samples);
-            color.mul_rgb		(energy);
+            float sample_energy	= (b->data.diffuse.magnitude_rgb())/float(samples*samples);
+            color.mul_rgb		(sample_energy);
 
             float disp			= deg2rad(P.area_dispersion);
             float da 			= disp/float(samples);
@@ -378,8 +379,8 @@ BOOL SceneBuilder::BuildPointLight(b_light* b, DWORD usage, svector<WORD,16>* se
         // make soft light
             Fcolor color		= b->data.diffuse;
             color.normalize_rgb(b->data.diffuse);
-            float energy		= (b->data.diffuse.magnitude_rgb())/float(soft_points->size());
-            color.mul_rgb		(energy);
+            float sample_energy	= (b->data.diffuse.magnitude_rgb())/float(soft_points->size());
+            color.mul_rgb		(sample_energy);
 
             for (DWORD k=0; k<soft_points->size(); k++){
                 l_light_static.push_back(b_light_static());

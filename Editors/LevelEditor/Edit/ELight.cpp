@@ -11,6 +11,7 @@
 #include "ui_main.h"
 #include "d3dutils.h"
 #include "LightAnimLibrary.h"
+#include "scene.h"
 
 #define LIGHT_VERSION   				0x0011
 //----------------------------------------------------
@@ -261,6 +262,31 @@ void CLight::Save(CFS_Base& F){
 		F.WstringZ	(m_pAnimRef->cName);
 		F.close_chunk();
     }
+}
+//----------------------------------------------------
+
+bool CLight::FillProp(PropValueMap& values, bool bFirstInit)
+{
+	if (bFirstInit){
+	    PROP::InitFirst	(values,"Name", 			FName,			PROP::CreateTextValue	(sizeof(FName), Scene.OnObjectNameAfterEdit));
+    	PROP::InitFirst	(values,"Diffuse",			&m_D3D.diffuse,	PROP::CreateColorValue	());
+	    PROP::InitFirst	(values,"Brightness",		&m_Brightness,	PROP::CreateFloatValue	(-3.f,3.f,0.1f,2));
+    	PROP::InitFirst	(values,"Use In D3D",		&m_UseInD3D,	PROP::CreateBOOLValue	());
+    	PROP::InitFirst	(values,"Usage\\LightMap",	&m_dwFlags,		PROP::CreateFlagValue	(CLight::flAffectStatic));
+	    PROP::InitFirst	(values,"Usage\\Dynamic",	&m_dwFlags,		PROP::CreateFlagValue	(CLight::flAffectDynamic));
+    	PROP::InitFirst	(values,"Usage\\Animated",	&m_dwFlags,		PROP::CreateFlagValue	(CLight::flProcedural));
+    	PROP::InitFirst	(values,"Flags\\Breaking",	&m_dwFlags,		PROP::CreateFlagValue	(CLight::flBreaking));
+    }else{
+	    PROP::InitNext	(values,"Name", 			FName			);
+    	PROP::InitNext	(values,"Diffuse",			&m_D3D.diffuse	);
+	    PROP::InitNext	(values,"Brightness",		&m_Brightness	);
+    	PROP::InitNext	(values,"Use In D3D",		&m_UseInD3D		);
+    	PROP::InitNext	(values,"Usage\\LightMap",	&m_dwFlags		);
+	    PROP::InitNext	(values,"Usage\\Dynamic",	&m_dwFlags		);
+    	PROP::InitNext	(values,"Usage\\Animated",	&m_dwFlags		);
+    	PROP::InitNext	(values,"Flags\\Breaking",	&m_dwFlags		);
+    }
+    return true;
 }
 //----------------------------------------------------
 

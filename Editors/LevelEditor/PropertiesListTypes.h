@@ -48,12 +48,11 @@ typedef void 	__fastcall (__closure *TOnItemFocused)	(TElTreeItem* item);
 class PropValue{
 protected:
 	bool				bDiff;			// internal use only
-    LPSTR				cKey;
 public:
 	// internal use only
     EPropType			type;
-	PropValue*			parent;
-	TElTreeItem*		item;
+//	PropValue*			parent;
+	TElTreeItem*		item; 
     bool				bEnabled;
 public:
 	// base events
@@ -61,25 +60,27 @@ public:
     TBeforeEdit			OnBeforeEdit;
     TOnDrawValue		OnDrawValue;
 public:
-						PropValue		(LPCSTR key, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):
-                        				item(0),bEnabled(true),bDiff(false),OnAfterEdit(after),
-                                        OnBeforeEdit(before),OnDrawValue(draw){cKey=strdup(key);}
-	virtual 			~PropValue		(){_FREE(cKey);}
+						PropValue		(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):
+                        				item(0),/*parent(0),*/bEnabled(true),bDiff(false),OnAfterEdit(after),
+                                        OnBeforeEdit(before),OnDrawValue(draw){};
+	virtual 			~PropValue		(){};
     virtual LPCSTR		GetText			()=0;
-    virtual void		FirstInit		(LPVOID value)=0;
-    virtual void		NextInit		(LPVOID value)=0;
+    virtual void		InitFirst		(LPVOID value)=0;
+    virtual void		InitNext		(LPVOID value)=0;
     virtual void		ResetValue		()=0;
     bool				IsDiffValues	(){return bDiff;}
-    TElTreeItem*		GetParentItem	(){return parent?parent->item:0;}
-    LPCSTR				GetKey			(){return cKey;}
+//    TElTreeItem*		GetParentItem	(){return parent?parent->item:0;}
 };
 //------------------------------------------------------------------------------
 
 class MarkerItem: public PropValue{
-	AnsiString			value;
+	AStringVec			init_values;
+	AStringVec			values;
+    void				AppendValue		(LPCSTR value){values.push_back(value);init_values.push_back(value);}
 public:
-						MarkerItem		(LPCSTR key, LPCSTR val):PropValue(key,TAfterEdit(0),TBeforeEdit(0),TOnDrawValue(0)),value(val){};
-    virtual LPCSTR		GetText			(){return value.c_str();}
+						MarkerItem		():PropValue(TAfterEdit(0),TBeforeEdit(0),TOnDrawValue(0)){};
+    virtual LPCSTR		GetText			(){return values.front().c_str();}
+    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((LPCSTR)value);}
     virtual void		InitNext		(LPVOID value){};
     virtual	void		ResetValue		(){;}
 };
@@ -90,8 +91,9 @@ class TextValue: public PropValue{
     void				AppendValue		(LPSTR value){values.push_back(value);init_values.push_back(value);}
 public:
 	int					lim;
-						TextValue		(LPCSTR key, LPSTR value, int _lim, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):lim(_lim),PropValue(key,after,before,draw){AppendValue(value);};
+						TextValue		(int _lim, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):lim(_lim),PropValue(after,before,draw){};
     virtual LPCSTR		GetText			();
+    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((LPSTR)value);}
     virtual void		InitNext		(LPVOID value){if (0!=strcmp((LPSTR)value,values.front())) bDiff=true; AppendValue((LPSTR)value);}
     bool				ApplyValue		(LPCSTR value)
     {
@@ -117,8 +119,9 @@ class ATextValue: public PropValue{
 	LPAStringVec		values;
     void				AppendValue		(AnsiString* value){values.push_back(value);init_values.push_back(*value);}
 public:
-						ATextValue		(LPCSTR key, AnsiString* value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropValue(key,after,before,draw){AppendValue(value);};
+						ATextValue		(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropValue(after,before,draw){};
     virtual LPCSTR		GetText			();
+    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((AnsiString*)value);}
     virtual void		InitNext		(LPVOID value){if (*(AnsiString*)value!=*values.front()) bDiff=true; AppendValue((AnsiString*)value);}
     bool				ApplyValue		(const AnsiString& value)
     {
@@ -142,8 +145,9 @@ class BOOLValue: public PropValue{
 	LPBOOLVec			values;
     void				AppendValue		(LPBOOL value){values.push_back(value);init_values.push_back(*value);}
 public:
-						BOOLValue		(LPCSTR key, LPBOOL value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropValue(key,after,before,draw){AppendValue(value);};
+						BOOLValue		(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropValue(after,before,draw){};
     virtual LPCSTR		GetText			(){return 0;}
+    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((BOOL*)value);}
     virtual void		InitNext		(LPVOID value){if (*(BOOL*)value!=*values.front()) bDiff=true; AppendValue((BOOL*)value);}
     virtual bool		ApplyValue		(BOOL value)
     {	
@@ -170,8 +174,9 @@ class WaveValue: public PropValue{
 	LPWaveFormVec		values;
     void				AppendValue		(WaveForm* value){values.push_back(value);init_values.push_back(*value);}
 public:
-						WaveValue		(LPCSTR key, WaveForm* value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropValue(key,after,before,draw){AppendValue(value);};
+						WaveValue		(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropValue(after,before,draw){};
     virtual LPCSTR		GetText			(){return "[Wave]";}
+    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((WaveForm*)value);}
     virtual void		InitNext		(LPVOID value){if (!((WaveForm*)value)->Similar(*values.front())) bDiff=true; AppendValue((WaveForm*)value);}
     bool				ApplyValue		(const WaveForm& value)
     {
@@ -193,12 +198,12 @@ public:
 class DWORDValue: public PropValue{
 	DWORDVec			init_values;
 	LPDWORDVec			values;
-    void				AppendValue		(LPDWORD value){values.push_back(value);init_values.push_back(*value);}
+    void				AppendValue		(LPDWORD value){clamp(*(DWORD*)value,0ul,lim_mx); values.push_back(value);init_values.push_back(*value);}
 public:
     DWORD				lim_mx;
     DWORD 				inc;
 public:
-						DWORDValue		(LPCSTR key, DWORD* value, DWORD mx, DWORD increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):lim_mx(mx),inc(increm),PropValue(key,after,before,draw){clamp(*value,0ul,lim_mx); AppendValue(value);};
+						DWORDValue		(DWORD mx, DWORD increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):lim_mx(mx),inc(increm),PropValue(after,before,draw){};
     virtual LPCSTR		GetText			(){
     	DWORD draw_val 	= GetValue();
         if (OnDrawValue)OnDrawValue(this, &draw_val);
@@ -206,7 +211,8 @@ public:
         draw_text		= draw_val;
         return draw_text.c_str();
     }
-    virtual void		InitNext		(LPVOID value){clamp(*(DWORD*)value,0ul,lim_mx); if (*(DWORD*)value!=*values.front()) bDiff=true; AppendValue((DWORD*)value);}
+    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((DWORD*)value);}
+    virtual void		InitNext		(LPVOID value){if (*(DWORD*)value!=*values.front()) bDiff=true; AppendValue((DWORD*)value);}
     virtual bool		ApplyValue		(DWORD value)
     {
     	bool bChanged	= false;
@@ -227,12 +233,12 @@ public:
 class IntValue: public PropValue{
 	IntVec				init_values;
 	LPIntVec			values;
-    void				AppendValue		(int* value){values.push_back(value);init_values.push_back(*value);}
+    void				AppendValue		(int* value){clamp(*(int*)value,lim_mn,lim_mx); values.push_back(value);init_values.push_back(*value);}
 public:
 	int					lim_mn;
     int					lim_mx;
     int 				inc;
-    					IntValue		(LPCSTR key, int* value, int mn, int mx, int increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):lim_mn(mn),lim_mx(mx),inc(increm),PropValue(key,after,before,draw){clamp(*value,lim_mn,lim_mx); AppendValue(value);};
+    					IntValue		(int mn, int mx, int increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):lim_mn(mn),lim_mx(mx),inc(increm),PropValue(after,before,draw){};
     virtual LPCSTR		GetText			()
     {
     	int draw_val 	= GetValue();
@@ -241,7 +247,8 @@ public:
         draw_text		= draw_val;
         return draw_text.c_str();
     }
-    virtual void		InitNext		(LPVOID value){clamp(*(int*)value,lim_mn,lim_mx); if (*(int*)value!=*values.front()) bDiff=true; AppendValue((int*)value);}
+    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((int*)value);}
+    virtual void		InitNext		(LPVOID value){if (*(int*)value!=*values.front()) bDiff=true; AppendValue((int*)value);}
     virtual bool		ApplyValue		(int value)
     {
     	bool bChanged	= false;
@@ -262,13 +269,13 @@ public:
 class FloatValue: public PropValue{
 	FloatVec			init_values;
 	LPFloatVec			values;
-    void				AppendValue		(float* value){values.push_back(value);init_values.push_back(*value);}
+    void				AppendValue		(float* value){clamp(*(float*)value,lim_mn,lim_mx); values.push_back(value);init_values.push_back(*value);}
 public:
 	float				lim_mn;
     float				lim_mx;
     float 				inc;
     int 				dec;
-    					FloatValue		(LPCSTR key, float* value, float mn, float mx, float increment, int decimal, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),PropValue(key,after,before,draw){clamp(*value,lim_mn,lim_mx); AppendValue(value);}
+    					FloatValue		(float mn, float mx, float increment, int decimal, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),PropValue(after,before,draw){};
     virtual LPCSTR		GetText			()
     {
     	float draw_val 	= GetValue();
@@ -278,7 +285,8 @@ public:
         draw_text.sprintf(fmt.c_str(),draw_val);
 		return draw_text.c_str();
     }
-    virtual void		InitNext		(LPVOID value){clamp(*(float*)value,lim_mn,lim_mx); if (*(float*)value!=*values.front()) bDiff=true; AppendValue((float*)value);}
+    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((float*)value);}
+    virtual void		InitNext		(LPVOID value){if (*(float*)value!=*values.front()) bDiff=true; AppendValue((float*)value);}
     virtual bool		ApplyValue		(float value)
     {	
     	bool bChanged	= false;
@@ -301,8 +309,9 @@ class ColorValue: public PropValue{
 	LPFcolorVec			values;
     void				AppendValue		(Fcolor* value){values.push_back(value);init_values.push_back(*value);}
 public:
-						ColorValue		(LPCSTR key, Fcolor* value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropValue(key,after,before,draw){AppendValue(value);}
+						ColorValue		(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropValue(after,before,draw){};
     virtual LPCSTR		GetText			(){return 0;}
+    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((Fcolor*)value);}
     virtual void		InitNext		(LPVOID value){if (!((Fcolor*)value)->similar_rgba(*values.front())) bDiff=true; AppendValue((Fcolor*)value);}
     virtual bool		ApplyValue		(const Fcolor& value)
     {
@@ -325,13 +334,20 @@ public:
 class VectorValue: public PropValue{
 	FvectorVec			init_values;
 	LPFvectorVec		values;
-    void				AppendValue		(Fvector* value){values.push_back(value);init_values.push_back(*value);}
+    void				AppendValue		(Fvector* value)
+    {
+    	clamp(value->x,lim_mn,lim_mx); 
+    	clamp(value->y,lim_mn,lim_mx); 
+    	clamp(value->z,lim_mn,lim_mx); 
+        values.push_back(value);
+        init_values.push_back(*value);
+    }
 public:
 	float				lim_mn;
     float				lim_mx;
     float 				inc;
     int 				dec;
-						VectorValue		(LPCSTR key, Fvector* value, float mn, float mx, float increment, int decimal, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),PropValue(key,after,before,draw){AppendValue(value);}
+						VectorValue		(float mn, float mx, float increment, int decimal, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),PropValue(after,before,draw){};
     virtual LPCSTR		GetText			()
     {
 		Fvector draw_val 	= GetValue();
@@ -341,6 +357,7 @@ public:
         draw_text.sprintf(fmt.c_str(),draw_val.x,draw_val.y,draw_val.z);
 		return draw_text.c_str();
     }
+    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((Fvector*)value);}
     virtual void		InitNext		(LPVOID value){if (!((Fvector*)value)->similar(*values.front())) bDiff=true; AppendValue((Fvector*)value);}
     virtual bool		ApplyValue		(const Fvector& value)
     {
@@ -365,8 +382,9 @@ class FlagValue: public PropValue{
     void				AppendValue		(LPDWORD value){values.push_back(value);init_values.push_back(*value);}
 public:
 	DWORD				mask;
-						FlagValue		(LPCSTR key, LPDWORD value, DWORD _mask, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):mask(_mask),PropValue(key,after,before,draw){AppendValue(value);}
+						FlagValue		(DWORD _mask, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):mask(_mask),PropValue(after,before,draw){};
     virtual LPCSTR		GetText			(){return 0;}
+    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((DWORD*)value);}
     virtual void		InitNext		(LPVOID value){bDiff=false; bool a=(*(DWORD*)value)&mask; bool b=(*values.front())&mask; if (a!=b) bDiff=true; AppendValue((DWORD*)value);}
     virtual bool		ApplyValue		(bool value)
     {
@@ -391,8 +409,9 @@ class TokenValue: public PropValue{
     void				AppendValue		(LPDWORD value){values.push_back(value);init_values.push_back(*value);}
 public:
 	xr_token* 			token;
-						TokenValue		(LPCSTR key, LPDWORD value, xr_token* _token, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):token(_token),PropValue(key,after,before,draw){AppendValue(value);}
+						TokenValue		(xr_token* _token, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):token(_token),PropValue(after,before,draw){};
 	virtual LPCSTR 		GetText			();
+    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((DWORD*)value);}
     virtual void		InitNext		(LPVOID value)	{if (*(DWORD*)value!=*values.front()) bDiff=true; AppendValue((DWORD*)value);}
     bool				ApplyValue		(DWORD value)
     {
@@ -417,8 +436,9 @@ class TokenValue2: public PropValue{
     void				AppendValue		(LPDWORD value){values.push_back(value);init_values.push_back(*value);}
 public:
 	AStringVec 			items;
-						TokenValue2		(LPCSTR key, LPDWORD value, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):items(*_items),PropValue(key,after,before,draw){AppendValue(value);}
+						TokenValue2		(AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):items(*_items),PropValue(after,before,draw){};
 	virtual LPCSTR 		GetText			();
+    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((DWORD*)value);}
     virtual void		InitNext		(LPVOID value)	{if (*(DWORD*)value!=*values.front()) bDiff=true; AppendValue((DWORD*)value);}
     bool				ApplyValue		(DWORD value)
     {
@@ -448,8 +468,9 @@ public:
 	};
 	DWORD				cnt;
     const Item*			items;
-						TokenValue3		(LPCSTR key, LPDWORD value, DWORD _cnt, const Item* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):cnt(_cnt),items(_items),PropValue(key,after,before,draw){AppendValue(value);};
+						TokenValue3		(DWORD _cnt, const Item* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):cnt(_cnt),items(_items),PropValue(after,before,draw){};
 	virtual LPCSTR 		GetText			();
+    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((DWORD*)value);}
     virtual void		InitNext		(LPVOID value)	{if (*(DWORD*)value!=*values.front()) bDiff=true; AppendValue((DWORD*)value);}
     bool				ApplyValue		(DWORD value)
     {
@@ -474,9 +495,10 @@ class ListValue: public PropValue{
     void				AppendValue		(LPSTR value){values.push_back(value);init_values.push_back(value);}
 public:
 	AStringVec 			items;
-						ListValue		(LPCSTR key, LPSTR value, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):items(*_items),PropValue(key,after,before,draw){AppendValue(value);};
-						ListValue		(LPCSTR key, LPSTR value, DWORD cnt, LPCSTR* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropValue(key,after,before,draw){AppendValue(value); items.resize(cnt); int i=0; for (AStringIt it=items.begin(); it!=items.end(); it++,i++) *it=_items[i]; };
+						ListValue		(AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):items(*_items),PropValue(after,before,draw){};
+						ListValue		(DWORD cnt, LPCSTR* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropValue(after,before,draw){items.resize(cnt); int i=0; for (AStringIt it=items.begin(); it!=items.end(); it++,i++) *it=_items[i]; };
 	virtual LPCSTR		GetText			();
+    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((LPSTR)value);}
     virtual void		InitNext		(LPVOID value){if (0!=strcmp((LPSTR)value,values.front())) bDiff=true; AppendValue((LPSTR)value);}
     virtual bool		ApplyValue		(LPCSTR value)
     {
@@ -494,216 +516,197 @@ public:
     void				ResetValue		(){AStringIt src=init_values.begin(); for (LPSTRIt it=values.begin();it!=values.end();it++,src++) strcpy(*it,src->c_str());}
 };
 //------------------------------------------------------------------------------
-DEFINE_MAP(LPSTR,PropValue*,PropValueMap,PropValuePairIt)
+DEFINE_MAP(AnsiString,PropValue*,PropValueMap,PropValuePairIt);
 
 //---------------------------------------------------------------------------
 namespace PROP{
-    MarkerItem*			CreateMarkerValue	(PropValue* parent, LPCSTR key, LPCSTR value=0)
+    MarkerItem*			CreateMarkerValue	()
     {
-        MarkerItem* V	= new MarkerItem(key,value);
+        MarkerItem* V	= new MarkerItem();
         V->type			= PROP_MARKER;
-        V->parent		= parent;
         return V;
     }
-    IntValue* 			CreateIntValueValue	(PropValue* parent, LPCSTR key, int* value, int mn=0, int mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+    IntValue* 			CreateIntValueValue	(int mn=0, int mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        IntValue* V		= new IntValue(key,value,mn,mx,inc,after,before,draw);
+        IntValue* V		= new IntValue(mn,mx,inc,after,before,draw);
         V->type			= PROP_INTEGER;
-        V->parent		= parent;
         return V;
     }
-    DWORDValue* 		CreateDWORDValue	(PropValue* parent, LPCSTR key, LPDWORD value, int mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+    DWORDValue* 		CreateDWORDValue	(int mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        DWORDValue* V	= new DWORDValue(key,value,mx,inc,after,before,draw);
+        DWORDValue* V	= new DWORDValue(mx,inc,after,before,draw);
         V->type			= PROP_DWORD;
-        V->parent		= parent;
         return V;
     }
-    FloatValue* 		CreateFloatValue	(PropValue* parent, LPCSTR key, float* value, float mn=0.f, float mx=1.f, float inc=0.01f, int decim=2, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+    FloatValue* 		CreateFloatValue	(float mn=0.f, float mx=1.f, float inc=0.01f, int decim=2, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        FloatValue* V	= new FloatValue(key,value,mn,mx,inc,decim,after,before,draw);
+        FloatValue* V	= new FloatValue(mn,mx,inc,decim,after,before,draw);
         V->type			= PROP_FLOAT;
-        V->parent		= parent;
         return V;
     }           	
-    BOOLValue* 			CreateBOOLValue	(PropValue* parent, LPCSTR key, BOOL* value, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+    BOOLValue* 			CreateBOOLValue		(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        BOOLValue* V	=new BOOLValue(key,value,after,before,draw);
+        BOOLValue* V	=new BOOLValue(after,before,draw);
         V->type			= PROP_BOOLEAN;
-        V->parent		= parent;
         return V;
     }
-    FlagValue* 			CreateFlagValue	(PropValue* parent, LPCSTR key, DWORD* value, DWORD mask, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+    FlagValue* 			CreateFlagValue		(DWORD mask, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        FlagValue* V	= new FlagValue(key,value,mask,after,before,draw);
+        FlagValue* V	= new FlagValue(mask,after,before,draw);
         V->type			= PROP_FLAG;
-        V->parent		= parent;
         return V;
     }
-    VectorValue* 		CreateVectorValue(PropValue* parent, LPCSTR key, Fvector* value, float mn=0.f, float mx=1.f, float inc=0.01f, int decim=2, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+    VectorValue* 		CreateVectorValue	(float mn=0.f, float mx=1.f, float inc=0.01f, int decim=2, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        VectorValue* V	= new VectorValue(key,value,mn,mx,inc,decim,after,before,draw);
+        VectorValue* V	= new VectorValue(mn,mx,inc,decim,after,before,draw);
         V->type			= PROP_VECTOR;
-        V->parent		= parent;
         return V;
     }
-	TokenValue* 		CreateTokenValue	(PropValue* parent, LPCSTR key, LPDWORD value, xr_token* token, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+	TokenValue* 		CreateTokenValue	(xr_token* token, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        TokenValue* V	= new TokenValue(key,value,token,after,before,draw);
+        TokenValue* V	= new TokenValue(token,after,before,draw);
         V->type			= PROP_TOKEN;
-        V->parent		= parent;
         return V;
     }
-	TokenValue2* 		CreateTokenValue	(PropValue* parent, LPCSTR key, LPDWORD value, AStringVec* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+	TokenValue2* 		CreateTokenValue	(AStringVec* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        TokenValue2* V	= new TokenValue2(key,value,lst,after,before,draw);
+        TokenValue2* V	= new TokenValue2(lst,after,before,draw);
         V->type			= PROP_TOKEN2;
-        V->parent		= parent;
         return V;
     }
-	TokenValue3* 		CreateTokenValue	(PropValue* parent, LPCSTR key, LPDWORD value, DWORD cnt, const TokenValue3::Item* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+	TokenValue3* 		CreateTokenValue	(DWORD cnt, const TokenValue3::Item* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        TokenValue3* V	= new TokenValue3(key,value,cnt,lst,after,before,draw);
+        TokenValue3* V	= new TokenValue3(cnt,lst,after,before,draw);
         V->type			= PROP_TOKEN3;
-        V->parent		= parent;
         return V;
     }
-	ListValue* 			CreateListValue	(PropValue* parent, LPCSTR key, LPSTR value, AStringVec* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+	ListValue* 			CreateListValue		(AStringVec* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        ListValue* V	= new ListValue(key,value,lst,after,before,draw);
+        ListValue* V	= new ListValue(lst,after,before,draw);
         V->type			= PROP_LIST;
-        V->parent		= parent;
         return V;
     }
-	ListValue* 			CreateListValueA	(PropValue* parent, LPCSTR key, LPSTR value, DWORD cnt, LPCSTR* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+	ListValue* 			CreateListValueA	(DWORD cnt, LPCSTR* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        ListValue* V	= new ListValue(key,value,cnt,lst,after,before,draw);
+        ListValue* V	= new ListValue(cnt,lst,after,before,draw);
         V->type			= PROP_LIST;
-        V->parent		= parent;
         return V;
     }
-    DWORDValue* 		CreateColorValue	(PropValue* parent, LPCSTR key, LPDWORD value, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+    DWORDValue* 		CreateColorValue	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        DWORDValue* V	= new DWORDValue(key,value,0xffffffff,0,after,before,draw);
+        DWORDValue* V	= new DWORDValue(0xffffffff,0,after,before,draw);
         V->type			= PROP_COLOR;
-        V->parent		= parent;
         return V;
     }
-    ColorValue*			CreateColorValue	(PropValue* parent, LPCSTR key, Fcolor* value, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+    ColorValue*			CreateFColorValue	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        ColorValue* V	= new ColorValue(key,value,after,before,draw);
-        V->type			= PROP_COLOR;
-        V->parent		= parent;
+        ColorValue* V	= new ColorValue(after,before,draw);
+        V->type			= PROP_FCOLOR;
         return V;
     }
-	TextValue* 			CreateTextValue	(PropValue* parent, LPCSTR key, LPSTR value, int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+	TextValue* 			CreateTextValue		(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        TextValue* V	= new TextValue(key,value,lim,after,before,draw);
+        TextValue* V	= new TextValue(lim,after,before,draw);
         V->type			= PROP_TEXT;
-        V->parent		= parent;
         return V;
     }
-	ATextValue* 		CreateATextValue	(PropValue* parent, LPCSTR key, AnsiString* value, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+	ATextValue* 		CreateATextValue	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        ATextValue* V	= new ATextValue(key,value,after,before,draw);
+        ATextValue* V	= new ATextValue(after,before,draw);
         V->type			= PROP_A_TEXT;
-        V->parent		= parent;
         return V;
     }
-	TextValue* 			CreateEShaderValue(PropValue* parent, LPCSTR key, LPSTR value, int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+	TextValue* 			CreateEShaderValue	(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        TextValue* V	= new TextValue(key,value,lim,after,before,draw);
+        TextValue* V	= new TextValue(lim,after,before,draw);
         V->type			= PROP_ESHADER;
-        V->parent		= parent;
         return V;
     }
-	TextValue* 			CreateCShaderValue(PropValue* parent, LPCSTR key, LPSTR value, int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+	TextValue* 			CreateCShaderValue	(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        TextValue* V	= new TextValue(key,value,lim,after,before,draw);
+        TextValue* V	= new TextValue(lim,after,before,draw);
         V->type			= PROP_CSHADER;
-        V->parent		= parent;
         return V;
     }
-	TextValue* 			CreateTextureValue(PropValue* parent, LPCSTR key, LPSTR value, int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+	TextValue* 			CreateTextureValue	(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        TextValue* V	= new TextValue(key,value,lim,after,before,draw);
+        TextValue* V	= new TextValue(lim,after,before,draw);
         V->type			= PROP_TEXTURE;
-        V->parent		= parent;
         return V;
     }
-	TextValue* 			CreateTexture2Value(PropValue* parent, LPCSTR key, LPSTR value, int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+	TextValue* 			CreateTexture2Value	(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        TextValue* V	= new TextValue(key,value,lim,after,before,draw);
+        TextValue* V	= new TextValue(lim,after,before,draw);
         V->type			= PROP_TEXTURE2;
-        V->parent		= parent;
         return V;
     }
-	ATextValue* 		CreateAEShaderValue(PropValue* parent, LPCSTR key, AnsiString* value, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+	ATextValue* 		CreateAEShaderValue	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        ATextValue* V	= new ATextValue(key,value,after,before,draw);
+        ATextValue* V	= new ATextValue(after,before,draw);
         V->type			= PROP_A_ESHADER;
-        V->parent		= parent;
         return V;
     }
-	ATextValue* 		CreateACShaderValue(PropValue* parent, LPCSTR key, AnsiString* value, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+	ATextValue* 		CreateACShaderValue	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        ATextValue* V	= new ATextValue(key,value,after,before,draw);
+        ATextValue* V	= new ATextValue(after,before,draw);
         V->type			= PROP_A_CSHADER;
-        V->parent		= parent;
         return V;
     }
-	ATextValue* 		CreateATextureValue(PropValue* parent, LPCSTR key, AnsiString* value, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+	ATextValue* 		CreateATextureValue	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        ATextValue* V	= new ATextValue(key,value,after,before,draw);
+        ATextValue* V	= new ATextValue(after,before,draw);
         V->type			= PROP_A_TEXTURE;
-        V->parent		= parent;
         return V;
     }
-	TextValue*			CreateLightAnimValue(PropValue* parent, LPCSTR key, LPSTR value, int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+	TextValue*			CreateLightAnimValue(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        TextValue* V	= new TextValue(key,value,lim,after,before,draw);
+        TextValue* V	= new TextValue(lim,after,before,draw);
         V->type			= PROP_LIGHTANIM;
-        V->parent		= parent;
         return V;
     }
-	TextValue* 			CreateLibObjectValue(PropValue* parent, LPCSTR key, LPSTR value, int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+	TextValue* 			CreateLibObjectValue(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        TextValue* V	= new TextValue(key,value,lim,after,before,draw);
+        TextValue* V	= new TextValue(lim,after,before,draw);
         V->type			= PROP_LIBOBJECT;
-        V->parent		= parent;
         return V;
     }
-	TextValue* 			CreateEntityValue	(PropValue* parent, LPCSTR key, LPSTR value, int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+	TextValue* 			CreateEntityValue	(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        TextValue* V	= new TextValue(key,value,lim,after,before,draw);
+        TextValue* V	= new TextValue(lim,after,before,draw);
         V->type			= PROP_ENTITY;
-        V->parent		= parent;
         return V;
     }
-	WaveValue* 			CreateWaveValue		(PropValue* parent, LPCSTR key, WaveForm* value, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+	WaveValue* 			CreateWaveValue		(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-        WaveValue* V	= new WaveValue(key,value,after,before,draw);
+        WaveValue* V	= new WaveValue(after,before,draw);
         V->type			= PROP_WAVE;
-        V->parent		= parent;
         return V;
     }     
-    LPCSTR 				MakeFullKey			(PropValue* v, AnsiString& dest)
+//------------------------------------------------------------------------------
+    IC PropValue* 		InitFirst			(PropValueMap& values,	LPCSTR key,	LPVOID val, PropValue* v)
     {
-    	for (PropValue* p=v; p; p=p->parent){
-        	if (!dest.IsEmpty()) dest.Insert("\\",1);
-        	dest.Insert	(p->GetKey(),1);
-        }
-        return dest.c_str();
-    }
-    PropValue* 			FirstInit			(PropValueMap& values,	LPCSTR key,	LPVOID val, PropValue* v)
-    {
-    	AnsiString		key;
         pair<PropValuePairIt, bool> R;
-    	R=values.insert	(make_pair(strdup(MakeFullKey(v,key)),v));
-        if (!R.second)	Device.Fatal("PropValue: '%s' already exist.",key.c_str());
+	 	R				= values.insert(make_pair(key,v));
+        if (!R.second)	Device.Fatal("PropValue: '%s' already exist.",key);
+        v->InitFirst	(val);
+        return v;
+    }
+    IC PropValue* 		FindProp			(PropValueMap& values,	LPCSTR key)
+    {
+    	PropValuePairIt	it = values.find(key); 
+        return (values.end()==it)?0:it->second;
+    }
+    IC PropValue* 		InitNext			(PropValueMap& values,	LPCSTR key,	LPVOID val)
+	{
+        PropValue* v	= FindProp(values,key);
+        if (!v) Device.Fatal("PropValue: '%s' can't find in map.",key);
+        v->InitNext		(val);
         return v;
     }
 }
 //---------------------------------------------------------------------------
 #endif
+
+
+
 

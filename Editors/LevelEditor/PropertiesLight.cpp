@@ -27,16 +27,8 @@ __fastcall TfrmPropertiesLight::TfrmPropertiesLight(TComponent* Owner)
     : TForm(Owner)
 {
     m_SunProps 	= TProperties::CreateForm(tsSun,alClient);
-    m_Props		= TProperties::CreateForm(paProps,alClient);
+    m_Props		= TProperties::CreateForm(paProps,alClient,OnModified);
 	DEFINE_INI(fsStorage);
-    txName		= 0;
-    clDiffuse	= 0;
-    flBrightness= 0;
-    blUseInD3D	= 0;
-    fgTargetLM	= 0;
-    fgTargetDyn	= 0;
-    fgTargetAnm	= 0;
-    fgBreaking	= 0;
 }
 //----------------------------------------------------
 void __fastcall TfrmPropertiesLight::FormClose(TObject *Sender,
@@ -140,38 +132,26 @@ void TfrmPropertiesLight::GetObjectsInfo(){
     seA2->ObjFirstInit				( _L->m_D3D.attenuation2 );
 
     switch(_L->m_D3D.type){
-    case D3DLIGHT_POINT:   		pcType->ActivePage = tsPoint;   break;
-    case D3DLIGHT_DIRECTIONAL: 	pcType->ActivePage = tsSun; 	break;
+    case D3DLIGHT_POINT:   			pcType->ActivePage = tsPoint;   break;
+    case D3DLIGHT_DIRECTIONAL: 		pcType->ActivePage = tsSun; 	break;
     default: THROW;
     }
 
-	TElTreeItem* M,*N,*O;
-    m_Props->BeginFillMode	();
-    txName		= m_Props->AddTextItem	(0,"Name",		_L->FName, sizeof(_L->FName), Scene.OnObjectNameAfterEdit);
-    clDiffuse	= m_Props->AddColorItem	(0,"Diffuse",	&_L->m_D3D.diffuse);
-    flBrightness= m_Props->AddFloatItem	(0,"Brightness",&_L->m_Brightness,-3.f,3.f,0.1f,2, OnBrightnessAfterEdit);
-    blUseInD3D	= m_Props->AddBOOLItem	(0,"Use In D3D",&_L->m_UseInD3D);
-	M			= m_Props->AddMarkerItem(0,"Usage"		)->item;
-    fgTargetLM	= m_Props->AddFlagItem	(M,"LightMap",	&_L->m_dwFlags,CLight::flAffectStatic);
-    fgTargetDyn	= m_Props->AddFlagItem	(M,"Dynamic",	&_L->m_dwFlags,CLight::flAffectDynamic);
-    fgTargetAnm	= m_Props->AddFlagItem	(M,"Animated",	&_L->m_dwFlags,CLight::flProcedural);
-	M			= m_Props->AddMarkerItem(0,"Flags"		)->item;
-    fgBreaking	= m_Props->AddFlagItem	(M,"Breaking",	&_L->m_dwFlags,CLight::flBreaking);
+//    m_Props->BeginFillMode	();
+    PropValueMap values;
+    _L->FillProp(values,true);
+	flBrightness 					= (FloatValue*)PROP::FindProp(values,"Brightness"); R_ASSERT(flBrightness);
+    flBrightness->OnAfterEdit		= OnBrightnessAfterEdit;
+    if (m_Objects->size()>1){
+		PropValue* V 				= PROP::FindProp(values,"Name"); R_ASSERT(V);
+        V->bEnabled					= false;
+    }
                                                           
 	_F++;
 	for(;_F!=m_Objects->end();_F++){
 		VERIFY( (*_F)->ClassID==OBJCLASS_LIGHT );
-		_L = (CLight *)(*_F);
-
-        txName->item->Enabled		= false;
-        txName->InitNext			(_L->FName);
-        clDiffuse->InitNext			(&_L->m_D3D.diffuse);
-        flBrightness->InitNext		(&_L->m_Brightness);
-        blUseInD3D->InitNext		(&_L->m_UseInD3D);
-        fgTargetLM->InitNext		(&_L->m_dwFlags);
-        fgTargetDyn->InitNext		(&_L->m_dwFlags);
-        fgTargetAnm->InitNext		(&_L->m_dwFlags);
-		fgBreaking->InitNext		(&_L->m_dwFlags);
+		_L 							= (CLight *)(*_F);
+        _L->FillProp				(values,false);
 
         seA0->ObjNextInit		 	(_L->m_D3D.attenuation0);
         seA1->ObjNextInit		 	(_L->m_D3D.attenuation1);
@@ -179,36 +159,39 @@ void TfrmPropertiesLight::GetObjectsInfo(){
 
 		sePointRange->ObjNextInit	(_L->m_D3D.range);
 	}
-    m_Props->EndFillMode	();
+    m_Props->AssignValues			(values,true);
+//    m_Props->EndFillMode	();
     
     // init flares
     if (m_Objects->size()==1){
 		CEditFlare& F = ((CLight*)m_Objects->front())->m_LensFlare;
+/*       
+//p 
     	m_SunProps->Enabled = true;
 		m_SunProps->BeginFillMode();
         TElTreeItem* M=0;
         TElTreeItem* N=0;
-		M = m_SunProps->AddMarkerItem	(0,"Source")->item;
-			m_SunProps->AddFlagItem		(M,"Enabled",	&F.m_dwFlags,CEditFlare::flSource);
-			m_SunProps->AddFloatItem	(M,"Radius", 	&F.m_Source.fRadius,0.f,10.f);
-			m_SunProps->AddTextureItem	(M,"Texture",	F.m_Source.texture,sizeof(F.m_Source.texture));
-		M = m_SunProps->AddMarkerItem	(0,"Gradient")->item;
-			m_SunProps->AddFlagItem		(M,"Enabled",	&F.m_dwFlags,CEditFlare::flGradient);
-			m_SunProps->AddFloatItem	(M,"Radius", 	&F.m_Gradient.fRadius,0.f,100.f);
-			m_SunProps->AddFloatItem	(M,"Opacity",	&F.m_Gradient.fOpacity,0.f,1.f);
-			m_SunProps->AddTextureItem	(M,"Texture",	F.m_Gradient.texture,sizeof(F.m_Gradient.texture));
-		M = m_SunProps->AddMarkerItem	(0,"Flares")->item;
-			m_SunProps->AddFlagItem		(M,"Enabled",	&F.m_dwFlags,CEditFlare::flFlare);
+		M = m_SunProps->AppendMarkerValue	(0,"Source")->item;
+			m_SunProps->AppendFlagValue		(M,"Enabled",	&F.m_dwFlags,CEditFlare::flSource);
+			m_SunProps->AppendFloatValue	(M,"Radius", 	&F.m_Source.fRadius,0.f,10.f);
+			m_SunProps->AppendTextureValue	(M,"Texture",	F.m_Source.texture,sizeof(F.m_Source.texture));
+		M = m_SunProps->AppendMarkerValue	(0,"Gradient")->item;
+			m_SunProps->AppendFlagValue		(M,"Enabled",	&F.m_dwFlags,CEditFlare::flGradient);
+			m_SunProps->AppendFloatValue	(M,"Radius", 	&F.m_Gradient.fRadius,0.f,100.f);
+			m_SunProps->AppendFloatValue	(M,"Opacity",	&F.m_Gradient.fOpacity,0.f,1.f);
+			m_SunProps->AppendTextureValue	(M,"Texture",	F.m_Gradient.texture,sizeof(F.m_Gradient.texture));
+		M = m_SunProps->AppendMarkerValue	(0,"Flares")->item;
+			m_SunProps->AppendFlagValue		(M,"Enabled",	&F.m_dwFlags,CEditFlare::flFlare);
 		for (CEditFlare::FlareIt it=F.m_Flares.begin(); it!=F.m_Flares.end(); it++){
             AnsiString nm; nm.sprintf("Flare %d",it-F.m_Flares.begin());
-		N = m_SunProps->AddMarkerItem	(M,nm.c_str())->item;
-			m_SunProps->AddFloatItem	(N,"Radius", 	&it->fRadius,0.f,10.f);
-			m_SunProps->AddFloatItem	(N,"Opacity", 	&it->fOpacity,0.f,1.f);
-			m_SunProps->AddFloatItem	(N,"Position",	&it->fPosition,-10.f,10.f);
-			m_SunProps->AddTextureItem	(N,"Texture",	it->texture,sizeof(it->texture));
+		N = m_SunProps->AppendMarkerValue	(M,nm.c_str())->item;
+			m_SunProps->AppendFloatValue	(N,"Radius", 	&it->fRadius,0.f,10.f);
+			m_SunProps->AppendFloatValue	(N,"Opacity", 	&it->fOpacity,0.f,1.f);
+			m_SunProps->AppendFloatValue	(N,"Position",	&it->fPosition,-10.f,10.f);
+			m_SunProps->AppendTextureValue	(N,"Texture",	it->texture,sizeof(it->texture));
 		}
-
 		m_SunProps->EndFillMode();
+*/
     }else{
     	m_SunProps->Enabled = false;
     }
@@ -243,13 +226,7 @@ bool TfrmPropertiesLight::ApplyObjectsInfo(){
 
 void TfrmPropertiesLight::CancelObjectsInfo()
 {
-    txName->ResetValue		();
-    clDiffuse->ResetValue	();
-    flBrightness->ResetValue();
-    blUseInD3D->ResetValue	();
-    fgTargetLM->ResetValue	();
-    fgTargetDyn->ResetValue	();
-    fgTargetAnm->ResetValue	();
+	m_Props->ResetValues();
 
     UI.UpdateScene();
 }
@@ -301,6 +278,11 @@ void __fastcall TfrmPropertiesLight::FormPaint(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmPropertiesLight::OnModified()
+{
+    DrawGraph();
+}
+//---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesLight::OnBrightnessAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
@@ -311,10 +293,10 @@ void __fastcall TfrmPropertiesLight::OnBrightnessAfterEdit(TElTreeItem* item, Pr
 void __fastcall TfrmPropertiesLight::FormKeyDown(TObject *Sender,
       WORD &Key, TShiftState Shift)
 {
-	if (!m_SunProps->tvProperties->Focused()&&!m_Props->tvProperties->Focused()){
-	    if (Key==VK_ESCAPE) ebCancel->Click();
-    	if (Key==VK_RETURN) ebOk->Click();
-    }
+	if (m_SunProps->Focused()||m_Props->Focused()) return;
+
+    if (Key==VK_ESCAPE) ebCancel->Click();
+    if (Key==VK_RETURN) ebOk->Click();
 }
 //---------------------------------------------------------------------------
 

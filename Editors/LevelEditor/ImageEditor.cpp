@@ -161,10 +161,7 @@ void TfrmImageLib::InitItemsList(const char* nm)
     TElTreeItem *node=0;
     if (!nm)	node = tvItems->Items->GetFirstNode();
     else 		node = FOLDER::FindObject(tvItems,nm);
-    if (node){
-        tvItems->Selected = node;
-        tvItems->EnsureVisible(node);
-    }
+    FOLDER::RestoreSelection(tvItems,node);
 
 	tvItems->IsUpdating = false;
 }
@@ -245,6 +242,8 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
 
             char key[255];
             TElTreeItem* M=0;
+/*
+//p            
             ImageProps->BeginFillMode	("Image properties");
             ImageProps->AddTokenItem	(0,"Format",(LPDWORD)&fmt.fmt,tfmt_token);
             M=ImageProps->AddMarkerItem	(0,"MipMaps")->item;
@@ -270,6 +269,7 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
             ImageProps->AddFlagItem		(M,"Dither Each MIP",&fmt.flag,STextureParams::flDitherEachMIPLevel);
             ImageProps->AddFlagItem		(M,"Implicit Lighted",&fmt.flag,STextureParams::flImplicitLighted);
             ImageProps->EndFillMode		();
+*/
             m_LastSelection = m_SelectedName;
         }
     }else{
@@ -295,10 +295,7 @@ void __fastcall TfrmImageLib::tvItemsKeyPress(TObject *Sender, char &Key)
 {
 	TElTreeItem* node = tvItems->Items->LookForItemEx(tvItems->Selected,-1,false,false,false,&Key,LookupFunc);
     if (!node) node = tvItems->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);
-    if (node){
-    	tvItems->Selected = node;
-		tvItems->EnsureVisible(node);
-    }
+    FOLDER::RestoreSelection(tvItems,node);
 }
 //---------------------------------------------------------------------------
 

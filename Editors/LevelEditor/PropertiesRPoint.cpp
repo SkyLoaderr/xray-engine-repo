@@ -28,7 +28,7 @@ void TfrmPropertiesSpawnPoint::GetObjectInfo()
     m_Props->BeginFillMode();
     TElTreeItem* M=0;
 //	M = m_Props->AddItem(0,PROP_MARKER2,	"Entity",	m_SPObject->m_SpawnData->s_name);
-	m_Props->AddTextItem	(0,"Name",		m_SPObject->FName,sizeof(m_SPObject->FName),Scene.OnObjectNameAfterEdit);
+//p	m_Props->AddTextItem	(0,"Name",		m_SPObject->FName,sizeof(m_SPObject->FName),Scene.OnObjectNameAfterEdit);
 //    m_SPObject->PropWrite(m_SPData);
 //    CStream F(m_SPData.pointer(),m_SPData.size());
 //    m_Props->AddItems	(M,F);

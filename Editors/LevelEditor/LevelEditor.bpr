@@ -100,7 +100,8 @@
       intermediate\_math.obj intermediate\xrSkin1W.obj 
       intermediate\ExportObjectOGF.obj intermediate\SoundManager.obj 
       intermediate\tga.obj intermediate\xrServer_Entities.obj 
-      intermediate\SpawnPoint.obj intermediate\PropertiesListTypes.obj"/>
+      intermediate\SpawnPoint.obj intermediate\PropertiesListTypes.obj 
+      intermediate\xrServer_Entities_ed.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -382,6 +383,7 @@
       <FILE FILENAME="PropertiesListTypes.h" FORMNAME="" UNITNAME="PropertiesListTypes.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesListTypes.cpp" FORMNAME="" UNITNAME="PropertiesListTypes" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\xrHemisphere.lib" FORMNAME="" UNITNAME="xrHemisphere.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\xrServer_Entities_ed.cpp" FORMNAME="" UNITNAME="xrServer_Entities_ed" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

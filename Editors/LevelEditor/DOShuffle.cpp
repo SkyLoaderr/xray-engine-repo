@@ -11,6 +11,7 @@
 #include "DOOneColor.h"
 #include "EditObject.h"
 #include "Scene.h"
+#include "folderlib.h"
 #include "DetailObjects.h"
 #include "PropertiesDetailObject.h"
 //---------------------------------------------------------------------------
@@ -212,10 +213,7 @@ void __fastcall TfrmDOShuffle::tvItemsKeyPress(TObject *Sender, char &Key)
 {
 	TElTreeItem* node = tvItems->Items->LookForItemEx(tvItems->Selected,-1,false,false,false,&Key,LookupFunc);
     if (!node) node = tvItems->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);
-    if (node){
-    	tvItems->Selected = node;
-		tvItems->EnsureVisible(node);
-    }
+    FOLDER::RestoreSelection(tvItems,node);
 }
 //---------------------------------------------------------------------------
 

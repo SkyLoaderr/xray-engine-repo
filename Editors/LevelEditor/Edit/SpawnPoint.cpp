@@ -253,8 +253,9 @@ bool CSpawnPoint::ExportGame(SExportStreams& F)
 }
 //----------------------------------------------------
 
-void CSpawnPoint::PropWrite(CFS_Base& F)
+void CSpawnPoint::FillProp(CFS_Base& F)
 {
+/*
 	inherited::PropWrite(F);
 
     if (m_SpawnData){
@@ -274,27 +275,8 @@ void CSpawnPoint::PropWrite(CFS_Base& F)
         default: THROW;
         }
     }
+*/
 }
 //----------------------------------------------------
 
-void CSpawnPoint::PropRead(CStream& F)
-{
-	inherited::PropRead(F);
-	if (m_SpawnData){	
-    	xrPREAD_MARKER(F);
-    	m_SpawnData->P_Read(F);
-    }else{
-    	switch (m_Type){
-        case ptRPoint:{
-	    	xrPREAD_MARKER(F);
-            xrP_Integer		dI;
-            xrPREAD_PROP	(F,xrPID_INTEGER,dI);	m_dwTeamID = u8(dI.value);
-        }break;
-        case ptAIPoint: 
-        break;
-        default: THROW;
-        }
-    }
-}
-//----------------------------------------------------
 
