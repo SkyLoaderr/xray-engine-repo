@@ -5,6 +5,7 @@
 ----------------------------------------------------------------------------------------------------------------------
 storage = {}
 memtsg = {} --' временна€ таблица
+lasthealth = 0
 
 ----------------------------------------------------------------------------------------------------------------------
 --Motivator binder
@@ -37,6 +38,12 @@ if false then
                           self.object:group())
     memtsg[self.object:id()] = self.object:id()
   end
+end
+
+--' ѕроверка потери жизни
+if false then
+	printf("%f * %f", self.object.health, self.object.health - lasthealth)
+	lasthealth = self.object.health
 end
 
 end
