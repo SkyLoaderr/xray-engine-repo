@@ -38,6 +38,7 @@ void	CBlender_Compile::r2_Pass		(LPCSTR _vs, LPCSTR _ps, BOOL bZtest, BOOL bZwri
 	// Setup FF-units (Z-buffer, blender)
 	PassSET_ZB				(bZtest,bZwrite);
 	PassSET_Blend			(bABlend,abSRC,abDST,aTest,aRef);
+	PassSET_LightFog		(FALSE,FALSE);
 
 	// Create shaders
 	SPS* ps					= Device.Shader._CreatePS			(_ps);
