@@ -66,13 +66,10 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisu
 	u8								flags;
 	float							o_model;				// model yaw
 	SRotation						o_torso;				// torso in world coords
+	bool							m_bDeathIsProcessed;
 									
-									CSE_ALifeCreatureAbstract(LPCSTR caSection)	: CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
-	{
-		s_team = s_squad = s_group	= 0;
-		fHealth						= 100;
-	};
-	
+									CSE_ALifeCreatureAbstract(LPCSTR caSection);
+
 	virtual u8						g_team			()
 	{
 		return s_team;

@@ -189,6 +189,13 @@ void CSE_ALifeTrader::FillProp				(LPCSTR _pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeCreatureAbstract
 ////////////////////////////////////////////////////////////////////////////
+CSE_ALifeCreatureAbstract::CSE_ALifeCreatureAbstract(LPCSTR caSection)	: CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
+{
+	s_team = s_squad = s_group	= 0;
+	fHealth						= 100;
+	m_bDeathIsProcessed			= false;
+}
+
 void CSE_ALifeCreatureAbstract::STATE_Write	(NET_Packet &tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
