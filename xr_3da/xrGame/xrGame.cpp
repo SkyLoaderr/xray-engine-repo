@@ -631,6 +631,8 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		// physics
 		CMD4(CCC_Integer,			"ph_fps",				&psPhysicsFPS,	10,1000);
 		CMD4(CCC_Float,				"ph_squeeze_velocity",	&psHUD_FOV,		0,500);
+
+		// keyboard binding
 		}
 		GamePersistent		= xr_new<CGamePersistent> ();
 		break;
@@ -765,7 +767,7 @@ extern "C" {
 		case CLSID_OBJECT_HLAMP:		P = xr_new<CHangingLamp>();			break;
 		case CLSID_OBJECT_PHYSIC:		P = xr_new<CPhysicObject>();			break;
 		}
-		R_ASSERT		(P);
+		R_ASSERT2		(P,"Unknown object class");
 		P->SUB_CLS_ID	= cls;
 		return P;
 	}

@@ -7,7 +7,6 @@
 #include "..\effectorfall.h"
 #include "..\CameraLook.h"
 #include "..\CameraFirstEye.h"
-#include "..\xr_level_controller.h"
 #include "actor.h"
 #include "hudmanager.h"
 

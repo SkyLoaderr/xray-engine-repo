@@ -5,7 +5,6 @@
 #include "..\camerabase.h"
 #include "..\cameralook.h"
 #include "..\camerafirsteye.h"
-#include "..\xr_level_controller.h"
 #include "Actor.h"
 
 static float car_snd_volume=1.f;

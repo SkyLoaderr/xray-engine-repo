@@ -52,14 +52,15 @@ enum	EKeyBinding
 	kFORCEDWORD		= u32(-1)
 };
 
-struct ENGINE_API _keybind {
+struct _keybind		{
 	char *	name;
 	int		DIK;
 };
 
-ENGINE_API extern _keybind	keybind			[];
-ENGINE_API extern _keybind	keynames		[];
-ENGINE_API extern int		key_binding		[];
+extern _keybind	keybind			[];
+extern _keybind	keynames		[];
+extern int		key_binding		[];
+extern void		CCC_RegisterInput();
 
 #define MOUSE_1		0x100
 #define MOUSE_2		0x200

@@ -27,5 +27,6 @@
 
 #include "ode_include.h"
 
+#include "xr_level_controller.h"
 #include "Level.h"
 #include "GameMtlLib.h"

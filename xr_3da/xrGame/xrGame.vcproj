@@ -288,6 +288,12 @@
 			<File
 				RelativePath="GamePersistent.h">
 			</File>
+			<File
+				RelativePath="xr_level_controller.cpp">
+			</File>
+			<File
+				RelativePath="xr_level_controller.h">
+			</File>
 			<Filter
 				Name="Level"
 				Filter="">

@@ -7,9 +7,9 @@
 #include "xr_ioc_cmd.h"
  
 //************************************************ Input
-ENGINE_API int key_binding	[ 2048	];
+int key_binding			[ 2048	];
 
-_keybind  keybind[] = {
+_keybind  keybind[]		= {
 	{ "left",			kLEFT		},	
 	{ "right",			kRIGHT		},
 	{ "up",				kUP			},	

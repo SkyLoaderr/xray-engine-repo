@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Actor.h"
 #include "ActorAnimation.h"
-#include "..\xr_level_controller.h"
 #include "hudmanager.h"
 #include "UI.h"
 #include "xr_weapon_list.h"

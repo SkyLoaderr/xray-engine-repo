@@ -1,6 +1,5 @@
 #pragma once
 #include "gameobject.h"
-#include "..\xr_level_controller.h"
 
 #define CMD_START	(1<<0)
 #define CMD_STOP	(1<<1)

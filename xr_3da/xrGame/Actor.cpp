@@ -6,7 +6,6 @@
 #include "..\effectorfall.h"
 #include "..\CameraLook.h"
 #include "..\CameraFirstEye.h"
-#include "..\xr_level_controller.h"
 #include "EffectorBobbing.h"
 #include "EffectorPPHit.h"
 #include "EffectorHit.h"

@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "flyer.h"
-#include "..\xr_level_controller.h"
 #include "..\xr_input.h"
 #include "..\CameraBase.h"
 

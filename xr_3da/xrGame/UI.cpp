@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "UI.h"
-#include "..\xr_level_controller.h"
 #include "..\xr_IOConsole.h"
 #include "Entity.h"
 #include "HUDManager.h"

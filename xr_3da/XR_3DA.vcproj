@@ -768,12 +768,6 @@
 			<File
 				RelativePath="xr_creator_check_textures.cpp">
 			</File>
-			<File
-				RelativePath=".\xr_level_controller.cpp">
-			</File>
-			<File
-				RelativePath=".\xr_level_controller.h">
-			</File>
 			<Filter
 				Name="Objects"
 				Filter="">
