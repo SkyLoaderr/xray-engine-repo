@@ -100,9 +100,6 @@ void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_
 
 	if (!ps_killed || !ps_killer) return;
 
-	ps_killed->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
-	ps_killed->deaths				+=	1;
-
 	TeamStruct* pTeam		= GetTeamData(u8(ps_killer->team));
 
 	if (ps_killer == ps_killed || ps_killed->team == ps_killer->team)	
@@ -605,11 +602,8 @@ bool	game_sv_ArtefactHunt::ArtefactSpawn_Allowed		()
 	for		(u32 it=0; it<cnt; ++it)	
 	{
 		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
-//		game_PlayerState* ps		=	get_it	(it);
 		game_PlayerState* ps	= l_pC->ps;
 
-		
-//		if (/*ps->flags & GAME_PLAYER_FLAG_VERY_VERY_DEAD*/!(ps->flags & GAME_PLAYER_FLAG_READY) || ps->Skip)	continue;
 		if (!l_pC->net_Ready || ps->Skip) continue;
 		else
 			TeamAlived[ps->team-1]++;

@@ -109,9 +109,6 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_ki
 
 	if (!ps_killed || !ps_killer) return;
 	
-//	ps_killed->flags				&= ~GAME_PLAYER_FLAG_READY;
-//	ps_killed->deaths				+=	1;
-
 	TeamStruct* pTeam		= GetTeamData(u8(ps_killer->team));
 	if (ps_killer == ps_killed)	
 	{
@@ -264,7 +261,7 @@ void	game_sv_Deathmatch::SM_SwitchOnNextActivePlayer()
 	{
 		game_PlayerState* ps		=	get_it	(it);
 		if (ps->Skip) continue;
-		if (ps->flags & GAME_PLAYER_FLAG_VERY_VERY_DEAD) continue;
+		if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) continue;
 		PossiblePlayers[PPlayersCount++] = it;
 	};
 	
@@ -377,7 +374,7 @@ void	game_sv_Deathmatch::OnPlayerReady			(ClientID id)
 //			LPCSTR	options			=	get_name_id	(id);
 			game_PlayerState*	ps	=	get_id	(id);
 			if (ps->Skip) break;
-			if (!(ps->flags & GAME_PLAYER_FLAG_VERY_VERY_DEAD)) break;
+			if (!(ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))) break;
 			xrClientData* xrSCData	=	m_server->GetServer_client();
 			if (xrSCData && xrSCData->ID == id && m_bSpectatorMode) 
 			{

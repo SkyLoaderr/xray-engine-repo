@@ -102,9 +102,6 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(ClientID id_killer, ClientID i
 
 	if (!ps_killed || !ps_killer) return;
 
-//	ps_killed->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
-//	ps_killed->deaths				+=	1;
-
 	TeamStruct* pTeam		= GetTeamData(u8(ps_killer->team));
 
 	if (ps_killer == ps_killed || ps_killed->team == ps_killer->team)	
