@@ -2,7 +2,6 @@
 
 #include "script_space_forward.h"
 
-class CScriptCallback;
 class CGameObject;
 
 class CUsableScriptObject
@@ -11,9 +10,6 @@ public:
 							CUsableScriptObject		();
 							~CUsableScriptObject	();
 		virtual bool		use						(CGameObject* who_use);
-		void				set_callback			(const luabind::object &lua_object, LPCSTR method);
-		void				set_callback			(const luabind::functor<void> &lua_function);
-		void				clear_callback			();
 	
 		//строчка по€вл€юща€с€ при наведении на объект (если NULL, то нет)
 		virtual LPCSTR		tip_text				();
@@ -24,7 +20,6 @@ public:
 		bool				nonscript_usable		();
 		void				set_nonscript_usable	(bool usable);
 private:
-		CScriptCallback		*callback;
-		shared_str				m_sTipText;
+		shared_str			m_sTipText;
 		bool				m_bNonscriptUsable;
 };

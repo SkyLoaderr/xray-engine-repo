@@ -49,12 +49,21 @@ TEMPLATE_SPECIALIZATION
 IC	CSScriptCallbackEx::CScriptCallbackEx_	(const CScriptCallbackEx_ &callback)
 {
 	init				();
+	*this				= callback;
+}
+
+TEMPLATE_SPECIALIZATION
+IC	CSScriptCallbackEx &CSScriptCallbackEx::operator=	(const CScriptCallbackEx_ &callback)
+{
+	clear				();
 
 	if (callback.m_functor)
 		m_functor		= xr_new<functor_type>(*callback.m_functor);
 
 	if (callback.m_object)
 		m_object		= xr_new<object_type>(*callback.m_object);
+
+	return				(*this);
 }
 
 TEMPLATE_SPECIALIZATION

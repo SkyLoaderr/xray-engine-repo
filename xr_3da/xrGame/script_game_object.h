@@ -11,9 +11,10 @@
 #include "script_space_forward.h"
 #include "script_bind_macroses.h"
 #include "script_export_space.h"
-#include "script_callback.h"
 #include "xr_time.h"
 #include "character_info_defs.h"
+#include "script_callback_ex.h"
+#include "game_object_space.h"
 
 enum EPdaMsg;
 enum ESoundTypes;
@@ -73,8 +74,8 @@ class CHelicopter;
 class CHangingLamp;
 
 struct ScriptCallbackInfo{
-	CScriptCallback		m_callback;
-	s16					m_event;
+	CScriptCallbackEx<void>		m_callback;
+	s16							m_event;
 	ScriptCallbackInfo():m_event(-1){}
 };
 
@@ -91,7 +92,7 @@ public:
 	typedef CALLBACKS::iterator				CALLBACK_IT;
 	CALLBACKS							m_callbacks;
 	void								AddEventCallback			(s16 event, const luabind::functor<void> &lua_function);
-	void								AddEventCallback			(s16 event, const luabind::object &lua_object, LPCSTR method);
+	void								AddEventCallback			(s16 event, const luabind::functor<void> &lua_function, const luabind::object &lua_object);
 	void								RemoveEventCallback			(s16 event);
 	void								OnEventRaised(s16 event, NET_Packet& P);
 
@@ -266,27 +267,15 @@ public:
 			CScriptGameObject	*GetObjectByName	(LPCSTR caObjectName) const;
 			CScriptGameObject	*GetObjectByIndex	(int iIndex) const;
 
-	//////////////////////////////////////////////////////////////////////////
-	// Trader functions
-	//////////////////////////////////////////////////////////////////////////
-
-			void				SetCallback			(const luabind::functor<void> &tpZoneCallback, bool bOnEnter);
-			void				SetCallback			(const luabind::object &object, LPCSTR method, bool bOnEnter);
-			void				ClearCallback		(bool bOnEnter);
-
-			void				SetTradeCallback	(const luabind::functor<void> &tpTradeCallback);	
-			void				SetTradeCallback	(const luabind::object &object, LPCSTR method);
-			void				ClearTradeCallback	();
-
-			void				SetPerformTradeCallback		(const luabind::functor<void> &tpTradeCallback);	
-			void				SetPerformTradeCallback		(const luabind::object &object, LPCSTR method);
-			void				ClearPerformTradeCallback	();
+			
+	// Callbacks			
+			void				SetCallback			(GameObject::ECallbackType type, const luabind::functor<void> &functor);
+			void				SetCallback			(GameObject::ECallbackType type, const luabind::functor<void> &functor, const luabind::object &object);
+			void				ClearCallback		(GameObject::ECallbackType type);
+			
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////use calback///////////////////////////////////////////////
-			void				SetUseCallback		(const luabind::functor<void> &tpUseCallback);
-			void				SetUseCallback		(const luabind::object &object, LPCSTR method);
-			void				ClearUseCallback	();
 			void				SetTipText			(LPCSTR tip_text);
 			void				SetTipTextDefault	();
 			void				SetNonscriptUsable	(bool nonscript_usable);
@@ -309,25 +298,10 @@ public:
 	_DECLARE_FUNCTION10			(GetActionCount,u32);
 	
 			const				CScriptEntityAction	*GetActionByIndex(u32 action_index = 0);
-			void				SetSoundCallback	(const luabind::object &lua_object, LPCSTR method);
-			void				SetSoundCallback	(const luabind::functor<void> &lua_function);
-			void				ClearSoundCallback	(bool member_callback);
-			void				SetHitCallback		(const luabind::object &lua_object, LPCSTR method);
-			void				SetHitCallback		(const luabind::functor<void> &lua_function);
-			void				ClearHitCallback	(bool member_callback);
-			void				SetDeathCallback	(const luabind::object &lua_object, LPCSTR method);
-			void				SetDeathCallback	(const luabind::functor<void> &lua_function);
-			void				ClearDeathCallback	(bool member_callback);
 
 //////////////////////////////////////////////////////////////////////////
 // Inventory Owner
 //////////////////////////////////////////////////////////////////////////
-			void				SetPdaCallback		(const luabind::functor<void> &lua_function);
-			void				SetPdaCallback		(const luabind::object &instance, LPCSTR method);
-			void				ClearPdaCallback	();
-			void				SetInfoCallback		(const luabind::functor<void> &lua_function);
-			void				SetInfoCallback		(const luabind::object &instance, LPCSTR method);
-			void				ClearInfoCallback	();
 
 			//////////////////////////////////////////////////////////////////////////
 			Flags32				get_actor_relation_flags	()			const;

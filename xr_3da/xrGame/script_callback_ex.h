@@ -57,6 +57,7 @@ public:
 	IC							CScriptCallbackEx_	();
 	IC							CScriptCallbackEx_	(const CScriptCallbackEx_ &callback);
 	IC	virtual					~CScriptCallbackEx_	();
+	IC	CScriptCallbackEx_		&operator=			(const CScriptCallbackEx_ &callback);
 	IC			void			set					(const functor_type &functor);
 	IC			void			set					(const functor_type &functor, const object_type &object);
 	IC			void			clear				();

@@ -119,13 +119,6 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 			value("no_pda_msg",				int(ePdaMsgMax))
 		]
 
-		.def("set_pda_callback",			(void (CScriptGameObject::*)(const luabind::functor<void>&))(CScriptGameObject::SetPdaCallback))
-		.def("set_pda_callback",			(void (CScriptGameObject::*)(const luabind::object &, LPCSTR))(CScriptGameObject::SetPdaCallback))
-		.def("set_info_callback",			(void (CScriptGameObject::*)(const luabind::functor<void>&))(CScriptGameObject::SetInfoCallback))
-		.def("set_info_callback",			(void (CScriptGameObject::*)(const luabind::object &, LPCSTR))(CScriptGameObject::SetInfoCallback))
-		.def("clear_pda_callback",			&CScriptGameObject::ClearPdaCallback)
-		.def("clear_info_callback",			&CScriptGameObject::ClearInfoCallback)
-
 		.def("give_info_portion",			&CScriptGameObject::GiveInfoPortion)
 		.def("give_info_portion_via_pda",	&CScriptGameObject::GiveInfoPortionViaPda)
 		.def("disable_info_portion",		&CScriptGameObject::DisableInfoPortion)
@@ -206,19 +199,6 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 			value("relation_kill",							int(RELATION_REGISTRY::KILL))
 		]
 
-
-
-		//////////////////////////////////////////////////////////////////////////
-		// Trader
-		//////////////////////////////////////////////////////////////////////////
-		.def("set_trade_callback",			(void (CScriptGameObject::*)(const luabind::functor<void> &))(CScriptGameObject::SetTradeCallback))
-		.def("set_trade_callback",			(void (CScriptGameObject::*)(const luabind::object &, LPCSTR))(CScriptGameObject::SetTradeCallback))			
-		.def("clear_trade_callback",		(void (CScriptGameObject::*)())(CScriptGameObject::ClearTradeCallback))
-
-		.def("set_perform_trade_callback",		(void (CScriptGameObject::*)(const luabind::functor<void> &))(CScriptGameObject::SetPerformTradeCallback))
-		.def("set_perform_trade_callback",		(void (CScriptGameObject::*)(const luabind::object &, LPCSTR))(CScriptGameObject::SetPerformTradeCallback))			
-		.def("clear_perform_trade_callback",	(void (CScriptGameObject::*)())(CScriptGameObject::ClearPerformTradeCallback))
-
 		.enum_("CLSIDS")
 		[
 			value("no_pda_msg",				int(ePdaMsgMax))
@@ -234,9 +214,6 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("get_physics_shell",			&CScriptGameObject::get_physics_shell)
 
 		//usable object
-		.def("set_use_callback",			(void (CScriptGameObject::*)(const luabind::functor<void> &))(CScriptGameObject::SetUseCallback))
-		.def("set_use_callback",			(void (CScriptGameObject::*)(const luabind::object &, LPCSTR))(CScriptGameObject::SetUseCallback))
-		.def("clear_use_callback",			(void (CScriptGameObject::*)(void))(CScriptGameObject::ClearUseCallback))
 		.def("set_tip_text",				&CScriptGameObject::SetTipText)
 		.def("set_tip_text_default",		&CScriptGameObject::SetTipTextDefault)
 		.def("set_nonscript_usable",		&CScriptGameObject::SetNonscriptUsable)

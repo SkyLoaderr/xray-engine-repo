@@ -12,7 +12,6 @@
 #include "inventory_space.h"
 
 class CSE_Abstract;
-class CScriptCallback;
 class CInventory;
 class CInventoryItem;
 class CTrade;
@@ -178,17 +177,6 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	// связь со скриптами
 	//////////////////////////////////////////////////////////////////////////
-public:
-	void	set_pda_callback	(const luabind::object &lua_object, LPCSTR method);
-	void	set_pda_callback	(const luabind::functor<void> &lua_function);
-	void	set_info_callback	(const luabind::object &lua_object, LPCSTR method);
-	void	set_info_callback	(const luabind::functor<void> &lua_function);
-	void	clear_pda_callback	();
-	void	clear_info_callback	();
-
-protected:
-	CScriptCallback		*m_pPdaCallback;
-	CScriptCallback		*m_pInfoCallback;
 };
 
 #include "inventory_owner_inline.h"

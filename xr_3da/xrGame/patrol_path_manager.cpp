@@ -33,19 +33,7 @@ bool show_restrictions(CRestrictedObject *object)
 
 CPatrolPathManager::~CPatrolPathManager			()
 {
-	xr_delete				(m_callback);
 	xr_delete				(m_extrapolate_callback);
-}
-
-void CPatrolPathManager::set_callback			()
-{
-	xr_delete				(m_callback);
-}
-
-void CPatrolPathManager::set_callback			(CScriptCallback &callback)
-{
-	xr_delete				(m_callback);
-	m_callback				= xr_new<CScriptCallback>(callback);
 }
 
 void CPatrolPathManager::set_extrapolate_callback()
@@ -74,7 +62,6 @@ void CPatrolPathManager::reinit					()
 	m_actuality				= true;
 	m_failed				= false;
 	m_completed				= true;
-	m_callback				= 0;
 	m_extrapolate_callback	= 0;
 
 	reset					();
@@ -174,8 +161,7 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 	}
 	VERIFY3					(m_path->vertex(m_curr_point_index) || show_restrictions(m_object),*m_path_name,*m_game_object->cName());
 
-	if (m_callback)
-		SCRIPT_CALLBACK_EXECUTE_3((*m_callback), m_game_object->lua_game_object(),u32(ScriptEntity::eActionTypeMovement),m_curr_point_index);
+	m_game_object->callback	(GameObject::ePatrolPathInPoint)(m_game_object->lua_game_object(),u32(ScriptEntity::eActionTypeMovement),m_curr_point_index);
 
 	u32							count = 0;		// количество разветвлений
 	float						sum = 0.f;		// сумма весов разветвления

@@ -6,10 +6,11 @@
 #include "artifact.h"
 #include "inventory.h"
 #include "xrmessages.h"
-
 #include "character_info.h"
 #include "relation_registry.h"
 #include "level.h"
+#include "script_callback_ex.h"
+#include "script_game_object.h"
 
 class CInventoryOwner;
 
@@ -200,11 +201,13 @@ void CTrade::StartTrade(CInventoryOwner* pInvOwner)
 	StartTrade();
 
 	if (pThis.type == TT_TRADER) smart_cast<CAI_Trader*>(pThis.base)->OnStartTrade();
+	
 }
 
 void CTrade::OnPerformTrade(u32 money_get, u32 money_put)
 {
-	if (pThis.type == TT_TRADER) smart_cast<CAI_Trader*>(pThis.base)->OnPerformTrade(money_get, money_put);	
+	if (pThis.type == TT_TRADER) 
+		smart_cast<CAI_Trader*>(pThis.base)->callback(GameObject::eTradePerformTradeOperation)(money_get, money_put);
 }
 
 void CTrade::StopTrade()
@@ -294,8 +297,12 @@ void CTrade::SellItem(int id)
 #ifdef DEBUG
 				Msg("--TRADE:: [%s]: Ok, item sold!",*pThis.base->cName());
 #endif
-				if (pThis.type == TT_TRADER) smart_cast<CAI_Trader*>(pThis.base)->OnTradeAction(&l_pIItem->object(), true, dwTransferMoney);
-				else if (pPartner.type == TT_TRADER) smart_cast<CAI_Trader*>(pPartner.base)->OnTradeAction(&l_pIItem->object(), false, dwTransferMoney);
+				// On Trade Action callback
+				if (pThis.type == TT_TRADER) {
+					smart_cast<CAI_Trader*>(pThis.base)->callback(GameObject::eTradeSellBuyItem)(l_pIItem->object().lua_game_object(), true, dwTransferMoney);
+				} else if (pPartner.type == TT_TRADER) {
+					smart_cast<CAI_Trader*>(pPartner.base)->callback(GameObject::eTradeSellBuyItem)(l_pIItem->object().lua_game_object(), false, dwTransferMoney);
+				}
 			}
 			break;
 		}
@@ -337,12 +344,13 @@ void CTrade::SellItem(CInventoryItem* pItem)
 	if (pThis.type == TT_TRADER) 
 	{
 		pTrader = smart_cast<CAI_Trader*>(pThis.base);
-		pTrader->OnTradeAction(&pItem->object(), true, dwTransferMoney);
+		pTrader->callback(GameObject::eTradeSellBuyItem)(pItem->object().lua_game_object(), true, dwTransferMoney);
 	}
 	else if (pPartner.type == TT_TRADER) 
 	{
 		pTrader = smart_cast<CAI_Trader*>(pPartner.base);
-		pTrader->OnTradeAction(&pItem->object(), false, dwTransferMoney);
+		pTrader->callback(GameObject::eTradeSellBuyItem)(pItem->object().lua_game_object(), false, dwTransferMoney);
+		
 		CArtefact* pArtefact= smart_cast<CArtefact*>(pItem);
 		if(pArtefact)
 			m_bNeedToUpdateArtefactTasks |= pTrader->BuyArtefact(pArtefact);

@@ -22,7 +22,6 @@
 #include "xrmessages.h"
 #include "inventory.h"
 #include "script_ini_file.h"
-#include "script_callback.h"
 #include "../skeletoncustom.h"
 #include "HangingLamp.h"
 #include "patrol_path_manager.h"
@@ -126,118 +125,6 @@ const CScriptEntityAction *CScriptGameObject::GetActionByIndex(u32 action_index)
 	else
 		return			(l_tpScriptMonster->GetActionByIndex(action_index));
 }
-
-void CScriptGameObject::SetCallback(const luabind::object &lua_object, LPCSTR method, const ScriptEntity::EActionType tActionType)
-{
-	CScriptEntity	*l_tpScriptMonster = smart_cast<CScriptEntity*>(&object());
-	if (!l_tpScriptMonster)
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptEntity : cannot access class member set_callback!");
-	else
-		l_tpScriptMonster->set_callback(lua_object,method,tActionType);
-}
-
-void CScriptGameObject::SetCallback(const luabind::functor<void> &lua_function, const ScriptEntity::EActionType tActionType)
-{
-	CScriptEntity	*l_tpScriptMonster = smart_cast<CScriptEntity*>(&object());
-	if (!l_tpScriptMonster)
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptEntity : cannot access class member set_callback!");
-	else
-		l_tpScriptMonster->set_callback(lua_function,tActionType);
-}
-
-void CScriptGameObject::ClearCallback(const ScriptEntity::EActionType tActionType)
-{
-	CScriptEntity	*l_tpScriptMonster = smart_cast<CScriptEntity*>(&object());
-	if (!l_tpScriptMonster)
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptEntity : cannot access class member clear_callback!");
-	else
-		l_tpScriptMonster->clear_callback(tActionType);
-}
-
-void CScriptGameObject::SetSoundCallback(const luabind::object &lua_object, LPCSTR method)
-{
-	CScriptEntity	*l_tpScriptMonster = smart_cast<CScriptEntity*>(&object());
-	if (!l_tpScriptMonster)
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptEntity : cannot access class member set_sound_callback!");
-	else
-		l_tpScriptMonster->set_sound_callback(lua_object,method);
-}
-
-void CScriptGameObject::SetSoundCallback(const luabind::functor<void> &lua_function)
-{
-	CScriptEntity	*l_tpScriptMonster = smart_cast<CScriptEntity*>(&object());
-	if (!l_tpScriptMonster)
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptEntity : cannot access class member set_sound_callback!");
-	else
-		l_tpScriptMonster->set_sound_callback(lua_function);
-}
-
-void CScriptGameObject::ClearSoundCallback(bool member_callback)
-{
-	CScriptEntity	*l_tpScriptMonster = smart_cast<CScriptEntity*>(&object());
-	if (!l_tpScriptMonster)
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptEntity : cannot access class member clear_hit_callback!");
-	else
-		l_tpScriptMonster->clear_sound_callback(member_callback);
-}
-//////////////////////////////////////////////////////////////////////////
-// Hit Callbacks 
-void CScriptGameObject::SetHitCallback(const luabind::object &lua_object, LPCSTR method)
-{
-	CScriptEntity	*l_tpScriptMonster = smart_cast<CScriptEntity*>(&object());
-	if (!l_tpScriptMonster)
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptEntity : cannot access class member set_hit_callback!");
-	else
-		l_tpScriptMonster->set_hit_callback(lua_object,method);
-}
-
-void CScriptGameObject::SetHitCallback(const luabind::functor<void> &lua_function)
-{
-	CScriptEntity	*l_tpScriptMonster = smart_cast<CScriptEntity*>(&object());
-	if (!l_tpScriptMonster)
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptEntity : cannot access class member set_hit_callback!");
-	else
-		l_tpScriptMonster->set_hit_callback(lua_function);
-}
-
-void CScriptGameObject::ClearHitCallback(bool member_callback)
-{
-	CScriptEntity	*l_tpScriptMonster = smart_cast<CScriptEntity*>(&object());
-	if (!l_tpScriptMonster)
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptEntity : cannot access class member clear_hit_callback!");
-	else
-		l_tpScriptMonster->clear_hit_callback(member_callback);
-}
-
-//////////////////////////////////////////////////////////////////////////
-// Death Callbacks 
-void CScriptGameObject::SetDeathCallback(const luabind::object &lua_object, LPCSTR method)
-{
-	CEntityAlive *entity = smart_cast<CEntityAlive*>(&object());
-	if (!entity)
-		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CEntityAlive : cannot access class member set_death_callback!");
-	else
-		entity->set_death_callback(lua_object,method);
-}
-
-void CScriptGameObject::SetDeathCallback(const luabind::functor<void> &lua_function)
-{
-	CEntityAlive *entity = smart_cast<CEntityAlive*>(&object());
-	if (!entity)
-		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CEntityAlive : cannot access class member set_death_callback!");
-	else
-		entity->set_death_callback(lua_function);
-}
-
-void CScriptGameObject::ClearDeathCallback(bool member_callback)
-{
-	CEntityAlive *entity = smart_cast<CEntityAlive*>(&object());
-	if (!entity)
-		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CEntityAlive : cannot access class member clear_death_callback!");
-	else
-		entity->clear_death_callback(member_callback);
-}
-
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -412,59 +299,6 @@ void CScriptGameObject::SetQueueSize(u32 queue_size)
 ////////////////////////////////////////////////////////////////////////////
 //// Inventory Owner
 ////////////////////////////////////////////////////////////////////////////
-void CScriptGameObject::SetPdaCallback(const luabind::functor<void> &lua_function)
-{
-	CInventoryOwner* pInvOwner = smart_cast<CInventoryOwner*>(&object());
-	if (!pInvOwner)
-		ai().script_engine().script_log 	(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member set_pda_callback!");
-	else
-		pInvOwner->set_pda_callback(lua_function);
-}
-
-void CScriptGameObject::SetPdaCallback(const luabind::object &instance, LPCSTR method)
-{
-	CInventoryOwner* pInvOwner = smart_cast<CInventoryOwner*>(&object());
-	if (!pInvOwner)
-		ai().script_engine().script_log 	(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member set_pda_callback!");
-	else
-		pInvOwner->set_pda_callback(instance,method);
-}
-
-void CScriptGameObject::ClearPdaCallback()
-{
-	CInventoryOwner* pInvOwner = smart_cast<CInventoryOwner*>(&object());
-	if (!pInvOwner)
-		ai().script_engine().script_log 	(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member clear_pda_callback!");
-	else
-		pInvOwner->clear_pda_callback();
-}
-
-void CScriptGameObject::SetInfoCallback(const luabind::functor<void> &lua_function)
-{
-	CInventoryOwner* pInvOwner = smart_cast<CInventoryOwner*>(&object());
-	if (!pInvOwner)
-		ai().script_engine().script_log 	(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member set_info_callback!");
-	else
-		pInvOwner->set_info_callback(lua_function);
-}
-
-void CScriptGameObject::SetInfoCallback(const luabind::object &instance, LPCSTR method)
-{
-	CInventoryOwner* pInvOwner = smart_cast<CInventoryOwner*>(&object());
-	if (!pInvOwner)
-		ai().script_engine().script_log 	(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member set_info_callback!");
-	else
-		pInvOwner->set_info_callback(instance,method);
-}
-
-void CScriptGameObject::ClearInfoCallback()
-{
-	CInventoryOwner* pInvOwner = smart_cast<CInventoryOwner*>(&object());
-	if (!pInvOwner)
-		ai().script_engine().script_log 	(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member clear_info_callback!");
-	else
-		pInvOwner->clear_info_callback();
-}
 
 u32	CScriptGameObject::Cost			() const
 {
@@ -575,6 +409,31 @@ float CScriptGameObject::extrapolate_length		() const
 		return				(0.f);
 	}
 	return					(monster->movement().detail().extrapolate_length());
+}
+
+//////////////////////////////////////////////////////////////////////////
+void CScriptGameObject::SetCallback(GameObject::ECallbackType type, const luabind::functor<void> &functor)
+{
+	CGameObject *obj = smart_cast<CGameObject *>(&object());
+	VERIFY		(obj);
+
+	obj->callback(type).set(functor);
+}
+
+void CScriptGameObject::SetCallback(GameObject::ECallbackType type, const luabind::functor<void> &functor, const luabind::object &object)
+{
+	CGameObject *obj = smart_cast<CGameObject *>(&this->object());
+	VERIFY		(obj);
+
+	obj->callback(type).set(functor, object);
+}
+
+void CScriptGameObject::ClearCallback(GameObject::ECallbackType type)
+{
+	CGameObject *obj = smart_cast<CGameObject *>(&object());
+	VERIFY		(obj);
+
+	obj->callback(type).clear();
 }
 
 void CScriptGameObject::set_fov					(float new_fov)

@@ -11,7 +11,6 @@
 #include "alife_simulator.h"
 #include "alife_registry_container.h"
 #include "script_game_object.h"
-#include "script_callback.h"
 #include "level.h"
 #include "script_space.h"
 #include "infoportion.h"
@@ -70,8 +69,8 @@ bool CInventoryOwner::OnReceiveInfo(INFO_INDEX info_index) const
 	VERIFY(pThisGameObject);
 
 //	SCRIPT_CALLBACK_EXECUTE_2(*m_pInfoCallback, pThisGameObject->lua_game_object(), info_index);
-	SCRIPT_CALLBACK_EXECUTE_2(*m_pInfoCallback, pThisGameObject->lua_game_object(), *CInfoPortion::IndexToId(info_index));
 	
+	pThisGameObject->callback(GameObject::eInventoryInfo)(pThisGameObject->lua_game_object(), *CInfoPortion::IndexToId(info_index));
 
 	CInfoPortion info_portion;
 	info_portion.Load(info_index);

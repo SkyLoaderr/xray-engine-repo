@@ -18,7 +18,6 @@ template <typename _return_type>
 class CScriptCallbackEx;
 
 class CRestrictedObject;
-class CScriptCallback;
 class CGameObject;
 
 using namespace PatrolPathManager;
@@ -43,7 +42,6 @@ private:
 	u32								m_prev_point_index;
 	u32								m_start_point_index;
 	Fvector							m_dest_position;
-	CScriptCallback					*m_callback;
 	CExtrapolateCallback			*m_extrapolate_callback;
 	CRestrictedObject				*m_object;
 	CGameObject						*m_game_object;
@@ -58,8 +56,6 @@ public:
 	IC								CPatrolPathManager		(CRestrictedObject *object, CGameObject *game_object);
 		virtual						~CPatrolPathManager		();
 		virtual	void				reinit					();
-				void				set_callback			();
-				void				set_callback			(CScriptCallback &callback);
 				void				set_extrapolate_callback();
 				void				set_extrapolate_callback(CExtrapolateCallback &callback);
 	IC			void				make_inactual			();

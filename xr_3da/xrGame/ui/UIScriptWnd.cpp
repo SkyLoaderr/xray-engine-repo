@@ -4,10 +4,10 @@
 #include "../script_space.h"
 #include <luabind/operator.hpp>
 #include "../object_broker.h"
-#include "../script_callback.h"
+#include "../script_callback_ex.h"
 
 struct SCallbackInfo{
-	CScriptCallback			m_callback;
+	CScriptCallbackEx<void>	m_callback;
 	boost::function<void()>	m_cpp_callback;
 	shared_str				m_controlName;
 	s16						m_event;
@@ -50,11 +50,10 @@ void CUIDialogWndEx::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	if(it==m_callbacks.end())
 		return inherited::SendMessage(pWnd, msg, pData);
 
-	if ((*it)->m_callback.assigned()) {
-		SCRIPT_CALLBACK_EXECUTE_0((*it)->m_callback );
-	}else 
-		if ( (*it)->m_cpp_callback )	
-			(*it)->m_cpp_callback();
+	((*it)->m_callback)();
+
+	if ( (*it)->m_cpp_callback )	
+		(*it)->m_cpp_callback();
 }
 
 bool CUIDialogWndEx::Load(LPCSTR xml_name)
@@ -77,10 +76,10 @@ void CUIDialogWndEx::AddCallback(LPCSTR control_id, s16 event, const luabind::fu
 	
 }
 
-void CUIDialogWndEx::AddCallback (LPCSTR control_id, s16 event, const luabind::object &lua_object, LPCSTR method)
+void CUIDialogWndEx::AddCallback (LPCSTR control_id, s16 event, const luabind::functor<void> &functor, const luabind::object &object)
 {
 	SCallbackInfo* c	= NewCallback ();
-	c->m_callback.set	(lua_object,method);
+	c->m_callback.set	(functor,object);
 	c->m_controlName	= control_id;
 	c->m_event			= event;
 }
@@ -97,7 +96,7 @@ void CUIDialogWndEx::test()
 {
 	CALLBACK_IT it = m_callbacks.begin();
 	for(;it!=m_callbacks.end();++it)
-		SCRIPT_CALLBACK_EXECUTE_0( (*it)->m_callback )
+		((*it)->m_callback)();
 }
 
 bool CUIDialogWndEx::OnKeyboard(int dik, EUIMessages keyboard_action)

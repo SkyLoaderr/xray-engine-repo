@@ -17,6 +17,9 @@
 #include "../../../../skeletonanimated.h"
 #include "../../../sound_player.h"
 #include "../../../level.h"
+#include "../../../script_callback_ex.h"
+#include "../../../script_game_object.h"
+
 
 void CBaseMonster::feel_sound_new(CObject* who, int eType, CSoundUserDataPtr user_data, const Fvector &Position, float power)
 {
@@ -41,9 +44,7 @@ void CBaseMonster::feel_sound_new(CObject* who, int eType, CSoundUserDataPtr use
 	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) power = 1.f;
 
 	// execute callback
-	CScriptEntity	*script_monster = this;
-	if (script_monster)
-		script_monster->sound_callback(who,eType,Position,power);
+	sound_callback	(who,eType,Position,power);
 	
 	// register in sound memory
 	if (power >= get_sd()->m_fSoundThreshold) {
@@ -128,8 +129,13 @@ void CBaseMonster::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16
 
 	Morale.on_hit		();
 
-	CScriptEntity	*script_monster = this;
-	if (script_monster)	script_monster->hit_callback(amount,vLocalDir,who,element);
+	callback(GameObject::eHit)(
+		lua_game_object(), 
+		amount,
+		vLocalDir,
+		smart_cast<const CGameObject*>(who)->lua_game_object(),
+		element
+	);
 
 	// если нейтрал - добавить как врага
 	CEntityAlive	*obj = smart_cast<CEntityAlive*>(who);

@@ -10,28 +10,20 @@
 #include "script_zone.h"
 #include "script_game_object.h"
 #include "xrserver_objects_alife_monsters.h"
-#include "script_callback.h"
 #include "script_space.h"
 #include "../xr_collide_form.h"
 
 CScriptZone::CScriptZone		()
 {
-	m_tpOnEnter				= xr_new<CScriptCallback>();
-	m_tpOnExit				= xr_new<CScriptCallback>();
 }
 
 CScriptZone::~CScriptZone		()
 {
-	xr_delete				(m_tpOnEnter);
-	xr_delete				(m_tpOnExit);
 }
 
 void CScriptZone::reinit		()
 {
 	inherited::reinit		();
-	
-	m_tpOnEnter->clear		();
-	m_tpOnExit->clear		();
 }
 
 BOOL CScriptZone::net_Spawn	(CSE_Abstract* DC) 
@@ -46,8 +38,6 @@ BOOL CScriptZone::net_Spawn	(CSE_Abstract* DC)
 void CScriptZone::net_Destroy	()
 {
 	inherited::net_Destroy		();
-	m_tpOnEnter->clear			();
-	m_tpOnExit->clear			();
 }
 
 void CScriptZone::shedule_Update(u32 dt)
@@ -66,7 +56,7 @@ void CScriptZone::feel_touch_new	(CObject *tpObject)
 	if (!l_tpGameObject)
 		return;
 	
-	SCRIPT_CALLBACK_EXECUTE_2(*m_tpOnEnter, lua_game_object(),l_tpGameObject->lua_game_object());
+	callback(GameObject::eZoneEnter)(lua_game_object(),l_tpGameObject->lua_game_object());
 }
 
 void CScriptZone::feel_touch_delete	(CObject *tpObject)
@@ -76,7 +66,7 @@ void CScriptZone::feel_touch_delete	(CObject *tpObject)
 	if (!l_tpGameObject || l_tpGameObject->getDestroy())
 		return;
 
-	SCRIPT_CALLBACK_EXECUTE_2(*m_tpOnExit, lua_game_object(),l_tpGameObject->lua_game_object());
+	callback(GameObject::eZoneEnter)(lua_game_object(),l_tpGameObject->lua_game_object());
 }
 
 void CScriptZone::net_Relcase			(CObject *O)
@@ -87,31 +77,13 @@ void CScriptZone::net_Relcase			(CObject *O)
 
 	xr_vector<CObject*>::iterator	I = std::find(feel_touch.begin(),feel_touch.end(),O);
 	if (I != feel_touch.end()) {
-		SCRIPT_CALLBACK_EXECUTE_2(*m_tpOnExit, lua_game_object(),l_tpGameObject->lua_game_object());
+		callback(GameObject::eZoneEnter)(lua_game_object(),l_tpGameObject->lua_game_object());
 	}
 }
 
 BOOL CScriptZone::feel_touch_contact	(CObject* O)
 {
 	return						(((CCF_Shape*)CFORM())->Contact(O));
-}
-
-void CScriptZone::set_callback	(const luabind::object &lua_object, LPCSTR method, bool bOnEnter)
-{
-	CScriptCallback				&callback = bOnEnter ? *m_tpOnEnter : *m_tpOnExit;
-	callback.set				(lua_object, method);
-}
-
-void CScriptZone::set_callback	(const luabind::functor<void> &lua_function, bool bOnEnter)
-{
-	CScriptCallback				&callback = bOnEnter ? *m_tpOnEnter : *m_tpOnExit;
-	callback.set				(lua_function);
-}
-
-void CScriptZone::clear_callback(bool bOnEnter)
-{
-	CScriptCallback				&callback = bOnEnter ? *m_tpOnEnter : *m_tpOnExit;
-	callback.clear				();
 }
 
 #ifdef DEBUG

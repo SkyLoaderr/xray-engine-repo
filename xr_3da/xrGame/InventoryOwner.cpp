@@ -15,7 +15,6 @@
 #include "character_info.h"
 #include "script_game_object.h"
 #include "script_engine.h"
-#include "script_callback.h"
 #include "AI_PhraseDialogManager.h"
 #include "level.h"
 #include "game_base_space.h"
@@ -40,8 +39,6 @@ CInventoryOwner::CInventoryOwner			()
 	
 	EnableTalk();
 	
-	m_pPdaCallback				= xr_new<CScriptCallback>();
-	m_pInfoCallback				= xr_new<CScriptCallback>();
 	m_known_info_registry		= xr_new<CInfoPortionWrapper>();
 }
 
@@ -56,8 +53,6 @@ CInventoryOwner::~CInventoryOwner			()
 	xr_delete					(m_inventory);
 	xr_delete					(m_pTrade);
 	xr_delete					(m_pCharacterInfo);
-	xr_delete					(m_pPdaCallback);
-	xr_delete					(m_pInfoCallback);
 	xr_delete					(m_known_info_registry);
 }
 
@@ -74,10 +69,6 @@ void CInventoryOwner::reload				(LPCSTR section)
 	m_dwMoney					= 0;
 	m_bTalking					= false;
 	m_pTalkPartner				= NULL;
-
-	m_pPdaCallback->clear		();
-	m_pInfoCallback->clear		();
-
 
 	CAttachmentOwner::reload	(section);
 }
@@ -150,8 +141,6 @@ void CInventoryOwner::net_Destroy()
 	
 	inventory().Clear();
 	inventory().SetActiveSlot(NO_ACTIVE_SLOT);
-	m_pPdaCallback->clear();
-	m_pInfoCallback->clear();
 }
 
 
@@ -231,7 +220,7 @@ void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_in
 
 
 	//Запустить скриптовый callback
-	CGameObject* pThisGameObject = smart_cast<CGameObject*>(this);
+	CGameObject* pThisGameObject = cast_game_object();
 	VERIFY(pThisGameObject);
 	CPda* pWhoPda = smart_cast<CPda*>(Level().Objects.net_Find(who));
 	VERIFY(pWhoPda);
@@ -243,12 +232,13 @@ void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_in
 		GetPDA()->ID(),
 		GetPDA()->GetOriginalOwnerID());*/
 
+	pThisGameObject->callback(GameObject::eInventoryPda)(
+		pThisGameObject->lua_game_object(),
+		pWho->lua_game_object(), 
+		(int)msg,
+		info_index
+	);
 
- 	SCRIPT_CALLBACK_EXECUTE_4(*m_pPdaCallback, 
-							  pThisGameObject->lua_game_object(),
-							  pWho->lua_game_object(), 
-							  (int)msg,
-							  info_index);
 }
 
 

@@ -22,6 +22,7 @@
 #include "../../object_broker.h"
 #include "../../sound_player.h"
 #include "../../level.h"
+#include "../../script_callback_ex.h"
 
 CAI_Trader::CAI_Trader()
 {
@@ -52,10 +53,6 @@ void CAI_Trader::reinit	()
 	CEntityAlive::reinit	();
 	CInventoryOwner::reinit	();
 	sound().reinit			();
-
-	m_OnStartCallback.clear ();
-	m_OnStopCallback.clear	();
-	m_OnTradeCallback.clear ();
 
 	m_tpHeadDef				= 0;
 	m_tpGlobalDef			= 0;
@@ -365,9 +362,6 @@ void CAI_Trader::net_Destroy()
 {
 	inherited::net_Destroy		();
 	CScriptEntity::net_Destroy ();
-	m_OnStartCallback.clear		();
-	m_OnStopCallback.clear		();
-	m_OnTradeCallback.clear		();
 	delete_data					(m_tpOrderedArtefacts);
 }
 
@@ -393,78 +387,16 @@ BOOL CAI_Trader::UsedAI_Locations()
 	return					(TRUE);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////
-// Trade callbacks
-///////////////////////////////////////////////////////////////////////////////////////////////
-void CAI_Trader::set_callback(const luabind::functor<void> &lua_function, bool bOnStart)
-{
-	CScriptCallback	 &callback = bOnStart ? m_OnStartCallback : m_OnStopCallback;
-	callback.set(lua_function);
-}
-
-void CAI_Trader::set_callback(const luabind::object &lua_object, LPCSTR method, bool bOnStart)
-{
-	CScriptCallback	&callback = bOnStart ? m_OnStartCallback : m_OnStopCallback;
-	callback.set(lua_object,method);
-}
-
-void CAI_Trader::clear_callback(bool bOnStart)
-{
-	CScriptCallback	&callback = bOnStart ? m_OnStartCallback : m_OnStopCallback;
-	callback.clear	();
-}
-
 void CAI_Trader::OnStartTrade()
 {
 	m_busy_now			= true;
-	m_OnStartCallback.callback();
+	callback(GameObject::eTradeStart)();
 }
 
 void CAI_Trader::OnStopTrade()
 {
 	m_busy_now			= false;
-	m_OnStopCallback.callback();
-}
-
-void CAI_Trader::set_trade_callback(const luabind::functor<void> &lua_function)
-{
-	m_OnTradeCallback.set(lua_function);
-}
-
-void CAI_Trader::set_trade_callback(const luabind::object &lua_object, LPCSTR method)
-{
-	m_OnTradeCallback.set(lua_object,method);
-}
-
-void CAI_Trader::clear_trade_callback()
-{
-	m_OnTradeCallback.clear();
-}
-
-void CAI_Trader::set_perform_trade_callback(const luabind::functor<void> &lua_function)
-{
-	m_OnPerformTradeCallback.set(lua_function);
-}
-
-void CAI_Trader::set_perform_trade_callback(const luabind::object &lua_object, LPCSTR method)
-{
-	m_OnPerformTradeCallback.set(lua_object,method);
-}
-
-void CAI_Trader::clear_perform_trade_callback()
-{
-	m_OnPerformTradeCallback.clear();
-}
-
-void CAI_Trader::OnTradeAction(CGameObject *O, bool bSell,u32 money)
-{
-	if (!O) return;
-	SCRIPT_CALLBACK_EXECUTE_3(m_OnTradeCallback,O->lua_game_object(), bSell, money);
-}
-
-void CAI_Trader::OnPerformTrade(u32 money_get, u32 money_put)
-{
-	SCRIPT_CALLBACK_EXECUTE_2(m_OnPerformTradeCallback, money_get, money_put);
+	callback(GameObject::eTradeStop)();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////

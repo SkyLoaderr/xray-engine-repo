@@ -12,6 +12,7 @@
 #include "alife_space.h"
 #include "UsableScriptObject.h"
 #include "script_binder.h"
+#include "game_object_space.h"
 
 class CPhysicsShell;
 class CSE_Abstract;
@@ -33,6 +34,9 @@ class CScriptEntity;
 class CAI_ObjectLocation;
 class CWeapon;
 class CExplosive;
+
+template <typename _return_type>
+class CScriptCallbackEx;
 
 class CGameObject : 
 	public CObject, 
@@ -234,6 +238,20 @@ public:
 	virtual u32				ef_detector_type	() const;
 	virtual bool			natural_weapon		() const {return true;}
 	virtual bool			natural_detector	() const {return true;}
+
+
+public:
+	
+	typedef CScriptCallbackEx<void> CScriptCallbackExVoid;
+
+private:
+	
+	DEFINE_MAP				(GameObject::ECallbackType, CScriptCallbackExVoid, CALLBACK_MAP, CALLBACK_MAP_IT);
+	CALLBACK_MAP			*m_callbacks;
+
+public:
+
+	CScriptCallbackExVoid	&callback		(GameObject::ECallbackType type) const;
 };
 
 #endif // !defined(AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_)

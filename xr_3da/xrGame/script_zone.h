@@ -14,11 +14,8 @@
 #include "script_export_space.h"
 
 class CScriptGameObject;
-class CScriptCallback;
 
 class CScriptZone : public CSpaceRestrictor, public Feel::Touch {
-	CScriptCallback *m_tpOnEnter;
-	CScriptCallback *m_tpOnExit;
 public:
 	typedef	CSpaceRestrictor inherited;
 
@@ -33,9 +30,6 @@ public:
 	virtual void	feel_touch_delete	(CObject* O);
 	virtual BOOL	feel_touch_contact	(CObject* O);
 			bool	active_contact		(u16 id) const;
-			void	set_callback		(const luabind::object &lua_object, LPCSTR method, bool bOnEnter);
-			void	set_callback		(const luabind::functor<void> &lua_function, bool bOnEnter);
-			void	clear_callback		(bool bOnEnter);
 	virtual bool	IsVisibleForZones() { return false;		}
 #ifdef DEBUG
 	virtual	void	OnRender			();

@@ -9,15 +9,15 @@
 #pragma once
 
 #include "alife_space.h"
-#include "script_callback.h"
 #include "script_export_space.h"
+#include "script_callback_ex.h"
 
 class CGameObject;
 
 class CClientSpawnManager {
 	struct CSpawnCallback {
-		CGameObject		*m_object;
-		CScriptCallback	m_callback;
+		CGameObject				*m_object;
+		CScriptCallbackEx<void>	m_callback;
 
 		IC	CSpawnCallback	()
 		{
@@ -38,7 +38,7 @@ protected:
 public:
 	IC					CClientSpawnManager		();
 	virtual				~CClientSpawnManager	();
-			void		add						(ALife::_OBJECT_ID	requesting_id, ALife::_OBJECT_ID requested_id, const luabind::object &lua_object, LPCSTR method);
+			void		add						(ALife::_OBJECT_ID	requesting_id, ALife::_OBJECT_ID requested_id, const luabind::functor<void> &functor, const luabind::object &object);
 			void		add						(ALife::_OBJECT_ID	requesting_id, ALife::_OBJECT_ID requested_id, const luabind::functor<void> &lua_function);
 			void		add						(ALife::_OBJECT_ID	requesting_id, ALife::_OBJECT_ID requested_id, CSpawnCallback &callback);
 			void		add						(ALife::_OBJECT_ID	requesting_id, ALife::_OBJECT_ID requested_id, CGameObject *object);

@@ -19,14 +19,14 @@ CClientSpawnManager::~CClientSpawnManager	()
 {
 }
 
-void CClientSpawnManager::add				(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, const luabind::object &lua_object, LPCSTR method)
+void CClientSpawnManager::add		(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, const luabind::functor<void> &functor, const luabind::object &object)
 {
 	CSpawnCallback					callback;
-	callback.m_callback.set			(lua_object,method);
+	callback.m_callback.set			(functor,object);
 	add								(requesting_id,requested_id,callback);
 }
 
-void CClientSpawnManager::add				(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, const luabind::functor<void> &lua_function)
+void CClientSpawnManager::add		(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, const luabind::functor<void> &lua_function)
 {
 	CSpawnCallback					callback;
 	callback.m_callback.set			(lua_function);
@@ -95,7 +95,7 @@ void CClientSpawnManager::callback			(CSpawnCallback &spawn_callback, CObject *o
 		spawn_callback.m_object->on_reguested_spawn(object);
 	CGameObject						*game_object = smart_cast<CGameObject*>(object);
 	CScriptGameObject				*script_game_object = !game_object ? 0 : game_object->lua_game_object();
-	SCRIPT_CALLBACK_EXECUTE_2		(spawn_callback.m_callback,object->ID(),script_game_object);
+	(spawn_callback.m_callback)	(object->ID(),script_game_object);
 }
 
 void CClientSpawnManager::callback			(CObject *object)
@@ -115,11 +115,7 @@ void CClientSpawnManager::callback			(CObject *object)
 void CClientSpawnManager::merge_spawn_callbacks	(CSpawnCallback &new_callback, CSpawnCallback &old_callback)
 {
 	if (new_callback.m_object)
-		old_callback.m_object = new_callback.m_object;
+		old_callback.m_object	= new_callback.m_object;
 
-	if (new_callback.m_callback.get_function())
-		old_callback.m_callback.set(*new_callback.m_callback.get_function());
-
-	if (new_callback.m_callback.get_object())
-		old_callback.m_callback.set(*new_callback.m_callback.get_object(),*new_callback.m_callback.get_method());
+	old_callback.m_callback		= new_callback.m_callback;
 }

@@ -26,6 +26,7 @@
 #include "../igame_level.h"
 #include "level.h"
 #include "net_utils.h"
+#include "script_callback_ex.h"
 
 #define OBJECT_REMOVE_TIME 180000
 //////////////////////////////////////////////////////////////////////
@@ -40,6 +41,8 @@ CGameObject::CGameObject		()
 	m_spawn_time				= 0;
 	m_ai_location				= xr_new<CAI_ObjectLocation>();
 	m_server_flags.one			();
+
+	m_callbacks					= xr_new<CALLBACK_MAP>();
 }
 
 CGameObject::~CGameObject		()
@@ -48,6 +51,7 @@ CGameObject::~CGameObject		()
 	VERIFY						(!m_lua_game_object);
 	VERIFY						(!m_spawned);
 	xr_delete					(m_ai_location);
+	xr_delete					(m_callbacks);
 }
 
 void CGameObject::init			()
@@ -660,3 +664,10 @@ void CGameObject::net_Relcase			(CObject* O)
 {
 	inherited::net_Relcase	(O);
 }
+
+CGameObject::CScriptCallbackExVoid &CGameObject::callback(GameObject::ECallbackType type) const
+{
+	return ((*m_callbacks)[type]);
+}
+
+

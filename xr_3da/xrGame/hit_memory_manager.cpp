@@ -12,6 +12,8 @@
 #include "custommonster.h"
 #include "ai_object_location.h"
 #include "level_graph.h"
+#include "script_callback_ex.h"
+#include "script_game_object.h"
 
 struct CHitObjectPredicate {
 	const CObject *m_object;
@@ -73,7 +75,13 @@ void CHitMemoryManager::add		(float amount, const Fvector &vLocalDir, const CObj
 	if (who && (m_object->ID() == who->ID()))
 		return;
 
-	m_object->hit_callback		(amount,vLocalDir,who,element);
+	object().callback(GameObject::eHit)(
+		m_object->lua_game_object(), 
+		amount,
+		vLocalDir,
+		smart_cast<const CGameObject*>(who)->lua_game_object(),
+		element
+	);
 
 	Fvector							direction;
 	m_object->XFORM().transform_dir	(direction,vLocalDir);

@@ -64,6 +64,22 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 			value("no_path",				int(MovementManager::ePathTypeNoPath))
 		]
 		
+		.enum_("callback_types")
+		[
+			value("trade_start",			int(GameObject::eTradeStart)),
+			value("trade_stop",				int(GameObject::eTradeStop)),
+			value("trade_sell_buy_item",	int(GameObject::eTradeSellBuyItem)),
+			value("trade_perform_operation",int(GameObject::eTradePerformTradeOperation)),
+			value("zone_enter",				int(GameObject::eZoneEnter)),
+			value("zone_exit",				int(GameObject::eZoneExit)),
+			value("death",					int(GameObject::eDeath)),
+			value("patrol_path_in_point",	int(GameObject::ePatrolPathInPoint)),
+			value("inventory_pda",			int(GameObject::eInventoryPda)),
+			value("inventory_info",			int(GameObject::eInventoryInfo)),
+			value("use_object",				int(GameObject::eUseObject)),
+			value("hit",					int(GameObject::eHit))
+		]
+
 		.property("visible",				&CScriptGameObject::getVisible,		&CScriptGameObject::setVisible)
 		.property("enabled",				&CScriptGameObject::getEnabled,		&CScriptGameObject::setEnabled)
 		.property("health",					&CScriptGameObject::GetHealth,			&CScriptGameObject::SetHealth)
@@ -74,7 +90,7 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.property("morale",					&CScriptGameObject::GetMorale,			&CScriptGameObject::SetMorale)
 
 		.def("AddEventCallback",			(void(CScriptGameObject::*)(s16, const luabind::functor<void>&))CScriptGameObject::AddEventCallback)
-		.def("AddEventCallback",			(void(CScriptGameObject::*)(s16, const luabind::object&, LPCSTR))CScriptGameObject::AddEventCallback)
+		.def("AddEventCallback",			(void(CScriptGameObject::*)(s16, const luabind::functor<void>&, const luabind::object&))CScriptGameObject::AddEventCallback)
 		.def("RemoveEventCallback",			&CScriptGameObject::RemoveEventCallback)
 
 		.def("position",					&CScriptGameObject::Position)
@@ -118,12 +134,16 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("object",						(CScriptGameObject *(CScriptGameObject::*)(LPCSTR))(CScriptGameObject::GetObjectByName))
 		.def("object",						(CScriptGameObject *(CScriptGameObject::*)(int))(CScriptGameObject::GetObjectByIndex))
 		.def("active_item",					&CScriptGameObject::GetActiveItem)
-		.def("set_callback",				(void (CScriptGameObject::*)(const luabind::functor<void> &, bool))(CScriptGameObject::SetCallback))
-		.def("set_callback",				(void (CScriptGameObject::*)(const luabind::object &, LPCSTR, bool))(CScriptGameObject::SetCallback))
-		.def("set_callback",				(void (CScriptGameObject::*)(const luabind::object &, LPCSTR, const ScriptEntity::EActionType))(CScriptGameObject::SetCallback))
-		.def("set_callback",				(void (CScriptGameObject::*)(const luabind::functor<void> &, const ScriptEntity::EActionType))(CScriptGameObject::SetCallback))
-		.def("clear_callback",				(void (CScriptGameObject::*)(bool))(CScriptGameObject::ClearCallback))
-		.def("clear_callback",				(void (CScriptGameObject::*)(const ScriptEntity::EActionType))(CScriptGameObject::ClearCallback))
+		
+		.def("set_callback",				(void (CScriptGameObject::*)(GameObject::ECallbackType, const luabind::functor<void> &))(CScriptGameObject::SetCallback))
+		.def("set_callback",				(void (CScriptGameObject::*)(GameObject::ECallbackType, const luabind::functor<void> &, const luabind::object &))(CScriptGameObject::SetCallback))
+		.def("clear_callback",				(void (CScriptGameObject::*)(GameObject::ECallbackType))(CScriptGameObject::ClearCallback))
+
+		//.def("set_callback",				(void (CScriptGameObject::*)(const luabind::object &, LPCSTR, const ScriptEntity::EActionType))(CScriptGameObject::SetCallback))
+		//.def("set_callback",				(void (CScriptGameObject::*)(const luabind::functor<void> &, const ScriptEntity::EActionType))(CScriptGameObject::SetCallback))
+		//.def("clear_callback",				(void (CScriptGameObject::*)(bool))(CScriptGameObject::ClearCallback))
+		//.def("clear_callback",				(void (CScriptGameObject::*)(const ScriptEntity::EActionType))(CScriptGameObject::ClearCallback))
+		
 		.def("patrol",						&CScriptGameObject::GetPatrolPathName)
 
 		.def("get_ammo_in_magazine",		&CScriptGameObject::GetAmmoElapsed)
@@ -136,15 +156,11 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("best_item",					&CScriptGameObject::GetBestItem)
 		.def("action_count",				&CScriptGameObject::GetActionCount)
 		.def("action_by_index",				&CScriptGameObject::GetActionByIndex)
-		.def("set_hit_callback",			(void (CScriptGameObject::*)(const luabind::object &, LPCSTR))(CScriptGameObject::SetHitCallback))
-		.def("set_hit_callback",			(void (CScriptGameObject::*)(const luabind::functor<void> &))(CScriptGameObject::SetHitCallback))
-		.def("clear_hit_callback",			&CScriptGameObject::ClearHitCallback)
-		.def("set_death_callback",			(void (CScriptGameObject::*)(const luabind::object &, LPCSTR))(CScriptGameObject::SetDeathCallback))
-		.def("set_death_callback",			(void (CScriptGameObject::*)(const luabind::functor<void> &))(CScriptGameObject::SetDeathCallback))
-		.def("clear_death_callback",		&CScriptGameObject::ClearDeathCallback)
-		.def("set_hear_callback",			(void (CScriptGameObject::*)(const luabind::object &, LPCSTR))(CScriptGameObject::SetSoundCallback))
-		.def("set_hear_callback",			(void (CScriptGameObject::*)(const luabind::functor<void> &))(CScriptGameObject::SetSoundCallback))
-		.def("clear_hear_callback",			&CScriptGameObject::ClearSoundCallback)
+		
+		//.def("set_hear_callback",			(void (CScriptGameObject::*)(const luabind::object &, LPCSTR))(CScriptGameObject::SetSoundCallback))
+		//.def("set_hear_callback",			(void (CScriptGameObject::*)(const luabind::functor<void> &))(CScriptGameObject::SetSoundCallback))
+		//.def("clear_hear_callback",			&CScriptGameObject::ClearSoundCallback)
+		
 		.def("memory",						&CScriptGameObject::memory, adopt(result))
 		.def("best_weapon",					&CScriptGameObject::best_weapon)
 		.def("explode",						&CScriptGameObject::explode)

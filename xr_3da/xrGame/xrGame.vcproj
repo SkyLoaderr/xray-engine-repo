@@ -5819,6 +5819,9 @@
 							Name="GameObject"
 							Filter="">
 							<File
+								RelativePath=".\game_object_space.h">
+							</File>
+							<File
 								RelativePath=".\GameObject.cpp">
 							</File>
 							<File
@@ -5955,9 +5958,6 @@
 							</File>
 							<File
 								RelativePath=".\inventory_owner_inline.h">
-							</File>
-							<File
-								RelativePath=".\inventory_owner_scripts.cpp">
 							</File>
 							<File
 								RelativePath=".\InventoryOwner.cpp">

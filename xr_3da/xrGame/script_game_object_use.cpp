@@ -23,13 +23,13 @@ void CScriptGameObject::AddEventCallback			(s16 event, const luabind::functor<vo
 	c->m_event			= event;
 }
 
-void CScriptGameObject::AddEventCallback			(s16 event, const luabind::object &lua_object, LPCSTR method)
+void CScriptGameObject::AddEventCallback			(s16 event, const luabind::functor<void> &lua_function, const luabind::object &lua_object)
 {
 	ScriptCallbackInfo* c = NULL;
 	c = xr_new<ScriptCallbackInfo>();
 	m_callbacks.insert( mk_pair(event,c) );
 
-	c->m_callback.set	(lua_object,method);
+	c->m_callback.set	(lua_function,lua_object);
 	c->m_event			= event;
 }
 
@@ -40,31 +40,6 @@ void CScriptGameObject::RemoveEventCallback			(s16 event)
 		xr_delete(it->second);
 		m_callbacks.erase(it);
 	}
-}
-
-void CScriptGameObject::SetUseCallback(const luabind::functor<void> &tpUseCallback)
-{
-	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(&object());
-	if (!l_tpUseableScriptObject)
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"Can not set callback on use. Reason: the object is not usable");
-	else l_tpUseableScriptObject->set_callback(tpUseCallback);
-	
-}
-
-void CScriptGameObject::SetUseCallback(const luabind::object &lua_object, LPCSTR method)
-{
-	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(&object());
-	if (!l_tpUseableScriptObject)
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"Can not set callback on use. Reason: the object is not usable");
-	else l_tpUseableScriptObject->set_callback(lua_object,method);
-}
-
-void CScriptGameObject::ClearUseCallback()
-{
-	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(&object());
-	if (!l_tpUseableScriptObject)
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"Can not clear use callback . Reason: the object is not usable");
-	else l_tpUseableScriptObject->clear_callback();
 }
 
 void CScriptGameObject::SetTipText (LPCSTR tip_text)
@@ -277,6 +252,6 @@ void CScriptGameObject::OnEventRaised(s16 event, NET_Packet& P)
 	CALLBACK_IT it = m_callbacks.find(event);
 	if(it==m_callbacks.end())
 		return;
-	SCRIPT_CALLBACK_EXECUTE_1((*it).second->m_callback, &P );
+	((*it).second->m_callback)(&P);
 }
 

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "UIDialogWnd.h"
-//#include "../script_callback.h"
 #include "../script_space_forward.h"
 #include "../script_export_space.h"
 #include <boost/function.hpp>
@@ -28,7 +27,7 @@ public:
 								CUIDialogWndEx		();
 	virtual						~CUIDialogWndEx		();
 			void				AddCallback			(LPCSTR control_id, s16 event, const luabind::functor<void> &lua_function);
-			void				AddCallback			(LPCSTR control_id, s16 event, const luabind::object &lua_object, LPCSTR method);
+			void				AddCallback			(LPCSTR control_id, s16 event, const luabind::functor<void> &functor, const luabind::object &object);
 			void				AddCallback			(LPCSTR control_id, s16 event, boost::function<void()> f);
 	virtual bool				OnKeyboard			(int dik, EUIMessages keyboard_action);
 			void				test();

@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "script_callback.h"
 #include "script_entity_space.h"
 
 class CSE_Abstract;
@@ -42,6 +41,7 @@ public:
 		{
 		}
 	};
+
 protected:
 	typedef xr_deque<CScriptEntityAction*>	ACTIONS;
 
@@ -61,9 +61,6 @@ public:
 	CMotionDef					*m_tpScriptAnimation;
 
 protected:
-	CScriptCallback				m_tpCallbacks[ScriptEntity::eActionTypeCount];
-	CScriptCallback				m_tSoundCallback;
-	CScriptCallback				m_tHitCallback;
 	ref_sound					*m_current_sound;
 	xr_vector<CSavedSound>		m_saved_sounds;
 
@@ -104,21 +101,7 @@ public:
 	virtual	bool				bfAssignObject			(CScriptEntityAction		*tpEntityAction);
 	virtual bool				bfAssignMonsterAction	(CScriptEntityAction		*tpEntityAction);
 
-	virtual void				set_callback			(const luabind::object &lua_object, LPCSTR method, const CScriptEntity::EActionType tActionType);
-	virtual void				set_callback			(const luabind::functor<void> &lua_function, const CScriptEntity::EActionType tActionType);
-	virtual void				clear_callback			(const CScriptEntity::EActionType tActionType);
-
-	virtual void				set_sound_callback		(const luabind::object &lua_object, LPCSTR method);
-	virtual void				set_sound_callback		(const luabind::functor<void> &lua_function);
-	virtual void				clear_sound_callback	(bool member_callback);
 	virtual void				sound_callback			(const CObject *object, int sound_type, const Fvector &position, float sound_power);
-
-	virtual void				set_hit_callback		(const luabind::object &lua_object, LPCSTR method);
-	virtual void				set_hit_callback		(const luabind::functor<void> &lua_function);
-	virtual void				clear_hit_callback		(bool member_callback);
-	virtual void				hit_callback			(float amount, const Fvector &vLocalDir, const CObject *who, s16 element);
-
-	virtual	void				callback				(const EActionType tActionType);
 
 	virtual LPCSTR				GetPatrolPathName		();
 			bool				bfScriptAnimation		();
@@ -130,8 +113,7 @@ public:
 	virtual int					get_enemy_strength		();
 			void				process_sound_callbacks	();
 
-private:
-			void				FreeAll					();
+public:
 	IC		CGameObject			&object					() const;
 };
 
