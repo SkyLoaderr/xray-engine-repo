@@ -58,10 +58,17 @@ void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 {
 	R1				= m_r_hand;
 	R2				= m_r_finger2;
-	if ((IsLimping() && (mental_state() == eMentalStateFree)) || (GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bHandUsage))
-		L			= R2;
-	else
+	if	(
+			(IsLimping() && (mental_state() == eMentalStateFree)) || 
+			(GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bHandUsage) ||
+			(!m_script_animations.empty() && m_script_animations.front().m_hand_usage)
+		)
+	{
+			L		= R2;
+	}
+	else {
 		L			= m_l_finger1;
+	}
 }
 
 void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)
@@ -268,9 +275,9 @@ CCoverPoint	*CAI_Stalker::best_cover_point	(
 	m_last_cover								= 0;
 
 	Fvector										direction;
-	direction.sub								(enemy_position,Position());
+	direction.sub								(enemy_position,self_position);
 
-	ai().cover_manager().covers().nearest		(Position(),radius,m_nearest);
+	ai().cover_manager().covers().nearest		(self_position,radius,m_nearest);
 	float										best_value = 1000.f;
 	float										best_distance = 1000.f;
 	float										current_distance = self_position.distance_to(enemy_position);

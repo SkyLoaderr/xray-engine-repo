@@ -49,10 +49,22 @@ public:
 
 class CStalkerAnimations {
 public:
+	struct CScriptAnimation {
+		bool		m_hand_usage;
+		CMotionDef	*m_motion;
+
+		IC			CScriptAnimation	(bool hand_usage, CMotionDef *motion) :
+						m_hand_usage(hand_usage),
+						m_motion	(motion)
+		{
+		}
+	};
+
 	CAniCollection<CStateAnimations,caStateNames>	m_tAnims;
 	CMotionDef					*m_tpCurrentGlobalAnimation;
 	CMotionDef					*m_tpCurrentTorsoAnimation;
 	CMotionDef					*m_tpCurrentLegsAnimation;
+	CMotionDef					*m_current_script_animation;
 	CBlend						*m_tpCurrentGlobalBlend;
 	CBlend						*m_tpCurrentTorsoBlend;
 	CBlend						*m_tpCurrentLegsBlend;
@@ -61,6 +73,8 @@ public:
 	u32							m_dwAnimationSwitchInterval;
 	EMovementDirection			m_tMovementDirection;
 	EMovementDirection			m_tDesirableDirection;
+	xr_deque<CScriptAnimation>	m_script_animations;
+	IRender_Visual				*m_visual;
 	
 							CStalkerAnimations				()
 	{
@@ -75,10 +89,12 @@ public:
 		m_dwDirectionStartTime			= 0;
 		m_tMovementDirection			= eMovementDirectionForward;
 		m_tDesirableDirection			= eMovementDirectionForward;
+		m_script_animations.clear		();
 	}
 	
 	virtual	void			reload							(IRender_Visual *Visual, CInifile *ini, LPCSTR section)
 	{
+		m_visual								= Visual;
 		m_tAnims.Load							(PSkeletonAnimated(Visual),"");
 		int										head_bone = PKinematics(Visual)->LL_BoneID(ini->r_string(section,"bone_head"));
 		PKinematics(Visual)->LL_GetBoneInstance	(u16(head_bone)).set_callback(HeadCallback,this);
@@ -96,4 +112,6 @@ public:
 			void			vfAssignGlobalAnimation			(CMotionDef *&tpGlobalAnimation);
 			void			vfAssignTorsoAnimation			(CMotionDef *&tpGlobalAnimation);
 			void			vfAssignLegsAnimation			(CMotionDef *&tpLegsAnimation);
+			void			add_animation					(LPCSTR animation, bool hand_usage = false);
+			void			clear_animations				();
 };

@@ -571,14 +571,37 @@ static void	GlobalPlayCallback(CBlend *B)
 #endif
 }
 
+static void	ScriptPlayCallback(CBlend *B)
+{
+#ifdef DEBUG
+	CAI_Stalker							*stalker = (CAI_Stalker*)B->CallbackParam;
+	VERIFY								(stalker);
+#endif
+	VERIFY								(!stalker->m_current_script_animation || stalker->m_current_script_animation == stalker->m_script_animations.front().m_motion);
+	stalker->m_script_animations.pop_front();
+	stalker->m_current_script_animation	= 0;
+}
+
 void CAI_Stalker::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_move/**/, float /**speed/**/)
 {
 	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(this);
 	VERIFY					(stalker);
 	CSkeletonAnimated		&tVisualObject		=	*(PSkeletonAnimated(stalker->Visual()));
 
+	if (!m_script_animations.empty()) {
+		bool				_continue = false;
+		if (m_current_script_animation) {
+			VERIFY			(m_current_script_animation == m_script_animations.front().m_motion);
+			return;
+		}
+		tVisualObject.PlayCycle	(m_current_script_animation = m_script_animations.front().m_motion,TRUE,ScriptPlayCallback,this);
+		if (!_continue)
+			return;
+	}
+
 	if (m_tAnims.A.empty())	return;
 
+	m_current_script_animation	= 0;
 	CMotionDef				*tpGlobalAnimation	=	0;
 	CMotionDef				*tpTorsoAnimation	=	0;
 	CMotionDef				*tpLegsAnimation	=	0;
@@ -620,4 +643,21 @@ void CAI_Stalker::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /*
 //	if (tpLegsAnimation)
 //		Msg				("%6d Legs animation : %s",Level().timeServer(),PSkeletonAnimated(Visual())->LL_MotionDefName_dbg(tpLegsAnimation));
 #endif
+}
+
+void CStalkerAnimations::add_animation		(LPCSTR animation, bool hand_usage)
+{
+	CMotionDef						*motion = PSkeletonAnimated(m_visual)->ID_Cycle_Safe(animation);
+	if (!motion) {
+		CObject						*object = dynamic_cast<CObject*>(this);
+		VERIFY						(object);
+		ai().script_engine().script_log(eLuaMessageTypeError,"There is no animation %s (object %s)!",animation,*object->cName());
+		return;
+	}
+	m_script_animations.push_back	(CScriptAnimation(hand_usage,motion));
+}
+
+void CStalkerAnimations::clear_animations	()
+{
+	m_script_animations.clear		();
 }

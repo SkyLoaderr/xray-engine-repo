@@ -1,6 +1,6 @@
 // Copyright (c) 2003 Daniel Wallin and Arvid Norberg
 
-// Permission is hereby granted, _free of charge, to any person obtaining a
+// Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
 // the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -20,19 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 
-#pragma warning(disable:4244)
-#pragma warning(disable:4995)
-#pragma warning(disable:4530)
-#pragma warning(disable:4267)
-#pragma warning(disable:4505)
-//extern "C"
-//{
-	#include "lua.h"
-	#include "lauxlib.h"
-	#include "lualib.h"
-//}
-
-#define LUABIND_NO_HEADERS_ONLY
+#include <luabind/lua_include.hpp>
 
 #include <luabind/luabind.hpp>
 
@@ -61,7 +49,13 @@ int luabind::detail::create_class::stage2(lua_State* L)
 	binfo.base = base;
 	crep->add_base_class(binfo);
 
-	if (base->get_class_type() == class_rep::lua_class)
+	// set holder size and alignment so that we can class_rep::allocate
+	// can return the correctly sized buffers
+	crep->derived_from(base);
+	
+	// this has changed, c++ classes now stores their
+	// methods in the table as well
+//	if (base->get_class_type() == class_rep::lua_class)
 	{
 		// copy base class members
 
@@ -109,6 +103,12 @@ int luabind::detail::create_class::stage1(lua_State* L)
 		lua_error(L);
 	}
 
+	if (std::strlen(lua_tostring(L, 1)) != lua_strlen(L, 1))
+	{
+		lua_pushstring(L, "luabind does not support class names with extra nulls");
+		lua_error(L);
+	}
+
 #endif
 
 	const char* name = lua_tostring(L, 1);
@@ -127,8 +127,3 @@ int luabind::detail::create_class::stage1(lua_State* L)
 	return 1;
 }
 
-#pragma warning(default:4244)
-#pragma warning(default:4995)
-#pragma warning(default:4530)
-#pragma warning(default:4267)
-//#pragma warning(default:4505)

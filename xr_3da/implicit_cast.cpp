@@ -1,6 +1,6 @@
 // Copyright (c) 2003 Daniel Wallin and Arvid Norberg
 
-// Permission is hereby granted, _free of charge, to any person obtaining a
+// Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
 // the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -20,15 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 
-#pragma warning(disable:4244)
-#pragma warning(disable:4995)
-#pragma warning(disable:4530)
-#pragma warning(disable:4267)
-#pragma warning(disable:4505)
-//extern "C"
-//{
-	#include "lua.h"
-//}
+#include <luabind/lua_include.hpp>
 
 #include <luabind/luabind.hpp>
 #include <luabind/detail/implicit_cast.hpp>
@@ -68,8 +60,3 @@ namespace luabind { namespace detail
 	}
 }}
 
-#pragma warning(default:4244)
-#pragma warning(default:4995)
-#pragma warning(default:4530)
-#pragma warning(default:4267)
-//#pragma warning(default:4505)

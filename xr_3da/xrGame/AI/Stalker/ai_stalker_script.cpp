@@ -64,19 +64,20 @@ void CAI_Stalker::ResetScriptData(void *P)
 bool CAI_Stalker::bfAssignMovement(CEntityAction *tpEntityAction)
 {
 	if (!inherited::bfAssignMovement(tpEntityAction))
-		return		(false);
+		return						(false);
 	
-	CScriptMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
-	CScriptWatchAction		&l_tWatchAction		= tpEntityAction->m_tWatchAction;
-	CScriptAnimationAction	&l_tAnimationAction	= tpEntityAction->m_tAnimationAction;
-	CScriptObjectAction		&l_tObjectAction	= tpEntityAction->m_tObjectAction;
+	CScriptMovementAction			&l_tMovementAction	= tpEntityAction->m_tMovementAction;
+	CScriptWatchAction				&l_tWatchAction		= tpEntityAction->m_tWatchAction;
+	CScriptAnimationAction			&l_tAnimationAction	= tpEntityAction->m_tAnimationAction;
+	CScriptObjectAction				&l_tObjectAction	= tpEntityAction->m_tObjectAction;
 
 #ifdef OLD_OBJECT_HANDLER
 	CObjectHandler::set_dest_state	(l_tObjectAction.m_tGoalType);
 #else
 	CObjectHandlerGOAP::set_goal	(l_tObjectAction.m_tGoalType);
 #endif
-	set_path_type					(ePathTypeLevelPath);
+	
+	set_path_type					(CMovementManager::path_type());
 	set_detail_path_type			(l_tMovementAction.m_tPathType);
 	set_body_state					(l_tMovementAction.m_tBodyState);
 	set_movement_type				(l_tMovementAction.m_tMovementType);
