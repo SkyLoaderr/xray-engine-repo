@@ -160,6 +160,7 @@ void CCustomMonster::reinit()
 
 void CCustomMonster::reload		(LPCSTR section)
 {
+	CSoundPlayer::reload		(section);
 	CEntityAlive::reload		(section);
 	CScriptMonster::reload		(section);
 	CDamageManager::reload		(section);
@@ -169,7 +170,6 @@ void CCustomMonster::reload		(LPCSTR section)
 	CMemoryManager::reload		(section);
 	CMovementManager::reload	(section);
 //	CSelectorManager::reload	(section);
-//	CSoundPlayer::reload		(section);
 }
 
 void CCustomMonster::mk_orientation(Fvector &dir, Fmatrix& mR)
