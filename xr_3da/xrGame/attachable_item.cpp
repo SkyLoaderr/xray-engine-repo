@@ -52,6 +52,11 @@ void CAttachableItem::renderable_Render()
 		::Render->add_Visual	(Visual());
 	}
 }
+void CAttachableItem::OnH_A_Independent	()
+{
+	inherited::OnH_A_Independent	();
+	enable(true);
+}
 
 void CAttachableItem::enable		(bool value)
 {

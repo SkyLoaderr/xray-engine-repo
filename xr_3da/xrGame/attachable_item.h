@@ -29,6 +29,7 @@ public:
 	virtual	void			Load				(LPCSTR section);
 	virtual	void			reload				(LPCSTR section);
 	virtual void			OnH_A_Chield		();
+	virtual void			OnH_A_Independent	();
 	virtual void			renderable_Render	();
 	IC		shared_str		bone_name			() const;
 	IC		u16				bone_id				() const;

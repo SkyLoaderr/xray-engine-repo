@@ -232,10 +232,6 @@ void CTorch::OnH_A_Chield()
 //	Switch							(false);
 	// end of comments
 }
-void CTorch::OnH_A_Independent	()
-{
-	enable(true);
-}
 
 void CTorch::OnH_B_Independent() 
 {
