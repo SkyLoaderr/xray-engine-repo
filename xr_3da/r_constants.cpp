@@ -82,7 +82,40 @@ BOOL	R_constant_table::parse	(D3DXSHADER_CONSTANTTABLE* desc, u16 destination)
 			fatal		("Pclass D3DXPC_STRUCT unsupported");
 			break;
 		case D3DXPC_OBJECT:
-			Log			("***object***:",name);
+			{
+				switch (T->Type)
+				{
+				case D3DXPT_SAMPLER:
+				case D3DXPT_SAMPLER2D:
+				case D3DXPT_SAMPLER3D:
+				case D3DXPT_SAMPLERCUBE:
+					{
+						// ***Register sampler***
+						// We have determined all valuable info, search if constant already created
+						R_constant*	C		=	get	(name);
+						if (0==C)	{
+							C					=	g_constant_allocator.create();
+							strcpy				(C->name,name);
+							C->destination		=	RC_dest_sampler;
+							C->type				=	RC_sampler;
+							R_constant_load& L	=	C->samp;
+							L.index				=	r_index;
+							L.cls				=	RC_sampler;
+							table.push_back		(C);
+						} else {
+							R_ASSERT			(C->destination	==	RC_dest_sampler);
+							R_ASSERT			(C->type		==	RC_sampler);
+							R_constant_load& L	=	C->samp;
+							R_ASSERT			(L.index		==	r_index);
+							R_ASSERT			(L.cls			==	RC_sampler);
+						}
+					}
+					break;
+				default:
+					fatal		("Pclass D3DXPC_OBJECT - object isn't of 'sampler' type");
+					break;
+				}
+			}
 			bSkip		= TRUE;
 			break;
 		default:
@@ -109,7 +142,6 @@ BOOL	R_constant_table::parse	(D3DXSHADER_CONSTANTTABLE* desc, u16 destination)
 			L.index				=	r_index;
 			L.cls				=	r_type;
 		}
-
 	}
 	std::sort	(table.begin(),table.end(),p_sort);
 	return		TRUE;

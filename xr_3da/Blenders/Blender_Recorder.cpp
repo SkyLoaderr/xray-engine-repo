@@ -8,7 +8,7 @@
 #include "Blender_Recorder.h"
 #include "Blender.h"
 
-int ParseName(LPCSTR N)
+static int ParseName(LPCSTR N)
 {
 	if (0==strcmp(N,"$null"))	return -1;
 	if (0==strcmp(N,"$base0"))	return	0;
@@ -65,7 +65,7 @@ void	CBlender_Compile::PassEnd			()
 	RS.SetTSS				(Stage(),D3DTSS_ALPHAOP,D3DTOP_DISABLE);
 
 	// Create pass
-	SPS* ps					= Device.Shader._CreatePS			(pass_ps);
+	SPS* ps					= Device.Shader._CreatePS			("test"/*pass_ps*/);
 	SVS* vs					= Device.Shader._CreateVS			(pass_vs);
 
 	SPass					P;
