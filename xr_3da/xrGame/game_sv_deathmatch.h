@@ -45,6 +45,8 @@ public:
 	virtual		void				OnPlayerReady			(u32 id_who);
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed);
 	virtual		void				OnPlayerWantsDie		(u32 id_who);
+
+	virtual		void				OnPlayerBuyFinished		(u32 id_who, NET_Packet& P);
 	
 	virtual		void				OnFraglimitExceed		();
 	virtual		void				OnTimelimitExceed		();
@@ -57,4 +59,6 @@ public:
 	virtual		u32					RP_2_Use				(CSE_Abstract* E);
 
 	virtual		void				SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)	{};
+
+	virtual		void				ClearPlayerState		(game_PlayerState* ps);
 };

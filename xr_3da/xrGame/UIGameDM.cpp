@@ -83,7 +83,6 @@ bool CUIGameDM::IR_OnKeyboardPress(int dik)
 {
 	if(inherited::IR_OnKeyboardPress(dik)) return true;
 
-
 	switch (dik)
 	{
 	case DIK_I: 
@@ -100,7 +99,7 @@ bool CUIGameDM::IR_OnKeyboardPress(int dik)
 				SetFlag		(flShowFragList,TRUE);	
 				return true;
 			}break;
-		case DIK_B:
+		case DIK_RETURN:
 			{
 				StartStopMenu(pBuyMenu);
 			}break;
@@ -129,3 +128,20 @@ bool CUIGameDM::IR_OnKeyboardRelease(int dik)
 	return false;
 }
 //--------------------------------------------------------------------
+void CUIGameDM::OnBuyMenu_Ok	()
+{
+	CObject *l_pObj = Level().CurrentEntity();
+
+	CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
+	if(!l_pPlayer) return;
+
+	NET_Packet		P;
+	l_pPlayer->u_EventGen		(P,GEG_PLAYER_BUY_FINISHED,l_pPlayer->ID()	);
+	
+	P.w_u8		(pBuyMenu->GetWeaponIndex(KNIFE_SLOT));
+	P.w_u8		(pBuyMenu->GetWeaponIndex(PISTOL_SLOT));
+	P.w_u8		(pBuyMenu->GetWeaponIndex(RIFLE_SLOT));
+	P.w_u8		(pBuyMenu->GetWeaponIndex(GRENADE_SLOT));
+
+	l_pPlayer->u_EventSend		(P);
+};

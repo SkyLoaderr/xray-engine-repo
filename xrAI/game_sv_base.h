@@ -64,6 +64,8 @@ public:
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_target)	= 0;			// TRUE=allow ownership, FALSE=denied
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_target)	= 0;			// TRUE=allow ownership, FALSE=denied
 
+	virtual		void				OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)				{};
+
 	virtual		void				OnRoundStart			();												// старт раунда
 	virtual		void				OnRoundEnd				(LPCSTR reason);								// конец раунда
 

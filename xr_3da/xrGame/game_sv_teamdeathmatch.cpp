@@ -79,8 +79,7 @@ void	game_sv_TeamDeathmatch::OnRoundStart			()
 	{
 		// init
 		game_PlayerState*	ps	=	get_it	(it);
-		ps->kills				=	0;
-		ps->deaths				=	0;
+		ClearPlayerState(ps);
 
 		SpawnActor(get_it_2_id(it), "spectator");
 	}

@@ -33,6 +33,10 @@ public:
 	virtual bool		IR_OnKeyboardPress		(int dik);
 	virtual bool		IR_OnKeyboardRelease	(int dik);
 
+	virtual void		OnBuyMenu_Ok			();
+
+	virtual CUIDialogWnd*	GetBuyWnd			()	{ return (CUIDialogWnd*) pBuyMenu; };
+
 	/////////
 	CUIInventoryWnd		InventoryMenu;
 //	CUIBuyWeaponWnd		UIBuyWeaponWnd;

@@ -53,6 +53,7 @@ enum {
 	GEG_PLAYER_READY,
 	GEG_PLAYER_CHANGE_TEAM,
 	GEG_PLAYER_KILL,			//player wants to die
+	GEG_PLAYER_BUY_FINISHED,	//player end to buy items
 
 	GE_FORCEDWORD				= u32(-1)
 };

@@ -2,6 +2,7 @@
 #include "game_sv_deathmatch.h"
 #include "HUDmanager.h"
 #include "xrserver_objects_alife_monsters.h"
+#include "ui\UIBuyWeaponWnd.h"
 
 void	game_sv_Deathmatch::Create					(LPSTR &options)
 {
@@ -22,8 +23,8 @@ void	game_sv_Deathmatch::OnRoundStart			()
 	{
 		// init
 		game_PlayerState*	ps	=	get_it	(it);
-		ps->kills				=	0;
-		ps->deaths				=	0;
+
+		ClearPlayerState(ps);
 
 		SpawnActor(get_it_2_id(it), "spectator");
 	}
@@ -180,6 +181,7 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 	case GAME_PHASE_INPROGRESS:
 		{
 			LPCSTR	options			=	get_name_id	(id);
+			game_PlayerState*	ps	=	get_id	(id);
 			Msg		("* [%s] respawned ",get_option_s(options,"name","Player"));
 			//------------------------------------------------------------
 			xrClientData* xrCData	=	Level().Server->ID_to_client(id);
@@ -217,6 +219,19 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 					//------------------------------------------------------------
 					pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(xrCData->owner);
 					R_ASSERT2(pA, "Owner not a Actor");
+
+					CUIBuyWeaponWnd* pBuyWnd = (CUIBuyWeaponWnd*) HUD().GetUI()->UIGame()->GetBuyWnd();
+					if (pBuyWnd)
+					{
+						if (0xff != ps->KnifeSlot	)	
+							SpawnItem4Actor(pA->ID, pBuyWnd->GetWeaponNameByIndex(KNIFE_SLOT,		ps->KnifeSlot	));
+						if (0xff != ps->PistolSlot	)	
+							SpawnItem4Actor(pA->ID, pBuyWnd->GetWeaponNameByIndex(PISTOL_SLOT,		ps->PistolSlot	));
+						if (0xff != ps->RifleSlot	)	
+							SpawnItem4Actor(pA->ID, pBuyWnd->GetWeaponNameByIndex(RIFLE_SLOT,		ps->RifleSlot	));
+						if (0xff != ps->GrenadeSlot	)	
+							SpawnItem4Actor(pA->ID, pBuyWnd->GetWeaponNameByIndex(GRENADE_SLOT,		ps->GrenadeSlot	));
+					};
 //					SpawnItem4Actor(pA->ID, "wpn_knife");
 //					SpawnItem4Actor(pA->ID, "wpn_lr300");
 					//------------------------------------------------------------
@@ -232,9 +247,8 @@ void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 
 	game_PlayerState*	ps_who	=	get_id	(id_who);
 
-	ps_who->kills				=	0;
-	ps_who->deaths				=	0;
-	ps_who->team				=	0;
+	ClearPlayerState(ps_who);
+	ps_who->team				=	0;	
 
 	SpawnActor(id_who, "spectator");
 }
@@ -487,4 +501,28 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E)
 	RPoint&				r	= rp[(pRPDist.back()).PointID];
 	E->o_Position.set	(r.P);
 	E->o_Angle.set		(r.A);
+};
+
+void	game_sv_Deathmatch::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
+{
+	game_PlayerState*	ps	=	get_id	(id_who);
+	if (!ps) return;
+
+	P.r_u8		(ps->KnifeSlot);
+	P.r_u8		(ps->PistolSlot);
+	P.r_u8		(ps->RifleSlot);
+	P.r_u8		(ps->GrenadeSlot);
+};
+
+void	game_sv_Deathmatch::ClearPlayerState		(game_PlayerState* ps)
+{
+	if (!ps) return;
+
+	ps->kills				= 0;
+	ps->deaths				= 0;
+
+	ps->KnifeSlot			= 255;
+	ps->PistolSlot			= 255;
+	ps->RifleSlot			= 255;
+	ps->GrenadeSlot			= 255;
 };

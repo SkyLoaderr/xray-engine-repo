@@ -51,6 +51,12 @@ struct	game_PlayerState
 	u16			GameID;
 
 	game_PlayerState();
+
+	//selected weapons
+	u8			KnifeSlot;
+	u8			PistolSlot;
+	u8			RifleSlot;
+	u8			GrenadeSlot;
 };
 
 struct	game_TeamState

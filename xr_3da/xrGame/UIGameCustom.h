@@ -34,6 +34,11 @@ public:
 	virtual bool		IR_OnKeyboardRelease	(int dik);
 	virtual bool		IR_OnMouseMove			(int dx, int dy);
 
+	virtual void		OnBuyMenu_Ok			()	{};
+	virtual void		OnBuyMenu_Cancel		()	{};
+
+	virtual CUIDialogWnd*	GetBuyWnd			()	{ return NULL; };
+
 
 	//для остановки и запуска дополнительных меню
 	virtual void StartStopMenu(CUIDialogWnd* pDialog);
