@@ -258,51 +258,61 @@ void CSE_ALifeSimulator::vfFurlObjectOffline(CSE_ALifeDynamicObject *I)
 
 void CSE_ALifeSimulator::vfValidatePosition(CSE_ALifeDynamicObject *I)
 {
-//	Msg("Validating position");
-	// updating vertex if it is invalid and object is not attached and online
-	if (I->used_ai_locations() && (I->m_bOnline || ai().level_graph().valid_vertex_id(I->m_tNodeID)) && (0xffff == I->ID_Parent)) {
-		// checking if it is a group of objects
-		CSE_ALifeGroupAbstract *tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(I);
-		if (tpALifeGroupAbstract) {
-			// checking if group is empty then remove it
-			if (tpALifeGroupAbstract->m_tpMembers.empty())
-				vfReleaseObject(I);
-			else {
-				// assign group position to the member position
-				I->o_Position			= tpfGetObjectByID(tpALifeGroupAbstract->m_tpMembers[0])->o_Position;
-				if (!ai().level_graph().inside(ai().level_graph().vertex(I->m_tNodeID),I->o_Position)) {
-					// checking if position is inside the current vertex
-					I->m_tNodeID		= ai().level_graph().vertex(I->m_tNodeID,I->o_Position);
-					// validating graph point and changing it if needed
-					_GRAPH_ID			tGraphID = ai().cross_table().vertex(I->m_tNodeID).game_vertex_id();
-					if ((tGraphID != I->m_tGraphID) && (0xffff == I->ID_Parent))
-						if (!I->m_bOnline)
-							vfChangeObjectGraphPoint(I,I->m_tGraphID,tGraphID);
-						else
-							I->m_tGraphID = tGraphID;
+	// check if we do not use ai locations
+	if (!I->used_ai_locations())
+		return;
 
-					// validating distance to graph point via graph cross-table
-					I->m_fDistance		= ai().cross_table().vertex(I->m_tNodeID).distance();
-				}
-			}
-		}
+	// check if we are not attached
+	if (0xffff != I->ID_Parent)
+		return;
+
+	// check if we are not online and 
+	// we are not on the current level or 
+	// we have a valid level vertex id
+	if	(!I->m_bOnline && ((ai().level_graph().level_id() != ai().game_graph().vertex(I->m_tGraphID)->level_id()) || !ai().level_graph().valid_vertex_id(I->m_tNodeID)))
+		return;
+
+	// checking if it is a group of objects
+	CSE_ALifeGroupAbstract *tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(I);
+	if (tpALifeGroupAbstract) {
+		// checking if group is empty then remove it
+		if (tpALifeGroupAbstract->m_tpMembers.empty())
+			vfReleaseObject(I);
 		else {
-			// otherwise validate position, graph point and vertex
+			// assign group position to the member position
+			I->o_Position			= tpfGetObjectByID(tpALifeGroupAbstract->m_tpMembers[0])->o_Position;
 			if (!ai().level_graph().inside(ai().level_graph().vertex(I->m_tNodeID),I->o_Position)) {
 				// checking if position is inside the current vertex
-				I->m_tNodeID			= ai().level_graph().vertex(I->m_tNodeID,I->o_Position);
+				I->m_tNodeID		= ai().level_graph().vertex(I->m_tNodeID,I->o_Position);
 				// validating graph point and changing it if needed
-				_GRAPH_ID				tGraphID = ai().cross_table().vertex(I->m_tNodeID).game_vertex_id();
+				_GRAPH_ID			tGraphID = ai().cross_table().vertex(I->m_tNodeID).game_vertex_id();
 				if ((tGraphID != I->m_tGraphID) && (0xffff == I->ID_Parent))
 					if (!I->m_bOnline)
 						vfChangeObjectGraphPoint(I,I->m_tGraphID,tGraphID);
-					else {
-						VERIFY			(ai().game_graph().vertex(tGraphID)->level_id() == m_tCurrentLevelID);
-						I->m_tGraphID	= tGraphID;
-					}
+					else
+						I->m_tGraphID = tGraphID;
+
 				// validating distance to graph point via graph cross-table
-				I->m_fDistance			= ai().cross_table().vertex(I->m_tNodeID).distance();
+				I->m_fDistance		= ai().cross_table().vertex(I->m_tNodeID).distance();
 			}
+		}
+	}
+	else {
+		// otherwise validate position, graph point and vertex
+		if (!ai().level_graph().inside(ai().level_graph().vertex(I->m_tNodeID),I->o_Position)) {
+			// checking if position is inside the current vertex
+			I->m_tNodeID			= ai().level_graph().vertex(I->m_tNodeID,I->o_Position);
+			// validating graph point and changing it if needed
+			_GRAPH_ID				tGraphID = ai().cross_table().vertex(I->m_tNodeID).game_vertex_id();
+			if ((tGraphID != I->m_tGraphID) && (0xffff == I->ID_Parent))
+				if (!I->m_bOnline)
+					vfChangeObjectGraphPoint(I,I->m_tGraphID,tGraphID);
+				else {
+					VERIFY			(ai().game_graph().vertex(tGraphID)->level_id() == m_tCurrentLevelID);
+					I->m_tGraphID	= tGraphID;
+				}
+			// validating distance to graph point via graph cross-table
+			I->m_fDistance			= ai().cross_table().vertex(I->m_tNodeID).distance();
 		}
 	}
 }
