@@ -5,8 +5,7 @@
   $Id: mat2.cxx,v 1.4 2001/02/08 21:28:53 garland Exp $
 
  ************************************************************************/
-
-#include "stdmix.h"
+#include "stdafx.h"
 #pragma hdrstop
 
 #include "MxDefines.h"
