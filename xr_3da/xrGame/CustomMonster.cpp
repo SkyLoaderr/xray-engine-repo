@@ -500,10 +500,9 @@ void CCustomMonster::Death	()
 
 BOOL CCustomMonster::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
-	if (!inherited::Spawn(bLocal,sid,team,squad,group,o_pos,o_angle, P))	return FALSE;
+	if (!inherited::Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
 	AI_Path.DestNode		= AI_NodeID;
 
-//	Log("- CAI: Spawning");
 	if (Local())	
 	{
 		net_update		N;
