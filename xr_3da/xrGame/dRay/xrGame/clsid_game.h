@@ -100,7 +100,10 @@
 #define CLSID_OBJECT_A_HPSA			MK_CLSID('A','_','H','P','S','A',' ',' ')
 #define CLSID_OBJECT_A_PM			MK_CLSID('A','M','M','O',' ',' ',' ',' ')
 #define CLSID_OBJECT_A_FORT			MK_CLSID('A','_','F','O','R','T',' ',' ')
-
+//-----------------------------------------------------------------------------
+#define CLSID_OBJECT_A_VOG25		MK_CLSID('A','_','V','O','G','2','5',' ')
+#define CLSID_OBJECT_A_OG7B			MK_CLSID('A','_','O','G','7','B',' ',' ')
+//-----------------------------------------------------------------------------
 // Weapons Add-ons
 #define CLSID_OBJECT_W_SCOPE		MK_CLSID('W','_','S','C','O','P','E',' ')
 #define CLSID_OBJECT_W_SILENCER		MK_CLSID('W','_','S','I','L','E','N','C')

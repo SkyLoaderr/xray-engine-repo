@@ -208,7 +208,6 @@ void CObjectFactory::register_classes	()
 	ADD(CWeaponLR300		,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_LR300		,"wpn_lr300");
 	ADD(CWeaponHPSA			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_HPSA		,"wpn_hpsa");
 	ADD(CWeaponPM			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_PM			,"wpn_pm");
-	ADD(CWeaponAmmo			,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_PM			,"wpn_ammo");
 	ADD(CWeaponFORT			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_FORT		,"wpn_fort");
 	ADD(CWeaponBinoculars	,CSE_ALifeItem					,CLSID_OBJECT_W_BINOCULAR	,"wpn_binocular");
 	ADD(CWeaponShotgun		,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_SHOTGUN		,"wpn_shotgun");
@@ -221,6 +220,11 @@ void CObjectFactory::register_classes	()
 	ADD(CWeaponUSP45		,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_USP45		,"wpn_usp45");
 	ADD(CWeaponGroza		,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_GROZA		,"wpn_groza");
 	ADD(CWeaponKnife		,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_KNIFE		,"wpn_knife");
+	//-----------------------------------------------------------------------------------------------------
+	ADD(CWeaponAmmo			,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_PM			,"wpn_ammo");
+	ADD(CWeaponAmmo			,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_VOG25		,"wpn_ammo_vog25");
+	ADD(CWeaponAmmo			,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_OG7B		,"wpn_ammo_og7b");
+	//-----------------------------------------------------------------------------------------------------
 
 	//Weapons Add-on
 	ADD(CScope				,CSE_ALifeItem					,CLSID_OBJECT_W_SCOPE		,"wpn_scope");
