@@ -14,6 +14,18 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 
 	switch		(type)
 	{
+	case GEG_PLAYER_READY:
+		{
+			xrServerEntity*		E			= ID_to_entity	(destination);
+			if (E) {
+				xrClientData*		C			= E->owner;
+				if (C && (C->owner == E))
+				{
+					game->OnPlayerReady		(C->ID);
+				}
+			}
+		}
+		break;
 	case GE_RESPAWN:
 		{
 			xrServerEntity*		E	= ID_to_entity	(destination);
