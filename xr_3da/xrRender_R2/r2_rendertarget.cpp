@@ -140,6 +140,8 @@ void	CRenderTarget::OnDeviceCreate	()
 		rt_Normal.create			(r2_RT_N,		w,h,D3DFMT_A16B16G16R16F);
 		rt_Color.create				(r2_RT_D_G,		w,h,D3DFMT_A16B16G16R16F);
 		rt_Accumulator.create		(r2_RT_accum,	w,h,D3DFMT_A16B16G16R16F);
+		rt_Generic_0.create			(r2_RT_generic0,w,h,D3DFMT_A8R8G8B8		);
+		rt_Generic_1.create			(r2_RT_generic1,w,h,D3DFMT_A8R8G8B8		);
 	}
 	else
 	{
@@ -239,7 +241,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		s_combine.create					(b_combine,					"r2\\combine");
 		s_combine_dbg_Normal.create			("effects\\screen_set",		r2_RT_smap_d_surf);
 		s_combine_dbg_Accumulator.create	("effects\\screen_set",		r2_RT_accum);
-		s_combine_dbg_DepthD.create			("effects\\screen_set",		r2_RT_generic);
+		s_combine_dbg_DepthD.create			("effects\\screen_set",		r2_RT_generic0);
 		g_combine.create					(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
 
 		u32 fvf_aa_blur				= D3DFVF_XYZRHW|D3DFVF_TEX4|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE2(1)|D3DFVF_TEXCOORDSIZE2(2)|D3DFVF_TEXCOORDSIZE2(3);

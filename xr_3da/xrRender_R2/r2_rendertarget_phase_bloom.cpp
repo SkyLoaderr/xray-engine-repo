@@ -55,29 +55,20 @@ void CRenderTarget::phase_bloom	()
 	// Targets
 	u_setrt								(rt_Bloom_1,NULL,NULL,NULL);		// No need for ZBuffer at all
 	
-	// XForms
-	RCache.set_xform_world				(Fidentity);
-	RCache.set_xform_view				(Device.mView);
-	RCache.set_xform_project			(Device.mProject);
-
 	// Clear	- don't clear - it's stupid here :)
 	// Stencil	- disable
 	// Misc		- draw everything (no culling)
 	CHK_DX		(HW.pDevice->SetRenderState	( D3DRS_ZENABLE,		FALSE				));
 
-	// Render skybox/skydome into Bloom1
-	RCache.set_CullMode						( CULL_CCW );
-	RCache.set_Stencil					(FALSE);
-	RImplementation.rmFar				();
-	g_pGamePersistent->Environment.RenderFirst	();		// sky
-
-	// Transfer into Bloom1, use black/white mask stored in Bloom2
+	// Transfer into Bloom1
 	{
 		float		_w				= float(Device.dwWidth);
 		float		_h				= float(Device.dwHeight);
 		float		_2w				= _w/2;
 		float		_2h				= _h/2;
-		Fvector2	one				= { 1.f/_w, 1.f/_h };
+		float		_aspect_w		= _2w/BLOOM_size_X;
+		float		_aspect_h		= _2h/BLOOM_size_Y;
+		Fvector2	one				= { 1.f/_w, 1.f/_h };	one.x*=_aspect_w; one.y*=_aspect_h;
 		Fvector2	half			= { .5f/_w, .5f/_h };
 		Fvector2	a_0				= { half.x + 0,		half.y + 0		};
 		Fvector2	a_1				= { half.x + one.x, half.y + 0		};
@@ -116,8 +107,8 @@ void CRenderTarget::phase_bloom	()
 
 	// Transfer into Bloom2, horizontal filter
 	{
-		float		_w				= float	(Device.dwWidth		/ 2);
-		float		_h				= float	(Device.dwHeight	/ 2);
+		float		_w				= BLOOM_size_X;
+		float		_h				= BLOOM_size_Y;
 		Fvector2	two				= { 2.f/_w, 2.f/_h };
 		Fvector2	one				= { 1.f/_w, 1.f/_h };
 		Fvector2	half			= { .5f/_w, .5f/_h };
@@ -195,8 +186,8 @@ void CRenderTarget::phase_bloom	()
 
 	// Transfer into Bloom1, vertical filter
 	{
-		float		_w				= float	(Device.dwWidth		/ 2);
-		float		_h				= float	(Device.dwHeight	/ 2);
+		float		_w				= BLOOM_size_X;
+		float		_h				= BLOOM_size_Y;
 		Fvector2	two				= { 2.f/_w, 2.f/_h };
 		Fvector2	one				= { 1.f/_w, 1.f/_h };
 		Fvector2	half			= { .5f/_w, .5f/_h };
@@ -270,14 +261,6 @@ void CRenderTarget::phase_bloom	()
 		RCache.set_ca				("weight", 1,			w1);
 		RCache.set_Geometry			(g_bloom_filter);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
-	}
-
-	// 
-	{
-		// Render skybox/skydome into Bloom2.rgbx
-		u_setrt								(rt_Bloom_2,NULL,NULL,NULL);		// No need for ZBuffer at all
-		RImplementation.rmFar				();
-		g_pGamePersistent->Environment.RenderFirst	();
 	}
 
 	CHK_DX		(HW.pDevice->SetRenderState	( D3DRS_ZENABLE,		TRUE				));
