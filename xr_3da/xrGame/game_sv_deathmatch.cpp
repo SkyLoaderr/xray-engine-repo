@@ -41,8 +41,11 @@ void	game_sv_Deathmatch::OnFraglimitExceed		()
 }
 void	game_sv_Deathmatch::Update					()
 {
-	if ((Device.TimerAsync()-start_time)>timelimit)
-		OnTimelimitExceed	();
+	if (timelimit)
+	{
+		if ((Device.TimerAsync()-start_time)>u32(timelimit))
+			OnTimelimitExceed	();
+	}
 }
 BOOL	game_sv_Deathmatch::OnTargetTouched			(u32 id_who, u32 eid_target)
 {
