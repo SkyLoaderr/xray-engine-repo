@@ -64,4 +64,6 @@ public:
 
 	virtual const char* Name();
 	virtual bool Action	(s32 cmd, u32 flags);
+
+	virtual void	StartIdleAnim		();
 };

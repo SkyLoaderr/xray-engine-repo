@@ -145,6 +145,11 @@ void CWeaponKnife::KnifeStrike(const Fvector& pos, const Fvector& dir)
 	FireTrace(pos,dir);
 }
 
+
+void CWeaponKnife::StartIdleAnim		()
+{
+	m_pHUD->animDisplay(mhud_attack_e[Random.randI(mhud_attack_e.size())], TRUE);
+}
 void CWeaponKnife::OnAnimationEnd()
 {
 	switch (STATE)
