@@ -402,6 +402,7 @@ public:
 #ifdef _MAYA_EXPORT
 	BOOL			ParseMAMaterial			(CSurface* dest, SXRShaderData& d);
 	CSurface*		CreateSurface			(LPCSTR m_name, SXRShaderData& d);
+	CSurface*		CreateSurface			(MObject shader);
 #endif
 	bool			ExportLWO				(LPCSTR fname);
 };

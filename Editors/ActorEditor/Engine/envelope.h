@@ -96,12 +96,7 @@ DEFINE_VECTOR(st_Key*,KeyVec,KeyIt);
 class CExporter;
 
 class ENGINE_API CEnvelope {
-	friend class CBoneData;
-	friend class CCustomMotion;
-	friend float evalEnvelope(CEnvelope *env, float time);
-	friend class MeshExpUtility;
-	friend class CExporter;
-
+public:
 	KeyVec		keys;
 	int			behavior[2];
 public:
