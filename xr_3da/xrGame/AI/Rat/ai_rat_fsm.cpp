@@ -19,6 +19,7 @@
 #define ATTACK_DISTANCE						.5f
 #define ATTACK_ANGLE					PI_DIV_6
 #define LOST_MEMORY_TIME				30000
+#define UNDER_FIRE_TIME					20000
 
 void CAI_Rat::Die()
 {
@@ -206,12 +207,21 @@ void CAI_Rat::FreeHunting()
 	}
 
 	if (m_tLastSound.dwTime >= m_dwLastUpdateTime) {
-		tSavedEnemy = m_tLastSound.tpEntity;
-		m_dwLostEnemyTime = Level().timeServer();
-		SWITCH_TO_NEW_STATE(aiRatAttackRun);
+		if ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) != SOUND_TYPE_WEAPON_SHOOTING) {
+			tSavedEnemy = m_tLastSound.tpEntity;
+			m_dwLostEnemyTime = Level().timeServer();
+			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun);
+		}
+		m_dwLastRangeSearch = Level().timeServer();
+		Fvector tTemp;
+		tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
+		tTemp.normalize_safe();
+		tTemp.mul(50.f);
+		m_tSpawnPosition.add(vPosition,tTemp);
+		m_fGoalChangeTime = 0;
+		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatUnderFire);
 	}
-
-	m_tSpawnPosition.set(m_tSafeSpawnPosition);
+    m_tSpawnPosition.set(m_tSafeSpawnPosition);
 	m_fGoalChangeDelta		= 10.f;
 	m_tVarGoal.set			(10.0,0.0,20.0);
 	m_fASpeed				= .2f;
@@ -250,59 +260,75 @@ void CAI_Rat::FreeHunting()
 	AI_Path.TravelPath.clear();
 }
 
-//void CAI_Rat::UnderFire()
-//{
-//	WRITE_TO_LOG("Under fire");
-//
-//	bStopThinking = true;
-//	
-//	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
-//
-//	SelectEnemy(Enemy);
-//	
-//	if (Enemy.Enemy) {
-//		m_fGoalChangeTime = 0;
-//		SWITCH_TO_NEW_STATE(aiRatAttackFire)
-//	}
-//
-//	m_fGoalChangeDelta		= 10.f;
-//	m_tVarGoal.set			(10.0,0.0,20.0);
-//	m_fASpeed				= .2f;
-//	
-//	if (bfCheckIfGoalChanged())
-//		vfChooseNewSpeed();
-//
-//	vfUpdateTime(m_fTimeUpdateDelta);
-//
-//	vfComputeNewPosition();
-//
-//	SetDirectionLook();
-//
-//	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8))
-//		m_fSpeed = EPS_S;
-//	else 
-//		if (m_fSafeSpeed != m_fSpeed) {
-//			int iRandom = ::Random.randI(0,2);
-//			switch (iRandom) {
-//				case 0 : {
-//					m_fSpeed = m_fMaxSpeed;
-//					break;
-//				}
-//				case 1 : {
-//					m_fSpeed = m_fMinSpeed;
-//					break;
-//				}
-//				case 2 : {
-//					if (::Random.randI(0,4) == 0)
-//						m_fSpeed = EPS_S;
-//					break;
-//				}
-//			}
-//			m_fSafeSpeed = m_fSpeed;
-//		}
-//	AI_Path.TravelPath.clear();
-//}
-//
+void CAI_Rat::UnderFire()
+{
+	WRITE_TO_LOG("UnderFire");
+
+	bStopThinking = true;
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
+
+	SelectEnemy(Enemy);
+	
+	if (Enemy.Enemy) {
+		m_fGoalChangeTime = 0;
+		SWITCH_TO_NEW_STATE(aiRatAttackFire)
+	}
+
+	if (m_tLastSound.dwTime >= m_dwLastUpdateTime) {
+		if ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) != SOUND_TYPE_WEAPON_SHOOTING) {
+			tSavedEnemy = m_tLastSound.tpEntity;
+			m_dwLostEnemyTime = Level().timeServer();
+			SWITCH_TO_NEW_STATE(aiRatAttackRun);
+		}
+		m_dwLastRangeSearch = Level().timeServer();
+		Fvector tTemp;
+		tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
+		tTemp.normalize_safe();
+		tTemp.mul(50.f);
+		m_tSpawnPosition.add(vPosition,tTemp);
+		m_fGoalChangeTime = 0;
+	}
+
+	CHECK_IF_GO_TO_PREV_STATE(Level().timeServer() - m_dwLastRangeSearch > UNDER_FIRE_TIME);
+
+	m_fGoalChangeDelta		= 10.f;
+	m_tVarGoal.set			(10.0,0.0,20.0);
+	m_fASpeed				= .2f;
+	
+	m_fSpeed = m_fMaxSpeed;
+	
+	vfUpdateTime(m_fTimeUpdateDelta);
+
+	vfComputeNewPosition();
+
+	SetDirectionLook();
+
+	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8))
+		m_fSpeed = EPS_S;
+	else 
+		if (m_fSafeSpeed != m_fSpeed) {
+			int iRandom = ::Random.randI(0,2);
+			switch (iRandom) {
+				case 0 : {
+					m_fSpeed = m_fMaxSpeed;
+					break;
+				}
+				case 1 : {
+					m_fSpeed = m_fMinSpeed;
+					break;
+				}
+				case 2 : {
+					if (::Random.randI(0,4) == 0)
+						m_fSpeed = EPS_S;
+					break;
+				}
+			}
+			m_fSafeSpeed = m_fSpeed;
+		}
+	AI_Path.TravelPath.clear();
+}
+
 void CAI_Rat::Think()
 {
 	bStopThinking = false;
@@ -327,6 +353,10 @@ void CAI_Rat::Think()
 			}
 			case aiRatTurn : {
 				Turn();
+				break;
+			}
+			case aiRatUnderFire : {
+				UnderFire();
 				break;
 			}
 		}

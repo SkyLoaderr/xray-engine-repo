@@ -64,7 +64,7 @@ private:
 	{
 		SPattern &tPattern = m_tpPatterns[iPatternIndex];
 		for (DWORD i=1, dwIndex = dwpTest[tPattern.dwaVariableIndexes[0]]; i<(int)tPattern.dwCardinality; i++)
-			dwIndex = dwIndex*m_dwaAtomicFeatureRange[tPattern.dwaVariableIndexes[i - 1]] + dwpTest[tPattern.dwaVariableIndexes[i]];
+			dwIndex = dwIndex*m_dwaAtomicFeatureRange[tPattern.dwaVariableIndexes[i]] + dwpTest[tPattern.dwaVariableIndexes[i]];
 		return(dwIndex + m_dwaPatternIndexes[iPatternIndex]);
 	}
 	
