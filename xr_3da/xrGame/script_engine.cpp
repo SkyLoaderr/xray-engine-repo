@@ -101,7 +101,9 @@ void CScriptEngine::setup_callbacks		()
 		luabind::set_pcall_callback		(CScriptEngine::lua_pcall_failed);
 	}
 
+#ifndef DEBUG
 	luabind::set_cast_failed_callback	(lua_cast_failed);
+#endif
 	lua_atpanic							(lua(),CScriptEngine::lua_panic);
 }
 
