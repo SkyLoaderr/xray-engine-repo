@@ -11,7 +11,6 @@ public:
 public:	
 	u32						timestamp;
 	u8						flags;
-	Fvector					pos;
 	u8						mstate;
 	float					model_yaw;
 	SRotation				torso;
@@ -31,7 +30,7 @@ public:
 	{
 		P.r_u32				(timestamp	);
 		P.r_u8				(flags		);
-		P.r_vec3			(pos		);
+		P.r_vec3			(o_Position	);
 		P.r_u8				(mstate		);
 		P.r_angle8			(model_yaw	);
 		P.r_angle8			(torso.yaw	);
@@ -47,16 +46,16 @@ public:
 	};
 	virtual void			UPDATE_Write		(NET_Packet& P)
 	{
-		P.w_u32				(timestamp);
-		P.w_u8				(flags);
-		P.w_vec3			(pos);
-		P.w_u8				(mstate);
+		P.w_u32				(timestamp	);
+		P.w_u8				(flags		);
+		P.w_vec3			(o_Position	);
+		P.w_u8				(mstate		);
 		P.w_angle8			(model_yaw	);
 		P.w_angle8			(torso.yaw	);
 		P.w_angle8			(torso.pitch);
-		P.w_sdir			(accel);
-		P.w_sdir			(velocity);
-		P.w_u8				(weapon);
+		P.w_sdir			(accel		);
+		P.w_sdir			(velocity	);
+		P.w_u8				(weapon		);
 		if (flags&MF_FIREPARAMS)
 		{
 			P.w_vec3		(f_pos);
@@ -79,10 +78,6 @@ public:
 	virtual BOOL			RelevantTo			(xrServerEntity* E)
 	{
 		return TRUE;
-	};
-	virtual void			GetPlacement		(Fvector4& dest)
-	{
-		dest.set			(pos.x,pos.y,pos.z,model_yaw);
 	};
 };
 
@@ -138,10 +133,6 @@ public:
 	virtual BOOL			RelevantTo			(xrServerEntity* E)
 	{
 		return TRUE;
-	};
-	virtual void			GetPlacement		(Fvector4& dest)
-	{
-		dest.set			(p_pos.x,p_pos.y,p_pos.z,o_model);
 	};
 };
 
