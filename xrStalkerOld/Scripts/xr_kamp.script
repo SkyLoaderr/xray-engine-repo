@@ -144,12 +144,16 @@ function action_go_position:execute ()
 			local pos = self.vectors[self.a.pos_id]
 			local dir = vector():set(pos[1], pos[2], pos[3])
 			local pp = level.vertex_in_direction(patrol(self.a.center_point):level_vertex_id(0), dir, self.a.max_rad)
-	        self.object:set_dest_level_vertex_id(pp)
-
-			self.object:set_path_type(game_object.level_path)
-			self.object:set_sight(look.path_dir, nil, 0)
-			self.object:set_body_state(move.standing)
-			self.object:set_movement_type(move.walk)
+			
+			if self.object:accessible(pp) then
+				self.object:set_dest_level_vertex_id(pp)
+				self.object:set_path_type(game_object.level_path)
+				self.object:set_sight(look.path_dir, nil, 0)
+				self.object:set_body_state(move.standing)
+				self.object:set_movement_type(move.walk)
+			else
+				printf("ERROR: KAMP NODE NOT ACCESIBLE")
+			end
 		end
 		--' если доступных не осталось - никуда его не отправлять
 	end
