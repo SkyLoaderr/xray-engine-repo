@@ -255,16 +255,16 @@ void CActor::net_Destroy	()
 {
 	inherited::net_Destroy	();
 
-	sound->Delete			(sndStep[0]);
-	sound->Delete			(sndStep[1]);
+	::Sound->Delete			(sndStep[0]);
+	::Sound->Delete			(sndStep[1]);
 
-	sound->Delete			(sndLanding);
-	sound->Delete			(sndZoneHeart);
-	sound->Delete			(sndZoneDetector);
+	::Sound->Delete			(sndLanding);
+	::Sound->Delete			(sndZoneHeart);
+	::Sound->Delete			(sndZoneDetector);
 
 	u32 it;
-	for (it=0; it<SND_HIT_COUNT; it++)	sound->Delete	(sndHit[it]);
-	for (it=0; it<SND_DIE_COUNT; it++)	sound->Delete	(sndDie[it]);
+	for (it=0; it<SND_HIT_COUNT; it++)	::Sound->Delete	(sndHit[it]);
+	for (it=0; it<SND_DIE_COUNT; it++)	::Sound->Delete	(sndDie[it]);
 }
 
 void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element)
