@@ -64,9 +64,6 @@ public:
 	void				EditActionList		();
     void				ResetState			();
 public:
-    float 				fFogness;
-    u32					dwFogColor;
-public:
 	// flags
     enum{
     	flRefreshProps 		= (1<<0),
