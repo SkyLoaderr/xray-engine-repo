@@ -10,25 +10,31 @@
 
 class CScriptThread;
 
-DEFINE_VECTOR(CScriptThread*,SCRIPT_VECTOR,SCRIPT_IT);
-
 class CScriptProcess {
+public:
+	typedef xr_vector<CScriptThread*> SCRIPT_REGISTRY;
+
 protected:
-	SCRIPT_VECTOR			m_tpScripts;
-	u32						m_iterator;				// Oles: iterative update
-	xr_vector<LPSTR>		m_scripts_to_run;
-	xr_vector<LPSTR>		m_strings_to_run;
-	string256				m_name;
+	SCRIPT_REGISTRY					m_scripts;
+	xr_vector<LPSTR>				m_scripts_to_run;
+	xr_vector<LPSTR>				m_strings_to_run;
+	ref_str							m_name;
+
 protected:
-			void		run_scripts					();
-			void		run_strings					();
+	u32								m_iterator;				// Oles: iterative update
+
+protected:
+			void					run_scripts		();
+			void					run_strings		();
 
 public:
-						CScriptProcess			(LPCSTR					caCaption, LPCSTR caScriptString);
-	virtual				~CScriptProcess			();
-			void		update						();
-			void		add_script					(LPCSTR					script_name);
-			void		add_string					(LPCSTR					string_to_run);
-			const SCRIPT_VECTOR&	scripts			() const {return m_tpScripts;};
-			LPCSTR		name						() const {return m_name;};
+									CScriptProcess	(ref_str anme, ref_str scripts);
+	virtual							~CScriptProcess	();
+			void					update			();
+			void					add_script		(LPCSTR	script_name);
+			void					add_string		(LPCSTR	string_to_run);
+	IC		const SCRIPT_REGISTRY	&scripts		() const;
+	IC		ref_str					name			() const;
 };
+
+#include "script_process_inline.h"

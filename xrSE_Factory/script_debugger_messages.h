@@ -15,19 +15,23 @@ struct Variable
 	Variable(){szName[0]=0;szType[0]=0;szValue[0]=0;};
 };
 
+struct lua_State;
+
 struct SScriptThread{
-	void*			pScript;
+//	void*			pScript;
+	lua_State		*lua;
 	int				scriptID;
 	bool			active;
 	char			name[255];
 	char			process[255];
-	SScriptThread():pScript(0),scriptID(-1),active(false){name[0]=0;process[0]=0;};
+	SScriptThread():/**pScript(0),/**/lua(0), scriptID(-1),active(false){name[0]=0;process[0]=0;};
 	SScriptThread(const SScriptThread& other)
 	{
 		operator = (other);
 	};
 	SScriptThread& operator = (const SScriptThread& other){
-		pScript			= other.pScript;
+//		pScript			= other.pScript;
+		lua				= other.lua;
 		scriptID		= other.scriptID;
 		active			= other.active;
 		name[0]			=0;

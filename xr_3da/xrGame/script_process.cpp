@@ -12,6 +12,7 @@
 #include "script_process.h"
 #include "script_thread.h"
 #include "ai_space.h"
+#include "object_broker.h"
 
 string4096			g_ca_stdout;
 
@@ -19,26 +20,21 @@ string4096			g_ca_stdout;
 #	include "script_debugger.h"
 #endif
 
-DEFINE_VECTOR(LPSTR,LPSTR_VECTOR,LPSTR_IT);
-
-CScriptProcess::CScriptProcess(LPCSTR caCaption, LPCSTR caScriptString)
+CScriptProcess::CScriptProcess	(ref_str name, ref_str scripts) :
+	m_name						(name)
 {
-	Msg				("* Initializing %s script process",caCaption);
-	m_name[0]		= 0;
-	strcat(m_name,caCaption);
-	u32				N = _GetItemCount(caScriptString);
+	Msg				("* Initializing %s script process",name);
+	
 	string256		I;
-	for (u32 i=0; i<N; ++i)
-		add_script	(_GetItem(caScriptString,i,I));
+	for (u32 i=0, n = _GetItemCount(*scripts); i<n; ++i)
+		add_script	(_GetItem(*scripts,i,I));
+
 	m_iterator		= 0;
 }
 
 CScriptProcess::~CScriptProcess()
 {
-	SCRIPT_IT		I = m_tpScripts.begin();
-	SCRIPT_IT		E = m_tpScripts.end();
-	for ( ; I != E; ++I)
-		xr_delete	(*I);
+	delete_data		(m_scripts);
 }
 
 void CScriptProcess::run_scripts()
@@ -54,7 +50,7 @@ void CScriptProcess::run_scripts()
 		xr_free		(S);
 
 		if (l_tpScript->m_bActive)
-			m_tpScripts.push_back(l_tpScript);
+			m_scripts.push_back(l_tpScript);
 		else
 			xr_delete(l_tpScript);
 	}
@@ -78,7 +74,7 @@ void CScriptProcess::run_strings()
 
 // Oles: 
 //		changed to process one script per-frame
-//		changed log-output to stack-based buffer (avoid persistant 4K storage)
+//		changed log-output to stack-based buffer (avoid persistent 4K storage)
 void CScriptProcess::update()
 {
 #ifdef DBG_DISABLE_SCRIPTS
@@ -90,15 +86,15 @@ void CScriptProcess::update()
 	run_scripts			();
 	run_strings			();
 
-	if (m_tpScripts.empty())
+	if (m_scripts.empty())
 		return;
 
 	// update script
 	g_ca_stdout[0]		= 0;
-	u32					_id	= (++m_iterator)%m_tpScripts.size();
-	if (!m_tpScripts[_id]->Update()) {
-		xr_delete			(m_tpScripts[_id]);
-		m_tpScripts.erase	(m_tpScripts.begin() + _id);
+	u32					_id	= (++m_iterator)%m_scripts.size();
+	if (!m_scripts[_id]->Update()) {
+		xr_delete			(m_scripts[_id]);
+		m_scripts.erase	(m_scripts.begin() + _id);
 		--m_iterator;		// try to avoid skipping
 	}
 
