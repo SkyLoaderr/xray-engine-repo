@@ -757,12 +757,12 @@ void CPHSimpleCharacter::ApplyAcceleration()
 		 */
 		if(b_at_wall&&b_valide_wall_contact){
 
-
+			dReal press_to_ladder=world_gravity*m_mass*0.1f;
 			dReal proj=dDOT(accel,m_wall_contact_normal);
-			fvdir[0]=accel[0]-m_wall_contact_normal[0]*proj;
+			fvdir[0]=accel[0]-m_wall_contact_normal[0]*(proj+press_to_lwadder);
 			//fvdir[1]=-proj;
 			fvdir[1]=m_wall_contact_normal[1]<0.1f ? -proj : -m_wall_contact_normal[1]*proj;//accel[1]-m_wall_contact_normal[1]*proj,
-			fvdir[2]=accel[2]-m_wall_contact_normal[2]*proj;
+			fvdir[2]=accel[2]-m_wall_contact_normal[2]*(proj+press_to_ladder);
 			dNormalize3(fvdir);
 			m_control_force[0]+=fvdir[0]*m.mass*30.f;
 			m_control_force[1]+=fvdir[1]*m.mass*30.f;
@@ -787,7 +787,7 @@ void CPHSimpleCharacter::ApplyAcceleration()
 
 
 
-	if(b_clamb_jump){//&&m_wall_contact_normal[1]<M_SQRT1_2
+	if(!b_at_wall&&b_clamb_jump){//&&m_wall_contact_normal[1]<M_SQRT1_2
 		m_control_force[0]*=4.f;
 		m_control_force[1]*=4.f;//*8.f
 		m_control_force[2]*=4.f;
