@@ -7,6 +7,7 @@
 
 
 local boar = get_level_object ("boar")
+local freed = false
 	
 function on_enter_pzone (zone, obj)
 	zone:clear_callback (true)
@@ -16,10 +17,11 @@ end
 
 function on_enter_bzone (zone, obj)
 	sound_object ("monsters\\boar\\hit_0"):play_at_pos (obj, obj:position (), 0)
-	sound_object ("material\\wood\\wood_crash1_hl2"):play_at_pos (obj, obj:position (), 0)
-	printf ("Sound play")
+	--sound_object ("material\\wood\\wood_crash1_hl2"):play_at_pos (obj, obj:position (), 0)
+	--printf ("Sound play")
 	boar:script (false, boar_attack.script_name ())
 	zone:clear_callback (true)
+	freed = true
 end
 
 
@@ -37,12 +39,14 @@ function main ()
 	local oldtime = game.time ()
 	local wait_time = math.random (2000, 3000)
 
-	while boar:action () do 
-		if game.time () - oldtime >= wait_time then
-		   oldtime = game.time ()
-		   wait_time = math.random (2000, 3000)	
-		   update_action (boar, boar_attack.script_name (), sound ("monsters\\boar\\Idle_1", "bip01_head", vector ():set (0, 0, 0), 
-		   				  vector ():set (0, 0, 0), false))
+	while freed == false do 
+	    if boar:action () then
+		   if game.time () - oldtime >= wait_time then
+		      oldtime = game.time ()
+		      wait_time = math.random (2000, 3000)	
+		      update_action (boar, boar_attack.script_name (), sound ("monsters\\boar\\Idle_1", "bip01_head", vector ():set (0, 0, 0), 
+		   	   			  vector ():set (0, 0, 0), false))
+		   end	   			  
 		end   
 		wait ()
 	end	
