@@ -99,11 +99,12 @@ class CPHWorld {
 	CPHMesh Mesh;
 	vector<CPHObject*> m_objects;
 public:
+	
 	CPHGun Gun;
 	//CPHJeep Jeep;
-	
+	unsigned int disable_count;
 	//vector<CPHElement*> elements;
-//	CPhysicsWorld(){};
+	CPhysicsWorld(){disable_count=0;};
 	~CPHWorld(){};
 
 	dSpaceID GetSpace(){return Space;};
@@ -188,8 +189,6 @@ dBodyID m_body;
 //dVector3 mean_v;
 dVector3 previous_p;
 dMatrix3 previous_r;
-UINT dis_count;
-
 
 public:
 	CPHShell				()							{bActive=false;};

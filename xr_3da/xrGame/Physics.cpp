@@ -535,7 +535,7 @@ void CPHWorld::Create(){
 	dReal h=0.02222f;
 	dWorldSetERP(phWorld,  h*k_p / (h*k_p + k_d));
 	dWorldSetCFM(phWorld,  1.f / (h*k_p + k_d));
-	
+	disable_count=0;
 	//Jeep.DynamicData.CalculateData();
 }
 
@@ -558,10 +558,14 @@ void CPHWorld::Destroy(){
 
 //////////////////////////////////////////////////////////////////////////////
 static dReal rest=0.f;
+const int dis_frames=50;
 void CPHWorld::Step(dReal step)
 {
 			// compute contact joints and forces
 	///return;
+
+	if(disable_count==dis_frames+1) disable_count=0;
+	disable_count++;	
 	vector<CPHObject*>::iterator iter;
 	//step+=astep;
 	const dReal max_step=0.02f;//0.0034f;
@@ -992,7 +996,6 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2){
 	*/
 	previous_p[0]=dInfinity;
 	previous_r[0]=0.f;
-	dis_count=0;
 }
 
 void CPHShell::Deactivate(){
@@ -1008,6 +1011,12 @@ void CPHShell::Update(){
 	vector<CPHElement*>::iterator i;
 	for(i=elements.begin();i!=elements.end();i++)
 	(*i)->Update();
+
+if( !dBodyIsEnabled(m_body)) {
+					if(previous_p[0]!=dInfinity) previous_p[0]=dInfinity;
+					return;
+				}
+				
 		//////////////////////////////////////////////////////////////////////
 		/////limit velocity of the main body/////////////////////////////////
 		/////////////////////////////////////////////////////////////////////
@@ -1032,10 +1041,14 @@ void CPHShell::Update(){
 				PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),
 							  dBodyGetPosition(m_body),
 							  mXFORM);
-				//return;
+	
 				//////////////////////////////////////////////////////////////////////////////////////////
 				////////disabling main body///////////////////////////////////////////////////////////////
 				//////////////////////////////////////////////////////////////////////////////////////////
+	
+
+
+
 				if(previous_p[0]==dInfinity){
 					const dReal* position=dBodyGetPosition(m_body);
 					previous_p[0]=position[0];
@@ -1061,9 +1074,8 @@ void CPHShell::Update(){
 				mean_w[1]+=rot[1];
 				mean_w[2]+=rot[2];
 				*/
-				dis_count++;
-				const int dis_frames=50;
-				if(dis_count==dis_frames){	
+			
+				if(ph_world->disable_count==dis_frames){	
 	
 				//	dReal mag_v=sqrtf(mean_v[0]*mean_v[0]+mean_v[1]*mean_v[1]+mean_v[2]*mean_v[2])/dis_frames;
 				//	dReal mag_w=sqrtf(mean_w[0]*mean_w[0]+mean_w[1]*mean_w[1]+mean_w[2]*mean_w[2])/dis_frames;
@@ -1122,9 +1134,9 @@ void CPHShell::Update(){
 					previous_r[10]=rotation[10];
 
 					}
-					dis_count=0;
+				
 				}
-				//dBodyAddTorque(m_body, u * rot[0]*mag, u * rot[1]*mag, u * rot[2]*mag);
+
 			/////////////////////////////////////////////////////////////////
 
 }
