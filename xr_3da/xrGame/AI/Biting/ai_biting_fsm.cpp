@@ -20,7 +20,6 @@ void CAI_Biting::Think()
 	time_next_update = Level().timeServer() + 1000 / UPS;
 #endif
 
-
 	m_dwLastUpdateTime						= m_current_update;
 	m_current_update						= Level().timeServer();
 	
@@ -47,28 +46,23 @@ void CAI_Biting::Think()
 			pSquad->UpdateDecentralized();
 		} 
 	}
-
 	
 	if (MotionMan.Seq_Active()) disable_path();
 	else {
 		// Выбор текущего состояния
 		StateSelector						();
 		CurrentState->Execute				(m_current_update);
-		UpdatePathWithAction					();
 	}
-
-	// построить путь
-	CMonsterMovement::Frame_Update			();
-
-	// в зависимости от маршрута установить action
-	UpdateActionWithPath					();
-
 	// Обработать action
 	MotionMan.ProcessAction					();
 
-	// Выбрать скорости в соответствии с параметрами, записанными в маршруте
-	UpdateVelocityWithPath					();
+	UpdatePathWithAction					();
+
+	if (CMonsterMovement::is_path_targeted())
+		UpdateTargetVelocityWithPath		();
 	
+	// построить путь
+	CMonsterMovement::Frame_Update			();
 	// установить текущую скорость
 	CMonsterMovement::Frame_Finalize		();
 
@@ -134,125 +128,32 @@ void CAI_Biting::UpdateVelocityWithPath()
 		xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(cur_point_velocity_index);
 		R_ASSERT(it != m_movement_params.end());
 
-		m_velocity.target	= _abs((*it).second.linear_velocity);
-		m_body.speed		= (*it).second.angular_velocity;
-
-	} else m_velocity.target = 0;
-}
-
-
-// Реализация движения по пути с ускорением
-void CAI_Biting::UpdateVelocities(STravelParams cur_velocity)
-{
-	// заполнить вектор velocities
-	velocities.clear(); 
-	velocities.reserve(CDetailPathManager::path().size()); 
-
-	for (u32 i=0; i<CDetailPathManager::path().size(); i++) {
-		xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(CDetailPathManager::path()[i].velocity);
-		R_ASSERT(it != m_movement_params.end());
-		
-		velocities.push_back(it->second);
-	}
-
-	velocities[curr_travel_point_index()] = cur_velocity;
-
-	u32	start_point_index	= 0;
-	u32	end_point_index		= 0;		// индекс последнего валидного элемента
-	u32 cur_point_index		= 0;
-
-	while (true) {							// цикл для всего пути
-
-		xr_vector<u32>	section;			// индексы в массиве скоростей
-		bool			b_path_end			= false;
-		bool			b_velocity_changed	= false;
-		section.clear						();
-		
-		start_point_index					= cur_point_index;
-		STravelParams	start_velocity		= velocities[start_point_index];
-		STravelParams	end_velocity;
-
-		while (true) {							// цикл для текущего участка
-			cur_point_index++;
-
-			if (cur_point_index >= velocities.size()) {
-				b_path_end = true;
-				break;
-			}
-
-			STravelParams	new_velocity = velocities[cur_point_index];
-
-			// если новая скорость не равна предыдущей
-			if ((new_velocity.linear_velocity != start_velocity.linear_velocity ) || 
-				(new_velocity.angular_velocity != start_velocity.angular_velocity )) {
-
-				b_velocity_changed = true;
-				break;
-			}
-			
-			section.push_back(cur_point_index);			
-		}
-
-		end_point_index = cur_point_index-1;
-
-		if (b_path_end)			end_velocity = STravelParams(0.f,0.f);
-		if (b_velocity_changed) end_velocity = velocities[cur_point_index];
-		
-		// интерполяция текущей секции
-		if (section.size() < 2) break;
-
-		// найти дистанцию текущей секции
-		float D = 0.f;
-		for (u32 i=start_point_index; i<end_point_index; i++) 
-			D += CDetailPathManager::path()[i].position.distance_to(CDetailPathManager::path()[i+1].position);
-		
-
-		STravelParams from	= start_velocity;
-		STravelParams to	= end_velocity;
-		STravelParams new_vel;
-
-		float dist;
-
-		for (u32 j = start_point_index; j < end_point_index; j++) {
-			dist	= CDetailPathManager::path()[j].position.distance_to(CDetailPathManager::path()[j+1].position) / D;
-
-			new_vel.linear_velocity = from.linear_velocity + (to.linear_velocity - from.linear_velocity) * dist;
-			new_vel.angular_velocity = from.angular_velocity + (to.angular_velocity - from.angular_velocity) * dist;
+		m_velocity_linear.target	= _abs((*it).second.linear_velocity);
+		m_velocity_angular.target	= (*it).second.angular_velocity;
 	
-			velocities[j] = new_vel;
-
-			from = new_vel;
-		}
-
-		if (b_path_end) break;		
-	}
-
+	} else m_velocity_linear.target = 0;
 }
+
 
 void CAI_Biting::UpdatePathWithAction()
 {
-	switch (MotionMan.m_tAction) {
-	case ACT_STAND_IDLE: 
-	case ACT_SIT_IDLE:	 
-	case ACT_LIE_IDLE:
-	case ACT_EAT:
-	case ACT_SLEEP:
-	case ACT_REST:
-	case ACT_LOOK_AROUND:
-	case ACT_ATTACK:
-	case ACT_TURN:
+	if (MotionMan.IsStandCurAnim()) {
 		disable_path();
-		break;
-	case ACT_WALK_FWD:
-	case ACT_WALK_BKWD:
-	case ACT_RUN:
-	case ACT_DRAG:
-	case ACT_STEAL:
-	case ACT_JUMP:
-		enable_path();
-		break;
+		m_velocity_linear.current = 0.f;
+	} else enable_path();
+}
+
+void CAI_Biting::UpdateTargetVelocityWithPath()
+{
+	float accelaration	= 3.5f;
+	float dist_to_end	= (m_velocity_linear.current * m_velocity_linear.current) / accelaration;
+	
+	if (IsPathEnd(dist_to_end) && IsMovingOnPath()) {
+		Msg("Cur Dist = [%f]", dist_to_end);
+		m_velocity_linear.target = 0.f;
 	}
 }
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

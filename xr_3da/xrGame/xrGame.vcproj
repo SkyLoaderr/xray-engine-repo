@@ -1318,6 +1318,36 @@
 						Name="StateManager"
 						Filter="">
 					</Filter>
+					<Filter
+						Name="AnimationManager"
+						Filter="">
+						<File
+							RelativePath=".\ai\chimera\ai_chimera_animation.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\chimera\ai_chimera_animation.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="WatchManager"
+						Filter="">
+						<File
+							RelativePath=".\ai\chimera\ai_chimera_watch.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\chimera\ai_chimera_watch.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="BaseManager"
+						Filter="">
+						<File
+							RelativePath=".\ai\chimera\ai_chimera_man.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\chimera\ai_chimera_man.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ai_crow"

@@ -235,6 +235,7 @@ typedef		ref_str			anim_string;
 
 DEFINE_VECTOR	(CMotionDef*,		ANIM_VECTOR,			ANIM_IT);
 
+
 // элемент анимации
 struct SAnimItem {
 
@@ -246,6 +247,13 @@ struct SAnimItem {
 	SVelocityParam	*velocity;
 
 	EPState			pos_state;
+
+	struct {
+		anim_string front;
+		anim_string	back;
+		anim_string	left;
+		anim_string	right;
+	} fxs;
 };
 
 // описание перехода
@@ -311,6 +319,13 @@ struct t_fx_index {
 	s8 back;	
 };
 
+enum EHitSide {
+	eSideFront	= u32(0),
+	eSideBack,
+	eSideLeft,
+	eSideRight
+};
+
 
 DEFINE_MAP		(EMotionAnim,		SStepSound,				STEP_SOUND_MAP,				STEP_SOUND_MAP_IT);
 DEFINE_MAP		(EMotionAnim,		SAnimItem,				ANIM_ITEM_MAP,				ANIM_ITEM_MAP_IT);
@@ -333,3 +348,13 @@ DEFINE_MAP		(ref_str,			t_fx_index,				FX_MAP_STRING,				FX_MAP_STRING_IT);
 	pmt::Finish();									\
 }
 
+
+DEFINE_VECTOR	(SEQ_VECTOR, VELOCITY_CHAIN_VEC, VELOCITY_CHAIN_VEC_IT);
+
+
+struct SVelocity {
+	float	current;
+	float	target;
+	
+	void	set		(float c, float t) {current = c; target = t;}
+}; 

@@ -21,14 +21,17 @@ CMonsterMovement::~CMonsterMovement()
 
 void CMonsterMovement::Init()
 {
-	pMonster			= dynamic_cast<CAI_Biting*>(this);
-	VERIFY				(pMonster);
+	pMonster						= dynamic_cast<CAI_Biting*>(this);
+	VERIFY							(pMonster);
 	
-	MotionStats			= xr_new<CMotionStats> (pMonster);
+	MotionStats						= xr_new<CMotionStats> (pMonster);
 
-	b_try_min_time		= false;
-	time_last_approach	= 0;
+	b_try_min_time					= false;
+	time_last_approach				= 0;
 
+	m_velocity_linear.set			(0.f,0.f);
+	m_velocity_angular.set			(0.f,0.f);
+	m_accel							= 0.f;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -39,6 +42,7 @@ void CMonsterMovement::Frame_Init()
 	CDetailPathManager::set_path_type		(eDetailPathTypeSmooth);
 	b_try_min_time							= true;		
 	b_enable_movement						= true;
+	set_path_targeted						(false);
 }
 
 
@@ -224,3 +228,7 @@ void CMonsterMovement::WalkNextGraphPoint()
 	pMonster->SetupVelocityMasks(false);
 }
 
+void CMonsterMovement::update_velocity()
+{
+	velocity_lerp	(m_velocity_linear.current, m_velocity_linear.target, m_accel, Device.fTimeDelta);
+}

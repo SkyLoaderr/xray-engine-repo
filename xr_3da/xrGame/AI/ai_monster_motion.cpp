@@ -43,7 +43,7 @@ void CMotionManager::Init (CAI_Biting	*pM)
 }
 
 // Загрузка параметров анимации. Вызывать необходимо на Monster::Load
-void CMotionManager::AddAnim(EMotionAnim ma, LPCSTR tn, int s_id, SVelocityParam *vel, EPState p_s)
+void CMotionManager::AddAnim(EMotionAnim ma, LPCSTR tn, int s_id, SVelocityParam *vel, EPState p_s, LPCSTR fx_front, LPCSTR fx_back, LPCSTR fx_left, LPCSTR fx_right)
 {
 	CHECK_SHARED_LOADED();
 	
@@ -54,8 +54,29 @@ void CMotionManager::AddAnim(EMotionAnim ma, LPCSTR tn, int s_id, SVelocityParam
 	new_item.velocity		= vel;
 	new_item.pos_state		= p_s;
 
+	new_item.fxs.front		= fx_front;
+	new_item.fxs.back		= fx_back;
+	new_item.fxs.left		= fx_left;
+	new_item.fxs.right		= fx_right;
+
 	_sd->m_tAnims.insert			(mk_pair(ma, new_item));
 }
+
+// Загрузка параметров анимации. Вызывать необходимо на Monster::Load
+void CMotionManager::AddAnim(EMotionAnim ma, LPCSTR tn, int s_id, SVelocityParam *vel, EPState p_s)
+{
+	CHECK_SHARED_LOADED();
+
+	SAnimItem new_item;
+
+	new_item.target_name	= tn;
+	new_item.spec_id		= s_id;
+	new_item.velocity		= vel;
+	new_item.pos_state		= p_s;
+
+	_sd->m_tAnims.insert			(mk_pair(ma, new_item));
+}
+
 
 // Загрузка анимаций. Необходимо вызывать на Monster::NetSpawn 
 void CMotionManager::LoadVisualData()
@@ -183,6 +204,64 @@ void CMotionManager::AddReplacedAnim(bool *b_flag, EMotionAnim pmt_cur_anim, EMo
 }
 
 
+void CMotionManager::VelocityChain_Add(EMotionAnim anim1, EMotionAnim anim2)
+{
+	CHECK_SHARED_LOADED();
+
+	SEQ_VECTOR v_temp;
+	v_temp.push_back(anim1);
+	v_temp.push_back(anim2);
+
+	velocity_chain.push_back(v_temp);
+}
+
+bool CMotionManager::VelocityChain_GetAnim(float cur_speed, EMotionAnim target_anim, EMotionAnim &new_anim, float &a_speed)
+{
+	VELOCITY_CHAIN_VEC_IT B = velocity_chain.begin(), I;
+	VELOCITY_CHAIN_VEC_IT E = velocity_chain.end();
+
+	// пройти по всем Chain-векторам
+	for (I = B; I != E; I++) {
+		SEQ_VECTOR_IT	IT_B		= I->begin(), IT;
+		SEQ_VECTOR_IT	IT_E		= I->end();
+		SEQ_VECTOR_IT	best_anim	= IT_E;
+		SVelocityParam	*best_param	= 0;
+
+		bool		  found		= false;
+
+		// Пройти по текущему вектору
+		for (IT = IT_B; IT != IT_E; IT++) {
+			
+			ANIM_ITEM_MAP_IT	item_it = _sd->m_tAnims.find(*IT);
+			SVelocityParam		*param	= item_it->second.velocity;
+			float				from	= param->velocity.linear * param->min_factor;
+			float				to		= param->velocity.linear * param->max_factor;
+
+			if ( ((from <= cur_speed) && (cur_speed <= to))	|| 
+				 ((cur_speed < from) && (IT == I->begin()))	|| 
+				 ((cur_speed >= to)	 &&	(IT+1 == I->end())) ) {
+					 best_anim	= IT;
+					 best_param	= item_it->second.velocity;
+			}
+
+			if ((*IT) == target_anim)	{
+				found = true;
+				break;
+			}
+		}
+		
+		if (!found) continue;
+
+		R_ASSERT2(best_param,"probably incompatible speed ranges");
+		// calc anim_speed
+		new_anim	= *best_anim;
+		a_speed		= GetAnimSpeed(new_anim) * cur_speed / best_param->velocity.linear;
+		return true;
+	}
+	return false;
+}
+
+
 // загрузка анимаций из модели начинающиеся с pmt_name в вектор pMotionVect
 void CMotionManager::Load(LPCTSTR pmt_name, ANIM_VECTOR	*pMotionVect)
 {
@@ -234,8 +313,6 @@ bool CMotionManager::PrepareAnimation()
 	// установить анимацию	
 	m_tpCurAnim = anim_it->second.pMotionVect[index];
 	
-	//LOG_EX2("Anim: name = [%s] length = [%f]", *"*/ *anim_it->second.target_name, GetAnimTime(cur_anim, index) /*"*);
-
 	// установить параметры атаки
 	AA_SwitchAnimation(cur_anim, index);
 
@@ -335,6 +412,14 @@ void CMotionManager::ProcessAction()
 
 	ApplyParams();
 
+	EMotionAnim new_anim;
+	float		a_speed;
+	
+	if (VelocityChain_GetAnim(pMonster->m_fCurSpeed, cur_anim,new_anim, a_speed)) {
+		cur_anim = new_anim;
+		pMonster->SetAnimSpeed(a_speed);
+	} else pMonster->SetAnimSpeed(-1.f);
+
 	// если установленная анимация отличается от предыдущей - установить новую анимацию
 	if (cur_anim != prev_anim) ForceAnimSelect();		
 
@@ -350,8 +435,8 @@ void CMotionManager::ApplyParams()
 	R_ASSERT(_sd->m_tAnims.end() != item_it);
 
 	//pMonster->m_fCurSpeed		= item_it->second.speed.linear;
-	pMonster->m_velocity.target	= item_it->second.velocity->velocity.linear;
-	if (!b_forced_velocity) pMonster->CMovementManager::m_body.speed = item_it->second.velocity->velocity.angular;
+	pMonster->m_velocity_linear.target	= item_it->second.velocity->velocity.linear;
+	if (!b_forced_velocity) pMonster->m_velocity_angular.target = item_it->second.velocity->velocity.angular;
 }
 
 // Callback на завершение анимации
@@ -665,6 +750,24 @@ void CMotionManager::FX_Play(u16 bone, bool is_front, float amount)
 	fx_time_last_play = pMonster->m_dwCurrentTime;
 }
 
+void CMotionManager::FX_Play(EHitSide side, float amount)
+{
+	if (fx_time_last_play + FX_CAN_PLAY_MIN_INTERVAL > pMonster->m_dwCurrentTime) return;
+
+	ANIM_ITEM_MAP_IT anim_it = _sd->m_tAnims.find(cur_anim);
+	R_ASSERT(_sd->m_tAnims.end() != anim_it);
+	
+	clamp(amount,0.f,1.f);
+	switch (side) {
+		case eSideFront:	PSkeletonAnimated(pVisual)->PlayFX(*anim_it->second.fxs.front,	amount);	break;
+		case eSideBack:		PSkeletonAnimated(pVisual)->PlayFX(*anim_it->second.fxs.back,	amount);	break;
+		case eSideLeft:		PSkeletonAnimated(pVisual)->PlayFX(*anim_it->second.fxs.left,	amount);	break;
+		case eSideRight:	PSkeletonAnimated(pVisual)->PlayFX(*anim_it->second.fxs.right,	amount);	break;
+	}
+	
+	fx_time_last_play = pMonster->m_dwCurrentTime;
+}
+
 
 float CMotionManager::GetAnimTime(EMotionAnim anim, u32 index)
 {
@@ -679,8 +782,28 @@ float CMotionManager::GetAnimTime(EMotionAnim anim, u32 index)
 	return  bone_anim->Motions[def->motion].GetLength();
 }
 
+float CMotionManager::GetAnimSpeed(EMotionAnim anim)
+{
+	ANIM_ITEM_MAP_IT anim_it = _sd->m_tAnims.find(anim);
+	R_ASSERT(_sd->m_tAnims.end() != anim_it);
+
+	CMotionDef *def = anim_it->second.pMotionVect[0];
+
+	return def->Dequantize(def->speed);
+}
+
+
 void CMotionManager::ForceAngularSpeed(float vel)
 {
-	pMonster->CMovementManager::m_body.speed = vel;
+	pMonster->m_velocity_angular.target = vel;
 	b_forced_velocity = true;
+}
+
+bool CMotionManager::IsStandCurAnim()
+{
+	ANIM_ITEM_MAP_IT	item_it = _sd->m_tAnims.find(cur_anim);
+	R_ASSERT(_sd->m_tAnims.end() != item_it);
+
+	if (fis_zero(item_it->second.velocity->velocity.linear)) return true;
+	return false;
 }

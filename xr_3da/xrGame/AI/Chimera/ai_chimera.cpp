@@ -97,24 +97,25 @@ void CAI_Chimera::Think()
 	
 	CChimeraMovementManager::update();
 
-	if (!CDetailPathManager::completed(Position()) && CMovementManager::enabled()) {
-		u32 cur_point_velocity_index = CDetailPathManager::path()[curr_travel_point_index()].velocity;
-		u32 next_point_velocity_index = u32(-1);
-		if (CDetailPathManager::path().size() > curr_travel_point_index() + 1) 
-			next_point_velocity_index = CDetailPathManager::path()[curr_travel_point_index() + 1].velocity;
 
-		if ((cur_point_velocity_index == eVelocityParameterStand) && (next_point_velocity_index != u32(-1))) {
-			if (angle_difference(m_body.current.yaw, m_body.target.yaw) < PI_DIV_6/6) {
-				cur_point_velocity_index = next_point_velocity_index;
-			}
-		}
-
-		xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(cur_point_velocity_index);
-		R_ASSERT(it != m_movement_params.end());
-
-		m_fCurSpeed		= _abs((*it).second.linear_velocity);
-		m_body.speed	= (*it).second.angular_velocity;
-	} else m_fCurSpeed = 0;
+	//	if (!CDetailPathManager::completed(Position()) && CMovementManager::enabled()) {
+//		u32 cur_point_velocity_index = CDetailPathManager::path()[curr_travel_point_index()].velocity;
+//		u32 next_point_velocity_index = u32(-1);
+//		if (CDetailPathManager::path().size() > curr_travel_point_index() + 1) 
+//			next_point_velocity_index = CDetailPathManager::path()[curr_travel_point_index() + 1].velocity;
+//
+//		if ((cur_point_velocity_index == eVelocityParameterStand) && (next_point_velocity_index != u32(-1))) {
+//			if (angle_difference(m_body.current.yaw, m_body.target.yaw) < PI_DIV_6/6) {
+//				cur_point_velocity_index = next_point_velocity_index;
+//			}
+//		}
+//
+//		xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(cur_point_velocity_index);
+//		R_ASSERT(it != m_movement_params.end());
+//
+//		m_fCurSpeed		= _abs((*it).second.linear_velocity);
+//		m_body.speed	= (*it).second.angular_velocity;
+//	} else m_fCurSpeed = 0;
 	
 	set_desirable_speed						(m_fCurSpeed);
 }
@@ -228,5 +229,22 @@ void CAI_Chimera::net_Import(NET_Packet& P)
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

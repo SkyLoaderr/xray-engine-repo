@@ -48,6 +48,8 @@ class CMotionManager : public CSharedClass<_motion_shared> {
 	bool					bad_motion_fixed;		// true, если монстр пытаетс€ двигатьс€, но стоит на месте
 	bool					b_forced_velocity;
 
+	VELOCITY_CHAIN_VEC		velocity_chain;
+
 public:
 	
 	EAction					m_tAction;
@@ -61,6 +63,7 @@ public:
 
 	// создание карты анимаций (выполн€ть на Monster::Load)
 	void		AddAnim					(EMotionAnim ma, LPCSTR tn, int s_id, SVelocityParam *vel, EPState p_s);
+	void		AddAnim					(EMotionAnim ma, LPCSTR tn, int s_id, SVelocityParam *vel, EPState p_s, LPCSTR fx_front, LPCSTR fx_back, LPCSTR fx_left, LPCSTR fx_right);
 
 	// -------------------------------------
 
@@ -121,6 +124,8 @@ public:
 	void		FX_LoadMap				(LPCSTR section);
 	void		FX_ConvertMap			();
 	void		FX_Play					(u16 bone, bool is_front, float amount);
+	void		FX_Play					(EHitSide side, float amount);
+	
 
 	// ќбновить tpKinematics
 	void		UpdateVisual			();
@@ -150,7 +155,7 @@ private:
 
 	void		CheckReplacedAnim		();
 
-	// sctipting
+
 public:
 
 	// ¬ызов PrepareAnimation() и установка анимации
@@ -158,6 +163,12 @@ public:
 	
 	void		ForceAngularSpeed		(float vel);
 	float		GetAnimTime				(EMotionAnim anim, u32 index);
-	
+	float		GetAnimSpeed			(EMotionAnim anim);
+
+	void		VelocityChain_Add		(EMotionAnim anim1, EMotionAnim anim2);
+	bool		VelocityChain_GetAnim	(float cur_speed, EMotionAnim target_anim, EMotionAnim &new_anim, float &a_speed);
+
+	bool		IsStandCurAnim			();
+
 };
 

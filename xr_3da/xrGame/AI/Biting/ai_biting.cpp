@@ -53,6 +53,7 @@ void CAI_Biting::Init()
 	m_pPhysics_support				->in_Init();
 
 	flagEatNow						= false;
+	m_bDamaged						= false;
 
 	// Attack-stops init
 	AS_Init							();
@@ -60,8 +61,8 @@ void CAI_Biting::Init()
 	// Инициализация параметров анимации	
 	MotionMan.Init					(this);
 
-	m_velocity.current				= 0.f;
-	m_velocity.target				= 0.f;
+	anim_speed						= -1.f;
+	cur_blend						= 0;
 }
 
 void CAI_Biting::reinit()
@@ -242,7 +243,6 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 		pSquad->SetupAlgType(ESquadAttackAlg(_sd->m_bUsedSquadAttackAlg));
 	}
 
-
 	m_movement_params.insert(std::make_pair(eVelocityParameterStand,		STravelParams(_sd->m_fsVelocityStandTurn.velocity.linear,		_sd->m_fsVelocityStandTurn.velocity.angular)));
 	m_movement_params.insert(std::make_pair(eVelocityParameterWalkNormal,	STravelParams(_sd->m_fsVelocityWalkFwdNormal.velocity.linear,	_sd->m_fsVelocityWalkFwdNormal.velocity.angular)));
 	m_movement_params.insert(std::make_pair(eVelocityParameterRunNormal,	STravelParams(_sd->m_fsVelocityRunFwdNormal.velocity.linear,	_sd->m_fsVelocityRunFwdNormal.velocity.angular)));
@@ -365,8 +365,9 @@ void CAI_Biting::UpdateCL()
 
 	m_pPhysics_support->in_UpdateCL();
 
-	velocity_lerp	(m_velocity.current, m_velocity.target, 1.5f, Device.fTimeDelta);
-	m_fCurSpeed		= m_velocity.current;
+	CMonsterMovement::update_velocity();
+	m_fCurSpeed		= m_velocity_linear.current;
+	m_body.speed	= m_velocity_angular.target * m_velocity_linear.current / (m_velocity_linear.target + EPS_L);
 
 #ifdef DEBUG
 	HDebug->M_Update	();

@@ -90,14 +90,18 @@ void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 e
 
 	if (element < 0) return;
 
-	// Определить направление хита (спереди || сзади)
+	// Определить направление хита (перед || зад || лево || право)
 	float yaw,pitch;
 	vLocalDir.getHP(yaw,pitch);
 	
 	yaw = angle_normalize(yaw);
-	bool is_front = ( ((PI_DIV_2 <= yaw) && (yaw <= 3*PI_DIV_2))? false: true );
+	
+	EHitSide hit_side = eSideFront;
+	if ((yaw >= PI_DIV_4) && (yaw <= 3*PI_DIV_4)) hit_side = eSideLeft;
+	else if ((yaw >= 3 * PI_DIV_4) && (yaw <= 5*PI_DIV_4)) hit_side = eSideBack;
+	else if ((yaw >= 5 * PI_DIV_4) && (yaw <= 7*PI_DIV_4)) hit_side = eSideRight;
 
-	MotionMan.FX_Play(u16(element), is_front, 1.0f);	
+	MotionMan.FX_Play(hit_side, 1.0f);
 
 	AddDangerousEnemy(who,20000);
 }

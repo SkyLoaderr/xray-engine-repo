@@ -173,10 +173,12 @@ public:
 			void			AddStepSound					(LPCSTR section, EMotionAnim a, LPCSTR name);
 			void			GetStepSound					(EMotionAnim a, float &vol, float &freq);
 	
+	// Velocity management
 			void			SetupVelocityMasks				(bool force_real_speed);
 			void			UpdateVelocityWithPath			();
 			void			UpdateActionWithPath			();
 			void			UpdatePathWithAction			();
+			void			UpdateTargetVelocityWithPath	();
 	
 // members
 public:
@@ -239,20 +241,15 @@ public:
 	virtual void	OnRender();
 #endif
 
-	u16		fire_bone_id;
-	float	GetRealDistToEnemy();
+	u16						fire_bone_id;
+	float					GetRealDistToEnemy		();
 
-	void FaceTarget				(const CEntity *entity);
-	void FaceTarget				(const Fvector &position);
+	void					FaceTarget				(const CEntity *entity);
+	void					FaceTarget				(const Fvector &position);
 	
-
-	void	UpdateVelocities	(STravelParams cur_velocity);
-	xr_vector<STravelParams> velocities;
-
-	struct {
-		float current;
-		float target;
-	} m_velocity;
+	float					anim_speed;
+	void					SetAnimSpeed(float val) {anim_speed = val;}
+	CBlend					*cur_blend;
 
 
 #ifdef 	DEEP_TEST_SPEED

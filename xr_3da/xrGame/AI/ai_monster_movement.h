@@ -17,11 +17,18 @@ class CMonsterMovement : virtual public CMovementManager {
 
 	TTime				time_last_approach;
 
+	bool				b_targeted_path;		// предположительно путь ведёт к целевой точке
+
+public :
+
+	SVelocity			m_velocity_linear, m_velocity_angular;
+	float				m_accel;			
+
 public:
 
 		CAbstractVertexEvaluator	*m_tSelectorApproach;
 
-		CMotionStats		*MotionStats;
+		CMotionStats				*MotionStats;
 
 	// -------------------------------------------------------------------
 		void	MoveToTarget			(const CEntity *entity); 
@@ -37,6 +44,7 @@ public:
 	// -------------------------------------------------------------------
 
 		bool	IsPathEnd				(u32 n_points, float dist_to_end);
+		bool	IsPathEnd				(float dist_to_end);
 			
 	// -------------------------------------------------------------------
 
@@ -44,6 +52,8 @@ public:
 	IC	void	disable_path			() {b_enable_movement = false;}
 	IC	void	enable_path				() {b_enable_movement = true;}
 
+	IC 	bool	is_path_targeted		() {return b_targeted_path;}
+	IC	void	set_path_targeted		(bool val = true) {b_targeted_path = val;}
 	// -------------------------------------------------------------------
 
 public:
@@ -59,11 +69,13 @@ public:
 
 		void		WalkNextGraphPoint	();
 
+		void		update_velocity		();
+	IC	void		set_accel			(float new_val) {m_accel = new_val;}
+
 private:
 	
 		// проверка на завершение пути
 		bool		IsPathEnd				(u32 n_points);
-		bool		IsPathEnd				(float dist_to_end);
 
 		void		InitSelector			(CAbstractVertexEvaluator &S, Fvector target_pos);
 		void		SetPathParams			(u32 dest_vertex_id, const Fvector &dest_pos);
