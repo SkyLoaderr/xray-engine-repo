@@ -166,7 +166,7 @@ void CRender::Calculate()
 	g_fSCREEN	=	float(Device.dwWidth*Device.dwHeight);
 	
 	// HOM rendering
-	HOM.Render	(ViewBase);
+	HOM.Render						(ViewBase);
 
 	// Build L_DB visibility & perform basic initialization
 	L_DB.UnselectAll				();
@@ -180,6 +180,7 @@ void CRender::Calculate()
 	CHK_DX(HW.pDevice->SetMaterial	(gm_Data.d3d()));
 	gm_SetAmbient					(0);
 	gm_SetNearer					(FALSE);
+	gm_SetLighting					(0);
 		
 	// Render current sector and beyond
 	if (!vLastCameraPos.similar(Device.vCameraPosition,EPS_S)) 
