@@ -426,12 +426,8 @@ class CAI_Soldier : public CCustomMonster
 
 		// patrol structures
 		bool					m_bLessCoverLook;
-		DWORD					m_dwLoopCount;
 		float					m_fMinPatrolDistance;
 		float					m_fMaxPatrolDistance;
-		int						m_iCurrentPatrolIndex;
-		bool					m_bPatrolPathInverted;
-		bool					m_bWaitingForMembers;
 
 		// finite state machine
 		stack<ESoldierStates>	tStateStack;

@@ -63,11 +63,7 @@ CAI_Soldier::CAI_Soldier()
 	m_dwCurrentUpdate = Level().timeServer();
 	m_dwUpdateCount = 0;
 	m_iCurrentSuspiciousNodeIndex = -1;
-	m_dwLoopCount = 0;
 	m_tpaNodeStack.clear();
-	m_iCurrentPatrolIndex = -1;
-	m_bPatrolPathInverted = false;
-	m_bWaitingForMembers = false;
 //	if (!bStarted) {
 //		bStarted = true;
 //		u64 uTime = 0;

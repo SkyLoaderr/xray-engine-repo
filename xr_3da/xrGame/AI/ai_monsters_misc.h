@@ -12,6 +12,8 @@
 #include "..\\ai_PathNodes.h"
 #include "..\\Level.h"
 #include "..\\Entity.h"
+#include "..\\CustomMonster.h"
+#include "..\\Group.h"
 		   
 	// Fuzzy State Machine
 	#define ASSIGN_PROPORTIONAL_POWER(a,b)	if ((eType & a) == a) power*=b;
@@ -213,6 +215,18 @@
 		v.set(X,P0.y,Z);	
 		PL.intersectRayPoint(v,DUP,v1);	
 		return(v1.y);
+	}
+
+	IC bool bfCheckIfReadyToPatrol(CCustomMonster *tpCustomMonster, CGroup &Group, bool bLeader = false)
+	{
+		int i = 0;
+		if (!bLeader) {
+			for ( i=0; i<(int)Group.Members.size(); i++)
+				if (Group.Members[i] == tpCustomMonster)
+					break;
+			i = (i + 1) % 3;
+		}
+		return((tpCustomMonster->m_iCurrentPatrolIndex >= 0) && (tpCustomMonster->Position().distance_to(tpCustomMonster->m_tpPath->tpaVectors[i][tpCustomMonster->m_iCurrentPatrolIndex]) < EPS_L));
 	}
 
 	typedef struct tagSSubNode {

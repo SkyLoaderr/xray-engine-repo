@@ -85,7 +85,13 @@ void CGroup::GetMemberDedication(MemberPlacement& MP, CEntity* Me)
 			if (E!=Me)	{
 				CCustomMonster* M = dynamic_cast<CCustomMonster*>(E);
 				if (M)
-					MP.push_back				(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
+					if (M->AI_Path.DestNode != DWORD(-1))
+						MP.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
+					else {
+						Fvector tTemp;
+						tTemp.set(0,0,0);
+						MP.push_back(tTemp);
+					}
 			}
 		}
 	}
@@ -133,8 +139,16 @@ void CGroup::GetMemberInfo(MemberPlacement& P0, MemberNodes& P1, MemberPlacement
 				if (M) {
 					P0.push_back(E->Position());
 					P1.push_back(M->AI_NodeID);
-					P2.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
-					P3.push_back(M->AI_Path.DestNode);
+					if (M->AI_Path.DestNode != DWORD(-1)) {
+						P2.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
+						P3.push_back(M->AI_Path.DestNode);
+					}
+					else {
+						Fvector tTemp;
+						tTemp.set(0,0,0);
+						P2.push_back(tTemp);
+						P3.push_back(0);
+					}
 				}
 			}
 		}
@@ -186,7 +200,13 @@ void CGroup::GetAliveMemberDedication(MemberPlacement& MP, CEntity* Me)
 				if (E!=Me)	{
 					CCustomMonster* M = dynamic_cast<CCustomMonster*>(E);
 					if (M)
-						MP.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
+						if (M->AI_Path.DestNode != DWORD(-1))
+							MP.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
+						else {
+							Fvector tTemp;
+							tTemp.set(0,0,0);
+							MP.push_back(tTemp);
+						}
 				}
 			}
 		}
@@ -236,8 +256,16 @@ void CGroup::GetAliveMemberInfo(MemberPlacement& P0, MemberNodes& P1, MemberPlac
 					if (M) {
 						P0.push_back(E->Position());
 						P1.push_back(M->AI_NodeID);
-						P2.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
-						P3.push_back(M->AI_Path.DestNode);
+						if (M->AI_Path.DestNode != DWORD(-1)) {
+							P2.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
+							P3.push_back(M->AI_Path.DestNode);
+						}
+						else {
+							Fvector tTemp;
+							tTemp.set(0,0,0);
+							P2.push_back(tTemp);
+							P3.push_back(0);
+						}
 					}
 				}
 			}
@@ -377,8 +405,16 @@ void CGroup::GetAliveMemberInfoWithLeader(MemberPlacement& P0, MemberNodes& P1, 
 					if (M) {
 						P0.push_back(E->Position());
 						P1.push_back(M->AI_NodeID);
-						P2.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
-						P3.push_back(M->AI_Path.DestNode);
+						if (M->AI_Path.DestNode != DWORD(-1)) {
+							P2.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
+							P3.push_back(M->AI_Path.DestNode);
+						}
+						else {
+							Fvector tTemp;
+							tTemp.set(0,0,0);
+							P2.push_back(tTemp);
+							P3.push_back(0);
+						}
 					}
 				}
 			}
@@ -400,8 +436,16 @@ void CGroup::GetAliveMemberInfoWithLeader(MemberPlacement& P0, MemberNodes& P1, 
 				if (M) {
 					P0.push_back(E->Position());
 					P1.push_back(M->AI_NodeID);
-					P2.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
-					P3.push_back(M->AI_Path.DestNode);
+					if (M->AI_Path.DestNode != DWORD(-1)) {
+						P2.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
+						P3.push_back(M->AI_Path.DestNode);
+					}
+					else {
+						Fvector tTemp;
+						tTemp.set(0,0,0);
+						P2.push_back(tTemp);
+						P3.push_back(0);
+					}
 				}
 			}
 		}

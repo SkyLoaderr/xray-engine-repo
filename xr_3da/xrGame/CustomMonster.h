@@ -133,6 +133,11 @@ public:
 	
 	float				m_fTimeUpdateDelta;
 	//float				m_fTorsoAngle;
+	DWORD				m_dwLoopCount;
+	int					m_iCurrentPatrolIndex;
+	bool				m_bPatrolPathInverted;
+	bool				m_bWaitingForMembers;
+
 
 	// movement
 	float				m_fJumpSpeed;
@@ -214,6 +219,25 @@ public:
 	IC		void		StandUp()	{ m_cBodyState = BODY_STATE_STAND;  };
 	IC		void		Squat()		{ m_cBodyState = BODY_STATE_CROUCH; };
 	IC		void		Lie()		{ m_cBodyState = BODY_STATE_LIE;    };
+
+	// miscellaneous
+	IC		int			ifGetMemberIndex() 
+	{
+		vector<CEntity*> &tpaMembers = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].Members;
+		int iCount = (int)tpaMembers.size();
+		for (int i=0; i<iCount; i++)
+			if (this == tpaMembers[i])
+				return(i);
+		return(-1);
+	};
+
+	IC		void		vfRestPatrolData()
+	{
+		m_dwLoopCount = 0;
+		m_iCurrentPatrolIndex = -1;
+		m_bPatrolPathInverted = false;
+		m_bWaitingForMembers = false;
+	};
 	
 public:
 	//typedef BOOL (*QualifierFunction)(CObject*, void*);
