@@ -26,7 +26,7 @@ void CStateMonsterAttackRunAbstract::initialize()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackRunAbstract::execute()
 {
-	float dist = object->EnemyMan.get_enemy()->Position().distance_to(object->Position());
+//	float dist = object->EnemyMan.get_enemy()->Position().distance_to(object->Position());
 	
 	// установка параметров функциональных блоков
 	object->set_action									(ACT_RUN);

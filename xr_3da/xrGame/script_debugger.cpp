@@ -65,13 +65,13 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 		}break;
 
 	case DMSG_CLEAR_STACKTRACE:{
-			m_callStack.Clear();
+			m_callStack->Clear();
 			msg.w_int(DMSG_CLEAR_STACKTRACE);
 			SendMessageToIde(msg);
 		}break;
 
 	case DMSG_ADD_STACKTRACE:{
-			m_callStack.Add(((StackTrace*)wParam)->szDesc, 
+			m_callStack->Add(((StackTrace*)wParam)->szDesc, 
 							((StackTrace*)wParam)->szFile, 
 							((StackTrace*)wParam)->nLine);
 
@@ -81,7 +81,7 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 		}break;
 
 	case DMSG_GOTO_STACKTRACE_LEVEL:{
-			m_callStack.GotoStackTraceLevel((int)wParam);
+			m_callStack->GotoStackTraceLevel((int)wParam);
 			StackLevelChanged();
 		}break;
 	
@@ -139,8 +139,11 @@ BOOL CScriptDebugger::Active()
 }
 
 CScriptDebugger::CScriptDebugger()
-:m_threads(this),m_callStack(this),m_lua(this)
 {
+	m_threads			= xr_new<CDbgScriptThreads>(this);
+	m_callStack			= xr_new<CScriptCallStack>(this);
+	m_lua				= xr_new<CDbgLuaHelper>(this);
+
 	ZeroMemory(m_curr_connected_mslot,sizeof(m_curr_connected_mslot));
 //	m_pDebugger					= this;
 	m_nLevel					= 0;
@@ -171,15 +174,19 @@ void CScriptDebugger::Connect(LPCSTR mslot_name)
 CScriptDebugger::~CScriptDebugger()
 {
 	if (Active())
-		_SendMessage(DMSG_CLOSE_CONNECTION,0,0);
+		_SendMessage	(DMSG_CLOSE_CONNECTION,0,0);
 
-	CloseHandle(m_mailSlot);
+	CloseHandle			(m_mailSlot);
+
+	xr_delete			(m_threads);
+	xr_delete			(m_callStack);
+	xr_delete			(m_lua);
 }
 
 void CScriptDebugger::UnPrepareLua(lua_State* l, int idx)
 {
 	if(idx == -1) return; // !Active()
-	m_lua.UnPrepareLua (l, idx);
+	m_lua->UnPrepareLua (l, idx);
 }
 
 int CScriptDebugger::PrepareLua(lua_State* l)
@@ -189,14 +196,14 @@ int CScriptDebugger::PrepareLua(lua_State* l)
 	if(!Active())return -1;
 
 	m_nMode = DMOD_NONE;
-	return m_lua.PrepareLua(l);
+	return m_lua->PrepareLua(l);
 }
 
 BOOL CScriptDebugger::PrepareLuaBind()
 {
 	if(!Active())return FALSE;
 
-	m_lua.PrepareLuaBind();
+	m_lua->PrepareLuaBind();
 	m_nMode = DMOD_NONE;
 
 	return TRUE;
@@ -246,18 +253,18 @@ void CScriptDebugger::FunctionHook(const char *szFile, int nLine, BOOL bCall)
 void CScriptDebugger::DrawThreadInfo(int nThreadID)
 {
 	//find corresponding lua_state
-	lua_State* ls = m_threads.FindScript(nThreadID);
+	lua_State* ls = m_threads->FindScript(nThreadID);
 	if(!ls)
 		return;
-	m_lua.set_lua(ls);
+	m_lua->set_lua(ls);
 	DrawCurrentState();
 }
 
 void CScriptDebugger::DrawCurrentState()
 {
-	m_lua.DrawStackTrace();
-	m_callStack.SetStackTraceLevel(0);
-	m_lua.DrawGlobalVariables();
+	m_lua->DrawStackTrace();
+	m_callStack->SetStackTraceLevel(0);
+	m_lua->DrawGlobalVariables();
 	_SendMessage(DMSG_GOTO_STACKTRACE_LEVEL, GetStackTraceLevel(), 0);
 }
 
@@ -265,8 +272,8 @@ void CScriptDebugger::DebugBreak(const char *szFile, int nLine)
 {
 	m_nMode = DMOD_NONE;
 
-	m_threads.Fill();
-	m_threads.DrawThreads();
+	m_threads->Fill();
+	m_threads->DrawThreads();
 
 	DrawCurrentState();
 
@@ -303,17 +310,17 @@ void CScriptDebugger::AddStackTrace(const char* szDesc, const char* szFile, int 
 
 int CScriptDebugger::GetStackTraceLevel()
 {
-	return m_callStack.GetLevel();
+	return m_callStack->GetLevel();
 }
 
 void CScriptDebugger::StackLevelChanged()
 {
-	m_lua.DrawLocalVariables();
+	m_lua->DrawLocalVariables();
 }
 
 void CScriptDebugger::DrawVariableInfo(char* varName)
 {
-	m_lua.DrawVariableInfo(varName);
+	m_lua->DrawVariableInfo(varName);
 }
 
 void CScriptDebugger::ClearLocalVariables()
@@ -347,7 +354,7 @@ void CScriptDebugger::Eval(const char* strCode, char* res)
 	strCodeFull[0] = 0;
 	const char * r = "return  ";
 	strconcat(strCodeFull,r,strCode);
-	m_lua.Eval(strCodeFull, res);
+	m_lua->Eval(strCodeFull, res);
 }
 
 void CScriptDebugger::CheckNewMessages()

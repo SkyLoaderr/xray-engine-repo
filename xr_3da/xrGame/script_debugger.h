@@ -92,9 +92,9 @@ protected:
 	void			SendMessageToIde	(CMailSlotMsg&);
 
 
-	CDbgScriptThreads					m_threads;
-	CDbgLuaHelper						m_lua;
-	CScriptCallStack					m_callStack;
+	CDbgScriptThreads					*m_threads;
+	CDbgLuaHelper						*m_lua;
+	CScriptCallStack					*m_callStack;
 //	static CScriptDebugger*				m_pDebugger;
 	int									m_nMode;
 	int									m_nLevel;  //for step into/over/out
