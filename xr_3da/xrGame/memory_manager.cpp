@@ -81,11 +81,11 @@ void CMemoryManager::update			(const xr_vector<T> &objects)
 
 const CMemoryInfo	CMemoryManager::memory(const CObject *object) const
 {
-	CMemoryInfo							result;
-	result.m_object						= 0;
-	ALife::_TIME_ID							game_time = 0;
-	const CGameObject					*game_object = dynamic_cast<const CGameObject*>(object);
-	VERIFY								(game_object);
+	CMemoryInfo						result;
+	result.m_object					= 0;
+	ALife::_TIME_ID					game_time = 0;
+	const CGameObject				*game_object = dynamic_cast<const CGameObject*>(object);
+	VERIFY							(game_object);
 
 	{
 		xr_vector<CVisibleObject>::const_iterator	I = std::find(memory_visible_objects().begin(),memory_visible_objects().end(),object_id(object));
@@ -110,7 +110,7 @@ const CMemoryInfo	CMemoryManager::memory(const CObject *object) const
 	
 	{
 		xr_vector<CHitObject>::const_iterator	I = std::find(hit_objects().begin(),hit_objects().end(),object_id(object));
-		if ((hit_objects().end() != I) && (game_time > (*I).m_game_time)) {
+		if ((hit_objects().end() != I) && (game_time < (*I).m_game_time)) {
 			(CMemoryObject<CGameObject>&)result = (CMemoryObject<CGameObject>&)(*I);
 			result.m_object							= game_object;
 			result.m_hit_info						= true;

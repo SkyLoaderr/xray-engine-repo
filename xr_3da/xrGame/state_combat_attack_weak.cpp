@@ -58,13 +58,19 @@ void CStateAttackWeak::execute			()
 	if (!mem_object.m_object)
 		return;
 
-	if (m_object->visible(m_object->enemy()))
+	if (m_object->visible(m_object->enemy())) {
 		m_object->CObjectHandler::set_dest_state(eObjectActionFire1,m_object->best_weapon());
-	else
+		m_object->CSightManager::update			(eLookTypeFirePoint,&mem_object.m_object_params.m_position);
+	}
+	else {
 		if (m_object->best_weapon()->SUB_CLS_ID != CLSID_IITEM_BOLT)
 			m_object->CObjectHandler::set_dest_state(eObjectActionAim1,m_object->best_weapon());
+		
+		Fvector			direction;
+		direction.sub	(mem_object.m_object_params.m_position,m_object->Position());
+		m_object->CSightManager::update				(eLookTypeDirection,&direction);
+	}
 
-	m_object->CSightManager::update				(eLookTypeFirePoint,&mem_object.m_object_params.m_position);
 	m_object->set_level_dest_vertex				(mem_object.m_object_params.m_level_vertex_id);
 	m_object->CStalkerMovementManager::update	(
 		0,
