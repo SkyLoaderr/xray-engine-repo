@@ -110,16 +110,14 @@ VOID CDeflector::OA_Export()
 	size.sub	(max,min);
 
 	// Surface
-	lm.dwWidth  = iCeil(size.u*g_params.m_lm_pixels_per_meter*density)+BORDER*2; clamp(lm.dwWidth, BORDER*2ul,512ul);
-	lm.dwHeight = iCeil(size.v*g_params.m_lm_pixels_per_meter*density)+BORDER*2; clamp(lm.dwHeight,BORDER*2ul,512ul);
+	lm.dwWidth  = iCeil(size.u*g_params.m_lm_pixels_per_meter*density); clamp(lm.dwWidth, 2ul,510ul);
+	lm.dwHeight = iCeil(size.v*g_params.m_lm_pixels_per_meter*density); clamp(lm.dwHeight,2ul,510ul);
 	lm.bHasAlpha= FALSE;
 	iArea		= lm.dwWidth*lm.dwHeight;
 
 	// Setup variables
 	UVpoint		dim, guard, scale;
 	dim.set		(float(lm.dwWidth), float(lm.dwHeight));
-	guard.set	(BORDER/512.f,BORDER/512.f);
-	scale.set	(1.f-2.f*guard.u, 1.f-2.f*guard.v); 
 
 	// *** Addressing 
 	// also calculate center & radius in 3D space
@@ -132,8 +130,8 @@ VOID CDeflector::OA_Export()
 
 		for (int i=0; i<3; i++) 
 		{
-			R.uv[i].u = scale.u*(T->uv[i].u-min.u)/size.u + guard.u; 
-			R.uv[i].v = scale.v*(T->uv[i].v-min.v)/size.v + guard.v; 
+			R.uv[i].u = (T->uv[i].u-min.u)/size.u; 
+			R.uv[i].v = (T->uv[i].v-min.v)/size.v; 
 			bb.modify(F->v[i]->P);
 		}
 		*T = R;
