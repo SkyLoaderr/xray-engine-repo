@@ -389,7 +389,7 @@ function process_map_spot(info_id)
 		add_location(505, "bar_dolg_captain_ivancov_location")
 
 	elseif info_id == "bar_dolg_veteran_done" then
-		remove_location(505, "bar_dolg_captain_ivancov_location)
+		remove_location(505, "bar_dolg_captain_ivancov_location")
 
 
 
