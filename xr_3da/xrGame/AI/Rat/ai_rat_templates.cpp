@@ -34,6 +34,7 @@ void CAI_Rat::vfSetFire(bool bFire, CGroup &Group)
 void CAI_Rat::vfSetMovementType(float fSpeed)
 {
 //	StandUp();
+	m_bMoving = _abs(fSpeed) > EPS_L;
 	m_fSpeed = m_fCurSpeed = fSpeed;
 }
 
@@ -136,6 +137,8 @@ void CAI_Rat::vfAdjustSpeed()
 bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 {
 	// saving current parameters
+	m_bCanAdjustSpeed	= bCanAdjustSpeed;
+	m_bStraightForward	= bStraightForward;
 	Fvector tSafeHPB = m_tHPB;
 	Fvector tSavedPosition = Position();
 	SRotation tSavedTorsoTarget = r_torso_target;
@@ -148,7 +151,7 @@ bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 		return(true);
 	
 	m_fCurSpeed = m_fSpeed;
-	
+
 	// Update position and orientation of the planes
 	float fAT = m_fASpeed * m_fTimeUpdateDelta;
 

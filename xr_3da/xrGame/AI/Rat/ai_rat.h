@@ -145,7 +145,6 @@ class CAI_Rat : public CCustomMonster, CEatableItem
 
 		// constants
 		float				m_fGoalChangeDelta;
-		float				m_fSpeed;
 		float				m_fSafeSpeed;
 		float				m_fASpeed;
 		Fvector				m_tVarGoal;
@@ -214,6 +213,11 @@ class CAI_Rat : public CCustomMonster, CEatableItem
 		BOOL				m_bEatMemberCorpses;
 		BOOL				m_bCannibalism;
 		u32					m_dwEatCorpseInterval;
+public:
+		float				m_fSpeed;
+		bool				m_bMoving;
+		bool				m_bCanAdjustSpeed;
+		bool				m_bStraightForward;
 
 		//////////////////////////
 		// INLINE FUNCTIONS
@@ -359,6 +363,7 @@ class CAI_Rat : public CCustomMonster, CEatableItem
 		void	FreeRecoil();
 		void	ReturnHome();
 		void	EatCorpse();
+		void	Init();
 	public:
 					   CAI_Rat();
 		virtual		  ~CAI_Rat();

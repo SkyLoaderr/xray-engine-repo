@@ -13,6 +13,19 @@
 #include "..\\..\\PhysicsShell.h"
 CAI_Rat::CAI_Rat()
 {
+	Init();
+}
+
+CAI_Rat::~CAI_Rat()
+{
+	DELETE_SOUNDS			(SND_HIT_COUNT,	m_tpaSoundHit);
+	DELETE_SOUNDS			(SND_DIE_COUNT,	m_tpaSoundDie);
+	DELETE_SOUNDS			(SND_VOICE_COUNT,	m_tpaSoundVoice);
+	xr_delete				(m_pPhysicsShell);
+}
+
+void CAI_Rat::Init()
+{
 	m_tHitDir.set			(0,0,1);
 	m_tSavedEnemyPosition.set(0,0,0);
 	m_dwHitTime				= 0;
@@ -45,14 +58,9 @@ CAI_Rat::CAI_Rat()
 	m_pPhysicsShell			= NULL;
 	m_saved_impulse			= 0.f;
 	m_dwTimeToChange		= 30000;
-}
-
-CAI_Rat::~CAI_Rat()
-{
-	DELETE_SOUNDS			(SND_HIT_COUNT,	m_tpaSoundHit);
-	DELETE_SOUNDS			(SND_DIE_COUNT,	m_tpaSoundDie);
-	DELETE_SOUNDS			(SND_VOICE_COUNT,	m_tpaSoundVoice);
-	xr_delete				(m_pPhysicsShell);
+	m_bMoving				= false;
+	m_bCanAdjustSpeed		= false;
+	m_bStraightForward		= false;
 }
 
 void CAI_Rat::Die()
@@ -79,8 +87,9 @@ void CAI_Rat::Die()
 void CAI_Rat::Load(LPCSTR section)
 { 
 	// load parameters from ".ini" file
-	inherited::Load(section);
+	Init();
 
+	inherited::Load(section);
 	CEatableItem::Load(section);
 
 	/*
@@ -236,6 +245,8 @@ void CAI_Rat::net_Destroy()
 {
 	inherited::net_Destroy();
 
+	Init();
+
 	if (m_pPhysicsShell) m_pPhysicsShell->Deactivate();
 }
 
@@ -353,12 +364,15 @@ void CAI_Rat::CreateSkeleton(){
 
 void CAI_Rat::shedule_Update(u32 dt)
 {
+//	Fmatrix	l_tSavedTransform = XFORM();
 	inherited::shedule_Update	(dt);
-	if(m_pPhysicsShell)
-	{
+
+	if(m_pPhysicsShell) {
 		m_pPhysicsShell->Update	();
 		XFORM().set				(m_pPhysicsShell->mXFORM);
 	}
+//	else
+//		XFORM()					= l_tSavedTransform;
 }
 
 void CAI_Rat::UpdateCL(){

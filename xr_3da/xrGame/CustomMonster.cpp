@@ -13,6 +13,7 @@
 	#include "actor.h"
 #endif
 #include "ai_script_actions.h"
+#include "ai\\rat\\ai_rat.h"
 
 using namespace AI;
 
@@ -367,8 +368,10 @@ void CCustomMonster::UpdateCL	()
 			float	factor			= (float(d1)/float(d2));
 			Fvector					l_tOldPosition = Position();
 			NET_Last.lerp			(A,B,factor);
-			if (Local())
-				NET_Last.p_pos		= l_tOldPosition;
+			if (Local()) {
+				if (SUB_CLS_ID != CLSID_AI_RAT)
+					NET_Last.p_pos		= l_tOldPosition;
+			}
 			else {
 				if (!bfScriptAnimation()) {
 					Fvector					dir;
@@ -385,15 +388,33 @@ void CCustomMonster::UpdateCL	()
 
 	if (Local() && g_Alive()) {
 #pragma todo("Dima to All : this is FAKE, network is not supported here!")
+		
 		if (SUB_CLS_ID != CLSID_AI_RAT) {
-			
 			AI_Path.Calculate(this,NET_Last.p_pos,Position(),m_fCurSpeed,Device.fTimeDelta);
-
 			if (!bfScriptAnimation()) {
 				Fvector				dir;
 				AI_Path.Direction	(dir);
 				SelectAnimation		(XFORM().k,dir,AI_Path.fSpeed);
 			}
+		}
+		else {
+			CAI_Rat				*l_tpRat = dynamic_cast<CAI_Rat*>(this);
+			R_ASSERT			(l_tpRat);
+//			if ((dwTime > N.dwTimeStamp) || (NET.size() < 2)) {
+//				Fmatrix				l_tSavedTransform = XFORM();
+//				m_fTimeUpdateDelta	= Device.fTimeDelta;
+//				l_tpRat->bfComputeNewPosition(l_tpRat->m_bCanAdjustSpeed,l_tpRat->m_bStraightForward);
+//				Think();
+//				float				y,p,b;
+//				XFORM().getHPB		(y,p,b);
+//				NET_Last.p_pos		= Position();
+//				NET_Last.o_model	= y;
+//				NET_Last.o_torso.yaw= y;
+//				NET_Last.o_torso.pitch= p;
+//				XFORM()				= l_tSavedTransform;
+//			}
+			if (!bfScriptAnimation())
+				SelectAnimation		(XFORM().k,Fvector().set(1,0,0),l_tpRat->m_fSpeed);
 		}
 	}
 
