@@ -791,8 +791,41 @@ bool load_file_into_namespace(lua_State *L, LPCSTR S, LPCSTR N, bool bCall = tru
 //}
 //
 // main
+
+class A {
+public:
+	~A()
+	{
+		Log("A");
+	};
+};
+
+class AA {
+public:
+	~AA()
+	{
+		Log("AA");
+	};
+};
+
+class B : public A, public AA {
+public:
+	~B()
+	{
+		Log("B");
+	};
+
+	virtual bb() {};
+};
+
 int __cdecl main(int argc, char* argv[])
 {
+//	A* a = xr_new<A>();
+	B* b = xr_new<B>();
+	
+//	xr_delete(a);
+	xr_delete(b);
+
 	printf	("xrLuaCompiler v0.1\n");
 	if (argc < 2) {
 		printf	("Syntax : xrLuaCompiler.exe <file1> <file2> ... <fileN>\nAll the files must be in the directory \"s:\\gamedata\\scripts\" \nwith \".script\" extension\n");
