@@ -726,8 +726,6 @@ going_speed          = 1.5                      ; option for ALife Simulator
 search_speed		 = 0.5
 going_item_detect_probability = 0.1
 search_item_detect_probability = 0.9
-eye_fov              = 120	;170	;145	;170
-eye_range            = 30	;50	;100	;70	;150
 max_item_mass		 = 40.0
 MaxHealthValue		 = 100			; range [0..200]
 
@@ -788,9 +786,11 @@ selector_cover           =      20.0,            -1000.0,                30.0,  
 selector_retreat         =      20.0,             -100.0,            1000.0,                 1000.0,                0.0,                   0.0,        100000.0,                 0.0,                   000.0
 
 ;-------VISIBILITY----------------------------------------------------
-min_view_distance_danger =  0.3				; коэффициент, который множится на eye_range, в зависимости от угла
+eye_fov					 = 120	;170	;145	;170
+eye_range				 = 70	;50	;100	;70	;150
+min_view_distance_danger =  0.0				; коэффициент, который множится на eye_range, в зависимости от угла
 max_view_distance_danger =  1.0				; коэффициент, который множится на eye_range, в зависимости от угла
-min_view_distance_free   =  0.3				; коэффициент, который множится на eye_range, в зависимости от угла
+min_view_distance_free   =  0.0				; коэффициент, который множится на eye_range, в зависимости от угла
 max_view_distance_free	 =  1.0				; коэффициент, который множится на eye_range, в зависимости от угла
 visibility_value		 =  1.0				; значение, при достижении суммой которого объект считается видимым
 always_visible_distance_danger = 0.0
