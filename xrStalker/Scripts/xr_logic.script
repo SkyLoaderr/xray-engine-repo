@@ -152,8 +152,8 @@ function gulag_activate(npc, ini, section, gulag_name, death, combat, actor_dial
 end
 
 function enable_scripts(npc, ini, stype)
-	printf("DEBUG: stalker_enable_scripts")
-	printf("_bp: obj:name()=%s, obj:id()=%s", npc:name(), npc:id())
+	--printf("DEBUG: stalker_enable_scripts")
+	--printf("_bp: obj:name()=%s, obj:id()=%s", npc:name(), npc:id())
 
 	local npc_id = npc:id()
 
@@ -166,7 +166,7 @@ function enable_scripts(npc, ini, stype)
 		local cfg_filename = utils.cfg_get_string(ini, "logic", "cfg", npc, false, "")
 		local actual_ini
 		if cfg_filename then
-			printf("enable_scripts: object '%s' has external configuration file '%s'", npc:name(), cfg_filename)
+			--printf("enable_scripts: object '%s' has external configuration file '%s'", npc:name(), cfg_filename)
 			actual_ini = ini_file(cfg_filename)
 			if actual_ini:line_count("logic") == 0 then
 				utils.abort("file '%s' does not exist or is empty, or has no section 'logic'", cfg_filename)
@@ -189,21 +189,21 @@ function enable_scripts(npc, ini, stype)
 		-- ќбщие схемы должны работать и без logic:
 		set_generic_schemes(ini, npc, stype)
 	end
-	printf("DEBUG: stalker_enable_scripts end")
+	--printf("DEBUG: stalker_enable_scripts end")
 end
 
 function set_generic_schemes(ini, npc, stype, death, combat, actor_dialogs)
 	if stype == modules.stype_stalker then
 		local combat_section = utils.cfg_get_string(ini, "logic", "on_combat", npc, false, "")
-		printf("_bp: npc='%s': combat section: %s", npc:name(), if_then_else(combat_section ~= nil, "found",
-			"not_found"))
+		--printf("_bp: npc='%s': combat section: %s", npc:name(), if_then_else(combat_section ~= nil, "found",
+		--	"not_found"))
 		if combat_section then
 			xr_combat.set_combat_checker(npc, ini, "combat", combat_section)
 		end
 		
 		local death_section = utils.cfg_get_string(ini, "logic", "on_death", npc, false, "")
-		printf("_bp: npc='%s': death section: %s", npc:name(), if_then_else(death_section ~= nil, "found",
-			"not_found"))
+		--printf("_bp: npc='%s': death section: %s", npc:name(), if_then_else(death_section ~= nil, "found",
+		--	"not_found"))
 		if death_section then
 			xr_death.set_death_checker(npc, ini, "death", death_section)
 		end
@@ -217,8 +217,8 @@ function set_generic_schemes(ini, npc, stype, death, combat, actor_dialogs)
 		
 		-- wounded
 		local wounded_section = utils.cfg_get_string (ini, "logic", "wounded", npc, false, "")
-		printf("_bp: npc='%s': wounded section: %s", npc:name(), if_then_else(wounded_section ~= nil, "found",
-			"not_found"))
+		--printf("_bp: npc='%s': wounded section: %s", npc:name(), if_then_else(wounded_section ~= nil, "found",
+		--	"not_found"))
 		xr_wounded.set_wounded (npc, ini, "wounded", wounded_section)
 
 		local rest_section = utils.cfg_get_string(ini, "logic", "rest", npc, false, "")
@@ -227,16 +227,23 @@ function set_generic_schemes(ini, npc, stype, death, combat, actor_dialogs)
 		end   
 
 		local heli_hunter_section = utils.cfg_get_string(ini, "logic", "heli_hunter", npc, false, "")
-		printf("_bp: npc='%s': heli_hunter section: %s", npc:name(), if_then_else(heli_hunter_section ~= nil, "found",
-			"not_found"))
+		--printf("_bp: npc='%s': heli_hunter section: %s", npc:name(), if_then_else(heli_hunter_section ~= nil, "found",
+		--	"not_found"))
 		--if heli_hunter_section then
 			xr_heli_hunter.set_scheme(npc, ini, "heli_hunter", heli_hunter_section)
 		--end
+	elseif stype == modules.stype_mobile then
+		local death_section = utils.cfg_get_string(ini, "logic", "on_death", npc, false, "")
+		--printf("_bp: npc='%s': death section: %s", npc:name(), if_then_else(death_section ~= nil, "found",
+		--	"not_found"))
+		if death_section then
+			mob_death.set_scheme(npc, ini, "mob_death", death_section)
+		end
 	end
 end
 
 function activate_by_section(npc, ini, section)
-	printf("DEBUG: activate_by_section: looking for section '%s'", section)
+	--printf("DEBUG: activate_by_section: looking for section '%s'", section)
 
 	local npc_id = npc:id()
 	if xr_motivator.storage[npc_id]["active_section"] then
@@ -277,7 +284,7 @@ function activate_by_section(npc, ini, section)
 			utils.abort("xr_logic: can't call %s.set_scheme() - a nil value", schemes[scheme])
 		end
 		_G[schemes[scheme]].set_scheme(npc, ini, scheme, section, xr_motivator.storage[npc_id]["gulag_name"])
-		printf("DEBUG: activate_by_section: scheme '%s' activated from section '%s'", scheme, section)
+		--printf("DEBUG: activate_by_section: scheme '%s' activated from section '%s'", scheme, section)
 		xr_motivator.storage[npc_id]["active_section"] = section
 		xr_motivator.storage[npc_id]["active_scheme"] = scheme
 
@@ -289,7 +296,7 @@ function activate_by_section(npc, ini, section)
 end
 
 function reset_generic_schemes_on_scheme_switch(npc)
-	printf("_bp: reset_generic_schemes_on_scheme_switch: npc:name()='%s'", npc:name())
+	--printf("_bp: reset_generic_schemes_on_scheme_switch: npc:name()='%s'", npc:name())
 	local st = xr_motivator.storage[npc:id()]
 
 	if not st.stype then
@@ -300,7 +307,7 @@ function reset_generic_schemes_on_scheme_switch(npc)
 		xr_meet.dialog_manager_reset(npc, st.stype)
 		xr_reactions.reset_rules(npc)
 	elseif st.stype == modules.stype_mobile then
-		printf("_bp: disabling talk")
+		--printf("_bp: disabling talk")
 		--npc:disable_talk() -- теперь делаетс€ в dialog_manager_reset
 		xr_meet.dialog_manager_reset(npc, st.stype)
 		mob_release(npc)
@@ -321,7 +328,7 @@ function assign_storage_and_bind(npc, ini, scheme, section)
 		st["npc"] = npc
 		
 		-- —хема стартует впервые - прибиндить
-		printf("DEBUG: assign_storage_and_bind: bind scheme: '%s'", scheme)
+		--printf("DEBUG: assign_storage_and_bind: bind scheme: '%s'", scheme)
 		_G[schemes[scheme]].add_to_binder(npc, ini, scheme, section, st)
 	else
 		st = xr_motivator.storage[npc_id][scheme]
@@ -335,7 +342,7 @@ function assign_storage_and_bind(npc, ini, scheme, section)
 end
 
 function subscribe_action_for_events(npc, storage, new_action)
-	printf("DEBUG: registering new action for reset event (npc:name() = '%s')", npc:name())
+	--printf("DEBUG: registering new action for reset event (npc:name() = '%s')", npc:name())
 
 	if not storage.actions then
 		storage.actions = {}
@@ -346,7 +353,7 @@ end
 
 -- st - storage активной схемы
 function reset_actions_event(npc, st)
-	printf("DEBUG: reset_actions_event")
+	--printf("DEBUG: reset_actions_event")
 	if not st.actions then
 		local global_st = xr_motivator.storage[npc:id()]
 		printf("WARNING: reset_actions: scheme '%s', section '%s': at least one action in a scheme must be " ..
@@ -399,7 +406,7 @@ function extrapolate_callback_event(npc, st)
 	end
 	for action_ptr, is_active in pairs(st.actions) do
 		if action_ptr.extrapolate_callback then
-			printf("___ISSUING EXTRAPOLATE CALLBACK EVENT___")
+			--printf("___ISSUING EXTRAPOLATE CALLBACK EVENT___")
 			action_ptr:extrapolate_callback(npc)
 		end
 	end
@@ -463,12 +470,12 @@ function pick_section_from_condlist(actor, npc, condlist)
 					xr_effects[infop.func](actor, npc)
 				elseif infop.required then
 					if not actor:has_info(infop.name) then
-						printf("_bp: setting infoportion: %s", infop.name)
+						--printf("_bp: setting infoportion: %s", infop.name)
 						actor:give_info_portion(infop.name)
 					end
 				else
 					if actor:has_info(infop.name) then
-						printf("_bp: disabling infoportion: %s", infop.name)
+						--printf("_bp: disabling infoportion: %s", infop.name)
 						actor:disable_info_portion(infop.name)
 					end
 				end
@@ -566,7 +573,7 @@ function try_switch_to_another_section(npc, st, actor)
 		end
 
 		if switched then
-			printf("_SWITCHED")
+			--printf("_SWITCHED")
 			break
 		end
 	end

@@ -110,6 +110,7 @@ load_scheme("xr_rest",        "rest",        stype_stalker)
 ----------------------------------------------------------------------
 load_scheme("mob_remark",     "mob_remark",  stype_mobile)
 load_scheme("mob_walker",     "mob_walker",  stype_mobile)
+load_scheme("mob_death",      "mob_death",   stype_mobile)
 
 ----------------------------------------------------------------------
 -- Загрузка модулей физических объектов:
