@@ -79,9 +79,9 @@ namespace CPU
 			start			=	GetCycleCount();
 			cycles_overhead	+=	GetCycleCount()-start-dummy;
 		}
-		cycles_overhead	/= 64;
+		cycles_overhead		/=	64;
 
-		cycles_per_second -= cycles_overhead;
+		cycles_per_second	-=	cycles_overhead;
 		SetPriorityClass	(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 
 		_control87	( _PC_64,   MCW_PC );
@@ -91,6 +91,8 @@ namespace CPU
 		cycles2seconds = float(double(a/b));
 		a = 1000;	b = double(cycles_per_second);
 		cycles2milisec = float(double(a/b));
+		a = 1000000;b = double(cycles_per_second);
+		cycles2microsec = float(double(a/b));
 	}
 };
 

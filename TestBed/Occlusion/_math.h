@@ -38,6 +38,7 @@ namespace CPU {
 	ENGINE_API extern u64				cycles_overhead;
 	ENGINE_API extern float				cycles2seconds;
 	ENGINE_API extern float				cycles2milisec;
+	ENGINE_API extern float				cycles2microsec;
 	ENGINE_API extern _processor_info	ID;
 
 #ifdef M_VISUAL
