@@ -10,12 +10,15 @@
     #include "..\FBasicVisual.h"
     #include "..\ParticleCustom.h"
 #endif
+
 // refs
 namespace PAPI
 {
 	struct Particle;
 	struct ParticleEffect;
 	struct PAHeader;
+	struct ParticleAction;
+    DEFINE_VECTOR(ParticleAction*,PAVec,PAVecIt);
 }
 
 namespace PS
