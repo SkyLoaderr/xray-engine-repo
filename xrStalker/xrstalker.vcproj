@@ -772,9 +772,6 @@
 					RelativePath=".\Config\ui\map_character.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\map_spots.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\motion_icon.xml">
 				</File>
 				<File
@@ -849,6 +846,31 @@
 				<File
 					RelativePath=".\Config\ui\zone_map.xml">
 				</File>
+				<Filter
+					Name="mapspots"
+					Filter="">
+					<File
+						RelativePath=".\Config\ui\map_spots.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\map_spots_agroprom.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\map_spots_escape.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\map_spots_garbage.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\map_spots_military.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\map_spots_radar.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\map_spots_rostok.xml">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="weapons"
