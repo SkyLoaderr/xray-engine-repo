@@ -1200,26 +1200,45 @@ void CAI_Soldier::OnAttackFireAlone()
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE(!((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))),aiSoldierTurnOver)
 	
-	AI_Path.TravelPath.clear();
-	
 	vfSaveEnemy();
 
 	if (fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI/30.f) {
 		vfSetFire(true,Group);
 		CHECK_IF_GO_TO_NEW_STATE((dwCurTime - m_dwNoFireTime > 1000) && !m_bFiring && Weapons->ActiveWeapon() && (float(Weapons->ActiveWeapon()->GetAmmoElapsed()) / float(Weapons->ActiveWeapon()->GetAmmoMagSize()) < RECHARGE_MEDIAN + ::Random.randF(-RECHARGE_EPSILON,+RECHARGE_EPSILON)),aiSoldierRecharge);
+		if (dwCurTime - m_dwNoFireTime > 1000) {
+			INIT_SQUAD_AND_LEADER;
+			vfInitSelector(SelectorAttack,Squad,Leader);
+			if (AI_Path.bNeedRebuild)
+				vfBuildPathToDestinationPoint(&SelectorAttack);
+			else
+				vfSearchForBetterPositionWTime(SelectorAttack,Squad,Leader);
+			if (m_cBodyState != BODY_STATE_STAND)
+				vfSetMovementType(WALK_FORWARD_1);
+			else {
+				Squat();
+				vfSetMovementType(WALK_FORWARD_1);
+			}
+		}
+		else {
+			AI_Path.TravelPath.clear();
+			if (m_cBodyState != BODY_STATE_STAND)
+				vfSetMovementType(WALK_NO);
+			else {
+				Squat();
+				vfSetMovementType(WALK_NO);
+			}
+		}
 	}
-	else
-		vfSetFire(false,Group);
-	
-	if (m_cBodyState != BODY_STATE_STAND)
-		vfSetMovementType(WALK_NO);
 	else {
-		Squat();
-		vfSetMovementType(WALK_NO);
+		vfSetFire(false,Group);
+		AI_Path.TravelPath.clear();
+		if (m_cBodyState != BODY_STATE_STAND)
+			vfSetMovementType(WALK_NO);
+		else {
+			Squat();
+			vfSetMovementType(WALK_NO);
+		}
 	}
-	
-	//StandUp();
-	//vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
 }
 
 /**/
