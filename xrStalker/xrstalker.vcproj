@@ -292,6 +292,9 @@
 						RelativePath=".\Config\gameplay\tasks_agroprom.xml">
 					</File>
 					<File
+						RelativePath=".\Config\gameplay\tasks_darkvalley.xml">
+					</File>
+					<File
 						RelativePath=".\Config\gameplay\tasks_escape.xml">
 					</File>
 					<File
@@ -526,6 +529,9 @@
 						RelativePath=".\Config\text\rus\string_table_outfit.xml">
 					</File>
 					<File
+						RelativePath=".\Config\text\rus\string_table_tasks_darkvalley.xml">
+					</File>
+					<File
 						RelativePath=".\Config\text\rus\string_table_tasks_escape.xml">
 					</File>
 					<File
@@ -552,6 +558,9 @@
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\stable_dialogs_bar.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\stable_dialogs_darkvalley.ltx">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\stable_dialogs_escape.xml">

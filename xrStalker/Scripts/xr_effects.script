@@ -325,5 +325,11 @@ function military_lukash_dead (actor, npc)
        db.actor:set_task_state (task.fail, "mil_lukash_job", 3)
        level_tasks.remove_location (1007, "mil_lukash_location")
        level_tasks.remove_location (1002, "mil_max_location")
-    end        
+    end
+end
+
+function val_suicide_stalker_died(actor, npc)
+	if not db.actor:has_info_portion("val_suicide_artefact_given") then
+		db.actor:set_task_state(task.fail, "val_suicide_find_lost_stalker", 0)
+	end
 end

@@ -122,6 +122,13 @@ states = {
 				animstate = "stand",
 				animation = nil
 			},
+	threat_fire = {	weapon = "fire",
+				movement = move.stand,
+				mental = anim.danger,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = nil
+			},
 	hide = {	weapon = "unstrapped",
 				movement = move.stand,
 				mental = anim.danger,

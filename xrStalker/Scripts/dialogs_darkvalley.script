@@ -13,3 +13,7 @@
 function val_rob_actor_has_money(first_speaker, second_speaker)
 	return first_speaker:money() >= 100
 end
+
+function val_suicide_stalker_found(stalker, player)
+	db.actor:set_task_state(task.completed, "val_suicide_find_lost_stalker", 0)
+end

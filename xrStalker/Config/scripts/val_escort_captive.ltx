@@ -14,18 +14,11 @@ combat_ignore_cond = always
 no_move = true
 no_rotate = true
 anim = wounded
-;no_wpn = true
-;no_danger = true
 on_info = {+val_escort_actor_helped} remark@after_fight
 on_info2 = {-val_escort_guard1_combat -val_escort_guard2_combat -val_escort_guard3_combat} walker1
 combat_ignore_cond = always
 
 [walker@flee]
-no_move = true
-no_rotate = true
-no_wpn = true
-no_danger = true
-anim = wounded
 reactions = ignore
 path_walk = val_escort_captive_flee_walk
 path_look = val_escort_captive_flee_look
@@ -33,7 +26,6 @@ combat_ignore_cond = always
 
 [remark@after_fight]
 no_move = false
-no_wpn = true
 no_danger = true
 ; FIXME
 snd = gar_dm_newbie_thank_you
