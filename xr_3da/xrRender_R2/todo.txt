@@ -28,7 +28,7 @@ OPT:	occlusion culling of light volumes
 		1. if camera inside - assume visible
 		2. employ temporal coherence
 OPT:	precompute invisible list (visuals) for static lights at load time
-FEATUR:	statts:
+FEATURE:	stats:
 
 Engine/Game:
 	* refactor/rebuild collision detection infrastructure (along with Slipch)	
