@@ -12,7 +12,7 @@
 #include "bone.h"
 #include "motion.h"
 #include "MgcCont3DMinBox.h"
-#include "ui_main.h"
+#include "ui_main.h"          
 
 u32 CSkeletonCollectorPacked::VPack(SSkelVert& V){
     u32 P 	= 0xffffffff;

@@ -168,7 +168,7 @@ void CEditableMesh::Render(const Fmatrix& parent, CSurface* S)
 {
     if (!m_LoadState.is(LS_RBUFFERS)) CreateRenderBuffers();
 	// visibility test
-    if (!m_Visible) return;
+	if (!m_Flags.is(flVisible)) return;
 	// frustum test
     Fbox bb; bb.set(m_Box);
     bb.xform(parent);

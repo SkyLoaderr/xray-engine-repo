@@ -23,6 +23,30 @@
 #define CUSTOMOBJECT_CHUNK_MOTION_PARAM	0xF908
 //----------------------------------------------------
 
+CCustomObject::CCustomObject(LPVOID data, LPCSTR name)
+{
+    ClassID 	= OBJCLASS_DUMMY;
+    FName[0] 	= 0;
+    if (name) 	strcpy(FName, name);
+    m_CO_Flags.set	(flVisible);
+    m_RT_Flags.set	(flRT_Valid);
+    m_pOwnerObject	= 0;
+    ResetTransform	();
+    m_RT_Flags.set(flRT_UpdateTransform,FALSE);
+    m_Motion		= NULL;
+    m_MotionParams 	= NULL;
+}
+
+CCustomObject::CCustomObject(CCustomObject* source)
+{
+    ClassID 	= source->ClassID;
+    Name		= source->Name;
+    m_CO_Flags.set	(flVisible);
+    m_RT_Flags.set	(flRT_Valid);
+    m_pOwnerObject	= 0;
+    m_Motion		= NULL;
+    m_MotionParams 	= NULL;
+}
 CCustomObject::~CCustomObject()
 {
 	xr_delete				(m_Motion);
@@ -36,7 +60,7 @@ bool CCustomObject::IsRender()
 
 void CCustomObject::OnUpdateTransform()
 {
-	m_bUpdateTransform		= FALSE;
+	m_RT_Flags.set			(flRT_UpdateTransform,FALSE);
     // update transform matrix
 	FTransformR.setHPB		(PRotation.y, PRotation.x, PRotation.z);
 
@@ -152,7 +176,7 @@ void CCustomObject::Save(IWriter& F)
 void CCustomObject::OnFrame()
 {
     if (m_Motion) 			AnimationOnFrame();
-	if (m_bUpdateTransform) OnUpdateTransform();
+	if (m_RT_Flags.is(flRT_UpdateTransform)) OnUpdateTransform();
 }
 
 void CCustomObject::Render(int priority, bool strictB2F)

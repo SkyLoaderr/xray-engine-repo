@@ -89,7 +89,7 @@ void CEditableMesh::BoxQuery(const Fmatrix& parent, const Fmatrix& inv_parent, S
 
 bool CEditableMesh::RayPick(float& distance, const Fvector& start, const Fvector& direction, const Fmatrix& inv_parent, SRayPickInfo* pinf)
 {
-	if (!m_Visible) return false;
+	if (!m_Flags.is(flVisible)) return false;
 
     if (!m_CFModel) GenerateCFModel();
     float m_r 		= pinf?pinf->inf.range+EPS_L:UI.ZFar();// (bugs: не всегда выбирает) //S ????
@@ -185,8 +185,9 @@ bool CEditableMesh::BoxPick(const Fbox& box, const Fmatrix& inv_parent, SBoxPick
 }
 //----------------------------------------------------
 
-bool CEditableMesh::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
-	if (!m_Visible) return false;
+bool CEditableMesh::FrustumPick(const CFrustum& frustum, const Fmatrix& parent)
+{
+	if (!m_Flags.is(flVisible)) return false;
 
 	Fvector p[3];
 	for(u32 i=0;i<m_Faces.size();i++){
@@ -198,8 +199,9 @@ bool CEditableMesh::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
 }
 //---------------------------------------------------------------------------
 
-void CEditableMesh::FrustumPickFaces(const CFrustum& frustum, const Fmatrix& parent, U32Vec& fl){
-	if (!m_Visible) return;
+void CEditableMesh::FrustumPickFaces(const CFrustum& frustum, const Fmatrix& parent, U32Vec& fl)
+{
+	if (!m_Flags.is(flVisible)) return;
 
 	u32 i=0;
 	Fvector p[3];

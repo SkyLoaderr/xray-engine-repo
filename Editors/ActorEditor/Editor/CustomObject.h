@@ -37,8 +37,6 @@ struct SExportStreams{
 class CCustomObject {
 	EObjClass 		FClassID;
 
-    BOOL			m_bUpdateTransform;
-
 	SAnimParams*	m_MotionParams;
     COMotion*		m_Motion;
 
@@ -60,7 +58,8 @@ protected:
     };
     Flags32			m_CO_Flags;
 	enum{
-        flRT_Valid		= (1<<0),
+        flRT_Valid			= (1<<0),
+        flRT_UpdateTransform= (1<<1),
     };
     Flags32			m_RT_Flags;
 public:
@@ -100,6 +99,10 @@ protected:
 	virtual void 	SetRotation		(const Fvector& rot)	{ FRotation.set(rot);	UpdateTransform();}
     virtual void 	SetScale		(const Fvector& scale)	{ FScale.set(scale);	UpdateTransform();}
 public:
+					CCustomObject	(LPVOID data, LPCSTR name);
+					CCustomObject	(CCustomObject* source);
+	virtual 		~CCustomObject	();
+    
 	IC BOOL 		Motionable		(){return m_CO_Flags.is(flMotion); 	}
 	IC BOOL 		Visible			(){return m_CO_Flags.is(flVisible);	}
 	IC BOOL 		Locked			(){return m_CO_Flags.is(flLocked); 	}
@@ -137,7 +140,7 @@ public:
 	    				FITransformRP.identity	();
 					}
     virtual void 	ResetAnimation	(bool upd_t=true){;}
-    virtual void 	UpdateTransform	(bool bForced=false){m_bUpdateTransform=TRUE;if(bForced)OnUpdateTransform();}
+    virtual void 	UpdateTransform	(bool bForced=false){m_RT_Flags.set(flRT_UpdateTransform,TRUE);if(bForced)OnUpdateTransform();}
 
     // animation methods
     
@@ -176,31 +179,6 @@ public:
 
 	virtual void 	OnSynchronize	(){;}
     virtual void    OnShowHint      (AStringVec& dest);
-
-					CCustomObject	(LPVOID data, LPCSTR name)
-                    {
-                        ClassID 	= OBJCLASS_DUMMY;
-                        FName[0] 	= 0;
-                        if (name) 	strcpy(FName, name);
-                        m_CO_Flags.set	(flVisible);
-                        m_RT_Flags.set(flRT_Valid);
-                        m_pOwnerObject= 0;
-                        ResetTransform();
-                        m_bUpdateTransform = FALSE;
-                        m_Motion	= NULL;
-                    }
-
-					CCustomObject	(CCustomObject* source)
-                    {
-                        ClassID 	= source->ClassID;
-                        Name		= source->Name;
-                        m_CO_Flags.set	(flVisible);
-                        m_RT_Flags.set(flRT_Valid);
-                        m_pOwnerObject= 0;
-                        m_Motion	= NULL;
-					}
-
-	virtual 		~CCustomObject();
 
     IC const Fmatrix& _ITransform			(){return FITransform;}
     IC const Fmatrix& _Transform			(){return FTransform;}
