@@ -51,9 +51,17 @@ TEMPLATE_SPECIALIZATION
 IC	bool CSolverPathManager::is_goal_reached		(const _index_type &vertex_id) const
 {
 #ifdef INTENSIVE_MEMORY_USAGE
-	return					(vertex_id.includes(goal_node_index));
+	#ifndef REVERSE_SEARCH
+		return				(vertex_id.includes(goal_node_index));
+	#else
+		return				(goal_node_index.includes(vertex_id));
+	#endif
 #else
-	return					(vertex_id.includes(goal_node_index,graph->current_state()));
+	#ifndef REVERSE_SEARCH
+		return				(vertex_id.includes(goal_node_index,graph->current_state()));
+	#else
+		return				(goal_node_index.includes(vertex_id));
+	#endif
 #endif
 }
 
@@ -80,7 +88,11 @@ TEMPLATE_SPECIALIZATION
 IC	_dist_type CSolverPathManager::estimate			(const _index_type &vertex_id) const
 {
 	VERIFY					(graph);
+#ifndef REVERSE_SEARCH
 	return					(graph->get_edge_weight(vertex_id,goal_node_index,m_iterator));
+#else
+	return					(graph->get_edge_weight(vertex_id,start_node_index,m_iterator));
+#endif
 }
 
 TEMPLATE_SPECIALIZATION
@@ -88,8 +100,13 @@ template <typename T>
 IC	void CSolverPathManager::create_path			(T &vertex)
 {
 	VERIFY					(data_storage);
-	if (m_edge_path)
+	if (m_edge_path) {
+#ifndef REVERSE_SEARCH
 		data_storage->get_edge_path	(*m_edge_path,&vertex);
+#else
+		data_storage->get_edge_path	(*m_edge_path,&vertex,true);
+#endif
+	}
 }
 
 #undef TEMPLATE_SPECIALIZATION

@@ -72,6 +72,7 @@ IC	void CAbstractOperator::add_effect		(const COperatorCondition &effect)
 	m_effects.push_back		(effect);
 }
 
+#ifdef INTENSIVE_MEMORY_USAGE
 TEMPLATE_SPECIALIZATION
 IC	bool CAbstractOperator::applicable		(const CSConditionState &condition) const
 {
@@ -93,16 +94,16 @@ IC	bool CAbstractOperator::applicable		(const CSConditionState &condition) const
 			}
 	return					(true);
 }
-
+#else
 TEMPLATE_SPECIALIZATION
-IC	bool CAbstractOperator::applicable		(const CSConditionState &condition, const CSConditionState &start) const
+IC	bool CAbstractOperator::applicable		(const xr_vector<COperatorCondition> &condition, const xr_vector<COperatorCondition> &start, const xr_vector<COperatorCondition> &self_condition) const
 {
-	xr_vector<COperatorCondition>::const_iterator	i = conditions().begin();
-	xr_vector<COperatorCondition>::const_iterator	e = conditions().end();
-	xr_vector<COperatorCondition>::const_iterator	I = condition.conditions().begin();
-	xr_vector<COperatorCondition>::const_iterator	E = condition.conditions().end();
-	xr_vector<COperatorCondition>::const_iterator	J = start.conditions().begin();
-	xr_vector<COperatorCondition>::const_iterator	EE = start.conditions().end();
+	xr_vector<COperatorCondition>::const_iterator	i = self_condition.begin();
+	xr_vector<COperatorCondition>::const_iterator	e = self_condition.end();
+	xr_vector<COperatorCondition>::const_iterator	I = condition.begin();
+	xr_vector<COperatorCondition>::const_iterator	E = condition.end();
+	xr_vector<COperatorCondition>::const_iterator	J = start.begin();
+	xr_vector<COperatorCondition>::const_iterator	EE = start.end();
 	for ( ; (I != E) && (i != e); )
 		if ((*I).condition() < (*i).condition())
 			++I;
@@ -142,10 +143,16 @@ IC	bool CAbstractOperator::applicable		(const CSConditionState &condition, const
 	return					(true);
 }
 
+#endif
+
+#ifdef INTENSIVE_MEMORY_USAGE
 TEMPLATE_SPECIALIZATION
-IC	const typename CAbstractOperator::CSConditionState &CAbstractOperator::apply	(const CSConditionState &condition, CSConditionState &result) const
+IC	bool CAbstractOperator::apply	(const CSConditionState &condition, CSConditionState &result) const
 {
 	result.clear			();
+#ifdef USE_AFFECT
+	bool					changed = false;
+#endif
 	xr_vector<COperatorCondition>::const_iterator	i = effects().begin();
 	xr_vector<COperatorCondition>::const_iterator	e = effects().end();
 	xr_vector<COperatorCondition>::const_iterator	I = condition.conditions().begin();
@@ -158,38 +165,56 @@ IC	const typename CAbstractOperator::CSConditionState &CAbstractOperator::apply	
 		else
 			if ((*I).condition() > (*i).condition()) {
 				result.add_condition(*i);
+#ifdef USE_AFFECT
+				changed		= true;
+#endif
 				++i;
 			}
 			else {
+#ifdef USE_AFFECT
+				if ((*I).value() != (*i).value())
+					changed	= true;
+#endif
 				result.add_condition(*i);
 				++I;
 				++i;
 			}
 
+#ifdef USE_AFFECT
+	if (i == e) {
+		if (!changed)
+			return			(false);
+	}
+	else {
+		I					= i;
+		E					= e;
+	}
+#else
 	if (I == E) {
 		I					= i;
 		E					= e;
 	}
+#endif
 	
 	for ( ; (I != E); ++I)
 		result.add_condition(*I);
 
-	return					(result);
+	return					(true);
 }
-
+#else
 TEMPLATE_SPECIALIZATION
-IC	const typename CAbstractOperator::CSConditionState &CAbstractOperator::apply	(const CSConditionState &condition, const CSConditionState &start, CSConditionState &result) const
+IC	bool CAbstractOperator::apply	(const CSConditionState &condition, const xr_vector<COperatorCondition> &start, CSConditionState &result, const xr_vector<COperatorCondition> &self_condition) const
 {
 	result.clear			();
 #ifdef USE_AFFECT
 	bool					changed = false;
 #endif
-	xr_vector<COperatorCondition>::const_iterator	i = effects().begin();
-	xr_vector<COperatorCondition>::const_iterator	e = effects().end();
+	xr_vector<COperatorCondition>::const_iterator	i = self_condition.begin();
+	xr_vector<COperatorCondition>::const_iterator	e = self_condition.end();
 	xr_vector<COperatorCondition>::const_iterator	I = condition.conditions().begin();
 	xr_vector<COperatorCondition>::const_iterator	E = condition.conditions().end();
-	xr_vector<COperatorCondition>::const_iterator	J = start.conditions().begin();
-	xr_vector<COperatorCondition>::const_iterator	EE = start.conditions().end();
+	xr_vector<COperatorCondition>::const_iterator	J = start.begin();
+	xr_vector<COperatorCondition>::const_iterator	EE = start.end();
 	for ( ; (I != E) && (i != e); )
 		if ((*I).condition() < (*i).condition()) {
 			result.add_condition(*I);
@@ -239,14 +264,12 @@ IC	const typename CAbstractOperator::CSConditionState &CAbstractOperator::apply	
 
 	if (i == e) {
 #ifdef USE_AFFECT
-		if (!changed) {
-			result.clear	();
-			return			(result);
-		}
+		if (!changed)
+			return			(false);
 #endif
 		for ( ; (I != E); ++I)
 			result.add_condition(*I);
-		return				(result);
+		return				(true);
 	}
 
 	for ( ; (J != EE) && (i != e); )
@@ -279,11 +302,93 @@ IC	const typename CAbstractOperator::CSConditionState &CAbstractOperator::apply	
 			result.add_condition(*i);
 
 #ifdef USE_AFFECT
-	if (!changed)
-		result.clear		();
+	return					(changed);
+#else
+	return					(true);
 #endif
-	return					(result);
 }
 
+TEMPLATE_SPECIALIZATION
+IC	bool CAbstractOperator::apply_reverse	(const CSConditionState &condition, const xr_vector<COperatorCondition> &start, CSConditionState &result, const xr_vector<COperatorCondition> &self_condition) const
+{
+	result.clear			();
+#ifdef USE_AFFECT
+	bool					changed = false;
+#endif
+	xr_vector<COperatorCondition>::const_iterator	i = self_condition.begin();
+	xr_vector<COperatorCondition>::const_iterator	e = self_condition.end();
+	xr_vector<COperatorCondition>::const_iterator	I = condition.conditions().begin();
+	xr_vector<COperatorCondition>::const_iterator	E = condition.conditions().end();
+	xr_vector<COperatorCondition>::const_iterator	J = start.begin();
+	xr_vector<COperatorCondition>::const_iterator	EE = start.end();
+	for ( ; (I != E) && (i != e); )
+		if ((*I).condition() < (*i).condition()) {
+			while ((J != EE) && ((*J).condition() < (*I).condition()))
+				++J;
+			if ((J != EE) && ((*J).condition() == (*I).condition())) {
+				VERIFY		((*J).value() == (*I).value());
+#ifdef USE_AFFECT
+				changed		= true;
+#endif
+				++J;
+			}
+			else
+				result.add_condition(*I);
+			++I;
+		}
+		else
+			if ((*I).condition() > (*i).condition()) {
+				result.add_condition(*i);
+				++i;
+			}
+			else {
+#ifdef USE_AFFECT
+				if ((*I).value() != (*i).value())
+					changed	= true;
+#endif
+				result.add_condition(*i);
+				++I;
+				++i;
+			}
+
+	if (I == E) {
+#ifdef USE_AFFECT
+		if (!changed)
+			return			(false);
+#endif
+		for ( ; (i != e); ++i)
+			result.add_condition(*i);
+		return				(true);
+	}
+
+	for ( ; (J != EE) && (I != E); )
+		if ((*J).condition() < (*I).condition())
+			++J;
+		else
+			if ((*J).condition() > (*I).condition()) {
+				result.add_condition(*I);
+				++I;
+			}
+			else {
+				VERIFY		((*J).value() == (*I).value());
+#ifdef USE_AFFECT
+				changed		= true;
+#endif
+				++J;
+				++I;
+			}
+
+#ifdef USE_AFFECT
+	if (!changed)
+		return				(false);
+#endif
+
+	if ((J == EE) && (I != E))
+		for ( ; (I != E); ++I)
+			result.add_condition(*I);
+
+	return					(true);
+}
+#endif
 #undef TEMPLATE_SPECIALIZATION
 #undef CAbstractOperator

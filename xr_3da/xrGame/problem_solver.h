@@ -49,6 +49,7 @@ protected:
 	_edge_type					m_current_operator;
 	xr_vector<_edge_type>		m_plan;
 	mutable CState				m_temp;
+	mutable bool				m_applied;
 	
 public:
 	IC							CProblemSolver		();

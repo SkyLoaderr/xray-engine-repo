@@ -45,7 +45,7 @@ struct CEdgePath {
 		virtual				~CDataStorage		();
 		IC		void		assign_parent		(CGraphVertex &neighbour, CGraphVertex *parent);
 		IC		void		assign_parent		(CGraphVertex &neighbour, CGraphVertex *parent, const _edge_type &edge);
-		IC		void		get_edge_path		(xr_vector<_edge_type>  &path, CGraphVertex *best);
+		IC		void		get_edge_path		(xr_vector<_edge_type>  &path, CGraphVertex *best, bool reverse_order = false);
 	};
 };
 

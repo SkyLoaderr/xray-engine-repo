@@ -9,10 +9,7 @@
 #pragma once
 
 #define USE_AFFECT
-#define RESERVE_COUNT			8
-#define INTENSIVE_MEMORY_USAGE
-//#define USE_PUSH_BASK
-//#define REVERSE_SEARCH
+#define RESERVE_COUNT			16
+//#define INTENSIVE_MEMORY_USAGE
 #define USE_HASH
-
-
+//#define REVERSE_SEARCH

@@ -10,7 +10,6 @@
 
 #include "condition_config.h"
 
-#ifdef USE_HASH
 class CRandom32 {
 private:
 	u32			m_seed;
@@ -34,7 +33,6 @@ public:
 };
 
 extern CRandom32 rand32;
-#endif
 
 template <
 	typename _condition_type,

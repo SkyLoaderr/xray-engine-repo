@@ -60,7 +60,14 @@ protected:
 //	typedef CDataStorageSingleLinkedList<true>				CPriorityQueue;
 //	typedef CDataStorageDoubleLinkedList<false>				CPriorityQueue;
 //	typedef CDataStorageDoubleLinkedList<true>				CPriorityQueue;
-	typedef CDataStorageCheapList<32,true,true>				CSolverPriorityQueue;
+//	typedef CPriorityQueue<boost::fibonacci_heap>			CSolverPriorityQueue;
+//	typedef CDataStorageMultiBinaryHeap<4>					CSolverPriorityQueue;
+//	typedef CPriorityQueue<boost::pairing_heap>				CSolverPriorityQueue;
+//	typedef CDataStorageBucketList<u32,u8,16,false>			CSolverPriorityQueue;
+//	typedef CDataStorageBinaryHeapList<4>					CSolverPriorityQueue;
+//	typedef CDataStorageCheapList<32,true,true>				CSolverPriorityQueue;
+//	typedef CDataStorageDoubleLinkedList<true>				CSolverPriorityQueue;
+	typedef CDataStorageBinaryHeap							CSolverPriorityQueue;
 	typedef CDataStorageBucketList<u32,u32,8*1024,false>	CPriorityQueue;
 //	typedef CDataStorageBinaryHeap							CPriorityQueue;
 //	typedef CDataStorageBinaryHeapList<4>					CPriorityQueue;
@@ -75,12 +82,12 @@ protected:
 	typedef CVertexManagerHashFixed<
 				u32,
 				_solver_index_type,
-				1024,
-				4096
+				4096,
+				16*65536
 			>												CSolverVertexManager;
 #endif
 	typedef CVertexAllocatorFixed<65536>					CVertexAllocator;
-	typedef CVertexAllocatorFixed<4096>						CSolverVertexAllocator;
+	typedef CVertexAllocatorFixed<16*65536>					CSolverVertexAllocator;
 
 	typedef CAStar<
 		_dist_type,

@@ -31,10 +31,14 @@ public:
 	IC		u32									priority			() const;
 	IC		const xr_vector<COperatorCondition>	&effects			() const;
 	IC		void								add_effect			(const COperatorCondition &effect);
-	virtual bool								applicable			(const CSConditionState &condition, const CSConditionState &start) const;
+#ifdef INTENSIVE_MEMORY_USAGE
 	virtual bool								applicable			(const CSConditionState &condition) const;
-	virtual const CSConditionState				&apply				(const CSConditionState &condition, CSConditionState &result) const;
-	virtual const CSConditionState				&apply				(const CSConditionState &condition, const CSConditionState &start, CSConditionState &result) const;
+	virtual bool								apply				(const CSConditionState &condition, CSConditionState &result) const;
+#else
+	virtual bool								applicable			(const xr_vector<COperatorCondition> &condition, const xr_vector<COperatorCondition> &start, const xr_vector<COperatorCondition> &self_condition) const;
+	virtual bool								apply				(const CSConditionState &condition, const xr_vector<COperatorCondition> &start, CSConditionState &result, const xr_vector<COperatorCondition> &self_condition) const;
+	virtual bool								apply_reverse		(const CSConditionState &condition, const xr_vector<COperatorCondition> &start, CSConditionState &result, const xr_vector<COperatorCondition> &self_condition) const;
+#endif
 	virtual void								initialize			();
 	virtual void								execute				();
 	virtual void								finalize			();

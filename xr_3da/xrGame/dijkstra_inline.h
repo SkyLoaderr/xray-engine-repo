@@ -145,6 +145,12 @@ IC	bool CSDijkstra::step				(_PathManager &path_manager)
 	_PathManager::const_iterator	i;
 	_PathManager::const_iterator	e;
 	path_manager.begin				(best.index(),i,e);
+//	if (data_storage().current_path_id() == 122157) {
+//		Msg							("*****************************************");
+//		CGraphVertex				*temp = &best;
+//		for ( ; temp->back(); temp = temp->back())
+//			Msg						("%d",temp->edge());
+//	}
 	for (  ; i != e; ++i) {
 		const _index_type			&neighbour_index = path_manager.get_value(i);
 		// check if neighbour is accessible

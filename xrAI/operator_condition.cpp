@@ -9,6 +9,4 @@
 #include "stdafx.h"
 #include "operator_condition.h"
 
-#ifdef USE_HASH
-	CRandom32 rand32;
-#endif
+CRandom32 rand32;
