@@ -986,12 +986,12 @@ bool CCustomZone::Disable()
 
 void CCustomZone::ZoneEnable()
 {
-	if (IsEnabled()) return;
+//	if (IsEnabled()) return;
 	SwitchZoneState(eZoneStateIdle);
 };
 
 void CCustomZone::ZoneDisable()
 {
-	if (!IsEnabled()) return;
+//	if (!IsEnabled()) return;
 	SwitchZoneState(eZoneStateDisabled);
 };

@@ -1325,7 +1325,7 @@ void	game_sv_Deathmatch::StartAnomalies			()
 			const char *pName = ((*OldAnomalies)[i]).c_str();
 			CCustomZone* pZone = dynamic_cast<CCustomZone*> (Level().Objects.FindObjectByName(pName));
 			if (!pZone) continue;
-			if (pZone->IsEnabled())
+//			if (pZone->IsEnabled())
 				pZone->ZoneDisable();
 		};
 	};
@@ -1338,7 +1338,7 @@ void	game_sv_Deathmatch::StartAnomalies			()
 		const char *pName = ((*NewAnomalies)[i]).c_str();
 		CCustomZone* pZone = dynamic_cast<CCustomZone*> (Level().Objects.FindObjectByName(pName));
 		if (!pZone) continue;
-		if (!pZone->IsEnabled())
+//		if (!pZone->IsEnabled())
 			pZone->ZoneEnable();
 	};
 };
