@@ -67,11 +67,14 @@ void CMotivationActionManagerStalker::reinit			(CAI_Stalker *object, bool clear_
 {
 	inherited::reinit		(object,clear_all);
 
-	m_storage.clear			();
-	m_storage.set_property	(eWorldPropertyDead,false);
-	m_storage.set_property	(eWorldPropertyEnemyAimed,false);
-	m_storage.set_property	(eWorldPropertyFireEnough,false);
-	m_storage.set_property	(eWorldPropertySafeToKill,false);
+	m_death_planner->CScriptActionPlanner::m_storage.clear			();
+	m_alife_planner->CScriptActionPlanner::m_storage.clear			();
+	m_combat_planner->CScriptActionPlanner::m_storage.clear			();
+
+	m_death_planner->CScriptActionPlanner::m_storage.set_property	(eWorldPropertyDead,false);
+	m_combat_planner->CScriptActionPlanner::m_storage.set_property	(eWorldPropertyEnemyAimed,false);
+	m_combat_planner->CScriptActionPlanner::m_storage.set_property	(eWorldPropertyFireEnough,false);
+	m_combat_planner->CScriptActionPlanner::m_storage.set_property	(eWorldPropertySafeToKill,false);
 
 #ifdef LOG_ACTION
 	if (psAI_Flags.test(aiGOAP))
