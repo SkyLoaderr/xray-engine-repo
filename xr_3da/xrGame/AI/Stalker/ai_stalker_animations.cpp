@@ -14,6 +14,7 @@
 #include "../../missile.h"
 #include "../../ai_script_actions.h"
 #include "../../inventory.h"
+#include "../../fooditem.h"
 
 static const float y_spin_factor			= 0.25f;
 static const float y_shoulder_factor		= 0.25f;
@@ -55,17 +56,19 @@ LPCSTR caWeaponNames		[] = {
 };
 
 LPCSTR caWeaponActionNames	[] = {
-	"draw_",
-	"attack_",
-	"drop_",
-	"holster_",
-	"reload_",
-	"pick_",
-	"aim_",
-	"walk_",
-	"run_",
-	"idle_",
-	"escape_",
+	"draw_",		// 0
+	"attack_",		// 1
+	"drop_",		// 2
+	"holster_",		// 3
+	"reload_",		// 4
+	"pick_",		// 5
+	"aim_",			// 6
+	"walk_",		// 7
+	"run_",			// 8
+	"idle_",		// 9
+	"escape_",		// 10
+	"prepare",		// 11
+	"playing",		// 12
 	0
 };
 
@@ -206,9 +209,51 @@ void CStalkerAnimations::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
 {
 	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(this);
 	VERIFY					(stalker);
-	if (stalker->g_Alive()) {
-		if ((eMentalStatePanic == stalker->mental_state()) && (stalker->speed() > EPS_L))
-			tpGlobalAnimation = m_tAnims.A[stalker->IsLimping() ? eBodyStateStandDamaged : eBodyStateStand].m_tGlobal.A[1].A[0];
+	if (!stalker->g_Alive())
+		return;
+
+	if ((eMentalStatePanic == stalker->mental_state()) && (stalker->speed() > EPS_L)) {
+		tpGlobalAnimation = m_tAnims.A[stalker->IsLimping() ? eBodyStateStandDamaged : eBodyStateStand].m_tGlobal.A[1].A[0];
+		return;
+	}
+
+	CFoodItem				*food_item = dynamic_cast<CFoodItem*>(stalker->inventory().ActiveItem());
+	if (food_item) {
+		u32					dwCurrentAniSlot = u32(-1);
+		switch (food_item->SUB_CLS_ID) {
+			case CLSID_IITEM_BOTTLE : {
+				dwCurrentAniSlot = 0;
+				break;
+			}
+			default : NODEFAULT;
+		}
+		switch (food_item->STATE) {
+			case FOOD_SHOWING: {
+				tpGlobalAnimation = m_tAnims.A[eBodyStateStand].m_tGlobalItem.A[dwCurrentAniSlot].A[0].A[0];
+				break;
+			}
+			case FOOD_HIDING : {
+				tpGlobalAnimation = m_tAnims.A[eBodyStateStand].m_tGlobalItem.A[dwCurrentAniSlot].A[3].A[0];
+				break;
+			}
+			case FOOD_IDLE	 : {
+				tpGlobalAnimation = m_tAnims.A[eBodyStateStand].m_tGlobalItem.A[dwCurrentAniSlot].A[9].A[0];
+				break;
+			}
+			case FOOD_PREPARE: {
+				tpGlobalAnimation = m_tAnims.A[eBodyStateStand].m_tGlobalItem.A[dwCurrentAniSlot].A[11].A[0];
+				break;
+			}
+			case FOOD_EATING : {
+				tpGlobalAnimation = m_tAnims.A[eBodyStateStand].m_tGlobalItem.A[dwCurrentAniSlot].A[1].A[0];
+				break;
+			}
+			case FOOD_PLAYING : {
+				tpGlobalAnimation = m_tAnims.A[eBodyStateStand].m_tGlobalItem.A[dwCurrentAniSlot].A[12].A[0];
+				break;
+			}
+			default			 : NODEFAULT;
+		}
 	}
 }
 
@@ -218,7 +263,7 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 	VERIFY					(stalker);
 	if (!stalker->g_Alive())
 		return;
-	
+
 	CWeapon					*tpWeapon = dynamic_cast<CWeapon*>(stalker->inventory().ActiveItem());
 	CMissile				*missile = dynamic_cast<CMissile*>(stalker->inventory().ActiveItem());
 	CLASS_ID				clsid = tpWeapon ? tpWeapon->SUB_CLS_ID : missile ? missile->SUB_CLS_ID : 0;

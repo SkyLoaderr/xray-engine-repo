@@ -31,15 +31,19 @@ public:
 	CAniCollection<CWeaponActions,	caWeaponNames>		m_tTorso;
 	// legs
 	CAniCollection<CMovementActions,caMovementNames>	m_tMoves;
+	// in-place 
 	CAniFVector	  <caInPlaceNames>						m_tInPlace;
+	// global item
+	CAniCollection<CWeaponActions,	caWeaponNames>		m_tGlobalItem;
 
 	IC	void		Load(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName)
 	{
-		string256		S;
-		m_tGlobal.Load	(tpKinematics,caBaseName);
-		m_tTorso.Load	(tpKinematics,strconcat(S,caBaseName,"torso_"));
-		m_tMoves.Load	(tpKinematics,caBaseName);
-		m_tInPlace.Load	(tpKinematics,caBaseName);
+		string256			S;
+		m_tGlobal.Load		(tpKinematics,caBaseName);
+		m_tTorso.Load		(tpKinematics,strconcat(S,caBaseName,"torso_"));
+		m_tMoves.Load		(tpKinematics,caBaseName);
+		m_tInPlace.Load		(tpKinematics,caBaseName);
+		m_tGlobalItem.Load	(tpKinematics,strconcat(S,caBaseName,"item_"));
 	};
 };
 

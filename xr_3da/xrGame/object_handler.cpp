@@ -421,8 +421,6 @@ void CObjectHandler::update(u32 time_delta)
 	inherited::update	(time_delta);
 
 #ifdef _DEBUG
-	if (xr_strcmp("stalker3",m_object->cName()))
-		return;
 	if (!path().empty()) {
 		Msg				("Path : ");
 		xr_vector<u32>::const_iterator	I = path().begin();
