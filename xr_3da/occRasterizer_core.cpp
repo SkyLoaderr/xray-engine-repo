@@ -185,7 +185,7 @@ void i_line		( int x1, int y1, int x2, int y2 )
 }
 void i_edge ( float x1, float y1, float x2, float y2)
 {
-	i_line	(int(x1),int(y1),int(x2),int(y2));
+	i_line	(iFloor(x1),iFloor(y1),iFloor(x2),iFloor(y2));
 }
 
 
