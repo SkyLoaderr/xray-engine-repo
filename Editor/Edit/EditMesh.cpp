@@ -10,7 +10,6 @@
 #include "UI_Main.h"
 #include "EditObject.h"
 #include "Bone.h"
-#include "Sector.h"
 
 CEditableMesh::~CEditableMesh(){
 	Clear();
