@@ -84,7 +84,7 @@ BOOL CMissile::net_Spawn(LPVOID DC)
 	CSE_Abstract						*abstract = (CSE_Abstract*)DC;
 	if (abstract->ID_Parent==0xffff) {
 		m_pPhysicsShell->Activate	(XFORM(),0,XFORM(),true);
-		m_pPhysicsShell->Update		();
+
 	}
 
 	dwXF_Frame					= 0xffffffff;
