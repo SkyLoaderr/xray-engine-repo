@@ -91,6 +91,8 @@ function main()
 				anim	(anim.danger),
 				cond	(cond.time_end, 15000)
 				)
+			printf("am!")
+			flush()
 		wait(1000)
 			action(
 				stalker1,
