@@ -59,7 +59,7 @@ function load_dialog:InitControls()
 	local captiontxt_rect = {x = 60, --caption_rect.width/2,
 							 y = -60, --caption_rect.height/2,
 							 width = 100,
-							 height = 30}
+							 height = 0}
 	local info_rect       = {x = 0, 
 						     y = indent,
 						     width = 150, 
