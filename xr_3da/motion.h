@@ -179,9 +179,18 @@ public:
 
 class ENGINE_API CClip{
 public:
-	shared_str			name;
-    shared_str			cycles[4];
-    shared_str			fx;
+	struct AnimItem{
+    	shared_str	name;
+        u16			slot;
+        			AnimItem	():slot(u16(-1)){}
+        void		set			(shared_str nm, u16 s){name=nm;slot=s;}
+        void		clear		(){set("",-1);}
+        bool		valid		(){return !!(name.size()&&(slot!=u16(-1)));}
+    };
+	shared_str		name;
+    AnimItem		cycles[4];
+    AnimItem		fx;
+    
     float			fx_power;
     float			length;
 public:
