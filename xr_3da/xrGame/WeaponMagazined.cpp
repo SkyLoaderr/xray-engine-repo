@@ -162,8 +162,18 @@ void CWeaponMagazined::OnMagazineEmpty	()
 void CWeaponMagazined::ReloadMagazine	()
 {
 	st_target			=	eIdle;
-	if (iAmmoCurrent>=iMagazineSize)	{ iAmmoElapsed = iMagazineSize; iAmmoCurrent -= iMagazineSize;	}
-	else								{ iAmmoElapsed = iAmmoCurrent;	iAmmoCurrent =  0;				}
+	if (iAmmoCurrent>=iMagazineSize)	
+	{
+		iAmmoCurrent += iAmmoElapsed; 
+		iAmmoElapsed =	iMagazineSize; 
+		iAmmoCurrent -= iMagazineSize;	
+	}
+	else
+	{ 
+		iAmmoElapsed = iAmmoCurrent+iAmmoElapsed;
+		if (iAmmoElapsed>iMagazineSize)	iAmmoCurrent =	iAmmoElapsed-iMagazineSize;
+		else							iAmmoCurrent =  0;
+	}
 }
 
 void CWeaponMagazined::Update			(float dt, BOOL bHUDView)
