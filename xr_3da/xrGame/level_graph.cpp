@@ -48,7 +48,7 @@ CLevelGraph::CLevelGraph					(LPCSTR filename, u32 current_version)
 
 CLevelGraph::~CLevelGraph		()
 {
-	xr_delete					(m_reader);
+	FS.r_close					(m_reader);
 }
 
 u32	CLevelGraph::vertex		(const Fvector &position) const
