@@ -17,6 +17,7 @@ struct VIPM_SWR
 	u16		num_verts;				// Number of vertices to render with (using WORD indices)
 };
 #pragma pack(pop)
+
 struct VIPM_Result
 {
 	ArbitraryList<u16>		permute_verts;
