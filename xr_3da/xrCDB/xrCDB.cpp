@@ -25,22 +25,6 @@ BOOL APIENTRY DllMain( HANDLE hModule,
     return TRUE;
 }
 
-// Triangle utilities
-void	TRI::convert_I2P	(Fvector* pBaseV)	
-{
-	u32*	pVertsID= (u32*)	verts;	// as indexed form
-	verts[0] = pBaseV+pVertsID[0];
-	verts[1] = pBaseV+pVertsID[1];
-	verts[2] = pBaseV+pVertsID[2];
-}
-void	TRI::convert_P2I	(Fvector* pBaseV)	
-{
-	u32* pVertsID	= (u32*) verts;		// as indexed form
-	pVertsID[0]		= u32(verts[0]-pBaseV);
-	pVertsID[1]		= u32(verts[1]-pBaseV);
-	pVertsID[2]		= u32(verts[2]-pBaseV);
-}
-
 // Model building
 MODEL::MODEL	()
 {
