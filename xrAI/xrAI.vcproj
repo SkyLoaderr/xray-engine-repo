@@ -1264,6 +1264,15 @@
 				Name="Shared"
 				Filter="">
 				<File
+					RelativePath=".\intrusive_ptr.h">
+				</File>
+				<File
+					RelativePath=".\intrusive_ptr_inline.h">
+				</File>
+				<File
+					RelativePath=".\restriction_space.h">
+				</File>
+				<File
 					RelativePath=".\Sound.h">
 				</File>
 				<Filter
