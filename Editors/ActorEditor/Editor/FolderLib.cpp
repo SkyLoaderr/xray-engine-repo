@@ -384,17 +384,16 @@ void FOLDER::StartDrag(TObject *Sender, TDragObject *&DragObject)
 }
 //---------------------------------------------------------------------------
 
-void FOLDER::AfterTextEdit(TElTreeItem* node, LPCSTR value, AnsiString& N)
+bool FOLDER::AfterTextEdit(TElTreeItem* node, LPCSTR value, AnsiString& N)
 {
 	N=N.LowerCase();
 	int cnt=_GetItemCount(N.c_str(),'\\');
-    if (cnt>1){ N=value; return; }
-    //
+    if (cnt>1){ N=value; return false; }
     VERIFY(node);
     for (TElTreeItem* itm=node->GetFirstSibling(); itm; itm=itm->GetNextSibling()){
         if ((itm->Text==N)&&(itm!=node)){
 	        N=value;
-            return;
+            return false;
         }
     }
     // all right
@@ -403,6 +402,7 @@ void FOLDER::AfterTextEdit(TElTreeItem* node, LPCSTR value, AnsiString& N)
     string256 new_name;
 	_ReplaceItem(value,cnt-1,N.c_str(),new_name,'\\');
     N=new_name;
+    return true;
 }
 //---------------------------------------------------------------------------
 

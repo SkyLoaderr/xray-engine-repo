@@ -43,9 +43,9 @@ namespace FOLDER{
     // popup menu
     void				ShowPPMenu			(TMxPopupMenu* M, TExtBtn* B=0);
     // folder text edit
-    void 				AfterTextEdit		(TElTreeItem* node, LPCSTR value, AnsiString& edit_val);
+    bool 				AfterTextEdit		(TElTreeItem* node, LPCSTR value, AnsiString& edit_val);
     void 				BeforeTextEdit		(LPCSTR value, AnsiString& edit_val);
-    void 				TextDraw			(LPCSTR value, AnsiString& edit_val);
+    void 				TextDraw			(LPCSTR value, AnsiString& show_val);
 //------------------------------------------------------------------------------
 }
 #endif

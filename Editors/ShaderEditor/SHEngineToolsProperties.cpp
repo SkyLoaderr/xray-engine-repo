@@ -97,6 +97,8 @@ void __fastcall CSHEngineTools::MatrixOnAfterEdit(TElTreeItem* item, PropItem* s
         if (*V->GetValue()=='$'){
             strcpy(nm,AppendMatrix());
             AddMatrixProps(item,nm);
+        }else{
+            strcpy(nm,V->GetValue());
         }
     }else{
         if (*V->GetValue()!='$'){
@@ -144,6 +146,8 @@ void __fastcall CSHEngineTools::ConstOnAfterEdit(TElTreeItem* item, PropItem* se
         if (*V->GetValue()=='$'){
             strcpy(nm,AppendConstant());
             AddConstProps(item,nm);
+        }else{
+            strcpy(nm,V->GetValue());
         }
     }else{
         if (*V->GetValue()!='$'){
@@ -157,7 +161,10 @@ void __fastcall CSHEngineTools::ConstOnAfterEdit(TElTreeItem* item, PropItem* se
 //------------------------------------------------------------------------------
 void __fastcall CSHEngineTools::NameOnAfterEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
 {
-	FOLDER::AfterTextEdit(fraLeftBar->tvEngine->Selected,((TextValue*)sender)->GetValue(),*(AnsiString*)edit_val);
+	TextValue* V = (TextValue*)sender;
+    AnsiString* new_name = (AnsiString*)edit_val;
+	if (FOLDER::AfterTextEdit(fraLeftBar->tvEngine->Selected,V->GetValue(),*new_name))
+    	RemoteRenameBlender(V->GetValue(),new_name->c_str());
 }
 //------------------------------------------------------------------------------
 void __fastcall CSHEngineTools::NameOnBeforeEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
