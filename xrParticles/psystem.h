@@ -63,8 +63,8 @@ namespace PAPI{
 		Flags16		flags;	// 2
 	};                  	// 		72
 
-	typedef void (__stdcall * OnBirthParticleCB)(void* owner, PAPI::Particle& P);
-	typedef void (__stdcall * OnDeadParticleCB)(void* owner, PAPI::Particle& P);
+	typedef void (__stdcall * OnBirthParticleCB)(void* owner, PAPI::Particle& P, u32 idx);
+	typedef void (__stdcall * OnDeadParticleCB)(void* owner, PAPI::Particle& P, u32 idx);
 	//////////////////////////////////////////////////////////////////////
 	// Type codes for domains
 	enum PDomainEnum
