@@ -106,6 +106,8 @@ IC bool CAI_Rat::bfCheckIfOutsideAIMap(Fvector &tTemp1)
 	u32 dwNewNode = level_vertex_id();
 	const CLevelGraph::CVertex *tpNewNode = level_vertex();
 	CLevelGraph::CPosition	QueryPos;
+	if (!ai().level_graph().valid_vertex_position(tTemp1))
+		return	(false);
 	ai().level_graph().vertex_position(QueryPos,tTemp1);
 	if (!ai().level_graph().valid_vertex_id(dwNewNode) || !ai().level_graph().inside(*level_vertex(),QueryPos)) {
 		dwNewNode = ai().level_graph().vertex(level_vertex_id(),tTemp1);

@@ -52,19 +52,11 @@ CInventoryItem::CInventoryItem()
 	m_dwFrameReinit		= u32(-1);
 	m_dwFrameSpawn		= u32(-1);
 	m_dwFrameDestroy	= u32(-1);
+	m_dwFrameClient		= u32(-1);
 }
 
 CInventoryItem::~CInventoryItem() 
 {
-}
-
-bool CInventoryItem::frame_check(u32 &frame)
-{
-	if (Device.dwFrame == frame)
-		return		(false);
-
-	frame			= Device.dwFrame;
-	return			(true);
 }
 
 void CInventoryItem::Load(LPCSTR section) 
@@ -291,6 +283,9 @@ void CInventoryItem::OnH_A_Chield		()
 
 void CInventoryItem::UpdateCL()
 {
+	if (!frame_check(m_dwFrameClient))
+		return;
+
 	inherited::UpdateCL();
 }
 

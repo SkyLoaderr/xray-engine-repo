@@ -486,7 +486,7 @@ void CAI_Rat::FreeRecoil()
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(m_fMorale < m_fMoraleNormalValue);
 
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(Level().timeServer() - memory(enemy()).m_level_time >= m_dwLostRecoilTime,aiRatPursuit);
+	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(enemy() && (Level().timeServer() - memory(enemy()).m_level_time >= m_dwLostRecoilTime),aiRatPursuit);
 
 	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((!m_tLastSound.tpEntity) || (m_tLastSound.tpEntity->g_Team() != g_Team()))) {
 		Fvector tTemp;

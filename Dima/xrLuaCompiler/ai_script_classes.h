@@ -61,7 +61,7 @@ public:
 	{
 		CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(m_tpGameObject->H_Parent());
 		if (l_tpGameObject)
-			return		(xr_new<CLuaGameObject>(l_tpGameObject));
+			return		(l_tpGameObject->lua_game_object());
 		else
 			return		(0);
 	}
@@ -367,7 +367,7 @@ public:
 		const CEnemyManager	*enemy_manager = dynamic_cast<const CEnemyManager*>(m_tpGameObject);
 		if (!enemy_manager)
 			return				(0);
-		return					(xr_new<CLuaGameObject>(const_cast<CGameObject*>(dynamic_cast<const CGameObject*>(enemy_manager->selected()))));
+		return					(const_cast<CGameObject*>(dynamic_cast<const CGameObject*>(enemy_manager->selected()))->lua_game_object());
 	}
 
 	CLuaGameObject	*GetBestItem()
@@ -375,7 +375,7 @@ public:
 		const CItemManager	*item_manager = dynamic_cast<const CItemManager*>(m_tpGameObject);
 		if (!item_manager)
 			return				(0);
-		return					(xr_new<CLuaGameObject>(const_cast<CGameObject*>(dynamic_cast<const CGameObject*>(item_manager->selected()))));
+		return					(const_cast<CGameObject*>(dynamic_cast<const CGameObject*>(item_manager->selected()))->lua_game_object());
 	}
 
 	BIND_FUNCTION10			(m_tpGameObject,	GetActionCount,		CScriptMonster,	GetActionCount,		u32,					0);
@@ -465,7 +465,7 @@ public:
 		}
 		else {
 			CGameObject		*game_object = object_handler->best_weapon();
-			return			(game_object ? xr_new<CLuaGameObject>(game_object) : 0);
+			return			(game_object ? game_object->lua_game_object() : 0);
 		}
 	}
 };

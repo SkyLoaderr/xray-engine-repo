@@ -31,9 +31,9 @@ CLuaGameObject *tpfGetActor()
 {
 	CActor *l_tpActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 	if (l_tpActor)
-		return(xr_new<CLuaGameObject>(dynamic_cast<CGameObject*>(l_tpActor)));
+		return	(dynamic_cast<CGameObject*>(l_tpActor)->lua_game_object());
 	else
-		return(0);
+		return	(0);
 }
 
 CCameraManager &get_camera_manager()
@@ -45,7 +45,7 @@ CLuaGameObject *get_object_by_name(LPCSTR caObjectName)
 {
 	CGameObject		*l_tpGameObject	= dynamic_cast<CGameObject*>(Level().Objects.FindObjectByName(caObjectName));
 	if (l_tpGameObject)
-		return		(xr_new<CLuaGameObject>(l_tpGameObject));
+		return		(l_tpGameObject->lua_game_object());
 	else
 		return		(0);
 }

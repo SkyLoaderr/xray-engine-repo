@@ -15,6 +15,8 @@
 #include "level_graph.h"
 #include "game_level_cross_table.h"
 #include "ph_shell_interface.h"
+#include "ai_script_classes.h"
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -25,19 +27,26 @@ CGameObject::CGameObject		()
 
 CGameObject::~CGameObject		()
 {
+	xr_delete				(m_lua_game_object);
 }
 
 void CGameObject::Init		()
 {
-	m_dwSpawnFrame0				= u32(-1);
-	m_dwSpawnFrame1				= u32(-1);
-	m_dwSpawnFrame2				= u32(-1);
 	m_pPhysicsShell				= NULL;
-	m_initialized				= false;
+	m_lua_game_object			= 0;
+	m_dwFrameLoad				= u32(-1);
+	m_dwFrameReload				= u32(-1);
+	m_dwFrameReinit				= u32(-1);
+	m_dwFrameSpawn				= u32(-1);
+	m_dwFrameDestroy			= u32(-1);
+	m_dwFrameClient				= u32(-1);
 }
 
 void CGameObject::Load(LPCSTR section)
 {
+	if (!frame_check(m_dwFrameLoad))
+		return;
+
 	inherited::Load			(section);
 	CPrefetchManager::Load	(section);
 	//////////////////////////////////////
@@ -55,33 +64,26 @@ void CGameObject::Load(LPCSTR section)
 
 void CGameObject::reinit	()
 {
-	if (Device.dwFrame == m_dwSpawnFrame0)
+	if (!frame_check(m_dwFrameReinit))
 		return;
-
-	m_dwSpawnFrame0				= Device.dwFrame;
 
 	m_visual_callback.clear		();
 	CAI_ObjectLocation::reinit	();
 //	CPrefetchManager::reinit	();
 	m_tpALife					= 0;
-	m_initialized				= true;
 }
 
 void CGameObject::reload	(LPCSTR section)
 {
-//	CAI_ObjectLocation::reload	(section);
-//	CPrefetchManager::reload	(section);
+	if (!frame_check(m_dwFrameReload))
+		return;
 }
 
 void CGameObject::net_Destroy	()
 {
-	if (Device.dwFrame == m_dwSpawnFrame2)
+	if (!frame_check(m_dwFrameDestroy))
 		return;
 
-	m_dwSpawnFrame2				= Device.dwFrame;
-	m_dwSpawnFrame0				= u32(-1);
-	m_dwSpawnFrame1				= u32(-1);
-	m_initialized				= false;
 	if (Visual() && PKinematics(Visual()))
 		PKinematics(Visual())->Callback	(0,0);
 
@@ -137,11 +139,8 @@ void __stdcall VisualCallback(CKinematics *tpKinematics);
 
 BOOL CGameObject::net_Spawn		(LPVOID	DC)
 {
-	if (Device.dwFrame == m_dwSpawnFrame1)
+	if (!frame_check(m_dwFrameSpawn))
 		return						(TRUE);
-
-	m_dwSpawnFrame1					= Device.dwFrame;
-	m_dwSpawnFrame2					= u32(-1);
 
 	CSE_Abstract*		E			= (CSE_Abstract*)DC;
 	R_ASSERT						(E);
@@ -289,6 +288,9 @@ CObject::SavedPosition CGameObject::ps_Element(u32 ID)
 
 void CGameObject::UpdateCL	()
 {
+	if (!frame_check(m_dwFrameClient))
+		return;
+
 	//обновить присоединенные партиклы
 	UpdateParticles	();
 
@@ -379,7 +381,7 @@ void CGameObject::OnH_B_Chield()
 {
 	inherited::OnH_B_Chield();
 	PHSetPushOut();
-	if (m_initialized && UsedAI_Locations() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(level_vertex_id()))
+	if (UsedAI_Locations() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(level_vertex_id()))
 		ai().level_graph().ref_dec(level_vertex_id());
 }
 
@@ -475,3 +477,20 @@ void CGameObject::create_physic_shell	()
 	if (shell_creator)
 		shell_creator->CreatePhysicsShell();
 }
+
+CLuaGameObject *CGameObject::lua_game_object		()
+{
+	if (!m_lua_game_object)
+		m_lua_game_object			= xr_new<CLuaGameObject>(this);
+	return							(m_lua_game_object);
+}
+
+bool CGameObject::frame_check(u32 &frame)
+{
+	if (Device.dwFrame == frame)
+		return		(false);
+
+	frame			= Device.dwFrame;
+	return			(true);
+}
+

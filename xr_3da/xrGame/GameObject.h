@@ -6,15 +6,16 @@
 #define AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_
 #pragma once
 
-class CPhysicsShell;
-class CSE_Abstract;
-class CPHSynchronize;
-
 #include "PhysicsRefObject.h"
 #include "level_graph.h"
 #include "ai_object_location.h"
 #include "prefetch_manager.h"
 #include "ParticlesPlayer.h"
+
+class CPhysicsShell;
+class CSE_Abstract;
+class CPHSynchronize;
+class CLuaGameObject;
 
 class CGameObject : 
 	public CObject, 
@@ -25,9 +26,12 @@ class CGameObject :
 
 {
 	typedef CObject inherited;
-	u32						m_dwSpawnFrame0;
-	u32						m_dwSpawnFrame1;
-	u32						m_dwSpawnFrame2;
+	u32						m_dwFrameLoad;
+	u32						m_dwFrameReload;
+	u32						m_dwFrameReinit;
+	u32						m_dwFrameSpawn;
+	u32						m_dwFrameDestroy;
+	u32						m_dwFrameClient;
 protected:
 	CSE_ALifeSimulator		*m_tpALife;
 public:
@@ -118,9 +122,6 @@ public:
 		return				(true);
 	}
 
-private:
-	bool					m_initialized;
-
 public:
 	typedef void __stdcall visual_callback(CKinematics *);
 	typedef svector<visual_callback*,6>			CALLBACK_VECTOR;
@@ -136,6 +137,13 @@ public:
 		return				(m_visual_callback);
 	}
 	virtual void			create_physic_shell	();
+
+private:
+	CLuaGameObject			*m_lua_game_object;
+public:
+			CLuaGameObject	*lua_game_object();
+protected:
+			bool	frame_check			(u32 &frame);
 };
 
 #endif // !defined(AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_)

@@ -353,7 +353,6 @@ void CAI_Rat::CreateSkeleton(){
 void CAI_Rat::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update	(dt);
-	CEatableItem::shedule_Update(dt);
 }
 
 void CAI_Rat::UpdateCL(){
@@ -443,6 +442,11 @@ void CAI_Rat::OnH_A_Chield		()
 }
 
 void CAI_Rat::create_physic_shell()
+{
+	// do not delete!!!
+}
+
+void CAI_Rat::setup_physic_shell()
 {
 	// do not delete!!!
 }

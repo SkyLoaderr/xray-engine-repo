@@ -79,7 +79,8 @@ CLuaGameObject *CLuaGameObject::GetCurrentWeapon() const
 		LuaOut		(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetCurrentWeapon!");
 		return		(0);
 	}
-	return			(xr_new<CLuaGameObject>(l_tpStalker->GetCurrentWeapon()));
+	CGameObject		*current_weapon = l_tpStalker->GetCurrentWeapon();
+	return			(current_weapon ? current_weapon->lua_game_object() : 0);
 }
 
 CLuaGameObject *CLuaGameObject::GetCurrentEquipment() const
@@ -89,7 +90,8 @@ CLuaGameObject *CLuaGameObject::GetCurrentEquipment() const
 		LuaOut		(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetCurrentWeapon!");
 		return		(0);
 	}
-	return			(xr_new<CLuaGameObject>(l_tpStalker->GetCurrentEquipment()));
+	CGameObject		*current_equipment = l_tpStalker->GetCurrentEquipment();
+	return			(current_equipment ? current_equipment->lua_game_object() : 0);
 }
 
 CLuaGameObject *CLuaGameObject::GetFood() const
@@ -99,7 +101,8 @@ CLuaGameObject *CLuaGameObject::GetFood() const
 		LuaOut		(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetCurrentWeapon!");
 		return		(0);
 	}
-	return			(xr_new<CLuaGameObject>(l_tpStalker->GetFood()));
+	CGameObject		*food = l_tpStalker->GetFood();
+	return			(food ? food->lua_game_object() : 0);
 }
 
 CLuaGameObject *CLuaGameObject::GetMedikit() const
@@ -109,7 +112,8 @@ CLuaGameObject *CLuaGameObject::GetMedikit() const
 		LuaOut		(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetCurrentWeapon!");
 		return		(0);
 	}
-	return			(xr_new<CLuaGameObject>(l_tpStalker->GetMedikit()));
+	CGameObject		*medikit = l_tpStalker->GetMedikit();
+	return			(medikit ? medikit->lua_game_object() : 0);
 }
 
 void CMovementAction::SetObjectToGo(CLuaGameObject *tpObjectToGo)
@@ -192,7 +196,7 @@ CLuaGameObject	*CLuaGameObject::GetActiveItem()
 	CInventoryOwner		*l_tpInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
 	if (l_tpInventoryOwner)
 		if (l_tpInventoryOwner->inventory().ActiveItem())
-			return		(xr_new<CLuaGameObject>(l_tpInventoryOwner->inventory().ActiveItem()));
+			return		(l_tpInventoryOwner->inventory().ActiveItem()->lua_game_object());
 		else
 			return		(0);
 	else {
@@ -210,7 +214,7 @@ CLuaGameObject	*CLuaGameObject::GetObjectByName	(LPCSTR caObjectName) const
 		if (!l_tpGameObject)
 			return		(0);
 		else
-			return		(xr_new<CLuaGameObject>(l_tpGameObject));
+			return		(l_tpGameObject->lua_game_object());
 	}
 	else {
 		LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member object!");
@@ -227,7 +231,7 @@ CLuaGameObject	*CLuaGameObject::GetObjectByIndex	(int iIndex) const
 		if (!l_tpGameObject)
 			return		(0);
 		else
-			return		(xr_new<CLuaGameObject>(l_tpGameObject));
+			return		(l_tpGameObject->lua_game_object());
 	}
 	else {
 		LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member object!");
