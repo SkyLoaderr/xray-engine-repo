@@ -119,7 +119,7 @@ void CLightPPA_Manager::Render()
 		float	alpha	= Device.vCameraPosition.distance_to(PPL.sphere.P)/MAX_DISTANCE;
 
 		// Culling
-		if (alpha>=1)	continue;
+		if (alpha>=1)		continue;
 		if (!::Render.ViewBase.testSphereDirty (PPL.sphere.P,PPL.sphere.R))	continue;
 
 		// Setup D3D light
