@@ -9,16 +9,6 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	float		np					= VIEWPORT_NEAR+EPS;
 	Device.mView.transform_tiny		(L_pos,L->sphere.P);
 
-	// Near plane for fog
-	Fmatrix& M						= Device.mFullTransform;
-	Fvector4 plane;
-	plane.x							= -(M._14 + M._13);
-	plane.y							= -(M._24 + M._23);
-	plane.z							= -(M._34 + M._33);
-	plane.w							= -(M._44 + M._43);
-	float denom						= -1.0f / _sqrt(_sqr(plane.x)+_sqr(plane.y)+_sqr(plane.z));
-	plane.mul						(denom);
-
 	// Xforms
 	Fmatrix mW;
 	mW.scale						(L_R,L_R,L_R);
@@ -27,7 +17,20 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	RCache.set_xform_view			(Device.mView);
 	RCache.set_xform_project		(Device.mProject);
 
+	// Mask by stencil
+	
+
+
+
 	// Select shader (front or back-faces), *** back, if intersect near plane
+	Fmatrix& M						= Device.mFullTransform;
+	Fvector4 plane;
+	plane.x							= -(M._14 + M._13);
+	plane.y							= -(M._24 + M._23);
+	plane.z							= -(M._34 + M._33);
+	plane.w							= -(M._44 + M._43);
+	float denom						= -1.0f / _sqrt(_sqr(plane.x)+_sqr(plane.y)+_sqr(plane.z));
+	plane.mul						(denom);
 	Fplane	P;	P.n.set(plane.x,plane.y,plane.z); P.d = plane.w;
 	float	p_dist					= P.classify	(L->sphere.P) - L->sphere.R;
 	if (p_dist<0)					{
