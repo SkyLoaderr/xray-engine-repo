@@ -91,7 +91,7 @@ protected:
 	void			switch2_DeathDead			();
 
 	void			state_DeathFall				();
-	void			state_Flying				(float dt);
+	void			state_Flying				(u32 dt);
 
 	void			CreateSkeleton();
 	
@@ -107,7 +107,7 @@ public:
 	virtual void	renderable_Render			();
 	virtual void	shedule_Update				(u32 DT);
 	virtual void	UpdateCL					();
-			void	UpdateWorkload				(float DT);
+			void	UpdateWorkload				(u32 DT);
 
 	virtual CEntity*cast_entity					()			{return this;}
 
