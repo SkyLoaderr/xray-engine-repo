@@ -1,4 +1,15 @@
+-- скрипт героя
 function main ()
 
+	local hero = get_level_object ("stalker_hero")
+
+	hero:script (true, military3_5.script_name ())
+
+	action (hero, move (move.standing, move.stand, move.line, patrol ("guard_way1")),
+			anim (anim.free), look (look.search), cond (cond.time_end, 10000000))
+
+	while hero:action () do wait () end
+
+	hero:script (false, military3_5.script_name ())
 
 end

@@ -1,3 +1,11 @@
 function main ()
 
+	local hero = get_level_object ("stalker_hero")
+	hero:script (true, military4.script_name ())
+	action (hero, move (move.standing, move.stand), anim ("machina_1"), look (), cond (cond.time_end, 100000000))
+	
+	while hero:action () do wait () end
+
+	hero:script (false, military4.script_name ())
+
 end

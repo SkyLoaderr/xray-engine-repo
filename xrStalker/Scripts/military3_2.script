@@ -1,4 +1,16 @@
+-- сталкер на вышке
 function main ()
+
+	local guard4 = get_level_object ("stalker_guard4")
+
+	guard4:script (true, military3_2.script_name ())
+
+	action (guard4, move (move.standing, move.stand, move.line, patrol ("guard_way1")),
+			anim (anim.free), look (look.search), cond (cond.time_end, 10000000))
+
+	while guard4:action () do wait () end
+
+	guard4:script (false, military3_2.script_name ())
 
 
 end

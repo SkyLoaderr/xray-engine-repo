@@ -1,4 +1,31 @@
+-- сталкер у шлагбаума КПП
 function main ()
 
+	local guard5 = get_level_object ("stalker_guard5")
+	local path = 1
+
+	guard5:script (true, military3_3.script_name ())
+
+	action (guard5, move (move.standing, move.walk, move.line, patrol ("guard_way51")),
+			anim (anim.free), look (look.search), cond (cond.move_end))
+
+	while true do 
+		  if guard5:action () == nil then
+         	 guard5:script (false, military3_3.script_name ())
+             guard5:script (true, military3_3.script_name ())
+			 if path == 1 then 
+   				action (guard5, move (move.standing, move.walk, move.line, patrol ("guard_way52")),
+						anim (anim.free), look (look.search), cond (cond.move_end))
+			    path = 2
+			 else 
+   				action (guard5, move (move.standing, move.walk, move.line, patrol ("guard_way51")),
+						anim (anim.free), look (look.search), cond (cond.move_end))
+			    path = 1
+			 end
+		   end
+	       wait (1000) 
+    end
+
+	guard5:script (false, military3_3.script_name ())
 
 end
