@@ -134,6 +134,7 @@ void CPHCapture::PullingUpdate()
 		dJointAttach(m_joint,m_body,m_taget_element->get_body());
 		dJointAttach(m_ajoint,m_body,m_taget_element->get_body());
 		dJointSetFeedback (m_joint, &m_joint_feedback);
+		dJointSetFeedback (m_ajoint, &m_joint_feedback);
 		dJointSetBallAnchor(m_joint,capture_bone_position.x,capture_bone_position.y,capture_bone_position.z);
 
 

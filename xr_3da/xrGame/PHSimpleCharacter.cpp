@@ -308,7 +308,7 @@ void		CPHSimpleCharacter::ApplyForce(float x, float y, float z)
 	if(!b_exist) return;
 	Enable();
 	dBodyAddForce(m_body,x,y,z);
-	BodyCutForce(m_body,5.f,0.f);
+	//BodyCutForce(m_body,5.f,0.f);
 }
 
 void		CPHSimpleCharacter::ApplyForce(const Fvector& dir,float force)
@@ -571,7 +571,7 @@ void CPHSimpleCharacter::PhTune(dReal step){
 	//chVel[1]=0.f;
 	//	}
 
-
+	BodyCutForce(m_body,5.f,0.f);
 }
 
 
