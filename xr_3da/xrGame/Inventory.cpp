@@ -497,26 +497,19 @@ bool CInventory::Drop(CGameObject *pObj, bool call_drop)
 {
 	CInventoryItem *pIItem = dynamic_cast<CInventoryItem*>(pObj);
 	
-	if(pIItem && (m_all.find(pIItem) != m_all.end()) && Ruck(pIItem)) 
+	if(pIItem && (m_all.find(pIItem) != m_all.end())) 
 	{
-		m_ruck.erase(std::find(m_ruck.begin(), m_ruck.end(), pIItem));
-		m_all.erase(pIItem);
-		pIItem->m_pInventory = NULL;
-		
-		/*TIItemList subs; 
-		subs.insert(subs.end(), pIItem->m_subs.begin(), pIItem->m_subs.end());
-		
-		while(subs.size()) 
+		if (pIItem->GetSlot() == m_activeSlot) m_activeSlot = NO_ACTIVE_SLOT;
+		if (Ruck(pIItem))
 		{
-			pIItem = *subs.begin();
-			pIItem->m_pInventory = NULL;
+			m_ruck.erase(std::find(m_ruck.begin(), m_ruck.end(), pIItem));
 			m_all.erase(pIItem);
-			subs.insert(subs.end(), pIItem->m_subs.begin(), pIItem->m_subs.end());
-			subs.erase(subs.begin());
-		}*/
-		if (call_drop && dynamic_cast<CInventoryItem*>(pObj))
-			m_pOwner->OnItemDrop	(dynamic_cast<CInventoryItem*>(pObj));
-		return true;
+			pIItem->m_pInventory = NULL;
+
+			if (call_drop && dynamic_cast<CInventoryItem*>(pObj))
+				m_pOwner->OnItemDrop	(dynamic_cast<CInventoryItem*>(pObj));
+			return true;
+		};
 	}
 	return false;
 }
@@ -842,8 +835,7 @@ void CInventory::Update(u32 /**deltaT/**/)
 
 		if(pIItem && pIItem->m_drop)
 		{
-			pIItem->m_drop = false;
-			if((u32)i == m_activeSlot) m_activeSlot = NO_ACTIVE_SLOT;
+			pIItem->m_drop = false;			 
 			
 			if(pIItem->H_Parent())
 			{
