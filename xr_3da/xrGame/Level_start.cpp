@@ -44,30 +44,33 @@ BOOL CLevel::net_Start	( LPCSTR name, BOOL server )
 	}
 
 	// Analyze game and perform apropriate CLIENT spawning
-	u16	spawn_flags					= M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;
-	switch (GAME)
+	if (bResult) 
 	{
-	case GAME_SINGLE:
-		// Already spawned actor on server
-		break;
-	case GAME_DEATHMATCH:
-		// Spawn at ANY r-point
+		u16	spawn_flags					= M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;
+		switch (GAME)
 		{
-			g_cl_Spawn("actor",0xFF,spawn_flags);
+		case GAME_SINGLE:
+			// Already spawned actor on server
+			break;
+		case GAME_DEATHMATCH:
+			// Spawn at ANY r-point
+			{
+				g_cl_Spawn("actor",0xFF,spawn_flags);
+			}
+			break;
+		case GAME_CTF:
+			// Spawn at TEAM r-point
+			{
+				g_cl_Spawn("actor",0xFD,spawn_flags);
+			}
+			break;
+		case GAME_ASSAULT:
+			// Spawn at TEAM r-point
+			{
+				g_cl_Spawn("actor",0xFD,spawn_flags);
+			}
+			break;
 		}
-		break;
-	case GAME_CTF:
-		// Spawn at TEAM r-point
-		{
-			g_cl_Spawn("actor",0xFD,spawn_flags);
-		}
-		break;
-	case GAME_ASSAULT:
-		// Spawn at TEAM r-point
-		{
-			g_cl_Spawn("actor",0xFD,spawn_flags);
-		}
-		break;
 	}
 
 	pApp->LoadEnd					();
