@@ -30,6 +30,7 @@ private:
 		eStalkerStateDrop,
 		eStalkerStateLookingOver,
 		eStalkerStateSearching,
+		eStalkerStateFiring,
 	};
 
 	enum EBodyState {
@@ -63,6 +64,10 @@ private:
 		u32					dwTime;
 	} SStalkerStates;
 
+	// VISIBILITY
+	objSET					m_tpaVisibleObjects;
+	SEnemySelected			m_Enemy;
+		
 	//HIT PHYS
 	float					m_saved_impulse;
 	Fvector					m_saved_hit_position;
@@ -134,6 +139,7 @@ private:
 			void			Drop							();
 			void			LookingOver						();
 			void			Searching						();
+			void			Firing							();
 			// selectors
 			void			vfBuildPathToDestinationPoint	(CAISelectorBase *S);
 			void			vfSearchForBetterPosition		(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
@@ -237,4 +243,6 @@ public:
 	virtual void			Update							(u32 dt);
 	virtual void			UpdateCL						();
 	virtual void			Hit								(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse);
+	virtual float			EnemyHeuristics					(CEntity* E);
+	virtual void			SelectEnemy						(SEnemySelected& S);
 };

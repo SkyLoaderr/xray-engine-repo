@@ -90,6 +90,10 @@ void CAI_Stalker::Think()
 				Searching();
 				break;
 			}
+			case eStalkerStateFiring: {
+				Firing();
+				break;
+			}
 		}
 		m_bStateChanged		= m_ePreviousState != m_eCurrentState;
 	}
@@ -161,10 +165,32 @@ void CAI_Stalker::Searching()
 {
 	WRITE_TO_LOG("Searching");
 
+//	SelectEnemy(m_Enemy);
+
+//	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_Enemy.Enemy,eStalkerStateFiring);
+
 	if (!AI_Path.Nodes.size() || (AI_Path.Nodes[AI_Path.TravelPath.size() - 1] != AI_Path.DestNode))
 		vfBuildPathToDestinationPoint		(0);
 
 	vfSetMovementType(eBodyStateStand,eMovementTypeWalk,eLookTypeSearch);
+	if (m_fCurSpeed < EPS_L)
+		r_torso_target.yaw = r_target.yaw;
+}
+
+void CAI_Stalker::Firing()
+{
+	WRITE_TO_LOG("Searching");
+
+	SelectEnemy(m_Enemy);
+
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!m_Enemy.Enemy);
+
+//	vfChoosePointAndBuildPath();
+
+	vfSetMovementType(eBodyStateStand,eMovementTypeWalk,eLookTypePoint,m_Enemy.Enemy->Position());
+
+//	vfSetFire(true);
+	
 	if (m_fCurSpeed < EPS_L)
 		r_torso_target.yaw = r_target.yaw;
 }

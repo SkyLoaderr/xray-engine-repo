@@ -19,19 +19,20 @@ CAI_Stalker::CAI_Stalker			()
 	m_tDesirableDirection			= eMovementDirectionForward;
 	m_dwDirectionStartTime			= 0;
 	m_dwAnimationSwitchInterval		= 0;
-	r_torso_speed					= 2*PI_DIV_6;
+	r_torso_speed					= M_PI;
 	r_head_speed					= PI_DIV_6;
 	m_pPhysicsShell					= NULL;
-	m_saved_impulse			= 0.f;
-	m_dwTimeToChange		= 0;
+	m_saved_impulse					= 0.f;
+	m_dwTimeToChange				= 0;
+	m_tBodyState					= eBodyStateStand;
 }
 
 CAI_Stalker::~CAI_Stalker			()
 {
-	Msg								("FSM report for %s :",cName());
-	for (int i=0; i<(int)m_tStateStack.size(); i++)
-		Msg							("%3d %6d",m_tStateList[i].eState,m_tStateList[i].dwTime);
-	Msg								("Total updates : %d",m_dwUpdateCount);
+//	Msg								("FSM report for %s :",cName());
+//	for (int i=0; i<(int)m_tStateStack.size(); i++)
+//		Msg							("%3d %6d",m_tStateList[i].eState,m_tStateList[i].dwTime);
+//	Msg								("Total updates : %d",m_dwUpdateCount);
 	xr_delete						(Weapons);
 	xr_delete						(m_pPhysicsShell);
 }
@@ -112,6 +113,8 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	cNameVisual_set					(tpHuman->caModel);
 	
 	fHealth							= tpHuman->fHealth;
+	if (fHealth <= 0)
+		Die();
 	m_tCurGP						= tpHuman->m_tGraphID;
 	m_tNextGP						= tpHuman->m_tNextGraphID;
 
