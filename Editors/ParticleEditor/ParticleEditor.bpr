@@ -70,7 +70,8 @@
       Intermediate\R_Backend.obj Intermediate\Blender_detail_still.obj 
       Intermediate\Blender_tree.obj Intermediate\ELog.obj 
       Intermediate\Blender_Palette.obj Intermediate\ParticleGroupEditor.obj 
-      Intermediate\ParticleGroupParser.obj Intermediate\R_Backend_xform.obj"/>
+      Intermediate\ParticleGroupParser.obj Intermediate\R_Backend_xform.obj 
+      Intermediate\Blender_Recorder_R2.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -260,6 +261,7 @@
       <FILE FILENAME="Editor\ParticleGroupEditor.cpp" FORMNAME="" UNITNAME="ParticleGroupEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ParticleGroupParser.cpp" FORMNAME="" UNITNAME="ParticleGroupParser" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\R_Backend_xform.cpp" FORMNAME="" UNITNAME="R_Backend_xform" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Recorder_R2.cpp" FORMNAME="" UNITNAME="Blender_Recorder_R2" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
