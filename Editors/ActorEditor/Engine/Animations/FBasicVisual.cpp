@@ -80,6 +80,11 @@ void CVisual::Load		(const char* N, CStream *data, u32 dwFlags)
 		bv_Radius		= bv_Position.magnitude();
 		bv_Position.add	(bbox.min);
 	}
+	Log	("---");
+	Log	("pos",bv_Position);
+	Log	("r  ",bv_Radius);
+	Log	("min",bv_BBox.min);
+	Log	("max",bv_BBox.max);
 
 	// textures
 	if (data->FindChunk(OGF_TEXTURE_L)) {
