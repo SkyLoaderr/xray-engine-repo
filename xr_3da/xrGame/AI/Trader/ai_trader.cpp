@@ -211,13 +211,13 @@ BOOL CAI_Trader::net_Spawn			(LPVOID DC)
 	clone							(l_tpTrader->m_tpOrderedArtefacts,m_tpOrderedArtefacts);
 	
 	R_ASSERT						(l_tpTrader);
-	
-	if (!inherited::net_Spawn(DC) || !CScriptMonster::net_Spawn(DC))	return FALSE;
+
 
 	//проспавнить PDA у InventoryOwner
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
 
-	
+	if (!inherited::net_Spawn(DC) || !CScriptMonster::net_Spawn(DC))	return FALSE;
+
 	//m_body.current.yaw			= m_body.target.yaw	= -tpTrader->o_Angle.y;
 	//m_body.current.pitch			= m_body.target.pitch	= 0;
 	
