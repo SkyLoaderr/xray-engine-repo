@@ -1457,6 +1457,9 @@
 					RelativePath=".\Scripts\ui_multiplayer_find.script">
 				</File>
 				<File
+					RelativePath=".\Scripts\ui_multiplayer_gametype_tab.script">
+				</File>
+				<File
 					RelativePath=".\Scripts\ui_multiplayer_map_tab.script">
 				</File>
 				<File
