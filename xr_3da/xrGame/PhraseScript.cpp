@@ -54,30 +54,31 @@ bool  CPhraseScript::CheckInfo		(const CInventoryOwner* pOwner) const
 	THROW(pOwner);
 
 	for(u32 i=0; i<m_HasInfo.size(); i++) {
-		INFO_INDEX	result = CInfoPortion::IdToIndex(m_HasInfo[i],NO_INFO_INDEX,true);
+#pragma todo("Andy->Andy how to check infoportion existence in XML ?")
+/*		INFO_INDEX	result = CInfoPortion::IdToIndex(m_HasInfo[i],NO_INFO_INDEX,true);
 		if (result == NO_INFO_INDEX) {
 			ai().script_engine().script_log(eLuaMessageTypeError,"XML item not found : \"%s\"",*m_HasInfo[i]);
 			break;
 		}
-
-		if (!pOwner->HasInfo(result)) {
+*/
+		if (!pOwner->HasInfo(m_HasInfo[i])) {
 #ifdef DEBUG
-			Msg("[%s] has info %s", pOwner->Name(), *m_HasInfo[i]);
+			Msg("----rejected: [%s] has info %s", pOwner->Name(), *m_HasInfo[i]);
 #endif
 			return false;
 		}
 	}
 
 	for(i=0; i<m_DontHasInfo.size(); i++) {
-		INFO_INDEX	result = CInfoPortion::IdToIndex(m_DontHasInfo[i],NO_INFO_INDEX,true);
+/*		INFO_INDEX	result = CInfoPortion::IdToIndex(m_DontHasInfo[i],NO_INFO_INDEX,true);
 		if (result == NO_INFO_INDEX) {
 			ai().script_engine().script_log(eLuaMessageTypeError,"XML item not found : \"%s\"",*m_DontHasInfo[i]);
 			break;
 		}
-
-		if (pOwner->HasInfo(result)) {
+*/
+		if (pOwner->HasInfo(m_DontHasInfo[i])) {
 #ifdef DEBUG
-			Msg("[%s] dont has info %s", pOwner->Name(), *m_DontHasInfo[i]);
+			Msg("----rejected: [%s] dont has info %s", pOwner->Name(), *m_DontHasInfo[i]);
 #endif
 			return false;
 		}
@@ -91,10 +92,10 @@ void  CPhraseScript::TransferInfo	(const CInventoryOwner* pOwner) const
 	THROW(pOwner);
 
 	for(u32 i=0; i<m_GiveInfo.size(); i++)
-		pOwner->TransferInfo(CInfoPortion::IdToIndex(m_GiveInfo[i]), true);
+		pOwner->TransferInfo(m_GiveInfo[i], true);
 
 	for(i=0; i<m_DisableInfo.size(); i++)
-		pOwner->TransferInfo(CInfoPortion::IdToIndex(m_DisableInfo[i]),false);
+		pOwner->TransferInfo(m_DisableInfo[i],false);
 }
 
 
@@ -104,8 +105,10 @@ bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO, LPCSTR dialog_i
 	bool predicate_result = true;
 
 	if(!CheckInfo(smart_cast<const CInventoryOwner*>(pSpeakerGO))){
-		if (psAI_Flags.test(aiDialogs))
+		#ifdef DEBUG
+			if (psAI_Flags.test(aiDialogs))
 			Msg("dialog [%s] phrase[%d] rejected by CheckInfo",dialog_id,phrase_num);
+		#endif
 		return false;
 	}
 
@@ -117,8 +120,10 @@ bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO, LPCSTR dialog_i
 		THROW3(functor_exists, "Cannot find precondition", *Preconditions()[i]);
 		predicate_result = lua_function	(pSpeakerGO->lua_game_object());
 		if(!predicate_result){
+		#ifdef DEBUG
 			if (psAI_Flags.test(aiDialogs))
 				Msg("dialog [%s] phrase[%d] rejected by script predicate",dialog_id,phrase_num);
+		#endif
 			break;
 		} 
 	}
@@ -144,8 +149,10 @@ bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO1, const CGameObj
 	bool predicate_result = true;
 
 	if(!CheckInfo(smart_cast<const CInventoryOwner*>(pSpeakerGO1))){
+		#ifdef DEBUG
 		if (psAI_Flags.test(aiDialogs))
 			Msg("dialog [%s] phrase[%d] rejected by CheckInfo",dialog_id,phrase_num);
+		#endif
 		return false;
 	}
 	for(u32 i = 0; i<Preconditions().size(); i++)
@@ -156,8 +163,10 @@ bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO1, const CGameObj
 		THROW3(functor_exists, "Cannot find phrase precondition", *Preconditions()[i]);
 		predicate_result = lua_function	(pSpeakerGO1->lua_game_object(), pSpeakerGO2->lua_game_object(), dialog_id, phrase_num);
 		if(!predicate_result){
+		#ifdef DEBUG
 			if (psAI_Flags.test(aiDialogs))
 				Msg("dialog [%s] phrase[%d] rejected by script predicate",dialog_id,phrase_num);
+		#endif
 			break;
 		}
 	}

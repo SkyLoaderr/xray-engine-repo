@@ -34,7 +34,7 @@ CPhraseDialog::CPhraseDialog(void)
 	m_pSpeakerFirst		= NULL;
 	m_pSpeakerSecond	= NULL;
 
-	m_DialogIndex = NO_PHRASE_DIALOG;
+	m_DialogId = NULL;
 }
 
 CPhraseDialog::~CPhraseDialog(void)
@@ -126,11 +126,16 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 			CPhraseGraph::CVertex* next_phrase_vertex = phrase_dialog->data()->m_PhraseGraph.vertex(edge.vertex_id());
 			THROW(next_phrase_vertex);
 
-			if(next_phrase_vertex->data()->m_PhraseScript.Precondition(pSpeakerGO2, pSpeakerGO1, *CPhraseDialog::IndexToId(phrase_dialog->m_DialogIndex), (int)phrase_id))
+			if(next_phrase_vertex->data()->m_PhraseScript.Precondition(pSpeakerGO2, pSpeakerGO1, *phrase_dialog->m_DialogId, (int)phrase_id)){
 				phrase_dialog->m_PhraseVector.push_back(next_phrase_vertex->data());
+				LPCSTR phrase_text = next_phrase_vertex->data()->GetText();
+				int iii = next_phrase_vertex->data()->GetIndex();
+				Msg("----added phrase text [%s]phrase_id=[%d] index=[%d] to dialog [%s]",phrase_text,phrase_id,iii,*phrase_dialog->m_DialogId);
+			}
+
 		}
 
-		THROW3(!phrase_dialog->m_PhraseVector.empty(), "No available phrase to say.", *CPhraseDialog::IndexToId(phrase_dialog->m_DialogIndex));
+		THROW3(!phrase_dialog->m_PhraseVector.empty(), "No available phrase to say.", *phrase_dialog->m_DialogId);
 
 		//упорядочить списко по убыванию благосклонности
 		std::sort(phrase_dialog->m_PhraseVector.begin(),
@@ -140,7 +145,7 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 	//вызвать скриптовую присоединенную функцию 
 	//активируется после сказанной фразы
 	//первый параметр - тот кто говорит фразу, второй - тот кто слушает
-	last_phrase->m_PhraseScript.Action(pSpeakerGO1, pSpeakerGO2, *CPhraseDialog::IndexToId(phrase_dialog->m_DialogIndex), (int)phrase_id);
+	last_phrase->m_PhraseScript.Action(pSpeakerGO1, pSpeakerGO2, *phrase_dialog->m_DialogId, (int)phrase_id);
 
 	//сообщить CDialogManager, что сказана фраза
 	//и ожидается ответ
@@ -170,7 +175,7 @@ LPCSTR CPhraseDialog::GetPhraseText	(PHRASE_ID phrase_id, bool current_speaking)
 	//если собеседники еще не заданы, то текст фразы запрашивается только для 
 	//обычный но не скриптовый
 	if(pSpeakerGO1 && pSpeakerGO2)
-		script_text = phrase_vertex->data()->GetScriptText(pSpeakerGO1, pSpeakerGO2, *CPhraseDialog::IndexToId(m_DialogIndex), (int)phrase_id);
+		script_text = phrase_vertex->data()->GetScriptText(pSpeakerGO1, pSpeakerGO2, *m_DialogId, (int)phrase_id);
 	return script_text?script_text:phrase_vertex->data()->GetText();
 }
 
@@ -189,21 +194,23 @@ int	 CPhraseDialog::Priority()
 //инициализация диалога
 //если диалог с таким id раньше не использовался
 //он будет загружен из файла
+/*
 void CPhraseDialog::Load(PHRASE_DIALOG_ID dialog_id)
 {
 	Load(id_to_index::IdToIndex(dialog_id));
 }
-
-void CPhraseDialog::Load(PHRASE_DIALOG_INDEX dialog_index)
+*/
+void CPhraseDialog::Load(PHRASE_DIALOG_ID dialog_id)
 {
-	m_DialogIndex = dialog_index;
-	inherited_shared::load_shared(m_DialogIndex, NULL);
+	m_DialogId = dialog_id;
+	inherited_shared::load_shared(m_DialogId, NULL);
 }
 
 
 void CPhraseDialog::load_shared	(LPCSTR)
 {
-	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetByIndex(m_DialogIndex);
+//	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetByIndex(m_DialogIndex);
+	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetById(m_DialogId);
 
 	string128 xml_file_full;
 	strconcat(xml_file_full, *shared_str(item_data.file_name), ".xml");
@@ -298,7 +305,7 @@ void CPhraseDialog::AddPhrase	(XML_NODE* phrase_node, PHRASE_ID phrase_id)
 
 bool  CPhraseDialog::Precondition(const CGameObject* pSpeaker1, const CGameObject* pSpeaker2)
 {
-	return data()->m_PhraseScript.Precondition(pSpeaker1, pSpeaker2, *CPhraseDialog::IndexToId(m_DialogIndex), -1);
+	return data()->m_PhraseScript.Precondition(pSpeaker1, pSpeaker2, *m_DialogId, -1);
 }
 
 void   CPhraseDialog::InitXmlIdToIndex()
@@ -307,4 +314,16 @@ void   CPhraseDialog::InitXmlIdToIndex()
 		id_to_index::tag_name = "dialog";
 	if(!id_to_index::file_str)
 		id_to_index::file_str = pSettings->r_string("dialogs", "files");
+}
+
+bool CPhraseDialog::allIsDummy	()
+{
+	PHRASE_VECTOR_IT it = m_PhraseVector.begin();
+	bool bAllIsDummy = true;
+	for(;it!=m_PhraseVector.end();++it){
+		if( !(*it)->IsDummy() )
+			bAllIsDummy=false;
+	}
+
+	return bAllIsDummy;
 }

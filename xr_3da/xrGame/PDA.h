@@ -63,8 +63,8 @@ public:
 	virtual bool IsOn() {return !m_bTurnedOff;}
 	virtual bool IsOff() {return m_bTurnedOff;}
 
-	virtual void SendMessage(u32 pda_num, EPdaMsg msg, INFO_INDEX info_index);
-	virtual void SendMessageID(u32 pda_ID, EPdaMsg msg, INFO_INDEX info_index);
+	virtual void SendMessage(u32 pda_num, EPdaMsg msg, INFO_ID info_id);
+	virtual void SendMessageID(u32 pda_ID, EPdaMsg msg, INFO_ID info_id);
 
 	virtual bool IsNewMessage(){return m_bNewMessage;}
 	virtual void NoNewMessage(){m_bNewMessage = false;}
@@ -91,8 +91,8 @@ public:
 	//получить последнее сообщение из лога  (false - если лог пуст)
 	bool GetLastMessageFromLog(u32 pda_ID,  SPdaMessage& pda_message);
 
-	virtual void		SetInfoPortion (INFO_INDEX);
-	virtual INFO_INDEX	GetInfoPortion ();
+	virtual void		SetInfoPortion (INFO_ID);
+	virtual INFO_ID		GetInfoPortion ();
 
 	virtual LPCSTR		Name			();
 	virtual LPCSTR		NameComplex		();
@@ -101,8 +101,8 @@ protected:
 	//поступление нового сообщения на PDA
 	bool m_bNewMessage;
 
-	void PdaEventSend(u32 pda_ID, EPdaMsg msg, INFO_INDEX info_index);
-	void AddMessageToLog(u32 pda_ID, EPdaMsg msg, INFO_INDEX info_index, bool receive);
+	void PdaEventSend(u32 pda_ID, EPdaMsg msg, INFO_ID info_id);
+	void AddMessageToLog(u32 pda_ID, EPdaMsg msg, INFO_ID info_id, bool receive);
 
 
 	//радиус обнаружения других PDA
@@ -110,9 +110,9 @@ protected:
 
 	//первый владелец PDA
 	u16 m_idOriginalOwner;
-	SPECIFIC_CHARACTER_INDEX m_iSpecificChracterOwner;
+	SPECIFIC_CHARACTER_ID m_SpecificChracterOwner;
 	//присоединенный info portion
-	INFO_INDEX m_iInfoPortion;
+	INFO_ID		m_InfoPortion;
 	//полное название PDA с именем владельца
 	xr_string m_sFullName;
 

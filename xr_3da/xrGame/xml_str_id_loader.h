@@ -14,11 +14,11 @@
 #endif
 
 
+
 //T_ID    - уникальный текстовый идентификатор (аттрибут id в XML файле)
 //T_INDEX - уникальный числовой индекс 
 //T_INIT -  класс где определена статическая InitXmlIdToIndex
 //          функция инициализации file_str и tag_name
-
 #define TEMPLATE_SPECIALIZATION template<typename T_ID, typename T_INDEX,  typename T_INIT>
 #define CSXML_IdToIndex CXML_IdToIndex<T_ID, T_INDEX, T_INIT>
 
@@ -101,7 +101,8 @@ const typename CSXML_IdToIndex::ITEM_DATA* CSXML_IdToIndex::GetById (const T_ID&
 	for(T_VECTOR::iterator it = ItemDataVector().begin();
 		ItemDataVector().end() != it; it++)
 	{
-		if(!xr_strcmp((*it).id, str_id))
+		if( (*it).id == str_id)
+//		if(!xr_strcmp((*it).id, str_id))
 			break;
 	}
 
@@ -198,3 +199,4 @@ typename CSXML_IdToIndex::T_VECTOR&	CSXML_IdToIndex::ItemDataVector ()
 }
 
 #undef TEMPLATE_SPECIALIZATION
+

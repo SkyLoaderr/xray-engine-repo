@@ -1417,6 +1417,16 @@ public:
 			strcpy(I,"restarts script debugger or start if no script debugger presents"); 
 	}
 };
+
+class CCC_DumpInfos : public IConsole_Command {
+public:
+	CCC_DumpInfos	(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void	Execute				(LPCSTR args) {
+		CActor* A =smart_cast<CActor*>(Level().CurrentEntity());
+		if(A)
+			A->DumpInfo();
+	}
+};
 #endif
 
 class CCC_PostprocessTest : public IConsole_Command {
@@ -1835,6 +1845,9 @@ void CCC_RegisterCommands()
 
 #ifdef DEBUG
 	CMD4(CCC_Integer,	"string_table_error_msg",	&CStringTable::m_bWriteErrorsToLog,	0,	1);
+
+	CMD1(CCC_DumpInfos,				"dump_infos");
+	
 #endif
 
 	CMD1(CCC_KickPlayer,	"sv_kick"					);		

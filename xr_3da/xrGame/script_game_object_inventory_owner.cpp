@@ -32,7 +32,7 @@ bool CScriptGameObject::GiveInfoPortion(LPCSTR info_id)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
 	if(!pInventoryOwner) return false;
-	pInventoryOwner->TransferInfo(CInfoPortion::IdToIndex(info_id), true);
+	pInventoryOwner->TransferInfo(info_id, true);
 	return			true;
 }
 
@@ -40,7 +40,7 @@ bool CScriptGameObject::DisableInfoPortion(LPCSTR info_id)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
 	if(!pInventoryOwner) return false;
-	pInventoryOwner->TransferInfo(CInfoPortion::IdToIndex(info_id), false);
+	pInventoryOwner->TransferInfo(info_id, false);
 	return true;
 }
 
@@ -107,7 +107,7 @@ bool  CScriptGameObject::HasInfo				(LPCSTR info_id)
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
 	if(!pInventoryOwner) return false;
 	if(!pInventoryOwner->GetPDA()) return false;
-	return pInventoryOwner->HasInfo(CInfoPortion::IdToIndex(info_id));
+	return pInventoryOwner->HasInfo(info_id);
 
 }
 bool  CScriptGameObject::DontHasInfo			(LPCSTR info_id)
@@ -115,7 +115,7 @@ bool  CScriptGameObject::DontHasInfo			(LPCSTR info_id)
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
 	if(!pInventoryOwner) return true;
 	if(!pInventoryOwner->GetPDA()) return true;
-	return !pInventoryOwner->HasInfo(CInfoPortion::IdToIndex(info_id));
+	return !pInventoryOwner->HasInfo(info_id);
 }
 
 xrTime CScriptGameObject::GetInfoTime			(LPCSTR info_id)
@@ -124,7 +124,7 @@ xrTime CScriptGameObject::GetInfoTime			(LPCSTR info_id)
 	if(!pInventoryOwner) return xrTime(0);
 
 	INFO_DATA info_data;
-	if(pInventoryOwner->GetInfo(CInfoPortion::IdToIndex(info_id), info_data))
+	if(pInventoryOwner->GetInfo(info_id, info_data))
 		return xrTime(info_data.receive_time);
 	else
 		return xrTime(0);
@@ -146,7 +146,7 @@ bool CScriptGameObject::SendPdaMessage(EPdaMsg pda_msg, CScriptGameObject* pForW
 	object().u_EventGen(P,GE_PDA,pForWhoInvOwner->GetPDA()->ID());
 	P.w_u16			(u16(pInventoryOwner->GetPDA()->ID()));		//отправитель
 	P.w_s16			((u16)pda_msg);
-	P.w_s32			(-1);
+	P.w_stringZ		(NULL);
 	object().u_EventSend(P);
 	return			true;
 }
@@ -298,11 +298,11 @@ LPCSTR CScriptGameObject::ProfileName			()
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
 	VERIFY(pInventoryOwner);
 	
-	PROFILE_INDEX profile_index =  pInventoryOwner->CharacterInfo().Profile();
-	if(NO_PROFILE == profile_index)
+	PROFILE_ID profile_id =  pInventoryOwner->CharacterInfo().Profile();
+	if(!profile_id || !profile_id.size() )
 		return NULL;
 	else
-		return *CCharacterInfo::IndexToId(profile_index);
+		return *profile_id;
 }
 
 
@@ -384,8 +384,9 @@ ETaskState CScriptGameObject::GetGameTaskState	(LPCSTR task_id, int objective_nu
 	CActor* pActor = smart_cast<CActor*>(&object());
 	VERIFY(pActor);
 
-	TASK_INDEX task_index = CGameTask::IdToIndex(task_id);
-	R_ASSERT3(task_index != NO_TASK, "wrong task id", task_id);
+//	TASK_INDEX task_index = CGameTask::IdToIndex(task_id);
+
+//	R_ASSERT3(task_index != NO_TASK, "wrong task id", task_id);
 	
 	const GAME_TASK_VECTOR* tasks =  pActor->game_task_registry->registry().objects_ptr();
 	if(!tasks) 
@@ -394,7 +395,7 @@ ETaskState CScriptGameObject::GetGameTaskState	(LPCSTR task_id, int objective_nu
 	for(GAME_TASK_VECTOR::const_iterator it = tasks->begin();
 			tasks->end() != it; it++)
 	{
-		if((*it).index == task_index) 
+		if((*it).task_id == task_id) 
 			break;
 	}
 	
@@ -410,15 +411,15 @@ void CScriptGameObject::SetGameTaskState	(ETaskState state, LPCSTR task_id, int 
 	CActor* pActor = smart_cast<CActor*>(&object());
 	VERIFY(pActor);
 
-	TASK_INDEX task_index = CGameTask::IdToIndex(task_id);
-	R_ASSERT3(task_index != NO_TASK, "wrong task id", task_id);
+//	TASK_INDEX task_index = CGameTask::IdToIndex(task_id);
+//	R_ASSERT3(task_index != NO_TASK, "wrong task id", task_id);
 	
 	GAME_TASK_VECTOR& tasks =  pActor->game_task_registry->registry().objects();
 
 	for(GAME_TASK_VECTOR::iterator it = tasks.begin();
 			tasks.end() != it; it++)
 	{
-		if((*it).index == task_index) 
+		if((*it).task_id == task_id) 
 			break;
 	}
 

@@ -104,7 +104,7 @@ void CSE_ALifeTraderAbstract::spawn_supplies	()
 	pda->m_specific_character = specific_character();
 #endif
 
-	if(NO_SPECIFIC_CHARACTER != m_iSpecificCharacter)
+	if(m_SpecificCharacter.size())
 	{
 		//если в custom data объекта есть
 		//секция [dont_spawn_character_supplies]
@@ -130,7 +130,7 @@ void CSE_ALifeTraderAbstract::spawn_supplies	()
 		if(specific_character_supply)
 		{
 			CSpecificCharacter selected_char;
-			selected_char.Load(m_iSpecificCharacter);
+			selected_char.Load(m_SpecificCharacter);
 			dynamic_object->spawn_supplies(selected_char.SupplySpawn());
 		}
 	}

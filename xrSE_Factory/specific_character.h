@@ -49,9 +49,9 @@ struct SSpecificCharacterData : CSharedResource
 #ifdef  XRGAME_EXPORTS
 	
 	//начальный диалог
-	PHRASE_DIALOG_INDEX m_iStartDialog;
+	PHRASE_DIALOG_ID m_StartDialog;
 	//диалоги актера, которые будут доступны только при встрече с данным персонажем
-	DIALOG_INDEX_VECTOR m_ActorDialogs;
+	DIALOG_ID_VECTOR m_ActorDialogs;
 
 	//положение большой икноки (для торговли и общения) в файле с иконками 
 	int	m_iIconX, m_iIconY;
@@ -85,12 +85,12 @@ class CCharacterInfo;
 class CSE_ALifeTraderAbstract;
 
 
-class CSpecificCharacter: public CSharedClass<SSpecificCharacterData, SPECIFIC_CHARACTER_INDEX, false>,
-						  public CXML_IdToIndex<SPECIFIC_CHARACTER_ID, SPECIFIC_CHARACTER_INDEX, CSpecificCharacter>
+class CSpecificCharacter: public CSharedClass<SSpecificCharacterData, SPECIFIC_CHARACTER_ID, false>,
+						  public CXML_IdToIndex<SPECIFIC_CHARACTER_ID, int, CSpecificCharacter>
 {
 private:
-	typedef CSharedClass	<SSpecificCharacterData, SPECIFIC_CHARACTER_INDEX, false>				inherited_shared;
-	typedef CXML_IdToIndex	<SPECIFIC_CHARACTER_ID, SPECIFIC_CHARACTER_INDEX, CSpecificCharacter>	id_to_index;
+	typedef CSharedClass	<SSpecificCharacterData, SPECIFIC_CHARACTER_ID, false>				inherited_shared;
+	typedef CXML_IdToIndex	<SPECIFIC_CHARACTER_ID, int, CSpecificCharacter>					id_to_index;
 
 	friend id_to_index;
 	friend CInventoryOwner;
@@ -105,7 +105,6 @@ public:
 	//если таким id раньше не использовалось
 	//будет загружено из файла
 	virtual void Load	(SPECIFIC_CHARACTER_ID		id);
-	virtual void Load	(SPECIFIC_CHARACTER_INDEX	index);
 
 protected:
 	const SSpecificCharacterData* data() const { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
@@ -115,7 +114,7 @@ protected:
 	virtual void load_shared		(LPCSTR);
 	static void	 InitXmlIdToIndex	();
 
-	SPECIFIC_CHARACTER_INDEX m_iOwnIndex;
+	SPECIFIC_CHARACTER_ID	m_OwnId;
 public:
 
 #ifdef  XRGAME_EXPORTS

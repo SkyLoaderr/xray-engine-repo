@@ -23,7 +23,7 @@ SSpecificCharacterData::SSpecificCharacterData()
 	m_sNpcConfigSect.clear();
 
 
-	m_iStartDialog	= NO_PHRASE_DIALOG;
+	m_StartDialog	= NULL;
 	m_ActorDialogs.clear(); 
 
 	m_iIconX = m_iIconY = -1;
@@ -47,7 +47,7 @@ SSpecificCharacterData::~SSpecificCharacterData()
 
 CSpecificCharacter::CSpecificCharacter()
 {
-	m_iOwnIndex = NO_SPECIFIC_CHARACTER;
+	m_OwnId = NULL;
 }
 
 
@@ -66,21 +66,16 @@ void CSpecificCharacter::InitXmlIdToIndex()
 
 void CSpecificCharacter::Load(SPECIFIC_CHARACTER_ID id)
 {
-	Load(id_to_index::IdToIndex(id));
-}
-
-void CSpecificCharacter::Load(SPECIFIC_CHARACTER_INDEX index)
-{
-	R_ASSERT(index != NO_SPECIFIC_CHARACTER);
-	m_iOwnIndex = index;
-	inherited_shared::load_shared(m_iOwnIndex, NULL);
+	R_ASSERT(id.size());
+	m_OwnId = id;
+	inherited_shared::load_shared(m_OwnId, NULL);
 }
 
 
 void CSpecificCharacter::load_shared	(LPCSTR)
 {
 	CUIXml uiXml;
-	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetByIndex(m_iOwnIndex);
+	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetById(m_OwnId);
 
 	string_path xml_file_full;
 	strconcat	(xml_file_full, *shared_str(item_data.file_name), ".xml");
@@ -90,7 +85,7 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 
 	//loading from XML
 	XML_NODE* item_node = uiXml.NavigateToNode(id_to_index::tag_name, item_data.pos_in_file);
-	R_ASSERT3(item_node, "specific_character id=", *shared_str(item_data.id));
+	R_ASSERT3(item_node, "specific_character id=", *item_data.id);
 
 	uiXml.SetLocalRoot(item_node);
 
@@ -118,19 +113,19 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	LPCSTR start_dialog = uiXml.Read("start_dialog", 0, NULL);
 	if(start_dialog)
 	{
-		data()->m_iStartDialog	= CPhraseDialog::IdToIndex(start_dialog);
-		if(data()->m_iStartDialog == NO_PHRASE_DIALOG)
-			Debug.fatal("start dialog %s doesn't exists in specific character id=%s", start_dialog,  *shared_str(item_data.id));
+		data()->m_StartDialog	= start_dialog;
+//		if(!data()->m_StartDialog || !data()->m_StartDialog.size() )
+//			Debug.fatal("start dialog %s doesn't exists in specific character id=%s", start_dialog,  *shared_str(item_data.id));
 	}
 	else
-		data()->m_iStartDialog	= NO_PHRASE_DIALOG;
+		data()->m_StartDialog	= NULL;
 
 	int dialogs_num = uiXml.GetNodesNum(uiXml.GetLocalRoot(), "actor_dialog");
 	data()->m_ActorDialogs.clear();
 	for(int i=0; i<dialogs_num; ++i)
 	{
 		shared_str dialog_name = uiXml.Read(uiXml.GetLocalRoot(), "actor_dialog", i);
-		data()->m_ActorDialogs.push_back(CPhraseDialog::IdToIndex(dialog_name));
+		data()->m_ActorDialogs.push_back(dialog_name);
 	}
 
 	data()->m_iIconX		= uiXml.ReadAttribInt("icon", 0, "x");
@@ -185,7 +180,7 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 #ifdef  XRGAME_EXPORTS
 
 	LPCSTR team = uiXml.Read("community", 0, NULL);
-	R_ASSERT3(team != NULL, "'community' field not fulfiled for specific character", *IndexToId(m_iOwnIndex));
+	R_ASSERT3(team != NULL, "'community' field not fulfiled for specific character", *m_OwnId);
 	
 	char* buf_str = xr_strdup(team);
 	xr_strlwr(buf_str);
@@ -193,12 +188,12 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	xr_free(buf_str);
 	
 	if(data()->m_Community.index() == NO_COMMUNITY_INDEX)
-		Debug.fatal("wrong 'community' '%s' in specific character %s ", team, *IndexToId(m_iOwnIndex));
+		Debug.fatal("wrong 'community' '%s' in specific character %s ", team, *m_OwnId);
 
 	data()->m_Rank			= uiXml.ReadInt("rank", 0, NO_RANK);
-	R_ASSERT3(data()->m_Rank != NO_RANK, "'rank' field not fulfiled for specific character", *IndexToId(m_iOwnIndex));
+	R_ASSERT3(data()->m_Rank != NO_RANK, "'rank' field not fulfiled for specific character", *m_OwnId);
 	data()->m_Reputation	= uiXml.ReadInt("reputation", 0, NO_REPUTATION);
-	R_ASSERT3(data()->m_Reputation != NO_REPUTATION, "'reputation' field not fulfiled for specific character", *IndexToId(m_iOwnIndex));
+	R_ASSERT3(data()->m_Reputation != NO_REPUTATION, "'reputation' field not fulfiled for specific character", *m_OwnId);
 
 #endif
 }

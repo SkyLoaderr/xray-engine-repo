@@ -48,16 +48,16 @@ void CActor::AddMapLocationsFromInfo(const CInfoPortion* info_portion) const
 class RemoveByIDPred
 {
 public:
-	RemoveByIDPred(ARTICLE_INDEX idx){object_index = idx;}
+	RemoveByIDPred(ARTICLE_ID id){object_id = id;}
 	bool operator() (const ARTICLE_DATA& item)
 	{
-		if(item.index == object_index)
+		if(item.article_id == object_id)
 			return true;
 		else
 			return false;
 	}
 private:
-	ARTICLE_INDEX object_index;
+	ARTICLE_ID object_id;
 };
 
 void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion) const
@@ -69,7 +69,7 @@ void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion) const
 	ARTICLE_VECTOR::iterator B = article_vector.begin();
 	ARTICLE_VECTOR::iterator E = last_end;
 
-	for(ARTICLE_INDEX_VECTOR::const_iterator it = info_portion->ArticlesDisable().begin();
+	for(ARTICLE_ID_VECTOR::const_iterator it = info_portion->ArticlesDisable().begin();
 									it != info_portion->ArticlesDisable().end(); it++)
 	{
 		RemoveByIDPred pred(*it);
@@ -80,7 +80,7 @@ void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion) const
 	bool actor_diary_article = false;
 	bool encyclopedia_article = false;
 
-	for(ARTICLE_INDEX_VECTOR::const_iterator it = info_portion->Articles().begin();
+	for(ARTICLE_ID_VECTOR::const_iterator it = info_portion->Articles().begin();
 									it != info_portion->Articles().end(); it++)
 	{
 		CEncyclopediaArticle article;
@@ -123,14 +123,14 @@ void CActor::AddGameTask			 (const CInfoPortion* info_portion) const
 
 	std::size_t old_size = task_vector.size();
 
-	for(TASK_INDEX_VECTOR::const_iterator it = info_portion->GameTasks().begin();
+	for(TASK_ID_VECTOR::const_iterator it = info_portion->GameTasks().begin();
 		it != info_portion->GameTasks().end(); it++)
 	{
 
 		for(GAME_TASK_VECTOR::const_iterator it1 = task_vector.begin();
 			it1 != task_vector.end(); it1++)
 		{
-			if(*it == (*it1).index)
+			if(*it == (*it1).task_id)
 				break;
 		}
 
@@ -197,13 +197,13 @@ void  CActor::AddGameNews			 (GAME_NEWS_DATA& news_data)
 }
 
 
-bool CActor::OnReceiveInfo(INFO_INDEX info_index) const
+bool CActor::OnReceiveInfo(INFO_ID info_id) const
 {
-	if(!CInventoryOwner::OnReceiveInfo(info_index))
+	if(!CInventoryOwner::OnReceiveInfo(info_id))
 		return false;
 
 	CInfoPortion info_portion;
-	info_portion.Load(info_index);
+	info_portion.Load(info_id);
 
 //	AddMapLocationsFromInfo	(&info_portion);
 	AddEncyclopediaArticle	(&info_portion);
@@ -237,10 +237,10 @@ bool CActor::OnReceiveInfo(INFO_INDEX info_index) const
 }
 
 
-void CActor::OnDisableInfo(INFO_INDEX info_index)  const
+void CActor::OnDisableInfo(INFO_ID info_id)  const
 {
 //	Level().RemoveMapLocationByInfo(info_index);
-	CInventoryOwner::OnDisableInfo(info_index);
+	CInventoryOwner::OnDisableInfo(info_id);
 
 	if(!HUD().GetUI())
 		return;
@@ -270,7 +270,7 @@ void CActor::OnDisableInfo(INFO_INDEX info_index)  const
 
 
 
-void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index)
+void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_id)
 {
 	//только если находимся в режиме single
 	if(!HUD().GetUI())
@@ -283,7 +283,7 @@ void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index)
 	VERIFY(pPdaObject);
 	CPda* pPda = smart_cast<CPda*>(pPdaObject);
 	VERIFY(pPda);
-	HUD().GetUI()->UIMainIngameWnd.ReceivePdaMessage(pPda->GetOriginalOwner(), msg, info_index);
+	HUD().GetUI()->UIMainIngameWnd.ReceivePdaMessage(pPda->GetOriginalOwner(), msg, info_id);
 
 
 	SPdaMessage last_pda_message;
@@ -292,7 +292,7 @@ void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index)
 
 	//обновить информацию о контакте
 	UpdateContact(pPda->GetOriginalOwnerID());
-	CInventoryOwner::ReceivePdaMessage(who, msg, info_index);
+	CInventoryOwner::ReceivePdaMessage(who, msg, info_id);
 }
 
 void  CActor::ReceivePhrase		(DIALOG_SHARED_PTR& phrase_dialog)
@@ -326,7 +326,7 @@ void   CActor::UpdateAvailableDialogs	(CPhraseDialogManager* partner)
 		{
 			//подгрузить кусочек информации с которым мы работаем
 			CInfoPortion info_portion;
-			info_portion.Load((*it).id);
+			info_portion.Load((*it).info_id);
 
 			for(u32 i = 0; i<info_portion.DialogNames().size(); i++)
 				AddAvailableDialog(*info_portion.DialogNames()[i], partner);
@@ -337,7 +337,7 @@ void   CActor::UpdateAvailableDialogs	(CPhraseDialogManager* partner)
 	CInventoryOwner* pInvOwnerPartner = smart_cast<CInventoryOwner*>(partner); VERIFY(pInvOwnerPartner);
 	
 	for(u32 i = 0; i<pInvOwnerPartner->CharacterInfo().ActorDialogs().size(); i++)
-		AddAvailableDialog(CPhraseDialog::IndexToId(pInvOwnerPartner->CharacterInfo().ActorDialogs()[i]), partner);
+		AddAvailableDialog(pInvOwnerPartner->CharacterInfo().ActorDialogs()[i], partner);
 
 	//добавить актерские диалоги собеседника из info portions
 	if(pInvOwnerPartner->m_known_info_registry->registry().objects_ptr())
@@ -347,7 +347,7 @@ void   CActor::UpdateAvailableDialogs	(CPhraseDialogManager* partner)
 		{
 			//подгрузить кусочек информации с которым мы работаем
 			CInfoPortion info_portion;
-			info_portion.Load((*it).id);
+			info_portion.Load((*it).info_id);
 			for(u32 i = 0; i<info_portion.ActorDialogNames().size(); i++)
 				AddAvailableDialog(*info_portion.ActorDialogNames()[i], partner);
 		}

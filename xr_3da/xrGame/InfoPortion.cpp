@@ -37,22 +37,23 @@ CInfoPortion::CInfoPortion()
 CInfoPortion::~CInfoPortion ()
 {
 }
-
+/*
 void CInfoPortion::Load	(INFO_STR_ID info_str_id)
 {
 	Load	(id_to_index::IdToIndex(info_str_id));
 }
-
-void CInfoPortion::Load	(INFO_INDEX info_index)
+*/
+void CInfoPortion::Load	(INFO_ID info_id)
 {
-	m_InfoIndex = info_index;
-	inherited_shared::load_shared(m_InfoIndex, NULL);
+	m_InfoId = info_id;
+	inherited_shared::load_shared(m_InfoId, NULL);
 }
 
 
 void CInfoPortion::load_shared	(LPCSTR)
 {
-	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetByIndex(m_InfoIndex);
+//	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetByIndex(m_InfoIndex);
+	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetById(m_InfoId);
 
 	CUIXml uiXml;
 	string128 xml_file_full;
@@ -99,7 +100,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 	info_data()->m_DisableInfo.clear();
 	for(i=0; i<disable_num; ++i)
 	{
-		INFO_INDEX info_id = CInfoPortion::IdToIndex(uiXml.Read(pNode, "disable", NULL));
+		INFO_ID info_id = uiXml.Read(pNode, "disable", NULL);
 		info_data()->m_DisableInfo.push_back(info_id);
 	}
 
@@ -114,7 +115,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 	{
 		LPCSTR article_str_id = uiXml.Read(pNode, "article", i, NULL);
 		THROW(article_str_id);
-		info_data()->m_Articles.push_back(CEncyclopediaArticle::IdToIndex(article_str_id));
+		info_data()->m_Articles.push_back(article_str_id);
 	}
 	//индексы статей, которые уберутся из реестра
 	info_data()->m_ArticlesDisable.clear();
@@ -123,7 +124,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 	{
 		LPCSTR article_str_id = uiXml.Read(pNode, "article_disable", i, NULL);
 		THROW(article_str_id);
-		info_data()->m_ArticlesDisable.push_back(CEncyclopediaArticle::IdToIndex(article_str_id));
+		info_data()->m_ArticlesDisable.push_back(article_str_id);
 	}
 	
 	//индексы статей, которые уберутся из реестра
@@ -133,79 +134,8 @@ void CInfoPortion::load_shared	(LPCSTR)
 	{
 		LPCSTR task_str_id = uiXml.Read(pNode, "task", i, NULL);
 		THROW(task_str_id);
-		info_data()->m_GameTasks.push_back(CGameTask::IdToIndex(task_str_id));
+		info_data()->m_GameTasks.push_back(task_str_id);
 	}
-
-/*
-	//загрузить позиции на карте
-	SMapLocation map_location;
-	info_data()->m_MapLocations.clear();
-	int location_num = uiXml.GetNodesNum(pNode, "location");
-
-	for(i=0; i<location_num; ++i)
-	{
-		XML_NODE* pMapNode = uiXml.NavigateToNode(pNode,"location",i);
-
-		if(pMapNode)
-		{
-			map_location.info_portion_id = m_InfoIndex;
-
-			map_location.level_name = uiXml.Read(pMapNode,"level",0);
-
-			map_location.x = (float)atof(uiXml.Read(pMapNode,"x",0));
-			map_location.y = (float)atof(uiXml.Read(pMapNode,"y",0));
-
-			map_location.name = uiXml.ReadAttrib(pMapNode, "icon", 0, "name");
-			map_location.icon_x = uiXml.ReadAttribInt(pMapNode, "icon", 0, "x");
-			map_location.icon_y = uiXml.ReadAttribInt(pMapNode, "icon", 0, "y");
-			map_location.icon_width = uiXml.ReadAttribInt(pMapNode, "icon", 0, "width");
-			map_location.icon_height = uiXml.ReadAttribInt(pMapNode, "icon", 0, "height");
-			map_location.dynamic_manifestation = !!uiXml.ReadAttribInt(pMapNode, "icon", 0, "dyn");
-
-			map_location.text = uiXml.Read(pMapNode, "text", 0);
-
-			CUIXmlInit xml_init;
-			XML_NODE* icon_node = uiXml.NavigateToNode(pMapNode, "icon", 0);
-			if(icon_node)
-			{
-				xml_init.InitColor(uiXml, icon_node, map_location.icon_color);
-				map_location.marker_show = !!uiXml.ReadAttribInt(icon_node, "marker", 1);
-				map_location.big_icon = !!uiXml.ReadAttribInt(icon_node, "big_icon", 0);
-				map_location.global_map_text = !!uiXml.ReadAttribInt(icon_node, "global_map_text", 0);
-				map_location.shader_name = uiXml.Read(pMapNode,"icon",0);
-			}
-			else
-				map_location.icon_color = 0xffffffff;
-
-			//присоединить к объекту на уровне, если тот задан
-			XML_NODE* object_node = uiXml.NavigateToNode(pMapNode, "object", 0);
-			if(object_node)
-			{
-				int story_id = uiXml.ReadInt(object_node,-1);
-				
-				if (story_id != -1 && ai().get_alife())
-				{
-					CSE_ALifeDynamicObject	*object	= ai().alife().story_objects().object(ALife::_STORY_ID(story_id),true);
-					if (!object) {
-						ai().script_engine().script_log(eLuaMessageTypeError,"! Cannot find story object with id %d!",story_id);
-						map_location.attached_to_object = false;
-						map_location.object_id = 0xffff;
-					}
-					else {
-						map_location.attached_to_object = true;
-						map_location.object_id = object->ID;
-					}
-				}
-				else
-				{
-					map_location.attached_to_object = false;
-					map_location.object_id = 0xffff;
-				}
-			}
-			info_data()->m_MapLocations.push_back(map_location);
-		}
-	}
-*/
 }
 
 LPCSTR  CInfoPortion::GetText () const

@@ -45,12 +45,12 @@ DEFINE_VECTOR(CPhrase*, PHRASE_VECTOR, PHRASE_VECTOR_IT);
 class CPhraseDialog;
 class CPhraseDialogManager;
 
-class CPhraseDialog	: public CSharedClass<SPhraseDialogData, PHRASE_DIALOG_INDEX, false>,
-					  public CXML_IdToIndex<PHRASE_DIALOG_ID, PHRASE_DIALOG_INDEX, CPhraseDialog>
+class CPhraseDialog	: public CSharedClass<SPhraseDialogData, PHRASE_DIALOG_ID, false>,
+					  public CXML_IdToIndex<PHRASE_DIALOG_ID, int, CPhraseDialog>
 {
 private:
-	typedef CSharedClass<SPhraseDialogData, PHRASE_DIALOG_INDEX, false>				inherited_shared;
-	typedef CXML_IdToIndex<PHRASE_DIALOG_ID, PHRASE_DIALOG_INDEX, CPhraseDialog>	id_to_index;
+	typedef CSharedClass<SPhraseDialogData, PHRASE_DIALOG_ID, false>				inherited_shared;
+	typedef CXML_IdToIndex<PHRASE_DIALOG_ID, int, CPhraseDialog>					id_to_index;
 
 	friend id_to_index;
 public:
@@ -66,8 +66,8 @@ public:
 	//инициализация диалога данными
 	//если диалог с таким id раньше не использовался
 	//он будет загружен из файла
+	//virtual void Load	(PHRASE_DIALOG_ID dialog_id);
 	virtual void Load	(PHRASE_DIALOG_ID dialog_id);
-	virtual void Load	(PHRASE_DIALOG_INDEX dialog_index);
 
 	//связь диалога между двумя DialogManager
 	virtual void Init	(CPhraseDialogManager* speaker_first, 
@@ -83,7 +83,7 @@ public:
 
 	//список доступных в данный момент фраз
 	virtual const PHRASE_VECTOR& PhraseList() const			{return m_PhraseVector;}
-	
+			bool				allIsDummy	();
 	//сказать фразу и перейти к следующей стадии диалога
 	//если вернули false, то считаем, что диалог закончился
 	//(сделано статическим, так как мы должны передавать имеенно DIALOG_SHARED_PTR&,
@@ -121,7 +121,7 @@ public:
 
 protected:
 	//идентификатор диалога
-	PHRASE_DIALOG_INDEX	m_DialogIndex;
+	PHRASE_DIALOG_ID	m_DialogId;
 
 	//ID последней сказанной фразы в диалоге, -1 если такой не было
 	PHRASE_ID	m_iSaidPhraseID;

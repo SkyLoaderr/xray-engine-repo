@@ -64,9 +64,9 @@ public:
 	//функци€ через которую
 	//другие персонажи отправл€ют объекту PDA сообщение.
 	//должна быть переопределена в порожеденных классах
-	virtual void ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index);
+	virtual void ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_id);
 	//отправка сообщени€ другому владельцу PDA
-	virtual void SendPdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index);
+	virtual void SendPdaMessage(u16 who, EPdaMsg msg, INFO_ID info_id);
 
 	// инвентарь
 	CInventory	*m_inventory;			
@@ -109,16 +109,18 @@ protected:
 	// сюжетна€ информаци€
 public:
 	//персонаж получил новую порцию информации
-	virtual bool OnReceiveInfo	(INFO_INDEX info_index) const;
+	virtual bool OnReceiveInfo	(INFO_ID info_id) const;
 	//убрать информацию
-	virtual void OnDisableInfo	(INFO_INDEX info_index) const;
+	virtual void OnDisableInfo	(INFO_ID info_id) const;
 	//передать/удалить информацию через сервер
-	virtual void TransferInfo	(INFO_INDEX info_index, bool add_info) const;
+	virtual void TransferInfo	(INFO_ID info_id, bool add_info) const;
 	//есть ли информаци€ у персонажа
-	virtual bool				HasInfo		(INFO_INDEX info_index) const;
-	virtual bool				GetInfo		(INFO_INDEX info_index, INFO_DATA&) const;
+	virtual bool				HasInfo		(INFO_ID info_id) const;
+	virtual bool				GetInfo		(INFO_ID info_id, INFO_DATA&) const;
 
-
+	#ifdef DEBUG
+	void CInventoryOwner::DumpInfo() const;
+	#endif
 
 	CInfoPortionWrapper			*m_known_info_registry;
 

@@ -93,7 +93,7 @@ LPCSTR GAME_NEWS_DATA::FullText()
 		pTrader = smart_cast<CSE_ALifeTraderAbstract*>(newsActorOne);
 		if(pTrader)
 		{
-			if(pTrader->specific_character()!= NO_SPECIFIC_CHARACTER)
+			if(pTrader->specific_character().size())
 			{
 				CSpecificCharacter spec_char;
 				spec_char.Load(pTrader->specific_character());
@@ -107,7 +107,7 @@ LPCSTR GAME_NEWS_DATA::FullText()
 			pTrader = smart_cast<CSE_ALifeTraderAbstract*>(newsActorTwo);
 			if(pTrader)
 			{
-				if(pTrader->specific_character()!= NO_SPECIFIC_CHARACTER)
+				if(pTrader->specific_character().size())
 				{
 					CSpecificCharacter spec_char;
 					spec_char.Load(pTrader->specific_character());

@@ -126,7 +126,7 @@ void	CCustomOutfit::OnMoveToSlot		()
 		CActor* pActor = smart_cast<CActor*> (m_pInventory->GetOwner());
 		if (pActor)
 		{
-			if (m_ActorVisual != NULL)
+			if (m_ActorVisual.size())
 			{
 				shared_str NewVisual = NULL;
 				char* TeamSection = Game().getTeamSection(pActor->g_Team());
@@ -143,7 +143,7 @@ void	CCustomOutfit::OnMoveToSlot		()
 					}
 				}
 				
-				if (NewVisual == NULL || *NewVisual == NULL)
+				if (NewVisual.size())
 					NewVisual = m_ActorVisual;
 
 				pActor->ChangeVisual(NewVisual);
@@ -167,10 +167,10 @@ void	CCustomOutfit::OnMoveToRuck		()
 		CActor* pActor = smart_cast<CActor*> (m_pInventory->GetOwner());
 		if (pActor)
 		{
-			if (m_ActorVisual != NULL)
+			if (m_ActorVisual.size())
 			{
 				shared_str DefVisual = pActor->GetDefaultVisualOutfit();
-				if (DefVisual != NULL)
+				if (DefVisual.size())
 				{
 					pActor->ChangeVisual(DefVisual);
 /*

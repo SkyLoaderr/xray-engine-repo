@@ -94,7 +94,7 @@ BOOL CInventoryOwner::net_Spawn		(CSE_Abstract* DC)
 		if(!pTrader) return FALSE;
 
 //		R_ASSERT(NO_PROFILE != pTrader->character_profile());
-		R_ASSERT( xr_strlen(*pTrader->character_profile()) );
+		R_ASSERT( pTrader->character_profile().size() );
 
 		//синхронизируем параметры персонажа с серверным объектом
 		CharacterInfo().m_CurrentCommunity.set(pTrader->m_community_index);
@@ -111,12 +111,11 @@ BOOL CInventoryOwner::net_Spawn		(CSE_Abstract* DC)
 
 
 		CAI_PhraseDialogManager* dialog_manager = smart_cast<CAI_PhraseDialogManager*>(this);
-		if(dialog_manager && dialog_manager->GetStartDialog() == NULL &&
-			CharacterInfo().StartDialog() != NO_PHRASE_DIALOG)
+		if( dialog_manager && !dialog_manager->GetStartDialog().size() )
 		{
-			PHRASE_DIALOG_ID dialog_id = CPhraseDialog::IndexToId(CharacterInfo().StartDialog());
-			dialog_manager->SetStartDialog(dialog_id);
-			dialog_manager->SetDefaultStartDialog(dialog_id);
+//			PHRASE_DIALOG_ID dialog_id = CPhraseDialog::IndexToId(CharacterInfo().StartDialog());
+			dialog_manager->SetStartDialog(CharacterInfo().StartDialog());
+			dialog_manager->SetDefaultStartDialog(CharacterInfo().StartDialog());
 		}
 	}
 	else
@@ -213,12 +212,12 @@ bool CInventoryOwner::IsActivePDA() const
 
 //виртуальная функция обработки сообщений
 //who - id PDA от которого пришло сообщение
-void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index)
+void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_id)
 {
 	if(msg == ePdaMsgInfo)
 	{
 		//переслать себе же полученную информацию
-		TransferInfo(info_index, true);
+		TransferInfo(info_id, true);
 	}
 
 
@@ -239,7 +238,7 @@ void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_in
 		pThisGameObject->lua_game_object(),
 		pWho->lua_game_object(), 
 		(int)msg,
-		info_index
+		info_id
 	);
 
 }
@@ -247,11 +246,11 @@ void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_in
 
 
 //who - id PDA которому отправляем сообщение
-void CInventoryOwner::SendPdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index)
+void CInventoryOwner::SendPdaMessage(u16 who, EPdaMsg msg, INFO_ID info_id)
 {
 	if(!GetPDA() || !GetPDA()->IsActive()) return;
 
-	GetPDA()->SendMessageID(who, msg, info_index);
+	GetPDA()->SendMessageID(who, msg, info_id);
 }
 
 CTrade* CInventoryOwner::GetTrade() 

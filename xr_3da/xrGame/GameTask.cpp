@@ -14,16 +14,16 @@
 #include "ui/xrXMLParser.h"
 #include "encyclopedia_article.h"
 
-TASK_DATA::TASK_DATA():index(NO_TASK),receive_time(0),finish_time(0)
+TASK_DATA::TASK_DATA():task_id(NULL),receive_time(0),finish_time(0)
 {
 }
 
-TASK_DATA::TASK_DATA(TASK_INDEX idx, ALife::_TIME_ID time):index(idx),receive_time(time),finish_time(0)
+TASK_DATA::TASK_DATA(TASK_ID id, ALife::_TIME_ID time):task_id(id),receive_time(time),finish_time(0)
 {
-	if(index == NO_TASK) return;
+	if(!task_id.size()) return;
 	
 	CGameTask task;
-	task.Load(index);
+	task.Load(task_id);
 	states.resize(task.ObjectivesNum());
 	for(std::size_t i=0; i<states.size();i++)
 		states[i] = eTaskStateInProgress;
@@ -32,14 +32,14 @@ TASK_DATA::TASK_DATA(TASK_INDEX idx, ALife::_TIME_ID time):index(idx),receive_ti
 
 void TASK_DATA::load (IReader& stream)
 {
-	load_data(index, stream);
+	load_data(task_id, stream);
 	load_data(receive_time, stream);
 	load_data(finish_time, stream);
 	load_data(states, stream);
 }
 void TASK_DATA::save (IWriter& stream)
 {
-	save_data(index, stream);
+	save_data(task_id, stream);
 	save_data(receive_time, stream);
 	save_data(finish_time, stream);
 	save_data(states, stream);
@@ -66,22 +66,23 @@ CGameTask::CGameTask		()
 CGameTask::~CGameTask		()
 {
 }
-
+/*
 void CGameTask::Load	(TASK_ID str_id)
 {
 	Load	(id_to_index::IdToIndex(str_id));
 }
-
-void CGameTask::Load	(TASK_INDEX  index)
+*/
+void CGameTask::Load	(TASK_ID  id)
 {
-	m_TaskIndex = index;
-	inherited_shared::load_shared(m_TaskIndex, NULL);
+	m_TaskId = id;
+	inherited_shared::load_shared(m_TaskId, NULL);
 }
 
 
 void CGameTask::load_shared	(LPCSTR)
 {
-	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetByIndex(m_TaskIndex);
+//	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetByIndex(m_TaskIndex);
+	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetById(m_TaskId);
 
 	CUIXml uiXml;
 	string_path xml_file_full;
@@ -107,7 +108,8 @@ void CGameTask::load_shared	(LPCSTR)
 		LPCSTR tag_text = uiXml.Read(task_node, "objective:text", i, NULL);
 		objective.description = tag_text;
 		tag_text = uiXml.Read(task_node, "objective:article", i, NULL);
-		objective.article_index = tag_text?CEncyclopediaArticle::IdToIndex(tag_text):NO_ARTICLE;
+		if(tag_text)
+			objective.article_id = tag_text;
 		objective.icon_texture_name = uiXml.Read(task_node, "objective:icon", i, NULL);
 		objective.icon_x = uiXml.ReadAttribInt(task_node, "objective:icon", i, "x");
 		objective.icon_y = uiXml.ReadAttribInt(task_node, "objective:icon", i, "y");
@@ -134,9 +136,9 @@ shared_str		CGameTask::ObjectiveDesc	(u32 index)
 	return data()->m_Objectives[index].description;
 }
 
-ARTICLE_INDEX		CGameTask::ObjectiveArticle	(u32 index)
+ARTICLE_ID		CGameTask::ObjectiveArticle	(u32 index)
 {
-	return data()->m_Objectives[index].article_index;
+	return data()->m_Objectives[index].article_id;
 }
 
 ETaskState	CGameTask::ObjectiveState  (u32 index)
@@ -159,7 +161,7 @@ void 	CGameTask::ObjectiveIcon  (u32 index, shared_str& tex_name,
 
 void CGameTask::Init(const TASK_DATA& tast_data)
 {
-	Load(tast_data.index);
+	Load(tast_data.task_id);
 	m_ObjectiveStates = tast_data.states;
 
 	m_ReceiveTime = tast_data.receive_time;

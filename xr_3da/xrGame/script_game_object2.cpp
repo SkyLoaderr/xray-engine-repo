@@ -160,26 +160,26 @@ void		CScriptGameObject::set_character_pda_info	(LPCSTR info_id)
 {
 	CInventoryOwner	 *pInventoryOwner = smart_cast<CInventoryOwner*>(&object()); VERIFY(pInventoryOwner);
 	CPda* pda = pInventoryOwner->GetPDA(); VERIFY(pda);
-	pda->SetInfoPortion(CInfoPortion::IdToIndex(info_id));
+	pda->SetInfoPortion(info_id);
 }
 
 LPCSTR		CScriptGameObject::get_character_pda_info	()
 {
 	CInventoryOwner	 *pInventoryOwner = smart_cast<CInventoryOwner*>(&object()); VERIFY(pInventoryOwner);
 	CPda* pda = pInventoryOwner->GetPDA(); VERIFY(pda);
-	return *CInfoPortion::IndexToId(pda->GetInfoPortion());
+	return *(pda->GetInfoPortion());
 }
 
 void		CScriptGameObject::set_pda_info				(LPCSTR info_id)
 {
 	CPda* pda = smart_cast<CPda*>(&object()); VERIFY(pda);
-	pda->SetInfoPortion(CInfoPortion::IdToIndex(info_id));
+	pda->SetInfoPortion(info_id);
 }
 
 LPCSTR		CScriptGameObject::get_pda_info				()
 {
 	CPda* pda = smart_cast<CPda*>(&object()); VERIFY(pda);
-	return *CInfoPortion::IndexToId(pda->GetInfoPortion());
+	return *(pda->GetInfoPortion());
 }
 
 const MemorySpace::CHitObject *CScriptGameObject::GetBestHit	() const

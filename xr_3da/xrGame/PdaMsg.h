@@ -22,8 +22,8 @@ typedef struct tagSPdaMessage
 	//и false, если ответ
 	bool			question;
 	
-	//порядковый номер информации
-	INFO_INDEX info_index;
+	// информаци
+	INFO_ID		info_id;
 
 	//время получения/отправки сообщения
 	ALife::_TIME_ID	time;

@@ -29,9 +29,9 @@ CPda::CPda(void)
 	//или в рюкзак, если чужой PDA	
 	m_ruck = true;
 
-	m_idOriginalOwner = 0xffff;
-	m_iSpecificChracterOwner = NO_SPECIFIC_CHARACTER;
-	m_iInfoPortion = NO_INFO_INDEX;
+	m_idOriginalOwner		= 0xffff;
+	m_SpecificChracterOwner = NULL;
+	m_InfoPortion			= NULL;
 
 
 	m_bPassiveMode = false;
@@ -54,8 +54,8 @@ BOOL CPda::net_Spawn(CSE_Abstract* DC)
 	CSE_ALifeItemPDA	*pda = smart_cast<CSE_ALifeItemPDA*>(abstract);
 	R_ASSERT			(pda);
 	m_idOriginalOwner			= pda->m_original_owner;
-	m_iSpecificChracterOwner	= pda->m_specific_character;
-	m_iInfoPortion				= pda->m_info_portion;
+	m_SpecificChracterOwner		= pda->m_specific_character;
+	m_InfoPortion				= pda->m_info_portion;
 
 	m_sFullName.clear();
 	
@@ -204,12 +204,12 @@ void CPda::OnH_A_Chield()
 	if(!actor) return;
 
 	//создать и отправить пакет о получении новой информации
-	if(NO_INFO_INDEX != GetInfoPortion())
+	if(m_InfoPortion.size())
 	{
 		NET_Packet		P;
 		u_EventGen		(P,GE_INFO_TRANSFER, H_Parent()->ID());
 		P.w_u16			(ID());						//отправитель
-		P.w_s32			(GetInfoPortion());			//сообщение
+		P.w_stringZ		(m_InfoPortion);			//сообщение
 		P.w_u8			(1);						//добавление сообщения
 		u_EventSend		(P);
 	}
@@ -249,7 +249,7 @@ CObject* CPda::GetOwnerObject()
 
 //отправка сообщения другому владельцу PDA 
 //pda_num - номер PDA в нашем списке
-void CPda::SendMessage(u32 pda_num, EPdaMsg msg, INFO_INDEX info_index)
+void CPda::SendMessage(u32 pda_num, EPdaMsg msg, INFO_ID info_id)
 {
 	//найти PDA с нужным номером в списке
 	u32 i=0;
@@ -262,13 +262,13 @@ void CPda::SendMessage(u32 pda_num, EPdaMsg msg, INFO_INDEX info_index)
 	if(it == m_PDAList.end()) return;
 	if(pPda->IsOff() || pPda->IsPassive()) return;
 	
-	PdaEventSend(pPda->ID(), msg, info_index);
+	PdaEventSend(pPda->ID(), msg, info_id);
 }
 
 
 //отправление сообщению PDA с определенным ID
 //если такое есть в списке контактов
-void CPda::SendMessageID(u32 pda_ID, EPdaMsg msg, INFO_INDEX info_index)
+void CPda::SendMessageID(u32 pda_ID, EPdaMsg msg, INFO_ID info_id)
 {
 	CObject* pObject =  Level().Objects.net_Find(pda_ID);
 	CPda* pPda = smart_cast<CPda*>(pObject);
@@ -282,24 +282,24 @@ void CPda::SendMessageID(u32 pda_ID, EPdaMsg msg, INFO_INDEX info_index)
 	//PDA нет в списке
 	if(it == m_PDAList.end()) return;
 
-	PdaEventSend(pda_ID, msg, info_index);
+	PdaEventSend(pda_ID, msg, info_id);
 }
 
-void CPda::PdaEventSend(u32 pda_ID, EPdaMsg msg, INFO_INDEX info_index)
+void CPda::PdaEventSend(u32 pda_ID, EPdaMsg msg, INFO_ID info_id)
 {
-	AddMessageToLog(pda_ID, msg, info_index, false);
+	AddMessageToLog(pda_ID, msg, info_id, false);
 
 	//создать и отправить пакет
 	NET_Packet		P;
 	u_EventGen		(P,GE_PDA,pda_ID);
 	P.w_u16			(u16(ID()));				//отправитель
 	P.w_s16			(s16(msg));					//сообщение
-	P.w_s32			(info_index);				//индекс информации если нужен
+	P.w_stringZ		(info_id);					//индекс информации если нужен
 	u_EventSend		(P);
 }
 
 //добавляет сообщение в список
-void CPda::AddMessageToLog(u32 pda_ID, EPdaMsg msg, INFO_INDEX info_index, bool receive)
+void CPda::AddMessageToLog(u32 pda_ID, EPdaMsg msg, INFO_ID info_id, bool receive)
 {
 	m_bNewMessage = true;
 
@@ -322,7 +322,7 @@ void CPda::AddMessageToLog(u32 pda_ID, EPdaMsg msg, INFO_INDEX info_index, bool 
 
 
 	pda_message.msg = msg;
-	pda_message.info_index = info_index;
+	pda_message.info_id = info_id;
 	pda_message.receive = receive;
 	pda_message.time = Level().GetGameTime();
 	
@@ -351,17 +351,17 @@ void CPda::OnEvent(NET_Packet& P, u16 type)
 		{
 			u16				id;
 			s16				msg;
-			s32				info_index;
+			shared_str		info_id;
 
 			P.r_u16			(id);
 			P.r_s16			(msg);
-			P.r_s32			(info_index);
+			P.r_stringZ		(info_id);
 
 			//отправить сообщение владельцу, только если мы включены
 			if(IsActive())
 			{
-				GetOriginalOwner()->ReceivePdaMessage(id, (EPdaMsg)msg, (INFO_INDEX)info_index);
-				AddMessageToLog(id, (EPdaMsg)msg, (INFO_INDEX)info_index, true);
+				GetOriginalOwner()->ReceivePdaMessage(id, (EPdaMsg)msg, info_id);
+				AddMessageToLog(id, (EPdaMsg)msg, info_id, true);
 			}
 		}
 		break;
@@ -397,23 +397,23 @@ bool CPda::WaitForReply(u32 pda_ID)
 
 }
 
-void		CPda::SetInfoPortion (INFO_INDEX info)
+void		CPda::SetInfoPortion (INFO_ID info)
 {
 	CSE_Abstract* e_entity		= Level().Server->game->get_entity_from_eid	(ID()); VERIFY(e_entity);
 	CSE_ALifeItemPDA* pda		= smart_cast<CSE_ALifeItemPDA*>(e_entity);
 	if(!pda) return;
 	pda->m_info_portion = info;
-	m_iInfoPortion = info;
+	m_InfoPortion = info;
 }
-INFO_INDEX	CPda::GetInfoPortion ()
+INFO_ID	CPda::GetInfoPortion ()
 {
-	return m_iInfoPortion;
+	return m_InfoPortion;
 }
 
 
 LPCSTR		CPda::Name				()
 {
-	if(m_iSpecificChracterOwner == NO_SPECIFIC_CHARACTER)
+	if( !m_SpecificChracterOwner.size() )
 		return inherited::Name();
 
 	if(m_sFullName.empty())
@@ -421,7 +421,7 @@ LPCSTR		CPda::Name				()
 		m_sFullName.assign(inherited::Name());
 		
 		CSpecificCharacter spec_char;
-		spec_char.Load(m_iSpecificChracterOwner);
+		spec_char.Load(m_SpecificChracterOwner);
 		m_sFullName += " ";
 		m_sFullName += xr_string(spec_char.Name());
 	}

@@ -33,7 +33,7 @@ struct SCharacterProfile : CSharedResource
 
     //если задано, то выбирается именно такой профиль,
 	//иначе ищется случайно,удовлетворяющее шаблону
-	SPECIFIC_CHARACTER_INDEX		m_iCharacterIndex;	
+	SPECIFIC_CHARACTER_ID		m_CharacterId;	
 
 	//требуемые параметры персонажа
 	CHARACTER_CLASS					m_Class;
@@ -45,12 +45,12 @@ struct SCharacterProfile : CSharedResource
 class CInventoryOwner;
 class CSE_ALifeTraderAbstract;
 
-class CCharacterInfo: public CSharedClass<SCharacterProfile, PROFILE_INDEX, false>,
-					  public CXML_IdToIndex<PROFILE_ID, PROFILE_INDEX, CCharacterInfo>
+class CCharacterInfo: public CSharedClass<SCharacterProfile, PROFILE_ID, false>,
+					  public CXML_IdToIndex<PROFILE_ID, int, CCharacterInfo>
 {
 private:
-	typedef CSharedClass	<SCharacterProfile, PROFILE_INDEX, false>	inherited_shared;
-	typedef CXML_IdToIndex	<PROFILE_ID, PROFILE_INDEX, CCharacterInfo>	id_to_index;
+	typedef CSharedClass	<SCharacterProfile, PROFILE_ID, false>	inherited_shared;
+	typedef CXML_IdToIndex	<PROFILE_ID, int, CCharacterInfo>		id_to_index;
 
 	friend id_to_index;
 	friend CInventoryOwner;
@@ -63,7 +63,6 @@ public:
 	~CCharacterInfo();
 
 	virtual void Load	(PROFILE_ID id);
-	virtual void Load	(PROFILE_INDEX index);
 
 #ifdef XRGAME_EXPORTS
 	void load	(IReader&);
@@ -72,7 +71,7 @@ public:
 	//инициализация профиля подразумевает
 	//загрузку соответствующего CSpecificCharacter, по 
 	//указанному индексу
-	void InitSpecificCharacter (SPECIFIC_CHARACTER_INDEX new_index);
+	void InitSpecificCharacter (SPECIFIC_CHARACTER_ID new_id);
 #endif
 
 protected:
@@ -86,14 +85,14 @@ protected:
 	virtual void load_shared		(LPCSTR);
 
 	//индекс загруженного профиля
-	PROFILE_INDEX m_iProfileIndex;
+	PROFILE_ID m_ProfileId;
 	
 	//индекс данных о конкретном персонаже, который
 	//используется в данном экземпляре класса
-	SPECIFIC_CHARACTER_INDEX m_iSpecificCharacterIndex;
+	SPECIFIC_CHARACTER_ID m_SpecificCharacterId;
 
 #ifdef XRGAME_EXPORTS
-	PHRASE_DIALOG_INDEX m_iStartDialog;
+	PHRASE_DIALOG_ID m_StartDialog;
 
 	//загруженная информация о конкретном персонаже
 	CSpecificCharacter m_SpecificCharacter;
@@ -103,7 +102,7 @@ public:
 
 
 #ifdef XRGAME_EXPORTS
-	PROFILE_INDEX				Profile()			const;
+	PROFILE_ID					Profile()			const;
 	LPCSTR						Name()				const;
 	LPCSTR						Bio()				const;
 
@@ -124,8 +123,8 @@ public:
 	int		MapIconX	()	const;
 	int		MapIconY	()	const;
 
-	PHRASE_DIALOG_INDEX			StartDialog	()	const;
-	const DIALOG_INDEX_VECTOR&	ActorDialogs()	const;
+	PHRASE_DIALOG_ID			StartDialog	()	const;
+	const DIALOG_ID_VECTOR&		ActorDialogs()	const;
 #endif
 
 protected:

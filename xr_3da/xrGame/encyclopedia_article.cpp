@@ -20,22 +20,23 @@ CEncyclopediaArticle::~CEncyclopediaArticle()
 	if( data()->image.GetParent() )
 		data()->image.GetParent()->DetachChild( &(data()->image) );
 }
-
+/*
 void CEncyclopediaArticle::Load	(ARTICLE_STR_ID str_id)
 {
 	Load	(id_to_index::IdToIndex(str_id));
 }
-
-void CEncyclopediaArticle::Load	(ARTICLE_INDEX  index)
+*/
+void CEncyclopediaArticle::Load	(ARTICLE_ID  id)
 {
-	m_ArticleIndex = index;
-	inherited_shared::load_shared(m_ArticleIndex, NULL);
+	m_ArticleId = id;
+	inherited_shared::load_shared(m_ArticleId, NULL);
 }
 
 
 void CEncyclopediaArticle::load_shared	(LPCSTR)
 {
-	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetByIndex(m_ArticleIndex);
+//	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetByIndex(m_ArticleIndex);
+	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetById(m_ArticleId);
 
 	CUIXml		uiXml;
 	CUIXmlInit	xml_init;

@@ -23,7 +23,7 @@ struct SGameTaskObjective
 	//текстовое описание
 	shared_str description;
 	//index статьи в энциклопедии или дневнике (если есть)
-	ARTICLE_INDEX article_index;
+	ARTICLE_ID article_id;
 	//прикрипленная иконка
 	shared_str icon_texture_name;
 	int icon_x, icon_y, icon_width, icon_height;
@@ -44,36 +44,36 @@ struct SGameTaskData : CSharedResource
 };
 
 
-class CGameTask: public CSharedClass<SGameTaskData, TASK_INDEX, false>,
-				 public CXML_IdToIndex<TASK_ID, TASK_INDEX, CGameTask>
+class CGameTask: public CSharedClass<SGameTaskData, TASK_ID, false>,
+				 public CXML_IdToIndex<TASK_ID, int, CGameTask>
 {
 private:
-	typedef CSharedClass<SGameTaskData, TASK_INDEX, false>	inherited_shared;
-	typedef CXML_IdToIndex<TASK_ID, TASK_INDEX, CGameTask>	id_to_index;
+	typedef CSharedClass<SGameTaskData, TASK_ID, false>	inherited_shared;
+	typedef CXML_IdToIndex<TASK_ID, int, CGameTask>	id_to_index;
 
 	friend id_to_index;
 public:
 			CGameTask	();
 	virtual ~CGameTask	();
 
-	virtual void Load	(TASK_ID	str_id);
-	virtual void Load	(TASK_INDEX  index);
+//	virtual void Load	(TASK_ID	str_id);
+	virtual void Load	(TASK_ID  id);
 
 	virtual void Init	(const TASK_DATA&  data);
 
 protected:
-	TASK_INDEX	m_TaskIndex;
-	void load_shared	(LPCSTR);
-	static void InitXmlIdToIndex();
+	TASK_ID					m_TaskId;
+	void					load_shared			(LPCSTR);
+	static void				InitXmlIdToIndex	();
 public:
-	const TASK_INDEX Index() {return m_TaskIndex;}
-	SGameTaskData* data() { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
+	const TASK_ID			Id				() {return m_TaskId;}
+	SGameTaskData*			data			() { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
 
 public:
 	virtual u32				ObjectivesNum	();
 	virtual shared_str		ObjectiveDesc	(u32 index);
 	virtual shared_str		ObjectiveTitle	() {return data()->title;}
-	virtual ARTICLE_INDEX	ObjectiveArticle(u32 index);
+	virtual ARTICLE_ID		ObjectiveArticle(u32 index);
 	virtual ETaskState		ObjectiveState  (u32 index);
 	virtual void			ObjectiveIcon	(u32 index, shared_str& tex_name, int& x, int& y, int& width, int& height);
 	//инициализируется значениями из реестра актера

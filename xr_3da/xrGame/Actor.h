@@ -104,9 +104,9 @@ public:
 
 public:
 	//information receive & dialogs
-	virtual bool OnReceiveInfo		(INFO_INDEX info_index) const;
-	virtual void OnDisableInfo		(INFO_INDEX info_index) const;
-	virtual void ReceivePdaMessage	(u16 who, EPdaMsg msg, INFO_INDEX info_index);
+	virtual bool OnReceiveInfo		(INFO_ID info_id) const;
+	virtual void OnDisableInfo		(INFO_ID info_id) const;
+	virtual void ReceivePdaMessage	(u16 who, EPdaMsg msg, INFO_ID info_id);
 
 	virtual void	 NewPdaContact		(CInventoryOwner*);
 	virtual void	 LostPdaContact		(CInventoryOwner*);

@@ -38,7 +38,7 @@ protected:
 	
 	//буфферный список диалогов, которые были проверены
 	//во время UpdateAvailableDialogs
-	xr_vector<PHRASE_DIALOG_INDEX> m_CheckedDialogs;
+	xr_vector<PHRASE_DIALOG_ID> m_CheckedDialogs;
 
 	//список активных диалогов
 	DIALOG_VECTOR m_ActiveDialogs;

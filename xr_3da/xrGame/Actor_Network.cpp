@@ -886,8 +886,8 @@ void	CActor::OnChangeVisual()
 
 void	CActor::ChangeVisual			( shared_str NewVisual )
 {
-	if (NewVisual == NULL || !(*NewVisual)) return;
-	if (cNameVisual() != NULL && (*cNameVisual()))
+	if (!NewVisual.size()) return;
+	if (cNameVisual().size() )
 	{
 		if (cNameVisual() == NewVisual) return;
 	}

@@ -8,9 +8,9 @@
 #include "alife_space.h"
 #include "object_interfaces.h"
 
-typedef int			TASK_INDEX;
+//typedef int			TASK_INDEX;
 typedef shared_str		TASK_ID;
-#define NO_TASK		TASK_INDEX(-1)
+//#define NO_TASK		TASK_INDEX(-1)
 
 
 //состояние цели и задания
@@ -28,12 +28,12 @@ DEFINE_VECTOR		(ETaskState, TASK_STATE_VECTOR, TASK_STATE_IT);
 struct TASK_DATA : public IPureSerializeObject<IReader,IWriter>
 {
 	TASK_DATA();
-	TASK_DATA(TASK_INDEX idx, ALife::_TIME_ID time);
+	TASK_DATA(TASK_ID id, ALife::_TIME_ID time);
 
 	virtual void load (IReader&);
 	virtual void save (IWriter&);
 
-	TASK_INDEX			index;
+	TASK_ID			task_id;
 	//время получения задания
 	ALife::_TIME_ID		receive_time;
 	//время окончания задания
@@ -43,4 +43,4 @@ struct TASK_DATA : public IPureSerializeObject<IReader,IWriter>
 };
 
 DEFINE_VECTOR		(TASK_DATA, GAME_TASK_VECTOR, GAME_TASK_IT);
-DEFINE_VECTOR		(TASK_INDEX, TASK_INDEX_VECTOR, TASK_INDEX_IT);
+DEFINE_VECTOR		(TASK_ID, TASK_ID_VECTOR, TASK_ID_IT);

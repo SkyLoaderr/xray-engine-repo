@@ -34,27 +34,27 @@ struct SArticleData : CSharedResource
 
 class CEncyclopediaArticle;
 
-class CEncyclopediaArticle : public CSharedClass<SArticleData, ARTICLE_INDEX, false>,
-							 public CXML_IdToIndex<ARTICLE_STR_ID,	ARTICLE_INDEX, CEncyclopediaArticle>
+class CEncyclopediaArticle : public CSharedClass<SArticleData, ARTICLE_ID, false>
+							,public CXML_IdToIndex<ARTICLE_ID,	int, CEncyclopediaArticle>
 {
 private:
-	typedef CSharedClass<SArticleData, ARTICLE_INDEX, false> inherited_shared;
-	typedef CXML_IdToIndex<ARTICLE_STR_ID, ARTICLE_INDEX, CEncyclopediaArticle>	id_to_index;
+	typedef CSharedClass<SArticleData, ARTICLE_ID, false>					inherited_shared;
+	typedef CXML_IdToIndex<ARTICLE_ID, int, CEncyclopediaArticle>	id_to_index;
 
 	friend id_to_index;
 public:
 	CEncyclopediaArticle			();
 	virtual ~CEncyclopediaArticle	();
 
-	virtual void Load	(ARTICLE_STR_ID str_id);
-	virtual void Load	(ARTICLE_INDEX  index);
+	virtual void Load	(ARTICLE_ID str_id);
+//	virtual void Load	(ARTICLE_INDEX  index);
 
 
 protected:
-	ARTICLE_INDEX	m_ArticleIndex;
-	void load_shared	(LPCSTR);
-	static void InitXmlIdToIndex();
+	ARTICLE_ID			m_ArticleId;
+	virtual	void		load_shared					(LPCSTR);
+	static  void		InitXmlIdToIndex			();
 public:
-	const ARTICLE_INDEX Index() {return m_ArticleIndex;}
-	SArticleData* data() { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
+	const ARTICLE_ID	Id							()						{return m_ArticleId;}
+	SArticleData*		data						()						{ VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
 };

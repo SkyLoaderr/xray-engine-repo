@@ -7,6 +7,7 @@
 #pragma once
 
 #include "inventory_item_object.h"
+#include "InfoPortionDefs.h"
 
 class CInfoDocument: public CInventoryItemObject {
 private:
@@ -27,5 +28,5 @@ public:
 
 protected:
 	//индекс информации, содержащейс€ в документе
-	int m_iInfoIndex;
+	INFO_ID m_Info;
 };

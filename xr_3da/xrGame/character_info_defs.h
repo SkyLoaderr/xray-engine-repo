@@ -7,15 +7,11 @@
 
 #include "alife_space.h"
 
-typedef int					PROFILE_INDEX;
 typedef shared_str			PROFILE_ID;
-#define NO_PROFILE			PROFILE_INDEX(-1)
-#define DEFAULT_PROFILE		PROFILE_INDEX(0)
+#define DEFAULT_PROFILE		"default"
 
 
-typedef int						SPECIFIC_CHARACTER_INDEX;
 typedef shared_str				SPECIFIC_CHARACTER_ID;
-#define NO_SPECIFIC_CHARACTER	SPECIFIC_CHARACTER_INDEX(-1)
 
 //личное отношение (благосклонность) одного персонажа к другому - 
 //величина от -100< (крайне враждебное) до >100 (очень дрюжелюбное)

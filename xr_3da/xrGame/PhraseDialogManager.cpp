@@ -67,10 +67,10 @@ void CPhraseDialogManager::UpdateAvailableDialogs(CPhraseDialogManager* partner)
 
 bool CPhraseDialogManager::AddAvailableDialog(PHRASE_DIALOG_ID dialog_id, CPhraseDialogManager* partner)
 {
-	PHRASE_DIALOG_INDEX dialog_index =  CPhraseDialog::IdToIndex(dialog_id);
-	if(std::find(m_CheckedDialogs.begin(), m_CheckedDialogs.end(), dialog_index) != m_CheckedDialogs.end())
+//	PHRASE_DIALOG_INDEX dialog_index =  CPhraseDialog::IdToIndex(dialog_id);
+	if(std::find(m_CheckedDialogs.begin(), m_CheckedDialogs.end(), dialog_id) != m_CheckedDialogs.end())
 		return false;
-	m_CheckedDialogs.push_back(dialog_index);
+	m_CheckedDialogs.push_back(dialog_id);
 
 	DIALOG_SHARED_PTR phrase_dialog(xr_new<CPhraseDialog>());
 	phrase_dialog->Load(dialog_id);

@@ -7,17 +7,17 @@
 
 #include "alife_space.h"
 
-#define NO_INFO_INDEX	(-1)
-typedef int				INFO_INDEX;
-typedef shared_str		INFO_STR_ID;
+//#define NO_INFO_INDEX	(-1)
+//typedef int				INFO_INDEX;
+typedef shared_str		INFO_ID;
 
 
 struct INFO_DATA
 {
-	INFO_DATA():id(NO_INFO_INDEX),receive_time(0){};
-	INFO_DATA(INFO_INDEX info_index, ALife::_TIME_ID time):id(info_index),receive_time(time){};
+	INFO_DATA():info_id(NULL),receive_time(0){};
+	INFO_DATA(INFO_ID id, ALife::_TIME_ID time):info_id(id),receive_time(time){};
 
-	INFO_INDEX			id;
+	INFO_ID			info_id;
 	//время получения нужно порции информации
 	ALife::_TIME_ID		receive_time;
 };
