@@ -142,7 +142,7 @@ IC	const CObjectFactory::CObjectItemAbstract &CObjectFactory::item	(const CLASS_
 IC	const CObjectFactory::CObjectItemAbstract *CObjectFactory::item	(const CLASS_ID &clsid, bool no_assert) const
 {
 	const_iterator		I = std::lower_bound(clsids().begin(),clsids().end(),clsid,CObjectItemPredicate());
-	if ((I != clsids().end()) && ((*I)->clsid() == clsid)) {
+	if ((I == clsids().end()) || ((*I)->clsid() != clsid)) {
 		R_ASSERT		(no_assert);
 		return			(0);
 	}
