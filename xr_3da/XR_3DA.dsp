@@ -2200,6 +2200,10 @@ SOURCE=.\plan_last_month.txt
 # End Source File
 # Begin Source File
 
+SOURCE=.\StartUp_Logo.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\TODO.txt
 # End Source File
 # End Target

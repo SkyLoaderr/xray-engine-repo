@@ -170,7 +170,7 @@ void CreateLog(BOOL bQuiet)
 	} else {
 		logoWindow = CreateDialog(
 			GetModuleHandle(NULL),
-			MAKEINTRESOURCE(IDD_LOGO),
+			MAKEINTRESOURCE(IDD_STARTUP),
 			0, logDlgProc );
 	}
 
