@@ -330,7 +330,7 @@ void CEnvironment::unload	()
 	tonemap				= 0;
 
 	// music
-	for (int m=0; m<playlist.size(); m++)
+	for (u32 m=0; m<playlist.size(); m++)
 	{
 		music*	M		= playlist	[m];
 		M->left.stop	();
