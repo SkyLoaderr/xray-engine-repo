@@ -3,6 +3,7 @@
 #pragma once
 
 #include "xrMemory_pso.h"
+#include "xrMemory_POOL.h"
 
 class XRCORE_API	xrMemory
 {
@@ -52,5 +53,11 @@ IC void*	xr_malloc	(size_t size)			{	return	Memory.mem_alloc(size);					}
 IC void*	xr_realloc	(void* P, size_t size)	{	return Memory.mem_realloc(P,size);				}
 
 XRCORE_API char* __stdcall	xr_strdup	(const char* string);
+
+// POOL-ing
+const		u32			mem_pools_count			=	40;
+const		u32			mem_pools_ebase			=	32;
+const		u32			mem_generic				=	mem_pools_count+1;
+extern		MEMPOOL		mem_pools				[mem_pools_count];
 
 #endif

@@ -423,10 +423,16 @@
 			RelativePath="xrDebug_macros.h">
 		</File>
 		<File
+			RelativePath="xrMEMORY_POOL.h">
+		</File>
+		<File
 			RelativePath="xrMemory.cpp">
 		</File>
 		<File
 			RelativePath="xrMemory.h">
+		</File>
+		<File
+			RelativePath="xrMemory_POOL.cpp">
 		</File>
 		<File
 			RelativePath="xrMemory_align.cpp">
@@ -483,7 +489,13 @@
 			</FileConfiguration>
 		</File>
 		<File
+			RelativePath="xrMemory_subst_borland.cpp">
+		</File>
+		<File
 			RelativePath="xrMemory_subst_borland.h">
+		</File>
+		<File
+			RelativePath="xrMemory_subst_msvc.cpp">
 		</File>
 		<File
 			RelativePath="xrMemory_subst_msvc.h">
