@@ -85,8 +85,17 @@ void CAI_Space::Load(LPCSTR name)
 	// for graph
 	strconcat				(fName,::Path.GameData,"game.graph");
 	if (Engine.FS.Exist(fName)) {
-		m_tpGraphVFS			= Engine.FS.Open	(fName);
-		m_tpGraphVFS->Read		(&m_tGraphHeader,sizeof(AI::SGraphHeader));
+		m_tpGraphVFS					= Engine.FS.Open(fName);
+		m_tGraphHeader.dwVersion		= m_tpGraphVFS->Rdword();
+		m_tGraphHeader.dwVertexCount	= m_tpGraphVFS->Rdword();
+		m_tGraphHeader.dwLevelCount		= m_tpGraphVFS->Rdword();
+		m_tGraphHeader.tpLevels.resize	(m_tGraphHeader.dwLevelCount);
+		{
+			vector<SLevel>::iterator	I = m_tGraphHeader.tpLevels.begin();
+			vector<SLevel>::iterator	E = m_tGraphHeader.tpLevels.end();
+			for ( ; I != E; I++)
+				m_tpGraphVFS->Rvector((*I).tOffset);
+		}
 		R_ASSERT				(m_tGraphHeader.dwVersion == XRAI_CURRENT_VERSION);
 		m_tpaGraph				= (AI::SGraphVertex*)m_tpGraphVFS->Pointer();
 	}

@@ -30,10 +30,15 @@ namespace AI {
 		u32		dwEdgeOffset;
 	} SGraphVertex;
 
+	typedef struct tagSLevel {
+		Fvector		tOffset;
+	} SLevel;
+
 	typedef struct tagSGraphHeader {
-		u32		dwVersion;
-		u32		dwVertexCount;
-		u32		dwLevelCount;
+		u32				dwVersion;
+		u32				dwVertexCount;
+		u32				dwLevelCount;
+		vector<SLevel>	tpLevels;
 	} SGraphHeader;
 	#pragma pack(pop)
 
