@@ -1,14 +1,16 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include "xr_ini.h"
+#include "xrServer_Entities.h"
+#include ""
+
 #ifdef _EDITOR
-	#include "xrServer_Entities.h"
-	#include "xr_ini.h"
 	#include "clsid_game.h"
 	#include "xr_tokens.h"
 	#include "game_base.h"
 #else
-	#include "xrServer.h"
+//	#include "xrServer.h"
 #endif
 
 // EDITOR, NETWORK, SAVE, LOAD, DEMO
