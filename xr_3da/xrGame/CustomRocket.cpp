@@ -90,6 +90,7 @@ void CCustomRocket::activate_physic_shell	()
 	m_pPhysicsShell->set_PhysicsRefObject(this);
 	m_pPhysicsShell->set_ObjectContactCallback(ObjectContactCallback);
 	m_pPhysicsShell->set_ContactCallback(NULL);
+	m_pPhysicsShell->SetAirResistance(0.f,0.f);
 }
 
 void CCustomRocket::create_physic_shell	()
@@ -303,12 +304,16 @@ void CCustomRocket::UpdateEnginePh			()
 {
 	if (Level().In_NetCorrectionPrediction()) return;
 	float force = m_fEngineImpulse*fixed_step;// * Device.fTimeDelta;
-
+	float k_back=1.f;
 	Fvector l_pos, l_dir; 
-	l_pos.set(0, 0, 5.f);
+	l_pos.set(0, 0,-2.f);
 	l_dir.set(XFORM().k);
+	
 	l_dir.normalize();
-
+	m_pPhysicsShell->applyImpulse(l_dir,(1.f+k_back)*force);
+	m_pPhysicsShell->get_LinearVel(l_dir);
+	l_dir.normalize_safe();
+	l_dir.invert();
 	m_pPhysicsShell->applyImpulseTrace(l_pos, l_dir, force);
 	l_dir.set(0, 1.f, 0);
 	force = m_fEngineImpulseUp*fixed_step;// * Device.fTimeDelta;
