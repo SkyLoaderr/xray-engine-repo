@@ -153,11 +153,7 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 
 				i->ID			= m_tpServer->PerformIDgen(0xffff);
 				i->m_tSpawnID	= _SPAWN_ID(j - b);
-				i->m_tGraphID	= l_tpSpawnAnomalousZone->m_tGraphID;
-				u32				l_dwIndex = l_tpSpawnAnomalousZone->m_dwStartIndex + randI(l_tpSpawnAnomalousZone->m_wArtefactSpawnCount);
-				i->o_Position	= m_tpArtefactSpawnPositions[l_dwIndex].tPoint;
-				i->m_tNodeID	= m_tpArtefactSpawnPositions[l_dwIndex].tNodeID;
-				i->m_fDistance	= m_tpArtefactSpawnPositions[l_dwIndex].fDistance;
+				vfAssignArtefactPosition(l_tpSpawnAnomalousZone,i);
 				i->m_bALifeControl = true;
 
 				CSE_ALifeItemArtefact *l_tpALifeItemArtefact = dynamic_cast<CSE_ALifeItemArtefact*>(i);

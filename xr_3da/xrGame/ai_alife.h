@@ -47,10 +47,11 @@ class CSE_ALifeSimulator :
 			void					vfUpdateDynamicData			(bool						bReserveID = true);
 			void					vfUpdateDynamicData			(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					vfCreateNewTask				(CSE_ALifeTrader			*tpTrader);
-			void					vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject		*&tpALifDynamicObject,		CSE_ALifeDynamicObject *tpALifeDynamicObject, _SPAWN_ID tSpawnID);
+			void					vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject		*&tpALifDynamicObject,		CSE_ALifeDynamicObject *tpALifeDynamicObject,			_SPAWN_ID tSpawnID);
 			void					vfSetupScheduledObjects		();
 			void					vfPrintTime					(LPCSTR						S,							_TIME_ID				tTimeID);
-			void					vfAssignDeathPosition		(CSE_ALifeCreatureAbstract	*tpALifeCreatureAbstract,	_GRAPH_ID				tGraphID);
+			void					vfAssignDeathPosition		(CSE_ALifeCreatureAbstract	*tpALifeCreatureAbstract,	_GRAPH_ID				tGraphID,						CSE_ALifeSchedulable *tpALifeSchedulable = 0);
+			void					vfAssignArtefactPosition	(CSE_ALifeAnomalousZone		*tpALifeAnomalousZone,		CSE_ALifeDynamicObject	*tpALifeDynamicObject);
 	// surge
 			void					vfPerformSurge				();
 			void					vfGenerateAnomalousZones	();

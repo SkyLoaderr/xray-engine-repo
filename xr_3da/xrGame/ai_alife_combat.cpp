@@ -263,9 +263,26 @@ void CSE_ALifeSimulator::vfPerformAttackAction(int iCombatGroupIndex)
 	}
 }
 
-void CSE_ALifeSimulator::vfAssignDeathPosition(CSE_ALifeCreatureAbstract *tpALifeCreatureAbstract, _GRAPH_ID tGraphID)
+void CSE_ALifeSimulator::vfAssignArtefactPosition(CSE_ALifeAnomalousZone *tpALifeAnomalousZone, CSE_ALifeDynamicObject *tpALifeDynamicObject)
+{
+	tpALifeDynamicObject->m_tGraphID	= tpALifeAnomalousZone->m_tGraphID;
+	u32									l_dwIndex = tpALifeAnomalousZone->m_dwStartIndex + randI(tpALifeAnomalousZone->m_wArtefactSpawnCount);
+	tpALifeDynamicObject->o_Position	= m_tpArtefactSpawnPositions[l_dwIndex].tPoint;
+	tpALifeDynamicObject->m_tNodeID		= m_tpArtefactSpawnPositions[l_dwIndex].tNodeID;
+	tpALifeDynamicObject->m_fDistance	= m_tpArtefactSpawnPositions[l_dwIndex].fDistance;
+}
+
+void CSE_ALifeSimulator::vfAssignDeathPosition(CSE_ALifeCreatureAbstract *tpALifeCreatureAbstract, _GRAPH_ID tGraphID, CSE_ALifeSchedulable *tpALifeSchedulable)
 {
 	tpALifeCreatureAbstract->fHealth		= 0;
+	
+	if (tpALifeSchedulable) {
+		CSE_ALifeAnomalousZone				*l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(tpALifeSchedulable);
+		R_ASSERT2							(l_tpALifeAnomalousZone,"Invalid object class");
+		vfAssignArtefactPosition			(l_tpALifeAnomalousZone,tpALifeCreatureAbstract);
+		return;
+	}
+
 	SLevelPoint*							l_tpaLevelPoints = (SLevelPoint*)(((u8*)getAI().m_tpaGraph) + getAI().m_tpaGraph[tGraphID].dwPointOffset);
 	u32										l_dwDeathpointIndex = randI(getAI().m_tpaGraph[tGraphID].tDeathPointCount);
 	tpALifeCreatureAbstract->m_tGraphID		= tGraphID;
@@ -304,7 +321,7 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 					l_tpALifeMonsterAbstract->m_bDirectControl	= true;
 					l_tpALifeAbstractGroup->m_tpMembers.erase	(l_tpALifeAbstractGroup->m_tpMembers.begin() + I);
 					vfUpdateDynamicData							(l_tpALifeMonsterAbstract);
-					vfAssignDeathPosition						(l_tpALifeMonsterAbstract, l_tGraphID);
+					vfAssignDeathPosition						(l_tpALifeMonsterAbstract, l_tGraphID, m_tpaCombatObjects[i ^ 1]);
 					l_tpALifeAbstractGroup->m_wCount--;
 					I--;
 					N--;
@@ -316,7 +333,7 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 			CSE_ALifeMonsterAbstract							*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(m_tpaCombatObjects[i]);
 			if (l_tpALifeMonsterAbstract && (l_tpALifeMonsterAbstract->fHealth <= 0)) {
 				vfAppendItemList								(l_tpALifeMonsterAbstract->children,m_tpItemVector);
-				vfAssignDeathPosition							(l_tpALifeMonsterAbstract, l_tGraphID);
+				vfAssignDeathPosition							(l_tpALifeMonsterAbstract, l_tGraphID, m_tpaCombatObjects[i ^ 1]);
 			}
 		}
 	}
