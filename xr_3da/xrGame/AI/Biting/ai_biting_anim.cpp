@@ -15,9 +15,9 @@ using namespace AI_Biting;
 
 namespace AI_Biting {
 	LPCSTR caStateNames			[] = {
-		"stand_",
-		"sit_",
-		"lie_",
+		"stand_",				// 0
+		"sit_",					// 1
+		"lie_",					// 2
 		0
 	};
 
