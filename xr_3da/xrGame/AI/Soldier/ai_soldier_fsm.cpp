@@ -1375,7 +1375,8 @@ void CAI_Soldier::OnAttackFireAlone()
 				m_tpSoundBeingPlayed = 0;
 				m_dwLastRadioTalk = dwCurTime;
 			}
-			if ((dwCurTime - m_dwLastSoundRefresh > m_fRadioRefreshRate) && ((dwCurTime - m_dwLastRadioTalk > m_fMaxRadioIinterval) || ((dwCurTime - m_dwLastRadioTalk > m_fMinRadioIinterval) && (::Random.randF(0,1) > (dwCurTime - m_dwLastRadioTalk - m_fMinRadioIinterval)/(m_fMaxRadioIinterval - m_fMinRadioIinterval))))) {
+			//if ((dwCurTime - m_dwLastSoundRefresh > m_fRadioRefreshRate) && ((dwCurTime - m_dwLastRadioTalk > m_fMaxRadioIinterval) || ((dwCurTime - m_dwLastRadioTalk > m_fMinRadioIinterval) && (::Random.randF(0,1) > (dwCurTime - m_dwLastRadioTalk - m_fMinRadioIinterval)/(m_fMaxRadioIinterval - m_fMinRadioIinterval))))) {
+				Msg("told");
 				m_dwLastSoundRefresh = dwCurTime;
 				// Play hit-sound
 				m_tpSoundBeingPlayed = &(sndRadio[0]);
@@ -1384,7 +1385,7 @@ void CAI_Soldier::OnAttackFireAlone()
 					return;
 
 				pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,vPosition);
-			}
+			//}
 		}
 	}
 
