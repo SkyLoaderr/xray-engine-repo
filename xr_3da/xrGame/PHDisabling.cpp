@@ -4,8 +4,7 @@
 #include "Physics.h"
 SDisableVector::SDisableVector()
 {
-	sum.set(0.f,0.f,0.f);
-	previous.set(0.f,0.f,0.f);
+	Init();
 }
 
 CBaseDisableData::CBaseDisableData()
@@ -19,6 +18,11 @@ void	SDisableVector::Reset()
 	sum.set(0.f,0.f,0.f);
 }
 
+void	SDisableVector::Init()
+{
+	previous.set(0.f,0.f,0.f);
+	Reset();
+}
 
 float	SDisableVector::Update(const Fvector& new_vector)
 {
@@ -77,6 +81,11 @@ void	CBaseDisableData::Disabling()
 					Disable();//dBodyDisable(body);
 }
 
+void	CPHDisablingBase::Reinit()
+{
+	m_mean_velocity.Init();
+	m_mean_acceleration.Init();
+}
 
 void	CPHDisablingBase::UpdateL2()
 {
@@ -146,6 +155,11 @@ void CPHDisablingRotational::set_DisableParams(const SAllDDOParams& params)
 	m_frames=params.L2frames;
 }
 
+void	CPHDisablingFull::Reinit()
+{
+	CPHDisablingRotational::Reinit();
+	CPHDisablingTranslational::Reinit();
+}
 void	CPHDisablingFull::UpdateL1()
 {
 	SDisableUpdateState state;

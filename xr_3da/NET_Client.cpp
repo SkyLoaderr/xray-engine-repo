@@ -438,7 +438,7 @@ void	IPureClient::OnMessage(void* data, u32 size)
 	// One of the messages - decompress it
 	NET_Packet* P	= net_Queue.Create			();
 	P->B.count		= net_Compressor.Decompress	(P->B.data,LPBYTE(data),size);
-	P->timeReceive	= TimerAsync				(device_timer);
+	P->timeReceive	= timeServer_Async();//TimerAsync				(device_timer);
 }
 
 void	IPureClient::timeServer_Correct(u32 sv_time, u32 cl_time)
@@ -481,7 +481,7 @@ BOOL	IPureClient::net_HasBandwidth	()
 {
 	u32		dwTime				= TimeGlobal(device_timer);
 	u32		dwInterval			= 1000/psNET_ClientUpdate;
-	if		(net_Disconnected)	return FALSE;
+	if		(net_Disconnected) return FALSE;
 	
 	if		(psNET_Flags.test(NETFLAG_MINIMIZEUPDATES))	dwInterval	= 333;	// approx 3 times per second
 
@@ -493,7 +493,7 @@ BOOL	IPureClient::net_HasBandwidth	()
 		// check queue for "empty" state
 		DWORD				dwPending=0;
 		hr					= NET->GetSendQueueInfo(&dwPending,0,0);
-		if (FAILED(hr))		return FALSE;
+		if (FAILED(hr)) return FALSE;
 
 		if (dwPending > u32(psNET_ClientPending))	
 		{
@@ -506,7 +506,7 @@ BOOL	IPureClient::net_HasBandwidth	()
 		ZeroMemory			(&CI,sizeof(CI));
 		CI.dwSize			= sizeof(CI);
 		hr					= NET->GetConnectionInfo(&CI,0);
-		if (FAILED(hr))		return FALSE;
+		if (FAILED(hr)) return FALSE;
 
 		net_Statistic.Update(CI);
 

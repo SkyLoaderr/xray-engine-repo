@@ -7,6 +7,7 @@ struct SDisableVector
 	Fvector						previous																	;
 	float						Update						(const Fvector& new_vector)						;
 	void						Reset						()												;
+	void						Init						()												;
 	float						SumMagnitude				()												;
 	SDisableVector											()												;
 };
@@ -54,6 +55,7 @@ public:
 	virtual		void			set_DisableParams			(const SOneDDOParams& params)					;
 
 protected:
+				void			Reinit						()												;
 	IC			void			CheckState					(SDisableUpdateState& state,	float vel	,float	accel)
 	{
 		if	(vel	<	m_params.velocity	&&	accel	<	m_params.acceleration) 
@@ -92,6 +94,7 @@ class CPHDisablingFull	:
 	public		CPHDisablingRotational
 {
 public:
+				void			Reinit						()												;
 	virtual		void			UpdateL1					()												;
 	virtual		void			UpdateL2					()												;
 	virtual		void			set_DisableParams			(const SAllDDOParams& params)					;

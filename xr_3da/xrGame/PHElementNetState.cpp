@@ -43,6 +43,7 @@ void CPHElement::set_State(const SPHNetState& state)
 		m_shell->EnableObject();
 	}
 	if(!state.enabled && dBodyIsEnabled(m_body)) Disable();
+	CPHDisablingFull::Reinit();
 }
 
 void CPHElement	::net_Export(NET_Packet& P)
