@@ -19,7 +19,6 @@
 ////////////////////////////////////////////////////////////////////////////
 CSE_Visual::CSE_Visual		   	(LPCSTR name)
 {
-	Msg							("CSE_Visual::CSE_Visual() called");
 	visual_name					= name;
     startup_animation			= "$editor";
 }
