@@ -4,7 +4,7 @@
 -- Author:      Serhiy O. Vynnychenk0
 -- Mail:        narrator@gsc-game.com
 --
---[[
+--
 function main()
 	local dlg = ui_multiplayer_dialog.multiplayer_dialog()
 	level.start_stop_menu(dlg,true)
@@ -12,7 +12,7 @@ function main()
 		wait(3000)
 	end
 end
-]]
+
 
 class "multiplayer_dialog" (ui_base_dialog.base_dialog)
 
