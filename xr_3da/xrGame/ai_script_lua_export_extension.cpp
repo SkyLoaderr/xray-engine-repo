@@ -415,7 +415,16 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("get_corpse",					&CLuaGameObject::GetCorpse)
 			.def("set_object",					&CLuaGameObject::set_object)
 			.def("motivation_action_manager",	&CLuaGameObject::motivation_action_manager)
-			.def("movement",					&CLuaGameObject::movement)
+			
+			.def("set_desired_position",		&CLuaGameObject::set_desired_position	)
+			.def("set_desired_direction",		&CLuaGameObject::set_desired_direction	)
+			.def("set_body_state",				&CLuaGameObject::set_body_state			)
+			.def("set_movement_type",			&CLuaGameObject::set_movement_type		)
+			.def("set_mental_state",			&CLuaGameObject::set_mental_state		)
+			.def("set_path_type",				&CLuaGameObject::set_path_type			)
+			.def("set_detail_path_type",		&CLuaGameObject::set_detail_path_type	)
+			.def("set_node_evaluator",			&CLuaGameObject::set_node_evaluator		)
+			.def("set_path_evaluator",			&CLuaGameObject::set_path_evaluator		)
 			
 	];
 }

@@ -518,30 +518,87 @@ public:
 		return					(manager);
 	}
 
-	IC		void		movement					(
-//			CStalkerMovementManager::EPathType			tGlobalPathType,
-//			CStalkerMovementManager::EDetailPathType	tPathType,
-			MonsterSpace::EBodyState					tBodyState,
-			MonsterSpace::EMovementType					tMovementType,
-			MonsterSpace::EMentalState					tMentalState,
-			Fvector										*tDesiredPosition,
-			Fvector										*tDesiredDirection
-		)
+	//////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
+	IC		void		set_desired_position	(const Fvector *desired_position)
 	{
-		CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+		CAI_Stalker							*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 		if (!stalker)
-			LuaOut				(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
-//		else
-//			stalker->CStalkerMovementManager::update(
-//				0,
-//				0,
-//				0,//&tDesiredPosition,
-//				&tDesiredDirection,
-//				tGlobalPathType,
-//				tPathType,
-//				tBodyState,
-//				tMovementType,
-//				tMentalState
-//			);
+			LuaOut							(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		else
+			stalker->set_desired_position	(desired_position);
+	}
+
+	IC		void		set_desired_direction	(const Fvector *desired_direction)
+	{
+		CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+		if (!stalker)
+			LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		else
+			stalker->set_desired_direction	(desired_direction);
+	}
+
+	IC		void		set_body_state			(EBodyState body_state)
+	{
+		CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+		if (!stalker)
+			LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		else
+			stalker->set_body_state	(body_state);
+	}
+
+	IC		void		set_movement_type		(EMovementType movement_type)
+	{
+		CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+		if (!stalker)
+			LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		else
+			stalker->set_movement_type	(movement_type);
+	}
+
+	IC		void		set_mental_state		(EMentalState mental_state)
+	{
+		CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+		if (!stalker)
+			LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		else
+			stalker->set_mental_state	(mental_state);
+	}
+
+	IC		void		set_path_type			(CMovementManager::EPathType path_type)
+	{
+		CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+		if (!stalker)
+			LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		else
+			stalker->set_path_type	(path_type);
+	}
+
+	IC		void		set_detail_path_type	(CMovementManager::EDetailPathType detail_path_type)
+	{
+		CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+		if (!stalker)
+			LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		else
+			stalker->set_detail_path_type	(detail_path_type);
+	}
+
+	IC		void		set_node_evaluator		(CAbstractVertexEvaluator *node_evaluator)
+	{
+		CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+		if (!stalker)
+			LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		else
+			stalker->set_node_evaluator	(node_evaluator);
+	}
+
+	IC		void		set_path_evaluator		(CAbstractVertexEvaluator *path_evaluator)
+	{
+		CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+		if (!stalker)
+			LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		else
+			stalker->set_path_evaluator	(path_evaluator);
 	}
 };
