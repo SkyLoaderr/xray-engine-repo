@@ -2,7 +2,6 @@
 #ifndef PropertiesListTypesH
 #define PropertiesListTypesH
 
-#include "ElTree.hpp"
 #include "WaveForm.H"
 
 //---------------------------------------------------------------------------
