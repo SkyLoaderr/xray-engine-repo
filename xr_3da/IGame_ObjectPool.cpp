@@ -28,6 +28,7 @@ void IGame_ObjectPool::load	()
 	{
 		if (pSettings->line_exist(*S->Name,"$prefetch"))
 		{
+			Msg					("* prefetching: %s",	*S->Name);
 			int		count		=	pSettings->r_s32	(*S->Name,"$prefetch");
 			R_ASSERT2			((count>0) && (count<=128), "Too many objects for prefetching");
 			CLASS_ID CLS		=	pSettings->r_clsid	(*S->Name,"class");
