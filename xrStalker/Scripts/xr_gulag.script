@@ -566,6 +566,7 @@ function fract:loadJob(name)
 			path_main = "mili_root_guard",
 			path_hideout = "mili_root_guard" }
 		table.insert(self.Job, t)			
+--[[
 		local t = { name = "guard",
 			object = nil,
 			begin = nil, 
@@ -578,6 +579,7 @@ function fract:loadJob(name)
 			path_main = "mili_2stage_guard",
 			path_hideout = "mili_2stage_guard" }
 		table.insert(self.Job, t)			
+]]
 		local t = { name = "guard",
 			object = nil,
 			begin = nil, 
@@ -645,7 +647,7 @@ function fract:loadJob(name)
 			leader_name = nil,
 			escape_path = "mili_patrol_return" }
 		table.insert(self.Job, t)			
-		
+--[[		
 		t = { name = "sleeper",
 			object = nil,
 			begin = nil, 
@@ -673,7 +675,7 @@ function fract:loadJob(name)
 			group = 0,
 			path_main = "mili_sleep_3"}
 		table.insert(self.Job, t)			
-
+]]
 		t = { name = "kamp",
 			object = nil,
 			begin = nil, 
