@@ -159,6 +159,13 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 		xr_free((char*&)_t->second.M);
 	}
 	m_td.clear();
+
+    // clear Geoms
+	for (u32 g_it=0; g_it<v_geoms.size(); g_it++)
+	{
+		xr_delete(v_geoms[g_it]);
+    }
+    v_geoms.clear();
 }
 
 void	CShaderManager::OnDeviceCreate	(CStream* FS)

@@ -1,5 +1,5 @@
-#ifndef _XR_GAMEFONT_H_
-#define _XR_GAMEFONT_H_
+#ifndef GameFontH
+#define GameFontH
 #pragma once
 
 class ENGINE_API CGameFont
