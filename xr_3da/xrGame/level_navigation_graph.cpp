@@ -469,9 +469,7 @@ IC	void CLevelNavigationGraph::fill_cell		(u32 start_vertex_id)
 IC	void CLevelNavigationGraph::fill_cells		()
 {
 	m_temp.clear			();
-//	m_temp2.resize			(m_cross.size());
 
-//	TEMP_TABLE::iterator	J = m_temp2.begin();
 	CROSS_TABLE::iterator	I = m_cross.begin();
 	CROSS_TABLE::iterator	E = m_cross.end();
 	for ( ; I != E; ++I) {
@@ -484,12 +482,8 @@ IC	void CLevelNavigationGraph::fill_cells		()
 		if (!(*I).m_down_left)
 			fill_cell		(vertex_id(I));
 
-//		*J					= &*I;
-//		++J;
 		m_temp.insert		(std::make_pair(cell_id(&*I),&*I));
 	}
-//	m_temp.insert			(m_temp2.begin(),m_temp2.end());
-//	m_temp2.clear			();
 }
 
 IC	void CLevelNavigationGraph::update_cell		(u32 start_vertex_id, u32 link)
@@ -507,12 +501,10 @@ IC	void CLevelNavigationGraph::update_cell		(u32 start_vertex_id, u32 link)
 
 		CCellVertex			*cell = &m_cross[vertex_id];
 
-//		m_temp.erase		(cell);
 		m_temp.erase		(cell_id(cell));
 
 		cell->m_dirs[index]	= (u16)i;
 
-//		m_temp.insert		(cell);
 		m_temp.insert		(std::make_pair(cell_id(cell),cell));
 
 		if (!link)
@@ -775,6 +767,7 @@ CLevelNavigationGraph::CLevelNavigationGraph	(
 #ifdef DEBUG
 	check_edges		();
 #endif
+	m_cross.clear	();
 	finish			= CPU::GetCycleCount();
 #ifdef DEBUG
 	Msg				("* Navigation info : %d nodes, %d sectors, %d edges (%f seconds)",header().vertex_count(),sectors().vertex_count(),sectors().edge_count(),CPU::cycles2seconds*float(finish - start));
