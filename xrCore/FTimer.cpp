@@ -26,19 +26,19 @@ XRCORE_API pauseMngr	g_pauseMngr;
 void pauseMngr::Pause(bool b){
 	if(m_paused == b)return;
 
-	xr_vector<CTimer*>::iterator it = m_timers.begin();
+	xr_vector<CTimer_paused*>::iterator it = m_timers.begin();
 	for(;it!=m_timers.end();++it)
 		(*it)->Pause(b);
 
 	m_paused = b;
 }
 
-void pauseMngr::Register (CTimer* t){
+void pauseMngr::Register (CTimer_paused* t){
 		m_timers.push_back(t);
 }
 
-void pauseMngr::UnRegister (CTimer* t){
-	xr_vector<CTimer*>::iterator it = std::find(m_timers.begin(),m_timers.end(),t);
+void pauseMngr::UnRegister (CTimer_paused* t){
+	xr_vector<CTimer_paused*>::iterator it = std::find(m_timers.begin(),m_timers.end(),t);
 	if( it!=m_timers.end() )
 		m_timers.erase(it);
 }
