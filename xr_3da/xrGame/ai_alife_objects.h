@@ -19,8 +19,8 @@ public:
 	_TIME_ID						m_tGameTime;
 	_TIME_ID						m_tLastSurgeTime;
 	_TIME_ID						m_tNextSurgeTime;
-	u32								m_dwStartTime;
 	float							m_fTimeFactor;
+	u32								m_dwStartTime;
 	u64								m_qwStartProcessorCycle;
 
 	virtual void					Save(IWriter	&tMemoryStream)
@@ -30,6 +30,7 @@ public:
 		tMemoryStream.open_chunk	(GAME_TIME_CHUNK_DATA);
 		tMemoryStream.w				(&m_tGameTime,		sizeof(m_tGameTime));
 		tMemoryStream.w				(&m_tLastSurgeTime,	sizeof(m_tLastSurgeTime));
+		tMemoryStream.w				(&m_tNextSurgeTime,	sizeof(m_tNextSurgeTime));
 		tMemoryStream.w_float		(m_fTimeFactor);
 		tMemoryStream.close_chunk	();
 	};
@@ -39,6 +40,7 @@ public:
 		R_ASSERT2					(tFileStream.find_chunk(GAME_TIME_CHUNK_DATA),"Can't find chunk GAME_TIME_CHUNK_DATA!");
 		tFileStream.r				(&m_tGameTime,		sizeof(m_tGameTime));
 		tFileStream.r				(&m_tLastSurgeTime,	sizeof(m_tLastSurgeTime));
+		tFileStream.r				(&m_tNextSurgeTime,	sizeof(m_tNextSurgeTime));
 		m_fTimeFactor				= tFileStream.r_float();
 		m_qwStartProcessorCycle		= CPU::GetCycleCount();
 		m_dwStartTime				= Device.TimerAsync();
