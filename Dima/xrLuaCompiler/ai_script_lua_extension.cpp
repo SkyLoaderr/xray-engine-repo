@@ -313,9 +313,8 @@ bool Script::bfGetNamespaceTable(CLuaVirtualMachine *tpLuaVM, LPCSTR N)
 		lua_gettable 	(tpLuaVM,-2); 
 		if (lua_isnil(tpLuaVM,-1)) { 
 			lua_pop		(tpLuaVM,2); 
-			Debug.fatal	(" Error : the namespace name is already being used by the non-table object!\n");
-			return		(false); 
-		} 
+			return		(false);	//	there is no namespace!
+		}
 		else 
 			if (!lua_istable(tpLuaVM,-1)) { 
 				lua_pop		(tpLuaVM,2); 
