@@ -32,7 +32,7 @@ object frmEditorPreferences: TfrmEditorPreferences
       Top = 0
       Width = 396
       Height = 243
-      ActivePage = tsMouse
+      ActivePage = tsScene
       Align = alClient
       TabOrder = 0
       object tsCamera: TTabSheet
@@ -488,7 +488,7 @@ object frmEditorPreferences: TfrmEditorPreferences
           Left = 0
           Top = 77
           Width = 181
-          Height = 53
+          Height = 70
           Caption = ' Snap '
           TabOrder = 2
           object RxLabel28: TLabel
@@ -504,6 +504,13 @@ object frmEditorPreferences: TfrmEditorPreferences
             Width = 47
             Height = 13
             Caption = 'Move (m):'
+          end
+          object Label1: TLabel
+            Left = 4
+            Top = 51
+            Width = 63
+            Height = 13
+            Caption = 'Move To (m):'
           end
           object seSnapMove: TMultiObjSpinEdit
             Left = 109
@@ -534,6 +541,21 @@ object frmEditorPreferences: TfrmEditorPreferences
             Value = 5
             AutoSize = False
             TabOrder = 0
+          end
+          object seSnapMoveTo: TMultiObjSpinEdit
+            Left = 109
+            Top = 49
+            Width = 69
+            Height = 18
+            LWSensitivity = 0.1
+            ButtonKind = bkLightWave
+            Increment = 0.01
+            MaxValue = 1000
+            MinValue = 0.01
+            ValueType = vtFloat
+            Value = 0.5
+            AutoSize = False
+            TabOrder = 2
           end
         end
         object GroupBox6: TGroupBox
@@ -590,7 +612,7 @@ object frmEditorPreferences: TfrmEditorPreferences
         end
         object GroupBox3: TGroupBox
           Left = 0
-          Top = 130
+          Top = 154
           Width = 181
           Height = 53
           Caption = ' Grid '
@@ -1027,7 +1049,8 @@ object frmEditorPreferences: TfrmEditorPreferences
       'seSnapAngle.Value'
       'seSnapMove.Value'
       'seCameraFlyAltitude.Value'
-      'seCameraFlySpeed.Value')
+      'seCameraFlySpeed.Value'
+      'seSnapMoveTo.Value')
     StoredValues = <>
     Left = 273
     Top = 9

@@ -29,7 +29,7 @@ const DWORD RP_COLORS[MAX_TEAM]={0xff0000,0x00ff00,0x0000ff,0xffff00,0x00ffff,0x
 
 CRPoint::CRPoint( char *name ):CCustomObject(){
 	Construct();
-	strcpy( m_Name, name );
+    Name		= name;
 }
 
 CRPoint::CRPoint():CCustomObject(){
@@ -37,7 +37,7 @@ CRPoint::CRPoint():CCustomObject(){
 }
 
 void CRPoint::Construct(){
-	m_ClassID   = OBJCLASS_RPOINT;
+	ClassID		= OBJCLASS_RPOINT;
 	m_Position.set(0,0,0);
     m_dwTeamID	= 0;
     m_dwSquadID	= 0;
@@ -101,30 +101,21 @@ bool CRPoint::RayPick(float& distance, Fvector& start, Fvector& direction, SRayP
 }
 
 void CRPoint::Move( Fvector& amount ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
     UI.UpdateScene();
 	m_Position.add( amount );
 }
 //----------------------------------------------------
 
 void CRPoint::LocalRotate( Fvector& axis, float angle ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
     m_fHeading			-= axis.y*angle;
     UI.UpdateScene		();
 }
 //----------------------------------------------------
 
 void CRPoint::Rotate( Fvector& center, Fvector& axis, float angle ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
 	Fmatrix m;
 	m.rotation			(axis, -angle);
 	m_Position.sub		(center);

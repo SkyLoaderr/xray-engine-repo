@@ -117,15 +117,13 @@ void TUI_CustomTools::SetNumPosition(CCustomObject* O){
     if(O)objset.push_back(O);
     else Scene.GetQueryObjects(objset,objclass);
 	if( !objset.empty() ){
-    	Fvector V;
-        if (objset.front()->GetPosition(V)){
+    	Fvector V = objset.front()->PPosition;
+        {
             Fvector RV; RV.set(0,0,0);
             if (mrOk==NumericVectorRun("Position",&V,3,&RV)){
                 ObjectIt _F = objset.begin(); ObjectIt _E = objset.end();
-                for(;_F!=_E;_F++){
-                	(*_F)->SetPosition(V);
-                    (*_F)->UpdateTransform();
-                }
+                for(;_F!=_E;_F++)
+                	(*_F)->PPosition = V;
                 Scene.UndoSave();
             }
         }
@@ -137,8 +135,8 @@ void TUI_CustomTools::SetNumRotation(CCustomObject* O){
     if(O)objset.push_back(O);
     else Scene.GetQueryObjects(objset,objclass);
 	if( !objset.empty() ){
-    	Fvector V;
-        if (objset.front()->GetRotate(V)){
+    	Fvector V=objset.front()->PRotate;
+        {
             V.set(rad2deg(V.x),rad2deg(V.y),rad2deg(V.z));
             Fvector RV; RV.set(0,0,0);
             Fvector MN; MN.set(-360,-360,-360);
@@ -146,10 +144,8 @@ void TUI_CustomTools::SetNumRotation(CCustomObject* O){
             if (mrOk==NumericVectorRun("Rotation",&V,1,&RV,&MN,&MX)){
                 ObjectIt _F = objset.begin(); ObjectIt _E = objset.end();
 	            V.set(deg2rad(V.x),deg2rad(V.y),deg2rad(V.z));
-                for(;_F!=_E;_F++){
-                	(*_F)->SetRotate(V);
-                    (*_F)->UpdateTransform();
-                }
+                for(;_F!=_E;_F++)
+                	(*_F)->PRotate = V;
                 Scene.UndoSave();
             }
         }
@@ -161,17 +157,15 @@ void TUI_CustomTools::SetNumScale(CCustomObject* O){
     if(O)objset.push_back(O);
     else Scene.GetQueryObjects(objset,objclass);
 	if( !objset.empty() ){
-    	Fvector V;
-        if (objset.front()->GetScale(V)){
+    	Fvector V=objset.front()->PScale;
+        {
             Fvector RV; RV.set(1,1,1);
             Fvector MN; MN.set(0.0001f,0.0001f,0.0001f);
             Fvector MX; MX.set(10000,10000,10000);
             if (mrOk==NumericVectorRun("Scale",&V,3,&RV,&MN,&MX)){
                 ObjectIt _F = objset.begin(); ObjectIt _E = objset.end();
-                for(;_F!=_E;_F++){
-                	(*_F)->SetScale(V);
-                    (*_F)->UpdateTransform();
-                }
+                for(;_F!=_E;_F++)
+                	(*_F)->PScale = V;
                 Scene.UndoSave();
             }
         }

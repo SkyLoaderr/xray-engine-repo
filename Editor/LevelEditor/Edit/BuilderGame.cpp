@@ -30,7 +30,7 @@ bool SceneBuilder::BuildGame()
             NET_Packet Packet;
             Packet.w_begin		(M_SPAWN);
             Packet.w_string		("g_event");
-            Packet.w_string		(E->GetName());
+            Packet.w_string		(E->Name);
             Packet.w_u8 		(0xFE);
             Packet.w_vec3		(center);		// возможно нужно будет юзать локальную СК
             Fvector a; a.set	(0,0,0);
@@ -85,7 +85,7 @@ bool SceneBuilder::BuildGame()
 			    NET_Packet Packet;
                 Packet.w_begin		(M_SPAWN);
 				Packet.w_string		(rpt->m_EntityRefs);
-				Packet.w_string		(rpt->GetName());
+				Packet.w_string		(rpt->Name);
    				Packet.w_u8 		(0xFE);
                 Packet.w_vec3		(rpt->m_Position);
                 Fvector a; a.set	(0,rpt->m_fHeading,0);
@@ -117,5 +117,6 @@ bool SceneBuilder::BuildGame()
     	m_LevelPath.Update(lev_spawn);
 	    F.SaveTo(lev_spawn.c_str(),0);
     }
+    return true;
 }
 

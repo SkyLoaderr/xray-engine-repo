@@ -28,17 +28,17 @@ __fastcall TfrmPropertiesSector::TfrmPropertiesSector(TComponent* Owner)
 void TfrmPropertiesSector::GetObjectsInfo(){
 	VERIFY(!m_Objects->empty());
 
-	ObjectIt _F = m_Objects->begin();	VERIFY( (*_F)->ClassID()==OBJCLASS_SECTOR );
+	ObjectIt _F = m_Objects->begin();	VERIFY( (*_F)->ClassID==OBJCLASS_SECTOR );
 	CSector *_O = (CSector*)(*_F);
 
     int t_objs,t_meshes,t_faces;
 	mcSectorColor->ObjFirstInit( _O->sector_color.get_windows() );
-    edName->Text = _O->m_Name;
+    edName->Text = _O->Name;
     _O->GetCounts(&t_objs,&t_meshes,&t_faces);
 
 	_F++;
 	for(;_F!=m_Objects->end();_F++){
-		VERIFY( (*_F)->ClassID()==OBJCLASS_SECTOR );
+		VERIFY( (*_F)->ClassID==OBJCLASS_SECTOR );
     	_O = (CSector *)(*_F);
 		mcSectorColor->ObjNextInit( _O->sector_color.get_windows() );
 	    edName->Text = "< Multiple selection >";
@@ -50,7 +50,7 @@ void TfrmPropertiesSector::GetObjectsInfo(){
     AnsiString stat; stat.sprintf("Objects: %d, Meshes: %d, Faces: %d",t_objs,t_meshes,t_faces);
     lbContains->Caption = stat;
 
-    if (m_Objects->size()==1) gbSector->Caption = AnsiString("Sector: '")+AnsiString((*m_Objects->begin())->GetName())+AnsiString("'");
+    if (m_Objects->size()==1) gbSector->Caption = AnsiString("Sector: '")+AnsiString((*m_Objects->begin())->Name)+AnsiString("'");
 }
 
 bool TfrmPropertiesSector::ApplyObjectsInfo(){
@@ -58,7 +58,7 @@ bool TfrmPropertiesSector::ApplyObjectsInfo(){
     CSector *_O = 0;
     ObjectIt _F = m_Objects->begin();
     for(;_F!=m_Objects->end();_F++){
-        VERIFY( (*_F)->ClassID()==OBJCLASS_SECTOR );
+        VERIFY( (*_F)->ClassID==OBJCLASS_SECTOR );
         _O = (CSector*)(*_F);
         int c;
         if (mcSectorColor->ObjApply(c)){  _O->sector_color.set_windows(c); }

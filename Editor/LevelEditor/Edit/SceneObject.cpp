@@ -17,21 +17,16 @@
 
 //----------------------------------------------------
 CSceneObject::CSceneObject( char *name ):CCustomObject(){
-	Construct();
-	strcpy( m_Name, name );
+	Construct	();
+	Name		= name;
 }
 
 CSceneObject::CSceneObject( ):CCustomObject(){
-	Construct();
+	Construct	();
 }
 
 void CSceneObject::Construct(){
-	m_ClassID = OBJCLASS_SCENEOBJECT;
-
-	mTransform.identity();
-    vScale.set(1,1,1);
-    vRotate.set(0,0,0);
-    vPosition.set(0,0,0);
+	ClassID		= OBJCLASS_SCENEOBJECT;
 
 	m_pRefs 	= 0;
     m_ObjVer.reset();
@@ -56,9 +51,9 @@ void CSceneObject::Select(BOOL flag)
 void CSceneObject::GetFaceWorld(CEditableMesh* M, int idx, Fvector* verts){
 	const Fvector* PT[3];
 	M->GetFacePT(idx, PT);
-	mTransform.transform_tiny(verts[0],*PT[0]);
-    mTransform.transform_tiny(verts[1],*PT[1]);
-	mTransform.transform_tiny(verts[2],*PT[2]);
+	_Transform().transform_tiny(verts[0],*PT[0]);
+    _Transform().transform_tiny(verts[1],*PT[1]);
+	_Transform().transform_tiny(verts[2],*PT[2]);
 }
 
 int CSceneObject::GetFaceCount(){
@@ -73,27 +68,15 @@ int CSceneObject::GetVertexCount(){
 	return m_pRefs->GetVertexCount();
 }
 
-void CSceneObject::UpdateTransform(const Fvector& T, const Fvector& R, const Fvector& S){
-    // update transform matrix
-	Fmatrix	mScale,mTranslate,mRotate;
-	mRotate.setHPB			(R.y, R.x, R.z);
-
-	mScale.scale			(S);
-	mTranslate.translate	(T);
-	mTransform.mul			(mTranslate,mRotate);
-	mTransform.mul			(mScale);
-
+void CSceneObject::OnUpdateTransform(){
+	inherited::OnUpdateTransform();
     // update bounding volume
     Fbox BB; GetBox			(BB);
     BB.getsphere			(m_Center,m_fRadius);
 }
 
-void CSceneObject::UpdateTransform( ){
-	UpdateTransform			(vPosition,vRotate,vScale);
-}
-
 bool CSceneObject::GetBox( Fbox& box ){
-    box.transform(m_pRefs->GetBox(),mTransform);
+    box.transform(m_pRefs->GetBox(),_Transform());
 	return true;
 }
 
@@ -105,47 +88,46 @@ bool __inline CSceneObject::IsRender(){
 
 void CSceneObject::Render(int priority, bool strictB2F){
     Scene.TurnLightsForObject(this);
-	m_pRefs->Render(mTransform, priority, strictB2F);
+	m_pRefs->Render(_Transform(), priority, strictB2F);
     if ((1==priority)&&(false==strictB2F)){
         if (Selected()){
             if (m_dwBlinkTime>Device.dwTimeGlobal){
             	DWORD c=D3DCOLOR_ARGB(iFloor(sqrtf(float(m_dwBlinkTime-Device.dwTimeGlobal)/BLINK_TIME)*48),255,255,255);
                 RenderSelection(c);
                 UI.RedrawScene();
-            }else{
-                Device.SetShader(Device.m_WireShader);
-                Device.SetTransform(D3DTS_WORLD,mTransform);
-                DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-                DU::DrawSelectionBox(m_pRefs->GetBox(),&clr);
             }
+            Device.SetShader(Device.m_WireShader);
+            Device.SetTransform(D3DTS_WORLD,_Transform());
+            DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
+            DU::DrawSelectionBox(m_pRefs->GetBox(),&clr);
         }
     }
 }
 
 void CSceneObject::RenderSingle(){
-	m_pRefs->RenderSingle(mTransform);
+	m_pRefs->RenderSingle(_Transform());
 }
 
 void CSceneObject::RenderAnimation(){
-	m_pRefs->RenderAnimation(mTransform);
+	m_pRefs->RenderAnimation(_Transform());
 }
 
 void CSceneObject::RenderBones(){
-	m_pRefs->RenderBones(mTransform);
+	m_pRefs->RenderBones(_Transform());
 }
 
 void CSceneObject::RenderEdge(CEditableMesh* mesh, DWORD color){
     if (Device.m_Frustum.testSphere(m_Center,m_fRadius))
-		m_pRefs->RenderEdge(mTransform, mesh, color);
+		m_pRefs->RenderEdge(_Transform(), mesh, color);
 }
 
 void CSceneObject::RenderSelection(DWORD color){
-	m_pRefs->RenderSelection(mTransform,0,color);
+	m_pRefs->RenderSelection(_Transform(),0,color);
 }
 
 bool CSceneObject::FrustumPick(const CFrustum& frustum){
     if(Device.m_Frustum.testSphere(m_Center,m_fRadius))
-		return m_pRefs->FrustumPick(frustum, mTransform);
+		return m_pRefs->FrustumPick(frustum, _Transform());
     return false;
 }
 
@@ -158,7 +140,7 @@ bool CSceneObject::SpherePick(const Fvector& center, float radius){
 
 bool CSceneObject::RayPick(float& dist, Fvector& S, Fvector& D, SRayPickInfo* pinf){
     if (Device.m_Frustum.testSphere(m_Center,m_fRadius))
-		if (m_pRefs->RayPick(dist, S, D, mTransform, pinf)){
+		if (m_pRefs->RayPick(dist, S, D, _Transform(), pinf)){
         	if (pinf) pinf->s_obj = this;
             return true;
         }
@@ -166,98 +148,91 @@ bool CSceneObject::RayPick(float& dist, Fvector& S, Fvector& D, SRayPickInfo* pi
 }
 
 bool CSceneObject::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf){
-	return m_pRefs->BoxPick(this, box, mTransform, pinf);
+	return m_pRefs->BoxPick(this, box, _Transform(), pinf);
 }
 
 void CSceneObject::Move(Fvector& amount){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
     UI.UpdateScene();
-	vPosition.add( amount );
-    UpdateTransform();
+    Fvector v=PPosition; v.add(amount);	PPosition = v;
 }
 
 void CSceneObject::Rotate(Fvector& center, Fvector& axis, float angle){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
     UI.UpdateScene();
 
 	Fmatrix m;
 	m.rotation(axis, -angle);
 
-	vPosition.sub( center );
-    m.transform_tiny(vPosition);
-	vPosition.add( center );
+    Fvector p	= PPosition;
+    Fvector r	= PRotate;
 
-    vRotate.direct(vRotate,axis,axis.z?-angle:angle);
+	p.sub		(center);
+    m.transform_tiny(p);
+	p.add		(center);
 
-    UpdateTransform();
+    r.mad		(axis,axis.z?-angle:angle);
+	PPosition 	= p;
+    PRotate		= r;
 }
 void CSceneObject::LocalRotate(Fvector& axis, float angle){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
     UI.UpdateScene();
-    vRotate.direct(vRotate,axis,angle);
-    UpdateTransform();
+    Fvector r	= PRotate;
+    r.mad		(axis,angle);
+    PRotate		= r;
 }
 
 void CSceneObject::Scale( Fvector& center, Fvector& amount ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
     if (IsDynamic()){
-    	ELog.DlgMsg(mtInformation,"Dynamic object %s - can't scale.", GetName());
+    	ELog.DlgMsg(mtInformation,"Dynamic object %s - can't scale.", Name);
         return;
     }
     UI.UpdateScene();
-	vScale.add(amount);
-	if (vScale.x<EPS) vScale.x=EPS;
-	if (vScale.y<EPS) vScale.y=EPS;
-	if (vScale.z<EPS) vScale.z=EPS;
+    Fvector p	= PPosition;
+    Fvector s	= PScale;
+	s.add(amount);
+	if (s.x<EPS) s.x=EPS;
+	if (s.y<EPS) s.y=EPS;
+	if (s.z<EPS) s.z=EPS;
 
 	Fmatrix m;
     Fvector S;
     S.add(amount,1.f);
 	m.scale( S );
-	vPosition.sub( center );
-	m.transform_tiny(vPosition);
-	vPosition.add( center );
-    UpdateTransform();
+	p.sub( center );
+	m.transform_tiny(p);
+	p.add( center );
+
+    PPosition	= p;
+    PScale		= s;
 }
 
 void CSceneObject::LocalScale( Fvector& amount ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
     if (IsDynamic()){
-    	ELog.DlgMsg(mtInformation,"Dynamic object %s - can't scale.", GetName());
+    	ELog.DlgMsg(mtInformation,"Dynamic object %s - can't scale.", Name);
         return;
     }
     UI.UpdateScene();
-	vScale.add(amount);
-    if (vScale.x<EPS) vScale.x=EPS;
-    if (vScale.y<EPS) vScale.y=EPS;
-    if (vScale.z<EPS) vScale.z=EPS;
-    UpdateTransform();
+    Fvector s	= PScale;
+	s.add(amount);
+    if (s.x<EPS) s.x=EPS;
+    if (s.y<EPS) s.y=EPS;
+    if (s.z<EPS) s.z=EPS;
+    PScale		= s;
 }
 
 void CSceneObject::GetFullTransformToWorld( Fmatrix& m ){
-    m.set( mTransform );
+    m.set( _Transform() );
 }
 
 void CSceneObject::GetFullTransformToLocal( Fmatrix& m ){
-    m.invert(mTransform);
+    m.invert(_Transform());
 }
 
-void CSceneObject::RTL_Update(float dT){
+void CSceneObject::OnFrame(){
 }
 
 CEditableObject* CSceneObject::SetReference(LPCSTR ref_name)

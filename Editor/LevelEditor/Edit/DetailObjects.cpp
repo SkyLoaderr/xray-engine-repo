@@ -939,7 +939,7 @@ void CDetailManager::Save(CFS_Base& F){
 	F.open_chunk		(DETMGR_CHUNK_SNAP_OBJECTS);
     F.Wdword			(m_SnapObjects.size());
     for (ObjectIt o_it=m_SnapObjects.begin(); o_it!=m_SnapObjects.end(); o_it++)
-    	F.WstringZ		((*o_it)->GetName());
+    	F.WstringZ		((*o_it)->Name);
     F.close_chunk		();
 
     F.open_chunk		(DETMGR_CHUNK_DENSITY);

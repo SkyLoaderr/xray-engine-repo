@@ -27,7 +27,7 @@ CSound::CSound( char *name )
 	:CCustomObject()
 {
 	Construct();
-	strcpy( m_Name, name );
+    Name = name;
 }
 
 CSound::CSound()
@@ -37,8 +37,7 @@ CSound::CSound()
 }
 
 void CSound::Construct(){
-
-	m_ClassID = OBJCLASS_SOUND;
+	ClassID=OBJCLASS_SOUND;
 
 	m_Position.set(0,0,0);
 	m_Range = 8.f;
@@ -88,19 +87,13 @@ bool CSound::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPi
 }
 
 void CSound::Move( Fvector& amount ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
     UI.UpdateScene();
 	m_Position.add( amount );
 }
 
 void CSound::Rotate( Fvector& center, Fvector& axis, float angle ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
 	Fmatrix m;
 	m.rotation			(axis, -angle);
 	m_Position.sub		(center);
@@ -110,10 +103,7 @@ void CSound::Rotate( Fvector& center, Fvector& axis, float angle ){
 }
 
 void CSound::LocalRotate( Fvector& axis, float angle ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
     UI.UpdateScene();
 }
 

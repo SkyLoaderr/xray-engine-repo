@@ -30,13 +30,13 @@ void TfrmPropertiesPS::GetObjectsInfo(){
 
 	VERIFY(!m_Objects->empty());
 	ObjectIt _F = m_Objects->begin();
-    VERIFY( (*_F)->ClassID()==OBJCLASS_PS );
+    VERIFY( (*_F)->ClassID==OBJCLASS_PS );
 
     CPSObject *_O = (CPSObject *)(*_F);
     fraEmitter->GetInfoFirst(_O->m_Emitter);
     _F++;
     for(;_F!=m_Objects->end();_F++){
-		VERIFY( (*_F)->ClassID()==OBJCLASS_PS );
+		VERIFY( (*_F)->ClassID==OBJCLASS_PS );
     	CPSObject *_O = (CPSObject *)(*_F);
 	    fraEmitter->GetInfoFirst(_O->m_Emitter);
 	}

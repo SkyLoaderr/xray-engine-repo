@@ -229,7 +229,7 @@ void SceneBuilder::BuildObject(CSceneObject* obj){
     AnsiString temp; temp.sprintf("Building object: %s",O->GetName());
     UI.SetStatus(temp.c_str());
 
-    Fmatrix& T = obj->GetTransform();
+    const Fmatrix& T = obj->_Transform();
     for(EditMeshIt M=O->FirstMesh();M!=O->LastMesh();M++){
 		CSector* S = PortalUtils.FindSector(obj,*M);
 	    int sect_num = S?S->sector_num:m_iDefaultSectorNum;
@@ -251,7 +251,7 @@ void SceneBuilder::BuildObjectDynamic(CEditableObject* O){
 // light build functions
 //------------------------------------------------------------------------------
 void SceneBuilder::BuildLight(b_light* b, CLight* e){
-	strcpy(b->name,e->GetName());
+	strcpy(b->name,e->Name);
 	CopyMemory		(b,&e->m_D3D,sizeof(Flight));
     b->diffuse.mul_rgb(e->m_Brightness);
     b->ambient.mul_rgb(e->m_Brightness);
@@ -490,7 +490,7 @@ bool SceneBuilder::RemoteStaticBuild()
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
 		    UI.ProgressUpdate(i++);
             if (UI.NeedAbort()) break;
-            switch((*_F)->ClassID()){
+            switch((*_F)->ClassID){
             case OBJCLASS_LIGHT:
                 BuildLight(&(TSData.lights[cur_light]),(CLight*)(*_F));
                 cur_light++;

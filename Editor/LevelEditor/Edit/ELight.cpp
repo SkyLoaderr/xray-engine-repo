@@ -38,7 +38,7 @@
 
 CLight::CLight( char *name ):CCustomObject(){
 	Construct();
-	strcpy( m_Name, name );
+	Name			= name;
 }
 
 CLight::CLight():CCustomObject(){
@@ -46,7 +46,7 @@ CLight::CLight():CCustomObject(){
 }
 
 void CLight::Construct(){
-	m_ClassID 		= OBJCLASS_LIGHT;
+	ClassID 		= OBJCLASS_LIGHT;
 
     m_UseInD3D		= true;
 
@@ -79,7 +79,7 @@ void CLight::UpdateTransform(){
 }
 
 void CLight::CopyFrom(CLight* src){
-	*this			= *src;
+	THROW2("Go to AlexMX");
 }
 
 void CLight::AffectD3D(BOOL flag){
@@ -166,21 +166,14 @@ bool CLight::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPi
 }
 
 void CLight::Move( Fvector& amount ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
 	m_D3D.position.add(amount);
     UpdateTransform();
     UI.UpdateScene();
 }
 
 void CLight::Rotate(Fvector& center, Fvector& axis, float angle){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
-
+	R_ASSERT(!Locked());
 	Fmatrix m;
 	m.rotation			(axis, -angle);
 
@@ -195,10 +188,7 @@ void CLight::Rotate(Fvector& center, Fvector& axis, float angle){
 }
 //----------------------------------------------------
 void CLight::LocalRotate(Fvector& axis, float angle){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
     vRotate.direct		(vRotate,axis,angle);
     UpdateTransform		();
     UI.UpdateScene		();

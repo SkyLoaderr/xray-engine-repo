@@ -43,14 +43,14 @@ void TfrmPropertiesOccluder::GetObjectsInfo(){
 	COccluder *_L = 0;
 	ObjectIt _F = m_Objects->begin();
 
-	VERIFY( (*_F)->ClassID()==OBJCLASS_OCCLUDER );
+	VERIFY( (*_F)->ClassID==OBJCLASS_OCCLUDER );
 	_L = (COccluder*)(*_F);
 
 	sePointCount->ObjFirstInit( _L->m_Points.size() );
 	_F++;
 
 	for(;_F!=m_Objects->end();_F++){
-		VERIFY( (*_F)->ClassID()==OBJCLASS_OCCLUDER );
+		VERIFY( (*_F)->ClassID==OBJCLASS_OCCLUDER );
 		_L = (COccluder*)(*_F);
         sePointCount->ObjNextInit( _L->m_Points.size() );
 	}
@@ -63,7 +63,7 @@ void TfrmPropertiesOccluder::ApplyObjectsInfo(){
 	ObjectIt _F = m_Objects->begin();
 
 	for(;_F!=m_Objects->end();_F++){
-		VERIFY( (*_F)->ClassID()==OBJCLASS_OCCLUDER );
+		VERIFY( (*_F)->ClassID==OBJCLASS_OCCLUDER );
 		_L = (COccluder*)(*_F);
         _L->ResizePoints(sePointCount->Value);
 	}

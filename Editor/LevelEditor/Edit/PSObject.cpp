@@ -23,7 +23,7 @@
 
 CPSObject::CPSObject( char *name ):CCustomObject(){
 	Construct();
-	strcpy( m_Name, name );
+	Name		= name;
 }
 //----------------------------------------------------
 
@@ -33,7 +33,7 @@ CPSObject::CPSObject():CCustomObject(){
 //----------------------------------------------------
 
 void CPSObject::Construct(){
-	m_ClassID   = OBJCLASS_PS;
+	ClassID   	= OBJCLASS_PS;
 	m_Emitter.Reset();
     m_Emitter.m_ConeDirection.set(0.f,1.f,0.f);
     m_Emitter.m_ConeAngle = 1.f;
@@ -224,20 +224,14 @@ bool CPSObject::RayPick(float& distance, Fvector& start, Fvector& direction, SRa
 //----------------------------------------------------
 
 void CPSObject::Move( Fvector& amount ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
     UI.UpdateScene();
 	m_Emitter.m_Position.add( amount );
 }
 //----------------------------------------------------
 
 void CPSObject::Rotate( Fvector& center, Fvector& axis, float angle ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
 	Fmatrix m;
 	m.rotation			(axis, (axis.y)?-angle:angle);
 	m_Emitter.m_Position.sub(center);
@@ -249,10 +243,7 @@ void CPSObject::Rotate( Fvector& center, Fvector& axis, float angle ){
 //----------------------------------------------------
 
 void CPSObject::LocalRotate(Fvector& axis, float angle ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
 	Fmatrix m;
 	m.rotation			(axis, (axis.y)?-angle:angle);
 	m.transform_tiny	(m_Emitter.m_ConeDirection);
@@ -260,10 +251,7 @@ void CPSObject::LocalRotate(Fvector& axis, float angle ){
 }
 //----------------------------------------------------
 void CPSObject::Scale( Fvector& center, Fvector& amount ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
     if (m_Emitter.m_EmitterType==PS::SEmitter::emBox){
 		m_Emitter.m_BoxSize.add(amount);
 	    if (m_Emitter.m_BoxSize.x<EPS) m_Emitter.m_BoxSize.x=EPS;
@@ -278,10 +266,7 @@ void CPSObject::Scale( Fvector& center, Fvector& amount ){
 }
 
 void CPSObject::LocalScale( Fvector& amount ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
     if (m_Emitter.m_EmitterType==PS::SEmitter::emBox){
 		m_Emitter.m_BoxSize.add(amount);
 	    if (m_Emitter.m_BoxSize.x<EPS) m_Emitter.m_BoxSize.x=EPS;

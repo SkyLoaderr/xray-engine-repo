@@ -28,7 +28,7 @@
 
 CPortal::CPortal( char *name ):CCustomObject(){
 	Construct();
-	strcpy( m_Name, name );
+    Name		= name;
 }
 //------------------------------------------------------------------------------
 
@@ -38,7 +38,7 @@ CPortal::CPortal():CCustomObject(){
 //------------------------------------------------------------------------------
 
 void CPortal::Construct(){
-	m_ClassID = OBJCLASS_PORTAL;
+	ClassID		= OBJCLASS_PORTAL;
 	m_Center.set(0,0,0);
 	m_SectorFront=0;
 	m_SectorBack=0;
@@ -160,7 +160,7 @@ bool CPortal::Update(bool bLoadMode){
     float m=m_Normal.magnitude();
     if (fabsf(m)<=EPS){
     	ELog.DlgMsg(mtError,"Portal: Some error found at pos: [%3.2f,%3.2f,%3.2f].",m_Vertices[0].x,m_Vertices[0].x,m_Vertices[0].x);
-        m_Valid = false;
+        SetValid(false);
 		return false;
     }
     m_Normal.div(m);
@@ -196,7 +196,7 @@ bool CPortal::Update(bool bLoadMode){
         else  if ((front.size()==1)&&(back.size()==2)) 	{ SF = front[0]; SB = back [(SF==back[0])?1:0]; }
 
         if (!(SF && (SF!=SB))){
-            ELog.Msg(mtError, "Check portal orientation: '%s'",m_Name);
+            ELog.Msg(mtError, "Check portal orientation: '%s'",Name);
         }else{
             if (SF!=m_SectorFront) InvertOrientation();
         }
@@ -368,11 +368,11 @@ void CPortal::Simplify(){
     while(vertices.size()>XR_MAX_PORTAL_VERTS){
     	int f_cnt=vertices.size();
     	SimplifyVertices(vertices);
-        if (f_cnt==int(vertices.size())){ m_Valid = false; return; }
+        if (f_cnt==int(vertices.size())){ SetValid(false); return; }
     }
 
-    if (vertices.size()<=2){ m_Valid = false; return; }
-    else					m_Valid = true;
+    if (vertices.size()<=2){ SetValid(false); return; }
+    else					SetValid(true);
 
     // convert to 3D & check portal normal
     Fvector center, temp, norm;
@@ -425,7 +425,7 @@ bool CPortal::Load(CStream& F){
     }
 
     if (!m_SectorBack||!m_SectorFront){
-        ELog.Msg( mtError, "Portal: Can't find required sectors.\nObject '%s' can't load.", m_Name);
+        ELog.Msg( mtError, "Portal: Can't find required sectors.\nObject '%s' can't load.", Name);
     	return false;
     }
 
@@ -434,7 +434,7 @@ bool CPortal::Load(CStream& F){
 	F.Read			(m_Vertices.begin(), m_Vertices.size()*sizeof(Fvector));
 
     if (m_Vertices.size()<3){
-        ELog.Msg( mtError, "Portal: '%s' can't create.\nInvalid portal. (m_Vertices.size()<3)", m_Name);
+        ELog.Msg( mtError, "Portal: '%s' can't create.\nInvalid portal. (m_Vertices.size()<3)", Name);
     	return false;
     }
 
@@ -452,13 +452,13 @@ void CPortal::Save(CFS_Base& F){
 
     if (m_SectorFront){
 		F.open_chunk	(PORTAL_CHUNK_SECTOR_FRONT);
-        F.WstringZ		(m_SectorFront->GetName());
+        F.WstringZ		(m_SectorFront->Name);
 		F.close_chunk	();
     }
 
 	if (m_SectorBack){
 		F.open_chunk	(PORTAL_CHUNK_SECTOR_BACK);
-        F.WstringZ		(m_SectorBack->GetName());
+        F.WstringZ		(m_SectorBack->Name);
 		F.close_chunk	();
     }
 

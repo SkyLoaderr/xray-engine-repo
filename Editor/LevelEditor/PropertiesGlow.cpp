@@ -66,7 +66,7 @@ void TfrmPropertiesGlow::GetObjectsInfo(){
 
 	CGlow *_G = 0;
 	ObjectIt _F = m_Objects->begin();
-	VERIFY( (*_F)->ClassID()==OBJCLASS_GLOW );
+	VERIFY( (*_F)->ClassID==OBJCLASS_GLOW );
 	_G = (CGlow *)(*_F);
 
     m_Glow = _G;
@@ -78,7 +78,7 @@ void TfrmPropertiesGlow::GetObjectsInfo(){
     AnsiString tex1,tex2;
     tex1 = _G->m_TexName;
 	for(;_F!=m_Objects->end();_F++){
-		VERIFY( (*_F)->ClassID()==OBJCLASS_GLOW );
+		VERIFY( (*_F)->ClassID==OBJCLASS_GLOW );
 		_G = (CGlow *)(*_F);
 		seRange->ObjNextInit( _G->m_Range );
 		if (!bDifShader&&(_G->m_ShaderName!=sh)) bDifShader = true;
@@ -112,7 +112,7 @@ bool TfrmPropertiesGlow::ApplyObjectsInfo(){
     bool bValidTex 		= (lbTexture->Caption!="...");
     bool bValidShader 	= (lbShader->Caption!="...");
 	for(;_F!=m_Objects->end();_F++){
-		VERIFY( (*_F)->ClassID()==OBJCLASS_GLOW );
+		VERIFY( (*_F)->ClassID==OBJCLASS_GLOW );
 		_G = (CGlow *)(*_F);
 		seRange->ObjApplyFloat( _G->m_Range );
         // apply shader

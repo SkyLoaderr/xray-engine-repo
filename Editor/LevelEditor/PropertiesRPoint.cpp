@@ -36,13 +36,13 @@ void TfrmPropertiesRPoint::GetObjectsInfo(){
 
 	VERIFY(!m_Objects->empty());
 	ObjectIt _F = m_Objects->begin();
-    VERIFY( (*_F)->ClassID()==OBJCLASS_RPOINT );
+    VERIFY( (*_F)->ClassID==OBJCLASS_RPOINT );
 
 	CRPoint::EType T;
     {
         CRPoint *_S = (CRPoint *)(*_F);
         CRPoint *_N = _S;
-        edName->Text= _S->GetName();
+        edName->Text= _S->Name;
         seTeamID->ObjFirstInit(_S->m_dwTeamID);
         seSquadID->ObjFirstInit(_S->m_dwSquadID);
         seGroupID->ObjFirstInit(_S->m_dwGroupID);
@@ -55,7 +55,7 @@ void TfrmPropertiesRPoint::GetObjectsInfo(){
 
     _F++;
     for(;_F!=m_Objects->end();_F++){
-		VERIFY( (*_F)->ClassID()==OBJCLASS_RPOINT );
+		VERIFY( (*_F)->ClassID==OBJCLASS_RPOINT );
     	CRPoint *_N = (CRPoint *)(*_F);
 	    seTeamID->ObjNextInit(_N->m_dwTeamID);
 	    seSquadID->ObjNextInit(_N->m_dwSquadID);
@@ -86,7 +86,7 @@ bool TfrmPropertiesRPoint::ApplyObjectsInfo(){
             	ELog.DlgMsg(mtError,"Duplicate object name already exists: '%s'",edName->Text.c_str());
             	return false;
             }
-	        _O->SetName(edName->Text.c_str());
+	        _O->Name = edName->Text.c_str();
         }
         seTeamID->ObjApplyInt(int(_O->m_dwTeamID));
         seSquadID->ObjApplyInt(int(_O->m_dwSquadID));

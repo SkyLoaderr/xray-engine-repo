@@ -24,7 +24,7 @@
 //------------------------------------------------------------------------------
 CAITPoint::CAITPoint(char *name):CCustomObject(){
 	Construct();
-	strcpy( m_Name, name );
+	Name		= name;
 }
 
 CAITPoint::CAITPoint():CCustomObject(){
@@ -32,7 +32,7 @@ CAITPoint::CAITPoint():CCustomObject(){
 }
 
 void CAITPoint::Construct(){
-	m_ClassID   = OBJCLASS_AITPOINT;
+	ClassID   	= OBJCLASS_AITPOINT;
 	m_Position.set(0,0,0);
 }
 
@@ -119,20 +119,14 @@ bool CAITPoint::RayPick(float& distance, Fvector& S, Fvector& D, SRayPickInfo* p
 //----------------------------------------------------
 
 void CAITPoint::Move( Fvector& amount ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
     UI.UpdateScene();
 	m_Position.add( amount );
 }
 //----------------------------------------------------
 
 void CAITPoint::Rotate( Fvector& center, Fvector& axis, float angle ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
 	Fmatrix m;
 	m.rotation			(axis, -angle);
 	m_Position.sub		(center);
@@ -182,7 +176,7 @@ void CAITPoint::Save(CFS_Base& F){
     F.open_chunk	(AITPOINT_CHUNK_LINKS);
     F.Wdword		(m_Links.size());
     for (ObjectIt o_it=m_Links.begin(); o_it!=m_Links.end(); o_it++)
-    	F.WstringZ	((*o_it)->GetName());
+    	F.WstringZ	((*o_it)->Name);
 	F.close_chunk	();
 }
 //----------------------------------------------------

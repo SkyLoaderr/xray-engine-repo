@@ -28,10 +28,10 @@ void TfrmPropertiesSceneObject::GetObjectsInfo(){
 
 	VERIFY(!m_Objects->empty());
 	ObjectIt _F = m_Objects->begin();
-    VERIFY( (*_F)->ClassID()==OBJCLASS_SCENEOBJECT );
+    VERIFY( (*_F)->ClassID==OBJCLASS_SCENEOBJECT );
 
     CSceneObject *_S = (CSceneObject *)(*_F);
-	edName->Text= _S->GetName();
+	edName->Text= _S->Name;
     ebReference->Caption=_S->GetReference()->GetName();
 
     if (m_Objects->size()>1){
@@ -55,7 +55,7 @@ bool TfrmPropertiesSceneObject::ApplyObjectsInfo(){
             	ELog.DlgMsg(mtError,"Duplicate object name already exists: '%s'",edName->Text.c_str());
             	return false;
             }
-        	_O->SetName(edName->Text.c_str());
+        	_O->Name = edName->Text.c_str();
         }
         // change reference
         if (!m_NewReference.IsEmpty())

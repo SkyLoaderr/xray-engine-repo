@@ -35,7 +35,7 @@ void TfrmPropertiesSound::GetObjectsInfo(){
 	CSound *_L = 0;
 	ObjectIt _F = m_Objects->begin();
 
-	VERIFY( (*_F)->ClassID()==OBJCLASS_SOUND );
+	VERIFY( (*_F)->ClassID==OBJCLASS_SOUND );
 	_L = (CSound *)(*_F);
 
 	seRange->ObjFirstInit( _L->m_Range );
@@ -48,7 +48,7 @@ void TfrmPropertiesSound::GetObjectsInfo(){
     bMultipleSelection = false;
 	for(;_F!=m_Objects->end();_F++){
 
-		VERIFY( (*_F)->ClassID()==OBJCLASS_SOUND );
+		VERIFY( (*_F)->ClassID==OBJCLASS_SOUND );
 		_L = (CSound *)(*_F);
 
         bMultipleSelection = true;
@@ -70,7 +70,7 @@ void TfrmPropertiesSound::ApplyObjectsInfo(){
 
 	for(;_F!=m_Objects->end();_F++){
 
-		VERIFY( (*_F)->ClassID()==OBJCLASS_SOUND );
+		VERIFY( (*_F)->ClassID==OBJCLASS_SOUND );
 		_L = (CSound *)(*_F);
         if (!bMultipleSelection) strcpy(_L->m_fName, edName->Text.c_str());
 

@@ -13,12 +13,12 @@
 #include "bone.h"
 #include "motion.h"
 
-#define EOBJ_CURRENT_VERSION		0x0010
+#define EOBJ_CURRENT_VERSION		0x0011
 //----------------------------------------------------
 #define EOBJ_CHUNK_VERSION		  	0x0900
 #define EOBJ_CHUNK_REFERENCE     	0x0902
 #define EOBJ_CHUNK_FLAG           	0x0903
-#define EOBJ_CHUNK_PLACEMENT     	0x0904
+#define EOBJ_CHUNK_PLACEMENT     	0x0904           
 #define EOBJ_CHUNK_SURFACES			0x0905
 #define EOBJ_CHUNK_EDITMESHES      	0x0910
 #define EOBJ_CHUNK_LIB_VERSION     	0x0911
@@ -36,18 +36,20 @@ bool CSceneObject::Load(CStream& F){
         DWORD version = 0;
         char buf[1024];
         R_ASSERT(F.ReadChunk(EOBJ_CHUNK_VERSION,&version));
-        if (version!=EOBJ_CURRENT_VERSION){
+        if ((version!=0x0010)&&(version!=EOBJ_CURRENT_VERSION)){
             ELog.DlgMsg( mtError, "CSceneObject: unsupported file version. Object can't load.");
             bRes = false;
             break;
         }
 
-		CCustomObject::Load(F);
+        if (version==0x0010){
+	        R_ASSERT(F.FindChunk(EOBJ_CHUNK_PLACEMENT));
+    	    F.Rvector(PPosition);
+	        F.Rvector(PRotate);
+    	    F.Rvector(PScale);
+        }
 
-        R_ASSERT(F.FindChunk(EOBJ_CHUNK_PLACEMENT));
-        F.Rvector(vPosition);
-        F.Rvector(vRotate);
-        F.Rvector(vScale);
+		CCustomObject::Load(F);
 
         R_ASSERT(F.FindChunk(EOBJ_CHUNK_REFERENCE));
         F.Read(&m_ObjVer, sizeof(m_ObjVer));
@@ -61,7 +63,6 @@ bool CSceneObject::Load(CStream& F){
             ELog.Msg( mtError, "CSceneObject: '%s' different file version! Some objects will work incorrectly.", buf );
 
         if (!bRes) break;
-        UpdateTransform();
     }while(0);
 
     return bRes;
@@ -72,12 +73,6 @@ void CSceneObject::Save(CFS_Base& F){
 
 	F.open_chunk	(EOBJ_CHUNK_VERSION);
 	F.Wword			(EOBJ_CURRENT_VERSION);
-	F.close_chunk	();
-
-	F.open_chunk	(EOBJ_CHUNK_PLACEMENT);
-    F.Wvector		(vPosition);
-    F.Wvector		(vRotate);
-    F.Wvector		(vScale);
 	F.close_chunk	();
 
     // reference object version

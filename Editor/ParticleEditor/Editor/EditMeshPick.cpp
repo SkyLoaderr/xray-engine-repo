@@ -106,6 +106,7 @@ bool CEditableMesh::CHullPickMesh(PlaneVec& pl, Fmatrix& parent){
     }
     for(FaceIt f_it=m_Faces.begin();f_it!=m_Faces.end();f_it++,i++)
     	if (inside[f_it->pv[0].pindex]&&inside[f_it->pv[1].pindex]&&inside[f_it->pv[2].pindex]) return true;
+    return false;
 }
 //----------------------------------------------------
 

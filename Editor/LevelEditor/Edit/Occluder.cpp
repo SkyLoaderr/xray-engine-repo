@@ -29,7 +29,7 @@
 
 COccluder::COccluder( char *name ):CCustomObject(){
 	Construct();
-	strcpy( m_Name, name );
+	Name		= name;
 }
 
 COccluder::COccluder():CCustomObject(){
@@ -40,7 +40,7 @@ COccluder::~COccluder(){
 }
 
 void COccluder::Construct(){
-	m_ClassID = OBJCLASS_OCCLUDER;
+	ClassID 	= OBJCLASS_OCCLUDER;
     m_vPlaneSize.set(1.f,1.f);
     m_vRotate.set(PI_DIV_2,0,0);
     m_vCenter.set(0,0,0);
@@ -270,18 +270,12 @@ bool COccluder::SelectPoint(const CFrustum& frustum, bool bLeaveSel){
 }
 
 void COccluder::Move( Fvector& amount ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
     m_vCenter.add(amount);
 }
 
 void COccluder::Rotate( Fvector& center, Fvector& axis, float angle ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
 	Fmatrix m;
 	m.rotation(axis, -angle);
 
@@ -293,18 +287,12 @@ void COccluder::Rotate( Fvector& center, Fvector& axis, float angle ){
 }
 
 void COccluder::LocalRotate( Fvector& axis, float angle ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
     m_vRotate.direct(m_vRotate,axis,angle);
 }
 
 void COccluder::Scale( Fvector& center, Fvector& amount ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
 	m_vPlaneSize.x+=amount.x;
 	m_vPlaneSize.y+=amount.z;
 	if (m_vPlaneSize.x<EPS) m_vPlaneSize.x=EPS;
@@ -320,10 +308,7 @@ void COccluder::Scale( Fvector& center, Fvector& amount ){
 }
 
 void COccluder::LocalScale( Fvector& amount ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
 	m_vPlaneSize.x+=amount.x;
 	m_vPlaneSize.y+=amount.z;
 	if (m_vPlaneSize.x<EPS) m_vPlaneSize.x=EPS;

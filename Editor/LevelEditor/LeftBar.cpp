@@ -481,7 +481,7 @@ void __fastcall TfraLeftBar::UpdateSnapList()
     	int idx=0;
         ObjectIt _F=Scene.m_SnapObjects.begin();
     	for (;_F!=Scene.m_SnapObjects.end(); _F++,idx++){
-        	AnsiString s; s.sprintf("%d: %s",idx,(*_F)->GetName());
+        	AnsiString s; s.sprintf("%d: %s",idx,(*_F)->Name);
         	lbSnapList->Items->Add(s);
         }
     }
@@ -558,10 +558,7 @@ void TfraLeftBar::AppendRecentFile(LPCSTR name)
 void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
 {
 	for (int i = 0; i < miRecentFiles->Count; i++)
-	{
-		TMenuItem* MI = miRecentFiles->Items[i];
-		fsStorage->WriteString(AnsiString("RecentFiles")+AnsiString(i),MI->Caption);
-    }
+		fsStorage->WriteString(AnsiString("RecentFiles")+AnsiString(i),miRecentFiles->Items[i]->Caption);
 }
 //---------------------------------------------------------------------------
 

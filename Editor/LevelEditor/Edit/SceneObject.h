@@ -14,17 +14,10 @@ class CSceneObject : public CCustomObject {
 protected:
 	typedef CCustomObject inherited;
     int				m_dwBlinkTime;           
-    // orientation
-    Fvector 		vScale;
-    Fvector 		vRotate;
-    Fvector 		vPosition;
-	Fmatrix 		mTransform;
 
     // internal use
     float 			m_fRadius;
     Fvector 		m_Center; 			// центр в мировых координатах
-
-    void			UpdateTransform			(const Fvector& T, const Fvector& R, const Fvector& S);
 public:
     // constructor/destructor methods
 					CSceneObject			();
@@ -59,9 +52,11 @@ public:
 	void 			RenderAnimation			();
 	void 			RenderSingle			();
 
-    // update methods
-	virtual void 	RTL_Update				(float dT);
-    virtual void	UpdateTransform			();
+    // update methods           
+	virtual void 	OnFrame					();
+    virtual void	OnUpdateTransform		();
+
+    // 
 	void		    LightenObject			();
 
     // pick methods
@@ -83,21 +78,6 @@ public:
     void 			GetFullTransformToLocal	(Fmatrix& m);
     IC const Fvector& GetCenter				(){return m_Center;}
     IC float		GetRadius				(){return m_fRadius;}
-    IC const Fmatrix& GetTransform			(){return mTransform;}
-    IC const Fvector& GetPosition			(){return vPosition;}
-    IC const Fvector& GetRotate				(){return vRotate;}
-    IC const Fvector& GetScale				(){return vScale;}
-    IC Fvector& 	Position				(){return vPosition;}
-    IC Fvector& 	Rotate					(){return vRotate;}
-    IC Fvector& 	Scale					(){return vScale;}
-
-    virtual bool 	GetPosition				(Fvector& pos){pos.set(vPosition); return true; }
-    virtual bool 	GetRotate				(Fvector& rot){rot.set(vRotate); return true; }
-    virtual bool 	GetScale				(Fvector& scale){scale.set(vScale); return true; }
-
-    virtual void 	SetPosition				(Fvector& pos){vPosition.set(pos);}
-    virtual void 	SetRotate				(Fvector& rot){vRotate.set(rot);}
-    virtual void 	SetScale				(Fvector& scale){vScale.set(scale);}
 
     // load/save methods
   	virtual bool 	Load					(CStream&);

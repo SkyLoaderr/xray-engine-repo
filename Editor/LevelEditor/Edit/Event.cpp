@@ -158,7 +158,7 @@ void CEvent::SForm::LocalScale( Fvector& amount )
 
 CEvent::CEvent( char *name ):CCustomObject(){
 	Construct();
-	strcpy( m_Name, name );
+	Name			= name;
 }
 
 CEvent::CEvent():CCustomObject(){
@@ -169,7 +169,7 @@ CEvent::~CEvent(){
 }
 
 void CEvent::Construct(){
-	m_ClassID 		= OBJCLASS_EVENT;
+	ClassID 		= OBJCLASS_EVENT;
     m_Actions.clear	();
     m_Forms.clear	();
     // create one box
@@ -251,48 +251,33 @@ bool CEvent::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPi
 }
 
 void CEvent::Move(Fvector& amount){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
     //S
 	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->Move(amount);
     UI.UpdateScene();
 }
 
 void CEvent::Rotate(Fvector& center, Fvector& axis, float angle){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
     //S
 	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->Rotate(center, axis, angle);
     UI.UpdateScene();
 }
 
 void CEvent::LocalRotate(Fvector& axis, float angle){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
 	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->LocalRotate(axis, angle);
     UI.UpdateScene();
 }
 
 void CEvent::Scale( Fvector& center, Fvector& amount ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
 	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->Scale(center, amount);
     UI.UpdateScene();
 }
 
 void CEvent::LocalScale( Fvector& amount ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
 	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->LocalScale(amount);
     UI.UpdateScene();
 }

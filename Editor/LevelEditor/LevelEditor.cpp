@@ -207,6 +207,7 @@ USEUNIT("edit\ModelPool.cpp");
 USELIB("lib\xrCDB.lib");
 USEOBJ("Intermediate\_math.obj");
 USEOBJ("Intermediate\cpuid.obj");
+USEUNIT("Engine\SH_RT.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

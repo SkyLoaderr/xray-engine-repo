@@ -564,10 +564,10 @@ public:
 	 	            Scene.AddObject(_O);
                 }else{
                 	delete _O;
-				    ELog.DlgMsg(mtError,"Can't simplify Portal :(\nPlease check geometry once more.\n'%s'<->'%s'",p_it->s[0]->GetName(),p_it->s[1]->GetName());
+				    ELog.DlgMsg(mtError,"Can't simplify Portal :(\nPlease check geometry once more.\n'%s'<->'%s'",p_it->s[0]->Name,p_it->s[1]->Name);
                 }
             }else
-			    ELog.DlgMsg(mtError,"Can't create Portal from one edge :(\nPlease check geometry once more.\n'%s'<->'%s'",p_it->s[0]->GetName(),p_it->s[1]->GetName());
+			    ELog.DlgMsg(mtError,"Can't create Portal from one edge :(\nPlease check geometry once more.\n'%s'<->'%s'",p_it->s[0]->Name,p_it->s[1]->Name);
         }
     }
 };

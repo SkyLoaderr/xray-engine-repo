@@ -23,7 +23,7 @@
 
 CGlow::CGlow( char *name ):CCustomObject(){
 	Construct();
-	strcpy( m_Name, name );
+    Name		= name;
 }
 
 CGlow::CGlow():CCustomObject(){
@@ -31,7 +31,7 @@ CGlow::CGlow():CCustomObject(){
 }
 
 void CGlow::Construct(){
-	m_ClassID   = OBJCLASS_GLOW;
+	ClassID		= OBJCLASS_GLOW;
     m_GShader   = 0;
     m_Range     = 0.5f;
 	m_Position.set(0,0,0);
@@ -107,20 +107,14 @@ bool CGlow::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPic
 }
 
 void CGlow::Move( Fvector& amount ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
     UI.UpdateScene();
 	m_Position.add( amount );
 }
 //----------------------------------------------------
 
 void CGlow::Rotate( Fvector& center, Fvector& axis, float angle ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
+	R_ASSERT(!Locked());
 	Fmatrix m;
 	m.rotation			(axis, -angle);
 	m_Position.sub		(center);

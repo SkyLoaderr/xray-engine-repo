@@ -133,6 +133,8 @@ void __fastcall _verify(const char *expr, char *file, int line);
 #define DLL_API			__declspec(dllimport)
 #define ALIGN(a)
 
+#define PropertyGP(a,b)	__declspec( property( get=a, put=b ) )
+
 // float redefine
 #define _PC_24 PC_24
 #define _PC_53 PC_53

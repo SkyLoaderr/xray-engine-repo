@@ -298,7 +298,6 @@ bool CExportSkeleton::ExportGeometry(CFS_Base& F)
         		        B->LITransform().transform_dir(N,vnormals[fv.pindex]);
                         v[k].set(MESH->m_Points[fv.pindex],sv.offs,N,*uv,sv.bone); //sv.norm
                     }
-                    int u=f_it-face_lst.begin();
                     split.add_face(v[0], v[1], v[2]);
                 }
             }
@@ -477,6 +476,7 @@ bool CExportSkeleton::ExportMotions(CFS_Base& F)
 
     // restore active motion
     m_Source->SetActiveSMotion(active_motion);
+    return true;
 }
 //----------------------------------------------------
 

@@ -39,7 +39,7 @@ public:
     // flares
     CEditFlare		m_LensFlare;
 
-    const Fvector&	GetRotate	(){return vRotate;}
+    const Fvector&	_Rotate		(){return vRotate;}
 public:
 					CLight		();
 					CLight		(char *name);

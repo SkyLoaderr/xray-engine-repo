@@ -187,8 +187,8 @@ public:
 	int SpherePick					(const Fvector& center, float radius, EObjClass classfilter, ObjectList& ol);
 
 	void GenObjectName				(EObjClass cls_id, char *buffer, const char* prefix=NULL);
-	CCustomObject* FindObjectByName	(char *name, EObjClass classfilter);
-    CCustomObject* FindObjectByName	(char *name, CCustomObject* pass_object);
+	CCustomObject* FindObjectByName	(LPCSTR name, EObjClass classfilter);
+    CCustomObject* FindObjectByName	(LPCSTR name, CCustomObject* pass_object);
     bool FindDuplicateName          ();
 
 	void UndoClear					();

@@ -111,7 +111,7 @@ void TfrmPropertiesLight::GetObjectsInfo(){
 	CLight *_L = 0;
 	ObjectIt _F = m_Objects->begin();
 
-	VERIFY( (*_F)->ClassID()==OBJCLASS_LIGHT );
+	VERIFY( (*_F)->ClassID==OBJCLASS_LIGHT );
 	_L = (CLight *)(*_F);
 
 	sePointRange->ObjFirstInit		( _L->m_D3D.range );
@@ -136,7 +136,7 @@ void TfrmPropertiesLight::GetObjectsInfo(){
 
     if (m_Objects->size()==1){
     	edName->Enabled 			= true;
-		edName->Text				= _L->GetName();
+		edName->Text				= _L->Name;
     }else{
     	edName->Enabled 			= false;
         edName->Text				= "<Multiple selection>";
@@ -144,7 +144,7 @@ void TfrmPropertiesLight::GetObjectsInfo(){
 
 	_F++;
 	for(;_F!=m_Objects->end();_F++){
-		VERIFY( (*_F)->ClassID()==OBJCLASS_LIGHT );
+		VERIFY( (*_F)->ClassID==OBJCLASS_LIGHT );
 		_L = (CLight *)(*_F);
 
         seA0->ObjNextInit				( _L->m_D3D.attenuation0 );
@@ -200,14 +200,14 @@ bool TfrmPropertiesLight::ApplyObjectsInfo(){
 	CLight *_L = 0;
     bool bMultiSel = (m_Objects->size()>1);
 	for(ObjectIt _F = m_Objects->begin();_F!=m_Objects->end();_F++){
-		VERIFY( (*_F)->ClassID()==OBJCLASS_LIGHT );
+		VERIFY( (*_F)->ClassID==OBJCLASS_LIGHT );
 		_L = (CLight *)(*_F);
         if (!bMultiSel){
         	if (Scene.FindObjectByName(edName->Text.c_str(),_L)){
             	ELog.DlgMsg(mtError,"Duplicate object name already exists: '%s'",edName->Text.c_str());
             	return false;
             }
-	        _L->SetName(edName->Text.c_str());
+	        _L->Name = edName->Text.c_str();
         }
         if  (pcType->ActivePage==tsSun){
             _L->m_D3D.type 		= D3DLIGHT_DIRECTIONAL;

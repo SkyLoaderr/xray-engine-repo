@@ -162,7 +162,7 @@ void EScene::Save(char *_FileName, bool bUndo){
     F.open_chunk	(CHUNK_SNAPOBJECTS);
     F.Wdword		(m_SnapObjects.size());
     for(ObjectIt _F=m_SnapObjects.begin();_F!=m_SnapObjects.end();_F++)
-        F.WstringZ	((*_F)->GetName());
+        F.WstringZ	((*_F)->Name);
     F.close_chunk	();
 
 //	Msg("6: %d",F.tell());
@@ -174,7 +174,7 @@ void EScene::Save(char *_FileName, bool bUndo){
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
             F.open_chunk(count); count++;
               	F.open_chunk	(CHUNK_OBJECT_CLASS);
-                F.Wdword		((*_F)->ClassID());
+                F.Wdword		((*_F)->ClassID);
             	F.close_chunk	();
               	F.open_chunk	(CHUNK_OBJECT_BODY);
             	(*_F)->Save		(F);
@@ -340,7 +340,7 @@ void EScene::SaveSelection( int classfilter, char *filename ){
                 if( (*_F)->Selected() ){
                     F.open_chunk(count); count++;
                         F.open_chunk	(CHUNK_OBJECT_CLASS);
-                        F.Wdword		((*_F)->ClassID());
+                        F.Wdword		((*_F)->ClassID);
                         F.close_chunk	();
                         F.open_chunk	(CHUNK_OBJECT_BODY);
                         (*_F)->Save		(F);
@@ -408,8 +408,8 @@ bool EScene::LoadSelection( const char *_FileName ){
     	for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
         	CCustomObject* obj = *it;
             char buf[MAX_OBJ_NAME];
-            GenObjectName(obj->ClassID(),buf);
-            strcpy(obj->GetName(),buf);
+            GenObjectName(obj->ClassID,buf);
+            obj->Name=buf;
 			AddObject(obj, false);
 			obj->Select(false);
             // group utils

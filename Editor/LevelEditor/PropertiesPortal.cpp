@@ -78,8 +78,8 @@ int __fastcall TfrmPropertiesPortal::Run(ObjectList* pObjects, bool& bChange)
     VERIFY(m_Objects);
     gbOrientation->Visible = (m_Objects->size()==1);
     m_CurPortal=(CPortal*)m_Objects->front();
-    lbFrontSector->Caption = m_CurPortal->m_SectorFront->GetName();
-    lbBackSector->Caption = m_CurPortal->m_SectorBack->GetName();
+    lbFrontSector->Caption = m_CurPortal->m_SectorFront->Name;
+    lbBackSector->Caption = m_CurPortal->m_SectorBack->Name;
 	GetObjectsInfo();
     int res = ShowModal();
     bChange = (res==mrOk);

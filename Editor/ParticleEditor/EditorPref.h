@@ -121,6 +121,8 @@ __published:	// IDE-managed Components
 	TLabel *MxLabel2;
 	TMultiObjSpinEdit *seGridNumberOfCells;
 	TMultiObjSpinEdit *seGridSquareSize;
+	TLabel *Label1;
+	TMultiObjSpinEdit *seSnapMoveTo;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);

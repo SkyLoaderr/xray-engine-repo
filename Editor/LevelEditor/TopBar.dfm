@@ -1,7 +1,7 @@
 object fraTopBar: TfraTopBar
   Left = 0
   Top = 0
-  Width = 785
+  Width = 848
   Height = 18
   HorzScrollBar.Visible = False
   VertScrollBar.Visible = False

@@ -50,7 +50,7 @@ void st_LevelOptions::WriteToLTX(CInifile* pIni){
 void EScene::WriteToLTX(CInifile* pIni){
 	m_LevelOp.WriteToLTX(pIni);
     if (m_SkyDome){
-        AnsiString name = m_SkyDome->GetName();
+        AnsiString name = m_SkyDome->Name;
         name = ChangeFileExt(name,".ogf");
         pIni->WriteString("environment", "sky", name.c_str() );
     }
@@ -132,7 +132,7 @@ void EScene::OnDestroy(){
 void EScene::AddObject( CCustomObject* object, bool bManual ){
 	VERIFY( object );
 	VERIFY( m_Valid );
-    ObjectList& lst = ListObj(object->ClassID());
+    ObjectList& lst = ListObj(object->ClassID);
     lst.push_back( object );
     UI.UpdateScene();
 	if (bManual){
@@ -144,9 +144,9 @@ void EScene::AddObject( CCustomObject* object, bool bManual ){
 void EScene::RemoveObject( CCustomObject* object, bool bUndo ){
 	VERIFY( object );
 	VERIFY( m_Valid );
-    ObjectList& lst = ListObj(object->ClassID());
+    ObjectList& lst = ListObj(object->ClassID);
     // remove object from Snap List if exists
-    if ((object->ClassID()==OBJCLASS_SCENEOBJECT)&&!m_SnapObjects.empty()){
+    if ((object->ClassID==OBJCLASS_SCENEOBJECT)&&!m_SnapObjects.empty()){
     	m_SnapObjects.remove(object);
 		if (m_DetailObjects) m_DetailObjects->RemoveFromSnapList(object);
 		UpdateSnapList();
@@ -420,7 +420,7 @@ void EScene::RenderSky(const Fmatrix& camera)
 //	draw sky
 	if (m_SkyDome&&fraBottomBar->miDrawSky->Checked){
         st_Environment& E = m_LevelOp.m_Envs[m_LevelOp.m_CurEnv];
-        m_SkyDome->Position().set(camera.c);
+        m_SkyDome->PPosition = camera.c;
         m_SkyDome->UpdateTransform();
 		Device.SetRS(D3DRS_TEXTUREFACTOR, E.m_SkyColor.get());
     	m_SkyDome->RenderSingle();
@@ -532,7 +532,7 @@ void EScene::Update( float dT ){
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-    		(*_F)->RTL_Update( dT );
+    		(*_F)->OnFrame();
     }
 }
 
@@ -742,7 +742,7 @@ bool EScene::GroupAddItem(int idx, CCustomObject* O, bool bLoadMode){
     	m_Groups[idx].objects.push_back(O);
         return true;
     }else{
-        ELog.DlgMsg(mtError,"Object '%s' already in %d group.",O->GetName(),O->GetGroupIndex());
+        ELog.DlgMsg(mtError,"Object '%s' already in %d group.",O->Name,O->GetGroupIndex());
         return false;
     }
 }
@@ -782,7 +782,7 @@ void EScene::GroupCreate(bool bMsg){
         if ((cls==OBJCLASS_DUMMY)||(cls==it->first)){
             for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
                 if ((*_F)->Visible()&&(*_F)->Selected()&&(*_F)->IsInGroup()){
-                    if (bMsg) ELog.DlgMsg(mtError,"Object '%s' already in group#%d",(*_F)->GetName(),(*_F)->GetGroupIndex());
+                    if (bMsg) ELog.DlgMsg(mtError,"Object '%s' already in group#%d",(*_F)->Name,(*_F)->GetGroupIndex());
                     return;
                 }
             }

@@ -32,10 +32,10 @@ bool SceneBuilder::BuildSkyModel(){
 	// build sky ogf
     if (Scene.m_SkyDome){
 	    AnsiString ogf_name;
-        ogf_name.sprintf("%s.ogf",Scene.m_SkyDome->GetName());
+        ogf_name.sprintf("%s.ogf",Scene.m_SkyDome->Name);
         m_LevelPath.Update(ogf_name);
         CFS_Memory F;
-        BuildObjectOGF(F, Scene.m_SkyDome->GetReference(), Scene.m_SkyDome->GetName(),m_LevelPath);
+        BuildObjectOGF(F, Scene.m_SkyDome->GetReference(), Scene.m_SkyDome->Name,m_LevelPath);
         F.SaveTo(ogf_name.c_str(),0);
     }
 	return true;

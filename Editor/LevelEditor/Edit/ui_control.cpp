@@ -69,7 +69,7 @@ CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift)
 		char namebuffer[MAX_OBJ_NAME];
 		Scene.GenObjectName(parent_tool->objclass, namebuffer);
 		obj = NewObjectFromClassID(parent_tool->objclass);
-        strcpy(obj->GetName(),namebuffer);
+        strcpy(obj->Name,namebuffer);
 		obj->Move( p );
         Scene.SelectObjects(false,parent_tool->objclass);
 		Scene.AddObject(obj);
@@ -169,7 +169,15 @@ bool __fastcall TUI_CustomControl::DefaultMovingProcess(TShiftState Shift, Fvect
         	CHECK_SNAP(m_MovingReminder.y,amount.y,UI.movesnap());
         	CHECK_SNAP(m_MovingReminder.z,amount.z,UI.movesnap());
         }
+/*	    if (fraTopBar->ebOSnap->Down){
+    		Fvector s,d;
 
+	        SRayPickInfo pinf;
+    		if (Scene.RayPick( s, d, OBJCLASS_SCENEOBJECT, &pinf, false, true)&&pinf.inf.range///seSnapMoveTo){
+	        }
+			vPosition.add( amount );
+	    }
+*/
         if (!fraTopBar->ebAxisX->Down&&!fraTopBar->ebAxisZX->Down) amount.x = 0.f;
         if (!fraTopBar->ebAxisZ->Down&&!fraTopBar->ebAxisZX->Down) amount.z = 0.f;
         if (!fraTopBar->ebAxisY->Down) amount.y = 0.f;
@@ -188,8 +196,13 @@ void __fastcall TUI_CustomControl::MovingProcess(TShiftState _Shift)
         for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
             ObjectList& lst = (*it).second;
             if ((cls==OBJCLASS_DUMMY)||(parent_tool->objclass==(*it).first))
-                for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
+                for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
+                	if((*_F)->Locked()){
+				    	ELog.Msg(mtError,"Object %s - locked.", (*_F)->Name);
+                        continue;
+                    }
                     if((*_F)->Visible()&&(*_F)->Selected()) if ((flt&&!(*_F)->IsInGroup())||!flt) (*_F)->Move( amount );
+                }
         }
     }
 }
@@ -231,7 +244,11 @@ void __fastcall TUI_CustomControl::RotateProcess(TShiftState _Shift)
         for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
             ObjectList& lst = (*it).second;
             if (!flt||(parent_tool->objclass==(*it).first))
-                for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
+                for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
+                	if((*_F)->Locked()){
+				    	ELog.Msg(mtError,"Object %s - locked.", (*_F)->Name);
+                        continue;
+                    }
                     if((*_F)->Visible()&&(*_F)->Selected()){
 						if (grp&&(*_F)->IsInGroup()){
 	                    	if (flt) continue;
@@ -248,6 +265,7 @@ void __fastcall TUI_CustomControl::RotateProcess(TShiftState _Shift)
                             }
                         }
                     }
+                }
         }
     }
 }
@@ -288,7 +306,11 @@ void __fastcall TUI_CustomControl::ScaleProcess(TShiftState _Shift)
     for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
         ObjectList& lst = (*it).second;
         if (!flt||(parent_tool->objclass==(*it).first))
-            for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
+            for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
+                if((*_F)->Locked()){
+                    ELog.Msg(mtError,"Object %s - locked.", (*_F)->Name);
+                    continue;
+                }
                 if((*_F)->Visible()&&(*_F)->Selected()){
                     if (grp&&(*_F)->IsInGroup()){
                         int idx = (*_F)->GetGroupIndex();
@@ -304,6 +326,7 @@ void __fastcall TUI_CustomControl::ScaleProcess(TShiftState _Shift)
                         }
                     }
                 }
+            }
     }
 }
 bool __fastcall TUI_CustomControl::ScaleEnd(TShiftState _Shift)

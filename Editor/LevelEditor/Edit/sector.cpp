@@ -42,13 +42,13 @@ void CSectorItem::GetTransform(Fmatrix& parent){
 	object->GetFullTransformToWorld(parent);
 }
 bool CSectorItem::IsItem(const char* O, const char* M){
-	return (0==strcmp(O,object->GetName()))&&(0==strcmp(M,mesh->GetName()));
+	return (0==strcmp(O,object->Name))&&(0==strcmp(M,mesh->GetName()));
 }
 //------------------------------------------------------------------------------
 
 CSector::CSector( char *name ):CCustomObject(){
 	Construct();
-	strcpy( m_Name, name );
+    Name			= name;
 }
 
 CSector::CSector():CCustomObject(){
@@ -56,7 +56,7 @@ CSector::CSector():CCustomObject(){
 }
 
 void CSector::Construct(){
-	m_ClassID = OBJCLASS_SECTOR;
+	ClassID			= OBJCLASS_SECTOR;
     sector_color.set(1,1,1,0);
 	m_bDefault		= false;
 	sector_num		= -1;
@@ -154,14 +154,14 @@ void CSector::Move( Fvector& amount ){
 bool CSector::FrustumPick(const CFrustum& frustum){
 	if (!frustum.testSphere(m_SectorCenter,m_SectorRadius)) return false;
 	for (SItemIt s_it=sector_items.begin();s_it!=sector_items.end();s_it++)
-    	if (s_it->mesh->FrustumPick(frustum,s_it->object->GetTransform())) return true;
+    	if (s_it->mesh->FrustumPick(frustum,s_it->object->_Transform())) return true;
 	return false;
 }
 
 bool CSector::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
     bool bPick=false;
 	for (SItemIt s_it=sector_items.begin();s_it!=sector_items.end();s_it++)
-    	if (s_it->mesh->RayPick(distance,start,direction,s_it->object->GetTransform(),pinf)) bPick=true;
+    	if (s_it->mesh->RayPick(distance,start,direction,s_it->object->_Transform(),pinf)) bPick=true;
 	return bPick;
 }
 //----------------------------------------------------
@@ -172,7 +172,7 @@ void CSector::UpdateVolume(){
     m_Box.invalidate();
     for (SItemIt s_it=sector_items.begin();s_it!=sector_items.end();s_it++){
         s_it->mesh->GetBox(bb);
-        bb.transform(s_it->object->GetTransform());
+        bb.transform(s_it->object->_Transform());
         for(int i=0; i<8; i++){
             bb.getpoint(i, pt);
             m_Box.modify(pt);
@@ -408,7 +408,7 @@ void CSector::Save(CFS_Base& F){
     for(SItemIt it=sector_items.begin(); it!=sector_items.end(); it++){
         F.open_chunk(count); count++;
             F.open_chunk(SECTOR_CHUNK_ONE_ITEM);
-            F.WstringZ	(it->object->GetName());
+            F.WstringZ	(it->object->Name);
             F.WstringZ	(it->mesh->GetName());
 	        F.close_chunk();
         F.close_chunk();

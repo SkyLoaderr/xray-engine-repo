@@ -16,20 +16,20 @@
 
 //----------------------------------------------------
 
-CCustomObject* EScene::FindObjectByName( char *name, EObjClass classfilter ){
+CCustomObject* EScene::FindObjectByName( LPCSTR name, EObjClass classfilter ){
 	ObjectIt _F = FirstObj(classfilter);
     ObjectIt _E = LastObj(classfilter);
-	for(;_F!=_E;_F++) if(0==stricmp((*_F)->GetName(),name)) return (*_F);
+	for(;_F!=_E;_F++) if(0==stricmp((*_F)->Name,name)) return (*_F);
     return 0;
 }
 
-CCustomObject* EScene::FindObjectByName( char *name, CCustomObject* pass_object ){
+CCustomObject* EScene::FindObjectByName( LPCSTR name, CCustomObject* pass_object ){
     for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
         ObjectList& lst = (*it).second;
     	ObjectIt _F = lst.begin();
         ObjectIt _E = lst.end();
     	for(;_F!=_E;_F++){
-            if( (0==strcmp((*_F)->GetName(),name)) && (pass_object!=(*_F)) )
+            if( (0==strcmp((*_F)->Name,name)) && (pass_object!=(*_F)) )
                 return (*_F);
         }
 	}
@@ -41,11 +41,11 @@ bool EScene::FindDuplicateName(){
     for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
         ObjectList& lst = (*it).second;
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-            if (FindObjectByName((*_F)->GetName(), *_F)){
+            if (FindObjectByName((*_F)->Name, *_F)){
 //                char buf[1024];
 //                GenObjectName((*_F)->ClassID(),buf);
 //                strcpy((*_F)->GetName(),buf);
-            	ELog.DlgMsg(mtError,"Duplicate object name already exists: '%s'",(*_F)->GetName());
+            	ELog.DlgMsg(mtError,"Duplicate object name already exists: '%s'",(*_F)->Name);
                 return true;
             }
 	}

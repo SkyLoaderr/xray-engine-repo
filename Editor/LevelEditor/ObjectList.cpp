@@ -90,7 +90,7 @@ void __fastcall TfrmObjectList::InitListBox()
                 if (!node) node = AddFolder(it->first);
                 VERIFY(node);
                 for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-                    AddObject(node,(*_F)->GetName(),(void*)(*_F));
+                    AddObject(node,(*_F)->Name,(void*)(*_F));
             }
         }
     }

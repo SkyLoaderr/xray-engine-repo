@@ -75,12 +75,12 @@ bool SceneBuilder::BuildLTX(){
     for(;i!=_E;i++){
         CSceneObject *obj = (CSceneObject*)(*i);
         if( obj->IsDynamic() ){
-    		pIni->WriteString("mobileobjects", obj->GetName(), obj->GetName() );
-            if( !obj->GetReference()->GetClassScript().IsEmpty() ) AppendDataToSection(pIni, AnsiString(obj->GetName()), obj->GetReference()->GetClassScript().c_str());
-            pIni->WriteVector(obj->GetName(),"position",obj->GetPosition());
-			Fmatrix mRotate; mRotate.setHPB(obj->GetRotate().y, obj->GetRotate().x, obj->GetRotate().z);
-            pIni->WriteVector(obj->GetName(),"direction",mRotate.k);
-            pIni->WriteVector(obj->GetName(),"normal",mRotate.j);
+    		pIni->WriteString("mobileobjects", obj->Name, obj->Name );
+            if( !obj->GetReference()->GetClassScript().IsEmpty() ) AppendDataToSection(pIni, AnsiString(obj->Name), obj->GetReference()->GetClassScript().c_str());
+            pIni->WriteVector(obj->Name,"position",obj->_Position());
+			Fmatrix mRotate; mRotate.setHPB(obj->_Rotate().y, obj->_Rotate().x, obj->_Rotate().z);
+            pIni->WriteVector(obj->Name,"direction",mRotate.k);
+            pIni->WriteVector(obj->Name,"normal",mRotate.j);
 //            temp.sprintf("%.3f,%.3f,%.3f", obj->GetScale().x, obj->GetScale().y, obj->GetScale().z);
 //            pIni->WriteString(obj->GetName(),"scale",temp);
         }
@@ -93,12 +93,12 @@ bool SceneBuilder::BuildLTX(){
         for(;i!=_E;i++){
             CSound *s = (CSound *)(*i);
             if (strlen(s->m_fName)==0){
-            	ELog.DlgMsg(mtError,"*ERROR: Sound '%s'. Not assigned wave file!", s->GetName());
+            	ELog.DlgMsg(mtError,"*ERROR: Sound '%s'. Not assigned wave file!", s->Name);
                 bResult=false;
                 goto end_ltx_build;
             }
             AnsiString ln; ln.sprintf("%s,%f,%f,%f",s->m_fName,s->m_Position.x,s->m_Position.y,s->m_Position.z);
-            pIni->WriteString("static_sounds",s->GetName(),ln.c_str());
+            pIni->WriteString("static_sounds",s->Name,ln.c_str());
 		}
 	}
 
@@ -111,15 +111,15 @@ bool SceneBuilder::BuildLTX(){
             CLight *l = (CLight *)(*i);
             if (l->m_D3D.type==D3DLIGHT_DIRECTIONAL){
 	            if (suns.Length()) suns += ", ";
-    	        suns += l->GetName();
-           	    pIni->WriteColor	(l->GetName(), "sun_color", 		l->m_D3D.diffuse.get());
-               	pIni->WriteVector	(l->GetName(), "sun_dir", 			l->m_D3D.direction);
-               	pIni->WriteString	(l->GetName(), "gradient", 			l->m_LensFlare.m_Flags.bGradient?"on":"off");
-               	pIni->WriteString	(l->GetName(), "source", 			l->m_LensFlare.m_Flags.bSource?"on":"off");
-               	pIni->WriteString	(l->GetName(), "flares", 			l->m_LensFlare.m_Flags.bFlare?"on":"off");
-                pIni->WriteFloat	(l->GetName(), "gradient_density", 	l->m_LensFlare.m_fGradientDensity);
-                pIni->WriteString	(l->GetName(), "source_texture", 	l->m_LensFlare.m_Source.texture);
-                pIni->WriteFloat	(l->GetName(), "source_radius", 	l->m_LensFlare.m_Source.fRadius);
+    	        suns += l->Name;
+           	    pIni->WriteColor	(l->Name, "sun_color", 			l->m_D3D.diffuse.get());
+               	pIni->WriteVector	(l->Name, "sun_dir", 			l->m_D3D.direction);
+               	pIni->WriteString	(l->Name, "gradient", 			l->m_LensFlare.m_Flags.bGradient?"on":"off");
+               	pIni->WriteString	(l->Name, "source", 			l->m_LensFlare.m_Flags.bSource?"on":"off");
+               	pIni->WriteString	(l->Name, "flares", 			l->m_LensFlare.m_Flags.bFlare?"on":"off");
+                pIni->WriteFloat	(l->Name, "gradient_density", 	l->m_LensFlare.m_fGradientDensity);
+                pIni->WriteString	(l->Name, "source_texture", 	l->m_LensFlare.m_Source.texture);
+                pIni->WriteFloat	(l->Name, "source_radius", 	l->m_LensFlare.m_Source.fRadius);
                 AnsiString FT=""; AnsiString FR=""; AnsiString FO=""; AnsiString FP="";
                 AnsiString T="";
                 int i=l->m_LensFlare.m_Flares.size();
@@ -130,10 +130,10 @@ bool SceneBuilder::BuildLTX(){
                 	T.sprintf("%.3f",it->fPosition);FP += T;
                     if (i>1){FT+=","; FR+=","; FO+=","; FP+=",";}
                 }
-               	pIni->WriteString	(l->GetName(), "flare_textures",	FT.c_str());
-               	pIni->WriteString	(l->GetName(), "flare_radius",		FR.c_str());
-               	pIni->WriteString	(l->GetName(), "flare_opacity",		FO.c_str());
-               	pIni->WriteString	(l->GetName(), "flare_position",	FP.c_str());
+               	pIni->WriteString	(l->Name, "flare_textures",	FT.c_str());
+               	pIni->WriteString	(l->Name, "flare_radius",	FR.c_str());
+               	pIni->WriteString	(l->Name, "flare_opacity",	FO.c_str());
+               	pIni->WriteString	(l->Name, "flare_position",	FP.c_str());
             }
 		}
         if (suns.Length()) pIni->WriteString("environment", "suns", suns.c_str());
@@ -148,7 +148,7 @@ bool SceneBuilder::BuildLTX(){
             CRPoint *rpt = (CRPoint *)(*i);
             if (CRPoint::etPlayer==rpt->m_Type){
 	            temp.sprintf("%.3f,%.3f,%.3f,%d,%.3f", rpt->m_Position.x,rpt->m_Position.y,rpt->m_Position.z,rpt->m_dwTeamID,rpt->m_fHeading);
-    	        pIni->WriteString("respawn_point",rpt->GetName(),temp.c_str());
+    	        pIni->WriteString("respawn_point",rpt->Name,temp.c_str());
             }
 		}
 	}
@@ -162,8 +162,8 @@ bool SceneBuilder::BuildLTX(){
         	CAITPoint* P = (CAITPoint*)(*i);
             temp.sprintf("%.3f,%.3f,%.3f", P->m_Position.x,P->m_Position.y,P->m_Position.z);
             for (ObjectIt it=P->m_Links.begin(); it!=P->m_Links.end(); it++)
-	            temp += AnsiString(", ") + AnsiString((*it)->GetName());
-            pIni->WriteString("ai_traffic",P->GetName(),temp.c_str());
+	            temp += AnsiString(", ") + AnsiString((*it)->Name);
+            pIni->WriteString("ai_traffic",P->Name,temp.c_str());
 		}
 
 		i = Scene.FirstObj(OBJCLASS_AITPOINT);
