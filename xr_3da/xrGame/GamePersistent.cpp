@@ -46,7 +46,7 @@ void CGamePersistent::OnAppCycleStart()
 	// loading scripts
 	xr_delete					(m_tpScriptProcessor);
 	string256					l_caFilePath;
-	FS.update_path				(l_caFilePath,"$game_scripts$","*.script");
+	FS.update_path				(l_caFilePath,"$game_scripts$","");
 	m_tpScriptProcessor			= xr_new<CScriptProcessor>(l_caFilePath);
 
 	__super::OnAppCycleStart	();

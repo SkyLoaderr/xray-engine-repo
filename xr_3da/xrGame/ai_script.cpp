@@ -49,8 +49,14 @@ CScriptProcessor::CScriptProcessor(LPCSTR caFilePath)
 	if (l_tpFileList) {
 		LPSTR_IT		I = l_tpFileList->begin();
 		LPSTR_IT		E = l_tpFileList->end();
-		for ( ; I != E; I++)
-			m_tpScripts.push_back(xr_new<CScript>(*I));
+		for ( ; I != E; I++) {
+			string256	l_caExtension;
+			_splitpath(*I,0,0,0,l_caExtension);
+			if (!strcmp(l_caExtension,".script")) {
+				strconcat(l_caExtension,caFilePath,*I);
+				m_tpScripts.push_back(xr_new<CScript>(l_caExtension));
+			}
+		}
 	}
 
 	FS.file_list_close(l_tpFileList);
