@@ -87,3 +87,91 @@ void slipch_test()
 //		printf("Expression : %s\n",msg);
 //	}
 }
+
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+class CPatternData {
+private:
+	char		m_table[256];
+	LPCSTR		m_pattern;
+	int			m_length;
+
+public:
+				CPatternData	(LPCSTR pattern)
+	{
+		m_pattern		= pattern;
+		m_length		= (int)strlen(m_pattern);
+
+		for (int i=0; i<256; ++i)
+			m_table[i]	= (char)m_length;
+
+		for (int i=m_length - 1; i>=0; --i)
+			if ((int)m_table[m_pattern[i]] == m_length)
+				m_table[m_pattern[i]] = char(m_length - i - 1);
+	}
+
+	IC	LPCSTR	search			(LPCSTR str, int length, int start = 0) const
+	{
+		int				pos = start + m_length - 1;
+		while (pos < length) {
+			if (m_pattern[m_length - 1] != str[pos]) {
+				pos		+= m_table[str[pos]];
+				continue;
+			}
+			for (int i = m_length - 2; i>=0; --i) {
+				if (m_pattern[i] != str[pos - m_length + i + 1]) {
+					++pos;
+					break;
+				}
+				if (!i)
+					return	(str + (pos - m_length + 1));
+			}
+		}
+		return				(0);
+	}
+};
+
+const int TEST_COUNT = 1000000;
+
+void string_test()
+{
+	Core._initialize("LUA_TEST");
+
+	LPCSTR			str = "_google_yahoo_andex";
+
+	CPatternData	google	("google");
+	CPatternData	yahoo	("yahoo");
+	CPatternData	yandex	("yandex");
+
+	u64				start, finish;
+	
+	start			= CPU::GetCycleCount();
+
+	for (int i=0; i<TEST_COUNT; ++i) {
+		LPCSTR		r_google = strstr(str,"google");
+		LPCSTR		r_yahoo  = strstr(str,"yahoo");
+		LPCSTR		r_yandex = strstr(str,"yandex");
+
+		printf		("",r_google,r_yahoo,r_yandex,i);
+	}
+
+	finish			= CPU::GetCycleCount();
+	
+	printf			("strstr : %f\n",(finish-start)*CPU::cycles2milisec);
+
+	start			= CPU::GetCycleCount();
+
+	for (int i=0; i<TEST_COUNT; ++i) {
+		int			length = (int)strlen(str);
+		LPCSTR		b_google = google.search(str,length);
+		LPCSTR		b_yahoo  = yahoo.search	(str,length);
+		LPCSTR		b_yandex = yandex.search(str,length);
+
+		printf		("",b_google,b_yahoo,b_yandex,i);
+	}
+
+	finish			= CPU::GetCycleCount();
+	
+	printf			("search : %f\n",(finish-start)*CPU::cycles2milisec);
+}

@@ -23,8 +23,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				EnableFiberSafeOptimizations="TRUE"
-				OptimizeForProcessor="2"
+				EnableFiberSafeOptimizations="FALSE"
+				OptimizeForProcessor="0"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;DEBUG;_WINDOWS;_USRDLL;LUA_TEST;"
 				MinimalRebuild="TRUE"
 				ExceptionHandling="TRUE"
@@ -34,7 +34,7 @@
 				EnableFunctionLevelLinking="FALSE"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
-				BrowseInformation="1"
+				BrowseInformation="0"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"
@@ -173,6 +173,12 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
 			</File>
 			<File

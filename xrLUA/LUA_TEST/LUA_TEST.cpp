@@ -1534,10 +1534,10 @@ void time_smart_ptr_test();
 #	include <strstream>
 #endif
 
-std::string to_string(luabind::object const& o)
+xr_string to_string(luabind::object const& o)
 {
 	using namespace luabind;
-	if (o.type() == LUA_TSTRING) return object_cast<std::string>(o);
+	if (o.type() == LUA_TSTRING) return object_cast<xr_string>(o);
 	lua_State* L = o.lua_state();
 	LUABIND_CHECK_STACK(L);
 
@@ -1550,17 +1550,17 @@ std::string to_string(luabind::object const& o)
 	if (o.type() == LUA_TNUMBER)
 	{
 		s << object_cast<float>(o);
-		return s.str();
+		return s.str().c_str();
 	}
 
 	s << "<" << lua_typename(L, o.type()) << ">";
 #ifdef BOOST_NO_STRINGSTREAM
 	s << std::ends;
 #endif
-	return s.str();
+	return s.str().c_str();
 }
 
-void strreplaceall(std::string &str, LPCSTR S, LPCSTR N)
+void strreplaceall(xr_string &str, LPCSTR S, LPCSTR N)
 {
 	LPSTR	A;
 	int		S_len = xr_strlen(S);
@@ -1568,7 +1568,7 @@ void strreplaceall(std::string &str, LPCSTR S, LPCSTR N)
 		str.replace(A - str.c_str(),S_len,N);
 }
 
-std::string &process_signature(std::string &str)
+xr_string &process_signature(xr_string &str)
 {
 	strreplaceall	(str,"custom [","");
 	strreplaceall	(str,"]","");
@@ -1578,7 +1578,7 @@ std::string &process_signature(std::string &str)
 	return			(str);
 }
 
-std::string member_to_string(luabind::object const& e, LPCSTR function_signature)
+xr_string member_to_string(luabind::object const& e, LPCSTR function_signature)
 {
 #if !defined(LUABIND_NO_ERROR_CHECKING)
     using namespace luabind;
@@ -1614,7 +1614,7 @@ std::string member_to_string(luabind::object const& e, LPCSTR function_signature
 			for (std::vector<detail::overload_rep>::const_iterator i = m->overloads().begin();
 				i != m->overloads().end(); ++i)
 			{
-				std::string str, temp;
+				xr_string str, temp;
 				i->get_signature(L, str);
 				s << function_signature << process_signature(str) << ";\n";
 			}
@@ -1622,7 +1622,7 @@ std::string member_to_string(luabind::object const& e, LPCSTR function_signature
 #ifdef BOOST_NO_STRINGSTREAM
 		s << std::ends;
 #endif
-		return s.str();
+		return s.str().c_str();
 	}
 
     return to_string(e);
@@ -1676,7 +1676,7 @@ void print_class(lua_State *L, luabind::detail::class_rep *crep)
 		std::vector<luabind::detail::construct_rep::overload_t>::const_iterator	I = constructors.begin();
 		std::vector<luabind::detail::construct_rep::overload_t>::const_iterator	E = constructors.end();
 		for ( ; I != E; ++I) {
-			std::string S;
+			xr_string S;
 			(*I).get_signature(L,S);
 			printf		("    %s %s;\n",crep->name(),S.c_str());
 		}
@@ -1690,7 +1690,7 @@ void print_class(lua_State *L, luabind::detail::class_rep *crep)
 		table.set		();
 		for (luabind::object::iterator i = table.begin(); i != table.end(); ++i) {
 			luabind::object	object = *i;
-			std::string	S;
+			xr_string	S;
 			S			= "    function ";
 			S.append	(to_string(i.key()).c_str());
 
@@ -1709,7 +1709,7 @@ void print_class(lua_State *L, luabind::detail::class_rep *crep)
 	printf			("\n");
 }
 
-void print_free_functions	(lua_State *L, const luabind::object &object, LPCSTR header, const std::string &indent)
+void print_free_functions	(lua_State *L, const luabind::object &object, LPCSTR header, const xr_string &indent)
 {
 	u32							count = 0;
 	luabind::object::iterator	I = object.begin();
@@ -1735,7 +1735,7 @@ void print_free_functions	(lua_State *L, const luabind::object &object, LPCSTR h
 						std::vector<luabind::detail::free_functions::overload_rep>::const_iterator	i = rep->overloads().begin();
 						std::vector<luabind::detail::free_functions::overload_rep>::const_iterator	e = rep->overloads().end();
 						for ( ; i != e; ++i) {
-							std::string	S;
+							xr_string	S;
 							(*i).get_signature(L,S);
 							printf("    %sfunction %s%s;\n",indent.c_str(),rep->name(),process_signature(S).c_str());
 						}
@@ -1748,7 +1748,7 @@ void print_free_functions	(lua_State *L, const luabind::object &object, LPCSTR h
 		lua_pop(L, 1);
 	}
 	{
-		std::string				_indent = indent;
+		xr_string				_indent = indent;
 		_indent.append			("    ");
 		object.pushvalue();
 		lua_pushnil		(L);
@@ -1916,6 +1916,7 @@ namespace callback_test {
 }
 
 extern void slipch_test();
+extern void string_test();
 
 int __cdecl main(int argc, char* argv[])
 {
@@ -1924,6 +1925,7 @@ int __cdecl main(int argc, char* argv[])
 //	time_smart_ptr_test();
 //	lesha_test();
 	bug_test();
+//	string_test();
 //	test_smart_container();
 //	callback_test::callback_test();
 //	slipch_test();
@@ -2153,12 +2155,30 @@ int __cdecl main(int argc, char* argv[])
 luabind::functor<int>	*g_callback;
 luabind::object			*g_object;
 
+#if 1
 void set_callback_free	(const luabind::functor<int> &callback)
 {
-	xr_delete			(g_callback);
-	xr_delete			(g_object);
-	g_callback			= xr_new<luabind::functor<int> >(callback);
+	xr_delete				(g_callback);
+	xr_delete				(g_object);
+	g_callback				= xr_new<luabind::functor<int> >(callback);
 }
+#else
+void set_callback_free	(const luabind::object &callback)
+{
+	xr_delete				(g_callback);
+	xr_delete				(g_object);
+	luabind::functor<int>	p;
+	try {
+		p					= luabind::object_cast<luabind::functor<int> >(callback);
+		g_callback			= xr_new<luabind::functor<int> >(p);
+	}
+	catch(...) {
+		printf				("set_callback_free : specified object is not a function!\n");
+		g_callback			= 0;
+		g_object			= 0;
+	}
+}
+#endif
 
 void set_callback_member(const luabind::functor<int> &callback, const luabind::object &object)
 {
@@ -2168,8 +2188,195 @@ void set_callback_member(const luabind::functor<int> &callback, const luabind::o
 	g_object			= xr_new<luabind::object>(object);
 }
 
+int auto_load(lua_State *L)
+{
+	int					n = lua_gettop(L);    /* number of arguments */
+	VERIFY				(lua_istable(L,1));
+	VERIFY				(lua_isstring(L,2));
+	printf				("Unknown table key : %s\n",lua_tostring(L,2));
+	lua_pushnil			(L);
+	return				(1);
+}
+
+#if 0
+struct A {
+	virtual ~A() {Msg("A::~A() called!");}
+};
+
+struct B : public A {
+	virtual ~B() {Msg("B::~B() called!");}
+};
+
+struct C : public A {
+	~C() {Msg("C::~C() called!");}
+};
+
+struct D {
+	~D() {Msg("D::~D() called!");}
+};
+
+struct E : public D {
+	~E() {Msg("E::~E() called!");}
+};
+
+struct F : public D {
+	virtual ~F() {Msg("F::~F() called!");}
+};
+
+struct G {
+};
+
+struct H : public G {
+	virtual ~H() {Msg("H::~H() called!");}
+};
+
+struct I : public G {
+	~I() {Msg("I::~I() called!");}
+};
+
+struct AA {
+	~AA() {Msg("AA::~AA() called!");}
+};
+
+struct BB {
+	virtual ~BB() {Msg("BB::~BB() called!");}
+};
+
+struct CC : public AA, public BB {
+	virtual ~CC() {Msg("CC::~CC() called!");}
+};
+
+struct DD : public AA, public BB {
+	~DD() {Msg("DD::~DD() called!");}
+};
+
+struct EE : virtual public AA, public BB {
+	~EE() {Msg("EE::~EE() called!");}
+};
+
+struct FF : public CC {
+	~FF() {Msg("FF::~FF() called!");}
+};
+
+struct GG : public CC {
+	virtual ~GG() {Msg("GG::~GG() called!");}
+};
+
+struct HH : public DD {
+	~HH() {Msg("HH::~HH() called!");}
+};
+
+struct II : public DD {
+	virtual ~II() {Msg("II::~II() called!");}
+};
+
+struct A0 {
+	~A0() {Msg("A0::~A0() called!");}
+};
+
+struct A1 {
+	~A1() {Msg("A1::~A1() called!");}
+};
+
+struct A2 : public A0, public A1 {
+	~A2() {Msg("A2::~A2() called!");}
+};
+
+struct A3 : public A0, public A1 {
+	virtual ~A3() {Msg("A3::~A3() called!");}
+};
+
+struct A4 : public A2 {
+	virtual ~A4() {Msg("A4::~A4() called!");}
+};
+
+struct A5 : public A3 {
+	virtual ~A5() {Msg("A5::~A5() called!");}
+};
+#endif
+
 void bug_test	()
 {
+#if 0
+	{
+		{A a;}
+		{B b;}
+		{C c;}
+		{D d;}
+		{E e;}
+		{F f;}
+		{G g;}
+		{H h;}
+		{I i;}
+		{AA aa;}
+		{BB bb;}
+		{CC cc;}
+		{DD dd;}
+		{EE ee;}
+		{FF ff;}
+		{GG gg;}
+		{HH hh;}
+		{II ii;}
+		{A2 a2;}
+		{A3 a3;}
+
+		D *pd0 = xr_new<E>();
+		D *pd1 = xr_new<F>();
+		xr_delete(pd0);
+		xr_delete(pd1);
+
+		A *pa0 = xr_new<B>();
+		A *pa1 = xr_new<C>();
+		xr_delete(pa0);
+		xr_delete(pa1);
+
+		G *pg0 = xr_new<H>();
+		G *pg1 = xr_new<I>();
+		xr_delete(pg0);
+		xr_delete(pg1);
+
+		AA *paa0 = xr_new<CC>();
+		AA *paa1 = xr_new<DD>();
+		xr_delete(paa0);
+		xr_delete(paa1);
+
+		BB *pbb0 = xr_new<CC>();
+		BB *pbb1 = xr_new<DD>();
+		xr_delete(pbb0);
+		xr_delete(pbb1);
+
+		AA *paa2 = xr_new<EE>();
+		xr_delete(paa2);
+
+		BB *paa3 = xr_new<EE>();
+		xr_delete(paa3);
+
+		CC *pcc0 = xr_new<FF>();
+		xr_delete(pcc0);
+
+		CC *pcc1 = xr_new<GG>();
+		xr_delete(pcc1);
+
+		DD *pdd0 = xr_new<HH>();
+		xr_delete(pdd0);
+
+		DD *pdd1 = xr_new<II>();
+		xr_delete(pdd1);
+
+		A0 *a00 = xr_new<A2>();
+		xr_delete(a00);
+
+		A0 *a01 = xr_new<A3>();
+		xr_delete(a01);
+
+		A2 *a20 = xr_new<A4>();
+		xr_delete(a20);
+
+		A3 *a30 = xr_new<A5>();
+		xr_delete(a30);
+	}
+#endif
+
 	lua_State				*L = lua_open();
 
 	if (!L) {
@@ -2205,6 +2412,45 @@ void bug_test	()
 #else
 	function				(L,"set_callback",&set_callback_free);
 	function				(L,"set_callback",&set_callback_member);
+
+//	luaL_newmetatable		(L,"XRAY_AutoLoadMetaTable");
+//	lua_pushcfunction		(L, &auto_load);
+//	lua_settable			(L,-2);
+//	luaL_getmetatable		(L,"XRAY_AutoLoadMetaTable");
+//	lua_pushstring			(L,"__index");
+//	lua_pushstring			(L,"_G");
+//	lua_setmetatable		(L,-3);
+
+//	lua_register			(L,"auto_load",auto_load);
+
+//	LPCSTR					setup_auto_load_methamethod = 
+//	"\
+//		setmetatable	(\
+//			_G,\
+//			{\
+//				__index = auto_load\
+//			}\
+//		)\
+//	";
+
+//	lua_dostring			(L,setup_auto_load_methamethod);
+
+//	luaL_newmetatable		(L,"XRAY_AutoLoadMetaTable");
+//	lua_pushstring			(L,"__index");
+//	lua_pushcfunction		(L, auto_load);
+//	lua_settable			(L,-3);
+//	lua_pushstring 			(L,"_G"); 
+//	lua_gettable 			(L,LUA_GLOBALSINDEX); 
+//	luaL_getmetatable		(L,"XRAY_AutoLoadMetaTable");
+//	lua_setmetatable		(L,-2);
+
+//	lua_pushstring 			(L,"_G"); 
+//	lua_gettable 			(L,LUA_GLOBALSINDEX); 
+//	lua_pushstring			(L,"__index");
+//	luaL_getmetatable		(L,"XRAY_AutoLoadMetaTable");
+//	lua_settable			(L,-3);
+
+//	lua_dostring			(L,"try_one.this(1)");
 
 	xr_vector<LPCSTR>		files;
 
