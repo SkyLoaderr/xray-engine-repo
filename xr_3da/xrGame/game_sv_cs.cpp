@@ -270,17 +270,29 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u32 eid_who, LPCSTR what)
 	xrSE_Weapon*		W	=	dynamic_cast<xrSE_Weapon*>(E);
 	if (W)
 	{
-		vector<u16>* C			= get_children(id_who);
+		xrServer*		S		=	Level().Server;
+		vector<u16>*	C		=	get_children(id_who);
 		if (0==C)				
 		{
 			F_entity_Destroy	(E);
 			return;
 		}
-		int slot 
-			for (u32 it=0; it<C->size(); it++)
+		u8 slot					=	W->get_slot	();
+		for (u32 it=0; it<C->size(); it++)
+		{
+			xrServerEntity*		Et	= S->ID_to_entity				((*C)[it]);
+			if (0==Et)				continue;
+			xrSE_Weapon*		T	= dynamic_cast<xrSE_Weapon*>	(Et);
+			if (0==T)				continue;
+			if (slot == T->get_slot())	
+			{
+				// We've found same slot occupied - don't buy anything
+				F_entity_Destroy	(E);
+				return;
+			}
+		}
 	}
 		
-
 	// check if has money to pay
 	game_PlayerState*	ps_who	=	get_id	(id_who);
 	if(ps_who->money_total < cost)	return;
