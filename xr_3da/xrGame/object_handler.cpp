@@ -101,9 +101,11 @@ void CObjectHandler::OnItemTake		(CInventoryItem *inventory_item)
 	CInventoryOwner::OnItemTake	(inventory_item);
 	add_item					(inventory_item);
 
-	CTorch						*torch = smart_cast<CTorch*>(inventory_item);
-	if (torch)
-		torch->Switch			(true);
+	if (m_object->g_Alive()) {
+		CTorch					*torch = smart_cast<CTorch*>(inventory_item);
+		if (torch)
+			torch->Switch		(true);
+	}
 }
 
 void CObjectHandler::OnItemDrop		(CInventoryItem *inventory_item)
