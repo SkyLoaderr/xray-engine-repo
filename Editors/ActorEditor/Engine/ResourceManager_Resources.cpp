@@ -26,7 +26,8 @@ class	includer				: public ID3DXInclude
 public:
 	HRESULT __stdcall	Open	(D3DXINCLUDE_TYPE IncludeType, LPCSTR pFileName, LPCVOID pParentData, LPCVOID *ppData, UINT *pBytes)
 	{
-		IReader*		R		= FS.r_open	("$game_shaders$",pFileName);
+		string256				pname;
+		IReader*		R		= FS.r_open	("$game_shaders$",strconcat(pname,Device.Resources->HLSL_Path,pFileName));
 		if (0==R)				return			E_FAIL;
 		_2close.push_back		(R);
 		*ppData					= R->pointer();
@@ -160,7 +161,7 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR name)
 		LPD3DXSHADER_CONSTANTTABLE	pConstants	= NULL;
 		HRESULT						_hr			= S_OK;
 		string256					cname;
-		FS.update_path				(cname,	"$game_shaders$", strconcat(cname,name,".vs"));
+		FS.update_path				(cname,	"$game_shaders$", strconcat(cname,HLSL_Path,name,".vs"));
 		LPCSTR						target		= NULL;
 
 		/*if (HW.Caps.vertex.dwVersion>=CAP_VERSION(3,0))			target="vs_3_0";
@@ -229,7 +230,7 @@ SPS*	CResourceManager::_CreatePS			(LPCSTR name)
 		// Open file
 		includer					Includer;
 		string256					cname;
-		FS.update_path				(cname,	"$game_shaders$", strconcat(cname,name,".ps"));
+		FS.update_path				(cname,	"$game_shaders$", strconcat(cname,HLSL_Path,name,".ps"));
 		IReader*					fs			= FS.r_open(cname);
 
 		// Select target

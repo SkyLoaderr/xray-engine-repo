@@ -59,7 +59,9 @@ private:
 	xr_vector<Shader*>				v_shaders;
 
 	// misc
+public:
 	BOOL							bDeferredLoad;
+	string256						HLSL_Path;
 public:
 	// Miscelaneous
 	void							_ParseList			(sh_list& dest, LPCSTR names);
@@ -153,6 +155,8 @@ public:
 	void			DeferredUpload		();
 	void			DeferredUnload		();
 	void			Evict				();
+
+	void			SetHLSL_path		(LPCSTR path);
 };
 
 #endif //ResourceManagerH

@@ -301,3 +301,8 @@ BOOL	CResourceManager::_GetDetailTexture(LPCSTR Name,LPCSTR& T, R_constant_setup
 		return FALSE;
 	}
 }
+
+void	CResourceManager::SetHLSL_path(LPCSTR path)
+{
+	strcpy	(HLSL_Path,path);
+}
