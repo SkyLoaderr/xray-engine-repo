@@ -92,7 +92,9 @@ void CHOM::Load			()
 		rT.adjacent[2]	= (0xffffffff==adjacency[3*it+2])?((occTri*) (-1)):(m_pTris+adjacency[3*it+2]);
 		rT.flags		= clT.dummy;
 		rT.area			= Area	(v0,v1,v2);
-		VERIFY2			(rT.area>EPS, "Invalid HOM");
+		if (rT.area<EPS)	{
+			Msg	("! Invalid HOM triangle (%f,%f,%f)-(%f,%f,%f)-(%f,%f,%f)",VPUSH(v0),VPUSH(v1),VPUSH(v2));
+		}
 		rT.plane.build	(v0,v1,v2);
 		rT.skip			= 0;
 	}
