@@ -52,7 +52,7 @@ float	Cuboid			(Fbox& BB)
 	
 	float	volume_cube	= min*min*min;
 	float	volume		= sz.x*sz.y*sz.z;
-	return  volume_cube	/ volume;
+	return  powf(volume_cube / volume, 1.f/3.f);
 }
 
 BOOL	ValidateMerge	(DWORD f1, Fbox& bb_base, DWORD f2, Fbox& bb, float& volume)
