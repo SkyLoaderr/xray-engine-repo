@@ -237,7 +237,7 @@ IC DWORD	rms_diff	(DWORD a, DWORD b)
 }
 BOOL	__stdcall rms_test	(b_texture& lm, DWORD w, DWORD h, DWORD rms)
 {
-	if ((w<=0) || (h<=0))	return FALSE;
+	if ((w<=1) || (h<=1))	return FALSE;
 
 	// scale down(lanczos3) and up (bilinear, as video board)
 	LPDWORD	pScaled		= LPDWORD(malloc(w*h*4));

@@ -446,7 +446,7 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 	try	{
 		for	(i = 0; i < dst.ysize; ++i) _FREE(contrib[i].p);
 		_FREE(contrib);
-	} catch (...) {	Msg		("imf_Process::A");	};
+	} catch (...) {	Msg		("imf_Process::B");	};
 
 	free_image(tmp);
 }
