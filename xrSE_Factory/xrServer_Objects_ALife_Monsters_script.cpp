@@ -66,6 +66,7 @@ void CSE_ALifeCreatureAbstract::script_register(lua_State *L)
 			"cse_alife_creature_abstract",
 			CSE_ALifeDynamicObjectVisual
 		)
+		.def("health",&CSE_ALifeCreatureAbstract::g_Health)
 	];
 }
 
