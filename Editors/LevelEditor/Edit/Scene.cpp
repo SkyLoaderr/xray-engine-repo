@@ -9,7 +9,6 @@
 #include "Scene.h"
 #include "Texture.h"
 #include "FS.h"
-#include "ui_main.h"
 #include "ui_tools.h"
 #include "Frustum.h"
 #include "SceneObject.h"
@@ -19,6 +18,7 @@
 #include "xr_ini.h"
 #include "bottombar.h"
 #include "leftbar.h"    
+#include "ui_main.h"
 //----------------------------------------------------
 EScene Scene;
 //----------------------------------------------------
@@ -73,7 +73,6 @@ void st_LevelOptions::Reset(){
     m_Envs.resize	(1);
 
     m_SkydomeObjName= "";
-    m_HOMObjName	= "";
 
     InitDefaultText	();
 
@@ -100,7 +99,6 @@ EScene::EScene(){
 // Build options
     m_DetailObjects	= new CDetailManager();
     m_SkyDome 		= 0;
-    m_HOM 			= 0;
     ClearSnapList	();
 }
 
@@ -130,7 +128,6 @@ void EScene::OnDestroy(){
 	m_Valid = false;
     _DELETE(m_DetailObjects);
     _DELETE(m_SkyDome);
-    _DELETE(m_HOM);
 }
 
 void EScene::AddObject( CCustomObject* object, bool bManual ){
@@ -446,13 +443,6 @@ void EScene::RenderSky(const Fmatrix& camera)
     }
 }
 
-void EScene::RenderHOM(const Fmatrix& parent)
-{
-//	draw sky
-	if (m_HOM&&fraBottomBar->miDrawHOM->Checked)
-    	m_HOM->RenderSingle();
-}
-
 void EScene::Render( const Fmatrix& camera )
 {
 	if( !valid() )	return;
@@ -475,8 +465,6 @@ void EScene::Render( const Fmatrix& camera )
         }
     }
 // priority #0
-	RenderHOM						(Fidentity);
-
     // render normal objects
     mapRenderObjects.traverseLR		(object_Normal_0);
     mapRenderObjects.traverseRL		(object_StrictB2F_0);
@@ -559,19 +547,6 @@ void EScene::UpdateSkydome()
     }
 }
 
-void EScene::UpdateHOM()
-{
-	_DELETE(m_HOM);
-    if (!m_LevelOp.m_HOMObjName.IsEmpty()){
-        m_HOM = new CSceneObject(0,"$hom");
-        CEditableObject* EO = m_HOM->SetReference(m_LevelOp.m_HOMObjName.c_str());
-        if (!EO){
-        	ELog.DlgMsg(mtError,"Object %s can't find in library.",m_LevelOp.m_HOMObjName.c_str());
-            _DELETE(m_HOM);
-        }
-    }
-}
-
 void EScene::Update( float dT ){
 	if( !valid() ) return;
 	if( locked() ) return;
@@ -592,7 +567,6 @@ void EScene::ClearObjects(bool bDestroy){
     }
     m_DetailObjects->Clear();
     _DELETE(m_SkyDome);
-    _DELETE(m_HOM);
     ClearSnapList();
 }
 //----------------------------------------------------
@@ -659,9 +633,10 @@ bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal){
 	    	return false;
     	}
     }
-    if (!m_HOM){
-    	ELog.DlgMsg(mtError,"*ERROR: Can't find HOM.");
-        return false;
+//    if (!m_HOM)
+    {
+//    	if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Level doesn't contain HOM.\nContinue anyway?"))
+//        	return false;
     }
     if (ObjCount(OBJCLASS_SPAWNPOINT)==0){
     	ELog.DlgMsg(mtError,"*ERROR: Can't find 'Respawn Point'.\nPlease add at least one.");

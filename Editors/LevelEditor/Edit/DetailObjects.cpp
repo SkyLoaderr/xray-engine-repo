@@ -5,18 +5,16 @@
 #pragma hdrstop
 
 #include "DetailObjects.h"
-#include "SceneClassList.h"
-#include "UI_Main.h"
 #include "EditMesh.h"
 #include "EditObject.h"
 #include "Texture.h"
-#include "D3DUtils.h"
 #include "Scene.h"
 #include "SceneObject.h"
 #include "EditorPref.h"
 #include "leftbar.h"
 #include "cl_intersect.h"
 #include "Library.h"
+#include "ui_main.h"
 
 #include "Library.h"
 #include "DetailFormat.h"

@@ -8,8 +8,7 @@
 #include "Log.h"
 #include "Library.h"
 #include "EditObject.h"
-#include "SceneClassList.h"
-#include "UI_Main.h"
+#include "ui_main.h"
 
 //----------------------------------------------------
 ELibrary Lib;
@@ -111,6 +110,15 @@ void ELibrary::OnDeviceDestroy(){
     	O->second->OnDeviceDestroy();
 }
 //---------------------------------------------------------------------------
+
+void ELibrary::EvictObjects()
+{
+	EditObjPairIt O = m_EditObjects.begin();
+	EditObjPairIt E = m_EditObjects.end();
+    for(; O!=E; O++)
+    	O->second->EvictObject();
+}
+//----------------------------------------------------
 
 CEditableObject* ELibrary::LoadEditObject(LPCSTR name, int age){
 	VERIFY(m_bReady);

@@ -7,10 +7,8 @@
 
 #include "Log.h"
 #include "Scene.h"
-#include "SceneClassList.h"
 #include "ELight.h"
 #include "SceneObject.h"
-#include "ui_main.h"
 #include "Frustum.h"
 #include "ui_tools.h"
 

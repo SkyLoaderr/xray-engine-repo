@@ -5,9 +5,9 @@
 #ifndef _INCDEF_DetailObjects_H_
 #define _INCDEF_DetailObjects_H_
 
-#include "CustomObject.h"
 #include "DetailFormat.h"
 #include "Library.h"
+#include "customobject.h"
 
 class CFrustum;
 class CEditableObject;

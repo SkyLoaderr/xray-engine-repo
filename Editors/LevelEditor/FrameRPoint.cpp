@@ -4,7 +4,6 @@
 #include "ui_tools.h"
 #include "FrameRPoint.h"
 #include "Scene.h"
-#include "ui_main.h"
 #include "ChoseForm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

@@ -6,10 +6,10 @@
 #pragma hdrstop
 
 #include "Builder.h"
-#include "UI_Main.h"
 #include "Scene.h"
 #include "SceneObject.h"
 #include "Sector.h"
+#include "ui_main.h"
 //------------------------------------------------------------------------------
 
 bool SceneBuilder::PreparePath(){
@@ -56,23 +56,24 @@ bool SceneBuilder::PrepareFolders(){
 }
 //------------------------------------------------------------------------------
 
-bool SceneBuilder::LightenObjects(){
+bool SceneBuilder::EvictResource(){
+    UI.Command(COMMAND_EVICT_OBJECTS);
+    UI.Command(COMMAND_EVICT_TEXTURES);
+
 	int objcount = Scene.ObjCount(OBJCLASS_SCENEOBJECT);
 	if( objcount <= 0 ) return true;
 
-	UI.ProgressStart(objcount, "Lighten objects...");
-    // unload cform, point normals, render buffers
+	UI.ProgressStart(objcount, "Evict objects...");
+    // unload cform, point normals
     ObjectIt _F = Scene.FirstObj(OBJCLASS_SCENEOBJECT);
     ObjectIt _E = Scene.LastObj(OBJCLASS_SCENEOBJECT);
     for(;_F!=_E;_F++){
-    	CEditableObject* O = ((CSceneObject*)(*_F))->GetReference();
+    	CSceneObject* O = (CSceneObject*)(*_F);
         if (UI.NeedAbort()) break; // break building
-        O->LightenObject();
+        O->EvictObject();
 		UI.ProgressInc();
 	}
 	UI.ProgressEnd();
-	// unload texture
-//S    UI.Command(COMMAND_REFRESH_TEXTURES);
 
     return true;
 }

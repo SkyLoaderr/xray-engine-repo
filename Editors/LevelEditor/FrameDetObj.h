@@ -9,7 +9,6 @@
 #include <Buttons.hpp>
 #include <ExtCtrls.hpp>
 
-#include "CustomObject.h"
 #include "ui_customtools.h"
 #include "multi_edit.hpp"
 #include "ExtBtn.hpp"

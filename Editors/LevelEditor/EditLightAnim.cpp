@@ -5,7 +5,6 @@
 
 #include "EditLightAnim.h"
 #include "Scene.h"
-#include "UI_Main.h"
 #include "FolderLib.h"
 #include "LightAnimLibrary.h"
 #include "ColorPicker.h"

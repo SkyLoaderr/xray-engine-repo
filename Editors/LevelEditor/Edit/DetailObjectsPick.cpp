@@ -5,11 +5,10 @@
 #pragma hdrstop
 
 #include "DetailObjects.h"
-#include "UI_Main.h"
 #include "Scene.h"
 #include "cl_intersect.h"
-#include "D3DUtils.h"
 #include "bottombar.h"
+#include "ui_main.h"
 
 int CDetailManager::RaySelect(bool flag, float& distance, Fvector& start, Fvector& direction){
 // box selected only

@@ -15,16 +15,16 @@
 #include "sceneproperties.h"
 #include "EditorPref.h"
 #include "ImageEditor.h"
+#include "d3dutils.h"
 
-#include "UI_Main.h"
 #include "builder.h"
-#include "D3DUtils.h"
 
 #include "Scene.h"
 #include "PSLibrary.h"
 #include "Library.h"
 #include "UI_Tools.h"
 #include "folderlib.h"
+#include "ui_main.h"
 
 bool TUI::Command( int _Command, int p1, int p2 ){
 	if ((_Command!=COMMAND_INITIALIZE)&&!m_bReady) return false;
@@ -72,6 +72,12 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	    _DELETE(fraTopBar);
     	_DELETE(fraBottomBar);
 		//----------------
+    	break;
+    case COMMAND_EVICT_OBJECTS:
+    	Lib.EvictObjects();
+    	break;
+    case COMMAND_EVICT_TEXTURES:
+    	Device.Shader.Evict();
     	break;
     case COMMAND_CHECK_MODIFIED:
     	bRes = Scene.IsModified();

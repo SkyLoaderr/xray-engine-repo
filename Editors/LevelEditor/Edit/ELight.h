@@ -5,8 +5,8 @@
 #ifndef _INCDEF_Light_H_
 #define _INCDEF_Light_H_                                                      
 
-#include "CustomObject.h"
 #include "xr_efflensflare.h"
+#include "CustomObject.h"
 
 class CEditFlare: public CLensFlare{
 public:

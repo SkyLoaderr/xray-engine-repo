@@ -3,9 +3,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "D3DUtils.h"
-#include "UI_Main.h"
 #include "xr_hudfont.h"
+#include "d3dutils.h"
 
 #define LINE_DIVISION  32  // не меньше 6!!!!!
 namespace DU{

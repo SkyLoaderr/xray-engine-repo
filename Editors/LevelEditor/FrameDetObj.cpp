@@ -4,7 +4,6 @@
 #include "ui_tools.h"
 #include "FrameDetObj.h"
 #include "Scene.h"
-#include "ui_main.h"
 #include "ChoseForm.h"
 #include "Library.h"
 #include "DetailObjects.h"
@@ -13,6 +12,7 @@
 #include "Texture.h"
 #include "DOShuffle.h"
 #include "BottomBar.h"
+#include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "multi_color"

@@ -6,8 +6,8 @@
 #include "ImageThumbnail.h"
 #include "xrImage_Resampler.h"
 #include "freeimage.h"
-#include "UI_Main.h"
 #include "Image.h"
+#include "ui_main.h"
 CImageManager ImageManager;
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

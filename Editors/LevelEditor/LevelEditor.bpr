@@ -19,7 +19,7 @@
       intermediate\NumericVector.obj intermediate\EditMesh.obj 
       intermediate\ShaderFunction.obj intermediate\EditObjectImport.obj 
       intermediate\EditMeshIO.obj intermediate\EditMeshPick.obj 
-      intermediate\EditMeshModify.obj intermediate\Device.obj 
+      intermediate\EditMeshModify.obj intermediate\device.obj 
       intermediate\SceneIO.obj intermediate\EditMeshRender.obj 
       intermediate\Event.obj intermediate\TopBar.obj intermediate\LeftBar.obj 
       intermediate\BottomBar.obj intermediate\FrameObject.obj 
@@ -74,7 +74,7 @@
       intermediate\Blender_Vertex_aref.obj intermediate\BlenderDefault.obj 
       intermediate\Image.obj intermediate\tss_def.obj 
       intermediate\xrLoadSurface.obj intermediate\ImageManager.obj 
-      intermediate\ImageThumbnail.obj intermediate\TextureManager.obj 
+      intermediate\ImageThumbnail.obj intermediate\texturemanager.obj 
       intermediate\PropertiesList.obj intermediate\ETextureParams.obj 
       intermediate\blender_light.obj intermediate\FolderLib.obj 
       intermediate\EStats.obj intermediate\UI_MainExtern.obj 
@@ -197,7 +197,7 @@
       <FILE FILENAME="edit\EditMeshIO.cpp" FORMNAME="" UNITNAME="EditMeshIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\EditMeshPick.cpp" FORMNAME="" UNITNAME="EditMeshPick" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\EditMeshModify.cpp" FORMNAME="" UNITNAME="EditMeshModify" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\Device.cpp" FORMNAME="" UNITNAME="Device" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\device.cpp" FORMNAME="" UNITNAME="Device" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\SceneIO.cpp" FORMNAME="" UNITNAME="SceneIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\EditMeshRender.cpp" FORMNAME="" UNITNAME="EditMeshRender" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\Event.cpp" FORMNAME="" UNITNAME="Event" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -323,7 +323,7 @@
       <FILE FILENAME="Engine\xrLoadSurface.cpp" FORMNAME="" UNITNAME="xrLoadSurface" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ImageManager.cpp" FORMNAME="" UNITNAME="ImageManager" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ImageThumbnail.cpp" FORMNAME="" UNITNAME="ImageThumbnail" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\TextureManager.cpp" FORMNAME="" UNITNAME="TextureManager" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\texturemanager.cpp" FORMNAME="" UNITNAME="TextureManager" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesList.cpp" FORMNAME="Properties" UNITNAME="PropertiesList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ETextureParams.cpp" FORMNAME="" UNITNAME="ETextureParams" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\blender_light.cpp" FORMNAME="" UNITNAME="blender_light" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>

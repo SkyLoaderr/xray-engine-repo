@@ -6,10 +6,10 @@
 #ifdef _LEVEL_EDITOR
  #include "OneEnvironment.h"
  #include "Scene.h"
- #include "ui_main.h"
  #include "library.h"
  #include "ChoseForm.h"
  #include "EditObject.h"
+ #include "ColorPicker.h"
 #else
  #include "Communicate.h"
  #include "ColorPicker.h"

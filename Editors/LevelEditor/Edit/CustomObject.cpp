@@ -5,13 +5,12 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "CustomObject.h"
-#include "ui_main.h"
-
 #include "bottombar.h"
 #include "topbar.h"
 #include "editorpref.h"
-#include "D3DUtils.h"
+#include "customobject.h"
+#include "ui_main.h"
+#include "d3dutils.h"
 
 #define SCENEOBJECT_CHUNK_PARAMS 		0xF900
 #define SCENEOBJECT_CHUNK_LOCK	 		0xF902

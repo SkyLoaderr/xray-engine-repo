@@ -3,9 +3,7 @@
 #define UI_MainH
 
 #include "RenderWindow.hpp"
-#include "device.h"
 #include "UI_MainCommand.h"
-#include "ColorPicker.h"                        
 #include "FController.h"
 
 // refs
@@ -187,6 +185,9 @@ public:
 	void 			ShowContextMenu		(int cls);
 
     void			SetGradient			(DWORD color){;}
+
+    void 			OnDeviceCreate		();
+    void			OnDeviceDestroy		();
 };
 //---------------------------------------------------------------------------
 extern TUI UI;

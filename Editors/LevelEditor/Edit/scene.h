@@ -4,12 +4,10 @@
 #ifndef _INCDEF_Scene_H_
 #define _INCDEF_Scene_H_
 
-#include "CustomObject.h";
-#include "SceneClassList.h"
 #include "SceneGraph.h"
 #include "Communicate.h"
 #include "pure.h"
-
+#include "CustomObject.h"
 //refs
 struct FSChunkDef;
 //----------------------------------------------------
@@ -53,7 +51,6 @@ struct st_LevelOptions{
 	AnsiString	m_LevelName;
 	AnsiString 	m_BOPText;
 	AnsiString 	m_SkydomeObjName;
-    AnsiString	m_HOMObjName;
     EnvList		m_Envs;
     int 		m_CurEnv;
     float		m_DOClusterSize;
@@ -86,7 +83,6 @@ public:
 	// addition objects
     CDetailManager*	m_DetailObjects;
     CSceneObject*	m_SkyDome;
-    CSceneObject*	m_HOM;
 
     ObjectList		m_SnapObjects;
 
@@ -139,7 +135,6 @@ public:
 	int ObjCount 			        ();
 
 	void RenderSky					(const Fmatrix& camera);
-    void RenderHOM					(const Fmatrix& matrix);
 	void Render                     (const Fmatrix& camera);
 	void Update                     (float dT);
 
@@ -191,7 +186,6 @@ public:
     bool GetBox						(Fbox& box, EObjClass classfilter);
     bool GetBox						(Fbox& box, ObjectList& lst);
 	void UpdateSkydome				();
-    void UpdateHOM					();
     void WriteToLTX					(CInifile* pIni);
 
 public:

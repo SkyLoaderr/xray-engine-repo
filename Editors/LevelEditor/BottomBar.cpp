@@ -3,10 +3,10 @@
 #pragma hdrstop
 
 #include "BottomBar.h"
-#include "UI_main.h"
 #include "leftbar.h"
 #include "LogForm.h"
 #include "EditorPref.h"
+#include "ui_main.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -62,7 +62,7 @@ void TUI::OutCameraPos(){
 	VERIFY(m_bReady);
     AnsiString s;
 	const Fvector& c 	= Device.m_Camera.GetPosition();
-	s.sprintf(" %3.1f, %3.1f, %3.1f",c.x,c.y,c.z);
+	s.sprintf("Cam: %3.1f, %3.1f, %3.1f",c.x,c.y,c.z);
 //	const Fvector& hpb 	= Device.m_Camera.GetHPB();
 //	s.sprintf(" Cam: %3.1f°, %3.1f°, %3.1f°",rad2deg(hpb.y),rad2deg(hpb.x),rad2deg(hpb.z));
     fraBottomBar->paCamera->Caption=s; fraBottomBar->paCamera->Repaint();
@@ -72,8 +72,8 @@ void TUI::OutUICursorPos(){
 	VERIFY(m_bReady);
     AnsiString s; POINT pt;
     GetCursorPos(&pt);
-    s.sprintf("Cursor: %d, %d",pt.x,pt.y);
-//    fraBottomBar->paUICursor->Caption=s; fraBottomBar->paUICursor->Repaint();
+    s.sprintf("Cur: %d, %d",pt.x,pt.y);
+    fraBottomBar->paUICursor->Caption=s; fraBottomBar->paUICursor->Repaint();
 }
 //---------------------------------------------------------------------------
 void TUI::OutGridSize(){

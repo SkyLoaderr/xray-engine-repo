@@ -6,8 +6,8 @@
 #pragma hdrstop
 
 #include "scene.h"
-#include "ui_main.h"
 #include "DetailObjects.h"
+#include "ui_main.h"
 
 // file: SceneChunks.h
 #define CURRENT_FILE_VERSION    0x00000005
@@ -32,7 +32,6 @@
 #define CHUNK_LO_SKYDOME	 	0x7804
 #define CHUNK_LO_ENVS		 	0x7805
 #define CHUNK_LO_DOCLUSTERSIZE	0x7806
-#define CHUNK_LO_HOM		 	0x7807
 #define CHUNK_BUILD_PARAMS		0x7850
 
 //------------------------------------------------------------------------------------------------
@@ -108,10 +107,6 @@ void st_LevelOptions::Read(CStream& F){
 
     R_ASSERT(F.FindChunk(CHUNK_LO_SKYDOME));
 	F.RstringZ	(buf); m_SkydomeObjName=buf;
-
-    if (F.FindChunk(CHUNK_LO_HOM)){
-		F.RstringZ	(buf); m_HOMObjName=buf;
-    }
 
     R_ASSERT(F.FindChunk(CHUNK_LO_ENVS));
 	m_CurEnv	= F.Rdword( );
@@ -255,7 +250,6 @@ bool EScene::Load(char *_FileName){
         if (LOP){
 	        m_LevelOp.Read	(*LOP);
     	    UpdateSkydome	();
-            UpdateHOM		();
         	LOP->Close		();
         }else{
 			ELog.DlgMsg( mtError, "Skipping old version of level options.\nCheck level options after loading." );

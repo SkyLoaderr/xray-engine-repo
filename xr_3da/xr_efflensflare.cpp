@@ -8,8 +8,8 @@
 
 #ifdef _LEVEL_EDITOR
 	#include "ELight.h"
-	#include "ui_main.h"
 	#include "scene.h"
+	#include "ui_main.h"
 #else
 	#include "xr_creator.h"
 #endif
@@ -48,6 +48,8 @@ CLensFlare::CLensFlare()
 
     LightColor.set		( 0xFFFFFFFF );
 	fGradientValue		= 0.f;
+
+    VS					= 0;
 }
 
 

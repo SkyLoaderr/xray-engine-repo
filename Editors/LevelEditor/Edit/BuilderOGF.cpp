@@ -5,10 +5,8 @@
 #pragma hdrstop
 
 #include "Builder.h"
-#include "UI_Main.h"
 
 #include "Scene.h"
-#include "SceneClassList.h"
 #include "EditObject.h"
 #include "EditMesh.h"
 #include "SceneObject.h"

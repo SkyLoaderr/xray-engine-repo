@@ -3,8 +3,6 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "UI_Main.h"
-#include "D3DUtils.h"
 #include "leftbar.h"
 #include "main.h"
 #include "xr_input.h"
@@ -15,6 +13,9 @@
 #ifdef _LEVEL_EDITOR
  	#include "cursor3d.h"
 #endif
+
+#include "ui_main.h"
+#include "d3dutils.h"
 
 TUI UI;
 
@@ -33,8 +34,6 @@ TUI::TUI()
 #ifdef _LEVEL_EDITOR
     m_Cursor        = 0;
 #endif
-
-	DU::InitUtilLibrary();
 
     bRedraw = false;
 	bResize = true;
@@ -62,6 +61,16 @@ TUI::~TUI()
 #ifdef _LEVEL_EDITOR
     _DELETE(m_Cursor);
 #endif
+}
+
+void TUI::OnDeviceCreate()
+{
+	DU::OnDeviceCreate();
+}
+
+void TUI::OnDeviceDestroy()
+{
+	DU::OnDeviceDestroy();
 }
 
 bool TUI::OnCreate(){
@@ -98,7 +107,6 @@ void TUI::OnDestroy()
 	UI.iRelease		();
     _DELETE			(pInput);
     EndEState		();
-	DU::UninitUtilLibrary();
 
     Device.ShutDown	();
 }

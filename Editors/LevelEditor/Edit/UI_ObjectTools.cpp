@@ -8,9 +8,9 @@
 #include "SceneObject.h"
 //#include "EditObject.h"
 #include "FrameObject.h"
-#include "ui_main.h"
 #include "leftbar.h"
 #include "EditorPref.h"
+#include "ui_main.h"
 
 //----------------------------------------------------------------------
 TUI_ObjectTools::TUI_ObjectTools():TUI_CustomTools(OBJCLASS_SCENEOBJECT){

@@ -11,7 +11,6 @@
 #include "Library.h"
 #include "EditObject.h"
 #include "LevelGameDef.h"
-#include "D3DUtils.h"
 #include "ImageThumbnail.h"
 #include "FolderLib.h"
 #include "ImageManager.h"

@@ -13,7 +13,6 @@
 #include "motion.h"
 #include "xr_ini.h"
 #include "MgcCont3DMinBox.h"
-#include "UI_Main.h"
 
 DWORD CSkeletonCollectorPacked::VPack(SSkelVert& V){
     DWORD P 	= 0xffffffff;

@@ -2,7 +2,6 @@
 #pragma hdrstop
 
 #include "PropertiesRPoint.h"
-#include "SceneClassList.h"
 #include "SpawnPoint.h"
 #include "Scene.h"
 #include "ChoseForm.h"

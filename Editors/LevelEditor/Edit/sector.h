@@ -5,7 +5,6 @@
 #ifndef _INCDEF_Sector_H_
 #define _INCDEF_Sector_H_
 
-#include "CustomObject.h"
 #include "portalutils.h"                                 
 enum EVisible{
 	fvNone,

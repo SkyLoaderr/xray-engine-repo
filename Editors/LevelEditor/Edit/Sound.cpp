@@ -6,12 +6,10 @@
 #pragma hdrstop
 
 #include "Log.h"
-#include "SceneClassList.h"
-#include "UI_Main.h"                   
-#include "D3DUtils.h"
 #include "texture.h"
 #include "Sound.h"
 #include "Frustum.h"
+#include "d3dutils.h"
 
 #define VIS_RADIUS 0.25f
 #define SOUND_SEL_COLOR 	0x00FFFFFF

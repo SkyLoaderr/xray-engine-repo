@@ -2,7 +2,6 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "UI_Main.h"
 #include "UI_Tools.h"
 #include "EditLibrary.h"
 #include "EditLightAnim.h"
@@ -12,12 +11,13 @@
 #include "scene.h"
 #include "sceneobject.h"
 #include "EditorPref.h"
-#include "D3DUtils.h"
 #include "Cursor3D.h"
 #include "bottombar.h"
 #include "xr_trims.h"
 #include "main.h"
 #include "xr_input.h"
+#include "ui_main.h"
+#include "d3dutils.h"
 
 
 bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& direction, int bSnap, Fvector* hitnormal){
@@ -122,7 +122,6 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
 	return true;
 }
 //----------------------------------------------------
-
 void TUI::Redraw(){
 	VERIFY(m_bReady);
     if (!(psDeviceFlags&rsRenderRealTime)) bRedraw = false;
@@ -146,6 +145,7 @@ void TUI::Redraw(){
     else                			Device.SetRS(D3DRS_AMBIENT,0xFFFFFFFF);
 
     try{
+    	Device.Statistic.RenderDUMP_RT.Begin();
         Device.Begin();
         Device.UpdateView();
 		Device.ResetMaterial();
@@ -183,6 +183,7 @@ void TUI::Redraw(){
 
     // end draw
         Device.End();
+    	Device.Statistic.RenderDUMP_RT.End();
     }
     catch(...)
     {

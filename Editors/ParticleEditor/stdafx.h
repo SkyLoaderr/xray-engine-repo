@@ -193,6 +193,11 @@ struct astr_pred : public binary_function<AnsiString&, AnsiString&, bool>
 	#include "xrXRC.h"
 #endif
 
+
+//#include "CustomObject.h"
+//#include "D3DUtils.h"
+//#include "ui_main.h"
+
 #define MAX_FOLDER_NAME    255
 #define MAX_OBJ_NAME       64
 #define MAX_OBJCLS_NAME    64

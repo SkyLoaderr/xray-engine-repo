@@ -5,7 +5,6 @@
 #include "FrameGroup.h"
 #include "GroupObject.h"
 #include "Scene.h"
-#include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"

@@ -5,9 +5,9 @@
 #ifndef _INCDEF_RPoint_H_
 #define _INCDEF_RPoint_H_
 
-#include "CustomObject.h"
 #include "xrServer_Entities.h"
 #include "LevelGameDef.h"
+#include "CustomObject.h"
 
 #define RPOINT_SIZE 0.5f
 

@@ -10,6 +10,7 @@
 
 CEditableMesh::~CEditableMesh(){
 	Clear();
+    R_ASSERT2(m_RenderBuffers.empty(),"Render buffer still referenced.");
 }
 
 void CEditableMesh::Construct(){
@@ -25,7 +26,7 @@ void CEditableMesh::Construct(){
 
 void CEditableMesh::Clear(){
 #ifdef _EDITOR
-	ClearRenderBuffers	();
+	OnDeviceDestroy		();
 #endif
 	m_Points.clear 		();
     m_Adjs.clear		();
@@ -41,6 +42,7 @@ void CEditableMesh::Clear(){
 }
 
 void CEditableMesh::UnloadCForm     (){
+	if (!(m_LoadState&EMESH_LS_CF_MODEL)) return;
 #ifdef _EDITOR
 	cdb_model_destroy(m_CFModel);
     m_CFModel = 0;
@@ -49,11 +51,13 @@ void CEditableMesh::UnloadCForm     (){
 }
 
 void CEditableMesh::UnloadFNormals   (){
+	if (!(m_LoadState&EMESH_LS_FNORMALS)) return;
 	m_FNormals.clear	();
     m_LoadState &=~ EMESH_LS_FNORMALS;
 }
 
 void CEditableMesh::UnloadPNormals   (){
+	if (!(m_LoadState&EMESH_LS_PNORMALS)) return;
 	m_PNormals.clear	();
     m_LoadState &=~ EMESH_LS_PNORMALS;
 }

@@ -4,9 +4,8 @@
 #include "ui_customtools.h"
 #include "ui_tools.h"
 #include "ui_control.h"
-#include "ui_main.h"
-#include "sceneclasslist.h"
 #include "scene.h"
+#include "ui_main.h"
 
 #include "PropertiesSceneObject.h"
 #include "PropertiesGroup.h"

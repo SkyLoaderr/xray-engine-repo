@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "SceneClassList.h"
 #include "Scene.h"
 #include "ui_tools.h"
 #include "SceneObject.h"

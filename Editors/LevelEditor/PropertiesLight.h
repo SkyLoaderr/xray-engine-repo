@@ -11,7 +11,6 @@
 #include <ExtCtrls.hpp>
 #include <ComCtrls.hpp>
 
-#include "CustomObject.h"
 #include "ELight.h"
 #include "multi_check.hpp"
 #include "multi_color.hpp"

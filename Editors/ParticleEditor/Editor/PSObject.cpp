@@ -7,10 +7,10 @@
 #include "Log.h"
 #include "PSObject.h"
 #include "ParticleSystem.h"                 
-#include "ui_main.h"
-#include "d3dutils.h"
 #include "PSLibrary.h"
 #include "tlsprite.h"
+#include "d3dutils.h"
+#include "ui_main.h"
 // export spawn
 #include "net_utils.h"
 #include "xrMessages.h"

@@ -4,8 +4,8 @@
 #ifndef _INCDEF_SceneObject_H_
 #define _INCDEF_SceneObject_H_
 
-#include "CustomObject.h"
 #include "EditObject.h"
+#include "customobject.h"
 //----------------------------------------------------
 
 class CSceneObject : public CCustomObject {
@@ -114,7 +114,7 @@ public:
     virtual void	OnUpdateTransform		();
 
     // misc
-	void		    LightenObject			();
+	void		    EvictObject				();
     virtual void 	ResetAnimation			(bool upd_t=true);
 
     // pick methods

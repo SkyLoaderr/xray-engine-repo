@@ -2,7 +2,6 @@
 #pragma hdrstop
 
 #include "Builder.h"
-#include "SceneClassList.h"
 #include "ELight.h"
 #include "SceneObject.h"
 #include "EditObject.h"
@@ -16,7 +15,7 @@
 #include "portal.h"
 #include "frustum.h"
 #include "xrLevel.h"
-#include "UI_main.h"
+#include "ui_main.h"
 
 template <class T>
 DWORD transfer(CFS_Base& F, T* src, DWORD cnt )

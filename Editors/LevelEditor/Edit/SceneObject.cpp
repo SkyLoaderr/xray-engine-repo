@@ -6,13 +6,13 @@
 #pragma hdrstop
 
 #include "SceneObject.h"
-#include "UI_Main.h"          
 #include "bottombar.h"
 #include "scene.h"
-#include "d3dutils.h"
 #include "library.h"
 #include "EditMesh.h"
 #include "motion.h"
+#include "ui_main.h"
+#include "d3dutils.h"
 
 #define BLINK_TIME 300.f
 
@@ -44,6 +44,12 @@ CSceneObject::~CSceneObject(){
     for(OMotionIt o_it=m_OMotions.begin(); o_it!=m_OMotions.end();o_it++)_DELETE(*o_it);
     m_OMotions.clear();
     m_ActiveOMotion = 0;
+}
+//----------------------------------------------------
+
+void CSceneObject::EvictObject()
+{
+	if (m_pRefs) m_pRefs->EvictObject();
 }
 
 //----------------------------------------------------

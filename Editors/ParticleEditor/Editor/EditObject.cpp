@@ -59,14 +59,6 @@ void CEditableObject::VerifyMeshNames(){
     }
 }
 
-void CEditableObject::ClearRenderBuffers(){
-#ifdef _EDITOR
-	for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
-    	if (*_M) (*_M)->ClearRenderBuffers();
-    m_LoadState &=~ EOBJECT_LS_RENDERBUFFER;
-#endif
-}
-
 void CEditableObject::GenerateMeshNames(){
 	int idx=0;
     for(EditMeshIt m_def=m_Meshes.begin();m_def!=m_Meshes.end();m_def++,idx++)

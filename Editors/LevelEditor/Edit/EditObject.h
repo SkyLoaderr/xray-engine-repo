@@ -4,8 +4,8 @@
 #ifndef _INCDEF_Object_H_
 #define _INCDEF_Object_H_
                                       
-#include "SceneClassList.h"
 #include "Bone.h"
+#include "SceneClassList.h"
 //----------------------------------------------------
 struct 	SRayPickInfo;
 class 	CEditableMesh;
@@ -266,7 +266,7 @@ public:
     // update methods
 	void 			OnFrame					();
 	void 			UpdateBox				();
-	void		    LightenObject			();
+	void		    EvictObject				();
 
     // pick methods
 	bool 			RayPick					(float& dist, Fvector& S, Fvector& D, Fmatrix& inv_parent, SRayPickInfo* pinf=0);

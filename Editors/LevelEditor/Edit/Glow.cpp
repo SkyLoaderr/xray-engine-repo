@@ -6,13 +6,11 @@
 
 #include "Log.h"
 #include "Glow.h"
-#include "SceneClassList.h"                
-#include "UI_Main.h"
-#include "D3DUtils.h"
 #include "Frustum.h"
 #include "Scene.h"
 #include "xr_trims.h"
 #include "bottombar.h"
+#include "d3dutils.h"
 
 #define GLOW_VERSION	   				0x0012
 //----------------------------------------------------

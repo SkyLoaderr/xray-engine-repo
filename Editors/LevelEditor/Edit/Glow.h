@@ -5,8 +5,8 @@
 #ifndef _INCDEF_Glow_H_
 #define _INCDEF_Glow_H_
 
-#include "CustomObject.h"
 #include "tlsprite.h"
+#include "customobject.h"
 class CFrustum;                                 
 
 class CGlow : public CCustomObject {

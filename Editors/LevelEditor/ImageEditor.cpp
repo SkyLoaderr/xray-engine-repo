@@ -4,12 +4,12 @@
 #pragma hdrstop
 
 #include "ImageEditor.h"
-#include "UI_Main.h"
 #include "ImageThumbnail.h"
 #include "ImageManager.h"
 #include "PropertiesList.h"
 #include "FolderLib.h"
 #include "xr_tokens.h"
+#include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ElTree"

@@ -5,7 +5,6 @@
 
 #include "EditLibrary.h"
 #include "Library.h"
-#include "UI_Main.h"
 #include "library.h"
 #include "ui_tools.h"
 #include "EditObject.h"                 
@@ -22,6 +21,7 @@
 #include "xr_trims.h"
 #include "SceneObject.h"
 #include "Image.h"
+#include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ElTree"

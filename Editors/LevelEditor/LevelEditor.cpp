@@ -49,8 +49,8 @@ USEFORM("PropertiesWayPoint.cpp", frmPropertiesWayPoint);
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
-#include "UI_Main.h"
 #include "LogForm.h"
+#include "EditorPref.h"
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {

@@ -85,6 +85,7 @@ __published:	// IDE-managed Components
 	TPanel *paSel;
 	TPanel *paGridSquareSize;
 	TMenuItem *miDrawHOM;
+	TPanel *paUICursor;
 	TPanel *paCamera;
     void __fastcall ClickOptionsMenuItem(TObject *Sender);
     void __fastcall QualityClick(TObject *Sender);

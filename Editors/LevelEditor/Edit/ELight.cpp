@@ -6,11 +6,10 @@
 
 #include "Log.h"                                                      
 #include "ELight.h"
-#include "SceneClassList.h"
-#include "UI_Main.h"
 #include "Frustum.h"
-#include "D3DUtils.h"
 #include "BottomBar.h"
+#include "ui_main.h"
+#include "d3dutils.h"
 
 #define LIGHT_VERSION   				0x0011
 //----------------------------------------------------

@@ -5,17 +5,14 @@
 #define _INCDEF_EditableMesh_H_
 
 //----------------------------------------------------
-#ifdef _EDITOR
-//	#include "cl_rapid.h"
-#endif
-#include "SceneClassList.h"
-
 // refs
 class CSurface;
 struct SRayPickInfo;
 //struct CFrustum;
 struct FSChunkDef;
 class CExporter;
+
+#include "sceneclasslist.h"
 
 #pragma pack( push,1 )
 enum EVMType{
@@ -105,10 +102,10 @@ class CSector;
 	struct st_RenderBuffer{
 		DWORD			dwStartVertex;
 	    DWORD			dwNumVertex;
-		BYTE* 			buffer;
-		DWORD			buffer_size;
-//	    CVS*			vs;
-		st_RenderBuffer	(DWORD sv, DWORD nv):dwStartVertex(sv),dwNumVertex(nv),buffer(0),buffer_size(0){;}
+        CVS*			pVS;
+		IDirect3DVertexBuffer8*	pVB;
+//		IDirect3DIndexBuffer8*	pIB;
+		st_RenderBuffer	(DWORD sv, DWORD nv):dwStartVertex(sv),dwNumVertex(nv),pVS(0),pVB(0){;}
 	};
 	DEFINE_VECTOR(st_RenderBuffer,RBVector,RBVecIt);
 	DEFINE_MAP(CSurface*,RBVector,RBMap,RBMapPairIt);
@@ -169,9 +166,7 @@ protected:
     VMapVec			m_VMaps;
     VMRefsVec		m_VMRefs;
 
-    void			UpdateRenderBuffers		();
 	void 			FillRenderBuffer		(INTVec& face_lst, int start_face, int num_face, const CSurface* surf, LPBYTE& data);
-    void 			ClearRenderBuffers		();
 
 	void 			RecurseTri				(int id);
 
@@ -241,6 +236,10 @@ public:
 #endif
 	int				FindVMapByName			(VMapVec& vmaps, const char* name, EVMType t, BOOL polymap);
 	void			RebuildVMaps			();
+
+    // device dependent routine
+	void 			OnDeviceCreate 			();
+	void 			OnDeviceDestroy			();
 };
 //----------------------------------------------------
 #endif /*_INCDEF_EditableMesh_H_*/

@@ -5,7 +5,6 @@
 #include "EditMesh.h"
 #include "bottombar.h"
 #include "motion.h"
-#include "D3DUtils.h"
 #include "bone.h"
 #include "ExportSkeleton.h"
 #include "ExportObjectOGF.h"
@@ -50,11 +49,18 @@ bool CEditableObject::BoxPick(CSceneObject* obj, const Fbox& box, Fmatrix& paren
 }
 #endif
 
+void CEditableObject::ClearRenderBuffers(){
+	if (!(m_LoadState&EOBJECT_LS_RENDERBUFFER)) return;
+	for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
+    	if (*_M) (*_M)->OnDeviceDestroy();
+    m_LoadState &=~ EOBJECT_LS_RENDERBUFFER;
+}
+
 void CEditableObject::UpdateRenderBuffers(){
-	ClearRenderBuffers();
+	if (m_LoadState&EOBJECT_LS_RENDERBUFFER) ClearRenderBuffers();
     EditMeshIt _M=m_Meshes.begin();
     EditMeshIt _E=m_Meshes.end();
-	for (; _M!=_E; _M++) (*_M)->UpdateRenderBuffers();
+	for (; _M!=_E; _M++) (*_M)->OnDeviceCreate();
     m_LoadState |= EOBJECT_LS_RENDERBUFFER;
 }
 
@@ -229,25 +235,28 @@ void CEditableObject::UpdateLODShader()
 
 void CEditableObject::OnDeviceCreate()
 {
-	// пока буфера не аппаратные не нужно пересоздавать их
-    //	UpdateRenderBuffers();
+	// создать буфера
+    for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
+    	(*m)->OnDeviceCreate();
 	// создать заново shaders
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
        (*s_it)->CreateShader();
     UpdateLODShader();
 }
 
-void CEditableObject::OnDeviceDestroy(){
-	// пока буфера не аппаратные не нужно пересоздавать их
-    //	ClearRenderBuffers();
-		// удалить shaders
+void CEditableObject::OnDeviceDestroy()
+{
+	// удалить буфера
+    for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
+    	(*m)->OnDeviceDestroy();
+	// удалить shaders
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
         (*s_it)->DeleteShader();
     // LOD
     Device.Shader.Delete(m_LODShader);
 }
 
-void CEditableObject::LightenObject(){
+void CEditableObject::EvictObject(){
 	EditMeshIt m = m_Meshes.begin();
 	for(;m!=m_Meshes.end();m++){
     	(*m)->UnloadCForm();

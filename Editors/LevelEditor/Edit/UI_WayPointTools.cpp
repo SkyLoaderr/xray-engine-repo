@@ -5,8 +5,8 @@
 #include "ui_tools.h"
 #include "FrameWayPoint.h"
 #include "WayPoint.h"
-#include "ui_main.h"
 #include "scene.h"
+#include "ui_main.h"
 //---------------------------------------------------------------------------
 
 TUI_WayPointTools::TUI_WayPointTools():TUI_CustomTools(OBJCLASS_WAY){

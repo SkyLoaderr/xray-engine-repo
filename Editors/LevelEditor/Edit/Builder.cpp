@@ -6,10 +6,10 @@
 #pragma hdrstop
 
 #include "Builder.h"
-#include "UI_Main.h"
 #include "Scene.h"
 #include "PortalUtils.h"
 #include "DetailObjects.h"
+#include "ui_main.h"
 //----------------------------------------------------
 
 SceneBuilder Builder;
@@ -49,7 +49,7 @@ BOOL SceneBuilder::Compile()
     	    VERIFY_COMPILE(Scene.Validate(false,bTestPortal),"Validation failed. Invalid scene.");
         	// build
             VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.");
-            VERIFY_COMPILE(LightenObjects(),			"Failed to lighten objects.");
+            VERIFY_COMPILE(EvictResource(),			"Failed to evict resource.");
             VERIFY_COMPILE(PrepareFolders(),			"Failed to prepare level folders.");
             VERIFY_COMPILE(GetBounding(),				"Failed to acquire level bounding volume.");
             VERIFY_COMPILE(RenumerateSectors(),			"Failed to renumerate sectors.");

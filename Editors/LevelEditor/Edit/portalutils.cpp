@@ -5,15 +5,14 @@
 #pragma hdrstop
 
 #include "portalutils.h"
-#include "CustomObject.h"
 #include "Scene.h"
 #include "Portal.h"
 #include "Sector.h"
 #include "EditMesh.h"
 #include "EditObject.h"
 #include "SceneObject.h"
-#include "UI_Main.h"
 #include "Library.h"
+#include "ui_main.h"
 
 CPortalUtils PortalUtils;
 #define EPS_P 0.001f

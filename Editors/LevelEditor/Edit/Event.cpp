@@ -6,17 +6,16 @@
 #pragma hdrstop
 
 #include "Event.h"
-#include "SceneClassList.h"
-#include "UI_Main.h"
 #include "frustum.h"
 #include "cl_intersect.h"
 #include "texture.h"
-#include "D3DUtils.h"
 #include "bottombar.h"
 #include "topbar.h"
 #include "scene.h"
 #include "UI_Tools.h"
 #include "FrameEvent.h"
+#include "d3dutils.h"
+#include "ui_main.h"
 // export to game
 #include "net_utils.h"
 #include "xrMessages.h"

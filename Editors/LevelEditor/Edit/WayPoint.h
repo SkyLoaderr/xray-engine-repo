@@ -5,8 +5,8 @@
 #ifndef _INCDEF_WayPoint_H_
 #define _INCDEF_WayPoint_H_                                
 
-#include "CustomObject.h"
 #include "LevelGameDef.h"
+#include "CustomObject.h"
 
 class CFrustum;
 class CWayPoint;

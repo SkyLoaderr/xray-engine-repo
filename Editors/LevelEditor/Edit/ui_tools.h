@@ -1,10 +1,11 @@
 #ifndef ui_toolsH
 #define ui_toolsH
 
-#include "SceneClassList.h"
 // refs
 class TUI_CustomTools;
 class TUI_Control;
+
+#include "SceneClassList.h"
 
 //---------------------------------------------------------------------------
 enum ETarget{

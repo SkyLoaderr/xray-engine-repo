@@ -4,11 +4,10 @@
 
 #include "PropertiesLight.h"
 #include "ELight.h"
-#include "SceneClassList.h"
-#include "ui_main.h"
-//#include "ColorPicker.h"
 #include "Scene.h"                              
 #include "PropertiesList.h"
+#include "ColorPicker.h"
+#include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "mxPlacemnt"

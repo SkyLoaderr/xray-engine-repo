@@ -4,13 +4,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "Log.h"
 #include "spawnpoint.h"
-#include "SceneClassList.h"
-#include "UI_Main.h"
-#include "Texture.h"
-#include "Frustum.h"
-#include "D3DUtils.h"
 #include "xr_ini.h"
 #include "clsid_game.h"
 

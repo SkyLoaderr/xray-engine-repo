@@ -5,12 +5,11 @@
 #pragma hdrstop
 
 #include "DetailObjects.h"
-#include "UI_Main.h"
 #include "Scene.h"
 #include "cl_intersect.h"
-#include "D3DUtils.h"
 #include "bottombar.h"
 #include "SceneObject.h"
+#include "d3dutils.h"
 
 const DWORD	vs_size				= 3000;
 const float slot_size			= DETAIL_SLOT_SIZE;

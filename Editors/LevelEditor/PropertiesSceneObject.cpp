@@ -2,7 +2,6 @@
 #pragma hdrstop
 
 #include "PropertiesSceneObject.h"
-#include "SceneClassList.h"
 #include "SceneObject.h"
 #include "Scene.h"
 #include "ChoseForm.h"

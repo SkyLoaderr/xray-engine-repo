@@ -71,7 +71,7 @@ protected:
 public:
 	FSPath 	m_LevelPath;
 protected:
-	bool 	LightenObjects			();
+	bool 	EvictResource			();
 	bool 	PrepareFolders          ();
     bool 	PreparePath				();
 

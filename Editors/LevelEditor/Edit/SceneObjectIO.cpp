@@ -7,7 +7,6 @@
 
 #include "SceneObject.h"
 #include "Library.h"
-#include "UI_Main.h"
 #include "Shader.h"
 #include "EditMesh.h"
 #include "bone.h"

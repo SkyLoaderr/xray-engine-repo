@@ -1,8 +1,8 @@
 #ifndef ui_controlH
 #define ui_controlH
-//---------------------------------------------------------------------------
-#include "SceneClassList.h"
 
+#include "customobject.h"
+//---------------------------------------------------------------------------
 class TUI_CustomControl{
 protected:
     friend class TUI_CustomTools;

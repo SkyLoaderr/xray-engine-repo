@@ -5,8 +5,8 @@
 #ifndef _INCDEF_PSObject_H_
 #define _INCDEF_PSObject_H_
 
-#include "CustomObject.h"                      
 #include "ParticleSystem.h"
+#include "CustomObject.h"
 #define PSOBJECT_SIZE 0.5f
 
 // refs

@@ -1,10 +1,9 @@
 #ifndef _INCDEF_Portal_H_
 #define _INCDEF_Portal_H_
 
-#include "CustomObject.h"
-
 // refs
 class CSector;
+#include "CustomObject.h"
 
 class CPortal: public CCustomObject {
 	friend class TfrmPropertiesPortal;

@@ -3,7 +3,6 @@
 
 #include "LeftBar.h"
 #include "BottomBar.h"
-#include "UI_Main.h"
 #include "UI_Tools.h"
 #include "main.h"
 #include "ObjectList.h"
@@ -12,6 +11,7 @@
 #include "EditorPref.h"
 #include "UI_Tools.h"
 #include "folderlib.h"
+#include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"

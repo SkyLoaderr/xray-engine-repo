@@ -6,12 +6,13 @@
 
 #include "EditObject.h"
 
+#ifdef _EDITOR
+	#include "ui_main.h"
+#endif
+
 #include "motion.h"
 #include "bone.h"
 
-#ifdef _EDITOR
-#include "ui_main.h"
-#endif
 //----------------------------------------------------
 class fBoneNameEQ {
 	AnsiString	name;

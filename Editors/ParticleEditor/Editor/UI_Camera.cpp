@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "UI_Main.h"
 #include "UI_Camera.h"
+#include "ui_main.h"
 
 CUI_Camera::CUI_Camera(){
 	m_Style = csPlaneMove;

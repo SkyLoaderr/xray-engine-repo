@@ -4,10 +4,10 @@
 #include "UI_PSTools.h"
 #include "ui_tools.h"
 #include "PSLibrary.h"
-#include "ui_main.h"
 #include "PSObject.h"
 #include "scene.h"
 #include "FramePS.h"
+#include "ui_main.h"
 
 //----------------------------------------------------------------------
 TUI_PSTools::TUI_PSTools():TUI_CustomTools(OBJCLASS_PS){

@@ -13,7 +13,6 @@
 #include "motion.h"
 #include "xr_ini.h"
 #include "MgcCont3DMinBox.h"
-#include "UI_Main.h"
 
 DWORD CObjectOGFCollectorPacked::VPack(SOGFVert& V){
     DWORD P 	= 0xffffffff;

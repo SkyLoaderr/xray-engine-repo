@@ -7,11 +7,8 @@
 
 #include "Log.h"
 #include "Sector.h"
-#include "SceneClassList.h"
-#include "UI_Main.h"
 #include "Frustum.h"
 #include "EditMesh.h"
-#include "D3DUtils.h"
 #include "SceneObject.h"
 #include "Scene.h"
 #include "Texture.h"
@@ -21,6 +18,7 @@
 #include "portalutils.h"
 #include "cl_collector.h"
 #include "MgcConvexHull3D.h"
+#include "ui_main.h"
 
 #define SECTOR_VERSION   					0x0011
 //----------------------------------------------------

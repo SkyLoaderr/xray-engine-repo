@@ -3,12 +3,11 @@
 
 #include "ui_tools.h"
 #include "ui_control.h"
-#include "ui_main.h"
-#include "sceneclasslist.h"
 #include "UI_CustomTools.h"
 #include "LeftBar.h"
 #include "TopBar.h"
 #include "Scene.h"
+#include "ui_main.h"
 
 #include "UI_LightTools.h"
 #include "UI_ObjectTools.h"

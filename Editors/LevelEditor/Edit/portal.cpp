@@ -6,16 +6,15 @@
 
 #include "Log.h"
 #include "Portal.h"
-#include "SceneClassList.h"                           
-#include "UI_Main.h"
 #include "Frustum.h"
-#include "D3DUtils.h"
 #include "Scene.h"
 #include "cl_intersect.h"
 #include "sector.h"
 #include "MgcConvexHull2D.h"
 #include "MgcAppr3DPlaneFit.h"
 #include "bottombar.h"
+#include "d3dutils.h"
+#include "ui_main.h"
 
 #define PORTAL_VERSION   					0x0010
 //------------------------------------------------------------------------------

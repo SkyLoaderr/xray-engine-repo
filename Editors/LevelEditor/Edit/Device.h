@@ -107,45 +107,47 @@ public:
 
     IC float				GetRenderArea	(){return m_RenderArea;}
 	// Sprite rendering
-	IC float 				_x2real			(float x)	{ return (x+1)*m_RenderWidth_2;	}
-	IC float 				_y2real			(float y)	{ return (y+1)*m_RenderHeight_2;}
+	IC float 				_x2real			(float x)	
+    { return (x+1)*m_RenderWidth_2;	}
+	IC float 				_y2real			(float y)	
+    { return (y+1)*m_RenderHeight_2;}
 
-    IC void					SetTexture		(DWORD dwStage, IDirect3DTexture8* lpTexture){
-    											VERIFY(bReady);
-	                          		      	    CHK_DX(HW.pDevice->SetTexture( dwStage, lpTexture ));
-									   	 	}
-    IC void					SetTSS			(DWORD dwStage, D3DTEXTURESTAGESTATETYPE dwState, DWORD dwValue){
-    											VERIFY(bReady);
-                        		            	CHK_DX(HW.pDevice->SetTextureStageState(dwStage,dwState,dwValue));
-											}
-    IC void					SetRS			(D3DRENDERSTATETYPE p1, DWORD p2){
-    											VERIFY(bReady);
-                   		                	 	CHK_DX(HW.pDevice->SetRenderState(p1,p2));
-											}
-    IC void					SetTransform	(D3DTRANSFORMSTATETYPE p1, const Fmatrix& m){
-    											VERIFY(bReady);
-                               		  		   	CHK_DX(HW.pDevice->SetTransform(p1,m.d3d()));
-							   			 	}
+    IC void					SetTexture		(DWORD dwStage, IDirect3DTexture8* lpTexture)
+    { VERIFY(bReady); CHK_DX(HW.pDevice->SetTexture( dwStage, lpTexture )); }
+    IC void					SetTSS			(DWORD dwStage, D3DTEXTURESTAGESTATETYPE dwState, DWORD dwValue)
+    { VERIFY(bReady); CHK_DX(HW.pDevice->SetTextureStageState(dwStage,dwState,dwValue)); }
+    IC void					SetRS			(D3DRENDERSTATETYPE p1, DWORD p2)
+    { VERIFY(bReady); CHK_DX(HW.pDevice->SetRenderState(p1,p2)); }
+    IC void					SetTransform	(D3DTRANSFORMSTATETYPE p1, const Fmatrix& m)
+    { VERIFY(bReady); CHK_DX(HW.pDevice->SetTransform(p1,m.d3d())); }
 
-	IC void					set_xform		(DWORD ID, const Fmatrix& m){	SetTransform((D3DTRANSFORMSTATETYPE)ID,m); }
-	IC void					set_xform_world	(const Fmatrix& M)	{ set_xform(D3DTS_WORLD,M);			}
-	IC void					set_xform_view	(const Fmatrix& M)	{ set_xform(D3DTS_VIEW,M);			}
-	IC void					set_xform_project(const Fmatrix& M)	{ set_xform(D3DTS_PROJECTION,M);	}
+	IC void					set_xform		(DWORD ID, const Fmatrix& m)
+    { SetTransform((D3DTRANSFORMSTATETYPE)ID,m); }
+	IC void					set_xform_world	(const Fmatrix& M)	
+    { set_xform(D3DTS_WORLD,M);			}
+	IC void					set_xform_view	(const Fmatrix& M)	
+    { set_xform(D3DTS_VIEW,M);			}
+	IC void					set_xform_project(const Fmatrix& M)	
+    { set_xform(D3DTS_PROJECTION,M);	}
 
 	// draw
 	void			   		SetShader		(Shader* sh){m_CurrentShader = sh;}
-	void			   		DP				(D3DPRIMITIVETYPE pt, CVS* vs, DWORD vBase, DWORD pc);
-	void 					DIP				(D3DPRIMITIVETYPE pt, CVS* vs, DWORD vBase, DWORD vc, DWORD iBase, DWORD pc);
+	void			   		DP				(D3DPRIMITIVETYPE pt, CVS* vs, IDirect3DVertexBuffer8* vb, DWORD vBase, DWORD pc);
+	IC void			   		DP				(D3DPRIMITIVETYPE pt, CVS* vs, DWORD vBase, DWORD pc)
+    { DP(pt,vs,Streams.Vertex.Buffer(),vBase,pc); }
+	void 					DIP				(D3DPRIMITIVETYPE pt, CVS* vs, IDirect3DVertexBuffer8* vb, DWORD vBase, DWORD vc, IDirect3DIndexBuffer8* ib, DWORD iBase, DWORD pc);
+	IC void 				DIP				(D3DPRIMITIVETYPE pt, CVS* vs, DWORD vBase, DWORD vc, DWORD iBase, DWORD pc)
+    { DIP(pt,vs,Streams.Vertex.Buffer(),vBase,vc,Streams.Index.Buffer(),iBase,pc); }
 
     // light&material
-    IC void					LightEnable		(DWORD dwLightIndex, BOOL bEnable){
-                                			CHK_DX(HW.pDevice->LightEnable(dwLightIndex, bEnable));}
-    IC void					SetLight		(DWORD dwLightIndex, Flight& lpLight){
-                                			CHK_DX(HW.pDevice->SetLight(dwLightIndex, lpLight.d3d()));}
-	IC void					SetMaterial		(Fmaterial& mat){
-                         			       	CHK_DX(HW.pDevice->SetMaterial(mat.d3d()));}
-	IC void					ResetMaterial	(){
-                                			CHK_DX(HW.pDevice->SetMaterial(m_DefaultMat.d3d()));}
+    IC void					LightEnable		(DWORD dwLightIndex, BOOL bEnable)
+    { CHK_DX(HW.pDevice->LightEnable(dwLightIndex, bEnable));}
+    IC void					SetLight		(DWORD dwLightIndex, Flight& lpLight)
+    { CHK_DX(HW.pDevice->SetLight(dwLightIndex, lpLight.d3d()));}
+	IC void					SetMaterial		(Fmaterial& mat)
+    { CHK_DX(HW.pDevice->SetMaterial(mat.d3d()));}
+	IC void					ResetMaterial	()
+    { CHK_DX(HW.pDevice->SetMaterial(m_DefaultMat.d3d()));}
 
 	// update
     void					UpdateView		();
@@ -159,13 +161,10 @@ public:
 
 	void 					InitTimer		();
 	// Mode control
-	IC u32	 				TimerAsync		(void){
-		u64	qTime		= TimerGlobal.GetElapsed();
-		return u32((qTime*u64(1000))/CPU::cycles_per_second);
-	}
-	IC u32	 				TimerAsyncMM	(void){
-		return TimerAsync()+Timer_MM_Delta;
-	}
+	IC u32	 				TimerAsync		(void)
+    { u64 qTime = TimerGlobal.GetElapsed(); return u32((qTime*u64(1000))/CPU::cycles_per_second); }
+	IC u32	 				TimerAsyncMM	(void)
+    { return TimerAsync()+Timer_MM_Delta; }
 
 	__declspec(noreturn) void __cdecl		Fatal	(const char* F,...);
 	void									Error	(HRESULT,LPCSTR,int);

@@ -3,11 +3,11 @@
 
 #include "ui_control.h"
 #include "ui_tools.h"
-#include "ui_main.h"
 #include "scene.h"
 #include "topbar.h"
 #include "ui_customtools.h"
 #include "bottombar.h"
+#include "ui_main.h"
 
 TUI_CustomControl::TUI_CustomControl(int st, int act, TUI_CustomTools* parent){
 	parent_tool		= parent; VERIFY(parent);

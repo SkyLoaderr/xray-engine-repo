@@ -1,11 +1,10 @@
 //---------------------------------------------------------------------------
 #include "stdafx.h"
 #pragma hdrstop
-#include "Device.h"
-#include "ui_main.h"
 #include "xr_hudfont.h"
 #include "dxerr8.h"
 #include "ImageManager.h"
+#include "ui_main.h"
 
 #pragma package(smart_init)
 
@@ -14,6 +13,9 @@ CRenderDevice 		Device;
 int psTextureLOD	= 0;
 DWORD psDeviceFlags = rsStatistic|rsFilterLinear|rsFog|rsDrawGrid;
 DWORD dwClearColor	= DEFAULT_CLEARCOLOR;
+
+extern int	rsDVB_Size;
+extern int	rsDIB_Size;
 
 //---------------------------------------------------------------------------
 void CRenderDevice::Error(HRESULT hr, const char *file, int line)
@@ -41,6 +43,10 @@ void __cdecl CRenderDevice::Fatal(const char* F,...)
 
 //---------------------------------------------------------------------------
 CRenderDevice::CRenderDevice(){
+// dynamic buffer size
+	rsDVB_Size		= 2048;
+	rsDIB_Size		= 2048;
+// default initialization
     m_ScreenQuality = 1.f;
     dwWidth 		= dwHeight 	= 256;
     m_RealWidth 	= m_RealHeight 		= 256;
@@ -340,24 +346,24 @@ void CRenderDevice::UpdateTimer(){
     m_Camera.Update(fTimeDelta);
 }
 
-void CRenderDevice::DP(D3DPRIMITIVETYPE pt, CVS* VS, DWORD vBase, DWORD pc){
-	::Shader* S 		= m_CurrentShader?m_CurrentShader:m_WireShader;
-    DWORD dwRequired	= S->lod0->Passes.size();
-	Primitive.setVertices(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.Buffer());
+void CRenderDevice::DP(D3DPRIMITIVETYPE pt, CVS* vs, IDirect3DVertexBuffer8* vb, DWORD vBase, DWORD pc){
+	::Shader* S 			= m_CurrentShader?m_CurrentShader:m_WireShader;
+    DWORD dwRequired		= S->lod0->Passes.size();
+	Primitive.setVertices	(vs->dwHandle,vs->dwStride,vb);
     for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
         Shader.set_Shader	(S,dwPass);
 		Primitive.Render	(pt,vBase,pc);
     }
 }
 
-void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, CVS* vs, DWORD vBase, DWORD vc, DWORD iBase, DWORD pc){
-	::Shader* S 		= m_CurrentShader?m_CurrentShader:m_WireShader;
-    DWORD dwRequired	= S->lod0->Passes.size();
-    Primitive.setIndices	(vBase, Device.Streams.Index.Buffer());
-    Primitive.setVertices	(vs->dwHandle,vs->dwStride,Device.Streams.Vertex.Buffer());
+void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, CVS* vs, IDirect3DVertexBuffer8* vb, DWORD vBase, DWORD vc, IDirect3DIndexBuffer8* ib, DWORD iBase, DWORD pc){
+	::Shader* S 			= m_CurrentShader?m_CurrentShader:m_WireShader;
+    DWORD dwRequired		= S->lod0->Passes.size();
+    Primitive.setIndices	(vBase, ib);
+    Primitive.setVertices	(vs->dwHandle,vs->dwStride,vb);
     for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
-        Shader.set_Shader(S,dwPass);
-		Primitive.Render(pt,vBase,vc,iBase,pc);
+        Shader.set_Shader	(S,dwPass);
+		Primitive.Render	(pt,vBase,vc,iBase,pc);
     }
 }
 

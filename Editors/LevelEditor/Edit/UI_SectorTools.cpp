@@ -3,16 +3,15 @@
 
 #include "ui_Sectortools.h"
 #include "scene.h"
-#include "sceneclasslist.h"
 #include "Sector.h"
 #include "editmesh.h"
 #include "EditObject.h"
 #include "SceneObject.h"
 #include "frameSector.h"
 #include "topbar.h"
-#include "ui_main.h"
 #include "ui_tools.h"
 #include "frustum.h"
+#include "ui_main.h"
 
 //---------------------------------------------------------------------------
 TUI_SectorTools::TUI_SectorTools():TUI_CustomTools(OBJCLASS_SECTOR){
