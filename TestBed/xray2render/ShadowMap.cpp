@@ -670,7 +670,7 @@ HRESULT CreatePower(IDirect3DDevice9* D, DWORD size, float P, LPDIRECT3DTEXTURE9
 
 // Gauss filtering coeffs
 void	CalcGauss	(
-					 vector<D3DXVECTOR4>&	w,	// weight
+					 vector<D3DXVECTOR4>&	W,	// weight
 					 vector<D3DXVECTOR4>&	H,	// horizontal offsets
 					 vector<D3DXVECTOR4>&	V,	// vertical offsets
 					 int	n=7,				// kernel size
@@ -681,15 +681,19 @@ void	CalcGauss	(
 					 float	th=1.f				// grid/texture height
 					 )
 {
+	// calculate
 	D3DXVECTOR4		scale	= D3DXVECTOR4(1/tw,1/th,0,0);
+	vector<float>	w;
 	for (int i=-n; i<=n; i++)
 	{
-		w.push_back	(expf(-float(i*i)/(2*r*r)));	// weight
+		w.push_back		(expf(-float(i*i)/(2*r*r)));	// weight
 
 		float offset	= bs*float(i); 
 		H.push_back		(scale*D3DXVECTOR4(offset,0,0,0));
 		V.push_back		(scale*D3DXVECTOR4(0,offset,0,0));
 	}
+
+	// scale weights
 	float mag				= 0;
 	for (i=0; i<w.size(); i++)	mag		+= w[i];
 	for (i=0; i<w.size(); i++)	w[i]	= s_out*w[i]/mag;
