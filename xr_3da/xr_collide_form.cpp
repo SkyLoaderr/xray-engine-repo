@@ -331,6 +331,55 @@ void CCF_Shape::add_box		(Fmatrix& B )
 	shapes.back().data.box.set(B);
 }
 
+void CCF_Shape::ComputeBounds()
+{
+	s_box.invalidate	();
+
+	for (u32 el=0; el<shapes.size(); el++)
+	{
+		switch (shapes[el].type)
+		{
+		case 0: // sphere
+			{
+				Fsphere		T		= shapes[el].data.sphere;
+				for (int t=0; t<100; t++)
+				{
+					Fvector p; p.random_dir();
+					p.normalize	();
+					p.mul		(T.R);
+					p.add		(T.P);
+					s_box.modify(p);
+				}
+			}
+			break;
+		case 1:	// box
+			{
+				Fvector		A[8],B[8];
+				Fmatrix&	T		= shapes[el].data.box;
+				
+				// Build points
+				A[0].set( -.5f, -.5f, -.5f); T.transform_tiny	(B[0],A[0]); 
+				A[1].set( -.5f, -.5f, +.5f); T.transform_tiny	(B[1],A[1]);
+				A[2].set( -.5f, +.5f, +.5f); T.transform_tiny	(B[2],A[2]);
+				A[3].set( -.5f, +.5f, -.5f); T.transform_tiny	(B[3],A[3]);
+				A[4].set( +.5f, +.5f, +.5f); T.transform_tiny	(B[4],A[4]);
+				A[5].set( +.5f, +.5f, -.5f); T.transform_tiny	(B[5],A[5]);
+				A[6].set( +.5f, -.5f, +.5f); T.transform_tiny	(B[6],A[6]);
+				A[7].set( +.5f, -.5f, -.5f); T.transform_tiny	(B[7],A[7]);
+				
+				P.build(B[0],B[3],B[5]);	if (P.classify(S.P)<S.R) break;
+				P.build(B[1],B[2],B[3]);	if (P.classify(S.P)>S.R) break;
+				P.build(B[6],B[5],B[4]);	if (P.classify(S.P)>S.R) break;
+				P.build(B[4],B[2],B[1]);	if (P.classify(S.P)>S.R) break;
+				P.build(B[3],B[2],B[4]);	if (P.classify(S.P)>S.R) break;
+				P.build(B[1],B[0],B[6]);	if (P.classify(S.P)>S.R) break;
+				return TRUE;
+			}
+			break;
+		}
+	}
+}
+
 BOOL CCF_Shape::Contact		( CObject* O )
 {
 	// Build object-sphere
