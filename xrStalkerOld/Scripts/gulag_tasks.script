@@ -688,29 +688,6 @@ function loadJob(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = "",
 			leader = "patrol1@agr_nii"
 		}
-		t = { section = "kamp1@agr_nii",
-			idle = 0,
-			prior = 2, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "kamp1@agr_nii",
-			idle = 0,
-			prior = 2, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "kamp1@agr_nii",
-			idle = 0,
-			prior = 2, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "kamp1@agr_nii",
-			idle = 0,
-			prior = 2, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
 		table.insert(sj, t)		
 		t = { section = "sleeper1@agr_nii",
 			idle = 0,
@@ -730,12 +707,6 @@ function loadJob(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "sleeper4@agr_nii",
-			idle = 0,
-			prior = 0, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)	
 	end
 
 	--' Agroprom factory
@@ -804,7 +775,11 @@ function loadStates(gname, type)
 
 	if type == "agr_nii" then
 		return function(gulag)
-			return 0 
+			if level.get_time_hours() >= 7 and level.get_time_hours() <= 22 then
+				return 0  -- день
+			else
+				return 1  -- ночь
+			end
 		end
 	end
 
@@ -821,10 +796,10 @@ function loadStates(gname, type)
 				enemy = v:best_enemy()
 				if enemy ~= nil then
 					enemy_type = get_clsid(enemy)
-					if 	enemy_type == clsid.actor or
-	  	   				enemy_type == clsid.soldier or
-		   				enemy_type == clsid.stalker or
-	   					enemy_type == clsid.trader
+					if enemy_type == clsid.actor or
+	  	   			   enemy_type == clsid.soldier or
+		   			   enemy_type == clsid.stalker or
+	   				   enemy_type == clsid.trader
 	   				then
 	   					gulag.alarm_start = game.get_game_time()
 	   					return 2 -- тревога
@@ -886,9 +861,9 @@ function loadStates(gname, type)
 
 	if type == "agr_factory" then
 		return function( gulag )
-			if gulag:get_population() <= 3 then
+			if gulag:getCasualities() >= 3 then
 				local actor = level.actor()
-				if actor and actor:has_info( "agr_factory_combat_proceed" ) then
+				if actor and actor:dont_has_info( "agr_factory_need_help" ) then
 					actor:give_info_portion( "agr_factory_need_help" )
 				end
 			end
