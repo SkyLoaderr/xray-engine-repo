@@ -53,12 +53,6 @@ public:
 	SLevel						m_tLevel;
 	VERTEX_MAP					m_tVertexMap;
 	u32							m_dwOffset;
-	CSE_ALifeCrossTable			*l_tpCrossTable;
-	CAI_Map						*l_tpAI_Map;
-	LPCSTR						m_S;
-	u32							dwOffset;
-	CInifile					*m_Ini;
-	xr_vector<SLevelPoint>		*m_tpLevelPoints;
 
 								CLevelGraph(const SLevel &tLevel, LPCSTR S, u32 dwOffset, u32 dwLevelID, xr_vector<SLevelPoint> *tpLevelPoints, CInifile *Ini) : CSE_ALifeGraph()
 	{
@@ -66,19 +60,15 @@ public:
 		m_dwOffset				= dwOffset;
 		
 		FILE_NAME				caFileName;
-		m_S						= S;
-		m_dwOffset				= dwOffset;
-		m_Ini					= Ini;
-		m_tpLevelPoints			= tpLevelPoints;
 		
 		// loading graph
 		strconcat				(caFileName,S,"level.graph");
 		CSE_ALifeGraph::Load	(caFileName);
 
 		strconcat				(caFileName,S,CROSS_TABLE_NAME_RAW);
-		l_tpCrossTable = xr_new<CSE_ALifeCrossTable>(caFileName);
+		CSE_ALifeCrossTable		*l_tpCrossTable = xr_new<CSE_ALifeCrossTable>(caFileName);
 
-		l_tpAI_Map				= xr_new<CAI_Map>(S);
+		CAI_Map					*l_tpAI_Map = xr_new<CAI_Map>(S);
 		u32						l_dwPointOffset = 0;
 
 		m_tpVertices.resize		(m_tGraphHeader.dwVertexCount);
@@ -100,6 +90,97 @@ public:
 				(*I).tpaEdges[i].dwVertexNumber += dwOffset;
 			}
 			(*I).dwPointOffset		= 0;
+			vfGenerateDeathPoints	(int(I - B),l_tpCrossTable,tpLevelPoints,l_tpAI_Map,(*I).tDeathPointCount);
+		}
+
+		xr_delete					(l_tpCrossTable);
+		xr_delete					(l_tpAI_Map);
+		
+		// updating cross-table
+		{
+			strconcat			(caFileName,S,CROSS_TABLE_NAME_RAW);
+			CSE_ALifeCrossTable	*tpCrossTable = xr_new<CSE_ALifeCrossTable>(caFileName);
+			xr_vector<CSE_ALifeCrossTable::SCrossTableCell> tCrossTableUpdate;
+			tCrossTableUpdate.resize(tpCrossTable->m_tCrossTableHeader.dwNodeCount);
+			for (int i=0; i<(int)tpCrossTable->m_tCrossTableHeader.dwNodeCount; i++) {
+				tCrossTableUpdate[i] = tpCrossTable->m_tpaCrossTable[i];
+				tCrossTableUpdate[i].tGraphIndex += dwOffset;
+			}
+
+			CMemoryWriter		tMemoryStream;
+			CSE_ALifeCrossTable	tCrossTable;
+
+			tCrossTable.m_tCrossTableHeader.dwVersion = XRAI_CURRENT_VERSION;
+			tCrossTable.m_tCrossTableHeader.dwNodeCount = tpCrossTable->m_tCrossTableHeader.dwNodeCount;
+			tCrossTable.m_tCrossTableHeader.dwGraphPointCount = tpCrossTable->m_tCrossTableHeader.dwGraphPointCount;
+
+			xr_delete			(tpCrossTable);
+
+			tMemoryStream.open_chunk(CROSS_TABLE_CHUNK_VERSION);
+			tMemoryStream.w(&tCrossTable.m_tCrossTableHeader,sizeof(tCrossTable.m_tCrossTableHeader));
+			tMemoryStream.close_chunk();
+
+			tMemoryStream.open_chunk(CROSS_TABLE_CHUNK_DATA);
+			for (int i=0; i<(int)tCrossTable.m_tCrossTableHeader.dwNodeCount; i++)
+				tMemoryStream.w(&(tCrossTableUpdate[i]),sizeof(tCrossTableUpdate[i]));
+			tMemoryStream.close_chunk();
+
+			strconcat			(caFileName,S,CROSS_TABLE_NAME);
+			tMemoryStream.save_to(caFileName);
+		}
+
+		// fill vertex map
+		{
+			string256								fName;
+			strconcat								(fName,S,"level.spawn");
+			IReader									*F = FS.r_open(fName);
+			IReader									*O = 0;
+			for (int id=0, i=0; 0!=(O = F->open_chunk(id)); id++)	{
+				NET_Packet							P;
+				P.B.count							= O->length();
+				O->r								(P.B.data,P.B.count);
+				O->close							();
+				u16									ID;
+				P.r_begin							(ID);
+				R_ASSERT							(M_SPAWN==ID);
+				P.r_string							(fName);
+				CSE_Abstract				*E = F_entity_Create	(fName);
+				R_ASSERT2							(E,"Can't create entity.");
+				E->Spawn_Read						(P);
+				CSE_ALifeGraphPoint					*tpGraphPoint = dynamic_cast<CSE_ALifeGraphPoint*>(E);
+				if (tpGraphPoint) {
+					Fvector							tVector;
+					tVector							= tpGraphPoint->o_Position;
+					_GRAPH_ID						tGraphID = _GRAPH_ID(-1);
+					float							fMinDistance = 1000000.f;
+					GRAPH_VERTEX_IT					B = m_tpVertices.begin();
+					GRAPH_VERTEX_IT					I = B;
+					GRAPH_VERTEX_IT					E = m_tpVertices.end();
+					for ( ; I != E; I++) {
+						float fDistance = (*I).tLocalPoint.distance_to(tVector);
+						if (fDistance < fMinDistance) {
+							fMinDistance	= fDistance;
+							tGraphID		= _GRAPH_ID(I - B);
+							if (fMinDistance < EPS_L)
+								break;
+						}
+					}
+					if (fMinDistance < EPS_L) {
+						SConnectionVertex				T;
+						LPSTR							S;
+						S								= (char *)xr_malloc((strlen(tpGraphPoint->s_name_replace) + 1)*sizeof(char));
+						T.caConnectName					= (char *)xr_malloc((strlen(tpGraphPoint->m_caConnectionPointName) + 1)*sizeof(char));
+						T.dwLevelID						= dwfGetIDByLevelName(Ini,tpGraphPoint->m_caConnectionLevelName);
+						T.tGraphID						= i;
+						Memory.mem_copy					(S,tpGraphPoint->s_name_replace,(u32)strlen(tpGraphPoint->s_name_replace) + 1);
+						Memory.mem_copy					(T.caConnectName,tpGraphPoint->m_caConnectionPointName,(u32)strlen(tpGraphPoint->m_caConnectionPointName) + 1);
+						m_tVertexMap.insert				(mk_pair(S,T));
+						i++;
+					}
+				}
+				xr_delete							(E);
+			}
+			O->close								();
 		}
 	};
 
@@ -199,108 +280,6 @@ public:
 		}
 	}
 
-	void						vfGenerateDeathPoints()
-	{
-		GRAPH_VERTEX_IT			B = m_tpVertices.begin();
-		GRAPH_VERTEX_IT			I = B;
-		GRAPH_VERTEX_IT			E = m_tpVertices.end();
-		for ( ; I != E; I++)
-			vfGenerateDeathPoints	(int(I - B),l_tpCrossTable,m_tpLevelPoints,l_tpAI_Map,(*I).tDeathPointCount);
-
-		xr_delete				(l_tpCrossTable);
-		xr_delete				(l_tpAI_Map);
-
-		FILE_NAME				caFileName;
-		LPCSTR					S = m_S;
-		CInifile				*Ini = m_Ini;
-		// updating cross-table
-		{
-			strconcat			(caFileName,S,CROSS_TABLE_NAME_RAW);
-			CSE_ALifeCrossTable	*tpCrossTable = xr_new<CSE_ALifeCrossTable>(caFileName);
-			xr_vector<CSE_ALifeCrossTable::SCrossTableCell> tCrossTableUpdate;
-			tCrossTableUpdate.resize(tpCrossTable->m_tCrossTableHeader.dwNodeCount);
-			for (int i=0; i<(int)tpCrossTable->m_tCrossTableHeader.dwNodeCount; i++) {
-				tCrossTableUpdate[i] = tpCrossTable->m_tpaCrossTable[i];
-				tCrossTableUpdate[i].tGraphIndex += dwOffset;
-			}
-
-			CMemoryWriter		tMemoryStream;
-			CSE_ALifeCrossTable	tCrossTable;
-
-			tCrossTable.m_tCrossTableHeader.dwVersion = XRAI_CURRENT_VERSION;
-			tCrossTable.m_tCrossTableHeader.dwNodeCount = tpCrossTable->m_tCrossTableHeader.dwNodeCount;
-			tCrossTable.m_tCrossTableHeader.dwGraphPointCount = tpCrossTable->m_tCrossTableHeader.dwGraphPointCount;
-
-			xr_delete			(tpCrossTable);
-
-			tMemoryStream.open_chunk(CROSS_TABLE_CHUNK_VERSION);
-			tMemoryStream.w(&tCrossTable.m_tCrossTableHeader,sizeof(tCrossTable.m_tCrossTableHeader));
-			tMemoryStream.close_chunk();
-
-			tMemoryStream.open_chunk(CROSS_TABLE_CHUNK_DATA);
-			for (int i=0; i<(int)tCrossTable.m_tCrossTableHeader.dwNodeCount; i++)
-				tMemoryStream.w(&(tCrossTableUpdate[i]),sizeof(tCrossTableUpdate[i]));
-			tMemoryStream.close_chunk();
-
-			strconcat			(caFileName,S,CROSS_TABLE_NAME);
-			tMemoryStream.save_to(caFileName);
-		}
-
-		// fill vertex map
-		{
-			string256								fName;
-			strconcat								(fName,S,"level.spawn");
-			IReader									*F = FS.r_open(fName);
-			IReader									*O = 0;
-			for (int id=0, i=0; 0!=(O = F->open_chunk(id)); id++)	{
-				NET_Packet							P;
-				P.B.count							= O->length();
-				O->r								(P.B.data,P.B.count);
-				O->close							();
-				u16									ID;
-				P.r_begin							(ID);
-				R_ASSERT							(M_SPAWN==ID);
-				P.r_string							(fName);
-				CSE_Abstract				*E = F_entity_Create	(fName);
-				R_ASSERT2							(E,"Can't create entity.");
-				E->Spawn_Read						(P);
-				CSE_ALifeGraphPoint					*tpGraphPoint = dynamic_cast<CSE_ALifeGraphPoint*>(E);
-				if (tpGraphPoint) {
-					Fvector							tVector;
-					tVector							= tpGraphPoint->o_Position;
-					_GRAPH_ID						tGraphID = _GRAPH_ID(-1);
-					float							fMinDistance = 1000000.f;
-					GRAPH_VERTEX_IT					B = m_tpVertices.begin();
-					GRAPH_VERTEX_IT					I = B;
-					GRAPH_VERTEX_IT					E = m_tpVertices.end();
-					for ( ; I != E; I++) {
-						float fDistance = (*I).tLocalPoint.distance_to(tVector);
-						if (fDistance < fMinDistance) {
-							fMinDistance	= fDistance;
-							tGraphID		= _GRAPH_ID(I - B);
-							if (fMinDistance < EPS_L)
-								break;
-						}
-					}
-					if (fMinDistance < EPS_L) {
-						SConnectionVertex				T;
-						LPSTR							S;
-						S								= (char *)xr_malloc((strlen(tpGraphPoint->s_name_replace) + 1)*sizeof(char));
-						T.caConnectName					= (char *)xr_malloc((strlen(tpGraphPoint->m_caConnectionPointName) + 1)*sizeof(char));
-						T.dwLevelID						= dwfGetIDByLevelName(Ini,tpGraphPoint->m_caConnectionLevelName);
-						T.tGraphID						= i;
-						Memory.mem_copy					(S,tpGraphPoint->s_name_replace,(u32)strlen(tpGraphPoint->s_name_replace) + 1);
-						Memory.mem_copy					(T.caConnectName,tpGraphPoint->m_caConnectionPointName,(u32)strlen(tpGraphPoint->m_caConnectionPointName) + 1);
-						m_tVertexMap.insert				(mk_pair(S,T));
-						i++;
-					}
-				}
-				xr_delete							(E);
-			}
-			O->close								();
-		}
-	}
-
 };
 
 void xrMergeGraphs(LPCSTR name)
@@ -333,21 +312,10 @@ void xrMergeGraphs(LPCSTR name)
 		tLevel.tLevelID				= Ini->r_s32(N,"id");
 		CLevelGraph					*tpLevelGraph = xr_new<CLevelGraph>(tLevel,S1,dwOffset,tLevel.tLevelID,&l_tpLevelPoints, Ini);
 		dwOffset					+= tpLevelGraph->m_tGraphHeader.dwVertexCount;
-		tpGraphs.insert				(mk_pair(tLevel.tLevelID,tpLevelGraph));
+		tpGraphs.insert				(mk_pair(k,tpLevelGraph));
 		tGraphHeader.tpLevels.insert(std::make_pair(tLevel.tLevelID,tLevel));
     }
 	R_ASSERT(tpGraphs.size());
-
-	{
-		LEVEL_PAIR_IT			I = tGraphHeader.tpLevels.begin();
-		LEVEL_PAIR_IT			E = tGraphHeader.tpLevels.end();
-		for ( ; I != E; I++) {
-			GRAPH_P_PAIR_IT		i = tpGraphs.find((*I).second.tLevelID);
-			R_ASSERT			(i != tpGraphs.end());
-			(*i).second->vfGenerateDeathPoints();
-		}
-	}
-
 	
 	Phase("Adding interconnection points");
 	{
@@ -412,22 +380,16 @@ void xrMergeGraphs(LPCSTR name)
 	l_dwPointOffset				= dwOffset + tGraphHeader.dwEdgeCount*sizeof(CSE_ALifeGraph::SGraphEdge);
 	u32							l_dwStartPointOffset = l_dwPointOffset;
 	{
-		LEVEL_PAIR_IT			I = tGraphHeader.tpLevels.begin();
-		LEVEL_PAIR_IT			E = tGraphHeader.tpLevels.end();
-		for ( ; I != E; I++) {
-			GRAPH_P_PAIR_IT		i = tpGraphs.find((*I).second.tLevelID);
-			R_ASSERT			(i != tpGraphs.end());
-			(*i).second->vfSaveVertices	(F,dwOffset,l_dwPointOffset);
-		}
+		GRAPH_P_PAIR_IT			I = tpGraphs.begin();
+		GRAPH_P_PAIR_IT			E = tpGraphs.end();
+		for ( ; I != E; I++)
+			(*I).second->vfSaveVertices	(F,dwOffset,l_dwPointOffset);
 	}
 	{
-		LEVEL_PAIR_IT			I = tGraphHeader.tpLevels.begin();
-		LEVEL_PAIR_IT			E = tGraphHeader.tpLevels.end();
-		for ( ; I != E; I++) {
-			GRAPH_P_PAIR_IT			i = tpGraphs.find((*I).second.tLevelID);
-			R_ASSERT				(i != tpGraphs.end());
-			(*i).second->vfSaveEdges(F);
-		}
+		GRAPH_P_PAIR_IT			I = tpGraphs.begin();
+		GRAPH_P_PAIR_IT			E = tpGraphs.end();
+		for ( ; I != E; I++)
+			(*I).second->vfSaveEdges(F);
 	}
 	R_ASSERT2						(l_dwStartPointOffset == F.size() - l_dwOffset,"Graph file format is corrupted");
 	save_data						(l_tpLevelPoints,F,false);
