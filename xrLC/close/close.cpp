@@ -49,9 +49,10 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	// Send
 	if (bHighPriority) 
 	{
-		char		dest[128],msg[128];
-		sscanf		(lpCmdLine,"%s %s",dest,msg);
-
+		char*		dest	= lpCmdLine;
+		char*		msg 	= strchr(lpCmdLine,' ');
+		if (0==msg)			return 1;
+		*msg++				= 0;
 		WriteSlot	("*",dest,msg);
 	}
 
