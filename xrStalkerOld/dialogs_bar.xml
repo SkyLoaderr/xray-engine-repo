@@ -28,6 +28,10 @@
     </dialog>
     <dialog id="bar_ecolog_crush_professor_give_info_dp">
         <phrase_list>
+            <phrase id="0">
+                <text>bar_ecolog_crush_professor_give_info_dp_0</text>
+                <next>1</next>
+            </phrase>
             <phrase id="1">
                 <text>bar_ecolog_crush_professor_give_info_dp_1</text>
                 <next>11</next>
