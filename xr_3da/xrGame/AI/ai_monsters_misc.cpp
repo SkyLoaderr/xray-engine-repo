@@ -552,7 +552,7 @@ bool bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemie
 
 u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability, u32 dwTeam, u32 dwSquad, u32 dwGroup, u32 a1, u32 a2, u32 a3)
 {
-	//return(a1);
+	return(a1);
 	CGroup &Group = Level().Teams[dwTeam].Squads[dwSquad].Groups[dwGroup];
 	
 	if (Level().timeServer() - Group.m_dwLastActionTime < dwActionRefreshRate) {
