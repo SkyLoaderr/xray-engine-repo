@@ -968,7 +968,7 @@ void dInternalStepIsland_x2 (dxWorld *world, dxBody * const *body, int nb,
 //****************************************************************************
 
 void dInternalStepIsland (dxWorld *world, dxBody * const *body, int nb,
-			  dxJoint * const *joint, int nj, dReal stepsize)
+			  dxJoint **joint, int nj, dReal stepsize)
 {
 # ifndef COMPARE_METHODS
   dInternalStepIsland_x2 (world,body,nb,joint,nj,stepsize);

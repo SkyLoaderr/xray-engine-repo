@@ -521,7 +521,7 @@ static void SOR_LCP (int m, int nb, dRealMutablePtr J, int *jb, dxBody * const *
 
 
 void dxQuickStepper (dxWorld *world, dxBody * const *body, int nb,
-		     dxJoint * const *_joint, int nj, dReal stepsize)
+		     dxJoint **joint, int nj, dReal stepsize)
 {
 	int i,j;
 	IFTIMING(dTimerStart("preprocessing");)
@@ -535,8 +535,8 @@ void dxQuickStepper (dxWorld *world, dxBody * const *body, int nb,
 	// (the "dxJoint *const*" declaration says we're allowed to modify the joints
 	// but not the joint array, because the caller might need it unchanged).
 	//@@@ do we really need to do this? we'll be sorting constraint rows individually, not joints
-	dxJoint **joint = (dxJoint**) alloca (nj * sizeof(dxJoint*));
-	memcpy (joint,_joint,nj * sizeof(dxJoint*));
+	//dxJoint **joint = (dxJoint**) alloca (nj * sizeof(dxJoint*));//slipch@ - no need  to copy with sipmle island processing
+	//memcpy (joint,_joint,nj * sizeof(dxJoint*));
 	
 	// for all bodies, compute the inertia tensor and its inverse in the global
 	// frame, and compute the rotational force and add it to the torque
