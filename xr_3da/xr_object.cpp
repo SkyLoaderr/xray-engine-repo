@@ -170,8 +170,8 @@ void CObject::shedule_Update	( u32 T )
 {
 	// consistency check
 #ifdef DEBUG
-	if (Device.dwFrame==dbg_update_shedule)	
-		Debug.fatal	("'shedule_Update' called twice per frame for %s",cName());
+//	if (Device.dwFrame==dbg_update_shedule)	
+//		Debug.fatal	("'shedule_Update' called twice per frame for %s",*cName());
 	dbg_update_shedule	= Device.dwFrame;
 #endif
 

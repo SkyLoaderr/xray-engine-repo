@@ -4,22 +4,15 @@ namespace PAPI{
 
 extern void 			_pAddActionToList	(ParticleAction *S);
 extern void 			_pCallActionList	(PAVec* pa, ParticleEffect *pe);
-extern void 			_pCallAction		(ParticleAction* pa, ParticleEffect *pe, float dt);
 
 // Do not call this function.
 void _pSendAction(ParticleAction *S)
 {
 	_ParticleState &_ps = _GetPState();
 
-	if(_ps.in_new_list)
-	{
-		_pAddActionToList	(S);
-	}
-	else
-	{
-		// Immediate mode. Execute it.
-		_pCallAction		(S, _ps.peff, _ps.dt);
-	}
+	VERIFY(_ps.in_new_list);
+
+	_pAddActionToList	(S);
 }
 
 PARTICLEDLL_API void pAvoid(float magnitude, float epsilon, float look_ahead,

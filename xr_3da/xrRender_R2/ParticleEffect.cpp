@@ -416,11 +416,10 @@ void CParticleEffect::OnFrame(u32 frame_dt)
                     }
                 }
             }
-			pTimeStep			(fDT_STEP);
 			pCurrentEffect		(m_HandleEffect);
 
 			// execute action list
-			pCallActionList		(m_HandleActionList);
+			pCallActionList		(m_HandleActionList,fDT_STEP);
 
 //			if (action_list_handle>-1) 
 //            	pCallActionList	(action_list_handle);

@@ -621,7 +621,7 @@ namespace PAPI
 
 
 	// Action List Calls
-	PARTICLEDLL_API void pCallActionList(int action_list_num);
+	PARTICLEDLL_API void pCallActionList(int action_list_num, float dt);
 
 	PARTICLEDLL_API void pDeleteActionLists(int action_list_num, int action_list_count = 1);
 

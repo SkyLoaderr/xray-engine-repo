@@ -42,7 +42,13 @@ void __stdcall CWeaponFakeGrenade::ObjectContactCallback(bool& do_colide,dContac
 	l_pUD2 = retrieveGeomUserData(c.geom.g2);
 
 	CWeaponFakeGrenade *l_this = l_pUD1 ? dynamic_cast<CWeaponFakeGrenade*>(l_pUD1->ph_ref_object) : NULL;
-	if(!l_this) l_this = l_pUD2 ? dynamic_cast<CWeaponFakeGrenade*>(l_pUD2->ph_ref_object) : NULL;
+	Fvector vUp;
+	if(!l_this){
+		l_this = l_pUD2 ? dynamic_cast<CWeaponFakeGrenade*>(l_pUD2->ph_ref_object) : NULL;
+		vUp.invert(*(Fvector*)&c.geom.normal);
+	}else{
+		vUp.set(*(Fvector*)&c.geom.normal);	
+	}
 	if(!l_this) return;
 
 	CGameObject *l_pOwner = l_pUD1 ? dynamic_cast<CGameObject*>(l_pUD1->ph_ref_object) : NULL;
@@ -67,8 +73,8 @@ void __stdcall CWeaponFakeGrenade::ObjectContactCallback(bool& do_colide,dContac
 
 				}
 			}
-			l_pos.mad(*(Fvector*)&c.geom.normal, l_this->m_fJumpHeight);
-			l_this->Explode(l_pos, *(Fvector*)&c.geom.normal);
+			l_pos.mad(vUp, l_this->m_fJumpHeight);
+			l_this->Explode(l_pos, vUp);
 		}
 	} else {}
 }

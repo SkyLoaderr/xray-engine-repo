@@ -702,7 +702,7 @@ void PABounce::Transform(const Fmatrix& m)
 // Set the secondary position of each particle to be its position.
 void PACallActionList::Execute(ParticleEffect *effect, float dt)
 {
-	pCallActionList(action_list_num);
+	pCallActionList(action_list_num,dt);
 }
 void PACallActionList::Transform(const Fmatrix&){;}
 //-------------------------------------------------------------------------------------------------
