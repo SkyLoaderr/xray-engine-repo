@@ -42,3 +42,8 @@ IC	bool CMovementManager::get_enabled() const
 {
 	return					(m_enabled);
 }
+
+IC	float CMovementManager::speed() const
+{
+	return					(m_speed);
+}

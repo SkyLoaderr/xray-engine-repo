@@ -74,6 +74,7 @@ private:
 	u64										m_time_work;
 	CGraphEngine::CBaseParameters			*m_base_game_selector;
 	CGraphEngine::CBaseParameters			*m_base_level_selector;
+	float									m_speed;
 
 	IC		void	time_start				();
 	IC		bool	time_over				() const;
@@ -86,7 +87,6 @@ protected:
 	u32										m_game_dest_vertex_id;
 	u32										m_level_dest_vertex_id;
 	Fvector									m_detail_dest_position;
-	float									m_speed;
 
 	friend class CScriptMonster;
 	friend class CGroup;
@@ -104,6 +104,7 @@ public:
 
 			void	build_path				();
 			void	move_along_path			(CPHMovementControl *movement_control, float time_delta);
+			float	speed					() const;
 };
 
 #include "movement_manager_inline.h"
