@@ -38,7 +38,7 @@ class ENGINE_API	CLightPPA_Manager	: public pureDeviceCreate, pureDeviceDestroy
 	svector<CLightPPA*,128>			container;
 	
 	Shader*							SH;
-	CVertexStream*					VS;
+	CVS*							VS;
 public:
 	virtual	void	OnDeviceCreate	();
 	virtual void	OnDeviceDestroy	();

@@ -6,11 +6,12 @@ const DWORD	vs_size				= 3000;
 void CDetailManager::soft_Load		()
 {
 	// Vertex Stream
-	soft_VS	= Device.Streams.Create	(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1, vs_size);
+	soft_VS	= Device.Shader._CreateVS(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1);
 }
 
 void CDetailManager::soft_Unload	()
 {
+	Device.Shader._DeleteVS			(soft_VS);
 }
 
 void CDetailManager::soft_Render	()
@@ -21,7 +22,8 @@ void CDetailManager::soft_Render	()
 	// float	fPhaseZ		= sinf(Device.fTimeGlobal*0.11f)*fPhaseRange;
 
 	// Get index-stream
-	CIndexStream*	IS	= Device.Streams.Get_IB();
+	CIndexStream&	_IS		= Device.Streams.Index;
+	CVertexStream&	_VS		= Device.Streams.Vertex;
 
 	for (DWORD O=0; O<objects.size(); O++)
 	{
@@ -61,8 +63,8 @@ void CDetailManager::soft_Render	()
 	
 			// Lock buffers
 			DWORD	vBase,iBase,iOffset=0;
-			CDetail::fvfVertexOut* vDest	= (CDetail::fvfVertexOut*)	soft_VS->Lock(vCount_Lock,vBase);
-			WORD*	iDest					= (WORD*)					IS->Lock(iCount_Lock,iBase);
+			CDetail::fvfVertexOut* vDest	= (CDetail::fvfVertexOut*)	_VS.Lock(vCount_Lock,soft_VS->dwStride,vBase);
+			WORD*	iDest					= (WORD*)					_IS.Lock(iCount_Lock,iBase);
 
 			// Filling itself
 			for (DWORD item=item_start; item<item_end; item++)
@@ -109,12 +111,12 @@ void CDetailManager::soft_Render	()
 				iDest					+=	iCount_Object;
 				iOffset					+=	vCount_Object;
 			}
-			soft_VS->Unlock	(vCount_Lock);
-			IS->Unlock		(iCount_Lock);
+			_VS.Unlock		(vCount_Lock,soft_VS->dwStride);
+			_IS.Unlock		(iCount_Lock);
 			
 			// Render
-			Device.Primitive.setVertices	(soft_VS->getFVF(),soft_VS->getStride(),soft_VS->getBuffer());
-			Device.Primitive.setIndices		(vBase, IS->getBuffer());
+			Device.Primitive.setVertices	(soft_VS->dwHandle,soft_VS->dwStride,_VS.getBuffer());
+			Device.Primitive.setIndices		(vBase, _IS.getBuffer());
 			DWORD	dwNumPrimitives			= iCount_Lock/3;
 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,iBase,dwNumPrimitives);
 			UPDATEC							(vCount_Lock,dwNumPrimitives,2);

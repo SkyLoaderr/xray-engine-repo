@@ -65,18 +65,18 @@ public:
 public:
 	IC bool					UseVS			()	{ return HW.Caps.vertex.dwVersion >= CAP_VERSION(1,1); }
 
-	CVertexStream*			soft_VS;
+	CVS*					soft_VS;
 	void					soft_Load		();
 	void					soft_Unload		();
 	void					soft_Render		();
 
-	CVS*					VS_Code;
-	DWORD					VS_BatchSize;
-	IDirect3DVertexBuffer8*	VS_VB;
-	IDirect3DIndexBuffer8*	VS_IB;
-	void					VS_Load			();
-	void					VS_Unload		();
-	void					VS_Render		();
+	CVS*					hw_VS;
+	DWORD					hw_BatchSize;
+	IDirect3DVertexBuffer8*	hw_VB;
+	IDirect3DIndexBuffer8*	hw_IB;
+	void					hw_Load			();
+	void					hw_Unload		();
+	void					hw_Render		();
 public:
 	void					Decompress		(int sx, int sz, Slot& D);
 	Slot&					Query			(int sx, int sz);

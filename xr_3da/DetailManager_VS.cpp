@@ -27,13 +27,13 @@ short QC (float v)
 	return short(t&0xffff);
 }
 
-void CDetailManager::VS_Load()
+void CDetailManager::hw_Load()
 {	
 	// Load vertex shader
-	VS_Code			= Device.Shader._CreateVS	("detail",dwDecl);
+	hw_VS			= Device.Shader._CreateVS	("detail",dwDecl,sizeof(vertHW));
 
 	// Analyze batch-size
-	VS_BatchSize	= (DWORD(HW.Caps.vertex.dwRegisters)-c_hdr)/c_size;
+	hw_BatchSize	= (DWORD(HW.Caps.vertex.dwRegisters)-c_hdr)/c_size;
 
 	// Pre-process objects
 	DWORD			dwVerts		= 0;
@@ -41,8 +41,8 @@ void CDetailManager::VS_Load()
 	for (u32 o=0; o<objects.size(); o++)
 	{
 		CDetail& D	=	objects[o];
-		dwVerts		+=	D.number_vertices*VS_BatchSize;
-		dwIndices	+=	D.number_indices*VS_BatchSize;
+		dwVerts		+=	D.number_vertices*hw_BatchSize;
+		dwIndices	+=	D.number_indices*hw_BatchSize;
 	}
 	DWORD			vSize		= sizeof(vertHW);
 	Msg("* [DETAILS] %d v(%d), %d p",dwVerts,vSize,dwIndices/3);
@@ -57,18 +57,18 @@ void CDetailManager::VS_Load()
 
 	// Create VB/IB
 	Device.Shader.Evict		();
-	R_CHK			(HW.pDevice->CreateVertexBuffer(dwVerts*vSize,dwUsage,0,dwPool,&VS_VB));
-	R_CHK			(HW.pDevice->CreateIndexBuffer(dwIndices*2,dwUsage,D3DFMT_INDEX16,dwPool,&VS_IB));
-	Msg("* [DETAILS] Batch(%d), VB(%dK), IB(%dK)",VS_BatchSize,(dwVerts*vSize)/1024, (dwIndices*2)/1024);
+	R_CHK			(HW.pDevice->CreateVertexBuffer(dwVerts*vSize,dwUsage,0,dwPool,&hw_VB));
+	R_CHK			(HW.pDevice->CreateIndexBuffer(dwIndices*2,dwUsage,D3DFMT_INDEX16,dwPool,&hw_IB));
+	Msg("* [DETAILS] Batch(%d), VB(%dK), IB(%dK)",hw_BatchSize,(dwVerts*vSize)/1024, (dwIndices*2)/1024);
 	
 	// Fill VB
 	{
 		vertHW*			pV;
-		R_CHK			(VS_VB->Lock(0,0,(BYTE**)&pV,0));
+		R_CHK			(hw_VB->Lock(0,0,(BYTE**)&pV,0));
 		for (o=0; o<objects.size(); o++)
 		{
 			CDetail& D		=	objects[o];
-			for (u32 batch=0; batch<VS_BatchSize; batch++)
+			for (u32 batch=0; batch<hw_BatchSize; batch++)
 			{
 				DWORD mid	=	batch*c_size+c_base;
 				for (u32 v=0; v<D.number_vertices; v++)
@@ -85,37 +85,37 @@ void CDetailManager::VS_Load()
 				}
 			}
 		}
-		R_CHK			(VS_VB->Unlock());
+		R_CHK			(hw_VB->Unlock());
 	}
 
 	// Fill IB
 	{
 		u16*			pI;
-		R_CHK			(VS_IB->Lock(0,0,(BYTE**)(&pI),0));
+		R_CHK			(hw_IB->Lock(0,0,(BYTE**)(&pI),0));
 		for (o=0; o<objects.size(); o++)
 		{
 			CDetail& D		=	objects[o];
 			u16		offset	=	0;
-			for (u32 batch=0; batch<VS_BatchSize; batch++)
+			for (u32 batch=0; batch<hw_BatchSize; batch++)
 			{
 				for (u32 i=0; i<D.number_indices; i++)
-					*pI++	=	u16(D.indices[i] + offset);
+					*pI++	=	u16(u16(D.indices[i]) + u16(offset));
 				offset		+=	u16(D.number_vertices);
 			}
 		}
-		R_CHK			(VS_IB->Unlock());
+		R_CHK			(hw_IB->Unlock());
 	}
 }
 
-void CDetailManager::VS_Unload()
+void CDetailManager::hw_Unload()
 {
 	// Destroy VS/VB/IB
-	if (VS_Code)			Device.Shader._DeleteVS	(VS_Code);
-	_RELEASE				(VS_IB);
-	_RELEASE				(VS_VB);
+	if (hw_VS)				Device.Shader._DeleteVS	(hw_VS);
+	_RELEASE				(hw_IB);
+	_RELEASE				(hw_VB);
 }
 
-void CDetailManager::VS_Render()
+void CDetailManager::hw_Render()
 {
 	// Phase
 	// float	fPhaseRange	=	PI/16;
@@ -134,7 +134,7 @@ void CDetailManager::VS_Render()
 	DWORD		iOffset	=	0;
 	
 	// Iterate
-	Device.Primitive.setVerticesUC	(VS_Code->dwHandle,sizeof(vertHW),VS_VB);
+	Device.Primitive.setVerticesUC	(hw_VS->dwHandle,hw_VS->dwStride,hw_VB);
 	for (DWORD O=0; O<objects.size(); O++)
 	{
 		CList<SlotItem*>&	vis = visible	[O];
@@ -161,13 +161,13 @@ void CDetailManager::VS_Render()
 				VSC.set					(cBase+3,	C,				C,				C,				1.f		);
 				
 				dwBatch	++;
-				if (dwBatch == VS_BatchSize)	
+				if (dwBatch == hw_BatchSize)	
 				{
 					// flush
 					VSC.flush						(c_base,dwBatch*c_size);
 					DWORD dwCNT_verts				= dwBatch * Object.number_vertices;
 					DWORD dwCNT_prims				= (dwBatch * Object.number_indices)/3;
-					Device.Primitive.setIndices		(vOffset, VS_IB);
+					Device.Primitive.setIndices		(vOffset, hw_IB);
 					Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,dwCNT_verts,iOffset,dwCNT_prims);
 					UPDATEC							(dwCNT_verts,dwCNT_prims,2);
 					
@@ -182,7 +182,7 @@ void CDetailManager::VS_Render()
 				VSC.flush						(c_base,dwBatch*c_size);
 				DWORD dwCNT_verts				= dwBatch * Object.number_vertices;
 				DWORD dwCNT_prims				= (dwBatch * Object.number_indices)/3;
-				Device.Primitive.setIndices		(vOffset, VS_IB);
+				Device.Primitive.setIndices		(vOffset, hw_IB);
 				Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,dwCNT_verts,iOffset,dwCNT_prims);
 				UPDATEC							(dwCNT_verts,dwCNT_prims,2);
 			}
@@ -190,7 +190,7 @@ void CDetailManager::VS_Render()
 			// Clean up
 			vis.clear	();
 		}
-		vOffset		+=	VS_BatchSize * Object.number_vertices;
-		iOffset		+=	VS_BatchSize * Object.number_indices;
+		vOffset		+=	hw_BatchSize * Object.number_vertices;
+		iOffset		+=	hw_BatchSize * Object.number_indices;
 	}
 }

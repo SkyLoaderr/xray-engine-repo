@@ -51,7 +51,7 @@ void CLightPPA::Render	(CVertexStream* VS)
 
 	// Lock
 	DWORD	vOffset;
-	CLightPPA_Vertex* VB = (CLightPPA_Vertex*)VS->Lock(triCount*3,vOffset);
+	CLightPPA_Vertex* VB = (CLightPPA_Vertex*)Device.Streams.Vertex.Lock(triCount*3,VS->dwStride,vOffset);
 
 	// Cull and triangulate polygons
 	Fvector	cam		= Device.vCameraPosition;
@@ -78,20 +78,26 @@ void CLightPPA::Render	(CVertexStream* VS)
 	}
 
 	// Unlock and render
-	VS->Unlock	(actual*3);
-	if (actual) Device.Primitive.Draw	(VS,actual,vOffset);
+	Device.Streams.Vertex.Unlock		(actual*3,VS->dwStride);
+	if (actual) {
+		Device.Primitive.setVertices	(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.getBuffer());
+		Device.Primitive.setIndices		(0,0);
+		Device.Primitive.Render			(D3DPT_TRIANGLELIST,vOffset,actual);
+		UPDATEC							(actual*3,actual,1);
+	}
 }
 
 void CLightPPA_Manager::OnDeviceCreate	()
 {
 	REQ_CREATE	();
-	SH	= Device.Shader.Create	("effects\\light","effects\\light,effects\\light");
-	VS	= Device.Streams.Create	(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX2, MAX_POLYGONS*3);
+	SH	= Device.Shader.Create		("effects\\light","effects\\light,effects\\light");
+	VS	= Device.Shader._CreateVS	(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX2);
 }
 
 void CLightPPA_Manager::OnDeviceDestroy	()
 {
-	Device.Shader.Delete		(SH);
+	Device.Shader._DeleteVS			(VS);
+	Device.Shader.Delete			(SH);
 }
 
 void CLightPPA_Manager::Initialize	()
