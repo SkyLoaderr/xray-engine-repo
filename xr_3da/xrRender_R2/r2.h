@@ -71,6 +71,9 @@ public:
 	CLight_DB													Lights;
 	CLight_Render_Direct										LR;
 
+	light_Package												LP_normal;
+	light_Package												LP_pending;
+
 	ref_str														c_sbase;
 	ref_str														c_lmaterial;
 private:
@@ -93,6 +96,7 @@ private:
 	IRender_Sector*					rimp_detectSector			(Fvector& P, Fvector& D);
 	void							render_smap_direct			(Fmatrix& mCombined);
 	void							render_indirect				(light* L);
+	void							render_lights				();
 public:
 	IRender_Portal*					getPortal					(int id);
 	IRender_Sector*					getSectorActive				();

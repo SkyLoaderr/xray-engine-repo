@@ -282,6 +282,9 @@
 				RelativePath="r2_R_calculate.cpp">
 			</File>
 			<File
+				RelativePath=".\r2_R_lights.cpp">
+			</File>
+			<File
 				RelativePath="r2_R_render.cpp">
 			</File>
 			<File
@@ -464,6 +467,9 @@
 			</File>
 			<File
 				RelativePath="Light_DB.h">
+			</File>
+			<File
+				RelativePath=".\Light_Package.h">
 			</File>
 			<File
 				RelativePath="Light_Render_Direct.cpp">

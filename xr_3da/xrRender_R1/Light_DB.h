@@ -1,18 +1,16 @@
 #pragma once
 
 #include "light.h"
+#include "light_package.h"
 
-class CLight_DB
+class	CLight_DB
 {
 private:
 	xr_vector<light*>		v_static;
 public:
 	light*					sun;
 	light*					sun_base;
-	xr_vector<light*>		v_point;
-	xr_vector<light*>		v_point_s;
-	xr_vector<light*>		v_spot;
-	xr_vector<light*>		v_spot_s;
+	light_Package			package;
 public:
 	void					add_light			(light*		L);
 
