@@ -37,11 +37,8 @@ public:
 	virtual u32 GetHeaderColor() { return m_iNameTextColor; }
 	virtual CGameFont *GetHeaderFont() { return m_pNameTextFont; }
 
-//	void AddMessageToLog(CUIListWnd *List, const CUIString& msg, const char StartShift, const u32 &MsgColor);
-
 	//номер выбранного вопроса
 	int m_iClickedQuestion;
-	SInfoQuestion* m_pClickedQuestion;
 
 	//список вопросов, которые мы можем задавать персонажу
 	CUIListWnd			UIQuestionsList;

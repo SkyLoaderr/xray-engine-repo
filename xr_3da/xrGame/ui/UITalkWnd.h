@@ -14,7 +14,11 @@
 #include "UITradeWnd.h"
 #include "UITalkDialogWnd.h"
 
+#include "../PhraseDialogDefs.h"
+
+class CActor;
 class CInventoryOwner;
+class CPhraseDialogManager;
 
 ///////////////////////////////////////
 //
@@ -46,7 +50,7 @@ protected:
 	void AskQuestion();
 
 	// Функции добавления строк в листы вопросов и ответов
-	void AddQuestion(const CUIString &str, void* pData);
+	void AddQuestion(const CUIString &str, void* pData, int value = 0);
 	void AddAnswer(const CUIString &str, const CUIString &SpeakerName);
 
 	//для режима торговли
@@ -55,6 +59,16 @@ protected:
 
 
 	//указатель на владельца инвентаря вызвавшего менюшку
+	//и его собеседника
+	CActor*			 m_pActor;
 	CInventoryOwner* m_pOurInvOwner;
 	CInventoryOwner* m_pOthersInvOwner;
+	
+	CPhraseDialogManager* m_pOurDialogManager;
+	CPhraseDialogManager* m_pOthersDialogManager;
+
+	//текущий диалог, если NULL, то переходим в режим выбора темы
+	DIALOG_SHARED_PTR m_pCurrentDialog;
+	bool TopicMode	();
+	void ToTopicMode();
 };

@@ -10,8 +10,10 @@ class CUIString
 {
 public:
 	CUIString();
+	CUIString(LPCSTR str);
 	virtual ~CUIString();
-
+	
+	CUIString& operator = (LPCSTR str) {*this = CUIString(str); return *this;}
 	void SetText(LPCSTR str);
 	void AppendText(LPCSTR str);
 	

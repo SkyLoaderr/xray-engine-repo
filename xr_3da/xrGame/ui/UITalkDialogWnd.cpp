@@ -12,8 +12,7 @@
 
 CUITalkDialogWnd::CUITalkDialogWnd()
 {
-	m_iClickedQuestion = 0;
-	m_pClickedQuestion = NULL;
+	m_iClickedQuestion = -1;
 }
 CUITalkDialogWnd::~CUITalkDialogWnd()
 {
@@ -96,9 +95,8 @@ void CUITalkDialogWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	{
 		if(msg == CUIListWnd::LIST_ITEM_CLICKED)
 		{
-			m_iClickedQuestion = ((CUIListItem*)pData)->GetIndex();
-			m_pClickedQuestion =(SInfoQuestion*) (((CUIListItem*)pData)->GetData());
-
+			m_iClickedQuestion = ((CUIListItem*)pData)->GetValue();
+			//m_pClickedQuestion =(SInfoQuestion*) (((CUIListItem*)pData)->GetData());
 			GetMessageTarget()->SendMessage(this, QUESTION_CLICKED);
 		}
 	}

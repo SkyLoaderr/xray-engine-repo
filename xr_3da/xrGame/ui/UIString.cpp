@@ -10,6 +10,12 @@ CUIString::CUIString()
 {
 	m_str.clear();
 }
+
+CUIString::CUIString(LPCSTR str)
+{
+	SetText(str);
+}
+
 CUIString::~CUIString()
 {
 	m_str.clear();

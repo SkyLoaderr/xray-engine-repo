@@ -12,6 +12,10 @@
 #include "../PDA.h"
 #include "../character_info.h"
 #include "../level.h"
+
+#include "../PhraseDialog.h"
+#include "../PhraseDialogManager.h"
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -20,16 +24,24 @@ const u32 NameTextColor = 0xff00ff00;
 const u32 MsgTextColor  = 0xffffffff;
 const char MessageShift = 2;
 
+
+
+
 CUITalkWnd::CUITalkWnd()
 {
-	Init();
-
-	Hide();
-	
-	SetFont(HUD().pFontHeaderRussian);
+	m_pActor = NULL;
 
 	m_pOurInvOwner = NULL;
 	m_pOthersInvOwner = NULL;
+
+	m_pOurDialogManager = NULL;
+	m_pOthersDialogManager = NULL;
+
+	ToTopicMode();
+
+	Init();
+	Hide();
+	SetFont(HUD().pFontHeaderRussian);
 }
 
 CUITalkWnd::~CUITalkWnd()
@@ -52,16 +64,17 @@ void CUITalkWnd::Init()
 }
 
 
+
 void CUITalkWnd::InitTalkDialog()
 {
-	CActor *pActor = dynamic_cast<CActor *>(Level().CurrentEntity());
+	m_pActor = dynamic_cast<CActor *>(Level().CurrentEntity());
+	if (m_pActor && !m_pActor->IsTalking()) return;
 
-	if (pActor && !pActor->IsTalking()) return;
+	m_pOurInvOwner = dynamic_cast<CInventoryOwner*>(m_pActor);
+	m_pOthersInvOwner = m_pActor->GetTalkPartner();
 
-
-	m_pOurInvOwner = dynamic_cast<CInventoryOwner*>(pActor);
-	m_pOthersInvOwner = pActor->GetTalkPartner();
-
+	m_pOurDialogManager = dynamic_cast<CPhraseDialogManager*>(m_pOurInvOwner);
+	m_pOthersDialogManager = dynamic_cast<CPhraseDialogManager*>(m_pOthersInvOwner);
 
 	//имена собеседников
 	UITalkDialogWnd.UICharacterInfoLeft.InitCharacter(m_pOurInvOwner);
@@ -69,14 +82,12 @@ void CUITalkWnd::InitTalkDialog()
 	UITalkDialogWnd.UICharacterName.SetText(m_pOurInvOwner->CharacterInfo().Name());
 	
 	CEntityAlive* ContactEA = dynamic_cast<CEntityAlive*>(m_pOthersInvOwner);
-	UITalkDialogWnd.UICharacterInfoRight.SetRelation(ContactEA->tfGetRelationType(pActor));
+	UITalkDialogWnd.UICharacterInfoRight.SetRelation(ContactEA->tfGetRelationType(m_pActor));
 
-	
 	UpdateQuestions();
 
 	//очистить лог сообщений
 	UITalkDialogWnd.UIAnswersList.RemoveAll();
-
 
 	UITalkDialogWnd.Show();
 	UITradeWnd.Hide();
@@ -85,22 +96,32 @@ void CUITalkWnd::InitTalkDialog()
 void CUITalkWnd::UpdateQuestions()
 {
 	UITalkDialogWnd.UIQuestionsList.RemoveAll();
-
 	R_ASSERT2(m_pOurInvOwner->GetPDA(), "PDA for character does not init yet");
 
-	//получить возможные вопросы и заполнить ими список
-	m_pOurInvOwner->GetPDA()->UpdateQuestions();
-	
-	for(INFO_QUESTIONS_LIST_it it = m_pOurInvOwner->GetPDA()->m_ActiveQuestionsList.begin();
-		m_pOurInvOwner->GetPDA()->m_ActiveQuestionsList.end() != it;
-		++it)
+	//если нет активного диалога, то
+	//режима выбора темы
+	if(!m_pCurrentDialog)
 	{
-		SInfoQuestion* pQuestion = &(*it);
-//		CUIString CharName;
-//		CharName.SetText(m_pOurInvOwner->GetGameName());
-//		UITalkDialogWnd.AddMessageToLog();
-//		UITalkDialogWnd.UIQuestionsList.AddItem(pQuestion->text, pQuestion);
-		AddQuestion(pQuestion->text, pQuestion);
+		m_pOurDialogManager->UpdateAvailableDialogs();
+		for(u32 i=0; i< m_pOurDialogManager->AvailableDialogs().size(); i++)
+		{
+			const DIALOG_SHARED_PTR& phrase_dialog = m_pOurDialogManager->AvailableDialogs()[i];
+			AddQuestion(phrase_dialog->DialogCaption(), NULL, (int)i);
+		}
+	}
+	else
+	{
+		if(m_pCurrentDialog->IsWeSpeaking(m_pOurDialogManager))
+		{
+			//выбор доступных фраз из активного диалога
+			for(PHRASE_VECTOR::const_iterator   it = m_pCurrentDialog->PhraseList().begin();
+				it != m_pCurrentDialog->PhraseList().end();
+				it++)
+			{
+				CPhrase* phrase = *it;
+				AddQuestion(phrase->GetText(), NULL, (PHRASE_ID)phrase->GetIndex());
+			}
+		}
 	}
 }
 
@@ -131,9 +152,7 @@ void CUITalkWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 void CUITalkWnd::Update()
 {
 	//остановить разговор, если нужно
-	CActor *pActor = dynamic_cast<CActor *>(Level().CurrentEntity());
-
-	if (pActor && !pActor->IsTalking())
+	if (m_pActor && !m_pActor->IsTalking())
 	{
 		CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 		if(pGameSP) pGameSP->StartStopMenu(this);
@@ -157,63 +176,65 @@ void CUITalkWnd::Hide()
 {
 	inherited::Hide();
 
-	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-	if(!pActor) return;
-
-
-	if (pActor->IsTalking())
-	{
-		pActor->StopTalk();
-	}
+	if(!m_pActor) return;
+	if (m_pActor->IsTalking()) m_pActor->StopTalk();
+	m_pActor = NULL;
 }
+
+
+bool  CUITalkWnd::TopicMode			() 
+{
+	return NULL == m_pCurrentDialog.get();
+}
+void  CUITalkWnd::ToTopicMode		() 
+{
+	m_pCurrentDialog = DIALOG_SHARED_PTR((CPhraseDialog*)NULL);
+}
+
 
 void CUITalkWnd::AskQuestion()
 {
-
-	INFO_INDEX_LIST index_list;
-	bool result = m_pOthersInvOwner->AskQuestion(*UITalkDialogWnd.m_pClickedQuestion,
-												 index_list);
-	CUIString str, SpeakerName;
-
+	CUIString str, speaker_name;
 	//очистить лог сообщений
-	UITalkDialogWnd.UIAnswersList.RemoveAll();
+	//UITalkDialogWnd.UIAnswersList.RemoveAll();
+	speaker_name.SetText(m_pOurInvOwner->CharacterInfo().Name());
 
-	SpeakerName.SetText(m_pOurInvOwner->CharacterInfo().Name());
-	AddAnswer(UITalkDialogWnd.m_pClickedQuestion->text, SpeakerName);
-//	UITalkDialogWnd.AddMessageToLog(SpeakerName, UITalkDialogWnd.m_pClickedQuestion->text, &UITalkDialogWnd.UIAnswersList);
-	SpeakerName.SetText(m_pOthersInvOwner->CharacterInfo().Name());
+	PHRASE_ID phrase_id;
 
-	if(!result)
+	//игрок выбрал тему разговора
+	if(TopicMode())
 	{
-		//UITalkDialogWnd.UIAnswer.SetText(UITalkDialogWnd.m_pClickedQuestion->
-		//										negative_answer_text.GetBuf());
-		AddAnswer(UITalkDialogWnd.m_pClickedQuestion->negative_answer_text, SpeakerName);
-//		UITalkDialogWnd.AddMessageToLog(SpeakerName, UITalkDialogWnd.m_pClickedQuestion->negative_answer_text, &UITalkDialogWnd.UIAnswersList);
+		m_pCurrentDialog = m_pOurDialogManager->AvailableDialogs()[UITalkDialogWnd.m_iClickedQuestion];
+		
+		m_pOurDialogManager->InitDialog(m_pOthersDialogManager, m_pCurrentDialog);
+		phrase_id = START_PHRASE;
 	}
 	else
 	{
-		CInfoPortion info_portion; 	
-
-		for(INFO_INDEX_LIST_it it = index_list.begin(); 
-							   index_list.end() != it; ++it)
-		{
-			info_portion.Load(*it);
-			str.AppendText(info_portion.GetText());
-			str.AppendText("\\n");
-		}
-
-		//UITalkDialogWnd.AddMessageToLog(SpeakerName, str, &UITalkDialogWnd.UIAnswersList);
-		AddAnswer(str, SpeakerName);
-		//UITalkDialogWnd.UIAnswer.SetText(str);
-
-		//UpdateQuestions();
+		phrase_id = (PHRASE_ID)UITalkDialogWnd.m_iClickedQuestion;
 	}
+
+	//сказать фразу
+	AddAnswer(m_pCurrentDialog->GetPhraseText(phrase_id), speaker_name);
+	m_pOurDialogManager->SayPhrase(m_pCurrentDialog, phrase_id);
+	
+	//добавить ответ собеседника в список, если он что-то сказал
+	if(m_pCurrentDialog->GetLastPhraseID() !=  phrase_id)
+	{
+		speaker_name.SetText(m_pOthersInvOwner->CharacterInfo().Name());
+		AddAnswer(m_pCurrentDialog->GetLastPhraseText(), speaker_name);
+	}
+
+	//если диалог завершился, перейти в режим выбора темы
+	if(m_pCurrentDialog->IsFinished()) ToTopicMode();
+
+	UpdateQuestions();
 }
 
-void CUITalkWnd::AddQuestion(const CUIString &str, void* pData)
+void CUITalkWnd::AddQuestion(const CUIString &str, void* pData , int value)
 {
 	UITalkDialogWnd.UIQuestionsList.AddParsedItem(str, 0, UITalkDialogWnd.UIQuestionsList.GetTextColor(), 
-		UITalkDialogWnd.UIQuestionsList.GetFont(), pData);
+						UITalkDialogWnd.UIQuestionsList.GetFont(), pData, value);
 }
 
 void CUITalkWnd::AddAnswer(const CUIString &str, const CUIString &SpeakerName)
