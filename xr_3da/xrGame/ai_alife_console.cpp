@@ -457,7 +457,6 @@ void CAI_ALife::vfSpawnPointInfo(_SPAWN_ID &tSpawnID)
 	Msg("* BirthRadius	           : %6.2f",tSpawnPoint.m_fBirthRadius);
 	Msg("* BirthProbability	       : %6.2f",tSpawnPoint.m_fBirthProbability);
 	Msg("* IncreaseCoefficient     : %6.2f",tSpawnPoint.m_fIncreaseCoefficient);
-	Msg("* AnomalyDeathProbability : %6.2f",tSpawnPoint.m_fAnomalyDeathProbability);
 	
 	GRAPH_IT	I = tSpawnPoint.m_tpRouteGraphPoints.begin();
 	GRAPH_IT	E = tSpawnPoint.m_tpRouteGraphPoints.end();

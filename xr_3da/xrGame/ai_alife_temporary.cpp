@@ -193,7 +193,6 @@ void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFa
 		(*I)->m_fBirthRadius			= 10.f;
 		(*I)->m_fBirthProbability		= 1.0f;
 		(*I)->m_fIncreaseCoefficient	= 1.0f;
-		(*I)->m_fAnomalyDeathProbability= 0.0f;
 		(*I)->m_tpRouteGraphPoints.clear();
 	}
 	(*I)							= xr_new<CALifeSpawnPoint> ();
@@ -208,7 +207,6 @@ void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFa
 	(*I)->m_fBirthRadius			= 10.f;
 	(*I)->m_fBirthProbability		= 1.0f;
 	(*I)->m_fIncreaseCoefficient	= 1.0f;
-	(*I)->m_fAnomalyDeathProbability= 0.0f;
 	(*I)->m_tpRouteGraphPoints.clear();
 
 	I++;
@@ -225,7 +223,6 @@ void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFa
 	(*I)->m_fBirthRadius			= 10.f;
 	(*I)->m_fBirthProbability		= 1.0f;
 	(*I)->m_fIncreaseCoefficient	= 1.0f;
-	(*I)->m_fAnomalyDeathProbability= 0.0f;
 	(*I)->m_tpRouteGraphPoints.clear();
 	/**/
 	sort(m_tpSpawnPoints.begin(),m_tpSpawnPoints.end(),bfSpawnPointPredicate);
@@ -252,7 +249,6 @@ void CAI_ALife::vfSaveSpawnPoints()
 		tStream.Wfloat	((*I)->m_fBirthRadius);
 		tStream.Wfloat	((*I)->m_fBirthProbability);
 		tStream.Wfloat	((*I)->m_fIncreaseCoefficient);
-		tStream.Wfloat	((*I)->m_fAnomalyDeathProbability);
 		save_base_vector((*I)->m_tpRouteGraphPoints,tStream);
 	}
 	tStream.close_chunk	();

@@ -96,7 +96,6 @@ public:
 	float							m_fBirthRadius;
 	float							m_fBirthProbability;
 	float							m_fIncreaseCoefficient;
-	float							m_fAnomalyDeathProbability;
 	GRAPH_VECTOR					m_tpRouteGraphPoints;
 	
 	virtual void					Load(CStream	&tFileStream)
@@ -111,7 +110,6 @@ public:
 		m_fBirthRadius				= tFileStream.Rfloat();
 		m_fBirthProbability			= tFileStream.Rfloat();
 		m_fIncreaseCoefficient		= tFileStream.Rfloat();
-		m_fAnomalyDeathProbability	= tFileStream.Rfloat();
 		load_base_vector			(m_tpRouteGraphPoints, tFileStream);
 	};
 };
