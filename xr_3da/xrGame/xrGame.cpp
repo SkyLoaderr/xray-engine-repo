@@ -56,7 +56,6 @@ extern	float				psSqueezeVelocity;
 
 extern	int					lvInterp;
 extern	float				g_fMaxDesyncLen;
-extern	bool				g_bUnlimitedAmmo;
 
 extern	float	g_fMinReconDist		;
 extern	float	g_fMaxReconDist		;
@@ -72,8 +71,8 @@ BOOL		net_cl_inputguaranteed = TRUE;
 int			net_cl_inputupdaterate = 100;
 int			g_dwInputUpdateDelta = 10;
 
-//extern int x_m_x = 0;
-//extern int x_m_z = 0;
+extern int x_m_x;
+extern int x_m_z;
 
 // console commands
 class CCC_Spawn : public IConsole_Command
@@ -1023,9 +1022,10 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD4(CCC_Integer,	"g_eventdelay",			&g_dwEventDelay,	0,	1000);
 
 		CMD4(CCC_Integer,	"g_corpsenum",			(int*)&g_dwMaxCorpses,		0,	100);
-
-//		CMD4(CCC_Integer,	"center_x",				&x_m_x,	-1000,	1000);
-//		CMD4(CCC_Integer,	"center_y",				&x_m_z,	-1000,	1000);
+#ifdef _DEBUG
+		CMD4(CCC_Integer,	"center_x",				&x_m_x,	-1000,	1000);
+		CMD4(CCC_Integer,	"center_y",				&x_m_z,	-1000,	1000);
+#endif
 
 
 		// keyboard binding

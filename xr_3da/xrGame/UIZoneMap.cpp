@@ -144,8 +144,8 @@ void CUIZoneMap::EntityOut(float diff, u32 color, const Ivector2& pt)
 }
 
 
-//int x_m_x = 0;
-//int x_m_z = 0;
+int x_m_x = 0;
+int x_m_z = 0;
 void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 {
 	CActor* pActor = dynamic_cast<CActor*>(Actor);
@@ -311,8 +311,8 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	float width = level_box.x2 - level_box.x1;
 	float height = level_box.z2 - level_box.z1;
 
-	float center_x = level_box.x1 + width/2;// + x_m_x;
-	float center_y = level_box.z1 + height/2;// + x_m_z;
+	float center_x = level_box.x1 + width/2 + x_m_x;
+	float center_y = level_box.z1 + height/2 + x_m_z;
 
 
 	float x = width/2  + map_x - center_x;

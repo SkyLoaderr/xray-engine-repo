@@ -7,6 +7,7 @@
 #include "GrenadeLauncher.h"
 #include "xrserver_objects_alife_items.h"
 #include "ExplosiveRocket.h"
+#include "Actor_Flags.h"
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -326,7 +327,13 @@ void CWeaponMagazinedWGrenade::OnEvent(NET_Packet& P, u16 type)
 
 void CWeaponMagazinedWGrenade::ReloadMagazine() 
 {
+	//fake чтобы на гранаты для подствольника не действовало UnlimitedAmmo
+//	BOOL UnlimitedAmmo = (psActorFlags.is_any(AF_UNLIMITEDAMMO)) != 0;	
+//	if (m_bGrenadeMode) psActorFlags.set(AF_UNLIMITEDAMMO, FALSE);
+
 	inherited::ReloadMagazine();
+
+//	psActorFlags.set(AF_UNLIMITEDAMMO, UnlimitedAmmo);
 	
 	//перезарядка подствольного гранатомета
 	if(iAmmoElapsed && !getRocketCount()/*m_pRocket*/ && m_bGrenadeMode) 

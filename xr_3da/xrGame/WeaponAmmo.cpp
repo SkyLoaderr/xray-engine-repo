@@ -69,6 +69,11 @@ void CWeaponAmmo::Load(LPCSTR section)
 
 	m_boxSize = (u16)pSettings->r_s32(section, "box_size");
 	m_boxCurr = m_boxSize;
+
+	if(pSettings->line_exist(section,"can_be_unlimited"))
+		m_bCanBeUnlimited = pSettings->r_u32(section,"can_be_unlimited");
+	else
+		m_bCanBeUnlimited = true;
 }
 
 BOOL CWeaponAmmo::net_Spawn(LPVOID DC) 
@@ -162,7 +167,7 @@ bool CWeaponAmmo::Get(CCartridge &cartridge)
 	cartridge.m_buckShot = m_buckShot;
 	cartridge.m_impair = m_impair;
 	cartridge.fWallmarkSize = fWallmarkSize;
-	if (!psActorFlags.test(AF_UNLIMITEDAMMO))
+	if (!psActorFlags.test(AF_UNLIMITEDAMMO) || !m_bCanBeUnlimited)
 		--m_boxCurr;
 	return true;
 }

@@ -434,6 +434,7 @@ bool CInventory::Action(s32 cmd, u32 flags)
 				return true;
 			}break;
 		case kWPN_FIRE:
+		case kWPN_FUNC:
 		case kWPN_1:
 		case kWPN_2:
 		case kWPN_3:
