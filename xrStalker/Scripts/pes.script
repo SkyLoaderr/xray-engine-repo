@@ -7,6 +7,7 @@
 local entered = false
 
 function on_enter (zone, obj)
+    if obj:name () == "pes" then return end
     entered = true
     zone:clear_callback (true)
     printf ("Entered ");    
