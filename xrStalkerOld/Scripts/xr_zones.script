@@ -128,6 +128,7 @@ function zone_binder:net_spawn( server_object )
 		if not self.managers.factory.ini_ok then
 			utils.abort( "'escape_raid' manager NOT initialized" )
 		end
+		escape_raid.zone = self.managers.factory
 	end
   
 	if ini:section_exist( "spawner" ) then

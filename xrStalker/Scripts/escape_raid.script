@@ -1,6 +1,6 @@
 local members = {}
 local moved = {}
-local zone = nil
+zone = nil
 
 
 -------------------------------------------------------------------------
@@ -31,6 +31,7 @@ function start_raid ()
     zone.raid_wait = device ():time_global ()
     for a = 1, table.getn (members), 1 do
         this.switch_online (members[a])
+        printf ("Switch to online stalker with id %d", members[a])
     end
     --в идеале, здесь нужно рассортировать команды в случае гибели отдельных мужиков
 end
@@ -45,7 +46,6 @@ function escape_raid:__init (zone, ini)
     printf ("Zone %s is added to binder", zone:name ())
     self.time = 0
     self.raid_wait = 0
-    zone = self
 end
 -----------------------
 function escape_raid:on_enter (obj)
