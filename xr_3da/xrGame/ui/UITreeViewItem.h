@@ -83,7 +83,7 @@ public:
 
 	// Ctor and Dtor
 	CUITreeViewItem();
-	~CUITreeViewItem();
+	virtual		~CUITreeViewItem();
 
 	// Устанавливаем цвет текста в зависимости от того, прочитан ли артикл
 	void	MarkArticleAsRead(bool value);
