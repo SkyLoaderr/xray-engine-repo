@@ -123,7 +123,7 @@ void CDummyObject::UpdateCL		()
 	}
 	if (s_particles)			
 	{
-		s_emitter.m_Position.set		(Position());
+		s_emitter.m_Position.set				(Position());
 	}
 	if (s_sound.feedback)
 	{
