@@ -88,7 +88,7 @@ void CAI_Space::Load(LPCSTR name)
 	q_mark_bit_x.assign		(m_header.count,false);
 
 	// for graph
-	strconcat				(fName,name,"level.graph.10");
+	strconcat				(fName,name,"level.graph");
 	if (Engine.FS.Exist(fName)) {
 		m_tpGraphVFS			= Engine.FS.Open	(fName);
 		m_tpGraphVFS->Read		(&m_tGraphHeader,sizeof(AI::SGraphHeader));
@@ -96,43 +96,6 @@ void CAI_Space::Load(LPCSTR name)
 		m_tpaGraph				= (AI::SGraphVertex*)m_tpGraphVFS->Pointer();
 	}
 
-	// for graph
-	strconcat				(fName,name,"level.graph.12");
-	if (Engine.FS.Exist(fName)) {
-		m_tpGraphVFS1			= Engine.FS.Open	(fName);
-		m_tpGraphVFS1->Read		(&m_tGraphHeader1,sizeof(AI::SGraphHeader));
-		R_ASSERT				(m_tGraphHeader1.dwVersion == XRAI_CURRENT_VERSION);
-		m_tpaGraph1				= (AI::SGraphVertex*)m_tpGraphVFS1->Pointer();
-	}
-
-	for (int i=0; i<(int)m_tGraphHeader.dwVertexCount; i++) {
-		if (m_tpaGraph[i].tPoint.distance_to(m_tpaGraph1[i].tPoint) > EPS_L)
-			Msg("%d : [%7.2f,%7.2f,%7.2f] -> [%7.2f,%7.2f,%7.2f]",i,m_tpaGraph[i].tPoint.x,m_tpaGraph[i].tPoint.y,m_tpaGraph[i].tPoint.z,m_tpaGraph1[i].tPoint.x,m_tpaGraph1[i].tPoint.y,m_tpaGraph1[i].tPoint.z);
-		if (m_tpaGraph[i].dwNeighbourCount != m_tpaGraph1[i].dwNeighbourCount)
-			Msg("%d : %d -> %d ",i,m_tpaGraph[i].dwNeighbourCount,m_tpaGraph1[i].dwNeighbourCount);
-		AI::SGraphEdge *P1 = ((AI::SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[i].dwEdgeOffset));
-		AI::SGraphEdge *P2 = ((AI::SGraphEdge *)((BYTE *)m_tpaGraph1 + m_tpaGraph1[i].dwEdgeOffset));
-		for (int j=0; j<min(m_tpaGraph[i].dwNeighbourCount,m_tpaGraph1[i].dwNeighbourCount); j++) {
-			if (P1[j].dwVertexNumber != P2[j].dwVertexNumber)
-				Msg("%d %d : %d -> %d ",i,j,P1[j].dwVertexNumber,P2[j].dwVertexNumber);
-			if (P1[j].fPathDistance != P2[j].fPathDistance)
-				Msg("%d %d : %7.2f -> %7.2f ",i,j,P1[j].fPathDistance,P2[j].fPathDistance);
-		}
-		if (m_tpaGraph[i].dwNeighbourCount > m_tpaGraph1[i].dwNeighbourCount)
-			for (int j=min(m_tpaGraph[i].dwNeighbourCount,m_tpaGraph1[i].dwNeighbourCount); j<m_tpaGraph[i].dwNeighbourCount; j++)
-				Msg("%d 000 : %d %7.2f",i,j,P1[j].dwVertexNumber,P1[j].fPathDistance);
-		else
-			if (m_tpaGraph[i].dwNeighbourCount < m_tpaGraph1[i].dwNeighbourCount)
-				for (int j=min(m_tpaGraph1[i].dwNeighbourCount,m_tpaGraph1[i].dwNeighbourCount); j<m_tpaGraph1[i].dwNeighbourCount; j++)
-					Msg("%d 001 : %d %7.2f",i,j,P2[j].dwVertexNumber,P2[j].fPathDistance);
-	}
-
-
-	for (int i=0; i<(int)m_tGraphHeader.dwVertexCount; i++) {
-		AI::SGraphEdge *P1 = ((AI::SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[i].dwEdgeOffset));
-		for (int j=0; j<m_tpaGraph[i].dwNeighbourCount; j++)
-			Msg("%3d[%7.2f,%7.2f,%7.2f] %3d[%3d][%7.2f,%7.2f,%7.2f] : %5.2f",i,m_tpaGraph[i].tPoint.x,m_tpaGraph[i].tPoint.y,m_tpaGraph[i].tPoint.z,j,P1[j].dwVertexNumber,m_tpaGraph[P1[j].dwVertexNumber].tPoint.x,m_tpaGraph[P1[j].dwVertexNumber].tPoint.y,m_tpaGraph[P1[j].dwVertexNumber].tPoint.z,P1[j].fPathDistance);
-	}
 	// for a* search
 	m_fSize2				= _sqr(m_header.size)/4;
 	m_fYSize2				= _sqr((float)(m_header.size_y/32767.0))/4;
