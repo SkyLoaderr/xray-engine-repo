@@ -2,6 +2,52 @@
 #include "net_client.h"
 #include "net_messages.h"
 
+// 
+INetQueue::INetQueue()		
+{
+	free.reserve	(128);
+}
+INetQueue::~INetQueue()
+{
+	cs.Enter		();
+	int				it;
+	for				(it=0; it<free.size(); it++)	_DELETE(free[it]);
+	for				(it=0; it<ready.size(); it++)	_DELETE(ready[it]);
+	cs.Leave		();
+}
+NET_Packet*		INetQueue::Create	()
+{
+	cs.Enter		();
+	if (free.empty())	
+	{
+		ready.push_back		(new NET_Packet());
+		return ready.back	();
+	} else {
+		ready.push_back		(free.back());
+		free.pop_back		();
+		return ready.back	();
+	}
+	cs.Leave		();
+}
+NET_Packet*		INetQueue::Retreive	()
+{
+	NET_Packet*	P			= 0;
+	cs.Enter		();
+	if (!ready.empty())		P = ready.front();
+	cs.Leave		();
+	return	P;
+}
+
+void			INetQueue::Release	()
+{
+	cs.Enter		();
+	R_ASSERT		(!ready.empty());
+	free.push_back	(ready.front());
+	ready.pop_back	();
+	cs.Leave		();
+}
+
+//
 const DWORD syncQueueSize	= 256;
 const int syncSamples		= 8;
 class ENGINE_API syncQueue

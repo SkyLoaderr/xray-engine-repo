@@ -2,38 +2,18 @@
 
 #include "net_shared.h"
 
-const DWORD NET_QueueSize	= 256;
 class ENGINE_API INetQueue
 {
 	CCriticalSection	cs;
-	NET_Packet			table	[NET_QueueSize];
-	DWORD				id_read;
-	DWORD				id_write;
+	deque<NET_Packet*>	ready;
+	vector<NET_Packet*>	free;
 public:
-	INetQueue()		
-	{
-		id_read		= 0;
-		id_write	= 0;
-	}
+	INetQueue();
+	~INetQueue();
 
-	IC NET_Packet*	Create()
-	{
-		cs.Enter	();
-		NET_Packet*	P = &(table[id_write++]);
-		if (id_write == NET_QueueSize)	id_write = 0;
-		R_ASSERT	(id_write != id_read);
-		cs.Leave	();
-		return P;
-	}
-	IC NET_Packet*	Retreive()
-	{
-		if (id_read==id_write)	return NULL;
-		cs.Enter	();
-		NET_Packet*	P = &(table[id_read++]);
-		if (id_read == NET_QueueSize)	id_read	= 0;
-		cs.Leave	();
-		return P;
-	}
+	NET_Packet*			Create();
+	NET_Packet*			Retreive();
+	void				Release();
 };
 
 class ENGINE_API IPureClient
