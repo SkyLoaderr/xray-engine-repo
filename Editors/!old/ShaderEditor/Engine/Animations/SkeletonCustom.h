@@ -82,13 +82,13 @@ public:
 	virtual void		Calculate		(CKinematics* K, Fmatrix *Parent)=0;
 };
 
-class ENGINE_API CSkeletonWallmark
+class ENGINE_API CSkeletonWallmark		// 4+4+4+12+4+16+16 = 60
 {
-public:
-	const Fmatrix*		xform;
-	ref_shader			shader;
-	Fvector3			contact_point;	// on model space
-	Fsphere				bounds;
+	CKinematics*		m_Parent;		// 4
+	const Fmatrix*		m_XForm;		// 4
+	ref_shader			m_Shader;		// 4
+	Fvector3			m_ContactPoint;	// 12		model space
+	float				m_fTimeStart;	// 4
 public:
 	struct WMFace{
 		Fvector3		vert	[3];
@@ -96,18 +96,21 @@ public:
 		u16				bone_id	[3][2];
 		float			weight	[3];
 	};
-	float				fTimeStart;
 	DEFINE_VECTOR		(WMFace,WMFacesVec,WMFacesVecIt);
-	WMFacesVec			s_faces;
-	xr_vector<FVF::LIT>	r_verts;
+	WMFacesVec			m_Faces;		// 16 
 public:
-	CSkeletonWallmark():xform(0),fTimeStart(0.f){}
-	void				Clear	()
-	{
-		xform			= 0;
-		s_faces.clear	();
-		r_verts.clear	();
-	}
+	Fsphere				m_Bounds;		// 16		world space
+public:									
+						CSkeletonWallmark	(CKinematics* p,const Fmatrix* m, ref_shader s, const Fvector& cp, float ts):
+						m_Parent(p),m_XForm(m),m_Shader(s),m_fTimeStart(ts),
+						m_ContactPoint(cp){}
+	IC CKinematics*		Parent				(){return m_Parent;}
+	IC u32				VCount				(){return m_Faces.size()*3;}
+	IC bool				Similar				(ref_shader& sh, const Fvector& cp, float eps){return (m_Shader==sh)&&m_ContactPoint.similar(cp,eps);}
+	IC float			TimeStart			(){return m_fTimeStart;}
+	IC const Fmatrix*	XFORM				(){return m_XForm;}
+	IC const Fvector3&	ContactPoint		(){return m_ContactPoint;}
+	IC ref_shader		Shader				(){return m_Shader;}
 };
 DEFINE_VECTOR(CSkeletonWallmark*,SkeletonWMVec,SkeletonWMVecIt);
 
@@ -192,6 +195,7 @@ public:
 	// wallmarks
 	void						AddWallmark			(const Fmatrix* parent, const Fvector3& start, const Fvector3& dir, u16 bone_id, ref_shader shader, float size);
 	void						CalculateWallmarks	();
+	void						RenderWallmark		(CSkeletonWallmark* wm, FVF::LIT* &verts);
 
 	// General "Visual" stuff
     virtual void				Copy				(IRender_Visual *pFrom);

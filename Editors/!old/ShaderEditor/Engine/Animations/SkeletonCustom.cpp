@@ -421,19 +421,11 @@ void BuildMatrix		(Fmatrix &mView, float invsz, const Fvector norm, const Fvecto
 	mView.mulA			(mScale);
 }
 
-void CKinematics::AddWallmark(const Fmatrix* parent, const Fvector3& start, const Fvector3& dir, u16 bone_id, ref_shader shader, float size)
+void CKinematics::AddWallmark(const Fmatrix* parent_xf, const Fvector3& start, const Fvector3& dir, u16 bone_id, ref_shader shader, float size)
 {
-	if (wallmarks.size()){
-//		CSkeletonWallmark* wm=wallmarks.back();
-//		for (u32 k=0; k<wm->r_verts.size()/3; k++){
-//			RCache.dbg_DrawTRI(Fidentity,wm->r_verts[k*3+0].p,wm->r_verts[k*3+1].p,wm->r_verts[k*3+2].p,0xff00ff00);
-//		}
-	}
-
-//	if (!wallmarks.empty()) return;
 	Fvector S,D,normal		= {0,0,0};
 	// transform ray from world to model
-	Fmatrix P;	P.invert	(*parent);
+	Fmatrix P;	P.invert	(*parent_xf);
 	P.transform_tiny		(S,start);
 	P.transform_dir			(D,dir);
 	// find pick point
@@ -449,7 +441,7 @@ void CKinematics::AddWallmark(const Fmatrix* parent, const Fvector3& start, cons
 	// find similar wm
 	for (u32 wm_idx=0; wm_idx<wallmarks.size(); wm_idx++){
 		CSkeletonWallmark*& wm = wallmarks[wm_idx];
-		if (wm->contact_point.similar(cp,0.02f)&&(wm->shader==shader)){ 
+		if (wm->Similar(shader,cp,0.02f)){ 
 			xr_delete		(wm);
 			if (wm_idx<wallmarks.size()-1) 
 				wm = wallmarks.back();
@@ -459,10 +451,9 @@ void CKinematics::AddWallmark(const Fmatrix* parent, const Fvector3& start, cons
 	}
 
 	// ok. allocate wallmark
-	CSkeletonWallmark* wm	= xr_new<CSkeletonWallmark>();
-	wm->fTimeStart			= Device.fTimeGlobal;
-	wm->contact_point		= cp;
-	wm->shader				= shader;
+	CSkeletonWallmark* wm	= xr_new<CSkeletonWallmark>(this,parent_xf,shader,cp,Device.fTimeGlobal);
+	parent_xf->transform_tiny(wm->m_Bounds.P,cp);
+	wm->m_Bounds.R			= size;
 
 	// build UV projection matrix
 	Fmatrix					mView,mRot;
@@ -483,7 +474,6 @@ void CKinematics::AddWallmark(const Fmatrix* parent, const Fvector3& start, cons
 			S->FillVertices	(mView,*wm,normal,size,BD.children[i]->SelfID);
 	}
 
-	wm->xform				= parent;
 	wallmarks.push_back		(wm);
 }
 
@@ -495,40 +485,10 @@ void CKinematics::CalculateWallmarks()
 		bool need_remove=false; 
 		for (SkeletonWMVecIt it=wallmarks.begin(); it!=wallmarks.end(); it++){
 			CSkeletonWallmark*& wm = *it;
-			float w	= (Device.fTimeGlobal-wm->fTimeStart)/LIFE_TIME;
+			float w	= (Device.fTimeGlobal-wm->TimeStart())/LIFE_TIME;
 			if (w<=1.f){
 				// append wm to WallmarkEngine
-				Fbox bb;	bb.invalidate();
-				wm->r_verts.resize(wm->s_faces.size()*3);
-				// skin vertices
-				for (u32 f_idx=0; f_idx<wm->s_faces.size(); f_idx++){
-					CSkeletonWallmark::WMFace& F=wm->s_faces[f_idx];
-					for (u32 k=0; k<3; k++){
-						Fvector P;
-						if (F.bone_id[k][0]==F.bone_id[k][1]){
-							// 1-link
-							Fmatrix& xform0			= LL_GetBoneInstance(F.bone_id[k][0]).mRenderTransform; 
-							xform0.transform_tiny	(P,F.vert[k]);
-						}else{
-							// 2-link
-							Fvector P0,P1;
-							Fmatrix& xform0			= LL_GetBoneInstance(F.bone_id[k][0]).mRenderTransform; 
-							Fmatrix& xform1			= LL_GetBoneInstance(F.bone_id[k][1]).mRenderTransform; 
-							xform0.transform_tiny	(P0,F.vert[k]);
-							xform1.transform_tiny	(P1,F.vert[k]);
-							P.lerp					(P0,P1,F.weight[k]);
-						}
-						FVF::LIT& v_lit				= wm->r_verts[f_idx*3+k];
-						wm->xform->transform_tiny	(v_lit.p,P);
-						v_lit.t.set					(F.uv[k]);
-						int			aC				= iFloor	( w * 255.f);	clamp	(aC,0,255);
-						v_lit.color					= color_rgba(128,128,128,aC);
-						bb.modify					(v_lit.p);
-					}
-				}
-				bb.getsphere						(wm->bounds.P,wm->bounds.R);
-				// add wallmark
-				if (::Render->ViewBase.testSphere_dirty(wm->bounds.P,wm->bounds.R))
+				if (::Render->ViewBase.testSphere_dirty(wm->m_Bounds.P,wm->m_Bounds.R))
 					::Render->add_SkeletonWallmark	(wm);
 			}else{
 				// remove wallmark
@@ -541,4 +501,37 @@ void CKinematics::CalculateWallmarks()
 			wallmarks.erase	(new_end,wallmarks.end());
 		}
 	}
+}
+
+void CKinematics::RenderWallmark(CSkeletonWallmark* wm, FVF::LIT* &V)
+{
+	Fbox bb;	bb.invalidate();
+	// skin vertices
+	for (u32 f_idx=0; f_idx<wm->m_Faces.size(); f_idx++){
+		CSkeletonWallmark::WMFace& F=wm->m_Faces[f_idx];
+		float w	= (Device.fTimeGlobal-wm->TimeStart())/LIFE_TIME;
+		for (u32 k=0; k<3; k++){
+			Fvector P;
+			if (F.bone_id[k][0]==F.bone_id[k][1]){
+				// 1-link
+				Fmatrix& xform0			= LL_GetBoneInstance(F.bone_id[k][0]).mRenderTransform; 
+				xform0.transform_tiny	(P,F.vert[k]);
+			}else{
+				// 2-link
+				Fvector P0,P1;
+				Fmatrix& xform0			= LL_GetBoneInstance(F.bone_id[k][0]).mRenderTransform; 
+				Fmatrix& xform1			= LL_GetBoneInstance(F.bone_id[k][1]).mRenderTransform; 
+				xform0.transform_tiny	(P0,F.vert[k]);
+				xform1.transform_tiny	(P1,F.vert[k]);
+				P.lerp					(P0,P1,F.weight[k]);
+			}
+			wm->XFORM()->transform_tiny	(V->p,P);
+			V->t.set					(F.uv[k]);
+			int			aC				= iFloor	( w * 255.f);	clamp	(aC,0,255);
+			V->color					= color_rgba(128,128,128,aC);
+			bb.modify					(V->p);
+			V++;
+		}
+	}
+	bb.getsphere						(wm->m_Bounds.P,wm->m_Bounds.R);
 }

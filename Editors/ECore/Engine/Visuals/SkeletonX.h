@@ -74,14 +74,14 @@ protected:
 
 	void					_CollectBoneFaces	(Fvisual* V, u32 iBase, u32 iCount);
 
-//	void					_FillVerticesSoft1W	(CSkeletonWallmark& wm, const Fvector& pt, float size, Fvisual* V, CBoneData::IndicesVec& indices, u16 bone_id);
-//	void					_FillVerticesSoft2W	(CSkeletonWallmark& wm, const Fvector& pt, float size, Fvisual* V, CBoneData::IndicesVec& indices, u16 bone_id);
+	void					_FillVerticesSoft1W	(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, u16* indices, CBoneData::FacesVec& faces);
+	void					_FillVerticesSoft2W	(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, u16* indices, CBoneData::FacesVec& faces);
 	void					_FillVerticesHW1W	(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, Fvisual* V, u16* indices, CBoneData::FacesVec& faces);
 	void					_FillVerticesHW2W	(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, Fvisual* V, u16* indices, CBoneData::FacesVec& faces);
 	void					_FillVertices		(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, Fvisual* V, u16 bone_id, u32 iBase, u32 iCount);
 
-//	BOOL					_PickBoneSoft1W		(float& range, const Fvector& S, const Fvector& D, Fvisual* V, CBoneData::IndicesVec& indices);
-//	BOOL					_PickBoneSoft2W		(float& range, const Fvector& S, const Fvector& D, Fvisual* V, CBoneData::IndicesVec& indices);
+	BOOL					_PickBoneSoft1W		(Fvector& normal, float& range, const Fvector& S, const Fvector& D, u16* indices, CBoneData::FacesVec& faces);
+	BOOL					_PickBoneSoft2W		(Fvector& normal, float& range, const Fvector& S, const Fvector& D,	u16* indices, CBoneData::FacesVec& faces);
 	BOOL					_PickBoneHW1W		(Fvector& normal, float& range, const Fvector& S, const Fvector& D, Fvisual* V, u16* indices, CBoneData::FacesVec& faces);
 	BOOL					_PickBoneHW2W		(Fvector& normal, float& range, const Fvector& S, const Fvector& D, Fvisual* V, u16* indices, CBoneData::FacesVec& faces);
 	BOOL					_PickBone			(Fvector& normal, float& range, const Fvector& S, const Fvector& D, Fvisual* V, u16 bone_id, u32 iBase, u32 iCount);
