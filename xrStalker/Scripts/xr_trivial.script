@@ -721,7 +721,7 @@ function novice3_attack:execute ()
     end
 
     if(self.start_run == false and self.end_run == false) then
-      self.object:set_movement_type    ( move.run )
+      self.object:set_movement_type    ( move.walk )
     self.start_run = true
     end
 
