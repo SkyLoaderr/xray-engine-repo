@@ -9,6 +9,7 @@ public:
 	CTorch(void);
 	virtual ~CTorch(void);
 
+	virtual void Load(LPCSTR section);
 	virtual BOOL net_Spawn(LPVOID DC);
 	virtual void net_Destroy();
 
@@ -17,4 +18,7 @@ public:
 
 	virtual void UpdateCL();
 	virtual void OnVisible();
+
+	Fvector m_pos;
+	IRender_Light*	light_render;
 };

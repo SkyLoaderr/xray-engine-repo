@@ -67,6 +67,8 @@ inv_name				= "Torch"
 inv_name_short			= "Torch"
 inv_weight				= .4
 
+position				= 1 0 0
+
 [bolt]
 class				= II_BOLT
 cform				= skeleton
@@ -104,8 +106,6 @@ force_min			= 25
 force_max			= 100
 force_grow_speed	= 25
 
-cost				= 50
-
 blast				= 800
 blast_r				= 15
 frags				= 10
@@ -142,8 +142,6 @@ hud					= grenade_rgd5_hud
 force_min			= 25
 force_max			= 100
 force_grow_speed	= 25
-
-cost				= 70
 
 blast				= 800
 blast_r				= 20
@@ -260,7 +258,6 @@ rank					= 0;
 ;jump_speed             = 5.6
 jump_speed              = 6.
 crouch_coef 		= 0.2
-max_item_mass			= 40.0
 run_coef                 = 2.4
 visual			 = actors\Different_stalkers\stalker_hood_multiplayer.ogf
 ;visual			 = actors\alpha\pidarka_urban.ogf
@@ -431,7 +428,6 @@ rank					= 0;
 going_speed                  = 1.5                      ; option for ALife Simulator
 eye_fov                      = 145	;170
 eye_range                    = 150	;150
-max_item_mass			= 40.0
 
 ; State                = 7
 ; 0 - бежать прямо на врага
@@ -541,7 +537,6 @@ rank					= 0;
 going_speed                  = 1.5                      ; option for ALife Simulator
 eye_fov                      = 145	;170
 eye_range                    = 80	;150
-max_item_mass			= 40.0
 
 State                = 7
 ; 0 - бежать прямо на врага
@@ -1222,8 +1217,6 @@ class                    = W_FN2000
 min_radius               = 50
 max_radius               = 150
 
-cost					 = 3500
-
 ammo_limit		         = 180
 ammo_current		     = 90
 ammo_elapsed		     = 30
@@ -1301,7 +1294,6 @@ inv_name_short		=
 inv_weight		= .3
 ;$prefetch 		= 16
 
-cost					 = 50
 
 [wpn_fn2000_hud]
 shell_point		 = 0.0, 0.0, 0.0
@@ -1322,8 +1314,6 @@ cform                    = skeleton
 class                    = W_VINT
 min_radius               = 50
 max_radius               = 150
-
-cost					 = 4000
 
 ammo_limit		         = 180
 ammo_current		     = 90
@@ -1411,8 +1401,6 @@ class                    = W_LR300
 min_radius               = 0
 max_radius               = 50
 
-cost					 = 2300
-
 ammo_limit		 = 210
 ammo_current		 = 30
 ammo_elapsed		 = 30
@@ -1496,8 +1484,6 @@ cform                    = skeleton
 class                    = W_VAL
 min_radius               = 30
 max_radius               = 100
-
-cost					 = 2400
 
 ammo_limit		 = 210
 ammo_current		 = 180
@@ -1587,8 +1573,6 @@ class                   = W_AK74
 min_radius              = 30
 max_radius              = 100
 
-cost					 = 1800
-
 ammo_limit				= 210
 ammo_current			= 180
 ammo_elapsed			= 30
@@ -1675,8 +1659,6 @@ cform                   = skeleton
 class                   = W_GROZA
 min_radius              = 30
 max_radius              = 100
-
-cost					= 2700
 
 ammo_limit				= 210
 ammo_current			= 180
@@ -1765,8 +1747,6 @@ class                    = W_HPSA
 min_radius               = 0
 max_radius               = 30
 
-cost					 = 300
-
 ammo_limit		 = 120
 ammo_current		 = 0
 ammo_elapsed		 = 0
@@ -1849,8 +1829,6 @@ cform                    = skeleton
 class                    = W_PM
 min_radius               = 0
 max_radius               = 30
-
-cost					 = 250
 
 ammo_limit		 = 120
 ammo_current		 = 96
@@ -1938,8 +1916,6 @@ cform                    = skeleton
 class                    = W_WALTHR
 min_radius               = 0
 max_radius               = 30
-
-cost					 = 300
 
 ammo_limit		 = 120
 ammo_current		 = 96
@@ -2029,8 +2005,6 @@ class                    = W_USP45
 min_radius               = 0
 max_radius               = 30
 
-cost					 = 111
-
 ammo_limit		 = 120
 ammo_current		 = 96
 ammo_elapsed		 = 12
@@ -2119,8 +2093,6 @@ class                    = W_RPG7
 min_radius               = 50
 max_radius               = 150
 
-cost					 = 4000
-
 ammo_limit		 = 120
 ammo_current		 = 96
 ammo_elapsed		 = 12
@@ -2204,8 +2176,6 @@ visual                  = weapon\rpg_7\wpn_rpg_7_grenade.ogf
 cform                    = skeleton
 class                    = G_RPG7
 
-cost					 = 100
-
 blast				= 3000
 blast_r				= 15
 frags				= 0
@@ -2236,8 +2206,6 @@ cform                    = skeleton
 class                    = W_FORT
 min_radius               = 5
 max_radius               = 30
-
-cost					 = 300
 
 ammo_limit		 = 120
 ammo_current		 = 90
@@ -2333,8 +2301,6 @@ resource		= 6000
 min_radius               = 100
 max_radius               = 150
 
-cost					 = 350
-
 cam_relax_speed          = 5.5
 cam_dispersion           = 2
 cam_max_angle		 = 5
@@ -2371,8 +2337,6 @@ inv_name_short		= M134
 inv_weight		= 5.
 min_radius               = 0
 max_radius               = 50
-
-cost					 = 3500
 
 cam_relax_speed          = 15.0
 cam_dispersion           = 5.0
@@ -2444,8 +2408,6 @@ cform                    = skeleton
 class                    = W_SHOTGN
 min_radius               = 0
 max_radius               = 50
-
-cost					 = 1000
 
 ammo_limit		 = 60
 ammo_current		 = 10
@@ -2540,8 +2502,6 @@ class                    = W_SVD
 min_radius               = 0
 max_radius               = 50
 
-cost					 = 3000
-
 ammo_limit		 = 60
 ammo_current		 = 10
 ammo_elapsed		 = 0
@@ -2625,8 +2585,6 @@ cform                    = skeleton
 class                    = W_SVU
 min_radius               = 0
 max_radius               = 50
-
-cost					 = 3100
 
 ammo_limit		 = 60
 ammo_current		 = 10
@@ -2856,8 +2814,6 @@ cform                   = skeleton
 visual                  = munition\patron9_18_fmj.ogf
 $prefetch 		= 16
 
-cost					 = 50
-
 box_size		= 50
 
 inv_name		= "9x18 FMJ"
@@ -2880,8 +2836,6 @@ class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron9_pbp.ogf
 $prefetch 		= 16
-
-cost					 = 50
 
 box_size		= 50
 
@@ -2906,8 +2860,6 @@ cform                   = skeleton
 visual                  = munition\patron9_18_pmm.ogf
 $prefetch 		= 16
 
-cost					 = 50
-
 box_size		= 50
 
 inv_name		= "9x18 PMM"
@@ -2930,8 +2882,6 @@ class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron9_fmj.ogf
 $prefetch 		= 16
-
-cost					 = 50
 
 box_size		= 50
 
@@ -2956,8 +2906,6 @@ cform                   = skeleton
 visual                  = munition\patron9_19_pbp.ogf
 $prefetch 		= 16
 
-cost					 = 50
-
 box_size		= 50
 
 inv_name		= "9x19 PBP"
@@ -2980,8 +2928,6 @@ class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron545.ogf
 $prefetch 		= 16
-
-cost					 = 50
 
 box_size		= 60
 
@@ -3006,8 +2952,6 @@ cform                   = skeleton
 visual                  = munition\patron545_ap.ogf
 $prefetch 		= 64
 
-cost					 = 50
-
 box_size		= 60
 
 inv_name		= "5.45x39 AP"
@@ -3030,8 +2974,6 @@ class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron556.ogf
 $prefetch 		= 16
-
-cost					 = 50
 
 box_size		= 60
 
@@ -3056,8 +2998,6 @@ cform                   = skeleton
 visual                  = munition\patron556_ap.ogf
 $prefetch 		= 16
 
-cost					 = 50
-
 box_size		= 60
 
 inv_name		= "5.56x45 AP"
@@ -3080,8 +3020,6 @@ class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron57.ogf
 $prefetch 		= 16
-
-cost					 = 50
 
 box_size		= 60
 
@@ -3106,8 +3044,6 @@ cform                   = skeleton
 visual                  = munition\patron57_AP.ogf
 $prefetch 		= 16
 
-cost					 = 50
-
 box_size		= 60
 
 inv_name		= "5.7x28 AP"
@@ -3130,8 +3066,6 @@ class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron762_7h1.ogf
 $prefetch 		= 16
-
-cost					 = 50
 
 box_size		= 10
 
@@ -3156,8 +3090,6 @@ cform                   = skeleton
 visual                  = munition\patron762_AP.ogf
 $prefetch 		= 16
 
-cost					 = 50
-
 box_size		= 10
 
 inv_name		= "7.62x54R BTZ"
@@ -3180,8 +3112,6 @@ class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron762_7h14.ogf
 $prefetch 		= 16
-
-cost					 = 50
 
 box_size		= 10
 
@@ -3206,8 +3136,6 @@ cform                   = skeleton
 visual                  = munition\patron9_pab9.ogf
 $prefetch 		= 16
 
-cost					 = 50
-
 box_size		= 60
 
 inv_name		= "9x39 PAB-9"
@@ -3230,8 +3158,6 @@ class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron9_AP.ogf
 $prefetch 		= 16
-
-cost					 = 50
 
 box_size		= 60
 
@@ -3256,8 +3182,6 @@ cform                   = skeleton
 visual                  = munition\patron9_sp5.ogf
 $prefetch 		= 16
 
-cost					 = 50
-
 box_size		= 60
 
 inv_name		= "9x39 SP-5"
@@ -3281,8 +3205,6 @@ cform                   = skeleton
 visual                  = munition\patron45.ogf
 $prefetch 		= 16
 
-cost					 = 50
-
 box_size		= 50
 
 inv_name		= "11.43x23 FMJ"
@@ -3305,8 +3227,6 @@ class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron45_Hydro.ogf
 $prefetch 		= 16
-
-cost					 = 50
 
 box_size		= 50
 
@@ -3332,8 +3252,6 @@ cform                   = skeleton
 visual                  = munition\kartech.ogf
 $prefetch 		= 16
 
-cost					 = 50
-
 box_size		= 10
 
 inv_name		= "12x70 BUCK"
@@ -3356,8 +3274,6 @@ class			= AMMO
 cform                   = skeleton
 visual                  = munition\dart.ogf
 $prefetch 		= 16
-
-cost					 = 50
 
 box_size		= 10
 
@@ -3382,8 +3298,6 @@ cform                   = skeleton
 visual                  = munition\zhekan.ogf
 $prefetch 		= 16
 
-cost					 = 50
-
 box_size		= 10
 
 inv_name		= "12x70 Zhekan "
@@ -3407,8 +3321,6 @@ class			= AMMO
 cform                   = skeleton
 visual                  = munition\rpg.ogf
 $prefetch 		= 16
-
-cost					 = 50
 
 box_size		= 1
 
@@ -3471,6 +3383,6 @@ ph_friction_wall     = 4.0                              ; ???
     schedule_min         = 1                ; milliseconds
     schedule_max         = 999              ; milliseconds
     process_time         = 90000             ; microseconds
-    online_distance      = 15.0             ; metres
+    online_distance      = 50.0             ; metres
     switch_delay         = 1000             ; milliseconds
     time_factor          = 1.0              ; 
