@@ -438,7 +438,7 @@ typedef struct CompressionOptions
 
         FadeAmount = 0;         // percentage of color to fade in
 
-        BinaryAlphaThreshold = 128;  // When Binary Alpha is selected, below this value, alpha is zero
+        BinaryAlphaThreshold = 0;  //. When Binary Alpha is selected, below this value, alpha is zero
 
 
         bDitherColor = false;       // enable dithering during 16 bit conversion
