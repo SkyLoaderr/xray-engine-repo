@@ -204,11 +204,12 @@ void CSpectator::cam_Update	(CActor* A)
 
 void CSpectator::OnHUDDraw(CCustomHUD* hud)
 {
-	if (last_actor){
-		CHUDManager* HUD			= (CHUDManager*)hud;
-		HUD->pFontDI->SetColor		(0xA0808080);
-		HUD->pFontDI->SetSize		(0.1f);
-		HUD->pFontDI->SetAligment	(CGameFont::alCenter);
+	CHUDManager* HUD				= (CHUDManager*)hud;
+	HUD->pFontDI->SetColor			(0xA0808080);
+	HUD->pFontDI->SetSize			(0.1f);
+	HUD->pFontDI->SetAligment		(CGameFont::alCenter);
+	if (last_actor)
 		HUD->pFontDI->Out			(0.f,0.9f,"%s(%d%%)",last_actor->cName(),last_actor->g_Health());
-	}
+	else
+		HUD->pFontDI->Out			(0.f,0.9f,"free-fly camera");
 }
