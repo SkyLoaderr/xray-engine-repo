@@ -1108,12 +1108,6 @@
 					Name="Shaders"
 					Filter="">
 					<File
-						RelativePath=".\Shader.cpp">
-					</File>
-					<File
-						RelativePath=".\Shader.h">
-					</File>
-					<File
 						RelativePath=".\Shader_xrLC.h">
 					</File>
 					<File
@@ -1190,42 +1184,6 @@
 					<Filter
 						Name="Shaders "
 						Filter="">
-						<File
-							RelativePath=".\SH_Constant.cpp">
-							<FileConfiguration
-								Name="Debug|Win32">
-								<Tool
-									Name="VCCLCompilerTool"
-									AssemblerOutput="4"/>
-							</FileConfiguration>
-							<FileConfiguration
-								Name="Mixed|Win32">
-								<Tool
-									Name="VCCLCompilerTool"
-									AssemblerOutput="4"/>
-							</FileConfiguration>
-						</File>
-						<File
-							RelativePath=".\SH_Constant.h">
-						</File>
-						<File
-							RelativePath=".\SH_Matrix.cpp">
-						</File>
-						<File
-							RelativePath=".\SH_Matrix.h">
-						</File>
-						<File
-							RelativePath=".\SH_RT.cpp">
-						</File>
-						<File
-							RelativePath=".\SH_RT.h">
-						</File>
-						<File
-							RelativePath=".\SH_Texture.cpp">
-						</File>
-						<File
-							RelativePath=".\SH_Texture.h">
-						</File>
 						<Filter
 							Name="dx9_R_shader"
 							Filter="">
@@ -1272,6 +1230,52 @@
 						</File>
 						<File
 							RelativePath=".\TextureManager_Loader.cpp">
+						</File>
+					</Filter>
+					<Filter
+						Name="Resources"
+						Filter="">
+						<File
+							RelativePath=".\SH_Constant.cpp">
+							<FileConfiguration
+								Name="Debug|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									AssemblerOutput="4"/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Mixed|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									AssemblerOutput="4"/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\SH_Constant.h">
+						</File>
+						<File
+							RelativePath=".\SH_Matrix.cpp">
+						</File>
+						<File
+							RelativePath=".\SH_Matrix.h">
+						</File>
+						<File
+							RelativePath=".\SH_RT.cpp">
+						</File>
+						<File
+							RelativePath=".\SH_RT.h">
+						</File>
+						<File
+							RelativePath=".\SH_Texture.cpp">
+						</File>
+						<File
+							RelativePath=".\SH_Texture.h">
+						</File>
+						<File
+							RelativePath=".\Shader.cpp">
+						</File>
+						<File
+							RelativePath=".\Shader.h">
 						</File>
 					</Filter>
 				</Filter>
