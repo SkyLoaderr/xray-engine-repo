@@ -284,7 +284,8 @@ void CCustomMonster::shedule_Update	( u32 DT )
 		if (fEntityHealth>0) {
 			Exec_Action				(dt);
 			VERIFY				(_valid(Position()));
-			Exec_Look				(dt);
+			if (!dcast_Rat())
+				Exec_Look			(dt);
 			VERIFY				(_valid(Position()));
 			Exec_Visibility			();
 			VERIFY				(_valid(Position()));
@@ -395,10 +396,11 @@ void CCustomMonster::UpdateCL	()
 		else {
 			CAI_Rat				*l_tpRat = dcast_Rat();
 			R_ASSERT			(l_tpRat);
-			if (((dwTime > N.dwTimeStamp) || (NET.size() < 2)) && (_abs(l_tpRat->m_fSpeed) > EPS_L)) {
+//			if (((dwTime > N.dwTimeStamp) || (NET.size() < 2))) {// && (_abs(l_tpRat->m_fSpeed) > EPS_L)) 
+			{
 				Fmatrix				l_tSavedTransform = XFORM();
 				m_fTimeUpdateDelta	= Device.fTimeDelta;
-				l_tpRat->bfComputeNewPosition(l_tpRat->m_bCanAdjustSpeed,l_tpRat->m_bStraightForward);
+				l_tpRat->vfComputeNewPosition(l_tpRat->m_bCanAdjustSpeed,l_tpRat->m_bStraightForward);
 				float				y,p,b;
 				XFORM().getHPB		(y,p,b);
 				NET_Last.p_pos		= Position();
@@ -409,9 +411,9 @@ void CCustomMonster::UpdateCL	()
 				if (!bfScriptAnimation())
 					SelectAnimation		(XFORM().k,Fvector().set(1,0,0),l_tpRat->m_fSpeed);
 			}
-			else
-				if (!bfScriptAnimation())
-					SelectAnimation		(XFORM().k,Fvector().set(1,0,0),l_tpRat->m_fSpeed);
+//			else
+//				if (!bfScriptAnimation())
+//					SelectAnimation		(XFORM().k,Fvector().set(1,0,0),l_tpRat->m_fSpeed);
 		}
 	}
 
