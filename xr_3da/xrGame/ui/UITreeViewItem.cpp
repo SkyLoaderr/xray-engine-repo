@@ -250,7 +250,7 @@ void CUITreeViewItem::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			IsOpened() ? Close() : Open();
 		}
 	}
-	else if (pWnd == this && BUTTON_FOCUS_RECEIVED == msg)
+	else if (pWnd == this && STATIC_FOCUS_RECEIVED == msg)
 	{
 		UIBkg.TextureOn();
 
@@ -260,7 +260,7 @@ void CUITreeViewItem::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 		}
 		pPrevFocusedItem = this;
 	}
-	else if (pWnd == this && BUTTON_FOCUS_LOST == msg)
+	else if (pWnd == this && STATIC_FOCUS_LOST == msg)
 	{
 		UIBkg.TextureOff();
 		pPrevFocusedItem = NULL;

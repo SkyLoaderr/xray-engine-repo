@@ -138,9 +138,9 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	}
 	else if (&UIOffButton == pWnd)
 	{
-		if (BUTTON_FOCUS_RECEIVED == msg)
+		if (STATIC_FOCUS_RECEIVED == msg)
 			UIOffButton.TextureOn();
-		else if (BUTTON_FOCUS_LOST == msg)
+		else if (STATIC_FOCUS_LOST == msg)
 			UIOffButton.TextureOff();
 		else if (BUTTON_CLICKED == msg)
 			Game().StartStopMenu(this);

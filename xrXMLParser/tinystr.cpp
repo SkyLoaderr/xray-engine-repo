@@ -47,7 +47,7 @@ TiXmlString::TiXmlString (const char* instring)
         return;
     }
 
-	newlen = static_cast<unsigned int>(strlen (instring) + 1);
+	newlen = static_cast<unsigned int>(xr_strlen (instring) + 1);
     newstring = new char [newlen];
     memcpy (newstring, instring, newlen);
     // strcpy (newstring, instring);
@@ -93,7 +93,7 @@ void TiXmlString ::operator = (const char * content)
         empty_it ();
         return;
     }
-    newlen = static_cast<unsigned int>(strlen (content) + 1);
+    newlen = static_cast<unsigned int>(xr_strlen (content) + 1);
     newstring = new char [newlen];
     // strcpy (newstring, content);
     memcpy (newstring, content, newlen);
@@ -192,7 +192,7 @@ void TiXmlString::append( const char * suffix )
     char * new_string;
     unsigned new_alloc, new_size;
 
-    new_size = length () + strlen (suffix) + 1;
+    new_size = length () + xr_strlen (suffix) + 1;
     // check if we need to expand
     if (new_size > allocated)
     {
@@ -212,7 +212,7 @@ void TiXmlString::append( const char * suffix )
         // strcat (new_string, suffix);
         memcpy (new_string + length (), 
                 suffix,
-                strlen (suffix) + 1);
+                xr_strlen (suffix) + 1);
 
         // return previsously allocated buffer if any
         if (allocated && cstring)
@@ -228,7 +228,7 @@ void TiXmlString::append( const char * suffix )
         // strcat (cstring, suffix);
         memcpy (cstring + length (), 
                 suffix, 
-                strlen (suffix) + 1);
+                xr_strlen (suffix) + 1);
     }
     current_length = new_size - 1;
 }

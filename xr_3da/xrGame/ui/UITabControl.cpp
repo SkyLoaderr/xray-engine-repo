@@ -107,8 +107,8 @@ void CUITabControl::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			}
 		}
 	}
-	else if (BUTTON_FOCUS_RECEIVED	== msg	||
-			 BUTTON_FOCUS_LOST		== msg)
+	else if (STATIC_FOCUS_RECEIVED	== msg	||
+			 STATIC_FOCUS_LOST		== msg)
 	{
 		for (u8 i = 0; i < m_TabsArr.size(); ++i)
 		{

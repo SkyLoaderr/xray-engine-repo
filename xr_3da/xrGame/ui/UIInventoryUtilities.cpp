@@ -14,6 +14,8 @@
 #include "../Level.h"
 #include "../HUDManager.h"
 #include "../date_time.h"
+#include "../string_table.h"
+#include "../Inventory.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -307,4 +309,45 @@ const ref_str InventoryUtilities::GetDateAsString(ALife::_TIME_ID date, EDatePre
 	}
 
 	return bufDate;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void InventoryUtilities::UpdateWeight(CUIStatic &wnd, bool withPrefix)
+{
+	CInventoryOwner *pInvOwner = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());
+	R_ASSERT(pInvOwner);
+	string128 buf;
+	ZeroMemory(buf, 128);
+
+	float total = pInvOwner->inventory().CalcTotalWeight();
+	float max	= pInvOwner->MaxCarryWeight();
+
+	string16 cl;
+	ZeroMemory(cl, 16);
+
+	if (total > max)
+	{
+		strcpy(cl, "%cred");
+	}
+	else
+	{
+		strcpy(cl, "%cUI_orange");
+	}
+
+	string32 prefix;
+	ZeroMemory(prefix, 32);
+
+	if (withPrefix)
+	{
+		sprintf(prefix, "%%cdefault%s ", *CStringTable()("Weight"));
+	}
+	else
+	{
+		strcpy(prefix, "");
+	}
+
+	sprintf(buf, "%s%s%3.1f %s/%5.1f", prefix, cl, total, "%cUI_orange", max);
+	wnd.SetText(buf);
+	//	UIStaticWeight.ClipperOff();
 }

@@ -43,7 +43,7 @@ public:
 	// Функции управления анимацией
 	void				Play();
 	void				Stop();
-	void				Reset()							{ m_uPrevGlobalTime = 0; m_uTotalTime = 0; }
+	void				Reset()							{ m_uPrevGlobalTime = 0; m_uTotalTime = 0; m_iCurrAnimationTime = 0; }
 	EAnimationState		GetState() const				{ return m_eAnimationState; }
 
 	void				SetPlayDuration(int duration)	{ m_iAnimationDuration = duration; }

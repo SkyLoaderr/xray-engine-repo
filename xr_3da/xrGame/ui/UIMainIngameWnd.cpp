@@ -251,7 +251,15 @@ void CUIMainIngameWnd::Init()
 
 	UIContactsFlicker.SetAnimationPeriod(1000);
 	UIContactsFlicker.SetPlayDuration(4000);
-	UIContactsFlicker.SetMessageTarget(this);
+
+	// Claws animation
+	uiXml.SetLocalRoot(uiXml.GetRoot());
+	m_ClawsAnimation.SetAnimationPeriod(uiXml.ReadAttribInt("claws_animation", 0, "period", 1000));
+	m_ClawsAnimation.SetPlayDuration(uiXml.ReadAttribInt("claws_animation", 0, "duration", 2000));
+	m_ClawsTexture.SetRect(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+
+	// !!! TEST !!!
+	AddMonsterClawsEffect("aa", "wpn\\wpn_crosshair");
 }
 
 void CUIMainIngameWnd::Draw()
@@ -305,6 +313,14 @@ void CUIMainIngameWnd::Draw()
 			psHUD_Flags.set(HUD_CROSSHAIR, TRUE);
 		}
 		RenderQuickInfos();
+	}
+
+	// Render claws
+	if (CUIAnimationBase::easPlayed == m_ClawsAnimation.GetState() && m_ClawsTexture.GetShader())
+	{
+		m_ClawsTexture.SetPos(0, 0);
+		m_ClawsTexture.Render(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+		Msg("%i", color_get_A(m_ClawsTexture.GetColor()));
 	}
 }
 
@@ -518,6 +534,7 @@ void CUIMainIngameWnd::Update()
 
 	UpdateFlashingIcons();
 	UpdateContactsAnimation();
+	UpdateClawsAnimation();
 
 	CUIWindow::Update();
 }
@@ -754,6 +771,11 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 			break;
 		case DIK_NUMPADPLUS:
 			UIZoneMap.ZoomIn();
+			return true;
+			break;
+		// TEST
+		case DIK_O:
+			PlayClawsAnimation("aa");
 			return true;
 			break;
 		}
@@ -1227,4 +1249,44 @@ void CUIMainIngameWnd::UpdateContactsAnimation()
 	}
 	else
 		UIPdaOnline.Show(true);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::UpdateClawsAnimation()
+{
+	m_ClawsAnimation.Update();
+	if (m_ClawsAnimation.GetState() == CUIAnimationBase::easPlayed)
+	{
+		m_ClawsTexture.SetColor(subst_alpha(m_ClawsTexture.GetColor(), m_ClawsAnimation.GetCurrentPhase()));
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::AddMonsterClawsEffect(const ref_str &monsterName, const ref_str &textureName)
+{
+	if (m_ClawsTextures.find(monsterName) != m_ClawsTextures.end()) return;
+
+	// Check for texture existance
+	if (m_ClawsRepos.find(textureName) == m_ClawsRepos.end())
+	{
+		m_ClawsRepos[textureName].create("hud\\default", *textureName);
+	}
+
+	ref_shader *sh = &m_ClawsRepos[textureName];
+	// Add new texture
+	m_ClawsTextures[monsterName] = sh;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::PlayClawsAnimation(const ref_str &monsterName)
+{
+	MonsterClawsTextures_it it = m_ClawsTextures.find(monsterName);
+	R_ASSERT2(it != m_ClawsTextures.end(), "Monster claws texture for this monster doesn't exist");
+	m_ClawsTexture.SetShader(*it->second);
+	m_ClawsAnimation.Reset();
+	m_ClawsAnimation.SetAnimationDirection(CUIAnimationFade::efdFadeOut);
+	m_ClawsAnimation.Play();
 }

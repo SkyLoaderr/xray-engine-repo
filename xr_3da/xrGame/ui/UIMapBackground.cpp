@@ -108,12 +108,12 @@ void CUIMapBackground::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	//проверить сообщение от иконок на карте
 	if(m_vMapSpots.end() != std::find(m_vMapSpots.begin(), m_vMapSpots.end(), pWnd))
 	{
-		if(BUTTON_FOCUS_RECEIVED == msg)
+		if(STATIC_FOCUS_RECEIVED == msg)
 		{
 			m_pActiveMapSpot = smart_cast<CUIMapSpot*>(pWnd);
 			GetTop()->SendMessage(this, MAPSPOT_FOCUS_RECEIVED);
 		}
-		else if(BUTTON_FOCUS_LOST == msg)
+		else if(STATIC_FOCUS_LOST == msg)
 		{
 			GetTop()->SendMessage(this, MAPSPOT_FOCUS_LOST);
 			m_pActiveMapSpot = NULL;
@@ -423,7 +423,7 @@ void CUIMapBackground::OnMouse(int x, int y, EUIMessages mouse_action)
 			deltaY = y - m_iOldMouseY;
 			MoveMap(deltaX, deltaY);
 			if (m_pActiveMapSpot)
-				SendMessage(m_pActiveMapSpot, BUTTON_FOCUS_RECEIVED, NULL);
+				SendMessage(m_pActiveMapSpot, STATIC_FOCUS_RECEIVED, NULL);
 			GetMessageTarget()->SendMessage(this, MAP_MOVED, NULL);
 		}
 	}

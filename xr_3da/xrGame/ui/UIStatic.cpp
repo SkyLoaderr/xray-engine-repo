@@ -18,37 +18,42 @@ const char * const	clDefault	= "default";
 
 CUIStatic:: CUIStatic()
 {
-	m_str				= NULL;
-	m_bAvailableTexture	= false;
-	m_bTextureEnable	= true;
+	m_str					= NULL;
+	m_bAvailableTexture		= false;
+	m_bTextureEnable		= true;
 
-	m_bClipper			= false;
-	m_bStretchTexture	= false;
+	m_bClipper				= false;
+	m_bStretchTexture		= false;
 
-	SetTextAlign(CGameFont::alLeft);
+	SetTextAlign			(CGameFont::alLeft);
 
-	m_iTextOffsetX		= 0;
-	m_iTextOffsetY		= 0;
-	m_iTexOffsetY		= 0;
-	m_iTexOffsetX		= 0;
+	m_iTextOffsetX			= 0;
+	m_iTextOffsetY			= 0;
+	m_iTexOffsetY			= 0;
+	m_iTexOffsetX			= 0;
 
-	m_dwFontColor		= 0xFFFFFFFF;
+	m_dwFontColor			= 0xFFFFFFFF;
 
-	m_pMask				= NULL;
-	m_ElipsisPos		= eepNone;
-	m_iElipsisIndent	= 0;
+	m_pMask					= NULL;
+	m_ElipsisPos			= eepNone;
+	m_iElipsisIndent		= 0;
 
-	m_ClipRect.bottom	= -1;
-	m_ClipRect.top		= -1;
-	m_ClipRect.left		= -1;
-	m_ClipRect.right	= -1;
+	m_ClipRect.bottom		= -1;
+	m_ClipRect.top			= -1;
+	m_ClipRect.left			= -1;
+	m_ClipRect.right		= -1;
+
+	m_bCursorOverButton		= false;
+
 }
 
- CUIStatic::~ CUIStatic()
+//////////////////////////////////////////////////////////////////////////
+
+CUIStatic::~ CUIStatic()
 {
 }
 
-
+//////////////////////////////////////////////////////////////////////////
 
 void CUIStatic::Init(LPCSTR tex_name, int x, int y, int width, int height)
 {
@@ -59,6 +64,8 @@ void CUIStatic::Init(LPCSTR tex_name, int x, int y, int width, int height)
 	CUIWindow::Init(x, y, width, height);
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUIStatic::InitTexture(LPCSTR tex_name)
 {
 	m_UIStaticItem.Init(tex_name,"hud\\default", GetAbsoluteRect().left,
@@ -66,15 +73,18 @@ void CUIStatic::InitTexture(LPCSTR tex_name)
 	m_bAvailableTexture = true;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUIStatic::Init(int x, int y, int width, int height)
 {
 	m_bAvailableTexture = false;
 	CUIWindow::Init(x, y, width, height);
 }
 
-
-
+//////////////////////////////////////////////////////////////////////////
 //прорисовка
+//////////////////////////////////////////////////////////////////////////
+
 void  CUIStatic::Draw()
 {
 	if(m_bAvailableTexture && m_bTextureEnable)
@@ -113,11 +123,14 @@ void  CUIStatic::Draw()
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////
 
 void CUIStatic::Update()
 {
 	inherited::Update();
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIStatic::WordOut(const RECT &rect)
 {
@@ -169,6 +182,8 @@ void CUIStatic::WordOut(const RECT &rect)
 		new_word = false;
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIStatic::AddLetter(char letter)
 {
@@ -363,6 +378,7 @@ void CUIStatic::TextureClipper(int offset_x, int offset_y, RECT* pClipRect,
 	UIStaticItem.SetPos(out_x + offset_x , out_y  + offset_y);
 }
 
+//////////////////////////////////////////////////////////////////////////
 
 void CUIStatic::ClipperOn() 
 {
@@ -370,6 +386,8 @@ void CUIStatic::ClipperOn()
 
 	TextureClipper(0, 0);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIStatic::ClipperOff(CUIStaticItem& UIStaticItem)
 {
@@ -393,21 +411,28 @@ void CUIStatic::ClipperOff(CUIStaticItem& UIStaticItem)
 	UIStaticItem.SetRect(r);
 }
 
+//////////////////////////////////////////////////////////////////////////
 
 void CUIStatic::ClipperOff() 
 {
 	ClipperOff(m_UIStaticItem);
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUIStatic::SetTextureScale(float new_scale)
 {
 	m_UIStaticItem.SetScale(new_scale);
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 float CUIStatic::GetTextureScale()
 {
 	return m_UIStaticItem.GetScale();
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void  CUIStatic::SetShader(const ref_shader& sh)
 {
@@ -415,6 +440,7 @@ void  CUIStatic::SetShader(const ref_shader& sh)
 	m_bAvailableTexture = true;
 }
 
+//////////////////////////////////////////////////////////////////////////
 
 void CUIStatic::SetText(LPCSTR str, STRING &arr) 
 {
@@ -424,6 +450,8 @@ void CUIStatic::SetText(LPCSTR str, STRING &arr)
 		arr.push_back(str[i]);
 	arr.push_back(0);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIStatic::SetText(LPCSTR str)
 {
@@ -779,4 +807,34 @@ void CUIStatic::Elipsis(STRING &str, const RECT &rect, EElipsisPosition elipsisP
 	}
 
 	str.insert(cutPos, 3, '.');
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIStatic::OnMouse(int x, int y, EUIMessages mouse_action)
+{
+	//проверить попадает ли курсор на кнопку
+	//координаты заданы относительно самой кнопки
+	bool cursor_on_button;
+
+	if(x>=0 && x<GetWidth() && y>=0 && y<GetHeight())
+	{
+		cursor_on_button = true;
+	}
+	else
+	{
+		cursor_on_button = false;
+	}
+
+
+	if(m_bCursorOverButton != cursor_on_button)
+	{
+		if(cursor_on_button)
+			GetMessageTarget()->SendMessage(this, STATIC_FOCUS_RECEIVED, NULL);
+		else
+			GetMessageTarget()->SendMessage(this, STATIC_FOCUS_LOST, NULL);
+	}
+	m_bCursorOverButton = cursor_on_button;
+
+	inherited::OnMouse(x, y, mouse_action);
 }

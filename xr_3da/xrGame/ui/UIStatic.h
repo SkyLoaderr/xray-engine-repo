@@ -25,16 +25,17 @@ private:
 	typedef CUIWindow inherited;
 public:
 	CUIStatic();
-	virtual ~ CUIStatic();
+	virtual ~CUIStatic();
 
 
-	virtual void Init(LPCSTR tex_name, int x, int y, int width, int height);
-	virtual void Init(int x, int y, int width, int height);
+	virtual void	Init(LPCSTR tex_name, int x, int y, int width, int height);
+	virtual void	Init(int x, int y, int width, int height);
 	
 	//прорисовка окна
-	virtual void Draw();
+	virtual void	Draw();
 	//обновление перед прорисовкой
-	virtual void Update();
+	virtual void	Update();
+	virtual void	OnMouse(int x, int y, EUIMessages mouse_action);
 
 
 	static void SetText(LPCSTR str, STRING &arr);
@@ -180,6 +181,9 @@ protected:
 
 	// Clip rect
 	RECT	m_ClipRect;
+
+	// если курсор над статиком
+	bool			m_bCursorOverButton;
 
 public:
 	static void Elipsis(STRING &str, const RECT &rect, EElipsisPosition elipsisPos, CGameFont *pFont);

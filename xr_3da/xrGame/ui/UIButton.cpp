@@ -23,8 +23,7 @@ CUIButton:: CUIButton()
 	m_str						= "";
 
 	m_bButtonClicked			= false;
-	m_bCursorOverButton			= false;
-
+	
 	m_bAvailableTexture			= false;
 
 	m_bIsSwitch					= false;
@@ -85,35 +84,12 @@ void CUIButton::Init(int x, int y, int width, int height)
 
 void  CUIButton::OnMouse(int x, int y, EUIMessages mouse_action)
 {
-	//проверить попадает ли курсор на кнопку
-	//координаты заданы относительно самой кнопки
-	bool cursor_on_button;
+	inherited::OnMouse(x, y, mouse_action);
 
-	if(x>=0 && x<GetWidth() && y>=0 && y<GetHeight())
-	{
-		cursor_on_button = true;
-	}
-	else
-	{
-		cursor_on_button = false;
-	}
-
-	
-	if(m_bCursorOverButton != cursor_on_button)
-	{
-		if(cursor_on_button)
-			GetMessageTarget()->SendMessage(this,BUTTON_FOCUS_RECEIVED, NULL);
-		else
-			GetMessageTarget()->SendMessage(this,BUTTON_FOCUS_LOST, NULL);
-	}
-	m_bCursorOverButton = cursor_on_button;
-
-	
 	m_bButtonClicked = false;
 
-
 	if(mouse_action == WINDOW_MOUSE_MOVE && m_eButtonState == BUTTON_NORMAL)
-			GetParent()->SetCapture(this, cursor_on_button);
+			GetParent()->SetCapture(this, m_bCursorOverButton);
 
 
 	switch(m_ePressMode)
@@ -137,7 +113,7 @@ void  CUIButton::OnMouse(int x, int y, EUIMessages mouse_action)
 		{
 			if(mouse_action == WINDOW_LBUTTON_UP)
 			{
-				if(cursor_on_button)
+				if(m_bCursorOverButton)
 				{
 					GetMessageTarget()->SendMessage(this, BUTTON_CLICKED);
 					m_bButtonClicked = true;
@@ -151,7 +127,7 @@ void  CUIButton::OnMouse(int x, int y, EUIMessages mouse_action)
 			}
 			else if(mouse_action == WINDOW_MOUSE_MOVE)
 			{
-				if(!cursor_on_button)
+				if(!m_bCursorOverButton)
 					m_eButtonState = BUTTON_UP;
 			}
 		}
@@ -159,7 +135,7 @@ void  CUIButton::OnMouse(int x, int y, EUIMessages mouse_action)
 		{
 			if(mouse_action == WINDOW_MOUSE_MOVE)
 			{
-				if(cursor_on_button)
+				if(m_bCursorOverButton)
 					m_eButtonState = BUTTON_PUSHED;
 			}
 			else if(mouse_action == WINDOW_LBUTTON_UP)
@@ -174,7 +150,7 @@ void  CUIButton::OnMouse(int x, int y, EUIMessages mouse_action)
 	case DOWN_PRESS:
         if(mouse_action == WINDOW_MOUSE_MOVE)
 		{
-			if(cursor_on_button)
+			if(m_bCursorOverButton)
 			{
 				m_eButtonState = BUTTON_PUSHED;
 				//захватить мышь
@@ -190,7 +166,7 @@ void  CUIButton::OnMouse(int x, int y, EUIMessages mouse_action)
 		}
 		else if(mouse_action == WINDOW_LBUTTON_DOWN || mouse_action == WINDOW_LBUTTON_DB_CLICK)
 		{
-			if(cursor_on_button)
+			if(m_bCursorOverButton)
 			{
 				GetMessageTarget()->SendMessage(this, BUTTON_CLICKED);
 				m_bButtonClicked = true;
@@ -203,7 +179,7 @@ void  CUIButton::OnMouse(int x, int y, EUIMessages mouse_action)
 	case UP_PRESS:
         if(mouse_action == WINDOW_MOUSE_MOVE)
 		{
-			if(cursor_on_button)
+			if(m_bCursorOverButton)
 			{
 				m_eButtonState = BUTTON_PUSHED;
 				//захватить мышь
@@ -218,7 +194,7 @@ void  CUIButton::OnMouse(int x, int y, EUIMessages mouse_action)
 		}
 		else if(mouse_action == WINDOW_LBUTTON_UP)
 		{
-			if(cursor_on_button)
+			if(m_bCursorOverButton)
 			{
 				GetMessageTarget()->SendMessage(this, BUTTON_CLICKED);
 				m_bButtonClicked = true;

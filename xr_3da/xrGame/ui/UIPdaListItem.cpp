@@ -144,11 +144,11 @@ void CUIPdaListItem::InitCharacter(CInventoryOwner* pInvOwner)
 
 void CUIPdaListItem::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
-	if (pWnd == this && BUTTON_FOCUS_RECEIVED == msg)
+	if (pWnd == this && STATIC_FOCUS_RECEIVED == msg)
 	{
 		UIName.SetHighlightText(true);
 	}
-	else if (pWnd == this && BUTTON_FOCUS_LOST == msg)
+	else if (pWnd == this && STATIC_FOCUS_LOST == msg)
 	{
 		UIName.SetHighlightText(false);
 	}

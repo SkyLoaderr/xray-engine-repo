@@ -434,7 +434,7 @@ void CUIInventoryWnd::InitInventory()
 
 		}
 	}
-	UpdateWeight();
+	UpdateWeight(UIBagWnd, true);
 }  
 
 
@@ -848,7 +848,7 @@ void CUIInventoryWnd::DropItem()
 	SetCurrentItem(NULL);
 	m_pCurrentDragDropItem = NULL;
 
-	UpdateWeight();
+	UpdateWeight(UIBagWnd, true);
 }
 
 void CUIInventoryWnd::EatItem()
@@ -914,10 +914,13 @@ void CUIInventoryWnd::Show()
 		pActor->u_EventGen(P, GEG_PLAYER_INVENTORYMENU_OPEN, pActor->ID());
 		pActor->u_EventSend(P);
 	}
+
+	Update();
 }
 
 void CUIInventoryWnd::Hide()
 {
+	inherited::Hide();
 	//достать вещь в активный слот
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(pActor && m_iCurrentActiveSlot != NO_ACTIVE_SLOT && 
@@ -926,7 +929,6 @@ void CUIInventoryWnd::Hide()
 		pActor->inventory().Activate(m_iCurrentActiveSlot);
 		m_iCurrentActiveSlot = NO_ACTIVE_SLOT;
 	}
-	inherited::Hide();
 
 	if (GameID() != GAME_SINGLE)
 	{
@@ -1384,33 +1386,4 @@ void CUIInventoryWnd::UpdateTime()
 		UIStaticTime.SetText(buf);
 		prevStrTime = strTime;
 	}
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-void CUIInventoryWnd::UpdateWeight()
-{
-	CInventoryOwner *pInvOwner = smart_cast<CInventoryOwner*>(Level().CurrentEntity());
-	R_ASSERT(pInvOwner);
-	string128 buf;
-	ZeroMemory(buf, 128);
-
-	float total = pInvOwner->inventory().CalcTotalWeight();
-	float max	= pInvOwner->MaxCarryWeight();
-
-	string16 cl;
-	ZeroMemory(cl, 16);
-
-	if (total > max)
-	{
-		strcpy(cl, "%cred");
-	}
-	else
-	{
-		strcpy(cl, "%cUI_orange");
-	}
-
-	sprintf(buf, "%%cdefaultWeight %s%3.1f %s/%5.1f", cl, total, "%cUI_orange", max);
-	UIBagWnd.SetText(buf);
-//	UIStaticWeight.ClipperOff();
 }

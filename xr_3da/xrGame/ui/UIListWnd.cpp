@@ -262,7 +262,7 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			{
 				GetMessageTarget()->SendMessage(this, LIST_ITEM_CLICKED, pListItem);
 			}
-			else if(BUTTON_FOCUS_RECEIVED == msg)
+			else if(STATIC_FOCUS_RECEIVED == msg)
 			{
 				if (!m_bForceFocusedItem)
 				{
@@ -287,7 +287,7 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				}
 				// end prototype code
 			}
-			else if(BUTTON_FOCUS_LOST == msg)
+			else if(STATIC_FOCUS_LOST == msg)
 			{
 				if(pListItem->GetIndex() == m_iFocusedItem && !m_bForceFocusedItem) m_iFocusedItem = -1;
 

@@ -203,6 +203,9 @@ void  CHUDManager::RenderUI()
 	}
 	if (psHUD_Flags.test(HUD_CROSSHAIR) && !bAlready)	
 		m_pHUDCursor->Render();
+
+	// Recalc new scale factor if resolution was changed
+	OnDeviceCreate();
 }
 
 //--------------------------------------------------------------------

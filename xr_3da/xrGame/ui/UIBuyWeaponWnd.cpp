@@ -855,7 +855,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		Game().StartStopMenu(this);
 	}
 	// “ак как у нас при наведении мен€етс€ текстура, то обрабатываем эту ситуацию
-	else if (BUTTON_FOCUS_RECEIVED == msg && &UIWeaponsTabControl == pWnd)
+	else if (STATIC_FOCUS_RECEIVED == msg && &UIWeaponsTabControl == pWnd)
 	{
 		if (pData)
 		{
@@ -864,7 +864,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				Init(*activeItems[idx], "hud\\default", 0, 0, alNone);
 		}
 	}
-	else if (BUTTON_FOCUS_LOST == msg && &UIWeaponsTabControl == pWnd)
+	else if (STATIC_FOCUS_LOST == msg && &UIWeaponsTabControl == pWnd)
 	{
 		if (pData)
 		{
@@ -873,19 +873,19 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				Init(*inactiveItems[idx], "hud\\default", 0, 0, alNone);
 		}
 	}
-	else if (BUTTON_FOCUS_RECEIVED == msg && &UIBtnOK == pWnd)
+	else if (STATIC_FOCUS_RECEIVED == msg && &UIBtnOK == pWnd)
 	{
 		UIBtnOK.SetTextColor(0xFFF0D9B6);
 	}
-	else if (BUTTON_FOCUS_RECEIVED == msg && &UIBtnCancel == pWnd)
+	else if (STATIC_FOCUS_RECEIVED == msg && &UIBtnCancel == pWnd)
 	{
 		UIBtnCancel.SetTextColor(0xFFF0D9B6);
 	}
-	else if (BUTTON_FOCUS_LOST == msg && &UIBtnOK == pWnd)
+	else if (STATIC_FOCUS_LOST == msg && &UIBtnOK == pWnd)
 	{
 		UIBtnOK.SetTextColor(0xFFEE9B17);
 	}
-	else if (BUTTON_FOCUS_LOST == msg && &UIBtnCancel == pWnd)
+	else if (STATIC_FOCUS_LOST == msg && &UIBtnCancel == pWnd)
 	{
 		UIBtnCancel.SetTextColor(0xFFEE9B17);
 	}

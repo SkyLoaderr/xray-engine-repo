@@ -240,4 +240,24 @@ protected:
 	// Мигалка для контактов
 	CUIAnimationFlicker	UIContactsFlicker;
 	void				UpdateContactsAnimation();
+
+private:
+	// Блок операций работы с текстурами-эффектами ударов когтей на экране(как в Doom 3)
+	DEF_MAP(ClawsTexturesRepository, ref_str /*texture name*/, ref_shader /*actually shader*/);
+	DEF_MAP(MonsterClawsTextures, ref_str /*monster name*/, ref_shader* /*effect texture*/);
+	ClawsTexturesRepository		m_ClawsRepos;
+	MonsterClawsTextures		m_ClawsTextures;
+
+	// Static item for display claws texture
+	CUIStaticItem		m_ClawsTexture;
+	// Animation engine for claws
+	CUIAnimationFade	m_ClawsAnimation;
+	// Update claws animation
+	void				UpdateClawsAnimation();
+
+public:
+	// Инициализировать текстуры когтей для монстров
+	void				AddMonsterClawsEffect(const ref_str &monsterName, const ref_str &textureName);
+	// Проиграть анимацию текстуры когтей монстра
+	void				PlayClawsAnimation(const ref_str &monsterName);
 };

@@ -175,10 +175,6 @@ protected:
 	//устанавливает текущий предмет
 	void SetCurrentItem(CInventoryItem* pItem);
 
-	// Отобразить вес, который несет актер
-	void UpdateWeight();
-		
-
 	//дополнительные списки для сортировки вещей
 	TIItemList ruck_list;
 	

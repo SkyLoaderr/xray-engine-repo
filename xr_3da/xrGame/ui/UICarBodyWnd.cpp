@@ -252,6 +252,7 @@ void CUICarBodyWnd::UpdateLists()
 //			++m_iUsedItems;
 		}
 	}
+	UpdateWeight(UIOurBagWnd);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -327,6 +328,7 @@ void CUICarBodyWnd::Show()
 { 
 	inherited::Show();
 	m_pCurrentDragDropItem = NULL;
+	UpdateWeight(UIOurBagWnd);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -397,6 +399,7 @@ bool CUICarBodyWnd::ToOurBag()
 	UIOurBagList.AttachChild(m_pCurrentDragDropItem);
 
 	m_pMouseCapturer = NULL;
+	UpdateWeight(UIOurBagWnd);
 
 	return true;
 }
@@ -412,6 +415,7 @@ bool CUICarBodyWnd::ToOthersBag()
 	UIOthersBagList.AttachChild(m_pCurrentDragDropItem);
 
 	m_pMouseCapturer = NULL;
+	UpdateWeight(UIOurBagWnd);
 
 	return true;
 }

@@ -31,9 +31,6 @@ public:
 	
 	virtual void	OnMouse(int x, int y, EUIMessages mouse_action);
 
-	//сообщени€, отправл€емые родительскому окну
-//	typedef enum{BUTTON_CLICKED, BUTTON_FOCUS_RECEIVED, BUTTON_FOCUS_LOST, BUTTON_DOWN} E_MESSAGE;
-
 	//прорисовка окна
 	virtual void	Draw();
 	//обновление перед прорисовкой
@@ -101,9 +98,6 @@ protected:
 
 	//если кнопка была только что нажата
 	bool			m_bButtonClicked;
-
-	//если курсор над мышкой
-	bool			m_bCursorOverButton;
 
 	// ¬ключена ли подсветка текста
 	bool			m_bEnableTextHighlighting;
