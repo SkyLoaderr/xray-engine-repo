@@ -22,6 +22,8 @@ end
 function action_camera_activity:reset_scheme()
 	printf("_hr: action_camera_activity:reset_scheme: self.object:name()='%s'", self.object:name())
 	
+	--self.st.signals = {}
+
 	xr_logic.mob_capture(self.object, true)
 	
 	if self.path == nil then
@@ -30,8 +32,8 @@ function action_camera_activity:reset_scheme()
 	self.num_wp = self.path:count()
 	self.cur_wp = self.st.start_wp
 	
-	action(self.object, look(look.point, self.path:point(self.cur_wp)), anim(anim.turn, 0), cond(cond.look_end))
-	--action(self.object, look(self.path:point(self.cur_wp), self.st.speed_h, self.st.speed_v), cond(cond.look_end))
+	--action(self.object, look(look.point, self.path:point(self.cur_wp)), anim(anim.turn, 0), cond(cond.look_end))
+	action(self.object, look(self.path:point(self.cur_wp), self.st.speed_h, self.st.speed_v), cond(cond.look_end))
 end
 
 function action_camera_activity:update(delta)
@@ -66,8 +68,8 @@ function action_camera_activity:update(delta)
 		self.cur_wp = self.cur_wp + self.move_direction
 		
 		printf("_hr: action_camera_activity:update: cur_wp = %d", self.cur_wp)
-		action(self.object, look(look.point, self.path:point(self.cur_wp)), anim(anim.turn, 0), cond(cond.look_end))
-		--action(self.object, look(self.path:point(self.cur_wp), self.st.speed_h, self.st.speed_v), cond(cond.look_end))
+		--action(self.object, look(look.point, self.path:point(self.cur_wp)), anim(anim.turn, 0), cond(cond.look_end))
+		action(self.object, look(self.path:point(self.cur_wp), self.st.speed_h, self.st.speed_v), cond(cond.look_end))
 	end
 end
 
@@ -89,7 +91,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.state       = utils.cfg_get_string(ini, section, "state", npc, false, "", "off")
 	st.path_look   = utils.cfg_get_string(ini, section, "path_look", npc, true, "")
 	st.start_wp    = utils.cfg_get_number(ini, section, "start_wp", npc, false, 0)
-	st.speed_h     = utils.cfg_get_number(ini, section, "speed_h", npc, false, 10)
-	st.speed_v     = utils.cfg_get_number(ini, section, "speed_v", npc, false, 10)
-	st.moving_type = utils.cfg_get_number(ini, section, "moving_type", npc, false, "", "path")
+	st.speed_h     = utils.cfg_get_number(ini, section, "speed_h", npc, false, 1)
+	st.speed_v     = utils.cfg_get_number(ini, section, "speed_v", npc, false, 1)
+	--st.moving_type = utils.cfg_get_number(ini, section, "moving_type", npc, false, "", "path")
 end
