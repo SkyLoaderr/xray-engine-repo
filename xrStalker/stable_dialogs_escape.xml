@@ -105,13 +105,9 @@
 	
 	<string id="escape_trader_jobs__82">
 		<text ln="rus">Иди к центру зоны, через свалку, потом свернешь на запад - там и есть агропром.
-		Выйдешь к агропрому, а там по ПДА выйдешь к институту. Координаты я тебе скинул. Да, и еще.
-		Я нашел сталкера, который знает что-то о группировке Стрелка. Он сейчас обитает в гаражах
-		на северной оконечности свалки. Я ему рассказал о тебе. Он готов с тобой встретиться.</text>
+		Выйдешь к агропрому, а там по ПДА выйдешь к институту. Координаты я тебе скинул.</text>
 		<text>Go to the zone center, through dumps, then turn to the west - you'll find agroprom there.
-		When you see agroprom, use your PDA to locate the institute. I dropped you the coordinates. And, something more here. 
-		I found a stalker, who knows bits and pieces about the grouping of Gunslinger. You can locate him in garages in the 
-		north edge of the dump. I told him about you. HeТs prepared to meet with you.</text>
+		When you see agroprom, use your PDA to locate the institute. I dropped you the coordinates.</text>
 	</string>
 	
 	<string id="escape_trader_jobs__92">

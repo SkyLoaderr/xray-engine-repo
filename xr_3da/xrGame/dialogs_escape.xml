@@ -1,8 +1,7 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <game_dialogs>
-	<!-- DONE -->
-    <dialog id="escape_trader_start_dialog">
+    <dialog id="escape_trader_start_dialog" priority="10">
 	<phrase_list>
 	    	<phrase id="0">
 			<text>escape_trader_start_dialog__hello</text>
@@ -10,8 +9,7 @@
 	</phrase_list>
     </dialog>
 
-	<!-- DONE -->
-    <dialog id="escape_trader_jobs">
+    <dialog id="escape_trader_jobs" priority="5">
 	<phrase_list>
 	    	<phrase id="0">
 			<text>escape_trader_jobs__0</text>
@@ -86,7 +84,6 @@
 		</phrase>
 		<phrase id="62">
 			<text>escape_trader_jobs__62</text>
-			<give_info>garbage_find_stalker</give_info>
 			<give_info>escape_need_agroprom_documents</give_info>
 			<next>82</next>
 		</phrase>
@@ -111,8 +108,7 @@
 	</phrase_list>
     </dialog>
 
-	<!-- DONE -->
-    <dialog id="escape_trader_done_artefact">
+    <dialog id="escape_trader_done_artefact" priority="9">
     <precondition>escape_dialog.have_artefact_nightstar</precondition>
 	<phrase_list>
 		<phrase id="0">
@@ -127,8 +123,7 @@
 	</phrase_list>
     </dialog>
 
-	<!-- DONE -->
-    <dialog id="escape_trader_done_blockpost_box">
+    <dialog id="escape_trader_done_blockpost_box" priority="9">
     <precondition>escape_dialog.have_blockpost_case</precondition>
 	<phrase_list>
 		<phrase id="0">
@@ -143,8 +138,7 @@
 	</phrase_list>
     </dialog>
 
-	<!-- DONE -->
-	<dialog id="escape_trader_talk_about">
+	<dialog id="escape_trader_talk_about" priority="1">
 	<phrase_list>
 	   	<phrase id="0">
 			<text>escape_trader_talk_about__0</text>
@@ -190,8 +184,7 @@
 	</phrase_list>
 	</dialog>
 
-	<!-- DONE -->
-	<dialog id="escape_trader_talk_level">
+	<dialog id="escape_trader_talk_level" priority="2">
 	<phrase_list>
 	   	<phrase id="0">
 			<text>escape_trader_talk_level__0</text>
@@ -243,8 +236,7 @@
 	</phrase_list>
 	</dialog>
 
-	<!-- DONE -->
-	<dialog id="escape_trader_talk_flame">
+	<dialog id="escape_trader_talk_flame" priority="6">
 	<phrase_list>
 	   	<phrase id="0">
 			<text>escape_trader_talk_flame__0</text>
@@ -303,9 +295,8 @@
 	   	</phrase>		
 	</phrase_list>
 	</dialog>
-
-	<!-- DONE -->
-    <dialog id="loser_hello_dialog">
+	
+    <dialog id="loser_hello_dialog" priority="10">
         <phrase_list>
             <phrase id="0">
                 <text>loser_hello_dialog__0</text>
@@ -347,8 +338,7 @@
         </phrase_list>
     </dialog>
 
-	<!-- DONE -->
-    <dialog id="escape_novice_thank_actor">
+    <dialog id="escape_novice_thank_actor" priority="10">
         <phrase_list>
             <phrase id="0">
                 <text>escape_novice_thank_actor__0</text>
@@ -356,7 +346,7 @@
         </phrase_list>
     </dialog>
     
-	<dialog id="escape_talk_about_escape">
+	<dialog id="escape_talk_about_escape" priority="2">
 	<precondition>dialogs.level_escape</precondition>
 	<phrase_list>
 	   	<phrase id="0">

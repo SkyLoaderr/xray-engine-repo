@@ -8,7 +8,6 @@
             <icon name="" x="2" y="3" width="1" height="1" marker="0"></icon>
             <text>Помочь ограбленному новичку</text>
         </location>
-        <task>escape_novice_need_weapon</task>        
     </info_portion>
     <info_portion id="escape_novice_has_weapon">
         <disable>escape_novice_need_weapon</disable>
@@ -39,6 +38,12 @@
         <task>escape_blockpost_case</task>
     </info_portion>
     <info_portion id="escape_take_blockpost_case">
+		<location>
+            <level>l01_escape</level>
+            <object>003</object>            
+			<icon name="Торговец" x="6" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+            <text>Принеси ящик торговцу.</text>
+        </location>       
         <disable>escape_need_blockpost_case</disable>
         <dialog>escape_trader_done_blockpost_box</dialog>
     </info_portion>   
