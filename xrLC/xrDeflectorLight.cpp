@@ -268,13 +268,21 @@ VOID CDeflector::Light()
 
 	// Expand LMap with borders
 	LPDWORD	old = lm.pSurface;
-	DWORD	s_x = (lm.dwWidth+2*BORDER);
-	DWORD	s_y = (lm.dwHeight+2*BORDER);
+	DWORD	o_x = lm.dwWidth;
+	DWORD	o_y = lm.dwHeight;
+	DWORD	s_x = (o_x+2*BORDER);
+	DWORD	s_y = (o_y+2*BORDER);
 	DWORD size	= s_x*s_y*4;
 	lm.pSurface	= LPDWORD(malloc(size));
 	ZeroMemory	(lm.pSurface,size);
-	blit		(lm.pSurface,s_x,s_y,old,lm.dwWidth,lm.dwHeight,BORDER,BORDER);
+	blit		(lm.pSurface,s_x,s_y,old,o_x,o_y,BORDER,BORDER);
 	_FREE		(old);
+
+	// Calculate color of border pixels
+	lm.dwWidth	= s_x;	lm.dwHeight	= s_y;
+	ApplyBorders(lm,254);
+	ApplyBorders(lm,253);
+	lm.dwWidth	= o_x;	lm.dwHeight	= o_y;
 }
 
 float gauss [7][7] =
@@ -408,7 +416,7 @@ void CDeflector::Save()
 	p.maketga		(lm.name);
 	
 	// Borders correction
-	for (DWORD ref=254/*-BORDER*/; ref>0; ref--)
+	for (DWORD ref=253/*-BORDER*/; ref>0; ref--)
 		if (!ApplyBorders(lm,ref)) break;
 
 	// Saving
