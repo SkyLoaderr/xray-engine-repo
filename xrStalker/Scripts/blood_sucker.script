@@ -401,6 +401,7 @@ function CStateRest:__init(_npc, _mem)
     self.npc        = _npc
     self.memory     = _mem
     self.path		= nil
+	printf("Name = %s", self.npc:name())
     self.path = patrol(self.npc:spawn_ini():r_string ("blood_sucker", "point_path"))
 end
 
