@@ -228,6 +228,83 @@
 			<Tool
 				Name="VCWebDeploymentTool"/>
 		</Configuration>
+		<Configuration
+			Name="Mixed (for debug only)|Win32"
+			OutputDirectory="Mixed (for debug only)"
+			IntermediateDirectory="Mixed (for debug only)"
+			ConfigurationType="1"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2"
+			WholeProgramOptimization="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				GlobalOptimizations="TRUE"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="TRUE"
+				FavorSizeOrSpeed="1"
+				OmitFramePointers="FALSE"
+				EnableFiberSafeOptimizations="FALSE"
+				OptimizeForProcessor="2"
+				AdditionalIncludeDirectories="scripting\,.."
+				PreprocessorDefinitions="NDEBUG,WIN32,_WINDOWS,ENGINE_BUILD"
+				StringPooling="TRUE"
+				ExceptionHandling="FALSE"
+				SmallerTypeCheck="FALSE"
+				RuntimeLibrary="2"
+				BufferSecurityCheck="FALSE"
+				EnableFunctionLevelLinking="FALSE"
+				RuntimeTypeInfo="TRUE"
+				UsePrecompiledHeader="3"
+				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderFile=".\Release/XR_3DA.pch"
+				AssemblerListingLocation=".\Release/"
+				ObjectFile=".\Release/"
+				ProgramDataBaseFileName=".\Release/"
+				BrowseInformation="0"
+				WarningLevel="4"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="3"
+				CallingConvention="2"
+				CompileAs="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalOptions="/MACHINE:I386 "
+				AdditionalDependencies="odbc32.lib odbccp32.lib msacm32.lib vfw32.lib"
+				OutputFile="x:\XR_3DA.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="TRUE"
+				GenerateDebugInformation="TRUE"
+				GenerateMapFile="TRUE"
+				MapFileName="x:\XR_3DA.map"
+				MapExports="TRUE"
+				MapLines="TRUE"
+				SubSystem="2"/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="TRUE"
+				SuppressStartupBanner="TRUE"
+				TargetEnvironment="1"
+				TypeLibraryName="x:\XR_3DA.tlb"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1058"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+		</Configuration>
 	</Configurations>
 	<Files>
 		<Filter
@@ -255,6 +332,12 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed (for debug only)|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"/>
@@ -311,6 +394,12 @@
 						<Tool
 							Name="VCCLCompilerTool"/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed (for debug only)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\StackTrace\MapFile.h">
@@ -331,6 +420,12 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed (for debug only)|Win32"
 						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"/>
@@ -359,6 +454,12 @@
 						<Tool
 							Name="VCCLCompilerTool"/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed (for debug only)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\StackTrace\StackTrace.h">
@@ -383,6 +484,12 @@
 						<Tool
 							Name="VCCLCompilerTool"/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed (for debug only)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\StackTrace\TextFile.h">
@@ -403,6 +510,12 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed (for debug only)|Win32"
 						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"/>
@@ -629,6 +742,12 @@
 							<Tool
 								Name="VCCLCompilerTool"/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed (for debug only)|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\Primitive.h">
@@ -643,6 +762,12 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								AssemblerOutput="4"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed (for debug only)|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
 								AssemblerOutput="4"/>
@@ -873,6 +998,12 @@
 									Name="VCCLCompilerTool"
 									AssemblerOutput="4"/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="Mixed (for debug only)|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									AssemblerOutput="4"/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\Texture.h">
@@ -887,6 +1018,12 @@
 							</FileConfiguration>
 							<FileConfiguration
 								Name="Release|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									AssemblerOutput="4"/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Mixed (for debug only)|Win32">
 								<Tool
 									Name="VCCLCompilerTool"
 									AssemblerOutput="4"/>
@@ -1060,6 +1197,12 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed (for debug only)|Win32"
 						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"/>
@@ -1265,6 +1408,12 @@
 						<Tool
 							Name="VCCLCompilerTool"/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed (for debug only)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\XR_Animator.h">
@@ -1374,6 +1523,12 @@
 						<Tool
 							Name="VCCLCompilerTool"/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed (for debug only)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\xr_area_debug.cpp">
@@ -1391,6 +1546,12 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed (for debug only)|Win32"
 						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"/>
@@ -1486,6 +1647,12 @@
 						Name="VCCLCompilerTool"
 						AssemblerOutput="4"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed (for debug only)|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AssemblerOutput="4"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\FStaticRender.h">
@@ -1570,6 +1737,12 @@
 							<Tool
 								Name="VCCLCompilerTool"/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed (for debug only)|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\FShadowForm.h">
@@ -1604,6 +1777,12 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed (for debug only)|Win32"
 							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"/>
@@ -1652,6 +1831,12 @@
 							<Tool
 								Name="VCCLCompilerTool"/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed (for debug only)|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\FastSprite.h">
@@ -1672,6 +1857,12 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed (for debug only)|Win32"
 							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"/>
@@ -1704,6 +1895,12 @@
 							<Tool
 								Name="VCCLCompilerTool"/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed (for debug only)|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\FDetailPatch.h">
@@ -1726,6 +1923,12 @@
 								Name="VCCLCompilerTool"
 								AssemblerOutput="4"/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed (for debug only)|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								AssemblerOutput="4"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\FCached.h">
@@ -1738,6 +1941,12 @@
 						RelativePath=".\psvisual.cpp">
 						<FileConfiguration
 							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								AssemblerOutput="4"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed (for debug only)|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
 								AssemblerOutput="4"/>
@@ -1764,6 +1973,12 @@
 								Name="VCCLCompilerTool"
 								AssemblerOutput="4"/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed (for debug only)|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								AssemblerOutput="4"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\BodyInstance.h">
@@ -1781,6 +1996,12 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								AssemblerOutput="2"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed (for debug only)|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
 								AssemblerOutput="2"/>
@@ -1831,6 +2052,12 @@
 						RelativePath=".\HOM.cpp">
 						<FileConfiguration
 							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								AssemblerOutput="4"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed (for debug only)|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
 								AssemblerOutput="4"/>
@@ -1894,6 +2121,12 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed (for debug only)|Win32"
 						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"/>
@@ -1966,6 +2199,12 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								AssemblerOutput="4"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed (for debug only)|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
 								AssemblerOutput="4"/>
@@ -2121,6 +2360,12 @@
 					<Tool
 						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed (for debug only)|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\XR_Menu.h">
@@ -2145,6 +2390,12 @@
 					<Tool
 						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed (for debug only)|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\XR_Options.h">
@@ -2165,6 +2416,12 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed (for debug only)|Win32"
 					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"/>
@@ -2231,6 +2488,12 @@
 						<Tool
 							Name="VCCLCompilerTool"/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed (for debug only)|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\2DSound.h">
@@ -2251,6 +2514,12 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed (for debug only)|Win32"
 						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"/>
