@@ -194,6 +194,7 @@ bool EParticlesObject::ExportGame(SExportStreams& F)
 	SExportStreamItem& I	= F.pg_static;
 	I.stream.open_chunk		(I.chunk++);
     I.stream.w_stringZ		(m_RefName.c_str());
+    I.stream.w				(&_Transform(),sizeof(Fmatrix));
     I.stream.close_chunk	();
     return true;
 }

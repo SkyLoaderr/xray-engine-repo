@@ -56,6 +56,7 @@ public:
     	flAnimated		= (1<<11),
         flRandomFrame   = (1<<12),
         flRandomPlayback= (1<<13),
+        flTimeLimit		= (1<<14),
     };
 
     string64			m_Name;
@@ -65,6 +66,8 @@ public:
     LPSTR				m_TextureName;
 
     SFrame				m_Frame;
+
+	u32					m_TimeLimit;
 
     int					m_MaxParticles;
 
@@ -83,6 +86,7 @@ public:
     void				pFrame				(BOOL random_frame=TRUE, u32 frame_count=16, u32 texture_width=128, u32 texture_height=128, u32 frame_width=32, u32 frame_height=32);
     // action api
 	void 				pAnimate			(float speed=24.f, BOOL random_playback=FALSE);
+	void 				pTimeLimit			(float time_limit);
     // action
     void				pFrameInitExecute	(PAPI::ParticleGroup *group);
     void				pAnimateExecute		(PAPI::ParticleGroup *group);

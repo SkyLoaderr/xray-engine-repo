@@ -21,6 +21,7 @@ CPGDef::CPGDef()
     m_ActionList		= 0;
     m_MaxParticles		= 0;
 	m_CachedShader		= 0;
+	m_TimeLimit			= 0;
 }
 CPGDef::~CPGDef()
 {
@@ -49,6 +50,10 @@ void CPGDef::pAnimate(float speed, BOOL random_playback)
 	m_Frame.m_fSpeed	= speed;
 	m_Flags.set			(flAnimated,TRUE);
 	m_Flags.set			(flRandomPlayback,random_playback);
+}
+void CPGDef::pTimeLimit(float time_limit)
+{
+	m_TimeLimit			= iFloor(time_limit*1000.f);
 }
 void CPGDef::pFrameInitExecute(ParticleGroup *group)
 {
