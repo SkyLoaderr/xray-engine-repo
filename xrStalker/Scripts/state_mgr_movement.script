@@ -7,6 +7,10 @@ function eva_state_mgr_movement:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_movement:evaluate()
+--	printf("MOVE: %s",utils.to_str((state_lib.states[self.st.target_state].movement == nil) or
+--		   (state_lib.states[self.st.target_state].movement == self.object:movement_type())))
+--	printf("MOVE: %s",utils.to_str(self.object:movement_type()))
+		   
 	return (state_lib.states[self.st.target_state].movement == nil) or
 		   (state_lib.states[self.st.target_state].movement == self.object:movement_type())
 end
