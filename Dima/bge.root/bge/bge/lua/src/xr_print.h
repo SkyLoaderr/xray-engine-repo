@@ -1,6 +1,3 @@
-#ifndef XR_PRINT_H
-#define XR_PRINT_H
+#pragma once
 
-extern __declspec(dllexport)	size_t	__cdecl lua_memusage	();
-
-#endif
+//extern __declspec(dllexport)	size_t	lua_memusage	();
