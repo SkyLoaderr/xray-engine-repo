@@ -164,11 +164,11 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
  
-		<visual>actors\dolg\stalker_do_balon_2</visual>
+		<visual>actors\bandit\stalker_bandit_veteran</visual>
 		<supplies>
 			[spawn] \n
-			wpn_spas12 \n
-			ammo_12x70_buck \n
+			wpn_val \n
+			ammo_9x39_pab9 \n
 		</supplies>
 					
 		<start_dialog>escape_lager_volk_hello</start_dialog>
@@ -186,11 +186,11 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
  
-		<visual>actors\dolg\stalker_do_balon_2</visual>
+		<visual>actors\killer\stalker_ki_head_2</visual>
 		<supplies>
 			[spawn] \n
-			wpn_spas12 \n
-			ammo_12x70_buck \n
+			wpn_lr300 \n
+			ammo_5.56x45_ss190 \n
 		</supplies>
 					
 		<start_dialog>escape_lager_volk_hello</start_dialog>
