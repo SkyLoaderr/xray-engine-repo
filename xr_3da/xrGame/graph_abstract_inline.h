@@ -207,27 +207,25 @@ IC	void CAbstractGraph::load			(IReader &stream)
 {
 	clear						();
 
+	u32							id;
 	_data_type					data;
 	_vertex_id_type				vertex_id;
 	IReader						*chunk0, *chunk1, *chunk2;
 
 	chunk0						= stream.open_chunk(0);
-	u32							n = chunk0->r_u32();
+	chunk0->r_u32				();
 	chunk0->close				();
 
 	chunk0						= stream.open_chunk(1);
-	for (u32 i=0; i<n; ++i) {
-		chunk1					= chunk0->open_chunk(i);
-		{
-			chunk2				= chunk1->open_chunk(0);
-			load_data			(vertex_id,*chunk2);
-			chunk2->close		();
 
-			chunk2				= chunk1->open_chunk(1);
-			load_data			(data,*chunk2);
-			chunk2->close		();
-		}
-		chunk1->close			();
+	for (chunk1 = chunk0->open_chunk_iterator(id); chunk1; chunk1 = chunk0->open_chunk_iterator(id,chunk1)) {
+		chunk2					= chunk1->open_chunk(0);
+		load_data				(vertex_id,*chunk2);
+		chunk2->close			();
+
+		chunk2					= chunk1->open_chunk(1);
+		load_data				(data,*chunk2);
+		chunk2->close			();
 
 		add_vertex				(data,vertex_id);
 	}
@@ -238,19 +236,19 @@ IC	void CAbstractGraph::load			(IReader &stream)
 		return;
 
 	while (!chunk0->eof()) {
-		_vertex_id_type		vertex_id0;
-		load_data			(vertex_id0,*chunk0);
+		_vertex_id_type			vertex_id0;
+		load_data				(vertex_id0,*chunk0);
 		
-		u32					n = chunk0->r_u32();
-		VERIFY				(n);
+		u32						n = chunk0->r_u32();
+		VERIFY					(n);
 		for (u32 i=0; i<n; ++i) {
-			_vertex_id_type	vertex_id1;
-			load_data		(vertex_id1,*chunk0);
+			_vertex_id_type		vertex_id1;
+			load_data			(vertex_id1,*chunk0);
 			
 			_edge_weight_type	edge_weight;
-			load_data		(edge_weight,*chunk0);
+			load_data			(edge_weight,*chunk0);
 
-			add_edge		(vertex_id0,vertex_id1,edge_weight);
+			add_edge			(vertex_id0,vertex_id1,edge_weight);
 		}
 	}
 }
