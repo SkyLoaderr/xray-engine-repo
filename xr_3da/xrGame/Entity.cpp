@@ -156,6 +156,12 @@ BOOL CEntity::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_ang
 	P.r_u8				(s_squad);
 	P.r_u8				(s_group);
 	
+	// Register
+	CSquad& S			= Level().get_squad	(s_team,s_squad);
+	CGroup& G			= Level().get_group	(s_team,s_squad,s_group);
+	if (S.Leader==0)	S.Leader			=this;
+	else				G.Members.push_back	(this);
+	
 	// Initialize variables
 	id_Team				= s_team;
 	id_Squad			= s_squad;
