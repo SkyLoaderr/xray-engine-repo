@@ -202,10 +202,14 @@ void CObjectList::Load		()
 
 void CObjectList::Unload	( )
 {
+	if (objects_sleeping.size() || objects_active.size())
+		Msg			("! objects-leaked: %d",objects_sleeping.size() + objects_active.size());
+
 	// Destroy objects
 	while (objects_sleeping.size())
 	{
 		CObject*	O	= objects_sleeping.back	();
+		Msg				("! [%4d]-[%s]-[%s]", O->ID(), *O->cNameSect(), *O->cName());
 		O->setDestroy	( true );
 		O->net_Destroy	(   );
 		Destroy			( O );
@@ -213,6 +217,7 @@ void CObjectList::Unload	( )
 	while (objects_active.size())
 	{
 		CObject*	O	= objects_active.back	();
+		Msg				("! [%4d]-[%s]-[%s]", O->ID(), *O->cNameSect(), *O->cName());
 		O->setDestroy	( true );
 		O->net_Destroy	(   );
 		Destroy			( O );
