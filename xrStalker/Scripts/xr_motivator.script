@@ -63,7 +63,7 @@ end
 function motivator_binder:reinit()
     object_binder.reinit(self)
     
-    self.object:set_pda_callback(this.pda_call_back)
+    self.object:set_pda_callback(pda_call_back)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_destroy()
@@ -339,24 +339,14 @@ xr_motivator.storage[self.object:id ()].sos =
     enabled = false,
     npc = nil,
     initialized = false,
-    code = 0
+    code = 0,
+	need_follow = false
     }
 xr_sos.add_to_binder (self.object, char_ini)
  
 end
 ----------------------------------------------------------------------------------------------------------------------
 function pda_call_back(recepient, who, msg, info_index)
-
---[[    if msg == game_object.trade_pda_msg then
-        xr_motivator.trade_arhive[recepient:id()]:save(who)
-    elseif msg == game_object.help_pda_msg and 
-           xr_motivator.storage[recepient:id()].sos.npc == nil and
-           recepient:relation (who) ~= game_object.enemy then
-        xr_motivator.storage[recepient:id()].sos.npc = who
-    else
-        recepient:send_pda_message(4, who)
-    end
-    ]]
     printf("pda prishlo")
     recepient:answer_pda()
     printf("pda ushlo")
