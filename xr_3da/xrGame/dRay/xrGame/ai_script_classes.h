@@ -687,6 +687,6 @@ public:
 			
 
 			void air_attack					(CLuaGameObject*);
-			void air_attack_wait			(CLuaGameObject*, float, float);
+			void air_attack_wait			(CLuaGameObject*, float dist = 20.0f, float time = 5.0f);
 			bool air_attack_active			();
 };

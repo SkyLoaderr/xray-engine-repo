@@ -453,9 +453,9 @@ if(who==this)
 		return;
 	}
 
-	CGameObject* GO = dynamic_cast<CGameObject*>(who);
-	if (GO){
-		switch (GO->SUB_CLS_ID){
+//	CGameObject* GO = dynamic_cast<CGameObject*>(who);
+	if (who){
+		switch (who->SUB_CLS_ID){
 			case CLSID_OBJECT_ACTOR: 
 				doHunt(who);
 //				doHunt2(who);
