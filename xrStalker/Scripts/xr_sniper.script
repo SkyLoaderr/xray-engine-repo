@@ -73,6 +73,7 @@ function enemy_near_evaluator:__init (name, storage) super ()
 end
 
 function enemy_near_evaluator:evaluate()
+    if(self.a.enabled == false) then  return true  end
     return( self.object:best_enemy() ~= nil and distance_between(self.object, self.object:best_enemy()) < distance_to_enemy )
 end
 ---------------------------------------------------------------------------------------------------------------------
