@@ -122,16 +122,17 @@ CScript::~CScript()
 
 void CScript::Update()
 {
-	LUA_VM_IT		I = m_tpThreads.begin(), B = I;
+	LUA_VM_IT		I = m_tpThreads.begin();
 	LUA_VM_IT		E = m_tpThreads.end();
 	for ( ; I != E; I++)
-		lua_resume	(*I,0);
+		lua_resume	(*I,1);
 }
 
 void CScript::vfExportToLua()
 {
 	using namespace luabind;
 	open			(m_tpLuaVirtualMachine);
-	function		(m_tpLuaVirtualMachine,"print",(void (*) (LPCSTR,int))(Log));
+	function		(m_tpLuaVirtualMachine,"print",(void (*) (LPCSTR))		(Log));
+//	function		(m_tpLuaVirtualMachine,"print",(void (*) (LPCSTR,int))	(Log));
 //	function		(m_tpLuaVirtualMachine,"print",(void (*) (LPCSTR,...))(Msg));
 }
