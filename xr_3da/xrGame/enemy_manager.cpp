@@ -26,7 +26,7 @@ bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 		return				(false);
 
 	if (!entity_alive->human_being() && !expedient(entity_alive) && (evaluate(entity_alive) >= .8f)) {
-		Msg					("Object %s is ignored\n",*entity_alive->cName());
+//		Msg					("Object %s is ignored\n",*entity_alive->cName());
 		return				(false);
 	}
 

@@ -50,13 +50,13 @@ void CAbstractObjectManager::reload					(LPCSTR section)
 TEMPLATE_SPECIALIZATION
 void CAbstractObjectManager::update					()
 {
-	float						result = flt_max/2*(-1);
+	float						result = flt_max;
 	m_selected					= 0;
 	xr_set<const T*>::const_iterator	I = m_objects.begin();
 	xr_set<const T*>::const_iterator	E = m_objects.end();
 	for ( ; I != E; ++I) {
 		float					value = evaluate(*I);
-		if (result < value) {
+		if (result > value) {
 			result				= value;
 			m_selected			= *I;
 		}
