@@ -1559,15 +1559,6 @@ void CSE_ALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 	}
 	m_tpPath.clear				();
 	m_baVisitedVertices.clear	();
-
-#ifdef XRGAME_EXPORTS
-	if (m_wVersion > 76) 
-	{
-		character_profile();
-		specific_character();
-	}
-#endif
-
 }
 
 void CSE_ALifeHumanAbstract::UPDATE_Write	(NET_Packet &tNetPacket)

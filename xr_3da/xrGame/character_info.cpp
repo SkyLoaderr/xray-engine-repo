@@ -110,11 +110,13 @@ void CCharacterInfo::load_shared	(LPCSTR)
 
 LPCSTR CCharacterInfo::Name() const
 {
+	R_ASSERT(m_iSpecificCharacterIndex != NO_SPECIFIC_CHARACTER);
 	return	m_SpecificCharacter.Name();
 }
 
 LPCSTR CCharacterInfo::Bio() const
 {
+	R_ASSERT(m_iSpecificCharacterIndex != NO_SPECIFIC_CHARACTER);
 	return 	m_SpecificCharacter.Bio();
 }
 CHARACTER_RANK CCharacterInfo::Rank() const
@@ -154,27 +156,33 @@ RELATION_REGISTRY& CCharacterInfo::Relations ()
 
 int	 CCharacterInfo::TradeIconX() const
 {
+	R_ASSERT(m_iSpecificCharacterIndex != NO_SPECIFIC_CHARACTER);
 	return m_SpecificCharacter.TradeIconX();
 }
 int	 CCharacterInfo::TradeIconY() const
 {
+	R_ASSERT(m_iSpecificCharacterIndex != NO_SPECIFIC_CHARACTER);
 	return m_SpecificCharacter.TradeIconY();
 }
 int	 CCharacterInfo::MapIconX()	 const
 {
+	R_ASSERT(m_iSpecificCharacterIndex != NO_SPECIFIC_CHARACTER);
 	return m_SpecificCharacter.MapIconX();
 }
 int	 CCharacterInfo::MapIconY()	 const
 {
+	R_ASSERT(m_iSpecificCharacterIndex != NO_SPECIFIC_CHARACTER);
 	return m_SpecificCharacter.MapIconY();
 }
 
 PHRASE_DIALOG_INDEX	CCharacterInfo::StartDialog	()	const
 {
+	R_ASSERT(m_iSpecificCharacterIndex != NO_SPECIFIC_CHARACTER);
 	return m_SpecificCharacter.data()->m_iStartDialog;
 }
 const DIALOG_INDEX_VECTOR&	CCharacterInfo::ActorDialogs	()	const
 {
+	R_ASSERT(m_iSpecificCharacterIndex != NO_SPECIFIC_CHARACTER);
 	return m_SpecificCharacter.data()->m_ActorDialogs;
 }
 

@@ -60,6 +60,11 @@ void CSE_ALifeTraderAbstract::spawn_supplies	()
 	CSE_ALifeItemPDA			*pda = smart_cast<CSE_ALifeItemPDA*>(abstract);
 	pda->m_original_owner		= base()->ID;
 
+#ifdef XRGAME_EXPORTS
+	relation_registry.Init(base()->ID);
+	character_profile();
+	specific_character();
+#endif
 
 	if(NO_SPECIFIC_CHARACTER != m_iSpecificCharacter)
 	{

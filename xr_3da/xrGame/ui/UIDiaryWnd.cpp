@@ -267,6 +267,7 @@ void CUIDiaryWnd::SetContractTrader()
 		if(NO_PROFILE != pTrader->character_profile())
 		{				
 			character_info.Load(pTrader->character_profile());
+			character_info.InitSpecificCharacter(pTrader->specific_character());
 			UIContractsWnd.UICharInfo.InitCharacter(&character_info);
 
 			LPCSTR artefact_list_func = pSettings->r_string("artefacts_tasks", "script_func");
@@ -406,16 +407,11 @@ void CUIDiaryWnd::InitDiary()
 			if(pTrader)
 			{
 				CCharacterInfo character_info;
-				bool init_default_profile =true;
-				
-				if(NO_PROFILE != pTrader->character_profile())
-				{				
-					character_info.Load(pTrader->character_profile());
-					init_default_profile = false;
-				}
+				character_info.Load(pTrader->character_profile());
+				character_info.InitSpecificCharacter(pTrader->specific_character());
 
 				CUITreeViewItem* pTVItemSub = xr_new<CUITreeViewItem>();
-				pTVItemSub->SetText(init_default_profile?E->name():character_info.Name());
+				pTVItemSub->SetText(character_info.Name());
 				m_TraderID = (*it).id;
 				pTVItemSub->SetValue(idContracts);
 				pTVItemSub->SetFont(m_pTreeItemFont);
