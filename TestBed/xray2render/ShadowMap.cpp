@@ -688,7 +688,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	hr = D3DXCreateTextureFromFileEx	(m_pd3dDevice,"media\\shadowmap_height.tga",
 		D3DX_DEFAULT,D3DX_DEFAULT,D3DX_DEFAULT,0,D3DFMT_UNKNOWN,D3DPOOL_SCRATCH,D3DX_DEFAULT,D3DX_DEFAULT,0,NULL,NULL,&height);
 	hr = D3DXCreateTexture				(m_pd3dDevice,512,512,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED, &t_Normals);
-	hr = D3DXComputeNormalMap			(t_Normals,height,0,0,D3DX_CHANNEL_RED,8.f);
+	hr = D3DXComputeNormalMap			(t_Normals,height,0,0,D3DX_CHANNEL_RED,4.f);
 
 	// Transfer gloss-map
 	{
@@ -726,7 +726,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	height->Release						();
 
 	// Power and Normalization Cube-Map
-	hr = CreatePower					(m_pd3dDevice,256,4.f,&t_SpecularPower_32);
+	hr = CreatePower					(m_pd3dDevice,256,64.f,&t_SpecularPower_32);
 	hr = CreateNCM						(m_pd3dDevice,64,&t_NCM);
 
 	m_ArcBall.SetWindow					(m_d3dsdBackBuffer.Width, m_d3dsdBackBuffer.Height, 1.0f);
@@ -1032,7 +1032,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	D3DXVec3TransformNormal					(&vLightDir, &vLightDir,&mInvView);
 	D3DXVec3Normalize						(&vLightDir, &vLightDir);
 	cc.set									(s_Light_Direct.constants.get("light_direction"),	vLightDir.x,vLightDir.y,vLightDir.z,0	);
-	cc.set									(s_Light_Direct.constants.get("light_color"),		.9f,		.9f,		1.,			1.0	);
+	cc.set									(s_Light_Direct.constants.get("light_color"),		.9f,		.9f,		1.,			.5	);
 	cc.flush								(m_pd3dDevice);
 
 	// Blend mode - directional light comes first - means no blending
