@@ -110,17 +110,19 @@ function action_zoneguard_activity:get_sug_body_state(actor)
 	end
 end
 
-function action_zoneguard_activity:go_to_actor(actor)
-	local sug_body_state = self:get_sug_body_state(actor)
-
+function action_zoneguard_activity:go_to_actor(actor, update_state)
 	self.object:set_path_type(game_object.level_path)
 	self.object:set_dest_level_vertex_id(actor:level_vertex_id())
-	state_mgr.set_state(self.object,
-		if_then_else(sug_body_state == body_state_free, "run", "assault"),
-		nil,
-		nil,
-		{ look_object = actor }, 
-		{animation = true})
+
+	if update_state then	
+		local sug_body_state = self:get_sug_body_state(actor)
+		state_mgr.set_state(self.object,
+			if_then_else(sug_body_state == body_state_free, "run",	"assault"),
+			nil,
+			nil,
+			{ look_object = actor }, 
+			{animation = true})
+	end
 end
 
 function action_zoneguard_activity:stand_still(actor)
@@ -213,7 +215,7 @@ function action_zoneguard_activity:fsm_step()
 		   (not self.st.ignore_friends or self.object:relation(actor) ~= game_object.friend)
 		then
 			if not self.st.no_move then
-				self:go_to_actor(actor)
+				self:go_to_actor(actor, true)
 				self.state = state_going_to_plr
 			else
 				self:stand_still(actor)
@@ -258,7 +260,7 @@ function action_zoneguard_activity:fsm_step()
 	if self.state == state_standing then
 		if not self.st.no_move then
 			if distance_between(self.object, actor) >= 4 then
-				self:go_to_actor(actor)
+				self:go_to_actor(actor, true)
 				self.state = state_going_to_plr
 				return
 			end
@@ -276,7 +278,9 @@ function action_zoneguard_activity:fsm_step()
 
 	if self.state == state_going_to_plr then
 		if distance_between(self.object, actor) >= 3 then
-			self:go_to_actor(actor)
+			-- Второй параметр false т.к. состояние обновлять не нужно,
+			-- нужно обновить только место назначения.
+			self:go_to_actor(actor, false)
 		else
 			self:stand_still(actor)
 			self:talk_with_plr(actor)
