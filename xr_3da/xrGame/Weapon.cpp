@@ -453,7 +453,6 @@ void CWeapon::net_update::lerp(CWeapon::net_update& A, CWeapon::net_update& B, f
 {
 	float invf		= 1.f-f;
 	flags			= (f<0.5f)?A.flags:B.flags;
-	state			= (f<0.5f)?A.state:B.state;
 	ammo_current	= u16(iFloor(invf*float(A.ammo_current)+f*float(B.ammo_current)));
 	ammo_elapsed	= u16(iFloor(invf*float(A.ammo_elapsed)+f*float(B.ammo_elapsed)));
 	pos.lerp		(A.pos,B.pos,f);
