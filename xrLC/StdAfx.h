@@ -28,6 +28,7 @@
 
 #define ENGINE_API				// fake, to enable sharing with engine
 #define ECORE_API				// fake, to enable sharing with editors
+#define XR_EPROPS_API
 #include "clsid.h"
 #include "defines.h"
 #include "cl_log.h"
