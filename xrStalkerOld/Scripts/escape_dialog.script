@@ -16,7 +16,8 @@ end
 function trader_dont_has_job(first_speaker, second_speaker)
     if trader_need_blockpost_box(first_speaker, second_speaker) == false and
 	   trader_need_artefact(first_speaker, second_speaker) == false and
-	   trader_need_military_document(first_speaker, second_speaker) == false
+	   trader_need_military_document(first_speaker, second_speaker) == false and
+	   trader_need_fox_info(first_speaker, second_speaker) == false
 	then
 		return true
 	end
@@ -51,14 +52,20 @@ function trader_need_fox_info(first_speaker, second_speaker)
 	local actor = level.actor()
     if actor ~= nil and
 	   actor:has_info("escape_artefact_done") and
-	   actor:dont_has_info("escape_stalker_done")
+	   actor:dont_has_info("escape_stalker_done") and
+	   actor:dont_has_info("escape_stalker_give") and
+	   actor:dont_has_info("escape_stalker_help") and
+	   actor:dont_has_info("escape_stalker_die")
 	then
 		return true
 	end
 	return false
 end
 function give_fox_info(first_speaker, second_speaker)
-	return 
+	local item = first_speaker:object("fox_flash")
+	first_speaker:transfer_item(item, second_speaker)
+	first_speaker:set_task_state(task.completed, "esc_help_wounded_from_raid", 2)
+	first_speaker:set_task_state(task.completed, "esc_help_wounded_from_raid", 0)
 end
 
 

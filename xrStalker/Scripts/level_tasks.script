@@ -48,6 +48,13 @@ function proceed(actor)
 		actor:set_task_state(task.completed, "esc_blockpost_case_to_trader", 1)
 	end       	
 
+	if actor:has_info("escape_stalker_help") and
+	   actor:object("fox_flash") ~= nil
+	then
+		actor:give_info_portion("escape_stalker_give")
+		actor:set_task_state(task.completed, "esc_help_wounded_from_raid", 1)
+	end       	
+
 	if actor:has_info("escape_dynamite_start") and
 	   actor:object("dynamite") ~= nil
 	then
