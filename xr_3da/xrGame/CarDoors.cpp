@@ -461,9 +461,15 @@ void CCar::SDoor::GetExitPosition(Fvector& pos)
 		pos.set(pf.c);
 		Fvector add,add1;
 		MAX_OF(abs(pf.i.y),add.set(pf.i);add.mul(bb.m_halfsize.x*fsignum(pf.i.y)),abs(pf.j.y),add.set(pf.j);add.mul(bb.m_halfsize.y*fsignum(pf.j.y)),abs(pf.k.y),add.set(pf.k);add.mul(bb.m_halfsize.z*fsignum(pf.k.y)));
-		MIN_OF(bb.m_halfsize.x,add1.set(pf.i);add1.mul(bb.m_halfsize.x*fsignum(pf.i.y)),abs(pf.j.y),add.set(pf.j);add.mul(bb.m_halfsize.y*fsignum(pf.j.y)),abs(pf.k.y),add.set(pf.k);add.mul(bb.m_halfsize.z*fsignum(pf.k.y)));
 		pos.sub(add);
 
+		MIN_OF(bb.m_halfsize.x,add1.set(pf.i);add1.mul(bb.m_halfsize.x),
+			   bb.m_halfsize.y,add1.set(pf.j);add1.mul(bb.m_halfsize.y),
+			  bb.m_halfsize.z,add1.set(pf.k);add1.mul(bb.m_halfsize.z))
+		Fvector dir_from_car;dir_from_car.sub(pf.c,pcar->Position());
+		if(add1.dotproduct(dir_from_car)<0.f)add1.invert();	
+		add1.mul(3.f);
+		pos.add(add1);
 		return;
 	}
 	float lo_ext,hi_ext;
