@@ -61,6 +61,7 @@ CCar::~CCar(void)
 	xr_delete			(m_car_sound);
 	ClearExhausts();
 	xr_delete			(inventory);
+ //	xr_delete			(l_tpEntityAction);
 }
 
 void CCar::reinit		()

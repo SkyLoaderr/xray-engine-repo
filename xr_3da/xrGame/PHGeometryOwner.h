@@ -6,8 +6,9 @@ DEFINE_VECTOR(CODEGeom*,GEOM_STORAGE,GEOM_I)
 class CPHGeometryOwner
 {
 protected:
+		GEOM_STORAGE			m_geoms;					//e			
+		//bl
 		bool					b_builded;
-		GEOM_STORAGE			m_geoms;					//e					//bl
 		dSpaceID				m_group;					//e					//bl
 		Fvector					m_mass_center;				//e ??				//bl
 		CPhysicsShellHolder*	m_phys_ref_object;			//->to shell ??		//bl

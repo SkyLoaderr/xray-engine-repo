@@ -15,6 +15,7 @@ public:
 	CPhysicsShellHolder							();
 
 
+
 	IC CPhysicsShell	*&PPhysicsShell				()		
 	{
 		return m_pPhysicsShell;

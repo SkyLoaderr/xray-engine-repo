@@ -68,7 +68,7 @@ public:
 		u16 bone_id;
 		bool inited;
 		float radius;
-		dJointID joint;
+		CPhysicsJoint* joint;
 		CCar*	car;
 		void Init();//asumptions: bone_map is 1. ini parsed 2. filled in 3. bone_id is set 
 		SWheel(CCar* acar)
@@ -101,7 +101,7 @@ public:
 		bool  limited;			//zero limited for idle steering drive
 		float GetSteerAngle()
 		{
-			return -pos_right*dJointGetHinge2Angle1 (pwheel->joint);
+			return -pos_right*dJointGetHinge2Angle1 (pwheel->joint->GetDJoint());
 		}
 		void Init();
 		void SteerRight();

@@ -94,6 +94,7 @@ class CBoxGeom : public CODEGeom
 	Fobb	m_box;
 public:
 							CBoxGeom			(const Fobb& box)													;
+//	virtual					~CBoxGeom			(const Fobb& box)													;
 	virtual		float		volume				()																	;
 	virtual		float		radius				()																	;
 	virtual		void		get_extensions_bt	(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext) ;
