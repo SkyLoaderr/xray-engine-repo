@@ -145,6 +145,7 @@ CActor::CActor() : CEntity()
 	m_fRunFactor			= 2.f;
 	m_fCrouchFactor			= 0.2f;
 //	Device.seqRender.Add(this,REG_PRIORITY_LOW-1111);
+	bSndAmbientPlaying		= FALSE;
 }
 
 CActor::~CActor()
@@ -186,6 +187,7 @@ void CActor::Load(CInifile* ini, const char* section )
 	sndStep[0]			= pSounds->Create2D	(strconcat(buf,cName(),"\\stepL"));
 	sndStep[1]			= pSounds->Create2D	(strconcat(buf,cName(),"\\stepR"));
 	sndLanding			= pSounds->Create2D	(strconcat(buf,cName(),"\\landing"));
+	sndAmbient			= pSounds->Create2D	("amb_lev5_aztec");
 	pSounds->Create3D	(sndWeaponChange,	strconcat(buf,cName(),"\\weaponchange"));
 	pSounds->Create3D	(sndRespawn,		strconcat(buf,cName(),"\\respawn"));
 	pSounds->Create3D	(sndHit[0],			strconcat(buf,cName(),"\\bhit_flesh-1"));
@@ -224,8 +226,6 @@ void CActor::Load(CInifile* ini, const char* section )
 
 BOOL CActor::Spawn		( BOOL bLocal, int sid, int team, int squad, int group, Fvector4& o_pos )
 {
-	Msg("ACTOR: %f,%f,%f",o_pos.x,o_pos.y,o_pos.z);
-
 	if (!inherited::Spawn(bLocal,sid,team,squad,group,o_pos))	return FALSE;
 	r_model_yaw			= o_pos.w;
 	cameras[cam_active]->Set(o_pos.w,0,0);		// set's camera orientation
@@ -246,6 +246,7 @@ BOOL CActor::Spawn		( BOOL bLocal, int sid, int team, int squad, int group, Fvec
 	
 	NET_SavedAccel.set	(0,0,0);
 	NET_WasInterpolating= TRUE;
+
 	return				TRUE;
 }
 
@@ -365,6 +366,12 @@ void CActor::net_update::lerp(CActor::net_update& A, CActor::net_update& B, floa
 void CActor::Update	(DWORD DT)
 {
 	if (!bEnabled)	return;
+
+	if (!bSndAmbientPlaying)	{
+		bSndAmbientPlaying	= TRUE;
+		pSounds->Play2D		(sndAmbient,true);
+	}
+
 
 //	clamp			(DT,0ul,66ul);
 	float	dt		= float(DT)/1000.f;
