@@ -22,8 +22,8 @@ void CDraw::Lines_Begin	(int count)
 void CDraw::Lines_Draw	(Fvector& P1, Fvector& P2, float width, DWORD C)
 {
 	FVF::TL			s1,s2;
-	s1.transform	(P1,Device.mFullTransform); float l1 = width/sqrtf(s1.p.w);
-	s2.transform	(P2,Device.mFullTransform);	float l2 = width/sqrtf(s2.p.w);
+	s1.transform	(P1,Device.mFullTransform); float l1 = width/sqrtf(s1.p.w); l1=0.005f;
+	s2.transform	(P2,Device.mFullTransform);	float l2 = width/sqrtf(s2.p.w); l2=0.005f;
 	Fvector2		dir,R;
 	dir.set			(s2.p.x-s1.p.x,s2.p.y-s1.p.y);
 	dir.norm		();

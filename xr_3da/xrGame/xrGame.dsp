@@ -298,6 +298,14 @@ SOURCE=.\WeaponProtecta.h
 # End Group
 # Begin Source File
 
+SOURCE=.\Tracer.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Tracer.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\xr_weapon_list.cpp
 # End Source File
 # Begin Source File
