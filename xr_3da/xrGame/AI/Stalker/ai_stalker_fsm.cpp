@@ -1101,11 +1101,11 @@ void CAI_Stalker::Think()
 		m_bStateChanged = false;
 	}
 	
-	if (bfCheckIfSound()) {
-		vfUpdateVisibilityBySensitivity();
-		m_dwInertion	= 0;
-		m_dwActionStartTime = m_dwCurrentUpdate;
-	}
+//	if (bfCheckIfSound()) {
+//		vfUpdateVisibilityBySensitivity();
+//		m_dwInertion	= 0;
+//		m_dwActionStartTime = m_dwCurrentUpdate;
+//	}
 
 	m_bStateChanged = ((_A	!= A) || (_B	!= B) || (_C	!= C) || (_D	!= D) || (_E	!= E) || (_F	!= F) || (_G	!= G) || (_H	!= H) || (_I	!= I) || (_J	!= J) || (_K	!= K) || (_L	!= L));// || (_M	!= M));
 
