@@ -74,7 +74,6 @@ function main()
 			prof_nashel_taynik_b:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(2000)			
 			break
-		end
 		wait()			
 	end
 
@@ -86,7 +85,6 @@ function main()
 			rainbow_v_vagone_mojet_bit_stalker:play_at_pos	(stalker2,stalker2:position(),0);
 			wait(2000)			
 			break
-		end
 		wait()			
 	end
 
@@ -100,7 +98,6 @@ function main()
 			prof_proveru_ya_vagonchik:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
 			break
-		end
 		wait()			
 	end
 
@@ -110,7 +107,6 @@ function main()
 			rainbow_poshutil_ya:play_at_pos				(stalker2,stalker2:position(),0);
 			wait(2000)			
 			break
-		end
 		wait()			
 	end
 
@@ -122,7 +118,6 @@ function main()
 			prof_prikroy:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(2000)			
 			break
-		end
 		wait()			
 	end
 
@@ -132,7 +127,6 @@ function main()
 			rainbow_nda:play_at_pos				(stalker2,stalker2:position(),0);
 			wait(2000)			
 			break
-		end
 		wait()			
 	end
 
@@ -146,7 +140,6 @@ function main()
 			prof_valim_otsuda:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(2000)			
 			break
-		end
 		wait()			
 	end
 
