@@ -232,9 +232,9 @@ BOOL CLevel::Load_GameSpecific_Before()
 		const char*	sVal = I->second;
 		sscanf(sVal,"%f,%f,%f,%d,%f",&pos.x,&pos.y,&pos.z,&team,&pos.w); pos.y += 0.1f;
 		Level().get_team(team).RespawnPoints.push_back(pos);
-#pragma todo("remove me!!!")
-		Fvector P; P.set(pos.x,pos.y+1.5f,pos.z);
-		::new CTestPhysics(P);
+//#pragma todo("remove me!!!")
+//		Fvector P; P.set(pos.x,pos.y+1.5f,pos.z);
+//		::new CTestPhysics(P);
 	}
 	return TRUE;
 }

@@ -1,7 +1,7 @@
 // TestPhysics.cpp: implementation of the CTestPhysics class.
 //
 //////////////////////////////////////////////////////////////////////
-
+ 
 #include "stdafx.h"
 #include "TestPhysics.h"
 #include "..\fstaticrender.h"
@@ -99,6 +99,6 @@ void CTestPhysics::OnEvent(	EVENT _E, DWORD P1, DWORD P2)
 {
 	VERIFY(E==_E);
 	C->m_rigidBody.m_sticked	= FALSE;
-	C->m_rigidBody.m_P			+= bkVector3 (0,1000.f,100.f);
+//	C->m_rigidBody.m_P			+= bkVector3 (0,1000.f,100.f);
 	C->m_rigidBody.m_L			+= bkVector3 (0,10.f,10.f);
 }
