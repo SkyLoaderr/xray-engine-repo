@@ -77,6 +77,7 @@ public:
 
 	// Pathfinding cache
 	AI::CPathNodes		AI_Path;
+	DWORD_VECTOR		m_tpaGraphPath;
 
 	// Eyes
 	Fmatrix				eye_matrix;
