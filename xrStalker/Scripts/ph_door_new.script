@@ -47,7 +47,7 @@ function action_door:initialize()
 	self.object:set_nonscript_usable(false)
 	self.object:set_use_callback(self, "door_callback")
 
-	--level.add_call(self, "close_check", "close_action")
+	level.add_call(self, "close_check", "close_action")
 
 	if self.st.snd_init then
 		self:door_play_snd_from_set(self.st.snd_init)
@@ -103,9 +103,6 @@ function action_door:update(delta)
 		end
 	end
 	--]]
-	if self:close_check() then
-		self:close_action()
-	end
 end
 
 function action_door:close_check()
