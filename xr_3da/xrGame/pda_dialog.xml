@@ -4,7 +4,9 @@
 	<character_info x="26" y="58" width="236" height="120"></character_info>
 
 	<!-- MESSAGE LOG LIST -->
-	<list x="20" y="40" width="470" height="320" item_height="16"></list>
+	<list x="20" y="40" width="470" height="320" item_height="16">
+		<font font="letterica16" r="255" g="255" b="255"></font>
+	</list>
 	<!-- PHRASES LIST -->
 	<list x="20" y="37" width="470" height="75" item_height="15">
 		<font font="letterica16" r="255" g="255" b="255"></font>
