@@ -144,7 +144,7 @@ IC		void		gm_SetLighting		(CObject* O)
 	{
 		gm_Object			= O;
 		if (0==gm_Object)	return;
-		CLightTrack& LT		= *O->Lights	();
+		CLightTrack& LT		= *((CLightTrack*)O->ROS());
 		
 		// shadowing
 		if (LT.Shadowed_dwFrame==Device.dwFrame)	{

@@ -166,7 +166,7 @@ void CLightShadows::calculate	()
 		if (C.nodes.empty())	continue;
 		
 		// Select lights and calc importance
-		CLightTrack* LT			= C.O->Lights();
+		CLightTrack* LT			= (CLightTrack*)C.O->ROS();
 		vector<CLightTrack::Light>& lights = LT->lights;
 		
 		// iterate on lights

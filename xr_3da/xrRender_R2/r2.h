@@ -85,6 +85,10 @@ public:
 	virtual CBlender*				blender_create			(CLASS_ID cls);
 	virtual void					blender_destroy			(CBlender* &);
 
+	//
+	virtual IRender_ObjectSpecific*	ros_create				(CObject* parent);
+	virtual void					ros_destroy				(IRender_ObjectSpecific* &);
+
 	// Lighting
 	virtual IRender_Light*			light_create			();
 	virtual void					light_destroy			(IRender_Light* &);

@@ -78,12 +78,13 @@ void CLightProjector::set_object	(CObject* O)
 		
 		if (current)
 		{
-			current->Lights()->Shadowed_dwFrame	= Device.dwFrame;
-			current->Lights()->Shadowed_Slot	= receivers.size();
-			receivers.push_back			(recv());
-			receivers.back().O			= current;
-			receivers.back().C			= C;
-			receivers.back().D			= D;
+			CLightTrack*	LT		= (CLightTrack*)current->ROS();
+			LT->Shadowed_dwFrame	= Device.dwFrame;
+			LT->Shadowed_Slot		= receivers.size();
+			receivers.push_back		(recv());
+			receivers.back().O		= current;
+			receivers.back().C		= C;
+			receivers.back().D		= D;
 		}
 	}
 }
@@ -180,7 +181,7 @@ void CLightProjector::calculate	()
 		C.UVgen.mulA_43			(mTemp);
 
 		// Clear color to ambience
-		float	c_a			=	C.O->Lights()->ambient;
+		float	c_a			=	((CLightTrack*)C.O->ROS())->ambient;
 		int		c_i			=	iFloor(c_a)/2;
 		CHK_DX					(HW.pDevice->Clear(0,0, D3DCLEAR_TARGET, D3DCOLOR_RGBA(c_i,c_i,c_i,c_i), 1, 0 ));
 		
