@@ -70,6 +70,12 @@ function fract:checkNpc(npc)
 		return true
 	end
 
+	if self.type == "stalker_camp" and
+	   type == "stalker"
+	then
+		return true
+	end
+
 	if self.type == "bandits_camp" and
 	   type == "bandit"
 	then
