@@ -500,7 +500,7 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 	m_all.insert(pIItem);
 		
 	//сначала закинуть вещь в рюкзак
-	if(pIItem->m_ruck) m_ruck.insert(m_ruck.end(), pIItem); 
+	if(pIItem->Ruck()) m_ruck.insert(m_ruck.end(), pIItem); 
 		
 //	SortRuckAndBelt(this);
 //	l_subs.insert(l_subs.end(), l_pIItem->m_subs.begin(), l_pIItem->m_subs.end());
@@ -517,7 +517,7 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 	//поытаться закинуть в слот
 	if(!Slot(pIItem)) 
 	{
-		if(pIItem->m_slot < NO_ACTIVE_SLOT) 
+		if(pIItem->GetSlot() < NO_ACTIVE_SLOT) 
 		{
 			/*if(m_slots[pIItem->m_slot].m_pIItem &&
 			   m_slots[pIItem->m_slot].m_pIItem->Attach(pIItem))
@@ -528,7 +528,7 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 			else */
 			if(!Belt(pIItem)/* || !FreeBeltRoom()*/) 
 				 if(m_ruck.size() > m_maxRuck || 
-					!pIItem->m_ruck || !FreeRuckRoom()) 
+					!pIItem->Ruck() || !FreeRuckRoom()) 
 			{
 				//return true;
 				//else 
@@ -548,7 +548,7 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 	//то что только что подняли
 	else if(m_activeSlot == NO_ACTIVE_SLOT && !bNotActivate) 
 	{
-		Activate(pIItem->m_slot);
+		Activate(pIItem->GetSlot());
 	}
 	return true;
 }
@@ -609,12 +609,12 @@ bool CInventory::Slot(PIItem pIItem)
 {
 	if(!m_bSlotsUseful) return false;
 
-	if(pIItem->m_slot < m_slots.size()) 
+	if(pIItem->GetSlot() < m_slots.size()) 
 	{
 		//if(m_slots[pIItem->m_slot].m_pIItem && !Belt(m_slots[pIItem->m_slot].m_pIItem)) Ruck(m_slots[pIItem->m_slot].m_pIItem);
-		if(!m_slots[pIItem->m_slot].m_pIItem) 
+		if(!m_slots[pIItem->GetSlot()].m_pIItem) 
 		{
-			m_slots[pIItem->m_slot].m_pIItem = pIItem;
+			m_slots[pIItem->GetSlot()].m_pIItem = pIItem;
 			PPIItem it = std::find(m_ruck.begin(), m_ruck.end(), pIItem); 
 			
 			if(it != m_ruck.end()) m_ruck.erase(it);
@@ -657,17 +657,17 @@ bool CInventory::Belt(PIItem pIItem)
 {
 	if(!m_bBeltUseful) return false;
 
-	if(!pIItem || !pIItem->m_belt) return false;
+	if(!pIItem || !pIItem->Belt()) return false;
 	if(m_belt.size() == m_maxBelt) return false;
 	
 	//вещь - уже на поясе
 	if(std::find(m_belt.begin(), m_belt.end(), pIItem) != m_belt.end()) return true;
 	
 	//вещь была в слоте
-	if((pIItem->m_slot < m_slots.size()) && (m_slots[pIItem->m_slot].m_pIItem == pIItem)) 
+	if((pIItem->GetSlot() < m_slots.size()) && (m_slots[pIItem->GetSlot()].m_pIItem == pIItem)) 
 	{
-		if(m_activeSlot == pIItem->m_slot) Activate(NO_ACTIVE_SLOT);
-		m_slots[pIItem->m_slot].m_pIItem = NULL;
+		if(m_activeSlot == pIItem->GetSlot()) Activate(NO_ACTIVE_SLOT);
+		m_slots[pIItem->GetSlot()].m_pIItem = NULL;
 	}
 	
 	m_belt.insert(m_belt.end(), pIItem); 
@@ -690,15 +690,15 @@ bool CInventory::Belt(PIItem pIItem)
 
 bool CInventory::Ruck(PIItem pIItem) 
 {
-	if(!pIItem || !pIItem->m_ruck) return false;
+	if(!pIItem || !pIItem->Ruck()) return false;
 
 	if(std::find(m_ruck.begin(), m_ruck.end(), pIItem) != m_ruck.end()) return true;
 	
 	//вещь была в слоте
-	if((pIItem->m_slot < m_slots.size()) && (m_slots[pIItem->m_slot].m_pIItem == pIItem)) 
+	if((pIItem->GetSlot() < m_slots.size()) && (m_slots[pIItem->GetSlot()].m_pIItem == pIItem)) 
 	{
-		if(m_activeSlot == pIItem->m_slot) Activate(NO_ACTIVE_SLOT);
-		m_slots[pIItem->m_slot].m_pIItem = NULL;
+		if(m_activeSlot == pIItem->GetSlot()) Activate(NO_ACTIVE_SLOT);
+		m_slots[pIItem->GetSlot()].m_pIItem = NULL;
 	}
 
 	//вещь была на поясе
@@ -905,7 +905,7 @@ PIItem CInventory::SameSlot(u32 slot)
 	for(PPIItem it = m_belt.begin(); it != m_belt.end(); it++) 
 	{
 		PIItem pIItem = *it;
-		if(pIItem->m_slot == slot) return pIItem;
+		if(pIItem->GetSlot() == slot) return pIItem;
 	}
 
 	return NULL;
@@ -1024,8 +1024,8 @@ bool CInventory::Eat(PIItem pIItem)
 
 bool CInventory::InSlot(PIItem pIItem)
 {
-	if(pIItem->m_slot < m_slots.size() && 
-		m_slots[pIItem->m_slot].m_pIItem == pIItem)
+	if(pIItem->GetSlot() < m_slots.size() && 
+		m_slots[pIItem->GetSlot()].m_pIItem == pIItem)
 		return true;
 	return false;
 }
@@ -1043,8 +1043,8 @@ bool CInventory::InRuck(PIItem pIItem)
 
 bool CInventory::CanPutInSlot(PIItem pIItem)
 {
-	if(pIItem->m_slot < m_slots.size() && 
-		m_slots[pIItem->m_slot].m_pIItem == NULL)
+	if(pIItem->GetSlot() < m_slots.size() && 
+		m_slots[pIItem->GetSlot()].m_pIItem == NULL)
 		return true;
 	
 	return false;

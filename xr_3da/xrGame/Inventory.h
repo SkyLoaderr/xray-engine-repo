@@ -83,8 +83,6 @@ public:
 	u32		Cost()		{return m_cost;}
 	float	Weight()	{return m_weight;}		
 
-	u32 m_slot;												// Слот в который можно установить объект (0xffffffff если нельзя)
-	bool m_belt, m_ruck;									// Может ли объект быть на поясе или в рюкзаке
 	
 	CInventory *m_pInventory;								// Указатель на инвентарь. Всегда полезно знать где находишься :)
 	const char *m_name, *m_nameShort;
@@ -92,20 +90,28 @@ public:
 	bool m_showHUD;
 	bool m_drop;
 
-	
-	//const char* m_sIconTexture;								//текстура с иконкой для меню
-	
-	int m_iGridWidth;										//ширина в сетке инвенторя
-	int m_iGridHeight;										//высота в сетке инвенторя
-
-	int m_iXPos;											//позиция X в сетке инвенторя
-	int m_iYPos;											//позиция Y в сетке инвенторя
-
+	virtual int GetGridWidth() {return m_iGridWidth;}
+	virtual int GetGridHeight() {return m_iGridHeight;}
+	virtual int GetXPos() {return m_iXPos;}
+	virtual int GetYPos() {return m_iYPos;}
 
 	float GetCondition() {return m_fCondition;}
 	void  ChangeCondition(float fDeltaCondition);
-	
+
+	u32	 GetSlot() {return m_slot;}
+	void SetSlot(u32 slot) {m_slot = slot;}
+
+	bool Belt() {return m_belt;}
+	void Belt(bool on_belt) {m_belt = on_belt;}
+	bool Ruck() {return m_ruck;}
+	void Ruck(bool on_ruck) {m_ruck = on_ruck;}
 protected:
+	// Слот в который можно установить объект (0xffffffff если нельзя)
+	u32 m_slot;
+	// Может ли объект быть на поясе или в рюкзаке
+	bool m_belt, m_ruck;			
+
+
 	// цена по умолчанию
 	u32	m_cost;
 	// вес объекта (без подсоединненых вещей)
@@ -128,6 +134,11 @@ protected:
 	float m_fK_Explosion;
 	float m_fK_FireWound;
 
+	int m_iGridWidth;										//ширина в сетке инвенторя
+	int m_iGridHeight;										//высота в сетке инвенторя
+
+	int m_iXPos;											//позиция X в сетке инвенторя
+	int m_iYPos;											//позиция Y в сетке инвенторя
 
 };
 

@@ -390,7 +390,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	m_dwMoney				= pTA->m_dwMoney;
 	m_tRank					= pTA->m_tRank;
 	
-/*
+
 	// @@@: WT - !!!ВРЕМЕННО!!! - спавним каждому актеру детектор
 
 	//спавним каждому актеру в инвентарь болты
@@ -424,7 +424,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 		F_entity_Destroy	(D);
 	}
 	// @@@: WT
-*/
+
 	// take index spine bone
 	CSkeletonAnimated* V= PSkeletonAnimated(Visual());
 	R_ASSERT			(V);

@@ -2188,10 +2188,10 @@
 							RelativePath=".\ui\UIArtifactMergerWnd.h">
 						</File>
 						<File
-							RelativePath="UIInventory.cpp">
+							RelativePath=".\UIInventory.cpp">
 						</File>
 						<File
-							RelativePath="UIInventory.h">
+							RelativePath=".\UIInventory.h">
 						</File>
 						<File
 							RelativePath=".\ui\UIInventoryUtilities.cpp">
@@ -2223,28 +2223,6 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="PdaWnd"
-						Filter="">
-						<File
-							RelativePath=".\ui\UIPdaContactsWnd.cpp">
-						</File>
-						<File
-							RelativePath=".\ui\UIPdaContactsWnd.h">
-						</File>
-						<File
-							RelativePath=".\ui\UIPdaDialogWnd.cpp">
-						</File>
-						<File
-							RelativePath=".\ui\UIPdaDialogWnd.h">
-						</File>
-						<File
-							RelativePath=".\ui\UIPdaWnd.cpp">
-						</File>
-						<File
-							RelativePath=".\ui\UIPdaWnd.h">
-						</File>
-					</Filter>
-					<Filter
 						Name="MainIngame"
 						Filter="">
 						<File
@@ -2271,6 +2249,28 @@
 						<File
 							RelativePath=".\UIZoneMap.h">
 						</File>
+						<Filter
+							Name="PdaWnd"
+							Filter="">
+							<File
+								RelativePath=".\ui\UIPdaContactsWnd.cpp">
+							</File>
+							<File
+								RelativePath=".\ui\UIPdaContactsWnd.h">
+							</File>
+							<File
+								RelativePath=".\ui\UIPdaDialogWnd.cpp">
+							</File>
+							<File
+								RelativePath=".\ui\UIPdaDialogWnd.h">
+							</File>
+							<File
+								RelativePath=".\ui\UIPdaWnd.cpp">
+							</File>
+							<File
+								RelativePath=".\ui\UIPdaWnd.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="MapWnd"
@@ -2432,6 +2432,12 @@
 						</File>
 						<File
 							RelativePath=".\ui\UIDragDropList.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIWpnDragDropItem.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIWpnDragDropItem.h">
 						</File>
 					</Filter>
 					<Filter

@@ -2,15 +2,18 @@
 #define __XR_WEAPON_AK74_H__
 #pragma once
 
-#include "WeaponAutoRifle.h"
+#include "WeaponMagazinedWGrenade.h"
 
-class CWeaponAK74: public CWeaponMagazined
+class CWeaponAK74: public CWeaponMagazinedWGrenade
 {
 private:
-	typedef CWeaponMagazined inherited;
+	typedef CWeaponMagazinedWGrenade inherited;
 public:
 					CWeaponAK74		();
 	virtual			~CWeaponAK74	();
+
+	void		Load	(LPCSTR section);
+	BOOL		net_Spawn	(LPVOID DC); 
 };
 
 #endif //__XR_WEAPON_AK74_H__

@@ -215,7 +215,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 			CInventoryItem	*l_tpInventoryItem = dynamic_cast<CInventoryItem*>(l_tObjectAction.m_tpObject);
 			if (l_tpInventoryItem) {
 				m_inventory.Slot(l_tpInventoryItem);
-				m_inventory.Activate(l_tpInventoryItem->m_slot);
+				m_inventory.Activate(l_tpInventoryItem->GetSlot());
 				if (l_tpWeapon && (l_tpWeapon->STATE != CWeapon::eShowing))
 					l_tObjectAction.m_bCompleted = true;
 			}

@@ -20,6 +20,7 @@ CBolt::~CBolt(void)
 void CBolt::OnH_A_Chield() 
 {
 	inherited::OnH_A_Chield();
+	
 	if(!m_subs.size() && !dynamic_cast<CBolt*>(H_Parent())) 
 	{
 		CSE_Abstract*		D	= F_entity_Create(cNameSect());
@@ -113,8 +114,7 @@ void CBolt::Throw()
 		{
 			NET_Packet				P;
 			u_EventGen				(P,GE_OWNERSHIP_REJECT,/*H_Parent()->*/ID());
-			P.w_u16
-				(u16(l_pBolt->ID()));
+			P.w_u16					(u16(l_pBolt->ID()));
 			u_EventSend				(P);
 		}
 
