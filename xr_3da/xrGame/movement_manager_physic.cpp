@@ -108,6 +108,13 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	
 	if (prev_cur_point_index != CDetailPathManager::curr_travel_point_index()) on_travel_point_change();
 
+	if (dist_to_target < EPS_L) {
+#pragma todo("Dima to ? : is this correct?")
+		CDetailPathManager::m_current_travel_point = CDetailPathManager::path().size() - 1;
+		m_speed			= 0.f;
+		return;
+	}
+
 	// Физика устанавливает новую позицию
 	Device.Statistic.Physics.Begin	();
 
