@@ -9,7 +9,7 @@
 
 CBlender_Blur::CBlender_Blur()
 {
-	description.CLS		= B_SHADOW_WORLD;
+	description.CLS		= B_BLUR;
 }
 
 CBlender_Blur::~CBlender_Blur()
@@ -32,8 +32,8 @@ void CBlender_Blur::Compile	(CBlender_Compile& C)
 	CBlender::Compile		(C);
 	C.PassBegin		();
 	{
-		C.PassSET_ZB		(TRUE, FALSE);
-		C.PassSET_Blend_MUL	();
+		C.PassSET_ZB		(FALSE, FALSE);
+		C.PassSET_Blend_SET	();
 		C.PassSET_LightFog	(FALSE, FALSE);
 
 		// Stage0 - Base texture
