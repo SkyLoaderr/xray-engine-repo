@@ -28,11 +28,9 @@ void CCustomMonster::mk_rotation	(Fvector &dir, SRotation &R)
 
 void CCustomMonster::Exec_Look		( float dt )
 {
+	float pitch_speed				= get_custom_pitch_speed(m_body.speed);
 	angle_lerp_bounds				(m_body.current.yaw,m_body.target.yaw,m_body.speed,dt);
-	angle_lerp_bounds				(m_body.current.pitch,m_body.target.pitch,PI_DIV_6,dt);
-
-//	angle_lerp_bounds				(m_head.current.yaw,m_head.target.yaw,m_head.speed,dt);
-//	angle_lerp_bounds				(m_head.current.pitch,m_head.target.pitch,m_head.speed,dt);
+	angle_lerp_bounds				(m_body.current.pitch,m_body.target.pitch,pitch_speed,dt);
 
 	Fvector P						= Position();
 	XFORM().setHPB					(-NET_Last.o_model,-NET_Last.o_torso.pitch,0);

@@ -141,6 +141,8 @@ public:
 	virtual	void			PitchCorrection					();
 
 	virtual	void			SetAttackEffector				();
+	
+	virtual float			get_custom_pitch_speed			(float def_speed);
 
 	// ---------------------------------------------------------------------------------
 	// Process scripts

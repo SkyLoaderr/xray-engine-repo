@@ -175,6 +175,7 @@ public:
 		return					(m_body.current);
 	};
 	virtual bool				use_model_pitch			() const;
+	virtual float				get_custom_pitch_speed	(float def_speed) {return def_speed;}
 };
 
 #include "custommonster_inline.h"

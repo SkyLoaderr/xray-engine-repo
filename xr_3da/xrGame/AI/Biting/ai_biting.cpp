@@ -498,4 +498,16 @@ void CAI_Biting::PitchCorrection()
 	target_dir.getHP(yaw,pitch);
 
 	m_body.target.pitch = -pitch;
+
 }
+
+float CAI_Biting::get_custom_pitch_speed(float def_speed)
+{
+	float cur_speed = angle_difference(m_body.current.pitch, m_body.target.pitch) * 4.0f;
+	clamp(cur_speed, PI_DIV_6, 5 * PI_DIV_6);
+
+	return cur_speed;
+}
+
+
+
