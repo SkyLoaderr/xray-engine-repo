@@ -37,15 +37,31 @@ void	geom_batch_average	(u32 verts, u32 faces)
 	else if (faces<=5000)		g_batch_5000++;
 }
 
-void CBuild::SaveTREE(IWriter &fs)
+bool	remap_order		(u32 id0, u32 id1)
+{
+	OGF*	o0			= (OGF*)g_tree[id0];
+	OGF*	o1			= (OGF*)g_tree[id1];
+	return	strcmp(*o0->textures.front().name,*o1->textures.front().name)<0;
+}
+
+void CBuild::SaveTREE	(IWriter &fs)
 {
 	CMemoryWriter		MFS;
 
+	Status				("Geometry buffers...");
+	xr_vector<u32>		remap;
+	remap.reserve		(g_tree.size());
+	for (u32 rid=0; rid<g_tree.size(); rid++)	{
+		OGF*	o		= dynamic_cast<OGF*>	(g_tree[rid]);
+		if		(o)		remap.push_back(rid);
+	}
+	std::stable_sort	(remap.begin(),remap.end(),remap_order);
+	for (u32 sid=0; sid<remap.size(); sid++)	
+		g_tree[remap[sid]]->PreSave();
+
 	Status				("Visuals...");
-	//mem_Compact			();
 	fs.open_chunk		(fsL_VISUALS);
-	for (xr_vector<OGF_Base*>::iterator it = g_tree.begin(); it!=g_tree.end(); it++)
-	{
+	for (xr_vector<OGF_Base*>::iterator it = g_tree.begin(); it!=g_tree.end(); it++)	{
 		u32			idx = u32(it-g_tree.begin());
 		MFS.open_chunk	(idx);
 		(*it)->Save		(MFS);

@@ -229,7 +229,7 @@ void	OGF::Save_Cached		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 	fs.w_u32		((u32)vertices.size());
 	for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
 	{
-						fs.w(&*V,6*sizeof(float));	// Position & normal
+		fs.w(&*V,6*sizeof(float));	// Position & normal
 		if (bVertexColored)	fs.w(&(V->Color),4);
 		for (u32 uv=0; uv<dwRelevantUV; uv++)
 			fs.w(&*V->UV.begin()+uv,2*sizeof(float));
@@ -243,12 +243,12 @@ void	OGF::Save_Cached		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 	fs.close_chunk	();
 }
 
-void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
+void	OGF::PreSave			()
 {
-//	clMsg			("- saving: normal or clod");
+	Shader_xrLC*	SH	=	pBuild->shaders.Get		(pBuild->materials[material].reserved);
+	bool bVertexColors	=	(SH->flags.bLIGHT_Vertex);
 
 	// Vertices
-	u32 ID,Start;
 	VDeclarator		D;
 	if (b_R2)
 	{
@@ -259,7 +259,7 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 			r2v			v	(V->P,V->N,V->T,V->B,V->Color,V->UV[0]);
 			g_VB.Add		(&v,sizeof(v));
 		}
-		g_VB.End		(&ID,&Start);
+		g_VB.End		(&vb_id,&vb_start);
 	} else {
 		if	(bVertexColored)	
 		{
@@ -271,7 +271,7 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 				r1v_vert	v	(V->P,V->N,V->Color,V->UV[0]);
 				g_VB.Add		(&v,sizeof(v));
 			}
-			g_VB.End		(&ID,&Start);
+			g_VB.End		(&vb_id,&vb_start);
 		}
 		else
 		{
@@ -283,21 +283,29 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 				r1v_lmap	v	(V->P,V->N,V->Color,V->UV[0],V->UV[1]);
 				g_VB.Add		(&v,sizeof(v));
 			}
-			g_VB.End		(&ID,&Start);
+			g_VB.End		(&vb_id,&vb_start);
 		}
 	}
-	
+
+	// Faces
+	g_IB.Register	(LPWORD(&*faces.begin()),LPWORD(&*faces.end()),&ID,&Start);
+}
+
+void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
+{
+//	clMsg			("- saving: normal or clod");
+
+	// Vertices
 	fs.open_chunk	(OGF_VCONTAINER);
-	fs.w_u32		(ID);
-	fs.w_u32		(Start);
+	fs.w_u32		(vb_id);
+	fs.w_u32		(vb_start);
 	fs.w_u32		((u32)vertices.size());
 	fs.close_chunk	();
 	
 	// Faces
-	g_IB.Register	(LPWORD(&*faces.begin()),LPWORD(&*faces.end()),&ID,&Start);
 	fs.open_chunk	(OGF_ICONTAINER);
-	fs.w_u32		(ID);
-	fs.w_u32		(Start);
+	fs.w_u32		(ib_id);
+	fs.w_u32		(ib_start);
 	fs.w_u32		((u32)faces.size()*3);
 	fs.close_chunk	();
 	

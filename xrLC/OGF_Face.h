@@ -78,8 +78,9 @@ struct OGF_Base
 
 	IC BOOL				IsNode()	{ return iLevel; }
 
+	virtual void		PreSave		()							{};
 	virtual void		Save		(IWriter &fs);
-	virtual void		GetGeometry	(xr_vector<Fvector> &RES) = 0;
+	virtual void		GetGeometry	(xr_vector<Fvector> &RES)	= 0;
 	void				CalcBounds	(); 
 };
 extern xr_vector<OGF_Base *>		g_tree;
@@ -101,6 +102,11 @@ struct OGF : public OGF_Base
 	u32					dwRelevantUV;
 	u32					dwRelevantUVMASK;
 
+	u32					vb_id;
+	u32					vb_start;
+	u32					ib_id;
+	u32					ib_start;
+
 	OGF() : OGF_Base(0) {
 		dwRelevantUV		= 0;
 		dwRelevantUVMASK	= 0;
@@ -117,6 +123,7 @@ struct OGF : public OGF_Base
 	void				BuildVSPLIT		();
 	void				DumpFaces		();
 
+	virtual void		PreSave			();
 	virtual void		Save			(IWriter &fs);
 
 	void				Save_Cached		(IWriter &fs, ogf_header& H, BOOL bColors);
