@@ -16,7 +16,7 @@ using namespace Opcode;
 	if(x2>max) max=x2;
 
 //! TO BE DOCUMENTED
-IC bool planeBoxOverlap(const Point& normal, const float d, const Point& maxbox)
+ICF bool planeBoxOverlap(const Point& normal, const float d, const Point& maxbox)
 {
 	Point vmin, vmax;
 	for(udword q=0;q<=2;q++)
@@ -112,7 +112,7 @@ public:
 		if( b_min.z > C.z+E.z )	return false;
 		return true;
 	};
-	IC	bool		_tri		()
+	ICF	bool		_tri		()
 	{
 		// move everything so that the boxcenter is in (0,0,0) 
 		Point v0, v1, v2;
