@@ -476,23 +476,19 @@ int CUIListWnd::FindItemWithValue(int iValue)
 	return -1;
 }
 
-//////////////////////////////////////////////////////////////////////////
-void CUIListWnd::OnMouseWheel(int direction)
-{
-	if(m_bScrollBarEnabled){
-		if(direction<0)
-			m_ScrollBar.TryScrollInc();
-		else
-			m_ScrollBar.TryScrollDec();
-
-	}
-}
 
 void CUIListWnd::OnMouse(int x, int y, EUIMessages mouse_action)
 {
-	if(mouse_action == WINDOW_LBUTTON_DB_CLICK) 
-	{
+	switch(mouse_action){
+	case WINDOW_LBUTTON_DB_CLICK:
 		mouse_action = WINDOW_LBUTTON_DOWN;
+		break;
+	case WINDOW_MOUSE_WHEEL_DOWN:
+			m_ScrollBar.TryScrollInc();
+			break;
+	case WINDOW_MOUSE_WHEEL_UP:
+			m_ScrollBar.TryScrollDec();
+			break;
 	}
 
 	inherited::OnMouse(x, y, mouse_action);

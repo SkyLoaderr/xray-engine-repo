@@ -86,7 +86,13 @@ bool CUIDialogWnd::IR_OnKeyboardRelease(int dik)
 
 bool CUIDialogWnd::IR_OnMouseWheel (int direction)
 {
-	OnMouseWheel(direction);
+	Ivector2 pos = GetUICursor()->GetPos();
+
+	if(direction>0)
+		OnMouse(pos.x,pos.y,WINDOW_MOUSE_WHEEL_UP);
+	else
+		OnMouse(pos.x,pos.y,WINDOW_MOUSE_WHEEL_DOWN);
+
 	return true;
 }
 

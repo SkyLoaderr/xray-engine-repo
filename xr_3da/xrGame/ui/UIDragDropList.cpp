@@ -132,15 +132,20 @@ void CUIDragDropList::DropAll()
 	ScrollBarRecalculate(true);
 }
 
-void CUIDragDropList::OnMouseWheel(int direction)
+void CUIDragDropList::OnMouse(int x, int y, EUIMessages mouse_action)
 {
-	if(m_bScrollBarEnabled){
-		if(direction<0)
+	switch(mouse_action){
+	case WINDOW_MOUSE_WHEEL_DOWN:
+		if(m_bScrollBarEnabled)
 			m_ScrollBar.TryScrollInc();
-		else
+			break;
+	case WINDOW_MOUSE_WHEEL_UP:
+		if(m_bScrollBarEnabled)
 			m_ScrollBar.TryScrollDec();
-
+			break;
 	}
+
+	inherited::OnMouse(x, y, mouse_action);
 }
 
 //обработка сообщений для DragDrop

@@ -128,13 +128,6 @@ void CUIGlobalMap::Init		(shared_str name, CInifile& gameLtx)
 	bool xml_result			= uiXml.Init(CONFIG_PATH, UI_PATH, "pda_map.xml");
 	R_ASSERT3(xml_result, "xml file not found", "global_map.xml");
 
-	// load map background
-/*	CUIStatic* background	= xr_new<CUIStatic>();
-	background->SetWindowName("background");
-	xml_init.InitStatic		(uiXml, "main_wnd:global_map:background", 0, background);
-	background->SetAutoDelete(true);
-	AttachChild				(background);
-*/
 
 
 	CUIXmlInit xml_init;
@@ -186,7 +179,12 @@ void CUIGlobalMap::SwitchTo(CUIGlobalMap::EState new_state)
 		switch (new_state){
 		case stMinimized:		SetWidth(m_MinimizedSize.x); SetHeight(m_MinimizedSize.y);	break;
 		case stNormal:			SetWidth(m_NormalSize.x); SetHeight(m_NormalSize.y);		break;
-		case stMaximized:		SetWidth(GetParent()->GetWidth()); SetHeight(GetParent()->GetHeight());	break;
+//		case stMaximized:		SetWidth(GetParent()->GetWidth()); SetHeight(GetParent()->GetHeight());	break;
+		case stMaximized:{
+			MapWnd()->SetActiveMap( MapName() );
+			//FitToWidth();
+			SetWidth(GetParent()->GetWidth()); SetHeight(GetParent()->GetHeight());	
+				};break;
 		}
 		m_State					= new_state;
 
@@ -250,7 +248,6 @@ void CUILevelMap::Init	(shared_str name, CInifile& gameLtx)
 CUIMapWnd::CUIMapWnd()
 {
 	m_activeLevelMap		= NULL;
-//	m_activeLevelMap		= xr_new<CUILevelMap>();
 	m_flags.zero();
 }
 
@@ -291,8 +288,8 @@ void CUIMapWnd::Init()
 	Register						(&m_UIMainScrollH);
 	AddCallback						("scroll_h",SCROLLBAR_HSCROLL,boost::bind(&CUIMapWnd::OnScrollH,this));
 
-//	AttachChild(&UIMainMapHeader);
-//	xml_init.InitFrameLine(uiXml, "map_header_frame_line", 0, &UIMainMapHeader);
+	AttachChild(&UIMainMapHeader);
+	xml_init.InitFrameLine(uiXml, "map_header_frame_line", 0, &UIMainMapHeader);
 
 
 // Load maps
@@ -313,13 +310,15 @@ void CUIMapWnd::Init()
 		for (;it!=end; it++){
 
 			R_ASSERT2	(m_GameMaps.end() == m_GameMaps.find(it->first), "Duplicate level name not allowed");
-			CUILevelMap*& l = m_GameMaps[it->first];
+			CUICustomMap*& l = m_GameMaps[it->first];
 
 			l = xr_new<CUILevelMap>(this);
 			l->Init(it->first, gameLtx);
 
 			l->OptimalFit( m_UILevelFrame.GetWndRect() );
-			m_GlobalMap->AttachChild(l->GlobalMapSpot() );
+			
+			if(l->GlobalMapSpot())
+				m_GlobalMap->AttachChild(l->GlobalMapSpot() );
 		}
 	}
 }
@@ -342,14 +341,19 @@ void CUIMapWnd::Show(bool status)
 
 void CUIMapWnd::SetActiveMap			(shared_str level_name)
 {
-	if(m_activeLevelMap)
+	if(m_activeLevelMap	&& m_activeLevelMap!=m_GlobalMap)
 		m_UILevelFrame.DetachChild		(m_activeLevelMap);
+	//if Global map 
+	if( level_name == m_GlobalMap->MapName() ){
+		m_activeLevelMap = m_GlobalMap;
+	}else{
+		GameMapsPairIt it			= m_GameMaps.find(level_name);
+		if( m_GameMaps.end()==it)	return;
+		
+		m_activeLevelMap			= it->second;
+		m_UILevelFrame.AttachChild	(m_activeLevelMap);
+	};
 
-	GameMapsPairIt it			= m_GameMaps.find(level_name);
-	if( m_GameMaps.end()==it)	return;
-	
-	m_activeLevelMap			= it->second;
-	m_UILevelFrame.AttachChild	(m_activeLevelMap);
 	m_UILevelFrame.BringToTop	(m_GlobalMap);
 
 	// set scroll range
@@ -393,16 +397,16 @@ void CUIMapWnd::OnMouse(int x, int y, EUIMessages mouse_action)
 			GetUICursor()->HoldMode(false);
 			m_flags.set(lmMouseHold,FALSE);
 		break;
+		case WINDOW_MOUSE_WHEEL_UP:
+			m_UIMainScrollV.TryScrollDec();
+		break;
+		case WINDOW_MOUSE_WHEEL_DOWN:
+			m_UIMainScrollV.TryScrollInc();
+		break;
+
+
 		}	
 	};
-}
-
-void CUIMapWnd::OnMouseWheel(int direction)
-{
-	if(direction<0)
-		m_UIMainScrollV.TryScrollInc();
-	else
-		m_UIMainScrollV.TryScrollDec();
 }
 
 void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
@@ -435,11 +439,54 @@ void CUIMapWnd::OnScrollH()
 	}
 }
 
-
-
-CUIGlobalMapSpot::CUIGlobalMapSpot		(CUILevelMap* m)
+void CUIMapWnd::SetStatusInfo			(LPCSTR status_text)
 {
-	m_map = m;
+	UIMainMapHeader.UITitleText.SetText(status_text);
+}
+
+void CUIMapWnd::Update()
+{
+	ShowHint();
+	inherited::Update();
+}
+
+void CUIMapWnd::ShowHint()
+{
+	Ivector2 cursor_pos = GetUICursor()->GetPos();
+	shared_str hint;
+
+	if( m_GlobalMap->GetAbsoluteRect().in(cursor_pos) ){
+		WINDOW_LIST& wl = m_GlobalMap->GetChildWndList();
+		xr_list<CUIWindow*>::reverse_iterator it = wl.rbegin();
+		for(;it!=wl.rend();++it)
+			if( (*it)->GetAbsoluteRect().in(cursor_pos) )
+				if( (*it)->GetHint(hint) )
+					break;
+		
+			if(xr_strlen(hint)==0)
+				m_GlobalMap->GetHint(hint);
+		
+	}else
+	if( m_activeLevelMap && m_activeLevelMap->GetAbsoluteRect().in(cursor_pos) ){
+		WINDOW_LIST& wl = m_activeLevelMap->GetChildWndList();
+		xr_list<CUIWindow*>::reverse_iterator it = wl.rbegin();
+		for(;it!=wl.rend();++it)
+			if( (*it)->GetAbsoluteRect().in(cursor_pos) )
+				if( (*it)->GetHint(hint) )
+					break;
+			if(xr_strlen(hint)==0)
+				m_activeLevelMap->GetHint(hint);
+	};
+
+	SetStatusInfo(*hint);
+}
+
+
+
+
+CUIGlobalMapSpot::CUIGlobalMapSpot		(CUICustomMap* m)
+{
+	m_owner_map = smart_cast<CUILevelMap*>(m);
 }
 
 CUIGlobalMapSpot::~CUIGlobalMapSpot		()
@@ -462,11 +509,10 @@ void CUIGlobalMapSpot::OnMouse	(int x, int y, EUIMessages mouse_action)
 {
 	inherited::OnMouse(x,y,mouse_action);
 		switch (mouse_action){
-			case WINDOW_MOUSE_MOVE:{
-
-				}break;
 			case WINDOW_LBUTTON_DOWN:{
-				((CUIGlobalMap*)GetParent())->MapWnd()->SetActiveMap( m_map->MapName() );
+					CUIGlobalMap* globalMap = (CUIGlobalMap*)GetParent();
+					globalMap->MapWnd()->SetActiveMap( m_owner_map->MapName() );
+					globalMap->SwitchTo(CUIGlobalMap::stNormal);
 				}break;
 		}
 }
@@ -478,10 +524,10 @@ void CUIGlobalMapSpot::Update()
 
 	Irect rect, tmp;
 
-	tmp = w->ConvertRealToLocal(m_map->GlobalRect().lt);
+	tmp = w->ConvertRealToLocal(m_owner_map->GlobalRect().lt);
 	rect.lt = tmp.lt;
 
-	tmp = w->ConvertRealToLocal(m_map->GlobalRect().rb);
+	tmp = w->ConvertRealToLocal(m_owner_map->GlobalRect().rb);
 	rect.rb = tmp.lt;
 	
 	SetWndRect				(rect);
@@ -489,8 +535,22 @@ void CUIGlobalMapSpot::Update()
 	Irect rectAbs =			GetAbsoluteRect();
 	UIBorder.SetPos			(rectAbs.left, rectAbs.top);
 	UIBorder.SetSize		( rectAbs.width(), rectAbs.height() );
-}
 
+	//highlight border
+	if(w->MapWnd()->ActiveLevelMap()==m_owner_map)
+		UIBorder.SetColor(ourLevelMapColor);
+	else{
+		if(GetAbsoluteRect().in( GetUICursor()->GetPos() ) )
+				UIBorder.SetColor(activeLocalMapColor);
+		else
+				UIBorder.SetColor(inactiveLocalMapColor);
+	};
+}
+bool CUIGlobalMapSpot::GetHint(shared_str& hint)
+{
+	hint = m_owner_map->MapName();
+	return true;
+}
 
 /*
 using namespace InventoryUtilities;

@@ -32,7 +32,6 @@ public:
 	virtual void Init(int x, int y, int width, int height, int item_height);
 
 	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
-	virtual void OnMouseWheel(int direction);
 
 	//сообщени€, отправл€емые родительскому окну
 //	typedef enum{LIST_ITEM_CLICKED} E_MESSAGE;
