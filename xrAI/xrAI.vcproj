@@ -55,7 +55,7 @@
 				ProgramDatabaseFile="x:\$(ProjectName).pdb"
 				GenerateMapFile="TRUE"
 				MapFileName="x:\$(ProjectName).map"
-				MapExports="TRUE"
+				MapExports="FALSE"
 				MapLines="FALSE"
 				SubSystem="2"
 				StackReserveSize="0"
@@ -562,11 +562,6 @@
 					<File
 						RelativePath=".\path_test.cpp">
 						<FileConfiguration
-							Name="Debug|Win32">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
 							Name="Mixed|Win32"
 							ExcludedFromBuild="TRUE">
 							<Tool
@@ -644,11 +639,6 @@
 					</File>
 					<File
 						RelativePath=".\smooth_test.cpp">
-						<FileConfiguration
-							Name="Debug|Win32">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
 						<FileConfiguration
 							Name="Mixed|Win32"
 							ExcludedFromBuild="TRUE">

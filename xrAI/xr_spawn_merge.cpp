@@ -49,13 +49,15 @@ public:
 	CLevelGraph					*m_tpAI_Map;
 	CGameLevelCrossTable		*m_tpCrossTable;
 	xr_vector<CGameGraph::CLevelPoint>	m_tpLevelPoints;
+	xr_vector<CSE_ALifeLevelChanger*>	*m_level_changers;
 
-								CSpawn(LPCSTR name, const CGameGraph::SLevel &tLevel, u32 dwLevelID, u32 *dwGroupOffset) : CThread(dwLevelID)
+								CSpawn(LPCSTR name, const CGameGraph::SLevel &tLevel, u32 dwLevelID, u32 *dwGroupOffset, xr_vector<CSE_ALifeLevelChanger*> *level_changers) : CThread(dwLevelID)
 	{
 		thDestroyOnComplete		= FALSE;
 		// loading AI map
 		m_tLevel				= tLevel;
 		m_dwLevelID				= dwLevelID;
+		m_level_changers		= level_changers;
 		string256				fName;
 		FS.update_path			(fName,name,m_tLevel.caLevelName);
 		strcat					(fName,"\\");
@@ -95,8 +97,12 @@ public:
 				CSE_ALifeObject	*tpALifeObject = dynamic_cast<CSE_ALifeObject*>(E);
 				if (tpALifeObject) {
 					m_tpSpawnPoints.push_back(tpALifeObject);
-					if (!xr_strlen(tpALifeObject->m_caGroupControl))
+					if (!xr_strlen(tpALifeObject->m_caGroupControl)) {
 						tpALifeObject->m_dwSpawnGroup = ++*dwGroupOffset;
+						CSE_ALifeLevelChanger	*level_changer = dynamic_cast<CSE_ALifeLevelChanger*>(tpALifeObject);
+						if (level_changer)
+							m_level_changers->push_back(level_changer);
+					}
 					else {
 						xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*,pred_str>::iterator I = l_tpSpawnGroupObjectsMap.find(*tpALifeObject->m_caGroupControl);
 						if (I == l_tpSpawnGroupObjectsMap.end()) {
@@ -236,6 +242,24 @@ public:
 			m_tpSpawnPoints[i]->m_fDistance	= fCurrentBestDistance;
 		}
 		thProgress				= .5f;
+		{
+			ALIFE_OBJECT_P_IT	I = m_tpSpawnPoints.begin();
+			ALIFE_OBJECT_P_IT	E = m_tpSpawnPoints.end();
+			for ( ; I != E; ++I) {
+				xr_vector<CSE_ALifeLevelChanger*>::iterator i = m_level_changers->begin();
+				xr_vector<CSE_ALifeLevelChanger*>::iterator e = m_level_changers->end();
+				for ( ; i != e; ++i)
+					if (!xr_strcmp((*i)->m_caLevelPointToChange,(*I)->s_name)) {
+						(*i)->m_tNextGraphID	= (*I)->m_tGraphID;
+						(*i)->m_tNextPosition	= (*I)->o_Position;
+						(*i)->m_tAngles			= (*I)->o_Angle;
+						(*i)->m_dwNextNodeID	= (*I)->m_tNodeID;
+						m_level_changers->erase	(i);
+						break;
+					}
+			}
+		}
+		thProgress				= .75f;
 		vfGenerateArtefactSpawnPositions();
 		thProgress				= 1.0f;
 	};
@@ -375,18 +399,29 @@ public:
 		tSpawnHeader.dwSpawnCount	= 0;
 		u32							dwGroupOffset = 0;
 		xr_vector<CSpawn *>			tpLevels;
+		xr_vector<CSE_ALifeLevelChanger*>	level_changers;
 
-		CGameGraph::SLevel				tLevel;
+		CGameGraph::SLevel			tLevel;
 		xr_set<CLevelInfo>::const_iterator	I = levels.begin();
 		xr_set<CLevelInfo>::const_iterator	E = levels.end();
 		for ( ; I != E; ++I) {
-			if (xr_strlen(name) && xr_strcmp(name,(*I).name))
-				continue;
+			if (xr_strlen(name)) {
+				u32					N = _GetItemCount(name);
+				string16			J;
+				bool				found = false;
+				for (u32 i=0; i<N; ++i)
+					if (!xr_strcmp(_GetItem(name,i,J),(*I).name)) {
+						found		= true;
+						break;
+					}
+				if (!found)
+					continue;
+			}
 			tLevel.tOffset			= (*I).offset;
 			strcpy					(tLevel.caLevelName,(*I).name);
 			tLevel.tLevelID			= (*I).id;
 			Msg						("%9s %2d %s","level",tLevel.tLevelID,(*I).name);
-			tpLevels.push_back		(xr_new<CSpawn>("$game_levels$",tLevel,tLevel.tLevelID,&dwGroupOffset));
+			tpLevels.push_back		(xr_new<CSpawn>("$game_levels$",tLevel,tLevel.tLevelID,&dwGroupOffset,&level_changers));
 		}
 
 		R_ASSERT2					(tpLevels.size(),"There are no levels in the section 'levels' in the 'game.ltx' to build 'game.spawn' from!");
