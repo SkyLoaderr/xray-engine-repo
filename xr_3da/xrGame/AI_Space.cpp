@@ -150,7 +150,7 @@ void CAI_Space::Render()
 				t1 = t2;
 			}
 //			i=1;
-//			for (; m_tpIndexes[m_tpAStar->m_tpHeap[i].iIndex].dwTime == m_dwAStarStaticCounter; i++) {
+//			for (; m_tpAStar->m_tpIndexes[m_tpAStar->m_tpHeap[i].iIndex].dwTime == m_tpAStar->m_dwAStarStaticCounter; i++) {
 //				Fvector t2 = m_tpaGraph[m_tpAStar->m_tpHeap[i].iIndex].tPoint;
 //				t2.y += .6f;
 //				NORMALIZE_VECTOR(t2);
