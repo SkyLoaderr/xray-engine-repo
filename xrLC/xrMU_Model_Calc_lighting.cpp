@@ -233,6 +233,7 @@ void xrMU_Model::calc_lighting		()
 
 void xrMU_Reference::calc_lighting	()
 {
+	static BOOL					bFirst	= TRUE;
 	model->calc_lighting	(color,xform,RCAST_Model,pBuild->L_layers.front().lights,TRUE);
 
 	// A*C + D = B
@@ -242,6 +243,17 @@ void xrMU_Reference::calc_lighting	()
 		vector<vector<REAL> >	B(color.size());
 		vector<REAL>			C;
 		vector<REAL>			D;
+
+		if (bFirst)
+		{
+			bFirst				= FALSE;
+			for (u32 it=0; it<color.size(); it++)
+			{
+				Fcolor&		__A		= model->color	[it];
+				Fcolor&		__B		= color			[it];
+				Msg				("[%1.3f,%1.3f,%1.3f]-[%1.3f,%1.3f,%1.3f]",__A.r,__A.g,__A.b,__B.r,__B.g,__B.b);
+			}
+		}
 
 		for (u32 it=0; it<color.size(); it++)
 		{
