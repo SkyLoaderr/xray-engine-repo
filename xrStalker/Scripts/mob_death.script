@@ -30,11 +30,8 @@ function mob_death:death_callback(victim, who)
 		printf("mob_death: [%s] killed by [Unknown]", victim:name())
 		death.killer = -1
 	end
-	local actor = level.actor()
-	if actor then
-		if xr_logic.try_switch_to_another_section(victim, self.st, actor) then
-			return
-		end
+	if xr_logic.try_switch_to_another_section(victim, self.st, db.actor) then
+		return
 	end
 end
 
