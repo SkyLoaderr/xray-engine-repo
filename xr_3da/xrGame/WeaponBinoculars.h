@@ -59,7 +59,7 @@ public:
 	virtual void	Hide			();
 	virtual void	Show			();
 
-	virtual float	GetZoomFactor	()	{ return fMaxZoomFactor; }
+	virtual float	GetZoomFactor	();
 };
 
 #endif //__XR_WEAPON_BINOCULAR_H__
