@@ -53,7 +53,7 @@ public:
 		DWORD	bPixelShader:	1;
 	};
 public:
-	ShaderElement	();
+	ShaderElement		();
 public:
 	DWORD					dwReference;
 	SFlags					Flags;
