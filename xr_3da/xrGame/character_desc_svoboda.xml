@@ -105,7 +105,7 @@
 			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
 			wpn_spas12 \n
-			ammo_12x76_dart = 1 \n
+			ammo_12x70_buck = 1 \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -133,7 +133,7 @@
 			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
 			wpn_spas12 \n
-			ammo_12x76_dart = 1 \n
+			ammo_12x70_buck = 1 \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -161,7 +161,7 @@
 			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
 			wpn_spas12 \n
-			ammo_12x76_zhekan = 1 \n
+			ammo_12x70_buck = 1 \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
