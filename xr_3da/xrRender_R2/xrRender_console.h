@@ -3,30 +3,30 @@
 #pragma once
 
 // Common
-extern ENGINE_API int			ps_r__Supersample;
-extern ECORE_API int			ps_r__Anisotropic;
-extern ECORE_API int			ps_r__LightSleepFrames;
+extern ENGINE_API	int			ps_r__Supersample;
+extern ECORE_API	int			ps_r__tf_Anisotropic;
+extern ECORE_API	int			ps_r__tf_Mipbias;
+extern ECORE_API	int			ps_r__LightSleepFrames;
 
-extern ECORE_API float			ps_r__Detail_l_ambient;
-extern ECORE_API float			ps_r__Detail_l_aniso;
-extern ECORE_API float			ps_r__Detail_density;
-extern ECORE_API float			ps_r__Detail_rainbow_hemi;
+extern ECORE_API	float		ps_r__Detail_l_ambient;
+extern ECORE_API	float		ps_r__Detail_l_aniso;
+extern ECORE_API	float		ps_r__Detail_density;
+extern ECORE_API	float		ps_r__Detail_rainbow_hemi;
 
-extern ECORE_API float			ps_r__Tree_w_rot;
-extern ECORE_API float			ps_r__Tree_w_speed;
-extern ECORE_API float			ps_r__Tree_w_amp;
-extern ECORE_API Fvector		ps_r__Tree_Wave;
+extern ECORE_API	float		ps_r__Tree_w_rot;
+extern ECORE_API	float		ps_r__Tree_w_speed;
+extern ECORE_API	float		ps_r__Tree_w_amp;
+extern ECORE_API	Fvector		ps_r__Tree_Wave;
 
 // R1
-extern ECORE_API float			ps_r1_ssaDISCARD;
-extern ECORE_API float			ps_r1_ssaDONTSORT;
-extern ECORE_API float			ps_r1_ssaLOD_A;
-extern ECORE_API float			ps_r1_ssaLOD_B;
-extern ECORE_API float			ps_r1_ssaHZBvsTEX;
+extern ECORE_API	float		ps_r1_ssaDISCARD;
+extern ECORE_API	float		ps_r1_ssaDONTSORT;
+extern ECORE_API	float		ps_r1_ssaLOD_A;
+extern ECORE_API	float		ps_r1_ssaLOD_B;
+extern ECORE_API	float		ps_r1_ssaHZBvsTEX;
 
 // R1-specific
-extern ECORE_API int			ps_r1_GlowsPerFrame;	// r1-only
-extern ECORE_API int			ps_r1_SH_Blur;			// r1-only
+extern ECORE_API	int			ps_r1_GlowsPerFrame;	// r1-only
 
 // R2
 extern ECORE_API float			ps_r2_ssaDISCARD;

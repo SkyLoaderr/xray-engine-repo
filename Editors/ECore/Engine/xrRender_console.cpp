@@ -27,7 +27,6 @@ float		ps_r1_ssaHZBvsTEX			= 256.f;
 
 // R1-specific
 int			ps_r1_GlowsPerFrame			= 16;	// r1-only
-int			ps_r1_SH_Blur				= 0;	// r1-only
 
 // R2
 float		ps_r2_ssaDISCARD			= 4.f;
@@ -144,7 +143,6 @@ void		xrRender_initconsole	()
 
 	// R1-specific
 	CMD4(CCC_Integer,	"r1_glows_per_frame",	&ps_r1_GlowsPerFrame,		2,		32		);
-	CMD4(CCC_Integer,	"r1_sh_blur",			&ps_r1_SH_Blur,				0,		2		);
 
 	// R2
 	CMD4(CCC_Float,		"r2_ssa_lod_a",			&ps_r2_ssaLOD_A,			16,		96		);
