@@ -272,6 +272,7 @@ function action_idle:__init (name, storage) super (nil, name)
 				  sumidle = 2,
 				  themes = { "help" } 
 				}
+    self.send_time = 0;				
 end
 ------------
 function action_idle:initialize ()
@@ -279,6 +280,7 @@ function action_idle:initialize ()
     self.object:set_movement_type         (move.stand)
     self.object:add_animation ("waunded_idle_0", true)
     xr_meet.override_meet (self.object, true)
+    self.send_time = device ():time_global ()
 end
 ------------
 function action_idle:execute ()
@@ -291,8 +293,10 @@ function action_idle:execute ()
     --if self.a.on_medikit ~= nil then
        --self.object:give_info_portion_via_pda (self.a.on_medikit.info, level.actor ())
     --end   
-    
-    self.object:send_pda_message (4, level.actor ())    --help_pda_msg
+    if device ():time_global () - self.send_time > 15000 then    
+       self.object:send_pda_message (4, level.actor ())    --help_pda_msg
+       self.send_time = device ():time_global ()
+    end   
 end    
 ------------
 function action_idle:finalize ()
@@ -314,7 +318,7 @@ function action_help:__init (name, storage) super (nil, name)
 				  sumidle = 2,
 				  themes = { "help_see" } 
 				}
-
+    self.send_time = 0
 end
 ------------
 function action_help:initialize ()
@@ -328,6 +332,7 @@ function action_help:initialize ()
        self.object:set_start_dialog (self.a.dialog)    
     end   
     xr_meet.override_meet (self.object, true)
+    self.send_time = device ():time_global ()
 end
 ------------
 function action_help:execute ()
@@ -350,6 +355,10 @@ function action_help:execute ()
     --if self.object:active_sound_count() == 0 then
 	   xr_sound.sound_update(self.object, self.sounds)		
 	--end
+    if device ():time_global () - self.send_time > 15000 then    
+       self.object:send_pda_message (4, level.actor ())    --help_pda_msg
+       self.send_time = device ():time_global ()
+    end   
     
 end    
 ------------
@@ -413,6 +422,7 @@ function action_enemy:__init (name, storage) super (nil, name)
 				  sumidle = 2,
 				  themes = { "help_see" } 
 				}
+    self.send_time = 0
 end
 ------------
 function action_enemy:initialize ()
@@ -425,6 +435,8 @@ function action_enemy:initialize ()
        self.object:set_item (object.activate, self.object:best_weapon ())
     end   
     xr_meet.override_meet (self.object, true)
+    
+    self.send_time = device ():time_global ()
 end
 ------------
 function action_enemy:execute ()
@@ -441,6 +453,11 @@ function action_enemy:execute ()
     end
     
     xr_sound.sound_update(self.object, self.sounds)		
+    
+    if device ():time_global () - self.send_time > 15000 then    
+       self.object:send_pda_message (4, level.actor ())    --help_pda_msg
+       self.send_time = device ():time_global ()
+    end   
 end    
 ------------
 function action_enemy:finalize ()
