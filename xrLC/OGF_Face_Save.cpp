@@ -12,7 +12,7 @@ void OGF::Save			(CFS_Base &fs)
 {
 	OGF_Base::Save		(fs);
 
-	clMsg				("%3d: %d faces",treeID,faces.size());
+	// clMsg			("* %d faces",faces.size());
 	geom_batch_average	(vertices.size(),faces.size());
 
 	// Create header

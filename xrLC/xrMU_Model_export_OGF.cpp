@@ -73,7 +73,6 @@ void xrMU_Reference::export_ogf()
 			}
 
 			try {
-				pOGF->treeID		= g_tree.size();
 				pOGF->Optimize		();
 				pOGF->CalcBounds	();
 

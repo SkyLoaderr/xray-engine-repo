@@ -70,7 +70,6 @@ void xrMU_Model::calc_ogf()
 		}
 
 		try {
-			pOGF->treeID		= 0;
 			pOGF->Optimize		();
 			pOGF->CalcBounds	();
 			pOGF->Stripify		();

@@ -87,7 +87,6 @@ void CBuild::Flex2OGF()
 		}
 		
 		try {
-			pOGF->treeID	= g_tree.size();
 			pOGF->Optimize	();
 			pOGF->CalcBounds();
 			
