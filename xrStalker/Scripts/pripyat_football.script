@@ -160,8 +160,6 @@ function CFootballPlayer:reload(section)
 	self.time_play	= 0
 	self.temp		= false				// Временно, оббегаем ли мы мяч
 
-	self.update_time	= 0
-
 end
 
 function CFootballPlayer:update(delta)
@@ -197,9 +195,6 @@ function CFootballPlayer:action()
 	end
 	
 	if(self.state == 0 and self.object:action() == nil) then
-		//if(self:fly()) then
-			//Пока летит, не бежим
-			//action(self.object, anim(anim.stand_idle, 0), cond(cond.time_end, 500))
 		if(self.ball:position():distance_to(self.path:point(0)) > max_distance and
 		   self.object:position():distance_to(self.path:point(0)) < self.ball:position():distance_to(self.path:point(0))
 		) then
@@ -253,9 +248,7 @@ function CFootballPlayer:select_point()
 	// Выбираем точку, так, чтоб было похоже, что пытаемся оббежать
 	
 	self.id			= self.object:level_vertex_id()
-	
-	self.len		= self.ball:position():sub(self.object:position()):magnitude()
-	
+		
 	// еще больше вносим неясность
 	if(math.random() > 0.85) then
 		self.dir		= self.ball:position():sub(self.object:position())
@@ -272,18 +265,13 @@ function CFootballPlayer:select_point()
 	end
 	
 	if(self.dir:magnitude() == 0) then
-		// На всякий случай, вдруг получится, что |self.dir| = 1
+		// На всякий случай, вдруг получится, что |self.dir| = 0
 		self.dir.x = 0.1
 	end
 	
 	self.id		 	= level.vertex_in_direction(self.id, self.dir, 5) //self.len * 3
 	
 	return	(level.vertex_position(self.id))
-end
-
-function CFootballPlayer:fly()
-	self.id			= self.ball:level_vertex_id()
-	return	(level.vertex_position(self.id):distance_to(self.ball:position()) > 1)
 end
 
 function CFootballPlayer:finalize()
