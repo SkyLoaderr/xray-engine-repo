@@ -4,7 +4,7 @@
 #include "FrameSector.h"
 #include "scene.h"
 #include "sector.h"
-#include "ui_tools.h"
+#include "ui_main.h"
 #include "portal.h"
 #include "portalutils.h"
 //---------------------------------------------------------------------------

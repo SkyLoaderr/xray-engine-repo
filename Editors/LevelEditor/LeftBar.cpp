@@ -80,7 +80,7 @@ void TfraLeftBar::UpdateBar()
     
     int hh = fraLeftBar->Height-(paLeftBar->Height+h);
     if (hh<=0) hh = 0; 
-    paFrames->Height = h+hh;
+    paFrames->Height = h+hh+2;
 
     h=0;
     for (j=0; j<paLeftBar->ControlCount; j++){

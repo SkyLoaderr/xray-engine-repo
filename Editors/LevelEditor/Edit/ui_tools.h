@@ -141,10 +141,4 @@ public:
 extern TUI_Tools Tools;
 extern void ResetActionToSelect();
 extern TShiftState ssRBOnly;
-extern void __fastcall PanelMinMax	(TPanel *pa);
-extern void __fastcall PanelMinimize(TPanel *pa);
-extern void __fastcall PanelMaximize(TPanel *pa);
-extern void __fastcall PanelMinMaxClick		(TObject *sender);
-extern void __fastcall PanelMinimizeClick	(TObject *sender);
-extern void __fastcall PanelMaximizeClick	(TObject *sender);
 #endif

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "ui_tools.h"
+#include "ui_main.h"
 #include "FrameGroup.h"
 #include "GroupObject.h"
 #include "Scene.h"

@@ -49,6 +49,7 @@ void __fastcall TfraSpawnPoint::OnItemFocused(ListItemsVec& items)
     m_Current 			= 0;
     for (ListItemsIt it=items.begin(); it!=items.end(); it++)
         m_Current 		= (LPCSTR)(*it)->m_Object;
+    UI.Command			(COMMAND_RENDER_FOCUS);
 }
 //------------------------------------------------------------------------------
 void __fastcall TfraSpawnPoint::PaneMinClick(TObject *Sender)

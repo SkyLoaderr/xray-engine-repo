@@ -22,6 +22,7 @@ object fraSpawnPoint: TfraSpawnPoint
     Width = 443
     Height = 226
     Align = alClient
+    Constraints.MinHeight = 175
     ParentColor = True
     TabOrder = 0
     object APHeadLabel1: TLabel
