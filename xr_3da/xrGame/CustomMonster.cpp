@@ -299,7 +299,7 @@ void CCustomMonster::shedule_Update	( u32 DT )
 		}
 		else 
 		{
-			Exec_Physics			(dt);
+			//Exec_Physics			(dt);
 			if (bfExecMovement()) 
 			{
 				//Exec_Movement		(dt);

@@ -848,9 +848,9 @@ void CAI_Stalker::UpdateCL(){
 			PHSetPushOut();
 #endif
 		}
-		if (Level().CurrentViewEntity() == this) {
-			Exec_Visibility();
-		}
+	
+	if (Level().CurrentViewEntity() == this)
+		Exec_Visibility();
 }
 
 void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse){
@@ -897,7 +897,8 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	if (!Remote()) {
 		if ((fHealth>0) || bfExecMovement())
 			// функция должна выполняться до inherited::shedule_Update, для smooth movement
-			Exec_Movement	(float(DT)/1000.f);  
+			Msg				("TIME DELTA : %d",DT);
+			Exec_Movement	(dt);  
 	}
 
 	// *** general stuff

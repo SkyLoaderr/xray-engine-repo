@@ -503,6 +503,7 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	float	real_motion	= motion.magnitude() + dist_save-dist;
 	float	real_speed	= real_motion/dt;
 	fSpeed				= 0.5f*fSpeed + 0.5f*real_speed;
+	Msg					("Movement : %f * %f = %f ",fSpeed,dt,p_dest.distance_to(p_src));
 	Device.Statistic.Physics.End	();
 
 }
