@@ -20,6 +20,7 @@
 #include "date_time.h"
 #include "ai_space.h"
 #include "level_graph.h"
+#include "HUDManager.h"
 
 using namespace luabind;
 
@@ -170,8 +171,26 @@ CClientSpawnManager	&get_client_spawn_manager()
 
 void start_stop_menu(CUIDialogWnd* pDialog, bool bDoHideIndicators)
 {
-	Game().StartStopMenu(pDialog,bDoHideIndicators);
+	HUD().GetUI()->StartStopMenu(pDialog,bDoHideIndicators);
 }
+
+
+void add_dialog_to_render(CUIDialogWnd* pDialog)
+{
+	HUD().GetUI()->AddDialogToRender(pDialog);
+}
+
+void remove_dialog_to_render(CUIDialogWnd* pDialog)
+{
+	HUD().GetUI()->RemoveDialogToRender(pDialog);
+}
+
+CUIDialogWnd* main_input_receiver()
+{
+	return HUD().GetUI()->MainInputReceiver();
+}
+
+
 bool is_level_present()
 {
 	return (!!g_pGameLevel);
@@ -207,8 +226,11 @@ void CLevel::script_register(lua_State *L)
 		def("map_add_entity_icon",				map_add_entity_icon),
 		def("map_add_object_icon",				map_add_object_icon),
 		def("map_remove_object_icon",			map_remove_object_icon),
-
 		def("start_stop_menu",					start_stop_menu),
+		def("add_dialog_to_render",				add_dialog_to_render),
+		def("remove_dialog_to_render",			remove_dialog_to_render),
+		def("main_input_receiver",				main_input_receiver),
+
 		def("present",							is_level_present)
 	];
 }
