@@ -10,9 +10,13 @@
 
 #include "script_storage.h"
 
+
+
+
 class CScriptProcessor;
 class CScript;
 
+class CScriptDebugger;
 class CScriptEngine : public CScriptStorage {
 public:
 	typedef CScriptStorage inherited;
@@ -68,6 +72,9 @@ public:
 	IC		void				reload_modules				(bool flag);
 	template <typename _result_type>
 	IC		bool				functor						(LPCSTR function_to_call, luabind::functor<_result_type> &lua_function);
+	
+	
+	CScriptDebugger	*			m_scriptDebugger;
 };
 
 #include "script_engine_inline.h"

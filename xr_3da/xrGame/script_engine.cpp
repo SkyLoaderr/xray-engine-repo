@@ -12,12 +12,16 @@
 #include "ai_space.h"
 #include "object_factory.h"
 
+#include "script_debugger.h"
+
 CScriptEngine::CScriptEngine	()
 {
 //	lua_setgcthreshold		(lua(),64*1024);
 	m_current_thread		= 0;
 	m_stack_level			= 0;
 	m_reload_modules		= false;
+
+	m_scriptDebugger = xr_new<CScriptDebugger>();
 }
 
 CScriptEngine::~CScriptEngine			()
@@ -25,6 +29,7 @@ CScriptEngine::~CScriptEngine			()
 	while (!m_script_processors.empty())
 		remove_script_processor(m_script_processors.begin()->first);
 	flush_log				();
+	xr_delete (m_scriptDebugger);
 }
 
 void CScriptEngine::unload				()
@@ -48,6 +53,7 @@ void CScriptEngine::lua_hook_call(CLuaVirtualMachine *L, lua_Debug *tpLuaDebug)
 void CScriptEngine::lua_error(CLuaVirtualMachine *L)
 {
 	print_error				(L,LUA_ERRRUN);
+
 	Debug.fatal				("LUA error: %s",lua_tostring(L,-1));
 }
 
@@ -62,7 +68,12 @@ void CScriptEngine::export()
 {
 	luabind::open						(lua());
 	
-	luabind::set_error_callback			(CScriptEngine::lua_error);
+	m_scriptDebugger->PrepareLuaBind();
+	
+	if( !CScriptDebugger::GetDebugger()->Active() )
+		luabind::set_error_callback			(CScriptEngine::lua_error);
+
+
 	luabind::set_cast_failed_callback	(CScriptEngine::lua_cast_failed);
 	lua_atpanic							(lua(),CScriptEngine::lua_panic);
 
@@ -89,7 +100,8 @@ void CScriptEngine::export()
 	object_factory().register_script	();
 
 #ifdef DEBUG
-	lua_sethook							(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
+	if( !CScriptDebugger::GetDebugger()->Active() )
+		lua_sethook							(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
 #endif
 
 	load_common_scripts					();
