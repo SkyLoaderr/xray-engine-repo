@@ -294,7 +294,10 @@ void CRender::Render		()
 			light*	L	= Lights.v_point.back	();
 			Lights.v_point.pop_back		();
 			L->vis_update				();
-			if (L->vis.visible)			Target.accum_point			(L);
+			if (L->vis.visible)			{ 
+				Target.accum_point		(L);
+				render_indirect			(L);
+			}
 		}
 
 		//		if (has_spot_unshadowed)	-> 	accum spot unshadowed
@@ -302,14 +305,23 @@ void CRender::Render		()
 			light*	L	= Lights.v_spot.back	();
 			Lights.v_spot.pop_back			();
 			L->vis_update				();
-			if (L->vis.visible)			Target.accum_spot			(L);
+			if (L->vis.visible)			{ 
+				Target.accum_spot		(L);
+				render_indirect			(L);
+			}
 		}
 
 		//		if (was_point_shadowed)		->	accum point shadowed
-		if		(L_point_s)					Target.accum_point			(L_point_s);
+		if		(L_point_s)					{
+			Target.accum_point			(L_point_s);
+			render_indirect				(L_point_s);
+		}
 
 		//		if (was_spot_shadowed)		->	accum spot shadowed
-		if		(L_spot_s)					Target.accum_spot			(L_spot_s);
+		if		(L_spot_s)					{ 
+			Target.accum_spot			(L_spot_s);
+			render_indirect				(L_spot_s);
+		}
 	}
 
 	// Point lighting (unshadowed, if left)
@@ -317,7 +329,10 @@ void CRender::Render		()
 		xr_vector<light*>&	Lvec		= Lights.v_point;
 		for	(u32 pid=0; pid<Lvec.size(); pid++)	{
 			Lvec[pid]->vis_update		();
-			if (Lvec[pid]->vis.visible)	Target.accum_point		(Lvec[pid]);
+			if (Lvec[pid]->vis.visible)	{
+				render_indirect			(Lvec[pid]);
+				Target.accum_point		(Lvec[pid]);
+			}
 		}
 		Lvec.clear	();
 	}
@@ -327,7 +342,10 @@ void CRender::Render		()
 		xr_vector<light*>&	Lvec		= Lights.v_spot;
 		for	(u32 pid=0; pid<Lvec.size(); pid++)	{
 			Lvec[pid]->vis_update		();
-			if (Lvec[pid]->vis.visible)	Target.accum_spot		(Lvec[pid]);
+			if (Lvec[pid]->vis.visible)	{
+				render_indirect			(Lvec[pid]);
+				Target.accum_spot		(Lvec[pid]);
+			}
 		}
 		Lvec.clear	();
 	}
@@ -342,4 +360,39 @@ void CRender::Render		()
 	Device.Statistic.RenderDUMP_HUD.Begin	();
 	g_pGameLevel->pHUD->Render_Direct		();
 	Device.Statistic.RenderDUMP_HUD.End		();
+}
+
+void	CRender::render_indirect			(light* L)
+{
+	light									LIGEN;
+	LIGEN.set_type							(IRender_Light::SPOT);
+	LIGEN.set_shadow						(false);
+
+	xr_vector<light_indirect>&	Lvec		= L->indirect;
+	if (Lvec.empty())						return;
+	float	LE								= L->color.intensity	();
+	for (int it=0; it<Lvec.size(); it++)	{
+		light_indirect&	LI				= Lvec[it];
+
+		// energy and color
+		float	LIE						= LE*LI.E;
+		if (LIE < ps_r2_GI_clip)		continue;
+		Fvector T; T.set(L->color.r,L->color.g,L->color.b).mul(LI.E);
+		LIGEN.set_color					(T.x,T.y,T.z);
+
+		// geometric
+		LIGEN.set_position				(LI.P);
+		LIGEN.set_rotation				(LI.D,T.set(0,0,0));
+
+		// range
+		// dist^2 / range^2 = A - has infinity number of solutions
+		// approximate energy by linear fallof Emax / (1 + x) = Emin
+		float	Emax					= LIE;
+		float	Emin					= 1.f / 255.f;
+		float	x						= (Emax - Emin)/Emin;
+		if		(x < 0.1f)				continue;
+		LIGEN.set_range					(x);
+
+		Target.accum_spot				(&LIGEN);
+	}
 }

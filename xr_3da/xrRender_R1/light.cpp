@@ -230,10 +230,10 @@ void	light::xform_calc			()
 void	light::gi_generate	()
 {
 	indirect.clear		();
-	indirect_photons	= ps_r2_GI_photons;
+	indirect_photons	= ps_r2_ls_flags.test(R2FLAG_GI)?ps_r2_GI_photons:0;
 
-	CRandom			random;
-	random.seed		(0x12071980);
+	CRandom				random;
+	random.seed			(0x12071980);
 
 	xrXRC&		xrc		= RImplementation.Sectors_xrc;
 	CDB::MODEL*	model	= g_pGameLevel->ObjectSpace.GetStaticModel	();
@@ -242,7 +242,7 @@ void	light::gi_generate	()
 	xrc.ray_options		(CDB::OPT_CULL|CDB::OPT_ONLYNEAREST);
 	float		LE		= color.intensity	();
 
-	for (int it=0; it<ps_r2_GI_photons; it++)	{
+	for (int it=0; it<indirect_photons; it++)	{
 		Fvector	dir;
 		switch	(flags.type)		{
 		case IRender_Light::POINT	:	dir.random_dir(random);					break;
