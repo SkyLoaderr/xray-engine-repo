@@ -32,7 +32,13 @@ function evaluator_contact:evaluate()
 	else
 		self.a.actor = nil
 	end	
-	return self.a.actor ~= nil and (self.a.over == false)
+	if self.a.over == false then
+		printf("OVER TRU")
+	else
+		printf("OVER FALSE")
+	end
+	
+	return self.a.actor ~= nil and self.a.over == false
 end
 -- имеет ли клиент оружие
 class "evaluator_weapon" (property_evaluator)
