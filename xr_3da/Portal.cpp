@@ -94,7 +94,7 @@ void CSector::Render(CFrustum &F)
 		// Visuals
 		{
 			vector<CTempObject*>::iterator I=tempObjects.begin(), E=tempObjects.end();
-			for (DWORD i=0; i<tempObjects.size(); i++) 
+			for (int i=0; i<int(tempObjects.size()); i++) 
 			{
 				CTempObject* pV = tempObjects[i];
 				if (pV->Alive())
