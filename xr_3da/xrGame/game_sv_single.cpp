@@ -19,8 +19,8 @@ xrServerEntity*		game_sv_Single::get_entity_from_eid		(u16 id)
 BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 {
 	xrServer*			S		= m_tpServer;
-	xrServerEntity*		e_who	= S->ID_to_entity(eid_who);		VERIFY(e_who	);
-	xrServerEntity*		e_what	= S->ID_to_entity(eid_what);	VERIFY(e_what	);
+	xrServerEntity*		e_who	= S->get_entity_from_eid(eid_who);	VERIFY(e_who	);
+	xrServerEntity*		e_what	= S->get_entity_from_eid(eid_what);	VERIFY(e_what	);
 
 	xrSE_Actor*			A		= dynamic_cast<xrSE_Actor*> (e_who);
 	if (A)
@@ -34,7 +34,7 @@ BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 			u8 slot						=	W->get_slot	();
 			for (u32 it=0; it<C.size(); it++)
 			{
-				xrServerEntity*		Et	= S->ID_to_entity				(C[it]);
+				xrServerEntity*		Et	= S->get_entity_from_eid		(C[it]);
 				if (0==Et)				continue;
 				xrSE_Weapon*		T	= dynamic_cast<xrSE_Weapon*>	(Et);
 				if (0==T)				continue;
@@ -61,7 +61,7 @@ BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 				u8 slot						=	W->get_slot	();
 				for (u32 it=0; it<C.size(); it++)
 				{
-					xrServerEntity*		Et	= S->ID_to_entity				(C[it]);
+					xrServerEntity*		Et	= S->get_entity_from_eid		(C[it]);
 					if (0==Et)				continue;
 					xrSE_Weapon*		T	= dynamic_cast<xrSE_Weapon*>	(Et);
 					if (0==T)				continue;
@@ -120,8 +120,8 @@ void	game_sv_Single::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 	//{
 	//	u16		eid						= (*C)[0];
 
-	//	xrServerEntity*		from		= S->ID_to_entity(get_id_2_eid(id_killed));
-	//	xrServerEntity*		what		= S->ID_to_entity(eid);
+	//	xrServerEntity*		from		= S->get_entity_from_eid(get_id_2_eid(id_killed));
+	//	xrServerEntity*		what		= S->get_entity_from_eid(eid);
 	//	S->Perform_reject				(what,from);
 	//}
 }
