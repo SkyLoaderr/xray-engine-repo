@@ -231,7 +231,7 @@ function action_go_patrol:execute()
 		self.object:set_mental_state(anim.free)
 --		self.object:set_mental_state(anim.danger)
 		self.object:set_path_type  (game_object.patrol_path)
-	    	self.object:set_patrol_path (self.a.patrol_path[rr], patrol.start, patrol.continue, true)
+	    	self.object:set_patrol_path (self.a.patrol_path[rr], patrol.nearest, patrol.continue, true)
 		self.object:set_movement_type(move.walk)
 
 		self.object:set_item(object.idle, self.object:best_weapon())	                                                            
