@@ -321,7 +321,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			int						ifChooseFood			(ALife::OBJECT_VECTOR	*tpObjectVector = 0);
 			int						ifChooseMedikit			(ALife::OBJECT_VECTOR	*tpObjectVector = 0);
 			int						ifChooseDetector		(ALife::OBJECT_VECTOR	*tpObjectVector = 0);
-			int						ifChooseValuables		(ALife::OBJECT_VECTOR	*tpObjectVector = 0);
+			int						ifChooseValuables		();
 			bool					bfChooseFast			();
 			void					vfChooseGroup			(CSE_ALifeGroupAbstract *tpALifeGroupAbstract);
 	virtual void					spawn_supplies			();

@@ -106,11 +106,8 @@ void CSoundPlayer::update			(float time_delta)
 
 void CSoundPlayer::remove_inappropriate_sounds(u32 sound_mask)
 {
-	xr_vector<CSoundSingle>::iterator	I = remove_if(m_playing_sounds.begin(),m_playing_sounds.end(),CInappropriateSoundPredicate(sound_mask)), B = I;
-	xr_vector<CSoundSingle>::iterator	E = m_playing_sounds.end();
-	for ( ; I != E; ++I)
-		(*I).destroy					();
-	m_playing_sounds.erase				(B,m_playing_sounds.end());
+	xr_vector<CSoundSingle>::iterator	I = remove_if(m_playing_sounds.begin(),m_playing_sounds.end(),CInappropriateSoundPredicate(sound_mask));
+	m_playing_sounds.erase				(I,m_playing_sounds.end());
 }
 
 void CSoundPlayer::update_playing_sounds()

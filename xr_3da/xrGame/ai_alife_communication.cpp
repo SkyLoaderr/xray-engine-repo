@@ -647,7 +647,7 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 				vfAssignItemParents	(tpALifeHumanAbstract2,l_iItemCount2);
 			if (l_iItemCount1 + l_iItemCount2) {
 				ITEM_P_IT			I = remove_if(m_tpItemVector.begin(),m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
-				m_tpItemVector.erase(m_tpItemVector.end() - l_iItemCount1 - l_iItemCount2,m_tpItemVector.end());
+				m_tpItemVector.erase(I,m_tpItemVector.end());
 			}
 			k					= 0;
 		}
@@ -664,7 +664,7 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 					tpALifeHumanAbstract1->children.resize(tpALifeHumanAbstract1->children.size() - l_iItemCount1);
 					vfAssignItemParents	(tpALifeHumanAbstract2,l_iItemCount2);
 					ITEM_P_IT			I = remove_if(m_tpItemVector.begin(),m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
-					m_tpItemVector.erase(m_tpItemVector.end() - l_iItemCount2,m_tpItemVector.end());
+					m_tpItemVector.erase(I,m_tpItemVector.end());
 					k = 1;
 				}
 			else {
@@ -672,7 +672,7 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 				k = 2;
 				vfAssignItemParents	(tpALifeHumanAbstract1,l_iItemCount1);
 				ITEM_P_IT			I = remove_if(m_tpItemVector.begin(),m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
-				m_tpItemVector.erase(m_tpItemVector.end() - l_iItemCount1,m_tpItemVector.end());
+				m_tpItemVector.erase(I,m_tpItemVector.end());
 			}
 			--j;
 		}
@@ -771,14 +771,17 @@ void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALi
 		vfRunFunctionByIndex				(tpALifeHumanAbstract,m_tpBlockedItems1,m_tpItemVector,i,l_iItemCount);
 		if (l_iItemCount) {
 			vfAssignItemParents				(tpALifeHumanAbstract,l_iItemCount);
-			ITEM_P_IT						I = remove_if(m_tpItemVector.begin(),m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
+			ITEM_P_IT						I = m_tpItemVector.begin();
 			ITEM_P_IT						E = m_tpItemVector.end();
 			for ( ; I != E; ++I) {
+				if (!(*I)->bfAttached())
+					continue;
 				OBJECT_IT					J = std::lower_bound(tpALifeTrader->children.begin(),tpALifeTrader->children.end(),(*I)->ID);
 				R_ASSERT					((tpALifeTrader->children.end() != J) && (*J == (*I)->ID) && (((J+1) == tpALifeTrader->children.end()) || (*(J + 1) != (*I)->ID)));
 				tpALifeTrader->children.erase(J);
 			}
-			m_tpItemVector.erase			(m_tpItemVector.end() - l_iItemCount,m_tpItemVector.end());
+			I								= remove_if(m_tpItemVector.begin(),m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
+			m_tpItemVector.erase			(I,m_tpItemVector.end());
 		}
 	}
 	tpALifeTrader->m_dwMoney				+= tpALifeHumanAbstract->m_dwMoney - tpALifeHumanAbstract->m_dwTotalMoney;

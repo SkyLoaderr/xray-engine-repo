@@ -815,7 +815,7 @@ int  CSE_ALifeHumanAbstract::ifChooseDetector(OBJECT_VECTOR *tpObjectVector)
 	return						(0);
 }
 
-int  CSE_ALifeHumanAbstract::ifChooseValuables(OBJECT_VECTOR *tpObjectVector)
+int  CSE_ALifeHumanAbstract::ifChooseValuables()
 {
 	// choosing the rest objects
 	ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin();
@@ -826,8 +826,8 @@ int  CSE_ALifeHumanAbstract::ifChooseValuables(OBJECT_VECTOR *tpObjectVector)
 
 	u32						l_dwCount = children.size();
 	I						= remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
-	if (!tpObjectVector)
-		m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
+	m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
+
 	return					(children.size() - l_dwCount);
 }
 

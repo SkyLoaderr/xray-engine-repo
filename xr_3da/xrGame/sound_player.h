@@ -70,15 +70,17 @@ public:
 		{
 		}
 
-		bool			operator()				(const CSoundSingle &sound) const
+		bool			operator()				(CSoundSingle &sound)
 		{
-			return		(
+			bool		result = 
 				(sound.m_synchro_mask & m_sound_mask) || 
 				(
 					!sound.m_sound->feedback && 
 					(sound.m_stop_time <= Level().timeServer())
-				)
-			);
+				);
+			if (result)
+				sound.destroy					();
+			return								(result);
 		}
 	};
 
