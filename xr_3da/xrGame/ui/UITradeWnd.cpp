@@ -204,11 +204,11 @@ void CUITradeWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		SwitchToTalk();
 	}
-	else if(pWnd == &UIDealClose && msg == BUTTON_CLICKED)
+/*	else if(pWnd == &UIDealClose && msg == BUTTON_CLICKED)
 	{
 		SwitchDealControls(false);
 		EnableAll();
-	}
+	}*/
 	else if(pWnd == &UIPerformTradeButton && msg == BUTTON_CLICKED)
 	{
 		PerformTrade();
@@ -464,12 +464,12 @@ void CUITradeWnd::PerformTrade()
 		SellItems(&UIOthersTradeList, &UIOurBagList, m_pOthersTrade);
 		UpdatePrices();
 		
-		UIDealMsg.SetText(*stbl("The deal is done!"));
+	//	UIDealMsg.SetText(*stbl("The deal is done!"));
 
 	}
-
-	SwitchDealControls(true);
-	DisableAll();
+	SetCurrentItem(NULL);
+//	SwitchDealControls(true);
+//	DisableAll();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -519,8 +519,9 @@ void CUITradeWnd::SellItems(CUIDragDropList* pSellList,
 							CTrade* pTrade)
 {
 
-	for(DRAG_DROP_LIST_it it = pSellList->GetDragDropItemsList().begin(); 
- 			  			  pSellList->GetDragDropItemsList().end() != it; 
+	DRAG_DROP_LIST list_to_sell = pSellList->GetDragDropItemsList();
+	for(DRAG_DROP_LIST_it it = list_to_sell.begin(); 
+ 			  			  list_to_sell.end() != it; 
 						  ++it)
 	{	
 		CUIDragDropItem* pDragDropItem = *it;
@@ -530,6 +531,8 @@ void CUITradeWnd::SellItems(CUIDragDropList* pSellList,
 		//если это простой сталкер, то 
 		//вещь обязана появиться у него,
 		//а с  торговцем надо решать.
+		if(pDragDropItem->GetParent())
+			pDragDropItem->GetParent()->DetachChild(pDragDropItem);
 		pBuyList->AttachChild(pDragDropItem);
 	}
 	pSellList->DropAll();
