@@ -103,6 +103,16 @@ void CGamePersistent::OnAppEnd	()
 	GMLib.Unload				();
 }
 
+void CGamePersistent::Start(LPCSTR op)
+{
+	__super::Start				(op);
+}
+
+void CGamePersistent::Disconnect()
+{
+	__super::Disconnect			();
+}
+
 void CGamePersistent::OnGameStart()
 {
 	__super::OnGameStart		();

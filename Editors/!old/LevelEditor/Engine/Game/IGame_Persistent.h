@@ -49,7 +49,6 @@ public:
 	virtual void					Start				(LPCSTR op);
 	virtual void					Disconnect			();
 
-
 #ifndef _EDITOR
 	IGame_ObjectPool				ObjectPool;
 #endif

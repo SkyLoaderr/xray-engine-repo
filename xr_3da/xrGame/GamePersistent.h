@@ -19,6 +19,9 @@ public:
 						CGamePersistent			();
 	virtual				~CGamePersistent		();
 
+	virtual void		Start					(LPCSTR op);
+	virtual void		Disconnect				();
+
 	virtual	void		OnAppActivate			();
 	virtual void		OnAppDeactivate			();
 
