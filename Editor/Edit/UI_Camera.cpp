@@ -40,8 +40,8 @@ void CUI_Camera::SetStyle(ECameraStyle new_style){
         m_HPB.y			= asinf(dir.y);
 
         BuildCamera		();
-		m_Style			= new_style;
     }
+	m_Style				= new_style;
     if (UI) UI->RedrawScene();
 }
 
