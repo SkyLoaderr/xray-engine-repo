@@ -75,6 +75,8 @@ protected:
 	// Информация о локации на глобальной карте
 	CUIStatic			UIMapName;
 	CUIListWnd			UIMapGoals;
+	// Имя локальной карты в нижнем правом углу
+	CUIStatic			UILocalMapName;
 
 	// Current map
 	CUIMapBackground	*m_pCurrentMap;
