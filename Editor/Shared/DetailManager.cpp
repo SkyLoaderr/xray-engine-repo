@@ -327,7 +327,8 @@ void CDetailManager::Render		(Fvector& EYE)
 
 				// Build matrix and xform vertices
 				mScale.scale			(scale,scale,scale);
-				if (scale>0.7f)	{
+				if (scale>0.7f)	
+				{
 					mRotXZ.setXYZ			(Instance.phase_x+fPhaseX,0,Instance.phase_z+fPhaseZ);
 					mRot.mul_43				(mRotXZ,Instance.mRotY);
 					mXform.mul_43			(mRot,mScale);
