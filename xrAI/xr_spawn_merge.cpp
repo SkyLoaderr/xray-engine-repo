@@ -136,12 +136,17 @@ public:
 		m_tpGraphNodes.resize	(tGraphHeader.dwVertexCount);
 		m_tpSpawnNodes.resize	(m_tpSpawnPoints.size());
 		m_tpResultNodes.resize	(m_tpSpawnPoints.size());
-		u32						dwStart = tGraphHeader.dwVertexCount, dwFinish = tGraphHeader.dwVertexCount;
+		u32						dwStart = tGraphHeader.dwVertexCount, dwFinish = tGraphHeader.dwVertexCount, dwCount = 0;
+		for (int i=0; i<(int)tGraphHeader.dwVertexCount; i++)
+			if (tpaGameGraph[i].tLevelID == m_dwLevelID)
+				dwCount++;
+		float fRelation = float(dwCount)/(float(dwCount) + 2*m_tpSpawnPoints.size());
 		for (int i=0; i<(int)tGraphHeader.dwVertexCount; i++)
 			if (tpaGameGraph[i].tLevelID == m_dwLevelID) {
 				R_ASSERT((m_tpGraphNodes[i] = m_tpAI_Map->dwfFindCorrespondingNode(tpaGameGraph[i].tLocalPoint))!=-1);
 				if (dwStart > (u32)i)
 					dwStart = (u32)i;
+				thProgress = float(i - dwStart + 1)/float(dwCount)*float(fRelation);
 			}
 			else {
 				m_tpGraphNodes[i] = -1;
@@ -150,10 +155,12 @@ public:
 					break;
 				}
 			}
+//		thProgress				= .75f;
 		DWORD_IT				BB = m_tpGraphNodes.begin();
 		DWORD_IT				B = BB + dwStart;
 		DWORD_IT				E = m_tpGraphNodes.begin() + dwFinish;
-		for (int i=0; i<(int)m_tpSpawnPoints.size(); i++) {
+		R_ASSERT				(B != E);
+		for (int i=0; i<(int)m_tpSpawnPoints.size(); i++, thProgress = fRelation + float(i)/float(m_tpSpawnPoints.size())*(1.f - fRelation)) {
 			R_ASSERT((m_tpSpawnNodes[i] = m_tpAI_Map->dwfFindCorrespondingNode(m_tpSpawnPoints[i]->o_Position)) != -1);
 			sort(B,E,CSpawnComparePredicate(m_tpSpawnNodes[i],*m_tpAI_Map));
 			DWORD_IT			I = B;
@@ -186,6 +193,7 @@ public:
 			}
 			m_tpResultNodes[i].tGraphID		= dwBest;
 			m_tpResultNodes[i].fDistance	= fCurrentBestDistance;
+			thProgress						= 1.0f;
 		}
 	};
 
@@ -269,6 +277,7 @@ void xrMergeSpawns()
 	Phase						("Searching for corresponding graph vertices");
 	for (u32 i=0, N = tpLevels.size(); i<N; i++)
 		tThreadManager.start(tpLevels[i]);
+//		tpLevels[i]->Execute();
 	tThreadManager.wait();
 	
 	Phase						("Merging spawn files");
