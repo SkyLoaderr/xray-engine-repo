@@ -71,7 +71,6 @@ void CCustomEvent::Parse		(DEF_EVENT& D, LPCSTR DEF)
 		D.E  = Engine.Event.Create(Event); 
 		D.P1 = strdup	(Parsed); 
 	}
-	return D;
 }
 
 BOOL CCustomEvent::Spawn		( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags )
@@ -129,7 +128,7 @@ BOOL CCustomEvent::Spawn		( BOOL bLocal, int server_id, Fvector& o_pos, Fvector&
 void CCustomEvent::Update (DWORD dt)
 {
 	if (!Contacted.empty()) {
-		CCF_Shape* M = dynamic_cast<CCF_Shape*> CFORM(); R_ASSERT	(M);
+		CCF_Shape* M = dynamic_cast<CCF_Shape*> (CFORM()); R_ASSERT	(M);
 		for (DWORD i=0; i<Contacted.size(); i++) 
 		{
 			// Check if it is still contact us
@@ -159,7 +158,7 @@ void CCustomEvent::OnNear( CObject* O )
 	if (find(Contacted.begin(),Contacted.end(),O)!=Contacted.end()) return;
 	
 	// check if it is actually contacted
-	CCF_Shape* M = dynamic_cast<CCF_Shape*>CFORM(); R_ASSERT(M);
+	CCF_Shape* M = dynamic_cast<CCF_Shape*>(CFORM()); R_ASSERT(M);
 	if (M->Contact(O)) {
 		Contacted.push_back	(O);
 
