@@ -23,24 +23,14 @@ void CALifeObject::STATE_Read(NET_Packet &tNetPacket, u16 size)
 
 void CALifeObject::UPDATE_Write(NET_Packet &tNetPacket)
 {
-	tNetPacket.w				(&m_tClassID,sizeof(m_tClassID));
-	tNetPacket.w				(&m_tObjectID,sizeof(m_tObjectID));
 	tNetPacket.w				(&m_tGraphID,sizeof(m_tGraphID));
 	tNetPacket.w_float			(m_fDistance);
-	tNetPacket.w_u16			(m_wCount);
-	tNetPacket.w_u32			(m_bOnline);
 }
 
 void CALifeObject::UPDATE_Read(NET_Packet &tNetPacket)
 {
-	tNetPacket.r				(&m_tClassID,sizeof(m_tClassID));
-	tNetPacket.r				(&m_tObjectID,sizeof(m_tObjectID));
 	tNetPacket.r				(&m_tGraphID,sizeof(m_tGraphID));
 	tNetPacket.r_float			(m_fDistance);
-	tNetPacket.r_u16			(m_wCount);
-	u32							dwDummy;
-	tNetPacket.r_u32			(dwDummy);
-	m_bOnline					= !!dwDummy;
 };
 
 // CALifeMonsterParams
