@@ -56,19 +56,18 @@
       Intermediate\ETextureParams.obj Intermediate\ExportObjectOGF.obj 
       Intermediate\ExportSkeleton.obj Intermediate\FolderLib.obj 
       Intermediate\ImageEditor.obj Intermediate\ImageManager.obj 
-      Intermediate\ImageThumbnail.obj Intermediate\ItemList.obj 
-      Intermediate\ItemListHelper.obj Intermediate\ItemListTypes.obj 
-      Intermediate\Library.obj Intermediate\LightAnimLibrary.obj 
-      Intermediate\NumericVector.obj Intermediate\PropertiesList.obj 
-      Intermediate\PropertiesListHelper.obj Intermediate\PropertiesListTypes.obj 
-      Intermediate\PSLibrary.obj Intermediate\render.obj 
-      Intermediate\ShaderFunction.obj Intermediate\SoundManager.obj 
-      Intermediate\TextForm.obj Intermediate\TopBar.obj 
-      Intermediate\UI_Camera.obj Intermediate\UI_Main.obj 
-      Intermediate\UI_MainCommand.obj Intermediate\UI_Tools.obj 
-      Intermediate\BottomBar.obj Intermediate\EditorPref.obj 
-      Intermediate\GameMtlLib_Editor.obj Intermediate\LeftBar.obj 
-      Intermediate\LogForm.obj Intermediate\main.obj 
+      Intermediate\ItemList.obj Intermediate\ItemListHelper.obj 
+      Intermediate\ItemListTypes.obj Intermediate\Library.obj 
+      Intermediate\LightAnimLibrary.obj Intermediate\NumericVector.obj 
+      Intermediate\PropertiesList.obj Intermediate\PropertiesListHelper.obj 
+      Intermediate\PropertiesListTypes.obj Intermediate\PSLibrary.obj 
+      Intermediate\render.obj Intermediate\ShaderFunction.obj 
+      Intermediate\SoundManager.obj Intermediate\TextForm.obj 
+      Intermediate\TopBar.obj Intermediate\UI_Camera.obj 
+      Intermediate\UI_Main.obj Intermediate\UI_MainCommand.obj 
+      Intermediate\UI_Tools.obj Intermediate\BottomBar.obj 
+      Intermediate\EditorPref.obj Intermediate\GameMtlLib_Editor.obj 
+      Intermediate\LeftBar.obj Intermediate\LogForm.obj Intermediate\main.obj 
       Intermediate\SHCompilerTools.obj 
       Intermediate\SHCompilerToolsProperties.obj Intermediate\SHEngineTools.obj 
       Intermediate\SHEngineToolsProperties.obj 
@@ -83,7 +82,10 @@
       Intermediate\Rain.obj Intermediate\xr_efflensflare.obj 
       Intermediate\DetailModel.obj Intermediate\ModelPool.obj 
       Intermediate\thunderbolt.obj Intermediate\SkeletonRigid.obj 
-      Intermediate\SkeletonAnimated.obj Intermediate\SkeletonCustom.obj"/>
+      Intermediate\SkeletonAnimated.obj Intermediate\SkeletonCustom.obj 
+      Intermediate\SoundEditor.obj Intermediate\EThumbnailTexture.obj 
+      Intermediate\EThumbnail.obj Intermediate\EThumbnailObject.obj 
+      Intermediate\EThumbnailSound.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -91,7 +93,8 @@
     <RESDEPEN value="$(RESFILES) Editor\ChoseForm.dfm Editor\ImageEditor.dfm 
       Editor\ItemList.dfm Editor\NumericVector.dfm Editor\PropertiesList.dfm 
       Editor\ShaderFunction.dfm Editor\TextForm.dfm Editor\TopBar.dfm 
-      BottomBar.dfm EditorPref.dfm LeftBar.dfm LogForm.dfm main.dfm Splash.dfm"/>
+      BottomBar.dfm EditorPref.dfm LeftBar.dfm LogForm.dfm main.dfm Splash.dfm 
+      Editor\SoundEditor.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="elpackB6.lib editor.lib vclx.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
@@ -241,7 +244,6 @@
       <FILE FILENAME="Editor\FolderLib.cpp" FORMNAME="" UNITNAME="FolderLib.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ImageEditor.cpp" FORMNAME="frmImageLib" UNITNAME="ImageEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ImageManager.cpp" FORMNAME="" UNITNAME="ImageManager.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\ImageThumbnail.cpp" FORMNAME="" UNITNAME="ImageThumbnail.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ItemList.cpp" FORMNAME="ItemList" UNITNAME="ItemList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ItemListHelper.cpp" FORMNAME="" UNITNAME="ItemListHelper.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ItemListTypes.cpp" FORMNAME="" UNITNAME="ItemListTypes.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -296,6 +298,11 @@
       <FILE FILENAME="Engine\Animations\SkeletonRigid.cpp" FORMNAME="" UNITNAME="SkeletonRigid.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\SkeletonAnimated.cpp" FORMNAME="" UNITNAME="SkeletonAnimated.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\SkeletonCustom.cpp" FORMNAME="" UNITNAME="SkeletonCustom.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\SoundEditor.cpp" FORMNAME="frmSoundLib" UNITNAME="SoundEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\EThumbnailTexture.cpp" FORMNAME="" UNITNAME="EThumbnailTexture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\EThumbnail.cpp" FORMNAME="" UNITNAME="EThumbnail.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\EThumbnailObject.cpp" FORMNAME="" UNITNAME="EThumbnailObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\EThumbnailSound.cpp" FORMNAME="" UNITNAME="EThumbnailSound.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -307,7 +314,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=62
+Build=64
 Debug=1
 PreRelease=0
 Special=0
@@ -319,7 +326,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.62
+FileVersion=1.0.2.64
 InternalName=
 LegalCopyright=
 LegalTrademarks=

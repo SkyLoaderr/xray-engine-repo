@@ -211,11 +211,13 @@ void ELibrary::RenameObject(LPCSTR nm0, LPCSTR nm1, EItemType type)
 	if (TYPE_FOLDER==type){
     	FS.dir_delete			(_objects_,nm0,FALSE);
     }else if (TYPE_OBJECT==type){
-        AnsiString fn0,fn1;
+        AnsiString fn0,fn1,temp;
         // rename base file
         FS.update_path(fn0,_objects_,nm0);	fn0+=".object";
         FS.update_path(fn1,_objects_,nm1);	fn1+=".object";
         FS.file_rename(fn0.c_str(),fn1.c_str(),false);
+        EFS.WriteAccessLog	(AnsiString().sprintf("%s -> %s",fn0.c_str(),fn1.c_str()).c_str(),"Rename");
+
         // rename thm
         FS.update_path(fn0,_objects_,nm0);	fn0+=".thm";
         FS.update_path(fn1,_objects_,nm1);	fn1+=".thm";

@@ -104,6 +104,13 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn9;
 	TPanel *paPreviewProps;
 	TSplitter *Splitter2;
+	TExtBtn *ExtBtn10;
+	TMxPopupMenu *pmSounds;
+	TMenuItem *MenuItem4;
+	TMenuItem *MenuItem5;
+	TMenuItem *MenuItem6;
+	TMenuItem *MenuItem7;
+	TMenuItem *MenuItem8;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebReloadClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
@@ -137,6 +144,11 @@ __published:	// IDE-managed Components
 	void __fastcall ImageEditor1Click(TObject *Sender);
 	void __fastcall Refresh1Click(TObject *Sender);
 	void __fastcall Checknewtextures1Click(TObject *Sender);
+	void __fastcall ExtBtn10MouseDown(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y);
+	void __fastcall MenuItem5Click(TObject *Sender);
+	void __fastcall MenuItem7Click(TObject *Sender);
+	void __fastcall MenuItem8Click(TObject *Sender);
 private:	// User declarations
 	void __fastcall RenameItem			(LPCSTR p0, LPCSTR p1, EItemType type);
 	BOOL __fastcall RemoveItem			(LPCSTR p0, EItemType type);
@@ -146,8 +158,9 @@ public:		// User declarations
         __fastcall TfraLeftBar			(TComponent* Owner);
 	void 			ChangeTarget		(int tgt);
     void 			UpdateBar			();
-    void 			MinimizeAllFrames();
-    void 			MaximizeAllFrames();
+    void 			OnTimer				();
+    void 			MinimizeAllFrames	();
+    void 			MaximizeAllFrames	();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 493
+  Height = 553
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 260
-    Height = 493
+    Height = 553
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 254
+      Top = 314
       Width = 258
       Height = 2
       Cursor = crVSplit
@@ -42,7 +42,7 @@ object fraLeftBar: TfraLeftBar
     end
     object Splitter2: TSplitter
       Left = 1
-      Top = 137
+      Top = 152
       Width = 258
       Height = 2
       Cursor = crVSplit
@@ -54,7 +54,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 1
       Width = 258
-      Height = 51
+      Height = 66
       Hint = 'Scene commands'
       Align = alTop
       Color = 10528425
@@ -99,7 +99,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebPreferences: TExtBtn
         Left = 2
-        Top = 33
+        Top = 49
         Width = 255
         Height = 15
         Align = alNone
@@ -148,12 +148,43 @@ object fraLeftBar: TfraLeftBar
         Spacing = 3
         OnMouseDown = ebImageCommandsMouseDown
       end
+      object ExtBtn10: TExtBtn
+        Left = 2
+        Top = 32
+        Width = 255
+        Height = 15
+        Align = alNone
+        BevelShow = False
+        HotTrack = True
+        HotColor = 15790320
+        BtnColor = 10528425
+        CloseButton = False
+        Caption = 'Sounds'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Glyph.Data = {
+          DE000000424DDE00000000000000360000002800000007000000070000000100
+          180000000000A8000000120B0000120B00000000000000000000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF00
+          0000FFFFFFFFFFFF000000000000000000FFFFFFFFFFFF000000FFFFFF000000
+          000000000000000000000000FFFFFF0000000000000000000000000000000000
+          00000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
+          0000}
+        Margin = 3
+        ParentFont = False
+        Spacing = 3
+        OnMouseDown = ExtBtn10MouseDown
+      end
     end
     object paEngineShaders: TPanel
       Left = 1
-      Top = 139
+      Top = 154
       Width = 258
-      Height = 115
+      Height = 160
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -175,7 +206,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 256
-        Height = 100
+        Height = 145
         ActiveTabColor = 10528425
         BorderWidth = 0
         Color = 10528425
@@ -324,7 +355,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 23
+            Height = 68
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -539,7 +570,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 23
+            Height = 68
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -753,7 +784,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 23
+            Height = 68
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -862,7 +893,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 23
+            Height = 68
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -1182,7 +1213,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 23
+            Height = 68
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -1277,7 +1308,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paShaderProperties: TPanel
       Left = 1
-      Top = 256
+      Top = 316
       Width = 258
       Height = 236
       Align = alBottom
@@ -1342,7 +1373,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paPreview: TPanel
       Left = 1
-      Top = 52
+      Top = 67
       Width = 258
       Height = 85
       Align = alTop
@@ -1402,7 +1433,7 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 4
+    Version = 5
     OnSavePlacement = fsStorageSavePlacement
     OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
@@ -1525,6 +1556,40 @@ object fraLeftBar: TfraLeftBar
     object MenuItem15: TMenuItem
       Caption = 'Export'
       Enabled = False
+    end
+  end
+  object pmSounds: TMxPopupMenu
+    Alignment = paCenter
+    AutoPopup = False
+    TrackButton = tbLeftButton
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
+    LeftMargin = 10
+    Style = msOwnerDraw
+    Left = 117
+    Top = 26
+    object MenuItem4: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem5: TMenuItem
+      Caption = 'Sound Editor'
+      OnClick = MenuItem5Click
+    end
+    object MenuItem6: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem7: TMenuItem
+      Caption = 'Synchronize Sounds'
+      OnClick = MenuItem7Click
+    end
+    object MenuItem8: TMenuItem
+      Caption = 'Check New Sounds'
+      OnClick = MenuItem8Click
     end
   end
 end

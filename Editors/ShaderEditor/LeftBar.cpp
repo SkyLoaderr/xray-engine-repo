@@ -68,6 +68,12 @@ void TfraLeftBar::UpdateBar(){
 }
 //---------------------------------------------------------------------------
 
+void TfraLeftBar::OnTimer()
+{
+	UpdateBar();
+}
+//---------------------------------------------------------------------------
+
 void TfraLeftBar::MinimizeAllFrames()
 {
     for (int j=0; j<paLeftBar->ControlCount; j++){
@@ -335,4 +341,29 @@ void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
 //	CSHEngineTools* tools = (CSHEngineTools*)Tools.FindTools(aeEngine); R_ASSERT(tools);
 //    tools->PreviewObjClick(Sender);
 
+
+void __fastcall TfraLeftBar::ExtBtn10MouseDown(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+	FHelper.ShowPPMenu(pmSounds,dynamic_cast<TExtBtn*>(Sender));
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::MenuItem5Click(TObject *Sender)
+{
+	UI.Command( COMMAND_SOUND_EDITOR );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::MenuItem7Click(TObject *Sender)
+{
+	UI.Command( COMMAND_SYNC_SOUNDS );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::MenuItem8Click(TObject *Sender)
+{
+	UI.Command( COMMAND_CHECK_SOUNDS );
+}
+//---------------------------------------------------------------------------
 

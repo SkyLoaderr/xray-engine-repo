@@ -40,10 +40,10 @@ public:
 	void		RegisterAccess	(LPSTR fn, LPSTR start_msg, bool bLog=true);
 	void		WriteAccessLog	(LPSTR fn, LPSTR start_msg);
 
-	AnsiString&	UpdateTextureNameWithFolder(AnsiString& tex_name);
+	AnsiString&	AppendFolderToName(AnsiString& tex_name);
 #endif
-	LPSTR		UpdateTextureNameWithFolder(LPSTR tex_name);
-	LPSTR		UpdateTextureNameWithFolder(LPCSTR src_name, LPSTR dest_name);
+	LPSTR		AppendFolderToName(LPSTR tex_name);
+	LPSTR		AppendFolderToName(LPCSTR src_name, LPSTR dest_name);
 };
 extern XRCORE_API EFS_Utils EFS;
 //#endif

@@ -151,14 +151,14 @@ bool EFS_Utils::GetSaveName( LPCSTR initial, char *buffer, int sz_buf, LPCSTR of
 	return bRes;
 }
 //----------------------------------------------------
-LPSTR EFS_Utils::UpdateTextureNameWithFolder(LPSTR tex_name)
+LPSTR EFS_Utils::AppendFolderToName(LPSTR tex_name)
 {
 	string256 _fn;
-	strcpy(tex_name,UpdateTextureNameWithFolder(tex_name, _fn));
+	strcpy(tex_name,AppendFolderToName(tex_name, _fn));
 	return tex_name;
 }
 
-LPSTR EFS_Utils::UpdateTextureNameWithFolder(LPCSTR src_name, LPSTR dest_name)
+LPSTR EFS_Utils::AppendFolderToName(LPCSTR src_name, LPSTR dest_name)
 {
 	if (_GetItemCount(src_name,'_')>1){
 		string256 fld;
