@@ -268,6 +268,13 @@ class "action_help" (action_base)
 function action_help:__init (name, storage) super (nil, name)
     self.a = storage
     self.first = false
+   	self.sounds = 
+   	            { rnd = 100,
+				  maxidle = 5, 
+				  sumidle = 2,
+				  themes = { "wounded_help" } 
+				}
+
 end
 ------------
 function action_help:initialize ()
@@ -289,6 +296,10 @@ function action_help:execute ()
     if self.object:animation_count () < 2 then 
        self.object:add_animation ("waunded_idle_0", true)
     end    
+
+    --if self.object:active_sound_count() == 0 then
+	   xr_sound.sound_update(self.object, self.sounds)		
+	--end
     
 end    
 ------------
@@ -337,6 +348,12 @@ class "action_enemy" (action_base)
 function action_enemy:__init (name, storage) super (nil, name)
     self.a = storage
     self.first = false
+   	self.sounds = 
+   	            { rnd = 100,
+				  maxidle = 5, 
+				  sumidle = 2,
+				  themes = { "wounded_enemy" } 
+				}
 end
 ------------
 function action_enemy:initialize ()
@@ -359,6 +376,7 @@ function action_enemy:execute ()
        self.object:add_animation ("waunded_monser_1", true)
     end    
     
+    xr_sound.sound_update(self.object, self.sounds)		
 end    
 ------------
 function action_enemy:finalize ()
