@@ -254,6 +254,7 @@ HRESULT CMyD3DApplication::Render		()
 		// RenderOverlay		();
 
 		RenderFAT					();
+		RenderLight_Direct			();
 		RenderCombine				(CM_DBG_NORMALS);
 
         // Output statistics
