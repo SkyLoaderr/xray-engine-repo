@@ -49,7 +49,8 @@ void CStateMonsterHearInterestingSoundAbstract::setup_substates()
 
 #ifdef DEBUG
 		if (psAI_Flags.test(aiMonsterDebug)) {
-			object->HDebug->M_Add(0,"Interesting Snd :: Move To Sound Source", D3DCOLOR_XRGB(255,0,0));
+			DBG().object_info(object,object).remove_item	(u32(0));
+			DBG().object_info(object,object).add_item		("Interesting Snd :: Move To Sound Source", D3DCOLOR_XRGB(255,0,0), 0);
 		}
 #endif
 		return;
@@ -65,7 +66,8 @@ void CStateMonsterHearInterestingSoundAbstract::setup_substates()
 
 #ifdef DEBUG
 		if (psAI_Flags.test(aiMonsterDebug)) {
-			object->HDebug->M_Add(0,"Interesting Snd :: Look Around", D3DCOLOR_XRGB(255,0,0));
+			DBG().object_info(object,object).remove_item	(u32(0));
+			DBG().object_info(object,object).add_item		("Interesting Snd :: Look Around", D3DCOLOR_XRGB(255,0,0), 0);
 		}
 #endif
 

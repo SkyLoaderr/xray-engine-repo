@@ -112,4 +112,5 @@
 #	include "ai/monsters/snork/snork.h"
 #	include "ai/monsters/controller/controller.h"
 #	include "ai/monsters/cat/cat.h"
+#	include "ai/monsters/tushkano/tushkano.h"
 #endif

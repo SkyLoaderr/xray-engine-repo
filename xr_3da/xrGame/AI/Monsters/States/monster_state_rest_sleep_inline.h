@@ -21,6 +21,14 @@ void CStateMonsterRestSleepAbstract::initialize()
 {
 	inherited::initialize	();
 	object->fall_asleep		();
+
+#ifdef DEBUG
+	if (psAI_Flags.test(aiMonsterDebug)) {
+		DBG().object_info(object,object).remove_item	(u32(0));
+		DBG().object_info(object,object).add_item		("Rest :: Sleep", D3DCOLOR_XRGB(255,0,0), 0);
+	}
+#endif
+
 }
 
 TEMPLATE_SPECIALIZATION
@@ -28,13 +36,6 @@ void CStateMonsterRestSleepAbstract::execute()
 {
 	object->set_action				(ACT_SLEEP);
 	object->set_state_sound			(MonsterSpace::eMonsterSoundIdle);	
-
-#ifdef DEBUG
-	if (psAI_Flags.test(aiMonsterDebug)) {
-		object->HDebug->M_Add(0,"Rest :: Sleep", D3DCOLOR_XRGB(255,0,0));
-
-	}
-#endif
 }
 
 TEMPLATE_SPECIALIZATION

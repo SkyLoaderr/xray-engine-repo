@@ -26,9 +26,11 @@ void CStateMonsterEatingAbstract::initialize()
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiMonsterDebug)) {
-		object->HDebug->M_Clear();
+		DBG().object_info(object,object).remove_item(u32(0));
+		DBG().object_info(object,object).add_item	("Eat :: Eating", D3DCOLOR_XRGB(255,0,0), 0);
 	}
 #endif
+
 }
 
 TEMPLATE_SPECIALIZATION
@@ -65,27 +67,11 @@ void CStateMonsterEatingAbstract::execute()
 			time_last_eat = object->m_current_update;
 		}
 
-#ifdef DEBUG
-		if (psAI_Flags.test(aiMonsterDebug)) {
-			object->HDebug->M_Add(0,"Eat :: Eating", D3DCOLOR_XRGB(255,0,0));
-			
-			string64 s;
-			sprintf(s,"Food[%f] Satiety[%f]", object->conditions().GetSatiety(), corpse->m_fFood);
-			object->HDebug->M_Add(1, s, D3DCOLOR_XRGB(255,0,0));
-		}
-#endif
-
 	} else {
-		object->set_action									(ACT_WALK_FWD);
-		object->set_state_sound								(MonsterSpace::eMonsterSoundIdle);
+		object->set_action							(ACT_WALK_FWD);
+		object->set_state_sound						(MonsterSpace::eMonsterSoundIdle);
 		object->movement().set_target_point			(nearest_bone_pos, corpse->ai_location().level_vertex_id());
 		object->movement().set_generic_parameters	();
-
-#ifdef DEBUG
-		if (psAI_Flags.test(aiMonsterDebug)) {
-			object->HDebug->M_Add(0,"Eat :: Walk To Corpse", D3DCOLOR_XRGB(255,0,0));
-		}
-#endif
 	}
 
 	prev_state = cur_state;	

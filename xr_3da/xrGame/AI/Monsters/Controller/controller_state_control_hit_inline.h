@@ -62,10 +62,10 @@ void CStateControllerControlHitAbstract::execute()
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiMonsterDebug)) {
-		object->HDebug->M_Add(0,"Attack :: Control Hit", D3DCOLOR_XRGB(255,0,0));
+		DBG().object_info(object,object).remove_item	(u32(0));
+		DBG().object_info(object,object).add_item		("Attack :: Control Hit", D3DCOLOR_XRGB(255,0,0), 0);
 	}
 #endif
-
 
 }
 

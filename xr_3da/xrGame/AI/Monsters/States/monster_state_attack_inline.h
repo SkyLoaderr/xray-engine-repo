@@ -101,16 +101,6 @@ void CStateMonsterAttackAbstract::execute()
 		squad->UpdateGoal	(object, goal);
 	}
 	//////////////////////////////////////////////////////////////////////////
-
-#ifdef DEBUG
-	if (psAI_Flags.test(aiMonsterDebug)) {
-		string128 s;
-		sprintf(s, "Morale :: [%f]", object->Morale.get_morale());
-
-		object->HDebug->M_Add(1, s, D3DCOLOR_XRGB(255,0,0));
-	}
-#endif
-
 }
 
 TEMPLATE_SPECIALIZATION
@@ -183,7 +173,8 @@ void CStateMonsterAttackAbstract::setup_substates()
 
 #ifdef DEBUG
 		if (psAI_Flags.test(aiMonsterDebug)) {
-			object->HDebug->M_Add(0,"Attack :: Run Away", D3DCOLOR_XRGB(255,0,0));
+			DBG().object_info(object,object).remove_item	(u32(0));
+			DBG().object_info(object,object).add_item		("Attack :: Run Away", D3DCOLOR_XRGB(255,0,0), 0);
 		}
 #endif
 		return;

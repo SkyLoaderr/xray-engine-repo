@@ -27,7 +27,6 @@
 #include "../melee_checker.h"
 #include "../monster_morale.h"
 
-class CMonsterDebug;
 class CCharacterPhysicsSupport;
 class CAnimTriple;
 class CMonsterCorpseCoverEvaluator;
@@ -317,12 +316,11 @@ IC	void					wake_up				(){m_bSleep = false;}
 
 	virtual void			on_first_update		();
 
-
 #ifdef DEBUG
-	CMonsterDebug	*HDebug;
-	virtual void	OnRender();
+	u8						m_show_debug_info;	// 0 - none, 1 - first column, 2 - second column
+	void					set_show_debug_info	(u8 show = 1){m_show_debug_info = show;}
+	virtual	void			show_debug_info		();
 #endif
-
 
 private:
 	bool					m_first_update_initialized;

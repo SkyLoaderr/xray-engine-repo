@@ -11,7 +11,8 @@
 #include "zombie_state_attack_run.h"
 #include "../states/monster_state_squad_rest.h"
 #include "../states/monster_state_squad_rest_follow.h"
-#include "../ai_monster_debug.h"
+#include "../../../level.h"
+#include "../../../level_debug.h"
 #include "../../../entitycondition.h"
 #include "../../../detail_path_manager.h"
 
@@ -87,12 +88,6 @@ void CStateManagerZombie::execute()
 
 	// информировать squad о своих целях
 	squad_notify();
-#ifdef DEBUG
-	if (monster_squad().get_squad(object)->GetLeader() == object) {
-		object->HDebug->L_Clear();
-		object->HDebug->L_AddPoint(monster_squad().get_squad(object)->GetLeader()->Position(), 0.35f, D3DCOLOR_XRGB(0,255,0));
-	}
-#endif
 }
 
 void CStateManagerZombie::squad_notify()

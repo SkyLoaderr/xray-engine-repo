@@ -89,10 +89,10 @@ void CStateBloodsuckerVampireExecuteAbstract::execute()
 	object->set_action			(ACT_STAND_IDLE);
 	object->DirMan.face_target	(object->EnemyMan.get_enemy(), 1200);
 
-
 #ifdef DEBUG
 	if (psAI_Flags.test(aiMonsterDebug)) {
-		object->HDebug->M_Add(0, "State Vampire", D3DCOLOR_XRGB(255,0,0));
+		DBG().object_info(object,object).remove_item	(u32(0));
+		DBG().object_info(object,object).add_item		("State Vampire", D3DCOLOR_XRGB(255,0,0), 0);
 	}
 #endif
 

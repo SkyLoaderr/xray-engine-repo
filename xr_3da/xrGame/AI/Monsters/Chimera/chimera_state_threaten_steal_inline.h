@@ -42,9 +42,11 @@ void CStateChimeraThreatenStealAbstract::execute()
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiMonsterDebug)) {
-		object->HDebug->M_Add(0,"Threaten :: Steal", D3DCOLOR_XRGB(255,0,0));
+		DBG().object_info(object,object).remove_item	(u32(0));
+		DBG().object_info(object,object).add_item		("Threaten :: Steal", D3DCOLOR_XRGB(255,0,0), 0);
 	}
 #endif
+
 }
 
 #define MIN_DISTANCE_TO_ENEMY	8.f

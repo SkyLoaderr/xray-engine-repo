@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "bloodsucker_state_manager.h"
 #include "bloodsucker.h"
-#include "../ai_monster_debug.h"
+#include "../../../level.h"
+#include "../../../level_debug.h"
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_attack.h"
 #include "../states/monster_state_panic.h"
@@ -10,8 +11,6 @@
 #include "../states/monster_state_hitted.h"
 
 #include "bloodsucker_vampire.h"
-
-#include "../../../level_debug.h"
 
 CStateManagerBloodsucker::CStateManagerBloodsucker(CAI_Bloodsucker *monster) : inherited(monster)
 {

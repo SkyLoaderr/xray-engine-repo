@@ -38,9 +38,11 @@ void CStateChimeraThreatenWalkAbstract::execute()
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiMonsterDebug)) {
-		object->HDebug->M_Add(0,"Threaten :: Walk", D3DCOLOR_XRGB(255,0,0));
+		DBG().object_info(object,object).remove_item	(u32(0));
+		DBG().object_info(object,object).add_item		("Threaten :: Walk", D3DCOLOR_XRGB(255,0,0), 0);
 	}
 #endif
+
 }
 
 #define DISTANCE_TO_ENEMY		5.f

@@ -84,7 +84,8 @@ void CStateMonsterFindEnemyLookAbstract::setup_substates()
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiMonsterDebug)) {
-		object->HDebug->M_Add(0,"Find Enemy :: Move To Point", D3DCOLOR_XRGB(255,0,0));
+		DBG().object_info(object,object).remove_item	(u32(0));
+		DBG().object_info(object,object).add_item		("Find Enemy :: Move To Point", D3DCOLOR_XRGB(255,0,0), 0);
 	}
 #endif
 		return;
@@ -102,7 +103,8 @@ void CStateMonsterFindEnemyLookAbstract::setup_substates()
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiMonsterDebug)) {
-		object->HDebug->M_Add(0,"Find Enemy :: Look around", D3DCOLOR_XRGB(255,0,0));
+		DBG().object_info(object,object).remove_item	(u32(0));
+		DBG().object_info(object,object).add_item		("Find Enemy :: Look around", D3DCOLOR_XRGB(255,0,0), 0);
 	}
 #endif
 		return;
@@ -120,11 +122,11 @@ void CStateMonsterFindEnemyLookAbstract::setup_substates()
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiMonsterDebug)) {
-		object->HDebug->M_Add(0,"Find Enemy :: Turn to point", D3DCOLOR_XRGB(255,0,0));
+		DBG().object_info(object,object).remove_item	(u32(0));
+		DBG().object_info(object,object).add_item		("Find Enemy :: Turn to point", D3DCOLOR_XRGB(255,0,0), 0);
 	}
 #endif
 		return;
 	}
 }
-
 

@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "fracture.h"
-#include "fracture_state_manager.h"
+#include "tushkano.h"
+#include "tushkano_state_manager.h"
 
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_eat.h"
@@ -13,26 +13,26 @@
 #include "../../../level_debug.h"
 #include "../../../entitycondition.h"
 
-CStateManagerFracture::CStateManagerFracture(CFracture *obj) : inherited(obj)
+CStateManagerTushkano::CStateManagerTushkano(CTushkano *obj) : inherited(obj)
 {
-	add_state(eStateRest,				xr_new<CStateMonsterRest<CFracture> >				(obj));
-	add_state(eStateAttack,				xr_new<CStateMonsterAttack<CFracture> >				(obj));
-	add_state(eStateEat,				xr_new<CStateMonsterEat<CFracture> >				(obj));
-	add_state(eStateDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CFracture> >	(obj));
-	add_state(eStatePanic,				xr_new<CStateMonsterPanic<CFracture> >				(obj));
-	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CFracture> >				(obj));
+	add_state(eStateRest,				xr_new<CStateMonsterRest<CTushkano> >				(obj));
+	add_state(eStateAttack,				xr_new<CStateMonsterAttack<CTushkano> >				(obj));
+	add_state(eStateEat,				xr_new<CStateMonsterEat<CTushkano> >				(obj));
+	add_state(eStateDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CTushkano> >	(obj));
+	add_state(eStatePanic,				xr_new<CStateMonsterPanic<CTushkano> >				(obj));
+	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CTushkano> >				(obj));
 }
 
-CStateManagerFracture::~CStateManagerFracture()
+CStateManagerTushkano::~CStateManagerTushkano()
 {
 }
 
-void CStateManagerFracture::initialize()
+void CStateManagerTushkano::initialize()
 {
 	inherited::initialize();
 }
 
-void CStateManagerFracture::execute()
+void CStateManagerTushkano::execute()
 {
 	u32 state_id = u32(-1);
 	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();

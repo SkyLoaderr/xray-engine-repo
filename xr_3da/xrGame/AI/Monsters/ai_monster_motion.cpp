@@ -5,7 +5,6 @@
 #include "ai_monster_utils.h"
 #include "../../PHMovementControl.h"
 #include "anim_triple.h"
-#include "ai_monster_debug.h"
 #include "../../../skeletonanimated.h"
 #include "../../detail_path_manager.h"
 #include "ai_monster_movement.h"
@@ -485,14 +484,6 @@ bool CMotionManager::TA_IsActive()
 void CMotionManager::ValidateAnimation()
 {
 
-#ifdef _DEBUG	
-	Fvector P1,P2;
-	P1 = pMonster->Position(); P1.y+=2.0f;
- 	P2.mad(P1, pMonster->Direction(), 2.f);
-	pMonster->HDebug->L_Clear	();
-	pMonster->HDebug->L_AddLine	(P1, P2, D3DCOLOR_XRGB(255,255,0));
-#endif 
-	
 	ANIM_ITEM_MAP_IT item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
 	bool is_moving_anim		= !fis_zero(item_it->second.velocity->velocity.linear);
 	bool is_moving_on_path	= pMonster->movement().IsMovingOnPath();

@@ -2513,12 +2513,6 @@
 							<Filter
 								Name="Debug"
 								Filter="">
-								<File
-									RelativePath=".\ai\Monsters\ai_monster_debug.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\ai_monster_debug.h">
-								</File>
 							</Filter>
 							<Filter
 								Name="Critical Action Info"
@@ -2632,6 +2626,9 @@
 						</File>
 						<File
 							RelativePath=".\ai\Monsters\BaseMonster\base_monster_anim.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\BaseMonster\base_monster_debug.cpp">
 						</File>
 						<File
 							RelativePath=".\ai\Monsters\BaseMonster\base_monster_feel.cpp">
@@ -3659,6 +3656,29 @@
 							Filter="">
 							<File
 								RelativePath=".\ai\Monsters\Cat\cat_script.cpp">
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="Tushkano"
+						Filter="">
+						<File
+							RelativePath=".\ai\Monsters\Tushkano\tushkano.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Tushkano\tushkano.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Tushkano\tushkano_state_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Tushkano\tushkano_state_manager.h">
+						</File>
+						<Filter
+							Name="Script"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Tushkano\tushkano_script.cpp">
 							</File>
 						</Filter>
 					</Filter>

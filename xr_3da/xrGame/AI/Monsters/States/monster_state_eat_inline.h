@@ -65,21 +65,23 @@ void CStateMonsterEatAbstract::setup_substates()
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiMonsterDebug)) {
+		DBG().object_info(object,object).remove_item	(u32(0));
+
 		switch (current_substate) {
 			case eStateCorpseApproachRun:
-				object->HDebug->M_Add(0, "Eat :: Approach To Corpse :: Run", D3DCOLOR_XRGB(255,0,0));
+				DBG().object_info(object,object).add_item("Eat :: Approach To Corpse :: Run", D3DCOLOR_XRGB(255,0,0), 0);
 				break;
 			case eStateCorpseApproachWalk:
-				object->HDebug->M_Add(0, "Eat :: Approach To Corpse :: Walk", D3DCOLOR_XRGB(255,0,0));
+				DBG().object_info(object,object).add_item("Eat :: Approach To Corpse :: Walk", D3DCOLOR_XRGB(255,0,0), 0);
 				break;
 			case eStateCheckCorpse:
-				object->HDebug->M_Add(0, "Eat :: Check Corpse", D3DCOLOR_XRGB(255,0,0));
+				DBG().object_info(object,object).add_item("Eat :: Check Corpse", D3DCOLOR_XRGB(255,0,0), 0);
 				break;
 			case eStateWalkAway:
-				object->HDebug->M_Add(0, "Eat :: Walk Away", D3DCOLOR_XRGB(0,0,255));
+				DBG().object_info(object,object).add_item("Eat :: Walk Away", D3DCOLOR_XRGB(255,0,0), 0);
 				break;
 			case eStateRest:
-				object->HDebug->M_Add(0, "Eat :: Little Rest", D3DCOLOR_XRGB(0,0,255));
+				DBG().object_info(object,object).add_item("Eat :: Little Rest", D3DCOLOR_XRGB(255,0,0), 0);
 				break;
 		}
 	}

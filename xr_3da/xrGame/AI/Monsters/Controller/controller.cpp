@@ -3,7 +3,6 @@
 #include "../ai_monster_utils.h"
 #include "controller_state_manager.h"
 #include "../controlled_entity.h"
-#include "../ai_monster_debug.h"
 #include "../../../actor.h"
 #include "../../../ActorEffector.h"
 #include "../ai_monster_effector.h"
@@ -157,29 +156,29 @@ void CController::UpdateControlled()
 //////////////////////////////////////////////////////////////////////////
 
 
-#ifdef DEBUG
-	// Draw Controlled Lines
-	HDebug->L_Clear();
-	Fvector my_pos = Position();
-	my_pos.y += 1.5f;
-	
-
-	for (u32 i=0; i < m_controlled_objects.size(); i++) {
-		Fvector enemy_pos	= m_controlled_objects[i]->Position();
-		
-		Fvector dir;
-		dir.sub(enemy_pos, Position());
-		dir.div(2.f);
-		Fvector new_pos;
-		new_pos.add(Position(),dir);
-		new_pos.y += 10.f;
-
-		enemy_pos.y += 1.0f;
-		HDebug->L_AddLine(my_pos,		new_pos, D3DCOLOR_XRGB(0,255,255));
-		HDebug->L_AddLine(enemy_pos,	new_pos, D3DCOLOR_XRGB(0,255,255));
-	}
-
-#endif
+//#ifdef DEBUG
+//	// Draw Controlled Lines
+//	HDebug->L_Clear();
+//	Fvector my_pos = Position();
+//	my_pos.y += 1.5f;
+//	
+//
+//	for (u32 i=0; i < m_controlled_objects.size(); i++) {
+//		Fvector enemy_pos	= m_controlled_objects[i]->Position();
+//		
+//		Fvector dir;
+//		dir.sub(enemy_pos, Position());
+//		dir.div(2.f);
+//		Fvector new_pos;
+//		new_pos.add(Position(),dir);
+//		new_pos.y += 10.f;
+//
+//		enemy_pos.y += 1.0f;
+//		HDebug->L_AddLine(my_pos,		new_pos, D3DCOLOR_XRGB(0,255,255));
+//		HDebug->L_AddLine(enemy_pos,	new_pos, D3DCOLOR_XRGB(0,255,255));
+//	}
+//
+//#endif
 }
 
 void CController::set_controlled_task(u32 task)

@@ -68,10 +68,10 @@ void CStateMonsterSquadRestFollowAbstract::setup_substates()
 
 #ifdef DEBUG
 		if (psAI_Flags.test(aiMonsterDebug)) {
-			object->HDebug->M_Add(0,"Squad :: Idle", D3DCOLOR_XRGB(255,0,0));
+			DBG().object_info(object,object).remove_item	(u32(0));
+			DBG().object_info(object,object).add_item		("Squad :: Idle", D3DCOLOR_XRGB(255,0,0), 0);
 		}
 #endif
-
 		return;
 	}
 
@@ -99,7 +99,8 @@ void CStateMonsterSquadRestFollowAbstract::setup_substates()
 
 #ifdef DEBUG
 		if (psAI_Flags.test(aiMonsterDebug)) {
-			object->HDebug->M_Add(0,"Squad :: Follow Leader", D3DCOLOR_XRGB(255,0,0));
+			DBG().object_info(object,object).remove_item	(u32(0));
+			DBG().object_info(object,object).add_item		("Squad :: Follow Leader", D3DCOLOR_XRGB(255,0,0), 0);
 		}
 #endif
 		return;

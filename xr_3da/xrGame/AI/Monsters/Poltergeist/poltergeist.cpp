@@ -3,7 +3,6 @@
 #include "poltergeist_state_manager.h"
 #include "../../../PHMovementControl.h"
 #include "../../../PhysicsShellHolder.h"
-#include "../ai_monster_debug.h"
 #include "../ai_monster_utils.h"
 #include "../../../ai_debug.h"
 
@@ -172,15 +171,6 @@ void CPoltergeist::shedule_Update(u32 dt)
 	UpdateFlame();
 	UpdateTelekinesis();
 	UpdateHeight();
-
-
-#ifdef DEBUG
-	if (psAI_Flags.test(aiMonsterDebug)) {
-		string128 s;
-		sprintf(s,"Energy [%f]", Energy::get_value());
-		HDebug->M_Add(1,s,D3DCOLOR_XRGB(255,0,0));
-	}
-#endif
 }
 
 void CPoltergeist::net_Destroy()

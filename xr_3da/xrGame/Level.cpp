@@ -429,9 +429,11 @@ void CLevel::OnRender()
 #endif
 
 #ifdef DEBUG
-	DBG().draw_object_info				();
-	DBG().draw_text						();
-	DBG().draw_level_info				();
+	if (bDebug) {
+		DBG().draw_object_info				();
+		DBG().draw_text						();
+		DBG().draw_level_info				();
+	}
 #endif
 }
 

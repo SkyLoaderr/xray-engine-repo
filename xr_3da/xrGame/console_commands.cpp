@@ -24,6 +24,7 @@
 #include "string_table.h"
 #include "autosave_manager.h"
 #include "ai_space.h"
+#include "ai/monsters/BaseMonster/base_monster.h"
 
 extern void show_smart_cast_stats		();
 extern void clear_smart_cast_stats		();
@@ -1437,6 +1438,28 @@ public:
 		}
 	}
 };
+
+class CCC_ShowMonsterInfo : public IConsole_Command {
+public:
+				CCC_ShowMonsterInfo(LPCSTR N) : IConsole_Command(N)  { };
+
+	virtual void Execute(LPCSTR args) {
+
+		string128 param1, param2;
+		_GetItem(args,0,param1,' ');
+		_GetItem(args,1,param2,' ');
+
+		CObject			*obj = Level().Objects.FindObjectByName(param1);
+		CBaseMonster	*monster = smart_cast<CBaseMonster *>(obj);
+		if (!monster)	return;
+		
+		u32				value2;
+		
+		sscanf			(param2,"%u",&value2);
+		monster->set_show_debug_info (u8(value2));
+	}
+};
+
 #endif
 
 class CCC_PHIterations : public CCC_Integer {
@@ -1606,6 +1629,9 @@ void CCC_RegisterCommands()
 	
 	CMD1(CCC_Script,			"run_script");
 	CMD1(CCC_ScriptCommand,		"run_string");
+
+
+	CMD1(CCC_ShowMonsterInfo,	"ai_monster_info");
 #endif // DEBUG
 	
 

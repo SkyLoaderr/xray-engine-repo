@@ -22,9 +22,11 @@ void CStateCatAttackRatMeleeAbstract::execute()
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiMonsterDebug)) {
-		object->HDebug->M_Add(0,"Attack Rat :: Melee", D3DCOLOR_XRGB(255,0,0));
+		DBG().object_info(object,object).remove_item	(u32(0));
+		DBG().object_info(object,object).add_item		("Attack Rat :: Melee", D3DCOLOR_XRGB(255,0,0), 0);
 	}
 #endif
+
 
 }
 

@@ -61,7 +61,8 @@ void CStateMonsterHearDangerousSoundAbstract::setup_substates()
 
 #ifdef DEBUG
 		if (psAI_Flags.test(aiMonsterDebug)) {
-			object->HDebug->M_Add(0,"Danger Snd :: Hide From Point", D3DCOLOR_XRGB(255,0,0));
+			DBG().object_info(object,object).remove_item	(u32(0));
+			DBG().object_info(object,object).add_item		("Danger Snd :: Hide From Point", D3DCOLOR_XRGB(255,0,0), 0);
 		}
 #endif
 		return;
@@ -79,7 +80,8 @@ void CStateMonsterHearDangerousSoundAbstract::setup_substates()
 
 #ifdef DEBUG
 		if (psAI_Flags.test(aiMonsterDebug)) {
-			object->HDebug->M_Add(0,"Danger Snd :: Face Open Place", D3DCOLOR_XRGB(255,0,0));
+			DBG().object_info(object,object).remove_item	(u32(0));
+			DBG().object_info(object,object).add_item		("Danger Snd :: Face Open Place", D3DCOLOR_XRGB(255,0,0), 0);
 		}
 #endif
 		
@@ -97,9 +99,11 @@ void CStateMonsterHearDangerousSoundAbstract::setup_substates()
 
 #ifdef DEBUG
 		if (psAI_Flags.test(aiMonsterDebug)) {
-			object->HDebug->M_Add(0,"Danger Snd :: Stand Scared", D3DCOLOR_XRGB(255,0,0));
+			DBG().object_info(object,object).remove_item	(u32(0));
+			DBG().object_info(object,object).add_item		("Danger Snd :: Stand Scared", D3DCOLOR_XRGB(255,0,0), 0);
 		}
 #endif
+
 		return;
 	}
 }

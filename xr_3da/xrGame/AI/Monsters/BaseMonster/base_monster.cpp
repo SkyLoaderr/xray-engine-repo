@@ -9,7 +9,6 @@
 #include "../../../xrserver_objects_alife_monsters.h"
 #include "../ai_monster_jump.h"
 #include "../ai_monster_utils.h"
-#include "../ai_monster_debug.h"
 #include "../corpse_cover.h"
 #include "../../../cover_evaluators.h"
 #include "../../../seniority_hierarchy_holder.h"
@@ -23,21 +22,15 @@
 #include "../../../hudmanager.h"
 #include "../../../memory_manager.h"
 #include "../../../visual_memory_manager.h"
-#include "../../../ai_debug.h"
 #include "../ai_monster_movement.h"
 #include "../../../entitycondition.h"
 #include "../../../sound_player.h"
-#include "../../../level.h"
 
 CBaseMonster::CBaseMonster()
 {
 	m_movement_manager				= 0;
 	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
 	m_pPhysics_support=xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etBitting,this);
-
-#ifdef DEBUG
-	HDebug							= xr_new<CMonsterDebug>(this, Fvector().set(0.0f,2.0f,0.0f), 20.f);
-#endif
 	
 	m_pPhysics_support				->in_Init();
 
@@ -69,10 +62,6 @@ CBaseMonster::CBaseMonster()
 CBaseMonster::~CBaseMonster()
 {
 	xr_delete(m_pPhysics_support);
-#ifdef DEBUG
-	xr_delete(HDebug);
-#endif	
-
 	xr_delete(m_corpse_cover_evaluator);
 	xr_delete(m_enemy_cover_evaluator);
 	xr_delete(m_cover_evaluator_close_point);
@@ -105,12 +94,6 @@ void CBaseMonster::UpdateCL()
 	}
 
 	m_pPhysics_support->in_UpdateCL();
-
-#ifdef DEBUG
-	if (psAI_Flags.test(aiMonsterDebug))
-		HDebug->M_Update	();
-#endif
-
 }
 
 void CBaseMonster::shedule_Update(u32 dt)
@@ -124,6 +107,10 @@ void CBaseMonster::shedule_Update(u32 dt)
 	Morale.update_schedule		(dt);
 	
 	m_pPhysics_support->in_shedule_Update(dt);
+
+#ifdef DEBUG	
+	show_debug_info();
+#endif
 }
 
 
@@ -176,18 +163,6 @@ CBoneInstance *CBaseMonster::GetEatBone()
 	int bone = smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_ponytail2");
 	return (&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(u16(bone)));
 }
-
-#ifdef DEBUG
-void CBaseMonster::OnRender()
-{
-	inherited::OnRender();
-	
-	if (psAI_Flags.test(aiMonsterDebug)) {
-		HDebug->L_Update();
-		HDebug->HT_Update();
-	}
-}
-#endif
 
 bool CBaseMonster::useful(const CGameObject *object) const
 {
@@ -404,3 +379,4 @@ DLL_Pure *CBaseMonster::_construct	()
 	CStepManager::_construct	();
 	return						(this);
 }
+

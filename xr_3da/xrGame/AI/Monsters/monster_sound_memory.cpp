@@ -132,9 +132,6 @@ void CMonsterSoundMemory::UpdateHearing()
 	// пересчитать value
 	for (I=Sounds.begin(); I!=Sounds.end(); I++) I->CalcValue(monster->m_current_update, monster->Position());
 
-
-
-
 	//#ifdef DEBUG
 	//	CBaseMonster *pB = smart_cast<CBaseMonster*>(this);
 	//

@@ -8,7 +8,6 @@
 #include "../../level_location_selector.h"
 #include "../../level_path_manager.h"
 #include "../../ai_object_location.h"
-#include "ai_monster_debug.h"
 
 #define MAX_PATH_DISTANCE		100.f
 
@@ -47,13 +46,6 @@ void CMonsterMovement::set_target_point(const Fvector &position, u32 node)
 	set_path_type		(MovementManager::ePathTypeLevelPath);
 
 	select_target		();
-
-#ifdef DEBUG
-	m_object->HDebug->L_Clear();
-	m_object->HDebug->L_AddPoint(m_target_set.position, 0.35f, D3DCOLOR_XRGB(0,0,255));
-	m_object->HDebug->L_AddPoint(m_target_selected.position, 0.35f, D3DCOLOR_XRGB(0,255,255));
-#endif
-
 }
 
 void CMonsterMovement::set_retreat_from_point(const Fvector &position)

@@ -1,5 +1,8 @@
 #pragma once
 
+#include "../../level.h"
+#include "../../level_debug.h"
+
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
 >
@@ -54,6 +57,10 @@ TEMPLATE_SPECIALIZATION
 void CStateManagerSecondAbstract::critical_finalize()
 {
 	inherited::critical_finalize();
+	
+#ifdef DEBUG
+	DBG().object_info(object,object).remove_item(u32(0));
+#endif
 }
 
 #undef CStateManagerSecondAbstract 

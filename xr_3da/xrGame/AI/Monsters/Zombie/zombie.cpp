@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "zombie.h"
 #include "zombie_state_manager.h"
-#include "../ai_monster_debug.h"
 #include "../../../profiler.h"
 #include "../../../../skeletonanimated.h"
 #include "../ai_monster_movement.h"

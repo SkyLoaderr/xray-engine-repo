@@ -25,6 +25,14 @@ void CStateMonsterRestFunAbstract::initialize()
 	inherited::initialize	();
 
 	time_last_hit			= 0;
+
+#ifdef DEBUG
+	if (psAI_Flags.test(aiMonsterDebug)) {
+		DBG().object_info(object,object).remove_item	(u32(0));
+		DBG().object_info(object,object).add_item		("Rest :: Fun", D3DCOLOR_XRGB(255,0,0), 0);
+	}
+#endif
+
 }
 
 
@@ -71,13 +79,6 @@ void CStateMonsterRestFunAbstract::execute()
 			time_last_hit	= Device.dwTimeGlobal;
 		}
 	}
-
-#ifdef DEBUG
-	if (psAI_Flags.test(aiMonsterDebug)) {
-		object->HDebug->M_Add(0,"Rest :: Fun", D3DCOLOR_XRGB(255,0,0));
-
-	}
-#endif
 }
 
 TEMPLATE_SPECIALIZATION

@@ -71,6 +71,11 @@ void CBaseMonster::reinit()
 	script_processing_active		= false;
 
 	m_first_update_initialized		= false;
+
+#ifdef DEBUG
+	m_show_debug_info				= 0;
+#endif 
+
 }
 
 void CBaseMonster::Load(LPCSTR section)
@@ -204,4 +209,9 @@ void CBaseMonster::net_Destroy()
 	if (StateMan) StateMan->critical_finalize();
 	
 	monster_squad().remove_member((u8)g_Team(),(u8)g_Squad(), this);
+
+#ifdef DEBUG
+	m_show_debug_info				= 0;
+#endif 
+
 }

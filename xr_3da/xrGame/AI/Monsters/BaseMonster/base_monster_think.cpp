@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "base_monster.h"
-#include "../ai_monster_debug.h"
 #include "../ai_monster_squad.h"
 #include "../ai_monster_squad_manager.h"
 #include "../../../profiler.h"
@@ -46,11 +45,6 @@ void CBaseMonster::Think()
 
 	// установить текущую скорость
 	movement().Update_Finalize		();
-
-	// Debuging
-#ifdef DEBUG
-	HDebug->SetActive						(true);
-#endif
 
 	STOP_PROFILE;
 }

@@ -8,7 +8,8 @@
 #include "../../../PHCharacter.h"
 #include "../../../phcapture.h"
 
-#include "../ai_monster_debug.h"
+#include "../../../level.h"
+#include "../../../level_debug.h"
 
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_rest_sleep.h"

@@ -3,7 +3,6 @@
 #include "../../../script_entity_action.h"
 #include "../../../phmovementcontrol.h"
 #include "../../../sight_manager.h"
-#include "../ai_monster_debug.h"
 #include "../../../detail_path_manager.h"
 #include "../../../ai_object_location.h"
 #include "../ai_monster_movement.h"
@@ -245,12 +244,6 @@ void CBaseMonster::ProcessScripts()
 	}
 
 	force_real_speed	= false;
-
-	// Debuging
-#ifdef DEBUG
-	HDebug->SetActive						(true);
-#endif
-
 
 	script_processing_active = false;
 }

@@ -90,6 +90,14 @@ void CLevelDebug::draw_object_info()
 	// handle all of the objects
 	for (OBJECT_INFO_MAP_IT it = m_objects_info.begin(); it != m_objects_info.end(); ++it) {
 
+		// если объект невалидный - удалить информацию
+		if (!it->first || it->first->getDestroy()) {
+			for (CLASS_INFO_MAP_IT it_class = it->second.begin(); it_class != it->second.end(); ++it_class){
+				xr_delete(it_class->second);
+			}
+			m_objects_info.erase(it);
+			break;
+		}
 
 		Fmatrix		res;
 		res.mul		(Device.mFullTransform,it->first->XFORM());

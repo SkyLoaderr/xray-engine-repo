@@ -10,7 +10,8 @@
 #include "../states/monster_state_hear_int_sound.h"
 #include "../states/monster_state_hear_danger_sound.h"
 #include "../states/monster_state_hitted.h"
-#include "../ai_monster_debug.h"
+#include "../../../level.h"
+#include "../../../level_debug.h"
 #include "../../../entitycondition.h"
 
 CStateManagerPoltergeist::CStateManagerPoltergeist(CPoltergeist *obj) : inherited(obj)
