@@ -173,8 +173,22 @@ void CSoundMemoryManager::add_sound_object(const CObject *object, int sound_type
 		(*J).fill				(game_object,self,ESoundTypes(sound_type),sound_power);
 }
 
+struct CRemoveOfflinePredicate {
+	bool		operator()						(const CSoundObject &object) const
+	{
+		VERIFY	(object.m_object);
+		return	(!!object.m_object->getDestroy() || object.m_object->H_Parent());
+	}
+};
+
 void CSoundMemoryManager::update()
 {
+	VERIFY						(m_sounds);
+	{
+		xr_vector<CSoundObject>::iterator	I = remove_if(m_sounds->begin(),m_sounds->end(),CRemoveOfflinePredicate());
+		m_sounds->erase						(I,m_sounds->end());
+	}
+
 	m_selected_sound			= 0;
 	u32							priority = u32(-1);
 	xr_vector<CSoundObject>::const_iterator	I = m_sounds->begin();

@@ -94,6 +94,9 @@ const CMemoryInfo	CMemoryManager::memory(const CObject *object) const
 {
 	CMemoryInfo						result;
 	result.m_object					= 0;
+	if (!m_object->g_Alive())
+		return						(result);
+
 	ALife::_TIME_ID					game_time = 0;
 	const CGameObject				*game_object = dynamic_cast<const CGameObject*>(object);
 	VERIFY							(game_object);

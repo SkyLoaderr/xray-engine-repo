@@ -139,9 +139,22 @@ void CHitMemoryManager::add_hit_object(const CHitObject &hit_object)
 		*J						= hit_object;
 }
 
+struct CRemoveOfflinePredicate {
+	bool		operator()						(const CHitObject &object) const
+	{
+		VERIFY	(object.m_object);
+		return	(!!object.m_object->getDestroy() || object.m_object->H_Parent());
+	}
+};
+
 void CHitMemoryManager::update()
 {
 	VERIFY						(m_hits);
+	{
+		xr_vector<CHitObject>::iterator	I = remove_if(m_hits->begin(),m_hits->end(),CRemoveOfflinePredicate());
+		m_hits->erase					(I,m_hits->end());
+	}
+
 	m_selected_hit				= 0;
 	u32							level_time = 0;
 	xr_vector<CHitObject>::const_iterator	I = m_hits->begin();
