@@ -6,9 +6,8 @@
 #include "editorpref.h"
 #include "CustomObject.h"
 
-bool CCustomObject::FillProp(PropValueVec& values)
+void CCustomObject::FillProp(LPCSTR pref, PropValueVec& values)
 {
-	return true;
 }
 
 void CCustomObject::Move(Fvector& amount)
