@@ -55,12 +55,12 @@ void C3DSoundRender::OnMove()
 		Device.Statistic.dwSND_Allocated+=sounds[i].size();
 	}
 
-	Listener.vVelocity.sub		(Device.vCameraPosition, Listener.vPosition );
-	Listener.vVelocity.div		(Device.fTimeDelta);
-	Listener.vPosition.set		(Device.vCameraPosition);
-	Listener.vOrientFront.set	(Device.vCameraDirection);
-	Listener.vOrientTop.set		(Device.vCameraTop);
-	Listener.flRolloffFactor	= psSoundRolloff;
+	Listener.vVelocity.sub				(Device.vCameraPosition, Listener.vPosition );
+	Listener.vVelocity.div				(Device.fTimeDelta);
+	Listener.vPosition.set				(Device.vCameraPosition);
+	Listener.vOrientFront.set			(Device.vCameraDirection);
+	Listener.vOrientTop.set				(Device.vCameraTop);
+	Listener.flRolloffFactor			= psSoundRolloff;
 	pListener->SetAllParameters			(Listener.d3d(), DS3D_DEFERRED );
 	pListener->CommitDeferredSettings	();
 }
