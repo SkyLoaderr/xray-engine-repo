@@ -54,7 +54,7 @@ IC void GET(
 	
 	// summarize
 	u32 pixel = lm.pSurface[y*lm.dwWidth + x];
-	if (RGBA_GETALPHA(pixel)<=ref) return;
+	if (color_get_A(pixel)<=ref) return;
 	
 	r+=RGBA_GETRED	(pixel);
 	g+=RGBA_GETGREEN(pixel);
@@ -76,7 +76,7 @@ BOOL ApplyBorders(b_texture &lm, u32 ref)
 		for (int y=0; y<(int)lm.dwHeight; y++) {
 			for (int x=0; x<(int)lm.dwWidth; x++)
 			{
-				if (RGBA_GETALPHA(lm.pSurface[y*lm.dwWidth+x])==0) {
+				if (color_get_A(lm.pSurface[y*lm.dwWidth+x])==0) {
 					
 					u32 C=0,r=0,g=0,b=0;
 					GET(lm,x-1,y-1,ref,C,r,g,b);
@@ -153,7 +153,7 @@ float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L, Face* skip)
 			V %= T.dwHeight;	if (V<0) V+=T.dwHeight;
 			
 			u32 pixel		= T.pSurface[V*T.dwWidth+U];
-			u32 pixel_a		= RGBA_GETALPHA(pixel);
+			u32 pixel_a		= color_get_A(pixel);
 			float opac		= 1.f - float(pixel_a)/255.f;
 			scale			*= opac;
 		}
@@ -264,7 +264,7 @@ BOOL	__stdcall rms_test	(b_texture& lm, u32 w, u32 h, u32 rms)
 		for (u32 x=0; x<lm.dwWidth; x++)
 		{
 			u32 pixel	= scan_lmap[x];
-			if (RGBA_GETALPHA(pixel)>=limit)	
+			if (color_get_A(pixel)>=limit)	
 			{
 				u32 pixel_r	= scan_rest[x];
 				if (rms_diff(RGBA_GETRED(pixel_r),RGBA_GETRED(pixel))>rms)		goto fail;
@@ -289,7 +289,7 @@ BOOL	__stdcall rms_test	(b_texture&	lm, u32 _r, u32 _g, u32 _b, u32 rms)
 		for (x=0; x<lm.dwWidth; x++)
 		{
 			u32 pixel	= lm.pSurface	[y*lm.dwWidth+x];
-			if (RGBA_GETALPHA(pixel)>=254)	{
+			if (color_get_A(pixel)>=254)	{
 				if (rms_diff(_r, RGBA_GETRED(pixel))>rms)	return FALSE;
 				if (rms_diff(_g, RGBA_GETGREEN(pixel))>rms)	return FALSE;
 				if (rms_diff(_b, RGBA_GETBLUE(pixel))>rms)	return FALSE;
@@ -309,7 +309,7 @@ u32	__stdcall rms_average	(b_texture& lm, u32& _r, u32& _g, u32& _b)
 		for (x=0; x<lm.dwWidth; x++)
 		{
 			u32 pixel	= lm.pSurface[y*lm.dwWidth+x];
-			if ((RGBA_GETALPHA(pixel))>=254)	
+			if ((color_get_A(pixel))>=254)	
 			{
 				_r		+= RGBA_GETRED	(pixel);
 				_g		+= RGBA_GETGREEN(pixel);
