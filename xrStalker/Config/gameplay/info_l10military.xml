@@ -110,6 +110,10 @@
 	<info_portion id="mil_freedom_cook_drink_1"></info_portion>
 	<info_portion id="mil_freedom_cook_drink_2"></info_portion>
 	<info_portion id="mil_freedom_cook_drink_3"></info_portion>
+	<info_portion id="mil_freedom_cook_rg6_1"></info_portion>
+	<info_portion id="mil_freedom_cook_rg6_2"></info_portion>
+	<info_portion id="mil_freedom_cook_rg6_3"></info_portion>
+	<info_portion id="mil_freedom_cook_rg6_4"></info_portion>
 	
 	<info_portion id="mil_village_monsters_spawn"></info_portion>
 	<info_portion id="mil_arsenal_inside"></info_portion>
