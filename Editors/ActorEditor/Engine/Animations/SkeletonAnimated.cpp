@@ -395,7 +395,7 @@ void CSkeletonAnimated::Release()
 	for (u32 i=0; i<bones->size(); i++)
 	{
 		CBoneDataAnimated* B	= (CBoneDataAnimated*)(*bones)[i];
-		B.Motions.clear			();
+		B->Motions.clear		();
 	}
 
 	// destroy shared data
@@ -675,8 +675,9 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
 
                     D->Q.slerp	(Q1,Q2,delta);
                 }
+
                 // translate
-                if (M._keysT){
+                if (*M._keysT){
 	                CKeyQT*	K1t	= &M._keysT[(frame+0)%count];
     	            CKeyQT*	K2t	= &M._keysT[(frame+1)%count];
 
