@@ -167,10 +167,58 @@ $spawn 				= "food and drugs\bread"
 ;$prefetch 			= 32
 class				= II_BREAD
 cform				= skeleton
-visual				= items\geiger_01.ogf
+visual				= items\bred.ogf	;items\geiger_01.ogf
 
 inv_name			= Bread
 inv_name_short		= Bread
+inv_weight			= 0.2
+inv_icon			= ui\ui_inv_medkit				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+cost				= 50
+
+; eatable item
+eat_health = 0.01
+eat_satiety = 0.2
+eat_power = 0
+eat_radiation = 0	
+eat_portions_num = -1
+
+[kolbasa]
+GroupControlSection	= spawn_group
+;discovery_dependency = 
+$spawn 				= "food and drugs\bread"
+;$prefetch 			= 32
+class				= II_BREAD
+cform				= skeleton
+visual				= items\kolbasa.ogf	;items\geiger_01.ogf
+
+inv_name			= Kolbasa
+inv_name_short		= Kolbasa
+inv_weight			= 0.2
+inv_icon			= ui\ui_inv_medkit				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+cost				= 50
+
+; eatable item
+eat_health = 0.01
+eat_satiety = 0.2
+eat_power = 0
+eat_radiation = 0	
+eat_portions_num = -1
+
+[conserva]
+GroupControlSection	= spawn_group
+;discovery_dependency = 
+$spawn 				= "food and drugs\bread"
+;$prefetch 			= 32
+class				= II_BREAD
+cform				= skeleton
+visual				= items\conserv1.ogf	;items\geiger_01.ogf
+
+inv_name			= Conserva
+inv_name_short		= Conserva
 inv_weight			= 0.2
 inv_icon			= ui\ui_inv_medkit				; for inventory menu
 inv_grid_width		= 1
@@ -191,7 +239,7 @@ $spawn 			= "food and drugs\antirad"
 ;$prefetch 		= 32
 class			= II_ANTIR
 cform           = skeleton
-visual          = items\geiger_01.ogf
+visual          = items\conserv2.ogf ;items\geiger_01.ogf
 
 inv_name			= Antirad
 inv_name_short		= Antirad
@@ -220,7 +268,7 @@ $spawn 			= "outfit\scientific"
 ;$prefetch 		= 32
 class			= EQU_SCIE
 cform           = skeleton
-visual          = items\geiger_01.ogf;	corps\corp_zomb1
+visual          = equipment\stalker_scient_suit	;items\geiger_01.ogf;	corps\corp_zomb1
 
 inv_name			= "Scienific Outfit"
 inv_name_short		= "Scienific Outfit"
@@ -250,6 +298,80 @@ chemical_burn_protection = 1.0
 explosion_protection = 1.0
 fire_wound_protection  = 1.0
 
+[scientist_outfit]
+GroupControlSection	= spawn_group
+;discovery_dependency = 
+$spawn 			= "outfit\scientific"
+;$prefetch 		= 32
+class			= EQU_SCIE
+cform           = skeleton
+visual          = equipment\scientist_suit	;items\geiger_01.ogf;	corps\corp_zomb1
+
+inv_name			= "Scienific Outfit"
+inv_name_short		= "Scienific Outfit"
+inv_weight			= 6.5
+inv_icon			= ui\ui_inv_binoculars					; for inventory menu
+inv_grid_width		= 2
+inv_grid_height		= 2
+cost				= 1500
+
+burn_immunity = 1.0				;коэффициенты иммунитета самого костюма
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 1.0
+fire_wound_immunity  = 1.0
+
+burn_protection = 0.3			;коэффициенты защиты костюма персонажем 
+strike_protection = 0.9
+shock_protection = 0.4
+wound_protection = 0.8		
+radiation_protection = 0.1
+telepatic_protection = 0.3
+chemical_burn_protection = 1.0
+explosion_protection = 1.0
+fire_wound_protection  = 1.0
+
+[green_outfit]
+GroupControlSection	= spawn_group
+;discovery_dependency = 
+$spawn 			= "outfit\stalker"
+;$prefetch 		= 32
+class			= EQU_STLK
+cform           = skeleton
+visual          = equipment\green_stalker_suit	;items\geiger_01.ogf;	corps\corp_stalk1	
+
+inv_name			= "Stalker Outfit"
+inv_name_short		= "Stalker Outfit"
+inv_weight			= 4.0
+inv_icon			= ui\ui_inv_binoculars					; for inventory menu
+inv_grid_width		= 2
+inv_grid_height		= 2
+cost				= 2500
+
+burn_immunity = 1.0				;коэффициенты иммунитета самого костюма
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 1.0
+fire_wound_immunity  = 1.0
+
+burn_protection = 0.5			;коэффициенты защиты костюма персонажем 
+strike_protection = 0.7
+shock_protection = 0.7
+wound_protection = 0.7		
+radiation_protection = 0.3
+telepatic_protection = 0.5
+chemical_burn_protection = 1.0
+explosion_protection = 1.0
+fire_wound_protection  = 1.0
+
 [stalker_outfit]
 GroupControlSection	= spawn_group
 ;discovery_dependency = 
@@ -257,7 +379,7 @@ $spawn 			= "outfit\stalker"
 ;$prefetch 		= 32
 class			= EQU_STLK
 cform           = skeleton
-visual          = items\geiger_01.ogf;	corps\corp_stalk1	
+visual          = equipment\stalker_suit	;items\geiger_01.ogf;	corps\corp_stalk1	
 
 inv_name			= "Stalker Outfit"
 inv_name_short		= "Stalker Outfit"
@@ -295,7 +417,7 @@ $spawn 			= "outfit\military"
 ;$prefetch 		= 32
 class			= EQU_MLTR
 cform           = skeleton
-visual          = items\geiger_01.ogf;	corps\corp_stalk2
+visual          = equipment\stalker_killer_suit	;items\geiger_01.ogf;	corps\corp_stalk2
 
 inv_name			= "Military Outfit"
 inv_name_short		= "Military Outfit"
@@ -332,7 +454,7 @@ $spawn 			= "outfit\exo"
 ;$prefetch 		= 32
 class			= EQU_EXO
 cform           = skeleton
-visual          = items\geiger_01.ogf;	corps\corp_sold2
+visual          = equipment\exoskelet	;items\geiger_01.ogf;	corps\corp_sold2
 
 inv_name			= "Exo Outfit"
 inv_name_short		= "Exo Outfit"
