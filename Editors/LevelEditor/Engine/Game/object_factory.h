@@ -148,7 +148,7 @@ public:
 	virtual							~CObjectFactory		();
 #ifndef _EDITOR
 	IC		int						script_clsid		(const CLASS_ID &clsid) const;
-			void					script_register		() const;
+			void					register_script		() const;
 	IC		CLIENT_BASE_CLASS		*client_object		(const CLASS_ID &clsid) const;
 	IC		SERVER_BASE_CLASS		*server_object		(const CLASS_ID &clsid, LPCSTR section) const;
 #else

@@ -84,7 +84,7 @@ void CScriptEngine::export()
 	export_action_management			();
 	export_motivation_management		();
 	export_monster_info					();
-	object_factory().script_register	();
+	object_factory().register_script	();
 
 #ifdef DEBUG
 	lua_sethook							(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);

@@ -30,7 +30,7 @@ CObjectFactory::~CObjectFactory			()
 }
 
 #ifndef _EDITOR
-void CObjectFactory::script_register	() const
+void CObjectFactory::register_script	() const
 {
 	luabind::class_<CInternal>	instance("clsid");
 	
