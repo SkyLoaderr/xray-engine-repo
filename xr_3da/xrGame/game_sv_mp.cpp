@@ -481,7 +481,7 @@ bool game_sv_mp::OnNextMap				()
 
 	MapName = m_pMapRotation_List.front();
 
-	Msg("Goint to level %s", MapName.c_str());
+	Msg("Going to level %s", MapName.c_str());
 
 	if (!stricmp(MapName.c_str(), Level().name().c_str())) return false;
 	string1024 Command;
