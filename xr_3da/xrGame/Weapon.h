@@ -87,6 +87,8 @@ protected:			// Utilities
 public:
 	virtual void	OnMagazineEmpty	()			= 0;
 	virtual void	OnAnimationEnd	()			{};
+	virtual void	OnHide			()			{};
+	virtual void	OnShow			()			{};
 public:
 					CWeapon			(LPCSTR name);
 	virtual			~CWeapon		();

@@ -26,7 +26,9 @@ protected:
 		eIdle,
 		eFire,
 		eMagEmpty,
-		eReload
+		eReload,
+		eShowing,
+		eHiding
 	};
 	EState			st_current, st_target;
 protected:

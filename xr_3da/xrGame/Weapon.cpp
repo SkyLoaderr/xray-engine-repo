@@ -199,6 +199,7 @@ void CWeapon::OnDeviceDestroy()
 void CWeapon::Hide		()
 {
 	FireEnd				();
+	OnHide				();
 }
 void CWeapon::signal_HideComplete()
 {
@@ -206,6 +207,7 @@ void CWeapon::signal_HideComplete()
 }
 void CWeapon::Show		()
 {
+	OnShow				();
 	bVisible		= TRUE;
 }
 

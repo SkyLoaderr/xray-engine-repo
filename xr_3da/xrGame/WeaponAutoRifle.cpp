@@ -56,10 +56,10 @@ void CWeaponAutoRifle::Load	(CInifile* ini, const char* section)
 	
 	// HUD :: Anims
 	R_ASSERT			(m_pHUD);
-	mhud_idle			= m_pHUD->animGet("idle");
-	mhud_reload			= m_pHUD->animGet("reload");
-	mhud_show			= m_pHUD->animGet("draw");
-	mhud_hide			= m_pHUD->animGet("holster");
+	mhud_idle			= m_pHUD->animGet("idle"	);
+	mhud_reload			= m_pHUD->animGet("reload"	);
+	mhud_show			= m_pHUD->animGet("draw"	);
+	mhud_hide			= m_pHUD->animGet("holster"	);
 	for (int i=0; i<32; i++)
 	{
 		string128		sh_anim;

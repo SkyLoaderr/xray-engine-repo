@@ -253,7 +253,6 @@ void CWeaponMagazined::SetDefaults	()
 void CWeaponMagazined::Hide		()
 {
 	inherited::Hide				();
-	signal_HideComplete			();
 }
 void CWeaponMagazined::Show		()
 {
