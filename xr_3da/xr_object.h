@@ -73,6 +73,7 @@ protected:
 	CObject*							Parent;
 public:
 	DWORD								dwFrame_UpdateCL;
+	virtual void						___instantiate		()					= 0;
 
 	// Network
 	IC BOOL								Local				()					{ return net_Local;		}
@@ -143,8 +144,6 @@ public:
 	virtual void						net_Export			(NET_Packet& P) {};					// export to server
 	virtual void						net_Import			(NET_Packet& P) {};					// import from server
 	virtual BOOL						net_Relevant		()				{ return FALSE; };	// relevant for export to server
-	virtual void						net_OwnershipTake	(CObject* O)	{};
-	virtual void						net_OwnershipReject	(CObject* O)	{};
 	virtual void						net_MigrateInactive	(NET_Packet& P)	{ net_Local = FALSE;	};
 	virtual void						net_MigrateActive	(NET_Packet& P)	{ net_Local = TRUE;		};
 

@@ -64,3 +64,6 @@ public:
 	}
 };
 
+class	NET_Queue_Update
+{
+};
