@@ -115,10 +115,8 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	));
 	dwLightMarkerID						+=	2;	// keep lowest bit always setted up
 
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CLIPPING,			FALSE				));
 	RCache.set_Geometry					(g_accum_point);
 	RCache.Render						(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CLIPPING,			TRUE				));
 
 	// XForm vertices + manual, non projective TC gen
 
