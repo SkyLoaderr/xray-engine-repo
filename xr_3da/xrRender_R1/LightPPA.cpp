@@ -151,8 +151,9 @@ void CLightPPA_Manager::Render()
 CLightPPA*		CLightPPA_Manager::Create			()
 {
 	CLightPPA*	L	= xr_new<CLightPPA>	();
+	L->bActive		= false;
 	inactive.insert	(L);
-	return		L;
+	return			L;
 }
 void			CLightPPA_Manager::Destroy			(CLightPPA* L)
 {
