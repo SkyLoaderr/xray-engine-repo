@@ -42,6 +42,12 @@ typedef		Decimater::DecimaterT	< _mesh >				_decimater;		// Decimater type
 typedef		Decimater::ModQuadricT	< _decimater >::Handle	_HModQuadric;	// Decimation Module Handle type
 
 //main
+struct	FailFace
+{
+	Fvector	P[3];
+	u32		props;
+};
+
 void SimplifyCFORM		(CDB::CollectorPacked& CL)
 {
 	Phase		("CFORM: simplification...");
@@ -63,7 +69,7 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 	}
 	Status		("Building base mesh : faces[%d]...",CL.getTS());
 	std::vector <_mesh::VertexHandle>	fhandles;
-	u32			fail_cnt	= 0;
+	xr_vector	<FailFace>				failedfaces;
 	for (u32 f_it=0; f_it<CL.getTS(); f_it++)		{
 		CDB::TRI&	f		= CL.getT()[f_it];
 		fhandles.clear		();
@@ -71,10 +77,17 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 		fhandles.push_back	(vhandles[f.IDvert(1)]);
 		fhandles.push_back	(vhandles[f.IDvert(2)]);
 		_mesh::FaceHandle	hface	= mesh.add_face		(fhandles);
-		if (hface == _mesh::InvalidFaceHandle)	fail_cnt	+= 1;
+		if (hface == _mesh::InvalidFaceHandle)	{
+			failedfaces.push_back(FailFace());
+			failedfaces.back().P[0]		= CL.getV()[f.IDvert(0)];
+			failedfaces.back().P[1]		= CL.getV()[f.IDvert(1)];
+			failedfaces.back().P[2]		= CL.getV()[f.IDvert(2)];
+			failedfaces.back().props	= f.dummy;
+		}
 		else				mesh.face(hface).set_props	(f.dummy);
 	}
-	clMsg		("%d faces failed topology check",fail_cnt);
+	clMsg		("%d faces failed topology check",failedfaces.size());
+	clMsg		("%f%% geometry/artist quality",100.f * (1-float(failedfaces.size())/float(CL.getTS())));
 	Status		("Building base mesh : normals...");
 	mesh.garbage_collection		();
 	mesh.request_vertex_normals	();
@@ -112,5 +125,11 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 			reinterpret_cast<Fvector&>(mesh.point	(fhandles[2])),
 			fit->props	()
 			);
+	}
+	Status		("Restoring fail-faces...");
+	for (u32 it=0; it<failedfaces.size(); it++)
+	{
+		FailFace&	F	= failedfaces[it];
+		CL.add_face_D	( F.P[0], F.P[1], F.P[2], F.props );
 	}
 }
