@@ -17,7 +17,7 @@ CBlender_Screen_GRAY::CBlender_Screen_GRAY()
 
 CBlender_Screen_GRAY::~CBlender_Screen_GRAY()
 {
-	
+
 }
 
 void	CBlender_Screen_GRAY::Save	( IWriter& fs	)
@@ -38,46 +38,32 @@ void	CBlender_Screen_GRAY::Compile	(CBlender_Compile& C)
 		C.PassSET_ZB			(FALSE,FALSE);
 		C.PassSET_Blend		(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,	FALSE,0);
 		C.PassSET_LightFog	(FALSE,FALSE);
-		
-		if (HW.Caps.raster.op_DP3)	
-		{
-			C.R().SetRS		(D3DRS_TEXTUREFACTOR,color_rgba(76+105,150+105,29+105,0));
 
-			// Stage0 - Base texture
-			C.StageBegin		();
-			{
-				C.StageSET_Address	(D3DTADDRESS_CLAMP);
-				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_DIFFUSE);
-				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_DIFFUSE);
-				C.Stage_Texture		(oT_Name);
-				C.Stage_Matrix		(oT_xform,	0);
-				C.Stage_Constant	("$null");
-			}
-			C.StageEnd			();
-			
-			// Stage1 - Base texture
-			C.StageBegin		();
-			{
-				C.StageSET_Address	(D3DTADDRESS_CLAMP);
-				C.StageSET_Color	(D3DTA_CURRENT,	  D3DTOP_DOTPRODUCT3,	D3DTA_TFACTOR);
-				C.StageSET_Alpha	(D3DTA_CURRENT,	  D3DTOP_DOTPRODUCT3,	D3DTA_TFACTOR);
-				C.Stage_Texture		(oT_Name);
-				C.Stage_Matrix		(oT_xform,	0);
-				C.Stage_Constant	("$null");
-			}
-			C.StageEnd			();
-		} else {
-			C.StageBegin		();
-			{
-				C.StageSET_Address	(D3DTADDRESS_CLAMP);
-				C.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
-				C.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
-				C.Stage_Texture		(oT_Name);
-				C.Stage_Matrix		(oT_xform,	0);
-				C.Stage_Constant		("$null");
-			}
-			C.StageEnd			();
+		C.R().SetRS		(D3DRS_TEXTUREFACTOR,color_rgba(76+105,150+105,29+105,0));
+
+		// Stage0 - Base texture
+		C.StageBegin		();
+		{
+			C.StageSET_Address	(D3DTADDRESS_CLAMP);
+			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_DIFFUSE);
+			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_DIFFUSE);
+			C.Stage_Texture		(oT_Name);
+			C.Stage_Matrix		(oT_xform,	0);
+			C.Stage_Constant	("$null");
 		}
+		C.StageEnd			();
+
+		// Stage1 - Base texture
+		C.StageBegin		();
+		{
+			C.StageSET_Address	(D3DTADDRESS_CLAMP);
+			C.StageSET_Color	(D3DTA_CURRENT,	  D3DTOP_DOTPRODUCT3,	D3DTA_TFACTOR);
+			C.StageSET_Alpha	(D3DTA_CURRENT,	  D3DTOP_DOTPRODUCT3,	D3DTA_TFACTOR);
+			C.Stage_Texture		(oT_Name);
+			C.Stage_Matrix		(oT_xform,	0);
+			C.Stage_Constant	("$null");
+		}
+		C.StageEnd			();
 	}
 	C.PassEnd			();
 }
