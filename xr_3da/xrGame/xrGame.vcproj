@@ -1328,10 +1328,22 @@
 				RelativePath="ExtendedGeom.h">
 			</File>
 			<File
+				RelativePath="PHCharacter.cpp">
+			</File>
+			<File
+				RelativePath="PHCharacter.h">
+			</File>
+			<File
 				RelativePath="PHDynamicData.cpp">
 			</File>
 			<File
 				RelativePath="PHDynamicData.h">
+			</File>
+			<File
+				RelativePath="PHMovementControl.cpp">
+			</File>
+			<File
+				RelativePath="PHMovementControl.h">
 			</File>
 			<File
 				RelativePath="Physics.cpp">

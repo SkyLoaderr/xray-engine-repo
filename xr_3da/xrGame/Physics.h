@@ -3,14 +3,7 @@
 
 #include "dCylinder/dCylinder.h"
 #include "PhysicsShell.h"
-
-
-
-class CPHObject {
-public:
-	virtual void PhDataUpdate(dReal step)=0;
-	virtual void PhTune(dReal step)=0;
-};
+#include "PHObject.h"
 ///////////////////////////////////////////////////////////////////////////////
 class CPHMesh {
 	dGeomID Geom;
@@ -258,6 +251,7 @@ public:
 	virtual void			applyImpulse			(const Fvector& dir, float val)				{};
 	virtual	void PhDataUpdate(dReal step);
 	virtual	void PhTune(dReal step);
+	virtual void InitContact(dContact* c){};
 
 };
 

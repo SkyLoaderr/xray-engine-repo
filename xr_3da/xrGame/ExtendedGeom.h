@@ -2,7 +2,7 @@
 #define EXTENDED_GEOM
 #include <ode\src\objects.h>
 #include <ode\src\geom_internal.h>
-
+#include "PHObject.h"
 enum Material {
 weels,
 cardboard,
@@ -66,7 +66,7 @@ dVector3 last_pos;
 bool pushing_neg,pushing_b_neg;
 Triangle neg_tri,b_neg_tri;
 dReal friction;
-
+CPHObject* ph_object;
 };
 
 inline void dGeomCreateUserData(dxGeom* geom){
@@ -77,7 +77,7 @@ geom->data=new dxGeomUserData();
 ((dxGeomUserData*)geom->data)->last_pos[0]=dInfinity;
 ((dxGeomUserData*)geom->data)->last_pos[1]=dInfinity;
 ((dxGeomUserData*)geom->data)->last_pos[2]=dInfinity;
-
+((dxGeomUserData*)geom->data)->ph_object=NULL;
 }
 
 inline void dGeomDestroyUserData(dxGeom* geom){
@@ -92,6 +92,11 @@ return (dxGeomUserData*) geom->data;
 
 inline void dGeomUserDataSetFriction(dxGeom* geom,dReal friction){
 ((dxGeomUserData*)geom->data)->friction=friction;
+
+}
+
+inline void dGeomUserDataSetPhObject(dxGeom* geom,CPHObject* phObject){
+((dxGeomUserData*)geom->data)->ph_object=phObject;
 
 }
 #endif

@@ -638,11 +638,12 @@ void CPHWorld::Step(dReal step)
 //			dWorldSetERP(phWorld,  0.2);
 //			dWorldSetCFM(phWorld,  0.0001);
 
-			for(iter=m_objects.begin();iter!=m_objects.end();iter++)
-				(*iter)->PhTune(fixed_step);	
+
 
 			dSpaceCollide(Space, 0, &NearCallback); 
 		
+		for(iter=m_objects.begin();iter!=m_objects.end();iter++)
+				(*iter)->PhTune(fixed_step);	
 
 			dWorldStep(phWorld, fixed_step);
 			
@@ -819,7 +820,12 @@ else
 				pushing_neg=dGeomGetUserData(contacts[i].geom.g2)->pushing_b_neg||
 				dGeomGetUserData(contacts[i].geom.g2)->pushing_neg;
 	
-
+			if(dGeomGetUserData(contacts[i].geom.g2)->ph_object){
+					dGeomGetUserData(contacts[i].geom.g2)->ph_object->InitContact(&contacts[i]);
+					dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
+					dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
+					continue;
+			}
 		}
 		if(contacts[i].geom.g1->data){ 
 			//contacts[i].surface.mu=dGeomGetUserData(contacts[i].geom.g1)->friction;
@@ -830,6 +836,14 @@ else
 			else
 				pushing_neg=dGeomGetUserData(contacts[i].geom.g1)->pushing_b_neg||
 				dGeomGetUserData(contacts[i].geom.g1)->pushing_neg;
+
+			if(dGeomGetUserData(contacts[i].geom.g1)->ph_object){
+					dGeomGetUserData(contacts[i].geom.g1)->ph_object->InitContact(&contacts[i]);
+					dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
+					dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
+					continue;
+				}
+
 		}
 		if(pushing_neg) contacts[i].surface.mu=dInfinity;
 
