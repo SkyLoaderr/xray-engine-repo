@@ -23,6 +23,7 @@
 #include <Menus.hpp>
 #include "MXCtrls.hpp"
 #include "FolderLib.h"
+#include "RenderWindow.hpp"
 //---------------------------------------------------------------------------
 // refs
 class CLAItem;
@@ -46,7 +47,6 @@ __published:	// IDE-managed Components
 	TPanel *paColorAndControls;
 	TPanel *paPropsGroup;
 	TPanel *paProps;
-	TPaintBox *pbG;
 	TPanel *paColor;
 	TMxLabel *lbCurFrame;
 	TPanel *Panel1;
@@ -63,6 +63,9 @@ __published:	// IDE-managed Components
 	TStaticText *stEndFrame;
 	TExtBtn *ebDeleteKey;
 	TExtBtn *ebCreateKey;
+	TD3DWindow *wnShape;
+	TPaintBox *pbG;
+	TMxLabel *lbAlpha;
     void __fastcall FormShow(TObject *Sender);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
@@ -97,12 +100,15 @@ __published:	// IDE-managed Components
 	void __fastcall FormDestroy(TObject *Sender);
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
+	void __fastcall wnShapeKeyDown(TObject *Sender, WORD &Key,
+          TShiftState Shift);
 private:	// User declarations
     void 	InitItems();
     bool 	bFinalClose;
     bool 	IsClose();
 	static 	TfrmEditLightAnim *form;
-    CLAItem* 		m_CurrentItem;
+    CLAItem* 				m_CurrentItem;
+    ListItem* 				m_CurrentOwner;
     void	SetCurrentItem	(CLAItem* item, ListItem* owner);
     void	UpdateView		();
     int		iMoveKey;
@@ -113,6 +119,7 @@ private:	// User declarations
     TItemList*				m_Items;
     TProperties*			m_Props;
     void __stdcall 			OnModified				(void);
+    void					UpdateProperties		();
 public:		// User declarations
     __fastcall 				TfrmEditLightAnim		(TComponent* Owner);
     static bool 			FinalClose				();

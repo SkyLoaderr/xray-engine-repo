@@ -18,6 +18,7 @@
 #pragma link "ElTreeAdvEdit"
 #pragma link "MxMenus"
 #pragma link "MXCtrls"
+#pragma link "RenderWindow"
 #pragma resource "*.dfm"
 
 TfrmEditLightAnim* TfrmEditLightAnim::form=0;
@@ -29,6 +30,7 @@ __fastcall TfrmEditLightAnim::TfrmEditLightAnim(TComponent* Owner)
     DEFINE_INI(fsStorage);
     bFinalClose		= false;
     m_CurrentItem 	= 0;
+    m_CurrentOwner	= 0;
     iMoveKey        = -1;
     m_Props 		= 0;
     m_Items			= 0;
@@ -181,21 +183,36 @@ void __fastcall	TfrmEditLightAnim::OnFrameCountAfterEdit  (PropValue* v, s32& va
 }
 //---------------------------------------------------------------------------
 
-void TfrmEditLightAnim::SetCurrentItem(CLAItem* I, ListItem* owner)
+void TfrmEditLightAnim::UpdateProperties()
 {
-	m_CurrentItem 				= I;
-    paItemProps->Visible 		= !!I;
     // fill data
     PropItemVec items;
 	if (m_CurrentItem){
-        PHelper().CreateName	(items, "Name",			&m_CurrentItem->cName,		owner);
+        PHelper().CreateName	(items, "Name",			&m_CurrentItem->cName,		m_CurrentOwner);
         PHelper().CreateFloat	(items,	"FPS",			&m_CurrentItem->fFPS,		0.1f,1000,1.f,1);
         S32Value* V;
         V=PHelper().CreateS32	(items,	"Frame Count",	&m_CurrentItem->iFrameCount,1,100000,1);
         V->OnAfterEditEvent.bind(this,&TfrmEditLightAnim::OnFrameCountAfterEdit);
+
+        u32 frame 				= sePointer->Value;
+        PHelper().CreateCaption	(items,	"Current\\Frame",	shared_str().sprintf("%d",frame));
+        u32* val				= m_CurrentItem->GetKey(sePointer->Value);
+        if (val){
+            PHelper().CreateColor(items,"Current\\Color",	val);
+            PHelper().CreateU8	(items,	"Current\\Alpha",	((u8*)val)+3, 0x00, 0xFF);
+        }
     }
     m_Props->AssignItems		(items);
     UpdateView					();
+}
+//---------------------------------------------------------------------------
+
+void TfrmEditLightAnim::SetCurrentItem(CLAItem* I, ListItem* owner)
+{
+	m_CurrentItem 				= I;
+    m_CurrentOwner				= owner;
+    paItemProps->Visible 		= !!I;
+    UpdateProperties			();
 }
 //---------------------------------------------------------------------------
 
@@ -255,6 +272,7 @@ void __fastcall TfrmEditLightAnim::pbGMouseDown(TObject *Sender,
             }
         }
     }
+    wnShape->SetFocus();
 }
 //---------------------------------------------------------------------------
 
@@ -300,27 +318,11 @@ void __fastcall TfrmEditLightAnim::ebDeleteKeyClick(TObject *Sender)
 
 void __fastcall TfrmEditLightAnim::ebCreateKeyClick(TObject *Sender)
 {
-    u32 old_color			= m_CurrentItem->Interpolate(sePointer->Value);
+    u32 color				= m_CurrentItem->InterpolateRGB(sePointer->Value);
 
-    float 	alpha			= float		(color_get_A(old_color))/255.f;
-    u32 	base_color		= color_rgba(color_get_B(old_color),color_get_G(old_color),color_get_R(old_color),0);
-    
-	TProperties* P 			= TProperties::CreateModalForm("Key Properties",true);
-    // fill data
-    PropItemVec items;
-    PHelper().CreateColor	(items, "Color",		&base_color);
-    PHelper().CreateFloat	(items,	"Alpha",		&alpha);
-    P->AssignItems			(items);
-
-    if (mrOk==P->ShowPropertiesModal()){
-        u32 new_color		= color_rgba(color_get_B(base_color),color_get_G(base_color),color_get_R(base_color),u8(alpha*255.f));
-        u32 old_sz			= m_CurrentItem->Keys.size();
-        m_CurrentItem->InsertKey(sePointer->Value,new_color);
-        UpdateView			();
-        if ((old_color!=new_color)||(old_sz!=m_CurrentItem->Keys.size())) 
-        	OnModified();
-    }
-    TProperties::DestroyForm(P);
+    m_CurrentItem->InsertKey(sePointer->Value,color);
+    UpdateProperties		();
+    OnModified				();
 }                    
 //---------------------------------------------------------------------------
 
@@ -356,7 +358,7 @@ void __fastcall TfrmEditLightAnim::pbGPaint(TObject *Sender)
             for (int k=0; k<g_cnt; k++){
 	            cb.Left		= iFloor(x_prev+k*segment);
     	        cb.Right	= iFloor(x_prev+k*segment+segment+1);
-			    B->Canvas->Brush->Color	= TColor(subst_alpha(m_CurrentItem->Interpolate(prev_key->first+k),0));
+			    B->Canvas->Brush->Color	= TColor(subst_alpha(m_CurrentItem->InterpolateBGR(prev_key->first+k),0));
 		    	B->Canvas->FillRect(cb);
             }
             prev_key 	= it;
@@ -417,9 +419,11 @@ void __fastcall TfrmEditLightAnim::OnIdle()
 {
 	if (form){
 		if (form->m_CurrentItem){
-        	int frame;
-			form->paColor->Color=TColor(subst_alpha(form->m_CurrentItem->CalculateBGR(Device.fTimeGlobal,frame),0));
-            form->lbCurFrame->Caption=frame;
+        	int 	frame;
+            u32 C 	= form->m_CurrentItem->CalculateBGR(Device.fTimeGlobal,frame);
+			form->paColor->Color		= TColor(subst_alpha(C,0));
+            form->lbCurFrame->Caption	= AnsiString().sprintf("%d",frame);
+            form->lbAlpha->Caption		= AnsiString().sprintf("[%d]",color_get_A(C));
         }
         UI->RedrawScene();
     }
@@ -429,6 +433,7 @@ void __fastcall TfrmEditLightAnim::OnIdle()
 void __fastcall TfrmEditLightAnim::sePointerChange(TObject *Sender)
 {
 	sePointer->Color = TColor(m_CurrentItem->IsKey(sePointer->Value)?0x00BFFFFF:0x00A0A0A0);
+    UpdateProperties();
 }
 //---------------------------------------------------------------------------
 
@@ -506,4 +511,30 @@ void __fastcall TfrmEditLightAnim::ebFirstFrameClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmEditLightAnim::wnShapeKeyDown(TObject *Sender,
+      WORD &Key, TShiftState Shift)
+{
+    if (m_CurrentItem){
+        if (Key==VK_LEFT){
+            if (Shift.Contains(ssAlt)){
+                sePointer->Value--;
+                pbG->Repaint();
+            }else if (Shift.Contains(ssCtrl)){
+	            ebFirstKeyClick(Sender);
+            }else{
+                ebPrevKeyClick(Sender);
+            }
+        }else if (Key==VK_RIGHT){
+            if (Shift.Contains(ssAlt)){
+                sePointer->Value++;
+                pbG->Repaint();
+            }else if (Shift.Contains(ssCtrl)){
+	            ebLastKeyClick(Sender);
+            }else{
+                ebNextKeyClick(Sender);
+            }
+        }
+    }
+}
+//---------------------------------------------------------------------------
 

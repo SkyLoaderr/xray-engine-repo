@@ -1,6 +1,6 @@
 object frmEditLightAnim: TfrmEditLightAnim
-  Left = -934
-  Top = 453
+  Left = -903
+  Top = 271
   Width = 650
   Height = 258
   BorderIcons = [biSystemMenu, biMinimize]
@@ -64,6 +64,25 @@ object frmEditLightAnim: TfrmEditLightAnim
           Top = 3
           Width = 8
           Height = 13
+          Caption = '7'
+          Color = clWhite
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = 15790320
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentColor = False
+          ParentFont = False
+          ShadowColor = 5460819
+          ShadowPos = spRightBottom
+          Transparent = True
+        end
+        object lbAlpha: TMxLabel
+          Left = 189
+          Top = 3
+          Width = 8
+          Height = 13
+          Alignment = taRightJustify
           Caption = '7'
           Color = clWhite
           Font.Charset = DEFAULT_CHARSET
@@ -371,19 +390,6 @@ object frmEditLightAnim: TfrmEditLightAnim
       BevelOuter = bvNone
       ParentColor = True
       TabOrder = 1
-      object pbG: TPaintBox
-        Left = 0
-        Top = 196
-        Width = 257
-        Height = 35
-        Align = alBottom
-        Color = clBlack
-        ParentColor = False
-        OnMouseDown = pbGMouseDown
-        OnMouseMove = pbGMouseMove
-        OnMouseUp = pbGMouseUp
-        OnPaint = pbGPaint
-      end
       object paProps: TPanel
         Left = 0
         Top = 0
@@ -393,6 +399,31 @@ object frmEditLightAnim: TfrmEditLightAnim
         BevelOuter = bvLowered
         Color = 10528425
         TabOrder = 0
+      end
+      object wnShape: TD3DWindow
+        Left = 0
+        Top = 196
+        Width = 257
+        Height = 35
+        FocusedColor = 15000804
+        Align = alBottom
+        BorderStyle = bsNone
+        Color = 5592405
+        TabOrder = 1
+        OnKeyDown = wnShapeKeyDown
+        object pbG: TPaintBox
+          Left = 1
+          Top = 1
+          Width = 255
+          Height = 33
+          Align = alClient
+          Color = clBlack
+          ParentColor = False
+          OnMouseDown = pbGMouseDown
+          OnMouseMove = pbGMouseMove
+          OnMouseUp = pbGMouseUp
+          OnPaint = pbGPaint
+        end
       end
     end
   end

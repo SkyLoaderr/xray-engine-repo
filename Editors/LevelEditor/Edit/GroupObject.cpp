@@ -199,16 +199,18 @@ void CGroupObject::NumSetRotation(const Fvector& rot)
 }
 void CGroupObject::NumSetScale(const Fvector& scale)
 {
+	Fvector old_s = PScale;
 	inherited::NumSetScale(scale);
     Fmatrix prev; prev.invert(FTransform);
     UpdateTransform(true);
 
+    Fvector ds; ds.sub(FScale,old_s);
 	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
+    	Fvector s=(*it)->PScale; s.add(ds); (*it)->PScale=s;
     	Fvector v=(*it)->PPosition;
         prev.transform_tiny(v);
         FTransform.transform_tiny(v);
     	(*it)->PPosition=v;
-    	(*it)->PScale=scale;
     }
 }
 
@@ -357,7 +359,7 @@ bool CGroupObject::Load(IReader& F)
     F.r_chunk(GROUPOBJ_CHUNK_FLAGS,&m_Flags);
 
 	// objects
-    if (IsOpened()){
+    if (IsOpened()){           
     	m_PObjects	= xr_new<SStringVec>();
         R_ASSERT(F.find_chunk(GROUPOBJ_CHUNK_OPEN_OBJECT_LIST));
         u32 cnt 	= F.r_u32();
