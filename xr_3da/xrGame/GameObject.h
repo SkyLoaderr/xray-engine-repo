@@ -39,6 +39,8 @@ protected:
 	bool					m_bObjectRemoved;
 
 public:
+	CInifile				*m_ini_file;
+
 	CPhysicsShell			*m_pPhysicsShell;
 	IC CPhysicsShell		*&PPhysicsShell()		
 	{

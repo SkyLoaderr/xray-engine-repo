@@ -38,6 +38,7 @@ public:
 
 	virtual void			SelectAnimation				(const Fvector& _view, const Fvector& _move, float speed );
 	virtual BOOL			feel_vision_isRelevant		(CObject *O);
+	virtual	Feel::Sound*	dcast_FeelSound				()			{ return this;	}
 	
 	virtual void			HitSignal					(float amount, Fvector& vLocalDir, CObject* who, s16 element) {}
 	virtual void			Hit							(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound) {}

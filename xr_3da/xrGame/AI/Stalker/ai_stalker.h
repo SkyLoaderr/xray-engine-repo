@@ -233,6 +233,8 @@ public:
 	CCoverEvaluatorFarFromEnemy	*m_ce_far;
 	CCoverEvaluatorBest			*m_ce_best;
 	CCoverEvaluatorAngle		*m_ce_angle;
+
+	virtual	Feel::Sound*		dcast_FeelSound			()			{ return this;	}
 };
 
 #include "ai_stalker_inline.h"

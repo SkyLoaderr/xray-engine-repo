@@ -24,15 +24,16 @@
 //////////////////////////////////////////////////////////////////////
 CGameObject::CGameObject		()
 {
-	Init					();
+	Init						();
 }
 
 CGameObject::~CGameObject		()
 {
-	xr_delete				(m_lua_game_object);
+	VERIFY						(!m_ini_file);
+	xr_delete					(m_lua_game_object);
 }
 
-void CGameObject::Init		()
+void CGameObject::Init			()
 {
 	m_pPhysicsShell				= NULL;
 	m_lua_game_object			= 0;
@@ -43,6 +44,7 @@ void CGameObject::Init		()
 	m_dwFrameDestroy			= u32(-1);
 	m_dwFrameClient				= u32(-1);
 	m_script_clsid				= -1;
+	m_ini_file					= 0;
 }
 
 void CGameObject::Load(LPCSTR section)
@@ -86,6 +88,8 @@ void CGameObject::net_Destroy	()
 {
 	if (!frame_check(m_dwFrameDestroy))
 		return;
+
+	xr_delete				(m_ini_file);
 
 	m_script_clsid			= -1;
 	if (Visual() && PKinematics(Visual()))
@@ -164,6 +168,19 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	cNameSect_set					(E->s_name);
 	if (E->s_name_replace[0])
 		cName_set					(E->s_name_replace);
+
+	CSE_ALifeObject					*O = dynamic_cast<CSE_ALifeObject*>(E);
+	if (O && xr_strlen(O->m_ini_string)) {
+#pragma warning(push)
+#pragma warning(disable:4238)
+		m_ini_file					= xr_new<CInifile>(
+			&IReader				(
+				(void*)(*(O->m_ini_string)),
+				O->m_ini_string.size()
+			)
+		);
+#pragma warning(pop)
+	}
 
 	reload							(*cNameSect());
 	reinit							();

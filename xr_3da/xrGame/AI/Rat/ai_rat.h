@@ -326,6 +326,7 @@ public:
 		virtual void				create_physic_shell	();
 		virtual void				setup_physic_shell	();
 		virtual void				activate_physic_shell();
+		virtual	Feel::Sound*		dcast_FeelSound		()			{ return this;	}
 };
 
 #include "ai_rat_inline.h"
