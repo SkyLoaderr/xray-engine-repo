@@ -95,6 +95,8 @@
 		<task>task1</task>
 		<task>task2</task>
 		
+		<dialog>pda_trade</dialog>
+		
 		<article>three</article>
 		<article>four</article>
 		<location >
