@@ -380,19 +380,8 @@ void CBuild::Run	(string& P)
 	xrPhase_Subdivide();
 	IsolateVertices	();
 
-	// All lighting
+	// All lighting + lmaps building and saving
 	Light			();
-
-	// 
-	FPU::m64r		();
-	Phase			("Destroying collision model...");
-	mem_Compact		();
-	xr_delete		(RCAST_Model);
-
-	FPU::m64r		();
-	Phase			("Merging lightmaps...");
-	mem_Compact		();
-	xrPhase_MergeLM	();
 
 	FPU::m64r		();
 	Phase			("Merging geometry...");

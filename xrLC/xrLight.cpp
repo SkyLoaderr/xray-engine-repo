@@ -120,11 +120,24 @@ void CBuild::Light()
 
 	LightVertex		();
 
+	//****************************************** Merge LMAPS
+	FPU::m64r		();
+	Phase			("LIGHT: Merging lightmaps...");
+	mem_Compact		();
+
+	xrPhase_MergeLM	();
+
 	//****************************************** Wait for MU
 	FPU::m64r		();
 	Phase			("LIGHT: Waiting for MU-thread...");
 	mem_Compact		();
-	mu.wait			(100);
+	mu.wait			(500);
+
+	//****************************************** Wait for MU
+	FPU::m64r		();
+	Phase			("Destroying ray-trace model...");
+	mem_Compact		();
+	xr_delete		(RCAST_Model);
 }
 
 //-----------------------------------------------------------------------
