@@ -375,8 +375,6 @@ void CALifeCombatManager::vfFinishCombat(ECombatResult tCombatResult)
 					--N;
 				}
 			}
-			if (!m_tpaCombatObjects[i]->bfActive())
-				release(m_tpaCombatObjects[i]->base());
 		}
 		else {
 			m_tpaCombatObjects[i]->vfUpdateWeaponAmmo			();
