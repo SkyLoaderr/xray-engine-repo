@@ -21,7 +21,7 @@
 
 class CBaseFunction {
 protected:
-	u32			m_dwLastUpdate;
+	u32				m_dwLastUpdate;
 	float			m_fLastValue;
 	CEntity			*m_tpLastMonster;
 	float			m_fMinResultValue;
