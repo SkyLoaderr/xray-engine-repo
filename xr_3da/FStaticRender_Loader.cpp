@@ -243,8 +243,8 @@ void CRender::LoadSectors(IReader* fs)
 		if (0==P) break;
 
 		CSector* __S		= xr_new<CSector> (i);
-		S->Load				(*P);
-		Sectors.push_back	(S);
+		__S->Load			(*P);
+		Sectors.push_back	(__S);
 
 		P->close();
 	}
@@ -261,8 +261,8 @@ void CRender::LoadSectors(IReader* fs)
 			fs->r		(&P,sizeof(P));
 			CPortal*	__P	= (CPortal*)Portals[i];
 			__P->Setup	(P.vertices.begin(),P.vertices.size(),
-				getSector(P.sector_front),
-				getSector(P.sector_back));
+				(CSector*)getSector(P.sector_front),
+				(CSector*)getSector(P.sector_back));
 			for (u32 j=2; j<P.vertices.size(); j++)
 				CL.add_face_packed(
 				P.vertices[0],P.vertices[j-1],P.vertices[j],

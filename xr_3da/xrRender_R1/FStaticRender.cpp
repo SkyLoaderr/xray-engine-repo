@@ -20,7 +20,7 @@ CVisual*	CRender::model_Duplicate		(CVisual* V)					{ return Models.Instance_Dup
 void		CRender::model_Delete			(CVisual* &V)					{ Models.Delete(V);						}
 
 int						CRender::getVisualsCount		()					{ return Visuals.size();								}
-CPortal*				CRender::getPortal				(int id)			{ VERIFY(id<int(Portals.size()));	return &Portals[id];}
+IRender_Portal*			CRender::getPortal				(int id)			{ VERIFY(id<int(Portals.size()));	return Portals[id];	}
 IRender_Sector*			CRender::getSector				(int id)			{ VERIFY(id<int(Sectors.size()));	return Sectors[id];	}
 IRender_Sector*			CRender::getSectorActive		()					{ return pLastSector;									}
 CVisual*				CRender::getVisual				(int id)			{ VERIFY(id<int(Visuals.size()));	return Visuals[id];	}
@@ -174,7 +174,7 @@ void CRender::Calculate()
 	Device.Statistic.RenderCALC.Begin();
 
 	// Transfer to global space to avoid deep pointer access
-	CRender_target* T				=	getTarget	();
+	IRender_target* T				=	getTarget	();
 	g_fFarSq						=	75.f;
 	g_fFarSq						*=	g_fFarSq;
 	g_fSCREEN						=	float(T->get_width()*T->get_height());

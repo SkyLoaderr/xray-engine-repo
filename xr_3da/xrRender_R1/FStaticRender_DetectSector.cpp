@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "fstaticrender.h"
  
-CSector* CRender::detectSector(Fvector& P)
+IRender_Sector* CRender::detectSector(Fvector& P)
 {
 	XRC.ray_options	(CDB::OPT_ONLYNEAREST);
 	Fvector dir; dir.set(0,-1,0);

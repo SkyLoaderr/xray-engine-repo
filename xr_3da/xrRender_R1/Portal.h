@@ -80,9 +80,9 @@ public:
 	}
 
 	// Visuals management
-	void					tempobjAdd		(CTempObject* O)
+	void					tempAdd		(CTempObject* O)
 	{	tempObjects.push_back	(O); }
-	void					tempobjRemove	(CTempObject* O)
+	void					tempRemove	(CTempObject* O)
 	{
 		vector<CTempObject*>::iterator I = find(tempObjects.begin(),tempObjects.end(),O);
 		if (I!=tempObjects.end()) tempObjects.erase(I);
