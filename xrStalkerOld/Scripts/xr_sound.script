@@ -146,12 +146,6 @@ function load_sound(obj)
 	theme["trade_no"] = { exec = npc_class, types = {}}
 	theme["trade_no"].types["stalker"] = load_theme("trade_no_stalker")
 	
-	--раненый
-	theme["wounded_help"] = { exec = npc_class, types = {}}
-	theme["wounded_help"].types["soldier"] = load_theme("wounded_get_help")
-	theme["wounded_enemy"] = { exec = npc_class, types = {}}
-	theme["wounded_enemy"].types["soldier"] = load_theme("wounded_enemy")
-
 --	print_table(theme)
 	printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
 end
