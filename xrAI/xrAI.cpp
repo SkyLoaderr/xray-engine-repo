@@ -13,6 +13,7 @@
 #pragma comment(lib,"winmm.LIB")
 #pragma comment(lib,"x:\\xrcdb.LIB")
 #pragma comment(lib,"x:\\MagicFM.LIB")
+#pragma comment(lib,"x:\\xrCore.LIB")
 
 extern void	xrCompiler			(LPCSTR name);
 extern void __cdecl logThread	(void *dummy);
@@ -46,9 +47,6 @@ void Startup(LPSTR     lpCmdLine)
 	_beginthread		(logThread,	0,0);
 	Sleep				(150);
 	
-	// Faster FPU 
-	InitMath			();
-
 	// Load project
 	name[0]=0; 
 	if (strstr(cmd,"-f"))
@@ -83,22 +81,9 @@ int APIENTRY WinMain(HINSTANCE hInstance,
                      int       nCmdShow)
 {
 	// Initialize debugging
-	Debug.Start		();
+ 	Core._initialize		("xrAI");
 
-#ifndef _DEBUG
-	__try
-	{
-#endif
-		Startup		(lpCmdLine);
-#ifndef _DEBUG
-	}
-	__except(Debug.LogStack(GetExceptionInformation()))
-	{
-		MessageBox(0,"Access violation occured. See ENGINE.LOG for details.","Error",MB_OK|MB_ICONSTOP);
-	}
-#endif
-	
-	Debug.Stop		();
+	Startup					(lpCmdLine);
 	
 	return 0;
 }

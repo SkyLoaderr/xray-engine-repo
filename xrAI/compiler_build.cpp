@@ -227,7 +227,7 @@ void	hash_Initialize ()
 	{
 		for (int j=0; j<HDIM_Z; j++)
 		{
-			HASH[i][j]	= new vecDW;
+			HASH[i][j]	= xr_new<vecDW>();
 			HASH[i][j]->reserve	(64);
 		}
 	}
@@ -238,7 +238,7 @@ void	hash_Destroy	()
 	{
 		for (int j=0; j<HDIM_Z; j++)
 		{
-			_DELETE	(HASH[i][j]);
+			xr_delete	(HASH[i][j]);
 		}
 	}
 }
@@ -291,7 +291,7 @@ BOOL	CanTravel(Fvector& _from, Fvector& _at)
 {
 	float eps	= 0.1f;
 	float eps_y = g_params.fPatchSize*1.5f; // * tan(56) = 1.5
-	Fvector Result; float radius = g_params.fPatchSize/sqrtf(2);
+	Fvector Result; float radius = g_params.fPatchSize/_sqrt(2.f);
 
 	// 1
 	msimulator_Simulate(Result,_from,_at,radius,0.7f);
@@ -313,14 +313,14 @@ DWORD BuildNode(Fvector& vFrom, Fvector& vAt)	// return node's index
 
 	if (!CanTravel(vFrom, vAt))	return InvalidNode;
 
-	// *** set up new node
+	// *** set up xr_new<node
 	Node N;
 	if (CreateNode(vAt,N)) {
 		//*** check if similar node exists
 		DWORD	old		= FindNode(N.Pos);
 		if (old==InvalidNode)	
 		{
-			// register new node
+			// register xr_new<node
 			RegisterNode(N);
 			return g_nodes.size()-1;
 		} else {

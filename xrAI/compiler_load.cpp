@@ -64,11 +64,11 @@ void xrLoad(LPCSTR name)
 
 		string32	ID			= BUILD_PROJECT_MARK;
 		string32	id;
-		CStream*	F			= new CFileStream(N);
+		CStream*	F			= xr_new<CFileStream>(N);
 		F->Read		(&id,8);
 		if (0==strcmp(id,ID))	{
-			_DELETE		(F);
-			F			= new CCompressedStream(N,ID);
+			xr_delete		(F);
+			F			= xr_new<CCompressedStream>(N,ID);
 		}
 		CStream&				FS	= *F;
 

@@ -66,7 +66,7 @@ float LightPoint(CDB::COLLIDER& DB, Fvector &P, Fvector &N, LSelection& SEL)
 			if( D <=0 ) continue;
 			
 			// Raypick
-			float R		= sqrtf(sqD);
+			float R		= _sqrt(sqD);
 			if (!RayPick(DB,Pnew,Ldir,R,*L))
 				amount += (D*L->amount)/(L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
 		}
@@ -149,7 +149,7 @@ void	xrLight			()
 	DWORD	stride			= g_nodes.size()/NUM_THREADS;
 	DWORD	last			= g_nodes.size()-stride*(NUM_THREADS-1);
 	for (DWORD thID=0; thID<NUM_THREADS; thID++)
-		Threads.start(new LightThread(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
+		Threads.start(xr_new<LightThread>(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
 	Threads.wait			();
 	Msg("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
 

@@ -39,7 +39,7 @@ IC int lines_intersect(	float x1, float y1,	float x2, float y2,	float x3, float 
 	r3 = a1 * x3 + b1 * y3 + c1;
 	r4 = a1 * x4 + b1 * y4 + c1;
 	
-	if ((r3*r4 > EPS) && (fabsf(r3) > EPS_H) && (fabsf(r4) > EPS_H))
+	if ((r3*r4 > EPS) && (_abs(r3) > EPS_H) && (_abs(r4) > EPS_H))
 		return(LI_NONE);
 	
 	a2 = y4 - y3;
@@ -49,7 +49,7 @@ IC int lines_intersect(	float x1, float y1,	float x2, float y2,	float x3, float 
 	r1 = a2 * x1 + b2 * y1 + c2;
 	r2 = a2 * x2 + b2 * y2 + c2;
 	
-	if ((r1*r2 > EPS) && (fabsf(r1) > EPS_H) && (fabsf(r2) > EPS_H))
+	if ((r1*r2 > EPS) && (_abs(r1) > EPS_H) && (_abs(r2) > EPS_H))
 		return(LI_NONE);
 	
 	if ( _abs(r1*r2)<EPS_S && _abs(r3*r4)<EPS_S ) 
@@ -92,7 +92,7 @@ IC bool bfInsideNode(NodeCompressed *tpNode, Fvector &tCurrentPosition, bool bUs
 		(tCurrentPosition.x <= tP1.x + fHalfSubNodeSize + EPS) &&
 		(tCurrentPosition.z <= tP1.z + fHalfSubNodeSize + EPS) &&
 		((!bUseY) || 
-		 (fabsf(tCurrentPosition.y - ffGetY(*tpNode,tCurrentPosition.x,tCurrentPosition.z)) < 1.f))
+		 (_abs(tCurrentPosition.y - ffGetY(*tpNode,tCurrentPosition.x,tCurrentPosition.z)) < 1.f))
 	);
 }
 

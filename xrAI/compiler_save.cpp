@@ -64,7 +64,7 @@ void xrSaveNodes(LPCSTR N)
 {
 	Msg("NS: %d, CNS: %d, ratio: %f%%",sizeof(Node),sizeof(NodeCompressed),100*float(sizeof(NodeCompressed))/float(sizeof(Node)));
 
-	FILE_NAME	fName; 
+	string256	fName; 
 	strconcat	(fName,N,"level.ai");
 
 	CFS_File	fs(fName);

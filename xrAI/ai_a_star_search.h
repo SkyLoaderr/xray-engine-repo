@@ -69,7 +69,7 @@ public:
 							**tppHeapStart = m_tppHeap + 1,
 							**tppHeapEnd = m_tppHeap + 2;
 		
-		memset(tpTemp,0,sizeof(SNode));
+		Memory.mem_fill(tpTemp,0,sizeof(SNode));
 		
 		tpIndexes[dwStartNode].dwTime = dwAStarStaticCounter;
 

@@ -25,7 +25,7 @@
 	u32	stride	= size/THREAD_COUNT;\
 	u32	last	= size - stride*(THREAD_COUNT - 1);\
 	for (u32 thID=0; thID<THREAD_COUNT; thID++)\
-		tThreadManager.start(new ThreadClass(thID,thID*stride,thID*stride+((thID==(THREAD_COUNT - 1))?last:stride)));\
+		tThreadManager.start(xr_new<ThreadClass>(thID,thID*stride,thID*stride+((thID==(THREAD_COUNT - 1))?last:stride)));\
 }
 
 typedef struct tagRPoint {
@@ -63,9 +63,9 @@ u32						*dwaEdgeOwner;  // edge owners
 
 void vfLoafAIMap(LPCSTR name)
 {
-	FILE_NAME	fName;
+	string256	fName;
 	strconcat	(fName,name,"level.ai");
-	vfs			= new CVirtualFileStream	(fName);
+	vfs			= xr_new<CVirtualFileStream>(fName);
 	
 	// m_header & data
 	vfs->Read	(&m_header,sizeof(m_header));
@@ -95,7 +95,7 @@ void vfLoafAIMap(LPCSTR name)
 
 void vfLoadAIPoints(LPCSTR name)
 {
-	FILE_NAME	fName;
+	string256	fName;
 	strconcat	(fName,name,"level.game");
 	CVirtualFileStream	F(fName);
 
@@ -165,8 +165,8 @@ void vfRemoveDuplicateAIPoints()
 
 	for (i=0; i<j; i++)
 		tpaGraph.erase(tpaGraph.begin() + dwpGraphOrder[i] - i);
-	_FREE(dwpSortOrder);
-	_FREE(dwpGraphOrder);
+	xr_free(dwpSortOrder);
+	xr_free(dwpGraphOrder);
 	Progress(1.0f);
 	Msg("%d vertexes has been removed",j);
 }
@@ -233,8 +233,9 @@ void vfPreprocessEdges(u32 dwEdgeCount)
 	dwaEdgeOwner = (u32 *)xr_malloc(dwEdgeCount*sizeof(u32));
 	for (int i=0, j=0; i<(int)tpaGraph.size(); i++) {
 		SGraphVertex &tGraphVertex = tpaGraph[i]; 
-		memcpy(tpPointer,tGraphVertex.tpaEdges,tGraphVertex.dwNeighbourCount*sizeof(SGraphEdge));
-		//_FREE(tGraphVertex.tpaEdges);
+		Memory.mem_copy(tpPointer,tGraphVertex.tpaEdges,tGraphVertex.dwNeighbourCount*sizeof(SGraphEdge));
+		//PSGP.memCopy(tpPointer,tGraphVertex.tpaEdges,tGraphVertex.dwNeighbourCount*sizeof(SGraphEdge));
+		//xr_free(tGraphVertex.tpaEdges);
 		tGraphVertex.tpaEdges = tpPointer;
 		tpPointer += tGraphVertex.dwNeighbourCount;
 		for (int k=0; k<(int)tGraphVertex.dwNeighbourCount; k++, j++) {
@@ -242,7 +243,7 @@ void vfPreprocessEdges(u32 dwEdgeCount)
 			dwaEdgeOwner[j] = i;
 		}
 	}
-	_FREE(tpaFullEdges);
+	xr_free(tpaFullEdges);
 	Progress(1.0f);
 }
 
@@ -301,7 +302,7 @@ void vfNormalizeGraph()
 
 void vfSaveGraph(LPCSTR name)
 {
-	FILE_NAME	fName;
+	string256	fName;
 	strconcat	(fName,name,"level.graph");
 	
 	CFS_Memory	tGraph;
@@ -310,7 +311,7 @@ void vfSaveGraph(LPCSTR name)
 	tGraph.write(&tGraphHeader,sizeof(SGraphHeader));	
 	Progress(0.0f);
 	SCompressedGraphVertex tCompressedGraphVertex;
-	memset(&tCompressedGraphVertex,0,sizeof(SCompressedGraphVertex));
+	Memory.mem_fill(&tCompressedGraphVertex,0,sizeof(SCompressedGraphVertex));
 	for (int i=0; i<(int)tpaGraph.size(); Progress(float(++i)/tpaGraph.size()/4))
 		tGraph.write(&tCompressedGraphVertex,sizeof(SCompressedGraphVertex));
 	Progress(0.25f);
@@ -343,7 +344,7 @@ void vfSaveGraph(LPCSTR name)
 void xrBuildGraph(LPCSTR name)
 {
 	CThreadManager		tThreadManager;		// multithreading
-	CCriticalSection	tCriticalSection;	// thread synchronization
+	xrCriticalSection	tCriticalSection;	// thread synchronization
 
 	Msg("Building Level %s",name);
 
@@ -372,7 +373,7 @@ void xrBuildGraph(LPCSTR name)
 
 	Phase("Building graph");
 	for (u32 thID=0, dwThreadCount = THREAD_COUNT, N = tpaGraph.size(), M = 0, K = 0; thID<dwThreadCount; M += K, thID++)
-		tThreadManager.start(new CGraphThread(thID,M, ((thID + 1) == dwThreadCount) ? N - 1 : M + (K = GET_INDEX((N - M),(dwThreadCount - thID))),MAX_DISTANCE_TO_CONNECT,tCriticalSection));
+		tThreadManager.start(xr_new<CGraphThread>(thID,M, ((thID + 1) == dwThreadCount) ? N - 1 : M + (K = GET_INDEX((N - M),(dwThreadCount - thID))),MAX_DISTANCE_TO_CONNECT,tCriticalSection));
 	tThreadManager.wait();
 	
 	for (int i=0, dwEdgeCount=0; i<(int)tpaGraph.size(); i++)
@@ -412,8 +413,8 @@ void xrBuildGraph(LPCSTR name)
 
 	Phase("Freeing graph being built");
 	Progress(0.0f);
-	_FREE(tpaEdges);
-	_FREE(dwaSortOrder);
+	xr_free(tpaEdges);
+	xr_free(dwaSortOrder);
 	tpaGraph.clear();
 	Progress(1.0f);
 	

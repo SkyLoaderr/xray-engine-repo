@@ -11,7 +11,7 @@
 
 #include "compiler.h"
 #include "xrThread.h"
-#include "xrSyncronize.h"
+//#include "xrSyncronize.h"
 
 #include "xrGraph.h"
 #include "ai_nodes.h"
@@ -232,12 +232,12 @@ class CGraphThread : public CThread
 	SNode				**m_tppHeap;
 	SIndexNode			*m_tpIndexes;
 	float				m_fMaxDistance;
-	CCriticalSection	*m_tpCriticalSection;
+	xrCriticalSection	*m_tpCriticalSection;
 	vector<u32>			tpaNodes;
 	CAStarSearch<CAIMapShortestPathNode,SAIMapData> m_tpMapPath;
 
 public:
-	CGraphThread(u32 ID, u32 dwStart, u32 dwEnd, float fMaxDistance, CCriticalSection &tCriticalSection) : CThread(ID)
+	CGraphThread(u32 ID, u32 dwStart, u32 dwEnd, float fMaxDistance, xrCriticalSection &tCriticalSection) : CThread(ID)
 	{
 		m_dwAStarStaticCounter	= 0;
 		u32 S1					= (m_header.count + 2)*sizeof(SNode);
@@ -258,8 +258,8 @@ public:
 
 	~CGraphThread()
 	{
-		_FREE(m_tpHeap);
-		_FREE(m_tpIndexes);
+		xr_free(m_tpHeap);
+		xr_free(m_tpIndexes);
 	}
 	
 	virtual void Execute()

@@ -137,7 +137,7 @@ void ShowNormals(HWND hw)
 			DWORD	C	= RGB(0,127,0);
 			if (T.N)	{
 				Fvector	N	= T.N->Plane.n;
-				C			= RGB(iFloor(fabsf(N.x)*255),iFloor(fabsf(N.y)*255),iFloor(fabsf(N.z)*255));
+				C			= RGB(iFloor(_abs(N.x)*255),iFloor(_abs(N.y)*255),iFloor(_abs(N.z)*255));
 			}
 			pixel	(dc,x,z,C);
 		}
@@ -275,5 +275,5 @@ void xrDisplay		()
 {
 	InternalRender	();
 	DialogBox		(HINSTANCE(GetModuleHandle(0)),MAKEINTRESOURCE(IDD_NVIEW),logWindow,disp_proc);
-	_FREE			(texels);
+	xr_free			(texels);
 }
