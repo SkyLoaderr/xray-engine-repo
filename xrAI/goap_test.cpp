@@ -23533,10 +23533,6 @@ void test_goap	()
 		u64 finish						= CPU::GetCycleCount();
 		total							+= finish - start;
 		vertex_count					+= graph_engine->solver_algorithm().data_storage().get_visited_node_count();
-//		if (ii == 137) {
-//			Msg							("Finished %5d (try %I64d, %f sec, %d vertices)",jj,ii,CPU::cycles2seconds*total,graph_engine->solver_algorithm().data_storage().get_visited_node_count());
-//			FlushLog					();
-//		}
 
 		xr_vector<_edge_type>::iterator	I = path.begin(), B = I;
 		xr_vector<_edge_type>::iterator	E = path.end();
@@ -23545,7 +23541,7 @@ void test_goap	()
 			continue;
 	
 		++total_solved;
-//		Msg								("%d",seed_safe);
+//		Msg								("%d,",seed_safe);
 
 		if (path.size() <= max_length)
 			continue;
