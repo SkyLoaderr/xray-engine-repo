@@ -9,30 +9,30 @@
 #pragma once
 
 // spawn points
-#define SPAWN_POINT_VERSION				0x0001
+#define SPAWN_POINT_VERSION			0x0001
 
-#define SPAWN_POINT_CHUNK_VERSION		0x0001
-#define SPAWN_POINT_CHUNK_DATA			0x0002
+#define SPAWN_POINT_CHUNK_VERSION	0x0001
+#define SPAWN_POINT_CHUNK_DATA		0x0002
 	
 // ALife objects, events and tasks
-#define ALIFE_VERSION					0x0001
+#define ALIFE_VERSION				0x0001
 
-#define ALIFE_CHUNK_VERSION				0x0001
-#define OBJECT_CHUNK_DATA				0x0002
-#define EVENT_CHUNK_DATA				0x0003
-#define TASK_CHUNK_DATA					0x0004
+#define ALIFE_CHUNK_VERSION			0x0001
+#define OBJECT_CHUNK_DATA			0x0002
+#define EVENT_CHUNK_DATA			0x0003
+#define TASK_CHUNK_DATA				0x0004
 
 class CALifeMonsterGroup;
 
 namespace ALife {
-	typedef u64	_CLASS_ID;										// Class ID
-	typedef u32	_OBJECT_ID;										// Object ID
-	typedef u32	_TIME_ID;											// Time  ID
-	typedef u32	_EVENT_ID;										// Event ID
-	typedef u32	_TASK_ID;											// Event ID
-	typedef u16	_GRAPH_ID;										// Graph  ID
-	typedef u16	_SPAWN_ID;										// Spawn ID
-	typedef u16	_TERRAIN_ID;										// Spawn ID
+	typedef u64	_CLASS_ID;									// Class ID
+	typedef u32	_OBJECT_ID;									// Object ID
+	typedef u32	_TIME_ID;									// Time  ID
+	typedef u32	_EVENT_ID;									// Event ID
+	typedef u32	_TASK_ID;									// Event ID
+	typedef u16	_GRAPH_ID;									// Graph ID
+	typedef u16	_SPAWN_ID;									// Spawn ID
+	typedef u16	_TERRAIN_ID;								// Terrain ID
 
 	enum EInjureType {
 		eInjureTypeEat = u32(0),
@@ -65,56 +65,56 @@ namespace ALife {
 	};
 
 	typedef struct tagSTask {
-		_TASK_ID							tTaskID;
-		_GRAPH_ID							tGraphPointID;
-		_OBJECT_ID						tCustomerGOID;
-		ETaskType						tTaskType;
-		_TERRAIN_ID						tTerrain;
+		_TASK_ID					tTaskID;
+		_GRAPH_ID					tGraphPointID;
+		_OBJECT_ID					tCustomerGOID;
+		ETaskType					tTaskType;
+		_TERRAIN_ID					tTerrain;
 	} STask;
 
 	typedef struct tagSEvent {
-		_TIME_ID							tGameTimeID;
-		_GRAPH_ID							tGraphPointID;
-		CALifeMonsterGroup				*tpMonsterGroup1;
-		CALifeMonsterGroup				*tpMonsterGroup2;
-		u8								ucMonster1CountAfter;
-		u8								ucMonster2CountAfter;
-		EBattleResult					tBattleResult;
+		_TIME_ID					tGameTimeID;
+		_GRAPH_ID					tGraphPointID;
+		CALifeMonsterGroup			*tpMonsterGroup1;
+		CALifeMonsterGroup			*tpMonsterGroup2;
+		u8							ucMonster1CountAfter;
+		u8							ucMonster2CountAfter;
+		EBattleResult				tBattleResult;
 	} SEvent;
 
 	typedef struct tagSPersonalEvent {
-		_EVENT_ID							tEventID;
-		_TIME_ID							tGameTime;
-		_TASK_ID							tTaskID;
-		vector<_OBJECT_ID>				tpItemIDs;
-		int								iHealth;
-		EPerception						tPerception;
+		_EVENT_ID					tEventID;
+		_TIME_ID					tGameTime;
+		_TASK_ID					tTaskID;
+		vector<_OBJECT_ID>			tpItemIDs;
+		int							iHealth;
+		EPerception					tPerception;
 	} SPersonalEvent;
 
 	typedef struct tagSSpawnHeader {
-		u32								dwVersion;
-		u32								dwCount;
+		u32							dwVersion;
+		u32							dwCount;
 	} SSpawnHeader;
 
 	typedef struct tagSSpawnPoint {
-		_GRAPH_ID							tNearestGraphPointID;
-		string64						caModel;
-		u8								ucTeam;
-		u8								ucSquad;
-		u8								ucGroup;
-		u16								wGroupID;
-		u16								wCount;
-		float							fBirthRadius;
-		float							fBirthProbability;
-		float							fIncreaseCoefficient;
-		float							fAnomalyDeathProbability;
-		u8								ucRoutePointCount;
-		vector<_GRAPH_ID>					wpRouteGraphPoints;
+		_GRAPH_ID					tNearestGraphPointID;
+		string64					caModel;
+		u8							ucTeam;
+		u8							ucSquad;
+		u8							ucGroup;
+		u16							wGroupID;
+		u16							wCount;
+		float						fBirthRadius;
+		float						fBirthProbability;
+		float						fIncreaseCoefficient;
+		float						fAnomalyDeathProbability;
+		u8							ucRoutePointCount;
+		vector<_GRAPH_ID>			wpRouteGraphPoints;
 	} SSpawnPoint;
 
 	typedef struct tagSALifeHeader {
-		u32								dwVersion;
-		_TIME_ID							tTimeID;
+		u32							dwVersion;
+		_TIME_ID					tTimeID;
 	} SALifeHeader;
 };
 
@@ -122,9 +122,9 @@ using namespace ALife;
 
 class CALifeObject {
 public:
-	virtual void						Save(CFS_Memory		&tMemoryStream) = 0;
-	virtual void						Load(CStream		&tFileStream)	= 0;
-	virtual void						Init(_SPAWN_ID	tSpawnID, vector<SSpawnPoint> &tpSpawnPoints) = 0;
+	virtual void					Save(CFS_Memory	&tMemoryStream) = 0;
+	virtual void					Load(CStream	&tFileStream)	= 0;
+	virtual void					Init(_SPAWN_ID	tSpawnID, vector<SSpawnPoint> &tpSpawnPoints) = 0;
 };
 
 class CALifeMonsterGroup : public CALifeObject {
@@ -133,9 +133,9 @@ public:
 	_OBJECT_ID						m_tObjectID;
 	_SPAWN_ID						m_tSpawnID;
 	_GRAPH_ID						m_tGraphID;
-	u16									m_wCount;
+	u16								m_wCount;
 	
-	virtual	void						Save(CFS_Memory		&tMemoryStream)
+	virtual	void					Save(CFS_Memory	&tMemoryStream)
 	{
 		tMemoryStream.write	(&m_tClassID,	sizeof(m_tClassID));
 		tMemoryStream.write	(&m_tObjectID,	sizeof(m_tObjectID));
@@ -144,7 +144,7 @@ public:
 		tMemoryStream.write	(&m_wCount,		sizeof(m_wCount));
 	};
 
-	virtual	void						Load(CStream		&tFileStream)
+	virtual	void					Load(CStream	&tFileStream)
 	{
 		tFileStream.Read	(&m_tClassID,	sizeof(m_tClassID));
 		tFileStream.Read	(&m_tObjectID,	sizeof(m_tObjectID));
@@ -153,7 +153,7 @@ public:
 		tFileStream.Read	(&m_wCount,		sizeof(m_wCount));
 	};
 
-	virtual void						Init(_SPAWN_ID	tSpawnID, vector<SSpawnPoint> &tpSpawnPoints)
+	virtual void					Init(_SPAWN_ID	tSpawnID, vector<SSpawnPoint> &tpSpawnPoints)
 	{
 		m_tClassID	= _CLASS_ID(pSettings->ReadSTRING(tpSpawnPoints[tSpawnID].caModel, "class"));
 		m_tGraphID	= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
@@ -168,19 +168,19 @@ public:
 	
 	_TIME_ID						m_tTimeID;
 	
-	virtual	void						Save(CFS_Memory &tMemoryStream)
+	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
 		inherited::Save		(tMemoryStream);
 		tMemoryStream.write	(&m_tTimeID,	sizeof(m_tTimeID));
 	};
 	
-	virtual	void						Load(CStream	&tFileStream)
+	virtual	void					Load(CStream	&tFileStream)
 	{
 		inherited::Load		(tFileStream);
 		tFileStream.Read	(&m_tTimeID,	sizeof(m_tTimeID));
 	};
 
-	virtual void						Init(_SPAWN_ID	tSpawnID, vector<SSpawnPoint> &tpSpawnPoints)
+	virtual void					Init(_SPAWN_ID	tSpawnID, vector<SSpawnPoint> &tpSpawnPoints)
 	{
 		inherited::Init(tSpawnID,tpSpawnPoints);
 		m_tTimeID = 0;
@@ -193,19 +193,19 @@ public:
 	
 	EInjureType					m_tInjureType;
 	
-	virtual	void						Save(CFS_Memory &tMemoryStream)
+	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
 		inherited::Save		(tMemoryStream);
 		tMemoryStream.write	(&m_tInjureType,	sizeof(m_tInjureType));
 	};
 	
-	virtual	void						Load(CStream	&tFileStream)
+	virtual	void					Load(CStream	&tFileStream)
 	{
 		inherited::Load		(tFileStream);
 		tFileStream.Read	(&m_tInjureType,	sizeof(m_tInjureType));
 	};
 
-	virtual void						Init(_SPAWN_ID	tSpawnID, vector<SSpawnPoint> &tpSpawnPoints)
+	virtual void					Init(_SPAWN_ID	tSpawnID, vector<SSpawnPoint> &tpSpawnPoints)
 	{
 		inherited::Init(tSpawnID,tpSpawnPoints);
 		m_tInjureType = eInjureTypeDummy;
@@ -219,14 +219,14 @@ public:
 	_GRAPH_ID						m_tCurrentGraphPointID;
 	_GRAPH_ID						m_tNextGraphPointID;
 	_GRAPH_ID						m_tPrevGraphPointID;
-	float								m_fCurSpeed;
-	float								m_fMinSpeed;
-	float								m_fMaxSpeed;
-	float								m_fDistanceFromPoint;
-	float								m_fDistanceToPoint;
-	s32									m_iHealth;
+	float							m_fCurSpeed;
+	float							m_fMinSpeed;
+	float							m_fMaxSpeed;
+	float							m_fDistanceFromPoint;
+	float							m_fDistanceToPoint;
+	s32								m_iHealth;
 	
-	virtual	void						Save(CFS_Memory &tMemoryStream)
+	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
 		inherited::Save		(tMemoryStream);
 		tMemoryStream.write	(&m_tCurrentGraphPointID,	sizeof(m_tCurrentGraphPointID));
@@ -240,7 +240,7 @@ public:
 		tMemoryStream.write	(&m_iHealth,				sizeof(m_iHealth));
 	};
 	
-	virtual	void						Load(CStream	&tFileStream)
+	virtual	void					Load(CStream	&tFileStream)
 	{
 		inherited::Load		(tFileStream);
 		tFileStream.Read	(&m_tCurrentGraphPointID,	sizeof(m_tCurrentGraphPointID));
@@ -254,7 +254,7 @@ public:
 		tFileStream.Read	(&m_iHealth,				sizeof(m_iHealth));
 	};
 
-	virtual void						Init(_SPAWN_ID	tSpawnID, vector<SSpawnPoint> &tpSpawnPoints)
+	virtual void					Init(_SPAWN_ID	tSpawnID, vector<SSpawnPoint> &tpSpawnPoints)
 	{
 		inherited::Init(tSpawnID,tpSpawnPoints);
 		m_iHealth				= pSettings->ReadINT	(tpSpawnPoints[tSpawnID].caModel, "Health");
@@ -274,10 +274,10 @@ public:
 	typedef	CALifeMonster inherited;
 	
 	vector<_OBJECT_ID>				m_tpItemIDs;
-	vector<SPersonalEvent>		m_tpEvents;
+	vector<SPersonalEvent>			m_tpEvents;
 	vector<_TASK_ID>				m_tpTaskIDs;
 
-	virtual	void						Save(CFS_Memory &tMemoryStream)
+	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
 		// calling inherited
 		inherited::Save(tMemoryStream);
@@ -304,7 +304,7 @@ public:
 			tMemoryStream.write	(&(m_tpTaskIDs[i]),sizeof(m_tpTaskIDs[i]));
 	};
 
-	virtual	void						Load(CStream	&tFileStream)
+	virtual	void					Load(CStream	&tFileStream)
 	{
 		// calling inherited
 		inherited::Load(tFileStream);
@@ -331,7 +331,7 @@ public:
 			tFileStream.Read	(&(m_tpTaskIDs[i]),sizeof(m_tpTaskIDs[i]));
 	};
 
-	virtual void						Init(_SPAWN_ID	tSpawnID, vector<SSpawnPoint> &tpSpawnPoints)
+	virtual void					Init(_SPAWN_ID	tSpawnID, vector<SSpawnPoint> &tpSpawnPoints)
 	{
 		inherited::Init(tSpawnID,tpSpawnPoints);
 		m_tCurrentGraphPointID	= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
@@ -342,20 +342,69 @@ public:
 
 class CALifeObjectRegistry {
 public:
-	_OBJECT_ID						m_dwEventID;			// идентификатор карты событий
+	_OBJECT_ID						m_tObjectID;			// идентификатор карты событий
 	map<_OBJECT_ID,CALifeItem *>	m_tppMap;				// список событий игры
 	map<_OBJECT_ID,CALifeItem *>::iterator	m_tpIterator;
 
-	virtual	void						Save(CFS_Memory &tMemoryStream)
+	virtual							~CALifeObjectRegistry()
 	{
+		for (m_tpIterator = m_tppMap.begin(); m_tpIterator != m_tppMap.end(); m_tpIterator++)
+			_DELETE((*m_tpIterator).second);
+		m_tppMap.clear();
+	};
+	
+	virtual	void					Save(CFS_Memory &tMemoryStream)
+	{
+		tMemoryStream.write(&m_tObjectID,sizeof(m_tObjectID));
+		tMemoryStream.Wdword(m_tppMap.size());
+		for (m_tpIterator = m_tppMap.begin(); m_tpIterator != m_tppMap.end(); m_tpIterator++) {
+			_OBJECT_ID	tObjectID;
+			tMemoryStream.write(&tObjectID,sizeof(tObjectID));
+			CALifeHuman	*tpALifeHuman = dynamic_cast<CALifeHuman *>((*m_tpIterator).second);
+			if (tpALifeHuman)
+				tMemoryStream.Wbyte(2);
+			else {
+				CALifeMonster	*tpALifeMonster = dynamic_cast<CALifeMonster *>((*m_tpIterator).second);
+				if (tpALifeMonster)
+					tMemoryStream.Wbyte(1);
+				else
+					tMemoryStream.Wbyte(0);
+			}
+			(*m_tpIterator).second->Save(tMemoryStream);
+		}
 	};
 
-	virtual	void						Load(CStream	&tFileStream)
+	virtual	void					Load(CStream	&tFileStream)
 	{
+		tFileStream.Read(&m_tObjectID,sizeof(m_tObjectID));
+		u32 dwCount = tFileStream.Rdword();
+		for (u32 i=0; i<dwCount; i++) {
+			_OBJECT_ID	tObjectID;
+			tFileStream.Read(&tObjectID,sizeof(tObjectID));
+			CALifeItem *tpALifeItem = 0;
+			switch (tFileStream.Rbyte()) {
+				case 0 : {
+					tpALifeItem = new CALifeItem;
+					break;
+				}
+				case 1 : {
+					tpALifeItem = new CALifeMonster;
+					break;
+				}
+				case 2 : {
+					tpALifeItem = new CALifeHuman;
+					break;
+				}
+				default : NODEFAULT;
+			};
+			tpALifeItem->Load(tFileStream);
+			m_tppMap.insert(make_pair(tObjectID,tpALifeItem));
+		}
 	};
 
-	virtual	void						Add	(CALifeItem *tpALifeItem)
+	virtual	void					Add	(CALifeItem *tpALifeItem)
 	{
+		m_tppMap.insert(make_pair(tpALifeItem->m_tObjectID = m_tObjectID++,tpALifeItem));
 	};
 
 };
@@ -363,37 +412,46 @@ public:
 class CALifeEventRegistry {
 public:
 	_EVENT_ID						m_tEventID;				// идентификатор карты событий
-	map<_EVENT_ID,SEvent>	m_tpMap;				// список событий игры
+	map<_EVENT_ID,SEvent>			m_tpMap;				// список событий игры
 	map<_EVENT_ID,SEvent>::iterator	m_tpIterator;
 
-	virtual	void						Save(CFS_Memory &tMemoryStream)
+	virtual							~CALifeEventRegistry()
+	{
+		for (m_tpIterator = m_tpMap.begin(); m_tpIterator != m_tpMap.end(); m_tpIterator++) {
+			_DELETE((*m_tpIterator).second.tpMonsterGroup1);
+			_DELETE((*m_tpIterator).second.tpMonsterGroup2);
+		}
+		m_tpMap.clear();
+	};
+	
+	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
 	};
 
-	virtual	void						Load(CStream	&tFileStream)
+	virtual	void					Load(CStream	&tFileStream)
 	{
 	};
 	
-	virtual	void						Add	(SEvent	&tEvent)
+	virtual	void					Add	(SEvent	&tEvent)
 	{
 	};
 };
 
 class CALifeTaskRegistry {
 public:
-	_TASK_ID						m_dwTaskID;				// идентификатор карты событий
-	map<_TASK_ID,STask>		m_tpMap;				// список событий игры
+	_TASK_ID						m_tTaskID;				// идентификатор карты событий
+	map<_TASK_ID,STask>				m_tpMap;				// список событий игры
 	map<_TASK_ID,STask>::iterator	m_tpIterator;
 
-	virtual	void						Save(CFS_Memory &tMemoryStream)
+	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
 	};
 	
-	virtual	void						Load(CStream	&tFileStream)
+	virtual	void					Load(CStream	&tFileStream)
 	{
 	};
 	
-	virtual	void						Add	(STask	&tTask)
+	virtual	void					Add	(STask	&tTask)
 	{
 	};
 };
@@ -402,30 +460,30 @@ class CAI_ALife : public CSheduled {
 public:
 	typedef CSheduled inherited;
 
-	u32									m_dwObjectsBeingProcessed;
-	u64									m_qwMaxProcessTime;
-	bool								m_bLoaded;
+	u32								m_dwObjectsBeingProcessed;
+	u64								m_qwMaxProcessTime;
+	bool							m_bLoaded;
 	
 	SSpawnHeader					m_tSpawnHeader;
 	SALifeHeader					m_tALifeHeader;
 
 	// auto
 	svector<vector<_GRAPH_ID>,256>	m_tpTerrain;			// массив списков: по идетнификатору 
-																//	местности получить список точек 
-																//  графа
-	vector<vector<_OBJECT_ID> >	m_tpLocationOwners;		// массив списков : по точке графа 
-																//  получить список её владельцев
-	vector<vector<_OBJECT_ID> >	m_tpGraphObjects;		// по точке графа получить все 
-																//  динамические объекты
+															//	местности получить список точек 
+															//  графа
+	vector<vector<_OBJECT_ID> >		m_tpLocationOwners;		// массив списков : по точке графа 
+															//  получить список её владельцев
+	vector<vector<_OBJECT_ID> >		m_tpGraphObjects;		// по точке графа получить все 
+															//  динамические объекты
 	vector<_OBJECT_ID>				m_tpScheduledObjects;	// массив обновляемых объектов
 	
 	// static
-	vector<SSpawnPoint>			m_tpSpawnPoints;		// массив spawn-point-ов
+	vector<SSpawnPoint>				m_tpSpawnPoints;		// массив spawn-point-ов
 
 	// dynamic
-	CALifeObjectRegistry				m_tObjectRegistry;		// карта объектов
-	CALifeEventRegistry					m_tEventRegistry;		// карта событий
-	CALifeTaskRegistry					m_tTaskRegistry;		// карта заданий
+	CALifeObjectRegistry			m_tObjectRegistry;		// карта объектов
+	CALifeEventRegistry				m_tEventRegistry;		// карта событий
+	CALifeTaskRegistry				m_tTaskRegistry;		// карта заданий
 
 	IC void vfRemoveFromGraphPoint(_OBJECT_ID tObjectID, _GRAPH_ID tGraphID)
 	{
@@ -447,26 +505,26 @@ public:
 		vfAddToGraphPoint		(tObjectID,tNextGraphPointID);
 	}
 
-	void								vfCheckForDeletedEvents	(_OBJECT_ID tObjectID);
-	void								vfCheckForTheBattle		(_OBJECT_ID tObjectID);
-	void								vfChooseNextRoutePoint	(_OBJECT_ID tObjectID);
-	void								vfProcessNPC			(_OBJECT_ID tObjectID);
-	void								vfInitTerrain			();
-	void								vfInitLocationOwners	();
-	void								vfInitGraph				();
-	void								vfInitScheduledObjects	();
+	void							vfCheckForDeletedEvents	(_OBJECT_ID tObjectID);
+	void							vfCheckForTheBattle		(_OBJECT_ID tObjectID);
+	void							vfChooseNextRoutePoint	(_OBJECT_ID tObjectID);
+	void							vfProcessNPC			(_OBJECT_ID tObjectID);
+	void							vfInitTerrain			();
+	void							vfInitLocationOwners	();
+	void							vfInitGraph				();
+	void							vfInitScheduledObjects	();
 	// temporary
-	void								vfGenerateSpawnPoints	(u32 dwSpawnCount);
-	void								vfSaveSpawnPoints		();
+	void							vfGenerateSpawnPoints	(u32 dwSpawnCount);
+	void							vfSaveSpawnPoints		();
 	//
 public:
-										CAI_ALife				();
-	virtual								~CAI_ALife				();
-	virtual float						shedule_Scale			()					{return .5f;};
-	virtual BOOL						Ready					()					{return TRUE;};
-	virtual LPCSTR						cName					()					{return "ALife simulator";}; 
-	virtual void						Load					();
-	virtual void						Update					(u32 dt);	
-			void						Save					();
-			void						Generate				();
+									CAI_ALife				();
+	virtual							~CAI_ALife				();
+	virtual float					shedule_Scale			()					{return .5f;};
+	virtual BOOL					Ready					()					{return TRUE;};
+	virtual LPCSTR					cName					()					{return "ALife simulator";}; 
+	virtual void					Load					();
+	virtual void					Update					(u32 dt);	
+			void					Save					();
+			void					Generate				();
 };
