@@ -48,6 +48,29 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierRetreat,
 		aiSoldierSenseSomething,
 		aiSoldierUnderFire,
+		
+		aiSoldierTestMicroActions,
+		aiSoldierTestA,
+		aiSoldierTestD,
+		aiSoldierTestQ,
+		aiSoldierTestE,
+		aiSoldierTestZ,
+		aiSoldierTestC,
+		aiSoldierTestW,
+		aiSoldierTestS,
+		aiSoldierTestX,
+		aiSoldierTestR,
+		aiSoldierTestF,
+		aiSoldierTestV,
+		aiSoldierTestT,
+		aiSoldierTestG,
+		aiSoldierTestB,
+		aiSoldierTestY,
+		aiSoldierTestH,
+		aiSoldierTestN,
+		aiSoldierTestU,
+		aiSoldierTestJ,
+		aiSoldierTestM,
 	};
 	
 	typedef	CCustomMonster inherited;
@@ -55,7 +78,7 @@ class CAI_Soldier : public CCustomMonster
 	protected:
 		
 		// macroses
-		//#define WRITE_LOG
+		#define WRITE_LOG
 		#define MIN_RANGE_SEARCH_TIME_INTERVAL	15000.f
 		#define MAX_TIME_RANGE_SEARCH			150000.f
 		#define	FIRE_ANGLE						PI/10
@@ -67,7 +90,7 @@ class CAI_Soldier : public CCustomMonster
 		#define	AMMO_NEED_RELOAD				6
 		#define	MAX_HEAD_TURN_ANGLE				(PI/3.f)
 		#define EYE_WEAPON_DELTA				(0*PI/30.f)
-		#define TORSO_ANGLE_DELTA				(0*PI/30.f)
+		#define TORSO_ANGLE_DELTA				(PI/20.f)
 		#define INIT_SQUAD_AND_LEADER \
 			CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];\
 			CEntity* Leader = Squad.Leader;\
@@ -420,9 +443,53 @@ class CAI_Soldier : public CCustomMonster
 		void Retreat();
 		void SenseSomething();
 		void UnderFire();
-
+		
+		// test
+		void TestMicroActions();
+		void TestA();
+		void TestD();
+		void TestQ();
+		void TestE();
+		void TestZ();
+		void TestC();
+		void TestW();
+		void TestS();
+		void TestX();
+		void TestR();
+		void TestF();
+		void TestV();
+		void TestT();
+		void TestG();
+		void TestB();
+		void TestY();
+		void TestH();
+		void TestN();
+		void TestU();
+		void TestJ();
+		void TestM();
+		bool m_bA;
+		bool m_bD;
+		bool m_bQ;
+		bool m_bE;
+		bool m_bZ;
+		bool m_bC;
+		bool m_bW;
+		bool m_bS;
+		bool m_bX;
+		bool m_bR;
+		bool m_bF;
+		bool m_bV;
+		bool m_bT;
+		bool m_bG;
+		bool m_bB;
+		bool m_bY;
+		bool m_bH;
+		bool m_bN;
+		bool m_bU;
+		bool m_bJ;
+		bool m_bM;
+		
 		// miscellanious funtions	
-
 		bool bfCheckForVisibility(CEntity* tpEntity);
 		void vfLoadSounds();
 		void vfLoadSelectors(CInifile *ini, const char *section);

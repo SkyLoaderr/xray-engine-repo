@@ -24,7 +24,7 @@ void __stdcall CAI_Soldier::HeadSpinCallback(CBoneInstance* B)
 	CAI_Soldier*		A = dynamic_cast<CAI_Soldier*> (static_cast<CObject*>(B->Callback_Param));
 	
 	Fmatrix				spin;
-	spin.setXYZ			(A->NET_Last.o_torso.yaw - A->r_current.yaw, A->r_current.pitch, 0);
+	spin.setXYZ			(A->r_current.yaw - A->r_torso_current.yaw, A->r_current.pitch, 0);
 	B->mTransform.mulB_43(spin);
 }
 
@@ -33,7 +33,7 @@ void __stdcall CAI_Soldier::SpineSpinCallback(CBoneInstance* B)
 	CAI_Soldier*		A = dynamic_cast<CAI_Soldier*> (static_cast<CObject*>(B->Callback_Param));
 	
 	Fmatrix				spin;
-	spin.setXYZ			(A->NET_Last.o_torso.yaw - A->r_spine_current.yaw, A->r_spine_current.pitch, 0);
+	spin.setXYZ			(A->r_spine_current.yaw - A->r_torso_current.yaw, A->r_spine_current.pitch, 0);
 	B->mTransform.mulB_43(spin);
 }
 
@@ -155,7 +155,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 					switch (m_cBodyState) {
 						case BODY_STATE_STAND : {
 							if ((!(AI_Path.TravelPath.size()) || (eCurrentState != aiSoldierPatrolRoute))) {
-								if (r_torso_target.yaw - r_torso_current.yaw > PI/30.f)
+								if ((fabsf(r_torso_target.yaw - r_torso_current.yaw) > TORSO_ANGLE_DELTA) && (fabsf(PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw)) > TORSO_ANGLE_DELTA))
 									tpLegsAnimation = tSoldierAnimations.tNormal.tLegs.tpTurn;
 								else
 									tpLegsAnimation = tSoldierAnimations.tNormal.tLegs.tpIdle;
@@ -166,7 +166,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 							break;
 						}
 						case BODY_STATE_CROUCH : {
-							if (r_torso_target.yaw - r_torso_current.yaw > PI/30.f)
+							if ((fabsf(r_torso_target.yaw - r_torso_current.yaw) > TORSO_ANGLE_DELTA) && (fabsf(PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw)) > TORSO_ANGLE_DELTA))
 								tpLegsAnimation = tSoldierAnimations.tCrouch.tLegs.tpTurn;
 							else
 								tpLegsAnimation = tSoldierAnimations.tCrouch.tLegs.tpIdle;

@@ -22,7 +22,8 @@ CAI_Soldier::CAI_Soldier()
 	dwSavedEnemyNodeID = -1;
 	dwLostEnemyTime = 0;
 	bBuildPathToLostEnemy = false;
-	eCurrentState = aiSoldierFollowLeader;
+	//eCurrentState = aiSoldierFollowLeader;
+	eCurrentState = aiSoldierTestMicroActions;
 	m_dwLastRangeSearch = 0;
 	m_dwLastSuccessfullSearch = 0;
 	m_fAggressiveness = ::Random.randF(0,1);
@@ -30,6 +31,7 @@ CAI_Soldier::CAI_Soldier()
 	m_bFiring = false;
 	m_tpEventSay = Engine.Event.Handler_Attach	("level.entity.say",this);
 	m_bLessCoverLook = false;
+	q_look.o_look_speed = _FB_look_speed;
 }
 
 CAI_Soldier::~CAI_Soldier()

@@ -171,7 +171,7 @@ void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode)
 			
 			r_target.yaw = fBestAngle;
 			ASSIGN_SPINE_BONE;
-			q_look.o_look_speed=PI_DIV_4;
+			q_look.o_look_speed = PI_DIV_4;
 			//r_torso_speed = _FB_look_speed;//(r_torso_target.yaw - r_torso_current.yaw);
 			r_target.yaw += PI_DIV_6;
 		}

@@ -1229,7 +1229,7 @@ void CAI_Soldier::UnderFire()
 	Group.m_dwLastHitTime = dwHitTime;
 	Group.m_tLastHitDirection = tHitDir;
 	Group.m_tHitPosition = tHitPosition;
-
+	
 	if ((dwCurTime - Group.m_dwLastHitTime > HIT_REACTION_TIME) && (Group.m_dwLastHitTime)) {
 		eCurrentState = tStateStack.top();
 		tStateStack.pop();
@@ -1239,30 +1239,340 @@ void CAI_Soldier::UnderFire()
 	}
 	
 	vfInitSelector(SelectorUnderFire,Squad,Leader);
-
+	
 	SelectorUnderFire.m_tEnemyPosition = tHitPosition;
-
+	
 	if (AI_Path.bNeedRebuild)
 		vfBuildPathToDestinationPoint(0);
 	else
 		if (m_dwLastSuccessfullSearch <= Group.m_dwLastHitTime)
 			vfSearchForBetterPosition(SelectorUnderFire,Squad,Leader);
+		
+		mk_rotation(tHitDir,r_torso_target);
+		r_target.yaw = r_torso_target.yaw;
+		ASSIGN_SPINE_BONE;
+		r_target.yaw += PI_DIV_6;
+		r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
+		//r_target.pitch = 0;
+		//r_torso_target.pitch = 0;
+		
+		//q_look.o_look_speed=8*_FB_look_speed;
+		
+		vfSetFire(dwCurTime - dwHitTime < 1000,Group);
+		
+		vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
+		// stop processing more rules
+		
+}
 
-	mk_rotation(tHitDir,r_torso_target);
-	r_target.yaw = r_torso_target.yaw;
-	ASSIGN_SPINE_BONE;
-	r_target.yaw += PI_DIV_6;
-	r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
-	//r_target.pitch = 0;
-	//r_torso_target.pitch = 0;
+#define TEST_MICRO_ACTION(A) \
+	if (Level().iGetKeyState(DIK_##A)) {\
+		if (!m_b##A) {\
+			m_b##A = true;\
+			tStateStack.push(eCurrentState);\
+			eCurrentState = aiSoldierTest##A;\
+			return;\
+		}\
+	}\
+	else\
+		m_b##A = false;
+
+#define CASE_MICRO_ACTION(A) \
+	case aiSoldierTest##A : {\
+	Test##A();\
+	break;\
+}
+
+/**/
+#define ADJUST_ANGLE(A) \
+	if (A >= PI_MUL_2 - EPS_L)\
+		A -= PI_MUL_2;\
+	else\
+		if (A <= -EPS_L)\
+			A += PI_MUL_2;
+
+#define ADJUST_BONE(A) \
+	ADJUST_ANGLE(A.yaw);\
+	ADJUST_ANGLE(A.pitch);\
 	
-	//q_look.o_look_speed=8*_FB_look_speed;
+#define ADJUST_BONE_ANGLES \
+	ADJUST_BONE(r_target);\
+	ADJUST_BONE(r_current);\
+	ADJUST_BONE(r_torso_target);\
+	ADJUST_BONE(r_torso_current);\
+	ADJUST_BONE(r_spine_target);\
+	ADJUST_BONE(r_spine_current);
 
-	vfSetFire(dwCurTime - dwHitTime < 1000,Group);
+/**/
+#define SUB_ANGLE(A,B)\
+	A -= B;\
+	if (A <= -EPS_L )\
+		A += PI_MUL_2;
 
-	vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
-	// stop processing more rules
+#define ADD_ANGLE(A,B)\
+	A += B;\
+	if (A >= PI_MUL_2 - EPS_L)\
+		A -= PI_MUL_2;
+
+void CAI_Soldier::TestMicroActions()
+{
+	bStopThinking = true;
 	
+	if (Level().iGetKeyState(DIK_LCONTROL) || Level().iGetKeyState(DIK_RCONTROL)) {
+		TEST_MICRO_ACTION(A);
+		TEST_MICRO_ACTION(D);
+		TEST_MICRO_ACTION(Q);
+		TEST_MICRO_ACTION(E);
+		TEST_MICRO_ACTION(Z);
+		TEST_MICRO_ACTION(C);
+		TEST_MICRO_ACTION(W);
+		TEST_MICRO_ACTION(S);
+		TEST_MICRO_ACTION(X);
+		TEST_MICRO_ACTION(R);
+		TEST_MICRO_ACTION(F);
+		TEST_MICRO_ACTION(V);
+		TEST_MICRO_ACTION(T);
+		TEST_MICRO_ACTION(G);
+		TEST_MICRO_ACTION(B);
+		TEST_MICRO_ACTION(Y);
+		TEST_MICRO_ACTION(H);
+		TEST_MICRO_ACTION(N);
+		TEST_MICRO_ACTION(U);
+		TEST_MICRO_ACTION(J);
+		TEST_MICRO_ACTION(M);
+	}
+}
+
+void CAI_Soldier::TestA()
+{
+	WRITE_TO_LOG("model left turn");
+	
+	SUB_ANGLE(r_torso_target.yaw,PI_DIV_2);
+	SUB_ANGLE(r_target.yaw,PI_DIV_2);
+	SUB_ANGLE(r_spine_target.yaw,PI_DIV_2);
+	ADJUST_BONE_ANGLES;
+	q_look.o_look_speed = r_spine_speed = r_torso_speed;
+		
+	eCurrentState = tStateStack.top();
+	tStateStack.pop();
+	return;
+}
+
+void CAI_Soldier::TestD()
+{
+	WRITE_TO_LOG("model right turn");
+	
+	ADD_ANGLE(r_torso_target.yaw,PI_DIV_2);
+	ADD_ANGLE(r_target.yaw,PI_DIV_2);
+	ADD_ANGLE(r_spine_target.yaw,PI_DIV_2);
+	ADJUST_BONE_ANGLES;
+	q_look.o_look_speed = r_spine_speed = r_torso_speed;
+		
+	eCurrentState = tStateStack.top();
+	tStateStack.pop();
+	return;
+}
+
+void CAI_Soldier::TestQ()
+{
+	WRITE_TO_LOG("left torso + head turn");
+	
+	SUB_ANGLE(r_spine_target.yaw,PI_DIV_4);
+	SUB_ANGLE(r_target.yaw,PI_DIV_2 - PI_DIV_4);
+	ADJUST_BONE_ANGLES;
+		
+	eCurrentState = tStateStack.top();
+	tStateStack.pop();
+	return;
+}
+
+void CAI_Soldier::TestE()
+{
+	WRITE_TO_LOG("right torso + head turn");
+	
+	ADD_ANGLE(r_spine_target.yaw,PI_DIV_4);
+	ADD_ANGLE(r_target.yaw,PI_DIV_2 - PI_DIV_4);
+	ADJUST_BONE_ANGLES;
+	
+	eCurrentState = tStateStack.top();
+	tStateStack.pop();
+	return;
+}
+
+void CAI_Soldier::TestZ()
+{
+	WRITE_TO_LOG("left head turn");
+	
+	SUB_ANGLE(r_target.yaw,PI_DIV_2);
+	ADJUST_BONE_ANGLES;
+	
+	eCurrentState = tStateStack.top();
+	tStateStack.pop();
+	return;
+}
+
+void CAI_Soldier::TestC()
+{
+	WRITE_TO_LOG("right head turn");
+	
+	ADD_ANGLE(r_target.yaw,PI_DIV_2);
+	ADJUST_BONE_ANGLES;
+	
+	eCurrentState = tStateStack.top();
+	tStateStack.pop();
+	return;
+}
+
+void CAI_Soldier::TestW()
+{
+	WRITE_TO_LOG("stand up");
+	
+	vfSetMovementType(BODY_STATE_STAND,0);
+		
+	eCurrentState = tStateStack.top();
+	tStateStack.pop();
+	return;
+}
+
+void CAI_Soldier::TestS()
+{
+	WRITE_TO_LOG("sit down");
+	
+	vfSetMovementType(BODY_STATE_CROUCH,0);
+		
+	eCurrentState = tStateStack.top();
+	tStateStack.pop();
+	return;
+}
+
+void CAI_Soldier::TestX()
+{
+	WRITE_TO_LOG("lie down");
+	
+	vfSetMovementType(BODY_STATE_LIE,0);
+	eCurrentState = aiSoldierLyingDown;
+	
+	return;
+}
+
+void CAI_Soldier::TestR()
+{
+	WRITE_TO_LOG("lie down");
+	
+	vfSetMovementType(BODY_STATE_LIE,0);
+	eCurrentState = aiSoldierLyingDown;
+	
+	return;
+}
+
+void CAI_Soldier::TestF()
+{
+	WRITE_TO_LOG("lie down");
+	
+	vfSetMovementType(BODY_STATE_LIE,0);
+	eCurrentState = aiSoldierLyingDown;
+	
+	return;
+}
+
+void CAI_Soldier::TestV()
+{
+	WRITE_TO_LOG("lie down");
+	
+	vfSetMovementType(BODY_STATE_LIE,0);
+	eCurrentState = aiSoldierLyingDown;
+	
+	return;
+}
+
+void CAI_Soldier::TestT()
+{
+	WRITE_TO_LOG("lie down");
+	
+	vfSetMovementType(BODY_STATE_LIE,0);
+	eCurrentState = aiSoldierLyingDown;
+	
+	return;
+}
+
+void CAI_Soldier::TestG()
+{
+	WRITE_TO_LOG("lie down");
+	
+	vfSetMovementType(BODY_STATE_LIE,0);
+	eCurrentState = aiSoldierLyingDown;
+	
+	return;
+}
+
+void CAI_Soldier::TestB()
+{
+	WRITE_TO_LOG("lie down");
+	
+	vfSetMovementType(BODY_STATE_LIE,0);
+	eCurrentState = aiSoldierLyingDown;
+	
+	return;
+}
+
+void CAI_Soldier::TestY()
+{
+	WRITE_TO_LOG("lie down");
+	
+	vfSetMovementType(BODY_STATE_LIE,0);
+	eCurrentState = aiSoldierLyingDown;
+	
+	return;
+}
+
+void CAI_Soldier::TestH()
+{
+	WRITE_TO_LOG("lie down");
+	
+	vfSetMovementType(BODY_STATE_LIE,0);
+	eCurrentState = aiSoldierLyingDown;
+	
+	return;
+}
+
+void CAI_Soldier::TestN()
+{
+	WRITE_TO_LOG("lie down");
+	
+	vfSetMovementType(BODY_STATE_LIE,0);
+	eCurrentState = aiSoldierLyingDown;
+	
+	return;
+}
+
+void CAI_Soldier::TestU()
+{
+	WRITE_TO_LOG("lie down");
+	
+	vfSetMovementType(BODY_STATE_LIE,0);
+	eCurrentState = aiSoldierLyingDown;
+	
+	return;
+}
+
+void CAI_Soldier::TestJ()
+{
+	WRITE_TO_LOG("lie down");
+	
+	vfSetMovementType(BODY_STATE_LIE,0);
+	eCurrentState = aiSoldierLyingDown;
+	
+	return;
+}
+
+void CAI_Soldier::TestM()
+{
+	WRITE_TO_LOG("lie down");
+	
+	vfSetMovementType(BODY_STATE_LIE,0);
+	eCurrentState = aiSoldierLyingDown;
+	
+	return;
 }
 
 void CAI_Soldier::Think()
@@ -1322,11 +1632,11 @@ void CAI_Soldier::Think()
 			case aiSoldierPatrolRoute : {
 				Patrol();
 				break;
-										}
+			}
 			case aiSoldierPatrolReturnToRoute : {
 				PatrolReturn();
 				break;
-										}
+			}
 			case aiSoldierFollowLeaderPatrol : {
 				FollowLeaderPatrol();
 				break;
@@ -1342,11 +1652,11 @@ void CAI_Soldier::Think()
 			case aiSoldierPatrolHurtAggressiveUnderFire : {
 				PatrolHurtAggressiveUnderFire();
 				break;
-														  }
+			}
 			case aiSoldierPatrolHurtNonAggressiveUnderFire : {
 				PatrolHurtAggressiveUnderFire();
 				break;
-														  }
+			}
 			case aiSoldierPursuit : {
 				Pursuit();
 				break;
@@ -1367,6 +1677,31 @@ void CAI_Soldier::Think()
 				UnderFire();
 				break;
 			}
+			case aiSoldierTestMicroActions : {
+				TestMicroActions();
+				break;
+			}
+			CASE_MICRO_ACTION(A)
+			CASE_MICRO_ACTION(D)
+			CASE_MICRO_ACTION(Q)
+			CASE_MICRO_ACTION(E)
+			CASE_MICRO_ACTION(Z)
+			CASE_MICRO_ACTION(C)
+			CASE_MICRO_ACTION(W)
+			CASE_MICRO_ACTION(S)
+			CASE_MICRO_ACTION(X)
+			CASE_MICRO_ACTION(R)
+			CASE_MICRO_ACTION(F)
+			CASE_MICRO_ACTION(V)
+			CASE_MICRO_ACTION(T)
+			CASE_MICRO_ACTION(G)
+			CASE_MICRO_ACTION(B)
+			CASE_MICRO_ACTION(Y)
+			CASE_MICRO_ACTION(H)
+			CASE_MICRO_ACTION(N)
+			CASE_MICRO_ACTION(U)
+			CASE_MICRO_ACTION(J)
+			CASE_MICRO_ACTION(M)
 		}
 		m_bStateChanged = m_ePreviousState != eCurrentState;
 	}
