@@ -237,7 +237,7 @@ void __stdcall xrSkin2W_SSE(vertRender*		D,
 //	static data
 // ------------------------------------------------------------------
 	movlps		xmm0,MMWORD PTR [esi]S.u		;	xmm0 = ?.? | ?.? | u | v
-	movlps		MMWORD PTR [edi]S.u,xmm0		;	
+	movlps		MMWORD PTR [edi]D.u,xmm0		;	
 // ------------------------------------------------------------------	
 // advancing	
 // ------------------------------------------------------------------	
