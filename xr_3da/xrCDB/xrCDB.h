@@ -24,6 +24,14 @@ namespace CDB
 	
 	class XRCDB_API MODEL;
 
+	class XRCDB_API RESULT
+	{
+	public:
+		int			id;
+		float		range;
+		float		u,v;
+	};
+
 	class XRCDB_API COLLIDER 
 	{
 		DWORD			ray_mode;
@@ -31,7 +39,7 @@ namespace CDB
 		DWORD			frustum_mode;
 
 		// Result management
-		int*			rd_ptr;
+		RESULT*			rd_ptr;
 		int				rd_count;
 		int				rd_size;
 	public:
@@ -47,10 +55,10 @@ namespace CDB
 		IC void			frustum_options	(DWORD f)	{	frustum_mode = f;	}
 		void			frustum_query	(const MODEL *m_def, const CFrustum& F);
 		
-		void			r_add			(int id);
+		void			r_add			(int id, float range, float u, float v);
 		void			r_free			();
-		IC int*			r_begin			()	{	return rd_ptr;				};
-		IC int*			r_end			()	{	return rd_ptr + rd_count;	};
+		IC RESULT*		r_begin			()	{	return rd_ptr;				};
+		IC RESULT*		r_end			()	{	return rd_ptr + rd_count;	};
 		IC int			r_count			()	{	return rd_count;			};
 		IC void			r_clear			()	{	rd_count = 0;				};
 	};
