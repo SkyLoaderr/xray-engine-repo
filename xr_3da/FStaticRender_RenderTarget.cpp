@@ -177,6 +177,13 @@ void CRenderTarget::e_render_duality()
 
 BOOL CRenderTarget::Perform		()
 {
+	set_duality_h					(.015f*sinf(1.f*Device.fTimeGlobal));
+	set_duality_v					(.017f*cosf(1.1f*Device.fTimeGlobal));
+	set_noise						(.5f);
+	set_noise_scale					(1.f);
+	set_noise_color					(color_rgba(255,255,127,0));
+	set_noise_fps					(10.f);
+
 	return Available() && ( NeedPostProcess() || (psSupersample>1));
 }
 
