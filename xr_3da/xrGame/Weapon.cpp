@@ -414,6 +414,11 @@ void CWeapon::Load		(LPCSTR section)
 
 	m_fMinRadius		= pSettings->r_float		(section,"min_radius");
 	m_fMaxRadius		= pSettings->r_float		(section,"max_radius");
+
+
+	m_eScopeStatus			 = (CSE_ALifeItemWeapon::EAddonStatus)pSettings->r_s32(section,"scope_status");
+	m_eSilencerStatus		 = (CSE_ALifeItemWeapon::EAddonStatus)pSettings->r_s32(section,"silencer_status");
+	m_eGrenadeLauncherStatus = (CSE_ALifeItemWeapon::EAddonStatus)pSettings->r_s32(section,"grenade_launcher_status");
 }
 
 BOOL CWeapon::net_Spawn		(LPVOID DC)
@@ -424,7 +429,7 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 
 	//iAmmoCurrent					= E->a_current;
 	iAmmoElapsed					= E->a_elapsed;
-	m_flagsAddOnState				= E->m_addon_flags;
+	m_flagsAddOnState				= E->m_addon_flags.get();
 
 	if(iAmmoElapsed) 
 	{

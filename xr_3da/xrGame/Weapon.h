@@ -14,11 +14,7 @@ class CEntity;
 class CWeaponHUD;
 class ENGINE_API CMotionDef;
 
-//флаги аддонов к оружию
-#define SCOPE1_ADDON			0x01
-#define SCOPE2_ADDON			0x02
-#define GRENADE_LAUNCHER_ADDON	0x04
-#define SILENCER_ADDON			0x08
+#include "xrServer_Objects_ALife_Items.h"
 
 
 class CWeapon : public CInventoryItem//CGameObject
@@ -29,16 +25,19 @@ private:
 public:
 	enum					{ MAX_ANIM_COUNT = 8 };
 	typedef					svector<CMotionDef*,MAX_ANIM_COUNT>		MotionSVec;
+	
 	enum EHandDependence{
 		hdNone	= 0,
 		hd1Hand	= 1,
 		hd2Hand	= 2
 	};
+
 protected:
 	EHandDependence			eHandDependence;		// 0-используется без участия рук, 1-одна рука, 2-две руки
 	bool					bWorking, bWorking2;	// Weapon fires now
 	bool					bPending;				// Weapon needs some time to update itself, even if hidden
 	ref_str					m_WpnName;
+
 
 	bool					bMisfire;				// a misfire happens, you'll need to rearm weapon
 
@@ -171,8 +170,16 @@ public:
 	// Events/States
 	u32						STATE, NEXT_STATE;
 	
-	//состояние аддонов к оружию
+
+	//возможность подключения различных аддонов
+	CSE_ALifeItemWeapon::EAddonStatus			m_eScopeStatus;
+	CSE_ALifeItemWeapon::EAddonStatus			m_eSilencerStatus;
+	CSE_ALifeItemWeapon::EAddonStatus			m_eGrenadeLauncherStatus;
+
+	//состояние подключенных аддонов
 	u8						m_flagsAddOnState;
+
+
 	
 	float					m_fMinRadius;
 	float					m_fMaxRadius;
