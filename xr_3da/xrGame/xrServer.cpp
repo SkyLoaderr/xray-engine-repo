@@ -71,7 +71,7 @@ void xrServer::Update	()
 	csPlayers.Leave		();
 }
 
-BOOL	ProcessRP		(xrServerEntity* EEE, xrS_entities& ent)
+BOOL xrServer::ProcessRP	(xrServerEntity* EEE)
 {
 	// Get list of respawn points
 	if (EEE->s_team >= int(Level().Teams.size()))	return FALSE;
@@ -97,10 +97,10 @@ BOOL	ProcessRP		(xrServerEntity* EEE, xrS_entities& ent)
 				float		cost	=0;
 				DWORD		count	=0;
 				
-				for (DWORD o=0; o<ent.size(); o++) 
+				for (xrS_entities::iterator o_it=0; o_it!=entities.size(); o_it++) 
 				{
 					// Get entity & it's position
-					xrServerEntity*	E	= ent[o];
+					xrServerEntity*	E	= o_it->second;
 					float	dist		= POS.distance_to(E->o_Position);
 					float	e_cost		= 0;
 					
@@ -125,7 +125,7 @@ BOOL	ProcessRP		(xrServerEntity* EEE, xrS_entities& ent)
 	}
 
 	// Perform spawn
-	Fvector4&			P = Level().Teams[s_team].RespawnPoints[selected];
+	Fvector4&			P = Level().Teams[EEE->s_team].RespawnPoints[selected];
 	EEE->o_Position.set	(P.x,P.y,P.z);
 	EEE->o_Angle.set	(P.w);
 	return TRUE;
@@ -189,7 +189,6 @@ DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)	// Non-Zero means broadca
 			xrClientData* CL	= ID_to_client	(sender);
 			xrServerEntity*	E	= entity_Create	(s_name);
 			R_ASSERT			(E);
-			entities.push_back	(E);
 			E->Spawn_Read		(P);
 			
 			// ID, owner, etc
@@ -206,8 +205,11 @@ DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)	// Non-Zero means broadca
 			if (NameReplace)	strcpy	(E->s_name_replace,NameReplace);
 			
 			// PROCESS RP;	 3D position/orientation
+			ProcessRP			(E);
 			
-
+			// REGISTER new ENTITY
+			entities.insert		(ID,E);
+			
 			// log
 			Level().HUD()->outMessage	(0xffffffff,"SERVER","Spawning '%s'(%d,%d,%d) as #%d, on '%s'", E->s_name_replace, E->s_team, E->s_squad, E->s_group, E->ID, CL->Name);
 

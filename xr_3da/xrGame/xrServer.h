@@ -12,7 +12,7 @@
 class xrServerEntity;
 
 // t-defs
-typedef vector<xrServerEntity*>	xrS_entities;
+typedef std::map<u16,xrServerEntity*>	xrS_entities;
 
 class xrClientData	: public IClient
 {
@@ -107,8 +107,6 @@ public:
 	}
 	~xrServerEntity			()
 	{
-		_FREE				(s_name_replace);
-		_FREE				(s_name);
 	}
 };
 
@@ -117,6 +115,8 @@ class xrServer	: public IPureServer
 {
 private:
 	xrS_entities			entities;
+	
+	void					ProcessRP			(xrServerEntity* E);
 public:
 	// constr / destr
 	xrServer				();
@@ -132,10 +132,10 @@ public:
 	virtual void			client_Destroy		(IClient* C);					// destroy client info
 
 	// utilities
-	xrServerEntity*			entity_Create	(LPCSTR name);
-	void					entity_Destroy	(xrServerEntity* P);
+	xrServerEntity*			entity_Create		(LPCSTR name);
+	void					entity_Destroy		(xrServerEntity* P);
 
-	IC xrClientData*		ID_to_client	(DPNID ID)
+	IC xrClientData*		ID_to_client		(DPNID ID)
 	{
 		csPlayers.Enter		();
 		for (DWORD client=0; client<net_Players.size(); client++)
@@ -148,7 +148,7 @@ public:
 		csPlayers.Leave		();
 		return 0;
 	}
-	IC xrServerEntity*		ID_to_entity	(BYTE ID)
+	IC xrServerEntity*		ID_to_entity		(u16 ID)
 	{
 		xrS_entities::iterator	I=entities.begin(),E=entities.end();
 		for (; I!=E; I++)
