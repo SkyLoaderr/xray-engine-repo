@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "hudmanager.h"
 
-
 void xrServer::OnCL_Disconnected	(IClient* CL)
 {
 	Level().HUD()->outMessage(0xffffffff,"SERVER","Player '%s' disconnected",CL->Name);
@@ -27,5 +26,6 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 	}
 
 	// Game config (all, info excludes deleted player)
+	game->OnPlayerDisconnect();
 	game->signal_Syncronize	();
 }

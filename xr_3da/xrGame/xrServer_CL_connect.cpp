@@ -42,7 +42,7 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 	u32			mode			= net_flags(TRUE,TRUE);
 
 	// Game config (all, info includes new player)
-	game->OnPlayerConnect			(CL->ID,CL->Name);
+	game->OnPlayerConnect			(CL->ID);
 	Perform_game_export				();
 
 	// Replicate current entities on to this client
