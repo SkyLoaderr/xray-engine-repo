@@ -9,6 +9,8 @@
 #include "ui_main.h"
 #include "igame_persistent.h"
 #include "environment.h"
+#include "PropertiesListHelper.h"
+#include "PropertiesList.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -108,63 +110,21 @@ void __fastcall TfraBottomBar::fsStorageRestorePlacement(TObject *Sender)
     mi				= xr_new<TMenuItem>((TComponent*)0);
     mi->Caption 	= "-";
     miWeather->Add	(mi);
-    
-    TMenuItem* miSp	= xr_new<TMenuItem>((TComponent*)0);
-    miSp->Caption 	= "Speed";
-    miWeather->Add	(miSp);
-    
-    mi				= xr_new<TMenuItem>((TComponent*)0);
-    mi->Caption 	= "x1";
-    mi->OnClick 	= miWeatherClick;
-    mi->Tag			= 1;
-    mi->RadioItem	= true;
-    mi->Checked		= true;
-    miSp->Add		(mi);
-    mi				= xr_new<TMenuItem>((TComponent*)0);
-    mi->Caption 	= "x5";
-    mi->OnClick 	= miWeatherClick;
-    mi->Tag			= 5;
-    mi->RadioItem	= true;
-    miSp->Add		(mi);
-    mi				= xr_new<TMenuItem>((TComponent*)0);
-    mi->Caption 	= "x10";
-    mi->OnClick 	= miWeatherClick;
-    mi->Tag			= 10;
-    mi->RadioItem	= true;
-    miSp->Add		(mi);
-    mi				= xr_new<TMenuItem>((TComponent*)0);
-    mi->Caption 	= "x20";
-    mi->OnClick 	= miWeatherClick;
-    mi->Tag			= 20;
-    mi->RadioItem	= true;
-    miSp->Add		(mi);
-    mi				= xr_new<TMenuItem>((TComponent*)0);
-    mi->Caption 	= "x100";
-    mi->OnClick 	= miWeatherClick;
-    mi->Tag			= 100;
-    mi->RadioItem	= true;
-    miSp->Add		(mi);
-    mi				= xr_new<TMenuItem>((TComponent*)0);
-    mi->Caption 	= "x1000";
-    mi->OnClick 	= miWeatherClick;
-    mi->Tag			= 1000;
-    mi->RadioItem	= true;
-    miSp->Add		(mi);
-    mi				= xr_new<TMenuItem>((TComponent*)0);
-    mi->Caption 	= "x2000";
-    mi->OnClick 	= miWeatherClick;
-    mi->Tag			= 2000;
-    mi->RadioItem	= true;
-    miSp->Add		(mi);
-
-    mi				= xr_new<TMenuItem>((TComponent*)0);
-    mi->Caption 	= "-";
-    miWeather->Add	(mi);
     mi				= xr_new<TMenuItem>((TComponent*)0);
     mi->Caption 	= "Reload";
     mi->OnClick 	= miWeatherClick;
     mi->Tag			= -2;
     miWeather->Add	(mi);
+
+    mi				= xr_new<TMenuItem>((TComponent*)0);
+    mi->Caption 	= "-";
+    miWeather->Add	(mi);
+    mi				= xr_new<TMenuItem>((TComponent*)0);
+    mi->Caption 	= "Properties...";
+    mi->OnClick 	= miWeatherClick;
+    mi->Tag			= -3;
+    miWeather->Add	(mi);
+    
     psDeviceFlags.set	(rsEnvironment,FALSE);
 }
 //---------------------------------------------------------------------------
@@ -223,13 +183,26 @@ void __fastcall TfraBottomBar::miWeatherClick(TObject *Sender)
         	mi->Checked = !mi->Checked;
         }else if (mi->Tag==-1){
 		    psDeviceFlags.set	(rsEnvironment,FALSE);
+    	    g_pGamePersistent->Environment.SetWeather(0);
         	mi->Checked = !mi->Checked;
         }else if (mi->Tag==-2){
         	Engine.ReloadSettings();
     	    g_pGamePersistent->Environment.ED_Reload();
-        }else if (mi->Tag>0){
-        	g_pGamePersistent->Environment.SetTimeFactor(float(mi->Tag));
-        	mi->Checked = !mi->Checked;
+        }else if (mi->Tag==-3){
+            TProperties* P 		= TProperties::CreateModalForm();
+			CEnvironment& env	= g_pGamePersistent->Environment;
+            PropItemVec items;
+            float ft=env.ed_from_time,tt=env.ed_to_time,sp=env.ed_speed;
+            PHelper.CreateTime	(items,"From Time", 	&ft);
+            PHelper.CreateTime	(items,"To Time",   	&tt);
+            PHelper.CreateFloat	(items,"Speed",			&sp, 		1.f,10000.f,1.f,1);
+            P->AssignItems		(items,true,"Weather properties...");
+            if (mrOk==P->ShowPropertiesModal()){
+                env.ed_from_time	= ft;
+                env.ed_to_time		= tt;
+                env.ed_speed 		= sp;
+            }
+            TProperties::DestroyForm(P);
         }
     }
 }

@@ -519,6 +519,8 @@ void TUI::Redraw(){
             }
         }
 
+        RCache.set_xform_world	(Fidentity);
+        
     	// draw grid
     	if (psDeviceFlags.is(rsDrawGrid)){
 	        DU.DrawGrid		();

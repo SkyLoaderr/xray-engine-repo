@@ -194,6 +194,8 @@ public:
     {	return			(WaveValue*)	AppendValue		(items,key,xr_new<WaveValue>(val),PROP_WAVE);           }
     IC TextValue* 		CreateGameMtl	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_GAMEMTL);    }
+    IC FloatValue* 		CreateTime		(PropItemVec& items, AnsiString key, float* val, float mn=0.f, float mx=86400.f)
+    {	return			(FloatValue*)	AppendValue		(items,key,xr_new<FloatValue>(val,mn,mx,0,0),PROP_TIME);    }
     
     IC FloatValue* 		CreateAngle		(PropItemVec& items, AnsiString key, float* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2)
     {   FloatValue* V	= (FloatValue*)	AppendValue		(items,key,xr_new<FloatValue>(val,mn,mx,inc,decim),PROP_FLOAT);

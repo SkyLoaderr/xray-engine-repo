@@ -198,11 +198,25 @@ void CImageManager::SafeCopyLocalToServer(FS_QueryMap& files)
 		FS.file_rename(src_name.c_str(),dest_name.c_str(),true);
     	// copy sources
 		fn 			= it->first;
-		src_name 	= p_import	+ AnsiString(fn);
+		src_name 	= p_import	+ fn;
 		EFS.UpdateTextureNameWithFolder(fn);
-		dest_name 	= p_textures+ AnsiString(fn);
-        EFS.BackupFile	(_textures_,AnsiString(fn));
-		FS.file_copy(src_name.c_str(),dest_name.c_str());
+		dest_name 	= p_textures+ ChangeFileExt(fn,".tga");
+        if (FS.exist(dest_name.c_str()))
+	        EFS.BackupFile	(_textures_,ChangeFileExt(fn,".tga"));
+        if (ExtractFileExt(src_name)==".tga"){
+			FS.file_copy(src_name.c_str(),dest_name.c_str());
+        }else{
+        	// convert to TGA
+            U32Vec data;
+            u32 w,h,a;
+		    R_ASSERT	(Surface_Load(src_name.c_str(),data,w,h,a));
+            CImage* I 	= xr_new<CImage>();
+            I->Create	(w,h,data.begin());
+            I->Vflip	();
+            I->SaveTGA	(dest_name.c_str());
+            xr_delete	(I);
+            FS.set_file_age(dest_name.c_str(), FS.get_file_age(src_name.c_str()));
+        }
         EFS.WriteAccessLog(dest_name.c_str(),"Replace");
         EFS.MarkFile		(src_name,true);
     }

@@ -27,7 +27,7 @@ void ESceneLightTools::Clear(bool bSpecific)
 
     m_HemiQuality		= 1;
     m_SunShadowQuality	= 1;
-    m_SunShadowDir.set	(-PI_DIV_6,PI_MUL_2-PI_DIV_4);
+    m_SunShadowDir.set	(deg2rad(-25),deg2rad(292));
     
 	lcontrol_last_idx	= 0;
     lcontrols.clear		();
@@ -112,9 +112,7 @@ void ESceneLightTools::AfterRender()
 }
 //------------------------------------------------------------------------------
 
-//#define DIR_SELRANGE 	250
-#define DIR_RANGE 		10
-#define VIS_RADIUS 		0.25f
+#define VIS_RADIUS 		0.03f
 void  ESceneLightTools::OnRender(int priority, bool strictB2F)
 {
 	inherited::OnRender(priority, strictB2F);
@@ -122,10 +120,13 @@ void  ESceneLightTools::OnRender(int priority, bool strictB2F)
         if ((true==strictB2F)&&(1==priority)){
             Device.SetShader		(Device.m_WireShader);
             RCache.set_xform_world	(Fidentity);
-            Fvector pos				= {-5.f,5.f,0.f};
             Fvector dir;
             dir.setHP(m_SunShadowDir.y,m_SunShadowDir.x);
-            DU.DrawDirectionalLight( pos, dir, VIS_RADIUS, DIR_RANGE, 0x00FFFF00 );
+            Fvector p;
+            float fd				= UI.ZFar()*0.95f;
+            p.mad					(Device.vCameraPosition,dir,-fd);
+            DU.DrawPointLight		( p ,VIS_RADIUS*fd, 0x00FFE020);
+            DU.DrawLineSphere		( p, VIS_RADIUS*fd*0.3f, 0x00FF3000, false );
         }
     }
 }

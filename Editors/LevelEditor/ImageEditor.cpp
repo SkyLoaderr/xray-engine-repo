@@ -84,7 +84,7 @@ void __fastcall TfrmImageLib::UpdateImageLib()
         FS_QueryPairIt it=files.begin();
         FS_QueryPairIt _E=files.end();
         for (;it!=_E; it++){
-        	EFS.UpdateTextureNameWithFolder(it->first.c_str(),fn);
+        	EFS.UpdateTextureNameWithFolder(ChangeFileExt(it->first,".tga").c_str(),fn);
             texture_map.insert(mk_pair(fn,FS_QueryItem(it->second.size,it->second.modif,it->second.flags.get())));
         }
         // sync

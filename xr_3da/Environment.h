@@ -64,9 +64,7 @@ public:
 	CEnvDescriptor			CurrentEnv;
 	CEnvDescriptor*			CurrentA;
 	CEnvDescriptor*			CurrentB;
-    float					ABlength;
-    float					ABcurrent;
-	float					fTimeFactor;
+    bool					bTerminator;
     
     EnvVec*					CurrentWeather;
     LPCSTR					CurrentWeatherName;
@@ -77,7 +75,13 @@ public:
 	CLensFlare*				eff_LensFlare;
 	CEffect_Thunderbolt*	eff_Thunderbolt;
 
-    void					SelectEnv			();
+    void					SelectEnvs			(float gt);
+#ifdef _EDITOR
+public:
+	float					ed_from_time;
+	float					ed_to_time;
+    float 					ed_speed;
+#endif
 public:
 							CEnvironment		();
 							~CEnvironment		();
@@ -93,7 +97,6 @@ public:
     void					OnDeviceCreate		();
     void					OnDeviceDestroy		();
 
-	void					SetTimeFactor		(float _time_factor);
     void					SetWeather			(LPCSTR name);
     LPCSTR					GetWeather			(){return CurrentWeatherName;}
 

@@ -152,27 +152,26 @@ void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f)
 
 //////////////////////////////////////////////////////////////////////////
 // environment
+static const float day_tm	= 86400.f;
 CEnvironment::CEnvironment	()
 {
-	fTimeFactor				= 1;
 	CurrentA				= 0;
 	CurrentB				= 0;
-	ABcurrent				= 0.f;
-    ABlength				= 0.f;
     CurrentWeather			= 0;
     CurrentWeatherName		= 0;
 	eff_Rain				= 0;
     eff_LensFlare 			= 0;
     eff_Thunderbolt			= 0;
 	OnDeviceCreate			();
+#ifdef _EDITOR
+	ed_from_time			= 0.f;
+	ed_to_time				= day_tm;
+    ed_speed				= 12.f;
+#endif
 }
 CEnvironment::~CEnvironment	()
 {
 	OnDeviceDestroy			();
-}
-void	CEnvironment::SetTimeFactor		(float _time_factor)
-{
-	fTimeFactor				= _time_factor;
 }
 
 IC bool sort_env_pred(const CEnvDescriptor*& x, const CEnvDescriptor*& y)
@@ -229,55 +228,98 @@ void CEnvironment::unload	()
     CurrentEnv.unload	();
     CurrentA			= 0;
     CurrentB			= 0;
-    ABcurrent			= 0;
-    ABlength			= 0;
 }
 
 void CEnvironment::SetWeather(LPCSTR name)
 {
-	R_ASSERT2			(name&&name[0],"Empty weather name");
-	WeatherPairIt it	= Weathers.find(name);
-    R_ASSERT3			(it!=Weathers.end(),"Invalid weather name.",name);
-	CurrentWeather		= &it->second;
-    CurrentWeatherName	= *it->first;
+	if (name&&name[0]){
+        R_ASSERT2			(name&&name[0],"Empty weather name");
+        WeatherPairIt it	= Weathers.find(name);
+        R_ASSERT3			(it!=Weathers.end(),"Invalid weather name.",name);
+        CurrentWeather		= &it->second;
+        CurrentWeatherName	= *it->first;
+    }else{
+		CurrentWeather		= 0;
+		CurrentWeatherName	= 0;
+		CurrentA			= 0;
+		CurrentB			= 0;
+    }
 }
 
 IC bool lb_env_pred(const CEnvDescriptor*& x, float val)
 {	return x->exec_time < val;	}
 
-void CEnvironment::SelectEnv()
+void CEnvironment::SelectEnvs(float gt)
 {
 	VERIFY				(CurrentWeather);
     if ((CurrentA==CurrentB)&&(CurrentA==0)){
-        CurrentA		= *CurrentWeather->begin();
-        CurrentB		= *(CurrentWeather->begin()+1);
-        ABlength		= CurrentB->exec_time-CurrentA->exec_time;
-        ABcurrent		= 0.f;
-    }else{
-        CurrentA		= CurrentB;
-        EnvIt env		= std::lower_bound(CurrentWeather->begin(),CurrentWeather->end(),CurrentB->exec_time+1.f,lb_env_pred);
+	    bTerminator		= false;
+        EnvIt env		= std::lower_bound(CurrentWeather->begin(),CurrentWeather->end(),gt,lb_env_pred);
         if (env==CurrentWeather->end()){
+            CurrentA	= *(CurrentWeather->end()-1);
             CurrentB	= CurrentWeather->front();
-            ABlength	= (24*60*60-CurrentA->exec_time)+CurrentB->exec_time;
+            bTerminator	= true;
         }else{
             CurrentB	= *env;
-            ABlength	= CurrentB->exec_time-CurrentA->exec_time;
+            if (env==CurrentWeather->begin()){
+		        CurrentA= *(CurrentWeather->end()-1);
+	            bTerminator	= true;
+            }else{
+		        CurrentA= *(env-1);
+            }
         }
-        ABcurrent		= 0.f;
+    }else{
+    	if (bTerminator){
+            if ((gt>CurrentB->exec_time)&&(gt<CurrentA->exec_time)){
+                bTerminator		= false;
+                CurrentA		= CurrentB;
+                EnvIt env		= std::lower_bound(CurrentWeather->begin(),CurrentWeather->end(),gt,lb_env_pred);
+                if (env==CurrentWeather->end()){
+                    CurrentB	= CurrentWeather->front();
+                    bTerminator	= true;
+                }else{
+                    CurrentB	= *env;
+                }
+            }
+        }else{
+            if (gt>CurrentB->exec_time){
+			    bTerminator		= false;       
+                CurrentA		= CurrentB;
+                EnvIt env		= std::lower_bound(CurrentWeather->begin(),CurrentWeather->end(),gt,lb_env_pred);
+                if (env==CurrentWeather->end()){
+                    CurrentB	= CurrentWeather->front();
+                    bTerminator	= true;
+                }else{
+                    CurrentB	= *env;
+                }
+            }
+        }
     }
 }
 
+static float gt				= 0.f;
 void CEnvironment::OnFrame()
 {
 #ifdef _EDITOR
 	if (!psDeviceFlags.is(rsEnvironment)) return;
+	gt 						+= Device.fTimeDelta*ed_speed;
+    if (gt>ed_to_time)		gt=gt-ed_to_time+ed_from_time;
+    if (gt<ed_from_time)	gt=ed_from_time;
+#else
+	float gt				= Level().GetGameDayTime_sec();
 #endif
-
-	ABcurrent			+= Device.fTimeDelta*fTimeFactor;
-    if (ABcurrent>ABlength)	SelectEnv();
-
+	SelectEnvs				(gt);
     VERIFY					(CurrentA&&CurrentB);
-    float t_fact			= ABcurrent/ABlength; VERIFY(t_fact<1.f);
+
+    float t_fact;
+    if (bTerminator){
+	    float x				= gt>CurrentA->exec_time?gt-CurrentA->exec_time:(day_tm-CurrentA->exec_time)+gt;
+	    t_fact				= x/((day_tm-CurrentA->exec_time)+CurrentB->exec_time); 
+    }else{
+	    t_fact				= (gt-CurrentA->exec_time)/(CurrentB->exec_time-CurrentA->exec_time); 
+    }
+    clamp					(t_fact,0.f,1.f);
+    
 	CurrentEnv.lerp			(*CurrentA,*CurrentB,t_fact);
     int id					= (t_fact<0.5f)?CurrentA->lens_flare_id:CurrentB->lens_flare_id;
 	eff_LensFlare->OnFrame	(id);

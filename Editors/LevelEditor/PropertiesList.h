@@ -29,7 +29,6 @@ __published:	// IDE-managed Components
 	TMxPopupMenu 		*pmEnum;
 	TFormStorage 		*fsStorage;
 	TMultiObjSpinEdit 	*seNumber;
-	TEdit 				*edText;
 	TBevel 				*Bevel1;
 	TElPopupButton *pbExtBtn;
 	TMxPopupMenu *pmSystem;
@@ -46,6 +45,7 @@ __published:	// IDE-managed Components
 	TBevel *Bevel2;
 	TExtBtn *ebLightAnimationEditor;
 	TExtBtn *ExtBtn1;
+	TMaskEdit *edText;
 	void __fastcall 	FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall 	tvPropertiesClick(TObject *Sender);
 	void __fastcall 	tvPropertiesItemDraw(TObject *Sender, TElTreeItem *Item, TCanvas *Surface, TRect &R, int SectionIndex);

@@ -417,7 +417,7 @@ void __fastcall TItemList::InplaceEditValidateResult(
     InputValid						= false;
     if (!new_text.IsEmpty()){
 	    IE->Editor->Text 			= new_text;
-		AnsiString old_name,new_name;
+		AnsiString old_name, new_name;
 		FHelper.MakeName			(IE->Item,0,old_name,false);
 	    _ReplaceItem				(old_name.c_str(),IE->Item->Level,new_text.c_str(),new_name,'\\');
 	    TElTreeItem* find_item		= FHelper.FindItem(tvItems,new_name);

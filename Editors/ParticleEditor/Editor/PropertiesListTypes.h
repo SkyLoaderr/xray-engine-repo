@@ -56,6 +56,7 @@ enum EPropType{
 	PROP_WAVE,
     PROP_SCENE_ITEM,
     PROP_CANVAS,
+    PROP_TIME,
 };
 // refs
 struct 	xr_token;        

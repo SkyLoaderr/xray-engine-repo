@@ -377,6 +377,22 @@ void DrawButtons(TRect R, TCanvas* Surface, AStringVec& lst, int down_btn, bool 
     }
 }
 
+IC AnsiString FloatTimeToStrTime(float v)
+{
+    int h,m,s;
+    h=iFloor(v/3600);
+    m=iFloor((v-h*3600)/60);
+    s=iFloor(v-h*3600-m*60);
+    return AnsiString().sprintf("%02d:%02d:%02d",h,m,s);
+}
+
+IC float StrTimeToFloatTime(LPCSTR buf)
+{
+    int h,m,s;
+	sscanf(buf,"%2d:%2d:%2d",&h,&m,&s);
+    return h*3600+m*60+s;
+}
+
 void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
       TElTreeItem *Item, TCanvas *Surface, TRect &R, int SectionIndex)
 {
@@ -517,6 +533,10 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             case PROP_LIST:
                 OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
             break;
+            case PROP_TIME:{
+                FloatValue* V = dynamic_cast<FloatValue*>(prop->GetFrontValue()); R_ASSERT(V);
+                OutText(FloatTimeToStrTime(V->GetValue()).c_str(),Surface,R,prop->Enabled());
+            }break;
             case PROP_A_TEXT:
             case PROP_TEXT:
                 if (edText->Tag!=(int)Item)
@@ -542,6 +562,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
         // show LW edit
         if (!prop->m_Flags.is(PropItem::flDisabled)){
             switch(type){
+            case PROP_TIME:
             case PROP_A_TEXT:
             case PROP_TEXT:
                 if (edText->Tag==(int)Item) if (!edText->Visible) ShowLWText(R);
@@ -756,6 +777,9 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 case PROP_TEXT:
                 	if ((X-prop->draw_rect.left)<(prop->draw_rect.Width()-(m_BMEllipsis->Width+2)))	PrepareLWText(item);
                     else								                   							ExecTextEditor(prop);
+                break;
+                case PROP_TIME:
+                	PrepareLWText(item);
                 break;
                 case PROP_TEXTURE2:{
                     pmEnum->Items->Clear();
@@ -1343,6 +1367,7 @@ void TProperties::PrepareLWText(TElTreeItem* item)
 		ATextValue* V	= dynamic_cast<ATextValue*>(prop->GetFrontValue()); R_ASSERT(V);
         AnsiString edit_val	= V->GetValue();
         prop->OnBeforeEdit	(&edit_val);
+        edText->EditMask	= "";
 		edText->Text 		= edit_val;
 		edText->MaxLength	= 0;
     }break;
@@ -1350,8 +1375,17 @@ void TProperties::PrepareLWText(TElTreeItem* item)
 		TextValue* V		= dynamic_cast<TextValue*>(prop->GetFrontValue()); R_ASSERT(V);
 		AnsiString edit_val	= V->GetValue();
         prop->OnBeforeEdit	(&edit_val);
+        edText->EditMask	= "";
 		edText->Text 		= edit_val;
 		edText->MaxLength	= V->lim;
+    }break;
+    case PROP_TIME:{
+		FloatValue* V		= dynamic_cast<FloatValue*>(prop->GetFrontValue()); R_ASSERT(V);
+        float edit_val		= V->GetValue();
+        prop->OnBeforeEdit	(&edit_val);
+        edText->EditMask	= "!90:00:00;1;_";
+		edText->Text 		= FloatTimeToStrTime(edit_val);
+		edText->MaxLength	= 0;
     }break;
     }
     edText->Tag 	= (int)item;
@@ -1392,6 +1426,15 @@ void TProperties::ApplyLWText()
             }
             item->ColumnText->Strings[0] = prop->GetText();
         }break;
+        case PROP_TIME:{
+			FloatValue* V		= dynamic_cast<FloatValue*>(prop->GetFrontValue()); R_ASSERT(V);
+			float new_val		= StrTimeToFloatTime(edText->Text.c_str());
+			prop->OnAfterEdit	(&new_val);
+            if (prop->ApplyValue(&new_val)){
+	            Modified		();
+			}
+            item->ColumnText->Strings[0] = FloatTimeToStrTime(V->GetValue());
+		}break;        
     	}
     }
 }
