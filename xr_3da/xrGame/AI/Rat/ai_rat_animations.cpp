@@ -9,8 +9,6 @@
 #include "stdafx.h"
 #include "ai_rat.h"
 
-using namespace NAI_Rat_Constants;
-
 // sounds
 void CAI_Rat::vfLoadSounds()
 {
@@ -79,7 +77,7 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 		}
 		else
 			if (_abs(r_torso_target.yaw - r_torso_current.yaw) <= PI)
-				if (_abs(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
+				if (_abs(r_torso_target.yaw - r_torso_current.yaw) >= EPS_L)
 					if (r_torso_target.yaw - r_torso_current.yaw >= 0)
 						tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpTurnRight;
 					else
@@ -100,7 +98,7 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 							else
 								tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tWalk.fwd;
 			else
-				if (PI_MUL_2 - _abs(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
+				if (PI_MUL_2 - _abs(r_torso_target.yaw - r_torso_current.yaw) >= EPS_L)
 					if (r_torso_target.yaw > r_torso_current.yaw)
 						tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpTurnLeft;
 					else

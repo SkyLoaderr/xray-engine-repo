@@ -12,21 +12,6 @@
 #include "..\\ai_monsters.h"
 #include "..\\..\\CustomMonster.h"
 
-namespace NAI_Rat_Constants
-{
-	const float TORSO_ANGLE_DELTA				= EPS_L;
-	const u32 LOST_MEMORY_TIME				= 20000;
-	const u32 LOST_RECOIL_TIME				=  2000;
-	const float UNDER_FIRE_DISTANCE				= 100.f;
-	const u32 RETREAT_TIME					= 10000;
-	const float RETREAT_DISTANCE				= 100.f;
-	const float MIN_PROBABILITY					= 0.5f;
-	const float ATTACK_STRAIGHT_RUN_DISTANCE	= 10.f;
-	const float	MAX_STABLE_DISTANCE				= 20.f;
-	const float	MIN_TURN_VALUE					= PI_DIV_2 + 0*PI_DIV_6;
-	const float	MAX_TURN_VALUE					= 3*PI_DIV_2 - 0*PI_DIV_6;
-};
-
 class CAI_Rat : public CCustomMonster  
 {
 	protected:
@@ -95,23 +80,23 @@ class CAI_Rat : public CCustomMonster
 		sound				m_tpaSoundAttack[SND_ATTACK_COUNT];
 		sound				m_tpaSoundVoice[SND_VOICE_COUNT];
 		sound*				m_tpSoundBeingPlayed;
-		u32				m_dwLastSoundRefresh;
+		u32					m_dwLastSoundRefresh;
 		float				m_fMinVoiceIinterval;
 		float				m_fMaxVoiceIinterval;
 		float				m_fVoiceRefreshRate;
-		u32				m_dwLastVoiceTalk;
+		u32					m_dwLastVoiceTalk;
 		
 		// ATTACK
 		bool				m_bActionStarted;
 		bool				m_bFiring;
-		u32				m_dwStartAttackTime;
+		u32					m_dwStartAttackTime;
 		float				m_fAttackSpeed;
 		// HIT
-		u32				m_dwHitTime;
+		u32					m_dwHitTime;
 		Fvector				m_tHitDir;
 		Fvector				m_tHitPosition;
 		float				m_fHitPower;
-		u32				m_dwHitInterval;
+		u32					m_dwHitInterval;
 		
 		// SOUND BEING FELT
 		SSimpleSound		m_tLastSound;
@@ -123,12 +108,12 @@ class CAI_Rat : public CCustomMonster
 		SEnemySelected		m_Enemy;
 		CEntity*			m_tSavedEnemy;
 		Fvector				m_tSavedEnemyPosition;
-		u32				m_dwLostEnemyTime;
+		u32					m_dwLostEnemyTime;
 		NodeCompressed* 	m_tpSavedEnemyNode;
-		u32				m_dwSavedEnemyNodeID;
+		u32					m_dwSavedEnemyNodeID;
 		
 		// PERFORMANCE
-		u32				m_dwLastRangeSearch;
+		u32					m_dwLastRangeSearch;
 		
 		// BEHAVIOUR
 		Fvector				m_tGoalDir;
@@ -140,12 +125,10 @@ class CAI_Rat : public CCustomMonster
 		float				m_fSpeed;
 		float				m_fSafeSpeed;
 		float				m_fASpeed;
-		float				m_fMinHeight;
 		Fvector				m_tVarGoal;
 		float				m_fIdleSoundDelta;
 		Fvector				m_tSpawnPosition;
 		Fvector				m_tSafeSpawnPosition;
-		u32				m_dwStandLookTime;
 		// variables
 		float				m_fGoalChangeTime;
 		Fvector				m_tOldPosition;
@@ -156,8 +139,8 @@ class CAI_Rat : public CCustomMonster
 		float				m_fMoraleDeathQuant;
 		float				m_fMoraleFearQuant;
 		float				m_fMoraleRestoreQuant;
-		u32				m_dwMoraleRestoreTimeInterval;
-		u32				m_dwMoraleLastUpdateTime;
+		u32					m_dwMoraleRestoreTimeInterval;
+		u32					m_dwMoraleLastUpdateTime;
 		float				m_fMoraleMinValue;
 		float				m_fMoraleMaxValue;
 		float				m_fMoraleNormalValue;
@@ -171,12 +154,12 @@ class CAI_Rat : public CCustomMonster
 
 		// active
 		float				m_fChangeActiveStateProbability;
-		u32				m_dwActiveCountPercent;
-		u32				m_dwActiveScheduleMin;
-		u32				m_dwActiveScheduleMax;
-		u32				m_dwPassiveScheduleMin;
-		u32				m_dwPassiveScheduleMax;
-		u32				m_dwStandingCountPercent;
+		u32					m_dwActiveCountPercent;
+		u32					m_dwActiveScheduleMin;
+		u32					m_dwActiveScheduleMax;
+		u32					m_dwPassiveScheduleMin;
+		u32					m_dwPassiveScheduleMax;
+		u32					m_dwStandingCountPercent;
 		bool				m_bStanding;
 		bool				m_bActive;
 
@@ -187,8 +170,18 @@ class CAI_Rat : public CCustomMonster
 		float				m_fMaxHomeRadius;
 
 		// DDD
-		u32				m_dwActionRefreshRate;
+		u32					m_dwActionRefreshRate;
 		float				m_fAttackSuccessProbability;
+
+		u32					m_dwLostMemoryTime;
+		u32					m_dwLostRecoilTime;
+		float				m_fUnderFireDistance;
+		u32					m_dwRetreatTime;
+		float				m_fRetreatDistance;
+		float				m_fAttackStraightDistance;
+		float				m_fStableDistance;
+		float				m_fWallMinTurnValue;
+		float				m_fWallMaxTurnValue;
 
 		//////////////////////////
 		// INLINE FUNCTIONS
@@ -196,7 +189,7 @@ class CAI_Rat : public CCustomMonster
 		IC void vfChangeGoal()
 		{
 			Fvector vP;
-			vP.set(m_tSpawnPosition.x,m_tSpawnPosition.y+m_fMinHeight,m_tSpawnPosition.z);
+			vP.set(m_tSpawnPosition.x,m_tSpawnPosition.y,m_tSpawnPosition.z);
 			m_tGoalDir.x = vP.x+m_tVarGoal.x*::Random.randF(-0.5f,0.5f); 
 			m_tGoalDir.y = vP.y+m_tVarGoal.y*::Random.randF(-0.5f,0.5f);
 			m_tGoalDir.z = vP.z+m_tVarGoal.z*::Random.randF(-0.5f,0.5f);

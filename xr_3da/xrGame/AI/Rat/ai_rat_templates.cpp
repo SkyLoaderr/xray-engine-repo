@@ -10,8 +10,6 @@
 #include "ai_rat.h"
 #include "..\\ai_monsters_misc.h"
 
-using namespace NAI_Rat_Constants;
-
 void CAI_Rat::vfSaveEnemy()
 {
 	m_tSavedEnemy = m_Enemy.Enemy;

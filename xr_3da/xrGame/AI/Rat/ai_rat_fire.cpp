@@ -10,8 +10,6 @@
 #include "ai_rat.h"
 #include "..\\..\\ai_funcs.h"
 
-using namespace NAI_Rat_Constants;
-
 void CAI_Rat::Exec_Action(float dt)
 {
 	AI::C_Command* C	= &q_action;

@@ -78,31 +78,22 @@ void CCustomMonster::Load		(LPCSTR section)
 {
 	Msg("Loading AI entity: %s",section);
 	
-	inherited::Load				(section);
+	inherited::Load(section);
 
 	vPosition.y += EPS_L;
 	
-	Movement.SetPosition		(vPosition);
+	Movement.SetPosition(vPosition);
 	
-	eye_fov					= pSettings->ReadFLOAT(section,"eye_fov");
-	eye_range				= pSettings->ReadFLOAT(section,"eye_range");
-	// movement
-	m_fJumpSpeed			= pSettings->ReadFLOAT(section,"jump_speed");
-	//
-	m_fMinSpeed				= pSettings->ReadFLOAT(section,"min_speed");
-	m_fMaxSpeed				= pSettings->ReadFLOAT(section,"max_speed");
-	m_fCurSpeed				= m_fMaxSpeed;
-	m_current				= 0;
+	m_current = 0;
 
 	// Health & Armor
-	fArmor					= 0;
+	fArmor = 0;
 	
 	// weapons
 	if (pSettings->ReadINT(section,"weapon_usage")) {
 		Weapons					= new CWeaponList(this);
 		LPCSTR S1 = pSettings->ReadSTRING(section,"bone_torso_weapon"),S2 = pSettings->ReadSTRING(section,"bone_head_weapon");
 		Weapons->Init			(S1,S2);
-		// Weapons->TakeItem	(CLSID_OBJECT_W_AK74, 0);
 	}
 
 	// Sheduler

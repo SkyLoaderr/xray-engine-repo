@@ -10,8 +10,6 @@
 #include "ai_rat.h"
 #include "..\\ai_monsters_misc.h"
 
-using namespace NAI_Rat_Constants;
-		   
 /**
 #define WRITE_TO_LOG(s) bStopThinking = true;
 {\
@@ -197,7 +195,7 @@ void CAI_Rat::FreeHuntingActive()
 	m_fASpeed				= .2f;
 	
 	if (bfCheckIfGoalChanged()) {
-		if (m_bStateChanged || (vPosition.distance_to(m_tSpawnPosition) > MAX_STABLE_DISTANCE) || (::Random.randF(0,1) > m_fChangeActiveStateProbability))
+		if (m_bStateChanged || (vPosition.distance_to(m_tSpawnPosition) > m_fStableDistance) || (::Random.randF(0,1) > m_fChangeActiveStateProbability))
 			if (vPosition.distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius)
 				m_fSpeed = m_fSafeSpeed = m_fMaxSpeed;
 			else
@@ -216,7 +214,7 @@ void CAI_Rat::FreeHuntingActive()
 	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
 		m_fSpeed = .1f;
 		if (m_bNoWay) {
-			float fAngle = ::Random.randF(MIN_TURN_VALUE,MAX_TURN_VALUE);
+			float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
 			r_torso_target.yaw = r_torso_current.yaw + fAngle;
 			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
@@ -336,7 +334,7 @@ void CAI_Rat::UnderFire()
 			Fvector tTemp;
 			tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
 			tTemp.normalize_safe();
-			tTemp.mul(UNDER_FIRE_DISTANCE);
+			tTemp.mul(m_fUnderFireDistance);
 			m_tSpawnPosition.add(vPosition,tTemp);
 		}
 		if (m_fMorale >= m_fMoraleNormalValue - EPS_L) {
@@ -355,7 +353,7 @@ void CAI_Rat::UnderFire()
 	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
 		m_fSpeed = .1f;
 		if (m_bNoWay) {
-			float fAngle = ::Random.randF(MIN_TURN_VALUE,MAX_TURN_VALUE);
+			float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
 			r_torso_target.yaw = r_torso_current.yaw + fAngle;
 			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
@@ -376,14 +374,14 @@ void CAI_Rat::AttackFire()
 	
 	SelectEnemy(m_Enemy);
 	
-	ERatStates eState = ERatStates(dwfChooseAction(m_dwActionRefreshRate,MIN_PROBABILITY,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiRatRetreat));
+	ERatStates eState = ERatStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiRatRetreat));
 	if (eState != eCurrentState)
 		GO_TO_NEW_STATE_THIS_UPDATE(eState);
 
 	if (m_Enemy.Enemy)
 		m_dwLostEnemyTime = Level().timeServer();
 
-	if (!(m_Enemy.Enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < LOST_MEMORY_TIME))
+	if (!(m_Enemy.Enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < m_dwLostMemoryTime))
 		m_Enemy.Enemy = m_tSavedEnemy;
 
 	CHECK_IF_GO_TO_PREV_STATE(!(m_Enemy.Enemy));// || !m_Enemy.Enemy->g_Alive())
@@ -426,12 +424,12 @@ void CAI_Rat::AttackRun()
 
 	SelectEnemy(m_Enemy);
 
-	ERatStates eState = ERatStates(dwfChooseAction(m_dwActionRefreshRate,MIN_PROBABILITY,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiRatRetreat));
+	ERatStates eState = ERatStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiRatRetreat));
 	if (eState != eCurrentState) {
 		GO_TO_NEW_STATE_THIS_UPDATE(eState);
 	}
 
-	if (!(m_Enemy.Enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < LOST_MEMORY_TIME))
+	if (!(m_Enemy.Enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < m_dwLostMemoryTime))
 		m_Enemy.Enemy = m_tSavedEnemy;
 
 	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.Enemy->Position()) > m_fMaxPursuitRadius),aiRatReturnHome);
@@ -489,7 +487,7 @@ void CAI_Rat::AttackRun()
 		m_fSpeed = EPS_S;//.1f;
 		if (m_bNoWay) {
 			if (!::Random.randI(4)) {
-				float fAngle = ::Random.randF(MIN_TURN_VALUE,MAX_TURN_VALUE);
+				float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
 				r_torso_target.yaw = r_torso_current.yaw + fAngle;
 			}
 			else {
@@ -518,7 +516,7 @@ void CAI_Rat::Retreat()
 
 	if (m_Enemy.Enemy) {
 		vfSaveEnemy();
-		ERatStates eState = ERatStates(dwfChooseAction(m_dwActionRefreshRate,MIN_PROBABILITY,g_Team(),g_Squad(),g_Group(),aiRatAttackRun,aiRatAttackRun,aiRatRetreat));
+		ERatStates eState = ERatStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),aiRatAttackRun,aiRatAttackRun,aiRatRetreat));
 		if (eState != eCurrentState)
 			GO_TO_NEW_STATE_THIS_UPDATE(eState);
 		m_dwLostEnemyTime = Level().timeServer();
@@ -528,11 +526,11 @@ void CAI_Rat::Retreat()
 		Fvector tTemp;
 		tTemp.sub(vPosition,m_Enemy.Enemy->Position());
 		tTemp.normalize_safe();
-		tTemp.mul(RETREAT_DISTANCE);
+		tTemp.mul(m_fRetreatDistance);
 		m_tSpawnPosition.add(vPosition,tTemp);
 	}
 	else
-		if ((Level().timeServer() - m_dwLostEnemyTime > RETREAT_TIME) && ((m_tLastSound.dwTime < m_dwLastUpdateTime) || !m_tLastSound.tpEntity || (m_tLastSound.tpEntity->g_Team() == g_Team()) || (!bfCheckIfSoundFrightful()))) {
+		if ((Level().timeServer() - m_dwLostEnemyTime > m_dwRetreatTime) && ((m_tLastSound.dwTime < m_dwLastUpdateTime) || !m_tLastSound.tpEntity || (m_tLastSound.tpEntity->g_Team() == g_Team()) || (!bfCheckIfSoundFrightful()))) {
 			GO_TO_PREV_STATE;
 		}
 
@@ -545,7 +543,7 @@ void CAI_Rat::Retreat()
 	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
 		m_fSpeed = .1f;
 		if (m_bNoWay) {
-			float fAngle = ::Random.randF(MIN_TURN_VALUE,MAX_TURN_VALUE);
+			float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
 			r_torso_target.yaw = r_torso_current.yaw + fAngle;
 			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
@@ -574,7 +572,7 @@ void CAI_Rat::Pursuit()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE((m_fMorale < m_fMoraleNormalValue),aiRatUnderFire);
 
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Level().timeServer() - m_dwLostEnemyTime >= LOST_MEMORY_TIME);
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Level().timeServer() - m_dwLostEnemyTime >= m_dwLostMemoryTime);
 	
 	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_BULLET_RICOCHET) == SOUND_TYPE_WEAPON_BULLET_RICOCHET)) {
 		if (m_tLastSound.tpEntity)
@@ -598,7 +596,7 @@ void CAI_Rat::Pursuit()
 	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
 		m_fSpeed = .1f;
 		if (m_bNoWay) {
-			float fAngle = ::Random.randF(MIN_TURN_VALUE,MAX_TURN_VALUE);
+			float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
 			r_torso_target.yaw = r_torso_current.yaw + fAngle;
 			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
@@ -648,12 +646,12 @@ void CAI_Rat::FreeRecoil()
 		Fvector tTemp;
 		tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
 		tTemp.normalize_safe();
-		tTemp.mul(UNDER_FIRE_DISTANCE);
+		tTemp.mul(m_fUnderFireDistance);
 		m_tSavedEnemyPosition = m_tLastSound.tSavedPosition;
 		m_tSpawnPosition.add(vPosition,tTemp);
 	}
 	
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(Level().timeServer() - m_dwLostEnemyTime >= LOST_RECOIL_TIME,aiRatPursuit);
+	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(Level().timeServer() - m_dwLostEnemyTime >= m_dwLostRecoilTime,aiRatPursuit);
 	
 	m_tGoalDir.set(m_tSpawnPosition);
 	
@@ -666,7 +664,7 @@ void CAI_Rat::FreeRecoil()
 	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
 		m_fSpeed = .1f;
 		if (m_bNoWay) {
-			float fAngle = ::Random.randF(MIN_TURN_VALUE,MAX_TURN_VALUE);
+			float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
 			r_torso_target.yaw = r_torso_current.yaw + fAngle;
 			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
@@ -724,7 +722,7 @@ void CAI_Rat::ReturnHome()
 	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
 		m_fSpeed = .1f;
 		if (m_bNoWay) {
-			float fAngle = ::Random.randF(MIN_TURN_VALUE,MAX_TURN_VALUE);
+			float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
 			r_torso_target.yaw = r_torso_current.yaw + fAngle;
 			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);

@@ -32,10 +32,6 @@ CAI_Rat::CAI_Rat()
 	m_fDHeading				= 0;
 	m_fGoalChangeDelta		= 10.f;
 	m_fGoalChangeTime		= 0.f;
-	m_fASpeed				= .2f;
-	m_fMinHeight			= 0.f;
-	m_tVarGoal.set			(10.0,0.0,20.0);
-	m_dwStandLookTime		= 5000;
 	m_tLastSound.tpEntity	= 0;
 	m_tLastSound.dwTime		= 0;
 	m_tLastSound.eSoundType	= SOUND_TYPE_NO_SOUND;
@@ -96,19 +92,34 @@ void CAI_Rat::Load(LPCSTR section)
 	vfLoadSounds();
 	
 	// sounds
-	m_fMinVoiceIinterval			= pSettings->ReadFLOAT(section,"MinVoiceInterval");
-	m_fMaxVoiceIinterval			= pSettings->ReadFLOAT(section,"MaxVoiceInterval");
-	m_fVoiceRefreshRate				= pSettings->ReadFLOAT(section,"VoiceRefreshRate");
+	m_fMinVoiceIinterval			= pSettings->ReadFLOAT (section,"MinVoiceInterval");
+	m_fMaxVoiceIinterval			= pSettings->ReadFLOAT (section,"MaxVoiceInterval");
+	m_fVoiceRefreshRate				= pSettings->ReadFLOAT (section,"VoiceRefreshRate");
 	
 	// active\passive
-	m_fChangeActiveStateProbability = pSettings->ReadFLOAT(section,"ChangeActiveStateProbability");
-	m_dwPassiveScheduleMin			= pSettings->ReadINT(section,"PassiveScheduleMin");
-	m_dwPassiveScheduleMax			= pSettings->ReadINT(section,"PassiveScheduleMax");
-	m_dwActiveCountPercent			= pSettings->ReadINT(section,"ActiveCountPercent");
-	m_dwStandingCountPercent		= pSettings->ReadINT(section,"StandingCountPercent");
+	m_fChangeActiveStateProbability = pSettings->ReadFLOAT (section,"ChangeActiveStateProbability");
+	m_dwPassiveScheduleMin			= pSettings->ReadINT   (section,"PassiveScheduleMin");
+	m_dwPassiveScheduleMax			= pSettings->ReadINT   (section,"PassiveScheduleMax");
+	m_dwActiveCountPercent			= pSettings->ReadINT   (section,"ActiveCountPercent");
+	m_dwStandingCountPercent		= pSettings->ReadINT   (section,"StandingCountPercent");
 
 	// eye shift
-	m_tEyeShift.y					= pSettings->ReadFLOAT(section,"EyeYShift");
+	m_tEyeShift.y					= pSettings->ReadFLOAT (section,"EyeYShift");
+
+	// former constants
+	m_dwLostMemoryTime				= pSettings->ReadINT   (section,"LostMemoryTime");
+	m_dwLostRecoilTime				= pSettings->ReadINT   (section,"LostRecoilTime");
+	m_fUnderFireDistance			= pSettings->ReadFLOAT (section,"UnderFireDistance");
+	m_dwRetreatTime					= pSettings->ReadINT   (section,"RetreatTime");
+	m_fRetreatDistance				= pSettings->ReadFLOAT (section,"RetreatDistance");
+	m_fAttackStraightDistance		= pSettings->ReadFLOAT (section,"AttackStraightDistance");
+	m_fStableDistance				= pSettings->ReadFLOAT (section,"StableDistance");
+	m_fWallMinTurnValue				= pSettings->ReadFLOAT (section,"WallMinTurnValue")/180.f*PI;
+	m_fWallMaxTurnValue				= pSettings->ReadFLOAT (section,"WallMaxTurnValue")/180.f*PI;
+
+	m_fASpeed						= pSettings->ReadFLOAT (section,"AngleSpeed");
+	m_fGoalChangeDelta	 			= pSettings->ReadFLOAT (section,"GoalChangeDelta");
+	m_tVarGoal	  					= pSettings->ReadVECTOR(section,"GoalVariation");
 
 	m_dwActiveScheduleMin			= shedule_Min;
 	m_dwActiveScheduleMax			= shedule_Max;
@@ -144,9 +155,11 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_fHitPower						= tpSE_Rat->fHitPower;
 	m_dwHitInterval					= tpSE_Rat->u16HitInterval;
 	m_fAttackDistance				= tpSE_Rat->fAttackDistance;
-	m_fAttackAngle					= tpSE_Rat->fAttackAngle;
+	m_fAttackAngle					= tpSE_Rat->fAttackAngle/180.f*PI;
 	m_fAttackSuccessProbability		= tpSE_Rat->fAttackSuccessProbability;
 	//////////////////////////////////////////////////////////////////////////
+
+	m_fCurSpeed						= m_fMaxSpeed;
 
 	m_tOldPosition.set(vPosition);
 	m_tSpawnPosition.set(Level().get_squad(g_Team(),g_Squad()).Leader->Position());
