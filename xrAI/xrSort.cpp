@@ -58,6 +58,8 @@ void vfQuickSortEdges(SGraphEdge *tpaEdges, u32 *uiaSortOrder, int n)
 	while (tpStackPointer > tpStack) {
 		QPOP(iStartI,n);
 		for (;;) {
+			if (n < 2)
+				break;
 			if ((n < QUICK_SORT_THRESHOLD) || (tpStackPointer - tpStack>= QUICK_SORT_STACK_SIZE - 1)) {
 				vfSimpleInsertionSort(tpaEdges,uiaSortOrder,iStartI,iStartI + n - 1);
 				break;
@@ -90,7 +92,7 @@ void vfQuickSortEdges(SGraphEdge *tpaEdges, u32 *uiaSortOrder, int n)
 				c--;
 			}
 			if (d < a)
-				continue;
+				break;
 			int rr;
 			rr = min(a - uiaArray,b - a);
 			vfSwapVectors(uiaArray,b - rr,rr);
