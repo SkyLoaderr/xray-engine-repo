@@ -98,7 +98,7 @@ void CDetailManager::soft_Render	()
 					Fvector dir2D,ldir;
 					dir2D.set			(sinf(tm_rot),0,cosf(tm_rot));
 					dir2D.normalize		();
-					ldir.set			(0,-1,1);
+					ldir.set			(0,-1,0);
 					ldir.normalize		();
 
 					for	(; srcIt!=srcEnd; srcIt++, dstIt++)
@@ -109,8 +109,9 @@ void CDetailManager::soft_Render	()
 						Fvector pos;		mXform.transform_tiny	(pos,src);			// normal coords
 						Fvector pos2D;		pos2D.set				(pos.x,0,pos.z);	// 2D pos
 						float	H			= pos.y - mXform.c.y;						// height of vertex (scaled)
-						float	frac		= src.y/height;							// fraction of model height
-						float	inten		= .1f * H * sinf		(tm + pos.x*cx+pos.y*cy+pos.z*cz);
+						float	frac		= src.y/height;								// fraction of model height
+						float	dot			= sinf		(tm + pos.x*cx+pos.y*cy+pos.z*cz);
+						float	inten		= .1f * H * dot;
 
 						//
 						Fvector ctrl1;		ctrl1.set	(0,				0,		0				);
@@ -126,11 +127,14 @@ void CDetailManager::soft_Render	()
 						dstIt->P			=	pos2D;
 
 						// 
+						/*
 						Fvector norm;		norm.sub	(pos2D,	mXform.c);
 						norm.normalize		();
 						float	dot			= norm.dotproduct	(ldir);
+						*/
 						Fcolor clr;			clr.set				(Instance.C,Instance.C,Instance.C,1.f);
-						clr.mul_rgb			(.5f+dot*dot*dot*dot);
+						clamp				(dot,0.f,1.f		);
+						clr.mul_rgb			(.9f+dot*dot*frac	);
 
 						// 
 						/*
