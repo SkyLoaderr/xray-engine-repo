@@ -143,9 +143,6 @@ void CDummyObject::UpdateCL		()
 	}
 	clTransform.set				(svTransform);
 
-	if (s_model)
-	{
-	}
 	if (s_particles)			
 	{
 		s_emitter.m_Position.set				(Position());

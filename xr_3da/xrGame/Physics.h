@@ -103,7 +103,7 @@ public:
 	//CPHJeep Jeep;
 	unsigned int disable_count;
 	//vector<CPHElement*> elements;
-	CPhysicsWorld(){disable_count=0;};
+	CPHWorld(){disable_count=0;};
 	~CPHWorld(){};
 
 	dSpaceID GetSpace(){return Space;};
