@@ -210,6 +210,7 @@ public:
 			bool				can_kill_member			(const Fvector &position, const Fvector &direction) const;
 			void				dbg_animation			(LPCSTR caption, CMotionDef *animation);
 
+	virtual BOOL				feel_touch_on_contact	(CObject* O);
 };
 
 #include "ai_stalker_inline.h"

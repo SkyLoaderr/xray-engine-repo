@@ -105,6 +105,8 @@ public:
 	u32						NET_Time;				// server time of last update
 //------------------------------
 
+	virtual BOOL		feel_touch_on_contact	(CObject *);
+	virtual BOOL		feel_touch_contact		(CObject *);
 	// utils
 	void				mk_orientation			( Fvector& dir, Fmatrix& mR );
 	void				mk_rotation				( Fvector& dir, SRotation &R);

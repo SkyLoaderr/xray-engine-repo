@@ -36,3 +36,8 @@ bool CAI_Stalker::bfCheckForNodeVisibility(u32 dwNodeID, bool bIfRayPick)
 {
 	return							(CVisualMemoryManager::visible(dwNodeID,m_head.current.yaw,ffGetFov()));
 }
+
+BOOL CAI_Stalker::feel_touch_on_contact	(CObject *O)
+{
+	return		(inherited::feel_touch_on_contact(O));
+}

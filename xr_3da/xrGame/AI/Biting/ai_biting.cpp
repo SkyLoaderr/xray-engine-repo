@@ -395,3 +395,7 @@ void CAI_Biting::SetState(IState *pS, bool bSkipInertiaCheck)
 	}
 }
 
+BOOL CAI_Biting::feel_touch_on_contact	(CObject *O)
+{
+	return		(inherited::feel_touch_on_contact(O));
+}

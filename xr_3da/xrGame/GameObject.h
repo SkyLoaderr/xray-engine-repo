@@ -61,6 +61,9 @@ public:
 	virtual CGameObject*				cast_game_object		()						{return this;}
 
 public:
+	virtual BOOL						feel_touch_on_contact	(CObject *)				{return TRUE;}
+
+public:
 	CInifile				*m_ini_file;
 
 	// Utilities

@@ -574,14 +574,20 @@ void CCustomZone::feel_touch_delete(CObject* O)
 
 BOOL CCustomZone::feel_touch_contact(CObject* O) 
 {
-	if(O == this) return false;
-	if(/*!O->Local() ||*/ !((CGameObject*)O)->IsVisibleForZones()) return false;
-	
-	return ((CCF_Shape*)CFORM())->Contact(O);
+	if (O->ID() == ID())
+		return		(FALSE);
+
+	CGameObject *object = smart_cast<CGameObject*>(O);
+    if (!object || !object->IsVisibleForZones())
+		return		(FALSE);
+
+	if (!((CCF_Shape*)CFORM())->Contact(O))
+		return		(FALSE);
+
+	return			(object->feel_touch_on_contact(this));
 }
 
 #define REL_POWER_COEFF 0.75f
-
 
 float CCustomZone::RelativePower(float dist)
 {

@@ -18,7 +18,7 @@ public:
 	IC				CSpaceRestrictor	();
 	virtual			~CSpaceRestrictor	();
 	virtual	BOOL	net_Spawn			(LPVOID data);
-			bool	inside				(const Fvector &position, float radius = EPS_L) const;
+			bool	inside				(const Fvector &position, float radius = EPS_S) const;
 	virtual void	Center				(Fvector &C) const;
 	virtual float	Radius				() const;
 #ifdef DEBUG

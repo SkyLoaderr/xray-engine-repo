@@ -16,6 +16,7 @@
 #include "team_hierarchy_holder.h"
 #include "squad_hierarchy_holder.h"
 #include "group_hierarchy_holder.h"
+#include "customzone.h"
 
 #ifdef DEBUG
 Flags32		psAI_Flags	= {0};
@@ -828,3 +829,26 @@ void CCustomMonster::PitchCorrection()
 
 }
 
+BOOL CCustomMonster::feel_touch_on_contact	(CObject *O)
+{
+	CCustomZone	*custom_zone = smart_cast<CCustomZone*>(O);
+	if (!custom_zone)
+		return	(TRUE);
+
+	if (custom_zone->inside(Position()))
+		return	(TRUE);
+
+	return		(FALSE);
+}
+
+BOOL CCustomMonster::feel_touch_contact		(CObject *O)
+{
+	CCustomZone	*custom_zone = smart_cast<CCustomZone*>(O);
+	if (!custom_zone)
+		return	(TRUE);
+
+	if (custom_zone->inside(Position()))
+		return	(TRUE);
+
+	return		(FALSE);
+}

@@ -277,10 +277,11 @@ public:
 	virtual void				Exec_Action				(float dt);
 	virtual	void				feel_sound_new			(CObject* who, int type, const Fvector &Position, float power);
 	virtual void				feel_touch_new			(CObject* O);
+	virtual BOOL				feel_touch_on_contact	(CObject* O);
+	virtual BOOL				feel_vision_isRelevant	(CObject*);
 	virtual void				shedule_Update			(u32 dt);
 	virtual void				UpdateCL				();
 	virtual void				Hit						(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
-	virtual BOOL				feel_vision_isRelevant	(CObject*);
 
 	/////////////////////////////////////
 	//rat as eatable item
