@@ -67,47 +67,141 @@ void CAI_Soldier::OnFightGroup()
 	
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType());
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(dwHitTime >= m_dwLastUpdate,aiSoldierHurtAlone);
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(dwHitTime >= m_dwLastUpdate,aiSoldierHurtGroup);
 
 	SelectEnemy(Enemy);
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!Enemy.Enemy,aiSoldierFindAlone);
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!Enemy.bVisible,aiSoldierPursuitAlone);
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!Enemy.Enemy,aiSoldierFindGroup);
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!Enemy.bVisible,aiSoldierPursuitGroup);
 	switch (tfGetGroupFightType()) {
-		case FIGHT_TYPE_ATTACK  : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierAttackAlone);
-		case FIGHT_TYPE_DEFEND  : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierDefendAlone);
-		case FIGHT_TYPE_RETREAT : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierRetreatAlone);
+		case FIGHT_TYPE_ATTACK  : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierAttackGroup);
+		case FIGHT_TYPE_DEFEND  : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierDefendGroup);
+		case FIGHT_TYPE_RETREAT : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierRetreatGroup);
 	}
 }
 
 void CAI_Soldier::OnAttackAlone()
 {
 	WRITE_TO_LOG("attack alone");
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+	
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate);
+
+	CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(Enemy.Enemy);
+	
+	if ((!tpCustomMonster) || (!tpCustomMonster->tpfGetWeapons()))
+		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierAttackAloneNonFire)
+	else
+		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierAttackAloneFire)
 }
 
 void CAI_Soldier::OnDefendAlone()
 {
 	WRITE_TO_LOG("defend alone");
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+	
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate);
+
+	CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(Enemy.Enemy);
+	
+	if ((!tpCustomMonster) || (!tpCustomMonster->tpfGetWeapons()))
+		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierDefendAloneNonFire)
+	else
+		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierDefendAloneFire)
 }
 
 void CAI_Soldier::OnPursuitAlone()
 {
 	WRITE_TO_LOG("pursuit alone");
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+	
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate);
+
+	CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(Enemy.Enemy);
+	
+	if ((!tpCustomMonster) || (!tpCustomMonster->tpfGetWeapons()))
+		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierPursuitAloneNonFire)
+	else
+		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierPursuitAloneFire)
 }
 
 void CAI_Soldier::OnFindAlone()
 {
 	WRITE_TO_LOG("find alone");
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+	
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate);
+
+	CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(Enemy.Enemy);
+	
+	if ((!tpCustomMonster) || (!tpCustomMonster->tpfGetWeapons()))
+		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierFindAloneNonFire)
+	else
+		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierFindAloneFire)
 }
 
 void CAI_Soldier::OnRetreatAlone()
 {
 	WRITE_TO_LOG("retreat alone");
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+	
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate);
+
+	CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(Enemy.Enemy);
+	
+	if ((!tpCustomMonster) || (!tpCustomMonster->tpfGetWeapons()))
+		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierRetreatAloneNonFire)
+	else
+		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierRetreatAloneFire)
 }
 
 void CAI_Soldier::OnHurtAlone()
 {
 	WRITE_TO_LOG("hurt alone");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+	
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType());
+
+	AI_Path.TravelPath.clear();
+
+	DWORD dwCurTime = Level().timeServer();
+
+	vfStopFire();
+
+	m_dwLastRangeSearch = dwCurTime;
+	
+	tWatchDirection.sub(tHitPosition,vPosition);
+	float fDistance = tWatchDirection.magnitude();
+	mk_rotation(tWatchDirection,r_torso_target);
+		
+	r_torso_speed = 1*PI_DIV_2;
+	
+	if (m_cBodyState != BODY_STATE_LIE) {
+		if (m_cBodyState == BODY_STATE_STAND)
+			m_tpAnimationBeingWaited = tSoldierAnimations.tNormal.tGlobal.tpaLieDown[1];
+		else
+			m_tpAnimationBeingWaited = tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[1];
+		Lie();
+		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierWaitForAnimation);
+	}
+	
+	r_torso_speed = TORSO_START_SPEED;
+	r_torso_target.yaw = r_torso_current.yaw;
+
+	vfSetMovementType(WALK_FORWARD_1);
+	
+	SelectEnemy(Enemy);
+
+	if (fabsf(r_torso_target.yaw - r_torso_current.yaw) >= PI/30)
+		return;
+
+	GO_TO_PREV_STATE
 }
 
 void CAI_Soldier::OnAttackAloneNonFire()
