@@ -222,6 +222,7 @@ void CAI_Stalker::vfSetParameters(
 		if (angle_difference(m_body.target.yaw,m_head.target.yaw) > 2*PI_DIV_6)
 			m_body.target.yaw = m_head.target.yaw;
 	
+#pragma todo("Dima to Dima : This method will be automatically removed after 22.12.2003 00:00")
 	set_desirable_speed	(m_fCurSpeed);
 
 	if (!GetScriptControl())

@@ -37,6 +37,7 @@ void CAI_Biting::Think()
 
 	MotionMan.ProcessAction();
 
+#pragma todo("Dima to Jim : This method will be automatically removed after 22.12.2003 00:00")
 	set_desirable_speed		(m_fCurSpeed);
 
 	// process sound

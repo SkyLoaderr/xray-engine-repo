@@ -39,10 +39,21 @@ IC	void CDetailPathManager::set_start_position	(const Fvector &start_position)
 	m_start_position		= start_position;
 }
 
+IC	void CDetailPathManager::set_start_direction	(const Fvector &start_direction)
+{
+	m_start_direction		= start_direction;
+}
+
 IC	void CDetailPathManager::set_dest_position	(const Fvector &dest_position)
 {
 	m_actuality				= m_actuality && m_dest_position.similar(dest_position);
 	m_dest_position			= dest_position;
+}
+
+IC	void CDetailPathManager::set_dest_direction	(const Fvector &dest_direction)
+{
+	m_actuality				= m_actuality && m_dest_direction.similar(dest_direction);
+	m_dest_direction		= dest_direction;
 }
 
 IC	const Fvector &CDetailPathManager::start_position	() const
@@ -50,9 +61,19 @@ IC	const Fvector &CDetailPathManager::start_position	() const
 	return					(m_start_position);
 }
 
+IC	const Fvector &CDetailPathManager::start_direction	() const
+{
+	return					(m_start_direction);
+}
+
 IC	const Fvector &CDetailPathManager::dest_position	() const
 {
 	return					(m_dest_position);
+}
+
+IC	const Fvector &CDetailPathManager::dest_direction	() const
+{
+	return					(m_dest_direction);
 }
 
 IC	void CDetailPathManager::set_path_type				(const EDetailPathType path_type)
@@ -116,3 +137,71 @@ IC	void CDetailPathManager::compute_circles(
 	circles[1].center.y =  point.direction.x*point.radius + point.position.y;
 }
 
+IC	const u32 CDetailPathManager::desirable_speed		() const
+{
+	return					(m_desirable_velocity);
+}
+
+IC	void CDetailPathManager::set_desirable_speed	(const u32 desirable_speed)
+{
+	m_actuality				= m_actuality && (!try_desirable_speed() || (desirable_speed == m_desirable_velocity));
+	m_desirable_velocity	= desirable_speed;
+}
+
+IC	const float CDetailPathManager::desirable_linear_speed	() const
+{
+	xr_map<u32,STravelParams>::const_iterator	I = m_movement_params.find(desirable_speed());
+	VERIFY					(m_movement_params.end() != I);
+	return					((*I).second.linear_velocity);
+}
+
+IC	const float	CDetailPathManager::desirable_angular_speed	() const
+{
+	xr_map<u32,STravelParams>::const_iterator	I = m_movement_params.find(desirable_speed());
+	VERIFY					(m_movement_params.end() != I);
+	return					((*I).second.angular_velocity);
+}
+
+IC	void CDetailPathManager::set_velocity_mask			(const u32 velocity_mask)
+{
+	m_actuality				= m_actuality && (velocity_mask == m_velocity_mask);
+	m_velocity_mask			= velocity_mask;
+}
+
+IC	const u32 CDetailPathManager::velocity_mask			() const
+{
+	return					(m_velocity_mask);
+}
+
+IC	void CDetailPathManager::set_try_min_time			(const bool try_min_time)
+{
+	m_actuality				= m_actuality && (try_min_time == m_try_min_time);
+	m_try_min_time			= try_min_time;
+}
+
+IC	const bool CDetailPathManager::try_min_time			() const
+{
+	return					(m_try_min_time);
+}
+
+IC	void CDetailPathManager::set_try_desirable_speed	(const bool try_desirable_speed)
+{
+	m_actuality				= m_actuality && (try_desirable_speed == m_try_desirable_speed);
+	m_try_desirable_speed	= try_desirable_speed;
+}
+
+IC	const bool CDetailPathManager::try_desirable_speed	() const
+{
+	return					(m_try_desirable_speed);
+}
+
+IC	void CDetailPathManager::set_use_dest_orientation	(const bool use_dest_orientation)
+{
+	m_actuality				= m_actuality && (use_dest_orientation == m_use_dest_orientation);
+	m_use_dest_orientation	= use_dest_orientation;
+}
+
+IC	const bool CDetailPathManager::use_dest_orientation	() const
+{
+	return					(m_use_dest_orientation);
+}

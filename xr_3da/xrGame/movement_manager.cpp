@@ -30,8 +30,8 @@ void CMovementManager::Init			()
 	m_path_state					= ePathStateDummy;
 	m_path_actuality				= true;
 	m_speed							= 0.f;
-	m_desirable_speed				= 0.f;
 	m_selector_path_usage			= true;
+	m_old_desirable_speed			= 0.f;
 
 	enable_movement					(true);
 	CGameLocationSelector::Init		(&ai().game_graph());

@@ -82,7 +82,7 @@ private:
 	CGraphEngine::CBaseParameters			*m_base_game_selector;
 	CGraphEngine::CBaseParameters			*m_base_level_selector;
 	float									m_speed;
-	float									m_desirable_speed;
+	float									m_old_desirable_speed;
 	bool									m_selector_path_usage;
 
 	IC		void	time_start				();
@@ -118,7 +118,7 @@ public:
 	IC		u32		level_dest_vertex_id	() const;
 	IC		bool	enabled					() const;
 	IC		bool	path_completed			() const;
-	IC		float	desirable_speed			() const;
+	IC		float	old_desirable_speed		() const;
 	IC		void	set_desirable_speed		(float speed);
 	IC		void	use_selector_path		(bool selector_path_usage);
 	IC		bool	selector_path_used		() const;

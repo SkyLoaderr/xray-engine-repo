@@ -138,7 +138,7 @@ bool CDetailPathManager::build_circle_trajectory(
 	const STrajectoryPoint		&position, 
 	xr_vector<STravelPathPoint>	*path,
 	u32							*vertex_id,
-	const EMovementParameters	velocity
+	const u32					velocity
 )
 {
 	const float			min_dist = .1f;
@@ -223,7 +223,7 @@ bool CDetailPathManager::build_line_trajectory(
 	const STrajectoryPoint		&dest, 
 	u32							vertex_id,
 	xr_vector<STravelPathPoint>	*path,
-	EMovementParameters			velocity
+	u32							velocity
 )
 {
 	VERIFY					(ai().level_graph().valid_vertex_id(vertex_id));
@@ -244,9 +244,9 @@ bool CDetailPathManager::build_trajectory(
 	const STrajectoryPoint		&start, 
 	const STrajectoryPoint		&dest, 
 	xr_vector<STravelPathPoint>	*path,
-	const EMovementParameters	velocity1,
-	const EMovementParameters	velocity2,
-	const EMovementParameters	velocity3
+	const u32					velocity1,
+	const u32					velocity2,
+	const u32					velocity3
 )
 {
 	u32					vertex_id;
@@ -266,14 +266,14 @@ bool CDetailPathManager::build_trajectory(
 	const u32					tangent_count,
 	xr_vector<STravelPathPoint>	*path,
 	float						&time,
-	const EMovementParameters	velocity1,
-	const EMovementParameters	velocity2,
-	const EMovementParameters	velocity3
+	const u32					velocity1,
+	const u32					velocity2,
+	const u32					velocity3
 )
 {
 	time			= flt_max;
 	SDist			dist[4];
-	xr_map<EMovementParameters,STravelParams>::const_iterator I = m_movement_params.find(velocity2);
+	xr_map<u32,STravelParams>::const_iterator I = m_movement_params.find(velocity2);
 	VERIFY			(m_movement_params.end() != I);
 	float			straight_velocity = (*I).second.linear_velocity;
 	{
@@ -311,9 +311,9 @@ bool CDetailPathManager::compute_trajectory(
 	STrajectoryPoint			&dest,
 	xr_vector<STravelPathPoint>	*path,
 	float						&time,
-	const CDetailPathManager::EMovementParameters	velocity1,
-	const CDetailPathManager::EMovementParameters	velocity2,
-	const CDetailPathManager::EMovementParameters	velocity3
+	const u32					velocity1,
+	const u32					velocity2,
+	const u32					velocity3
 )
 {
 	SCirclePoint				start_circles[2], dest_circles[2];
@@ -346,16 +346,16 @@ bool CDetailPathManager::compute_path(
 	m_temp_path.clear		();
 	float					min_time = flt_max, time;
 	u32						size = m_tpTravelLine ? m_tpTravelLine->size() : 0;
-	xr_map<EMovementParameters,STravelParams>::const_iterator I = m_movement_params.begin(), B = I;
-	xr_map<EMovementParameters,STravelParams>::const_iterator E = m_movement_params.end();
+	xr_map<u32,STravelParams>::const_iterator I = m_movement_params.begin(), B = I;
+	xr_map<u32,STravelParams>::const_iterator E = m_movement_params.end();
 	for ( ; I != E; ++I) {
 		(STravelParams&)start	= (*I).second;
-		xr_map<EMovementParameters,STravelParams>::const_iterator i = m_movement_params.begin(), b = i;
-		xr_map<EMovementParameters,STravelParams>::const_iterator e = m_movement_params.end();
+		xr_map<u32,STravelParams>::const_iterator i = m_movement_params.begin(), b = i;
+		xr_map<u32,STravelParams>::const_iterator e = m_movement_params.end();
 		for ( ; i != e; ++i) {
 			(STravelParams&)dest	= (*i).second;
 			m_temp_path.clear		();
-			if (compute_trajectory(start,dest,m_tpTravelLine ? &m_temp_path : 0,time,(*I).first,eMovementParameterWalk,(*i).first)) {
+			if (compute_trajectory(start,dest,m_tpTravelLine ? &m_temp_path : 0,time,(*I).first,0,(*i).first)) {
 				if (time < min_time) {
 					min_time = time;
 					if (m_tpTravelLine) {
@@ -385,6 +385,12 @@ void CDetailPathManager::build_smooth_path		(
 //	Device.Statistic.AI_Range.Begin			();
 //
 //	STrajectoryPoint						s,d,t,p,start,dest;
+//
+//	start.position							= ai().level_graph().v2d(m_start_position);
+//	start.direction							= ai().level_graph().v2d(m_start_direction);
+//	
+//	dest.position							= ai().level_graph().v2d(m_dest_position);
+//	dest.direction							= ai().level_graph().v2d(m_dest_direction);
 //
 //	VERIFY									(!level_path.empty());
 //	VERIFY									(level_path.size() > intermediate_index);

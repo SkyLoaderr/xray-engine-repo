@@ -70,16 +70,6 @@ IC	u32	 CMovementManager::level_dest_vertex_id() const
 	return					(CLevelPathManager::dest_vertex_id());
 }
 
-IC	float CMovementManager::desirable_speed		() const
-{
-	return					(m_desirable_speed);
-}
-
-IC	void CMovementManager::set_desirable_speed	(float speed)
-{
-	m_desirable_speed		= speed;
-}
-
 IC	void CMovementManager::use_selector_path	(bool selector_path_usage)
 {
 	m_selector_path_usage	= selector_path_usage;
@@ -88,4 +78,14 @@ IC	void CMovementManager::use_selector_path	(bool selector_path_usage)
 IC	bool CMovementManager::selector_path_used	() const
 {
 	return					(m_selector_path_usage);
+}
+
+IC	float CMovementManager::old_desirable_speed		() const
+{
+	return					(m_old_desirable_speed);
+}
+
+IC	void CMovementManager::set_desirable_speed		(float speed)
+{
+	m_old_desirable_speed	= speed;
 }

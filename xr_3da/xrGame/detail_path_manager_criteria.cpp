@@ -17,7 +17,7 @@ void CDetailPathManager::build_criteria_path	(const xr_vector<u32> &level_path, 
 
 	// start point
 	m_path.clear			();
-	current.velocity		= eMovementParameterStand;
+	current.velocity		= 0;
 	current.position		= m_start_position;
 	m_path.push_back		(current);
 

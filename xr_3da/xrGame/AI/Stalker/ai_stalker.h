@@ -32,6 +32,15 @@ class CAI_Stalker : public CCustomMonster, public CStalkerAnimations, public CIn
 private:
 	typedef CCustomMonster inherited;
 	
+	enum EMovementParameters {
+		eMovementParameterStand		= u32(1) << 1,
+		eMovementParameterJumpUp	= u32(1) << 2,
+		eMovementParameterJumpDown	= u32(1) << 3,
+		eMovementParameterWalk		= u32(1) << 4,
+		eMovementParameterRun		= u32(1) << 5,
+		eMovementParameterPanic		= u32(1) << 6,
+	};
+
 	typedef struct tagSHurt {
 		CEntity *tpEntity;
 		u32	dwTime;
