@@ -91,15 +91,16 @@ public:
 	// Цвет текста когда артикл не прочитан и не прочитан
 	void	SetReadedColor(u32 cl)		{ m_uReadedColor = cl;		}
 	void	SetUnreadedColor(u32 cl)	{ m_uUnreadedColor = cl;	}
-
-private:
-	friend class CUITreeViewItem;
-
+	void	SetManualSetColor(bool val)	{ m_bManualSetColor = val;	}
 	// Устанавливаем цвет в зависимости от состояния элемента
 	void	SetItemColor()
 	{
 		m_bArticleRead ? SetTextColor(m_uReadedColor) :SetTextColor(m_uUnreadedColor);
 	}
+
+private:
+	friend class CUITreeViewItem;
+
 	// Применить состояние вверх по иерархии
 	void	CheckParentMark(CUITreeViewItem *pOwner);
 	// Цвет текста когда артикл не прочитан
@@ -108,6 +109,9 @@ private:
 	u32		m_uReadedColor;
 	// Флажек состояния прочитки
 	bool	m_bArticleRead;
+	// Если true, то MarkArticleAsRead не будет вызывать
+	// SetItemColor()
+	bool	m_bManualSetColor;
 };
 
 //////////////////////////////////////////////////////////////////////////

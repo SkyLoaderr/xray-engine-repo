@@ -38,7 +38,7 @@ public:
 	void				SetActiveSubdialog(EPdaSections section);
 	void				OpenDiaryTree(int idx) { UIActorDiaryWnd.m_pCore->OpenTree(idx); }
 
-	void				MarkNewsAsRead ();
+	void				MarkNewsAsRead (bool status);
 
 public:
 	// Дочерние окна входящие в окно информации

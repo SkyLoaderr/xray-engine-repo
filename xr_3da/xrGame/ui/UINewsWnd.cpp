@@ -20,6 +20,8 @@
 
 const char * const	NEWS_XML			= "news.xml";
 
+#define NEWS_TO_SHOW 15
+
 //////////////////////////////////////////////////////////////////////////
 
 CUINewsWnd::CUINewsWnd()
@@ -58,8 +60,8 @@ void CUINewsWnd::Init()
 
 void CUINewsWnd::AddNews()
 {
-	UIListWnd.RemoveAll();
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
+	UIListWnd.RemoveAll();
 
 	static u32 lastNewsCount = 0;
 
@@ -72,10 +74,10 @@ void CUINewsWnd::AddNews()
 			GetMessageTarget()->SendMessage(this, DIARY_SET_NEWS_AS_UNREAD, NULL);
 		}
 		
-		// Показать только 15 последних ньюсов
+		// Показать только NEWS_TO_SHOW последних ньюсов
 		int currentNews = 0;
 
-		for (GAME_NEWS_VECTOR::reverse_iterator it = news_vector.rbegin(); it != news_vector.rend() && currentNews < 15 ; ++it)
+		for (GAME_NEWS_VECTOR::reverse_iterator it = news_vector.rbegin(); it != news_vector.rend() && currentNews < NEWS_TO_SHOW ; ++it)
 		{
 			AddNewsItem(it->FullText());
 			++currentNews;

@@ -11,6 +11,10 @@
 #include "UIListWnd.h"
 #include "../string_table.h"
 
+
+#define UNREAD_COLOR	0xff00ff00
+#define READ_COLOR		0xffffffff
+
 //////////////////////////////////////////////////////////////////////////
 
 // Смещение относительно родителя
@@ -26,8 +30,8 @@ CUITreeViewItem::CUITreeViewItem()
 		isOpened			(false),
 		iTextShift			(0),
 		pOwner				(NULL),
-		m_uUnreadedColor	(0xff00ff00),
-		m_uReadedColor		(0xffffffff)
+		m_uUnreadedColor	(UNREAD_COLOR),
+		m_uReadedColor		(READ_COLOR)
 {
 	AttachChild(&UIBkg);
 	UIBkg.InitTexture(treeItemBackgroundTexture);
@@ -35,6 +39,8 @@ CUITreeViewItem::CUITreeViewItem()
 	UIBkg.SetTextureOffset(-20, 0);
 	EnableTextHighlighting(false);
 	EnableDoubleClick(false);
+
+	m_bManualSetColor = false;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -377,7 +383,8 @@ void CUITreeViewItem::MarkArticleAsRead(bool value)
 	if (IsRoot())
 	{
 		m_bArticleRead = value;
-		SetItemColor();
+		if(!m_bManualSetColor)
+			SetItemColor();
 
 		for (SubItems_it it = vSubItems.begin(); it != vSubItems.end(); ++it)
 		{
@@ -391,7 +398,8 @@ void CUITreeViewItem::MarkArticleAsRead(bool value)
 	{
 		// Если же нет, то маркаем себя и говорим проверить свой парентовый элемент
 		m_bArticleRead	= value;
-		SetItemColor();
+		if(!m_bManualSetColor)
+			SetItemColor();
 		CheckParentMark(GetOwner());
 	}
 }

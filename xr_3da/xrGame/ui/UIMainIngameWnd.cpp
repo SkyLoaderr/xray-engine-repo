@@ -1051,8 +1051,10 @@ void CUIMainIngameWnd::OnNewsReceived(GAME_NEWS_DATA &news)
 {
 	if (g_bNewsDisable) return;
 
+#ifdef DEBUG
 	Msg("[news]%s", news.FullText());
-	
+#endif
+		
 	if(news.texture_name)
 	{
 		RECT rect;
@@ -1064,9 +1066,6 @@ void CUIMainIngameWnd::OnNewsReceived(GAME_NEWS_DATA &news)
 	}
 	else
 		AddGameMessage(news.FullText(), news.news_text, news.show_time);
-
-//	CUIGameSP* pGameSP		= smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-//	pGameSP->PdaMenu.AddNewsItem(result);
 }
 
 //////////////////////////////////////////////////////////////////////////

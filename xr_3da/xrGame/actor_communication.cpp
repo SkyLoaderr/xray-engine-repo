@@ -140,6 +140,20 @@ void  CActor::AddGameNews			 (GAME_NEWS_DATA& news_data)
 
 	if(HUD().GetUI())
 		HUD().GetUI()->UIMainIngameWnd.OnNewsReceived(news_data);
+
+	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+	if(pGameSP) 
+	{
+		if(pGameSP->PdaMenu.UIDiaryWnd.IsShown() &&
+			pGameSP->PdaMenu.UIDiaryWnd.UINewsWnd.IsShown())
+		{
+			pGameSP->PdaMenu.UIDiaryWnd.UINewsWnd.AddNews();
+			pGameSP->PdaMenu.UIDiaryWnd.MarkNewsAsRead(true);
+		}
+		else
+			pGameSP->PdaMenu.UIDiaryWnd.MarkNewsAsRead(false);
+	}
+	
 }
 
 
@@ -182,7 +196,10 @@ void CActor::OnDisableInfo(INFO_INDEX info_index)  const
 
 	//только если находимся в режиме single
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-	if(pGameSP && pGameSP->TalkMenu.IsShown()) pGameSP->TalkMenu.UpdateQuestions();
+	if(pGameSP && pGameSP->TalkMenu.IsShown()) 
+	{
+		pGameSP->TalkMenu.UpdateQuestions();
+	}
 }
 
 

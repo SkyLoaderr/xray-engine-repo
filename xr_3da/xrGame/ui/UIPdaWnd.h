@@ -63,13 +63,13 @@ protected:
 public:
 	CUIPdaCommunication	UIPdaCommunication;
 
-protected:
 	CUIMapWnd				UIMapWnd;
 	CUIEncyclopediaWnd		UIEncyclopediaWnd;
 	CUIDiaryWnd				UIDiaryWnd;
 	CUIActorInfoWnd			UIActorInfo;
 	CUIStalkersRankingWnd	UIStalkersRanking;
 
+protected:
 	//элементы декоративного интерфейса
 	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBottom;

@@ -116,10 +116,13 @@ void CUIDiaryWnd::Init()
 
 	// Поддиалоги
 	UIJobsWnd.Init();
+	UIJobsWnd.Show(false);
 	UINewsWnd.Init();
+	UINewsWnd.Show(false);
 	UINewsWnd.SetMessageTarget(this);
 	UIContractsWnd.Init();
 	UIActorDiaryWnd.Init(&UITreeView);
+	UIActorDiaryWnd.Show(false);
 	UIActorDiaryWnd.m_pCore->m_pTreeRootFont	= m_pTreeRootFont;
 	UIActorDiaryWnd.m_pCore->m_pTreeItemFont	= m_pTreeItemFont;
 	UIActorDiaryWnd.m_pCore->m_uTreeRootColor	= m_uTreeRootColor;
@@ -133,7 +136,6 @@ void CUIDiaryWnd::Init()
 	m_pLeftHorisontalLine = xml_init.InitAutoStatic(uiXml, "left_auto_static", &UIFrameWnd)[2];
 	xml_init.InitAutoStatic(uiXml, "right_auto_static", &UITreeViewBg);
 }
-
 //////////////////////////////////////////////////////////////////////////
 
 void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
@@ -156,7 +158,7 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 
 			if (m_pActiveSubdialog)
 			{
-//				m_pActiveSubdialog->Hide();
+				m_pActiveSubdialog->Show(false);
 				UIFrameWnd.DetachChild(m_pActiveSubdialog);
 			}
 
@@ -218,6 +220,7 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				break;
 
 			case idNews:
+				
 				m_pActiveSubdialog = &UINewsWnd;
 				ArticleCaption(*stbl(m_pActiveSubdialog->WindowName()));
 				InventoryUtilities::SendInfoToActor("ui_pda_news");
@@ -255,18 +258,18 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	}
 	else if (pWnd == &UINewsWnd && DIARY_SET_NEWS_AS_UNREAD == msg)
 	{
-		R_ASSERT(m_pNews);
-		m_pNews->MarkArticleAsRead(false);
+		MarkNewsAsRead(true);
 	}
 
 	inherited::SendMessage(pWnd, msg, pData);
 }
 //////////////////////////////////////////////////////////////////////////
 
-void CUIDiaryWnd::MarkNewsAsRead ()
+void CUIDiaryWnd::MarkNewsAsRead (bool status)
 {
 	R_ASSERT(m_pNews);
-	m_pNews->MarkArticleAsRead(true);
+	m_pNews->MarkArticleAsRead(status);
+	m_pNews->SetItemColor();
 }
 //////////////////////////////////////////////////////////////////////////
 
@@ -371,6 +374,8 @@ void CUIDiaryWnd::InitTreeView()
 	pTVItem->SetReadedColor(m_uTreeRootColor);
 	pTVItem->SetValue(idNews);
 	UITreeView.AddItem(pTVItem);
+	pTVItem->MarkArticleAsRead(true);
+	pTVItem->SetManualSetColor(true);
 	m_pNews = pTVItem;
 }
 
