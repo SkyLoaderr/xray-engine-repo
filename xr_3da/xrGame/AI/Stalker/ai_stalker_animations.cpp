@@ -40,7 +40,7 @@ float faTurnAngles			[] = {
 LPCSTR caStateNames			[] = {
 	"cr_",
 	"norm_",
-	"norm_dmg_",
+	"dmg_norm_",
 	0
 };
 

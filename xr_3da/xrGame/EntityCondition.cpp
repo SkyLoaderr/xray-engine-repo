@@ -23,6 +23,7 @@
 
 CEntityCondition::CEntityCondition(void)
 {
+	m_use_limping_state = false;
 	m_iLastTimeCalled = 0;
 	m_bTimeValid = false;
 
@@ -126,6 +127,8 @@ void CEntityCondition::Load(LPCSTR section)
 	m_fK_SleepPower = pSettings->r_float(section,"sleep_power");
 	m_fK_SleepSatiety = pSettings->r_float(section,"sleep_satiety");	
 	m_fK_SleepRadiation = pSettings->r_float(section,"sleep_radiation");
+
+	m_use_limping_state = pSettings->line_exist(section,"use_limping_state") ? !!pSettings->r_bool(section,"use_limping_state") : false;
 }
 
 void CEntityCondition::reinit	()

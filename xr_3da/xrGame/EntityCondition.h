@@ -16,6 +16,9 @@ class CWound;
 
 class CEntityCondition
 {
+private:
+	bool			m_use_limping_state;
+
 public:
 	CEntityCondition(void);
 	virtual ~CEntityCondition(void);

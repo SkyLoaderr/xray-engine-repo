@@ -66,15 +66,17 @@ void CVisualMemoryManager::Load					(LPCSTR section)
 
 void CVisualMemoryManager::reinit					()
 {
-	CGameObject::reinit			();
+	CGameObject::reinit					();
 	
-	m_objects					= 0;
+	m_objects							= 0;
 	
-	m_visible_objects.clear		();
-	m_visible_objects.reserve	(100);
+	m_visible_objects.clear				();
+	m_visible_objects.reserve			(100);
 	
-	m_not_yet_visible_objects.clear();
-	m_not_yet_visible_objects.reserve(100);
+	m_not_yet_visible_objects.clear		();
+	m_not_yet_visible_objects.reserve	(100);
+
+	feel_vision_clear					();
 }
 
 void CVisualMemoryManager::reload				(LPCSTR section)

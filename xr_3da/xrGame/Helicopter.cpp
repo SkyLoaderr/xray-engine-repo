@@ -561,7 +561,7 @@ void CHelicopter::shedule_Update(u32 time_delta)
 			P.w_vec3(m_currP);
 			s16 curr_idx = -1;
 			if(m_data.m_currPatrolVertex)
-				curr_idx = m_data.m_currPatrolVertex->vertex_id();
+				curr_idx = (s16)m_data.m_currPatrolVertex->vertex_id();
 			
 			P.w_s16(curr_idx);
 			lua_game_object()->OnEventRaised(CHelicopter::EV_ON_POINT,P);
@@ -625,7 +625,7 @@ if(who==this)
 			P_.w_float(P);
 			P_.w_float(impulse);
 			P_.w_u32(hit_type);
-			P_.w_stringZ( who->cName() );
+			P_.w_stringZ(*who->cName());
 
 			lua_game_object()->OnEventRaised(CHelicopter::EV_ON_HIT,P_);
 
@@ -708,7 +708,7 @@ void CHelicopter::Die()
 	setState(CHelicopter::eDead);
 	m_engineSound.stop();
 
-	Fvector last_pos = PositionStack.back().vPosition;
+//	Fvector last_pos = PositionStack.back().vPosition;
 
 }
 
