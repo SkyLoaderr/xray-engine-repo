@@ -7,7 +7,7 @@ void CRenderTarget::phase_accumulator_init()
 
 	// ***** Prepare mask for skybox *****
 	// Render white quad where stencil = 0
-	if (0)
+	if (1)
 	{
 		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		TRUE				));
 		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_EQUAL		));
