@@ -26,6 +26,7 @@ module ("xr_camper")
 module ("xr_wounded")
 module ("xr_scout")
 module ("xr_trivial")
+module ("xr_report")
 
 function printf(fmt,...)
     log(string.format(fmt,unpack(arg)))
