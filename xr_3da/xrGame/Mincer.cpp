@@ -24,8 +24,7 @@ void CMincer::SwitchZoneState(EZoneState new_state)
 		for(;e!=it;++it)
 		{
 			CPhysicsShellHolder * GO = smart_cast<CPhysicsShellHolder *>(*it);
-			Telekinesis().activate(GO,m_fThrowInImpulse, m_fTeleHeight, 100000);
-
+			if (GO)					Telekinesis().activate(GO,m_fThrowInImpulse, m_fTeleHeight, 100000);
 		}
 	}
 
