@@ -3,7 +3,7 @@
 #include "hudmanager.h"
 
 CCustomDetector::CCustomDetector(void) {
-	m_belt = true;
+//	m_belt = true;
 }
 
 CCustomDetector::~CCustomDetector(void) {
