@@ -39,7 +39,7 @@ public:
 	// static
 	SPAWN_VECTOR					m_tpSpawnPoints;		// массив spawn-point-ов
 
-	// auto
+	// automatic
 	GRAPH_VECTOR_SVECTOR			m_tpTerrain;			// массив списков: по идетнификатору 
 															//	местности получить список точек 
 															//  графа
