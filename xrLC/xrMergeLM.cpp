@@ -163,7 +163,7 @@ bool Place_Perpixel(_rect& R, CDeflector* D, BOOL bRotate)
 	
 	if (!bRotate) {
 		// Normal (and fastest way)
-		for (int y=0; y<s_y; y++)
+		for (DWORD y=0; y<s_y; y++)
 		{
 			BYTE*	P = surface+(y+R.a.y)*512+R.a.x+sp[y].first;	// destination scan-line
 			BYTE*	E = P + (sp[y].second-sp[y].first) + 1;
@@ -174,7 +174,7 @@ bool Place_Perpixel(_rect& R, CDeflector* D, BOOL bRotate)
 		}
 	} else {
 		// Rotated :(
-		for (int y=0; y<s_x; y++)
+		for (DWORD y=0; y<s_x; y++)
 		{
 			BYTE*	P = surface+(y+R.a.y)*512+R.a.x;
 			for (DWORD x=0; x<s_y; x++,P++)
@@ -190,6 +190,7 @@ bool Place_Perpixel(_rect& R, CDeflector* D, BOOL bRotate)
 }
 
 // Check for intersection
+/*
 bool Place(_rect &R, vecRIT CIT)
 {
 	if (R.b.x >= 512) return false;
@@ -203,6 +204,7 @@ bool Place(_rect &R, vecRIT CIT)
 	// Degrade to surface testing
 	return Place_Perpixel(R);
 };
+*/
 
 BOOL _rect_place(_rect &r, CDeflector* D)
 {
@@ -217,7 +219,7 @@ BOOL _rect_place(_rect &r, CDeflector* D)
 			{
 				if (surface[_Y*512+_X]) continue;
 				R.init(_X,_Y,_X+r.b.x,_Y+r.b.y);
-				if (Place_Perpixel(R)) {
+				if (Place_Perpixel(R,D,FALSE)) {
 					_rect_register(R,D,FALSE);
 					return TRUE;
 				}
@@ -237,7 +239,7 @@ BOOL _rect_place(_rect &r, CDeflector* D)
 				if (surface[_Y*512+_X]) continue;
 
 				R.init(_X,_Y,_X+r.b.y,_Y+r.b.x);
-				if (Place_Perpixel(R)) {
+				if (Place_Perpixel(R,D,TRUE)) {
 					_rect_register(R,D,TRUE);
 					return TRUE;
 				}
