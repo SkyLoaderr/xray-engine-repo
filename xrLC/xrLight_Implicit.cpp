@@ -366,6 +366,10 @@ void CBuild::ImplicitLighting()
 			Progress(sumProgress/float(NUM_THREADS));
 			if (sumComplete == NUM_THREADS)	break;
 		}
+		
+		// Delete threads
+		for (thID=0; thID<NUM_THREADS; thID++)
+			_DELETE(THP[thID]);
 
 		// Expand
 		Status	("Processing lightmap...");
