@@ -17,7 +17,7 @@ void xrServer::Perform_transfer(CSE_Abstract* what, CSE_Abstract* from, CSE_Abst
 	// 2. Detach "FROM"
 	xr_vector<u16>& C			= from->children;
 	xr_vector<u16>::iterator c	= std::find	(C.begin(),C.end(),what->ID);
-	R_ASSERT				(c!=C.end());
+	R_ASSERT				(C.end()!=c);
 	C.erase					(c);
 	P.w_begin				(M_EVENT);
 	P.w_u32					(time);

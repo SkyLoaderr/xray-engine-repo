@@ -12,7 +12,7 @@ void xrServer::Perform_game_export	()
 
 	// Game config (all, info includes _new_ player)
 	csPlayers.Enter		();
-	for (u32 client=0; client<net_Players.size(); client++)
+	for (u32 client=0; client<net_Players.size(); ++client)
 	{
 		u32 ID						= net_Players[client]->ID;
 		P.w_begin						(M_SV_CONFIG_GAME);

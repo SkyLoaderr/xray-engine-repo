@@ -27,7 +27,7 @@ void xrServer::SLS_Default	()
 			R_ASSERT		(M_SPAWN==ID);
 			Process_spawn	(P,0);
 
-			S_id++;
+			++S_id;
 		}
 		FS.r_close			(SP);
 	}

@@ -310,19 +310,19 @@ void CSE_ALifeGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 		Ini						= xr_new<CInifile>(gm_name);
 	}
 
-	for (int i=0; i<LOCATION_TYPE_COUNT; i++)
+	for (int i=0; i<LOCATION_TYPE_COUNT; ++i)
 		if(locations[i].empty()) {
 			string256			caSection, T;
 			strconcat			(caSection,SECTION_HEADER,itoa(i,T,10));
 			R_ASSERT			(Ini->section_exist(caSection));
 			LPCSTR				N,V;
-			for (u32 k = 0; Ini->r_line(caSection,k,&N,&V); k++)
+			for (u32 k = 0; Ini->r_line(caSection,k,&N,&V); ++k)
 				locations[i].push_back	(TokenValue4::Item(atoi(N),V));
 		}
 
 	if(level_ids.empty()) {
 		LPCSTR					N,V;
-		for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++)
+		for (u32 k = 0; Ini->r_line("levels",k,&N,&V); ++k)
 			level_ids.push_back	(Ini->r_string(N,"caption"));
 	}
 	if (Ini)
@@ -708,7 +708,7 @@ void CSE_ALifeLevelChanger::FillProp		(LPCSTR pref, PropItemVec& items)
 
     if(level_ids.empty()) {
         LPCSTR				N,V;
-        for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++)
+        for (u32 k = 0; Ini->r_line("levels",k,&N,&V); ++k)
             level_ids.push_back	(Ini->r_string(N,"caption"));
     }
 	if (Ini)
@@ -817,7 +817,7 @@ void CSE_ALifeObjectPhysic::FillProp		(LPCSTR pref, PropItemVec& values) {
 		_E						= ll_motions->end();
 		bFound					= false;
 
-		for (; _I!=_E; _I++) {
+		for (; _I!=_E; ++_I) {
 			vec.push_back(*_I->first);
 			if (!bFound && startup_animation[0] && (vec.back() == startup_animation))
 				bFound=true;
@@ -939,7 +939,7 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
         _E						= ll_motions->end();
         bFound					= false;
         
-		for (; _I!=_E; _I++) {
+		for (; _I!=_E; ++_I) {
 			vec.push_back(*_I->first);
 			if (!bFound && startup_animation[0] && (vec.back() == startup_animation))
 				bFound=true;
@@ -954,7 +954,7 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
         _I						= ll_bones->begin();
         _E						= ll_bones->end();
         bFound					= false;
-        for (; _I!=_E; _I++) {
+        for (; _I!=_E; ++_I) {
 			vec.push_back(*_I->first);
 			if (!bFound && spot_bone[0] && (vec.back() == spot_bone))
 				bFound=true;

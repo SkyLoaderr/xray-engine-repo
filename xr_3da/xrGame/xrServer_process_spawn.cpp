@@ -83,7 +83,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 	E->s_RP					= 0xFE;	// Use supplied
 
 	// Parent-Connect
-	if (!E->m_bALifeControl && (E->ID_Parent != 0xffff)) {
+	if (!E->m_bALifeControl && (0xffff != E->ID_Parent)) {
 		CSE_Abstract*		e_parent	= ID_to_entity(E->ID_Parent);
 		R_ASSERT						(e_parent);
 		e_parent->children.push_back	(E->ID);

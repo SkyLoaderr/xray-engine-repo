@@ -45,7 +45,7 @@ CSE_ALifeInventoryItem::CSE_ALifeInventoryItem(LPCSTR caSection) : CSE_Abstract(
 	m_iVolume					= m_iGridWidth*m_iGridHeight;
 	m_fDeteriorationValue		= 0;
 	m_qwGridBitMask				= 0;
-	for (int i=0; i<m_iGridHeight; i++)
+	for (int i=0; i<m_iGridHeight; ++i)
 		m_qwGridBitMask			|= ((u64(1) << m_iGridWidth) - 1) << (i*RUCK_WIDTH);
 
 	m_tPreviousParentID			= 0xffff;

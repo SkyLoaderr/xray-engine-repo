@@ -193,14 +193,14 @@ void CSE_Shape::cform_read					(NET_Packet	&tNetPacket)
 				break;
 		}
 		shapes.push_back		(S);
-		count--;
+		--count;
 	}
 }
 
 void CSE_Shape::cform_write					(NET_Packet	&tNetPacket)
 {
 	tNetPacket.w_u8				(u8(shapes.size()));
-	for (u32 i=0; i<shapes.size(); i++) {
+	for (u32 i=0; i<shapes.size(); ++i) {
 		shape_def				&S = shapes[i];
 		tNetPacket.w_u8			(S.type);
 		switch (S.type) {
@@ -332,7 +332,7 @@ void CSE_Event::STATE_Read					(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_string		(str);
 		A.event					= xr_strdup(str);
 		Actions.push_back		(A);
-		count--;
+		--count;
 	}
 }
 
@@ -343,7 +343,7 @@ void CSE_Event::STATE_Write					(NET_Packet	&tNetPacket)
 
 	// Actions
 	tNetPacket.w_u8				(u8(Actions.size()));
-	for (u32 i=0; i<Actions.size(); i++) {
+	for (u32 i=0; i<Actions.size(); ++i) {
 		tAction&				A = Actions[i];
 		tNetPacket.w_u8			(A.type	);
 		tNetPacket.w_u16		(A.count);

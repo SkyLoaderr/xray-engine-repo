@@ -47,8 +47,8 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 
 	// Replicate current entities on to this client
 	xrS_entities::iterator	I=entities.begin(),E=entities.end();
-	for (; I!=E; I++)						I->second->net_Processed	= FALSE;
-	for (I=entities.begin(); I!=E; I++)		Perform_connect_spawn		(I->second,CL,P);
+	for (; I!=E; ++I)						I->second->net_Processed	= FALSE;
+	for (I=entities.begin(); I!=E; ++I)		Perform_connect_spawn		(I->second,CL,P);
 
 	// Send "finished" signal
 	P.w_begin						(M_SV_CONFIG_FINISHED);
@@ -66,12 +66,12 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 		string256	aaaa;
 		DWORD		aaaa_s			= sizeof(aaaa);
 		R_CHK		(pAddr->GetURLA(aaaa,&aaaa_s));
-		aaaa_s = strlen(aaaa);
+		aaaa_s		= xr_strlen(aaaa);
 
 		LPSTR ClientIP = NULL;
 		if (strstr(aaaa, "hostname="))
 		{
-			ClientIP = strstr(aaaa, "hostname=")+ strlen("hostname=");
+			ClientIP = strstr(aaaa, "hostname=")+ xr_strlen("hostname=");
 			if (strstr(ClientIP, ";")) strstr(ClientIP, ";")[0] = 0;
 		};
 		if (!ClientIP || !ClientIP[0]) return;
@@ -80,7 +80,7 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 		NET->GetLocalHostAddresses(NULL, &NumAdresses, 0);
 		
 		IDirectPlay8Address* p_pAddr[256];
-		memset(p_pAddr, 0, sizeof(p_pAddr));
+		Memory.mem_fill(p_pAddr, 0, sizeof(p_pAddr));
 
 		NumAdresses = 256;
 		R_CHK(NET->GetLocalHostAddresses(p_pAddr, &NumAdresses, 0));
@@ -92,16 +92,16 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 			string256	bbbb;
 			DWORD		bbbb_s			= sizeof(bbbb);
 			R_CHK		(p_pAddr[i]->GetURLA(bbbb,&bbbb_s));
-			bbbb_s = strlen(bbbb);
+			bbbb_s		= xr_strlen(bbbb);
 
 			LPSTR ServerIP = NULL;
 			if (strstr(aaaa, "hostname="))
 			{
-				ServerIP = strstr(bbbb, "hostname=")+ strlen("hostname=");
+				ServerIP = strstr(bbbb, "hostname=")+ xr_strlen("hostname=");
 				if (strstr(ServerIP, ";")) strstr(ServerIP, ";")[0] = 0;
 			};
 			if (!ServerIP || !ServerIP[0]) continue;
-			if (!stricmp(ServerIP, ClientIP))
+			if (!strcmp(ServerIP, ClientIP))
 			{
 				CL->flags.bLocal = 1;
 				break;
