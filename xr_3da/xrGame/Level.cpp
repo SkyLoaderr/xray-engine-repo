@@ -425,7 +425,7 @@ void				CLevel::SetNumCrSteps		( u32 NumSteps )
 CSE_Abstract *CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 level_vertex_id, u16 parent_id, bool return_item)
 {
 	CSE_Abstract			*abstract = F_entity_Create(section);
-	R_ASSERT3				(abstract,"Cannot find item with section %s",section);
+	R_ASSERT3				(abstract,"Cannot find item with section",section);
 	CSE_ALifeDynamicObject	*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(abstract);
 	if (dynamic_object && ai().get_level_graph()) {
 		dynamic_object->m_tNodeID	= level_vertex_id;

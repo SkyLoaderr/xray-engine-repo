@@ -44,7 +44,18 @@ BOOL CPda::net_Spawn(LPVOID DC)
 	CSE_ALifeItemPDA	*pda = dynamic_cast<CSE_ALifeItemPDA*>(abstract);
 	R_ASSERT			(pda);
 	m_idOriginalOwner	= pda->m_original_owner;
+	
+	//включить PDA только если оно находитс€ у первого владельца
+	if(H_Parent() && H_Parent()->ID() == m_idOriginalOwner)
+		TurnOn				();
+	else
+		TurnOff				();
+
 	return				(TRUE);
+}
+void CPda::net_Destroy() 
+{
+	inherited::net_Destroy();
 }
 
 void CPda::Load(LPCSTR section) 
@@ -57,20 +68,7 @@ void CPda::Load(LPCSTR section)
 		
 }
 
-void CPda::net_Destroy() 
-{
-	//при переходе PDA в offline 
-	//самосто€тельно выкинуть все ссылки на себ€
-	//из других PDA
-	/*for(PDA_LIST_it it = m_PDAList.begin();
-					m_PDAList.end() != it; 
-					++it)
-	{
-		CPda* pPda = (*it);
-		pPda->feel_touch_delete(H_Parent());
-	}*/
-	inherited::net_Destroy();
-}
+
 
 void CPda::shedule_Update(u32 dt)	
 {
@@ -80,18 +78,19 @@ void CPda::shedule_Update(u32 dt)
 	if(!H_Parent()) return;
 	Position().set(H_Parent()->Position());
 
-	
-	Fvector	P; 
-	P.set(H_Parent()->Position());
-
-
 	//обновить список дос€гаемых PDA
 	if(IsOn())
 	{
+		CEntityAlive* EA = dynamic_cast<CEntityAlive*>(H_Parent());
+		if(!EA || !EA->g_Alive())
+		{
+			TurnOff();
+			return;
+		}
+
 		m_NewPDAList.clear();
 		m_DeletedPDAList.clear();
-		feel_touch_update(P,m_fRadius);
-
+		feel_touch_update(Position(),m_fRadius);
 		//m_bNewMessage = false;
 	}
 }
@@ -134,12 +133,28 @@ void CPda::feel_touch_delete(CObject* O)
 		//дл€ случа€ перехода PDA в offline
 		else
 		{
+/*			if(pInvOwner->GetPDA())
+			{
+				PDA_LIST_it it = std::find(m_PDAList.begin(), m_PDAList.end(), pInvOwner->GetPDA());
+				
+				if(m_PDAList.end() != it)
+				{
+					if(bDebug) HUD().outMessage(0xffffffff,O->cName(),"a PDA owner moved to offline");
+					m_DeletedPDAList.push_back(pInvOwner->GetPDA());
+					m_PDAList.erase(it);
+				}
+			}
+		}
+
+*/
 			for(PDA_LIST_it it = m_PDAList.begin();
 					m_PDAList.end() != it; 
 					++it)
 			{
 				CPda* pPda = (*it);
-				if(O == pPda->H_Parent())
+				//if(O == pPda->H_Parent())
+				if(O->ID() == pPda->GetOriginalOwnerID())
+		//		if(!pPda->GetOriginalOwner())
 				{
 					m_PDAList.erase(it);
 					m_DeletedPDAList.push_back(pPda);
@@ -147,6 +162,7 @@ void CPda::feel_touch_delete(CObject* O)
 				}
 			}
 		}
+		
 
 	}
 }
@@ -154,22 +170,33 @@ void CPda::feel_touch_delete(CObject* O)
 BOOL CPda::feel_touch_contact(CObject* O) 
 {
 	CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(O);
-	CEntityAlive* pEntityAlive = dynamic_cast<CEntityAlive*>(O);
-
-	if(pInvOwner && pEntityAlive->g_Alive() && !pEntityAlive->getDestroy() &&
-	   pInvOwner->IsActivePDA() && this!=pInvOwner->GetPDA() &&
-	   !pInvOwner->GetPDA()->getDestroy()) 
-		return TRUE;
-	else
-		return FALSE;
+	if(pInvOwner && pInvOwner->GetPDA() && 
+		this!=pInvOwner->GetPDA() && 
+		!pInvOwner->GetPDA()->getDestroy()	&& 
+		pInvOwner->IsActivePDA())
+	{
+		CEntityAlive* pEntityAlive = dynamic_cast<CEntityAlive*>(O);
+		if(pEntityAlive && pEntityAlive->g_Alive() && !pEntityAlive->getDestroy())
+			return TRUE;
+	}
+	
+	return FALSE;
 }
 
 
 void CPda::OnH_A_Chield() 
 {
+	VERIFY(IsOff());
+
+	if(0xffff == m_idOriginalOwner)
+		m_idOriginalOwner = H_Parent()->ID();
+
+	//включить PDA только если оно находитс€ у первого владельца
+	if(H_Parent()->ID() == m_idOriginalOwner)
+		TurnOn				();
+
+
 	inherited::OnH_A_Chield		();
-	if (H_Parent()->ID() == m_idOriginalOwner)
-		TurnOn		();
 }
 
 void CPda::OnH_B_Independent() 
@@ -177,7 +204,7 @@ void CPda::OnH_B_Independent()
 	inherited::OnH_B_Independent();
 	
 	//выключить
-	m_bTurnedOff	= true;
+	TurnOff();
 }
 
 

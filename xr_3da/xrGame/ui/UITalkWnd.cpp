@@ -10,8 +10,7 @@
 #include "../HUDManager.h"
 #include "../UIGameSP.h"
 #include "../PDA.h"
-
-
+#include "../character_info.h"
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -65,7 +64,7 @@ void CUITalkWnd::InitTalkDialog()
 	//имена собеседников
 	UITalkDialogWnd.UICharacterInfoLeft.InitCharacter(m_pOurInvOwner);
 	UITalkDialogWnd.UICharacterInfoRight.InitCharacter(m_pOthersInvOwner);
-	UITalkDialogWnd.UICharacterName.SetText(m_pOurInvOwner->GetGameName());
+	UITalkDialogWnd.UICharacterName.SetText(m_pOurInvOwner->CharacterInfo().Name());
 
 	
 	UpdateQuestions();
@@ -167,10 +166,10 @@ void CUITalkWnd::AskQuestion()
 												 index_list);
 	CUIString str, SpeakerName;
 
-	SpeakerName.SetText(m_pOurInvOwner->GetGameName());
+	SpeakerName.SetText(m_pOurInvOwner->CharacterInfo().Name());
 	AddAnswer(UITalkDialogWnd.m_pClickedQuestion->text, SpeakerName);
 //	UITalkDialogWnd.AddMessageToLog(SpeakerName, UITalkDialogWnd.m_pClickedQuestion->text, &UITalkDialogWnd.UIAnswersList);
-	SpeakerName.SetText(m_pOthersInvOwner->GetGameName());
+	SpeakerName.SetText(m_pOthersInvOwner->CharacterInfo().Name());
 
 	if(!result)
 	{

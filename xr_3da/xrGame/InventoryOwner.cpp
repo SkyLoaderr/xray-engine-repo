@@ -13,6 +13,7 @@
 #include "trade.h"
 #include "inventory.h"
 #include "xrserver_objects_alife_items.h"
+#include "character_info.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CInventoryOwner class 
@@ -27,14 +28,18 @@ CInventoryOwner::~CInventoryOwner			()
 	xr_delete					(m_inventory);
 	xr_delete					(m_trade_storage);
 	xr_delete					(m_pTrade);
+	xr_delete					(m_pCharacterInfo);
 }
 
 void CInventoryOwner::Init					()
 {
+	m_pCharacterInfo = NULL;
 	m_pTrade = NULL;
+	
 	m_inventory					= xr_new<CInventory>();
 	m_trade_storage				= xr_new<CInventory>();
-
+	m_pCharacterInfo			= xr_new<CCharacterInfo>();
+	
 	EnableTalk();
 }
 
@@ -270,25 +275,6 @@ bool CInventoryOwner::AskQuestion(SInfoQuestion& question, INFO_INDEX_LIST& inde
 	}
 
 	return result_answer;
-}
-
-LPCSTR CInventoryOwner::GetGameName()
-{
-	CObject* pObject = dynamic_cast<CObject*>(this);
-	
-	
-	if(pObject)
-		return *pObject->cName();
-	else
-		return NULL;
-}
-LPCSTR CInventoryOwner::GetGameRank()
-{
-	return "novice";
-}
-LPCSTR CInventoryOwner::GetGameCommunity()
-{
-	return "none";
 }
 
 void CInventoryOwner::renderable_Render		()

@@ -64,6 +64,8 @@ void CUIPdaContactsWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 void CUIPdaContactsWnd::AddContact(CObject* pOwnerObject)
 {
+	VERIFY(pOwnerObject);
+
 	CUIPdaListItem* pItem = NULL;
 	pItem = xr_new<CUIPdaListItem>();
 	UIListWnd.AddItem(pItem); 

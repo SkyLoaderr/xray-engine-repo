@@ -7,7 +7,7 @@
 #include "../Pda.h"
 #include "../InventoryOwner.h"
 #include "../HUDManager.h"
-
+#include "../character_info.h"
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 
@@ -130,13 +130,13 @@ void CUIPdaDialogWnd::Update()
 void CUIPdaDialogWnd::AddOurMessageToLog(EPdaMsg msg, CInventoryOwner* pInvOwner)
 {
 	UILogListWnd.SetTextColor(0xFF00CCCC);
-	UILogListWnd.AddItem(pInvOwner->GetGameName());
+	UILogListWnd.AddItem(pInvOwner->CharacterInfo().Name());
 	AddMessageToLog(msg, 0xFF00FFFF);
 }
 void CUIPdaDialogWnd::AddOthersMessageToLog(EPdaMsg msg, CInventoryOwner* pInvOwner)
 {
 	UILogListWnd.SetTextColor(0xFFCCCC00);
-	UILogListWnd.AddItem(pInvOwner->GetGameName());
+	UILogListWnd.AddItem(pInvOwner->CharacterInfo().Name());
 	AddMessageToLog(msg, 0xFFFFFF00);
 }
 

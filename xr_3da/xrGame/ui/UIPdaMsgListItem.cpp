@@ -8,6 +8,7 @@
 #include "UIPdaMsgListItem.h"
 
 #include "../Entity.h"
+#include "../character_info.h"
 
 #include "UIInventoryUtilities.h"
 using namespace InventoryUtilities;
@@ -62,8 +63,10 @@ void CUIPdaMsgListItem::Draw()
 
 void CUIPdaMsgListItem::InitCharacter(CInventoryOwner* pInvOwner)
 {
+	VERIFY(pInvOwner);
+
 	string256 str;
-	sprintf(str, "name: %s", pInvOwner->GetGameName());
+	sprintf(str, "name: %s", pInvOwner->CharacterInfo().Name());
 	UIName.SetText(str);
 
 	CEntity* pInvOwnerEntity = dynamic_cast<CEntity*>(pInvOwner);

@@ -138,6 +138,9 @@ void CUITradeWnd::Init()
 
 void CUITradeWnd::InitTrade(CInventoryOwner* pOur, CInventoryOwner* pOthers)
 {
+	VERIFY(pOur);
+	VERIFY(pOthers);
+
 	m_pInvOwner = pOur;
 	m_pOthersInvOwner = pOthers;
 

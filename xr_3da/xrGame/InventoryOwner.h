@@ -14,6 +14,7 @@ class CInventory;
 class CInventoryItem;
 class CTrade;
 class CPda;
+class CCharacterInfo;
 
 class CInventoryOwner : public CAttachmentOwner {							
 public:
@@ -75,10 +76,7 @@ public:
 	//персонаж получил новую порцию информации
 	virtual void OnReceiveInfo(int info_index);
 
-	//игровые характеристики персонажа
-	virtual LPCSTR GetGameName();
-	virtual LPCSTR GetGameRank();
-	virtual LPCSTR GetGameCommunity();
+	
 	const CInventory &inventory() const {return(*m_inventory);}
 	CInventory &inventory() {return(*m_inventory);}
 
@@ -93,6 +91,11 @@ protected:
 
 	bool				m_bAllowTalk;
 
+	//игровые характеристики персонажа
+public:
+	virtual CCharacterInfo& CharacterInfo	() const {VERIFY(m_pCharacterInfo); return *m_pCharacterInfo;}
+protected:
+	CCharacterInfo*		m_pCharacterInfo;
 
 public:
 	virtual void			renderable_Render		();

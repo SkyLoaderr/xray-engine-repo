@@ -37,5 +37,6 @@ void CUIPdaListItem::Draw()
 
 void CUIPdaListItem::InitCharacter(CInventoryOwner* pInvOwner)
 {
+	VERIFY(pInvOwner);
 	UICharacterInfo.InitCharacter(pInvOwner);
 }

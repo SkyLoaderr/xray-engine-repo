@@ -9,6 +9,7 @@ using namespace InventoryUtilities;
 
 #include "uicharacterinfo.h"
 #include "../entity.h"
+#include "../character_info.h"
 
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
@@ -86,14 +87,16 @@ void CUICharacterInfo::Init(int x, int y, int width, int height, const char* xml
 
 void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner)
 {
+	VERIFY(pInvOwner);
+
 	string256 str;
-	sprintf(str, "name: %s", pInvOwner->GetGameName());
+	sprintf(str, "name: %s", pInvOwner->CharacterInfo().Name());
 	UIName.SetText(str);
 
-	sprintf(str, "rank: %s", pInvOwner->GetGameRank());
+	sprintf(str, "rank: %s", pInvOwner->CharacterInfo().Rank());
 	UIRank.SetText(str);
 
-	sprintf(str, "community: %s", pInvOwner->GetGameCommunity());
+	sprintf(str, "community: %s", pInvOwner->CharacterInfo().Community());
 	UICommunity.SetText(str);
 
 	CEntity* pInvOwnerEntity = dynamic_cast<CEntity*>(pInvOwner);
