@@ -84,9 +84,15 @@ void CRenderDevice::Clear	()
 
 void CRenderDevice::End		(void)
 {
-	VERIFY(HW.pDevice);
+	VERIFY	(HW.pDevice);
 
 	if (HW.Caps.SceneMode)	overdrawEnd		();
+
+	// 
+	if (dwPrecacheFrame)
+	{
+		dwPrecacheFrame	--;
+	}
 
 	// end scene
 	Shader.OnFrameEnd	();
@@ -129,7 +135,7 @@ void CRenderDevice::Run			()
     BOOL		bGotMsg;
 
 	Create		();
-	Log("Starting engine...");
+	Log			("Starting engine...");
 
 	// Startup timers and calculate timer delta
 	TimerGlobal.Start			();
@@ -158,33 +164,45 @@ void CRenderDevice::Run			()
         bGotMsg = PeekMessage( &msg, NULL, 0U, 0U, PM_REMOVE );
         if( bGotMsg )
         {
-              TranslateMessage( &msg );
-              DispatchMessage( &msg );
+              TranslateMessage	( &msg );
+              DispatchMessage	( &msg );
          }
         else
         {
 			if (bReady && bActive) {
-				FrameMove();
+				FrameMove					( );
 
-				// Render
+				// Precache
+				if (dwPrecacheFrame)
+				{
+					float factor					= float(dwPrecacheFrame)/float(dwPrecacheTotal);
+					float angle						= PI_MUL_2 * factor;
+					vCameraDirection.set			(sinf(angle),0,cosf(angle));	vCameraDirection.normalize	();
+					vCameraTop.set					(0,1,0);
+					vCameraRight.crossproduct		(vCameraTop,vCameraDirection);
+
+					mView.build_camera_dir			(vCameraPosition,vCameraDirection,vCameraTop);
+				}
+
+				// Matrices
 				mFullTransform.mul			( mProject,mView	);
 				Device.set_xform_view		( mView				);
 				Device.set_xform_project	( mProject			);
 
-				// *** Render
-
 				// *** Resume threads
 				// Capture end point - thread must run only ONE cycle
 				// Release start point - allow thread to run
-				EnterCriticalSection(&mt_csLeave);
-				LeaveCriticalSection(&mt_csEnter);
+				EnterCriticalSection		(&mt_csLeave);
+				LeaveCriticalSection		(&mt_csEnter);
 
 				Statistic.RenderTOTAL_Real.FrameStart	();
 				Statistic.RenderTOTAL_Real.Begin		();
-				Begin				();
-				seqRender.Process	(rp_Render);
-				Statistic.Show		();
-				End					();
+				Begin									();
+				
+				seqRender.Process						(rp_Render);
+				Statistic.Show							();
+
+				End										();
 				Statistic.RenderTOTAL_Real.End			();
 				Statistic.RenderTOTAL_Real.FrameEnd		();
 				Statistic.RenderTOTAL.accum	= Statistic.RenderTOTAL_Real.accum;
@@ -192,8 +210,8 @@ void CRenderDevice::Run			()
 				// *** Suspend threads
 				// Capture startup point
 				// Release end point - allow thread to wait for startup point
-				EnterCriticalSection(&mt_csEnter);
-				LeaveCriticalSection(&mt_csLeave);
+				EnterCriticalSection		(&mt_csEnter);
+				LeaveCriticalSection		(&mt_csLeave);
 			}
         }
     }
