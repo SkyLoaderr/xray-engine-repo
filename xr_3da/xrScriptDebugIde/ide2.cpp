@@ -8,6 +8,8 @@
 #include "LuaFrame.h"
 #include "LuaDoc.h"
 #include "LuaView.h"
+#include "TreeViewFiles.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -172,7 +174,8 @@ CLuaView* CIdeApp::OpenProjectFilesView(CProjectFile *pPF, int nLine)
 	if ( pView )
 	{
 		pView->Activate();
-
+		HTREEITEM itm = g_mainFrame->GetWorkspaceWnd()->GetTreeViewFiles()->FindFile(pPF->GetNameExt());
+		g_mainFrame->GetWorkspaceWnd()->GetTreeViewFiles()->VSSUpdateStatus(itm);
 		if ( nLine>=0 )
 			pView->GetEditor()->GotoLine(nLine);
 	}

@@ -95,7 +95,6 @@ protected:
 
 //}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-	void VSSUpdateStatus(HTREEITEM);
 	long VSSGetStatus(HTREEITEM);
 	void VSSCheckIn(HTREEITEM);
 	void VSSCheckOut(HTREEITEM);
@@ -104,6 +103,10 @@ protected:
 	void VSSGetLatest(HTREEITEM itm);
 	void Reload(HTREEITEM itm);
 	void Save(HTREEITEM itm);
+
+public:
+	void VSSUpdateStatus(HTREEITEM);
+
 };
 
 /////////////////////////////////////////////////////////////////////////////
