@@ -10,6 +10,9 @@
 #include "ai_zombie.h"
 #include "..\\..\\xr_weapon_list.h"
 
+#define MIN_SPINE_TURN_ANGLE			PI_DIV_6
+#define	MAX_HEAD_TURN_ANGLE				(PI/3.f)
+
 bool CAI_Zombie::bfCheckForVisibility(CEntity* tpEntity)
 {
 	float fResult = 0.f;

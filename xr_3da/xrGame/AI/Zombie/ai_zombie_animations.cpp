@@ -9,6 +9,8 @@
 #include "stdafx.h"
 #include "ai_zombie.h"
 
+#define TORSO_ANGLE_DELTA				(PI/30.f)
+
 // bones
 void CAI_Zombie::vfAssignBones(CInifile *ini, const char *section)
 {
