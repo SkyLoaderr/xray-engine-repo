@@ -16,12 +16,12 @@
 		<text>Найдите артефакт в месте, отмеченном на карте, и принесите торговцу.</text>
 	</string>
 
-	<string id="tutorial_trader_search_corpses">
-		<text>Обыщи трупы, там может быть что-нибудь полезное.</text>
+	<string id="tutorial_trader_look_vagon">
+		<text>Недалеко от тебя возле вагончика какая-то шумиха... Ща тебе координаты скину. Глянь, что там.</text>
 	</string>
 
-	<string id="tutorial_trader_help_wounded">
-		<text>Помни! Помогая раненым, ты помогаешь самому себе.</text>
+	<string id="tutorial_trader_search_corpses">
+		<text>Обыщи трупы, там может быть что-нибудь полезное.</text>
 	</string>
 
 	<string id="tutorial_trader_give_medikit">
@@ -40,6 +40,10 @@
 	</string>
 	
 	<string id="escape_stalker_help">
+		<text>Эй, Меченный. Там недалеко от тебя сталкер находится, так вот он из глубокого рейда в зоны возвращается, ранен сильно. Помоги ему, вполне возможно он знает что-то о Стрелке.</text>
+	</string>
+
+	<string id="escape_wounded_start">
 		<text>Эй, Меченный. Там недалеко от тебя сталкер находится, так вот он из глубокого рейда в зоны возвращается, ранен сильно. Помоги ему, вполне возможно он знает что-то о Стрелке.</text>
 	</string>
 	

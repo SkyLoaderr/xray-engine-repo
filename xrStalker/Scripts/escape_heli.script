@@ -111,6 +111,7 @@ function update()
 			end
 
 			actor:give_info_portion( "tutorial_wounded_start" )
+			news_manager.send_news( actor, "tutorial_trader_look_vagon" )
 
 			-- отправить вертолёт патрулировать уровень
 			heli_mgr:set_path( "heli_path_patrol" )
@@ -124,8 +125,8 @@ end
 function main()
 	actor = get_actor()
 
-	local snd = sound_object( "ambient\\gunfire" )
-	snd:play_at_pos( actor, actor:position():add( vector():set( 0, 100, 0 ) ) )
+--	local snd = sound_object( "ambient\\gunfire" )
+--	snd:play_at_pos( actor, actor:position():add( vector():set( 0, 100, 0 ) ) )
 
 	heli_mgr = xr_heli.HeliManager()
 	heli_mgr:initialize( "heli", nil, 30, 30 )
