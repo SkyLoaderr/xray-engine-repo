@@ -7,7 +7,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ui.h"
+#include "console_ui.h"
+#include "script.h"
 
 LPCSTR		log_file_name		= "vo.log";
 const char	SHAPE_CHARACTER		= '*';
@@ -118,4 +119,11 @@ int __cdecl CConsoleUI::log	(LPCSTR format, ...)
 
 void CConsoleUI::execute	(char argc, char *argv[])
 {
+	char s[128];
+	for (;;) {
+		log					("bge> ");
+		scanf				("%[^\n]s",s);
+		script().run_string	(s);
+		scanf				("%[^\r]s",s);
+	}
 }

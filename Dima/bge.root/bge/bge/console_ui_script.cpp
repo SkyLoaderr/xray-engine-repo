@@ -13,11 +13,18 @@
 
 using namespace luabind;
 
+void _log(CConsoleUI *ui, LPCSTR string)
+{
+	ui->log(string);
+	ui->log("\n");
+}
+
 void CConsoleUI::script_register(lua_State *L)
 {
 	module(L)
 	[
 		def("ui",&ui),
 		class_<CConsoleUI>("CConsoleUI")
+			.def("log",&_log)
 	];
 }

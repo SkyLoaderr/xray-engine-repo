@@ -8,4 +8,5 @@
 
 #pragma once
 
+#include "script_engine.h"
 #include "console_ui.h"

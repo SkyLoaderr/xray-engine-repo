@@ -754,6 +754,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\script_engine_script.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\script_export_space.h"
 						>
 					</File>
