@@ -99,8 +99,7 @@ function action_go_position:execute ()
 		local used = {}
 		local i = 1
 		for key,value in xr_motivator.storage do 
-			if value.kamp ~= nil and value.kamp.center_point == self.a.center_point and
-			    value.kamp.enabled == true then
+			if value.kamp ~= nil and value.kamp.center_point == self.a.center_point then
 				used[i] = value.kamp.pos_id
 				i = i + 1
 			end
@@ -137,7 +136,7 @@ function action_go_position:execute ()
 			local pos = self.vectors[self.a.pos_id]
 			local dir = vector():set(pos[1], pos[2], pos[3])
 			local pp = level.vertex_in_direction(patrol(self.a.center_point):level_vertex_id(0), dir, self.a.max_rad)
-	        	self.object:set_dest_level_vertex_id(pp)
+	        self.object:set_dest_level_vertex_id(pp)
 
 			self.object:set_path_type(game_object.level_path)
 			self.object:set_sight(look.path_dir, nil, 0)
@@ -236,16 +235,16 @@ function action_wait:execute()
 				if value.kamp ~= nil and
 				   value.kamp.center_point == self.a.center_point and
 				   value.kamp.action == 1 and
-				   key ~= self.object:id() and
-				   value.kamp.enabled == true then
+				   key ~= self.object:id() 
+				then
 					free = false
 				end
 				--' Проверка, что последнее время никто не ходил в обход 
 				if value.kamp ~= nil and
 				   value.kamp.center_point == self.a.center_point and
 				   value.kamp.timer.act1.begin ~= nil and
-				   (device():time_global()/1000 - value.kamp.timer.act1.begin) < self.a.timer.act1.time and
-				   value.kamp.enabled == true then
+				   (device():time_global()/1000 - value.kamp.timer.act1.begin) < self.a.timer.act1.time 
+				then
 					free = false
 				end
 			end		
