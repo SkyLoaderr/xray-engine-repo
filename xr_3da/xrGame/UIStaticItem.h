@@ -6,8 +6,8 @@
 
 class CUIStaticItem: public CUICustomItem
 {
-	Shader*			hShader;
-	SGeometry*		hVS;	
+	ref_shader		hShader;
+	ref_geom		hGeom;	
 
 	Ivector2		iPos;
 	u32				dwColor;
@@ -31,7 +31,7 @@ public:
 	IC void			SetPosY			(int top)					{iPos.y = top;}
 	IC void			SetColor		(u32 clr)					{dwColor= clr;}
 	IC void			SetColor		(Fcolor clr)				{dwColor= clr.get();}
-	IC Shader*		GetShader		()							{return hShader;}
+	IC ref_shader&	GetShader		()							{return hShader;}
 };
 
 #endif //__XR_UISTATICITEM_H__

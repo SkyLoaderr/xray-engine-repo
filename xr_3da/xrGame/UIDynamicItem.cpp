@@ -9,21 +9,17 @@
 CUIDynamicItem::CUIDynamicItem()
 {    
 	item_cnt	= 0;
-	hShader		= 0;
-	hVS			= 0;
 }
 //--------------------------------------------------------------------
 CUIDynamicItem::~CUIDynamicItem()
 {
-	Device.Shader.Delete	(hShader);
-	Device.Shader.DeleteGeom(hVS);
 }
 
 //--------------------------------------------------------------------
 void CUIDynamicItem::Init	(LPCSTR tex, LPCSTR sh)
 {
-	if (0==hVS)		hVS		= Device.Shader.CreateGeom	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
-	if (0==hShader)	hShader	= Device.Shader.Create		(sh,tex,FALSE);
+	if (0==hGeom())		hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
+	if (0==hShader())	hShader.create	(sh,tex);
 }
 
 void CUIDynamicItem::Out(int left, int top, u32 color)
@@ -49,17 +45,17 @@ void CUIDynamicItem::Render	()
 	RCache.set_Shader		(hShader);
 
 	// actual rendering
-	u32			vOffset;
-	FVF::TL*		pv	= (FVF::TL*) RCache.Vertex.Lock(item_cnt*4,hVS->vb_stride,vOffset);
+	u32				vOffset;
+	FVF::TL*		pv	= (FVF::TL*) RCache.Vertex.Lock(item_cnt*4,hGeom.stride(),vOffset);
 	
 	DIDIt it		= data.begin();
 	for (u32 i=0; i<item_cnt; i++,it++)
 		inherited::Render(pv,it->pos,it->color);
 
 	// unlock VB and Render it as triangle LIST
-	RCache.Vertex.Unlock	(item_cnt*4,hVS->vb_stride);
+	RCache.Vertex.Unlock	(item_cnt*4,hGeom.stride());
 	RCache.set_Shader		(hShader);
-	RCache.set_Geometry		(hVS);
+	RCache.set_Geometry		(hGeom);
 	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,item_cnt*4,0,item_cnt*2);
 }
 
@@ -70,16 +66,16 @@ void CUIDynamicItem::Render(float angle)
 
 	// actual rendering
 	u32			vOffset;
-	FVF::TL*		pv	= (FVF::TL*) RCache.Vertex.Lock(item_cnt*4,hVS->vb_stride,vOffset);
+	FVF::TL*		pv	= (FVF::TL*) RCache.Vertex.Lock(item_cnt*4,hGeom.stride(),vOffset);
 	
 	DIDIt it		= data.begin();
 	for (u32 i=0; i<item_cnt; i++,it++)
 		inherited::Render(pv,it->pos,it->color,angle);	
 
 	// unlock VB and Render it as triangle LIST
-	RCache.Vertex.Unlock	(item_cnt*4,hVS->vb_stride);
+	RCache.Vertex.Unlock	(item_cnt*4,hGeom.stride());
 	RCache.set_Shader		(hShader);
-	RCache.set_Geometry		(hVS);
+	RCache.set_Geometry		(hGeom);
 	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,item_cnt*4,0,item_cnt*2);
 }
 //--------------------------------------------------------------------

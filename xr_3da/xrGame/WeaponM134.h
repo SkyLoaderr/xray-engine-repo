@@ -19,73 +19,73 @@ class CWeaponM134 : public CWeapon
 	};
 	typedef CWeapon inherited;
 
-	static void __stdcall RotateCallback_norm	(CBoneInstance* B);
-	static void __stdcall RotateCallback_hud	(CBoneInstance* B);
+	static void __stdcall	RotateCallback_norm	(CBoneInstance* B);
+	static void __stdcall	RotateCallback_hud	(CBoneInstance* B);
 private:
 	// General
-	float			fTime;
-	float			fRotateSpeed;
-	float			fRotateAngle;
+	float					fTime;
+	float					fRotateSpeed;
+	float					fRotateAngle;
 
-	float			fRotateMaxSpeed;
-	float			fRotateSpinupAccel;
-	float			fRotateBreakAccel;
+	float					fRotateMaxSpeed;
+	float					fRotateSpinupAccel;
+	float					fRotateBreakAccel;
 
-	u32				dwServoMaxFreq;
-	u32				dwServoMinFreq;
+	u32						dwServoMaxFreq;
+	u32						dwServoMinFreq;
 
-	ref_sound			sndFireStart;
-	ref_sound			sndFireEnd;
-	ref_sound			sndFireLoop;
-	ref_sound			sndServo;
-	ref_sound			sndRicochet[SND_RIC_COUNT];
+	ref_sound				sndFireStart;
+	ref_sound				sndFireEnd;
+	ref_sound				sndFireLoop;
+	ref_sound				sndServo;
+	ref_sound				sndRicochet[SND_RIC_COUNT];
 
-	xr_vector<Shader*>	hFlames;
+	xr_vector<ref_shader>	hFlames;
 
-	int				iWpnRotBone;
-	int				iHUDRotBone;
-	int				iFireBone;
+	int						iWpnRotBone;
+	int						iHUDRotBone;
+	int						iFireBone;
 
-	u32				dwFP_Frame;
-	u32				dwXF_Frame;
+	u32						dwFP_Frame;
+	u32						dwXF_Frame;
 
-	int				iFlameDiv;
-	float			fFlameLength;
-	float			fFlameSize;
+	int						iFlameDiv;
+	float					fFlameLength;
+	float					fFlameSize;
 	
-	BYTE			bRotAxisHUD;
-	BYTE			bRotAxisWpn;
+	BYTE					bRotAxisHUD;
+	BYTE					bRotAxisWpn;
 
-	EM134State		st_current, st_target;
+	EM134State				st_current, st_target;
 
-	CMotionDef*		mhud_idle;	
-	CMotionDef*		mhud_fire;	
-	CMotionDef*		mhud_spinup;
+	CMotionDef*				mhud_idle;	
+	CMotionDef*				mhud_fire;	
+	CMotionDef*				mhud_spinup;
 	
-	void			DrawFlame		(const Fvector& fp, const Fvector& fd);
-	virtual void	UpdateFP		();
-	virtual void	UpdateXForm		();
+	void			DrawFlame			(const Fvector& fp, const Fvector& fd);
+	virtual void	UpdateFP			();
+	virtual void	UpdateXForm			();
 protected:
-	void			FlameLOAD		();
-	void			FlameUNLOAD		();
+	void			FlameLOAD			();
+	void			FlameUNLOAD			();
 	
-	virtual void	FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R);
+	virtual void	FireShotmark		(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R);
 public:
-					CWeaponM134		();
-	virtual			~CWeaponM134	();
+					CWeaponM134			();
+	virtual			~CWeaponM134		();
 
 	// misc
-	virtual void	Load			(LPCSTR section);
+	virtual void	Load				(LPCSTR section);
 
-	virtual void	SetDefaults		();
-	virtual void	FireStart		();
-	virtual void	FireEnd			();
+	virtual void	SetDefaults			();
+	virtual void	FireStart			();
+	virtual void	FireEnd				();
 
-	virtual void	Hide			();
-	virtual void	Show			();
+	virtual void	Hide				();
+	virtual void	Show				();
 
-	virtual	void	Update			(u32	dT		);
-	virtual	void	renderable_Render		();
+	virtual	void	Update				(u32	dT		);
+	virtual	void	renderable_Render	();
 };
 
 #endif //__XR_WEAPON_M134_H__

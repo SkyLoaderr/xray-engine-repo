@@ -42,7 +42,7 @@ namespace AI {
 
 class CAStar;
 
-class CAI_Space			: public CSE_ALifeGraph, public CAI_DDD, public CSE_ALifeCrossTable, public pureDeviceCreate, pureDeviceDestroy
+class CAI_Space			: public CSE_ALifeGraph, public CAI_DDD, public CSE_ALifeCrossTable
 {
 private:
 	// Initial data
@@ -52,7 +52,7 @@ private:
 	NodeCompressed**	m_nodes_ptr;	// pointers to node's data
 
 	// Debug
-	Shader*				sh_debug;
+	ref_shader			sh_debug;
 
 public:
 	// Query
@@ -181,10 +181,6 @@ public:
 	float	ffFindFarthestNodeInDirection	(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, u32 &dwFinishNode, xr_vector<bool> *tpaMarks = 0);
 
 	bool	bfCreateStraightPTN_Path		(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, xr_vector<Fvector> &tpaOutputPoints, xr_vector<u32> &tpaOutputNodes, bool bAddFirstPoint);
-	
-	// Device dependance
-	virtual void	OnDeviceCreate			();
-	virtual void	OnDeviceDestroy			();
 };
 
 extern CAI_Space *tpAI_Space;

@@ -4,8 +4,8 @@
 
 class CUICursor
 {
-	Shader*			hShader;
-	SGeometry*		hVS;	
+	ref_shader		hShader;
+	ref_geom		hGeom;	
 	bool			bVisible;
 	Fvector2		vPos;
 public:

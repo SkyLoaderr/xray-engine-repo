@@ -22,11 +22,8 @@ CAI_Space *	tpAI_Space = 0;
 
 CAI_Space::CAI_Space	()
 {
-	sh_debug					= 0;
-	Device.seqDevCreate.Add		(this);
-	Device.seqDevDestroy.Add	(this);
-	OnDeviceCreate				();
-	
+	sh_debug.create				("debug\\ai_nodes","$null");
+
 	m_nodes_ptr					= NULL;
 	vfs							= NULL;
 	m_tpAStar					= 0;
@@ -39,21 +36,6 @@ CAI_Space::CAI_Space	()
 CAI_Space::~CAI_Space	()
 {
 	Unload();
-	Device.seqDevCreate.Remove	(this);
-	Device.seqDevDestroy.Remove	(this);
-	OnDeviceDestroy				();
-}
-
-void CAI_Space::OnDeviceCreate()
-{
-	REQ_CREATE					();
-	sh_debug					= Device.Shader.Create	("debug\\ai_nodes","$null");
-}
-
-void CAI_Space::OnDeviceDestroy()
-{
-	REQ_DESTROY	();
-	Device.Shader.Delete		(sh_debug);
 }
 
 void CAI_Space::Unload()

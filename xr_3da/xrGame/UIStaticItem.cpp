@@ -9,26 +9,21 @@
 CUIStaticItem::CUIStaticItem()
 {    
 	dwColor		= 0xffffffff;
-	hShader		= 0;
-	hVS			= 0;
 	iTileX		= 1;
 	iTileY		= 1;
 	iRemX		= 0;
 	iRemY		= 0;
-	if (0==hVS)		hVS		= Device.Shader.CreateGeom	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
+	hGeom.create(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 }
 //--------------------------------------------------------------------
-
 CUIStaticItem::~CUIStaticItem()
 {
-	Device.Shader.DeleteGeom	(hVS);
-	Device.Shader.Delete		(hShader);
 }
 //--------------------------------------------------------------------
 
 void CUIStaticItem::CreateShader(LPCSTR tex, LPCSTR sh)
 {
-	if (0==hShader)	hShader	= Device.Shader.Create		(sh,tex);
+	if (0==hShader())	hShader.create	(sh,tex);
 }
 
 void CUIStaticItem::Init(LPCSTR tex, LPCSTR sh, int left, int top, u32 align)
@@ -41,7 +36,7 @@ void CUIStaticItem::Init(LPCSTR tex, LPCSTR sh, int left, int top, u32 align)
 void CUIStaticItem::Render(Shader* sh)
 {
 	// установить обязательно перед вызовом CustomItem::Render() !!!
-	RCache.set_Shader		(sh?sh:hShader);
+	RCache.set_Shader			(sh?sh:hShader());
 	// convert&set pos
 	Ivector2		bp;
 	HUD().ClientToScreenScaled	(bp,iPos.x,iPos.y,uAlign);
@@ -49,7 +44,7 @@ void CUIStaticItem::Render(Shader* sh)
 	// actual rendering
 	u32				vOffset;
 	int				v_cnt			= 0;
-	FVF::TL*		pv				= (FVF::TL*)RCache.Vertex.Lock	(4*(iTileX+1)*(iTileY+1),hVS->vb_stride,vOffset);
+	FVF::TL*		pv				= (FVF::TL*)RCache.Vertex.Lock	(4*(iTileX+1)*(iTileY+1),hGeom.stride(),vOffset);
 
 	Ivector2		pos;
 	int fw			= iVisRect.width();
@@ -83,28 +78,28 @@ void CUIStaticItem::Render(Shader* sh)
 	}
 
 	// unlock VB and Render it as triangle LIST
-	RCache.Vertex.Unlock	(v_cnt,hVS->vb_stride);
-	RCache.set_Geometry		(hVS);
+	RCache.Vertex.Unlock	(v_cnt,hGeom.stride());
+	RCache.set_Geometry		(hGeom);
 	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,v_cnt,0,v_cnt/2);
 }
 //--------------------------------------------------------------------
 void CUIStaticItem::Render(float angle, Shader* sh)
 {
 	// установить обязательно перед вызовом CustomItem::Render() !!!
-	RCache.set_Shader		(sh?sh:hShader);
+	RCache.set_Shader		(sh?sh:hShader());
 	// convert&set pos
 	Ivector2		bp;
 	HUD().ClientToScreenScaled	(bp,iPos.x,iPos.y,uAlign);
 
 	// actual rendering
 	u32			vOffset;
-	FVF::TL*		pv				= (FVF::TL*)RCache.Vertex.Lock	(4,hVS->vb_stride,vOffset);
+	FVF::TL*		pv				= (FVF::TL*)RCache.Vertex.Lock	(4,hGeom.stride(),vOffset);
 	
 	inherited::Render(pv,bp,dwColor,angle);	
 
 	// unlock VB and Render it as triangle LIST
-	RCache.Vertex.Unlock	(4,hVS->vb_stride);
-	RCache.set_Geometry		(hVS);
+	RCache.Vertex.Unlock	(4,hGeom.stride());
+	RCache.set_Geometry		(hGeom);
 	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,4,0,2);
 }
 //--------------------------------------------------------------------

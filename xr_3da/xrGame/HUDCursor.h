@@ -4,8 +4,8 @@
 
 class CHUDCursor : public pureDeviceDestroy, public pureDeviceCreate
 {
-	Shader*					hShader;
-	SGeometry*				hVS;
+	ref_shader				hShader;
+	ref_geom				hGeom;
 	float					fuzzyShowInfo;
 public:
 							CHUDCursor	();

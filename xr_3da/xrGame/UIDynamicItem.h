@@ -13,8 +13,8 @@ DEFINE_VECTOR(SDynamicItemData,DIDVec,DIDIt);
 
 class CUIDynamicItem: public CUICustomItem
 {
-	Shader*			hShader;
-	SGeometry*		hVS;	
+	ref_shader		hShader;
+	ref_geom		hGeom;	
 		
 	DIDVec			data;
 	u32				item_cnt;
