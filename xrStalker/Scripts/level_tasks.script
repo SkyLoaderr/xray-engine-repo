@@ -151,6 +151,7 @@ function proceed(actor)
 	end
 
 	if	actor:has_info("bar_bar_hunter_quest_start") and 
+ 		actor:dont_has_info("bar_bar_hunter_quest_rifle") and
 		actor:object("hunters_toz") ~= nil 
 	then		
 		actor:give_info_portion("bar_bar_hunter_quest_find_rifle")
