@@ -74,8 +74,11 @@ void CPhysicObject::LoadNetState(NET_Packet& P)
 void CPhysicObject::RespawnInit()
 {
 	CKinematics*	K	=	PKinematics(Visual());
-	K->LL_SetBoneRoot(0);
-	K->LL_SetBonesVisible(0xffffffffffffffffL);
+	if(K)
+	{
+		K->LL_SetBoneRoot(0);
+		K->LL_SetBonesVisible(0xffffffffffffffffL);
+	}
 	Init();
 	ClearUnsplited();
 }
@@ -168,7 +171,8 @@ void CPhysicObject::net_Destroy()
 {
 	RespawnInit();
 	inherited::net_Destroy();
-	PKinematics(Visual())->Calculate();
+	CKinematics* K=PKinematics(Visual());
+	if(K)	K->Calculate();
 }
 void CPhysicObject::Load(LPCSTR section)
 {
