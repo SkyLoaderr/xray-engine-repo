@@ -39,7 +39,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
         	strcpy(m_LastFileName,fn.c_str());
         	Command(COMMAND_UPDATE_CAPTION);
             EFS.LockFile(0,m_LastFileName);
-            fraLeftBar->AppendRecentFile(m_LastFileName);
+            AppendRecentFile(m_LastFileName);
         }
     	}break;
 	case COMMAND_SAVE:{
@@ -52,7 +52,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 		if (Tools.Save(fn.c_str())){
             ELog.Msg(mtInformation,"Object '%s' successfully saved. Saving time - %3.2f(s).",m_LastFileName,T.GetElapsed_sec());
         	Command(COMMAND_UPDATE_CAPTION);
-			fraLeftBar->AppendRecentFile(fn.c_str());
+			AppendRecentFile(fn.c_str());
         }else{
         	bRes=false;
         }
@@ -113,7 +113,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
             }
 			strcpy(m_LastFileName,fn.c_str());
             ELog.Msg(mtInformation,"Object '%s' successfully loaded. Loading time - %3.2f(s).",m_LastFileName,T.GetElapsed_sec());
-			fraLeftBar->AppendRecentFile(m_LastFileName);
+			AppendRecentFile(m_LastFileName);
 //.		    fraLeftBar->UpdateMotionList();
         	Command	(COMMAND_UPDATE_CAPTION);
 	        Command	(COMMAND_UPDATE_PROPERTIES);
@@ -145,8 +145,8 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     case COMMAND_RESET_ANIMATION:
     	break;
     case COMMAND_LOAD_FIRSTRECENT:
-    	if (fraLeftBar->FirstRecentFile()){
-        	bRes = Command(COMMAND_LOAD,(int)fraLeftBar->FirstRecentFile());
+    	if (FirstRecentFile()){
+        	bRes = Command(COMMAND_LOAD,(int)FirstRecentFile());
         }
     	break;
     case COMMAND_FILE_MENU:

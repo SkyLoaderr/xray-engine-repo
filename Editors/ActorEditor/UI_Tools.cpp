@@ -488,19 +488,34 @@ bool __fastcall CActorTools::MouseEnd(TShiftState Shift)
     case eaAdd: 	break;
     case eaMove:{
     	switch (m_EditMode){
-        case emObject:	OnMotionKeysModified();	break;
-        case emBone:	OnBoneModified();		break;
+        case emObject:
+			if (Shift.Contains(ssCtrl))
+	        	OnMotionKeysModified();	
+        break;
+        case emBone:	
+			if (Shift.Contains(ssCtrl))
+        		OnBoneModified();		
+        break;
         }
     }break;
     case eaRotate:{
     	switch (m_EditMode){
-        case emObject:	OnMotionKeysModified();	break;
-        case emBone:	OnBoneModified();		break;
+        case emObject:	
+			if (Shift.Contains(ssCtrl))
+        		OnMotionKeysModified();	
+        break;
+        case emBone:	
+			if (Shift.Contains(ssCtrl))
+	        	OnBoneModified();		
+        break;
         }
     }break;
     case eaScale:{
     	switch (m_EditMode){
-        case emBone:	OnBoneModified();		break;
+        case emBone:	
+			if (Shift.Contains(ssCtrl))
+		        OnBoneModified();		
+        break;
         }
     }break;
     }
@@ -536,7 +551,8 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
         if (!fraTopBar->ebAxisY->Down) amount.y = 0.f;
     	switch (m_EditMode){
         case emObject:
-            m_pEditObject->a_vPosition.add(amount);
+			if (Shift.Contains(ssCtrl))
+	            m_pEditObject->a_vPosition.add(amount);
         break;
         case emBone:
         	if (Shift.Contains(ssCtrl)){
@@ -553,7 +569,8 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
         if( fraTopBar->ebASnap->Down ) CHECK_SNAP(m_fRotateSnapAngle,amount,UI.anglesnap());
     	switch (m_EditMode){
         case emObject:
-            m_pEditObject->a_vRotate.mad(m_RotateVector,amount);
+			if (Shift.Contains(ssCtrl))
+	            m_pEditObject->a_vRotate.mad(m_RotateVector,amount);
         break;
         case emBone:{
             BoneVec lst;

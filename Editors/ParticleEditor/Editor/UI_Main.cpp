@@ -559,3 +559,43 @@ void ResetActionToSelect()
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TUI::miRecentFilesClick(TObject *Sender)
+{
+	TMenuItem* MI = dynamic_cast<TMenuItem*>(Sender); R_ASSERT(MI&&(MI->Tag==0x1001));
+    AnsiString fn = MI->Caption;
+    if (FS.exist(fn.c_str()))	Command(COMMAND_LOAD,(u32)fn.c_str());
+    else						ELog.DlgMsg(mtError, "Error reading file '%s'",fn.c_str());
+}
+//---------------------------------------------------------------------------
+
+void TUI::AppendRecentFile(LPCSTR name)
+{
+	R_ASSERT(fraLeftBar->miRecentFiles->Count<=frmEditPrefs->seRecentFilesCount->Value);
+
+	for (int i = 0; i < fraLeftBar->miRecentFiles->Count; i++)
+    	if (fraLeftBar->miRecentFiles->Items[i]->Caption==name){
+        	fraLeftBar->miRecentFiles->Items[i]->MenuIndex = 0;
+            return;
+		}
+
+	if (fraLeftBar->miRecentFiles->Count==frmEditPrefs->seRecentFilesCount->Value) 
+    	fraLeftBar->miRecentFiles->Remove(fraLeftBar->miRecentFiles->Items[frmEditPrefs->seRecentFilesCount->Value-1]);
+
+    TMenuItem *MI 	= xr_new<TMenuItem>((TComponent*)0);
+    MI->Caption 	= name;
+    MI->OnClick 	= miRecentFilesClick;
+    MI->Tag			= 0x1001;
+    fraLeftBar->miRecentFiles->Insert(0,MI);
+
+    fraLeftBar->miRecentFiles->Enabled = true;
+}
+//---------------------------------------------------------------------------
+
+LPCSTR TUI::FirstRecentFile()
+{
+	if (fraLeftBar->miRecentFiles->Count>0)
+    	return fraLeftBar->miRecentFiles->Items[0]->Caption.c_str();
+    return 0;
+}
+
+

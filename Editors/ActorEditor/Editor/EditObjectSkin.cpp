@@ -18,25 +18,6 @@ static const u32 color_bone_sel_cm		=0xFFFF0000;
 static const u32 color_bone_norm_cm		=0xFF700000;
 static const float joint_size=0.025f;
 
-/*
-bool testRayBox(float& dist, const Fvector& start, const Fvector& dir, const Fbox& pos, float radius)
-{
-	Fvector ray2;
-	ray2.sub(pos, start);
-
-    float d = ray2.dotproduct(dir);
-    if (d>0){
-        float d2 = ray2.magnitude();
-        if( ((d2*d2-d*d) < (radius*radius)) && (d>radius) ){
-        	if (d<dist){
-	            dist = d;
-    	        return true;
-            }
-        }
-    }
-    return false;
-}
-*/
 void CEditableObject::ResetBones()
 {
     BoneVec& lst = m_Bones;

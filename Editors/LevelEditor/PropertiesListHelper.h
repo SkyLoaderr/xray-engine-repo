@@ -42,7 +42,7 @@ public:
         V->x = deg2rad(V->x);
         V->y = deg2rad(V->y);
         V->z = deg2rad(V->z);
-        VectorValue* P = dynamic_cast<VectorValue*>(sender); R_ASSERT(P);
+        VectorValue* P = dynamic_cast<VectorValue*>(sender->GetFrontValue()); R_ASSERT(P);
         P->lim_mn.x = deg2rad(P->lim_mn.x);  P->lim_mx.x = deg2rad(P->lim_mx.x);
         P->lim_mn.y = deg2rad(P->lim_mn.y);  P->lim_mx.y = deg2rad(P->lim_mx.y);
         P->lim_mn.z = deg2rad(P->lim_mn.z);  P->lim_mx.z = deg2rad(P->lim_mx.z);
@@ -54,7 +54,7 @@ public:
         V->x = rad2deg(V->x);
         V->y = rad2deg(V->y);
         V->z = rad2deg(V->z);
-        VectorValue* P = dynamic_cast<VectorValue*>(sender); R_ASSERT(P);
+        VectorValue* P = dynamic_cast<VectorValue*>(sender->GetFrontValue()); R_ASSERT(P);
         P->lim_mn.x = rad2deg(P->lim_mn.x);  P->lim_mx.x = rad2deg(P->lim_mx.x);
         P->lim_mn.y = rad2deg(P->lim_mn.y);  P->lim_mx.y = rad2deg(P->lim_mx.y);
         P->lim_mn.z = rad2deg(P->lim_mn.z);  P->lim_mx.z = rad2deg(P->lim_mx.z);

@@ -128,9 +128,7 @@ public:		// User declarations
         __fastcall TfraLeftBar		(TComponent* Owner);
     void 			UpdateBar		();
 	void 			AddMotion		(LPCSTR full_name, bool bLoadMode);
-	void 			AppendRecentFile(LPCSTR name);
     void			SetRenderStyle	(bool bEngineStyle);
-    LPCSTR 			FirstRecentFile	();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

@@ -40,7 +40,6 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 // startup create
 		Application->Title = "Actor Editor";
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
-		Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
 		Application->CreateForm(__classid(TfrmBonePart), &frmBonePart);
 		frmMain->SetHInst(hInst);
 

@@ -210,6 +210,13 @@ public:
 //	void 			SendMail			();
 
     void			CheckWindowPos		(TForm* form);
+
+    // recent items
+private:    
+	void __fastcall miRecentFilesClick	(TObject *Sender);
+public:
+	void 			AppendRecentFile	(LPCSTR name);
+    LPCSTR 			FirstRecentFile		();
 };
 //---------------------------------------------------------------------------
 extern TUI UI;

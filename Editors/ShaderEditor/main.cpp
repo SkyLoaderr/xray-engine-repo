@@ -165,7 +165,7 @@ void __fastcall TfrmMain::fsStorageRestorePlacement(TObject *Sender)
 	// read recent list    
     for (int i=frmEditPrefs->seRecentFilesCount->Value; i>=0; i--){
 		AnsiString recent_fn= frmMain->fsStorage->ReadString	(AnsiString("RecentFiles")+AnsiString(i),"");
-        if (!recent_fn.IsEmpty()) fraLeftBar->AppendRecentFile(recent_fn.c_str());
+        if (!recent_fn.IsEmpty()) UI.AppendRecentFile(recent_fn.c_str());
     }
 }
 //---------------------------------------------------------------------------

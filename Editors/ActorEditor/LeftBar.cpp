@@ -50,13 +50,6 @@ void __fastcall PanelMaximizeOnlyClick(TObject *Sender)
     UI.Command(COMMAND_UPDATE_TOOLBAR);
 }
 
-LPCSTR TfraLeftBar::FirstRecentFile()
-{
-	if (miRecentFiles->Count>0)
-    	return miRecentFiles->Items[0]->Caption.c_str();
-    return 0;
-}
-
 //---------------------------------------------------------------------------
 __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
         : TFrame(Owner)
@@ -65,34 +58,6 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
 
     frmMain->paLeftBar->Width = paLeftBar->Width+2;
     frmMain->sbToolsMin->Left = paLeftBar->Width-frmMain->sbToolsMin->Width-3;
-
-    for (int i=5; i>=0; i--)
-    {
-		AnsiString recent_fn= fsStorage->ReadString	(AnsiString("RecentFiles")+AnsiString(i),"");
-        if (!recent_fn.IsEmpty()) AppendRecentFile(recent_fn.c_str());
-    }
-}
-//---------------------------------------------------------------------------
-
-void TfraLeftBar::AppendRecentFile(LPCSTR name)
-{
-	R_ASSERT(miRecentFiles->Count<=5);
-
-	for (int i = 0; i < miRecentFiles->Count; i++)
-    	if (miRecentFiles->Items[i]->Caption==name){
-        	miRecentFiles->Items[i]->MenuIndex = 0;
-            return;
-		}
-
-	if (miRecentFiles->Count==5) miRecentFiles->Remove(miRecentFiles->Items[4]);
-
-    TMenuItem *MI = xr_new<TMenuItem>((TComponent*)0);
-    MI->Caption = name;
-    MI->OnClick = miRecentFilesClick;
-    MI->Tag		= 0x1001;
-    miRecentFiles->Insert(0,MI);
-
-    miRecentFiles->Enabled = true;
 }
 //---------------------------------------------------------------------------
 
@@ -112,11 +77,6 @@ void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
     Tools.m_ItemProps->SaveParams(fsStorage);
     Tools.m_PreviewObject.SaveParams(fsStorage);
     Tools.m_RenderObject.SaveParams(fsStorage);
-	for (int i = 0; i < miRecentFiles->Count; i++)
-	{
-		TMenuItem* MI = miRecentFiles->Items[i];
-		fsStorage->WriteString(AnsiString("RecentFiles")+AnsiString(i),MI->Caption);
-    }
 }
 //---------------------------------------------------------------------------
 
