@@ -430,6 +430,8 @@ void	game_sv_ArtefactHunt::SpawnArtefact			()
 	m_eAState = ON_FIELD;
 
 	Artefact_PrepareForRemove();
+
+	signal_Syncronize();
 };
 
 void	game_sv_ArtefactHunt::RemoveArtefact			()
@@ -443,8 +445,6 @@ void	game_sv_ArtefactHunt::RemoveArtefact			()
 	P.w_u32				(GMSG_ARTEFACT_DESTROYED);
 	u_EventSend(P);
 	//-----------------------------------------------
-	m_ArtefactBearerID = 0;
-	m_TeamInPosession = 0;
 	Artefact_PrepareForSpawn();
 };
 
@@ -585,6 +585,8 @@ void				game_sv_ArtefactHunt::Artefact_PrepareForSpawn	()
 
 	m_ArtefactBearerID	= 0;
 	m_TeamInPosession	= 0;
+
+	signal_Syncronize();
 };
 
 void				game_sv_ArtefactHunt::Artefact_PrepareForRemove	()
