@@ -208,6 +208,19 @@ attack_effector			= m_controller_attack_effector
 attack_params			= m_controller_attack_params
 step_params				= m_controller_step_params
 
+jump_factor				= 0.5			
+jump_delay				= 2000	
+jump_min_dist			= 2.0 
+jump_max_dist			= 50.0	
+jump_max_angle			= 0.3
+jump_trace_dist			= 1.0
+
+LegsCount				= 2
+
+control_fx_texture		= act\act_controller_hit
+control_fx_texture2		= act\act_controller_hit1
+
+
 [m_Controller_damage]
 ;bone_name		 = <hit_scale>,-1,<wound_scale>
 ;<hit_scale>	- коэфф. изменения хита (уменьшения здоровья) 
@@ -221,17 +234,6 @@ bip01_spine1 		= 0.2, -1, 0.5
 bip01_neck 			= 0.5, -1, 0.5
 bip01_head 			= 10.0, -1, 10.00
 
-jump_factor				= 0.5			
-jump_delay				= 2000	
-jump_min_dist			= 2.0 
-jump_max_dist			= 50.0	
-jump_max_angle			= 0.3
-jump_trace_dist			= 1.0
-
-LegsCount				= 2
-
-control_fx_texture		= act\act_controller_hit
-control_fx_texture2		= act\act_controller_hit1
 
 ; Controlling ability properties
 Max_Controlled_Count	= 4
