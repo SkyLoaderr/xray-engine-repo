@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "lzo\lzo1x.h"
+#include <mmsystem.h>
 #pragma comment			(lib,"x:\\xrCore.lib")
 
 IWriter*				fs=0;
