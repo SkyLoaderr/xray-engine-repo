@@ -7,13 +7,24 @@ void	CRenderTarget::phase_smap_direct		(light* L, u32 sub_phase)
 	else								u_setrt	(rt_smap_surf, NULL, NULL, rt_smap_ZB);
 
 	// Clear
-	CHK_DX								(HW.pDevice->Clear( 0L, NULL, D3DCLEAR_ZBUFFER,	0xFFFFFFFF, 1.0f, 0L));
+	if (SE_SUN_NEAR==sub_phase)			{
+		// optimized clear
+		D3DRECT		R;
+		R.x1		= L->X.D->minX;
+		R.x2		= L->X.D->maxX;
+		R.y1		= L->X.D->minY;
+		R.y2		= L->X.D->maxY;
+		CHK_DX							(HW.pDevice->Clear( 1L, &R,	  D3DCLEAR_ZBUFFER,	0xFFFFFFFF, 1.0f, 0L));
+	} else {
+		// full-clear
+		CHK_DX							(HW.pDevice->Clear( 0L, NULL, D3DCLEAR_ZBUFFER,	0xFFFFFFFF, 1.0f, 0L));
+	}
 
 	// Stencil	- disable
 	RCache.set_Stencil					( FALSE );
 
 	// Misc		- draw only front/back-faces
-	// RCache.set_CullMode					( CULL_CCW	);	// near
+	// RCache.set_CullMode				( CULL_CCW	);	// near
 	if (SE_SUN_NEAR==sub_phase)			RCache.set_CullMode			( CULL_CCW	);	// near
 	else								RCache.set_CullMode			( CULL_CW	);	// far	//.
 	if (RImplementation.o.HW_smap)		RCache.set_ColorWriteEnable	( FALSE		);

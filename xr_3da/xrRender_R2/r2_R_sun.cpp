@@ -877,7 +877,7 @@ void CRender::render_sun_near	()
 		FPU::m64r					();
 		// Lets begin from base frustum
 		Fmatrix		fullxform_inv	= ex_full_inverse;
-#ifdef	DEBUG
+#ifdef	_DEBUG
 		typedef		DumbConvexVolume<true>	t_volume;
 #else
 		typedef		DumbConvexVolume<false>	t_volume;
@@ -896,7 +896,7 @@ void CRender::render_sun_near	()
 			}
 		}
 		hull.compute_caster_model	(cull_planes,fuckingsun->direction);
-#ifdef	DEBUG
+#ifdef	_DEBUG
 		for (u32 it=0; it<cull_planes.size(); it++)
 			RImplementation.Target->dbg_addplane(cull_planes[it],0xffffffff);
 #endif
@@ -982,8 +982,22 @@ void CRender::render_sun_near	()
 		Fmatrix adjust;		adjust.translate(diff);
 		cull_xform.mulA		(adjust);
 
+		// calculate scissor
+		Fbox		scissor				;
+		Fmatrix		scissor_xf			;
+					scissor_xf.mul		(m_viewport,cull_xform);
+		for (int it=0; it<9; it++)	{
+			Fvector	xf	= wform		(scissor_xf,hull.points[it]);
+			scissor.modify			(xf);
+		}
+		s32		limit					= RImplementation.o.smapsize-1;
+		fuckingsun->X.D.minX			= clampr	(iFloor	(scissor.min.x), 0, limit);
+		fuckingsun->X.D.maxX			= clampr	(iCeil	(scissor.max.x), 0, limit);
+		fuckingsun->X.D.minY			= clampr	(iFloor	(scissor.min.y), 0, limit);
+		fuckingsun->X.D.maxY			= clampr	(iCeil	(scissor.max.y), 0, limit);
+
 		// full-xform
-		FPU::m24r					();
+		FPU::m24r			();
 	}
 
 	// Begin SMAP-render
