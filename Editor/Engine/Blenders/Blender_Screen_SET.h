@@ -10,8 +10,10 @@
 
 class ENGINE_API CBlender_Screen_SET : public CBlender  
 {
+	BP_TOKEN	oBlend;
+	BP_Integer	oAREF;
 public:
-	virtual		LPCSTR		getComment()	{ return "screen-space set"; }
+	virtual		LPCSTR		getComment()	{ return "screen-space set/blend/add"; }
 	
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS);
@@ -20,7 +22,6 @@ public:
 	
 	CBlender_Screen_SET();
 	virtual ~CBlender_Screen_SET();
-
 };
 
 #endif // !defined(AFX_BLENDER_SCREEN_SET_H__A215FA40_D885_4D06_9032_ED934AE295E3__INCLUDED_)
