@@ -17,17 +17,17 @@ class CDetailPathManager {
 			void	build_dodge_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position);
 			void	build_criteria_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position);
 protected:
-	u32										m_current_travel_point;
-	bool									m_actual;
-	bool									m_failed;
+	u32											m_current_travel_point;
+	bool										m_actual;
+	bool										m_failed;
 public:
-	enum EMovementType {
-		eMovementTypeStand	= u32(1) << 1,
-		eMovementTypJumpUp	= u32(1) << 2,
-		eMovementTypJumpDown= u32(1) << 3,
-		eMovementTypeWalk	= u32(1) << 4,
-		eMovementTypeRun	= u32(1) << 5,
-		eMovementTypePanic	= u32(1) << 6,
+	enum EMovementParameters {
+		eMovementParameterStand		= u32(1) << 1,
+		eMovementParameterJumpUp	= u32(1) << 2,
+		eMovementParameterJumpDown	= u32(1) << 3,
+		eMovementParameterWalk		= u32(1) << 4,
+		eMovementParameterRun		= u32(1) << 5,
+		eMovementParameterPanic		= u32(1) << 6,
 	};
 
 	enum EDetailPathType {
@@ -37,22 +37,22 @@ public:
 	};
 
 	struct SMovementParams {
-		float								m_linear_speed;
-		float								m_angular_speed;
+		float									m_linear_speed;
+		float									m_angular_speed;
 	};
 
 	struct STravelPoint : public SMovementParams {
-		Fvector								m_position;
+		Fvector									m_position;
 	};
 
-	bool									m_collision;
+	bool										m_collision;
 
-	xr_vector<STravelPoint>					m_path;
-	xr_vector<CLevelGraph::SSegment>		m_segments;
-	Fvector									m_start_position;
-	Fvector									m_dest_position;
-	EDetailPathType							m_path_type;
-	xr_map<EMovementType,SMovementParams>	m_movement_params;
+	xr_vector<STravelPoint>						m_path;
+	xr_vector<CLevelGraph::SSegment>			m_segments;
+	Fvector										m_start_position;
+	Fvector										m_dest_position;
+	EDetailPathType								m_path_type;
+	xr_map<EMovementParameters,SMovementParams>	m_movement_params;
 
 	friend class CScriptMonster;
 	friend class CMotionManager;
