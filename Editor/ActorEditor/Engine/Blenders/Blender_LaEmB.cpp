@@ -33,7 +33,7 @@ void	CBlender_LaEmB::Save(	CFS_Base& FS )
 	xrPWRITE_PROP	(FS,"Constant",			xrPID_CONSTANT,	oT2_const);
 }
 
-void	CBlender_LaEmB::Load(	CStream& FS )
+void	CBlender_LaEmB::Load(	CStream& FS, WORD version )
 {
 	CBlender::Load	(FS);
 	xrPREAD_MARKER	(FS);

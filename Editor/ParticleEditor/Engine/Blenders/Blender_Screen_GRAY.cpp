@@ -25,7 +25,7 @@ void	CBlender_Screen_GRAY::Save	( CFS_Base& FS	)
 	CBlender::Save	(FS);
 }
 
-void	CBlender_Screen_GRAY::Load	( CStream& FS	)
+void	CBlender_Screen_GRAY::Load	( CStream& FS, WORD version	)
 {
 	CBlender::Load	(FS);
 }

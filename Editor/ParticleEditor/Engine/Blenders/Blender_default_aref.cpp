@@ -30,7 +30,7 @@ void	CBlender_default_aref::Save(	CFS_Base& FS )
 	xrPWRITE_PROP	(FS,"Alpha ref",	xrPID_INTEGER,	oAREF);
 }
 
-void	CBlender_default_aref::Load(	CStream& FS )
+void	CBlender_default_aref::Load(	CStream& FS , WORD version)
 {
 	CBlender::Load	(FS);
 	xrPREAD_PROP	(FS,xrPID_INTEGER,	oAREF);

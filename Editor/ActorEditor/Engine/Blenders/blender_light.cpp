@@ -26,7 +26,7 @@ void	CBlender_LIGHT::Save	( CFS_Base& FS	)
 	CBlender::Save	(FS);
 }
 
-void	CBlender_LIGHT::Load	( CStream& FS	)
+void	CBlender_LIGHT::Load	( CStream& FS, WORD version	)
 {
 	CBlender::Load	(FS);
 }

@@ -56,7 +56,7 @@ void	CBlender_Screen_SET::Save	( CFS_Base& FS	)
 
 void	CBlender_Screen_SET::Load	( CStream& FS, WORD version)
 {
-	CBlender::Load	(FS);
+	CBlender::Load		(FS,version);
 
 	switch (version)	{
 	case 2:

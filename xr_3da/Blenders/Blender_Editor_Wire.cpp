@@ -24,7 +24,7 @@ void	CBlender_Editor_Wire::Save	( CFS_Base& FS	)
 	xrPWRITE_PROP	(FS,"TFactor",	xrPID_CONSTANT, oT_Factor);
 }
 
-void	CBlender_Editor_Wire::Load	( CStream& FS	)
+void	CBlender_Editor_Wire::Load	( CStream& FS, WORD version	)
 {
 	CBlender::Load	(FS);
 	xrPREAD_PROP	(FS,xrPID_CONSTANT,	oT_Factor);

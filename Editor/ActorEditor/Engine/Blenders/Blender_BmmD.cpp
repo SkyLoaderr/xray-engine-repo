@@ -31,7 +31,7 @@ void	CBlender_BmmD::Save(	CFS_Base& FS )
 	xrPWRITE_PROP	(FS,"Transform",		xrPID_MATRIX,	oT2_xform);
 }
 
-void	CBlender_BmmD::Load(	CStream& FS )
+void	CBlender_BmmD::Load(	CStream& FS, WORD version )
 {
 	CBlender::Load	(FS);
 	xrPREAD_MARKER	(FS);
