@@ -18,7 +18,8 @@
 // Global variables
 //---------------------------------------------------------------------------
 string 	g_sSerial;
-BOOL	g_NeedReboot;
+BOOL	g_bNeedReboot; 
+BOOL	g_bServer;
 //---------------------------------------------------------------------------
             
 //---------------------------------------------------------------------------
@@ -61,6 +62,7 @@ prototype 				StartServer					();
 prototype 				StopServer					();
 prototype 				ParseSerialNumber			(byval string, byref string, byref string);
 prototype BOOL 			CheckMSDEStatus				();
+prototype 				ConfigureServer				();
 // external SQL server management function
 prototype CDECL BOOL 	SQL_CONFIG.initLibrary		();
 prototype CDECL BOOL 	SQL_CONFIG.deInitLibrary	();
@@ -70,8 +72,6 @@ prototype CDECL BOOL 	SQL_CONFIG.attachDatabase	(byval string, byval string, byv
 prototype CDECL BOOL 	SQL_CONFIG.runSQLString		(byval string, byval string, byval string, byval string, byval string);
 prototype CDECL BOOL 	SQL_CONFIG.detachDatabase	(byval string, byval string, byval string, byval string);
 // export events for IS
-export prototype 		MSDE_2000_Installed			();
-export prototype 		MSDE_2000_UnInstalling		();
 export prototype 		MSDE_2000_UnInstalled		();
 
 //---------------------------------------------------------------------------
@@ -194,13 +194,175 @@ begin
     ClearFolder				(TARGETDIR);
 end;
 //---------------------------------------------------------------------------                                                                        
+function ConfigureServer()
+	number 	nResult;
+	BOOL 	bRes;
+	string 	sTmp,db_files,sInsertSQL,sServerName;
+	string 	sPrimReg,sSecReg,sVersionEXE,sVersionDB;
+	NUMBER 	nvType, nvSize, nLocation;
+begin
+	bRes = CheckMSDEStatus();    
+	if (TRUE=bRes) then
+		// register our SQLDMO.dll
+		LaunchAppAndWait (WINSYSDIR^"regsvr32" , "/s sqldmo.dll", WAIT); // /s 
+		           
+		// load dll
+	    nResult 	= UseDLL (DLL_FILE);
+	    if (nResult != 0) then
+	        MessageBox (@IDSL_ERROR_UNABLE_TO_LOAD+" "+DLL_FILE, SEVERE);
+	        abort;
+	    endif;                  
+	    
+	    SQL_CONFIG.initLibrary();
+	        
+	    // Enable the progress bar.
+	    Enable			(STATUS);
+    
+	    // Set the limit of the progress bar to 99% completion.
+	    StatusUpdate 	(ON, 99);
+    
+	    // Display a message; do not change the progress bar.
+	    SetStatusWindow (-1, @IDSL_PROGRESS_SETUP_SERVER);
+    
+	    SetStatusWindow (10, @IDSL_PROGRESS_START_SERVER);
+	    StartServer		();
+	    
+	    SetStatusWindow (20, @IDSL_PROGRESS_CHECK_CONNECTION);
+		bRes 			= SQL_CONFIG.testConnection(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_);
+		if (bRes = 0) then 
+		    SetStatusWindow (30, @IDSL_PROGRESS_TUNE_CONNECTION);
+		    bRes = SQL_CONFIG.tuneServer(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_);
+		    if(bRes != 0) then
+		        MessageBox (@IDSL_ERROR_SERVER_CONFIGURE, SEVERE);
+		        bRes	= FALSE;
+		        goto label_end;
+		    endif;
+
+		    SetStatusWindow (40, @IDSL_PROGRESS_CONNECT_DB+" 'KAS'");
+		    db_files = "["+TARGETDIR^"DATA\\KAS_Data.MDF] "+"["+TARGETDIR^"DATA\\KAS_Log.LDF]";
+		    bRes = SQL_CONFIG.attachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"KAS",db_files);
+		    if(bRes != 0) then
+		        MessageBox (@IDSL_ERROR_CONNECT_DB+" 'KAS'", SEVERE);
+		        bRes	= FALSE;
+		        goto label_end; 
+		    else
+		    	bRes=TRUE;
+		    endif;
+		
+		    SetStatusWindow (50, @IDSL_PROGRESS_CONNECT_DB+" 'client_repl'");
+		    db_files = "["+TARGETDIR^"DATA\\client_repl_Data.MDF] "+"["+TARGETDIR^"DATA\\client_repl_Log.LDF]";
+		    bRes = SQL_CONFIG.attachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"client_repl",db_files);
+		    if(bRes != 0) then
+		        MessageBox (@IDSL_ERROR_CONNECT_DB+" 'client_repl'", SEVERE);
+		        bRes	= FALSE;
+		        goto label_end;
+		    else
+		    	bRes=TRUE;
+		    endif;
+		
+		    SetStatusWindow (60, @IDSL_PROGRESS_CONNECT_DB+" 'searchdb'");
+		    db_files = "["+TARGETDIR^"DATA\\searchdb_Data.MDF] "+"["+TARGETDIR^"DATA\\searchdb_Log.LDF]";
+		    bRes = SQL_CONFIG.attachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"searchdb",db_files);
+		    if(bRes != 0) then
+		        MessageBox (@IDSL_ERROR_CONNECT_DB+" 'searchdb'", SEVERE);
+		        bRes	= FALSE;
+		        goto label_end;
+		    else
+		    	bRes=TRUE;
+		    endif;
+		 
+		    SetStatusWindow (70, @IDSL_PROGRESS_REGISTER_SP);
+		 	// copy stored proc dll  
+			// register it in DB
+		    bRes = SQL_CONFIG.runSQLString	(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,
+		    								"master",
+		    								"EXEC sp_addextendedproc xp_check, '"+SQL_STORED_PROC_DLL_+"'");
+		    if(bRes != 0) then
+		        MessageBox (@IDSL_ERROR_REGISTER_SP+" 'xp_check'", SEVERE);
+		        bRes	= FALSE;
+		        goto label_end;
+		    else
+		    	bRes=TRUE;
+		    endif;
+		
+		    SetStatusWindow (80, @IDSL_PROGRESS_READ_INI);
+			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_SERVER_ID, 		sServerName);
+			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_VERSION_EXE_ID,	sVersionEXE);
+			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_VERSION_DB_ID, 	sVersionDB);
+		
+			// parse serial number      
+			sPrimReg		= "";
+			sSecReg			= "";	
+			ParseSerialNumber(g_sSerial,sPrimReg,sSecReg);
+		                           
+		    SetStatusWindow (90, @IDSL_PROGRESS_REGISTERING_USER);
+			// prepare sql string
+			sInsertSQL = "insert into Summary (primary_reg_id, secondary_reg_id, unique_id, version_id, last_update)";
+			sInsertSQL = sInsertSQL+"values('"+sPrimReg+"','"+sSecReg+"',newId(),'"+sVersionEXE+"','"+sVersionDB+"')"; 
+		    bRes = SQL_CONFIG.runSQLString	(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,
+		    								"KAS",
+		    								sInsertSQL);
+		    if(bRes != 0) then
+		        MessageBox (@IDSL_ERROR_SQL_QUERY_FAILED, SEVERE);
+		        bRes	= FALSE;
+		        goto label_end;
+		    else
+		    	bRes=TRUE;
+		    endif;
+		
+		    SetStatusWindow (95, @IDSL_PROGRESS_ADD_REGISTRY);
+			// insert registry keys
+			RegDBSetDefaultRoot		(HKEY_LOCAL_MACHINE);
+			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_VERSION_DB_ID, REGDB_STRING, sVersionDB,-1) < 0) then
+			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
+			endif;
+			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_SERVER_ID, REGDB_STRING, sServerName,-1) < 0) then
+			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
+			endif;
+			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_INSTANCE_ID, REGDB_STRING, MSDE_INSTANCE_NAME,-1) < 0) then
+			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
+			endif;
+
+			// create auto-start shortcut
+			CreateStartServerShortcut();
+		else
+	        MessageBox (@IDSL_ERROR_SQLSERVER_CONNECT_FAILED, SEVERE);
+	        bRes	= FALSE;
+	        goto label_end;
+		endif;
+		
+label_end:
+	    // Set the progress bar to 100% and displays a message.
+	    SetStatusWindow (100, @IDSL_PROGRESS_END);
+	    Disable			(STATUS);
+	
+	    SQL_CONFIG.deInitLibrary();
+	
+		// free dll
+	    nResult = UnUseDLL (DLL_FILE);
+	    if (nResult < 0) then
+	   //     MessageBox ("Невозможно выгрузить: "+DLL_FILE, SEVERE);
+	    endif;
+
+		if (bRes=TRUE) then
+			g_bNeedReboot = TRUE;
+		endif;
+	else
+        MessageBox (@IDSL_ERROR_MSDE_INSTALL_FAILED, SEVERE);
+		bRes=FALSE;	    
+	endif;
+    // if error found -> abort instalation          
+    if (bRes=FALSE) then abort; endif;
+end;
+//---------------------------------------------------------------------------                                                                        
 
 //---------------------------------------------------------------------------                                                                        
 // InstallShield Events
 //---------------------------------------------------------------------------                                                                        
 function OnBegin()
 begin       
-	g_NeedReboot = FALSE;
+	g_bNeedReboot 	= FALSE;
+	g_bServer 		= FALSE;
 	// check admin rights
 	if (FALSE=CheckAdminRights()) then abort; endif;
 end;
@@ -260,10 +422,13 @@ Dlg_SetupType:
         sTargetPath 	= TARGETDIR;
 		if (nSetupType 	= 301) then     
 			sSetupType 	= "ClientServer";
+			g_bServer	= TRUE;
 		elseif(nSetupType = 302) then
 			sSetupType 	= "Client";
+			g_bServer	= FALSE;
 		else
 			sSetupType 	= "Server";
+			g_bServer	= TRUE;
 		endif;
 		if (FeatureSetupTypeSet (MEDIA, sSetupType) < 0) then
 			MessageBox (@IDSL_FEATURE_SETUP_FAILED, SEVERE);
@@ -413,165 +578,6 @@ Dlg_ObjDialogs:
 	endif;
 end;
 //---------------------------------------------------------------------------
-function MSDE_2000_Installed()
-	number 	nResult;
-	BOOL 	bRes;
-	string 	sTmp,db_files,sInsertSQL,sServerName;
-	string 	sPrimReg,sSecReg,sVersionEXE,sVersionDB;
-	NUMBER 	nvType, nvSize, nLocation;
-begin
-	bRes = CheckMSDEStatus();    
-	if (TRUE=bRes) then
-		// register our SQLDMO.dll
-		LaunchAppAndWait (WINSYSDIR^"regsvr32" , "/s sqldmo.dll", WAIT); // /s 
-		           
-		// load dll
-	    nResult 	= UseDLL (DLL_FILE);
-	    if (nResult != 0) then
-	        MessageBox (@IDSL_ERROR_UNABLE_TO_LOAD+" "+DLL_FILE, SEVERE);
-	        abort;
-	    endif;                  
-	    
-	    SQL_CONFIG.initLibrary();
-	        
-	    // Enable the progress bar.
-	    Enable			(STATUS);
-    
-	    // Set the limit of the progress bar to 99% completion.
-	    StatusUpdate 	(ON, 99);
-    
-	    // Display a message; do not change the progress bar.
-	    SetStatusWindow (-1, @IDSL_PROGRESS_SETUP_SERVER);
-    
-	    SetStatusWindow (10, @IDSL_PROGRESS_START_SERVER);
-	    StartServer		();
-	    
-	    SetStatusWindow (20, @IDSL_PROGRESS_CHECK_CONNECTION);
-		bRes 			= SQL_CONFIG.testConnection(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_);
-		if (bRes = 0) then 
-		    SetStatusWindow (30, @IDSL_PROGRESS_TUNE_CONNECTION);
-		    bRes = SQL_CONFIG.tuneServer(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_);
-		    if(bRes != 0) then
-		        MessageBox (@IDSL_ERROR_SERVER_CONFIGURE, SEVERE);
-		        bRes	= FALSE;
-		        goto label_end;
-		    endif;
-
-		    SetStatusWindow (40, @IDSL_PROGRESS_CONNECT_DB+" 'KAS'");
-		    db_files = "["+TARGETDIR^"DATA\\KAS_Data.MDF] "+"["+TARGETDIR^"DATA\\KAS_Log.LDF]";
-		    bRes = SQL_CONFIG.attachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"KAS",db_files);
-		    if(bRes != 0) then
-		        MessageBox (@IDSL_ERROR_CONNECT_DB+" 'KAS'", SEVERE);
-		        bRes	= FALSE;
-		        goto label_end; 
-		    else
-		    	bRes=TRUE;
-		    endif;
-		
-		    SetStatusWindow (50, @IDSL_PROGRESS_CONNECT_DB+" 'client_repl'");
-		    db_files = "["+TARGETDIR^"DATA\\client_repl_Data.MDF] "+"["+TARGETDIR^"DATA\\client_repl_Log.LDF]";
-		    bRes = SQL_CONFIG.attachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"client_repl",db_files);
-		    if(bRes != 0) then
-		        MessageBox (@IDSL_ERROR_CONNECT_DB+" 'client_repl'", SEVERE);
-		        bRes	= FALSE;
-		        goto label_end;
-		    else
-		    	bRes=TRUE;
-		    endif;
-		
-		    SetStatusWindow (60, @IDSL_PROGRESS_CONNECT_DB+" 'searchdb'");
-		    db_files = "["+TARGETDIR^"DATA\\searchdb_Data.MDF] "+"["+TARGETDIR^"DATA\\searchdb_Log.LDF]";
-		    bRes = SQL_CONFIG.attachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"searchdb",db_files);
-		    if(bRes != 0) then
-		        MessageBox (@IDSL_ERROR_CONNECT_DB+" 'searchdb'", SEVERE);
-		        bRes	= FALSE;
-		        goto label_end;
-		    else
-		    	bRes=TRUE;
-		    endif;
-		 
-		    SetStatusWindow (70, @IDSL_PROGRESS_REGISTER_SP);
-		 	// copy stored proc dll  
-			// register it in DB
-		    bRes = SQL_CONFIG.runSQLString	(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,
-		    								"master",
-		    								"EXEC sp_addextendedproc xp_check, '"+SQL_STORED_PROC_DLL_+"'");
-		    if(bRes != 0) then
-		        MessageBox (@IDSL_ERROR_REGISTER_SP+" 'xp_check'", SEVERE);
-		        bRes	= FALSE;
-		        goto label_end;
-		    else
-		    	bRes=TRUE;
-		    endif;
-		
-		    SetStatusWindow (80, @IDSL_PROGRESS_READ_INI);
-			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_SERVER_ID, 		sServerName);
-			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_VERSION_EXE_ID,	sVersionEXE);
-			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_VERSION_DB_ID, 	sVersionDB);
-		
-			// parse serial number      
-			sPrimReg		= "";
-			sSecReg			= "";	
-			ParseSerialNumber(g_sSerial,sPrimReg,sSecReg);
-		                           
-		    SetStatusWindow (90, @IDSL_PROGRESS_REGISTERING_USER);
-			// prepare sql string
-			sInsertSQL = "insert into Summary (primary_reg_id, secondary_reg_id, unique_id, version_id, last_update)";
-			sInsertSQL = sInsertSQL+"values('"+sPrimReg+"','"+sSecReg+"',newId(),'"+sVersionEXE+"','"+sVersionDB+"')"; 
-		    bRes = SQL_CONFIG.runSQLString	(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,
-		    								"KAS",
-		    								sInsertSQL);
-		    if(bRes != 0) then
-		        MessageBox (@IDSL_ERROR_SQL_QUERY_FAILED, SEVERE);
-		        bRes	= FALSE;
-		        goto label_end;
-		    else
-		    	bRes=TRUE;
-		    endif;
-		
-		    SetStatusWindow (95, @IDSL_PROGRESS_ADD_REGISTRY);
-			// insert registry keys
-			RegDBSetDefaultRoot		(HKEY_LOCAL_MACHINE);
-			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_VERSION_DB_ID, REGDB_STRING, sVersionDB,-1) < 0) then
-			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
-			endif;
-			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_SERVER_ID, REGDB_STRING, sServerName,-1) < 0) then
-			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
-			endif;
-			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_INSTANCE_ID, REGDB_STRING, MSDE_INSTANCE_NAME,-1) < 0) then
-			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
-			endif;
-
-			// create auto-start shortcut
-			CreateStartServerShortcut();
-		else
-	        MessageBox (@IDSL_ERROR_SQLSERVER_CONNECT_FAILED, SEVERE);
-	        bRes	= FALSE;
-	        goto label_end;
-		endif;
-		
-label_end:
-	    // Set the progress bar to 100% and displays a message.
-	    SetStatusWindow (100, @IDSL_PROGRESS_END);
-	
-	    SQL_CONFIG.deInitLibrary();
-	
-		// free dll
-	    nResult = UnUseDLL (DLL_FILE);
-	    if (nResult < 0) then
-	   //     MessageBox ("Невозможно выгрузить: "+DLL_FILE, SEVERE);
-	    endif;
-
-		if (bRes=TRUE) then
-			g_NeedReboot = TRUE;
-		endif;
-	else
-        MessageBox (@IDSL_ERROR_MSDE_INSTALL_FAILED, SEVERE);
-		bRes=FALSE;	    
-	endif;
-    // if error found -> abort instalation          
-    if (bRes=FALSE) then abort; endif;
-end;
 //---------------------------------------------------------------------------
 function MSDE_2000_UnInstalled()
 begin
@@ -655,14 +661,17 @@ begin
 	endif;                                   
 	if (mdac_need_install=TRUE) then
 		LaunchAppAndWait ("mdac_typ.exe", " /Q:A /C:\"dasetup /Q /N\"", WAIT);
-		g_NeedReboot 		= TRUE;
+		g_bNeedReboot 		= TRUE;
 	endif;
-
+           
+	// configure server (if needed)           
+	if (g_bServer) then 	ConfigureServer(); endif;
+           
 	// create uninstall shortcut
 	CreateUninstallShortcut();
 
 	// set reboot flag 
-	if (g_NeedReboot=TRUE) then BATCH_INSTALL = TRUE; endif;
+	if (g_bNeedReboot=TRUE) then BATCH_INSTALL = TRUE; endif;
         
 	// 
     ShowObjWizardPages(NEXT);

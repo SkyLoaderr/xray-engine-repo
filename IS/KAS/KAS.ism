@@ -280,6 +280,7 @@
 		<row><td>sqlresld.dll</td><td>Files2</td><td>sqlresld.DLL</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\sqldmo_files\sqlresld.DLL</td><td>1</td><td/></row>
 		<row><td>sqlsvc.dll</td><td>Files2</td><td>sqlsvc.DLL</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\sqldmo_files\sqlsvc.DLL</td><td>1</td><td/></row>
 		<row><td>sqlsvc.rll</td><td>Files1</td><td>sqlsvc.RLL</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\sqldmo_files\resources\1033\sqlsvc.RLL</td><td>1</td><td/></row>
+		<row><td>sqlunirl.dll</td><td>Files2</td><td>SQLUNIRL.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\sqldmo_files\SQLUNIRL.dll</td><td>1</td><td/></row>
 		<row><td>trident.gif</td><td>ClientComponent</td><td>trident.gif</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\trident.gif</td><td>1</td><td/></row>
 		<row><td>updateclient.exe</td><td>ClientComponent</td><td>UpdateClient.exe</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\UpdateClient.exe</td><td>1</td><td>NewSubFolder4</td></row>
 		<row><td>updateserver.exe</td><td>ServerComponent</td><td>UpdateServer.exe</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\UpdateServer.exe</td><td>1</td><td>NewSubFolder5</td></row>
@@ -377,7 +378,7 @@
 		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>20</td><td/><td/><td>@ismk10:ED4FF843-0DE2-4F5F-936C-29845A706E45</td></row>
 		<row><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
 		<row><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>44</td><td/><td/><td/></row>
-		<row><td>{E75979B2-D796-4D7B-88E1-909BCEA7508A}</td><td/><td>MSDE_2000_Installed</td><td/><td>MSDE_2000_UnInstalled</td><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
+		<row><td>{E75979B2-D796-4D7B-88E1-909BCEA7508A}</td><td/><td/><td/><td>MSDE_2000_UnInstalled</td><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
 	</table>
 
 	<table name="ISFeatureMergeModuleExcludes">
@@ -624,7 +625,7 @@
 		<col def="S255">InitDlgProductName</col>
 		<col def="I4">Attributes</col>
 		<col def="S255">CertPassword</col>
-		<row><td>Release 1</td><td>Media</td><td/><td/><td>{97B1C350-F747-4366-A433-FF17B7056211}</td><td/><td/><td/><td/><td>-1</td><td/><td>-1</td><td/><td/><td/><td/><td/><td/><td/><td>14338</td><td/></row>
+		<row><td>Release 1</td><td>Media</td><td/><td/><td>{97B1C350-F747-4366-A433-FF17B7056211}</td><td/><td/><td/><td/><td>-1</td><td/><td>-1</td><td/><td/><td/><td/><td/><td/><td/><td>14336</td><td/></row>
 		<row><td>Release 2</td><td>Media</td><td/><td/><td/><td/><td/><td/><td/><td/><td/><td/><td/><td/><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
