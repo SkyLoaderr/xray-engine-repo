@@ -300,7 +300,7 @@ typedef struct Table {
   struct Table *metatable;
   TObject *array;  /* array part */
   Node *node;
-  Node *firstfree;  /* this position is free; all positions after it are full */
+  Node *firstfree;  /* this position is _free; all positions after it are full */
   GCObject *gclist;
   int sizearray;  /* size of `array' array */
 } Table;

@@ -265,7 +265,7 @@ static void setnodevector (lua_State *L, Table *t, int lsize) {
     }
   }
   t->lsizenode = cast(lu_byte, lsize);
-  t->firstfree = gnode(t, size-1);  /* first free position to be used */
+  t->firstfree = gnode(t, size-1);  /* first _free position to be used */
 }
 
 
@@ -307,7 +307,7 @@ static void resize (lua_State *L, Table *t, int nasize, int nhsize) {
       setobjt2t(luaH_set(L, t, gkey(old)), gval(old));
   }
   if (oldhsize)
-    luaM_freearray(L, nold, twoto(oldhsize), Node);  /* free old array */
+    luaM_freearray(L, nold, twoto(oldhsize), Node);  /* _free old array */
 }
 
 
@@ -371,7 +371,7 @@ void luaH_remove (Table *t, Node *e) {
 
 /*
 ** inserts a new key into a hash table; first, check whether key's main 
-** position is free. If not, check whether colliding node is in its main 
+** position is _free. If not, check whether colliding node is in its main 
 ** position or not: if it is not, move colliding node to an empty place and 
 ** put new key in its main position; otherwise (colliding node is in its main 
 ** position), new key goes to an empty position. 
@@ -379,19 +379,19 @@ void luaH_remove (Table *t, Node *e) {
 static TObject *newkey (lua_State *L, Table *t, const TObject *key) {
   TObject *val;
   Node *mp = luaH_mainposition(t, key);
-  if (!ttisnil(gval(mp))) {  /* main position is not free? */
+  if (!ttisnil(gval(mp))) {  /* main position is not _free? */
     Node *othern = luaH_mainposition(t, gkey(mp));  /* `mp' of colliding node */
-    Node *n = t->firstfree;  /* get a free place */
+    Node *n = t->firstfree;  /* get a _free place */
     if (othern != mp) {  /* is colliding node out of its main position? */
-      /* yes; move colliding node into free position */
+      /* yes; move colliding node into _free position */
       while (othern->next != mp) othern = othern->next;  /* find previous */
       othern->next = n;  /* redo the chain with `n' in place of `mp' */
-      *n = *mp;  /* copy colliding node into free pos. (mp->next also goes) */
-      mp->next = NULL;  /* now `mp' is free */
+      *n = *mp;  /* copy colliding node into _free pos. (mp->next also goes) */
+      mp->next = NULL;  /* now `mp' is _free */
       setnilvalue(gval(mp));
     }
     else {  /* colliding node is in its own main position */
-      /* new node will go into free position */
+      /* new node will go into _free position */
       n->next = mp->next;  /* chain new position */
       mp->next = n;
       mp = n;
@@ -401,11 +401,11 @@ static TObject *newkey (lua_State *L, Table *t, const TObject *key) {
   lua_assert(ttisnil(gval(mp)));
   for (;;) {  /* correct `firstfree' */
     if (ttisnil(gkey(t->firstfree)))
-      return gval(mp);  /* OK; table still has a free place */
+      return gval(mp);  /* OK; table still has a _free place */
     else if (t->firstfree == t->node) break;  /* cannot decrement from here */
     else (t->firstfree)--;
   }
-  /* no more free places; must create one */
+  /* no more _free places; must create one */
   setbvalue(gval(mp), 0);  /* avoid new key being removed */
   rehash(L, t);  /* grow table */
   val = cast(TObject *, luaH_get(t, key));  /* get new position */

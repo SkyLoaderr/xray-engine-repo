@@ -29,7 +29,7 @@
 #endif
 
 /*
-** definition for free function. (`os' is the old block size; some
+** definition for _free function. (`os' is the old block size; some
 ** allocators may use that.)
 */
 #ifndef l_free
@@ -48,7 +48,7 @@ void *luaM_growaux (lua_State *L, void *block, int *size, int size_elems,
     newsize = MINSIZEARRAY;  /* minimum size */
   else if (*size >= limit/2) {  /* cannot double it? */
     if (*size < limit - MINSIZEARRAY)  /* try something smaller... */
-      newsize = limit;  /* still have at least MINSIZEARRAY free places */
+      newsize = limit;  /* still have at least MINSIZEARRAY _free places */
     else luaG_runerror(L, errormsg);
   }
   newblock = luaM_realloc(L, block,

@@ -55,7 +55,7 @@ typedef struct FuncState {
   int pc;  /* next position to code (equivalent to `ncode') */
   int lasttarget;   /* `pc' of last `jump target' */
   int jpc;  /* list of pending jumps to `pc' */
-  int freereg;  /* first free register */
+  int freereg;  /* first _free register */
   int nk;  /* number of elements in `k' */
   int np;  /* number of elements in `p' */
   int nlocvars;  /* number of elements in `locvars' */

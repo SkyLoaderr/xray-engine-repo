@@ -297,7 +297,7 @@ static void leaveblock (FuncState *fs) {
   if (bl->upval)
     luaK_codeABC(fs, OP_CLOSE, bl->nactvar, 0, 0);
   lua_assert(bl->nactvar == fs->nactvar);
-  fs->freereg = fs->nactvar;  /* free registers */
+  fs->freereg = fs->nactvar;  /* _free registers */
   luaK_patchtohere(fs, bl->breaklist);
 }
 
@@ -440,7 +440,7 @@ static void recfield (LexState *ls, struct ConsControl *cc) {
   expr(ls, &val);
   luaK_codeABC(fs, OP_SETTABLE, cc->t->info, luaK_exp2RK(fs, &key),
                                              luaK_exp2RK(fs, &val));
-  fs->freereg = reg;  /* free registers */
+  fs->freereg = reg;  /* _free registers */
 }
 
 
@@ -451,7 +451,7 @@ static void closelistfield (FuncState *fs, struct ConsControl *cc) {
   if (cc->tostore == LFIELDS_PER_FLUSH) {
     luaK_codeABx(fs, OP_SETLIST, cc->t->info, cc->na-1);  /* flush */
     cc->tostore = 0;  /* no more items pending */
-    fs->freereg = cc->t->info + 1;  /* free registers */
+    fs->freereg = cc->t->info + 1;  /* _free registers */
   }
 }
 
@@ -467,7 +467,7 @@ static void lastlistfield (FuncState *fs, struct ConsControl *cc) {
       luaK_exp2nextreg(fs, &cc->v);
     luaK_codeABx(fs, OP_SETLIST, cc->t->info, cc->na-1);
   }
-  fs->freereg = cc->t->info + 1;  /* free registers */
+  fs->freereg = cc->t->info + 1;  /* _free registers */
 }
 
 
@@ -1321,7 +1321,7 @@ static void chunk (LexState *ls) {
     islast = statement(ls);
     testnext(ls, ';');
     lua_assert(ls->fs->freereg >= ls->fs->nactvar);
-    ls->fs->freereg = ls->fs->nactvar;  /* free registers */
+    ls->fs->freereg = ls->fs->nactvar;  /* _free registers */
   }
   leavelevel(ls);
 }

@@ -187,7 +187,7 @@ LUA_API lua_State *lua_open (void) {
     preinit_state(L);
     L->l_G = NULL;
     if (luaD_rawrunprotected(L, f_luaopen, NULL) != 0) {
-      /* memory allocation error: free partial state */
+      /* memory allocation error: _free partial state */
       close_state(L);
       L = NULL;
     }

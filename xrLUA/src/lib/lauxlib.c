@@ -427,7 +427,7 @@ LUALIB_API int luaL_ref (lua_State *L, int t) {
   lua_rawgeti(L, t, FREELIST_REF);  /* get first _free element */
   ref = (int)lua_tonumber(L, -1);  /* ref = t[FREELIST_REF] */
   lua_pop(L, 1);  /* remove it from stack */
-  if (ref != 0) {  /* any free element? */
+  if (ref != 0) {  /* any _free element? */
     lua_rawgeti(L, t, ref);  /* remove it from list */
     lua_rawseti(L, t, FREELIST_REF);  /* (t[FREELIST_REF] = t[ref]) */
   }
