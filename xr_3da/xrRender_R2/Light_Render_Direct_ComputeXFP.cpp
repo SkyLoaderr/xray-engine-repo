@@ -54,9 +54,7 @@ BOOL CLight_Render_Direct::compute_xfp_1	(u32 m_phase, light* L)
 		Fvector		points			[5];
 		float		p_FOV			= Device.fFOV;
 		float		p_DIST			= g_pGamePersistent->Environment.CurrentEnv.far_plane;
-		Fmatrix		mCam;			mCam.invert			(Device.mView);
-		Fvector						camD,camN,camR,camP;
-		ComputeFrustum				(points,p_FOV,1.f,p_DIST,mCam.k,mCam.j,mCam.i,mCam.c);
+		ComputeFrustum				(points,p_FOV,1.f,p_DIST,Device.vCameraDirection,Device.vCameraTop,Device.vCameraRight,Device.vCameraPosition);
 		CFrustum	fTest;			fTest.CreateFromMatrix			(P_combine,FRUSTUM_P_ALL);
 		sPoly	sSrc(points,4), sDest;
 		if (0!=fTest.ClipPoly(sSrc, sDest))		return TRUE;
