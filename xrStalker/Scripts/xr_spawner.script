@@ -4,24 +4,16 @@
 --  TODO:
 ----------------------------------------------------------------------------------------------------------------------
 
-spawner = {}
+spawner = nil
 
 function spawn(npc)
 	local char_ini = npc:spawn_ini()
-	local id = nil
-	if char_ini:section_exist ("spawner") and
-		char_ini:line_exist("spawner", "id")
-	then
-		id = char_ini:r_string("spawner", "id")
-	end	
-	if id ~= nil then
-		printf("want spawn")
-		if xr_spawner.spawner[id] == nil then
-			xr_spawner.create_spawner(id)
-		end
-		xr_spawner.spawner[id]:addList(npc)
-		xr_spawner.spawner[id]:check_spawn(npc.id)
-	end	
+		
+	xr_spawner.create_spawner()
+	xr_spawner.spawner:addList(npc)
+	xr_spawner.spawner:check_spawn(npc.id)
+	
+	--'!! Подумать и убрать нахрен, there could be only one!!!
 	if char_ini:section_exist ("zone_spawner") then
 	   zone_spawner.add_member (npc)
 	end    
@@ -33,39 +25,43 @@ end
 
 function spawn_client(npc)
 	local char_ini = npc:spawn_ini()
-	local id = nil
-	if char_ini:section_exist ("spawner") and
-		char_ini:line_exist("spawner", "id")
-	then
-		id = char_ini:r_string("spawner", "id")
-	end	
-	if id ~= nil then
-		if xr_spawner.spawner[id] == nil then
-			xr_spawner.create_spawner(id)
-		end
-		local sim = alife()
-		sobject = sim:object(npc:id())
-		xr_spawner.spawner[id]:addList(sobject)
-		xr_spawner.spawner[id]:check_spawn(npc:id())
-	end	
+
+	xr_spawner.create_spawner()
+	local sim = alife()
+	sobject = sim:object(npc:id())
+	xr_spawner.spawner:addList(sobject)
+	xr_spawner.spawner:check_spawn(npc:id())
 	return true
 end
 
 class "object_spawner"
-function object_spawner:__init(id)
+function object_spawner:__init()
 	self.list = {}
-	self.name = id
-	self.rules = self:load_rules(id)
 	self.timer = game.get_game_time()
 	self.idle = 60
 end
 function object_spawner:check_spawn(npc_id)
-	if self.rules(npc_id) == false then
-		self:hide(npc_id)
+	---' !!! Тут вставить проверку по кондлисту
+	local actor = level.actor()
+	print_table(self.list)
+	if actor ~= nil then
+		if xr_logic.pick_section_from_condlist(actor,nil,self.list[npc_id].cond.condlist) ~= nil then
+			self:restore(npc_id)
+		else
+			self:hide(npc_id)
+		end
 	end
 end
 function object_spawner:addList(sobject)
-	self.list[sobject.id] = { id = sobject.id, on = sobject:can_switch_online(), off = sobject:can_switch_offline(), int = sobject:interactive(), pos = sobject.position}
+	local char_ini = sobject:spawn_ini()
+	
+	---' !!! Тут добавить чтение кондлиста
+	self.list[sobject.id] = {	id = sobject.id, 
+								on = sobject:can_switch_online(), 
+								off = sobject:can_switch_offline(), 
+								int = sobject:interactive(), 
+								pos = sobject.position,
+								cond = xr_logic.cfg_get_condlist(char_ini,"spawner","cond",sobject) }
 end
 function object_spawner:restore(npc_id)
 	local sim = alife()
@@ -85,15 +81,7 @@ function object_spawner:update()
 	--printf("!!%s!! %s", self.name, game.get_game_time():diffSec(self.timer))
 	if game.get_game_time():diffSec(self.timer) > self.idle then
 		for k,v in self.list do
-			if self.rules(k) == true then
-				--' не забыть добавить условие, что персонаж должен быть далеко от актера
-				local actor = level.actor()
-				if actor == nil or
-				   actor:position():distance_to_sqr(v.pos) > 10000
-				then
-					self:restore(k)
-				end
-			end
+			self:check_spawn(v.id)
 		end		
 		self.timer = game.get_game_time()
 	end
@@ -104,62 +92,17 @@ function object_spawner:destroy()
 		self.list[k] = nil
 	end
 end
-function object_spawner:load_rules(id)
-	if id == "test" then
-		return function(obj)
-			if level.get_time_hours() >= 8 and
-			   level.get_time_hours() < 21 
-			then
-				return true
-			else
-				return false
-			end
-		end
-	end
-	if id == "day" then
-		return function(obj)
-			if level.get_time_hours() >= 9 and
-			   level.get_time_hours() < 21 
-			then
-				return true
-			else
-				return false
-			end
-		end
-	end
-	if id == "night" then
-		return function(obj)
-			if level.get_time_hours() < 9 or
-			   level.get_time_hours() >= 21 
-			then
-				return true
-			else
-				return false
-			end
-		end
-	end
-	if id == "bar_svoboda_sniper" then
-		return function()
-			return level.actor():has_info("bar_svoboda_sniper")
-		end
-	end
-	if id == "bar_monolith_zasada" then
-		return function()
-			return level.actor():has_info("bar_monolith_zasada")
-		end
-	end
-end
 
-function create_spawner(id)
-	if xr_spawner.spawner[id] == nil then
-		xr_spawner.spawner[id] = xr_spawner.object_spawner(id)
-		printf("create spawner")
+function create_spawner()
+	if xr_spawner.spawner == nil then
+		xr_spawner.spawner = xr_spawner.object_spawner()
+		printf("spawner created")
 		return true	
 	end
 	return false
 end
-function update(id)
-	if xr_spawner.spawner[id] ~= nil then
-		xr_spawner.spawner[id].update()
+function update()
+	if xr_spawner.spawner ~= nil then
+		xr_spawner.spawner:update()
 	end
 end

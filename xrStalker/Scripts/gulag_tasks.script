@@ -485,6 +485,21 @@ function loadJob(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)		
 	end
+	--' Garbage maniac
+	if type == "gar_maniac" then
+		t = { section = "camper1@gar_maniac",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "sleeper1@gar_maniac",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+	end
 	--' Garbage DOLG blockpost	
 	if type == "gar_dolg" then
 		t = { section = "walker1@gar_dolg",
@@ -585,7 +600,13 @@ function loadStates(gname, type)
 	end
 
 	if type == "gar_maniac" then
-		return 0
+		return function(gulag)
+			if level.get_time_hours() >= 7 and level.get_time_hours() <= 22 then
+				return 0  -- день
+			else
+				return 1  -- ночь
+			end
+		end
 	end
 
 	if type == "blockpost" then
@@ -630,9 +651,7 @@ function loadStates(gname, type)
 			local actor = level.actor()
 			local zone = level.object("gar_shooting")
 			if actor ~= nil and zone ~= nil then
-				local st = actor:position():distance_to(zone:position())
-				printf("%s", st)
-				if st < 10 then
+				if actor:position():distance_to(zone:position()) < 10 then
 					return 1
 				else
 					return 0
