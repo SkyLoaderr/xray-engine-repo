@@ -24,8 +24,8 @@ enum MT {
 enum OGF_Chuncks {
 	OGF_HEADER		= 1,
 	OGF_TEXTURE		= 2,
-	OGF_TEXTURE_L	= 3,	// Really - Texture link for static data
-	OGF_MATERIAL	= 4,	// Actors only
+	OGF_SHADER_ID	= 3,	// really - shader link for static data
+	OGF_MATERIAL	= 4,	// actors only
 	OGF_CHIELDS		= 5,
 	OGF_BBOX		= 6,
 	OGF_VERTICES	= 7,

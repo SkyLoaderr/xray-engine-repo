@@ -17,14 +17,6 @@ u32						u8_vec4			(Fvector N, u8 A=0)
 	s32 nz				= iFloor(N.z);	clamp(nz,0,255);
 	return				color_rgba(nx,ny,nz,A);
 }
-s16						s16_tc_base		(float uv)		// [-32 .. +32]
-{
-	const u32	max_tile	=	32;
-	const s32	quant		=	32768/max_tile;
-
-	s32			t			=	iFloor	(uv*float(quant)); clamp(t,-32768,32767);
-	return	s16	(t);
-}
 s16						s16_tc_lmap		(float uv)		// [-1 .. +1]
 {
 	const u32	max_tile	=	1;
@@ -44,26 +36,27 @@ D3DVERTEXELEMENT9		r2_decl			[] =	// 36
 	{0, 28, D3DDECLTYPE_FLOAT2,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
 	D3DDECL_END()
 };
-D3DVERTEXELEMENT9		r1_decl_lmap	[] =	// 12+4+8	= 24
+D3DVERTEXELEMENT9		r1_decl_lmap	[] =	// 12+4+8	= 24 / 28
 {
 	{0, 0,  D3DDECLTYPE_FLOAT3,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,	0 },
 	{0, 12, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,	0 },
-	{0, 16, D3DDECLTYPE_SHORT4,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
+	{0, 16, D3DDECLTYPE_FLOAT2,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
+	{0, 24, D3DDECLTYPE_SHORT2,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	1 },
 	D3DDECL_END()
 };
-D3DVERTEXELEMENT9		r1_decl_vert	[] =	// 12+4+4+4 = 24
+D3DVERTEXELEMENT9		r1_decl_vert	[] =	// 12+4+4+4 = 24 / 28
 {
 	{0, 0,  D3DDECLTYPE_FLOAT3,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,	0 },
 	{0, 12, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,	0 },
 	{0, 16, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_COLOR,		0 },
-	{0, 20, D3DDECLTYPE_SHORT2,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
+	{0, 20, D3DDECLTYPE_FLOAT2,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
 	D3DDECL_END()
 };
 #pragma pack(push,1)
 struct  r1v_lmap	{
 	Fvector3	P;
 	u32			N;
-	s16			tc0x,tc0y;
+	float		tc0x,tc0y;
 	s16			tc1x,tc1y;
 
 	r1v_lmap	(Fvector3 _P, Fvector _N, base_color _C, Fvector2 tc_base, Fvector2 tc_lmap )
@@ -71,8 +64,8 @@ struct  r1v_lmap	{
 		_N.normalize	();
 		P				= _P;
 		N				= u8_vec4		(_N,u8_clr(_C.hemi));
-		tc0x			= s16_tc_base	(tc_base.x);
-		tc0y			= s16_tc_base	(tc_base.y);
+		tc0x			= tc_base.x;
+		tc0y			= tc_base.y;
 		tc1x			= s16_tc_lmap	(tc_lmap.x);
 		tc1y			= s16_tc_lmap	(tc_lmap.y);
 	}
@@ -81,7 +74,7 @@ struct  r1v_vert	{
 	Fvector3	P;
 	u32			N;
 	u32			C;
-	s16			tc0x,tc0y;
+	float		tc0x,tc0y;
 
 	r1v_vert	(Fvector3 _P, Fvector _N, base_color _C, Fvector2 tc_base)
 	{
@@ -89,8 +82,8 @@ struct  r1v_vert	{
 		P				= _P;
 		N				= u8_vec4		(_N,u8_clr(_C.hemi));
 		C				= color_rgba	(u8_clr(_C.rgb.x),u8_clr(_C.rgb.y),u8_clr(_C.rgb.z),u8_clr(_C.sun));
-		tc0x			= s16_tc_base	(tc_base.x);
-		tc0y			= s16_tc_base	(tc_base.y);
+		tc0x			= tc_base.x;
+		tc0y			= tc_base.y;
 	}
 };
 #pragma pack(pop)
@@ -109,17 +102,16 @@ void OGF::Save			(IWriter &fs)
 	H.type				= MT_NORMAL;
 
 	// Texture & shader
-	fs.open_chunk		(OGF_TEXTURE_L);
-	std::string Tname;
-	for (u32 i=0; i<textures.size(); i++)
-	{
+	fs.open_chunk		(OGF_SHADER_ID);
+	std::string			Tname;
+	for (u32 i=0; i<textures.size(); i++)	{
 		if (!Tname.empty()) Tname += ',';
 		char *fname = textures[i].name;
 		if (strchr(fname,'.')) *strchr(fname,'.')=0;
 		Tname += fname;
 	}
+	Tname				+= "/" + string(pBuild->shader_render[pBuild->materials[material].shader].name);
 	fs.w_u32			(RegisterString(Tname.c_str()));
-	fs.w_u32			(RegisterString(pBuild->shader_render[pBuild->materials[material].shader].name));
 	fs.close_chunk		();
 
 	// Vertices
@@ -135,11 +127,6 @@ void OGF::Save			(IWriter &fs)
 	case MT_PROGRESSIVE:
 		Save_Normal_PM	(fs,H,bVertexColors);		
 		break;
-		/*
-	case MT_PROGRESSIVE_STRIPS:
-		Save_Progressive(fs,H,bVertexColors);		
-		break;
-		*/
 	}
 
 	// Header
@@ -161,7 +148,7 @@ void OGF_Reference::Save	(IWriter &fs)
 	H.type				= MT_TREE;
 
 	// Texture & shader
-	fs.open_chunk		(OGF_TEXTURE_L);
+	fs.open_chunk		(OGF_SHADER_ID);
 	std::string			Tname;
 	for (u32 i=0; i<textures.size(); i++)
 	{
@@ -170,8 +157,8 @@ void OGF_Reference::Save	(IWriter &fs)
 		if (strchr(fname,'.')) *strchr(fname,'.')=0;
 		Tname += fname;
 	}
+	Tname				+= "/" + string(pBuild->shader_render[pBuild->materials[material].shader].name);
 	fs.w_u32			(RegisterString(Tname.c_str()));
-	fs.w_u32			(RegisterString(pBuild->shader_render[pBuild->materials[material].shader].name));
 	fs.close_chunk		();
 
 	// Vertices
@@ -350,7 +337,7 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 	fs.open_chunk(OGF_P_LODS);
 	{
 		// Init
-		u32					V_Current,V_Minimal,FIX_Current;
+		u32						V_Current,V_Minimal,FIX_Current;
 		WORD*					faces_affected	= (WORD*)&*pmap_faces.begin();
 		Vsplit*					vsplit			= (Vsplit*)&*pmap_vsplit.begin();
 		V_Current				= V_Minimal		= dwMinVerts;
