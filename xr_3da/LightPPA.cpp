@@ -8,7 +8,7 @@
 #include "xr_creator.h"
 #include "fstaticrender.h"
 
-const DWORD MAX_POLYGONS=1024;
+const DWORD MAX_POLYGONS=1024*4;
 const float MAX_DISTANCE=50.f;
 
 //////////////////////////////////////////////////////////////////////
