@@ -383,13 +383,19 @@ void CInventoryItem::net_Import			(NET_Packet& P)
 
 void CInventoryItem::net_Export			(NET_Packet& P) 
 {	
+	
+//	inherited::net_Export(P);
+
 	P.w_u32				(Level().timeServer());	
 	
 	u16 NumItems = PHGetSyncItemsNumber();
-	if (H_Parent()) NumItems = 0;
+	if (H_Parent() || GameID() == 1) NumItems = 0;
+//	if (H_Parent()) NumItems = 0;
 
 	P.w_u16				(NumItems);
 	if (!NumItems) return;
+
+	Msg("CInventoryItem net_export %s - Items %d", cName(), NumItems);
 
 	CPHSynchronize* pSyncObj = NULL;
 	SPHNetState	State;
@@ -420,7 +426,7 @@ void CInventoryItem::net_Export			(NET_Packet& P)
 void CInventoryItem::PH_B_CrPr		()
 {
 	//just set last update data for now
-	u32 CurTime = Level().timeServer();
+//	u32 CurTime = Level().timeServer();
 	if (m_bHasUpdate)
 	{
 		m_bInInterpolation = false;
