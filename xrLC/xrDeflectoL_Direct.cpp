@@ -7,7 +7,6 @@
 extern void LightPoint		(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end);
 extern void Jitter_Select	(UVpoint* &Jitter, DWORD& Jcount);
 
-#define	NUM_THREADS	6
 void CDeflector::L_Direct	(HASH& H)
 {
 	RAPID::XRCollide		DB;
@@ -19,7 +18,7 @@ void CDeflector::L_Direct	(HASH& H)
 	
 	// Jitter data
 	UVpoint		JS;
-	JS.set		(g_params.m_lm_jitter/dim.u, g_params.m_lm_jitter/dim.v);
+	JS.set		(.499f/dim.u, .499f/dim.v);
 	
 	DWORD		Jcount;
 	UVpoint*	Jitter;
@@ -48,7 +47,7 @@ void CDeflector::L_Direct	(HASH& H)
 					
 					// World space
 					Fvector wP,wN,B;
-					C[J].set(0,0,0,0);
+					C[J].set	(0,0,0,0);
 					FPU::m64r	();
 					for (UVtri** it=space.begin(); it!=space.end(); it++)
 					{
@@ -59,12 +58,12 @@ void CDeflector::L_Direct	(HASH& H)
 							Vertex	*V2 = F->v[1];
 							Vertex	*V3 = F->v[2];
 							wP.from_bary(V1->P,V2->P,V3->P,B);
-							wN.from_bary(V1->N,V2->N,V3->N,B);
-							//						wN.direct	(wN,F->N,0.5f);
-							wN = F->N;
-							wN.normalize();
-							LightPoint	(&DB, C[J], wP, wN, LightsSelected.begin(), LightsSelected.end());
-							Fcount++;
+							//			wN.from_bary(V1->N,V2->N,V3->N,B);
+							//			wN.direct	(wN,F->N,0.5f);
+							//			wN	= F->N;
+							//			wN.normalize();
+							LightPoint	(&DB, C[J], wP, F->N, LightsSelected.begin(), LightsSelected.end());
+							Fcount		+= 1;
 							break;
 						}
 					}
