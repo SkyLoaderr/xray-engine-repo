@@ -10,6 +10,7 @@ public:
 	CDeflector *		volatile	defl;
 	BOOL				volatile	bContinue;
 	HASH							H;
+	RAPID::XRCollide				DB;
 public:
 	CLMThread	(DWORD ID, CDeflector* D) : CThread(ID)
 	{

@@ -63,7 +63,6 @@ public:
 	BOOL				bMerged;
 
 	vector<R_Light>		LightsSelected;
-	RAPID::XRCollide	DB;
 public:
 	CDeflector					();
 	~CDeflector					();
@@ -77,10 +76,10 @@ public:
 	Layer*	GetLayer			(b_light* base);
 	DWORD	GetFaceCount()		{ return UVpolys.size();	};
 
-	VOID	Light				(HASH& H);
-	VOID	L_Direct			(HASH& H);
-	VOID	L_Direct_Edge		(UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size);
-	VOID	L_Calculate			(HASH& H);
+	VOID	Light				(RAPID::XRCollide* DB, HASH& H);
+	VOID	L_Direct			(RAPID::XRCollide* DB, HASH& H);
+	VOID	L_Direct_Edge		(RAPID::XRCollide* DB, UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size);
+	VOID	L_Calculate			(RAPID::XRCollide* DB, HASH& H);
 
 	WORD	GetBaseMaterial		() { return UVpolys.front().owner->dwMaterial;	}
 
