@@ -106,6 +106,7 @@ class CMyD3DApplication : public CD3DApplication
 	// Shaders
 	R_shader						s_Scene2fat;
 	R_shader						s_CombineDBG_Normals;
+	R_shader						s_Light_Direct;
 
 	//  ************************
 	//	**** Shadow mapping ****
@@ -155,6 +156,7 @@ public:
 	HRESULT RenderOverlay	();
 
 	HRESULT RenderFAT					();
+	HRESULT RenderLight_Direct			();
 	HRESULT RenderCombine				(COMBINE_MODE M);
 	HRESULT RenderCombineDBG_Normals	();
 
@@ -416,6 +418,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	// Create shaders
 	s_Scene2fat.compile			(m_pd3dDevice,"shaders\\D\\fat_base.s");
 	s_CombineDBG_Normals.compile(m_pd3dDevice,"shaders\\D\\cm_dbg_normals.s");
+	s_Light_Direct.compile		(m_pd3dDevice,"shaders\\D\\light_direct.s");
 
 	// Create shadow map texture and retrieve surface
 	if (FAILED(m_pd3dDevice->CreateTexture(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, 1, 

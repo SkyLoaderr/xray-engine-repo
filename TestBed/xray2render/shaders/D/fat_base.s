@@ -31,7 +31,6 @@ struct 	p2f
 uniform float3x4 	m_model2view;
 uniform float4x4 	m_model2view2projection;
 uniform sampler2D 	s_texture;
-// uniform float4		m_a[256] : register(c10);
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // Vertex
@@ -60,6 +59,6 @@ p2f 	p_main	( v2p_in IN )
   // No calculations here: just sample texture and out all that shit
   OUT.Pe	= IN.Pe;
   OUT.Ne 	= normalize	(IN.Ne);
-  OUT.C 	= float4    (1,1,1,0);	// tex2D		(s_texture, float2(IN.Tex0.x, IN.Tex0.y)); 
+  OUT.C 	= float4    (.7,.5,.3,0);	// tex2D		(s_texture, float2(IN.Tex0.x, IN.Tex0.y)); 
   return OUT;
 }
