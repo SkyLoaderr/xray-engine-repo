@@ -29,7 +29,7 @@ public:
 		
 		// Setup variables
 		UVpoint		dim,guard,half;
-		dim.set		(float(lm.dwWidth),float(lm.dwHeight));
+		dim.set		(float(defl.lm.dwWidth),float(defl.lm.dwHeight));
 		guard.set	(1.f/dim.u,1.f/dim.v);
 		half.set	(.5f/dim.u,.5f/dim.v);
 		
@@ -121,7 +121,7 @@ void CDeflector::L_Direct(float progress)
 	DirectThread*	THP	[NUM_THREADS];
 	DWORD	stride		= lm.dwHeight/NUM_THREADS;
 	for (DWORD thID=0; thID<NUM_THREADS; thID++)
-		THP[thID]	= new ImplicitThread(thID,this,thID*stride,thID*stride+stride);
+		THP[thID]	= new DirectThread(thID,this,thID*stride,thID*stride+stride);
 	
 	// Wait for completition
 	for (;;)

@@ -253,16 +253,16 @@ VOID CDeflector::Light(float P_Base)
 				float dist = Center.distance_to(L->position);
 				if (dist>(Radius+L->range)) continue;
 			}
-			Lights.push_back		(*L);
+			LightsSelected.push_back		(*L);
 		}
 	}
-	if (Lights.empty()) return;
+	if (LightsSelected.empty()) return;
 
 	Deflector			= this;
 	if (g_params.m_bRadiosity)	L_Radiosity	(P_Base);
 	else						L_Direct	(P_Base);
 
-	Lights.clear	();
+	LightsSelected.clear	();
 }
 
 void CDeflector::Prepare()
