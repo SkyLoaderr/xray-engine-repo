@@ -2,6 +2,7 @@
 #include "fstaticrender_rendertarget.h"
 
 static LPCSTR		RTname			= "$user$rendertarget";
+static LPCSTR		RTname_distort	= "$user$distort";
 
 CRenderTarget::CRenderTarget()
 {
@@ -51,7 +52,7 @@ BOOL CRenderTarget::Create	()
 
 	// Bufferts
 	RT.create			(RTname,			rtWidth,rtHeight,HW.Caps.fTarget);
-	RT_distort.create	("$user$distort",	rtWidth,rtHeight,HW.Caps.fTarget);
+	RT_distort.create	(RTname_distort,	rtWidth,rtHeight,HW.Caps.fTarget);
 	if ((rtHeight!=Device.dwHeight) || (rtWidth!=Device.dwWidth))	{
 		R_CHK		(HW.pDevice->CreateDepthStencilSurface	(rtWidth,rtHeight,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&ZB,NULL));
 	} else {
@@ -183,7 +184,7 @@ void CRenderTarget::End		()
 	curHeight			= Device.dwHeight;
 	
 	if (!Perform())		return;
-	RCache.set_Element	(bDistort ? s_postprocess->E[0] : s_postprocess->E[1]);
+	RCache.set_Element	(bDistort ? (s_postprocess->E[4]) : (s_postprocess->E[0]) );
 
 	int		gblend		= clampr		(iFloor((1-param_gray)*255.f),0,255);
 	int		nblend		= clampr		(iFloor((1-param_noise)*255.f),0,255);
