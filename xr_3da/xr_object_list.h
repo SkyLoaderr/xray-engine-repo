@@ -9,10 +9,11 @@ class	ENGINE_API 				CObjectList
 {
 private:
 	// data
-	xr_map<u32,CObject*>		map_NETID;
-	xr_vector<CObject*>			destroy_queue;
+	xr_map<u32,CObject*>		map_NETID			;
+	xr_vector<CObject*>			destroy_queue		;
 public:
-	xr_vector<CObject*>			objects;
+	xr_vector<CObject*>			objects_active		;
+	xr_vector<CObject*>			objects_sleeping	;
 public:
 	// methods
 								CObjectList			( );
@@ -37,6 +38,10 @@ public:
 	u32							net_Export			( NET_Packet*	P,		u32 _start, u32 _count	);	// return next start
 	void						net_Import			( NET_Packet*	P		);
 	CObject*					net_Find			( u32 ID				);
+
+	void						o_remove			( xr_vector<CObject*>&	v,  CObject*	O);
+	void						o_activate			( CObject*		O		);
+	void						o_sleep				( CObject*		O		);
 };
 
 #endif //__XR_OBJECT_LIST_H__
