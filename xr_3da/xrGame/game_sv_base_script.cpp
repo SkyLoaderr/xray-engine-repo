@@ -89,7 +89,7 @@ void game_sv_GameState::script_register(lua_State *L)
 		.def("timeToString"			,&xrTime::timeToString),
 		// declarations
 		def("time",					get_time),
-		def("get_time",				get_time_struct),
+		def("get_game_time",		get_time_struct),
 //		def("get_surge_time",	Game::get_surge_time),
 //		def("get_object_by_name",Game::get_object_by_name),
 	
