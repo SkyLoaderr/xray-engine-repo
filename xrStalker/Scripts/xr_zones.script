@@ -313,14 +313,15 @@ function zone_fractions:add_stalker( obj )
 		local n = self.fraction:get_population()
 
 		if n < self.capacity and n < self.fraction:get_capacity() then
-			self.fraction:addObject( obj )
-			self.stalkers[obj:id()] = {
-				group    = obj:group(),
-				squad    = obj:squad(),
-				stay_end = math.random( self.fraction_params.stay_min, self.fraction_params.stay_max ) * h2ms + game.time()
-			}
+			if self.fraction:addObject( obj ) then
+				self.stalkers[obj:id()] = {
+					group    = obj:group(),
+					squad    = obj:squad(),
+					stay_end = math.random( self.fraction_params.stay_min, self.fraction_params.stay_max ) * h2ms + game.time()
+				}
 
-			printf( "[zone %s] adding %s to zonal fraction type=%s", self.zone:name(), obj:name(), self.fraction_type )
+				printf( "[zone %s] adding %s to zonal fraction type=%s", self.zone:name(), obj:name(), self.fraction_type )
+			end
 		end
 	end
 end
