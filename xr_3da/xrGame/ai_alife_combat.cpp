@@ -303,9 +303,9 @@ void CSE_ALifeSimulator::vfAppendItemVector(OBJECT_VECTOR &tObjectVector, ITEM_P
 	OBJECT_IT	I = tObjectVector.begin();
 	OBJECT_IT	E = tObjectVector.end();
 	for ( ; I != E; I++) {
-		CSE_ALifeItem *l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(tpfGetObjectByID(*I));
-		if (l_tpALifeItem)
-			tItemList.push_back				(l_tpALifeItem);
+		CSE_ALifeInventoryItem *l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*I));
+		if (l_tpALifeInventoryItem)
+			tItemList.push_back				(l_tpALifeInventoryItem);
 	}
 }
 

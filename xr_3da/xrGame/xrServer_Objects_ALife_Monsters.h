@@ -165,6 +165,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterRat,CSE_ALifeMonsterAbstract)
 	float							fAttackSuccessProbability;
 
 									CSE_ALifeMonsterRat	(LPCSTR caSection);				// constructor for variable initialization
+	virtual bool					bfUseful();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterZombie,CSE_ALifeMonsterAbstract)
@@ -229,8 +230,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			// FSM miscellanious
 			void					vfChooseHumanTask		();
 			bool					bfHealthIsGood			();
-			bool					bfItemCanTreat			(CSE_ALifeItem			*tpALifeItem);
-			void					vfUseItem				(CSE_ALifeItem			*tpALifeItem);
+			bool					bfItemCanTreat			(CSE_ALifeInventoryItem	*tpALifeInventoryItem);
+			void					vfUseItem				(CSE_ALifeInventoryItem	*tpALifeInventoryItem);
 			bool					bfCanTreat				();
 			bool					bfEnoughMoneyToTreat	();
 			bool					bfEnoughTimeToTreat		();
@@ -251,8 +252,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	virtual	void					vfUpdateWeaponAmmo		();
 	virtual	void					vfProcessItems			();
 	virtual	void					vfAttachItems			(_GRAPH_ID				tGraphID,			ETakeType tTakeType = eTakeTypeAll);
-			bool					bfCanGetItem			(CSE_ALifeItem *tpALifeItem);
-	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable *tpALifeSchedulable, int iGroupIndex, bool bMutualDetection);
+			bool					bfCanGetItem			(CSE_ALifeInventoryItem	*tpALifeInventoryItem);
+	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,int iGroupIndex, bool bMutualDetection);
 			void					vfCollectAmmoBoxes		();
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
 	virtual	void					vfDetachAll				(_GRAPH_ID				tGraphID);

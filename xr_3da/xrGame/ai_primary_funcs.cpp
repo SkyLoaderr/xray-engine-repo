@@ -662,9 +662,9 @@ float CItemDeterioration::ffGetValue()
 		return					(m_fLastValue);
 	}
 	else {
-		CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(getAI().m_tpCurrentALifeObject);
-		R_ASSERT2				(l_tpALifeItem,"Non-item object specified for the ItemDeterioration evaluation function");
-		return					(m_fLastValue = l_tpALifeItem->m_fDeteriorationValue);
+		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(getAI().m_tpCurrentALifeObject);
+		R_ASSERT2				(l_tpALifeInventoryItem,"Non-item object specified for the ItemDeterioration evaluation function");
+		return					(m_fLastValue = l_tpALifeInventoryItem->m_fDeteriorationValue);
 	}
 }
 
@@ -749,9 +749,9 @@ float CItemValue::ffGetValue()
 		return					(m_fLastValue);
 	}
 	else {
-		CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(getAI().m_tpCurrentALifeObject);
-		R_ASSERT2				(l_tpALifeItem,"Non-item object specified for the ItemDeterioration evaluation function");
-		return					(m_fLastValue = float(l_tpALifeItem->m_dwCost));
+		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(getAI().m_tpCurrentALifeObject);
+		R_ASSERT2				(l_tpALifeInventoryItem,"Non-item object specified for the ItemDeterioration evaluation function");
+		return					(m_fLastValue = float(l_tpALifeInventoryItem->m_dwCost));
 	}
 }
 

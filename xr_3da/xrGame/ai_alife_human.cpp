@@ -362,9 +362,9 @@ void CSE_ALifeHumanAbstract::vfProcessItems()
 	D_OBJECT_PAIR_IT	I = m_tpALife->m_tpGraphObjects[m_tGraphID].tpObjects.begin();
 	D_OBJECT_PAIR_IT	E = m_tpALife->m_tpGraphObjects[m_tGraphID].tpObjects.end();
 	for ( ; I != E; I++) {
-		CSE_ALifeItem	*tpALifeItem = dynamic_cast<CSE_ALifeItem *>((*I).second);
-		if (tpALifeItem && !tpALifeItem->m_bOnline && (m_tpALife->randF(1.0f) < m_fProbability))
-			m_tpALife->m_tpItemVector.push_back(tpALifeItem);
+		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>((*I).second);
+		if (l_tpALifeInventoryItem && l_tpALifeInventoryItem->bfUseful() && !(*I).second->m_bOnline && (m_tpALife->randF(1.0f) < m_fProbability))
+			m_tpALife->m_tpItemVector.push_back(l_tpALifeInventoryItem);
 	}
 	if (!m_tpALife->m_tpItemVector.empty())
 		vfAttachItems(m_tGraphID);
@@ -373,9 +373,9 @@ void CSE_ALifeHumanAbstract::vfProcessItems()
 void CSE_ALifeHumanAbstract::vfDetachAll(_GRAPH_ID tGraphID)
 {
 	for (int i=0, n=children.size(); i<n; n--) {
-		CSE_ALifeItem				*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(m_tpALife->tpfGetObjectByID(children[i]));
-		R_ASSERT2					(l_tpALifeItem,"Invalid inventory object");
-		m_tpALife->vfDetachItem		(*this,l_tpALifeItem,tGraphID);
+		CSE_ALifeInventoryItem		*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(m_tpALife->tpfGetObjectByID(children[i]));
+		R_ASSERT2					(l_tpALifeInventoryItem,"Invalid inventory object");
+		m_tpALife->vfDetachItem		(*this,l_tpALifeInventoryItem,tGraphID);
 	}
 	R_ASSERT2						((m_fCumulativeItemMass < EPS_L) && (m_iCumulativeItemVolume < EPS_L),"Invalid cumulative item mass or volume value");
 	m_fCumulativeItemMass			= 0.f;
@@ -413,7 +413,7 @@ void CSE_ALifeHumanAbstract::vfAttachItems(_GRAPH_ID tGraphID, ETakeType tTakeTy
 		vfDetachAll						(tGraphID);
 	}
 	
-	CSE_ALifeItem						*l_tpALifeItemBest;
+	CSE_ALifeInventoryItem				*l_tpALifeItemBest;
 	float								l_fItemBestValue;
 	
 	getAI().m_tpCurrentALifeMember		= this;
@@ -425,21 +425,16 @@ void CSE_ALifeHumanAbstract::vfAttachItems(_GRAPH_ID tGraphID, ETakeType tTakeTy
 			ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin(), X;
 			ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
 			for ( ; I != E; I++) {
-				// checking if it is an item
-				CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(*I);
-				R_ASSERT2				(l_tpALifeItem,"Non-item object!");
-				if (!l_tpALifeItem)
-					continue;
 				// checking if it is an equipment item
-				getAI().m_tpCurrentALifeObject = l_tpALifeItem;
+				getAI().m_tpCurrentALifeObject = dynamic_cast<CSE_ALifeObject*>(*I);
 				if (getAI().m_pfEquipmentType->ffGetValue() > getAI().m_pfEquipmentType->ffGetMaxResultValue())
 					continue;
 				// evaluating item
 				float					l_fCurrentValue = getAI().m_pfEquipmentType->ffGetValue();
 				// choosing the best item
-				if ((l_fCurrentValue > l_fItemBestValue) && bfCanGetItem(l_tpALifeItem)) {
+				if ((l_fCurrentValue > l_fItemBestValue) && bfCanGetItem(*I)) {
 					l_fItemBestValue = l_fCurrentValue;
-					l_tpALifeItemBest = l_tpALifeItem;
+					l_tpALifeItemBest = *I;
 					X = I;
 				}
 			}
@@ -457,12 +452,8 @@ void CSE_ALifeHumanAbstract::vfAttachItems(_GRAPH_ID tGraphID, ETakeType tTakeTy
 				ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin();
 				ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
 				for ( ; I != E; I++) {
-					// checking if it is an item
-					CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(*I);
-					if (!l_tpALifeItem)
-						continue;
 					// checking if it is a hand weapon
-					getAI().m_tpCurrentALifeObject = l_tpALifeItem;
+					getAI().m_tpCurrentALifeObject = dynamic_cast<CSE_ALifeObject*>(*I);
 					int						j = getAI().m_pfPersonalWeaponType->dwfGetWeaponType();
 					float					l_fCurrentValue = -1.f;
 					switch (i) {
@@ -492,15 +483,15 @@ void CSE_ALifeHumanAbstract::vfAttachItems(_GRAPH_ID tGraphID, ETakeType tTakeTy
 						}
 					}
 					// choosing the best item
-					if ((l_fCurrentValue > l_fItemBestValue) && bfCanGetItem(l_tpALifeItem)) {
+					if ((l_fCurrentValue > l_fItemBestValue) && bfCanGetItem(*I)) {
 						l_fItemBestValue = l_fCurrentValue;
-						l_tpALifeItemBest = l_tpALifeItem;
+						l_tpALifeItemBest = *I;
 					}
 				}
 				if (l_tpALifeItemBest) {
 					m_tpALife->vfAttachItem	(*this,l_tpALifeItemBest,tGraphID);
 					attach_available_ammo	(dynamic_cast<CSE_ALifeItemWeapon*>(l_tpALifeItemBest),m_tpALife->m_tpItemVector,tGraphID);
-					ITEM_P_IT			I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
+					ITEM_P_IT				I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
 					m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
 				}
 			}
@@ -512,14 +503,13 @@ void CSE_ALifeHumanAbstract::vfAttachItems(_GRAPH_ID tGraphID, ETakeType tTakeTy
 		// choosing food
 		{
 			u32							l_dwCount = 0;
-			ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin();
-			ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
+			ITEM_P_IT					I = m_tpALife->m_tpItemVector.begin();
+			ITEM_P_IT					E = m_tpALife->m_tpItemVector.end();
 			for ( ; I != E; I++) {
-				CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(*I);
-				if (!l_tpALifeItem || (l_tpALifeItem->m_iFoodValue <= 0))
+				if ((*I)->m_iFoodValue <= 0)
 					continue;
-				if (bfCanGetItem(l_tpALifeItem)) {
-					m_tpALife->vfAttachItem	(*this,l_tpALifeItem,tGraphID);
+				if (bfCanGetItem(*I)) {
+					m_tpALife->vfAttachItem	(*this,*I,tGraphID);
 					l_dwCount++;
 					if (l_dwCount > MAX_ITEM_FOOD_COUNT)
 						break;
@@ -537,11 +527,10 @@ void CSE_ALifeHumanAbstract::vfAttachItems(_GRAPH_ID tGraphID, ETakeType tTakeTy
 			ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin();
 			ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
 			for ( ; I != E; I++) {
-				CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(*I);
-				if (!l_tpALifeItem || (l_tpALifeItem->m_iHealthValue <= 0))
+				if ((*I)->m_iHealthValue <= 0)
 					continue;
-				if (bfCanGetItem(l_tpALifeItem)) {
-					m_tpALife->vfAttachItem	(*this,l_tpALifeItem,tGraphID);
+				if (bfCanGetItem(*I)) {
+					m_tpALife->vfAttachItem	(*this,*I,tGraphID);
 					l_dwCount++;
 					if (l_dwCount > MAX_ITEM_MEDIKIT_COUNT)
 						break;
@@ -587,20 +576,17 @@ void CSE_ALifeHumanAbstract::vfAttachItems(_GRAPH_ID tGraphID, ETakeType tTakeTy
 		ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin();
 		ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
 		for ( ; I != E; I++) {
-			CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(*I);
-			if (!l_tpALifeItem)
-				continue;
-			if (bfCanGetItem(l_tpALifeItem))
-				m_tpALife->vfAttachItem	(*this,l_tpALifeItem,tGraphID);
+			if (bfCanGetItem(*I))
+				m_tpALife->vfAttachItem	(*this,*I,tGraphID);
 		}
 		I							= remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
 		m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
 	}
 }
 
-bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeItem *tpALifeItem)
+bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeInventoryItem *tpALifeInventoryItem)
 {
-	if ((m_fCumulativeItemMass + tpALifeItem->m_fMass > m_fMaxItemMass) || (m_iCumulativeItemVolume + tpALifeItem->m_iVolume > MAX_ITEM_VOLUME))
+	if ((m_fCumulativeItemMass + tpALifeInventoryItem->m_fMass > m_fMaxItemMass) || (m_iCumulativeItemVolume + tpALifeInventoryItem->m_iVolume > MAX_ITEM_VOLUME))
 		return		(false);
 	
 	m_tpTempItemBuffer.resize(children.size() + 1);
@@ -610,8 +596,8 @@ bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeItem *tpALifeItem)
 		OBJECT_IT	e = children.end();
 		ITEM_P_IT	I = m_tpTempItemBuffer.begin();
 		for ( ; i != e; i++, I++)
-			*I		= dynamic_cast<CSE_ALifeItem*>(m_tpALife->tpfGetObjectByID(*i));
-		*I			= tpALifeItem;
+			*I		= dynamic_cast<CSE_ALifeInventoryItem*>(m_tpALife->tpfGetObjectByID(*i));
+		*I			= tpALifeInventoryItem;
 	}
 
 	m_tpALife->m_tpWeaponVector.assign(m_tpALife->m_tpWeaponVector.size(),0);
@@ -680,7 +666,7 @@ CSE_ALifeDynamicObject *CSE_ALifeHumanAbstract::tpfGetBestDetector()
 			u32						l_dwCurrentValue = iFloor(getAI().m_pfDetectorType->ffGetValue()+.5f);
 			if (l_dwCurrentValue > l_dwBestValue) {
 				l_dwBestValue		= l_dwCurrentValue;
-				m_tpBestDetector	= dynamic_cast<CSE_ALifeItem*>(getAI().m_tpCurrentALifeObject);
+				m_tpBestDetector	= dynamic_cast<CSE_ALifeDynamicObject*>(getAI().m_tpCurrentALifeObject);
 			}
 		}
 		return						(m_tpBestDetector);
@@ -689,15 +675,16 @@ CSE_ALifeDynamicObject *CSE_ALifeHumanAbstract::tpfGetBestDetector()
 	OBJECT_IT						I = children.begin();
 	OBJECT_IT						E = children.end();
 	for ( ; I != E; I++) {
-		CSE_ALifeItem				*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(m_tpALife->tpfGetObjectByID(*I));
-		R_ASSERT2					(l_tpALifeItem,"Non-item object in the inventory found");
-		switch (l_tpALifeItem->m_tClassID) {
+		CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = m_tpALife->tpfGetObjectByID(*I);
+		CSE_ALifeInventoryItem		*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject);
+		R_ASSERT2					(l_tpALifeInventoryItem,"Non-item object in the inventory found");
+		switch (l_tpALifeDynamicObject->m_tClassID) {
 			case CLSID_DETECTOR_SIMPLE		: {
-				m_tpBestDetector	= l_tpALifeItem;
+				m_tpBestDetector	= l_tpALifeDynamicObject;
 				break;
 			}
 			case CLSID_DETECTOR_VISUAL		: {
-				m_tpBestDetector	= l_tpALifeItem;
+				m_tpBestDetector	= l_tpALifeDynamicObject;
 				return				(m_tpBestDetector);
 			}
 		}

@@ -252,8 +252,8 @@ void CSE_ALifeGraphRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObject
 			}
 	}
 
-	CSE_ALifeItem *tpALifeItem = dynamic_cast<CSE_ALifeItem *>(tpALifeDynamicObject);
-	if ((!tpALifeItem && !dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject)) || (tpALifeItem && !tpALifeItem->bfAttached()))
+	CSE_ALifeInventoryItem *l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpALifeDynamicObject);
+	if ((!l_tpALifeInventoryItem && !dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject)) || (l_tpALifeInventoryItem && !l_tpALifeInventoryItem->bfAttached()))
 		vfAddObjectToGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
 }
 
@@ -356,54 +356,54 @@ void CSE_ALifeGraphRegistry::vfChangeEventGraphPoint(CSE_ALifeEvent *tpEvent, _G
 	vfAddEventToGraphPoint		(tpEvent,tNextGraphPointID);
 }
 
-void CSE_ALifeGraphRegistry::vfAttachItem(CSE_Abstract &tAbstract, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bALifeRequest)
+void CSE_ALifeGraphRegistry::vfAttachItem(CSE_Abstract &tAbstract, CSE_ALifeInventoryItem *tpALifeInventoryItem, _GRAPH_ID tGraphID, bool bALifeRequest)
 {
 #ifdef ALIFE_LOG
-	Msg							("[LSS] : Attaching item [%s][%d] to [%s][%d]",tpALifeItem->s_name_replace,tpALifeItem->ID,tAbstract.s_name_replace,tAbstract.ID);
+	Msg							("[LSS] : Attaching item [%s][%d] to [%s][%d]",tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID,tAbstract.s_name_replace,tAbstract.ID);
 #endif
 	if (bALifeRequest)
-		vfRemoveObjectFromGraphPoint	(tpALifeItem,tGraphID);
+		vfRemoveObjectFromGraphPoint	(dynamic_cast<CSE_ALifeDynamicObject*>(tpALifeInventoryItem),tGraphID);
 	else
-		vfRemoveObjectFromCurrentLevel(tpALifeItem);
+		vfRemoveObjectFromCurrentLevel	(dynamic_cast<CSE_ALifeDynamicObject*>(tpALifeInventoryItem));
 
 	CSE_ALifeTraderAbstract		*l_tpALifeTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(&tAbstract);
 	R_ASSERT2					(!bALifeRequest || l_tpALifeTraderAbstract,"Cannot attach an item to a non-trader object");
 
 	if (l_tpALifeTraderAbstract) {
 		if (bALifeRequest) {
-			l_tpALifeTraderAbstract->children.push_back(tpALifeItem->ID);
-			tpALifeItem->ID_Parent	= l_tpALifeTraderAbstract->ID;
+			l_tpALifeTraderAbstract->children.push_back(tpALifeInventoryItem->ID);
+			tpALifeInventoryItem->ID_Parent	= l_tpALifeTraderAbstract->ID;
 		}
-		l_tpALifeTraderAbstract->m_fCumulativeItemMass		+= tpALifeItem->m_fMass;
-		l_tpALifeTraderAbstract->m_iCumulativeItemVolume	+= tpALifeItem->m_iVolume;
+		l_tpALifeTraderAbstract->m_fCumulativeItemMass		+= tpALifeInventoryItem->m_fMass;
+		l_tpALifeTraderAbstract->m_iCumulativeItemVolume	+= tpALifeInventoryItem->m_iVolume;
 	}
 }
 
-void CSE_ALifeGraphRegistry::vfDetachItem(CSE_Abstract &tAbstract, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bALifeRequest)
+void CSE_ALifeGraphRegistry::vfDetachItem(CSE_Abstract &tAbstract, CSE_ALifeInventoryItem *tpALifeInventoryItem, _GRAPH_ID tGraphID, bool bALifeRequest)
 {
 #ifdef ALIFE_LOG
-	Msg							("[LSS] : Detaching item [%s][%d] from [%s][%d]",tpALifeItem->s_name_replace,tpALifeItem->ID,tAbstract.s_name_replace,tAbstract.ID);
+	Msg							("[LSS] : Detaching item [%s][%d] from [%s][%d]",tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID,tAbstract.s_name_replace,tAbstract.ID);
 #endif
 	if (bALifeRequest)
-		vfAddObjectToGraphPoint	(tpALifeItem,tGraphID);
+		vfAddObjectToGraphPoint		(dynamic_cast<CSE_ALifeDynamicObject*>(tpALifeInventoryItem),tGraphID);
 	else
-		vfAddObjectToCurrentLevel(tpALifeItem);
+		vfAddObjectToCurrentLevel	(dynamic_cast<CSE_ALifeDynamicObject*>(tpALifeInventoryItem));
 
 	CSE_ALifeTraderAbstract		*l_tpALifeTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(&tAbstract);
 	R_ASSERT2					(!bALifeRequest || l_tpALifeTraderAbstract,"Cannot detach an item from non-trader object");
 
 	if (l_tpALifeTraderAbstract) {
-		OBJECT_IT				I = std::find	(l_tpALifeTraderAbstract->children.begin(),l_tpALifeTraderAbstract->children.end(),tpALifeItem->ID);
+		OBJECT_IT				I = std::find	(l_tpALifeTraderAbstract->children.begin(),l_tpALifeTraderAbstract->children.end(),tpALifeInventoryItem->ID);
 		R_ASSERT2				(I != l_tpALifeTraderAbstract->children.end(),"Can't detach an item which is not on my own");
 		if (bALifeRequest) {
 			l_tpALifeTraderAbstract->children.erase(I);
-			tpALifeItem->ID_Parent	= 0xffff;
+			tpALifeInventoryItem->ID_Parent	= 0xffff;
 		}
-		l_tpALifeTraderAbstract->m_fCumulativeItemMass		-= tpALifeItem->m_fMass;
-		l_tpALifeTraderAbstract->m_iCumulativeItemVolume	-= tpALifeItem->m_iVolume;
+		l_tpALifeTraderAbstract->m_fCumulativeItemMass		-= tpALifeInventoryItem->m_fMass;
+		l_tpALifeTraderAbstract->m_iCumulativeItemVolume	-= tpALifeInventoryItem->m_iVolume;
 	}
 	else {
-		OBJECT_IT				I = std::find	(tAbstract.children.begin(),tAbstract.children.end(),tpALifeItem->ID);
+		OBJECT_IT				I = std::find	(tAbstract.children.begin(),tAbstract.children.end(),tpALifeInventoryItem->ID);
 		R_ASSERT2				(I != tAbstract.children.end(),"Can't detach an item which is not on my own");
 	}
 }

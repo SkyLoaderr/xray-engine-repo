@@ -42,12 +42,12 @@ BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 	CSE_Abstract*		e_what	= get_entity_from_eid(eid_what);	VERIFY(e_what	);
 
 	if (m_tpALife) {
-		CSE_ALifeTraderAbstract	*tpTraderParams		= dynamic_cast<CSE_ALifeTraderAbstract*>(e_who);
-		CSE_ALifeItem			*tpALifeItem		= dynamic_cast<CSE_ALifeItem*>			(e_what);
-		CSE_ALifeDynamicObject	*tpDynamicObject	= dynamic_cast<CSE_ALifeDynamicObject*>	(e_who);
+		CSE_ALifeTraderAbstract	*l_tpTraderParams		= dynamic_cast<CSE_ALifeTraderAbstract*>(e_who);
+		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem	= dynamic_cast<CSE_ALifeInventoryItem*>	(e_what);
+		CSE_ALifeDynamicObject	*l_tpDynamicObject		= dynamic_cast<CSE_ALifeDynamicObject*>	(e_who);
 		
-		if (tpTraderParams && tpALifeItem && tpDynamicObject && (m_tpALife->m_tObjectRegistry.find(e_who->ID) != m_tpALife->m_tObjectRegistry.end()) && (m_tpALife->m_tObjectRegistry.find(tpALifeItem->ID) != m_tpALife->m_tObjectRegistry.end()))
-			m_tpALife->vfAttachItem(*e_who,tpALifeItem,tpALifeItem->m_tGraphID,false);
+		if (l_tpTraderParams && l_tpALifeInventoryItem && l_tpDynamicObject && (m_tpALife->m_tObjectRegistry.find(e_who->ID) != m_tpALife->m_tObjectRegistry.end()) && (m_tpALife->m_tObjectRegistry.find(l_tpDynamicObject->ID) != m_tpALife->m_tObjectRegistry.end()))
+			m_tpALife->vfAttachItem(*e_who,l_tpALifeInventoryItem,l_tpDynamicObject->m_tGraphID,false);
 	}
 	return TRUE;
 }
@@ -58,16 +58,16 @@ BOOL	game_sv_Single::OnDetach		(u16 eid_who, u16 eid_what)
 		CSE_Abstract*		e_who	= get_entity_from_eid(eid_who);		VERIFY(e_who	);
 		CSE_Abstract*		e_what	= get_entity_from_eid(eid_what);	VERIFY(e_what	);
 
-		CSE_ALifeItem *tpALifeItem = dynamic_cast<CSE_ALifeItem*>(e_what);
-		if (!tpALifeItem)
+		CSE_ALifeInventoryItem *l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(e_what);
+		if (!l_tpALifeInventoryItem)
 			return TRUE;
 
-		CSE_ALifeDynamicObject *tpDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(e_who);
-		if (!tpDynamicObject)
+		CSE_ALifeDynamicObject *l_tpDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(e_who);
+		if (!l_tpDynamicObject)
 			return TRUE;
 		
-		if ((m_tpALife->m_tObjectRegistry.find(e_who->ID) != m_tpALife->m_tObjectRegistry.end()) && (m_tpALife->m_tObjectRegistry.find(tpALifeItem->ID) != m_tpALife->m_tObjectRegistry.end()))
-			m_tpALife->vfDetachItem(*e_who,tpALifeItem,tpDynamicObject->m_tGraphID,false);
+		if ((m_tpALife->m_tObjectRegistry.find(e_who->ID) != m_tpALife->m_tObjectRegistry.end()) && (m_tpALife->m_tObjectRegistry.find(l_tpDynamicObject->ID) != m_tpALife->m_tObjectRegistry.end()))
+			m_tpALife->vfDetachItem(*e_who,l_tpALifeInventoryItem,l_tpDynamicObject->m_tGraphID,false);
 	}
 	return					(TRUE);
 }

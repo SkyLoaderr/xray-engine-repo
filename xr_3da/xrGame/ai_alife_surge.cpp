@@ -597,14 +597,12 @@ void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
 		xr_vector<u16>::iterator	e = tTrader.children.end();
 		for ( ; i != e; i++) {
 			// checking if the purchased item is an item
-			CSE_ALifeItem *l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(tpfGetObjectByID(*i));
-			if (!l_tpALifeItem)
-				continue;
-
+			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*i));
+			R_ASSERT2				(l_tpALifeInventoryItem,"Non inventory object has a parent?!");
 			// adding item to the temporary item map
-			ITEM_COUNT_PAIR_IT		k = m_tpTraderItems.find(l_tpALifeItem->s_name);
+			ITEM_COUNT_PAIR_IT		k = m_tpTraderItems.find(l_tpALifeInventoryItem->s_name);
 			if (k == m_tpTraderItems.end())
-				m_tpTraderItems.insert(std::make_pair(l_tpALifeItem->s_name,1));
+				m_tpTraderItems.insert(std::make_pair(l_tpALifeInventoryItem->s_name,1));
 			else
 				(*k).second++;
 		}
@@ -646,7 +644,7 @@ void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
 				CSE_ALifeDynamicObject	*i = dynamic_cast<CSE_ALifeDynamicObject*>(l_tpSE_Abstract);
 				R_ASSERT2		(i,"Non-ALife object in the 'game.spawn'");
 				CSE_ALifeItem	*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(i);
-				R_ASSERT2		(i,"Non-item object in the trader supplies string!");
+				R_ASSERT2		(l_tpALifeItem,"Non-item object in the trader supplies string!");
 				
 				// checking if there is enough money to buy an item
 				if (l_tpALifeItem->m_dwCost > tTrader.m_dwMoney) {

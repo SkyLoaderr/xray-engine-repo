@@ -24,10 +24,11 @@ public:
 	u64								m_qwGridBitMask;
 
 									CSE_ALifeInventoryItem	(LPCSTR caSection);
-	IC	bool						bfAttached		()
+	IC		bool					bfAttached		() const
 	{
 		return						(ID_Parent < 0xffff);
 	}
+	virtual bool					bfUseful();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeItem,CSE_ALifeDynamicObjectVisual,CSE_ALifeInventoryItem)

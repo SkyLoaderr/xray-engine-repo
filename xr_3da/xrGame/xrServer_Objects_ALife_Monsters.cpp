@@ -792,6 +792,12 @@ void CSE_ALifeMonsterRat::FillProp			(LPCSTR pref, PropItemVec& items)
 }	
 #endif
 
+bool CSE_ALifeMonsterRat::bfUseful		()
+{
+	return						(!dynamic_cast<CSE_ALifeAbstractGroup*>(this) && (fHealth <= EPS_L));
+}
+
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeMonsterZombie
 ////////////////////////////////////////////////////////////////////////////

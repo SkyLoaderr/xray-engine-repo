@@ -61,25 +61,25 @@ public:
 
 class CSortItemPredicate {
 public:
-	IC bool							operator()							(const CSE_ALifeItem *tpALifeItem1, const CSE_ALifeItem *tpALifeItem2)  const
+	IC bool							operator()							(const CSE_ALifeInventoryItem *tpALifeInventoryItem1, const CSE_ALifeInventoryItem *tpALifeInventoryItem2)  const
 	{
-		return						(float(tpALifeItem1->m_dwCost)/1/**tpALifeItem1->m_fMass/**/ > float(tpALifeItem2->m_dwCost)/1/**tpALifeItem2->m_fMass/**/);
+		return						(float(tpALifeInventoryItem1->m_dwCost)/1/**tpALifeInventoryItem1->m_fMass/**/ > float(tpALifeInventoryItem2->m_dwCost)/1/**tpALifeInventoryItem2->m_fMass/**/);
 	};
 };
 
 class CRemoveAttachedItemsPredicate {
 public:
-	IC bool							operator()							(const CSE_ALifeItem *tpALifeItem1)  const
+	IC bool							operator()							(const CSE_ALifeInventoryItem *tpALifeInventoryItem)
 	{
-		return						(tpALifeItem1->ID_Parent != 0xffff);
+		return						(tpALifeInventoryItem->bfAttached());
 	};
 };
 
 class CSortItemVolumePredicate {
 public:
-	IC bool							operator()							(const CSE_ALifeItem *tpALifeItem1, const CSE_ALifeItem *tpALifeItem2)  const
+	IC bool							operator()							(const CSE_ALifeInventoryItem *tpALifeInventoryItem1, const CSE_ALifeInventoryItem *tpALifeInventoryItem2)  const
 	{
-		return						(float(tpALifeItem1->m_iGridWidth*tpALifeItem1->m_iGridHeight) > float(tpALifeItem2->m_iGridWidth*tpALifeItem2->m_iGridHeight));
+		return						(float(tpALifeInventoryItem1->m_iGridWidth*tpALifeInventoryItem1->m_iGridHeight) > float(tpALifeInventoryItem2->m_iGridWidth*tpALifeInventoryItem2->m_iGridHeight));
 	};
 };
 
@@ -94,13 +94,13 @@ public:
 		m_tpWeaponVector			= tpWeaponVector;
 	}
 
-	IC bool							operator()							(const CSE_ALifeItem *tpALifeItem)
+	IC bool							operator()							(const CSE_ALifeInventoryItem *tpALifeInventoryItem)
 	{
-		const CSE_ALifeItemWeapon	*l_tpALifeItemWeapon = dynamic_cast<const CSE_ALifeItemWeapon*>(tpALifeItem);
+		const CSE_ALifeItemWeapon	*l_tpALifeItemWeapon = dynamic_cast<const CSE_ALifeItemWeapon*>(tpALifeInventoryItem);
 		if (l_tpALifeItemWeapon && ((*m_tpWeaponVector)[l_tpALifeItemWeapon->m_dwSlot] == l_tpALifeItemWeapon))
 			return					(true);
 		else
-			if ((m_dwCurCount < m_dwMaxCount) && (tpALifeItem->m_iVolume == 1)) {
+			if ((m_dwCurCount < m_dwMaxCount) && (tpALifeInventoryItem->m_iVolume == 1)) {
 				m_dwCurCount++;
 				return				(true);
 			}

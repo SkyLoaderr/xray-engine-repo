@@ -44,7 +44,7 @@ class CSE_ALifeDiscovery;
 class CSE_ALifeOrganization;
 class CSE_ALifeArtefactDemand;
 class CSE_ALifeArtefactNeed;
-class CSE_ALifeItem;
+class CSE_ALifeInventoryItem;
 class CSE_ALifeItemWeapon;
 class CSE_ALifeSchedulable;
 
@@ -331,7 +331,7 @@ namespace ALife {
 	DEFINE_VECTOR	(STraderSupply,				TRADER_SUPPLY_VECTOR,			TRADER_SUPPLY_IT);
 	DEFINE_VECTOR	(SGraphPoint,				GRAPH_POINT_VECTOR,				GRAPH_POINT_IT);
 	DEFINE_VECTOR	(SArtefactTraderOrder,		ARTEFACT_TRADER_ORDER_VECTOR,	ARTEFACT_TRADER_ORDER_IT);
-	DEFINE_VECTOR	(CSE_ALifeItem*,			ITEM_P_VECTOR,					ITEM_P_IT);
+	DEFINE_VECTOR	(CSE_ALifeInventoryItem*,	ITEM_P_VECTOR,					ITEM_P_IT);
 	DEFINE_VECTOR	(CSE_ALifeItemWeapon*,		WEAPON_P_VECTOR,				WEAPON_P_IT);
 	DEFINE_VECTOR	(CSE_ALifeSchedulable*,		SCHEDULE_P_VECTOR,				SCHEDULE_P_IT);
 

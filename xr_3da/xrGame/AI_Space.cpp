@@ -250,8 +250,8 @@ void CAI_Space::Render()
 								}
 							}
 							else {
-								CSE_ALifeItem *tpALifeItem = dynamic_cast<CSE_ALifeItem *>((*I).second);
-								if (tpALifeItem && !tpALifeItem->bfAttached()) {
+								CSE_ALifeInventoryItem *l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>((*I).second);
+								if (l_tpALifeInventoryItem && !l_tpALifeInventoryItem->bfAttached()) {
 									Fvector t1 = m_tpaGraph[(*I).second->m_tGraphID].tGlobalPoint;
 									t1.y += .6f;
 									NORMALIZE_VECTOR(t1);

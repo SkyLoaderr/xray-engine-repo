@@ -171,11 +171,10 @@ void CSE_ALifeSimulator::vfObjectInfo(_OBJECT_ID	tObjectID)
 	Msg("* Graph ID      : %d",tpALifeDynamicObject->m_tGraphID);
 	vfPrintTime("* Update        :",tpALifeDynamicObject->m_tTimeID);
 	
-	CSE_ALifeItem *tpALifeItem = dynamic_cast<CSE_ALifeItem *>(tpALifeDynamicObject);
-	if (tpALifeItem) {
-		Msg("* Mass          : %7.2f",tpALifeItem->m_fMass);
-		Msg("* Price         : %d",tpALifeItem->m_dwCost);
-		return;
+	CSE_ALifeInventoryItem	 *l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpALifeDynamicObject);
+	if (l_tpALifeInventoryItem) {
+		Msg("* Mass          : %7.2f",l_tpALifeInventoryItem->m_fMass);
+		Msg("* Price         : %d",l_tpALifeInventoryItem->m_dwCost);
 	}
 	
 	CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract *>(tpALifeDynamicObject);

@@ -54,23 +54,23 @@ void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 		OBJECT_IT					I = tpALifeDynamicObject->children.begin();
 		OBJECT_IT					E = tpALifeDynamicObject->children.end();
 		for ( ; I != E; I++) {
-			CSE_ALifeItem			*tpItem = dynamic_cast<CSE_ALifeItem*>(tpfGetObjectByID(*I));
-			if (!tpItem)
-				continue;
-			tpItem->s_flags.or		(M_SPAWN_UPDATE);
-			CSE_Abstract			*l_tpAbstract = dynamic_cast<CSE_Abstract*>(tpItem);
+			CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = tpfGetObjectByID(*I);
+			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject);
+			R_ASSERT2				(l_tpALifeInventoryItem,"Non inventory item object has parent?!");
+			l_tpALifeInventoryItem->s_flags.or(M_SPAWN_UPDATE);
+			CSE_Abstract			*l_tpAbstract = dynamic_cast<CSE_Abstract*>(l_tpALifeInventoryItem);
 			m_tpServer->entity_Destroy(l_tpAbstract);
 
 #ifdef ALIFE_LOG
-			Msg						("[LSS] : Spawning item [%s][%d]",tpItem->s_name_replace,tpItem->ID);
+			Msg						("[LSS] : Spawning item [%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeDynamicObject->ID);
 #endif
 
-			R_ASSERT3				(tpItem->m_tNodeID && (tpItem->m_tNodeID < getAI().Header().count),"Invalid node for object ",tpItem->s_name_replace);
-			m_tpServer->Process_spawn(tNetPacket,0,FALSE,tpItem);
-			tpItem->o_Position		= tpALifeDynamicObject->o_Position;
-			tpItem->m_tNodeID		= tpALifeDynamicObject->m_tNodeID;
-			tpItem->s_flags.and		(u16(-1) ^ M_SPAWN_UPDATE);
-			tpItem->m_bOnline		= true;
+			R_ASSERT3				(u32(l_tpALifeDynamicObject->m_tNodeID) < getAI().Header().count,"Invalid node for object ",l_tpALifeInventoryItem->s_name_replace);
+			m_tpServer->Process_spawn(tNetPacket,0,FALSE,l_tpALifeInventoryItem);
+			l_tpALifeDynamicObject->o_Position		= tpALifeDynamicObject->o_Position;
+			l_tpALifeDynamicObject->m_tNodeID		= tpALifeDynamicObject->m_tNodeID;
+			l_tpALifeDynamicObject->s_flags.and		(u16(-1) ^ M_SPAWN_UPDATE);
+			l_tpALifeDynamicObject->m_bOnline		= true;
 		}
 	}
 	
@@ -98,19 +98,18 @@ void CSE_ALifeSimulator::vfRemoveOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 		OBJECT_IT					I = tpALifeDynamicObject->children.begin();
 		OBJECT_IT					E = tpALifeDynamicObject->children.end();
 		for ( ; I != E; I++) {
-			CSE_ALifeItem			*tpItem = dynamic_cast<CSE_ALifeItem*>(tpfGetObjectByID(*I));
-			if (!tpItem)
-				continue;
-
+			CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = tpfGetObjectByID(*I);
+			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject);
+			R_ASSERT2				(l_tpALifeInventoryItem,"Non inventory item object has parent?!");
 #ifdef ALIFE_LOG
-			Msg						("[LSS] : Destroying item [%s]",tpItem->s_name_replace,tpItem->ID);
+			Msg						("[LSS] : Destroying item [%s]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->ID);
 #endif
 
-			m_tpServer->Perform_destroy(tpItem,net_flags(TRUE,TRUE));
-			_OBJECT_ID				l_tObjectID = tpItem->ID;
-			tpItem->ID				= m_tpServer->PerformIDgen(tpItem->ID);
-			R_ASSERT2				(tpItem->ID == l_tObjectID,"Object ID has changed during ID generation!");
-			tpItem->m_bOnline		= false;
+			m_tpServer->Perform_destroy(l_tpALifeInventoryItem,net_flags(TRUE,TRUE));
+			_OBJECT_ID				l_tObjectID = l_tpALifeInventoryItem->ID;
+			l_tpALifeInventoryItem->ID	= m_tpServer->PerformIDgen(l_tpALifeInventoryItem->ID);
+			R_ASSERT2				(l_tpALifeInventoryItem->ID == l_tObjectID,"Object ID has changed during ID generation!");
+			l_tpALifeDynamicObject->m_bOnline = false;
 		}
 	}
 	

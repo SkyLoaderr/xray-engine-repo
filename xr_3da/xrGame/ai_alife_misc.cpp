@@ -142,13 +142,14 @@ void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALi
 		if (tpALifeHumanAbstract->bfCheckIfTaskCompleted(I)) {
 			D_OBJECT_PAIR_IT					J = m_tObjectRegistry.find(*I);
 			R_ASSERT2							(J != m_tObjectRegistry.end(), "Specified object hasn't been found in the Object registry!");
-			CSE_ALifeItem						*tpALifeItem = dynamic_cast<CSE_ALifeItem *>((*J).second);
-			if (tpTraderAbstract->m_dwMoney >= tpALifeItem->m_dwCost) {
-				vfDetachItem					(*tpALifeHumanAbstract,tpALifeItem,tpALifeHumanAbstract->m_tGraphID);
-				vfAttachItem					(*tpTraderAbstract,tpALifeItem,tpALifeHumanAbstract->m_tGraphID);
+			CSE_ALifeInventoryItem				*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>((*J).second);
+			R_ASSERT2							(l_tpALifeInventoryItem,"Non inventory item has a parent?!");
+			if (tpTraderAbstract->m_dwMoney >= l_tpALifeInventoryItem->m_dwCost) {
+				vfDetachItem					(*tpALifeHumanAbstract,l_tpALifeInventoryItem,tpALifeHumanAbstract->m_tGraphID);
+				vfAttachItem					(*tpTraderAbstract,l_tpALifeInventoryItem,tpALifeHumanAbstract->m_tGraphID);
 				// paying/receiving money
-				tpTraderAbstract->m_dwMoney		-= tpALifeItem->m_dwCost;
-				tpALifeHumanAbstract->m_dwMoney += tpALifeItem->m_dwCost;
+				tpTraderAbstract->m_dwMoney		-= l_tpALifeInventoryItem->m_dwCost;
+				tpALifeHumanAbstract->m_dwMoney += l_tpALifeInventoryItem->m_dwCost;
 			}
 		}
 	}

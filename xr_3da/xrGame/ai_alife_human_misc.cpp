@@ -16,12 +16,12 @@ bool CSE_ALifeHumanAbstract::bfHealthIsGood			()
 	return(true);
 }
 
-bool CSE_ALifeHumanAbstract::bfItemCanTreat			(CSE_ALifeItem *tpALifeItem)
+bool CSE_ALifeHumanAbstract::bfItemCanTreat			(CSE_ALifeInventoryItem *tpALifeInventoryItem)
 {
 	return(false);
 }
 
-void CSE_ALifeHumanAbstract::vfUseItem				(CSE_ALifeItem *tpALifeItem)
+void CSE_ALifeHumanAbstract::vfUseItem				(CSE_ALifeInventoryItem *tpALifeInventoryItem)
 {
 }
 
@@ -30,9 +30,10 @@ bool CSE_ALifeHumanAbstract::bfCanTreat				()
 	xr_vector<u16>::iterator	I = children.begin();
 	xr_vector<u16>::iterator	E = children.end();
 	for ( ; I != E; I++) {
-		CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(m_tpALife->tpfGetObjectByID(*I));
-		if (l_tpALifeItem && bfItemCanTreat(l_tpALifeItem))
-			vfUseItem			(l_tpALifeItem);
+		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(m_tpALife->tpfGetObjectByID(*I));
+		R_ASSERT2				(l_tpALifeInventoryItem,"Non inventory item ihas a parent?!");
+		if (bfItemCanTreat(l_tpALifeInventoryItem))
+			vfUseItem			(l_tpALifeInventoryItem);
 	}
 	return						(bfHealthIsGood());
 }

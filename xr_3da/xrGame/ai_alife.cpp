@@ -61,14 +61,14 @@ void CSE_ALifeSimulator::vfUpdateDynamicData(CSE_ALifeDynamicObject *tpALifeDyna
 	CSE_ALifeTraderRegistry::Update		(tpALifeDynamicObject);
 	CSE_ALifeScheduleRegistry::Update	(tpALifeDynamicObject);
 	
-	CSE_ALifeItem						*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(tpALifeDynamicObject);
-	if (l_tpALifeItem && l_tpALifeItem->bfAttached()) {
-		CSE_ALifeDynamicObject			*II = tpfGetObjectByID(l_tpALifeItem->ID_Parent);
+	CSE_ALifeInventoryItem				*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpALifeDynamicObject);
+	if (l_tpALifeInventoryItem && l_tpALifeInventoryItem->bfAttached()) {
+		CSE_ALifeDynamicObject			*II = tpfGetObjectByID(l_tpALifeInventoryItem->ID_Parent);
 		xr_vector<u16>::iterator		i = II->children.begin();
 		xr_vector<u16>::iterator		e = II->children.end();
 		for ( ; i != e; i++)
-			VERIFY(*i != l_tpALifeItem->ID);
-		II->children.push_back(l_tpALifeItem->ID);
+			VERIFY(*i != l_tpALifeInventoryItem->ID);
+		II->children.push_back(l_tpALifeInventoryItem->ID);
 	}
 	
 	CSE_ALifeSchedulable				*l_tpALifeSchedulable = dynamic_cast<CSE_ALifeSchedulable*>(tpALifeDynamicObject);
