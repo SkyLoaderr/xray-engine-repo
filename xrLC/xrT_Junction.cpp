@@ -56,8 +56,8 @@ void check(Vertex* vE1, Vertex* vE2, Vertex* vTEST)
 		vecJunctions->push_back	(rec);
 		
 		// display
-		if (bWeld)	clMsg	("ERROR. unwelded vertex      [%3.1f,%3.1f,%3.1f]",	VPUSH(vTEST->P));
-		else		clMsg	("ERROR. T-junction at vertex [%3.1f,%3.1f,%3.1f]",	VPUSH(vTEST->P));
+		// if (bWeld)	clMsg	("ERROR. unwelded vertex      [%3.1f,%3.1f,%3.1f]",	VPUSH(vTEST->P));
+		// else			clMsg	("ERROR. T-junction at vertex [%3.1f,%3.1f,%3.1f]",	VPUSH(vTEST->P));
 		pBuild->err_tjunction.w_fvector3	(vTEST->P);
 	}
 }

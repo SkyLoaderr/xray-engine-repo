@@ -62,6 +62,10 @@ public:
 
 void CBuild::Light_R2			()
 {
+	FPU::m64r				();
+	Phase					("LIGHT: Hemisphere...");
+	mem_Compact				();
+
 	// Start threads, wait, continue --- perform all the work
 	Status					("Calculating...");
 	DWORD	start_time		= timeGetTime();

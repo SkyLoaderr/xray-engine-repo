@@ -311,9 +311,9 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 		if (65535==M.shader_xrlc)	{
 			// No compiler shader
 			M.reserved	= WORD(-1);
-			clMsg	(" *  %20s",shader_render[M.shader].name);
+			// clMsg	(" *  %20s",shader_render[M.shader].name);
 		} else {
-			clMsg	(" *  %20s / %-20s",shader_render[M.shader].name, shader_compile[M.shader_xrlc].name);
+			// clMsg	(" *  %20s / %-20s",shader_render[M.shader].name, shader_compile[M.shader_xrlc].name);
 			int id = shaders.GetID(shader_compile[M.shader_xrlc].name);
 			if (id<0) {
 				clMsg	("ERROR: Shader '%s' not found in library",shader_compile[M.shader].name);
