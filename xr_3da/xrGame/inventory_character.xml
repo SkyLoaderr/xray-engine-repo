@@ -7,11 +7,9 @@
 	</name_static>
 
 	<!-- COMMUNITY -->
-<!--	
 	<community_static x="20" y="65" width="240" height="18">
 		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
 	</community_static>
--->
 	
 	<!-- COMMUNITY CAPTION -->
 <!--
