@@ -65,13 +65,12 @@ void FTreeVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 	hGeom.create		(vFormat,pVertices,pIndices);
 
 	// Get constants
-	R_constant_table& T	= *(hShader->E[0]->Passes[0]->constants);
-	c_consts			= T.get	("consts");
-	c_wave				= T.get	("wave");
-	c_wind				= T.get	("wind");
-	c_c_bias			= T.get	("c_bias");
-	c_c_scale			= T.get	("c_scale");
-	c_c_sun				= T.get	("c_sun");
+	c_consts			= "consts";
+	c_wave				= "wave";
+	c_wind				= "wind";
+	c_c_bias			= "c_bias";
+	c_c_scale			= "c_scale";
+	c_c_sun				= "c_sun";
 }
 
 struct	FTreeVisual_setup
@@ -106,12 +105,12 @@ void FTreeVisual::Render	(float LOD)
 	if (tvs.dwFrame!=Device.dwFrame)	tvs.calculate();
 
 	// setup constants
-	RCache.set_c			("consts",	tvs.scale,tvs.scale,0,0);									// consts/scale
-	RCache.set_c			("wave",	tvs.wave);													// wave
-	RCache.set_c			("wind",	tvs.wind);													// wind
-	RCache.set_c			("c_scale",	c_scale.rgb.x,c_scale.rgb.y,c_scale.rgb.z,c_scale.hemi);	// scale
-	RCache.set_c			("c_bias",	c_bias.rgb.x,c_bias.rgb.y,c_bias.rgb.z,c_bias.hemi);		// bias
-	RCache.set_c			("c_sun",	c_scale.sun,c_bias.sun,0,0);								// sun
+	RCache.set_c			(c_consts,	tvs.scale,tvs.scale,0,0);									// consts/scale
+	RCache.set_c			(c_wave,	tvs.wave);													// wave
+	RCache.set_c			(c_wind,	tvs.wind);													// wind
+	RCache.set_c			(c_c_bias,	c_scale.rgb.x,c_scale.rgb.y,c_scale.rgb.z,c_scale.hemi);	// scale
+	RCache.set_c			(c_c_scale,	c_bias.rgb.x,c_bias.rgb.y,c_bias.rgb.z,c_bias.hemi);		// bias
+	RCache.set_c			(c_c_sun,	c_scale.sun,c_bias.sun,0,0);								// sun
 
 	// render
 #if RENDER==R_R1

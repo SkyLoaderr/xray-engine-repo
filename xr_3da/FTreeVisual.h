@@ -19,12 +19,12 @@ protected:
 	u32							iCount;
 	u32							dwPrimitives;
 
-	R_constant*					c_consts;
-	R_constant*					c_wave;
-	R_constant*					c_wind;
-	R_constant*					c_c_bias;
-	R_constant*					c_c_scale;
-	R_constant*					c_c_sun;
+	ref_str						c_consts;
+	ref_str						c_wave;
+	ref_str						c_wind;
+	ref_str						c_c_bias;
+	ref_str						c_c_scale;
+	ref_str						c_c_sun;
 
 	_5color						c_scale;
 	_5color						c_bias;
