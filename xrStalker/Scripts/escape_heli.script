@@ -18,28 +18,6 @@ local wounded_id
 local newbies = {}
 local attack_end
 
-function cb( zone, obj )
-	if obj:id() == actor:id() then
-		actor:give_info_portion( "tutorial_artefact_gain" )
-	end
-end
-
-function on_enter( zone, obj )
---	printf( "ZONE CALLBACK" )
-	-- если раненный родился, то запомнить его ID и тут же спрятать
-	if obj:name() == "esc_vagon_wounded" then
-		wounded_id = obj:id()
-
-		obj:set_start_dialog( "escape_vagon_wounded" )
-
-		local sim = alife()
-		sim:set_switch_online(  wounded_id, false )
-		sim:set_switch_offline( wounded_id, true )
-		
-		zone:clear_callback( true )
-	end
-end
-
 function chst( new_state )
 	state      = new_state
 	state_init = true
@@ -52,8 +30,12 @@ function update()
 			heli_mgr:set_path( "heli_path_tutorial" )
 			heli_mgr.not_die = true
 
-			get_level_object( "esc_vagon_wounded_spawn_zone" ):set_callback( on_enter, true )
---			printf( "CALLBACK SET" )
+			-- запомнить ID раненого и тут же спрятать
+			wounded_id = get_level_object( "esc_vagon_wounded" ):id()
+
+			local sim = alife()
+			sim:set_switch_online(  wounded_id, false )
+			sim:set_switch_offline( wounded_id, true )
 
 			state_init = false
 		end
@@ -124,8 +106,6 @@ function main()
 
 	heli_mgr = xr_heli.HeliManager()
 	heli_mgr:initialize( "heli" )
-
---	get_level_object( "z" ):set_callback( cb, true )
 
 	if not state then
 		chst( state_before )
