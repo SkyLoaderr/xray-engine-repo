@@ -90,7 +90,11 @@ protected:
 				256,
 				4096
 			>												CSolverVertexManager;
+#ifdef AI_COMPILER
+	typedef CVertexAllocatorFixed<1024*1024>				CVertexAllocator;
+#else
 	typedef CVertexAllocatorFixed<65536>					CVertexAllocator;
+#endif
 	typedef CVertexAllocatorFixed<4096>						CSolverVertexAllocator;
 
 	typedef CAStar<
