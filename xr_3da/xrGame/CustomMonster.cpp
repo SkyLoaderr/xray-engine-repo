@@ -305,6 +305,9 @@ void CCustomMonster::Update	( DWORD DT )
 			NET.push_back		(uNext);
 		}
 	}
+
+	// weapons
+	Weapons->Update				(Device.fTimeDelta,false);
 	
 	// *** general stuff
 	inherited::Update	(DT);
@@ -373,9 +376,6 @@ void CCustomMonster::UpdateCL	()
 		svTransform.translate_over	(N.p_pos);
 		vPosition.set				(NET_Last.p_pos);
 	}
-
-	// weapons
-	Weapons->Update				(Device.fTimeDelta,false);
 }
 
 BOOL __fastcall	Qualifier				(CObject* O, void* P)
