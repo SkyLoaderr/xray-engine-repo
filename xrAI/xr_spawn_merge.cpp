@@ -191,7 +191,7 @@ public:
 	virtual 					~CSpawn()
 	{
 		delete_data				(m_tpLevelSpawnPoints);
-		delete_data				(m_tpSpawnPoints);
+		//delete_data				(m_tpSpawnPoints);
 		delete_data				(m_tpAI_Map);
 		delete_data				(m_tpCrossTable);
 	};
