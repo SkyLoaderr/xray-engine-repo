@@ -28,6 +28,8 @@ _keybind  keybind[] = {
 	{ "lstrafe",		kL_STRAFE	},	
 	{ "rstrafe",		kR_STRAFE	},
 
+	{ "repair",			kREPAIR		},
+
 	{ "cam_1",			kCAM_1		},	
 	{ "cam_2",			kCAM_2		},
 	{ "cam_3",			kCAM_3		},	

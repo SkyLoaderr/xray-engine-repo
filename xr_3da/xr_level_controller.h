@@ -13,6 +13,7 @@ enum	EKeyBinding
 	kJUMP			,
 	kCROUCH			,
 	kACCEL			,
+	kREPAIR			,
 
 	kCAM_1			,
 	kCAM_2			,
