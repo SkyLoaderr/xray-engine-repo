@@ -231,7 +231,6 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 
 void CAI_Rat::Exec_Movement	( float dt )
 {
-	AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
 }
 
 void CAI_Rat::net_Export(NET_Packet& P)
