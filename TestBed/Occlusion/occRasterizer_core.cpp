@@ -307,7 +307,7 @@ DWORD occRasterizer::rasterize	(occTri* T)
 	// Order the vertices by Y
 	currentTri			= T;
 	dwPixels			= 0;
-	i_order				(T->raster[0].asDATA(), T->raster[1].asDATA(),T->raster[2].asDATA());
+	i_order				(&(T->raster[0].x), &(T->raster[0].x),&(T->raster[0].x));
 
 	// Rasterize sections
 	if (currentB[1]-iFloor(currentB[1]) > .5f)	

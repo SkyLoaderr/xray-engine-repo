@@ -148,7 +148,7 @@ void CDetailManager::hw_Render()
 	VSC.set					(0,	scale,		scale,		psDetail_l_aniso,	psDetail_l_ambient);			// consts
 	VSC.set					(1,	1.f/5.f,	1.f/7.f,	1.f/3.f,	Device.fTimeGlobal*psDetail_w_speed);	// wave
 	VSC.set					(2,	dir1);																		// wind-dir
-	VSC.set					(3,	Device.mFullTransform);
+	VSC.set_m4x4			(3,	Device.mFullTransform);
 	VSC.set					(7,	1,			0,			2,			0);				//const c[7] = 1 0 2 0
 	VSC.set					(8,	0,			0.5f,		1.f,		0);				//const c[8] = 0 0.5 1 0
 	VSC.set					(9, 0.25f,		-9.f,		0.75f,		0.1591549f);	//const c[9] = 0.25 -9 0.75 0.1591549
@@ -156,19 +156,16 @@ void CDetailManager::hw_Render()
 	VSC.set					(11,85.45379f,	-85.45379f, -64.93935f, 64.93935f);		//const c[11] = 85.45379 -85.45379 -64.93935 64.93935
 	VSC.set					(12,19.73921f,	-19.73921f,	-1,			1);				//const c[12] = 19.73921 -19.73921 -1 1
 	VSC.set					(13,0,			0,			0,			0);				//const c[13] = 0 0 0 0
-	VSC.flush				(0,	c_hdr);
 	hw_Render_dump			(hw_VS_wave,	visible[1], c_hdr );
 
 	// Wave1
 	VSC.set					(1,	1.f/3.f,	1.f/7.f,	1.f/5.f,	Device.fTimeGlobal*psDetail_w_speed);	// wave
 	VSC.set					(2,	dir2);																		// wind-dir
-	VSC.flush				(1,	2);
 	hw_Render_dump			(hw_VS_wave,	visible[2], c_hdr );
 
 	// Still
 	VSC.set					(0,scale,scale,scale,1.f);
-	VSC.set					(1,Device.mFullTransform);
-	VSC.flush				(0,c_hdr);
+	VSC.set_m4x4			(1,Device.mFullTransform);
 	hw_Render_dump			(hw_VS_still,	visible[0], c_hdr );
 }
 
@@ -210,7 +207,7 @@ void	CDetailManager::hw_Render_dump	(CVS* vs, vis_list& list, DWORD c_offset)
 				if (dwBatch == hw_BatchSize)	
 				{
 					// flush
-					VSC.flush						(c_offset,dwBatch*c_size);
+					VSC.flush						();
 					DWORD dwCNT_verts				= dwBatch * Object.number_vertices;
 					DWORD dwCNT_prims				= (dwBatch * Object.number_indices)/3;
 					Device.Primitive.setIndices		(vOffset, hw_IB);
@@ -224,7 +221,7 @@ void	CDetailManager::hw_Render_dump	(CVS* vs, vis_list& list, DWORD c_offset)
 			// flush if nessecary
 			if (dwBatch)
 			{
-				VSC.flush						(c_offset,dwBatch*c_size);
+				VSC.flush						();
 				DWORD dwCNT_verts				= dwBatch * Object.number_vertices;
 				DWORD dwCNT_prims				= (dwBatch * Object.number_indices)/3;
 				Device.Primitive.setIndices		(vOffset, hw_IB);
