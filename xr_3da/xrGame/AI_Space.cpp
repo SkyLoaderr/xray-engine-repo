@@ -9,6 +9,8 @@
 // for a* search
 #include "ai_a_star.h"
 #include "ai_console.h"
+//
+#include "ai_pathnodes.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -50,6 +52,127 @@ void CAI_Space::OnDeviceDestroy()
 	REQ_DESTROY	();
 	Device.Shader.Delete		(sh_debug);
 }
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+extern void	UnpackContour(PContour& C, DWORD ID);
+extern void	IntersectContours(PSegment& Dest, PContour& C1, PContour& C2);
+
+IC bool bfInsideContour(Fvector &tPoint, PContour &tContour)
+{
+	return((tContour.v1.x - EPS_L <= tPoint.x) && (tContour.v1.z - EPS_L <= tPoint.z) && (tContour.v3.x + EPS_L >= tPoint.x) && (tContour.v3.z + EPS_L >= tPoint.z));
+}
+
+IC bool bfSimilar(Fvector &tPoint0, Fvector &tPoint1)
+{
+	return((fabsf(tPoint0.x - tPoint1.x) < EPS_L) && (fabsf(tPoint0.z - tPoint1.z) < EPS_L));
+}
+
+bool bfIntersectContours(PSegment &tSegment, PContour &tContour0, PContour &tContour1, bool bLog = true)
+{
+	bool bFound = false;
+	
+	if (bfInsideContour(tContour0.v1,tContour1)) {
+		tSegment.v1 = tContour0.v1;
+		bFound = true;
+	}
+
+	if (bfInsideContour(tContour0.v2,tContour1)) {
+		if (!bFound) {
+			tSegment.v1 = tContour0.v2;
+			bFound = true;
+		}
+		else {
+			tSegment.v2 = tContour0.v2;
+			return(true);
+		}
+	}
+	if (bfInsideContour(tContour0.v3,tContour1)) {
+		if (!bFound) {
+			tSegment.v1 = tContour0.v3;
+			bFound = true;
+		}
+		else {
+			tSegment.v2 = tContour0.v3;
+			return(true);
+		}
+	}
+	if (bfInsideContour(tContour0.v4,tContour1)) {
+		if (!bFound) {
+			tSegment.v1 = tContour0.v4;
+			bFound = true;
+		}
+		else {
+			tSegment.v2 = tContour0.v4;
+			return(true);
+		}
+	}
+	if (bFound) {
+		if (bfInsideContour(tContour1.v1,tContour0) && (!(bfSimilar(tSegment.v1,tContour1.v1)))) {
+			tSegment.v2 = tContour1.v1;
+			return(true);
+		}
+		if (bfInsideContour(tContour1.v2,tContour0) && (!(bfSimilar(tSegment.v1,tContour1.v2)))) {
+			tSegment.v2 = tContour1.v2;
+			return(true);
+		}
+		if (bfInsideContour(tContour1.v3,tContour0) && (!(bfSimilar(tSegment.v1,tContour1.v3)))) {
+			tSegment.v2 = tContour1.v3;
+			return(true);
+		}
+		if (bfInsideContour(tContour1.v4,tContour0) && (!(bfSimilar(tSegment.v1,tContour1.v4)))) {
+			tSegment.v2 = tContour1.v4;
+			return(true);
+		}
+	}
+	else {
+		if (bfInsideContour(tContour1.v1,tContour0)) {
+			tSegment.v1 = tContour1.v1;
+			bFound = true;
+		}
+		if (bfInsideContour(tContour1.v2,tContour0)) {
+			if (!bFound) {
+				tSegment.v1 = tContour1.v2;
+				bFound = true;
+			}
+			else {
+				tSegment.v2 = tContour1.v2;
+				return(true);
+			}
+		}
+		if (bfInsideContour(tContour1.v3,tContour0)) {
+			if (!bFound) {
+				tSegment.v1 = tContour1.v3;
+				bFound = true;
+			}
+			else {
+				tSegment.v2 = tContour1.v3;
+				return(true);
+			}
+		}
+		if (bfInsideContour(tContour1.v4,tContour0)) {
+			if (!bFound) {
+				tSegment.v1 = tContour1.v4;
+				bFound = true;
+			}
+			else {
+				tSegment.v2 = tContour1.v4;
+				return(true);
+			}
+		}
+	}
+
+	if (bLog)
+		if (bFound) {
+			tSegment.v2 = tSegment.v1;
+			Msg("! AI_PathNodes: segment has null length ([%6.4f,%6.4f],[%6.4f,%6.4f] -> [%6.4f,%6.4f],[%6.4f,%6.4f])",tContour0.v1.x,tContour0.v1.z,tContour0.v3.x,tContour0.v3.z,tContour1.v1.x,tContour1.v1.z,tContour1.v3.x,tContour1.v3.z);
+		}
+		else
+			Msg("! AI_PathNodes: Can't find intersection segment ([%6.4f,%6.4f],[%6.4f,%6.4f] -> [%6.4f,%6.4f],[%6.4f,%6.4f])",tContour0.v1.x,tContour0.v1.z,tContour0.v3.x,tContour0.v3.z,tContour1.v1.x,tContour1.v1.z,tContour1.v3.x,tContour1.v3.z);
+
+	return(false);
+}
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 void CAI_Space::Load(LPCSTR name)
 {
 	FILE_NAME	fName;
@@ -80,6 +203,69 @@ void CAI_Space::Load(LPCSTR name)
 	q_mark.assign		(m_header.count,0);
 	q_mark_bit.assign	(m_header.count,false);
 	q_mark_bit_x.assign	(m_header.count,false);
+
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	PContour tCurContour, tNextContour, tContour0, tContour1;
+	PSegment tSegment;
+	NodeCompressed *tpNode;
+	NodeLink *taLinks,*taLinks1;
+	DWORD		dwErrorsCount = 0;
+	
+	for ( I=0; I<m_header.count; I++)
+	{
+		tpNode = Node(I);
+		UnpackContour(tCurContour,I);
+		taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
+		int iCount = tpNode->link_count;
+		int iNodeIndex;
+		bool bOk = true;
+		for (int i=0; i < iCount; i++) {
+			iNodeIndex = UnpackLink(taLinks[i]);
+			q_mark[iNodeIndex] = true;
+			UnpackContour(tNextContour,iNodeIndex);
+			bool bTemp = bfIntersectContours(tSegment,tCurContour,tNextContour);
+			if (!bTemp) {
+				Msg("First : node %d (%d), neighbour %d (%d)",I,iCount,iNodeIndex,i);
+				bOk = false;
+			}
+		}
+		if (!bOk) {
+			dwErrorsCount++;
+			for (int j=0; j<m_header.count; j++) {
+				if (q_mark[j] || (I == j))
+					continue;
+				q_mark[j] = true;
+				UnpackContour(tNextContour,j);
+				if (bfIntersectContours(tSegment,tCurContour,tNextContour,false) && (fabsf(tCurContour.v1.y - tNextContour.v1.y) < 1.5f)) {
+					NodeCompressed *tpDummy0 = Node(j);
+					NodeCompressed *tpDummy1 = Node(I);
+					UnpackContour(tContour0,j);
+					UnpackContour(tContour1,I);
+					taLinks1 = (NodeLink *)((BYTE *)tpDummy0 + sizeof(NodeCompressed));
+					for (int k=0; k<tpDummy0->link_count; k++)
+						if (UnpackLink(taLinks1[k]) == I) {
+							Msg("Third : node %d (%d) neighbour %d (%d)",j,tpDummy0->link_count,I,k);
+							Msg("[%6.4f,%6.4f],[%6.4f,%6.4f] -> [%6.4f,%6.4f],[%6.4f,%6.4f])",tContour0.v1.x,tContour0.v1.z,tContour0.v3.x,tContour0.v3.z,tContour1.v1.x,tContour1.v1.z,tContour1.v3.x,tContour1.v3.z);
+							k = -1;
+							break;
+						}
+					if (k != -1) {
+						Msg("Second : node %d (%d)",j,tpDummy0->link_count);
+						Msg("[%6.4f,%6.4f],[%6.4f,%6.4f] -> [%6.4f,%6.4f],[%6.4f,%6.4f])",tContour0.v1.x,tContour0.v1.z,tContour0.v3.x,tContour0.v3.z,tContour1.v1.x,tContour1.v1.z,tContour1.v3.x,tContour1.v3.z);
+					}
+				}
+			}
+			for (int j=0; j<m_header.count; j++)
+				q_mark[j] = false;
+		}
+		else
+			for (int i=0; i < iCount; i++) {
+				iNodeIndex = UnpackLink(taLinks[i]);
+				q_mark[iNodeIndex] = false;
+			}
+	}
+	Msg("Total errors : %d",dwErrorsCount);
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	// for a* search
 	vfLoadSearch();

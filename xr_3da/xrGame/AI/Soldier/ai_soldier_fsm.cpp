@@ -291,8 +291,6 @@ void CAI_Soldier::OnFindAloneFire()
 			else {
 				SelectorRetreat.m_tEnemyPosition = tpaDynamicObjects[iIndex].tMySavedPosition;
 				SelectorRetreat.m_tpEnemyNode = Level().AI.Node(tpaDynamicObjects[iIndex].dwMyNodeID);
-				//SelectorRetreat.m_tMyPosition = tpaDynamicObjects[iIndex].tSavedPosition;
-				//SelectorRetreat.m_tpMyNode = Level().AI.Node(tpaDynamicObjects[iIndex].dwNodeID);
 				SelectorRetreat.m_tMyPosition = vPosition;
 				SelectorRetreat.m_tpMyNode = AI_Node;
 				vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
@@ -303,19 +301,13 @@ void CAI_Soldier::OnFindAloneFire()
 	}
 	
 
-//	if  ((AI_Path.fSpeed < EPS_L) && ((AI_Path.TravelPath.empty()) || (AI_Path.TravelPath.size() - 2 <= AI_Path.TravelStart))) {
-//		int iIndex = ifFindDynamicObject(tSavedEnemy);
-//		if (iIndex != -1)
-//			SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierFindAloneFireRetreat);
-//	}
-
 	if (AI_Path.fSpeed < EPS_L) {
 		SetLessCoverLook(AI_Node);
 		StandUp();
 		vfSetMovementType(RUN_FORWARD_3);
 	}
 	else
-		if (bfCheckForDangerPlace() && (!bfTooBigDistance(AI_Path.TravelPath[AI_Path.TravelStart].P,.5f))) {
+		if (bfCheckForDangerPlace() && (!bfTooBigDistance(AI_Path.TravelPath[AI_Path.TravelStart].P,.5f) || (r_torso_target.yaw - r_torso_current.yaw > EPS_L))) {
 			Squat();
 			vfSetMovementType(WALK_FORWARD_1);
 		}
@@ -875,8 +867,11 @@ void CAI_Soldier::OnTurnOver()
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfCheckForDanger(),aiSoldierFight)
 
 	if (bfTooBigAngle(r_torso_target.yaw,r_torso_current.yaw,PI_DIV_6)) {
+		ESoldierStates eDummy = tStateStack.top();
+		tStateStack.pop();
 		m_ePreviousState = tStateStack.top();
-		GO_TO_PREV_STATE
+		tStateStack.push(eDummy);
+		GO_TO_PREV_STATE_THIS_UPDATE
 	}
 
 	q_look.o_look_speed = r_spine_speed = r_torso_speed = TORSO_START_SPEED;
@@ -1015,13 +1010,19 @@ void CAI_Soldier::OnPatrolReturnToRoute()
 					tTemp.sub(vPosition,SelectorPatrol.taMemberPositions[i]);
 				}
 				if (fDistance < 5.f) {
+					ESoldierStates eDummy = tStateStack.top();
+					tStateStack.pop();
 					m_ePreviousState = tStateStack.top();
-					GO_TO_PREV_STATE
+					tStateStack.push(eDummy);
+					GO_TO_PREV_STATE_THIS_UPDATE
 				}
 			}
 			else {
+				ESoldierStates eDummy = tStateStack.top();
+				tStateStack.pop();
 				m_ePreviousState = tStateStack.top();
-				GO_TO_PREV_STATE
+				tStateStack.push(eDummy);
+				GO_TO_PREV_STATE_THIS_UPDATE
 			}
 		}
 		else {
@@ -1049,7 +1050,7 @@ void CAI_Soldier::OnPatrolRoute()
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfCheckForDanger(),aiSoldierFight);
 
-	CHECK_IF_SWITCH_TO_NEW_STATE(m_bStateChanged,aiSoldierPatrolReturnToRoute)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_bStateChanged,aiSoldierPatrolReturnToRoute)
 	
 	INIT_SQUAD_AND_LEADER;
 	DWORD dwCurTime = m_dwCurrentUpdate;

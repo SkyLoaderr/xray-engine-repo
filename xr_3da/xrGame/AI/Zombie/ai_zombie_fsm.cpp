@@ -55,6 +55,7 @@ void CAI_Zombie::Jumping()
 		else
 			if ((m_bJumping) && (Movement.Environment() == CMovementControl::peOnGround)) {
 				m_bJumping = false;
+				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				eCurrentState = tStateStack.top();
 				tStateStack.pop();
 			}
@@ -327,6 +328,7 @@ void CAI_Zombie::TurnOver()
 	CGroup &Group = Squad.Groups[g_Group()];
 	
 	if ((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))) {
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		m_ePreviousState = tStateStack.top();
 		GO_TO_PREV_STATE
 	}
