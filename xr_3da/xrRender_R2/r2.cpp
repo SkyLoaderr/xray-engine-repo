@@ -211,7 +211,7 @@ HRESULT	CRender::CompileShader			(
 	}
 	// options
 	if (b_fp16)	{
-		defines[def_it].Name		=	"FP16_DEFFER";
+		defines[def_it].Name		=	"FP16_DEFER";
 		defines[def_it].Definition	=	"1";
 		def_it						++;
 	}
