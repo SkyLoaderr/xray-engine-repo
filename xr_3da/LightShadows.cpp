@@ -207,9 +207,10 @@ void CLightShadows::render	()
 		int			s_x			=	S.slot%slot_line;
 		int			s_y			=	S.slot/slot_line;
 		Fvector2	t_scale, t_offset;
-		t_scale.set	(S_size/S_rt_size,S_size/S_rt_size);
-		t_offset.set(s_x/slot_line,s_y/slot_line);
-		t_offset.add(.5f/S_rt_size,.5f/S_rt_size);
+		t_scale.set	(float(S_size)/float(S_rt_size),float(S_size)/float(S_rt_size));
+		t_offset.set(float(s_x)/float(slot_line),float(s_y)/float(slot_line));
+		t_offset.x	+= .5f/S_rt_size;
+		t_offset.y	+= .5f/S_rt_size;
 		
 		// Frustum
 		CFrustum	F;
@@ -265,9 +266,9 @@ void CLightShadows::render	()
 	p1.set					((S_rt_size+.5f)/S_rt_size, (S_rt_size+.5f)/S_rt_size);
 	
 	// Fill vertex buffer
-	DWORD Offset, C=0xffffffff;
-	DWORD _w = S_rt_size/2, _h = S_rt_size/2;
-	FVF::TL* pv = (FVF::TL*) vs_Screen->Lock(4,Offset);
+	C			=	0xffffffff;
+	DWORD _w	=	S_rt_size/2, _h = S_rt_size/2;
+	FVF::TL* pv =	(FVF::TL*) vs_Screen->Lock(4,Offset);
 	pv->set(0,			float(_h),	.0001f,.9999f, C, p0.x, p1.y);	pv++;
 	pv->set(0,			0,			.0001f,.9999f, C, p0.x, p0.y);	pv++;
 	pv->set(float(_w),	float(_h),	.0001f,.9999f, C, p1.x, p1.y);	pv++;
