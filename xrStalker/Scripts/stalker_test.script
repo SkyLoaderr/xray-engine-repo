@@ -5,8 +5,6 @@ function main ()
     stalker:script	(true,stalker_test:script_name());
     
 	printf			("%d",device():time_global())
-	wait			(1000)
-	printf			("%d",device():time_global())
 	action (
 		stalker, 
 		anim		("stalker_2_1"),
