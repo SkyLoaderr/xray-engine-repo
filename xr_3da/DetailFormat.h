@@ -24,10 +24,10 @@
 
 struct ENGINE_API DetailHeader
 {
-	DWORD	version;
-	DWORD	object_count;
-	DWORD	offs_x,	offs_z;
-	DWORD	size_x,	size_z;
+	DWORD		version;
+	DWORD		object_count;
+	DWORD		offs_x,	offs_z;
+	DWORD		size_x,	size_z;
 };
 
 struct ENGINE_API DetailPalette
