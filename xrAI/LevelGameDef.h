@@ -24,6 +24,14 @@ enum ERPpointType{		// [0..255]
 	rptActorSpawn		= 0,
 	rptArtefactSpawn	,
 };
+
+
+enum ERPGameType{		// [0..255]
+	rptGameAny							= 0,
+	rptGameDeathmatch					= 1,
+	rptGameTeamDeathmatch				= 2,
+	rptGameArtefactHunt					= 3,
+};
 extern ECORE_API xr_token rpoint_type[];
 
 // BASE offset
