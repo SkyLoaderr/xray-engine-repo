@@ -69,6 +69,7 @@ void	CCar::IR_OnKeyboardHold(int cmd)
 	case kDOWN:
 	case kLEFT:
 	case kRIGHT:	active_camera->Move(cmd);	break;
+	case kREPAIR:	m_repairing=true;			break;
 /*
 	case kFWD:		
 		if (ectFree==active_camera->tag)	active_camera->Move(kUP);
@@ -85,8 +86,6 @@ void	CCar::IR_OnKeyboardHold(int cmd)
 	case kR_STRAFE: 
 		if (ectFree==active_camera->tag)	active_camera->Move(kRIGHT);
 		else								m_vCamDeltaHP.x += active_camera->rot_speed.x*Device.fTimeDelta;
-		break;
-	case kREPAIR:	m_repairing=true;		
 		break;
 */
 	}

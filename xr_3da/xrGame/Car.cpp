@@ -17,14 +17,13 @@ extern CPHWorld*	ph_world;
 CCar::CCar(void)
 {
 	active_camera	= 0;
-	m_vCamDeltaHP.set(0.f,0.f,0.f);
 	camera[ectFirst]= xr_new<CCameraFirstEye>	(this, pSettings, "car_firsteye_cam",	CCameraBase::flRelativeLink|CCameraBase::flPositionRigid); 
 	camera[ectFirst]->tag	= ectFirst;
 	camera[ectChase]= xr_new<CCameraLook>		(this, pSettings, "car_look_cam",		CCameraBase::flRelativeLink); 
 	camera[ectChase]->tag	= ectChase;
-	camera[ectFree]	= xr_new<CCameraLook>		(this, pSettings, "car_free_cam",		CCameraBase::flRelativeLink); 
+	camera[ectFree]	= xr_new<CCameraLook>		(this, pSettings, "car_free_cam",		0); 
 	camera[ectFree]->tag	= ectFree;
-	OnCameraChange(ectChase);
+	OnCameraChange(ectFirst);
 
 	m_repairing		=false;
 	m_owner			=NULL;
@@ -148,7 +147,7 @@ void	CCar::UpdateCL				( )
 	//	Log("UpdateCL",Device.dwFrame);
 	//XFORM().set(m_pPhysicsShell->mXFORM);
 	// Camera
-	if (IsMyCamera())				
+	if (m_owner&&IsMyCamera())				
 		cam_Update	(Device.fTimeDelta);
 	m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
 	Fvector lin_vel;
@@ -220,8 +219,8 @@ bool CCar::attach_Actor(CActor* actor)
 	if(m_owner) return false;
 	m_owner=actor;
 
-	CKinematics* K= PKinematics(Visual());
-	CInifile* ini = K->LL_UserData();
+	CKinematics* K	= PKinematics(Visual());
+	CInifile* ini	= K->LL_UserData();
 	int id;
 	if(ini->line_exist("car_definition","driver_place"))
 		id=K->LL_BoneID(ini->r_string("car_definition","driver_place"));
@@ -296,6 +295,7 @@ void CCar::ParseDefinitions()
 	CInifile* ini = pKinematics->LL_UserData();
 	if(! ini) return;
 
+	m_camera_position			= ini->r_fvector3("car_definition","camera_pos");
 	///////////////////////////car definition///////////////////////////////////////////////////
 	fill_wheel_vector			(ini->r_string	("car_definition","driving_wheels"),m_driving_wheels);
 	fill_wheel_vector			(ini->r_string	("car_definition","steering_wheels"),m_steering_wheels);

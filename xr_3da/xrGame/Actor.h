@@ -193,6 +193,7 @@ protected:
 	static void	__stdcall	SpinCallback	(CBoneInstance*);
 	static void	__stdcall	ShoulderCallback(CBoneInstance*);
 	static void	__stdcall	HeadCallback	(CBoneInstance*);
+	static void __stdcall	CarHeadCallback	(CBoneInstance*);
 private:
 	// Motions
 	u32						mstate_wishful;	
@@ -329,7 +330,7 @@ public:
 	virtual void						g_PerformDrop		( );
 	virtual void						g_WeaponBones		(int &L, int &R1, int &R2);
 	
-	SRotation							Orientation()		{ return r_torso; };
+	SRotation&							Orientation()		{ return r_torso; };
 
 	virtual void						IR_OnMouseMove		(int x, int y);
 	virtual void						IR_OnKeyboardPress	(int dik);

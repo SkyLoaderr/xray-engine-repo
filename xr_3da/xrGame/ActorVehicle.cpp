@@ -12,14 +12,14 @@ void CActor::attach_Vehicle(CCar* vehicle)
 	m_vehicle=vehicle;
 
 
+	CKinematics* V		= PKinematics(Visual());
+	R_ASSERT			(V);
 	
 	if(!m_vehicle->attach_Actor(this)){
 		m_vehicle=NULL;
 		return;
 	}
 	// temp play animation
-	CKinematics* V		= PKinematics(Visual());
-	R_ASSERT			(V);
 	V->PlayCycle(m_anims.m_steering_legs_idle);
 	V->PlayCycle(m_anims.m_steering_torso_idle);
 	int spine_bone		= V->LL_BoneID("bip01_spine1");
@@ -27,7 +27,8 @@ void CActor::attach_Vehicle(CCar* vehicle)
 	int head_bone		= V->LL_BoneID("bip01_head");
 	V->LL_GetInstance(spine_bone).set_callback		(NULL,NULL);
 	V->LL_GetInstance(shoulder_bone).set_callback	(NULL,NULL);
-	V->LL_GetInstance(head_bone).set_callback		(NULL,NULL);
+	V->LL_GetInstance(head_bone).set_callback		(CarHeadCallback,this);
+
 	ph_Movement.DestroyCharacter();
 	//PIItem iitem=m_inventory.ActiveItem();
 	//if(iitem)iitem->m_showHUD=false;

@@ -189,8 +189,10 @@ private:
 	bool					m_repairing;
 	CCameraBase*			camera[3];
 	CCameraBase*			active_camera;
+
+	Fvector					m_camera_position;
+
 	CActor*					m_owner;
-	Fvector					m_vCamDeltaHP;
 	////////////////////////////////////////////////////
 	friend struct SWheel;
 	friend struct SDoor;

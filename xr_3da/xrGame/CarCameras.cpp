@@ -15,21 +15,24 @@ void	CCar::cam_Update			(float dt)
 	XFORM().getHPB					(yaw_dest,pitch_dest,bank_dest);
 
 	switch(active_camera->tag) {
-	case ectFirst:
+	case ectFirst:{
 		//		angle_lerp					(active_camera->yaw,	-yaw_dest+m_vCamDeltaHP.x,		PI_DIV_2,dt);
 		//		angle_lerp					(active_camera->pitch,	-pitch_dest+m_vCamDeltaHP.y,	PI_DIV_2,dt);
-		P.set						(-0.5f,1.5f,-.05f);
-		XFORM().transform_tiny	(P);
+		XFORM().transform_tiny		(P,m_camera_position);
+
+		m_owner->Orientation().yaw	= -(active_camera->yaw-yaw_dest);
+		m_owner->Orientation().pitch= 0;//-active_camera->pitch;
 		//		m_vCamDeltaHP.x				= m_vCamDeltaHP.x*(1-PI*dt)+((active_camera->lim_yaw.y+active_camera->lim_yaw.x)/2.f)*PI*dt;
-		break;
+		}break;
 	case ectChase:
-		angle_lerp					(active_camera->yaw,	-(yaw_dest+m_vCamDeltaHP.x),	PI_DIV_4,dt);
-		angle_lerp					(active_camera->pitch,	-pitch_dest+m_vCamDeltaHP.y,	PI_DIV_4,dt);
+//		angle_lerp					(active_camera->yaw,	-(yaw_dest+m_vCamDeltaHP.x),	PI_DIV_4,dt);
+//		angle_lerp					(active_camera->pitch,	-pitch_dest+m_vCamDeltaHP.y,	PI_DIV_4,dt);
 		Center					(P);
-		m_vCamDeltaHP.x				= m_vCamDeltaHP.x*(1-PI*dt)+((active_camera->lim_yaw.y+active_camera->lim_yaw.x)/2.f)*PI*dt;
+//		m_vCamDeltaHP.x				= m_vCamDeltaHP.x*(1-PI*dt)+((active_camera->lim_yaw.y+active_camera->lim_yaw.x)/2.f)*PI*dt;
 		break;
 	case ectFree:
 		Center					(P);
+		m_owner->Orientation().yaw	= -active_camera->yaw;
 		break;
 	}
 
@@ -46,7 +49,7 @@ void	CCar::OnCameraChange		(int type)
 		float Y,P,R;
 		XFORM().getHPB			(Y,P,R);
 		active_camera->yaw			= -Y;
-		m_vCamDeltaHP.y	= active_camera->pitch;
+//		m_vCamDeltaHP.y	= active_camera->pitch;
 	}
 }
 
