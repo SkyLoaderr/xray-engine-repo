@@ -25,11 +25,9 @@ public:
 	u32					stat_calls;
 	s32					stat_counter;
 public:
-#ifdef DEBUG
 	void				dbg_register	(void* _p,	size_t _size);
 	void				dbg_unregister	(void* _p);
 	void				dbg_check		();
-#endif
 
 	u32					mem_usage		(u32* pBlocksUsed=NULL, u32* pBlocksFree=NULL);
 	void				mem_compact		();

@@ -273,8 +273,10 @@ void CLightShadows::calculate	()
 			
 			// register shadow and increment slot
 			shadows.push_back	(shadow());
+#ifdef DEBUG
 			shadows.back().dbg_O	=	C.O;
 			shadows.back().dbg_HAT	=	p_hat;
+#endif
 			shadows.back().slot	=	slot_id;
 			shadows.back().C	=	C.C;
 			shadows.back().M	=	mCombineR;

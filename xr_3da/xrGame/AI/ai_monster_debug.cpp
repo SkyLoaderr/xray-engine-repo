@@ -4,8 +4,9 @@
 #include "../hudmanager.h"
 
 #define DISABLE_MONSTER_DEBUG
-#ifndef DEBUG
-	#undef DISABLE_MONSTER_DEBUG
+#ifdef DEBUG
+	#undef	DISABLE_MONSTER_DEBUG
+	#define DISABLE_MONSTER_DEBUG
 #endif
 
 CMonsterDebug::CMonsterDebug(CEntityAlive *pM, const Fvector &shift_vec, float height)

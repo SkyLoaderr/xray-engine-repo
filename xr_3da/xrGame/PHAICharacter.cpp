@@ -82,7 +82,7 @@ void CPHAICharacter::InitContact(dContact* c){
 
 	dReal spring_rate=def_spring_rate;
 	dReal dumping_rate=def_dumping_rate;
-	R_ASSERT2(dV_valid(c->geom.pos),"odd contact position");
+	VERIFY2(dV_valid(c->geom.pos),"odd contact position");
 	bool object=(dGeomGetBody(c->geom.g1)&&dGeomGetBody(c->geom.g2));
 	b_on_object=b_on_object||object;
 	*p_lastMaterial=((dxGeomUserData*)dGeomGetData(m_wheel))->tri_material;

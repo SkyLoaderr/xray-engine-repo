@@ -304,6 +304,7 @@ void CCustomDetector::OnH_B_Independent()
 	//u_EventSend			(P);
 }
 
+#ifdef DEBUG
 void CCustomDetector::OnRender() 
 {
 	if(!bDebug) return;
@@ -316,6 +317,7 @@ void CCustomDetector::OnRender()
 	l_ball.translate_add(l_p);
 	RCache.dbg_DrawEllipse(l_ball, D3DCOLOR_XRGB(255,0,255));
 }
+#endif
 
 void CCustomDetector::renderable_Render()
 {

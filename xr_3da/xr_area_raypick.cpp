@@ -96,11 +96,13 @@ BOOL CObjectSpace::RayPick	( const Fvector &start, const Fvector &dir, float ran
 				C	= D3DCOLOR_XRGB(128,128,196);
 				R.set_if_less(r_temp.r_begin());
 			}
+#ifdef DEBUG
 			if (bDebug) 
 			{
 				Fsphere	S;		S.P = spatial->spatial.center; S.R = spatial->spatial.radius;
 				dbg_S.push_back	(mk_pair(S,C));
 			}
+#endif
 		}
 	}
 	return (R.element>=0);

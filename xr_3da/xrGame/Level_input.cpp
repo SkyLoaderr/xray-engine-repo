@@ -14,9 +14,11 @@ void CLevel::IR_OnKeyboardPress(int key)
 
 	switch (key) 
 	{
+#ifdef DEBUG
 	case DIK_RETURN:
 		bDebug	= !bDebug;
 		return;
+#endif
 	case DIK_F12:
 		Render->Screenshot			();
 		return;

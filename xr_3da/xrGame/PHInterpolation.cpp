@@ -20,7 +20,7 @@ qRotations.fill_in(fQ);
 void CPHInterpolation::UpdatePositions(){
 	if(!m_body)
 		return;
-	R_ASSERT2(dV_valid(dBodyGetPosition(m_body)),"invalid body position in update interpolation");
+	VERIFY2(dV_valid(dBodyGetPosition(m_body)),"invalid body position in update interpolation");
 	qPositions.push_back(*((Fvector*) dBodyGetPosition(m_body)));
 
 }
@@ -28,7 +28,7 @@ void CPHInterpolation::UpdatePositions(){
 void CPHInterpolation::UpdateRotations(){
 	if(!m_body)
 		return;
-	R_ASSERT2(dM_valid(dBodyGetRotation(m_body)),"invalid body rotation in update interpolation");
+	VERIFY2(dM_valid(dBodyGetRotation(m_body)),"invalid body rotation in update interpolation");
 	//qRotations.pop_front();
 	const dReal* dQ=dBodyGetQuaternion(m_body);
 	Fquaternion fQ;

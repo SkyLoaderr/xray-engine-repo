@@ -41,6 +41,7 @@ public:
 	
 	//звуки
 	ref_sound m_noise, m_buzzer;
-
+#ifdef DEBUG
 	virtual void		OnRender	();
+#endif
 };

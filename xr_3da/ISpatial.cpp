@@ -209,8 +209,6 @@ void			ISpatial_DB::_insert	(ISpatial_NODE* N, Fvector& n_C, float n_R)
 	}
 }
 
-BOOL			f_valid					(float f)		{	return _finite(f) && !_isnan(f);	}
-
 void			ISpatial_DB::insert		(ISpatial* S)
 {
 	cs.Enter			();

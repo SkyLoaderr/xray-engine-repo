@@ -255,10 +255,10 @@ void CLevel::OnRender()
 #ifdef DEBUG
 	if (ai().get_level_graph() && (bDebug || psAI_Flags.test(aiMotion)))
 		ai().level_graph().render();
-#endif
 	if (bDebug)	{
 		ObjectSpace.dbgRender	();
 	}
+#endif
 }
 
 void CLevel::OnEvent(EVENT E, u64 P1, u64 /**P2/**/)
