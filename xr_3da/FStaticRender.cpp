@@ -127,8 +127,12 @@ IC		void		gm_SetLighting		(CObject* O)
 		CLightTrack& LT		= *O->Lights	();
 		
 		// shadowing
-		if (LT.Shadowed_dwFrame==Device.dwFrame)
-			Render_Implementation.L_Projector.setup(LT.Shadowed_Slot);
+		if (LT.Shadowed_dwFrame==Device.dwFrame)	{
+			gm_SetAmbient		(0);
+			Render_Implementation.L_Projector.setup	(LT.Shadowed_Slot);
+		} else {
+			gm_SetAmbient		(iFloor(LT.ambient));
+		}
 
 		// ambience
 		// gm_SetAmbient		(iFloor(LT.ambient)/2);
