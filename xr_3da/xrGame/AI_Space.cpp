@@ -309,7 +309,7 @@ void CAI_Space::Render()
 	u32 ID				= O->AI_NodeID;
 
 	CGameFont* F		= ((CHUDManager*)Level().HUD())->pFontDI;
-	F->Size				(.02f);
+	F->SetSize			(.02f);
 	F->Out				(0.f,0.5f,"%f,%f,%f",VPUSH(P));
 	F->Out				(0.f,0.55f,"%3d,%4d,%3d -> %d",	iFloor(Local.x),iFloor(Local.y),iFloor(Local.z),u32(ID));
 
@@ -333,7 +333,7 @@ void CAI_Space::Render()
 	Fvector	DUP;	DUP.set(0,1,0);
 
 	Device.Shader.set_Shader(sh_debug);
-	F->Color		(D3DCOLOR_RGBA(255,255,255,255));
+	F->SetColor		(D3DCOLOR_RGBA(255,255,255,255));
 
 	for (u32 Nid=0; Nid<m_header.count; Nid++)
 	{
@@ -386,7 +386,7 @@ void CAI_Space::Render()
 				Fvector4	S;
 				T.set		(PC); T.y+=0.3f;
 				Device.mFullTransform.transform	(S,T);
-				F->Size		(0.05f/sqrtf(_abs(S.w)));
+				F->SetSize	(0.05f/sqrtf(_abs(S.w)));
 				F->Out		(S.x,-S.y,"~%d",Nid);
 			}
 		}

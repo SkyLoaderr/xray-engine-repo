@@ -91,7 +91,7 @@ void CUI::OnFrame()
 			u32 color = messages[i]->color;
 			if (M->life_time<=(HIDE_TIME*1000))
 				color = ScaleAlpha(color, float(M->life_time)/float(HIDE_TIME*1000));
-			m_Parent->pFontSmall->Color(color);
+			m_Parent->pFontSmall->SetColor(color);
 			m_Parent->pFontSmall->OutPrev("%s: %s",messages[i]->sender,messages[i]->msg);
 		}
 	}

@@ -40,8 +40,15 @@ public:
 		fsDeviceIndependent	= (1<<1),
 		fsValid 			= (1<<2),
 
-		fsForceDWORD		= (-1)
+		fsForceDWORD		= u32(-1)
 	};
+	enum EAligment{
+		alLeft				= 0,
+		alRight,
+		alCenter
+	};
+protected:
+	EAligment				uAligment;
 protected:
 	IC	float				ConvertX		(float x)	{return (uFlags&fsDeviceIndependent)?Device._x2real(x):x;}
 	IC	float				ConvertY		(float y)	{return (uFlags&fsDeviceIndependent)?Device._y2real(y):y;}
@@ -53,9 +60,11 @@ public:
 							CGameFont		(LPCSTR shader, LPCSTR texture, u32 flags=0);
 							~CGameFont		();
 
-	IC void					Color			(u32 C)	{dwCurrentColor=C;};
-	IC void					Size			(float S)	{fCurrentSize=S;};
-	IC void					Interval		(float x, float y) {vInterval.set(x,y);};
+	IC void					SetColor		(u32 C)	{dwCurrentColor=C;};
+	IC void					SetSize			(float S)	{fCurrentSize=S;};
+	IC void					SetInterval		(float x, float y) {vInterval.set(x,y);};
+	IC void					SetInterval		(const Fvector2& v) {vInterval.set(v);};
+	IC void					SetAligment		(EAligment aligment){ uAligment=aligment; }
 	IC void					Add				(float _x, float _y, char *s, u32 _c=0xffffffff, float _size=0.01f);
 	float					SizeOf			(char *s);
 	void					OutSet			(float x, float y)	{fCurrentX=x; fCurrentY=y;}

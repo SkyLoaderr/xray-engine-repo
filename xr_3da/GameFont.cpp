@@ -11,8 +11,10 @@
 CGameFont::CGameFont(LPCSTR section, u32 flags)
 {
 	Initialize	(pSettings->ReadSTRING(section,"shader"),pSettings->ReadSTRING(section,"texture"),flags);
-	if (pSettings->LineExists(section,"size"))		Size(pSettings->ReadFLOAT(section,"size"));
-	if (pSettings->LineExists(section,"interval"))	vInterval = pSettings->ReadVECTOR2(section,"interval");
+	if (pSettings->LineExists(section,"size"))		
+		SetSize(pSettings->ReadFLOAT(section,"size"));
+	if (pSettings->LineExists(section,"interval"))	
+		SetInterval(pSettings->ReadVECTOR2(section,"interval"));
 }
 CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, u32 flags)
 {
@@ -20,6 +22,7 @@ CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, u32 flags)
 }
 void CGameFont::Initialize(LPCSTR shader, LPCSTR texture, u32 flags)
 {
+	uAligment					= alLeft;
 	uFlags						= flags;
 	cShader						= xr_strdup(shader);
 	cTexture					= xr_strdup(texture);
@@ -64,7 +67,8 @@ void CGameFont::Initialize(LPCSTR shader, LPCSTR texture, u32 flags)
 				TCMap[i].set			((i%cpl)*width,(i/cpl)*fHeight,width);
 		}
 	}
-	if (!(uFlags&fsDeviceIndependent)) Size(fHeight);
+	if (!(uFlags&fsDeviceIndependent)) 
+		SetSize					(fHeight);
 	CInifile::Destroy			(ini);
 
 	OnDeviceCreate				();
@@ -149,6 +153,8 @@ void CGameFont::OnRender()
 				float	Y2	= Y+S;
 				S			= (S*vTS.x)/fHeight;
 
+				if (alCenter==uAligment) X-=SizeOf(PS.string)*.5f;
+
 				u32	clr,clr2; 
 				clr			= PS.c; 
 				if (uFlags&fsGradient){
@@ -174,7 +180,10 @@ void CGameFont::OnRender()
 						v->set	(X+scw,	Y2,	clr2,tu+l.z,	tv+fTCHeight);	v++;
 						v->set	(X+scw,	Y,	clr, tu+l.z,	tv);			v++;
 					}
-					X			+=scw*vInterval.x;
+					switch(uAligment){
+					case alRight:	X-=scw*vInterval.x; break;
+					default:		X+=scw*vInterval.x; break;
+					}
 				}
 			}
 		}

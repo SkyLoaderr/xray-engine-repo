@@ -135,14 +135,14 @@ void CLevel::OnFrame	()
 		if (psDeviceFlags&rsStatistic)
 		{
 			const IServerStatistic* S = Server->GetStatistic();
-			F->Size	(0.015f);
+			F->SetSize	(0.015f);
 			F->OutSet	(0.0f,0.5f);
-			F->Color	(D3DCOLOR_XRGB(0,255,0));
-			F->OutNext("IN:  %4d/%4d (%2.1f%%)",	S->bytes_in_real,	S->bytes_in,	100.f*float(S->bytes_in_real)/float(S->bytes_in));
-			F->OutNext("OUT: %4d/%4d (%2.1f%%)",	S->bytes_out_real,	S->bytes_out,	100.f*float(S->bytes_out_real)/float(S->bytes_out));
-			F->OutNext("client_2_sever ping: %d",	net_Statistic.getPing());
+			F->SetColor	(D3DCOLOR_XRGB(0,255,0));
+			F->OutNext	("IN:  %4d/%4d (%2.1f%%)",	S->bytes_in_real,	S->bytes_in,	100.f*float(S->bytes_in_real)/float(S->bytes_in));
+			F->OutNext	("OUT: %4d/%4d (%2.1f%%)",	S->bytes_out_real,	S->bytes_out,	100.f*float(S->bytes_out_real)/float(S->bytes_out));
+			F->OutNext	("client_2_sever ping: %d",	net_Statistic.getPing());
 			
-			F->Color	(D3DCOLOR_XRGB(255,255,255));
+			F->SetColor	(D3DCOLOR_XRGB(255,255,255));
 			for (u32 I=0; I<Server->client_Count(); I++)
 			{
 				IClient*	C = Server->client_Get(I);
@@ -158,9 +158,9 @@ void CLevel::OnFrame	()
 	} else {
 		if (psDeviceFlags&rsStatistic)
 		{
-			F->Size	(0.015f);
+			F->SetSize	(0.015f);
 			F->OutSet	(0.0f,0.5f);
-			F->Color	(D3DCOLOR_XRGB(0,255,0));
+			F->SetColor	(D3DCOLOR_XRGB(0,255,0));
 			F->OutNext("client_2_sever ping: %d",	net_Statistic.getPing());
 		}
 	}

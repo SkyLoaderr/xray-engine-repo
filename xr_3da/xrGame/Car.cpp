@@ -311,11 +311,11 @@ void	CCar::OnKeyboardHold		(int cmd)
 void	CCar::OnHUDDraw				(CCustomHUD* hud)
 {
 #ifdef DEBUG
-	CHUDManager* HUD	= (CHUDManager*)hud;
-	HUD->pFontSmall->Color	(0xffffffff);
-	HUD->pFontSmall->OutSet	(120,530);
-	HUD->pFontSmall->OutNext("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(vPosition));
-	HUD->pFontSmall->OutNext("Velocity:      [%3.2f]",m_jeep.GetVelocity().magnitude());
+	CHUDManager* HUD			= (CHUDManager*)hud;
+	HUD->pFontSmall->SetColor	(0xffffffff);
+	HUD->pFontSmall->OutSet		(120,530);
+	HUD->pFontSmall->OutNext	("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(vPosition));
+	HUD->pFontSmall->OutNext	("Velocity:      [%3.2f]",m_jeep.GetVelocity().magnitude());
 #endif
 }
 

@@ -74,9 +74,9 @@ void CUIGroup::Render(CGroup& G, int idx, int grp_index, bool bSelected)
 	list_bottom.SetPos(iFloor(sc_offset+3*sc),iFloor(Y*sc));
 	list_bottom.Render();
 	// counters
-	HUD->pFontSmall->Color	(0xffffffff);
-	HUD->pFontSmall->Out	(float(offset+5),	10,	"#%02d",grp_index+1);
-	HUD->pFontSmall->Out	(float(offset+30),	40,	"%02d",item_cnt);
+	HUD->pFontSmall->SetColor	(0xffffffff);
+	HUD->pFontSmall->Out		(float(offset+5),	10,	"#%02d",grp_index+1);
+	HUD->pFontSmall->Out		(float(offset+30),	40,	"%02d",item_cnt);
 }
 //--------------------------------------------------------------------
 

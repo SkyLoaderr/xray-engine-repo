@@ -72,7 +72,7 @@ void CUIGameCS::OnFrame()
 	break;
 	}
 	game_cl_GameState::Player* P = Game().local_player;
-	m_Parent->m_Parent->pFontBigDigit->Color	(0xA0969678);
+	m_Parent->m_Parent->pFontBigDigit->SetColor	(0xA0969678);
 	m_Parent->m_Parent->pFontBigDigit->OutSet	((float)vMoneyPlace.x,(float)vMoneyPlace.y);
 	m_Parent->m_Parent->pFontBigDigit->OutNext	("$%-4d",P->money_total);
 }

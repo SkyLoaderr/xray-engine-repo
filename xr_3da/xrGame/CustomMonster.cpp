@@ -602,7 +602,7 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 void CCustomMonster::OnHUDDraw(CCustomHUD* hud)
 {
 	CHUDManager* H			= (CHUDManager*)hud;
-	H->pFontSmall->Color	(D3DCOLOR_XRGB(255,0,0));
+	H->pFontSmall->SetColor	(D3DCOLOR_XRGB(255,0,0));
 	H->pFontSmall->OutSet	(0,200);
 	H->pFontSmall->OutNext	("NET_Q_size: %d",NET.size());
 	

@@ -42,8 +42,8 @@ void CUIDMFragList::OnFrame()
 	int k=1;
 	for (ItemIt mI=items.begin(); mI!=items.end(); mI++){
 		game_cl_GameState::Player* P = (game_cl_GameState::Player*)*mI;
-		if (P->flags&GAME_PLAYER_FLAG_LOCAL)	H->Color(0xf0a0ffa0);
-		else									H->Color(0xb0a0a0a0);
+		if (P->flags&GAME_PLAYER_FLAG_LOCAL)	H->SetColor(0xf0a0ffa0);
+		else									H->SetColor(0xb0a0a0a0);
 		H->OutNext		("%3d: %-20s %-5d",k++,P->name,P->kills);
 	}
 }

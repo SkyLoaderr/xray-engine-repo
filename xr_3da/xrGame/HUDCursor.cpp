@@ -86,8 +86,8 @@ void CHUDCursor::Render()
 
 	CGameFont* F = Level().HUD()->pFontDI;
 	if (psHUD_Flags&HUD_CROSSHAIR_DIST){
-		F->Color	(C);
-		F->Size		(di_size*1.5f);
+		F->SetColor	(C);
+		F->SetSize	(di_size*1.5f);
 		F->Out		(PT.p.x,PT.p.y+di_size*2,"~%3.1f",dist);
 	}
 	if (RQ.O && (psHUD_Flags&HUD_INFO))
@@ -95,8 +95,8 @@ void CHUDCursor::Render()
 		CEntityAlive*	E = dynamic_cast<CEntityAlive*>(RQ.O);
 		if (E && (E->g_Health()>0)) 
 		{
-			F->Color	(C);
-			F->Size		(0.02f);
+			F->SetColor	(C);
+			F->SetSize	(0.02f);
 			F->Out		(PT.p.x,PT.p.y+di_size*4,"~%s",RQ.O->cName());
 		}
 	}

@@ -93,7 +93,7 @@ void CStats::Show()
 		b_ps						= .99f*b_ps + .01f*(clBOX.count/clBOX.result);
 		
 		CGameFont&	F = *((CGameFont*)pFont);
-		F.Color		(0xFFFFFFFF	);
+		F.SetColor	(0xFFFFFFFF	);
 		F.OutSet	(0,0);
 		F.OutNext	("FPS/RFPS:    %3.1f/%3.1f",fFPS,fRFPS);
 		F.OutNext	("TPS:         %2.2f M",fTPS);

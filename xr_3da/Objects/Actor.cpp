@@ -894,8 +894,8 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 #ifdef _DEBUG
 	CHUDManager* HUD	= (CHUDManager*)hud;
 	string128 buf;
-	HUD->pFontSmall->Color(0xffffffff);
-	HUD->pFontSmall->OutSet(120,530);
+	HUD->pFontSmall->SetColor(0xffffffff);
+	HUD->pFontSmall->OutSet	(120,530);
 	HUD->pFontSmall->OutNext("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(vPosition));
 	HUD->pFontSmall->OutNext("Velocity:      [%3.2f, %3.2f, %3.2f]",VPUSH(Movement.GetVelocity()));
 	HUD->pFontSmall->OutNext("Vel Magnitude: [%3.2f]",Movement.GetVelocityMagnitude());
