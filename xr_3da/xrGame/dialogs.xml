@@ -201,6 +201,7 @@
 	</dialog>
 
 	<dialog id="stalker_talk_about">
+	<precondition>trader_job.is_stalker</precondition>
 	    <has_info>actor_start</has_info>
 		<phrase_list>
 			<phrase id="0">
