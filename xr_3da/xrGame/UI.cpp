@@ -26,7 +26,7 @@ CUI::CUI(CHUDManager* p)
 	pUIDMFragList	= 0;
 	pUIDMPlayerList	= 0;
 
-	msgs_offs		= m_Parent->ClientToScreenY(MSGS_OFFS,alLeft|alBottom);
+	msgs_offs		= (float)m_Parent->ClientToScreenY(MSGS_OFFS,alLeft|alBottom);
 }
 //--------------------------------------------------------------------
 

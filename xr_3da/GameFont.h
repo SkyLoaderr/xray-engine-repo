@@ -17,7 +17,7 @@ class ENGINE_API CGameFont: public pureDeviceDestroy, public pureDeviceCreate
 	LPSTR					cTexture;
 protected:
 	Fvector2				vHalfPixel;
-	Fvector2				vTS;
+	Ivector2				vTS;
 
 	u32						dwCurrentColor;
 	float					fCurrentSize;
@@ -27,13 +27,13 @@ protected:
 	int						CharMap[256];
 	Fvector 				TCMap[256];
 	float					fHeight;
+	float					fTCHeight;
 	vector<String>			strings;
 
 	Shader*					pShader;
 	CVS*					VS;
 
 	u32						uFlags;
-//A	float					fScale;
 public:
 	enum{
 		fsGradient			= (1<<0),
@@ -45,7 +45,7 @@ public:
 protected:
 	IC	float				ConvertX		(float x)	{return (uFlags&fsDeviceIndependent)?Device._x2real(x):x;}
 	IC	float				ConvertY		(float y)	{return (uFlags&fsDeviceIndependent)?Device._y2real(y):y;}
-//	IC	float				ConvertSize		(float sz)	{return (uFlags&fsDeviceIndependent)?Device.dwWidth:sz;}
+	IC	float				ConvertSize		(float sz)	{return (uFlags&fsDeviceIndependent)?sz*Device.dwWidth:sz;}
 public:
 							CGameFont		(LPCSTR shader, LPCSTR texture, u32 flags=0);
 							~CGameFont		();
@@ -54,18 +54,7 @@ public:
 	IC void					Size			(float S)	{fCurrentSize=S;};
 	IC void					Interval		(float x, float y) {vInterval.set(x,y);};
 	IC void					Add				(float _x, float _y, char *s, u32 _c=0xffffffff, float _size=0.01f);
-	IC float				SizeOf			(char *s)	
-	{ 
-		int		len			= strlen(s);
-		float	X			= 0;
-		if (len) {
-			for (int j=0; j<len; j++) {
-				float cw	= TCMap[s[j]].z;
-				X			+=cw;
-			}
-		}
-		return X*fCurrentSize*vInterval.x; 
-	}
+	float					SizeOf			(char *s);
 	void					OutSet			(float x, float y)	{fCurrentX=x; fCurrentY=y;}
 	void __cdecl            OutNext			(char *fmt, ...);
 	void __cdecl            OutPrev			(char *fmt, ...);

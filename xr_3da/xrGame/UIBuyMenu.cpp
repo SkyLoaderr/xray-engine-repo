@@ -11,9 +11,9 @@
 CUIBuyMenu::CUIBuyMenu	()
 {
 	CHUDManager* HUD	= (CHUDManager*)Level().HUD();
-	menu_offs			= iFloor(HUD->ClientToScreenY(BUY_MENU_OFFS,alLeft|alTop));
-	menu_offs_col[0]	= iFloor(HUD->ClientToScreenX(BUY_MENU_OFFS_COL1,alLeft|alTop));
-	menu_offs_col[1]	= iFloor(HUD->ClientToScreenX(BUY_MENU_OFFS_COL2,alLeft|alTop));
+	menu_offs			= HUD->ClientToScreenY(BUY_MENU_OFFS,alLeft|alTop);
+	menu_offs_col[0]	= HUD->ClientToScreenX(BUY_MENU_OFFS_COL1,alLeft|alTop);
+	menu_offs_col[1]	= HUD->ClientToScreenX(BUY_MENU_OFFS_COL2,alLeft|alTop);
 	menu_root			= 0;
 	menu_active			= 0;
 }

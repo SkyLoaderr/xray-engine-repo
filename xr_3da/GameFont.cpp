@@ -28,15 +28,36 @@ CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, u32 flags)
 	R_ASSERT(Engine.FS.Exist(fn,Path.Textures,buf,".ini"));
 #endif
 	CInifile* ini				= CInifile::Create(fn);
-	for (int i=0; i<256; i++){
-		buf[0]					= 0;
-		sprintf					(buf,"%03d",i);
-		Fvector v				= ini->ReadVECTOR("symbol_coords",buf);
-		TCMap[i].set			(v.x,v.y,v[2]-v[0]);
+	if (ini->SectionExists("symbol_coords")){
+		for (int i=0; i<256; i++){
+			sprintf					(buf,"%03d",i);
+			Fvector v				= ini->ReadVECTOR("symbol_coords",buf);
+			TCMap[i].set			(v.x,v.y,v[2]-v[0]);
+		}
+		fHeight						= ini->ReadFLOAT("symbol_coords","height");
+		vInterval.set				(1.f,1.f);
+	}else{
+		if (ini->SectionExists("char widths")){
+			fHeight					= ini->ReadFLOAT("char widths","height");
+			const int cpl			= 16;
+			for (int i=0; i<256; i++){
+				sprintf				(buf,"%d",i);
+				float w				= ini->ReadFLOAT("char widths",buf);
+				TCMap[i].set		((i%cpl)*fHeight,(i/cpl)*fHeight,w);
+			}
+			vInterval.set			(1.f,1.f);
+		}else{
+			R_ASSERT(ini->SectionExists("font_size"));
+			fHeight					= ini->ReadFLOAT("font_size","height");
+			float width				= ini->ReadFLOAT("font_size","width");
+			const int cpl			= ini->ReadINT	("font_size","cpl");
+			vInterval.x				= ini->ReadFLOAT("font_size","interval");
+			vInterval.y				= 1.f;
+			for (int i=0; i<256; i++)
+				TCMap[i].set			((i%cpl)*width,(i/cpl)*fHeight,width);
+		}
 	}
-	fHeight						= ini->ReadFLOAT("symbol_coords","height");
 	if (!(uFlags&fsDeviceIndependent)) Size(fHeight);
-	vInterval.set				(1.f,1.f);
 	CInifile::Destroy			(ini);
 
 	OnDeviceCreate				();
@@ -81,11 +102,11 @@ void CGameFont::OnRender()
 		vTS.set			((int)T->get_Width(),(int)T->get_Height());
 		vHalfPixel.set	(0.5f/float(vTS.x),0.5f/float(vTS.y));
 		for (int i=0; i<256; i++){ 
-			TCMap[i].x	/= vTS.x;
-			TCMap[i].y	/= vTS.y;
-			TCMap[i].z	/= vTS.x;
+			TCMap[i].x	/= float(vTS.x);
+			TCMap[i].y	/= float(vTS.y);
+			TCMap[i].z	/= float(vTS.x);
 		}
-		fHeight			/= vTS.y;
+		fTCHeight		= fHeight/float(vTS.y);
 		uFlags			|= fsValid;
 	}
 
@@ -115,10 +136,11 @@ void CGameFont::OnRender()
 			String		&PS	= strings[i];
 			int			len	= strlen(PS.string);
 			if (len) {
-				float	X	= float			(iFloor(ConvertX(PS.x)));
-				float	Y	= float			(iFloor(ConvertY(PS.y)));
-				float	S	= (uFlags&fsDeviceIndependent)?PS.size*Device.dwWidth:PS.size;
-				float	Y2	= Y+S; 
+				float	X	= float(iFloor(ConvertX(PS.x)));
+				float	Y	= float(iFloor(ConvertY(PS.y)));
+				float	S	= ConvertSize(PS.size);
+				float	Y2	= Y+S;
+				S			= S/fHeight*vTS.x;
 
 				u32	clr,clr2; 
 				clr			= PS.c; 
@@ -136,13 +158,13 @@ void CGameFont::OnRender()
 				for (int j=0; j<len; j++) {
 					int c		= CharMap	[PS.string[j]];
 					Fvector& l	= TCMap		[PS.string[j]];
-					float scw	= S*l.z*vTS.x;
+					float scw	= S*l.z;
 					if ((c>=0)&&!fis_zero(l.z)){
 						tu		= l.x+vHalfPixel.x;
 						tv		= l.y+vHalfPixel.y;
-						v->set	(X,		Y2,	clr2,tu,		tv+fHeight);	v++;
+						v->set	(X,		Y2,	clr2,tu,		tv+fTCHeight);	v++;
 						v->set	(X,		Y,	clr, tu,		tv);			v++;
-						v->set	(X+scw,	Y2,	clr2,tu+l.z,	tv+fHeight);	v++;
+						v->set	(X+scw,	Y2,	clr2,tu+l.z,	tv+fTCHeight);	v++;
 						v->set	(X+scw,	Y,	clr, tu+l.z,	tv);			v++;
 					}
 					X			+=scw*vInterval.x;
@@ -188,7 +210,7 @@ void __cdecl CGameFont::Out(float _x, float _y, char *fmt,...)
 	if (fmt[0]=='~') {
 		vsprintf(rs.string,&(fmt[1]),p);
 		VERIFY(strlen(rs.string)<127);
-		rs.x-=SizeOf(rs.string);
+		rs.x-=SizeOf(rs.string)*.5f;
 	} else {
 		vsprintf(rs.string,fmt,p);
 		VERIFY(strlen(rs.string)<127);
@@ -211,7 +233,7 @@ void __cdecl CGameFont::OutNext(char *fmt,...)
 	if (fmt[0]=='~') {
 		vsprintf(rs.string,&(fmt[1]),p);
 		VERIFY(strlen(rs.string)<127);
-		rs.x-=SizeOf(rs.string);
+		rs.x-=SizeOf(rs.string)*.5f;
 	} else {
 		vsprintf(rs.string,fmt,p);
 		VERIFY(strlen(rs.string)<127);
@@ -235,7 +257,7 @@ void __cdecl CGameFont::OutPrev(char *fmt,...)
 	if (fmt[0]=='~') {
 		vsprintf(rs.string,&(fmt[1]),p);
 		VERIFY(strlen(rs.string)<127);
-		rs.x-=SizeOf(rs.string);
+		rs.x-=SizeOf(rs.string)*.5f;
 	} else {
 		vsprintf(rs.string,fmt,p);
 		VERIFY(strlen(rs.string)<127);
@@ -244,4 +266,14 @@ void __cdecl CGameFont::OutPrev(char *fmt,...)
 
 	strings.push_back(rs);
 	fCurrentY -= fCurrentSize*vInterval.y;
+}
+
+float CGameFont::SizeOf(char *s)	
+{ 
+	int		len			= strlen(s);
+	float	X			= 0;
+	if (len) for (int j=0; j<len; j++) X+=TCMap[s[j]].z;
+	X					= X*ConvertSize(fCurrentSize)/fHeight*vInterval.x*vTS.x;
+	if (uFlags&fsDeviceIndependent)		return (2*X)/Device.dwWidth;
+	else								return X;
 }
