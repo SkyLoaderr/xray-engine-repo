@@ -91,19 +91,21 @@ void CLevel::OnFrame	()
 		NET_Packet			P;
 		u32 svT				= timeServer()-NET_Latency;
 
+		/*
 		if (!game_events.queue.empty())	
 			Msg("- d[%d],ts[%d] -- E[svT=%d],[evT=%d]",Device.dwTimeGlobal,timeServer(),svT,game_events.queue.begin()->timestamp);
+		*/
 
 		while	(game_events.available(svT))
 		{
 			u16 dest,type;
 			game_events.get	(dest,type,P);
 
-			Msg				("--- event[%d] for [%d]",type,dest);
+//			Msg				("--- event[%d] for [%d]",type,dest);
 			CObject*	 O	= Objects.net_Find	(dest);
-			if (0==O)		{ Msg("! c_EVENT[%d] : unknown dest"); continue; }
+			if (0==O)		{ /*Msg("! c_EVENT[%d] : unknown dest");*/ continue; }
 			CGameObject* GO = dynamic_cast<CGameObject*>(O);
-			if (0==GO)		{ Msg("! c_EVENT[%d] : non-game-object"); continue; }
+			if (0==GO)		{ /*Msg("! c_EVENT[%d] : non-game-object");*/ continue; }
 			GO->OnEvent		(P,type);
 		}
 	}
