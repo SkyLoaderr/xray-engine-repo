@@ -936,6 +936,9 @@
 								RelativePath=".\level_graph_inline.h">
 							</File>
 							<File
+								RelativePath=".\level_graph_space.h">
+							</File>
+							<File
 								RelativePath=".\level_graph_vertex.cpp">
 							</File>
 							<File
