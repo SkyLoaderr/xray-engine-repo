@@ -11,8 +11,6 @@
 #include "ai_space.h"
 #include "GameObject.h"
 
-#define DEBUG_LOG
-
 void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract, bool bForceDelete)
 {
 	CSE_ALifeDynamicObject			*tpALifeDynamicObject = m_tObjectRegistry[tpSE_Abstract->ID];
