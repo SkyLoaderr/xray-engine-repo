@@ -2,10 +2,10 @@
 #include "xrSheduler.h"
 #include "xr_object.h"
 
-float					psUpdateFar		= 200.f;
-int						psSheduler		= 3000;
-LPVOID 					fiber_main		= 0;
-LPVOID					fiber_thread	= 0;
+int			psSheduler				= 3000;
+float		psShedulerLoadBalance	= 1.f;
+LPVOID 		fiber_main				= 0;
+LPVOID		fiber_thread			= 0;
 
 //-------------------------------------------------------------------------------------
 VOID CALLBACK t_process			(LPVOID p)
@@ -19,7 +19,6 @@ void CSheduler::Initialize		()
 	fiber_thread		= CreateFiber			(0,t_process,0);
 	fibered				= FALSE;
 	slowdown			= FALSE;
-	if (0==xr_strcmp(Core.UserName,"jim"))		slowdown = TRUE;
 }
 
 void CSheduler::Destroy			()
@@ -131,8 +130,8 @@ void CSheduler::ProcessStep			()
 		}
 
 		// Calc next update interval
-		u32		dwMin				= T.Object->shedule.t_min;
-		u32		dwMax				= T.Object->shedule.t_max;
+		u32		dwMin				= iFloor					(psShedulerLoadBalance*T.Object->shedule.t_min);
+		u32		dwMax				= iFloor					(psShedulerLoadBalance*T.Object->shedule.t_max);
 		float	scale				= T.Object->shedule_Scale	(); 
 		u32		dwUpdate			= dwMin+iFloor(float(dwMax-dwMin)*scale);
 		clamp	(dwUpdate,dwMin,dwMax);
@@ -152,7 +151,6 @@ void CSheduler::ProcessStep			()
 		T.Object->shedule.b_locked	= TRUE;
 		T.Object->shedule_Update	(Elapsed);
 		T.Object->shedule.b_locked	= FALSE;
-		if (slowdown)				Sleep	(30);
 
 #ifdef DEBUG
 		u32	execTime				= eTimer.GetElapsed_ms		();

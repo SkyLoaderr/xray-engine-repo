@@ -29,7 +29,6 @@ public:
 	u64				cycles_start;
 	u64				cycles_limit;
 	BOOL			fibered;
-	BOOL			slowdown;
 public:
 	void			ProcessStep	();
 	void			Process		();

@@ -291,6 +291,7 @@ extern int			psNET_ServerPending;
 extern char			psNET_Name[32];
 extern int			psNET_Port;
 extern int			psSheduler;
+extern float		psShedulerLoadBalance;
 extern Flags32		psEnvFlags;
 extern float		rsDT_Range;
 
@@ -307,10 +308,11 @@ void CCC_Register()
 	CMD1(CCC_LoadCFG,	"cfg_load"				);
 	CMD1(CCC_MemStat,	"stat_mem"				);
 
-	CMD3(CCC_Mask,		"mt_sound",				&psDeviceFlags,	mtSound);
-	CMD3(CCC_Mask,		"mt_input",				&psDeviceFlags,	mtInput);
-	CMD3(CCC_Mask,		"mt_physics",			&psDeviceFlags,	mtPhysics);
-	CMD4(CCC_Integer,	"mt_sheduler",			&psSheduler,	1000,	100000	);
+	CMD3(CCC_Mask,		"mt_sound",				&psDeviceFlags,			mtSound);
+	CMD3(CCC_Mask,		"mt_input",				&psDeviceFlags,			mtInput);
+	CMD3(CCC_Mask,		"mt_physics",			&psDeviceFlags,			mtPhysics);
+	CMD4(CCC_Integer,	"mt_sheduler",			&psSheduler,			1000,	100000	);
+	CMD4(CCC_Float,		"mt_sheduler_load",		&psShedulerLoadBalance,	.1f,	10.f	);
 	
 	// Events
 	CMD1(CCC_E_Dump,	"e_list"				);
