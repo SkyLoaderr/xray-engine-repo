@@ -100,6 +100,9 @@ void CMotivationActionManagerStalker::script_register(lua_State *L)
 				luabind::value("sound_humming",				StalkerSpace::eStalkerSoundHumming),
 				luabind::value("sound_alarm",				StalkerSpace::eStalkerSoundAlarm),
 				luabind::value("sound_surrender",			StalkerSpace::eStalkerSoundSurrender),
+				luabind::value("sound_backup",				StalkerSpace::eStalkerSoundBackup),
+				luabind::value("sound_attack",				StalkerSpace::eStalkerSoundAttack),
+				luabind::value("sound_injuring_by_friend",	StalkerSpace::eStalkerSoundInjuringByFriend),
 				luabind::value("sound_script",				StalkerSpace::eStalkerSoundScript)
 			]
 	];

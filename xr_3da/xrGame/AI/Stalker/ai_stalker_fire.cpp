@@ -71,7 +71,11 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 {
 	if (g_Alive()) {
 		// Play hit-ref_sound
-		CSoundPlayer::play	(eStalkerSoundInjuring);
+		CEntityAlive		*entity_alive = dynamic_cast<CEntityAlive*>(who);
+		if (!entity_alive || (tfGetRelationType(entity_alive) != ALife::eRelationTypeFriend))
+			CSoundPlayer::play	(eStalkerSoundInjuring);
+		else
+			CSoundPlayer::play	(eStalkerSoundInjuringByFriend);
 		Fvector				D;
 		float				yaw, pitch;
 		D.getHP				(yaw,pitch);
