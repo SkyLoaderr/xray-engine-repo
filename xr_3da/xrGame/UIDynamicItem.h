@@ -7,6 +7,7 @@
 struct SDynamicItemData{
 	Ivector2		pos;
 	u32			color;
+	float		angle;
 };
 
 DEFINE_VECTOR(SDynamicItemData,DIDVec,DIDIt);
@@ -24,7 +25,7 @@ public:
 					CUIDynamicItem	();
 	virtual			~CUIDynamicItem	();
 	void			Init			(LPCSTR tex, LPCSTR sh);
-	void			Out				(int left, int top, u32 color);
+	void			Out				(int left, int top, u32 color, float angle = 0.f);
 	void			Clear			(){item_cnt=0;}
 	void			Render			();
 	void			Render			(float angle);

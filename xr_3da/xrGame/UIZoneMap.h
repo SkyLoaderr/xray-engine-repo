@@ -14,6 +14,7 @@ class CUIZoneMap
 	CUIStaticItem	back;
 	CUIStaticItem	compass;
 	CUIDynamicItem	entity;
+	CUIDynamicItem	entity_arrow;
 	CUIDynamicItem	entity_up;
 	CUIDynamicItem	entity_down;
 	float			heading;
@@ -30,7 +31,7 @@ class CUIZoneMap
 	Fbox level_box;
 
 	void			EntityOut		(float diff, u32 color, const Ivector2& pt);
-	void			ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Ivector2& dest);
+	void			ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Ivector2& dest, bool& on_border);
 public:
 					CUIZoneMap		();
 	virtual			~CUIZoneMap		();

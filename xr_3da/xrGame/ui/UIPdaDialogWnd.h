@@ -75,5 +75,4 @@ public:
 	CUIWindow			UICharacterWindow;
 	CUICharacterInfo	UICharacterInfo;
 	CUIFrameWindow		UIMask;
-	CUIMultiTextStatic	UIMTStatic;
 };

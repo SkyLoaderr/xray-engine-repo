@@ -23,7 +23,7 @@ void CUIDynamicItem::Init	(LPCSTR tex, LPCSTR sh)
 	if (!hShader)	hShader.create	(sh,tex);
 }
 
-void CUIDynamicItem::Out(int left, int top, u32 color)
+void CUIDynamicItem::Out(int left, int top, u32 color, float angle)
 {
 	SDynamicItemData* D = 0;
 	if (data.size()<=item_cnt){ 
@@ -34,6 +34,7 @@ void CUIDynamicItem::Out(int left, int top, u32 color)
 	}
 	HUD().ClientToScreenScaled(D->pos,left,top,uAlign);
 	D->color = color;
+	D->angle = angle;
 	++item_cnt;
 }
 
@@ -51,7 +52,7 @@ void CUIDynamicItem::Render	()
 	
 	DIDIt it		= data.begin();
 	for (u32 i=0; i<item_cnt; ++i,++it)
-		inherited::Render(pv,it->pos,it->color);
+		inherited::Render(pv,it->pos,it->color, it->angle);
 
 	// unlock VB and Render it as triangle LIST
 	RCache.Vertex.Unlock	(item_cnt*4,hGeom.stride());

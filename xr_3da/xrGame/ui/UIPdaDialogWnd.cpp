@@ -81,10 +81,6 @@ void CUIPdaDialogWnd::Init(int x, int y, int width, int height)
 	xml_init.InitFrameWindow(uiXml, "mask_frame_window", 0, &UIMask);
 	UICharacterInfo.UIIcon.SetMask(&UIMask);
 
-	// Some text captions
-	UICharacterWindow.AttachChild(&UIMTStatic);
-	xml_init.InitMultiTextStatic(uiXml, "charinfo_mt_static", 0, &UIMTStatic);
-
 	//Элементы автоматического добавления
 //	xml_init.InitAutoStatic(uiXml, "auto_static", this);
 

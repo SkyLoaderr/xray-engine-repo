@@ -65,9 +65,11 @@ void CUIZoneMap::Init()
 //	back.SetRect(0,0,153,148);
 
 	compass.Init("ui\\hud_map_arrow",	"hud\\default",125,118,align);
-	entity.Init	("ui\\hud_map_point",	"hud\\default");
-	entity_up.Init	("ui\\ui_hud_map_point_up",		"hud\\default");
-	entity_down.Init("ui\\ui_hud_map_point_down",	"hud\\default");
+	
+	entity.Init			("ui\\hud_map_point",	"hud\\default");
+	entity_arrow.Init	("ui\\hud_map_arrow",	"hud\\default");
+	entity_up.Init		("ui\\ui_hud_map_point_up",		"hud\\default");
+	entity_down.Init	("ui\\ui_hud_map_point_down",	"hud\\default");
 	entity.SetRect(0,0,3,3);
 	entity.SetAlign(alLeft|alTop);
 	entity_up.SetRect	(0,0,3,4);
@@ -113,7 +115,7 @@ void CUIZoneMap::Init()
 }
 //--------------------------------------------------------------------
 
-void CUIZoneMap::ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Ivector2& dest)
+void CUIZoneMap::ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Ivector2& dest, bool& on_border)
 {
 	float k = map_radius/VIEW_DISTANCE;
 	
@@ -125,12 +127,29 @@ void CUIZoneMap::ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Ivector2
 	/*float r=Pt.magnitude();
 	if (r>map_radius) Pt.mul((float)map_radius/r);*/
 	
+	on_border = false;
 	
-	if(Pt.x>(float)map_radius) Pt.x = (float)map_radius;
-	else if(Pt.x<(float)-map_radius) Pt.x = (float)-map_radius;
+	if(Pt.x>(float)map_radius) 
+	{
+		Pt.x = (float)map_radius;
+		on_border = true;
+	}
+	else if(Pt.x<(float)-map_radius) 
+	{
+		Pt.x = (float)-map_radius;
+		on_border = true;
+	}
 	
-	if(Pt.y>(float)map_radius) Pt.y = (float)map_radius;
-	else if(Pt.y<(float)-map_radius) Pt.y = (float)-map_radius;
+	if(Pt.y>(float)map_radius) 
+	{
+		Pt.y = (float)map_radius;
+		on_border = true;
+	}
+	else if(Pt.y<(float)-map_radius) 
+	{
+		Pt.y = (float)-map_radius;
+		on_border = true;
+	}
 
 		
 	dest.x = iFloor(map_center.x+Pt.x);
@@ -168,98 +187,15 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor)
 	for(; it !=vEnt.end(); ++it){
 		float diff = 0.0f;
 		Ivector2 pt;
-		ConvertToLocal(LM, (*it).pos, pt);
+		bool b;
+		ConvertToLocal(LM, (*it).pos, pt, b);
 		diff = (*it).pos.y - Actor->Position().y;
 		EntityOut(diff, (*it).color, pt);
 	};
 
-/*
-
-	// render friend
-	BOOL	bRender = FALSE;
-	switch (GameID())
-	{
-	case GAME_SINGLE:		bRender = TRUE; break;
-	case GAME_DEATHMATCH:	bRender = TRUE; break;
-	case GAME_CS:			bRender = TRUE;	break;
-	case GAME_TEAMDEATHMATCH:	bRender = TRUE; break;
-	case GAME_ARTEFACTHUNT:	bRender = TRUE; break;
-	}
-	
-	if (bRender && (
-					GameID() == GAME_DEATHMATCH || 
-					GameID() == GAME_TEAMDEATHMATCH ||
-					GameID() == GAME_ARTEFACTHUNT
-					)
-		)
-	{
-			for(u32 i=0; i<Level().Objects.objects.size(); i++)
-			{
-				CObject* pObj = Level().Objects.objects[i];
-				if (!pObj) continue;
-				CActor* pObjActor = dynamic_cast<CActor*>(pObj);
-				if (GameID() == GAME_TEAMDEATHMATCH ||
-					GameID() == GAME_ARTEFACTHUNT
-					)
-				{
-					if (pObjActor && pObjActor != Level().CurrentEntity() && pObjActor->g_Alive())
-					{
-						ConvertToLocal(LM,pObjActor->Position(),P);
-
-						if (pActor->id_Team == pObjActor->id_Team)
-							EntityOut(pObjActor->Position().y-Actor->Position().y,COLOR_SELF,P);
-						continue;
-					};
-				};
-				CInventoryItem* pItem = dynamic_cast<CInventoryItem*>(pObj);
-				if (pItem && !pItem->H_Parent())
-				{
-					if (GameID() == GAME_ARTEFACTHUNT)
-					{
-						CArtefact* pArtefact = dynamic_cast<CArtefact*>(pObj);
-						if (pArtefact)
-						{
-							ConvertToLocal(LM,pItem->Position(),P);
-							EntityOut(pItem->Position().y-Actor->Position().y,COLOR_FRIEND,P);
-							continue;
-						};
-					};
-					CGrenade* pGrenade = dynamic_cast<CGrenade*>(pObj);
-					if (pGrenade) continue;
-//					ConvertToLocal(LM,pItem->Position(),P);
-//					EntityOut(pItem->Position().y-Actor->Position().y,COLOR_TARGET,P);
-					continue;
-				};
-				if (GameID() == GAME_ARTEFACTHUNT)
-				{
-					if (pItem)
-					{
-						CArtefact* pArtefact = dynamic_cast<CArtefact*>(pObj);
-						if (pArtefact)
-						{
-							CObject* pParent = pArtefact->H_Parent();
-							if (pParent && pParent->ID() == Game().artefactBearerID)
-							{
-								if (pParent == pActor) continue;
-								ConvertToLocal(LM,pItem->Position(),P);
-
-								if (pActor->g_Team() == Game().teamInPossession)
-								{
-									EntityOut(pItem->Position().y-Actor->Position().y,COLOR_ARTEFACT,P);
-								}
-								else
-								{
-									EntityOut(pItem->Position().y-Actor->Position().y,COLOR_ENEMY,P);
-								};								
-								continue;
-							}
-						};
-					};
-				};
-			};
-	};
-*/
 	if(!pActor->g_Alive())return;
+
+
 #pragma todo(" ост€ то ёра : € вставил здесь проверку, чтобы не вылетало при смерти актера - надо разобратьс€ ...............")
 	////////////////////////////////////////////
 	//добавить локации, имеющиес€ в пам€ти PDA
@@ -310,12 +246,20 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor)
 			world_pos.set(map_location.x,0.f,map_location.y);
 		}
 
-		ConvertToLocal(LM, src, P);
-		entity.Out(P.x,P.y,entity_color);
+		bool on_border;
+		ConvertToLocal(LM, src, P, on_border);
+		if(on_border)
+			entity.Out(P.x,P.y,entity_color);
+		else
+		{
+			float angle = atanf(static_cast<float>(P.y) / P.x);
+			entity_arrow.Out(P.x,P.y,entity_color, angle);
+		}
 	}
 
 	// draw self
-	ConvertToLocal	(LM,Actor->Position(),P);
+	bool b;
+	ConvertToLocal	(LM,Actor->Position(),P,b);
 	entity.Out		(map_center.x,P.y,COLOR_SELF);
 
 	/////////////////////
