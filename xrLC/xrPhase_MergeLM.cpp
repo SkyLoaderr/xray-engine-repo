@@ -26,14 +26,14 @@ IC int	sort_defl_analyze	(CDeflector* D1, CDeflector* D2)
 	WORD M2		= D2->GetBaseMaterial();
 
 	// 1. material area
-	u32	 A1		= pBuild->materials[M1]->internal_max_area;
-	u32	 A2		= pBuild->materials[M2]->internal_max_area;
+	u32	 A1		= pBuild->materials[M1].internal_max_area;
+	u32	 A2		= pBuild->materials[M2].internal_max_area;
 	if (A1<A2)	return	2;	// A2 better
 	if (A1>A2)	return	1;	// A1 better
 
 	// 2. material sector (geom - locality)
-	u32	 s1		= pBuild->materials[M1]->sector;
-	u32	 s2		= pBuild->materials[M2]->sector;
+	u32	 s1		= pBuild->materials[M1].sector;
+	u32	 s2		= pBuild->materials[M2].sector;
 	if (s1<s2)	return	2;	// s2 better
 	if (s1>s2)	return	1;	// s1 better
 
@@ -70,13 +70,6 @@ void CBuild::xrPhase_MergeLM()
 {
 	vecDefl			Layer;
 
-	// **** calc material area
-	for (u32 it=0; it<materials.size(); it++) materials[it].internal_max_area	= 0;
-	for (u32 it=0; it<Layer.size(); it++)	{
-		CDeflector*	D		= Layer[it];
-		materials[D->GetBaseMaterial()]->internal_max_area	= _max(D->layer.Area(),materials[D->GetBaseMaterial()]->internal_max_area);
-	}
-
 	// **** Select all deflectors, which contain this light-layer
 	Layer.clear	();
 	for (u32 it=0; it<g_deflectors.size(); it++)
@@ -95,7 +88,13 @@ void CBuild::xrPhase_MergeLM()
 		Phase		(phase_name);
 
 		// Sort layer by similarity (state changes)
+		// + calc material area
 		Status		("Selection...");
+		for (u32 it=0; it<materials.size(); it++) materials[it].internal_max_area	= 0;
+		for (u32 it=0; it<Layer.size(); it++)	{
+			CDeflector*	D		= Layer[it];
+			materials[D->GetBaseMaterial()]->internal_max_area	= _max(D->layer.Area(),materials[D->GetBaseMaterial()]->internal_max_area);
+		}
 		std::stable_sort(Layer.begin(),Layer.end(),sort_defl_complex);
 
 		// Select first deflectors which can fit

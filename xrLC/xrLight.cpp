@@ -244,11 +244,11 @@ void CBuild::LightVertex	()
 
 		// Calc summary color
 		base_color	C;
-		for (int v=0; v<int(VL.size()); v++)
+		for (u32 v=0; v<VL.size(); v++)
 			C.max		(VL[v]->C);
 
 		// Calculate final vertex color
-		for (v=0; v<int(VL.size()); v++)
+		for (u32 v=0; v<VL.size(); v++)
 		{
 			// trans-level
 			float	level		= VL[v]->C._tmp_;

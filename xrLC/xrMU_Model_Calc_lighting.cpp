@@ -147,7 +147,7 @@ void xrMU_Model::calc_lighting	(xr_vector<base_color>& dest, Fmatrix& xform, CDB
 			C.max		(VL[v]->C);
 
 		// Calculate final vertex color
-		for (v=0; v<int(VL.size()); v++)
+		for (u32 v=0; v<int(VL.size()); v++)
 		{
 			// trans-level
 			float	level		= VL[v]->C._tmp_;

@@ -95,7 +95,7 @@ void NvStripifier::BuildStripifyInfo(NvFaceInfoVec &faceInfos, NvEdgeInfoVec &ed
 	// iterate through the triangles of the triangle list
 	int numTriangles = numIndices / 3;
 	int index        = 0;
-	for (i = 0; i < numTriangles; i++)
+	for (u32 i = 0; i < numTriangles; i++)
 	{	
 		// grab the indices
 		int v0 = indices[index++];
@@ -554,7 +554,7 @@ void NvStripInfo::Combine(const NvFaceInfoVec &forward, const NvFaceInfoVec &bac
 	
 	// add forward faces
 	numFaces = forward.size();
-	for (i = 0; i < numFaces; i++)
+	for (u32 i = 0; i < numFaces; i++)
 		m_faces.push_back(forward[i]);
 }
 
@@ -924,7 +924,7 @@ void NvStripifier::Stripify(const WordVec &in_indices, const int in_cacheSize,
 		xr_delete(allStrips[i]);
 	}
 	
-	for (i = 0; i < allEdgeInfos.size(); i++)
+	for (u32 i = 0; i < allEdgeInfos.size(); i++)
 	{
 		NvEdgeInfo *info = allEdgeInfos[i];
 		while (info != NULL)

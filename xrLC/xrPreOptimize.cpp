@@ -113,7 +113,7 @@ void CBuild::PreOptimize()
 	
 	Status("Removing degenerated/duplicated faces...");
 	g_bUnregister	= false;
-	for (it=0; it<(int)g_faces.size(); it++)
+	for (u32 it=0; it<g_faces.size(); it++)
 	{
 		R_ASSERT		(it>=0 && it<(int)g_faces.size());
 		Face* F			= g_faces[it];
@@ -134,7 +134,7 @@ void CBuild::PreOptimize()
 
 	Status("Adjacency check...");
 	g_bUnregister = false;
-	for (it = 0; it<(int)g_vertices.size(); it++)
+	for (u32 it = 0; it<(int)g_vertices.size(); it++)
 	{
 		if (g_vertices[it] && (0==g_vertices[it]->adjacent.size()))
 		{

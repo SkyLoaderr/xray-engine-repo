@@ -177,7 +177,7 @@ void CDeflector::OA_Export()
 	mView.build_camera(from,at,up);
 
 	Fbox bb; bb.invalidate();
-	for (it = UVpolys.begin(); it!=UVpolys.end(); it++)
+	for (u32 it = UVpolys.begin(); it!=UVpolys.end(); it++)
 	{
 		UVtri	*T = &*it;
 		Face	*F = T->owner;

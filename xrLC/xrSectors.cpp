@@ -19,14 +19,14 @@ void CBuild::BuildSectors()
 	clMsg("%d sectors accepted.",SectorCount);
 
 	Status("Spatializing geometry...");
-	for (I=0; I<g_tree.size(); I++)
+	for (u32 I=0; I<g_tree.size(); I++)
 	{
 		u32 Sector = g_tree[I]->Sector;
 		if (0==g_sectors[Sector]) g_sectors[Sector] = xr_new<CSector> (Sector);
 	}
 
 	Status("Building hierrarhy...");
-	for (I=0; I<g_sectors.size(); I++)
+	for (u32 I=0; I<g_sectors.size(); I++)
 	{
 		R_ASSERT(g_sectors[I]);
 		g_sectors[I]->BuildHierrarhy();
@@ -35,7 +35,7 @@ void CBuild::BuildSectors()
 
 	Status("Assigning portals, occluders, glows, lights...");
 	// portals
-	for (I=0; I<portals.size(); I++)
+	for (u32 I=0; I<portals.size(); I++)
 	{
 		b_portal &P = portals[I];
 		R_ASSERT(u32(P.sector_front)<g_sectors.size());
@@ -44,7 +44,7 @@ void CBuild::BuildSectors()
 		g_sectors[u32(P.sector_back)]->add_portal		(WORD(I));
 	}
 	// glows
-	for (I=0; I<glows.size(); I++)
+	for (u32 I=0; I<glows.size(); I++)
 	{
 		b_glow		&G = glows[I];
 		b_material	&M = materials[G.dwMaterial];
@@ -52,7 +52,7 @@ void CBuild::BuildSectors()
 		g_sectors[M.sector]->add_glow			(WORD(I));
 	}
 	// lights
-	for (I=0; I<L_dynamic.size(); I++)
+	for (u32 I=0; I<L_dynamic.size(); I++)
 	{
 		b_light_dynamic	&L = L_dynamic[I];
 		if (L.data.type == D3DLIGHT_DIRECTIONAL)

@@ -142,7 +142,7 @@ void CBuild::xrPhase_TangentBasis()
 
 	// ************************************* Retreive data
 	Status						("Retreiving basis...");
-	for (f=0; f<g_faces.size(); f++)
+	for (u32 f=0; f<g_faces.size(); f++)
 	{
 		Face*	F				= g_faces[f];
 		for (u32 v=0; v<3; v++)

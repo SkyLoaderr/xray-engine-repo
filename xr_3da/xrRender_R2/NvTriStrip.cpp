@@ -118,7 +118,7 @@ void GenerateStrips(const u16* in_indices, const s32 in_numIndices, xr_vector<Pr
 
 		//do strips
 		unsigned int indexCtr = 0;
-		for(i = 0; i < tempStrips.size(); i++)
+		for(u32 i = 0; i < tempStrips.size(); i++)
 		{
 			for(int j = 0; j < tempStrips[i]->m_faces.size(); j++)
 			{
@@ -129,7 +129,7 @@ void GenerateStrips(const u16* in_indices, const s32 in_numIndices, xr_vector<Pr
 		}
 
 		//do lists
-		for(i = 0; i < tempFaces.size(); i++)
+		for(u32 i = 0; i < tempFaces.size(); i++)
 		{
 			primGroups[0].indices[indexCtr++] = u16(tempFaces[i]->m_v0);
 			primGroups[0].indices[indexCtr++] = u16(tempFaces[i]->m_v1);
@@ -209,7 +209,7 @@ void GenerateStrips(const u16* in_indices, const s32 in_numIndices, xr_vector<Pr
 	}
 
 	//_delete faces
-	for(i = 0; i < tempFaces.size(); i++)
+	for(u32 i = 0; i < tempFaces.size(); i++)
 	{
 		xr_delete(tempFaces[i]);
 	}

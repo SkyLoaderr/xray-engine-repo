@@ -66,13 +66,13 @@ void CBuild::CalcNormals()
 	vecVertex vtmp;
 	vtmp.assign		(g_vertices.begin(),g_vertices.begin()+Vcount);
 	g_vertices.erase(g_vertices.begin(),g_vertices.begin()+Vcount);
-	for (I=0; I<Vcount; I++) VertexPool.destroy	(vtmp[I]);
+	for (u32 I=0; I<Vcount; I++) VertexPool.destroy	(vtmp[I]);
 	g_bUnregister = true;
 
 	clMsg	("%d vertices was duplicated 'cause of SM groups",g_vertices.size()-Vcount);
 
 	// Clear temporary flag
-	for (it = g_faces.begin(); it!=g_faces.end(); it++)
+	for (vecFaceIt it = g_faces.begin(); it!=g_faces.end(); it++)
 		(*it)->flags.bSplitted = false;
 
 	// Models

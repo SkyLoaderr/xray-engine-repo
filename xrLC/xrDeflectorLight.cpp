@@ -578,7 +578,7 @@ void CDeflector::Light(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H
 			ApplyBorders			(layer,253);
 			ApplyBorders			(layer,252);
 			ApplyBorders			(layer,251);
-			for	(ref=250; ref>0; ref--) if (!ApplyBorders(layer,ref)) break;
+			for	(u32 ref=250; ref>0; ref--) if (!ApplyBorders(layer,ref)) break;
 			layer.width				= lm_old.width;
 			layer.height			= lm_old.height;
 		}

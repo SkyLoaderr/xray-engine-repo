@@ -97,7 +97,7 @@ void OGF::Optimize()
 	}
 
 	// 2. Recalc UV mapping
-	for (i=0; i<vertices.size(); i++)
+	for (u32 i=0; i<vertices.size(); i++)
 	{
 		svector<Fvector2,2>& UV = vertices[i].UV;
 		for (int j=0; j<2; j++)
