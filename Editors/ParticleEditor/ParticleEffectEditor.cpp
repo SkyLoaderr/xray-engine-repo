@@ -226,8 +226,10 @@ void PS::CPEDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
 	// align to path
     P=PHelper().CreateFlag32(items,PrepareKey	(pref,"Movement\\Align To Path"), 					&m_Flags, dfAlignToPath);
     P->OnChangeEvent.bind	(this,&PS::CPEDef::OnFlagChange);
-    if (m_Flags.is(dfAlignToPath))
-    	PHelper().CreateAngle3(items,PrepareKey		(pref,"Movement\\Align To Path\\Default Rotate"),	&m_APDefaultRotation);
+    if (m_Flags.is(dfAlignToPath)){
+	    PHelper().CreateFlag32(items,PrepareKey	(pref,"Movement\\World Align"), 					&m_Flags, dfWorldAlign);
+    	PHelper().CreateAngle3(items,PrepareKey	(pref,"Movement\\Align To Path\\Default Rotate"),	&m_APDefaultRotation);
+    }
 	// velocity scale
     P=PHelper().CreateFlag32(items,PrepareKey	(pref,"Movement\\Velocity Scale"),					&m_Flags, dfVelocityScale);
     P->OnChangeEvent.bind	(this,&PS::CPEDef::OnFlagChange);

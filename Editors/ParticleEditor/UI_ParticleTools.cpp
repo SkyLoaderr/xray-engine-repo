@@ -52,10 +52,18 @@ CParticleTools::~CParticleTools()
 
 bool CParticleTools::OnCreate()
 {
+//.    UI->SendMail("RIP",UI->EditorName(),"info \"xxx\"");
 	// shader test locking
 	std::string fn; 
     FS.update_path(fn,_game_data_,PSLIB_FILENAME);
-	if (EFS.CheckLocking(0,fn.c_str(),false,true)) return false;
+    shared_str owner;
+	if (EFS.CheckLocking(0,fn.c_str(),false,false,&owner)){ 
+    	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbCancel,"Particle Editor locked by '%s'. Send notification?",owner.c_str())==mrYes){
+        	AnsiString tmp; tmp.sprintf("info \"'%s' say: 'Please exit from editor.'\"",Core.CompName);
+        	UI->SendMail("*",UI->EditorName(),tmp.c_str());
+        }
+    	return false;
+    }
 
     m_bReady = true;
 
