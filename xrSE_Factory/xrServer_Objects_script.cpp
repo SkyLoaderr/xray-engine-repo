@@ -47,7 +47,7 @@ void CSE_Shape::script_register(lua_State *L)
 	module(L)[
 		class_<CSE_Shape>
 			("cse_shape")
-			.def(		constructor<>())
+//			.def(		constructor<>())
 	];
 }
 
@@ -56,8 +56,8 @@ void CSE_Visual::script_register(lua_State *L)
 	module(L)[
 		class_<CSE_Visual>
 			("cse_visual")
-			.def(		constructor<>())
-			.def(		constructor<LPCSTR>())
+//			.def(		constructor<>())
+//			.def(		constructor<LPCSTR>())
 	];
 }
 
@@ -66,8 +66,8 @@ void CSE_Motion::script_register(lua_State *L)
 	module(L)[
 		class_<CSE_Motion>
 			("cse_motion")
-			.def(		constructor<>())
-			.def(		constructor<LPCSTR>())
+//			.def(		constructor<>())
+//			.def(		constructor<LPCSTR>())
 	];
 }
 
