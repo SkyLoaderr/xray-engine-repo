@@ -461,14 +461,14 @@ IC static void CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup)
 		surface.mode =dContactApprox1|dContactSoftERP|dContactSoftCFM;
 		if(flags_1.is(SGameMtl::flBounceable)&&flags_2.is(SGameMtl::flBounceable))
 		{
-			surface.mode|=dContactBounce;
-			surface.bounce_vel=_max(material_1->fPHBounceStartVelocity,material_2->fPHBounceStartVelocity);
-			surface.bounce	  =_min(material_1->fPHBouncing,material_2->fPHBouncing);
+			surface.mode		|=	dContactBounce;
+			surface.bounce_vel	=	_max(material_1->fPHBounceStartVelocity,material_2->fPHBounceStartVelocity);
+			surface.bounce		=	_min(material_1->fPHBouncing,material_2->fPHBouncing);
 		}
 		/////////////////////////////////////////////////////////////////////////////////////////////////
-		if(pushing_neg) 
+		if	(pushing_neg)
 			surface.mu=dInfinity;
-		if(do_collide)
+		if	(do_collide)
 		{
 			dJointID contact_joint = dJointCreateContact(phWorld, jointGroup, &c);
 			dJointAttach(contact_joint, dGeomGetBody(g1), dGeomGetBody(g2));
