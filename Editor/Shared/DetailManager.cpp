@@ -268,7 +268,7 @@ void CDetailManager::Render		(Fvector& EYE)
 	}
 
 //	HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d());
-//	HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE);
+	HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE);
 
 	// Render itself
 	float	fPhaseRange	= PI/16;
@@ -358,7 +358,7 @@ void CDetailManager::Render		(Fvector& EYE)
 		// Clean up
 		vis.clear	();
 	}
-//	HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_CCW);
+	HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_CCW);
 }
 
 CDetailManager::Slot&	CDetailManager::Query	(int sx, int sz)
