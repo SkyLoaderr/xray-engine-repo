@@ -43,6 +43,10 @@
                 <text>bar_ecolog_crush_professor_give_info_dp_11</text>
                 <next>111</next>
             </phrase>
+            <phrase id="111">
+                <text>bar_ecolog_crush_professor_give_info_dp_111</text>
+                <next>1112</next>
+            </phrase>
             <phrase id="1112">
                 <text>bar_ecolog_crush_professor_give_info_dp_1112</text>
                 <next>1</next>
@@ -83,6 +87,11 @@
             <phrase id="12">
                 <text>bar_ecolog_crush_professor_give_info_dp_12</text>
                 <next>121</next>
+            </phrase>
+            <phrase id="121">
+                <text>bar_ecolog_crush_professor_give_info_dp_121</text>
+                <next>1211</next>
+				<next>1212</next>
             </phrase>
             <phrase id="1211">
                 <text>bar_ecolog_crush_professor_give_info_dp_1211</text>
