@@ -17,28 +17,10 @@ CDeflector::CDeflector()
 {
 	Deflector	= this;
 	lm.pSurface = 0;
-
-#ifdef DEFL_SHOW
-	WNDCLASS C = {CS_OWNDC, deflector_proc, 0,0, GetModuleHandle(0), 0,0,(HBRUSH)GetStockObject(BLACK_BRUSH), 0, "DEFL" };
-	RegisterClass(&C);
-	hw = CreateWindow(
-		"DEFL",
-		"Deflector",
-		WS_SIZEBOX|WS_VISIBLE,
-		0,0,700,700,
-		0,0,0,0);
-	VERIFY(hw);
-	hPen = CreatePen(PS_SOLID, 1, RGB(0,255,0));
-#endif
 }
 CDeflector::~CDeflector()
 {
-	_FREE(lm.pSurface);
-
-#ifdef DEFL_SHOW
-	DeleteObject(hPen);
-	DestroyWindow(hw);
-#endif
+	_FREE		(lm.pSurface);
 }
 
 VOID CDeflector::OA_Export()
