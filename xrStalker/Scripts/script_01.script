@@ -1,14 +1,13 @@
 is_creature_entered = false
+is_actor_entered = false
 
 -- функция вызывается из игры после того как объект object вошел в зону zone
 function on_enter(zone,object)
 	is_creature_entered = true
 	printf("Object %s entered zone %s",object:name(),zone:name())
-	if event_zone_id == zone:id() then 
-		printf("entering in our zone")
-	end
-	if actor_id == object:id() then 
-		printf("actor in our zone")
+	if event_zone_id == zone:id() and actor_id == object:id() then 
+		printf("actor entering in our zone")
+		is_actor_entered = true
 	end
 end
 
@@ -83,7 +82,7 @@ function main()
 	event:set_callback(script_01.on_exit,false)
 
 	while stalker1:action() do		
-		if actor_id == object:id() then 
+		if is_actor_entered == true then 
 			printf("alarm!")
 			flush()
 			stalker1:script	(false, script_01.script_name())
