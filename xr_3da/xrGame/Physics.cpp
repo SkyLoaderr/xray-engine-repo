@@ -748,6 +748,12 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 
 	for(i = 0; i < n; ++i)
 	{
+		if(i!=0) {
+		  dReal dif=dFabs(contacts[i-1].geom.pos[0]-contacts[i].geom.pos[0])+
+				dFabs(contacts[i-1].geom.pos[1]-contacts[i].geom.pos[1])+
+				dFabs(contacts[i-1].geom.pos[2]-contacts[i].geom.pos[2]);
+		  if(dif==0.f) continue;
+		}
 
         contacts[i].surface.mode =dContactBounce|dContactApprox1|dContactSoftERP|dContactSoftCFM;
 
