@@ -472,9 +472,15 @@ IC	bool	CLevelGraph::create_straight_PTN_path	(u32 start_vertex_id, const Fvecto
 				}
 				VERIFY			(_valid(next1));
 				VERIFY			(_valid(next2));
-				u32				dwIntersect = intersect(start_point.x,start_point.y,finish_point.x,finish_point.y,next1.x,next1.y,next2.x,next2.y,&tIntersectPoint.x,&tIntersectPoint.z);
-				if (!dwIntersect)
-					continue;
+				u32				dwIntersect = intersect_no_check(start_point.x,start_point.y,finish_point.x,finish_point.y,next1.x,next1.y,next2.x,next2.y,&tIntersectPoint.x,&tIntersectPoint.z);
+				VERIFY			(dwIntersect);
+				VERIFY			(_valid(tIntersectPoint.x));
+				VERIFY			(_valid(tIntersectPoint.z));
+
+				clamp			(tIntersectPoint.x,_min(next1.x,next2.x),_max(next1.x,next2.x));
+				clamp			(tIntersectPoint.z,_min(next1.y,next2.y),_max(next1.y,next2.y));
+//				if (!dwIntersect)
+//					continue;
 				if (bAssignY)
 					tIntersectPoint.y = vertex_plane_y(vertex(cur_vertex_id),tIntersectPoint.x,tIntersectPoint.z);
 				path_node.set_position(tIntersectPoint);

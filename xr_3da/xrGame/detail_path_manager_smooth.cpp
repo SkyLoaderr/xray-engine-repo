@@ -514,6 +514,8 @@ void CDetailPathManager::build_path_via_key_points(
 			VERIFY						(!fis_zero(d.direction.magnitude()));
 			d.direction.normalize		();
 			if (!compute_path(s,d,&m_path,m_start_params,m_dest_params)) {
+				compute_path			(s,d,0,m_start_params,m_dest_params);
+				compute_path			(s,d,&m_path,m_start_params,m_dest_params);
 				VERIFY					(false);
 			}
 			P							= I - 1;
@@ -528,10 +530,8 @@ void CDetailPathManager::build_path_via_key_points(
 		t								= d;
 	}
 	if (!compute_path(s,d,&m_path,m_start_params,finish_params)) {
-		if (compute_path(s,d,0,m_start_params,finish_params)) {
-			compute_path(s,d,&m_path,m_start_params,finish_params);
-			t=t;
-		}
+		compute_path(s,d,0,m_start_params,finish_params);
+		compute_path(s,d,&m_path,m_start_params,finish_params);
 		VERIFY							(false);
 	}
 	

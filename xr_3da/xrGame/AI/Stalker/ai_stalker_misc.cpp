@@ -46,18 +46,6 @@ void CAI_Stalker::vfSetParameters(
 	u32										dwLookOverDelay
 )
 {
-	CMovementManager::set_path_type(tGlobalPathType);
-	CDetailPathManager::set_path_type(tPathType);
-	m_tBodyState	= tBodyState;
-	m_tMovementType = tMovementType;
-	m_tMentalState	= tMentalState;
-	bool			bLookChanged = (m_tLookType != tLookType);
-	m_tLookType		= tLookType;
-
-	update_path		();
-
-	m_fCurSpeed		= 1.f;
-
 //	if (!CDetailPathManager::path().empty() && ((CDetailPathManager::path().size() - 1) > CDetailPathManager::curr_travel_point_index())) {
 //		if (GetScriptControl() && GetCurrentAction() && (_abs(GetCurrentAction()->m_tMovementAction.m_fSpeed) > EPS_L))
 //			m_fCurSpeed = GetCurrentAction()->m_tMovementAction.m_fSpeed;
@@ -152,37 +140,49 @@ void CAI_Stalker::vfSetParameters(
 	}
 
 	if (!CDetailPathManager::path().empty() && ((CDetailPathManager::path().size() - 1) > CDetailPathManager::curr_travel_point_index())) {
-		if (GetScriptControl() && GetCurrentAction() && (_abs(GetCurrentAction()->m_tMovementAction.m_fSpeed) > EPS_L))
-			m_fCurSpeed = GetCurrentAction()->m_tMovementAction.m_fSpeed;
-		else {
-			switch (m_tMovementType) {
-				case eMovementTypeWalk : {
-					velocity_mask	|= eMovementParameterWalk;
-					break;
-				}
-				case eMovementTypeRun : {
-					velocity_mask	|= eMovementParameterRun;
-					break;
-				}
-				default : 
-					velocity_mask	|= eMovementParameterStanding;
+		switch (m_tMovementType) {
+			case eMovementTypeWalk : {
+				velocity_mask	|= eMovementParameterWalk;
+				break;
 			}
+			case eMovementTypeRun : {
+				velocity_mask	|= eMovementParameterRun;
+				break;
+			}
+			default : 
+				velocity_mask	|= eMovementParameterStanding;
 		}
 	}
 	else
 		velocity_mask	|= eMovementParameterStanding;
 
-	xr_map<u32,STravelParams>::const_iterator	I = m_movement_params.find(velocity_mask);
-	VERIFY							(I != m_movement_params.end());
-	
-	m_fCurSpeed						= (*I).second.linear_velocity;
-	m_body.speed					= 2*(*I).second.angular_velocity;
-	m_head.speed					= 3*PI_DIV_2;
+	CMovementManager::set_path_type(tGlobalPathType);
+	CDetailPathManager::set_path_type(tPathType);
+	m_tBodyState	= tBodyState;
+	m_tMovementType = tMovementType;
+	m_tMentalState	= tMentalState;
+	bool			bLookChanged = (m_tLookType != tLookType);
+	m_tLookType		= tLookType;
 
-	set_velocity_mask				(velocity_mask | eMovementParameterWalk | eMovementParameterRun | eMovementParameterStanding);
-	if ((velocity_mask & eMovementParameterStanding) != eMovementParameterStanding)
-		set_desirable_mask			(velocity_mask);
-//	set_use_dest_orientation		(true);
+	if (GetScriptControl() && GetCurrentAction() && (_abs(GetCurrentAction()->m_tMovementAction.m_fSpeed) > EPS_L)) {
+		m_fCurSpeed = GetCurrentAction()->m_tMovementAction.m_fSpeed;
+	}
+	else {
+		xr_map<u32,STravelParams>::const_iterator	I = m_movement_params.find(velocity_mask);
+		VERIFY							(I != m_movement_params.end());
+
+		m_fCurSpeed						= (*I).second.linear_velocity;
+		m_body.speed					= 2*(*I).second.angular_velocity;
+		m_head.speed					= 3*PI_DIV_2;
+
+		if (m_tMovementType != eMovementTypeStand)
+			set_velocity_mask			(velocity_mask | eMovementParameterWalk | eMovementParameterRun | eMovementParameterStanding);
+		if ((velocity_mask & eMovementParameterStanding) != eMovementParameterStanding)
+			set_desirable_mask			(velocity_mask);
+		//	set_use_dest_orientation		(true);
+
+		update_path		();
+	}
 
 	switch (m_tLookType) {
 		case eLookTypePathDirection : {
