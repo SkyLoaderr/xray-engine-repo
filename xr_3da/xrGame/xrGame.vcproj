@@ -8683,6 +8683,9 @@
 					Name="ServerEntities"
 					Filter="">
 					<File
+						RelativePath=".\DrawUtils.h">
+					</File>
+					<File
 						RelativePath="PropertiesListTypes.h">
 					</File>
 					<File
