@@ -12,7 +12,7 @@ function wait_game(time_to_wait)
 		end
 	end
 end
-
+ 
 function wait(time_to_wait)
 	if (time_to_wait == nil) then
 		coroutine.yield()
