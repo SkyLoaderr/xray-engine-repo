@@ -631,7 +631,8 @@ class CAI_Soldier : public CCustomMonster
 		}
 	IC	bool bfNeedRecharge()
 		{
-			return(Weapons && (Weapons->getAmmoElapsed() == 0));
+			//return(Weapons && (Weapons->getAmmoElapsed() == 0));
+			return(false);
 		}
 	IC	bool bfNoAmmo()
 		{

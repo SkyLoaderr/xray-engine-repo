@@ -322,21 +322,31 @@ void CAI_Soldier::OnFindAloneFire()
 						vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
 				}
 				else {
-					if (AI_Path.bNeedRebuild) {
-						vfInitSelector(SelectorRetreat,Squad,Leader);
-						SelectorRetreat.m_tEnemyPosition = tpaDynamicObjects[iIndex].tMySavedPosition;
-						SelectorRetreat.m_tpEnemyNode = Level().AI.Node(tpaDynamicObjects[iIndex].dwMyNodeID);
-						SelectorRetreat.m_tMyPosition = vPosition;
-						SelectorRetreat.m_tpMyNode = AI_Node;
-						vfBuildPathToDestinationPoint(0);
+					if (!Group.m_tpaSuspiciousNodes.size() && (Level().AI.u_SqrDistance2Node(vPosition,tpSavedEnemyNode) > 1.f)) {
+						vfInitSelector(SelectorPatrol,Squad,Leader);
+
+						if (AI_Path.bNeedRebuild)
+							vfBuildPathToDestinationPoint(0);
+						else
+							vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
 					}
 					else {
-						vfInitSelector(SelectorRetreat,Squad,Leader);
-						SelectorRetreat.m_tEnemyPosition = tpaDynamicObjects[iIndex].tMySavedPosition;
-						SelectorRetreat.m_tpEnemyNode = Level().AI.Node(tpaDynamicObjects[iIndex].dwMyNodeID);
-						SelectorRetreat.m_tMyPosition = vPosition;
-						SelectorRetreat.m_tpMyNode = AI_Node;
-						vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
+						if (AI_Path.bNeedRebuild) {
+							vfInitSelector(SelectorRetreat,Squad,Leader);
+							SelectorRetreat.m_tEnemyPosition = tpaDynamicObjects[iIndex].tMySavedPosition;
+							SelectorRetreat.m_tpEnemyNode = Level().AI.Node(tpaDynamicObjects[iIndex].dwMyNodeID);
+							SelectorRetreat.m_tMyPosition = vPosition;
+							SelectorRetreat.m_tpMyNode = AI_Node;
+							vfBuildPathToDestinationPoint(0);
+						}
+						else {
+							vfInitSelector(SelectorRetreat,Squad,Leader);
+							SelectorRetreat.m_tEnemyPosition = tpaDynamicObjects[iIndex].tMySavedPosition;
+							SelectorRetreat.m_tpEnemyNode = Level().AI.Node(tpaDynamicObjects[iIndex].dwMyNodeID);
+							SelectorRetreat.m_tMyPosition = vPosition;
+							SelectorRetreat.m_tpMyNode = AI_Node;
+							vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
+						}
 					}
 				}
 				m_bActionStarted = true;

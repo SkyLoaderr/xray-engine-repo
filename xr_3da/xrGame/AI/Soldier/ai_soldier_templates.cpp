@@ -189,6 +189,9 @@ void CAI_Soldier::vfSetFire(bool bFire, CGroup &Group)
 {
 	bool bSafeFire = m_bFiring;
 	
+	if (!Weapons || !Weapons->ActiveWeapon())
+		return;
+
 	if (bFire)
 		if (m_bFiring)
 			if (m_dwStartFireAmmo - Weapons->ActiveWeapon()->GetAmmoElapsed() > ::Random.randI(m_dwFireRandomMin,m_dwFireRandomMax + 1)) {
