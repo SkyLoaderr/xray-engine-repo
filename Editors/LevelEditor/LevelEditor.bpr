@@ -389,7 +389,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=1
-Build=427
+Build=501
 Debug=1
 PreRelease=0
 Special=0
@@ -401,7 +401,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.1.427
+FileVersion=1.0.1.501
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -503,11 +503,12 @@ Item0=intermediate
 Item1=ed_debug
 
 [HistoryLists\hlFinalOutputDir]
-Count=4
+Count=5
 Item0=x:\
-Item1=x:
-Item2=!run\
-Item3=P:\Editor\!run
+Item1=s:\
+Item2=x:
+Item3=!run\
+Item4=P:\Editor\!run
 
 [Debugging]
 DebugSourceDirs=c:\rad\borland\cbuilder5\source\vcl;R:\Borland\Components6\AlexMX\
