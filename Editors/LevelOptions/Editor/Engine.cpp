@@ -39,6 +39,7 @@ LPCSTR CEngine::LastWindowsError()
 }
 
 extern void __stdcall xrSkin1W_x86	(vertRender* D, vertBoned1W* S, DWORD vCount, CBoneInstance* Bones);
+extern void __stdcall xrSkin2W_x86	(vertRender* D, vertBoned2W* S, DWORD vCount, CBoneInstance* Bones);
 extern void __stdcall xrBoneLerp_x86(CKey* D, CKeyQ* K1, CKeyQ* K2, float delta);
 
 void CEngine::Initialize(void)
@@ -66,6 +67,7 @@ void CEngine::Initialize(void)
 	bindCPU		            (&PSGP, CPU::ID.feature & CPU::ID.os_support);
     // for compliance with editor
     PSGP.skin1W				= xrSkin1W_x86;
+    PSGP.skin2W				= xrSkin2W_x86;
 #endif
 }
 

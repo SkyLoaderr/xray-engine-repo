@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 698
+  Height = 573
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 698
+    Height = 573
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object spProps: TSplitter
       Left = 1
-      Top = 213
+      Top = 88
       Width = 210
       Height = 2
       Cursor = crVSplit
@@ -43,7 +43,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paSkeletonPart: TPanel
       Left = 1
-      Top = 215
+      Top = 90
       Width = 210
       Height = 482
       Align = alBottom
@@ -632,7 +632,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 1
       Width = 210
-      Height = 212
+      Height = 87
       Align = alClient
       BevelOuter = bvNone
       ParentColor = True
@@ -1083,6 +1083,9 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 205
     Top = 313
+    object N10: TMenuItem
+      Caption = '-'
+    end
     object miLoadMotions: TMenuItem
       Caption = 'Load'
       OnClick = LoadClick
@@ -1167,6 +1170,9 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 34
     Top = 346
+    object N11: TMenuItem
+      Caption = '-'
+    end
     object CreateFolder1: TMenuItem
       Caption = 'Create Folder'
       OnClick = CreateFolder1Click

@@ -35,18 +35,25 @@ void __stdcall xrSkin2W_x86(vertRender* D,
 	Fvector			P0,N0,P1,N1;
 
 	// NON-Unrolled loop
-	for (; S!=E; )
-	{
-		Fmatrix& M0		= Bones[S->matrix0].mTransform;
-		Fmatrix& M1		= Bones[S->matrix1].mTransform;
-		M0.transform_tiny(P0,S->P0);
-		M0.transform_dir (N0,S->N0);
-		M1.transform_tiny(P1,S->P1);
-		M1.transform_dir (N1,S->N1);
-		D->P.lerp		(P0,P1,S->w);
-		D->N.lerp		(N0,N1,S->w);
-		D->u			= S->u;
-		D->v			= S->v;
+	for (; S!=E; ){
+    	if (S->matrix1!=S->matrix0){
+            Fmatrix& M0		= Bones[S->matrix0].mTransform;
+            Fmatrix& M1		= Bones[S->matrix1].mTransform;
+            M0.transform_tiny(P0,S->P0);
+            M0.transform_dir (N0,S->N0);
+            M1.transform_tiny(P1,S->P1);
+            M1.transform_dir (N1,S->N1);
+            D->P.lerp		(P0,P1,S->w);
+            D->N.lerp		(N0,N1,S->w);
+            D->u			= S->u;
+            D->v			= S->v;
+        }else{
+            Fmatrix& M0		= Bones[S->matrix0].mTransform;
+            M0.transform_tiny(D->P,S->P0);
+            M0.transform_dir (D->N,S->N0);
+            D->u			= S->u;
+            D->v			= S->v;
+        }
 		S++; D++;
 	}
 }

@@ -16,38 +16,55 @@ class CInifile;
 
 struct SSkelVert{
 	Fvector		P;
-	Fvector		O;
-	Fvector		N;
+	Fvector		O0;
+	Fvector		O1;
+	Fvector		N0;
+	Fvector		N1;
     Fvector2	UV;
-	DWORD		B;
+	DWORD		B0;
+	DWORD		B1;
+    float 		w;
 	SSkelVert(){
 		P.set	(0,0,0);
-        O.set   (0,0,0);
-		N.set	(0,1,0);
         UV.set	(0.f,0.f);
-		B		= BONE_NONE;
+        O0.set	(0,0,0);
+		N0.set	(0,1,0);
+		B0		= BONE_NONE;
+        O1.set	(0,0,0);
+		N1.set	(0,1,0);
+		B1		= BONE_NONE;
+        w		= 0;
 	}
-	void set(Fvector& p, Fvector& o, Fvector& n, Fvector2& uv, DWORD b){
-		P.set	(p);
-        O.set   (o);
-		N.set	(n);
+    void set(Fvector& p, Fvector2& uv, float _w)
+    {
+        P.set   (p);
         UV.set	(uv);
-		B		= b;
+        w		= _w;
+    }
+	void set0(Fvector& o, Fvector& n, DWORD b)
+    {
+        O0.set	(o);
+		N0.set	(n);
+		B0		= b;
 	}
-	void	setbone(DWORD b){
-		if (B==BONE_NONE){
-			B = b;
-		} else R_ASSERT(B==b);
+	void set1(Fvector& o, Fvector& n, DWORD b)
+    {
+        O1.set   (o);
+		N1.set	(n);
+		B1		= b;
 	}
 	BOOL	similar_pos(SSkelVert& V){
         return P.similar(V.P,EPS_L);
     }
 	BOOL	similar(SSkelVert& V){
-		if (B!=V.B)						return FALSE;
+		if (B0!=V.B0)					return FALSE;
+		if (B1!=V.B1)					return FALSE;
         if (!P.similar	(V.P,EPS_L))	return FALSE;
         if (!UV.similar	(V.UV,EPS_S))	return FALSE;
-		if (!O.similar	(V.O,EPS_L))	return FALSE;
-		if (!N.similar	(V.N,EPS_L))	return FALSE;
+		if (!O0.similar	(V.O0,EPS_L))	return FALSE;
+		if (!N0.similar	(V.N0,EPS_L))	return FALSE;
+		if (!O1.similar	(V.O1,EPS_L))	return FALSE;
+		if (!N1.similar	(V.N1,EPS_L))	return FALSE;
 		return TRUE;
 	}
 };
@@ -119,7 +136,7 @@ class CExportSkeleton{
         std::vector<Vsplit>	pmap_vsplit;
         std::vector<WORD>	pmap_faces;
 
-        void 			Save	(CFS_Base& F);
+        void 			Save	(CFS_Base& F, BOOL b2Link);
 
 		void 			MakeProgressive();
         SSplit			(CSurface* surf, const Fbox& bb);

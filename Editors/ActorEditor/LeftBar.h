@@ -115,6 +115,8 @@ __published:	// IDE-managed Components
 	TMxLabel *lbMotionCount;
 	TMxLabel *MxLabel2;
 	TExtBtn *ebRotateMotion;
+	TMenuItem *N10;
+	TMenuItem *N11;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
     void __fastcall PanelMaximizeClick(TObject *Sender);

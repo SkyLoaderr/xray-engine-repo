@@ -127,7 +127,17 @@ void CEditableMesh::GeneratePNormals(){
 
 #ifdef _EDITOR
 #include "Bone.h"
-void CEditableMesh::GenerateSVertices(){
+
+struct st_WB{
+	int 	bone;
+    float 	weight;
+    		st_WB	(int b, float w):bone(b),weight(w){;}
+};
+bool operator < (const st_WB& x, const st_WB& y){ return x.weight < y.weight; }
+DEFINE_VECTOR(st_WB,WBVec,WBIt);
+
+void CEditableMesh::GenerateSVertices()
+{
 	if (!m_Parent->IsSkeleton()) return;
 
     m_Parent->ResetAnimation();
@@ -146,22 +156,44 @@ void CEditableMesh::GenerateSVertices(){
                 st_FaceVert& fv = F.pv[k];
                 if (fv.pindex==int(i)){
                     VMapPtSVec& vmpt_lst = m_VMRefs[fv.vmref];
+                    WBVec 		wb;
                     for (VMapPtIt vmpt_it=vmpt_lst.begin(); vmpt_it!=vmpt_lst.end(); vmpt_it++){
                         st_VMap& VM = *m_VMaps[vmpt_it->vmap_index];
                         if (VM.type==vmtWeight){
-							//float& w = VM.getW(vmpt_it->index);
-                            SV.bone 	= m_Parent->GetBoneIndexByWMap(VM.name);
-							if (SV.bone<=-1){
+                        	wb.push_back(st_WB(m_Parent->GetBoneIndexByWMap(VM.name),VM.getW(vmpt_it->index)));
+							if (wb.back().bone<=-1){
 	                            ELog.DlgMsg(mtError,"Can't find bone assigned to weight map %s",VM.name);
 								m_SVertices.clear();
                                 THROW2("Editor crashed.");
                                 return;
                             }
-                            CBone* B 	= m_Parent->m_Bones[SV.bone];
-                            B->LITransform().transform_tiny(SV.offs,P);
-                            bRes=true;
-                            break;
                         }
+                    }
+                    std::sort(wb.begin(),wb.end());
+                    int cnt = wb.size();
+					CBone* B=0;
+                    switch (cnt){
+                    	case 0: 
+                        	bRes = false; 
+                        break;
+                        case 1:{ 
+		                    bRes 		= true;
+                            SV.bone0 	= wb[0].bone;
+                            SV.bone1 	= -1;
+                            SV.w	   	= 0.f;
+	                        CBone* B 	= m_Parent->m_Bones[SV.bone0];
+    	                    B->LITransform().transform_tiny(SV.offs0,P);
+                        }break;
+                        default:{
+		                    bRes 		= true;
+                            SV.bone0 	= wb[0].bone;
+                            SV.bone1 	= wb[1].bone;
+                            SV.w	   	= wb[1].weight/(wb[0].weight+wb[1].weight);
+	                        B		 	= m_Parent->m_Bones[SV.bone0];
+    	                    B->LITransform().transform_tiny(SV.offs0,P);
+	                        B		 	= m_Parent->m_Bones[SV.bone1];
+    	                    B->LITransform().transform_tiny(SV.offs1,P);
+                        }break;
                     }
                     break;
                 }

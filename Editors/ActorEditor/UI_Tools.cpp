@@ -86,7 +86,7 @@ void CActorTools::PreviewModel::SetPreferences()
 	FILL_PROP(values,	"Scroll",		&m_dwFlags,		PROP::CreateFlag	(pmScroll));
 	FILL_PROP(values,	"Speed (m/c)",	&m_fSpeed,		PROP::CreateFloat	(-10000.f,10000.f,0.01f,2));
 	FILL_PROP(values,	"Segment (m)",	&m_fSegment,	PROP::CreateFloat	(-10000.f,10000.f,0.01f,2));
-	FILL_PROP(values,	"Scroll axis",	&m_ScrollAxis,	PROP::CreateToken	(sa_token));
+	FILL_PROP(values,	"Scroll axis",	&m_ScrollAxis,	PROP::CreateToken	(sa_token,sizeof(m_ScrollAxis)));
 	m_Props->AssignValues(values,true,"Preview prefs");
     m_Props->ShowProperties();
 }

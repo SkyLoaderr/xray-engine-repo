@@ -51,7 +51,7 @@
       Intermediate\FHierrarhyVisual.obj Intermediate\FProgressiveFixedVisual.obj 
       Intermediate\FVisual.obj Intermediate\SkeletonCalculate.obj 
       Intermediate\BodyInstance.obj Intermediate\fmesh.obj 
-      Intermediate\Engine.obj Intermediate\ModelPool.obj 
+      Intermediate\engine.obj Intermediate\ModelPool.obj 
       Intermediate\UI_ToolsMotions.obj Intermediate\KeyBar.obj 
       Intermediate\xrXRC.obj Intermediate\cl_collector.obj 
       Intermediate\Blender_Shadow_Texture.obj 
@@ -63,7 +63,7 @@
       Intermediate\ImageEditor.obj Intermediate\ETextureParams.obj 
       Intermediate\ShaderFunction.obj Intermediate\PropertiesListTypes.obj 
       Intermediate\LightAnimLibrary.obj Intermediate\render.obj 
-      Intermediate\Frustum.obj"/>
+      Intermediate\Frustum.obj Intermediate\xrSkin2W.obj"/>
     <RESFILES value="ActorEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -226,7 +226,7 @@
       <FILE FILENAME="Engine\Animations\SkeletonCalculate.cpp" FORMNAME="" UNITNAME="SkeletonCalculate" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\BodyInstance.cpp" FORMNAME="" UNITNAME="BodyInstance" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\fmesh.cpp" FORMNAME="" UNITNAME="fmesh" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\Engine.cpp" FORMNAME="" UNITNAME="Engine" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\engine.cpp" FORMNAME="" UNITNAME="Engine" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ModelPool.cpp" FORMNAME="" UNITNAME="ModelPool" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="UI_ToolsMotions.cpp" FORMNAME="" UNITNAME="UI_ToolsMotions" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="KeyBar.cpp" FORMNAME="frmKeyBar" UNITNAME="KeyBar" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -253,6 +253,7 @@
       <FILE FILENAME="Editor\LightAnimLibrary.cpp" FORMNAME="" UNITNAME="LightAnimLibrary" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\render.cpp" FORMNAME="" UNITNAME="render" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Frustum.cpp" FORMNAME="" UNITNAME="Frustum" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\xrSkin2W.cpp" FORMNAME="" UNITNAME="xrSkin2W" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -52,7 +52,6 @@ class CUIBuyMenu{
 	CMenuItem*			menu_root;	
 	CMenuItem*			menu_active;
 
-	static void 		BackItem			(CMenuItem* sender);
 	static void 		BuyItem				(CMenuItem* sender);
 	int					menu_offs;
 	int					menu_offs_col[2];

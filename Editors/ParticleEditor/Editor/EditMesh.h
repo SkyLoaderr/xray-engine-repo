@@ -66,9 +66,13 @@ DEFINE_SVECTOR		(st_VMapPt,8,VMapPtSVec,VMapPtIt);
 DEFINE_VECTOR		(VMapPtSVec,VMRefsVec,VMRefsIt);
 
 struct st_SVert{
-	Fvector			offs;
-    Fvector			norm;
-    int				bone;
+	Fvector			offs0;
+	Fvector			offs1;
+    Fvector			norm0;
+    Fvector			norm1;
+    int				bone0;
+    int				bone1;
+    float			w;
 };
 // faces
 struct st_FaceVert{

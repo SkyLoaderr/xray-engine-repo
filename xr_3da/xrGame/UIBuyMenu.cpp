@@ -2,7 +2,6 @@
 #include "UIBuyMenu.h"
 #include "HUDManager.h"
 #include "..\\xr_trims.h"
-#include <functional>
 
 #define BUY_MENU_OFFS		200
 #define BUY_MENU_OFFS_COL1	0
@@ -93,10 +92,6 @@ void CUIBuyMenu::OnFrame	()
 //--------------------------------------------------------------------
 
 void CUIBuyMenu::Render		()
-{
-}
-//--------------------------------------------------------------------
-void CUIBuyMenu::BackItem	(CMenuItem* sender)
 {
 }
 //--------------------------------------------------------------------

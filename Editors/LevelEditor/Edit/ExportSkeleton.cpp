@@ -93,7 +93,7 @@ CExportSkeleton::SSplit::SSplit(CSurface* surf, const Fbox& bb):CSkeletonCollect
 }
 //----------------------------------------------------
 
-void CExportSkeleton::SSplit::Save(CFS_Base& F)
+void CExportSkeleton::SSplit::Save(CFS_Base& F, BOOL b2Link)
 {
     // Header
     F.open_chunk		(OGF_HEADER);
@@ -113,15 +113,31 @@ void CExportSkeleton::SSplit::Save(CFS_Base& F)
     // Vertices
     m_Box.invalidate	();
     F.open_chunk		(OGF_VERTICES);
-    F.Wdword			(0x12071980);
+    F.Wdword			(b2Link?2*0x12071980:1*0x12071980);
     F.Wdword			(m_Verts.size());
-    for (SkelVertIt v_it=m_Verts.begin(); v_it!=m_Verts.end(); v_it++){
-        SSkelVert& pV 	= *v_it;
-        m_Box.modify(pV.P);
-        F. write(&(pV.O),sizeof(float)*3);		// position (offset)
-        F.write(&(pV.N),sizeof(float)*3);		// normal
-        F.Wfloat(pV.UV.x); F.Wfloat(pV.UV.y);		// tu,tv
-        F.Wdword(pV.B);
+    if (b2Link){
+        for (SkelVertIt v_it=m_Verts.begin(); v_it!=m_Verts.end(); v_it++){
+            SSkelVert& pV 	= *v_it;
+            m_Box.modify(pV.P);
+			// write vertex
+            F.Wword(pV.B0);
+            F.Wword(pV.B1);
+            F.write(&(pV.O0),sizeof(Fvector));		// position (offset)
+            F.write(&(pV.N0),sizeof(Fvector));		// normal
+            F.write(&(pV.O1),sizeof(Fvector));		// position (offset)
+            F.write(&(pV.N1),sizeof(Fvector));		// normal
+            F.Wfloat(pV.w);
+            F.Wfloat(pV.UV.x); F.Wfloat(pV.UV.y);	// tu,tv
+        }
+    }else{
+        for (SkelVertIt v_it=m_Verts.begin(); v_it!=m_Verts.end(); v_it++){
+            SSkelVert& pV 	= *v_it;
+            m_Box.modify(pV.P);
+            F. write(&(pV.O0),sizeof(float)*3);		// position (offset)
+            F.write(&(pV.N0),sizeof(float)*3);		// normal
+            F.Wfloat(pV.UV.x); F.Wfloat(pV.UV.y);		// tu,tv
+            F.Wdword(pV.B0);
+        }
     }
     F.close_chunk();
 
@@ -237,6 +253,7 @@ bool CExportSkeleton::ExportGeometry(CFS_Base& F)
     CSMotion* active_motion=m_Source->ResetSAnimation();
 
     R_ASSERT(m_Source->IsFlag(CEditableObject::eoDynamic)&&m_Source->IsSkeleton());
+    BOOL b2Link = FALSE;
 
     UI.ProgressStart(5+m_Source->MeshCount()*2+m_Source->SurfaceCount(),"Export skeleton geometry...");
     UI.ProgressInc();
@@ -293,14 +310,26 @@ bool CExportSkeleton::ExportGeometry(CFS_Base& F)
                             uv					= &vmap.getUV(vm_pt.index);
                         }
                         R_ASSERT2(uv,"uv empty");
-                        Fvector N;
-		                CBone* B		= m_Source->GetBone(sv.bone);
-        		        B->LITransform().transform_dir(N,vnormals[fv.pindex]);
-                        v[k].set(MESH->m_Points[fv.pindex],sv.offs,N,*uv,sv.bone); //sv.norm
+                        v[k].set(MESH->m_Points[fv.pindex],*uv,sv.w);
+
+                        Fvector N0,N1;
+		                CBone* B;
+                        B = m_Source->GetBone(sv.bone0);
+        		        B->LITransform().transform_dir(N0,vnormals[fv.pindex]);
+                        v[k].set0(sv.offs0,N0,sv.bone0);
+                        if (sv.bone1!=-1){
+                        	b2Link = TRUE;
+			                B = m_Source->GetBone(sv.bone1);
+    	    		        B->LITransform().transform_dir(N1,vnormals[fv.pindex]);
+        	                v[k].set1(sv.offs1,N1,sv.bone1);
+                        }else{
+        	                v[k].set1(sv.offs0,N0,sv.bone0);
+                        }
                     }
                     split.add_face(v[0], v[1], v[2]);
 			        if (surf->IsFlag(CSurface::sf2Sided)){
-                    	v[0].N.invert(); v[1].N.invert(); v[2].N.invert();
+                    	v[0].N0.invert(); v[1].N0.invert(); v[2].N0.invert();
+                    	v[0].N1.invert(); v[1].N1.invert(); v[2].N1.invert();
                     	split.add_face(v[0], v[2], v[1]);
                     }
                 }
@@ -316,7 +345,7 @@ bool CExportSkeleton::ExportGeometry(CFS_Base& F)
     for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
 		SkelVertVec& lst = split_it->getV_Verts();
 	    for (SkelVertIt sv_it=lst.begin(); sv_it!=lst.end(); sv_it++)
-		    bone_points[sv_it->B].push_back(sv_it->O);
+		    bone_points[sv_it->B0].push_back(sv_it->O0);
         if (m_Source->IsFlag(CEditableObject::eoProgressive)) split_it->MakeProgressive();
 		UI.ProgressInc();
     }
@@ -339,7 +368,7 @@ bool CExportSkeleton::ExportGeometry(CFS_Base& F)
     int chield=0;
     for (split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
 	    F.open_chunk(chield++);
-    	    split_it->Save(F);
+        split_it->Save(F,b2Link);
 	    F.close_chunk();
 		rootBB.merge(split_it->m_Box);
     }
