@@ -14,7 +14,7 @@ void CLevel::net_Stop		()
 
 void CLevel::ClientSend	()
 {
-	if (!net_HasBandwidth())	return;
+	if (!net_HasBandwidth() || !Level().Server->client_Count())	return;
 	/*
 	if (!Level().Server->client_Count())
 	{
