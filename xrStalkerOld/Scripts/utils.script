@@ -81,7 +81,7 @@ function cfg_get_bool(char_ini, section, field, object, mandatory, default_val)
 	end
 	
 	--printf("DEBUG: conf_get_bool: section='%s', field='%s'", section, field)
-	if char_ini:section_exist(section) and char_ini:line_exist(section, field) then
+	if section and char_ini:section_exist(section) and char_ini:line_exist(section, field) then
 		local ret = char_ini:r_bool(section, field)
 		return ret
 	end
@@ -106,7 +106,7 @@ function cfg_get_string(char_ini, section, field, object, mandatory, gulag_name,
 
 
 	--printf("DEBUG: conf_get_string: section='%s', field='%s'", section, field)
-	if char_ini:section_exist(section) and char_ini:line_exist(section, field) then
+	if section and char_ini:section_exist(section) and char_ini:line_exist(section, field) then
 		if gulag_name and gulag_name ~= "" then
 			return gulag_name .. "_" .. char_ini:r_string(section, field)
 		else
@@ -127,7 +127,7 @@ function cfg_get_number(char_ini, section, field, object, mandatory, default_val
 	end
 
 	--printf("DEBUG: conf_get_number: section='%s', field='%s'", section, field)
-	if char_ini:section_exist(section) and char_ini:line_exist(section, field) then
+	if section and char_ini:section_exist(section) and char_ini:line_exist(section, field) then
 		return char_ini:r_s32(section, field)
 	end
 	if not mandatory then
