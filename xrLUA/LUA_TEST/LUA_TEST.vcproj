@@ -45,7 +45,7 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
 				AdditionalDependencies="odbc32.lib odbccp32.lib x:\xr_3da.lib "
-				OutputFile="$(OutDir)/xrLuaCompiler.exe"
+				OutputFile="x:\xrLuaCompiler.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
