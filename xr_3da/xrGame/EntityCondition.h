@@ -32,6 +32,9 @@ public:
 
 	void ChangeBleeding(float percent);
 
+	void ChangeCircumspection(float value);
+	void ChangeEntityMorale(float value);
+
 	//hit_power задается от 0 до 100 (сложилось исторически)
 	virtual void ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
 	//обновления состояния с течением времени
@@ -54,6 +57,9 @@ protected:
 	virtual void UpdateSatiety();
 	virtual void UpdateRadiation();
 
+	virtual void UpdateCircumspection();
+	virtual void UpdateEntityMorale();
+
 
 	//для подсчета состояния открытых ран,
 	//запоминается кость куда был нанесен хит
@@ -67,11 +73,17 @@ protected:
 	float m_fSatiety;				//сытость (энергия)
 	float m_fRadiation;				//доза радиактивного облучения
 
+	float m_fCircumspection;		//настороженность	
+	float m_fEntityMorale;			//мораль
+
 	//максимальные величины
 	float m_fHealthMax;				
 	float m_fPowerMax;					
 	float m_fSatietyMax;				
 	float m_fRadiationMax;				
+
+	float m_fCircumspectionMax;		
+	float m_fEntityMoraleMax;				
 
 	//величины изменения параметров на каждом обновлении
 	float m_fDeltaHealth;
@@ -79,12 +91,18 @@ protected:
 	float m_fDeltaSatiety;
 	float m_fDeltaRadiation;
 
+	float m_fDeltaCircumspection;
+	float m_fDeltaEntityMorale;
+
 	//скорости изменения характеристик состояния
 	//в секунду
 	float m_fV_Health;
 	float m_fV_Power;				
 	float m_fV_Satiety;	
 	float m_fV_Radiation;
+
+	float m_fV_Circumspection;		
+	float m_fV_EntityMorale;
 
 	//коэффициенты скоростей изменения параметров во время сна
 	float m_fK_SleepHealth;

@@ -22,6 +22,12 @@ CEntityCondition::CEntityCondition(void)
 	m_fSatietyMax = MAX_SATIETY;
 	m_fRadiationMax = MAX_RADIATION;
 
+	m_fCircumspection = m_fCircumspectionMax = 1.f;
+	m_fEntityMorale =  m_fEntityMoraleMax = 1.f;
+	m_fV_Circumspection =  0.01f;
+	m_fV_EntityMorale = 0.01f;
+
+
 	m_fHealth  = MAX_HEALTH;
 	m_fPower  = MAX_POWER;
 	m_fSatiety = MAX_SATIETY;
@@ -119,6 +125,17 @@ void CEntityCondition::ChangeRadiation(float value)
 	m_fDeltaRadiation += value;
 }
 
+
+void CEntityCondition::ChangeCircumspection(float value)
+{
+	m_fDeltaCircumspection += value;
+}
+void CEntityCondition::ChangeEntityMorale(float value)
+{
+	m_fDeltaEntityMorale += value;
+}
+
+
 void CEntityCondition::ChangeBleeding(float percent)
 {
 	//затянуть раны на заданное кол-во процентов
@@ -157,15 +174,24 @@ void CEntityCondition::UpdateCondition()
 	UpdateSatiety();
 	UpdateRadiation();
 
+	UpdateCircumspection();
+	UpdateEntityMorale();
+
 	m_fHealth += m_fDeltaHealth;
 	m_fPower += m_fDeltaPower;
 	m_fSatiety += m_fDeltaSatiety;
 	m_fRadiation +=  m_fDeltaRadiation;
 
+	m_fCircumspection += m_fDeltaCircumspection;
+	m_fEntityMorale += m_fDeltaEntityMorale;
+
 	m_fDeltaHealth = 0;
 	m_fDeltaPower = 0;
 	m_fDeltaSatiety = 0;
 	m_fDeltaRadiation = 0;
+
+	m_fDeltaCircumspection = 0;
+	m_fDeltaEntityMorale = 0;
 
 	if(m_fHealth<0) m_fHealth = 0;
 	if(m_fHealth>m_fHealthMax) m_fHealth = m_fHealthMax;
@@ -175,6 +201,11 @@ void CEntityCondition::UpdateCondition()
 	if(m_fRadiation>m_fRadiationMax) m_fRadiation = m_fRadiationMax;
 	if(m_fSatiety<0) m_fSatiety = 0;
 	if(m_fSatiety>m_fSatietyMax) m_fSatiety = m_fSatietyMax;
+
+	if(m_fCircumspection<0) m_fCircumspection = 0;
+	if(m_fCircumspection>m_fCircumspectionMax) m_fCircumspection = m_fCircumspectionMax;
+	if(m_fEntityMorale<0) m_fEntityMorale = 0;
+	if(m_fEntityMorale>m_fEntityMoraleMax) m_fEntityMorale = m_fEntityMoraleMax;
 }
 
 
@@ -311,7 +342,51 @@ void CEntityCondition::UpdateHealth()
 		if((*it).second<0) (*it).second = 0;
 	}
 
+
 	//убрать все зашившие раны из списка
+	
+	s16 previous_bone_num;
+	bool search_completed = false;
+
+	WOUND_PAIR_IT begin_it;
+
+	begin_it = m_mWound.begin(); 
+
+	do
+	{
+		
+		previous_bone_num = -1;
+
+		for(WOUND_PAIR_IT it = begin_it; 
+						  it!=m_mWound.end();)
+		{
+			if((*it).second == 0)
+				break;
+
+			//запомнить номер последней кости
+			previous_bone_num = (*it).first;
+			it++;
+		}
+
+
+		if(it == m_mWound.end()) 
+			search_completed = true; 
+		else
+		{
+			m_mWound.erase(it);
+			search_completed = false;
+
+
+			begin_it = m_mWound.find(previous_bone_num);
+			
+			if(begin_it == m_mWound.end())
+			{
+				begin_it = m_mWound.begin();
+			}
+		}
+
+	}while(!search_completed);
+
 }
 void CEntityCondition::UpdatePower()
 {
@@ -358,6 +433,23 @@ void CEntityCondition::UpdateRadiation()
 							m_iDeltaTime/1000;
 
 		m_fDeltaHealth -= m_fV_RadiationHealth*m_fRadiation*m_iDeltaTime/1000;
+	}
+}
+
+void CEntityCondition::UpdateCircumspection()
+{
+	if(m_fCircumspection<m_fCircumspectionMax)
+	{
+		m_fDeltaCircumspection += m_fV_Circumspection*
+								 m_iDeltaTime/1000;
+	}
+}
+void CEntityCondition::UpdateEntityMorale()
+{
+	if(m_fEntityMorale<m_fEntityMoraleMax)
+	{
+		m_fDeltaEntityMorale += m_fV_EntityMorale*
+						  m_iDeltaTime/1000;
 	}
 }
 
