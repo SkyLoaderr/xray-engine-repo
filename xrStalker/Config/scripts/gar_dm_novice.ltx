@@ -1,11 +1,13 @@
 [logic]
 active = walker1
+on_death = death
+on_combat = combat
 
 [death]
-conditions = %+gar_dm_novice_dead%
+on_info = %+gar_dm_novice_dead%
 
 [combat]
-on_info = remark@after_fight %=gar_bandits_fight%
+on_info = remark@after_fight %=gar_bandits_fight =log_bp1%
 
 [walker1]
 path_walk = novice_walk
@@ -34,6 +36,7 @@ on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} rema
 no_move = false
 no_wpn = true
 snd = help
+arrival_timeout = 1500
 on_signal = move_end | nil %=gar_bandits_fight%
 ;on_info = {=unfriendly_or_has_enemy} remark@after_fight %=gar_bandits_fight%
 on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight
