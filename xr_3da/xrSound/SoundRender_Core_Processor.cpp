@@ -108,7 +108,7 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 		pListener->SetAllParameters		((DS3DLISTENER*)&Listener, DS3D_DEFERRED );
         
 // EAX        
-		if (psSoundFlags.test(ssFX)&&pExtensions){
+		if (psSoundFlags.test(ssEAX)&&pExtensions){
         	if (bListenerMoved){
 	        	bListenerMoved			= FALSE;
     	        e_target				= *get_environment	(Listener.vPosition);

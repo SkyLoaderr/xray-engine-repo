@@ -43,7 +43,7 @@ XRSOUND_API extern int				psSoundCacheSizeMB		;
 // Flags
 enum {
 	ssHardware			= (1ul<<1ul),	//!< Use hardware mixing only
-    ssFX				= (1ul<<2ul),	//!< Use effects
+    ssEAX				= (1ul<<2ul),	//!< Use eax
 	ss_forcedword		= u32(-1)
 };
 enum {
