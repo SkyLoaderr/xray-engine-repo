@@ -2,6 +2,7 @@
 #include "../../biting/ai_biting.h"
 #include "../../anim_triple.h"
 #include "../../ai_monster_jump.h"
+#include "../../../UIStaticItem.h"
 
 class CStateManagerController;
 
@@ -16,6 +17,8 @@ class CController : public CAI_Biting, public CJumping {
 
 
 	SAttackEffector		m_control_effector;
+
+	CUIStaticItem		m_UIControlFX;
 
 public:
 	xr_vector<CEntity*> m_controlled_objects;

@@ -15,6 +15,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 {
 	if (Remote())		return;
 	if (IsSleeping())	return;
+	if (IsControlled())	return;
 
 	if (GAME_PHASE_PENDING == Game().phase || !g_Alive())
 	{
@@ -127,6 +128,7 @@ void CActor::IR_OnKeyboardRelease(int cmd)
 {
 	if (Remote())		return;
 	if (IsSleeping())	return;
+	if (IsControlled())	return;
 
 	if (g_Alive())	
 	{
@@ -163,6 +165,7 @@ void CActor::IR_OnKeyboardHold(int cmd)
 {
 	if (Remote() || !g_Alive())		return;
 	if (IsSleeping())				return;
+	if (IsControlled())				return;
 
 	if(m_holder)
 	{
@@ -194,8 +197,11 @@ void CActor::IR_OnMouseMove(int dx, int dy)
 		return;
 	}
 
+	if (!IsControlled()) m_controlled_mouse_scale_factor = 1.0f;
+	VERIFY(!fis_zero(m_controlled_mouse_scale_factor));
+
 	CCameraBase* C	= cameras	[cam_active];
-	float scale		= (C->f_fov/DEFAULT_FOV)*psMouseSens * psMouseSensScale/50.f;
+	float scale		= (C->f_fov/DEFAULT_FOV)*psMouseSens * psMouseSensScale/50.f  / m_controlled_mouse_scale_factor;
 	if (dx){
 		float d = float(dx)*scale;
 		cam_Active()->Move((d<0)?kLEFT:kRIGHT, _abs(d));

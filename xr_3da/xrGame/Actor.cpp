@@ -151,6 +151,8 @@ CActor::CActor() : CEntityAlive()
 	m_eDefaultObjAction = eaaNoAction;
 
 	m_bHeavyBreathSndPlaying = false;
+
+	m_controlled_mouse_scale_factor	 = 10.f;
 }
 
 

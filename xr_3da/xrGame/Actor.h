@@ -513,6 +513,17 @@ protected:
 	ALife::EHitType			m_saved_hit_type;
 	s16						m_saved_element;
 
+	//////////////////////////////////////////////////////////////////////////
+	// Controlled Routines
+	//////////////////////////////////////////////////////////////////////////
+public:	
+			bool			IsControlled			() {return m_controlled;}
+			void			SetControlled			(bool b_controlled = true) {m_controlled = b_controlled;}
+
+private:
+			bool			m_controlled;
+			u32				m_controlled_time_started;
+			float			m_controlled_mouse_scale_factor;
 
 	/////////////////////////////////////////
 	// DEBUG INFO

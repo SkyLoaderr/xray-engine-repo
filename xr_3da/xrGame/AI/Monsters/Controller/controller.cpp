@@ -7,6 +7,8 @@
 #include "../../../actor.h"
 #include "../../../ActorEffector.h"
 #include "../../ai_monster_effector.h"
+#include "../../../hudmanager.h"
+#include "../../../ui.h"
 
 CController::CController()
 {
@@ -14,7 +16,6 @@ CController::CController()
 
 	CJumping::Init(this);
 }
-
 CController::~CController()
 {
 	xr_delete(StateMan);
@@ -24,6 +25,9 @@ void CController::Load(LPCSTR section)
 {
 	inherited::Load	(section);
 	CJumping::Load	(section);
+
+	// Load Control FX texture
+	m_UIControlFX.Init(pSettings->r_string(section, "control_fx_texture"), "hud\\default",0,0,0);
 
 	m_max_controlled_number			= pSettings->r_u8(section,"Max_Controlled_Count");
 	m_controlled_objects.reserve	(m_max_controlled_number);
@@ -136,6 +140,15 @@ void CController::UpdateControlled()
 				m_controlled_objects.pop_back();
 			}  
 		}
+
+
+//////////////////////////////////////////////////////////////////////////
+// Test	
+//////////////////////////////////////////////////////////////////////////
+	CActor *pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+	if (!pA) return;
+	pA->SetControlled();
+//////////////////////////////////////////////////////////////////////////
 
 
 #ifdef DEBUG
@@ -254,12 +267,31 @@ void CController::control_hit()
 		pA->EffectorManager().AddEffector(xr_new<CMonsterEffectorHit>(m_control_effector.ce_time,m_control_effector.ce_amplitude,m_control_effector.ce_period_number,m_control_effector.ce_power));
 		Level().Cameras.AddEffector(xr_new<CMonsterEffector>(m_control_effector.ppi, m_control_effector.time, m_control_effector.time_attack, m_control_effector.time_release));
 	}
+
 }
 
 void CController::UpdateCL()
 {
 	inherited::UpdateCL();
 	CJumping::Update();
+	
+
+	
+	static u32 time_started = 0;
+	u32 time_to_show = 2000;
+		
+	if (time_started + time_to_show < Level().timeServer()) {
+		time_started = Level().timeServer();
+	}
+
+	float percent = (Level().timeServer() - time_started) / time_to_show;
+
+	float x1 = Device.dwWidth  / 2 - ((Device.dwWidth	/ 2) * (1 - percent));
+	float y1 = Device.dwHeight / 2 - ((Device.dwHeight	/ 2) * (1 - percent));
+	float x2 = Device.dwWidth  / 2 + ((Device.dwWidth	/ 2) * (1 - percent));
+	float y2 = Device.dwHeight / 2 + ((Device.dwHeight	/ 2) * (1 - percent));
+	
+	HUD().GetUI()->UIMainIngameWnd.AddStaticItem(&m_UIControlFX,x1,y1,x2,y2);
 }
 
 void CController::Jump()
