@@ -78,30 +78,6 @@ void	xrServerEntity::FillProp	(LPCSTR pref, PropValueVec& values)
 }
 #endif
 
-// class xrSE_MercuryBall /////////////////////////////////////////////////////////////////////////
-void xrSE_MercuryBall::UPDATE_Read		(NET_Packet& P)
-{
-}
-void	xrSE_MercuryBall::UPDATE_Write	(NET_Packet& P)
-{
-}
-void	xrSE_MercuryBall::STATE_Read		(NET_Packet& P, u16 size)
-{
-}
-void	xrSE_MercuryBall::STATE_Write	(NET_Packet& P)
-{
-}
-
-#ifdef _EDITOR
-void	xrSE_MercuryBall::FillProp	(LPCSTR pref, PropValueVec& values)
-{
-	FILL_PROP_EX(values,	pref, "Model",		s_Model, 		PROP::CreateObject());
-}
-#endif
-//
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 xrSE_Weapon::xrSE_Weapon()
 {
 	a_current			= 90;
@@ -244,6 +220,21 @@ void	xrSE_Dummy::FillProp			(LPCSTR pref, PropValueVec& values)
   	inherited::FillProp(pref,values);
 }
 #endif
+
+//***** MercuryBall
+void	xrSE_MercuryBall::UPDATE_Read	(NET_Packet& P)				{}
+void	xrSE_MercuryBall::UPDATE_Write	(NET_Packet& P)				{}
+void	xrSE_MercuryBall::STATE_Read	(NET_Packet& P, u16 size)	{}
+void	xrSE_MercuryBall::STATE_Write	(NET_Packet& P)				{}
+
+#ifdef _EDITOR
+void	xrSE_MercuryBall::FillProp	(LPCSTR pref, PropValueVec& values)
+{
+	FILL_PROP_EX(values,	pref, "Model",		s_Model, 		PROP::CreateObject());
+}
+#endif
+//
+
 
 //***** Car
 void xrSE_Car::STATE_Read			(NET_Packet& P, u16 size)	{inherited::STATE_Read(P,size); };
