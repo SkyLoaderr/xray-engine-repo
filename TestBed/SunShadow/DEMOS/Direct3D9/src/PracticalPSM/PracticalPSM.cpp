@@ -570,6 +570,7 @@ CPracticalPSM::CPracticalPSM()
 
     m_bShowHelp = false;
     m_bShowStats = true;
+	m_bLightAnimation = true;	//. OLES:
     m_pAttributes = NULL;
     m_SelectedUI = NULL;
     m_MouseFPSUI = NULL;
