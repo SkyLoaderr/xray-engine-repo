@@ -1,10 +1,10 @@
 module("game_types")
-module("game_phases")
-module("game_messages")
+--module("game_phases")
+--module("game_messages")
 
 module("game_last_ui")
 module("game_last_ps")
-module("key_bindings")
+--module("key_bindings")
 
 class "game_cl_LastStanding" (game_cl_mp_script)
 
@@ -37,9 +37,15 @@ function game_cl_LastStanding:shedule_Update (dt)
 	game_cl_mp_script.shedule_Update	(self, dt)
 
    if self.m_game_ui ~= nil then
-      self.m_game_ui:ShowPlayersList(self:Phase()==game_phases.game_phases.GAME_PHASE_PENDING)
+      self.m_game_ui:ShowPlayersList(self:Phase()==game_phases.GAME_PHASE_PENDING)
+      
+      if (self:Phase()==game_phases.GAME_PHASE_PENDING) then
+         self.m_game_ui:SetTodoCaption("Press FIRE to enter the game")
+      else
+         self.m_game_ui:SetTodoCaption("Kill your enemies")
+      end
 
-      if self:Phase()==game_phases.game_phases.GAME_PHASE_INPROGRESS then
+      if self:Phase()==game_phases.GAME_PHASE_INPROGRESS then
          local ps_local	= self:GetLocalPlayer()
          local msg = string.format("You have %d lives", ps_local.lifecount)
          self.m_game_ui:SetLifeCaption(msg)
@@ -78,14 +84,14 @@ function game_cl_LastStanding:GetMapEntities(ent_container)
 end
 
 function game_cl_LastStanding:TranslateGameMessage(msg, P)
-   if msg == game_messages.game_messages.GAME_EVENT_ROUND_STARTED then
+   if msg == game_messages.GAME_EVENT_ROUND_STARTED then
       self:CommonMessageOut("R O U N D  S T A R T E D !!!")
-   elseif msg == game_messages.game_messages.GAME_EVENT_PLAYER_CONNECTED then
+   elseif msg == game_messages.GAME_EVENT_PLAYER_CONNECTED then
       local name = P:r_stringZ()
       local msg = string.format("Player %s connected.", name)
       self:CommonMessageOut(msg)
 
-   elseif msg == game_messages.game_messages.GAME_EVENT_PLAYER_DISCONNECTED then
+   elseif msg == game_messages.GAME_EVENT_PLAYER_DISCONNECTED then
       local name = P:r_stringZ()
       local msg = string.format("Player %s disconnected.", name)
       self:CommonMessageOut(msg)
@@ -99,7 +105,7 @@ end
 
 function game_cl_LastStanding:OnKeyboardPress(key)
 
-	if key_bindings.keys.kWPN_FIRE == key  then
+	if key_bindings.kWPN_FIRE == key  then
 	
 		local b_need_to_send_ready = false
 
@@ -113,14 +119,14 @@ function game_cl_LastStanding:OnKeyboardPress(key)
 		
 
 		b_need_to_send_ready =	
-		( is_actor and  (ps_local:testFlag(game_player_flags.flags.GAME_PLAYER_FLAG_VERY_VERY_DEAD)) )		or
-		( self:Phase() == game_phases.game_phases.GAME_PHASE_PENDING		)								or
+		( is_actor and  (ps_local:testFlag(game_player_flags.GAME_PLAYER_FLAG_VERY_VERY_DEAD)) )		or
+		( self:Phase() == game_phases.GAME_PHASE_PENDING		)								or
 		( is_spectator and self:CanBeReady()	)
 		
 		if b_need_to_send_ready then
 				local P = net_packet()
 				self:GameEventGen	(P, ps_local.GameID	)
-				P:w_u16(game_messages.game_messages.GAME_EVENT_PLAYER_READY);
+				P:w_u16(game_messages.GAME_EVENT_PLAYER_READY);
 				self:EventSend	(P)
             return true
 		
@@ -130,19 +136,19 @@ function game_cl_LastStanding:OnKeyboardPress(key)
 
 	end
 
-   if key_bindings.keys.kINVENTORY == key then
+   if key_bindings.kINVENTORY == key then
       self:StartStopMenu(self.m_inventory_wnd)
       return true
    end
 
-   if key_bindings.keys.kSCORES == key then
+   if key_bindings.kSCORES == key then
       self.m_game_ui:ShowFragList(true)
       return true
    end
 
-	if (self:Phase() ~= game_phases.game_phases.GAME_PHASE_INPROGRESS) and 
-      (key_bindings.keys.kQUIT ~= key) and 
-      (key_bindings.keys.kCONSOLE ~= key)  then	
+	if (self:Phase() ~= game_phases.GAME_PHASE_INPROGRESS) and 
+      (key_bindings.kQUIT ~= key) and 
+      (key_bindings.kCONSOLE ~= key)  then	
          return  true
       end
 
@@ -151,10 +157,11 @@ function game_cl_LastStanding:OnKeyboardPress(key)
 end
 
 function game_cl_LastStanding:OnKeyboardRelease(key)
-   if key_bindings.keys.kSCORES == key then
+   if key_bindings.kSCORES == key then
       self.m_game_ui:ShowFragList(false)
       return true
    end
 
 	return game_cl_mp_script.OnKeyboardRelease(self, key)
 end
+
