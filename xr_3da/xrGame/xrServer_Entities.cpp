@@ -1043,6 +1043,7 @@ void	xrSE_Zone::FillProp			(LPCSTR pref, PropItemVec& items)
 #endif
 
 xrGraphPoint::xrGraphPoint() {
+	s_gameid					= GAME_DUMMY;
 	m_caConnectionPointName[0]	= 0;
 	m_tLevelID					= 0;
 	m_tLocBaseID				= 0;
