@@ -156,10 +156,10 @@ function se_smart_terrain:update()
 end
 
 function se_smart_terrain:detect_probability()
-	log( "se_smart_terrain::detect_probability called!" )
+--	log( "se_smart_terrain::detect_probability called!" )
 	-- если есть активный гулаг, то вероятность будет зависеть от него, иначе вероятность 100%
---	return ( self.gulag and self.gparams.probability ) or 1
-	return 1.0
+	return ( self.gulag and self.gparams.probability ) or 1
+--	return 1.0
 end
 
 function se_smart_terrain:smart_touch( monster )
