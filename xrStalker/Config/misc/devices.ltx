@@ -107,3 +107,25 @@ inv_grid_x			= 6
 inv_grid_y			= 13
 cost				= 1000
 
+[dynamite]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "devices\dynamite"
+;$prefetch 			= 32
+class				= D_AFMERG
+cform				= skeleton
+visual				= equipments\item_merger.ogf
+radius				= 1
+script_binding		= stalker.object_init
+
+inv_name			= Dynamite
+inv_name_short		= Dynamite
+inv_weight			= 3	;0.2
+
+inv_grid_width		= 2
+inv_grid_height		= 1
+inv_grid_x			= 6
+inv_grid_y			= 13
+cost				= 1000
+
+
