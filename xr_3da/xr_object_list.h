@@ -13,6 +13,7 @@ private:
 	xr_vector<CObject*>			destroy_queue		;
 	xr_vector<CObject*>			objects_active		;
 	xr_vector<CObject*>			objects_sleeping	;
+	xr_vector<CObject*>			objects_active_dup	;
 public:
 	// methods
 								CObjectList			( );

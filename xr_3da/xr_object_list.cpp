@@ -102,8 +102,9 @@ void CObjectList::Update		()
 		Device.Statistic.UpdateClient_active	= objects_active.size	();
 		Device.Statistic.UpdateClient_total		= objects_active.size	() + objects_sleeping.size();
 		Device.Statistic.UpdateClient.Begin		();
-		for (xr_vector<CObject*>::iterator O=objects_active.begin(); O!=objects_active.end(); O++) 
-			SingleUpdate	(*O);
+		objects_active_dup						= objects_active;		// assume no reallocations
+		for (u32 O=0; O<objects_active_dup.size(); O++) 
+			SingleUpdate	(objects_active_dup[O]);
 		Device.Statistic.UpdateClient.End		();
 	}
 
