@@ -11,9 +11,13 @@ class ENGINE_API CController
 {
 public:
 	void	iGetLastMouseDelta			(Ipoint& p);
-	void	iGetMousePosReal			(Ipoint &p)
+	IC void	iGetMousePosScreen			(Ipoint &p)
 	{
 		GetCursorPos(p.d3d());
+	}
+	IC void	iGetMousePosReal			(Ipoint &p)
+	{
+		iGetMousePosScreen(p);
 		if (Device.m_hWnd) ScreenToClient(Device.m_hWnd, p.d3d());
 	}
 	void	iGetMousePosIndependent		(Fpoint &f)
