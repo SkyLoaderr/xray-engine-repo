@@ -59,7 +59,7 @@ function CDeadFlesh:update(delta)
 		end
 		
 		if(self.object:action() == nil) then
-			action(self.object, move(move.run_fwd, patrol(self.dead_way)), sound(sound.panic), cond(cond.move_end))
+			action(self.object, move(move.run_fwd, patrol(self.dead_way)), sound(sound.panic, 800), cond(cond.move_end))
 		end
 	end
 end
