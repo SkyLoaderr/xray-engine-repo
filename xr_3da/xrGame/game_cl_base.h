@@ -2,7 +2,9 @@
 
 #include "game_base.h"
 
+class	CScriptProcessor;
 class	CGameObject;
+
 class	game_cl_GameState	: public game_GameState
 {
 public:
@@ -13,8 +15,11 @@ public:
 	xr_map<u32,Player>				players;
 	Player*							local_player;
 	xr_vector<CGameObject*>			targets;
+	// scripts
+	CScriptProcessor				*m_tpScriptProcessor;
 public:
-	game_cl_GameState();
+									game_cl_GameState		();
+									~game_cl_GameState		();
 
 	virtual		void				Create					(LPSTR &options);
 	virtual		void				net_import_state		(NET_Packet& P);

@@ -20,26 +20,17 @@ namespace boost {
 	}
 };
 
-CScriptProcessor::CScriptProcessor(LPCSTR caFilePath)
+CScriptProcessor::CScriptProcessor(LPCSTR caCaption, LPCSTR caScriptString)
 {
-	Msg				("* Initializing script processor for scripts in %s",caFilePath);
-
-	LPSTR_VECTOR	*l_tpFileList = FS.file_list_open(caFilePath);
-
-	if (l_tpFileList) {
-		LPSTR_IT		I = l_tpFileList->begin();
-		LPSTR_IT		E = l_tpFileList->end();
-		for ( ; I != E; I++) {
-			string256	l_caExtension;
-			_splitpath(*I,0,0,0,l_caExtension);
-			if (!strcmp(l_caExtension,".script")) {
-				strconcat(l_caExtension,caFilePath,*I);
-				m_tpScripts.push_back(xr_new<CScript>(l_caExtension));
-			}
-		}
+	Msg				("* Initializing %s script processor",caCaption);
+	u32				N = _GetItemCount(caScriptString);
+	string16		I;
+	string256		S,S1;
+	for (u32 i=0; i<N; i++) {
+		FS.update_path(S,"$game_scripts$",strconcat(S1,_GetItem(caScriptString,i,I),".script"));
+		R_ASSERT3	(FS.exist(S),"Script file not found!",S);
+		m_tpScripts.push_back(xr_new<CScript>(S));
 	}
-
-	FS.file_list_close(l_tpFileList);
 }
 
 CScriptProcessor::~CScriptProcessor()

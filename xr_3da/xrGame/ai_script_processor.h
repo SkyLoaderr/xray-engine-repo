@@ -16,7 +16,7 @@ class CScriptProcessor {
 public:
 	SCRIPT_VECTOR		m_tpScripts;
 
-						CScriptProcessor			(LPCSTR				caFilePath);
+						CScriptProcessor			(LPCSTR					caCaption, LPCSTR caScriptString);
 	virtual				~CScriptProcessor			();
 			void		Update						();
 };

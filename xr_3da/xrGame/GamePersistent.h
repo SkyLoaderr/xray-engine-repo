@@ -4,8 +4,6 @@
 
 #include "..\IGame_Persistent.h"
 
-class CScriptProcessor;
-
 class CGamePersistent				: 
 	public IGame_Persistent, 
 	public IEventReceiver
@@ -14,8 +12,6 @@ public:
 	IReader*			pDemoFile;
 	u32					uTime2Change;
 	EVENT				eDemoStart;
-	// scripts
-	CScriptProcessor	*m_tpScriptProcessor;
 
 						CGamePersistent			();
 						~CGamePersistent		();

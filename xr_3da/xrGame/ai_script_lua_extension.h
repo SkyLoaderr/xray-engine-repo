@@ -13,7 +13,7 @@
 namespace Script {
 	void		vfExportToLua				(CLuaVirtualMachine *tpLuaVirtualMachine);
 	int			ifSuspendThread				(CLuaVirtualMachine *tpLuaVirtualMachine);
-	void		_Msg						(LPCSTR				caFormat,...);
+	int			vfPrintF					(CLuaVirtualMachine *tpLuaVirtualMachine);
 #ifdef DEBUG
 	LPCSTR		cafEventToString			(int				iEventCode);
 	void		vfPrintError				(CLuaVirtualMachine *tpLuaVirtualMachine, int iErrorCode);

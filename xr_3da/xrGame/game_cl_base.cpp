@@ -1,12 +1,52 @@
 #include "stdafx.h"
+#include "ai_script_processor.h"
 
 game_cl_GameState::game_cl_GameState()
 {
-	local_player	= 0;
+	local_player				= 0;
+	m_tpScriptProcessor			= 0;
+}
+
+game_cl_GameState::~game_cl_GameState()
+{
+	xr_delete					(m_tpScriptProcessor);
 }
 
 void	game_cl_GameState::Create			(LPSTR &options)
 {
+	// loading scripts
+	xr_delete					(m_tpScriptProcessor);
+	LPCSTR						caSection = "";
+	switch (type) {
+		case GAME_ANY			: {
+			Debug.fatal			("Game type is not specified!");
+		}
+		case GAME_SINGLE		: {
+			caSection			= "single";
+			break;
+		}
+		case GAME_DEATHMATCH	: {
+			caSection			= "deathmatch";
+			break;
+		}
+		case GAME_CTF			: {
+			caSection			= "ctf";
+			break;
+		}
+		case GAME_ASSAULT		: {
+			caSection			= "assault";
+			break;
+		}
+		case GAME_CS			: {
+			caSection			= "cs";
+			break;
+		}
+		default					: NODEFAULT;
+	}
+	CInifile					*l_tpIniFile = xr_new<CInifile>("script.ltx");
+	R_ASSERT					(l_tpIniFile);
+	if (l_tpIniFile->r_string(caSection,"script"))
+		m_tpScriptProcessor		= xr_new<CScriptProcessor>("Game",l_tpIniFile->r_string(caSection,"script"));
 }
 
 void	game_cl_GameState::net_import_state	(NET_Packet& P)
