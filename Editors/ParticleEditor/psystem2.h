@@ -31,7 +31,7 @@
 #define drand48() (((float) rand())/((float) RAND_MAX))
 #define srand48(x) srand(x)
 
-namespace PAPI
+namespace PAPI2
 {
 	class pVector	: public Fvector
 	{
