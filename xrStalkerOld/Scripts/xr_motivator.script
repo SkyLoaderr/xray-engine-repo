@@ -120,11 +120,6 @@ function motivator_binder:reload (section)
         }  
 	xr_meet.add_to_binder(self.object, char_ini)
 	--' Компаньон
-	xr_motivator.storage[self.object:id()].assistance = {
-			actor = nil,
-			desired_distance = 5,
-			assist_point = nil,
-	}
 	xr_assistance.add_to_binder	(self.object)		
 	--' помощник, мля !!!
 	xr_motivator.storage[self.object:id ()].sos = {
