@@ -48,7 +48,7 @@ public:
 			m_free				= E - 1;
 		}
 
-					~CFixedStorage			()
+		virtual		~CFixedStorage			()
 		{
 			xr_free				(m_objects);
 		}
