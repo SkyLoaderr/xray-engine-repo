@@ -63,7 +63,7 @@ float		ps_r2_GI_refl			= .9f;				// .9f
 class CCC_Aniso		: public CCC_Integer
 {
 public:
-	CCC_Contrast(LPCSTR N, int*	v) : CCC_Integer(N, v, 2, 16) { *v = 4; };
+	CCC_Aniso(LPCSTR N, int*	v) : CCC_Integer(N, v, 2, 16) { *v = 4; };
 	virtual void Execute(LPCSTR args)
 	{
 		CCC_Integer::Execute	(args);

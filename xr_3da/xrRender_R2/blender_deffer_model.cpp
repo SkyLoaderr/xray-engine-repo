@@ -24,7 +24,7 @@ void	CBlender_deffer_model::Compile(CBlender_Compile& C)
 	{
 	case 0: 	// deffer
 		C.r_Pass		("deffer_model_flat","deffer_base_flat",FALSE);
-		C.r_Sampler		("s_base",		C.L_textures[0]);
+		C.r_Sampler		("s_base",		C.L_textures[0],	false,	D3DTADDRESS_WRAP,	D3DTEXF_ANISOTROPIC,D3DTEXF_LINEAR,	D3DTEXF_LINEAR);
 		C.r_Sampler		("s_ncm",		r2_ncm,		false,D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR);
 		C.r_End			();
 		break;
