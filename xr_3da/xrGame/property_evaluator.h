@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "intrusive_ptr.h"
 #include "property_storage.h"
 #include "script_export_space.h"
 #include "action_management_config.h"
@@ -16,7 +15,7 @@
 class CScriptGameObject;
 
 template <typename _object_type>
-class CPropertyEvaluator : public intrusive_base {
+class CPropertyEvaluator {
 public:
 	typedef GraphEngineSpace::_solver_condition_type	_condition_type;
 	typedef GraphEngineSpace::_solver_value_type		_value_type;

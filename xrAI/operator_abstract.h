@@ -9,13 +9,12 @@
 #pragma once
 
 #include "condition_state.h"
-#include "intrusive_ptr.h"
 
 template <
 	typename _world_property,
 	typename _edge_value_type
 >
-class COperatorAbstract : public intrusive_base {
+class COperatorAbstract {
 public:
 	typedef _edge_value_type					_edge_value_type;
 

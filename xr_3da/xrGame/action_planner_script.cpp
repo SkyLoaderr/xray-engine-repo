@@ -14,16 +14,6 @@
 
 using namespace luabind;
 
-void add_operator_impl(CScriptActionPlanner *action_planner, const CScriptActionPlanner::_edge_type &operator_id, CScriptActionPlanner::COperator *action)
-{
-	action_planner->add_operator	(operator_id,action);
-}
-
-void add_evaluator_impl(CScriptActionPlanner *action_planner, const CScriptActionPlanner::_condition_type &evaluator_id, CScriptActionPlanner::CConditionEvaluator *evaluator)
-{
-	action_planner->add_evaluator	(evaluator_id,evaluator);
-}
-
 void set_goal_world_state(CScriptActionPlanner *action_planner, CScriptActionPlanner::CState *world_state)
 {
 	action_planner->set_target_state	(*world_state);
@@ -39,10 +29,10 @@ void CActionPlanner<CScriptGameObject>::script_register(lua_State *L)
 			.def(								constructor<>())
 			.def("setup",						&CScriptActionPlanner::setup,	&CScriptActionPlannerWrapper::setup_static)
 			.def("update",						&CScriptActionPlanner::update,	&CScriptActionPlannerWrapper::update_static)
-			.def("add_action",					&add_operator_impl,adopt(_3))
+			.def("add_action",					&CScriptActionPlanner::add_operator,adopt(_3))
 			.def("remove_action",				(void (CScriptActionPlanner::*)(const CScriptActionPlanner::_edge_type &))(CScriptActionPlanner::remove_operator))
 			.def("action",						&CScriptActionPlanner::action)
-			.def("add_evaluator",				&add_evaluator_impl,adopt(_3))
+			.def("add_evaluator",				&CScriptActionPlanner::add_evaluator,adopt(_3))
 			.def("remove_evaluator",			(void (CScriptActionPlanner::*)(const CScriptActionPlanner::_condition_type &))(CScriptActionPlanner::remove_evaluator))
 			.def("evaluator",					&CScriptActionPlanner::evaluator)
 			.def("current_action_id",			&CScriptActionPlanner::current_action_id)
