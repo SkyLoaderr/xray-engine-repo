@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xml xmlns="http://tempuri.org/npc_profile.xsd">
     <!-- destroy name ID after next update  -->
     <!-- PERSON INFORMATION  -->
     <character name_id="novice" id="default">
