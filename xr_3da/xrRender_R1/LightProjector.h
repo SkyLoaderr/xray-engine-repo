@@ -11,10 +11,10 @@
 class CLightProjector
 {
 private:
-	const	int		P_rt_size		= 512;
-	const	int		P_o_size		= 51;
-	const	int		P_o_line		= P_rt_size/P_o_size;
-	const	int		P_o_count		= P_o_line*P_o_line;
+	static	const	int		P_rt_size		= 512;
+	static	const	int		P_o_size		= 51;
+	static	const	int		P_o_line		= P_rt_size/P_o_size;
+	static	const	int		P_o_count		= P_o_line*P_o_line;
 
 	//
 	typedef	R_dsgraph::_MatrixItem	NODE;		

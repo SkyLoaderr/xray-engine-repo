@@ -72,12 +72,13 @@ void CLightProjector::setup		(int id)
 		Log		("! CLightProjector::setup - ID out of range");
 		return;
 	}
-	float			dist		= receivers[id].C.distance_to	(Device.vCameraPosition)+receivers[id].O->renderable.visual->vis.sphere.R;
+	recv&			R			= cache[id];
+	float			dist		= R.C.distance_to	(Device.vCameraPosition)+R.O->renderable.visual->vis.sphere.R;
 	float			factor		= _sqr(dist/P_distance);
-	RCache.set_c	(c_xform,	receivers[id].UVgen);
-	Fvector&	m	= receivers[id].UVclamp_min;
+	RCache.set_c	(c_xform,	R.UVgen);
+	Fvector&	m	= R.UVclamp_min;
 	RCache.set_ca	(c_clamp,	0,m.x,m.y,m.z,factor);
-	Fvector&	M	= receivers[id].UVclamp_max;
+	Fvector&	M	= R.UVclamp_max;
 	RCache.set_ca	(c_clamp,	1,M.x,M.y,M.z,0);
 }
 
@@ -190,8 +191,8 @@ void CLightProjector::calculate	()
 		// Build bbox and render
 		Fvector					min,max;
 		Fbox					BB;
-		min.set					(C.C.x-p_R,	C.C.y-(p_R+P_cam_range),	C.C.z-p_R);
-		max.set					(C.C.x+p_R,	C.C.y+0,					C.C.z+p_R);
+		min.set					(R.C.x-p_R,	R.C.y-(p_R+P_cam_range),	R.C.z-p_R);
+		max.set					(R.C.x+p_R,	R.C.y+0,					R.C.z+p_R);
 		BB.set					(min,max);
 		R.UVclamp_min.set		(min);
 		R.UVclamp_max.set		(max);
