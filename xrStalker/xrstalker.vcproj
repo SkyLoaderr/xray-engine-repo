@@ -436,6 +436,12 @@
 				<Filter
 					Name="eng"
 					Filter="">
+					<File
+						RelativePath=".\Config\text\eng\stable_dialogs_agroprom.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\stable_dialogs_garbage.xml">
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
