@@ -109,7 +109,10 @@ IC	void CGameLocationSelector::select_random_location(const _vertex_id_type star
 						++iBranches;
 						break;
 					}
-			THROW				(iBranches);
+			
+			string128	s;
+			sprintf		(s,"Start Vertex ID = [%u]", start_vertex_id);
+			THROW2		(iBranches, s);
 		}
 	}
 	else {
