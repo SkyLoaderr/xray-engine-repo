@@ -27,7 +27,7 @@ CTelekineticObject::~CTelekineticObject()
 
 bool CTelekineticObject::init(CTelekinesis* tele,CPhysicsShellHolder *obj, float s, float h, u32 ttk) 
 {
-	if (!obj || !obj->m_pPhysicsShell) return false;
+	if(!can_activate(obj)) return false;
 
 	//state				= TS_Raise;
 	switch_state(TS_Raise);
@@ -44,7 +44,8 @@ bool CTelekineticObject::init(CTelekinesis* tele,CPhysicsShellHolder *obj, float
 	time_fire_started	= 0;
 	//time_raise_started	= Level().timeServer();
 
-	object->m_pPhysicsShell->set_ApplyByGravity(FALSE);
+	if(object->m_pPhysicsShell)
+		object->m_pPhysicsShell->set_ApplyByGravity(FALSE);
 	
 	return true;
 }
@@ -252,4 +253,9 @@ void CTelekineticObject::rotate()
 	dir.normalize();
 
 	if (OnServer()) object->m_pPhysicsShell->applyImpulse(dir, 2.5f * object->m_pPhysicsShell->getMass());
+}
+
+bool CTelekineticObject::can_activate(CPhysicsShellHolder *obj)
+{
+	return (obj && obj->m_pPhysicsShell);
 }

@@ -63,6 +63,10 @@ bool		CTeleWhirlwindObject::		init(CTelekinesis* tele,CPhysicsShellHolder *obj, 
 				obj->PPhysicsShell()->SetAirResistance(0.f,0.f);
 				obj->m_pPhysicsShell->set_ApplyByGravity(TRUE);
 			}
+			else
+			{
+
+			}
 
 			return result;
 }
@@ -136,6 +140,13 @@ void		CTeleWhirlwindObject::		raise					(float step)
 {
 
 		CPhysicsShell*	p					=	get_object()	->PPhysicsShell();
+		if(!p)	
+			return;
+		else
+			{
+				p->SetAirResistance(0.f,0.f);
+				p->set_ApplyByGravity(FALSE);
+			}
 		u16				element_number		=	p				->get_ElementsNumber();
 		Fvector			center				=	m_telekinesis	->Center();
 
@@ -245,4 +256,9 @@ void		CTeleWhirlwindObject::		fire					(const Fvector &target, float power)
 void		CTeleWhirlwindObject::switch_state(ETelekineticState new_state)
 {
 	inherited::switch_state(new_state);
+}
+
+bool CTeleWhirlwindObject::can_activate(CPhysicsShellHolder *obj)
+{
+	return (obj!=NULL);
 }
