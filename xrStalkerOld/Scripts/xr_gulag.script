@@ -22,9 +22,6 @@ function fract:__init(smrttrn_id, name, type, squad, groups)
 
 	self.Object = {}
 	self.Job = {}
---	self.States = {}
-	--' Функция для просчета состояний
---	self.calculateStates = nil
 
 	self.music = gulag_tasks.get_megafone(type, name) --' матюгальник
 	
@@ -193,8 +190,8 @@ function fract:setJob(npc, job)
 	--' Смена тим, сквад, груп
 	job.object:change_team(job.object:team(), job.squad or job.object:squad(), job.group or job.object:group())
 	--' Спейс рестрикторы
-	--job.object:remove_all_restrictions()
-	--job.object:add_restrictions(job.out_rest, job.in_rest)
+	job.object:remove_all_restrictions()
+	job.object:add_restrictions(job.out_rest, job.in_rest)
 end
 function fract:getJob(npc)
 	if npc == nil then return nil end
