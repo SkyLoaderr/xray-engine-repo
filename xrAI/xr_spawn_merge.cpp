@@ -247,17 +247,16 @@ public:
 		}
 		thProgress				= .5f;
 		{
-			ALIFE_OBJECT_P_IT	I = m_tpSpawnPoints.begin();
-			ALIFE_OBJECT_P_IT	E = m_tpSpawnPoints.end();
-			for ( ; I != E; ++I) {
-				xr_vector<CSE_ALifeLevelChanger*>::iterator i = m_level_changers->begin();
-				xr_vector<CSE_ALifeLevelChanger*>::iterator e = m_level_changers->end();
-				for ( ; i != e; ++i)
-					if (
-						(dwfGetIDByLevelName(m_ini,(*i)->m_caLevelToChange) == m_dwLevelID) &&
-						!xr_strcmp((*i)->m_caLevelPointToChange,(*I)->s_name)
-					) 
-					{
+			xr_vector<CSE_ALifeLevelChanger*>::iterator i = m_level_changers->begin();
+			xr_vector<CSE_ALifeLevelChanger*>::iterator e = m_level_changers->end();
+			for ( ; i != e; ++i) {
+				if (dwfGetIDByLevelName(m_ini,(*i)->m_caLevelToChange) != m_dwLevelID)
+					continue;
+
+				ALIFE_OBJECT_P_IT	I = m_tpSpawnPoints.begin();
+				ALIFE_OBJECT_P_IT	E = m_tpSpawnPoints.end();
+				for ( ; I != E; ++I)
+					if (!xr_strcmp((*i)->m_caLevelPointToChange,(*I)->s_name_replace)) {
 						(*i)->m_tNextGraphID	= (*I)->m_tGraphID;
 						(*i)->m_tNextPosition	= (*I)->o_Position;
 						(*i)->m_tAngles			= (*I)->o_Angle;
@@ -442,6 +441,7 @@ public:
 //			tThreadManager.start	(tpLevels[i]);
 			tpLevels[i]->Execute	();
 //		tThreadManager.wait			();
+		VERIFY2						(level_changers.empty(),"Some of the level changers setup incorrectly");
 
 		Phase						("Merging spawn files");
 		for (u32 i=0, N = tpLevels.size(); i<N; i++)
