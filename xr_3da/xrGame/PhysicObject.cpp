@@ -10,7 +10,7 @@ CPhysicObject::CPhysicObject(void) {
 CPhysicObject::~CPhysicObject(void)
 {
 	SHELL_PAIR_I i=m_unsplited_shels.begin(),e=m_unsplited_shels.end();
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 	{
 		i->first->Deactivate();
 		xr_delete(i->first);
@@ -104,7 +104,7 @@ void CPhysicObject::AddElement(CPhysicsElement* root_e, int id)
 	}
 
 	CBoneData& BD		= K->LL_GetData(u16(id));
-	for (vecBonesIt it=BD.children.begin(); it!=BD.children.end(); it++){
+	for (vecBonesIt it=BD.children.begin(); BD.children.end() != it; ++it){
 		AddElement		(E,(*it)->SelfID);
 	}
 }
@@ -169,10 +169,10 @@ void CPhysicObject::CreateSkeleton(CSE_ALifeObjectPhysic* po)
 	CKinematics* pKinematics=PKinematics(Visual());
 	m_pPhysicsShell		= P_create_Shell();
 	CPhysicsElement* fixed_element=NULL;
-	if(po->fixed_bone[0]!=0)
+	if(0!=po->fixed_bone[0])
 	{
 		u32 fixed_bone_id=pKinematics->LL_BoneID(po->fixed_bone);
-		R_ASSERT2(fixed_bone_id!=BI_NONE,"wrong fixed bone");
+		R_ASSERT2(BI_NONE!=fixed_bone_id,"wrong fixed bone");
 		bone_map.clear();
 		bone_map.insert(mk_pair(fixed_bone_id,physicsBone()));
 		m_pPhysicsShell->build_FromKinematics(pKinematics,&bone_map);
@@ -231,7 +231,7 @@ void CPhysicObject::SpawnCopy()
 		CSE_ALifeObjectPhysic		*l_tpALifePhysicObject = dynamic_cast<CSE_ALifeObjectPhysic*>(D);
 		R_ASSERT					(l_tpALifePhysicObject);
 		
-		l_tpALifeDynamicObject->m_tNodeID	= AI_NodeID;
+		l_tpALifeDynamicObject->m_tNodeID	= level_vertex_id();
 		l_tpALifePhysicObject->set_visual(cNameVisual());
 		l_tpALifePhysicObject->type=u32(m_type);
 		//char mask=0;
@@ -268,7 +268,7 @@ void CPhysicObject::PHSplit()
 		m_pPhysicsShell->SplitProcess(m_unsplited_shels);
 		u16 i=u16(m_unsplited_shels.size())-spawned;
 		//	Msg("%o,spawned,%d",this,i);
-		for(;i;i--) SpawnCopy();
+		for(;i;--i) SpawnCopy();
 	}
 	//else
 	//{
@@ -277,7 +277,7 @@ void CPhysicObject::PHSplit()
 	//	m_unsplited_shels.insert(m_unsplited_shels.begin(),new_shells.begin(),new_shells.end());
 	//	u16 i=u16(new_shells.size());
 	//	//	Msg("%o,spawned,%d",this,i);
-	//	for(;i;i--) SpawnCopy();
+	//	for(;i;--i) SpawnCopy();
 	//}
 }
 
@@ -340,14 +340,14 @@ JOINT_P_MAP			*l_tpJointMap = xr_new<JOINT_P_MAP>();
 
 l_tpJointMap->insert(mk_pair(bone_name,joint*));
 JOINT_P_PAIR_IT		I = l_tpJointMap->find(bone_name);
-if (I!=l_tpJointMap->end()){
+if (l_tpJointMap->end()!=I){
 	//bone_name is found and is an pair_iterator
 	(*I).second
 }
 
 JOINT_P_PAIR_IT		I = l_tpJointMap->begin();
 JOINT_P_PAIR_IT		E = l_tpJointMap->end();
-for ( ; I != E; I++) {
+for ( ; I != E; ++I) {
 	(*I).second->joint_method();
 	Msg("%s",(*I).first);
 }
