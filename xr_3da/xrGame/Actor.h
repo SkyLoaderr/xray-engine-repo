@@ -17,7 +17,6 @@
 #include "StatGraph.h"
 #include "PhraseDialogManager.h"
 #include "CharacterPhysicsSupport.h"
-
 using namespace ACTOR_DEFS;
 
 class CInfoPortion;
@@ -116,8 +115,18 @@ protected:
 	virtual void AddMapLocationsFromInfo (const CInfoPortion* info_portion) const;
 	virtual void AddEncyclopediaArticle	 (const CInfoPortion* info_portion) const;
 	virtual void AddGameTask			 (const CInfoPortion* info_portion) const;
+
+protected:
+struct SDefNewsMsg{
+		GAME_NEWS_DATA*	news_data;
+		u32				time;
+		bool operator < (const SDefNewsMsg& other){return time>other.time;}
+	};
+	xr_vector<SDefNewsMsg> m_defferedMessages;
+	void UpdateDefferedMessages();	
 public:	
-	virtual void AddGameNews			 (GAME_NEWS_DATA& news_data);
+	void			AddGameNews_deffered	 (GAME_NEWS_DATA& news_data, u32 delay);
+	virtual void	AddGameNews				 (GAME_NEWS_DATA& news_data);
 	
 public:
 	virtual void StartTalk			(CInventoryOwner* talk_partner);

@@ -49,7 +49,7 @@ void  CScriptGameObject::SetNewsShowTime	(LPCSTR news, int show_time)
 	if(HUD().GetUI())
 		HUD().GetUI()->UIMainIngameWnd.SetDelayForPdaMessage(CStringTable().IndexById(news), show_time);
 }
-bool  CScriptGameObject::GiveGameNews		(LPCSTR news, LPCSTR texture_name, int x1, int y1, int x2, int y2)
+bool  CScriptGameObject::GiveGameNews		(LPCSTR news, LPCSTR texture_name, int x1, int y1, int x2, int y2, u32 delay)
 {
 	CActor* pActor = smart_cast<CActor*>(&object());
 	if(!pActor) return false;
@@ -72,7 +72,11 @@ bool  CScriptGameObject::GiveGameNews		(LPCSTR news, LPCSTR texture_name, int x1
 	}
 
 	R_ASSERT3(news_data.news_text != NO_STRING, "no entrance found for news in string table", news);
-	pActor->AddGameNews(news_data);
+	
+	if(delay==0)
+		pActor->AddGameNews(news_data);
+	else
+		pActor->AddGameNews_deffered(news_data,delay);
 
 	return true;
 }
