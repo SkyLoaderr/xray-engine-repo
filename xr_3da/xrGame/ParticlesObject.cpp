@@ -66,6 +66,7 @@ void CParticlesObject::Init(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove)
 //----------------------------------------------------
 CParticlesObject::~CParticlesObject()
 {
+	shedule_unregister		();
 }
 
 void CParticlesObject::UpdateSpatial()

@@ -30,6 +30,7 @@ CPSObject::CPSObject	(LPCSTR ps_name, IRender_Sector* S, BOOL bAutoRemove)
 //----------------------------------------------------
 CPSObject::~CPSObject	()
 {
+	shedule_unregister		();
 }
 
 void CPSObject::shedule_Update		(u32 dt)
