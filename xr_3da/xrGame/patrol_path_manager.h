@@ -44,6 +44,7 @@ protected:
 	IC			bool	completed					() const;
 	IC			bool	failed						() const;
 	IC			bool	random						() const;
+	IC			bool	need_selection				(const Fvector &position) const;
 	IC			const Fvector &destination_position	() const;
 	IC			void	set_path					(const CLevel::SPath *path, ref_str path_name);
 	IC			void	set_start_type				(const EPatrolStartType patrol_start_type);

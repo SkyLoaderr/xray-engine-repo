@@ -1057,37 +1057,37 @@ void fill_params(
 	xr_vector<CLevelGraph::STravelParams>	&dest_set
 )
 {
-	start.angular_velocity	= PI_DIV_8;
-	start.linear_velocity	= 1.05f;
+//	start.angular_velocity	= PI_MUL_2;
+//	start.linear_velocity	= 0.f;
+//	start_set.push_back		(start);
+
+	start.angular_velocity	= PI;
+	start.linear_velocity	= 2.15f;
 	start_set.push_back		(start);
 
-//	start.angular_velocity	= PI;
-//	start.linear_velocity	= 2.15f;
-//	start_set.push_back		(start);
+	start.angular_velocity	= PI_DIV_2;
+	start.linear_velocity	= 4.5f;
+	start_set.push_back		(start);
 
-//	start.angular_velocity	= PI_DIV_2;
-//	start.linear_velocity	= 4.5f;
-//	start_set.push_back		(start);
+	start.angular_velocity	= PI_DIV_4;
+	start.linear_velocity	= 6.f;
+	start_set.push_back		(start);
 
-//	start.angular_velocity	= PI_DIV_4;
-//	start.linear_velocity	= 6.f;
-//	start_set.push_back		(start);
+//	dest.angular_velocity	= PI_MUL_2;
+//	dest.linear_velocity	= 0.f;
+//	dest_set.push_back		(dest);
 
-	dest.angular_velocity	= PI_DIV_8;
-	dest.linear_velocity	= 1.05f;
+	dest.angular_velocity	= PI;
+	dest.linear_velocity	= 2.15f;
 	dest_set.push_back		(dest);
 
-//	dest.angular_velocity	= PI;
-//	dest.linear_velocity	= 2.15f;
-//	dest_set.push_back		(dest);
+	dest.angular_velocity	= PI_DIV_2;
+	dest.linear_velocity	= 4.5f;
+	dest_set.push_back		(dest);
 
-//	dest.angular_velocity	= PI_DIV_2;
-//	dest.linear_velocity	= 4.5f;
-//	dest_set.push_back		(dest);
-
-//	dest.angular_velocity	= PI_DIV_4;
-//	dest.linear_velocity	= 6.f;
-//	dest_set.push_back		(dest);
+	dest.angular_velocity	= PI_DIV_4;
+	dest.linear_velocity	= 6.f;
+	dest_set.push_back		(dest);
 }
 
 void CLevelGraph::build_detail_path(

@@ -57,7 +57,7 @@ void CMovementManager::process_patrol_path()
 				break;
 		}
 		case ePathStatePathVerification : {
-			if (!CPatrolPathManager::actual())
+			if (!CPatrolPathManager::actual() || !CPatrolPathManager::need_selection(Position()))
 				m_path_state	= ePathStateSelectPatrolPoint;
 			else
 			if (!CLevelPathManager::actual())
