@@ -46,14 +46,17 @@ void InventoryUtilities::AmmoUpdateProc(CUIDragDropItem* pItem)
 	CInventoryItem* pIItem = (CInventoryItem*)(pItem->GetData());
 	CWeaponAmmo* pAmmoItem = dynamic_cast<CWeaponAmmo*>(pIItem);
 
-	int left	= pItem->GetUIStaticItem().GetPosX() + 5;
-	int bottom	= pItem->GetUIStaticItem().GetPosY() + pItem->GetUIStaticItem().GetRect().height();
-	
-	pItem->GetFont()->SetColor(0xffffffff);
-	HUD().OutText(pItem->GetFont(), pItem->GetClipRect(), float(left), 
-						float(bottom - pItem->GetFont()->CurrentHeight()),
-						"%d",	pAmmoItem->m_boxCurr);
-	pItem->GetFont()->OnRender();
+	if (pAmmoItem->m_boxCurr > 1)
+	{
+		int left	= pItem->GetUIStaticItem().GetPosX() + 5;
+		int bottom	= pItem->GetUIStaticItem().GetPosY() + pItem->GetUIStaticItem().GetRect().height();
+
+		pItem->GetFont()->SetColor(0xffffffff);
+		HUD().OutText(pItem->GetFont(), pItem->GetClipRect(), float(left), 
+			float(bottom - pItem->GetFont()->CurrentHeight()),
+			"%d",	pAmmoItem->m_boxCurr);
+		pItem->GetFont()->OnRender();
+	}
 }
 
 //для надписей на иконках с едой
@@ -63,14 +66,17 @@ void InventoryUtilities::FoodUpdateProc(CUIDragDropItem* pItem)
 	CInventoryItem* pIItem = (CInventoryItem*)(pItem->GetData()); R_ASSERT(pIItem);
 	CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>(pIItem); R_ASSERT(pEatableItem);
 
-	RECT rect = pItem->GetAbsoluteRect();
-	
-	pItem->GetFont()->SetColor(0xffffffff);
-	if(pEatableItem->m_iPortionsNum>0)
-		HUD().OutText(pItem->GetFont(), pItem->GetClipRect(), float(rect.left), 
-							float(rect.bottom - pItem->GetFont()->CurrentHeight()- 2),
-							"%d",	pEatableItem->m_iPortionsNum);
-	pItem->GetFont()->OnRender();
+	if (pEatableItem->m_iPortionsNum > 1)
+	{
+		RECT rect = pItem->GetAbsoluteRect();
+
+		pItem->GetFont()->SetColor(0xffffffff);
+		if(pEatableItem->m_iPortionsNum>0)
+			HUD().OutText(pItem->GetFont(), pItem->GetClipRect(), float(rect.left), 
+			float(rect.bottom - pItem->GetFont()->CurrentHeight()- 2),
+			"%d",	pEatableItem->m_iPortionsNum);
+		pItem->GetFont()->OnRender();
+	}
 }
 
 

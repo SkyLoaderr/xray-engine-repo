@@ -91,7 +91,6 @@ protected:
 	CUIStatic			UIStaticBelt;
 	CUIStatic			UIStaticBottom;
 	CUIStatic			UIStaticTime;
-	CUIStatic			UIStaticWeight;
 
 	// Update current time indicator
 	void				UpdateTime();

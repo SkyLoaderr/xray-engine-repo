@@ -326,6 +326,7 @@ void CUICarBodyWnd::Update()
 void CUICarBodyWnd::Show() 
 { 
 	inherited::Show();
+	m_pCurrentDragDropItem = NULL;
 }
 
 //////////////////////////////////////////////////////////////////////////
