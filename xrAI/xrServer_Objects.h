@@ -17,7 +17,7 @@
 	#include "PropertiesListHelper.h"
 #endif
 
-#define SPAWN_VERSION	u16(29)
+#define SPAWN_VERSION	u16(30)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
@@ -41,6 +41,7 @@
 // 27 - CSE_AnomalousZone			weights changed type from u32 to float
 // 28 - CSE_AnomalousZone			appended with an anomalous zone type
 // 29 - CSE_ALifeObjectPhysic		appended with an animation property
+// 30 - CSE_ALifeTrader				appended with an ordered artefacts property
 //------------------------------------------------------------------------------
 
 class xrClientData;

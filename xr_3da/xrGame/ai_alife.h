@@ -57,7 +57,6 @@ private:
 			void					vfSellArtefacts				(CSE_ALifeTrader			&tTrader);
 			void					vfUpdateArtefactOrders		(CSE_ALifeTrader			&tTrader);
 			void					vfBuySupplies				(CSE_ALifeTrader			&tTrader);
-			void					vfAssignPrices				(CSE_ALifeTrader			&tTrader);
 			void					vfGiveMilitariesBribe		(CSE_ALifeTrader			&tTrader);
 			void					vfUpdateOrganizations		();
 			void					vfKillCreatures				();

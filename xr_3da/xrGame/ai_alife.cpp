@@ -771,35 +771,58 @@ void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
 
 void CSE_ALifeSimulator::vfUpdateArtefactOrders(CSE_ALifeTrader &tTrader)
 {
-	
-}
-
-void CSE_ALifeSimulator::vfAssignPrices(CSE_ALifeTrader &tTrader)
-{
+	// iterating on all the organizations
+	ORGANIZATION_P_PAIR_IT	I = m_tOrganizationRegistry.begin();
+	ORGANIZATION_P_PAIR_IT	E = m_tOrganizationRegistry.end();
+	for ( ; I != E; I++) {
+		// checking if our rank is enough for the organization
+		// and the organization in the appropriate state
+		if (((*I).second->m_tTraderRank == tTrader.m_tRank) && ((*I).second->m_tResearchState == eResearchStateJoin)) {
+			ARTEFACT_ORDER_IT	i = (*I).second->m_tpOrderedArtefacts.begin();
+			ARTEFACT_ORDER_IT	e = (*I).second->m_tpOrderedArtefacts.end();
+			for ( ; i != e; i++) {
+				bool				bOk = false;
+				ARTEFACT_ORDER_IT	ii = tTrader.m_tpOrderedArtefacts.begin();
+				ARTEFACT_ORDER_IT	ee = tTrader.m_tpOrderedArtefacts.end();
+				for ( ; ii != ee; ii++)
+					if (!strcmp((*i).m_caSection,(*ii).m_caSection)) {
+						(*ii).m_dwCount += (*i).m_dwCount;
+						(*ii).m_dwPrice = _min((*ii).m_dwPrice,(*i).m_dwPrice);
+						bOk			= true;
+						break;
+					}
+				if (!bOk) {
+					SArtefactOrder	l_tArtefactOrder;
+					strcpy			(l_tArtefactOrder.m_caSection,(*i).m_caSection);
+					l_tArtefactOrder.m_dwCount = (*i).m_dwCount;
+					l_tArtefactOrder.m_dwPrice = (*i).m_dwPrice;
+					tTrader.m_tpOrderedArtefacts.push_back(l_tArtefactOrder);
+				}
+			}
+		}
+	}
 }
 
 void CSE_ALifeSimulator::vfPerformSurge()
 {
-	vfGenerateAnomalousZones	();
-	vfGenerateAnomalyMap		();
+	vfGenerateAnomalousZones		();
+	vfGenerateAnomalyMap			();
+	vfKillCreatures					();
+	vfBallanceCreatures				();
 	{
 		TRADER_P_IT					I = m_tpTraders.begin();
 		TRADER_P_IT					E = m_tpTraders.end();
 		for ( ; I != E; I++) {
 			vfSellArtefacts			(**I);
 			vfBuySupplies			(**I);
-		}
-	}
-	vfUpdateOrganizations		();
-	{
-		TRADER_P_IT					I = m_tpTraders.begin();
-		TRADER_P_IT					E = m_tpTraders.end();
-		for ( ; I != E; I++) {
-			vfUpdateArtefactOrders	(**I);
-			vfAssignPrices			(**I);
 			vfGiveMilitariesBribe	(**I);
 		}
 	}
-	vfKillCreatures				();
-	vfBallanceCreatures			();
+	vfUpdateOrganizations			();
+	{
+		TRADER_P_IT					I = m_tpTraders.begin();
+		TRADER_P_IT					E = m_tpTraders.end();
+		for ( ; I != E; I++)
+			vfUpdateArtefactOrders	(**I);
+	}
 }

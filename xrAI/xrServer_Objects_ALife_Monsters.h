@@ -45,6 +45,10 @@ public:
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_ALifeTraderAbstract)
 									CSE_ALifeTrader	(LPCSTR caSection);
+	virtual							~CSE_ALifeTrader();
+
+	ARTEFACT_ORDER_VECTOR			m_tpOrderedArtefacts;
+
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisual)

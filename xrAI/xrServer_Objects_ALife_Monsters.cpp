@@ -66,20 +66,45 @@ void CSE_ALifeTraderAbstract::FillProp	(LPCSTR pref, PropItemVec& values)
 
 CSE_ALifeTrader::CSE_ALifeTrader			(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_ALifeTraderAbstract(caSection), CSE_Abstract(caSection)
 {
+	m_tpOrderedArtefacts.clear				();
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
 		set_visual				(pSettings->r_string(caSection,"visual"));
+}
+
+CSE_ALifeTrader::~CSE_ALifeTrader			()
+{
 }
 
 void CSE_ALifeTrader::STATE_Write			(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
 	inherited2::STATE_Write		(tNetPacket);
+	tNetPacket.w_u32			(m_tpOrderedArtefacts.size());
+	ARTEFACT_ORDER_IT			I = m_tpOrderedArtefacts.begin();
+	ARTEFACT_ORDER_IT			E = m_tpOrderedArtefacts.end();
+	for ( ; I != E; I++) {
+		tNetPacket.w_string		((*I).m_caSection);
+		tNetPacket.w_u32		((*I).m_dwCount);
+		tNetPacket.w_u32		((*I).m_dwPrice);
+	}
 }
 
 void CSE_ALifeTrader::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 {
 	inherited1::STATE_Read		(tNetPacket, size);
 	inherited2::STATE_Read		(tNetPacket, size);
+	if (m_wVersion > 29) {
+		u32						l_dwCount;
+		tNetPacket.r_u32		(l_dwCount);
+		m_tpOrderedArtefacts.resize(l_dwCount);
+		ARTEFACT_ORDER_IT		I = m_tpOrderedArtefacts.begin();
+		ARTEFACT_ORDER_IT		E = m_tpOrderedArtefacts.end();
+		for ( ; I != E; I++) {
+			tNetPacket.r_string	((*I).m_caSection);
+			tNetPacket.r_u32	((*I).m_dwCount);
+			tNetPacket.r_u32	((*I).m_dwPrice);
+		}
+	}
 }
 
 void CSE_ALifeTrader::UPDATE_Write			(NET_Packet &tNetPacket)
