@@ -205,7 +205,7 @@ void CGrenade::Explode() {
 			u_EventGen		(P,GE_HIT,l_pGO->ID());
 			P.w_u16			(u16(ID()));
 			P.w_dir			(l_dir);
-			P.w_float		(0);
+			P.w_float		(l_impuls);
 			P.w_s16			(l_element);
 			P.w_vec3		(l_bs_pos);
 			P.w_float		(l_impuls);
