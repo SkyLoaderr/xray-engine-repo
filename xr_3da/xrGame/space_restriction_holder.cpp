@@ -50,7 +50,7 @@ void CSpaceRestrictionHolder::register_restrictor				(CSpaceRestrictor *space_re
 		if (restrictor_type == RestrictionSpace::eDefaultRestrictorTypeOut)
 			temp			= &m_default_out_restrictions;
 		else
-			if (restrictor_type == RestrictionSpace::eDefaultRestrictorTypeOut)
+			if (restrictor_type == RestrictionSpace::eDefaultRestrictorTypeIn)
 				temp		= &m_default_in_restrictions;
 			else
 				NODEFAULT;
