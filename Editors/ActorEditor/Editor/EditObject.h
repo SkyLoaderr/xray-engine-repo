@@ -102,7 +102,7 @@ public:
     IC void			SetName			(LPCSTR name){m_Name=name;}
 	IC void			SetShader		(LPCSTR name)
 	{
-		R_ASSERT(name&&name[0]); 
+		R_ASSERT2(name&&name[0],"Empty shader name."); 
 		m_ShaderName=name; 
 #ifdef _EDITOR 
 		OnDeviceDestroy(); 
