@@ -420,6 +420,16 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 	}
 	else
 		hit_slowmo = 0.f;
+	//---------------------------------------------------------------
+	if (mstate_real & mcSprint && Level().CurrentControlEntity() == this)
+	{
+		mstate_real	&=~mcSprint;
+		mstate_wishful	&=~mcSprint;
+
+		psHUD_Flags.set(HUD_WEAPON_RT,TRUE);
+		psHUD_Flags.set(HUD_CROSSHAIR_RT,TRUE);
+	};
+	//---------------------------------------------------------------
 
 	switch (GameID())
 	{
@@ -462,8 +472,6 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 		}		
 		break;
 	}
-
-
 }
 
 void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element)
