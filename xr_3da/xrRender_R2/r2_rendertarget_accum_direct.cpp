@@ -126,7 +126,7 @@ void CRenderTarget::accum_direct()
 	Device.mView.transform_dir	(L_dir,RImplementation.Lights.sun_dir);
 	L_dir.normalize				();
 	RCache.set_c				("light_direction",	L_dir.x,L_dir.y,L_dir.z,0.f);
-	RCache.set_c				("light_color",		1,1,1,.1f);
+	RCache.set_c				("light_color",		1.3f,1,1,.1f);
 
 	// RS-set
 	//CHK_DX						(HW.pDevice->SetRenderState	(D3DRS_SEPARATEALPHABLENDENABLE,TRUE));
