@@ -229,7 +229,25 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 7, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = ""
 		}
+		table.insert(sj, t)		
+		t = { section = "logic@bar_evil_veterans_walker4", 
+			idle = 0,
+			prior = 7, state = {0,2}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
 		table.insert(sj, t)
+		t = { section = "logic@bar_evil_veterans_camper1", 
+			idle = 0,
+			prior = 9, state = {0,1,2}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_evil_veterans_kamp4", 
+			idle = 0,
+			prior = 7, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
 		t = { section = "logic@bar_evil_veterans_alarm1", 
 			idle = 0,
 			prior = 5, state = {2}, squad = squad, group = groups[0],
@@ -502,7 +520,7 @@ function checkStalker(npc_community, gulag_type)
 		return npc_community == "dolg"
 	end
 	if gulag_type == "bar_evil_veterans" then
-		return npc_community == "stalker"
+		return npc_community == "bandit"
 	end
 	if gulag_type == "bar_freedom_attack" then
 		return npc_community == "freedom"
