@@ -282,11 +282,11 @@ public:
 	{	return (x-v.x)*(x-v.x) + (z-v.z)*(z-v.z);	}
 
 	// Distance calculation
-	IC	T		distance_to_sqr(const Self &v) const
+	ICF	T		distance_to_sqr(const Self &v) const
 	{	return (x-v.x)*(x-v.x) + (y-v.y)*(y-v.y) + (z-v.z)*(z-v.z);	}
 
 	// Distance calculation
-	IC	T		distance_to(const Self &v) const 
+	ICF	T		distance_to(const Self &v) const 
 	{	return _sqrt(distance_to_sqr(v));	}
 
 	// Barycentric coords

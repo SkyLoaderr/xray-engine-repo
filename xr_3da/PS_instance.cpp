@@ -14,11 +14,13 @@ CPS_Instance::CPS_Instance			()
 	m_iLifeTime								= int_max;
 	m_bAutoRemove							= TRUE;
 	m_bDead									= FALSE;
+
+	::Render->ros_destroy					(renderable.ROS);	//. particles doesn't need ROS
 }
-extern ENGINE_API BOOL g_bRendering; 
+extern ENGINE_API BOOL						g_bRendering; 
 
 //----------------------------------------------------
-CPS_Instance::~CPS_Instance			()
+CPS_Instance::~CPS_Instance					()
 {
 	VERIFY									(!g_bRendering);
 	xr_set<CPS_Instance*>::iterator it		= g_pGameLevel->ps_active.find(this);
