@@ -6,6 +6,8 @@
 #include "soundrender_target.h"
 #include "soundrender_emitter.h"
 
+static CTimer	T;
+
 CSoundRender_Target::CSoundRender_Target(void)
 {
 	pBuffer_base	= NULL;
@@ -23,6 +25,8 @@ CSoundRender_Target::CSoundRender_Target(void)
 CSoundRender_Target::~CSoundRender_Target(void)
 {
 }
+
+HANDLE	g_hNotificationEvent    = NULL;
 
 void	CSoundRender_Target::_initialize		()
 {
@@ -50,7 +54,7 @@ void	CSoundRender_Target::_initialize		()
 		DSBCAPS_CTRLFREQUENCY | 
 		DSBCAPS_CTRLVOLUME |
 		DSBCAPS_GETCURRENTPOSITION2 |
-//.        DSBCAPS_CTRLPOSITIONNOTIFY | //!
+        DSBCAPS_CTRLPOSITIONNOTIFY | //!
 		(psSoundFlags.test(ssHardware) 	? 0 				: (DSBCAPS_LOCSOFTWARE));
 	dsBD.dwBufferBytes		= buf_size;
 	dsBD.dwReserved			= 0;
@@ -86,6 +90,29 @@ void	CSoundRender_Target::_initialize		()
 	R_CHK	(pControl->SetConeOrientation	(0,0,1,DS3D_DEFERRED));
 	R_CHK	(pControl->SetConeOutsideVolume	(0,DS3D_DEFERRED));
 	R_CHK	(pControl->SetVelocity			(0,0,0,DS3D_DEFERRED));
+
+    DSBPOSITIONNOTIFY*  aPosNotify     		= NULL; 
+    LPDIRECTSOUNDNOTIFY pDSNotify      		= NULL;
+    // Create the notification events, so that we know when to fill
+    // the buffer as the sound plays. 
+    R_CHK(pBuffer->QueryInterface(IID_IDirectSoundNotify, (VOID**)&pDSNotify));
+
+    aPosNotify = new DSBPOSITIONNOTIFY[sdef_target_count]; 
+
+    if (0==g_hNotificationEvent) 
+    	g_hNotificationEvent 				= CreateEvent( NULL, FALSE, FALSE, NULL );
+    for( DWORD i = 0; i < sdef_target_count; i++ ){
+        aPosNotify[i].dwOffset     = (buf_block * i) + buf_block - 1;
+        aPosNotify[i].hEventNotify = g_hNotificationEvent;             
+    }
+    
+    // Tell DirectSound when to notify us. The notification will come in the from 
+    // of signaled events that are handled in WinMain()
+    R_CHK(pDSNotify->SetNotificationPositions(sdef_target_count, aPosNotify));
+
+//    CloseHandle( g_hNotificationEvent );
+    _RELEASE( pDSNotify );
+    delete []aPosNotify;
 }
 
 void	CSoundRender_Target::_destroy		()
@@ -113,7 +140,9 @@ void	CSoundRender_Target::render			()
 	fill_block		();
 	fill_block		();
 
-	R_CHK			(pBuffer->SetCurrentPosition	(0));
+    Msg				("B: 0x%x",pBuffer);
+    
+    R_CHK			(pBuffer->SetCurrentPosition	(0));
 	HRESULT _hr		= pBuffer->Play(0,0,DSBPLAY_LOOPING);
 	if (DSERR_BUFFERLOST==_hr)	{
 		R_CHK(pBuffer->Restore());
@@ -128,8 +157,8 @@ void	CSoundRender_Target::stop			()
 {
 	if (rendering)
 	{
-		R_CHK			(pBuffer->Stop());
-		R_CHK			(pControl->SetMode(DS3DMODE_DISABLE,DS3D_DEFERRED));
+		R_CHK		(pBuffer->Stop());
+//		R_CHK		(pControl->SetMode(DS3DMODE_DISABLE,DS3D_DEFERRED));
 	}
 	pEmitter		= NULL;
 	rendering		= FALSE;
@@ -143,6 +172,7 @@ void	CSoundRender_Target::rewind			()
 	pos_write		= 0;
 	fill_block		();
 	fill_block		();
+
 	R_CHK			(pBuffer->SetCurrentPosition	(0));
 	HRESULT _hr		= pBuffer->Play(0,0,DSBPLAY_LOOPING);
 	if (DSERR_BUFFERLOST==_hr)	{
@@ -175,12 +205,42 @@ void	CSoundRender_Target::update			()
 	// fill_parameters	();
 
 	// Analyze if we really need more data to stream them ahead
-	u32				cursor_write;
-	R_CHK			(pBuffer->GetCurrentPosition(0,LPDWORD(&cursor_write)));
+	u32				cursor_play, cursor_write;
+	R_CHK			(pBuffer->GetCurrentPosition(LPDWORD(&cursor_play),LPDWORD(&cursor_write)));
 
+    u32 p_c			= calc_interval(cursor_play);
+    u32 w_c			= calc_interval(cursor_write);
+    
 	u32				r_write		= calc_interval(pos_write);
-	u32				r_cursor	= (calc_interval(cursor_write)+1)%3;
-	if (r_write==r_cursor)		fill_block	();
+	u32				r_cursor	= (calc_interval(cursor_write)+1)%sdef_target_count;
+
+    Msg				("t:%d, play: %x, write: %x,  rw: %d, rc: %d",T.GetElapsed_ms(),cursor_play,cursor_write,r_write,r_cursor);
+
+	u32 result		= WaitForSingleObject(g_hNotificationEvent,0);
+    switch(result){
+    case WAIT_FAILED:{
+        LPVOID lpMsgBuf = NULL;
+        DWORD result 	= FormatMessage(
+            FORMAT_MESSAGE_ALLOCATE_BUFFER |
+            FORMAT_MESSAGE_FROM_SYSTEM |
+            FORMAT_MESSAGE_IGNORE_INSERTS,
+            NULL,
+            GetLastError(),
+            MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+            (LPTSTR) &lpMsgBuf,
+            0,
+            NULL);
+    	Msg			((LPCSTR)lpMsgBuf);
+        LocalFree	(lpMsgBuf);
+    }break;
+    case WAIT_OBJECT_0:
+    	Msg			("notify");
+    break;
+    }
+    
+	if (r_write==r_cursor){
+    	fill_block	();
+    }
 }
 
 void	CSoundRender_Target::fill_parameters()
@@ -210,7 +270,7 @@ void	CSoundRender_Target::fill_parameters()
 		buf.dwMode					= pEmitter->b2D ? DS3DMODE_DISABLE : DS3DMODE_NORMAL;
 		R_CHK(pControl->SetAllParameters(&buf,DS3D_DEFERRED));
 */
-		R_CHK(pControl->SetMode			(pEmitter->b2D ? DS3DMODE_DISABLE : DS3DMODE_NORMAL,DS3D_DEFERRED));
+//        R_CHK(pControl->SetMode			(pEmitter->b2D ? DS3DMODE_DISABLE : DS3DMODE_NORMAL,DS3D_DEFERRED));
 		R_CHK(pControl->SetMinDistance	(pEmitter->p_source.min_distance,	DS3D_DEFERRED));
 		R_CHK(pControl->SetMaxDistance	(pEmitter->p_source.max_distance,	DS3D_DEFERRED));
 		R_CHK(pControl->SetPosition		(p_pos.x,p_pos.y,p_pos.z,			DS3D_DEFERRED));
@@ -242,15 +302,19 @@ void	CSoundRender_Target::fill_block		()
 #pragma todo("check why pEmitter is NULL")
 	if (0==pEmitter)					return;
 
+    T.Stop			();
+    Msg				("t:%d, fill: %d", T.GetElapsed_ms(), calc_interval(pos_write));
+    T.Start			();
 	// Obtain memory address of write block. This will be in two parts if the block wraps around.
     LPVOID			ptr1, ptr2;
     u32				bytes1,bytes2;
-    R_CHK			(pBuffer->Lock(pos_write%buf_size, buf_block, &ptr1, LPDWORD(&bytes1), &ptr2, LPDWORD(&bytes2), 0));
+    R_CHK			(pBuffer->Lock(pos_write, buf_block, &ptr1, LPDWORD(&bytes1), &ptr2, LPDWORD(&bytes2), 0));
 	R_ASSERT		(0==ptr2 && 0==bytes2);
 
 	// Copy data (and clear the end)
 	pEmitter->fill_block(ptr1,buf_block);
-	pos_write		+=	buf_block;
+	pos_write		+= buf_block;
+    pos_write		%= buf_size;
 
 	R_CHK			(pBuffer->Unlock(ptr1, bytes1, ptr2, bytes2));
 }
