@@ -16,6 +16,7 @@
 #include "encyclopedia_article_defs.h"
 
 #include "GameTaskDefs.h"
+#include "PhraseDialogDefs.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -31,8 +32,7 @@ struct SInfoPortionData : CSharedResource
 
 	//массив с именами диалогов, которые могут быть инициированы
 	//из этого InfoPortion
-	DEFINE_VECTOR(ref_str, DIALOG_NAME_VECTOR, DIALOG_NAME_VECTOR_IT);
-	DIALOG_NAME_VECTOR m_DialogNames;
+	DIALOG_ID_VECTOR m_DialogNames;
 
 	//список локаций на карте
 	LOCATIONS_VECTOR	m_MapLocations;
@@ -84,7 +84,7 @@ public:
 	const ARTICLE_INDEX_VECTOR&						Articles	()	const {return info_data()->m_Articles;}
 	const ARTICLE_INDEX_VECTOR&						ArticlesDisable	()	const {return info_data()->m_ArticlesDisable;}
 	const TASK_INDEX_VECTOR&						GameTasks	()	const {return info_data()->m_GameTasks;}
-	const SInfoPortionData::DIALOG_NAME_VECTOR&		DialogNames	()	const {return info_data()->m_DialogNames;}
+	const DIALOG_ID_VECTOR&							DialogNames	()	const {return info_data()->m_DialogNames;}
 	const SInfoPortionData::INFO_INDEX_VECTOR&		DisableInfos()	const {return info_data()->m_DisableInfo;}
 	
 	//запуск присоединенных скриптовых функций	

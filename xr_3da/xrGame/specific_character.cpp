@@ -11,14 +11,18 @@
 SSpecificCharacterData::SSpecificCharacterData()
 {
 	m_sGameName		= NULL;
-	m_iStartDialog	= NO_DIALOG;
-	m_iActorDialog	= NO_DIALOG; 
+	m_sBioText		= NULL;
+	m_iStartDialog	= NO_PHRASE_DIALOG;
+	m_ActorDialogs.clear(); 
 
 	m_iIconX = m_iIconY = -1;
 	m_iMapIconX = m_iMapIconY = -1;
 
 	m_Rank = NO_RANK;
 	m_Reputation = NO_REPUTATION;
+
+	m_bNoRandom = false;
+	m_bDefaultForCommunity = false;
 }
 
 SSpecificCharacterData::~SSpecificCharacterData()
@@ -79,20 +83,37 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	uiXml.SetLocalRoot(item_node);
 
 
-	/////////////////////////////////////////////////
+
+	int norandom = uiXml.ReadAttribInt(item_node, "no_random", 0);
+	if (1 == norandom) 
+		data()->m_bNoRandom = true;
+	else
+		data()->m_bNoRandom = false;
+
+	int team_default = uiXml.ReadAttribInt(item_node, "team_default", 0);
+	if (1 == team_default) 
+		data()->m_bDefaultForCommunity = true;
+	else
+		data()->m_bDefaultForCommunity = false;
+
+	R_ASSERT3(!(data()->m_bNoRandom && data()->m_bDefaultForCommunity), 
+		"cannot set 'no_random' and 'team_default' flags simultaneously, profile id", *ref_str(item_data.id));
 	
+	/////////////////////////////////////////////////
 
 	LPCSTR start_dialog = uiXml.Read("start_dialog", 0, NULL);
 	if(start_dialog)
 		data()->m_iStartDialog	= CPhraseDialog::IdToIndex(start_dialog);
 	else
-		data()->m_iStartDialog	= NO_DIALOG;
+		data()->m_iStartDialog	= NO_PHRASE_DIALOG;
 
-	LPCSTR actor_dialog = uiXml.Read("actor_dialog", 0, NULL);
-	if(actor_dialog)
-		data()->m_iActorDialog	= CPhraseDialog::IdToIndex(actor_dialog);
-	else
-		data()->m_iActorDialog	= NO_DIALOG;
+	int dialogs_num = uiXml.GetNodesNum(uiXml.GetRoot(), "actor_dialog");
+	data()->m_ActorDialogs.clear();
+	for(int i=0; i<dialogs_num; ++i)
+	{
+		ref_str dialog_name = uiXml.Read(uiXml.GetRoot(), "actor_dialog", i);
+		data()->m_ActorDialogs.push_back(CPhraseDialog::IdToIndex(dialog_name));
+	}
 
 	data()->m_iIconX		= uiXml.ReadAttribInt("icon", 0, "x");
 	data()->m_iIconY		= uiXml.ReadAttribInt("icon", 0, "y");
@@ -101,6 +122,7 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 
 	//игровое имя персонажа
 	data()->m_sGameName		= uiXml.Read("name", 0, NULL);
+	data()->m_sBioText		= uiXml.Read("bio", 0, NULL);
 
 	data()->m_Community		= uiXml.Read("team", 0, *NO_COMMUNITY);
 	R_ASSERT3(data()->m_Community != NO_COMMUNITY, "not all fields fulfiled for specific character", *IndexToId(m_iOwnIndex));
@@ -115,6 +137,12 @@ LPCSTR CSpecificCharacter::Name() const
 {
 	return	*data()->m_sGameName;
 }
+
+LPCSTR CSpecificCharacter::Bio() const 
+{
+	return	*data()->m_sBioText;
+}
+
 CHARACTER_RANK CSpecificCharacter::Rank() const 
 {
 	return	data()->m_Rank;

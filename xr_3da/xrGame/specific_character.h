@@ -23,11 +23,13 @@ struct SSpecificCharacterData : CSharedResource
 
 	//игровое имя персонажа
 	ref_str m_sGameName;
+	//текст с биографией персонажа (линк на string table)
+	ref_str m_sBioText;
 
 	//начальный диалог
 	PHRASE_DIALOG_INDEX m_iStartDialog;
-	//диалог актера, который будет доступен только при встрече с данным персонажем
-	PHRASE_DIALOG_INDEX m_iActorDialog;
+	//диалоги актера, которые будут доступны только при встрече с данным персонажем
+	DIALOG_INDEX_VECTOR m_ActorDialogs;
 
 	//положение большой икноки (для торговли и общения) в файле с иконками 
 	int	m_iIconX, m_iIconY;
@@ -40,6 +42,12 @@ struct SSpecificCharacterData : CSharedResource
 	CHARACTER_RANK			m_Rank;
 	//репутация
 	CHARACTER_REPUTATION	m_Reputation;
+
+	//указание на то что персонаж не предназначен для случайного выбора
+	//и задается только через явное указание ID
+	bool m_bNoRandom;
+	//если персонаж является заданым по умолчанию для своей команды
+	bool m_bDefaultForCommunity;
 };
 
 
@@ -78,6 +86,7 @@ protected:
 public:
 
 	LPCSTR					Name		() const ;
+	LPCSTR					Bio			() const ;
 	LPCSTR					Community	() const ;
 	CHARACTER_RANK			Rank		() const ;
 	CHARACTER_REPUTATION	Reputation	() const ;

@@ -86,6 +86,7 @@ protected:
 public:
 
 	LPCSTR					Name()				const;
+	LPCSTR					Bio()				const;
 	CHARACTER_COMMUNITY		Community()			const;
 	CHARACTER_RANK			Rank()				const;
 	CHARACTER_REPUTATION	Reputation()		const;
@@ -100,8 +101,8 @@ public:
 	int		MapIconX	()	const;
 	int		MapIconY	()	const;
 
-	PHRASE_DIALOG_INDEX	StartDialog	()	const;
-	PHRASE_DIALOG_INDEX	ActorDialog	()	const;
+	PHRASE_DIALOG_INDEX			StartDialog	()	const;
+	const DIALOG_INDEX_VECTOR&	ActorDialogs()	const;
 
 	int					 GetGoodwill			(u16 person_id) const ;
 	void				 SetGoodwill			(u16 person_id, int goodwill);

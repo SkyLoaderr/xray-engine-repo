@@ -144,23 +144,24 @@ void CCharacterInfo::InitSpecificCharacter (SPECIFIC_CHARACTER_INDEX new_index)
 	//а потом делаем случайный выбор
 	else
 	{
-		SPECIFIC_CHARACTER_INDEX first_found_index = NO_SPECIFIC_CHARACTER;
+		SPECIFIC_CHARACTER_INDEX team_default_index = NO_SPECIFIC_CHARACTER;
 		for(SPECIFIC_CHARACTER_INDEX i=0; i<=CSpecificCharacter::GetMaxIndex(); i++)
 		{
 			CSpecificCharacter spec_char;
 			spec_char.Load(i);
 
+			if(spec_char.data()->m_bNoRandom) continue;
+
 			if(data()->m_Community == NO_COMMUNITY || !xr_strcmp(spec_char.Community(), data()->m_Community))
 			{
+				//запомнить первый (если группировка явно не задана) подходящий персонаж с флажком m_bDefaultForCommunity
+				if(team_default_index == NO_SPECIFIC_CHARACTER && spec_char.data()->m_bDefaultForCommunity)
+					team_default_index = i;
+
 				if(data()->m_Rank == NO_RANK || _abs(spec_char.Rank() - data()->m_Rank)<RANK_DELTA)
 				{
 					if(data()->m_Reputation == NO_REPUTATION || _abs(spec_char.Reputation() - data()->m_Reputation)<REPUTATION_DELTA)
 					{
-						if(NO_SPECIFIC_CHARACTER == first_found_index)
-						{
-							first_found_index = i;
-						}
-						
 						int* count = NULL;
 						if(ai().get_alife())
 							count = ai().alife().registry(specific_characters).object(i, true);
@@ -171,12 +172,12 @@ void CCharacterInfo::InitSpecificCharacter (SPECIFIC_CHARACTER_INDEX new_index)
 				}
 			}
 		}
-		R_ASSERT3(NO_SPECIFIC_CHARACTER != first_found_index, 
-			"No specific character found for profile id", *IndexToId(m_iProfileIndex));
+		R_ASSERT3(NO_SPECIFIC_CHARACTER != team_default_index, 
+			"no default spec character set for team", *data()->m_Community);
 	
 		
 		if(m_CheckedCharacters.empty())
-			m_iSpecificCharacterIndex = first_found_index;
+			m_iSpecificCharacterIndex = team_default_index;
 		else
 			m_iSpecificCharacterIndex = m_CheckedCharacters[Random.randI(m_CheckedCharacters.size())];
 
@@ -217,6 +218,11 @@ void CCharacterInfo::load_shared	(LPCSTR)
 LPCSTR CCharacterInfo::Name() const
 {
 	return	m_SpecificCharacter.Name();
+}
+
+LPCSTR CCharacterInfo::Bio() const
+{
+	return 	m_SpecificCharacter.Bio();
 }
 CHARACTER_RANK CCharacterInfo::Rank() const
 {
@@ -320,9 +326,9 @@ PHRASE_DIALOG_INDEX	CCharacterInfo::StartDialog	()	const
 {
 	return m_SpecificCharacter.data()->m_iStartDialog;
 }
-PHRASE_DIALOG_INDEX	CCharacterInfo::ActorDialog	()	const
+const DIALOG_INDEX_VECTOR&	CCharacterInfo::ActorDialogs	()	const
 {
-	return m_SpecificCharacter.data()->m_iActorDialog;
+	return m_SpecificCharacter.data()->m_ActorDialogs;
 }
 
 void CCharacterInfo::load	(IReader& stream)

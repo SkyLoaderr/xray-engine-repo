@@ -107,7 +107,7 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 		CharacterInfo().Load(pTrader->m_iCharacterProfile);
 
 		CAI_PhraseDialogManager* dialog_manager = dynamic_cast<CAI_PhraseDialogManager*>(this);
-		if(dialog_manager && CharacterInfo().StartDialog() != NO_DIALOG)
+		if(dialog_manager && CharacterInfo().StartDialog() != NO_PHRASE_DIALOG)
 		{
 			dialog_manager->SetStartDialog(CPhraseDialog::IndexToId(CharacterInfo().StartDialog()));
 			dialog_manager->SetDefaultStartDialog(CPhraseDialog::IndexToId(CharacterInfo().StartDialog()));

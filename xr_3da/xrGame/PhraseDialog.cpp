@@ -33,7 +33,7 @@ CPhraseDialog::CPhraseDialog(void)
 	m_pSpeakerFirst		= NULL;
 	m_pSpeakerSecond	= NULL;
 
-	m_DialogIndex = NO_DIALOG;
+	m_DialogIndex = NO_PHRASE_DIALOG;
 }
 
 CPhraseDialog::~CPhraseDialog(void)
