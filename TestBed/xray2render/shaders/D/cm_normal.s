@@ -17,7 +17,7 @@ struct 	v2p_in
 
 struct 	p2f
 {
-  float4 C: 		COLOR0;		// Final color
+  half4 C:			COLOR0;		// Final color
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -42,7 +42,10 @@ p2f 	p_main	( v2p_in IN )
 {
   p2f		OUT;
 
-  float4 C 	= tex2D		(s_accumulator, float2(IN.Tex0.x, IN.Tex0.y)); 
+  half4 D	= tex2D		(s_diffuse,		IN.Tex0);
+  half4 L 	= tex2D		(s_accumulator, IN.Tex0);
+  
+  half4 C	= D*L;		// rgb.gloss * light(rgb.specular)
   OUT.C 	= float4	(C.x+C.w,C.y+C.w,C.z+C.w,0);
   return OUT;
 }
