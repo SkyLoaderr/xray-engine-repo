@@ -295,7 +295,7 @@ xr_motivator.storage[self.object:id()].follower = {
     state = 0,
     leader_command = 0,
     npc = self.object,
-    look_dir = vector():set(0,0,0)
+    look_dir = vector():set(0,0,0),
     npc_id = -1
     }
 --      if char_ini:section_exist ("follower") == true then
