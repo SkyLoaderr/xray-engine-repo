@@ -241,7 +241,7 @@ u32 xrServer::OnMessage(NET_Packet& P, ClientID sender)			// Non-Zero means broa
 			ClientID clientID; clientID.set(id);
 			u32 clLastPing = P.r_u32();
 			xrClientData* pCL = ID_to_client(clientID);
-			pCL->ps->Rping = clLastPing;
+			pCL->ps->Rping = u16(clLastPing);
 			SendTo	(clientID, P, net_flags(FALSE));
 		}break;
 		//-------------------------------------------------------------------

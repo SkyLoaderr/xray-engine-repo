@@ -49,7 +49,7 @@ protected:
 
 	BOOL							m_bSkinSelected;
 	BOOL							m_bBuyEnabled;
-	s16								m_iCurrentPlayersMoney;
+	s32								m_iCurrentPlayersMoney;
 
 	u32								m_dwVoteEndTime;
 

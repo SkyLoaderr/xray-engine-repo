@@ -28,7 +28,7 @@ struct	game_PlayerState
 	s16			kills;
 	s16			deaths;
 	s32			money_total;
-	s16			money_for_round;
+	s32			money_for_round;
 	u16			flags;
 
 	u16			ping;		//Ping from DirectX
@@ -81,7 +81,7 @@ public:
 	SPAWN_POINTS_LIST	pSpawnPointsList;
 	s16					m_s16LastSRoint;
 
-	s16					LastBuyAcount;
+	s32					LastBuyAcount;
 	DECLARE_SCRIPT_REGISTER_FUNCTION_STRUCT
 };
 

@@ -345,7 +345,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 
 				if (P->money_for_round != m_iCurrentPlayersMoney)
 				{
-					s16 dMoney = P->money_for_round - m_iCurrentPlayersMoney;
+					s32 dMoney = P->money_for_round - m_iCurrentPlayersMoney;
 					if (dMoney > 0)
 						sprintf(tmp,"+%d", dMoney);
 					else

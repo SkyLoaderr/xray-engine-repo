@@ -60,7 +60,7 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 		pCurPresetItems->push_back(ID);
 	};	
 	//-------------------------------------------------------------------------------
-	P.w_s16		(s16(pCurBuyMenu->GetMoneyAmount()) - Pl->money_for_round);
+	P.w_s32		(s32(pCurBuyMenu->GetMoneyAmount()) - Pl->money_for_round);
 	P.w_u8		(u8(pCurPresetItems->size()));
 	for (s=0; s<pCurPresetItems->size(); s++)
 	{

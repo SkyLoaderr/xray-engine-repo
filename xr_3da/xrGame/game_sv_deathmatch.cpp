@@ -150,9 +150,9 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_ki
 		ps_killer->kills			+=	1;
 		if (pTeam)
 		{
-			s16 ResMoney = pTeam->m_iM_KillRival;
+			s32 ResMoney = pTeam->m_iM_KillRival;
 			if (ps_killer->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
-				ResMoney = s16(ResMoney * pTeam->m_fInvinsibleKillModifier);
+				ResMoney = s32(ResMoney * pTeam->m_fInvinsibleKillModifier);
 			Player_AddMoney(ps_killer, ResMoney);
 		};
 
@@ -451,7 +451,7 @@ void	game_sv_Deathmatch::OnPlayerReady			(ClientID id)
 			{
 				if (xrSCData->ps->DeathTime + 1000 > Device.dwTimeGlobal)
 				{
-					return;
+///					return;
 				}
 			}
 			//------------------------------------------------------------
@@ -681,7 +681,7 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 	game_PlayerState*	ps	=	get_id	(id_who);
 	if (!ps || ps->Skip) return;
 	
-	P.r_s16(ps->LastBuyAcount);
+	P.r_s32(ps->LastBuyAcount);
 
 	xr_vector<s16>		ItemsDesired;
 
@@ -1029,10 +1029,10 @@ void	game_sv_Deathmatch::LoadTeams			()
 	LoadTeamData("deathmatch_team0");
 };
 
-s16		game_sv_Deathmatch::GetMoneyAmount			(char* caSection, char* caMoneyStr)
+s32		game_sv_Deathmatch::GetMoneyAmount			(char* caSection, char* caMoneyStr)
 {
 	if (pSettings->line_exist(caSection, caMoneyStr))
-		return pSettings->r_s16(caSection, caMoneyStr);
+		return pSettings->r_s32(caSection, caMoneyStr);
 
 	return 0;
 };
@@ -1473,7 +1473,7 @@ void	game_sv_Deathmatch::Player_AddMoney			(game_PlayerState* ps, s32 MoneyAmoun
 	if (TotalMoney > 32767)
 		TotalMoney = 32767;
 
-	ps->money_for_round = s16(TotalMoney);
+	ps->money_for_round = s32(TotalMoney);
 };
 
 void	game_sv_Deathmatch::check_Player_for_Invincibility	(game_PlayerState* ps)
