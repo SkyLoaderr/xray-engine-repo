@@ -116,6 +116,16 @@ IC	void	xform		(Fmatrix& X, Fvector& D, Fvector& S, float dim_2)
 	D.y = (1.f-y/w)*dim_2;
 	D.z	= z/w;
 }
+IC	BOOL	xform_b		(Fmatrix& X, Fvector& D, Fvector& S)
+{
+	float w	= S.x*X._14 + S.y*X._24 + S.z*X._34 + X._44;
+	if (w<EPS) return TRUE;
+		
+	D.x	= 1.f+(S.x*X._11 + S.y*X._21 + S.z*X._31 + X._41)/w;
+	D.y	= 1.f-(S.x*X._12 + S.y*X._22 + S.z*X._32 + X._42)/w;
+	D.z	= 0.f+(S.x*X._13 + S.y*X._23 + S.z*X._33 + X._43)/w;
+	return FALSE;
+}
 
 void CHOM::Render_DB	(CFrustum& base)
 {
@@ -177,6 +187,8 @@ void CHOM::Render		(CFrustum& base)
 
 void CHOM::Debug		()
 {
+	return;
+
 	// Texture
 	D3DLOCKED_RECT		R;
 	R_CHK				(m_pDBG->LockRect(0,&R,0,0));
@@ -222,15 +234,14 @@ BOOL CHOM::Visible		(Fbox& B)
 	Fmatrix&	XF		= Device.mFullTransform;
 	Fbox		rect;
 	Fvector		test,src;
-	float		D		= 1.f;
-	B.getpoint(0,src);	xform(XF,test,src,D);	rect.set	(test,test);
-	B.getpoint(1,src);	xform(XF,test,src,D);	rect.modify	(test);
-	B.getpoint(2,src);	xform(XF,test,src,D);	rect.modify	(test);
-	B.getpoint(3,src);	xform(XF,test,src,D);	rect.modify	(test);
-	B.getpoint(4,src);	xform(XF,test,src,D);	rect.modify	(test);
-	B.getpoint(5,src);	xform(XF,test,src,D);	rect.modify	(test);
-	B.getpoint(6,src);	xform(XF,test,src,D);	rect.modify	(test);
-	B.getpoint(7,src);	xform(XF,test,src,D);	rect.modify	(test);
+	B.getpoint(0,src);	if (xform_b(XF,test,src)) return TRUE;	rect.set	(test,test);
+	B.getpoint(1,src);	if (xform_b(XF,test,src)) return TRUE;	rect.modify	(test);
+	B.getpoint(2,src);	if (xform_b(XF,test,src)) return TRUE;	rect.modify	(test);
+	B.getpoint(3,src);	if (xform_b(XF,test,src)) return TRUE;	rect.modify	(test);
+	B.getpoint(4,src);	if (xform_b(XF,test,src)) return TRUE;	rect.modify	(test);
+	B.getpoint(5,src);	if (xform_b(XF,test,src)) return TRUE;	rect.modify	(test);
+	B.getpoint(6,src);	if (xform_b(XF,test,src)) return TRUE;	rect.modify	(test);
+	B.getpoint(7,src);	if (xform_b(XF,test,src)) return TRUE;	rect.modify	(test);
 	
 	return Raster.test	(rect.min.x,rect.min.y,rect.max.x,rect.max.y,rect.min.z);
 }
