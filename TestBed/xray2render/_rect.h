@@ -58,15 +58,16 @@ public:
 
 	IC BOOL intersected(SelfCRef b) const {return !(x1>b.x2 || x2<b.x1 || y1>b.y2 ||  y2<b.y1);}
 
-	IC BOOL intersection(SelfCRef b, SelfRef result)const{
-		if (!intersected(b0,b1))
+	IC BOOL intersection(SelfCRef b1, SelfCRef b2)
+	{
+		if (!intersected(b1,b2))
 			return	(FALSE);
 
-			result.x1	= _max(x1,b.x1);
-			result.y1	= _max(y1,b.y1);
-			result.x2	= _min(x2,b.x2);
-			result.y2	= _min(y2,b.y2);
-			return		(TRUE);
+		x1	= _max(b1.x1,b2.x1);
+		y1	= _max(b1.y1,b2.y1);
+		x2	= _min(b1.x2,b2.x2);
+		y2	= _min(b1.y2,b2.y2);
+		return		(TRUE);
 	}
 
 };
