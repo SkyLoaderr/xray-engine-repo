@@ -118,6 +118,7 @@ void CAI_Zomby::Death()
 	//Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].Member_Remove(this);
 
 	bActive = false;
+	bEnabled = false;
 	
 	Fvector	dir;
 	AI_Path.Direction(dir);

@@ -99,6 +99,9 @@ void CAI_Crow::Death()
 	// removing from group
 	//Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].Member_Remove(this);
 
+	bActive = false;
+	bEnabled = false;
+	
 	Fvector	dir;
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);

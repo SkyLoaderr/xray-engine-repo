@@ -144,6 +144,7 @@ void CAI_Rat::Death()
 	UpdateTransform	();
 	/**/
 	bActive = false;
+	bEnabled = false;
 	
 	Fvector	dir;
 	AI_Path.Direction(dir);
