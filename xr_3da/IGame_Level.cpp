@@ -60,7 +60,7 @@ void IGame_Level::net_Stop			()
 //-------------------------------------------------------------------------------------------
 extern CStatTimer				tscreate;
 
-BOOL IGame_Level::Load				(u32 dwNum) 
+BOOL IGame_Level::Load			(u32 dwNum) 
 {
 	// Initialize level data
 	pApp->Level_Set				( dwNum );
