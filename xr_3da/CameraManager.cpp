@@ -84,17 +84,19 @@ CEffectorPP* CCameraManager::GetEffector(EEffectorPPType type)
 	return 0;
 }
 
-CEffectorPP* CCameraManager::AddEffector(CEffectorPP* ef) {
-	RemoveEffector(ef->eType);
-	m_EffectorsPP.push_back(ef);
-	return m_EffectorsPP.back();
+CEffectorPP* CCameraManager::AddEffector(CEffectorPP* ef) 
+{
+	RemoveEffector				(ef->eType);
+	m_EffectorsPP.push_back		(ef);
+	return m_EffectorsPP.back	();
 }
 
-void CCameraManager::RemoveEffector(EEffectorPPType type){
+void CCameraManager::RemoveEffector(EEffectorPPType type)
+{
 	for (EffectorPPIt it=m_EffectorsPP.begin(); it!=m_EffectorsPP.end(); it++ )
 		if ((*it)->eType==type){ 
-			xr_delete(*it);
-			m_EffectorsPP.erase(it);
+			if ((*it)->bFreeOnRemove)	xr_delete(*it);
+			m_EffectorsPP.erase			(it);
 			return;
 		}
 }

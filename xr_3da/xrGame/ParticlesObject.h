@@ -8,13 +8,15 @@ extern const Fvector zero_vel;
 
 class CParticlesObject		:	public CPS_Instance
 {
-	Fmatrix				m_XFORM;
 	typedef CPS_Instance	inherited;
+	Fmatrix				m_XFORM;
 	u32					dwLastTime;
 	void				Init				(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove);
 	void				UpdateSpatial		();
+protected:
+	bool m_bLooped;
 public:
-						CParticlesObject	(LPCSTR p_name, IRender_Sector* S=0, BOOL bAutoRemove=true);
+						CParticlesObject	(LPCSTR p_name, IRender_Sector* S=0, BOOL bAutoRemove=TRUE);
 						CParticlesObject	(LPCSTR p_name, BOOL bAutoRemove);
 	virtual				~CParticlesObject	();
 
@@ -28,7 +30,7 @@ public:
 
 	void				play_at_pos			(const Fvector& pos, BOOL xform=FALSE);
 	void				Play				();
-	void				Stop				();
+	void				Stop				(BOOL bDefferedStop=TRUE);
 	
 	bool				IsLooped			() {return m_bLooped;}
 	bool				IsAutoRemove		();
@@ -37,8 +39,15 @@ public:
 
 	LPCSTR				dbg_ref_name		();
 
-protected:
-	bool m_bLooped;
+public:
+	static CParticlesObject*	Create		(LPCSTR p_name, IRender_Sector* S=0, BOOL bAutoRemove=TRUE)
+	{
+		return xr_new<CParticlesObject>(p_name, S, bAutoRemove);
+	}
+	static void					Destroy		(CParticlesObject*& p)
+	{
+		xr_delete				(p);
+	}
 };
 
 #endif /*ParticlesObjectH*/

@@ -9,8 +9,7 @@
 #include "../render.h"
 
 
-const Fvector zero_vel		= {0.f,0.f,0.f};
-
+static const Fvector zero_vel		= {0.f,0.f,0.f};
 
 CParticlesObject::CParticlesObject	(LPCSTR p_name, BOOL bAutoRemove)
 {
@@ -101,10 +100,10 @@ void CParticlesObject::Play()
 	UpdateSpatial	();
 }
 
-void CParticlesObject::Stop()
+void CParticlesObject::Stop(BOOL bDefferedStop)
 {
 	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
-	V->Stop			();
+	V->Stop			(bDefferedStop);
 }
 
 void CParticlesObject::play_at_pos(const Fvector& pos, BOOL xform)

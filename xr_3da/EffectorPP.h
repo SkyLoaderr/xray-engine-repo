@@ -12,14 +12,14 @@ struct SPPInfo;
 class ENGINE_API CEffectorPP
 {
 	EEffectorPPType		eType;
+	bool				bFreeOnRemove;
 	friend class		CCameraManager;
 protected:
 	float				fLifeTime;
 public:
-	virtual	BOOL Process(SPPInfo &PPInfo);
-
-	CEffectorPP(EEffectorPPType type, f32 lifeTime);
-	virtual ~CEffectorPP();
+						CEffectorPP		(EEffectorPPType type, f32 lifeTime, bool free_on_remove=true);
+	virtual				~CEffectorPP	();
+	virtual	BOOL		Process			(SPPInfo &PPInfo);
 };
 
 #endif // !defined(AFX_EFFECTORPP_H__06AA79FB_8954_457B_B338_039EBF4EE94E__INCLUDED_)
