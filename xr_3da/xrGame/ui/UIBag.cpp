@@ -357,6 +357,7 @@ void CUIBag::HideAll(){
 
 // Init Boxes SLOT
 void CUIBag::InitBoxes(CUIXml& xml){
+
 	for (u32 i = 0; i < 4; ++i)
 	{
 		CUITabButtonMP* pNewBtn = xr_new<CUITabButtonMP>();
