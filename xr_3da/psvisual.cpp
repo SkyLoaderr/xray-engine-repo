@@ -270,7 +270,7 @@ u32 CPSVisual::RenderTO	(FVF::TL* dest)
 void CPSVisual::Compile(PS::SDef* source, PS::SEmitter* E)
 {
 	VERIFY				(source);
-    hShader				= source->m_CachedShader();
+    hShader				= source->m_CachedShader;
 	m_Definition		= source;
 	hGeom				= Device.Shader.CreateGeom	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 

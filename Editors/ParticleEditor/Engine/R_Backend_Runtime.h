@@ -208,7 +208,7 @@ IC void CBackend::set_Shader			(Shader* S, u32 pass)
 	set_Element			(S->E[0],pass);
 }
 
-IC void CBackend::set_Geometry			(ref_geom& _geom)			{	set_Geometry(&*_geom);			}
+IC void CBackend::set_Geometry			(ref_geom& _geom)			{	set_Geometry(&*_geom);	}
 IC void CBackend::set_Geometry			(SGeometry* _geom)
 {
 	set_Format			(_geom->dcl);

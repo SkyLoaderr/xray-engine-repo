@@ -17,23 +17,23 @@ void	SGeometry::_release_			(SGeometry * ptr)			{	Device.Shader.DeleteGeom			(pt
 void	Shader::_release_				(Shader * ptr)				{	Device.Shader.Delete				(ptr);			}
 
 //////////////////////////////////////////////////////////////////////////
-void	ref_shader::create		(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
+void	resptrcode_shader::create		(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
 {
-	this_type(Device.Shader.Create	(s_shader,s_textures,s_constants,s_matrices)).swap(*this);
+	_set(Device.Shader.Create			(s_shader,s_textures,s_constants,s_matrices));
 }
-void	ref_shader::create		(IBlender* B, LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
+void	resptrcode_shader::create		(IBlender* B, LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
 {
-	this_type(Device.Shader.Create_B(B,s_shader,s_textures,s_constants,s_matrices)).swap(*this);
+	_set(Device.Shader.Create_B		(B,s_shader,s_textures,s_constants,s_matrices));
 }
 
 //////////////////////////////////////////////////////////////////////////
-void	ref_geom::create		(u32 FVF , IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib)
+void	resptrcode_geom::create			(u32 FVF , IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib)
 {
-	this_type(Device.Shader.CreateGeom(FVF,vb,ib)).swap(*this);
+	_set(Device.Shader.CreateGeom		(FVF,vb,ib));
 }
-void	ref_geom::create		(D3DVERTEXELEMENT9* decl, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib)
+void	resptrcode_geom::create			(D3DVERTEXELEMENT9* decl, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib)
 {
-	this_type(Device.Shader.CreateGeom(decl,vb,ib)).swap(*this);
+	_set(Device.Shader.CreateGeom		(decl,vb,ib));
 }
 
 //////////////////////////////////////////////////////////////////////

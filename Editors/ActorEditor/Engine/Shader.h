@@ -92,8 +92,8 @@ public:
 };
 struct ENGINE_API		Shader			: public xr_resorce									{
 public:
-	ShaderElement*			E		[4];	// R1 - 0=lod0,		1=lod1, 2=lighting, 3=*undefined*
-											// R2 - 0=deffer,	1=dsm,	2=psm,		3=ssm		(or special usage)
+	ShaderElement*		E		[4];	// R1 - 0=lod0,		1=lod1, 2=lighting, 3=*undefined*
+										// R2 - 0=deffer,	1=dsm,	2=psm,		3=ssm		(or special usage)
 
 	BOOL				equal			(Shader& S);
 	BOOL				equal			(Shader* S);
@@ -103,19 +103,23 @@ public:
 //////////////////////////////////////////////////////////////////////////
 // auto references + helper functors
 //////////////////////////////////////////////////////////////////////////
-struct ENGINE_API		ref_shader		: public xr_resorce_ptr<Shader>
+struct ENGINE_API		resptrcode_shader	: public resptr_base<Shader>
 {
 	void				create			(LPCSTR s_shader=0, LPCSTR s_textures=0, LPCSTR s_constants=0, LPCSTR s_matrices=0);
 	void				create			(IBlender*	B,	LPCSTR s_shader=0, LPCSTR s_textures=0, LPCSTR s_constants=0, LPCSTR s_matrices=0);
-	void				destroy			()		{ this_type(NULL).swap(*this);		}
+	void				destroy			()	{ _set(NULL);		}
 };
-struct ENGINE_API		ref_geom		: public xr_resorce_ptr<SGeometry>
+typedef	resptr_core<Shader,resptrcode_shader>	ref_shader;
+
+//////////////////////////////////////////////////////////////////////////
+struct ENGINE_API		resptrcode_geom		: public resptr_base<SGeometry>
 {
 	void 				create			(D3DVERTEXELEMENT9* decl, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib);
 	void				create			(u32 FVF				, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib);
-	void				destroy			()		{ this_type(NULL).swap(*this);		}
-	u32					stride			()		{ VERIFY(p_); return p_->vb_stride;	}
+	void				destroy			()			{ _set(NULL);		}
+	u32					stride			()	const	{ return _get()->vb_stride;	}
 };
+typedef	resptr_core<SGeometry,resptrcode_geom>	ref_geom;
 
 #pragma pack(pop)
 

@@ -20,8 +20,8 @@ public:
 	vis_data				vis;
 
 	// Common data for rendering
-	Shader*					hShader;				// pipe state, shared
-	SGeometry*				hGeom;					// vertex shader, shared
+	ref_shader				hShader;				// pipe state, shared
+	ref_geom				hGeom;					// vertex shader, shared
 
 	virtual void			Render					(float LOD)		{};		// LOD - Level Of Detail  [0..1], Ignored
 	virtual void			Load					(const char* N, IReader *data, u32 dwFlags);
