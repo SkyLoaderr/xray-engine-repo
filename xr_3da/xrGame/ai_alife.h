@@ -85,6 +85,27 @@ public:
 		vfAddEventToGraphPoint		(tEventID,tNextGraphPointID);
 	}
 
+	IC void vfCreateNewDynamicObject(SPAWN_IT I)
+	{
+		CALifeDynamicObject	*tpALifeDynamicObject;
+		if (pSettings->LineExists((*I).caModel, "scheduled") && pSettings->ReadBOOL((*I).caModel, "scheduled"))
+			if (pSettings->LineExists((*I).caModel, "human") && pSettings->ReadBOOL((*I).caModel, "human"))
+				if (((*I).wCount > 1) && pSettings->LineExists((*I).caModel, "single") && pSettings->ReadBOOL((*I).caModel, "single"))
+					tpALifeDynamicObject	= new CALifeHumanGroup;
+				else
+					tpALifeDynamicObject	= new CALifeHuman;
+			else
+				if (((*I).wCount > 1) && pSettings->LineExists((*I).caModel, "single") && pSettings->ReadBOOL((*I).caModel, "single"))
+					tpALifeDynamicObject	= new CALifeMonsterGroup;
+				else
+					tpALifeDynamicObject	= new CALifeMonster;
+		else
+			tpALifeDynamicObject		= new CALifeItem;
+
+		tpALifeDynamicObject->Init(_SPAWN_ID(I - m_tpSpawnPoints.begin()),m_tpSpawnPoints);
+		m_tObjectRegistry.Add(tpALifeDynamicObject);
+	};
+
 	void							vfProcessItems			(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraphID, float fMaxItemMass);
 	void							vfCheckForItems			(CALifeHumanAbstract	*tpALifeHumanAbstract);
 	void							vfCheckForDeletedEvents	(CALifeHumanAbstract	*tpALifeHumanAbstract);

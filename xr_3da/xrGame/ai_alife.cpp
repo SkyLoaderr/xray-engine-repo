@@ -153,6 +153,7 @@ IC bool	bfSpawnPointPredicate(SSpawnPoint v1, SSpawnPoint v2)
 
 void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFactors)
 {
+	/**
 	vector<bool>				tpMarks;
 	tpMarks.resize				(Level().AI.GraphHeader().dwVertexCount);
 	tpMarks.assign				(tpMarks.size(),false);
@@ -242,6 +243,63 @@ void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFa
 					tpMarks[m_tpSpawnPoints[ii].tpRouteGraphPoints[j]] = false;
 			}
 		}
+	/**/
+	m_tSpawnHeader.dwCount		= Level().AI.GraphHeader().dwVertexCount + 2;
+	m_tSpawnHeader.dwVersion	= SPAWN_POINT_VERSION;
+	u16 wGroupID				= 0;
+	m_tpSpawnPoints.resize		(m_tSpawnHeader.dwCount);
+	int							j;
+	SPAWN_IT					B = m_tpSpawnPoints.begin();
+	SPAWN_IT					E = m_tpSpawnPoints.end() - 2;
+	SPAWN_IT					I = B;
+	for ( ; I != E; I++) {
+		(*I).tNearestGraphPointID		= _GRAPH_ID(I - B);
+		(*I).wGroupID					= wGroupID++;
+		j								= ::Random.randI(5);
+		memcpy							((*I).caModel,cpArtefactModels[j],(1 + strlen(cpArtefactModels[j]))*sizeof(char));
+		(*I).ucTeam						= 0;
+		(*I).ucSquad					= 0;
+		(*I).ucGroup					= 0;
+		(*I).wCount						= 1;
+		(*I).fBirthRadius				= 10.f;
+		(*I).fBirthProbability			= 1.0f;
+		(*I).fIncreaseCoefficient		= 1.0f;
+		(*I).fAnomalyDeathProbability	= 0.0f;
+		(*I).ucRoutePointCount			= 0;
+		(*I).tpRouteGraphPoints.clear	();
+	}
+	(*I).tNearestGraphPointID		= _GRAPH_ID(::Random.randI(m_tSpawnHeader.dwCount - 2));
+	(*I).wGroupID					= wGroupID++;
+	j								= 1;
+	memcpy							((*I).caModel,cpHumanModels[j],(1 + strlen(cpHumanModels[j]))*sizeof(char));
+	(*I).ucTeam						= 1;
+	(*I).ucSquad					= 0;
+	(*I).ucGroup					= 0;
+	(*I).wCount						= 1;
+	(*I).fBirthRadius				= 10.f;
+	(*I).fBirthProbability			= 1.0f;
+	(*I).fIncreaseCoefficient		= 1.0f;
+	(*I).fAnomalyDeathProbability	= 0.0f;
+	(*I).ucRoutePointCount			= 0;
+	(*I).tpRouteGraphPoints.clear	();
+
+	I++;
+
+	(*I).tNearestGraphPointID		= _GRAPH_ID(::Random.randI(m_tSpawnHeader.dwCount - 2));
+	(*I).wGroupID					= wGroupID++;
+	j								= 2;
+	memcpy							((*I).caModel,cpHumanModels[j],(1 + strlen(cpHumanModels[j]))*sizeof(char));
+	(*I).ucTeam						= 1;
+	(*I).ucSquad					= 0;
+	(*I).ucGroup					= 0;
+	(*I).wCount						= 1;
+	(*I).fBirthRadius				= 10.f;
+	(*I).fBirthProbability			= 1.0f;
+	(*I).fIncreaseCoefficient		= 1.0f;
+	(*I).fAnomalyDeathProbability	= 0.0f;
+	(*I).ucRoutePointCount			= 0;
+	(*I).tpRouteGraphPoints.clear	();
+	/**/
 	sort(m_tpSpawnPoints.begin(),m_tpSpawnPoints.end(),bfSpawnPointPredicate);
 }
 
@@ -396,42 +454,30 @@ void CAI_ALife::Save()
 
 void CAI_ALife::Generate()
 {
-	SPAWN_IT	B = m_tpSpawnPoints.begin();
-	SPAWN_IT	E  = m_tpSpawnPoints.end();
-	for (SPAWN_IT it = B ; it != E; ) {
-		u16	wGroupID = it->wGroupID;
-		float fSum = it->fBirthProbability;
-		for (SPAWN_IT j= it + 1; (j != E) && (j->wGroupID == wGroupID); j++)
-			fSum += j->fBirthProbability;
-		float fProbability = ::Random.randF(0,fSum);
-		fSum = it->fBirthProbability;
-		SPAWN_IT m = j, k = it;
-		for ( j= it + 1; (j != E) && (j->wGroupID == wGroupID); j++) {
-			fSum += j->fBirthProbability;
-			if (fSum > fProbability) {
-				k = j;
-				break;
-			}
-		}
-		CALifeDynamicObject	*tpALifeDynamicObject;
-		if (pSettings->LineExists(k->caModel, "scheduled") && pSettings->ReadBOOL(k->caModel, "scheduled"))
-			if (pSettings->LineExists(k->caModel, "human") && pSettings->ReadBOOL(k->caModel, "human"))
-				if (((*k).wCount > 1) && pSettings->LineExists(k->caModel, "single") && pSettings->ReadBOOL(k->caModel, "single"))
-					tpALifeDynamicObject	= new CALifeHumanGroup;
-				else
-					tpALifeDynamicObject	= new CALifeHuman;
-			else
-				if (((*k).wCount > 1) && pSettings->LineExists(k->caModel, "single") && pSettings->ReadBOOL(k->caModel, "single"))
-					tpALifeDynamicObject	= new CALifeMonsterGroup;
-				else
-					tpALifeDynamicObject	= new CALifeMonster;
-		else
-			tpALifeDynamicObject		= new CALifeItem;
+//	SPAWN_IT	B = m_tpSpawnPoints.begin();
+//	SPAWN_IT	E  = m_tpSpawnPoints.end();
+//	for (SPAWN_IT it = B ; it != E; ) {
+//		u16	wGroupID = it->wGroupID;
+//		float fSum = it->fBirthProbability;
+//		for (SPAWN_IT j= it + 1; (j != E) && (j->wGroupID == wGroupID); j++)
+//			fSum += j->fBirthProbability;
+//		float fProbability = ::Random.randF(0,fSum);
+//		fSum = it->fBirthProbability;
+//		SPAWN_IT m = j, k = it;
+//		for ( j= it + 1; (j != E) && (j->wGroupID == wGroupID); j++) {
+//			fSum += j->fBirthProbability;
+//			if (fSum > fProbability) {
+//				k = j;
+//				break;
+//			}
+//		}
+//		vfCreateNewDynamicObject(k);
+//		it = m;	
+//	}
+	vfCreateNewDynamicObject	(m_tpSpawnPoints.begin() + ::Random.randI(m_tpSpawnPoints.size() - 2));
+	vfCreateNewDynamicObject	(m_tpSpawnPoints.end() - 2);
+	vfCreateNewDynamicObject	(m_tpSpawnPoints.end() - 1);
 
-		tpALifeDynamicObject->Init(_SPAWN_ID(k - B),m_tpSpawnPoints);
-		m_tObjectRegistry.Add(tpALifeDynamicObject);
-		it = m;	
-	}
 	m_tALifeHeader.dwVersion	= ALIFE_VERSION;
 	m_tALifeHeader.tTimeID		= 0;
 }
@@ -462,13 +508,18 @@ void CAI_ALife::Update(u32 dt)
 
 void CAI_ALife::vfProcessNPC(CALifeMonsterAbstract	*tpALifeMonsterAbstract)
 {
-	vfChooseNextRoutePoint	(tpALifeMonsterAbstract);
-	vfCheckForTheBattle		(tpALifeMonsterAbstract);
 	CALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CALifeHumanAbstract *>(tpALifeMonsterAbstract);
 	if (tpALifeHumanAbstract) {
-		vfCheckForDeletedEvents	(tpALifeHumanAbstract);
+		vfChooseNextRoutePoint	(tpALifeMonsterAbstract);
+		vfCheckForTheBattle		(tpALifeMonsterAbstract);
 		vfCheckForItems			(tpALifeHumanAbstract);
+		vfCheckForDeletedEvents	(tpALifeHumanAbstract);
 	}
+	else {
+		vfChooseNextRoutePoint	(tpALifeMonsterAbstract);
+		vfCheckForTheBattle		(tpALifeMonsterAbstract);
+	}
+
 	tpALifeMonsterAbstract->m_tTimeID = Level().timeServer();
 }
 
