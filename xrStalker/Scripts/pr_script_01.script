@@ -43,8 +43,8 @@ function main()
 	event:clear_callback(true)
 	event:clear_callback(false)
 
-	event:set_callback(pr_script_01.on_enter,true)
-	event:set_callback(pr_script_01.on_exit,false)
+	event:set_callback(this.on_enter,true)
+	event:set_callback(this.on_exit,false)
 
 	while true do
 		if is_actor_entered and actor.health > 0 then 
