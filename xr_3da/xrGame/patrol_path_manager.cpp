@@ -71,16 +71,13 @@ bool CPatrolPathManager::extrapolate_path		()
 void CPatrolPathManager::reinit					()
 {
 	m_path					= 0;
-	m_start_type			= ePatrolStartTypeDummy;
-	m_route_type			= ePatrolRouteTypeDummy;
 	m_actuality				= true;
 	m_failed				= false;
 	m_completed				= true;
-	m_curr_point_index		= u32(-1);
-	m_prev_point_index		= u32(-1);
-	m_start_point_index		= u32(-1);
 	m_callback				= 0;
 	m_extrapolate_callback	= 0;
+
+	reset					();
 }
 
 IC	bool CPatrolPathManager::accessible	(const Fvector &position) const
@@ -344,4 +341,14 @@ void CPatrolPathManager::set_start_point	(int point_index)
 	VERIFY					(m_path);
 	VERIFY					(m_path->vertex(point_index));
 	m_start_point_index		= point_index;
+}
+
+void CPatrolPathManager::reset()
+{
+	m_curr_point_index		= u32(-1);
+	m_prev_point_index		= u32(-1);
+	m_start_point_index		= u32(-1);
+	
+	m_start_type			= ePatrolStartTypeDummy;
+	m_route_type			= ePatrolRouteTypeDummy;
 }

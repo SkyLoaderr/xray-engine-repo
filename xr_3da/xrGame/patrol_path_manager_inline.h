@@ -68,6 +68,7 @@ IC	void CPatrolPathManager::set_path				(const CPatrolPath *path, shared_str pat
 	m_path_name				= path_name;
 	m_actuality				= false;
 	m_completed				= false;
+	reset					();
 }
 
 IC	void CPatrolPathManager::set_start_type			(const EPatrolStartType patrol_start_type)
