@@ -90,6 +90,9 @@ function action_car:reset_scheme()
 
 	self.state = state_none
 
+	self.st.signals = {}
+	self.arrival_signalled = false
+
 	self.target_pt = self:get_nearest_waypoint()
 	if self:at_target_waypoint() then
 		self:arrival_callback(self.target_pt)
@@ -170,6 +173,11 @@ function action_car:arrival_callback(index)
 		self.min_car_explode_time = default_min_car_explode_time
 	end
 
+	local sig = self.st.path_walk_info[index]["sig"]
+	if sig then
+		self.st.signals[sig] = true
+	end
+
 	-- Выбрать следующую точку езды:
 	self.target_pt = self:get_next_waypoint()
 	if not self.target_pt then
@@ -238,10 +246,7 @@ function action_car:update(delta)
 		return
 	end
 
-	local actor = level.actor()
-	if not actor then
-		return
-	end
+	local actor = db.actor
 
 	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
 		return
@@ -279,8 +284,6 @@ function action_car:update(delta)
 			self.last_pos = cur_pos
 			self.last_pos_time = device():time_global()
 		end
-	else
-		
 	end
 	
 	if self:at_target_waypoint() then
