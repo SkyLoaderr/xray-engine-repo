@@ -42,10 +42,7 @@ void CAI_ALife::vfProcessNPC(CALifeMonsterAbstract	*tpALifeMonsterAbstract)
 	if (tpALifeHumanAbstract) {
 		CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeMonsterAbstract);
 		if (tpALifeHuman)
-			if (tpALifeHuman->m_bIsTrader)
-				vfUpdateTrader(tpALifeHuman);
-			else
-				vfUpdateHuman(tpALifeHuman);
+			vfUpdateHuman(tpALifeHuman);
 		else
 			vfUpdateHumanGroup(dynamic_cast<CALifeHumanGroup *>(tpALifeMonsterAbstract));
 	}
@@ -60,10 +57,6 @@ void CAI_ALife::vfUpdateMonster(CALifeMonsterAbstract *tpALifeMonsterAbstract)
 	vfCheckForTheBattle		(tpALifeMonsterAbstract);
 }
 
-void CAI_ALife::vfUpdateTrader(CALifeHuman *tpALifeHuman)
-{
-}
-
 void CAI_ALife::vfUpdateHumanGroup(CALifeHumanGroup *tpALifeHumanGroup)
 {
 }
@@ -73,7 +66,7 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 	switch (tpALifeHuman->m_tTaskState) {
 		case eTaskStateNoTask : {
 			if (!tpALifeHuman->m_tpTaskIDs.size()) {
-				CALifeHuman *tpTrader = tpfGetNearestSuitableTrader(tpALifeHuman);
+				CALifeTrader *tpTrader = tpfGetNearestSuitableTrader(tpALifeHuman);
 				Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,tpTrader->m_tGraphID,tpALifeHuman->m_tpaVertices);
 				tpALifeHuman->m_dwCurNode = 0;
 				tpALifeHuman->m_tTaskState = eTaskStateGoToTrader;
@@ -89,9 +82,9 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 				tpALifeHuman->m_dwCurNode = u32(-1);
 				if (tpALifeHuman->m_tpTaskIDs.size()) {
 					OBJECT_PAIR_IT I = m_tObjectRegistry.m_tppMap.find(tpALifeHuman->m_tCurTask.tCustomerID);
-					CALifeHuman *tpTrader = 0;
+					CALifeTrader *tpTrader = 0;
 					if (I != m_tObjectRegistry.m_tppMap.end())
-						tpTrader = dynamic_cast<CALifeHuman *>(I->second);
+						tpTrader = dynamic_cast<CALifeTrader *>(I->second);
 					if (tpTrader)
 						vfCommunicateWithTrader(tpALifeHuman,tpTrader);
 					else

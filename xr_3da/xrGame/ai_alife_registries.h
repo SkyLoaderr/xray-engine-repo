@@ -39,36 +39,41 @@ public:
 		OBJECT_PAIR_IT it			= m_tppMap.begin();
 		OBJECT_PAIR_IT E			= m_tppMap.end();
 		for ( ; it != E; it++) {
-			CALifeHuman	*tpALifeHuman = dynamic_cast<CALifeHuman *>((*it).second);
-			if (tpALifeHuman)
-				tMemoryStream.Wbyte(ALIFE_HUMAN_ID);
+			CALifeTrader *tpALifeTrader = dynamic_cast<CALifeTrader *>((*it).second);
+			if (tpALifeTrader)
+				tMemoryStream.Wbyte(ALIFE_TRADER_ID);
 			else {
-				CALifeHumanGroup	*tpALifeHumanGroup = dynamic_cast<CALifeHumanGroup *>((*it).second);
-				if (tpALifeHumanGroup)
-					tMemoryStream.Wbyte(ALIFE_HUMAN_GROUP_ID);
+				CALifeHuman	*tpALifeHuman = dynamic_cast<CALifeHuman *>((*it).second);
+				if (tpALifeHuman)
+					tMemoryStream.Wbyte(ALIFE_HUMAN_ID);
 				else {
-					CALifeMonster	*tpALifeMonster = dynamic_cast<CALifeMonster *>((*it).second);
-					if (tpALifeMonster)
-						tMemoryStream.Wbyte(ALIFE_MONSTER_ID);
+					CALifeHumanGroup	*tpALifeHumanGroup = dynamic_cast<CALifeHumanGroup *>((*it).second);
+					if (tpALifeHumanGroup)
+						tMemoryStream.Wbyte(ALIFE_HUMAN_GROUP_ID);
 					else {
-						CALifeMonsterGroup	*tpALifeHumanGroup = dynamic_cast<CALifeMonsterGroup *>((*it).second);
-						if (tpALifeHumanGroup)
-							tMemoryStream.Wbyte(ALIFE_MONSTER_GROUP_ID);
+						CALifeMonster	*tpALifeMonster = dynamic_cast<CALifeMonster *>((*it).second);
+						if (tpALifeMonster)
+							tMemoryStream.Wbyte(ALIFE_MONSTER_ID);
 						else {
-							CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>((*it).second);
-							if (tpALifeItem)
-								tMemoryStream.Wbyte(ALIFE_ITEM_ID);
+							CALifeMonsterGroup	*tpALifeHumanGroup = dynamic_cast<CALifeMonsterGroup *>((*it).second);
+							if (tpALifeHumanGroup)
+								tMemoryStream.Wbyte(ALIFE_MONSTER_GROUP_ID);
 							else {
-								CALifeAnomalousZone *tpALifeAnomalousZone = dynamic_cast<CALifeAnomalousZone *>((*it).second);
-								if (tpALifeAnomalousZone)
-									tMemoryStream.Wbyte(ALIFE_ANOMALOUS_ZONE_ID);
+								CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>((*it).second);
+								if (tpALifeItem)
+									tMemoryStream.Wbyte(ALIFE_ITEM_ID);
 								else {
-									Msg("!Unsupported ALife monster type!");
-									R_ASSERT(false);
+									CALifeAnomalousZone *tpALifeAnomalousZone = dynamic_cast<CALifeAnomalousZone *>((*it).second);
+									if (tpALifeAnomalousZone)
+										tMemoryStream.Wbyte(ALIFE_ANOMALOUS_ZONE_ID);
+									else {
+										Msg("!Unsupported ALife monster type!");
+										R_ASSERT(false);
+									}
 								}
 							}
-						}
 
+						}
 					}
 				}
 			}
@@ -101,6 +106,10 @@ public:
 				}
 				case ALIFE_HUMAN_GROUP_ID : {
 					tpALifeDynamicObject = new CALifeHumanGroup;
+					break;
+				}
+				case ALIFE_TRADER_ID : {
+					tpALifeDynamicObject = new CALifeTrader;
 					break;
 				}
 				case ALIFE_ANOMALOUS_ZONE_ID : {

@@ -18,7 +18,7 @@ public:
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints) = 0;
 };
 
-class CALifeMonsterParams {
+class CALifeMonsterParams : public IPureALifeObject {
 public:
 	int								m_iHealth;
 
@@ -38,10 +38,8 @@ public:
 	};
 };
 
-class CALifeHumanParams : public CALifeMonsterParams{
+class CALifeTraderParams : public IPureALifeObject {
 public:
-	typedef CALifeMonsterParams inherited;
-
 	float							m_fCumulativeItemMass;
 	u32								m_dwMoney;
 	EStalkerRank					m_tRank;
@@ -49,7 +47,6 @@ public:
 
 	virtual void					Save(CFS_Memory	&tMemoryStream)
 	{
-		inherited::Save				(tMemoryStream);
 		tMemoryStream.Wfloat		(m_fCumulativeItemMass);
 		tMemoryStream.Wdword		(m_dwMoney);
 		tMemoryStream.Wdword		(m_tRank);
@@ -62,7 +59,6 @@ public:
 	
 	virtual void					Load(CStream	&tFileStream)
 	{
-		inherited::Load				(tFileStream);
 		m_fCumulativeItemMass		= tFileStream.Rfloat();
 		m_dwMoney					= tFileStream.Rdword();
 		m_tRank						= EStalkerRank(tFileStream.Rdword());
@@ -75,13 +71,107 @@ public:
 	
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
-		inherited::Init				(tSpawnID,tpSpawnPoints);
 		m_fCumulativeItemMass		= 0.0f;
 		m_dwMoney					= 0;
 		if (pSettings->LineExists(tpSpawnPoints[tSpawnID].caModel, "money"))
 			m_dwMoney = pSettings->ReadINT(tpSpawnPoints[tSpawnID].caModel, "money");
 		m_tRank						= EStalkerRank(pSettings->ReadINT	(tpSpawnPoints[tSpawnID].caModel, "rank"));
 		m_tpItemIDs.clear			();
+	};
+};
+
+class CALifeHumanParams : public CALifeMonsterParams, public CALifeTraderParams {
+public:
+	virtual void					Save(CFS_Memory	&tMemoryStream)
+	{
+		CALifeMonsterParams::Save	(tMemoryStream);
+		CALifeTraderParams::Save	(tMemoryStream);
+	};
+	
+	virtual void					Load(CStream	&tFileStream)
+	{
+		CALifeMonsterParams::Load	(tFileStream);
+		CALifeTraderParams::Load	(tFileStream);
+	};
+	
+	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
+	{
+		CALifeMonsterParams::Init	(tSpawnID,tpSpawnPoints);
+		CALifeTraderParams::Init	(tSpawnID,tpSpawnPoints);
+	};
+};
+
+class CALifeTraderAbstract : public IPureALifeObject {
+public:
+	PERSONAL_EVENT_VECTOR			m_tpEvents;
+	TASK_VECTOR						m_tpTaskIDs;
+	float							m_fMaxItemMass;
+	
+	virtual	void					Save(CFS_Memory	&tMemoryStream)
+	{
+		// saving events
+		{
+			tMemoryStream.Wdword	(m_tpEvents.size());
+			PERSONAL_EVENT_IT 		I = m_tpEvents.begin();
+			PERSONAL_EVENT_IT 		E = m_tpEvents.end();
+			for ( ; I != E; I++) {
+				SPersonalEvent		&tPersonalEvent = *I;
+				tMemoryStream.write	(&tPersonalEvent.tEventID,			sizeof(tPersonalEvent.tEventID));
+				tMemoryStream.write	(&tPersonalEvent.tGameTime,			sizeof(tPersonalEvent.tGameTime));
+				tMemoryStream.write	(&tPersonalEvent.tTaskID,			sizeof(tPersonalEvent.tTaskID));
+				tMemoryStream.Wdword(tPersonalEvent.tpItemIDs.size());
+				for (int j=0; j<(int)tPersonalEvent.tpItemIDs.size(); j++)
+					tMemoryStream.write	(&(tPersonalEvent.tpItemIDs[j]),sizeof(tPersonalEvent.tpItemIDs[j]));
+				tMemoryStream.write	(&tPersonalEvent.iHealth,			sizeof(tPersonalEvent.iHealth));
+				tMemoryStream.write	(&tPersonalEvent.tRelation,		sizeof(tPersonalEvent.tRelation));
+			}
+		}
+		// saving tasks
+		{
+			tMemoryStream.Wdword	(m_tpTaskIDs.size());
+			TASK_IT 				I = m_tpTaskIDs.begin();
+			TASK_IT 				E = m_tpTaskIDs.end();
+			for ( ; I != E; I++)
+				tMemoryStream.write	(I,sizeof(*I));
+		}
+		tMemoryStream.Wfloat		(m_fMaxItemMass);
+	};
+
+	virtual	void					Load(CStream	&tFileStream)
+	{
+		// loading events
+		{
+			m_tpEvents.resize		(tFileStream.Rdword());
+			PERSONAL_EVENT_IT 		I = m_tpEvents.begin();
+			PERSONAL_EVENT_IT 		E = m_tpEvents.end();
+			for ( ; I != E; I++) {
+				SPersonalEvent		&tPersonalEvent = *I;
+				tFileStream.Read	(&tPersonalEvent.tEventID,			sizeof(tPersonalEvent.tEventID));
+				tFileStream.Read	(&tPersonalEvent.tGameTime,			sizeof(tPersonalEvent.tGameTime));
+				tFileStream.Read	(&tPersonalEvent.tTaskID,			sizeof(tPersonalEvent.tTaskID));
+				tPersonalEvent.tpItemIDs.resize(tFileStream.Rdword());
+				for (int j=0; j<(int)tPersonalEvent.tpItemIDs.size(); j++)
+					tFileStream.Read(&(tPersonalEvent.tpItemIDs[j]),	sizeof(tPersonalEvent.tpItemIDs[j]));
+				tFileStream.Read	(&tPersonalEvent.iHealth,			sizeof(tPersonalEvent.iHealth));
+				tFileStream.Read	(&tPersonalEvent.tRelation,			sizeof(tPersonalEvent.tRelation));
+			}
+		}
+		// loading tasks
+		{
+			m_tpTaskIDs.resize		(tFileStream.Rdword());
+			TASK_IT I				= m_tpTaskIDs.begin();
+			TASK_IT E				= m_tpTaskIDs.end();
+			for ( ; I != E; I++)
+				tFileStream.Read	(I,sizeof(*I));
+		}
+		m_fMaxItemMass				= tFileStream.Rfloat();
+	};
+
+	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
+	{
+		m_tpEvents.clear			();
+		m_tpTaskIDs.clear			();
+		m_fMaxItemMass				= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "max_item_mass");
 	};
 };
 
@@ -214,6 +304,30 @@ public:
 	};
 };
 
+class CALifeTrader : public CALifeDynamicObject, public CALifeTraderParams, public CALifeTraderAbstract {
+public:
+	virtual	void					Save(CFS_Memory &tMemoryStream)
+	{
+		CALifeDynamicObject::Save	(tMemoryStream);
+		CALifeTraderParams::Save	(tMemoryStream);
+		CALifeTraderAbstract::Save	(tMemoryStream);
+	};
+	
+	virtual	void					Load(CStream	&tFileStream)
+	{
+		CALifeDynamicObject::Load	(tFileStream);
+		CALifeTraderParams::Load	(tFileStream);
+		CALifeTraderAbstract::Load	(tFileStream);
+	};
+
+	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
+	{
+		CALifeDynamicObject::Init	(tSpawnID,tpSpawnPoints);
+		CALifeTraderParams::Init	(tSpawnID,tpSpawnPoints);
+		CALifeTraderAbstract::Init	(tSpawnID,tpSpawnPoints);
+	};
+};
+
 class CALifeMonsterAbstract : public CALifeDynamicObject {
 public:
 	typedef	CALifeDynamicObject inherited;
@@ -284,28 +398,24 @@ public:
 	};
 };
 
-class CALifeMonster : public CALifeMonsterAbstract {
+class CALifeMonster : public CALifeMonsterAbstract, public CALifeMonsterParams {
 public:
-	typedef	CALifeMonsterAbstract inherited;
-	
-	CALifeMonsterParams				m_tMonsterParams;
-
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
-		inherited::Save				(tMemoryStream);
-		m_tMonsterParams.Save		(tMemoryStream);
+		CALifeMonsterAbstract::Save	(tMemoryStream);
+		CALifeMonsterParams::Save	(tMemoryStream);
 	};
 	
 	virtual	void					Load(CStream	&tFileStream)
 	{
-		inherited::Load				(tFileStream);
-		m_tMonsterParams.Load		(tFileStream);
+		CALifeMonsterAbstract::Load	(tFileStream);
+		CALifeMonsterParams::Load	(tFileStream);
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
-		inherited::Init				(tSpawnID,tpSpawnPoints);
-		m_tMonsterParams.Init		(tSpawnID,tpSpawnPoints);
+		CALifeMonsterAbstract::Init	(tSpawnID,tpSpawnPoints);
+		CALifeMonsterParams::Init	(tSpawnID,tpSpawnPoints);
 	};
 };
 
@@ -346,15 +456,11 @@ public:
 	};
 };
 
-class CALifeHumanAbstract : public CALifeMonsterAbstract {
+class CALifeHumanAbstract : public CALifeMonsterAbstract, public CALifeTraderAbstract {
 public:
-	typedef	CALifeMonsterAbstract inherited;
-	
-	PERSONAL_EVENT_VECTOR			m_tpEvents;
-	TASK_VECTOR						m_tpTaskIDs;
 	DWORD_VECTOR					m_tpaVertices;
 	BOOL_VECTOR						m_baVisitedVertices;
-	float							m_fMaxItemMass;
+	PERSONAL_TASK_VECTOR			m_tpTasks;
 	ETaskState						m_tTaskState;
 	u32								m_dwCurNode;
 	u32								m_dwCurTaskLocation;
@@ -364,32 +470,8 @@ public:
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
 		// calling inherited
-		inherited::Save				(tMemoryStream);
-		// saving events
-		{
-			tMemoryStream.Wdword	(m_tpEvents.size());
-			PERSONAL_EVENT_IT 		I = m_tpEvents.begin();
-			PERSONAL_EVENT_IT 		E = m_tpEvents.end();
-			for ( ; I != E; I++) {
-				SPersonalEvent		&tPersonalEvent = *I;
-				tMemoryStream.write	(&tPersonalEvent.tEventID,			sizeof(tPersonalEvent.tEventID));
-				tMemoryStream.write	(&tPersonalEvent.tGameTime,			sizeof(tPersonalEvent.tGameTime));
-				tMemoryStream.write	(&tPersonalEvent.tTaskID,			sizeof(tPersonalEvent.tTaskID));
-				tMemoryStream.Wdword(tPersonalEvent.tpItemIDs.size());
-				for (int j=0; j<(int)tPersonalEvent.tpItemIDs.size(); j++)
-					tMemoryStream.write	(&(tPersonalEvent.tpItemIDs[j]),sizeof(tPersonalEvent.tpItemIDs[j]));
-				tMemoryStream.write	(&tPersonalEvent.iHealth,			sizeof(tPersonalEvent.iHealth));
-				tMemoryStream.write	(&tPersonalEvent.tRelation,		sizeof(tPersonalEvent.tRelation));
-			}
-		}
-		// saving tasks
-		{
-			tMemoryStream.Wdword	(m_tpTaskIDs.size());
-			TASK_IT 				I = m_tpTaskIDs.begin();
-			TASK_IT 				E = m_tpTaskIDs.end();
-			for ( ; I != E; I++)
-				tMemoryStream.write	(I,sizeof(*I));
-		}
+		CALifeMonsterAbstract::Save	(tMemoryStream);
+		CALifeTraderAbstract::Save	(tMemoryStream);
 		{
 			tMemoryStream.Wdword	(m_tpaVertices.size());
 			DWORD_IT 				I = m_tpaVertices.begin();
@@ -415,7 +497,13 @@ public:
 				tMemoryStream.Wdword	(dwMask);
 			}
 		}
-		tMemoryStream.Wfloat		(m_fMaxItemMass);
+		{
+			tMemoryStream.Wdword	(m_tpTasks.size());
+			PERSONAL_TASK_IT 		I = m_tpTasks.begin();
+			PERSONAL_TASK_IT 		E = m_tpTasks.end();
+			for ( ; I != E; I++)
+				tMemoryStream.write	(I,sizeof(*I));
+		}
 		tMemoryStream.Wdword		(m_tTaskState);
 		tMemoryStream.Wdword		(m_dwCurNode);
 		tMemoryStream.Wdword		(m_dwCurTaskLocation);
@@ -426,32 +514,8 @@ public:
 	virtual	void					Load(CStream	&tFileStream)
 	{
 		// calling inherited
-		inherited::Load				(tFileStream);
-		// loading events
-		{
-			m_tpEvents.resize		(tFileStream.Rdword());
-			PERSONAL_EVENT_IT 		I = m_tpEvents.begin();
-			PERSONAL_EVENT_IT 		E = m_tpEvents.end();
-			for ( ; I != E; I++) {
-				SPersonalEvent		&tPersonalEvent = *I;
-				tFileStream.Read	(&tPersonalEvent.tEventID,			sizeof(tPersonalEvent.tEventID));
-				tFileStream.Read	(&tPersonalEvent.tGameTime,			sizeof(tPersonalEvent.tGameTime));
-				tFileStream.Read	(&tPersonalEvent.tTaskID,			sizeof(tPersonalEvent.tTaskID));
-				tPersonalEvent.tpItemIDs.resize(tFileStream.Rdword());
-				for (int j=0; j<(int)tPersonalEvent.tpItemIDs.size(); j++)
-					tFileStream.Read(&(tPersonalEvent.tpItemIDs[j]),	sizeof(tPersonalEvent.tpItemIDs[j]));
-				tFileStream.Read	(&tPersonalEvent.iHealth,			sizeof(tPersonalEvent.iHealth));
-				tFileStream.Read	(&tPersonalEvent.tRelation,			sizeof(tPersonalEvent.tRelation));
-			}
-		}
-		// loading tasks
-		{
-			m_tpTaskIDs.resize		(tFileStream.Rdword());
-			TASK_IT I				= m_tpTaskIDs.begin();
-			TASK_IT E				= m_tpTaskIDs.end();
-			for ( ; I != E; I++)
-				tFileStream.Read	(I,sizeof(*I));
-		}
+		CALifeMonsterAbstract::Load	(tFileStream);
+		CALifeTraderAbstract::Load	(tFileStream);
 		{
 			m_tpaVertices.resize	(tFileStream.Rdword());
 			DWORD_IT 				I = m_tpaVertices.begin();
@@ -472,7 +536,13 @@ public:
 				*I = !!(dwMask & (u32(1) << j));
 			}
 		}
-		m_fMaxItemMass				= tFileStream.Rfloat();
+		{
+			m_tpTasks.resize		(tFileStream.Rdword());
+			PERSONAL_TASK_IT 		I = m_tpTasks.begin();
+			PERSONAL_TASK_IT 		E = m_tpTasks.end();
+			for ( ; I != E; I++)
+				tFileStream.Read	(I,sizeof(*I));
+		}
 		m_tTaskState				= ETaskState(tFileStream.Rdword());
 		m_dwCurNode					= tFileStream.Rdword();
 		m_dwCurTaskLocation			= tFileStream.Rdword();
@@ -482,12 +552,11 @@ public:
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
-		inherited::Init				(tSpawnID,tpSpawnPoints);
-		m_tpEvents.	clear			();
-		m_tpTaskIDs.clear			();
+		CALifeMonsterAbstract::Init	(tSpawnID,tpSpawnPoints);
+		CALifeTraderAbstract::Init	(tSpawnID,tpSpawnPoints);
 		m_tpaVertices.clear			();
 		m_baVisitedVertices.clear	();
-		m_fMaxItemMass				= pSettings->ReadFLOAT				(tpSpawnPoints[tSpawnID].caModel, "max_item_mass");
+		m_tpTasks.clear				();
 		m_tTaskState				= eTaskStateNoTask;
 		memset						(&m_tCurTask,0,sizeof(m_tCurTask));
 		m_tCurTask.tTaskID			= u32(-1);
@@ -497,32 +566,24 @@ public:
 	};
 };
 
-class CALifeHuman : public CALifeHumanAbstract {
+class CALifeHuman : public CALifeHumanAbstract, public CALifeHumanParams {
 public:
-	typedef	CALifeHumanAbstract inherited;
-
-	CALifeHumanParams				m_tHumanParams;
-	bool							m_bIsTrader;
-
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
-		inherited::Save				(tMemoryStream);
-		m_tHumanParams.Save			(tMemoryStream);
-		tMemoryStream.Wdword		(m_bIsTrader);
+		CALifeHumanAbstract::Save	(tMemoryStream);
+		CALifeHumanParams::Save		(tMemoryStream);
 	};
 	
 	virtual	void					Load(CStream	&tFileStream)
 	{
-		inherited::Load				(tFileStream);
-		m_tHumanParams.Load			(tFileStream);
-		m_bIsTrader					= !!(tFileStream.Rdword());
+		CALifeHumanAbstract::Load	(tFileStream);
+		CALifeHumanParams::Load		(tFileStream);
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
-		inherited::Init				(tSpawnID,tpSpawnPoints);
-		m_tHumanParams.Init			(tSpawnID,tpSpawnPoints);
-		m_bIsTrader					= pSettings->LineExists(tpSpawnPoints[tSpawnID].caModel, "trader") && pSettings->ReadBOOL(tpSpawnPoints[tSpawnID].caModel, "trader");
+		CALifeHumanAbstract::Init	(tSpawnID,tpSpawnPoints);
+		CALifeHumanParams::Init		(tSpawnID,tpSpawnPoints);
 	};
 };
 

@@ -28,7 +28,8 @@
 #define ALIFE_MONSTER_GROUP_ID		0x02
 #define ALIFE_HUMAN_ID				0x03
 #define ALIFE_HUMAN_GROUP_ID		0x04
-#define ALIFE_ANOMALOUS_ZONE_ID		0x05
+#define ALIFE_TRADER_ID				0x05
+#define ALIFE_ANOMALOUS_ZONE_ID		0x06
 
 class CALifeMonsterParams;
 class CALifeHumanParams;
@@ -36,7 +37,7 @@ class CALifeEventGroup;
 class CALifeDynamicObject;
 class CALifeDynamicObject;
 class CALifeMonsterAbstract;
-class CALifeHuman;
+class CALifeTrader;
 
 namespace ALife {
 	typedef u64	_CLASS_ID;									// Class ID
@@ -62,7 +63,7 @@ namespace ALife {
 	DEFINE_VECTOR	(CALifeDynamicObject *,		DYNAMIC_OBJECT_P_VECTOR,		DYNAMIC_OBJECT_P_IT);
 	DEFINE_VECTOR	(CALifeMonsterAbstract *,	ALIFE_MONSTER_P_VECTOR,			ALIFE_MONSTER_P_IT);
 	DEFINE_VECTOR	(ALIFE_MONSTER_P_VECTOR,	ALIFE_MONSTER_P_VECTOR_VECTOR,	ALIFE_MONSTER_P_VECTOR_IT);
-	DEFINE_VECTOR	(CALifeHuman *,				HUMAN_P_VECTOR,					HUMAN_P_IT);
+	DEFINE_VECTOR	(CALifeTrader *,			TRADER_P_VECTOR,				TRADER_P_IT);
 	
 	DEFINE_SVECTOR	(GRAPH_VECTOR,				LOCATION_COUNT,					GRAPH_VECTOR_SVECTOR,	GRAPH_VECTOR_IT);
 	
@@ -157,7 +158,15 @@ namespace ALife {
 			_GRAPH_ID				tGraphID;
 		};
 		ETaskType					tTaskType;
+		float						fCost;
 	} STask;
+
+	typedef struct tagSPersonalTask {
+		_TASK_ID					tTaskID;
+		_TIME_ID					tTimeID;
+		float						fCost;
+		u32							dwTryCount;
+	} SPersonalTask;
 
 	typedef struct tagSEvent {
 		_EVENT_ID					tEventID;
@@ -211,6 +220,7 @@ namespace ALife {
 	
 	DEFINE_VECTOR	(SSpawnPoint,				SPAWN_VECTOR,			SPAWN_IT);
 	DEFINE_VECTOR	(SPersonalEvent,			PERSONAL_EVENT_VECTOR,	PERSONAL_EVENT_IT);
+	DEFINE_VECTOR	(SPersonalTask,				PERSONAL_TASK_VECTOR,	PERSONAL_TASK_IT);
 	DEFINE_VECTOR	(SGraphPoint,				GRAPH_POINT_VECTOR,		GRAPH_POINT_IT);
 
 	DEFINE_MAP		(_EVENT_ID,					SEvent,					EVENT_MAP,				EVENT_PAIR_IT);

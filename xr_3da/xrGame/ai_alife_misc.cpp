@@ -165,7 +165,7 @@ bool CAI_ALife::bfCheckForItems(CALifeHumanAbstract	*tpALifeHumanAbstract)
 {
 	CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeHumanAbstract);
 	if (tpALifeHuman)
-		return(bfProcessItems(tpALifeHuman->m_tHumanParams,tpALifeHuman->m_tGraphID,tpALifeHuman->m_fMaxItemMass));
+		return(bfProcessItems(*tpALifeHuman,tpALifeHuman->m_tGraphID,tpALifeHuman->m_fMaxItemMass));
 	else {
 		CALifeHumanGroup *tpALifeHumanGroup = dynamic_cast<CALifeHumanGroup *>(tpALifeHumanAbstract);
 		VERIFY(tpALifeHumanGroup);
@@ -250,15 +250,15 @@ bool CAI_ALife::bfProcessItems(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraph
 	return(false);
 }
 
-CALifeHuman *CAI_ALife::tpfGetNearestSuitableTrader(CALifeHuman *tpALifeHuman)
+CALifeTrader *CAI_ALife::tpfGetNearestSuitableTrader(CALifeHuman *tpALifeHuman)
 {
 	float			fBestDistance = MAX_NODE_ESTIMATION_COST;
-	CALifeHuman *	tpBestTrader = 0;
-	HUMAN_P_IT		I = m_tpTraders.begin();
-	HUMAN_P_IT		E = m_tpTraders.end();
+	CALifeTrader *	tpBestTrader = 0;
+	TRADER_P_IT		I = m_tpTraders.begin();
+	TRADER_P_IT		E = m_tpTraders.end();
 	Fvector			&tPoint = Level().AI.m_tpaGraph[tpALifeHuman->m_tGraphID].tPoint;
 	for ( ; I != E; I++) {
-		if ((*I)->m_tHumanParams.m_tRank != tpALifeHuman->m_tHumanParams.m_tRank)
+		if ((*I)->m_tRank != tpALifeHuman->m_tRank)
 			break;
 		float fCurDistance = Level().AI.m_tpaGraph[(*I)->m_tGraphID].tPoint.distance_to(tPoint);
 		if (fCurDistance < fBestDistance) {
@@ -269,7 +269,7 @@ CALifeHuman *CAI_ALife::tpfGetNearestSuitableTrader(CALifeHuman *tpALifeHuman)
 	return(tpBestTrader);
 }
 
-void CAI_ALife::vfCommunicateWithTrader(CALifeHuman *tpALifeHuman, CALifeHuman *tpTrader)
+void CAI_ALife::vfCommunicateWithTrader(CALifeHuman *tpALifeHuman, CALifeTrader *tpTrader)
 {
 	// update items
 	TASK_PAIR_IT T = m_tTaskRegistry.m_tpMap.find(tpALifeHuman->m_tCurTask.tTaskID);
@@ -277,14 +277,14 @@ void CAI_ALife::vfCommunicateWithTrader(CALifeHuman *tpALifeHuman, CALifeHuman *
 		OBJECT_IT	I;
 		if (bfCheckIfTaskCompleted(tpALifeHuman, I)) {
 			CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(m_tObjectRegistry.m_tppMap[*I]);
-			if (tpTrader->m_tHumanParams.m_dwMoney >= tpALifeItem->m_dwCost) {
+			if (tpTrader->m_dwMoney >= tpALifeItem->m_dwCost) {
 				tpALifeHuman->m_tpaVertices.clear();
-				tpTrader->m_tHumanParams.m_tpItemIDs.push_back(*I);
-				tpALifeHuman->m_tHumanParams.m_tpItemIDs.erase(I);
-				tpTrader->m_tHumanParams.m_fCumulativeItemMass += tpALifeItem->m_fMass;
-				tpALifeHuman->m_tHumanParams.m_fCumulativeItemMass -= tpALifeItem->m_fMass;
-				tpTrader->m_tHumanParams.m_dwMoney -= tpALifeItem->m_dwCost;
-				tpALifeHuman->m_tHumanParams.m_dwMoney += tpALifeItem->m_dwCost;
+				tpTrader->m_tpItemIDs.push_back(*I);
+				tpALifeHuman->m_tpItemIDs.erase(I);
+				tpTrader->m_fCumulativeItemMass += tpALifeItem->m_fMass;
+				tpALifeHuman->m_fCumulativeItemMass -= tpALifeItem->m_fMass;
+				tpTrader->m_dwMoney -= tpALifeItem->m_dwCost;
+				tpALifeHuman->m_dwMoney += tpALifeItem->m_dwCost;
 				m_tTaskRegistry.m_tpMap.erase(T);
 				tpTrader->m_tpTaskIDs.erase(lower_bound(tpTrader->m_tpTaskIDs.begin(),tpTrader->m_tpTaskIDs.end(),(*T).first));
 				tpALifeHuman->m_tpTaskIDs.erase(lower_bound(tpALifeHuman->m_tpTaskIDs.begin(),tpALifeHuman->m_tpTaskIDs.end(),(*T).first));

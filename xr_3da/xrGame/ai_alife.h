@@ -16,9 +16,9 @@
 
 class CCompareTraderRanksPredicate {
 public:
-	bool operator()(const CALifeHuman *tpALifeHuman1, const CALifeHuman *tpALifeHuman2) const
+	bool operator()(const CALifeTrader *tpALifeTrader1, const CALifeTrader *tpALifeTrader2) const
 	{
-		return(tpALifeHuman1->m_tHumanParams.m_tRank < tpALifeHuman2->m_tHumanParams.m_tRank);
+		return(tpALifeTrader1->m_tRank < tpALifeTrader2->m_tRank);
 	};
 };
 
@@ -51,7 +51,7 @@ public:
 	GRAPH_POINT_VECTOR				m_tpGraphObjects;		// по точке графа получить все 
 															//  динамические объекты
 	ALIFE_MONSTER_P_VECTOR			m_tpScheduledObjects;	// массив обновляемых объектов
-	HUMAN_P_VECTOR					m_tpTraders;			// массив торговцев
+	TRADER_P_VECTOR					m_tpTraders;			// массив торговцев
 	
 	// dynamic
 	CALifeObjectRegistry			m_tObjectRegistry;		// карта объектов
@@ -123,22 +123,22 @@ public:
 				m_tpGraphObjects[tpALifeItem->m_tGraphID].tpObjects.push_back(tpALifeItem);
 			return;
 		}
+		CALifeTrader *tpALifeTrader = dynamic_cast<CALifeTrader *>(tpALifeDynamicObject);
+		if (tpALifeTrader) {
+			m_tpTraders.push_back(tpALifeTrader);
+			sort(m_tpTraders.begin(),m_tpTraders.end(),CCompareTraderRanksPredicate());
+		}
+		
 		m_tpGraphObjects[tpALifeDynamicObject->m_tGraphID].tpObjects.push_back(tpALifeDynamicObject);
 		CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>(tpALifeDynamicObject);
 		if (tpALifeMonsterAbstract) {
 			m_tpScheduledObjects.push_back	(tpALifeMonsterAbstract);
-			CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeDynamicObject);
-			if (tpALifeHuman) {
-				if (tpALifeHuman->m_bIsTrader) {
-					m_tpTraders.push_back(tpALifeHuman);
-					sort(m_tpTraders.begin(),m_tpTraders.end(),CCompareTraderRanksPredicate());
-				}
-			}
 			GRAPH_IT			I = m_tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID].tpRouteGraphPoints.begin(); 
 			GRAPH_IT			E = m_tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID].tpRouteGraphPoints.end(); 
 			for ( ; I != E; I++)
 				m_tpLocationOwners[*I].push_back(tpALifeMonsterAbstract);
 		}
+
 	}
 	
 	IC void vfUpdateDynamicData()
@@ -183,7 +183,10 @@ public:
 				if (((*I).wCount > 1) && pSettings->LineExists((*I).caModel, "single") && pSettings->ReadBOOL((*I).caModel, "single"))
 					tpALifeDynamicObject	= new CALifeHumanGroup;
 				else
-					tpALifeDynamicObject	= new CALifeHuman;
+					if (pSettings->LineExists((*I).caModel, "trader") && pSettings->ReadBOOL((*I).caModel, "trader"))
+						tpALifeDynamicObject	= new CALifeTrader;
+					else
+						tpALifeDynamicObject	= new CALifeHuman;
 			else
 				if (pSettings->LineExists((*I).caModel, "monster") && pSettings->ReadBOOL((*I).caModel, "monster"))
 					if (((*I).wCount > 1) && pSettings->LineExists((*I).caModel, "single") && pSettings->ReadBOOL((*I).caModel, "single"))
@@ -207,7 +210,7 @@ public:
 			vfUpdateDynamicData				(tpALifeDynamicObject);
 	};
 
-	IC void vfCreateNewTask(CALifeHuman *tpTrader)
+	IC void vfCreateNewTask(CALifeTrader *tpTrader)
 	{
 		OBJECT_PAIR_IT	I = m_tObjectRegistry.m_tppMap.begin();
 		OBJECT_PAIR_IT	E = m_tObjectRegistry.m_tppMap.end();
@@ -252,7 +255,7 @@ public:
 
 	IC bool bfCheckIfTaskCompleted(CALifeHuman *tpALifeHuman, OBJECT_IT &I)
 	{
-		return(bfCheckIfTaskCompleted(tpALifeHuman->m_tHumanParams,tpALifeHuman,I));
+		return(bfCheckIfTaskCompleted(*tpALifeHuman,tpALifeHuman,I));
 	}
 
 	IC bool bfCheckIfTaskCompleted(CALifeHuman *tpALifeHuman)
@@ -263,10 +266,9 @@ public:
 
 	void							vfAttachItem			(CALifeHumanParams &tHumanParams, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID);
 	void							vfDetachItem			(CALifeHumanParams &tHumanParams, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID);
-	void							vfCommunicateWithTrader	(CALifeHuman *tpALifeHuman, CALifeHuman *tpTrader);
-	CALifeHuman *					tpfGetNearestSuitableTrader(CALifeHuman *tpALifeHuman);
+	void							vfCommunicateWithTrader	(CALifeHuman *tpALifeHuman, CALifeTrader *tpTrader);
+	CALifeTrader *					tpfGetNearestSuitableTrader(CALifeHuman *tpALifeHuman);
 	void							vfUpdateMonster			(CALifeMonsterAbstract	*tpALifeMonsterAbstract);
-	void							vfUpdateTrader			(CALifeHuman			*tpALifeHuman);
 	void							vfUpdateHumanGroup		(CALifeHumanGroup		*tpALifeHumanGroup);
 	void							vfUpdateHuman			(CALifeHuman			*tpALifeHuman);
 	bool							bfProcessItems			(CALifeHumanParams		&tHumanParams, _GRAPH_ID tGraphID, float fMaxItemMass);
