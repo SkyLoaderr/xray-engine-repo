@@ -278,9 +278,6 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 			if(BUTTON_CLICKED == msg)
 			{
-				/* new_code_here
-                m_pClickedListItem = pListItem;
-				*/
 				GetMessageTarget()->SendMessage(this, LIST_ITEM_CLICKED, pListItem);
 			}
 			else if(STATIC_FOCUS_RECEIVED == msg)
