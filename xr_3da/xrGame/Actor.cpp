@@ -68,8 +68,8 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 void CActor::net_Import		(NET_Packet& P)					// import from server
 {
 	// import
-	R_ASSERT		(!net_Local);
-	net_update		N;
+	R_ASSERT			(Remote());
+	net_update			N;
 
 	u8	 flags, tmp;
 	P.r_u32				(N.dwTimeStamp	);

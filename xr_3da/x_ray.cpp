@@ -17,7 +17,7 @@
 #include "3dsoundrender.h"
 #include "xr_streamsnd.h"
 #include "std_classes.h"
- 
+  
 // global variables
 ENGINE_API	CApplication*	pApp			= NULL;
 ENGINE_API	CCreator*		pCreator		= NULL;
