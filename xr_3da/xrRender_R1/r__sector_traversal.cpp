@@ -28,8 +28,9 @@ void CPortalTraverser::traverse			(IRender_Sector* start, CFrustum& F, Fvector& 
 	i_mXFORM_01.mul		(m_viewport_01,mXFORM);
 	i_start				= (CSector*)start;
 	r_sectors.clear		();
-	Fbox2				scissor;
+	_scissor			scissor;
 	scissor.set			(0,0,1,1);
+	scissor.depth		= 0;
 	i_start->traverse	(F,scissor);
 
 	if (options & VQ_SCISSOR)		{
