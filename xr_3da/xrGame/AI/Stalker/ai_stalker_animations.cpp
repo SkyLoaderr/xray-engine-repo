@@ -367,6 +367,9 @@ void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 	CKinematics				&tVisualObject		=	*(PKinematics(pVisual));
 	CMotionDef				*tpGlobalAnimation	=	0;
 
+	if (m_tAnims.A.empty())
+		return;
+
 	vfAssignGlobalAnimation	(tpGlobalAnimation);
 
 	if ((tpGlobalAnimation) && (m_tpCurrentGlobalAnimation != tpGlobalAnimation))

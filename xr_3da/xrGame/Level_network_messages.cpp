@@ -12,11 +12,13 @@ void CLevel::ClientReceive()
 		{
 		case M_SPAWN:
 			{
+				u32			m0	= Memory.stat_calls;
 				CTimer		T;
 				T.Start		();
 				g_sv_Spawn	(P);
 				T.Stop		();
-				Msg			("--spawn--: %f ms",1000.f*T.Get());
+				u32			m1	= Memory.stat_calls;
+				Msg			("--spawn--: %f ms, %d mo",1000.f*T.Get(),m1-m0);
 			}
 			break;
 		case M_UPDATE:
