@@ -167,8 +167,6 @@ satiety_power_v 			= 0.005		;0.01			;увеличение силы при уменьшении сытости [0..
 satiety_health_v 			= 0.001	;0.03				;увеличение здоровья при уменьшении сытости [0...1]
 satiety_critical 			= 0		;0.25				;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
 radiation_health_v 			= 0.01	;0.006				;уменьшение здоровья при воздействии радиации [0...1]
-bleeding_v 					= 0.05			;0.02		;потеря крови при максимальной ране [0...1]
-wound_incarnation_v 		= 0.1	;0.001		   		;скорость заживания раны [0...1]
 morale_v					= 0.01						;скорость восстановления морали [0...1]
 health_hit_part 			= 0.3		;0.8			;процент хита, уходящий на отнимание здоровья [0...1]
 power_hit_part 				= 1.0		;0.9			;процент хита, уходящий на отнимание силы [0...1]
@@ -183,6 +181,11 @@ telepatic_immunity 			= 1.0
 chemical_burn_immunity		= 0.5
 explosion_immunity 			= 0.5
 fire_wound_immunity  		= 0.2
+
+;открытые раны
+bleeding_v					= 0						;потеря крови при номинальной ране в секунду
+wound_incarnation_v			= 0.01				;крутизна кривой заживления (какой процент раны останется после заживления в игровую секунду)
+min_wound_size				= 0.01
 
 ;Health from which to play injured animation
 DamagedThreshold			= 0.2
@@ -224,7 +227,6 @@ idle_sound_delay			= 15000
 eat_sound_delay				= 3000
 attack_sound_delay			= 6000
 
-
 material					= creatures\medium
 DynamicObjectsCount			= 32
 
@@ -239,7 +241,15 @@ postprocess_new				= postprocess_new
 
 LegsCount					= 2
 
-;открытые раны
-bleeding_v					= 0						;потеря крови при номинальной ране в секунду
-wound_incarnation_v			= 0.0				;крутизна кривой заживления (какой процент раны останется после заживления в игровую секунду)
-min_wound_size				= 0.01
+[m_Bloodsucker_damage]
+;bone_name		 = <hit_scale>,-1,<wound_scale>
+;<hit_scale>	- коэфф. изменения хита (уменьшения здоровья) 
+;<wound_scale>	- коэфф. изменения величины открытой раны
+
+default				= 1.00,	-1,	1.00
+
+bip01_pelvis 		= 0.01, -1, 0.5
+bip01_spine 		= 0.01, -1, 0.5
+bip01_spine1 		= 0.2, -1, 0.5
+bip01_neck 			= 0.5, -1, 0.5
+bip01_head 			= 10.0, -1, 10.00
