@@ -45,8 +45,7 @@
 
 	<string id="enc_mutant_crow_general">
 		<text>General</text>
-		<text ln="rus">o	Летают
-o	Съедобны
+		<text ln="rus">%credЛетают %cgreenСъедобны %cdefault Вороны, это не только ценный мех... :)
 
 
 </text>
