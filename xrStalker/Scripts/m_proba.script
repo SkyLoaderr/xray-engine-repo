@@ -2,10 +2,10 @@ module( "m_Monster_Ai" )
 
 function main()
     if( m_monster_ai == nil ) then printf( "nil" ) end
-	local name = this.script_name()
+	local name = script_name()
     if( name == nil ) then print( "m_proba - nil" ) end
---    local dog = m_monster_ai.m_MonsterPoint( get_level_object( "m_dog1"), this.script_name(), get_level_object( "m_dog1"):position() )
-    local dog = m_monster_ai.m_Coward( "m_dog1", this.script_name() )
+--    local dog = m_monster_ai.m_MonsterPoint( get_level_object( "m_dog1"), script_name(), get_level_object( "m_dog1"):position() )
+    local dog = m_monster_ai.m_Coward( "m_dog1", script_name() )
 
 
     while not dog:check_completed() do
