@@ -14,6 +14,7 @@
 #define MIN_RANGE_SEARCH_TIME_INTERVAL	 2000
 #define TIME_TO_SEARCH					60000
 #define DODGE_AMPLITUDE					.5f
+#define MAX_DODGE_DISTANCE				1.5f
 
 void CAI_Stalker::vfInitSelector(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader)
 {
@@ -43,30 +44,30 @@ void CAI_Stalker::vfInitSelector(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntit
 	S.m_tStartPosition	= vPosition;
 }
 
-void CAI_Stalker::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader)
+void CAI_Stalker::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &tNodeEvaluator, CSquad &Squad, CEntity* &Leader)
 {
 	Device.Statistic.AI_Range.Begin();
 	
-	if ((!m_dwLastRangeSearch) || (AI_Path.TravelStart > AI_Path.TravelPath.size() - 4) || (AI_Path.fSpeed < EPS_L) || ((S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SEARCH_TIME_INTERVAL))) {
+	if ((!m_dwLastRangeSearch) || (AI_Path.TravelPath.empty()) || (int(AI_Path.TravelStart) > int(AI_Path.TravelPath.size()) - 4) || (AI_Path.fSpeed < EPS_L) || ((tNodeEvaluator.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SEARCH_TIME_INTERVAL))) {
 		
-		m_dwLastRangeSearch = S.m_dwCurTime;
+		m_dwLastRangeSearch = tNodeEvaluator.m_dwCurTime;
 		
-		vfInitSelector(S,Squad,Leader);
+		vfInitSelector(tNodeEvaluator,Squad,Leader);
 		
 		float fOldCost = MAX_NODE_ESTIMATION_COST;
 		
-		if (AI_Path.DestNode != u32(-1)) {
-			S.m_tpCurrentNode		= getAI().Node(AI_Path.DestNode);
-			S.m_fDistance			= getAI().u_SqrDistance2Node(vPosition,S.m_tpCurrentNode);
-			fOldCost				= S.ffEvaluateNode();
-		}
+//		if (AI_Path.DestNode != u32(-1)) {
+//			tNodeEvaluator.m_tpCurrentNode	= getAI().Node(AI_Path.DestNode);
+//			tNodeEvaluator.m_fDistance		= getAI().u_SqrDistance2Node(vPosition,tNodeEvaluator.m_tpCurrentNode);
+//			fOldCost						= tNodeEvaluator.ffEvaluateNode();
+//		}
+
+		Squad.Groups[g_Group()].GetAliveMemberInfo(tNodeEvaluator.m_taMemberPositions, tNodeEvaluator.m_taMemberNodes, tNodeEvaluator.m_taDestMemberPositions, tNodeEvaluator.m_taDestMemberNodes, this);
 		
-		Squad.Groups[g_Group()].GetAliveMemberInfo(S.m_taMemberPositions, S.m_taMemberNodes, S.m_taDestMemberPositions, S.m_taDestMemberNodes, this);
+		tNodeEvaluator.vfShallowGraphSearch(getAI().q_mark_bit);
 		
-		S.vfShallowGraphSearch(getAI().q_mark_bit);
-		
-		if ((AI_Path.DestNode != S.m_dwBestNode) && (S.m_fBestCost < (fOldCost - S.m_fLaziness))){
-			AI_Path.DestNode		= S.m_dwBestNode;
+		if ((AI_Path.DestNode != tNodeEvaluator.m_dwBestNode) && (tNodeEvaluator.m_fBestCost < (fOldCost - tNodeEvaluator.m_fLaziness))){
+			AI_Path.DestNode		= tNodeEvaluator.m_dwBestNode;
 			m_tPathState			= ePathStateBuildNodePath;
 			vfAddToSearchList		();
 		} 
@@ -218,14 +219,14 @@ void CAI_Stalker::vfDodgeTravelLine()
 			if (i & 1) {
 				Fvector						tPoint;
 				if ((i % 4) == 1) {
-					float					fDistance = DODGE_AMPLITUDE*m_tpaTempPath[i].distance_to(m_tpaTempPath[i - 1]);
+					float					fDistance = DODGE_AMPLITUDE*_min(m_tpaTempPath[i].distance_to(m_tpaTempPath[i - 1]),MAX_DODGE_DISTANCE);
 					tPoint					= tLeft;
 					tPoint.mul				(fDistance);
 					tPoint.add				(m_tpaTempPath[i]);
 				}
 				else
 					if ((i % 4) == 3) {
-						float				fDistance = DODGE_AMPLITUDE*m_tpaTempPath[i].distance_to(m_tpaTempPath[i - 1]);
+						float				fDistance = DODGE_AMPLITUDE*_min(m_tpaTempPath[i].distance_to(m_tpaTempPath[i - 1]),MAX_DODGE_DISTANCE);
 						tPoint				= tRight;
 						tPoint.mul			(fDistance);
 						tPoint.add			(m_tpaTempPath[i]);
@@ -249,6 +250,7 @@ void CAI_Stalker::vfDodgeTravelLine()
 				AI_Path.TravelPath[i].P			= m_tpaTempPath[i];
 			}
 	}
+	
 	AI_Path.TravelStart			= 0;
 	m_tPathState				= ePathStateSearchNode;
 

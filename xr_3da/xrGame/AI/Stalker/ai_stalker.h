@@ -147,9 +147,10 @@ private:
 	EStalkerStates			m_eCurrentState;
 	EStalkerStates			m_ePreviousState;
 	bool					m_bStateChanged;
-	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance>		m_tSelectorFreeHunting;
-	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight>	m_tSelectorReload;
+	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance>			m_tSelectorFreeHunting;
+	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance >	m_tSelectorReload;
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance | aiEnemyViewDeviationWeight >	m_tSelectorRetreat;
+	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance | aiEnemyViewDeviationWeight >	m_tSelectorCover;
 	CAI_NodeEvaluatorFull												m_tSelectorAttack;
 	u32						m_dwActionRefreshRate;
 	float					m_fAttackSuccessProbability;
@@ -214,6 +215,7 @@ private:
 //			void			DropItem						();
 
 			void			BackDodge						();
+			void			BackCover						();
 
 			// selectors
 			void			vfInitSelector					(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader);

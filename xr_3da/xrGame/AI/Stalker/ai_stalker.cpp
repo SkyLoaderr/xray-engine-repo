@@ -44,8 +44,10 @@ CAI_Stalker::CAI_Stalker			()
 	m_dwLastRangeSearch				= 0;
 
 	m_tPathState					= ePathStateSearchNode;
+	m_tPathType						= ePathTypeDodge;
 
 	AI_Path.TravelStart				= 0;
+	AI_Path.DestNode				= u32(-1);
 	
 //	m_fAccuracy						= 0.f;
 //	m_fIntelligence					= 0.f;
@@ -86,6 +88,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	m_tSelectorFreeHunting.Load		(section,"selector_free_hunting");
 	m_tSelectorReload.Load			(section,"selector_reload");
 	m_tSelectorRetreat.Load			(section,"selector_retreat");
+	m_tSelectorCover.Load			(section,"selector_cover");
 	// visibility
 	m_dwMovementIdleTime			= pSettings->r_s32(section,"MovementIdleTime");
 	m_fMaxInvisibleSpeed			= pSettings->r_float(section,"MaxInvisibleSpeed");
