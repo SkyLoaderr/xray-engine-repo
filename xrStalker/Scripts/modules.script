@@ -72,6 +72,7 @@ module ("bar_stalker")
 module ("barman")
 
 module ("level_news")
+module ("level_tasks")
 
 module ("escape_factory_bandits")
 

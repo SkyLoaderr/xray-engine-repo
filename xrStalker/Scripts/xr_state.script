@@ -176,7 +176,48 @@ function body_state:__init(npc)
 									[1]	= {	"hello_1_idle_0" },
 									[2]	= {	"hello_2_idle_0" },
 									[3]	= { "hello_3_idle_0" },
-									[4]	= {	"hello_4_idle_0" }}}
+									[4]	= {	"hello_4_idle_0" }}},
+		net			= {	state_id = xr_state.stand,
+						prop	= { maxidle = 3,
+									sumidle = 3,
+									rnd = 100 },
+						into	= nil,
+						out		= nil,
+						idle	= nil,
+						rnd		= {	[0]	= {	"net_0",
+											"net_1" },
+									[1]	= {	"net_0",
+											"net_1" },
+									[2]	= {	"net_0",
+											"net_1" },
+									[3]	= {	"net_0",
+											"net_1" },
+									[4]	= {	"net_0",
+											"net_1" }}},
+		gop_stop	= {	state_id = xr_state.stand,
+						prop	= { maxidle = 5,
+									sumidle = 2,
+									rnd = 100 },
+						into	= nil,
+						out		= nil,
+						idle	= nil,
+						rnd		= {	[0]	= {	"gop_stop_0" },
+									[1]	= {	"gop_stop_0" },
+									[2]	= {	"gop_stop_0" },
+									[3]	= {	"gop_stop_0" },
+									[4]	= {	"gop_stop_0" }}},
+		uhodi		= {	state_id = xr_state.stand,
+						prop	= { maxidle = 5,
+									sumidle = 2,
+									rnd = 100 },
+						into	= nil,
+						out		= nil,
+						idle	= nil,
+						rnd		= {	[0]	= {	"uhodi_2_0" },
+									[1]	= {	"uhodi_2_0" },
+									[2]	= {	"uhodi_2_0" },
+									[3]	= {	"uhodi_2_0" },
+									[4]	= {	"uhodi_2_0" }}}
 	}
 	--print_table(self.animations)
 end
@@ -277,7 +318,9 @@ function body_state:anim_update(type)
 			if self.animations[type].into ~= nil then
 				self.npc:add_animation(self.animations[type].into[self:weapon_slot()], true)				
 			end	
-			self.npc:add_animation(self.animations[type].idle[self:weapon_slot()], true)
+			if self.animations[type].idle ~= nil then
+				self.npc:add_animation(self.animations[type].idle[self:weapon_slot()], true)
+			end
 		else
 			self:set_state(xr_state.stand)
 		end
@@ -321,7 +364,9 @@ function body_state:anim_update(type)
 							table.getn(self.animations[self.states.current_state].rnd[self:weapon_slot()]),
 							self.states.current_state, self:weapon_slot() )
 			end
-			self.npc:add_animation (self.animations[self.states.current_state].idle[self:weapon_slot()], true)
+			if self.animations[type].idle ~= nil then
+				self.npc:add_animation (self.animations[self.states.current_state].idle[self:weapon_slot()], true)
+			end	
 		end
 	end
 	--printf("animcount %d", self.npc:animation_count())
