@@ -143,17 +143,17 @@ void TfrmPropertiesLight::GetObjectsInfo(){
         _L->FillPointProp			(GetClassNameByClassID(_L->ClassID),point_values);
         _L->FillSpotProp			(GetClassNameByClassID(_L->ClassID),spot_values);
 	}
-/*	flBrightness 					= (FloatValue*)PHelper.FindProp(values,pref,"Brightness"); R_ASSERT(flBrightness);
-    flBrightness->OnChange			= OnBrightnessChange;
-    flPointRange					= (FloatValue*)PHelper.FindProp(point_values,pref,"Range");						R_ASSERT(flPointRange);
-    flPointA0						= (FloatValue*)PHelper.FindProp(point_values,pref,"Attenuation\\Constant"); 	R_ASSERT(flPointA0);
-    flPointA1						= (FloatValue*)PHelper.FindProp(point_values,pref,"Attenuation\\Linear"); 	 	R_ASSERT(flPointA1);
-    flPointA2						= (FloatValue*)PHelper.FindProp(point_values,pref,"Attenuation\\Quadratic"); 	R_ASSERT(flPointA2);
-    m_Props->AssignValues			(values,true);
-    m_SunProps->AssignValues		(sun_values,true);
-    m_PointProps->AssignValues		(point_values,true);
-    m_SpotProps->AssignValues		(spot_values,true);
-*/}
+//	flBrightness 					= (FloatValue*)PHelper.FindProp(values,pref,"Brightness"); R_ASSERT(flBrightness);
+//    flBrightness->OnChange			= OnBrightnessChange;
+//    flPointRange					= (FloatValue*)PHelper.FindProp(point_values,pref,"Range");						R_ASSERT(flPointRange);
+//    flPointA0						= (FloatValue*)PHelper.FindProp(point_values,pref,"Attenuation\\Constant"); 	R_ASSERT(flPointA0);
+//    flPointA1						= (FloatValue*)PHelper.FindProp(point_values,pref,"Attenuation\\Linear"); 	 	R_ASSERT(flPointA1);
+//    flPointA2						= (FloatValue*)PHelper.FindProp(point_values,pref,"Attenuation\\Quadratic"); 	R_ASSERT(flPointA2);
+    m_Props->AssignItems			(values,true);
+//    m_SunProps->AssignItems			(sun_values,true);
+//    m_PointProps->AssignItems		(point_values,true);
+//    m_SpotProps->AssignItems		(spot_values,true);
+}
 
 bool TfrmPropertiesLight::ApplyObjectsInfo(){
 	VERIFY( !m_Objects->empty() );

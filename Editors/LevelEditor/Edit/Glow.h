@@ -15,13 +15,13 @@ class CGlow : public CCustomObject {
 public:
 	enum EFlags{
     	gfFixedSize	= (1<<0),
-    	gfForceDWORD= (-1)
+    	gfForceDWORD= u8(-1)
     };
     Shader*       	m_GShader;
     AnsiString		m_ShaderName;
     AnsiString		m_TexName;
     float           m_fRadius;
-    Flags32			m_Flags;
+    Flags8			m_Flags;
 
     bool			m_bDefLoad;
     void __fastcall	ShaderChange	(PropValue* value);

@@ -17,7 +17,7 @@
 #include "ElTreeAdvEdit.hpp"
 #include <Mask.hpp>                    
 
-#include "PropertiesListTypes.h"
+#include "PropertiesListHelper.h"
 
 
 class TProperties : public TForm

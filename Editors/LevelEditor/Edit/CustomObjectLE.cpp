@@ -205,7 +205,8 @@ void __fastcall CCustomObject::OnObjectNameAfterEdit(PropValue* sender, LPVOID e
 
 void CCustomObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
-    PropValue* V = PHelper.CreateText(items,PHelper.PrepareKey(pref, "Name"),FName,sizeof(FName),OnObjectNameAfterEdit);
+    PropValue* V = PHelper.CreateText(items,PHelper.PrepareKey(pref, "Name"),FName,sizeof(FName));
+    V->OnAfterEditEvent = OnObjectNameAfterEdit;
     if (V->Owner()->m_Flags.is(PropItem::flMixed)) V->Owner()->m_Flags.set(PropItem::flDisabled,TRUE);
 }
 //----------------------------------------------------

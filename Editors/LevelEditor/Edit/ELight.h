@@ -33,7 +33,7 @@ public:
 		flProcedural	= (1<<2),
         flBreaking 		= (1<<3)
     };
-    DWORD			m_dwFlags;
+    Flags32			m_Flags;
 	Flight			m_D3D;
 
 	// build options
@@ -72,10 +72,10 @@ public:
     // file system function
   	virtual bool 	Load		(CStream&);
 	virtual void 	Save		(CFS_Base&);
-	virtual void	FillProp	(LPCSTR pref, PropItemVec& values);
-	void			FillSunProp	(LPCSTR pref, PropItemVec& values);
-	void			FillPointProp(LPCSTR pref, PropItemVec& values);
-	void			FillSpotProp(LPCSTR pref, PropItemVec& values);
+	virtual void	FillProp	(LPCSTR pref, PropItemVec& items);
+	void			FillSunProp	(LPCSTR pref, PropItemVec& items);
+	void			FillPointProp(LPCSTR pref, PropItemVec& items);
+	void			FillSpotProp(LPCSTR pref, PropItemVec& items);
 
     // render utility function
 	void 			Set			(int d3dindex);

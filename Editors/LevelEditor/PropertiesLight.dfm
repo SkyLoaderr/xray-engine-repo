@@ -1,6 +1,6 @@
 object frmPropertiesLight: TfrmPropertiesLight
-  Left = 385
-  Top = 392
+  Left = 616
+  Top = 669
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsDialog
   Caption = 'Light properties'
@@ -44,10 +44,10 @@ object frmPropertiesLight: TfrmPropertiesLight
       Top = 15
       Width = 298
       Height = 247
-      ActivePage = tsSpot
+      ActivePage = tsPoint
       Align = alClient
       Style = tsFlatButtons
-      TabIndex = 2
+      TabIndex = 1
       TabOrder = 0
       object tsSun: TTabSheet
         Caption = 'Sun'

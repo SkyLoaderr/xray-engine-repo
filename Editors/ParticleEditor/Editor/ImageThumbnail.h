@@ -2,7 +2,7 @@
 #define _INCDEF_ImageThumbnail_H_
 
 #include "ETextureParams.h"
-#include "PropertiesListTypes.h"
+#include "PropertiesListHelper.h"
 //----------------------------------------------------
 
 //----------------------------------------------------

@@ -72,7 +72,7 @@ bool CSpawnPoint::CreateSpawnData(LPCSTR entity_ref)
     if (m_SpawnData){ 
         if (pSettings->LineExists(entity_ref,"$player")){
 			if (pSettings->ReadBOOL(entity_ref,"$player"))
-            	m_SpawnData->s_flags |= M_SPAWN_OBJECT_ASPLAYER;
+            	m_SpawnData->s_flags.set(M_SPAWN_OBJECT_ASPLAYER,TRUE);
         }
 		m_SpawnClassID = pSettings->ReadCLSID(entity_ref,"class");
     	strcpy(m_SpawnData->s_name,entity_ref);
@@ -292,19 +292,19 @@ bool CSpawnPoint::ExportGame(SExportStreams& F)
 }
 //----------------------------------------------------
 
-void CSpawnPoint::FillProp(LPCSTR pref, PropItemVec& values)
+void CSpawnPoint::FillProp(LPCSTR pref, PropItemVec& items)
 {
-	inherited::FillProp(pref,values);
+	inherited::FillProp(pref,items);
     
     if (m_SpawnData){
-    	m_SpawnData->FillProp(pref,values);
+    	m_SpawnData->FillProp(pref,items);
     }else{
     	switch (m_Type){
         case ptRPoint:{
-//            FILL_PROP_EX(values, PHelper.PrepareKey(pref,"Respawn Point"), 	"Team",			&m_dwTeamID, PHelper.CreateU32(0,64,1));
+			PHelper.CreateU32(items, PHelper.PrepareKey(pref,"Respawn Point","Team"), &m_dwTeamID, 0,64,1);
         }break;
         case ptAIPoint: 
-//            FILL_PROP_EX(values, PHelper.PrepareKey(pref,"AI Point"), 		"Reserved", "-", PHelper.CreateMarker());
+        	PHelper.CreateCaption(items,PHelper.PrepareKey(pref,"AI Point","Reserved"),"-");
         break;
         default: THROW;
         }

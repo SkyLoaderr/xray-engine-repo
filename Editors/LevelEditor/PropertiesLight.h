@@ -12,7 +12,7 @@
 #include <ComCtrls.hpp>
 
 #include "ELight.h"
-#include "PropertiesListTypes.h"
+#include "PropertiesListHelper.h"
 #include "multi_check.hpp"
 #include "multi_color.hpp"
 #include "multi_edit.hpp"

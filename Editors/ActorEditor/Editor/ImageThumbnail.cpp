@@ -210,26 +210,26 @@ void EImageThumbnail::FillProp(PropItemVec& items)
         PHelper.CreateToken		(items, "Format",					(u32*)&F.fmt, 			tfmt_token,4);
         PHelper.CreateToken		(items, "Type",						(u32*)&F.type,			ttype_token,4);
 
-        PHelper.CreateFlag		(items, "MipMaps\\Enabled",			&F.flags,				STextureParams::flGenerateMipMaps);
+        PHelper.CreateFlag32	(items, "MipMaps\\Enabled",			&F.flags,				STextureParams::flGenerateMipMaps);
         PHelper.CreateToken		(items, "MipMaps\\Filter",			&F.mip_filter,			tparam_token,4);
 
-        PHelper.CreateFlag		(items, "Details\\Enabled",			&F.flags,				STextureParams::flHasDetailTexture);
+        PHelper.CreateFlag32	(items, "Details\\Enabled",			&F.flags,				STextureParams::flHasDetailTexture);
         PHelper.CreateTexture	(items, "Details\\Texture",			F.detail_name,			sizeof(F.detail_name));    
         PHelper.CreateFloat		(items, "Details\\Scale",			&F.detail_scale,		0.1f,10000.f,0.1f,2);
 
-        PHelper.CreateFlag		(items, "Flags\\Grayscale",			&F.flags,				STextureParams::flGreyScale);
-        PHelper.CreateFlag		(items, "Flags\\Binary Alpha",		&F.flags,				STextureParams::flBinaryAlpha);
-        PHelper.CreateFlag		(items, "Flags\\Dither",			&F.flags,				STextureParams::flDitherColor);
-        PHelper.CreateFlag		(items, "Flags\\Dither Each MIP",	&F.flags,				STextureParams::flDitherEachMIPLevel);
-        PHelper.CreateFlag		(items, "Flags\\Implicit Lighted",	&F.flags,				STextureParams::flImplicitLighted);
+        PHelper.CreateFlag32	(items, "Flags\\Grayscale",			&F.flags,				STextureParams::flGreyScale);
+        PHelper.CreateFlag32	(items, "Flags\\Binary Alpha",		&F.flags,				STextureParams::flBinaryAlpha);
+        PHelper.CreateFlag32	(items, "Flags\\Dither",			&F.flags,				STextureParams::flDitherColor);
+        PHelper.CreateFlag32	(items, "Flags\\Dither Each MIP",	&F.flags,				STextureParams::flDitherEachMIPLevel);
+        PHelper.CreateFlag32	(items, "Flags\\Implicit Lighted",	&F.flags,				STextureParams::flImplicitLighted);
 
-        PHelper.CreateFlag		(items, "Fade\\Enabled Color",		&F.flags,				STextureParams::flFadeToColor);
-        PHelper.CreateFlag		(items, "Fade\\Enabled Alpha",		&F.flags,				STextureParams::flFadeToAlpha);
+        PHelper.CreateFlag32	(items, "Fade\\Enabled Color",		&F.flags,				STextureParams::flFadeToColor);
+        PHelper.CreateFlag32	(items, "Fade\\Enabled Alpha",		&F.flags,				STextureParams::flFadeToAlpha);
         PHelper.CreateU32		(items, "Fade\\Amount",				&F.fade_amount,			0,1000,0);
         PHelper.CreateColor		(items, "Fade\\Color",				&F.fade_color			);
 
-        PHelper.CreateFlag		(items, "Border\\Enabled Color",	&F.flags,				STextureParams::flColorBorder);
-        PHelper.CreateFlag		(items, "Border\\Enabled Alpha",	&F.flags,				STextureParams::flAlphaBorder);
+        PHelper.CreateFlag32	(items, "Border\\Enabled Color",	&F.flags,				STextureParams::flColorBorder);
+        PHelper.CreateFlag32	(items, "Border\\Enabled Alpha",	&F.flags,				STextureParams::flAlphaBorder);
         PHelper.CreateColor		(items, "Border\\Color",			&F.border_color			);
     }else{
         PHelper.CreateCaption	(items, "Face Count",				AnsiString(F.face_count).c_str());

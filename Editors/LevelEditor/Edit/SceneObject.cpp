@@ -398,7 +398,8 @@ void __fastcall CSceneObject::ReferenceChange(PropValue* sender)
 void CSceneObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp		(pref,items);
-	PHelper.CreateALibObject(items,PHelper.PrepareKey(pref,"Reference"),	&m_ReferenceName,0,0,0,ReferenceChange);
-	PHelper.CreateFlag		(items,PHelper.PrepareKey(pref,"Flags\\Dummy"),	&m_Flags,flDummy);
+    PropValue* V=0;
+	V=PHelper.CreateALibObject	(items,PHelper.PrepareKey(pref,"Reference"),	&m_ReferenceName); V->OnChangeEvent = ReferenceChange;
+	PHelper.CreateFlag32		(items,PHelper.PrepareKey(pref,"Flags\\Dummy"),	&m_Flags,flDummy);
 }
 

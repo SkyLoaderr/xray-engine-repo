@@ -170,7 +170,7 @@ bool CSceneObject::ExportGame(SExportStreams& F)
         strcpy(dummy.s_name_replace,Name);
         dummy.o_Position.set(PPosition);
         dummy.o_Angle.set	(PRotation);
-        dummy.s_flags		= M_SPAWN_OBJECT_ACTIVE;
+        dummy.s_flags.set	(M_SPAWN_OBJECT_ACTIVE);
         // esAnimated=1<<0,	esModel=1<<1, esParticles=1<<2, esSound=1<<3, esRelativePosition=1<<4
         dummy.s_style		= (IsOMotionable()?(1<<0):0)|
         					 (1<<1)|

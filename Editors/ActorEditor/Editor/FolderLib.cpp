@@ -3,7 +3,7 @@
 
 #include "FolderLib.h"
 #include "xr_trims.h"
-#include "PropertiesListTypes.h"
+#include "PropertiesListHelper.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -414,7 +414,7 @@ bool CFolderHelper::NameAfterEdit(TElTreeItem* node, LPCSTR value, AnsiString& N
 
 void CFolderHelper::NameAfterEdit(PropValue* sender, LPVOID edit_val)
 {
-	NameAfterEdit((TElTreeItem*)sender->m_Owner->tag,((TextValue*)sender)->GetValue(),*(AnsiString*)edit_val);
+	NameAfterEdit((TElTreeItem*)sender->Owner()->tag,((TextValue*)sender)->GetValue(),*(AnsiString*)edit_val);
 }
 //---------------------------------------------------------------------------
 

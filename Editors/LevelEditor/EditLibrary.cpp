@@ -75,6 +75,12 @@ CSceneObject* __fastcall TfrmEditLibrary::RayPick(const Fvector& start, const Fv
 void __fastcall TfrmEditLibrary::OnRender(){
 	if (!form) return;
 	if (form->cbPreview->Checked){
+    	CSceneObject*		S = form->m_pEditObject;
+    	CEditableObject* 	O = form->m_pEditObject->GetReference(); R_ASSERT(O);
+        if (!S->PPosition.similar(O->t_vPosition)) 	S->PPosition 	= O->t_vPosition;
+        if (!S->PRotation.similar(O->t_vRotate))	S->PRotation 	= O->t_vRotate;
+        if (!S->PScale.similar(O->t_vScale))		S->PScale		= O->t_vScale;
+
         form->m_pEditObject->OnFrame();
         form->m_pEditObject->RenderSingle();
     }

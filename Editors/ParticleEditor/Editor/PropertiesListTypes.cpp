@@ -4,15 +4,14 @@
 #include "PropertiesListTypes.h"
 #include "xr_tokens.h"
 
-CPropHelper PHelper;
-
 AnsiString prop_draw_text;
+
 //------------------------------------------------------------------------------
 // AnsiTextValue
 //------------------------------------------------------------------------------
-LPCSTR ATextValue::GetText(){
+LPCSTR ATextValue::GetText(TOnDrawEvent OnDraw){
     prop_draw_text=*value;
-    if (DrawValueEvent)DrawValueEvent(this, &prop_draw_text);
+    if (OnDraw)OnDraw(this, &prop_draw_text);
     return prop_draw_text.c_str();
 }
 //------------------------------------------------------------------------------
@@ -20,10 +19,10 @@ LPCSTR ATextValue::GetText(){
 //------------------------------------------------------------------------------
 // TextValue
 //------------------------------------------------------------------------------
-LPCSTR TextValue::GetText()
+LPCSTR TextValue::GetText(TOnDrawEvent OnDraw)
 {
     prop_draw_text=value;
-    if (DrawValueEvent)DrawValueEvent(this, &prop_draw_text);
+    if (OnDraw)OnDraw(this, &prop_draw_text);
     return prop_draw_text.c_str();
 }
 //------------------------------------------------------------------------------
@@ -56,10 +55,10 @@ LPCSTR TextValue::GetText()
 //------------------------------------------------------------------------------
 // TokenValue
 //------------------------------------------------------------------------------
-LPCSTR 	TokenValue::GetText()
+LPCSTR 	TokenValue::GetText(TOnDrawEvent OnDraw)
 {
-	int draw_val 	= GetValue();
-    if (DrawValueEvent)DrawValueEvent(this, &draw_val);
+	int draw_val 	= *(TYPE*)GetValue();
+    if (OnDraw)OnDraw(this, &draw_val);
 	for(int i=0; token[i].name; i++) if (0==memcmp(&token[i].id,&draw_val,p_size)) return token[i].name;
     return 0;
 }
@@ -68,10 +67,10 @@ LPCSTR 	TokenValue::GetText()
 //------------------------------------------------------------------------------
 // TokenValue2
 //------------------------------------------------------------------------------
-LPCSTR 	TokenValue2::GetText()
+LPCSTR 	TokenValue2::GetText(TOnDrawEvent OnDraw)
 {
-	DWORD draw_val 	= GetValue();
-    if (DrawValueEvent)DrawValueEvent(this, &draw_val);
+	DWORD draw_val 	= *(TYPE*)GetValue();
+    if (OnDraw)OnDraw(this, &draw_val);
     if (draw_val>=items.size()) return 0;
 	return items[draw_val].c_str();
 }
@@ -80,11 +79,11 @@ LPCSTR 	TokenValue2::GetText()
 //------------------------------------------------------------------------------
 // TokenValue3
 //------------------------------------------------------------------------------
-LPCSTR TokenValue3::GetText()
+LPCSTR TokenValue3::GetText(TOnDrawEvent OnDraw)
 {
-	VERIFY(GetValue()<cnt);
-	DWORD draw_val 	= GetValue();
-    if (DrawValueEvent)DrawValueEvent(this, &draw_val);
+	VERIFY((*(TYPE*)GetValue())<cnt);
+	DWORD draw_val 	= *(TYPE*)GetValue();
+    if (OnDraw)OnDraw(this, &draw_val);
     return items[draw_val].str;
 }
 //------------------------------------------------------------------------------
@@ -92,10 +91,10 @@ LPCSTR TokenValue3::GetText()
 //------------------------------------------------------------------------------
 // ListValue
 //------------------------------------------------------------------------------
-LPCSTR	ListValue::GetText()
+LPCSTR	ListValue::GetText(TOnDrawEvent OnDraw)
 {
     prop_draw_text=GetValue();
-    if (DrawValueEvent)DrawValueEvent(this, &prop_draw_text);
+    if (OnDraw)OnDraw(this, &prop_draw_text);
     return prop_draw_text.c_str();
 }
 //------------------------------------------------------------------------------

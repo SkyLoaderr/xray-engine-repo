@@ -1,6 +1,5 @@
 //----------------------------------------------------
 // file: Sector.cpp
-// hjxsbhzabha
 //----------------------------------------------------
 #include "stdafx.h"
 #pragma hdrstop                                      
@@ -412,5 +411,12 @@ void CSector::Save(CFS_Base& F){
 	F.close_chunk	();
 }
 
+//----------------------------------------------------
+
+void CSector::FillProp(LPCSTR pref, PropItemVec& items)
+{
+	inherited::FillProp(pref,items);
+    PHelper.CreateFColor(items, PHelper.PrepareKey(pref,"Color"), &sector_color);
+}
 //----------------------------------------------------
 

@@ -12,7 +12,7 @@
 #include "bottombar.h"
 #include "d3dutils.h"
 #include "render.h"
-#include "PropertiesListTypes.h"
+#include "PropertiesListHelper.h"
 
 #define GLOW_VERSION	   				0x0012
 //----------------------------------------------------
@@ -20,6 +20,7 @@
 #define GLOW_CHUNK_PARAMS				0xC413
 #define GLOW_CHUNK_SHADER				0xC414
 #define GLOW_CHUNK_TEXTURE				0xC415
+#define GLOW_CHUNK_FLAGS				0xC416
 //----------------------------------------------------
 
 #define VIS_RADIUS 		0.25f
@@ -61,15 +62,6 @@ void __fastcall	CGlow::ShaderChange(PropValue* value)
 	OnDeviceDestroy();
 }
 
-void CGlow::FillProp(LPCSTR pref, PropItemVec& items)
-{
-	inherited::FillProp(pref, items);
-    PHelper.CreateATexture	(items,PHelper.PrepareKey(pref,"Texture"), 		&m_TexName, 	0,0,0,ShaderChange);
-    PHelper.CreateAEShader	(items,PHelper.PrepareKey(pref,"Shader"),		&m_ShaderName, 	0,0,0,ShaderChange);
-    PHelper.CreateFloat		(items,PHelper.PrepareKey(pref,"Radius"),		&m_fRadius,		0.01f,10000.f);
-    PHelper.CreateFlag		(items,PHelper.PrepareKey(pref,"Fixed size"),	&m_Flags, 		gfFixedSize);
-}
-//----------------------------------------------------
 bool CGlow::GetBox( Fbox& box )
 {
 	box.set( PPosition, PPosition );
@@ -160,6 +152,9 @@ bool CGlow::Load(CStream& F){
         UpdateTransform();
     }
 
+    if (F.FindChunk(GLOW_CHUNK_FLAGS))
+    	m_Flags.set	(F.Rword());
+
     return true;
 }
 
@@ -183,7 +178,21 @@ void CGlow::Save(CFS_Base& F){
 	F.open_chunk	(GLOW_CHUNK_TEXTURE);
 	F.WstringZ		(m_TexName.c_str());
 	F.close_chunk	();
+
+	F.open_chunk	(GLOW_CHUNK_FLAGS);
+	F.Wword			(m_Flags.get());
+	F.close_chunk	();
 }
 //----------------------------------------------------
 
+void CGlow::FillProp(LPCSTR pref, PropItemVec& items)
+{
+	inherited::FillProp(pref, items);
+    PropValue* V=0;
+    V=PHelper.CreateATexture(items,PHelper.PrepareKey(pref,"Texture"), 		&m_TexName);	V->OnChangeEvent = ShaderChange;
+    V=PHelper.CreateAEShader(items,PHelper.PrepareKey(pref,"Shader"),		&m_ShaderName);	V->OnChangeEvent = ShaderChange;
+    PHelper.CreateFloat		(items,PHelper.PrepareKey(pref,"Radius"),		&m_fRadius,		0.01f,10000.f);
+    PHelper.CreateFlag8		(items,PHelper.PrepareKey(pref,"Fixed size"),	&m_Flags, 		gfFixedSize);
+}
+//----------------------------------------------------
 

@@ -322,36 +322,61 @@ bool CEditableObject::PrepareSV(CFS_Base& F)
     CExportSkeleton E(this);
     return E.Export(F);
 }
+//---------------------------------------------------------------------------
 
-void CEditableObject::FillPropSummary(LPCSTR pref, PropItemVec& values)
+void __fastcall	CEditableObject::OnChangeShader(PropValue* prop)
 {
-/*
+    OnDeviceDestroy	();
+    UI.RedrawScene	();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall CEditableObject::OnChangeTransform(PropValue* sender)
+{
+	UI.RedrawScene();
+}
+//---------------------------------------------------------------------------
+
+void CEditableObject::FillPropSurf(LPCSTR pref, PropItemVec& items)
+{
+    for (SurfaceIt s_it=FirstSurface(); s_it!=LastSurface(); s_it++){
+        CSurface* SURF			= *s_it;
+        AnsiString nm 			= AnsiString(pref)+AnsiString("Surfaces\\")+SURF->_Name();
+        AnsiString f_cnt		= GetSurfFaceCount(SURF->_Name());
+        PropValue* V=0;
+		V=PHelper.CreateATexture(items, AnsiString(nm+"\\Texture").c_str(), 	&SURF->m_Texture);					V->OnChangeEvent = OnChangeShader;
+        V=PHelper.CreateAEShader(items, AnsiString(nm+"\\Shader").c_str(), 		&SURF->m_ShaderName);				V->OnChangeEvent = OnChangeShader;
+        PHelper.CreateACShader	(items, AnsiString(nm+"\\Compile").c_str(), 	&SURF->m_ShaderXRLCName);
+        V=PHelper.CreateAGameMtl(items, AnsiString(nm+"\\Game Mtl").c_str(),	&SURF->m_GameMtlName);				V->OnChangeEvent = SURF->OnChangeGameMtl;
+        V=PHelper.CreateFlag32	(items, AnsiString(nm+"\\2 Sided").c_str(), 	&SURF->m_Flags, CSurface::sf2Sided);V->OnChangeEvent = OnChangeShader;
+        PHelper.CreateCaption	(items, AnsiString(nm+"\\Face count").c_str(),  f_cnt.c_str());
+    }
+}
+//---------------------------------------------------------------------------
+
+void CEditableObject::FillBasicProps(LPCSTR pref, PropItemVec& items)
+{
+	PropValue* V=0;
+	PHelper.CreateCaption	(items, PHelper.PrepareKey(pref,"Reference Name"),		m_LibName.c_str());
+    PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Flags\\Dynamic"),		&m_Flags,		CEditableObject::eoDynamic);
+    PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Flags\\HOM"),			&m_Flags,		CEditableObject::eoHOM);
+    PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Flags\\Use LOD"),		&m_Flags,		CEditableObject::eoUsingLOD);
+    V=PHelper.CreateVector	(items, PHelper.PrepareKey(pref,"Transform\\Position"),	&t_vPosition,	-10000,	10000,0.01,2); 	V->OnChangeEvent = OnChangeTransform;
+    V=PHelper.CreateVector	(items, PHelper.PrepareKey(pref,"Transform\\Rotation"),	&t_vRotate, 	-10000,	10000,0.1,1);	
+    V->OnAfterEditEvent		= PHelper.FvectorRDOnAfterEdit;
+    V->OnBeforeEditEvent	= PHelper.FvectorRDOnBeforeEdit;
+    V->Owner()->OnDrawEvent	= PHelper.FvectorRDOnDraw;
+    V->OnChangeEvent		= OnChangeTransform;
+    V=PHelper.CreateVector	(items, PHelper.PrepareKey(pref,"Transform\\Scale"),	&t_vScale, 		0.01,	10000,0.01,2);	V->OnChangeEvent = OnChangeTransform;
+
     AnsiString t; t.sprintf("V: %d, F: %d",		GetVertexCount(),GetFaceCount());
-    FILL_PROP_EX(values, pref, "Summary\\Object",		t.c_str(), 		PHelper.CreateMarker());
+    PHelper.CreateCaption(items,PHelper.PrepareKey(pref,"Summary\\Object"),t.c_str());
     for (EditMeshIt m_it=FirstMesh(); m_it!=LastMesh(); m_it++){
         CEditableMesh* MESH=*m_it;
         t.sprintf("V: %d, F: %d",MESH->GetVertexCount(),MESH->GetFaceCount());
-        FILL_PROP_EX(values, pref, AnsiString(AnsiString("Summary\\Meshes\\")+MESH->GetName()).c_str(),	t.c_str(), PHelper.CreateMarker());
+	    PHelper.CreateCaption(items,PHelper.PrepareKey(pref,AnsiString(AnsiString("Summary\\Meshes\\")+MESH->GetName()).c_str()),t.c_str());
     }
-    FILL_PROP_EX(values, pref, "Game options\\Script",	&m_ClassScript,		PHelper.CreateAText());
-*/
-}
-
-void CEditableObject::FillPropSurf(LPCSTR pref, PropItemVec& values, TOnChange onchange)
-{
-/*
-    for (SurfaceIt s_it=FirstSurface(); s_it!=LastSurface(); s_it++){
-        CSurface* SURF	= *s_it;
-        AnsiString nm 	= AnsiString("Surfaces\\")+SURF->_Name();
-        int face_cnt 	= GetSurfFaceCount(SURF->_Name());
-        FILL_PROP_EX(values, pref, AnsiString(nm+"\\Texture").c_str(), 		&SURF->m_Texture, 				PHelper.CreateATexture(0,0,0,0,onchange));
-        FILL_PROP_EX(values, pref, AnsiString(nm+"\\Shader").c_str(), 		&SURF->m_ShaderName, 			PHelper.CreateAEShader(0,0,0,0,onchange));
-        FILL_PROP_EX(values, pref, AnsiString(nm+"\\Compile").c_str(), 		&SURF->m_ShaderXRLCName,		PHelper.CreateACShader());
-        FILL_PROP_EX(values, pref, AnsiString(nm+"\\Game Mtl").c_str(),		&SURF->m_GameMtlName,			PHelper.CreateAGameMtl(0,0,0,0,SURF->OnChangeGameMtl));
-        FILL_PROP_EX(values, pref, AnsiString(nm+"\\2 Sided").c_str(), 		&SURF->m_Flags.flags,			PHelper.CreateFlag(CSurface::sf2Sided,0,0,0,0,onchange));
-        FILL_PROP_EX(values, pref, AnsiString(nm+"\\Face count").c_str(), 	AnsiString(face_cnt).c_str(), 	PHelper.CreateMarker());
-    }
-*/
+    PHelper.CreateAText(items,PHelper.PrepareKey(pref, "Game options\\Script"),&m_ClassScript);
 }
 //---------------------------------------------------------------------------
 

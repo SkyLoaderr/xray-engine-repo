@@ -243,8 +243,6 @@ bool TUI_Tools::Pick()
 //---------------------------------------------------------------------------
 
 #include "PropertiesLight.h"
-#include "PropertiesSector.h"
-#include "PropertiesPortal.h"
 #include "PropertiesEvent.h"
 #include "PropertiesPS.h"
 #include "PropertiesWayPoint.h"
@@ -257,7 +255,6 @@ void TUI_Tools::ShowProperties()
         bool bChange				= false;
         switch(cls_id){
         case OBJCLASS_LIGHT:    	frmPropertiesLightRun(&lst,bChange);	   	break;
-        case OBJCLASS_SECTOR:   	frmPropertiesSectorRun(&lst,bChange); 		break;
         case OBJCLASS_EVENT:   		frmPropertiesEventRun(&lst,bChange);		break;
         case OBJCLASS_WAY:   		TfrmPropertiesWayPoint::Run(&lst,bChange);	break;
         case OBJCLASS_PS:			TfrmPropertiesPS::Run(&lst,bChange);		break;
@@ -276,6 +273,15 @@ void TUI_Tools::HideProperties()
 	m_Props->HideProperties			();
 }
 //---------------------------------------------------------------------------
+static s8 		_s8=0;
+static u32 		_u32=0;
+static float	_float=0.f;
+static BOOL		_BOOL=0.f;
+static Flags16	_flag16={0};
+static Fcolor 	_fcolor={0,0,0,0};
+static Fvector 	_fvector={0,0,0};
+static string128 _text={0};
+static AnsiString _atext="";
 
 void TUI_Tools::UpdateProperties()
 {
@@ -283,14 +289,56 @@ void TUI_Tools::UpdateProperties()
 		if (m_Props->IsModified()) Scene.UndoSave();
         ObjectList lst;
         EObjClass cls_id				= CurrentClassID();
-        PropItemVec values;
+        PropItemVec items;
+
+    	PHelper.CreateCaption	(items,	"Caption",	"Caption2");
+    	PHelper.CreateS8		(items,	"S8", 		&_s8);
+    	PHelper.CreateU32		(items,	"U32", 		&_u32);
+    	PHelper.CreateFloat		(items,	"Float",	&_float);
+    	PHelper.CreateBOOL		(items,	"BOOL",		&_BOOL);
+    	PHelper.CreateFlag16	(items, "Flag16",	&_flag16,0x01);
+	    PHelper.CreateVector	(items, "Vector",	&_fvector);
+        PHelper.CreateText		(items, "Text", 	_text, sizeof(_text));
+		PHelper.CreateAText		(items, "AText", 	&_atext);
+/*
+	IC TokenValue* 		CreateToken		(PropItemVec& items, LPCSTR key, LPVOID val, xr_token* token, int p_size)
+	IC TokenValue2*   	CreateToken2	(PropItemVec& items, LPCSTR key, u32* val, AStringVec* lst)
+	IC TokenValue3*   	CreateToken3	(PropItemVec& items, LPCSTR key, u32* val, u32 cnt, const TokenValue3::Item* lst)
+	IC ListValue* 	 	CreateList		(PropItemVec& items, LPCSTR key, LPSTR val, AStringVec* lst)
+	IC ListValue* 	 	CreateListA		(PropItemVec& items, LPCSTR key, LPSTR val, u32 cnt, LPCSTR* lst)
+    IC U32Value*  		CreateColor		(PropItemVec& items, LPCSTR key, u32* val)
+    IC ColorValue*		CreateFColor	(PropItemVec& items, LPCSTR key, Fcolor* val)
+	IC TextValue* 	   	CreateText		(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+	IC ATextValue* 		CreateAText		(PropItemVec& items, LPCSTR key, AnsiString* val)
+	IC TextValue* 	 	CreateEShader	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+	IC TextValue* 	   	CreateCShader	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+	IC TextValue* 	   	CreateTexture	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+	IC TextValue* 	  	CreateTexture2	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+	IC ATextValue* 		CreateAEShader	(PropItemVec& items, LPCSTR key, AnsiString* val)
+	IC ATextValue* 		CreateACShader	(PropItemVec& items, LPCSTR key, AnsiString* val)
+    IC ATextValue*	   	CreateAGameMtl	(PropItemVec& items, LPCSTR key, AnsiString* val)
+	IC ATextValue* 		CreateATexture	(PropItemVec& items, LPCSTR key, AnsiString* val)
+	IC TextValue*	 	CreateLightAnim	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+	IC TextValue* 	 	CreateLibObject	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+	IC ATextValue* 		CreateALibObject(PropItemVec& items, LPCSTR key, AnsiString* val)
+	IC TextValue* 	 	CreateGameObject(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+    IC TextValue*		CreateLibSound	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+    IC ATextValue*	  	CreateALibSound	(PropItemVec& items, LPCSTR key, AnsiString* val)
+    IC TextValue*	 	CreateLibPS		(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+    IC ATextValue*	 	CreateALibPS	(PropItemVec& items, LPCSTR key, AnsiString* val)
+	IC TextValue* 		CreateEntity	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+	IC WaveValue* 		CreateWave		(PropItemVec& items, LPCSTR key, WaveForm* val)
+    IC TextValue* 		CreateGameMtl	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+*/
+/*	
         if (Scene.GetQueryObjects(lst,cls_id)){
             for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
                 LPCSTR pref				= GetClassNameByClassID((*it)->ClassID);
-                (*it)->FillProp	 		(pref,values);
+                (*it)->FillProp	 		(pref,items);
             }
         }
-		m_Props->AssignItems		(values,true,"Object Inspector");
+*/
+		m_Props->AssignItems		(items,true,"Object Inspector");
     }
 }
 //---------------------------------------------------------------------------

@@ -45,14 +45,11 @@ __published:	// IDE-managed Components
 	TExtBtn *ebDropper;
 	TExtBtn *ebSortByShader;
 	TLabel *Label1;
-	TTimer *tmIdle;
 	void __fastcall FormDestroy(TObject *Sender);
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall pbImagePaint(TObject *Sender);
-	void __fastcall tmIdleTimer(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
-	void __fastcall FormHide(TObject *Sender);
 private:	// User declarations
     TProperties* 	m_BasicProp;
     TProperties* 	m_SurfProp;
@@ -63,12 +60,6 @@ private:	// User declarations
     CSceneObject* 	m_pEditObject;
     void			FillBasicProps			();
     void			FillSurfProps			();
-	void __fastcall OnChangeShader			(PropValue* sender);
-	void __fastcall OnChangeTransform		(PropValue* sender);
-
-    bool			m_bNeedRefreshShaders;
-    void			RefreshShaders			(){m_bNeedRefreshShaders = true;}
-public:
 public:		// User declarations
     __fastcall 		TfrmPropertiesEObject	(TComponent* Owner);
 	static TfrmPropertiesEObject* CreateProperties	(TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0);

@@ -7,7 +7,7 @@
 #include "Bone.h"                     
 #include "SceneClassList.h"
 #ifdef _EDITOR
-	#include "PropertiesListTypes.h"
+	#include "PropertiesListHelper.h"
 	#include "GameMtlLib.h"
 #endif
 //----------------------------------------------------
@@ -211,6 +211,9 @@ protected:
 	void 			UpdateBoneParenting		();
     void			DefferedLoadRP			();
     void			DefferedUnloadRP		();
+
+    void __fastcall	OnChangeShader			(PropValue* prop);
+	void __fastcall OnChangeTransform		(PropValue* prop);
 public:
     DWORD			m_LoadState;
 
@@ -326,8 +329,8 @@ public:
   	bool 			Load					(CStream&);
 	void 			Save					(CFS_Base&);
 #ifdef _EDITOR
-    void			FillPropSummary			(LPCSTR pref, PropItemVec& values);
-    void			FillPropSurf			(LPCSTR pref, PropItemVec& values, TOnChange change=0);
+    void			FillPropSurf			(LPCSTR pref, PropItemVec& items);
+	void 			FillBasicProps			(LPCSTR pref, PropItemVec& items);
 #endif
 	bool			Import_LWO				(LPCSTR fname, bool bNeedOptimize);
 

@@ -12,7 +12,7 @@
 #include "d3dutils.h"
 #include "LightAnimLibrary.h"
 #include "scene.h"
-#include "PropertiesListTypes.h"
+#include "PropertiesListHelper.h"
 
 #define LIGHT_VERSION   				0x0011
 //----------------------------------------------------
@@ -65,7 +65,7 @@ void CLight::Construct(LPVOID data){
 
     m_pAnimRef		= 0;
 
-    m_dwFlags		= flAffectStatic;
+    m_Flags.set		(flAffectStatic);
 }
 
 CLight::~CLight(){
@@ -104,7 +104,7 @@ bool CLight::GetBox( Fbox& box ){
 void CLight::Render(int priority, bool strictB2F){
     if ((1==priority)&&(false==strictB2F)){
     	DWORD clr;
-        clr = Locked()?LOCK_COLOR:(Selected()?SEL_COLOR:(m_dwFlags&flAffectDynamic?NORM_DYN_COLOR:NORM_COLOR));
+        clr = Locked()?LOCK_COLOR:(Selected()?SEL_COLOR:(m_Flags.is(flAffectDynamic)?NORM_DYN_COLOR:NORM_COLOR));
     	switch (m_D3D.type){
         case D3DLIGHT_POINT:
             if (Selected()) DU::DrawLineSphere( m_D3D.position, m_D3D.range, clr, true );
@@ -198,9 +198,9 @@ void CLight::OnShowHint(AStringVec& dest){
     }
     dest.push_back(temp);
     temp = "Flags: ";
-    if (m_dwFlags&flAffectStatic)  	temp+="Stat ";
-    if (m_dwFlags&flAffectDynamic) 	temp+="Dyn ";
-    if (m_dwFlags&flProcedural)		temp+="Proc ";
+    if (m_Flags.is(flAffectStatic))  	temp+="Stat ";
+    if (m_Flags.is(flAffectDynamic)) 	temp+="Dyn ";
+    if (m_Flags.is(flProcedural))		temp+="Proc ";
     dest.push_back(temp);
     temp.sprintf("Pos:   %3.2f, %3.2f, %3.2f",m_D3D.position.x,m_D3D.position.y,m_D3D.position.z);
     dest.push_back(temp);
@@ -235,7 +235,7 @@ bool CLight::Load(CStream& F){
         }
     }
 
-    if (F.FindChunk(LIGHT_CHUNK_FLAG)) F.Read(&m_dwFlags,sizeof(DWORD));
+    if (F.FindChunk(LIGHT_CHUNK_FLAG)) F.Read(&m_Flags.flags,sizeof(m_Flags));
 
 	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.Load(F);
 
@@ -267,7 +267,7 @@ void CLight::Save(CFS_Base& F){
 	F.write_chunk	(LIGHT_CHUNK_BRIGHTNESS,&m_Brightness,sizeof(m_Brightness));
 	F.write_chunk	(LIGHT_CHUNK_D3D_PARAMS,&m_D3D,sizeof(m_D3D));
     F.write_chunk	(LIGHT_CHUNK_USE_IN_D3D,&m_UseInD3D,sizeof(m_UseInD3D));
-    F.write_chunk	(LIGHT_CHUNK_FLAG,&m_dwFlags,sizeof(DWORD));
+    F.write_chunk	(LIGHT_CHUNK_FLAG,&m_Flags,sizeof(m_Flags));
     
     if (m_pAnimRef){
 		F.open_chunk(LIGHT_CHUNK_ANIMREF);
@@ -283,64 +283,63 @@ void CLight::Save(CFS_Base& F){
 }
 //----------------------------------------------------
 
-void CLight::FillProp(LPCSTR pref, PropItemVec& values)
+
+void CLight::FillProp(LPCSTR pref, PropItemVec& items)
 {
-/*
-	inherited::FillProp(pref,values);
-	FILL_PROP_EX(values,	pref,	"Color",			&m_D3D.diffuse,	PHelper.CreateFColor());
-	FILL_PROP_EX(values,	pref,	"Brightness",		&m_Brightness,	PHelper.CreateFloat	(-3.f,3.f,0.1f,2));
-	FILL_PROP_EX(values,	pref,	"Use In D3D",		&m_UseInD3D,	PHelper.CreateBOOL	());
-	FILL_PROP_EX(values,	pref,	"Usage\\LightMap",	&m_dwFlags,		PHelper.CreateFlag	(CLight::flAffectStatic));
-	FILL_PROP_EX(values,	pref,	"Usage\\Dynamic",	&m_dwFlags,		PHelper.CreateFlag	(CLight::flAffectDynamic));
-	FILL_PROP_EX(values,	pref,	"Usage\\Animated",	&m_dwFlags,		PHelper.CreateFlag	(CLight::flProcedural));
-	FILL_PROP_EX(values,	pref,	"Flags\\Breakable",	&m_dwFlags,		PHelper.CreateFlag	(CLight::flBreaking));
-*/
+//	inherited::FillProp(pref,items);
+    PropValue* V=0;
+    PHelper.CreateFColor(items,	PHelper.PrepareKey(pref,"Color"),			&m_D3D.diffuse);
+    V=PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref,"Brightness"),		&m_Brightness,-3.f,3.f,0.1f,2);
+    V->Owner()->m_Flags.set(PropItem::flDrawBtnBorder,TRUE);
+    PHelper.CreateBOOL	(items,	PHelper.PrepareKey(pref,"Use In D3D"),		&m_UseInD3D);
+    PHelper.CreateFlag32(items,	PHelper.PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	CLight::flAffectStatic);
+    PHelper.CreateFlag32(items,	PHelper.PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	CLight::flAffectDynamic);
+    PHelper.CreateFlag32(items,	PHelper.PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	CLight::flProcedural);
+    PHelper.CreateFlag32(items,	PHelper.PrepareKey(pref,"Flags\\Breakable"),&m_Flags,	CLight::flBreaking);
 }
 //----------------------------------------------------
 
-void CLight::FillSunProp(LPCSTR pref, PropItemVec& values)
+void CLight::FillSunProp(LPCSTR pref, PropItemVec& items)
 {
-/*
 	CEditFlare& F 			= m_LensFlare;
-	FILL_PROP_EX(values,	pref, "Source\\Enabled",	&F.m_dwFlags,			PHelper.CreateFlag	(CEditFlare::flSource));
-	FILL_PROP_EX(values,	pref, "Source\\Radius",		&F.m_Source.fRadius,	PHelper.CreateFloat	(0.f,10.f));
-	FILL_PROP_EX(values,	pref, "Source\\Texture",	F.m_Source.texture,		PHelper.CreateTexture(sizeof(F.m_Source.texture)));
+    PHelper.CreateFlag32	(items, PHelper.PrepareKey(pref,"Source\\Enabled"),		&F.m_Flags,				CEditFlare::flSource);
+    PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,"Source\\Radius"),		&F.m_Source.fRadius,	0.f,10.f);
+    PHelper.CreateTexture	(items, PHelper.PrepareKey(pref,"Source\\Texture"),		F.m_Source.texture,		sizeof(F.m_Source.texture));
 
-	FILL_PROP_EX(values,	pref, "Gradient\\Enabled",&F.m_dwFlags,				PHelper.CreateFlag	(CEditFlare::flGradient));
-	FILL_PROP_EX(values,	pref, "Gradient\\Radius",	&F.m_Gradient.fRadius,	PHelper.CreateFloat	(0.f,100.f));
-	FILL_PROP_EX(values,	pref, "Gradient\\Opacity",&F.m_Gradient.fOpacity,	PHelper.CreateFloat	(0.f,1.f));
-	FILL_PROP_EX(values,	pref, "Gradient\\Texture",F.m_Gradient.texture,		PHelper.CreateTexture	(sizeof(F.m_Gradient.texture)));
+    PHelper.CreateFlag32	(items, PHelper.PrepareKey(pref,"Gradient\\Enabled"),	&F.m_Flags,				CEditFlare::flGradient);
+    PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,"Gradient\\Radius"),	&F.m_Gradient.fRadius,	0.f,100.f);
+    PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,"Gradient\\Opacity"),	&F.m_Gradient.fOpacity,	0.f,1.f);
+    PHelper.CreateTexture	(items, PHelper.PrepareKey(pref,"Gradient\\Texture"),	F.m_Gradient.texture,	sizeof(F.m_Gradient.texture));
 
-	FILL_PROP_EX(values,	pref, "Flares\\Enabled",	&F.m_dwFlags,			PHelper.CreateFlag	(CEditFlare::flFlare));
+    PHelper.CreateFlag32	(items, PHelper.PrepareKey(pref,"Flares\\Enabled"),		&F.m_Flags,				CEditFlare::flFlare);
 	for (CEditFlare::FlareIt it=F.m_Flares.begin(); it!=F.m_Flares.end(); it++){
 		AnsiString nm; nm.sprintf("Flares\\Flare %d",it-F.m_Flares.begin());
-		FILL_PROP_EX(values,pref, AnsiString(nm+"\\Radius").c_str(),  	&it->fRadius,  	PHelper.CreateFloat	(0.f,10.f));
-		FILL_PROP_EX(values,pref, AnsiString(nm+"\\Opacity").c_str(),	&it->fOpacity,	PHelper.CreateFloat	(0.f,1.f));
-		FILL_PROP_EX(values,pref, AnsiString(nm+"\\Position").c_str(),	&it->fPosition,	PHelper.CreateFloat	(-10.f,10.f));
-		FILL_PROP_EX(values,pref, AnsiString(nm+"\\Texture").c_str(),	it->texture,	PHelper.CreateTexture	(sizeof(it->texture)));
+		PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,AnsiString(nm+"\\Radius").c_str()), 	&it->fRadius,  	0.f,10.f);
+        PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,AnsiString(nm+"\\Opacity").c_str()),	&it->fOpacity,	0.f,1.f);
+        PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,AnsiString(nm+"\\Position").c_str()),	&it->fPosition,	-10.f,10.f);
+        PHelper.CreateTexture	(items, PHelper.PrepareKey(pref,AnsiString(nm+"\\Texture").c_str()),	it->texture,	sizeof(it->texture));
 	}
-*/
 }
 //----------------------------------------------------
 
-void CLight::FillPointProp(LPCSTR pref, PropItemVec& values)
+void CLight::FillPointProp(LPCSTR pref, PropItemVec& items)
 {
-/*
-	FILL_PROP_EX(values,	pref, "Range",					&m_D3D.range,			PHelper.CreateFloat	(0.1f,1000.f));
-	FILL_PROP_EX(values,	pref, "Attenuation\\Constant",	&m_D3D.attenuation0,	PHelper.CreateFloat	(0.f,1.f,0.0001f,6));
-	FILL_PROP_EX(values,	pref, "Attenuation\\Linear",	&m_D3D.attenuation1,	PHelper.CreateFloat	(0.f,1.f,0.0001f,6));
-	FILL_PROP_EX(values,	pref, "Attenuation\\Quadratic",	&m_D3D.attenuation2,	PHelper.CreateFloat	(0.f,1.f,0.0001f,6));
-*/
+    PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref, "Range"),					&m_D3D.range,		0.1f,1000.f);
+    PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref, "Attenuation\\Constant"),	&m_D3D.attenuation0,0.f,1.f,0.0001f,6);
+    PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref, "Attenuation\\Linear"),	&m_D3D.attenuation1,0.f,1.f,0.0001f,6);
+    PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref, "Attenuation\\Quadratic"),	&m_D3D.attenuation2,0.f,1.f,0.0001f,6);
 }
 //----------------------------------------------------
 
-void CLight::FillSpotProp(LPCSTR pref, PropItemVec& values)
+void CLight::FillSpotProp(LPCSTR pref, PropItemVec& items)
 {
-/*
-	FILL_PROP_EX(values,	pref, "Range",					&m_D3D.range,			PHelper.CreateFloat	(0.1f,1000.f));
-	FILL_PROP_EX(values,	pref, "Cone Angle",				&m_D3D.phi,				PHelper.CreateFloat	(0.1f,120.f,0.01f,2,0,PHelper.floatRDOnAfterEdit,PHelper.floatRDOnBeforeEdit,PHelper.floatRDOnDraw));
-	FILL_PROP_EX(values,	pref, "Attenuation\\Texture",	&m_SpotAttTex,			PHelper.CreateATexture());
-*/
+	PropValue* V=0;
+	PHelper.CreateFloat		(items,	PHelper.PrepareKey(pref, "Range"),					&m_D3D.range,	0.1f,1000.f);
+	V=PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref, "Cone Angle"),				&m_D3D.phi,		0.1f,120.f,0.01f,2);
+    V->OnAfterEditEvent		= PHelper.floatRDOnAfterEdit;
+    V->OnBeforeEditEvent	= PHelper.floatRDOnBeforeEdit;
+    V->Owner()->OnDrawEvent	= PHelper.floatRDOnDraw;
+	PHelper.CreateATexture	(items,	PHelper.PrepareKey(pref, "Attenuation\\Texture"),	&m_SpotAttTex);
 }
 //----------------------------------------------------
 
@@ -362,9 +361,7 @@ void CLight::OnDeviceDestroy()
 //----------------------------------------------------
 CEditFlare::CEditFlare()
 {
-    m_dwFlags |= flFlare;
-    m_dwFlags |= flSource;
-    m_dwFlags |= flGradient;
+    m_Flags.set(flFlare|flSource|flGradient,TRUE);
 	// flares
     m_Flares.resize		(6);
     FlareIt it=m_Flares.begin();
@@ -387,7 +384,7 @@ void CEditFlare::Load(CStream& F){
 	if (!F.FindChunk(FLARE_CHUNK_FLAG)) return;
 
     R_ASSERT(F.FindChunk(FLARE_CHUNK_FLAG));
-    F.Read			(&m_dwFlags,sizeof(DWORD));
+    F.Read			(&m_Flags.flags,sizeof(m_Flags));
 
     R_ASSERT(F.FindChunk(FLARE_CHUNK_SOURCE));
     F.RstringZ		(m_Source.texture);
@@ -416,7 +413,7 @@ void CEditFlare::Load(CStream& F){
 void CEditFlare::Save(CFS_Base& F)
 {
 	F.open_chunk	(FLARE_CHUNK_FLAG);
-    F.write			(&m_dwFlags,sizeof(DWORD));
+    F.write			(&m_Flags.flags,sizeof(m_Flags));
 	F.close_chunk	();
 
 	F.open_chunk	(FLARE_CHUNK_SOURCE);
@@ -439,7 +436,7 @@ void CEditFlare::Save(CFS_Base& F)
 
 void CEditFlare::Render()  
 {
-	CLensFlare::Render(m_dwFlags&flSource,m_dwFlags&flFlare,m_dwFlags&flGradient);
+	CLensFlare::Render(m_Flags.is(flSource),m_Flags.is(flFlare),m_Flags.is(flGradient));
 }
 //----------------------------------------------------
 

@@ -10,7 +10,7 @@
 #include "Sound.h"
 #include "Frustum.h"
 #include "d3dutils.h"
-#include "PropertiesListTypes.h"
+#include "PropertiesListHelper.h"
 
 #define VIS_RADIUS 0.25f
 #define SOUND_SEL_COLOR 	0x00FFFFFF

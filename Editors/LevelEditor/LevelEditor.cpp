@@ -10,8 +10,6 @@ USEFORM("FrameObject.cpp", fraObject);
 USEFORM("FrameSector.cpp", fraSector);
 USEFORM("FramePortal.cpp", fraPortal);
 USEFORM("PropertiesLight.cpp", frmPropertiesLight);
-USEFORM("PropertiesSector.cpp", frmPropertiesSector);
-USEFORM("PropertiesPortal.cpp", frmPropertiesPortal);
 USEFORM("SceneProperties.cpp", frmSceneProperties);
 USEFORM("ObjectList.cpp", frmObjectList);
 USEFORM("EditorPref.cpp", frmEditorPreferences);

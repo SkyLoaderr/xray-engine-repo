@@ -170,19 +170,20 @@ void TfrmEditLightAnim::UpdateView()
 //------------------------------------------------------------------------------
 void TfrmEditLightAnim::GetItemData()
 {
+    PropItemVec items;
 	if (m_CurrentItem){
-    	PropItemVec values;
-/*        FILL_PROP(values,	"Name",			m_CurrentItem->cName,		PHelper.CreateText	(sizeof(m_CurrentItem->cName),0,FHelper.NameAfterEdit,FHelper.NameBeforeEdit,FHelper.NameDraw));
-        FILL_PROP(values,	"FPS",			&m_CurrentItem->fFPS,		PHelper.CreateFloat	(0.1f,1000,1.f,1));
-        FILL_PROP(values,	"Frame Count",	&m_CurrentItem->iFrameCount,PHelper.CreateS32	(1,100000,1));
-    	m_Props->AssignValues(values,true);
+        PropValue* V=0;
+        V = PHelper.CreateText	(items,	"Name",			m_CurrentItem->cName,		sizeof(m_CurrentItem->cName));
+        V->OnAfterEditEvent		= FHelper.NameAfterEdit;
+        V->OnBeforeEditEvent	= FHelper.NameBeforeEdit;
+        V->Owner()->OnDrawEvent = FHelper.NameDraw;
+        PHelper.CreateFloat		(items,	"FPS",			&m_CurrentItem->fFPS,		0.1f,1000,1.f,1);
+        PHelper.CreateS32		(items,	"Frame Count",	&m_CurrentItem->iFrameCount,1,100000,1);
 		// set name
-        PropValue* P	= PHelper.FindProp(values,"Name"); VERIFY(P);
-        P->tag			= (int)tvItems->Items->LookForItem(0,m_CurrentItem->cName,0,0,false,true,false,true,true); VERIFY(P->tag);
-*/
-    }else{
-    	m_Props->ClearProperties();
+        PropItem* P				= V->Owner(); VERIFY(P);
+        P->tag					= (int)tvItems->Items->LookForItem(0,m_CurrentItem->cName,0,0,false,true,false,true,true); VERIFY(P->tag);
     }
+    m_Props->AssignItems	(items,true);
     UpdateView();
 }
 //---------------------------------------------------------------------------

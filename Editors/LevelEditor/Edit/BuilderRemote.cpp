@@ -316,9 +316,9 @@ void SceneBuilder::BuildHemiLights()
         }
     }
 }
-BOOL SceneBuilder::BuildSun(b_light* b, DWORD usage, svector<WORD,16>* sectors)
+BOOL SceneBuilder::BuildSun(b_light* b, const Flags32& usage, svector<WORD,16>* sectors)
 {
-    if (usage&CLight::flAffectStatic){
+    if (usage.is(CLight::flAffectStatic)){
 	    b_params& P			= Scene.m_LevelOp.m_BuildParams;
     	if (!P.area_quality){
         	// single light	        
@@ -362,7 +362,7 @@ BOOL SceneBuilder::BuildSun(b_light* b, DWORD usage, svector<WORD,16>* sectors)
             }
         }
     }
-    if (usage&CLight::flAffectDynamic){
+    if (usage.is(CLight::flAffectDynamic)){
         R_ASSERT			(sectors);
 		l_light_dynamic.push_back(b_light_dynamic());
         b_light_dynamic& dl	= l_light_dynamic.back();
@@ -374,9 +374,9 @@ BOOL SceneBuilder::BuildSun(b_light* b, DWORD usage, svector<WORD,16>* sectors)
 	return TRUE;
 }
 
-BOOL SceneBuilder::BuildPointLight(b_light* b, DWORD usage, svector<WORD,16>* sectors, FvectorVec* soft_points)
+BOOL SceneBuilder::BuildPointLight(b_light* b, const Flags32& usage, svector<WORD,16>* sectors, FvectorVec* soft_points)
 {
-    if (usage&CLight::flAffectStatic){
+    if (usage.is(CLight::flAffectStatic)){
     	if (soft_points){
         // make soft light
             Fcolor color		= b->data.diffuse;
@@ -400,7 +400,7 @@ BOOL SceneBuilder::BuildPointLight(b_light* b, DWORD usage, svector<WORD,16>* se
             sl.data			    = b->data;
         }
     }
-    if (usage&CLight::flAffectDynamic){
+    if (usage.is(CLight::flAffectDynamic)){
         R_ASSERT			(sectors);
 		l_light_dynamic.push_back(b_light_dynamic());
         b_light_dynamic& dl	= l_light_dynamic.back();
@@ -414,7 +414,7 @@ BOOL SceneBuilder::BuildPointLight(b_light* b, DWORD usage, svector<WORD,16>* se
 
 BOOL SceneBuilder::BuildLight(CLight* e)
 {
-    if (!(e->m_dwFlags&CLight::flAffectStatic)&&!(e->m_dwFlags&CLight::flAffectDynamic))
+    if (!(e->m_Flags.is(CLight::flAffectStatic)&&!(e->m_Flags.is(CLight::flAffectDynamic))))
     	return FALSE;
 
     b_light	L;
@@ -422,12 +422,12 @@ BOOL SceneBuilder::BuildLight(CLight* e)
     L.data.mul		(e->m_Brightness);
     L.controller_ID	= BuildLightControl(e);
     
-    if (e->m_dwFlags&CLight::flProcedural){
+    if (e->m_Flags.is(CLight::flProcedural)){
 //	    controllerID= ?;
     }
 
 	svector<WORD,16>* lpSectors;
-    if (e->m_dwFlags&CLight::flAffectDynamic){
+    if (e->m_Flags.is(CLight::flAffectDynamic)){
 		svector<WORD,16> sectors;
         lpSectors		= &sectors;
         Fvector& pos 	= e->m_D3D.position;
@@ -460,8 +460,8 @@ BOOL SceneBuilder::BuildLight(CLight* e)
 
     
     switch (e->m_D3D.type){
-    case D3DLIGHT_DIRECTIONAL: 	return BuildSun			(&L,e->m_dwFlags,lpSectors);
-    case D3DLIGHT_POINT:		return BuildPointLight	(&L,e->m_dwFlags,lpSectors,0);
+    case D3DLIGHT_DIRECTIONAL: 	return BuildSun			(&L,e->m_Flags,lpSectors);
+    case D3DLIGHT_POINT:		return BuildPointLight	(&L,e->m_Flags,lpSectors,0);
     default:
     	THROW2("Invalid case.");
 	    return FALSE;

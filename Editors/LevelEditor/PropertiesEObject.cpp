@@ -24,7 +24,6 @@ __fastcall TfrmPropertiesEObject::TfrmPropertiesEObject(TComponent* Owner)
 {
 	m_Thumbnail	= 0;
     m_pEditObject=0;
-	m_bNeedRefreshShaders = false;
 }
 //---------------------------------------------------------------------------
 
@@ -57,30 +56,12 @@ void TfrmPropertiesEObject::FillBasicProps()
 {
 	// basic
 	CSceneObject* 		S = m_pEditObject;
-	m_BasicProp->BeginFillMode();
+	PropItemVec items;
     if (S->GetReference()){
     	CEditableObject* 	O = S->GetReference();
-        PropItemVec values;
-/*
-	    FILL_PROP(values, "Reference Name",			(LPVOID)S->GetRefName(),PHelper.CreateMarker());
-	    FILL_PROP(values, "Flags\\Dynamic",			&O->m_Flags.flags,		PHelper.CreateFlag(CEditableObject::eoDynamic));
-	    FILL_PROP(values, "Flags\\HOM",	   			&O->m_Flags.flags,		PHelper.CreateFlag(CEditableObject::eoHOM));
-	    FILL_PROP(values, "Flags\\Use LOD",			&O->m_Flags.flags,		PHelper.CreateFlag(CEditableObject::eoUsingLOD));
-
-	    FILL_PROP(values, "Transform\\Position",	&S->FPosition, 			PHelper.CreateVector(-10000,	10000,0.01,2,0,0,0,	0,OnChangeTransform));
-    	FILL_PROP(values, "Transform\\Rotation",	&S->FRotation, 			PHelper.CreateVector(-10000,	10000,0.1,1,		0,PHelper.FvectorRDOnAfterEdit,PHelper.FvectorRDOnBeforeEdit,PHelper.FvectorRDOnDraw,OnChangeTransform));
-	    FILL_PROP(values, "Transform\\Scale",		&S->FScale, 			PHelper.CreateVector(0.01,		10000,0.01,2,0,0,0,	0,OnChangeTransform));
-//	    FILL_PROP(values, "Transform\\Position",	&O->t_vPosition, 		PHelper.CreateVector(-10000,	10000,0.01,2,0,0,0,OnChangeTransform));
-//    	FILL_PROP(values, "Transform\\Rotation",	&O->t_vRotate, 			PHelper.CreateVector(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw,OnChangeTransform));
-//		FILL_PROP(values, "Transform\\Scale",		&O->t_vScale, 			PHelper.CreateVector(0.01,	10000,0.01,2,0,0,0,OnChangeTransform));
-*/
-		O->FillPropSummary(0,values);
-
-        m_BasicProp->AssignItems(values,true);
-    }else{
-    	m_BasicProp->ClearProperties();
+        O->FillBasicProps	(0,items);
     }
-    m_BasicProp->EndFillMode(true);
+	m_BasicProp->AssignItems(items,true);
 }
 //---------------------------------------------------------------------------
 
@@ -91,7 +72,7 @@ void TfrmPropertiesEObject::FillSurfProps()
     PropItemVec values;
     if (S->GetReference()){
     	CEditableObject* 	O = S->GetReference();
-        O->FillPropSurf		(0,values,OnChangeShader);
+        O->FillPropSurf		(0,values);
     }
     m_SurfProp->AssignItems(values,true);
 }
@@ -173,46 +154,11 @@ void __fastcall TfrmPropertiesEObject::OnPick(const SRayPickInfo& pinf)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesEObject::OnChangeShader(PropValue* sender)
-{
-	RefreshShaders();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesEObject::OnChangeTransform(PropValue* sender)
-{
-	UI.RedrawScene();
-/*	// внести изменения в едит об для последующего сохранения
-	CSceneObject* 		S = m_pEditObject;
-	CEditableObject* 	O = S->GetReference(); R_ASSERT(O);
-    S->FPosition.set	(O->t_vPosition);
-    S->FRotation.set	(O->t_vRotate);
-    S->FScale.set		(O->t_vScale);
-*/
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesEObject::tmIdleTimer(TObject *Sender)
-{
-	if (m_bNeedRefreshShaders){
-	    m_pEditObject->GetReference()->OnDeviceDestroy();
-        m_bNeedRefreshShaders = false;
-        UI.RedrawScene();
-    }
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfrmPropertiesEObject::FormShow(TObject *Sender)
 {
-	tmIdle->Enabled = true;
 	// check window position
 	UI.CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesEObject::FormHide(TObject *Sender)
-{
-	tmIdle->Enabled = false;
-}
-//---------------------------------------------------------------------------
 

@@ -38,6 +38,7 @@ class CSector : public CCustomObject {
 	friend class SceneBuilder;
     friend class CPortalUtils;
     friend class CPortal;
+	typedef CCustomObject inherited;
 
     BYTE			m_bDefault;
     bool			m_bHasLoadError;
@@ -65,13 +66,16 @@ public:
 								SRayPickInfo* pinf = NULL);
     virtual bool 	FrustumPick	(const CFrustum& frustum);
     virtual bool 	SpherePick	(const Fvector& center, float radius);
-  	virtual bool 	Load		(CStream&);
-	virtual void 	Save		(CFS_Base&);
 	virtual bool 	GetBox		(Fbox& box);
 	virtual void 	Move		( Fvector& amount ); // need for Shift Level
 	virtual void 	OnSceneUpdate();
 	virtual void 	OnDestroy	();
     void			UpdateVolume();
+
+    // file system function
+  	virtual bool 	Load		(CStream&);
+	virtual void 	Save		(CFS_Base&);
+	virtual void	FillProp	(LPCSTR pref, PropItemVec& values);
 
 	bool			AddMesh		(CSceneObject* O, CEditableMesh* M); // возвращает добавлен ли объект
 	bool	  		DelMesh		(CSceneObject* O, CEditableMesh* M); // возвращает false если объект удален

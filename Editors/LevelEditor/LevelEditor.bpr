@@ -24,8 +24,7 @@
       intermediate\TopBar.obj intermediate\LeftBar.obj 
       intermediate\BottomBar.obj intermediate\FrameObject.obj 
       intermediate\FrameSector.obj intermediate\FramePortal.obj 
-      intermediate\PropertiesLight.obj intermediate\PropertiesSector.obj 
-      intermediate\PropertiesPortal.obj intermediate\SceneProperties.obj 
+      intermediate\PropertiesLight.obj intermediate\SceneProperties.obj 
       intermediate\ObjectList.obj intermediate\EditorPref.obj 
       intermediate\Splash.obj intermediate\main.obj 
       intermediate\PropertiesEvent.obj intermediate\LogForm.obj 
@@ -107,22 +106,22 @@
       intermediate\Blender_Model_EbB.obj intermediate\GameMtlLib.obj 
       intermediate\Blender_B.obj intermediate\du_sphere.obj 
       intermediate\EShape.obj intermediate\UI_ShapeTools.obj 
-      intermediate\FrameShape.obj intermediate\du_box.obj"/>
+      intermediate\FrameShape.obj intermediate\du_box.obj 
+      intermediate\PropertiesListHelper.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) EditLibrary.dfm NumericVector.dfm ShaderFunction.dfm 
       TopBar.dfm LeftBar.dfm BottomBar.dfm FrameObject.dfm FrameSector.dfm 
-      FramePortal.dfm PropertiesLight.dfm PropertiesSector.dfm 
-      PropertiesPortal.dfm SceneProperties.dfm ObjectList.dfm EditorPref.dfm 
-      Splash.dfm main.dfm PropertiesEvent.dfm LogForm.dfm FrameLight.dfm 
-      OneEnvironment.dfm PropertiesPS.dfm ChoseForm.dfm ImageEditor.dfm 
-      FramePS.dfm previewimage.dfm FrameEmitter.dfm FrameRPoint.dfm 
-      FrameWayPoint.dfm FrameDetObj.dfm DOShuffle.dfm DOOneColor.dfm 
-      PropertiesDetailObject.dfm PropertiesList.dfm EventOneAction.dfm 
-      EditLightAnim.dfm PropertiesEObject.dfm FrameGroup.dfm FrameEvent.dfm 
-      TextForm.dfm PropertiesWayPoint.dfm FrameShape.dfm"/>
+      FramePortal.dfm PropertiesLight.dfm SceneProperties.dfm ObjectList.dfm 
+      EditorPref.dfm Splash.dfm main.dfm PropertiesEvent.dfm LogForm.dfm 
+      FrameLight.dfm OneEnvironment.dfm PropertiesPS.dfm ChoseForm.dfm 
+      ImageEditor.dfm FramePS.dfm previewimage.dfm FrameEmitter.dfm 
+      FrameRPoint.dfm FrameWayPoint.dfm FrameDetObj.dfm DOShuffle.dfm 
+      DOOneColor.dfm PropertiesDetailObject.dfm PropertiesList.dfm 
+      EventOneAction.dfm EditLightAnim.dfm PropertiesEObject.dfm FrameGroup.dfm 
+      FrameEvent.dfm TextForm.dfm PropertiesWayPoint.dfm FrameShape.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
       lib\DXT.lib lib\gauss.lib lib\DX\d3d8.lib lib\DX\d3dx8d.lib 
       lib\DX\dinput.lib lib\ETools.lib lib\FreeImage.lib lib\xrCDB.lib 
@@ -214,8 +213,6 @@
       <FILE FILENAME="FrameSector.cpp" FORMNAME="fraSector" UNITNAME="FrameSector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FramePortal.cpp" FORMNAME="fraPortal" UNITNAME="FramePortal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesLight.cpp" FORMNAME="frmPropertiesLight" UNITNAME="PropertiesLight" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="PropertiesSector.cpp" FORMNAME="frmPropertiesSector" UNITNAME="PropertiesSector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="PropertiesPortal.cpp" FORMNAME="frmPropertiesPortal" UNITNAME="PropertiesPortal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SceneProperties.cpp" FORMNAME="frmSceneProperties" UNITNAME="SceneProperties" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ObjectList.cpp" FORMNAME="frmObjectList" UNITNAME="ObjectList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="EditorPref.cpp" FORMNAME="frmEditorPreferences" UNITNAME="EditorPref" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -403,6 +400,7 @@
       <FILE FILENAME="edit\UI_ShapeTools.cpp" FORMNAME="" UNITNAME="UI_ShapeTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameShape.cpp" FORMNAME="fraShape" UNITNAME="FrameShape" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\du_box.cpp" FORMNAME="" UNITNAME="du_box" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PropertiesListHelper.cpp" FORMNAME="" UNITNAME="PropertiesListHelper" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
