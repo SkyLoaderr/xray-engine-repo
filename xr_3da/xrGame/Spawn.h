@@ -7,9 +7,9 @@
 #pragma once
 
 // CLSID
-#define		CLSID_SPAWN_EVENT		MK_CLSID('L','M',' ',' ',' ',' ',' ',' ')
-#define		CLSID_SPAWN_ZONE		MK_CLSID('L','M','_','A','R','E','F',' ')
-#define		CLSID_SPAWN_MONSTER		MK_CLSID('L','M','_','A','R','E','F',' ')
+#define		CLSID_SPAWN_EVENT		MK_CLSID('S','_','E','V','E','N','T',' ')
+#define		CLSID_SPAWN_ZONE		MK_CLSID('S','_','Z','O','N','E',' ',' ')
+#define		CLSID_SPAWN_ENTITY		MK_CLSID('S','_','E','N','T','I','T','Y')
 
 // Description
 #pragma pack(push,4)
