@@ -225,12 +225,16 @@ void	CEffect_Rain::Render	()
 	sndP.mad					(Device.vCameraPosition,Device.vCameraDirection,.1f);
 	snd_Ambient.set_position	(sndP);
 
+	// 
+	Fvector3&	f_rain_color	= g_pGamePersistent->Environment.Current.rain_color;
+	u32			u_rain_color	= color_rgba_f(f_rain_color.x,f_rain_color.y,f_rain_color.z,1);
+
 	// Born _new_ if needed
 	float	b_radius		= 10.f;
 	float	b_radius_wrap	= b_radius+.5f;
 	float	b_height		= 40.f;
 	if (items.size()<desired_items)	{
-		items.reserve	(desired_items);
+		// items.reserve	(desired_items);
 		while (items.size()<desired_items)	{
 			Item			one;
 			Born			(one,b_radius,b_height);
@@ -283,10 +287,10 @@ void	CEffect_Rain::Render	()
 		camDir.normalize	();
 		lineTop.crossproduct(camDir,lineD);
 		float	w = drop_width;
-		P.mad(pos_trail,lineTop,-w);	verts->set(P,0xffffffff,0,1);	verts++;
-		P.mad(pos_trail,lineTop,w);		verts->set(P,0xffffffff,0,0);	verts++;
-		P.mad(pos_head, lineTop,-w);	verts->set(P,0xffffffff,1,1);	verts++;
-		P.mad(pos_head, lineTop,w);		verts->set(P,0xffffffff,1,0);	verts++;
+		P.mad(pos_trail,lineTop,-w);	verts->set(P,u_rain_color,0,1);	verts++;
+		P.mad(pos_trail,lineTop,w);		verts->set(P,u_rain_color,0,0);	verts++;
+		P.mad(pos_head, lineTop,-w);	verts->set(P,u_rain_color,1,1);	verts++;
+		P.mad(pos_head, lineTop,w);		verts->set(P,u_rain_color,1,0);	verts++;
 	}
 	u32 vCount					= (u32)(verts-start);
 	RCache.Vertex.Unlock		(vCount,hGeom_Rain->vb_stride);

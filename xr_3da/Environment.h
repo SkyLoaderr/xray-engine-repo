@@ -24,6 +24,7 @@ public:
 	float				fog_far;		// C
 
 	float				rain_density;
+	Fvector3			rain_color;
 
 	Fvector3			ambient;
 	Fvector3			lmap_color;

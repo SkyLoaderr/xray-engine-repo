@@ -50,15 +50,8 @@ public:
 		r=dw.r; g=dw.g; b=dw.b; a = dw.a;	
 		return *this;
 	};
-	IC	u32		get( )	const
-	{
-		int	 _r = iFloor(r*255.f); clamp(_r,0,255);
-		int	 _g = iFloor(g*255.f); clamp(_g,0,255);
-		int	 _b = iFloor(b*255.f); clamp(_b,0,255);
-		int	 _a = iFloor(a*255.f); clamp(_a,0,255);
-		return color_rgba(_r,_g,_b,_a);
-	};
-	IC	u32		get_windows( ) const
+	IC	u32		get( )	const	{ return color_rgba_f(r,g,b,a); }
+	IC	u32		get_windows	( ) const
 	{
 		BYTE _a, _r, _g, _b;
 		_a = (BYTE)(a*255.f);

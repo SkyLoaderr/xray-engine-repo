@@ -110,6 +110,7 @@ void CEnvDescriptor::load	(LPCSTR S)
 	fog_color				= pSettings->r_fvector3	(S,"fog_color");
 	fog_density				= pSettings->r_float	(S,"fog_density");
 	rain_density			= pSettings->r_float	(S,"rain_density");
+	rain_color				= pSettings->r_fvector3	(S,"rain_color");
 	ambient					= pSettings->r_fvector3	(S,"ambient");
 	lmap_color				= pSettings->r_fvector3	(S,"lmap_color");
 	hemi_color				= pSettings->r_fvector3	(S,"hemi_color");
@@ -130,6 +131,7 @@ void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f)
 	fog_near				= (1.0f - fog_density)*0.85f * far_plane;
 	fog_far					= 0.95f * far_plane;
 	rain_density			= fi*A.rain_density + f*B.rain_density;
+	rain_color.lerp			(A.rain_color,B.rain_color,f);
 	ambient.lerp			(A.ambient,B.ambient,f);
 	lmap_color.lerp			(A.lmap_color,B.lmap_color,f);
 	hemi_color.lerp			(A.hemi_color,B.hemi_color,f);
@@ -164,8 +166,7 @@ void CEnvironment::OnFrame()
 	Current.lerp		(_A,_B,t_fact);
 
 	// ******************** Environment params (setting)
-	Fcolor c_fog;	c_fog.set	(Current.fog_color.x,Current.fog_color.y,Current.fog_color.z,0);
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGCOLOR,	c_fog.get	( ) )); 
+	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGCOLOR,	color_rgba_f(Current.fog_color.x,Current.fog_color.y,Current.fog_color.z,0) )); 
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGSTART,	*(u32 *)(&Current.fog_near)	));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGEND,	*(u32 *)(&Current.fog_far)	));
 }
