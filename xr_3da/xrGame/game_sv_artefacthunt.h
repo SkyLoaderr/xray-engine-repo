@@ -105,4 +105,5 @@ public:
 	virtual		bool				CheckAlivePlayersInTeam		(s16 Team);
 	virtual		void				MoveAllAlivePlayers			();
 	virtual		void				CheckForTeamElimination		();
+	virtual		void				CheckForTeamWin				();
 };

@@ -493,14 +493,6 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(ClientID id_who)
 	signal_Syncronize();
 	//-----------------------------------------------
 	Artefact_PrepareForSpawn();
-
-	if ( GetTeamScore(ps->team-1) >= artefactsNum) 
-	{
-		OnTeamScore(ps->team, false);
-		phase = u16((ps->team-1)?GAME_PHASE_TEAM2_SCORES:GAME_PHASE_TEAM1_SCORES);
-		switch_Phase		(phase);
-		OnDelayedRoundEnd("Team Final Score");
-	};
 };
 
 void	game_sv_ArtefactHunt::SpawnArtefact			()
@@ -605,6 +597,7 @@ void	game_sv_ArtefactHunt::Update			()
 				CheckForAnyAlivePlayer();
 				CheckForTeamElimination();
 			};
+			CheckForTeamWin();
 			//---------------------------------------------------
 			if (Artefact_NeedToSpawn()) return;
 			if (Artefact_NeedToRemove()) return;
@@ -924,6 +917,20 @@ void	game_sv_ArtefactHunt::CheckForTeamElimination()
 	RemoveArtefact();
 }
 
+void	game_sv_ArtefactHunt::CheckForTeamWin()
+{
+	u8 WinTeam = 0;
+	if (GetTeamScore(0) >= artefactsNum) WinTeam = 1;
+	else if (GetTeamScore(1) >= artefactsNum) WinTeam = 2;
+	if (!WinTeam) return;
+	
+	OnTeamScore(WinTeam, false);
+	phase = u16((WinTeam == 2)?GAME_PHASE_TEAM2_SCORES:GAME_PHASE_TEAM1_SCORES);
+	switch_Phase		(phase);
+	OnDelayedRoundEnd("Team Final Score");
+}
+
+
 void	game_sv_ArtefactHunt::RespawnPlayer			(ClientID id_who, bool NoSpectator)
 {
 	inherited::RespawnPlayer(id_who, NoSpectator);
@@ -938,3 +945,4 @@ void	game_sv_ArtefactHunt::RespawnPlayer			(ClientID id_who, bool NoSpectator)
 	if (pTeamData)
 		Player_AddMoney(ps, pTeamData->m_iM_OnRespawn);
 }
+
