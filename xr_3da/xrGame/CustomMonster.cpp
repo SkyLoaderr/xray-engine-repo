@@ -688,7 +688,7 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 	if (!g_Alive())
 		set_death_time			();
 
-	if (ai().get_level_graph() && UsedAI_Locations())
+	if (ai().get_level_graph() && UsedAI_Locations() && (e->ID_Parent == 0xffff))
 		set_level_dest_vertex	(level_vertex_id());
 
 	// Eyes
