@@ -73,12 +73,12 @@ void	callback_vertex_hemi	(Vertex* V)
 	V->C._set				(vC);
 }
 
-int		smfVertex		(Vertex* V)
+int		smfVertex				(Vertex* V)
 {
 	return 1 + (std::lower_bound(g_vertices.begin(),g_vertices.end(),V)-g_vertices.begin());
 }
 
-void SaveAsSMF					(LPCSTR fname)
+void GSaveAsSMF					(LPCSTR fname)
 {
 	IWriter* W			= FS.w_open	(fname);
 	string256 			tmp;
@@ -167,6 +167,8 @@ void CBuild::xrPhase_AdaptiveHT	()
 
 	//////////////////////////////////////////////////////////////////////////
 	Status				("Exporting to SMF...");
+	string_path			fn;
+	GSaveAsSMF			(strconcat(fn,pBuild->path,"hemi_source.smf"));
 }
 
 void CBuild::u_Tesselate	(tesscb_estimator* cb_E, tesscb_face* cb_F, tesscb_vertex* cb_V)
