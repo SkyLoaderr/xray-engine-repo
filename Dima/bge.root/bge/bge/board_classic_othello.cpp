@@ -45,10 +45,10 @@ void CBoardClassicOthello::start_position	()
 	m_flip_stack.c.reserve	(4096);
 }
 
-void CBoardClassicOthello::show_cell		(const cell_type &value) const
+IC	void CBoardClassicOthello::show_cell		(const cell_index &index) const
 {
 	char			output;
-	switch (value) {
+	switch (cell(index)) {
 		case WHITE : {
 			output = 'o';
 			break;
@@ -58,7 +58,10 @@ void CBoardClassicOthello::show_cell		(const cell_type &value) const
 			break;
 		}
 		case EMPTY : {
-			output = '_';
+			if (!can_move(index))
+				output = '-';
+			else
+				output = '.';
 			break;
 		}
 		default : NODEFAULT;
@@ -66,11 +69,28 @@ void CBoardClassicOthello::show_cell		(const cell_type &value) const
 	ui().log		(" %c",output);
 }
 
+IC	void CBoardClassicOthello::show_letters		() const
+{
+	ui().log		("  ");
+	for (cell_index i=0; i<8; ++i)
+		ui().log	(" %c",'A' + i);
+	ui().log		("\n");
+}
+
+IC	void CBoardClassicOthello::show_digit		(const cell_index &index) const
+{
+	ui().log		(" %c",'1' + index);
+}
+
 void CBoardClassicOthello::show				() const
 {
+	show_letters		();
 	for (cell_index i=0; i<8; ++i) {
+		show_digit		(i);
 		for (cell_index j=0; j<8; ++j)
-			show_cell(cell(i,j));
-		ui().log("\n");
+			show_cell	(index(i,j));
+		show_digit		(i);
+		ui().log		("\n");
 	}
+	show_letters		();
 }

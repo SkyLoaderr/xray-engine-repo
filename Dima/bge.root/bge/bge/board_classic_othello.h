@@ -67,7 +67,9 @@ private:
 	mutable char	m_temp[16];
 
 protected:
-	IC		void			show_cell				(const cell_type &value) const;
+	IC		void			show_cell				(const cell_index &index) const;
+	IC		void			show_letters			() const;
+	IC		void			show_digit				(const cell_index &index) const;
 
 protected:
 	IC		void			change_color			();
@@ -109,6 +111,7 @@ public:
 			void			show					() const;
 	IC		LPCSTR			move_to_string			(const cell_index &index) const;
 	IC		LPCSTR			move_to_string			(const cell_index &index0, const cell_index &index1) const;
+	IC		cell_index		string_to_move			(LPCSTR move) const;
 
 public:
 	IC		const cell_type	&color_to_move			() const;
@@ -127,6 +130,7 @@ public:
 public:
 			void			do_move					(const cell_index &index);
 	IC		void			do_move					(const cell_index &index0, const cell_index &index1);
+	IC		void			do_move					(LPCSTR move);
 
 public:
 	IC		void			undo_move				();
@@ -135,10 +139,12 @@ public:
 			bool			can_move				() const;
 			bool			can_move				(const cell_index &index) const;
 	IC		bool			can_move				(const cell_index &index0, const cell_index &index1) const;
+	IC		bool			can_move				(LPCSTR move) const;
 
 public:
 			int				compute_difference		(const cell_index &index) const;
 	IC		int				compute_difference		(const cell_index &index0, const cell_index &index1) const;
+	IC		int				compute_difference		(LPCSTR move) const;
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

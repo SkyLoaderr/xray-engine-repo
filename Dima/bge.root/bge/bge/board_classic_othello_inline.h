@@ -144,8 +144,51 @@ IC	LPCSTR CBoardClassicOthello::move_to_string	(const cell_index &index) const
 
 IC	LPCSTR CBoardClassicOthello::move_to_string	(const cell_index &index0, const cell_index &index1) const
 {
-	m_temp[0]						= index0 + 'A';
-	m_temp[1]						= index1 + '1';
+	m_temp[0]						= index1 + 'A';
+	m_temp[1]						= index0 + '1';
 	m_temp[2]						= 0;
 	return							(m_temp);
+}
+
+IC	CBoardClassicOthello::cell_index CBoardClassicOthello::string_to_move	(LPCSTR move) const
+{
+	if (xr_strlen(move) != 2) {
+		ui().error_log				("Move \"%s\" is invalid!\n",move);
+		return						(0);
+	}
+	xr_strcpy						(m_temp,move);
+	strupr							(m_temp);
+	cell_index						index0 = m_temp[1] - '1';
+	cell_index						index1 = m_temp[0] - 'A';
+	if (
+		(index0 < 0) ||
+		(index0 > 7) ||
+		(index1 < 0) ||
+		(index1 > 7)
+		) {
+		ui().error_log				("Move \"%s\" is invalid!\n",move);
+		return						(0);
+	}
+	return							(index(index0,index1));
+}
+
+IC	void CBoardClassicOthello::do_move	(LPCSTR move)
+{
+	cell_index						index = string_to_move(move), index0, index1;
+	this->index						(index,index0,index1);
+	do_move							(index0,index1);
+}
+
+IC	bool CBoardClassicOthello::can_move	(LPCSTR move) const
+{
+	cell_index						index = string_to_move(move), index0, index1;
+	this->index						(index,index0,index1);
+	return							(can_move(index0,index1));
+}
+
+IC	int	 CBoardClassicOthello::compute_difference	(LPCSTR move) const
+{
+	cell_index						index = string_to_move(move), index0, index1;
+	this->index						(index,index0,index1);
+	return							(compute_difference(index0,index1));
 }
