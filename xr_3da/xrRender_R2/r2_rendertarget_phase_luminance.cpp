@@ -115,7 +115,8 @@ void	CRenderTarget::phase_luminance()
 		f_luminance_adapt			= .9f*f_luminance_adapt + .1f*Device.fTimeDelta*ps_r2_tonemap_adaptation;
 		RCache.set_Element			(s_luminance->E[2]	);
 		RCache.set_Geometry			(g_bloom_filter		);
-		RCache.set_c				("MiddleGray",ps_r2_tonemap_bias_lum,mgray,ps_r2_tonemap_low_lum,f_luminance_adapt);
+		if (ps_r2_ls_flags.test(R2FLAG_TONEMAP))	RCache.set_c("MiddleGray",ps_r2_tonemap_bias_lum,mgray,ps_r2_tonemap_low_lum,f_luminance_adapt	);
+		else										RCache.set_c("MiddleGray",1.f,0.f,ps_r2_tonemap_low_lum,f_luminance_adapt						);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 

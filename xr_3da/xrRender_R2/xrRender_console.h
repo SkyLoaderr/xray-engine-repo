@@ -72,9 +72,10 @@ enum
 	R2FLAG_SUN			= (1<<0),
 	R2FLAG_SUN_FOCUS	= (1<<1),
 	R2FLAG_SUN_TSM		= (1<<2),
-	R2FLAG_AA			= (1<<3),
-	R2FLAG_GI			= (1<<4),
-	R2FLAG_FASTBLOOM	= (1<<5),
+	R2FLAG_TONEMAP		= (1<<3),
+	R2FLAG_AA			= (1<<4),
+	R2FLAG_GI			= (1<<5),
+	R2FLAG_FASTBLOOM	= (1<<6),
 };
 
 extern void						xrRender_initconsole	();
