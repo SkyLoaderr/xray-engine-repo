@@ -5,7 +5,29 @@
 #include "GameObject.h"
 #include "Actor.h"
 #include "level.h"
- 
+#include "hudmanager.h"
+#include "ui/UIChatWnd.h"
+
+
+game_cl_mp::game_cl_mp()
+{
+	pChatWnd		= NULL;
+};
+
+game_cl_mp::~game_cl_mp()
+{
+	xr_delete(pChatWnd);
+};
+
+CUIGameCustom*		game_cl_mp::createGameUI			()
+{
+	pChatWnd		= xr_new<CUIChatWnd>(&HUD().GetUI()->UIMainIngameWnd.UIMPChatLog);
+	pChatWnd->Init				();
+	pChatWnd->SetOwner			(this);
+	pChatWnd->SetReplicaAuthor	(Level().CurrentEntity()->cName());
+	return NULL;
+};
+
 bool game_cl_mp::CanBeReady	()
 {
 	return true;
@@ -86,6 +108,31 @@ bool	game_cl_mp::OnKeyboardPress			(int key)
 	if( (Phase() != GAME_PHASE_INPROGRESS) && (kQUIT != key) && (kCONSOLE != key))
 		return true;
 
+	if (Phase() == GAME_PHASE_INPROGRESS)
+	{
+		if ((kCHAT == key || kCHAT_TEAM == key) && pChatWnd)
+		{
+			ref_str prefix;
+
+			if (kCHAT_TEAM == key)
+				prefix = "to team> ";
+			else
+				prefix = "to all> ";
+
+			pChatWnd->SetEditBoxPrefix(prefix);
+
+			StartStopMenu(pChatWnd, false);
+			if (!pChatWnd->IsShown() && xr_strlen(pChatWnd->UIEditBox.GetText()) > 0)
+			{
+				ref_str phrase = pChatWnd->UIEditBox.GetText();
+				pChatWnd->Say(phrase);
+				kCHAT == key ? ChatSayAll(phrase) : ChatSayTeam(phrase);
+				pChatWnd->UIEditBox.SetText("");
+			}
+			return false;
+		}
+	}
+
 	return inherited::OnKeyboardPress(key);
 }
 
@@ -138,4 +185,21 @@ void game_cl_mp::TranslateGameMessage	(u32 msg, NET_Packet& P)
 	default:
 		inherited::TranslateGameMessage(msg,P);
 	}
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+
+void game_cl_mp::ChatSayAll(const ref_str &phrase)
+{
+	int x=0;
+	x=x;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void game_cl_mp::ChatSayTeam(const ref_str &phrase)
+{
+	int x=0;
+	x=x;
 }

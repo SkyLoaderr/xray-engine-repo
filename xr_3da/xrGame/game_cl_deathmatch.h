@@ -6,7 +6,6 @@ class CUIBuyWeaponWnd;
 class CUISkinSelectorWnd;
 class CUIDialogWnd;
 class CUIGameDM;
-class CUIChatWnd;
 
 class game_cl_Deathmatch :public game_cl_mp
 {
@@ -43,7 +42,7 @@ protected:
 	CUISkinSelectorWnd*				pSkinMenuTeam0;
 	CUISkinSelectorWnd*				pCurSkinMenu;
 	CUIInventoryWnd*				pInventoryMenu;
-	CUIChatWnd*						pChatWnd;
+	
 
 	BOOL							m_bSkinSelected;
 	BOOL							m_bBuyEnabled;
@@ -73,8 +72,4 @@ public:
 
 	virtual CUIDialogWnd*			GetBuyWnd				()	{ return (CUIDialogWnd*) pCurBuyMenu; };
 	virtual CUIDialogWnd*			GetSkinWnd				()	{ return (CUIDialogWnd*) pCurSkinMenu; };
-
-			void					ChatSayTeam				(const ref_str &phrase);
-			void					ChatSayAll				(const ref_str &phrase);
-
 };
