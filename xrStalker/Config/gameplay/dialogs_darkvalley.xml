@@ -122,7 +122,7 @@
                 <text></text>
                 <dont_has_info>val_prisoner_open_cage</dont_has_info>
                 <dont_has_info>val_prisoner_free</dont_has_info>
-                <has_info>val_prisoner_sit</has_info>
+                <has_info>val_prisoner_plr_captured</has_info>
                 <next>13</next>
             </phrase>
             <phrase id="4">
