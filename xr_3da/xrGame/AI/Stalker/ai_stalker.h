@@ -59,58 +59,63 @@ public:
 private:
 	CStalkerAnimationManager		*m_animation_manager;
 	CMotivationActionManagerStalker	*m_brain;
-	// demo mode
+
 private:
-	bool						m_demo_mode;
-	float						m_panic_threshold;
+	xr_vector<CLASS_ID>				m_killer_clsids;
+
+private:
+	bool							m_demo_mode;
+
+private:
+	float							m_panic_threshold;
 	
 	// ALife
 private:
-	ALife::OBJECT_VECTOR		m_tpKnownCustomers;
-	CALifeTask					*m_current_alife_task;
+	ALife::OBJECT_VECTOR			m_tpKnownCustomers;
+	CALifeTask						*m_current_alife_task;
 
 	// bones
 private:
-	int							m_r_hand;
-	int							m_l_finger1;
-	int							m_r_finger2;
+	int								m_r_hand;
+	int								m_l_finger1;
+	int								m_r_finger2;
 
 	// weapon dispersion
 private:
-	float						m_disp_walk_stand;
-	float						m_disp_walk_crouch;
-	float						m_disp_run_stand;
-	float						m_disp_run_crouch;
-	float						m_disp_stand_stand;
-	float						m_disp_stand_crouch;
+	float							m_disp_walk_stand;
+	float							m_disp_walk_crouch;
+	float							m_disp_run_stand;
+	float							m_disp_run_crouch;
+	float							m_disp_stand_stand;
+	float							m_disp_stand_crouch;
 
 private:
-	float						m_fRankDisperison;
-	float						m_fRankVisibility;
-	float						m_fRankImmunity;
+	float							m_fRankDisperison;
+	float							m_fRankVisibility;
+	float							m_fRankImmunity;
 
 	// best item/ammo selection members
 public:
-	u32							m_last_best_item_frame;
-	bool						m_item_actuality;
-	CInventoryItem				*m_best_item_to_kill;
-	CInventoryItem				*m_best_ammo;
-	const CInventoryItem		*m_best_found_item_to_kill;
-	const CInventoryItem		*m_best_found_ammo;
+	u32								m_last_best_item_frame;
+	bool							m_item_actuality;
+	CInventoryItem					*m_best_item_to_kill;
+	CInventoryItem					*m_best_ammo;
+	const CInventoryItem			*m_best_found_item_to_kill;
+	const CInventoryItem			*m_best_found_ammo;
 
 	// covers being used
 public:
-	CCoverEvaluatorCloseToEnemy	*m_ce_close;
-	CCoverEvaluatorFarFromEnemy	*m_ce_far;
-	CCoverEvaluatorBest			*m_ce_best;
-	CCoverEvaluatorAngle		*m_ce_angle;
-	CCoverEvaluatorSafe			*m_ce_safe;
-	CCoverEvaluatorRandomGame	*m_ce_random_game;
-	CCoverEvaluatorAmbush		*m_ce_ambush;
+	CCoverEvaluatorCloseToEnemy		*m_ce_close;
+	CCoverEvaluatorFarFromEnemy		*m_ce_far;
+	CCoverEvaluatorBest				*m_ce_best;
+	CCoverEvaluatorAngle			*m_ce_angle;
+	CCoverEvaluatorSafe				*m_ce_safe;
+	CCoverEvaluatorRandomGame		*m_ce_random_game;
+	CCoverEvaluatorAmbush			*m_ce_ambush;
 
 	// physics support
 public:
-	CCharacterPhysicsSupport	*m_pPhysics_support;
+	CCharacterPhysicsSupport		*m_pPhysics_support;
 
 public:
 										CAI_Stalker					();
@@ -327,7 +332,8 @@ public:
 			void						communicate						(CInventoryOwner *trader);
 	IC	CStalkerAnimationManager		&animation_manager				() const;
 	IC	CMotivationActionManagerStalker &brain							() const;
-	IC	float							panic_threshold					() const;
+	IC		float						panic_threshold					() const;
+			void						load_killer_clsids				(LPCSTR section);
 };
 
 #include "ai_stalker_inline.h"

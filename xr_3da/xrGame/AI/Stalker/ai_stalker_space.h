@@ -13,6 +13,7 @@
 namespace StalkerSpace {
 	enum EStalkerSounds {
 		eStalkerSoundDie = u32(0),
+		eStalkerSoundDieInAnomaly,
 		eStalkerSoundInjuring,
 		eStalkerSoundHumming,
 		eStalkerSoundAlarm,
@@ -31,6 +32,7 @@ namespace StalkerSpace {
 	enum EStalkerSoundMasks {
 		eStalkerSoundMaskAnySound			= u32(0),
 		eStalkerSoundMaskDie				= u32(-1),
+		eStalkerSoundMaskDieInAnomaly		= u32(-1),
 		eStalkerSoundMaskInjuring			= u32(-1),
 		eStalkerSoundMaskHumming			= u32(1 << 31) | 1,
 		eStalkerSoundMaskNoHumming			= u32(1 << 31),

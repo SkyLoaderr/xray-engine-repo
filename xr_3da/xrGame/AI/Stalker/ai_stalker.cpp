@@ -110,6 +110,7 @@ void CAI_Stalker::LoadSounds		(LPCSTR section)
 {
 	LPCSTR							head_bone_name = pSettings->r_string(section,"bone_head");
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_death"),		100, SOUND_TYPE_MONSTER_DYING,		0, u32(eStalkerSoundMaskDie),				eStalkerSoundDie,				head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_anomaly_death"),100, SOUND_TYPE_MONSTER_DYING,		0, u32(eStalkerSoundMaskDieInAnomaly),		eStalkerSoundDieInAnomaly,		head_bone_name);
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_hit"),			100, SOUND_TYPE_MONSTER_INJURING,	1, u32(eStalkerSoundMaskInjuring),			eStalkerSoundInjuring,			head_bone_name);
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_humming"),		100, SOUND_TYPE_MONSTER_TALKING,	4, u32(eStalkerSoundMaskHumming),			eStalkerSoundHumming,			head_bone_name);
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_alarm"),		100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskAlarm),				eStalkerSoundAlarm,				head_bone_name);
@@ -120,6 +121,15 @@ void CAI_Stalker::LoadSounds		(LPCSTR section)
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_friendly_fire"),100, SOUND_TYPE_MONSTER_INJURING,	1, u32(eStalkerSoundMaskInjuringByFriend),	eStalkerSoundInjuringByFriend,	head_bone_name);
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_panic_human"),	100, SOUND_TYPE_MONSTER_TALKING,	2, u32(eStalkerSoundMaskPanicHuman),		eStalkerSoundPanicHuman,		head_bone_name);
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_panic_monster"),100, SOUND_TYPE_MONSTER_TALKING,	2, u32(eStalkerSoundMaskPanicMonster),		eStalkerSoundPanicMonster,		head_bone_name);
+}
+
+void CAI_Stalker::load_killer_clsids(LPCSTR section)
+{
+	m_killer_clsids.clear			();
+	LPCSTR							killers = pSettings->r_string(section,"killer_clsids");
+	string16						temp;
+	for (u32 i=0, n=_GetItemCount(killers); i<n; ++i)
+		m_killer_clsids.push_back	(TEXT2CLSID(_GetItem(killers,i,temp)));
 }
 
 void CAI_Stalker::reload			(LPCSTR section)
@@ -145,6 +155,8 @@ void CAI_Stalker::reload			(LPCSTR section)
 	m_r_finger2						= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(section,"weapon_bone2"));
 
 	m_panic_threshold				= pSettings->r_float(section,"panic_threshold");
+
+	load_killer_clsids				(section);
 }
 
 void CAI_Stalker::Die				(CObject* who)
@@ -152,7 +164,11 @@ void CAI_Stalker::Die				(CObject* who)
 	SelectAnimation					(XFORM().k,detail_path_manager().direction(),speed());
 
 	set_sound_mask					(0);
-	play							(eStalkerSoundDie);
+	if (!who || (std::find(m_killer_clsids.begin(),m_killer_clsids.end(),who->SUB_CLS_ID) == m_killer_clsids.end()))
+		play						(eStalkerSoundDie);
+	else
+		play						(eStalkerSoundDieInAnomaly);
+	
 	inherited::Die					(who);
 	m_hammer_is_clutched			= !::Random.randI(0,2);
 
