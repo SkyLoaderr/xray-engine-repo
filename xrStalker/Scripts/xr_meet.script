@@ -355,7 +355,6 @@ function action_talk:execute ()
 
 	-- Анимации
 	xr_state.anim_update("idle", self.object)
-
 	action_base.execute (self)
 end
 function action_talk:finalize ()
