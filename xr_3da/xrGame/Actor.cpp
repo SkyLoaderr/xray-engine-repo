@@ -529,16 +529,7 @@ void CActor::Die	(CObject* who)
 			if((*I).m_pIItem) inventory().Ruck((*I).m_pIItem);
 		};
 	};
-	///!!! выбрасываем артефакты
-	/*
-	TIItemList &l_list = inventory().m_ruck;
-	for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
-	{
-		CArtefact* pArtefact = smart_cast<CArtefact*>(*l_it);
-		if(pArtefact)
-			pArtefact->Drop();
-	}
-	*/
+
 
 	///!!! чистка пояса
 	TIItemList &l_blist = inventory().m_belt;
@@ -1164,6 +1155,10 @@ void CActor::OnItemDrop			(CInventoryItem *inventory_item)
 	CInventoryOwner::OnItemDrop(inventory_item);
 	if (OnClient()) return;
 
+	CArtefact* artefact = smart_cast<CArtefact*>(inventory_item);
+	if(artefact && artefact->m_eItemPlace == eItemPlaceBelt)
+		MoveArtefactBelt(artefact, false);
+
 	switch (GameID())
 	{
 	case GAME_DEATHMATCH:
@@ -1189,6 +1184,94 @@ void CActor::OnItemDropUpdate ()
 			attach(*I);
 }
 
+//////////////////////////////////////////////////////////////////////////
+
+
+void CActor::OnItemRuck		(CInventoryItem *inventory_item, EItemPlace previous_place)
+{
+	CInventoryOwner::OnItemRuck(inventory_item, previous_place);
+
+	CArtefact* artefact = smart_cast<CArtefact*>(inventory_item);
+	if(artefact && previous_place == eItemPlaceBelt)
+		MoveArtefactBelt(artefact, false);
+}
+void CActor::OnItemBelt		(CInventoryItem *inventory_item, EItemPlace previous_place)
+{
+	CInventoryOwner::OnItemBelt(inventory_item, previous_place);
+
+	CArtefact* artefact = smart_cast<CArtefact*>(inventory_item);
+	if(artefact)
+		MoveArtefactBelt(artefact, true);
+}
+
+
+void CActor::MoveArtefactBelt(const CArtefact* artefact, bool on_belt)
+{
+	VERIFY(artefact);
+
+	//повесить артефакт на пояс
+	if(on_belt)
+	{
+		VERIFY(m_ArtefactsOnBelt.end() == std::find(m_ArtefactsOnBelt.begin(), m_ArtefactsOnBelt.end(), artefact));
+		m_ArtefactsOnBelt.push_back(artefact);
+	}
+	else
+	{
+		xr_vector<const CArtefact*>::iterator it = std::remove(m_ArtefactsOnBelt.begin(), m_ArtefactsOnBelt.end(), artefact);
+		VERIFY(it != m_ArtefactsOnBelt.end());
+		m_ArtefactsOnBelt.erase(it);
+	}
+	HUD().GetUI()->UIMainIngameWnd.m_artefactPanel.InitIcons(m_ArtefactsOnBelt);
+}
+#define ARTEFACTS_UPDATE_TIME 1000
+
+void CActor::UpdateArtefactsOnBelt()
+{
+	static u64 update_time = 0;
+
+	float f_update_time = 0;
+
+	if(update_time<ARTEFACTS_UPDATE_TIME)
+	{
+		update_time += conditions().delta_time();
+		return;
+	}
+	else
+	{
+		f_update_time = static_cast<float>(update_time)/1000.f;
+		update_time = 0;
+	}
+
+	for(PPIItem it = inventory().m_belt.begin(); 
+		inventory().m_belt.end() != it; ++it) 
+	{
+		CArtefact*	artefact = smart_cast<CArtefact*>(*it);
+		if(artefact && artefact->m_bActorPropertiesEnabled)
+		{
+			conditions().ChangeBleeding(artefact->m_fBleedingRestoreSpeed*f_update_time);
+			conditions().ChangeHealth(artefact->m_fHealthRestoreSpeed*f_update_time);
+			conditions().ChangePower(artefact->m_fPowerRestoreSpeed*f_update_time);
+			conditions().ChangeSatiety(artefact->m_fSatietyRestoreSpeed*f_update_time);
+			conditions().ChangeRadiation(artefact->m_fRadiationRestoreSpeed*f_update_time);
+		}
+	}
+}
+
+float	CActor::HitArtefactsOnBelt		(float hit_power, ALife::EHitType hit_type)
+{
+	for(PPIItem it = inventory().m_belt.begin(); 
+		inventory().m_belt.end() != it; ++it) 
+	{
+		CArtefact*	artefact = smart_cast<CArtefact*>(*it);
+		if(artefact && artefact->m_bActorPropertiesEnabled)
+			hit_power *= artefact->m_ArtefactHitImmunities.AffectHit(hit_power, hit_type);
+	}
+
+	return hit_power;
+}
+
+
+//////////////////////////////////////////////////////////////////////////
 
 void	CActor::SpawnAmmoForWeapon	(CInventoryItem *pIItem)
 {
@@ -1390,53 +1473,6 @@ void CActor::UpdateMotionIcon(u32 mstate_rl)
 		motion_icon.ShowState(CUIMotionIcon::stNormal);
 }
 
-
-#define ARTEFACTS_UPDATE_TIME 1000
-
-void CActor::UpdateArtefactsOnBelt()
-{
-	static u64 update_time = 0;
-	
-	float f_update_time = 0;
-
-	if(update_time<ARTEFACTS_UPDATE_TIME)
-	{
-		update_time += conditions().delta_time();
-		return;
-	}
-	else
-	{
-		f_update_time = static_cast<float>(update_time)/1000.f;
-		update_time = 0;
-	}
-
-	for(PPIItem it = inventory().m_belt.begin(); 
-		inventory().m_belt.end() != it; ++it) 
-	{
-		CArtefact*	artefact = smart_cast<CArtefact*>(*it);
-		if(artefact && artefact->m_bActorPropertiesEnabled)
-		{
-			conditions().ChangeBleeding(artefact->m_fBleedingRestoreSpeed*f_update_time);
-			conditions().ChangeHealth(artefact->m_fHealthRestoreSpeed*f_update_time);
-			conditions().ChangePower(artefact->m_fPowerRestoreSpeed*f_update_time);
-			conditions().ChangeSatiety(artefact->m_fSatietyRestoreSpeed*f_update_time);
-			conditions().ChangeRadiation(artefact->m_fRadiationRestoreSpeed*f_update_time);
-		}
-	}
-}
-
-float	CActor::HitArtefactsOnBelt		(float hit_power, ALife::EHitType hit_type)
-{
-	for(PPIItem it = inventory().m_belt.begin(); 
-		inventory().m_belt.end() != it; ++it) 
-	{
-		CArtefact*	artefact = smart_cast<CArtefact*>(*it);
-		if(artefact && artefact->m_bActorPropertiesEnabled)
-			hit_power *= artefact->m_ArtefactHitImmunities.AffectHit(hit_power, hit_type);
-	}
-
-	return hit_power;
-}
 
 CPHDestroyable*	CActor::ph_destroyable	()
 {

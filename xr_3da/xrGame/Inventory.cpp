@@ -343,8 +343,11 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate)
 	if ((m_iActiveSlot == NO_ACTIVE_SLOT) && (!bNotActivate))
 		Activate(pIItem->GetSlot());
 
+	
+	m_pOwner->OnItemSlot(pIItem, pIItem->m_eItemPlace);
 	pIItem->m_eItemPlace = eItemPlaceSlot;
 	pIItem->OnMoveToSlot();
+	
 
 	return true;
 }
@@ -372,8 +375,10 @@ bool CInventory::Belt(PIItem pIItem)
 	CalcTotalWeight();
 	m_dwModifyFrame = Device.dwFrame;
 
+	m_pOwner->OnItemBelt(pIItem, pIItem->m_eItemPlace);
 	pIItem->m_eItemPlace = eItemPlaceBelt;
 	pIItem->OnMoveToBelt();
+	
 	return true;
 }
 
@@ -399,6 +404,7 @@ bool CInventory::Ruck(PIItem pIItem)
 	CalcTotalWeight();
 	m_dwModifyFrame = Device.dwFrame;
 
+	m_pOwner->OnItemRuck(pIItem, pIItem->m_eItemPlace);
 	pIItem->m_eItemPlace = eItemPlaceRuck;
 	pIItem->OnMoveToRuck();
 	return true;

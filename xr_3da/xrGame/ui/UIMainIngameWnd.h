@@ -154,6 +154,8 @@ protected:
 	CUIStatic			UIWoundIcon;
 	CUIStatic			UIStarvationIcon;
 	CUIStatic			UIFatigueIcon;
+
+public:	
 	CUIArtefactPanel    m_artefactPanel;
 	
 public:

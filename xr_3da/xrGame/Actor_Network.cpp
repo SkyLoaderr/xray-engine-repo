@@ -612,6 +612,9 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
 	if (!inherited::net_Spawn(DC))	return FALSE;
 
+	//убрать все артефакты с пояса
+	m_ArtefactsOnBelt.clear();
+
 	ROS()->force_mode	(IRender_ObjectSpecific::TRACE_ALL);
 
 	m_pPhysics_support->in_NetSpawn	(e);
@@ -778,7 +781,7 @@ void CActor::net_Destroy	()
 	m_holder=NULL;
 	m_holderID=u16(-1);
 
-//	cam_UnsetLadder();
+	m_ArtefactsOnBelt.clear();
 }
 
 void CActor::net_Relcase	(CObject* O)

@@ -471,3 +471,13 @@ void CInventoryOwner::OnItemDrop			(CInventoryItem *inventory_item)
 void CInventoryOwner::OnItemDropUpdate ()
 {
 }
+
+void CInventoryOwner::OnItemBelt	(CInventoryItem *inventory_item, EItemPlace previous_place)
+{
+}
+void CInventoryOwner::OnItemRuck	(CInventoryItem *inventory_item, EItemPlace previous_place)
+{
+}
+void CInventoryOwner::OnItemSlot	(CInventoryItem *inventory_item, EItemPlace previous_place)
+{
+}

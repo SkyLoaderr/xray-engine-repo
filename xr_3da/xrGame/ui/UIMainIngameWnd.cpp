@@ -289,16 +289,16 @@ void CUIMainIngameWnd::Init()
 	this->AttachChild(&m_artefactPanel);	
 	xr_vector<RECT> vRects;
 
-	// uncoment to test ArtefactPanel
-	//RECT rect;
-	//rect.left = 698; rect.right = 750;
-	//rect.top = 0;    rect.bottom = 48;
+/*	// uncoment to test ArtefactPanel
+	RECT rect;
+	rect.left = 698; rect.right = 750;
+	rect.top = 0;    rect.bottom = 48;
 
-	//vRects.push_back(rect);
-	//rect.left = 749; rect.right = 801;
-	//vRects.push_back(rect);
+	vRects.push_back(rect);
+	rect.left = 749; rect.right = 801;
+	vRects.push_back(rect);
 
-	m_artefactPanel.InitIcons(vRects);	
+	m_artefactPanel.InitIcons(vRects);	*/
 }
 
 //////////////////////////////////////////////////////////////////////////

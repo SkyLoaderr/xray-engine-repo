@@ -48,6 +48,7 @@ class  CSleepEffectorPP;
 class  CActorEffector;
 
 class	CHudItem;
+class   CArtefact;
 
 struct SActorMotions;
 struct SActorVehicleAnims;
@@ -144,6 +145,10 @@ public:
 	virtual bool use_bolts		() const;
 
 	virtual void OnItemTake		(CInventoryItem *inventory_item);
+	
+	virtual void OnItemRuck		(CInventoryItem *inventory_item, EItemPlace previous_place);
+	virtual void OnItemBelt		(CInventoryItem *inventory_item, EItemPlace previous_place);
+	
 	virtual void OnItemDrop		(CInventoryItem *inventory_item);
 	virtual void OnItemDropUpdate ();
 
@@ -174,11 +179,14 @@ public:
 
 	//свойства артефактов
 	virtual void		UpdateArtefactsOnBelt	();
+	virtual void		MoveArtefactBelt		(const CArtefact* artefact, bool on_belt);
 	virtual float		HitArtefactsOnBelt		(float hit_power, ALife::EHitType hit_type);
 protected:
 	//звук тяжелого дыхания
 	ref_sound			m_HeavyBreathSnd;
 	bool				m_bHeavyBreathSndPlaying;
+
+	xr_vector<const CArtefact*> m_ArtefactsOnBelt;
 
 protected:
 	//Sleep params

@@ -8,6 +8,8 @@ CMosquitoBald::CMosquitoBald(void)
 {
 	m_dwDeltaTime = 0;
 	m_fHitImpulseScale = 1.f;
+
+	m_bLastBlowoutUpdate = false;
 }
 
 CMosquitoBald::~CMosquitoBald(void) 
@@ -27,7 +29,16 @@ void CMosquitoBald::Postprocess(f32 /**val/**/)
 bool CMosquitoBald::BlowoutState()
 {
 	bool result = inherited::BlowoutState();
-	if(!result) UpdateBlowout();
+	if(!result)
+	{
+		m_bLastBlowoutUpdate = false;
+		UpdateBlowout();
+	}
+	else if(!m_bLastBlowoutUpdate)
+	{
+		m_bLastBlowoutUpdate = true;
+		UpdateBlowout();
+	}
 
 	return result;
 }

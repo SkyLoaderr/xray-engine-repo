@@ -11,6 +11,8 @@
 #include "UIArtefactPanel.h"
 #include "UIInventoryUtilities.h"
 
+#include "../artifact.h"
+
 using namespace InventoryUtilities;
 
 CUIArtefactPanel::CUIArtefactPanel(){		
@@ -24,12 +26,22 @@ void CUIArtefactPanel::SetScale(float fScale){
 	m_si.SetScale(fScale);
 }
 
-void CUIArtefactPanel::InitIcons(const xr_vector<RECT>& vect){
-
+void CUIArtefactPanel::InitIcons(const xr_vector<const CArtefact*>& artefacts)
+{
 	m_si.SetShader(GetEquipmentIconsShader());
-
-	this->m_vRects.clear();
-	this->m_vRects.assign(vect.begin(), vect.end());	
+	m_vRects.clear();
+	
+	for(xr_vector<const CArtefact*>::const_iterator it = artefacts.begin();
+		it != artefacts.end(); it++)
+	{
+		const CArtefact* artefact = *it;
+		RECT rect;
+		rect.left = artefact->GetXPos()*INV_GRID_WIDTH;
+		rect.top = artefact->GetYPos()*INV_GRID_HEIGHT;
+		rect.right = rect.left + artefact->GetGridWidth()*INV_GRID_WIDTH;
+		rect.bottom = rect.top + artefact->GetGridHeight()*INV_GRID_HEIGHT;
+		m_vRects.push_back(rect);
+	}
 }
 
 void CUIArtefactPanel::Draw(){

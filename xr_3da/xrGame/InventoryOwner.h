@@ -9,6 +9,7 @@
 #include "attachment_owner.h"
 #include "script_space_forward.h"
 #include "character_info_defs.h"
+#include "inventory_space.h"
 
 class CSE_Abstract;
 class CScriptCallback;
@@ -163,7 +164,13 @@ protected:
 public:
 	virtual void			renderable_Render		();
 	virtual void			OnItemTake				(CInventoryItem *inventory_item);
+	
+	virtual void			OnItemBelt				(CInventoryItem *inventory_item, EItemPlace previous_place);
+	virtual void			OnItemRuck				(CInventoryItem *inventory_item, EItemPlace previous_place);
+	virtual void			OnItemSlot				(CInventoryItem *inventory_item, EItemPlace previous_place);
+	
 	virtual void			OnItemDrop				(CInventoryItem *inventory_item);
+
 	virtual void			OnItemDropUpdate		();
 	virtual bool			use_bolts				() const {return(true);}
 	virtual	void			spawn_supplies			();

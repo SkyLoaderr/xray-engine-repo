@@ -12,6 +12,8 @@
 #include "UIStatic.h"
 #include "../UIStaticItem.h"
 
+class CArtefact;
+
 class CUIArtefactPanel : public CUIWindow{
 	typedef xr_vector<RECT>::const_iterator ITr;
 	typedef xr_vector<CUIStaticItem*>::const_iterator ITsi;
@@ -21,7 +23,7 @@ public:
 	CUIArtefactPanel();
 	~CUIArtefactPanel();
 
-	virtual void InitIcons(const xr_vector<RECT>& vector);
+	virtual void InitIcons(const xr_vector<const CArtefact*>& artefacts);
 	virtual void Draw();
 	virtual void SetScale(float fScale);
 
