@@ -46,8 +46,8 @@ public:
 
 	// writing - utilities
 	IC void	w_float		( float a       )	{ w(&a,4);					}			// float
-	IC void w_vec3		( Fvector& a    )   { w(&a,3*sizeof(float));	}			// vec3
-	IC void w_vec4		( Fvector4& a   )   { w(&a,4*sizeof(float));	}			// vec4
+	IC void w_vec3		( const Fvector& a) { w(&a,3*sizeof(float));	}			// vec3
+	IC void w_vec4		( const Fvector4& a){ w(&a,4*sizeof(float));	}			// vec4
 	IC void w_u64		( u64 a			)	{ w(&a,8);					}			// qword (8b)
 	IC void w_s64		( s64 a			)	{ w(&a,8);					}			// qword (8b)
 	IC void w_u32		( u32 a			)	{ w(&a,4);					}			// dword (4b)
