@@ -130,6 +130,8 @@ void xrServer::Update	()
 		}
 	}
 	csPlayers.Leave		();
+
+	if (game->sv_force_sync)	Perform_game_export		();
 }
 
 u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadcasting with "flags" as returned
