@@ -31,6 +31,7 @@ protected:
 	float				fAccuracy;
 	float				m_fMaxHealthValue;
 public:
+	float				m_fMorale;
 	// Team params
 	int					id_Team;
 	int					id_Squad;
@@ -98,7 +99,6 @@ public:
 	CMovementControl		Movement;
 	EVENT					m_tpEventSay;
 	bool					m_bMobility;
-	float					m_fMorale;
 public:
 	// General
 	CEntityAlive			();

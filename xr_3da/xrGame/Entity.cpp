@@ -1,5 +1,5 @@
 // Entity.cpp: implementation of the CEntity class.
-//
+
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -123,6 +123,8 @@ void CEntity::Load		(LPCSTR section)
 	id_Team = -1; if (pSettings->LineExists(section,"team"))	id_Team		= pSettings->ReadINT	(section,"team");
 	id_Squad= -1; if (pSettings->LineExists(section,"squad"))	id_Squad	= pSettings->ReadINT	(section,"squad");
 	id_Group= -1; if (pSettings->LineExists(section,"group"))	id_Group	= pSettings->ReadINT	(section,"group");
+	
+	m_fMorale = 66.f;
 }
 
 BOOL CEntity::net_Spawn		(LPVOID DC)
@@ -223,8 +225,6 @@ void CEntityAlive::Load		(LPCSTR section)
 
 	// BOX activate
 	Movement.ActivateBox	(0);
-	
-	m_fMorale = 66.f;
 }
 
 BOOL CEntityAlive::net_Spawn	(LPVOID DC)

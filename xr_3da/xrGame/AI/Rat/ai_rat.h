@@ -143,13 +143,17 @@ class CAI_Rat : public CCustomMonster
 		bool				m_bNoWay;
 
 		// Morale
-		float				m_fDecreaseMoraleQuant;
-		float				m_fIncreaseMoraleQuant;
-		float				m_fRestoreMoraleQuant;
-		float				m_fMinMoraleValue;
-		float				m_fMaxMoraleValue;
-		DWORD				m_dwRestoreMoraleTimeInterval;
-		DWORD				m_dwLastMoraleUpdateTime;
+		float				m_fMoraleDecreaseQuant;
+		float				m_fMoraleIncreaseQuant;
+		float				m_fMoraleRestoreQuant;
+		float				m_fMoraleMinValue;
+		float				m_fMoraleMaxValue;
+		float				m_fMoraleDecreaseRadius;
+		float				m_fMoraleIncreaseRadius;
+		float				m_fMoraleUESDecreaseQuant;
+		float				m_fMoraleMaxUESDistance;
+		DWORD				m_dwMoraleRestoreTimeInterval;
+		DWORD				m_dwMoraleLastUpdateTime;
 
 		// FSM
 		stack<ERatStates>	tStateStack;
@@ -208,6 +212,7 @@ class CAI_Rat : public CCustomMonster
 		//////////////////////////
 		// MISCELLANIOUS FUNCTIONS
 		//////////////////////////
+		void	vfAddMorale(float fValue, float fRadius);
 		void	vfUpdateMorale();
 		void	vfComputeNewPosition();
 		void	vfLoadSounds();

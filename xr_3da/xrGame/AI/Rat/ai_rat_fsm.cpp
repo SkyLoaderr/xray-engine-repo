@@ -233,6 +233,9 @@ void CAI_Rat::UnderFire()
 			tTemp.mul(UNDER_FIRE_DISTANCE);
 			m_tSpawnPosition.add(vPosition,tTemp);
 			m_fGoalChangeTime = 0;
+			float fDistance = m_tLastSound.tpEntity->Position().distance_to(vPosition);
+			if (fDistance <= m_fMoraleMaxUESDistance)
+				m_fMorale += m_fMoraleUESDecreaseQuant*(1.f - fDistance/m_fMoraleMaxUESDistance);
 		}
 
 		if (Level().timeServer() - m_dwLastRangeSearch > UNDER_FIRE_TIME) {

@@ -18,7 +18,7 @@ void CAI_Rat::Exec_Action(float dt)
 	AI::AIC_Action* L	= (AI::AIC_Action*)C;
 	switch (L->Command) {
 		case AI::AIC_Action::AttackBegin: {
-			
+			vfAddMorale(m_fMoraleIncreaseQuant, m_fMoraleIncreaseRadius);
 			if (m_tSavedEnemy->g_Health() > 0) {
 				DWORD dwTime = Level().timeServer();
 				m_bActionStarted = true;
@@ -68,6 +68,8 @@ void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
 		r_torso_target.pitch = 0;
 	}
 	if (g_Health() - amount < 0) {
+		if (g_Health() > 0)
+			vfAddMorale(m_fMoraleDecreaseQuant, m_fMoraleDecreaseRadius);
 		if ((m_tpCurrentGlobalAnimation) && (!m_tpCurrentGlobalBlend->playing))
 			if (m_tpCurrentGlobalAnimation != m_tRatAnimations.tNormal.tGlobal.tpaDeath[0])
 				m_tpCurrentGlobalBlend = PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)]);
@@ -132,10 +134,23 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 void CAI_Rat::vfUpdateMorale()
 {
 	DWORD dwCurTime = Level().timeServer();
-	if (dwCurTime - m_dwLastMoraleUpdateTime > m_dwRestoreMoraleTimeInterval) {
-		m_dwLastMoraleUpdateTime = dwCurTime;
-		m_fMorale += m_fRestoreMoraleQuant;
-		if (m_fMorale > m_fMaxMoraleValue)
-			m_fMorale = m_fMaxMoraleValue;
+	if (m_fMorale < m_fMoraleMinValue)
+		m_fMorale = m_fMoraleMinValue;
+	if (dwCurTime - m_dwMoraleLastUpdateTime > m_dwMoraleRestoreTimeInterval) {
+		m_dwMoraleLastUpdateTime = dwCurTime;
+		m_fMorale += m_fMoraleRestoreQuant;
+		if (m_fMorale > m_fMoraleMaxValue)
+			m_fMorale = m_fMoraleMaxValue;
 	}
+}
+
+void CAI_Rat::vfAddMorale(float fValue, float fRadius)
+{
+	CEntity *tpLeader = Level().Teams[g_Team()].Squads[g_Squad()].Leader;
+	if (tpLeader->g_Alive())
+		tpLeader->m_fMorale += m_fMoraleDecreaseQuant;
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	for (int i=0; i<(int)Group.Members.size(); i++)
+		if (Group.Members[i]->g_Alive())
+			Group.Members[i]->m_fMorale += m_fMoraleDecreaseQuant;
 }
