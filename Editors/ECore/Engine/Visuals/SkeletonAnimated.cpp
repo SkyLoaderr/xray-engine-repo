@@ -215,37 +215,15 @@ void	CSkeletonAnimated::LL_FadeCycle(u16 part, float falloff)
 		CBlend& B			= *Blend[I];
 		B.blend				= CBlend::eFalloff;
 		B.blendFalloff		= falloff;
-		if (B.stop_at_end)  B.playing = FALSE;
-
-		/*
-		if (!B.playing)	{
-			// Stop @ End
-			B.playing		= TRUE;
-			B.stop_at_end	= FALSE;
-			B.blendAmount	= EPS_S;
-		}
-
-		if (!B.playing) {
-			// Stop @ End
-			B.playing		= FALSE;
-			B.stop_at_end	= TRUE;
-			B.blendAmount	= B.blendPower;
-		}
-
-		if (!B.playing&&!B.stop_at_end) {
-			B.playing		= TRUE;
-			B.stop_at_end	= FALSE;
-			B.blendAmount	= EPS_S;
-		}
-        if (B.stop_at_end)  B.playing = FALSE;  //.
-		*/
+		if (B.stop_at_end)  B.playing = FALSE;		// callback не должен приходить!
 	}
 }
 
 void	CSkeletonAnimated::LL_CloseCycle(u16 part)
 {
-	if (BI_NONE==part) return;
-	if (part>=MAX_PARTS) return;
+	if (BI_NONE==part)		return;
+	if (part>=MAX_PARTS)	return;
+
 	// destroy cycle(s)
 	BlendListIt	I = blend_cycles[part].begin(), E = blend_cycles[part].end();
 	for (; I!=E; I++)
@@ -334,11 +312,8 @@ void CSkeletonAnimated::Update ()
 		for (; I!=E; I++)
 		{
 			CBlend& B = *(*I);
-//			if (!B.playing) continue;
-			// if (!B.playing&&!B.stop_at_end)	continue; //.
 			if (B.dwFrame==Device.dwFrame)	continue;
 			B.dwFrame		=	Device.dwFrame;
-//			B.timeCurrent += dt*B.speed;
 			if (B.playing) 	B.timeCurrent += dt*B.speed; // stop@end - time is not going 
 			switch (B.blend) 
 			{
