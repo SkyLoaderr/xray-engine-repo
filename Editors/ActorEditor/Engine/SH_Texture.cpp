@@ -236,9 +236,9 @@ void CTexture::Unload()
 void CTexture::desc_update()
 {
 	desc_cache	= pSurface;
-	if (D3DRTYPE_TEXTURE == pTexture->GetType())
+	if (pSurface && (D3DRTYPE_TEXTURE == pSurface->GetType()))
 	{
-		IDirect3DTexture8*	T	= (IDirect3DTexture8*)pTexture;
+		IDirect3DTexture8*	T	= (IDirect3DTexture8*)pSurface;
 		R_CHK					(T->GetLevelDesc(0,&desc));
 	}
 }
