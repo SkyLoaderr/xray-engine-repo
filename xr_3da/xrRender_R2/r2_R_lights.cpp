@@ -90,7 +90,6 @@ void	CRender::render_lights	(light_Package& LP)
 			if	(source.empty())		break;
 			L	= source.back			();
 			if	(L->vis.smap_ID!=sid)	break;
-			L_spot_s.push_back			(L);
 			source.pop_back				();
 			Lights_LastFrame.push_back	(L);
 
@@ -104,6 +103,7 @@ void	CRender::render_lights	(light_Package& LP)
 			bool	bSpecial						= mapNormal[1].size() || mapMatrix[1].size() || mapSorted.size();
 			if ( bNormal || bSpecial)	{
 				stats.s_merged						++;
+				L_spot_s.push_back					(L);
 				Target.phase_smap_spot				(L);
 				RCache.set_xform_world				(Fidentity);
 				RCache.set_xform_view				(L->X.S.view);
