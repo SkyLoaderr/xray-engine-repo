@@ -11,3 +11,4 @@ CUIGameCustom* game_cl_Single::createGameUI()
 	pUIGame->Init();
 	return pUIGame;
 }
+

@@ -21,6 +21,8 @@ public:
 	virtual		void				Create					(ref_str& options);
 	virtual		CSE_Abstract*		get_entity_from_eid		(u16 id);
 
+	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, u32 sender );
+
 	// Events
 	virtual		void				OnRoundStart			();										// старт раунда
 	virtual		void				OnRoundEnd				()								{};		// старт раунда

@@ -231,3 +231,16 @@ void game_sv_Single::switch_distance		(NET_Packet &net_packet, DPNID sender)
 	alife().set_switch_distance	(net_packet.r_float());
 }
 
+
+void	game_sv_Single::OnEvent (NET_Packet &P, u16 type, u32 time, u32 sender )
+{
+
+	switch	(type)
+	{
+	case GAME_EVENT_PLAYER_READY:
+		break;
+
+	default:
+		inherited::OnEvent(P, type, time, sender);
+	}
+}

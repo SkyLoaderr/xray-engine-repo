@@ -17,7 +17,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	if (IsSleeping())	return;
 	if (IsControlled())	return;
 
-	if (GAME_PHASE_PENDING == Game().phase || !g_Alive())
+	if ( !g_Alive() )
 	{
 		if (kWPN_FIRE == cmd)	
 		{
