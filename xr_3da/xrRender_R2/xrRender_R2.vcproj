@@ -255,9 +255,6 @@
 			Name="Core"
 			Filter="">
 			<File
-				RelativePath="common_binders.h">
-			</File>
-			<File
 				RelativePath=".\Particle.h">
 			</File>
 			<File
