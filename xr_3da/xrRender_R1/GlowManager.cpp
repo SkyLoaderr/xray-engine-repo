@@ -19,6 +19,7 @@
 CGlow::CGlow()				{
 	flags.bActive	= false;
 	position.set	(0,0,0);
+	direction.set	(0,0,0);
 	radius			= 0.1f;
 	color.set		(1,1,1,1);
 	bTestResult		= FALSE;
