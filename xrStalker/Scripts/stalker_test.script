@@ -35,6 +35,7 @@ function main()
 		printf			("stalker is under script control")
 	else
 		printf			("stalker is free")
+	end
 		
     stalker:script		(false,stalker_test:script_name());
     
@@ -42,4 +43,5 @@ function main()
 		printf			("stalker is under script control")
 	else
 		printf			("stalker is free")
+	end
 end
