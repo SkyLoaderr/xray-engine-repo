@@ -353,6 +353,9 @@
 						RelativePath=".\Config\gameplay\info_l10military.xml">
 					</File>
 					<File
+						RelativePath=".\Config\gameplay\info_l10radar.xml">
+					</File>
+					<File
 						RelativePath=".\Config\gameplay\info_l11yantar.xml">
 					</File>
 					<File
@@ -363,9 +366,6 @@
 					</File>
 					<File
 						RelativePath=".\Config\gameplay\info_l14swamp.xml">
-					</File>
-					<File
-						RelativePath=".\Config\gameplay\info_l15radar.xml">
 					</File>
 					<File
 						RelativePath=".\Config\gameplay\info_l16radar_antena.xml">
