@@ -119,6 +119,27 @@ void CAI_ALife::vfCheckForItems(CALifeHumanAbstract	*tpALifeHumanAbstract)
 	}
 }
 
+void CAI_ALife::vfAttachItem(CALifeHumanParams &tHumanParams, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID)
+{
+	tHumanParams.m_tpItemIDs.push_back(tpALifeItem->m_tObjectID);
+	tpALifeItem->m_bAttached = true;
+	OBJECT_IT	I = m_tpGraphObjects[tGraphID].tpObjectIDs.begin();
+	OBJECT_IT	E  = m_tpGraphObjects[tGraphID].tpObjectIDs.end();
+	for ( ; I != E; I++)
+		if (*I == tpALifeItem->m_tObjectID) {
+			m_tpGraphObjects[tGraphID].tpObjectIDs.erase(I);
+			break;
+		}
+	tHumanParams.m_fCumulativeItemMass += tpALifeItem->m_fMass;
+}
+
+void CAI_ALife::vfDetachItem(CALifeHumanParams &tHumanParams, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID)
+{
+	tpALifeItem->m_bAttached = true;
+	m_tpGraphObjects[tGraphID].tpObjectIDs.push_back(tpALifeItem->m_tObjectID);
+	tHumanParams.m_fCumulativeItemMass -= tpALifeItem->m_fMass;
+}
+
 void CAI_ALife::vfProcessItems(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraphID, float fMaxItemMass)
 {
 	OBJECT_IT	I = m_tpGraphObjects[tGraphID].tpObjectIDs.begin();
@@ -131,16 +152,15 @@ void CAI_ALife::vfProcessItems(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraph
 		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(tpALifeDynamicObject);
 		if (tpALifeItem) {
 			// adding new item to the item list
-			if (tHumanParams.m_fCumulativeItemMass + tpALifeItem->m_fMass < fMaxItemMass) {
-				tHumanParams.m_tpItemIDs.push_back(*I);
-				m_tpGraphObjects[tGraphID].tpObjectIDs.erase(I);
-				tHumanParams.m_fCumulativeItemMass += tpALifeItem->m_fMass;
-			}
+			if (tHumanParams.m_fCumulativeItemMass + tpALifeItem->m_fMass < fMaxItemMass)
+				vfAttachItem(tHumanParams,tpALifeItem,tGraphID);
 			else {
 				sort(tHumanParams.m_tpItemIDs.begin(),tHumanParams.m_tpItemIDs.end(),CSortItemPredicate(m_tObjectRegistry.m_tppMap));
-				OBJECT_IT	I = tHumanParams.m_tpItemIDs.end();
+				OBJECT_IT	E = tHumanParams.m_tpItemIDs.end();
 				OBJECT_IT	S = tHumanParams.m_tpItemIDs.begin();
+				OBJECT_IT	I = E - 1;
 				float		fItemMass = tHumanParams.m_fCumulativeItemMass;
+#pragma todo("Reimplement with the reverse iterator because of the possible ERROR!")
 				for ( ; I != S; I--) {
 					OBJECT_PAIR_IT II = m_tObjectRegistry.m_tppMap.find((*I));
 					VERIFY(II != m_tObjectRegistry.m_tppMap.end());
@@ -153,9 +173,12 @@ void CAI_ALife::vfProcessItems(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraph
 						break;
 				}
 				if (tHumanParams.m_fCumulativeItemMass + tpALifeItem->m_fMass < fMaxItemMass) {
+					for ( ; I != E; I++)
+						vfDetachItem(tHumanParams,tpALifeItem,tGraphID);
 					tHumanParams.m_tpItemIDs.erase		(I,tHumanParams.m_tpItemIDs.end());
 					tHumanParams.m_tpItemIDs.push_back	(tpALifeItem->m_tObjectID);
 					tHumanParams.m_fCumulativeItemMass	+= tpALifeItem->m_fMass;
+					vfAttachItem(tHumanParams,tpALifeItem,tGraphID);
 				}
 				else
 					tHumanParams.m_fCumulativeItemMass	= fItemMass;
@@ -198,24 +221,31 @@ void CAI_ALife::vfCommunicateWithTrader(CALifeHuman *tpALifeHuman, CALifeHuman *
 					tpALifeHuman->m_tHumanParams.m_tpItemIDs.erase(I);
 					tpALifeHuman->m_tTaskState = eTaskStateNone;
 					CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(m_tObjectRegistry.m_tppMap[*I]);
+					tpTrader->m_tHumanParams.m_fCumulativeItemMass += tpALifeItem->m_fMass;
+					tpALifeHuman->m_tHumanParams.m_fCumulativeItemMass -= tpALifeItem->m_fMass;
 					tpALifeHuman->m_tHumanParams.m_dwMoney += tpALifeItem->m_dwCost;
-					m_tTaskRegistry.m_tpMap.erase(T);
 				}
+			m_tTaskRegistry.m_tpMap.erase(T);
+			tpTrader->m_tpTaskIDs.erase(lower_bound(tpTrader->m_tpTaskIDs.begin(),tpTrader->m_tpTaskIDs.end(),(*T).first));
+			tpALifeHuman->m_tpTaskIDs.erase(lower_bound(tpALifeHuman->m_tpTaskIDs.begin(),tpALifeHuman->m_tpTaskIDs.end(),(*T).first));
 		}
 	}
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// TEMPORARY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	vfCreateNewDynamicObject	(m_tpSpawnPoints.begin() + ::Random.randI(m_tpSpawnPoints.size() - 2));
-	vfCreateNewTask				(m_tpTraders[0]);
+	if (!tpTrader->m_tpTaskIDs.size()) {
+		vfCreateNewDynamicObject	(m_tpSpawnPoints.begin() + ::Random.randI(m_tpSpawnPoints.size() - 2),true);
+		vfCreateNewTask				(m_tpTraders[0]);
+	}
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// END OF TEMPORARY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	// update events
+	
 	// update tasks
 	m_tpBufferTaskIDs.resize(tpALifeHuman->m_tpTaskIDs.size() + tpTrader->m_tpTaskIDs.size());
 	set_union(tpALifeHuman->m_tpTaskIDs.begin(),tpALifeHuman->m_tpTaskIDs.end(),tpTrader->m_tpTaskIDs.begin(),tpTrader->m_tpTaskIDs.end(),m_tpBufferTaskIDs.begin());
-	// !!! NPC has to choose it
-	tpALifeHuman->m_dwCurTask = 0;
+	tpALifeHuman->m_tpTaskIDs = m_tpBufferTaskIDs;
+	
 }

@@ -180,36 +180,75 @@ void CAI_Space::Render()
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame->m_tALife.m_bLoaded) {
-				for ( i=0; i<(int)tpGame->m_tALife.m_tpScheduledObjects.size(); i++)
-					for (int j=0; j<(int)tpGame->m_tALife.m_tpSpawnPoints[tpGame->m_tALife.m_tpScheduledObjects[i]->m_tSpawnID].ucRoutePointCount; j++) {
-						Fvector t2 = m_tpaGraph[tpGame->m_tALife.m_tpSpawnPoints[tpGame->m_tALife.m_tpScheduledObjects[i]->m_tSpawnID].tpRouteGraphPoints[j]].tPoint;
-						t2.y += .6f;
-						NORMALIZE_VECTOR(t2);
-						Device.Primitive.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(255,255,0));
-					}
-				for ( i=0; i<(int)tpGame->m_tALife.m_tpScheduledObjects.size(); i++) {
+//				for ( i=0; i<(int)tpGame->m_tALife.m_tpScheduledObjects.size(); i++)
+//					for (int j=0; j<(int)tpGame->m_tALife.m_tpSpawnPoints[tpGame->m_tALife.m_tpScheduledObjects[i]->m_tSpawnID].ucRoutePointCount; j++) {
+//						Fvector t2 = m_tpaGraph[tpGame->m_tALife.m_tpSpawnPoints[tpGame->m_tALife.m_tpScheduledObjects[i]->m_tSpawnID].tpRouteGraphPoints[j]].tPoint;
+//						t2.y += .6f;
+//						NORMALIZE_VECTOR(t2);
+//						Device.Primitive.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(255,255,0));
+//					}
+//				for ( i=0; i<(int)tpGame->m_tALife.m_tpScheduledObjects.size(); i++) {
+//					{
+//						Fvector t1 = m_tpaGraph[tpGame->m_tALife.m_tpSpawnPoints[tpGame->m_tALife.m_tpScheduledObjects[i]->m_tSpawnID].tNearestGraphPointID].tPoint;
+//						t1.y += .6f;
+//						NORMALIZE_VECTOR(t1);
+//						Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,0));
+//					}
+//					{
+//						if (tpGame->m_tALife.m_tpScheduledObjects[i]->m_fDistanceToPoint > EPS_L) {
+//							Fvector t1 = m_tpaGraph[tpGame->m_tALife.m_tpScheduledObjects[i]->m_tGraphID].tPoint;
+//							Fvector t2 = m_tpaGraph[tpGame->m_tALife.m_tpScheduledObjects[i]->m_tNextGraphID].tPoint;
+//							t2.sub(t1);
+//							t2.mul(tpGame->m_tALife.m_tpScheduledObjects[i]->m_fDistanceFromPoint/tpGame->m_tALife.m_tpScheduledObjects[i]->m_fDistanceToPoint);
+//							t1.add(t2);
+//							t1.y += .6f;
+//							NORMALIZE_VECTOR(t1);
+//							Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
+//						}
+//						else {
+//							Fvector t1 = m_tpaGraph[tpGame->m_tALife.m_tpScheduledObjects[i]->m_tGraphID].tPoint;
+//							t1.y += .6f;
+//							NORMALIZE_VECTOR(t1);
+//							Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
+//						}
+//					}
+//				}
+				OBJECT_PAIR_IT	I = tpGame->m_tALife.m_tObjectRegistry.m_tppMap.begin();
+				OBJECT_PAIR_IT	E = tpGame->m_tALife.m_tObjectRegistry.m_tppMap.end();
+				for ( ; I != E; I++) {
 					{
-						Fvector t1 = m_tpaGraph[tpGame->m_tALife.m_tpSpawnPoints[tpGame->m_tALife.m_tpScheduledObjects[i]->m_tSpawnID].tNearestGraphPointID].tPoint;
+						Fvector t1 = m_tpaGraph[tpGame->m_tALife.m_tpSpawnPoints[(*I).second->m_tSpawnID].tNearestGraphPointID].tPoint;
 						t1.y += .6f;
 						NORMALIZE_VECTOR(t1);
 						Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,0));
 					}
 					{
-						if (tpGame->m_tALife.m_tpScheduledObjects[i]->m_fDistanceToPoint > EPS_L) {
-							Fvector t1 = m_tpaGraph[tpGame->m_tALife.m_tpScheduledObjects[i]->m_tGraphID].tPoint;
-							Fvector t2 = m_tpaGraph[tpGame->m_tALife.m_tpScheduledObjects[i]->m_tNextGraphID].tPoint;
-							t2.sub(t1);
-							t2.mul(tpGame->m_tALife.m_tpScheduledObjects[i]->m_fDistanceFromPoint/tpGame->m_tALife.m_tpScheduledObjects[i]->m_fDistanceToPoint);
-							t1.add(t2);
-							t1.y += .6f;
-							NORMALIZE_VECTOR(t1);
-							Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
-						}
+						CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>((*I).second);
+						if (tpALifeMonsterAbstract)
+							if (tpALifeMonsterAbstract->m_fDistanceToPoint > EPS_L) {
+								Fvector t1 = m_tpaGraph[tpALifeMonsterAbstract->m_tGraphID].tPoint;
+								Fvector t2 = m_tpaGraph[tpALifeMonsterAbstract->m_tNextGraphID].tPoint;
+								t2.sub(t1);
+								t2.mul(tpALifeMonsterAbstract->m_fDistanceFromPoint/tpALifeMonsterAbstract->m_fDistanceToPoint);
+								t1.add(t2);
+								t1.y += .6f;
+								NORMALIZE_VECTOR(t1);
+								Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
+							}
+							else {
+								Fvector t1 = m_tpaGraph[(*I).second->m_tGraphID].tPoint;
+								t1.y += .6f;
+								NORMALIZE_VECTOR(t1);
+								Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
+							}
 						else {
-							Fvector t1 = m_tpaGraph[tpGame->m_tALife.m_tpScheduledObjects[i]->m_tGraphID].tPoint;
-							t1.y += .6f;
-							NORMALIZE_VECTOR(t1);
-							Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
+							CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>((*I).second);
+							if (tpALifeItem && !tpALifeItem->m_bAttached) {
+								Fvector t1 = m_tpaGraph[(*I).second->m_tGraphID].tPoint;
+								t1.y += .6f;
+								NORMALIZE_VECTOR(t1);
+								Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,255,0));
+							}
 						}
 					}
 				}

@@ -89,7 +89,7 @@ public:
 		vfAddEventToGraphPoint		(tEventID,tNextGraphPointID);
 	}
 
-	IC void vfCreateNewDynamicObject(SPAWN_IT I)
+	IC void vfCreateNewDynamicObject(SPAWN_IT I, bool bTemp = false)
 	{
 		CALifeDynamicObject	*tpALifeDynamicObject;
 		if (pSettings->LineExists((*I).caModel, "scheduled") && pSettings->ReadBOOL((*I).caModel, "scheduled"))
@@ -108,6 +108,8 @@ public:
 
 		tpALifeDynamicObject->Init(_SPAWN_ID(I - m_tpSpawnPoints.begin()),m_tpSpawnPoints);
 		m_tObjectRegistry.Add(tpALifeDynamicObject);
+		if (bTemp)
+			m_tpGraphObjects[tpALifeDynamicObject->m_tGraphID].tpObjectIDs.push_back(tpALifeDynamicObject->m_tObjectID);
 	};
 
 	IC void vfCreateNewTask(CALifeHuman *tpTrader)
@@ -116,10 +118,11 @@ public:
 		OBJECT_PAIR_IT	E = m_tObjectRegistry.m_tppMap.end();
 		for ( ; I != E; I++) {
 			CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>((*I).second);
-			if (tpALifeItem) {
+			if (tpALifeItem && !tpALifeItem->m_bAttached) {
 				STask						tTask;
 				tTask.tCustomerID			= tpTrader->m_tObjectID;
 				tTask.tGraphID				= tpALifeItem->m_tGraphID;
+				tTask.tClassID				= tpALifeItem->m_tClassID;
 				tTask.tTimeID				= Level().timeServer();
 				tTask.tTaskType				= eTaskTypeSearchForArtefact;
 				m_tTaskRegistry.Add			(tTask);
@@ -129,6 +132,8 @@ public:
 		}
 	}
 
+	void							vfAttachItem			(CALifeHumanParams &tHumanParams, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID);
+	void							vfDetachItem			(CALifeHumanParams &tHumanParams, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID);
 	void							vfCommunicateWithTrader	(CALifeHuman *tpALifeHuman, CALifeHuman *tpTrader);
 	CALifeHuman *					tpfGetNearestSuitableTrader(CALifeHuman *tpALifeHuman);
 	void							vfUpdateMonster			(CALifeMonsterAbstract	*tpALifeMonsterAbstract);

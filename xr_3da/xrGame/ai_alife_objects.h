@@ -175,6 +175,7 @@ public:
 	float							m_fMass;
 	u32								m_dwCost;
 	s32								m_iHealthValue;
+	bool							m_bAttached;
 	
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
@@ -182,6 +183,7 @@ public:
 		tMemoryStream.Wfloat		(m_fMass);
 		tMemoryStream.Wdword		(m_dwCost);
 		tMemoryStream.Wdword		(m_iHealthValue);
+		tMemoryStream.Wdword		(m_bAttached);
 	};
 	
 	virtual	void					Load(CStream	&tFileStream)
@@ -190,6 +192,7 @@ public:
 		m_fMass						= tFileStream.Rfloat();
 		m_dwCost					= tFileStream.Rdword();
 		m_iHealthValue				= tFileStream.Rint();
+		m_bAttached					= !!(tFileStream.Rdword());
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
@@ -201,6 +204,7 @@ public:
 			m_iHealthValue			= pSettings->ReadINT(tpSpawnPoints[tSpawnID].caModel, "health_value");
 		else
 			m_iHealthValue			= 0;
+		m_bAttached					= false;
 	};
 };
 
