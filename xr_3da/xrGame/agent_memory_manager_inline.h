@@ -14,6 +14,12 @@ IC	CAgentMemoryManager::CAgentMemoryManager						(CAgentManager *object)
 	m_object					= object;
 }
 
+IC	CAgentManager &CAgentMemoryManager::object						() const
+{
+	VERIFY				(m_object);
+	return				(*m_object);
+}
+
 IC	void CAgentMemoryManager::set_squad_objects						(VISIBLES *objects)
 {
 	m_visible_objects			= objects;
@@ -47,18 +53,9 @@ IC	CAgentMemoryManager::HITS &CAgentMemoryManager::hits			() const
 	return						(*m_hit_objects);
 }
 
-template <typename T>
-IC	void CAgentMemoryManager::reset_memory_masks					(xr_vector<T> &objects)
+IC	void CAgentMemoryManager::update_memory_mask	(const squad_mask_type &mask, squad_mask_type &current)
 {
-	VISIBLES::iterator			I = m_visible_objects->begin();
-	VISIBLES::iterator			E = m_visible_objects->end();
-	for ( ; I != E; ++I)
-		(*I).m_squad_mask.one	();
+	// this function removes specified bit and shifts all the others
+	current					= (((mask ^ squad_mask_type(-1) ^ (mask - 1)) & current) >> 1) | (current & (mask - 1));
 }
 
-IC	void CAgentMemoryManager::reset_memory_masks					()
-{
-	reset_memory_masks			(*m_visible_objects);
-	reset_memory_masks			(*m_sound_objects);
-	reset_memory_masks			(*m_hit_objects);
-}

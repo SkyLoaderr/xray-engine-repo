@@ -47,7 +47,7 @@ IC	bool CMemoryObject<T>::operator==		(u32 id) const
 }
 
 template <typename T>
-IC	void CMemoryObject<T>::fill				(const T *game_object, const T *self)
+IC	void CMemoryObject<T>::fill				(const T *game_object, const T *self, const squad_mask_type &mask)
 {
 	++m_update_count;
 	m_object				= game_object;
@@ -57,6 +57,7 @@ IC	void CMemoryObject<T>::fill				(const T *game_object, const T *self)
 	m_level_time			= Device.dwTimeGlobal;
 	m_object_params.fill	(game_object);
 	m_self_params.fill		(self);
+	m_squad_mask.assign		(mask);
 	SMemoryObject::fill		();
 }
 

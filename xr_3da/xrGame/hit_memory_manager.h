@@ -22,12 +22,13 @@ public:
 
 private:
 	CCustomMonster			*m_object;
+	CAI_Stalker				*m_stalker;
 	HITS					*m_hits;
 	u32						m_max_hit_count;
 	const CHitObject		*m_selected_hit;
 
 public:
-	IC						CHitMemoryManager	(CCustomMonster *object);
+	IC						CHitMemoryManager	(CCustomMonster *object, CAI_Stalker *stalker);
 	virtual					~CHitMemoryManager	();
 	virtual	void			Load				(LPCSTR section);
 	virtual	void			reinit				();

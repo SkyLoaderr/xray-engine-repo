@@ -15,7 +15,7 @@ class CAgentManager;
 
 class CAgentMemberManager {
 public:
-	typedef xr_vector<CMemberOrder>			MEMBER_STORAGE;
+	typedef xr_vector<CMemberOrder*>		MEMBER_STORAGE;
 	typedef MEMBER_STORAGE::iterator		iterator;
 	typedef MEMBER_STORAGE::const_iterator	const_iterator;
 	typedef MemorySpace::squad_mask_type	squad_mask_type;
@@ -23,13 +23,17 @@ public:
 private:
 	CAgentManager					*m_object;
 	MEMBER_STORAGE					m_members;
+	MEMBER_STORAGE					m_combat_members;
+	bool							m_actuality;
 	squad_mask_type					m_combat_mask;
+
 
 protected:
 	IC		CAgentManager			&object				() const;
 
 public:
 	IC								CAgentMemberManager	(CAgentManager *object);
+	virtual							~CAgentMemberManager();
 			void					update				();
 			void					add					(CEntity *member);
 			void					remove				(CEntity *member);
@@ -45,6 +49,7 @@ public:
 			void					unregister_in_combat(const CAI_Stalker *object);
 			bool					registered_in_combat(const CAI_Stalker *object) const;
 	IC		const squad_mask_type	&combat_mask		() const;
+			MEMBER_STORAGE			&combat_members		();
 };
 
 #include "agent_member_manager_inline.h"

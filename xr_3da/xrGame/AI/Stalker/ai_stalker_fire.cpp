@@ -31,6 +31,8 @@
 #include "../../agent_member_manager.h"
 #include "../../agent_location_manager.h"
 #include "../../danger_cover_location.h"
+#include "../../object_handler_planner.h"
+#include "../../object_handler_space.h"
 
 const float DANGER_DISTANCE = 5.f;
 const u32	DANGER_INTERVAL = 30000;
@@ -352,4 +354,26 @@ bool CAI_Stalker::inside_anomaly		()
 			return			(true);
 	}
 	return					(false);
+}
+
+void CAI_Stalker::update_range_fov		(float &new_range, float &new_fov, float start_range, float start_fov)
+{
+	float					range = start_range, fov = start_fov;
+
+	if (inventory().ActiveItem() && ((movement().movement_type() == eMovementTypeStand) || (movement().body_state() == eBodyStateCrouch))) {
+		switch (CObjectHandler::planner().current_action_state_id()) {
+			case ObjectHandlerSpace::eWorldOperatorAim1 :
+			case ObjectHandlerSpace::eWorldOperatorAim2 :
+			case ObjectHandlerSpace::eWorldOperatorAimingReady1 :
+			case ObjectHandlerSpace::eWorldOperatorAimingReady2 :
+			case ObjectHandlerSpace::eWorldOperatorQueueWait1 :
+			case ObjectHandlerSpace::eWorldOperatorQueueWait2 :
+			case ObjectHandlerSpace::eWorldOperatorFire1 :
+			case ObjectHandlerSpace::eWorldOperatorFire2 : {
+				inventory().ActiveItem()->modify_holder_params(range,fov);
+				break;
+			}
+		}
+	}
+	return					(inherited::update_range_fov(new_range,new_fov,range,fov));
 }

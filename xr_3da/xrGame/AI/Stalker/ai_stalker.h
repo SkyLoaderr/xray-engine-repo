@@ -39,6 +39,7 @@ class CStalkerAnimationManager;
 class CMotivationActionManagerStalker;
 class CSightManager;
 class CStalkerMovementManager;
+class CStalkerSoundDataVisitor;
 
 template <
 	typename _action_type,
@@ -337,7 +338,7 @@ public:
 	IC		const EBodyAction			&body_action					() const;
 
 private:
-	CSoundUserDataVisitor				*m_sound_user_data_visitor;
+	CStalkerSoundDataVisitor			*m_sound_user_data_visitor;
 
 protected:
 	virtual CSoundUserDataVisitor		*create_sound_visitor			();
@@ -358,6 +359,9 @@ private:
 
 public:
 	IC		bool						group_behaviour					() const;
+	virtual	void						update_range_fov				(float &new_range, float &new_fov, float start_range, float start_fov);
+
+public:
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CAI_Stalker)

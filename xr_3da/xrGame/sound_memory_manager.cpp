@@ -10,12 +10,16 @@
 #include "sound_memory_manager.h"
 #include "memory_manager.h"
 #include "hit_memory_manager.h"
+#include "visual_memory_manager.h"
 #include "enemy_manager.h"
 #include "memory_space_impl.h"
 #include "custommonster.h"
 #include "ai_object_location.h"
 #include "level_graph.h"
 #include "sound_user_data_visitor.h"
+#include "agent_manager.h"
+#include "agent_member_manager.h"
+#include "ai/stalker/ai_stalker.h"
 
 #define SILENCE
 //#define SAVE_OWN_SOUNDS
@@ -109,8 +113,6 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, CSound
 	if (!entity_alive->g_Alive())
 		return;
 	
-	sound_power				*= 1;//ffGetStartVolume(ESoundTypes(eType));
-	
 	if ((sound_type & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) {
 		// this is fake!
 		sound_power			= 1.f;
@@ -128,46 +130,49 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, CSound
 
 void CSoundMemoryManager::add			(const CObject *object, int sound_type, const Fvector &position, float sound_power)
 {
-#ifdef SAVE_OWN_SOUNDS
+#ifndef SAVE_OWN_SOUNDS
 	// we do not want to save our own sounds
 	if (object && (m_object->ID() == object->ID()))
 		return;
 #endif
 
-#ifdef SAVE_OWN_ITEM_SOUNDS
+#ifndef SAVE_OWN_ITEM_SOUNDS
 	// we do not want to save the sounds which was from the items we own
 	if (object && object->H_Parent() && (object->H_Parent()->ID() == m_object->ID()))
 		return;
 #endif
 
-#ifdef SAVE_NON_ALIVE_OBJECT_SOUNDS
+#ifndef SAVE_NON_ALIVE_OBJECT_SOUNDS
 	// we do not want to save sounds from the non-alive objects (?!)
 	if (object && !m_object->memory().enemy().selected() && !smart_cast<const CEntityAlive*>(object))
 		return;
 #endif
 
-#ifdef SAVE_FRIEND_ITEM_SOUNDS
+#ifndef SAVE_FRIEND_ITEM_SOUNDS
 	// we do not want to save sounds from the teammates items
 	CEntityAlive	*me				= m_object;
 	if (object && object->H_Parent() && (me->tfGetRelationType(smart_cast<const CEntityAlive*>(object->H_Parent())) == ALife::eRelationTypeFriend))
 		return;
 #endif
 
-#ifdef SAVE_FRIEND_SOUNDS
-	// we do not want ot save sounds from the teammates
+#ifndef SAVE_FRIEND_SOUNDS
 	const CEntityAlive	*entity_alive	= smart_cast<const CEntityAlive*>(object);
+	// we do not want to save sounds from the teammates
 	if (entity_alive && me && (me->tfGetRelationType(entity_alive) == ALife::eRelationTypeFriend))
 		return;
 #endif
 
-#ifdef SAVE_VISIBLE_OBJECT_SOUNDS
+#ifndef SAVE_VISIBLE_OBJECT_SOUNDS
+#	ifdef SAVE_FRIEND_SOUNDS
+		const CEntityAlive	*entity_alive	= smart_cast<const CEntityAlive*>(object);
+#	endif
 	// we do not save sounds from the objects we see (?!)
 	if (m_object->memory().visual().visible_now(entity_alive))
 		return;
 #endif
 
 #ifndef SILENCE
-	Msg							("* %s - ref_sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",*self->cName(),sound_type,object ? object->cName() : "world",Device.dwTimeGlobal,position.x,position.y,position.z,sound_power);
+	Msg							("* %s - ref_sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",*m_object->cName(),sound_type,object ? *object->cName() : "world",Device.dwTimeGlobal,position.x,position.y,position.z,sound_power);
 #endif
 
 	const CGameObject		*game_object = smart_cast<const CGameObject*>(object);
@@ -180,7 +185,7 @@ void CSoundMemoryManager::add			(const CObject *object, int sound_type, const Fv
 	if (m_sounds->end() == J) {
 		CSoundObject			sound_object;
 
-		sound_object.fill		(game_object,self,ESoundTypes(sound_type),sound_power);
+		sound_object.fill		(game_object,self,ESoundTypes(sound_type),sound_power,!m_stalker ? squad_mask_type(-1) : m_stalker->agent_manager().member().mask(m_stalker));
 		sound_object.m_first_level_time	= Device.dwTimeGlobal;
 		sound_object.m_first_game_time	= Level().GetGameTime();
 
@@ -194,7 +199,7 @@ void CSoundMemoryManager::add			(const CObject *object, int sound_type, const Fv
 			m_sounds->push_back	(sound_object);
 	}
 	else
-		(*J).fill				(game_object,self,ESoundTypes(sound_type),sound_power);
+		(*J).fill				(game_object,self,ESoundTypes(sound_type),sound_power,!m_stalker ? (*J).m_squad_mask.get() : (*J).m_squad_mask.get() | m_stalker->agent_manager().member().mask(m_stalker));
 }
 
 struct CRemoveOfflinePredicate {

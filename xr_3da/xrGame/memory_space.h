@@ -75,7 +75,7 @@ namespace MemorySpace {
 
 		IC			CMemoryObject	();
 		IC	bool	operator==		(u32 id) const;
-		IC	void	fill			(const T *game_object, const T *self);
+		IC	void	fill			(const T *game_object, const T *self, const squad_mask_type &mask);
 	};
 
 	struct CVisibleObject : CMemoryObject<CGameObject> {
@@ -87,9 +87,9 @@ namespace MemorySpace {
 			return					(m_visible);
 		}
 
-		IC	void	fill							(const CGameObject *game_object, const CGameObject *self)
+		IC	void	fill							(const CGameObject *game_object, const CGameObject *self, const squad_mask_type &mask)
 		{
-			inherited::fill			(game_object,self);
+			inherited::fill			(game_object,self,mask);
 			m_visible				= true;
 		}
 	};
@@ -104,9 +104,9 @@ namespace MemorySpace {
 		ESoundTypes					m_sound_type;
 		float						m_power;
 
-		IC	void	fill							(const CGameObject *game_object, const CGameObject *self, const ESoundTypes sound_type, const float sound_power)
+		IC	void	fill							(const CGameObject *game_object, const CGameObject *self, const ESoundTypes sound_type, const float sound_power, const squad_mask_type &mask)
 		{
-			CVisibleObject::fill	(game_object,self);
+			CVisibleObject::fill	(game_object,self,mask);
 			m_sound_type			= sound_type;
 			m_power					= sound_power;
 		}

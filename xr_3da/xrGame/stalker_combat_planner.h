@@ -39,6 +39,7 @@ public:
 	virtual	void		setup					(CAI_Stalker *object, CPropertyStorage *storage);
 	virtual void		update					();
 	virtual void		initialize				();
+	virtual void		execute					();
 	virtual void		finalize				();
 
 public:

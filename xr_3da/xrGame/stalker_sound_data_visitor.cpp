@@ -31,6 +31,8 @@ void CStalkerSoundDataVisitor::visit				(CStalkerSoundData *data)
 	if (object().tfGetRelationType(data->object().memory().enemy().selected()) != ALife::eRelationTypeEnemy)
 		return;
 
+	Msg			("%s : Adding fiction hit by sound info from stalker %s",*object().cName(),*data->object().cName());
+
 	object().memory().hit().add							(
 		0.f,
 		Fvector().set(0.f,0.f,1.f),

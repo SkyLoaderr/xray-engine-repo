@@ -48,14 +48,14 @@ bool CAgentLocationManager::suitable	(CAI_Stalker *object, CCoverPoint *location
 	CAgentMemberManager::const_iterator	I = this->object().member().members().begin();
 	CAgentMemberManager::const_iterator	E = this->object().member().members().end();
 	for ( ; I != E; ++I) {
-		if ((*I).object().ID() == object->ID())
+		if ((*I)->object().ID() == object->ID())
 			continue;
 
-		if (!(*I).cover())
+		if (!(*I)->cover())
 			continue;
 
-		if ((*I).cover()->m_position.distance_to(location->position()) <= 5.f)
-			if ((*I).object().Position().distance_to(location->position()) <= object->Position().distance_to(location->position()))
+		if ((*I)->cover()->m_position.distance_to(location->position()) <= 5.f)
+			if ((*I)->object().Position().distance_to(location->position()) <= object->Position().distance_to(location->position()))
 				return				(false);
 	}
 

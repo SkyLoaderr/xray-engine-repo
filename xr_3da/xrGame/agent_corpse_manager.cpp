@@ -58,8 +58,8 @@ void CAgentCorpseManager::react_on_member_death			()
 		CAgentMemberManager::MEMBER_STORAGE::iterator	I = object().member().members().begin();
 		CAgentMemberManager::MEMBER_STORAGE::iterator	E = object().member().members().end();
 		for ( ; I != E; ++I)
-			if (!(*I).member_death_reaction().m_processing)
-				changed				= process_corpse(*I);
+			if (!(*I)->member_death_reaction().m_processing)
+				changed				= process_corpse(**I);
 
 		if (!changed)
 			break;

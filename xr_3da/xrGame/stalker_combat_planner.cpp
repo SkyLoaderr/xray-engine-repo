@@ -130,6 +130,14 @@ void CStalkerCombatPlanner::react_on_member_death	()
 	reaction.clear			();
 }
 
+void CStalkerCombatPlanner::execute				()
+{
+	if (first_time())
+		object().agent_manager().member().register_in_combat(m_object);
+	
+	inherited::execute		();
+}
+
 void CStalkerCombatPlanner::update				()
 {
 	update_cover			();
@@ -159,7 +167,8 @@ void CStalkerCombatPlanner::finalize			()
 	if (!object().g_Alive())
 		return;
 
-	object().sound().remove_active_sounds	(u32(-1));
+//	object().agent_manager().member().unregister_in_combat	(m_object);
+	object().sound().remove_active_sounds					(u32(-1));
 }
 
 void CStalkerCombatPlanner::add_evaluators		()

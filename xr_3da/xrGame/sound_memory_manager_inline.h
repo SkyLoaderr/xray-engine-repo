@@ -8,12 +8,13 @@
 
 #pragma once
 
-IC	CSoundMemoryManager::CSoundMemoryManager	(CCustomMonster *object, CSoundUserDataVisitor *visitor)
+IC	CSoundMemoryManager::CSoundMemoryManager	(CCustomMonster *object, CAI_Stalker *stalker, CSoundUserDataVisitor *visitor)
 {
 	VERIFY						(object);
 	m_object					= object;
 	VERIFY						(visitor);
 	m_visitor					= visitor;
+	m_stalker					= stalker;
 	m_max_sound_count			= 0;
 }
 

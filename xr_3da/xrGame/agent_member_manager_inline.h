@@ -18,9 +18,9 @@ public:
 	  {
 	  }
 
-	  IC		bool	operator()			(const CMemberOrder &order) const
+	  IC		bool	operator()			(const CMemberOrder *order) const
 	  {
-		  return			(&order.object() == m_object);
+		  return			(&order->object() == m_object);
 	  }
 };
 
@@ -28,6 +28,8 @@ IC	CAgentMemberManager::CAgentMemberManager	(CAgentManager *object)
 {
 	VERIFY				(object);
 	m_object			= object;
+	m_actuality			= true;
+	m_combat_mask		= 0;
 }
 
 IC	CAgentManager &CAgentMemberManager::object	() const
@@ -55,7 +57,7 @@ IC	CMemberOrder &CAgentMemberManager::member	(const CAI_Stalker *object)
 {
 	iterator			I = std::find_if(members().begin(), members().end(), CMemberPredicate(object));
 	VERIFY				(I != members().end());
-	return				(*I);
+	return				(**I);
 }
 
 IC	MemorySpace::squad_mask_type CAgentMemberManager::mask(const CAI_Stalker *object) const

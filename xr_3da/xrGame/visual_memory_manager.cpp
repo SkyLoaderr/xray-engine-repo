@@ -16,6 +16,8 @@
 #include "level_graph.h"
 #include "stalker_movement_manager.h"
 #include "gamemtllib.h"
+#include "agent_manager.h"
+#include "agent_member_manager.h"
 
 struct SRemoveOfflinePredicate {
 	bool		operator()						(const CVisibleObject &object) const
@@ -59,11 +61,11 @@ struct CNotYetVisibleObjectPredicate{
 	}
 };
 
-CVisualMemoryManager::CVisualMemoryManager		(CCustomMonster *object)
+CVisualMemoryManager::CVisualMemoryManager		(CCustomMonster *object, CAI_Stalker *stalker)
 {
 	VERIFY				(object);
 	m_object			= object;
-	m_stalker			= smart_cast<CAI_Stalker*>(m_object);
+	m_stalker			= stalker;
 	m_max_object_count	= 1;
 	m_enabled			= true;
 }
@@ -281,7 +283,7 @@ void CVisualMemoryManager::add_visible_object	(const CObject *object, float time
 	if (m_objects->end() == J) {
 		CVisibleObject			visible_object;
 
-		visible_object.fill		(game_object,self);
+		visible_object.fill		(game_object,self,!m_stalker ? squad_mask_type(-1) : m_stalker->agent_manager().member().mask(m_stalker));
 		visible_object.m_first_level_time	= Device.dwTimeGlobal;
 		visible_object.m_first_game_time	= Level().GetGameTime();
 
@@ -294,7 +296,7 @@ void CVisualMemoryManager::add_visible_object	(const CObject *object, float time
 			m_objects->push_back	(visible_object);
 	}
 	else
-		(*J).fill				(game_object,self);
+		(*J).fill				(game_object,self,!m_stalker ? (*J).m_squad_mask.get() : (*J).m_squad_mask.get() | m_stalker->agent_manager().member().mask(m_stalker));
 }
 
 void CVisualMemoryManager::add_visible_object	(const CVisibleObject visible_object)

@@ -25,7 +25,7 @@ CAgentManagerPropertyEvaluatorItem::_value_type CAgentManagerPropertyEvaluatorIt
 	CAgentMemberManager::iterator	I = m_object->member().members().begin();
 	CAgentMemberManager::iterator	E = m_object->member().members().end();
 	for ( ; I != E; ++I)
-		if ((*I).object().memory().item().selected())
+		if ((*I)->object().memory().item().selected())
 			return			(true);
 	return					(false);
 }
@@ -39,7 +39,7 @@ CAgentManagerPropertyEvaluatorEnemy::_value_type CAgentManagerPropertyEvaluatorE
 	CAgentMemberManager::iterator	I = m_object->member().members().begin();
 	CAgentMemberManager::iterator	E = m_object->member().members().end();
 	for ( ; I != E; ++I)
-		if ((*I).object().memory().enemy().selected())
+		if ((*I)->object().memory().enemy().selected())
 			return			(true);
 	return					(false);
 }

@@ -59,7 +59,7 @@ protected:
 			CNotYetVisibleObject *not_yet_visible_object	(const CGameObject *game_object);
 
 public:
-					CVisualMemoryManager	(CCustomMonster *object);
+					CVisualMemoryManager	(CCustomMonster *object, CAI_Stalker *stalker);
 	virtual			~CVisualMemoryManager	();
 	virtual	void	Load					(LPCSTR section);
 	virtual	void	reinit					();

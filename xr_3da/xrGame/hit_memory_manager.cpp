@@ -14,6 +14,9 @@
 #include "level_graph.h"
 #include "script_callback_ex.h"
 #include "script_game_object.h"
+#include "agent_manager.h"
+#include "agent_member_manager.h"
+#include "ai/stalker/ai_stalker.h"
 
 struct CHitObjectPredicate {
 	const CObject *m_object;
@@ -94,7 +97,7 @@ void CHitMemoryManager::add		(float amount, const Fvector &vLocalDir, const CObj
 	if (m_hits->end() == J) {
 		CHitObject				hit_object;
 
-		hit_object.fill			(entity_alive,m_object);
+		hit_object.fill			(entity_alive,m_object,!m_stalker ? squad_mask_type(-1) : m_stalker->agent_manager().member().mask(m_stalker));
 		hit_object.m_first_level_time	= Device.dwTimeGlobal;
 		hit_object.m_first_game_time	= Level().GetGameTime();
 
@@ -107,7 +110,7 @@ void CHitMemoryManager::add		(float amount, const Fvector &vLocalDir, const CObj
 			m_hits->push_back	(hit_object);
 	}
 	else
-		(*J).fill				(entity_alive,m_object);
+		(*J).fill				(entity_alive,m_object,!m_stalker ? (*J).m_squad_mask.get() : (*J).m_squad_mask.get() | m_stalker->agent_manager().member().mask(m_stalker));
 }
 
 void CHitMemoryManager::add(const CHitObject &hit_object)

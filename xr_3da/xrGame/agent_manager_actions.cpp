@@ -67,11 +67,11 @@ void CAgentManagerActionNoOrders::execute			()
 	CAgentMemberManager::iterator		E = m_object->member().members().end();
 	for ( ; I != E; ++I) {
 #ifndef TEST
-		(*I).order_type			(AgentManager::eOrderTypeNoOrder);
+		(*I)->order_type			(AgentManager::eOrderTypeNoOrder);
 #else
-		(*I).order_type			(AgentManager::eOrderTypeAction);
-		(*I).action				(CSetupAction(0.f,0));
-		(*I).action().movement().set_level_dest_vertex_id((*I).object().ai_location().level_vertex_id());
+		(*I)->order_type			(AgentManager::eOrderTypeAction);
+		(*I)->action				(CSetupAction(0.f,0));
+		(*I)->action().movement().set_level_dest_vertex_id((*I)->object().ai_location().level_vertex_id());
 #endif
 
 //		(*I).order_type			(AgentManager::eOrderTypeGoal);
@@ -107,7 +107,7 @@ void CAgentManagerActionGatherItems::execute			()
 	CAgentMemberManager::iterator		I = m_object->member().members().begin();
 	CAgentMemberManager::iterator		E = m_object->member().members().end();
 	for ( ; I != E; ++I)
-		(*I).order_type			(AgentManager::eOrderTypeNoOrder);
+		(*I)->order_type	(AgentManager::eOrderTypeNoOrder);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -139,7 +139,7 @@ void CAgentManagerActionKillEnemy::execute			()
 	CAgentMemberManager::iterator	E = m_object->member().members().end();
 	for ( ; I != E; ++I) {
 #ifndef TEST
-		(*I).order_type				(AgentManager::eOrderTypeNoOrder);
+		(*I)->order_type			(AgentManager::eOrderTypeNoOrder);
 #else
 		if ((*I).object().enemy())
 			Msg						("%6d : %s vs %s",Device.dwTimeGlobal,*(*I).object().cName(),*(*I).object().enemy()->cName());

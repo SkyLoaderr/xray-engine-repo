@@ -28,9 +28,9 @@ CMemoryManager::CMemoryManager		(CCustomMonster *monster, CSoundUserDataVisitor 
 	m_object			= monster;
 	m_stalker			= smart_cast<CAI_Stalker*>(monster);
 
-	m_visual			= xr_new<CVisualMemoryManager>	(monster);
-	m_sound				= xr_new<CSoundMemoryManager>	(monster, visitor);
-	m_hit				= xr_new<CHitMemoryManager>		(monster);
+	m_visual			= xr_new<CVisualMemoryManager>	(monster, m_stalker);
+	m_sound				= xr_new<CSoundMemoryManager>	(monster, m_stalker, visitor);
+	m_hit				= xr_new<CHitMemoryManager>		(monster, m_stalker);
 	m_enemy				= xr_new<CEnemyManager>			(monster);
 	m_item				= xr_new<CItemManager>			(monster);
 	m_greeting			= xr_new<CGreetingManager>		(monster);
@@ -114,7 +114,7 @@ void CMemoryManager::update			(const xr_vector<T> &objects)
 		if (!(*I).m_enabled)
 			continue;
 		
-		if (m_stalker && !(*I).m_squad_mask.is(m_stalker->agent_manager().member().mask(m_stalker)))
+		if (m_stalker && !(*I).m_squad_mask.test(m_stalker->agent_manager().member().mask(m_stalker)))
 			continue;
 		
 		const CEntityAlive			*entity_alive = smart_cast<const CEntityAlive*>((*I).m_object);
