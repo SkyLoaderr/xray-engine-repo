@@ -215,12 +215,14 @@ void CWeaponFakeGrenade::activate_physic_shell	()
 {
 	CObject		*E = dynamic_cast<CObject*>(H_Parent());
 	R_ASSERT	(E);
+	
 	Fmatrix trans;
 	Level().Cameras.unaffected_Matrix(trans);
+
 	CWeaponMagazinedWGrenade *l_pW = dynamic_cast<CWeaponMagazinedWGrenade*>(E);
 	Fmatrix l_p1, l_r; 
 	l_r.rotateY(M_PI*2.f); 
-	l_p1.mul(l_pW->GetHUDmode()?trans:XFORM(), l_r); 
+	l_p1.mul(l_pW->GetHUDmode()?trans:l_pW->XFORM(), l_r); 
 	l_p1.c.set(*l_pW->m_pGrenadePoint);
 
 	Fvector a_vel; 
