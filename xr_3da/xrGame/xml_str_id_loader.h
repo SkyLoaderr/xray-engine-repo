@@ -88,7 +88,7 @@ const typename CSXML_IdToIndex::ITEM_DATA& CSXML_IdToIndex::GetById (const T_ID&
 	for(T_VECTOR::iterator it = ItemDataVector().begin();
 		ItemDataVector().end() != it; it++)
 	{
-#pragma todo("Oles to Yura: Really dumb and slow code. 'ref_str' designed for sharing only!!!")
+#pragma todo("Oles to Yura: Really dumb and slow code. 'shared_str' designed for sharing only!!!")
 		if((*it).id == str_id)
 			break;
 	}
@@ -133,7 +133,7 @@ typename CSXML_IdToIndex::T_VECTOR&	CSXML_IdToIndex::ItemDataVector ()
 			std::string xml_file_full;
 			xml_file_full = xml_file;
 			xml_file_full += ".xml";
-			//strconcat(xml_file_full, *ref_str(xml_file), ".xml");
+			//strconcat(xml_file_full, *shared_str(xml_file), ".xml");
 			bool xml_result = uiXml.Init("$game_data$", xml_file_full.c_str());
 			R_ASSERT3(xml_result, "xml file not found", xml_file_full.c_str());
 

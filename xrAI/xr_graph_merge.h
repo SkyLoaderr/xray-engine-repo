@@ -12,9 +12,9 @@ struct CLevelInfo {
 	u32				id;
 	LPSTR			name;
 	Fvector			offset;
-	ref_str			m_section;
+	shared_str			m_section;
 
-	CLevelInfo	(u32 _id, LPCSTR _name, const Fvector &_offset, ref_str section) :
+	CLevelInfo	(u32 _id, LPCSTR _name, const Fvector &_offset, shared_str section) :
 		id(_id),
 		offset(_offset),
 		m_section(section)

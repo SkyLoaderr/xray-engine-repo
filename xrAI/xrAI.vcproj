@@ -1085,6 +1085,16 @@
 									RelativePath=".\path_manager_game_vertex_type_inline.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="path_manager_game_level"
+								Filter="">
+								<File
+									RelativePath=".\path_manager_game_level.h">
+								</File>
+								<File
+									RelativePath=".\path_manager_game_level_inline.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="path_manager_generic"
@@ -1184,6 +1194,9 @@
 							</File>
 							<File
 								RelativePath=".\path_manager_params_flooder.h">
+							</File>
+							<File
+								RelativePath=".\path_manager_params_game_level.h">
 							</File>
 							<File
 								RelativePath=".\path_manager_params_obstacles.h">
