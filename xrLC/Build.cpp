@@ -94,10 +94,10 @@ void CBuild::Light_prepare()
 void CBuild::Run	(LPCSTR P)
 {
 	//****************************************** Open Level
-	strconcat					(path,P,"\\");
-	string256					lfn;
-	IWriter* fs					= FS.w_open(strconcat(lfn,path,"level."));
-	fs->open_chunk				(fsL_HEADER2);
+	strconcat					(path,P,"\\")	;
+	string_path					lfn				;
+	IWriter* fs					= FS.w_open		(strconcat(lfn,path,"level."));
+	fs->open_chunk				(fsL_HEADER2)	;
 	hdrLEVEL H;	H.XRLC_version	= XRCL_PRODUCTION_VERSION;
 	fs->w						(&H,sizeof(H));
 	fs->close_chunk				();
@@ -151,7 +151,6 @@ void CBuild::Run	(LPCSTR P)
 	BuildPortals				(*fs);
 
 	//****************************************** T-Basis
-	// if (b_R2) ******************************* R2 only
 	{
 		FPU::m64r					();
 		Phase						("Building tangent-basis...");
@@ -191,7 +190,6 @@ void CBuild::Run	(LPCSTR P)
 	IsolateVertices				(TRUE);
 
 	//****************************************** UV mapping
-	// if (!b_R2)	**************************** R1 only
 	{
 		FPU::m64r					();
 		Phase						("Build UV mapping...");
@@ -208,8 +206,7 @@ void CBuild::Run	(LPCSTR P)
 	IsolateVertices				(TRUE);
 
 	//****************************************** All lighting + lmaps building and saving
-	/*if (!b_R2)*/				Light			();
-	// else						Light_R2		();
+	Light						();
 
 	//****************************************** Merge geometry
 	FPU::m64r					();

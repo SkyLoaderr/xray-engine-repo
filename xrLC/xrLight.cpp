@@ -52,7 +52,6 @@ public:
 void CBuild::Light()
 {
 	//****************************************** Implicit
-//	if (!b_R2)	//****************************** R1 only
 	{
 		FPU::m64r		();
 		Phase			("LIGHT: Implicit...");
@@ -61,7 +60,6 @@ void CBuild::Light()
 	}
 
 	//****************************************** Lmaps
-//	if (!b_R2)	//****************************** R1 only
 	{
 		FPU::m64r		();
 		Phase			("LIGHT: LMaps...");
@@ -89,7 +87,6 @@ void CBuild::Light()
 	LightVertex		();
 
 	//****************************************** Merge LMAPS
-//	if (!b_R2)	//****************************** R1 only
 	{
 		FPU::m64r		();
 		Phase			("LIGHT: Merging lightmaps...");

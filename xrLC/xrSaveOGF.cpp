@@ -3,8 +3,8 @@
 #include "OGF_Face.h"
 
 SWIContainer			g_SWI;
-VBContainer				g_VB;
-IBContainer				g_IB;
+VBContainer				g_VB,x_VB;
+IBContainer				g_IB,x_VB;
 xr_vector<LPCSTR>		g_Shaders;
 
 u32						g_batch_count;
@@ -45,6 +45,31 @@ bool	remap_order		(u32 id0, u32 id1)
 	return	xr_strcmp(*o0->textures.front().name,*o1->textures.front().name)<0;
 }
 
+void	SaveGEOMs		(LPCSTR fn, VBContainer& vb, IBContainer& ib, SWIContainer& swi)
+{
+	// geometry
+	string_path					lfn		;
+	IWriter*					file	;
+	file						= FS.w_open		(strconcat(lfn,pBuild->path,fn));
+	hdrLEVEL H;	H.XRLC_version	= XRCL_PRODUCTION_VERSION;
+	file->w_chunk				(fsL_HEADER,&H,sizeof(H));
+
+	Status				("Geometry '%s': vertices ...",	fn);
+	file->open_chunk	(fsL_VB);
+	vb.Save				(*file);
+	file->close_chunk	();
+
+	Status				("Geometry '%s': indices ...",	fn);
+	file->open_chunk	(fsL_IB);
+	ib.Save				(*file);
+	file->close_chunk	();
+
+	Status				("Geometry '%s': SWIs ...",		fn);
+	file->open_chunk	(fsL_SWIS);
+	swi.Save			(*file);
+	file->close_chunk	();
+}
+
 void CBuild::SaveTREE	(IWriter &fs)
 {
 	CMemoryWriter		MFS;
@@ -80,30 +105,10 @@ void CBuild::SaveTREE	(IWriter &fs)
 		100.f * float(g_batch_1000)/float(g_batch_count),
 		100.f * float(g_batch_5000)/float(g_batch_count)
 		);
-	//mem_Compact			();
+	mem_Compact			();
 
-	Status				("Geometry : vertices ...");
-	MFS.clear			();
-	fs.open_chunk		(fsL_VB | CFS_CompressMark);
-	g_VB.Save			(MFS);
-	fs.w_compressed		(MFS.pointer(),MFS.size());
-	fs.close_chunk		();
-	//mem_Compact			();
-
-	Status				("Geometry : SWIs ...");
-	MFS.clear			();
-	fs.open_chunk		(fsL_SWIS | CFS_CompressMark);
-	g_SWI.Save			(MFS);
-	fs.w_compressed		(MFS.pointer(),MFS.size());
-	fs.close_chunk		();
-
-	Status				("Geometry : indices ...");
-	MFS.clear			();
-	fs.open_chunk		(fsL_IB | CFS_CompressMark);
-	g_IB.Save			(MFS);
-	fs.w_compressed		(MFS.pointer(),MFS.size());
-	fs.close_chunk		();
-	//mem_Compact			();
+	SaveGEOMs			("level.geom",	g_VB,g_IB,g_SWI);	// Normal
+	SaveGEOMs			("level.geomx",	x_VB,x_IB,x_SWI);	// Normal
 
 	Status				("Shader table...");
 	fs.open_chunk		(fsL_SHADERS);

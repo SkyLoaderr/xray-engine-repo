@@ -74,7 +74,7 @@ public:
 	xr_vector<xrMU_Reference*>		mu_refs;
 
 	Shader_xrLC_LIB					shaders;
-	string256						path;
+	string_path						path;
 
 	void	mem_Compact				();
 	void	mem_CompactSubdivs		();

@@ -48,7 +48,6 @@ void Startup(LPSTR     lpCmdLine)
 	if (strstr(cmd,"-?") || strstr(cmd,"-h"))			{ Help(); return; }
 	if (strstr(cmd,"-f")==0)							{ Help(); return; }
 	if (strstr(cmd,"-o"))								bModifyOptions	= TRUE;
-	if (strstr(cmd,"-r2"))								b_R2			= TRUE;
 	if (strstr(cmd,"-gi"))								b_radiosity		= TRUE;
 	if (strstr(cmd,"-noise"))							b_noise			= TRUE;
 	if (strstr(cmd,"-nosun"))							b_nosun			= TRUE;

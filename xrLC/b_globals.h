@@ -30,21 +30,20 @@ typedef xr_map<Vertex*,Vertex*>			map_v2v;	// vertex to vertex translation
 typedef map_v2v::iterator				map_v2v_it;
 
 // Globals
-extern SWIContainer				g_SWI;
-extern vecVertex				g_vertices;
-extern vecFace					g_faces;
-extern vec2Face					g_XSplit;
-extern vecDefl					g_deflectors;
-extern CDB::MODEL*				RCAST_Model;
-extern CDeflector*				Deflector;
-extern VBContainer				g_VB;
-extern IBContainer				g_IB;
-extern OGF_Base*				g_TREE_ROOT;
-extern b_params					g_params;
+extern vecVertex				g_vertices		;
+extern vecFace					g_faces			;
+extern vec2Face					g_XSplit		;
+extern vecDefl					g_deflectors	;
+extern CDB::MODEL*				RCAST_Model		;
+extern CDeflector*				Deflector		;
+extern SWIContainer				g_SWI,	x_SWI	;
+extern VBContainer				g_VB,	x_VB	;
+extern IBContainer				g_IB,	x_IB	;
+extern OGF_Base*				g_TREE_ROOT		;
+extern b_params					g_params		;
 extern const int				edge2idx	[3][2];
 extern const int				edge2idx3	[3][3];
 extern const int				idx2edge	[3][3];
-extern BOOL						b_R2;
 extern BOOL						b_radiosity;
 extern BOOL						b_noise;
 extern BOOL						b_nosun;
