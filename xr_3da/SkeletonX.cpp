@@ -83,9 +83,8 @@ void CSkeletonX::_Render	(CVS* hVS, DWORD vCount, DWORD pCount, IDirect3DIndexBu
 	}
 
 	Device.Primitive.setVertices	(hVS->dwHandle,hVS->dwStride,_VS.Buffer());
-	Device.Primitive.setIndices		(vOffset,IB);;
+	Device.Primitive.setIndices		(vOffset,IB);
 	Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount,0,pCount);
-	UPDATEC							(vCount,pCount,1);
 }
 //////////////////////////////////////////////////////////////////////
 void CSkeletonX::_Release()

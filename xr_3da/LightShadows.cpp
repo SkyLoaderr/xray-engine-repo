@@ -417,7 +417,6 @@ void CLightShadows::render	()
 				Device.Primitive.setVertices	(vs_World->dwHandle,vs_World->dwStride,Device.Streams.Vertex.Buffer());
 				Device.Primitive.setIndices		(0,0);
 				Device.Primitive.Render			(D3DPT_TRIANGLELIST,Offset,batch);
-				UPDATEC							(batch*3,batch,1);
 
 				pv								= (FVF::LIT*) Device.Streams.Vertex.Lock(batch_size*3,vs_World->dwStride,Offset);
 				batch							= 0;
@@ -432,7 +431,6 @@ void CLightShadows::render	()
 		Device.Primitive.setVertices	(vs_World->dwHandle,vs_World->dwStride,Device.Streams.Vertex.Buffer());
 		Device.Primitive.setIndices		(0,0);
 		Device.Primitive.Render			(D3DPT_TRIANGLELIST,Offset,batch);
-		UPDATEC							(batch*3,batch,1);
 	}
 	
 	// Clear all shadows

@@ -168,7 +168,6 @@ void CPSVisual::Render		(float LOD)
 		Device.Primitive.setVertices	(hVS->dwHandle,hVS->dwStride,Device.Streams.Vertex.Buffer());
 		Device.Primitive.setIndices		(vOffset,Device.Streams.QuadIB);;
 		Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,dwCount,0,dwCount/2);
-		UPDATEC							(dwCount,dwCount/2,1);
 	}
 }
  
