@@ -369,7 +369,7 @@ function animation:__init(npc, mgr)
 									rnd = 80 },
 						into	= { [0]	= {"knopka_0"} },
 						out	= { [0]	= "knopka_1" },
-						idle	= { [0]	= "knopka_0" },
+						idle	= { [0]	= "knopka_2" },
 						rnd		= nil },
 
 		warding		= {	prop	= { maxidle = 10,
