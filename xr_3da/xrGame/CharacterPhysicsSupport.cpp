@@ -133,7 +133,7 @@ void CCharacterPhysicsSupport::in_NetDestroy()
 
 void	CCharacterPhysicsSupport::in_NetSave(NET_Packet& P)
 {
-	CPHSkeleton::SaveNetState(P);
+	if(m_eType!=etActor) CPHSkeleton::SaveNetState(P);
 }
 
 void CCharacterPhysicsSupport::in_Init()
