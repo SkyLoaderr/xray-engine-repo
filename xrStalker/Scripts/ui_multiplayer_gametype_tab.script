@@ -18,11 +18,11 @@ end
 function gametype_tab:InitControls(x_pos, y_pos, width, height)
 	ui_multiplayer_base_tab.multiplayer_base_tab.InitControls(self, "Game Type", x_pos, y_pos, width, height)
 	
-	rbtn_rect = {}
+	local rbtn_rect = {}
 	rbtn_rect.width = 350
 	rbtn_rect.height = 40
 	
-	rbtn_group_rect = {}
+	local rbtn_group_rect = {}
 	rbtn_group_rect.height = rbtn.height*3 + self.indent*2
 	rbtn_group_rect.y = (self.main_rect.height - rbtn_group.height)/2
 	rbnt_group_rect.x = (self.main_rect.width - rbtn.width)/2
