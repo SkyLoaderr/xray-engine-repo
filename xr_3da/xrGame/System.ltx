@@ -4303,6 +4303,10 @@ sleep_radiation = 1.0	;1.1
 
 ;animations			 = udar_1,udar_2,rrrrrr_1,rrrrrr_2,rrrrrr_3
 
+;*************************************************************************************************
+;**  MONSTERS  _START
+;*************************************************************************************************
+
 ;-----------------------------------------------------------------------------------
 ; Flesh
 ;-----------------------------------------------------------------------------------
@@ -4410,6 +4414,11 @@ ProbRestTurnLeft	= 10
 selector_free_hunting    =      20.0,            20.0,                 1000.0,                 0.0,               10000.0,               1000.0,               10000.0,      
 ;							  fSearchRange,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
 selector_cover           =      20.0,            -1000.0,                30.0,                 0.0,                  0.0,              100000.0,             100000.0,               1000.0,
+
+selector_getaway		=      20.0,            20.0,                1000.0,             0.0,               10000.0,		  1000.0,				10000.0,      
+selector_approach		=      20.0,            1.0,                 1000.0,             0.0,               0.0,              1000.0,				10000.0,      
+
+
 terrain				 = 255,255,255,255,30,40
 
 hit_type = strike
@@ -4685,11 +4694,14 @@ Max_Satiety			= 0.9		; макс. норма сытости (больше - очень сытый)
 bone_spin				= bip01_spine1
 
 ;                           fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
-selector_free_hunting   =      20.0,            20.0,                 1000.0,                 0.0,               10000.0,               1000.0,               10000.0,      
-;                           fSearchRange,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
-selector_cover          =      20.0,            -1000.0,                30.0,                 0.0,                  0.0,              100000.0,             100000.0,               1000.0,
-;                           fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
-selector_hear_sound		=      20.0,            1.0,                 1000.0,                 0.0,               0.0,               1000.0,               10000.0,      
+selector_free_hunting   =      20.0,            20.0,				1000.0,              0.0,               10000.0,          1000.0,               10000.0,      
+selector_cover          =      20.0,            -1000.0,			30.0,                0.0,               0.0,              100000.0,             100000.0,               1000.0,
+selector_hear_sound		=      20.0,            1.0,				1000.0,              0.0,               0.0,              1000.0,               10000.0,      
+
+
+selector_getaway		=      20.0,            20.0,                1000.0,             0.0,               10000.0,		  1000.0,				10000.0,      
+selector_approach		=      20.0,            1.0,                 1000.0,             0.0,               0.0,              1000.0,				10000.0,      
+
 
 
 terrain					= 255,255,255,255,30,40
@@ -4817,6 +4829,9 @@ selector_free_hunting    =      20.0,            20.0,                 1000.0,  
 ;                           fSearchRange,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
 selector_cover           =      20.0,            -1000.0,                30.0,                 0.0,                  0.0,              100000.0,             100000.0,               1000.0,
 
+selector_getaway		=      20.0,            20.0,                1000.0,             0.0,               10000.0,		  1000.0,				10000.0,      
+selector_approach		=      20.0,            1.0,                 1000.0,             0.0,               0.0,              1000.0,				10000.0,      
+
 terrain				 = 255,255,255,255,30,40
 
 hit_type = wound
@@ -4846,11 +4861,9 @@ sleep_power = 1.0		;1.5
 sleep_satiety = 1.0		;0.8
 sleep_radiation = 1.0	;1.1
 
-;-----------------------------------------------------------------------------------
-; Corpse
-;-----------------------------------------------------------------------------------
-[corpse]
-freshness	= 1				; [Jim] труп становится не свежим, если прошло 'freshness' часов игрового времени
+;*************************************************************************************************
+;**  MONSTERS  _END
+;*************************************************************************************************
 
 ;-----------------------------------------------------------------------------------
 ; Trader
