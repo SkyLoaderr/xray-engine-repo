@@ -284,6 +284,62 @@ VOID CDeflector::Light()
 	ApplyBorders(lm,253);
 	ApplyBorders(lm,252);
 	lm.dwWidth	= o_x;	lm.dwHeight	= o_y;
+	
+	// Try to shrink lightmap in U & V direction to ONE pixel
+	{
+		// Calculate average color
+		DWORD _r=0;	DWORD _g=0;	DWORD _b=0;
+		{
+			for (DWORD y=0; y<s_y; y++)
+			{
+				for (DWORD x=0; x<s_x; x++)
+				{
+					DWORD pixel			= lm.pSurface[y*s_x+x];
+					_r += RGBA_GETRED	(pixel);
+					_g += RGBA_GETGREEN	(pixel);
+					_b += RGBA_GETBLUE	(pixel);
+				}
+			}
+		}
+		DWORD cnt = s_y*s_x;
+		_r	/= cnt;	_g	/= cnt;	_b	/= cnt;
+		
+		// Test for equality
+		DWORD	bCompress	= TRUE;
+		{
+			for (DWORD y=0; y<s_y; y++)
+			{
+				for (DWORD x=0; x<s_x; x++)
+				{
+					DWORD pixel	= lm.pSurface	[y*s_x+x];
+					DWORD r		= RGBA_GETRED	(pixel);
+					if (_abs(s32(r)-s32(_r))>1)	{ bCompress=FALSE; break; }
+					DWORD g		= RGBA_GETGREEN	(pixel);
+					if (_abs(s32(g)-s32(_g))>1)	{ bCompress=FALSE; break; }
+					DWORD b		= RGBA_GETBLUE	(pixel);
+					if (_abs(s32(b)-s32(_b))>1)	{ bCompress=FALSE; break; }
+				}
+				if (!bCompress) break;
+			}
+		}
+
+		// Compress if needed
+		if (bCompress)
+		{
+			DWORD	c_x			= BORDER*2;
+			DWORD	c_y			= BORDER*2;
+			DWORD   c_size		= c_x*c_y;
+			LPDWORD	compressed	= LPDWORD(malloc(c_size*4));
+			ZeroMemory			(compressed,c_size*4);
+			DWORD	c_fill		= RGBA_MAKE		(_r,_g,_b,253);
+			for (DWORD p=0; p<c_size; p++)	compressed[p]=c_fill;
+
+			_FREE				(lm.pSurface);
+			lm.pSurface			= compressed;
+			lm.dwHeight			= 0;
+			lm.dwWidth			= 0;
+		}
+	}
 }
 
 float gauss [7][7] =

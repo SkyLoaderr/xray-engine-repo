@@ -171,7 +171,7 @@ VOID CDeflector::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BO
 	UVpoint half;	half.set	(.5f/512.f, .5f/512.f);
 	UVpoint guard;	guard.set	(BORDER/512.f, BORDER/512.f);
 	UVpoint scale;  scale.set	(float(s_u-2*BORDER)/512.f, float(s_v-2*BORDER)/512.f);	// take in mind border
-	UVpoint base;	base.set	(float(b_u+BORDER)/512.f, float(b_v+BORDER)/512.f);					// offset in UV space
+	UVpoint base;	base.set	(float(b_u+BORDER)/512.f, float(b_v+BORDER)/512.f);		// offset in UV space
 
 	if (!bRotated) 
 	{
