@@ -137,7 +137,7 @@ public:
 	void						accum_spot_geom_create	();
 	void						accum_spot_geom_destroy	();
 
-	void						u_stencil_optimize		();
+	void						u_stencil_optimize		(BOOL		common_stencil=TRUE);
 	void						u_compute_texgen_screen	(Fmatrix&	dest);
 	void						u_compute_texgen_jitter	(Fmatrix&	dest);
 	void						u_setrt					(const ref_rt& _1, const ref_rt& _2, const ref_rt& _3, IDirect3DSurface9* zb);

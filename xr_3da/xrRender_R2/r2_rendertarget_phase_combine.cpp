@@ -21,7 +21,9 @@ void	CRenderTarget::phase_combine	()
 
 	// Draw full-screen quad textured with our scene image
 	{
-		// RCache.set_Stencil		(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0x00);	// stencil should be >= 1
+		//.
+		RCache.set_Stencil					(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0x00);	// stencil should be >= 1
+		if (RImplementation.o.nvstencil)	u_stencil_optimize	(FALSE);
 
 		// Compute params
 		Fmatrix		m_v2w;			m_v2w.invert				(Device.mView		);
@@ -67,7 +69,8 @@ void	CRenderTarget::phase_combine	()
 
 	// Draw skybox
 	{
-		// RCache.set_Stencil		(TRUE,D3DCMP_EQUAL,0x00,0xff,0x00);
+		//.
+		RCache.set_Stencil			(TRUE,D3DCMP_EQUAL,0x00,0xff,0x00);
 		g_pGamePersistent->Environment.RenderFirst	();
 	}
 
