@@ -29,7 +29,7 @@ void CCar::SCarSound::Update()
 {
 	if(eCarSound==sndOff) return;
 	//float		velocity						= V.magnitude();
-	float		scale							= 0.2f+pcar->m_current_rpm/pcar->m_torque_rpm;// clamp(scale,0.0f,1.5f);
+	float		scale							= 0.2f+pcar->m_current_rpm/pcar->m_torque_rpm; clamp(scale,0.2f,2.0f);
 
 	snd_engine.set_position			(pcar->Position());
 
