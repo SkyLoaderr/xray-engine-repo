@@ -7,8 +7,9 @@
   $Id: MxBlockModel.cxx,v 1.27 2000/11/20 20:36:38 garland Exp $
 
  ************************************************************************/
+#include "stdafx.h"
+#pragma hdrstop
 
-#include "stdmix.h"
 #include "MxBlockModel.h"
 #include "MxVector.h"
 

@@ -7,8 +7,9 @@ Copyright (C) 1998 Michael Garland.  See "COPYING.txt" for details.
 $Id: MxPropSlim.cxx,v 1.9 2000/11/20 20:36:38 garland Exp $
 
 ************************************************************************/
+#include "stdafx.h"
+#pragma hdrstop
 
-#include "stdmix.h"
 #include "MxPropSlim.h"
 #include "MxGeom3D.h"
 
@@ -660,4 +661,36 @@ void MxPropSlim::finalize_edge_update(edge_info *info)
 
 void MxPropSlim::update_pre_contract(const MxPairContraction& conx)
 {
-	MxVertexID v1=conx.v1, v2=
+	MxVertexID v1=conx.v1, v2=conx.v2;
+	unsigned int i, j;
+
+	star.reset();
+	m->collect_vertex_star(v1, star);
+
+	for(i=0; i<(unsigned int)edge_links(v2).length(); i++)
+	{
+		edge_info *e = edge_links(v2)(i);
+		MxVertexID u = (e->v1==v2)?e->v2:e->v1;
+		VERIFY( e->v1==v2 || e->v2==v2 );
+		VERIFY( u!=v2 );
+
+		if( u==v1 || varray_find(star, u) )
+		{
+			// This is a useless link --- kill it
+			bool found = varray_find(edge_links(u), e, &j);
+			VERIFY( found );
+			edge_links(u).remove(j);
+			heap.remove(e);
+			if( u!=v1 ) xr_delete(e); // (v1,v2) will be deleted later
+		}
+		else
+		{
+			// Relink this to v1
+			e->v1 = v1;
+			e->v2 = u;
+			edge_links(v1).add(e);
+		}
+	}
+
+	edge_links(v2).reset();
+}

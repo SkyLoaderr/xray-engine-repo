@@ -7,8 +7,9 @@ Copyright (C) 1998 Michael Garland.  See "COPYING.txt" for details.
 $Id: MxStdModel.cxx,v 1.42 2000/11/20 20:36:38 garland Exp $
 
 ************************************************************************/
+#include "stdafx.h"
+#pragma hdrstop
 
-#include "stdmix.h"
 #include "MxStdModel.h"
 #include "MxVector.h"
 

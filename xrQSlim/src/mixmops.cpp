@@ -7,8 +7,9 @@
   $Id: mixmops.cxx,v 1.7 1998/10/26 21:09:38 garland Exp $
 
  ************************************************************************/
+#include "stdafx.h"
+#pragma hdrstop
 
-#include "stdmix.h"
 #include "MxMatrix.h"
 
 // This section originally from Paul's matrix library.

@@ -7,8 +7,9 @@
   $Id: MxQMetric3.cxx,v 1.13.2.1 2002/01/31 19:29:48 garland Exp $
 
  ************************************************************************/
+#include "stdafx.h"
+#pragma hdrstop
 
-#include "stdmix.h"
 #include "MxDefines.h"
 #include "MxQMetric3.h"
 

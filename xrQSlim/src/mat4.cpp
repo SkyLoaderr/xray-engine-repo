@@ -5,8 +5,9 @@
   $Id: mat4.cxx,v 1.4 2000/12/04 06:18:37 garland Exp $
 
  ************************************************************************/
+#include "stdafx.h"
+#pragma hdrstop
 
-#include "stdmix.h"
 #include "mat4.h"
 
 Mat4 Mat4::I()

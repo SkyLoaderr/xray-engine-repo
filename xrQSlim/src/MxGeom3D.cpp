@@ -7,8 +7,9 @@
   $Id: MxGeom3D.cxx,v 1.13 2000/12/14 17:47:43 garland Exp $
 
  ************************************************************************/
+#include "stdafx.h"
+#pragma hdrstop
 
-#include "stdmix.h"
 #include "MxGeom3D.h"
 
 void mx3d_box_corners(const Vec3& min, const Vec3& max, Vec3 *v)

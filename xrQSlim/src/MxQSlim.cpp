@@ -7,8 +7,9 @@ Copyright (C) 1998 Michael Garland.  See "COPYING.txt" for details.
 $Id: MxQSlim.cxx,v 1.42.2.2 2004/07/01 18:47:32 garland Exp $
 
 ************************************************************************/
+#include "stdafx.h"
+#pragma hdrstop
 
-#include "stdmix.h"
 #include "MxQSlim.h"
 #include "MxGeom3D.h"
 #include "MxVector.h"

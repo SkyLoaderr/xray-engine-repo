@@ -7,8 +7,9 @@
   $Id: MxQMetric.cxx,v 1.5 1998/10/26 21:09:17 garland Exp $
 
  ************************************************************************/
+#include "stdafx.h"
+#pragma hdrstop
 
-#include "stdmix.h"
 #include "MxQMetric.h"
 
 static

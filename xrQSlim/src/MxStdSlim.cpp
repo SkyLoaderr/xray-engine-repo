@@ -7,8 +7,9 @@
   $Id: MxStdSlim.cxx,v 1.4 1999/01/08 18:56:30 garland Exp $
 
  ************************************************************************/
+#include "stdafx.h"
+#pragma hdrstop
 
-#include "stdmix.h"
 #include "MxStdSlim.h"
 
 MxStdSlim::MxStdSlim(MxStdModel *m0)

@@ -7,8 +7,9 @@
   $Id: MxMatrix.cxx,v 1.4 1998/10/26 21:09:09 garland Exp $
 
  ************************************************************************/
+#include "stdafx.h"
+#pragma hdrstop
 
-#include "stdmix.h"
 #include "MxMatrix.h"
 
 // Originally from Paul's matrix library.

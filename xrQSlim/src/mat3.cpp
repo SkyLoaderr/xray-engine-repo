@@ -5,8 +5,9 @@
   $Id: mat3.cxx,v 1.3 2001/11/19 16:08:30 garland Exp $
 
  ************************************************************************/
+#include "stdafx.h"
+#pragma hdrstop
 
-#include "stdmix.h"
 #include "mat3.h"
 
 Mat3 Mat3::I() { return Mat3(Vec3(1,0,0), Vec3(0,1,0), Vec3(0,0,1)); }

@@ -7,8 +7,9 @@
   $Id: MxHeap.cxx,v 1.7 2000/11/20 20:36:38 garland Exp $
 
  ************************************************************************/
+#include "stdafx.h"
+#pragma hdrstop
 
-#include "stdmix.h"
 #include "MxHeap.h"
 
 #define ref(i) ((*this)[i])

@@ -12,8 +12,9 @@
   $Id: MxMat3-jacobi.cxx,v 1.11 2000/12/14 17:48:24 garland Exp $
 
  ************************************************************************/
+#include "stdafx.h"
+#pragma hdrstop
 
-#include "stdmix.h"
 #include "MxMat3.h"
 
 #define ROT(a,i,j,k,l) g=a[i][j];h=a[k][l];a[i][j]=g-s*(h+g*tau);a[k][l]=h+s*(g-h*tau);
