@@ -57,7 +57,7 @@ function load_dialog:InitControls()
 						     y = self.top_align_y,
 						     width = 148, 
 						     height = 148}
-	info_rect.y = (self.main_rect.width - info_rect.width)/2
+	//info_rect.y = (self.main_rect.width - info_rect.width)/2
 							 
 							 
 							 
@@ -79,10 +79,10 @@ function load_dialog:InitControls()
 	----- CODE -------
 	
 	-- INFO box --
-	local frame_info = CUIStatic() 
+	local frame_info = CUIFrameWindow() 
     frame_info:SetAutoDelete(true)
-    frame_info:Init("ui\\ui_static_loadgameinfo", info_rect.x, info_rect.y, info_rect.width, info_rect.height)
-    self.main_frame:AttachChild(frame_info)	
+    frame_info:Init("ui\\ui_frame_very_small", info_rect.x, info_rect.y, info_rect.width, info_rect.height)
+	self.main_frame:AttachChild(frame_info)	
 
 	------------LIST-----------------
     local txt_list   = CUIFrameWindow()  --background for ListView
