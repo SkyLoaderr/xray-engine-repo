@@ -32,19 +32,19 @@ end
 function play_sound_rnd (obj, min_delay, max_delay, theme, sub_theme, phrase_set, sub_phrase)
 
     if obj == nil or theme == nil then return end
-    --printf ("Theme %s", theme)
+    printf ("Theme %s", theme)
     if sub_theme == nil or table.getn (themes[theme]) < sub_theme then
        sub_theme = math.random (1, table.getn (themes[theme]))
     end
-    --printf ("Sub_theme %d", sub_theme)
+    printf ("Sub_theme %d", sub_theme)
     if phrase_set == nil or table.getn (themes[theme][sub_theme]) < phrase_set - 1 then
        phrase_set = math.random (1, table.getn (themes[theme][sub_theme]) - 1)
     end
-    --printf ("Phrase_set %d", phrase_set)
+    printf ("Phrase_set %d", phrase_set)
     if sub_phrase == nil or this.get_num_subphrases (theme, sub_theme, phrase_set - 1) < sub_phrase then
        sub_phrase = math.random (0, this.get_num_subphrases (theme, sub_theme, phrase_set - 1) - 1)
     end
-    --printf ("Sub_phrase %d", sub_phrase)
+    printf ("Sub_phrase %d", sub_phrase)
     obj:set_sound_mask (-1)
     obj:set_sound_mask (0)
     --printf ("NAMESPACE %d", themes[theme][sub_theme][1] + phrase_set)
