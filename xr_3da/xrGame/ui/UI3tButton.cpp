@@ -27,6 +27,12 @@ void CUI3tButton::Init(int x, int y, int width, int height){
     CUIWindow::Init(x, y, width, height);
 }
 
+void CUI3tButton::Init(LPCSTR tex_name, int x, int y, int width, int height)
+{
+	this->Init(x, y, width, height);
+	this->InitTexture(tex_name);
+}
+
 void CUI3tButton::InitTexture(LPCSTR tex_name){
 	char tex_enabled[256];
 	char tex_disabled[256];
@@ -34,15 +40,15 @@ void CUI3tButton::InitTexture(LPCSTR tex_name){
 
 	// enabled state texture
 	strcpy(tex_enabled,    tex_name);
-	strcat(tex_enabled,   "e");
+	strcat(tex_enabled,   "_e");
 
 	// pressed state texture
 	strcpy(tex_disabled,   tex_name);
-	strcat(tex_disabled,   "d");
+	strcat(tex_disabled,   "_d");
 
 	// touched state texture
 	strcpy(tex_touched, tex_name);
-	strcat(tex_touched, "t");
+	strcat(tex_touched, "_t");
 
 	RECT absRect = this->GetAbsoluteRect();
 
@@ -74,26 +80,32 @@ void CUI3tButton::SetTextColor(u32 color){
     this->m_dwEnabledTextColor = color;
 }
 
+void CUI3tButton::SetDisabledTextColor(u32 color){
+	this->m_dwDisabledTextColor = color;
+}
+
 void CUI3tButton::Draw(){
     RECT rect = GetAbsoluteRect();
-
-	switch (this->m_eButtonState){		
-		case CUIButton::BUTTON_PUSHED :
-			this->m_psiCurrentState = &this->m_siTouchedState;
-			break;
-		default :
-			this->m_psiCurrentState = &this->m_siEnabledState;
-			break;
-	}
-
-	if (!this->m_bIsEnabled)
-		this->m_psiCurrentState = &this->m_siDisabledState;
 
 	if(m_psiCurrentState && m_bTextureEnable)//m_bAvailableTexture && m_bTextureEnable)
 	{		
 		if (this->m_psiCurrentState->GetShader())
 		{
+			switch (this->m_eButtonState)
+			{		
+			case CUIButton::BUTTON_PUSHED :
+				this->m_psiCurrentState = &this->m_siTouchedState;
+				break;
+			default :
+				this->m_psiCurrentState = &this->m_siEnabledState;
+				break;
+			}
+
+			if (!this->m_bIsEnabled)
+				this->m_psiCurrentState = &this->m_siDisabledState;
+
 			m_UIStaticItem.SetPos(rect.left, rect.top);
+			this->m_psiCurrentState->SetPos(rect.left, rect.top);
 
 			if(m_bStretchTexture)
 				m_psiCurrentState->Render(0, 0, rect.right-rect.left, rect.bottom-rect.top);

@@ -16,10 +16,12 @@ public:
 	virtual ~CUI3tButton();
 	// appearence
 	virtual void Init(int x, int y, int width, int height);
+    virtual void Init(LPCSTR tex_name, int x, int y, int width, int height);
 	virtual void InitTexture(LPCSTR tex_name);
 	virtual void InitTexture(LPCSTR tex_enabled, LPCSTR tex_disabled, LPCSTR tex_touched);	
 	virtual void SetColor(u32 color_enabled, u32 color_disabled, u32 color_touched);	
 	virtual void SetTextColor(u32 color);
+	virtual void SetDisabledTextColor(u32 color);
 
 	// behavior
 	virtual void Draw();

@@ -28,6 +28,7 @@ void CUIButton::script_register(lua_State *L)
 		class_<CUI3tButton, CUIButton>("CUI3tButton")
 		.def(							constructor<>())
 		.def("Init",					(void(CUI3tButton::*)(int,int,int,int))CUI3tButton::Init)
+		.def("Init",					(void(CUI3tButton::*)(LPCSTR,int,int,int,int))CUI3tButton::Init)
 		.def("InitTexture",				(void(CUI3tButton::*)(LPCSTR))CUIButton::InitTexture)
 		.def("InitTexture",				(void(CUI3tButton::*)(LPCSTR, LPCSTR, LPCSTR, LPCSTR))CUIButton::InitTexture)
 		.def("SetColor",				(void(CUI3tButton::*)(int, int, int)) &CUI3tButton::SetColor),
