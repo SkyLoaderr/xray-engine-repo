@@ -369,15 +369,15 @@ HRESULT		xrIDirect3DDevice9::GetPixelShaderConstantF( UINT StartRegister,float* 
 { APIDEBUG("xrIDirect3DDevice9::GetPixelShaderConstantF");  return HRESULT_Proc(S_OK); };
 HRESULT		xrIDirect3DDevice9::SetPixelShaderConstantI( UINT StartRegister,CONST int* pConstantData,UINT Vector4iCount) 
 { APIDEBUG("xrIDirect3DDevice9::SetPixelShaderConstantI");  return HRESULT_Proc(S_OK); };
-HRESULT		xrIDirect3DDevice9::GetPixelShaderConstantI	( UINT StartRegister,int* pConstantData,UINT Vector4iCount)						{ APIDEBUG("xrIDirect3DDevice9::GetPixelShaderConstantI	");  return HRESULT_Proc(S_OK); };
-HRESULT		xrIDirect3DDevice9::SetPixelShaderConstantB	( UINT StartRegister,CONST BOOL* pConstantData,UINT  BoolCount)					{ APIDEBUG("xrIDirect3DDevice9::SetPixelShaderConstantB	");  return HRESULT_Proc(S_OK); };
-HRESULT		xrIDirect3DDevice9::GetPixelShaderConstantB	( UINT StartRegister,BOOL* pConstantData,UINT BoolCount)						{ APIDEBUG("xrIDirect3DDevice9::GetPixelShaderConstantB	");  return HRESULT_Proc(S_OK); };
-HRESULT		xrIDirect3DDevice9::DrawRectPatch			( UINT Handle,CONST float* pNumSegs,CONST D3DRECTPATCH_INFO* pRectPatchInfo)	{ APIDEBUG("xrIDirect3DDevice9::DrawRectPatch			");  return HRESULT_Proc(S_OK); };
-HRESULT		xrIDirect3DDevice9::DrawTriPatch			( UINT Handle,CONST float* pNumSegs,CONST D3DTRIPATCH_INFO* pTriPatchInfo)		{ APIDEBUG("xrIDirect3DDevice9::DrawTriPatch			");  return HRESULT_Proc(S_OK); };
-HRESULT		xrIDirect3DDevice9::DeletePatch				( UINT Handle)																	{ APIDEBUG("xrIDirect3DDevice9::DeletePatch				");  return HRESULT_Proc(S_OK); };
+HRESULT		xrIDirect3DDevice9::GetPixelShaderConstantI	( UINT StartRegister,int* pConstantData,UINT Vector4iCount)						{ APIDEBUG("xrIDirect3DDevice9::GetPixelShaderConstantI");  return HRESULT_Proc(S_OK); };
+HRESULT		xrIDirect3DDevice9::SetPixelShaderConstantB	( UINT StartRegister,CONST BOOL* pConstantData,UINT  BoolCount)					{ APIDEBUG("xrIDirect3DDevice9::SetPixelShaderConstantB");  return HRESULT_Proc(S_OK); };
+HRESULT		xrIDirect3DDevice9::GetPixelShaderConstantB	( UINT StartRegister,BOOL* pConstantData,UINT BoolCount)						{ APIDEBUG("xrIDirect3DDevice9::GetPixelShaderConstantB");  return HRESULT_Proc(S_OK); };
+HRESULT		xrIDirect3DDevice9::DrawRectPatch			( UINT Handle,CONST float* pNumSegs,CONST D3DRECTPATCH_INFO* pRectPatchInfo)	{ APIDEBUG("xrIDirect3DDevice9::DrawRectPatch");  return HRESULT_Proc(S_OK); };
+HRESULT		xrIDirect3DDevice9::DrawTriPatch			( UINT Handle,CONST float* pNumSegs,CONST D3DTRIPATCH_INFO* pTriPatchInfo)		{ APIDEBUG("xrIDirect3DDevice9::DrawTriPatch");  return HRESULT_Proc(S_OK); };
+HRESULT		xrIDirect3DDevice9::DeletePatch				( UINT Handle)																	{ APIDEBUG("xrIDirect3DDevice9::DeletePatch");  return HRESULT_Proc(S_OK); };
 HRESULT		xrIDirect3DDevice9::CreateQuery				( D3DQUERYTYPE Type,IDirect3DQuery9** ppQuery)									
 { 
-	APIDEBUG("xrIDirect3DDevice9::CreateQuery				");  ; 
+	APIDEBUG("xrIDirect3DDevice9::CreateQuery"); 
 	*ppQuery = NULL;
 	xrIDirect3DQuery9* I = new xrIDirect3DQuery9(this, Type);
 	*ppQuery = I;

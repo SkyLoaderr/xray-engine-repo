@@ -56,22 +56,22 @@ HRESULT				xrIDirect3DQuery9::GetDevice	( IDirect3DDevice9** ppDevice)
 };
 D3DQUERYTYPE		xrIDirect3DQuery9::GetType		()													
 {
-	APIDEBUG("xrIDirect3DQuery9::GetType		");
+	APIDEBUG("xrIDirect3DQuery9::GetType");
 	return Type;
 };
 DWORD				xrIDirect3DQuery9::GetDataSize	()													
 {
-	APIDEBUG("xrIDirect3DQuery9::GetDataSize	");
+	APIDEBUG("xrIDirect3DQuery9::GetDataSize");
 	return DWORD_Proc(DataSize);
 };
 HRESULT				xrIDirect3DQuery9::Issue		( DWORD dwIssueFlags)								
 {
-	APIDEBUG("xrIDirect3DQuery9::Issue		");
+	APIDEBUG("xrIDirect3DQuery9::Issue");
 	return HRESULT_Proc(S_OK);
 };
 HRESULT				xrIDirect3DQuery9::GetData		( void* pData,DWORD dwSize,DWORD dwGetDataFlags)	
 {
-	APIDEBUG("xrIDirect3DQuery9::GetData		");
+	APIDEBUG("xrIDirect3DQuery9::GetData");
 	dwSize = 0;
 	return HRESULT_Proc(S_OK);
 };

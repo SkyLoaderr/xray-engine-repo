@@ -63,23 +63,23 @@ ULONG			xrIDirect3DSurface9::Release()
 /*** IDirect3DResource9 methods ***/
 HRESULT			xrIDirect3DSurface9::GetDevice		( IDirect3DDevice9** ppDevice)										
 {
-	APIDEBUG("xrIDirect3DSurface9::GetDevice		");
+	APIDEBUG("xrIDirect3DSurface9::GetDevice");
 	m_pIDirect3DDevice9->AddRef();
 	*ppDevice = m_pIDirect3DDevice9;
 	return HRESULT_Proc(S_OK);
 };
 
-HRESULT			xrIDirect3DSurface9::SetPrivateData	( REFGUID refguid,CONST void* pData,DWORD SizeOfData,DWORD Flags)	{APIDEBUG("xrIDirect3DSurface9::SetPrivateData	");return HRESULT_Proc(S_OK);};
-HRESULT			xrIDirect3DSurface9::GetPrivateData	( REFGUID refguid,void* pData,DWORD* pSizeOfData)					{APIDEBUG("xrIDirect3DSurface9::GetPrivateData	");return HRESULT_Proc(S_OK);};
+HRESULT			xrIDirect3DSurface9::SetPrivateData	( REFGUID refguid,CONST void* pData,DWORD SizeOfData,DWORD Flags)	{APIDEBUG("xrIDirect3DSurface9::SetPrivateData");return HRESULT_Proc(S_OK);};
+HRESULT			xrIDirect3DSurface9::GetPrivateData	( REFGUID refguid,void* pData,DWORD* pSizeOfData)					{APIDEBUG("xrIDirect3DSurface9::GetPrivateData");return HRESULT_Proc(S_OK);};
 HRESULT			xrIDirect3DSurface9::FreePrivateData( REFGUID refguid) 													{APIDEBUG("xrIDirect3DSurface9::FreePrivateData");return HRESULT_Proc(S_OK);};
-DWORD			xrIDirect3DSurface9::SetPriority	( DWORD PriorityNew) 												{APIDEBUG("xrIDirect3DSurface9::SetPriority	"); DWORD old = Priority; Priority = PriorityNew;  return DWORD_Proc(old);};
-DWORD			xrIDirect3DSurface9::GetPriority	() 																	{APIDEBUG("xrIDirect3DSurface9::GetPriority	");return DWORD_Proc(Priority);};
-void			xrIDirect3DSurface9::PreLoad		() 																	{APIDEBUG("xrIDirect3DSurface9::PreLoad		"); VOID_proc();};
-D3DRESOURCETYPE	xrIDirect3DSurface9::GetType		() 																	{APIDEBUG("xrIDirect3DSurface9::GetType		");return D3DRESOURCETYPE(0);};
-HRESULT			xrIDirect3DSurface9::GetContainer	( REFIID riid,void** ppContainer) 									{APIDEBUG("xrIDirect3DSurface9::GetContainer	");return HRESULT_Proc(S_OK);};
+DWORD			xrIDirect3DSurface9::SetPriority	( DWORD PriorityNew) 												{APIDEBUG("xrIDirect3DSurface9::SetPriority"); DWORD old = Priority; Priority = PriorityNew;  return DWORD_Proc(old);};
+DWORD			xrIDirect3DSurface9::GetPriority	() 																	{APIDEBUG("xrIDirect3DSurface9::GetPriority");return DWORD_Proc(Priority);};
+void			xrIDirect3DSurface9::PreLoad		() 																	{APIDEBUG("xrIDirect3DSurface9::PreLoad"); VOID_proc();};
+D3DRESOURCETYPE	xrIDirect3DSurface9::GetType		() 																	{APIDEBUG("xrIDirect3DSurface9::GetType");return D3DRESOURCETYPE(0);};
+HRESULT			xrIDirect3DSurface9::GetContainer	( REFIID riid,void** ppContainer) 									{APIDEBUG("xrIDirect3DSurface9::GetContainer");return HRESULT_Proc(S_OK);};
 HRESULT			xrIDirect3DSurface9::GetDesc		( D3DSURFACE_DESC *pDesc)
 {
-	APIDEBUG("xrIDirect3DSurface9::GetDesc		");
+	APIDEBUG("xrIDirect3DSurface9::GetDesc");
 
 	pDesc->Format	= Format;
 	pDesc->Type		= D3DRTYPE_SURFACE;
@@ -94,7 +94,7 @@ HRESULT			xrIDirect3DSurface9::GetDesc		( D3DSURFACE_DESC *pDesc)
 };
 HRESULT			xrIDirect3DSurface9::LockRect		( D3DLOCKED_RECT* pLockedRect,CONST RECT* pRect,DWORD Flags) 		
 {
-	APIDEBUG("xrIDirect3DSurface9::LockRect		");
+	APIDEBUG("xrIDirect3DSurface9::LockRect");
 	
 	if (m_pLockedData != NULL)
 	{
@@ -110,7 +110,7 @@ HRESULT			xrIDirect3DSurface9::LockRect		( D3DLOCKED_RECT* pLockedRect,CONST REC
 };
 HRESULT			xrIDirect3DSurface9::UnlockRect		() 																	
 {
-	APIDEBUG("xrIDirect3DSurface9::UnlockRect		");
+	APIDEBUG("xrIDirect3DSurface9::UnlockRect");
 	
 	if (m_pLockedData == NULL)
 	{
@@ -121,5 +121,5 @@ HRESULT			xrIDirect3DSurface9::UnlockRect		()
 
 	return HRESULT_Proc(S_OK);
 };
-HRESULT			xrIDirect3DSurface9::GetDC			( HDC *phdc) 														{APIDEBUG("xrIDirect3DSurface9::GetDC			");return HRESULT_Proc(S_OK);};
-HRESULT			xrIDirect3DSurface9::ReleaseDC		( HDC hdc) 															{APIDEBUG("xrIDirect3DSurface9::ReleaseDC		");return HRESULT_Proc(S_OK);};
+HRESULT			xrIDirect3DSurface9::GetDC			( HDC *phdc) 														{APIDEBUG("xrIDirect3DSurface9::GetDC");return HRESULT_Proc(S_OK);};
+HRESULT			xrIDirect3DSurface9::ReleaseDC		( HDC hdc) 															{APIDEBUG("xrIDirect3DSurface9::ReleaseDC");return HRESULT_Proc(S_OK);};
