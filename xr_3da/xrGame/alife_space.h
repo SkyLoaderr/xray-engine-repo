@@ -212,6 +212,7 @@ namespace ALife {
 		eMeetActionTypeAttack = u32(0),
 		eMeetActionTypeInteract,
 		eMeetActionTypeIgnore,
+		eMeetActionSmartTerrain,
 		eMeetActionTypeDummy = u32(-1),
 	};
 
