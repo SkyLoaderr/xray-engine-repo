@@ -10,6 +10,18 @@ class CTorch :
 {
 private:
     typedef	CInventoryItem	inherited;
+protected:
+	float			fBrightness;
+	CLAItem*		lanim;
+	float			time2hide;
+
+	u16				guid_bone;
+	ref_str			light_trace_bone;
+
+	Fvector			m_pos;
+	IRender_Light*	light_render;
+	IRender_Glow*	glow_render;
+	Fvector			m_focus;
 public:
 					CTorch				(void);
 	virtual			~CTorch				(void);
@@ -31,17 +43,4 @@ public:
 	{
 		return				(!H_Parent());
 	}
-
-protected:
-	float			fBrightness;
-	CLAItem*		lanim;
-	float			time2hide;
-	
-	u16				guid_bone;
-	ref_str			light_trace_bone;
-
-	Fvector			m_pos;
-	IRender_Light*	light_render;
-	IRender_Glow*	glow_render;
-	Fvector			m_focus;
 };

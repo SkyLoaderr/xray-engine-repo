@@ -12,7 +12,7 @@
 CHangingLamp::CHangingLamp	()
 {
 	fHealth					= 100.f;
-	light_bone_idx			= -1;
+	guid_bone				= BI_NONE;
 	lanim					= 0;
 	light_render			= ::Render->light_create();
 	light_render->set_type	(IRender_Light::SPOT);
@@ -43,21 +43,24 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 
 	// set bone id
 	R_ASSERT				(Visual()&&PKinematics(Visual()));
-	light_bone_idx			= *lamp->spot_bone?PKinematics(Visual())->LL_BoneID(*lamp->spot_bone):-1;
-	R_ASSERT2				(BI_NONE != light_bone_idx, *lamp->spot_bone);
-	clr.set					(lamp->color);			clr.a = 1.f;
-	clr.mul_rgb				(lamp->spot_brightness);
-	fBrightness				= lamp->spot_brightness;
+	CKinematics* K			= PKinematics(Visual());
+	CInifile* pUserData		= K->LL_UserData(); 
+	R_ASSERT3				(pUserData,"Empty HangingLamp user data!",lamp->get_visual());
+
+	guid_bone				= K->LL_BoneID	(pUserData->r_string("hanging_lamp_definition","guide_bone"));	VERIFY(guid_bone!=BI_NONE);
+	clr.set					(lamp->color);						clr.a = 1.f;
+	clr.mul_rgb				(lamp->brightness);
+	fBrightness				= lamp->brightness;
 	light_render->set_range	(lamp->spot_range);
 	light_render->set_color	(clr);
-	light_render->set_cone	(lamp->spot_cone_angle);
-	light_render->set_texture(*lamp->spot_texture);
-	light_render->set_active(true);
+	light_render->set_cone	(deg2rad(pUserData->r_float			("hanging_lamp_definition","spot_angle")));
+	light_render->set_texture(pUserData->r_string				("hanging_lamp_definition","spot_texture"));
 
-	glow_render->set_texture(*lamp->glow_texture);
+	glow_render->set_texture(pUserData->r_string				("hanging_lamp_definition","glow_texture"));
 	glow_render->set_color	(clr);
-	glow_render->set_radius	(lamp->glow_radius);
-	glow_render->set_active (true);
+	glow_render->set_radius	(pUserData->r_float					("hanging_lamp_definition","glow_radius"));
+
+	fHealth					= lamp->m_health;
 
 	lanim					= LALib.FindItem(*lamp->color_animator);
 
@@ -66,16 +69,9 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	
 	//PKinematics(Visual())->Calculate();
 	
-	setVisible				(true);
-	setEnabled				(true);
+	if (Alive())			TurnOn	();
+	else					TurnOff	();
 	
-	fHealth					= lamp->m_health;
-
-	if (!Alive()) {
-		light_render->set_active(false);
-		glow_render->set_active(false);
-	}
-
 	return					(TRUE);
 }
 
@@ -93,9 +89,9 @@ void CHangingLamp::UpdateCL	()
 	if (Alive()&&light_render->get_active())
 	{
 		Fmatrix xf;
-		if (light_bone_idx>=0)
+		if (guid_bone>=0)
 		{
-			Fmatrix& M = PKinematics(Visual())->LL_GetTransform(u16(light_bone_idx));
+			Fmatrix& M = PKinematics(Visual())->LL_GetTransform(u16(guid_bone));
 			xf.mul		(XFORM(),M);
 		} 
 		else 
@@ -117,14 +113,6 @@ void CHangingLamp::UpdateCL	()
 			fclr.mul_rgb	(fBrightness/255.f);
 			light_render->set_color(fclr);
 		}
-		if (0)
-		{
-			u32 clr			= 0xffffffff;
-			Fcolor			fclr;
-			fclr.set		((float)color_get_B(clr),(float)color_get_G(clr),(float)color_get_R(clr),1.f);
-			fclr.mul_rgb	(fBrightness/255.f);
-			light_render->set_color(fclr);
-		}
 	}
 }
 
@@ -133,61 +121,32 @@ void CHangingLamp::renderable_Render()
 	inherited::renderable_Render	();
 }
 
+void CHangingLamp::TurnOn()
+{
+	light_render->set_active(true);
+	glow_render->set_active (true);
+	PKinematics(Visual())->LL_SetBoneVisible(guid_bone, TRUE, TRUE);
+}
+
+void CHangingLamp::TurnOff()
+{
+	light_render->set_active(false);
+	glow_render->set_active (false);
+	PKinematics(Visual())->LL_SetBoneVisible(guid_bone, FALSE, TRUE);
+}
+
 void CHangingLamp::Hit(float P,Fvector &dir, CObject* who,s16 element,
 					   Fvector p_in_object_space, float impulse, ALife::EHitType /**hit_type/**/)
 {
 	//inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
 	if(m_pPhysicsShell) m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
 
-	if (element==light_bone_idx)	
-		fHealth = 0.f;
-	else							
-		fHealth -= P*0.1f;
+	if (element==guid_bone)	fHealth =	0.f;
+	else					fHealth -=	P*0.1f;
 
-	if (!Alive())
-	{
-	 	light_render->set_active(false);
-		glow_render->set_active(false);
-	}
+	if (!Alive())	TurnOff	();
 }
 
-void CHangingLamp::AddElement(CPhysicsElement* root_e, int id)
-{
-	CKinematics* K		= PKinematics(Visual());
-
-	CPhysicsElement* E	= P_create_Element();
-	CBoneInstance& B	= K->LL_GetBoneInstance(u16(id));
-	E->mXFORM.set		(K->LL_GetTransform(u16(id)));
-	Fobb bb			= K->LL_GetBox(u16(id));
-
-
-	if(bb.m_halfsize.magnitude()<0.05f)
-	{
-		bb.m_halfsize.add(0.05f);
-	
-	}
-	E->add_Box			(bb);
-	E->setMass(10.f);
-	E->set_ParentElement(root_e);
-	B.set_callback		(m_pPhysicsShell->GetBonesCallback(),E);
-	m_pPhysicsShell->add_Element	(E);
-
-	{
-		CPhysicsJoint* J= P_create_Joint(CPhysicsJoint::full_control,root_e,E);
-		J->SetAnchorVsSecondElement	(0,0,0);
-		J->SetAxisDirVsSecondElement	(1,0,0,0);
-		J->SetAxisDirVsSecondElement	(0,1,0,2);
-		J->SetLimits				(-M_PI/2,M_PI/2,0);
-		J->SetLimits				(-M_PI/2,M_PI/2,1);
-		J->SetLimits				(-M_PI/2,M_PI/2,2);
-		m_pPhysicsShell->add_Joint	(J);
-	}
-
-	CBoneData& BD		= K->LL_GetData(u16(id));
-	for (vecBonesIt it=BD.children.begin(); BD.children.end() != it; ++it){
-		AddElement		(E,(*it)->SelfID);
-	}
-}
 static BONE_P_MAP bone_map=BONE_P_MAP();
 void CHangingLamp::CreateBody(CSE_ALifeObjectHangingLamp	*lamp)
 {

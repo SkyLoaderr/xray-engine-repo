@@ -16,6 +16,7 @@ CTorch::CTorch(void)
 	glow_render				= ::Render->glow_create();
 	lanim					= 0;
 	time2hide				= 0;
+	fBrightness				= 1.f;
 }
 
 CTorch::~CTorch(void) 
@@ -66,28 +67,25 @@ BOOL CTorch::net_Spawn(LPVOID DC)
 	cNameVisual_set			(torch->get_visual());
 	inherited::net_Spawn	(DC);
 
-	R_ASSERT(!CFORM());
-	R_ASSERT(PKinematics(Visual()));
+	R_ASSERT				(!CFORM());
+	R_ASSERT				(PKinematics(Visual()));
 	collidable.model		= xr_new<CCF_Skeleton>	(this);
 
-	// set bone id
-	Fcolor					clr;
-	clr.set					(torch->color);
-	clr.mul_rgb				(torch->spot_brightness);
-	fBrightness				= torch->spot_brightness;
-	light_render->set_range	(torch->spot_range);
+	CKinematics* K			= PKinematics(Visual());
+	CInifile* pUserData		= K->LL_UserData(); 
+	R_ASSERT3				(pUserData,"Empty Torch user data!",torch->get_visual());
+	lanim					= LALib.FindItem(pUserData->r_string("torch_definition","color_animator"));
+	guid_bone				= K->LL_BoneID	(pUserData->r_string("torch_definition","guide_bone"));	VERIFY(guid_bone!=BI_NONE);
+	Fcolor clr				= pUserData->r_fcolor				("torch_definition","color");
+	fBrightness				= clr.intensity();
 	light_render->set_color	(clr);
-	light_render->set_cone	(torch->spot_cone_angle);
-	light_render->set_texture(torch->spot_texture[0]?torch->spot_texture:0);
+	light_render->set_range	(pUserData->r_float					("torch_definition","range"));
+	light_render->set_cone	(deg2rad(pUserData->r_float			("torch_definition","spot_angle")));
+	light_render->set_texture(pUserData->r_string				("torch_definition","spot_texture"));
 
-	glow_render->set_texture(torch->glow_texture[0]?torch->glow_texture:0);
+	glow_render->set_texture(pUserData->r_string				("torch_definition","glow_texture"));
 	glow_render->set_color	(clr);
-	glow_render->set_radius	(torch->glow_radius);
-
-	R_ASSERT				(Visual());
-	lanim					= LALib.FindItem(torch->animator);
-
-	guid_bone				= torch->guid_bone; VERIFY(guid_bone!=BI_NONE);
+	glow_render->set_radius	(pUserData->r_float					("torch_definition","glow_radius"));
 
 	VERIFY (m_pPhysicsShell);
 	CSE_Abstract *l_pE = (CSE_Abstract*)DC;

@@ -250,17 +250,11 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVis
 		};
 
 		Flags16							flags;
-		float							mass;
 		u32								color;
+		float							brightness;
 		ref_str							startup_animation;
 		ref_str							color_animator;
-		ref_str							spot_texture;
-		ref_str							spot_bone;
 		float							spot_range;
-		float							spot_cone_angle;
-		float							spot_brightness;
-		ref_str							glow_texture;
-		float							glow_radius;
 		ref_str							fixed_bones;
 		float							m_health;
 
@@ -269,22 +263,9 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVis
 SERVER_ENTITY_DECLARE_END
 
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectSearchlight,CSE_ALifeDynamicObjectVisual)
-
-	u32								color;
-	string64						animator;
-	string64						spot_texture;
-	float							spot_range;
-	float							spot_cone_angle;
-	float							spot_brightness;
-	string64						glow_texture;
-	float							glow_radius;
-	u16								guid_bone;
-	u16								rotation_bone;
-	u16								cone_bone;
-
-									CSE_ALifeObjectSearchlight	(LPCSTR caSection);
-	virtual							~CSE_ALifeObjectSearchlight	();
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectProjector,CSE_ALifeDynamicObjectVisual)
+									CSE_ALifeObjectProjector	(LPCSTR caSection);
+	virtual							~CSE_ALifeObjectProjector	();
 SERVER_ENTITY_DECLARE_END
 
 

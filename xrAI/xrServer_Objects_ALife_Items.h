@@ -46,6 +46,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeItem,CSE_ALifeDynamicObjectVisual,CSE_ALif
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemTorch,CSE_ALifeItem)
+/*
 	u32								color;
 	string64						animator;
 	string64						spot_texture;
@@ -55,7 +56,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemTorch,CSE_ALifeItem)
 	string64						glow_texture;
 	float							glow_radius;
     u16								guid_bone;
-
+*/
 									CSE_ALifeItemTorch	(LPCSTR caSection);
     virtual							~CSE_ALifeItemTorch	();
 SERVER_ENTITY_DECLARE_END

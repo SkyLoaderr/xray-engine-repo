@@ -175,7 +175,7 @@ void CSE_ALifeItem::FillProp				(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeItemTorch::CSE_ALifeItemTorch		(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
 {
-	strcpy						(spot_texture,"");
+/*	strcpy						(spot_texture,"");
 	strcpy						(animator,"");
 	spot_range					= 10.f;
 	spot_cone_angle				= PI_DIV_3;
@@ -184,6 +184,7 @@ CSE_ALifeItemTorch::CSE_ALifeItemTorch		(LPCSTR caSection) : CSE_ALifeItem(caSec
 	glow_texture[0]				= 0;
 	glow_radius					= 0.1f;
     guid_bone					= u32(BI_NONE);
+*/
 }
 
 CSE_ALifeItemTorch::~CSE_ALifeItemTorch		()
@@ -194,7 +195,7 @@ void CSE_ALifeItemTorch::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 {
 	if (m_wVersion > 20)
 		inherited::STATE_Read	(tNetPacket,size);
-	
+/*	
 	tNetPacket.r_u32			(color);
 	tNetPacket.r_string			(animator);
 	tNetPacket.r_string			(spot_texture);
@@ -209,11 +210,13 @@ void CSE_ALifeItemTorch::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 	if (m_wVersion > 41){
 		tNetPacket.r_u16		(guid_bone);
 	}
+*/
 }
 
 void CSE_ALifeItemTorch::STATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
+/*
 	tNetPacket.w_u32			(color);
 	tNetPacket.w_string			(animator);
 	tNetPacket.w_string			(spot_texture);
@@ -223,6 +226,7 @@ void CSE_ALifeItemTorch::STATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_string			(glow_texture);
 	tNetPacket.w_float			(glow_radius);
     tNetPacket.w_u16			(guid_bone);
+*/
 }
 
 void CSE_ALifeItemTorch::UPDATE_Read		(NET_Packet	&tNetPacket)
@@ -239,6 +243,7 @@ void CSE_ALifeItemTorch::UPDATE_Write		(NET_Packet	&tNetPacket)
 void CSE_ALifeItemTorch::FillProp			(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,	 values);
+/*
 	PHelper.CreateColor			(values, FHelper.PrepareKey(pref,s_name,"Color"),			&color);
 	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Color animator"),	animator,			sizeof(animator), 		smLAnim);
 	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Spot texture"),	spot_texture,		sizeof(spot_texture),	smTexture);
@@ -255,6 +260,7 @@ void CSE_ALifeItemTorch::FillProp			(LPCSTR pref, PropItemVec& values)
         for (u16 k=0; k<cnt; k++) vec.push_back(PKinematics(visual)->LL_BoneName_dbg(k));
 		PHelper.CreateToken2<u16>(values, FHelper.PrepareKey(pref,s_name,"Guide bone"),		&guid_bone,	&vec);
     }
+*/
 }
 #endif
 

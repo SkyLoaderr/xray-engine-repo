@@ -5,28 +5,29 @@
 
 class CLAItem;
 
-class CSearchlight: public CScriptMonster {
+class CProjector: public CScriptMonster {
 	typedef	CScriptMonster		inherited;
+
+	friend void __stdcall BoneCallbackX(CBoneInstance *B);
+	friend void __stdcall BoneCallbackY(CBoneInstance *B);
 
 	float			fBrightness;
 	CLAItem*		lanim;
 	Fvector			m_pos;
 	IRender_Light*	light_render;
 	IRender_Glow*	glow_render;
-	Fvector			m_focus;
 
-	u16				rot_bone;
+	u16				rot_bone_x;
+	u16				rot_bone_y;
 	u16				guid_bone;
-	u16				cone_bone;
 
 	struct SRot {
 		float yaw;
 		float pitch;
 	} _start, _cur, _target;
-
 public:
-					CSearchlight	();
-	virtual			~CSearchlight	();
+					CProjector		();
+	virtual			~CProjector		();
 
 	virtual void	Load			( LPCSTR section);
 	virtual BOOL	net_Spawn		( LPVOID DC);
@@ -38,14 +39,14 @@ public:
 
 	virtual	bool	bfAssignWatch(CEntityAction	*tpEntityAction);
 	virtual	bool	bfAssignObject(CEntityAction *tpEntityAction);
-	
 private:
 			void	TurnOn			();
 			void	TurnOff			();
 	
 	// Rotation routines
-	static void __stdcall  BoneCallback(CBoneInstance *B);
-	void			UpdateBones		();
+	static void __stdcall  BoneCallbackX(CBoneInstance *B);
+	static void __stdcall  BoneCallbackY(CBoneInstance *B);
+
 	void			SetTarget		(const Fvector &target_pos);
 	
 	float			bone_vel_x;

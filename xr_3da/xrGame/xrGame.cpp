@@ -1039,7 +1039,7 @@ extern "C" {
 
 			
 			// objects
-			case CLSID_OBJECT_SEARCHLIGHT:	P = xr_new<CSearchlight>();			break;
+			case CLSID_OBJECT_PROJECTOR:	P = xr_new<CProjector>();			break;
 
 			// entity
 			case CLSID_OBJECT_HLAMP:		P = xr_new<CHangingLamp>();			break;

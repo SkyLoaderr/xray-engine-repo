@@ -17,7 +17,7 @@ class CHangingLamp: public CGameObject
 private:
 	typedef	CGameObject		inherited;
 private:
-	int				light_bone_idx;
+	u16				guid_bone;
 	IRender_Light*	light_render;
 	CLAItem*		lanim;
 
@@ -26,9 +26,11 @@ private:
 	float			fHealth;
 	float			fBrightness;
 
-	void			AddElement		(CPhysicsElement* root_e, int id);
 	void			CreateBody		(CSE_ALifeObjectHangingLamp	*lamp);
 	bool			Alive			(){return fHealth>0.f;}
+
+	void			TurnOn			();
+	void			TurnOff			();
 public:
 					CHangingLamp	();
 	virtual			~CHangingLamp	();

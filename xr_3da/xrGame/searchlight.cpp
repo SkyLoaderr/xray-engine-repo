@@ -9,66 +9,94 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CSearchlight::CSearchlight()
+CProjector::CProjector()
 {
 	light_render			= ::Render->light_create();
 	light_render->set_type	(IRender_Light::SPOT);
 	light_render->set_shadow(true);
 	glow_render				= ::Render->glow_create();
 	lanim					= 0;
-
+	rot_bone_x				= BI_NONE;
+	rot_bone_y				= BI_NONE;
 }
 
-CSearchlight::~CSearchlight()
+CProjector::~CProjector()
 {
 	::Render->light_destroy	(light_render);
 	::Render->glow_destroy	(glow_render);
 }
 
-void CSearchlight::Load(LPCSTR section)
+void CProjector::Load(LPCSTR section)
 {
 	inherited::Load(section);
 
 }
 
 
-void __stdcall CSearchlight::BoneCallback(CBoneInstance *B)
+void __stdcall CProjector::BoneCallbackX(CBoneInstance *B)
 {
-	CSearchlight	*this_class = dynamic_cast<CSearchlight*> (static_cast<CObject*>(B->Callback_Param));
-	
-	this_class->UpdateBones();
+	CProjector	*P = dynamic_cast<CProjector*> (static_cast<CObject*>(B->Callback_Param));
+
+	float delta_pitch;
+
+	delta_pitch = angle_difference(P->_start.pitch,P->_cur.pitch);
+	if (angle_normalize_signed(P->_start.pitch - P->_cur.pitch) > 0) delta_pitch = -delta_pitch;
+
+	Fvector c				= B->mTransform.c;
+	Fmatrix					spin;
+
+	spin.setXYZi			(delta_pitch, 0, 0);
+	VERIFY					(_valid(spin));
+	B->mTransform.mulA_43	(spin);
+	B->mTransform.c			= c;
 }
 
+void __stdcall CProjector::BoneCallbackY(CBoneInstance *B)
+{
+	CProjector	*P = dynamic_cast<CProjector*> (static_cast<CObject*>(B->Callback_Param));
 
-BOOL CSearchlight::net_Spawn(LPVOID DC)
+	float delta_pitch;
+
+	delta_pitch = angle_difference(P->_start.pitch,P->_cur.pitch);
+	if (angle_normalize_signed(P->_start.pitch - P->_cur.pitch) > 0) delta_pitch = -delta_pitch;
+
+	Fvector c				= B->mTransform.c;
+	Fmatrix					spin;
+
+	spin.setXYZi			(delta_pitch, 0, 0);
+	VERIFY					(_valid(spin));
+	B->mTransform.mulA_43	(spin);
+	B->mTransform.c			= c;
+}
+
+BOOL CProjector::net_Spawn(LPVOID DC)
 {
 	CSE_Abstract				*e		= (CSE_Abstract*)(DC);
-	CSE_ALifeObjectSearchlight	*slight	= dynamic_cast<CSE_ALifeObjectSearchlight*>(e);
+	CSE_ALifeObjectProjector	*slight	= dynamic_cast<CSE_ALifeObjectProjector*>(e);
 	R_ASSERT				(slight);
 	
 	cNameVisual_set			(slight->get_visual());
 	inherited::net_Spawn	(DC);
 	
 	R_ASSERT				(Visual() && PKinematics(Visual()));
-	
-	Fcolor					clr;
-	clr.set					(slight->color);			clr.a = 1.f;
-	clr.mul_rgb				(slight->spot_brightness);
-	fBrightness				= slight->spot_brightness;
-	light_render->set_range	(slight->spot_range);
+
+	CKinematics* K			= PKinematics(Visual());
+	CInifile* pUserData		= K->LL_UserData(); 
+	R_ASSERT3				(pUserData,"Empty Torch user data!",slight->get_visual());
+	lanim					= LALib.FindItem(pUserData->r_string("projector_definition","color_animator"));
+	guid_bone				= K->LL_BoneID	(pUserData->r_string("projector_definition","guide_bone"));		VERIFY(guid_bone!=BI_NONE);
+	rot_bone_x				= K->LL_BoneID	(pUserData->r_string("projector_definition","rotation_bone_x"));VERIFY(rot_bone_x!=BI_NONE);
+	rot_bone_y				= K->LL_BoneID	(pUserData->r_string("projector_definition","rotation_bone_y"));VERIFY(rot_bone_y!=BI_NONE);
+	Fcolor clr				= pUserData->r_fcolor				("projector_definition","color");
+	fBrightness				= clr.intensity();
 	light_render->set_color	(clr);
-	light_render->set_cone	(slight->spot_cone_angle);
-	light_render->set_texture(slight->spot_texture[0]?slight->spot_texture:0);
+	light_render->set_range	(pUserData->r_float					("projector_definition","range"));
+	light_render->set_cone	(deg2rad(pUserData->r_float			("projector_definition","spot_angle")));
+	light_render->set_texture(pUserData->r_string				("projector_definition","spot_texture"));
 
-	glow_render->set_texture(slight->glow_texture[0]?slight->glow_texture:0);
+	glow_render->set_texture(pUserData->r_string				("projector_definition","glow_texture"));
 	glow_render->set_color	(clr);
-	glow_render->set_radius	(slight->glow_radius);
-
-	lanim					= LALib.FindItem(slight->animator);
-
-	guid_bone				= slight->guid_bone;		VERIFY(guid_bone!=BI_NONE);
-	rot_bone				= slight->rotation_bone;	VERIFY(rot_bone!=BI_NONE);
-	cone_bone				= PKinematics(Visual())->LL_BoneID("bone_cone");
+	glow_render->set_radius	(pUserData->r_float					("projector_definition","glow_radius"));
 
 	setVisible	(true);
 	setEnabled	(true);
@@ -76,8 +104,11 @@ BOOL CSearchlight::net_Spawn(LPVOID DC)
 	TurnOn		();
 	
 	//////////////////////////////////////////////////////////////////////////
-	CBoneInstance& BI = PKinematics(Visual())->LL_GetBoneInstance(rot_bone);	
-	BI.set_callback(BoneCallback,this);
+	CBoneInstance& b_x = PKinematics(Visual())->LL_GetBoneInstance(rot_bone_x);	
+	b_x.set_callback(BoneCallbackX,this,TRUE);
+
+	CBoneInstance& b_y = PKinematics(Visual())->LL_GetBoneInstance(rot_bone_y);	
+	b_y.set_callback(BoneCallbackY,this,TRUE);
 	
 	Fvector dir = Direction();
 	dir.invert().getHP(_start.yaw,_start.pitch);
@@ -88,31 +119,31 @@ BOOL CSearchlight::net_Spawn(LPVOID DC)
 	return TRUE;
 }
 
-void CSearchlight::shedule_Update	(u32 dt)
+void CProjector::shedule_Update	(u32 dt)
 {
 	inherited::shedule_Update(dt);
 
 }
 
-void CSearchlight::TurnOn()
+void CProjector::TurnOn()
 {
 	if (light_render->get_active()) return;
 
 	light_render->set_active(true);
 	glow_render->set_active (true);
-	PKinematics(Visual())->LL_SetBoneVisible(cone_bone, TRUE, TRUE);
+	PKinematics(Visual())->LL_SetBoneVisible(guid_bone, TRUE, TRUE);
 }
 
-void CSearchlight::TurnOff()
+void CProjector::TurnOff()
 {
 	if (!light_render->get_active()) return;
 
 	light_render->set_active(false);
 	glow_render->set_active (false);
-	PKinematics(Visual())->LL_SetBoneVisible(cone_bone, FALSE, TRUE);
+	PKinematics(Visual())->LL_SetBoneVisible(guid_bone, FALSE, TRUE);
 }
 
-void CSearchlight::UpdateCL	()
+void CProjector::UpdateCL	()
 {
 	inherited::UpdateCL();
 
@@ -150,7 +181,7 @@ void CSearchlight::UpdateCL	()
 }
 
 
-void CSearchlight::renderable_Render()
+void CProjector::renderable_Render()
 {
 	inherited::renderable_Render	();
 
@@ -160,12 +191,12 @@ void CSearchlight::renderable_Render()
 	}
 }
 
-BOOL CSearchlight::UsedAI_Locations()
+BOOL CProjector::UsedAI_Locations()
 {
 	return					(FALSE);
 }
 
-bool CSearchlight::bfAssignWatch(CEntityAction *tpEntityAction)
+bool CProjector::bfAssignWatch(CEntityAction *tpEntityAction)
 {
 	if (!inherited::bfAssignWatch(tpEntityAction))
 		return		(false);
@@ -189,7 +220,7 @@ bool CSearchlight::bfAssignWatch(CEntityAction *tpEntityAction)
 	return !l_tWatchAction.m_bCompleted;
 }
 
-bool CSearchlight::bfAssignObject(CEntityAction *tpEntityAction)
+bool CProjector::bfAssignObject(CEntityAction *tpEntityAction)
 {
 	if (!inherited::bfAssignObject(tpEntityAction))
 		return	(false);
@@ -202,30 +233,7 @@ bool CSearchlight::bfAssignObject(CEntityAction *tpEntityAction)
 	return	(true);
 }
 
-void CSearchlight::UpdateBones()
-{
-	float delta_yaw;
-	float delta_pitch;
-	
-	delta_yaw = angle_difference(_start.yaw,_cur.yaw);
-	if (angle_normalize_signed(_start.yaw - _cur.yaw) > 0) delta_yaw = -delta_yaw;
-
-	delta_pitch = angle_difference(_start.pitch,_cur.pitch);
-	if (angle_normalize_signed(_start.pitch - _cur.pitch) > 0) delta_pitch = -delta_pitch;
-
-	CBoneInstance& BI = PKinematics(Visual())->LL_GetBoneInstance(rot_bone);
-	
-	Fvector c					= BI.mTransform.c;
-	Fmatrix						spin;
-
-	spin.setXYZi				(delta_pitch, delta_yaw, 0);
-	VERIFY						(_valid(spin));
-	BI.mTransform.mulA_43	(spin);
-	BI.mTransform.c			= c;
-}
-
-
-void CSearchlight::SetTarget(const Fvector &target_pos)
+void CProjector::SetTarget(const Fvector &target_pos)
 {
 	float  th,tp;
 	Fvector().sub(target_pos, Position()).getHP(th,tp);

@@ -818,12 +818,9 @@ void CSE_ALifeObjectPhysic::FillProp		(LPCSTR pref, PropItemVec& values) {
 CSE_ALifeObjectHangingLamp::CSE_ALifeObjectHangingLamp(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
 {
 	flags.set					(flPhysic,TRUE);
-    mass						= 10.f;
 	spot_range					= 10.f;
-	spot_cone_angle				= PI_DIV_3;
-	glow_radius					= 0.1f;
 	color						= 0xffffffff;
-    spot_brightness				= 1.f;
+    brightness					= 1.f;
 	m_health					= 1.f;
 }
 
@@ -838,37 +835,55 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 
 	if (m_wVersion < 32)
 		visual_read				(tNetPacket);
-	// model
-	tNetPacket.r_u32			(color);
-	tNetPacket.r_string			(color_animator);
-	tNetPacket.r_string			(spot_texture);
-	tNetPacket.r_string			(spot_bone);
-	tNetPacket.r_float			(spot_range);
-	tNetPacket.r_angle8			(spot_cone_angle);
-    if (m_wVersion>10)
-		tNetPacket.r_float		(spot_brightness);
-    if (m_wVersion>11)
-    	tNetPacket.r_u16		(flags.flags);
-    if (m_wVersion>12)
-    	tNetPacket.r_float		(mass);
-    if (m_wVersion>17)
-		tNetPacket.r_string		(startup_animation);
+
+	if (m_wVersion < 49){
+		ref_str s_tmp;
+		float	f_tmp;
+		// model
+		tNetPacket.r_u32			(color);
+		tNetPacket.r_string			(color_animator);
+		tNetPacket.r_string			(s_tmp);
+		tNetPacket.r_string			(s_tmp);
+		tNetPacket.r_float			(spot_range);
+		tNetPacket.r_angle8			(f_tmp);
+		if (m_wVersion>10)
+			tNetPacket.r_float		(brightness);
+		if (m_wVersion>11)
+			tNetPacket.r_u16		(flags.flags);
+		if (m_wVersion>12)
+			tNetPacket.r_float		(f_tmp);
+		if (m_wVersion>17)
+			tNetPacket.r_string		(startup_animation);
 
 #ifdef _EDITOR    
-	PlayAnimation				(*startup_animation?*startup_animation:"$editor");
+		PlayAnimation				(*startup_animation?*startup_animation:"$editor");
 #endif
 
-	if (m_wVersion > 42) {
-		tNetPacket.r_string		(glow_texture);
-		tNetPacket.r_float		(glow_radius);
-	}
+		if (m_wVersion > 42) {
+			tNetPacket.r_string		(s_tmp);
+			tNetPacket.r_float		(f_tmp);
+		}
 
-	if (m_wVersion > 43){
-		tNetPacket.r_string		(fixed_bones);
-	}
+		if (m_wVersion > 43){
+			tNetPacket.r_string		(fixed_bones);
+		}
 
-	if (m_wVersion > 44){
-		tNetPacket.r_float		(m_health);
+		if (m_wVersion > 44){
+			tNetPacket.r_float		(m_health);
+		}
+	}else{
+		// model
+		tNetPacket.r_u32			(color);
+		tNetPacket.r_float			(brightness);
+		tNetPacket.r_string			(color_animator);
+		tNetPacket.r_float			(spot_range);
+    	tNetPacket.r_u16			(flags.flags);
+		tNetPacket.r_string			(startup_animation);
+	#ifdef _EDITOR    
+		PlayAnimation				(*startup_animation?*startup_animation:"$editor");
+	#endif
+		tNetPacket.r_string			(fixed_bones);
+		tNetPacket.r_float			(m_health);
 	}
 }
 
@@ -877,17 +892,11 @@ void CSE_ALifeObjectHangingLamp::STATE_Write(NET_Packet	&tNetPacket)
 	inherited::STATE_Write		(tNetPacket);
 	// model
 	tNetPacket.w_u32			(color);
+	tNetPacket.w_float			(brightness);
 	tNetPacket.w_string			(color_animator);
-	tNetPacket.w_string			(spot_texture);
-	tNetPacket.w_string			(spot_bone);
 	tNetPacket.w_float			(spot_range);
-	tNetPacket.w_angle8			(spot_cone_angle);
-	tNetPacket.w_float			(spot_brightness);
    	tNetPacket.w_u16			(flags.flags);
-	tNetPacket.w_float			(mass);
 	tNetPacket.w_string			(startup_animation);
-	tNetPacket.w_string			(glow_texture);
-	tNetPacket.w_float			(glow_radius);
     tNetPacket.w_string			(fixed_bones);
 	tNetPacket.w_float			(m_health);
 }
@@ -939,7 +948,7 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
     PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Mass"),			&mass,				1.f, 1000.f);
 	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Glow texture"),	&glow_texture,		smTexture);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Glow radius"),		&glow_radius,		0.1f, 1000.f);
-	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Health"),			&m_health,			0.f, 1.f);
+	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Health"),			&m_health,			0.f, 100.f);
 
     // motions
     if (visual && PSkeletonAnimated(visual))
@@ -967,94 +976,38 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
 // CSE_ALifeObjectSearchlight
 ////////////////////////////////////////////////////////////////////////////
 
-CSE_ALifeObjectSearchlight::CSE_ALifeObjectSearchlight(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
-{
-	strcpy						(spot_texture,"");
-	strcpy						(animator,"");
-	spot_range					= 10.f;
-	spot_cone_angle				= PI_DIV_3;
-	color						= 0xffffffff;
-	spot_brightness				= 1.f;
-	glow_texture[0]				= 0;
-	glow_radius					= 0.1f;
-	guid_bone					= u16(BI_NONE);
-	rotation_bone				= u16(BI_NONE);
-	cone_bone					= u16(BI_NONE);
-}
-
-CSE_ALifeObjectSearchlight::~CSE_ALifeObjectSearchlight()
+CSE_ALifeObjectProjector::CSE_ALifeObjectProjector(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
 {
 }
 
-void CSE_ALifeObjectSearchlight::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
+CSE_ALifeObjectProjector::~CSE_ALifeObjectProjector()
+{
+}
+
+void CSE_ALifeObjectProjector::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited::STATE_Read	(tNetPacket,size);
-
-	tNetPacket.r_u32		(color);
-	tNetPacket.r_string		(animator);
-	tNetPacket.r_string		(spot_texture);
-	tNetPacket.r_float		(spot_range);
-	tNetPacket.r_angle8		(spot_cone_angle);
-	tNetPacket.r_float		(spot_brightness);
-	tNetPacket.r_string		(glow_texture);
-	tNetPacket.r_float		(glow_radius);
-	if (m_wVersion > 45) {
-		tNetPacket.r_u16	(guid_bone);
-		tNetPacket.r_u16	(rotation_bone);
-	}
-	if (m_wVersion > 47) {
-		tNetPacket.r_u16	(cone_bone);
-	}
 }
 
-void CSE_ALifeObjectSearchlight::STATE_Write(NET_Packet	&tNetPacket)
+void CSE_ALifeObjectProjector::STATE_Write(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
-	tNetPacket.w_u32			(color);
-	tNetPacket.w_string			(animator);
-	tNetPacket.w_string			(spot_texture);
-	tNetPacket.w_float			(spot_range);
-	tNetPacket.w_angle8			(spot_cone_angle);
-	tNetPacket.w_float			(spot_brightness);
-	tNetPacket.w_string			(glow_texture);
-	tNetPacket.w_float			(glow_radius);
-	tNetPacket.w_u16			(guid_bone);
-	tNetPacket.w_u16			(rotation_bone);
-	tNetPacket.w_u16			(cone_bone);
 }
 
-void CSE_ALifeObjectSearchlight::UPDATE_Read(NET_Packet	&tNetPacket)
+void CSE_ALifeObjectProjector::UPDATE_Read(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 }
 
-void CSE_ALifeObjectSearchlight::UPDATE_Write(NET_Packet	&tNetPacket)
+void CSE_ALifeObjectProjector::UPDATE_Write(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
 #ifdef _EDITOR
-void CSE_ALifeObjectSearchlight::FillProp			(LPCSTR pref, PropItemVec& values)
+void CSE_ALifeObjectProjector::FillProp			(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,	 values);
-	PHelper.CreateColor			(values, FHelper.PrepareKey(pref,s_name,"Color"),			&color);
-	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Color animator"),	animator,			sizeof(animator), 		smLAnim);
-	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Spot texture"),	spot_texture,		sizeof(spot_texture),	smTexture);
-	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Range"),			&spot_range,		0.1f, 1000.f);
-	PHelper.CreateAngle			(values, FHelper.PrepareKey(pref,s_name,"Angle"),			&spot_cone_angle,	0, PI_DIV_2);
-	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Brightness"),		&spot_brightness,	0.1f, 5.f);
-	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Glow texture"),	glow_texture,		sizeof(glow_texture), 	smTexture);
-	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Glow radius"),		&glow_radius,		0.1f, 1000.f);
-	// bones
-	if (visual && PKinematics(visual))
-	{
-		AStringVec				vec;
-		u16 cnt					= PKinematics(visual)->LL_Bones()->size();
-		for (u16 k=0; k<cnt; k++) vec.push_back(PKinematics(visual)->LL_BoneName_dbg(k));
-		PHelper.CreateToken2<u16>(values, FHelper.PrepareKey(pref,s_name,"Guide bone"),		&guid_bone,		&vec);
-		PHelper.CreateToken2<u16>(values, FHelper.PrepareKey(pref,s_name,"Rotation bone"),	&rotation_bone,	&vec);
-		PHelper.CreateToken2<u16>(values, FHelper.PrepareKey(pref,s_name,"Cone bone"),		&cone_bone,		&vec);
-	}
 }
 #endif
 
