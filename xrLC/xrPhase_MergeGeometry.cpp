@@ -44,12 +44,12 @@ BOOL	NeedMerge		(vecFace& subdiv, Fbox& bb_base)
 BOOL	ValidateMerge	(DWORD f1, Fbox& bb_base, DWORD f2, Fbox& bb, float& volume)
 {
 	// Polygons
-	if ((f1+f2) > u32(4*g_params.m_SS_High/3))		return FALSE;	// Don't exceed limits (POLY)	
+	if ((f1+f2) > u32(4*g_params.m_SS_High/3))		return FALSE;	// Don't exceed limits (4/3 max POLY)	
 
 	// Size
 	Fbox	merge;	merge.merge		(bb_base,bb);
 	Fvector sz;		merge.getsize	(sz);
-	if (sz.x>(4*g_params.m_SS_maxsize/3))			return FALSE;	// Don't exceed limits (GEOM)
+	if (sz.x>(4*g_params.m_SS_maxsize/3))			return FALSE;	// Don't exceed limits (4/3 GEOM)
 	if (sz.y>(4*g_params.m_SS_maxsize/3))			return FALSE;
 	if (sz.z>(4*g_params.m_SS_maxsize/3))			return FALSE;
 
@@ -57,7 +57,7 @@ BOOL	ValidateMerge	(DWORD f1, Fbox& bb_base, DWORD f2, Fbox& bb, float& volume)
 	float	v1	= bb_base.getvolume	();
 	float	v2	= bb.getvolume		();
 	volume		= merge.getvolume	();
-	if (volume > 2*2*2*(v1+v2))						return FALSE;	// Don't merge too distant groups
+	if (volume > 2*2*2*(v1+v2))						return FALSE;	// Don't merge too distant groups (8 vol)
 
 	// OK
 	return TRUE;
