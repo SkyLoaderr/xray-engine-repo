@@ -54,7 +54,6 @@ void CActor::g_ProcessEvents()
 				}
 			}
 			break;
-			/*
 		case GE_TRANSFER_AMMO:
 			{
 				u16			from,to;
@@ -76,7 +75,6 @@ void CActor::g_ProcessEvents()
 				}
 			}
 			break;
-			*/
 		}
 	}
 }

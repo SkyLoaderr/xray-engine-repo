@@ -294,8 +294,10 @@ void CActor::feel_touch_new				(CObject* O)
 			P.w_begin	(M_EVENT);
 			P.w_u32		(Level().timeServer());
 			P.w_u16		(GE_TRANSFER_AMMO);
-			P.w_u16		(T->ID());	
-			P.w_u16		(W->ID());	
+			P.w_u16		(ID());
+
+			P.w_u16		(W->ID());
+			P.w_u16		(T->ID());
 			Level().Send(P,net_flags(TRUE,TRUE));
 			return;
 		} else {
@@ -305,6 +307,7 @@ void CActor::feel_touch_new				(CObject* O)
 			P.w_u32		(Level().timeServer());
 			P.w_u16		(GE_OWNERSHIP_TAKE);
 			P.w_u16		(ID());
+
 			P.w_u16		(u16(W->ID()));
 			Level().Send(P,net_flags(TRUE,TRUE));
 			return;
