@@ -12,7 +12,7 @@
 #include "agent_manager_motivation_planner.h"
 
 #define SECTION				"agent_manager"
-#define IMPORTANT_BUILD
+//#define IMPORTANT_BUILD
 
 CAgentManager::CAgentManager		()
 {

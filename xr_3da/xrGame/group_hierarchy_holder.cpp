@@ -14,7 +14,7 @@
 #include "agent_manager.h"
 #include "ai/stalker/ai_stalker.h"
 
-#define IMPORTANT_BUILD
+//#define IMPORTANT_BUILD
 
 CGroupHierarchyHolder::~CGroupHierarchyHolder			()
 {

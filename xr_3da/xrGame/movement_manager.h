@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "gameobject.h"
 #include "game_location_selector.h"
 #include "level_location_selector.h"
 #include "game_path_manager.h"
