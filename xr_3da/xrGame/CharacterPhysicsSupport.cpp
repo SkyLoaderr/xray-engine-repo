@@ -44,10 +44,10 @@ void CCharacterPhysicsSupport::SetRemoved()
 	m_eState=esRemoved;
 	if(b_skeleton_in_shell)
 	{
-		//if(m_pPhysicsShell->isEnabled())
-		//{
-		//	m_EntityAlife.processing_deactivate();
-		//}
+		if(m_pPhysicsShell->isEnabled())
+		{
+			m_EntityAlife.processing_deactivate();
+		}
 		m_pPhysicsShell->Deactivate();
 		xr_delete(m_pPhysicsShell);
 	}
@@ -55,7 +55,7 @@ void CCharacterPhysicsSupport::SetRemoved()
 	{
 		m_physics_skeleton->Deactivate();
 		xr_delete(m_physics_skeleton);
-		//m_EntityAlife.processing_deactivate();
+		m_EntityAlife.processing_deactivate();
 	}
 	
 }
@@ -180,7 +180,6 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 {
 	if(m_eState==esRemoved)
 	{
-		m_EntityAlife.setVisible(FALSE);
 		return;
 	}
 	if(m_pPhysicsShell&&m_pPhysicsShell->bActive&&!m_pPhysicsShell->bActivating)

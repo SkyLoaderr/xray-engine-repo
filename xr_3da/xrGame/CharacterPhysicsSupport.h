@@ -82,6 +82,7 @@ virtual CPhysicsShellHolder*			PPhysicsShellHolder				()	{return m_EntityAlife.P
 public:
 
 		void							SetRemoved						();
+		bool							IsRemoved						(){return m_eState==esRemoved;}
 //////////////////base hierarchi methods///////////////////////////////////////////////////
 		void 							in_UpdateCL()																																		;
 		void 							in_shedule_Update				( u32 DT )																											;

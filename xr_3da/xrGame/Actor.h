@@ -19,7 +19,7 @@
 #include "material_manager.h"
 #include "StatGraph.h"
 #include "PhraseDialogManager.h"
-
+#include "CharacterPhysicsSupport.h"
 using namespace ACTOR_DEFS;
 
 class CInfoPortion;
@@ -76,6 +76,7 @@ public:
 	virtual CGameObject*				cast_game_object			()						{return this;}
 	virtual IInputReceiver*				cast_input_receiver			()						{return this;}
 	virtual	CCharacterPhysicsSupport*	character_physics_support	()						{return m_pPhysics_support;}
+	virtual	CCharacterPhysicsSupport*	character_physics_support	() const				{return m_pPhysics_support;}
 	virtual CPHDestroyable*				ph_destroyable				();
 public:
 

@@ -851,7 +851,8 @@ void CActor::shedule_Update	(u32 DT)
 	}
 
 	//если в режиме HUD, то сама модель актера не рисуется
-	setVisible				(!HUDview	());
+	if(!character_physics_support()->IsRemoved())
+										setVisible				(!HUDview	());
 
 	//установить режим показа HUD для текущего активного слота
 	CHudItem* pHudItem = smart_cast<CHudItem*>(inventory().ActiveItem());	
