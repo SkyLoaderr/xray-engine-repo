@@ -1150,15 +1150,23 @@ void CLevelGraph::on_render2	()
 {
 	CSpaceRestrictionManager::SPACE_RESTRICTIONS::const_iterator	I = Level().space_restriction_manager().restrictions().begin();
 	CSpaceRestrictionManager::SPACE_RESTRICTIONS::const_iterator	E = Level().space_restriction_manager().restrictions().end();
+
+	CRandom R;
+
 	for ( ; I != E; ++I) {
 		if (!(*I).second->m_ref_count)
 			continue;
+
+		u8 b = u8(R.randI(255));
+		u8 g = u8(R.randI(255));
+		u8 r = u8(R.randI(255));
+
 		xr_vector<u32>::const_iterator	i = (*I).second->border().begin();
 		xr_vector<u32>::const_iterator	e = (*I).second->border().end();
 		for ( ; i != e; ++i) {
 			Fvector temp = ai().level_graph().vertex_position(*i);
 			temp.y += .1f;
-			RCache.dbg_DrawAABB(temp,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
+			RCache.dbg_DrawAABB(temp,.05f,.05f,.05f,D3DCOLOR_XRGB(r,g,b));
 		}
 
 		CSpaceRestriction::FREE_IN_RESTRICTIONS::const_iterator II = (*I).second->m_free_in_restrictions.begin();
