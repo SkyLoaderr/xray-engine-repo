@@ -380,8 +380,6 @@ void	CRenderTarget::OnDeviceCreate	()
 				}
 				R_CHK			(t_ncm_surf->UnlockRect((D3DCUBEMAP_FACES)i, 0));
 			}
-
-			return S_OK;
 		}
 	}
 
