@@ -1,0 +1,16 @@
+class "C_new_game_sv_Deathmatch" (game_sv_Deathmatch)
+
+function C_new_game_sv_Deathmatch:__init() super()
+	printf		("C_new_game_sv_Deathmatch::C_new_game_sv_Deathmatch called!")
+end
+
+function C_new_game_sv_Deathmatch:__finalize()
+	printf		("C_new_game_sv_Deathmatch::~C_new_game_sv_Deathmatch called!")
+end
+
+
+function C_new_game_sv_Deathmatch:section_name()
+	printf		("C_new_game_sv_Deathmatch::section_name called!")
+	return "new_deathmatch"
+end
+

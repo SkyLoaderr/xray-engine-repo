@@ -1,0 +1,13 @@
+
+fraction = {}
+
+function addMember(name, npc)
+	if fraction[name] == nil then
+		fraction[name] = self.fract(name)
+	end
+end
+
+class "fract"
+function fraction:__init(name)
+	self.name = name
+end
