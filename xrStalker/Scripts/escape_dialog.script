@@ -42,11 +42,14 @@ end
 
 function trader_dont_has_job(first_speaker, second_speaker)
 	local actor = level.actor()
-       	if actor ~= nil and
+    if actor ~= nil and
 	   (actor:has_info("escape_trader_need_artefact") or
+	   actor:has_info("escape_trader_find_artefact") or
 	   actor:has_info("escape_trader_have_artefact")) and
    	   (actor:has_info("escape_need_blockpost_case") or
-	   actor:has_info("escape_have_blockpost_case"))
+   	   actor:has_info("escape_take_blockpost_case") or
+	   actor:has_info("escape_have_blockpost_case")) and
+	   trader_need_military_document(first_speaker, second_speaker) == false
 	then
 		return true
 	end
@@ -104,7 +107,10 @@ end
 function trader_need_military_document(first_speaker, second_speaker)
 	local actor = level.actor()
     if actor ~= nil and
-	   actor:has_info("escape_trader_have_artefact")
+	   actor:has_info("escape_trader_have_artefact") and
+	   actor:dont_has_info("escape_need_agroprom_documents") and
+	   actor:dont_has_info("agroprom_take_agroprom_documents") and
+	   actor:dont_has_info("bar_have_agroprom_documents")
 	then
 		return true
 	end

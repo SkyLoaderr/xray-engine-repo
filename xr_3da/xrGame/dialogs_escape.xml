@@ -26,10 +26,10 @@
 		</phrase>
 		<phrase id="4">
 			<text>А может у тебя найдется "особая" работа для "особого" человека?</text>
+			<next>12</next>
 			<next>51</next>
 			<next>52</next>			
-			<next>5</next>			
-			<next>12</next>
+			<next>5</next>						
 		</phrase>
 
 		<phrase id="5">
@@ -90,6 +90,7 @@
 		</phrase>
 		<phrase id="62">
 			<text>Ладно, я берусь за это дело, только объясни как туда пройти.[Задание]</text>
+			<give_info>escape_need_agroprom_documents</give_info>
 			<next>82</next>
 		</phrase>
 		<phrase id="72">
