@@ -167,6 +167,7 @@ public:
 void CBuild::LightVertex()
 {
 	// Select faces
+	Status					("Selecting...");
 	VL_faces.reserve					(g_faces.size()/2);
 	for (DWORD I = 0; I<g_faces.size(); I++)
 	{
