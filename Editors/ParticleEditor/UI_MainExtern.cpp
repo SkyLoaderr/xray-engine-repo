@@ -40,9 +40,6 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 			Command(COMMAND_UPDATE_CAPTION);
 		}
 		break;
-    case COMMAND_APPLY_CHANGES:
-    	Tools.ApplyChanges();
-    	break;
     case COMMAND_PLAY_CURRENT:
     	Tools.PlayCurrent();
     	break;

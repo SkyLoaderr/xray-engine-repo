@@ -133,11 +133,6 @@ void __fastcall TfraLeftBar::PreviewClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebEngineApplyChangesClick(TObject *Sender)
-{
-	UI.Command( COMMAND_APPLY_CHANGES );
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebEngineShaderRemoveClick(TObject *Sender)
 {
@@ -164,13 +159,6 @@ void __fastcall TfraLeftBar::ebParticleCloneClick(TObject *Sender)
 		ELog.DlgMsg(mtInformation, "At first select item.");
     }
 */
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::ebPSCreateClick(TObject *Sender)
-{
-	Tools.AppendPS(0);
-	Tools.Modified();
 }
 //---------------------------------------------------------------------------
 

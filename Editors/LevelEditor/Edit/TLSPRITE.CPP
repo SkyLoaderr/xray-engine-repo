@@ -79,18 +79,18 @@ void CTLSprite::Render( Fvector &pos, u32 color, float radius, const Fvector& D 
 
     if ((s1.p.w<=0)||(s2.p.w<=0)) return;
 
-	float l1 = radius/s1.p.w*1.4142f;
-    float l2 = radius/s2.p.w*1.4142f;
+	float l1 		= radius/s1.p.w*1.4142f;
+    float l2 		= radius/s2.p.w*1.4142f;
 
 	Fvector2		dir,R;
 	dir.set			(s2.p.x-s1.p.x,s2.p.y-s1.p.y);
 	dir.norm		();
 	R.cross			(dir);
 
-	mesh.m[0].p.x = Device._x2real(s1.p.x+l1*R.x);	mesh.m[0].p.y = Device._y2real(s1.p.y+l1*R.y); mesh.m[0].p.z = s2.p.z; mesh.m[0].p.w = s2.p.w;
-	mesh.m[1].p.x = Device._x2real(s2.p.x+l2*R.x);	mesh.m[1].p.y = Device._y2real(s2.p.y+l2*R.y); mesh.m[1].p.z = s2.p.z; mesh.m[1].p.w = s2.p.w;
-	mesh.m[2].p.x = Device._x2real(s1.p.x-l1*R.x);	mesh.m[2].p.y = Device._y2real(s1.p.y-l1*R.y); mesh.m[2].p.z = s2.p.z; mesh.m[2].p.w = s2.p.w;
-	mesh.m[3].p.x = Device._x2real(s2.p.x-l2*R.x);	mesh.m[3].p.y = Device._y2real(s2.p.y-l2*R.y); mesh.m[3].p.z = s2.p.z; mesh.m[3].p.w = s2.p.w;
+	mesh.m[0].p.x 	= Device._x2real(s1.p.x+l1*R.x);	mesh.m[0].p.y = Device._y2real(s1.p.y+l1*R.y); mesh.m[0].p.z = s2.p.z; mesh.m[0].p.w = s2.p.w;
+	mesh.m[1].p.x 	= Device._x2real(s2.p.x+l2*R.x);	mesh.m[1].p.y = Device._y2real(s2.p.y+l2*R.y); mesh.m[1].p.z = s2.p.z; mesh.m[1].p.w = s2.p.w;
+	mesh.m[2].p.x 	= Device._x2real(s1.p.x-l1*R.x);	mesh.m[2].p.y = Device._y2real(s1.p.y-l1*R.y); mesh.m[2].p.z = s2.p.z; mesh.m[2].p.w = s2.p.w;
+	mesh.m[3].p.x 	= Device._x2real(s2.p.x-l2*R.x);	mesh.m[3].p.y = Device._y2real(s2.p.y-l2*R.y); mesh.m[3].p.z = s2.p.z; mesh.m[3].p.w = s2.p.w;
 
 	mesh.setcolor	(color);
 

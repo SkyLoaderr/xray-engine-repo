@@ -94,3 +94,13 @@ void	CRender::rmNormal	()
 	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
 
+void 	CRender::set_Transform	(Fmatrix* M)
+{
+	current_matrix.set(*M);
+}
+
+void	CRender::add_Visual   	(IRender_Visual* visual)
+{
+    Device.Models.RenderSingle	(visual,current_matrix);
+}
+

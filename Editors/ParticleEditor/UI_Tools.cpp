@@ -9,10 +9,8 @@
 #include "ui_main.h"
 #include "leftbar.h"
 #include "topbar.h"
-#include "PSObject.h"
 #include "PSLibrary.h"
 #include "ParticleSystem.h"
-#include "PropertiesPSDef.h"
 #include "ItemList.h"
 #include "xr_trims.h"
 #include "library.h"
@@ -29,13 +27,12 @@ CParticleTools::CParticleTools()
 {
     m_ItemProps 		= 0;
 	m_EditObject		= 0;
-	m_TestObject 		= 0;
-    m_LibPS				= 0;
-    m_PSProps			= 0;
     m_EditText			= 0;
     m_bModified			= false;
     m_bReady			= false;
     m_Transform.identity();
+    fFogness			= 0.9f;
+    dwFogColor			= 0xffffffff;
 }
 //---------------------------------------------------------------------------
 
@@ -56,17 +53,11 @@ bool CParticleTools::OnCreate()
 
     Device.seqDevCreate.Add(this);
     Device.seqDevDestroy.Add(this);
-    m_PSProps = xr_new<TfrmPropertiesPSDef>(fraLeftBar->paItemProps);
-	m_PSProps->Parent = fraLeftBar->paItemProps;
-    m_PSProps->Align = alClient;
-    m_PSProps->BorderStyle = bsNone;
-    m_PSProps->ShowProperties();
 
     m_bReady = true;
 
     Load();
 
-	m_PSProps->SetCurrent(0);
     ChangeAction(eaSelect);
 
 	// lock
@@ -108,9 +99,6 @@ void CParticleTools::OnDestroy()
 	TProperties::DestroyForm(m_ItemProps);
     xr_delete			(m_EditPG);
     xr_delete			(m_EditPE);
-	xr_delete			(m_TestObject);
-    m_LibPS				= 0;
-    m_PSProps->HideProperties();
     Device.seqDevCreate.Remove(this);
     Device.seqDevDestroy.Remove(this);
 }
@@ -154,17 +142,15 @@ void CParticleTools::Render()
 	// Draw the particles.
 	RCache.set_xform_world		(Fidentity);
     switch(m_EditMode){
-    case emSystem: 	if (m_TestObject) m_TestObject->RenderSingle();	break;
     case emEffect:	Device.Models.RenderSingle(m_EditPE,Fidentity,1.f);	break;
     case emGroup:	Device.Models.RenderSingle(m_EditPG,Fidentity,1.f);	break;
+    default: THROW;
     }
 }
 
 void CParticleTools::OnFrame()
 {
 	if (!m_bReady) return;
-	if (m_TestObject)
-    	m_TestObject->OnFrame();
 	if (m_EditObject)
     	m_EditObject->OnFrame();
         
@@ -178,9 +164,9 @@ void CParticleTools::OnFrame()
     	RealApplyParent();
 
     switch(m_EditMode){
-    case emSystem: 	UI.SetStatus(""); break;
     case emEffect:	if (m_EditPE->IsPlaying())UI.SetStatus(" PE Playing...",false); else UI.SetStatus(" Stopped.",false); break;
     case emGroup:	if (m_EditPG->IsPlaying())UI.SetStatus(" PG Playing...",false); else UI.SetStatus(" Stopped.",false); break;
+    default: THROW;
     }
 }
 
@@ -192,10 +178,9 @@ void CParticleTools::ZoomObject(BOOL bSelOnly)
 	}else{
     	Fbox box; box.invalidate();
         switch(m_EditMode){
-        case emSystem: 	m_TestObject->GetBox(box);	break;
         case emEffect:	box.set(m_EditPE->vis.box);	break;
         case emGroup:	box.set(m_EditPG->vis.box);	break;
-        default: ELog.Msg(mtError,"Nothing selected.");
+	    default: THROW;
         }
         if (box.is_valid()){ box.grow(1.f); Device.m_Camera.ZoomExtents(box); }
     }
@@ -233,7 +218,6 @@ void CParticleTools::OnDeviceCreate()
 	Device.SetLight(4,L);
 	Device.LightEnable(4,true);
 
-	if (m_TestObject) m_TestObject->OnDeviceCreate();
     m_EditPE->OnDeviceCreate();
     m_EditPG->OnDeviceCreate();
 }
@@ -242,7 +226,6 @@ void CParticleTools::OnDeviceDestroy()
 {
     m_EditPG->OnDeviceDestroy();
     m_EditPE->OnDeviceDestroy();
-	if (m_TestObject) m_TestObject->OnDeviceDestroy();
 }
 
 void CParticleTools::SelectPreviewObject(int p){
@@ -254,9 +237,9 @@ void CParticleTools::SelectPreviewObject(int p){
     UI.RedrawScene();
 }
 
-void CParticleTools::ResetPreviewObject(){
+void CParticleTools::ResetPreviewObject()
+{
 	VERIFY(m_bReady);
-    m_LibPS 	= 0;
     UI.RedrawScene();
 }
 
@@ -269,7 +252,6 @@ void CParticleTools::Load()
 void CParticleTools::Save()
 {
 	VERIFY			(m_bReady);
-    ApplyChanges	();
 	m_bModified 	= false;
 	// backup
     EFS.BackupFile	(_game_data_,"particles2.xr");
@@ -313,14 +295,9 @@ void CParticleTools::Rename(LPCSTR old_full_name, LPCSTR new_full_name)
         ::Render->PSLibrary.RenamePGD(G,new_full_name);
     	return;
     }
-    // is system
-	PS::SDef* S = ::Render->PSLibrary.FindPS(old_full_name); R_ASSERT(S);
-    ApplyChanges();
-    ::Render->PSLibrary.RenamePS(S,new_full_name);
-    if (S==m_LibPS){ m_EditPS = *S; }
 }
 
-void CParticleTools::RemovePS(LPCSTR name)
+void CParticleTools::Remove(LPCSTR name)
 {
 	VERIFY(m_bReady);
 	::Render->PSLibrary.Remove(name);
@@ -349,7 +326,6 @@ void CParticleTools::CloneCurrent()
 	        	AppendPG(PG);
     	        Modified();
             }
-//			Tools.SetCurrentPS(C);        
         }
     }else{                                    
 		ELog.DlgMsg(mtInformation, "At first select object.");
@@ -359,31 +335,8 @@ void CParticleTools::CloneCurrent()
 void CParticleTools::ResetCurrent()
 {
 	VERIFY(m_bReady);
-	m_LibPS = 0;
     m_LibPED= 0;
     m_LibPGD= 0;
-	xr_delete(m_TestObject);
-}
-
-void CParticleTools::SetCurrentPS(PS::SDef* P)
-{
-	VERIFY(m_bReady);
-    // save changes
-    if (m_LibPS)
-    	*m_LibPS = m_EditPS;
-    // load shader
-	if (m_LibPS!=P){
-        m_LibPS = P;
-        if (m_LibPS){ 
-        	m_EditPS 		= *m_LibPS;
-			m_EditMode		= emSystem;
-        }
-        m_PSProps->SetCurrent(m_LibPS?&m_EditPS:0);
-        // update visual
-        xr_delete(m_TestObject);
-		m_TestObject = xr_new<CPSObject>((LPVOID)0,"Test");
-		m_TestObject->Compile(&m_EditPS);
-    }
 }
 
 void CParticleTools::SetCurrentPE(PS::CPEDef* P)
@@ -417,11 +370,6 @@ void CParticleTools::SetCurrentPG(PS::CPGDef* P)
     }
 }
 
-PS::SDef* CParticleTools::FindPS(LPCSTR name)
-{
-	return ::Render->PSLibrary.FindPS(name);
-}
-
 PS::CPEDef*	CParticleTools::FindPE(LPCSTR name)
 {
 	return ::Render->PSLibrary.FindPED(name);
@@ -432,48 +380,14 @@ PS::CPGDef*	CParticleTools::FindPG(LPCSTR name)
 	return ::Render->PSLibrary.FindPGD(name);
 }
 
-void CParticleTools::UpdateCurrent()
-{
-	VERIFY(m_bReady);
-    VERIFY(m_LibPS);
-	xr_delete(m_TestObject);
-    m_TestObject = xr_new<CPSObject>((LPVOID)0,"Test");
-    m_TestObject->Compile(&m_EditPS);
-}
-//---------------------------------------------------------------------------
-
-void CParticleTools::UpdateEmitter()
-{
-	VERIFY(m_bReady);
-    if (!m_LibPS) return;
-    if (m_TestObject) m_TestObject->UpdateEmitter(&m_EditPS.m_DefaultEmitter);
-}
-//---------------------------------------------------------------------------
-
-PS::SDef* CParticleTools::ClonePS(LPCSTR name)
-{
-	VERIFY(m_bReady);
-	PS::SDef* S = ::Render->PSLibrary.FindPS(name); R_ASSERT(S);
-	return AppendPS(S);
-}
-
-void CParticleTools::ApplyChanges()
-{
-	VERIFY(m_bReady);
-    if (m_LibPS){
-		*m_LibPS = m_EditPS;
-		Modified();
-    }
-}
-
 void CParticleTools::PlayCurrent()
 {
 	VERIFY(m_bReady);
     StopCurrent		(false);
     switch(m_EditMode){
-    case emSystem: 	if (m_TestObject) m_TestObject->Play();	break;
     case emEffect:	m_EditPE->Play(); break;
     case emGroup:	m_EditPG->Play(); break;
+    default: THROW;
     }
     ApplyParent		();
 }
@@ -482,9 +396,9 @@ void CParticleTools::StopCurrent(bool bFinishPlaying)
 {
 	VERIFY(m_bReady);
     switch(m_EditMode){
-    case emSystem: 	if (m_TestObject) m_TestObject->Stop();	break;
     case emEffect:	m_EditPE->Stop(bFinishPlaying);	break;
     case emGroup:	m_EditPG->Stop(bFinishPlaying);	break;
+    default: THROW;
     }
 }
 
@@ -516,7 +430,6 @@ void CParticleTools::ChangeAction(EAction action)
 
 bool __fastcall CParticleTools::MouseStart(TShiftState Shift)
 {
-//	if (!m_TestObject) return false;
 	switch(m_Action){
     case eaSelect: return false;
     case eaAdd:{
@@ -526,7 +439,7 @@ bool __fastcall CParticleTools::MouseStart(TShiftState Shift)
             SRayPickInfo pinf;
             if (m_EditObject->RayPick(dist,UI.m_CurrentRStart,UI.m_CurrentRNorm,Fidentity,&pinf)){
                 R_ASSERT(pinf.e_mesh);
-                m_EditPS.m_DefaultEmitter.m_Position.set(pinf.pt);
+//.				m_EditPS.m_DefaultEmitter.m_Position.set(pinf.pt);
             }
         }
     }break;
@@ -581,8 +494,6 @@ bool __fastcall CParticleTools::MouseStart(TShiftState Shift)
     }break;
     }
     ApplyParent		();
-    UpdateEmitter	();
-    m_PSProps->fraEmitter->GetInfoFirst(m_EditPS.m_DefaultEmitter);
 	return m_bHiddenMode;
 }
 
@@ -636,18 +547,15 @@ void __fastcall CParticleTools::MouseMove(TShiftState Shift)
     }break;
     }
     ApplyParent		();
-
-    UpdateEmitter	();
-    m_PSProps->fraEmitter->GetInfoFirst(m_EditPS.m_DefaultEmitter);
 }       
 //------------------------------------------------------------------------------
 
 void CParticleTools::RealApplyParent()
 {
     switch(m_EditMode){
-    case emSystem: 	break;
     case emEffect:	m_EditPE->UpdateParent(m_Transform,zero_vec); break;
     case emGroup:	m_EditPG->UpdateParent(m_Transform,zero_vec); break;
+    default: THROW;
     }
 	m_Flags.set		(flApplyParent,FALSE);
 }
@@ -765,9 +673,9 @@ void __fastcall CParticleTools::ResetState()
 
 void CParticleTools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
 {
-	s_fog		= 0.99f*UI.ZFar();
-	e_fog		= UI.ZFar();
-	fog_color	= DEFAULT_CLEARCOLOR;
+    s_fog				= psDeviceFlags.is(rsFog)?(1.0f - fFogness)* 0.85f * UI.ZFar():0.99f*UI.ZFar();
+    e_fog				= psDeviceFlags.is(rsFog)?0.91f * UI.ZFar():UI.ZFar();
+    fog_color 			= dwFogColor;
 }
 
 LPCSTR CParticleTools::GetInfo()
@@ -785,23 +693,6 @@ void CParticleTools::SelectListItem(LPCSTR pref, LPCSTR name, bool bVal, bool bL
     }
 }
 //------------------------------------------------------------------------------
-
-PS::SDef* CParticleTools::AppendPS(PS::SDef* src)
-{
-	VERIFY(m_bReady);
-	AnsiString folder_name;
-	FHelper.MakeName	(m_PList->GetSelected(),0,folder_name,true);
-    string64 new_name;
-    string64 pref		={0};
-    if (src) 			strcat(pref,src->m_Name);
-    ::Render->PSLibrary.GenerateName	(new_name,folder_name.c_str(),pref);
-    PS::SDef* S 		= ::Render->PSLibrary.AppendPS(src);
-    strcpy				(S->m_Name,new_name);
-
-    UI.Command			(COMMAND_UPDATE_PROPERTIES,true);
-    if (new_name[0]) 	SelectListItem(0,new_name,true,false,true);
-    return S;
-}
 
 PS::CPEDef* CParticleTools::AppendPE(PS::CPEDef* src)
 {
@@ -837,45 +728,28 @@ PS::CPGDef*	CParticleTools::AppendPG(PS::CPGDef* src)
     return S;
 }
 
-/*
-	PropItemVec props;
-	m_EditMode	= emObject;
-    
-    // unselect
-    if (m_pEditObject){
-    	m_pEditObject->ResetSAnimation(false);
-	    StopMotion					();
-    	m_pEditObject->SelectBones	(false);
-    }
-    
-	if (!items.empty()){
-	    for (ListItemsIt it=items.begin(); it!=items.end(); it++){
-            ListItem* prop = *it;
-            m_ObjectItems->pmItems->Items->Clear();
-            if (prop){
-                m_EditMode = EEditMode(prop->Type());
-                switch(m_EditMode){
-                case emObject:
-                    FillObjectProperties(props,MOTIONS_PREFIX,prop);
-                break;
-                case emMotion:{ 	
-                    FillMotionProperties(props,MOTIONS_PREFIX,prop);
-                    CSMotion* MOT		= ((CSMotion*)prop->m_Object);
-                    SetCurrentMotion	(MOT?MOT->Name():"");
-                }break;
-                case emBone:{
-                    FillBoneProperties	(props,BONES_PREFIX,prop);
-                    CBone* BONE 		= (CBone*)prop->m_Object;
-                    if (BONE) 			BONE->Select(TRUE);
-                }break;
-                case emSurface: 
-                    FillSurfaceProperties(props,SURFACES_PREFIX,prop);
-                break;
-                case emMesh: 
-                break;
-                }
+#include "EditMesh.h"
+
+bool CParticleTools::RayPick(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt, Fvector* n)
+{
+    if (m_EditObject){
+		SRayPickInfo pinf;
+		if (m_EditObject->RayPick(dist,start,dir,Fidentity,&pinf)){
+        	if (pt) pt->set(pinf.pt); 
+            if (n){	
+                const Fvector* PT[3];
+                pinf.e_mesh->GetFacePT(pinf.inf.id, PT);
+            	n->mknormal(*PT[0],*PT[1],*PT[2]);
             }
-        }
+            return true;
+        }else return false;
+    }else{
+    	Fvector np; np.mad(start,dir,dist);
+    	if ((start.y>0)&&(np.y<0.f)){
+            if (pt) pt->set(start); 
+            if (n)	n->set(0.f,1.f,0.f);
+            return true;
+        }else return false;
     }
-	m_ItemProps->AssignItems(props,true);
-*/
+}
+ 

@@ -18,9 +18,9 @@ public:
 	virtual u32			get_height			()				{ return Device.dwHeight;	}
 };
 
-
 class	CRender{
     IRender_Target			Target;
+    Fmatrix					current_matrix;
 public:
 	// Data
 	CFrustum				ViewBase;
@@ -37,6 +37,9 @@ public:
 
     void					Calculate		();
     void					Render	 		();
+
+	void					set_Transform	(Fmatrix* M);
+	void					add_Visual   	(IRender_Visual* visual);
 
 	IRender_Target*			getTarget		(){return &Target;}
 

@@ -10,9 +10,6 @@
 #include "ItemList.h"
 
 // refs
-class CPSObject;
-class SDef;
-class TfrmPropertiesPSDef;
 class CEditableObject;
 class TfrmText;
 
@@ -33,8 +30,6 @@ enum EAxis{
 };
 
 enum EEditMode{
-	emNone,
-    emSystem,
     emEffect,
     emGroup
 };
@@ -42,9 +37,7 @@ enum EEditMode{
 class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
 {
 	CEditableObject*	m_EditObject;
-    CPSObject*  		m_TestObject;
     bool				m_bModified;
-	TfrmPropertiesPSDef*m_PSProps;
     bool				m_bReady;
 
     EAction				m_Action;
@@ -59,10 +52,6 @@ class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
     Fvector				m_RotateCenter;
     Fvector				m_RotateVector;
     float				m_fRotateSnapAngle;
-
-	// PS variables    
-    PS::SDef* 			m_LibPS;
-    PS::SDef			m_EditPS;
 
     // PE variables
     PS::CPEDef*			m_LibPED;
@@ -83,8 +72,8 @@ class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
     void __fastcall		OnItemModified		(void); 
 
     void __fastcall 	OnParticleItemFocused	(ListItemsVec& items);
-	void __fastcall 	OnParticleItemRename	(LPCSTR old_name, LPCSTR new_name);
-    BOOL __fastcall 	OnParticleItemRemove	(LPCSTR name);
+	void __fastcall 	OnParticleItemRename	(LPCSTR old_name, LPCSTR new_name, EItemType type);
+    BOOL __fastcall 	OnParticleItemRemove	(LPCSTR name, EItemType type);
 
     void				RealUpdateProperties();
 	void 				SelectListItem		(LPCSTR pref, LPCSTR name, bool bVal, bool bLeaveSel, bool bExpand);
@@ -100,6 +89,9 @@ public:
 public:
 	void				EditActionList		();
     void				ResetState			();
+public:
+    float 				fFogness;
+    u32					dwFogColor;
 public:
 	// flags
     enum{
@@ -132,17 +124,10 @@ public:
     void				Rename				(LPCSTR src_name, LPCSTR dest_name);
 
     // PS routine
-    PS::SDef*			AppendPS			(PS::SDef* src);
-    PS::SDef*			FindPS				(LPCSTR name);
-    void				RemovePS			(LPCSTR name);
 	void 				CloneCurrent		();
     void				ResetCurrent		();
     void				RemoveCurrent		();
-    void 				SetCurrentPS		(PS::SDef* P);
-    PS::SDef*			ClonePS				(LPCSTR name);
-    PS::SDef*			GetCurrentPS		(){return m_LibPS?&m_EditPS:0;}
-    void				UpdateCurrent		();
-    void				UpdateEmitter		();
+	void 				Remove				(LPCSTR name);
 
     // PG routine
     PS::CPEDef*			FindPE				(LPCSTR name);
@@ -157,7 +142,6 @@ public:
     void				Load				();
     void				Save				();
     void				Reload				();
-    void				ApplyChanges		();
 
     virtual void		OnDeviceCreate		();
     virtual void		OnDeviceDestroy		();
@@ -176,7 +160,9 @@ public:
     bool __fastcall 	KeyPress    		(WORD Key, TShiftState Shift){return false;}
 
     bool				Pick				(TShiftState Shift){return false;}
+    bool				RayPick				(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt=0, Fvector* n=0);
 
+    void				SetFog				(u32 fog_color, float fogness){dwFogColor=fog_color;fFogness=fogness;}
     void				GetCurrentFog		(u32& fog_color, float& s_fog, float& e_fog);
     LPCSTR				GetInfo				();
 	void				SetNumPosition		(CCustomObject* p1){;}

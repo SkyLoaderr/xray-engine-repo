@@ -54,12 +54,12 @@
       Intermediate\ELog.obj Intermediate\Engine.obj Intermediate\EStats.obj 
       Intermediate\ETextureParams.obj Intermediate\ExportObjectOGF.obj 
       Intermediate\ExportSkeleton.obj Intermediate\FolderLib.obj 
-      Intermediate\FrameEmitter.obj Intermediate\ImageEditor.obj 
-      Intermediate\ImageManager.obj Intermediate\ImageThumbnail.obj 
-      Intermediate\ItemList.obj Intermediate\ItemListHelper.obj 
-      Intermediate\ItemListTypes.obj Intermediate\Library.obj 
-      Intermediate\LightAnimLibrary.obj Intermediate\ModelPool.obj 
-      Intermediate\NumericVector.obj Intermediate\ParticleEffectEditor.obj 
+      Intermediate\ImageEditor.obj Intermediate\ImageManager.obj 
+      Intermediate\ImageThumbnail.obj Intermediate\ItemList.obj 
+      Intermediate\ItemListHelper.obj Intermediate\ItemListTypes.obj 
+      Intermediate\Library.obj Intermediate\LightAnimLibrary.obj 
+      Intermediate\ModelPool.obj Intermediate\NumericVector.obj 
+      Intermediate\ParticleEffectEditor.obj 
       Intermediate\ParticleEffectParser.obj Intermediate\ParticleGroupEditor.obj 
       Intermediate\PropertiesList.obj Intermediate\PropertiesListHelper.obj 
       Intermediate\PropertiesListTypes.obj Intermediate\PSLibrary.obj 
@@ -71,25 +71,28 @@
       Intermediate\UI_MainCommand.obj Intermediate\UI_ToolsProps.obj 
       Intermediate\BottomBar.obj Intermediate\EditorPref.obj 
       Intermediate\LeftBar.obj Intermediate\LogForm.obj Intermediate\main.obj 
-      Intermediate\PropertiesPSDef.obj Intermediate\Splash.obj 
-      Intermediate\stdafx.obj Intermediate\UI_MainExtern.obj 
-      Intermediate\UI_Tools.obj Intermediate\ResourceManager_Resources.obj 
+      Intermediate\Splash.obj Intermediate\stdafx.obj 
+      Intermediate\UI_MainExtern.obj Intermediate\UI_Tools.obj 
+      Intermediate\ResourceManager_Resources.obj 
       Intermediate\ResourceManager.obj Intermediate\ResourceManager_Loader.obj 
-      Intermediate\SH_Atomic.obj Intermediate\CustomObjectAnimation.obj"/>
+      Intermediate\SH_Atomic.obj Intermediate\CustomObjectAnimation.obj 
+      Intermediate\Blender_Recorder_StandartBinding.obj 
+      Intermediate\IGame_Persistent.obj Intermediate\Environment.obj 
+      Intermediate\Rain.obj Intermediate\xr_efflensflare.obj 
+      Intermediate\DetailModel.obj"/>
     <RESFILES value="resource.res ParticleEditor.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) Editor\ChoseForm.dfm Editor\FrameEmitter.dfm 
-      Editor\ImageEditor.dfm Editor\ItemList.dfm Editor\NumericVector.dfm 
-      Editor\PropertiesList.dfm Editor\ShaderFunction.dfm Editor\TextForm.dfm 
-      Editor\TopBar.dfm BottomBar.dfm EditorPref.dfm LeftBar.dfm LogForm.dfm 
-      main.dfm PropertiesPSDef.dfm Splash.dfm"/>
+    <RESDEPEN value="$(RESFILES) Editor\ChoseForm.dfm Editor\ImageEditor.dfm 
+      Editor\ItemList.dfm Editor\NumericVector.dfm Editor\PropertiesList.dfm 
+      Editor\ShaderFunction.dfm Editor\TextForm.dfm Editor\TopBar.dfm 
+      BottomBar.dfm EditorPref.dfm LeftBar.dfm LogForm.dfm main.dfm Splash.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="elpackB6.lib editor.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
     <PACKAGES value="rtl.bpi vcl.bpi vclx.bpi bcbsmp.bpi"/>
-    <PATHCPP value=".;Engine;Engine\Blenders;Engine\Animations;Editor"/>
+    <PATHCPP value=".;Engine;Engine\Blenders;Engine\Animations;Editor;..\LevelEditor\Engine\Blenders"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -99,16 +102,17 @@
     <USERDEFINES value="_EDITOR;_PARTICLE_EDITOR;DEBUG;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="ParticleEditor.cpp"/>
-    <INCLUDEPATH value="C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;r:\borland\components6\alexmx;editor;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\Elpack\Code;R:\Borland\Components6\Elpack\Code\Source;P:\xrCore"/>
-    <LIBPATH value="lib;Engine\Animations;Engine\BLENDERS;c:\rad\borland\CBuilder6\Projects;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\Elpack\Code\Source;R:\Borland\Components6\Elpack\Code;..\lib\dx;..\lib;&quot;x:\&quot;"/>
+    <INCLUDEPATH value="..\LevelEditor\Engine\Blenders;C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;r:\borland\components6\alexmx;editor;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\Elpack\Code;R:\Borland\Components6\Elpack\Code\Source;P:\xrCore"/>
+    <LIBPATH value="..\LevelEditor\Engine\Blenders;lib;Engine\Animations;Engine\BLENDERS;c:\rad\borland\CBuilder6\Projects;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\Elpack\Code\Source;R:\Borland\Components6\Elpack\Code;..\lib\dx;..\lib;&quot;x:\&quot;"/>
     <WARNINGS value="-w-par -w-8027"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-IC:\Rad\Borland\CBuilder6\Projects -IEngine\Animations -IEngine\BLENDERS 
-      -Ir:\borland\components6\alexmx -Ieditor -IR:\SDK\DirectX9.0\include 
-      -I$(BCB)\include -I$(BCB)\include\vcl -Iengine 
-      -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\Elpack\Code 
+    <IDLCFLAGS value="-I..\LevelEditor\Engine\Blenders -IC:\Rad\Borland\CBuilder6\Projects 
+      -IEngine\Animations -IEngine\BLENDERS -Ir:\borland\components6\alexmx 
+      -Ieditor -IR:\SDK\DirectX9.0\include -I$(BCB)\include -I$(BCB)\include\vcl 
+      -Iengine -IP:\MagicFM_Borland\Sdk\Include 
+      -IR:\Borland\Components6\Elpack\Code 
       -IR:\Borland\Components6\Elpack\Code\Source -IP:\xrCore -src_suffix cpp 
       -D_EDITOR -D_PARTICLE_EDITOR -DDEBUG -D_DEBUG -no_tie -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps -a4 
@@ -230,7 +234,6 @@
       <FILE FILENAME="Editor\ExportObjectOGF.cpp" FORMNAME="" UNITNAME="ExportObjectOGF.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ExportSkeleton.cpp" FORMNAME="" UNITNAME="ExportSkeleton.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\FolderLib.cpp" FORMNAME="" UNITNAME="FolderLib.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\FrameEmitter.cpp" FORMNAME="fraEmitter" UNITNAME="FrameEmitter" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ImageEditor.cpp" FORMNAME="frmImageLib" UNITNAME="ImageEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ImageManager.cpp" FORMNAME="" UNITNAME="ImageManager.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ImageThumbnail.cpp" FORMNAME="" UNITNAME="ImageThumbnail.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -265,7 +268,6 @@
       <FILE FILENAME="LeftBar.cpp" FORMNAME="fraLeftBar" UNITNAME="LeftBar" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="LogForm.cpp" FORMNAME="frmLog" UNITNAME="LogForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="main.cpp" FORMNAME="frmMain" UNITNAME="main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="PropertiesPSDef.cpp" FORMNAME="frmPropertiesPSDef" UNITNAME="PropertiesPSDef" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Splash.cpp" FORMNAME="frmSplash" UNITNAME="Splash" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="stdafx.cpp" FORMNAME="" UNITNAME="stdafx.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="UI_MainExtern.cpp" FORMNAME="" UNITNAME="UI_MainExtern.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -277,6 +279,12 @@
       <FILE FILENAME="Engine\ResourceManager_Loader.cpp" FORMNAME="" UNITNAME="ResourceManager_Loader.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\SH_Atomic.cpp" FORMNAME="" UNITNAME="SH_Atomic" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\CustomObjectAnimation.cpp" FORMNAME="" UNITNAME="CustomObjectAnimation" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="..\LevelEditor\Engine\Blenders\Blender_Recorder_StandartBinding.cpp" FORMNAME="" UNITNAME="Blender_Recorder_StandartBinding" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\IGame_Persistent.cpp" FORMNAME="" UNITNAME="IGame_Persistent" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Environment.cpp" FORMNAME="" UNITNAME="Environment" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Rain.cpp" FORMNAME="" UNITNAME="Rain" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\xr_efflensflare.cpp" FORMNAME="" UNITNAME="xr_efflensflare" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\DetailModel.cpp" FORMNAME="" UNITNAME="DetailModel" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

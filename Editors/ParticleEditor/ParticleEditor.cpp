@@ -6,7 +6,6 @@
 #include "LogForm.h"
 //---------------------------------------------------------------------------
 USEFORM("Editor\ChoseForm.cpp", frmChoseItem);
-USEFORM("Editor\FrameEmitter.cpp", fraEmitter); /* TFrame: File Type */
 USEFORM("Editor\ImageEditor.cpp", frmImageLib);
 USEFORM("Editor\ItemList.cpp", ItemList);
 USEFORM("Editor\NumericVector.cpp", frmNumericVector);
@@ -19,7 +18,6 @@ USEFORM("EditorPref.cpp", frmEditPrefs);
 USEFORM("LeftBar.cpp", fraLeftBar); /* TFrame: File Type */
 USEFORM("LogForm.cpp", frmLog);
 USEFORM("main.cpp", frmMain);
-USEFORM("PropertiesPSDef.cpp", frmPropertiesPSDef);
 USEFORM("Splash.cpp", frmSplash);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)

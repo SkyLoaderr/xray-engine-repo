@@ -55,7 +55,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn1;
 	TPanel *paItemProps;
 	TPanel *paAction;
-	TExtBtn *ebEngineApplyChanges;
 	TExtBtn *ebImageCommands;
 	TMxPopupMenu *pmImages;
 	TMenuItem *ImageEditor1;
@@ -65,7 +64,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ebResetState;
 	TExtBtn *ebCreate;
 	TMxPopupMenu *pmCreateMenu;
-	TMenuItem *MenuItem1;
 	TMenuItem *MenuItem2;
 	TMenuItem *N3;
 	TMenuItem *N4;
@@ -83,9 +81,7 @@ __published:	// IDE-managed Components
     void __fastcall ebRefreshTexturesClick(TObject *Sender);
 	void __fastcall ebSceneCommandsMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall PreviewClick(TObject *Sender);
-	void __fastcall ebEngineApplyChangesClick(TObject *Sender);
 	void __fastcall ebParticleCloneClick(TObject *Sender);
-	void __fastcall ebPSCreateClick(TObject *Sender);
 	void __fastcall ebImageCommandsMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall ImageEditor1Click(TObject *Sender);

@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 552
+  Height = 553
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 300
-    Height = 552
+    Height = 553
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 349
+      Top = 350
       Width = 298
       Height = 2
       Cursor = crVSplit
@@ -172,7 +172,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 68
       Width = 298
-      Height = 281
+      Height = 282
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -194,7 +194,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 296
-        Height = 249
+        Height = 250
         Align = alClient
         BevelOuter = bvNone
         ParentColor = True
@@ -203,7 +203,7 @@ object fraLeftBar: TfraLeftBar
         TabOrder = 0
         object Bevel2: TBevel
           Left = 0
-          Top = 247
+          Top = 248
           Width = 296
           Height = 2
           Align = alBottom
@@ -335,7 +335,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 36
           Width = 296
-          Height = 211
+          Height = 212
           Align = alClient
           BevelOuter = bvNone
           ParentColor = True
@@ -344,35 +344,15 @@ object fraLeftBar: TfraLeftBar
       end
       object paAction: TPanel
         Left = 1
-        Top = 263
+        Top = 264
         Width = 296
         Height = 17
         Align = alBottom
         BevelOuter = bvNone
         Color = 10528425
         TabOrder = 1
-        object ebEngineApplyChanges: TExtBtn
-          Left = 1
-          Top = 1
-          Width = 96
-          Height = 15
-          Align = alNone
-          BevelShow = False
-          HotTrack = True
-          HotColor = 15790320
-          CloseButton = False
-          Caption = 'Apply Changes'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          Margin = 13
-          ParentFont = False
-          OnClick = ebEngineApplyChangesClick
-        end
         object ebResetState: TExtBtn
-          Left = 105
+          Left = 2
           Top = 1
           Width = 96
           Height = 15
@@ -395,7 +375,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paProperties: TPanel
       Left = 1
-      Top = 351
+      Top = 352
       Width = 298
       Height = 200
       Align = alBottom
@@ -582,11 +562,6 @@ object fraLeftBar: TfraLeftBar
     Top = 88
     object N3: TMenuItem
       Caption = '-'
-    end
-    object MenuItem1: TMenuItem
-      Caption = 'Particle System'
-      Enabled = False
-      OnClick = ebPSCreateClick
     end
     object MenuItem2: TMenuItem
       Caption = 'Particle Effect'

@@ -54,21 +54,21 @@ union var
     BOOL    		b;
     WORD			w;
     DWORD			o;
-    string64		s;
+    string128		s;
 
     operator PDomainEnum()	{return d;}
     operator float		()	{return f;}
     operator int		()	{return i;}
     operator WORD		()	{return w;}
     operator DWORD		()	{return o;}
-    operator string64&	()	{return s;}
+    operator string128&	()	{return s;}
 
     var& operator 		= (PDomainEnum _d) 	{ d=_d; return *this; }
     var& operator 		= (float _f)      	{ f=_f; return *this; }
     var& operator 		= (int _i)        	{ i=_i; return *this; }
     var& operator 		= (WORD _w)       	{ w=_w; return *this; }
     var& operator 		= (DWORD _o)		{ o=_o; return *this; }
-    var& operator 		= (string64& _s)	{ strcpy(s,_s); return *this; }
+    var& operator 		= (string128& _s)	{ strcpy(s,_s); return *this; }
 
     var					()               	{ }
     var					(PDomainEnum _d): d(_d)   { }
@@ -76,7 +76,7 @@ union var
     var					(int _i)  		: i(_i)   { }
     var					(WORD _w) 		: w(_w)   { }
     var					(DWORD _o)		: o(_o)   { }
-    var					(string64& _s)	{ strcpy(s,_s); }
+    var					(string128& _s)	{ strcpy(s,_s); }
 };
 
 IC bool get_int(LPCSTR a, var& val)
@@ -111,7 +111,7 @@ IC bool get_bool(LPCSTR a, var& val)
 
 IC bool get_string(LPCSTR src, var& val)
 {
-	string64 v;
+	string128 v;
     _GetItem(src,1,v,'"');
     val 	= v;
    	return src&&src[0];
@@ -133,14 +133,16 @@ IC bool get_domain_type(LPCSTR src, var& val)
 // error constants
 static const int BAD_COMMAND	= 0;
 static const int FEW_PARAMS 	= 1;
-static const int BAD_PARAM	 	= 2;
-static const int STA_MISSING 	= 3;
+static const int MANY_PARAMS 	= 2;
+static const int BAD_PARAM	 	= 3;
+static const int STA_MISSING 	= 4;
 
 void ErrMsg(int c, int l, int v, LPCSTR line)
 {
     switch (c){
     case BAD_COMMAND: 	ELog.DlgMsg(mtError,"[Error] (%d): Unrecognized command: '%s'",l+1,line); break;
     case FEW_PARAMS: 	ELog.DlgMsg(mtError,"[Error] Too few parameters in call to '%s'",line); break;
+    case MANY_PARAMS: 	ELog.DlgMsg(mtError,"[Error] Extra parameters in call to '%s'",line); break;
     case BAD_PARAM: 	ELog.DlgMsg(mtError,"[Error] (%d): Bad parameter '%d' - '%s'",l+1,v,line); break;
     case STA_MISSING:	ELog.DlgMsg(mtError,"[Error] (%d): Statement missing ';'",l+1,line); break;
     }
@@ -225,6 +227,10 @@ public:
         _GetItem		(pms.c_str(),0,pms,')');
         bool bRes		= true;
         int p_cnt 		= _GetItemCount(pms.c_str());
+        if (p_cnt>params.size()){
+        	ErrMsg		(MANY_PARAMS,l,0,line);
+        	return false;
+        }
         if (p_cnt<req_params){
         	ErrMsg		(FEW_PARAMS,l,0,line);
         	return false;
@@ -282,6 +288,9 @@ public:
         else if (command=="pStartingAge")		pStartingAge   	(P2);
         else if (command=="pTimeStep")	  		pTimeStep	   	(P1);
         else if (command=="pSetMaxParticles")	pSetMaxParticles(P1);
+//        else if (command=="pObject")       		parent->pObject	(P1);
+		else if (command=="pAlignToPath")		parent->pAlignToPath();
+		else if (command=="pCollision")			parent->pCollision(P4);
         else if (command=="pSprite")        	parent->pSprite	(P2);
         else if (command=="pFrame")		  		parent->pFrame	(P6);
         else if (command=="pTimeLimit")			parent->pTimeLimit(P1);
@@ -345,22 +354,25 @@ static PFuncMap CommandTemplates;
 
 static LPCSTR PStateCommands[]={
 //	"pResetState();",
-	"pColor(float red, float green, float blue, float alpha = 1.0f);",
-	"pColorD(float alpha, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
+	"pColor(float red, float green, float blue, float alpha=1.0f);",
+	"pColorD(float alpha, PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f);",
 	"pParentMotion(float scale);",
 	"pRotate(float rot_x, float rot_y=0.f, float rot_z=0.f);",
-	"pRotateD(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
-	"pSize(float size_x, float size_y = 1.0f, float size_z = 1.0f);",
-	"pSizeD(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
-	"pStartingAge(float age, float sigma = 1.0f);",
+	"pRotateD(PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f);",
+	"pSize(float size_x, float size_y=1.0f, float size_z=1.0f);",
+	"pSizeD(PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f);",
+	"pStartingAge(float age, float sigma=1.0f);",
 	"pTimeStep(float new_dt);",
 	"pVelocity(float x, float y, float z);",
-	"pVelocityD(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
+	"pVelocityD(PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f);",
 	"pVertexB(float x, float y, float z);",
-	"pVertexBD(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
-	"pVertexBTracks(BOOL track_vertex = TRUE);",
+	"pVertexBD(PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f);",
+	"pVertexBTracks(BOOL track_vertex=TRUE);",
 	"pSetMaxParticles(int max_count);",
 // our     
+	"pAlignToPath();",
+    "pCollision(float friction, float resilience, float cutoff, BOOL destroy_on_contact=FALSE);",
+//    "pObject(LPCSTR obj_name);",
     "pSprite(LPCSTR sh_name, LPCSTR tex_name);",
     "pFrame(BOOL random_frame=TRUE, u32 frame_count=16, u32 texture_width=128, u32 texture_height=128, u32 frame_width=32, u32 frame_height=32);",
 	"pTimeLimit(float time_limit);",
@@ -368,36 +380,36 @@ static LPCSTR PStateCommands[]={
 };
 
 static LPCSTR PActionCommands[]={
-	"pAvoid(float magnitude, float epsilon, float look_ahead,  PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
-	"pBounce(float friction, float resilience, float cutoff, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
-	"pCopyVertexB(BOOL copy_pos = TRUE, BOOL copy_vel = FALSE);",
-	"pDamping(float damping_x, float damping_y, float damping_z, float vlow = 0.0f, float vhigh = P_MAXFLOAT);",
-	"pExplosion(float center_x, float center_y, float center_z, float velocity, float magnitude, float stdev, float epsilon = P_EPS, float age = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
-	"pFollow(float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT);",
-	"pGravitate(float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT);",
+	"pAvoid(float magnitude, float epsilon, float look_ahead,  PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
+	"pBounce(float friction, float resilience, float cutoff, PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
+	"pCopyVertexB(BOOL copy_pos=TRUE, BOOL copy_vel=FALSE);",
+	"pDamping(float damping_x, float damping_y, float damping_z, float vlow=0.0f, float vhigh=P_MAXFLOAT);",
+	"pExplosion(float center_x, float center_y, float center_z, float velocity, float magnitude, float stdev, float epsilon=P_EPS, float age=0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
+	"pFollow(float magnitude=1.0f, float epsilon=P_EPS, float max_radius=P_MAXFLOAT);",
+	"pGravitate(float magnitude=1.0f, float epsilon=P_EPS, float max_radius=P_MAXFLOAT);",
 	"pGravity(float dir_x, float dir_y, float dir_z, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
-	"pJet(float center_x, float center_y, float center_z, float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
-	"pKillOld(float age_limit, BOOL kill_less_than = FALSE);",
-	"pMatchVelocity(float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT);",
+	"pJet(float center_x, float center_y, float center_z, float magnitude=1.0f, float epsilon=P_EPS, float max_radius=P_MAXFLOAT, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
+	"pKillOld(float age_limit, BOOL kill_less_than=FALSE);",
+	"pMatchVelocity(float magnitude=1.0f, float epsilon=P_EPS, float max_radius=P_MAXFLOAT);",
 	"pMove();",
-	"pOrbitLine(float p_x, float p_y, float p_z, float axis_x, float axis_y, float axis_z, float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
-	"pOrbitPoint(float center_x, float center_y, float center_z, float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
-	"pRandomAccel(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
-	"pRandomDisplace(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
-	"pRandomVelocity(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
+	"pOrbitLine(float p_x, float p_y, float p_z, float axis_x, float axis_y, float axis_z, float magnitude=1.0f, float epsilon=P_EPS, float max_radius=P_MAXFLOAT, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
+	"pOrbitPoint(float center_x, float center_y, float center_z, float magnitude=1.0f, float epsilon=P_EPS, float max_radius=P_MAXFLOAT, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
+	"pRandomAccel(PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
+	"pRandomDisplace(PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
+	"pRandomVelocity(PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
 	"pRestore(float time);",
-	"pSink(BOOL kill_inside, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
-	"pSinkVelocity(BOOL kill_inside, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
-	"pSource(float particle_rate, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
-	"pSpeedLimit(float min_speed, float max_speed = P_MAXFLOAT);",
+	"pSink(BOOL kill_inside, PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
+	"pSinkVelocity(BOOL kill_inside, PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
+	"pSource(float particle_rate, PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
+	"pSpeedLimit(float min_speed, float max_speed=P_MAXFLOAT);",
 	"pTargetColor(float color_x, float color_y, float color_z, float alpha, float scale);",
-	"pTargetSize(float size_x, float size_y, float size_z, float scale_x = 0.0f, float scale_y = 0.0f, float scale_z = 0.0f);",
-	"pTargetRotate(float rot_x, float rot_y, float rot_z, float scale = 0.0f);",
-	"pTargetRotateD(float scale, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
+	"pTargetSize(float size_x, float size_y, float size_z, float scale_x=0.0f, float scale_y=0.0f, float scale_z=0.0f);",
+	"pTargetRotate(float rot_x, float rot_y, float rot_z, float scale=0.0f);",
+	"pTargetRotateD(float scale, PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f);",
 	"pTargetVelocity(float vel_x, float vel_y, float vel_z, float scale, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
-	"pTargetVelocityD(float scale, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
+	"pTargetVelocityD(float scale, PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
 	"pVertex(float x, float y, float z);",
-	"pVortex(float center_x, float center_y, float center_z, float axis_x, float axis_y, float axis_z, float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
+	"pVortex(float center_x, float center_y, float center_z, float axis_x, float axis_y, float axis_z, float magnitude=1.0f, float epsilon=P_EPS, float max_radius=P_MAXFLOAT, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
     // our
 	"pAnimate(float speed=24.f, BOOL random_playback=FALSE);",
     0
