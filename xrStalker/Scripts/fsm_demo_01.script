@@ -11,8 +11,11 @@ function if_see_actor(npc, fsm)
 		-- как только мы сделаем return true
 		log("i saw a fucking actor")
 
-		--	задаем новое состояние сталкера
+		-- при переходе из нулевого состояния всегда 
+		-- незабываем взять контроль скрипта над FSM
+		fsm:set_script_control()
 
+		--	задаем новое состояние сталкера
 		action(
 			npc, 	-- указываем именно тот NPC, для которого вызван FSM
 		  	move	(move.standing, move.stand,move.line,patrol("way0000")),
