@@ -139,9 +139,6 @@
 				RelativePath=".\color_defs.xml">
 			</File>
 			<File
-				RelativePath=".\diary.xml">
-			</File>
-			<File
 				RelativePath=".\game_tasks.xml">
 			</File>
 			<File
