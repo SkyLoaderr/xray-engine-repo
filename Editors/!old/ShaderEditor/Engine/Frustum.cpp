@@ -74,6 +74,10 @@ EFC_Visible	CFrustum::testSphere			(Fvector& c, float r, u32& test_mask) const
 BOOL	CFrustum::testSphere_dirty		(Fvector& c, float r) const
 {
 	switch (p_count) {
+		case 12:if (planes[11].classify(c)>r)	return FALSE;
+		case 11:if (planes[10].classify(c)>r)	return FALSE;
+		case 10:if (planes[9].classify(c)>r)	return FALSE;
+		case 9:	if (planes[8].classify(c)>r)	return FALSE;
 		case 8:	if (planes[7].classify(c)>r)	return FALSE;
 		case 7:	if (planes[6].classify(c)>r)	return FALSE;
 		case 6:	if (planes[5].classify(c)>r)	return FALSE;
