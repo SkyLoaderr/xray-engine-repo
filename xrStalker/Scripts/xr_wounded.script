@@ -48,7 +48,7 @@ function wounded_evaluator:__init () super ()
 end
 ------------
 function wounded_evaluator:evaluate ()
-    if self.object.health < 0.25 then return true end
+    if self.object.health < 0.50 then return true end
     return false
 end
 ------------------------------------------------------------------------------------------
