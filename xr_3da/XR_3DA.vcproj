@@ -1122,22 +1122,6 @@
 					RelativePath=".\xrSheduler.h">
 				</File>
 				<Filter
-					Name="Memory manager"
-					Filter="">
-					<File
-						RelativePath=".\FMemoryManager.cpp">
-					</File>
-					<File
-						RelativePath=".\FMemoryManager.h">
-					</File>
-					<File
-						RelativePath=".\LocalAllocator.cpp">
-					</File>
-					<File
-						RelativePath=".\LocalAllocator.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="File System"
 					Filter="">
 					<File
@@ -1163,12 +1147,6 @@
 			<Filter
 				Name="Debug"
 				Filter="">
-				<File
-					RelativePath=".\DebugKernel.cpp">
-				</File>
-				<File
-					RelativePath=".\DebugKernel.h">
-				</File>
 			</Filter>
 			<Filter
 				Name="Client - Server"
