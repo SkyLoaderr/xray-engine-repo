@@ -67,31 +67,16 @@ function main ()
 --		cond			(cond.object_end)
 --    )
     
-    action				(
-		stalker,
-		anim			("walk_fwd_crawl"),
-		cond			(cond.time_end,5000)
-    )
-    
-    action				(
-		stalker,
-		anim			("walk_fwd_crawl_stop"),
-		cond			(cond.anim_end)
-    )
-    
-    action				(
-		stalker,
-		anim			("prisluh"),
-		cond			(cond.time_end)
-    )
-    
-    action				(
-		stalker,
-		anim			("prisluh_v_torso_idle_2"),
-		cond			(cond.anim_end)
-    )
+	local				sound_blin = sound_object("scripts\\Rolik\\stalker_wounded\\wounded-15")
 	
-	while stalker:action() do
+	sound_blin:play_at_pos(
+		stalker,
+		stalker:position(),
+		0
+	)
+	
+--	while stalker:action() do
+	while true do
 		wait			()
     end
     
