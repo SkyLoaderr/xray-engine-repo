@@ -65,7 +65,7 @@ namespace PAPI{
 		{
         	if (0==p_count)			return;
 			Particle& m				= particles[i];
-            if (d_cb)				d_cb(owner,m,i);
+            if (d_cb)				d_cb(owner,param,m,i);
             m 						= particles[--p_count]; // не менять правило удаления !!! (dependence ParticleGroup)
 		}
 
@@ -85,7 +85,7 @@ namespace PAPI{
 				P.age 		= age;
 				P.frame 	= frame;
 				P.flags.set	(flags); 
-	            if (b_cb)	b_cb(owner,P,p_count);
+	            if (b_cb)	b_cb(owner,param,P,p_count);
 				p_count++;
 				return TRUE;
 			}
