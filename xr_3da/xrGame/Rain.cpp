@@ -53,28 +53,30 @@ CEffect_Rain::~CEffect_Rain()
 	DM_Drop.Unload		();
 }
 
-void	CEffect_Rain::OnDeviceDestroy	()
-{
-	REQ_DESTROY			();
-	Device.Shader.Delete(SH_Rain);
-	p_destroy			();
-	DM_Drop.Unload		();
-}
-
 void	CEffect_Rain::OnDeviceCreate	()
 {
 	REQ_CREATE			();
 
-	char name[256];
+	string256			name;
 	strconcat			(name,Path.Meshes,"dm\\rain.dm");
 	CStream*	 fs		= Engine.FS.Open(name);
 	DM_Drop.Load		(fs);
 	Engine.FS.Close		(fs);
 
-	SH_Rain				= Device.Shader.Create	("effects\\rain","fx\\rain");
-	VS_Rain				= Device.Streams.Create	(FVF::F_LIT,desired_items*4);
-	VS_Drops			= Device.Streams.Create	(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1, particles_cache*DM_Drop.number_vertices );
+	SH_Rain				= Device.Shader.Create		("effects\\rain","fx\\rain");
+	VS_Rain				= Device.Shader._CreateVS	(FVF::F_LIT);
+	VS_Drops			= Device.Shader._CreateVS	(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1);
 	p_create			();
+}
+
+void	CEffect_Rain::OnDeviceDestroy	()
+{
+	REQ_DESTROY				();
+	Device.Shader._DeleteVS	(VS_Drops);
+	Device.Shader._DeleteVS	(VS_Rain);
+	Device.Shader.Delete	(SH_Rain);
+	p_destroy				();
+	DM_Drop.Unload			();
 }
 
 void	CEffect_Rain::OnEvent	(EVENT E, DWORD P1, DWORD P2)
@@ -259,7 +261,7 @@ void	CEffect_Rain::Render	()
 	
 	// Perform update
 	DWORD		vOffset;
-	FVF::LIT	*verts		= (FVF::LIT	*) VS_Rain->Lock(desired_items*4,vOffset);
+	FVF::LIT	*verts		= (FVF::LIT	*) Device.Streams.Vertex.Lock(desired_items*4,VS_Rain->dwStride,vOffset);
 	FVF::LIT	*start		= verts;
 	float		dt			= Device.fTimeDelta;
 	Fvector		vCenter		= Device.vCameraPosition;
@@ -316,7 +318,7 @@ void	CEffect_Rain::Render	()
 		Device.set_xform_world		(Fidentity);
 		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_NONE);
 		Device.Shader.set_Shader	(SH_Rain);
-		Device.Primitive.Draw		(VS_Rain,vCount,vCount/2,vOffset,Device.Streams_QuadIB);
+		Device.Primitive.Draw		(VS_Rain,vCount,vCount/2,vOffset,Device.Streams.QuadIB);
 		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_CCW);
 	}
 	
@@ -326,7 +328,7 @@ void	CEffect_Rain::Render	()
 	
 	{
 		float	dt					= Device.fTimeDelta;
-		CIndexStream* IS			= Device.Streams.Get_IB();
+		_IndexStream& _IS			= Device.Streams.Index;
 		Device.Shader.set_Shader	(DM_Drop.shader);
 		
 		Fmatrix					mXform,mScale;

@@ -6,8 +6,9 @@
 
 class CUIStaticItem: public CUICustomItem
 {
-	CVertexStream*	Stream;	
 	Shader*			hShader;
+	CVS*			hVS;	
+
 	Fvector2		vPos;
 	DWORD			dwColor;
 protected:

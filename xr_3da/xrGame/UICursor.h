@@ -5,7 +5,7 @@
 class CUICursor
 {
 	Shader*			hShader;
-	CVertexStream*	Stream;	
+	CVS*			hVS;	
 public:
 	Fvector2		vPos;
 public:

@@ -111,7 +111,7 @@ void CHUDCursor::Render()
 	pv->set(cx + size, cy - size, PT.p.z, PT.p.w, C, 1, 0); pv++;
 	
 	// unlock VB and Render it as triangle list
-	Stream->Unlock				(4,hVS->dwStride);
+	Device.Streams.Vertex.Unlock(4,hVS->dwStride);
 	Device.Shader.set_Shader	(hShader);
 	Device.Primitive.setVertices(hVS->dwHandle,hVS->dwStride,Device.Streams.Vertex.Buffer());
 	Device.Primitive.setIndices	(vOffset,Device.Streams.QuadIB);;

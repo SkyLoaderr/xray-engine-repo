@@ -13,8 +13,8 @@ DEFINE_VECTOR(SDynamicItemData,DIDVec,DIDIt);
 
 class CUIDynamicItem: public CUICustomItem
 {
-	CVertexStream*	Stream;	
 	Shader*			hShader;
+	CVS*			hVS;	
 		
 	DIDVec			data;
 	DWORD			item_cnt;

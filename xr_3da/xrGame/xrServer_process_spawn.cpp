@@ -24,10 +24,10 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 		{
 			for (vector<bool>::iterator I=ids_used.begin(); I!=ids_used.end(); I++)
 			{
-				if (!(*I))	{ ID = I-ids_used.begin(); break; }
+				if (!(*I))	{ ID = u16(I-ids_used.begin()); break; }
 			}
 			if (0xffff==ID)	{
-				ID			= ids_used.size	();
+				ID			= u16(ids_used.size	());
 				ids_used.push_back			(false);
 			}
 		} else {
