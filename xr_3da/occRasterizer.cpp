@@ -98,7 +98,7 @@ void occRasterizer::propagade	()
 					// We has pixel 1scan down
 					float ZR			= (pDepth[pos_up]+pDepth[pos_down])/2;
 					if (ZR<pDepth[pos])	{ pFrame[pos] = Tu1; pDepth[pos] = ZR; }
-				} else if (shared(Td1,pFrame[pos_up2])) 
+				} else if (shared(Tu1,pFrame[pos_down2])) 
 				{
 					// We has pixel 2scan down
 					float ZR			= (pDepth[pos_up]+pDepth[pos_down2])/2;
