@@ -102,7 +102,12 @@ void CPGObject::OnEvent(EVENT E, u64 P1, u64 P2)
 {
 	if (rm_event==E)	
 	{
-		// xr_delete	(this);
+		CPGObject*		self	= dynamic_cast<CPGObject*>		(this);
+		IRenderable*	rnd		= dynamic_cast<IRenderable*>	(this);
+		Msg						("*** self: %x, rnd: %x",self,rnd);	
+		::Render->ros_destroy	(renderable.ROS);
+		::Render->model_Delete	(renderable.visual);			// memory corruption
+		// xr_delete		(self);
 	}
 }
 

@@ -27,12 +27,6 @@ ISpatial::ISpatial(void)
 	spatial.sector			= NULL;
 }
 
-ISpatial::~ISpatial		()
-{
-	// Just in case someone forgot to unregister
-	spatial_unregister	();
-}
-
 BOOL	ISpatial::spatial_inside()
 {
 	float	dr	= -(- spatial.node_radius + spatial.radius);
@@ -117,7 +111,9 @@ void			ISpatial_NODE::_insert			(ISpatial* S)
 void			ISpatial_NODE::_remove			(ISpatial* S)			
 {	
 	S->spatial.node_ptr	= NULL;
-	items.erase			(std::find(items.begin(),items.end(),S));	
+	xr_vector<ISpatial*>::iterator	it = std::find(items.begin(),items.end(),S);
+	VERIFY				(it!=items.end());
+	items.erase			(it);
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -47,7 +47,7 @@ void CRender::InsertSG_Dynamic	(IRender_Visual *pVisual, Fvector& Center)
 		N->val.vCenter.set		(Center);
 	} else if (sh->Flags.bStrictB2F) {
 		SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
-		VERIFY					(val_pObject?val_pObject->renderable.ROS:true);
+		if (val_pObject)		VERIFY	(val_pObject->renderable.ROS);
 		N->val.pObject			= val_pObject;
 		N->val.pVisual			= pVisual;
 		N->val.Matrix			= *val_pTransform;
@@ -79,6 +79,7 @@ void CRender::InsertSG_Static(IRender_Visual *pVisual)
 		ShaderElement*		sh		= ((_sqrt(distSQ)-pVisual->vis.sphere.R)<20)?pVisual->hShader->E[0]:pVisual->hShader->E[1];
 		if (sh->Flags.bStrictB2F) {
 			SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
+			N->val.pObject			= NULL;
 			N->val.pVisual			= pVisual;
 			N->val.Matrix			= Fidentity;
 			N->val.vCenter.set		(pVisual->vis.sphere.P);

@@ -90,8 +90,7 @@ void		CRender::set_Object			(IRenderable*		O )
 	L_Shadows.set_object	(O);
 	L_Projector.set_object	(O);
 	L_DB.Track				(O);
-
-	VERIFY					(O?O->renderable.ROS:true);
+	if (O)					VERIFY	(O->renderable.ROS);
 }
 
 // Misc
@@ -397,6 +396,7 @@ void __fastcall matrix_L1	(SceneGraph::mapMatrix_Node *N)
 // ALPHA
 void __fastcall sorted_L1	(SceneGraph::mapSorted_Node *N)
 {
+	if (N->val.pObject)		VERIFY	(N->val.pObject->renderable.ROS);
 	IRender_Visual *V	=	N->val.pVisual;
 	RCache.set_Shader		(V->hShader);
 	RCache.set_xform_world	(N->val.Matrix);

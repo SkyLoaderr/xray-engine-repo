@@ -65,7 +65,7 @@ void CSheduler::Unregister		(ISheduled* O)
 		for (u32 i=0; i<Items.size(); i++)
 		{
 			if (Items[i].Object==O) {
-				Items.erase(Items.begin()+i);
+				Items[i].Object	= NULL;
 				return;
 			}
 		}
@@ -110,6 +110,12 @@ void CSheduler::ProcessStep			()
 		// Update
 		Item	T					= Top	();
 		u32		Elapsed				= dwTime-T.dwTimeOfLastExecute;
+		if (NULL==T.Object)			
+		{
+			// Erase element
+			Pop						();
+			continue;
+		}
 
 		// Calc next update interval
 		u32		dwMin				= T.Object->shedule.t_min;
