@@ -10,12 +10,6 @@
 
 static float car_snd_volume=1.f;
 
-enum ECarCamType{
-	ectFirst	= 0,
-	ectChase,
-	ectFree
-};
-
 BONE_P_MAP CCar::bone_map=BONE_P_MAP();
 
 extern CPHWorld*	ph_world;
@@ -24,9 +18,12 @@ CCar::CCar(void)
 {
 	active_camera	= 0;
 	m_vCamDeltaHP.set(0.f,0.f,0.f);
-	camera[ectFirst]= xr_new<CCameraFirstEye>	(this, pSettings, "car_firsteye_cam",	false); camera[ectFirst]->tag	= ectFirst;
-	camera[ectChase]= xr_new<CCameraLook>		(this, pSettings, "car_look_cam",		false);	camera[ectChase]->tag	= ectChase;
-	camera[ectFree]	= xr_new<CCameraLook>		(this, pSettings, "car_free_cam",		false);	camera[ectFree]->tag	= ectFree;
+	camera[ectFirst]= xr_new<CCameraFirstEye>	(this, pSettings, "car_firsteye_cam",	CCameraBase::flRelativeLink|CCameraBase::flPositionRigid); 
+	camera[ectFirst]->tag	= ectFirst;
+	camera[ectChase]= xr_new<CCameraLook>		(this, pSettings, "car_look_cam",		CCameraBase::flRelativeLink); 
+	camera[ectChase]->tag	= ectChase;
+	camera[ectFree]	= xr_new<CCameraLook>		(this, pSettings, "car_free_cam",		CCameraBase::flRelativeLink); 
+	camera[ectFree]->tag	= ectFree;
 	OnCameraChange(ectChase);
 
 	m_repairing		=false;
@@ -66,38 +63,6 @@ void __stdcall  CCar::cb_Steer(CBoneInstance* B)
 	B->mTransform.mulB	(m);
 }
 
-void	CCar::cam_Update			(float dt)
-{
-	Fvector							P,Da;
-	Da.set							(0,0,0);
-	if(m_owner)	m_owner->setEnabled(false);
-	float yaw_dest,pitch_dest,bank_dest;
-	XFORM().getHPB				(yaw_dest,pitch_dest,bank_dest);
-
-	switch(active_camera->tag) {
-	case ectFirst:
-		angle_lerp					(active_camera->yaw,	-yaw_dest+m_vCamDeltaHP.x,		PI_DIV_2,dt);
-		angle_lerp					(active_camera->pitch,	-pitch_dest+m_vCamDeltaHP.y,	PI_DIV_2,dt);
-		P.set						(-0.5f,1.5f,-.05f);
-		XFORM().transform_tiny	(P);
-		m_vCamDeltaHP.x				= m_vCamDeltaHP.x*(1-PI*dt)+((active_camera->lim_yaw.y+active_camera->lim_yaw.x)/2.f)*PI*dt;
-		break;
-	case ectChase:
-		angle_lerp					(active_camera->yaw,	-(yaw_dest+m_vCamDeltaHP.x),	PI_DIV_4,dt);
-		angle_lerp					(active_camera->pitch,	-pitch_dest+m_vCamDeltaHP.y,	PI_DIV_4,dt);
-		Center					(P);
-		m_vCamDeltaHP.x				= m_vCamDeltaHP.x*(1-PI*dt)+((active_camera->lim_yaw.y+active_camera->lim_yaw.x)/2.f)*PI*dt;
-		break;
-	case ectFree:
-		Center					(P);
-		break;
-	}
-
-	active_camera->Update			(P,Da);
-	Level().Cameras.Update			(active_camera);
-	if(m_owner)	m_owner->setEnabled(true);
-}
-
 // Core events
 void	CCar::Load					( LPCSTR section )
 {
@@ -110,20 +75,20 @@ void	CCar::Load					( LPCSTR section )
 
 BOOL	CCar::net_Spawn				(LPVOID DC)
 {
-	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeItemCar		*po	= dynamic_cast<CSE_ALifeItemCar*>(e);
+	CSE_Abstract			*e		= (CSE_Abstract*)(DC);
+	CSE_ALifeItemCar		*po		= dynamic_cast<CSE_ALifeItemCar*>(e);
 	R_ASSERT(po);
-	cNameVisual_set			(po->get_visual());
-	BOOL R					= inherited::net_Spawn	(DC);
+	cNameVisual_set					(po->get_visual());
+	BOOL R							= inherited::net_Spawn	(DC);
 
-	setEnabled				(TRUE);
-	setVisible				(TRUE);
+	setEnabled						(TRUE);
+	setVisible						(TRUE);
 
 	Sound->play_at_pos				(snd_engine,this,Position(),true);
 
 	ParseDefinitions				();//parse ini filling in m_driving_wheels,m_steering_wheels,m_breaking_wheels
 	CreateSkeleton					();//creates m_pPhysicsShell & fill in bone_map
-	Init						();//inits m_driving_wheels,m_steering_wheels,m_breaking_wheels values using recieved in ParceDefinitions & from bone_map
+	Init							();//inits m_driving_wheels,m_steering_wheels,m_breaking_wheels values using recieved in ParceDefinitions & from bone_map
 	m_ident=ph_world->AddObject(dynamic_cast<CPHObject*>(this));
 
 	m_pPhysicsShell->set_PhysicsRefObject(this);
@@ -157,7 +122,7 @@ void	CCar::net_Destroy()
 void	CCar::shedule_Update		(u32 dt)
 {
 	inherited::shedule_Update(dt);
-	
+
 	if(fwp||bkp)UpdatePower();
 
 	if(m_pPhysicsShell&&m_owner)
@@ -180,7 +145,11 @@ void	CCar::shedule_Update		(u32 dt)
 void	CCar::UpdateCL				( )
 {
 	inherited::UpdateCL();
+	//	Log("UpdateCL",Device.dwFrame);
 	//XFORM().set(m_pPhysicsShell->mXFORM);
+	// Camera
+	if (IsMyCamera())				
+		cam_Update	(Device.fTimeDelta);
 	m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
 	Fvector lin_vel;
 	m_pPhysicsShell->get_LinearVel(lin_vel);
@@ -195,9 +164,6 @@ void	CCar::UpdateCL				( )
 	snd_engine.set_frequency		(scale);
 	snd_engine.set_volume			(car_snd_volume);
 
-	// Camera
-	if (IsMyCamera())				
-		cam_Update	(Device.fTimeDelta);
 	if(m_owner)
 	{
 		m_pPhysicsShell->InterpolateGlobalTransform(&m_owner->XFORM());
@@ -208,7 +174,6 @@ void	CCar::UpdateCL				( )
 	}
 
 	UpdateExhausts();
-
 }
 
 void	CCar::renderable_Render				( )
@@ -224,119 +189,6 @@ void	CCar::net_Import			(NET_Packet& P)
 {
 }
 
-void	CCar::IR_OnMouseMove			(int x, int y)
-{
-	if (Remote())					return;
-}
-
-void	CCar::IR_OnKeyboardPress		(int cmd)
-{
-	if (Remote())					return;
-
-	switch (cmd)	
-	{
-	case kCAM_1:	OnCameraChange(ectFirst);	break;
-	case kCAM_2:	OnCameraChange(ectChase);	break;
-	case kCAM_3:	OnCameraChange(ectFree);	break;
-	case kACCEL:	CircleSwitchTransmission();
-		break;
-	case kRIGHT:	PressRight();
-		m_owner->steer_Vehicle(1);
-		break;
-	case kLEFT:		PressLeft();
-		m_owner->steer_Vehicle(-1);
-		break;
-	case kUP:
-		PressForward();
-		//m_pExhaustPG2->Play				();
-		//m_pExhaustPG1->Play				();
-		break;
-	case kDOWN:		;
-		PressBack();
-		//m_pExhaustPG2->Play				();
-		//m_pExhaustPG1->Play				();
-		break;
-	case kJUMP:		
-		PressBreaks();
-		break;
-	case kUSE:
-		break;
-	};
-
-}
-
-void	CCar::IR_OnKeyboardRelease		(int cmd)
-{
-	if (Remote())					return;
-	switch (cmd)	
-	{
-	case kACCEL:break;
-	case kLEFT:		
-		ReleaseLeft			  ();
-		m_owner->steer_Vehicle(0);
-		break;
-	case kRIGHT:	ReleaseRight();
-		m_owner->steer_Vehicle  (0);
-		break;
-	case kUP:		
-		ReleaseForward			();
-		//m_pExhaustPG1->Stop		();
-		//m_pExhaustPG2->Stop		();
-		break;
-	case kDOWN:		;
-		ReleaseBack				();
-		//m_pExhaustPG1->Stop		();
-		//m_pExhaustPG2->Stop		();
-		break;
-	case kREPAIR:	m_repairing=false; break;
-	case kJUMP:		;
-		ReleaseBreaks();
-		break;
-	};
-}
-
-void	CCar::OnCameraChange		(int type)
-{
-	if (!active_camera||active_camera->tag!=type){
-		active_camera	= camera[type];
-		float Y,P,R;
-		XFORM().getHPB			(Y,P,R);
-		active_camera->yaw			= -Y;
-		m_vCamDeltaHP.y	= active_camera->pitch;
-	}
-}
-void	CCar::IR_OnKeyboardHold		(int cmd)
-{
-	if (Remote())					return;
-
-	switch(cmd)
-	{
-	case kCAM_ZOOM_IN: 
-	case kCAM_ZOOM_OUT: 
-		active_camera->Move(cmd); break;
-	case kFWD:		
-		if (ectFree==active_camera->tag)	active_camera->Move(kUP);
-		else								m_vCamDeltaHP.y += active_camera->rot_speed.y*Device.fTimeDelta;
-		break;
-	case kBACK:		
-		if (ectFree==active_camera->tag)	active_camera->Move(kDOWN);
-		else								m_vCamDeltaHP.y -= active_camera->rot_speed.y*Device.fTimeDelta;
-		break;
-	case kL_STRAFE: 
-		if (ectFree==active_camera->tag)	active_camera->Move(kLEFT);
-		else								m_vCamDeltaHP.x -= active_camera->rot_speed.x*Device.fTimeDelta;
-		break;
-	case kR_STRAFE: 
-		if (ectFree==active_camera->tag)	active_camera->Move(kRIGHT);
-		else								m_vCamDeltaHP.x += active_camera->rot_speed.x*Device.fTimeDelta;
-		break;
-	case kREPAIR:	m_repairing=true;		
-		break;
-	}
-	clamp(m_vCamDeltaHP.x, -PI_DIV_2,	PI_DIV_2);
-	clamp(m_vCamDeltaHP.y, active_camera->lim_pitch.x,	active_camera->lim_pitch.y);
-}
-
 void	CCar::OnHUDDraw				(CCustomHUD* hud)
 {
 #ifdef DEBUG
@@ -348,10 +200,6 @@ void	CCar::OnHUDDraw				(CCustomHUD* hud)
 	HUD().pFontSmall->OutNext		("Velocity:      [%3.2f]",velocity.magnitude());
 #endif
 }
-
-
-
-
 
 void CCar::Hit(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse)
 {
@@ -470,7 +318,7 @@ void CCar::ParseDefinitions()
 
 	m_max_rpm			=		ini->r_float("car_definition","max_engine_rpm");
 	m_max_rpm			*=		(1.f/60.f*2.f*M_PI);
-	
+
 
 	m_min_rpm			=		ini->r_float("car_definition","idling_engine_rpm");
 	m_min_rpm			*=		(1.f/60.f*2.f*M_PI);
@@ -524,18 +372,18 @@ void CCar::CreateSkeleton()
 
 void CCar::Init()
 {
-//get reference wheel radius
-CKinematics* pKinematics=PKinematics(Visual());
-CInifile* ini = pKinematics->LL_UserData();
-SWheel& ref_wheel=m_wheels_map.find(pKinematics->LL_BoneID(ini->r_string("car_definition","reference_wheel")))->second;
-if(ini->line_exist("car_definition","steer"))
-	pKinematics->LL_GetInstance(pKinematics->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback(cb_Steer,this);
-ref_wheel.Init();
-m_ref_radius=ref_wheel.radius;
-m_power/=m_driving_wheels.size();
-m_root_transform.set(bone_map.find(pKinematics->LL_BoneRoot())->second.element->mXFORM);
-m_current_transmission_num=0;
-m_pPhysicsShell->set_DynamicScales(1.f,1.f);
+	//get reference wheel radius
+	CKinematics* pKinematics=PKinematics(Visual());
+	CInifile* ini = pKinematics->LL_UserData();
+	SWheel& ref_wheel=m_wheels_map.find(pKinematics->LL_BoneID(ini->r_string("car_definition","reference_wheel")))->second;
+	if(ini->line_exist("car_definition","steer"))
+		pKinematics->LL_GetInstance(pKinematics->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback(cb_Steer,this);
+	ref_wheel.Init();
+	m_ref_radius=ref_wheel.radius;
+	m_power/=m_driving_wheels.size();
+	m_root_transform.set(bone_map.find(pKinematics->LL_BoneRoot())->second.element->mXFORM);
+	m_current_transmission_num=0;
+	m_pPhysicsShell->set_DynamicScales(1.f,1.f);
 
 	{
 		xr_map<int,SWheel>::iterator i,e;
@@ -569,13 +417,13 @@ m_pPhysicsShell->set_DynamicScales(1.f,1.f);
 			i->Init();
 	}
 
-{
-	xr_vector<SExhaust>::iterator i,e;
-	i=m_exhausts.begin();
-	e=m_exhausts.end();
-	for(;i!=e;i++)
-		i->Init();
-}
+	{
+		xr_vector<SExhaust>::iterator i,e;
+		i=m_exhausts.begin();
+		e=m_exhausts.end();
+		for(;i!=e;i++)
+			i->Init();
+	}
 
 {
 	xr_map<int,SDoor>::iterator i,e;
@@ -926,7 +774,7 @@ float CCar::EnginePower()
 	if(rpm>m_min_rpm)
 	{
 		///if(rpm<m_max_rpm)
-			return Parabola(rpm);
+		return Parabola(rpm);
 		//else
 		//	return Parabola(m_max_rpm);
 	}

@@ -21,15 +21,21 @@ class CCar : public CEntity,
 	virtual void PhTune(dReal step);
 	virtual void InitContact(dContact* c){};
 	virtual void StepFrameUpdate(dReal step){};
+protected:
+	enum ECarCamType{
+		ectFirst	= 0,
+		ectChase,
+		ectFree
+	};
 public:
-bool rsp,lsp,fwp,bkp,brp;
-Fmatrix m_root_transform;
-Fvector m_exit_position;
-enum eStateDrive
-{
-drive,
-neutral
-};
+	bool rsp,lsp,fwp,bkp,brp;
+	Fmatrix m_root_transform;
+	Fvector m_exit_position;
+	enum eStateDrive
+	{
+		drive,
+		neutral
+	};
 
 	eStateDrive e_state_drive;
 
@@ -122,58 +128,58 @@ neutral
 		~SExhaust();
 	};
 
-struct SDoor;
-struct SDoor 
-{
-int bone_id;
-CCar* pcar;
-bool  update;
-CPhysicsJoint*  joint;
-float			torque;
-float			a_vel;
-float			pos_open;
-float			opened_angle;
-float			closed_angle;
-u32				open_time;
-Fvector2		door_plane_ext;
-_vector2<int>	door_plane_axes;
-Fvector			door_dir_in_door;
-Fmatrix			closed_door_form_in_object;
-void Use();
-void Init();
-void Open();
-void Close();
-void Update();
-float GetAngle();
-bool CanEnter(const Fvector& pos,const Fvector& dir);
-bool IsInArea(const Fvector& pos);
-bool CanExit(const Fvector& pos,const Fvector& dir);
-bool TestPass(const Fvector& pos,const Fvector& dir);
-void GetExitPosition(Fvector& pos);
-void ApplyOpenTorque();
-void ApplyCloseTorque();
-void NeutralTorque(float atorque);
-void ClosingToClosed();
-void ClosedToOpening();
-void PlaceInUpdate();
-void RemoveFromUpdate();
-enum eState
-{
-opening,
-closing,
-opened,
-closed
-};
-eState state;
-SDoor(CCar* acar)
-{
-	bone_id=-1;
-	pcar=acar;
-	joint=NULL;
-	state=closed;
-	torque=100.f;
-	a_vel=M_PI;
-}
+	struct SDoor;
+	struct SDoor 
+	{
+		int bone_id;
+		CCar* pcar;
+		bool  update;
+		CPhysicsJoint*  joint;
+		float			torque;
+		float			a_vel;
+		float			pos_open;
+		float			opened_angle;
+		float			closed_angle;
+		u32				open_time;
+		Fvector2		door_plane_ext;
+		_vector2<int>	door_plane_axes;
+		Fvector			door_dir_in_door;
+		Fmatrix			closed_door_form_in_object;
+		void Use();
+		void Init();
+		void Open();
+		void Close();
+		void Update();
+		float GetAngle();
+		bool CanEnter(const Fvector& pos,const Fvector& dir);
+		bool IsInArea(const Fvector& pos);
+		bool CanExit(const Fvector& pos,const Fvector& dir);
+		bool TestPass(const Fvector& pos,const Fvector& dir);
+		void GetExitPosition(Fvector& pos);
+		void ApplyOpenTorque();
+		void ApplyCloseTorque();
+		void NeutralTorque(float atorque);
+		void ClosingToClosed();
+		void ClosedToOpening();
+		void PlaceInUpdate();
+		void RemoveFromUpdate();
+		enum eState
+		{
+			opening,
+			closing,
+			opened,
+			closed
+		};
+		eState state;
+		SDoor(CCar* acar)
+		{
+			bone_id=-1;
+			pcar=acar;
+			joint=NULL;
+			state=closed;
+			torque=100.f;
+			a_vel=M_PI;
+		}
 
 	};
 private:
@@ -189,42 +195,42 @@ private:
 	friend struct SWheel;
 	friend struct SDoor;
 
-xr_map   <int,SWheel>	m_wheels_map;
-xr_vector <SWheelDrive> m_driving_wheels;
-xr_vector <SWheelSteer> m_steering_wheels;
-xr_vector <SWheelBreak> m_breaking_wheels;
-xr_vector <SExhaust>	m_exhausts;
-xr_map	  <int,SDoor>	m_doors;
-xr_vector <SDoor*>		m_doors_update;
-//xr_list   <SDoor*>		m_doors_opened;
-xr_vector <float>		m_gear_ratious;
-xr_vector <Fmatrix>		m_sits_transforms;// m_sits_transforms[0] - driver_place
-float					m_current_gear_ratio;
+	xr_map   <int,SWheel>	m_wheels_map;
+	xr_vector <SWheelDrive> m_driving_wheels;
+	xr_vector <SWheelSteer> m_steering_wheels;
+	xr_vector <SWheelBreak> m_breaking_wheels;
+	xr_vector <SExhaust>	m_exhausts;
+	xr_map	  <int,SDoor>	m_doors;
+	xr_vector <SDoor*>		m_doors_update;
+	//xr_list   <SDoor*>		m_doors_opened;
+	xr_vector <float>		m_gear_ratious;
+	xr_vector <Fmatrix>		m_sits_transforms;// m_sits_transforms[0] - driver_place
+	float					m_current_gear_ratio;
 
-float					m_power;
-float					m_power_on_min_rpm;
-float					m_power_on_max_rpm;
-float					m_max_power;//best rpm
+	float					m_power;
+	float					m_power_on_min_rpm;
+	float					m_power_on_max_rpm;
+	float					m_max_power;//best rpm
 
-/////////////////////porabola
-float m_a,m_b,m_c;
+	/////////////////////porabola
+	float m_a,m_b,m_c;
 
-float					m_current_engine_power;
-float					m_axle_friction;
+	float					m_current_engine_power;
+	float					m_axle_friction;
 
-float					m_max_rpm;
-float					m_min_rpm;
-float					m_best_rpm;//max power
+	float					m_max_rpm;
+	float					m_min_rpm;
+	float					m_best_rpm;//max power
 
-float					m_idling_rpm;
-float					m_steering_speed;
-float					m_ref_radius;
-float					m_break_torque;
-float					m_hand_break_torque;
-size_t					m_current_transmission_num;
+	float					m_idling_rpm;
+	float					m_steering_speed;
+	float					m_ref_radius;
+	float					m_break_torque;
+	float					m_hand_break_torque;
+	size_t					m_current_transmission_num;
 
-////////////////////////////////////////////////////
-/////////////////////////////////////////////////
+	////////////////////////////////////////////////////
+	/////////////////////////////////////////////////
 	void  InitParabola();
 	float Parabola(float rpm);
 	float GetSteerAngle();
@@ -232,14 +238,14 @@ size_t					m_current_transmission_num;
 	void Drive();
 	void NeutralDrive();
 	void UpdatePower();
-////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////
 	float RefWheelMaxSpeed()
 	{
 		return m_max_rpm/m_current_gear_ratio;
 	}
 	float EnginePower();
 	float EngineDriveSpeed();
-/////////////////////////////////////////////////////////////////////////	
+	/////////////////////////////////////////////////////////////////////////	
 	void SteerRight();
 	void SteerLeft();
 	void SteerIdle();
