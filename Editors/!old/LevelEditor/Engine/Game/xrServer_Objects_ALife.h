@@ -174,6 +174,27 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeDynamicObjectVisual,CSE_ALifeDynamicObject
 	virtual							~CSE_ALifeDynamicObjectVisual();
 SERVER_ENTITY_DECLARE_END
 
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePHSkeletonObject,CSE_ALifeDynamicObjectVisual)
+									CSE_ALifePHSkeletonObject(LPCSTR caSection);
+	virtual							~CSE_ALifePHSkeletonObject();
+
+	enum{
+		flActive					= (1<<0),
+		flSpawnCopy					= (1<<1),
+		flSavedData					= (1<<2),
+		flNotSave					= (1<<3)
+	};
+	Flags8							flags;
+	SPHBonesData					saved_bones;
+	u16								source_id;//for break only
+	
+	virtual	void					load					(NET_Packet &tNetPacket);
+protected:
+	void							data_load				(NET_Packet &tNetPacket);
+public:
+SERVER_ENTITY_DECLARE_END
+
+
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeScriptZone,CSE_ALifeDynamicObject,CSE_Shape)
 									CSE_ALifeScriptZone		(LPCSTR caSection);
 	virtual							~CSE_ALifeScriptZone	();
@@ -191,7 +212,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeLevelChanger,CSE_ALifeScriptZone)
 	virtual							~CSE_ALifeLevelChanger	();
 SERVER_ENTITY_DECLARE_END
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifePHSkeletonObject)
 #ifdef _EDITOR
 	void __fastcall					OnChangeAnim	(PropValue* sender);
 	void __fastcall					OnChooseAnim	(ChooseItemVec& lst);
@@ -200,17 +221,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual)
 	u32 							type;
 	f32 							mass;
     ref_str 						fixed_bones;
-
-	SPHBonesData					saved_bones;
-	u16								source_id;//for break only
 	ref_str							startup_animation;
-    enum{
-    	flActive					= (1<<0),
-		flSpawnCopy					= (1<<1),
-		flSavedData					= (1<<2),
-		flNotSave					= (1<<3)
-    };
-    Flags8							flags;
 									CSE_ALifeObjectPhysic	(LPCSTR caSection);
     virtual 						~CSE_ALifeObjectPhysic	();
 	virtual bool					used_ai_locations		() const;
@@ -219,9 +230,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual)
 //	virtual	void					load					(IReader& r){inherited::load(r);}
 //	using inherited::load(IReader&);
 
-	private:
-			void					data_load				(NET_Packet &tNetPacket);
-	public:
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVisual)

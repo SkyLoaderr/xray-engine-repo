@@ -461,6 +461,70 @@ void CSE_ALifeDynamicObjectVisual::FillProp	(LPCSTR pref, PropItemVec& items)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
+// CSE_ALifePHSkeletonObject
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifePHSkeletonObject::CSE_ALifePHSkeletonObject(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
+{
+	source_id					= u16(-1);
+	flags.zero					();
+}
+
+CSE_ALifePHSkeletonObject::~CSE_ALifePHSkeletonObject()
+{
+
+}
+
+
+void CSE_ALifePHSkeletonObject::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited::STATE_Read(tNetPacket,size);
+
+	if(m_wVersion<64)		return;
+	tNetPacket.r_u8			(flags.flags);
+	tNetPacket.r_u16		(source_id);
+	if (flags.test(flSavedData)) {
+		data_load(tNetPacket);
+	}
+}
+
+void CSE_ALifePHSkeletonObject::STATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited::STATE_Write		(tNetPacket);
+	if(m_wVersion<64)			return;
+	tNetPacket.w_u8				(flags.flags);
+	tNetPacket.w_u16			(source_id);
+	////////////////////////saving///////////////////////////////////////
+	if(flags.test(flSavedData))
+	{
+		saved_bones.net_Save(tNetPacket);
+		flags.set(flSavedData,FALSE);
+	}
+}
+
+void CSE_ALifePHSkeletonObject::data_load(NET_Packet &tNetPacket)
+{
+	saved_bones.net_Load(tNetPacket);
+	flags.set(flSavedData,TRUE);
+}
+void CSE_ALifePHSkeletonObject::load(NET_Packet &tNetPacket)
+{
+	inherited::load				(tNetPacket);
+	flags.set					(tNetPacket.r_u8());
+	data_load					(tNetPacket);
+}
+void CSE_ALifePHSkeletonObject::UPDATE_Write(NET_Packet &tNetPacket)
+{
+	inherited::UPDATE_Write	(tNetPacket);
+};
+
+void CSE_ALifePHSkeletonObject::UPDATE_Read(NET_Packet &tNetPacket)
+{
+	inherited::UPDATE_Read		(tNetPacket);
+};
+
+
+
+////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeScriptZone
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeScriptZone::CSE_ALifeScriptZone(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection), CSE_Abstract(caSection)
@@ -591,14 +655,14 @@ void CSE_ALifeLevelChanger::FillProp		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeObjectPhysic
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeObjectPhysic::CSE_ALifeObjectPhysic(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
+CSE_ALifeObjectPhysic::CSE_ALifeObjectPhysic(LPCSTR caSection) : CSE_ALifePHSkeletonObject(caSection), CSE_Abstract(caSection)
 {
 	type 						= epotBox;
 	mass 						= 10.f;
-	source_id					= u16(-1);
+
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
     	set_visual				(pSettings->r_string(caSection,"visual"));
-    flags.zero					();
+
 	m_flags.set					(flUseSwitches,FALSE);
 	m_flags.set					(flSwitchOffline,FALSE);
 
@@ -628,20 +692,25 @@ void CSE_ALifeObjectPhysic::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 
 	if (m_wVersion > 28)
 		tNetPacket.r_string		(startup_animation);
+	if(m_wVersion<64)
+		{
+		if	(m_wVersion > 39)		// > 39 		
+			tNetPacket.r_u8			(flags.flags);
 
-	if	(m_wVersion > 39)		// > 39 		
-		tNetPacket.r_u8			(flags.flags);
+		if (m_wVersion>56)
+			tNetPacket.r_u16		(source_id);
 
-	if (m_wVersion>56)
-		tNetPacket.r_u16		(source_id);
-
-	if (m_wVersion>60	&&	flags.test(flSavedData)) {
-		data_load(tNetPacket);
+		if (m_wVersion>60	&&	flags.test(flSavedData)) {
+			data_load(tNetPacket);
+		}
 	}
 #ifdef _EDITOR    
 	PlayAnimation				(*startup_animation?*startup_animation:"$editor");
 #endif
 }
+
+
+
 
 void CSE_ALifeObjectPhysic::STATE_Write		(NET_Packet	&tNetPacket)
 {
@@ -650,15 +719,20 @@ void CSE_ALifeObjectPhysic::STATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_float			(mass);
 	tNetPacket.w_string			(fixed_bones);
 	tNetPacket.w_string			(startup_animation);
-	tNetPacket.w_u8				(flags.flags);
-	tNetPacket.w_u16			(source_id);
-////////////////////////saving///////////////////////////////////////
-	if(flags.test(flSavedData))
+	if(m_wVersion<64)
 	{
-		saved_bones.net_Save(tNetPacket);
-		flags.set(flSavedData,FALSE);
+		tNetPacket.w_u8				(flags.flags);
+		tNetPacket.w_u16			(source_id);
+		////////////////////////saving///////////////////////////////////////
+		if(flags.test(flSavedData))
+		{
+			saved_bones.net_Save(tNetPacket);
+			flags.set(flSavedData,FALSE);
+		}
 	}
 }
+
+
 
 void CSE_ALifeObjectPhysic::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
@@ -670,18 +744,14 @@ void CSE_ALifeObjectPhysic::UPDATE_Write	(NET_Packet	&tNetPacket)
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
-void CSE_ALifeObjectPhysic::data_load(NET_Packet &tNetPacket)
-{
-	saved_bones.net_Load(tNetPacket);
-	flags.set(flSavedData,TRUE);
-}
+
+
+
 void CSE_ALifeObjectPhysic::load(NET_Packet &tNetPacket)
 {
 	inherited::load(tNetPacket);
-	flags.set					(tNetPacket.r_u8());
-	data_load					(tNetPacket);
-
 }
+
 
 #ifdef _EDITOR
 xr_token po_types[]={
