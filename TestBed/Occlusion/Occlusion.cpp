@@ -76,7 +76,7 @@ int __cdecl main	(int argc, char* argv[])
 {
 	occRasterizer	occ;
 
-	for (int test=0; test<36; test++)
+	for (int test=1; test<2; test++)
 	{
 		float		a0	= rad(test*10.f);
 		float		a1	= rad(test*10.f + 60.f);
