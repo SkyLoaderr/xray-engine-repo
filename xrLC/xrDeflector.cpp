@@ -92,11 +92,10 @@ VOID CDeflector::OA_Export()
 		Fvector	P;	// projected
 
 		for (int i=0; i<3; i++) {
-			mView.transform_tiny(P,F->v[i]->P);
-			T->uv[i].u=P.x;	T->uv[i].v=P.y;
-			bb.modify	(F->v[i]->P);
+			mView.transform_tiny	(P,F->v[i]->P);
+			T->uv[i].set			(P.x,P.y);
+			bb.modify				(F->v[i]->P);
 		}
-		T->owner = F;
 	}
 	bb.getsphere(Center,Radius);
 
