@@ -48,17 +48,10 @@ void __stdcall CActor::HeadCallback(CBoneInstance* B)
 	float				bone_yaw	= angle_normalize_signed(A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta)*y_head_factor;
 	float				bone_pitch	= angle_normalize_signed(A->r_torso.pitch)*p_head_factor;
 	
-//	Fvector c			= B->mTransform.c;
-//	spin.setXYZ			(-bone_pitch,bone_yaw,0);
-//	B->mTransform.mulA_43(spin);
-//	B->mTransform.c		= c;
-
-	Fvector c				= B->mTransform.c;
-	float					y,p,b;
-	B->mTransform.getHPB	(y,p,b);
-	spin.setXYZ				(-bone_pitch - p, bone_yaw - y, 0);
-	B->mTransform.mulA_43	(spin);
-	B->mTransform.c			= c;
+	Fvector c			= B->mTransform.c;
+	spin.setXYZ			(-bone_pitch,bone_yaw,0);
+	B->mTransform.mulA_43(spin);
+	B->mTransform.c		= c;
 }
 
 void __stdcall CActor::VehicleHeadCallback(CBoneInstance* B)
