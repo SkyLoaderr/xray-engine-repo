@@ -174,14 +174,24 @@ bool __fastcall TUI_CustomControl::MovingStart(TShiftState Shift)
     if(Scene->SelectionCount(true,cls)==0) return false;
 
     if (Shift.Contains(ssCtrl)){
-	    Fvector p,n;
-		UI->IR_GetMousePosReal(Device.m_hRenderWnd, UI->m_CurrentCp);
-        Device.m_Camera.MouseRayFromPoint(UI->m_CurrentRStart,UI->m_CurrentRNorm,UI->m_CurrentCp);
-    	if (LUI->PickGround(p,UI->m_CurrentRStart,UI->m_CurrentRNorm,1,&n)){
-            ObjectList lst;
-            if (Scene->GetQueryObjects(lst,LTools->CurrentClassID(),1,1,0)){
-                for(ObjectIt _F = lst.begin();_F!=lst.end();_F++) (*_F)->MoveTo(p,n);
-				Scene->UndoSave();
+        ObjectList lst;
+        if (Scene->GetQueryObjects(lst,LTools->CurrentClassID(),1,1,0)){
+        	if (lst.size()==1){
+                Fvector p,n;
+                UI->IR_GetMousePosReal(Device.m_hRenderWnd, UI->m_CurrentCp);
+                Device.m_Camera.MouseRayFromPoint(UI->m_CurrentRStart,UI->m_CurrentRNorm,UI->m_CurrentCp);
+                if (LUI->PickGround(p,UI->m_CurrentRStart,UI->m_CurrentRNorm,1,&n)){
+                    for(ObjectIt _F = lst.begin();_F!=lst.end();_F++) (*_F)->MoveTo(p,n);
+                    Scene->UndoSave();
+                }
+            }else{
+                Fvector p,n;
+                Fvector D={0,-1,0};
+                for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){ 
+                	if (LUI->PickGround(p,(*_F)->PPosition,D,1,&n)){
+	                	(*_F)->MoveTo(p,n);
+                    }
+                }
             }
         }
         return false;
