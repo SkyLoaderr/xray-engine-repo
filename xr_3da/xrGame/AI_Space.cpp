@@ -200,15 +200,34 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 	{
 		NodeCompressed& N = *m_nodes_ptr[I];
 
+		if (I == 1735) {
+			I = I;
+		}
 		if (u_InsideNode(N,P)) 
 		{
-			int dist = int(P.y)-int(N.p0.y);
-			if (dist>=0) {
+			/**
+			int dist = fabsf(int(P.y)-int((N.p0.y + N.p1.y)/2.f));
+			//if (dist>=0) {
 				if (dist<min_dist) {
 					min_dist = dist;
 					selected = I;
 				}
+			//}
+			/**/
+			Fvector	DUP, vNorm, v, v1, P0;
+			DUP.set(0,1,0);
+			pvDecompress(vNorm,N.plane);
+			Fplane PL; 
+			Level().AI.UnpackPosition(P0,N.p0);
+			PL.build(P0,vNorm);
+			v.set(pos.x,P0.y,pos.z);	
+			PL.intersectRayPoint(v,DUP,v1);
+			int dist = int((v1.y - pos.y)*(v1.y - pos.y));
+			if (dist < min_dist) {
+				min_dist = dist;
+				selected = I;
 			}
+			/**/
 		}
 	}
 	return selected;
