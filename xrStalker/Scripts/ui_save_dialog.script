@@ -139,7 +139,7 @@ function save_dialog:InitCallBacks()
 end
 
 function save_dialog:OnButton_ok_clicked()	
-	local edit_box = self:GetEditWnd("edit_filename")
+	local edit_box = self:GetEditBox("edit_filename")
 	local txt = edit_box:GetText()
 	self:AddItemToList(txt)
 end
