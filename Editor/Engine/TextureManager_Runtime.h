@@ -30,8 +30,10 @@ IC void CShaderManager::set_Textures	(STextureList* T)
 			}
 		}
 		DWORD last				= T->size();
-		cache.surfaces[last]	= 0;
-		CHK_DX(HW.pDevice->SetTexture(last,NULL));
+		if (cache.surfaces[last]) {
+			cache.surfaces[last]	= 0;
+			CHK_DX(HW.pDevice->SetTexture(last,NULL));
+		}
 	}
 }
 IC void CShaderManager::set_Matrices	(SMatrixList* M)
