@@ -264,7 +264,7 @@ void CParticleTools::OnDeviceDestroy()
 
 void CParticleTools::SelectPreviewObject(int p){
     LPCSTR fn;
-    if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,fn,1,m_EditObject?m_EditObject->GetName():0)) return;
+    if (!TfrmChoseItem::SelectItem(smObject,fn,1,m_EditObject?m_EditObject->GetName():0)) return;
     Lib.RemoveEditObject(m_EditObject);
     m_EditObject = fn?Lib.CreateEditObject(fn):0;
 //	ZoomObject(TRUE);
@@ -744,8 +744,8 @@ void __fastcall	CParticleTools::OnPPMenuItemClick(TObject* sender)
     if (m_EditText&&mi){ 
 		LPCSTR T;
     	switch(mi->Tag){
-        case -2: 	if (TfrmChoseItem::SelectItem(TfrmChoseItem::smTexture,T)) m_EditText->InsertTextCP(T); break;
-        case -1: 	if (TfrmChoseItem::SelectItem(TfrmChoseItem::smShader,T)) m_EditText->InsertTextCP(T); break;
+        case -2: 	if (TfrmChoseItem::SelectItem(smTexture,T)) m_EditText->InsertTextCP(T); break;
+        case -1: 	if (TfrmChoseItem::SelectItem(smEShader,T)) m_EditText->InsertTextCP(T); break;
         case 0: 	m_EditText->InsertLine(GetFunctionTemplate(mi->Caption)); break;
         }
     	
