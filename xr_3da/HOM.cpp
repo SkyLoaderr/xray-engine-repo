@@ -333,8 +333,10 @@ BOOL CHOM::visible		(vis_data& vis)
 	// 2. New object slides into view								- delay test| frame-old, tested-old, hom_res = ???;
 	u32 frame_current	= Device.dwFrame;
 	u32	frame_prev		= frame_current-1;
-	BOOL result;
+
 	Device.Statistic.RenderCALC_HOM.Begin	();
+	BOOL result			= _visible			(vis.box);
+	u32  delay;
 	if (vis.frame<frame_prev)
 	{
 		// either [0] or [2]
@@ -342,46 +344,35 @@ BOOL CHOM::visible		(vis_data& vis)
 		{
 			// [2]
 			// assumming, that it will be rendered this frames, situation will be [1]
-			result	= _visible			(vis.box);
 			if (result)
 			{
 				// visible	- delay next test
-				u32 delay		= ::Random.randI	(2,5);
-				vis.hom_frame	= frame_current + delay;
-				vis.hom_tested	= frame_current;
+				delay			= ::Random.randI	(2,5);
 			} else {
 				// hidden	- shedule to next frame
-				u32 delay		= 1;
-				vis.hom_frame	= frame_current + delay;
-				vis.hom_tested	= frame_current;
+				delay			= 1;
 			}
 		} else {
 			// [0]
-			result			= _visible	(vis.box);
-
 			// (a) - visible, but last time it was hidden	- shedule to next frame
 			// (b) - invisible								- shedule to next frame
 
-			u32 delay		= 1;
-			vis.hom_frame	= frame_current + delay;
-			vis.hom_tested	= frame_current;
+			delay			= 1;
 		}
 	} else {
 		// [1]
-		result			= _visible	(vis.box);
-		if (vis.hom_result)
+		if (result)
 		{
 			// visible	- delay next test
-			u32 delay		= ::Random.randI	(5,10);
-			vis.hom_frame	= frame_current + delay;
-			vis.hom_tested	= frame_current;
+			delay			= ::Random.randI	(5,10);
 		} else {
 			// hidden	- shedule to next frame
-			u32 delay		= 1;
-			vis.hom_frame	= frame_current + delay;
-			vis.hom_tested	= frame_current;
+			delay			= 1;
 		}
 	}
+	vis.hom_frame	= frame_current + delay;
+	vis.hom_tested	= frame_current;
+
 	Device.Statistic.RenderCALC_HOM.End	();
 	return result;
 }
