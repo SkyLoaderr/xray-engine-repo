@@ -81,7 +81,7 @@ void	light::set_range		(float R)			{
 	if (fsimilar(range,R))		return;
 	range						= R;
 
-	spatial.center				= P;
+	spatial.center				= position;
 	spatial.radius				= range;
 	spatial_move				();
 };
