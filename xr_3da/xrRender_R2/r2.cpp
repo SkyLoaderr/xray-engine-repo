@@ -100,7 +100,7 @@ BOOL					CRender::occ_visible			(Fbox& P)			{ return HOM.visible(P);							}
 
 void					CRender::add_Visual				(IRender_Visual*		V )	{ add_leafs_Dynamic(V);								}
 void					CRender::add_Geometry			(IRender_Visual*		V )	{ add_Static(V,View->getMask());					}
-void					CRender::add_Wallmark		(ref_shader& S, const Fvector& P, float s, CDB::TRI* T)
+void					CRender::add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB::TRI* T, Fvector* V)
 {
 	//Msg		("! NotImplemented: CRender::add_Wallmark");
 }
