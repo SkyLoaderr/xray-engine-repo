@@ -89,8 +89,8 @@ void CUIFrameRect::UpdateSize()
 	ts.set ((int)T->get_Width(),(int)T->get_Height());
 	rem_x  = size_top%ts.x;
 	rem_y  = size_left%ts.y;
-	tile_x = iFloor(float(size_top)/ts.x);		tile_x=_max(tile_x, 0.f);
-	tile_y = iFloor(float(size_left)/ts.y);		tile_y=_max(tile_y, 0.f);
+	tile_x = iFloor(float(size_top)/ts.x);		tile_x=_max(tile_x, 0);
+	tile_y = iFloor(float(size_left)/ts.y);		tile_y=_max(tile_y, 0);
 
 	back.SetPos(iPos.x+lt_width,iPos.y+lt_height);
 	back.SetTile(tile_x,tile_y,rem_x,rem_y);
@@ -101,7 +101,7 @@ void CUIFrameRect::UpdateSize()
 	T = RCache.get_ActiveTexture(0);
 	ts.set			((int)T->get_Width(),(int)T->get_Height());
 	rem_x		= size_top%ts.x;
-	tile_x		= iFloor(float(size_top)/ts.x); tile_x=_max(tile_x, 0.f);
+	tile_x		= iFloor(float(size_top)/ts.x); tile_x=_max(tile_x, 0);
 	frame[fmT].SetPos	(iPos.x+lt_width,iPos.y);	
 	frame[fmT].SetTile	(tile_x,1,rem_x,0);
 
@@ -109,7 +109,7 @@ void CUIFrameRect::UpdateSize()
 	T		= RCache.get_ActiveTexture(0);
 	ts.set			((int)T->get_Width(),(int)T->get_Height());
 	rem_x		= size_bottom%ts.x;
-	tile_x		= iFloor(float(size_bottom)/ts.x); tile_x=_max(tile_x, 0.f);
+	tile_x		= iFloor(float(size_bottom)/ts.x); tile_x=_max(tile_x, 0);
 	frame[fmB].SetPos	(iPos.x+lb_width,iPos.y+iSize.y-ts.y);	
 	frame[fmB].SetTile	(tile_x,1,rem_x,0);
 
@@ -118,7 +118,7 @@ void CUIFrameRect::UpdateSize()
 	T		= RCache.get_ActiveTexture(0);
 	ts.set			((int)T->get_Width(),(int)T->get_Height());
 	rem_y		= size_left%ts.y;
-	tile_y		= iFloor(float(size_left)/ts.y); tile_y=_max(tile_y, 0.f);
+	tile_y		= iFloor(float(size_left)/ts.y); tile_y=_max(tile_y, 0);
 	frame[fmL].SetPos	(iPos.x, iPos.y+lt_height);	
 	frame[fmL].SetTile	(1,tile_y,0,rem_y);
 
@@ -127,7 +127,7 @@ void CUIFrameRect::UpdateSize()
 	T		= RCache.get_ActiveTexture(0);
 	ts.set			((int)T->get_Width(),(int)T->get_Height());
 	rem_y		= size_right%ts.y;
-	tile_y		= iFloor(float(size_right)/ts.y); tile_y=_max(tile_y, 0.f);
+	tile_y		= iFloor(float(size_right)/ts.y); tile_y=_max(tile_y, 0);
 	frame[fmR].SetPos	(iPos.x+iSize.x-ts.x,iPos.y+rt_height);	
 	frame[fmR].SetTile	(1,tile_y,0,rem_y);
 
