@@ -57,6 +57,7 @@ To AlexMX:
 +O	ocasional memory corruption inside particle system (on destructor, probably?)
 	(game00/single/alife)
 +D	зоны глючат постоянно из-за партикловой-хрени! (game00/single/alife)
+-J  глюк с консолью (как только загрузился уровень - вызвать консоль [occ_part_jim])
 
 ДЕТАЛЬНЫЕ ОБЪЕКТЫ В РЕДАКТОРЕ
 - вылет при попытке заменить объектный лист
@@ -93,6 +94,7 @@ TO YURA
 
 - wallmark на материаллы. спецэффекты от попаданий (партиклы и т.д. и т.п)
 - апгрейды оружия
+-J mouse sensitivity up in inventory 
 
 To Jim:
-tpALifeGroupAbstract-J	переход в оффлайн (проблема памяти монстров)
++J	переход в оффлайн (проблема памяти монстров)
