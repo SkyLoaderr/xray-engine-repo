@@ -58,6 +58,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 			v[it].vert_ambient			= 0;
 			v[it].vert_translucency		= 0;
 		}
+		g_params.m_vCacheSize	= 24;
 	}
 
 	//*******
