@@ -157,7 +157,7 @@ void CHOM::Render_DB	(CFrustum& base)
 		m_ZB.push_back	(it->id);
 
 		if (T.skip)		{ T.skip--; continue; }
-		u32	next		= ::Random.randI(7,30);
+		u32	next		= ::Random.randI(3,10);
 
 		// Test for good occluder - should be improved :)
 		if (!(T.flags || (T.plane.classify(COP)>0)))	
