@@ -254,7 +254,7 @@ void CAI_Biting::Detour()
 		case eActionStateWatchGo : 
 			WRITE_TO_LOG			("WatchGo : Detour");
 			AccomplishTask			((F || G) ? 0 : &m_tSelectorFreeHunting);
-			if ((m_dwCurrentUpdate - m_dwActionStartTime > dwDelay1) && (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) != u32(-1))) {
+			if ((m_dwCurrentUpdate - m_dwActionStartTime > dwDelay1) && (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,EnemyPosition) != u32(-1))) {
 				m_tActionState		= eActionStateWatchLook;
 				m_dwActionStartTime = Level().timeServer();
 			}
@@ -271,8 +271,8 @@ void CAI_Biting::Detour()
 					Msg("%3d : %6d",i,getAI().m_tpaGraph[i].tNodeID);
 			}
 			
-			vfSetParameters			((F || G) ? 0 : &m_tSelectorFreeHunting,0,false,eWeaponStateIdle,(F || G) ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,(F || G) ? eLookTypePoint : eLookTypeFirePoint,tPoint,false,true);
-			if ((m_dwCurrentUpdate - m_dwActionStartTime > dwDelay2) || (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) == u32(-1))) {
+			//vfSetParameters			((F || G) ? 0 : &m_tSelectorFreeHunting,0,false,eWeaponStateIdle,(F || G) ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,(F || G) ? eLookTypePoint : eLookTypeFirePoint,tPoint,false,true);
+			if ((m_dwCurrentUpdate - m_dwActionStartTime > dwDelay2) || (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,EnemyPosition) == u32(-1))) {
 				m_tActionState		= eActionStateWatchGo;
 				m_dwActionStartTime = m_dwCurrentUpdate;
 			}
