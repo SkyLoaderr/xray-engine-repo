@@ -176,5 +176,5 @@ _value_type CStalkerPropertyEvaluatorInsideAnomaly::evaluate	()
 _value_type CStalkerPropertyEvaluatorPanic::evaluate	()
 {
 	u32					result = dwfChooseAction(2000,.8f,.6f,.4f,.2f,m_object->g_Team(),m_object->g_Squad(),m_object->g_Group(),0,1,2,3,4,m_object,30.f);
-	return				(result > 2);
+	return				(result > 3);
 }

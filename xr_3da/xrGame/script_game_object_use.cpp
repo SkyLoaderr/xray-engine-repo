@@ -253,3 +253,13 @@ CScriptMonsterHitInfo CScriptGameObject::GetMonsterHitInfo()
 	}
 	return			(ret_val);
 }
+
+#include "script_space.h"
+void CScriptGameObject::OnEventRaised(s16 event, NET_Packet& P)
+{
+	P.read_start();
+	CALLBACK_IT it = m_callbacks.find(event);
+	if(it==m_callbacks.end())
+		return;
+	SCRIPT_CALLBACK_EXECUTE_1((*it).second->m_callback, &P );
+}

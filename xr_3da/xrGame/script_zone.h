@@ -31,6 +31,7 @@ public:
 	virtual void	feel_touch_new		(CObject* O);
 	virtual void	feel_touch_delete	(CObject* O);
 	virtual BOOL	feel_touch_contact	(CObject* O);
+			bool	active_contact		(u16 id) const;
 			void	set_callback		(const luabind::object &lua_object, LPCSTR method, bool bOnEnter);
 			void	set_callback		(const luabind::functor<void> &lua_function, bool bOnEnter);
 			void	clear_callback		(bool bOnEnter);

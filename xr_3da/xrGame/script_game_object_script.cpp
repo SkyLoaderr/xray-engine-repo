@@ -28,17 +28,9 @@
 #include "motivation_action_manager.h"
 #include "PhysicsShell.h"
 #include "helicopter.h"
+#include "script_zone.h"
 
 using namespace luabind;
-
-void CScriptGameObject::OnEventRaised(s16 event, NET_Packet& P)
-{
-	P.read_start();
-	CALLBACK_IT it = m_callbacks.find(event);
-	if(it==m_callbacks.end())
-		return;
-	SCRIPT_CALLBACK_EXECUTE_1((*it).second->m_callback, &P );
-}
 
 extern CScriptMotivationActionManager *script_motivation_action_manager(CScriptGameObject *obj);
 
@@ -140,7 +132,6 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("clear_callback",				(void (CScriptGameObject::*)(bool))(CScriptGameObject::ClearCallback))
 			.def("clear_callback",				(void (CScriptGameObject::*)(const ScriptMonster::EActionType))(CScriptGameObject::ClearCallback))
 			.def("patrol",						&CScriptGameObject::GetPatrolPathName)
-
 
 			.def("get_ammo_in_magazine",		&CScriptGameObject::GetAmmoElapsed)
 			.def("get_ammo_total",				&CScriptGameObject::GetAmmoCurrent)
@@ -355,5 +346,8 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("set_tip_text",				&CScriptGameObject::SetTipText)
 			.def("set_tip_text_default",		&CScriptGameObject::SetTipTextDefault)
 			.def("set_nonscript_usable",		&CScriptGameObject::SetNonscriptUsable)
+
+			// Script Zone
+			.def("active_zone_contact",			&CScriptGameObject::active_zone_contact)
 	];
 }

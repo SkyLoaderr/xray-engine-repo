@@ -25,6 +25,8 @@
 #include "explosive.h"
 #include "object_handler.h"
 #include "script_ini_file.h"
+#include "script_zone.h"
+#include "script_callback.h"
 
 class CScriptBinderObject;
 
@@ -644,4 +646,14 @@ void CScriptGameObject::explode	(u32 level_time)
 		explosive->SetCurrentParentID(m_tpGameObject->ID());
 		explosive->GenExplodeEvent(m_tpGameObject->Position(), normal);
 	}
+}
+
+bool CScriptGameObject::active_zone_contact		(u16 id)
+{
+	CScriptZone		*script_zone = smart_cast<CScriptZone*>(m_tpGameObject);
+	if (!script_zone) {
+		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CScriptZone : cannot access class member active_zone_contact!");
+		return		(false);
+	}
+	return			(script_zone->active_contact(id));
 }

@@ -86,14 +86,13 @@ void CScriptZone::net_Relcase			(CObject *O)
 
 	xr_vector<CObject*>::iterator	I = std::find(feel_touch.begin(),feel_touch.end(),O);
 	if (I != feel_touch.end()) {
-		feel_touch.erase			(I);
 		SCRIPT_CALLBACK_EXECUTE_2(*m_tpOnExit, lua_game_object(),l_tpGameObject->lua_game_object());
 	}
 }
 
 BOOL CScriptZone::feel_touch_contact	(CObject* O)
 {
-	return						((CCF_Shape*)CFORM())->Contact(O);
+	return						(((CCF_Shape*)CFORM())->Contact(O));
 }
 
 void CScriptZone::set_callback	(const luabind::object &lua_object, LPCSTR method, bool bOnEnter)
@@ -147,3 +146,13 @@ void CScriptZone::OnRender()
 	}
 }
 #endif
+
+bool CScriptZone::active_contact(u16 id) const
+{
+	xr_vector<CObject*>::const_iterator	I = feel_touch.begin();
+	xr_vector<CObject*>::const_iterator	E = feel_touch.end();
+	for ( ; I != E; ++I)
+		if ((*I)->ID() == id)
+			return						(true);
+	return								(false);
+}
