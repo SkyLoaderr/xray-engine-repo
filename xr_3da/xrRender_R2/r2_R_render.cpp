@@ -226,7 +226,7 @@ void CRender::Render		()
 		BOOL	result						= FALSE;
 		HRESULT	hr							= S_FALSE;
 		while	((hr=q_sync_point->GetData	(&result,sizeof(result),D3DGETDATA_FLUSH))==S_FALSE) {
-			Sleep(0);
+			if (!SwitchToThread())			Sleep(0);
 			if (T.GetElapsed_ms() > 500)	{
 				result	= FALSE;
 				break;

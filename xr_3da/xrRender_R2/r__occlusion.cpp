@@ -72,7 +72,7 @@ u32		R_occlusion::occq_get		(u32&	ID		)
 	T.Start	();
 	Device.Statistic.RenderDUMP_Wait.Begin	();
 	while	((hr=used[ID].Q->GetData(&fragments,sizeof(fragments),D3DGETDATA_FLUSH))==S_FALSE) {
-		Sleep(0);
+		if (!SwitchToThread())			Sleep(0);
 		if (T.GetElapsed_ms() > 500)	{
 			fragments	= 0xffffffff;
 			break;
