@@ -21,6 +21,7 @@
 #include "game_base.h"
 #include "xr_spawn_merge.h"
 #include "xrCrossTable.h"
+using namespace ALife;
 
 #define THREAD_COUNT				6
 
