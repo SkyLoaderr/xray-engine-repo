@@ -13,6 +13,7 @@ void	CRenderTarget::phase_combine	()
 		RCache.set_Stencil					( FALSE );
 
 		// Draw full-screen quad textured with our SKYBOX
+		/*
 		if (0)
 		{
 			u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
@@ -35,9 +36,12 @@ void	CRenderTarget::phase_combine	()
 			RCache.set_Geometry			(g_combine);
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		}
+		*/
 
 		// Stencil	- draw only where stencil >= 0x1
-		RCache.set_Stencil	(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0x00);
+		// RCache.set_Stencil	(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0x00);
+		RCache.set_Stencil				( FALSE );
+
 
 		// Draw full-screen quad textured with our scene image
 		if (1)	// combine
