@@ -355,19 +355,18 @@ function action_go_patrol:execute()
 	for key,value in self.relax_point do
 		if self.object:level_vertex_id() == self.ptr:level_vertex_id(value) then
 			-- стоим и смотрим, отыгрыва€ разные анимации
-			if self.relax_time.begin == nil and
-				self.relax_idle.begin ~= nil and
-                               	device():time_global() - self.relax_idle.begin >= self.relax_idle.idle
-			then
-				-- инициализируем остановку
-				self.relax_time.begin = device():time_global()
-				self.relax_time.idle = math.random(self.relax_time.max_idle) + self.relax_time.sum_idle
+			if self.relax_time.begin == nil	then
+				if self.relax_idle.begin == nil or (device():time_global() - self.relax_idle.begin) >= 3000 then
+					-- инициализируем остановку
+					self.relax_time.begin = device():time_global()
+					self.relax_time.idle = math.random(self.relax_time.max_idle) + self.relax_time.sum_idle
+				end
 			else
 				-- ќбработка остановки
 				self.object:set_movement_type(move.stand)				
 
 				-- ¬ыход из остановки
-				if device():time_global() - self.relax_time_begin >= self.relax_time.idle then
+				if device():time_global() - self.relax_time.begin >= self.relax_time.idle then
 					self.object:set_movement_type(move.walk)				
 					self.relax_time.begin = nil
 					self.relax_idle.begin = device():time_global()
