@@ -58,6 +58,7 @@ protected:
 public:
 	xrServer*					Server;
 
+	CAI_Space					AI;
 	vector<CTeam>				Teams;
 	CTracer						Tracers;
 	CHeightMap					HeightMap;

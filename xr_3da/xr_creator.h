@@ -43,7 +43,6 @@ public:
 	CEnvironment				Environment;
 	CCameraManager				Cameras;
 	CObjectSpace				ObjectSpace;
-	CAI_Space					AI;
 
 	BOOL						bReady;
 

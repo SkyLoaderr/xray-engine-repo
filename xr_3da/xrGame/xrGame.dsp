@@ -631,9 +631,41 @@ SOURCE=.\Tracer.cpp
 SOURCE=.\Tracer.h
 # End Source File
 # End Group
-# Begin Group "AI_Core"
+# Begin Group "AI Core"
 
 # PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\AI_astar.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI_astar_fsa.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI_qNode.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI_qPath.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI_qRange.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI_Space.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI_Space.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI_Utilities.cpp
+# End Source File
 # End Group
 # Begin Source File
 
