@@ -275,7 +275,7 @@ void CRender::flush_Patches()
 	for (DWORD g=0; g<groups.size(); g++)
 	{
 		int p_count				= groups[g];
-		Device.Shader.Set		(vecPatches[current].S);
+		Device.Shader.set_Shader(vecPatches[current].S);
 		Device.Primitive.Draw	(vsPatches,4*p_count,2*p_count,vOffset,Device.Streams_QuadIB);
 		current	+=	p_count;
 		vOffset	+=	4*p_count;
@@ -330,7 +330,7 @@ void	CRender::Render		()
 		if (0==mapNormal[pr][0].size())	continue;
 
 		for (DWORD pass_id=0; pass_id<8; pass_id++)	{
-			mapNormalCodes&		codes	= mapNormal	[pr][pass_id];
+			SceneGraph::mapNormalCodes&		codes	= mapNormal	[pr][pass_id];
 			if (0==codes.size())	break;
 			BOOL sort	= (pass_id==0);
 				
@@ -338,33 +338,33 @@ void	CRender::Render		()
 			if (sort) std::sort	(lstCodes.begin(), lstCodes.end(), cmp_codes);
 			for (DWORD code_id=0; code_id<lstCodes.size(); code_id++)
 			{
-				mapNormalCodes::TNode*	Ncode	= lstCodes[code_id];
-				mapNormalTextures&	textures	= Ncode->val;
+				SceneGraph::mapNormalCodes::TNode*	Ncode	= lstCodes[code_id];
+				SceneGraph::mapNormalTextures&	textures	= Ncode->val;
 				Device.Shader.set_Code	(Ncode->key);
 
 				textures.getANY_P	(lstTextures);
 				if (sort) std::sort	(lstTextures.begin(),lstTextures.end(), cmp_textures);
 				for (DWORD texture_id=0; texture_id<lstTextures.size(); texture_id++)
 				{
-					mapNormalTextures::TNode*	Ntexture	= lstTextures[texture_id];
-					mapNormalMatrices& matrices				= Ntexture->val;
+					SceneGraph::mapNormalTextures::TNode*	Ntexture	= lstTextures[texture_id];
+					SceneGraph::mapNormalMatrices& matrices				= Ntexture->val;
 					Device.Shader.set_Textures	(Ntexture->key);
 
 					matrices.getANY_P	(lstMatrices);
 					if (sort) std::sort	(lstMatrices.begin(),lstMatrices.end(), cmp_matrices);
 					for (DWORD matrix_id=0; matrix_id<lstMatrices.size(); matrix_id++) 
 					{
-						mapNormalMatrices::TNode*	Nmatrix		= lstMatrices[matrix_id];
-						mapNormalConstants& constants			= Nmatrix->val;
+						SceneGraph::mapNormalMatrices::TNode*	Nmatrix		= lstMatrices[matrix_id];
+						SceneGraph::mapNormalConstants& constants			= Nmatrix->val;
 						Device.Shader.set_Matrices	(Nmatrix->key);
 
 						constants.getANY_P	(lstConstants);
 						if (sort) std::sort	(lstConstants.begin(),lstConstants.end(), cmp_constants);
 						for (DWORD constant_id=0; constant_id<lstConstants.size(); constant_id++)
 						{
-							mapNormalConstants::TNode*	Nconstant	= lstConstants[constant_id];
-							mapNormalItems&	items					= Nconstant->val;
-							Device.Shader.set_Constants	(Nconstant->key);
+							SceneGraph::mapNormalConstants::TNode*	Nconstant	= lstConstants[constant_id];
+							SceneGraph::mapNormalItems&	items					= Nconstant->val;
+							Device.Shader.set_Constants	(Nconstant->key,FALSE);
 							mapNormal_Render			(Nconstant->val);
 							items.ssa					= 0;
 						}
