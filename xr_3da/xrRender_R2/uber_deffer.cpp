@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "uber_deffer.h"
 
-void	uber_deffer	(CBlender_Compile& C, LPCSTR _vspec, LPCSTR _pspec, BOOL _aref, LPCSTR _detail_replace)
+void	uber_deffer	(CBlender_Compile& C, bool hq, LPCSTR _vspec, LPCSTR _pspec, BOOL _aref, LPCSTR _detail_replace)
 {
 	// Uber-parse
 	string256		fname,fnameA,fnameB;
@@ -44,6 +44,12 @@ void	uber_deffer	(CBlender_Compile& C, LPCSTR _vspec, LPCSTR _pspec, BOOL _aref,
 			strcat		(ps,"_d"	);
 			strcat		(dt,"_bump"	);
 		}
+	}
+
+	// HQ
+	if (bump && hq)		{
+		strcat			(vs,"-hq");
+		strcat			(ps,"-hq");
 	}
 
 	// Uber-construct
