@@ -41,18 +41,6 @@
 		<dialog>stalker_talk_about</dialog>
 	</info_portion>
 
-	<info_portion id="actor_start01">
-		<text>Please... Help me!!! I need medikit...</text> 
-		<location >
-			<level></level>
-			<object>wounded_stalker_0_1</object>
-			<icon name="unknown" x="2" y="3" width="1" height="1"></icon>
-			<text>Please... Help me!!! I need medikit...</text>
-		</location>
-		<!-- список диалогов, который может инициировать InfoPortion -->
-		<dialog>job_medkit</dialog>
-	</info_portion>
-
 	<info_portion id="actor_start02">
 		<location >
 			<level></level>
@@ -62,17 +50,6 @@
 		</location>
 	</info_portion>
 
-	<info_portion id="actor_start03">
-		<text>S.O.S. S.O.S. S.O.S.</text> 
-		<location >
-			<level></level>
-			<object>fedya</object>
-			<icon name="unknown" x="2" y="4" width="1" height="1"></icon>
-			<text>S.O.S.</text>
-		</location>
-		<!-- список диалогов, который может инициировать InfoPortion -->
-	</info_portion>
-
 	<info_portion id="actor_start04">
 		<location >
 			<level></level>
@@ -80,19 +57,6 @@
 			<icon name="Case" x="2" y="8" width="1" height="1"></icon>
 			<text>Steal the case...</text>
 		</location>
-	</info_portion>
-
-	<info_portion id="trader_start1">
-		<location >
-			<level></level>
-			<object>trader1</object>
-			<icon name="stalker 'Dog'" x="0" y="5" width="1" height="1"></icon>
-			<text>You must kill the "Dog"... \nTake artefact from his body...</text>
-		</location>
-		<dialog>another_test_dialog</dialog>
-	
-		<!-- список деактивируемы info_portions -->
-		<disable>1</disable>
 	</info_portion>
 
 	<info_portion id="trader_start2">
@@ -121,33 +85,5 @@
 	<disable>trader_start4</disable>
 	</info_portion>
 	
-	<info_portion id="job_medkit_finished">
-	<disable_info>actor_start01</disable_info> 
-	</info_portion>
-
-
-	<info_portion id="job_weapon_finished">
-	<disable_info>actor_start05</disable_info> 
-	</info_portion>
-	
-	
-	<info_portion id="test_task_info">
-		<!-- задание -->
-		<task>
-			<objective>
-				<text>test task primary</text>
-				<script_condition>info_test1.test_task1</script_condition>
-			</objective>
-			<objective>
-				<text>test task secondary 01</text>
-				<script_condition>info_test1.test_task2</script_condition>
-			</objective>
-			<objective>
-				<text>test task secondary 01</text>
-				<script_condition>info_test1.test_task3</script_condition>
-			</objective>
-		</task>
-	</info_portion>
-
 
 </game_information_portions>
