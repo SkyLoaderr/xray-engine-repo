@@ -1038,8 +1038,10 @@ void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, fl
 	val/=fixed_step;
 	Fvector body_pos;
 	body_pos.sub(pos,m_inverse_local_transform.c);
-
+	
+	
 	dBodyAddForceAtRelPos       (m_body, dir.x*val,dir.y*val,dir.z*val,body_pos.x, body_pos.y, body_pos.z);
+	
 
 	BodyCutForce(m_body,m_l_limit,m_w_limit);
 }

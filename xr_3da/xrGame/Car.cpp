@@ -1272,7 +1272,11 @@ void CCar::SDoor::Update()
 		}
 	case opened:
 		{
-			if(Device.dwTimeGlobal-open_time>1000) NeutralTorque(0.f);
+			if(Device.dwTimeGlobal-open_time>1000) 
+			{
+				NeutralTorque(0.f);
+				RemoveFromUpdate();
+			}
 		}
 	}
 }
@@ -1311,7 +1315,7 @@ void CCar::SDoor::ApplyCloseTorque()
 void CCar::SDoor::NeutralTorque(float atorque)
 {
 	if(!joint->bActive)return;
-	joint->PSecond_element()->Enable();
+	//joint->PSecond_element()->Enable();
 	dJointSetHingeParam(joint->GetDJoint(),dParamFMax,atorque);
 	dJointSetHingeParam(joint->GetDJoint(),dParamVel,0);
 }
@@ -1324,6 +1328,8 @@ if(joint->bActive)return;
 Fmatrix door_form,root_form;
 CKinematics* pKinematics=PKinematics(pcar->Visual());
 CBoneData& bone_data= pKinematics->LL_GetData(bone_id);
+CBoneInstance& bone_instance=pKinematics->LL_GetInstance(bone_id);
+bone_instance.set_callback(pcar->PPhysicsShell()->GetBonesCallback1(),joint->PSecond_element());
 door_form.setXYZi(bone_data.bind_xyz);
 door_form.c.set(bone_data.bind_translate);
 //door_form.mulB(pcar->XFORM());
@@ -1343,8 +1349,7 @@ Fmatrix door_form;
 CKinematics* pKinematics=PKinematics(pcar->Visual());
 CBoneData& bone_data= pKinematics->LL_GetData(bone_id);
 CBoneInstance& bone_instance=pKinematics->LL_GetInstance(bone_id);
-
-
+bone_instance.set_callback(0,joint->PFirst_element());
 joint->PSecond_element()->Deactivate();
 joint->Deactivate();
 RemoveFromUpdate();
