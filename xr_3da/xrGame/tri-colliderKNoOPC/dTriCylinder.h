@@ -8,7 +8,7 @@ struct dxCylinder {	// cylinder
 
 int dTriCyl (
 						const dReal* v0,const dReal* v1,const dReal* v2,
-						CDB::TRI* T,
+						Triangle* T,
 						dxGeom *o1, dxGeom *o2,
 						int flags, dContactGeom *contact, int skip
 						);

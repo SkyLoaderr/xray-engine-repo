@@ -252,7 +252,7 @@ bool inline cylinderCrossesLine(const dReal* p,const dReal* R,dReal hlz,
 
 		int dTriCyl (
 						const dReal* v0,const dReal* v1,const dReal* v2,
-						CDB::TRI* T,
+						Triangle* T,
 						dxGeom *o1, dxGeom *o2,
 						int flags, dContactGeom *contact, int skip
 						
@@ -773,9 +773,9 @@ else {//7-12
 	CONTACT(contact,i*skip)->normal[0] = norm[0];
 	CONTACT(contact,i*skip)->normal[1] = norm[1];
 	CONTACT(contact,i*skip)->normal[2] = norm[2];
-	SURFACE(contact,i*skip)->mode=T->material;
+	SURFACE(contact,i*skip)->mode=T->T->material;
  }
-  if(ret&&dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T,contact);
+  if(ret&&dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T->T,contact);
  return ret;  
 }
 

@@ -174,7 +174,7 @@ contact->depth = outDepth;
 
  int dTriBox (
 						const dReal* v0,const dReal* v1,const dReal* v2,
-						CDB::TRI* T,
+						Triangle* T,
 						dxGeom *o1, dxGeom *o2,
 						int flags, dContactGeom *contact, int skip
 						)
@@ -198,16 +198,17 @@ contact->depth = outDepth;
   if (maxc < 1) maxc = 1;
   if (maxc > 3) maxc = 3;	// no more than 3 contacts per box allowed
 
-  dVector3 triAx;
-  dVector3 triSideAx0={v1[0]-v0[0],v1[1]-v0[1],v1[2]-v0[2]};
-  dVector3 triSideAx1={v2[0]-v1[0],v2[1]-v1[1],v2[2]-v1[2]};
+  //dVector3 triAx;
+  const dReal* triSideAx0=T->side0;//{v1[0]-v0[0],v1[1]-v0[1],v1[2]-v0[2]};
+  const dReal* triSideAx1=T->side1;//{v2[0]-v1[0],v2[1]-v1[1],v2[2]-v1[2]};
   dVector3 triSideAx2={v0[0]-v2[0],v0[1]-v2[1],v0[2]-v2[2]};
-  dCROSS(triAx,=,triSideAx0,triSideAx1);
+  //dCROSS(triAx,=,triSideAx0,triSideAx1);
   int code=0;
   dReal outDepth;
   dReal signum;
   //sepparation along tri plane normal;
-dNormalize3(triAx);
+  const dReal *triAx	=T->norm;
+ //dNormalize3(triAx);
 
 
  dReal sidePr=
@@ -215,7 +216,8 @@ dNormalize3(triAx);
 	dFabs(dDOT14(triAx,R+1)*hside[1])+
 	dFabs(dDOT14(triAx,R+2)*hside[2]);
 
-dReal dist=dDOT(triAx,v0)-dDOT(triAx,p);
+dReal dist=-T->dist;
+//dist=dDOT(triAx,v0)-dDOT(triAx,p);
 dReal depth=sidePr-dFabs(dist);
 outDepth=depth;
 signum=dist<0.f ? -1.f : 1.f;
@@ -687,9 +689,9 @@ contact->depth = outDepth;
 	CONTACT(contact,i*skip)->normal[0] = norm[0];
 	CONTACT(contact,i*skip)->normal[1] = norm[1];
 	CONTACT(contact,i*skip)->normal[2] = norm[2];
-	SURFACE(contact,i*skip)->mode=T->material;
+	SURFACE(contact,i*skip)->mode=T->T->material;
  }
- if(ret&&dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T,contact);
+ if(ret&&dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T->T,contact);
  return ret;
 
 }

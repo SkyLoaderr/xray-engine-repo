@@ -148,7 +148,7 @@ int dSortTriPrimitiveCollide (
 				(const dReal*)&V_array[T->verts[0]],
 				(const dReal*)&V_array[T->verts[1]],
 				(const dReal*)&V_array[T->verts[2]],
-				T,
+				&tri,
 				o1,
 				o2,
 				3,

@@ -20,7 +20,7 @@ int dSortedTriSphere(const dReal*	/**v1/**/,const dReal*	/**v2/**/,
 					 );
 
 int dTriSphere(const dReal* v0,const dReal* v1,const dReal* v2,
-			   CDB::TRI* T,
+			   Triangle* T,
 			   dxGeom* Sphere,dxGeom* Geometry, int Flags, 
 			   dContactGeom* Contacts,int /**skip/**/);
 

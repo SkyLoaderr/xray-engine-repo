@@ -8,7 +8,7 @@ public:\
 IC	static float Proj  (dxGeom* o,const dReal* normal){return d##primitive##Proj(o,normal);}\
 static int	 Collide(\
 					const dReal* v0,const dReal* v1,const dReal* v2,\
-					CDB::TRI* T,\
+					Triangle* T,\
 					dxGeom *o1,dxGeom *o2,\
 					int flags, dContactGeom *contact, int skip\
 					);\
@@ -27,7 +27,7 @@ static int	CollidePlain(\
 #define TRI_PRIMITIVE_COLIDE_CLASS_IMPLEMENT(primitive)			\
 	int primitive##Tri:: Collide(\
 	const dReal* v0,const dReal* v1,const dReal* v2,\
-	CDB::TRI* T,\
+	Triangle* T,\
 	dxGeom *o1,dxGeom *o2,\
 	int flags, dContactGeom *contact, int skip\
 	){\

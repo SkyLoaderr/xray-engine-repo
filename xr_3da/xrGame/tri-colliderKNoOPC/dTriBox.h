@@ -3,7 +3,7 @@
 
 #include "TriPrimitiveCollideClassDef.h"
 #include "../ode_include.h"
-
+struct Triangle;
 struct dxBox {
 	dVector3 side;	// side lengths (x,y,z)
 };
@@ -23,7 +23,7 @@ IC float	dBoxProj(dxGeom* box,const dReal* normal)
 
 int dTriBox (
 			 const dReal* v0,const dReal* v1,const dReal* v2,
-			 CDB::TRI* T,
+			 Triangle* T,
 			 dxGeom *o1,dxGeom *o2,
 			 int flags, dContactGeom *contact, int skip
 			 );

@@ -53,7 +53,7 @@ int dSortedTriSphere(const dReal*	/**v1/**/,const dReal*	/**v2/**/,
 					 }
 
 					 int dTriSphere(const dReal* v0,const dReal* v1,const dReal* v2,
-						 CDB::TRI* T,
+						 Triangle* T,
 						 dxGeom* Sphere,dxGeom* Geometry, int Flags, 
 						 dContactGeom* Contacts,int /**skip/**/)
 					 {
@@ -186,9 +186,9 @@ int dSortedTriSphere(const dReal*	/**v1/**/,const dReal*	/**v2/**/,
 								 Contacts->pos[2]=ContactPos[2];
 								 Contacts->g1 = Geometry;
 								 Contacts->g2 = Sphere;
-								 ((dxGeomUserData*)dGeomGetData(Sphere))->tri_material=T->material;
-								 if(dGeomGetUserData(Sphere)->callback)dGeomGetUserData(Sphere)->callback(T,Contacts);
-								 SURFACE(Contacts,0)->mode=T->material;
+								 ((dxGeomUserData*)dGeomGetData(Sphere))->tri_material=T->T->material;
+								 if(dGeomGetUserData(Sphere)->callback)dGeomGetUserData(Sphere)->callback(T->T,Contacts);
+								 SURFACE(Contacts,0)->mode=T->T->material;
 								 //////////////////////////////////
 								 //	++OutTriCount;
 								 return 1;
