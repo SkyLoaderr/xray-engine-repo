@@ -513,10 +513,7 @@ bool CUIXmlInit::InitTabControl(CUIXml &xml_doc, LPCSTR path, int index, CUITabC
 
 	for (int i = 0; i < tabsCount; ++i)
 	{
-		CUITabButton *newButton = xr_new<CUITabButton>();
-		// CAI_Stalker
-//		.def("get_current_equipment",		&CScriptGameObject::GetCurrentEquipment)
-
+		CUIButton *newButton = xr_new<CUIButton>();
 
 		status &= InitButton(xml_doc, "button", i, newButton);
 		pWnd->AddItem(newButton);
