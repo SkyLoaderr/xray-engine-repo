@@ -153,7 +153,9 @@ DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broad
 void xrServer::OnCL_Connected		(IClient* CL)
 {
 	Level().HUD()->outMessage		(0xffffffff,"SERVER","Player '%s' connected",CL->Name);
-	
+
+	NET_Packet		P;
+
 	// Game config
 	P.w_begin		(M_SV_CONFIG_GAME);
 	P.w_u8			(u8(GAME		));
@@ -162,7 +164,6 @@ void xrServer::OnCL_Connected		(IClient* CL)
 	SendTo			(CL->ID,P,net_flags(TRUE,TRUE));
 
 	// Replicate current entities on to this client
-	NET_Packet		P;
 	xrS_entities::iterator	I=entities.begin(),E=entities.end();
 	for (; I!=E; I++)
 	{
