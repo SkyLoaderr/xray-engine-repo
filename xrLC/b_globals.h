@@ -34,5 +34,3 @@ extern const int				edge2idx	[3][2];
 extern const int				edge2idx3	[3][3];
 extern const int				idx2edge	[3][3];
 
-#pragma comment(lib,"x:\\dxt.lib")
-extern "C" __declspec(dllimport) bool __cdecl DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch, STextureParams* fmt, DWORD depth);
