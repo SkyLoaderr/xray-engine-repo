@@ -12,7 +12,7 @@ struct	ENGINE_API CKey;
 struct	ENGINE_API CKeyQ;
 
 #ifdef _EDITOR
-#define MATRIX		Fmatrix;
+#define MATRIX		Fmatrix
 #else
 template<class T>	struct _matrix;
 #define MATRIX		_matrix<float>
