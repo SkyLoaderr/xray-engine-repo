@@ -567,10 +567,7 @@ accamulate_time		= 1000
 
 
 blowout_light_time		= 2100
-blowout_explosion_time	= 2100
-
-blowout_wind_time		= 200		
-blowout_wind_power		= 1			;сила поднимаего ветра (от 0 до 1)
+blowout_explosion_time	= 2500
 
 ;параметры телекинеза дл€ зоны
 throw_in_impulse		= 200		;сила импульса вт€гивани€ (дл€ тела 100кг)
@@ -584,7 +581,17 @@ tele_pause				= 5000		;пауза перед тем как снова подн€ть упавший объект
 
 visible_by_detector = on
 
-blowout_wind		= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ветер
+blowout_wind		= on
+
+blowout_wind_time_start     = 0
+blowout_wind_time_peak      = 2100
+blowout_wind_time_end		= 2450
+blowout_wind_power			= 1				;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;рождение артефактов во врем€ срабатывани€
