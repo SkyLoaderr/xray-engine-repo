@@ -59,6 +59,9 @@ function main()
 	event:set_callback(this.on_enter,true)
 	event:set_callback(this.on_exit,false)
 
+	stalker1:script	(true,this.script_name())
+	stalker2:script	(true,this.script_name())
+
 	while true do
 			printf("entered")
 			flush()
@@ -149,6 +152,9 @@ function main()
 
 	event:clear_callback(true)
 	event:clear_callback(false)
+
+	stalker1:script	(false, script_01.script_name())
+	stalker2:script	(false, script_01.script_name())
 
 end
 
