@@ -65,7 +65,7 @@ void	game_sv_CS::OnRoundStart	()
 
 		// spawn
 		LPCSTR	options			=	get_name_it	(it);
-		xrServerEntity*		E	=	spawn_begin	("actor");													// create SE
+		xrServerEntity*		E	=	spawn_begin	(ps->team?"actor_cs_2":"actor_cs_1");													// create SE
 		xrSE_Actor*	A			=	(xrSE_Actor*) E;					
 		strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
 		A->s_team				=	u8(ps->team);															// team
@@ -106,10 +106,12 @@ void	game_sv_CS::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 	if (ps_killer->team == ps_killed->team)	
 	{
 		// Teammate killed - no frag, chop money
-		ps_killer->money_for_round	-=	500;
+//		ps_killer->money_for_round	-=	500;
+		ps_killer->money_total	-=	500; if(ps_killer->money_total < 0) ps_killer->money_total = 0;
 	} else {
 		// Opponent killed - frag + money
-		ps_killer->money_for_round	+=	500;
+//		ps_killer->money_for_round	+=	500;
+		ps_killer->money_total	+=	500;
 		ps_killer->kills			+=	1;
 
 		// Check if there is no opponents left
