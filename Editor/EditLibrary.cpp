@@ -41,6 +41,7 @@ __fastcall TfrmEditLibrary::TfrmEditLibrary(TComponent* Owner)
     : TForm(Owner)
 {
     DEFINE_INI(fsStorage);
+	m_SelectedObject = 0;
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::ShowEditor()
@@ -97,7 +98,6 @@ void __fastcall TfrmEditLibrary::FormShow(TObject *Sender)
     InitObjects();
     ebSave->Enabled = false;
     UI.BeginEState(esEditLibrary);
-    m_SelectedObject = 0;
     // add directional light
     Flight L;
     ZeroMemory(&L,sizeof(Flight));
@@ -122,6 +122,7 @@ void __fastcall TfrmEditLibrary::FormShow(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action)
 {
+	Lib.RemoveEditObject(form->m_SelectedObject);
 	form = 0;
 	_DELETE(m_Thm);
 	Action = caFree;
@@ -192,7 +193,7 @@ void __fastcall TfrmEditLibrary::tvObjectsItemFocused(TObject *Sender)
         	Lib.RemoveEditObject(m_SelectedObject);
             m_SelectedObject = Lib.CreateEditObject(nm.c_str());
             R_ASSERT(m_SelectedObject);
-            ZoomObject();
+//            ZoomObject();
 		    ebMakeThm->Enabled = true;
         }
         m_LastSelection = nm;
@@ -312,7 +313,7 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
 void __fastcall TfrmEditLibrary::RefreshSelected()
 {
 	if (form){
-	    form->m_SelectedObject = 0;
+		Lib.RemoveEditObject(form->m_SelectedObject);
 		form->tvObjectsItemFocused(0);
     }
 }

@@ -40,7 +40,7 @@ void __fastcall TfrmLog::ebClearClick(TObject *Sender)
 void __fastcall TfrmLog::AddMessage(TMsgDlgType mt, const AnsiString& msg){
 	if (!form) return;
     AnsiString M;
-    for (int i=1; i<msg.Length(); i++){
+    for (int i=1; i<=msg.Length(); i++){
     	if (msg[i]=='\r') continue;
         if (msg[i]=='\n') M+=" ";
         else M+=msg[i];

@@ -49,7 +49,7 @@ void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bCheck){
 void __fastcall TfrmImageLib::CheckImageLib(){
 	texture_map.clear();
     if (ImageManager.GetModifiedTextures(texture_map)){
-		ImageManager.SynchronizeTextures(true,false,false,&texture_map,0);
+//		ImageManager.SynchronizeTextures(true,false,false,&texture_map,0);
     	EditImageLib(AnsiString("Check image params"),true);
     }
 }
