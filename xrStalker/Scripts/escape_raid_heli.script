@@ -19,7 +19,7 @@ function set_enemy( obj )
 end
 
 function main()
-    active = true
+--    active = true
 --    while not active do
 --        wait()
 --    end
