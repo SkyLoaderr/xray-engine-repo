@@ -70,6 +70,10 @@ void CRenderTarget::OnDeviceCreate	()
 
 void CRenderTarget::OnDeviceDestroy	()
 {
+	Device.Shader.Delete		(pShaderGray);
+	Device.Shader.Delete		(pShaderSet);
+	Device.Shader._DeleteTexture(pTexture);
+	
 	_RELEASE	(pBaseZB);
 	_RELEASE	(pBaseRT);
 	_RELEASE	(pRT);
