@@ -23,12 +23,12 @@ public:
 	SALifeHeader					m_tALifeHeader;
 
 	// auto
-	TERRAIN_SVECTOR					m_tpTerrain;			// массив списков: по идетнификатору 
+	GRAPH_VECTOR_SVECTOR			m_tpTerrain;			// массив списков: по идетнификатору 
 															//	местности получить список точек 
 															//  графа
-	vector<OBJECT_VECTOR>			m_tpLocationOwners;		// массив списков : по точке графа 
+	OBJECT_VECTOR_VECTOR			m_tpLocationOwners;		// массив списков : по точке графа 
 															//  получить список её владельцев
-	vector<OBJECT_VECTOR>			m_tpGraphObjects;		// по точке графа получить все 
+	OBJECT_VECTOR_VECTOR			m_tpGraphObjects;		// по точке графа получить все 
 															//  динамические объекты
 	ALIFE_MONSTER_P_VECTOR			m_tpScheduledObjects;	// массив обновляемых объектов
 	
@@ -60,8 +60,8 @@ public:
 		vfAddToGraphPoint		(tObjectID,tNextGraphPointID);
 	}
 
-	void							vfCheckForItems			(CALifeHuman	*tpALifeMonster);
-	void							vfCheckForDeletedEvents	(CALifeHuman	*tpALifeMonster);
+	void							vfCheckForItems			(CALifeHuman	*tpALifeHuman);
+	void							vfCheckForDeletedEvents	(CALifeHuman	*tpALifeHuman);
 	void							vfCheckForTheBattle		(CALifeMonster	*tpALifeMonster);
 	void							vfChooseNextRoutePoint	(CALifeMonster	*tpALifeMonster);
 	void							vfProcessNPC			(CALifeMonster	*tpALifeMonster);
