@@ -120,9 +120,9 @@ void CPHElement::destroy	()
 {
 	//dJointGroupDestroy(m_saved_contacts);
 	CPHGeometryOwner::destroy();
-	if(m_body&&m_body->world)
+	if(m_body)//&&m_body->world
 	{
-		m_shell->Island().RemoveBody(m_body);
+		if(m_body->world)m_shell->Island().RemoveBody(m_body);
 		dBodyDestroy(m_body);
 		m_body=NULL;
 	}

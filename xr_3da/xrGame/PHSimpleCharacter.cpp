@@ -252,6 +252,17 @@ void CPHSimpleCharacter::Destroy(){
 	CPHObject::deactivate();
 	spatial_unregister();
 
+	if(m_cap) {
+		dGeomDestroyUserData(m_cap);
+		dGeomDestroy(m_cap);
+		m_cap=NULL;
+	}
+
+	if(m_cap_transform){
+		dGeomDestroyUserData(m_cap_transform);
+		dGeomDestroy(m_cap_transform);
+		m_cap_transform=NULL;
+	}
 
 	if(m_geom_shell){
 		dGeomDestroyUserData(m_geom_shell);
@@ -291,6 +302,7 @@ void CPHSimpleCharacter::Destroy(){
 		dGeomDestroy(m_hat_transform);
 		m_hat_transform=NULL;
 	}
+
 	if(m_space){
 		dSpaceDestroy(m_space);
 		m_space=NULL;
@@ -1298,7 +1310,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 
 
 	///m_friction_factor=(c->surface.mu<1.f&&!object) ? c->surface.mu : 1.f;
-	if(c->surface.mu<1.f&&!object)m_friction_factor=c->surface.mu; else m_friction_factor=1.f;
+	if(c->surface.mu<1.f&&!object && !b_side_contact)m_friction_factor=c->surface.mu; else m_friction_factor=1.f;
 
 
 	++m_contact_count;

@@ -124,6 +124,7 @@ void CPHWorld::Destroy(){
 #endif
 	dGeomDestroy(m_motion_ray);
 	dJointGroupEmpty(ContactGroup);
+	dJointGroupDestroy(ContactGroup);
 	ContactFeedBacks.clear();
 	ContactEffectors.clear();
 	dCloseODE();

@@ -29,17 +29,7 @@ void CPHActorCharacter::Create(dVector3 sizes)
 void CPHActorCharacter::Destroy()
 {
 	if(!b_exist) return;
-	if(m_cap) {
-		dGeomDestroyUserData(m_cap);
-		dGeomDestroy(m_cap);
-		m_cap=NULL;
-	}
 
-	if(m_cap_transform){
-		dGeomDestroyUserData(m_cap_transform);
-		dGeomDestroy(m_cap_transform);
-		m_cap_transform=NULL;
-	}
 	inherited::Destroy();
 }
 

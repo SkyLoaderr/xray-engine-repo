@@ -8127,6 +8127,12 @@
 							Name="SipmpleCharacter"
 							Filter="">
 							<File
+								RelativePath=".\ElevatorState.cpp">
+							</File>
+							<File
+								RelativePath=".\ElevatorState.h">
+							</File>
+							<File
 								RelativePath=".\PHSimpleCharacter.cpp">
 							</File>
 							<File

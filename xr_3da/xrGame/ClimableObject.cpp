@@ -31,6 +31,8 @@ BOOL CClimableObject::	net_Spawn			( LPVOID DC)
 void CClimableObject::	net_Destroy			()
 {
 	inherited::net_Destroy();
+	m_pStaticShell->Deactivate();
+	xr_delete(m_pStaticShell);
 }
 void CClimableObject::	shedule_Update		( u32 dt)							// Called by shedule
 {
