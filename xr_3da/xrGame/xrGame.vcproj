@@ -3112,6 +3112,9 @@
 								RelativePath=".\path_manager_params_game_vertex_type.h">
 							</File>
 							<File
+								RelativePath=".\path_manager_params_level_evaluator.cpp">
+							</File>
+							<File
 								RelativePath=".\path_manager_params_level_evaluator.h">
 							</File>
 							<File

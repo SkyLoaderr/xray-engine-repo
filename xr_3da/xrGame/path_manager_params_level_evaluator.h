@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: path_manager_level_selector.h
+//	Module 		: path_manager_params_level_evaluator.h
 //	Created 	: 21.03.2002
 //  Modified 	: 19.11.2003
 //	Author		: Dmitriy Iassenev
-//	Description : Level selector
+//	Description : Level evaluator
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
