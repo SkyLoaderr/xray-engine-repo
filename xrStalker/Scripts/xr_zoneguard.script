@@ -40,7 +40,7 @@ function action_zoneguard_activity:initialize()
 
 	--xr_reactions.add_rule(self.object, "ignore")
 
-	self.object:enable_talk()
+	--self.object:enable_talk() -- теперь делается с помощью meet_talk_enabled = true
 
 	self.move_mgr:initialize()
 
@@ -244,7 +244,7 @@ function action_zoneguard_activity:execute()
 end
 
 function action_zoneguard_activity:finalize()
-	self.object:disable_talk()
+	--self.object:disable_talk()
 
 	self:reset_trigger()
 	self.move_mgr:finalize()

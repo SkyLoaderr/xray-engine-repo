@@ -295,12 +295,12 @@ function reset_generic_schemes_on_scheme_switch(npc)
 	end
 
 	if st.stype == modules.stype_stalker then
-		xr_meet.dialog_manager_reset(npc)
+		xr_meet.dialog_manager_reset(npc, st.stype)
 		xr_reactions.reset_rules(npc)
 	elseif st.stype == modules.stype_mobile then
 		printf("_bp: disabling talk")
-		npc:disable_talk()
-		xr_meet.dialog_manager_reset(npc)
+		--npc:disable_talk() -- теперь делается в dialog_manager_reset
+		xr_meet.dialog_manager_reset(npc, st.stype)
 		mob_release(npc)
 	elseif st.stype == modules.stype_item then
 		npc:clear_use_callback()
@@ -739,6 +739,7 @@ function cfg_get_overrides(ini, section, npc)
 	local l = {}
 
 	l.meet_enabled = utils.cfg_get_bool(ini, section, "meet_enabled", npc, false)
+	l.meet_talk_enabled = utils.cfg_get_bool(ini, section, "meet_talk_enabled", npc, false)
 	l.meet_dialog  = utils.cfg_get_string(ini, section, "meet_dialog", npc, false, "")
 	l.reactions    = parse_names(utils.cfg_get_string(ini, section, "reactions", npc, false, "", ""))
 	l.heli_hunter  = utils.cfg_get_bool(ini, section, "heli_hunter", npc, false)

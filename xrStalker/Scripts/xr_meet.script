@@ -463,19 +463,27 @@ function override_meet(npc, flag)
 end
 
 --' ВНИМАНИЕ: Эта функция вызывается и для сталкеров, и для монстров!
-function dialog_manager_reset(npc)
+function dialog_manager_reset(npc, stype)
 	printf("*DIALOGS*: dialog_manager_reset: npc:name='%s'", npc:name())
-	--' Смена стартового диалога
-	local overrides = xr_logic.generic_scheme_overrides(npc)
-	if overrides ~= nil and
-		overrides.meet_dialog ~= nil
-	then
-		printf("*DIALOGS*: Set start dialog %s", overrides.meet_dialog)
-		npc:set_start_dialog(overrides.meet_dialog)
-	else
-		printf("*DIALOGS*: Restore start dialog")
-		npc:restore_default_start_dialog()	
-	end		
+	if stype == modules.stype_stalker or stype == modules.stype_mobile then
+		--' Смена стартового диалога
+		local overrides = xr_logic.generic_scheme_overrides(npc)
+		if overrides ~= nil then
+			if overrides.meet_talk_enabled then
+				npc:enable_talk()
+			else
+				npc:disable_talk()
+			end
+
+			if overrides.meet_dialog then
+				printf("*DIALOGS*: Set start dialog %s", overrides.meet_dialog)
+				npc:set_start_dialog(overrides.meet_dialog)
+			else
+				printf("*DIALOGS*: Restore start dialog")
+				npc:restore_default_start_dialog()
+			end
+		end
+	end
 end
 
 --' Считывание доступных диалогов игрока.

@@ -17,10 +17,16 @@ function motivator_binder:__init (obj) super(obj)
     self.torch = xr_light.torch_light (obj)
 end
 ----------------------------------------------------------------------------------------------------------------------
+function motivator_binder:extrapolate_callback()
+	printf("_bp: extrapolate_callback")
+	return false
+end
+----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:reinit()
     object_binder.reinit(self)
     printf("motivator_binder:reinit(): self.object:name()='%s'", self.object:name())
     self.object:set_hear_callback(hear_callback)
+    --self.object:set_patrol_extrapolate_callback(motivator_binder.extrapolate_callback, self)
         
     local char_ini = self.object:spawn_ini()
 
@@ -82,7 +88,7 @@ function motivator_binder:reinit()
 //		need_follow = false
 //    }
 //	xr_sos.add_to_binder(self.object, char_ini)
-    military_radio.add_to_binder (self.object, char_ini)
+	military_radio.add_to_binder (self.object, char_ini)
 
 	--xr_combat.set_combat_checker(self.object, char_ini, "combat", "combat")
 ----------------------------------------------------------------------------------------------------------------------
@@ -112,43 +118,43 @@ function motivator_binder:update(delta)
 	self.torch:update()
     
 	--' Проверка ТИМ СКВАД ГРУП
-	if false then
-		if memtsg[self.object:id()] == nil then
-			printf("[TSG] Object: %s t:%d s:%d g:%d", self.object:name(),
-				self.object:team(),
-				self.object:squad(),
-				self.object:group())
-			memtsg[self.object:id()] = self.object:id()
-		end
+	--[[
+	if memtsg[self.object:id()] == nil then
+		printf("[TSG] Object: %s t:%d s:%d g:%d", self.object:name(),
+			self.object:team(),
+			self.object:squad(),
+			self.object:group())
+		memtsg[self.object:id()] = self.object:id()
 	end
+	--]]
 
 	--' Проверка потери жизни
-	if false then
-		if lasttime == nil or
-		   game.get_game_time():diffSec(lasttime) > 1 
-		then
-			printf("%f * %f", self.object.health, self.object.health - lasthealth)
-			lasthealth = self.object.health
-			lasttime = game.get_game_time()
-		end
+	--[[
+	if lasttime == nil or
+	   game.get_game_time():diffSec(lasttime) > 1 
+	then
+		printf("%f * %f", self.object.health, self.object.health - lasthealth)
+		lasthealth = self.object.health
+		lasttime = game.get_game_time()
 	end
+	--]]
 
 	--' Проверка врагов
-	if false then 
-		be = self.object:best_enemy()
-		if be ~= nil then
-			printf("ENEMYCHECK: %s[%s, %s, %s] -> %s[%s, %s, %s]",
-				self.object:name(),
-				self.object:team(),
-				self.object:squad(),
-				self.object:group(),
-				be:name(), 
-				be:team(), 
-				be:squad(), 
-				be:group()
-			)
-		end
+	--[[
+	be = self.object:best_enemy()
+	if be ~= nil then
+		printf("ENEMYCHECK: %s[%s, %s, %s] -> %s[%s, %s, %s]",
+			self.object:name(),
+			self.object:team(),
+			self.object:squad(),
+			self.object:group(),
+			be:name(), 
+			be:team(), 
+			be:squad(), 
+			be:group()
+		)
 	end
+	--]]
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:reload(section)
