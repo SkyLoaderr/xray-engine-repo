@@ -74,7 +74,7 @@ void CObjectHandlerGOAP::reinit			(CAI_Stalker *object)
 	action->add_effect			(CWorldProperty(eWorldPropertyNoItemsIdle,true));
 	add_operator				(eWorldOperatorNoItemsIdle,action);
 	set_goal					(eObjectActionNoItems);
-	m_current_action_id			= eWorldOperatorNoItemsIdle;
+	set_current_action			(eWorldOperatorNoItemsIdle);
 }
 
 void CObjectHandlerGOAP::reload			(LPCSTR section)
