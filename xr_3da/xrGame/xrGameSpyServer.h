@@ -7,6 +7,7 @@
 #define	GAMESPY_MAXCHALLANGESIZE	32
 
 #define	DEDICATED_KEY			100
+#define	FFIRE_KEY				101
 
 class xrGameSpyClientData	: public xrClientData
 {

@@ -43,6 +43,14 @@ void callback_serverkey(int keyid, qr2_buffer_t outbuf, void *userdata)
 		{
 			qr2_buffer_add_int(outbuf, pServer->GetPort());
 		}break;
+	case FFIRE_KEY:
+		{
+			if (pServer->game && pServer->game->CanHaveFriendlyFire())
+			{			
+				qr2_buffer_add_int(outbuf, pServer->game->isFriendlyFireEnabled());
+			}
+			qr2_buffer_add_int(outbuf, 0);
+		}break;
 	}
 	GSI_UNUSED(userdata);
 };
@@ -69,8 +77,9 @@ void callback_keylist(qr2_key_type keytype, qr2_keybuffer_t keybuffer, void *use
 		qr2_keybuffer_add(keybuffer, GAMETYPE_KEY);
 		qr2_keybuffer_add(keybuffer, PASSWORD_KEY);
 
-		qr2_keybuffer_add(keybuffer, DEDICATED_KEY);
 		qr2_keybuffer_add(keybuffer, HOSTPORT_KEY);
+		qr2_keybuffer_add(keybuffer, DEDICATED_KEY);
+		qr2_keybuffer_add(keybuffer, FFIRE_KEY);
 		break;
 	case key_player:
 //		qr2_keybuffer_add(keybuffer, PLAYER__KEY);

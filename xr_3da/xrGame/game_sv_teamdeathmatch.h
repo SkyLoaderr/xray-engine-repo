@@ -8,7 +8,6 @@ private:
 	typedef game_sv_Deathmatch inherited;
 
 protected:
-	float		m_fFriendlyFireModifier;
 	bool		m_bAutoTeamBalance;
 
 	virtual		bool				checkForFragLimit		();
@@ -37,4 +36,5 @@ public:
 	virtual		void				LoadTeams				();
 
 	virtual		char*				GetAnomalySetBaseName	() {return "teamdeathmatch_game_anomaly_sets";};
+	virtual		BOOL				CanHaveFriendlyFire		()	{return TRUE;}
 };

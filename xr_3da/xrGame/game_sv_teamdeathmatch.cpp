@@ -10,9 +10,6 @@ void	game_sv_TeamDeathmatch::Create					(shared_str& options)
 	inherited::Create					(options);
 //	fraglimit	= get_option_i		(*options,"fraglimit",0);
 //	timelimit	= get_option_i		(*options,"timelimit",0)*60000;	// in (ms)
-	int iFF = get_option_i(*options,"ffire",100);
-	if (iFF != 0) m_fFriendlyFireModifier	= float(iFF) / 100.0f;
-	else m_fFriendlyFireModifier = 0.000001f;
 	m_bAutoTeamBalance	= get_option_i(*options, "abalance") != 0;
 	
 	switch_Phase(GAME_PHASE_PENDING);

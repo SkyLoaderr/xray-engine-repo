@@ -24,7 +24,8 @@ void			xrGameSpyServer::CheckAvailableServices		()
 /////////////////////// QR2 ///////////////////////////////////////
 void			xrGameSpyServer::QR2_Init			()
 {	
-	qr2_register_key(DEDICATED_KEY,   ("dedicated")  );
+		qr2_register_key(DEDICATED_KEY,   ("dedicated")  );
+		qr2_register_key(FFIRE_KEY,   ("friendlyfire")  );
 	//--------- QR2 Init -------------------------/
 	//call qr_init with the query port number and gamename, default IP address, and no user data
 	if (qr2_init(NULL,NULL,GAMESPY_BASEPORT, GAMESPY_GAMENAME, secret_key, (m_iReportToMasterServer == 0)?0:1, 1,

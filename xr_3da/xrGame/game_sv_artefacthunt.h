@@ -106,4 +106,5 @@ public:
 	virtual		void				MoveAllAlivePlayers			();
 	virtual		void				CheckForTeamElimination		();
 	virtual		void				CheckForTeamWin				();
+	virtual		BOOL				CanHaveFriendlyFire		()	{return TRUE;}
 };

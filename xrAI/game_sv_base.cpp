@@ -236,7 +236,7 @@ void game_sv_GameState::OnPlayerDisconnect		(ClientID /**id_who/**/, LPSTR, u16 
 	signal_Syncronize	();
 }
 
-void game_sv_GameState::Create					(shared_str &/**options/**/)
+void game_sv_GameState::Create					(shared_str &options)
 {
 	string256	fn_game;
 	if (FS.exist(fn_game, "$level$", "level.game")) 
@@ -287,6 +287,11 @@ void game_sv_GameState::Create					(shared_str &/**options/**/)
 			ai().script_engine().add_script_process("game",xr_new<CScriptProcess>("game",""));
 
 	xr_delete					(l_tpIniFile);
+
+	//---------------------------------------------------------------------
+	int iFF = get_option_i(*options,"ffire",0);
+	if (iFF != 0) m_fFriendlyFireModifier	= float(iFF) / 100.0f;
+	else m_fFriendlyFireModifier = 0.000001f;
 }
 
 void	game_sv_GameState::assign_RP				(CSE_Abstract* E)

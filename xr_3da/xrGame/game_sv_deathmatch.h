@@ -125,6 +125,7 @@ public:
 //	virtual		s16					GetItemCost				(u32 id_who, s16 ItemID);
 				int					GetTeamScore			(u32 idx);
 				void				SetTeamScore			(u32 idx, int val);
+	virtual		BOOL				CanHaveFriendlyFire		()	{return FALSE;}
 				
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION

@@ -36,6 +36,7 @@ public:
 	virtual		bool				load_game				(NET_Packet &net_packet, ClientID sender);
 	virtual		void				reload_game				(NET_Packet &net_packet, ClientID sender);
 	virtual		void				switch_distance			(NET_Packet &net_packet, ClientID sender);
+	virtual		BOOL				CanHaveFriendlyFire		()	{return FALSE;}
 
 	IC			xrServer			&server					() const
 	{

@@ -41,6 +41,7 @@ public:
 	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender );
 	virtual		void				Update					();
 				void				KillPlayer				(ClientID id_who, u16 GameID);
+	virtual		BOOL				CanHaveFriendlyFire		()	{return TRUE;};
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
