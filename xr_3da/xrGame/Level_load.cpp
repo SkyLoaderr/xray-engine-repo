@@ -125,7 +125,7 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 	DWORD M = tpaVector0.size();
 
 	for (int I=1; I<3; I++) {
-		vector<Fvector> &tpaVector1 = I == 1 ? tpPatrolPath.tpaVectors[1] : tpPatrolPath.tpaVectors[2];
+		vector<Fvector> &tpaVector1 = ((I == 1) ? tpPatrolPath.tpaVectors[1] : tpPatrolPath.tpaVectors[2]);
 		for (int i=0, j=0, k=0; i<M; i++, j++) {
 			
 			tpaVector1[j] = tpaVector0[i];
@@ -148,7 +148,10 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 			tTemp.y = 0.f;
 			tTemp.normalize();
 
-			tTemp.set(tTemp.z,0,-tTemp.x);
+			if (I == 1)
+				tTemp.set(tTemp.z,0,-tTemp.x);
+			else
+				tTemp.set(-tTemp.z,0,tTemp.x);
 			
 			tpaVector1[j].add(tTemp);
 
@@ -186,6 +189,7 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 			AI.q_Range_Bit_X(tpaNodes[k],tpaVector0[i],4*fHalfSubnodeSize,&tNodePosition,dwBestNode,fBestCost);
 			tpaVector1[j].y = AI.ffGetY(*(AI.Node(dwBestNode)),tpaVector1[j].x,tpaVector1[j].z);
 		}
+		tpaVector1.resize(j);
 	}
 }
 
