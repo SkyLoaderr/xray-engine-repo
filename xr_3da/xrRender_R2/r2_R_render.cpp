@@ -167,7 +167,7 @@ void CRender::Render		()
 	r_pmask										(true,false);	// enable priority "0"
 	if (bSUN)									set_Recorder	(&main_coarse_structure);
 	else										set_Recorder	(NULL);
-	render_main									( );
+	render_main									(Device.mFullTransform);
 	set_Recorder								(NULL);
 	r_pmask										(true,false);	// disable priority "1"
 	Device.Statistic.RenderCALC.End				( );
