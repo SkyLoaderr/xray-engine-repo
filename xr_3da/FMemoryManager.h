@@ -6,13 +6,14 @@ void mmgrInitialize			(int dbgLevel);
 void mmgrDone				(void);
 void mmgrMessage			(const char *logMSG, const char *dop = NULL);
 
+LPSTR	_STRDUP				(LPCSTR string);
+#define strdup(a)			_STRDUP(a)
+
 
 #ifdef DEBUG
 // rewritten routines for debugging
-char * __fastcall _STRDUP	(const char * string);
 
 // reassigned routines
-#define strdup(a)			_STRDUP(a)
 #define malloc(s)			_malloc_dbg(s, _NORMAL_BLOCK, __FILE__, __LINE__)
 #define calloc(c, s)		_calloc_dbg(c, s, _NORMAL_BLOCK, __FILE__, __LINE__)
 #define realloc(p, s)		_realloc_dbg(p, s, _NORMAL_BLOCK, __FILE__, __LINE__)
