@@ -208,35 +208,40 @@ void CAI_Zombie::FreeHuntingActive()
 
 	SetDirectionLook();
 
-//	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
-//		m_fSpeed = .1f;
-//		if (m_bNoWay) {
-//			float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-//			r_torso_target.yaw = r_torso_current.yaw + fAngle;
-//			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-//			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
-//		}
-//	}
-//	else 
-//		if (m_fSafeSpeed != m_fSpeed) {
-//			int iRandom = ::Random.randI(0,2);
-//			switch (iRandom) {
-//				case 0 : {
-//					m_fSpeed = m_fMaxSpeed;
-//					break;
-//				}
-//				case 1 : {
-//					m_fSpeed = m_fMinSpeed;
-//					break;
-//				}
-//				case 2 : {
-//					if (::Random.randI(0,4) == 0)
-//						m_fSpeed = EPS_S;
-//					break;
-//				}
-//			}
-//			m_fSafeSpeed = m_fSpeed;
-//		}
+	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
+		m_fSpeed = .1f;
+		if (m_bNoWay) {
+			float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
+			r_torso_target.yaw = r_torso_current.yaw + fAngle;
+			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
+		}
+	}
+	else 
+		if (m_fSafeSpeed != m_fSpeed) {
+			int iRandom = ::Random.randI(0,2);
+			switch (iRandom) {
+				case 0 : {
+					m_fSpeed = m_fMaxSpeed;
+					break;
+				}
+				case 1 : {
+					m_fSpeed = m_fMinSpeed;
+					break;
+				}
+				case 2 : {
+					if (::Random.randI(0,4) == 0)
+						m_fSpeed = EPS_S;
+					break;
+				}
+			}
+			m_fSafeSpeed = m_fSpeed;
+		}
+	
+	if (Level().timeServer() - m_dwLastRangeSearch > 5000) {
+		m_dwLastRangeSearch = Level().timeServer();
+		PKinematics(pVisual)->PlayFX(m_tZombieAnimations.tNormal.tTorso.tpBlaBlaBla0);
+	}
 	
 	if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
 		u32 dwCurTime = Level().timeServer();
