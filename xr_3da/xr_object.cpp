@@ -146,6 +146,7 @@ void CObject::OnDeviceDestroy	()
 	if (pVisual)				Render.Models.Delete	(pVisual);
 	if (sh_Shader)				Device.Shader.Delete	(sh_Shader);
 }
+
 void CObject::OnDeviceCreate	()
 {
 	// visual and shadow
@@ -231,3 +232,14 @@ void CObject::Sector_Move	(CSector* P)
 		if (pSector)	pSector->objectAdd		(this);
 	}
 }
+
+void CObject::OnActivate	()
+{
+	bActive = TRUE;
+}
+
+void CObject::OnDeactivate	()
+{
+	bActive = FALSE;
+}
+

@@ -13,7 +13,6 @@ public:
 	DWORD								AI_NodeID;
 	NodeCompressed*						AI_Node;
 	float								AI_Lighting;
-	BOOL								bActive;		// was it activated or not - sleeping, not updating, no network messages etc.
 	
 	// Methods
 	virtual BOOL			Spawn				(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
@@ -28,9 +27,6 @@ public:
 	virtual	SavedPosition	ps_Element			(DWORD ID);
 
 	// Game-specific events
-	virtual void			OnActivate			();
-	virtual void			OnDeactivate		();
-
 	CGameObject();
 	virtual ~CGameObject();
 };

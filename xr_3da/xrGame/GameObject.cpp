@@ -23,15 +23,6 @@ CGameObject::~CGameObject()
 	
 }
 
-void CGameObject::OnActivate()
-{
-	bActive = TRUE;
-}
-void CGameObject::OnDeactivate()
-{
-	bActive = FALSE;
-}
-
 BOOL CGameObject::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
 	BOOL bResult		= CObject::Spawn(bLocal,server_id,o_pos,o_angle,P,flags);

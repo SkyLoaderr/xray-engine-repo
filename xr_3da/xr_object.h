@@ -37,6 +37,7 @@ protected:
 	// some property variables
 	bool								rbEnabled;
 	bool								rbVisible;
+	BOOL								bActive;		// was it activated or not - sleeping, not updating, no network messages etc.
 	char*								ObjectName;
 
 	CRandom								Random;
@@ -100,8 +101,8 @@ public:
 
 	// Enabled property
 	PropertyGP(getEnable,setEnable)		BOOL bEnabled;
-	void __forceinline					setEnable		(bool _enabled)		{ rbEnabled = _enabled; if (cfModel) cfModel->Enable(_enabled); }
-	BOOL __forceinline					getEnable		()					{ return rbEnabled;	}
+	IC void								setEnable		(bool _enabled)		{ rbEnabled = _enabled; if (cfModel) cfModel->Enable(_enabled); }
+	IC BOOL								getEnable		()					{ return rbEnabled;	}
 
 	//---------------------------------------------------------------------
 										CObject			();
@@ -130,6 +131,10 @@ public:
 	// HUD
 	virtual void						OnHUDDraw		(CCustomHUD* hud)	{};
 
+	// Active/non active
+	virtual void						OnActivate		();
+	virtual void						OnDeactivate	();
+	
 	// Device dependance
 	virtual void						OnDeviceDestroy	();
 	virtual void						OnDeviceCreate	();
