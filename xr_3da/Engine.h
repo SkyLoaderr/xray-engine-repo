@@ -7,7 +7,6 @@
 #pragma once
 
 #include "engineAPI.h"
-#include "debugkernel.h"
 #include "eventAPI.h"
 #include "locatorAPI.h"
 #include "xrCPU_Pipe.h"

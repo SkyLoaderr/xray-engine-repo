@@ -574,9 +574,6 @@
 				<File
 					RelativePath=".\device.h">
 				</File>
-				<File
-					RelativePath=".\xrSyncronize.h">
-				</File>
 				<Filter
 					Name="HW"
 					Filter="">
