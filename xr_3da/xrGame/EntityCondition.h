@@ -49,7 +49,8 @@ public:
 	//hit_power задается от 0 до 100 (сложилось исторически)
 	virtual CWound* ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, u16 element = BI_NONE);
 	//обновления состояния с течением времени
-	virtual void UpdateCondition();
+	virtual void UpdateCondition	();
+	virtual void UpdateWounds		();
 
 	//временно! сон часов
 	virtual void Sleep(float hours);

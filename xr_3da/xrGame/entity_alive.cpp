@@ -123,9 +123,11 @@ void CEntityAlive::shedule_Update(u32 dt)
 	inherited::shedule_Update	(dt);
 
 	//condition update with the game time pass
-	UpdateCondition();
+	UpdateCondition		();
 	//Обновление партиклов огня
-	UpdateFireParticles();
+	UpdateFireParticles	();
+	//обновить раны
+	UpdateWounds		();
 
 	//убить сущность
 	if(Local() && !g_Alive() && !AlreadyDie())
@@ -381,14 +383,15 @@ void CEntityAlive::UpdateFireParticles()
 {
 	if(m_ParticlesWoundList.empty()) return;
 	
-
 	RemoveWoundPred remove_pred(!!g_Alive(), m_fStopBurnWoundSize);
 	WOUND_LIST_it last_it = remove_if(m_ParticlesWoundList.begin(),m_ParticlesWoundList.end(),remove_pred);
 	
 	for(WOUND_LIST_it it = last_it;  it != m_ParticlesWoundList.end(); it++)
 	{
 		CWound* pWound = *it;
-		CParticlesPlayer::AutoStopParticles(pWound->GetParticleName(), pWound->GetParticleBoneNum());
+		CParticlesPlayer::AutoStopParticles(pWound->GetParticleName(),
+											pWound->GetParticleBoneNum());
 	}
+
 	m_ParticlesWoundList.erase(last_it,m_ParticlesWoundList.end());
 }

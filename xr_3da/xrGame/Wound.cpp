@@ -18,6 +18,7 @@ CWound::CWound(u16 bone_num)
 	m_iBoneNum = bone_num;
 	m_iParticleBoneNum = BI_NONE;
 }
+
 CWound::~CWound(void)
 {
 }

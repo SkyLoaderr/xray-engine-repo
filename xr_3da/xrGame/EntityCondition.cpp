@@ -141,6 +141,9 @@ void CEntityCondition::reinit	()
 	m_fHealthLost = 0.f;
 	m_pWho = NULL;
 
+
+	for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; ++it)
+		xr_delete(*it);
 	m_WoundVector.clear();
 
 	Awoke();
@@ -180,6 +183,22 @@ void CEntityCondition::ChangeBleeding(float percent)
 	for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; ++it)
 	{
 		(*it)->Incarnation(percent);
+	}
+}
+bool RemoveWoundPred(CWound* pWound)
+{
+	return (0 == pWound->TotalSize());
+}
+
+void  CEntityCondition::UpdateWounds		()
+{
+	//убрать все зашившие раны из списка
+	WOUND_VECTOR_IT last_it = remove_if(m_WoundVector.begin(), m_WoundVector.end(),RemoveWoundPred);
+	if(m_WoundVector.end() != last_it)
+	{
+		for(WOUND_VECTOR_IT  it = last_it; it != m_WoundVector.end(); it++)
+			xr_delete((*it));
+		m_WoundVector.erase(last_it, m_WoundVector.end());
 	}
 }
 
@@ -377,11 +396,6 @@ float CEntityCondition::BleedingSpeed()
 
 
 
-bool RemoveWoundPred(CWound* pWound)
-{
-	return (0 == pWound->TotalSize());
-}
-
 
 void CEntityCondition::UpdateHealth()
 {
@@ -392,16 +406,6 @@ void CEntityCondition::UpdateHealth()
 	for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; ++it)
 	{
 		(*it)->Incarnation( m_fV_WoundIncarnation * m_iDeltaTime/1000);
-	}
-
-
-	//убрать все зашившие раны из списка
-	WOUND_VECTOR_IT last_it = remove_if(m_WoundVector.begin(), m_WoundVector.end(),RemoveWoundPred);
-	if(m_WoundVector.end() != last_it)
-	{
-		for(WOUND_VECTOR_IT  it = last_it; it != m_WoundVector.end(); it++)
-			xr_delete((*it));
-		m_WoundVector.erase(last_it, m_WoundVector.end());
 	}
 }
 void CEntityCondition::UpdatePower()
