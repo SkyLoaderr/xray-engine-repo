@@ -68,17 +68,13 @@ inv_grid_height		= 2
 inv_grid_x			= 0
 inv_grid_y			= 14
 
-cam_relax_speed          = 12.0; 10
+cam_relax_speed          = 16.0
 cam_dispersion           = 2.1
-cam_max_angle		 = 6; 9
+cam_max_angle		     = 6
 
-fire_dispersion          = 0.067; не менять!!!!
-fire_dispersion_add      = 3.0
-fire_dispersion_relax    = 0.5
-fire_dispersion_base	 = 1.0
-disp_vel_factor		 = 0.2
-disp_crouch_factor	 = 0.75
-disp_jump_factor	 = 3.7
+
+fire_dispersion_base	 = 0.067
+
 fire_dispersion_condition_factor = 0.3
 misfire_probability = 0.0
 condition_shot_dec = 0.0003
@@ -157,7 +153,6 @@ snd_switch			= weapons\groza_switch, 1.0, 0.45
 [wpn_groza_hud]
 
 shell_point               = -0.25, 0.0, 0.05
-;shell_point		 = -0.15, -0.03, 0.05
 shell_dir		 = 0.0, 1.0, 0.0
 
 fire_point               = 0.05, -0.05, 0.11
@@ -232,22 +227,17 @@ inv_grid_height		= 1
 inv_grid_x			= 16
 inv_grid_y			= 7
 
-cam_relax_speed          = 10; 5.5
+cam_relax_speed          = 12
 cam_dispersion           = 2
-cam_max_angle		 = 5
-fire_dispersion          = 0.1 ;не менять
-fire_dispersion_add      = 1
-fire_dispersion_relax    = 3
-fire_dispersion_base	 = 1.5
-disp_vel_factor		 = 0.1
-disp_crouch_factor	 = 0.5
-disp_jump_factor	 = 3
+cam_max_angle		     = 5
+
+fire_dispersion_base	 = 0.1
+
 fire_dispersion_condition_factor = 0.3
 misfire_probability = 0.0
 condition_shot_dec = 0.0003
 
-;cam_relax                = 0.37
-;cam_dispersion           = 2
+
 direction                = 0, 0, 1
 fire_point               = 0.0, 0.12, 0.17
 
@@ -261,10 +251,10 @@ shell_particles	 = weapons\generic_shells
 rpm_empty_click 	 = 200
 ; ttc
 hit_power                = 62.5
-hit_impulse		 		 = 50.25
+hit_impulse		 		 = 40.25
 hit_type = wound
 
-fire_distance            = 50
+fire_distance            = 110
 bullet_speed			 = 370			;начальная скорость пули
 rpm                      = 300
 ; end ttc
@@ -311,7 +301,7 @@ snd_close			= weapons\generic_close
 shell_point		 = -0.35, -0.06, 0.07
 shell_dir		 = 0.0, 1.0, 0.0
 
-fire_point               = 0, 0.0, 0.1
+fire_point               = -0.130000,0.000000,0.070000
 fire_bone                = wpn_body
 orientation              = 0,0,0
 position                 = 0,0,0
@@ -372,10 +362,10 @@ inv_grid_y			= 6
 
 cam_relax_speed          = 12, 5.5
 cam_dispersion           = 2
-cam_max_angle		 = 5
+cam_max_angle		     = 5
 
 
-fire_dispersion_base	 = 1.5
+fire_dispersion_base	 = 0.17
 
 fire_dispersion_condition_factor = 0.3
 misfire_probability = 0.0
@@ -394,7 +384,7 @@ shell_particles	 = weapons\generic_shells
 rpm_empty_click 	 = 100
 
 ; ttc
-hit_power                = 45
+hit_power                = 35
 hit_impulse		 		 = 50
 hit_type = wound
 
@@ -443,7 +433,7 @@ snd_close			= weapons\generic_close
  
 [wpn_pm_hud]
 shell_point		         = -0.35, -0.06, 0.04
-fire_point               = 0.00, 0.07, 0.05
+fire_point               = -0.130000,0.000000,0.090000
 fire_bone                = wpn_body
 orientation              = 0,0,0
 position                 = 0,0,0
@@ -503,23 +493,18 @@ inv_grid_height		= 1
 inv_grid_x			= 15
 inv_grid_y			= 6
 
-cam_relax_speed          = 20; 5.5
+cam_relax_speed          = 20
 cam_dispersion           = 2
-cam_max_angle		 = 2 ;5
+cam_max_angle		     = 2
 
-fire_dispersion          = 0.17 ;;не менять
-fire_dispersion_add      = 1
-fire_dispersion_relax    = 3
-fire_dispersion_base	 = 1.5
-disp_vel_factor		 = 0.1
-disp_crouch_factor	 = 0.75
-disp_jump_factor	 = 3
+
+fire_dispersion_base	 = 0.17
+
 fire_dispersion_condition_factor = 0.3
 misfire_probability = 0.0
 condition_shot_dec = 0.0003
 
-;cam_relax                = 0.37
-;cam_dispersion           = 2
+
 
 direction                = 0, 0, 1
 fire_point               = 0.0, 0.12, 0.2
@@ -533,7 +518,7 @@ shell_particles	 = weapons\generic_shells
 rpm_empty_click 	 = 200
 
 ; ttc
-hit_power                = 40
+hit_power                = 30
 hit_impulse		 		 = 40
 hit_type = wound
 
@@ -584,7 +569,7 @@ snd_close			= weapons\generic_close
  
 [wpn_pb_hud]
 shell_point		         = -0.35, -0.06, 0.07
-fire_point               = 0.00, 0.07, 0.05
+fire_point               = -0.140000,0.010000,0.030000
 fire_bone                = wpn_body
 orientation              = 0,0,0
 position                 = 0,0,0
@@ -645,23 +630,18 @@ inv_grid_height		= 1
 inv_grid_x			= 19
 inv_grid_y			= 5
 
-cam_relax_speed          = 25;5.5
-cam_dispersion           = 2
+cam_relax_speed          = 18
+cam_dispersion           = 1.9
 cam_max_angle		 = 2
 
-fire_dispersion          = 0.12 ;не менять
-fire_dispersion_add      = 1
-fire_dispersion_relax    = 3
-fire_dispersion_base	 = 1.5
-disp_vel_factor		 = 0.1
-disp_crouch_factor	 = 0.6
-disp_jump_factor	 = 2
+
+fire_dispersion_base	 = 0.12
+
 fire_dispersion_condition_factor = 0.3
 misfire_probability = 0.0
 condition_shot_dec = 0.0003
 
-;cam_relax                = 0.37
-;cam_dispersion           = 2
+
 
 direction                = 0, 0, 1
 fire_point               = 0.0, 0.15, 0.12
@@ -681,8 +661,8 @@ hit_impulse		 		 = 50.25
 hit_type = wound
 
 fire_distance            = 50
-bullet_speed			 = 360			;начальная скорость пули
-rpm                      = 400
+bullet_speed			 = 280			;начальная скорость пули
+rpm                      = 300
 ; end ttc
 
 hud                      = wpn_walther_hud
@@ -694,7 +674,7 @@ visual                   = weapon\walter_99\wpn_walter_99.ogf
 wm_name                  = wallmarks\wallmark_default
 wm_size                  = 0.05
 ui_icon			 = ui\ui_hud_wpn_walther99
-tracer_head_speed	 = 360
+tracer_head_speed	 = 280
 tracer_trail_scale	 = 0.75
 tracer_start_length	 = 1
 tracer_width		 = 0.07
@@ -726,7 +706,7 @@ snd_close			= weapons\generic_close
  
 [wpn_walther_hud]
 shell_point		         = -0.35, -0.06, 0.07
-fire_point               = 0.00, 0.07, 0.05
+fire_point               = -0.080000,0.000000,0.070000
 fire_bone                = wpn_body
 orientation              = 0,0,0
 position                 = 0,0,0
@@ -787,21 +767,16 @@ inv_grid_y			= 8
 
 cam_relax_speed          = 15; 5.5
 cam_dispersion           = 2
-cam_max_angle		 = 5
+cam_max_angle		     = 5
 
-fire_dispersion          = 0.12
-fire_dispersion_add      = 2
-fire_dispersion_relax    = 3
-fire_dispersion_base	 = 1.5
-disp_vel_factor		 = 0.1
-disp_crouch_factor	 = 0.7
-disp_jump_factor	 = 2
+
+fire_dispersion_base	 = 0.12
+
 fire_dispersion_condition_factor = 0.3
 misfire_probability = 0.0
 condition_shot_dec = 0.0003
 
-;cam_relax                = 0.37
-;cam_dispersion           = 2
+
 
 direction                = 0, 0, 1
 fire_point               = 0.0, 0.14, 0.15
@@ -930,22 +905,18 @@ inv_grid_x			= 10
 inv_grid_y			= 8
 
 
-cam_relax_speed          = 5.5
+cam_relax_speed          = 12.5
 cam_dispersion           = 2
 cam_max_angle		 = 5
-fire_dispersion          = 0.15	;25.0	;не менять
-fire_dispersion_add      = 1
-fire_dispersion_relax    = 3
-fire_dispersion_base	 = 1.5
-disp_vel_factor		 = 0.1
-disp_crouch_factor	 = 0.75
-disp_jump_factor	 = 3
+
+fire_dispersion_base	 = 0.15
+
+
 fire_dispersion_condition_factor = 0.3
 misfire_probability = 0.0
 condition_shot_dec = 0.0003
 
-;cam_relax               = 0.37
-;cam_dispersion          = 2
+
 direction                = 0, 0, 1
 fire_point               = 0.0, 0.14, 0.15
 
@@ -1006,7 +977,7 @@ snd_close			= weapons\generic_close
 [wpn_fort_hud]
 
 shell_point		         = -0.35, -0.06, 0.04
-fire_point               = 0.00, 0.07, 0.05
+fire_point               = -0.090000,0.000000,0.080000
 fire_bone                = wpn_body
 orientation              = 0,0,0
 position                 = 0,0,0
@@ -1166,16 +1137,12 @@ ammo_class		 = ammo_12x70_buck, ammo_12x76_dart, ammo_12x76_zhekan
 
 resource		= 6000
 
-cam_relax_speed          = 5.5
+cam_relax_speed          = 8
 cam_dispersion           = 2
-cam_max_angle		 = 5
-fire_dispersion          = 0.12
-fire_dispersion_add      = 5
-fire_dispersion_relax    = 2
-fire_dispersion_base	 = 1.1
-disp_vel_factor		 = 0.1
-disp_crouch_factor	 = 0.75
-disp_jump_factor	 = 5
+cam_max_angle		     = 5
+
+fire_dispersion_base	 = 0.12
+
 fire_dispersion_condition_factor = 0.3
 misfire_probability = 0.0
 condition_shot_dec = 0.0003
@@ -1192,8 +1159,7 @@ inv_grid_x			= 12
 inv_grid_y			= 2
 
 
-;cam_relax               = 0.37
-;cam_dispersion          = 2
+
 direction                = 0, 0, 1
 shell_point				 = 0.05, 0.14, 0.07
 fire_point               = 0.0, 0.2, 0.83
@@ -1208,7 +1174,7 @@ hit_power        = 42.5
 hit_impulse      = 60
 hit_type = wound
 
-fire_distance            = 50
+fire_distance            = 100
 bullet_speed			 = 300			;начальная скорость пули
 rpm                      = 350
 ; end ttc
@@ -1296,15 +1262,12 @@ ammo_class				= ammo_7.62x54_7h1, ammo_7.62x54_ap, ammo_7.62x54_7h14
 
 resource				= 6000
 
-cam_relax_speed         = 5
+cam_relax_speed         = 9
 cam_dispersion          = 2
-cam_max_angle			= 3
-fire_dispersion         = 0.025
-fire_dispersion_add     = 3
-fire_dispersion_relax   = 2
-fire_dispersion_base	 = 0.047 ;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)disp_vel_factor			= 0.1
-disp_crouch_factor		= 0.5
-disp_jump_factor		= 3
+cam_max_angle			= 6
+
+fire_dispersion         = 0.025 ;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)disp_vel_factor			= 0.1
+
 fire_dispersion_condition_factor = 0.3
 misfire_probability		= 0.5
 condition_shot_dec		= 0.0003
@@ -1321,8 +1284,7 @@ inv_grid_x			= 0
 inv_grid_y			= 0
 
 
-;cam_relax              = 0.37
-;cam_dispersion         = 2
+
 direction               = 0, 0, 1
 
 fire_point              = 0.0, 0.14, 0.95
@@ -1339,7 +1301,7 @@ hit_power                = 95
 hit_impulse		 		 = 145
 hit_type = wound
 
-fire_distance            = 500
+fire_distance            = 600
 bullet_speed			 = 830			;начальная скорость пули
 rpm                      = 200
 ; end ttc
@@ -1432,16 +1394,12 @@ ammo_class		 = ammo_7.62x54_7h1, ammo_7.62x54_ap, ammo_7.62x54_7h14
 
 resource		= 6000
 
-cam_relax_speed          = 10; 5.5
+cam_relax_speed          = 10
 cam_dispersion           = 2
-cam_max_angle		 = 3; 4
-fire_dispersion          = 0.027 ;;не менять
-fire_dispersion_add      = 3
-fire_dispersion_relax    = 4
-fire_dispersion_base	 = 1.1
-disp_vel_factor		 = 0.1
-disp_crouch_factor	 = 0.5
-disp_jump_factor	 = 3
+cam_max_angle		     = 6
+
+fire_dispersion_base	 = 0.027
+
 fire_dispersion_condition_factor = 0.3
 misfire_probability = 0.0
 condition_shot_dec = 0.0003
@@ -1456,8 +1414,7 @@ inv_grid_height		= 1
 inv_grid_x			= 5
 inv_grid_y			= 4
 
-;cam_relax                = 0.37
-;cam_dispersion           = 2
+
 direction                = 0, 0, 1
 fire_point               = 0.0, 0.12, 0.55
 fire_point2              = 0.0, 0.12, 0.55
@@ -1474,7 +1431,7 @@ hit_power                = 95
 hit_impulse	        	 = 133
 hit_type = wound
 
-fire_distance            = 500
+fire_distance            = 600
 bullet_speed			 = 800			;начальная скорость пули
 rpm                      = 200
 ; end ttc
@@ -1524,7 +1481,7 @@ snd_close			= weapons\generic_close
 shell_point          = -0.15, -0.02, 0.05
 shell_dir		 = 0.0, 1.0, 0.0
 
-fire_point               = 0.07, -0.05, 0.11
+fire_point               = -0.090000,-0.090000,0.100000
 fire_bone                = wpn_body
 orientation              = 0, 0, 0
 position                 = 0, 0, 0
