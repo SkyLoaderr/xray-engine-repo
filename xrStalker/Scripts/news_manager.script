@@ -3,7 +3,10 @@ news = {}
 
 
 
-
+random_sounds = {	"script_replics\\radio\\message\\radio_voice_1",
+					"script_replics\\radio\\message\\radio_voice_2",
+					"script_replics\\radio\\message\\radio_voice_3"
+				}
 
 
 
@@ -16,6 +19,10 @@ function send_news(actor, news_id, nosound)
 			--' Играем звук забитый
 		else
 			--' Играем один из рандомных звуков
+			local snd_obj = sound_object(random_sounds[math.random(table.getn(random_sounds)-1)])
+			if snd_obj ~= nil then
+				snd_obj:play_at_pos(actor, actor:position(), 0, sound_object.s3d)
+			end
 		end
 	end
 	actor:give_game_news(news_id, "ui\\ui_icons_npc", 50,0,50,50)
