@@ -136,7 +136,7 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 	m_dwMaxDynamicObjectsCount = ini->ReadINT(section,"DynamicObjectsCount");
 	m_dwMaxDynamicSoundsCount = ini->ReadINT(section,"DynamicSoundsCount");
 
-	//tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0] = PKinematics(pVisual)->ID_Cycle(ini->ReadSTRING(section,"TestAnimation"));
+	//tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[2] = PKinematics(pVisual)->ID_Cycle(ini->ReadSTRING(section,"TestAnimation"));
 	//m_fAddAngle = ini->ReadFLOAT(section,"AddAngle");
 }
 

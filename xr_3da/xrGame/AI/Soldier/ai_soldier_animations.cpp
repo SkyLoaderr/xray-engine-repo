@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "ai_soldier.h"
 
-#define TORSO_ANGLE_DELTA				(PI/30.f)
+#define TORSO_ANGLE_DELTA		(PI/30.f)
 
 // bones
 void CAI_Soldier::vfAssignBones(CInifile *ini, const char *section)

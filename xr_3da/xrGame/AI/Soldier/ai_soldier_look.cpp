@@ -319,10 +319,18 @@ void CAI_Soldier::vfUpdateDynamicObjects()
 
 void CAI_Soldier::vfUpdateSounds(DWORD dwTimeDelta)
 {
-	if (m_fSoundPower > EPS_L)
-		m_fSoundPower = m_fStartPower/(float(dwTimeDelta - m_dwSoundUpdate)/1000.f + 1);
+	/**/
+	if (m_fSoundPower > EPS_L) {
+		//m_fSoundPower = m_fStartPower/(10*float(Level().timeServer() - m_dwSoundUpdate)/1000.f + 1);
+		m_fSoundPower -= m_fStartPower*float(Level().timeServer() - m_dwSoundUpdate)/1000.f/2.f;
+		if (m_fSoundPower <= EPS_L)
+			m_fSoundPower = 0.f;
+	}
 	else
 		m_fSoundPower = 0.f;
+	
+	Msg("%.2f",m_fSoundPower);
+	/**/
 }
 
 void CAI_Soldier::soundEvent(CObject* who, int eType, Fvector& Position, float power)
@@ -331,6 +339,7 @@ void CAI_Soldier::soundEvent(CObject* who, int eType, Fvector& Position, float p
 		Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 	#endif
 
+	/**/
 	power *= ffGetStartVolume(ESoundTypes(eType));
 							   
 	DWORD dwTime = Level().timeServer();
@@ -386,4 +395,5 @@ void CAI_Soldier::soundEvent(CObject* who, int eType, Fvector& Position, float p
 		m_fSoundPower = m_fStartPower = power;
 		m_dwSoundUpdate = dwTime;
 	}
+	/**/
 }
