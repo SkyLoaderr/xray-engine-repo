@@ -90,24 +90,18 @@ M_SPAWN
 		esAnimated
 		{
 			stringZ		file;
-			u8			count;
-			stringZ		names[...count...];	// names of animations
 		}
 		esSkeleton
 		{
 			stringZ		file;
-			u8			count;
-			stringZ		names[...count...];	// animations
 		}
 		esParticles
 		{
-			u8			count;
-			stringZ		names[...count...];	// name of PS in library 
+			stringZ		file;
 		}
 		esSound
 		{
-			u8			count;
-			stringZ		names[...count...];	// name of sound file
+			stringZ		file;
 		}
 	}
 	zone
