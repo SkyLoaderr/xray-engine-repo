@@ -180,8 +180,8 @@ function load_sound(obj)
 --[[	theme["escape_factory_bandits_novice"]        = load_theme("esc_f_band_novice")
 	theme["escape_factory_bandits_zone"]          = load_theme("esc_f_band_zone")
 	theme["escape_factory_bandits_place"]         = load_theme("esc_f_band_place")]]
-	theme["escape_factory_bandits_novice_again"]  = load_theme("esc_f_band_place")
-	theme["escape_factory_bandits_on_actor"]      = load_theme("esc_f_band_place")
+	theme["escape_factory_bandits_novice_again"]  = load_theme("esc_f_band_novice_again")
+	theme["escape_factory_bandits_on_actor"]      = load_theme("esc_f_band_on_actor")
 	theme["place1"] = load_theme("place1")
 	theme["place2"] = load_theme("place2")
 	
