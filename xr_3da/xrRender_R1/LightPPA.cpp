@@ -279,7 +279,7 @@ void CLightR_Manager::render		()
 
 void CLightR_Manager::add			(light* L)
 {
-	if (L->range<EPS_L)				return;
+	if (L->range<0.1f)				return;
 	if (IRender_Light::POINT==L->flags.type)
 	{
 		// PPA

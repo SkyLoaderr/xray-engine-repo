@@ -28,6 +28,10 @@ BOOL APIENTRY	DllMain(	HANDLE hModule,
     return TRUE;
 }
 
+namespace CPU
+{
+	extern	void			Detect	();
+};
 void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, LPCSTR root_path)
 {
 	static BOOL				bInitialized	= FALSE;
@@ -48,11 +52,12 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, LPCSTR root_p
 	GetComputerName			(CompName,&sz_comp);
 
 	// Mathematics & PSI detection
+	CPU::Detect				();
+	if (strstr(Params,"-mem_debug"))	Memory._initialize		(TRUE);
+	else								Memory._initialize		(FALSE);
 	InitMath				();
 	rtc_initialize			();
 	Debug._initialize		();
-	if (strstr(Params,"-mem_debug"))	Memory._initialize		(TRUE);
-	else								Memory._initialize		(FALSE);
 	xr_FS					= xr_new<CLocatorAPI>	();
 	FS._initialize			(0!=strstr(Params,"-build"),root_path);
 	CreateLog				(cb,0!=strstr(Params,"-nolog"));

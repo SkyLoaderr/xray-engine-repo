@@ -179,9 +179,6 @@ namespace CPU
 //------------------------------------------------------------------------------------
 void InitMath(void) 
 {
-
-	// Msg("Initializing geometry pipeline and mathematic routines...");
-	CPU::Detect();
 	Msg("* Detected CPU: %s %s, F%d/M%d/S%d, %.2f mhz, %d-clk 'rdtsc'",
 		CPU::ID.v_name,CPU::ID.model_name,
 		CPU::ID.family,CPU::ID.model,CPU::ID.stepping,
