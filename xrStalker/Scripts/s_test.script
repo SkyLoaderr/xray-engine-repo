@@ -1,17 +1,21 @@
+local a=0
+
 function main ()
 
   wait  (3000)
 
+  a = a + 1
+printf ("%d", a)
   local actor = get_actor ()
 
   while true do
             h = hit()
             h.power      = 10
-            h.direction:set  (1,0,0)
+            h.direction:set  (1,1,1)
             h:bone      ("bip01_head")
             h.draftsman    = actor
-            h.impulse    = 10
-            h.type      = hit.wound
+            h.impulse    = 2000
+            h.type      = hit.strike
             actor:hit    (h)
             wait (1000)
             end
