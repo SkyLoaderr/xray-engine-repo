@@ -21,11 +21,11 @@ void CRender::flush_LODs()
 
 	// *** Fill VB and generate groups
 	IRender_Visual*				firstV		= lstLODs[0].pVisual;
-	Shader*						cur_S		= &*firstV->hShader;
+	ref_shader					cur_S		= &*firstV->hShader;
 	int							cur_count	= 0;
 	u32							vOffset;
-	FVF::LIT*					V	= (FVF::LIT*)RCache.Vertex.Lock	(lstLODs.size()*4,firstV->hGeom->vb_stride, vOffset);
-	float	ssaRange				= r_ssaLOD_A - r_ssaLOD_B;
+	FVF::LIT*					V			= (FVF::LIT*)RCache.Vertex.Lock	(lstLODs.size()*4,firstV->hGeom->vb_stride, vOffset);
+	float	ssaRange						= r_ssaLOD_A - r_ssaLOD_B;
 	for (u32 i=0; i<lstLODs.size(); i++)
 	{
 		// sort out redundancy

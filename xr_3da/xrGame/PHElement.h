@@ -70,7 +70,7 @@ class CPHElement	:  public CPhysicsElement
 public:
 
 	/////////////////////////////////////////////////////////////////////////////
-	static Shader*			hWallmark;
+	static ref_shader			hWallmark;
 	////////////////////////////
 private:
 	void					create_Sphere					(const Fsphere&		V);

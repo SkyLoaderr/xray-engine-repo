@@ -47,7 +47,7 @@ CWallmarksEngine::~CWallmarksEngine	()
 }
 
 // allocate
-CWallmarksEngine::wallmark*	CWallmarksEngine::wm_allocate		(Shader*	S	)
+CWallmarksEngine::wallmark*	CWallmarksEngine::wm_allocate		(ref_shader&	S	)
 {
 	wallmark*			W = 0;
 	if (pool.empty())	W = xr_new<wallmark> ();
@@ -161,7 +161,7 @@ void CWallmarksEngine::BuildMatrix	(Fmatrix &mView, float invsz, const Fvector& 
 	mView.mulA			(mScale);
 }
 
-void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point, Shader* hShader, float sz)
+void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point, ref_shader hShader, float sz)
 {
 	// calc face normal
 	Fvector	N;
@@ -229,7 +229,7 @@ void CWallmarksEngine::Render()
 	FVF::LIT*			w_verts = (FVF::LIT*)	RCache.Vertex.Lock	(MAX_TRIS*3,hGeom->vb_stride,w_offset);
 	FVF::LIT*			w_start = w_verts;
 
-	Shader*	w_S			= marks.front()->shader;
+	ref_shader	w_S			= marks.front()->shader;
 	float	ssaCLIP		= r_ssaDISCARD/4;
 	for (u32 i=0; i<marks.size(); i++)
 	{
