@@ -73,7 +73,7 @@ void	CResourceManager::reset_end				()
 	}
 }
 
-void	CResourceManager::~CResourceManager		()
+CResourceManager::~CResourceManager		()
 {
 	Msg		("* RM_Dump: textures : %d",m_textures.size());
 	Msg		("* RM_Dump: rtargets : %d",m_rtargets.size());
