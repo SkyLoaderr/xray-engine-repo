@@ -13,15 +13,11 @@ enum fsL_Chunks {
 	fsL_SECTORS,		//*		- All sectors on level
 	fsL_IBUFFERS,		//*
 	fsL_VBUFFERS_DX9,	//*
-	fsL_SCOMBI,			//*		- Shader combinations for precompiling
     fsL_forcedword		= 0xFFFFFFFF
 };
 enum fsESectorChunks {
 	fsP_Portals = 1,	// - portal polygons
 	fsP_Root,			// - geometry root
-	fsP_Occluders,		// - occluders inside sector
-	fsP_Glows,			// - glows inside sector
-	fsP_Lights,			// - lights, which touches sector
 	fsP_forcedword = u32(-1)
 };
 enum fsSLS_Chunks {

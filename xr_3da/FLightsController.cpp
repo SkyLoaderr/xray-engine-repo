@@ -45,26 +45,6 @@ void CLightDB_Static::Load			(IReader *fs)
 {
 	IReader* F	= 0;
 
-	// Controlles/Layers
-	{
-		F				= fs->open_chunk		(fsL_LIGHT_CONTROL);
-		xrLIGHT_control	temp;
-		string128		c_name;
-
-		while (!F->eof())
-		{
-			F->r				(temp.name,sizeof(temp.name));
-			u32 cnt				= F->r_u32();
-			temp.data.resize	(cnt);
-			F->r				(&*temp.data.begin(),cnt*sizeof(u32));
-			strconcat			(c_name,"$light$",temp.name);
-			temp.dest			= Device.Shader._CreateConstant(c_name);
-			Layers.push_back	(temp);
-		}
-
-		F->close		();
-	}
-
 	// Lights itself
 	{
 		F				= fs->open_chunk		(fsL_LIGHT_DYNAMIC);

@@ -11,15 +11,6 @@ public:
 	u32				dwFrame;
 	u32				dwController;
 };
-
-class xrLIGHT_control
-{
-public:
-	u32				dwFrame;
-	CConstant*		dest;
-	string64		name;
-	xr_vector<u32>	data;
-};
 #pragma pack(pop)
 
 #endif
