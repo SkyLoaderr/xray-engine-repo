@@ -209,7 +209,7 @@ void CUIListWnd::UpdateList()
 					++i, ++it)
 	{
 		(*it)->Show(false);
-		(*it)->Enable(false);
+//		(*it)->Enable(false);
 	}
 	   
 
@@ -235,7 +235,7 @@ void CUIListWnd::UpdateList()
 			k<m_ItemList.size(); ++k, ++it)
 	{
 		(*it)->Show(false);
-		(*it)->Enable(false);
+//		(*it)->Enable(false);
 	}
 
 

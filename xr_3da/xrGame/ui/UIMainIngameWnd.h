@@ -31,6 +31,7 @@ extern float			g_fHudAdjustValue;
 extern int				g_bNewsDisable;
 
 class					CUIPdaMsgListItem;
+class					CLAItem;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -110,8 +111,8 @@ protected:
 	CUIListWnd			UIInfoMessages;
 	
 	//интервал показывани€ сообщени€
-	int					m_dwMaxShowTime;
-	int					m_iInfosShowTime;
+//	int					m_dwMaxShowTime;
+//	int					m_iInfosShowTime;
 
 	//изображение оружи€
 	CUIStatic			UIWeaponBack;
@@ -210,12 +211,7 @@ protected:
 	// ќтображение подсказок при наведении прицела на объект
 	void				RenderQuickInfos();
 	// ѕросчитать анимационные параметры фейда дл€ айтемов листа
-	static void			FadeUpdate(CUIListWnd *pWnd, int fadeDuration);
-
-	// дл€ лога сообщений на экране устанавливаем врем€ постепенного исчезновени€ надписи
-	int					m_iPdaMessagesFade_mSec;
-	int					m_iInfoMessagesFade_mSec;
-	int					m_iChatMessagesFade_mSec;
+	void				FadeUpdate(CUIListWnd *pWnd);//, int fadeDuration);
 
 	// ћигалка дл€ контактов
 	CUIColorAnimatorWrapper		UIContactsAnimation;
