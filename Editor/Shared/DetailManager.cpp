@@ -345,6 +345,10 @@ void CDetailManager::Render		(Fvector& EYE)
 			IS->Unlock	(iCount_Lock);
 
 			// Render
+			Msg	("items(%d), vC_Lock(%d),vBase(%d),iC_Lock(%d),iBase(%d)",item_range,
+				vCount_Lock,vBase,
+				iCount_Lock,iBase
+				);
 			Device.Primitive.setVertices	(VS->getFVF(),VS->getStride(),VS->getBuffer());
 			Device.Primitive.setIndicesUC	(vBase, IS->getBuffer());
 			DWORD	dwNumPrimitives			= iCount_Lock/3;
