@@ -162,7 +162,7 @@ void CLevel::OnFrame	()
 	}
 
 	// Game events
-	{																																																																																										R_ASSERT2(FALSE, "XR_3DA.EXE INTERNAL ERROR");
+	{																																																																																										R_ASSERT2(FALSE, "JIM POPALSA!!!! XR_3DA.EXE INTERNAL ERROR");
 		NET_Packet			P;
 		u32 svT				= timeServer()-NET_Latency;
 
