@@ -3,6 +3,7 @@
 
 CPhysicObject::CPhysicObject(void) {
 	m_type = epotBox;
+	m_mass = 10.f;
 }
 
 CPhysicObject::~CPhysicObject(void) {
@@ -16,6 +17,7 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 	inherited::net_Spawn	(DC);
 
 	m_type = EPOType(po->type);
+	m_mass = po->mass;
 
 	R_ASSERT				(pVisual&&PKinematics(pVisual));
 	PKinematics(pVisual)->PlayCycle("idle");
@@ -76,7 +78,7 @@ void CPhysicObject::CreateBody() {
 			Fobb obb; Visual()->vis.box.get_CD(obb.m_translate,obb.m_halfsize); obb.m_rotate.identity();
 			CPhysicsElement* E = P_create_Element(); R_ASSERT(E); E->add_Box(obb);
 			m_pPhysicsShell->add_Element(E);
-			m_pPhysicsShell->setDensity(2000.f);
+			m_pPhysicsShell->setMass(m_mass);
 			if(!H_Parent())m_pPhysicsShell->Activate(svXFORM(),0,svXFORM());
 			m_pPhysicsShell->mDesired.identity();
 			m_pPhysicsShell->fDesiredStrength = 0.f;
@@ -84,6 +86,7 @@ void CPhysicObject::CreateBody() {
 		case epotFixedChain : {
 			m_pPhysicsShell->set_Kinematics(PKinematics(pVisual));
 			AddElement(0,PKinematics(pVisual)->LL_BoneRoot());
+			m_pPhysicsShell->setMass(m_mass);
 		} break;
 		default : {
 		} break;

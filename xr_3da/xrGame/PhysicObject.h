@@ -17,4 +17,5 @@ public:
 	void			CreateBody		();
 
 	EPOType m_type;
+	float m_mass;
 };
