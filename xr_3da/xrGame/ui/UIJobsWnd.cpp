@@ -173,15 +173,16 @@ void CUIJobsWnd::ReloadJobs()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIJobsWnd::Show()
+void CUIJobsWnd::Show(bool status)
 {
-	ReloadJobs();
-	inherited::Show();
+	if (status)
+		ReloadJobs();
+	inherited::Show(status);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-ref_str CUIJobsWnd::DialogName()
+ref_str CUIJobsWnd::WindowName()
 {
 	switch (filter)
 	{

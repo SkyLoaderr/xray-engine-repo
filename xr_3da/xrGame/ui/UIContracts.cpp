@@ -39,19 +39,22 @@ void CUIContractsWnd::Init()
 
 //////////////////////////////////////////////////////////////////////////
 
-ref_str CUIContractsWnd::DialogName()
+ref_str CUIContractsWnd::WindowName()
 {
 	return "";
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIContractsWnd::Show()
+void CUIContractsWnd::Show(bool status)
 {
-	inherited::Show();
+	inherited::Show(status);
 
-	CInventoryOwner * pInvOwner  = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());;
+	if (status)
+	{
+		CInventoryOwner * pInvOwner  = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());;
 
-	//инициализировать окошко с информацие о собеседнике
-	UICharInfo.InitCharacter(pInvOwner, false);
+		//инициализировать окошко с информацие о собеседнике
+		UICharInfo.InitCharacter(pInvOwner, false);
+	}
 }

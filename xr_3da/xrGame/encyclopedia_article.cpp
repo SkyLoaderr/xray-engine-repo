@@ -65,9 +65,14 @@ void CEncyclopediaArticle::load_shared	(LPCSTR)
 
 		data()->image.GetUIStaticItem().SetOriginalRect(x, y, width, height);
 		data()->image.ClipperOn();
+		data()->image.TextureAvailable(true);
 	}
 	else 
+	{
+		uiXml.SetLocalRoot(pNode);
 		xml_init.InitTexture(uiXml, "", 0, &data()->image);
+		uiXml.SetLocalRoot(uiXml.GetRoot());
+	}
 
 	// Тип статьи
 	if (uiXml.ReadAttribInt(pNode, "article_type", 0))

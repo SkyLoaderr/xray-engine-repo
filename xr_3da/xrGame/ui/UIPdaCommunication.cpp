@@ -23,7 +23,7 @@
 
 CUIPdaCommunication::CUIPdaCommunication()
 {
-	Hide();
+	Show(false);
 
 	m_pInvOwner = NULL;
 	m_pPda = NULL;
@@ -59,12 +59,12 @@ void CUIPdaCommunication::Init()
 	//окно разговора по PDA
 	AttachChild(&UIPdaDialogWnd);
 	UIPdaDialogWnd.Init(0, 0, GetWidth(), GetHeight());
-	UIPdaDialogWnd.Hide();
+	UIPdaDialogWnd.Show(false);
 
 	//список контактов
 	AttachChild(&UIPdaContactsWnd);
 	UIPdaContactsWnd.Init(0,0, GetWidth(), GetHeight());
-	UIPdaContactsWnd.Show();
+	UIPdaContactsWnd.Show(true);
 
 	//Элементы автоматического добавления
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
@@ -81,8 +81,8 @@ void CUIPdaCommunication::InitPDACommunication()
 
 	InitPdaContacts();
 
-	UIPdaDialogWnd.Hide();
-	UIPdaContactsWnd.Show();
+	UIPdaDialogWnd.Show(false);
+	UIPdaContactsWnd.Show(true);
 }
 
 
@@ -92,19 +92,19 @@ void CUIPdaCommunication::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	{
 		if(msg == CUIPdaContactsWnd::CONTACT_SELECTED)
 		{
-			UIPdaContactsWnd.Hide();
+			UIPdaContactsWnd.Show(false);
 			UIPdaDialogWnd.ContactRestore();
 
 			InitPdaDialog();
-			UIPdaDialogWnd.Show();
+			UIPdaDialogWnd.Show(true);
 		}
 	}
 	else if(pWnd == &UIPdaDialogWnd)
 	{
 		if(msg == CUIPdaDialogWnd::BACK_BUTTON_CLICKED)
 		{
-			UIPdaContactsWnd.Show();
-			UIPdaDialogWnd.Hide();
+			UIPdaContactsWnd.Show(true);
+			UIPdaDialogWnd.Show(false);
 		}
 		else if(msg == CUIPdaDialogWnd::MESSAGE_BUTTON_CLICKED)
 		{
@@ -177,10 +177,11 @@ void CUIPdaCommunication::Draw()
 	inherited::Draw();
 }
 
-void CUIPdaCommunication::Show()
+void CUIPdaCommunication::Show(bool status)
 {
-	inherited::Show();
-	InitPDACommunication();
+	inherited::Show(status);
+	if (status)
+		InitPDACommunication();
 }
 
 

@@ -36,8 +36,7 @@ public:
 	virtual void Update();
 	virtual u32 GetContactID() {return m_idContact;}
 
-	void Show();
-	void Hide();
+	virtual void Show(bool status);
 
 	void AddContact(CPda* pda);
 	void RemoveContact(CPda* pda);

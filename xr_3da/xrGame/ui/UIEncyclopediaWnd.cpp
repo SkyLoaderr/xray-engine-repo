@@ -19,9 +19,6 @@
 //////////////////////////////////////////////////////////////////////////
 
 const char * const	ENCYCLOPEDIA_DIALOG_XML		= "encyclopedia_new.xml";
-static int			MAX_PICTURE_WIDTH			= 0;
-static const int	MIN_PICTURE_FRAME_WIDTH		= 64;
-static const int	MIN_PICTURE_FRAME_HEIGHT	= 64;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -82,7 +79,6 @@ void CUIEncyclopediaWnd::Init()
 	xml_init.InitListWnd(uiXml, "idx_list", 0, &UIIdxList);
 	UIIdxList.SetMessageTarget(this);
 	UIIdxList.EnableScrollBar(true);
-	UIIdxList.SetMessageTarget(this);
 
 	UIEncyclopediaInfoBkg.AttachChild(&UIInfoList);
 	xml_init.InitListWnd(uiXml, "info_list", 0, &UIInfoList);
@@ -92,13 +88,8 @@ void CUIEncyclopediaWnd::Init()
 
 	UIInfo.Init(&UIInfoList, &UIIdxList);
 
-	// mask
-	xml_init.InitFrameWindow(uiXml, "item_static:mask_frame_window", 0, &UIImgMask);
-	m_iItemX = uiXml.ReadAttribInt("item_static", 0, "x", 0);
-	m_iItemY = uiXml.ReadAttribInt("item_static", 0, "y", 0);
-
 	// Читаем максимальную длинну картинки в энциклопедии
-	MAX_PICTURE_WIDTH = uiXml.ReadAttribInt("item_static", 0, "width", 0);
+//	MAX_PICTURE_WIDTH = uiXml.ReadAttribInt("item_static", 0, "width", 0);
 
 	string256 header;
 	strconcat(header, ALL_PDA_HEADER_PREFIX, "/Encyclopedia");
@@ -153,39 +144,6 @@ void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIEncyclopediaWnd::RescaleStatic(CUIStatic &s)
-{
-	Irect	r		= s.GetUIStaticItem().GetOriginalRect();
-
-	// Если картинка не пoмещается в максимальную допустимую длинну
-	s.SetWidth(MAX_PICTURE_WIDTH);
-
-	if (r.width() > MAX_PICTURE_WIDTH)
-	{
-		float scale = static_cast<float>(MAX_PICTURE_WIDTH) / r.width();
-		s.SetTextureScale(scale);
-		s.SetHeight(static_cast<int>(r.height() * scale));
-	}
-	// Если помещается, то центрируем ее в отведенной области
-	else
-	{
-		s.SetHeight(r.height());
-	}
-
-	if (r.height() < MIN_PICTURE_FRAME_HEIGHT)
-	{
-		s.SetHeight(MIN_PICTURE_FRAME_HEIGHT);
-		s.SetTextureOffset(0, (MIN_PICTURE_FRAME_HEIGHT - r.height()) / 2);
-	}
-
-	if (r.width() < MAX_PICTURE_WIDTH)
-	{
-		s.SetTextureOffset((MAX_PICTURE_WIDTH - r.width()) / 2, s.GetTextureOffeset()[1]);
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////
-
 void CUIEncyclopediaWnd::Draw()
 {
 	inherited::Draw();
@@ -193,24 +151,27 @@ void CUIEncyclopediaWnd::Draw()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIEncyclopediaWnd::Show()
+void CUIEncyclopediaWnd::Show(bool status)
 {
-	DeleteArticles();
-
-	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-	if(pActor && pActor->encyclopedia_registry.objects_ptr())
+	if (status)
 	{
-		for(ARTICLE_VECTOR::const_iterator it = pActor->encyclopedia_registry.objects_ptr()->begin();
-			it != pActor->encyclopedia_registry.objects_ptr()->end(); it++)
+		DeleteArticles();
+
+		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+		if(pActor && pActor->encyclopedia_registry.objects_ptr())
 		{
-			if (ARTICLE_DATA::eEncyclopediaArticle == it->article_type)
+			for(ARTICLE_VECTOR::const_iterator it = pActor->encyclopedia_registry.objects_ptr()->begin();
+				it != pActor->encyclopedia_registry.objects_ptr()->end(); it++)
 			{
-				UIInfo.AddArticle((*it).index);
+				if (ARTICLE_DATA::eEncyclopediaArticle == it->article_type)
+				{
+					UIInfo.AddArticle((*it).index);
+				}
 			}
 		}
 	}
 
-	inherited::Show();
+	inherited::Show(status);
 }
 
 //////////////////////////////////////////////////////////////////////////

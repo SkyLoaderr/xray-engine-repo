@@ -20,9 +20,9 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-class CUIActorDiaryWnd: public CUIDialogWnd
+class CUIActorDiaryWnd: public CUIWindow
 {
-	typedef CUIDialogWnd inherited;
+	typedef CUIWindow inherited;
 
 public:
 	CUIActorDiaryWnd();

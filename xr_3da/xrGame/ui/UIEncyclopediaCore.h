@@ -16,6 +16,7 @@
 #include "UIDialogWnd.h"
 #include "UIListWnd.h"
 #include "UITreeViewItem.h"
+#include "UIFrameWindow.h"
 #include "../encyclopedia_article.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -24,10 +25,10 @@ class CEncyclopediaArticle;
 
 //////////////////////////////////////////////////////////////////////////
 
-class CUIEncyclopediaCore: public CUIDialogWnd
+class CUIEncyclopediaCore: public CUIWindow
 {
 private:
-	typedef CUIDialogWnd inherited;
+	typedef CUIWindow inherited;
 public:
 	CUIEncyclopediaCore();
 
@@ -51,8 +52,16 @@ public:
 	u32				m_uTreeItemColor;
 
 private:
+	static void		RescaleStatic(CUIStatic &s);
+
 	CUIListWnd		*pInfoList, *pIdxList;
 	ArticlesDB		m_ArticlesDB;
+	// Маска для изображения предмета текущей статьи
+	CUIFrameWindow	UIImgMask;
+	//положение картинки в энциклопедии
+	int				m_iItemX;
+	int				m_iItemY;
+
 };
 
 #endif	//UI_ENCYCLOPEDIA_CORE_H_

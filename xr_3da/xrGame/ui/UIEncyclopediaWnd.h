@@ -23,10 +23,10 @@ class CEncyclopediaArticle;
 
 //////////////////////////////////////////////////////////////////////////
 
-class CUIEncyclopediaWnd: public CUIDialogWnd
+class CUIEncyclopediaWnd: public CUIWindow
 {
 private:
-	typedef CUIDialogWnd inherited;
+	typedef CUIWindow inherited;
 
 	ref_str m_InfosHeaderStr;
 
@@ -37,7 +37,7 @@ public:
 	virtual ~CUIEncyclopediaWnd();
 
 	virtual void Init();
-	virtual void Show();
+	virtual void Show(bool status);
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData = NULL);
 	virtual void Draw();
 
@@ -58,12 +58,6 @@ protected:
 	CUIListWnd			UIIdxList;
 	CUIListWnd			UIInfoList;
 	CUIEncyclopediaCore	UIInfo;
-
-	// Маска для изображения предмета текущей статьи
-	CUIFrameWindow		UIImgMask;
-	//положение картинки в энциклопедии
-	int m_iItemX;
-	int m_iItemY;
 
 //	// Хранилище статей
 //	typedef xr_vector<CEncyclopediaArticle*>			ArticlesDB;

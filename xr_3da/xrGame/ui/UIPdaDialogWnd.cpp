@@ -111,18 +111,13 @@ void CUIPdaDialogWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	inherited::SendMessage(pWnd, msg, pData);
 }
 
-void CUIPdaDialogWnd::Show()
+void CUIPdaDialogWnd::Show(bool status)
 {
-	inherited::Show(true);
-	inherited::Enable(true);
+	inherited::Show(status);
+	inherited::Enable(status);
 
-	ResetAll();
-}
-
-void CUIPdaDialogWnd::Hide()
-{
-	inherited::Show(false);
-	inherited::Enable(false);
+	if (status)
+		ResetAll();
 }
 
 void CUIPdaDialogWnd::ContactLoss()

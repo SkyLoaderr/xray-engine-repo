@@ -215,6 +215,10 @@ void CUIInventoryWnd::Init()
 	// Time indicator
 	AttachChild(&UIStaticTime);
 	xml_init.InitStatic(uiXml, "time_static", 0, &UIStaticTime);
+
+	// Weight indicator
+	UIPersonalWnd.AttachChild(&UIStaticWeight);
+	xml_init.InitStatic(uiXml, "weight_static", 0, &UIStaticWeight);
 }
 
 void CUIInventoryWnd::InitInventory() 
@@ -432,6 +436,7 @@ void CUIInventoryWnd::InitInventory()
 
 		}
 	}
+	UpdateWeight();
 }  
 
 
@@ -1091,9 +1096,6 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 
 bool CUIInventoryWnd::ToSlot()
 {
-	// Можно ли засунуть новую вещь в предназначеный для нее слот?
-	if(!GetInventory()->CanPutInSlot(m_pCurrentItem)) return false;
-
 	// Если целевой слот - слот с одеждой, то попробуем убрать текущую одежду
 	if (OUTFIT_SLOT == m_pCurrentItem->GetSlot()) UndressOutfit();
 
@@ -1114,6 +1116,9 @@ bool CUIInventoryWnd::ToSlot()
 				NULL);
 		}
 	}
+
+	// Можно ли засунуть новую вещь в предназначеный для нее слот?
+	if(!GetInventory()->CanPutInSlot(m_pCurrentItem)) return false;
 
 	//попытаться закинуть элемент в соответствующий слот
 	bool result = GetInventory()->Slot(m_pCurrentItem);
@@ -1425,4 +1430,34 @@ void CUIInventoryWnd::UpdateTime()
 		UIStaticTime.SetText(buf);
 		prevStrTime = strTime;
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIInventoryWnd::UpdateWeight()
+{
+	CInventoryOwner *pInvOwner = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());
+	R_ASSERT(pInvOwner);
+	string128 buf;
+	ZeroMemory(buf, 128);
+
+	float total = pInvOwner->inventory().CalcTotalWeight();
+	float max	= pInvOwner->MaxCarryWeight();
+
+	string16 cl;
+	ZeroMemory(cl, 16);
+
+	const char * weightColor = "%c240,217,182";
+
+	if (total > max)
+	{
+		strcpy(cl, "%cred");
+	}
+	else
+	{
+		strcpy(cl, weightColor);
+	}
+
+	sprintf(buf, "%%cdefaultWeight %s%6.1f %s/%5.1f", cl, total, weightColor, max);
+	UIStaticWeight.SetText(buf);
 }

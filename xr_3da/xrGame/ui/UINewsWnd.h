@@ -17,9 +17,9 @@
 
 #include "xrXMLParser.h"
 
-class CUINewsWnd: public CUIDialogWnd
+class CUINewsWnd: public CUIWindow
 {
-	typedef CUIDialogWnd inherited;
+	typedef CUIWindow inherited;
 public:
 	CUINewsWnd();
 	virtual ~CUINewsWnd();
@@ -31,7 +31,7 @@ public:
 	CUIListWnd	UIListWnd;
 
 	// Получить заголовок раздела
-	virtual ref_str		DialogName();
+	virtual ref_str		WindowName();
 };
 
 #endif

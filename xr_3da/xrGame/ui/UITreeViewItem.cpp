@@ -29,8 +29,7 @@ CUITreeViewItem::CUITreeViewItem()
 	UIBkg.InitTexture(treeItemBackgroundTexture);
 	UIBkg.TextureOff();
 	UIBkg.SetTextureOffset(-20, 0);
-	SetHighlightText(false);
-	SetNewRenderMethod(true);
+	EnableTextHighlighting(false);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -256,8 +255,8 @@ void CUITreeViewItem::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	{
 		UIBkg.TextureOff();
 	}
-
-	inherited::SendMessage(pWnd, msg, pData);
+	else
+		inherited::SendMessage(pWnd, msg, pData);
 }
 
 //////////////////////////////////////////////////////////////////////////

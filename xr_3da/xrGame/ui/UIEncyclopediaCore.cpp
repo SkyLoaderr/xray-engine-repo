@@ -8,13 +8,18 @@
 
 #include "stdafx.h"
 #include "UIEncyclopediaCore.h"
+#include "UIIconedListItem.h"
 #include "../UI.h"
 #include "../encyclopedia_article.h"
 #include "../string_table.h"
+//#include "UIXmlInit.h"
 
 //////////////////////////////////////////////////////////////////////////
 
-const char * const		ENCYCLOPEDIA_CORE_XML	= "encyclopedia_core.xml";
+const char * const		ENCYCLOPEDIA_CORE_XML		= "encyclopedia_core.xml";
+static int				MAX_PICTURE_WIDTH			= 0;
+static const int		MIN_PICTURE_FRAME_WIDTH		= 64;
+static const int		MIN_PICTURE_FRAME_HEIGHT	= 64;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -37,6 +42,14 @@ void CUIEncyclopediaCore::Init(CUIListWnd *infoList, CUIListWnd *idxList)
 	pInfoList	= infoList;
 
 	inherited::Init(0,0, UI_BASE_WIDTH,	UI_BASE_HEIGHT);
+
+//	// mask
+//	xml_init.InitFrameWindow(uiXml, "item_static:mask_frame_window", 0, &UIImgMask);
+//	// Image position
+//	m_iItemX = uiXml.ReadAttribInt("item_static", 0, "x", 0);
+//	m_iItemY = uiXml.ReadAttribInt("item_static", 0, "y", 0);
+	m_iItemY = 0;
+	m_iItemX = 0;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -58,12 +71,21 @@ ref_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 //		}
 		pInfoList->RemoveAll();
 
-		// Отображаем новые
+		// Image
+		CUIListItem *pItemImg = xr_new<CUIListItem>();
+		m_ArticlesDB[pTVItem->GetValue()]->data()->image.ClipperOff();
+		m_ArticlesDB[pTVItem->GetValue()]->data()->image.Show(true);
+		m_ArticlesDB[pTVItem->GetValue()]->data()->image.SetClipRect(pInfoList->GetAbsoluteRect());
+		pItemImg->AttachChild(&m_ArticlesDB[pTVItem->GetValue()]->data()->image);
+
+		pInfoList->AddItem(pItemImg);
+
+		// Добавляем текст
 		CUIString str;
 		str.SetText(*CStringTable()(*m_ArticlesDB[pTVItem->GetValue()]->data()->text));
 		CUIStatic::PreprocessText(str.m_str, pInfoList->GetItemWidth() - 5, pInfoList->GetFont());
 		pInfoList->AddParsedItem<CUIListItem>(str, 0, 0xffffffff);
-//		UIEncyclopediaInfoBkg.AttachChild(&m_ArticlesDB[pTVItem->GetValue()]->data()->image);
+		
 //		m_ArticlesDB[pTVItem->GetValue()]->data()->image.SetMask(&UIImgMask);
 
 //		if(!m_ArticlesDB[pTVItem->GetValue()]->data()->image.GetStaticItem()->GetShader())
@@ -104,8 +126,8 @@ void CUIEncyclopediaCore::AddArticle(ARTICLE_INDEX article_index)
 	CEncyclopediaArticle*& a = m_ArticlesDB.back();
 	a = xr_new<CEncyclopediaArticle>();
 	a->Load(article_index);
-//	RescaleStatic(a->data()->image);
-//	a->data()->image.MoveWindow(m_iItemX, m_iItemY);
+	RescaleStatic(a->data()->image);
+	a->data()->image.MoveWindow(m_iItemX, m_iItemY);
 
 	// Теперь создаем иерархию вещи по заданному пути
 
@@ -114,3 +136,34 @@ void CUIEncyclopediaCore::AddArticle(ARTICLE_INDEX article_index)
 }
 
 //////////////////////////////////////////////////////////////////////////
+
+void CUIEncyclopediaCore::RescaleStatic(CUIStatic &s)
+{
+	Irect	r		= s.GetUIStaticItem().GetOriginalRect();
+
+	// Если картинка не пoмещается в максимальную допустимую длинну
+	s.SetWidth(MAX_PICTURE_WIDTH);
+
+	if (r.width() > MAX_PICTURE_WIDTH)
+	{
+		float scale = static_cast<float>(MAX_PICTURE_WIDTH) / r.width();
+		s.SetTextureScale(scale);
+		s.SetHeight(static_cast<int>(r.height() * scale));
+	}
+	// Если помещается, то центрируем ее в отведенной области
+	else
+	{
+		s.SetHeight(r.height());
+	}
+
+	if (r.height() < MIN_PICTURE_FRAME_HEIGHT)
+	{
+		s.SetHeight(MIN_PICTURE_FRAME_HEIGHT);
+		s.SetTextureOffset(0, (MIN_PICTURE_FRAME_HEIGHT - r.height()) / 2);
+	}
+
+	if (r.width() < MAX_PICTURE_WIDTH)
+	{
+		s.SetTextureOffset((MAX_PICTURE_WIDTH - r.width()) / 2, s.GetTextureOffeset()[1]);
+	}
+}

@@ -16,15 +16,15 @@
 
 #include "../GameTask.h"
 
-class CUIJobsWnd: public CUIDialogWnd
+class CUIJobsWnd: public CUIWindow
 {
-	typedef CUIDialogWnd inherited;
+	typedef CUIWindow inherited;
 public:
 
 	CUIJobsWnd();
 	virtual ~CUIJobsWnd();
 	virtual void Init();
-	virtual void Show();
+	virtual void Show(bool status);
 	// Добавить 1 таск
 	void AddTask(CGameTask * const task);
 	// Нет смысла скрывать листбокс, так как все равно пока это практически все, что есть, и
@@ -36,7 +36,7 @@ public:
 	// Установить фильтр
 	void SetFilter(ETaskState newFilter);
 	// Получить заголовок раздела
-	virtual ref_str		DialogName();
+	virtual ref_str		WindowName();
 protected:
 	// Добавляем заголовок крупным шрифтом
 	void AddHeader(ref_str strHeader);

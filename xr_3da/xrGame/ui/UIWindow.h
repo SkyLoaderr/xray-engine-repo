@@ -27,6 +27,7 @@ public:
 	//работа с дочерними и родительскими окнами
 	virtual void AttachChild(CUIWindow* pChild);
 	virtual void DetachChild(CUIWindow* pChild);
+	virtual bool IsChild(CUIWindow* pChild) const;
 	virtual void DetachAll();
 	int GetChildNum() {return m_ChildWndList.size();} 
 
@@ -89,7 +90,7 @@ public:
 	virtual bool IsEnabled() {return m_bIsEnabled;}
 
 	//убрать/показать окно и его дочерние окна
-	virtual void Show(bool status) {m_bIsShown =  status;}
+	virtual void Show(bool status) {m_bIsShown =  status; Enable(status); }
 	virtual bool IsShown() {return m_bIsShown;}
 	
 	////////////////////////////////////
@@ -154,6 +155,9 @@ public:
 
 	bool IsAutoDelete() {return m_bAutoDelete;}
 	void SetAutoDelete(bool auto_delete) {m_bAutoDelete = auto_delete;}
+
+	// Name of the window
+	virtual ref_str WindowName() { return ""; }
 protected:
 	//список дочерних окон
 	WINDOW_LIST m_ChildWndList;

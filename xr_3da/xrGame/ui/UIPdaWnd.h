@@ -56,7 +56,7 @@ protected:
 	CUIStatic UIMainPdaFrame;
 
 	// Текущий активный диалог
-	CUIDialogWnd *m_pActiveDialog;
+	CUIWindow			 *m_pActiveDialog;
 
 	// Поддиалоги PDA
 	CUIPdaCommunication	UIPdaCommunication;

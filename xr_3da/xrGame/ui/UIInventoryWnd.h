@@ -88,6 +88,7 @@ protected:
 	CUIStatic			UIStaticBelt;
 	CUIStatic			UIStaticBottom;
 	CUIStatic			UIStaticTime;
+	CUIStatic			UIStaticWeight;
 
 	// Update current time indicator
 	void				UpdateTime();
@@ -188,6 +189,9 @@ protected:
 
 	//устанавливает текущий предмет
 	void SetCurrentItem(CInventoryItem* pItem);
+
+	// Отобразить вес, который несет актер
+	void UpdateWeight();
 		
 
 	//дополнительные списки для сортировки вещей

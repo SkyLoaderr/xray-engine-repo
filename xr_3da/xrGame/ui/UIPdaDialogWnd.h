@@ -28,8 +28,7 @@ public:
 				 MESSAGE_BUTTON_CLICKED} E_MESSAGE;
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 
-	void Show();
-	void Hide();
+	void Show(bool status);
 
 	virtual void Update();
 

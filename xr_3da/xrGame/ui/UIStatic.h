@@ -81,6 +81,7 @@ public:
 	void SetStretchTexture(bool stretch_texture) {m_bStretchTexture = stretch_texture;}
 	bool GetStretchTexture() {return m_bStretchTexture;}
 
+	void SetClipRect(RECT r);
 	Irect GetClipRect();
 
 	// Работа с маской
@@ -106,8 +107,9 @@ public:
 	void SetElipsis(EElipsisPosition pos, int indent);
 
 	// Включть/выключить текстуру
-	void TextureOn()	{ m_bTextureEnable = true; }
-	void TextureOff()	{ m_bTextureEnable = false; }
+	void TextureOn()					{ m_bTextureEnable = true; }
+	void TextureOff()					{ m_bTextureEnable = false; }
+	void TextureAvailable(bool value)	{ m_bAvailableTexture = value; }
 
 protected:
 	bool m_bClipper;
@@ -169,6 +171,9 @@ protected:
 	EElipsisPosition	m_ElipsisPos;
 	void Elipsis(const RECT &rect, EElipsisPosition elipsisPos);
 	int	m_iElipsisIndent;
+
+	// Clip rect
+	RECT	m_ClipRect;
 };
 
 #endif // _UI_STATIC_H_

@@ -18,21 +18,21 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-class CUIContractsWnd: public CUIDialogWnd
+class CUIContractsWnd: public CUIWindow
 {
-	typedef CUIDialogWnd inherited;
+	typedef CUIWindow inherited;
 public:
 	CUIContractsWnd() {}
 	virtual ~CUIContractsWnd() {}
 	virtual void Init();
-	virtual void Show();
+	virtual void Show(bool status);
 	// Лист для отобржения заказов от торговца
 	CUIListWnd			UIListWnd;
 	// Информация о торговце
 	CUICharacterInfo	UICharInfo;
 
 	// Получить заголовок раздела
-	virtual ref_str	DialogName();
+	virtual ref_str	WindowName();
 protected:
 	// Название окна
 	CUIStatic		UIStaticCaption;

@@ -40,7 +40,7 @@ public:
 
 	// переопределяем критерий подсвечивания текста
 	virtual bool IsHighlightText();
-	virtual void SetHighlightText(bool Highlight) { m_bHighlightText = Highlight; }
+	virtual void SetHighlightText(bool Highlight)		{ m_bHighlightText = Highlight; }
 
 	// Автоматическое обновление
 	void	ManualDelete(bool value) { m_bManualDelete = value; }

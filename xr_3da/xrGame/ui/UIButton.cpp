@@ -17,30 +17,31 @@
 
 CUIButton:: CUIButton()
 {
-	m_eButtonState		= BUTTON_NORMAL;
-	m_ePressMode		= NORMAL_PRESS;
+	m_eButtonState				= BUTTON_NORMAL;
+	m_ePressMode				= NORMAL_PRESS;
 
-	m_str				= "";
+	m_str						= "";
 
-	m_bButtonClicked	= false;
-	m_bCursorOverButton	= false;
+	m_bButtonClicked			= false;
+	m_bCursorOverButton			= false;
 
-	m_bAvailableTexture	= false;
+	m_bAvailableTexture			= false;
 
-	m_bIsSwitch			= false;
+	m_bIsSwitch					= false;
 
-	m_iPushOffsetX		= PUSH_OFFSET_RIGHT;
-    m_iPushOffsetY		= PUSH_OFFSET_DOWN;
+	m_iPushOffsetX				= PUSH_OFFSET_RIGHT;
+    m_iPushOffsetY				= PUSH_OFFSET_DOWN;
 
 	SetTextAlign(CGameFont::alCenter);
 
-	m_HighlightColor	= 0xFF999999;
-	m_uAccelerator		= static_cast<u32>(-1);
+	m_HighlightColor			= 0xFF999999;
+	m_uAccelerator				= static_cast<u32>(-1);
 
-	m_iTexOffsetX		= 0;
-	m_iTexOffsetY		= 0;
+	m_iTexOffsetX				= 0;
+	m_iTexOffsetY				= 0;
 
-	m_bNewRenderMethod	= false;
+	m_bNewRenderMethod			= false;
+	m_bEnableTextHighlighting	= true;
 }
 
  CUIButton::~ CUIButton()
@@ -269,7 +270,7 @@ void  CUIButton::Draw()
 		UpdateTextAlign();
 		GetFont()->SetAligment(GetTextAlign());
 
-		if(IsHighlightText() && m_str && xr_strlen(m_str)>0)
+		if(IsHighlightText() && m_str && xr_strlen(m_str)>0 && m_bEnableTextHighlighting)
 		{
 			GetFont()->SetColor(m_HighlightColor);
 			HUD().OutText(GetFont(), GetClipRect(), 

@@ -53,7 +53,7 @@ CUIMapWnd::CUIMapWnd()
 	:	m_eCurrentMode	(emmLocal),
 		m_pCurrentMap	(&UILocalMapBackground)
 {
-	Hide();
+	Show(false);
 	
 	SetFont(HUD().pFontSmall);
 
@@ -66,10 +66,11 @@ CUIMapWnd::~CUIMapWnd()
 	UIGlobalMapBackground.RemoveAllSpots();
 }
 
-void CUIMapWnd::Show()
+void CUIMapWnd::Show(bool status)
 {
-	InitMaps();
-	inherited::Show();
+	if (status)
+		InitMaps();
+	inherited::Show(status);
 }
 
 //////////////////////////////////////////////////////////////////////////

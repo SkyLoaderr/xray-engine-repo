@@ -17,28 +17,31 @@ const char * const CELL_TEXTURE		= "ui\\ui_inv_lattice";
 //////////////////////////////////////////////////////////////////////
 CUIDragDropList::CUIDragDropList()
 {
-	SetCellHeight(50);
-	SetCellWidth(50);
+	SetCellHeight				(50);
+	SetCellWidth				(50);
 
-	m_vCellStatic.clear();
-	m_vGridState.clear();
+	m_vCellStatic.clear			();
+	m_vGridState.clear			();
 
 
-	m_pCheckProc = NULL;
+	m_pCheckProc				= NULL;
 
-	m_bCustomPlacement = false;
-	m_bBlockCustomPlacement = false;
+	m_bCustomPlacement			= false;
+	m_bBlockCustomPlacement		= false;
 
-	m_iViewRowsNum = 0;
-	m_iCurrentFirstRow = 0;
+	m_iViewRowsNum				= 0;
+	m_iCurrentFirstRow			= 0;
 
-	m_DragDropItemsList.clear();
+	m_DragDropItemsList.clear	();
 
-	m_bScrollBarEnabled = true;
+	m_bScrollBarEnabled			= true;
 
-	m_fItemsScale = 1.0f;
+	m_fItemsScale				= 1.0f;
 
-	m_iColsNum = m_iRowsNum = 0;
+	m_iColsNum = m_iRowsNum		= 0;
+
+	m_bGridVisible				= true;
+	m_bUnlimitedCapacity		= false;
 }
 
 CUIDragDropList::~CUIDragDropList()
@@ -237,7 +240,21 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				if(additional_check)
 				{
 
-					if(CanPlaceItemInGrid(pItem, place_row, place_col))
+					bool placeExists = false;
+					if (m_bUnlimitedCapacity)
+					{
+						while (!CanPlaceItemInGrid(pItem, place_row, place_col))
+						{
+							InitGrid(GetRows() + 1, GetCols(), m_bGridVisible, m_iViewRowsNum);
+						}
+						placeExists = true;
+					}
+					else
+					{
+						placeExists = CanPlaceItemInGrid(pItem, place_row, place_col);
+					}
+
+					if (placeExists)
 					{	
 						//отсоединить у прошлого родителя
 						pItem->GetParent()->SetCapture(pItem, false);
@@ -276,6 +293,7 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			pItem->Highlight(true);
 			// Просигнализировать о том, что если это был костюм, то надо его опять спрятать
 			pItem->GetMessageTarget()->SendMessage(pItem ,CUIOutfitSlot::OUTFIT_RETURNED_BACK, NULL);
+			UpdateList();
 		}
 	}
 
@@ -323,12 +341,14 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum,
 	SetWidth(m_iColsNum*GetCellWidth() + CUIScrollBar::SCROLLBAR_WIDTH + SCROLLBAR_OFFSET_X);
 	SetHeight(GetViewRows()*GetCellHeight());
 
-	AttachChild(&m_ScrollBar);
+	if (!IsChild(&m_ScrollBar))
+		AttachChild(&m_ScrollBar);
 	m_ScrollBar.Init(GetWidth() - CUIScrollBar::SCROLLBAR_WIDTH, SCROLLBAR_OFFSET_Y, 
 					GetHeight(), false);
 
 	m_vGridState.resize(m_iRowsNum*m_iColsNum, CELL_EMPTY);
 
+	m_bGridVisible = bGridVisible;
 	if(bGridVisible)
 	{
 		m_vCellStatic.resize(GetViewRows()*m_iColsNum);
@@ -355,7 +375,8 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum,
 				(*it).GetUIStaticItem().SetOriginalRect(0, 0, 64, 64);
 				it->ClipperOn();
 
-				AttachChild(&(*it));
+				if (!IsChild(&(*it)))
+					AttachChild(&(*it));
 				
 				(*it).SetTextureScale(scale);
 
@@ -370,16 +391,24 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum,
 bool CUIDragDropList::PlaceItemInGrid(CUIDragDropItem* pItem)
 {
 	int place_row = -1,  place_col = -1;
-	bool found_place = CanPlaceItemInGrid(pItem, place_row, place_col);
+	bool found_place = false;
 
-	//разместить элемент на найденном месте
-	if(found_place)
+	//разместить элемент на найденном месте если лист с бесконечной вместимостью
+	if (m_bUnlimitedCapacity)
 	{
-		PlaceItemAtPos(place_row, place_col, pItem);
-		return true;
+		while (!CanPlaceItemInGrid(pItem, place_row, place_col))
+		{
+			InitGrid(GetRows() + 1, GetCols(), m_bGridVisible, m_iViewRowsNum);
+		}
+		found_place = true;
 	}
 	else
-		return false;
+	{
+		found_place = CanPlaceItemInGrid(pItem, place_row, place_col);
+	}
+	if (found_place)
+		PlaceItemAtPos(place_row, place_col, pItem);
+	return found_place;
 }
 
 //размещение элемента на свободном месте в сетке

@@ -352,46 +352,8 @@ CUIWindow* CUIWindow::GetMessageTarget()
 	return m_pMessageTarget?m_pMessageTarget:GetParent();
 }
 
-
-/*
-void CUIWindow::SetCapture(CUIWindow *pChildWindow, bool capture_status)
+bool CUIWindow::IsChild(CUIWindow *pPossibleChild) const
 {
-	if(NULL != GetParent())
-	{
-		if(capture_status)
-		{
-			//запомнить то окно, которое изначально 
-			//захватило ввод
-			if(this != GetParent()->GetMouseCapturer())
-				m_pOrignMouseCapturer = pChildWindow;
-
-			GetParent()->SetCapture(this, true);
-		}
-		else
-		{
-			//сообщить родителю о потере фокуса,
-			//только в случае если фокус теряет нужное окно,
-			//которое его и взяло
-			if(m_pOrignMouseCapturer == pChildWindow ||
-				m_pOrignMouseCapturer == NULL)
-				GetParent()->SetCapture(this, false);
-		}
-            
-		
-	}
-
-	if(capture_status)
-	{
-		//оповестить дочернее окно о потере фокуса мыши
-		if(NULL != m_pMouseCapturer)
-			m_pMouseCapturer->SendMessage(this, MOUSE_CAPTURE_LOST);
-	
-		if(m_pOrignMouseCapturer == pChildWindow)
-			m_pOrignMouseCapturer == NULL;
-		
-
-		m_pMouseCapturer = pChildWindow;
-	}
-	else
-		m_pMouseCapturer = NULL;
-}*/
+	WINDOW_LIST::const_iterator it = std::find(m_ChildWndList.begin(), m_ChildWndList.end(), pPossibleChild);
+	return it != m_ChildWndList.end();
+}

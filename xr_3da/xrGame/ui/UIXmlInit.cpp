@@ -244,6 +244,9 @@ bool CUIXmlInit::InitDragDropList(CUIXml& xml_doc, LPCSTR path,
 	int show_grid = 1;
 	if(*show_grid_str) show_grid = atoi(*show_grid_str);
 
+	int unlimitedCapacity = xml_doc.ReadAttribInt(path, index, "unlimited", 0);
+	pWnd->SetUnlimitedCapacity(0 != unlimitedCapacity);
+
 	pWnd->SetCellWidth(cell_width);
 	pWnd->SetCellHeight(cell_height);
 	if(show_grid)

@@ -18,9 +18,9 @@
 // Дневник
 ///////////////////////////////////////
 
-class CUIDiaryWnd: public CUIDialogWnd
+class CUIDiaryWnd: public CUIWindow
 {
-	typedef CUIDialogWnd inherited;
+	typedef CUIWindow inherited;
 public:
 	// Ctor and Dtor
 	CUIDiaryWnd();
@@ -28,7 +28,7 @@ public:
 
 	virtual void Init();
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData = NULL);
-	virtual void Show();
+	virtual void Show(bool status);
 
 	// Добавить новую новость
 	void AddNewsItem(const char *sData);
@@ -43,7 +43,7 @@ protected:
 	CUIActorDiaryWnd	UIActorDiaryWnd;
 
 	// Текущий активный поддиалог
-	CUIDialogWnd		*m_pActiveSubdialog;
+	CUIWindow			*m_pActiveSubdialog;
 	// TreeView
 	CUIListWnd			UITreeView;
 	// Подложка под TreeView

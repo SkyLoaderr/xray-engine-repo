@@ -22,10 +22,10 @@
 
 class CGameObject;
 
-class CUIMapWnd: public CUIDialogWnd
+class CUIMapWnd: public CUIWindow
 {
 private:
-	typedef CUIDialogWnd inherited;
+	typedef CUIWindow inherited;
 public:
 	CUIMapWnd();
 	virtual ~CUIMapWnd();
@@ -34,7 +34,7 @@ public:
 	virtual void InitLocalMap();
 	virtual void InitGlobalMap();
 	virtual void InitMaps();
-	virtual void Show();
+	virtual void Show(bool status);
 
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 

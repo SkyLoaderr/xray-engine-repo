@@ -37,6 +37,11 @@ CUIStatic:: CUIStatic()
 	m_pMask				= NULL;
 	m_ElipsisPos		= eepNone;
 	m_iElipsisIndent	= 0;
+
+	m_ClipRect.bottom	= -1;
+	m_ClipRect.top		= -1;
+	m_ClipRect.left		= -1;
+	m_ClipRect.right	= -1;
 }
 
  CUIStatic::~ CUIStatic()
@@ -78,7 +83,14 @@ void  CUIStatic::Draw()
 		RECT rect = GetAbsoluteRect();
 //		m_UIStaticItem.SetPos(rect.left + m_iTexOffsetX, rect.top + m_iTexOffsetY);
 
-		if(m_bClipper) TextureClipper();
+		if(m_bClipper)
+		{
+			if (-1 == m_ClipRect.left && -1 == m_ClipRect.right &&
+				-1 == m_ClipRect.top && -1 == m_ClipRect.left)
+				TextureClipper();
+			else
+				TextureClipper(0, 0, &m_ClipRect);
+		}
 
 		m_UIStaticItem.SetPos(rect.left + m_iTexOffsetX, rect.top + m_iTexOffsetY);
 
@@ -751,4 +763,11 @@ void CUIStatic::SetElipsis(EElipsisPosition pos, int indent)
 {
 	m_ElipsisPos		= pos;
 	m_iElipsisIndent	= indent;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIStatic::SetClipRect(RECT r)
+{
+	m_ClipRect = r;
 }

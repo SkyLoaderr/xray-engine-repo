@@ -80,7 +80,7 @@ void CUIPdaWnd::Init()
 	// Окно энциклопедии
 	UIMainPdaFrame.AttachChild(&UIEncyclopediaWnd);
 	UIEncyclopediaWnd.Init();
-	UIEncyclopediaWnd.Hide();
+	UIEncyclopediaWnd.Show(false);
 
 	m_pActiveDialog = &UIDiaryWnd;
 
@@ -109,26 +109,26 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 		if (CUITabControl::TAB_CHANGED == msg)
 		{
 			if (m_pActiveDialog)
-				m_pActiveDialog->Hide();
+				m_pActiveDialog->Show(false);
 
 			// Add custom dialogs here
 			switch (UITabControl.GetActiveIndex()) 
 			{
 			case 0:
-				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UIDiaryWnd);
+				m_pActiveDialog = dynamic_cast<CUIWindow*>(&UIDiaryWnd);
 				break;
 			case 1:
-				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UIPdaCommunication);
+				m_pActiveDialog = dynamic_cast<CUIWindow*>(&UIPdaCommunication);
 				break;
 			case 2:
-				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UIMapWnd);
+				m_pActiveDialog = dynamic_cast<CUIWindow*>(&UIMapWnd);
 				break;
 			case 3:
-				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UIEncyclopediaWnd);
+				m_pActiveDialog = dynamic_cast<CUIWindow*>(&UIEncyclopediaWnd);
 				break;
 			}
 			m_pActiveDialog->Reset();
-			m_pActiveDialog->Show();
+			m_pActiveDialog->Show(true);
 		}
 	}
 	// Сменить точку центрирования карты. Новые координаты поступают в pData
@@ -157,7 +157,7 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 void CUIPdaWnd::Show()
 {
 	inherited::Show();
-	m_pActiveDialog->Show();
+	m_pActiveDialog->Show(true);
 }
 
 //////////////////////////////////////////////////////////////////////////

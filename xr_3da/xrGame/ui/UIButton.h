@@ -64,7 +64,8 @@ public:
 	// принудительна€ подсветка
 	virtual void HighlightItem(bool bHighlight) { m_bCursorOverButton = bHighlight; }
 	// ÷вет подсветки
-	virtual void SetHighlightColor(const u32 uColor) { m_HighlightColor = uColor; }
+	virtual void SetHighlightColor(const u32 uColor)	{ m_HighlightColor = uColor; }
+	void		 EnableTextHighlighting(bool value)		{ m_bEnableTextHighlighting = value; }
 
 	//состо€ни€ в которых находитс€ кнопка
 	typedef enum{BUTTON_NORMAL, //кнопка никак не затрагиваетс€
@@ -99,6 +100,9 @@ protected:
 
 	//если курсор над мышкой
 	bool m_bCursorOverButton;
+
+	// ¬ключена ли подсветка текста
+	bool m_bEnableTextHighlighting;
 
 	//режим в котором нажимаетс€ кнопка
 	E_PRESS_MODE m_ePressMode;

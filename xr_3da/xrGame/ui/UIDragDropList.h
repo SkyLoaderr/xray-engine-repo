@@ -100,6 +100,9 @@ public:
 	// листа
 	void RearrangeItems();
 
+	// Установить режим работы листа: бесконечная/конечная вместимость
+	void SetUnlimitedCapacity(bool value) { m_bUnlimitedCapacity = value; }
+
 protected:
 	//полоса прокрутки
 	CUIScrollBar m_ScrollBar;
@@ -163,6 +166,10 @@ protected:
 
 	// Для возможности изменения размера лежащих на листе элементов, запомним скейл
 	float		m_fItemsScale;
+
+	// Видима ли сетка?
+	bool		m_bGridVisible;
+	bool		m_bUnlimitedCapacity;
 };
 
 #endif //_UI_DRAG_DROP_LIST_H_

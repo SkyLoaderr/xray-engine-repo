@@ -63,7 +63,7 @@ void CUINewsWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 
 //////////////////////////////////////////////////////////////////////////
 
-ref_str CUINewsWnd::DialogName()
+ref_str CUINewsWnd::WindowName()
 {
 	return "News";
 }

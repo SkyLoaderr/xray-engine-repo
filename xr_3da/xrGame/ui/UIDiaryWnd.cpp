@@ -57,7 +57,7 @@ CUIDiaryWnd::CUIDiaryWnd()
 		m_pLeftHorisontalLine	(NULL),
 		m_pActorDiaryRoot		(NULL)
 {
-	Hide();
+	Show(false);
 }
 
 //-----------------------------------------------------------------------------/
@@ -172,17 +172,17 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			case idJobsFailed:
 				UIJobsWnd.SetFilter(eTaskStateFail);
 				m_pActiveSubdialog = &UIJobsWnd;
-				ArticleCaption(*(m_pActiveSubdialog->DialogName()));
+				ArticleCaption(*(m_pActiveSubdialog->WindowName()));
 				break;
 			case idJobsAccomplished:
 				UIJobsWnd.SetFilter(eTaskStateCompleted);
 				m_pActiveSubdialog = &UIJobsWnd;
-				ArticleCaption(*(m_pActiveSubdialog->DialogName()));
+				ArticleCaption(*(m_pActiveSubdialog->WindowName()));
 				break;
 			case idJobsCurrent:
 				UIJobsWnd.SetFilter(eTaskStateInProgress);
 				m_pActiveSubdialog = &UIJobsWnd;
-				ArticleCaption(*(m_pActiveSubdialog->DialogName()));
+				ArticleCaption(*(m_pActiveSubdialog->WindowName()));
 				break;
 
 			case idContracts:
@@ -191,12 +191,12 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				m_pLeftHorisontalLine->MoveWindow(r.left, r.top + contractsOffset);
 				m_pActiveSubdialog = &UIContractsWnd;
 				SetContractTrader();
-				ArticleCaption(*(m_pActiveSubdialog->DialogName()));
+				ArticleCaption(*(m_pActiveSubdialog->WindowName()));
 				break;
 
 			case idNews:
 				m_pActiveSubdialog = &UINewsWnd;
-				ArticleCaption(*(m_pActiveSubdialog->DialogName()));
+				ArticleCaption(*(m_pActiveSubdialog->WindowName()));
 				break;
 
 			case idActorDiary:
@@ -215,7 +215,7 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			if (m_pActiveSubdialog)
 			{
 				UIFrameWnd.AttachChild(m_pActiveSubdialog);
-				m_pActiveSubdialog->Show();
+				m_pActiveSubdialog->Show(true);
 			}
 		}
 	}
@@ -336,11 +336,15 @@ void CUIDiaryWnd::InitTreeView()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIDiaryWnd::Show()
+void CUIDiaryWnd::Show(bool status)
 {
-	inherited::Show();
-	InitDiary();
-	if (m_pActiveSubdialog) m_pActiveSubdialog->Show();
+	inherited::Show(status);
+	if (status)
+	{
+		InitDiary();
+	}
+
+	if (m_pActiveSubdialog) m_pActiveSubdialog->Show(status);
 }
 
 void CUIDiaryWnd::InitDiary()

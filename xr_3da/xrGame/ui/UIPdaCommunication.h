@@ -27,10 +27,10 @@ class CPhraseDialogManager;
 // Подложка и основные кнопки PDA
 ///////////////////////////////////////
 
-class CUIPdaCommunication: public CUIDialogWnd
+class CUIPdaCommunication: public CUIWindow
 {
 private:
-	typedef CUIDialogWnd inherited;
+	typedef CUIWindow inherited;
 public:
 	CUIPdaCommunication();
 	virtual ~CUIPdaCommunication();
@@ -43,7 +43,7 @@ public:
 	virtual void Draw();
 	virtual void Update();
 
-	virtual void Show();
+	virtual void Show(bool status);
 
 protected:
 	//контакты

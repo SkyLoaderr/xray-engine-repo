@@ -51,6 +51,7 @@ void CUIActorDiaryWnd::Init(CUIListWnd *idxList)
 	UIInfoList.ActivateList(false);
 	UIInfoList.EnableScrollBar(true);
 	UIInfoList.EnableActiveBackground(false);
+	UIInfoList.SetNewRenderMethod(true);
 
 	m_pCore->Init(&UIInfoList, idxList);
 }

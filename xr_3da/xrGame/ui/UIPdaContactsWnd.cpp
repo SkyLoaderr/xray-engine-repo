@@ -21,18 +21,14 @@ CUIPdaContactsWnd::~CUIPdaContactsWnd()
 {
 }
 
-void CUIPdaContactsWnd::Show()
+void CUIPdaContactsWnd::Show(bool status)
 {
-	inherited::Show(true);
-	inherited::Enable(true);
-	UIListWnd.Reset();
-}
-void CUIPdaContactsWnd::Hide()
-{
-	inherited::Show(false);
-	inherited::Enable(false);
-}
+	inherited::Show(status);
+	inherited::Enable(status);
 
+	if (status)
+		UIListWnd.Reset();
+}
 
 void CUIPdaContactsWnd::Init(int x, int y, int width, int height)
 {
