@@ -84,7 +84,6 @@ function main()
 
 	wait(1000)			
 
-	while true do
 		if stalkers_already_saw_actor == false then
 			wait(2000)			
 			prof_kgm4:play_at_pos				(stalker1,stalker1:position(),0);
@@ -93,8 +92,6 @@ function main()
 			wait(2000)			
 			break
 		end
-		wait()			
-	end
 
 	while true do
 		if stalkers_already_saw_actor == false then
