@@ -267,7 +267,38 @@ BOOL CLevel::Load_GameSpecific_After()
 			pStaticPG->SetTransform		(transform);
 			pStaticPG->Play				();
 			m_StaticParticles.push_back	(pStaticPG);
+			OBJ->close	();
 		}
+		FS.r_close		(F);
+	}
+	// loading static sounds
+	if (FS.exist(fn_game, "$level$", "level.sound_static")) {
+		IReader *F		= FS.r_open	(fn_game);
+		int				chunk = 0;
+		string256		wav_name;
+		CSound_params	params;
+		for (IReader *OBJ = F->open_chunk(chunk++); OBJ; OBJ = F->open_chunk(chunk++)){
+			static_Sounds.push_back	(xr_new<sound>());
+			sound* S			= static_Sounds.back();
+
+			OBJ->r_stringZ		(wav_name);
+			S->create			(TRUE,wav_name);
+			OBJ->r_fvector3		(params.position);
+			params.volume		= OBJ->r_float();
+			params.freq			= OBJ->r_float();
+			params.min_distance = OBJ->r_float();
+			params.max_distance	= OBJ->r_float();
+			S->play				(0,true);
+			S->set_params		(&params);
+			OBJ->close			();
+		}
+		FS.r_close				(F);
+	}
+	// loading static sounds
+	if (FS.exist(fn_game, "$level$", "level.sound_env")) {
+		IReader *F				= FS.r_open	(fn_game);
+		::Sound->set_geometry_env(F);
+		FS.r_close				(F);
 	}
 	return TRUE;
 }

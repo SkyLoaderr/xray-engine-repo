@@ -70,6 +70,9 @@ public:
 	CTracer						Tracers;
 	CEffect_Rain				eff_Rain;
 
+	// sounds
+	vector<sound*>				static_Sounds;
+
 	// waypoints
 	typedef struct tagSWayPoint{
 		Fvector	tWayPoint;

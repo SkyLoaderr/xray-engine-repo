@@ -49,6 +49,7 @@ void CPhysicObject::UpdateCL	()
 {
 	inherited::UpdateCL		();
 	if(m_pPhysicsShell){
+		m_pPhysicsShell->Update();
 		mRotate.i.set(m_pPhysicsShell->mXFORM.i);
 		mRotate.j.set(m_pPhysicsShell->mXFORM.j);
 		mRotate.k.set(m_pPhysicsShell->mXFORM.k);
@@ -103,7 +104,8 @@ void CPhysicObject::CreateBody() {
 			CPhysicsElement* E = P_create_Element(); R_ASSERT(E); E->add_Box(obb);
 			m_pPhysicsShell->add_Element(E);
 			m_pPhysicsShell->setMass(m_mass);
-			if(!H_Parent())m_pPhysicsShell->Activate(svXFORM(),0,svXFORM());
+			if(!H_Parent())
+				m_pPhysicsShell->Activate(svXFORM(),0,svXFORM());
 			m_pPhysicsShell->mDesired.identity();
 			m_pPhysicsShell->fDesiredStrength = 0.f;
 		} break;

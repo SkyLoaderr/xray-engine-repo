@@ -58,6 +58,13 @@ CLevel::~CLevel()
 	for (PGOIt p_it=m_StaticParticles.begin(); p_it!=m_StaticParticles.end(); p_it++)
 		xr_delete		(*p_it);
 	m_StaticParticles.clear();
+
+	// Unload sounds
+	for (u32 i=0; i<static_Sounds.size(); i++){
+		static_Sounds[i]->destroy();
+		xr_delete		(static_Sounds[i]);
+	}
+	static_Sounds.clear();
 }
 
 // Game interface ////////////////////////////////////////////////////
