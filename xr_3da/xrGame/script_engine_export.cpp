@@ -7,7 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "script_engine.h"
+#define TL_FAST_COMPILATION
 #define SCRIPT_REGISTRATOR
 #include "script_export_space.h"
 #include "script_engine_export.h"
@@ -19,6 +19,7 @@ template <typename TList> struct Register
 	static void _Register(lua_State *L)
 	{
 		Register<TList::Tail>::_Register(L);
+//		Msg("Exporting %s",typeid(TList::Head).name());
 		TList::Head::script_register(L);
 	}
 };
@@ -30,7 +31,9 @@ template <> struct Register<Loki::NullType>
 	}
 };
 
-void CScriptEngine::export_classes()
+void export_classes	(lua_State *L)
 {
-	Register<Loki::TL::DerivedToFrontAll<script_type_list>::Result>::_Register(lua());
+	Register<script_type_list>::_Register(L);
+//	Register<Loki::TL::NoDuplicates<script_type_list>::Result>::_Register(L);
+//	Register<Loki::TL::DerivedToFrontAll<script_type_list>::Result>::_Register(L);
 }

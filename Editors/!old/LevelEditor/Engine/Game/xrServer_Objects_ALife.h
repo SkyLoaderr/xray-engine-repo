@@ -13,6 +13,9 @@
 #include "alife_space.h"
 #include "phnetstate.h"
 
+#pragma warning(push)
+#pragma warning(disable:4005)
+
 #ifdef XRGAME_EXPORTS
 	class 	CALifeSimulator;
 #endif
@@ -23,8 +26,7 @@
 
 class CSE_ALifeDynamicObject;
 
-class CSE_ALifeSchedulable : public IPureSchedulableObject {
-public:
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeSchedulable,IPureSchedulableObject)
 	CSE_ALifeItemWeapon				*m_tpCurrentBestWeapon;
 	CSE_ALifeDynamicObject			*m_tpBestDetector;
 	u64								m_schedule_counter;
@@ -49,7 +51,6 @@ public:
 #endif
 };
 add_to_type_list(CSE_ALifeSchedulable)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeSchedulable)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_LevelPoint,CSE_Abstract)
@@ -57,7 +58,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_LevelPoint,CSE_Abstract)
 	virtual							~CSE_LevelPoint();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_LevelPoint)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_LevelPoint)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeGraphPoint,CSE_Abstract)
@@ -70,11 +70,9 @@ public:
 	virtual							~CSE_ALifeGraphPoint();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeGraphPoint)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeGraphPoint)
 
-class CSE_ALifeObject : public CSE_Abstract, public CRandom {
-public:
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObject,CSE_Abstract,CRandom)
 	enum {
 		flUseSwitches	= u32(1) << 0,
 		flSwitchOnline	= u32(1) << 1,
@@ -82,6 +80,7 @@ public:
 		flInteractive	= u32(1) << 3,
 		flVisibleForAI	= u32(1) << 4,
 	};
+
 public:
 	typedef CSE_Abstract inherited;
 	ALife::_CLASS_ID				m_tClassID;
@@ -119,11 +118,9 @@ public:
 #endif
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeObject)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeObject)
 
-class CSE_ALifeGroupAbstract {
-public:
+SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeGroupAbstract)
 	ALife::OBJECT_VECTOR			m_tpMembers;
 	bool							m_bCreateSpawnPositions;
 	u16								m_wCount;
@@ -136,7 +133,6 @@ public:
 	virtual const CSE_Abstract		*base					() const = 0;
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeGroupAbstract)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeGroupAbstract)
 
 template<class __A> class CSE_ALifeGroupTemplate : public __A, public CSE_ALifeGroupAbstract {
@@ -209,7 +205,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeDynamicObject,CSE_ALifeObject)
 	virtual							~CSE_ALifeDynamicObject();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeDynamicObject)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeDynamicObject)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeDynamicObjectVisual,CSE_ALifeDynamicObject,CSE_Visual)
@@ -217,7 +212,6 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeDynamicObjectVisual,CSE_ALifeDynamicObject
 	virtual							~CSE_ALifeDynamicObjectVisual();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeDynamicObjectVisual)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeDynamicObjectVisual)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePHSkeletonObject,CSE_ALifeDynamicObjectVisual)
@@ -241,7 +235,6 @@ protected:
 public:
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifePHSkeletonObject)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifePHSkeletonObject)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeScriptZone,CSE_ALifeDynamicObject,CSE_Shape)
@@ -249,7 +242,6 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeScriptZone,CSE_ALifeDynamicObject,CSE_Shap
 	virtual							~CSE_ALifeScriptZone	();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeScriptZone)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeScriptZone)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeLevelChanger,CSE_ALifeScriptZone)
@@ -264,7 +256,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeLevelChanger,CSE_ALifeScriptZone)
 	virtual							~CSE_ALifeLevelChanger	();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeLevelChanger)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeLevelChanger)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifePHSkeletonObject)
@@ -286,7 +277,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifePHSkeletonObject)
 
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeObjectPhysic)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeObjectPhysic)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVisual)
@@ -337,7 +327,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVis
 	virtual bool					used_ai_locations	() const;
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeObjectHangingLamp)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeObjectHangingLamp)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectProjector,CSE_ALifeDynamicObjectVisual)
@@ -346,7 +335,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectProjector,CSE_ALifeDynamicObjectVisua
 	virtual bool					used_ai_locations	() const;
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeObjectProjector)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeObjectProjector)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual,CSE_Motion)
@@ -361,7 +349,6 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual,CS
 	virtual bool					used_ai_locations			() const;
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeHelicopter)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeHelicopter)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCar,CSE_ALifeDynamicObjectVisual)
@@ -370,7 +357,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCar,CSE_ALifeDynamicObjectVisual)
 	virtual bool					used_ai_locations	() const;
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeCar)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeCar)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectBreakable,CSE_ALifeDynamicObjectVisual)
@@ -381,7 +367,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectBreakable,CSE_ALifeDynamicObjectVisua
 	virtual bool					can_switch_offline	() const;
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeObjectBreakable)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeObjectBreakable)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMountedWeapon,CSE_ALifeDynamicObjectVisual)
@@ -389,7 +374,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMountedWeapon,CSE_ALifeDynamicObjectVisual)
 	virtual							~CSE_ALifeMountedWeapon	();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeMountedWeapon)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeMountedWeapon)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeTeamBaseZone,CSE_ALifeScriptZone)
@@ -399,7 +383,8 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeTeamBaseZone,CSE_ALifeScriptZone)
 	u8								m_team;
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeTeamBaseZone)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeTeamBaseZone)
+
+#pragma warning(pop)
 
 #endif

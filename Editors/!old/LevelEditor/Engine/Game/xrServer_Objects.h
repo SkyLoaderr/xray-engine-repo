@@ -16,6 +16,9 @@
 	#include "PropertiesListHelper.h"
 #endif
 
+#pragma warning(push)
+#pragma warning(disable:4005)
+
 #define SPAWN_VERSION	u16(65)
 //------------------------------------------------------------------------------
 // Version history
@@ -89,7 +92,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_Spectator,CSE_Abstract)
 	virtual u8						g_team			();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_Spectator)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_Spectator)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Target,CSE_Abstract)
@@ -97,7 +99,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_Target,CSE_Abstract)
 	virtual							~CSE_Target		();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_Target)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_Target)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_TargetAssault,CSE_Target)
@@ -105,7 +106,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_TargetAssault,CSE_Target)
 	virtual							~CSE_TargetAssault();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_TargetAssault)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_TargetAssault)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Target_CS_Base,CSE_Target)
@@ -116,7 +116,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_Target_CS_Base,CSE_Target)
 	virtual u8						g_team			();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_Target_CS_Base)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_Target_CS_Base)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Target_CS_Cask,CSE_Target)
@@ -125,7 +124,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_Target_CS_Cask,CSE_Target)
 	virtual							~CSE_Target_CS_Cask();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_Target_CS_Cask)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_Target_CS_Cask)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Target_CS,CSE_Target)
@@ -134,7 +132,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_Target_CS,CSE_Target)
 	virtual							~CSE_Target_CS	();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_Target_CS)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_Target_CS)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Temporary,CSE_Abstract)
@@ -143,7 +140,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_Temporary,CSE_Abstract)
 	virtual							~CSE_Temporary	();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_Temporary)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_Temporary)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Event,CSE_Shape,CSE_Abstract)
@@ -161,7 +157,6 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_Event,CSE_Shape,CSE_Abstract)
 			void					Actions_clear	();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_Event)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_Event)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_SpawnGroup,CSE_Abstract)
@@ -172,11 +167,12 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_SpawnGroup,CSE_Abstract)
 	virtual							~CSE_SpawnGroup	();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_SpawnGroup)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_SpawnGroup)
 
 #ifndef AI_COMPILER
 extern CSE_Abstract	*F_entity_Create	(LPCSTR caSection);
 #endif
+
+#pragma warning(pop)
 
 #endif

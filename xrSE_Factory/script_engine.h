@@ -56,7 +56,6 @@ protected:
 			void				export_alife				();
 #endif
 			void				export_server_entities		();
-			void				export_classes				();
 
 public:
 								CScriptEngine				();

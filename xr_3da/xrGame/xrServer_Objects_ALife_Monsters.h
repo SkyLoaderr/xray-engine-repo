@@ -12,8 +12,10 @@
 #include "xrServer_Objects_ALife.h"
 #include "xrServer_Objects_ALife_Items.h"
 
-class CSE_ALifeTraderAbstract {
-public:
+#pragma warning(push)
+#pragma warning(disable:4005)
+
+SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeTraderAbstract)
 	float							m_fCumulativeItemMass;
 	int								m_iCumulativeItemVolume;
 	u32								m_dwMoney;
@@ -36,7 +38,6 @@ public:
 #endif
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeTraderAbstract)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeTraderAbstract)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_ALifeTraderAbstract)
@@ -61,7 +62,6 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_AL
 #endif
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeTrader)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeTrader)
 
 SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_ALifeSchedulable,CSE_Shape)
@@ -96,7 +96,6 @@ SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_A
 	virtual bool					need_update				(CSE_ALifeDynamicObject *object);
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeAnomalousZone)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeAnomalousZone)
 
 //---------------------------------------------------------------------------------------------------------
@@ -140,7 +139,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisu
 	virtual bool					can_switch_offline		() const;
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeCreatureAbstract)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeCreatureAbstract)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,CSE_ALifeSchedulable)
@@ -178,7 +176,6 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	virtual bool					need_update				(CSE_ALifeDynamicObject *object);
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeMonsterAbstract)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeMonsterAbstract)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CSE_ALifeTraderAbstract)
@@ -204,7 +201,6 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CS
 #endif
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeCreatureActor)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeCreatureActor)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureCrow,CSE_ALifeCreatureAbstract)
@@ -213,7 +209,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureCrow,CSE_ALifeCreatureAbstract)
 	virtual bool					used_ai_locations		() const;
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeCreatureCrow)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeCreatureCrow)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterRat,CSE_ALifeMonsterAbstract,CSE_ALifeInventoryItem)
@@ -249,7 +244,6 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterRat,CSE_ALifeMonsterAbstract,CSE_AL
 	virtual const CSE_Abstract		*base				() const;
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeMonsterRat)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeMonsterRat)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterZombie,CSE_ALifeMonsterAbstract)
@@ -271,7 +265,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterZombie,CSE_ALifeMonsterAbstract)
 	virtual							~CSE_ALifeMonsterZombie	();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeMonsterZombie)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeMonsterZombie)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterBiting,CSE_ALifeMonsterAbstract)
@@ -279,7 +272,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterBiting,CSE_ALifeMonsterAbstract)
 	virtual							~CSE_ALifeMonsterBiting	();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeMonsterBiting)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeMonsterBiting)
 
 //-------------------------------
@@ -359,7 +351,6 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 #endif
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeHumanAbstract)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeHumanAbstract)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeHumanStalker,CSE_ALifeHumanAbstract)
@@ -367,7 +358,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeHumanStalker,CSE_ALifeHumanAbstract)
 	virtual							~CSE_ALifeHumanStalker	();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeHumanStalker)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeHumanStalker)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectIdol,CSE_ALifeHumanAbstract)
@@ -377,7 +367,8 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectIdol,CSE_ALifeHumanAbstract)
 	virtual							~CSE_ALifeObjectIdol	();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeObjectIdol)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_ALifeObjectIdol)
+
+#pragma warning(pop)
 
 #endif

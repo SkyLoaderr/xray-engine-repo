@@ -8,12 +8,15 @@
 
 #pragma once
 
+struct lua_State;
+
 #ifdef SCRIPT_REGISTRATOR
 #	undef	STATIC_CHECK
 #	include <typelist.h>
 #	define	script_type_list		Loki::NullType
-#	define	add_to_type_list(type)	namespace SR {typedef Loki::TL::Append<script_type_list,type>::Result TypeList_##type; };
-#	define	save_type_list(type)	SR::TypeList_##type
+//#	define	add_to_type_list(type)	typedef Loki::TL::Append<script_type_list,type>::Result TypeList_##type;
+#	define	add_to_type_list(type)	typedef Loki::Typelist<type,script_type_list> TypeList_##type;
+#	define	save_type_list(type)	TypeList_##type
 #else
 #	define	script_type_list		
 #	define	add_to_type_list(type)	;

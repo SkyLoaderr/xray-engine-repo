@@ -13,22 +13,22 @@
 #include "xrServer_Space.h"
 #include "script_export_space.h"
 
-class CPureServerObject : public IPureServerObject {
-public:
+#pragma warning(push)
+#pragma warning(disable:4005)
+
+SERVER_ENTITY_DECLARE_BEGIN(CPureServerObject,IPureServerObject)
 	virtual							~CPureServerObject(){}
 	virtual void					load(IReader	&tFileStream);
 	virtual void					save(IWriter	&tMemoryStream);
 	virtual void					load(NET_Packet	&tNetPacket);
 	virtual void					save(NET_Packet	&tNetPacket);
-//	static  void					script_register(lua_State *L);
 };
 add_to_type_list(CPureServerObject)
-#undef script_type_list
 #define script_type_list save_type_list(CPureServerObject)
 
 class xrClientData;
 
-class CSE_Abstract : public CPureServerObject {
+SERVER_ENTITY_DECLARE_BEGIN(CSE_Abstract,CPureServerObject)
 public:
 	BOOL							net_Ready;
 	BOOL							net_Processed;	// Internal flag for connectivity-graph
@@ -74,12 +74,9 @@ public:
 #endif
 };
 add_to_type_list(CSE_Abstract)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_Abstract)
 
-class CSE_Shape
-{
-public:
+SERVER_ENTITY_DECLARE_BEGIN0(CSE_Shape)
 	enum{
     	cfSphere=0,
         cfBox
@@ -103,11 +100,10 @@ public:
 	virtual							~CSE_Shape		();
 };
 add_to_type_list(CSE_Shape)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_Shape)
 
-class CSE_Visual
-{
+SERVER_ENTITY_DECLARE_BEGIN0(CSE_Visual)
+private:
 	string64						visual_name;
 public:
 #ifdef _EDITOR
@@ -131,15 +127,14 @@ public:
 #endif
 };
 add_to_type_list(CSE_Visual)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_Visual)
 
 #ifdef _EDITOR
 	class CObjectAnimator;
 #endif
 
-class CSE_Motion
-{
+SERVER_ENTITY_DECLARE_BEGIN0(CSE_Motion)
+private:
 	ref_str							motion_name;
 public:
 #ifdef _EDITOR
@@ -162,7 +157,8 @@ public:
 #endif
 };
 add_to_type_list(CSE_Motion)
-#undef script_type_list
 #define script_type_list save_type_list(CSE_Motion)
+
+#pragma warning(pop)
 
 #endif // xrServer_Objects_AbstractH

@@ -19,6 +19,8 @@
 #	include "ai_script_processor.h"
 #endif
 
+extern void export_classes	(lua_State *L);
+
 CScriptEngine::CScriptEngine	()
 {
 //	lua_setgcthreshold		(lua(),64*1024);
@@ -115,7 +117,7 @@ void CScriptEngine::export()
 	export_motivation_management		();
 	export_monster_info					();
 #endif
-	export_classes						();
+	export_classes						(lua());
 
 #ifdef XRGAME_EXPORTS
 	load_class_registrators				();
