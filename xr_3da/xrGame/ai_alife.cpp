@@ -50,18 +50,18 @@ void CSE_ALifeSimulator::vfNewGame()
 	ALIFE_ENTITY_P_IT			E = m_tpSpawnPoints.end();
 	for (ALIFE_ENTITY_P_IT I = B ; I != E; ) {
 		u32						wGroupID	= (*I)->m_dwSpawnGroup;
-		float					fSum		= (*I)->m_ucProbability;
+		float					fSum		= (*I)->m_fProbability;
 		
 		for (ALIFE_ENTITY_P_IT j= I + 1; (j != E) && ((*j)->m_dwSpawnGroup == wGroupID); j++)
-			fSum += (*j)->m_ucProbability;
+			fSum += (*j)->m_fProbability;
 
 		float					fProbability = ::Random.randF(0,fSum);
-		fSum					= (*I)->m_ucProbability;
+		fSum					= (*I)->m_fProbability;
 		ALIFE_ENTITY_P_IT		m = j;
 		ALIFE_ENTITY_P_IT		k = I;
 
 		for ( j= I + 1; (j != E) && ((*j)->m_dwSpawnGroup == wGroupID); j++) {
-			fSum += (*j)->m_ucProbability;
+			fSum += (*j)->m_fProbability;
 			if (fSum > fProbability) {
 				k = j;
 				break;
