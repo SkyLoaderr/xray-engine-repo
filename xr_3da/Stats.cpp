@@ -153,7 +153,7 @@ void CStats::Show()
 		F.OutNext	("  S_render:  %2.2fms",RenderDUMP_Srender.result);
 		F.OutSkip	();
 		F.OutNext	("*** SOUND:   %2.2fms",Sound.result);
-		F.OutNext	("  SP/SA:     %d/%d",  dwSND_Played,dwSND_Allocated);
+		F.OutNext	("  REND/SIM:  %d/%d",  ::Sound->stat_render(),::Sound->stat_simulate());
 		F.OutSkip	();
 		F.OutNext	("Input:       %2.2fms",Input.result);
 		F.OutNext	("clRAY:       %2.2fms, %d, %2.0fK",clRAY.result,clRAY.count,r_ps);

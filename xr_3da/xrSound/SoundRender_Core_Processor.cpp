@@ -71,7 +71,7 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 u32		CSoundRender_Core::stat_render	()
 {
 	u32 counter		= 0;
-	for (it=0; it<s_targets.size(); it++)
+	for (u32 it=0; it<s_targets.size(); it++)
 	{
 		CSoundRender_Target*	T	= s_targets	[it];
 		if (T->get_emitter() && T->get_Rendering())	counter++;
