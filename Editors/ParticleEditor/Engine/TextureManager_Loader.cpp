@@ -177,9 +177,8 @@ void	CShaderManager::OnDeviceCreate	(IReader* F)
 		IReader*	fs		= F->open_chunk	(0);
 		while (fs && !fs->eof())	{
 			fs->r_stringZ	(name);
-			CConstant*		C = xr_new<CConstant>();
+			CConstant*	C	= _CreateConstant	(name);
 			C->Load			(fs);
-			m_constants.insert(mk_pair(xr_strdup(name),C));
 		}
 		fs->close();
 	}
@@ -189,9 +188,8 @@ void	CShaderManager::OnDeviceCreate	(IReader* F)
 		IReader*	fs		= F->open_chunk(1);
 		while (fs&&!fs->eof())	{
 			fs->r_stringZ	(name);
-			CMatrix*		M	= xr_new<CMatrix>();
-			M->Load				(fs);
-			m_matrices.insert	(mk_pair(xr_strdup(name),M));
+			CMatrix*	M	= _CreateMatrix	(name);
+			M->Load			(fs);
 		}
 		fs->close();
 	}

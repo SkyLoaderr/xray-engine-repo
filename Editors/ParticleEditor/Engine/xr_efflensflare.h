@@ -32,7 +32,7 @@ public:
     	float		fPosition;
 		ref_shader	hShader;
         string128	texture;
-    	SFlare()	{ZeroMemory(this,sizeof(SFlare));}
+    	SFlare()	{	fOpacity = fRadius = fPosition = 0; texture[0]=0; }
 	};
     DEFINE_VECTOR	(SFlare,FlareVec,FlareIt);
     FlareVec		m_Flares;

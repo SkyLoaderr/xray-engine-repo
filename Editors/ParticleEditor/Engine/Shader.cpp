@@ -55,7 +55,6 @@ BOOL	SPass::equal	(SPass& P)
 //
 ShaderElement::ShaderElement()
 {
-	ZeroMemory			(this,sizeof(*this));
 	Flags.iPriority		= 1;
 	Flags.bStrictB2F	= FALSE;
 	Flags.bLighting		= FALSE;

@@ -226,7 +226,7 @@ void CFrustum::CreateOccluder(Fvector* p, int count, Fvector& vBase, CFrustum& c
 
 	BOOL	edge[FRUSTUM_SAFE];
 	float	cls	[FRUSTUM_SAFE];
-	ZeroMemory(edge,sizeof(edge));
+	ZeroMemory	(edge,sizeof(edge));
 	for (int i=0; i<clip.p_count; i++)
 	{
 		// classify all points relative to plane #i
