@@ -84,8 +84,8 @@ void CSE_ALifeSimulator::vfListObjects()
 	string64		tString;
 	Msg("%s->Listing objects :",cName());
 	for (int i=0; I != E; I++, i++) {
-		Memory.mem_copy(tString,&((*I).second->m_caSection),sizeof((*I).second->m_caSection));
-		tString[sizeof((*I).second->m_caSection)] = 0;
+		Memory.mem_copy(tString,&((*I).second->m_tClassID),sizeof((*I).second->m_tClassID));
+		tString[sizeof((*I).second->m_tClassID)] = 0;
 		Msg("* %4d : %8s[ID=%4d][MDL=%10s][GID=%4d][UPD=%d]",i,tString,(*I).first,(*I).second->s_name,(*I).second->m_tGraphID,(*I).second->m_tTimeID);
 	}
 	Msg("Total %d objects",i);
@@ -358,14 +358,14 @@ void CSE_ALifeSimulator::vfEventInfo(_EVENT_ID &tEventID)
 	Msg("* Battle    : %d",tEvent.m_tBattleResult);
 	Msg("* Monster 1 :");
 	CSE_ALifeEventGroup *tpMG = tEvent.m_tpMonsterGroup1;
-	Msg("*     Class  ID    : %d",tpMG->m_caSection);
+	Msg("*     Class  ID    : %d",tpMG->m_tClassID);
 	Msg("*     Object ID    : %d",tpMG->ID);
 //	Msg("*     Spawn  ID    : %d",tpMG->m_tSpawnID);
 	Msg("*     Count before : %d",tpMG->m_wCountBefore);
 	Msg("*     Count after  : %d",tpMG->m_wCountAfter);
 	Msg("* Monster 2 :");
 	tpMG = tEvent.m_tpMonsterGroup2;
-	Msg("*     Class  ID    : %d",tpMG->m_caSection);
+	Msg("*     Class  ID    : %d",tpMG->m_tClassID);
 	Msg("*     Object ID    : %d",tpMG->ID);
 //	Msg("*     Spawn  ID    : %d",tpMG->m_tSpawnID);
 	Msg("*     Count before : %d",tpMG->m_wCountBefore);

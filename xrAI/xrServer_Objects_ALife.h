@@ -79,7 +79,7 @@ SERVER_ENTITY_DECLARE_END
 class CSE_ALifeObject : virtual public CSE_Abstract {
 public:
 	typedef CSE_Abstract inherited;
-	_CLASS_ID						m_caSection;
+	_CLASS_ID						m_tClassID;
 	_GRAPH_ID						m_tGraphID;
 	_SPAWN_ID						m_tSpawnID;
 	float							m_fDistance;

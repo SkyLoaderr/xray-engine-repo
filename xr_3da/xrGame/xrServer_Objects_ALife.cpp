@@ -321,7 +321,7 @@ CSE_ALifeObject::CSE_ALifeObject			(LPCSTR caSection) : CSE_Abstract(caSection)
 {
 	m_bOnline					= false;
 	m_fDistance					= 0.0f;
-	m_caSection					= _CLASS_ID(-1);
+	m_tClassID					= _CLASS_ID(-1);
 	ID							= _OBJECT_ID(-1);
 	m_tGraphID					= _GRAPH_ID(-1);
 	m_tGraphID					= _SPAWN_ID(-1);
