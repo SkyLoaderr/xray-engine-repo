@@ -84,7 +84,7 @@ void CScriptEngine::export()
 	script_register				(lua());
 
 #ifdef DEBUG
-	lua_sethook					(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE,	0);
+	lua_sethook					(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
 #endif
 
 	load_common_scripts			();

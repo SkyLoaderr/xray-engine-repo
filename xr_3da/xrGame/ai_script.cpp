@@ -26,7 +26,7 @@ CScript::CScript(LPCSTR caNamespaceName)
 	VERIFY2				(lua(),"Cannot create new Lua thread");
 	
 #ifdef DEBUG
-	lua_sethook			(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE,	0);
+	lua_sethook			(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
 #endif
 
 //	sprintf				(S,"function start_thread()\n%s.main()\nend\n",caNamespaceName);

@@ -35,12 +35,14 @@ void CScriptStackTracker::script_hook	(CLuaVirtualMachine *L, lua_Debug *dbg)
 			--m_current_stack_level;
 			break;
 		}
+		case LUA_HOOKTAILRET : {
+			VERIFY		(m_current_stack_level > 0);
+			--m_current_stack_level;
+			break;
+		}
 		case LUA_HOOKLINE : {
 			lua_getinfo	(L,"l",dbg);
 			m_stack[m_current_stack_level].currentline = dbg->currentline;
-			break;
-		}
-		case LUA_HOOKTAILRET : {
 			break;
 		}
 		case LUA_HOOKCOUNT : {
