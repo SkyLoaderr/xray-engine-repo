@@ -103,7 +103,7 @@ void CSpectator::OnKeyboardHold(int cmd)
 {
 	if (Remote())		return;
 
-	if (cam_active==eacFreeFly){
+	if ((cam_active==eacFreeFly)||(cam_active==eacFreeLook)){
 		CCameraBase* C	= cameras	[cam_active];
 		Fvector vmove={0,0,0};
 		switch(cmd){
@@ -164,22 +164,33 @@ void CSpectator::cam_Update	(const Fmatrix* M)
 {
 	if (M){
 		switch(cam_active) {
-		case eacFirstEye:
+		case eacFirstEye:{
 			CCameraBase* cam		= cameras[cam_active];
-			cam->Set				(M->c,M->k,M->j);
+			Fvector P;
+			P.add					(M->c,1.6f);
+			cam->Set				(P,M->k,M->j);
 			pCreator->Cameras.Update(cam);
-			break;
+			}break;
+		case eacFreeLook:
+		case eacLookAt:{
+			CCameraBase* cam		= cameras[cam_active];
+			Fvector point, dangle;
+			point.set				(0.f,1.6f,0.f);
+			M->transform_tiny		(point);
+			cam->Update				(point,dangle);
+			pCreator->Cameras.Update(cam);
+			}break;
 		}
 	}else{
 		R_ASSERT(cam_active==eacFreeFly);
 		Fvector point, dangle;
-		point.set					(0.f,1.f,0.f);
+		point.set					(0.f,1.6f,0.f);
 		svTransform.transform_tiny	(point);
 
 		// apply shift
 		dangle.set					(0,0,0);
 		CCameraBase* cam			= cameras[cam_active];
 		cam->Update					(point,dangle);
-		pCreator->Cameras.Update(cam);
+		pCreator->Cameras.Update	(cam);
 	}
 }
