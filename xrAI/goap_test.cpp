@@ -204,10 +204,68 @@ void test_goap	()
 
 	problem_solver.set_target_state		(condition);
 
+//	CSProblemSolver						problem_solver;
+//	CSProblemSolver::CState				start_condition;
+//	FILE								*f = fopen("x:\\dump.txt","rt");
+//	{
+//		u32								count;
+//		fscanf							(f,"%d",&count);
+//		for (u32 i=0; i<count; ++i) {
+//			u32							id, value;
+//			fscanf						(f,"%d,%d",&id,&value);
+//			start_condition.add_condition(CCondition(id,!!value));
+//			problem_solver.add_evaluator(id,xr_new<CConstConditionEvaluator>(!!value));
+//		}
+//	}
+//	{
+//		CSProblemSolver::CState			condition;
+//		u32								count;
+//		fscanf							(f,"%d",&count);
+//		for (u32 i=0; i<count; ++i) {
+//			u32							id, value;
+//			fscanf						(f,"%d,%d",&id,&value);
+//			condition.add_condition		(CCondition(id,!!value));
+//		}
+//		problem_solver.set_target_state	(condition);
+//	}
+//	{
+//		u32								count;
+//		fscanf							(f,"%d",&count);
+//		for (u32 i=0; i<count; ++i) {
+//			COperator					*op = xr_new<COperator>();
+//			u32							count1,weight,id;
+//			fscanf						(f,"%d,%d",&id,&weight);
+//			VERIFY						(weight == 1);
+////			op->set_weight				(weight);
+//			{
+//				fscanf						(f,"%d",&count1);
+//				for (u32 j=0; j<count1; ++j) {
+//					u32						id, value;
+//					fscanf					(f,"%d,%d",&id,&value);
+//					op->add_condition		(CCondition(id,!!value));
+//				}
+//			}
+//			{
+//				fscanf						(f,"%d",&count1);
+//				for (u32 j=0; j<count1; ++j) {
+//					u32						id, value;
+//					fscanf					(f,"%d,%d",&id,&value);
+//					op->add_effect			(CCondition(id,!!value));
+//				}
+//			}
+//			problem_solver.add_operator	(id,op);
+//		}
+//	}
+//	fclose								(f);
+
 	path.clear							();
 
 	u64 start							= CPU::GetCycleCount();
+#ifndef STRAIGHT_SEARCH
 	graph_engine->search				(problem_solver,problem_solver.target_state(),problem_solver.current_state(),&path,CBaseParameters());
+#else
+	graph_engine->search				(problem_solver,problem_solver.current_state(),problem_solver.target_state(),&path,CBaseParameters());
+#endif
 	u64 finish							= CPU::GetCycleCount();
 	total								+= finish - start;
 	vertex_count						+= graph_engine->solver_algorithm().data_storage().get_visited_node_count();

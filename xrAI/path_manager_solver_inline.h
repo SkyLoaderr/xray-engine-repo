@@ -79,7 +79,8 @@ IC	_dist_type CSolverPathManager::estimate			(const _index_type &vertex_id) cons
 {
 	VERIFY					(graph);
 //	return					((_dist_type)graph->get_edge_weight(vertex_id,start_node_index,m_iterator));
-	return					(0*(_dist_type)vertex_id.conditions().size());
+//	return					((_dist_type)vertex_id.conditions().size());
+	return					((_dist_type)0);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -104,7 +105,11 @@ IC	void CSolverPathManager::create_path			(T &vertex)
 {
 	VERIFY					(this->data_storage);
 	if (m_edge_path)
+#ifdef STRAIGHT_SEARCH
+		data_storage->get_edge_path	(*m_edge_path,&vertex,false);
+#else
 		data_storage->get_edge_path	(*m_edge_path,&vertex,true);
+#endif
 }
 
 #undef TEMPLATE_SPECIALIZATION

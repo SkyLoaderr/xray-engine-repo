@@ -10,6 +10,8 @@
 
 #include "operator_abstract.h"
 
+#define STRAIGHT_SEARCH
+
 template <
 	typename _operator_condition,
 	typename _condition_state,

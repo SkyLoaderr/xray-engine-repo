@@ -210,14 +210,14 @@ TEMPLATE_SPECIALIZATION
 IC	const typename CProblemSolverAbstract::_index_type &CProblemSolverAbstract::value(const _index_type &vertex_index, const_iterator &i, bool reverse_search) const
 {
 	if (reverse_search) {
-		if ((*i).m_operator->applicable((*i).m_operator->effects(),(*i).m_operator->conditions(),vertex_index))
+		if ((*i).m_operator->applicable_reverse((*i).m_operator->effects(),(*i).m_operator->conditions(),vertex_index))
 			m_applied			= (*i).m_operator->apply_reverse(vertex_index,(*i).m_operator->effects(),m_temp,(*i).m_operator->conditions());
 		else
 			m_applied			= false;
 	}
 	else {
-		if ((*i).m_operator->applicable(vertex_index,current_state(),(*i).m_operator->conditions())) {
-			(*i).m_operator->apply(vertex_index,(*i).m_operator->effects(),m_temp);
+		if ((*i).m_operator->applicable(vertex_index,current_state(),(*i).m_operator->conditions(),*this)) {
+			(*i).m_operator->apply(vertex_index,(*i).m_operator->effects(),m_temp,m_current_state,*this);
 			m_applied			= true;
 		}
 		else
@@ -236,6 +236,7 @@ IC	void CProblemSolverAbstract::begin			(const _index_type &vertex_index, const_
 TEMPLATE_SPECIALIZATION
 IC	bool CProblemSolverAbstract::is_goal_reached(const _index_type &vertex_index) const
 {
+#ifndef STRAIGHT_SEARCH
 	xr_vector<COperatorCondition>::const_iterator	I = m_current_state.conditions().begin();
 	xr_vector<COperatorCondition>::const_iterator	E = m_current_state.conditions().end();
 	xr_vector<COperatorCondition>::const_iterator	i = vertex_index.conditions().begin();
@@ -250,6 +251,8 @@ IC	bool CProblemSolverAbstract::is_goal_reached(const _index_type &vertex_index)
 				evaluate_condition	(I,E,(*i).condition());
 				if ((*I).value() != (*i).value())
 					return		(false);
+				++I;
+				++i;
 			}
 			else
 				if ((*I).value() != (*i).value())
@@ -260,6 +263,59 @@ IC	bool CProblemSolverAbstract::is_goal_reached(const _index_type &vertex_index)
 				}
 	}
 	return						(true);
+#else
+	xr_vector<COperatorCondition>::const_iterator	I = vertex_index.conditions().begin();
+	xr_vector<COperatorCondition>::const_iterator	E = vertex_index.conditions().end();
+	xr_vector<COperatorCondition>::const_iterator	i = target_state().conditions().begin();
+	xr_vector<COperatorCondition>::const_iterator	e = target_state().conditions().end();
+	xr_vector<COperatorCondition>::const_iterator	II = current_state().conditions().begin();
+	xr_vector<COperatorCondition>::const_iterator	EE = current_state().conditions().end();
+	for ( ; (i != e) && (I != E); ) {
+		if ((*I).condition() < (*i).condition()) {
+			++I;
+		}
+		else
+			if ((*I).condition() > (*i).condition()) {
+				for ( ; (II != EE) && ((*II).condition() < (*i).condition()); )
+					++II;
+				if ((II == EE) || ((*II).condition() > (*i).condition()))
+					evaluate_condition(II,EE,(*i).condition());
+				if ((*II).value() != (*i).value())
+					return	(false);
+				++II;
+				++i;
+			}
+			else {
+				if ((*I).value() != (*i).value())
+					return		(false);
+				++I;
+				++i;
+			}
+	}
+
+	if (I == E) {
+		I = II;
+		E = EE;
+	}
+	else
+		return	(true);
+
+	for ( ; i != e; ) {
+		if ((I == E) || ((*I).condition() > (*i).condition()))
+			evaluate_condition(I,E,(*i).condition());
+
+		if ((*I).condition() < (*i).condition())
+			++I;
+		else {
+			VERIFY	((*I).condition() == (*i).condition());
+			if ((*I).value() != (*i).value())
+				return	(false);
+			++I;
+			++i;
+		}
+	}
+	return		(true);
+#endif
 }
 
 TEMPLATE_SPECIALIZATION
@@ -300,7 +356,11 @@ IC	void CProblemSolverAbstract::solve			()
 	m_actuality					= true;
 	m_solution_changed			= true;
 	m_current_state.clear		();
-	bool						successful = ai().graph_engine().search(*this,target_state(),CState(),&m_solution,CGraphEngine::CSolverBaseParameters(CGraphEngine::_solver_dist_type(-1),CGraphEngine::_solver_condition_type(-1),8000));
+#ifdef STRAIGHT_SEARCH
+	bool						successful = ai().graph_engine().search(*this,current_state(),target_state(),&m_solution,CGraphEngine::CSolverBaseParameters(CGraphEngine::_solver_dist_type(-1),CGraphEngine::_solver_condition_type(-1),8000));
+#else
+	bool						successful = ai().graph_engine().search(*this,target_state(),current_state(),&m_solution,CGraphEngine::CSolverBaseParameters(CGraphEngine::_solver_dist_type(-1),CGraphEngine::_solver_condition_type(-1),8000));
+#endif
 	m_failed					= !successful;
 #endif
 }
