@@ -6,7 +6,7 @@
 
 #include "fmesh.h"
 #include "PSVisual.h"
-#include "ParticleSystem.h"
+#include "PSRuntime.h"
 #include "PSLibrary.h"
 
 CPSVisual::CPSVisual():CVisual()
