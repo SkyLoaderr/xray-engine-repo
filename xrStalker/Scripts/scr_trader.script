@@ -1,13 +1,12 @@
 module( "monsters" )
+local trader = nil
 
-function main()
+function init()
+	trader = this.Trader ( "escape_trader", "trader_zone", this.script_name())
+end
 
-    local trader = this.Trader ( "m_trader", "trader_zone", this.script_name())
-
-    while true do
-       	  trader:process()
-          wait()
-	end
+function execute()
+	trader:process()
 end
 
 local actor_id   = 0
