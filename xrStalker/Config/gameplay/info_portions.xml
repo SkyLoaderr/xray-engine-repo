@@ -10,6 +10,36 @@
   <info_portion id="encyclopedy">
   <article>social_stalker-clans_gunslinger-clan</article>
   </info_portion>
+  
+  
+  <!-- special info portion that sends to actor when it
+    use in-game UI (PDA, Inventory, etc)-->
+    
+      
+   <info_portion id="ui_pda_contacts"></info_portion>
+   <info_portion id="ui_pda_communication"></info_portion>
+   
+   
+   <info_portion id="ui_pda_encyclopedy"></info_portion>
+   <info_portion id="ui_pda_map_local"></info_portion>
+   <info_portion id="ui_pda_map_global"></info_portion>
+   
+   <info_portion id="ui_pda_news"></info_portion>
+   <info_portion id="ui_pda_encyclopedia"></info_portion>
+   <info_portion id="ui_pda_diary"></info_portion>
+   
+   <info_portion id="ui_pda_jobs_failed"></info_portion>
+   <info_portion id="ui_pda_jobs_accomplished"></info_portion>
+   <info_portion id="ui_pda_jobs_current"></info_portion>
+   
+   <info_portion id="ui_pda_contracts"></info_portion>
+   <info_portion id="ui_pda_events_diary"></info_portion>
+      
+   <info_portion id="ui_pda_actor_info"></info_portion>
+   <info_portion id="ui_pda_statistics"></info_portion>
+
+   
+   <info_portion id="ui_inventory"></info_portion>
 
 
 </game_information_portions>
