@@ -195,7 +195,7 @@ void xrLoad(LPCSTR name)
 						h_data.dest				= dest;
 						h_data.T				= RL;
 						h_data.T.amount			= 0;
-						xrHemisphereBuild		(Header.params.area_quality,FALSE,0.5f,Header.params.area_energy_summary,hemi_callback,&h_data);
+						xrHemisphereBuild		(1,FALSE,0.5f,Header.params.area_energy_summary,hemi_callback,&h_data);
 					}
 				} else {
 					RL.type			= LT_POINT;
