@@ -16,53 +16,7 @@ function motivator_binder:__init (obj) super(obj)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:reinit()
-	object_binder.reinit(self)
-	
-	self.object:set_pda_callback(pda_callback)
-	self.object:set_hear_callback(hear_callback)
-end
-----------------------------------------------------------------------------------------------------------------------
-function motivator_binder:net_spawn(sobject)
-	local sim = alife()
-	if sim ~= nil then 
-		xr_spawner.spawn(sobject)
-	end
-	return object_binder.net_spawn(self, sobject)
-end
-----------------------------------------------------------------------------------------------------------------------
-function motivator_binder:net_destroy()
-	xr_motivator.storage[self.object:id()] = nil
-    object_binder.net_destroy(self)
-end
-----------------------------------------------------------------------------------------------------------------------
-function motivator_binder:update(delta)
-    object_binder.update(self, delta)
---' Проверка ТИМ СКВАД ГРУП
-if false then
-  if memtsg[self.object:id()] == nil then
-    printf("[TSG] Object: %s t:%d s:%d g:%d", self.object:name(),
-                          self.object:team(),
-                          self.object:squad(),
-                          self.object:group())
-    memtsg[self.object:id()] = self.object:id()
-  end
-end
-
---' Проверка потери жизни
-if false then
-	if lasttime == nil or
-	   game.get_game_time():diffSec(lasttime) > 1 
-	then
-		printf("%f * %f", self.object.health, self.object.health - lasthealth)
-		lasthealth = self.object.health
-		lasttime = game.get_game_time()
-	end
-end
-
-end
-----------------------------------------------------------------------------------------------------------------------
-function motivator_binder:reload (section)
-    object_binder.reload(self, section)
+    object_binder.reinit(self)
 
     local char_ini = self.object:spawn_ini()
 
@@ -143,11 +97,57 @@ function motivator_binder:reload (section)
     }
 	xr_wounded.add_to_binder (self.object, char_ini)
 
+
 ----------------------------------------------------------------------------------------------------------------------
--- Модели поведения
+-- Скрипты, управляемые xr_logic
 ----------------------------------------------------------------------------------------------------------------------
-	--' 
 	xr_logic.stalker_enable_scripts(self.object, char_ini)
+end
+----------------------------------------------------------------------------------------------------------------------
+function motivator_binder:net_spawn(sobject)
+	local sim = alife()
+	if sim ~= nil then 
+		xr_spawner.spawn(sobject)
+	end
+	return object_binder.net_spawn(self, sobject)
+end
+----------------------------------------------------------------------------------------------------------------------
+function motivator_binder:net_destroy()
+	xr_motivator.storage[self.object:id()] = nil
+    object_binder.net_destroy(self)
+end
+----------------------------------------------------------------------------------------------------------------------
+function motivator_binder:update(delta)
+    object_binder.update(self, delta)
+--' Проверка ТИМ СКВАД ГРУП
+if false then
+  if memtsg[self.object:id()] == nil then
+    printf("[TSG] Object: %s t:%d s:%d g:%d", self.object:name(),
+                          self.object:team(),
+                          self.object:squad(),
+                          self.object:group())
+    memtsg[self.object:id()] = self.object:id()
+  end
+end
+
+--' Проверка потери жизни
+if false then
+	if lasttime == nil or
+	   game.get_game_time():diffSec(lasttime) > 1 
+	then
+		printf("%f * %f", self.object.health, self.object.health - lasthealth)
+		lasthealth = self.object.health
+		lasttime = game.get_game_time()
+	end
+end
+
+end
+----------------------------------------------------------------------------------------------------------------------
+function motivator_binder:reload (section)
+    object_binder.reload(self, section)
+
+    self.object:set_pda_callback(pda_callback)
+    self.object:set_hear_callback(hear_callback)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function pda_callback(recepient, who, msg_type)
