@@ -17,7 +17,7 @@ void CActor::cam_Update(float dt, BOOL bZoom)
 	// get calc eye point 90% from player height
 	Fvector						R;
 	Movement.Box().getsize		(R);
-	point.set					(0.f,R.y,0.f);
+	point.set					(0.f,.9f*R.y,0.f);
 	svTransform.transform_tiny	(point);
 
 	// soft crouch
