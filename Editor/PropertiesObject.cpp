@@ -48,8 +48,7 @@ __fastcall TfrmPropertiesObject::TfrmPropertiesObject(TComponent* Owner)
     : TForm(Owner)
 {
     sgBB->Cells[0][0]="X"; sgBB->Cells[0][1]="Y"; sgBB->Cells[0][2]="Z";
-    char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
-    fsStorage->IniFileName = buf;
+    DEFINE_INI(fsStorage);
     bLoadMode = false;
 }
 //---------------------------------------------------------------------------
@@ -247,7 +246,7 @@ void __fastcall TfrmPropertiesObject::ebSelectShaderXRLCClick(
 	if (!m_Surf) return;
 	LPCSTR S = TfrmChoseItem::SelectShaderXRLC(0,m_Surf->_ShaderXRLCName()?m_Surf->_ShaderXRLCName():0);
     if (S){
-        lbShader->Caption = S;
+        lbShaderXRLC->Caption = S;
 		m_Surf->SetShaderXRLC(S);
         OnModified(Sender);
     }
@@ -284,7 +283,8 @@ void __fastcall TfrmPropertiesObject::tvSurfacesItemFocused( TObject *Sender)
             CSurface* surf				= (CSurface*)(Item->Data);
             lbSurfFaces->Caption 		= m_EditObject->GetSurfFaceCount(surf->_Name());
             lbSurfSideFlag->Caption 	= (surf->_2Sided())?"yes":"no";
-            lbShader->Caption			= surf->_Name();
+            lbShader->Caption			= surf->_ShaderName();
+            lbShaderXRLC->Caption		= surf->_ShaderXRLCName();
             lbTexture->Caption			= surf->_Texture();
             // FVF
             lbSurfFVF_XYZ->Caption		= (surf->_FVF()&D3DFVF_XYZ)?"yes":"no";

@@ -5,10 +5,11 @@
 
 #include "DOShuffle.h"
 #include "ChoseForm.h"
-#include "Texture.h"
+#include "ImageThumbnail.h"
 #include "xr_trims.h"
 #include "Library.h"
 #include "DOOneColor.h"
+#include "EditObject.h"
 #include "Scene.h"
 #include "DetailObjects.h"
 #include "D3DUtils.h"
@@ -108,15 +109,7 @@ void TfrmDOShuffle::ApplyInfo(){
 __fastcall TfrmDOShuffle::TfrmDOShuffle(TComponent* Owner)
     : TForm(Owner)
 {
-    char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
-    fsStorage->IniFileName = buf;
-}
-//---------------------------------------------------------------------------
-TElTreeItem* TfrmDOShuffle::FindFolder(const char* s)
-{
-    for ( TElTreeItem* node = tvItems->Items->GetFirstNode(); node; node = node->GetNext())
-        if (!node->Data && (AnsiString(node->Text) == s)) return node;
-    return 0;
+    DEFINE_INI(fsStorage);
 }
 //---------------------------------------------------------------------------
 TElTreeItem* TfrmDOShuffle::FindItem(const char* s)
@@ -124,17 +117,6 @@ TElTreeItem* TfrmDOShuffle::FindItem(const char* s)
     for ( TElTreeItem* node = tvItems->Items->GetFirstNode(); node; node = node->GetNext())
         if (node->Data && (AnsiString(node->Text) == s)) return node;
     return 0;
-}
-//---------------------------------------------------------------------------
-TElTreeItem* TfrmDOShuffle::AddFolder(const char* s)
-{
-    TElTreeItem* node = 0;
-    if (s[0]!=0){
-        node = tvItems->Items->AddObject(0,s,0);
-        node->ParentStyle = false;
-        node->Bold = true;
-    }
-    return node;
 }
 //---------------------------------------------------------------------------
 TElTreeItem* TfrmDOShuffle::AddItem(TElTreeItem* node, const char* name, void* obj)
@@ -145,13 +127,6 @@ TElTreeItem* TfrmDOShuffle::AddItem(TElTreeItem* node, const char* name, void* o
     return obj_node;
 }
 //---------------------------------------------------------------------------
-TElTreeItem* TfrmDOShuffle::AddItemToFolder(const char* folder, const char* name, void* obj){
-	TElTreeItem* node = FindFolder(folder);
-    if (!node) node = AddFolder(folder);
-	return AddItem(node,name,obj);
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfrmDOShuffle::ebOkClick(TObject *Sender)
 {
 	ApplyInfo();
@@ -181,7 +156,7 @@ void __fastcall TfrmDOShuffle::FormClose(TObject *Sender, TCloseAction &Action)
 	for (DWORD k=0; k<color_indices.size(); k++)
     	_DELETE(color_indices[k]);
     color_indices.clear();
-//S    _DELETE(sel_thm);
+    _DELETE(m_Thm);
 
     if (ModalResult==mrOk)
 		Scene.m_DetailObjects->InvalidateCache();
@@ -191,42 +166,29 @@ void __fastcall TfrmDOShuffle::FormClose(TObject *Sender, TCloseAction &Action)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmDOShuffle::tvItemsItemSelectedChange(TObject *Sender, TElTreeItem *Item)
+void __fastcall TfrmDOShuffle::tvItemsItemFocused(TObject *Sender)
 {
-	if (Item==tvItems->Selected) return;
-//S    _DELETE(sel_thm);
+	TElTreeItem* Item = tvItems->Selected;
+    _DELETE(m_Thm);
 	if (Item&&Item->Data){
-		AnsiString nm = AnsiString("$O_")+Item->Text;
-//S
-/*    	sel_thm 				= new ETextureThumbnail(nm.c_str());
-        if (!sel_thm->Load()) 	pbImage->Repaint();
-        else				 	pbImagePaint(Sender);
-        SDOData* dd				= (SDOData*)Item->Data;
-		lbItemName->Caption 	= "\""+AnsiString(dd->LO->GetName())+"\"";
-		AnsiString temp; 		temp.sprintf("Density: %1.2f\nScale: [%3.1f, %3.1f)",dd->m_fDensityFactor,dd->m_fMinScale,dd->m_fMaxScale);
-        lbInfo->Caption			= temp;
-*/
+		AnsiString nm 		= Item->Text;
+    	m_Thm 				= new EImageThumbnail(nm.c_str(),EImageThumbnail::EITObject);
+        SDOData* dd			= (SDOData*)Item->Data;
+		lbItemName->Caption = "\""+AnsiString(dd->O->GetName())+"\"";
+		AnsiString temp; 	temp.sprintf("Density: %1.2f\nScale: [%3.1f, %3.1f)",dd->m_fDensityFactor,dd->m_fMinScale,dd->m_fMaxScale);
+        lbInfo->Caption		= temp;
     }else{
 		lbItemName->Caption = "-";
 		lbInfo->Caption		= "-";
     }
+    if (m_Thm&&m_Thm->Valid())	pbImagePaint(Sender);
+    else                        pbImage->Repaint();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmDOShuffle::pbImagePaint(TObject *Sender)
 {
-//S
-/*
-	if (sel_thm){
-        RECT r; r.left = 2; r.top = 2;
-        float w, h;
-        w = THUMB_WIDTH;
-        h = THUMB_HEIGHT;
-        if (w>h){   r.right = pbImage->Width; r.bottom = h/w*pbImage->Height;
-        }else{      r.right = w/h*pbImage->Width; r.bottom = pbImage->Height;}
-        sel_thm->DrawStretch(paImage->Handle, &r);
-    }
-*/
+	if (m_Thm) m_Thm->Draw(paImage,pbImage,true);
 }
 //---------------------------------------------------------------------------
 
@@ -373,4 +335,5 @@ void __fastcall TfrmDOShuffle::tvItemsDblClick(TObject *Sender)
 	ebDOProperties->Click();
 }
 //---------------------------------------------------------------------------
+
 

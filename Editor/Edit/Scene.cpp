@@ -627,7 +627,7 @@ bool EScene::Validate(bool bNeedMsg, bool bTestPortal){
     	ObjectList& lst = ListObj(OBJCLASS_OCCLUDER);
     	for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
         	if (!(*it)->Valid()){
-	    		ELog.DlgMsg(mtError,"*ERROR: Can't found 'PClipper'.\nPlease add at least one.");
+	    		ELog.DlgMsg(mtError,"*ERROR: Can't found 'Occluder'.\nPlease add at least one.");
     	    	return false;
             }
     }
@@ -642,44 +642,6 @@ bool EScene::Validate(bool bNeedMsg, bool bTestPortal){
     if (bNeedMsg)
     	ELog.DlgMsg(mtInformation,"Validation OK!");
     return true;
-}
-
-CCustomObject* EScene::FindObjectByName( char *name, EObjClass classfilter ){
-	ObjectIt _F = FirstObj(classfilter);
-    ObjectIt _E = LastObj(classfilter);
-	for(;_F!=_E;_F++) if(0==stricmp((*_F)->GetName(),name)) return (*_F);
-    return 0;
-}
-
-CCustomObject* EScene::FindObjectByName( char *name, CCustomObject* pass_object ){
-    for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
-        ObjectList& lst = (*it).second;
-    	ObjectIt _F = lst.begin();
-        ObjectIt _E = lst.end();
-    	for(;_F!=_E;_F++){
-            if( (0==stricmp((*_F)->GetName(),name)) && (pass_object!=(*_F)) )
-                return (*_F);
-        }
-	}
-    return 0;
-}
-
-bool EScene::FindDuplicateName(){
-// find duplicate name
-    for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
-        ObjectList& lst = (*it).second;
-    	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-            if (FindObjectByName((*_F)->GetName(), *_F)){
-//                char buf[1024];
-//                GenObjectName((*_F)->ClassID(),buf);
-//                strcpy((*_F)->GetName(),buf);
-                AnsiString s;
-                s.sprintf("Duplicated Object name '%s'!",(*_F)->GetName());
-                MessageDlg(s, mtError, TMsgDlgButtons() << mbOK, 0);
-                return true;
-            }
-	}
-    return false;
 }
 
 void EScene::OnObjectsUpdate(){

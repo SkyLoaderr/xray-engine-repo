@@ -8,7 +8,7 @@
 #include "sceneclasslist.h"
 #include "scene.h"
 
-#include "PropertiesObject.h"
+#include "PropertiesSceneObject.h"
 #include "PropertiesLight.h"
 #include "PropertiesSound.h"
 #include "PropertiesOccluder.h"
@@ -19,6 +19,7 @@
 #include "PropertiesPS.h"
 #include "PropertiesRPoint.h"
 
+#include "PropertiesList.h"
 #include "NumericVector.h"
 
 TUI_CustomTools::TUI_CustomTools(EObjClass cls){
@@ -84,8 +85,10 @@ void TUI_CustomTools::ShowProperties(){
     Scene.GetQueryObjects(objset,objclass);
     bool bChange=false;
     if(!objset.empty()){
+//    	TfrmProperties* P = new TfrmProperties(0);
 	    switch(objclass){
-///    	case OBJCLASS_SCENEOBJECT:	frmPropertiesObjectRun(&objset,bChange); 	break;
+//    	case OBJCLASS_SCENEOBJECT:	P->ShowPropertiesModal(&objset); 	break;
+    	case OBJCLASS_SCENEOBJECT:	TfrmPropertiesSceneObject::Run(&objset,bChange); break;
 	    case OBJCLASS_LIGHT:    	frmPropertiesLightRun(&objset,bChange);		break;
 	    case OBJCLASS_SOUND:    	frmPropertiesSoundRun(&objset,bChange); 	break;
 	    case OBJCLASS_OCCLUDER: 	frmPropertiesOccluderRun(&objset,bChange); 	break;
@@ -98,8 +101,10 @@ void TUI_CustomTools::ShowProperties(){
         case OBJCLASS_PS:			TfrmPropertiesPS::Run(&objset,bChange);		break;
     	default:{ ELog.DlgMsg(mtError, "Can't find properties form."); throw -1;}
 	    }
+//        if (P->IsModified()) Scene.UndoSave();
         if (bChange) Scene.UndoSave();
         UI.RedrawScene();
+//        _DELETE(P);
 	}
 }
 

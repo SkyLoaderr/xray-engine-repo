@@ -35,8 +35,7 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
     ebTargetPS->Tag			= etPS;
     ebTargetDO->Tag			= etDO;
 
-    char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
-    fsStorage->IniFileName = buf;
+    DEFINE_INI(fsStorage);
 }
 //---------------------------------------------------------------------------
 

@@ -4,6 +4,7 @@
 #include "PropertiesRPoint.h"
 #include "SceneClassList.h"
 #include "RPoint.h"
+#include "Scene.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"
@@ -56,7 +57,13 @@ bool TfrmPropertiesRPoint::ApplyObjectsInfo(){
     bool bMultiSel = (m_Objects->size()>1);
 	for(;_F!=m_Objects->end();_F++){
     	CRPoint *_O = (CRPoint *)(*_F);
-        if (!bMultiSel) _O->SetName(edName->Text.c_str());
+        if (!bMultiSel){
+        	if (Scene.FindObjectByName(edName->Text.c_str(),_O)){
+            	ELog.DlgMsg(mtError,"Duplicate object name already exists: '%s'",edName->Text.c_str());
+            	return false;
+            }
+	        _O->SetName(edName->Text.c_str());
+        }
         seTeamID->ObjApplyInt(int(_O->m_dwTeamID));
         // orientation
         float a = rad2deg(_O->m_fHeading);

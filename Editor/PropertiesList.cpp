@@ -46,8 +46,7 @@ __fastcall TfrmProperties::TfrmProperties(TComponent* Owner)
 {
 	bModified = false;
 	bFillMode = false;
-    char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
-    fsStorage->IniFileName = buf;
+    DEFINE_INI(fsStorage);
 	m_BMEllipsis = new Graphics::TBitmap();
 	m_BMEllipsis->LoadFromResourceName((DWORD)HInstance,"ELLIPSIS");
 }
@@ -104,7 +103,9 @@ TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, DWORD type,
     case PROP_MARKER:	CS->CellType = sftUndef;	break;
     case PROP_FLOAT:	CS->CellType = sftFloating; TI->ColumnText->Add	(AnsiString(double(iFloor(double(*(float*)value)*10000))/10000));  break;
     case PROP_INTEGER:	CS->CellType = sftNumber; 	TI->ColumnText->Add	(AnsiString(*((int*)value)));  break;
+    case PROP_TEXT:		CS->CellType = sftText; 	TI->ColumnText->Add	((LPSTR)value);  break;
     case PROP_COLOR:	CS->CellType = sftUndef; 	CS->Style = ElhsOwnerDraw; break;
+    case PROP_EXEC:		CS->CellType = sftUndef; 	TI->ColumnText->AddObject ("...",(TObject*)param); CS->Style = ElhsOwnerDraw; break;
     default: THROW2("BPID_????");
     }
     return TI;
@@ -179,12 +180,12 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
   	if (SectionIndex == 1){
     	DWORD type = (DWORD)Item->Tag;
         switch(type){
-        case PROP_WAVE:{
+        case PROP_EXEC:
+        case PROP_WAVE:
             R.Right	-=	10;
             R.Left 	+= 	1;
     		DrawText	(Surface->Handle, AnsiString(Item->ColumnText->Strings[0]).c_str(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
-            R.Left 	= 	R.Right;
-        }break;
+        break;
         case PROP_COLOR:{
             R.Right	-=	1;
             R.Left 	+= 	1;
@@ -248,6 +249,10 @@ void __fastcall TfrmProperties::tvPropertiesMouseDown(TObject *Sender,
         }break;
         case PROP_WAVE: CustomClick(item); break;
         case PROP_COLOR: ColorClick(item); break;
+        case PROP_EXEC:{
+        	PROP_EXEC_CB* T = (PROP_EXEC_CB*)item->Data; VERIFY(T);
+            T((LPDWORD)item->ColumnText->Objects[0]);
+        }break;
         };
         switch(type){
         case PROP_TOKEN:
@@ -298,43 +303,7 @@ void __fastcall TfrmProperties::PMItemClick(TObject *Sender)
     }
 }
 //---------------------------------------------------------------------------
-/*
-void __fastcall TfrmProperties::InitProperties(){
-	if (form){
-		bModified = false;
-        case aeCompiler:
-            if (SHTools.Compiler.m_LibShader){ // fill Tree
-                DWORD type;
-                char key[255];
-                TElTreeItem* marker_node=0;
-                form->tvProperties->IsUpdating = true;
-                form->tvProperties->Items->Clear();
 
-                form->AddItem(0,BPID_TYPE,"Type",LPDWORD("Compiler shader"));
-
-                Shader_xrLC& L = SHTools.Compiler.m_EditShader;
-			    form->AddItem(marker_node,BPID_FLOAT2,	"Translucency",	(LPDWORD)&L.vert_translucency );
-			    form->AddItem(marker_node,BPID_FLOAT2,	"Ambient",		(LPDWORD)&L.vert_ambient );
-			    form->AddItem(marker_node,BPID_FLOAT2,	"LM density",	(LPDWORD)&L.lm_density );
-			    marker_node = form->AddItem(0,BPID_MARKER,	"Flags");
-			    form->AddItem(marker_node,BPID_FLAG,	"Collision", 	(LPDWORD)&L.flags, (LPDWORD)Shader_xrLC::flCollision );
-                form->AddItem(marker_node,BPID_FLAG,	"Rendering",    (LPDWORD)&L.flags, (LPDWORD)Shader_xrLC::flRendering );
-                form->AddItem(marker_node,BPID_FLAG,	"OptimizeUV",   (LPDWORD)&L.flags, (LPDWORD)Shader_xrLC::flOptimizeUV );
-                form->AddItem(marker_node,BPID_FLAG,	"Vertex light", (LPDWORD)&L.flags, (LPDWORD)Shader_xrLC::flLIGHT_Vertex );
-                form->AddItem(marker_node,BPID_FLAG,	"Cast shadow",  (LPDWORD)&L.flags, (LPDWORD)Shader_xrLC::flLIGHT_CastShadow );
-                form->AddItem(marker_node,BPID_FLAG,	"Sharp",        (LPDWORD)&L.flags, (LPDWORD)Shader_xrLC::flLIGHT_Sharp );
-
-                form->tvProperties->FullExpand();
-                form->tvProperties->IsUpdating = false;
-            }else{
-                form->tvProperties->Items->Clear();
-            }
-        break;
-        }
-    }
-}
-//---------------------------------------------------------------------------
-*/
 void __fastcall TfrmProperties::CustomClick(TElTreeItem* item)
 {
 	DWORD type = item->Tag;
@@ -358,4 +327,16 @@ void __fastcall TfrmProperties::ColorClick(TElTreeItem* item)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmProperties::InplaceTextValidateResult(TObject *Sender,
+      bool &InputValid)
+{
+	TElEdit* E = InplaceText->Editor;
+	if (PROP_TEXT==InplaceText->Item->Tag){
+	    if (strcmp((LPSTR)InplaceText->Item->Data,AnsiString(E->Text).c_str())!=0){
+		    strcpy((LPSTR)InplaceText->Item->Data,AnsiString(E->Text).c_str());
+            bModified = true;
+	    }
+	}
+}
+//---------------------------------------------------------------------------
 

@@ -47,8 +47,7 @@ __fastcall TfrmSceneProperties::TfrmSceneProperties(TComponent* Owner, b_params*
 {
     VERIFY(params);
     m_BuildParams = params;
-    char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
-    fsSceneProps->IniFileName = buf;
+    DEFINE_INI(fsSceneProps);
     SetEditParams();
     ShowPage(AnsiString(""));
     fsSceneProps->RestoreFormPlacement();

@@ -35,6 +35,10 @@
 #include "ElStatBar.hpp"
 #include "ExtBtn.hpp"
 #include <ExtCtrls.hpp>
+
+#ifdef _LEVEL_EDITOR
+ #include "CustomObject.h"
+#endif
 //---------------------------------------------------------------------------
 class TfrmProperties : public TForm
 {
@@ -44,6 +48,7 @@ __published:	// IDE-managed Components
 	TElTreeInplaceSpinEdit *InplaceNumber;
 	TMxPopupMenu *pmEnum;
 	TFormStorage *fsStorage;
+	TElTreeInplaceEdit *InplaceText;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall InplaceNumberBeforeOperation(TObject *Sender,
@@ -59,6 +64,8 @@ __published:	// IDE-managed Components
           bool &InputValid);
 	void __fastcall InplaceNumberValidateResult(TObject *Sender,
           bool &InputValid);
+	void __fastcall InplaceTextValidateResult(TObject *Sender,
+          bool &InputValid);
 private:	// User declarations
     void __fastcall PMItemClick(TObject *Sender);
 	void __fastcall CustomClick(TElTreeItem* item);
@@ -68,16 +75,20 @@ private:	// User declarations
     bool bFillMode;
 public:		// User declarations
 	__fastcall TfrmProperties		        (TComponent* Owner);
-    void __fastcall ShowProperties();
-    void __fastcall HideProperties();
-    void __fastcall Clear();
-    bool __fastcall IsModified(){return bModified;}
+#ifdef _LEVEL_EDITOR
+    int  __fastcall ShowPropertiesModal		(ObjectList& lst);
+#endif
+    void __fastcall ShowProperties			();
+    void __fastcall HideProperties			();
+    void __fastcall Clear					();
+    bool __fastcall IsModified				(){return bModified;}
 
-    void __fastcall BeginFillMode(const AnsiString& title="Properties");
-    void __fastcall EndFillMode();
-	TElTreeItem* __fastcall AddItem(TElTreeItem* parent, DWORD type, LPCSTR key, LPDWORD value=0, LPDWORD param=0);
+    void __fastcall BeginFillMode			(const AnsiString& title="Properties");
+    void __fastcall EndFillMode				();
+	TElTreeItem* __fastcall AddItem			(TElTreeItem* parent, DWORD type, LPCSTR key, LPDWORD value=0, LPDWORD param=0);
 };
 //---------------------------------------------------------------------------
+
 #define PROP_TYPE 		0x1000
 #define PROP_WAVE 		0x1001
 #define PROP_FLAG 		0x1002
@@ -87,5 +98,9 @@ public:		// User declarations
 #define PROP_BOOL	  	0x1006
 #define PROP_MARKER		0x1007
 #define PROP_COLOR		0x1008
+#define PROP_TEXT		0x1009
+#define PROP_EXEC		0x1010
+
+typedef void PROP_EXEC_CB(LPDWORD p1);
 //---------------------------------------------------------------------------
 #endif

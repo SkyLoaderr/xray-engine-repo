@@ -163,10 +163,17 @@ public:
     void				InvalidateCache			();
 // render part -----------------------------------------------------------------
 public:
+	struct SBase{
+        char 			name[128];
+		DWORDVec		data;
+        				SBase(LPCSTR nm);
+        bool			Valid(){return !data.empty();}
+    };
+
     ColorIndexMap		m_ColorIndices;
 	BOOLVec				m_Selected;
-//	Shader*				m_pBaseShader;
-//	ETextureCore*		m_pBaseTexture;
+	Shader*				m_pBaseShader;
+    SBase*				m_pBase;
 public:
 						CDetailManager			();
     virtual 			~CDetailManager			();

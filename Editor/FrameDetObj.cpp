@@ -20,8 +20,7 @@
 __fastcall TfraDetailObject::TfraDetailObject(TComponent* Owner)
         : TFrame(Owner)
 {
-    char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
-    fsStorage->IniFileName = buf;
+    DEFINE_INI(fsStorage);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraDetailObject::PaneMinClick(TObject *Sender)
@@ -38,14 +37,11 @@ void __fastcall TfraDetailObject::ExpandClick(TObject *Sender)
 
 void __fastcall TfraDetailObject::ExtBtn1Click(TObject *Sender)
 {
-//S
-/*
-	LPCSTR T = TfrmChoseItem::SelectTexture(false,(Scene.m_DetailObjects->m_pBaseTexture)?Scene.m_DetailObjects->m_pBaseTexture->name():0);
+	LPCSTR T = TfrmChoseItem::SelectTexture(false,(Scene.m_DetailObjects->m_pBase)?Scene.m_DetailObjects->m_pBase->name:0);
     if (T){
 		Scene.m_DetailObjects->Initialize(T);
     	Scene.UndoSave();
     }
-*/
 }
 //---------------------------------------------------------------------------
 

@@ -21,6 +21,7 @@ public:
 //	void		SynchronizePath		();
     int			GetModifiedFiles	(AStringVec& files);
     int			GetFiles			(AStringVec& files);
+    bool		LoadTextureData		(const AnsiString& src_name, DWORDVec& data);
 };
 
 extern CImageManager ImageManager;

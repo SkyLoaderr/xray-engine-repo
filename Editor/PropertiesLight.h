@@ -31,7 +31,6 @@ __published:	// IDE-managed Components
 	TGroupBox *gbAddition;
     TGroupBox *gbType;
     TMultiObjColor *mcDiffuse;
-    TMultiObjCheck *cbCastShadows;
     TMxLabel *RxLabel6;
     TMxLabel *RxLabel1;
     TPageControl *pcType;
@@ -72,6 +71,8 @@ __published:	// IDE-managed Components
 	TExtBtn *ebCancel;
 	TExtBtn *ExtBtn1;
 	TExtBtn *ebAdjustScene;
+	TMxLabel *MxLabel1;
+	TEdit *edName;
     void __fastcall mcColorMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
     void __fastcall btApplyClick(TObject *Sender);

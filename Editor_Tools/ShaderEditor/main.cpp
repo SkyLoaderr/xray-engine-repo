@@ -177,7 +177,9 @@ void __fastcall TfrmMain::D3DWindowChangeFocus(TObject *Sender)
 //        if (UI.IsMouseInUse())
             UI.OnMouseRelease(0);
         UI.iCapture();
+		UI.OnAppActivate();
     }else{
+		UI.OnAppDeactivate();
         UI.iRelease();
     	paWindow->Color=clGray;
     }
@@ -186,13 +188,13 @@ void __fastcall TfrmMain::D3DWindowChangeFocus(TObject *Sender)
 
 void __fastcall TfrmMain::FormActivate(TObject *Sender)
 {
-	UI.OnAppActivate();
+//	UI.OnAppActivate();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmMain::FormDeactivate(TObject *Sender)
 {
-	UI.OnAppDeactivate();
+//	UI.OnAppDeactivate();
 }
 //---------------------------------------------------------------------------
 

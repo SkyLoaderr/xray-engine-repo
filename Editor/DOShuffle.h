@@ -23,6 +23,7 @@
 //---------------------------------------------------------------------------
 // refs
 class TfrmOneColor;
+class EImageThumbnail;
 
 class TfrmDOShuffle : public TForm
 {
@@ -56,8 +57,6 @@ __published:	// IDE-managed Components
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
-	void __fastcall tvItemsItemSelectedChange(TObject *Sender,
-          TElTreeItem *Item);
 	void __fastcall pbImagePaint(TObject *Sender);
 	void __fastcall tvItemsKeyPress(TObject *Sender, char &Key);
 	void __fastcall tvMultiDragDrop(TObject *Sender, TObject *Source, int X,
@@ -79,20 +78,18 @@ __published:	// IDE-managed Components
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall ebDOPropertiesClick(TObject *Sender);
 	void __fastcall tvItemsDblClick(TObject *Sender);
+	void __fastcall tvItemsItemFocused(TObject *Sender);
 private:	// User declarations
 	static TfrmDOShuffle* form;
     TElTreeItem* FDragItem;
 
-//S    ETextureThumbnail* sel_thm;
+    EImageThumbnail* m_Thm;
 
     vector<TfrmOneColor*> color_indices;
 
     void InitItemsList(const char* nm=0);
 	TElTreeItem* FindItem(const char* s);
-    TElTreeItem* FindFolder(const char* s);
-    TElTreeItem* AddFolder(const char* s);
     TElTreeItem* AddItem(TElTreeItem* node, const char* name, void* obj=(void*)1);
-    TElTreeItem* AddItemToFolder(const char* folder, const char* name, void* obj=(void*)1);
 
     void GetInfo();
     void ApplyInfo();

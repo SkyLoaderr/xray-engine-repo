@@ -31,7 +31,7 @@ public:
 	IC BOOL 		Selected		(){return m_Selected; }
 	IC EObjClass& 	ClassID			(){return m_ClassID; }
 	IC char*		GetName			(){return m_Name; }
-	IC void			SetName			(LPCSTR N){strcpy(m_Name,N); }
+	IC void			SetName			(LPCSTR N){strcpy(m_Name,N); strlwr(m_Name); }
 
     IC BOOL 		Group			(int g_idx)	{if (!IsInGroup()){m_GroupIndex=g_idx;return true;}return false;}
     IC void 		Ungroup			()			{if (IsInGroup()){m_GroupIndex=-1;}}

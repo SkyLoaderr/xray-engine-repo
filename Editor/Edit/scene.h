@@ -186,6 +186,7 @@ public:
 	int FrustumPick					(const CFrustum& frustum, EObjClass classfilter, ObjectList& ol);
 	int SpherePick					(const Fvector& center, float radius, EObjClass classfilter, ObjectList& ol);
 
+	void GenObjectName				(EObjClass cls_id, char *buffer, const char* prefix=NULL);
 	CCustomObject* FindObjectByName	(char *name, EObjClass classfilter);
     CCustomObject* FindObjectByName	(char *name, CCustomObject* pass_object);
     bool FindDuplicateName          ();
@@ -198,9 +199,6 @@ public:
 	void SetLights					();
 	void ClearLights				();
     void TurnLightsForObject		(CSceneObject* obj);
-
-	void GenObjectName				(EObjClass cls_id, char *buffer, const char* prefix=NULL);
-	bool SearchName					(char *name);
 
     bool GetBox						(Fbox& box, EObjClass classfilter);
     bool GetBox						(Fbox& box, ObjectList& lst);

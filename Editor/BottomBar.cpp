@@ -84,8 +84,7 @@ void TUI::OutGridSize(){
 __fastcall TfraBottomBar::TfraBottomBar(TComponent* Owner)
     : TFrame(Owner)
 {
-    char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
-    fsStorage->IniFileName = buf;
+    DEFINE_INI(fsStorage);
 }
 //---------------------------------------------------------------------------
 

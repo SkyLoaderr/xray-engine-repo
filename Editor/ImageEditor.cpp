@@ -20,8 +20,7 @@ AStringVec TfrmImageLib::modif_tex_list;
 __fastcall TfrmImageLib::TfrmImageLib(TComponent* Owner)
     : TForm(Owner)
 {
-    char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
-    fsStorage->IniFileName = buf;
+    DEFINE_INI(fsStorage);
     bCheckMode = false;
 }
 //---------------------------------------------------------------------------

@@ -4,7 +4,7 @@ object frmPropertiesLight: TfrmPropertiesLight
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsDialog
   Caption = 'Light properties'
-  ClientHeight = 331
+  ClientHeight = 290
   ClientWidth = 406
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -22,7 +22,7 @@ object frmPropertiesLight: TfrmPropertiesLight
   TextHeight = 13
   object ebOk: TExtBtn
     Left = 241
-    Top = 311
+    Top = 270
     Width = 82
     Height = 18
     Align = alNone
@@ -35,7 +35,7 @@ object frmPropertiesLight: TfrmPropertiesLight
   end
   object ebCancel: TExtBtn
     Left = 323
-    Top = 311
+    Top = 270
     Width = 82
     Height = 18
     Align = alNone
@@ -48,7 +48,7 @@ object frmPropertiesLight: TfrmPropertiesLight
   end
   object ExtBtn1: TExtBtn
     Left = 159
-    Top = 311
+    Top = 270
     Width = 82
     Height = 18
     Align = alNone
@@ -61,7 +61,7 @@ object frmPropertiesLight: TfrmPropertiesLight
   end
   object ebAdjustScene: TExtBtn
     Left = 1
-    Top = 311
+    Top = 270
     Width = 82
     Height = 18
     Align = alNone
@@ -142,28 +142,30 @@ object frmPropertiesLight: TfrmPropertiesLight
     Left = 0
     Top = 190
     Width = 406
-    Height = 117
+    Height = 77
     Align = alTop
     Caption = ' Addition: '
     TabOrder = 2
-    object cbCastShadows: TMultiObjCheck
-      Left = 3
-      Top = 81
-      Width = 132
-      Height = 17
-      Alignment = taLeftJustify
-      BiDiMode = bdLeftToRight
-      Caption = 'Cast Shadows'
-      ParentBiDiMode = False
-      TabOrder = 0
+    object MxLabel1: TMxLabel
+      Left = 6
+      Top = 14
+      Width = 33
+      Height = 13
+      Caption = 'Name:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
     end
     object gbLightType: TGroupBox
-      Left = 6
-      Top = 13
+      Left = 269
+      Top = 8
       Width = 133
       Height = 66
       Caption = ' Light Type '
-      TabOrder = 1
+      TabOrder = 0
       object cbTargetLM: TMultiObjCheck
         Left = 7
         Top = 14
@@ -201,14 +203,22 @@ object frmPropertiesLight: TfrmPropertiesLight
       end
     end
     object cbUseInD3D: TMultiObjCheck
-      Left = 3
-      Top = 97
-      Width = 132
+      Left = 8
+      Top = 58
+      Width = 76
       Height = 17
-      Alignment = taLeftJustify
       BiDiMode = bdLeftToRight
       Caption = 'Use in D3D'
       ParentBiDiMode = False
+      TabOrder = 1
+    end
+    object edName: TEdit
+      Left = 56
+      Top = 11
+      Width = 209
+      Height = 18
+      AutoSize = False
+      Color = 14671839
       TabOrder = 2
     end
   end
@@ -234,7 +244,7 @@ object frmPropertiesLight: TfrmPropertiesLight
       Top = 15
       Width = 402
       Height = 135
-      ActivePage = tsSun
+      ActivePage = tsPoint
       Align = alClient
       Style = tsFlatButtons
       TabOrder = 0

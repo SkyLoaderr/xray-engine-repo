@@ -16,24 +16,51 @@
 
 //----------------------------------------------------
 
-bool EScene::SearchName( char *name ){
-    for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
+CCustomObject* EScene::FindObjectByName( char *name, EObjClass classfilter ){
+	ObjectIt _F = FirstObj(classfilter);
+    ObjectIt _E = LastObj(classfilter);
+	for(;_F!=_E;_F++) if(0==stricmp((*_F)->GetName(),name)) return (*_F);
+    return 0;
+}
+
+CCustomObject* EScene::FindObjectByName( char *name, CCustomObject* pass_object ){
+    for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
+        ObjectList& lst = (*it).second;
+    	ObjectIt _F = lst.begin();
+        ObjectIt _E = lst.end();
+    	for(;_F!=_E;_F++){
+            if( (0==strcmp((*_F)->GetName(),name)) && (pass_object!=(*_F)) )
+                return (*_F);
+        }
+	}
+    return 0;
+}
+
+bool EScene::FindDuplicateName(){
+// find duplicate name
+    for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
         ObjectList& lst = (*it).second;
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-    		if( 0==stricmp((*_F)->GetName(),name) ) return true;
-    }
-	return false;
+            if (FindObjectByName((*_F)->GetName(), *_F)){
+//                char buf[1024];
+//                GenObjectName((*_F)->ClassID(),buf);
+//                strcpy((*_F)->GetName(),buf);
+            	ELog.DlgMsg(mtError,"Duplicate object name already exists: '%s'",(*_F)->GetName());
+                return true;
+            }
+	}
+    return false;
 }
 
 void EScene::GenObjectName( EObjClass cls_id, char *buffer, const char* prefix ){
     m_LastAvailObject = ListObj(cls_id).size();
 	do{
         if (prefix)
-       		sprintf( buffer, "%s_%04d", prefix, m_LastAvailObject );
+       		sprintf( buffer, "%s_%02d", prefix, m_LastAvailObject );
         else
-       		sprintf( buffer, "%s_%04d", GetNameByClassID(cls_id), m_LastAvailObject );
+       		sprintf( buffer, "%s_%02d", GetNameByClassID(cls_id), m_LastAvailObject );
 		m_LastAvailObject++;
-	} while( SearchName( buffer ) );
+	} while( FindObjectByName( buffer, 0 ) );
 }
 
 //----------------------------------------------------

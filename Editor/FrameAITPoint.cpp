@@ -14,8 +14,7 @@
 __fastcall TfraAITPoint::TfraAITPoint(TComponent* Owner)
         : TFrame(Owner)
 {
-    char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
-    fsStorage->IniFileName = buf;
+    DEFINE_INI(fsStorage);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraAITPoint::PaneMinClick(TObject *Sender)

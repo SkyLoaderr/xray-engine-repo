@@ -48,7 +48,11 @@ void ELibrary::OnCreate(){
     AStringVec& lst = FS.GetFiles(FS.m_Objects.m_Path);
     for (AStringIt it=lst.begin(); it!=lst.end(); it++){
 	    AnsiString ext = ExtractFileExt(*it).LowerCase();
-        if (ext==".object") m_Objects.push_back(it->Delete(1,count));
+        if (ext==".object"){
+        	AnsiString name = it->Delete(1,count);
+            name = name.Delete(name.Length()-6,7);
+        	m_Objects.push_back(name);
+        }
     }
 	std::sort(m_Objects.begin(),m_Objects.end(),sort_pred);
 	Device.seqDevCreate.Add	(this,REG_PRIORITY_NORMAL);
@@ -77,8 +81,8 @@ void ELibrary::OnDestroy(){
 
 void ELibrary::SetCurrentObject(LPCSTR T){
 	VERIFY(m_bReady);
-	AStringIt P = lower_bound(m_Objects.begin(),m_Objects.end(),AnsiString(T),sort_pred);
-    if (P!=m_Objects.end()) m_Current = *P;
+    bool b = binary_search(m_Objects.begin(),m_Objects.end(),AnsiString(T),sort_pred);
+    if (b) m_Current = T;
 }
 int ELibrary::ObjectCount(){
 	VERIFY(m_bReady);
@@ -145,6 +149,7 @@ CEditableObject* ELibrary::LoadEditObject(LPCSTR name){
 CEditableObject* ELibrary::GetEditObject(LPCSTR name)
 {
 	VERIFY(m_bReady);
+    R_ASSERT(name&&name[0]);
     CEditableObject* m_EditObject = 0;
 	AStringIt P = lower_bound(m_Objects.begin(),m_Objects.end(),AnsiString(name),sort_pred);
     if (P==m_Objects.end()) return 0;

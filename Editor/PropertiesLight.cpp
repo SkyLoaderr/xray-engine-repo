@@ -6,7 +6,8 @@
 #include "ELight.h"
 #include "SceneClassList.h"
 #include "ui_main.h"
- #include "ColorPicker.h"
+#include "ColorPicker.h"
+#include "Scene.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -128,6 +129,14 @@ void TfrmPropertiesLight::GetObjectsInfo(){
 
     seBrightness->ObjFirstInit		( _L->m_Brightness );
 
+    if (m_Objects->size()==1){
+    	edName->Enabled 			= true;
+		edName->Text				= _L->GetName();
+    }else{
+    	edName->Enabled 			= false;
+        edName->Text				= "<Multiple selection>";
+    }
+
 	_F++;
 	for(;_F!=m_Objects->end();_F++){
 		VERIFY( (*_F)->ClassID()==OBJCLASS_LIGHT );
@@ -155,9 +164,17 @@ bool TfrmPropertiesLight::ApplyObjectsInfo(){
 	tmAnimation->Enabled = false;
 
 	CLight *_L = 0;
+    bool bMultiSel = (m_Objects->size()>1);
 	for(ObjectIt _F = m_Objects->begin();_F!=m_Objects->end();_F++){
 		VERIFY( (*_F)->ClassID()==OBJCLASS_LIGHT );
 		_L = (CLight *)(*_F);
+        if (!bMultiSel){
+        	if (Scene.FindObjectByName(edName->Text.c_str(),_L)){
+            	ELog.DlgMsg(mtError,"Duplicate object name already exists: '%s'",edName->Text.c_str());
+            	return false;
+            }
+	        _L->SetName(edName->Text.c_str());
+        }
         if  (pcType->ActivePage==tsSun){
             _L->m_D3D.type 		= D3DLIGHT_DIRECTIONAL;
             _L->m_Flares       	= !!cbFlares->Checked;
@@ -254,6 +271,7 @@ void __fastcall TfrmPropertiesLight::FormKeyDown(TObject *Sender,
       WORD &Key, TShiftState Shift)
 {
     if (Key==VK_ESCAPE) ebCancel->Click();
+    if (Key==VK_RETURN) ebOk->Click();
 }
 //---------------------------------------------------------------------------
 

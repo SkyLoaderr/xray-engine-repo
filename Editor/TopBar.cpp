@@ -21,8 +21,7 @@ __fastcall TfraTopBar::TfraTopBar(TComponent* Owner)
     ebActionRotate->Tag     = eaRotate;
     ebActionScale->Tag      = eaScale;
 
-    char buf[MAX_PATH] 		= {"ed.ini"};  FS.m_ExeRoot.Update(buf);
-    fsStorage->IniFileName 	= buf;
+    DEFINE_INI(fsStorage);
 }
 //---------------------------------------------------------------------------
 

@@ -194,6 +194,8 @@ USEUNIT("Engine\Blenders\blender_light.cpp");
 USEUNIT("edit\FolderLib.cpp");
 USEUNIT("edit\EStats.cpp");
 USEUNIT("edit\UI_MainExtern.cpp");
+USEUNIT("PropertiesListExtern.cpp");
+USEFORM("edit\PropertiesSceneObject.cpp", frmPropertiesSceneObject);
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

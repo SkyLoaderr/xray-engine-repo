@@ -22,6 +22,7 @@
 #include "Texture.h"
 #include "frustum.h"
 #include "bottombar.h"
+#include "ImageManager.h"
 
 static Fvector down_vec	={0.f,-1.f,0.f};
 static Fvector left_vec	={-1.f,0.f,0.f};
@@ -216,8 +217,8 @@ void CDetail::Export(CFS_Base& F){
 
 //------------------------------------------------------------------------------
 CDetailManager::CDetailManager(){
-//	m_pBaseTexture 		= 0;
-//    m_pBaseShader		= 0;
+	m_pBase		 		= 0;
+    m_pBaseShader		= 0;
     ZeroMemory			(&m_Header,sizeof(DetailHeader));
     m_Selected.clear	();
     InitRender			();
@@ -237,7 +238,7 @@ CDetailManager::~CDetailManager(){
 
 void CDetailManager::OnDeviceCreate(){
 	// base texture
-//    if (m_pBaseTexture) m_pBaseShader = Device.Shader.Create("def_trans",m_pBaseTexture->name(),false);
+    if (m_pBase&&m_pBase->Valid()) m_pBaseShader = Device.Shader.Create("editor\\do_base",m_pBase->name);
 	// detail objects
 	for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
     	(*it)->OnDeviceCreate();
@@ -245,7 +246,7 @@ void CDetailManager::OnDeviceCreate(){
 
 void CDetailManager::OnDeviceDestroy(){
 	// base texture
-//    if (m_pBaseShader) Device.Shader.Delete(m_pBaseShader);
+    if (m_pBaseShader) Device.Shader.Delete(m_pBaseShader);
 	// detail objects
 	for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
     	(*it)->OnDeviceDestroy();
@@ -258,19 +259,19 @@ DetailSlot&	CDetailManager::GetSlot(DWORD sx, DWORD sz){
 }
 
 bool CDetailManager::GetColor(DWORD& color, int U, int V){
-//	return m_pBaseTexture->GetPixel(color, U,V);
+//S	return m_pBaseTexture->GetPixel(color, U,V);
 }
 
 DWORD CDetailManager::GetUFromX(float x){
 	float u = (x-m_BBox.min.x)/(m_BBox.max.x-m_BBox.min.x);
-//	int U = iFloor(u*(m_pBaseTexture->width()-1)+0.5f);// 	U %= m_pBaseTexture->width();
-//    return U;
+//S	int U = iFloor(u*(m_pBaseTexture->width()-1)+0.5f);// 	U %= m_pBaseTexture->width();
+//S    return U;
 }
 
 DWORD CDetailManager::GetVFromZ(float z){
 	float v = 1.f-(z-m_BBox.min.z)/(m_BBox.max.z-m_BBox.min.z);
-//	int V = iFloor(v*(m_pBaseTexture->height()-1)+0.5f);//    V %= m_pBaseTexture->height();
-//    return V;
+//S	int V = iFloor(v*(m_pBaseTexture->height()-1)+0.5f);//    V %= m_pBaseTexture->height();
+//S    return V;
 }
 
 void CDetailManager::FindClosestIndex(const Fcolor& C, SIndexDistVec& best){
@@ -375,20 +376,27 @@ bool CDetailManager::Reinitialize(){
 	return true;
 }
 
+CDetailManager::SBase::SBase(LPCSTR nm){
+	strcpy(name,nm);
+    ImageManager.LoadTextureData(nm,data);
+}
+
 bool CDetailManager::UpdateBaseTexture(LPCSTR tex_name){
     // create base texture
-/*    R_ASSERT(tex_name||m_pBaseTexture);
-    AnsiString fn = tex_name?tex_name:m_pBaseTexture->name();
-    _DELETE(m_pBaseTexture);
-    m_pBaseTexture = new ETextureCore(fn.c_str());
-    if (!m_pBaseTexture->Valid()){
-    	ELog.DlgMsg(mtError,"Can't load base texture '%s'!",fn.c_str());
+    R_ASSERT(tex_name||m_pBase);
+    AnsiString fn = tex_name?tex_name:m_pBase->name;
+    SBase* NB = new SBase(fn.c_str());
+    if (NB->Valid()){
+	    _DELETE(m_pBase);
+		m_pBase = NB;
+    }else{
+    	ELog.DlgMsg(mtError,"Can't load base image '%s'!",fn.c_str());
+        _DELETE(NB);
     	return false;
     }
     if (m_pBaseShader) Device.Shader.Delete(m_pBaseShader);
-    m_pBaseShader = Device.Shader.Create("def_trans",fn.c_str(),false);
+    m_pBaseShader = Device.Shader.Create("editor\\do_base",fn.c_str());
     UI.Command(COMMAND_REFRESH_TEXTURES);
-*/
     return true;
 }
 
@@ -636,8 +644,8 @@ void CDetailManager::Clear(){
 	RemoveObjects		();
 	m_ColorIndices.clear();
     m_Slots.clear		();
-//S    if (m_pBaseShader){ Device.Shader.Delete(m_pBaseShader); m_pBaseShader = 0;}
-//S    _DELETE				(m_pBaseTexture);
+    if (m_pBaseShader){ Device.Shader.Delete(m_pBaseShader); m_pBaseShader = 0;}
+    _DELETE				(m_pBase);
 	m_Selected.clear	();
     m_SnapObjects.clear	();
     InvalidateCache		();
@@ -762,8 +770,8 @@ bool CDetailManager::Load_V1(CStream& F){
     char buf[255];
 	if(F.FindChunk(DETMGR_CHUNK_BASE_TEXTURE)){
 	    F.RstringZ		(buf);
-//S    	m_pBaseTexture	= new ETextureCore(buf);
-//S	    m_pBaseShader 	= Device.Shader.Create("def_trans",m_pBaseTexture->name(),false);
+    	m_pBase			= new SBase(buf);
+	    m_pBaseShader 	= Device.Shader.Create("editor\\do_base",buf);
     }
     // color index map
     R_ASSERT			(F.FindChunk(DETMGR_CHUNK_COLOR_INDEX));
@@ -844,8 +852,8 @@ bool CDetailManager::Load(CStream& F){
     char buf[255];
 	if(F.FindChunk(DETMGR_CHUNK_BASE_TEXTURE)){
 	    F.RstringZ		(buf);
-//S    	m_pBaseTexture	= new ETextureCore(buf);
-//S	    m_pBaseShader 	= Device.Shader.Create("def_trans",m_pBaseTexture->name(),false);
+    	m_pBase			= new SBase(buf);
+	    m_pBaseShader 	= Device.Shader.Create("editor\\do_base",m_pBase->name);
     }
     // color index map
     R_ASSERT			(F.FindChunk(DETMGR_CHUNK_COLOR_INDEX));
@@ -910,11 +918,11 @@ void CDetailManager::Save(CFS_Base& F){
     // bbox
 	F.write_chunk		(DETMGR_CHUNK_BBOX,&m_BBox,sizeof(Fbox));
 	// base texture
-//S    if (m_pBaseTexture){
-//S		F.open_chunk	(DETMGR_CHUNK_BASE_TEXTURE);
-//S    	F.WstringZ		(m_pBaseTexture->name());
-//S	    F.close_chunk	();
-//S    }
+    if (m_pBase){
+		F.open_chunk	(DETMGR_CHUNK_BASE_TEXTURE);
+    	F.WstringZ		(m_pBase->name);
+	    F.close_chunk	();
+    }
     // color index map
 	F.open_chunk		(DETMGR_CHUNK_COLOR_INDEX);
     F.Wbyte				(m_ColorIndices.size());

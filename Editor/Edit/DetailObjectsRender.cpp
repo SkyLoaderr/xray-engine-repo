@@ -95,11 +95,10 @@ void CDetailManager::Render(int priority, bool strictB2F){
             }else{
                 if (fraBottomBar->miDODrawObjects->Checked)
                     RenderObjects(Device.m_Camera.GetPosition());
+                if (fraBottomBar->miDrawDOBaseTexture->Checked)
+                    RenderTexture(1.0f);
             }
         }
-//            case rpAlphaLast:{
-//                if (fraBottomBar->miDrawDOBaseTexture->Checked)
-//                    RenderTexture(1.0f);
     }
 }
 
@@ -113,7 +112,7 @@ void CDetailManager::RenderTexture(float alpha){
 	V[2].set(m_BBox.max.x,m_BBox.max.y,m_BBox.max.z,color,1,0);
 	V[3].set(m_BBox.max.x,m_BBox.max.y,m_BBox.min.z,color,1,1);
 
-//S	Device.SetShader(m_pBaseShader);
+	Device.SetShader(m_pBaseShader);
     Device.SetTransform(D3DTS_WORLD,precalc_identity);
     DU::DrawPrimitiveLIT(D3DPT_TRIANGLEFAN,2,V,4,false,false);
 }
@@ -332,7 +331,7 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 			// Render
 			Device.Primitive.setIndicesUC	(vBase, IS->getBuffer());
 			DWORD	dwNumPrimitives			= iCount_Lock/3;
-			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,iBase,dwNumPrimitives);
+ 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,iBase,dwNumPrimitives);
 			UPDATEC							(vCount_Lock,dwNumPrimitives,2);
 		}
 

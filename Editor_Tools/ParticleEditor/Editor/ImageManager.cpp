@@ -90,15 +90,35 @@ void CImageManager::CreateGameTexture(const AnsiString& src_name, EImageThumbnai
 void CImageManager::MakeGameTexture(EImageThumbnail* THM, LPCSTR game_name, FIBITMAP* bm)
 {
 	FS.VerifyPath(game_name);
-    // time check
+    // flip
     DWORDVec data;
     int w = THM->_Width();
     int h = THM->_Height();
     int w4= w*4;
     data.resize(w*h);
     for (int y=h-1; y>=0; y--) CopyMemory(data.begin()+(h-y-1)*w,FreeImage_GetScanLine(bm,y),w4);
+    // compress
     bool bRes 	= DXTCompress(game_name, (LPBYTE)data.begin(), w, h, w4, &THM->m_TexParams, 4);
     R_ASSERT(bRes&&FS.FileLength(game_name));
+}
+
+//------------------------------------------------------------------------------
+// загружает 32-bit данные
+//------------------------------------------------------------------------------
+bool CImageManager::LoadTextureData(const AnsiString& src_name, DWORDVec& data)
+{
+	AnsiString fn = src_name;
+	FS.m_Textures.Update(fn);
+    FIBITMAP* bm = Surface_Load(fn.c_str());
+    if (!bm) return false;
+    // flip
+	int w = FreeImage_GetWidth (bm);
+	int h = FreeImage_GetHeight(bm);
+    int w4= w*4;
+    data.resize(w*h);
+    for (int y=h-1; y>=0; y--) CopyMemory(data.begin()+(h-y-1)*w,FreeImage_GetScanLine(bm,y),w4);
+    FreeImage_Free(bm);
+    return true;
 }
 
 //------------------------------------------------------------------------------
