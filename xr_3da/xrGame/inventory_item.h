@@ -80,6 +80,10 @@ public:
 	EItemPlace		m_eItemPlace;
 
 
+	virtual void	OnMoveToSlot		() {};
+	virtual void	OnMoveToBelt		() {};
+	virtual void	OnMoveToRuck		() {};
+
 	virtual int		GetGridWidth		() const {return m_iGridWidth;}
 	virtual int		GetGridHeight		() const {return m_iGridHeight;}
 	virtual int		GetXPos				() const {return m_iXPos;}
@@ -95,6 +99,8 @@ public:
 			void	Belt				(bool on_belt) {m_belt = on_belt;}
 			bool	Ruck				() {return m_ruck;}
 			void	Ruck				(bool on_ruck) {m_ruck = on_ruck;}
+	
+			
 protected:
 	// Слот в который можно установить объект (NO_ACTIVE_SLOT если нельзя)
 	u32				m_slot;

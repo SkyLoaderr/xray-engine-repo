@@ -173,11 +173,18 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 		CSE_ALifeItemGrenade* pIGrenade		=	dynamic_cast<CSE_ALifeItemGrenade*> (e_what);
 		if (pIGrenade)
 		{
-			//Ammo
+			//Grenade
 			return TRUE;
 		};
-	};
 
+		CSE_ALifeInventoryItem* pIItem		= dynamic_cast<CSE_ALifeInventoryItem*> (e_what);
+		if (pIItem)
+		{
+			//Possibly Addons and/or Outfits
+			return TRUE;
+		};
+
+	};
 	// We don't know what the hell is it, so disallow ownership just for safety 
 	return FALSE;
 }
@@ -536,6 +543,7 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 	P.r_u8		(ps->Slots[PISTOL_SLOT]	);
 	P.r_u8		(ps->Slots[RIFLE_SLOT]	);
 	P.r_u8		(ps->Slots[GRENADE_SLOT]);
+	P.r_u8		(ps->Slots[OUTFIT_SLOT]);
 
 	ps->BeltItems.clear();
 
@@ -665,8 +673,10 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 	SpawnWeapon4Actor(pA->ID, GetItemForSlot(KNIFE_SLOT, 0xff, ps), GetItemAddonsForSlot(KNIFE_SLOT, 0xff, ps));
 	SpawnWeapon4Actor(pA->ID, GetItemForSlot(PISTOL_SLOT, 0xff,  ps), GetItemAddonsForSlot(PISTOL_SLOT, 0xff,  ps));
 	SpawnWeapon4Actor(pA->ID, GetItemForSlot(RIFLE_SLOT, 0xff,  ps), GetItemAddonsForSlot(RIFLE_SLOT, 0xff,  ps));
-
+	
 	SpawnItem4Actor(pA->ID, GetItemForSlot(GRENADE_SLOT, 0xff,  ps));
+
+	SpawnItem4Actor(pA->ID, GetItemForSlot(APPARATUS_SLOT,  ps->Slots[OUTFIT_SLOT],  ps));
 
 	for (u32 i = 0; i<ps->BeltItems.size(); i++)
 	{

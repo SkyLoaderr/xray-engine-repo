@@ -324,3 +324,47 @@ game_cl_GameState::Player*				game_cl_GameState::GetPlayerByGameID		(u32 GameID)
 	};
 	return NULL;
 };
+
+char*									game_cl_GameState::getTeamSection			(int Team)
+{
+	switch (type)
+	{
+	case GAME_SINGLE:
+		{
+			return NULL;
+		}break;
+	case GAME_DEATHMATCH:
+		{
+			return "deathmatch_team0";
+		}break;
+	case GAME_TEAMDEATHMATCH:
+		{
+			switch (Team)
+			{
+			case 1:
+				{
+					return "teamdeathmatch_team1";
+				}break;
+			case 2:
+				{
+					return "teamdeathmatch_team2";
+				}break;
+			};
+		}break;
+	case GAME_ARTEFACTHUNT:
+		{
+			switch (Team)
+			{
+			case 1:
+				{
+					return "artefacthunt_team1";
+				}break;
+			case 2:
+				{
+					return "artefacthunt_team2";
+				}break;
+			};
+		}break;
+	}
+	return NULL;
+};

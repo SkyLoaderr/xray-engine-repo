@@ -186,6 +186,9 @@ bool CInventory::Drop(CGameObject *pObj, bool call_drop)
 
 			if (call_drop && dynamic_cast<CInventoryItem*>(pObj))
 				m_pOwner->OnItemDrop	(dynamic_cast<CInventoryItem*>(pObj));
+
+			CalcTotalWeight();
+
 			return true;
 		};
 	}
@@ -254,6 +257,8 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate)
 	
 		pIItem->m_eItemPlace = eItemPlaceSlot;
 
+		pIItem->OnMoveToSlot();
+
 		return true;
 	}
 	else
@@ -301,6 +306,7 @@ bool CInventory::Belt(PIItem pIItem)
 
 		CalcTotalWeight();
 		pIItem->m_eItemPlace = eItemPlaceBelt;
+		pIItem->OnMoveToBelt();
 		return true;
 	}
 }
@@ -328,6 +334,7 @@ bool CInventory::Ruck(PIItem pIItem)
 	m_ruck.insert(m_ruck.end(), pIItem); 
 	CalcTotalWeight();
 	pIItem->m_eItemPlace = eItemPlaceRuck;
+	pIItem->OnMoveToRuck();
 	return true;
 }
 
@@ -576,7 +583,7 @@ void CInventory::Update()
 					pIItem->u_EventGen(P, GE_OWNERSHIP_REJECT, 
 										  pIItem->H_Parent()->ID());
 					P.w_u16(u16(pIItem->ID()));
-					pIItem->u_EventSend(P);
+					if (OnServer()) pIItem->u_EventSend(P);
 				}
 				else 
 					drop_tasks.push_back(pIItem);

@@ -143,6 +143,8 @@ void CUIGameTDM::SetCurrentBuyMenu	()
 		if (Game().local_player->team == 1) pCurBuyMenu = pBuyMenuTeam1;
 		else pCurBuyMenu = pBuyMenuTeam2;
 	};
+
+	if (pCurBuyMenu) pCurBuyMenu->SetSkin(pCurSkinMenu->GetActiveIndex());
 };
 
 void		CUIGameTDM::SetCurrentSkinMenu	()

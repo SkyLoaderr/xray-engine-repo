@@ -8,6 +8,11 @@
 #include "customoutfit.h"
 #include "PhysicsShell.h"
 #include "inventory_space.h"
+#include "Inventory.h"
+#include "Actor.h"
+#include "game_cl_base.h"
+#include "Level.h"
+
 
 CCustomOutfit::CCustomOutfit()
 {
@@ -48,6 +53,11 @@ void CCustomOutfit::Load(LPCSTR section)
 
 	m_iOutfitIconX = pSettings->r_u32(section, "full_scale_icon_x");
 	m_iOutfitIconY = pSettings->r_u32(section, "full_scale_icon_y");
+		
+	if (pSettings->line_exist(section, "actor_visual"))
+		m_ActorVisual = pSettings->r_string(section, "actor_visual");
+	else
+		m_ActorVisual = NULL;
 }
 
 void CCustomOutfit::net_Destroy() 
@@ -102,3 +112,58 @@ float CCustomOutfit::GetHitTypeProtection(ALife::EHitType hit_type)
 {
 	return m_HitTypeProtection[hit_type];
 }
+
+void	CCustomOutfit::OnMoveToSlot		()
+{
+	if (m_pInventory)
+	{
+		CActor* pActor = dynamic_cast<CActor*> (m_pInventory->GetOwner());
+		if (pActor)
+		{
+			if (m_ActorVisual != NULL)
+			{
+				ref_str NewVisual = NULL;
+				char* TeamSection = Game().getTeamSection(pActor->g_Team());
+				if (TeamSection)
+				{
+					if (pSettings->line_exist(TeamSection, *cNameSect()))
+					{
+						NewVisual = pSettings->r_string(TeamSection, *cNameSect());
+						string256 SkinName = {"actors\\Different_stalkers\\Mp_Skins\\"};
+						strcat(SkinName, *NewVisual);
+						strcat(SkinName, ".ogf");
+						NewVisual._set(SkinName);
+					}
+				}
+				
+				if (NewVisual != NULL) 
+					pActor->cNameVisual_set(NewVisual);
+				else
+					pActor->cNameVisual_set(m_ActorVisual);
+
+				pActor->OnChangeVisual();
+			}
+		}
+	}
+};
+
+void	CCustomOutfit::OnMoveToRuck		()
+{
+	if (m_pInventory)
+	{
+		CActor* pActor = dynamic_cast<CActor*> (m_pInventory->GetOwner());
+		if (pActor)
+		{
+			if (m_ActorVisual != NULL)
+			{
+				ref_str DefVisual = pActor->GetDefaultVisualOutfit();
+				if (DefVisual != NULL)
+				{
+					pActor->cNameVisual_set(DefVisual);
+
+					pActor->OnChangeVisual();
+				};
+			}
+		}
+	}
+};

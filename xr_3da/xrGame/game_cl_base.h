@@ -29,6 +29,8 @@ public:
 
 	virtual		void				OnGameMessage			(NET_Packet& P);
 
+	virtual		char*				getTeamSection			(int Team);
+
 	virtual		game_cl_GameState::Player*				GetPlayerByGameID		(u32 GameID);
 
 };

@@ -43,9 +43,14 @@ public:
 	int GetIconX() {return m_iOutfitIconX;}
 	int GetIconY() {return m_iOutfitIconY;}
 
+	virtual void	OnMoveToSlot		();
+	virtual void	OnMoveToRuck		();
+
 protected:
 	int m_iOutfitIconX;
 	int m_iOutfitIconY;
 
 	HitTypeSVec m_HitTypeProtection;
+
+	ref_str		m_ActorVisual;
 };

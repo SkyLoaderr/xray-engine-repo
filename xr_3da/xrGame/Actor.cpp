@@ -24,6 +24,7 @@
 #include "EffectorZoomInertion.h"
 
 #include "character_info.h"
+#include "CustomOutfit.h"
 
 
 
@@ -183,9 +184,9 @@ void CActor::reinit	()
 	CInventoryOwner::reinit	();
 	CDamageManager::reinit	();
 	CMaterialManager::reinit();
-	m_r_hand				= PKinematics(Visual())->LL_BoneID("bip01_r_hand");
-	m_l_finger1				= PKinematics(Visual())->LL_BoneID("bip01_l_finger1");
-	m_r_finger2				= PKinematics(Visual())->LL_BoneID("bip01_r_finger2");
+//	m_r_hand				= PKinematics(Visual())->LL_BoneID("bip01_r_hand");
+//	m_l_finger1				= PKinematics(Visual())->LL_BoneID("bip01_l_finger1");
+//	m_r_finger2				= PKinematics(Visual())->LL_BoneID("bip01_r_finger2");
 }
 
 void CActor::reload	(LPCSTR section)
@@ -320,6 +321,10 @@ void CActor::Load	(LPCSTR section )
 	m_fDispAccelFactor		= pSettings->r_float		(section,"disp_accel_factor" );
 	m_fDispCrouchFactor		= pSettings->r_float		(section,"disp_crouch_factor");
 
+	if (pSettings->line_exist(section, "default_outfit"))
+		m_DefaultVisualOutfit = pSettings->r_string(section, "default_outfit");
+	else
+		m_DefaultVisualOutfit = NULL;
 }
 
 
@@ -469,7 +474,12 @@ void CActor::Die	( )
 				(*I).m_pIItem->Drop();
 		}
 		else
+		{
+			CCustomOutfit *pOutfit = dynamic_cast<CCustomOutfit *> ((*I).m_pIItem);
+			if (pOutfit) continue;
+
 			if((*I).m_pIItem) inventory().Ruck((*I).m_pIItem);
+		};
 	};
 	///!!! выбрасываем артефакты
 	/*
@@ -501,7 +511,9 @@ void CActor::Die	( )
 				};
 			};
 
-			
+			CCustomOutfit *pOutfit = dynamic_cast<CCustomOutfit *> (*l_it);
+			if (pOutfit) continue;
+
 			//пока у нас нельзя обыскивать трупы, удаляем все объекты из инвентаря
 //			if ((*l_it)->SUB_CLS_ID == CLSID_DEVICE_PDA)
 			{

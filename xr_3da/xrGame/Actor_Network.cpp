@@ -532,18 +532,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	m_dwMoney				= pTA->m_dwMoney;
 	m_tRank					= pTA->m_tRank;
 
-	// take index spine bone
-	CSkeletonAnimated* V= PSkeletonAnimated(Visual());
-	R_ASSERT			(V);
-	int spine_bone		= V->LL_BoneID("bip01_spine1");
-	int shoulder_bone	= V->LL_BoneID("bip01_spine2");
-	int head_bone		= V->LL_BoneID("bip01_head");
-	V->LL_GetBoneInstance(u16(spine_bone)).set_callback		(SpinCallback,this);
-	V->LL_GetBoneInstance(u16(shoulder_bone)).set_callback	(ShoulderCallback,this);
-	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(HeadCallback,this);
-
-	m_anims.Create			(V);
-
+	OnChangeVisual();
 	// load damage params
 	CDamageManager::Load	(*cNameSect());
 	//----------------------------------
@@ -571,14 +560,33 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	//*/
 	//----------------------------------
 
-	//if (m_DefaultVisualOutfit == NULL)
-	//	m_DefaultVisualOutfit = cNameVisual();
+	if (m_DefaultVisualOutfit == NULL)
+		m_DefaultVisualOutfit = cNameVisual();
 
 	VERIFY(m_pActorEffector == NULL);
 	m_pActorEffector = xr_new<CActorEffector>();
 	PKinematics(Visual())->Calculate();
 	return					TRUE;
 }
+
+void	CActor::OnChangeVisual()
+{
+	// take index spine bone
+	CSkeletonAnimated* V= PSkeletonAnimated(Visual());
+	R_ASSERT			(V);
+	int spine_bone		= V->LL_BoneID("bip01_spine1");
+	int shoulder_bone	= V->LL_BoneID("bip01_spine2");
+	int head_bone		= V->LL_BoneID("bip01_head");
+	V->LL_GetBoneInstance(u16(spine_bone)).set_callback		(SpinCallback,this);
+	V->LL_GetBoneInstance(u16(shoulder_bone)).set_callback	(ShoulderCallback,this);
+	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(HeadCallback,this);
+
+	m_anims.Create			(V);
+	//-------------------------------------------------------------------------------
+	m_r_hand				= PKinematics(Visual())->LL_BoneID("bip01_r_hand");
+	m_l_finger1				= PKinematics(Visual())->LL_BoneID("bip01_l_finger1");
+	m_r_finger2				= PKinematics(Visual())->LL_BoneID("bip01_r_finger2");
+};
 
 void CActor::net_Relcase	(CObject* O)
 {

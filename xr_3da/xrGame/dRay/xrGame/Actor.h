@@ -474,6 +474,12 @@ public:
 		return				(true);
 	}
 
+	virtual	ref_str			GetDefaultVisualOutfit	() const	{return m_DefaultVisualOutfit;};
+	virtual	void			SetDefaultVisualOutfit	(ref_str DefaultOutfit) {m_DefaultVisualOutfit = DefaultOutfit;};
+	virtual void			UpdateAnimation			() 	{ g_SetAnimation(mstate_real); };
+	virtual void			OnChangeVisual			();
+	
+
 protected:
 	int						skel_ddelay;
 
@@ -488,6 +494,8 @@ protected:
 	// DEBUG INFO
 protected:
 		CStatGraph				*pStatGraph;
+
+		ref_str					m_DefaultVisualOutfit;
 #ifdef DEBUG
 		friend class CLevelGraph;
 #endif

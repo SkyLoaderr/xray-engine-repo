@@ -279,6 +279,7 @@ void CUIGameDM::OnBuyMenu_Ok	()
 	P.w_u8		(pCurBuyMenu->GetWeaponIndex(PISTOL_SLOT));
 	P.w_u8		(pCurBuyMenu->GetWeaponIndex(RIFLE_SLOT));
 	P.w_u8		(pCurBuyMenu->GetWeaponIndex(GRENADE_SLOT));
+	P.w_u8		(pCurBuyMenu->GetWeaponIndex(OUTFIT_SLOT));
 
 	P.w_u8		(pCurBuyMenu->GetBeltSize());
 	
@@ -297,8 +298,8 @@ bool		CUIGameDM::CanBeReady				()
 {
 	u8 res = 0xff;
 
-	SetCurrentBuyMenu();
 	SetCurrentSkinMenu();
+	SetCurrentBuyMenu();	
 
 	if (!m_bSkinSelected)
 	{
@@ -352,7 +353,7 @@ CUIBuyWeaponWnd*		CUIGameDM::InitBuyMenu			(s16 Team)
 	std::string *pTeamSect = &m_aTeamSections[ModifyTeam(Team)];
 
 	
-		CUIBuyWeaponWnd* pMenu	= xr_new<CUIBuyWeaponWnd>	((char*)pTeamSect->c_str());
+	CUIBuyWeaponWnd* pMenu	= xr_new<CUIBuyWeaponWnd>	((char*)pTeamSect->c_str());
 		/*
 	}
 	else
@@ -361,6 +362,7 @@ CUIBuyWeaponWnd*		CUIGameDM::InitBuyMenu			(s16 Team)
 	};
 	*/
 	FillDefItems(pTeamSect->c_str(), pMenu);
+	pMenu->SetSkin(0);
 	return pMenu;
 };
 
@@ -392,6 +394,8 @@ void		CUIGameDM::OnSkinMenu_Ok			()
 	l_pPlayer->u_EventSend		(P);
 	//-----------------------------------------------------------------
 	m_bSkinSelected = TRUE;
+
+	if (pCurBuyMenu) pCurBuyMenu->SetSkin(pCurSkinMenu->GetActiveIndex());
 };
 BOOL		CUIGameDM::CanCallBuyMenu			()
 {
