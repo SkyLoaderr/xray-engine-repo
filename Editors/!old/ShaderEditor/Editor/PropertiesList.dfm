@@ -127,16 +127,16 @@ object Properties: TProperties
     HeaderHeight = 17
     HeaderHotTrack = False
     HeaderSections.Data = {
-      F4FFFFFF020000009456990E002F0000FFFFFFFF0000010001000E407D000000
-      32000000102700000000004014B295040000000000000E400000000000000140
-      00000000000000000001000000000000ACB10E40CDB10E40EEB10E4012B20E40
-      37B20E4059B20E407FB20E40A5B20E40C9B20E40F0B20E401BB30E4044B30E40
-      66B30E4089B30E40AEB30E40CFB30E40F5B30E40040000004B65790001000000
-      0000000000000000009456990E002F0000FFFFFFFF0000010101000E40590000
-      00320000001027000000000040ECB695040100000000000E4000000000000001
-      4000000000000000000001000000000000ACB10E40CDB10E40EEB10E4012B20E
-      4037B20E4059B20E407FB20E40A5B20E40C9B20E40F0B20E401BB30E4044B30E
-      4066B30E4089B30E40AEB30E40CFB30E40F5B30E400600000056616C75650001
+      F4FFFFFF0200000064671901002F0000FFFFFFFF00000100010020207D000000
+      32000000102700000000005714B2950400000000000020200000000000000109
+      0000000000000000000100000000000028293B0D0A0D0A2020202050726F7049
+      74656D5665632009096D5F4974656D733B0D0A2020202050726F704974656D56
+      65632009096D5F566965774974656D733B0D0A09040000004B65790001000000
+      00000000000000000064671901002F0000FFFFFFFF0000010101002020590000
+      00320000001027000000000057ECB69504010000000000202000000000000001
+      090000000000000000000100000000000028293B0D0A0D0A2020202050726F70
+      4974656D5665632009096D5F4974656D733B0D0A2020202050726F704974656D
+      5665632009096D5F566965774974656D733B0D0A090600000056616C75650001
       000000000000000000000000}
     HeaderFlat = True
     HeaderFont.Charset = DEFAULT_CHARSET
@@ -226,7 +226,7 @@ object Properties: TProperties
   object seNumber: TMultiObjSpinEdit
     Left = 196
     Top = 19
-    Width = 74
+    Width = 90
     Height = 17
     LWSensitivity = 0.01
     BtnColor = 12171705
@@ -243,31 +243,6 @@ object Properties: TProperties
     OnExit = seNumberExit
     OnKeyDown = seNumberKeyDown
   end
-  object pbExtBtn: TElPopupButton
-    Left = 270
-    Top = 19
-    Width = 16
-    Height = 17
-    DrawDefaultFrame = False
-    DisableAutoPopup = True
-    NumGlyphs = 1
-    ShowFocus = False
-    ShowGlyph = False
-    Caption = 'E'
-    TabOrder = 2
-    Color = 12171705
-    ParentColor = False
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'MS Sans Serif'
-    Font.Style = []
-    ParentFont = False
-    Visible = False
-    OnClick = pbExtBtnClick
-    DockOrientation = doNoOrient
-    DoubleBuffered = False
-  end
   object paButtons: TPanel
     Left = 0
     Top = 283
@@ -276,7 +251,7 @@ object Properties: TProperties
     Align = alBottom
     BevelOuter = bvNone
     Color = 10528425
-    TabOrder = 3
+    TabOrder = 2
     Visible = False
     object Bevel2: TBevel
       Left = 0
@@ -337,7 +312,7 @@ object Properties: TProperties
     Height = 15
     BorderStyle = bsNone
     Color = 10526880
-    TabOrder = 4
+    TabOrder = 3
     Visible = False
     OnDblClick = edTextDblClick
     OnExit = edTextExit
@@ -350,7 +325,7 @@ object Properties: TProperties
     Height = 112
     BevelOuter = bvNone
     ParentColor = True
-    TabOrder = 5
+    TabOrder = 4
     Visible = False
   end
   object pmEnum: TMxPopupMenu

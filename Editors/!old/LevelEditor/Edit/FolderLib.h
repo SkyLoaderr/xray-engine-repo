@@ -57,7 +57,8 @@ public:
     TElTreeItem*		ExpandItem			(TElTree* tv, TElTreeItem* node);
     TElTreeItem*		ExpandItem			(TElTree* tv, AnsiString full_name);
 
-	bool 				DrawThumbnail		(void *Surface, Irect &R, ref_str fname, u32 thm_type);
+	bool 				DrawThumbnail		(HDC hdc, const Irect &R, u32* data, u32 w, u32 h);
+	void 				FillRect			(HDC hdc, const Irect& r, u32 color);
 
     AnsiString			GenerateName		(LPCSTR pref, int dgt_cnt, TFindObjectByName cb, bool allow_pref_name);
 //------------------------------------------------------------------------------

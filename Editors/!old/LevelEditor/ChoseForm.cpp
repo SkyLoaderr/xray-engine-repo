@@ -4,7 +4,6 @@
 #pragma hdrstop
 
 #include "ChoseForm.h"
-#include "EThumbnail.h"
 #include "PropertiesList.h"               
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -29,10 +28,10 @@ SChooseEvents* TfrmChoseItem::GetEvents	(u32 choose_ID)
     	return &it->second;
     }else return 0;
 }
-void TfrmChoseItem::AppendEvents(u32 choose_ID, LPCSTR caption, TOnChooseFillItems on_fill, TOnChooseSelectItem on_sel, bool bTHM)
+void TfrmChoseItem::AppendEvents(u32 choose_ID, LPCSTR caption, TOnChooseFillItems on_fill, TOnChooseSelectItem on_sel, TOnDrawThumbnail on_thm)
 {
 	EventsMapIt it 	= m_Events.find(choose_ID); VERIFY(it==m_Events.end());
-    m_Events.insert	(std::make_pair(choose_ID,SChooseEvents(caption,on_fill,on_sel,bTHM)));
+    m_Events.insert	(std::make_pair(choose_ID,SChooseEvents(caption,on_fill,on_sel,on_thm)));
 }
 void TfrmChoseItem::ClearEvents()
 {
@@ -42,14 +41,12 @@ void TfrmChoseItem::ClearEvents()
 void __fastcall TfrmChoseItem::FormCreate(TObject *Sender)
 {
     m_Props = TProperties::CreateForm("Info",paInfo,alClient);
-    m_Thm	= 0;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmChoseItem::FormDestroy(TObject *Sender)
 {
 	TProperties::DestroyForm		(m_Props);
-	xr_delete			(m_Thm);
 }
 //---------------------------------------------------------------------------
 
@@ -71,16 +68,19 @@ int __fastcall TfrmChoseItem::SelectItem(u32 choose_ID, LPCSTR& dest, int sel_cn
     	form->m_Items				= *items;
 	    form->Caption				= "Select Item";
 	    form->item_select_event		= item_select;
+        form->item_draw_thm			= 0;
     }else if (!item_fill.empty()){
     	// custom
         item_fill					(form->m_Items,fill_param);
 	    form->Caption				= "Select Item";
 	    form->item_select_event		= item_select;
+        form->item_draw_thm			= 0;
     }else{
     	SChooseEvents* E			= GetEvents(choose_ID); VERIFY(E);
         E->on_fill					(form->m_Items,fill_param);
 	    form->Caption				= E->caption.c_str();
 	    form->item_select_event		= item_select.empty()?E->on_sel:item_select;
+        form->item_draw_thm			= E->on_thm;
     }
     form->FillItems					();
     
@@ -116,7 +116,7 @@ void __fastcall TfrmChoseItem::FillItems()
     FHelper.AppendObject			(tvItems,NONE_CAPTION,false,true);
     ChooseItemVecIt  it				= m_Items.begin();
     ChooseItemVecIt  _E				= m_Items.end();
-    for (; it!=_E; it++)			AppendItem(&(*it));
+    for (; it!=_E; it++)   			AppendItem(&(*it));
     form->tvItems->Sort				(true);
 	form->tvItems->IsUpdating 		= false;
 }
@@ -336,93 +336,29 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
 {
 	TElTreeItem* Item 	= tvItems->Selected;
     PropItemVec 		items;
-	xr_delete			(m_Thm);
-	m_Snd.destroy		();
 	if (Item&&FHelper.IsObject(Item)&&Item->Tag){
-    	if (ebExt->Down&&!item_select_event.empty())	item_select_event((SChooseItem*)Item->Tag,m_Thm,m_Snd,items);
+    	if (ebExt->Down&&!item_select_event.empty())	
+        	item_select_event	((SChooseItem*)Item->Tag,items);
         lbItemName->Caption 	= Item->Text;
         lbHint->Caption 		= Item->Hint;
     }
-    if (m_Thm)			m_Thm->FillInfo	(items);
-    if (m_Snd.handle)	m_Snd.play(0,sm_2D);
     m_Props->AssignItems		(items);
     paInfo->Visible				= !items.empty();
 	paImage->Repaint			();
-/*    
-    	switch (Mode){
-        case smTexture:{
-            if (ebExt->Down){
-                AnsiString nm;
-                FHelper.MakeName		(Item,0,nm,false);
-                if (nm!=NONE_CAPTION)	m_Thm	= xr_new<ETextureThumbnail>(nm.c_str());
-                lbItemName->Caption 	= "\""+ChangeFileExt(Item->Text,"")+"\"";
-            }
-        }break;
-        case smObject:{
-            if (ebExt->Down){
-                AnsiString nm,fn;
-                FHelper.MakeName		(Item,0,nm,false);
-                fn						= ChangeFileExt(nm,".thm");
-                FS.update_path			(_objects_,fn);
-                if (FS.exist(fn.c_str())){
-                    m_Thm 				= xr_new<EObjectThumbnail>(nm.c_str());
-                }
-            }
-			lbItemName->Caption 	= "\""+Item->Text+"\"";
-			lbHint->Caption			= "\""+Item->Text+".object\"";
-        }break;
-        case smSoundSource:{
-            if (ebExt->Down){
-                AnsiString fn;
-                FHelper.MakeName		(Item,0,fn,false);
-                fn						= ChangeFileExt(fn,".ogg");
-                const CLocatorAPI::file* file	= FS.exist(_game_sounds_,fn.c_str());
-                if (file){
-                    m_Snd.create		(TRUE,fn.c_str());
-                    m_Snd.play			(0,sm_2D);
-                }
-            }
-			lbItemName->Caption 	= "\""+Item->Text+"\"";
-        }break;
-        case smGameObject:{
-	        AnsiString fn;
-        	FHelper.MakeName		(Item,0,fn,false);
-            fn						= ChangeFileExt(fn,".ogf");
-            if (ebExt->Down){
-                IRender_Visual* visual	= ::Render->model_Create(fn.c_str());
-                if (visual){
-                    PHelper.CreateCaption	(items, 	"Source File",	*visual->desc.source_file?*visual->desc.source_file:"unknown");
-                    PHelper.CreateCaption	(items, 	"Creator Name",	*visual->desc.create_name?*visual->desc.create_name:"unknown");
-                    PHelper.CreateCaption	(items, 	"Creator Time",	Trim(AnsiString(ctime(&visual->desc.create_time))));
-                    PHelper.CreateCaption	(items, 	"Modif Name",	*visual->desc.modif_name ?*visual->desc.modif_name :"unknown");
-                    PHelper.CreateCaption	(items, 	"Modif Time",	Trim(AnsiString(ctime(&visual->desc.modif_time))));
-                    PHelper.CreateCaption	(items, 	"Build Name",	*visual->desc.build_name ?*visual->desc.build_name :"unknown");
-                    PHelper.CreateCaption	(items, 	"Build Time",	Trim(AnsiString(ctime(&visual->desc.build_time))));
-                }
-                ::Render->model_Delete(visual);
-            }
-			lbItemName->Caption 	= "\""+Item->Text+"\"";
-        }break;
-        default:
-			lbItemName->Caption = "\""+Item->Text+"\"";
-        }
-        lbHint->Caption 		= Item->Hint;
-    }else{
-		lbItemName->Caption = "-";
-		lbHint->Caption		= "-";
-    }
-    if (m_Thm)	m_Thm->FillInfo		(items);
-    m_Props->AssignItems			(items);
-    paInfo->Visible					= !items.empty();
-	paImage->Repaint				();
-*/
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmChoseItem::paImagePaint(TObject *Sender)
 {
-	if (m_Thm&&m_Thm->IsClass(ECustomThumbnail::ETTexture)) 
-    	static_cast<EImageThumbnail*>(m_Thm)->Draw(paImage,false);
+	TElTreeItem* Item 	= tvItems->Selected;
+	if (Item&&FHelper.IsObject(Item)&&Item->Tag){
+    	if (ebExt->Down&&!item_select_event.empty()){
+        	SChooseItem* itm 	= (SChooseItem*)Item->Tag;
+            if (!item_draw_thm.empty()){
+            	item_draw_thm(*itm->name,paImage->Canvas->Handle,Irect().set(0,0,paImage->Width,paImage->Height));
+            }
+        }        	
+    }
 }
 //---------------------------------------------------------------------------
 

@@ -139,8 +139,7 @@ public:
     	flShowCB		= (1<<1),
     	flCBChecked		= (1<<2),
         flMixed			= (1<<3),
-        flShowExtBtn	= (1<<4),
-        flDrawThumbnail	= (1<<5),
+        flDrawThumbnail	= (1<<4),
     };
     Flags32				m_Flags;
 public:
@@ -366,11 +365,12 @@ public:
     ChooseItemVec*		m_Items;
 	typedef fastdelegate::FastDelegate1<ChooseValue*>	TOnChooseValueFill;
     TOnChooseValueFill	OnChooseFillEvent;
+    TOnDrawThumbnail	OnDrawThumbnailEvent;
     void*				m_FillParam;
 // utils
     void				AppendChooseItem	(LPCSTR name, LPCSTR hint){VERIFY(m_Items); m_Items->push_back(SChooseItem(name,hint));}
 public:
-						ChooseValue			(ref_str* val, u32 cid, LPCSTR path, void* param, u32 sub_item_counr):RTextValue(val),m_ChooseID(cid),m_StartPath(path),subitem(sub_item_counr),m_Items(0),m_FillParam(param),OnChooseFillEvent(0){}
+						ChooseValue			(ref_str* val, u32 cid, LPCSTR path, void* param, u32 sub_item_count):RTextValue(val),m_ChooseID(cid),m_StartPath(path),subitem(sub_item_count),m_Items(0),m_FillParam(param),OnChooseFillEvent(0),OnDrawThumbnailEvent(0){}
 };
 
 typedef CustomValue<BOOL>		BOOLValue;

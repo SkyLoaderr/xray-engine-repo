@@ -11,11 +11,7 @@
       intermediate\ColorPicker.obj intermediate\NumericVector.obj 
       intermediate\ShaderFunction.obj intermediate\TextForm.obj 
       intermediate\xrEProps.obj intermediate\ChoseForm.obj 
-      intermediate\EThumbnail.obj intermediate\EThumbnailObject.obj 
-      intermediate\EThumbnailSound.obj intermediate\EThumbnailTexture.obj 
-      intermediate\xrImage_Resampler.obj intermediate\ETextureParams.obj 
-      intermediate\ItemDialog.obj R:\Borland\CBuilder6\Lib\c0pkg32.obj 
-      intermediate\ai_sounds.obj"/>
+      intermediate\ItemDialog.obj"/>
     <RESFILES value="xrEPropsB.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -42,12 +38,11 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -DXR_EPROPS_EXPORTS -D_DEBUG 
-      -IR:\SDK\DirectX9.0_sum_2004\Include -IC:\Rad\Borland\CBuilder6\Projects 
+    <IDLCFLAGS value="-IR:\SDK\DirectX9.0_sum_2004\Include -IC:\Rad\Borland\CBuilder6\Projects 
       -I$(BCB)\include -I$(BCB)\include\vcl -IP:\MagicFM_Borland\Sdk\Include 
       -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source -IR:\Borland\CBuilder6\Include\Mfc 
-      -IP:\xrCore -boa"/>
+      -IP:\xrCore -src_suffix cpp -D_EDITOR -DXR_EPROPS_EXPORTS -D_DEBUG -boa"/>
     <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vms -Vx -Ve -xf -xp -VF -ff -X- 
       -r- -ps -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2intermediate -N0intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -57,7 +52,7 @@
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
-    <ALLOBJ value="$(PACKAGES) $(PACKAGES) Memmgr.Lib sysinit.obj $(OBJFILES)"/>
+    <ALLOBJ value="c0d32.obj $(PACKAGES) Memmgr.Lib sysinit.obj $(OBJFILES)"/>
     <ALLRES value="$(RESFILES)"/>
     <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
     <OTHERFILES value=""/>
@@ -81,18 +76,8 @@
       <FILE FILENAME="TextForm.cpp" FORMNAME="frmText" UNITNAME="TextForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="xrEProps.cpp" FORMNAME="" UNITNAME="xrEProps" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ChoseForm.cpp" FORMNAME="frmChoseItem" UNITNAME="ChoseForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Sound.h" FORMNAME="" UNITNAME="Sound.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="EThumbnail.cpp" FORMNAME="" UNITNAME="EThumbnail.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="EThumbnailObject.cpp" FORMNAME="" UNITNAME="EThumbnailObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="EThumbnailSound.cpp" FORMNAME="" UNITNAME="EThumbnailSound.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="EThumbnailTexture.cpp" FORMNAME="" UNITNAME="EThumbnailTexture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="xrImage_Resampler.cpp" FORMNAME="" UNITNAME="xrImage_Resampler" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="ETextureParams.cpp" FORMNAME="" UNITNAME="ETextureParams" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="ai_sounds.h" FORMNAME="" UNITNAME="ai_sounds.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="resource.res" FORMNAME="" UNITNAME="resource.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ItemDialog.cpp" FORMNAME="frmItemDialog" UNITNAME="ItemDialog" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="R:\Borland\CBuilder6\Lib\c0pkg32.obj" FORMNAME="" UNITNAME="c0pkg32.obj" CONTAINERID="OBJTool" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="ai_sounds.cpp" FORMNAME="" UNITNAME="ai_sounds" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -167,7 +152,7 @@ RunParams=
 Launcher=
 UseLauncher=0
 DebugCWD=
-HostApplication=x:\LevelEditor.exe
+HostApplication=x:\ActorEditor.exe
 RemoteHost=
 RemotePath=
 RemoteLauncher=

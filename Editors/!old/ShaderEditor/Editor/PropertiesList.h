@@ -35,7 +35,6 @@ __published:	// IDE-managed Components
 	TFormStorage 		*fsStorage;
 	TMultiObjSpinEdit 	*seNumber;
 	TBevel 				*Bevel1;
-	TElPopupButton *pbExtBtn;
 	TMxPopupMenu *pmSystem;
 	TMenuItem *ExpandAll1;
 	TMenuItem *N1;
@@ -69,7 +68,6 @@ __published:	// IDE-managed Components
 	void __fastcall 	FormShow(TObject *Sender);
 	void __fastcall 	tvPropertiesItemChange(TObject *Sender, TElTreeItem *Item, TItemChangeMode ItemChangeMode);
 	void __fastcall 	FormDestroy(TObject *Sender);
-	void __fastcall 	pbExtBtnClick(TObject *Sender);
 	void __fastcall 	fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall 	fsStorageSavePlacement(TObject *Sender);
 	void __fastcall 	CollapseAll1Click(TObject *Sender);
@@ -113,9 +111,6 @@ private:	// User declarations
     void 				ShowLWText		(TRect& R);
     void 				ApplyLWText	();
     void 				CancelLWText	();
-    // Ext Button
-    void 				ShowExtBtn		(TRect& R);
-    void 				HideExtBtn		();
 
     PropItemVec 		m_Items;
     PropItemVec 		m_ViewItems;

@@ -12,7 +12,6 @@
 namespace CDB{
 	class MODEL;
 };
-#include "Sound.h"             
 
 #include "xrEProps.h"
 #include "FolderLib.h"                 

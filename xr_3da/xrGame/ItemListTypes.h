@@ -13,7 +13,6 @@ class ListItem{
 public:                        
     typedef fastdelegate::FastDelegate1<ListItem*> 					TOnListItemFocused;   
     typedef fastdelegate::FastDelegate1<ListItem*> 					TOnClick;
-    typedef fastdelegate::FastDelegate3<ListItem*, void*, Irect&>TOnDrawThumbnail;
     TOnClick			OnClickEvent;
     TOnListItemFocused	OnItemFocused;
     TOnDrawThumbnail	OnDrawThumbnail;

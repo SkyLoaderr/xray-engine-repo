@@ -23,18 +23,16 @@ enum EChooseMode{
 };
 
 struct SChooseItem{
-	ref_str		name;
-	ref_str		hint;
-    bool		bTHM;
-    SChooseItem	(LPCSTR nm, LPCSTR ht, bool thm=false):name(nm),hint(ht),bTHM(thm){}
+	ref_str				name;
+	ref_str				hint;
+    SChooseItem	(LPCSTR nm, LPCSTR ht):name(nm),hint(ht){}
 };
 DEFINE_VECTOR(SChooseItem,ChooseItemVec,ChooseItemVecIt);
 
-// refs
-class ECustomThumbnail;
 // typedef
-typedef fastdelegate::FastDelegate2<ChooseItemVec&,void*>										TOnChooseFillItems;
-typedef fastdelegate::FastDelegate4<SChooseItem*, ECustomThumbnail*&, ref_sound&, PropItemVec&>	TOnChooseSelectItem;
+typedef fastdelegate::FastDelegate2<ChooseItemVec&,void*>		TOnChooseFillItems;
+typedef fastdelegate::FastDelegate2<SChooseItem*, PropItemVec&>	TOnChooseSelectItem;
+typedef fastdelegate::FastDelegate3<LPCSTR, HDC, const Irect&>	TOnDrawThumbnail;
 
 typedef void (*TOnChooseFillEvents)();
 
@@ -42,10 +40,10 @@ struct SChooseEvents{
 	ref_str				caption;
     TOnChooseFillItems	on_fill;
     TOnChooseSelectItem	on_sel;
-    bool				thm;
-    SChooseEvents(LPCSTR capt, TOnChooseFillItems f, TOnChooseSelectItem s, bool _thm):caption(capt),on_fill(f),on_sel(s),thm(_thm)
+    TOnDrawThumbnail    on_thm;
+    SChooseEvents(LPCSTR capt, TOnChooseFillItems f, TOnChooseSelectItem s, TOnDrawThumbnail t):caption(capt),on_fill(f),on_sel(s),on_thm(t)
     {
-    	VERIFY(on_fill);
+    	VERIFY(!on_fill.empty());
     }
 };
 

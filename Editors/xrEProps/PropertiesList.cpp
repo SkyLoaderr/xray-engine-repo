@@ -12,7 +12,6 @@
 #include "FolderLib.h"
 #include "NumericVector.h"
 #include "TextForm.h"
-#include "EThumbnail.h"
 #include "ItemList.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -78,7 +77,6 @@ void __fastcall TProperties::ResetItems()
 //---------------------------------------------------------------------------
 void __fastcall TProperties::ClearProperties()
 {
-	HideExtBtn			();
 	CancelEditControl	();
     ClearParams			();
 }
@@ -215,7 +213,6 @@ int __fastcall TProperties::EditPropertiesModal(PropItemVec& values, LPCSTR titl
 void __fastcall TProperties::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
-	HideExtBtn			();
 	ApplyEditControl	();
     if (Visible&&!OnCloseEvent.empty()) 	OnCloseEvent();
 	ClearParams			();
@@ -290,7 +287,6 @@ void __fastcall TProperties::AssignItems(PropItemVec& items)
 {
 	// begin fill mode
 	LockUpdating		();
-   	HideExtBtn			();
 	CancelEditControl	();
 
     // clear values
@@ -584,21 +580,25 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 OutBOOL				(V->GetValue(),Surface,R,prop->Enabled());
             }break;
             case PROP_CHOOSE:{
+				ChooseValue* V		= dynamic_cast<ChooseValue*>(prop->GetFrontValue()); R_ASSERT(V);
                 OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
                 if (miDrawThumbnails->Checked&&prop->m_Flags.is(PropItem::flDrawThumbnail)){ 
-                    R.top	+=	tvProperties->LineHeight-4;
-                    R.left 	= 	R.Right-(R.bottom-R.top);
-                    FHelper.DrawThumbnail	(Surface,Irect().set(R.left,R.top,R.right,R.bottom),prop->GetText(),EImageThumbnail::ETTexture);
+                    R.top			+=	tvProperties->LineHeight-4;
+                    R.left 			= 	R.Right-(R.bottom-R.top);
+                    if (!V->OnDrawThumbnailEvent.empty())
+                    	V->OnDrawThumbnailEvent(*prop->GetText(),Surface->Handle,Irect().set(R.left,R.top,R.right,R.bottom));
                 }
             }break;
-            case PROP_TEXTURE2:
+            case PROP_TEXTURE2:{
                 OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
                 if (miDrawThumbnails->Checked){ 
-                    R.top+=tvProperties->LineHeight-4;
-                    R.left 	= 	R.Right-(R.bottom-R.top);
-                    FHelper.DrawThumbnail	(Surface,Irect().set(R.left,R.top,R.right,R.bottom),prop->GetText(),EImageThumbnail::ETTexture);
+                    R.top			+=	tvProperties->LineHeight-4;
+                    R.left 			= 	R.Right-(R.bottom-R.top);
+                    SChooseEvents* E= TfrmChoseItem::GetEvents(smTexture); 
+                    if (E&&!E->on_thm.empty())
+                    	E->on_thm(*prop->GetText(),Surface->Handle,Irect().set(R.left,R.top,R.right,R.bottom));
                 }
-            break;
+            }break;
             case PROP_WAVE:
                 OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
             break;
@@ -641,8 +641,6 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 if (seNumber->Tag==(int)Item) if (!seNumber->Visible) ShowLWNumber(R);
             break;
             };
-            // show ext button (if needed)
-            if ((pbExtBtn->Tag==(int)prop)&&(!pbExtBtn->Visible)) ShowExtBtn(R);
         }
   	}
 }
@@ -1213,23 +1211,6 @@ void __fastcall TProperties::seNumberExit(TObject *Sender)
 	ApplyLWNumber();
 	HideLWNumber();
 }
-
-void TProperties::ShowExtBtn(TRect& R)
-{
-    pbExtBtn->Height= R.Bottom-R.Top+2;
-    pbExtBtn->Width	= pbExtBtn->Height;
-    pbExtBtn->Left 	= R.Right-pbExtBtn->Width+1;
-    pbExtBtn->Top  	= R.Top+tvProperties->HeaderHeight+1;
-    R.Right			-= pbExtBtn->Width+1;
-    pbExtBtn->Show	();
-}
-
-void TProperties::HideExtBtn()
-{
-    pbExtBtn->Tag	= 0;
-	pbExtBtn->Hide	();
-}
-
 //---------------------------------------------------------------------------
 
 void __fastcall TProperties::seNumberKeyDown(TObject *Sender, WORD &Key,
@@ -1418,11 +1399,8 @@ void TProperties::ExecTextEditor(PropItem* prop)
 void __fastcall TProperties::tvPropertiesItemFocused(TObject *Sender)
 {
 	if (!OnItemFocused.empty()) 	OnItemFocused(tvProperties->Selected);
-    HideExtBtn			();
 	if (tvProperties->Selected){
         PropItem* prop 		= (PropItem*)tvProperties->Selected->Tag;
-        if (prop&&prop->m_Flags.is(PropItem::flShowExtBtn))
-            pbExtBtn->Tag	= (int)prop;
         if (prop&&!prop->OnItemFocused.empty())prop->OnItemFocused(prop);
     }
 	m_FirstClickItem 	= 0;
@@ -1484,14 +1462,6 @@ void __fastcall TProperties::tvPropertiesItemChange(TObject *Sender,
     	}
 	    tvProperties->Refresh	();
     }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TProperties::pbExtBtnClick(TObject *Sender)
-{
-	TElPopupButton* btn = dynamic_cast<TElPopupButton*>(Sender);
-	PropItem* prop = (PropItem*)btn->Tag; R_ASSERT(prop);//&&prop->OnExtBtnClick);
-//.	prop->OnExtClick();
 }
 //---------------------------------------------------------------------------
 

@@ -3,7 +3,6 @@
 
 #include "FolderLib.h"
 #include "PropertiesListHelper.h"
-#include "EThumbnail.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -577,24 +576,50 @@ bool CFolderHelper::NameAfterEdit(TElTreeItem* node, AnsiString value, AnsiStrin
     return true;
 }
 
-bool CFolderHelper::DrawThumbnail(void *_Surface, Irect &R, ref_str fname, u32 thm_type)
+void DrawBitmap(HDC hdc, const Irect& r, u32* data, u32 w, u32 h)
 {
-	if (fname.size()){
-		TCanvas* Surface = (TCanvas*)_Surface;
-        EImageThumbnail* m_Thm 	= CreateThumbnail(fname.c_str(),EImageThumbnail::THMType(thm_type));
-        VERIFY		(m_Thm);
-        int dw 		= R.width()-R.height();
-        if (dw>=0) 	R.x2		-= dw;
-        bool bRes 	= m_Thm->Valid();
-        if (bRes) 	m_Thm->Draw(Surface,R);
-        else{		
-        	Surface->Brush->Color 	= clBlack;
-        	Surface->FillRect		(*((TRect*)&R)); 
-        }
-        xr_delete	(m_Thm);
-        return bRes;
+    BITMAPINFO  	bmi;
+    bmi.bmiHeader.biSize 			= sizeof(BITMAPINFOHEADER);
+    bmi.bmiHeader.biWidth 			= w;
+    bmi.bmiHeader.biHeight 			= h;
+    bmi.bmiHeader.biPlanes 			= 1;
+    bmi.bmiHeader.biBitCount 		= 32;
+    bmi.bmiHeader.biCompression 	= BI_RGB;
+    bmi.bmiHeader.biSizeImage 		= 0;
+    bmi.bmiHeader.biXPelsPerMeter 	= 0;
+    bmi.bmiHeader.biYPelsPerMeter 	= 0;
+    bmi.bmiHeader.biClrUsed 		= 0;
+    bmi.bmiHeader.biClrImportant 	= 0;
+
+    SetMapMode		(hdc,	MM_ANISOTROPIC	);
+    SetStretchBltMode(hdc,	HALFTONE		);
+    int err 		= StretchDIBits	(hdc, 	r.x1, 	r.y1, 	r.x2-r.x1, 	r.y2-r.y1,
+    							 	0,		0,		w,			h, 			data, &bmi,
+                    				DIB_RGB_COLORS, SRCCOPY);
+    if (err==GDI_ERROR){
+    	Log("!StretchDIBits - Draw failed.");
     }
-    return false;
+}
+
+void CFolderHelper::FillRect(HDC hdc, const Irect& r, u32 color)
+{
+    HBRUSH hbr		= CreateSolidBrush(color);
+    ::FillRect		(hdc,(const RECT*)&r,hbr);
+    DeleteObject	(hbr);
+}
+
+bool CFolderHelper::DrawThumbnail(HDC hdc, const Irect &r, u32* data, u32 w, u32 h)
+{
+	Irect R			= r;
+//	int dw 			= R.width()-R.height();
+//	if (dw>=0) R.x2	-= dw;
+    bool bRes 		= !!(w*h*4);
+    if (bRes){
+    	DrawBitmap	(hdc,R,data,w,h); 
+    }else{	
+    	FillRect	(hdc,R,0x00000000);	
+    }
+    return bRes;
 }
 //---------------------------------------------------------------------------
 
