@@ -80,7 +80,7 @@ struct SFillPropData{
         R_ASSERT				(Ini->section_exist(section));
         for (k = 0; Ini->r_line(section,k,&N,&V); ++k)
             story_names.push_back	(xr_rtoken(V,atoi(N)));
-		story_names.push_back	("NO STORY ID",ALife::_STORY_ID(-1));
+		story_names.push_back	(xr_rtoken("NO STORY ID",ALife::_STORY_ID(-1)));
 
 
 #ifndef AI_COMPILER
