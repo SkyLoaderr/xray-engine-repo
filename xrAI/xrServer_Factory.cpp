@@ -29,14 +29,15 @@ CSE_Abstract *F_entity_Create			(LPCSTR caSection)
 		case CLSID_AI_RAT_GROUP:		return xr_new<CSE_ALifeGroupTemplate<CSE_ALifeMonsterRat> >	(caSection);	
 		case CLSID_AI_FLESH:			return xr_new<CSE_ALifeMonsterBiting>			(caSection);
 		case CLSID_AI_FLESH_GROUP:		return xr_new<CSE_ALifeGroupTemplate<CSE_ALifeMonsterBiting> >(caSection);
-		case CLSID_AI_ZOMBIE:			return xr_new<CSE_ALifeMonsterZombie>			(caSection);            // Visualed
-		case CLSID_AI_DOG:				return xr_new<CSE_ALifeMonsterBiting>			(caSection);			// Visualed
-		case CLSID_AI_SOLDIER:			return xr_new<CSE_ALifeHumanStalker>			(caSection);           	// Visualed
-		case CLSID_AI_STALKER:			return xr_new<CSE_ALifeHumanStalker>			(caSection);			// Visualed
-		case CLSID_AI_IDOL:				return xr_new<CSE_ALifeObjectIdol>				(caSection);			// Visualed
-		case CLSID_EVENT:				return xr_new<CSE_Event>						(caSection);
-		case CLSID_CAR_NIVA:			return xr_new<CSE_ALifeItemCar>					(caSection);			// Visualed
-		case CLSID_SPECTATOR:			return xr_new<CSE_Spectator>					(caSection);
+		case CLSID_AI_ZOMBIE:			return xr_new<CSE_ALifeMonsterZombie>						(caSection);            // Visualed
+		case CLSID_AI_DOG:				return xr_new<CSE_ALifeMonsterBiting>						(caSection);			// Visualed
+		case CLSID_AI_SOLDIER:			return xr_new<CSE_ALifeHumanStalker>						(caSection);           	// Visualed
+		case CLSID_AI_STALKER:			return xr_new<CSE_ALifeHumanStalker>						(caSection);			// Visualed
+		case CLSID_AI_IDOL:				return xr_new<CSE_ALifeObjectIdol>							(caSection);			// Visualed
+		case CLSID_EVENT:				return xr_new<CSE_Event>									(caSection);
+		case CLSID_CAR_NIVA:			return xr_new<CSE_ALifeItemCar>								(caSection);			// Visualed
+		case CLSID_SPECTATOR:			return xr_new<CSE_Spectator>								(caSection);
+		case CLSID_AI_TRADER:			return xr_new<CSE_ALifeTrader>								(caSection); 
 
 		// Artifacts
 //		case CLSID_AF_MERCURY_BALL:		return xr_new<xrSE_MercuryBall>					(caSection);
