@@ -11,6 +11,7 @@
 
 #include "xrMessages.h"
 #include "xrServer_Objects_Abstract.h"
+#include "phnetstate.h"
 
 #ifdef _EDITOR
 	#include "PropertiesListHelper.h"
@@ -170,6 +171,29 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_SpawnGroup,CSE_Abstract)
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_SpawnGroup)
 #define script_type_list save_type_list(CSE_SpawnGroup)
+
+SERVER_ENTITY_DECLARE_BEGIN0(CSE_PHSkeleton)
+								CSE_PHSkeleton(LPCSTR caSection);
+virtual							~CSE_PHSkeleton();
+
+enum{
+	flActive					= (1<<0),
+	flSpawnCopy					= (1<<1),
+	flSavedData					= (1<<2),
+	flNotSave					= (1<<3),
+};
+ref_str							startup_animation;
+Flags8							flags;
+SPHBonesData					saved_bones;
+u16								source_id;//for break only
+	virtual	void					load					(NET_Packet &tNetPacket);
+protected:
+	virtual void					data_load				(NET_Packet &tNetPacket);
+	virtual void					data_save				(NET_Packet &tNetPacket);
+public:
+	SERVER_ENTITY_DECLARE_END
+		add_to_type_list(CSE_PHSkeleton)
+#define script_type_list save_type_list(CSE_PHSkeleton)
 
 #ifndef AI_COMPILER
 extern CSE_Abstract	*F_entity_Create	(LPCSTR caSection);

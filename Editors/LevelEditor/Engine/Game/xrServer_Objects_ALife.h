@@ -11,7 +11,7 @@
 
 #include "xrServer_Objects.h"
 #include "alife_space.h"
-#include "phnetstate.h"
+
 
 #pragma warning(push)
 #pragma warning(disable:4005)
@@ -207,26 +207,12 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeDynamicObjectVisual)
 #define script_type_list save_type_list(CSE_ALifeDynamicObjectVisual)
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePHSkeletonObject,CSE_ALifeDynamicObjectVisual)
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifePHSkeletonObject,CSE_ALifeDynamicObjectVisual,CSE_PHSkeleton)
 									CSE_ALifePHSkeletonObject(LPCSTR caSection);
 	virtual							~CSE_ALifePHSkeletonObject();
-
-	enum{
-		flActive					= (1<<0),
-		flSpawnCopy					= (1<<1),
-		flSavedData					= (1<<2),
-		flNotSave					= (1<<3),
-		};
-	ref_str							startup_animation;
-	Flags8							flags;
-	SPHBonesData					saved_bones;
-	u16								source_id;//for break only
 	virtual bool					can_save				() const;
 	virtual bool					used_ai_locations		() const;
 	virtual	void					load					(NET_Packet &tNetPacket);
-protected:
-	virtual void					data_load				(NET_Packet &tNetPacket);
-	virtual void					data_save				(NET_Packet &tNetPacket);
 public:
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifePHSkeletonObject)
@@ -253,7 +239,7 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeLevelChanger)
 #define script_type_list save_type_list(CSE_ALifeLevelChanger)
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifePHSkeletonObject)
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual,CSE_PHSkeleton)
 #ifdef _EDITOR
 	void __fastcall					OnChangeAnim	(PropValue* sender);
 	void __fastcall					OnChooseAnim	(ChooseItemVec& lst);
@@ -346,11 +332,12 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeHelicopter)
 #define script_type_list save_type_list(CSE_ALifeHelicopter)
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCar,CSE_ALifePHSkeletonObject)
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCar,CSE_ALifeDynamicObjectVisual,CSE_PHSkeleton)
 	xr_vector<u8>					door_states;
 									CSE_ALifeCar		(LPCSTR caSection);
 	virtual							~CSE_ALifeCar		();
 	virtual bool					used_ai_locations	() const;
+	virtual	void					load					(NET_Packet &tNetPacket);
 protected:
 	virtual void					data_load				(NET_Packet &tNetPacket);
 	virtual void					data_save				(NET_Packet &tNetPacket);

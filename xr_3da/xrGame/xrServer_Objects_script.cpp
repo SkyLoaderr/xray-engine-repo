@@ -170,3 +170,8 @@ void CSE_SpawnGroup::script_register(lua_State *L)
 		)
 	];
 }
+
+void CSE_PHSkeleton::script_register(lua_State *L)
+{
+	
+}

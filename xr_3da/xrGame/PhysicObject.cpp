@@ -50,7 +50,7 @@ void	CPhysicObject::SpawnInitPhysics	(CSE_Abstract* D)
 
 	if(Visual()&&PKinematics(Visual()))
 	{
-		CSE_ALifePHSkeletonObject	*po	= dynamic_cast<CSE_ALifePHSkeletonObject*>(D);
+		CSE_PHSkeleton	*po	= dynamic_cast<CSE_PHSkeleton*>(D);
 		CSkeletonAnimated*	pSkeletonAnimated=NULL;
 		R_ASSERT			(Visual()&&PKinematics(Visual()));
 		pSkeletonAnimated	=PSkeletonAnimated(Visual());
@@ -84,7 +84,7 @@ void CPhysicObject::CreateSkeleton(CSE_ALifeObjectPhysic* po)
 	if(m_pPhysicsShell) return;
 	if(!Visual()) return;
 	LPCSTR	fixed_bones=*po->fixed_bones;
-	m_pPhysicsShell=P_build_Shell(this,!po->flags.test(CSE_ALifePHSkeletonObject::flActive),fixed_bones);
+	m_pPhysicsShell=P_build_Shell(this,!po->flags.test(CSE_PHSkeleton::flActive),fixed_bones);
 }
 
 void CPhysicObject::Load(LPCSTR section)

@@ -19,7 +19,8 @@ void CSE_ALifeCar::script_register(lua_State *L)
 		luabind_class_alife1(
 			CSE_ALifeCar,
 			"cse_alife_car",
-			CSE_ALifeDynamicObjectVisual
+			CSE_ALifeDynamicObjectVisual,
+			CSE_PHSkeleton
 		)
 	];
 }

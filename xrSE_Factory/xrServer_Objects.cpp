@@ -731,5 +731,75 @@ void CSE_SpawnGroup::FillProp				(LPCSTR pref, PropItemVec& values)
 	inherited::FillProp			(pref,values);
 	PHelper.CreateFloat			(values,FHelper.PrepareKey(pref,s_name,"ALife\\Group probability"),	&m_fGroupProbability,0.f,1.f);
 };
+#endif
 
+////////////////////////////////////////////////////////////////////////////
+// CSE_PHSkeleton
+////////////////////////////////////////////////////////////////////////////
+CSE_PHSkeleton::CSE_PHSkeleton(LPCSTR caSection)
+{
+	source_id					= u16(-1);
+	flags.zero					();
+}
+
+CSE_PHSkeleton::~CSE_PHSkeleton()
+{
+
+}
+
+void CSE_PHSkeleton::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+
+	tNetPacket.r_string		(startup_animation);
+	tNetPacket.r_u8			(flags.flags);
+	tNetPacket.r_u16		(source_id);
+	if (flags.test(flSavedData)) {
+		data_load(tNetPacket);
+	}
+}
+
+void CSE_PHSkeleton::STATE_Write		(NET_Packet	&tNetPacket)
+{
+	tNetPacket.w_string			(startup_animation);
+	tNetPacket.w_u8				(flags.flags);
+	tNetPacket.w_u16			(source_id);
+	////////////////////////saving///////////////////////////////////////
+	if(flags.test(flSavedData))
+	{
+		data_save(tNetPacket);
+	}
+}
+
+void CSE_PHSkeleton::data_load(NET_Packet &tNetPacket)
+{
+	saved_bones.net_Load(tNetPacket);
+	flags.set(flSavedData,TRUE);
+}
+
+void CSE_PHSkeleton::data_save(NET_Packet &tNetPacket)
+{
+	saved_bones.net_Save(tNetPacket);
+	flags.set(flSavedData,FALSE);
+}
+
+void CSE_PHSkeleton::load(NET_Packet &tNetPacket)
+{
+	flags.assign				(tNetPacket.r_u8());
+	data_load					(tNetPacket);
+}
+void CSE_PHSkeleton::UPDATE_Write(NET_Packet &tNetPacket)
+{
+
+};
+
+void CSE_PHSkeleton::UPDATE_Read(NET_Packet &tNetPacket)
+{
+
+};
+
+#ifdef _EDITOR
+void CSE_PHSkeleton::FillProp				(LPCSTR pref, PropItemVec& values)
+{
+
+};
 #endif

@@ -106,7 +106,7 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 
 void CCar::SpawnInitPhysics	(CSE_Abstract	*D)
 {
-	CSE_ALifePHSkeletonObject		*so = dynamic_cast<CSE_ALifePHSkeletonObject*>(D);
+	CSE_PHSkeleton		*so = dynamic_cast<CSE_PHSkeleton*>(D);
 	R_ASSERT						(so);
 	ParseDefinitions				();//parse ini filling in m_driving_wheels,m_steering_wheels,m_breaking_wheels
 	CreateSkeleton					();//creates m_pPhysicsShell & fill in bone_map
@@ -172,9 +172,9 @@ void CCar::SaveNetState(NET_Packet& P)
 		i->second.SaveNetState(P);
 }
 
-void CCar::RestoreNetState(CSE_ALifePHSkeletonObject* po)
+void CCar::RestoreNetState(CSE_PHSkeleton* po)
 {
-	if(!po->flags.test(CSE_ALifePHSkeletonObject::flSavedData))return;
+	if(!po->flags.test(CSE_PHSkeleton::flSavedData))return;
 	CPHSkeleton::RestoreNetState(po);
 	CSE_ALifeCar* co=dynamic_cast<CSE_ALifeCar*>(po);
 	xr_map<u16,SDoor>::iterator i,e;
@@ -186,9 +186,9 @@ void CCar::RestoreNetState(CSE_ALifePHSkeletonObject* po)
 		i->second.RestoreNetState(*ii);
 	}
 }
-void CCar::SetDefaultNetState(CSE_ALifePHSkeletonObject* po)
+void CCar::SetDefaultNetState(CSE_PHSkeleton* po)
 {
-	if(po->flags.test(CSE_ALifePHSkeletonObject::flSavedData))return;
+	if(po->flags.test(CSE_PHSkeleton::flSavedData))return;
 	xr_map<u16,SDoor>::iterator i,e;
 	i=m_doors.begin();
 	e=m_doors.end();

@@ -53,10 +53,10 @@ void CPhysicsSkeletonObject::Load(LPCSTR section)
 
 void CPhysicsSkeletonObject::CreatePhysicsShell(CSE_Abstract* e)
 {
-	CSE_ALifePHSkeletonObject	*po=dynamic_cast<CSE_ALifePHSkeletonObject*>(e);
+	CSE_PHSkeleton	*po=dynamic_cast<CSE_PHSkeleton*>(e);
 	if(m_pPhysicsShell) return;
 	if (!Visual()) return;
-	m_pPhysicsShell=P_build_Shell(this,!po->flags.test(CSE_ALifePHSkeletonObject::flActive));
+	m_pPhysicsShell=P_build_Shell(this,!po->flags.test(CSE_PHSkeleton::flActive));
 }
 
 

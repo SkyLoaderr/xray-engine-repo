@@ -5,6 +5,7 @@
 class CPhysicsShellHolder;
 class CSE_ALifePHSkeletonObject;
 class CSE_Abstract;
+class CSE_PHSkeleton;
 class CPHSkeleton
 {
 	bool				b_removing;
@@ -40,7 +41,7 @@ protected:
 	virtual CPhysicsShellHolder*		PPhysicsShellHolder	()													=0;
 	virtual void	SpawnInitPhysics	(CSE_Abstract	*D)														=0;
 	virtual void	SaveNetState		(NET_Packet& P)															;
-	virtual	void	RestoreNetState		(CSE_ALifePHSkeletonObject* po)											;
+	virtual	void	RestoreNetState		(CSE_PHSkeleton* po)											;
 
 	virtual	void	InitServerObject	(CSE_Abstract	*D)														;//
 			void	RespawnInit			()																		;//net_Destroy

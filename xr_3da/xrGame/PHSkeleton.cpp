@@ -41,7 +41,7 @@ void CPHSkeleton::Init()
 bool CPHSkeleton::Spawn(CSE_Abstract *D)
 {
 	
-	CSE_ALifePHSkeletonObject *po	= dynamic_cast<CSE_ALifePHSkeletonObject*>(D);
+	CSE_PHSkeleton *po	= dynamic_cast<CSE_PHSkeleton*>(D);
 	R_ASSERT				(po);
 
 	m_flags					= po->flags;
@@ -49,13 +49,13 @@ bool CPHSkeleton::Spawn(CSE_Abstract *D)
 	
 
 
-	if(po->flags.test(CSE_ALifePHSkeletonObject::flSpawnCopy))
+	if(po->flags.test(CSE_PHSkeleton::flSpawnCopy))
 	{
 		CPHSkeleton* source=dynamic_cast<CPHSkeleton*>(Level().Objects.net_Find(po->source_id));
 		R_ASSERT2(source,"no source");
 		source->UnsplitSingle(this);
-		m_flags.set				(CSE_ALifePHSkeletonObject::flSpawnCopy,FALSE);
-		po->flags.set				(CSE_ALifePHSkeletonObject::flSpawnCopy,FALSE);
+		m_flags.set				(CSE_PHSkeleton::flSpawnCopy,FALSE);
+		po->flags.set				(CSE_PHSkeleton::flSpawnCopy,FALSE);
 		return true;
 	}
 	else 
@@ -107,7 +107,7 @@ void CPHSkeleton::SaveNetState(NET_Packet& P)
 	CPhysicsShellHolder* obj=PPhysicsShellHolder();
 	CPhysicsShell* pPhysicsShell=obj->PPhysicsShell();
 	CKinematics* K	=PKinematics(obj->Visual());
-	if(pPhysicsShell&&pPhysicsShell->bActive)			m_flags.set(CSE_ALifePHSkeletonObject::flActive,pPhysicsShell->isEnabled());
+	if(pPhysicsShell&&pPhysicsShell->bActive)			m_flags.set(CSE_PHSkeleton::flActive,pPhysicsShell->isEnabled());
 
 	P.w_u8 (m_flags.get());
 	if(K)
@@ -176,9 +176,9 @@ void CPHSkeleton::LoadNetState(NET_Packet& P)
 		obj->PHGetSyncItem(i)->set_State(state);
 	}
 }
-void CPHSkeleton::RestoreNetState(CSE_ALifePHSkeletonObject* po)
+void CPHSkeleton::RestoreNetState(CSE_PHSkeleton* po)
 {
-	if(!po->flags.test(CSE_ALifePHSkeletonObject::flSavedData))return;
+	if(!po->flags.test(CSE_PHSkeleton::flSavedData))return;
 	CPhysicsShellHolder* obj=PPhysicsShellHolder();
 	PHNETSTATE_VECTOR& saved_bones=po->saved_bones.bones;
 	PHNETSTATE_I i=saved_bones.begin(),e=saved_bones.end();
@@ -188,8 +188,8 @@ void CPHSkeleton::RestoreNetState(CSE_ALifePHSkeletonObject* po)
 		obj->PHGetSyncItem(bone)->set_State(*i);
 	}
 	saved_bones.clear();
-	po->flags.set(CSE_ALifePHSkeletonObject::flSavedData,FALSE);
-	m_flags.set(CSE_ALifePHSkeletonObject::flSavedData,FALSE);
+	po->flags.set(CSE_PHSkeleton::flSavedData,FALSE);
+	m_flags.set(CSE_PHSkeleton::flSavedData,FALSE);
 }
 
 
@@ -292,7 +292,7 @@ void CPHSkeleton::SetAutoRemove()
 {
 	b_removing=true;
 	m_unsplit_time=Device.dwTimeGlobal;
-	m_flags.set(CSE_ALifePHSkeletonObject::flNotSave,TRUE);
+	m_flags.set(CSE_PHSkeleton::flNotSave,TRUE);
 }
 
 
@@ -341,7 +341,7 @@ void CPHSkeleton::InitServerObject(CSE_Abstract * D)
 
 
 
-	l_tpALifePhysicObject->flags.set	(CSE_ALifePHSkeletonObject::flSpawnCopy,1);
+	l_tpALifePhysicObject->flags.set	(CSE_PHSkeleton::flSpawnCopy,1);
 	l_tpALifePhysicObject->source_id	= u16(obj->ID());
 	l_tpALifePhysicObject->startup_animation=m_startup_anim;
 	strcpy				(D->s_name,"ph_skeleton_object");//*cNameSect()

@@ -465,10 +465,8 @@ void CSE_ALifeDynamicObjectVisual::FillProp	(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifePHSkeletonObject
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifePHSkeletonObject::CSE_ALifePHSkeletonObject(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection)
+CSE_ALifePHSkeletonObject::CSE_ALifePHSkeletonObject(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection),CSE_PHSkeleton(caSection)
 {
-	source_id					= u16(-1);
-	flags.zero					();
 	m_flags.set					(flUseSwitches,FALSE);
 	m_flags.set					(flSwitchOffline,FALSE);
 }
@@ -481,58 +479,34 @@ CSE_ALifePHSkeletonObject::~CSE_ALifePHSkeletonObject()
 
 void CSE_ALifePHSkeletonObject::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
-	inherited::STATE_Read(tNetPacket,size);
+	inherited1::STATE_Read(tNetPacket,size);
+	if (m_wVersion>=64)
+		inherited2::STATE_Read(tNetPacket,size);
 
-	if (m_wVersion<64)
-		return;
-
-	tNetPacket.r_string		(startup_animation);
-	tNetPacket.r_u8			(flags.flags);
-	tNetPacket.r_u16		(source_id);
-	if (flags.test(flSavedData)) {
-		data_load(tNetPacket);
-	}
 }
 
 void CSE_ALifePHSkeletonObject::STATE_Write		(NET_Packet	&tNetPacket)
 {
-	inherited::STATE_Write		(tNetPacket);
-	tNetPacket.w_string			(startup_animation);
-	tNetPacket.w_u8				(flags.flags);
-	tNetPacket.w_u16			(source_id);
-	////////////////////////saving///////////////////////////////////////
-	if(flags.test(flSavedData))
-	{
-		data_save(tNetPacket);
-	}
+	inherited1::STATE_Write		(tNetPacket);
+	inherited2::STATE_Write		(tNetPacket);
 }
 
-void CSE_ALifePHSkeletonObject::data_load(NET_Packet &tNetPacket)
-{
-	saved_bones.net_Load(tNetPacket);
-	flags.set(flSavedData,TRUE);
-}
-
-void CSE_ALifePHSkeletonObject::data_save(NET_Packet &tNetPacket)
-{
-	saved_bones.net_Save(tNetPacket);
-	flags.set(flSavedData,FALSE);
-}
 
 void CSE_ALifePHSkeletonObject::load(NET_Packet &tNetPacket)
 {
-	inherited::load				(tNetPacket);
-	flags.assign				(tNetPacket.r_u8());
-	data_load					(tNetPacket);
+	inherited1::load				(tNetPacket);
+	inherited2::load				(tNetPacket);
 }
 void CSE_ALifePHSkeletonObject::UPDATE_Write(NET_Packet &tNetPacket)
 {
-	inherited::UPDATE_Write	(tNetPacket);
+	inherited1::UPDATE_Write	(tNetPacket);
+	inherited2::UPDATE_Write	(tNetPacket);
 };
 
 void CSE_ALifePHSkeletonObject::UPDATE_Read(NET_Packet &tNetPacket)
 {
-	inherited::UPDATE_Read		(tNetPacket);
+	inherited1::UPDATE_Read		(tNetPacket);
+	inherited2::UPDATE_Read		(tNetPacket);
 };
 
 bool CSE_ALifePHSkeletonObject::can_save			() const
@@ -548,7 +522,8 @@ bool CSE_ALifePHSkeletonObject::used_ai_locations () const
 #ifdef _EDITOR
 void CSE_ALifePHSkeletonObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
-	inherited::FillProp			(pref,items);
+	inherited1::FillProp			(pref,items);
+	inherited2::FillProp			(pref,items);
 }
 #endif
 
@@ -684,7 +659,7 @@ void CSE_ALifeLevelChanger::FillProp		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeObjectPhysic
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeObjectPhysic::CSE_ALifeObjectPhysic(LPCSTR caSection) : CSE_ALifePHSkeletonObject(caSection)
+CSE_ALifeObjectPhysic::CSE_ALifeObjectPhysic(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection),CSE_PHSkeleton(caSection)
 {
 	type 						= epotBox;
 	mass 						= 10.f;
@@ -705,7 +680,7 @@ void CSE_ALifeObjectPhysic::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	if (m_wVersion >= 14)
 		if (m_wVersion >= 16) {
-			inherited::STATE_Read(tNetPacket,size);
+			inherited1::STATE_Read(tNetPacket,size);
 			if (m_wVersion < 32)
 				visual_read		(tNetPacket);
 		}
@@ -713,6 +688,9 @@ void CSE_ALifeObjectPhysic::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 			CSE_ALifeObject::STATE_Read(tNetPacket,size);
 			visual_read			(tNetPacket);
 		}
+
+	if (m_wVersion>=64) inherited2::STATE_Read(tNetPacket,size);
+		
 	tNetPacket.r_u32			(type);
 	tNetPacket.r_float			(mass);
     
@@ -744,7 +722,8 @@ void CSE_ALifeObjectPhysic::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 
 void CSE_ALifeObjectPhysic::STATE_Write		(NET_Packet	&tNetPacket)
 {
-	inherited::STATE_Write		(tNetPacket);
+	inherited1::STATE_Write		(tNetPacket);
+	inherited2::STATE_Write		(tNetPacket);
 	tNetPacket.w_u32			(type);
 	tNetPacket.w_float			(mass);
 	tNetPacket.w_string			(fixed_bones);
@@ -755,12 +734,14 @@ void CSE_ALifeObjectPhysic::STATE_Write		(NET_Packet	&tNetPacket)
 
 void CSE_ALifeObjectPhysic::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
-	inherited::UPDATE_Read		(tNetPacket);
+	inherited1::UPDATE_Read		(tNetPacket);
+	inherited2::UPDATE_Read		(tNetPacket);
 }
 
 void CSE_ALifeObjectPhysic::UPDATE_Write	(NET_Packet	&tNetPacket)
 {
-	inherited::UPDATE_Write		(tNetPacket);
+	inherited1::UPDATE_Write		(tNetPacket);
+	inherited2::UPDATE_Write		(tNetPacket);
 }
 
 
@@ -768,7 +749,8 @@ void CSE_ALifeObjectPhysic::UPDATE_Write	(NET_Packet	&tNetPacket)
 
 void CSE_ALifeObjectPhysic::load(NET_Packet &tNetPacket)
 {
-	inherited::load(tNetPacket);
+	inherited1::load(tNetPacket);
+	inherited2::load(tNetPacket);
 }
 
 
@@ -805,7 +787,8 @@ void __fastcall	CSE_ALifeObjectPhysic::OnChooseBone(ChooseItemVec& lst)
 }
 
 void CSE_ALifeObjectPhysic::FillProp		(LPCSTR pref, PropItemVec& values) {
-	inherited::FillProp			(pref,	 values);
+	inherited1::FillProp			(pref,	 values);
+	inherited2::FillProp			(pref,	 values);
 	PHelper.CreateToken<u32>	(values, FHelper.PrepareKey(pref,s_name,"Type"), &type,	po_types);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Mass"), &mass, 0.1f, 10000.f);
     PHelper.CreateFlag<Flags8>	(values, FHelper.PrepareKey(pref,s_name,"Active"), &flags, flActive);
@@ -1227,7 +1210,7 @@ bool CSE_ALifeHelicopter::used_ai_locations	() const
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeCar
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeCar::CSE_ALifeCar				(LPCSTR caSection) : CSE_ALifePHSkeletonObject(caSection)
+CSE_ALifeCar::CSE_ALifeCar				(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection),CSE_PHSkeleton(caSection)
 {
 
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
@@ -1242,25 +1225,30 @@ CSE_ALifeCar::~CSE_ALifeCar				()
 
 void CSE_ALifeCar::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 {
-	if(m_wVersion>65)		inherited::STATE_Read		(tNetPacket,size);
-	else CSE_ALifeDynamicObjectVisual::STATE_Read		(tNetPacket,size);
-	if ((m_wVersion > 52) && (m_wVersion < 55))
+	inherited1::STATE_Read		(tNetPacket,size);
+
+	if(m_wVersion>65)
+		inherited2::STATE_Read		(tNetPacket,size);
+		if ((m_wVersion > 52) && (m_wVersion < 55))
 		tNetPacket.r_float		();
 }
 
 void CSE_ALifeCar::STATE_Write			(NET_Packet	&tNetPacket)
 {
-	inherited::STATE_Write		(tNetPacket);
+	inherited1::STATE_Write		(tNetPacket);
+	inherited2::STATE_Write		(tNetPacket);
 }
 
 void CSE_ALifeCar::UPDATE_Read			(NET_Packet	&tNetPacket)
 {
-	inherited::UPDATE_Read		(tNetPacket);
+	inherited1::UPDATE_Read		(tNetPacket);
+	inherited2::UPDATE_Read		(tNetPacket);
 }
 
 void CSE_ALifeCar::UPDATE_Write			(NET_Packet	&tNetPacket)
 {
-	inherited::UPDATE_Write		(tNetPacket);
+	inherited1::UPDATE_Write		(tNetPacket);
+	inherited2::UPDATE_Write		(tNetPacket);
 }
 
 bool CSE_ALifeCar::used_ai_locations() const
@@ -1268,10 +1256,16 @@ bool CSE_ALifeCar::used_ai_locations() const
 	return						(false);
 }
 
+void CSE_ALifeCar::load(NET_Packet &tNetPacket)
+{
+	inherited1::load(tNetPacket);
+	inherited2::load(tNetPacket);
+}
 
 void CSE_ALifeCar::data_load(NET_Packet	&tNetPacket)
 {
-	inherited::data_load(tNetPacket);
+	//inherited1::data_load(tNetPacket);
+	inherited2::data_load(tNetPacket);
 	VERIFY(door_states.empty());
 	u16 doors_number=tNetPacket.r_u16();
 	for(u16 i=0;i<doors_number;++i)
@@ -1279,7 +1273,8 @@ void CSE_ALifeCar::data_load(NET_Packet	&tNetPacket)
 }
 void CSE_ALifeCar::data_save(NET_Packet &tNetPacket)
 {
-	inherited::data_save(tNetPacket);
+	//inherited1::data_save(tNetPacket);
+	inherited2::data_save(tNetPacket);
 	
 	tNetPacket.w_u16(u16(door_states.size()));
 	xr_vector<u8>::iterator i=door_states.begin(),e=door_states.end();
@@ -1292,7 +1287,8 @@ void CSE_ALifeCar::data_save(NET_Packet &tNetPacket)
 #ifdef _EDITOR
 void CSE_ALifeCar::FillProp				(LPCSTR pref, PropItemVec& values)
 {
-  	inherited::FillProp			(pref,values);
+  	inherited1::FillProp			(pref,values);
+	inherited2::FillProp			(pref,values);
 }
 #endif
 

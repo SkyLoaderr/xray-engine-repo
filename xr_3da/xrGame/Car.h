@@ -11,7 +11,7 @@
 class ENGINE_API			CBoneInstance;
 class						CActor;
 class						CInventory;
-
+class						CSE_PHSkeleton;
 // defs
 
 class CScriptEntityAction;
@@ -427,8 +427,8 @@ protected:
 	virtual void					net_Save			(NET_Packet& P)																	;
 	virtual	BOOL					net_SaveRelevant	()																				;
 			void					SaveNetState		(NET_Packet& P)																	;
-	virtual	void					RestoreNetState		(CSE_ALifePHSkeletonObject* po)													;
-			void					SetDefaultNetState	(CSE_ALifePHSkeletonObject* po)																				;
+	virtual	void					RestoreNetState		(CSE_PHSkeleton* po)													;
+			void					SetDefaultNetState	(CSE_PHSkeleton* po)																				;
 public:
 	CCar(void);
 	virtual ~CCar(void);

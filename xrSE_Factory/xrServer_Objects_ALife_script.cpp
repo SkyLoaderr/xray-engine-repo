@@ -87,7 +87,8 @@ void CSE_ALifePHSkeletonObject::script_register(lua_State *L)
 		luabind_class_alife1(
 			CSE_ALifePHSkeletonObject,
 			"cse_alife_ph_skeleton_object",
-			CSE_ALifeDynamicObjectVisual
+			CSE_ALifeDynamicObjectVisual,
+			CSE_PHSkeleton
 		)
 	];
 }
@@ -122,7 +123,8 @@ void CSE_ALifeObjectPhysic::script_register(lua_State *L)
 		luabind_class_alife1(
 			CSE_ALifeObjectPhysic,
 			"cse_alife_object_physic",
-			CSE_ALifePHSkeletonObject
+			CSE_ALifeDynamicObjectVisual,
+			CSE_PHSkeleton
 		)
 	];
 }
