@@ -120,6 +120,7 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 	#include "net_utils.h"
 	#define _EDITOR_FILE_NAME_ 	"level"
 	#define _EDITOR_NAME_ 		"Level Editor"
+	#define _HAVE_RECENT_FILES
 #else
 	#ifdef _SHADER_EDITOR
 		#define _EDITOR_FILE_NAME_ 	"shader"
@@ -132,6 +133,7 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 			#ifdef _ACTOR_EDITOR
 				#define _EDITOR_FILE_NAME_ 	"actor"
 				#define _EDITOR_NAME_ 		"Actor Editor"
+				#define _HAVE_RECENT_FILES
             #else
             	#ifdef _LEVEL_OPTIONS
 					#define _EDITOR_FILE_NAME_ 	"options"

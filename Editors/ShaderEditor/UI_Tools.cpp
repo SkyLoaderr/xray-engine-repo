@@ -56,25 +56,32 @@ void CShaderTools::Modified()
 }
 //---------------------------------------------------------------------------
 
-bool CShaderTools::OnCreate(){
+bool CShaderTools::OnCreate()
+{
     // create props
     m_ItemProps 	= TProperties::CreateForm(fraLeftBar->paShaderProps,alClient);
     m_PreviewProps  = TProperties::CreateForm(fraLeftBar->paPreviewProps,alClient);
 	// shader test locking
 	AnsiString sh_fn;
     FS.update_path		(sh_fn,_game_data_,"shaders.xr");
-	if (EFS.CheckLocking(0,sh_fn.c_str(),false,true))
+	if (EFS.CheckLocking(0,sh_fn.c_str(),false,true)){
+    	ELog.DlgMsg(mtInformation,"Shader Editor locked.");
     	return false;
+    }
 	// shader test locking
 	AnsiString lc_fn;
     FS.update_path		(lc_fn,_game_data_,"shaders_xrlc.xr");
-	if (EFS.CheckLocking(0,lc_fn.c_str(),false,true))
+	if (EFS.CheckLocking(0,lc_fn.c_str(),false,true)){
+    	ELog.DlgMsg(mtInformation,"Shader Editor locked.");
     	return false;
+    }
 	// material test locking
 	AnsiString gm_fn;
     FS.update_path		(gm_fn,_game_data_,"gamemtl.xr");
-	if (EFS.CheckLocking(0,gm_fn.c_str(),false,true))
+	if (EFS.CheckLocking(0,gm_fn.c_str(),false,true)){
+    	ELog.DlgMsg(mtInformation,"Shader Editor locked.");
     	return false;
+    }
 	//
     Device.seqDevCreate.Add(this);
     Device.seqDevDestroy.Add(this);

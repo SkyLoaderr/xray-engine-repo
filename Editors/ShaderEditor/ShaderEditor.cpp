@@ -38,7 +38,6 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 // startup create
 		Application->Title = "Shader Editor";
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
-		Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
 		frmMain->SetHInst(hInst);
 
         xr_delete(frmSplash);

@@ -570,6 +570,7 @@ void __fastcall TUI::miRecentFilesClick(TObject *Sender)
 
 void TUI::AppendRecentFile(LPCSTR name)
 {
+#ifdef _HAVE_RECENT_FILES
 	R_ASSERT(fraLeftBar->miRecentFiles->Count<=frmEditPrefs->seRecentFilesCount->Value);
 
 	for (int i = 0; i < fraLeftBar->miRecentFiles->Count; i++)
@@ -588,13 +589,16 @@ void TUI::AppendRecentFile(LPCSTR name)
     fraLeftBar->miRecentFiles->Insert(0,MI);
 
     fraLeftBar->miRecentFiles->Enabled = true;
+#endif
 }
 //---------------------------------------------------------------------------
 
 LPCSTR TUI::FirstRecentFile()
 {
+#ifdef _HAVE_RECENT_FILES
 	if (fraLeftBar->miRecentFiles->Count>0)
     	return fraLeftBar->miRecentFiles->Items[0]->Caption.c_str();
+#endif
     return 0;
 }
 
