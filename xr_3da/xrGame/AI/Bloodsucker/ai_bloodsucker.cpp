@@ -34,11 +34,9 @@ void CAI_Bloodsucker::Think()
 		Motion.m_tSeq.Cycle(m_dwCurrentUpdate);
 	}else {
 		//- FSM 1-level 
-		
 		SetState(stateRest); 
 		
 		//-
-		
 		CurrentState->Execute(m_dwCurrentUpdate);
 
 		// проверяем на завершённость

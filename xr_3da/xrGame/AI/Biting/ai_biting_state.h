@@ -23,7 +23,7 @@ public:
 	CMotionSequence		m_tSeq;				//!< Последовательность действий для специфического состояния
 
 
-	void Init();							//!< Иницализация движения
+	void Init(CAI_Biting *pData);			//!< Иницализация движения
 	void SetFrameParams(CAI_Biting *pData);	//!< Установка параметров на текущий фрейм
 
 };

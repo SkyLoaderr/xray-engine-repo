@@ -24,7 +24,10 @@ class CCustomMonster;
 #define		MASK_SPEED		(1 << 1)
 #define		MASK_R_SPEED	(1 << 2)
 #define		MASK_YAW		(1 << 3)
-#define		MASK_TIME		(1 << 4)
+
+#define		STOP_ANIM_END	(1 << 0)
+#define		STOP_TIME_OUT	(1 << 1)
+#define		STOP_AT_TURNED	(1 << 2)
 
 
 enum EMotionAnim {
@@ -66,8 +69,10 @@ public:
 	TTime						time;
 
 	u32							mask;
+	u32							stop_mask;
+
 public:	
-	void SetParams(EMotionAnim a, float s, float r_s, float y, TTime t, u32 m);
+	void SetParams(EMotionAnim a, float s, float r_s, float y, TTime t, u32 m, u32 s_m = 0);
 	void ApplyData(CCustomMonster *pData);
 };
 
@@ -102,27 +107,31 @@ class CMotionSequence {
 	xr_vector<CMotionParams>::iterator it;		// указатель на текущий элемент
 	xr_vector<CMotionParams> States;
 
+	CCustomMonster	*pMonster;
+
 public:	
 
 	bool Playing;
-	bool Started;								// true, если новое состояние готово к выполнению
-	bool Finished;
 
 public:
+	IC	void	Setup		(CCustomMonster *pM) {pMonster = pM;}
 
-	// Инициализация всех полей
-	void Init();
-	// добавить состояние
-	void Add(EMotionAnim a, float s, float r_s, float y, TTime t, u32 m);
-	// Перейти в следующее состояние, если такового не имеется - завершить
-	void Switch();
-	// Выполняется в каждом фрейме 
-	void Cycle(u32 cur_time);
+		// Инициализация всех полей
+		void	Init		();
+		// добавить состояние
+		void	Add			(EMotionAnim a, float s, float r_s, float y, TTime t, u32 m, u32 s_m = 0);
+		// Перейти в следующее состояние, если такового не имеется - завершить
+		void	Switch		();
+		// Выполняется в каждом фрейме, выполняются проверки на завершение тек. элемента последовательности 
+		void	Cycle		(u32 cur_time);
+		// Выполняется по завершении анимации
+		void	OnAnimEnd	();
+		// Установить параметры, определённые в текущем элементе последовательности
+		void	ApplyData	();
+		// Завершение последовательности
+		void	Finish		();
 
-	void ApplyData(CCustomMonster *pData);
-
-	void Finish();
-	bool Active() {return (Playing || Started);}
+	IC	bool	isActive	() {return Playing;}
 };
 
 

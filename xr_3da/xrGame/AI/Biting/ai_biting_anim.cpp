@@ -42,28 +42,10 @@ LPCSTR caBitingGlobalNames		[] = {
 	0
 };
 
-
-
 static void __stdcall vfPlayCallBack(CBlend* B)
 {
 	CAI_Biting *tpBiting = (CAI_Biting*)B->CallbackParam;
 	tpBiting->OnAnimationEnd();
-}
-
-void CAI_Biting::OnAnimationEnd()
-{
-	m_tpCurAnim = 0;
-
-	if (Motion.m_tSeq.Playing) {		// Sequence activated?
-		Motion.m_tSeq.Switch();	
-		if (Motion.m_tSeq.Finished) {
-			Motion.m_tSeq.Init();		// сброс
-			// После проигрывания Seq, m_tParams содержит необходимые данные для установки анимации
-			Motion.m_tParams.ApplyData(this);
-			// восстановление текущего состояния
-			CurrentState->UnlockState(m_dwCurrentUpdate);
-		}
-	}
 }
 
 void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
@@ -80,6 +62,7 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 	if (g_Alive())
 		if (!m_tpCurAnim) {
 
+			// преобразование названия анимации в индексы глобальной анимации
 			int i1, i2, i3;
 			i1 = i2 = i3 = 0;			// bug protection ;) todo: find out the reason
 			MotionToAnim(m_tAnim,i1,i2,i3);
@@ -93,6 +76,50 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 			m_tAttackAnim.SwitchAnimation(m_dwCurrentUpdate,i1,i2,i3);
 		}
 }
+
+void CAI_Biting::OnAnimationEnd()
+{
+	m_tpCurAnim = 0;
+	Motion.m_tSeq.OnAnimEnd();
+}
+
+void CAI_Biting::ControlAnimation()
+{
+	if (!Motion.m_tSeq.Playing) {
+
+		// __START: Bug protection 
+		// Если нет пути и есть анимация движения, то играть анимацию отдыха
+		if (AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) <= AI_Path.TravelStart)) {
+			if ((m_tAnim == eMotionWalkFwd) || (m_tAnim == eMotionRun)) {
+				m_tAnim = eMotionStandIdle;
+			}
+		}
+
+		// если стоит на месте и пытается бежать...
+		int i = ps_Size();		
+		if (i > 1) {
+			CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
+			if (tCurrentPosition.vPosition.similar(tPreviousPosition.vPosition)) {
+				if ((m_tAnim == eMotionWalkFwd) || (m_tAnim == eMotionRun)) {
+					m_tAnim = eMotionStandIdle;
+				}
+			}
+		}
+		// __END
+
+		// если анимация изменилась, переназначить анимацию
+		if (m_tAnimPrevFrame != m_tAnim) {
+			FORCE_ANIMATION_SELECT();
+		}	
+	}
+	//--------------------------------------
+
+	// Сохранение предыдущей анимации
+	m_tAnimPrevFrame = m_tAnim;
+}
+
+
+
 
 bool CAI_Biting::IsInMotion()
 {

@@ -20,27 +20,19 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CMotionParams implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CMotionParams::SetParams(EMotionAnim a, float s, float r_s, float y, TTime t, u32 m)
+void CMotionParams::SetParams(EMotionAnim a, float s, float r_s, float y, TTime t, u32 m, u32 s_m)
 {
-	mask = m;
-	anim = a;
-	speed = s;
-	r_speed = r_s;
-	yaw = y;
-	time = t;
+	mask		= m;
+	anim		= a;
+	speed		= s;
+	r_speed		= r_s;
+	yaw			= y	;
+	time		= t;
+	stop_mask	= s_m;
 }
 
 void CMotionParams::ApplyData(CCustomMonster *pData)
 {
-	if ((mask & MASK_TIME) == MASK_TIME) {
-		if (time < pData->m_dwCurrentUpdate) {
-			pData->m_tAnim = DEFAULT_ANIM;
-			pData->m_fCurSpeed = 0.f; 
-			pData->r_torso_speed = 0.f; 
-			return;
-		}
-	}
-
 	if ((mask & MASK_ANIM) == MASK_ANIM) pData->m_tAnim = anim; 
 	if ((mask & MASK_SPEED) == MASK_SPEED) pData->m_fCurSpeed = speed; 
 	if ((mask & MASK_R_SPEED) == MASK_R_SPEED) pData->r_torso_speed = r_speed; 
@@ -76,8 +68,6 @@ bool CMotionTurn::CheckTurning(CCustomMonster *pData)
 	return false;
 }
 
-#define R2D(x) (angle_normalize(x)*180.f/PI)
-
 bool CMotionTurn::NeedToTurn(CCustomMonster *pData)
 {
 	// Если путь построен выполнить SetDirectionLook 
@@ -101,46 +91,61 @@ void CMotionSequence::Init()
 {
 	States.clear();
 	it = 0;
-	Playing = Started = Finished = false;
+	Playing = false;
 }
 
-void CMotionSequence::Add(EMotionAnim a, float s, float r_s, float y, TTime t, u32 m)
+void CMotionSequence::Add(EMotionAnim a, float s, float r_s, float y, TTime t, u32 m,u32 s_m)
 {
 	CMotionParams tS;
-	tS.SetParams(a,s,r_s,y,t,m);
+	tS.SetParams(a,s,r_s,y,t,m,s_m);
 
 	States.push_back(tS);
 }
 
 void CMotionSequence::Switch()
 {
-	Started = true;
+	Playing = true;
 	if (it == 0) it = States.begin();
 	else {
 		it++; 
-		if (it != States.end()) Started = true;	
-		else {
+		if (it == States.end()) {
 			Finish();
 			return;
 		}
 	}
+
+	ApplyData();
+	pMonster->OnMotionSequenceStart();
 }
 
-void CMotionSequence::ApplyData(CCustomMonster *pData)
+void CMotionSequence::ApplyData()
 {
-	it->ApplyData(pData);
+	it->ApplyData(pMonster);
 }
 
 void CMotionSequence::Finish()
 {
-	Init(); Finished = true;
+	Init(); 
+	pMonster->OnMotionSequenceEnd();
 }
 
+
+// Выполнить проверки на завершение текущего элемента последовательности (по STOP маскам)
 void CMotionSequence::Cycle(u32 cur_time)
 {
-	if (((it->mask & MASK_TIME) == MASK_TIME) && (cur_time > it->time))	Switch();
+	if (((it->stop_mask & STOP_TIME_OUT) == STOP_TIME_OUT) && (cur_time > it->time) ||																				// если TIME_OUT
+		(((it->stop_mask & STOP_AT_TURNED) == STOP_AT_TURNED) && (getAI().bfTooSmallAngle(pMonster->r_torso_target.yaw, pMonster->r_torso_current.yaw, EPS_L))))	// если необходима остановка, когда произведен поворот 
+	{ 
+		Switch();
+	}
 }
 
+void CMotionSequence::OnAnimEnd()
+{
+	if (Playing) {			// Sequence active?
+		if ((it->stop_mask & STOP_ANIM_END) == STOP_ANIM_END) Switch();
+	}	
+}
 
 
 //*********************************************************************************************************
@@ -217,7 +222,7 @@ void IState::LockState()
 }
 
 //Info: если в классах-потомках, используются дополнительные поля времени,
-//      метод UnlockState() должне быть переопределены 
+//      метод UnlockState() должен быть переопределен
 TTime IState::UnlockState(TTime cur_time)
 {
 	TTime dt = (m_dwCurrentTime = cur_time) - m_dwTimeLocked;

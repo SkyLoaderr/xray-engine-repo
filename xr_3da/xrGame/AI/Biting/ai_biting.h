@@ -15,7 +15,7 @@
 #include "..\\ai_monster_mem.h"
 
 // logging
-#define SILENCE
+//#define SILENCE
 
 #undef	WRITE_TO_LOG
 #ifdef SILENCE
@@ -97,7 +97,10 @@ public:
 			void			OnAnimationEnd					();
 			void			ControlAnimation				();
 	virtual	void			MotionToAnim					(EMotionAnim motion, int &index1, int &index2, int &index3) = 0;
+	// Motion control
 	virtual	bool			IsInMotion						();
+	virtual void			OnMotionSequenceStart			();
+	virtual	void			OnMotionSequenceEnd				();
 
 
 	virtual	void			LoadAttackAnim					() {}
