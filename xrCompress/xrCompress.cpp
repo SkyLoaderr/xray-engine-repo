@@ -2,13 +2,15 @@
 //
 
 #include "stdafx.h"
-#pragma comment(lib,"x:\\xrCore.lib")
+#pragma comment			(lib,"x:\\xrCore.lib")
 
 IWriter*				fs=0;
 CMemoryWriter			fs_desc;
 
 u32						bytesSRC=0,bytesDST=0;
 u32						filesTOTAL=0,filesSKIP=0,filesVFS=0,filesALIAS=0;
+CTimer					t_compress;
+u64						t_compress_total;
 
 struct	ALIAS
 {
@@ -125,11 +127,14 @@ void	Compress			(LPCSTR path, LPCSTR base)
 			printf				("VFS");
 		} else {
 			// Compress into BaseFS
-			c_ptr				= fs->tell();
-			c_size_real			= src->length();
-			u32 c_size_max		= rtc_csize		(src->length());
-			u8*	c_data			= xr_alloc<u8>	(c_size_max);
-			c_size_compressed	= rtc_compress	(c_data,c_size_max,src->pointer(),c_size_real);
+			c_ptr				=	fs->tell();
+			c_size_real			=	src->length();
+			u32 c_size_max		=	rtc_csize		(src->length());
+			u8*	c_data			=	xr_alloc<u8>	(c_size_max);
+			t_compress.Start	();
+			c_size_compressed	=	rtc_compress	(c_data,c_size_max,src->pointer(),c_size_real);
+			t_compress_total	+=	t_compress.GetElapsed_clk();
+
 			if ((c_size_compressed+16) >= c_size_real)
 			{
 				// Failed to compress - revert to VFS
@@ -202,13 +207,14 @@ int __cdecl main	(int argc, char* argv[])
 		bytesDST		= fs->tell	();
 		fs->w_chunk		(1|CFS_CompressMark, fs_desc.pointer(),fs_desc.size());
 		delete fs;
-		u32			dwTimeEnd	= timeGetTime();
-		printf			("\n\nFiles total/skipped/VFS/aliased: %d/%d/%d/%d\nOveral: %dK/%dK, %3.1f%%\nElapsed time: %d:%d\n",
+		u32	dwTimeEnd	= timeGetTime();
+		printf			("\n\nFiles total/skipped/VFS/aliased: %d/%d/%d/%d\nOveral: %dK/%dK, %3.1f%%\nElapsed time: %d:%d\nCompression speed: %3.1f Mb/s",
 			filesTOTAL,filesSKIP,filesVFS,filesALIAS,
 			bytesDST/1024,bytesSRC/1024,
 			100.f*float(bytesDST)/float(bytesSRC),
 			((dwTimeEnd-dwTimeStart)/1000)/60,
-			((dwTimeEnd-dwTimeStart)/1000)%60
+			((dwTimeEnd-dwTimeStart)/1000)%60,
+			float((double(bytesDST)/double(1024*1024))/(double(t_compress_total)*double(CPU::cycles2seconds)))
 			);
 	} else {
 		printf("ERROR: folder not found.\n");

@@ -101,7 +101,7 @@ public:
 	void DumpFlags							(void);
 	u32	 TimerAsync							(void)
 	{
-		u64	qTime		= TimerGlobal.GetElapsed();
+		u64	qTime		= TimerGlobal.GetElapsed_clk();
 		return u32((qTime*u64(1000))/CPU::cycles_per_second);
 	}
 	u32	 TimerAsyncMM						(void)
