@@ -49,28 +49,27 @@ BOOL ESceneAIMapTools::CreateNode(Fvector& vAt, SAINode& N, bool bIC)
 	}
 
 	// *** Transfer triangles and compute sector
-	R_ASSERT(dwCount<RCAST_MaxTris);
-	static svector<tri,RCAST_MaxTris> tris;		tris.clear();
+//	R_ASSERT(dwCount<RCAST_MaxTris);
+	static xr_vector<tri> tris;	tris.reserve(RCAST_MaxTris);	tris.clear();
 	for (DWORD i=0; i<dwCount; i++)
 	{
-		tri&		D = tris.last();
+    	tris.push_back	(tri());
+		tri&		D = tris.back();
 		Fvector*	V = (PQ.r_begin()+i)->verts;   
 
 		D.v[0]		= &V[0];
 		D.v[1]		= &V[1];
 		D.v[2]		= &V[2];
 		D.N.mknormal(*D.v[0],*D.v[1],*D.v[2]);
-		if (D.N.y<=0)	continue;
-
-		tris.inc	();
+		if (D.N.y<=0)	tris.pop_back	();
 	}
 	if (tris.size()==0){
 //		Log("chasm2");
 		return FALSE;			// chasm?
 	}
 
-	static svector<Fvector,RCAST_Total>	points;		points.clear();
-	static svector<Fvector,RCAST_Total>	normals;	normals.clear();
+	static xr_vector<Fvector>	points;		points.reserve(RCAST_Total); points.clear();
+	static xr_vector<Fvector>	normals;	normals.reserve(RCAST_Total);normals.clear();
 	Fvector P,D; D.set(0,-1,0);
 
 	float coeff 	= 0.5f*m_Params.fPatchSize/float(RCAST_Count);
@@ -85,11 +84,9 @@ BOOL ESceneAIMapTools::CreateNode(Fvector& vAt, SAINode& N, bool bIC)
 			float	tri_min_range	= flt_max;
 			int		tri_selected	= -1;
 			float	range,u,v;
-			for (i=0; i<DWORD(tris.size()); i++) 
-			{
-				if (ETOOLS::TestRayTriA(P,D,tris[i].v,u,v,range,false)) 
-				{
-					if (range<tri_min_range) {
+			for (i=0; i<DWORD(tris.size()); i++){
+				if (ETOOLS::TestRayTriA(P,D,tris[i].v,u,v,range,false)){
+					if (range<tri_min_range){
 						tri_min_range	= range;
 						tri_selected	= i;
 					}
