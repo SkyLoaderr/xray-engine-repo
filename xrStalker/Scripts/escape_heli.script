@@ -61,7 +61,7 @@ function update()
 --			printf("_ch: 1 %s", attack_end:timeToString(game.CTime.TimeToMilisecs))
 
 			-- в первом заходе ракетами не стрелять
-			heli_mgr.heliObject.m_use_rocket_on_attack = false
+--			heli_mgr.heliObject.m_use_rocket_on_attack = false
 
 			state_init = false
 		end
@@ -77,9 +77,9 @@ function update()
 		end
 
 		-- после первого захода стрелять ракетами
-		if heli_mgr.attack_pass_state == 1 then
-			heli_mgr.heliObject.m_use_rocket_on_attack = true
-		end
+--		if heli_mgr.attack_pass_state == 1 then
+--			heli_mgr.heliObject.m_use_rocket_on_attack = true
+--		end
 
 		-- если все умерли
 		if table.getn( newbies ) == 0 then
