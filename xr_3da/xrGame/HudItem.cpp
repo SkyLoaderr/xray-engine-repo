@@ -125,8 +125,7 @@ void CHudItem::renderable_Render()
 		if(!H_Parent() || (!hud_mode && !m_pHUD->IsHidden() && !IsHidden()))
 			inherited::renderable_Render();
 
-	if(m_pHUD) 
-		m_pHUD->UpdateHud();
+	
 }
 /*
 BOOL CHudItem::renderable_ShadowGenerate() 
@@ -218,6 +217,9 @@ void CHudItem::UpdateCL()
 {
 	inherited::UpdateCL();
 	m_dwStateTime += Device.dwTimeDelta;
+
+	if(m_pHUD) 
+		m_pHUD->UpdateHud();
 }
 
 void CHudItem::OnH_A_Chield		()

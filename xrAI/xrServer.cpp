@@ -172,7 +172,7 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 			xrClientData* CL		= ID_to_client(sender);
 			if (CL)	CL->net_Ready	= TRUE;
 			game->signal_Syncronize();
-			game->OnPlayerReady		(CL->ID);			
+//			game->OnPlayerReady		(CL->ID);			
 		}break;
 	}
 	csPlayers.Leave				();

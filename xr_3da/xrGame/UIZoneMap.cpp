@@ -170,12 +170,32 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	switch (GameID())
 	{
 	case GAME_SINGLE:		bRender = TRUE; break;
-	case GAME_DEATHMATCH:	break;
+	case GAME_DEATHMATCH:	bRender = TRUE; break;
 	case GAME_ASSAULT:		bRender = TRUE;	break;
 	case GAME_CTF:			bRender = TRUE;	break;
 	case GAME_CS:			bRender = TRUE;	break;
 	}
 	
+	if (bRender && GameID() == GAME_DEATHMATCH)
+	{
+		for(u32 i=0; i<Level().Objects.objects.size(); i++)
+		{
+			CObject* pObj = Level().Objects.objects[i];
+			if (!pObj) continue;
+			CActor* pActor = dynamic_cast<CActor*>(pObj);
+			if (pActor && pActor != Level().CurrentEntity() && pActor->g_Alive())
+			{
+				ConvertToLocal(LM,pActor->Position(),P);
+				EntityOut(pActor->Position().y-Actor->Position().y,COLOR_ENEMY,P);
+			};
+			CInventoryItem* pItem = dynamic_cast<CInventoryItem*>(pObj);
+			if (pItem && !pItem->H_Parent())
+			{
+				ConvertToLocal(LM,pItem->Position(),P);
+				EntityOut(pItem->Position().y-Actor->Position().y,COLOR_TARGET,P);
+			};
+		};
+	};
 /*	if (bRender)
 	{
 		for (u32 i=0; i<Team.Squads.size(); ++i){

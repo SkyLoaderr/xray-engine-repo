@@ -43,6 +43,11 @@ public:
 	//virtual	void			Hit						(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse){};
 	virtual void			shedule_Update			( u32 T ); 
 	virtual void			UpdateCL				( );
+	virtual BOOL			net_Spawn				( LPVOID	DC );
+
+	virtual void			Center					(Fvector& C)	const	{ C.set(Position());	}
+	virtual float			Radius					()				const	{ return EPS;}
+//	virtual const Fbox&		BoundingBox				()				const	{ VERIFY2(renderable.visual,*cName()); return renderable.visual->vis.box;									}
 };
 
 #endif // __SPECTATOR_H__

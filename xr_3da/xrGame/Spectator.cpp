@@ -9,6 +9,7 @@
 #include "CameraFirstEye.h"
 #include "actor.h"
 #include "hudmanager.h"
+#include "xrServer_Objects.h"
 
 //--------------------------------------------------------------------
 //////////////////////////////////////////////////////////////////////
@@ -207,3 +208,18 @@ void CSpectator::cam_Update	(CActor* A)
 		HUD().pFontDI->Out			(0.f,0.9f,"Free-fly camera");
 	}
 }
+
+BOOL			CSpectator::net_Spawn				( LPVOID	DC )
+{
+	BOOL res = inherited::net_Spawn(DC);
+	if (!res) return FALSE;
+
+	CSE_Abstract			*E	= (CSE_Abstract*)(DC);
+	if (!E) return FALSE;
+
+	cam_active				= eacFreeLook;
+	look_idx				= 0;
+
+	cameras[cam_active]->Set		(-E->o_Angle.y,-E->o_Angle.x,0);		// set's camera orientation
+	return TRUE;
+};

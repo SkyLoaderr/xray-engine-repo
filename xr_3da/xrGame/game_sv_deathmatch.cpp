@@ -204,8 +204,8 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 {
 	__super::OnPlayerConnect	(id_who);
-/*
 	LPCSTR	options			=	get_name_id	(id_who);
+/*
 
 	// Spawn "actor"
 	CSE_Abstract			*E	=	spawn_begin	("actor");													// create SE
@@ -216,6 +216,21 @@ void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 	assign_RP				(A);
 	spawn_end				(A,id_who);
 */
+
+	game_PlayerState*	ps_who	=	get_id	(id_who);
+//	ps_who->money_total			=	money.startup;
+	ps_who->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
+//	ps_who->team				=	u8(get_option_i(options,"team",AutoTeam()));
+	ps_who->kills				=	0;
+	ps_who->deaths				=	0;
+
+	// Spawn "actor"
+	CSE_Spectator*		A	=	(CSE_Spectator*)spawn_begin	("spectator");															// create SE
+	strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
+//	A->s_team				=	u8(0);
+	A->s_flags.set			(M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
+	assign_RP				(A);
+	spawn_end				(A,id_who);
 }
 
 
