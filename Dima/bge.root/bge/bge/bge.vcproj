@@ -1297,6 +1297,14 @@
 								Name="VCCLCompilerTool"
 							/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\lua\src\xr_LuaAllocator.h"
@@ -1316,6 +1324,7 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32"
+							ExcludedFromBuild="TRUE"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
