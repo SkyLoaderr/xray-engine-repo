@@ -252,7 +252,7 @@ void CSE_ALifeSimulator::vfValidatePosition(CSE_ALifeDynamicObject *I)
 {
 //	Msg("Validating position");
 	// updating vertex if it is invalid and object is not attached and online
-	if ((I->m_bOnline || ai().level_graph().valid_vertex_id(I->m_tNodeID)) && (0xffff == I->ID_Parent)) {
+	if (I->used_ai_locations() && (I->m_bOnline || ai().level_graph().valid_vertex_id(I->m_tNodeID)) && (0xffff == I->ID_Parent)) {
 		// checking if it is a group of objects
 		CSE_ALifeGroupAbstract *tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(I);
 		if (tpALifeGroupAbstract) {
