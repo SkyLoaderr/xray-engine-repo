@@ -132,7 +132,7 @@ public:
 	virtual IDirect3DVertexBuffer9*	getVB					(int id)						= 0;
 	virtual IDirect3DIndexBuffer9*	getIB					(int id)						= 0;
 	virtual IRender_Sector*			detectSector			(Fvector& P)					= 0;
-	virtual IRender_target*			getTarget				()								= 0;
+	virtual IRender_Target*			getTarget				()								= 0;
 
 	// Main 
 	IC		void					set_Frustum				(CFrustum*	O	)				{ VERIFY(O);	View = O;			}
@@ -149,8 +149,7 @@ public:
 	virtual void					add_Wallmark			(Shader* S, const Fvector& P, float s, CDB::TRI* T)				= 0;
 
 	// Lighting
-	virtual void					L_add					(CLightPPA* L	)				= 0;
-	virtual void					L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>&	dest)	= 0;
+	virtual void					L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>&	dest)			= 0;
 
 	// Models
 	virtual CVisual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E)			= 0;
