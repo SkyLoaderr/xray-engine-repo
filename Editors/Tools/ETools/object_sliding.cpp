@@ -61,6 +61,7 @@ void CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
 	int iCurVerts = iNumVerts;
 	int iCurCollapse = 0;
 	int iCurSlidingWindowLevel = 0;
+	float total_error = 0.f;
 	while ( TRUE ){
 		GeneralCollapseInfo *pCollapse = object->pNextCollapse;
 		if ( object->pNextCollapse == &(object->CollapseRoot) ) break;
@@ -69,6 +70,7 @@ void CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
 		iCurCollapse++;
 		iCurVerts--;
 		pCollapse->pptBin->mypt.dwNewIndex = iCurVerts;
+		total_error += pCollapse->fError;
 		object->DoCollapse();
 	}
 
