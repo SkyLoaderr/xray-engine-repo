@@ -98,7 +98,8 @@ BOOL CClimableObject::	net_Spawn			( CSE_Abstract* DC)
 		m_side.invert();
 
 	}
-	
+	shedule_unregister();
+	processing_deactivate();
 	return ret;
 }
 void CClimableObject::	net_Destroy			()

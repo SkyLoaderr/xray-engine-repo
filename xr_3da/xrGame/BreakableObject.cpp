@@ -57,6 +57,7 @@ BOOL CBreakableObject::net_Spawn(CSE_Abstract* DC)
 	CreateBroken			();
 	bRemoved				=false;
 	//Break					();
+	shedule_unregister		();
 	return					(TRUE);
 }
 
@@ -222,6 +223,7 @@ void CBreakableObject::Break()
 		m_pPhysicsShell->get_ElementByStoreOrder(i)->applyImpulseTrace(pos,dir,Random.randF(0.5f,3.f),0);
 	}
 	m_break_time=Device.dwTimeGlobal;
+	shedule_register();
 }
 
 void CBreakableObject::SendDestroy()
