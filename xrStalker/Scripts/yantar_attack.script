@@ -1,0 +1,99 @@
+
+local command1 ={
+                { name = "muzhik1", id = -1},
+                { name = "muzhik2", id = -1},
+                { name = "muzhik3", id = -1}
+                }
+
+local command2 ={
+                { name = "muzhik4", id = -1},
+                { name = "muzhik5", id = -1},
+                { name = "muzhik6", id = -1}
+                }
+                
+local command1_moved = false                
+local command2_moved = false
+local last_time = 0
+local zone_name = "attack_zone";
+local timeout = 2 * 60 * 60 * 1000
+                
+function main ()
+    --get command 1
+    for a = 1, table.getn (command1), 1 do
+        local npc = get_level_object (command1[a].name)
+        command1[a].id = npc:id ()
+        this.switch_offline (npc)
+    end    
+    --get command 2
+    for a = 1, table.getn (command2), 1 do
+        local npc = get_level_object (command2[a].name)
+        command2[a].id = npc:id ()
+        this.switch_offline (npc)
+    end    
+    
+    local zone = get_level_object (zone_name)
+    zone:set_callback (this.on_enter, true)
+    
+    while true do 
+          if command1_moved == true and command2_moved == true then
+             zone:clear_callback (true)
+             return
+          end
+          wait (1000)
+    end                   
+    
+end
+
+-------------------------------------------------------------------------------------------
+function on_enter (zone, obj)
+
+    local act = level.actor ()
+    if act:id () ~= obj:id () then return end
+
+    if command2_moved == true then return end
+    
+    if command1_moved == false then
+       last_time = device ():time_global ()
+       command1_moved = true
+       for a = 1, table.getn (command1), 1 do
+           this.switch_online (command1[a].id)
+       end
+       return 
+    end
+    
+    if device ():time_global () - last_time < timeout then
+       return 
+    end    
+    
+    if math.random (1, 100) < 50 then return end
+    
+    command2_moved = true
+    for a = 1, table.getn (command2), 1 do
+        this.switch_online (command2[a].id)
+    end
+    
+end
+-------------------------------------------------------------------------------------------
+function switch_online (id)
+    if id == -1 then return end
+    local sim = alife ()
+    if sim ~= nil then
+       sim:set_switch_online  (id, true) 
+       sim:set_switch_offline (id, false)
+    else
+       printf ("Simulator disabled")    
+    end   
+end
+-------------------------------------------------------------------------------------------
+function switch_offline (npc)
+    if npc == nil or npc:alive () == false then return end
+    local sim = alife ()
+    if sim ~= nil then
+       printf ("Object %s move to offline", npc:name ())
+       sim:set_switch_online  (npc:id (), false) 
+       sim:set_switch_offline (npc:id (), true)
+    else
+       printf ("Simulator disabled")    
+    end   
+end
+-------------------------------------------------------------------------------------------
