@@ -2,6 +2,7 @@
 #include "blender_light_mask.h"
 #include "blender_light_direct.h"
 #include "blender_light_point.h"
+#include "blender_light_point_uns.h"
 #include "blender_combine.h"
 #include "blender_bloom_build.h"
 
@@ -13,7 +14,8 @@ void	CRenderTarget::OnDeviceCreate	()
 	// Blenders
 	b_accum_mask					= xr_new<CBlender_accum_direct_mask>	();
 	b_accum_direct					= xr_new<CBlender_accum_direct>			();
-	b_accum_point					= xr_new<CBlender_accum_point>			();
+	b_accum_point_s					= xr_new<CBlender_accum_point>			();
+	b_accum_point_uns				= xr_new<CBlender_accum_point_uns>		();
 	b_bloom							= xr_new<CBlender_bloom_build>			();
 	b_combine						= xr_new<CBlender_combine>				();
 
@@ -42,7 +44,8 @@ void	CRenderTarget::OnDeviceCreate	()
 		u32 size = PSM_size;
 		R_CHK						(HW.pDevice->CreateDepthStencilSurface	(size,size,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_p_ZB,NULL));
 		rt_smap_p					= Device.Shader._CreateRTC	(r2_RT_smap_p,				size,D3DFMT_R32F);
-		s_accum_point				= Device.Shader.Create_B	(b_accum_point,				"r2\\accum_point");
+		s_accum_point_s				= Device.Shader.Create_B	(b_accum_point_s,			"r2\\accum_point_s");
+		s_accum_point_uns			= Device.Shader.Create_B	(b_accum_point_uns,			"r2\\accum_point_uns");
 
 		accum_point_geom_create		();
 		g_accum_point				= Device.Shader.CreateGeom	(D3DFVF_XYZ,				g_accum_point_vb, g_accum_point_ib);
@@ -158,7 +161,8 @@ void	CRenderTarget::OnDeviceDestroy	()
 	// POINT
 	Device.Shader.DeleteGeom	(g_accum_point			);
 	accum_point_geom_destroy	();
-	Device.Shader.Delete		(s_accum_point			);
+	Device.Shader.Delete		(s_accum_point_s		);
+	Device.Shader.Delete		(s_accum_point_uns		);
 	Device.Shader._DeleteRTC	(rt_smap_p				);
 	_RELEASE					(rt_smap_p_ZB			);
 
@@ -178,7 +182,8 @@ void	CRenderTarget::OnDeviceDestroy	()
 	// Blenders
 	xr_delete					(b_combine				);
 	xr_delete					(b_bloom				);
-	xr_delete					(b_accum_point			);
+	xr_delete					(b_accum_point_uns		);
+	xr_delete					(b_accum_point_s		);
 	xr_delete					(b_accum_direct			);
 	xr_delete					(b_accum_mask			);
 }

@@ -23,7 +23,7 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	// *** similar to "Carmack's reverse", but assumes convex, non intersecting objects,
 	// *** thus can cope without stencil clear with 127 lights
 	// *** in practice, 'cause we "clear" it back to 0x1 it usually allows us to > 200 lights :)
-	RCache.set_Element				(s_accum_point->E[0]);			// masker
+	RCache.set_Element				(s_accum_point_s->E[0]);			// masker
 	RCache.set_Geometry				(g_accum_point);
 	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	0	));
 	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		TRUE				));
@@ -65,11 +65,11 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	Fplane	P;	P.n.set(plane.x,plane.y,plane.z); P.d = plane.w;
 	float	p_dist					= P.classify	(L->sphere.P) - L->sphere.R;
 	if (p_dist<0)					{
-		RCache.set_Element(s_accum_point->E[2]);	// back
+		RCache.set_Element(s_accum_point_s->E[2]);	// back
 		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CW		)); 	
 	}
 	else							{
-		RCache.set_Element(s_accum_point->E[1]);	// front
+		RCache.set_Element(s_accum_point_s->E[1]);	// front
 		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CCW		)); 	
 	}
 
@@ -144,7 +144,7 @@ void CRenderTarget::accum_point_unshadow(light* L)
 	// *** similar to "Carmack's reverse", but assumes convex, non intersecting objects,
 	// *** thus can cope without stencil clear with 127 lights
 	// *** in practice, 'cause we "clear" it back to 0x1 it usually allows us to > 200 lights :)
-	RCache.set_Element				(s_accum_point->E[0]);			// masker
+	RCache.set_Element				(s_accum_point_uns->E[0]);	// masker
 	RCache.set_Geometry				(g_accum_point);
 	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	0	));
 	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		TRUE				));

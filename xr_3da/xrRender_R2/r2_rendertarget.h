@@ -16,7 +16,8 @@ private:
 	// 
 	CBlender*					b_accum_mask;
 	CBlender*					b_accum_direct;
-	CBlender*					b_accum_point;
+	CBlender*					b_accum_point_s;
+	CBlender*					b_accum_point_uns;
 	CBlender*					b_bloom;
 	CBlender*					b_combine;
 
