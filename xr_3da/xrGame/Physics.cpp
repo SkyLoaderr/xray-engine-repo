@@ -7,6 +7,7 @@
 #include <ode\src\objects.h>
 #include <ode\src\geom_internal.h>
 #include "ExtendedGeom.h"
+#include "dBoxGeomA.h"
 // #include "contacts.h"
 float friction_table[2]={5000.f,100.f};
 
@@ -588,7 +589,7 @@ void CPHWorld::Step(dReal step)
 
 	list<CPHObject*>::iterator iter;
 	//step+=astep;
-	const dReal max_step=0.01f;//0.0034f;
+	const dReal max_step=0.02f;//0.0034f;
 	//const dReal min_step=0.005f;
 	const  dReal k_p=24000000.f;//550000.f;///1000000.f;
 	const dReal k_d=400000.f;
@@ -825,7 +826,7 @@ void CPHElement::			add_Box		(const Fobb&		V){
 
 void CPHElement::			create_Box		(Fobb&		V){
 														dGeomID geom,trans;
-														geom=dCreateBox(0,
+														geom=dCreateBoxA(0,
 																		V.m_halfsize.x*2.f,
 																		V.m_halfsize.y*2.f,
 																		V.m_halfsize.z*2.f);

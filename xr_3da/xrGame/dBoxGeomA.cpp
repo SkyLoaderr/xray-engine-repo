@@ -226,7 +226,7 @@ extern "C" int dBoxABoxA (const dVector3 p1, const dMatrix3 R1,
 
 
 
-int dCollideBABA (const dxGeom *o1, const dxGeom *o2, int flags,
+int dCollideBBA (const dxGeom *o1, const dxGeom *o2, int flags,
 		dContactGeom *contact, int skip)
 {
   dVector3 normal;
@@ -440,7 +440,7 @@ static int dBoxBox (const dVector3 p1, const dMatrix3 R1,
 
 
 
-static int FUNCCALL dCollideBBA (const dxGeom *o1, const dxGeom *o2, int flags,
+static int FUNCCALL dCollideBABA (const dxGeom *o1, const dxGeom *o2, int flags,
 		dContactGeom *contact, int skip)
 {
   dVector3 normal;
@@ -448,8 +448,8 @@ static int FUNCCALL dCollideBBA (const dxGeom *o1, const dxGeom *o2, int flags,
   int code;
   dxBox *b1 = (dxBox*) CLASSDATA(o1);
   dxBox *b2 = (dxBox*) CLASSDATA(o2);
-  dxBox *box;
-  dReal* R;
+  dxBox *box=NULL;
+  dReal* R=NULL;
   
   int ret = dBoxBox (o1->pos,o1->R,b1->side, o2->pos,o2->R,b2->side,
 		     normal,&depth,&code,flags & NUMC_MASK,contact,skip);
@@ -458,28 +458,29 @@ static int FUNCCALL dCollideBBA (const dxGeom *o1, const dxGeom *o2, int flags,
 ////////////////////////////////////////////////////////////////////////////////////
   dVector3 p;
   dVector3 n;
-  if(code<3){
-  p[0] = o2->pos[0];
-  p[1] = o2->pos[1];
-  p[2] = o2->pos[2];
+  if(code<4){
+  p[0] = contact->pos[0];
+  p[1] = contact->pos[1];
+  p[2] = contact->pos[2];
   box=b2;
   R=o2->R;
-  n[0]=-normal[0];
-  n[1]=-normal[1];
-  n[2]=-normal[2];
-  }
-  else if(code<6)
-  {
-  p[0] = o1->pos[0];
-  p[1] = o1->pos[1];
-  p[2] = o1->pos[2];
-  box=b1;
-  R=o1->R;
   n[0]=normal[0];
   n[1]=normal[1];
   n[2]=normal[2];
   }
-  if(code<6){
+  else //if(code<7)
+  {
+  p[0] = contact->pos[0];
+  p[1] = contact->pos[1];
+  p[2] = contact->pos[2];
+  box=b1;
+  R=o1->R;
+  n[0]=-normal[0];
+  n[1]=-normal[1];
+  n[2]=-normal[2];
+  }
+  //if(code<7)
+  {
 
   int maxc = flags & NUMC_MASK;
   if (maxc < 1) maxc = 1;
@@ -548,6 +549,7 @@ static int FUNCCALL dCollideBBA (const dxGeom *o1, const dxGeom *o2, int flags,
 
  done:;
   }
+//  else return 0;
 ////////////////////////////////////////////////////////////////////////////////////
   for (int i=0; i<ret; i++) {
     CONTACT(contact,i*skip)->normal[0] = -normal[0];
@@ -657,7 +659,7 @@ static int dCollideSBA (const dxGeom *o2, const dxGeom *o1, int flags,
   return 0;
 }
 
-static void FUNCCALL dBoxAABB (dxGeom *geom, dReal aabb[6])
+static void FUNCCALL dABoxAABB (dxGeom *geom, dReal aabb[6])
 {
   dxBox *b = (dxBox*) CLASSDATA(geom);
   dReal xrange = REAL(0.5) * (dFabs (geom->R[0] * b->side[0]) +
@@ -677,14 +679,14 @@ static void FUNCCALL dBoxAABB (dxGeom *geom, dReal aabb[6])
 dxGeom *dCreateBoxA (dSpaceID space, dReal lx, dReal ly, dReal lz)
 {
   dAASSERT (lx > 0 && ly > 0 && lz > 0);
-  if (dBoxClass == -1) {
+  if (dBoxAClass == -1) {
     dGeomClass c;
     c.bytes = sizeof (dxBox);
     c.collider = &dBoxAColliderFn;
-    c.aabb = &dBoxAABB;
+    c.aabb = &dABoxAABB;
     c.aabb_test = 0;
     c.dtor = 0;
-    dBoxClass = dCreateGeomClass (&c);
+    dBoxAClass = dCreateGeomClass (&c);
   }
 
   dxGeom *g = dCreateGeom (dBoxAClass);

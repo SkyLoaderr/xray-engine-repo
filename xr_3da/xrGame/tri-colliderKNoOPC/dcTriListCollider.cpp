@@ -279,12 +279,15 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 	Fvector BoxExtents;
 
 	BoxCenter=(Fvector*)const_cast<dReal*>(dGeomGetPosition(Box));
-	dVector3 BoxSides;///=(dReal*)BoxExtents;
+	//dVector3 BoxSides;///=(dReal*)BoxExtents;
 
 
-	dGeomBoxGetLengths(Box, BoxSides);
+	//dGeomBoxGetLengths(Box, BoxSides);
+	
+	dxBox *box = (dxBox*) CLASSDATA(Box);
+    const dVector3 BoxSides={box->side[0],box->side[1],box->side[2],-1};
 	memcpy( &BoxExtents,&BoxSides,sizeof(Fvector));
-
+	
 	dReal* R=const_cast<dReal*>(dGeomGetRotation(Box));
 
 	AABB.x=(dFabs(BoxSides[0]*R[0])+dFabs(BoxSides[1]*R[1])+dFabs(BoxSides[2]*R[2]))/2.f+1.f*EPS_L;
