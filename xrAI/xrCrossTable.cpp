@@ -16,6 +16,7 @@
 DEFINE_VECTOR			(float,			FLOAT_VECTOR,			FLOAT_IT);
 DEFINE_VECTOR			(FLOAT_VECTOR,	FLOAT_VECTOR_VECTOR,	FLOAT_VECTOR_IT);
 
+
 void					vfRecurseUpdate(FLOAT_VECTOR &tDistances, CAI_Map& tMap, vector<bool> &tMarks, u32 dwStartNodeID, float fValue)
 {
 	if (tDistances[dwStartNodeID] < fValue)
@@ -58,7 +59,7 @@ void					xrBuildCrossTable(LPCSTR caProjectName)
 	Phase				("Loading AI map");
 	CAI_Map				tMap(caProjectName);
 	
-	Phase				("Allocating memory");
+	Phase				("Building dynamic objects");
 	FLOAT_VECTOR_VECTOR	tDistances;
 	int					iVertexCount	= tGraph.m_tGraphHeader.dwVertexCount;
 	int					iNodeCount		= tMap.m_header.count;
@@ -110,8 +111,6 @@ void					xrBuildCrossTable(LPCSTR caProjectName)
 				for ( ; I != E; I++)
 					if ((!tMarks[I - B]) && (*I == fDistanceToSearch)) {
 						dwCount++;
-						//if (dwCount < 10)
-						//	Msg		("%d node doesn't have a correspodning graph point",I - B);
 						FLOAT_VECTOR_IT i = tDistances.begin();
 						FLOAT_VECTOR_IT e = tDistances.end();
 						for ( ; i != e; i++)
@@ -123,24 +122,45 @@ void					xrBuildCrossTable(LPCSTR caProjectName)
 			if (!bOk) {
 				fDistanceToSearch = fNewDistanceToSearch;
 				Msg("%d nodes don't have a corresponding graph point",dwCount);
-//				FLOAT_VECTOR_IT		I = tDistances.begin();
-//				FLOAT_VECTOR_IT		E = tDistances.end();
-//				for ( ; I != E; I++) {
-//					FLOAT_IT		i = (*I).begin();
-//					FLOAT_IT		e = (*I).end();
-//					for ( ; i != e; i++)
-//						*i			= fDistanceToSearch;
-//				}
 			}
-			else
+			else {
+				Msg("All the nodes being connected with the graph point nodes do have a corresponding graph point",dwCount);
 				break;
+			}
 		}
 	}
 	Progress			(1.f);
 	
 	Phase				("Saving cross table");
-
-
-	Phase				("Freeing resources being allocated");
-
+	CFS_Memory			tMemoryStream;
+	CCrossTable			tCrossTable;
+	
+	tCrossTable.m_tCrossTableHeader.dwVersion = XRAI_CURRENT_VERSION;
+	tCrossTable.m_tCrossTableHeader.dwNodeCount = iNodeCount;
+	tCrossTable.m_tCrossTableHeader.dwGraphPointCount = iVertexCount;
+	
+	tMemoryStream.open_chunk(CROSS_TABLE_CHUNK_VERSION);
+	tMemoryStream.write(&tCrossTable.m_tCrossTableHeader,sizeof(tCrossTable.m_tCrossTableHeader));
+	tMemoryStream.close_chunk();
+	
+	tMemoryStream.open_chunk(CROSS_TABLE_CHUNK_DATA);
+	{
+		for (int i=0; i<iNodeCount; i++) {
+			FLOAT_VECTOR_IT		I = tDistances.begin(), B = I;
+			FLOAT_VECTOR_IT		E = tDistances.end();
+			CCrossTable::SCrossTableCell tCrossTableCell;
+			tCrossTableCell.fDistance = fDistanceToSearch;
+			tCrossTableCell.tGraphIndex = u16(-1);
+			for ( ; I != E; I++)
+				if ((*I)[i] < tCrossTableCell.fDistance) {
+					tCrossTableCell.fDistance	= (*I)[i];
+					tCrossTableCell.tGraphIndex = I - B;
+				}
+			tMemoryStream.write(&tCrossTableCell,sizeof(tCrossTableCell));
+		}
+	}
+	tMemoryStream.close_chunk();
+	
+	strconcat			(caFileName,caProjectName,"level.gct");
+	tMemoryStream.SaveTo(caFileName,0);
 }

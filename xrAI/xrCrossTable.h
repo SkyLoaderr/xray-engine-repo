@@ -13,6 +13,7 @@ void xrBuildCrossTable(LPCSTR caProjectName);
 #include "xrLevel.h"
 #include "ai_alife_space.h"
 typedef	char FILE_NAME[ _MAX_PATH	];
+#include "ai_alife_cross_table.h"
 
 class CGraph {
 public:
