@@ -269,7 +269,8 @@ void game_sv_GameState::Create					(LPSTR &/**options/**/)
 				O->r_fvector3			(R.A);
 				team					= O->r_u8	();	VERIFY(team>=0 && team<4);
 				type					= O->r_u8	();
-				u16 res					= O->r_u16	();
+				//u16 res					= 
+					O->r_u16	();
 				rpoints[team].push_back	(R);
 			}
 			O->close();

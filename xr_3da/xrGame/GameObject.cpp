@@ -43,6 +43,7 @@ void CGameObject::Init			()
 	m_dwFrameSpawn				= u32(-1);
 	m_dwFrameDestroy			= u32(-1);
 	m_dwFrameClient				= u32(-1);
+	m_dwFrameSchedule			= u32(-1);
 	m_script_clsid				= -1;
 	m_ini_file					= 0;
 }
@@ -569,6 +570,8 @@ void CGameObject::DestroyObject()
 
 void CGameObject::shedule_Update	(u32 dt)
 {
+	if (!frame_check(m_dwFrameSchedule))
+		return;
 	//уничтожить
 	if(NeedToDestroyObject())
 		DestroyObject();
