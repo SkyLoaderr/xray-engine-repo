@@ -197,9 +197,11 @@ void CHangingLamp::UpdateCL	()
 	if(m_pPhysicsShell)
 	{
 		m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
-		CBoneInstance* bi=&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(u16(guid_physic_bone->m_SelfID));
-		if(guid_physic_bone)guid_physic_bone->BonesCallBack(bi);
-		bi->mTransform.set(guid_physic_bone->mXFORM);
+		if (guid_physic_bone){
+			CBoneInstance* bi				= &smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(u16(guid_physic_bone->m_SelfID));
+			guid_physic_bone->BonesCallBack	(bi);
+			bi->mTransform.set				(guid_physic_bone->mXFORM);
+		}
 	}
 
 	if (Alive() && light_render->get_active())
