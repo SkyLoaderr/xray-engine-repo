@@ -180,6 +180,7 @@ function stalker_at_waypoint(stalker, patrol_path, path_point)
 end
 
 -- Послать stalker в заданную точку patrol_path(path_point)
+--[[
 function stalker_go_to_waypoint(stalker, patrol_path, path_point)
 	if stalker:animation_count() > 0 then
 		stalker:clear_animations()
@@ -195,34 +196,43 @@ function stalker_go_to_waypoint(stalker, patrol_path, path_point)
 	stalker:set_mental_state(anim.danger)
 	stalker:set_detail_path_type(move.line)
 end
+--]]
 
 function stalker_stop(stalker)
 	stalker:set_movement_type(move.stand)
 end
 
+--[[
 function stalker_look_at_waypoint(stalker, patrol_path, path_point)
 	local look_pt = this.vector_copy_by_val(patrol_path:point(path_point)):sub(stalker:position())
 	stalker:set_sight(look.direction, look_pt, 0)
 end
+--]]
 
+--[[
 function stalker_look_at_stalker(stalker, whom)
 	local look_pt = this.vector_copy_by_val(whom:position()):sub(stalker:position())
 	stalker:set_sight(look.direction, look_pt, 0)
 end
+--]]
 
+--[[
 function stalker_look_at_stalker_angle(stalker, whom, angle)
     --stalker - killer
     --whom - killed :)
 	local look_pt = this.vector_copy_by_val(whom:position()):sub(stalker:position())
 	stalker:set_sight (look.direction, vector_rotate_y (look_pt, angle), 0)
 end
+--]]
 
+--[[
 function stalker_look_firepoint_angle(stalker, whom, angle)
     --stalker - killer
     --whom - killed :)
 	local look_pt = this.vector_copy_by_val(whom:position()):sub(stalker:position())
 	stalker:set_sight (look.fire_point, vector_rotate_y (look_pt, angle), 0)
 end
+--]]
 
 local function door_default_callback(door, actor)
 	local ph_shell = door:get_physics_shell()
