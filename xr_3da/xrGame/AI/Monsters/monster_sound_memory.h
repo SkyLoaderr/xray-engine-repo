@@ -69,7 +69,7 @@ class CMonsterSoundMemory {
 	TTime					time_memory;				// время хранения звуков
 	xr_vector<SoundElem>	Sounds;
 
-	CBaseMonster				*monster;
+	CBaseMonster			*monster;
 
 public:
 				CMonsterSoundMemory		();
@@ -82,6 +82,7 @@ public:
 	IC	bool	IsRememberSound			() {return (!Sounds.empty());}		
 	void		GetSound				(SoundElem &s, bool &bDangerous);	// возвращает самый опасный звук
 	SoundElem	&GetSound				();
+	bool		get_sound_from_object	(const CObject* who, SoundElem	&value);	
 
 	void		UpdateHearing			();
 

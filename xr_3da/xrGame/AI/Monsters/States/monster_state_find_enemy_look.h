@@ -21,7 +21,7 @@ class CStateMonsterFindEnemyLook : public CState<_Object> {
 	} ;
 
 public:
-						CStateMonsterFindEnemyLook	(_Object *obj, state_ptr state_move, state_ptr state_look_around, state_ptr state_turn);
+						CStateMonsterFindEnemyLook	(_Object *obj);
 	virtual				~CStateMonsterFindEnemyLook	();
 
 	virtual	void		initialize					();	

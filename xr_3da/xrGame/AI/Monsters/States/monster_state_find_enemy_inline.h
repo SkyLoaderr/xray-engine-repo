@@ -1,5 +1,10 @@
 #pragma once
 
+#include "monster_state_find_enemy_run.h"
+#include "monster_state_find_enemy_angry.h"
+#include "monster_state_find_enemy_walk.h"
+#include "monster_state_find_enemy_look.h"
+
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
 >
@@ -7,12 +12,12 @@
 #define CStateMonsterFindEnemyAbstract CStateMonsterFindEnemy<_Object>
 
 TEMPLATE_SPECIALIZATION
-CStateMonsterFindEnemyAbstract::CStateMonsterFindEnemy(_Object *obj, state_ptr state_run, state_ptr state_look_around, state_ptr state_angry, state_ptr state_walk_around) : inherited(obj)
+CStateMonsterFindEnemyAbstract::CStateMonsterFindEnemy(_Object *obj) : inherited(obj)
 {
-	add_state	(eStateRun,			state_run);
-	add_state	(eStateLookAround,	state_look_around);
-	add_state	(eStateAngry,		state_angry);
-	add_state	(eStateWalkAround,	state_walk_around);
+	add_state	(eStateRun,			xr_new<CStateMonsterFindEnemyRun<_Object> >			(obj));
+	add_state	(eStateLookAround,	xr_new<CStateMonsterFindEnemyLook<_Object> >		(obj));
+	add_state	(eStateAngry,		xr_new<CStateMonsterFindEnemyAngry<_Object> >		(obj));
+	add_state	(eStateWalkAround,	xr_new<CStateMonsterFindEnemyWalkAround<_Object> >	(obj));
 }
 
 TEMPLATE_SPECIALIZATION

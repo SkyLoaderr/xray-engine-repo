@@ -4,6 +4,7 @@
 #include "monster_state_attack_run.h"
 #include "monster_state_attack_run_attack.h"
 #include "state_hide_from_point.h"
+#include "monster_state_find_enemy.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
@@ -18,6 +19,7 @@ CStateMonsterAttackAbstract::CStateMonsterAttack(_Object *obj) : inherited(obj)
 	add_state	(eStateMelee,		xr_new<CStateMonsterAttackMelee<_Object> >		(obj));
 	add_state	(eStateRunAttack,	xr_new<CStateMonsterAttackRunAttack<_Object> >	(obj));
 	add_state	(eStateRunAway,		xr_new<CStateMonsterHideFromPoint<_Object> >	(obj));
+	add_state	(eStateFindEnemy,	xr_new<CStateMonsterFindEnemy<_Object> >		(obj));	
 }
 
 TEMPLATE_SPECIALIZATION
@@ -27,6 +29,7 @@ CStateMonsterAttackAbstract::CStateMonsterAttack(_Object *obj, state_ptr state_r
 	add_state	(eStateMelee,		state_melee);
 	add_state	(eStateRunAttack,	xr_new<CStateMonsterAttackRunAttack<_Object> >	(obj));
 	add_state	(eStateRunAway,		xr_new<CStateMonsterHideFromPoint<_Object> >	(obj));
+	add_state	(eStateFindEnemy,	xr_new<CStateMonsterFindEnemy<_Object> >		(obj));	
 }
 
 TEMPLATE_SPECIALIZATION
@@ -38,38 +41,50 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackAbstract::initialize()
 {
 	inherited::initialize				();
-
 	object->MeleeChecker.init_attack	();
 	
 	m_time_next_run_away				= 0;
 }
+
+#define FIND_ENEMY_DELAY	6000
+
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackAbstract::execute()
 {
 	bool selected = false;
 	
-	if (prev_substate == eStateRunAway) {
-		if (!get_state(eStateRunAway)->check_completion()) {
-			select_state			(eStateRunAway);
-			selected				= true;
-			m_time_next_run_away	= Level().timeServer() + 10000;
-		}
-	} else if (object->Morale.is_despondent() && (m_time_next_run_away < Level().timeServer())) {
-		select_state	(eStateRunAway);
+	// check state find enemy
+	if (object->EnemyMan.get_enemy_time_last_seen() + FIND_ENEMY_DELAY < Level().timeServer()) {
+		select_state	(eStateFindEnemy);
 		selected		= true;
-	} else if (object->ability_run_attack()) {
-		if (prev_substate == eStateRun) {
-			if (get_state(eStateRunAttack)->check_start_conditions()) {
-				select_state	(eStateRunAttack);
-				selected		= true;
+	}
+	
+	if (!selected) {
+
+		if (prev_substate == eStateRunAway) {
+			if (!get_state(eStateRunAway)->check_completion()) {
+				select_state			(eStateRunAway);
+				selected				= true;
+				m_time_next_run_away	= Level().timeServer() + 10000;
 			}
-		} else if (prev_substate == eStateRunAttack) {
-			if (!get_state(eStateRunAttack)->check_completion()) {
-				select_state	(eStateRunAttack);
-				selected		= true;
+		} else if (object->Morale.is_despondent() && (m_time_next_run_away < Level().timeServer())) {
+			select_state	(eStateRunAway);
+			selected		= true;
+		} else if (object->ability_run_attack()) {
+			if (prev_substate == eStateRun) {
+				if (get_state(eStateRunAttack)->check_start_conditions()) {
+					select_state	(eStateRunAttack);
+					selected		= true;
+				}
+			} else if (prev_substate == eStateRunAttack) {
+				if (!get_state(eStateRunAttack)->check_completion()) {
+					select_state	(eStateRunAttack);
+					selected		= true;
+				}
 			}
 		}
+	
 	}
 	
 	if (!selected) {

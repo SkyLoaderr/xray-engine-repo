@@ -107,10 +107,14 @@ void CStalkerAnimationManager::update						()
 	head().play				(m_skeleton_animated,head_play_callback,&object());
 
 	torso().animation		(assign_torso_animation());
+	VERIFY					(torso().animation());
 	torso().play			(m_skeleton_animated,torso_play_callback,&object());
+	VERIFY					(torso().animation());
 
 	legs().animation		(assign_legs_animation());
+	VERIFY					(torso().animation());
 	legs().play				(m_skeleton_animated,legs_play_callback,&object());
+	VERIFY					(torso().animation());
 
 	VERIFY					(head().animation());
 

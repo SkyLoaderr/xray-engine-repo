@@ -9,8 +9,8 @@
 TEMPLATE_SPECIALIZATION
 void CStateMonsterFindEnemyWalkAbstract::execute()
 {
-	object->MotionMan.m_tAction			= ACT_STAND_IDLE;
-	object->CSoundPlayer::play			(MonsterSpace::eMonsterSoundAttack, 0,0,object->get_sd()->m_dwAttackSndDelay);
+	object->set_action			(ACT_STAND_IDLE);
+	object->set_state_sound		(MonsterSpace::eMonsterSoundAttack);
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiMonsterDebug)) {

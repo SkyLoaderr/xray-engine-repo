@@ -14,6 +14,7 @@ protected:
 		eStateMelee,
 		eStateRunAttack,
 		eStateRunAway,
+		eStateFindEnemy
 	};
 
 	u32		m_time_next_run_away;

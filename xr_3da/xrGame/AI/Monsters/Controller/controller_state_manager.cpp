@@ -80,18 +80,18 @@ CStateManagerController::CStateManagerController(CController *obj) : inherited(o
 	);
 
 
-	add_state(
-		eStateFindEnemy, 
-		xr_new<CStateMonsterFindEnemy<CController> > (obj,
-			xr_new<CStateMonsterFindEnemyRun<CController> >(obj), 
-			xr_new<CStateMonsterFindEnemyLook<CController> >(obj,
-				xr_new<CStateMonsterMoveToPoint<CController> >(obj), 
-				xr_new<CStateMonsterCustomAction<CController> >(obj),
-				xr_new<CStateMonsterLookToPoint<CController> >(obj)),
-			xr_new<CStateMonsterFindEnemyAngry<CController> >(obj), 
-			xr_new<CStateMonsterFindEnemyWalkAround<CController> >(obj)
-		)
-	);
+	//add_state(
+	//	eStateFindEnemy, 
+	//	xr_new<CStateMonsterFindEnemy<CController> > (obj,
+	//		xr_new<CStateMonsterFindEnemyRun<CController> >(obj), 
+	//		xr_new<CStateMonsterFindEnemyLook<CController> >(obj,
+	//			xr_new<CStateMonsterMoveToPoint<CController> >(obj), 
+	//			xr_new<CStateMonsterCustomAction<CController> >(obj),
+	//			xr_new<CStateMonsterLookToPoint<CController> >(obj)),
+	//		xr_new<CStateMonsterFindEnemyAngry<CController> >(obj), 
+	//		xr_new<CStateMonsterFindEnemyWalkAround<CController> >(obj)
+	//	)
+	//);
 }
 
 CStateManagerController::~CStateManagerController()

@@ -27,16 +27,15 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackRunAbstract::execute()
 {
 	// установка параметров функциональных блоков
-	object->set_action									(ACT_RUN);
-	object->MotionMan.accel_activate					(eAT_Aggressive);
-	object->MotionMan.accel_set_braking					(false);
-	object->movement().set_target_point			(object->EnemyMan.get_enemy()->Position(), object->EnemyMan.get_enemy()->ai_location().level_vertex_id());
+	object->set_action							(ACT_RUN);
+	object->MotionMan.accel_activate			(eAT_Aggressive);
+	object->MotionMan.accel_set_braking			(false);
+	object->movement().set_target_point			(object->EnemyMan.get_enemy_position(), object->EnemyMan.get_enemy_vertex());
 	object->movement().set_rebuild_time			(object->get_attack_rebuild_time());
-	object->movement().set_distance_to_end		(2.5f);
 	object->movement().set_use_covers			();
 	object->movement().set_cover_params			(5.f, 30.f, 1.f, 30.f);
 	object->movement().set_try_min_time			(false);
-	object->set_state_sound								(MonsterSpace::eMonsterSoundAttack);
+	object->set_state_sound						(MonsterSpace::eMonsterSoundAttack);
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiMonsterDebug)) {

@@ -1554,6 +1554,13 @@
 					RelativePath=".\scripts\ui_tab_test.script">
 				</File>
 			</Filter>
+			<Filter
+				Name="Test"
+				Filter="">
+				<File
+					RelativePath=".\scripts\monster_test.script">
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

@@ -18,7 +18,7 @@ protected:
 
 
 public:
-						CStateMonsterFindEnemy	(_Object *obj, state_ptr state_run, state_ptr state_look_around, state_ptr state_angry, state_ptr state_walk_around);
+						CStateMonsterFindEnemy	(_Object *obj);
 	virtual				~CStateMonsterFindEnemy	();
 
 	virtual	void		reselect_state			();

@@ -189,3 +189,14 @@ bool CMonsterSoundMemory::is_loud_sound(float val)
 
 	return false;
 }
+
+bool CMonsterSoundMemory::get_sound_from_object(const CObject* obj, SoundElem	&value)
+{
+	for (u32 i=0; i<Sounds.size(); i++) 
+		if (Sounds[i].who == obj) {
+			value	= Sounds[i];
+			return	true;
+		}
+
+	return false;
+}

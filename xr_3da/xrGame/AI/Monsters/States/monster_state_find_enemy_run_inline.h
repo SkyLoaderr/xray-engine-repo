@@ -19,7 +19,10 @@ CStateMonsterFindEnemyRunAbstract::~CStateMonsterFindEnemyRun()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterFindEnemyRunAbstract::initialize()
 {
-	inherited::initialize();
+	inherited::initialize					();
+
+	object->movement().initialize_movement	();	
+	
 	
 	target_point	= object->EnemyMan.get_enemy_position();
 	target_vertex	= object->EnemyMan.get_enemy_vertex();
@@ -44,17 +47,21 @@ void CStateMonsterFindEnemyRunAbstract::initialize()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterFindEnemyRunAbstract::execute()
 {
-//	object->MotionMan.m_tAction			= ACT_RUN;
-//	object->MotionMan.accel_activate	(eAT_Aggressive);
-//	object->MoveToTarget				(target_point, target_vertex);
-//	object->CSoundPlayer::play			(MonsterSpace::eMonsterSoundAttack, 0,0,object->get_sd()->m_dwAttackSndDelay);
-//
-//#ifdef DEBUG
-//	if (psAI_Flags.test(aiMonsterDebug)) {
-//		object->HDebug->M_Add(0,"Find Enemy :: Run", D3DCOLOR_XRGB(255,0,0));
-//	}
-//#endif
+	object->set_action							(ACT_RUN);
+	object->MotionMan.accel_activate			(eAT_Aggressive);
+	object->MotionMan.accel_set_braking			(false);
+	object->movement().set_target_point			(target_point, target_vertex);
+	object->movement().set_rebuild_time			(object->get_attack_rebuild_time());
+	object->movement().set_use_covers			();
+	object->movement().set_cover_params			(5.f, 30.f, 1.f, 30.f);
+	object->movement().set_try_min_time			(false);
+	object->set_state_sound						(MonsterSpace::eMonsterSoundAttack);
 
+#ifdef DEBUG
+	if (psAI_Flags.test(aiMonsterDebug)) {
+		object->HDebug->M_Add(0,"Find Enemy :: Run", D3DCOLOR_XRGB(255,0,0));
+	}
+#endif
 }
 
 TEMPLATE_SPECIALIZATION

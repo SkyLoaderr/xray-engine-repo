@@ -47,6 +47,18 @@ void CMonsterEnemyManager::update()
 		return;
 	}
 	
+	// обновить информацию о враге в соответствии со звуковой информацией
+	if (monster->SoundMemory.IsRememberSound()) {
+		SoundElem	sound_elem;		
+		if (monster->SoundMemory.get_sound_from_object	(enemy, sound_elem)) {
+			if (sound_elem.time > time_last_seen) {
+				position		= sound_elem.position;
+				vertex			= u32(-1);
+				time_last_seen	= sound_elem.time;
+			}
+		}
+	}
+
 	// проверить видимость
 	enemy_see_me = is_faced(enemy, monster);
 	

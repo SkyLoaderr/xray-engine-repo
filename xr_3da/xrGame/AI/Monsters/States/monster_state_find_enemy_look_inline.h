@@ -1,5 +1,9 @@
 #pragma once
 
+#include "state_move_to_point.h"
+#include "state_look_point.h"
+#include "state_custom_action.h"
+
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
 >
@@ -7,11 +11,11 @@
 #define CStateMonsterFindEnemyLookAbstract CStateMonsterFindEnemyLook<_Object>
 
 TEMPLATE_SPECIALIZATION
-CStateMonsterFindEnemyLookAbstract::CStateMonsterFindEnemyLook(_Object *obj, state_ptr state_move, state_ptr state_look_around, state_ptr state_turn) : inherited(obj)
+CStateMonsterFindEnemyLookAbstract::CStateMonsterFindEnemyLook(_Object *obj) : inherited(obj)
 {
-	add_state	(eMoveToPoint,	state_move);
-	add_state	(eLookAround,	state_look_around);
-	add_state	(eTurnToPoint,	state_turn);
+	add_state	(eMoveToPoint,	xr_new<CStateMonsterMoveToPoint<_Object> >	(obj));
+	add_state	(eLookAround,	xr_new<CStateMonsterCustomAction<_Object> > (obj));
+	add_state	(eTurnToPoint,	xr_new<CStateMonsterLookToPoint<_Object> >	(obj));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -22,6 +26,8 @@ CStateMonsterFindEnemyLookAbstract::~CStateMonsterFindEnemyLook()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterFindEnemyLookAbstract::initialize()
 {
+	inherited::initialize	();
+
 	look_right_side	= ((Random.randI(2)) ? true : false);
 	current_stage	= 0;
 	target_point	= Fvector().set(0.f,0.f,0.f);

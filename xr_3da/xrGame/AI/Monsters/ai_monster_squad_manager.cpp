@@ -66,14 +66,14 @@ void CMonsterSquadManager::remove_member(u8 team_id, u8 squad_id, CEntity *e)
 
 CMonsterSquad *CMonsterSquadManager::get_squad(u8 team_id, u8 squad_id)
 {
-#pragma todo("Dima to Jim : remove this when it will be corrected")
-	if (!((team_id < team.size()) && (squad_id < team[team_id].size()))) {
-		Msg		("CMonsterSquadManager::get_squad MINIDUMP");
-		Msg		("TEAM ID : %d(%d)",team_id,team.size());
-		if (team_id < team.size())
-			Msg	("SQUAD ID : %d(%d)",squad_id,team[team_id].size());
-		FlushLog();
-	}
+//#pragma todo("Dima to Jim : remove this when it will be corrected")
+//	if (!((team_id < team.size()) && (squad_id < team[team_id].size()))) {
+//		Msg		("CMonsterSquadManager::get_squad MINIDUMP");
+//		Msg		("TEAM ID : %d(%d)",team_id,team.size());
+//		if (team_id < team.size())
+//			Msg	("SQUAD ID : %d(%d)",squad_id,team[team_id].size());
+//		FlushLog();
+//	}
 	VERIFY((team_id < team.size()) && (squad_id < team[team_id].size()));
 	return team[team_id][squad_id];
 }
