@@ -77,7 +77,7 @@ public:
 			const Fmatrix		GetUpdatedMatrix		(ref_str caBoneName, const Fvector &tPositionOffset, const Fvector &tAngleOffset);
 			void				vfUpdateParticles		();
 			void				vfUpdateSounds			();
-			void				vfFinishAction			(CScriptEntityAction		*tpEntityAction);
+	virtual	void				vfFinishAction			(CScriptEntityAction		*tpEntityAction);
 	virtual	void				SetScriptControl		(const bool			bScriptControl, ref_str	caSciptName);
 	virtual	bool				GetScriptControl		() const;
 	virtual	LPCSTR				GetScriptControlName	() const;
@@ -98,8 +98,6 @@ public:
 	virtual	bool				bfAssignParticles		(CScriptEntityAction		*tpEntityAction);
 	virtual	bool				bfAssignObject			(CScriptEntityAction		*tpEntityAction);
 	virtual bool				bfAssignMonsterAction	(CScriptEntityAction		*tpEntityAction);
-
-	virtual void				bfFinalizeAnimation		() {}
 
 	virtual void				set_callback			(const luabind::object &lua_object, LPCSTR method, const CScriptMonster::EActionType tActionType);
 	virtual void				set_callback			(const luabind::functor<void> &lua_function, const CScriptMonster::EActionType tActionType);

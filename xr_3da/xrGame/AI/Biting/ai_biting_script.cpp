@@ -191,6 +191,8 @@ bool CAI_Biting::bfAssignMonsterAction(CScriptEntityAction *tpEntityAction)
 
 void CAI_Biting::ProcessScripts()
 {
+	if (!g_Alive()) return;
+
 	// Инициализировать action
 	MotionMan.m_tAction = ACT_STAND_IDLE;
 
@@ -354,10 +356,9 @@ int	CAI_Biting::get_enemy_strength()
 	return (0);
 }
 
-void CAI_Biting::bfFinalizeAnimation()
+void CAI_Biting::vfFinishAction(CScriptEntityAction *tpEntityAction)
 {
-	inherited::bfFinalizeAnimation();
+	inherited::vfFinishAction(tpEntityAction);
 	MotionMan.ForceAnimSelect();
 }
-
 

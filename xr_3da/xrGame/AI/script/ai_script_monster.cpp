@@ -223,9 +223,6 @@ void CScriptMonster::vfFinishAction(CScriptEntityAction *tpEntityAction)
 	}
 	if (!tpEntityAction->m_tParticleAction.m_bAutoRemove)
 		xr_delete(tpEntityAction->m_tParticleAction.m_tpParticleSystem);
-
-	//if (tpEntityAction->m_tAnimationAction.) {
-	//}
 }
 
 void CScriptMonster::ProcessScripts()
@@ -283,9 +280,6 @@ void CScriptMonster::ProcessScripts()
 
 	l_bCompleted	= l_tpEntityAction->m_tAnimationAction.m_bCompleted;
 	bfAssignAnimation(l_tpEntityAction);
-	if (l_tpEntityAction->m_tAnimationAction.m_bCompleted && !l_bCompleted)
-		bfFinalizeAnimation();
-
 
 	l_bCompleted	= l_tpEntityAction->m_tSoundAction.m_bCompleted;
 	bfAssignSound	(l_tpEntityAction);
