@@ -151,7 +151,8 @@ ENGINE_API IDirect3DBaseTexture9*	TWLoader2D
 	// make file name
 	char fname[_MAX_PATH];
 	strcpy(fname,fRName); if (strext(fname)) *strext(fname)=0;
-	if (strstr(fn,"_bump"))									goto _BUMP;
+	if (strstr(fname,"_bump"))								
+		if (FS.exist(fn,"$level$",		fname,	".dds"))	goto _BUMP;
 	if (FS.exist(fn,"$level$",			fname,	".dds"))	goto _DDS;
 	if (FS.exist(fn,"$game_textures$",	fname,	".dds"))	goto _DDS;
 

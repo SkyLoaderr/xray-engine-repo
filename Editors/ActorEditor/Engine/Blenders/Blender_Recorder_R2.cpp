@@ -56,8 +56,13 @@ void	CBlender_Compile::r2_Constant	(LPCSTR name, R_constant_setup* s)
 	if (C)					C->handler	= s;
 }
 
-void	CBlender_Compile::r2_Sampler	(LPCSTR name, LPCSTR texture, u32 address, u32 fmin, u32 fmip, u32 fmag, u32 element)
+void	CBlender_Compile::r2_Sampler	(LPCSTR _name, LPCSTR texture, u32 address, u32 fmin, u32 fmip, u32 fmag, u32 element)
 {
+	//
+	string256				name;
+	strcpy					(name,_name);
+	if (strext(name)) *strext(name)=0;
+
 	// Find index
 	R_constant*	C			= ctable.get(name);
 	if (0==C)				return;
