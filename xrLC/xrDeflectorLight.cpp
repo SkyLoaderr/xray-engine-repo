@@ -350,6 +350,7 @@ VOID CDeflector::Light()
 	}
 	
 	// Build span-buffer
+/*
 	lm_spans	= (span*)malloc(s_y*sizeof(span));
 	try {
 		for (DWORD y=0; y<s_y; y++)
@@ -383,6 +384,7 @@ VOID CDeflector::Light()
 	{
 		Msg("FUCK!!!, sp:%X, lm:%X",lm_spans,lm.pSurface);
 	}
+*/
 }
 
 float gauss [7][7] =
