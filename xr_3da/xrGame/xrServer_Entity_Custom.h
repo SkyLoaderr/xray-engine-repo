@@ -1,5 +1,5 @@
-#ifndef XRSERVER_SERVER_ENTITY_CUSTOMH
-#define XRSERVER_SERVER_ENTITY_CUSTOMH
+#ifndef xrServer_Entity_CustomH
+#define xrServer_Entity_CustomH
 
 #include "xrMessages.h"
 #include "ai_alife_interfaces.h"
