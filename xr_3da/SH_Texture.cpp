@@ -21,8 +21,10 @@ CTexture::CTexture		()
 	pAVI				= NULL;
 }
 
-CTexture::~CTexture() {
+CTexture::~CTexture() 
+{
 	R_ASSERT(dwReference==0);
+	Unload	();
 }
 
 void				CTexture::surface_set	(IDirect3DTexture8* surf)
@@ -178,6 +180,7 @@ void CTexture::Load(LPCSTR cName)
 			dwMemoryUsage			=	Calculate_MemUsage(pSurface);
 		}
 	}
+	_SHOW_REF	("TextureLOAD: ",pSurface);
 }
 
 DWORD CTexture::Calculate_MemUsage	(IDirect3DTexture8* T)
@@ -203,6 +206,7 @@ void CTexture::Unload()
 		seqDATA.clear();
 		pSurface	= 0;
 	}
+	_SHOW_REF	("TextureUNLOAD: ",pSurface);
 	_RELEASE	(pSurface);
 	_DELETE		(pAVI);
 }
