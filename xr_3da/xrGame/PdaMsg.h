@@ -9,17 +9,8 @@
 
 //типы сообщений PDA
 enum EPdaMsg {
-	ePdaMsgTrade  = u32(0),		//торговать
-	ePdaMsgGoAway,				//убирайся с территории
-	ePdaMsgNeedHelp,			//просьба о помощи
-
-	ePdaMsgAccept,				//принять предложение
-	ePdaMsgDecline,				//отказаться
-	ePdaMsgDeclineRude,			//грубо отказаться
-	ePdaMsgILeave,				//не могу ждать и ухожу
-
+	ePdaMsgDialog,				//диалог
 	ePdaMsgInfo,				//сообщение передает некоторую информацию
-
 	ePdaMsgMax
 };
 

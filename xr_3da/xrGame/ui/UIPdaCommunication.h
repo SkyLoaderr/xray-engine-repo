@@ -54,6 +54,9 @@ protected:
 	virtual void InitPdaDialog();
 	virtual void UpdateMessageLog();
 	virtual void UpdateMsgButtons();
+public:
+	virtual void UpdateDisplay();
+protected:
 
 //	CUIFrameWindow		UIMainPdaFrame;
 	CUIPdaContactsWnd	UIPdaContactsWnd;
@@ -84,6 +87,8 @@ protected:
 
 	//текущий диалог, если NULL, то переходим в режим выбора темы
 	DIALOG_SHARED_PTR m_pCurrentDialog;
+	PHRASE_ID		  m_iLastPhraseID;
+
 	bool TopicMode	();
 	void ToTopicMode();
 

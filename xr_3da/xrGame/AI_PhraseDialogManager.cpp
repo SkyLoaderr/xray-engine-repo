@@ -73,6 +73,7 @@ void CAI_PhraseDialogManager::AnswerOnPDA			()
 	{
 		AnswerPhrase(*it);
 	}
+	m_PendingPdaDialogs.clear();
 }
 
 

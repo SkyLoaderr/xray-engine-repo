@@ -89,8 +89,6 @@ public:
 	//получить последнее сообщение из лога  (false - если лог пуст)
 	bool GetLastMessageFromLog(u32 pda_ID,  SPdaMessage& pda_message);
 
-	void					 RemoveInfo(INFO_INDEX info_index);
-
 protected:
 	//поступление нового сообщения на PDA
 	bool m_bNewMessage;
@@ -109,7 +107,4 @@ protected:
 	bool m_bPassiveMode;
 	//PDA выключено
 	bool m_bTurnedOff;
-
-public:
-	static LPCSTR m_PdaMsgStr[ePdaMsgMax];
 };

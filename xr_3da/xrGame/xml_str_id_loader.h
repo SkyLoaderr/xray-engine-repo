@@ -52,6 +52,7 @@ public:
 	static const T_INDEX&		IdToIndex	(const T_ID& str_id) {return GetById(str_id).index;}
 	static const T_ID&			IndexToId	(T_INDEX index)		 {return GetByIndex(index).id;}
 
+	static const T_INDEX		GetMaxIndex	()					 {return ItemDataVector().size()-1;}
 
 	//удаление статичекого массива
 	static void					DeleteIdToIndexData		();

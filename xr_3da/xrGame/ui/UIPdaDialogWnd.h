@@ -36,15 +36,6 @@ public:
 	void ContactRestore();
 	void ContactWaitForReply();
 
-	//добавление сообщений в лог
-	void AddOurMessageToLog		(EPdaMsg msg, CInventoryOwner* pInvOwner);
-	void AddOthersMessageToLog	(EPdaMsg msg, CInventoryOwner* pInvOwner);
-	void AddMessageToLog		(EPdaMsg msg, u32 color);
-
-	//Режима задания вопроса и ответа на него
-	void PhrasesAnswer();
-	void PhrasesAsk();
-
 	u32			GetHeaderColor()		{ return m_iNameTextColor; }
 	CGameFont *	GetHeaderFont()			{ return m_pNameTextFont; }
 	u32			GetOurReplicsColor()	{ return m_uOurReplicsColor; }
@@ -62,6 +53,9 @@ public:
 
 	//номер отправленного сообщения
 	EPdaMsg m_iMsgNum;
+
+	bool m_bContactActive;
+	bool m_bContactWait;
 
 	//лог сообщений
 	CUIListWnd UILogListWnd;

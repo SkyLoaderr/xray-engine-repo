@@ -59,7 +59,10 @@ protected:
 	CUIWindow			 *m_pActiveDialog;
 
 	// Поддиалоги PDA
+public:
 	CUIPdaCommunication	UIPdaCommunication;
+
+protected:
 	CUIMapWnd			UIMapWnd;
 	CUIEncyclopediaWnd	UIEncyclopediaWnd;
 	CUIDiaryWnd			UIDiaryWnd;

@@ -51,8 +51,19 @@ void CPhraseDialogManager::SayPhrase(DIALOG_SHARED_PTR& phrase_dialog,
 }
 
 
-bool CPhraseDialogManager::AddAvailableDialog(LPCSTR dialog_id, CPhraseDialogManager* partner)
+void CPhraseDialogManager::UpdateAvailableDialogs(CPhraseDialogManager* partner)
 {
+	m_AvailableDialogs.clear();
+	m_CheckedDialogs.clear();
+}
+
+bool CPhraseDialogManager::AddAvailableDialog(PHRASE_DIALOG_ID dialog_id, CPhraseDialogManager* partner)
+{
+	PHRASE_DIALOG_INDEX dialog_index =  CPhraseDialog::IdToIndex(dialog_id);
+	if(std::find(m_CheckedDialogs.begin(), m_CheckedDialogs.end(), dialog_index) != m_CheckedDialogs.end())
+		return false;
+	m_CheckedDialogs.push_back(dialog_index);
+
 	DIALOG_SHARED_PTR phrase_dialog(xr_new<CPhraseDialog>());
 	phrase_dialog->Load(dialog_id);
 

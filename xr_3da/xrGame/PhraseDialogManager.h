@@ -28,13 +28,17 @@ public:
 
 	//виртуальная функция, заполняет массив, тем диалогами, которые
 	//персонаж может инициировать в данный момент
-	virtual void UpdateAvailableDialogs(CPhraseDialogManager* partner) {};
+	virtual void UpdateAvailableDialogs(CPhraseDialogManager* partner);
 
 	DEFINE_VECTOR(DIALOG_SHARED_PTR, DIALOG_VECTOR, DIALOG_VECTOR_IT);
 	virtual const DIALOG_VECTOR& AvailableDialogs() {return m_AvailableDialogs;}
 
 protected:
-	virtual bool AddAvailableDialog (LPCSTR dialog_id, CPhraseDialogManager* partner);
+	virtual bool AddAvailableDialog (PHRASE_DIALOG_ID dialog_id, CPhraseDialogManager* partner);
+	
+	//буфферный список диалогов, которые были проверены
+	//во время UpdateAvailableDialogs
+	xr_vector<PHRASE_DIALOG_INDEX> m_CheckedDialogs;
 
 	//список активных диалогов
 	DIALOG_VECTOR m_ActiveDialogs;

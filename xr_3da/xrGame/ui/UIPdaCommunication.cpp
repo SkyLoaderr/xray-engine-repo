@@ -31,6 +31,8 @@ CUIPdaCommunication::CUIPdaCommunication()
 	SetFont(HUD().pFontMedium);
 
 	m_pOurDialogManager = m_pOthersDialogManager = NULL;
+
+	ToTopicMode();
 }
 
 CUIPdaCommunication::~CUIPdaCommunication()
@@ -108,9 +110,9 @@ void CUIPdaCommunication::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 		}
 		else if(msg == CUIPdaDialogWnd::MESSAGE_BUTTON_CLICKED)
 		{
-/*			EPdaMsg pda_msg = ePdaMsgAccept;
+			EPdaMsg pda_msg = ePdaMsgDialog;
 			u32 id_pda_contact = m_pContactPda->ID();
-
+			/*
 			if(m_pPda->NeedToAnswer(id_pda_contact))
 			{
 				switch(UIPdaDialogWnd.m_iMsgNum)
@@ -140,9 +142,9 @@ void CUIPdaCommunication::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 					pda_msg = ePdaMsgNeedHelp;
 					break;
 				}
-			}
+			}*/
 			m_pPda->SendMessageID(id_pda_contact, pda_msg, NO_INFO_INDEX);
-			*/
+			
 			AskQuestion();
 			UpdateMessageLog();
 		}
@@ -159,7 +161,7 @@ void CUIPdaCommunication::Update()
 	//от того показано окно контактов или нет
 	UpdatePdaContacts();
 
-
+	/*
 	if(UIPdaDialogWnd.IsShown() && 
 		m_pPda->IsNewMessage())
 	{
@@ -167,7 +169,7 @@ void CUIPdaCommunication::Update()
 		UpdateMsgButtons();
 
 		m_pPda->NoNewMessage();
-	}
+	}*/
 
 	inherited::Update();
 }
@@ -264,8 +266,9 @@ void CUIPdaCommunication::InitPdaDialog()
 	m_pOurDialogManager = dynamic_cast<CPhraseDialogManager*>(m_pOurInvOwner);
 	m_pOthersDialogManager = dynamic_cast<CPhraseDialogManager*>(m_pOthersInvOwner);
 
-	UpdateMessageLog();
-	UpdateMsgButtons();
+	ToTopicMode			();
+	UpdateMessageLog	();
+	UpdateMsgButtons	();
 
 	std::string		buf;
 	string128		buf2;
@@ -278,6 +281,17 @@ void CUIPdaCommunication::InitPdaDialog()
 //заполнить окно логами сообщений с текущим контактом
 void CUIPdaCommunication::UpdateMessageLog()
 {
+	//сказать фразу
+	CUIString speaker_name;
+
+	//добавить ответ собеседника в список, если он что-то сказал
+	if(m_pCurrentDialog && m_pCurrentDialog->GetLastPhraseID() !=  m_iLastPhraseID)
+	{
+		m_iLastPhraseID = m_pCurrentDialog->GetLastPhraseID();
+		speaker_name.SetText(m_pOthersInvOwner->CharacterInfo().Name());
+		AddAnswer(m_pCurrentDialog->GetLastPhraseText(), speaker_name);
+	}
+
 /*	UIPdaDialogWnd.UILogListWnd.RemoveAll();
 
 	u32 id_pda_contact;
@@ -310,10 +324,9 @@ void CUIPdaCommunication::UpdateMessageLog()
 //и обновление кнопок ответа
 void CUIPdaCommunication::UpdateMsgButtons()
 {
-	u32 id_pda_contact = 0xffff;
+/*	u32 id_pda_contact = 0xffff;
 
 	id_pda_contact = m_pContactPda->ID();
-
 
 	if(m_pPda->WaitForReply(id_pda_contact))
 	{
@@ -322,18 +335,17 @@ void CUIPdaCommunication::UpdateMsgButtons()
 	else
 	{
 		UIPdaDialogWnd.ContactRestore();
-	}
-
-
-	UpdateQuestions();
-/*	if(m_pPda->NeedToAnswer(id_pda_contact))
-	{
-		UIPdaDialogWnd.PhrasesAnswer();
-	}
-	else
-	{
-		UIPdaDialogWnd.PhrasesAsk();
 	}*/
+	UpdateQuestions();
+}
+
+
+
+void CUIPdaCommunication::UpdateDisplay()
+{ 
+	UIPdaDialogWnd.ContactRestore();
+	UpdateMessageLog();
+	UpdateMsgButtons();
 }
 
 const int MessageShift = 30;
@@ -421,15 +433,14 @@ void CUIPdaCommunication::SayPhrase(PHRASE_ID phrase_id)
 	AddAnswer(m_pCurrentDialog->GetPhraseText(phrase_id), speaker_name);
 	m_pOurDialogManager->SayPhrase(m_pCurrentDialog, phrase_id);
 
-	//добавить ответ собеседника в список, если он что-то сказал
-	if(m_pCurrentDialog->GetLastPhraseID() !=  phrase_id)
-	{
-		speaker_name.SetText(m_pOthersInvOwner->CharacterInfo().Name());
-		AddAnswer(m_pCurrentDialog->GetLastPhraseText(), speaker_name);
-	}
+	m_iLastPhraseID = phrase_id;
 
 	//если диалог завершился, перейти в режим выбора темы
-	if(m_pCurrentDialog->IsFinished()) ToTopicMode();
+	if(m_pCurrentDialog->IsFinished()) 
+		ToTopicMode();
+	else
+		//добавить табличку, что мы ждем ответа
+		UIPdaDialogWnd.ContactWaitForReply();
 }
 
 //////////////////////////////////////////////////////////////////////////

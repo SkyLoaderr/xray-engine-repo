@@ -14,35 +14,6 @@
 #include "level.h"
 
 
-#define YES_MSG				"Yes"
-#define NO_MSG				"No"
-#define GETLOST_MSG			"Get Lost!"
-#define TRADE_MSG			"Trade?"
-#define HELP_MSG			"Need Help!"
-#define GETOUT_MSG			"Get Out Of Here!"
-#define IAMLEAVE_MSG		"I'm leave now!"
-
-
-/*	ePdaMsgTrade  = u32(0),	
-	ePdaMsgGoAway,			
-	ePdaMsgNeedHelp,		
-
-	ePdaMsgAccept,			
-	ePdaMsgDecline,			
-	ePdaMsgDeclineRude,		
-	ePdaMsgILeave,			
-
-	ePdaMsgInfo,			
-
-	ePdaMsgMax
-*/
-LPCSTR CPda::m_PdaMsgStr[ePdaMsgMax] = {TRADE_MSG,
-										GETOUT_MSG,HELP_MSG,
-										YES_MSG,
-										NO_MSG,
-										GETLOST_MSG,
-										IAMLEAVE_MSG,""};
-										
 CPda::CPda(void)						
 {										
 	m_fRadius = 10.0f;
