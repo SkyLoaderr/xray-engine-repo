@@ -31,7 +31,7 @@ void CPHCollideValidator::RegisterObjToGroup(CGID group,CPHObject& obj)
 }
 bool CPHCollideValidator::IsGroupObject(const CPHObject& obj)
 {
-	return obj.collide_class_bits().test(cbNCGroupObject);
+	return !!obj.collide_class_bits().test(cbNCGroupObject);
 }
 void CPHCollideValidator::RegisterObjToLastGroup(CPHObject& obj)
 {
