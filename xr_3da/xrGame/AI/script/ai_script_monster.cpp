@@ -16,11 +16,10 @@
 
 CScriptMonster::CScriptMonster()
 {
-	m_bScriptControl		= false;
-	strcpy					(m_caScriptName,"");
-	m_tpScriptAnimation		= 0;
-	m_iCurrentPatrolPoint	= m_iPreviousPatrolPoint = -1;
 	m_tpActionQueue.clear	();
+	strcpy					(m_caScriptName,"");
+	m_bScriptControl		= false;
+	Init					();
 }
 
 CScriptMonster::~CScriptMonster()
@@ -385,5 +384,17 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 
 void CScriptMonster::ResetScriptData(void *P)
 {
-	m_iCurrentPatrolPoint = m_iPreviousPatrolPoint = -1;
+	Init					();
+}
+
+void CScriptMonster::Init()
+{
+	m_tpScriptAnimation		= 0;
+	m_iCurrentPatrolPoint	= m_iPreviousPatrolPoint = -1;
+}
+
+void CScriptMonster::net_Destroy()
+{
+	inherited::net_Destroy	();
+	Init					();
 }

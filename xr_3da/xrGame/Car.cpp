@@ -105,6 +105,7 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 void	CCar::net_Destroy()
 {
 	inherited::net_Destroy();
+	CScriptMonster::net_Destroy();
 	if(m_pPhysicsShell)
 	{
 		m_pPhysicsShell->Deactivate();

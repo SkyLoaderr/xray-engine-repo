@@ -195,27 +195,32 @@ public:
 			void			SetSpeed			(float fSpeed)
 	{
 		m_fSpeed			= fSpeed;
+		m_bCompleted		= false;
 	}
 
 			void			SetPatrolStart		(CPatrolPathParams::EPatrolPathStart tPatrolPathStart)
 	{
 		m_tPatrolPathStart	= tPatrolPathStart;
+		m_bCompleted		= false;
 	}
 
 			void			SetPatrolStop		(CPatrolPathParams::EPatrolPathStop tPatrolPathStop)
 	{
 		m_tPatrolPathStop	= tPatrolPathStop;
+		m_bCompleted		= false;
 	}
 
 			void			SetPatrolRandom		(bool bRandom)
 	{
 		m_bRandom			= bRandom;
+		m_bCompleted		= false;
 	}
 
 			void			SetInputKeys		(const EInputKeys tInputKeys)
 	{
 		m_tInputKeys		= tInputKeys;
 		m_tGoalType			= eGoalTypeInput;
+		m_bCompleted		= false;
 	}
 };
 

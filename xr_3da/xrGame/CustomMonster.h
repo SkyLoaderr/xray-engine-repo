@@ -124,8 +124,6 @@ public:
 	u32					m_dwCurrentUpdate;
 	xr_vector<CObject*>	m_tpaVisibleObjects;
 
-	CMotionDef			*m_tpScriptAnimation;
-
 	struct net_update	{
 		u32				dwTimeStamp;			// server(game) timestamp
 		float			o_model;				// model yaw

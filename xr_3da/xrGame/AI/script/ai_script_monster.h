@@ -14,14 +14,18 @@ class CEntityAction;
 
 class CScriptMonster : virtual public CGameObject {
 protected:
+	typedef CGameObject inherited;
 	xr_deque<CEntityAction*>	m_tpActionQueue;
 	bool						m_bScriptControl;
 	string64					m_caScriptName;
 	int							m_iCurrentPatrolPoint;
 	int							m_iPreviousPatrolPoint;
+	CMotionDef					*m_tpScriptAnimation;
 public:
 								CScriptMonster			();
 	virtual						~CScriptMonster			();
+			void				Init					();
+	virtual void				net_Destroy				();
 			const Fmatrix		GetUpdatedMatrix		(LPCSTR caBoneName, const Fvector &tPositionOffset, const Fvector &tAngleOffset, BoneCallback fpBoneCallback = 0);
 	virtual	void				SetScriptControl		(const bool			bScriptControl, LPCSTR	caSciptName);
 	virtual	bool				GetScriptControl		() const;

@@ -741,6 +741,7 @@ void CCustomMonster::OnEvent(NET_Packet& P, u16 type)
 void CCustomMonster::net_Destroy()
 {
 	inherited::net_Destroy	();
+	CScriptMonster::net_Destroy();
 	Init					();
 }
 

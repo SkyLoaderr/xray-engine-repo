@@ -118,7 +118,7 @@ void CActor::SActorMotions::Create(CKinematics* V)
 	m_crouch.Create	(V,"cr");
 	m_climb.Create	(V,"cr");
 }
-void CActor::steer_Vehicle(float angle)
+void CActor::steer_Vehicle(float angle)	
 {
 if(!m_vehicle)		return;
 if(angle==0.f) 		PKinematics	(Visual())->PlayCycle(m_anims.m_steering_torso_idle);
