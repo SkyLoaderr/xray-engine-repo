@@ -648,7 +648,7 @@ extern "C" int dCylCyl (const dVector3 p1, const dMatrix3 R1,
 
   TEST (pp1[1],(hlz1 + radius2*c_sin + hlz2*c_cos ),R1+1,0);//pp
 
-  TEST (pp2[1],(radius1*c_sin + hlz1*c_cos + hlz2),R2+1,1);
+ /// TEST (pp2[1],(radius1*c_sin + hlz1*c_cos + hlz2),R2+1,1);
 
 
 
@@ -947,10 +947,11 @@ if (*code == 6) {
   // @@@ temporary: make deepest point on the "other" cylinder the contact point.
   // @@@ this kind of works, but we need multiple contact points for stability,
   // @@@ especially for face-face contact.
-
+  
   dVector3 vertex;
   int ret=1;
   if (*code == 0) {
+
     // flat face from cylinder 1 touches a edge/face from cylinder 2.
     dReal sign,cos1,cos3,factor;
    // for (i=0; i<3; ++i) vertex[i] = p2[i];
@@ -1022,7 +1023,7 @@ if (*code == 6) {
 	centerDepth=*depth-radius1*(c_sin);
 	Q1=(dDOT(R2+1,R1+0));Q3=(dDOT(R2+1,R1+2));
 
-/*
+
 	A1=(-cos1*M_COS_PI_3-cos3*M_SIN_PI_3)*radius1;
 	A3=(-cos3*M_COS_PI_3+cos1*M_SIN_PI_3)*radius1;
 	CONTACT(contact,ret*skip)->pos[0]=center[0]+A1*R1[0]+A3*R1[2];
@@ -1041,7 +1042,7 @@ if (*code == 6) {
 
 	if(CONTACT(contact,ret*skip)->depth>0.f)++ret;
 
-*/
+
   }
   for (i=0; i<3; ++i) contact[0].pos[i] = vertex[i];
   contact[0].depth = *depth;
