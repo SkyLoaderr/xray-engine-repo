@@ -57,8 +57,6 @@ void CBuild::PreOptimize()
 	g_bUnregister		= false;
 	for (int it = 0; it<(int)g_vertices.size(); it++)
 	{
-		once_more:
-
 		if (0==(it%128)) {
 			Progress(sqrtf(float(it)/float(g_vertices.size())));
 			Status	("Processing... (%d verts removed)",Vremoved);
