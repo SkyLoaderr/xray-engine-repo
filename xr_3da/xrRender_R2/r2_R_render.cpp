@@ -137,32 +137,44 @@ void CRender::Render		()
 	LP_pending.clear							();
 	{
 		// perform tests
-		int	count	= 0;
-		count		= _max(count,Lights.v_point_s.size());
-		count		= _max(count,Lights.v_spot_s.size());
-		count		= _max(count,Lights.v_point.size());
-		count		= _max(count,Lights.v_spot.size());
+		int	count			= 0;
+		light_Package&	LP	= Lights.package;
+
+		// stats
+		stats.l_shadowed	= LP.v_point_s.size() + LP.v_spot_s.size();
+		stats.l_unshadowed	= LP.v_point.size() + LP.v_spot.size();
+		stats.l_total		= stats.l_shadowed + stats.l_unshadowed;
+		stats.l_point_s		= LP.v_point_s.size	();
+		stats.l_point		= LP.v_point.size	();
+		stats.l_spot_s		= LP.v_spot_s.size	();
+		stats.l_spot		= LP.v_spot.size	();
+
+		// perform tests
+		count				= _max(count,LP.v_point_s.size());
+		count				= _max(count,LP.v_spot_s.size());
+		count				= _max(count,LP.v_point.size());
+		count				= _max(count,LP.v_spot.size());
 		for (int it=0; it<count; it++)	{
-			if (it<Lights.v_point_s.size())	{ 
-				light*	L			= Lights.v_point_s	[it];
+			if (it<LP.v_point_s.size())	{ 
+				light*	L			= LP.v_point_s	[it];
 				L->vis_prepare		(); 
 				if (L->vis.pending)	LP_pending.v_point_s.push_back	(L);
 				else				LP_normal.v_point_s.push_back	(L);
 			}
-			if (it<Lights.v_point.size())	{
-				light*	L			= Lights.v_point	[it];
+			if (it<LP.v_point.size())	{
+				light*	L			= LP.v_point	[it];
 				L->vis_prepare		();
 				if (L->vis.pending)	LP_pending.v_point.push_back	(L);
 				else				LP_normal.v_point.push_back		(L);
 			}
-			if (it<Lights.v_spot_s.size())	{
-				light*	L			= Lights.v_spot_s	[it];
+			if (it<LP.v_spot_s.size())	{
+				light*	L			= LP.v_spot_s	[it];
 				L->vis_prepare		();
 				if (L->vis.pending)	LP_pending.v_spot_s.push_back	(L);
 				else				LP_normal.v_spot_s.push_back	(L);
 			}
-			if (it<Lights.v_spot.size())	{
-				light*	L			= Lights.v_spot		[it];
+			if (it<LP.v_spot.size())	{
+				light*	L			= LP.v_spot		[it];
 				L->vis_prepare		();
 				if (L->vis.pending)	LP_pending.v_spot.push_back		(L);
 				else				LP_normal.v_spot.push_back		(L);
@@ -171,15 +183,6 @@ void CRender::Render		()
 	}
 	LP_normal.sort			();
 	LP_pending.sort			();
-
-	// stats
-	stats.l_shadowed	= Lights.v_point_s.size() + Lights.v_spot_s.size();
-	stats.l_unshadowed	= Lights.v_point.size() + Lights.v_spot.size();
-	stats.l_total		= stats.l_shadowed + stats.l_unshadowed;
-	stats.l_point_s		= Lights.v_point_s.size	();
-	stats.l_point		= Lights.v_point.size	();
-	stats.l_spot_s		= Lights.v_spot_s.size	();
-	stats.l_spot		= Lights.v_spot.size	();
 
 	//******* Decompression on some HW :)
 	Target.phase_decompress						();
