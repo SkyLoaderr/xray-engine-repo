@@ -5,16 +5,16 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	// Common
 	Fvector		L_pos;
 	float		L_spec;
-	float		L_R					= L->sphere.R;
+	float		L_R					= L->range;
 	Fvector		L_clr;				L_clr.set(L->color.r,L->color.g,L->color.b);
 	L_clr.div						(ps_r2_ls_dynamic_range);
 	L_spec							= L_clr.magnitude()/_sqrt(3.f);
-	Device.mView.transform_tiny		(L_pos,L->sphere.P);
+	Device.mView.transform_tiny		(L_pos,L->position);
 
 	// Xforms
 	Fmatrix mW;
 	mW.scale						(L_R,L_R,L_R);
-	mW.translate_over				(L->sphere.P);
+	mW.translate_over				(L->position);
 	RCache.set_xform_world			(mW);
 	RCache.set_xform_view			(Device.mView);
 	RCache.set_xform_project		(Device.mProject);
@@ -63,7 +63,7 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	float denom						= -1.0f / _sqrt(_sqr(plane.x)+_sqr(plane.y)+_sqr(plane.z));
 	plane.mul						(denom);
 	Fplane	P;	P.n.set(plane.x,plane.y,plane.z); P.d = plane.w;
-	float	p_dist					= P.classify	(L->sphere.P) - L->sphere.R;
+	float	p_dist					= P.classify	(L->position) - L->range;
 	if (p_dist<0)					{
 		RCache.set_Element(s_accum_point_s->E[2]);	// back
 		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CW		)); 	
@@ -126,16 +126,16 @@ void CRenderTarget::accum_point_unshadow(light* L)
 	// Common
 	Fvector		L_pos;
 	float		L_spec;
-	float		L_R					= L->sphere.R;
+	float		L_R					= L->range;
 	Fvector		L_clr;				L_clr.set(L->color.r,L->color.g,L->color.b);
 	L_clr.div						(ps_r2_ls_dynamic_range);
 	L_spec							= L_clr.magnitude()/_sqrt(3.f);
-	Device.mView.transform_tiny		(L_pos,L->sphere.P);
+	Device.mView.transform_tiny		(L_pos,L->position);
 
 	// Xforms
 	Fmatrix mW;
 	mW.scale						(L_R,L_R,L_R);
-	mW.translate_over				(L->sphere.P);
+	mW.translate_over				(L->position);
 	RCache.set_xform_world			(mW);
 	RCache.set_xform_view			(Device.mView);
 	RCache.set_xform_project		(Device.mProject);
@@ -184,7 +184,7 @@ void CRenderTarget::accum_point_unshadow(light* L)
 	float denom						= -1.0f / _sqrt(_sqr(plane.x)+_sqr(plane.y)+_sqr(plane.z));
 	plane.mul						(denom);
 	Fplane	P;	P.n.set(plane.x,plane.y,plane.z); P.d = plane.w;
-	float	p_dist					= P.classify	(L->sphere.P) - L->sphere.R;
+	float	p_dist					= P.classify	(L->position) - L->range;
 	if (p_dist<0)					{
 		RCache.set_Element(s_accum_point_uns->E[2]);	// back
 		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CW		)); 	

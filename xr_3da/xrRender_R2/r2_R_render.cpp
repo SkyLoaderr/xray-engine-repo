@@ -45,9 +45,9 @@ void CRender::Render	()
 				phase									= PHASE_SMAP_D;
 
 				HOM.Disable								();
-				LR_Direct.compute_xf_1					(dls_phase);
+				LR_Direct.compute_xfd_1					(dls_phase);
 				render_smap_direct						(LR_Direct.L_combine);
-				LR_Direct.compute_xf_2					(dls_phase);
+				LR_Direct.compute_xfd_2					(dls_phase);
 			}
 			Device.Statistic.RenderCALC.End			();
 
