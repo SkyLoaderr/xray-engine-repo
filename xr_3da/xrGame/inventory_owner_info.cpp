@@ -68,7 +68,7 @@ void CInventoryOwner::OnReceiveInfo(INFO_ID info_index)
 		TransferInfo(info_portion.DisableInfos()[i], false);
 
 	//добавить запись в реестр
-	KNOWN_INFO_VECTOR& known_info = KnownInfo	();
+	KNOWN_INFO_VECTOR& known_info = known_info_registry.objects();
 	KNOWN_INFO_VECTOR_IT it = std::find_if(known_info.begin(), known_info.end(), CFindByIDPred(info_index));
 	if( known_info.end() == it)
 	{
@@ -79,7 +79,7 @@ void CInventoryOwner::OnReceiveInfo(INFO_ID info_index)
 void CInventoryOwner::OnDisableInfo(INFO_ID info_index)
 {
 	//удалить запись из реестра
-	KNOWN_INFO_VECTOR& known_info = KnownInfo	();
+	KNOWN_INFO_VECTOR& known_info = known_info_registry.objects();
 
 	KNOWN_INFO_VECTOR_IT it = std::find_if(known_info.begin(), known_info.end(), CFindByIDPred(info_index));
 	if( known_info.end() == it)	return;
@@ -101,7 +101,7 @@ void CInventoryOwner::TransferInfo(INFO_ID info_index, bool add_info) const
 
 bool CInventoryOwner::HasInfo(INFO_ID info_index) const
 {
-	const KNOWN_INFO_VECTOR* known_info = KnownInfoPtr	();
+	const KNOWN_INFO_VECTOR* known_info = known_info_registry.objects_ptr ();
 	
 	if(!known_info) return false;
 
@@ -111,37 +111,3 @@ bool CInventoryOwner::HasInfo(INFO_ID info_index) const
 	return true;
 }
 
-const KNOWN_INFO_VECTOR*	CInventoryOwner::KnownInfoPtr	() const
-{
-#ifdef _DEBUG
-	if(NULL == ai().get_alife()) 
-		return &m_KnowInfoWithoutAlife;
-#endif	
-
-
-	const CObject* pThisObject = dynamic_cast<const CObject*>(this); VERIFY(pThisObject);
-	KNOWN_INFO_VECTOR* info_vector = ai().alife().registry(info_portions).object(pThisObject->ID(), true);
-	return info_vector;
-}
-
-KNOWN_INFO_VECTOR& CInventoryOwner::KnownInfo	()
-{
-#ifdef _DEBUG
-	if(NULL == ai().get_alife())
-		return m_KnowInfoWithoutAlife;
-#endif	
-
-
-	const CObject* pThisObject = dynamic_cast<const CObject*>(this); VERIFY(pThisObject);
-
-	KNOWN_INFO_VECTOR* info_vector = ai().alife().registry(info_portions).object(pThisObject->ID(), true);
-	
-	if(!info_vector)	
-	{
-		KNOWN_INFO_VECTOR new_info_vector;
-		ai().alife().registry(info_portions).add(pThisObject->ID(), new_info_vector, false);
-		info_vector = ai().alife().registry(info_portions).object(pThisObject->ID(), true);
-		VERIFY(info_vector);
-	}
-	return *info_vector;
-}
