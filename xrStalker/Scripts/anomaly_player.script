@@ -1,0 +1,16 @@
+function main()
+	local	script_table = {
+		{"script_object0000","idle"},
+	}
+	
+	local	object_table = {}
+	for a=1,table.getn(script_table),1 do
+		object_table[a] = script_object(script_table[a][1],anomaly_player:script_name(),script_table[a][2],cond(cond.anim_end))
+	end
+	
+    while true do
+		for a=1,table.getn(object_table),1 do
+			object_table[a]:update()
+		end
+    end
+end
