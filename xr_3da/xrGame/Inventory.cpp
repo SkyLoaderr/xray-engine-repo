@@ -1070,6 +1070,7 @@ void  CInventory::AddAvailableItems(TIItemList& items_container, bool for_trade)
 
 bool CInventory::isBeautifulForActiveSlot	(CInventoryItem *pIItem)
 {
+	if (GameID() != GAME_SINGLE) return (true);
 	TISlotArr::iterator it =  m_slots.begin();
 	for( ; it!=m_slots.end(); ++it) {
 		if ((*it).m_pIItem && (*it).m_pIItem->IsNecessaryItem(pIItem))
