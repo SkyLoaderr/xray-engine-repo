@@ -456,7 +456,7 @@ public:
 		float h		= 1.0f    * cot;
 		float Q		= fFarPlane / ( fFarPlane - fNearPlane );
 		
-		ZeroMemory	( this, sizeof(*this) );
+		ZeroMemory	(this,sizeof(*this));
 		_11			= w;
 		_22			= h;
 		_33			= Q;
