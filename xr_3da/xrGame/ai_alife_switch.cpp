@@ -70,6 +70,9 @@ void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 			tpItem->m_tNodeID		= tpALifeDynamicObject->m_tNodeID;
 			tpItem->s_flags.and		(u16(-1) ^ M_SPAWN_UPDATE);
 			tpItem->m_bOnline		= true;
+			Device.Statistic.TEST3.Begin();
+			Engine.Sheduler.Slice();
+			Device.Statistic.TEST3.End();
 		}
 	}
 	
@@ -146,6 +149,9 @@ void CSE_ALifeSimulator::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDyn
 					l_tpALifeMonsterAbstract->o_torso.yaw = angle_normalize_signed((I - B)/N*PI_MUL_2);
 			}
 			vfCreateOnlineObject	(J, false);
+			Device.Statistic.TEST3.Begin();
+			Engine.Sheduler.Slice();
+			Device.Statistic.TEST3.End();
 		}
 		tpALifeAbstractGroup->m_bCreateSpawnPositions = false;
 		vfRemoveObjectFromScheduled	(tpALifeDynamicObject);
@@ -228,7 +234,7 @@ void CSE_ALifeSimulator::vfFurlObjectOffline(CSE_ALifeDynamicObject *I)
 
 void CSE_ALifeSimulator::vfValidatePosition(CSE_ALifeDynamicObject *I)
 {
-	Msg("Validating position");
+//	Msg("Validating position");
 	// updating node if it is invalid and object is not attached and online
 	if ((I->m_bOnline || (I->m_tNodeID <= 0) || (I->m_tNodeID >= getAI().Header().count)) && (I->ID_Parent == 0xffff)) {
 		// checking if it is a group of objects
