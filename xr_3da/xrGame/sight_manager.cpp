@@ -72,8 +72,12 @@ void CSightManager::SetDirectionLook()
 
 void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, bool bDifferenceLook)
 {
-	SetDirectionLook();
-	SetLessCoverLook(tpNode,MAX_HEAD_TURN_ANGLE,bDifferenceLook);
+	SetDirectionLook	();
+
+	if (m_object->movement().detail().path().empty())
+		return;
+
+	SetLessCoverLook	(tpNode,MAX_HEAD_TURN_ANGLE,bDifferenceLook);
 }
 
 void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, float fMaxHeadTurnAngle, bool bDifferenceLook)
