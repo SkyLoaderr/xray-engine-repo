@@ -65,6 +65,8 @@ public:
 	float	m_tele_find_radius;
 
 
+	
+
 public:
 					CBurer				();
 	virtual			~CBurer				();	

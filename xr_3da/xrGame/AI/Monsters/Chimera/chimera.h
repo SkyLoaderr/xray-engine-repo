@@ -1,14 +1,15 @@
 #pragma once
 #include "../../biting/ai_biting.h"
-#include "chimera_state_manager.h"
 
-class CChimera : public CAI_Biting,
-				 public CStateManagerChimera {
+class CStateManagerChimera;
+
+class CChimera : public CAI_Biting {
 
 	typedef		CAI_Biting	inherited;
 
 	bool		b_upper_state;
 
+	CStateManagerChimera	*StateMan;
 public:
 					CChimera			();
 	virtual			~CChimera			();	

@@ -1,109 +1,65 @@
 #include "stdafx.h"
 #include "chimera.h"
-#include "../States/monster_state_rest.h"
-#include "../States/monster_state_rest_sleep.h"
-#include "../States/monster_state_rest_walk_graph.h"
-#include "../States/monster_state_attack.h"
-#include "../States/monster_state_attack_run.h"
-#include "../States/monster_state_attack_melee.h"
+#include "chimera_state_manager.h"
+#include "../states/monster_state_rest.h"
+#include "../states/monster_state_rest_sleep.h"
+#include "../states/monster_state_rest_walk_graph.h"
 
-#include "chimera_state_threaten.h"
-#include "../States/monster_state_threaten_walk.h"
-#include "../States/monster_state_threaten_threaten.h"
-
-#include "../States/monster_state_panic.h"
-#include "../States/monster_state_panic_run.h"
-
-CStateManagerChimera::CStateManagerChimera	(LPCSTR state_name) : inherited(state_name)
+CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
 {
-}
-
-CStateManagerChimera::~CStateManagerChimera	()
-{
-}
-
-void CStateManagerChimera::Load				(LPCSTR section)
-{
-	// set hierarchy
 	add_state(
-		xr_new<CStateMonsterRest<CChimera> > ("State Rest",
-			xr_new<CStateMonsterRestSleep<CChimera> >("StateSleep"), 
-			xr_new<CStateMonsterRestWalkGraph<CChimera> >("StateWalkGraph")),
-		eStateRest, 1
-	);
-	
-	add_state(
-		xr_new<CStateMonsterAttack<CChimera> > ("State Attack",
-			xr_new<CStateMonsterAttackRun<CChimera> >("State Attack Run"), 
-			xr_new<CStateMonsterAttackMelee<CChimera> >("State Attack Melee")),
-		eStateAttack, 1
+		eStateRest, 
+		xr_new<CStateMonsterRest<CChimera> > (obj, 
+			xr_new<CStateMonsterRestSleep<CChimera> >(obj), 
+			xr_new<CStateMonsterRestWalkGraph<CChimera> >(obj)
+		)
 	);
 
-	add_state(
-		xr_new<CStateChimeraThreaten<CChimera> > ("State Threaten",
-			xr_new<CStateMonsterThreatenWalk<CChimera> >("State Threaten Walk"), 
-			xr_new<CStateMonsterThreatenThreaten<CChimera> >("State Threaten Threaten")),
-		eStateThreaten, 1
-	);
-
-	add_state(
-		xr_new<CStateMonsterPanic<CChimera> > ("State Panic",
-			xr_new<CStateMonsterPanicRun<CChimera> >("State Panic Run")), 
-		eStatePanic, 1
-	);
-
-	add_transition			(eStateRest,	eStateAttack,	1, 1);
-	add_transition			(eStateRest,	eStatePanic,	1, 1);
-	add_transition			(eStatePanic,	eStateAttack,	1, 1);
-
-	inherited::Load			(section);
-}
-
-void CStateManagerChimera::reinit			(CChimera *object)
-{
-	inherited::reinit		(object);
-
-	set_current_state		(eStateRest);
-	set_dest_state			(eStateRest);
-}
-
-
-void CStateManagerChimera::initialize		()
-{
-	inherited::initialize	();
-	
-	time_threaten	= 0;
-}
-
-void CStateManagerChimera::execute			()
-{
-	//	m_object->SetUpperState(false);
-
-	
-
-
-//	VisionElem ve;
-//	if (m_object->C)					set_dest_state(eStatePanic);
-//	else if (m_object->K)				set_dest_state(eStateAttack);
-//	else if (m_object->A)				set_dest_state(eStateDangerousSound);
-//	else if (m_object->B)				set_dest_state(eStateInterestingSound);
-//	else if (m_object->GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((m_object->GetSatiety() < m_object->_sd->m_fMinSatiety) || m_object->flagEatNow))
-//										set_dest_state(eStateEat);
-//	else								set_dest_state(eStateRest);
-	
-//	Msg("Chim State Manager Executed!!! time = [%u] obj = [%u] K = [%u]", Level().timeServer(), m_object->m_tEnemy.obj,m_object->K);
+//	add_state(
+//		eStateAttack, xr_new<CStateMonsterAttack<CChimera> > (
+//			xr_new<CStateMonsterAttackRun<CChimera> >, 
+//			xr_new<CStateMonsterAttackMelee<CChimera> >
+//		)
+//	);
 //
-//	if (!m_object->K) {
-//		int a = 10;
-//	}
-	//if (m_object->K) set_dest_state(eStatePanic);
-	//else			 set_dest_state(eStateRest);
-	
-	inherited::execute		();
+//	add_state(
+//		eStateThreaten, xr_new<CStateChimeraThreaten<CChimera> > (
+//			xr_new<CStateMonsterThreatenWalk<CChimera> >, 
+//			xr_new<CStateMonsterThreatenThreaten<CChimera> >
+//		)	
+//	);
+//
+//	add_state(
+//		eStatePanic, xr_new<CStateMonsterPanic<CChimera> > (
+//			xr_new<CStateMonsterPanicRun<CChimera> > 
+//		)
+//	);
 }
 
-void CStateManagerChimera::finalize			()
+CStateManagerChimera::~CStateManagerChimera()
 {
-	inherited::finalize		();
+}
+
+void CStateManagerChimera::execute()
+{
+	u32 state = u32(-1);
+
+	if (object->EnemyMan.get_enemy()) {
+		switch (object->EnemyMan.get_danger_type()) {
+			case eVeryStrong:				state = eStatePanic; break;
+			case eStrong:		
+			case eNormal:
+			case eWeak:						state = eStateAttack; break;
+		}
+	} else if (object->hear_dangerous_sound || object->hear_interesting_sound) {
+		if (object->hear_dangerous_sound)			state = eStateInterestingSound;		
+		if (object->hear_interesting_sound)			state = eStateInterestingSound;	
+	} else	if (object->CorpseMan.get_corpse() && ((object->GetSatiety() < object->_sd->m_fMinSatiety) || object->flagEatNow))					
+		state = eStateEat;	
+	else									state = eStateRest;
+
+	state = eStateRest;
+
+	select_state(state); 
 }
 

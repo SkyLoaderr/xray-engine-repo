@@ -1,31 +1,23 @@
 #pragma once
 
-#include "../../../state_manager_state.h"
+#include "../../state.h"
 
 template<typename _Object>
-class	CStateMonsterRest : public CStateManagerState<_Object> {
+class	CStateMonsterRest : public CState<_Object> {
 protected:
-	typedef CStateManagerState<_Object> inherited;
+	typedef CState<_Object>		inherited;
+	typedef CState<_Object>*	state_ptr;
 
-	enum ERestStates {
-		eRS_Sleep			= u32(0),
-		eRS_WalkGraphPoint,
-
-		eRS_StateNumber
+	enum {
+		eStateSleep				= u32(0),
+		eStateWalkGraphPoint,
 	};
 
-	typedef typename CStateBase<_Object>* SSubStatePtr;
-	SSubStatePtr		states[eRS_StateNumber];
-
 public:
-						CStateMonsterRest		(LPCSTR state_name, SSubStatePtr state_sleep, SSubStatePtr state_walk);
+						CStateMonsterRest		(_Object *obj, state_ptr state_sleep, state_ptr state_walk);
 	virtual				~CStateMonsterRest		();
-	virtual	void		Load					(LPCSTR section);
-	virtual	void		reinit					(_Object *object);
 
-	virtual	void		initialize				();
-	virtual	void		execute					();
-	virtual	void		finalize				();
+	virtual	void		reselect_state			();
 };
 
 #include "monster_state_rest_inline.h"

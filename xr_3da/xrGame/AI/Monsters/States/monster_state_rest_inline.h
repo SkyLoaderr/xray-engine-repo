@@ -7,60 +7,28 @@
 #define CStateMonsterRestAbstract CStateMonsterRest<_Object>
 
 TEMPLATE_SPECIALIZATION
-CStateMonsterRestAbstract::CStateMonsterRest(LPCSTR state_name, SSubStatePtr state_sleep, SSubStatePtr state_walk) : inherited(state_name)
+CStateMonsterRestAbstract::CStateMonsterRest(_Object *obj, state_ptr state_sleep, state_ptr state_walk) : inherited(obj)
 {
-	states[eRS_Sleep]			= state_sleep;
-	states[eRS_WalkGraphPoint]	= state_walk;
+	add_state	(eStateSleep,			state_sleep);
+	add_state	(eStateWalkGraphPoint,	state_walk);
 }
 
 TEMPLATE_SPECIALIZATION
-CStateMonsterRestAbstract::~CStateMonsterRest()
+CStateMonsterRestAbstract::~CStateMonsterRest	()
 {
 }
 
-TEMPLATE_SPECIALIZATION
-void CStateMonsterRestAbstract::Load(LPCSTR section)
-{
-	add_state				(states[eRS_Sleep],			 eRS_Sleep,				1);
-	add_state				(states[eRS_WalkGraphPoint], eRS_WalkGraphPoint,	0);
-
-	add_transition			(eRS_Sleep,eRS_WalkGraphPoint,	1,1);
-
-	inherited::Load			(section);
-}
 
 TEMPLATE_SPECIALIZATION
-void CStateMonsterRestAbstract::reinit(_Object *object)
+void CStateMonsterRestAbstract::reselect_state()
 {
-	inherited::reinit		(object);
-	set_current_state		(eRS_Sleep);
-	set_dest_state			(eRS_Sleep);
-}
-
-TEMPLATE_SPECIALIZATION
-void CStateMonsterRestAbstract::initialize()
-{
-	inherited::initialize();
-}
-
-TEMPLATE_SPECIALIZATION
-void CStateMonsterRestAbstract::execute()
-{
-	bool bNormalSatiety =	(m_object->GetSatiety() > m_object->_sd->m_fMinSatiety) && 
-		(m_object->GetSatiety() < m_object->_sd->m_fMaxSatiety); 
+	bool bNormalSatiety =	(object->GetSatiety() > object->_sd->m_fMinSatiety) && 
+		(object->GetSatiety() < object->_sd->m_fMaxSatiety); 
 
 	if (bNormalSatiety) {
-		set_dest_state	(eRS_Sleep);
+		select_state	(eStateSleep);
 	} else {
-		set_dest_state	(eRS_WalkGraphPoint);
+		select_state	(eStateWalkGraphPoint);
 	}
-
-	inherited::execute();
-}
-
-TEMPLATE_SPECIALIZATION
-void CStateMonsterRestAbstract::finalize()
-{
-	inherited::finalize();
 }
 

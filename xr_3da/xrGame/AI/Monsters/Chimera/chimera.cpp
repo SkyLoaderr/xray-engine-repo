@@ -1,15 +1,18 @@
 #include "stdafx.h"
 #include "chimera.h"
 #include "../../ai_monster_utils.h"
+#include "chimera_state_manager.h"
 
-
-CChimera::CChimera() : CStateManagerChimera("State Manager Chimera")
+CChimera::CChimera()
 {
 	Init();
+	
+	StateMan = xr_new<CStateManagerChimera>(this);
 }
 
 CChimera::~CChimera()
 {
+	xr_delete(StateMan);
 }
 
 
@@ -17,19 +20,21 @@ void CChimera::Init()
 {
 	inherited::Init();
 
-	b_upper_state					= false;
+	
 }
 
 void CChimera::reinit()
 {
 	inherited::reinit();
-	CStateManagerChimera::reinit(this);	
+	//CStateManagerChimera::reinit(this);	
+
+	b_upper_state					= false;
 }
 
 void CChimera::Load(LPCSTR section)
 {
 	inherited::Load	(section);
-	CStateManagerChimera::Load(section);
+	//CStateManagerChimera::Init();
 
 	MotionMan.AddReplacedAnim(&b_upper_state, eAnimAttack,			eAnimUpperAttack);
 	MotionMan.AddReplacedAnim(&b_upper_state, eAnimWalkFwd,			eAnimUpperWalkFwd);
@@ -131,9 +136,7 @@ void CChimera::ProcessTurn()
 
 bool CChimera::UpdateStateManager()
 {
-	//UpdateWorld();
-	
-	CStateManagerChimera::update(m_current_update - m_dwLastUpdateTime);
+	StateMan->execute();
 	return true;
 }
 
