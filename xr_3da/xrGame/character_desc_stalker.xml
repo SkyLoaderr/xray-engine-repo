@@ -24,8 +24,8 @@
 		</supplies>
 					
 		<start_dialog>escape_lager_volk_hello</start_dialog>
-		<actor_dialog>escape_lager_volk_flame</actor_dialog>
 		<actor_dialog>escape_lager_volk_job</actor_dialog>
+		<actor_dialog>escape_lager_volk_info</actor_dialog>
 		<actor_dialog>escape_lager_volk_dynamite_done</actor_dialog>
 	</specific_character>
 
@@ -78,7 +78,7 @@
 		</supplies>
 					
 		<start_dialog>escape_lager_hlam_hello</start_dialog>
-		<actor_dialog>escape_lager_hlam_flame</actor_dialog>
+		<actor_dialog>escape_lager_hlam_talk_people</actor_dialog>
 	</specific_character>
 
 <!---------------------------STALKER NOVICE----------------------->
