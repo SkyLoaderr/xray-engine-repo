@@ -56,7 +56,9 @@ void	xrServerEntity::P_Read			(CStream& FS)
 
 	// Active
 	xrP_BOOL			dB;
-	dB.value			= s_flags&M_SPAWN_OBJECT_ACTIVE; xrPWRITE_PROP	(FS,"Active",xrPID_BOOL,dB);
+	xrPREAD_PROP		(FS,xrPID_BOOL,dB); 
+	if (dB.value)		s_flags|=	(M_SPAWN_OBJECT_ACTIVE); 
+	else				s_flags&=~	(M_SPAWN_OBJECT_ACTIVE); 
 }
 void	xrServerEntity::P_Write			(CFS_Base& FS)
 {
@@ -64,9 +66,7 @@ void	xrServerEntity::P_Write			(CFS_Base& FS)
 
 	// Active
 	xrP_BOOL			dB;
-	xrPREAD_PROP		(FS,xrPID_BOOL,dB); 
-	if (dB.value)		s_flags|=	(M_SPAWN_OBJECT_ACTIVE); 
-	else				s_flags&=~	(M_SPAWN_OBJECT_ACTIVE); 
+	dB.value			= s_flags&M_SPAWN_OBJECT_ACTIVE; xrPWRITE_PROP	(FS,"Active",xrPID_BOOL,dB);
 }
 
 //
