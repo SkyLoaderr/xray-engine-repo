@@ -79,35 +79,10 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	return TRUE;
 }
 
-/*
-	GetPDA()->OnReceiveInfo(1);
-	GetPDA()->OnReceiveInfo(2);
-	GetPDA()->OnReceiveInfo(3);
-	GetPDA()->OnReceiveInfo(4);
-*/
 
 void CInventoryOwner::UpdateInventoryOwner(u32 deltaT)
 {
-	
-	if(dynamic_cast<CActor*>(this))
-	{
-		if(m_inventory.m_slots[PDA_SLOT].m_pIItem)
-			GetPDA()->OnReceiveInfo(1);
-	}
-	else
-	{
-		if(m_inventory.m_slots[PDA_SLOT].m_pIItem)
-		{
 
-		GetPDA()->OnReceiveInfo(1);
-		GetPDA()->OnReceiveInfo(2);
-		GetPDA()->OnReceiveInfo(3);
-		GetPDA()->OnReceiveInfo(4);
-		}
-	}
-
-	
-	
 	
 	m_inventory.Update(deltaT);
 	if(m_pTrade) m_pTrade->UpdateTrade();
@@ -136,8 +111,8 @@ CPda* CInventoryOwner::GetPDA()
 	
 //	if(!pEntityAlive || !pEntityAlive->g_Alive()) return NULL; 
 
-	R_ASSERT2(m_inventory.m_slots[PDA_SLOT].m_pIItem, 
-			"PDA for character does not init yet");
+	/*R_ASSERT2(m_inventory.m_slots[PDA_SLOT].m_pIItem, 
+			"PDA for character does not init yet");*/
 	
 	return (CPda*)m_inventory.m_slots[PDA_SLOT].m_pIItem;
 }
@@ -225,6 +200,8 @@ bool CInventoryOwner::IsTalking()
 
 bool CInventoryOwner::AskQuestion(SInfoQuestion& question, INFO_INDEX_LIST& index_list)
 {
+	R_ASSERT2(GetPDA(), "PDA for character does not init yet");
+
 	bool result_answer = false;
 
 	index_list.clear();

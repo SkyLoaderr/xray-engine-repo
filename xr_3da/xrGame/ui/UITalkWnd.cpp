@@ -123,6 +123,9 @@ void CUITalkWnd::UpdateQuestions()
 {
 	UITalkDialogWnd.UIQuestionsList.RemoveAll();
 
+
+	R_ASSERT2(m_pOurInvOwner->GetPDA(), "PDA for character does not init yet");
+
 	//получить возможные вопросы и заполнить ими список
 	m_pOurInvOwner->GetPDA()->UpdateQuestions();
 	
