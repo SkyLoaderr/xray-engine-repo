@@ -32,7 +32,7 @@ private:
 		eStalkerStateRetreatUnknown,
 		eStalkerStatePursuitKnown,
 		eStalkerStatePursuitUnknown,
-		eStalkerStatePursuitSearchCorp,
+		eStalkerStateSearchCorp,
 		eStalkerStateRecharge,
 	};
 
@@ -91,6 +91,11 @@ private:
 	// VISIBILITY
 	objSET					m_tpaVisibleObjects;
 	SEnemySelected			m_tEnemy;
+	CEntity*				m_tSavedEnemy;
+	Fvector					m_tSavedEnemyPosition;
+	u32						m_dwLostEnemyTime;
+	NodeCompressed*			m_tpSavedEnemyNode;
+	u32						m_dwSavedEnemyNodeID;
 		
 	//HIT PHYS
 	float					m_saved_impulse;
@@ -256,6 +261,14 @@ private:
 			else
 				return(c);
 	};
+
+	IC		void		vfSaveEnemy()
+	{
+		m_tSavedEnemy			= m_tEnemy.Enemy;
+		m_tSavedEnemyPosition	= m_tEnemy.Enemy->Position();
+		m_tpSavedEnemyNode		= m_tEnemy.Enemy->AI_Node;
+		m_dwSavedEnemyNodeID	= m_tEnemy.Enemy->AI_NodeID;
+	}
 
 public:
 	typedef CCustomMonster inherited;

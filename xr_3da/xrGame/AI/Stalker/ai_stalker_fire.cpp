@@ -84,8 +84,9 @@ void CAI_Stalker::SelectEnemy(SEnemySelected& S)
 	
 	for (u32 i=0; i<Known.size(); i++) {
 		CEntityAlive*	E = dynamic_cast<CEntityAlive*>(Known[i].key);
-		if (!E)
+		if (!E || !E->g_Alive())
 			continue;
+
 		float		H = EnemyHeuristics(E);
 		if (H<S.fCost) {
 			bool bVisible = false;
@@ -103,6 +104,8 @@ void CAI_Stalker::SelectEnemy(SEnemySelected& S)
 			}
 		}
 	}
+	if (m_tEnemy.Enemy)
+		vfSaveEnemy();
 }
 
 bool CAI_Stalker::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) 

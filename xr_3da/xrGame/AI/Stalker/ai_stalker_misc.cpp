@@ -34,12 +34,14 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(CAISelectorBase *S, bool bCanStr
 			Fvector			tStartPosition = vPosition;
 			u32				dwCurNode = AI_NodeID;
 
-			for (u32 i=1; i<N; i++)
+			for (u32 i=1; i<N; i++) {
+				VERIFY(dwCurNode < getAI().Header().count);
 				if (!getAI().bfCheckNodeInDirection(dwCurNode,tStartPosition,AI_Path.Nodes[i]))
 					if (dwCurNode != AI_Path.Nodes[i - 1])
 						tpaPoints.push_back(tStartPosition = getAI().tfGetNodeCenter(dwCurNode = AI_Path.Nodes[--i]));
 					else
 						tpaPoints.push_back(tStartPosition = getAI().tfGetNodeCenter(dwCurNode = AI_Path.Nodes[i]));
+			}
 			
 			if (tStartPosition.distance_to(getAI().tfGetNodeCenter(AI_Path.Nodes[N - 1])) > getAI().Header().size)
 				tpaPoints.push_back(getAI().tfGetNodeCenter(AI_Path.Nodes[N - 1]));
@@ -164,22 +166,21 @@ void CAI_Stalker::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Le
 	S.m_tpMyNode		= AI_Node;
 	S.m_tMyPosition		= Position();
 	
-//	if (Enemy.Enemy) {
-//		bBuildPathToLostEnemy = false;
-//		// saving an enemy
-//		vfSaveEnemy();
-//		
-//		S.m_tEnemy			= Enemy.Enemy;
-//		S.m_tEnemyPosition	= Enemy.Enemy->Position();
-//		S.m_dwEnemyNode		= Enemy.Enemy->AI_NodeID;
-//		S.m_tpEnemyNode		= Enemy.Enemy->AI_Node;
-//	}
-//	else {
-//		S.m_tEnemy			= tSavedEnemy;
-//		S.m_tEnemyPosition	= tSavedEnemyPosition;
-//		S.m_dwEnemyNode		= dwSavedEnemyNodeID;
-//		S.m_tpEnemyNode		= tpSavedEnemyNode;
-//	}
+	if (m_tEnemy.Enemy) {
+		// saving an enemy
+		vfSaveEnemy();
+		
+		S.m_tEnemy			= m_tEnemy.Enemy;
+		S.m_tEnemyPosition	= m_tEnemy.Enemy->Position();
+		S.m_dwEnemyNode		= m_tEnemy.Enemy->AI_NodeID;
+		S.m_tpEnemyNode		= m_tEnemy.Enemy->AI_Node;
+	}
+	else {
+		S.m_tEnemy			= m_tSavedEnemy;
+		S.m_tEnemyPosition	= m_tSavedEnemyPosition;
+		S.m_dwEnemyNode		= m_dwSavedEnemyNodeID;
+		S.m_tpEnemyNode		= m_tpSavedEnemyNode;
+	}
 	
 	S.taMembers = &(Squad.Groups[g_Group()].Members);
 	

@@ -31,6 +31,12 @@ CAI_Stalker::CAI_Stalker			()
 	m_dwActionRefreshRate			= 1000;
 	m_fAttackSuccessProbability		= .7f;
 	m_dwNoFireTime					= 0;
+
+	m_tSavedEnemy					= 0;
+	m_tSavedEnemyPosition.set		(0,0,0);
+	m_dwLostEnemyTime				= 0;
+	m_tpSavedEnemyNode				= 0;
+	m_dwSavedEnemyNodeID			= u32(-1);
 	
 	m_pPhysicsShell					= NULL;
 	m_saved_impulse					= 0.f;

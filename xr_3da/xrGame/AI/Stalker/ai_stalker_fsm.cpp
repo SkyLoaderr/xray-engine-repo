@@ -75,11 +75,6 @@ void CAI_Stalker::PursuitUnknown()
 	WRITE_TO_LOG("Pursuiting unknown");
 }
 
-void CAI_Stalker::SearchCorp()
-{
-	WRITE_TO_LOG("Searching corp");
-}
-
 void CAI_Stalker::vfUpdateSearchPosition()
 {
 	if (!g_Alive())
@@ -105,27 +100,6 @@ void CAI_Stalker::vfUpdateSearchPosition()
 		else
 			AI_Path.DestNode			= getAI().m_tpaGraph[m_tNextGP].tNodeID;
 	}
-}
-
-void CAI_Stalker::AccomplishTask()
-{
-	WRITE_TO_LOG				("Accomplishing task");
-
-	vfStopFire();
-
-	SelectEnemy(m_tEnemy);
-
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_tEnemy.Enemy,eStalkerStateAttack);
-
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Weapons->ActiveWeapon() && !Weapons->ActiveWeapon()->GetAmmoElapsed(),eStalkerStateRecharge);
-
-	if (!AI_Path.Nodes.size() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode))
-		vfBuildPathToDestinationPoint		(0,true);
-
-	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypeDanger);
-	
-	if (m_fCurSpeed < EPS_L)
-		r_torso_target.yaw		= r_target.yaw;
 }
 
 void CAI_Stalker::Recharge()
@@ -177,6 +151,58 @@ void CAI_Stalker::Attack()
 //		r_torso_target.yaw		= r_target.yaw;
 }
 
+void CAI_Stalker::AccomplishTask()
+{
+	WRITE_TO_LOG				("Accomplishing task");
+
+	vfStopFire();
+
+	SelectEnemy(m_tEnemy);
+
+	// I see enemy
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_tEnemy.Enemy,eStalkerStateAttack);
+
+	// I have to recharge active weapon
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Weapons->ActiveWeapon() && !Weapons->ActiveWeapon()->GetAmmoElapsed(),eStalkerStateRecharge);
+
+	// I have to search the corp
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE((m_tSavedEnemy && (!m_tSavedEnemy->g_Alive())),eStalkerStateSearchCorp);
+
+	if (!AI_Path.Nodes.size() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode))
+		vfBuildPathToDestinationPoint		(0,true);
+
+	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypeDanger);
+	
+	if (m_fCurSpeed < EPS_L)
+		r_torso_target.yaw		= r_target.yaw;
+}
+
+void CAI_Stalker::SearchCorp()
+{
+	WRITE_TO_LOG("Searching corp");
+	
+	vfStopFire();
+
+	SelectEnemy(m_tEnemy);
+
+	// I see enemy
+	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_tEnemy.Enemy,eStalkerStateAttack);
+
+	if (AI_NodeID == m_dwSavedEnemyNodeID) {
+		m_tSavedEnemy = 0;
+		GO_TO_PREV_STATE_THIS_UPDATE;
+	}
+	
+	AI_Path.DestNode = m_dwSavedEnemyNodeID;
+	
+	vfBuildPathToDestinationPoint		(0,true);
+
+	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypeDanger);
+	
+	if (m_fCurSpeed < EPS_L)
+		r_torso_target.yaw		= r_target.yaw;
+}
+
 void CAI_Stalker::Think()
 {
 	vfUpdateSearchPosition();
@@ -219,7 +245,7 @@ void CAI_Stalker::Think()
 				PursuitUnknown();
 				break;
 			}
-			case eStalkerStatePursuitSearchCorp : {
+			case eStalkerStateSearchCorp : {
 				SearchCorp();
 				break;
 			}

@@ -493,6 +493,9 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 
 void CActor::Die	( )
 {
+	// Dima
+	b_DropActivated			= TRUE;
+	g_PerformDrop			();
 	// Play sound
 	::Sound->PlayAtPos		(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
 	cam_Set					(eacFreeLook);

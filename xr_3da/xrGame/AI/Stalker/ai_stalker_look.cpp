@@ -17,7 +17,7 @@ static BOOL __fastcall StalkerQualifier(CObject* O, void* P)
 	else {
 		CEntityAlive* E = dynamic_cast<CEntityAlive*> (O);
 		if (!E) return FALSE;
-		if (!E->IsVisibleForAI()) return FALSE; 
+		//if (!E->IsVisibleForAI()) return FALSE; 
 		return TRUE;
 	}
 }
