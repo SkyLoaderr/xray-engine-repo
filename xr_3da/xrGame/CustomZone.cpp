@@ -11,6 +11,7 @@
 #include "../igame_persistent.h"
 #include "artifact.h"
 #include "ai_object_location.h"
+#include "../skeletoncustom.h"
 
 //////////////////////////////////////////////////////////////////////////
 //количество предварительно проспавненых артефактов
