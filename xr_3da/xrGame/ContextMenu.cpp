@@ -2,7 +2,7 @@
 #include "contextmenu.h"
 #include "..\xr_ini.h"
 #include "..\xr_gamefont.h"
- 
+  
 const float fade_speed = 8.0f;
 
 CContextMenu::~CContextMenu(){
