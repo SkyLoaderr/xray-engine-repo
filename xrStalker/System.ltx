@@ -3733,7 +3733,6 @@ Ani_StandWalk		 = lie_eat_0, lie_eat_1, lie_eat_2, lie_eat_3
 [m_trader]
 $spawn						= monsters\Trader		; option for Level Editor
 ;$prefetch 					= 50
-spawn 						= on
 cform						= skeleton
 class						= AI_TRADE
 visual						= monsters\trader\trader
@@ -3777,6 +3776,9 @@ stalker_friend_buy_price_factor			= 1
 stalker_friend_sell_price_factor		= 1
 ;-----------------------------------------------------------------
 
+[spawn_group]
+$spawn						= on			; option for Level Editor
+class						= AI_SPGRP
 
 [alife]
     schedule_min         = 1                ; milliseconds
