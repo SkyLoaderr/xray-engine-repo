@@ -419,7 +419,9 @@ IC	void CLevelNavigationGraph::fill_cell		(u32 start_vertex_id, u32 link)
 struct sort_cells_predicate {
 	IC	bool	operator()	(const CLevelNavigationGraph::CCellVertex *&v0, const CLevelNavigationGraph::CCellVertex *&v1) const
 	{
-		return	(v0->m_down*v0->m_right > v1->m_down*v1->m_right);
+		u32					square0 = v0->m_all_computed_dirs ? v0->m_computed_down*v0->m_computed_right : v0->m_down*v0->m_right;
+		u32					square1 = v1->m_all_computed_dirs ? v1->m_computed_down*v1->m_computed_right : v1->m_down*v1->m_right;
+		return				(square0 > square1);
 	}
 };
 
@@ -452,8 +454,8 @@ struct remove_cell_preciate {
 
 IC	void CLevelNavigationGraph::update_cell		(u32 start_vertex_id, u32 link)
 {
-	for (u32 current_vertex_id = start_vertex_id, i = 1; ;++i) {
-		u32					vertex_id = vertex(current_vertex_id)->link(link);
+	for (u32 current_vertex_id = start_vertex_id, i = 1, index = (link + 1) & 3; ;++i) {
+		u32							vertex_id = vertex(current_vertex_id)->link(link);
 		if (!valid_vertex_id(vertex_id))
 			break;
 
@@ -463,9 +465,11 @@ IC	void CLevelNavigationGraph::update_cell		(u32 start_vertex_id, u32 link)
 		if (vertex(vertex_id)->link((link + 2) & 3) != current_vertex_id)
 			break;
 
-		m_cross[vertex_id].m_dirs[(link + 1) & 3] = (u16)i;
+		CCellVertex					&cell = m_cross[vertex_id];
+		cell.m_dirs[index]			= (u16)i;
+		cell.m_computed_dirs[index] = 0;
 
-		current_vertex_id	= vertex_id;
+		current_vertex_id			= vertex_id;
 	}
 }
 
@@ -485,6 +489,12 @@ IC	void CLevelNavigationGraph::update_cells	(u32 vertex_id, u32 right, u32 down)
 IC	void CLevelNavigationGraph::select_sector	(CCellVertex *v, u32 &right, u32 &down, u32 max_square)
 {
 	VERIFY					(!v->m_mark);
+
+	if (v->m_all_computed_dirs) {
+		right				= v->m_computed_right;
+		down				= v->m_computed_down;
+		return;
+	}
 
 	if (v->m_right >= v->m_down) {
 		right				= v->m_right;
@@ -538,6 +548,9 @@ IC	void CLevelNavigationGraph::select_sector	(CCellVertex *v, u32 &right, u32 &d
 		if (right_id == v->m_right_id)
 			break;
 	}
+
+	v->m_computed_right		= right;
+	v->m_computed_down		= down;
 }
 
 IC	bool CLevelNavigationGraph::select_sector	(u32 &vertex_id, u32 &right, u32 &down)
