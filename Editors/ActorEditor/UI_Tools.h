@@ -74,7 +74,7 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
     	bool			UpdateMotionsStream	(CEditableObject* source);
     public:
     	float			m_fLOD;
-	    CVisual*		m_pVisual;
+	    IVisual*		m_pVisual;
         CBlend*			m_pBlend;
     public:
         				EngineModel			(){m_pVisual=0;m_fLOD=1.f;m_pBlend=0;}
@@ -195,6 +195,7 @@ public:
 
     void				ShowProperties		(){;}
     void				UpdateProperties	(){;}
+    void				RefreshProperties	(){;}
     
 	void				GetStatTime			(float& a, float& b, float& c);
 };

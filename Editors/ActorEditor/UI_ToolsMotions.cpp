@@ -71,24 +71,24 @@ void CActorTools::EngineModel::Render(const Fmatrix& mTransform)
     {
     case MT_SKELETON:{
         CKinematics* pV					= (CKinematics*)m_pVisual;
-        vector<CVisual*>::iterator I,E;
+        vector<IVisual*>::iterator I,E;
         I = pV->children.begin			();
         E = pV->children.end			();
         for (; I!=E; I++)
         {
-            CVisual* V					= *I;
+            IVisual* V					= *I;
             RCache.set_Shader			(V->hShader);
             V->Render					(m_fLOD);
         }
     }break;
     case MT_HIERRARHY:{
         FHierrarhyVisual* pV			= (FHierrarhyVisual*)m_pVisual;
-        vector<CVisual*>::iterator 		I,E;
+        vector<IVisual*>::iterator 		I,E;
         I = pV->children.begin			();
         E = pV->children.end			();
         for (; I!=E; I++)
         {
-            CVisual* V					= *I;
+            IVisual* V					= *I;
             RCache.set_Shader			(V->hShader);
             V->Render					(m_fLOD);
         }
@@ -224,6 +224,7 @@ void CActorTools::FillMotionProperties()
             C->Owner()->SetEvents(BPOnDraw);
             PHelper.CreateFlag32	(items,"Cycle\\Stop at end",	&SM->m_Flags,	esmStopAtEnd);
             PHelper.CreateFlag32	(items,"Cycle\\No mix",			&SM->m_Flags,	esmNoMix);
+            PHelper.CreateFlag32	(items,"Cycle\\Sync part",		&SM->m_Flags,	esmSyncPart);
         }
         {
             AStringVec lst;
