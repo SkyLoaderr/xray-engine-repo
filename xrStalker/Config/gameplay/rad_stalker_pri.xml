@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
+<string_table>
+    <string id="rad_stalker_dialog_0">
+        <text>default text</text>
+    </string>
+    <string id="rad_stalker_dialog_1">
+        <text>Приветсвую! \nКто ты? Как ты тут оказался?</text>
+    </string>
+    <string id="rad_stalker_dialog_100">
+        <text>text in default</text>
+    </string>
+    <string id="rad_stalker_dialog_11">
+        <text>Значит так, говоришь что бармен тебя сюда прислал, для того чтоб отключить антенны? Я вижу ты чудесным образом справился с заданием и открыл дорогу к центру зоны. Может нам стоит объединить усилия и вместе искать монолит?</text>
+    </string>
+    <string id="rad_stalker_dialog_110">
+        <text>ok</text>
+    </string>
+    <string id="rad_stalker_dialog_111">
+        <text>ok</text>
+    </string>
+    <string id="rad_stalker_dialog_12">
+        <text>Вот и чудесно, но есть одна проблема, я послал пару своих ребят посмотреть, что же творится на Припяти, но они пропали, их задача была разведать происходящее на Припяти и вернутся доложить мне. Прошли уже целые сутки! А их до сих пор нет, а ведь они мои лучшие ребята, Бревно и Лом. Если, хочешь к нам присоединится тебе надо заслужить мое доверие! Как тебе это подходит?</text>
+    </string>
+    <string id="rad_stalker_dialog_13">
+        <text>Ну а если они погибли, принеси мне их ПДА! После этого и поговорим!\nУдачи тебе, Меченый!\n</text>
+    </string>
+</string_table>
