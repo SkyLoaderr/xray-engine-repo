@@ -586,6 +586,14 @@ SOURCE=.\xrDeflectorSave.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\xrImage_Filter.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrImage_Filter.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\xrImage_Resampler.cpp
 # End Source File
 # Begin Source File
