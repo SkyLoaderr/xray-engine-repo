@@ -89,9 +89,9 @@ void	CBlender_Particle::Compile	(CBlender_Compile& C)
 		C.r_Sampler			("s_base",	C.L_textures[0],false,oClamp.value?D3DTADDRESS_CLAMP:D3DTADDRESS_WRAP);
 		C.r_End				();
 		break;
-	case PHASE_SMAP_D:	// smap-direct
-	case PHASE_SMAP_P:	// smap-point
-	case PHASE_SMAP_S:	// smap-spot
+	case CRender::PHASE_SMAP_D:	// smap-direct
+	case CRender::PHASE_SMAP_P:	// smap-point
+	case CRender::PHASE_SMAP_S:	// smap-spot
 		// HARD or SOFT: shadow-map
 		switch (oBlend.IDselected)
 		{

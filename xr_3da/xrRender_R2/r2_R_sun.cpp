@@ -231,7 +231,7 @@ void CRender::render_sun				()
 		for (int p=0; p<8; p++)	frustumBox.modify	(frustumPnts[p].x, frustumPnts[p].y, frustumPnts[p].z);
 
 		// build initial ortho-xform
-		D3DXMatrixOrthoOffCenterLH	( &lightSpaceOrtho, frustumBox.min.x, frustumBox.max.x, frustumBox.min.y, frustumBox.max.y, frustumBox.min.z-tweak_ortho_xform_initial_offs, frustumBox.max.z);
+		D3DXMatrixOrthoOffCenterLH	( &lightSpaceOrtho, frustumBox.min.x, frustumBox.max.x, frustumBox.min.y, frustumBox.max.y, frustumBox.min.z+tweak_ortho_xform_initial_offs, frustumBox.max.z);
 		D3DXMatrixMultiply			( &m_LightViewProj, &lightSpaceBasis,	&lightSpaceOrtho);
 		D3DXMatrixMultiply			( &m_LightViewProj, &m_View,			&m_LightViewProj);	//.?
 	}
