@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "ai_monster_jump.h"
-#include "../custommonster.h"
-#include "../phmovementcontrol.h"
-#include "../../skeletoncustom.h"
-#include "../movement_manager.h"
+#include "../../custommonster.h"
+#include "../../phmovementcontrol.h"
+#include "../../../skeletoncustom.h"
+#include "../../movement_manager.h"
 
 CJumping::CJumping()
 {
