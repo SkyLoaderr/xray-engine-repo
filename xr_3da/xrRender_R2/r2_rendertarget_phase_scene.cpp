@@ -34,6 +34,7 @@ void	CRenderTarget::phase_scene_end		()
 	RCache.set_CullMode					( CULL_NONE );
 	RCache.set_Stencil					(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0x00);	// stencil should be >= 1
 	if (RImplementation.o.nvstencil)	u_stencil_optimize	(FALSE);
+	RCache.set_Stencil					(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0x00);	// stencil should be >= 1
 	RCache.set_ColorWriteEnable			();
 
 	// common calc for quad-rendering

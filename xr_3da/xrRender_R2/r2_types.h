@@ -5,7 +5,6 @@
 #define		r2_RT_P				"$user$position"		// MRT
 #define		r2_RT_N				"$user$normal"			// MRT
 #define		r2_RT_albedo		"$user$albedo"			// MRT
-#define		r2_RT_albedo_wo		"$user$albedo_wo"		// MRT
 
 // other
 #define		r2_RT_accum			"$user$accum"			// ---	16 bit fp or 16 bit fx
