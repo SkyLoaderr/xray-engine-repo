@@ -13,21 +13,40 @@ class CFrustum;
 class CEditObject;
 class Shader;
 
+struct SIndexDist{
+    DWORD 	index;
+    float 	dist;
+    float	density[4];
+};
+DEFINE_SVECTOR		(SIndexDist,4,SIndexDistVec,SIndexDistIt);
+
 class CDetail{
+	friend class CDetailManager;
+    friend class TfrmDOShuffle;
+    friend bool CompareIDFunc(CDetail* d0, CDetail* d1);
+
 	struct fvfVertexIn{
 		Fvector 		P;
 		float			u,v;
         void			set(fvfVertexIn& src){P.set(src.P); u=src.u; v=src.v;};
 	};
     DEFINE_VECTOR		(fvfVertexIn,DOVertVec,DOVertIt);
+    float				m_fMinScale;
+    float				m_fMaxScale;
+    // internal use
+	BYTE				m_ID;
 	// render
     DOVertVec			m_Vertices;
+    WORDVec				m_Indices;
 	Shader*				m_pShader;
 	DWORD				m_dwFlags;
 	float				m_fRadius;
+    bool				m_bSideFlag;
 
     // references
 	CEditObject*		m_pRefs;
+public:
+    bool				m_bMarkDel;
 public:
 						CDetail			();
 	virtual             ~CDetail		();
@@ -67,21 +86,17 @@ class CDetailManager{
 
     void				UpdateSlotBBox	(int x, int z, DetailSlot& slot);
 
-	struct SIndexDist{
-		DWORD 	index;
-	    float 	dist;
-        int		count[4];
-	};
-    DEFINE_SVECTOR		(SIndexDist,4,SIndexDistVec,SIndexDistIt);
-
     void				GetSlotRect		(Frect& rect, int sx, int sz);
     void				GetSlotTCRect	(Irect& rect, int sx, int sz);
+    BYTE				GetRandomObject	(DWORD color_index, const CRandom& R);
 
 	void 				CalcClosestCount(int part, const Fcolor& C, SIndexDistVec& best);
 	void 				FindClosestIndex(const Fcolor& C, SIndexDistVec& best);
+    void				SortObjectsByID	();
+    BYTE				FindEmptyID		();
 
 	DWORD				GetColor		(float x, float z);
-	DWORD 				GetColor		(DWORD U, DWORD V);
+	DWORD 				GetColor		(int U, int V);
 
     DWORD				GetUFromX		(float x);
     DWORD				GetVFromZ		(float z);
@@ -101,9 +116,10 @@ public:
     bool				UpdateObjects	();
     bool				GenerateSlots	(LPCSTR tex_name);
 
-    void				AppendObject	(LPCSTR name, bool bTestUnique=true);
-    void				RemoveObjects	();
+    CDetail*			AppendObject	(LPCSTR name, bool bTestUnique=true);
+    void				RemoveObjects	(bool bOnlyMarked=false);
     CDetail*			FindObjectByName(LPCSTR name);
+    void				MarkAllObjectsAsDel();
 
     void				RemoveColorIndices();
 	void				AppendIndexObject(DWORD color,LPCSTR name,bool bTestUnique=true);
