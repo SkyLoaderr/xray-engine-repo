@@ -13,10 +13,11 @@ end
 function artifact_merge(merger)
 	log	("artifact merge in actor01!")
 
---   if merger:get_black_drops_num()>=2  then
--- 		merger:destroy_black_drops(1)
---	end
-
+	if merger:get_mercury_ball_num()>=2 and 
+	   merger:get_black_drops_num()==0  then
+			merger:destroy_mercury_ball(2)
+			merger:spawn_gravi()
+	end 
 
 	if merger:get_mercury_ball_num()>=1 and 
 	   merger:get_black_drops_num()>=2  then
