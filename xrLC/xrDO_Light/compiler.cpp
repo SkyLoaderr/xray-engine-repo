@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "xr_func.h"
 #include "xrlevel.h"
 #include "communicate.h"
 #include "cl_rapid.h"
