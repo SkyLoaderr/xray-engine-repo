@@ -461,6 +461,16 @@ void CAI_Soldier::vfAimAtEnemy()
 	else
 		pos1 = tSavedEnemyPosition;
 
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// for making soldiers not so precise :-)))
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	SRotation sRot;
+	mk_rotation(pos1,sRot);
+	sRot.pitch += ::Random.randF(-PI/10,+PI/10);
+	sRot.yaw += ::Random.randF(-PI/10,+PI/10);
+	pos1.setHP(sRot.yaw,sRot.pitch);
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	
 	svCenter(pos2);
 	tWatchDirection.sub(pos1,pos2);
 	float fDistance = tWatchDirection.magnitude();
