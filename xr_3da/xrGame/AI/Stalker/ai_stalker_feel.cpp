@@ -13,8 +13,6 @@
 #include "..\\..\\actor.h"
 
 #define MIN_SOUND_VOLUME				.05f
-#define SOUND_UPDATE_DELAY				3000
-
 static BOOL __fastcall StalkerQualifier(CObject* O, void* P)
 {
 	CEntityAlive*	E = dynamic_cast<CEntityAlive*>		(O);

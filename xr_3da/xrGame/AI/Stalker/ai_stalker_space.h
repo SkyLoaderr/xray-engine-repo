@@ -22,6 +22,8 @@
 #define	STALKER_SND_HIT_COUNT			4
 #define	STALKER_SND_DIE_COUNT			4
 
+#define SOUND_UPDATE_DELAY				10000
+
 #define R2D(x)							(angle_normalize(x)*180.f/PI)
 
 enum EBodyState {
