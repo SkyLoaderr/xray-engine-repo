@@ -90,12 +90,16 @@ max_hear_dist		 = 30
 
 ; speed factors			linear | angular_real | angular_path | min |  max
 Velocity_Stand			= 0,		1.4,			1.4,		1,		1
-Velocity_RunFwdNormal	= 9.0,		1.5,			1.5,		0.25,	1	
+Velocity_RunFwdNormal	= 7.5,		1.5,			1.5,		0.25,	1	
 Velocity_RunFwdDamaged	= 5.0,  	4.0,			4.0,		0.2,	1
-Velocity_WalkFwdDamaged	= 2.0,		3.0,			3.0,		0.5,	2.0	
-Velocity_WalkFwdNormal	= 1.5,		1.9,			1.9,		0.02,	2.0
+Velocity_WalkFwdDamaged	= 2.0,		2.0,			2.0,		0.5,	2.0	
+Velocity_WalkFwdNormal	= 2.3,		1.2,			1.2,		0.02,	2.0
 Velocity_Drag			= 1.0,		3.0,			3.0,		1,		1
 Velocity_Steal			= 1.5,		3.0,			3.0,		1,		1
+Velocity_Walk_Upper		= 0.5,		1.2,			1.2,		0.02,	2.0
+Velocity_Jump_Stand		= 0,		2.4,			2.4,		1,		1	
+Velocity_Jump_Forward	= 14.0,		0.00001,		0.00001,	0.4,	1
+
 
 ; acceleration
 Accel_Generic			= 1.5
@@ -195,11 +199,15 @@ idle_sound_delay		= 15000
 eat_sound_delay			= 3000
 attack_sound_delay		= 2000
 
-jump_factor				= 1.6
-jump_delay				= 3000	
-jump_min_dist			= 1.0 
-jump_max_dist			= 20.0
-jump_max_angle			= 1.5
+; jump parameters
+jump_delay					= 3000
+jump_factor					= 1.5
+jump_ground_trace_range		= 1.4
+jump_hit_trace_range		= 1.0
+jump_build_line_distance	= 10.0
+jump_min_distance			= 3.5
+jump_max_distance			= 100.0
+jump_max_angle				= 0.6
 
 DamagedThreshold		= 0.5
 
