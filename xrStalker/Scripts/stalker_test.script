@@ -1,4 +1,4 @@
-function main ()
+function main()
     actor				= get_actor()
     stalker				= get_level_object ("m_stalker_e0000")
     ak					= get_level_object ("wpn_ak0001")
@@ -8,28 +8,6 @@ function main ()
     
     wait				(1000)
     
---[
-    action				(
-		stalker,
-		object			(vodka,object.activate),
-		cond			(cond.object_end)
-    )
-    
-    action				(
-		stalker,
-		object			(vodka,object.fire),
-		cond			(cond.object_end)
-    )
-    
-    action				(
-		stalker,
-		object			(vodka,object.reload),
-		cond			(cond.object_end)
-    )
-    
-	while stalker:action() do
---]
-
     action				(
 		stalker,
 		look			(look.fire_point,actor),
