@@ -9,10 +9,11 @@
 #pragma once
 
 #include "graph_abstract.h"
+#include "motivation.h"
 
 template <
-	template <typename _object_type> class _motivation_type,
-	typename _object_type
+	typename _object_type,
+	template <typename _object_type> class _motivation_type = CMotivation
 >
 class CMotivationManager {
 public:

@@ -8,31 +8,37 @@
 
 #pragma once
 
-#include "motivation_action.h"
+#define TEMPLATE_SPECIALIZATION \
+	template <\
+		typename _object_type,\
+		template <typename _object_type> class _motivation_type = CMotivation\
+	>
 
-template <typename _object_type>
-void CMotivationActionManager<_object_type>::reinit	(_object_type *object, bool clear_all)
+#define CSMotivationActionManager CMotivationActionManager<_object_type,_motivation_type>
+
+TEMPLATE_SPECIALIZATION
+void CSMotivationActionManager::reinit	(_object_type *object, bool clear_all)
 {
 	CSMotivationManager::reinit	(object,clear_all);
 	CSActionManager::reinit		(object,clear_all);
 }
 
-template <typename _object_type>
-void CMotivationActionManager<_object_type>::Load	(LPCSTR section)
+TEMPLATE_SPECIALIZATION
+void CSMotivationActionManager::Load	(LPCSTR section)
 {
 	CSMotivationManager::Load	(section);
 	CSActionManager::Load		(section);
 }
 
-template <typename _object_type>
-void CMotivationActionManager<_object_type>::reload	(LPCSTR section)
+TEMPLATE_SPECIALIZATION
+void CSMotivationActionManager::reload	(LPCSTR section)
 {
 	CSMotivationManager::reload	(section);
 	CSActionManager::reload		(section);
 }
 
-template <typename _object_type>
-void CMotivationActionManager<_object_type>::update	(u32 time_delta)
+TEMPLATE_SPECIALIZATION
+void CSMotivationActionManager::update	(u32 time_delta)
 {
 	CSMotivationManager::update			(time_delta);
 	
@@ -43,3 +49,6 @@ void CMotivationActionManager<_object_type>::update	(u32 time_delta)
 
 	CSActionManager::update				(time_delta);
 }
+
+#undef TEMPLATE_SPECIALIZATION
+#undef CSMotivationActionManager

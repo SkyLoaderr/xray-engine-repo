@@ -11,16 +11,20 @@
 #include "motivation_manager.h"
 #include "action_planner.h"
 #include "motivation.h"
+#include "motivation_action.h"
 
-template <typename _object_type>
+template <
+	typename _object_type,
+	template <typename _object_type> class _motivation_type = CMotivation
+>
 class CMotivationActionManager :
-	public CMotivationManager<CMotivation,_object_type>,
+	public CMotivationManager<_object_type,_motivation_type>,
 	public CActionPlanner<_object_type>
 {
 protected:
-	typedef CMotivationManager<CMotivation,_object_type>	CSMotivationManager;
-	typedef CActionPlanner<_object_type>					CSActionPlanner;
-	typedef CMotivationAction<_object_type>					CSMotivationAction;
+	typedef CMotivationManager<_object_type,_motivation_type>	CSMotivationManager;
+	typedef CActionPlanner<_object_type>						CSActionPlanner;
+	typedef CMotivationAction<_object_type>						CSMotivationAction;
 
 public:
 	virtual			~CMotivationActionManager	();

@@ -10,10 +10,10 @@
 
 #define TEMPLATE_SPECIALIZATION \
 	template<\
-		template <typename _object_type> class _motivation_type,\
-		typename _object_type\
+		typename _object_type,\
+		template <typename _object_type> class _motivation_type\
 	>
-#define CSMotivationManager		CMotivationManager<_motivation_type,_object_type>
+#define CSMotivationManager		CMotivationManager<_object_type,_motivation_type>
 
 TEMPLATE_SPECIALIZATION
 IC	CSMotivationManager::CMotivationManager		()

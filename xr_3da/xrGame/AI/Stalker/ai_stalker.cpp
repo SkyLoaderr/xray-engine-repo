@@ -58,19 +58,11 @@ void CAI_Stalker::reinit			()
 #ifdef OLD_DECISION_BLOCK
 	CStateManagerStalker::reinit	(this);
 #else
-	CActionManagerStalker::reinit	(this);
+	CSMotivationActionManager::reinit(this,false);
 #endif
-	CSStateInternal::reinit			(this);
-	CSMotivationManager::reinit		(this,false);
 
 	m_pPhysics_support->in_Init		();
-	m_dwRandomFactor				= 100;
-	m_dwInertion					= 20000;
-	m_dwActionStartTime				= 0;
-	m_bStateChanged					= true;
-	_A=_B=_C=_D=_E=_F=_G=_H=_I=_J=_K=_L=_M=false;
-	m_dwLastSoundUpdate				= 0;
-	m_dwLastUpdate					= 0;
+	
 	m_tTaskState					= ALife::eTaskStateChooseTask;
 
 	m_r_hand						= PKinematics(Visual())->LL_BoneID("bip01_r_hand");
@@ -91,10 +83,8 @@ void CAI_Stalker::reload			(LPCSTR section)
 #ifdef OLD_DECISION_BLOCK
 	CStateManagerStalker::reload	(section);
 #else
-	CActionManagerStalker::reload	(section);
+	CSMotivationActionManager::reload(section);
 #endif
-	CSStateInternal::reload			(section);
-	CSMotivationManager::reload		(section);
 }
 
 void CAI_Stalker::Die				()
@@ -124,10 +114,8 @@ void CAI_Stalker::Load				(LPCSTR section)
 #ifdef OLD_DECISION_BLOCK
 	CStateManagerStalker::Load		(section);
 #else
-	CActionManagerStalker::Load		(section);
+	CSMotivationActionManager::Load	(section);
 #endif
-	CSStateInternal::Load			(section);
-	CSMotivationManager::Load		(section);
 
 	CSelectorManager::add<
 		CVertexEvaluator<

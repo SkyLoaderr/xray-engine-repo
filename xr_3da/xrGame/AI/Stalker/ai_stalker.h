@@ -13,22 +13,22 @@
 
 #include "../../CustomMonster.h"
 #include "../../stalker_movement_manager.h"
+#include "../../sight_manager.h"
+#include "../../state_internal.h"
+#include "ai_stalker_animations.h"
+#include "ai_stalker_space.h"
+
 #ifdef OLD_OBJECT_HANDLER
 	#include "../../object_handler.h"
 #else
 	#include "../../object_handler_goap.h"
 #endif
-#include "../../sight_manager.h"
+
 #ifdef OLD_DECISION_BLOCK
 	#include "../../state_manager_stalker.h"
 #else
-	#include "../../action_manager_stalker.h"
+	#include "../../motivation_action_manager.h"
 #endif
-#include "../../state_internal.h"
-#include "../../motivation_manager.h"
-#include "../../motivation.h"
-#include "ai_stalker_animations.h"
-#include "ai_stalker_space.h"
 
 using namespace StalkerSpace;
 
@@ -53,38 +53,23 @@ class CAI_Stalker :
 	public CStalkerAnimations, 
 	public CStalkerMovementManager,
 #ifdef OLD_DECISION_BLOCK
-	public CStateManagerStalker,
+	public CStateManagerStalker
 #else
-	public CActionManagerStalker,
+	public CMotivationActionManager<CAI_Stalker>
 #endif
-	public CStateInternal<CAI_Stalker>,
-	public CMotivationManager<CMotivation,CAI_Stalker>
 {
 private:
-	typedef CCustomMonster inherited;
-	typedef CStateInternal<CAI_Stalker> CSStateInternal;
-	typedef CMotivationManager<CMotivation,CAI_Stalker>	CSMotivationManager;
-	typedef CMotivation<CAI_Stalker>					CSMotivation;
+	typedef CCustomMonster							inherited;
+	typedef CStateInternal<CAI_Stalker>				CSStateInternal;
+#ifndef OLD_DECISION_BLOCK
+	typedef CMotivationActionManager<CAI_Stalker>	CSMotivationActionManager;
+#endif
 	
-	EActionState				m_tActionState;
-	u32							m_dwActionStartTime;
-	bool						_A,_B,_C,_D,_E,_F,_G,_H,_I,_J,_K,_L,_M;
-	bool						A,B,C,D,E,F,G,H,I,J,K,L,M;
-	u32							m_dwRandomFactor;
-	u32							m_dwInertion;
 	u32							m_dwParticularState;
-	u32							m_dwLastSoundUpdate;
-	
-	u32							m_dwLastUpdate;
-	u32							m_current_update;
-	u32							m_dwUpdateCount;
-	bool						m_bStateChanged;
-	
 	ALife::ETaskState			m_tTaskState;
 	ALife::_GRAPH_ID			m_tDestGraphPointIndex;
 	ALife::_TASK_ID				m_tTaskID;
 	ALife::OBJECT_VECTOR		m_tpKnownCustomers;
-
 	int							m_r_hand;
 	int							m_l_finger1;
 	int							m_r_finger2;
