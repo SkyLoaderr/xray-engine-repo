@@ -360,13 +360,35 @@ void CWeapon::net_Export	(NET_Packet& P)
 
 void CWeapon::net_Import	(NET_Packet& P)
 {
-	
+	net_update				N;
+
+	P.r_u32					(N.timestamp);
+	P.r_u8					(N.flags);
+
+	P.r_u16					(N.ammo_current);
+	P.r_u16					(N.ammo_elapsed);
+
+	P.r_vec3				(N.pos);
+	P.r_angle8				(N.angles.x);
+	P.r_angle8				(N.angles.y);
+	P.r_angle8				(N.angles.z);
+
+	P.r_vec3				(N.fpos);
+	P.r_dir					(N.fdir);
+
+	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
+		NET.push_back			(N);
+	}
 }
 
 void CWeapon::Update		(DWORD dT)
 {
-	inherited::Update		(dT);
+	// Queue shrink
+	DWORD	dwTimeCL	= Level().timeServer()-NET_Latency;
+	VERIFY				(!NET.empty());
+	while ((NET.size()>2) && (NET[1].dwTimeStamp<dwTimeCL)) NET.pop_front();
 
+	// Logic
 	float dt				= float(dT)/1000.f;
 	fireDispersion_Current	-=	fireDispersion_Dec*dt;
 	clamp					(fireDispersion_Current,0.f,1.f);
@@ -379,6 +401,9 @@ void CWeapon::Update		(DWORD dT)
 	} else {
 		setEnabled				(false);
 	}
+
+	// Inherited
+	inherited::Update		(dT);
 }
 
 void CWeapon::OnVisible		()

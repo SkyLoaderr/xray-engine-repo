@@ -370,11 +370,9 @@ void CCustomMonster::UpdateCL	()
 	if ((dwTime > N.dwTimeStamp) || (NET.size()<2))
 	{
 		// BAD.	extrapolation
-//		Log("Extrapolation");
 		NET_Last		= N;
 	} else {
 		// OK.	interpolation
-//		Log("Interpolation");
 		
 		// Search 2 keyframes for interpolation
 		int select		= -1;

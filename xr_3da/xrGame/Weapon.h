@@ -41,8 +41,6 @@ protected:
 	float					fFlameTime;
 
 	void					animGet					(MotionSVec& lst, LPCSTR prefix);
-public:
-	float					GetPrecision();
 protected:
 	CWeaponHUD*				m_pHUD;
 	BOOL					hud_mode;
@@ -94,6 +92,19 @@ protected:
 
 	DWORD					dwFP_Frame;
 	DWORD					dwXF_Frame;
+protected:
+	struct	net_update 		
+	{
+		u32					dwTimeStamp;
+		u8					flags;
+		u16					ammo_current;
+		u16					ammo_elapsed;
+		Fvector				pos,angles;
+		Fvector				fpos,fdir;
+		void	lerp		(net_update& A,net_update& B, float f);
+	};
+	deque<net_update>		NET;
+
 protected:
 	void					Light_Start			();
 	void					Light_Render		(Fvector& P);
@@ -150,6 +161,7 @@ public:
 	virtual BOOL			HasOpticalAim		()				{	return FALSE;								}
 	virtual float			GetZoomFactor		()				{	return DEFAULT_FOV;							}
 
+	float					GetPrecision		();
 	IC LPCSTR				GetName				()				{	return m_WpnName;							}
 	IC int					GetAmmoElapsed		()				{	return iAmmoElapsed;						}
 	IC int					GetAmmoLimit		()				{	return iAmmoLimit;							}
