@@ -20,8 +20,7 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 	// Common constants (light-related)
 	Fvector		L_dir,L_clr;	float L_spec;
 	L_clr.set					(fuckingsun->color.r,fuckingsun->color.g,fuckingsun->color.b);
-	L_spec						= u_diffuse2s	(L_clr)/ps_r2_ls_dynamic_range;
-	L_clr.div					(ps_r2_ls_dynamic_range		);
+	L_spec						= u_diffuse2s	(L_clr);
 	Device.mView.transform_dir	(L_dir,fuckingsun->direction);
 	L_dir.normalize				();
 
@@ -206,7 +205,7 @@ void CRenderTarget::accum_direct()
 
 		// Calculate light-brightness
 		Fcolor		L_sunc			= RImplementation.Lights.sun->color; 
-		Fvector		L_clr;			L_clr.set(L_sunc.r,L_sunc.g,L_sunc.b).div(ps_r2_ls_dynamic_range);
+		Fvector		L_clr;			L_clr.set(L_sunc.r,L_sunc.g,L_sunc.b);
 		float		L_max			= _max(_max(L_clr.x,L_clr.y),L_clr.z);
 		float		L_mag			= L_clr.magnitude()/_sqrt(3.f);
 		float		L_gray			= (L_clr.x + L_clr.y + L_clr.z)/3.f;
@@ -249,8 +248,7 @@ void CRenderTarget::accum_direct()
 	Fvector		L_dir,L_clr;	float L_spec;
 	Fcolor		L_sunc			= RImplementation.Lights.sun->color;
 	L_clr.set					(L_sunc.r,L_sunc.g,L_sunc.b);
-	L_spec						= u_diffuse2s	(L_clr)/ps_r2_ls_dynamic_range;
-	L_clr.div					(ps_r2_ls_dynamic_range);
+	L_spec						= u_diffuse2s	(L_clr);
 	Device.mView.transform_dir	(L_dir,RImplementation.Lights.sun->direction);
 	L_dir.normalize				();
 	RCache.set_c				("Ldynamic_color",	L_clr.x,L_clr.y,L_clr.z,L_spec);

@@ -42,7 +42,6 @@ float		ps_r2_df_parallaxh			= 0.02f;
 float		ps_r2_tonemap_middlegray	= 0.01f;			// r2-only
 float		ps_r2_tonemap_adaptation	= 5.f;				// r2-only
 float		ps_r2_tonemap_low_lum		= 0.001f;			// r2-only
-float		ps_r2_ls_dynamic_range		= 2.f;				// r2-only
 float		ps_r2_ls_bloom_kernel_g		= 3.3f;				// r2-only
 float		ps_r2_ls_bloom_kernel_b		= .6f;				// r2-only
 float		ps_r2_ls_bloom_speed		= 10.f;				// r2-only
@@ -129,7 +128,6 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r2_tonemap_middlegray",&ps_r2_tonemap_middlegray,	0.0f,	2.0f	);
 	CMD4(CCC_Float,		"r2_tonemap_adaptation",&ps_r2_tonemap_adaptation,	0.01f,	10.0f	);
 	CMD4(CCC_Float,		"r2_tonemap_lowlum",	&ps_r2_tonemap_low_lum,		0.0001f,1.0f	);
-	CMD4(CCC_Float,		"r2_ls_dynamic_range",	&ps_r2_ls_dynamic_range,	.5f,	8.f		);
 	CMD4(CCC_Float,		"r2_ls_bloom_kernel_g",	&ps_r2_ls_bloom_kernel_g,	1.f,	7.f		);
 	CMD4(CCC_Float,		"r2_ls_bloom_kernel_b",	&ps_r2_ls_bloom_kernel_b,	0.01f,	1.f		);
 	CMD4(CCC_Float,		"r2_ls_bloom_threshold",&ps_r2_ls_bloom_threshold,	0.f,	1.f		);

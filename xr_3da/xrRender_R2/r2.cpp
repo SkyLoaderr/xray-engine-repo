@@ -54,11 +54,6 @@ static class cl_parallax		: public R_constant_setup		{	virtual void setup	(R_con
 	float			h			= ps_r2_df_parallaxh;
 	RCache.set_c	(C,h,-h/2,0.f,0.f);
 }}	binder_parallax;
-static class cl_lhdrscale		: public R_constant_setup		{	virtual void setup	(R_constant* C)
-{
-	float dr					= ps_r2_ls_dynamic_range;
-	RCache.set_c				(C,	dr,dr,dr,dr);
-}}	binder_lhdrscale;
 
 //////////////////////////////////////////////////////////////////////////
 // Just two static storage
@@ -93,7 +88,6 @@ void					CRender::create					()
 	::Device.Resources->RegisterConstantSetup	("v_encodeZ01",	&binder_encodeZ01);
 	::Device.Resources->RegisterConstantSetup	("v_decodeZ01",	&binder_decodeZ01);
 	::Device.Resources->RegisterConstantSetup	("parallax",	&binder_parallax);
-	::Device.Resources->RegisterConstantSetup	("L_hdr",		&binder_lhdrscale);
 
 	c_lmaterial					= "L_material";
 	c_sbase						= "s_base";

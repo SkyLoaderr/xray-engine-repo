@@ -26,7 +26,7 @@ void	CRenderTarget::phase_combine	()
 		// Compute params
 		Fmatrix		m_v2w;			m_v2w.invert				(Device.mView		);
 		CEnvDescriptor&		envdesc	= g_pGamePersistent->Environment.CurrentEnv;
-		Fvector4	envclr			= { envdesc.sky_color.x, envdesc.sky_color.y, envdesc.sky_color.z, envdesc.sky_factor };
+		Fvector4	envclr			= { envdesc.sky_color.x*2, envdesc.sky_color.y*2, envdesc.sky_color.z*2, envdesc.sky_factor };
 
 		// Fill VB
 		u32		C					= color_rgba	(255,255,255,255);
