@@ -313,3 +313,10 @@ u32 CHW::selectRefresh(u32 dwWidth, u32 dwHeight, D3DFORMAT fmt)
 		return selected;
 	}
 }
+
+BOOL	CHW::support	(D3DFORMAT fmt, DWORD type, DWORD usage)
+{
+	HRESULT hr		= pD3D->CheckDeviceFormat(DevAdapter,DevT,fTarget,usage,(D3DRESOURCETYPE)type,fmt);
+	if (FAILED(hr))	return FALSE;
+	else			return TRUE;
+}

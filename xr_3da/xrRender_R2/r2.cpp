@@ -199,14 +199,15 @@ void					CRender::rmNormal			()
 CRender::CRender()
 {
 	b_mrt				= TRUE;
-	b_HW_smap			= (strstr(Core.Params,"-hw_smap"))?TRUE:FALSE;
 	b_noshadows			= (strstr(Core.Params,"-noshadows"))?TRUE:FALSE;
-	b_fp16				= (strstr(Core.Params,"-fp16"))?TRUE:FALSE;
 	b_Tshadows			= (strstr(Core.Params,"-notsh"))?FALSE:TRUE;
 	b_distortion		= (strstr(Core.Params,"-nodistort"))?FALSE:TRUE;
 	b_nvstecil			= (strstr(Core.Params,"-nonvstencil"))?FALSE:TRUE;
 	b_nvstecil			= FALSE;
 	b_disasm			= (strstr(Core.Params,"-disasm"))?TRUE:FALSE;
+	b_HW_smap			= HW.support	(D3DFMT_D24X8,			D3DRTYPE_TEXTURE,D3DUSAGE_DEPTHSTENCIL);
+	b_fp16_filter		= HW.support	(D3DFMT_A16B16G16R16F,	D3DRTYPE_TEXTURE,D3DUSAGE_QUERY_FILTER);
+	b_fp16_blend		= HW.support	(D3DFMT_A16B16G16R16F,	D3DRTYPE_SURFACE,D3DUSAGE_QUERY_POSTPIXELSHADER_BLENDING);
 }
 
 CRender::~CRender()

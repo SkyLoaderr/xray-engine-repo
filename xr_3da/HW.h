@@ -46,6 +46,8 @@ public:
 	u32						selectGPU				();
 	u32						selectRefresh			(u32 dwWidth, u32 dwHeight, D3DFORMAT fmt);
 
+	BOOL					support					(D3DFORMAT fmt, DWORD type, DWORD usage);
+
 #ifdef DEBUG
 	void	Validate(void)	{	VERIFY(pDevice); VERIFY(pD3D); };
 #else
