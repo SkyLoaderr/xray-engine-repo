@@ -37,14 +37,13 @@
 		<name>Gunner</name>
 		<icon x="0" y="9"></icon>
 		<map_icon x="0" y="4"></map_icon>
+		
 		<rank>0</rank>
+		<reputation>50</reputation>
 		<team>Lonewolf</team>
 
 		<start_dialog></start_dialog>
 		<actor_dialog></actor_dialog>
-
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
 
 	</specific_character>
 </xml>
