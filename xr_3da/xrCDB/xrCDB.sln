@@ -3,12 +3,15 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrCDB", "xrCDB.vcproj", "{A
 EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 1
+		SccNumberOfProjects = 2
 		SccProjectName0 = \u0022$/xr_3da/xrCDB\u0022,\u0020XKFAAAAA
 		SccLocalPath0 = .
 		SccProvider0 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
 		CanCheckoutShared = true
 		SolutionUniqueID = {AA86356F-F346-4564-A6FE-4598E6D22133}
+		SccProjectUniqueName1 = xrCDB.vcproj
+		SccLocalPath1 = .
+		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		ConfigName.0 = Debug
