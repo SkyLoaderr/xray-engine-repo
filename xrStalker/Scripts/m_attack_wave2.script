@@ -323,24 +323,19 @@ function main ()
 
     local monsters = {
                       m_attack_wave2.Monster (get_level_object ("m_boar_e0000"), patrol ("way0000"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_boar_e0001"), patrol ("way0000"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_boar_e0002"), patrol ("way0000"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_boar_e0003"), patrol ("way0000"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_dog_e0000"),  patrol ("way0000"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_dog_e0001"),  patrol ("way0000"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_dog_e0002"),  patrol ("way0000"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_dog_e0003"),  patrol ("way0000"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_dog_e0004"),  patrol ("way0000"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_dog_e0005"),  patrol ("way0000"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0000"),  patrol ("way0000"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0001"),  patrol ("way0000"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0002"),  patrol ("way0000"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0003"),  patrol ("way0000"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_flesh_e0000"),  patrol ("way0000"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_flesh_e0001"),  patrol ("way0000"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_flesh_e0002"),  patrol ("way0000"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_flesh_e0003"),  patrol ("way0000"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_flesh_e0004"),  patrol ("way0000"), scrname)
+                      m_attack_wave2.Monster (get_level_object ("m_boar_e0001"), patrol ("way0001"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_boar_e0002"), patrol ("way0002"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_boar_e0003"), patrol ("way0003"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_dog_e0000"),  patrol ("way0004"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_dog_e0001"),  patrol ("way0005"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_dog_e0002"),  patrol ("way0006"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_dog_e0003"),  patrol ("way0007"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_dog_e0004"),  patrol ("way0008"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0000"),  patrol ("way0009"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0001"),  patrol ("way0010"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0002"),  patrol ("way0011"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0003"),  patrol ("way0012"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_flesh_e0000"),  patrol ("way0013"), scrname)
 					  }
 
 	local stalkers = {
