@@ -53,5 +53,14 @@ IC	bool CSGraphEdge::operator==										(const _vertex_index_type &index) const
 	return			(vertex_index() == index);
 }
 
+TEMPLATE_SPECIALIZATION
+IC	bool CSGraphEdge::operator==										(const CGraphEdge &obj) const
+{
+	if (weight() != obj.weight())
+		return		(false);
+
+	return			(vertex_id() == obj.vertex_id());
+}
+
 #undef TEMPLATE_SPECIALIZATION
 #undef CSGraphEdge

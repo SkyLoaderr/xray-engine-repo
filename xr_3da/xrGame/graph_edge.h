@@ -44,6 +44,7 @@ public:
 	IC		_vertex_id_type		vertex_id		() const;
 	IC		_vertex_index_type	vertex_index	() const;
 	IC		bool				operator==		(const _vertex_index_type &) const;
+	IC		bool				operator==		(const CGraphEdge &obj) const;
 };
 
 #include "graph_edge_inline.h"

@@ -222,8 +222,15 @@ IC	bool CAbstractGraph::empty				() const
 TEMPLATE_SPECIALIZATION
 IC	void CAbstractGraph::clear				()
 {
+#if 0
 	while (!vertices().empty())
 		remove_vertex(vertices().back()->vertex_id());
+#else
+	delete_data			(m_vertices);
+	m_index_by_id.clear	();
+	m_edge_count		= 0;
+#endif
+
 	VERIFY				(!m_edge_count);
 }
 
@@ -324,6 +331,18 @@ TEMPLATE_SPECIALIZATION
 IC	xr_vector<typename CAbstractGraph::CVertex*> &CAbstractGraph::vertices	()
 {
 	return				(m_vertices);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	bool CAbstractGraph::operator==					(const CGraphAbstract &obj) const
+{
+	if (vertex_count() != obj.vertex_count())
+		return			(false);
+
+	if (edge_count() != obj.edge_count())
+		return			(false);
+
+	return				(equal(vertices(),obj.vertices()));
 }
 
 #undef TEMPLATE_SPECIALIZATION

@@ -45,6 +45,7 @@ private:
 public:
 	IC									CGraphVertex	(const _Data &data, const _vertex_id_type vertex_id);
 	virtual								~CGraphVertex	();
+	IC		bool						operator==		(const CGraphVertex &obj) const;
 	IC		const CSGraphEdge			*edge			(const _vertex_index_type vertex_index) const;
 	IC		CSGraphEdge					*edge			(const _vertex_index_type vertex_index);
 	IC		void						set_data		(_Data &data);

@@ -117,5 +117,17 @@ IC	const xr_vector<typename CSGraphVertex::CSGraphEdge> &CSGraphVertex::edges	()
 	return					(m_edges);
 }
 
+TEMPLATE_SPECIALIZATION
+IC	bool CSGraphVertex::operator==	(const CGraphVertex &obj) const
+{
+	if (m_vertex_id != obj.m_vertex_id)
+		return				(false);
+
+	if (!equal(edges(),obj.edges()))
+		return				(false);
+
+	return					(equal(m_data,obj.m_data));
+}
+
 #undef TEMPLATE_SPECIALIZATION
 #undef CSGraphVertex

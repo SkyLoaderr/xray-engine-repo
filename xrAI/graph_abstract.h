@@ -50,6 +50,7 @@ public:
 	virtual								~CGraphAbstract		();
 	virtual void						save				(IWriter &stream);
 	virtual void						load				(IReader &stream);
+	IC		bool						operator==			(const CGraphAbstract &obj) const;
 	IC		void						add_vertex			(const _Data &data, const _vertex_id_type vertex_id);
 	IC		void						remove_vertex		(const _vertex_id_type vertex_id);
 	IC		void						add_edge			(const _vertex_id_type vertex_id0, const _vertex_id_type vertex_id1, const _edge_weight_type edge_weight);
