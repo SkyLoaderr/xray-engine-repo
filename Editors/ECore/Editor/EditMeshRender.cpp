@@ -22,7 +22,7 @@ void CEditableMesh::CreateRenderBuffers()
     if (!m_LoadState.is(LS_PNORMALS)) GeneratePNormals();
     R_ASSERT2(m_RenderBuffers.empty(),"Render buffer already exist.");
 
-//.    UI->ProgressStart((float)m_SurfFaces.size(),"Loading RB...");
+	SPBItem* pb 	= UI->PBStart((float)m_SurfFaces.size(),"Loading RB...");
 
     VERIFY(m_PNormals.size());
 
@@ -58,11 +58,11 @@ void CEditableMesh::CreateRenderBuffers()
             start_face			+= (_S->m_Flags.is(CSurface::sf2Sided))?rb.dwNumVertex/6:rb.dwNumVertex/3;
         }while(v_cnt>0);
         if (num_verts>0) m_RenderBuffers.insert(mk_pair(_S,rb_vec));
-//.		UI->ProgressInc();
+		UI->PBInc(pb);
     }
     UnloadPNormals();
     m_LoadState.set(LS_RBUFFERS,TRUE);
-//.    UI->ProgressEnd();
+	UI->PBEnd(pb);
 }
 //----------------------------------------------------
 

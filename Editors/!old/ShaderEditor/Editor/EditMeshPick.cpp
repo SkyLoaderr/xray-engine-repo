@@ -36,16 +36,14 @@ static float		m_fSoftAngle;
 //----------------------------------------------------
 void CEditableMesh::GenerateCFModel()
 {
-    UI->ProgressStart((float)m_SurfFaces.size()*2,"Generating CFModel...");
-	UnloadCForm();
-
-	m_CFModel = xr_new<CDB::MODEL>();    VERIFY(m_CFModel);
+	SPBItem* pb		= UI->PBStart((float)m_SurfFaces.size()*2,"Generating CFModel...");
+	UnloadCForm		();
+	m_CFModel 		= xr_new<CDB::MODEL>();    VERIFY(m_CFModel);
 	// Collect faces
-
 	CDB::Collector CL;
 	// double sided
 	for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
-    	UI->ProgressInc();
+    	UI->PBInc	(pb);
 		IntVec& face_lst = sp_it->second;
 		for (IntIt it=face_lst.begin(); it!=face_lst.end(); it++){
 			st_Face&	F = m_Faces[*it];
@@ -54,19 +52,9 @@ void CEditableMesh::GenerateCFModel()
 				CL.add_face_D(m_Points[F.pv[2].pindex],m_Points[F.pv[1].pindex],m_Points[F.pv[0].pindex], *it);
 		}
 	}
-/*
-	// without double sided
-	for (FaceIt P = m_Faces.begin(); P!=m_Faces.end(); P++){
-		st_Face&	F = *P;
-		CL.add_face(
-       		m_Points[F.pv[0].pindex],m_Points[F.pv[1].pindex],m_Points[F.pv[2].pindex],
-			0,0,0,
-			0,0,0 );
-	}
-*/
     m_CFModel->build(CL.getV(), CL.getVS(), CL.getT(), CL.getTS());
-	m_LoadState.set(LS_CF_MODEL,TRUE);
-    UI->ProgressEnd();
+	m_LoadState.set	(LS_CF_MODEL,TRUE);
+    UI->PBEnd		(pb);
 }
 
 void CEditableMesh::RayQuery(const Fmatrix& parent, const Fmatrix& inv_parent, SPickQuery& pinf)

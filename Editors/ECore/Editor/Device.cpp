@@ -430,14 +430,14 @@ bool CRenderDevice::MakeScreenshot(U32Vec& pixels, u32& width, u32& height)
 	// Image processing
 	u32* pPixel	= (u32*)D.pBits;
 
-//.    UI->ProgressStart(height,"Screenshot making");
+	SPBItem* pb 	= UI->PBStart(height,"Screenshot making");
     U32It it 		= pixels.begin();
     for (int h=height-1; h>=0; h--,it+=width){
         LPDWORD dt 	= LPDWORD(u32(pPixel)+u32(D.Pitch*h));
         CopyMemory	(it,dt,sizeof(u32)*width);
-//.	    UI->ProgressInc();
+	    UI->PBInc	(pb);
     }
-//.    UI->ProgressEnd();
+    UI->PBEnd(pb);
 
     R_CHK(pFB->UnlockRect());
 

@@ -35,11 +35,7 @@ public:
 
     virtual void 	ResetStatus				();
     virtual void 	SetStatus				(LPSTR s, bool bOutLog);
-    virtual void 	ProgressInfo			(LPCSTR text, bool bWarn);
-    virtual void 	ProgressStart			(float max_val, const char* text);
-    virtual void 	ProgressEnd				();
-    virtual void 	ProgressUpdate			(float val);
-    virtual void 	ProgressInc				(const char* info, bool bWarn);
+    virtual void	PBDraw					();
     virtual void 	OutCameraPos			();
     virtual void 	OutUICursorPos			();
     virtual void 	OutGridSize				();

@@ -43,6 +43,7 @@ TUI::TUI()
 //---------------------------------------------------------------------------
 TUI::~TUI()
 {
+	VERIFY(m_ProgressItems.size()==0);
     VERIFY(m_EditorState.size()==0);
 }
 
@@ -418,6 +419,8 @@ void TUI::Idle()
     // OnFrame
     TfrmImageLib::OnFrame();
     TfrmSoundLib::OnFrame();
+    // Progress
+    PBDraw			();
     // test quit
     if (m_Flags.is(flNeedQuit))	RealQuit();
 }
@@ -523,5 +526,53 @@ void TUI::OnDestroy()
 
     Device.ShutDown	();
     
+}
+
+SPBItem* TUI::PBStart			(float max_val, LPCSTR text)
+{
+	VERIFY(m_bReady);
+	SPBItem* item 				= xr_new<SPBItem>(text,"",max_val);
+    m_ProgressItems.push_back	(item);
+    ELog.Msg					(mtInformation,text);
+    PBDraw						();
+	return item;
+}
+void TUI::PBEnd					(SPBItem*& pbi)
+{
+	VERIFY(m_bReady);
+    if (pbi){
+        PBVecIt it=std::find(m_ProgressItems.begin(),m_ProgressItems.end(),pbi); VERIFY(it!=m_ProgressItems.end());
+        m_ProgressItems.erase	(it);
+        xr_delete				(pbi);
+        PBDraw					();
+    }
+}
+void TUI::PBInfo				(SPBItem* pbi, LPCSTR text, bool bWarn)
+{
+	VERIFY(m_bReady);
+	if (pbi&&text&&text[0]){
+    	pbi->info				= text;
+        AnsiString 				txt;
+        float 					p,m;
+        pbi->GetInfo			(txt,p,m);
+	    ELog.Msg				(bWarn?mtError:mtInformation,txt.c_str());
+	    PBDraw					();
+    }
+}
+void TUI::PBUpdate				(SPBItem* pbi, float val)
+{
+	VERIFY(m_bReady);
+    if (pbi){
+        pbi->progress			= val;
+        PBDraw					();
+    }
+}
+void TUI::PBInc					(SPBItem* pbi, LPCSTR info, bool bWarn)
+{
+	VERIFY(m_bReady);
+    if (pbi){
+        PBInfo					(pbi,info,bWarn);
+        PBUpdate				(pbi,pbi->progress+1.f);
+    }
 }
 

@@ -210,8 +210,8 @@ protected:
     SurfFaces	    m_SurfFaces;
 	U32Vec			m_SGs;		// |
     FvectorVec	    m_FNormals;	// |
-    FvectorVec	    m_PNormals;	// |
-    SVertVec	    m_SVertices;// |
+    FvectorVec	    m_PNormals;	// | *3
+    SVertVec	    m_SVertices;// | *3
     FaceVec		    m_Faces;    // + some array size!!!
     VMapVec		    m_VMaps;
     VMRefsVec	    m_VMRefs;
@@ -229,9 +229,9 @@ public:
 	void			RecomputeBBox			();
 	void 			Optimize				(BOOL NoOpt);
 public:
-	                CEditableMesh				(CEditableObject* parent){m_Parent=parent;Construct();}
-	                CEditableMesh				(CEditableMesh* source,CEditableObject* parent){m_Parent=parent;Construct();CloneFrom(source);}
-	virtual         ~CEditableMesh				();
+	                CEditableMesh			(CEditableObject* parent){m_Parent=parent;Construct();}
+	                CEditableMesh			(CEditableMesh* source,CEditableObject* parent){m_Parent=parent;Construct();CloneFrom(source);}
+	virtual         ~CEditableMesh			();
 	void			Construct				();
     void			Clear					();
 
@@ -254,7 +254,9 @@ public:
     IC FvectorVec&	GetPoints				(){ return m_Points;}
 	IC VMapVec&		GetVMaps				(){ return m_VMaps;}
 	IC VMRefsVec&	GetVMRefs				(){ return m_VMRefs;}
-    IC FvectorVec&	GetFNormals				(){ return m_FNormals;}
+    IC FvectorVec&	GetFNormals				(){ if (!m_LoadState.is(CEditableMesh::LS_FNORMALS)) GenerateFNormals(); return m_FNormals;}
+    IC FvectorVec&	GetPNormals				(){ if (!m_LoadState.is(CEditableMesh::LS_PNORMALS)) GeneratePNormals(); return m_PNormals;}
+    IC SVertVec&	GetSVertices			(){ if (!m_LoadState.is(CEditableMesh::LS_SVERTICES))GenerateSVertices();return m_SVertices;}
 	IC SurfFaces&	GetSurfFaces			(){ return m_SurfFaces;}
 	    
     // pick routine

@@ -316,9 +316,9 @@ bool CExportObjectOGF::Export(IWriter& F)
 {
     if( m_Source->MeshCount() == 0 ) return false;
 
-    AnsiString capt = AnsiString("Build OGF: '")+m_Source->GetName()+"'";
-    UI->ProgressStart(m_Source->MeshCount()+m_Source->SurfaceCount(),capt.c_str());
-    UI->ProgressInc();
+    AnsiString capt = AnsiString	("Build OGF: '")+m_Source->GetName()+"'";
+    SPBItem* pb		= UI->PBStart	(m_Source->MeshCount()+m_Source->SurfaceCount(),capt.c_str());
+    UI->PBInc		(pb);
 
     CTimer tm;
     tm.Start();
@@ -389,16 +389,16 @@ bool CExportObjectOGF::Export(IWriter& F)
                     }
                 }
             }while(elapsed_faces>0);
-		    UI->ProgressInc();
+		    UI->PBInc(pb);
         }
         // mesh fin
         MESH->UnloadPNormals();
         MESH->UnloadFNormals();
-	    UI->ProgressInc();
+	    UI->PBInc(pb);
     }
 
     if (!bResult){	
-	    UI->ProgressEnd	();
+	    UI->PBEnd		(pb);
     	return 			false;
     }
     
@@ -407,13 +407,13 @@ bool CExportObjectOGF::Export(IWriter& F)
 	if (m_Source->m_Flags.is(CEditableObject::eoProgressive)){
         for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
             (*split_it)->MakeProgressive();
-            UI->ProgressInc				();
+            UI->PBInc	(pb);
         }
     }
-    UI->ProgressInc();
+    UI->PBInc			(pb);
 
 	// Compute bounding...
-    ComputeBounding	();
+    ComputeBounding		();
 
 	// create OGF
 	// Saving geometry...
@@ -441,9 +441,9 @@ bool CExportObjectOGF::Export(IWriter& F)
     for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++)
         (*split_it)->Save(F,chunk);
     F.close_chunk	();
-    UI->ProgressInc	();
+    UI->PBInc		(pb);
 
-    UI->ProgressEnd	();
+    UI->PBEnd		(pb);
 
     tm.Stop			();
     ELog.Msg		(mtInformation,"Build time: %3.2f sec",float(tm.GetElapsed_ms())/1000.f);

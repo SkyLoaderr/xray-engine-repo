@@ -21,6 +21,21 @@ enum EEditorState{
     esBuildLevel
 };
 
+struct SPBItem{
+    ref_str		text;
+    ref_str		info;
+    float 		max;
+    float 		progress;
+                SPBItem				(LPCSTR txt, LPCSTR inf, float mx):text(txt),info(inf),max(mx){}
+    void		GetInfo				(AnsiString& txt, float& p, float& m)
+    {
+        if (info.size())txt.sprintf("%s (%s)",text.c_str(),info.c_str());
+        else			txt.sprintf("%s",text.c_str());
+        p				= progress;
+        m				= max;
+	}    
+};
+
 typedef xr_vector<EEditorState> EStateList;
 typedef EStateList::iterator EStateIt;
 
@@ -117,7 +132,7 @@ public:
     virtual bool 	OnCreate		(TD3DWindow* w, TPanel* p);
     virtual void 	OnDestroy		();
 
-    virtual char* 		GetCaption		()=0;
+    virtual char* 	GetCaption		()=0;
 
     bool 			IsModified		();
 
@@ -157,12 +172,6 @@ public:
     }
     EEditorState 	GetEState			(){ return m_EditorState.back(); }
     bool 			ContainEState		(EEditorState st){ return std::find(m_EditorState.begin(),m_EditorState.end(),st)!=m_EditorState.end(); }
-
-	virtual void 	ProgressInfo		(const char* text, bool bWarn=false)=0;
-	virtual void 	ProgressStart		(float max_val, const char* text)=0;
-	virtual void 	ProgressEnd			()=0;
-	virtual void 	ProgressUpdate		(float val)=0;
-    virtual void 	ProgressInc			(const char* info=0, bool bWarn=false)=0;
 
     virtual void 	OutCameraPos		()=0;
     virtual void 	SetStatus			(LPSTR s, bool bOutLog=true)=0;
@@ -204,6 +213,19 @@ public:
 	void 			CommandRenderFocus			(u32 p1, u32 p2, u32& res);
 	void 			CommandBreakLastOperation	(u32 p1, u32 p2, u32& res);
 	void 			CommandRenderResize			(u32 p1, u32 p2, u32& res);
+
+protected:    
+// progress bar
+    DEFINE_VECTOR	(SPBItem*,PBVec,PBVecIt);
+    PBVec			m_ProgressItems;
+    SPBItem*		PBLast				(){return m_ProgressItems.empty()?0:m_ProgressItems.back();}
+public:
+	SPBItem*		PBStart				(float max_val, LPCSTR text);
+	void 			PBEnd				(SPBItem*&);
+	void 			PBInfo				(SPBItem*, LPCSTR text, bool bWarn=false);
+	void 			PBUpdate			(SPBItem*, float val);
+    void 			PBInc				(SPBItem*, LPCSTR info=0, bool bWarn=false);
+    virtual void	PBDraw				()=0;
 };
 //---------------------------------------------------------------------------
 extern ECORE_API TUI* UI;  

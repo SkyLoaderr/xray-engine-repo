@@ -262,7 +262,8 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     FS.update_path	(ltx_nm,_game_textures_,"textures.ltx");
 	CInifile* ltx_ini = xr_new<CInifile>(ltx_nm.c_str(), FALSE, TRUE, TRUE);
     
-    if (bProgress) UI->ProgressStart(M_BASE.size(),"Synchronize textures...");
+	SPBItem* pb=0;
+    if (bProgress) pb = UI->PBStart(M_BASE.size(),"Synchronize textures...");
     FS_QueryPairIt it=M_BASE.begin();
 	FS_QueryPairIt _E = M_BASE.end();
 	for (; it!=_E; it++){
@@ -317,12 +318,12 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
 		if (THM) xr_delete(THM);
 		if (UI->NeedAbort()) break;
         
-        if (bProgress) UI->ProgressInc(bUpdated?std::string(base_name+(bFailed?" - FAILED":" - UPDATED.")).c_str():base_name.c_str(),bUpdated);
+        if (bProgress) UI->PBInc(pb,bUpdated?std::string(base_name+(bFailed?" - FAILED":" - UPDATED.")).c_str():base_name.c_str(),bUpdated);
     }
 
     xr_delete(ltx_ini);
     
-    if (bProgress) UI->ProgressEnd();
+    if (bProgress) 	UI->PBEnd(pb);
     // lock rescanning
     FS.unlock_rescan	();
 }
@@ -442,7 +443,7 @@ BOOL CImageManager::CheckCompliance(LPCSTR fname, int& compl)
 }
 void CImageManager::CheckCompliance(FS_QueryMap& files, FS_QueryMap& compl)
 {
-	UI->ProgressStart(files.size(),"Check texture compliance: ");
+	SPBItem* pb = UI->PBStart(files.size(),"Check texture compliance: ");
     FS_QueryPairIt it	= files.begin();
 	FS_QueryPairIt _E 	= files.end();
 	for (; it!=_E; it++){
@@ -452,10 +453,10 @@ void CImageManager::CheckCompliance(FS_QueryMap& files, FS_QueryMap& compl)
     	if (!CheckCompliance(fname.c_str(),val))
         	ELog.Msg(mtError,"Bad texture: '%s'",it->first.c_str());
         compl.insert			(mk_pair(it->first,FS_QueryItem(it->second.size,iFloor(val))));
-    	UI->ProgressInc	(it->first.c_str());
+    	UI->PBInc				(pb,it->first.c_str());
 		if (UI->NeedAbort()) break;
     }
-	UI->ProgressEnd();
+	UI->PBEnd(pb);
 }
 
 IC void SetCamera(float angle, const Fvector& C, float height, float radius, float dist)

@@ -216,7 +216,8 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
     
     BOOL bUpdated = FALSE;
     
-    if (bProgress) UI->ProgressStart(M_BASE.size(),"Synchronize sounds...");
+    SPBItem* pb = 0;
+    if (bProgress) pb = UI->PBStart(M_BASE.size(),"Synchronize sounds...");
     FS_QueryPairIt it=M_BASE.begin();
 	FS_QueryPairIt _E = M_BASE.end();
 	for (; it!=_E; it++){
@@ -254,10 +255,10 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
 		}
 		if (THM) xr_delete(THM);
 		if (UI->NeedAbort()) break;
-        if (bProgress) UI->ProgressInc(bUpdated?std::string(base_name+" - UPDATED.").c_str():base_name.c_str(),bUpdated);
+        if (bProgress) UI->PBInc	(pb,bUpdated?std::string(base_name+" - UPDATED.").c_str():base_name.c_str(),bUpdated);
     }
 
-    if (bProgress) UI->ProgressEnd();
+    if (bProgress) UI->PBEnd(pb);
     // lock rescanning
     FS.unlock_rescan	();
 }

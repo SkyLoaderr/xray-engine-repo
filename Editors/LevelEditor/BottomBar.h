@@ -80,10 +80,6 @@ __published:	// IDE-managed Components
 	void __fastcall pmOptionsPopup(TObject *Sender);
 	void __fastcall miWeatherClick(TObject *Sender);
 private:	// User declarations
-public:
-	float fStatusProgress;
-    float fMaxVal;
-    AnsiString sProgressTitle;
 public:		// User declarations
     __fastcall TfraBottomBar(TComponent* Owner);
     void RefreshBar(){;}

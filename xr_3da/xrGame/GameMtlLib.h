@@ -72,7 +72,7 @@ public:
         flBounceable	= (1ul<<2ul),
         flSkidmark		= (1ul<<3ul),
         flBloodmark		= (1ul<<4ul),
-        flClimbable		= (1ul<<5ul),
+        flClimable		= (1ul<<5ul),
 //		flWalkOn		= (1ul<<6ul), // obsolette
         flPassable		= (1ul<<7ul),
         flDynamic		= (1ul<<8ul),

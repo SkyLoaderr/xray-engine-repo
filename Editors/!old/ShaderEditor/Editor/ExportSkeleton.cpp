@@ -446,8 +446,8 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     R_ASSERT(m_Source->IsDynamic()&&m_Source->IsSkeleton());
     BOOL b2Link = FALSE;
 
-    UI->ProgressStart(5+m_Source->MeshCount()*2+m_Source->SurfaceCount(),"Export skeleton geometry...");
-    UI->ProgressInc();
+    SPBItem* pb = UI->PBStart(5+m_Source->MeshCount()*2+m_Source->SurfaceCount(),"Export skeleton geometry...");
+    UI->PBInc(pb);
 
     BoneVec& bones 			= m_Source->Bones();
     xr_vector<FvectorVec>	bone_points;
@@ -459,7 +459,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
         CEditableMesh* MESH = *mesh_it;
         // generate vertex offset
         if (!MESH->m_LoadState.is(CEditableMesh::LS_SVERTICES)) MESH->GenerateSVertices();
-	    UI->ProgressInc();
+	    UI->PBInc(pb);
         // fill faces
         for (SurfFacesPairIt sp_it=MESH->m_SurfFaces.begin(); sp_it!=MESH->m_SurfFaces.end(); sp_it++){
             IntVec& face_lst = sp_it->second;
@@ -503,7 +503,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
         MESH->UnloadSVertices();
         MESH->UnloadPNormals();
         MESH->UnloadFNormals();
-	    UI->ProgressInc();
+	    UI->PBInc(pb);
     }
     UI->SetStatus("Make progressive...");
     // fill per bone vertices
@@ -515,9 +515,9 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 		    bone_points[sv_it->B0].push_back(sv_it->O);
             bones[sv_it->B0]->_RITransform().transform_tiny(bone_points[sv_it->B0].back());
         }
-		UI->ProgressInc();
+		UI->PBInc(pb);
     }
-	UI->ProgressInc();
+	UI->PBInc(pb);
 
     // coumpute bounding
     ComputeBounding	();
@@ -549,11 +549,11 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 	    F.close_chunk();
     }
     F.close_chunk();
-    UI->ProgressInc();
+    UI->PBInc(pb);
 
 
     UI->SetStatus("Compute bounding volume...");
-	UI->ProgressInc();
+	UI->PBInc(pb);
 
     // BoneNames
     F.open_chunk(OGF_S_BONE_NAMES);
@@ -581,8 +581,8 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
         F.close_chunk();
     }
 
-	UI->ProgressInc();
-    UI->ProgressEnd();
+	UI->PBInc(pb);
+    UI->PBEnd(pb);
 
     // restore active motion
     m_Source->SetActiveSMotion(active_motion);
@@ -598,8 +598,8 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
      	return !!m_Source->m_SMotionRefs.size();
     }
 
-    UI->ProgressStart(1+m_Source->SMotionCount(),"Export skeleton motions keys...");
-    UI->ProgressInc();
+	SPBItem* pb = UI->PBStart(1+m_Source->SMotionCount(),"Export skeleton motions keys...");
+    UI->PBInc(pb);
 
     // mem active motion
     CSMotion* active_motion=m_Source->ResetSAnimation();
@@ -727,10 +727,10 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
         xr_free(_keysT);
 
         F.close_chunk();
-	    UI->ProgressInc();
+	    UI->PBInc(pb);
     }
     F.close_chunk();
-    UI->ProgressEnd();
+	UI->PBEnd(pb);
 
     // restore active motion
     m_Source->SetActiveSMotion(active_motion);
@@ -746,14 +746,14 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
 
     bool bRes=true;
 
-    UI->ProgressStart	(3,"Export skeleton motions defs...");
-    UI->ProgressInc		();
+	SPBItem* pb = UI->PBStart(3,"Export skeleton motions defs...");
+    UI->PBInc			(pb);
 
     if (m_Source->m_SMotionRefs.size()){
 	    F.open_chunk	(OGF_S_MOTION_REFS);
     	F.w_stringZ		(m_Source->m_SMotionRefs);
 	    F.close_chunk	();
-        UI->ProgressInc	();
+        UI->PBInc		(pb);
     }else{
         // save smparams
         F.open_chunk	(OGF_S_SMPARAMS);
@@ -782,7 +782,7 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
             F.w_u16(m_Source->BoneCount());
             for (int i=0; i<m_Source->BoneCount(); i++) F.w_u32(i);
         }
-        UI->ProgressInc	();
+        UI->PBInc			(pb);
         // motion defs
         SMotionVec& sm_lst	= m_Source->SMotions();
         F.w_u16(sm_lst.size());
@@ -808,11 +808,11 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
                 F.w_float	(motion->fFalloff);
             }
         }
-        UI->ProgressInc		();
+        UI->PBInc			(pb);
         F.close_chunk();
     }
     
-    UI->ProgressEnd();
+	UI->PBEnd(pb);
     return bRes;
 }
 
