@@ -10,10 +10,13 @@
 #include "ai_biting.h"
 #include "../ai_monster_debug.h"
 #include "../ai_monster_group.h"
+#include "../../profiler.h"
 
 
 void CAI_Biting::Think()
 {
+	START_PROFILE("AI/Base Monster/Think");
+
 	if (!g_Alive())		return;
 	if (getDestroy())	return;
 
@@ -28,7 +31,9 @@ void CAI_Biting::Think()
 	
 	MotionStats->update						();
 	
+	START_PROFILE("AI/Base Monster/Think/Update Memory");
 	vfUpdateParameters						();
+	STOP_PROFILE;
 
 	CMonsterMovement::Frame_Init();
 
@@ -43,16 +48,21 @@ void CAI_Biting::Think()
 
 	MotionMan.accel_deactivate			();
 	
+	START_PROFILE("AI/Base Monster/Think/FSM");
 	if (!MotionMan.Seq_Active()) {
 		if (!UpdateStateManager()) {
 			StateSelector					();
 			CurrentState->Execute			(m_current_update);
 		}
 	} else disable_path();
-	
+	STOP_PROFILE;
+
+
 	TranslateActionToPathParams				();
 
+	START_PROFILE("AI/Base Monster/Think/Build Path");
 	CMonsterMovement::Frame_Update			();
+	STOP_PROFILE;
 	
 	MotionMan.Update						();
 
@@ -64,6 +74,7 @@ void CAI_Biting::Think()
 	HDebug->SetActive						(true);
 #endif
 
+	STOP_PROFILE;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

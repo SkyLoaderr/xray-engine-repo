@@ -10,6 +10,8 @@ CPoltergeist::CPoltergeist()
 	
 	m_particles_object	= 0;
 	m_hidden			= false;
+
+	m_flame_state		= flameNone;
 }
 
 CPoltergeist::~CPoltergeist()
@@ -23,6 +25,8 @@ void CPoltergeist::Load(LPCSTR section)
 	inherited::Load	(section);
 
 	MotionMan.accel_load			(section);
+
+	LoadFlame(section);
 
 	m_height				= 2.f;
 	
@@ -98,6 +102,8 @@ void CPoltergeist::UpdateCL()
 	inherited::UpdateCL();
 
 	UpdateParticles();
+	
+	UpdateFlame();
 }
 
 void CPoltergeist::ForceFinalAnimation()
