@@ -187,6 +187,9 @@
 				RelativePath="r2_screenshot.cpp">
 			</File>
 			<File
+				RelativePath="r2_sector_detect.cpp">
+			</File>
+			<File
 				RelativePath="r2_types.h">
 			</File>
 		</Filter>
