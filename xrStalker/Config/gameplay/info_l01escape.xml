@@ -4,7 +4,7 @@
 	
 	<info_portion id="tutorial_artefact_start">
 		<location>
-			<level>zmey_selo2</level>
+			<level>l01_escape</level>
 			<object>002</object>
 			<text>јртефакт.</text>
 			<icon name="јртефакт" x="5" y="1" width="1" height="1" a="255" r="0" g="0" b="255" marker="1"></icon>
@@ -41,9 +41,30 @@
 	<info_portion id="escape_artefact_start">
 		<location>
 			<level>l01_escape</level>
-			<x></x>
-			<y></y>
-			<icon name="ящик" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<x>206</x>
+			<y>68</y>
+			<icon name="ящик" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
+			<text>—копление аномалий "Ёлектра"</text>
+		</location>	
+		<location>
+			<level>l01_escape</level>
+			<x>168</x>
+			<y>70</y>
+			<icon name="ящик" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
+			<text>—копление аномалий "Ёлектра"</text>
+		</location>	
+		<location>
+			<level>l01_escape</level>
+			<x>179</x>
+			<y>107</y>
+			<icon name="ящик" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
+			<text>—копление аномалий "Ёлектра"</text>
+		</location>	
+		<location>
+			<level>l01_escape</level>
+			<x>162</x>
+			<y>111</y>
+			<icon name="ящик" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
 			<text>—копление аномалий "Ёлектра"</text>
 		</location>	
 		<task>esc_trader_need_electra_artefact</task>
