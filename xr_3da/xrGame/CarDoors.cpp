@@ -17,8 +17,10 @@ void CCar::SDoor::Init()
 	Fmatrix door_transform;
 	joint->PSecond_element()->InterpolateGlobalTransform(&door_transform);
 	closed_door_form_in_object.set(joint->PSecond_element()->mXFORM);
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 	Fvector jaxis,janchor;
-
 	float lo_ext,hi_ext,ext;
 	joint->GetAxisDirDynamic(0,jaxis);
 	joint->GetAnchorDynamic(janchor);
@@ -103,18 +105,19 @@ void CCar::SDoor::Init()
 	}
 	switch(door_plane_axes.y) 
 	{
-	case 0:
-		door_dir_in_door.set(door_dir_sign,0.f,0.f);
-		break;
-	case 1:
-		door_dir_in_door.set(0.f,door_dir_sign,0.f);
-		break;
-	case 2:
-		door_dir_in_door.set(0.f,0.f,door_dir_sign);
-		break;
-	default: NODEFAULT;
+		case 0:
+			door_dir_in_door.set(door_dir_sign,0.f,0.f);
+			break;
+		case 1:
+			door_dir_in_door.set(0.f,door_dir_sign,0.f);
+			break;
+		case 2:
+			door_dir_in_door.set(0.f,0.f,door_dir_sign);
+			break;
+		default: NODEFAULT;
 	}
-	//door_dir_in_door.transform();
+///////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
 	///////////////////////////define positive open///////////////////////////////////
    	Fvector door_dir,door_test;
 	door_transform.transform_dir(door_dir,door_dir_in_door);
@@ -512,14 +515,116 @@ void CCar::SDoor::SetDefaultNetState()
 CCar::SDoor::SDoorway::SDoorway()
 {
 	door=NULL;
-	form_in_object.identity();
-	extensions.x=0.f;
-	extensions.y=0.f;
-	
+	door_plane_ext.set(0.f,0.f);
+	door_plane_axes.set(0,0);
 }
-void CCar::SDoor::SDoorway::Init(SDoor* door)
+void CCar::SDoor::SDoorway::Init(SDoor* adoor)
 {
-	
+door=adoor;	
+Fmatrix door_transform;
+door->joint->PSecond_element()->InterpolateGlobalTransform(&door_transform);
+door->closed_door_form_in_object.set(door->joint->PSecond_element()->mXFORM);
+Fvector jaxis,janchor;
+door->joint->GetAxisDirDynamic(0,jaxis);
+door->joint->GetAnchorDynamic(janchor);
+Fmatrix inv_door_transform;
+inv_door_transform.set(door_transform);
+inv_door_transform.invert();
+Fvector door_axis_in_door;
+inv_door_transform.transform_dir(door_axis_in_door,jaxis);
+float lo_ext,hi_ext,ext;
+
+if(_abs(door_axis_in_door.x)>_abs(door_axis_in_door.y))
+{
+	if(_abs(door_axis_in_door.x)>_abs(door_axis_in_door.z))
+	{
+		//door axis aligned along x
+		door_plane_axes.y=0;		   //door axis is x (door_plane_axes.y stores door axis direction (i,j,k)=(0,1,2)
+		door->joint->PSecond_element()->get_Extensions(door_transform.i,janchor.dotproduct(door_transform.i),lo_ext,hi_ext);
+		door->door_plane_ext.y=hi_ext-lo_ext; //door extension along door axis
+
+		door->joint->PSecond_element()->get_Extensions(door_transform.j,janchor.dotproduct(door_transform.j),lo_ext,hi_ext);
+		door_plane_ext.x=hi_ext-lo_ext;//door extensions
+		door_plane_axes.x=1;		   //door_plane_axes.x stores door direction it may be j or k in this point
+
+		door->joint->PSecond_element()->get_Extensions(door_transform.k,janchor.dotproduct(door_transform.k),lo_ext,hi_ext);
+		ext=hi_ext-lo_ext;
+		if(_abs(ext)>_abs(door_axis_in_door.x))
+		{
+			door->door_plane_ext.x=ext;
+			door->door_plane_axes.x=2;
+		}
+ 
+	}
+	else
+	{
+		door->joint->PSecond_element()->get_Extensions(door_transform.j,janchor.dotproduct(door_transform.j),lo_ext,hi_ext);
+		//door->door_plane_ext.y=hi_ext-lo_ext;
+		//door_dir_sign=hi_ext>-lo_ext ? 1.f : -1.f;
+		//door->door_plane_axes.x=2;
+		//door->door_plane_axes.y=1;
+
+		door->joint->PSecond_element()->get_Extensions(door_transform.i,janchor.dotproduct(door_transform.i),lo_ext,hi_ext);
+		ext=hi_ext-lo_ext;
+		if(_abs(ext)>door->door_plane_ext.y)
+		{
+			//door_dir_sign=hi_ext>-lo_ext ? 1.f : -1.f;
+			//door->door_plane_ext.y=ext;
+			//door->door_plane_axes.y=0;
+
+		}
+	}
+}
+else
+{
+	if(door_axis_in_door.y>door_axis_in_door.z)	
+	{
+		door->joint->PSecond_element()->get_Extensions(door_transform.i,janchor.dotproduct(door_transform.i),lo_ext,hi_ext);
+		door->door_plane_ext.y=hi_ext-lo_ext;
+		//door_dir_sign=hi_ext>-lo_ext ? 1.f : -1.f;
+		door->door_plane_axes.x=1;
+		door->door_plane_axes.y=0;
+		door->joint->PSecond_element()->get_Extensions(door_transform.k,janchor.dotproduct(door_transform.k),lo_ext,hi_ext);
+		ext=hi_ext-lo_ext;
+		if(ext>door->door_plane_ext.y)
+		{
+			//door_dir_sign=hi_ext>-lo_ext ? 1.f : -1.f;
+			door->door_plane_ext.y=ext;
+			door->door_plane_axes.y=2;
+		}
+	}
+	else
+	{
+		door->joint->PSecond_element()->get_Extensions(door_transform.j,janchor.dotproduct(door_transform.j),lo_ext,hi_ext);
+		door->door_plane_ext.y=hi_ext-lo_ext;
+		//door_dir_sign=hi_ext>-lo_ext ? 1.f : -1.f;
+		door->door_plane_axes.x=2;
+		door->door_plane_axes.y=1;
+		door->joint->PSecond_element()->get_Extensions(door_transform.i,janchor.dotproduct(door_transform.i),lo_ext,hi_ext);
+		ext=hi_ext-lo_ext;
+		if(ext>door->door_plane_ext.y)
+		{
+			//door_dir_sign=hi_ext>-lo_ext ? 1.f : -1.f;
+			door->door_plane_ext.y=ext;
+			door->door_plane_axes.y=0;
+		}
+	}
+}
+/*
+switch(door->door_plane_axes.y) 
+{
+case 0:
+	door_dir.set(door_dir_sign,0.f,0.f);
+	break;
+case 1:
+	door_dir.set(0.f,door_dir_sign,0.f);
+	break;
+case 2:
+	door_dir.set(0.f,0.f,door_dir_sign);
+	break;
+default: NODEFAULT;
+}
+*/
 }
 void CCar::SDoor::SDoorway::Trace(const Fvector &point,const Fvector &dir)
 {

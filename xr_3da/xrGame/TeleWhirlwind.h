@@ -15,6 +15,7 @@ public:
 	CTeleWhirlwindObject	();
 	virtual		bool				init					(CTelekinesis* tele,CPhysicsShellHolder *obj, float s, float h, u32 ttk); 
 	virtual		void				raise					(float power);
+	virtual		void				raise_update			();
 	virtual		void				keep					();
 	virtual		void				fire					(const Fvector &target);
 	virtual		void				fire					(const Fvector &target, float power);

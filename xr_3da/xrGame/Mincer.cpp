@@ -44,3 +44,11 @@ BOOL CMincer::net_Spawn(LPVOID DC)
 	m_telekinetics.SetCenter(C);
 	return result;
 }
+#ifdef DEBUG
+void CMincer::OnRender()
+{
+	Fmatrix M;M.identity();M.scale(0.2f,0.2f,0.2f);
+	Center(M.c);
+	RCache.dbg_DrawEllipse(M, 0xffffffff);
+}
+#endif

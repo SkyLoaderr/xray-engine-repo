@@ -237,8 +237,13 @@ void	CCar::UpdateCL				( )
 	#endif
 	//	Log("UpdateCL",Device.dwFrame);
 	//XFORM().set(m_pPhysicsShell->mXFORM);
+	VisualUpdate();
+}
+
+ void CCar::VisualUpdate()
+{
 	m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
-	
+
 	Fvector lin_vel;
 	m_pPhysicsShell->get_LinearVel(lin_vel);
 	// Sound
@@ -259,7 +264,6 @@ void	CCar::UpdateCL				( )
 	UpdateExhausts();
 	m_lights.Update();
 }
-
 void	CCar::renderable_Render				( )
 {
 	inherited::renderable_Render			();
@@ -329,12 +333,16 @@ bool CCar::attach_Actor(CActor* actor)
 	}
 	CBoneInstance& instance=K->LL_GetBoneInstance				(u16(id));
 	m_sits_transforms.push_back(instance.mTransform);
-
+	VisualUpdate();
+	
+/*
 	&Owner()->XFORM().set(XFORM());
 	Owner()->XFORM().mulB	(m_sits_transforms[0]);
 
 	if(Owner()->IsMyCamera()) 
 		cam_Update	(Device.fTimeDelta);
+
+*/
 	//CBoneData&	bone_data=K->LL_GetData(id);
 	//Fmatrix driver_pos_tranform;
 	//driver_pos_tranform.setHPB(bone_data.bind_hpb.x,bone_data.bind_hpb.y,bone_data.bind_hpb.z);

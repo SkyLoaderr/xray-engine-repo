@@ -158,12 +158,12 @@ public:
 		u32				open_time;
 		struct SDoorway
 		{
-			Fmatrix			form_in_object;
-			Fvector2		extensions;
+		Fvector2		door_plane_ext;
+		_vector2<int>	door_plane_axes;
 			SDoor			*door;
 				 SDoorway	();
 			void SPass		();
-			void Init		(SDoor	*door);
+			void Init		(SDoor	*adoor);
 			void Trace		(const Fvector &point,const Fvector &dir);
 		};
 		Fvector2		door_plane_ext;
@@ -301,7 +301,7 @@ private:
 	/////////////////////////////////////////////////
 	void  InitParabola();
 	float Parabola(float rpm);
-	float GetSteerAngle();
+	//float GetSteerAngle();
 	void LimitWheels();
 	void Drive();
 	
@@ -430,14 +430,16 @@ public:
 
 	// Inventory for the car
 	CInventory*				GetInventory		(){return inventory;}
+		  void				VisualUpdate		();
 protected:
-	virtual CPhysicsShellHolder*	PPhysicsShellHolder	()	{return PhysicsShellHolder();}												;
-	virtual void					SpawnInitPhysics	(CSE_Abstract	*D)																;
-	virtual void					net_Save			(NET_Packet& P)																	;
-	virtual	BOOL					net_SaveRelevant	()																				;
-			void					SaveNetState		(NET_Packet& P)																	;
-	virtual	void					RestoreNetState		(CSE_PHSkeleton* po)													;
-			void					SetDefaultNetState	(CSE_PHSkeleton* po)																				;
+	virtual CPhysicsShellHolder*	PPhysicsShellHolder					()	{return PhysicsShellHolder();}												;
+	virtual void					SpawnInitPhysics					(CSE_Abstract	*D)																;
+	virtual void					net_Save							(NET_Packet& P)																	;
+	virtual	BOOL					net_SaveRelevant					()																				;
+			void					SaveNetState						(NET_Packet& P)																	;
+	virtual	void					RestoreNetState						(CSE_PHSkeleton* po)															;
+			void					SetDefaultNetState					(CSE_PHSkeleton* po)															;
+	
 public:
 	CCar(void);
 	virtual ~CCar(void);
@@ -451,6 +453,7 @@ private:
 	//Inventory for the car
 	CInventory	*inventory;
 	
-	virtual	void reinit		();
-	virtual	void reload		(LPCSTR section);
+	virtual	void reinit			();
+	virtual	void reload			(LPCSTR section);
+
 };

@@ -18,6 +18,9 @@ private:
 public:
 	CMincer(void);
 	virtual ~CMincer(void);
+#ifdef DEBUG
+	virtual void OnRender					();
+#endif
 	virtual CTelekinesis& Telekinesis		(){return m_telekinetics;}
 	virtual void SwitchZoneState			(EZoneState new_state);
 	virtual void Load						(LPCSTR section);

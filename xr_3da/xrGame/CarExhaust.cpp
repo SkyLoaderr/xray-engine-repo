@@ -48,6 +48,7 @@ void CCar::SExhaust::Clear()
 void CCar::SExhaust::Play()
 {
 	p_pgobject->Play();
+	Update();
 }
 
 void CCar::SExhaust::Stop()
