@@ -47,8 +47,8 @@ public:
 	ALIFE_OBJECT_P_VECTOR		m_tpSpawnPoints;
 	xr_vector<CSE_LevelPoint*>	m_tpLevelSpawnPoints;
 	u32							m_dwLevelID;
-	CLevelGraph						*m_tpAI_Map;
-	CGameLevelCrossTable			*m_tpCrossTable;
+	CLevelGraph					*m_tpAI_Map;
+	CGameLevelCrossTable		*m_tpCrossTable;
 	xr_vector<SLevelPoint>		m_tpLevelPoints;
 
 								CSpawn(LPCSTR name, const SLevel &tLevel, u32 dwLevelID, u32 *dwGroupOffset) : CThread(dwLevelID)
