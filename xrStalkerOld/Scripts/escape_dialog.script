@@ -119,9 +119,9 @@ end
 function wolf_need_dynamite(first_speaker, second_speaker)
 	local actor = level.actor()
     if actor ~= nil and
-	   actor:dont_has_info("esc_dynamite_start") and
-	   actor:dont_has_info("esc_dynamite_have") and
-	   actor:dont_has_info("esc_dynamite_done")
+	   actor:dont_has_info("escape_dynamite_start") and
+	   actor:dont_has_info("escape_dynamite_have") and
+	   actor:dont_has_info("escape_dynamite_done")
 	then
 		return true
 	end
