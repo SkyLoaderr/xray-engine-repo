@@ -14,7 +14,7 @@ D3DVERTEXELEMENT9	decl[] =
 {
 	{0, 0,  D3DDECLTYPE_FLOAT3,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,	0 },
 	{0, 12, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_COLOR,		0 },
-	{0, 16, D3DDECLTYPE_SHORT2,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
+	{0, 16, D3DDECLTYPE_SHORT4,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
 	D3DDECL_END()
 };
 
@@ -24,10 +24,20 @@ void	xrMU_Model::export_geometry		()
 	VDeclarator			D;
 	D.set				(decl);
 
-	// RT-check
+	// RT-check, BOX, low-point, frac-size
 	R_ASSERT		(m_vertices.size()==color.size());
+	Fbox			BB; 
+	BB.invalidate	();
+	for (v_vertices_it vit=m_vertices.begin(); vit!=m_vertices.end(); vit++)
+		BB.modify	(vit->P);
 
-	for (xrMU_Model::v_subdivs_it it=m_subdivs.begin(); it!=m_subdivs.end(); it++)
+	Fvector			frac_low;
+	float			frac_Ysize;
+	BB.getcenter	(frac_low);		frac_low.y	= BB.min.y;
+	frac_Ysize		= BB.max.y - BB.min.y;
+
+	// Begin building
+	for (v_subdivs_it it=m_subdivs.begin(); it!=m_subdivs.end(); it++)
 	{
 		// Vertices
 		{
@@ -45,11 +55,19 @@ void	xrMU_Model::export_geometry		()
 				g_VB.Add	(&oV.Color,4);
 
 				// TC
-				s16	tu,tv;
+				s16	tu,tv,frac,dummy;
 				tu			= QC(oV.UV.begin()->x);
 				tv			= QC(oV.UV.begin()->y);
 				g_VB.Add	(&tu,2);
 				g_VB.Add	(&tv,2);
+
+				// frac
+				float	f1	= (oV.P.y - frac_low.y)		/frac_Ysize;
+				float	f2	= oV.P.distance_to(frac_low)/frac_Ysize;
+				frac		= QC((f1+f2)/2);
+				dummy		= 0;
+				g_VB.Add	(&frac,	2);
+				g_VB.Add	(&dummy,2);
 			}
 
 			g_VB.End		(&it->vb_id,&it->vb_start);
