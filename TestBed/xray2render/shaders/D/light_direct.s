@@ -63,7 +63,11 @@ p2f 	p_main	( v2p_in IN )
 
   // Specular = (H • N)^m
   float S 	= pow		(max(0,dot(H, N)), 32);
+  
+  // Final color
+  float4 C	= light_color*D;
+  C.w		= light_color.w*S;
 
-  OUT.C 	= float4	(light_color.x*D,light_color.y*D,light_color.z*D,light_color.w*S);
+  OUT.C 	= C;
   return OUT;
 }
