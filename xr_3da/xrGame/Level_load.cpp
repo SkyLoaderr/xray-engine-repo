@@ -317,7 +317,7 @@ BOOL CLevel::Load_GameSpecific_After()
 	// loading scripts
 	xr_delete					(m_tpScriptProcessor);
 	string256					l_caFilePath;
-	FS.update_path				(l_caFilePath,"$level$","\\scripts\\*.script");
+	FS.update_path				(l_caFilePath,"$level$","scripts\\*.script");
 	m_tpScriptProcessor			= xr_new<CScriptProcessor>(l_caFilePath);
 
 	return TRUE;
