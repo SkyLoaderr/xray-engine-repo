@@ -394,8 +394,9 @@ bool CFolderHelper::NameAfterEdit(TElTreeItem* node, LPCSTR value, AnsiString& N
 {
 	VERIFY(node);
 	N=N.LowerCase();
+    if (N.IsEmpty()){ N=value; return false; }
 	int cnt=_GetItemCount(N.c_str(),'\\');
-    if (cnt>1){ N=value; return false; }
+    if (cnt>1)		{ N=value; return false; }
     VERIFY(node);
 
     for (TElTreeItem* itm=node->GetFirstSibling(); itm; itm=itm->GetNextSibling()){

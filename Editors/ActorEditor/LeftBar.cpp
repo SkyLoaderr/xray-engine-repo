@@ -63,8 +63,6 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
 {
 	DEFINE_INI(fsStorage);
 
-    InplaceParticleEdit->Editor->Color		= TColor(0x00A0A0A0);
-    InplaceParticleEdit->Editor->BorderStyle= bsNone;
     frmMain->paLeftBar->Width = paLeftBar->Width+2;
     frmMain->sbToolsMin->Left = paLeftBar->Width-frmMain->sbToolsMin->Width-3;
 
@@ -352,38 +350,6 @@ void __fastcall TfraLeftBar::Rename1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
-void __fastcall TfraLeftBar::InplaceParticleEditValidateResult(
-      TObject *Sender, bool &InputValid)
-{
-	TElTreeInplaceAdvancedEdit* IE=InplaceParticleEdit;
-
-    AnsiString new_text = AnsiString(IE->Editor->Text).LowerCase();
-    IE->Editor->Text = new_text;
-
-    TElTreeItem* node = IE->Item;
-    for (TElTreeItem* item=node->GetFirstSibling(); item; item=item->GetNextSibling()){
-        if ((item->Text==new_text)&&(item!=IE->Item)){
-            InputValid = false;
-            return;
-        }
-    }
-    AnsiString full_name;
-    if (FHelper.IsFolder(node)){
-        for (item=node->GetFirstChild(); item&&(item->Level>node->Level); item=item->GetNext()){
-            if (FHelper.IsObject(item)){
-                FHelper.MakeName(item,0,full_name,false);
-                Tools.RenameMotion(full_name.c_str(),new_text.c_str());//,node->Level);
-            }
-        }
-    }else if (FHelper.IsObject(node)){
-        FHelper.MakeName(node,0,full_name,false);
-        Tools.RenameMotion(full_name.c_str(),new_text.c_str());//,node->Level);
-    }
-	Tools.MotionModified();
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::ebMotionsAppendClick(TObject *Sender)
 {
     AnsiString folder,nm,fnames,full_name;
@@ -438,6 +404,7 @@ void __fastcall TfraLeftBar::tvMotionsDragDrop(TObject *Sender,
 
 void TfraLeftBar::UpdateMotionList()
 {
+	tvMotions->IsUpdating = true;
 	tvMotions->Items->Clear();
     if (Tools.CurrentObject()){
 		SMotionVec&	lst=Tools.CurrentObject()->SMotions();
@@ -446,6 +413,7 @@ void TfraLeftBar::UpdateMotionList()
     }
     UpdateProperties();
 	lbMotionCount->Caption = tvMotions->Items->Count;	
+	tvMotions->IsUpdating = false;
 }
 //---------------------------------------------------------------------------
 

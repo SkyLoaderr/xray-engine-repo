@@ -27,7 +27,8 @@ public:
 	IC bool operator() (CBone* B) { return (stricmp(B->WMap(),wm_name.c_str())==0); }
 };
 //----------------------------------------------------
-void st_AnimParam::Set(CCustomMotion* M, bool loop){
+void st_AnimParam::Set(CCustomMotion* M, bool loop)
+{
 	t=0;
     min_t=(float)M->FrameStart()/M->FPS();
     max_t=(float)M->FrameEnd()/M->FPS();
@@ -47,7 +48,8 @@ void st_AnimParam::Update(float dt){
 }
 
 #ifdef _EDITOR
-void CEditableObject::OnFrame(){
+void CEditableObject::OnFrame()
+{
 	if (IsSkeleton()){
 		BoneVec& lst = m_Bones;
     	if (IsSMotionActive()){
@@ -66,28 +68,31 @@ void CEditableObject::OnFrame(){
 }
 #endif
 
-CSMotion* CEditableObject::ResetSAnimation(){
+CSMotion* CEditableObject::ResetSAnimation()
+{
 	CSMotion* M=m_ActiveSMotion;
 	SetActiveSMotion(0);
     return M;
 }
 
-void CEditableObject::ResetAnimation(){
+void CEditableObject::ResetAnimation()
+{
     ResetSAnimation();
 }
 
 //----------------------------------------------------
 // Skeletal motion
 //----------------------------------------------------
-void CEditableObject::CalculateAnimation(bool bGenInvMat){
+void CEditableObject::CalculateAnimation(bool bGenInvMat)
+{
     for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
-        u32 flag=0;
-        if (m_ActiveSMotion) flag = m_ActiveSMotion->GetMotionFlag(b_it-m_Bones.begin());
+        Flags8 flags; flags.zero();
+        if (m_ActiveSMotion) flags = m_ActiveSMotion->GetMotionFlags(b_it-m_Bones.begin());
 //        else if (bGenInvMat) flag = m_SMotions[0]->GetMotionFlag(b_it-m_Bones.begin());
         Fmatrix M,R;
         Fmatrix& parent = ((*b_it)->ParentIndex()>-1)?m_Bones[(*b_it)->ParentIndex()]->LTransform():Fidentity;
         const Fvector& r = (*b_it)->Rotate();
-        if (flag&WORLD_ORIENTATION){
+        if (flags.is(st_BoneMotion::flWorldOrient)){
 	        R.setHPB(-r.x,-r.y,-r.z);
             M.identity();
     	    M.c.set((*b_it)->Offset());
@@ -124,7 +129,8 @@ void CEditableObject::CalculateAnimation(bool bGenInvMat){
     }
 }
 
-void CEditableObject::SetActiveSMotion(CSMotion* mot){
+void CEditableObject::SetActiveSMotion(CSMotion* mot)
+{
 	m_ActiveSMotion=mot;
 	if (m_ActiveSMotion) m_SMParam.Set(m_ActiveSMotion,!m_ActiveSMotion->m_Flags.is(esmStopAtEnd));
     BoneVec& lst = m_Bones;
@@ -135,7 +141,8 @@ void CEditableObject::SetActiveSMotion(CSMotion* mot){
 #endif
 }
 
-bool CEditableObject::RemoveSMotion(const char* name){
+bool CEditableObject::RemoveSMotion(const char* name)
+{
     SMotionVec& lst = m_SMotions;
     for(SMotionIt m=lst.begin(); m!=lst.end(); m++)
         if ((stricmp((*m)->Name(),name)==0)){
@@ -147,7 +154,8 @@ bool CEditableObject::RemoveSMotion(const char* name){
     return false;
 }
 
-CSMotion* CEditableObject::AppendSMotion(LPCSTR name, LPCSTR fname){
+CSMotion* CEditableObject::AppendSMotion(LPCSTR name, LPCSTR fname)
+{
 	VERIFY(IsSkeleton());
 	CSMotion* M = LoadSMotion(fname);
     if (M){
@@ -165,7 +173,8 @@ CSMotion* CEditableObject::AppendSMotion(LPCSTR name, LPCSTR fname){
     return M;
 }
 
-bool CEditableObject::ReloadSMotion(CSMotion* src, const char* fname){
+bool CEditableObject::ReloadSMotion(CSMotion* src, const char* fname)
+{
 	VERIFY(IsSkeleton());
 	CSMotion* M = LoadSMotion(fname);
     if (M){
@@ -180,13 +189,15 @@ bool CEditableObject::ReloadSMotion(CSMotion* src, const char* fname){
     return false;
 }
 
-void CEditableObject::ClearSMotions(){
+void CEditableObject::ClearSMotions()
+{
 	SetActiveSMotion(0);
     for(SMotionIt m_it=m_SMotions.begin(); m_it!=m_SMotions.end();m_it++)xr_delete(*m_it);
     m_SMotions.clear();
 }
 
-bool CEditableObject::LoadSMotions(const char* fname){
+bool CEditableObject::LoadSMotions(const char* fname)
+{
 	IReader* F	= FS.r_open(fname);
     ClearSMotions();
     // object motions
@@ -213,7 +224,8 @@ bool CEditableObject::LoadSMotions(const char* fname){
 	return true;
 }
 
-bool CEditableObject::SaveSMotions(const char* fname){
+bool CEditableObject::SaveSMotions(const char* fname)
+{
 	CMemoryWriter F;
     F.w_u32		(m_SMotions.size());
     for (SMotionIt m_it=m_SMotions.begin(); m_it!=m_SMotions.end(); m_it++) (*m_it)->Save(F);
@@ -221,7 +233,8 @@ bool CEditableObject::SaveSMotions(const char* fname){
     return true;
 }
 
-bool CEditableObject::RenameSMotion(const char* old_name, const char* new_name){
+bool CEditableObject::RenameSMotion(const char* old_name, const char* new_name)
+{
 	if (stricmp(old_name,new_name)==0) return true;
     if (FindSMotionByName(new_name)) return false;
 	CSMotion* M = FindSMotionByName(old_name); VERIFY(M);
@@ -229,14 +242,16 @@ bool CEditableObject::RenameSMotion(const char* old_name, const char* new_name){
     return true;
 }
 
-CSMotion* CEditableObject::FindSMotionByName	(const char* name, const CSMotion* Ignore){
+CSMotion* CEditableObject::FindSMotionByName	(const char* name, const CSMotion* Ignore)
+{
     SMotionVec& lst = m_SMotions;
     for(SMotionIt m=lst.begin(); m!=lst.end(); m++)
         if ((Ignore!=(*m))&&(stricmp((*m)->Name(),name)==0)) return (*m);
     return 0;
 }
 
-void CEditableObject::GenerateSMotionName(char* buffer, const char* start_name, const CSMotion* M){
+void CEditableObject::GenerateSMotionName(char* buffer, const char* start_name, const CSMotion* M)
+{
 	strcpy(buffer,start_name);
     int idx = 0;
 	while(FindSMotionByName(buffer,M)){
@@ -246,7 +261,8 @@ void CEditableObject::GenerateSMotionName(char* buffer, const char* start_name, 
     strlwr(buffer);
 }
 
-void CEditableObject::UpdateBoneParenting(){
+void CEditableObject::UpdateBoneParenting()
+{
     // update parenting
     for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
         BoneIt parent=std::find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ((*b_it)->Parent()));
@@ -254,39 +270,46 @@ void CEditableObject::UpdateBoneParenting(){
     }
 }
 
-CBone* CEditableObject::FindBoneByName(const char* name){
+CBone* CEditableObject::FindBoneByName(const char* name)
+{
 	BoneIt parent = std::find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ(name));
     return (parent==m_Bones.end())?0:*parent;
 }
 
-int CEditableObject::BoneIDByName(LPCSTR name){
+int CEditableObject::BoneIDByName(LPCSTR name)
+{
 	BoneIt bone = std::find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ(name));
     return (bone!=m_Bones.end())?(bone-m_Bones.begin()):-1;
 }
 
-int CEditableObject::GetRootBoneID(){
+int CEditableObject::GetRootBoneID()
+{
     for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
     	if ((*b_it)->IsRoot()) return b_it-m_Bones.begin();
     THROW;
 }
 
-int CEditableObject::PartIDByName(LPCSTR name){
+int CEditableObject::PartIDByName(LPCSTR name)
+{
 	for (BPIt it=m_BoneParts.begin(); it!=m_BoneParts.end(); it++)
     	if (it->alias==name) return it-m_BoneParts.begin();
     return -1;
 }
 
-LPCSTR CEditableObject::BoneNameByID(int id){
+LPCSTR CEditableObject::BoneNameByID(int id)
+{
 	VERIFY((id>=0)&&(id<(int)m_Bones.size()));
     return m_Bones[id]->Name();
 }
 
-int	CEditableObject::GetBoneIndexByWMap(const char* wm_name){
+int	CEditableObject::GetBoneIndexByWMap(const char* wm_name)
+{
 	BoneIt bone = std::find_if(m_Bones.begin(),m_Bones.end(),fBoneWMNameEQ(wm_name));
     return (bone==m_Bones.end())?-1:bone-m_Bones.begin();
 }
 
-void CEditableObject::GetBoneWorldTransform(u32 bone_idx, float t, CSMotion* motion, Fmatrix& matrix){
+void CEditableObject::GetBoneWorldTransform(u32 bone_idx, float t, CSMotion* motion, Fmatrix& matrix)
+{
 	VERIFY(bone_idx<m_Bones.size());
     int idx	= bone_idx;
     matrix.identity();
@@ -294,11 +317,11 @@ void CEditableObject::GetBoneWorldTransform(u32 bone_idx, float t, CSMotion* mot
     do{ lst.push_back(idx); }while((idx=m_Bones[idx]->ParentIndex())>-1);
     for (int i=lst.size()-1; i>=0; i--){
     	idx = lst[i];
-	    u32 flag	= motion->GetMotionFlag(idx);
+	    Flags8 flags	= motion->GetMotionFlags(idx);
     	Fvector T,R;
         Fmatrix rot, mat;
         motion->Evaluate(idx,t,T,R);
-        if (flag&WORLD_ORIENTATION){
+        if (flags.is(st_BoneMotion::flWorldOrient)){
             rot.setHPB(-R.x,-R.y,-R.z);
             mat.identity();
             mat.c.set(T);
@@ -315,7 +338,8 @@ void CEditableObject::GetBoneWorldTransform(u32 bone_idx, float t, CSMotion* mot
     }
 }
 
-bool CEditableObject::CheckBoneCompliance(CSMotion* M){
+bool CEditableObject::CheckBoneCompliance(CSMotion* M)
+{
 	VERIFY(M);
     BoneMotionVec& lst = M->BoneMotions();
 	if (m_Bones.size()!=lst.size()){

@@ -1,5 +1,5 @@
-#ifndef _ENVELOPE_H_
-#define _ENVELOPE_H_
+#ifndef EnvelopeH
+#define EnvelopeH
 
 // refs
 class IWriter;
@@ -36,14 +36,57 @@ envelope.h
 
 #pragma pack( push,1 )
 struct st_Key{
+	enum{
+    	ktStepped = 1<<0,
+    };
 	float		value;
 	float		time;
-	int			shape;
+	u8			shape;
 	float		tension;
 	float		continuity;
 	float		bias;
 	float		param[ 4 ];
-	st_Key		(){ZeroMemory(this,sizeof(st_Key));}
+				st_Key		(){ZeroMemory(this,sizeof(st_Key));}
+    IC void		Save		(IWriter& F)
+    {
+        F.w_float	(value);
+        F.w_float	(time);
+        F.w_u8		(shape);
+        if (shape!=4){ // ! Stepped
+            F.w_float_q16(tension,-32.f,32.f);
+            F.w_float_q16(continuity,-32.f,32.f);
+            F.w_float_q16(bias,-32.f,32.f);
+            F.w_float_q16(param[0],-32.f,32.f);
+            F.w_float_q16(param[1],-32.f,32.f);
+            F.w_float_q16(param[2],-32.f,32.f);
+            F.w_float_q16(param[3],-32.f,32.f);
+        }
+    }
+	IC void		Load_1		(IReader& F)
+    {
+        value		= F.r_float();
+        time		= F.r_float();
+        shape		= F.r_u32();
+        tension		= F.r_float();
+        continuity	= F.r_float();
+        bias		= F.r_float();
+        F.r			(&param,sizeof(float)*4);
+    }
+	IC void		Load_2		(IReader& F)
+    {
+        value		= F.r_float();
+        time		= F.r_float();
+        shape		= F.r_u8();
+        if (shape!=4){ // ! Stepped
+            tension		= F.r_float_q16(-32.f,32.f);
+            continuity	= F.r_float_q16(-32.f,32.f);
+            bias		= F.r_float_q16(-32.f,32.f);
+            param[0]	= F.r_float_q16(-32.f,32.f);
+            param[1]	= F.r_float_q16(-32.f,32.f);
+            param[2]	= F.r_float_q16(-32.f,32.f);
+            param[3]	= F.r_float_q16(-32.f,32.f);
+        }
+    }
 };
 #pragma pack( pop )
 
@@ -69,7 +112,8 @@ public:
 	float		Evaluate	(float t);
 
 	void		Save		(IWriter& F);
-	void		Load		(IReader& F);
+	void		Load_1		(IReader& F);
+	void		Load_2		(IReader& F);
 	void		SaveA		(IWriter& F);
 	void		LoadA		(IReader& F);
 

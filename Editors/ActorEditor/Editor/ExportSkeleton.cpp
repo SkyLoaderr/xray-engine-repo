@@ -435,7 +435,7 @@ bool CExportSkeleton::ExportMotions(IWriter& F)
         BoneMotionVec& lst=motion->BoneMotions();
         int bone_id = 0;
         for (BoneMotionIt bm_it=lst.begin(); bm_it!=lst.end(); bm_it++,bone_id++){
-            u32 flag = motion->GetMotionFlag(bone_id);
+            Flags8 flags = motion->GetMotionFlags(bone_id);
             CBone* B = m_Source->GetBone(bone_id);
             int parent_idx = B->ParentIndex();
             for (int frm=motion->FrameStart(); frm<motion->FrameEnd(); frm++){
@@ -445,7 +445,7 @@ bool CExportSkeleton::ExportMotions(IWriter& F)
                 Fquaternion q;
                 motion->Evaluate	(bone_id,t,T,R);
 
-                if (flag&WORLD_ORIENTATION){
+                if (flags.is(st_BoneMotion::flWorldOrient)){
                     Fmatrix 	parent;
                     Fmatrix 	inv_parent;
                     if(parent_idx>-1){
@@ -511,7 +511,7 @@ bool CExportSkeleton::ExportMotions(IWriter& F)
         CSMotion* motion = *motion_it;
         F.w_stringZ	(motion->Name());
         F.w_u32	(motion->m_Flags.get());
-		F.w_u16		(motion->iBoneOrPart);
+		F.w_s16		(motion->iBoneOrPart);
         F.w_u16		(motion_it-sm_lst.begin());
         F.w_float	(motion->fSpeed);
         F.w_float	(motion->fPower);

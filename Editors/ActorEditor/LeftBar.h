@@ -36,8 +36,6 @@ __published:	// IDE-managed Components
 	TMenuItem *CollapseAll1;
 	TMenuItem *N1;
 	TMenuItem *CreateFolder1;
-	TMenuItem *Rename1;
-	TElTreeInplaceAdvancedEdit *InplaceParticleEdit;
 	TMenuItem *Load1;
 	TMenuItem *Save2;
 	TMenuItem *miExportSkeleton;
@@ -136,8 +134,6 @@ __published:	// IDE-managed Components
 	void __fastcall tvMotionsKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
 	void __fastcall Rename1Click(TObject *Sender);
-	void __fastcall InplaceParticleEditValidateResult(TObject *Sender,
-          bool &InputValid);
 	void __fastcall ebMotionsAppendClick(TObject *Sender);
 	void __fastcall tvMotionsStartDrag(TObject *Sender,
           TDragObject *&DragObject);

@@ -1,6 +1,6 @@
 //----------------------------------------------------
-#ifndef _Motion_H_
-#define _Motion_H_
+#ifndef MotionH
+#define MotionH
 
 #ifdef _LW_EXPORT
 #include <lwrender.h>
@@ -25,14 +25,15 @@ enum EChannelType{
 	ctMaxChannel
 };
 
-#define MAX_OBJ_NAME 64
-#define WORLD_ORIENTATION (1<<0)
-
-struct st_BoneMotion{
+struct st_BoneMotion
+{
+	enum {
+		flWorldOrient = 1<<0,
+	};
 	LPSTR		name;
 	CEnvelope*	envs[ctMaxChannel];
-	u32		flag;
-    			st_BoneMotion(){name=0; flag=0; ZeroMemory(envs,sizeof(CEnvelope*)*ctMaxChannel);}
+	Flags8		m_Flags;
+    			st_BoneMotion(){name=0; m_Flags.zero(); ZeroMemory(envs,sizeof(CEnvelope*)*ctMaxChannel);}
     void        SetName(LPCSTR nm){xr_free(name); name=xr_strdup(nm);}
 };
 // list по костям
@@ -109,12 +110,12 @@ enum ESMFlags{
 class ENGINE_API CSMotion: public CCustomMotion{
 	BoneMotionVec	bone_mots;
 public:
-    int				iBoneOrPart;
+    s32				iBoneOrPart;
     float			fSpeed;
     float			fAccrue;
     float			fFalloff;
     float			fPower;
-	Flags32			m_Flags;
+	Flags8			m_Flags;
 
     void			Clear			();
 public:
@@ -128,8 +129,8 @@ public:
 
     st_BoneMotion*	FindBoneMotion	(LPCSTR name);
     BoneMotionVec&	BoneMotions		()				{return bone_mots;}
-	void			SetBoneOrPart	(int idx)		{iBoneOrPart=idx;}
-	u32			GetMotionFlag	(int bone_idx)	{return bone_mots[bone_idx].flag;}
+	void			SetBoneOrPart	(s16 idx)		{iBoneOrPart=idx;}
+	Flags8			GetMotionFlags	(int bone_idx)	{return bone_mots[bone_idx].m_Flags;}
 
 	virtual void	Save			(IWriter& F);
 	virtual bool	Load			(IReader& F);

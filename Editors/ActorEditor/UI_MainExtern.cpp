@@ -68,7 +68,10 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
         if (p1)	fn = (char*)p1;
         else	fn = m_LastFileName;
         EFS.UnlockFile(0,m_LastFileName);
+        CTimer T;
+        T.Start();
 		if (Tools.Save(fn.c_str())){
+            ELog.Msg(mtInformation,"Object '%s' successfully saved. Saving time - %3.2f(s).",m_LastFileName,T.GetAsync());
         	Command(COMMAND_UPDATE_CAPTION);
 			fraLeftBar->AppendRecentFile(fn.c_str());
         }else{
@@ -84,11 +87,14 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
                 break;
             }
 			Command( COMMAND_CLEAR );
+            CTimer T;
+            T.Start();
 	    	if (!Tools.Load(fn.c_str())){
             	bRes=false;
             	break;
             }
 			strcpy(m_LastFileName,ExtractFileName(fn).c_str());
+            ELog.Msg(mtInformation,"Object '%s' successfully imported. Loading time - %3.2f(s).",m_LastFileName,T.GetAsync());
 			if (Command( COMMAND_SAVEAS )){
 	            EFS.MarkFile(fn.c_str(),true);
 			    fraLeftBar->UpdateMotionList();
@@ -126,11 +132,14 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
                 EFS.UnlockFile(0,fn.c_str());
             }
 			Command( COMMAND_CLEAR );
+            CTimer T;
+            T.Start();
 	    	if (!Tools.Load(fn.c_str())){
             	bRes=false;
             	break;
             }
 			strcpy(m_LastFileName,fn.c_str());
+            ELog.Msg(mtInformation,"Object '%s' successfully loaded. Loading time - %3.2f(s).",m_LastFileName,T.GetAsync());
 			fraLeftBar->AppendRecentFile(m_LastFileName);
 		    fraLeftBar->UpdateMotionList();
         	Command(COMMAND_UPDATE_CAPTION);

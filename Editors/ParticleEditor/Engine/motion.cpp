@@ -6,8 +6,8 @@
 
 #define EOBJ_OMOTION   			0x1100
 #define EOBJ_SMOTION   			0x1200
-#define EOBJ_OMOTION_VERSION   	0x0003
-#define EOBJ_SMOTION_VERSION   	0x0005
+#define EOBJ_OMOTION_VERSION   	0x0004
+#define EOBJ_SMOTION_VERSION   	0x0006
 
 #ifdef _LW_EXPORT
 	extern char* ReplaceSpace(char* s);
@@ -100,11 +100,18 @@ void COMotion::Save(IWriter& F){
 bool COMotion::Load(IReader& F){
 	CCustomMotion::Load(F);
 	WORD vers	= F.r_u16();
-	if (vers!=EOBJ_OMOTION_VERSION) return false;
-	for (int ch=0; ch<ctMaxChannel; ch++){
-		envs[ch] = xr_new<CEnvelope> ();
-		envs[ch]->Load(F);
-	}
+    if (vers==0x0003){
+        for (int ch=0; ch<ctMaxChannel; ch++){
+            envs[ch] = xr_new<CEnvelope> ();
+            envs[ch]->Load_1(F);
+        }
+    }else{
+		if (vers!=EOBJ_OMOTION_VERSION) return false;
+        for (int ch=0; ch<ctMaxChannel; ch++){
+            envs[ch] = xr_new<CEnvelope> ();
+            envs[ch]->Load_2(F);
+        }
+    }
 	return true;
 }
 
@@ -113,7 +120,8 @@ bool COMotion::Load(IReader& F){
 //------------------------------------------------------------------------------------------
 // Skeleton Motion
 //------------------------------------------------------------------------------------------
-CSMotion::CSMotion():CCustomMotion(){
+CSMotion::CSMotion():CCustomMotion()
+{
 	mtype			=mtSkeleton;
     iBoneOrPart		=-1;
     fSpeed			=1.0f;
@@ -208,29 +216,31 @@ bool CSMotion::LoadMotion(const char* buf){
 	return Load		(F());
 }
 
-void CSMotion::Save(IWriter& F){
+void CSMotion::Save(IWriter& F)
+{
 	CCustomMotion::Save(F);
 	F.w_u16		(EOBJ_SMOTION_VERSION);
-	F.w_u32		(m_Flags.get());
-    F.w_u32		(iBoneOrPart);
-    F.w_float	(fSpeed);
+	F.w_s8		(m_Flags.get());
+    F.w_s16		(iBoneOrPart);
+    F.w_float	(fSpeed);           
     F.w_float	(fAccrue);
     F.w_float	(fFalloff);
     F.w_float	(fPower);
-	F.w_u32		(bone_mots.size());
+	F.w_u16		(bone_mots.size());
 	for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
-    	F.w_stringZ	(bm_it->name);
-		F.w_u32	(bm_it->flag);
+    	F.w_stringZ(bm_it->name);
+		F.w_u8	(bm_it->m_Flags.get());
 		for (int ch=0; ch<ctMaxChannel; ch++)
 			bm_it->envs[ch]->Save(F);
 	}
 }
 
-bool CSMotion::Load(IReader& F){
+bool CSMotion::Load(IReader& F)
+{
 	CCustomMotion::Load(F);
 	WORD vers	= F.r_u16();
 	if (vers==0x0004){
-	    iBoneOrPart	= F.r_u32();
+	    iBoneOrPart	= F.r_u32();          
 		m_Flags.set	(esmFX,F.r_u8());
 		m_Flags.set	(esmStopAtEnd,F.r_u8());
 		fSpeed		= F.r_float();
@@ -241,31 +251,51 @@ bool CSMotion::Load(IReader& F){
         string64	temp_buf;
 		for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
         	bm_it->SetName	(itoa(bm_it-bone_mots.begin(),temp_buf,10));
-			bm_it->flag 	= F.r_u32();
+			bm_it->m_Flags.set(F.r_u32());
 			for (int ch=0; ch<ctMaxChannel; ch++){
 				bm_it->envs[ch] = xr_new<CEnvelope> ();
-				bm_it->envs[ch]->Load(F);
+				bm_it->envs[ch]->Load_1(F);
 			}
 		}
 	}else{
-		if (vers!=EOBJ_SMOTION_VERSION) return false;
-		m_Flags.set	(F.r_u32());
-		iBoneOrPart	= F.r_u32();
-		fSpeed		= F.r_float();
-		fAccrue		= F.r_float();
-		fFalloff	= F.r_float();
-		fPower		= F.r_float();
-		bone_mots.resize(F.r_u32());
-       	string64 	buf;
-		for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
-        	F.r_stringZ		(buf);
-        	bm_it->SetName	(buf);
-			bm_it->flag 	= F.r_u32();
-			for (int ch=0; ch<ctMaxChannel; ch++){
-				bm_it->envs[ch] = xr_new<CEnvelope> ();
-				bm_it->envs[ch]->Load(F);
-			}
-		}
+		if (vers==0x0005){
+            m_Flags.set	(F.r_u32());
+            iBoneOrPart	= F.r_u32();
+            fSpeed		= F.r_float();
+            fAccrue		= F.r_float();
+            fFalloff	= F.r_float();
+            fPower		= F.r_float();
+            bone_mots.resize(F.r_u32());
+            string64 	buf;
+            for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
+                F.r_stringZ		(buf);
+                bm_it->SetName	(buf);
+                bm_it->m_Flags.set(F.r_u32());
+                for (int ch=0; ch<ctMaxChannel; ch++){
+                    bm_it->envs[ch] = xr_new<CEnvelope> ();
+                    bm_it->envs[ch]->Load_1(F);
+                }
+            }
+        }else{
+            if (vers!=EOBJ_SMOTION_VERSION) return false;
+            m_Flags.set	(F.r_u8());
+            iBoneOrPart	= F.r_s16();
+            fSpeed		= F.r_float();
+            fAccrue		= F.r_float();
+            fFalloff	= F.r_float();
+            fPower		= F.r_float();
+            bone_mots.resize(F.r_u16());
+            string64 	buf;
+            for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
+                F.r_stringZ		(buf);
+                bm_it->SetName	(buf);
+                bm_it->m_Flags.set(F.r_u8());
+                for (int ch=0; ch<ctMaxChannel; ch++){
+                    bm_it->envs[ch] = xr_new<CEnvelope> ();
+                    bm_it->envs[ch]->Load_2(F);
+                }
+            }
+        }
 	}
 	return true;
 }

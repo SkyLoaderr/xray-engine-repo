@@ -235,6 +235,8 @@ void CEditableObject::Save(IWriter& F)
     F.w_s32			(m_Version);
     F.w_s32			(0);
     F.close_chunk	();
+
+//    Log("1: ",F.tell());
     // meshes
     F.open_chunk	(EOBJ_CHUNK_EDITMESHES);
     int count = 0;
@@ -244,6 +246,7 @@ void CEditableObject::Save(IWriter& F)
         F.close_chunk();
     }
     F.close_chunk	();
+//    Log("2: ",F.tell());
     // surfaces
     F.open_chunk	(EOBJ_CHUNK_SURFACES3);
     F.w_u32		(m_Surfaces.size());
@@ -259,6 +262,7 @@ void CEditableObject::Save(IWriter& F)
         F.w_u32	(1);
     }
     F.close_chunk	();
+//    Log("3: ",F.tell());
 
     // bones
     if (!m_Bones.empty()){
@@ -267,6 +271,7 @@ void CEditableObject::Save(IWriter& F)
 	    for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++) (*b_it)->Save(F);
     	F.close_chunk	();
     }
+//    Log("4: ",F.tell());
 
     // skeleton motions
     if (!m_SMotions.empty()){
@@ -275,6 +280,7 @@ void CEditableObject::Save(IWriter& F)
         for (SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end(); s_it++) (*s_it)->Save(F);
         F.close_chunk	();
     }
+//    Log("5: ",F.tell());
 
     // bone parts
     if (!m_BoneParts.empty()){
@@ -287,6 +293,7 @@ void CEditableObject::Save(IWriter& F)
         }
         F.close_chunk	();
     }
+//    Log("6: ",F.tell());
 
     if (IsDynamic()){
 		F.open_chunk	(EOBJ_CHUNK_ACTORTRANSFORM);
@@ -294,6 +301,7 @@ void CEditableObject::Save(IWriter& F)
         F.w_fvector3		(a_vRotate);
 		F.close_chunk	();
     }
+//    Log("7: ",F.tell());
 
 	bOnModified		= false;
 }

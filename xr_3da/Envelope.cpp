@@ -27,19 +27,34 @@ float CEnvelope::Evaluate(float time){
 	return evalEnvelope(this, time);
 }
 
-void CEnvelope::Save(IWriter& F){
-	F.w			(behavior,sizeof(int)*2);
-	F.w_u32		(keys.size());
+void CEnvelope::Save(IWriter& F)
+{
+	F.w_u8		(behavior[0]);
+	F.w_u8		(behavior[1]);
+	F.w_u16		(keys.size());
 	for (KeyIt k_it=keys.begin(); k_it!=keys.end(); k_it++)
-		F.w		(*k_it,sizeof(st_Key));
+    	(*k_it)->Save(F);
 }
 
-void CEnvelope::Load(IReader& F){
+void CEnvelope::Load_1(IReader& F)
+{
 	F.r			(behavior,sizeof(int)*2);
-	keys.resize	(F.r_u32());
+    int y		= F.r_u32();
+	keys.resize	(y);
 	for (u32 i=0; i<keys.size(); i++){
     	keys[i]	= xr_new<st_Key> ();
-		F.r		(keys[i],sizeof(st_Key));
+        keys[i]->Load_1(F);
+    }
+}
+
+void CEnvelope::Load_2(IReader& F)
+{
+	behavior[0]	= F.r_u8();
+	behavior[1]	= F.r_u8();
+	keys.resize	(F.r_u16());
+	for (u32 i=0; i<keys.size(); i++){
+    	keys[i]	= xr_new<st_Key> ();
+        keys[i]->Load_2(F);
     }
 }
 

@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 277
+  Height = 661
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 277
+    Height = 661
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object spProps: TSplitter
       Left = 1
-      Top = -208
+      Top = 176
       Width = 210
       Height = 2
       Cursor = crVSplit
@@ -43,7 +43,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paSkeletonPart: TPanel
       Left = 1
-      Top = -206
+      Top = 178
       Width = 210
       Height = 482
       Align = alBottom
@@ -632,7 +632,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 1
       Width = 210
-      Height = 239
+      Height = 175
       Align = alClient
       BevelOuter = bvNone
       ParentColor = True
@@ -860,7 +860,7 @@ object fraLeftBar: TfraLeftBar
         Left = 0
         Top = 149
         Width = 210
-        Height = 90
+        Height = 26
         Align = alClient
         ParentShowHint = False
         ShowHint = False
@@ -889,7 +889,7 @@ object fraLeftBar: TfraLeftBar
           Left = 1
           Top = 15
           Width = 208
-          Height = 74
+          Height = 10
           Align = alClient
           BevelOuter = bvNone
           Color = 10528425
@@ -1081,8 +1081,8 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 205
-    Top = 313
+    Left = 39
+    Top = 306
     object N10: TMenuItem
       Caption = '-'
     end
@@ -1168,18 +1168,14 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 34
-    Top = 346
+    Left = 10
+    Top = 306
     object N11: TMenuItem
       Caption = '-'
     end
     object CreateFolder1: TMenuItem
       Caption = 'Create Folder'
       OnClick = CreateFolder1Click
-    end
-    object Rename1: TMenuItem
-      Caption = 'Rename'
-      OnClick = Rename1Click
     end
     object N1: TMenuItem
       Caption = '-'
@@ -1192,12 +1188,6 @@ object fraLeftBar: TfraLeftBar
       Caption = 'Collapse All'
       OnClick = CollapseAll1Click
     end
-  end
-  object InplaceParticleEdit: TElTreeInplaceAdvancedEdit
-    Types = [sftText]
-    OnValidateResult = InplaceParticleEditValidateResult
-    Left = 5
-    Top = 346
   end
   object pmPreviewObject: TMxPopupMenu
     Alignment = paCenter

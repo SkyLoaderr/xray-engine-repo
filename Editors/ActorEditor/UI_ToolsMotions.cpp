@@ -217,24 +217,24 @@ void CActorTools::FillMotionProperties()
         P=PHelper.CreateText	(items,"Name",		&SM->Name(), sizeof(SM->Name()));
         P->SetEvents			(FHelper.NameAfterEdit,FHelper.NameBeforeEdit,OnMotionNameChange);
         P->Owner()->SetEvents	(FHelper.NameDraw);
-        P->Owner()->tag			= (int)FHelper.FindObject(fraLeftBar->tvMotions,SM->Name()); VERIFY(P->Owner()->tag);
+        P->Owner()->tag			= (int)FHelper.FindObject(fraLeftBar->tvMotions,SM->Name()); //VERIFY(P->Owner()->tag);
         PHelper.CreateFloat		(items,"Speed",		&SM->fSpeed,  0.f,20.f,0.01f,2);
         PHelper.CreateFloat		(items,"Accrue",	&SM->fAccrue, 0.f,20.f,0.01f,2);
         PHelper.CreateFloat		(items,"Falloff", 	&SM->fFalloff,0.f,20.f,0.01f,2);
 
         PropValue *C=0,*F=0,*TV=0;
-        TV = PHelper.CreateFlag32(items,"Type FX", &SM->m_Flags, esmFX);
+        TV = PHelper.CreateFlag8(items,"Type FX", &SM->m_Flags, esmFX);
         TV->SetEvents			(0,0,MotionOnChange);
         {
             AStringVec lst;
             lst.push_back("--none--");
             for (BPIt it=m_pEditObject->FirstBonePart(); it!=m_pEditObject->LastBonePart(); it++) lst.push_back(it->alias);
 			C=PHelper.CreateToken2	(items,"Cycle\\Bone part",	(u32*)&SM->iBoneOrPart,	&lst);
-            C->SetEvents		(BPOnAfterEdit,BPOnBeforeEdit);
-            C->Owner()->SetEvents(BPOnDraw);
-            PHelper.CreateFlag32	(items,"Cycle\\Stop at end",	&SM->m_Flags,	esmStopAtEnd);
-            PHelper.CreateFlag32	(items,"Cycle\\No mix",			&SM->m_Flags,	esmNoMix);
-            PHelper.CreateFlag32	(items,"Cycle\\Sync part",		&SM->m_Flags,	esmSyncPart);
+            C->SetEvents			(BPOnAfterEdit,BPOnBeforeEdit);
+            C->Owner()->SetEvents	(BPOnDraw);
+            PHelper.CreateFlag8		(items,"Cycle\\Stop at end",	&SM->m_Flags,	esmStopAtEnd);
+            PHelper.CreateFlag8		(items,"Cycle\\No mix",			&SM->m_Flags,	esmNoMix);
+            PHelper.CreateFlag8		(items,"Cycle\\Sync part",		&SM->m_Flags,	esmSyncPart);
         }
         {
             AStringVec lst;
