@@ -354,8 +354,8 @@ public:
 	IC void vfDetachItem(xrServerEntity &tServerEntity, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bRemoveChild = true)
 	{
 		if (bRemoveChild) {
-			vector<u16>				&tChildren = tServerEntity.children;
-			vector<u16>::iterator	I = find	(tChildren.begin(),tChildren.end(),tpALifeItem->ID);
+			xr_vector<u16>				&tChildren = tServerEntity.children;
+			xr_vector<u16>::iterator	I = find	(tChildren.begin(),tChildren.end(),tpALifeItem->ID);
 			VERIFY					(I != tChildren.end());
 			tChildren.erase			(I);
 			tpALifeItem->ID_Parent	= 0xffff;

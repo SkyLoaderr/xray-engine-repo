@@ -69,7 +69,7 @@ public:
 	u32								buy_time;
 	s32								fraglimit;
 	s32								timelimit;
-	vector<game_TeamState>			teams;
+	xr_vector<game_TeamState>		teams;
 public:
 	game_GameState();
 

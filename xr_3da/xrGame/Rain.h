@@ -48,11 +48,11 @@ private:
 	SGeometry*						hGeom_Drops;
 	
 	// Data and logic
-	vector<Item>					items;
+	xr_vector<Item>					items;
 	States							state;
 
 	// Particles
-	vector<Particle>				particle_pool;
+	xr_vector<Particle>				particle_pool;
 	Particle*						particle_active;
 	Particle*						particle_idle;
 

@@ -308,8 +308,8 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 	if (tWeaponState == eWeaponStateIdle) {
 		if (tpWeapon->STATE == CWeapon::eFire)
 			m_inventory.Action(kWPN_FIRE, CMD_STOP);
-		vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
-		vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
+		xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
+		xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
 		s32 best_slot = -1;
 		for ( ; I != E; I++)
 			if ((*I).m_pIItem && ((I - B) != m_inventory.m_activeSlot) && (!dynamic_cast<CWeaponMagazined*>((*I).m_pIItem) || dynamic_cast<CWeaponMagazined*>((*I).m_pIItem)->IsAmmoAvailable()))
@@ -366,8 +366,8 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 				if ((tpWeapon->STATE != CWeapon::eHidden) && (tpWeapon->STATE != CWeapon::eHiding)) {
 					if (tpWeaponMagazined->STATE == CWeapon::eFire)
 						m_inventory.Action(kWPN_FIRE,	CMD_STOP);
-					vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
-					vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
+					xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
+					xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
 					u32 best_slot = -1;
 					for ( ; I != E; I++)
 						if ((*I).m_pIItem && ((I - B) != m_inventory.m_activeSlot) && (!dynamic_cast<CWeaponMagazined*>((*I).m_pIItem) || dynamic_cast<CWeaponMagazined*>((*I).m_pIItem)->IsAmmoAvailable()))

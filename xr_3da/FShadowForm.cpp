@@ -104,7 +104,7 @@ void FShadowForm::MakeShadowVolume( Fvector& vLDir, Fmatrix &matWorld )
     // For view matrix, all we want is anything that projects the verts onto a
     // plane perpendicular to light direction. So any eyepoint is OK (try to
     // make object near origin though, so look at one of the verticess). Don't
-    // care what direction is view up vector (y).
+    // care what direction is view up _vector (y).
     Fvector at,from,up;
 	at.set		(vPosition);
 	from.mad	(at,vL,-fRadius*2);

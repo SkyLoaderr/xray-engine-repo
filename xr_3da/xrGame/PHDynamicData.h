@@ -25,7 +25,7 @@ CPHInterpolation body_interpolation;
 dGeomID geom;
 dGeomID transform;
 //PHDynamicData* Childs;
-vector<PHDynamicData>  Childs;
+xr_vector<PHDynamicData>  Childs;
 unsigned int numOfChilds;
 Fmatrix ZeroTransform;
 public:

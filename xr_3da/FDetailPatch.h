@@ -20,7 +20,7 @@ struct DPatch {
 
 class FDetailPatch : public IVisual  
 {
-	vector<DPatch>	patches;
+	xr_vector<DPatch>	patches;
 public:
 	virtual void	Render		(float LOD);
 	virtual void	Load		(const char* N, IReader *data, u32 dwFlags);

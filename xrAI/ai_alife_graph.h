@@ -47,7 +47,7 @@ public:
 		u32									dwVersion;
 		u32									dwVertexCount;
 		u32									dwLevelCount;
-		vector<SLevel>						tpLevels;
+		xr_vector<SLevel>					tpLevels;
 	} SGraphHeader;
 	#pragma pack(pop)
 
@@ -87,8 +87,8 @@ public:
 		m_tGraphHeader.dwLevelCount		= m_tpGraphVFS->r_u32();
 		m_tGraphHeader.tpLevels.resize	(m_tGraphHeader.dwLevelCount);
 		{
-			vector<SLevel>::iterator	I = m_tGraphHeader.tpLevels.begin();
-			vector<SLevel>::iterator	E = m_tGraphHeader.tpLevels.end();
+			xr_vector<SLevel>::iterator	I = m_tGraphHeader.tpLevels.begin();
+			xr_vector<SLevel>::iterator	E = m_tGraphHeader.tpLevels.end();
 			for ( ; I != E; I++) {
 				m_tpGraphVFS->r_stringZ		((*I).caLevelName);
 				m_tpGraphVFS->r_fvector3	((*I).tOffset);

@@ -15,8 +15,8 @@ void xrServer::Perform_transfer(xrServerEntity* what, xrServerEntity* from, xrSe
 	//Log						("B");
 
 	// 2. Detach "FROM"
-	vector<u16>& C			= from->children;
-	vector<u16>::iterator c	= find	(C.begin(),C.end(),what->ID);
+	xr_vector<u16>& C			= from->children;
+	xr_vector<u16>::iterator c	= find	(C.begin(),C.end(),what->ID);
 	R_ASSERT				(c!=C.end());
 	C.erase					(c);
 	P.w_begin				(M_EVENT);

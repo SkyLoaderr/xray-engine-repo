@@ -18,7 +18,7 @@ public:
 	u32				dwFrame;
 	CConstant*		dest;
 	string64		name;
-	vector<u32>		data;
+	xr_vector<u32>	data;
 };
 #pragma pack(pop)
 

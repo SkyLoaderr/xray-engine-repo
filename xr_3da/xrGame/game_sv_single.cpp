@@ -80,7 +80,7 @@ void	game_sv_Single::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 {
 	//xrServer*	S					=	Level().Server;
 	//// Drop everything
-	//vector<u16>*	C				=	get_children(id_killed);
+	//xr_vector<u16>*	C				=	get_children(id_killed);
 	//if (0==C)						return;
 	//while(C->size())
 	//{

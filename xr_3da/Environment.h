@@ -27,27 +27,27 @@ struct ENGINE_API	SEnvDef
 class ENGINE_API CEnvironment
 {
 public:
-	vector<CSun*>			Suns;
-	vector<CSoundStream*>	Music;
-	int						Music_Active;
-	int						Music_Fade;
+	xr_vector<CSun*>			Suns;
+	xr_vector<CSoundStream*>	Music;
+	int							Music_Active;
+	int							Music_Fade;
 public:
 	// Environments
-	SEnvDef					Current;
-	int						CurrentID;
-	float					CurrentSpeed;
-	svector<SEnvDef,32>		Palette;
+	SEnvDef						Current;
+	int							CurrentID;
+	float						CurrentSpeed;
+	svector<SEnvDef,32>			Palette;
 
 	// Environment cache
-	u32						c_Ambient;	
-	u32						c_Fog;		
-	float					c_Fogness;	
-	float					c_Far;
+	u32							c_Ambient;	
+	u32							c_Fog;		
+	float						c_Fogness;	
+	float						c_Far;
 
-	float					c_FogNear;
-	float					c_FogFar;
+	float						c_FogNear;
+	float						c_FogFar;
 
-	IC void					c_Invalidate() {
+	IC void						c_Invalidate() {
 		c_Ambient	= 0xAAAAAAAA;
 		c_Fog		= 0xAAAAAAAA;
 		c_Fogness	= 999;

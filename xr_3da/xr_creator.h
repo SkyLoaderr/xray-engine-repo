@@ -23,7 +23,7 @@ class	ENGINE_API				CCreator	:
 {
 public:
 	// Loader
-	typedef vector<char *>		vecC;
+	typedef xr_vector<char *>	vecC;
 	typedef vecC::iterator		vecCIT;
 	IReader*					LL_Stream;
 	vecC						LL_strings;
@@ -40,8 +40,8 @@ protected:
 
 	// Static sounds
 	sound						Sounds_Ambience;
-	vector<sound>				Sounds;
-	vector<sound>				Sounds_Random;
+	xr_vector<sound>				Sounds;
+	xr_vector<sound>				Sounds_Random;
 	u32							Sounds_dwNextTime;
 public:
 	CObjectList					Objects;

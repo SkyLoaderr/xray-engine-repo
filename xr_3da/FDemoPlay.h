@@ -18,7 +18,7 @@ class ENGINE_API CDemoPlay :
     COMotion*			m_pMotion;
     st_AnimParam		m_MParam;
 
-	vector	<Fmatrix>	seq;
+	xr_vector	<Fmatrix>	seq;
 	int					m_count;
 	float				fStartTime;
 	float				fSpeed;

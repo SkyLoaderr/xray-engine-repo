@@ -25,7 +25,7 @@ protected:
 	Shader*				sh_Tracer;
 	SGeometry*			hGeom;
 
-	vector<Bullet>		bullets;
+	xr_vector<Bullet>	bullets;
 public:
 	void		Add		(const Fvector& from, const Fvector& to, float bullet_speed, float trail_speed_factor, float start_length, float width);
 	void		Render	();

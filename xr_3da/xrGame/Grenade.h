@@ -47,7 +47,7 @@ public:
 	ESoundTypes m_eSoundRicochet, m_eSoundExplode, m_eSoundCheckout;
 	u32 m_expoldeTime;
 	char m_effectsSTR[255];
-	vector<LPCSTR> m_effects;
+	xr_vector<LPCSTR> m_effects;
 	IRender_Light* m_pLight;
 	Fcolor m_lightColor;
 	f32 m_lightRange;

@@ -59,7 +59,7 @@ public:
 	PIItem m_pIItem;
 	LPCSTR m_name;
 };
-typedef vector<CInventorySlot> TISlotArr;
+typedef xr_vector<CInventorySlot> TISlotArr;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class CInventoryOwner;

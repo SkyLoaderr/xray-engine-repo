@@ -65,13 +65,13 @@ public:
 
 	xrServer*					Server;
 
-	vector<CTeam>				Teams;
+	xr_vector<CTeam>			Teams;
 
 	CTracer						Tracers;
 	CEffect_Rain				eff_Rain;
 
 	// sounds
-	vector<sound*>				static_Sounds;
+	xr_vector<sound*>			static_Sounds;
 
 	// waypoints
 	typedef struct tagSWayPoint{
@@ -85,13 +85,13 @@ public:
 		WORD	wTo;
 	} SWayLink;
 
-	typedef vector<Fvector>			SPointVector;
+	typedef xr_vector<Fvector>			SPointVector;
 
 	typedef struct tagSPath {
 		u32							dwType;
-		vector<SWayPoint>			tpaWayPoints;
-		vector<SWayLink>			tpaWayLinks;
-		vector<u32>					tpaWayPointIndexes;
+		xr_vector<SWayPoint>			tpaWayPoints;
+		xr_vector<SWayLink>			tpaWayLinks;
+		xr_vector<u32>					tpaWayPointIndexes;
 		SPointVector				tpaVectors[3];
 	} SPath;
 

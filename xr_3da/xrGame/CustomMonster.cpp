@@ -427,7 +427,7 @@ objQualifier* CCustomMonster::GetQualifier	()
 
 void CCustomMonster::GetVisible			(objVisible& R)
 {
-	vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
+	xr_vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
 	for (; I!=E; I++)	if (positive(I->fuzzy)) {
 		CEntityAlive *tpEntityAlive = dynamic_cast<CEntityAlive *>(I->O);
 		CActor		 *tpActor = dynamic_cast<CActor *>(I->O);

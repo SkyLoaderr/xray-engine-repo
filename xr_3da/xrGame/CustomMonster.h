@@ -248,7 +248,7 @@ public:
 	// miscellaneous
 	IC		int			ifGetMemberIndex() 
 	{
-		vector<CEntity*> &tpaMembers = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].Members;
+		xr_vector<CEntity*> &tpaMembers = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].Members;
 		int iCount = (int)tpaMembers.size();
 		for (int i=0; i<iCount; i++)
 			if (this == tpaMembers[i])

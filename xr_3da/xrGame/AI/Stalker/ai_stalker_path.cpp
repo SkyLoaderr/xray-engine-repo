@@ -579,8 +579,8 @@ void CAI_Stalker::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition
 	}
 
 	{
-		vector<u32>::iterator it	= AI.m_dwaNodeStackS.begin();
-		vector<u32>::iterator end	= AI.m_dwaNodeStackS.end();
+		xr_vector<u32>::iterator it		= AI.m_dwaNodeStackS.begin();
+		xr_vector<u32>::iterator end	= AI.m_dwaNodeStackS.end();
 		for ( ; it!=end; it++)	
 			AI.m_baNodeMarks[*it] = false;
 		

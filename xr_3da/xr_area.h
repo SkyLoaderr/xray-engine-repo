@@ -55,7 +55,7 @@ private:
 	struct SLOT
 	{
 		u32					dwQueryID;
-		vector<CObject*>	lst;
+		xr_vector<CObject*>	lst;
 	};
 
 	CQList<SLOT>					Dynamic;
@@ -75,8 +75,8 @@ private:
 	IC void							InvTrans		( Fvector& v, int x, int z)		{v.set(CL_SLOT_SIZE*(x+.5f)-Static_Shift.x,0.f,CL_SLOT_SIZE*(z+.5f)-Static_Shift.z);}
 
 	// safe translate auxilary routines
-	vector<Collide::tri>			clContactedT;
-	vector<Collide::elipsoid>		clContactedE;
+	xr_vector<Collide::tri>			clContactedT;
+	xr_vector<Collide::elipsoid>		clContactedE;
 	void							clCheckCollision(SCollisionData& cl);
 	void							clResolveStuck	(SCollisionData& cl, Fvector& position);
 	Fvector							CollideWithWorld(SCollisionData& cl, Fvector position, Fvector velocity,WORD cnt=0);
@@ -89,9 +89,9 @@ public:
 	clQueryCollision				q_result;
 
 	clQueryCollision				q_debug;
-	vector<Fmatrix>					dbg_E;
-	vector<pair<Fsphere,u32> >		dbg_S;
-	vector<Fvector2>				dbg_Slot;
+	xr_vector<Fmatrix>					dbg_E;
+	xr_vector<pair<Fsphere,u32> >		dbg_S;
+	xr_vector<Fvector2>				dbg_Slot;
 
 public:
 									CObjectSpace		( );

@@ -48,11 +48,11 @@ public:
 	ESoundTypes		m_eSoundRicochet, m_eSoundExplode;
 	s32				m_engineTime, m_explodeTime, m_flashTime;
 	char			m_effectsSTR[255];
-	vector<LPCSTR>	m_effects;
-	char			m_trailEffectsSTR[255];
-	vector<LPCSTR>	m_trailEffects;
-	list<CPGObject*>m_trailEffectsPSs;
-	IRender_Light*	m_pLight;
+	xr_vector<LPCSTR>	m_effects;
+	char				m_trailEffectsSTR[255];
+	xr_vector<LPCSTR>	m_trailEffects;
+	xr_list<CPGObject*>	m_trailEffectsPSs;
+	IRender_Light*		m_pLight;
 	Fcolor			m_lightColor;
 	Fcolor			m_curColor;
 	f32				m_lightRange;

@@ -13,10 +13,10 @@
 using namespace ALife;
 
 template <class T>
-void free_vector(vector<T *> &tpVector)
+void free_vector(xr_vector<T *> &tpVector)
 {
-	vector<T *>::iterator		I = tpVector.begin();
-	vector<T *>::iterator		E = tpVector.end();
+	xr_vector<T *>::iterator		I = tpVector.begin();
+	xr_vector<T *>::iterator		E = tpVector.end();
 	for ( ; I != E; I++)
 		xr_delete				(*I);
 };
@@ -31,11 +31,11 @@ void free_map(map<T1,T2 *> &tpMap)
 };
 
 // server objects
-IC void save_bool_vector(vector<bool> &baVector, NET_Packet &tNetPacket)
+IC void save_bool_vector(xr_vector<bool> &baVector, NET_Packet &tNetPacket)
 {
 	tNetPacket.w_u32			(baVector.size());
-	vector<bool>::iterator 		I = baVector.begin();
-	vector<bool>::iterator 		E = baVector.end();
+	xr_vector<bool>::iterator 		I = baVector.begin();
+	xr_vector<bool>::iterator 		E = baVector.end();
 	u32							dwMask = 0;
 	if (I != E) {
 		for (int j=0; I != E; I++, j++) {
@@ -51,13 +51,13 @@ IC void save_bool_vector(vector<bool> &baVector, NET_Packet &tNetPacket)
 	}
 };
 
-IC void load_bool_vector(vector<bool> &baVector, NET_Packet &tNetPacket)
+IC void load_bool_vector(xr_vector<bool> &baVector, NET_Packet &tNetPacket)
 {
 	u32							dwDummy;
 	tNetPacket.r_u32			(dwDummy);
 	baVector.resize				(dwDummy);
-	vector<bool>::iterator 		I = baVector.begin();
-	vector<bool>::iterator 		E = baVector.end();
+	xr_vector<bool>::iterator 		I = baVector.begin();
+	xr_vector<bool>::iterator 		E = baVector.end();
 	u32							dwMask = 0;
 	for (int j=32; I != E; I++, j++) {
 		if (j >= 32) {
@@ -69,32 +69,32 @@ IC void load_bool_vector(vector<bool> &baVector, NET_Packet &tNetPacket)
 };
 
 template <class T>
-void save_base_vector(vector<T> &tpVector, NET_Packet &tNetPacket)
+void save_base_vector(xr_vector<T> &tpVector, NET_Packet &tNetPacket)
 {
 	tNetPacket.w_u32			(tpVector.size());
-	vector<T>::iterator			I = tpVector.begin();
-	vector<T>::iterator			E = tpVector.end();
+	xr_vector<T>::iterator			I = tpVector.begin();
+	xr_vector<T>::iterator			E = tpVector.end();
 	for ( ; I != E; I++)
 		tNetPacket.w			(I,sizeof(*I));
 };
 
 template <class T>
-void load_base_vector(vector<T> &tpVector, NET_Packet &tNetPacket)
+void load_base_vector(xr_vector<T> &tpVector, NET_Packet &tNetPacket)
 {
 	u32							dwDummy;
 	tNetPacket.r_u32			(dwDummy);
 	tpVector.resize				(dwDummy);
-	vector<T>::iterator			I = tpVector.begin();
-	vector<T>::iterator			E = tpVector.end();
+	xr_vector<T>::iterator			I = tpVector.begin();
+	xr_vector<T>::iterator			E = tpVector.end();
 	for ( ; I != E; I++)
 		tNetPacket.r		(I,sizeof(*I));
 };
 
 template <class T>
-void init_vector(vector<T *> &tpVector, LPCSTR caSection)
+void init_vector(xr_vector<T *> &tpVector, LPCSTR caSection)
 {
-	vector<T *>::iterator		I = tpVector.begin();
-	vector<T *>::iterator		E = tpVector.end();
+	xr_vector<T *>::iterator		I = tpVector.begin();
+	xr_vector<T *>::iterator		E = tpVector.end();
 	for ( ; I != E; I++) {
 		*I = xr_new<T>			();
 		(*I)->Init				(caSection);
@@ -102,23 +102,23 @@ void init_vector(vector<T *> &tpVector, LPCSTR caSection)
 };
 
 template <class T>
-void save_vector(vector<T *> &tpVector, NET_Packet &tNetPacket)
+void save_vector(xr_vector<T *> &tpVector, NET_Packet &tNetPacket)
 {
 	tNetPacket.w_u32			(tpVector.size());
-	vector<T *>::iterator		I = tpVector.begin();
-	vector<T *>::iterator		E = tpVector.end();
+	xr_vector<T *>::iterator		I = tpVector.begin();
+	xr_vector<T *>::iterator		E = tpVector.end();
 	for ( ; I != E; I++)
 		(*I)->UPDATE_Write		(tNetPacket);
 };
 
 template <class T>
-void load_vector(vector<T *> &tpVector, NET_Packet &tNetPacket)
+void load_vector(xr_vector<T *> &tpVector, NET_Packet &tNetPacket)
 {
 	u32							dwDummy;
 	tNetPacket.r_u32			(dwDummy);
 	tpVector.resize				(dwDummy);
-	vector<T *>::iterator		I = tpVector.begin();
-	vector<T *>::iterator		E = tpVector.end();
+	xr_vector<T *>::iterator		I = tpVector.begin();
+	xr_vector<T *>::iterator		E = tpVector.end();
 	for ( ; I != E; I++) {
 		*I = xr_new<T>			();
 		(*I)->UPDATE_Read		(tNetPacket);

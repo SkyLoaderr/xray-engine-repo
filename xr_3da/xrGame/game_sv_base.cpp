@@ -76,7 +76,7 @@ u32					game_sv_GameState::get_alive_count			(u32 team)
 	return alive;
 }
 
-vector<u16>*		game_sv_GameState::get_children				(u32 id)
+xr_vector<u16>*		game_sv_GameState::get_children				(u32 id)
 {
 	xrServer*		S	= Level().Server;
 	xrClientData*	C	= (xrClientData*)S->ID_to_client	(id);
@@ -261,7 +261,7 @@ void				game_sv_GameState::assign_RP				(xrServerEntity* E)
 {
 	VERIFY				(E);
 
-	vector<RPoint>&		rp	= rpoints[E->g_team()];
+	xr_vector<RPoint>&		rp	= rpoints[E->g_team()];
 	RPoint&				r	= rp[::Random.randI(rp.size())];
 	E->o_Position.set	(r.P);
 	E->o_Angle.set		(r.A);

@@ -226,7 +226,7 @@ public:
 
 	CWeaponAmmo *m_pAmmo;
 	char m_tmpName[255], m_ammoSect[255];
-	vector<LPCSTR> m_ammoTypes;
+	xr_vector<LPCSTR> m_ammoTypes;
 	u32 m_ammoType;
 	LPCSTR m_ammoName;
 	f32 m_resource, m_abrasion;

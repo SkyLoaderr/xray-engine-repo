@@ -12,7 +12,7 @@
 class ENGINE_API FHierrarhyVisual : public IVisual
 {
 public:
-	vector<IVisual*>		children;
+	xr_vector<IVisual*>		children;
 	BOOL					bDontDelete;
 
 	virtual void	Load	(const char* N, IReader *data, u32 dwFlags);

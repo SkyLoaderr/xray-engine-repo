@@ -104,7 +104,7 @@ void CBoneData::Calculate(CKinematics* K, Fmatrix *parent)
 	if (INST.Callback)		INST.Callback(&INST);
 
 	// Calculate children
-	for (vector<CBoneData*>::iterator C=children.begin(); C!=children.end(); C++)
+	for (xr_vector<CBoneData*>::iterator C=children.begin(); C!=children.end(); C++)
 		(*C)->Calculate(K,&INST.mTransform);
 }
 

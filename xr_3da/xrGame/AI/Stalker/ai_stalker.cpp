@@ -949,8 +949,8 @@ void CAI_Stalker::Update	( u32 DT )
 	if (m_dwDeathTime && (m_inventory.TotalWeight() > 0)) {
 		CWeapon *tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 		if (!tpWeapon || !tpWeapon->GetAmmoElapsed() || !m_bHammerIsClutched || (Level().timeServer() - m_dwDeathTime > 500)) {
-			vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
-			vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
+			xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
+			xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
 			for ( ; I != E; I++)
 				m_inventory.Ruck((*I).m_pIItem);
 			TIItemList &l_list = m_inventory.m_ruck;
@@ -960,8 +960,8 @@ void CAI_Stalker::Update	( u32 DT )
 		}
 		else {
 			m_inventory.Action(kWPN_FIRE,	CMD_START);
-			vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
-			vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
+			xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
+			xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
 			for ( ; I != E; I++)
 				if ((I - B) != m_inventory.m_activeSlot)
 					m_inventory.Ruck((*I).m_pIItem);

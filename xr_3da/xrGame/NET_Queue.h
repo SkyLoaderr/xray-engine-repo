@@ -6,7 +6,7 @@ public:
 	u32					timestamp;
 	u16					type;
 	u16					destination;
-	vector<u8>			data;
+	xr_vector<u8>		data;
 public:
 	void				import		(NET_Packet& P)
 	{

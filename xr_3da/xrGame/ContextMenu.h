@@ -16,7 +16,7 @@ public:
 		char*					Param;
 	};
 	char*						Name;
-	vector<MenuItem>			Items;
+	xr_vector<MenuItem>			Items;
 public:
 				~CContextMenu	();
 	void		Load			(CInifile* INI, LPCSTR S);

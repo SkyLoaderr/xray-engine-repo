@@ -35,8 +35,8 @@ int dCollideBP (const dxGeom* o1, const dxGeom* o2, int flags, dContactGeom *con
 #define SURFACE(Ptr, Stride) ((dSurfaceParameters*) (((byte*)Ptr) + (Stride-sizeof(dSurfaceParameters))))
 
 
-static 	vector<Triangle> pos_tries;
-//static 	vector<Triangle> neg_tries;
+static 	xr_vector<Triangle> pos_tries;
+//static 	xr_vector<Triangle> neg_tries;
 
 
 extern "C" int dSortTriBoxCollide (
@@ -200,7 +200,7 @@ extern "C" int dSortTriBoxCollide (
 	}
 
 
-	vector<Triangle>::iterator i;
+	xr_vector<Triangle>::iterator i;
 
 
 
@@ -772,7 +772,7 @@ extern "C" int dSortTriSphereCollide (
 	}
 
 
-	vector<Triangle>::iterator i;
+	xr_vector<Triangle>::iterator i;
 
 
 

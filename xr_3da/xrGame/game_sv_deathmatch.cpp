@@ -96,7 +96,7 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 		if (W) 
 		{
 			// Weapon
-			vector<u16>&	C			=	A->children;
+			xr_vector<u16>&	C			=	A->children;
 			u8 slot						=	W->get_slot	();
 			for (u32 it=0; it<C.size(); it++)
 			{

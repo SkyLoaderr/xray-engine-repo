@@ -14,7 +14,7 @@ class CAI_Idol : public CCustomMonster, public CInventoryOwner
 {
 public:
 	typedef CCustomMonster inherited;
-	vector<CMotionDef*>	m_tpaAnims;
+	xr_vector<CMotionDef*>	m_tpaAnims;
 	CBlend				*m_tpCurrentBlend;
 	bool				m_bPlaying;
 	u32					m_dwAnyPlayType;

@@ -17,16 +17,16 @@ private:
 		{	return strcmp(x,y)<0;	}
 	};
 
-	typedef vector<CObject*>::iterator				OBJ_IT;
-	typedef multimap<LPCSTR,CObject*,str_pred>		POOL;
+	typedef xr_vector<CObject*>::iterator			OBJ_IT;
+	typedef xr_multimap<LPCSTR,CObject*,str_pred>	POOL;
 	typedef POOL::iterator							POOL_IT;
 private:
 	POOL						map_POOL;
-	map<u32,CObject*>			map_NETID;
+	xr_map<u32,CObject*>		map_NETID;
 public:
 	// data
-	vector<CObject*>			objects;
-	vector<CObject*>			destroy_queue;
+	xr_vector<CObject*>			objects;
+	xr_vector<CObject*>			destroy_queue;
 
 	// methods
 								CObjectList			( );

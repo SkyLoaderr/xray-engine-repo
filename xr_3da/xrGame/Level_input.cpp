@@ -28,8 +28,8 @@ void CLevel::OnKeyboardPress(int key)
 		// SLS_Load					("quick.save");
 		return;
 	case DIK_F5:
-		vector<CObject*>::iterator I = Objects.objects.begin(), B = I, J;
-		vector<CObject*>::iterator E = Objects.objects.end();
+		xr_vector<CObject*>::iterator I = Objects.objects.begin(), B = I, J;
+		xr_vector<CObject*>::iterator E = Objects.objects.end();
 		bool bOk = false;
 		if (pCurrentEntity)
 			for ( ; I != E; I++)

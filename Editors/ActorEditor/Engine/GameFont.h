@@ -36,7 +36,7 @@ protected:
 	Fvector 				TCMap	[256];
 	float					fHeight;
 	float					fTCHeight;
-	vector<String>			strings;
+	xr_vector<String>		strings;
 
 	Shader*					pShader;
 	SGeometry*				pGeom;

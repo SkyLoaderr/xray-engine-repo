@@ -13,8 +13,8 @@ namespace AI
 		u32				DestNode;
 
 		u32				TravelStart;
-		vector<CTravelNode>	TravelPath;
-		vector<PSegment>	Segments;
+		xr_vector<CTravelNode>	TravelPath;
+		xr_vector<PSegment>	Segments;
 
 		float				fSpeed;
 		BOOL				m_bCollision;

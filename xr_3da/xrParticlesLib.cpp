@@ -57,7 +57,7 @@ PS::SDef* psLibrary_FindSorted(const char* Name, PS::PSVec &LIB)
 {
 	PS::SDef	D; 
 	strcpy		(D.m_Name,Name);
-	vector<PS::SDef>::iterator	P = std::lower_bound	(LIB.begin(),LIB.end(),D,sort_pred);
+	xr_vector<PS::SDef>::iterator	P = std::lower_bound	(LIB.begin(),LIB.end(),D,sort_pred);
 	if ((P!=LIB.end()) && (0==strcmp(P->m_Name,Name)) ) return &*P;
 	return NULL;
 }

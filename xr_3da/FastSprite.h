@@ -18,7 +18,7 @@ struct ENGINE_API FSprite
 	float	angle;
 };
 
-typedef vector<FSprite>	VSprites;
+typedef xr_vector<FSprite>	VSprites;
 
 class ENGINE_API CFastSprite : public IVisual
 {

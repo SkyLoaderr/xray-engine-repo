@@ -57,13 +57,13 @@ private:
 	u32						m_dwLookChangedTime;
 	u32						m_dwBornTime;
 
-	vector<Fvector>			m_tpaPoints;
-	vector<Fvector>			m_tpaDeviations;
-	vector<Fvector>			m_tpaTravelPath;
-	vector<u32>				m_tpaPointNodes;
-	vector<Fvector>			m_tpaLine;
-	vector<u32>				m_tpaNodes;
-	vector<Fvector>			m_tpaTempPath;
+	xr_vector<Fvector>			m_tpaPoints;
+	xr_vector<Fvector>			m_tpaDeviations;
+	xr_vector<Fvector>			m_tpaTravelPath;
+	xr_vector<u32>				m_tpaPointNodes;
+	xr_vector<Fvector>			m_tpaLine;
+	xr_vector<u32>				m_tpaNodes;
+	xr_vector<Fvector>			m_tpaTempPath;
 
 	typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousPoints;
 	typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousForces;
@@ -140,7 +140,7 @@ private:
 	u32						m_dwLostEnemyTime;
 	NodeCompressed*			m_tpSavedEnemyNode;
 	u32						m_dwSavedEnemyNodeID;
-	vector<CInventoryItem*>	m_tpItemsToTake;
+	xr_vector<CInventoryItem*>	m_tpItemsToTake;
 	u32						m_dwItemToTakeIndex;
 	
 	// pursuiting

@@ -470,7 +470,7 @@ Fvector CObjectSpace::CollideWithWorld(SCollisionData& cl, Fvector position, Fve
 		Fvector newDestinationPoint;
 		newDestinationPoint.mad(destinationPoint,slidePlaneNormal,l);
 		
-		// Generate the slide _vector, which will become our _new_ velocity vector
+		// Generate the slide _vector, which will become our _new_ velocity _vector
 		// for the next iteration
 		Fvector newVelocityVector;
 		newVelocityVector.sub(newDestinationPoint, cl.vNearestPolygonIntersectionPoint);

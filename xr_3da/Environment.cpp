@@ -114,7 +114,7 @@ void CEnvironment::Load_Music(CInifile* INI)
 			CSoundStream* S = pSounds->CreateStream((char*)N);
 			R_ASSERT		(S);
 			S->Play			(true);
-			vector<CSoundStream*>::iterator F = find(Music.begin(),Music.end(),S);
+			xr_vector<CSoundStream*>::iterator F = find(Music.begin(),Music.end(),S);
 			if (F!=Music.end()) Music_Active = F-Music.begin();
 			else	{
 				Music_Active = Music.size();
@@ -205,7 +205,7 @@ void CEnvironment::RenderFirst()
 		case MT_HIERRARHY:
 			{
 				FHierrarhyVisual* pV	= (FHierrarhyVisual*)pSkydome;
-				vector<IVisual*>::iterator I,E;
+				xr_vector<IVisual*>::iterator I,E;
 				I = pV->children.begin	();
 				E = pV->children.end	();
 				for (; I!=E; I++)		

@@ -37,8 +37,8 @@ void __stdcall xrSkin1W_SSE(	vertRender*		D,
 // ------------------------------------------------------------------
 	mov			ecx,vCount		; ecx = vCount
 // ------------------------------------------------------------------
-	; esi		= source vector [S]
-	; edi		= result vector [D]
+	; esi		= source _vector [S]
+	; edi		= result _vector [D]
 	; eax		= transform matrix [m]
 // ------------------------------------------------------------------
 	mov			edi,D			; edi = D

@@ -31,8 +31,8 @@ private:
 	float			fRotateSpinupAccel;
 	float			fRotateBreakAccel;
 
-	u32			dwServoMaxFreq;
-	u32			dwServoMinFreq;
+	u32				dwServoMaxFreq;
+	u32				dwServoMinFreq;
 
 	sound			sndFireStart;
 	sound			sndFireEnd;
@@ -40,14 +40,14 @@ private:
 	sound			sndServo;
 	sound			sndRicochet[SND_RIC_COUNT];
 
-	vector<Shader*>	hFlames;
+	xr_vector<Shader*>	hFlames;
 
 	int				iWpnRotBone;
 	int				iHUDRotBone;
 	int				iFireBone;
 
-	u32			dwFP_Frame;
-	u32			dwXF_Frame;
+	u32				dwFP_Frame;
+	u32				dwXF_Frame;
 
 	int				iFlameDiv;
 	float			fFlameLength;

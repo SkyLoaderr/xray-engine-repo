@@ -11,9 +11,9 @@ namespace Feel
 			CObject*	O;
 			DWORD		Expire;
 		};
-		vector<DenyTouch>		feel_touch_disable;
+		xr_vector<DenyTouch>	feel_touch_disable;
 	public:
-		vector<CObject*>		feel_touch;
+		xr_vector<CObject*>		feel_touch;
 
 		virtual BOOL			feel_touch_contact			(CObject* O);
 		virtual void			feel_touch_update			(Fvector& P, float	R);

@@ -222,7 +222,7 @@ SRotation tfGetOrientation(CEntity *tpEntity)
 	}
 }
 
-void vfGoToPointViaNodes(vector<CTravelNode> &tpaPath, u32 dwCurNode, Fvector tStartPoint, Fvector tFinishPoint)
+void vfGoToPointViaNodes(xr_vector<CTravelNode> &tpaPath, u32 dwCurNode, Fvector tStartPoint, Fvector tFinishPoint)
 {
 	NodeCompressed *tpNode;
 	PContour tCurContour,tNextContour;
@@ -487,7 +487,7 @@ float ffGetCoverInDirection(float fAngle, u32 dwNodeID)
 	return(ffGetCoverInDirection(fAngle, getAI().Node(dwNodeID)));
 }
 
-int ifFindNearestPatrolPoint(vector<Fvector> &tpaVector, const Fvector &tPosition)
+int ifFindNearestPatrolPoint(xr_vector<Fvector> &tpaVector, const Fvector &tPosition)
 {
 	float fMinDistance = 1000.f, fCurDistance;
 	for (int i=0, iIndex = 0; i<(int)(tpaVector.size()); i++)

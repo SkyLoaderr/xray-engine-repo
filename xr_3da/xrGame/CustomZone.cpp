@@ -163,8 +163,8 @@ void CCustomZone::OnRender() {
 	RCache.OnFrameEnd();
 	Fvector l_half; l_half.set(.5f, .5f, .5f);
 	Fmatrix l_ball, l_box;
-	vector<CCF_Shape::shape_def> &l_shapes = ((CCF_Shape*)cfModel)->Shapes();
-	vector<CCF_Shape::shape_def>::iterator l_pShape;
+	xr_vector<CCF_Shape::shape_def> &l_shapes = ((CCF_Shape*)cfModel)->Shapes();
+	xr_vector<CCF_Shape::shape_def>::iterator l_pShape;
 	for(l_pShape = l_shapes.begin(); l_pShape != l_shapes.end(); l_pShape++) {
 		switch(l_pShape->type) {
 			case 0 : {

@@ -23,10 +23,10 @@ struct clQueryTri
 
 struct clQueryCollision
 {
-	vector<CObject*>	objects;		// affected objects
-	vector<clQueryTri>	tris;			// triangles		(if queried)
-	vector<Fobb>		boxes;			// boxes/ellipsoids	(if queried)
-	vector<Fvector4>	spheres;		// spheres			(if queried)
+	xr_vector<CObject*>		objects;		// affected objects
+	xr_vector<clQueryTri>	tris;			// triangles		(if queried)
+	xr_vector<Fobb>			boxes;			// boxes/ellipsoids	(if queried)
+	xr_vector<Fvector4>		spheres;		// spheres			(if queried)
 	
 	IC void				Clear	()
 	{
@@ -143,7 +143,7 @@ class ENGINE_API	CCF_Skeleton : public CCFModel
 {
 private:
 	Fbox			base_box;
-	vector<CCF_OBB>	model;
+	xr_vector<CCF_OBB>	model;
 
 	u32				dwFrame;		// The model itself
 	u32				dwFrameTL;		// Top level
@@ -162,7 +162,7 @@ class ENGINE_API	CCF_Rigid : public CCFModel
 {
 private:
 	Fbox			base_box;
-	vector<CCF_OBB>	model;
+	xr_vector<CCF_OBB>	model;
 
 	u32				dwFrame;		// The model itself
 	u32				dwFrameTL;		// Top level
@@ -205,7 +205,7 @@ private:
 		int			type;
 		shape_data	data;
 	};
-	vector<shape_def>	shapes;
+	xr_vector<shape_def>	shapes;
 public:
 					CCF_Shape		( CObject* _owner );
 
@@ -217,7 +217,7 @@ public:
 	void			add_box			( Fmatrix& B	);
 	void			ComputeBounds	( );
 	BOOL			Contact			( CObject* O	);
-	vector<shape_def>&	Shapes		(){return shapes;}
+	xr_vector<shape_def>&	Shapes		(){return shapes;}
 };
 
 #endif //__XR_COLLIDE_FORM_H__

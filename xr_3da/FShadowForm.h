@@ -30,7 +30,7 @@ class FShadowForm : public IVisual
 {
 	// Data
 	LPDIRECT3DVERTEXBUFFER7	pVB;
-	vector<WORD>			Indices;
+	xr_vector<WORD>			Indices;
 	u32					dwNumVertices;
 
 	BOOL					g_bDrawShadowVolCaps;

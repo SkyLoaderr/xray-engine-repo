@@ -4,7 +4,7 @@
 const float fade_speed = 8.0f;
 
 CContextMenu::~CContextMenu(){
-	for (vector<MenuItem>::iterator I=Items.begin(); I!=Items.end(); I++){
+	for (xr_vector<MenuItem>::iterator I=Items.begin(); I!=Items.end(); I++){
 		Engine.Event.Destroy(I->Event);
 		xr_free(I->Name);
 		xr_free(I->Param);

@@ -23,11 +23,11 @@ protected:
 		EVENT		E;
 		LPSTR		P1;
 	};
-	typedef vector<DEF_EVENT>	tActions;
-	typedef tActions::iterator	tActions_it;
+	typedef xr_vector<DEF_EVENT>	tActions;
+	typedef tActions::iterator		tActions_it;
 
 	tActions				Actions;
-	vector<CObject*>		Contacted;
+	xr_vector<CObject*>		Contacted;
 protected:
 	void					Parse				( DEF_EVENT& D, LPCSTR DEF);
 public:

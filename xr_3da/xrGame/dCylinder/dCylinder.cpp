@@ -197,7 +197,7 @@ extern "C" int dCylBox (const dVector3 p1, const dMatrix3 R1,
     Q11,Q12,Q13,Q21,Q22,Q23,Q31,Q32,Q33,s,s2,l,sQ21,sQ22,sQ23;
   int i,invert_normal;
 
-  // get vector from centers of box 1 to box 2, relative to box 1
+  // get _vector from centers of box 1 to box 2, relative to box 1
   p[0] = p2[0] - p1[0];
   p[1] = p2[1] - p1[1];
   p[2] = p2[2] - p1[2];
@@ -221,10 +221,10 @@ extern "C" int dCylBox (const dVector3 p1, const dMatrix3 R1,
   //   * see if the axis separates the box with cylinder. if so, return 0.
   //   * find the depth of the penetration along the separating axis (s2)
   //   * if this is the largest depth so far, record it.
-  // the normal vector will be set to the separating axis with the smallest
+  // the normal vector3 will be set to the separating axis with the smallest
   // depth. note: normalR is set to point to a column of R1 or R2 if that is
   // the smallest depth normal so far. otherwise normalR is 0 and normalC is
-  // set to a vector relative to body 1. invert_normal is 1 if the sign of
+  // set to a vector3 relative to body 1. invert_normal is 1 if the sign of
   // the normal should be flipped.
 
 #define TEST(expr1,expr2,norm,cc) \
@@ -561,7 +561,7 @@ extern "C" int dCylCyl (const dVector3 p1, const dMatrix3 R1,
   dReal hlz1,hlz2,s,s2;
   int i,invert_normal;
 
-  // get vector from centers of box 1 to box 2, relative to box 1
+  // get vector3 from centers of box 1 to box 2, relative to box 1
   p[0] = p2[0] - p1[0];
   p[1] = p2[1] - p1[1];
   p[2] = p2[2] - p1[2];
@@ -956,7 +956,7 @@ int dCollideCylS (dxGeom *o1, dxGeom *o2, int flags,
   
   int i,invert_normal;
 
-  // get vector from centers of cyl to shere
+  // get vector3 from centers of cyl to shere
   p[0] = p2[0] - p1[0];
   p[1] = p2[1] - p1[1];
   p[2] = p2[2] - p1[2];
@@ -1141,7 +1141,7 @@ int dCollideCylPlane
  hlz/=REAL(2.);
  const dReal *R	=	dGeomGetRotation(o1);// rotation of cylinder
  const dReal* p	=	dGeomGetPosition(o1);
- dVector4 n;		// normal vector
+ dVector4 n;		// normal vector3
  dReal pp;
  dGeomPlaneGetParams (o2, n);
  pp=n[3];

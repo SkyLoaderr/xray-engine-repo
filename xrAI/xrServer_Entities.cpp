@@ -571,7 +571,7 @@ void	xrSE_Enemy::FillProp			(LPCSTR pref, PropItemVec& items)
 #endif
 
 ////***** CFormed (Base)
-//class xrSE_CFormed
+//cxr_vectorrSE_CFormed
 //{
 //public:
 //	union shape_data
@@ -584,7 +584,7 @@ void	xrSE_Enemy::FillProp			(LPCSTR pref, PropItemVec& items)
 //		u8			type;
 //		shape_data	data;
 //	};
-//	vector<shape_def>	shapes;
+//	xr_vector<shape_def>	shapes;
 //public:
 //	void					cform_read			(NET_Packet& P)
 //	{
@@ -694,7 +694,7 @@ public:	// actions
 		u64		cls;
 		LPSTR	event;
 	};
-	vector<tAction>			Actions;
+	xr_vector<tAction>			Actions;
 
 	void					Actions_clear()
 	{

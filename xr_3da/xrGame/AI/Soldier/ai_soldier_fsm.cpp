@@ -1323,7 +1323,7 @@ void CAI_Soldier::OnDeath()
 //		AI_Path.DestNode = u32(-1);
 //		AI_Path.bNeedRebuild = FALSE;
 //
-//		vector<Fvector> &tpaVector = m_tpPath->tpaVectors[0];
+//		xr_vector<Fvector> &tpaVector = m_tpPath->tpaVectors[0];
 //		
 //		AI_Path.TravelPath.resize(tpaVector.size());
 //
@@ -1430,7 +1430,7 @@ void CAI_Soldier::OnDeath()
 //
 //			CHECK_IF_SWITCH_TO_NEW_STATE((m_iCurrentPatrolIndex >= 0) && (vPosition.distance_to(m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex]) > EPS_L),aiSoldierPatrolReturn)
 //			
-//			vector<Fvector> &tpaVector = m_tpPath->tpaVectors[iPatrolPathIndex];
+//			xr_vector<Fvector> &tpaVector = m_tpPath->tpaVectors[iPatrolPathIndex];
 //			
 //			AI_Path.TravelPath.resize(tpaVector.size());
 //

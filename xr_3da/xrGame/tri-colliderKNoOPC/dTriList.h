@@ -8,7 +8,7 @@ extern int dTriListClass;
 
 
 
-/* Single precision, no padding vector used for storage */
+/* Single precision, no padding vector3 used for storage */
 
 struct dcVector3{
 

@@ -245,7 +245,7 @@ BOOL CCF_Skeleton::_svRayTest( RayQuery& Q)
 	if (dwFrame!=Device.dwFrame)			BuildState();
 
 	BOOL bHIT = FALSE;
-	for (vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
+	for (xr_vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
 	{
 		if (RAYvsOBB(*I,Q.start,Q.dir,Q.range)) 
 		{
@@ -276,7 +276,7 @@ void CCF_Skeleton::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 		clQueryCollision& Q = pCreator->ObjectSpace.q_result;
 
 #pragma todo("CCF_Skeleton::_BoxQuery - Actual test BOX vs SkeletonNODE")
-		for (vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
+		for (xr_vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
 		{
 			Q.AddBox(I->OBB);
 		}
@@ -369,7 +369,7 @@ BOOL CCF_Rigid::_svRayTest( RayQuery& Q)
 	if (dwFrame!=Device.dwFrame)			BuildState();
 
 	BOOL bHIT = FALSE;
-	for (vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
+	for (xr_vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
 	{
 		if (RAYvsOBB(*I,Q.start,Q.dir,Q.range)) 
 		{
@@ -400,7 +400,7 @@ void CCF_Rigid::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 		clQueryCollision& Q = pCreator->ObjectSpace.q_result;
 
 #pragma todo("CCF_Rigid::_BoxQuery - Actual test BOX vs SkeletonNODE")
-		for (vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
+		for (xr_vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
 		{
 			Q.AddBox(I->OBB);
 		}

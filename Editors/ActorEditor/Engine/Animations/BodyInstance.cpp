@@ -585,7 +585,7 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 	bone_instances	= NULL;
 
 	// Load bones
-	vector<LPSTR>	L_parents;
+	xr_vector<LPSTR>	L_parents;
 
 	R_ASSERT(data->find_chunk(OGF_BONE_NAMES));
 	u32 dwCount = data->r_u32();

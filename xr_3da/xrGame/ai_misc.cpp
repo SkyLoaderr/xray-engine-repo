@@ -293,7 +293,7 @@ void CAI_Space::vfChoosePoint(Fvector &tStartPoint, Fvector &tFinishPoint, PCont
 	}
 }
 
-//void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, u32 dwStartNode, vector<Fvector> &tpaDeviations, vector<Fvector> &tpaPath, vector<u32> &dwaNodes, bool bLooped, bool bUseDeviations, float fRoundedDistanceMin, float fRoundedDistanceMax, float fRadiusMin, float fRadiusMax, float fSuitableAngle, float fSegmentSizeMin, float fSegmentSizeMax)
+//void CAI_Space::vfCreateFastRealisticPath(xr_vector<Fvector> &tpaPoints, u32 dwStartNode, xr_vector<Fvector> &tpaDeviations, xr_vector<Fvector> &tpaPath, xr_vector<u32> &dwaNodes, bool bLooped, bool bUseDeviations, float fRoundedDistanceMin, float fRoundedDistanceMax, float fRadiusMin, float fRadiusMax, float fSuitableAngle, float fSegmentSizeMin, float fSegmentSizeMax)
 //{
 //	Fvector tTravelNode;
 //	Fvector tPrevPrevPoint,tTempPoint, tPrevPoint, tStartPoint, tFinishPoint, tCurrentPosition, tCircleCentre, tFinalPosition, t1, t2;
@@ -820,7 +820,7 @@ void CAI_Space::vfChoosePoint(Fvector &tStartPoint, Fvector &tFinishPoint, PCont
 //	/**/
 //}
 
-void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, u32 dwStartNode, vector<Fvector> &tpaDeviations, vector<Fvector> &tpaPath, vector<u32> &dwaNodes, bool bLooped, bool bUseDeviations, float fRoundedDistanceMin, float fRoundedDistanceMax, float fRadiusMin, float fRadiusMax, float fSuitableAngle, float fSegmentSizeMin, float fSegmentSizeMax)
+void CAI_Space::vfCreateFastRealisticPath(xr_vector<Fvector> &tpaPoints, u32 dwStartNode, xr_vector<Fvector> &tpaDeviations, xr_vector<Fvector> &tpaPath, xr_vector<u32> &dwaNodes, bool bLooped, bool bUseDeviations, float fRoundedDistanceMin, float fRoundedDistanceMax, float fRadiusMin, float fRadiusMax, float fSuitableAngle, float fSegmentSizeMin, float fSegmentSizeMax)
 {
 	Fvector tTravelNode;
 	Fvector tPrevPrevPoint,tTempPoint, tPrevPoint, tStartPoint, tFinishPoint, tCurrentPosition, tCircleCentre, tFinalPosition, t1, t2;
@@ -1389,7 +1389,7 @@ u32 CAI_Space::dwfCheckPositionInDirection(u32 dwStartNode, Fvector tStartPositi
 		return(-1);
 }
 
-float CAI_Space::ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tDirection, float fDistance, vector<u32> &tpaStack, vector<bool> *tpaMarks)
+float CAI_Space::ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tDirection, float fDistance, xr_vector<u32> &tpaStack, xr_vector<bool> *tpaMarks)
 {
 	Fvector					tFinishPoint;
 	tDirection.normalize	();
@@ -1398,12 +1398,12 @@ float CAI_Space::ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPosition,
 	return					(ffMarkNodesInDirection(dwStartNode,tStartPosition,tFinishPoint,tpaStack,tpaMarks));
 }
 
-float CAI_Space::ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPosition, u32 dwFinishNode, vector<u32> &tpaStack, vector<bool> *tpaMarks)
+float CAI_Space::ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPosition, u32 dwFinishNode, xr_vector<u32> &tpaStack, xr_vector<bool> *tpaMarks)
 {
 	return					(ffMarkNodesInDirection(dwStartNode,tStartPosition,tfGetNodeCenter(dwFinishNode),tpaStack,tpaMarks));
 }
 
-float CAI_Space::ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, vector<u32> &tpaStack, vector<bool> *tpaMarks)
+float CAI_Space::ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, xr_vector<u32> &tpaStack, xr_vector<bool> *tpaMarks)
 {
 	PContour				tCurContour;
 	NodeCompressed			*tpNode;
@@ -1439,7 +1439,7 @@ float CAI_Space::ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPoint, Fv
 	return(fCurDistance);
 }
 
-float CAI_Space::ffFindFarthestNodeInDirection(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, u32 &dwFinishNode, vector<bool> *tpaMarks)
+float CAI_Space::ffFindFarthestNodeInDirection(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, u32 &dwFinishNode, xr_vector<bool> *tpaMarks)
 {
 	PContour				tCurContour;
 	NodeCompressed			*tpNode;
@@ -1474,7 +1474,7 @@ float CAI_Space::ffFindFarthestNodeInDirection(u32 dwStartNode, Fvector tStartPo
 	return(fCurDistance);
 }
 
-bool CAI_Space::bfCreateStraightPTN_Path(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, vector<Fvector> &tpaOutputPoints, vector<u32> &tpaOutputNodes, bool bAddFirstPoint)
+bool CAI_Space::bfCreateStraightPTN_Path(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, xr_vector<Fvector> &tpaOutputPoints, xr_vector<u32> &tpaOutputNodes, bool bAddFirstPoint)
 {
 	PContour				tCurContour;
 	NodeCompressed			*tpNode;

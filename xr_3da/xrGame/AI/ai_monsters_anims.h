@@ -45,7 +45,7 @@ public:
 
 template <class TYPE_NAME, LPCSTR caBaseNames[]> class CAniCollection {
 public:
-	vector<TYPE_NAME>	A;
+	xr_vector<TYPE_NAME>	A;
 
 	IC	void		Load(CKinematics *tpKinematics, LPCSTR caBaseName)
 	{

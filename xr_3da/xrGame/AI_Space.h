@@ -56,13 +56,13 @@ private:
 
 public:
 	// Query
-	vector<bool>		q_mark_bit;		// temporal usage mark for queries
-	vector<bool>		q_mark_bit_x;	// temporal usage mark for queries
-	vector<bool>		m_baNodeMarks;	// temporal usage mark for search enemy queries
-	vector<BYTE>		q_mark;			// temporal usage mark for queries
-	vector<u32>			q_stack;		// temporal usage stack for search enemy queries
-	vector<u32>			m_dwaNodeStackM;// temporal usage stack for queries
-	vector<u32>			m_dwaNodeStackS;// temporal usage stack for queries
+	xr_vector<bool>		q_mark_bit;		// temporal usage mark for queries
+	xr_vector<bool>		q_mark_bit_x;	// temporal usage mark for queries
+	xr_vector<bool>		m_baNodeMarks;	// temporal usage mark for search enemy queries
+	xr_vector<BYTE>		q_mark;			// temporal usage mark for queries
+	xr_vector<u32>		q_stack;		// temporal usage stack for search enemy queries
+	xr_vector<u32>		m_dwaNodeStackM;// temporal usage stack for queries
+	xr_vector<u32>		m_dwaNodeStackS;// temporal usage stack for queries
 	u32					m_dwCurrentLevelID;
 	
 						CAI_Space		();
@@ -168,19 +168,19 @@ public:
 	float	ffGetDistanceBetweenNodeCenters	(u32 dwNodeID0, NodeCompressed *tpNode1);
 	float	ffGetDistanceBetweenNodeCenters	(NodeCompressed *tpNode0, NodeCompressed *tpNode1);
 
-	void	vfCreateFastRealisticPath		(vector<Fvector> &tpaPoints, u32 dwStartNode, vector<Fvector> &tpaDeviations, vector<Fvector> &tpaPath, vector<u32> &dwaNodes, bool bLooped, bool bUseDeviations = false, float fRoundedDistanceMin = 2.0f, float fRoundedDistanceMax = 2.0f, float fRadiusMin = 3.0f, float fRadiusMax = 3.0f, float fSuitableAngle = PI_DIV_8*.375f, float fSegmentSizeMin = .35f, float fSegmentSizeMax = 1.4f);
+	void	vfCreateFastRealisticPath		(xr_vector<Fvector> &tpaPoints, u32 dwStartNode, xr_vector<Fvector> &tpaDeviations, xr_vector<Fvector> &tpaPath, xr_vector<u32> &dwaNodes, bool bLooped, bool bUseDeviations = false, float fRoundedDistanceMin = 2.0f, float fRoundedDistanceMax = 2.0f, float fRadiusMin = 3.0f, float fRadiusMax = 3.0f, float fSuitableAngle = PI_DIV_8*.375f, float fSegmentSizeMin = .35f, float fSegmentSizeMax = 1.4f);
 	
-	float	ffMarkNodesInDirection			(u32 dwStartNode, Fvector tStartPosition, Fvector tDirection, float fDistance, vector<u32> &tpaStack, vector<bool> *tpaMarks = 0);
-	float	ffMarkNodesInDirection			(u32 dwStartNode, Fvector tStartPosition, u32 dwFinishNode, vector<u32> &tpaStack, vector<bool> *tpaMarks = 0);
-	float	ffMarkNodesInDirection			(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, vector<u32> &tpaStack, vector<bool> *tpaMarks = 0);
+	float	ffMarkNodesInDirection			(u32 dwStartNode, Fvector tStartPosition, Fvector tDirection, float fDistance, xr_vector<u32> &tpaStack, xr_vector<bool> *tpaMarks = 0);
+	float	ffMarkNodesInDirection			(u32 dwStartNode, Fvector tStartPosition, u32 dwFinishNode, xr_vector<u32> &tpaStack, xr_vector<bool> *tpaMarks = 0);
+	float	ffMarkNodesInDirection			(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, xr_vector<u32> &tpaStack, xr_vector<bool> *tpaMarks = 0);
 	
 	bool	bfCheckNodeInDirection			(u32 dwStartNode, Fvector tStartPosition, u32 dwFinishNode);
 	void	vfChoosePoint					(Fvector &tStartPoint, Fvector &tFinishPoint, AI::PContour	&tCurContour, int iNodeIndex, Fvector &tTempPoint, int &iSavedIndex);
 	u32		dwfCheckPositionInDirection		(u32 dwStartNode, Fvector tStartPosition, Fvector tFinishPosition);
 
-	float	ffFindFarthestNodeInDirection	(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, u32 &dwFinishNode, vector<bool> *tpaMarks = 0);
+	float	ffFindFarthestNodeInDirection	(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, u32 &dwFinishNode, xr_vector<bool> *tpaMarks = 0);
 
-	bool	bfCreateStraightPTN_Path		(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, vector<Fvector> &tpaOutputPoints, vector<u32> &tpaOutputNodes, bool bAddFirstPoint);
+	bool	bfCreateStraightPTN_Path		(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, xr_vector<Fvector> &tpaOutputPoints, xr_vector<u32> &tpaOutputNodes, bool bAddFirstPoint);
 	
 	// Device dependance
 	virtual void	OnDeviceCreate			();

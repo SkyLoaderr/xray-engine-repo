@@ -8,7 +8,7 @@ using namespace AI;
 //******* Distance 2 line segment
 IC float	ClosestPointOnSegment(Fvector& Dest, const Fvector& P, const Fvector& A, const Fvector& B)
 {
-	// Determine t (the length of the vector from ‘a’ to ‘p’)
+	// Determine t (the length of the xr_vector from ‘a’ to ‘p’)
 	Fvector c; c.sub(P,A);
 	Fvector V; V.sub(B,A); 
 	

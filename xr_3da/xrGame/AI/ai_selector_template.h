@@ -168,10 +168,10 @@ public:
 
 	virtual	float	ffEvaluateNode						() = 0;
 	virtual	void	vfShallowGraphSearch				() = 0;
-	virtual	void	vfShallowGraphSearch				(vector<u8>   &tpaMask) = 0;
-	virtual	void	vfShallowGraphSearch				(vector<bool> &tpaMask) = 0;
-	virtual	void	vfShallowGraphSearch				(vector<u32> &tpaStack, vector<u8> &tpaMask) = 0;
-	virtual	void	vfShallowGraphSearch				(vector<u32> &tpaStack, vector<bool> &tpaMask) = 0;
+	virtual	void	vfShallowGraphSearch				(xr_vector<u8>   &tpaMask) = 0;
+	virtual	void	vfShallowGraphSearch				(xr_vector<bool> &tpaMask) = 0;
+	virtual	void	vfShallowGraphSearch				(xr_vector<u32> &tpaStack, xr_vector<u8> &tpaMask) = 0;
+	virtual	void	vfShallowGraphSearch				(xr_vector<u32> &tpaStack, xr_vector<bool> &tpaMask) = 0;
 };
 
 template <const u64 qwFlags> class CAI_NodeEvaluatorTemplate : public IBaseAI_NodeEvaluator {
@@ -547,17 +547,17 @@ public:
 				vfShallowGraphSearch(getAI().q_stack,getAI().q_mark);
 			}
 
-	virtual	void vfShallowGraphSearch					(vector<u8>   &tpaMask)
+	virtual	void vfShallowGraphSearch					(xr_vector<u8>   &tpaMask)
 			{
 				vfShallowGraphSearch(getAI().q_stack,tpaMask);
 			}
 
-	virtual	void vfShallowGraphSearch					(vector<bool> &tpaMask)
+	virtual	void vfShallowGraphSearch					(xr_vector<bool> &tpaMask)
 			{
 				vfShallowGraphSearch(getAI().q_stack,tpaMask);
 			}
 
-	virtual	void vfShallowGraphSearch					(vector<u32> &tpaStack, vector<u8> &tpaMask)
+	virtual	void vfShallowGraphSearch					(xr_vector<u32> &tpaStack, xr_vector<u8> &tpaMask)
 			{
 				Device.Statistic.AI_Range.Begin	();
 
@@ -607,15 +607,15 @@ public:
 				}
 
 				{
-					vector<u32>::iterator I	= tpaStack.begin();
-					vector<u32>::iterator E	= tpaStack.end();
+					xr_vector<u32>::iterator I	= tpaStack.begin();
+					xr_vector<u32>::iterator E	= tpaStack.end();
 					for ( ; I!=E; I++)	
 						tpaMask[*I] -= 1;
 				}
 
 				Device.Statistic.AI_Range.End();
 			}
-	virtual	void vfShallowGraphSearch					(vector<u32> &tpaStack, vector<bool> &tpaMask)
+	virtual	void vfShallowGraphSearch					(xr_vector<u32> &tpaStack, xr_vector<bool> &tpaMask)
 			{
 				Device.Statistic.AI_Range.Begin	();
 
@@ -665,8 +665,8 @@ public:
 				}
 
 				{
-					vector<u32>::iterator I	= tpaStack.begin();
-					vector<u32>::iterator E	= tpaStack.end();
+					xr_vector<u32>::iterator I	= tpaStack.begin();
+					xr_vector<u32>::iterator E	= tpaStack.end();
 					for ( ; I!=E; I++)	
 						tpaMask[*I] = false;
 				}
