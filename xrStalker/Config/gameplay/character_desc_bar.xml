@@ -29,7 +29,7 @@
 
 
 	<specific_character id="stalker_bar_guard" team_default = "1">
-		<name>Гарри</name>
+		<name>Гарик</name>
 		<icon x="8" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Охранник бара. Или, если хотите, телохранитель бармена. О его настоящем, как и о прошлом ничего не известно.</bio>
@@ -50,6 +50,28 @@
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
 
+
+	<specific_character id="stalker_bar_guard2" team_default = "1">
+		<name>Жорик</name>
+		<icon x="8" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Брат-близнец Гарика. Охранник на входе бара. Такой же молчаливый и неконтактный, как и его брат.</bio>
+
+		<class>stalker_bar_guard2</class>
+		<community>stalker</community>
+		
+		<rank>90</rank>
+		<reputation>0</reputation>
+ 
+		<visual>actors\neytral\stalker_bar_security</visual>
+		<supplies>
+			[spawn] \n
+			wpn_vintorez \n
+			ammo_9x39_ap \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+	</specific_character>
 
 	<specific_character id="stalker_bar_white_novice_1" team_default = "1">
 		<name>Неизвестный сталкер</name>
