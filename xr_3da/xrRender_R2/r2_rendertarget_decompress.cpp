@@ -64,8 +64,11 @@ void	CRenderTarget::phase_decompress		()
 		RCache.set_Geometry			(g_decompress);
 
 		// Decompress
+		Fmatrix		mUnwarp;
+		mUnwarp.invert				(Device.mProject);
 		u_setrt						(rt_Position,rt_Normal,NULL,HW.pBaseZB);
 		RCache.set_Shader			(s_decompress);
+		RCache.set_c				("m_unwarp",mUnwarp);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 }
