@@ -420,6 +420,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	s_Scene2smap_direct.compile		(m_pd3dDevice,"shaders\\D\\smap_direct.s");
 	s_CombineDBG_Normals.compile	(m_pd3dDevice,"shaders\\D\\cm_dbg_normals.s");
 	s_CombineDBG_Accumulator.compile(m_pd3dDevice,"shaders\\D\\cm_dbg_accumulator.s");
+	s_CombineDBG_Base.compile		(m_pd3dDevice,"shaders\\D\\cm_dbg_base.s");
 	s_Light_Direct.compile			(m_pd3dDevice,"shaders\\D\\light_direct.s");
 	s_Light_Direct_smap.compile		(m_pd3dDevice,"shaders\\D\\light_direct_smap.s");
 
@@ -654,6 +655,7 @@ HRESULT CMyD3DApplication::RenderCombine	(COMBINE_MODE M)
 {
 	if (M==CM_DBG_NORMALS)					return RenderCombineDBG_Normals();
 	if (M==CM_DBG_ACCUMULATOR)				return RenderCombineDBG_Accumulator();
+	if (M==CM_DBG_BASE)						return RenderCombineDBG_Base();
 
 	return E_FAIL;
 }
@@ -910,6 +912,35 @@ HRESULT CMyD3DApplication::RenderCombineDBG_Normals	()
 	// Shader and params
 	m_pd3dDevice->SetPixelShader			(s_CombineDBG_Normals.ps);
 	m_pd3dDevice->SetVertexShader			(s_CombineDBG_Normals.vs);
+	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
+	cc.flush								(m_pd3dDevice);
+
+	// Render Quad
+	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE,	D3DCULL_NONE);
+	m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
+	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
+
+	// Cleanup
+	m_pd3dDevice->SetTexture				(0, NULL);
+
+	return S_OK;
+}
+
+//-----------------------------------------------------------------------------
+// Name: RenderCombineDBG_Base			()
+//-----------------------------------------------------------------------------
+HRESULT CMyD3DApplication::RenderCombineDBG_Base	()
+{
+	// samplers and texture
+	m_pd3dDevice->SetTexture				(0, d_Color);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
+
+	// Shader and params
+	m_pd3dDevice->SetPixelShader			(s_CombineDBG_Base.ps);
+	m_pd3dDevice->SetVertexShader			(s_CombineDBG_Base.vs);
 	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
 	cc.flush								(m_pd3dDevice);
 

@@ -332,6 +332,9 @@
 				RelativePath="shaders\D\cm_dbg_accumulator.s">
 			</File>
 			<File
+				RelativePath="shaders\D\cm_dbg_base.s">
+			</File>
+			<File
 				RelativePath="shaders\D\cm_dbg_normals.s">
 			</File>
 			<File
