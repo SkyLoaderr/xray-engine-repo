@@ -632,16 +632,31 @@
 					Name="ai_rat"
 					Filter="">
 					<File
-						RelativePath=".\AI\Rat\ai_rat.cpp">
+						RelativePath="AI\Rat\ai_rat.cpp">
 					</File>
 					<File
-						RelativePath=".\AI\Rat\ai_rat.h">
+						RelativePath="AI\Rat\ai_rat.h">
 					</File>
 					<File
-						RelativePath=".\AI\Rat\ai_rat_selectors.cpp">
+						RelativePath="AI\Rat\ai_rat_animations.cpp">
 					</File>
 					<File
-						RelativePath=".\AI\Rat\ai_rat_selectors.h">
+						RelativePath="AI\Rat\ai_rat_fire.cpp">
+					</File>
+					<File
+						RelativePath="AI\Rat\ai_rat_fsm.cpp">
+					</File>
+					<File
+						RelativePath="AI\Rat\ai_rat_look.cpp">
+					</File>
+					<File
+						RelativePath="AI\Rat\ai_rat_selectors.cpp">
+					</File>
+					<File
+						RelativePath="AI\Rat\ai_rat_selectors.h">
+					</File>
+					<File
+						RelativePath="AI\Rat\ai_rat_templates.cpp">
 					</File>
 				</Filter>
 				<Filter
