@@ -222,6 +222,14 @@ function action_follow:calculate_position ()
     if need_id == -1 then
        need_id = l_vid
     end
+    
+    if self.object:accessible (need_id) == false then
+       need_id = leader:level_vertex_id ()
+       if self.object:accessible (need_id) == false then
+          utils.abort ("ERROR: can't find vertex id for object %s", self.object:name ())
+       end 
+    end
+    
     l_dir = level.vertex_position (need_id)
     return need_id, l_dir:distance_to (self.object:position ()), l_dir
 end
