@@ -128,7 +128,7 @@ CBuild::CBuild(b_transfer * L)
 		
 		// load surface if it has an alpha channel or has "implicit lighting" flag
 		BT.pSurface = 0;
-		if (BT.bHasAlpha || (BT.THM.flag&EF_IMPLICIT_LIGHTED))	
+		if (BT.THM.flag&bHasAlpha || (BT.THM.flag&EF_IMPLICIT_LIGHTED))	
 		{
 			Msg("- loading: %s",N);
 			// load & flip
