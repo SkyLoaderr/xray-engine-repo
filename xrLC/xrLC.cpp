@@ -8,7 +8,7 @@
 //#pragma comment(linker,"/HEAP:0x70000000,0x10000000")
 
 #pragma comment(lib,"comctl32.lib")
-#pragma comment(lib,"d3dx8.lib")
+#pragma comment(lib,"d3dx9.lib")
 #pragma comment(lib,"IMAGEHLP.LIB")
 #pragma comment(lib,"winmm.LIB")
 #pragma comment(lib,"X:\\xrProgressive.lib")
