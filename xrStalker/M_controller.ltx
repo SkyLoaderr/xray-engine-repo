@@ -44,6 +44,7 @@ stand_run_dmg_0	 	=	    1,	   0.01,     1,	    0.25,    0.6,
 
 [m_controller_e]
 GroupControlSection	= spawn_group
+SpaceRestrictionSection = space_restrictor,zone_mosquito_bald
 $spawn               = "monsters\controller"	; option for Level Editor
 $npc			     = on						; option for Level Editor
 $prefetch 			 = 16
@@ -60,6 +61,8 @@ DynamicObjectsCount	 = 32
 
 cform                = skeleton					; collision class
 class                = AI_CONTR					; AI class
+
+script_binding  	= monster.bind
 
 bone_torso			 = bip01_spine1 			; bone name
 bone_head			 = bip01_head				; bone name
@@ -87,7 +90,7 @@ ph_skel_shot_up_factor					=.8f
 SoundThreshold		 = 0.06             ; range [0..1]
 
 EyeFov				 = 120;
-eye_range			 = 60;
+eye_range			 = 90;
 max_hear_dist		 = 60;
 
 ; speed factors			linear | angular_real | angular_path | min |  max
@@ -153,7 +156,7 @@ strike_immunity = 0.9
 shock_immunity = 1.0
 wound_immunity = 0.15	;0.30	;1.0		
 radiation_immunity = 0.2
-telepatic_immunity = 1.0
+telepatic_immunity = 0.1
 chemical_burn_immunity = 0.9
 explosion_immunity = 0.7
 fire_wound_immunity  = 0.7
@@ -286,11 +289,11 @@ gray			= 0.5
 noise_intensity = 0.6
 noise_grain		= 2
 noise_fps		= 25
-color_base		= 0.4,0.4,0.4; 0,0,0;0.8,0.8,0.8
-color_gray		= 0.6,0.6,0.6; 0,0,0;0.6,0.6,0.6
-color_add		= 0.00,0.02,0.07;0,0,0;0.00,0.02,0.07
+color_base		= 0,0,0;0.8,0.8,0.8
+color_gray		= 0,0,0;0.6,0.6,0.6
+color_add		= 0,0,0;0.00,0.02,0.07
 radius_min		= 0.01
-radius_max		= 0.99
+radius_max		= 0.8
 
 
 
@@ -301,10 +304,10 @@ radius_max		= 0.99
 
 default				= 1.00,	-1,	1.00
 
-bip01_pelvis 		= 0.01, -1, 0.5
-bip01_spine 		= 0.01, -1, 0.5
-bip01_spine1 		= 0.2, -1, 0.5
-bip01_neck 			= 0.5, -1, 0.5
-bip01_head 			= 10.0, -1, 10.00
+bip01_pelvis 		= 0.2, -1, 0.01
+bip01_spine 		= 0.4, -1, 0.04
+bip01_spine1 		= 0.4, -1, 0.1
+bip01_neck 			= 0.5, -1, 0.1
+bip01_head 			= 10.0, -1, 0.50
 
 
