@@ -38,7 +38,7 @@ void Startup()
 	strcpy						(Console.ConfigFile,"user.ltx");
 	if (strstr(Engine.Params,"-ltx ")) {
 		string64				c_name;
-		sscanf					(strstr(Engine.Params,"-ltx ")+5,"%s",c_name);
+		sscanf					(strstr(Engine.Params,"-ltx ")+5,"%[^ ] ",c_name);
 		strcpy					(Console.ConfigFile,c_name);
 	}
 	Console.ExecuteScript		(Console.ConfigFile);
@@ -46,7 +46,7 @@ void Startup()
 	// Name
 	if (strstr(Engine.Params,"-name ")) {
 		string64				c_name,cmd;
-		sscanf					(strstr(Engine.Params,"-name ")+6,"%s",c_name);
+		sscanf					(strstr(Engine.Params,"-name ")+6,"%[^ ] ",c_name);
 		strconcat				(cmd,"net_name ",c_name);
 		Console.Execute			(cmd);
 	}
