@@ -126,7 +126,7 @@ void CSoundRender_Core::_initialize	(u64 window)
 	Listener.fDopplerFactor		= DS3D_DEFAULTDOPPLERFACTOR;
 
     // Create property set
-	{
+	if (psSoundFlags.test(ssHardware)){
         IDirectSoundBuffer*		pTempBuf;
         WAVEFORMATEX 			wave;
         Memory.mem_fill			(&wave, 0, sizeof(WAVEFORMATEX));

@@ -83,6 +83,11 @@ void	CSoundRender_Target::_initialize		()
 	*/
 	R_CHK	(pBuffer->QueryInterface(IID_IDirectSound3DBuffer8,	(void **)&pControl));
 	R_ASSERT(pBuffer_base && pBuffer && pControl);
+
+	R_CHK	(pControl->SetConeAngles		(DS3D_DEFAULTCONEANGLE,DS3D_DEFAULTCONEANGLE,DS3D_DEFERRED));
+	R_CHK	(pControl->SetConeOrientation	(0,0,1,DS3D_DEFERRED));
+	R_CHK	(pControl->SetConeOutsideVolume	(0,DS3D_DEFERRED));
+	R_CHK	(pControl->SetVelocity			(0,0,0,DS3D_DEFERRED));
 }
 
 void	CSoundRender_Target::_destroy		()
@@ -175,6 +180,7 @@ void	CSoundRender_Target::fill_parameters()
 	// 1. Set 3D params (including mode)
 	{
 		Fvector&			p_pos	= pEmitter->p_source.position;
+/*
 		DS3DBUFFER					buf;
 		buf.dwSize					= sizeof(DS3DBUFFER);
 		buf.vPosition.x				= p_pos.x;
@@ -193,6 +199,11 @@ void	CSoundRender_Target::fill_parameters()
 		buf.flMaxDistance			= pEmitter->p_source.max_distance;
 		buf.dwMode					= pEmitter->b2D ? DS3DMODE_DISABLE : DS3DMODE_NORMAL;
 		R_CHK(pControl->SetAllParameters(&buf,DS3D_DEFERRED));
+*/
+		R_CHK(pControl->SetMode			(pEmitter->b2D ? DS3DMODE_DISABLE : DS3DMODE_NORMAL,DS3D_DEFERRED));
+		R_CHK(pControl->SetMinDistance	(pEmitter->p_source.min_distance,DS3D_DEFERRED));
+		R_CHK(pControl->SetMaxDistance	(pEmitter->p_source.max_distance,DS3D_DEFERRED));
+		R_CHK(pControl->SetPosition		(p_pos.x,p_pos.y,p_pos.z,DS3D_DEFERRED));
 	}
 	
 	// 2. Set 2D params (volume, freq) + position(rewind)
