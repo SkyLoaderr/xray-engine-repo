@@ -231,7 +231,7 @@ void test_all				(LPCSTR caLevelName, u32 test_count, _dist_type min_value, _dis
 	test<CDataStorageSL				<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
 	test<CDataStorageDLSL			<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
 	test<CDataStorageBinaryHeap		<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-	test<CDataStorageBinaryHeapList	<256,						_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
+	test<CDataStorageBinaryHeapList	<4,							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
 	test<CDataStorageMultiBinaryHeap<4,							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
 	test<CDataStorageCheapList		<32,true,true,				_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
 	test<CDataStorageBucketList		<8*1024,false,				_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value,max_value);
