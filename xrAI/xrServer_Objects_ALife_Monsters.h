@@ -208,9 +208,14 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CS
 	u8								weapon;
 	///////////////////////////////////////////
 	u16								m_u16NumItems;
-	u32								m_dwTime0;
-	u32								m_dwTime1;
-	SPHNetState						State;
+
+//	DEF_DEQUE		(PH_STATES, SPHNetState); 
+	SPHNetState						m_AliveState;
+//	PH_STATES						m_DeadStates;
+
+	// статический массив - 6 float(вектора пределов квантизации) + m_u16NumItems*(7 u8) (позиция и поворот кости)
+	u8								m_BoneDataSize;
+	char							m_DeadBodyData[1024];
 	///////////////////////////////////////////
 									CSE_ALifeCreatureActor	(LPCSTR caSection);
 	virtual							~CSE_ALifeCreatureActor	();

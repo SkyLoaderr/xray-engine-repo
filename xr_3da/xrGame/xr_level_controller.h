@@ -50,6 +50,8 @@ enum	EKeyBinding
 	kQUIT			,
 	kCONSOLE		,
 
+	kHyperKick		,
+
 	kFORCEDWORD		= u32(-1)
 };
 

@@ -58,6 +58,8 @@ _keybind  keybind[]		= {
 	{ "quit",			kQUIT		},
 	{ "console",		kCONSOLE	},
 
+	{ "hyperkick",		kHyperKick	},
+
 	{ NULL, 			0			}
 };
 

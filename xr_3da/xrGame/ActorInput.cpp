@@ -89,6 +89,32 @@ void CActor::IR_OnKeyboardPress(int cmd)
 		b_DropActivated			= TRUE;
 		f_DropPower				= 0;
 		break;
+		//-----------------------------------------------------
+		/*
+	case kHyperJump:
+		{
+			Fvector pos	= Device.vCameraPosition;
+			Fvector dir = Device.vCameraDirection;
+
+			Level().CurrentControlEntity()->setEnabled(false);
+			Collide::rq_result result;
+			BOOL reach_wall = Level().ObjectSpace.RayPick(pos, dir, 100.0f, 
+				Collide::rqtBoth, result) && !result.O;
+			Level().CurrentControlEntity()->setEnabled(true);			
+			////////////////////////////////////
+			if (!reach_wall || result.range < 1) break;
+
+			dir.mul(result.range-0.5f);
+			Fmatrix	M = Level().CurrentControlEntity()->XFORM();
+			M.translate_add(dir);
+			Level().CurrentControlEntity()->ForceTransform(M);
+		}break;
+		*/
+	case kHyperKick:
+		{
+			m_dwStartKickTime = Level().timeServer();
+		}break;
+		//-----------------------------------------------------
 	}
 }
 
@@ -125,6 +151,31 @@ void CActor::IR_OnKeyboardRelease(int cmd)
 		case kCROUCH:	mstate_wishful &=~mcCrouch;		break;
 
 		case kDROP:		if(GAME_PHASE_INPROGRESS == Game().phase) g_PerformDrop();				break;
+		case kHyperKick:
+			{
+				u32 FullKickTime = Level().timeServer() - m_dwStartKickTime;
+				
+				Collide::rq_result& RQ = HUD().GetCurrentRayQuery();
+				CActor* pActor = dynamic_cast<CActor*>(RQ.O);
+				if (!pActor || pActor->g_Alive()) break;
+
+				Fvector original_dir, position_in_bone_space;
+				original_dir.set(0, 1, 0);
+				position_in_bone_space.set(0, 1, 0);				
+
+				NET_Packet		P;
+				CGameObject::u_EventGen	(P,GE_HIT,RQ.O->ID());
+				P.w_u16			(ID());
+				P.w_u16			(ID());
+				P.w_dir			(original_dir);
+				P.w_float		(0);
+				P.w_s16			((s16)RQ.element);
+				P.w_vec3		(position_in_bone_space);
+				P.w_float		(float(FullKickTime)*10);
+				P.w_u16			(2);
+				Level().Send(P);
+
+			}break;
 		}
 	}
 }

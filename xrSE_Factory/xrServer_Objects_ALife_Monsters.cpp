@@ -869,24 +869,31 @@ void CSE_ALifeCreatureActor::UPDATE_Read	(NET_Packet	&tNetPacket)
 
 	if (!m_u16NumItems) return;
 
-	tNetPacket.r_u8					( *((u8*)&(State.enabled)) );
+	if (m_u16NumItems == 1)
+	{
+		tNetPacket.r_u8					( *((u8*)&(m_AliveState.enabled)) );
 
-	tNetPacket.r_vec3				( State.angular_vel );
-	tNetPacket.r_vec3				( State.linear_vel );
+		tNetPacket.r_vec3				( m_AliveState.angular_vel );
+		tNetPacket.r_vec3				( m_AliveState.linear_vel );
 
-	tNetPacket.r_vec3				( State.force );
-	tNetPacket.r_vec3				( State.torque );
+		tNetPacket.r_vec3				( m_AliveState.force );
+		tNetPacket.r_vec3				( m_AliveState.torque );
 
-	tNetPacket.r_vec3				( State.position );
+		tNetPacket.r_vec3				( m_AliveState.position );
 
-	tNetPacket.r_float				( State.quaternion.x );
-	tNetPacket.r_float				( State.quaternion.y );
-	tNetPacket.r_float				( State.quaternion.z );
-	tNetPacket.r_float				( State.quaternion.w );
+		tNetPacket.r_float				( m_AliveState.quaternion.x );
+		tNetPacket.r_float				( m_AliveState.quaternion.y );
+		tNetPacket.r_float				( m_AliveState.quaternion.z );
+		tNetPacket.r_float				( m_AliveState.quaternion.w );
 
-//	tNetPacket.r_u32				( m_dwTime0 );
-//	tNetPacket.r_u32				( m_dwTime1 );
-	////////////////////////////////////////////////////
+		return;
+	};	
+	////////////// Import dead body ////////////////////
+	{
+		m_BoneDataSize = tNetPacket.r_u8();
+		u32 BodyDataSize = 24 + m_BoneDataSize*m_u16NumItems;
+		tNetPacket.r(m_DeadBodyData, BodyDataSize);
+	};
 };
 void CSE_ALifeCreatureActor::UPDATE_Write	(NET_Packet	&tNetPacket)
 {
@@ -901,24 +908,31 @@ void CSE_ALifeCreatureActor::UPDATE_Write	(NET_Packet	&tNetPacket)
 	tNetPacket.w_u16			(m_u16NumItems);
 	if (!m_u16NumItems) return;	
 
-	tNetPacket.w_u8					( State.enabled );
+	if (m_u16NumItems == 1)
+	{
+		tNetPacket.w_u8					( m_AliveState.enabled );
 
-	tNetPacket.w_vec3				( State.angular_vel );
-	tNetPacket.w_vec3				( State.linear_vel );
+		tNetPacket.w_vec3				( m_AliveState.angular_vel );
+		tNetPacket.w_vec3				( m_AliveState.linear_vel );
 
-	tNetPacket.w_vec3				( State.force );
-	tNetPacket.w_vec3				( State.torque );
+		tNetPacket.w_vec3				( m_AliveState.force );
+		tNetPacket.w_vec3				( m_AliveState.torque );
 
-	tNetPacket.w_vec3				( State.position );
+		tNetPacket.w_vec3				( m_AliveState.position );
 
-	tNetPacket.w_float				( State.quaternion.x );
-	tNetPacket.w_float				( State.quaternion.y );
-	tNetPacket.w_float				( State.quaternion.z );
-	tNetPacket.w_float				( State.quaternion.w );	
+		tNetPacket.w_float				( m_AliveState.quaternion.x );
+		tNetPacket.w_float				( m_AliveState.quaternion.y );
+		tNetPacket.w_float				( m_AliveState.quaternion.z );
+		tNetPacket.w_float				( m_AliveState.quaternion.w );	
 
-///	tNetPacket.w_u32				( m_dwTime0 );
-//	tNetPacket.w_u32				( m_dwTime1 );
-	////////////////////////////////////////////////////
+		return;
+	};
+	////////////// Export dead body ////////////////////
+	{
+		tNetPacket.w_u8(m_BoneDataSize);
+		u32 BodyDataSize = 24 + m_BoneDataSize*m_u16NumItems;
+		tNetPacket.w(m_DeadBodyData, BodyDataSize);
+	};
 }
 
 void CSE_ALifeCreatureActor::FillProps		(LPCSTR pref, PropItemVec& items)

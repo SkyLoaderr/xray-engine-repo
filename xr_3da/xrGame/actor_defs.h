@@ -159,8 +159,8 @@ struct				net_update
 struct					net_update_A
 {
 	u32					dwTimeStamp;
-	u32					dwTime0;
-	u32					dwTime1;
+//	u32					dwTime0;
+//	u32					dwTime1;
 	SPHNetState			State;
 };
 

@@ -48,8 +48,8 @@ bool CTelekineticObject::init(CPhysicsShellHolder *obj, float s, float h, u32 tt
 
 void CTelekineticObject::raise(float power) 
 {
-	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->bActive) return;	
-	
+	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->bActive) return;
+		
 	power *= strength;
 	
 	Fvector dir;
@@ -58,7 +58,7 @@ void CTelekineticObject::raise(float power)
 	float elem_size = float(object->m_pPhysicsShell->Elements().size());
 	dir.mul(elem_size*elem_size);
 
-	(object->m_pPhysicsShell->Elements()[0])->applyGravityAccel(dir);
+	if (OnServer()) (object->m_pPhysicsShell->Elements()[0])->applyGravityAccel(dir);
 }
 
 void CTelekineticObject::prepare_keep()
@@ -104,7 +104,7 @@ void CTelekineticObject::keep()
 	//float elem_size = float(object->m_pPhysicsShell->Elements().size());
 	dir.mul(5.0f);
 
-	(object->m_pPhysicsShell->Elements()[0])->applyGravityAccel(dir);
+	if (OnServer()) (object->m_pPhysicsShell->Elements()[0])->applyGravityAccel(dir);
 
 	// установить время последнего обновления
 	time_keep_updated = Level().timeServer();
@@ -118,11 +118,13 @@ void CTelekineticObject::release()
 	Fvector dir_inv;
 	dir_inv.set(0.f,-1.0f,0.f);
 
-	// включить гравитацию
-	object->m_pPhysicsShell->set_ApplyByGravity(TRUE);
-	// приложить небольшую силу для того, чтобы объект начал падать
-	object->m_pPhysicsShell->applyImpulse(dir_inv, 0.5f * object->m_pPhysicsShell->getMass());
-
+		// включить гравитацию
+		object->m_pPhysicsShell->set_ApplyByGravity(TRUE);
+		if (OnServer()) 
+		{
+		// приложить небольшую силу для того, чтобы объект начал падать
+		object->m_pPhysicsShell->applyImpulse(dir_inv, 0.5f * object->m_pPhysicsShell->getMass());
+	}
 }
 
 void CTelekineticObject::fire(const Fvector &target)
@@ -137,14 +139,16 @@ void CTelekineticObject::fire(const Fvector &target)
 	dir.sub(target,object->Position());
 	dir.normalize();
 
-	// включить гравитацию
-	object->m_pPhysicsShell->set_ApplyByGravity(TRUE);
-	
-	// выполнить бросок
-	for (u32 i=0;i<object->m_pPhysicsShell->Elements().size();i++) {
-		object->m_pPhysicsShell->Elements()[i]->applyImpulse(dir, 20.f * object->m_pPhysicsShell->getMass() / object->m_pPhysicsShell->Elements().size());
-	}
-	
+		// включить гравитацию
+		object->m_pPhysicsShell->set_ApplyByGravity(TRUE);
+
+		if (OnServer()) 
+		{	
+		// выполнить бросок
+		for (u32 i=0;i<object->m_pPhysicsShell->Elements().size();i++) {
+			object->m_pPhysicsShell->Elements()[i]->applyImpulse(dir, 20.f * object->m_pPhysicsShell->getMass() / object->m_pPhysicsShell->Elements().size());
+		}
+	};	
 }
 
 void CTelekineticObject::fire(const Fvector &target, float power)
@@ -159,14 +163,17 @@ void CTelekineticObject::fire(const Fvector &target, float power)
 	dir.sub(target,object->Position());
 	dir.normalize();
 
-	// включить гравитацию
-	object->m_pPhysicsShell->set_ApplyByGravity(TRUE);
+		// включить гравитацию
+		object->m_pPhysicsShell->set_ApplyByGravity(TRUE);
 
-	// выполнить бросок
-	for (u32 i=0;i<object->m_pPhysicsShell->Elements().size();i++) {
-		object->m_pPhysicsShell->Elements()[i]->applyImpulse(dir, power * 20.f * object->m_pPhysicsShell->getMass() / object->m_pPhysicsShell->Elements().size());
-	}
-}
+		if (OnServer()) 
+		{
+		// выполнить бросок
+		for (u32 i=0;i<object->m_pPhysicsShell->Elements().size();i++) {
+			object->m_pPhysicsShell->Elements()[i]->applyImpulse(dir, power * 20.f * object->m_pPhysicsShell->getMass() / object->m_pPhysicsShell->Elements().size());
+		}
+	};
+};
 
 bool CTelekineticObject::check_height()
 {
@@ -198,5 +205,5 @@ void CTelekineticObject::rotate()
 	dir.random_dir();
 	dir.normalize();
 
-	object->m_pPhysicsShell->applyImpulse(dir, 2.5f * object->m_pPhysicsShell->getMass());
+	if (OnServer()) object->m_pPhysicsShell->applyImpulse(dir, 2.5f * object->m_pPhysicsShell->getMass());
 }

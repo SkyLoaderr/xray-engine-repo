@@ -441,7 +441,7 @@ public:
 	virtual void						net_Import			( NET_Packet& P);				// import from server
 	virtual void						net_Destroy			();
 	virtual void						net_ImportInput		( NET_Packet& P);				// import input from remote client
-	virtual BOOL						net_Relevant		()	{ return getSVU() | getLocal(); };		// relevant for export to server
+	virtual BOOL						net_Relevant		();//	{ return getSVU() | getLocal(); };		// relevant for export to server
 	virtual	void						net_Relcase			( CObject* O );					//
 
 	//object serialization
@@ -500,6 +500,12 @@ protected:
 	u32						m_dwIStartTime;
 	u32						m_dwIEndTime;
 	u32						m_dwILastUpdateTime;
+
+	//---------------------------------------------
+	DEF_DEQUE		(PH_STATES, SPHNetState);
+	PH_STATES				m_States;
+	u16						m_u16NumBones;
+	void					net_ExportDeadBody		(NET_Packet &P);
 	//---------------------------------------------
 	void					CalculateInterpolationParams();
 	//---------------------------------------------
@@ -563,6 +569,7 @@ private:
 	// DEBUG INFO
 protected:
 		CStatGraph				*pStatGraph;
+		u32						m_dwStartKickTime;
 
 		ref_str					m_DefaultVisualOutfit;
 #ifdef DEBUG

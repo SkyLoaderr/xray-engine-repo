@@ -258,6 +258,12 @@ void	game_sv_Deathmatch::SM_SwitchOnPlayer(CObject* pNewObject)
 			pHudItem->GetHUD()->SetCurrentEntityHud(true);
 			pHudItem->StartIdleAnim();
 		}
+		CWeapon* pWeapon = dynamic_cast<CWeapon*>(pActor->inventory().ActiveItem());
+		if (pWeapon)
+		{
+			pWeapon->InitAddons();
+			pWeapon->UpdateAddonsVisibility();
+		}
 	}
 
 	m_dwSM_CurViewEntity = pNewObject->ID();

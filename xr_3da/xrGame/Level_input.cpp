@@ -13,6 +13,8 @@
 #include "stalker_movement_manager.h"
 
 #include "ai/bloodsucker/ai_bloodsucker.h"
+#include "Inventory.h"
+#include "WeaponHUD.h"
 
 #ifdef DEBUG
 extern EStalkerBehaviour	g_stalker_behaviour;
@@ -27,11 +29,11 @@ void CLevel::IR_OnKeyboardPress(int key)
 	switch (key) {
 #ifdef DEBUG
 	case DIK_RETURN:
-		if (GameID() == GAME_SINGLE)
+//		if (GameID() == GAME_SINGLE)
 			bDebug	= !bDebug;
 		return;
 	case DIK_BACK:
-		if (GameID() == GAME_SINGLE)
+//		if (GameID() == GAME_SINGLE)
 			HW.Caps.SceneMode			= (HW.Caps.SceneMode+1)%3;
 		return;
 #endif
@@ -55,7 +57,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 	}
 #ifdef DEBUG
 	case DIK_F4: {
-		if (GameID() != GAME_SINGLE) return;
+//		if (GameID() != GAME_SINGLE) return;
 		xr_vector<CObject*>::iterator I = Objects.objects.begin(), B = I, J;
 		xr_vector<CObject*>::iterator E = Objects.objects.end();
 		bool bOk = false;
@@ -91,6 +93,17 @@ void CLevel::IR_OnKeyboardPress(int key)
 				};
 				Engine.Sheduler.Unregister	(*I);
 				Engine.Sheduler.Register	(*I, TRUE);
+
+				CActor* pActor = dynamic_cast<CActor*> (*I);
+				if (pActor)
+				{
+					CHudItem* pHudItem = dynamic_cast<CHudItem*>(pActor->inventory().ActiveItem());
+					if (pHudItem) 
+					{
+						pHudItem->GetHUD()->SetCurrentEntityHud(true);
+						pHudItem->StartIdleAnim();
+					}
+				}
 			}
 		}
 		return;
@@ -108,11 +121,13 @@ void CLevel::IR_OnKeyboardPress(int key)
 
 	case DIK_NUMPAD5: 
 		{
+			/*
 			if (GameID() != GAME_SINGLE) 
 			{
 				Msg("For this game type Demo Record is disabled.");
 				return;
 			};
+			*/
 			Console->Hide	();
 			char fn[256]; strcpy(fn,"1.xrdemo");
 			g_pGameLevel->Cameras.AddEffector(xr_new<CDemoRecord> (fn));
