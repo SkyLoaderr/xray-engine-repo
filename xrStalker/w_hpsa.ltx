@@ -45,13 +45,8 @@ fire_dispersion_base		= 0.1	;угол (в градусах) базовой дисперсии оружия (оружия 
 cam_relax_speed         	= 5.0	;скорость возврата в исходное положение
 cam_dispersion          	= 2.0	;увеличения угла (в градусах) с каждым выстрелом
 cam_max_angle				= 8		;максимальный угол отдачи
-cam_max_angle_horz	= 5.0	;(degree) maximum shot horizontal degree 
-cam_step_angle_horz	= 0.5	;(degree) size of step camera moved in horizontal position while shooting
-
-;;;destroy it
-cam_horz_prob = 1			;probability of the horizontal deviation of effector while shooting (1 – always deviates)
-cam_horz_factor = 1.5		; empirically determined coefficient  of the horizontal deviation (if raises – dispersal raises) 
-
+cam_max_angle_horz			= 5.0	;(degree) maximum shot horizontal degree 
+cam_step_angle_horz			= 0.5	;(degree) size of step camera moved in horizontal position while shooting
 
 fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
 misfire_probability 		= 0.0001	;вероятность осечки при максимальном износе 
@@ -59,12 +54,12 @@ condition_shot_dec 			= 0.00003	;увеличение износа при каждом выстреле
 ;-----------------------------------------------------------------------------------
 
 direction                	= 0, 0, 1
-fire_point               	= 0.0, 0.12, 0.17
+fire_point               	= 0.0, 0.129, 0.179
 
 flame_particles		   		= weapons\generic_weapon05
 smoke_particles		   		= weapons\generic_shoot_00
 
-shell_point		 			= 0.05, 0.12, -0.05
+shell_point		 			= 0.0, 0.129, 0.05
 shell_dir		 			= 0.0, 0.0, 0.4
 shell_particles	 			= weapons\generic_shells
 
@@ -81,7 +76,7 @@ rpm                      	= 300
 ; end ttc
 hud                      	= wpn_HPSA_hud
 normal                   	= 0, 1, 0
-position                 	= -0.03, -0.032, 0.12
+position                 	= -0.021, -0.085, 0.0
 orientation              	= 0, 00, 0
 startup_ammo             	= 90
 visual                   	= weapons\hpsa\wpn_hpsa.ogf
