@@ -76,8 +76,8 @@ private:	// User declarations
     static AnsiString last_item;
     const char* StartFolder;
 
-    ETextureCore* sel_tex;
-    ETextureThumbnail* sel_thm;
+//S    ETextureCore* sel_tex;
+//S    ETextureThumbnail* sel_thm;
 
     enum ESelectMode{
         smObject,

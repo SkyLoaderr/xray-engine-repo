@@ -7,7 +7,6 @@
 
 #include "EditMesh.h"
 #include "EditObject.h"
-#include "FileSystem.h"
 
 #define EMESH_CURRENT_VERSION	      	0x0011
 //----------------------------------------------------

@@ -5,21 +5,18 @@
     <VERSION value="BCB.05.03"/>
     <PROJECT value="x:\ShaderEditor.exe"/>
     <OBJFILES value="Intermediate\ShaderEditor.obj Intermediate\stdafx.obj 
-      Intermediate\Texture.obj Intermediate\FileSystem.obj 
-      Intermediate\D3DUtils.obj Intermediate\Log.obj Intermediate\frustum.obj 
-      Intermediate\EditMesh.obj Intermediate\Shader.obj 
+      Intermediate\FileSystem.obj Intermediate\D3DUtils.obj Intermediate\Log.obj 
+      Intermediate\frustum.obj Intermediate\EditMesh.obj 
       Intermediate\EditObjectImport.obj Intermediate\EditMeshIO.obj 
       Intermediate\EditMeshModify.obj Intermediate\Device.obj 
-      Intermediate\TextureIO.obj Intermediate\TextureThumbnail.obj 
       Intermediate\EditMeshRender.obj Intermediate\TopBar.obj 
       Intermediate\BottomBar.obj Intermediate\EditorPref.obj 
-      Intermediate\Splash.obj Intermediate\main.obj Intermediate\LogForm.obj 
+      Intermediate\Splash.obj Intermediate\main.obj 
       Intermediate\EditObjectIO.obj Intermediate\EditObjectMotions.obj 
-      Intermediate\xrShaderLib.obj Intermediate\XRShader.obj 
-      Intermediate\ShaderManager.obj Intermediate\_quaternion.obj 
-      Intermediate\_compressed_normal.obj Intermediate\xr_trims.obj 
-      Intermediate\interp.obj Intermediate\Envelope.obj Intermediate\motion.obj 
-      Intermediate\bone.obj Intermediate\clsid.obj Intermediate\cl_raypick.obj 
+      Intermediate\_quaternion.obj Intermediate\_compressed_normal.obj 
+      Intermediate\xr_trims.obj Intermediate\interp.obj 
+      Intermediate\Envelope.obj Intermediate\motion.obj Intermediate\bone.obj 
+      Intermediate\clsid.obj Intermediate\cl_raypick.obj 
       Intermediate\cl_build.obj Intermediate\cl_collector.obj 
       Intermediate\cl_collide.obj Intermediate\cl_intersect.obj 
       Intermediate\cl_overlap.obj Intermediate\cl_RAPID.obj 
@@ -35,13 +32,23 @@
       Intermediate\c_dinput.obj Intermediate\pure.obj 
       Intermediate\xrImage_Resampler.obj Intermediate\cpuid.obj 
       Intermediate\_math.obj Intermediate\LeftBar.obj 
-      Intermediate\ShaderTools.obj Intermediate\FrameProperties.obj"/>
-    <RESFILES value="ShaderEditor.res"/>
+      Intermediate\ShaderTools.obj Intermediate\PropertiesShader.obj 
+      Intermediate\LogForm.obj Intermediate\Library.obj 
+      Intermediate\ChoseForm.obj Intermediate\Blender.obj 
+      Intermediate\xr_avi.obj Intermediate\Blender_Recorder.obj 
+      Intermediate\Blender_Vertex.obj Intermediate\Blender_Vertex_aref.obj 
+      Intermediate\BlenderDefault.obj Intermediate\SH_Constant.obj 
+      Intermediate\SH_Matrix.obj Intermediate\SH_Texture.obj 
+      Intermediate\Shader.obj Intermediate\Texture.obj 
+      Intermediate\TextureManager.obj Intermediate\TextureManager_Loader.obj 
+      Intermediate\tss_def.obj Intermediate\Blender_default_aref.obj 
+      Intermediate\Image.obj Intermediate\tga.obj"/>
+    <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) TopBar.dfm BottomBar.dfm EditorPref.dfm Splash.dfm main.dfm 
-      LogForm.dfm LeftBar.dfm FrameProperties.dfm"/>
+      LeftBar.dfm PropertiesShader.dfm LogForm.dfm Editor\ChoseForm.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
       lib\DXT.lib lib\CreateDX.lib lib\d3d8.lib lib\d3dx8d.lib lib\dinput.lib"/>
     <LIBRARIES value="elpackB5.lib dclusr50.lib VCLX50.lib bcbsmp50.lib Vcl50.lib"/>

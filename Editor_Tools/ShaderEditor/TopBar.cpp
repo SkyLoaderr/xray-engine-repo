@@ -49,15 +49,15 @@ void __fastcall TfraTopBar::ebZoomExtentsClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TfraTopBar::ebCameraClick(TObject *Sender)
 {
-	Device.m_Camera.SetStyle(((TExtBtn*)Sender)->Tag);
+	Device.m_Camera.SetStyle(ECameraStyle(((TExtBtn*)Sender)->Tag));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraTopBar::fsStorageRestorePlacement(TObject *Sender)
 {
-	if (ebCameraPlane->Down) 			Device.m_Camera.SetStyle(0);
-	else if (ebCameraArcBall->Down) 	Device.m_Camera.SetStyle(1);
-	else if (ebCameraFly->Down) 		Device.m_Camera.SetStyle(2);
+	if (ebCameraPlane->Down) 			Device.m_Camera.SetStyle(csPlaneMove);
+	else if (ebCameraArcBall->Down) 	Device.m_Camera.SetStyle(cs3DArcBall);
+	else if (ebCameraFly->Down) 		Device.m_Camera.SetStyle(csFreeFly);
     UI->RedrawScene();
 }
 //---------------------------------------------------------------------------

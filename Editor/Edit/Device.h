@@ -3,7 +3,7 @@
 
 #include "ui_camera.h"
 #include "frustum.h"
-#include "ShaderManager.h"
+#include "texturemanager.h"
 #include "hw.h"
 #include "pure.h"
 #include "ftimer.h"
@@ -11,7 +11,6 @@
 #include "primitivesR.h"
 //---------------------------------------------------------------------------
 // refs
-class Shader;
 class CFontHUD;
 
 //------------------------------------------------------------------------------
@@ -26,6 +25,8 @@ class ENGINE_API CRenderDevice{
 	DWORD					Timer_MM_Delta;
 	CTimer					Timer;
 	CTimer					TimerGlobal;
+
+    Shader*					m_CurrentShader;
 public:
     Shader*					m_WireShader;
     Shader*					m_SelectionShader;
@@ -33,8 +34,6 @@ public:
     Fmaterial				m_DefaultMat;
 
     CFrustum    			m_Frustum;
-
-	CShaderManager			Shader;
 public:
     int 					dwWidth, dwHeight;
     int 					m_RenderWidth_2, m_RenderHeight_2;
@@ -116,6 +115,7 @@ public:
                                		  		   	CHK_DX(HW.pDevice->SetTransform(p1,m.d3d()));
 							   			 	}
 	// draw
+	void			   		SetShader		(Shader* sh){m_CurrentShader = sh;}
 	void			   		DP				(D3DPRIMITIVETYPE pt, CVertexStream* VS, DWORD vBase, DWORD pc);
 	void 					DIP				(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWORD vc, CIndexStream* is, DWORD iBase, DWORD pc);
 
@@ -152,6 +152,11 @@ public:
 	IC u32	 				TimerAsyncMM	(void){
 		return TimerAsync()+Timer_MM_Delta;
 	}
+
+	__declspec(noreturn) void __cdecl		Fatal	(const char* F,...);
+	void									Error	(HRESULT,LPCSTR,int);
+public:
+	CShaderManager			Shader;
 };
 
 extern ENGINE_API CRenderDevice Device;
@@ -172,5 +177,13 @@ enum {
 	mtInput				= (1ul<<25ul)
 };
 extern DWORD psDeviceFlags;
+// textures
+extern int psTextureLOD;
+
+#include "TextureManager_Runtime.h"
+#include "PrimitivesR_Runtime.h"
+
+#define		REQ_CREATE()	if (!Device.bReady)	return;
+#define		REQ_DESTROY()	if (Device.bReady)	return;
 
 #endif

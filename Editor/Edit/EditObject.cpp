@@ -9,7 +9,6 @@
 #include "UI_Main.h"
 #include "EditMesh.h"
 #include "Shader.h"
-#include "xrShader.h"
 #include "D3DUtils.h"
 #include "bottombar.h"
 #include "motion.h"
@@ -18,7 +17,7 @@
 
 //----------------------------------------------------
 ERenderPriority	st_Surface::RenderPriority(){
-	if (shader&&shader->shader->Flags.bStrictB2F) return rpAlphaLast;
+//S	if (shader&&shader->shader->Flags.bStrictB2F) return rpAlphaLast;
 	if (shader&&has_alpha) return rpAlphaNormal;
 	return rpNormal;
 }
@@ -170,17 +169,17 @@ void CEditableObject::Render(Fmatrix& parent, ERenderPriority priority){
     Device.SetTransform(D3DTS_WORLD,parent);
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
         if ((priority==rpAlphaNormal)&&((*s_it)->RenderPriority()==rpAlphaNormal)){
-            Device.Shader.Set((*s_it)->shader);
+            Device.SetShader((*s_it)->shader);
             for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
                 (*_M)->Render(parent,*s_it);
         }
         if ((priority==rpAlphaLast)&&((*s_it)->RenderPriority()==rpAlphaLast)){
-            Device.Shader.Set((*s_it)->shader);
+            Device.SetShader((*s_it)->shader);
             for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
                 (*_M)->Render(parent,*s_it);
         }
         if ((priority==rpNormal)&&((*s_it)->RenderPriority()==rpNormal)){
-            Device.Shader.Set((*s_it)->shader);
+            Device.SetShader((*s_it)->shader);
             for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
                 (*_M)->Render(parent,*s_it);
         }
@@ -208,7 +207,7 @@ void CEditableObject::RenderAnimation(const Fmatrix& parent){
             v.push_back(T);
         }
 
-        Device.Shader.Set		(Device.m_WireShader);
+        Device.SetShader		(Device.m_WireShader);
         Device.SetTransform		(D3DTS_WORLD,parent);
         DU::DrawPrimitiveL		(D3DPT_LINESTRIP,v.size()-1,v.begin(),v.size(),clr,true,false);
     }
@@ -232,7 +231,7 @@ void CEditableObject::RenderBones(const Fmatrix& parent){
 
         // render
         Device.SetTransform(D3DTS_WORLD,parent);
-        Device.Shader.Set(Device.m_WireShader);
+        Device.SetShader(Device.m_WireShader);
         for(BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++){
             Fmatrix& M = (*b_it)->LTransform();
             Fvector p1;
@@ -249,7 +248,7 @@ void CEditableObject::RenderBones(const Fmatrix& parent){
 }
 
 void CEditableObject::RenderEdge(Fmatrix& parent, CEditableMesh* mesh){
-    Device.Shader.Set(Device.m_WireShader);
+    Device.SetShader(Device.m_WireShader);
     DWORD c=D3DCOLOR_RGBA(192,192,192,255);
     if(mesh) mesh->RenderEdge(parent, c);
     else for(EditMeshIt _M = m_Meshes.begin();_M!=m_Meshes.end();_M++)
@@ -259,7 +258,7 @@ void CEditableObject::RenderEdge(Fmatrix& parent, CEditableMesh* mesh){
 void CEditableObject::RenderSelection(Fmatrix& parent){
     DWORD c=D3DCOLOR_RGBA(230,70,70,64);
     Device.SetTransform(D3DTS_WORLD,parent);
-    Device.Shader.Set(Device.m_SelectionShader);
+    Device.SetShader(Device.m_SelectionShader);
     Device.RenderNearer(0.0005);
     for(EditMeshIt _M = m_Meshes.begin();_M!=m_Meshes.end();_M++)
         (*_M)->RenderSelection(parent, c);
@@ -329,16 +328,16 @@ void CEditableObject::OnDeviceCreate(){
 	// пока буфера не аппаратные не нужно пересоздавать их
     //	UpdateRenderBuffers();
 	// создать заново shaders
-    for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-        (*s_it)->shader = Device.Shader.Create((*s_it)->sh_name.c_str(),(*s_it)->textures);
+//S    for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
+//S        (*s_it)->shader = Device.Shader.Create((*s_it)->sh_name.c_str(),(*s_it)->textures);
 }
 
 void CEditableObject::OnDeviceDestroy(){
 	// пока буфера не аппаратные не нужно пересоздавать их
     //	ClearRenderBuffers();
 		// удалить shaders
-    for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-        if ((*s_it)->shader){ Device.Shader.Delete((*s_it)->shader); (*s_it)->shader=0; }
+//S    for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
+//S        if ((*s_it)->shader){ Device.Shader.Delete((*s_it)->shader); (*s_it)->shader=0; }
 }
 
 void CEditableObject::LightenObject(){

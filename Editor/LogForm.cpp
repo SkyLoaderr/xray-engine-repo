@@ -3,7 +3,6 @@
 
 #include "LogForm.h"
 #include "main.h"
-#include "FileSystem.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "mxPlacemnt"
@@ -13,7 +12,7 @@ TfrmLog *TfrmLog::form=0;
 __fastcall TfrmLog::TfrmLog(TComponent* Owner)
     : TForm(Owner)
 {
-    char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
+    char buf[MAX_PATH] = {"shader_ed.ini"};  FS.m_ExeRoot.Update(buf);
     fsStorage->IniFileName = buf;
 }
 //---------------------------------------------------------------------------

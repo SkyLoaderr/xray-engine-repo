@@ -31,7 +31,7 @@ __fastcall TfrmMain::TfrmMain(TComponent* Owner)
     fraLeftBar  = new TfraLeftBar(0);
     fraTopBar   = new TfraTopBar(0);
 	fsMainForm->RestoreFormPlacement();
-	if (!UI->Init(D3DWindow)) exit(-1);
+	if (!UI->OnCreate(D3DWindow)) exit(-1);
     pInput		= new CInput(FALSE,mouse_device_key);
     UI->iCapture();
 	Device.InitTimer();
@@ -149,15 +149,11 @@ void __fastcall TfrmMain::ApplyShortCut(WORD Key, TShiftState Shift)
 {
 //    if (Key==VK_ESCAPE)   		UI->Command(COMMAND_CHANGE_ACTION, eaSelect);
     if (Shift.Contains(ssCtrl)){
-        if (Key=='O')   		UI->Command(COMMAND_LOAD);
-        else if (Key=='N')   	UI->Command(COMMAND_CLEAR);
-        else if (Key=='S'){ 	if (Shift.Contains(ssAlt))  UI->Command(COMMAND_SAVEAS);
-					            else                        UI->Command(COMMAND_SAVE);}
+		if (Key=='S')					UI->Command(COMMAND_SAVE);
     }else{
         if (Shift.Contains(ssAlt)){
         }else{
         	if (Key=='P')				UI->Command(COMMAND_EDITOR_PREF);
-        	else if (Key==VK_RETURN)    UI->Command(COMMAND_SHOWPROPERTIES);
         }
     }
 }
@@ -166,12 +162,7 @@ void __fastcall TfrmMain::ApplyShortCut(WORD Key, TShiftState Shift)
 void __fastcall TfrmMain::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 {
     if (Shift.Contains(ssCtrl)){
-        if (Key=='S'){
-            if (Shift.Contains(ssAlt))  UI->Command(COMMAND_SAVEAS);
-            else                        UI->Command(COMMAND_SAVE);
-        }
-        else if (Key=='O')   			UI->Command(COMMAND_LOAD);
-        else if (Key=='N')   			UI->Command(COMMAND_CLEAR);
+        if (Key=='S')					UI->Command(COMMAND_SAVE);
     }
     if (Key==VK_OEM_3)		  			UI->Command(COMMAND_RENDER_FOCUS);
 }
@@ -204,22 +195,11 @@ void __fastcall TfrmMain::D3DWindowPaint(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmMain::miPropertiesClick(TObject *Sender)
-{
-    UI->Command(COMMAND_SHOWPROPERTIES);
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfrmMain::fsMainFormRestorePlacement(TObject *Sender)
 {
     fraLeftBar->fsStorage->RestoreFormPlacement();
     fraBottomBar->fsStorage->RestoreFormPlacement();
     fraTopBar->fsStorage->RestoreFormPlacement();
-}
-//---------------------------------------------------------------------------
-
-void ResetActionToSelect()
-{
 }
 //---------------------------------------------------------------------------
 
@@ -247,13 +227,13 @@ void __fastcall TfrmMain::D3DWindowChangeFocus(TObject *Sender)
 
 void __fastcall TfrmMain::FormActivate(TObject *Sender)
 {
-	pInput->OnAppActivate();
+	if (pInput) pInput->OnAppActivate();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmMain::FormDeactivate(TObject *Sender)
 {
-	pInput->OnAppDeactivate();
+	if (pInput) pInput->OnAppDeactivate();
 }
 //---------------------------------------------------------------------------
 

@@ -15,9 +15,11 @@
 #include "ExtBtn.hpp"
 #include "MxMenus.hpp"
 #include "mxPlacemnt.hpp"
-#include "FrameProperties.h"
 #include "ElTree.hpp"
 #include "ElXPThemedControl.hpp"
+
+#include "ShaderTools.h"
+
 //---------------------------------------------------------------------------
 class TfraLeftBar : public TFrame
 {
@@ -34,7 +36,7 @@ __published:	// IDE-managed Components
 	TMenuItem *Save1;
 	TMenuItem *Reload1;
 	TMxPopupMenu *pmPreviewObject;
-	TMenuItem *Refresh1;
+	TMenuItem *Plane1;
 	TPanel *paShaders;
 	TLabel *Label1;
 	TPanel *paShaderList;
@@ -58,15 +60,14 @@ __published:	// IDE-managed Components
 	TMenuItem *CollapseAll1;
 	TMenuItem *N1;
 	TMenuItem *CreateFolder1;
-    void __fastcall ebClearClick(TObject *Sender);
-    void __fastcall ebLoadClick(TObject *Sender);
+	TExtBtn *ebApplyChanges;
+	TMxPopupMenu *pmBlenderList;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebReloadClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
     void __fastcall PanelMaximizeClick(TObject *Sender);
     void __fastcall ebEditorPreferencesClick(TObject *Sender);
     void __fastcall ebRefreshTexturesClick(TObject *Sender);
-	void __fastcall sbPropertiesClick(TObject *Sender);
 	void __fastcall ebResetAnimationClick(TObject *Sender);
 	void __fastcall ebSceneFileMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
@@ -74,13 +75,20 @@ __published:	// IDE-managed Components
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall ElTree1MouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
+	void __fastcall ebShaderPropertiesClick(TObject *Sender);
+	void __fastcall PreviewClick(TObject *Sender);
+	void __fastcall ebApplyChangesClick(TObject *Sender);
+	void __fastcall ebShaderCreateMouseDown(TObject *Sender,
+          TMouseButton Button, TShiftState Shift, int X, int Y);
 private:	// User declarations
+	void __fastcall TemplateClick(TObject *Sender);
 	void __fastcall ShowPPMenu(TMxPopupMenu* M, TObject* btn);
 public:		// User declarations
         __fastcall TfraLeftBar(TComponent* Owner);
-	void ChangeTarget(int tgt);
-    void UpdateBar();
-    void UpdateSnapList();
+	void ChangeTarget	(int tgt);
+    void UpdateBar		();
+    void UpdateSnapList	();
+    void InitPalette	(TemplateVec& lst);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

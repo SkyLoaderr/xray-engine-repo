@@ -14,6 +14,8 @@
 //----------------------------------------------------
 
 CLog ELog;
+BOOL CLog::bReady = false;
+char CLog::m_FileName[MAX_PATH];
 
 void Log	(const char *msg){ ELog.Msg(mtInformation,msg); }
 void Log	(const char *msg, const char*	dop){ ELog.Msg(mtInformation,"%s%s",msg,dop); }
@@ -57,7 +59,7 @@ void CLog::Create(LPCSTR _FileName){
 }
 
 int CLog::DlgMsg (TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...){
-	VERIFY(bReady);
+	if(!bReady) return -1;
     g_ErrorMode = true;
 	char buf[4096];
 	va_list l;
@@ -78,7 +80,7 @@ int CLog::DlgMsg (TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...){
 
 
 int CLog::DlgMsg (TMsgDlgType mt, LPCSTR _Format, ...){
-	VERIFY(bReady);
+	if(!bReady) return -1;
     g_ErrorMode = true;
 	char buf[4096];
 	va_list l;
@@ -100,7 +102,7 @@ int CLog::DlgMsg (TMsgDlgType mt, LPCSTR _Format, ...){
 }
 
 void CLog::Msg(TMsgDlgType mt, LPCSTR _Format, ...){
-	VERIFY(bReady);
+	if(!bReady) return;
 	char buf[4096];
 	va_list l;
 	va_start( l, _Format );

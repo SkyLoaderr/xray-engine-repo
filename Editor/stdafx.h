@@ -151,6 +151,8 @@ DEFINE_VECTOR(Fvector2,Fvector2Vec,Fvector2It);
 DEFINE_VECTOR(Fvector,FvectorVec,FvectorIt);
 DEFINE_VECTOR(AnsiString,AStringVec,AStringIt);
 
+#include "FS.h"
+#include "FileSystem.h"
 #include "device.h"
 
 DEFINE_VECTOR(FVF::L,FLvertexVec,FLvertexIt);
@@ -190,6 +192,8 @@ struct st_Version{
     bool operator == (st_Version& v)	{return v.f_age==f_age;}
     void reset	(){ver=0;}
 };
+
+typedef	char FILE_NAME	[ _MAX_PATH	];
 
 #endif /*_INCDEF_STDAFX_H_*/
 

@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 493
+  Height = 277
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 145
-    Height = 493
+    Height = 277
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -182,7 +182,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 87
       Width = 143
-      Height = 405
+      Height = 189
       Align = alClient
       ParentShowHint = False
       ShowHint = True
@@ -203,7 +203,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 48
         Width = 141
-        Height = 340
+        Height = 124
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
@@ -211,7 +211,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 0
           Width = 141
-          Height = 340
+          Height = 124
           Cursor = crDefault
           LeftPosition = 0
           DragCursor = crDrag
@@ -285,6 +285,7 @@ object fraLeftBar: TfraLeftBar
           Font.Style = []
           ParentFont = False
           Transparent = False
+          OnMouseDown = ebShaderCreateMouseDown
         end
         object ebShaderRemove: TExtBtn
           Left = 47
@@ -363,7 +364,7 @@ object fraLeftBar: TfraLeftBar
       end
       object paAction: TPanel
         Left = 1
-        Top = 388
+        Top = 172
         Width = 141
         Height = 16
         Align = alBottom
@@ -372,7 +373,7 @@ object fraLeftBar: TfraLeftBar
         object ebShaderProperties: TExtBtn
           Left = 1
           Top = 1
-          Width = 140
+          Width = 60
           Height = 15
           Align = alNone
           BevelShow = False
@@ -384,10 +385,28 @@ object fraLeftBar: TfraLeftBar
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
-          Margin = 13
           ParentFont = False
           Transparent = False
-          OnClick = ebEditorPreferencesClick
+          OnClick = ebShaderPropertiesClick
+        end
+        object ebApplyChanges: TExtBtn
+          Left = 61
+          Top = 1
+          Width = 80
+          Height = 15
+          Align = alNone
+          BevelShow = False
+          HotTrack = True
+          CloseButton = False
+          Caption = 'Apply Changes'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          Transparent = False
+          OnClick = ebApplyChangesClick
         end
       end
     end
@@ -396,6 +415,7 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
+    Version = 1
     StoredProps.Strings = (
       'paScene.Tag'
       'paScene.Height')
@@ -442,24 +462,32 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 117
     Top = 34
-    object Refresh1: TMenuItem
+    object Plane1: TMenuItem
       Caption = 'Plane'
-      OnClick = ebRefreshTexturesClick
+      OnClick = PreviewClick
     end
     object Box1: TMenuItem
+      Tag = 1
       Caption = 'Box'
+      OnClick = PreviewClick
     end
     object Ball1: TMenuItem
+      Tag = 2
       Caption = 'Ball'
+      OnClick = PreviewClick
     end
     object Teapot1: TMenuItem
+      Tag = 3
       Caption = 'Teapot'
+      OnClick = PreviewClick
     end
     object N3: TMenuItem
       Caption = '-'
     end
     object Custom1: TMenuItem
+      Tag = -1
       Caption = 'Custom...'
+      OnClick = PreviewClick
     end
   end
   object pmShaderList: TMxPopupMenu
@@ -488,5 +516,21 @@ object fraLeftBar: TfraLeftBar
     object CreateFolder1: TMenuItem
       Caption = 'Create Folder'
     end
+  end
+  object pmBlenderList: TMxPopupMenu
+    Alignment = paCenter
+    AutoPopup = False
+    TrackButton = tbLeftButton
+    MarginStartColor = 13158600
+    MarginEndColor = 1644825
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = clWhite
+    SepHColor = 1644825
+    SepLColor = 13158600
+    LeftMargin = 10
+    Style = msOwnerDraw
+    Left = 13
+    Top = 81
   end
 end

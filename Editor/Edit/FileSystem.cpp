@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "FileSystem.h"
 #include "CustomObject.h"
 #include <io.h>
 
@@ -168,7 +167,7 @@ bool CFileSystem::GetSaveName( FSPath *initial, AnsiString& buffer ){
     return res;
 }
 
-bool CFileSystem::Exist( const char *_FileName, bool bMessage ){
+bool CFileSystem::Exist(LPCSTR _FileName, bool bMessage){
     bool bRes = FileExists(_FileName);
     if (bMessage&&!bRes){
         ELog.Msg(mtError,"Can't find required file: '%s'",_FileName);
@@ -177,6 +176,22 @@ bool CFileSystem::Exist( const char *_FileName, bool bMessage ){
     return bRes;
 }
 //----------------------------------------------------
+
+bool CFileSystem::Exist(char* fn, const char* path, const char* name, bool bMessage){
+	strcpy(fn,path);
+    strcat(fn,name);
+	return Exist(fn,bMessage);
+}
+//----------------------------------------------------
+
+bool CFileSystem::Exist(char* fn, const char* path, const char* name, const char* ext, bool bMessage){
+	strcpy(fn,path);
+    strcat(fn,name);
+    strcat(fn,ext);
+	return Exist(fn,bMessage);
+}
+//----------------------------------------------------
+
 
 bool CFileSystem::Exist( FSPath *initial, const char *_FileName, bool bMessage){
 	AnsiString fn;

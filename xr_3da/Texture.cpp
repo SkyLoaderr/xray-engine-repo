@@ -431,7 +431,6 @@ ENGINE_API IDirect3DTexture8*	TWLoader2D(
 	char fname[_MAX_PATH];
 	strcpy(fname,fRName); if (strext(fname)) *strext(fname)=0;
 #ifdef M_BORLAND
-	#include "filesystem.h"
 	if (FS.Exist(fn,FS.m_GameTextures.m_Path,fname,	".dds"))	goto _DDS;
 	if (FS.Exist(fn,FS.m_GameTextures.m_Path,fname,	".tga"))	goto _TGA;
 #else

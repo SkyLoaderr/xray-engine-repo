@@ -14,6 +14,7 @@
 #include "main.h"
 #include "xr_trims.h"
 #include "ShaderTools.h"
+#include "Library.h"
 
 TUI* UI=0;
 
@@ -49,23 +50,25 @@ TUI::TUI()
     ELog.Create		("ed.log");
     FS.Init			();
 
-    SHLib			= new CShaderLibrary();
-	m_ShaderTools	= new CShaderTools();
+    Lib             = new ELibrary();
+//S    SHLib			= new CShaderLibrary();
 }
 //---------------------------------------------------------------------------
 TUI::~TUI()
 {
-    _DELETE(SHLib);
-    _DELETE(m_ShaderTools);
+    _DELETE(Lib);
+//S    _DELETE(SHLib);
 }
 
-bool TUI::Init(TD3DWindow* wnd){
+bool TUI::OnCreate(TD3DWindow* wnd){
 	DU::UpdateGrid(25,1,5);
 
     m_D3DWindow = wnd;
     VERIFY(m_D3DWindow);
 	InitMath		();
-    SHLib->Init		();
+	FPU::m64r		();
+//S    SHLib->Init		();
+	SHTools.OnCreate();
 
     if (!Device.Create(m_D3DWindow->Handle)){
         ELog.DlgMsg(mtError,"Can't create DirectX device. Editor halted!");
@@ -73,6 +76,7 @@ bool TUI::Init(TD3DWindow* wnd){
      }
 	g_bEditorValid  = true;
 
+    Lib->Init       ();
     XRC.RayMode		(RAY_CULL);
 
     Command			(COMMAND_CLEAR);
@@ -81,11 +85,12 @@ bool TUI::Init(TD3DWindow* wnd){
     return true;
 }
 
-void TUI::Clear()
+void TUI::OnDestroy()
 {
 	DU::UninitUtilLibrary();
-	m_ShaderTools->Clear();
-    SHLib->Clear();
+	SHTools.OnDestroy	();
+    Lib->Clear		();
+//S    SHLib->Clear();
 
     Device.Destroy();
     g_bEditorValid = false;
@@ -128,7 +133,7 @@ void TUI::Redraw(){
         }
         
 	// render
-	m_ShaderTools->Render();
+	SHTools.Render();
 
     // draw selection rect
 		if(m_SelectionRect) DU::DrawSelectionRect(m_SelStart,m_SelEnd);
@@ -152,7 +157,7 @@ void TUI::Idle()
     Sleep(5);
 	Device.UpdateTimer();
     if (bRedraw){
-		m_ShaderTools->Update();
+		SHTools.Update();
         Redraw();
     }
 }

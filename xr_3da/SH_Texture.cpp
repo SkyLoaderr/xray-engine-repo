@@ -27,7 +27,7 @@ CTexture::~CTexture() {
 
 void CTexture::Apply(DWORD dwStage)
 {
-	if (pAVI && pAVI->NeedUpdate()) 
+	if (pAVI && pAVI->NeedUpdate())
 	{
 		// AVI
 		D3DLOCKED_RECT R;
@@ -55,16 +55,15 @@ void CTexture::Apply(DWORD dwStage)
 void CTexture::Load(LPCSTR cName)
 {
 	if (pSurface)					return;
-	
+
 	dwMemoryUsage					= 0;
 	if (0==stricmp(cName,"$null"))	return;
-	
+
 	// Check for AVI
 	FILE_NAME fn;
 #ifndef M_BORLAND
 	if (Engine.FS.Exist(fn,Path.Textures,cName,".avi"))
 #else
-	#include "FileSystem.h"
 	if (FS.Exist(fn,FS.m_GameTextures.m_Path,cName,".avi"))
 #endif
 	{
@@ -183,7 +182,7 @@ DWORD CTexture::Calculate_MemUsage	(IDirect3DTexture8* T)
 
 void CTexture::Unload()
 {
-	if (!seqDATA.empty())	
+	if (!seqDATA.empty())
 	{
 		for (DWORD I=0; I<seqDATA.size(); I++)
 			_RELEASE(seqDATA[I]);

@@ -477,7 +477,7 @@ void DrawCross(const Fvector& p, float szx1, float szy1, float szz1, float szx2,
 }
 
 void DrawPivot(const Fvector& pos, float sz){
-	Device.Shader.Set(Device.m_WireShader);
+	Device.SetShader(Device.m_WireShader);
     DrawCross(pos, sz, sz, sz, sz, sz, sz, 0xFF7FFF7F);
 }
 
@@ -511,7 +511,7 @@ void DrawAxis(){
 	// unlock VB and Render it as triangle list
 	TLStream->Unlock(6);
 	Device.SetRS(D3DRS_SHADEMODE,D3DSHADE_GOURAUD);
-	Device.Shader.Set(Device.m_WireShader);
+	Device.SetShader(Device.m_WireShader);
     Device.DP(D3DPT_LINELIST,TLStream,vBase,3);
 	Device.SetRS(D3DRS_SHADEMODE,Device.dwShadeMode);
 }
@@ -525,7 +525,7 @@ void DrawGrid(){
 	LStream->Unlock(m_GridPoints.size());
 	// Render it as triangle list
     Device.SetTransform(D3DTS_WORLD,precalc_identity);
-	Device.Shader.Set(Device.m_WireShader);
+	Device.SetShader(Device.m_WireShader);
     Device.DP(D3DPT_LINELIST,LStream,vBase,m_GridPoints.size()/2);
 }
 
@@ -541,7 +541,7 @@ void DrawSelectionRect(const Ipoint& m_SelStart, const Ipoint& m_SelEnd){
 	TLStream->Unlock(4);
 	// Render it as triangle list
     Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
-	Device.Shader.Set(Device.m_SelectionShader);
+	Device.SetShader(Device.m_SelectionShader);
     Device.DP(D3DPT_TRIANGLEFAN,TLStream,vBase,2);
     Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
 }

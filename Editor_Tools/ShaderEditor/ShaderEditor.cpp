@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #pragma hdrstop
 USERES("ShaderEditor.res");
+USERES("resource.res");
 USE("!.txt", File);
 USEUNIT("stdafx.cpp");
-USEUNIT("editor\Texture.cpp");
 USEUNIT("editor\FileSystem.cpp");
 USEUNIT("editor\D3DUtils.cpp");
 USEUNIT("editor\Log.cpp");
@@ -12,13 +12,10 @@ USE("editor\std_classes.h", File);
 USEUNIT("editor\frustum.cpp");
 USELIB("lib\LWO.lib");
 USEUNIT("editor\EditMesh.cpp");
-USEUNIT("editor\Shader.cpp");
 USEUNIT("editor\EditObjectImport.cpp");
 USEUNIT("editor\EditMeshIO.cpp");
 USEUNIT("editor\EditMeshModify.cpp");
 USEUNIT("editor\Device.cpp");
-USEUNIT("editor\TextureIO.cpp");
-USEUNIT("editor\TextureThumbnail.cpp");
 USEUNIT("editor\EditMeshRender.cpp");
 USEFORM("TopBar.cpp", fraTopBar);
 USEFORM("BottomBar.cpp", fraBottomBar);
@@ -26,13 +23,9 @@ USEFORM("EditorPref.cpp", frmEditorPreferences);
 USEFORM("Splash.cpp", frmSplash);
 USEFORM("main.cpp", frmMain);
 USELIB("lib\cg32.lib");
-USEFORM("LogForm.cpp", frmLog);
 USEUNIT("editor\EditObjectIO.cpp");
 USEUNIT("editor\EditObjectMotions.cpp");
 USELIB("lib\xrProgressive.lib");
-USEUNIT("engine\xrShaderLib.cpp");
-USEUNIT("engine\XRShader.cpp");
-USEUNIT("engine\ShaderManager.cpp");
 USELIB("lib\MagicFMd.lib");
 USEUNIT("engine\_quaternion.cpp");
 USEUNIT("engine\_compressed_normal.cpp");
@@ -81,7 +74,27 @@ USEOBJ("Intermediate\cpuid.obj");
 USEOBJ("Intermediate\_math.obj");
 USEFORM("LeftBar.cpp", fraLeftBar); /* TFrame: File Type */
 USEUNIT("ShaderTools.cpp");
-USEFORM("FrameProperties.cpp", fraProperties); /* TFrame: File Type */
+USEFORM("PropertiesShader.cpp", frmShaderProperties);
+USEFORM("LogForm.cpp", frmLog);
+USEUNIT("Editor\Library.cpp");
+USEFORM("Editor\ChoseForm.cpp", frmChoseItem);
+USEUNIT("Engine\Blender.cpp");
+USEUNIT("Engine\xr_avi.cpp");
+USEUNIT("Engine\Blender_Recorder.cpp");
+USEUNIT("Engine\Blender_Vertex.cpp");
+USEUNIT("Engine\Blender_Vertex_aref.cpp");
+USEUNIT("Engine\BlenderDefault.cpp");
+USEUNIT("Engine\SH_Constant.cpp");
+USEUNIT("Engine\SH_Matrix.cpp");
+USEUNIT("Engine\SH_Texture.cpp");
+USEUNIT("Engine\Shader.cpp");
+USEUNIT("Engine\Texture.cpp");
+USEUNIT("Engine\TextureManager.cpp");
+USEUNIT("Engine\TextureManager_Loader.cpp");
+USEUNIT("Engine\tss_def.cpp");
+USEUNIT("Engine\Blender_default_aref.cpp");
+USEUNIT("Engine\Image.cpp");
+USEUNIT("Engine\tga.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

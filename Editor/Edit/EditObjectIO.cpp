@@ -6,11 +6,9 @@
 #pragma hdrstop
 
 #include "EditObject.h"
-#include "FileSystem.h"
 #include "UI_Main.h"
 #include "Shader.h"
 #include "EditMesh.h"
-#include "xrShader.h"
 #include "bone.h"
 #include "motion.h"
 
@@ -109,9 +107,9 @@ bool CEditableObject::Load(CStream& F){
             for (AStringIt v_it=(*s_it)->vmaps.begin(); v_it!=(*s_it)->vmaps.end(); v_it++){
                 F.RstringZ		(buf); *v_it = buf;
             }
-            (*s_it)->shader 	= Device.Shader.Create((*s_it)->sh_name.c_str(),(*s_it)->textures);
-            SH_ShaderDef* sh_base = SHLib->FindShader((*s_it)->sh_name);
-            if (sh_base)        (*s_it)->has_alpha = (sh_base->Passes_Count)?sh_base->Passes[0].Flags.bABlend:false;
+//S            (*s_it)->shader 	= Device.Shader.Create((*s_it)->sh_name.c_str(),(*s_it)->textures);
+//S            SH_ShaderDef* sh_base = SHLib->FindShader((*s_it)->sh_name);
+//S            if (sh_base)        (*s_it)->has_alpha = (sh_base->Passes_Count)?sh_base->Passes[0].Flags.bABlend:false;
         }
 
         // Load meshes
@@ -215,7 +213,7 @@ void CEditableObject::Save(CFS_Base& F){
     F.Wdword		(m_Surfaces.size());
     for (SurfaceIt sf_it=m_Surfaces.begin(); sf_it!=m_Surfaces.end(); sf_it++){
         F.WstringZ	((*sf_it)->name);
-        F.WstringZ	((*sf_it)->shader?(*sf_it)->shader->shader->cName:"");
+//S        F.WstringZ	((*sf_it)->shader?(*sf_it)->shader->shader->cName:"");
         F.Wbyte		((*sf_it)->sideflag);
         F.Wdword	((*sf_it)->dwFVF);
         F.Wdword	((*sf_it)->textures.size());

@@ -5,8 +5,6 @@
 #ifndef _INCDEF_FileSystem_H_
 #define _INCDEF_FileSystem_H_
 
-#include "FS.h"
-
 class FSPath{
 public:
 	char m_Root[MAX_PATH];
@@ -57,8 +55,10 @@ public:
 	bool 	GetOpenName		(FSPath *initial, AnsiString& buf);
 	bool 	GetSaveName		(FSPath *initial, AnsiString& buf);
 
-    bool 	Exist			(const char *_FileName, bool bMessage = false);
+    bool 	Exist			(LPCSTR _FileName, bool bMessage = false);
     bool 	Exist			(FSPath *initial, const char *_FileName, bool bMessage = false);
+	bool	Exist			(char* fn, const char* path, const char* name, bool bMessage = false);
+	bool	Exist			(char* fn, const char* path, const char* name, const char* ext, bool bMessage = false);
     void 	DeleteFileByName(const char* nm);
 	void 	CopyFileTo		(LPCSTR src, LPCSTR dest, bool bOverwrite=true);
     int		FileLength		(LPCSTR src);

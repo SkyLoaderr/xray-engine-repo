@@ -58,10 +58,10 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
     //	                Osf->shader = SHLib->FindShader(sh_info->sh_name);
                         shader_name = (char*)Isf->shader->data;
                     }
-                    if (!SHLib->FindShader(shader_name)){
-						ELog.Msg(mtError,"CEditableObject: Shader '%s' - can't find in library. Using 'default' shader.", shader_name.c_str());
-	                    shader_name = "default";
-                    }
+//S                    if (!SHLib->FindShader(shader_name)){
+//S						ELog.Msg(mtError,"CEditableObject: Shader '%s' - can't find in library. Using 'default' shader.", shader_name.c_str());
+//S	                    shader_name = "default";
+//S                    }
                     // fill texture layers
                     int cidx;
                     st_lwClip* Icl;
@@ -102,7 +102,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                         break;
                     }
 
-                    Osf->shader = Device.Shader.Create(shader_name.c_str(),Osf->textures);
+//S                    Osf->shader = Device.Shader.Create(shader_name.c_str(),Osf->textures);
 
                     Osf->dwFVF = D3DFVF_XYZ|D3DFVF_NORMAL|(dwNumTextures<<D3DFVF_TEXCOUNT_SHIFT);
                     i++;

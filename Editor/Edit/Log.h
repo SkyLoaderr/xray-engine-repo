@@ -7,14 +7,15 @@
 
 class CLog{
 protected:
-	BOOL        bReady;
-	char 		m_FileName[MAX_PATH];
+	static BOOL	bReady;
+	static char m_FileName[MAX_PATH];
 public:
 				CLog	(){bReady=false;}
+				~CLog	(){bReady=false;}
     void		Create  (LPCSTR _FileName );
-	void 		Msg   	(TMsgDlgType mt, LPCSTR _Format, ...);
-	int 		DlgMsg 	(TMsgDlgType mt, LPCSTR _Format, ...);
-	int 		DlgMsg 	(TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...);
+	static void Msg   	(TMsgDlgType mt, LPCSTR _Format, ...);
+	static int 	DlgMsg 	(TMsgDlgType mt, LPCSTR _Format, ...);
+	static int 	DlgMsg 	(TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...);
 };
 
 extern CLog ELog;

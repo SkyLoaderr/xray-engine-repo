@@ -29,38 +29,13 @@ __published:	// IDE-managed Components
         TPanel *paBottomBar;
     TPanel *paTools;
     TTimer *tmRefresh;
-	TMxPopupMenu *pmObjectContext;
-    TMenuItem *miProperties;
-    TMenuItem *miCopy;
-    TMenuItem *miPaste;
-    TMenuItem *miCut;
     TFormStorage *fsMainForm;
     TPanel *paMain;
     TPanel *paTopBar;
-	TMenuItem *miVisibility;
 	TPanel *paWindow;
 	TD3DWindow *D3DWindow;
 	TLabel *APHeadLabel2;
 	TExtBtn *sbToolsMin;
-	TMenuItem *Numeric1;
-	TMenuItem *Position1;
-	TMenuItem *Rotation1;
-	TMenuItem *Scale1;
-	TMenuItem *N4;
-	TMenuItem *HideAll2;
-	TMenuItem *HideSelected2;
-	TMenuItem *HideUnselected2;
-	TMenuItem *N5;
-	TMenuItem *UnhideAll2;
-	TMenuItem *Locking1;
-	TMenuItem *LockAll1;
-	TMenuItem *LockSelected1;
-	TMenuItem *LockUnselected1;
-	TMenuItem *N6;
-	TMenuItem *UnlockAll1;
-	TMenuItem *UnlockSelected1;
-	TMenuItem *UnlockUnselected1;
-	TMenuItem *Edit1;
         void __fastcall FormCreate(TObject *Sender);
     void __fastcall D3DWindowResize(TObject *Sender);
     void __fastcall D3DWindowKeyDown(TObject *Sender, WORD &Key,
@@ -73,7 +48,6 @@ __published:	// IDE-managed Components
     void __fastcall tmRefreshTimer(TObject *Sender);
     void __fastcall D3DWindowPaint(TObject *Sender);
     void __fastcall D3DWindowKeyPress(TObject *Sender, char &Key);
-    void __fastcall miPropertiesClick(TObject *Sender);
     void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
     void __fastcall fsMainFormRestorePlacement(TObject *Sender);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
@@ -98,7 +72,5 @@ public:		// User declarations
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfrmMain *frmMain;
-
-void ResetActionToSelect();
 //---------------------------------------------------------------------------
 #endif

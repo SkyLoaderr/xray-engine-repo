@@ -5,7 +5,6 @@
 
 #include "ChoseForm.h"
 #include "shader.h"
-#include "FileSystem.h"
 #include "texture.h"
 #include "xr_trims.h"
 #include "Library.h"
@@ -65,11 +64,11 @@ LPCSTR __fastcall TfrmChoseItem::SelectShader(bool bExcludeSystem, LPCSTR start_
     form->tvItems->Selected = 0;
     form->tvItems->Items->Clear();
     // fill shaders list
-    for (SH_ShaderDef* S=SHLib->FirstShader(); S!=SHLib->LastShader(); S++){
+//S    for (SH_ShaderDef* S=SHLib->FirstShader(); S!=SHLib->LastShader(); S++){
 //		if (!start_folder||(start_folder&&(stricmp(start_folder,S->cFolder)==0)))
-		if (bExcludeSystem&&(S->cName[0]!='$')||(!bExcludeSystem))
-        	form->AddItemToFolder("Shaders",S->cName);
-    }
+//S		if (bExcludeSystem&&(S->cName[0]!='$')||(!bExcludeSystem))
+//S        	form->AddItemToFolder("Shaders",S->cName);
+//S    }
     // redraw
 	SendMessage(form->tvItems->Handle,WM_SETREDRAW,1,0);
 	form->tvItems->Repaint();
@@ -152,8 +151,8 @@ __fastcall TfrmChoseItem::TfrmChoseItem(TComponent* Owner)
     : TForm(Owner)
 {
 	tvItems->MultiSelect = false;
-	sel_tex = 0;
-    sel_thm = 0;
+//S	sel_tex = 0;
+//S    sel_thm = 0;
     bMultiSel = false;
     tvItems->ShowCheckboxes = false;
     char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
@@ -282,8 +281,8 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
 
 void __fastcall TfrmChoseItem::FormClose(TObject *Sender, TCloseAction &Action)
 {
-	_DELETE(sel_tex);
-    _DELETE(sel_thm);
+//S	_DELETE(sel_tex);
+//S    _DELETE(sel_thm);
 	Action = caFree;
     form = 0;
     if (tvItems->Selected) last_item=tvItems->Selected->Text;
@@ -293,6 +292,8 @@ void __fastcall TfrmChoseItem::FormClose(TObject *Sender, TCloseAction &Action)
 
 void __fastcall TfrmChoseItem::tvItemsItemSelectedChange(TObject *Sender, TElTreeItem *Item)
 {
+//S
+/*
 	if (Item==tvItems->Selected) return;
 	_DELETE(sel_tex);
     _DELETE(sel_thm);
@@ -326,12 +327,14 @@ void __fastcall TfrmChoseItem::tvItemsItemSelectedChange(TObject *Sender, TElTre
 		lbFileName->Caption	= "...";
 		lbInfo->Caption		= "...";
     }
+*/
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmChoseItem::pbImagePaint(TObject *Sender)
 {
-    if (sel_tex){
+//S
+/*    if (sel_tex){
         RECT r;
         r.left = 2; r.top = 2;
         float w, h;
@@ -352,6 +355,7 @@ void __fastcall TfrmChoseItem::pbImagePaint(TObject *Sender)
 //		sel_thm->DrawStretch(paImage->Handle, &r);
 		sel_thm->DrawNormal(paImage->Handle, &r);
     }
+*/
 }
 //---------------------------------------------------------------------------
 

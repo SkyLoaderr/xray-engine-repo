@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "HW.h"
-
 #pragma hdrstop
+
+#include "HW.h"
 
 ENGINE_API CHW HW;
 

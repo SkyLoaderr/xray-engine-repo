@@ -5,13 +5,39 @@
 #include "ui_main.h"
 #include "main.h"
 #include "xr_hudfont.h"
+#include "dxerr8.h"
 
 #pragma package(smart_init)
 
 CRenderDevice Device;
 
+int psTextureLOD	= 0;
 DWORD psDeviceFlags 	= rsStatistic|rsFilterLinear|rsFog|rsDrawGrid;
 DWORD dwClearColor		= 0x00555555;
+
+//---------------------------------------------------------------------------
+void CRenderDevice::Error(HRESULT hr, const char *file, int line)
+{
+	char errmsg_buf[1024];
+
+	const char *errStr = DXGetErrorString8A(hr);
+	if (errStr==0) {
+		FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,0,hr,0,errmsg_buf,1024,0);
+		errStr = errmsg_buf;
+	}
+	_verify(errStr,(char *)file,line);
+}
+
+void __cdecl CRenderDevice::Fatal(const char* F,...)
+{
+	char errmsg_buf[1024];
+
+	va_list		p;
+	va_start	(p,F);
+	vsprintf	(errmsg_buf,F,p);
+	va_end		(p);
+	_verify		(errmsg_buf,"<unknown>",0);
+}
 
 //---------------------------------------------------------------------------
 CRenderDevice::CRenderDevice(){
@@ -38,6 +64,8 @@ CRenderDevice::CRenderDevice(){
 
 	dwFillMode		= D3DFILL_SOLID;
     dwShadeMode		= D3DSHADE_GOURAUD;
+
+    m_CurrentShader	= 0;
 }
 
 CRenderDevice::~CRenderDevice(){
@@ -104,10 +132,10 @@ void CRenderDevice::Destroy(){
 
 void CRenderDevice::OnDeviceCreate(){
 	// Shaders part
-    Shader.Initialize	();
-    m_NullShader 		= Shader.Create();
-    m_WireShader 		= Shader.Create("$ed_wire");
-    m_SelectionShader 	= Shader.Create("$ed_selection");
+//S	Shader.OnDeviceCreate();
+//S    m_NullShader 		= Shader.Create();
+//S    m_WireShader 		= Shader.Create("$ed_wire");
+//S    m_SelectionShader 	= Shader.Create("$ed_selection");
 
 	// General Render States
 	HW.Caps.Update();
@@ -143,7 +171,6 @@ void CRenderDevice::OnDeviceCreate(){
 
     ResetMaterial();
 	// signal another objects
-    Shader.OnDeviceCreate		();
 	seqDevCreate.Process		(rp_DeviceCreate);
 	Primitive.OnDeviceCreate	();
 //    Scene->OnDeviceCreate		();
@@ -151,7 +178,7 @@ void CRenderDevice::OnDeviceCreate(){
 #ifdef _EDITOR
     UpdateFog();
 #else
-    UpdateFog(0xffffffff,0.f,m_Camera.m_Zfar);
+    UpdateFog(dwClearColor,0.f,m_Camera.m_Zfar);
 #endif
 
 	// Create TL-primitive
@@ -181,20 +208,21 @@ void CRenderDevice::OnDeviceCreate(){
 		}
 		R_CHK(Streams_QuadIB->Unlock());
 	}
-	pHUDFont = new CFontHUD();
+//S	pHUDFont = new CFontHUD();
 }
 
 void CRenderDevice::OnDeviceDestroy(){
+    m_CurrentShader		= 0;
+
 	if (m_NullShader) Shader.Delete(m_NullShader);
 	if (m_WireShader) Shader.Delete(m_WireShader);
 	if (m_SelectionShader) Shader.Delete(m_SelectionShader);
 
-	_DELETE(pHUDFont);
+//S	_DELETE(pHUDFont);
 	seqDevDestroy.Process		(rp_DeviceDestroy);
 
 //    Scene->OnDeviceDestroy		();
-    Shader.OnDeviceDestroy		();
-	Shader.Clear				();
+	Shader.OnDeviceDestroy		();
 
 	Primitive.OnDeviceDestroy	();
 	Streams.OnDeviceDestroy		();
@@ -283,11 +311,11 @@ void CRenderDevice::End(){
 	VERIFY(HW.pDevice);
 	VERIFY(bReady);
 
-	Statistic.Show(pHUDFont);
-    pHUDFont->OnRender();
+//S	Statistic.Show(pHUDFont);
+//S	pHUDFont->OnRender();
 
 	// end scene
-	Shader.SetNULL	();
+	Shader.OnFrameEnd();
 	Primitive.Reset	();
     CHK_DX(HW.pDevice->EndScene());
 
@@ -323,25 +351,29 @@ void CRenderDevice::UpdateTimer(){
 }
 
 void CRenderDevice::DP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWORD pc){
-    DWORD dwRequired	= Device.Shader.dwPassesRequired;
+//S
+/*	R_ASSERT(m_CurrentShader);
+    DWORD dwRequired	= m_CurrentShader->Passes.size();
 	Primitive.setVertices(vs->getFVF(),vs->getStride(),vs->getBuffer());
     for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
-        Shader.SetupPass(dwPass);
+        Shader.set_Shader(m_CurrentShader,dwPass);
 		Primitive.Render(pt,vBase,pc);
     }
     UPDATEC(pc*3,pc,dwRequired);
-}
+*/}
 
 void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWORD vc, CIndexStream* is, DWORD iBase, DWORD pc){
-    DWORD dwRequired	= Device.Shader.dwPassesRequired;
+//S
+/*	R_ASSERT(m_CurrentShader);
+    DWORD dwRequired	= m_CurrentShader->Passes.size();
     Primitive.setIndicesUC(vBase, is->getBuffer());
     Primitive.setVertices(vs->getFVF(),vs->getStride(),vs->getBuffer());
     for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
-        Shader.SetupPass(dwPass);
+        Shader.set_Shader(m_CurrentShader,dwPass);
 		Primitive.Render(pt,vBase,vc,iBase,pc);
     }
     UPDATEC(vc,pc,dwRequired);
-}
+*/}
 
 void CRenderDevice::Validate()
 {
@@ -401,7 +433,7 @@ void CRenderDevice::ReloadShaders(){
 
 void CRenderDevice::RefreshTextures(bool bOnlyNew){
 	UI->SetStatus("Reload textures...");
-	Shader.RefreshTextures(bOnlyNew);
+//S	Shader.RefreshTextures(bOnlyNew);
 	UI->SetStatus("");
 }
 

@@ -5,11 +5,6 @@
 #include "xr_ini.h"
 #include "xr_tokens.h"
 
-#ifndef ENGINE_BUILD
-#include "FileSystem.h"
-#endif
-
-
 CInifile *pSettings	= NULL;
 
 CInifile* CInifile::Create(const char* szFileName, BOOL ReadOnly)

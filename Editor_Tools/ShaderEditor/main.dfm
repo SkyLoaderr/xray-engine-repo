@@ -129,107 +129,13 @@ object frmMain: TfrmMain
   end
   object fsMainForm: TFormStorage
     IniSection = 'Main Form'
-    Options = [fpState]
     RegistryRoot = prLocalMachine
     OnRestorePlacement = fsMainFormRestorePlacement
     StoredProps.Strings = (
       'paLeftBar.Tag')
     StoredValues = <>
-    Left = 185
+    Left = 161
     Top = 33
-  end
-  object pmObjectContext: TMxPopupMenu
-    Alignment = paCenter
-    AutoPopup = False
-    MenuAnimation = [maTopToBottom]
-    MarginEndColor = clBlack
-    LeftMargin = 15
-    Style = msBtnLowered
-    Left = 157
-    Top = 33
-    object miVisibility: TMenuItem
-      Caption = 'Visibility'
-      GroupIndex = 1
-      object HideSelected2: TMenuItem
-        Caption = 'Hide Selected'
-      end
-      object HideUnselected2: TMenuItem
-        Caption = 'Hide Unselected'
-      end
-      object HideAll2: TMenuItem
-        Caption = 'Hide All'
-      end
-      object N5: TMenuItem
-        Caption = '-'
-      end
-      object UnhideAll2: TMenuItem
-        Caption = 'Unhide All'
-      end
-    end
-    object Locking1: TMenuItem
-      Caption = 'Locking'
-      GroupIndex = 1
-      object LockSelected1: TMenuItem
-        Caption = 'Lock Selected'
-      end
-      object LockUnselected1: TMenuItem
-        Caption = 'Lock Unselected'
-      end
-      object LockAll1: TMenuItem
-        Caption = 'Lock All'
-      end
-      object N6: TMenuItem
-        Caption = '-'
-      end
-      object UnlockSelected1: TMenuItem
-        Caption = 'Unlock Selected'
-      end
-      object UnlockUnselected1: TMenuItem
-        Caption = 'Unlock Unselected'
-      end
-      object UnlockAll1: TMenuItem
-        Caption = 'Unlock All'
-      end
-    end
-    object Edit1: TMenuItem
-      Caption = 'Edit'
-      GroupIndex = 1
-      object miCopy: TMenuItem
-        Caption = 'Copy (selection)'
-        GroupIndex = 1
-      end
-      object miPaste: TMenuItem
-        Caption = 'Paste (selection)'
-        Enabled = False
-        GroupIndex = 1
-      end
-      object miCut: TMenuItem
-        Caption = 'Cut (selection)'
-        GroupIndex = 1
-      end
-    end
-    object Numeric1: TMenuItem
-      Caption = 'Numeric Set'
-      GroupIndex = 1
-      object Position1: TMenuItem
-        Caption = 'Position'
-      end
-      object Rotation1: TMenuItem
-        Caption = 'Rotation'
-      end
-      object Scale1: TMenuItem
-        Caption = 'Scale'
-      end
-    end
-    object N4: TMenuItem
-      Caption = '-'
-      GroupIndex = 1
-    end
-    object miProperties: TMenuItem
-      Caption = 'Properties...'
-      GroupIndex = 1
-      OnClick = miPropertiesClick
-    end
   end
   object tmRefresh: TTimer
     Enabled = False

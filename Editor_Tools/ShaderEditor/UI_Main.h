@@ -4,7 +4,6 @@
 
 #include "RenderWindow.hpp"
 #include "device.h"
-#include "FileSystem.h"
 #include "UI_MainCommand.h"
 #include "ColorPicker.h"
 #include "FController.h"
@@ -64,8 +63,6 @@ protected:
 	bool m_MouseMultiClickCaptured;
 	bool bMouseInUse;
 public:
-    CShaderTools*	m_ShaderTools;
-public:
     // mouse sensetive
     float m_MouseSM, m_MouseSS, m_MouseSR;
 public:
@@ -82,8 +79,8 @@ public:
 
     IC float ZFar()						{	return Device.m_Camera.m_Zfar; }
 
-    bool Init(TD3DWindow* wnd);
-    void Clear();
+    bool OnCreate(TD3DWindow* wnd);
+    void OnDestroy();
 
     char* GetEditFileName()             {   return m_LastFileName; }
 

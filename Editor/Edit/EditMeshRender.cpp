@@ -173,10 +173,10 @@ void CEditableMesh::RenderList(const Fmatrix& parent, DWORD color, bool bEdge, D
 	Device.RenderNearer(0.0006);
 	RB_cnt = 0;
     if (bEdge){
-    	Device.Shader.Set(Device.m_WireShader);
+    	Device.SetShader(Device.m_WireShader);
 	    Device.SetRS(D3DRS_FILLMODE,D3DFILL_WIREFRAME);
     }else
-    	Device.Shader.Set(Device.m_SelectionShader);
+    	Device.SetShader(Device.m_SelectionShader);
     for (DWORDIt dw_it=fl.begin(); dw_it!=fl.end(); dw_it++){
         st_Face& face = m_Faces[*dw_it];
         for (int k=0; k<3; k++)	RB[RB_cnt++].set(m_Points[face.pv[k].pindex]);
@@ -195,7 +195,7 @@ void CEditableMesh::RenderList(const Fmatrix& parent, DWORD color, bool bEdge, D
 void CEditableMesh::RenderEdge(Fmatrix& parent, DWORD color){
 	if (!m_Visible) return;
 	Device.SetTransform(D3DTS_WORLD,parent);
-	Device.Shader.Set(Device.m_WireShader);
+	Device.SetShader(Device.m_WireShader);
 	Device.RenderNearer(0.001);
 
     // render
