@@ -255,8 +255,10 @@ extern "C" int dSortTriBoxCollide (
 		//ret+=add;
 	}
 	//((b_count>1)||(*pushing_b_neg))&&
+	
 	if(b_neg_depth<dInfinity&&ret==0){
 		bool include = true;
+		/*
 		for(i=pos_tries.begin();i!=pos_tries.end();i++){
 			if((((dDOT(b_neg_tri->norm,(dReal*)i->T->verts[0])-b_neg_tri->pos)<0.f)||
 				((dDOT(b_neg_tri->norm,(dReal*)i->T->verts[1])-b_neg_tri->pos)<0.f)||
@@ -266,8 +268,9 @@ extern "C" int dSortTriBoxCollide (
 					break;
 				}
 		};
-
-		if(include)	{	
+		*/
+		if(include)	
+		{	
 			ret+=dSortedTriBox(b_neg_tri->side0,b_neg_tri->side1,b_neg_tri->norm,
 				//b_neg_tri->v0,b_neg_tri->v1,b_neg_tri->v2,
 				b_neg_tri->T,
@@ -778,7 +781,7 @@ extern "C" int dSortTriSphereCollide (
 
 	if(neg_depth<dInfinity&&ret==0){
 		bool include = true;
-
+/*
 		for(i=pos_tries.begin();i!=pos_tries.end();i++){
 			if(TriContainPoint((dReal*)i->T->verts[0],(dReal*)i->T->verts[1],(dReal*)i->T->verts[2],
 				i->norm,i->side0,
@@ -791,6 +794,7 @@ extern "C" int dSortTriSphereCollide (
 						break;
 					}
 		};
+	*/
 		if(include){
 			ret+=dSortedTriSphere(
 				//neg_tri->v0,neg_tri->v1,neg_tri->v2,
