@@ -190,12 +190,13 @@ bool Lcp33::SolveForLines()
 			in_limits=false;
 		}
 	}
-	UpdateX();
+
 	return in_limits;
 }
 
 bool Lcp33::SolveForPlanes()
 {
+	UpdateX();
 	for(;;)
 	{
 		BoundUnBn();
@@ -258,13 +259,13 @@ void Lcp33::FillA()
 	EA(0,1) = -fDetInv * ( EsA(0,1) * EsA(2,2) - EsA(0,2) * EsA(2,1) );
 	EA(0,2)=  fDetInv * ( EsA(0,1) * EsA(1,2) - EsA(0,2) * EsA(1,1) );
 
-	EA(1,0) = -fDetInv * ( EsA(1,0) * EsA(2,2) - EsA(1,2) * EsA(2,0) );
+	EA(1,0) = EA(0,1);//-fDetInv * ( EsA(1,0) * EsA(2,2) - EsA(1,2) * EsA(2,0) );////
 	EA(1,1)=  fDetInv * ( EsA(0,0) * EsA(2,2) - EsA(0,2) * EsA(2,0) );
 	EA(1,2)= -fDetInv * ( EsA(0,0) * EsA(1,2) - EsA(0,2) * EsA(1,0) );
 
 
-	EA(2,0)=  fDetInv * ( EsA(1,0) * EsA(2,1) - EsA(1,1) * EsA(2,0) );
-	EA(2,1) = -fDetInv * ( EsA(0,0) * EsA(2,1) - EsA(0,1) * EsA(2,0) );
+	EA(2,0)= EA(0,2);// fDetInv * ( EsA(1,0) * EsA(2,1) - EsA(1,1) * EsA(2,0) );//
+	EA(2,1) =EA(1,2);// -fDetInv * ( EsA(0,0) * EsA(2,1) - EsA(0,1) * EsA(2,0) );//
 	EA(2,2)=  fDetInv * ( EsA(0,0) * EsA(1,1) - EsA(0,1) * EsA(1,0) );
 }
 

@@ -228,7 +228,7 @@ dInternalStepJointContact (dxWorld * world, dxBody * body[2], dReal * GI[2], dRe
 	//memcpy (hi1, Jinfo.hi, 3 * sizeof (dReal));
 
 		dSolveLCP33(m, A, lambda, rhs, residual, nub, lo, hi, Jinfo.findex);
-	//	dSolveLCP (m, A, lambda1, rhs, residual, nub, lo1, hi1, Jinfo.findex);
+		//dSolveLCP (m, A, lambda, rhs, residual, nub, lo, hi, Jinfo.findex);
 	//dReal dif[3];
 	//dif[0]=lambda1[0]-lambda[0];lambda1[1]=lambda1[1]-lambda[1];lambda1[2]=lambda1[2]-lambda[2];
 	//dReal lengh=dDOT(lambda,lambda);
