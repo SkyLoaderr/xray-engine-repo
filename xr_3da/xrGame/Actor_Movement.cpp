@@ -449,6 +449,7 @@ void CActor::g_sv_Orientate(u32 /**mstate_rl/**/, float /**dt/**/)
 	r_model_yaw		= NET_Last.o_model;
 	r_torso.yaw		= NET_Last.o_torso.yaw;
 	r_torso.pitch	= NET_Last.o_torso.pitch;
+	r_torso.roll	= NET_Last.o_torso.roll;
 
 	CWeapon *pWeapon = smart_cast<CWeapon*>(inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
 		inventory().m_slots[inventory().GetActiveSlot()].m_pIItem : NULL);

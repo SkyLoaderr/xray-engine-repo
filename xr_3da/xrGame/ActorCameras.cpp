@@ -138,6 +138,13 @@ void CActor::cam_Update(float dt, float fFOV)
 		}
 		r_torso.roll		= valid_angle*2.f;
 		r_torso_tgt_roll	= r_torso.roll;
+//		calc_point			(point,radius,0,valid_angle);
+//		dangle.z			= (PI_DIV_2-((PI+valid_angle)/2));
+	}
+	if (!fis_zero(r_torso.roll))
+	{
+		float radius		= point.y*0.5f;
+		float valid_angle	= r_torso.roll/2.f;
 		calc_point			(point,radius,0,valid_angle);
 		dangle.z			= (PI_DIV_2-((PI+valid_angle)/2));
 	}
@@ -263,56 +270,4 @@ void CActor::LoadSleepEffector	(LPCSTR section)
 	m_pSleepEffector->time_release		= pSettings->r_float(section,"time_release");
 }
 
-/*
-Fvector world_dir;
-Fvector local_pt=point,world_pt;
-float radius		= point.y*0.5f;
-float alpha			= r_torso_tgt_roll/2.f;
-local_pt.x			= radius*_sin(alpha);
-local_pt.y			= radius+radius*_cos(alpha);
-//			dangle.z			= (PI_DIV_2-((PI+alpha)/2));
-// check tgt_pt
-world_dir.sub		(local_pt,point);
-float	range		= world_dir.magnitude();
-if (!fis_zero(range,EPS_L)){
-XFORM().transform_tiny	(world_pt,point);
-XFORM().transform_dir	(world_dir.div(range));
-Collide::rq_result R;
-float safe_radius	= viewport_near();
-if (_abs(r_torso.roll)<_abs(r_torso_tgt_roll)){
-if (g_pGameLevel->ObjectSpace.RayPick(world_pt,world_dir,range+safe_radius+EPS_L,Collide::rqtStatic,R)){
-r_torso_tgt_roll= (mstate_real&mcLLookout)?-ACTOR_LOOKOUT_ANGLE:ACTOR_LOOKOUT_ANGLE;
-}else{
-r_torso.roll	= r_torso_tgt_roll;
-}
-}else{
-r_torso.roll	= r_torso_tgt_roll;
-}
-}
-alpha				= r_torso.roll/2.f;
-local_pt.x			= radius*_sin(alpha);
-local_pt.y			= radius+radius*_cos(alpha);
-//			dangle.z			= (PI_DIV_2-((PI+alpha)/2));
-Log("PT",local_pt);
-// update point
-point.set			(local_pt);
-*/
-/*
-Fvector tgt_dir;
-tgt_dir.sub			(tgt_pt,src_pt);
-float range			= tgt_dir.magnitude();
-if (!fis_zero(range)){
-tgt_dir.div		(range);
-float view_near = viewport_near();
-Collide::ray_defs RD	(src_pt,tgt_dir,range+view_near,0,Collide::rqtStatic);
-SPassableParams V;
-if (!g_pGameLevel->ObjectSpace.RayQuery(RD,passable_callback,&V)||!V.solid){
-r_torso.roll= r_torso_tgt_roll;
-}else{
-float sign	= 1.f;
-if (!fis_zero(r_torso.roll))
-sign	= r_torso.roll/_abs(r_torso.roll);
-r_torso.roll= sign*2.f*asin(_max(0.f,(V.range-view_near))/radius);
-}
-}
-*/
+

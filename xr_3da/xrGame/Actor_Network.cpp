@@ -310,7 +310,7 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 	P.r_angle8			(N.o_model		);
 	P.r_angle8			(N.o_torso.yaw	);
 	P.r_angle8			(N.o_torso.pitch);
-	P.r_angle8			(N.o_torso.roll	);
+	P.r_angle8			(N.o_torso.roll	); if (N.o_torso.roll > PI) N.o_torso.roll -= PI_MUL_2;
 	id_Team				= P.r_u8();
 	id_Squad			= P.r_u8();
 	id_Group			= P.r_u8();
@@ -553,6 +553,7 @@ void CActor::NetInput_Apply			(net_input* pNI)
 	unaffected_r_torso.yaw		= -pNI->cam_yaw;
 	unaffected_r_torso.pitch	= pNI->cam_pitch;
 	unaffected_r_torso.roll		= pNI->cam_roll;
+
 	//-----------------------------------
 	if (OnClient())
 	{
@@ -964,7 +965,7 @@ void CActor::PH_I_CrPr		()		// actions & operations between two phisic predictio
 	if (g_Alive())
 	{
 		if (OnClient())
-			cam_Active()->Set		(-unaffected_r_torso.yaw,unaffected_r_torso.pitch,unaffected_r_torso.roll);		// set's camera orientation
+			cam_Active()->Set		(-unaffected_r_torso.yaw,unaffected_r_torso.pitch, 0);//, unaffected_r_torso.roll);		// set's camera orientation
 		////////////////////////////////////
 		CPHSynchronize* pSyncObj = NULL;
 		pSyncObj = PHGetSyncItem(0);
