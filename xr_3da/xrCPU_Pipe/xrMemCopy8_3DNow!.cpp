@@ -22,7 +22,7 @@
 //getting maximum read bandwidth,especially in DDR memory systems.
 
 
-void a()
+void a	()
 {
 	__asm {
 		mov ecx,[n ];							// number of bytes to copy
