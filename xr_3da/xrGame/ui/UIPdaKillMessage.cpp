@@ -68,6 +68,7 @@ int CUIPdaKillMessage::InitText(CUIStatic& refStatic, int x, PlayerInfo& info){
 		width = 100;
 
 	refStatic.Init(x, y, width + 1, height);
+	refStatic.SetElipsis(CUIStatic::eepEnd, 0);
 	refStatic.SetText(*info.m_name);
 	refStatic.SetTextColor(info.m_color);
 
