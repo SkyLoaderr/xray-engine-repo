@@ -26,6 +26,11 @@ CWeapon::CWeapon(LPCSTR name)
 	m_WpnName	= strupr(strdup(name));
 	m_pContainer= 0;
 	m_Offset.identity();
+
+	pstrUIIcon	= 0;
+	pstrWalmark	= 0;
+	hUIIcon		= 0;
+	hWallmark	= 0;
 }
 
 CWeapon::~CWeapon()
@@ -37,13 +42,13 @@ CWeapon::~CWeapon()
 	if (hWallmark) Device.Shader.Delete(hWallmark);
 }
 
-void CWeapon::SetParent(CEntity* parent, CWeaponList* container)
+void CWeapon::SetParent	(CEntity* parent, CWeaponList* container)
 {
 	R_ASSERT(parent);		m_pParent		= parent;
 	R_ASSERT(container);	m_pContainer	= container;
 }
 
-void CWeapon::Load(CInifile* ini, const char* section)
+void CWeapon::Load		(CInifile* ini, const char* section)
 {
 	// verify class
 	LPCSTR Class		= pSettings->ReadSTRING(section,"class");
@@ -63,16 +68,17 @@ void CWeapon::Load(CInifile* ini, const char* section)
 	m_Offset.setHPB		(ypr.x,ypr.y,ypr.z);
 	m_Offset.translate_over(pos);
 
-
 	fTimeToFire			= ini->ReadFLOAT	(section,"rpm");
 	fTimeToFire			= 60 / fTimeToFire;
 
 	LPCSTR	tex			= ini->ReadSTRING	(section,"ui_icon");
-	hUIIcon				= Device.Shader.Create("font",tex);
+	pstrUIIcon			= strdup(tex);
+	hUIIcon				= Device.Shader.Create("font",pstrUIIcon);
 	
 	LPCSTR	name		= ini->ReadSTRING	(section,"wm_name");
-	if (name=="")		hWallmark = 0; 
-	else				hWallmark = Device.Shader.Create("effects\\wallmark",name);
+	pstrWalmark			= strdup(name);
+	if (0==pstrWalmark)	hWallmark = 0; 
+	else				hWallmark = Device.Shader.Create("effects\\wallmark",pstrWalmark);
 	fWallmarkSize		= ini->ReadFLOAT	(section,"wm_size");
 
 	LPCSTR hud_sect		= ini->ReadSTRING	(section,"hud");
@@ -105,6 +111,25 @@ void CWeapon::Load(CInifile* ini, const char* section)
 	iHitPower			= ini->ReadINT		(section,"hit_power"		);
 
 	bVisible			= FALSE;
+}
+
+
+void CWeapon::OnDeviceCreate()
+{
+	CObject::OnDeviceCreate();
+
+	if (0==pstrUIIcon)	hUIIcon		= 0;
+	else				hUIIcon		= Device.Shader.Create("font",pstrUIIcon);
+
+	if (0==pstrWalmark)	hWallmark	= 0; 
+	else				hWallmark	= Device.Shader.Create("effects\\wallmark",pstrWalmark);
+}
+void CWeapon::OnDeviceDestroy()
+{
+	CObject::OnDeviceDestroy();
+
+	Device.Shader.Delete(hUIIcon);
+	Device.Shader.Delete(hWallmark);
 }
 
 void CWeapon::Hide		()

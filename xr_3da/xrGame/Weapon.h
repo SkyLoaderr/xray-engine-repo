@@ -27,6 +27,8 @@ protected:
 	CWeaponList*	m_pContainer;
 	CWeaponHUD*		m_pHUD;
 
+	LPSTR			pstrWalmark;
+	LPSTR			pstrUIIcon;
 	Shader*			hWallmark;
 	Shader*			hUIIcon;
 	float			fWallmarkSize;
@@ -91,6 +93,9 @@ public:
 	IC int			GetAmmoElapsed	()				{return iAmmoElapsed;	}
 	IC int			GetAmmoLimit	()				{return iAmmoLimit;		}
 	IC Shader*		GetUIIcon		()				{return hUIIcon;		}
+	
+	virtual void	OnDeviceCreate	();
+	virtual void	OnDeviceDestroy	();
 };
 
 #endif // !defined(AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_)
