@@ -62,11 +62,9 @@ function fract:all_spawned()
 	return true
 end
 function fract:calculate() 
---	printf( "calculate called" )
 	if not self:all_spawned() then
 		return
 	end
---	printf( "all spawned" )
 
 	--' Изменение потерь в лагере
 	for k,v in self.Object do
