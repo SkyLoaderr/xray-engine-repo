@@ -60,6 +60,9 @@ public:
 	//для добавления новых предметов во время работы с интерфейсом (например 
 	//отсоединенных аддонов)
 	void AddItemToBag(PIItem pItem);
+
+	// cнять костюм
+	bool UndressOutfit();
 protected:
 
 	CUIFrameWindow		UIBagWnd;

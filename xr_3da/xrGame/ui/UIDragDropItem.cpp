@@ -35,6 +35,8 @@ CUIDragDropItem:: CUIDragDropItem()
 	m_pCustomDrawProc = NULL;
 
 	m_bClipper = false;
+
+	m_bInFloat = false;
 }
 
 CUIDragDropItem::~ CUIDragDropItem()

@@ -18,7 +18,7 @@
 #include "UIDragDropList.h"
 #include "UIProgressBar.h"
 #include "UIListWnd.h"
-
+#include "UITabControl.h"
 
 class CUIXmlInit
 {
@@ -50,6 +50,9 @@ public:
 
 	bool InitFont(CUIXml &xml_doc, const char *path, 
 				int index, u32 &color, CGameFont *&pFnt);
+
+	bool InitTabControl(CUIXml &xml_doc, const char *path,
+						int index, CUITabControl *pWnd);
 
 	//автоматическая инициализация статических элеменитов
 	bool InitAutoStatic(CUIXml& xml_doc, const char* tag_name, CUIWindow* pParentWnd);

@@ -34,9 +34,6 @@ public:
 	CUIDragDropList();
 	virtual ~CUIDragDropList();
 
-	virtual void AttachChild(CUIDragDropItem* pChild);
-	virtual void DetachChild(CUIDragDropItem* pChild);
-	
 	virtual void AttachChild(CUIWindow* pChild);
 	virtual void DetachChild(CUIWindow* pChild);
 
@@ -92,10 +89,12 @@ protected:
 	bool PlaceItemInGrid(CUIDragDropItem* pItem);
 	void RemoveItemFromGrid(CUIDragDropItem* pItem);
 
+	bool CanPlaceItemInGrid(CUIDragDropItem* pItem, int& place_row, int& place_col);
+	void PlaceItemAtPos(int place_row, int place_col, CUIDragDropItem* pItem);
 	bool CanPlace(int row, int col, CUIDragDropItem* pItem);
 
 	//состояние клеточки в сетке
-	E_CELL_STATE& 	GetCell(int row, int col){return m_vGridState[row*GetCols() + col];}
+	E_CELL_STATE& 	GetCell(int row, int col){VERIFY(row<m_iRowsNum && col<m_iColsNum);return m_vGridState[row*GetCols() + col];}
 	E_CELL_STATE    GetCellState(int row, int col);
 
 	DEFINE_VECTOR	(E_CELL_STATE, GRID_STATE_VECTOR, GRID_STATE_IT);

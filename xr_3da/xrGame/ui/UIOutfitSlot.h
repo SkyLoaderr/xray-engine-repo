@@ -15,14 +15,24 @@ public:
 	virtual ~CUIOutfitSlot();
 
 	virtual void Init(int x, int y, int width, int height);
+	virtual void OnMouse(int x, int y, CUIWindow::E_MOUSEACTION mouse_action);
 
-	virtual void AttachChild(CUIDragDropItem* pChild);
-	virtual void DetachChild(CUIDragDropItem* pChild);
+	virtual void AttachChild(CUIWindow *pChild);
+	virtual void DetachChild(CUIWindow *pChild);
 
 	virtual void DropAll();
+	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 
 	virtual void Draw();
 	virtual void Update();
+
+	// Установка изображения персонажа без спецкостюма
+	void SetOriginalOutfit();
+
+	// Возвращение указателя на текущий костюм. NULL если нет.
+	CUIDragDropItem * GetCurrentOutfit();
+
+	typedef enum{UNDRESS_OUTFIT = 6000, OUTFIT_RETURNED_BACK} E_OUTFIT_ACTION;
 
 protected:
 	//иконка с изображение сталкера в полный рост

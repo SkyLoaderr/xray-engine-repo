@@ -19,8 +19,6 @@
 
 CUIPdaCommunication::CUIPdaCommunication()
 {
-	Init();
-
 	Hide();
 
 	m_pInvOwner = NULL;
@@ -76,7 +74,7 @@ void CUIPdaCommunication::InitPDA()
 	m_pInvOwner = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());
 	if(!m_pInvOwner) 
 	{
-		Hide();
+		Show();
 		return;
 	}
 
@@ -84,7 +82,7 @@ void CUIPdaCommunication::InitPDA()
 
 	if(!m_pPda)
 	{
-		Hide();
+		Show();
 		return;
 	}
 

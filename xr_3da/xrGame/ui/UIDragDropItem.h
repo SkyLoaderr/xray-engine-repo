@@ -75,6 +75,8 @@ public:
 	void SetCellWidth(int iCellWidth) {m_iCellWidth = iCellWidth;}
 	void SetCellHeight(int iCellHeight) {m_iCellHeight = iCellHeight;}
 
+	bool m_bInFloat;
+
 protected:
 	
 	int m_iOldMouseX;

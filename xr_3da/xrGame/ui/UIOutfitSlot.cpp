@@ -30,25 +30,31 @@ void CUIOutfitSlot::Init(int x, int y, int width, int height)
 	m_iNoOutfitX = pSettings->r_u32("without_outfit", "full_scale_icon_x");
 	m_iNoOutfitY = pSettings->r_u32("without_outfit", "full_scale_icon_y");
 
-	UIOutfitIcon.SetShader(GetCharIconsShader());
-	UIOutfitIcon.GetUIStaticItem().SetOriginalRect(
-					m_iNoOutfitX*ICON_GRID_WIDTH,
-					m_iNoOutfitY*ICON_GRID_HEIGHT,
-					m_iNoOutfitX+CHAR_ICON_FULL_WIDTH*ICON_GRID_WIDTH,
-					m_iNoOutfitY+CHAR_ICON_FULL_HEIGHT*ICON_GRID_HEIGHT);
+	SetOriginalOutfit();
 
+	// Немного ублюдочный способ прорескейлить текстуру иконки персонажа, чтобы изображение
+	// полностью влазило в статик контрол. Коэфициент подобран методом тыка. :( Других способов
+	// пока не вижу.
+	UIOutfitIcon.SetTextureScale(0.67f);
 	UIOutfitIcon.Show(true);
 	UIOutfitIcon.Enable(false);
 	UIOutfitIcon.ClipperOn();
 }
 
-void CUIOutfitSlot::AttachChild(CUIDragDropItem* pChild)
+void CUIOutfitSlot::AttachChild(CUIWindow *pChild)
 {
-	PIItem pInvItem = (PIItem)pChild->GetData();
+	CUIDragDropItem *pDDItem = dynamic_cast<CUIDragDropItem*>(pChild);
+	if (!pDDItem)
+	{
+		inherited::AttachChild(pChild);
+		return;
+	}
+
+	PIItem pInvItem = (PIItem)pDDItem->GetData();
 
 	if(!pInvItem) 
 	{
-		inherited::AttachChild(pChild);
+		inherited::AttachChild(pDDItem);
 		return;
 	}
 
@@ -65,13 +71,29 @@ void CUIOutfitSlot::AttachChild(CUIDragDropItem* pChild)
 					pOutfit->GetIconY()+CHAR_ICON_FULL_HEIGHT*ICON_GRID_HEIGHT);
 
 
-	inherited::AttachChild(pChild);
+	// Скрываем изображение
+	pDDItem->Show(false);
+	inherited::AttachChild(pDDItem);
 }
-void CUIOutfitSlot::DetachChild(CUIDragDropItem* pChild)
+void CUIOutfitSlot::DetachChild(CUIWindow *pChild)
 {
+	SetOriginalOutfit();
+	pChild->Show(true);
 	inherited::DetachChild(pChild);
 }
 
+//-----------------------------------------------------------------------------/
+//  Устанавливаем костюм заданый по умолчанию.
+//-----------------------------------------------------------------------------/
+void CUIOutfitSlot::SetOriginalOutfit()
+{
+	UIOutfitIcon.SetShader(GetCharIconsShader());
+	UIOutfitIcon.GetUIStaticItem().SetOriginalRect(
+		m_iNoOutfitX*ICON_GRID_WIDTH,
+		m_iNoOutfitY*ICON_GRID_HEIGHT,
+		m_iNoOutfitX+CHAR_ICON_FULL_WIDTH*ICON_GRID_WIDTH,
+		m_iNoOutfitY+CHAR_ICON_FULL_HEIGHT*ICON_GRID_HEIGHT);
+}
 
 void CUIOutfitSlot::Draw()
 {
@@ -86,4 +108,40 @@ void CUIOutfitSlot::DropAll()
 {
 	inherited::DropAll();
 	inherited::AttachChild(&UIOutfitIcon);
+}
+
+void CUIOutfitSlot::OnMouse(int x, int y, CUIWindow::E_MOUSEACTION mouse_action)
+{
+	if (CUIWindow::LBUTTON_DB_CLICK == mouse_action)
+	{
+		GetParent()->SendMessage(this, UNDRESS_OUTFIT, NULL);
+	}
+//	else if (CUIWindow::LBUTTON_DOWN == mouse_action && GetCurrentOutfit())
+//	{
+//		CUIDragDropItem *pDDItem = GetCurrentOutfit();
+//		pDDItem->Show(true);
+//	}
+	else if (CUIWindow::LBUTTON_UP == mouse_action && GetCurrentOutfit())
+	{
+		CUIDragDropItem *pDDItem = GetCurrentOutfit();
+		pDDItem->Show(false);
+	}
+
+	inherited::OnMouse(x, y, mouse_action);
+}
+
+CUIDragDropItem * CUIOutfitSlot::GetCurrentOutfit()
+{
+	if (!m_DragDropItemsList.empty())
+		return *m_DragDropItemsList.begin();
+	return NULL;
+}
+
+void CUIOutfitSlot::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
+{
+//	if (OUTFIT_RETURNED_BACK == msg)
+//	{
+//		pWnd->Show(false);
+//	}
+	inherited::SendMessage(pWnd, msg, pData);
 }

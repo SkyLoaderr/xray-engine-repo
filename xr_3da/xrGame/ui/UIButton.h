@@ -61,15 +61,23 @@ public:
 	//подсвечен ли текст на кнопке
 	virtual bool IsHighlightText();
 
-protected:
-	
 	//состояния в которых находится кнопка
 	typedef enum{BUTTON_NORMAL, //кнопка никак не затрагивается
-				 BUTTON_PUSHED, //в нажатом сотоянии
-				 BUTTON_UP      //при удерживаемой кнопки мыши 
-			} E_BUTTON_STATE;
+		BUTTON_PUSHED, //в нажатом сотоянии
+		BUTTON_UP      //при удерживаемой кнопки мыши 
+	} E_BUTTON_STATE;
+
+	// Установка состояния кнопки: утоплена, не утоплена
+	void SetButtonMode(E_BUTTON_STATE eBtnState) { m_eButtonState = eBtnState; }
+
+	// Поведение кнопки как переключателя реализовано пока только в режиме NORMAL_PRESS
+	void SetButtonAsSwitch(bool bAsSwitch) { m_bIsSwitch = bAsSwitch; }
+
+protected:
 	
 	E_BUTTON_STATE m_eButtonState;
+
+	bool m_bIsSwitch;
 
 	//если кнопка была только что нажата
 	bool m_bButtonClicked;

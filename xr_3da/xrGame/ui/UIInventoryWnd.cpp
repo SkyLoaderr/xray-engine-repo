@@ -279,6 +279,7 @@ void CUIInventoryWnd::InitInventory()
 
 			UITopList[i].AttachChild(&UIDragDropItem);
 			UIDragDropItem.SetData(pInv->m_slots[i].m_pIItem);
+			UIDragDropItem.Show(true);
 
 			++m_iUsedItems;
 			R_ASSERT(m_iUsedItems<MAX_ITEMS);
@@ -303,8 +304,9 @@ void CUIInventoryWnd::InitInventory()
 									pInv->m_slots[OUTFIT_SLOT].m_pIItem->GetGridHeight()*INV_GRID_HEIGHT);
 
 
-		UIOutfitSlot.AttachChild(&UIDragDropItem);
 		UIDragDropItem.SetData(pInv->m_slots[OUTFIT_SLOT].m_pIItem);
+		UIOutfitSlot.AttachChild(&UIDragDropItem);
+		UIDragDropItem.Show(false);
 
 		++m_iUsedItems;
 		R_ASSERT(m_iUsedItems<MAX_ITEMS);
@@ -338,6 +340,7 @@ void CUIInventoryWnd::InitInventory()
 
 			UIBeltList.AttachChild(&UIDragDropItem);
 			UIDragDropItem.SetData((*it));
+			UIDragDropItem.Show(true);
 
 			++m_iUsedItems;
 			R_ASSERT(m_iUsedItems<MAX_ITEMS);
@@ -375,6 +378,7 @@ void CUIInventoryWnd::InitInventory()
 
 			UIBagList.AttachChild(&UIDragDropItem);
 			UIDragDropItem.SetData((*it));
+			UIDragDropItem.Show(true);
 
 			m_iUsedItems++;
 			R_ASSERT(m_iUsedItems<MAX_ITEMS);
@@ -472,10 +476,22 @@ bool CUIInventoryWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pL
 
 	PIItem pInvItem = (PIItem)pItem->GetData();
 
+	// Cнимаем текущий костюм.
+	CUIInventoryWnd *pInvWnd = dynamic_cast<CUIInventoryWnd*>(pList->GetParent());
+	// Нет костюма, или парент у листа не CUIInventoryWnd, чего быть не может.
+	if (!pInvWnd) return false;
+
+	// Проверка возможности надевания нового костюма
+	
+	if (dynamic_cast<CCustomOutfit*>(pInvItem))
+		pInvWnd->SendMessage(NULL, CUIOutfitSlot::UNDRESS_OUTFIT, NULL);
+
 	if(!this_inventory->GetInventory()->CanPutInSlot(pInvItem)) return false;
 
 	if(pInvItem->GetSlot() == OUTFIT_SLOT)
+	{
 		return this_inventory->GetInventory()->Slot(pInvItem);
+	}
 	else
 		return false;
 
@@ -522,6 +538,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				
 		SetCurrentItem(pInvItem);
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
+
 	}
 	else if(msg == CUIDragDropItem::ITEM_DB_CLICK)
 	{
@@ -703,7 +720,10 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			pActor->ChangeSatiety(0.1f);
 		}
 	}
-
+	else if (CUIOutfitSlot::UNDRESS_OUTFIT == msg)
+	{
+		UndressOutfit();
+	}
 
 	CUIWindow::SendMessage(pWnd, msg, pData);
 }
@@ -844,6 +864,9 @@ void CUIInventoryWnd::Hide()
 void CUIInventoryWnd::ActivatePropertiesBox()
 {
 	int x,y;
+	// Флаг-признак для невлючения пункта контекстного меню: Dreess Outfit, если костюм уже надет
+	bool bAlreadyDressed = false; 
+
 	RECT rect = GetAbsoluteRect();
 	HUD().GetUI()->GetCursor()->GetPos(x,y);
 		
@@ -873,8 +896,9 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 			UIPropertiesBox.AddItem("Move to bag",  NULL, TO_BAG_ACTION);
 		else
 			UIPropertiesBox.AddItem("Undress outfit",  NULL, TO_BAG_ACTION);
+		bAlreadyDressed = true;
 	}
-	if(pOutfit && m_pInv->CanPutInSlot(m_pCurrentItem))
+	if(pOutfit  && !bAlreadyDressed /*&& m_pInv->CanPutInSlot(m_pCurrentItem)*/)
 	{
 		UIPropertiesBox.AddItem("Dress in outfit",  NULL, TO_SLOT_ACTION);
 	}
@@ -963,8 +987,6 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		UIPropertiesBox.AddItem("Drop", NULL, DROP_ACTION);
 	}
 
-	
-
 	UIPropertiesBox.AutoUpdateSize();
 	UIPropertiesBox.BringAllToTop();
 	UIPropertiesBox.Show(x-rect.left, y-rect.top);
@@ -973,6 +995,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 
 bool CUIInventoryWnd::ToSlot()
 {
+	if (OUTFIT_SLOT == m_pCurrentItem->GetSlot()) UndressOutfit();
 	if(!GetInventory()->CanPutInSlot(m_pCurrentItem)) return false;
 
 	//попытаться закинуть элемент в соответствующий слот
@@ -1156,4 +1179,33 @@ void  CUIInventoryWnd::StopSleepWnd()
 	UISleepButton.Reset();
 	UISleepButton.Enable(true);
 	UISleepButton.Show(true);
+}
+
+//-----------------------------------------------------------------------------/
+//  Снять костюм если есть
+//-----------------------------------------------------------------------------/
+bool CUIInventoryWnd::UndressOutfit()
+{
+	bool status = true;
+	// Получить текущий костюм
+	CUIDragDropItem *pDDItem = UIOutfitSlot.GetCurrentOutfit();
+	if (pDDItem)
+	{
+		// Переместить его в сумку
+		PIItem pInvItem = (PIItem)(UIOutfitSlot.GetCurrentOutfit())->GetData();
+
+		// Запоминаем текущий активный элемент
+		PIItem pCurrentItem = m_pCurrentItem;
+		CUIDragDropItem *pCurrDDItem = m_pCurrentDragDropItem;
+
+		SetCurrentItem(pInvItem);
+		m_pCurrentDragDropItem = UIOutfitSlot.GetCurrentOutfit();
+
+		status = ToBag();
+
+		// восстанавливам предыдущее состояние
+		SetCurrentItem(pCurrentItem);
+		m_pCurrentDragDropItem = pCurrDDItem;
+	}
+	return status;
 }

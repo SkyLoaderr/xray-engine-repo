@@ -1,6 +1,7 @@
 // UISleepWnd.h:  окошко для выбора того, сколько спать
 //////////////////////////////////////////////////////////////////////
 
+#pragma once
 
 #include "uiframewindow.h"
 #include "uibutton.h"

@@ -5,7 +5,7 @@
 
 #include "stdafx.h"
 #include "uidragdroplist.h"
-
+#include "UIOutfitSlot.h"
 
 #define SCROLLBAR_OFFSET_X 5
 #define SCROLLBAR_OFFSET_Y 0
@@ -46,52 +46,42 @@ CUIDragDropList::~CUIDragDropList()
 	
 }
 
-void CUIDragDropList::AttachChild(CUIDragDropItem* pChild)
-{
-	AttachChild((CUIWindow*)pChild);
-	PlaceItemInGrid(pChild);
-
-	pChild->SetWidth(GetCellWidth()*pChild->GetGridWidth());
-	pChild->SetHeight(GetCellHeight()*pChild->GetGridHeight());
-
-	pChild->SetCellWidth(GetCellWidth());
-	pChild->SetCellHeight(GetCellHeight());
-
-	/*
-	m_iCurrentFirstRow = pChild->GetGridRow();
-	m_ScrollBar.SetScrollPos(s16(m_iCurrentFirstRow));
-	m_iCurrentFirstRow = m_ScrollBar.GetScrollPos();
-	UpdateList();
-	*/
-
-	pChild->ClipperOn();
-//	pChild->TextureClipper();
-}
-
-void CUIDragDropList::DetachChild(CUIDragDropItem* pChild)
-{
-	WINDOW_LIST_it it = std::find(m_ChildWndList.begin(), 
-								  m_ChildWndList.end(), 
-								  pChild);
-	
-	if( m_ChildWndList.end() != it)
-	{
-		RemoveItemFromGrid(pChild);
-		DetachChild((CUIWindow*)pChild);
-	}
-}
-
 void CUIDragDropList::AttachChild(CUIWindow* pChild)
 {
 	CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(pChild);
-	if(pDragDropItem) m_DragDropItemsList.push_back(pDragDropItem);
+	if(pDragDropItem) 
+	{
+		PlaceItemInGrid(pDragDropItem);
+
+		pDragDropItem->SetWidth(GetCellWidth()*pDragDropItem->GetGridWidth());
+		pDragDropItem->SetHeight(GetCellHeight()*pDragDropItem->GetGridHeight());
+
+		pDragDropItem->SetCellWidth(GetCellWidth());
+		pDragDropItem->SetCellHeight(GetCellHeight());
+
+		m_DragDropItemsList.push_back(pDragDropItem);
+
+		pDragDropItem->ClipperOn();
+	}
 
 	inherited::AttachChild(pChild);
 }
 void CUIDragDropList::DetachChild(CUIWindow* pChild)
 {
-	CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(pChild);
-	if(pDragDropItem) m_DragDropItemsList.remove(pDragDropItem);
+	WINDOW_LIST_it it = std::find(m_ChildWndList.begin(), 
+								  m_ChildWndList.end(), 
+								  pChild);
+
+	if( m_ChildWndList.end() != it)
+	{
+
+		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(pChild);
+		if(pDragDropItem)
+		{
+			RemoveItemFromGrid(pDragDropItem);
+			m_DragDropItemsList.remove(pDragDropItem);
+		}
+	}
 
 	inherited::DetachChild(pChild);
 }
@@ -145,7 +135,7 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			UpdateList();
 		}
 	}
-	else if(msg == CUIDragDropItem::ITEM_DRAG)
+	else if(dynamic_cast<CUIDragDropItem*>(pWnd) && msg == CUIDragDropItem::ITEM_DRAG)
 	{
 		//принадлежит ли элемент отправивший сообщение ITEM_DRAG нашему списку
 		WINDOW_LIST_it it = std::find(m_ChildWndList.begin(),
@@ -160,12 +150,13 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			//поднять окно вместе с родителями на вершину
 			(*it)->BringAllToTop(); 
 
+			pWnd->Show(true);
+
 			//выбросить элемент из сетки
 			RemoveItemFromGrid((CUIDragDropItem*)pWnd);
-
 		}
 	}
-	else if(msg == CUIDragDropItem::ITEM_DROP)
+	else if(dynamic_cast<CUIDragDropItem*>(pWnd) && msg == CUIDragDropItem::ITEM_DROP)
 	{	
 		//принадлежит ли элемент отправивший сообщение ITEM_DROP нашему списку
 		WINDOW_LIST_it it = std::find(m_ChildWndList.begin(), 
@@ -213,27 +204,27 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 				////если есть куда брать и работает доп. проверка
 				OnCustomPlacement();
-				if(PlaceItemInGrid(pItem))
-				{	
-					//доп. проверка при помощи присоединенной функции
-					bool additional_check;
-				
-					if(GetCheckProc())
-						additional_check = (*(GetCheckProc()))(pItem, this);
-					else
-						additional_check = true;
+				int place_row, place_col;
 
-					if(additional_check)
-					{
+
+				//доп. проверка при помощи присоединенной функции
+				bool additional_check;
+
+				if(GetCheckProc())
+					additional_check = (*(GetCheckProc()))(pItem, this);
+				else
+					additional_check = true;
+
+				if(additional_check)
+				{
+
+					if(CanPlaceItemInGrid(pItem, place_row, place_col))
+					{	
 						//отсоединить у прошлого родителя
 						pItem->GetParent()->SetCapture(pItem, false);
 						//((CUIDragDropList*)pItem->GetParent())->DetachChild(pItem);
 						pItem->GetParent()->DetachChild(pItem);
 
-						//присоединить нам 
-						//чтоб 2 раза не присоединять сначала выкинем
-						//в AttachChild присоединим еще раз
-						RemoveItemFromGrid(pItem);
 						AttachChild(pItem);
 						pItem->BringAllToTop(); 
 					}
@@ -258,11 +249,14 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			PlaceItemInGrid(pItem);
 			OffCustomPlacement();
 			pItem->GetParent()->SetCapture(pItem, false);
+			// Просигнализировать о том, что если это был костюм, то надо его опять спрятать
+			pItem->GetParent()->SendMessage(pItem ,CUIOutfitSlot::OUTFIT_RETURNED_BACK, NULL);
 			//pItem->MoveWindow(pItem->GetPreviousPos().x,
 	 		//				  pItem->GetPreviousPos().y);
 		}
+		// Приземляем объект.
 	}
-	
+
 	CUIWindow::SendMessage(pWnd, msg, pData);
 }
 
@@ -322,7 +316,7 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum,
 		float scale = GetCellWidth()/50.f;
 		
 		CELL_STATIC_IT it=m_vCellStatic.begin();
-		
+
 		for(i=0; i<GetViewRows(); ++i)
 		{
 			for(j=0; j<GetCols(); ++j)
@@ -348,6 +342,22 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum,
 //размещение элемента на свободном месте в сетке
 bool CUIDragDropList::PlaceItemInGrid(CUIDragDropItem* pItem)
 {
+	int place_row = -1,  place_col = -1;
+	bool found_place = CanPlaceItemInGrid(pItem, place_row, place_col);
+
+	//разместить элемент на найденном месте
+	if(found_place)
+	{
+		PlaceItemAtPos(place_row, place_col, pItem);
+		return true;
+	}
+	else
+		return false;
+}
+
+//размещение элемента на свободном месте в сетке
+bool CUIDragDropList::CanPlaceItemInGrid(CUIDragDropItem* pItem, int& place_row, int& place_col)
+{
 	R_ASSERT(pItem->GetGridHeight()>0);
 	R_ASSERT(pItem->GetGridWidth()>0);
 
@@ -355,9 +365,10 @@ bool CUIDragDropList::PlaceItemInGrid(CUIDragDropItem* pItem)
 	R_ASSERT(GetCols()>0);
 
 	int i,j;
-	int k,m;
+//	int k,m;
 
-	int place_row = -1,  place_col = -1;
+	place_row = -1;
+	place_col = -1;
 
 	bool found_place;
 	bool can_place;
@@ -391,9 +402,9 @@ bool CUIDragDropList::PlaceItemInGrid(CUIDragDropItem* pItem)
 	if(place_row == -1)
 	{
 		place_row = m_iCurrentFirstRow + 
-					//item_center_y/GetCellHeight()
-					iFloor((float)item_center_y/GetCellHeight()
-					- (float)pItem->GetGridHeight()/2  + .5f);
+			//item_center_y/GetCellHeight()
+			iFloor((float)item_center_y/GetCellHeight()
+			- (float)pItem->GetGridHeight()/2  + .5f);
 	}
 
 
@@ -439,8 +450,6 @@ bool CUIDragDropList::PlaceItemInGrid(CUIDragDropItem* pItem)
 		}
 	}
 
-	
-
 
 	//проверить можно ли разместить элемент,
 	//проверяем последовательно каждую клеточку
@@ -450,7 +459,7 @@ bool CUIDragDropList::PlaceItemInGrid(CUIDragDropItem* pItem)
 		for(j=0; (j<GetCols()-pItem->GetGridWidth()+1) && !found_place; ++j)
 		{
 			can_place = CanPlace(i,j, pItem);
-			
+
 			if(can_place)
 			{
 				found_place=true;	
@@ -461,34 +470,37 @@ bool CUIDragDropList::PlaceItemInGrid(CUIDragDropItem* pItem)
 		}
 	}
 
-
-	//разместить элемент на найденном месте
-	if(found_place)
-	{
-		for(k=0; k<pItem->GetGridHeight(); ++k)
-		{
-			for(m=0; m<pItem->GetGridWidth(); ++m)
-			{
-				GetCell(place_row+k, place_col+m) = CELL_FULL;
-				pItem->SetGridRow(place_row);
-				pItem->SetGridCol(place_col);
-			}
-		}
-
-		//разместить само окно элемента
-		pItem->MoveWindow(place_col*GetCellWidth(),
-						  (place_row-m_iCurrentFirstRow)*GetCellHeight());
-
-		pItem->SetWidth(GetCellWidth()*pItem->GetGridWidth());
-		pItem->SetHeight(GetCellHeight()*pItem->GetGridHeight());
-
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return found_place;
 }
+
+
+
+void CUIDragDropList::PlaceItemAtPos(int place_row, int place_col, CUIDragDropItem* pItem)
+{
+	int k,m;
+
+	for(k=0; k<pItem->GetGridHeight(); ++k)
+	{
+		for(m=0; m<pItem->GetGridWidth(); ++m)
+		{
+			GetCell(place_row+k, place_col+m) = CELL_FULL;
+		}
+	}
+
+	pItem->SetGridRow(place_row);
+	pItem->SetGridCol(place_col);
+
+
+	//разместить само окно элемента
+	pItem->MoveWindow(place_col*GetCellWidth(),
+		(place_row-m_iCurrentFirstRow)*GetCellHeight());
+
+	pItem->SetWidth(GetCellWidth()*pItem->GetGridWidth());
+	pItem->SetHeight(GetCellHeight()*pItem->GetGridHeight());
+
+	pItem->m_bInFloat = false;
+}
+
 
 bool CUIDragDropList::CanPlace(int row, int col, CUIDragDropItem* pItem)
 {
@@ -519,6 +531,9 @@ bool CUIDragDropList::CanPlace(int row, int col, CUIDragDropItem* pItem)
 //удаление элемента из сетки
 void CUIDragDropList::RemoveItemFromGrid(CUIDragDropItem* pItem)
 {
+	if (pItem->m_bInFloat) return;
+	pItem->m_bInFloat = true;
+
 	int k, m;
 
 	int place_row = pItem->GetGridRow();

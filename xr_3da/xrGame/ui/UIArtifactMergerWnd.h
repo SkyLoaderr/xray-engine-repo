@@ -2,6 +2,7 @@
 // производства новых артефактов
 //////////////////////////////////////////////////////////////////////
 
+#pragma once
 
 #include "uiframewindow.h"
 #include "uidragdroplist.h"

@@ -10,13 +10,9 @@
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 
-
 #include "../HUDManager.h"
 
-
-
 #define PDA_XML "pda.xml"
-
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -28,9 +24,10 @@ CUIPdaWnd::CUIPdaWnd()
 
 	Hide();
 	
-	m_pInvOwner = NULL;
-	m_pPda = NULL;
+//	m_pInvOwner = NULL;
+//	m_pPda = NULL;
 
+	m_pActiveDialog = &UIPdaCommunication;
 	SetFont(HUD().pFontMedium);
 }
 
@@ -50,291 +47,72 @@ void CUIPdaWnd::Init()
 	UIStaticTop.Init("ui\\ui_top_background", 0,0,1024,128);
 	AttachChild(&UIStaticBottom);
 	UIStaticBottom.Init("ui\\ui_bottom_background", 0,Device.dwHeight-32,1024,32);
-
+	
 	AttachChild(&UIMainPdaFrame);
 	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIMainPdaFrame);
 
-	UIMainPdaFrame.AttachChild(&UIPDAHeader);
-	xml_init.InitStatic(uiXml, "static", 0, &UIPDAHeader);
-	
-	//окно разговора по PDA
-	UIMainPdaFrame.AttachChild(&UIPdaDialogWnd);
-	UIPdaDialogWnd.Init(0,0,UIMainPdaFrame.GetWidth(),UIMainPdaFrame.GetHeight());
-	UIPdaDialogWnd.Hide();
-	
-
-	//список контактов
-	UIMainPdaFrame.AttachChild(&UIPdaContactsWnd);
-	UIPdaContactsWnd.Init(0,0, GetWidth(), GetHeight());
-	UIPdaContactsWnd.Show();
-
-	UIPdaContactsWnd.AttachChild(&UIPdaContactsWnd.UIListWnd);
-	xml_init.InitListWnd(uiXml, "list", 0, &UIPdaContactsWnd.UIListWnd);
-	UIPdaContactsWnd.UIListWnd.EnableActiveBackground(true);
-	UIPdaContactsWnd.UIListWnd.EnableScrollBar(true);
-
- 
 	//Ёлементы автоматического добавлени€
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
-}
 
-void CUIPdaWnd::InitPDA()
-{
-	m_pInvOwner = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());
-	if(!m_pInvOwner) 
-	{
-		Hide();
-		return;
-	}
+	// Tab control
+	AttachChild(&UITabControl);
+	//	UITabControl.Init(0, 0, GetWidth(), GetHeight());
+	xml_init.InitTabControl(uiXml, "tab", 0, &UITabControl);
+
+	// Oкно коммуникaции
+	UIPdaCommunication.Init();
+	UIMainPdaFrame.AttachChild(&UIPdaCommunication);
+
+	// Oкно карты
+	UIMainPdaFrame.AttachChild(&UIMapWnd);
+	UIMapWnd.Init();
+
+	// ќкно задач
+	UIMainPdaFrame.AttachChild(&UITaskWnd);
+	UITaskWnd.Init();
 	
-	m_pPda = m_pInvOwner->GetPDA();
-
-	if(!m_pPda)
-	{
-		Hide();
-		return;
-	}
-
-	InitPdaContacts();
-
-
-	UIPdaDialogWnd.Hide();
-	UIPdaContactsWnd.Show();
+	// Oкно новостей
+	UIMainPdaFrame.AttachChild(&UINewsWnd);
+	UINewsWnd.Init();
 }
-
 
 void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
-	if(pWnd == &UIPdaContactsWnd)
+	if(pWnd == &UITabControl)
 	{
-		if(msg == CUIPdaContactsWnd::CONTACT_SELECTED)
+		if (CUITabControl::TAB_CHANGED == msg)
 		{
-			UIPdaContactsWnd.Hide();
-			UIPdaDialogWnd.ContactRestore();
+			m_pActiveDialog->Hide();
 
-			InitPdaDialog();
-			UIPdaDialogWnd.Show();
-		}
-	}
-	else if(pWnd == &UIPdaDialogWnd)
-	{
-		if(msg == CUIPdaDialogWnd::BACK_BUTTON_CLICKED)
-		{
-			UIPdaContactsWnd.Show();
-			UIPdaDialogWnd.Hide();
-		}
-		else if(msg == CUIPdaDialogWnd::MESSAGE_BUTTON_CLICKED)
-		{
-			EPdaMsg pda_msg = ePdaMsgAccept;
-			u32 id_pda_contact = m_pContactInvOwner->GetPDA()->ID();
-				
-			if(m_pPda->NeedToAnswer(id_pda_contact))
+			// Add custom dialogs here
+			switch (UITabControl.GetActiveIndex()) 
 			{
-				switch(UIPdaDialogWnd.m_iMsgNum)
-				{
-				case 0:
-					pda_msg = ePdaMsgAccept;
-					break;
-				case 1:
-					pda_msg = ePdaMsgDecline;
-					break;
-				case 2:
-					pda_msg = ePdaMsgDeclineRude;
-					break;
-				}
+			case 0:
+				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UIPdaCommunication);
+				break;
+			case 1:
+				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UIMapWnd);
+				break;
+			case 2:
+				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UINewsWnd);
+				break;
+			case 3:
+				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UITaskWnd);
+				break;
 			}
-			else
-			{
-				switch(UIPdaDialogWnd.m_iMsgNum)
-				{
-				case 0:
-					pda_msg = ePdaMsgTrade;
-					break;
-				case 1:
-					pda_msg = ePdaMsgNeedHelp;
-					break;
-				case 2:
-					pda_msg = ePdaMsgGoAway;
-					break;
-				}
-			}
-			m_pPda->SendMessageID(id_pda_contact, pda_msg, NO_INFO_INDEX);
-			UpdateMessageLog();
+			m_pActiveDialog->Reset();
+			m_pActiveDialog->Show();
 		}
 	}
-	inherited::SendMessage(pWnd, msg, pData);
-}
-
-
-void CUIPdaWnd::Update()
-{
-	if(!m_pPda) return;
-	
-	//обновл€ть список контактов вне зависимости
-	//от того показано окно контактов или нет
-	UpdatePdaContacts();
-
-
-	if(UIPdaDialogWnd.IsShown() && 
-		m_pPda->IsNewMessage())
+	else
 	{
-		UpdateMessageLog();
-		UpdateMsgButtons();
-	
-		m_pPda->NoNewMessage();
+		R_ASSERT(m_pActiveDialog);
+		m_pActiveDialog->SendMessage(pWnd, msg, pData);
 	}
-	
-	inherited::Update();
-}
-
-void CUIPdaWnd::Draw()
-{
-	inherited::Draw();
 }
 
 void CUIPdaWnd::Show()
 {
 	inherited::Show();
-	InitPDA();
-}
-
-
-/////////////////////////////////////////
-// ‘ункции работы с котактами
-////////////////////////////////////////
-void CUIPdaWnd::InitPdaContacts()
-{
-	UIPdaContactsWnd.RemoveAll();
-
-	PDA_LIST_it it;
-	for(it = m_pPda->m_PDAList.begin(); m_pPda->m_PDAList.end() != it; ++it)
-	{
-		UIPdaContactsWnd.AddContact((*it)->GetOwnerObject());
-	}
-}
-
-//обновление списка активных контактов PDA
-void CUIPdaWnd::UpdatePdaContacts()
-{
-	PDA_LIST_it it;	
-
-	//удалить из списка все PDA ушедшие из зоны дос€гаемости
-	for(it = m_pPda->m_DeletedPDAList.begin(); m_pPda->m_DeletedPDAList.end() != it; ++it)
-	{	
-		UIPdaContactsWnd.RemoveContact((*it)->GetOwnerObject());
-		
-		//текущий контак вышел из зоны дос€гаемости!
-		if(m_pContactInvOwner == (*it)->GetOriginalOwner())
-		{
-			UIPdaDialogWnd.ContactLoss();
-		}
-	}
-
-	//добавить новые
-	for(it = m_pPda->m_NewPDAList.begin(); m_pPda->m_NewPDAList.end() != it; ++it)
-	{	
-		//только если объекта еще нет в списке
-		if(UIPdaContactsWnd.IsInList((*it)->GetOwnerObject())==false)
-			UIPdaContactsWnd.AddContact((*it)->GetOwnerObject());
-
-		//текущий контак снова вошел в зону дос€гаемости
-		if(m_pContactInvOwner == (*it)->GetOriginalOwner())
-		{
-			UIPdaDialogWnd.ContactRestore();
-		}
-	}
-}
-
-
-
-/////////////////////////////////////////
-// ‘ункции работы дл€ поддержани€ диалога
-////////////////////////////////////////
-
-void CUIPdaWnd::InitPdaDialog()
-{
-	m_idContact = UIPdaContactsWnd.GetContactID();
-
-	m_pContactObject =  Level().Objects.net_Find(m_idContact);
-	
-	R_ASSERT2(m_pContactObject, "wrong ID");
-	m_pContactInvOwner = dynamic_cast<CInventoryOwner*>(m_pContactObject);
-	R_ASSERT2(m_pContactInvOwner, "can't cast to inventory owner");
-
-	//что за глюк?! херит пам€ть если выводить m_pContactObject->cName()
-
-//	sprintf(UIPdaDialogWnd.m_sContactName, "%s", *m_pContactObject->cName());
-//	UIPdaDialogWnd.UIStaticContactName.SetText(UIPdaDialogWnd.m_sContactName);
-
-	m_pInvOwner  = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());;
-	R_ASSERT2(m_pInvOwner, "wrong inventory owner");
-
-	//инициализировать окошко с информацие о собеседнике
-	UIPdaDialogWnd.UICharacterInfo.InitCharacter(m_pContactInvOwner);
-
-
-	UpdateMessageLog();
-	UpdateMsgButtons();
-}
-
-//заполнить окно логами сообщений с текущим контактом
-void CUIPdaWnd::UpdateMessageLog()
-{
-	UIPdaDialogWnd.UILogListWnd.RemoveAll();
-	
-	u32 id_pda_contact;
-	
-	if(m_pContactInvOwner)
-		id_pda_contact = m_pContactInvOwner->GetPDA()->ID();
-
-	//котактов еще не было
-	if(m_pPda->m_mapPdaLog.find(id_pda_contact) == m_pPda->m_mapPdaLog.end()) return;
-
-//	for(CPda::PDA_MESSAGE_LIST_it it = m_pPda->m_mapPdaLog[id_pda_contact].begin();
-//							      m_pPda->m_mapPdaLog[id_pda_contact].end() != it;
-//							      ++it)
-	for(CPda::PDA_MESSAGE_LIST::reverse_iterator it = m_pPda->m_mapPdaLog[id_pda_contact].rbegin();
-			      m_pPda->m_mapPdaLog[id_pda_contact].rend() != it;
-			      ++it)
-	{
-		if((*it).receive)
-			UIPdaDialogWnd.AddOthersMessageToLog((*it).msg, m_pContactInvOwner);
-		else
-			UIPdaDialogWnd.AddOurMessageToLog((*it).msg, m_pInvOwner);
-	}
-
-	UIPdaDialogWnd.UILogListWnd.ScrollToEnd();
-}
-
-
-//оновлени€ состо€ни€ диалога с контактом:
-//ожидание ответа, задавание вопроса,
-//ответ на вопрос
-//и обновление кнопок ответа
-void CUIPdaWnd::UpdateMsgButtons()
-{
-	u32 id_pda_contact = 0xffff;
-	
-	if(m_pContactInvOwner)
-		id_pda_contact = m_pContactInvOwner->GetPDA()->ID();
-	
-
-	if(m_pPda->WaitForReply(id_pda_contact))
-	{
-		UIPdaDialogWnd.ContactWaitForReply();
-	}
-	else
-	{
-		UIPdaDialogWnd.ContactRestore();
-	}
-
-
-	if(m_pPda->NeedToAnswer(id_pda_contact))
-	{
-		UIPdaDialogWnd.PhrasesAnswer();
-	}
-	else
-	{
-		UIPdaDialogWnd.PhrasesAsk();
-	}
+	m_pActiveDialog->Show();
 }

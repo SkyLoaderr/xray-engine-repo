@@ -35,7 +35,7 @@ CUIMapWnd::CUIMapWnd()
 	
 	SetFont(HUD().pFontSmall);
 
-	Init();
+//	Init();
 }
 
 CUIMapWnd::~CUIMapWnd()
@@ -65,29 +65,26 @@ void CUIMapWnd::Init()
 	CUIXml uiXml;
 	uiXml.Init("$game_data$","map.xml");
 
-
 	inherited::Init(0, 0, Device.dwWidth, Device.dwHeight);
 
+//	AttachChild(&UIStaticTop);
+//	UIStaticTop.Init("ui\\ui_top_background", 0,0,1024,128);
+//	AttachChild(&UIStaticBottom);
+//	UIStaticBottom.Init("ui\\ui_bottom_background", 0,Device.dwHeight-32,1024,32);
 
-	AttachChild(&UIStaticTop);
-	UIStaticTop.Init("ui\\ui_top_background", 0,0,1024,128);
-	AttachChild(&UIStaticBottom);
-	UIStaticBottom.Init("ui\\ui_bottom_background", 0,Device.dwHeight-32,1024,32);
-
-
-	AttachChild(&UIMainMapFrame);
-	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIMainMapFrame);
-	UIMainMapFrame.AttachChild(&UIPDAHeader);
-	xml_init.InitStatic(uiXml, "static", 0, &UIPDAHeader);
+//	AttachChild(&UIMainMapFrame);
+//	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIMainMapFrame);
+//	UIMainMapFrame.AttachChild(&UIPDAHeader);
+//	xml_init.InitStatic(uiXml, "static", 0, &UIPDAHeader);
 
 
-	UIMainMapFrame.AttachChild(&UICheckButton1);
+	AttachChild(&UICheckButton1);
 	xml_init.InitButton(uiXml, "button", 0, &UICheckButton1);
-	UIMainMapFrame.AttachChild(&UICheckButton2);
+	AttachChild(&UICheckButton2);
 	xml_init.InitButton(uiXml, "button", 1, &UICheckButton2);
-	UIMainMapFrame.AttachChild(&UICheckButton3);
+	AttachChild(&UICheckButton3);
 	xml_init.InitButton(uiXml, "button", 2, &UICheckButton3);
-	UIMainMapFrame.AttachChild(&UICheckButton4);
+	AttachChild(&UICheckButton4);
 	xml_init.InitButton(uiXml, "button", 3, &UICheckButton4);
 
 	UICheckButton1.Show(false);UICheckButton1.Enable(false);
@@ -96,21 +93,20 @@ void CUIMapWnd::Init()
 	UICheckButton4.Show(false);UICheckButton4.Enable(false);
 
 	//информация о точке на карте на которую наводит игрок
-	UIMainMapFrame.AttachChild(&UIStaticInfo);
+	AttachChild(&UIStaticInfo);
 	xml_init.InitStatic(uiXml, "static", 1, &UIStaticInfo);
 
 	UIStaticInfo.AttachChild(&UICharacterInfo);
 	UICharacterInfo.Init(0,0, UIStaticInfo.GetWidth(), UIStaticInfo.GetHeight(), "map_character.xml");
 
 	
-	UIMainMapFrame.AttachChild(&UIMapBackground);
+	AttachChild(&UIMapBackground);
 	xml_init.InitWindow(uiXml, "window", 0, &UIMapBackground);
 	UIMapBackground.Show(true);
 	UIMapBackground.Enable(true);
 	
 	m_iMapWidth = UIMapBackground.GetWidth();
 	m_iMapHeight = UIMapBackground.GetHeight();
-
 
 	//Элементы автоматического добавления
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
@@ -308,6 +304,7 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			if(UIMapBackground.m_pActiveMapSpot)
 			{
 				UIStaticInfo.Show(true);
+				
 				CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(UIMapBackground.m_pActiveMapSpot->m_pObject);
 
 				if(xr_strlen(UIMapBackground.m_pActiveMapSpot->m_sDescText.GetBuf())>1)

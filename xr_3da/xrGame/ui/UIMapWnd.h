@@ -44,13 +44,13 @@ protected:
 	void AddObjectSpot(CGameObject* pGameObject);
 
 	//элементы интерфейса
-	CUIFrameWindow	UIMainMapFrame;
+//	CUIFrameWindow	UIMainMapFrame;
 
-	CUIStatic UIStaticTop;
-	CUIStatic UIStaticBottom;
+//	CUIStatic UIStaticTop;
+//	CUIStatic UIStaticBottom;
 
 	//верхушка PDA для кнопочек переключения режима
-	CUIStatic			UIPDAHeader;
+//	CUIStatic			UIPDAHeader;
 	
 	CUICheckButton UICheckButton1;
 	CUICheckButton UICheckButton2;

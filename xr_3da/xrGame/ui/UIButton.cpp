@@ -25,6 +25,7 @@ CUIButton:: CUIButton()
 
 	m_bAvailableTexture = false;
 
+	m_bIsSwitch = false;
 
 	m_iPushOffsetX = PUSH_OFFSET_RIGHT;
     m_iPushOffsetY = PUSH_OFFSET_DOWN;
@@ -97,6 +98,9 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	{
 	//////////////////////////
 	//нормальный режим нажатия
+	//
+	// Поведение кнопки как переключателя реализовано пока только в режиме NORMAL_PRESS
+	// Отжатие производить в ручную вызовом SetButtonMode(BUTTON_NORMAL)
 	case NORMAL_PRESS:
 		if(m_eButtonState == BUTTON_NORMAL)
 		{
@@ -117,7 +121,8 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 					m_bButtonClicked = true;
 				}
 			
-				m_eButtonState = BUTTON_NORMAL;
+				if (!m_bIsSwitch)
+					m_eButtonState = BUTTON_NORMAL;
 			
 				//освободить мышь
 				GetParent()->SetCapture(this, false);
