@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\fixedset.h"
+#include "fixedset.h"
 
 class	CEntity;
 

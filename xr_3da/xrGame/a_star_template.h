@@ -67,8 +67,8 @@ public:
 				*tpTemp2,
 				*tpBestNode;
 		
-		memset(tpOpenedList,0,3*sizeof(SNode));
-		tpOpenedEnd->f = MAX_VALUE;
+		ZeroMemory		(tpOpenedList,3*sizeof(SNode));
+		tpOpenedEnd->f	= MAX_VALUE;
 		
 		tpIndexes[dwStartNode].dwTime = dwAStarStaticCounter;
 
