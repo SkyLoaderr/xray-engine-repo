@@ -302,7 +302,7 @@ void CPHShell::SmoothElementsInertia(float k)
 		dMassAdd(&m_avrg,(*i)->GetMass());
 
 	}
-	int n=elements.size();
+	int n = (int)elements.size();
 	m_avrg.mass/=n*k;
 	for(int j=0;j<4*3;j++) m_avrg.I[j]/=n*k;
 
