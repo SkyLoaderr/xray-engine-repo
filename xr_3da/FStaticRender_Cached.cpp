@@ -10,7 +10,6 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 {
 	CVertexStream*			vs	= cache[0]->VS;
 	CIndexStream*			is	= Device.Streams.Get_IB();
-	DWORD dwPassesRequired		= Device.Shader.dwPassesRequired;
 
 	Device.Primitive.Reset		();
 	for (DWORD Start=0; Start<cache.size(); )
@@ -67,13 +66,8 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 		CHK_DX(HW.pDevice->SetVertexShader		(vs->getFVF()));
 		CHK_DX(HW.pDevice->SetStreamSource		(0,vs->getBuffer(),vs->Stride()));
 		CHK_DX(HW.pDevice->SetIndices			(is->getBuffer(),vBase));
-
-		for (DWORD dwPass = 0; dwPass<dwPassesRequired; dwPass++)
-		{
-			Device.Shader.SetupPass			(dwPass);
-			CHK_DX(HW.pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,0,v_count,iBase,dwNumPrimitives));
-		}
-		UPDATEC(v_count,dwNumPrimitives,dwPassesRequired);
+		CHK_DX(HW.pDevice->DrawIndexedPrimitive	(D3DPT_TRIANGLELIST,0,v_count,iBase,dwNumPrimitives));
+		UPDATEC(v_count,dwNumPrimitives,1);
 
 		Start = End;
 	}

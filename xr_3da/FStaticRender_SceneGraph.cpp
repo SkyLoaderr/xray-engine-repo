@@ -61,14 +61,14 @@ void CRender::InsertSG_Static(FBasicVisual *pVisual)
 		} else {
 			for (DWORD pass_id=0; pass_id<sh->Passes.size(); pass_id++)
 			{
-				CPass&						pass	= sh->Passes[pass_id];
-				mapNormalCodes&				codes	= mapNormal	[sh->Flags.iPriority][pass_id];
-				mapNormalCodes::TNode*		Ncode	= codes.insert		(pass.dwStateBlock);
-				mapNormalTextures::TNode*	Ntex	= Ncode->val.insert	(pass.T);
-				mapNormalMatrices::TNode*	Nmat	= Ntex->val.insert	(pass.M);
-				mapNormalConstants::TNode*	Nconst	= Nmat->val.insert	(pass.C);
-				mapNormalItems&	item				= Nconst->val;
-				if (pass)	{
+				CPass&									pass	= sh->Passes[pass_id];
+				SceneGraph::mapNormalCodes&				codes	= mapNormal	[sh->Flags.iPriority][pass_id];
+				SceneGraph::mapNormalCodes::TNode*		Ncode	= codes.insert		(pass.dwStateBlock);
+				SceneGraph::mapNormalTextures::TNode*	Ntex	= Ncode->val.insert	(pass.T);
+				SceneGraph::mapNormalMatrices::TNode*	Nmat	= Ntex->val.insert	(pass.M);
+				SceneGraph::mapNormalConstants::TNode*	Nconst	= Nmat->val.insert	(pass.C);
+				SceneGraph::mapNormalItems&				item	= Nconst->val;
+				if (pass_id)	{
 					// No need to sort - ZB already setted up
 					item.direct.unsorted.push_back	(pVisual);
 				} else {
@@ -89,7 +89,6 @@ void CRender::InsertSG_Static(FBasicVisual *pVisual)
 				}
 			}
 		}
-		}
 	}
 }
 
@@ -107,14 +106,14 @@ void CRender::InsertSG_Cached(FCached *pVisual)
 		Shader*		sh	= pVisual->hShader;
 		for (DWORD pass_id=0; pass_id<sh->Passes.size(); pass_id++)
 		{
-			CPass&						pass	= sh->Passes[pass_id];
-			mapNormalCodes&				codes	= mapNormal	[sh->Flags.iPriority][pass_id];
-			mapNormalCodes::TNode*		Ncode	= codes.insert		(pass.dwStateBlock);
-			mapNormalTextures::TNode*	Ntex	= Ncode->val.insert	(pass.T);
-			mapNormalMatrices::TNode*	Nmat	= Ntex->val.insert	(pass.M);
-			mapNormalConstants::TNode*	Nconst	= Nmat->val.insert	(pass.C);
-			mapNormalItems&	item				= Nconst->val;
-			if (pass)	{
+			CPass&									pass	= sh->Passes[pass_id];
+			SceneGraph::mapNormalCodes&				codes	= mapNormal	[sh->Flags.iPriority][pass_id];
+			SceneGraph::mapNormalCodes::TNode*		Ncode	= codes.insert		(pass.dwStateBlock);
+			SceneGraph::mapNormalTextures::TNode*	Ntex	= Ncode->val.insert	(pass.T);
+			SceneGraph::mapNormalMatrices::TNode*	Nmat	= Ntex->val.insert	(pass.M);
+			SceneGraph::mapNormalConstants::TNode*	Nconst	= Nmat->val.insert	(pass.C);
+			SceneGraph::mapNormalItems&				item	= Nconst->val;
+			if (pass_id)	{
 				// No need to sort - ZB already setted up
 				item.cached.unsorted.push_back	(pVisual);
 			} else {
