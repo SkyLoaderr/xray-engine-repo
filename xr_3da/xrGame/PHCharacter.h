@@ -64,6 +64,7 @@ public:
 void					SetPLastMaterial					(u16* p)													{p_lastMaterial=p;}													
 
 virtual void			SetMaximumVelocity					(dReal /**vel/**/)											{}																			//!!
+virtual		dReal		GetMaximumVelocity					()															{return 0;}
 virtual	void			SetJupmUpVelocity					(dReal /**velocity/**/)										{}																			//!!
 virtual	void			IPosition							(Fvector& /**pos/**/)										{}
 virtual u16				ContactBone							()															{return 0;}
@@ -79,6 +80,7 @@ virtual		bool		ContactWas							()															=0 ;
 virtual		void		Create								(dVector3 /**sizes/**/)										=0 ;
 virtual		void		Destroy								(void)														=0 ;
 virtual		void		SetAcceleration						(Fvector accel)												=0 ;
+virtual		Fvector		GetAcceleration						()															=0 ;
 virtual		void		SetPosition							(Fvector pos)												=0 ;
 
 virtual		void		SetObjectContactCallback			(ObjectContactCallbackFun* callback)						=0 ;
