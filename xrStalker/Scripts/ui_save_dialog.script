@@ -41,11 +41,11 @@ function save_dialog:InitControls()
 	-- init self position and size
 	self:Init(main_rect.x, main_rect.y, main_rect.width, main_rect.height)
 	
-	-- Init Mant Static		
+	-- Init Main Static		
 	local main_static = CUIFrameWindow()
 	main_static:SetAutoDelete(true)              --parent will delete this item in destructor
 	main_static:SetWindowName("main_frame")
-	--init texture and position relatively parent	
+	--init texture and position relatively parent
 	main_static:Init("ui\\ui_pop_up",0,0,main_rect.width, main_rect.height)
     --textures name, root is Gamedata\Textures folder
 --	main_static:ClipperOn() --clip texture by window region
@@ -55,7 +55,7 @@ function save_dialog:InitControls()
 	------------LIST-----------------
    local txt_list   = CUIFrameWindow()  --background for ListView
    txt_list:SetAutoDelete(true)
-   txt_list:Init("ui\\ui_pda_frame", list_rect.x, list_rect.y, list_rect.width, list_rect.height)
+   txt_list:Init("ui\\ui_pop_up", list_rect.x, list_rect.y, list_rect.width, list_rect.height)
    -- txt_list:ClipperOn()
    main_static:AttachChild(txt_list) 
 
