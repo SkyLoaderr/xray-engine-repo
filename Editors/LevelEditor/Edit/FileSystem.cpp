@@ -8,65 +8,20 @@
 #include "cderr.h"
 
 //----------------------------------------------------
-
-void FSPath::Init( char *_Root, char *_Add, char *_DefExt, char *_FilterString ){
-	VERIFY( _Root && _Add );
-	strcpy( m_DefExt, _DefExt );
-	strcpy( m_FilterString, _FilterString );
-    strcpy( m_Add,  _Add);
-	strcpy( m_Root, _Root );
-	strcpy( m_Path, _Root );
-	strcat( m_Path, _Add );
-    strlwr( m_Path );
-	VerifyPath();
-//	ELog.Msg( mtInformation, "FS: path = %s", m_Path );
-}
-
-void FSPath::Update( char *_FileName )const{
-	VERIFY( _FileName );
-	char buffer[MAX_PATH];
-	strcpy(buffer,_FileName);
-	strcpy(_FileName, m_Path );
-	strcat(_FileName, buffer );
-}
-
-#ifdef M_BORLAND
-void FSPath::Update( AnsiString& _FileName )const{
-	AnsiString buf;
-    buf.sprintf("%s%s",m_Path,_FileName.c_str());
-    _FileName=buf;
-}
-#endif
-
-void FSPath::VerifyPath(){
-	char tmp[MAX_PATH];
-	for(int i=0;m_Path[i];i++){
-		if( m_Path[i]!='\\' || i==0 )
-			continue;
-		Memory.mem_copy( tmp, m_Path, i );
-		tmp[i] = 0;
-		CreateDirectory( tmp, 0 );
-	}
-}
-//----------------------------------------------------
-
-
 CFileSystem::CFileSystem( )
 {
-	m_Local[0] = 0;
-	m_Server[0] = 0;
+//	m_Local[0] = 0;
+//	m_Server[0] = 0;
     m_FindItems = 0;
-    m_AccessLog = 0;
 }
 
 CFileSystem::~CFileSystem()
 {
-	xr_free(m_AccessLog);
 }
 
 void CFileSystem::OnCreate()
 {
-	strcpy(m_Local,			"x:\\");
+/*	strcpy(m_Local,			"x:\\");
     strcpy(m_Server,		"\\\\X-Ray\\stalker$\\");
     strcpy(m_ServerData,	"\\\\X-Ray\\stalkerdata$\\");
     strcpy(m_ServerBackup,	"\\\\X-Ray\\stalkerdata$\\Backup\\");
@@ -98,10 +53,10 @@ void CFileSystem::OnCreate()
 	m_Textures.Init 		(m_ServerData, 	"textures\\",     		"*.bmp;*.tga",		"Texture files" );
 	m_Temp.Init     		(m_Local, 		"temp\\",         		"",     			"" );
 
-    strcpy					(m_LastAccessFN,"access.ini"); 	m_ServerDataRoot.Update(m_LastAccessFN);
-    string256 fn; strcpy(fn,"access.log"); m_ServerDataRoot.Update(fn);
-    m_AccessLog				= xr_strdup(fn);
-}
+*/
+    FS.update_path			(m_LastAccessFN,"$server_data_root$","access.ini");
+    FS.update_path			(m_AccessLog,	"$server_data_root$","access.log");
+}                                               
 //----------------------------------------------------
 #ifdef _MSC_VER
 #define utimbuf _utimbuf
@@ -138,23 +93,25 @@ LPCSTR MakeFilter(string1024& dest, LPCSTR info, LPCSTR ext){
 //------------------------------------------------------------------------------
 // start_flt_ext = 1-all 2..n-indices
 //------------------------------------------------------------------------------
-bool CFileSystem::GetOpenName( FSPath& initial, char *buffer, int sz_buf, bool bMulti, LPCSTR offset, int start_flt_ext ){
+bool CFileSystem::GetOpenName( LPCSTR initial, char *buffer, int sz_buf, bool bMulti, LPCSTR offset, int start_flt_ext )
+{
 	VERIFY(buffer&&(sz_buf>0));
+	FS_Path& P			= *FS.get_path(initial);
 	string1024 flt;
-	MakeFilter(flt,initial.m_FilterString,initial.m_DefExt);
+	MakeFilter(flt,P.m_FilterCaption,P.m_DefExt);
 
 	OPENFILENAME ofn;
 	Memory.mem_fill		( &ofn, 0, sizeof(ofn) );
     ofn.lStructSize		= sizeof(OPENFILENAME);
 	ofn.hwndOwner 		= GetForegroundWindow();
-	ofn.lpstrDefExt 	= initial.m_DefExt;
+	ofn.lpstrDefExt 	= P.m_DefExt;
 	ofn.lpstrFile 		= buffer;
 	ofn.nMaxFile 		= sz_buf;
 	ofn.lpstrFilter 	= flt;
 	ofn.nFilterIndex 	= start_flt_ext;
     ofn.lpstrTitle      = "Open a File";
 
-    string512 path; strcpy(path,(offset&&offset[0])?offset:initial.m_Path);
+    string512 path; strcpy(path,(offset&&offset[0])?offset:P.m_Path);
 	ofn.lpstrInitialDir = path;
 	ofn.Flags =
     	OFN_PATHMUSTEXIST|
@@ -192,21 +149,23 @@ bool CFileSystem::GetOpenName( FSPath& initial, char *buffer, int sz_buf, bool b
     return bRes;
 }
 
-bool CFileSystem::GetSaveName( FSPath& initial, char *buffer, int sz_buf, LPCSTR offset, int start_flt_ext ){
+bool CFileSystem::GetSaveName( LPCSTR initial, char *buffer, int sz_buf, LPCSTR offset, int start_flt_ext )
+{
 	VERIFY(buffer&&(sz_buf>0));
+	FS_Path& P			= *FS.get_path(initial);
 	string1024 flt;
-	MakeFilter(flt,initial.m_FilterString,initial.m_DefExt);
+	MakeFilter(flt,P.m_FilterCaption,P.m_DefExt);
 	OPENFILENAME ofn;
 	Memory.mem_fill		( &ofn, 0, sizeof(ofn) );
 	ofn.hwndOwner 		= GetForegroundWindow();
-	ofn.lpstrDefExt 	= initial.m_DefExt;
+	ofn.lpstrDefExt 	= P.m_DefExt;
 	ofn.lpstrFile 		= buffer;
 	ofn.lpstrFilter 	= flt;
 	ofn.lStructSize 	= sizeof(ofn);
 	ofn.nMaxFile 		= sz_buf;
 	ofn.nFilterIndex 	= start_flt_ext;
     ofn.lpstrTitle      = "Save a File";
-    string512 path; strcpy(path,(offset&&offset[0])?offset:initial.m_Path);
+    string512 path; strcpy(path,(offset&&offset[0])?offset:P.m_Path);
 	ofn.lpstrInitialDir = path;
 	ofn.Flags 			= OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT|OFN_NOCHANGEDIR;
 
@@ -221,7 +180,7 @@ bool CFileSystem::GetSaveName( FSPath& initial, char *buffer, int sz_buf, LPCSTR
 }
 //----------------------------------------------------
 #ifdef M_BORLAND
-bool CFileSystem::GetOpenName(FSPath& initial, AnsiString& buffer, bool bMulti, LPCSTR offset, int start_flt_ext ){
+bool CFileSystem::GetOpenName(LPCSTR initial, AnsiString& buffer, bool bMulti, LPCSTR offset, int start_flt_ext ){
 	string4096 buf;
     strcpy(buf,buffer.c_str());
 	bool bRes = GetOpenName(initial,buf,sizeof(buf),bMulti,offset,start_flt_ext);
@@ -229,7 +188,7 @@ bool CFileSystem::GetOpenName(FSPath& initial, AnsiString& buffer, bool bMulti, 
 	return bRes;
 }
 
-bool CFileSystem::GetSaveName( FSPath& initial, AnsiString& buffer, LPCSTR offset, int start_flt_ext ){
+bool CFileSystem::GetSaveName( LPCSTR initial, AnsiString& buffer, LPCSTR offset, int start_flt_ext ){
 	string4096 buf;
     strcpy(buf,buffer.c_str());
 	bool bRes = GetSaveName(initial,buf,sizeof(buf),offset,start_flt_ext);
@@ -239,7 +198,8 @@ bool CFileSystem::GetSaveName( FSPath& initial, AnsiString& buffer, LPCSTR offse
 #endif
 //----------------------------------------------------
 
-bool CFileSystem::Exist(LPCSTR _FileName, bool bMessage){
+bool CFileSystem::Exist(LPCSTR _FileName, bool bMessage)
+{
     bool bRes = FileExists(_FileName);
     if (bMessage&&!bRes){
         ELog.Msg(mtError,"Can't find required file: '%s'",_FileName);
@@ -249,26 +209,26 @@ bool CFileSystem::Exist(LPCSTR _FileName, bool bMessage){
 }
 //----------------------------------------------------
 
-bool CFileSystem::Exist(char* fn, const char* path, const char* name, bool bMessage){
-	strcpy(fn,path);
-    strcat(fn,name);
+bool CFileSystem::Exist(char* fn, LPCSTR initial, const char* name, bool bMessage)
+{
+	FS.update_path(fn,initial,name);
 	return Exist(fn,bMessage);
 }
 //----------------------------------------------------
 
-bool CFileSystem::Exist(char* fn, const char* path, const char* name, const char* ext, bool bMessage){
-	strcpy(fn,path);
-    strcat(fn,name);
+bool CFileSystem::Exist(char* fn, LPCSTR initial, const char* name, const char* ext, bool bMessage)
+{
+	FS.update_path(fn,initial,name);
     strcat(fn,ext);
 	return Exist(fn,bMessage);
 }
 //----------------------------------------------------
 
 
-bool CFileSystem::Exist( FSPath *initial, const char *_FileName, bool bMessage){
+bool CFileSystem::Exist(LPCSTR initial, const char *_FileName, bool bMessage)
+{
 	string256 fn;
-    strcpy(fn, _FileName);
-    initial->Update(fn);
+	FS.update_path(fn,initial,_FileName);
 	return Exist(fn,bMessage);
 }
 //----------------------------------------------------
@@ -278,11 +238,10 @@ void CFileSystem::DeleteFileByName(const char* nm){
 }
 //----------------------------------------------------
 
-void CFileSystem::DeleteFileByName(FSPath *initial, const char* nm)
+void CFileSystem::DeleteFileByName(LPCSTR initial, const char* nm)
 {
 	string256 fn;
-    strcpy(fn, nm);
-    initial->Update(fn);
+    FS.update_path(fn,initial,nm);
     DeleteFileByName(fn);
 }
 //----------------------------------------------------
@@ -302,7 +261,7 @@ void CFileSystem::MoveFileTo(LPCSTR src, LPCSTR dest, bool bOverwrite){
 //----------------------------------------------------
 // Age routines
 //----------------------------------------------------
-
+/*
 int CFileSystem::GetFileAge( const AnsiString& name ){
     _finddata_t		sFile;
     int	hFile		= _findfirst(name.c_str(), &sFile);
@@ -328,6 +287,7 @@ int	CFileSystem::FileLength(LPCSTR fn){
     }
     return 0;
 }
+*/
 //----------------------------------------------------
 #ifdef M_BORLAND
 void CFileSystem::MarkFile(const AnsiString& fn, bool bDeleteSource)
@@ -342,10 +302,10 @@ void CFileSystem::MarkFile(const AnsiString& fn, bool bDeleteSource)
 		CopyFileTo(fn.c_str(),backup_fn.c_str(),true);
     }
 }
-void CFileSystem::MarkFiles(FSPath* initial, FileMap& files, bool bDeleteSource)
+void CFileSystem::MarkFiles(LPCSTR initial, FileMap& files, bool bDeleteSource)
 {
     AnsiString fname, init_name;
-    initial->Update(init_name);
+	FS.update_path(init_name,initial,"");
 
     FilePairIt it	= files.begin();
 	FilePairIt _E 	= files.end();
@@ -354,10 +314,10 @@ void CFileSystem::MarkFiles(FSPath* initial, FileMap& files, bool bDeleteSource)
     	MarkFile	(fname.c_str(),bDeleteSource);
     }
 }
-void CFileSystem::MarkFiles(FSPath* initial, LPSTRVec& files, bool bDeleteSource)
+void CFileSystem::MarkFiles(LPCSTR initial, LPSTRVec& files, bool bDeleteSource)
 {
     AnsiString fname, init_name;
-    initial->Update(init_name);
+    FS.update_path(init_name,initial,"");
 
     LPSTRIt it	= files.begin();
 	LPSTRIt _E 	= files.end();
@@ -368,26 +328,22 @@ void CFileSystem::MarkFiles(FSPath* initial, LPSTRVec& files, bool bDeleteSource
 }
 
 #ifdef _EDITOR
-void CFileSystem::BackupFile(FSPath *initial, const AnsiString& fname)
+void CFileSystem::BackupFile(LPCSTR initial, const AnsiString& fname)
 {
     long tm; time(&tm);
-	AnsiString src_name = fname; initial->Update(src_name);
+	AnsiString src_name; 
+    FS.update_path(src_name,initial,fname.c_str());
     if (Exist(src_name.c_str())){
-        AnsiString dst_name;
-        dst_name.sprintf("%s%s.%x",initial->m_Add,fname.c_str(),tm);
-        m_ServerBackupRoot.Update(dst_name);
-        VerifyPath(dst_name.c_str());
-        CopyFileTo(src_name.c_str(),dst_name.c_str(),true);
-        WriteAccessLog(dst_name.c_str(),"Backup");
+        AnsiString 			dst_name;
+        FS_Path* P 			= FS.get_path(initial);
+        dst_name.sprintf	("%s%s.%x",P->m_Add,fname.c_str(),tm);
+        FS.update_path		("$server_backup$",dst_name);
+        VerifyPath			(dst_name.c_str());
+        CopyFileTo			(src_name.c_str(),dst_name.c_str(),true);
+        WriteAccessLog		(dst_name.c_str(),"Backup");
     }
 }
 #endif
-
-bool CFileSystem::CreateNullFile(const char* fn){
-    CMemoryWriter F;
-	F.save_to(fn,0);
-    return true;
-}
 #endif
 
 void CFileSystem::ProcessOne(_finddata_t& F, const char* path, bool bOnlyDir, bool bRootOnly)
@@ -435,23 +391,13 @@ void CFileSystem::Recurse(const char* path, bool bRootOnly)
 	        ProcessOne(sFile,path,false,bRootOnly);
 	    _findclose	( hFile );
 	}
-
-/*
-    strcpy			(N,path);
-    strcat			(N,"*.*");
-
-    R_ASSERT		((hFile=_findfirst(N, &sFile)) != -1);
-    ProcessOne		(sFile,path);
-
-    while			( _findnext( hFile, &sFile ) == 0 )
-        ProcessOne(sFile,path);
-
-    _findclose		( hFile );
-*/
 }
 
-int CFileSystem::GetFileList(LPCSTR path, FileMap& items, bool clamp_path, bool clamp_ext, bool bRootOnly, LPCSTR ext_m)
+int CFileSystem::GetFileList(LPCSTR initial, FileMap& items, bool clamp_path, bool clamp_ext, bool bRootOnly, LPCSTR ext_m)
 {
+/*
+	string256 		path;
+    FS.update_path	(path,initial,"");
     ext_mask		= xr_strdup(ext_m);
 	m_FindItems		= &items;
     bClampExt		= clamp_ext;
@@ -459,6 +405,7 @@ int CFileSystem::GetFileList(LPCSTR path, FileMap& items, bool clamp_path, bool 
 	Recurse			(path,bRootOnly);
     xr_free			(ext_mask);
     return m_FindItems->size();
+*/
 }
 
 AnsiString&	CFileSystem::UpdateTextureNameWithFolder(AnsiString& tex_name)
@@ -511,10 +458,10 @@ void CFileSystem::RegisterAccess(LPSTR fn, LPSTR start_msg, bool bLog)
     if (bLog) 	WriteAccessLog(fn,start_msg);
 }
 
-BOOL CFileSystem::CheckLocking(FSPath *initial, LPSTR fname, bool bOnlySelf, bool bMsg)
+BOOL CFileSystem::CheckLocking(LPCSTR initial, LPSTR fname, bool bOnlySelf, bool bMsg)
 {
 	string256 fn; strcpy(fn,fname);
-	if (initial) initial->Update(fn);
+	if (initial) FS.update_path(initial,fn);
 
 	if (bOnlySelf) return (m_LockFiles.find(fn)!=m_LockFiles.end());
     if (Exist(fn)){
@@ -526,10 +473,10 @@ BOOL CFileSystem::CheckLocking(FSPath *initial, LPSTR fname, bool bOnlySelf, boo
     }else return FALSE;
 }
 
-BOOL CFileSystem::LockFile(FSPath *initial, LPSTR fname, bool bLog)
+BOOL CFileSystem::LockFile(LPCSTR initial, LPSTR fname, bool bLog)
 {
 	string256 fn; strcpy(fn,fname);
-	if (initial) initial->Update(fn);
+	if (initial) FS.update_path(initial,fn);
 
     BOOL bRes=false;
 	if (m_LockFiles.find(fn)==m_LockFiles.end()){
@@ -545,10 +492,10 @@ BOOL CFileSystem::LockFile(FSPath *initial, LPSTR fname, bool bLog)
     return bRes;
 }
 
-BOOL CFileSystem::UnlockFile(FSPath *initial, LPSTR fname, bool bLog)
+BOOL CFileSystem::UnlockFile(LPCSTR initial, LPSTR fname, bool bLog)
 {
 	string256 fn; strcpy(fn,fname);
-	if (initial) initial->Update(fn);
+	if (initial) FS.update_path(initial,fn);
 
 	HANDLEPairIt it = m_LockFiles.find(fn);
 	if (it!=m_LockFiles.end()){
@@ -561,10 +508,10 @@ BOOL CFileSystem::UnlockFile(FSPath *initial, LPSTR fname, bool bLog)
     return false;
 }
 
-LPCSTR CFileSystem::GetLockOwner(FSPath *initial, LPSTR fname)
+LPCSTR CFileSystem::GetLockOwner(LPCSTR initial, LPSTR fname)
 {
 	string256 fn; strcpy(fn,fname);
-	if (initial) initial->Update(fn);
+	if (initial) FS.update_path(initial,fn);
 
     CInifile*	ini = CInifile::Create(m_LastAccessFN,true);
 	static string256 comp;
@@ -572,17 +519,6 @@ LPCSTR CFileSystem::GetLockOwner(FSPath *initial, LPSTR fname)
     CInifile::Destroy(ini);
 
 	return comp;
-}
-
-IReader* CFileSystem::Open(LPCSTR fn)
-{
-	if (!Exist(fn)) return 0;
-	return xr_new<CFileReader>(fn);
-}
-
-void CFileSystem::Close(IReader*& F)
-{
-	xr_delete(F);
 }
 
 LPCSTR CFileSystem::GenerateName(LPCSTR base_path, LPCSTR base_name, LPCSTR def_ext, LPSTR out_name)
