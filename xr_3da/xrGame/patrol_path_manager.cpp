@@ -50,11 +50,16 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 			m_prev_point_index	= vertex->vertex_id();
 
 		m_curr_point_index	= vertex->vertex_id();
-		dest_vertex_id		= vertex->data().level_vertex_id();
-		m_dest_position		= vertex->data().position();
-		m_actuality			= true;
-		m_completed			= false;
-		return;
+		
+		// если выбранная нода не соответствует текущей ноде - все ок
+		// иначе выбрать следующую вершину патрульного пути
+		if (vertex->data().level_vertex_id() != level_vertex_id()) {
+			dest_vertex_id		= vertex->data().level_vertex_id();
+			m_dest_position		= vertex->data().position();
+			m_actuality			= true;
+			m_completed			= false;
+			return;
+		} 
 	}
 	VERIFY					(m_path->vertex(m_curr_point_index));
 
@@ -118,4 +123,6 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 	m_curr_point_index	= temp;
 	dest_vertex_id		= m_path->vertex(m_curr_point_index)->data().level_vertex_id();
 	m_dest_position		= m_path->vertex(m_curr_point_index)->data().position();
+	m_actuality			= true;
+	m_completed			= false;
 }
