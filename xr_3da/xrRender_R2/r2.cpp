@@ -32,10 +32,19 @@ ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float 
 	return pVisual->hShader->E[RImplementation.phase]._get();
 }
 
+static class cl_encodeZ01		: public R_constant_setup		{	virtual void setup	(R_constant* C)
+{
+	float		far	= g_pGamePersistent->Environment.CurrentEnv.far_plane;
+	Fvector3	enc = {1,256,65536};
+	enc.div			(far);
+	RCache.set_c	(C,enc.x,enc.y,enc.z,0.f);
+}}	binder_encodeZ01;
 //////////////////////////////////////////////////////////////////////////
 // Just two static storage
 void					CRender::create					()
 {
+	::Device.Resources->RegisterConstantSetup	("v_encodeZ01",	&binder_encodeZ01);
+
 	Target.OnDeviceCreate		();
 	LR.Create					();
 
@@ -140,7 +149,6 @@ void					CRender::rmNormal			()
 	D3DVIEWPORT9 VP		= {0,0,T->get_width(),T->get_height(),0,1.f };
 	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
-
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
