@@ -235,7 +235,6 @@ void CHelicopterMovementManager::shedule_Update(u32 time_delta)
 		if( m_currKeyIdx == (int)z-1 )
 		{
 			helicopter()->setState(CHelicopter::eInitiatePatrolZone);
-			Log("-------add trajectory path");
 			return;
 		}
 			
@@ -380,10 +379,30 @@ float CHelicopterMovementManager::computeB(float angVel)
 
 ////////////////////////////////////////////////////
 
+CHelicopterMovManager::CHelicopterMovManager()
+{
+}
+
+CHelicopterMovManager::~CHelicopterMovManager	()
+{
+}
+
+void	CHelicopterMovManager::load(LPCSTR		section)
+{
+	m_baseAltitude				= 20.0f;
+	m_basePatrolSpeed			= 20.0f;
+	m_maxKeyDist				= 50.0f;
+	m_intermediateKeyRandFactor = 3.0f;
+}
+void CHelicopterMovManager::init(const Fmatrix& heli_xform)
+{
+	m_XFORM = heli_xform;
+}
+
 void CHelicopterMovManager::onTime(float t)
 {
 	Fvector P,R;
-	_Evaluate(t,P,R);
+	CHelicopterMovManager::_Evaluate(t,P,R);
 	m_XFORM.setXYZi	(R.x,R.y,R.z);
 	m_XFORM.translate_over(P);
 }
@@ -399,8 +418,130 @@ void CHelicopterMovManager::getPathPosition(float time,
 											float fTimeDelta, 
 											Fmatrix& dest)
 {
-	onTime(time);
+	if(m_endTime < time) return;
+//	onTime(time);
+	onFrame ();
 	dest.set(m_XFORM);
+}
+
+
+void CHelicopterMovManager::insertKeyPoints(	float from_time, 
+												xr_vector<Fvector>& keys)
+{
+// 1-зафиксировать текущую позицию, чтобы не повлияло на ближайший кусок пути
+// 2-удалить ключи > from_time
+
+	float	t = from_time;
+	float	d;
+	Fvector R;
+	R.set(0.0f,0.0f,0.0f);
+	u32 sz = keys.size();
+
+	for(u32 i=0; i<sz; ++i)
+	{
+		const Fvector& P = keys[i];
+		if( i != 0 )
+		{
+			d  = P.distance_to( keys[i-1] );
+			t += d / m_basePatrolSpeed;
+		}else
+			t = from_time;
+
+		CHelicopterMotion::CreateKey(t, P, R);
+	};
+	
+	updatePathHPB(from_time);
+
+	m_endTime = t;
+}
+
+void CHelicopterMovManager::shedule_Update(u32 timeDelta, CHelicopter* heli)
+{
+	float lt	= Level().timeServer()/1000.0f;;
+
+	if (heli->state() == CHelicopter::eInitiatePatrolZone)
+	{
+		addPartolPath(lt);
+
+		heli->setState(CHelicopter::eMovingByPatrolZonePath);
+	};
+
+	if (heli->state() == CHelicopter::eMovingByPatrolZonePath)
+	{
+		updatePatrolPath(lt);	
+	};
+
+}
+
+void	CHelicopterMovManager::addPartolPath(float from_time)
+{
+	float t		= 0.0f;
+
+	(m_endTime > from_time)? t=m_endTime : t=from_time;
+	
+	Fvector fromPos,fromRot;
+	
+	if( KeyCount() > 0 )
+		_Evaluate(t,fromPos,fromRot);
+	else
+		fromPos = m_XFORM.c;
+
+	xr_vector<Fvector> vAddedKeys;
+
+	createLevelPatrolTrajectory(10, fromPos, vAddedKeys);
+	insertKeyPoints(t, vAddedKeys);
+
+}
+
+void CHelicopterMovManager::updatePatrolPath(float t)
+{
+	u32 minIdx = 0;
+	u32 maxIdx = 0;
+	float minT = 0.0f;
+	float maxT = 0.0f;
+
+	u32 sz = CHelicopterMotion::KeyCount();
+	VERIFY(sz>4);
+
+	CHelicopterMotion::FindNearestKey(t,minT,maxT,minIdx,maxIdx);
+
+	if( maxIdx >= (sz-2) )//2 key ahead
+		addPartolPath(t);
+
+	if(minIdx > 6)
+	{
+		DropTailKeys(4);
+		GetKeyTime(0, m_startTime);
+	}
+}
+
+void	CHelicopterMovManager::updatePathHPB(float from_time)
+{
+	u32 minIdx = 0;
+	u32 maxIdx = 0;
+	float minT = 0.0f;
+	float maxT = 0.0f;
+
+	u32 sz = CHelicopterMotion::KeyCount();
+	CHelicopterMotion::FindNearestKey(from_time, minT, maxT, minIdx, maxIdx);
+
+	u32 i;
+	//(minIdx == maxIdx)
+	Fvector p_prev, p0, p_next, p0_phb_res;
+	float p0_time;
+
+	for(i=minIdx; i<sz-1 ;++i)
+	{
+		CHelicopterMotion::GetKeyT(i, p_prev);
+		CHelicopterMotion::GetKeyT(i+1, p0);
+		CHelicopterMotion::GetKeyT(i+2, p_next);
+		CHelicopterMotion::GetKeyTime(i+1, p0_time);
+
+		buildHPB(p_prev, p0, p_next, p0_phb_res);
+
+		CHelicopterMotion::CreateKey(p0_time, p0, p0_phb_res);
+	}
+
 }
 
 void CHelicopterMovManager::buildHPB(const Fvector& p_prev, 
@@ -410,7 +551,7 @@ void CHelicopterMovManager::buildHPB(const Fvector& p_prev,
 {
 	float s1 = p_prev.distance_to (p0);
 	float s2 = p0.distance_to (p_next);
-	
+
 	Fvector d1,d2;
 	d1.sub(p0, p_prev);
 	d2.sub(p_next, p0);
@@ -425,41 +566,8 @@ void CHelicopterMovManager::buildHPB(const Fvector& p_prev,
 
 
 	//z
-	Fvector cp;
+/*	Fvector cp;
 	cp.crossproduct (d1,d2);
 	p0_phb_res.z = cp.y;
-
-}
-
-void	CHelicopterMovManager::insertKeyPoints(float from_time, 
-											   xr_vector<Fvector>& keys)
-{
-// 1-зафиксировать текущую позицию, чтобы не повлияло на ближайший кусок пути
-// 2-удалить ключи > from_time
-
-	float	t;
-	
-//	if( COMotion::KeyCount()>0 )
-//		t = COMotion::
-
-	float	d;
-	Fvector P;
-	Fvector R;
-	R.set(0.0f,0.0f,1.0f);
-	u32 sz = keys.size();
-
-	for(u32 i=0; i<sz; ++i)
-	{
-	const Fvector& P = keys[i];
-	if( i != 0 )
-	{
-		d  = P.distance_to( keys[i-1] );
-		t += m_basePatrolSpeed * d;
-	}else
-		t = from_time;
-
-	// !!!		COMotion::CreateKey(t, P, R);
-	}
-
-
+*/
 }

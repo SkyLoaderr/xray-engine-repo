@@ -124,6 +124,8 @@ void CHelicopter::Load(LPCSTR section)
 	inherited::Load			(section);
 	CShootingObject::Load	(section);
 	CRocketLauncher::Load	(section);
+	
+	m_movMngr.load (section);
 
 	m_sAmmoType = pSettings->r_string(section, "ammo_class");
 	m_CurrentAmmo.Load(*m_sAmmoType);
@@ -238,6 +240,10 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 
 	setState			(eWaitForStart);
 	m_stayPos			= XFORM().c;
+
+	setState			(eInitiatePatrolZone);
+	m_movMngr.init ( XFORM() );
+
 	return				(TRUE);
 }
 
@@ -263,8 +269,9 @@ void CHelicopter::UpdateCL()
 {
 	inherited::UpdateCL	();
 	
-	m_movementMngr.onFrame( XFORM(),Device.fTimeDelta );
+//	m_movementMngr.onFrame( XFORM(),Device.fTimeDelta );
 
+	m_movMngr.getPathPosition (Level().timeServer()/1000.0f,Device.fTimeDelta, XFORM() );
 /*	if( PPhysicsShell()&&(GetfHealth() < 99.97f) )
 	{
 		PPhysicsShell()->InterpolateGlobalTransform(&XFORM());
@@ -321,7 +328,8 @@ void CHelicopter::shedule_Update(u32 time_delta)
 	
 //	if( GetfHealth() >= 0.0f )
 //	{
-		m_movementMngr.shedule_Update(time_delta);
+//		m_movementMngr.shedule_Update(time_delta);
+		m_movMngr.shedule_Update (time_delta, this);
 //	};
 
 //	if ( GetfHealth() <= 0.0f && !PPhysicsShell() )

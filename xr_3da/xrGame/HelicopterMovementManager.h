@@ -155,8 +155,8 @@ public:
 
 #include "HelicopterMovementManager_inl.h"
 
-#include "../motion.h"
-class CHelicopterMovManager :public COMotion
+#include "HelicopterMotion.h"
+class CHelicopterMovManager :public CHelicopterMotion
 {
 	bool							m_bLoop;
 	Fmatrix							m_XFORM;
@@ -172,17 +172,22 @@ class CHelicopterMovManager :public COMotion
 	float	_flerp					(float src, float dst, float t)		{return src*(1.f-t) + dst*t;};
 	bool	dice					()		{return (::Random.randF(-1.0f, 1.0f) > 0.0f); };
 
-	void	createLevelPatrolTrajectory(u32 keyCount, float fromTime, Fvector fromPos, xr_vector<Fvector>& keys );
+	void	createLevelPatrolTrajectory(u32 keyCount, const Fvector& fromPos, xr_vector<Fvector>& keys );
 	Fvector	makeIntermediateKey		(Fvector& start, Fvector& dest, float k);
 	void	buildHuntPath			(Fvector& enemyPos);
 	void	onFrame					();
 	void	onTime					(float t);
 	void	insertKeyPoints			(float from_time, xr_vector<Fvector>& keys);
-
+	void	updatePathHPB			(float from_time);
+	void	addPartolPath			(float from_time);
+	void	updatePatrolPath		(float t);
 public:
 	CHelicopterMovManager			();
 	virtual ~CHelicopterMovManager	();
 
+	void	init					(const Fmatrix& heli_xform);
+	void	load					(LPCSTR		section);
+	void	shedule_Update			(u32 timeDelta, CHelicopter* heli);
 	void	getPathPosition			(float time, float fTimeDelta, Fmatrix& dest);
 
 };

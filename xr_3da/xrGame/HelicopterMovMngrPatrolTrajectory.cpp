@@ -87,8 +87,8 @@ Fvector	CHelicopterMovementManager::makeIntermediateKey(Fvector& start,
 }
 
 //////////////////////////////////////////////////////
-void CHelicopterMovManager::createLevelPatrolTrajectory(u32 keyCount, float fromTime, 
-														Fvector fromPos, 
+void CHelicopterMovManager::createLevelPatrolTrajectory(u32 keyCount, 
+														const Fvector& fromPos, 
 														xr_vector<Fvector>& keys )
 {
 	Fvector					keyPoint;

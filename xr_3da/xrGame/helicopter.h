@@ -42,6 +42,9 @@ protected:
 
 	ref_sound						m_engineSound;
 	CHelicopterMovementManager		m_movementMngr;
+
+	CHelicopterMovManager			m_movMngr;
+
 	xr_map<s16,float>				m_hitBones;
 
 	u16								m_left_rocket_bone;
