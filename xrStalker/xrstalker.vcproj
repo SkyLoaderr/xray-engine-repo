@@ -1336,6 +1336,18 @@
 						<File
 							RelativePath=".\scripts\state_mgr.script">
 						</File>
+						<File
+							RelativePath=".\scripts\state_mgr_bodystate.script">
+						</File>
+						<File
+							RelativePath=".\scripts\state_mgr_mental.script">
+						</File>
+						<File
+							RelativePath=".\scripts\state_mgr_movement.script">
+						</File>
+						<File
+							RelativePath=".\scripts\state_mgr_weapon.script">
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
@@ -1361,6 +1373,9 @@
 					</File>
 					<File
 						RelativePath=".\scripts\utils.script">
+					</File>
+					<File
+						RelativePath=".\scripts\zone_no_weapon.script">
 					</File>
 				</Filter>
 				<Filter
