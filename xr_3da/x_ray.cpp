@@ -13,10 +13,13 @@
 #include "std_classes.h"
 #include "GameFont.h"
 #include <crtdbg.h>
+#include "resource.h"
    
 // global variables
 ENGINE_API	CApplication*	pApp			= NULL;
 ENGINE_API	CCreator*		pCreator		= NULL;
+
+static		HWND			logoWindow		= NULL;
 
 // externs
 extern BOOL					StartGame			(u32 num);
@@ -57,10 +60,18 @@ void Startup				()
 	LPCSTR	pStartup			= strstr		(Core.Params,"-start ");
 	if (pStartup)				Console.Execute	(pStartup+1);
 
-	// Main cycle
+	// Initialize APP
 	Device.Create				( );
 	pApp						= xr_new<CApplication>	();
+
+	// Destroy LOGO
+	DestroyWindow				(logoWindow);
+	logoWindow					= NULL;
+
+	// Main cycle
 	Device.Run					( );
+
+	// Destroy APP
 	xr_delete					( pApp			);
 	Engine.Event.Dump			( );
 
@@ -81,11 +92,35 @@ WORD getFPUsw()
 	return SW;
 }
 
+static BOOL CALLBACK logDlgProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
+{
+	switch( msg ){
+		case WM_DESTROY:
+			break;
+		case WM_CLOSE:
+			DestroyWindow( hw );
+			break;
+		case WM_COMMAND:
+			if( LOWORD(wp)==IDCANCEL )
+				DestroyWindow( hw );
+			break;
+		default:
+			return FALSE;
+	}
+	return TRUE;
+}
+
 int APIENTRY WinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
                      char *    lpCmdLine,
                      int       nCmdShow)
 {
+	// Title window
+	logoWindow = CreateDialog(
+		GetModuleHandle(NULL),
+		MAKEINTRESOURCE(IDD_STARTUP),
+		0, logDlgProc );
+
     // Init COM so we can use CoCreateInstance
     CoInitializeEx			(NULL, COINIT_MULTITHREADED);
 	Core._initialize		("xray",NULL);
