@@ -202,7 +202,12 @@ IC	void CDetailPathManager::set_use_dest_orientation	(const bool use_dest_orient
 	m_use_dest_orientation	= use_dest_orientation;
 }
 
-IC	const bool CDetailPathManager::use_dest_orientation	() const
+IC	const bool CDetailPathManager::use_dest_orientation		() const
 {
 	return					(m_use_dest_orientation);
+}
+
+IC	bool CDetailPathManager::check_mask					(u32 mask, u32 test) const
+{
+	return					((mask & test) == test);
 }

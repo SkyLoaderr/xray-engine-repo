@@ -110,7 +110,6 @@ void CAI_Stalker::vfSetParameters(
 						}
 						case eMentalStateFree : {
 							m_fCurSpeed		*= IsLimping() ? m_fDamagedWalkFreeFactor : m_fWalkFreeFactor;
-//							m_body.speed	= PI_DIV_4;
 							break;
 						}
 						case eMentalStatePanic : {

@@ -29,6 +29,13 @@ public:
 		STravelParams(float l, float a) : linear_velocity(l), angular_velocity(a) {}
 	};
 
+	struct STravelParamsIndex : public STravelParams {
+		u32				index;
+		
+		STravelParamsIndex(){}
+		STravelParamsIndex(float l, float a, u32 i) : STravelParams(l,a), index(i) {}
+	};
+
 	struct STravelPoint {
 		Fvector2		position;
 		u32				vertex_id;
@@ -77,6 +84,7 @@ private:
 	bool										m_actuality;
 	bool										m_failed;
 	bool										m_collision;
+	EDetailPathType								m_path_type;
 
 	xr_vector<STravelPathPoint>					m_path;
 	xr_vector<CLevelGraph::SSegment>			m_segments;
@@ -85,7 +93,8 @@ private:
 	Fvector										m_dest_position;
 	Fvector										m_dest_direction;
 
-	EDetailPathType								m_path_type;
+	xr_vector<STravelParamsIndex>				m_start_params;
+	xr_vector<STravelParamsIndex>				m_dest_params;
 	xr_vector<STravelPathPoint>					m_travel_line;
 	xr_vector<STravelPathPoint>					m_temp_path;
 	xr_vector<STravelPoint>						m_key_points;
@@ -103,17 +112,17 @@ private:
 	xr_vector<u32>								m_tpaNodes;
 	//
 
-	IC		void	adjust_point			(const Fvector2			&source,	float								yaw,			float								magnitude,				  Fvector2						&dest) const;
+	IC		bool	check_mask				(u32					mask,			  u32							test) const;
+	IC		void	adjust_point			(const Fvector2			&source,		  float							yaw,				  float							magnitude,				  Fvector2						&dest) const;
 	IC		void	assign_angle			(float					&angle,		const float							start_yaw,		const float							dest_yaw,			const bool							positive,		const bool							start = true) const;
 	IC		void	compute_circles			(STrajectoryPoint		&point,			  SCirclePoint					*circles);
 			bool	compute_tangent			(const STrajectoryPoint	&start,		const SCirclePoint					&start_circle,	const STrajectoryPoint				&dest,				const SCirclePoint					&dest_circle,		  SCirclePoint					*tangents);
 			bool	build_circle_trajectory	(const STrajectoryPoint &position,		  xr_vector<STravelPathPoint>	*path,				  u32							*vertex_id,			const u32							velocity);
 			bool	build_line_trajectory	(const STrajectoryPoint &start,		const STrajectoryPoint				&dest,				  u32							vertex_id,				  xr_vector<STravelPathPoint>	*path,			const u32							velocity);
-			bool	build_trajectory		(const STrajectoryPoint &start,		const STrajectoryPoint				&dest,				  xr_vector<STravelPathPoint>	*path,				const u32							velocity1,		const u32							velocity2,	const u32	velocity3);
-			bool	build_trajectory		(	   STrajectoryPoint &start,			  STrajectoryPoint				&dest,			const SCirclePoint					tangents[4][2],		const u32							tangent_count,		  xr_vector<STravelPathPoint>	*path,			  float	&time,		const u32 velocity1, const u32 velocity2, const u32 velocity3);
-			bool	compute_trajectory		(      STrajectoryPoint &start,			  STrajectoryPoint				&dest,				  xr_vector<STravelPathPoint>	*path,					  float							&time,			const u32							velocity1,	const u32	velocity2,	const u32 velocity3);
-			bool	compute_path			(      STrajectoryPoint &start,			  STrajectoryPoint				&dest,				  xr_vector<STravelPathPoint>	*m_tpTravelLine);
-		
+			bool	build_trajectory		(const STrajectoryPoint &start,		const STrajectoryPoint				&dest,				  xr_vector<STravelPathPoint>	*path,				const u32							velocity1,		const u32							velocity2,		const u32	velocity3);
+			bool	build_trajectory		(	   STrajectoryPoint &start,			  STrajectoryPoint				&dest,			const SCirclePoint					tangents[4][2],		const u32							tangent_count,		  xr_vector<STravelPathPoint>	*path,				  float	&time,		const u32 velocity1, const u32 velocity2, const u32 velocity3);
+			bool	compute_trajectory		(      STrajectoryPoint &start,			  STrajectoryPoint				&dest,				  xr_vector<STravelPathPoint>	*path,					  float							&time,			const u32							velocity1,		const u32	velocity2,	const u32 velocity3);
+			bool	compute_path			(      STrajectoryPoint &start,			  STrajectoryPoint				&dest,				  xr_vector<STravelPathPoint>	*m_tpTravelLine, 	const xr_vector<STravelParamsIndex> &m_start_params,const xr_vector<STravelParamsIndex> &m_dest_params);
 			void	build_smooth_path		(const xr_vector<u32> &level_path, u32 intermediate_index);
 			void	build_criteria_path		(const xr_vector<u32> &level_path, u32 intermediate_index);
 			void	build_straight_path		(const xr_vector<u32> &level_path, u32 intermediate_index);

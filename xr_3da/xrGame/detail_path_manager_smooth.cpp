@@ -10,6 +10,8 @@
 #include "detail_path_manager.h"
 #include "ai_space.h"
 
+//#define SMOOTH_PATH
+
 template<
 	typename T
 >
@@ -340,27 +342,31 @@ bool CDetailPathManager::compute_trajectory(
 bool CDetailPathManager::compute_path(
 	STrajectoryPoint			&start,
 	STrajectoryPoint			&dest,
-	xr_vector<STravelPathPoint>	*m_tpTravelLine
+	xr_vector<STravelPathPoint>	*m_tpTravelLine,
+	const xr_vector<STravelParamsIndex> &start_params,
+	const xr_vector<STravelParamsIndex> &dest_params
 )
 {
 	m_temp_path.clear		();
 	float					min_time = flt_max, time;
 	u32						size = m_tpTravelLine ? m_tpTravelLine->size() : 0;
-	xr_map<u32,STravelParams>::const_iterator I = m_movement_params.begin(), B = I;
-	xr_map<u32,STravelParams>::const_iterator E = m_movement_params.end();
+	xr_vector<STravelParamsIndex>::const_iterator I = start_params.begin(), B = I;
+	xr_vector<STravelParamsIndex>::const_iterator E = start_params.end();
 	for ( ; I != E; ++I) {
-		(STravelParams&)start	= (*I).second;
-		xr_map<u32,STravelParams>::const_iterator i = m_movement_params.begin(), b = i;
-		xr_map<u32,STravelParams>::const_iterator e = m_movement_params.end();
+		(STravelParams&)start	= (*I);
+		xr_vector<STravelParamsIndex>::const_iterator i = dest_params.begin(), b = i;
+		xr_vector<STravelParamsIndex>::const_iterator e = dest_params.end();
 		for ( ; i != e; ++i) {
-			(STravelParams&)dest	= (*i).second;
+			(STravelParams&)dest	= (*i);
 			m_temp_path.clear		();
-			if (compute_trajectory(start,dest,m_tpTravelLine ? &m_temp_path : 0,time,(*I).first,(*I).first,(*i).first)) {
-				if (time < min_time) {
+			if (compute_trajectory(start,dest,m_tpTravelLine ? &m_temp_path : 0,time,(*I).index,(*I).index,(*i).index)) {
+				if (!m_try_min_time || (time < min_time)) {
 					min_time = time;
 					if (m_tpTravelLine) {
 						m_tpTravelLine->resize(size);
 						m_tpTravelLine->insert(m_tpTravelLine->end(),m_temp_path.begin(),m_temp_path.end());
+						if (!m_try_min_time)
+							return	(true);
 					}
 					else
 						return(true);
@@ -387,140 +393,170 @@ void CDetailPathManager::build_smooth_path		(
 	u32						intermediate_index
 )
 {
+#ifndef SMOOTH_PATH
 	build_straight_path(level_path,intermediate_index);
 	m_current_travel_point					= 0;
-//	Device.Statistic.AI_Range.Begin			();
-//
-//	STrajectoryPoint						s,d,t,p,start,dest;
-//
-//	start.position							= ai().level_graph().v2d(m_start_position);
-//	start.direction							= ai().level_graph().v2d(m_start_direction);
-//	start.vertex_id							= level_path.front();
-//	
-//	dest.position							= ai().level_graph().v2d(m_dest_position);
-////	dest.direction							= ai().level_graph().v2d(m_dest_direction);
-//	dest.direction							= ai().level_graph().v2d(Fvector().sub(ai().level_graph().vertex_position(level_path.back()),ai().level_graph().vertex_position(level_path.front())));
-//	dest.vertex_id							= level_path.back();
-//
-//	write_trajectory_point					(start,"start");
-//	write_trajectory_point					(dest,"dest");
-//
-//	VERIFY									(!level_path.empty());
-//	VERIFY									(level_path.size() > intermediate_index);
-//
-//	m_current_travel_point					= 0;
-//	if (start.direction.square_magnitude() < EPS_L)
-//		start.direction.set					(0.f,1.f);
-//	else
-//		start.direction.normalize			();
-//
-//	if (dest.direction.square_magnitude() < EPS_L)
-//		dest.direction.set					(0.f,1.f);
-//	else
-//		dest.direction.normalize			();
-//
-//	m_path.clear							();
-//
-//	if (level_path.size() == 1) {
-//		if (!compute_path(start,dest,&m_path)) {
-//			m_path.clear					();
-//			Device.Statistic.AI_Range.End	();
-//			return;
-//		}
-//	}
-//	else {
-//		if (compute_path(start,dest,&m_path)) {
-//			Device.Statistic.AI_Range.End	();
-//			return;
-//		}
-//		
-//		m_path.clear						();
-//
-//		STravelPoint						start_point;
-//		start_point.vertex_id				= level_path.front();
-//		start_point.position				= start.position;
-//
-//		for (int _i=0, i=0, n=(int)level_path.size() - 1, j = n, m=j; _i < n; ) {
-//			if (!ai().level_graph().check_vertex_in_direction(start_point.vertex_id,start_point.position,level_path[j])) {
-//				m							= j;
-//				j							= (i + j)/2;
-//			}
-//			else {
-//				i							= j;
-//				j							= (i + m)/2;
-//			}
-//			if (i >= m - 1) {
-//				if (i <= _i) {
-//					Device.Statistic.AI_Range.End();
-//					return;
-//				}
-//				_i							= i;
-//				m_key_points.push_back		(start_point);
-//				if (i == n) {
-//					if (ai().level_graph().valid_vertex_id(ai().level_graph().check_position_in_direction(start_point.vertex_id,start_point.position,dest.position))) {
-//						m_key_points.push_back(dest);
-//						break;
-//					}
-//					else {
-//						Device.Statistic.AI_Range.End();
-//						return;
-//					}
-//				}
-//				start_point.vertex_id		= level_path[_i];
-//				start_point.position		= ai().level_graph().v2d(ai().level_graph().vertex_position(start_point.vertex_id));
-//				j = m						= n;
-//			}
-//		}
-//
-//		s = t								= start;
-//		xr_vector<STravelPoint>::const_iterator	I = m_key_points.begin(), P = I;
-//		xr_vector<STravelPoint>::const_iterator	E = m_key_points.end();
-//		for ( ; I != E; ++I) {
-//			// setting up destination
-//			if ((I + 1) != E) {
-//				(STravelPoint&)d = *I;
-//				d.direction.sub				((I + 1)->position,d.position);
-//				VERIFY						(!fis_zero(d.direction.magnitude()));
-//				d.direction.normalize		();
-//			}
-//			else
-//				d							= dest;
-//
-//			if (!compute_path(s,d,0)) {
-//				if (I == P) {
-//					m_path.clear			();
-//					Device.Statistic.AI_Range.End();
-//					return;
-//				}
-//				
-//				p							= d;
-//				(STravelPoint&)d = *(I - 1);
-//				d.direction.sub				((*I).position,d.position);
-//				VERIFY						(!fis_zero(d.direction.magnitude()));
-//				d.direction.normalize		();
-//				if (!compute_path(s,d,&m_path)) {
-//					VERIFY					(false);
-//				}
-//				P							= I - 1;
-//				d							= p;
-//				s							= t;
-//				VERIFY						(!fis_zero(s.direction.magnitude()));
-//				if (!compute_path(s,d,0)) {
-//					m_path.clear			();
-//					Device.Statistic.AI_Range.End();
-//					return;
-//				}
-//			}
-//			t								= d;
-//		}
-//		if (!compute_path(s,d,&m_path)) {
-//			if (compute_path(s,d,0)) {
-//				compute_path(s,d,&m_path);
-//				t=t;
-//			}
-//			VERIFY							(false);
-//		}
-//	}
-//
-//	Device.Statistic.AI_Range.End			();
+#else
+	Device.Statistic.AI_Range.Begin			();
+
+	VERIFY									(!level_path.empty());
+	VERIFY									(level_path.size() > intermediate_index);
+
+	m_current_travel_point					= 0;
+	m_path.clear							();
+
+	STrajectoryPoint						s,d,t,p,start,dest;
+
+	start.position							= ai().level_graph().v2d(m_start_position);
+	start.direction							= ai().level_graph().v2d(m_start_direction);
+	start.vertex_id							= level_path.front();
+	
+	dest.position							= ai().level_graph().v2d(m_dest_position);
+//	dest.direction							= ai().level_graph().v2d(m_dest_direction);
+	dest.direction							= ai().level_graph().v2d(Fvector().sub(ai().level_graph().vertex_position(level_path.back()),ai().level_graph().vertex_position(level_path.front())));
+	dest.vertex_id							= level_path.back();
+
+	if (start.direction.square_magnitude() < EPS_L)
+		start.direction.set					(0.f,1.f);
+	else
+		start.direction.normalize			();
+
+	if (dest.direction.square_magnitude() < EPS_L)
+		dest.direction.set					(0.f,1.f);
+	else
+		dest.direction.normalize			();
+
+	// fiiling velocity parameters
+	m_start_params.clear					();
+	{
+		xr_map<u32,STravelParams>::const_iterator I = m_movement_params.begin(), B = I;
+		xr_map<u32,STravelParams>::const_iterator E = m_movement_params.end();
+		for ( ; I != E; ++I) {
+			if (!check_mask(m_velocity_mask,(*I).first))
+				continue;
+			STravelParamsIndex					temp;
+			(STravelParams&)temp				= (*I).second;
+			temp.index							= (*I).first;
+			m_start_params.push_back			(temp);
+		}
+	}
+	if (m_try_desirable_speed) {
+		bool									bOk = false;
+		xr_vector<STravelParamsIndex>::iterator I = m_start_params.begin(), B = I;
+		xr_vector<STravelParamsIndex>::iterator E = m_start_params.end();
+		for ( ; I != E; ++I) {
+			if ((*I).index == m_desirable_velocity) {
+				bOk								= true;
+				m_start_params.insert			(m_start_params.begin(),*I);
+				m_start_params.erase			(I);
+			}
+		}
+		VERIFY									(bOk);
+	}
+
+	m_dest_params.push_back					(STravelParamsIndex(0.f,PI_MUL_2,u32(-1)));
+
+	if (level_path.size() == 1) {
+		if (!compute_path(start,dest,&m_path,m_start_params,m_dest_params)) {
+			m_path.clear					();
+			Device.Statistic.AI_Range.End	();
+			return;
+		}
+	}
+	else {
+		if (compute_path(start,dest,&m_path,m_start_params,m_dest_params)) {
+			Device.Statistic.AI_Range.End	();
+			return;
+		}
+		
+		m_path.clear						();
+
+		STravelPoint						start_point;
+		start_point.vertex_id				= level_path.front();
+		start_point.position				= start.position;
+
+		for (int _i=0, i=0, n=(int)level_path.size() - 1, j = n, m=j; _i < n; ) {
+			if (!ai().level_graph().check_vertex_in_direction(start_point.vertex_id,start_point.position,level_path[j])) {
+				m							= j;
+				j							= (i + j)/2;
+			}
+			else {
+				i							= j;
+				j							= (i + m)/2;
+			}
+			if (i >= m - 1) {
+				if (i <= _i) {
+					Device.Statistic.AI_Range.End();
+					return;
+				}
+				_i							= i;
+				m_key_points.push_back		(start_point);
+				if (i == n) {
+					if (ai().level_graph().valid_vertex_id(ai().level_graph().check_position_in_direction(start_point.vertex_id,start_point.position,dest.position))) {
+						m_key_points.push_back(dest);
+						break;
+					}
+					else {
+						Device.Statistic.AI_Range.End();
+						return;
+					}
+				}
+				start_point.vertex_id		= level_path[_i];
+				start_point.position		= ai().level_graph().v2d(ai().level_graph().vertex_position(start_point.vertex_id));
+				j = m						= n;
+			}
+		}
+
+		s = t								= start;
+		xr_vector<STravelPoint>::const_iterator	I = m_key_points.begin(), P = I;
+		xr_vector<STravelPoint>::const_iterator	E = m_key_points.end();
+		for ( ; I != E; ++I) {
+			// setting up destination
+			if ((I + 1) != E) {
+				(STravelPoint&)d = *I;
+				d.direction.sub				((I + 1)->position,d.position);
+				VERIFY						(!fis_zero(d.direction.magnitude()));
+				d.direction.normalize		();
+			}
+			else
+				d							= dest;
+
+			if (!compute_path(s,d,0,m_start_params,m_dest_params)) {
+				if (I == P) {
+					m_path.clear			();
+					Device.Statistic.AI_Range.End();
+					return;
+				}
+				
+				p							= d;
+				(STravelPoint&)d = *(I - 1);
+				d.direction.sub				((*I).position,d.position);
+				VERIFY						(!fis_zero(d.direction.magnitude()));
+				d.direction.normalize		();
+				if (!compute_path(s,d,&m_path,m_start_params,m_dest_params)) {
+					VERIFY					(false);
+				}
+				P							= I - 1;
+				d							= p;
+				s							= t;
+				VERIFY						(!fis_zero(s.direction.magnitude()));
+				if (!compute_path(s,d,0,m_start_params,m_dest_params)) {
+					m_path.clear			();
+					Device.Statistic.AI_Range.End();
+					return;
+				}
+			}
+			t								= d;
+		}
+		if (!compute_path(s,d,&m_path,m_start_params,m_dest_params)) {
+			if (compute_path(s,d,0,m_start_params,m_dest_params)) {
+				compute_path(s,d,&m_path,m_start_params,m_dest_params);
+				t=t;
+			}
+			VERIFY							(false);
+		}
+	}
+
+	Device.Statistic.AI_Range.End			();
+#endif
 }
