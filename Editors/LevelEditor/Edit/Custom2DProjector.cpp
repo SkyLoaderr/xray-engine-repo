@@ -29,6 +29,8 @@ bool CCustom2DProjector::LoadImage(LPCSTR nm)
 
 void CCustom2DProjector::CreateRMFromObjects(const Fbox& box, ObjectList& lst)
 {
+	geom.destroy();
+    mesh.clear	();
 	for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
     	CSceneObject*	 S = (CSceneObject*)(*it);
     	CEditableObject* O = S->GetReference(); VERIFY(O);

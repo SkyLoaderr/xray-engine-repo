@@ -179,7 +179,7 @@ void CDetailManager::Unload		()
 	xr_delete			(dtFS);
 }
 
-extern float r_ssaDISCARD;
+extern ECORE_API float r_ssaDISCARD;
 
 
 void CDetailManager::Render		()
@@ -250,7 +250,6 @@ void CDetailManager::Render		()
 					float   scale			= Item.scale_calculated	= Item.scale*alpha_i;
 					float	ssa				= scale*scale*Rq_drcp;
 					if (ssa < r_ssaDISCARD) continue;
-
 					u32		vis_id			= 0;
 					if (ssa > r_ssaCHEAP)	vis_id = Item.vis_ID;
 					visible[vis_id][sp.id].push_back	(*siIT);

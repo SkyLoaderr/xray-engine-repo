@@ -272,7 +272,7 @@ void CSE_Visual::PlayAnimation 	(LPCSTR name)
         CMotionDef				*M = PSkeletonAnimated(visual)->ID_Cycle_Safe(play_animation.c_str());
         if (M)					PSkeletonAnimated(visual)->PlayCycle(M); 
     }
-    if (PKinematics(visual))	PKinematics(visual)->Calculate();
+    if (PKinematics(visual))	PKinematics(visual)->CalculateBones();
 /*
     PSkeletonAnimated(visual)->LL_SetBonesVisible(0);
     PSkeletonAnimated(visual)->LL_SetBoneVisible(1,TRUE,TRUE);

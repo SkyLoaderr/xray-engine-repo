@@ -145,7 +145,7 @@ bool ESceneWallmarkTools::Valid		(){return !marks.empty();}
 bool ESceneWallmarkTools::IsNeedSave(){return marks.size();}
 void ESceneWallmarkTools::OnFrame	(){}
 
-extern float r_ssaDISCARD;
+extern ECORE_API float r_ssaDISCARD;
 const int	MAX_TRIS		= 512;
 
 void ESceneWallmarkTools::OnRender(int priority, bool strictB2F)

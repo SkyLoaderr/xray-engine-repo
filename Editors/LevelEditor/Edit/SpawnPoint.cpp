@@ -163,7 +163,7 @@ void CSpawnPoint::SSpawnData::Render(bool bSelected, const Fmatrix& parent,int p
 void CSpawnPoint::SSpawnData::OnFrame()
 {
     CSE_Visual* V				= dynamic_cast<CSE_Visual*>(m_Data);
-	if (V&&V->visual&&PKinematics(V->visual)) PKinematics(V->visual)->Calculate();
+	if (V&&V->visual&&PKinematics(V->visual)) PKinematics(V->visual)->CalculateBones();
     CSE_Motion* M				= dynamic_cast<CSE_Motion*>(m_Data);
 	if (M&&M->animator)			M->animator->OnFrame();
 }

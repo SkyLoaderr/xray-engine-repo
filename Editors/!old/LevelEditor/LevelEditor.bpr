@@ -307,6 +307,12 @@
       <FILE FILENAME="Engine\Game\object_factory_impl.h" FORMNAME="" UNITNAME="object_factory_impl.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\object_item_client_server_inline.h" FORMNAME="" UNITNAME="object_item_client_server_inline.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\object_item_client_server.h" FORMNAME="" UNITNAME="object_item_client_server.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\object_saver_inline.h" FORMNAME="" UNITNAME="object_saver_inline.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\object_destroyer.h" FORMNAME="" UNITNAME="object_destroyer.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\object_destroyer_inline.h" FORMNAME="" UNITNAME="object_destroyer_inline.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\object_loader.h" FORMNAME="" UNITNAME="object_loader.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\object_loader_inline.h" FORMNAME="" UNITNAME="object_loader_inline.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\object_saver.h" FORMNAME="" UNITNAME="object_saver.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

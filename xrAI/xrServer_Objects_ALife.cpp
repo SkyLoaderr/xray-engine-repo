@@ -34,7 +34,7 @@ struct SFillPropData{
     }
                 ~SFillPropData	()
     {
-        int y=0;
+    	VERIFY	(0==counter);
     }
     void		load			()
     {
@@ -70,6 +70,10 @@ struct SFillPropData{
     }
     void		unload			()
     {
+        for (int i=0; i<LOCATION_TYPE_COUNT; ++i)
+            locations[i].clear	();
+        level_ids.clear			();
+        story_names.clear		();
     }        
     void 		dec				()
     {
