@@ -180,7 +180,3 @@ void	CCar::IR_OnKeyboardHold(int cmd)
 //	clamp(m_vCamDeltaHP.x, -PI_DIV_2,	PI_DIV_2);
 //	clamp(m_vCamDeltaHP.y, active_camera->lim_pitch.x,	active_camera->lim_pitch.y);
 }
-
-_pitch.y);
-}
-
