@@ -5,8 +5,8 @@
 
 #include "debug_str.h"
 
-char *g_caOutBuffer = 0;
-char *g_caErrorBuffer = 0;
+__declspec(dllexport) char* g_caOutBuffer = 0;
+__declspec(dllexport) char* g_caErrorBuffer = 0;
 int	 g_iReturn;
 
 int xr_print(FILE *tpStream, const char *caFormat,...)
