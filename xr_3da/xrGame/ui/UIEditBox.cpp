@@ -17,18 +17,7 @@ static u32 DILetters[] = { DIK_A, DIK_B, DIK_C, DIK_D, DIK_E,
 
 static xr_map<u32, char> gs_DIK2CHR;
 
-void draw_buff(STRING& s)
-{
-	for(int i=0; i<(int)s.size(); ++i)
-		printf("%c",s[i]);
 
-	printf("\n");
-}
-void draw_buff(LPSTR s)
-{
-	printf(s);
-	printf("\n");
-}
 
 CUIEditBox::CUIEditBox(void)
 {
