@@ -40,10 +40,11 @@ void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, LSelection* LightsSelected, U
 		Fvector	P; P.direct(v1,vdir,time);
 		LightPoint	(DB, C, P, N, LightsSelected->begin(), LightsSelected->end(),skip);
 		
-		Fcolor	R;
-		R.lerp	(C,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
-		R.a		= 1.f;
-		Lumel   = R.get() | RGBA_MAKE(0,0,0,255);
+		Fcolor		R;
+		R.lerp		(C,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
+		R.mul_rgb	(.5f);
+		R.a			= 1.f;
+		Lumel		= R.get() | RGBA_MAKE(0,0,0,255);
 	}
 }
 
@@ -116,11 +117,12 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& 
 			if (Fcount) {
 				Fcolor	Lumel,R;
 				float	cnt		= float(Fcount);
-				R.r =		(C[0].r + C[1].r + C[2].r + C[3].r + C[4].r + C[5].r + C[6].r + C[7].r + C[8].r)/cnt;
-				R.g =		(C[0].g + C[1].g + C[2].g + C[3].g + C[4].g + C[5].g + C[6].g + C[7].g + C[8].g)/cnt;
-				R.b	=		(C[0].b + C[1].b + C[2].b + C[3].b + C[4].b + C[5].b + C[6].b + C[7].b + C[8].b)/cnt;
-				Lumel.lerp	(R,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
-				Lumel.a		= 1.f;
+				R.r =			(C[0].r + C[1].r + C[2].r + C[3].r + C[4].r + C[5].r + C[6].r + C[7].r + C[8].r)/cnt;
+				R.g =			(C[0].g + C[1].g + C[2].g + C[3].g + C[4].g + C[5].g + C[6].g + C[7].g + C[8].g)/cnt;
+				R.b	=			(C[0].b + C[1].b + C[2].b + C[3].b + C[4].b + C[5].b + C[6].b + C[7].b + C[8].b)/cnt;
+				Lumel.lerp		(R,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
+				Lumel.mul_rgb	(.5f);
+				Lumel.a			= 1.f;
 				lm.pSurface	[V*lm.dwWidth+U] = Lumel.get();
 			} else {
 				lm.pSurface	[V*lm.dwWidth+U] = 0;

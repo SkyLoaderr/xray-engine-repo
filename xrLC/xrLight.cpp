@@ -89,6 +89,7 @@ public:
 	
 	CVertexLightThread(DWORD ID, DWORD _start, DWORD _end) : CThread(ID)
 	{
+		thMessages	= FALSE;
 		faceStart	= _start;
 		faceEnd		= _end;
 	}
@@ -113,17 +114,18 @@ public:
 				Vertex* V = F->v[v];
 				if (V->Color) continue;
 				
-				Fcolor		C,R,Lumel;
-				C.set		(0,0,0,0);
-				LightPoint	(&DB, C, V->P, V->N, Lights.begin(), Lights.end(), F);
+				Fcolor			C,R,Lumel;
+				C.set			(0,0,0,0);
+				LightPoint		(&DB, C, V->P, V->N, Lights.begin(), Lights.end(), F);
 				
-				R.r			= C.r*v_inv+v_amb;
-				R.g			= C.g*v_inv+v_amb;
-				R.b			= C.b*v_inv+v_amb;
-				Lumel.lerp	(R,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
-				Lumel.a		= 1.f;
+				R.r				= C.r*v_inv+v_amb;
+				R.g				= C.g*v_inv+v_amb;
+				R.b				= C.b*v_inv+v_amb;
+				Lumel.lerp		(R,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
+				Lumel.mul_rgb	(.5f);
+				Lumel.a			= 1.f;
 				
-				V->Color	= Lumel.get();
+				V->Color		= Lumel.get();
 			}
 		}
 		thProgress	= float(I - faceStart) / float(faceEnd-faceStart);
