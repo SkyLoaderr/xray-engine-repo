@@ -25,3 +25,13 @@ IC	void c_free		(T *&ptr)
 		ptr			= 0;
 	}
 }
+
+IC	LPSTR c_strdup	(LPCSTR str)
+{
+	if (!str)
+		return		(0);
+
+	LPSTR			temp = (LPSTR)malloc(strlen(str)*sizeof(char));
+	strcpy			(temp,str);
+	return			(temp);
+}
