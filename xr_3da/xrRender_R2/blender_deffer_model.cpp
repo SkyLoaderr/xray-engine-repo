@@ -23,7 +23,7 @@ void	CBlender_deffer_model::Compile(CBlender_Compile& C)
 	switch(C.iElement) 
 	{
 	case 0: 	// deffer
-		C.r_Pass		("deffer_model_flat","deffer_base_flat,FALSE);
+		C.r_Pass		("deffer_model_flat","deffer_base_flat",FALSE);
 		C.r_Sampler		("s_base",C.L_textures[0]);
 		C.r_End			();
 		break;
