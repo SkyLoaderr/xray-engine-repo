@@ -104,6 +104,7 @@ void OGF::Optimize()
 	}
 }
 
+/*
 void OGF::CreateOccluder()
 {
 	ORM_Vertex* pV = ORM_Begin(vertices.size(),faces.size()*3,(WORD*)faces.begin());
@@ -118,6 +119,7 @@ void OGF::CreateOccluder()
 	}
 	ORM_End(C,R);
 }
+*/
 
 void OGF::MakeProgressive()
 {
