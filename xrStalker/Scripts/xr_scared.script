@@ -38,6 +38,23 @@ function action_scared_activity:__init (npc_name, action_name, storage) super(ni
 	self.move_mgr = move_mgr.move_mgr()
 end
 
+function action_scared_activity:hit_callback(obj, amount, local_direction, who, bone_index)
+	printf("HIT_CALLBACK [%d]: self.object.health=%s", device():time_global(), utils.to_str(self.object.health))
+	local monster = level.object(self.st.monster)
+	if monster:id() == who:id() then
+	--if not self.object:alive() then
+		--printf("HIT_CALLBACK_BY_MONSTER")
+		local h = hit()
+		h.power = 1000
+		h.direction = monster:direction()
+		h.bone = "bip01_legs"
+		h.draftsman = monster
+		h.impulse = 1000
+		h.type = hit.wound
+		self.object:hit(h)
+	end
+end
+
 function action_scared_activity:initialize()
 	--printf("_bp: action_scared_activity: initialize")
 	action_base.initialize(self)
@@ -45,6 +62,8 @@ function action_scared_activity:initialize()
 	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
+
+	self.object:set_hit_callback(self, "hit_callback")
 
 	self.move_mgr:initialize(self.object)
 
@@ -115,6 +134,7 @@ function action_scared_activity:execute()
 end
 
 function action_scared_activity:finalize()
+	self.object:clear_hit_callback(true)
 	self.move_mgr:finalize()
 	action_base.finalize(self)
 end
