@@ -19,6 +19,7 @@ private:
 	ref_shader							sh_debug;
 	CDB::MODEL							Static;
 	Fvector								Static_Shift;
+	Fbox								m_BoundingVolume;
 public:
 	xr_vector<CObject*>					q_nearest;
 	clQueryCollision					q_result;
@@ -48,6 +49,8 @@ public:
 
 	CDB::TRI*							GetStaticTris		() { return Static.get_tris();  }
 	CDB::MODEL*							GetStaticModel		() { return &Static; }
+
+	const Fbox&							GetBoundingVolume	() { return m_BoundingVolume;}
 
 	// Device dependance and debugging
 	void								dbgRender			();
