@@ -54,12 +54,51 @@ void drawPoly(sPoly &P, CPortal* Portal)
 	HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_CCW);
 }
 
+
+//
+void	CPortal::Setup	(Fvector* V, int vcnt, CSector* face, CSector* back)
+{
+	// calc sphere
+	Fbox				BB;
+	BB.invalidate		();
+	for (int v=0; v<vcnt; v++)
+		BB.modify		(V[v]);
+	BB.getsphere		(S.P,S.R);
+
+	// 
+	poly.assign			(V,V+vcnt);
+	pFace				= face; 
+	pBack				= back;
+	dwFrame				= 0xffffffff; 
+
+	Fvector				N,T;
+	N.set				(0,0,0);
+
+	FPU::m64r();
+	for (int i=2; i<vcnt; i++) {
+		T.mknormal	(poly[0],poly[i-1],poly[i]);
+		N.add		(T);
+	}
+	float	tcnt = float(vcnt)-2;
+	N.div	(tcnt);
+	P.build	(poly[0],N);
+	FPU::m24r();
+
+	VERIFY(fabsf(1-P.n.magnitude())<EPS_S);
+}
+
+
+//
 CSector::~CSector()
 {
 	for (int i=0; i<int(tempObjects.size()); i++) 
 		_DELETE(tempObjects[i]);
 	tempObjects.clear();
 }
+
+//
+extern float g_fSCREEN;
+extern float ssaLIMIT;
 
 void CSector::Render(CFrustum &F)
 {
@@ -139,12 +178,21 @@ void CSector::Render(CFrustum &F)
 				if (pSector==pLastSector)	continue;
 			}
 
-			vector<Fvector> &POLY = PORTAL->getPoly();
-			S.assign(POLY.begin(),POLY.size()); D.clear();
+			// SSA
+			Fvector	dir2portal;
+			dir2portal.sub		(PORTAL->S.P,Device.vCameraPosition);
+			float R				=	PORTAL->S.R;
+			float distSQ		=	dir2portal.square_magnitude();
+			float ssa			=	g_fSCREEN*R*R/distSQ;
+			dir2portal.div		(_sqrt(distSQ));
+			ssa					*=	PORTAL->P.n.dotproduct(dir2portal);
+			if (ssa<ssaLIMIT)	continue;
 
 			// Clip by frustum
-			sPoly* P	= F.ClipPoly(S,D);
-			if (0==P)	continue;
+			vector<Fvector> &POLY = PORTAL->getPoly();
+			S.assign			(POLY.begin(),POLY.size()); D.clear();
+			sPoly* P			= F.ClipPoly(S,D);
+			if (0==P)			continue;
 			
 			// Cull by HOM
 			if (!::Render->occ_visible(*P))	continue;

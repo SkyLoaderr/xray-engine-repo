@@ -22,32 +22,12 @@ private:
 	CSector					*pFace,*pBack;
 public:
 	Fplane					P;
+	Fsphere					S;
 	DWORD					dwFrame;
 	DWORD					dwFrameObject;
 	BOOL					bDualRender;
 
-	void					Setup(Fvector* V, int vcnt, CSector* face, CSector* back)
-	{
-		poly.assign	(V,V+vcnt);
-		pFace	= face; 
-		pBack	= back;
-		dwFrame = 0xffffffff; 
-
-		Fvector	N,T;
-		N.set	(0,0,0);
-
-		FPU::m64r();
-		for (int i=2; i<vcnt; i++) {
-			T.mknormal	(poly[0],poly[i-1],poly[i]);
-			N.add		(T);
-		}
-		float	tcnt = float(vcnt)-2;
-		N.div	(tcnt);
-		P.build	(poly[0],N);
-		FPU::m24r();
-
-		VERIFY(fabsf(1-P.n.magnitude())<EPS_S);
-	}
+	void					Setup(Fvector* V, int vcnt, CSector* face, CSector* back);
 
 	vector<Fvector>&		getPoly()					{ return poly;		}
 	CSector*				Back()						{ return pBack;		}
