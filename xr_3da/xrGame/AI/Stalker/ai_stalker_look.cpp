@@ -200,6 +200,35 @@ void CAI_Stalker::SetLessCoverLook(NodeCompressed *tpNode, float fMaxHeadTurnAng
 	}
 }
 
+void CAI_Stalker::vfValidateAngleDependency(float x1, float &x2, float x3)
+{
+	float	_x1 = x1;
+	float	_x2 = x2;
+	float	_x3 = x3;
+	x2		= angle_normalize_signed(x2 - x1);
+	x3		= angle_normalize_signed(x3 - x1);
+	if ((x2*x3 <= 0) && (_abs(x2) + _abs(x3) > PI - EPS_L)) {
+		//x2	= angle_normalize_signed(x2);
+		//x3	= angle_normalize_signed(x3);
+		x2  = angle_normalize_signed(_x3);//(x2 + x3)/2);
+//		x1	= angle_normalize_signed((x2 + x3)/2);
+//		x2	= _abs(x1 - x2);
+//		x3	= _abs(x1 - x3);
+//		if (x2 > PI)
+//			x2 = PI_MUL_2 - x2;
+//		if (x3 > PI)
+//			x3 = PI_MUL_2 - x3;
+//		if (x2 + x3 >= PI)
+//			x2 = angle_normalize_signed(x1 + PI);
+//		else
+//			x2 = x1;
+	}
+	else
+		x2	= angle_normalize_signed(_x2);
+}
+
+#define R2D(x) (angle_normalize(x)*180.f/PI)
+
 void CAI_Stalker::Exec_Look(float dt)
 {
 	// normalizing torso angles
@@ -213,6 +242,14 @@ void CAI_Stalker::Exec_Look(float dt)
 	r_current.pitch			= angle_normalize_signed	(r_current.pitch);
 	r_target.yaw			= angle_normalize_signed	(r_target.yaw);
 	r_target.pitch			= angle_normalize_signed	(r_target.pitch);
+
+	float					yaw, pitch;
+	GetDirectionAngles		(yaw,pitch);
+	yaw						= angle_normalize_signed(-yaw);
+	float x = r_torso_target.yaw, y = r_target.yaw;
+	vfValidateAngleDependency(r_torso_current.yaw,r_torso_target.yaw,r_current.yaw);
+	vfValidateAngleDependency(r_current.yaw,r_target.yaw,r_torso_current.yaw);
+	//Msg						("%6d[%f] : [%6.1f][%6.1f(%6.1f)][%6.1f] - [%6.1f][%6.1f(%6.1f)][%6.1f] (trying %s, moving %s)",Level().timeServer(),R2D(yaw),R2D(r_torso_current.yaw),R2D(x),R2D(r_torso_target.yaw),R2D(r_current.yaw), R2D(r_current.yaw),R2D(y),R2D(r_target.yaw),R2D(r_torso_current.yaw),caMovementActionNames[m_tDesirableDirection],caMovementActionNames[m_tMovementDirection]);
 
 	// updating torso angles
 	angle_lerp_bounds		(r_torso_current.yaw,r_torso_target.yaw,r_torso_speed,dt);

@@ -51,7 +51,7 @@ void CAI_Stalker::vfUpdateSearchPosition()
 
 void CAI_Stalker::Think()
 {
-	vfUpdateSearchPosition();
+	//vfUpdateSearchPosition();
 	m_dwUpdateCount++;
 	m_dwLastUpdate			= m_dwCurrentUpdate;
 	m_dwCurrentUpdate		= Level().timeServer();
@@ -164,18 +164,29 @@ void CAI_Stalker::LookingOver()
 
 void CAI_Stalker::Searching()
 {
+//	WRITE_TO_LOG("Searching");
+//
+////	SelectEnemy(m_Enemy);
+//
+////	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_Enemy.Enemy,eStalkerStateFiring);
+//
+////	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Level().timeServer() - m_dwLastHitTime > 3000,eStalkerStateUnderFire);
+//
+//	if (!AI_Path.Nodes.size() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode))
+//		vfBuildPathToDestinationPoint		(0);
+//
+//	vfSetMovementType(eBodyStateStand,eMovementTypeWalk,eLookTypeSearch);
+//	if (m_fCurSpeed < EPS_L)
+//		r_torso_target.yaw = r_target.yaw;
 	WRITE_TO_LOG("Searching");
 
-//	SelectEnemy(m_Enemy);
+	vfChoosePointAndBuildPath(m_tSelectorFreeHunting);
 
-//	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_Enemy.Enemy,eStalkerStateFiring);
+	Fvector tDummy;
+	u32		dwTime = Level().timeServer();
+	tDummy.setHP(angle_normalize_signed(2*PI*dwTime/20000),0);
+	vfSetMovementType(eBodyStateStand,eMovementTypeWalk,eLookTypePoint,tDummy);
 
-//	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Level().timeServer() - m_dwLastHitTime > 3000,eStalkerStateUnderFire);
-
-	if (!AI_Path.Nodes.size() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode))
-		vfBuildPathToDestinationPoint		(0);
-
-	vfSetMovementType(eBodyStateStand,eMovementTypeWalk,eLookTypeSearch);
 	if (m_fCurSpeed < EPS_L)
 		r_torso_target.yaw = r_target.yaw;
 }

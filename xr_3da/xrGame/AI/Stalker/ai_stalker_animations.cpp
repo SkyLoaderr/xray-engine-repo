@@ -121,7 +121,7 @@ void __stdcall CAI_Stalker::HeadCallback(CBoneInstance *B)
 	else
 		if (angle > PI)
 			angle -= PI_MUL_2;
-	float					yaw		= angle_normalize_signed(yaw_factor * angle);
+	float					yaw		= angle_normalize_signed(-yaw_factor * angle);
 	float					pitch	= angle_normalize_signed(-pitch_factor * (A->r_current.pitch - A->r_torso_current.pitch));
 //	Msg("Head : %f",-yaw,A->r_current.yaw,A->r_torso_current.yaw);
 	spin.setXYZ				(pitch, yaw, 0);
@@ -157,7 +157,7 @@ void __stdcall CAI_Stalker::ShoulderCallback(CBoneInstance *B)
 	else
 		if (angle > PI)
 			angle -= PI_MUL_2;
-	float					yaw		= angle_normalize_signed(yaw_factor * angle);
+	float					yaw		= angle_normalize_signed(-yaw_factor * angle);
 	float					pitch	= angle_normalize_signed(-pitch_factor * (A->r_current.pitch - A->r_torso_current.pitch));
 //	Msg("Shoulders : %f",-yaw);
 	spin.setXYZ				(pitch, yaw, 0);
@@ -193,7 +193,7 @@ void __stdcall CAI_Stalker::SpinCallback(CBoneInstance *B)
 	else
 		if (angle > PI)
 			angle -= PI_MUL_2;
-	float					yaw		= angle_normalize_signed(yaw_factor * angle);
+	float					yaw		= angle_normalize_signed(-yaw_factor * angle);
 	float					pitch	= angle_normalize_signed(-pitch_factor * (A->r_current.pitch - A->r_torso_current.pitch));
 //	Msg("Spine : %f %f %f",yaw,A->r_current.yaw,A->r_torso_current.yaw);
 	spin.setXYZ				(pitch, yaw, 0);
@@ -273,7 +273,7 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 	// moving
 	float					yaw, pitch;
 	GetDirectionAngles		(yaw,pitch);
-	yaw						= angle_normalize_signed(-yaw - 0*r_torso_current.yaw);
+	yaw						= angle_normalize_signed(-yaw);
 	if (getAI().bfTooSmallAngle(yaw,r_current.yaw,MAX_HEAD_TURN_ANGLE)) {
 		// moving forward
 		if (m_tMovementDirection == eMovementDirectionForward)
@@ -292,7 +292,7 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 	else {
 		if (getAI().bfTooSmallAngle(yaw,r_current.yaw,4*PI_DIV_6))
 			// moving left|right
-			if (getAI().bfTooSmallAngle(yaw,r_current.yaw + PI_DIV_2,PI_DIV_4)) {
+			if (getAI().bfTooSmallAngle(yaw,angle_normalize_signed(r_current.yaw + PI_DIV_2),PI_DIV_4)) {
 				// moving left, looking right
 				if (m_tMovementDirection == eMovementDirectionLeft)
 					m_dwDirectionStartTime	= Level().timeServer();
@@ -338,28 +338,10 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 					}
 		}
 	}
-	
 	//Msg("----%d\n[TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",Level().timeServer(),r_torso_target.yaw,r_torso_current.yaw,r_target.yaw,r_current.yaw);
 	//Msg("Trying %s\nMoving %s",caMovementActionNames[m_tDesirableDirection],caMovementActionNames[m_tMovementDirection]);
 	tpLegsAnimation			= m_tAnims.A[m_tBodyState].m_tMoves.A[m_tMovementType].A[m_tMovementDirection].A[0];
-	float					x1 = r_torso_current.yaw;
-	float					x2 = angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
-	float					x3 = angle_normalize_signed(r_current.yaw);
-	//Msg("%f %f %f",x1,x2,x3);
-	x2						= angle_normalize_signed(x2 - x1);
-	x3						= angle_normalize_signed(x3 - x1);
-	//Msg("%f %f %f",x1,x2,x3);
-	if ((x2*x3 <= 0) && (_abs(x2) + _abs(x3) > PI - EPS_L)) {
-		//Msg("Long way");
-		x2					= angle_normalize(x2);
-		x3					= angle_normalize(x3);
-		r_torso_target.yaw	= angle_normalize_signed((x2 + x3)/2);
-	}
-	else {
-		//Msg("Short way");
-		r_torso_target.yaw	= angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
-	}
-//	Msg("[TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",r_torso_target.yaw,r_torso_current.yaw,r_target.yaw,r_current.yaw);
+	r_torso_target.yaw		= angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
 }
 
 void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)

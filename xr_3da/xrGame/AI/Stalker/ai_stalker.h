@@ -187,6 +187,7 @@ private:
 			void			SetLessCoverLook				();
 			void			SetLessCoverLook				(NodeCompressed *tpNode);
 			void			SetLessCoverLook				(NodeCompressed *tpNode, float fMaxHeadTurnAngle);
+			void			vfValidateAngleDependency		(float x1, float &x2, float x3);
 			// movement and look
 			void			vfSetMovementType				(EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType);
 			void			vfSetMovementType				(EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType, Fvector &tPointToLook);
