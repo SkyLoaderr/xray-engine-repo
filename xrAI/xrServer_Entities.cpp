@@ -1039,10 +1039,12 @@ void	xrSE_Zone::FillProp			(LPCSTR pref, PropItemVec& items)
 #ifdef _EDITOR
 	static TokenValue4::ItemVec terrain_ids;
 	static TokenValue4::ItemVec terrain_sub_ids;
+	static TokenValue4::ItemVec level_ids;
 #endif
 
 xrGraphPoint::xrGraphPoint() {
 	m_caConnectionPointName[0]	= 0;
+	m_tLevelID					= 0;
 	m_tTerrainID				= 0;
 	m_tTerrainSubID				= 0;
 }
@@ -1050,6 +1052,7 @@ xrGraphPoint::xrGraphPoint() {
 void xrGraphPoint::STATE_Read		(NET_Packet& P, u16 size)
 {
 	P.r_string	(m_caConnectionPointName);
+	P.r_u32		(m_tLevelID);
 	P.r_u32		(m_tTerrainID);
 	P.r_u32		(m_tTerrainSubID);
 };
@@ -1057,6 +1060,7 @@ void xrGraphPoint::STATE_Read		(NET_Packet& P, u16 size)
 void xrGraphPoint::STATE_Write		(NET_Packet& P)
 {
 	P.w_string	(m_caConnectionPointName);
+	P.w_u32		(m_tLevelID);
 	P.w_u32		(m_tTerrainID);
 	P.w_u32		(m_tTerrainSubID);
 };
@@ -1082,7 +1086,8 @@ void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
             val.ID			= atoi(N);
         }
     }
-    if(terrain_sub_ids.empty()){
+    
+	if(terrain_sub_ids.empty()){
         R_ASSERT					(pSettings->SectionExists("terrain_sub_ids"));
         LPCSTR N,V;
         for (u32 k = 0; pSettings->ReadLINE("terrain_sub_ids",k,&N,&V); k++) {
@@ -1092,8 +1097,23 @@ void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
             val.ID			= atoi(N);
         }
     }
+    
+	if(level_ids.empty()){
+        CInifile					*Ini = xr_new<CInifile>("xrAI.ini");
+		R_ASSERT					(Ini->SectionExists("game_levels"));
+        LPCSTR N,V;
+        for (u32 k = 0; pSettings->ReadLINE("game_levels",k,&N,&V); k++) {
+   			terrain_sub_ids.push_back	(TokenValue4::Item());
+            TokenValue4::Item& val	= terrain_sub_ids.back();
+            val.str			= V;
+            val.ID			= atoi(N);
+        }
+		xr_delete(Ini);
+    }
+	
+	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"LevelID"),		&m_tLevelID,		&level_ids);
 	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"TerrainIDs"),	&m_tTerrainID,		&terrain_ids);
-	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"TerrainSubID"),&m_tTerrainSubID,	&terrain_sub_ids);
+	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"TerrainSubID"),	&m_tTerrainSubID,	&terrain_sub_ids);
 }
 #endif
 

@@ -183,8 +183,6 @@ void vfPreprocessEdges(u32 dwEdgeCount)
 	for (int i=0, j=0; i<(int)tpaGraph.size(); i++) {
 		SGraphVertex &tGraphVertex = tpaGraph[i]; 
 		Memory.mem_copy(tpPointer,tGraphVertex.tpaEdges,tGraphVertex.tNeighbourCount*sizeof(SGraphEdge));
-		//PSGP.memCopy(tpPointer,tGraphVertex.tpaEdges,tGraphVertex.tNeighbourCount*sizeof(SGraphEdge));
-		//xr_free(tGraphVertex.tpaEdges);
 		tGraphVertex.tpaEdges = tpPointer;
 		tpPointer += tGraphVertex.tNeighbourCount;
 		for (int k=0; k<(int)tGraphVertex.tNeighbourCount; k++, j++) {
