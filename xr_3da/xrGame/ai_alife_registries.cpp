@@ -345,14 +345,12 @@ void CSE_ALifeGraphRegistry::vfAttachItem(CSE_Abstract &tAbstract, CSE_ALifeItem
 	R_ASSERT2					(!bALifeRequest || l_tpALifeTraderAbstract,"Cannot attach an item to a non-trader object");
 
 	if (l_tpALifeTraderAbstract) {
-		l_tpALifeTraderAbstract->children.push_back(tpALifeItem->ID);
-		tpALifeItem->ID_Parent	= l_tpALifeTraderAbstract->ID;
+		if (bALifeRequest) {
+			l_tpALifeTraderAbstract->children.push_back(tpALifeItem->ID);
+			tpALifeItem->ID_Parent	= l_tpALifeTraderAbstract->ID;
+		}
 		l_tpALifeTraderAbstract->m_fCumulativeItemMass		+= tpALifeItem->m_fMass;
 		l_tpALifeTraderAbstract->m_iCumulativeItemVolume	+= tpALifeItem->m_iVolume;
-	}
-	else {
-		tAbstract.children.push_back(tpALifeItem->ID);
-		tpALifeItem->ID_Parent	= tAbstract.ID;
 	}
 }
 
@@ -366,16 +364,16 @@ void CSE_ALifeGraphRegistry::vfDetachItem(CSE_Abstract &tAbstract, CSE_ALifeItem
 	if (l_tpALifeTraderAbstract) {
 		OBJECT_IT				I = std::find	(l_tpALifeTraderAbstract->children.begin(),l_tpALifeTraderAbstract->children.end(),tpALifeItem->ID);
 		R_ASSERT2				(I != l_tpALifeTraderAbstract->children.end(),"Can't detach an item which is not on my own");
-		l_tpALifeTraderAbstract->children.erase(I);
-		tpALifeItem->ID_Parent	= 0xffff;
+		if (bALifeRequest) {
+			l_tpALifeTraderAbstract->children.erase(I);
+			tpALifeItem->ID_Parent	= 0xffff;
+		}
 		l_tpALifeTraderAbstract->m_fCumulativeItemMass		-= tpALifeItem->m_fMass;
 		l_tpALifeTraderAbstract->m_iCumulativeItemVolume	-= tpALifeItem->m_iVolume;
 	}
 	else {
 		OBJECT_IT				I = std::find	(tAbstract.children.begin(),tAbstract.children.end(),tpALifeItem->ID);
 		R_ASSERT2				(I != tAbstract.children.end(),"Can't detach an item which is not on my own");
-		tAbstract.children.erase(I);
-		tpALifeItem->ID_Parent	= 0xffff;
 	}
 }
 
