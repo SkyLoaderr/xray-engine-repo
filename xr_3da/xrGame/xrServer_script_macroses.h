@@ -9,6 +9,7 @@
 #pragma once
 
 #include "script_export_macroses.h"
+#include "xrEProps.h"
 
 template <typename T>
 struct CWrapperPure : public T, public luabind::wrap_base {
