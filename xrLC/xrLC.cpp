@@ -123,8 +123,6 @@ int APIENTRY WinMain(HINSTANCE hInst,
                      LPSTR     lpCmdLine,
                      int       nCmdShow)
 {
-	_amblksiz		= 512;
-	
 	// Initialize debugging
 	Debug.Start		();
 
