@@ -77,7 +77,8 @@
       intermediate\ESceneDOTools_Generate.obj intermediate\ObjectAnimator.obj 
       intermediate\ELight_props.obj intermediate\ELight_IO.obj 
       intermediate\ESceneObjectToolsExportBreakable.obj 
-      intermediate\xrHemisphere.obj"/>
+      intermediate\xrHemisphere.obj intermediate\object_factory.obj 
+      intermediate\object_factory_register.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -276,6 +277,9 @@
       <FILE FILENAME="Engine\Game\alife_space.h" FORMNAME="" UNITNAME="alife_space.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\inventory_space.h" FORMNAME="" UNITNAME="inventory_space.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\object_broker.h" FORMNAME="" UNITNAME="object_broker.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\object_factory_inline.h" FORMNAME="" UNITNAME="object_factory_inline.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\object_factory.cpp" FORMNAME="" UNITNAME="object_factory.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\object_factory_register.cpp" FORMNAME="" UNITNAME="object_factory_register" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -18,6 +18,7 @@ public:
     IC LPCSTR			ClassDesc				(){return "Way";}
     IC int				RenderPriority			(){return 1;}
 
+    virtual void		Clear					(bool bSpecific=false){inherited::Clear(bSpecific);}
     // IO
     virtual bool   		Load            		(IReader&);
     virtual void   		Save            		(IWriter&);

@@ -18,6 +18,7 @@ public:
     IC LPCSTR			ClassDesc				(){return "Particle System";}
     IC int				RenderPriority			(){return 30;}
 
+    virtual void		Clear					(bool bSpecific=false){inherited::Clear(bSpecific);}
     // IO
     virtual bool   		Load            		(IReader&);
     virtual void   		Save            		(IWriter&);

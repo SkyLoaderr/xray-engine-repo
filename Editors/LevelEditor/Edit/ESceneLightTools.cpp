@@ -36,6 +36,7 @@ void ESceneLightTools::Clear(bool bSpecific)
     AppendLightControl	(LCONTROL_HEMI);
     AppendLightControl	(LCONTROL_SUN);
     m_HemiControl		= FindLightControl(LCONTROL_HEMI)->id;
+    m_Flags.zero		();
 }
 //------------------------------------------------------------------------------
 

@@ -81,6 +81,7 @@ void EDetailManager::Clear(bool bSpecific)
 	ClearBase			();
 	ClearColorIndices	();
     ClearSlots			();
+    m_Flags.zero		();
 }
 //------------------------------------------------------------------------------
 

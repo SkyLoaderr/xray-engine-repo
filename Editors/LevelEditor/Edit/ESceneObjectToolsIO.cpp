@@ -27,17 +27,16 @@ bool ESceneObjectTools::Load(IReader& F)
     	m_Flags.set	(F.r_u32());
 
     if (F.find_chunk(CHUNK_APPEND_RANDOM)){
-        F.r_fvector3	(m_AppendRandomMinScale);
-        F.r_fvector3	(m_AppendRandomMaxScale);
-        F.r_fvector3	(m_AppendRandomMinRotation);
-        F.r_fvector3	(m_AppendRandomMaxRotation);
+        F.r_fvector3(m_AppendRandomMinScale);
+        F.r_fvector3(m_AppendRandomMaxScale);
+        F.r_fvector3(m_AppendRandomMinRotation);
+        F.r_fvector3(m_AppendRandomMaxRotation);
         int cnt		= F.r_u32();
         if (cnt){
         	AnsiString buf;
             for (int i=0; i<cnt; i++){
-                F.r_stringZ	(buf);
-                CCustomObject* O = FindObjectByName(buf.c_str());
-                if (O)	m_AppendRandomObjects.push_back(buf);
+                F.r_stringZ						(buf);
+                m_AppendRandomObjects.push_back	(buf);
             }
         }
     };

@@ -30,7 +30,7 @@ public:
 	virtual int 		SelectionCount          (bool testflag);
 	virtual int 		ShowObjects				(bool flag, bool bAllowSelectionFlag=false, bool bSelFlag=true);
 
-    virtual void		Clear					(bool bSpecific=false);       
+    virtual void		Clear					(bool bSpecific=false)=0;       
 
     // validation
     virtual bool		Valid					();

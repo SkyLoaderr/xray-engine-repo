@@ -9,6 +9,7 @@
 #include "PropertiesList.h"
 #include "PropertiesListHelper.h"
 #include "library.h"
+#include "Scene.h"
 
 ESceneObjectTools::ESceneObjectTools():ESceneCustomOTools(OBJCLASS_SCENEOBJECT)
 {
@@ -76,10 +77,23 @@ void ESceneObjectTools::FillAppendRandomProperties()
 
     m_Props->AssignItems		(items);
     
-    if (mrOk==m_Props->ShowPropertiesModal())
+    if (mrOk==m_Props->ShowPropertiesModal()){
     	_SequenceToList			(m_AppendRandomObjects,temp.c_str());
+		Scene.UndoSave			();
+    }
         
     TProperties::DestroyForm	(m_Props);
 }
 //----------------------------------------------------
+
+void ESceneObjectTools::Clear		(bool bSpecific)
+{
+	inherited::Clear				(bSpecific);
+    m_AppendRandomMinScale.set		(1.f,1.f,1.f);
+    m_AppendRandomMaxScale.set		(1.f,1.f,1.f);
+    m_AppendRandomMinRotation.set	(0.f,0.f,0.f);
+    m_AppendRandomMaxRotation.set	(0.f,0.f,0.f);
+    m_AppendRandomObjects.clear		();
+    m_Flags.zero					();
+}
 

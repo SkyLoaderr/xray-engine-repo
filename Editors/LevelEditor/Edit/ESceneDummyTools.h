@@ -13,6 +13,8 @@ protected:
 	virtual void 		RemoveControls			();
 public:
 						ESceneDummyTools		():ESceneCustomOTools(OBJCLASS_DUMMY){;}
+                        
+    virtual void		Clear					(bool bSpecific=false){inherited::Clear(bSpecific);}
 	// definition
     IC LPCSTR			ClassName				(){THROW; }
     IC LPCSTR			ClassDesc				(){THROW; }

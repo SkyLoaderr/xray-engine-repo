@@ -27,6 +27,7 @@ public:
 
 	virtual void 		FillProp				(LPCSTR pref, PropItemVec& items);
 
+    virtual void		Clear					(bool bSpecific=false){inherited::Clear(bSpecific);m_Flags.zero();}
     // IO
     virtual bool   		Load            		(IReader&);
     virtual void   		Save            		(IWriter&);
