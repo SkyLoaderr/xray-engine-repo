@@ -88,7 +88,162 @@ LINK32=link.exe
 # Begin Group "Kernel"
 
 # PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\_bitwise.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_color.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_compressed_normal.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\_compressed_normal.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_d3d_extensions.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_Faabb.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_fbox.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_fbox2.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_fpoint.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_frect.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_intersection_quad.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_ipoint.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_irect.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_l_vertex.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_lit_vertex.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_math.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\_math.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_matrix.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_matrix33.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_obb.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_plane.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_quaternion.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\_quaternion.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_random.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_sphere.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\_sphere.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_std_extensions.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_stl_extensions.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_tl_vertex.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_types.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_vector2.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_vector3d.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_vector4.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_vertex.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\cpuid.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\cpuid.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\FixedVector.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\vector.h
+# End Source File
 # End Group
+# Begin Group "Core"
+
+# PROP Default_Filter ""
 # Begin Source File
 
 SOURCE=.\cl_RAPID.h
@@ -110,5 +265,6 @@ SOURCE=.\xrCDB.cpp
 
 SOURCE=.\xrCDB.h
 # End Source File
+# End Group
 # End Target
 # End Project

@@ -12,8 +12,6 @@
 #endif
 
 // forward declarations
-class Fvector;
-class Fmatrix;
 class CFrustum;
 
 namespace CDB

@@ -45,7 +45,7 @@ void COLLIDER::r_add	(int id)
 	{
 		if (rd_size)	rd_size	*=	2;
 		else			rd_size	=	32;
-		rd_ptr	= realloc(rd_ptr,rd_size*sizeof(int));
+		rd_ptr			= (int*) realloc(rd_ptr,rd_size*sizeof(int));
 	}
 	rd_ptr[rd_count++]	= id;
 }
