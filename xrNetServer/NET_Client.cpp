@@ -347,7 +347,7 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 
 				if( pDesc->pwszSessionName)	{
 					string4096			dpSessionName;
-					R_CHK				(WideCharToMultiByte(CP_ACP,0,dpServerDesc->pwszSessionName,-1,dpSessionName,sizeof(dpSessionName),0,0));
+					R_CHK				(WideCharToMultiByte(CP_ACP,0,pDesc->pwszSessionName,-1,dpSessionName,sizeof(dpSessionName),0,0));
 					NODE.dpSessionName	= (char*)(&dpSessionName[0]);
 				}
 
