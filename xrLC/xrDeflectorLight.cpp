@@ -204,13 +204,13 @@ void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color &C, Fvector &P, F
 				if( D <=0 ) continue;
 
 				// Trace Light
-				float scale	= D*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,1000.f,skip,bUseFaceDisable);
-				C.rgb.x += scale * L->diffuse.r; 
-				C.rgb.y += scale * L->diffuse.g;
-				C.rgb.z += scale * L->diffuse.b;
+				float scale	=	D*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,1000.f,skip,bUseFaceDisable);
+				C.rgb.x		+=	scale * L->diffuse.x; 
+				C.rgb.y		+=	scale * L->diffuse.y;
+				C.rgb.z		+=	scale * L->diffuse.z;
 			} else {
 				// Distance
-				float sqD	= P.distance_to_sqr(L->position);
+				float sqD	=	P.distance_to_sqr	(L->position);
 				if (sqD > L->range2) continue;
 
 				// Dir
@@ -224,9 +224,9 @@ void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color &C, Fvector &P, F
 				float scale = D*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,R,skip,bUseFaceDisable);
 				float A		= scale / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
 
-				C.rgb.x += A * L->diffuse.r;
-				C.rgb.y += A * L->diffuse.g;
-				C.rgb.z += A * L->diffuse.b;
+				C.rgb.x += A * L->diffuse.x;
+				C.rgb.y += A * L->diffuse.y;
+				C.rgb.z += A * L->diffuse.z;
 			}
 		}
 	}
@@ -250,10 +250,10 @@ void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color &C, Fvector &P, F
 				if (sqD > L->range2) continue;
 
 				// Dir
-				Ldir.sub	(L->position,P);
-				Ldir.normalize_safe();
-				float D		= Ldir.dotproduct( N );
-				if( D <=0 ) continue;
+				Ldir.sub			(L->position,P);
+				Ldir.normalize_safe	();
+				float D				= Ldir.dotproduct( N );
+				if( D <=0 )			continue;
 
 				// Trace Light
 				float R		=	_sqrt(sqD);
@@ -280,13 +280,13 @@ void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color &C, Fvector &P, F
 				C.hemi		+=	scale;
 			} else {
 				// Distance
-				float sqD	= P.distance_to_sqr(L->position);
+				float sqD	=	P.distance_to_sqr(L->position);
 				if (sqD > L->range2) continue;
 
 				// Dir
 				Ldir.sub			(L->position,P);
 				Ldir.normalize_safe	();
-				float D		= Ldir.dotproduct( N );
+				float D		=	Ldir.dotproduct( N );
 				if( D <=0 ) continue;
 
 				// Trace Light
