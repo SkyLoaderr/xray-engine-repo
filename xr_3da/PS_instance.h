@@ -21,6 +21,8 @@ public:
 	IC BOOL				PSI_IsAutomatic	()						{	return m_bAutoRemove;				}
 	IC void				PSI_SetLifeTime	(float life_time)		{	m_iLifeTime=iFloor(life_time*1000);	}
 
+	IC void				PSI_destroy		(){g_pGameLevel->ps_destoy.push_back	(this);;}
+
 	virtual void		shedule_Update	(u32 dt);
 };
 
