@@ -15,6 +15,7 @@ public:
 
 	// data
 	vector<CObject*>			objects;
+	map<u16,CObject*>			map_NETID;
 
 	CSheduler					sheduled;
 
@@ -24,8 +25,6 @@ public:
 
 	CObject*					FindObjectByName	( char* name );
 	CObject*					FindObjectByCLS_ID	( CLASS_ID cls );
-	DWORD						GetObjectCID		( CObject* O );
-	CObject*					GetObjectByCID		( DWORD ID ) { return objects[ID]; }
 
 	VOID						Load				( CInifile *ini, LPSTR section );
 	VOID						Unload				( );

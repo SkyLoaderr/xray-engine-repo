@@ -1132,26 +1132,6 @@ SOURCE=.\xr_trims.cpp
 SOURCE=.\xr_trims.h
 # End Source File
 # End Group
-# Begin Group "File System"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\FS.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\FS.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\LzHuf.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\lzhuf.h
-# End Source File
-# End Group
 # Begin Group "Font output"
 
 # PROP Default_Filter ""
@@ -1237,6 +1217,26 @@ SOURCE=.\LocalAllocator.cpp
 # Begin Source File
 
 SOURCE=.\LocalAllocator.h
+# End Source File
+# End Group
+# Begin Group "File System"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\FS.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\FS.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\LzHuf.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\lzhuf.h
 # End Source File
 # End Group
 # Begin Source File

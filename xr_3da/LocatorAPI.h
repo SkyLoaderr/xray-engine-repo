@@ -16,13 +16,7 @@ enum FS_List
 class ENGINE_API CLocatorAPI  
 {
 private:
-	struct str_pred : public binary_function<char*, char*, bool> 
-	{	
-		IC bool operator()(const char* x, const char* y) const
-		{	return strcmp(x,y)<0;	}
-	};
-	
-	typedef set<char*,str_pred>	set_cstr;
+	typedef set<char*,pred_str>	set_cstr;
 	typedef set_cstr::iterator	set_cstr_it;
 
 	set_cstr			files;

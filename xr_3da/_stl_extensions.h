@@ -12,6 +12,18 @@
 #define DEFINE_MAP_PRED(K,T,N,I,P)	typedef std::map<K,T,P> N;	typedef N::iterator I;
 #define DEFINE_SVECTOR(T,C,N,I)		typedef svector<T,C> N;		typedef N::iterator I;
 
+
+struct pred_str		: public binary_function<char*, char*, bool> 
+{	
+	IC bool operator()(const char* x, const char* y) const
+	{	return strcmp(x,y)<0;	}
+};
+struct pred_stri	: public binary_function<char*, char*, bool> 
+{	
+	IC bool operator()(const char* x, const char* y) const
+	{	return strcmp(x,y)<0;	}
+};
+
 #include "FixedVector.h"
 
 #endif
