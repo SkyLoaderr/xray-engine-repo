@@ -150,18 +150,6 @@ void	CBlender_complex2::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 					RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
 					RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
 					
-					// Stage0 - Lightmap
-					RS.StageBegin		();
-					{
-						RS.StageSET_Address	(D3DTADDRESS_WRAP);
-						RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-						RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-						RS.Stage_Texture	("$base1",		L_textures);
-						RS.Stage_Matrix		("$null",		L_matrices, 1);
-						RS.Stage_Constant	("$null",		L_constants);
-					}
-					RS.StageEnd			();
-					
 					// Stage1 - Base texture
 					RS.StageBegin		();
 					{
@@ -183,6 +171,18 @@ void	CBlender_complex2::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 						RS.Stage_Texture	(oT2_Name,		L_textures);
 						RS.Stage_Matrix		(oT2_xform,		L_matrices,	0);
 						RS.Stage_Constant	(oT2_Constant,	L_constants);
+					}
+					RS.StageEnd			();
+
+					// Stage0 - Lightmap
+					RS.StageBegin		();
+					{
+						RS.StageSET_Address	(D3DTADDRESS_WRAP);
+						RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+						RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+						RS.Stage_Texture	("$base1",		L_textures);
+						RS.Stage_Matrix		("$null",		L_matrices, 1);
+						RS.Stage_Constant	("$null",		L_constants);
 					}
 					RS.StageEnd			();
 				}
