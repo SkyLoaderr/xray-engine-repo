@@ -732,93 +732,93 @@ function loadJob(sj, gname, type, squad, groups)
 		t = { section = "walker1@agr_nii",
 			idle = 0,
 			prior = 9, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "walker2@agr_nii",
 			idle = 0,
 			prior = 9, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "walker3@agr_nii",
 			idle = 0,
 			prior = 9, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "walker4@agr_nii",
 			idle = 0,
 			prior = 9, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "camper1@agr_nii",
 			idle = 0,
 			prior = 8, state = {0,1},
-			in_rest = "", out_rest = ""
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "walker5@agr_nii",
 			idle = 0,
 			prior = 7, state = {0,1},
-			in_rest = "", out_rest = ""
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "camper2@agr_nii",
 			idle = 0,
 			prior = 6, state = {0,1},
-			in_rest = "", out_rest = ""
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "walker6@agr_nii",
 			idle = 0,
 			prior = 5, state = {0,1},
-			in_rest = "", out_rest = ""
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "walker7@agr_nii",
 			idle = 0,
 			prior = 5, state = {0,1},
-			in_rest = "", out_rest = ""
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "patrol1@agr_nii",
 			idle = 4 * 1000 * 60 * 60,
 			prior = 4, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "follower1@agr_nii",
 			idle = 4 * 1000 * 60 * 60,
 			prior = 3, state = {0},
-			in_rest = "", out_rest = "",
+			in_rest = "agroprom_underground_space_restrictor", out_rest = "",
 			leader = "patrol1@agr_nii"
 		}
 		table.insert(sj, t)		
 		t = { section = "follower2@agr_nii",
 			idle = 4 * 1000 * 60 * 60,
 			prior = 3, state = {0},
-			in_rest = "", out_rest = "",
+			in_rest = "agroprom_underground_space_restrictor", out_rest = "",
 			leader = "patrol1@agr_nii"
 		}
 		table.insert(sj, t)		
 		t = { section = "sleeper1@agr_nii",
 			idle = 0,
 			prior = 0, state = {0,1},
-			in_rest = "", out_rest = ""
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "sleeper2@agr_nii",
 			idle = 0,
 			prior = 0, state = {0,1},
-			in_rest = "", out_rest = ""
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "sleeper3@agr_nii",
 			idle = 0,
 			prior = 0, state = {0,1},
-			in_rest = "", out_rest = ""
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
 		}
 		table.insert(sj, t)
 	end
