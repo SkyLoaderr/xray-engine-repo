@@ -398,9 +398,12 @@ void CUIStatic::TextureClipper(int offset_x, int offset_y, RECT* pClipRect)
 	
 	Irect r;
 	r.x1 = out_rect.left;
-	r.x2 = out_rect.right;
+	r.x2 = out_rect.right<m_UIStaticItem.GetOriginalRect().width()?
+		   out_rect.right:m_UIStaticItem.GetOriginalRect().width();
+
 	r.y1 = out_rect.top;
-	r.y2 = out_rect.bottom;
+	r.y2 = out_rect.bottom<m_UIStaticItem.GetOriginalRect().height()?
+		   out_rect.bottom:m_UIStaticItem.GetOriginalRect().height();
 	m_UIStaticItem.SetRect(r);
 
 	m_UIStaticItem.SetPos(out_x + offset_x , out_y + offset_y);
@@ -426,9 +429,16 @@ void CUIStatic::ClipperOff()
 	
 	Irect r;
 	r.x1 = out_rect.left;
-	r.x2 = out_rect.right;
+	r.x2 = out_rect.right<m_UIStaticItem.GetOriginalRect().width()?
+		   out_rect.right:m_UIStaticItem.GetOriginalRect().width();
+
 	r.y1 = out_rect.top;
-	r.y2 = out_rect.bottom;
+	r.y2 = out_rect.bottom<m_UIStaticItem.GetOriginalRect().height()?
+		   out_rect.bottom:m_UIStaticItem.GetOriginalRect().height();
+	m_UIStaticItem.SetRect(r);
+
+
+
 	m_UIStaticItem.SetRect(r);
 }
 
