@@ -8,29 +8,33 @@ function register(object_factory)
 	if(user_name == nil or user_name() ~= "Andy") then return end
 	
 	if (editor() == false) then
-		object_factory:register ("ce_new_game_dm.C_new_game_sv_Deathmatch","GM_NEWDM","new_game_sv_Deathmatch")
+		object_factory:register ("ce_new_game_dm.C_new_game_sv_Deathmatch","SV_NEWDM","new_game_sv_Deathmatch")
 	end
 end
 
-function get_game_clsid(game_type_option)
-
+function get_game_clsid(game_type_option,is_server)
+	local res_sv;
 	if(game_type_option == "single") then 
-		return "GM_SINGL" end
+		  res_sv = "SV_SINGL"	end
 
 	if(game_type_option == "deathmatch") then 
-		return "GM_DM" end
+		res_sv = "SV_DM" end
 
 	if(game_type_option == "teamdeathmatch") then 
-		return "GM_TDM" end
+		res_sv = "SV_TDM" end
 
 	if(game_type_option == "artefacthunt") then 
-		return "GM_AHUNT" end
+		res_sv = "SV_AHUNT" end
 
 --	if(game_type_option == "cs") then 
---		return "GM_CS" end
+--		res_sv = "SV_CS" end
 
 	if(game_type_option == "new_dm") then 
-		return "GM_NEWDM" end
+		res_sv = "SV_NEWDM" end
 
-
+if(is_server==0) then
+		local res_cl = string.gsub(res_sv,"SV_", "CL_")
+		return res_cl else
+		return res_sv
+	end
 end
