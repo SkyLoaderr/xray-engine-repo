@@ -41,20 +41,24 @@ void CUITabButton::OnMouse(int x, int y, EUIMessages mouse_action){
 	switch (mouse_action)
 	{
 	case WINDOW_LBUTTON_DOWN:
-		GetMessageTarget()->SendMessage(this, TAB_SELECT);
+		GetMessageTarget()->SendMessage(this, TAB_CHANGED);
 		break;
 	default:
 		break;
 	}
 }
 
+void CUITabButton::Update(){
+	CUI3tButton::Update();
+}
+
 void CUITabButton::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
-	if (!m_bIsEnabled)
+	if (!IsEnabled())
 		return;
 
 	switch (msg)
 	{
-	case TAB_SELECT:
+	case TAB_CHANGED:
 		if (this == pWnd)
 		{
             m_eButtonState = BUTTON_PUSHED;

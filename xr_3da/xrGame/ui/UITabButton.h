@@ -23,11 +23,10 @@ public:
 	//virtual void Enable(bool bEnable);
 	virtual void ShowAssociatedWindow(bool bShow = true);
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
-
-protected:
 	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
+	virtual void Update();
 
 protected:
-	// asociated window
+	// associated window
 	CUIFrameWindow* m_pAssociatedWindow;
 };

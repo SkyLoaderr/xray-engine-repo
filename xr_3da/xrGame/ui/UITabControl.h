@@ -8,47 +8,38 @@
 #pragma once
 
 #include "uiwindow.h"
-#include "UIButton.h"
+#include "UITabButton.h"
 #include "../script_export_space.h"
 
-DEF_VECTOR (TABS_VECTOR, CUIButton*)
+DEF_VECTOR (TABS_VECTOR, CUITabButton*)
 
 class CUITabControl: public CUIWindow
 {
 	typedef CUIWindow inherited;
 public:
-	// Ctor and Dtor
 	CUITabControl();
 	virtual ~CUITabControl();
 
-	// Инициализация  из XML
 	virtual void Init(int x, int y, int width, int height);
-	// обработка нажатий клавиш
 	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
-	// обновление 
+	virtual void OnTabChange(int iCur, int iPrev);
+	virtual void OnStaticFocusReceive(CUIWindow* pWnd);
+	virtual void OnStaticFocusLost(CUIWindow* pWnd);
 	virtual void Update();
-
-	// Сообщение отправляемое родительскому окну, когда произошла смена активной раскладки
-//	typedef enum{TAB_CHANGED = 8500} E_MESSAGE;
 
 	// Добавление кнопки-закладки в список закладок контрола
 	bool AddItem(const char *pItemName, const char *pTexName, int x, int y, int width, int height);
-	bool AddItem(CUIButton *pButton);
+	bool AddItem(CUITabButton *pButton);
 
-	// Удаление элементов
 	void RemoveItem(const u32 Index);
 	void RemoveAll();
 
-	// При нажатии на одну из кнопок то происходит переключение закладок.
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 
-	int GetActiveIndex() { return m_iPushedIndex; }
-
-	// Общее количество закладок
-	const int GetTabsCount() const				{ return m_TabsArr.size(); }
-
-	// Сделать новую такущую активную закладку
-	void SetNewActiveTab(const int iNewTab);
+			int  GetActiveIndex		()						{ return m_iPushedIndex; }
+			int  GetPrevActiveIndex	()						{ return m_iPrevPushedIndex; }
+			void SetNewActiveTab	(const int iNewTab);	
+	const	int  GetTabsCount		() const				{ return m_TabsArr.size(); }
 	
 	// Режим клавилатурных акселераторов (вкл/выкл)
 	bool GetAcceleratorsMode() const			{ return m_bAcceleratorsEnable; }
@@ -73,6 +64,7 @@ protected:
 
 	// Текущая нажатая кнопка. -1 - ни одна, 0 - первая, 1 - вторая, и т.д.
 	int				m_iPushedIndex;
+	int				m_iPrevPushedIndex;
 
 	// Цвет неактивных элементов
 	u32				m_cGlobalTextColor;
