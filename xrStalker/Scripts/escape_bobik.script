@@ -3,12 +3,12 @@ module("m_monster_ai")
 local sounds = {}
 
 local bobik_home = nil
-local dog = nil 
+local dog = nil
 
 function init_bobik()
 	bobik_home = patrol("point_bobik"):point(0)
 
-	dog = m_monster_ai.m_MonsterBobic("dog_bobik", this.script_name(), "point_bobik", 4 )
+	dog = m_monster_ai.m_MonsterBobik("dog_bobik", this.script_name(), "point_bobik", 4 )
 	printf("bobik under script")
 end
 function execute_bobik()
