@@ -5,10 +5,13 @@
 #include "alife_space.h"
 #include "PHSkeleton.h"
 #include "Entity_Alive.h"
+#include "PHDestroyable.h"
+
 class CPhysicsShell;
 class CPHMovementControl;
 class CCharacterPhysicsSupport :
-public CPHSkeleton
+public CPHSkeleton,
+public CPHDestroyable
 {
 public:
 enum EType

@@ -1011,13 +1011,16 @@ void CPHShell::PassEndElements(u16 from,u16 to,CPHShell *dest)
 	for(ELEMENT_I i=i_from;i!=e;++i)
 	{
 		dGeomID spaced_geom=(*i)->dSpacedGeometry();
-		dSpaceRemove (m_space,spaced_geom );
-		dSpaceAdd(dest->m_space,spaced_geom);
+		if(spaced_geom)//for active elems
+		{
+			dSpaceRemove (m_space,spaced_geom );
+			dSpaceAdd(dest->m_space,spaced_geom);
+		}
 		VERIFY(_valid(dest->mXFORM));
 		(*i)->SetShell(dest);
 	}
 	dest->elements.insert(dest->elements.end(),i_from,e);
-	elements.erase(i_from,e);
+	elements.erase(i_from,e);		
 
 }
 

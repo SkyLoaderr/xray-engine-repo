@@ -958,6 +958,8 @@ BOOL APIENTRY DllMain(HANDLE hModule, u32 ul_reason_for_call, LPVOID lpReserved)
 
 			CMD4( CCC_FloatBlock,			"ph_timefactor",		&phTimefactor,	0.0001f,1000.f);
 
+			CMD4( CCC_FloatBlock,			"ph_break_common_factor",		&phBreakCommonFactor,	0.f,1000000000.f);
+			CMD4( CCC_FloatBlock,			"ph_rigid_break_weapon_factor",		&phRigidBreakWeaponFactor,	0.f,1000000000.f);
 			// Mad Max
 			// Net Interpolation
 			CMD4(CCC_Net_CL_Interpolation,		"net_cl_interpolation",	&lvInterp,			-1,100);

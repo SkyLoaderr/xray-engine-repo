@@ -48,9 +48,14 @@ const dReal world_damping	=1.0f*DAMPING	(world_cfm,world_erp);
 
 const dReal	world_gravity	= 2.f*9.81f;
 
-int			phFPS			= 50;
-int			phIterations	= 18;
-float		phTimefactor	= 1.f;
+
+/////////////////////////////////////////////////////
+int			phFPS					= 50;
+int			phIterations			= 18;
+float		phTimefactor			= 1.f;
+float		phBreakCommonFactor		= 0.01f;
+float		phRigidBreakWeaponFactor= 1.f;
+
 int			phIterationCycle= 5;
 
 static int	IterationCycleI	= 0;

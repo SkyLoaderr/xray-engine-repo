@@ -8,7 +8,7 @@
 #include "../ode/src/joint.h"
 #pragma warning(default:4995)
 #pragma warning(default:4267)
-
+static const float torque_factor=10000000.f;
 CPHFracturesHolder::CPHFracturesHolder()
 {
 	m_has_breaks=false;
@@ -426,6 +426,7 @@ bool CPHFracture::Update(CPHElement* element)
 		{
 			Fvector force;
 			force.set(i_i->force);
+			force.mul(phRigidBreakWeaponFactor);
 			Fvector second_to_point;
 			second_to_point.sub(body_to_second,i_i->point);
 			//force.mul(30.f);
@@ -484,9 +485,9 @@ bool CPHFracture::Update(CPHElement* element)
 	//vtemp.crossproduct(first_in_bone,first_part_force);
 	//break_torque.sub(vtemp);
 #ifdef DBG_BREAK		
-	float btm_dbg=break_torque.magnitude()/1000000000.f;
+	float btm_dbg=break_torque.magnitude()*phBreakCommonFactor/torque_factor;
 #endif
-	if(break_torque.magnitude()/1000000000.f>m_break_torque)
+	if(break_torque.magnitude()*phBreakCommonFactor>m_break_torque*torque_factor)
 	{
 		//m_break_torque.set(second_part_torque);
 		m_pos_in_element.set(second_part_force);
@@ -512,9 +513,9 @@ bool CPHFracture::Update(CPHElement* element)
 	//vtemp.crossproduct(first_in_bone,first_part_torque);
 	//break_force.sub(vtemp);
 #ifdef DBG_BREAK		
-	float bfm_dbg=break_force.magnitude()/100.f;
+	float bfm_dbg=break_force.magnitude()*phBreakCommonFactor;
 #endif
-	if(m_break_force<break_force.magnitude()/100.f)
+	if(m_break_force<break_force.magnitude()*phBreakCommonFactor)
 	{
 		
 		m_pos_in_element.set(second_part_force);

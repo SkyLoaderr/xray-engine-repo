@@ -64,11 +64,13 @@ void CCharacterPhysicsSupport::in_Load(LPCSTR section)
 	skel_fatal_impulse_factor		= pSettings->r_float(section,"ph_skel_fatal_impulse_factor");
 	if(pSettings->line_exist(section,"ph_skel_shot_up_factor")) m_shot_up_factor=pSettings->r_float(section,"ph_skel_shot_up_factor");
 	if(pSettings->line_exist(section,"ph_after_death_velocity_factor")) m_after_death_velocity_factor=pSettings->r_float(section,"ph_after_death_velocity_factor");
+	CPHDestroyable::Load(section);
 }
 
 void CCharacterPhysicsSupport::in_NetSpawn(CSE_Abstract* e)
 {
 	CPHSkeleton::Spawn(e);
+	CPHDestroyable::Init();
 }
 
 void CCharacterPhysicsSupport::SpawnInitPhysics(CSE_Abstract* e)

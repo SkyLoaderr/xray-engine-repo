@@ -19,6 +19,8 @@ extern const dReal  world_damping;
 extern		 float	phTimefactor;
 extern	int			phFPS;
 extern	int			phIterations;
+extern	float		phBreakCommonFactor;
+extern	float		phRigidBreakWeaponFactor;
 
 #define ERP(k_p,k_d)		((fixed_step*(k_p)) / (((fixed_step)*(k_p)) + (k_d)))
 #define CFM(k_p,k_d)		(1.f / (((fixed_step)*(k_p)) + (k_d)))
