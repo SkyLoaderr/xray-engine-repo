@@ -3,7 +3,7 @@
 #include "SoundRender_Core.h"
 #include "SoundRender_Source.h"
 
-void CSoundRender_Emitter::update	()
+void CSoundRender_Emitter::update	(float dt)
 {
 	u32	dwTime			= SoundRender.Timer.GetElapsed_ms();
 
@@ -18,7 +18,7 @@ void CSoundRender_Emitter::update	()
 		occluder_volume		= (SoundRender.get_occlusion	(p_source.position,.2f,occluder))?0.f:1.f;
 		smooth_volume		= p_source.volume*psSoundVEffects*(occluder_volume*(1.f-psSoundOcclusionScale)+psSoundOcclusionScale);
 		e_current = e_target= *SoundRender.get_environment	(p_source.position);
-		if (update_culling())	
+		if (update_culling(dt))	
 		{
 			state				=	stPlaying;
 			position			=	0;
@@ -33,7 +33,7 @@ void CSoundRender_Emitter::update	()
 		occluder_volume		= (SoundRender.get_occlusion	(p_source.position,.2f,occluder))?0.f:1.f;
 		smooth_volume		= p_source.volume*psSoundVEffects*(occluder_volume*(1.f-psSoundOcclusionScale)+psSoundOcclusionScale);
 		e_current = e_target= *SoundRender.get_environment	(p_source.position);
-		if (update_culling())	
+		if (update_culling(dt))	
 		{
 			state				=	stPlayingLooped;
 			position			=	0;
@@ -48,7 +48,7 @@ void CSoundRender_Emitter::update	()
 			state					=	stStopped;
 			SoundRender.i_stop		(this);
 		} else {
-			if (!update_culling()) {
+			if (!update_culling(dt)) {
 				// switch to: SIMULATE
 				state					=	stSimulating;		// switch state
 				SoundRender.i_stop		(this);
@@ -56,7 +56,7 @@ void CSoundRender_Emitter::update	()
 			else 
 			{
 				// We are still playing
-				update_environment	();
+				update_environment	(dt);
 			}
 		}
 		break;
@@ -66,7 +66,7 @@ void CSoundRender_Emitter::update	()
 			// STOP
 			state					=	stStopped;
 		} else {
-			if (update_culling()) {
+			if (update_culling(dt)) {
 				// switch to: PLAY
 				state					=	stPlaying;
 				position				= 	(((dwTime-dwTimeStarted)%source->dwTimeTotal)*source->dwBytesPerMS);
@@ -75,7 +75,7 @@ void CSoundRender_Emitter::update	()
 		}
 		break;
 	case stPlayingLooped:
-		if (!update_culling()) 
+		if (!update_culling(dt)) 
 		{
 			// switch to: SIMULATE
 			state					=	stSimulatingLooped;	// switch state
@@ -84,11 +84,11 @@ void CSoundRender_Emitter::update	()
 		else 
 		{
 			// We are still playing
-			update_environment	();
+			update_environment	(dt);
 		}
 		break;
 	case stSimulatingLooped:
-		if (update_culling()) 
+		if (update_culling(dt)) 
 		{
 			// switch to: PLAY
 			state					=	stPlayingLooped;	// switch state
@@ -106,10 +106,10 @@ void CSoundRender_Emitter::update	()
 	} else if (owner)	{ owner->feedback = 0; owner	= 0; }
 }
 
-BOOL	CSoundRender_Emitter::update_culling	()
+BOOL	CSoundRender_Emitter::update_culling	(float dt)
 {
 	// Check range
-	float	dist		= SoundRender.Listener.distance_to	(p_source.position);
+	float	dist		= SoundRender.Listener.vPosition.distance_to	(p_source.position);
 	if (dist>p_source.max_distance)	return FALSE;
 
 	// Calc attenuated volume
@@ -118,7 +118,7 @@ BOOL	CSoundRender_Emitter::update_culling	()
 
 	// Update occlusion
 	float occ			=	(SoundRender.get_occlusion	(p_source.position,.2f,occluder))?-1.f:1.f;
-	occluder_volume		+=	Device.fTimeDelta*2*occ;
+	occluder_volume		+=	dt*2*occ;
 	clamp				(occluder_volume,0.f,1.f);
 
 	// Update smoothing
@@ -128,8 +128,8 @@ BOOL	CSoundRender_Emitter::update_culling	()
 	return TRUE;
 }
 
-void	CSoundRender_Emitter::update_environment	()
+void	CSoundRender_Emitter::update_environment	(float dt)
 {
 	if (bMoved)			e_target	= *SoundRender.get_environment	(p_source.position);
-	e_current.lerp		(e_current,e_target,Device.fTimeDelta);
+	e_current.lerp		(e_current,e_target,dt);
 }

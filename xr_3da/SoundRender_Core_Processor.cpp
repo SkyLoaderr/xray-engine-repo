@@ -21,7 +21,7 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 	for (it=0; it<s_emitters.size(); it++)
 	{
 		CSoundRender_Emitter*	pEmitter = s_emitters[it];
-		pEmitter->update		();
+		pEmitter->update		(dt);
 		if (!pEmitter->isPlaying())		
 		{
 			// Stopped

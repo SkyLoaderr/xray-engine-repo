@@ -53,9 +53,9 @@ public:
 	void						fill_block				(void* ptr, u32 size);
 
 	void						start					(sound* _owner, BOOL _loop);
-	void						update					();
-	BOOL						update_culling			();
-	void						update_environment		();
+	void						update					(float dt);
+	BOOL						update_culling			(float dt);
+	void						update_environment		(float dt);
 	void						rewind					();
 	virtual void				stop					();
 
