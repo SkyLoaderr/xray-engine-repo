@@ -43,4 +43,9 @@ void CHOM::Load			(CStream* S)
 	
 	// Determine adjacency
 	CL.calc_adjacency	();
+
+	// Create AABB-tree
+	
+	
+	// Create RASTER-triangles
 }
