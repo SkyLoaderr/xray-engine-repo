@@ -71,11 +71,11 @@ void CBuild::BuildSectors()
 				g_sectors[j]->add_light(WORD(I));
 			}
 		} else {
-			if	(L.s_count) {
-				for (DWORD j=0; j<L.s_count; j++)
+			if	(L.sectors.size()) {
+				for (DWORD j=0; j<L.sectors.size(); j++)
 				{
-					R_ASSERT(L.s_sectors[j]<g_sectors.size());
-					g_sectors[L.s_sectors[j]]->add_light(WORD(I));
+					R_ASSERT	(L.sectors[j]<g_sectors.size());
+					g_sectors	[L.sectors[j]]->add_light(WORD(I));
 				}
 			} else {
 				Msg("Fuck!!! Light at position %f,%f,%f non associated!!!",

@@ -102,8 +102,8 @@ CBuild::CBuild(b_transfer * L)
 	for (DWORD l=0; l<L->light_count; l++) {
 		b_light R = L->lights[l];
 		R.direction.normalize_safe();
-		if (R.flags & XRLIGHT_LMAPS)	lights_lmaps.push_back(R);
-		if ((R.flags & XRLIGHT_MODELS)||(R.flags & XRLIGHT_PROCEDURAL)) lights_dynamic.push_back(R);
+		if (R.flags.bAffectStatic)	lights_lmaps.push_back(R);
+		if (R.flags.bAffectDynamic) lights_dynamic.push_back(R);
 	}
 
 	// process textures

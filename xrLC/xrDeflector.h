@@ -66,7 +66,6 @@ public:
 	VOID	Light			(HASH& H);
 	VOID	L_Direct		(HASH& H);
 	VOID	L_Direct_Edge	(UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size);
-	VOID	L_Radiosity		(HASH& H);
 	VOID	L_Calculate		(HASH& H);
 	VOID	Save			();
 

@@ -389,8 +389,7 @@ VOID CDeflector::L_Calculate(HASH& H)
 		lm.pSurface = (DWORD *)malloc(size);
 		ZeroMemory	(lm.pSurface,size);
 	}
-	if (g_params.m_bRadiosity)	L_Radiosity	(H);
-	else						L_Direct	(H);
+	L_Direct		(H);
 }
 
 VOID CDeflector::Light(HASH& H)

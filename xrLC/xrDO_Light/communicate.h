@@ -44,6 +44,7 @@ struct b_texture
 struct b_light : public Flight
 {
 	struct {
+		DWORD			bAffectStatic	: 1;
 		DWORD			bAffectDynamic	: 1;
 		DWORD			bProcedural		: 1;
 	}					flags;
