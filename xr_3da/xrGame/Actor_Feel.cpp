@@ -45,7 +45,7 @@ void CActor::feel_touch_new				(CObject* O)
 	}
 
 	// Test for GAME-specific events
-	switch (Game())
+	switch (GameID())
 	{
 	case GAME_ASSAULT:
 		{
