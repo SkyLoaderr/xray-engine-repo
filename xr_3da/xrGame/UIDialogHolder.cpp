@@ -25,11 +25,13 @@ CDialogHolder::CDialogHolder()
 	shedule.t_min			= 5;
 	shedule.t_max			= 20;
 	shedule_register();
+	Device.seqFrame.Add		(this,REG_PRIORITY_LOW-1000);
 }
 
 CDialogHolder::~CDialogHolder()
 {
 	shedule_unregister();
+	Device.seqFrame.Remove		(this);
 }
 
 void CDialogHolder::StartMenu (CUIDialogWnd* pDialog)
@@ -121,31 +123,33 @@ void CDialogHolder::StartStopMenu(CUIDialogWnd* pDialog, bool bDoHideIndicators)
 */
 }
 
-void CDialogHolder::shedule_Update(u32 dt)
+void CDialogHolder::OnFrame	()
 {
-	ISheduled::shedule_Update(dt);
 	xr_vector<dlgItem>::iterator it = m_dialogsToRender.begin();
 	for(; it!=m_dialogsToRender.end();++it)
 		if((*it).enabled && (*it).wnd->IsEnabled())
 			(*it).wnd->Update();
 
-
-	std::sort	(m_dialogsToRender.begin(), m_dialogsToRender.end() );
-	while	((m_dialogsToRender.size()) && (!m_dialogsToRender[m_dialogsToRender.size()-1].enabled)) 
-		m_dialogsToRender.pop_back();
-/*
-	for(it = m_dialogsToErase.begin(); it!=m_dialogsToErase.end(); ++it)
-	{
-		xr_vector<CUIWindow*>::iterator it_find = std::find(m_dialogsToRender.begin(),
-			m_dialogsToRender.end(), *it);
-		if (it_find != m_dialogsToRender.end())
-		{
-			m_dialogsToRender.erase(it_find);
-		}
-	}
-	m_dialogsToErase.clear();
-*/
 }
+
+void CDialogHolder::shedule_Update(u32 dt)
+{
+	ISheduled::shedule_Update(dt);
+
+//	xr_vector<dlgItem>::iterator it = m_dialogsToRender.begin();
+//	for(; it!=m_dialogsToRender.end();++it)
+//		if((*it).enabled && (*it).wnd->IsEnabled())
+//			(*it).wnd->Update();
+
+
+	if( m_dialogsToRender.size() )
+	{
+		std::sort	(m_dialogsToRender.begin(), m_dialogsToRender.end() );
+		while	((m_dialogsToRender.size()) && (!m_dialogsToRender[m_dialogsToRender.size()-1].enabled)) 
+			m_dialogsToRender.pop_back();
+	}
+}
+
 float CDialogHolder::shedule_Scale()
 {
 	return 0.5f;

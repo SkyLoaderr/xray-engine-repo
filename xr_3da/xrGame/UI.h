@@ -68,7 +68,7 @@ public:
 	virtual					~CUI					();
 
 	bool					Render					();
-	void					OnFrame					();
+	void					UIOnFrame				();
 
 	void					Load					();
 

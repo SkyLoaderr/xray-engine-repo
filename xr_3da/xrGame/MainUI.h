@@ -12,7 +12,6 @@ class CMainUI :
 	public IMainUI,
 	public IInputReceiver,
 	public pureRender,
-	public pureFrame,
 	public CDialogHolder
 
 {

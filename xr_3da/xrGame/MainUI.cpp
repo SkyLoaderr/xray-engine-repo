@@ -53,7 +53,7 @@ void CMainUI::Activate	(bool bActivate)
 			Device.seqRender.Remove	(g_pGameLevel);
 		};
 		Device.seqRender.Add		(this);
-		Device.seqFrame.Add			(this);
+//		Device.seqFrame.Add			(this);
 		IR_Capture					();
 	}else{
 		m_bActive					= false;
@@ -153,11 +153,12 @@ void	CMainUI::OnRender		(void)
 void	CMainUI::OnFrame		(void)
 {
 	if(!IsActive() && m_startDialog){
-		Device.seqFrame.Remove		(this);
+//		Device.seqFrame.Remove		(this);
 //		Device.seqRender.Remove		(this);
 //		IR_Release					();
 		xr_delete					(m_startDialog);
 	}
+	CDialogHolder::OnFrame();
 }
 
 

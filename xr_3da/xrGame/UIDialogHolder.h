@@ -11,7 +11,7 @@ public:
 	bool operator < (const dlgItem& itm);
 };
 
-class CDialogHolder :public ISheduled
+class CDialogHolder :public ISheduled,public pureFrame
 {
 	//dialogs
 	xr_stack<CUIDialogWnd*>									m_input_receivers;
@@ -38,5 +38,5 @@ public:
 	virtual void			StartStopMenu					(CUIDialogWnd* pDialog, bool bDoHideIndicators);
 	void					AddDialogToRender				(CUIWindow* pDialog);
 	void					RemoveDialogToRender			(CUIWindow* pDialog);
-
+	virtual void			OnFrame							();
 };

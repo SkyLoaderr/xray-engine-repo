@@ -97,57 +97,6 @@ CHUDManager::~CHUDManager()
 }
 
 //--------------------------------------------------------------------
-/*
-void CHUDManager::ClientToScreenScaled(Irect& r, u32 align)
-{
-	r.x1 = ClientToScreenScaledX(r.x1,align); 
-	r.y1 = ClientToScreenScaledY(r.y1,align); 
-	r.x2 = ClientToScreenScaledX(r.x2,align); 
-	r.y2 = ClientToScreenScaledY(r.y2,align); 
-}
-
-void CHUDManager::ClientToScreenScaled(Ivector2& dest, int left, int top, u32 align)
-{
-	dest.set(ClientToScreenScaledX(left,align),	ClientToScreenScaledY(top,align));
-}
-
-int CHUDManager::ClientToScreenScaledX(int left, u32 align)
-{
-	if (align&alRight)	return iFloor(Device.dwWidth-UI_BASE_WIDTH*fScale + left*fScale);
-	else				return iFloor(left*fScale);
-}
-
-int CHUDManager::ClientToScreenScaledY(int top, u32 align)
-{
-	if (align&alBottom)	return iFloor(Device.dwHeight-UI_BASE_HEIGHT*fScale + top*fScale);
-	else				return iFloor(top*fScale);
-}
-
-void CHUDManager::ClientToScreen(Ivector2& dest, int left, int top, u32 align)
-{
-	dest.set(ClientToScreenX(left,align),	ClientToScreenY(top,align));
-}
-
-void CHUDManager::ClientToScreen(Irect& r, u32 align)
-{
-	r.x1 = ClientToScreenX(r.x1,align); 
-	r.y1 = ClientToScreenY(r.y1,align); 
-	r.x2 = ClientToScreenX(r.x2,align); 
-	r.y2 = ClientToScreenY(r.y2,align); 
-}
-
-int CHUDManager::ClientToScreenX(int left, u32 align)
-{
-	if (align&alRight)	return iFloor(Device.dwWidth-UI_BASE_WIDTH*fScale + left);
-	else				return left;
-}
-
-int CHUDManager::ClientToScreenY(int top, u32 align)
-{
-	if (align&alBottom)	return iFloor(Device.dwHeight-UI_BASE_HEIGHT*fScale + top);
-	else				return top;
-}
-*/
 
 void CHUDManager::Load()
 {
@@ -158,7 +107,7 @@ void CHUDManager::Load()
 //--------------------------------------------------------------------
 void CHUDManager::OnFrame()
 {
-	if (pUI) pUI->OnFrame();
+	if (pUI) pUI->UIOnFrame();
 }
 //--------------------------------------------------------------------
 
@@ -235,17 +184,6 @@ void  CHUDManager::RenderUI()
 void CHUDManager::OnEvent(EVENT E, u64 P1, u64 P2)
 {
 }
-//--------------------------------------------------------------------
-/*
-void CHUDManager::SetScale(float s){
-	fScale			= s;
-}
-void CHUDManager::OnDeviceCreate()
-{
-	if (Device.dwWidth<UI_BASE_WIDTH)	SetScale(float(Device.dwWidth)/float(UI_BASE_WIDTH));
-	else								SetScale(1.f);
-}
-*/
 //--------------------------------------------------------------------
 void __cdecl CHUDManager::outMessage(u32 C, LPCSTR from, LPCSTR msg, ...)
 {

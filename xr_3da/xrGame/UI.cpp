@@ -59,7 +59,7 @@ u32 ScaleAlpha(u32 val, float factor)
     return ((u32)(a<<24) | (r<<16) | (g<<8) | (b));
 }
 
-void CUI::OnFrame()
+void CUI::UIOnFrame()
 {
 	CEntity* m_Actor = smart_cast<CEntity*>(Level().CurrentEntity());
 	if (m_Actor){

@@ -516,7 +516,7 @@ void CWeapon::load(IReader &input_packet)
 
 void CWeapon::OnEvent				(NET_Packet& P, u16 type) 
 {
-	inherited::OnEvent(P,type);
+//	inherited::OnEvent(P,type);
 
 	switch (type)
 	{
@@ -971,9 +971,8 @@ CUIStaticItem* CWeapon::ZoomTexture()
 
 void CWeapon::SwitchState(u32 S)
 {
-	inherited::SwitchState(S);
-
 	NEXT_STATE		= S;	// Very-very important line of code!!! :)
+
 	if (CHudItem::object().Local() && !CHudItem::object().getDestroy()/* && (S!=NEXT_STATE)*/)	
 	{
 		// !!! Just single entry for given state !!!
