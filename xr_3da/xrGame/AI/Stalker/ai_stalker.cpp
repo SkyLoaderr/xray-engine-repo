@@ -969,9 +969,10 @@ void CAI_Stalker::Update	( u32 DT )
 			vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
 			for ( ; I != E; I++)
 				m_inventory.Ruck((*I).m_pIItem);
-//			TIItemList &l_list = m_inventory.m_ruck;
-//			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++)
-//				(**l_it).Drop();
+			TIItemList &l_list = m_inventory.m_ruck;
+			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++)
+				if (*l_it == tpWeapon)
+					(**l_it).Drop();
 		}
 		else {
 			m_inventory.Action(kWPN_FIRE,	CMD_START);
