@@ -22,8 +22,8 @@ typedef struct tagSSearchPlace {
 //typedef svector<bool,MAX_SUSPICIOUS_NODE_COUNT>				SuspiciousGroups;
 typedef xr_vector<Fvector>										MemberPlacement;
 typedef xr_vector<u32>											MemberNodes;
-typedef svector<SSearchPlace,MAX_SUSPICIOUS_NODE_COUNT>			SuspiciousNodes;
-typedef svector<bool,MAX_SUSPICIOUS_NODE_COUNT>					SuspiciousGroups;
+typedef xr_vector<SSearchPlace>									SuspiciousNodes;
+typedef xr_vector<bool>											SuspiciousGroups;
 typedef FixedSET<CObject*>										objVisible;
 
 class CGroup

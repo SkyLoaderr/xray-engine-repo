@@ -23,7 +23,7 @@ class CSquad
 {
 public:
 	CEntity*					Leader;
-	svector<CGroup,maxGroups>	Groups;
+	xr_vector<CGroup>			Groups;
 
 	objVisible					KnownEnemys;
 
@@ -38,7 +38,7 @@ const int maxRP					= 64;
 class CTeam
 {
 public:
-	svector<CSquad,maxTeams>	Squads;
+	xr_vector<CSquad>			Squads;
 };
 
 //by Dandy
