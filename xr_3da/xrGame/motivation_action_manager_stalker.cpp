@@ -153,7 +153,10 @@ void CMotivationActionManagerStalker::add_actions			()
 
 	action					= xr_new<CStalkerActionKillEnemy>	(m_object,"kill_enemy");
 	add_condition			(action,eWorldPropertyAlive,		true);
+	add_condition			(action,eWorldPropertyEnemy,		true);
+	add_condition			(action,eWorldPropertySeeEnemy,		true);
 	add_condition			(action,eWorldPropertyKillDistance,	true);
+	add_condition			(action,eWorldPropertyReadyToKill,	true);
 	add_effect				(action,eWorldPropertyEnemy,		false);
 	add_operator			(eWorldOperatorKillEnemy,			action);
 
