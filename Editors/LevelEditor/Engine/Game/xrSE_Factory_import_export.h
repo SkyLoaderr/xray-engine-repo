@@ -10,7 +10,7 @@
 class CSE_Abstract;
 
 extern "C" {
-	FACTORY_API CSE_Abstract* __stdcall create_entity	(LPCSTR section);
+	FACTORY_API ISE_Abstract* __stdcall create_entity	(LPCSTR section);
 	FACTORY_API void		  __stdcall destroy_entity	(CSE_Abstract *&);
 };
 

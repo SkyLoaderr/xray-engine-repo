@@ -14,6 +14,7 @@
 #include "ShapeData.h"
 #ifndef XRGAME_EXPORTS
 #	include "Sound.h"
+#	include "net_utils.h"
 #endif
 #include "xrEProps.h"
 #include "PropertiesListHelper.h"

@@ -28,12 +28,12 @@ IPropHelper &PHelper()
 	return						(_PHelper());
 }
 
-DLL_API CSE_Abstract *create_entity	(LPCSTR section)
+FACTORY_API ISE_Abstract *create_entity	(LPCSTR section)
 {
 	return				(F_entity_Create(section));
 }
 
-DLL_API void destroy_entity			(CSE_Abstract *&abstract)
+FACTORY_API void destroy_entity			(ISE_Abstract *&abstract)
 {
 	return				(F_entity_Destroy(abstract));
 }
