@@ -69,6 +69,7 @@ protected:
 	BOOL		c_XForm		();
 public:
 	static		CBlender*	Create			(CLASS_ID cls);
+	static		void		CreatePalette	(vector<CBlender*> & palette);
 	
 	CBlender_DESC&			getDescription();
 	virtual		LPCSTR		getComment()	= 0;

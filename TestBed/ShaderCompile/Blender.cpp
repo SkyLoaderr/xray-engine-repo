@@ -79,3 +79,11 @@ CBlender*	CBlender::Create	(CLASS_ID cls)
 	default:				return 0;
 	}
 }
+void		CBlender::CreatePalette(vector<CBlender*> &palette)
+{
+	R_ASSERT(palette.empty());
+	palette.push_back(Create(B_DEFAULT));
+	palette.push_back(Create(B_DEFAULT_AREF));
+	palette.push_back(Create(B_VERT));
+	palette.push_back(Create(B_VERT_AREF));
+}
