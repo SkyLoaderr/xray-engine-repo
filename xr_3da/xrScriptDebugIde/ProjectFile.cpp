@@ -239,9 +239,13 @@ void CProjectFile::ReloadFile()
 	if(!GetLuaView())
 		return;
 
+	int pos = GetLuaView()->GetEditor()->GetCurrentPos();
 	CFile fin;
 	if ( fin.Open(GetPathName(), CFile::modeRead) )
+	{
 		GetLuaView()->GetEditor()->Load(&fin);
+		GetLuaView()->GetEditor()->SetCurrentPos(pos);
+	}
 }
 
 void CProjectFile::Check_view ()

@@ -41,6 +41,8 @@ public:
 	void EndPrint(CDC* pDC, CPrintInfo* pInfo);
 	void SetStackTraceLevel(int nLevel);
 	void SetCallStackMargins();
+	int GetCurrentPos();
+	void SetCurrentPos(int pos);
 	int GetCurrentLine();
 	void GotoLastLine();
 	CString GetLine(int nLine);

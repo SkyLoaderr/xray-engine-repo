@@ -233,10 +233,19 @@ void CLuaEditor::SelectAll()
 {
 	Sci(SCI_SELECTALL);
 }
+int CLuaEditor::GetCurrentPos()
+{
+	return Sci(SCI_GETCURRENTPOS);
+}
+void CLuaEditor::SetCurrentPos(int pos)
+{
+	Sci(SCI_GOTOPOS, pos);
+//	Sci(SCI_SETCURRENTPOS,pos);
+}
 
 BOOL CLuaEditor::CanCutOrClear()
 {
-	int currentPos = Sci(SCI_GETCURRENTPOS);
+	int currentPos = GetCurrentPos();
 	int anchor = Sci(SCI_GETANCHOR);
 
 	return currentPos != anchor;
@@ -353,7 +362,7 @@ void CLuaEditor::GotoLastLine()
 
 int CLuaEditor::GetCurrentLine()
 {
-	return Sci(SCI_LINEFROMPOSITION, Sci(SCI_GETCURRENTPOS)) + 1;
+	return Sci(SCI_LINEFROMPOSITION, GetCurrentPos()) + 1;
 
 }
 
@@ -660,7 +669,7 @@ void CLuaEditor::setupLexer_ex()
 
 void	CLuaEditor::AdjustCurrTabIndent()
 {
-	int pos			=   Sci(SCI_GETCURRENTPOS);
+	int pos			=   GetCurrentPos();
 	
 	int line		= 	Sci(SCI_LINEFROMPOSITION,pos);
 	int prev_indent	=	Sci(SCI_GETLINEINDENTATION,line-1);
