@@ -45,8 +45,6 @@
 #define CLSID_AI_SNORK				MK_CLSID('A','I','_','S','N','O','R','K')
 #define CLSID_AI_CAT				MK_CLSID('A','I','_','C','A','T',' ',' ')
 
-#define CLSID_AI_IDOL				MK_CLSID('A','I','_','I','D','O','L',' ')
-
 // vehicles
 #define CLSID_CAR					MK_CLSID('C','_','N','I','V','A',' ',' ')
 #define CLSID_VEHICLE_HELICOPTER	MK_CLSID('C','_','H','L','C','P','T','R')

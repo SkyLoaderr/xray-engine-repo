@@ -2764,16 +2764,6 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="Idol"
-						Filter="">
-						<File
-							RelativePath="AI\Idol\ai_idol.cpp">
-						</File>
-						<File
-							RelativePath="AI\Idol\ai_idol.h">
-						</File>
-					</Filter>
-					<Filter
 						Name="Rat"
 						Filter="">
 						<File

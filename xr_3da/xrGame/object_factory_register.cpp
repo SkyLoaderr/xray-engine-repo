@@ -206,7 +206,6 @@ void CObjectFactory::register_classes	()
 	ADD(CAI_Dog					,CSE_ALifeMonsterBase			,CLSID_AI_DOG_RED				,"dog_red");
 	ADD(CAI_Stalker				,CSE_ALifeHumanStalker			,CLSID_AI_SOLDIER				,"soldier");
 	ADD(CAI_Stalker				,CSE_ALifeHumanStalker			,CLSID_AI_STALKER				,"stalker");
-	ADD(CAI_Idol				,CSE_ALifeObjectIdol			,CLSID_AI_IDOL					,"idol");
 	ADD(CAI_Bloodsucker			,CSE_ALifeMonsterBase			,CLSID_AI_BLOODSUCKER			,"bloodsucker");
 	ADD(CAI_Boar				,CSE_ALifeMonsterBase			,CLSID_AI_BOAR					,"boar");
 	ADD(CAI_PseudoDog			,CSE_ALifeMonsterBase			,CLSID_AI_DOG_BLACK				,"dog_black");

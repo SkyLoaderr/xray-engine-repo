@@ -1749,6 +1749,7 @@ CSE_ALifeHumanStalker::CSE_ALifeHumanStalker(LPCSTR caSection) : CSE_ALifeHumanA
 {
 	m_dwTotalMoney				= 0;
 	m_trader_flags.set			(eTraderFlagInfiniteAmmo,TRUE);
+	m_demo_mode					= FALSE;
 }
 
 CSE_ALifeHumanStalker::~CSE_ALifeHumanStalker()
@@ -1759,75 +1760,41 @@ void CSE_ALifeHumanStalker::STATE_Write		(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
 	inherited2::STATE_Write		(tNetPacket);
+	tNetPacket.w_u8				(u8(!!m_demo_mode));
 }
 
 void CSE_ALifeHumanStalker::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 {
 	inherited1::STATE_Read		(tNetPacket, size);
-	if(m_wVersion>=68)
-		inherited2::STATE_Read		(tNetPacket, size);
+	
+	if (m_wVersion > 67)
+		inherited2::STATE_Read	(tNetPacket, size);
+
+	if (m_wVersion > 90)
+		m_demo_mode				= !!tNetPacket.r_u8();
 }
 
 void CSE_ALifeHumanStalker::UPDATE_Write	(NET_Packet &tNetPacket)
 {
-	inherited1::UPDATE_Write		(tNetPacket);
-	inherited2::UPDATE_Write		(tNetPacket);
-};
+	inherited1::UPDATE_Write	(tNetPacket);
+	inherited2::UPDATE_Write	(tNetPacket);
+}
 
 void CSE_ALifeHumanStalker::UPDATE_Read		(NET_Packet &tNetPacket)
 {
 	inherited1::UPDATE_Read		(tNetPacket);
 	inherited2::UPDATE_Read		(tNetPacket);
-};
+}
+
 void CSE_ALifeHumanStalker::load(NET_Packet &tNetPacket)
 {
-	inherited1::load(tNetPacket);
-	inherited2::load(tNetPacket);
+	inherited1::load			(tNetPacket);
+	inherited2::load			(tNetPacket);
 }
 
 void CSE_ALifeHumanStalker::FillProps		(LPCSTR pref, PropItemVec& values)
 {
-	inherited1::FillProps			(pref,values);
-	inherited2::FillProps			(pref,values);
+	inherited1::FillProps		(pref,values);
+	inherited2::FillProps		(pref,values);
+	PHelper().CreateBOOL		(values,PrepareKey(pref,*s_name,"Demo mode"),&m_demo_mode);
 }
-
-//////////////////////////////////////////////////////////////////////////
-// CSE_ALifeObjectIdol
-//////////////////////////////////////////////////////////////////////////
-CSE_ALifeObjectIdol::CSE_ALifeObjectIdol	(LPCSTR caSection) : CSE_ALifeHumanAbstract(caSection)
-{
-	m_dwAniPlayType				= 0;
-}
-
-CSE_ALifeObjectIdol::~CSE_ALifeObjectIdol	()
-{
-}
-
-void CSE_ALifeObjectIdol::STATE_Read		(NET_Packet& tNetPacket, u16 size)
-{
-	inherited::STATE_Read		(tNetPacket,size);
-	tNetPacket.r_stringZ		(m_caAnimations);
-	tNetPacket.r_u32			(m_dwAniPlayType);
-}
-
-void CSE_ALifeObjectIdol::STATE_Write		(NET_Packet& tNetPacket)
-{
-	inherited::STATE_Write		(tNetPacket);
-	tNetPacket.w_stringZ			(m_caAnimations);
-	tNetPacket.w_u32			(m_dwAniPlayType);
-}
-
-void CSE_ALifeObjectIdol::UPDATE_Read		(NET_Packet& tNetPacket)
-{
-}
-
-void CSE_ALifeObjectIdol::UPDATE_Write		(NET_Packet& tNetPacket)
-{
-}
-
-void CSE_ALifeObjectIdol::FillProps			(LPCSTR pref, PropItemVec& items)
-{
-   	inherited::FillProps			(pref, items);
-	PHelper().CreateRText		(items, PrepareKey(pref,*s_name,"Idol", "Animations"),&m_caAnimations);
-   	PHelper().CreateU32			(items, PrepareKey(pref,*s_name,"Idol", "Animation playing type"),&m_dwAniPlayType,0,2,1);
-}	

@@ -446,21 +446,13 @@ add_to_type_list(CSE_ALifeHumanAbstract)
 #define script_type_list save_type_list(CSE_ALifeHumanAbstract)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanStalker,CSE_ALifeHumanAbstract,CSE_PHSkeleton)
+	BOOL							m_demo_mode;
 									CSE_ALifeHumanStalker	(LPCSTR caSection);
 	virtual							~CSE_ALifeHumanStalker	();
 	virtual	void					load					(NET_Packet &tNetPacket);
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeHumanStalker)
 #define script_type_list save_type_list(CSE_ALifeHumanStalker)
-
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectIdol,CSE_ALifeHumanAbstract)
-	shared_str							m_caAnimations;
-	u32								m_dwAniPlayType;
-									CSE_ALifeObjectIdol		(LPCSTR caSection);
-	virtual							~CSE_ALifeObjectIdol	();
-SERVER_ENTITY_DECLARE_END
-add_to_type_list(CSE_ALifeObjectIdol)
-#define script_type_list save_type_list(CSE_ALifeObjectIdol)
 
 #pragma warning(pop)
 

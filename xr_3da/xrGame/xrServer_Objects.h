@@ -107,8 +107,9 @@
 // 88 - CSE_ALifeCreatureAbstract		appended with m_dynamic_restrictions property
 // 89 - CSE_AlifeCreatureActor			appended with m_holderID
 // 90 - CSE_ALifeItemPDA				appended with m_specific_character, m_info_portion
+// 91 - CSE_ALifeHumanStalker			appended with property demo_mode
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(90)
+#define SPAWN_VERSION	u16(91)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:
