@@ -5,6 +5,8 @@
 #include	"occRasterizer.h"
 #include	"ftimer.h"
 
+#pragma comment(lib,"x:\\xrCore.lib")
+
 #define IMG_24B 0
 #define IMG_32B 1
 
@@ -117,7 +119,7 @@ int __cdecl main	(int argc, char* argv[])
 	u64				total=0;
 	int				count=0;
 
-	InitMath		();
+	Core._initialize("occTest");
 	printf			("\n");
 
 	Raster.clear	();
@@ -208,6 +210,7 @@ int __cdecl main	(int argc, char* argv[])
 	desc.maketga	(name);
 	*/
 
+	Core._destroy();
 	return 0;
 }
 
