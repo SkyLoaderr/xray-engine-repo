@@ -137,34 +137,9 @@ void CShaderMain::SetStatus(LPSTR s, bool bOutLog)
     	if (bOutLog&&s&&s[0]) ELog.Msg(mtInformation,s);
     }
 }
-void CShaderMain::PBDraw()
+void CShaderMain::ProgressDraw()
 {
-	SPBItem* pbi 	= PBLast();
-	if (pbi){
-        AnsiString 	txt;
-        float 		p,m;
-        pbi->GetInfo(txt,p,m);
-        // status line
-        fraBottomBar->paStatus->Caption			= txt;
-        fraBottomBar->paStatus->Repaint			();
-        // progress
-    	int val = (int)((p/m)*100);
-        if (val!=fraBottomBar->cgProgress->Progress){
-			fraBottomBar->cgProgress->Progress	= val;
-	        fraBottomBar->cgProgress->Repaint	();
-        }
-    	if (false==fraBottomBar->cgProgress->Visible) 
-        	fraBottomBar->cgProgress->Visible 	= true;
-    }else{
-    	if (fraBottomBar->cgProgress->Visible){
-            // status line
-            fraBottomBar->paStatus->Caption			= "";
-            fraBottomBar->paStatus->Repaint			();
-	        // progress
-	        fraBottomBar->cgProgress->Progress	= 0;
-        	fraBottomBar->cgProgress->Visible 	= false;
-        }
-    }
+	fraBottomBar->RedrawBar();
 }
 //---------------------------------------------------------------------------
 void CShaderMain::OutCameraPos()
