@@ -264,6 +264,7 @@ void CActor::IR_OnMouseMove(int dx, int dy)
 
 void CActor::ActorUse()
 {
+	mstate_real = 0;
 	PickupModeOn();
 
 		
