@@ -218,6 +218,12 @@
 			<File
 				RelativePath="xrRender_R1.cpp">
 			</File>
+			<File
+				RelativePath="xrRender_console.cpp">
+			</File>
+			<File
+				RelativePath="xrRender_console.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Core"

@@ -1,6 +1,5 @@
-// xrRender_R1.cpp : Defines the entry point for the DLL application.
+// xrRender_R2.cpp : Defines the entry point for the DLL application.
 //
-
 #include "stdafx.h"
 #include "xrRender_console.h"
 
@@ -22,5 +21,5 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 	case DLL_PROCESS_DETACH:
 		break;
 	}
-    return TRUE;
+	return TRUE;
 }

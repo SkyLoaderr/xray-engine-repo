@@ -106,20 +106,41 @@
 	</Configurations>
 	<Files>
 		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm">
+			Name="Kernel"
+			Filter="">
 		</Filter>
 		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc">
+			Name="Core"
+			Filter="">
 		</Filter>
 		<Filter
-			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe">
+			Name="Details"
+			Filter="">
 		</Filter>
-		<File
-			RelativePath="ReadMe.txt">
-		</File>
+		<Filter
+			Name="Stripifier"
+			Filter="">
+		</Filter>
+		<Filter
+			Name="Lights"
+			Filter="">
+		</Filter>
+		<Filter
+			Name="Glows"
+			Filter="">
+		</Filter>
+		<Filter
+			Name="Wallmarks"
+			Filter="">
+		</Filter>
+		<Filter
+			Name="Sector/Portal"
+			Filter="">
+		</Filter>
+		<Filter
+			Name="Shading templates"
+			Filter="">
+		</Filter>
 		<File
 			RelativePath="stdafx.cpp">
 			<FileConfiguration
