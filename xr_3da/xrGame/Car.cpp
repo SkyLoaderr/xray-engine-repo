@@ -125,8 +125,18 @@ void	CCar::shedule_Update		(u32 dt)
 {
 	inherited::shedule_Update(dt);
 
-	if(fwp||bkp)UpdatePower();
 
+
+
+}
+#endif
+
+void	CCar::UpdateCL				( )
+{
+	inherited::UpdateCL();
+
+
+#ifdef DEBUG
 	if(m_pPhysicsShell&&m_owner)
 	{
 		Fvector v;
@@ -141,12 +151,7 @@ void	CCar::shedule_Update		(u32 dt)
 		//HUD().pFontSmall->OutNext("Vel Magnitude: [%3.2f]",ph_Movement.GetVelocityMagnitude());
 		//HUD().pFontSmall->OutNext("Vel Actual:    [%3.2f]",ph_Movement.GetVelocityActual());
 	}
-}
 #endif
-
-void	CCar::UpdateCL				( )
-{
-	inherited::UpdateCL();
 	//	Log("UpdateCL",Device.dwFrame);
 	//XFORM().set(m_pPhysicsShell->mXFORM);
 	// Camera
@@ -312,9 +317,9 @@ void CCar::ParseDefinitions()
 	///////////////////////////car properties///////////////////////////////
 
 	m_power_on_min_rpm  =		ini->r_float("car_definition","engine_min_power");
-	m_power_on_min_rpm			*=		(0.8f*1000.f);
+	m_power_on_min_rpm	*=		(0.8f*1000.f);
 
-	m_max_power  =				ini->r_float("car_definition","engine_power");
+	m_max_power			=		ini->r_float("car_definition","engine_power");
 	m_max_power			*=		(0.8f*1000.f);
 
 	//m_max_power			/=		m_driving_wheels.size();
@@ -332,6 +337,8 @@ void CCar::ParseDefinitions()
 	
 	b_auto_switch_transmission= !!ini->r_bool("car_definition","auto_transmission");
 	m_auto_switch_rpm.set(ini->r_fvector2("car_definition","auto_transmission_rpm"));
+	m_auto_switch_rpm.mul((1.f/60.f*2.f*M_PI));
+
 	InitParabola		();
 
 	m_axle_friction		=		ini->r_float("car_definition","axle_friction");
@@ -478,6 +485,7 @@ void CCar::Drive()
 	
 	if(!(b_clutch&&b_engine_on)) return;
 	m_pPhysicsShell->Enable();
+	m_current_rpm=EngineDriveSpeed();
 	m_current_engine_power=EnginePower();
 	xr_vector<SWheelDrive>::iterator i,e;
 	i=m_driving_wheels.begin();
@@ -530,12 +538,21 @@ b_starting=true;
 }
 void CCar::UpdatePower()
 {
+	m_current_rpm=EngineDriveSpeed();
 	m_current_engine_power=EnginePower();
+
+	if(b_auto_switch_transmission) 
+	{
+		if(m_current_rpm<m_auto_switch_rpm.x) TransmisionDown();
+		if(m_current_rpm>m_auto_switch_rpm.y) TransmisionUp();
+	}
+
 	xr_vector<SWheelDrive>::iterator i,e;
 	i=m_driving_wheels.begin();
 	e=m_driving_wheels.end();
 	for(;i!=e;i++)
 		i->UpdatePower();
+
 	if(brp)
 		Break();
 }
@@ -711,6 +728,7 @@ void CCar::ReleaseBreaks()
 void CCar::Transmision(size_t num)
 {
 
+	b_starting=(num==0||num==1);
 	if(num<m_gear_ratious.size())
 	{
 		m_current_transmission_num=num;
@@ -757,6 +775,7 @@ void CCar::PhTune(dReal step)
 	if(m_repairing)Revert();
 	LimitWheels();
 
+	if(fwp||bkp)UpdatePower();
 
 	for (int k=0; k<(int)m_doors_update.size(); k++){
 		SDoor* D = m_doors_update[k];
@@ -858,26 +877,20 @@ float CCar::Parabola(float rpm)
 float CCar::EnginePower()
 {
 
-	float ret;
-	float rpm=EngineDriveSpeed();
-
-	if(rpm<m_min_rpm)
+	if(m_current_rpm<m_min_rpm)
 	{
-		if(b_starting) ret=m_power_on_min_rpm;
-		else		   ret=Parabola(rpm);
+		if(b_starting) return m_power_on_min_rpm;
+	
 	}
 	else
 	{
 		b_starting=false;
-		ret=Parabola(rpm);
 	}
 
-		if(b_auto_switch_transmission) 
-		{
-		if(rpm<m_auto_switch_rpm.x) TransmisionDown();
-		if(rpm>m_auto_switch_rpm.y) TransmisionUp();
-		}
-	return ret;
+	return Parabola(m_current_rpm);
+
+
+
 }
 
 float CCar::EngineDriveSpeed()

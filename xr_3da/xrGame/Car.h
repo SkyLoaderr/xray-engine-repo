@@ -223,6 +223,7 @@ private:
 	float m_a,m_b,m_c;
 
 	float					m_current_engine_power;
+	float					m_current_rpm;
 	float					m_axle_friction;
 
 	float					m_max_rpm;
