@@ -30,4 +30,5 @@ bool CPHJointDestroyInfo::Update()
 		m_breaked=true;
 		return true;
 	}
+	return false;
 }

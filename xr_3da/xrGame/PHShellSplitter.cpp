@@ -2,11 +2,18 @@
 #include "Physics.h"
 #include "PHShell.h"
 #include "PHShellSplitter.h"
-
+#include "PHFracture.h"
+#include "PHJointDestroyInfo.h"
 CPHShellSplitterHolder::CPHShellSplitterHolder()
 {
 	m_has_breaks=false;
 	bActive=false;
+}
+
+CPHShellSplitterHolder::~CPHShellSplitterHolder()
+{
+	Deactivate();
+	m_splitters.clear();
 }
 //the simpliest case - a joint to be destroied 
 CPhysicsShell* CPHShellSplitterHolder::SplitJoint(u16 aspl)
@@ -127,18 +134,57 @@ shell->PresetActive();
 
 void CPHShellSplitterHolder::PhTune(dReal step)
 {
+	SPLITTER_I i=m_splitters.begin(),e=m_splitters.end();
+	for(;i!=e;i++)
+	{
+		switch(i->m_type) 
+		{
+			case CPHShellSplitter::splElement:
+				{
+				CPHElement* element=m_pShell->elements[i->m_element];
+				element->FracturesHolder()->PhTune(element->get_body());
+				break;
+				}
+			case CPHShellSplitter::splJoint:
+				{
+				break;
+				}
+		default: NODEFAULT;
+		}
+	}
 }
 void CPHShellSplitterHolder::PhDataUpdate(dReal step)
 {
+	SPLITTER_I i=m_splitters.begin(),e=m_splitters.end();
+	for(;i!=e;i++)
+	{
+		switch(i->m_type) 
+		{
+		case CPHShellSplitter::splElement:
+			{
+				CPHElement* element=m_pShell->elements[i->m_element];
+				m_has_breaks=m_has_breaks||(element->FracturesHolder()->PhDataUpdate(element->get_body()));
+				break;
+			}
+		case CPHShellSplitter::splJoint:
+			{
+				m_has_breaks=m_has_breaks||m_pShell->joints[i->m_joint]->JointDestroyInfo()->Update();
+				break;
+			}
+		default: NODEFAULT;
+		}
+	}
 }
 void CPHShellSplitterHolder::Activate()
 {
+	if(bActive) return;
 	CPHObject::Activate();
 	bActive=true;
 }
 
 void CPHShellSplitterHolder::Deactivate()
 {
+	if(!bActive)return;
 	CPHObject::Deactivate();
 	bActive=false;
 }

@@ -6,6 +6,13 @@ CPHFracturesHolder::CPHFracturesHolder()
 {
 	m_has_breaks=false;
 }
+CPHFracturesHolder::~CPHFracturesHolder()
+{
+	m_has_breaks=false;
+	m_fractures.clear();
+	m_impacts.clear();
+	m_feedbacks.clear();
+}
 CPHElement* CPHFracturesHolder::SplitFromEnd(CPHElement* element,u16 fracture)
 {
 	FRACTURE_I fract_i=m_fractures.begin()+fracture;
@@ -16,7 +23,7 @@ CPHElement* CPHFracturesHolder::SplitFromEnd(CPHElement* element,u16 fracture)
 	m_fractures.erase(fract_i);
 	//fracture now points to next fracture
 	//if we have another fractures after this one pass them to the created element starting from fracture(next to argument fracture)
-	//shift geoms in fractures by number of geoms lived in source element
+	//shift geoms in fractures by number of geoms leaved in source element
 	if(m_fractures.size()-fracture>0) 
 	{	
 		if(new_element->m_fratures_holder==NULL)//create fractures holder if it was not created before
@@ -61,13 +68,47 @@ element->CreateSimulBase();
 element->ReInitDynamics();
 }
 
-void CPHFracturesHolder::PhTune()
+void CPHFracturesHolder::PhTune(dBodyID body)
 {
+	//iterate through all body's joints and set joints feedbacks where is not already set
+	//contact feedbacks stored in global storage - ContactFeedBacks wich cleared on each step
+	//breacable joints already has their feedbacks, 
+	//feedbacks for rest noncontact joints stored in m_feedbacks in runtime in this function and
+	//and killed by destructor
+
+	//int dBodyGetNumJoints (dBodyID b);
+	//dJointID dBodyGetJoint (dBodyID, int index);
+	//dJointGetType
+	//dJointTypeContact
+
+	int num=dBodyGetNumJoints(body);
+	for(int i=0;i<num;i++)
+	{
+		dJointID joint=dBodyGetJoint(body,i);
+
+		if(dJointGetType(joint)==dJointTypeContact)
+		{
+			dJointSetFeedback(joint,ContactFeedBacks.add());
+		}
+		else
+		{
+			if(!dJointGetFeedback(joint))
+			{
+				m_feedbacks.push_back(dJointFeedback());
+				dJointSetFeedback(joint,&m_feedbacks.back());
+			}
+		}
+	}
 
 }
-bool CPHFracturesHolder::PhDataUpdate()
+bool CPHFracturesHolder::PhDataUpdate(dBodyID body)
 {
-	return false;
+	FRACTURE_I i=m_fractures.begin(),e=m_fractures.end();
+	for(;i!=e;i++)
+	{
+		m_has_breaks=m_has_breaks||i->Update(m_impacts,body);
+	}
+	return m_has_breaks;
 }
 
 void CPHFracturesHolder::AddImpact(const Fvector& force,const Fvector& point)
@@ -89,6 +130,6 @@ m_breaked=false;
 }
 bool CPHFracture::Update(PH_IMPACT_STORAGE& impacts,dBodyID body)
 {
-
+	
 	return false;
 }

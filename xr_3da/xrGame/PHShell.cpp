@@ -59,6 +59,7 @@ float CPHShell::getMass()
 
 	return m;
 }
+
 void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disable){
 	if(bActive)
 		return;
@@ -75,6 +76,7 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 		(*i)->Activate(m0,dt01, m2, disable);
 	}
 	//SetPhObjectInElements();
+	if(m_spliter_holder)m_spliter_holder->Activate();
 	bActive=true;
 }
 
@@ -96,11 +98,45 @@ void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fv
 		(*i)->Activate(transform,lin_vel, ang_vel);
 	}
 	//SetPhObjectInElements();
+	if(m_spliter_holder)m_spliter_holder->Activate();
 	bActive=true;
 }
 
 
 
+void CPHShell::Activate(bool place_current_forms,bool disable)
+{ 
+	if(bActive)
+		return;
+	CPHObject::Activate();
+	if(!m_space) m_space=dSimpleSpaceCreate(ph_world->GetSpace());
+
+	{		
+		ELEMENT_I i=elements.begin(),e=elements.end();
+		if(place_current_forms) for(;i!=e;i++)(*i)->Activate(mXFORM,disable);
+	}
+
+	{
+		JOINT_I i=joints.begin(),e=joints.end();
+		for(;i!=e;i++) (*i)->Activate();
+	}	
+	if(m_spliter_holder)m_spliter_holder->Activate();
+	bActive=true;
+	bActivating=true;
+}
+
+void CPHShell::PresetActive()
+{
+	if(bActive)
+		return;
+	CPHObject::Activate();
+	if(!m_space) m_space=dSimpleSpaceCreate(ph_world->GetSpace());
+	bActive=true;
+	bActivating=true;
+	ELEMENT_I i=elements.begin(),e=elements.end();
+	for(;i!=e;i++)(*i)->PresetActive();
+	if(m_spliter_holder)m_spliter_holder->Activate();
+}
 
 
 
@@ -197,38 +233,6 @@ void __stdcall CPHShell:: BonesCallback1				(CBoneInstance* B){
 }
 
 
-void CPHShell::Activate(bool place_current_forms,bool disable)
-{ 
-	if(bActive)
-		return;
-		CPHObject::Activate();
-		if(!m_space) m_space=dSimpleSpaceCreate(ph_world->GetSpace());
-
-		{		
-		ELEMENT_I i=elements.begin(),e=elements.end();
-		if(place_current_forms) for(;i!=e;i++)(*i)->Activate(mXFORM,disable);
-		}
-		
-		{
-		JOINT_I i=joints.begin(),e=joints.end();
-		for(;i!=e;i++) (*i)->Activate();
-		}	
-
-	bActive=true;
-	bActivating=true;
-}
-
-void CPHShell::PresetActive()
-{
-	if(bActive)
-		return;
-	CPHObject::Activate();
-	if(!m_space) m_space=dSimpleSpaceCreate(ph_world->GetSpace());
-	bActive=true;
-	bActivating=true;
-	ELEMENT_I i=elements.begin(),e=elements.end();
-	for(;i!=e;i++)(*i)->PresetActive();
-}
 
 void CPHShell::SetTransform(Fmatrix m){
 	Fmatrix init;

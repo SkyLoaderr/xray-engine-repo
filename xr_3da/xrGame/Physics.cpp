@@ -206,7 +206,7 @@ void CPHWorld::Step(dReal step)
 		for(iter=m_objects.begin();iter!=m_objects.end();iter++)
 				(*iter)->PhDataUpdate(fixed_step);
 		dJointGroupEmpty(ContactGroup);//this is to be called after PhDataUpdate!!!-the order is critical!!!
-
+		ContactFeedBacks.empty();
 
 
 

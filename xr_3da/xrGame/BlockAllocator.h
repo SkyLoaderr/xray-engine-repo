@@ -11,8 +11,8 @@ public:
 	IC T* add()
 	{
 		if(block_position==block_size)next_block();
-		return &current_block[block_position];
 		block_position++;
+		return &current_block[block_position-1];
 	}
 	IC void empty()
 	{
