@@ -40,6 +40,11 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_WATCHES, OnUpdateControlBarMenu)
 	ON_COMMAND_EX(ID_VIEW_THREADS, OnBarCheck)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_THREADS, OnUpdateControlBarMenu)
+
+	ON_COMMAND_EX(ID_TOOLS_ALLOWCONNECTION, OnAllowConnectionCheck)
+	ON_UPDATE_COMMAND_UI(ID_TOOLS_ALLOWCONNECTION, OnUpdateAllowConnection)
+
+	
 	//{{AFX_MSG_MAP(CMainFrame)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_FILE_OPENPROJECT, OnFileOpenproject)
@@ -97,10 +102,16 @@ static UINT indicators[] =
 
 CMainFrame::CMainFrame()
 {
+	
+	InitializeCriticalSection(&cs);
+
 	m_needAnswer = FALSE;
 	m_pMailSlotThread = NULL;
+	m_mailSlot = NULL;
 
-	m_mailSlot = CreateMailSlotByName(IDE_MAIL_SLOT);
+	m_allowConnections = AfxGetApp()->GetProfileInt("options","AllowConnections", 1);
+	AllowConnections(m_allowConnections);
+//	m_mailSlot = CreateMailSlotByName(IDE_MAIL_SLOT);
 	m_hAccelNoProject = ::LoadAccelerators(theApp.m_hInstance, MAKEINTRESOURCE(IDR_ACCEL_NO_PROJECT));
 	m_hAccelDebug = ::LoadAccelerators(theApp.m_hInstance, MAKEINTRESOURCE(IDR_ACCEL_DEBUG));
 	m_hAccelDebugBreak = ::LoadAccelerators(theApp.m_hInstance, MAKEINTRESOURCE(IDR_ACCEL_DEBUG_BREAK));
@@ -110,17 +121,37 @@ CMainFrame::CMainFrame()
 CMainFrame::~CMainFrame()
 {
 	AfxGetApp()->WriteProfileString("options","last project", GetProject()->GetName() );
+	AfxGetApp()->WriteProfileInt("options","AllowConnections", m_allowConnections );
 
 	m_do_thread_end = true;
-	m_pMailSlotThread->m_bAutoDelete = FALSE;
-	WaitForSingleObject(m_pMailSlotThread->m_hThread, INFINITE);
-	delete m_pMailSlotThread;
 
-	CloseHandle(m_mailSlot);
+	if(m_pMailSlotThread){
+		m_pMailSlotThread->m_bAutoDelete = FALSE;
+		WaitForSingleObject(m_pMailSlotThread->m_hThread, INFINITE);
+		delete m_pMailSlotThread;
+		CloseHandle(m_mailSlot);
+	};
 
 	::DestroyAcceleratorTable(m_hAccelNoProject);
 	::DestroyAcceleratorTable(m_hAccelDebug);
 	::DestroyAcceleratorTable(m_hAccelDebugBreak);
+}
+
+void CMainFrame::AllowConnections(BOOL b)
+{
+	EnterCriticalSection(&cs);
+	if(b){
+		if(m_mailSlot)
+			CloseHandle(m_mailSlot);
+
+		m_mailSlot = CreateMailSlotByName(IDE_MAIL_SLOT);
+	}else
+		if(m_mailSlot){
+			CloseHandle(m_mailSlot);
+			m_mailSlot=NULL;
+		}
+	LeaveCriticalSection(&cs);
+
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -863,8 +894,11 @@ UINT CMainFrame::StartListener()
 {
 	CMailSlotMsg msg;
 	while(true){
-	if( CheckMailslotMessage(m_mailSlot, msg) )
-		TranslateMsg(msg);
+		EnterCriticalSection(&cs);
+		if( m_mailSlot && CheckMailslotMessage(m_mailSlot, msg) ){
+			TranslateMsg(msg);
+		};
+		LeaveCriticalSection(&cs);
 		Sleep(10);
 		if(m_do_thread_end)
 			AfxEndThread(0);
@@ -1054,3 +1088,18 @@ void CMainFrame::OnActivate(   UINT nState,   CWnd* pWndOther,   BOOL bMinimized
 		pActive = this->MDIGetActive();
 }*/
 
+
+
+
+BOOL CMainFrame::OnAllowConnectionCheck(  UINT nID )
+{
+	m_allowConnections = !m_allowConnections;
+	AllowConnections(m_allowConnections);
+	return TRUE;
+}
+
+void CMainFrame::OnUpdateAllowConnection( CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(TRUE);
+	pCmdUI->SetCheck(m_allowConnections);
+}

@@ -378,6 +378,8 @@ BEGIN
     POPUP "Tools"
     BEGIN
         MENUITEM "SourceSafe Options",          IDR_TOOLS_OPTIONS
+        MENUITEM "Allow connection",            ID_TOOLS_ALLOWCONNECTION
+        , CHECKED
     END
 END
 
@@ -450,6 +452,8 @@ BEGIN
     POPUP "Tools"
     BEGIN
         MENUITEM "SourceSafe Options",          32824
+        MENUITEM "Allow connection",            ID_TOOLS_ALLOWCONNECTION
+        , CHECKED
     END
 END
 

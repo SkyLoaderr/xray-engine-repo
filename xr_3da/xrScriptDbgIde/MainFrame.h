@@ -44,6 +44,8 @@ protected:
 	HACCEL					m_hAccelDebug, m_hAccelDebugBreak, m_hAccelNoProject;
 	int						m_nAppMode;
 	BOOL					m_needAnswer;
+	BOOL					m_allowConnections;
+	CRITICAL_SECTION		cs;
 
 	static UINT		StartListener( LPVOID pParam );	
 	UINT			StartListener();	
@@ -52,6 +54,7 @@ protected:
 	HANDLE			m_mailSlot;
 	bool			m_do_thread_end;
 	BOOL			checkExistingFolder(CString str);
+	void			AllowConnections(BOOL b);
 // Operations
 public:
 	CWatchBar				m_wndWatches;
@@ -101,6 +104,9 @@ protected:  // control bar embedded members
 // Generated message map functions
 protected:
 	//{{AFX_MSG(CMainFrame)
+
+	afx_msg BOOL OnAllowConnectionCheck(  UINT nID );
+	afx_msg void OnUpdateAllowConnection( CCmdUI* pCmdUI);
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnFileOpenproject();
 	afx_msg void OnFileSaveproject();

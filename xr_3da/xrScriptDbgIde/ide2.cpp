@@ -254,6 +254,7 @@ const char *g_rComparerCmd				= "fileComaprer";
 const char *g_rComparerFormat			= "fileComparerFormat";
 const char *g_rSSUserName				= "sSafeUserName";
 const char *g_rSSUserPass				= "sSafeUserPassword";
+const char *g_rAllowConn				= "AllowConnections";
 
 //CString ss_username  = 	GetProfileString("options","sSafeUserName", "" );
 //CString ss_userpass  = 	GetProfileString("options","sSafeUserPassword", "" );
@@ -262,6 +263,7 @@ const char *g_rSSafeIniDefValue			    = "\\\\X-RAY\\VSS$\\srcsafe.ini";
 const char *g_rSSafeFolderDefValue          = "$/xrStalker/Scripts/";
 const char *g_rComparerCmdDef				= "x:\\wincmp.exe";
 const char *g_rComparerFormatDef			= " %s %s";
+DWORD g_rAllowDef = 1;
 	char g_rSSUserNameDef[128];
 	DWORD	sz_user		= sizeof(g_rSSUserNameDef);
 	GetUserName(g_rSSUserNameDef, &sz_user);
@@ -302,6 +304,10 @@ LONG res;
 			res = RegQueryValueEx(hk,g_rSSUserPass,0,&keytype,(LPBYTE)keyvalue, &keysize );
 			if(res == ERROR_FILE_NOT_FOUND)
 				RegSetValueEx(hk,g_rSSUserPass,0,REG_SZ,(LPBYTE)g_rSSUserPassDef,strlen(g_rSSUserPassDef)+1);
+
+			res = RegQueryValueEx(hk,g_rAllowConn,0,&keytype,(LPBYTE)keyvalue, &keysize );
+			if(res == ERROR_FILE_NOT_FOUND)
+				RegSetValueEx(hk,g_rAllowConn,0,REG_DWORD,(LPBYTE)&g_rAllowDef,sizeof(DWORD));
 
 			RegCloseKey( hk );
     }
