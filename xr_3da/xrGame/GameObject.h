@@ -10,11 +10,6 @@
 class CGameObject : 
 	public CObject, 
 	public CPhysicsRefObject
-	/******* Oles
-#ifdef DEBUG
-	, public pureRender
-#endif
-	*/
 {
 	typedef CObject inherited;
 public:

@@ -14,6 +14,8 @@ typedef TIItemList::iterator	PPIItem;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class CInventoryItem : public CGameObject {				// Предок объектов инвентаря
+private:
+	typedef CGameObject	inherieted;
 public:
 	CInventoryItem();
 	virtual ~CInventoryItem();

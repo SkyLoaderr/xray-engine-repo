@@ -14,6 +14,8 @@ public:
 	Player*							local_player;
 	xr_vector<CGameObject*>			targets;
 public:
+	game_cl_GameState();
+
 	virtual		void				Create					(LPCSTR options);
 	virtual		void				net_import_state		(NET_Packet& P);
 	virtual		void				net_import_update		(NET_Packet& P);
