@@ -22,6 +22,13 @@ private:
 	int				iFlameDiv;
 	float			fFlameLength;
 	float			fFlameSize;
+
+	// HUD :: Animations
+	CMotionDef*				mhud_idle;
+	CMotionDef*				mhud_reload;
+	CMotionDef*				mhud_hide;
+	CMotionDef*				mhud_show;
+	svector<CMotionDef*,8>	mhud_shots;
 protected:
 	virtual void	MediaLOAD		();
 	virtual void	MediaUNLOAD		();
@@ -33,6 +40,7 @@ protected:
 	virtual void	OnEmptyClick	(BOOL bHUDView);
 	virtual void	OnDrawFlame		(BOOL bHUDView);
 	virtual void	OnShotmark		(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
+	virtual void	OnAnimationEnd	();
 public:
 					CWeaponLR300	();
 	virtual			~CWeaponLR300	();

@@ -43,7 +43,7 @@ void CUIWeapon::Out(CWeapon* W){
 		CFontHUD* H	= Level().HUD()->pHUDFont;
 		H->Color	(0xffffffff);
 		H->Out		(position.x+6,	position.y+15,"%s",W->GetName());
-		H->Out		(position.x+3,	position.y+2,"%d/%d",W->GetAmmoElapsed(),W->GetAmmoLimit());
+		H->Out		(position.x+3,	position.y+2,"%d/%d",W->GetAmmoElapsed(),W->GetAmmoCurrent());
 		H->Out		(position.x+34,	position.y+50,"%d/%d",0,0);
 		cur_shader	= W->GetUIIcon();
 	}else{

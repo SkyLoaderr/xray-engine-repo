@@ -112,6 +112,7 @@ public:
 	IC const char*	GetName			()				{return m_WpnName;		}
 	IC int			GetAmmoElapsed	()				{return iAmmoElapsed;	}
 	IC int			GetAmmoLimit	()				{return iAmmoLimit;		}
+	IC int			GetAmmoCurrent	()				{return iAmmoCurrent;	}
 	IC Shader*		GetUIIcon		()				{return hUIIcon;		}
 	
 	virtual void	OnDeviceCreate	();
