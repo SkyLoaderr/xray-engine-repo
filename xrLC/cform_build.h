@@ -46,7 +46,7 @@ public:
 	void	set_props(const u32 _p)		{ props_ = _p;		}
 	};
 
-	HalfedgeAttributes( OpenMesh::Attributes::None );
+	// HalfedgeAttributes( OpenMesh::Attributes::None );
 };
 typedef		TriMesh_ArrayKernelT	< MyTraits >			_mesh;			// Mesh type
 typedef		Decimater::DecimaterT	< _mesh >				_decimater;		// Decimater type
