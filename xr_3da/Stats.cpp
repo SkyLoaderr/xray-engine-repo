@@ -3,6 +3,7 @@
 #pragma hdrstop
 
 #include "ISpatial.h"
+#include "render.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
