@@ -686,6 +686,8 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 			vec3 s;
 			vec3 t;
 
+			if (2064==f)		__asm int 3;
+
             // grap position & tex coords again in case they were reallocated
             pPositions = (vec3*)( &( positions[ 0 ] ) );
             tex = (vec3*)&( output[ (*texIter).second ].floatVector_[ 0 ] );
