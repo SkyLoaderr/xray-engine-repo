@@ -62,6 +62,9 @@ enum EMotionAnim {
 	eAnimJumpStart,
 	eAnimJumpFly,		
 	eAnimJumpFinish,
+
+	eAnimJumpLeft,
+	eAnimJumpRight,
 };
 
 
@@ -86,12 +89,6 @@ enum EPState {
 	PS_STAND,
 	PS_SIT, 
 	PS_LIE,
-};
-
-enum EJumpState {
-	JS_PREPARE,
-	JS_JUMP,
-	JS_FINISH
 };
 
 enum ECriticalState {
@@ -154,12 +151,6 @@ struct SMotionItem {
 #define AA_FLAG_ATTACK_RAT		(1 << 0)			// аттака крыс?
 #define AA_FLAG_FIRE_ANYWAY		(1 << 1)			// трассировка не нужна
 
-// Вызов PrepareAnimation() и установка анимации
-#define FORCE_ANIMATION_SELECT() {				\
-	m_tpCurAnim = 0;							\
-	pMonster->SelectAnimation(pMonster->Direction(),pMonster->Direction(),0); \
-}
-
 #define CRITICAL_STAND_TIME 1400
 #define TIME_STAND_RECHECK  2000
 #define JUMP_MIN_TIME_DELAY 3000
@@ -182,9 +173,7 @@ typedef struct {
 	float		dir_pitch;			//  - || -
 } SAttackAnimation;
 
-// Определение параметров прыжка
-#define JUMP_PREPARE_USED	(1<<0)
-#define JUMP_FINISH_USED	(1<<1)
+
 
 struct SJump{
 	EMotionAnim	prepare;
@@ -237,24 +226,27 @@ class CMotionManager {
 
 	// ----------------------------------------------
 
-	// Прыжки
-	struct {
-		bool				active;					// состояние прыжка активно?
-		JUMP_VECTOR			bank;					// параметры прыжков
-		SJump				*ptr_cur;				// текущий указатель
-		EJumpState			state;					// состояние прыжка
-		Fvector				target_pos;				// целевая позиция
-		TTime				started;				// время начала прыжка
-		TTime				next_time_allowed;		// время следующего разрешенного прыжка
-		EMotionAnim			saved_anim;				// анимация до прыжка
-		float				ph_time;				// расcчетное время прыжка
-		float				dest_yaw;				// угол вектора направления
-		CObject				*entity;				// указатель на объект-цель (0 - нет)
-	} jump;
+	bool					should_play_die_anim;	// должен отыгрывать анимацию смерти
+
+public:
+//	// Прыжки
+//	struct {
+//		bool				active;					// состояние прыжка активно?
+//		JUMP_VECTOR			bank;					// параметры прыжков
+//		SJump				*ptr_cur;				// текущий указатель
+//		EJumpState			state;					// состояние прыжка
+//		Fvector				target_pos;				// целевая позиция
+//		TTime				started;				// время начала прыжка
+//		TTime				next_time_allowed;		// время следующего разрешенного прыжка
+//		EMotionAnim			saved_anim;				// анимация до прыжка
+//		float				ph_time;				// расcчетное время прыжка
+//		float				dest_yaw;				// угол вектора направления
+//		CObject				*entity;				// указатель на объект-цель (0 - нет)
+//		bool				striked;
+//	} jump;
 
 	// ----------------------------------------------
 
-public:
 	EAction					m_tAction;
 	CMotionDef				*m_tpCurAnim;
 
@@ -280,20 +272,18 @@ public:
 	void		LinkAction				(EAction act, EMotionAnim pmt_motion, EMotionAnim pmt_left, EMotionAnim pmt_right, float pmt_angle);
 	void		LinkAction				(EAction act, EMotionAnim pmt_motion);
 	
-	// -------------------------------------
-	//	Прыжки
-	// -------------------------------------
-	// Добавить в вектор параметры прыжка
-	void		JMP_Add					(EMotionAnim ja_start, EMotionAnim jump, EMotionAnim ja_finish, u8 used, float td);
-	// Проверка на возможность прыжка
-	bool		JMP_Check				(Fvector from_pos, Fvector to_pos);
-	void		JMP_Start				(Fvector from_pos, Fvector to_pos, CObject *pE);
-	void		JMP_Finish				();
-	void		JMP_Exec				();
-	// Обновляет состояние прыжка в каждом фрейме (вызывается из UpdateCL)
-	void		JMP_Update				();
-	bool		JMP_OnAnimEnd			();
-	void		JMP_SetAnim				();
+//	// -------------------------------------
+//	//	Прыжки
+//	// -------------------------------------
+//	// Добавить в вектор параметры прыжка
+//	void		JMP_Add					(EMotionAnim ja_start, EMotionAnim jump, EMotionAnim ja_finish, u8 used, float td);
+//	// Проверка на возможность прыжка
+//	bool		JMP_Check				(Fvector from_pos, Fvector to_pos);
+//	void		JMP_Start				(Fvector from_pos, Fvector to_pos, CObject *pE);
+//	void		JMP_Finish				();
+//	void		JMP_Exec				();
+//	// Обновляет состояние прыжка в каждом фрейме (вызывается из UpdateCL)
+//	void		JMP_Update				();
 	
 
 	// -------------------------------------
@@ -353,6 +343,12 @@ public:
 	
 	void		SCRIPT_SetAnim			(LPCSTR sa);
 
+// [TEST]
+//	void		LookAtEnemy(const Fvector &pos);
+// [/TEST]
+
+	// Вызов PrepareAnimation() и установка анимации
+	void		ForceAnimSelect			();
 };
 
 

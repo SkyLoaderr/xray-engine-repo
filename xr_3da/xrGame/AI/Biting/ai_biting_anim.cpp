@@ -19,9 +19,7 @@ static void __stdcall vfPlayEndCallBack(CBlend* B)
 // Установка анимации
 void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
 {
-	if (g_Alive() && MotionMan.PrepareAnimation()) {
-		PKinematics(Visual())->PlayCycle(MotionMan.m_tpCurAnim,TRUE,vfPlayEndCallBack,this);
-	}
+	if (MotionMan.PrepareAnimation()) PKinematics(Visual())->PlayCycle(MotionMan.m_tpCurAnim,TRUE,vfPlayEndCallBack,this);
 }
 
 bool CAI_Biting::AA_CheckHit()
@@ -93,14 +91,16 @@ void CMotionManager::Init (CAI_Biting	*pM, CKinematics *tpKin)
 	Seq_Init				();
 	AA_Clear				();
 
-	// clear jumps
-	jump.active				= false;					
-	jump.bank.clear			();					
-	jump.ptr_cur			= 0;				
-	jump.next_time_allowed	= 0;
+//	// clear jumps
+//	jump.active				= false;					
+//	jump.bank.clear			();					
+//	jump.ptr_cur			= 0;				
+//	jump.next_time_allowed	= 0;
 
 	time_start_stand		= 0;
 	prev_action				= ACT_STAND_IDLE;
+
+	should_play_die_anim	= true;			//этот флаг на NetSpawn должен устанавливаться в true
 }
 
 void CMotionManager::Destroy()
@@ -231,6 +231,14 @@ bool CMotionManager::PrepareAnimation()
 {
 	if (m_tpCurAnim != 0) return false;
 
+	// проверка на отыгрывание анимации смерти
+	if (!pMonster->g_Alive()) 
+		if (should_play_die_anim) {
+			should_play_die_anim = false;  // отыграть анимацию смерти только раз
+			if (m_tAnims.find(eAnimDie) != m_tAnims.end()) cur_anim = eAnimDie;
+			else return false;
+		} else return false;
+
 	// получить элемент SAnimItem соответствующий cur_anim
 	ANIM_ITEM_MAP_IT anim_it = m_tAnims.find(cur_anim);
 	R_ASSERT(anim_it != m_tAnims.end());
@@ -245,6 +253,7 @@ bool CMotionManager::PrepareAnimation()
 
 	// установить анимацию
 	m_tpCurAnim = anim_it->second.pMotionVect[index];
+	
 
 	// установить параметры атаки
 	AA_SwitchAnimation(cur_anim, index);
@@ -292,8 +301,6 @@ void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 // выполняется на каждом шед.апдейте, после выполнения состояния
 void CMotionManager::ProcessAction()
 {
-	if (jump.active) return;
-
 	if (!seq_playing) {
 	
 		// преобразовать Action в Motion и получить новую анимацию
@@ -333,7 +340,7 @@ void CMotionManager::ProcessAction()
 	ApplyParams();
 
 	// если установленная анимация отличается от предыдущей - установить новую анимацию
-	if (cur_anim != prev_anim) FORCE_ANIMATION_SELECT();		
+	if (cur_anim != prev_anim) ForceAnimSelect();		
 
 	prev_anim	= cur_anim;
 	spec_params = 0;
@@ -353,9 +360,12 @@ void CMotionManager::ApplyParams()
 // Callback на завершение анимации
 void CMotionManager::OnAnimationEnd() 
 { 
-	if (jump.active && JMP_OnAnimEnd()) m_tpCurAnim = 0;
-	if (!jump.active) m_tpCurAnim = 0;
-	if (seq_playing) Seq_Switch();
+	if (seq_playing) {
+//		if (!jump.active || (jump.active && (jump.state != JS_JUMP))) {
+//			Seq_Switch();
+//			m_tpCurAnim = 0;
+//		}
+	} else m_tpCurAnim = 0;
 }
 
 // если монстр стоит на месте и играет анимацию движения - force stand idle
@@ -447,6 +457,11 @@ void CMotionManager::Seq_Switch()
 	// установить параметры
 	cur_anim	= *seq_it;
 	ApplyParams ();
+
+//	if (jump.active && (jump.state == JS_PREPARE)) {
+//		jump.state = JS_JUMP;
+//		JMP_Exec();
+//	}
 }
 
 void CMotionManager::Seq_Finish()
@@ -454,6 +469,8 @@ void CMotionManager::Seq_Finish()
 	Seq_Init(); 
 
 	prev_anim = cur_anim = m_tMotions[m_tAction].anim;
+
+//	if (jump.active) jump.active = false;
 }
 
 
@@ -537,167 +554,162 @@ EPState	CMotionManager::GetState (EMotionAnim a)
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// JUMPS
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CMotionManager::JMP_Add(EMotionAnim ja_start, EMotionAnim ja_jump, EMotionAnim ja_finish, u8 used, float td)
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//// JUMPS
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//void CMotionManager::JMP_Add(EMotionAnim ja_start, EMotionAnim ja_jump, EMotionAnim ja_finish, u8 used, float td)
+//{
+//	SJump tmpJump;
+//
+//	tmpJump.prepare			= ja_start;
+//	tmpJump.jump			= ja_jump;
+//	tmpJump.finish			= ja_finish;
+//	tmpJump.trace_dist		= td;
+//	tmpJump.states_used		= used;
+//
+//	jump.bank.push_back		(tmpJump);
+//}
+//
+//// Проверка на возможность прыжка
+//bool CMotionManager::JMP_Check(Fvector from_pos, Fvector to_pos)
+//{
+//	if (!pMonster->CanJump() || jump.active || jump.bank.empty() || (jump.next_time_allowed > pMonster->m_dwCurrentTime) || seq_playing) return false;
+//
+//	// растояние до цели	
+//	float dist = from_pos.distance_to(to_pos);	
+//
+//	// получить вектор направления и его мир угол
+//	Fvector dir;
+//	float  dest_yaw, pitch;
+//	dir.sub(to_pos, from_pos);
+//	dir.getHP(dest_yaw, pitch);
+//	dest_yaw *= -1;
+//	dest_yaw = angle_normalize(dest_yaw);
+//	
+//	// проверка на max_angle и на dist
+//	if (!getAI().bfTooSmallAngle(pMonster->r_torso_current.yaw, dest_yaw, pMonster->m_fJumpMaxAngle) || !(pMonster->m_fJumpMinDist <=dist && dist <= pMonster->m_fJumpMaxDist)) return false;
+//
+//	jump.dest_yaw = dest_yaw;
+//	return true;
+//}
+//
+//void CMotionManager::JMP_Start(Fvector from_pos, Fvector to_pos, CObject *pE)
+//{
+//	// выбрать параметры прыжка
+//	jump.ptr_cur			= &jump.bank.at(::Random.randI(jump.bank.size()));
+//	jump.active				= true;
+//	
+//	if ((jump.ptr_cur->states_used & JUMP_PREPARE_USED)==JUMP_PREPARE_USED) jump.state = JS_PREPARE;
+//	else jump.state = JS_JUMP;
+//	
+//	jump.target_pos			= to_pos;
+//	
+//	jump.started			= 0;
+//	jump.next_time_allowed	= jump.started + pMonster->m_dwDelayAfterJump;
+//	jump.entity				= pE;
+//	jump.ph_time			= 0.f;
+//	jump.saved_anim			= cur_anim;
+//
+//	jump.striked			= false;
+//
+//	pMonster->r_torso_target.yaw = jump.dest_yaw;
+//
+//	// push animations to seq
+//	if ((jump.ptr_cur->states_used & JUMP_PREPARE_USED)==JUMP_PREPARE_USED)
+//		Seq_Add(jump.ptr_cur->prepare);
+//		Seq_Add(jump.ptr_cur->jump);
+//	if ((jump.ptr_cur->states_used & JUMP_FINISH_USED)==JUMP_FINISH_USED)
+//		Seq_Add(jump.ptr_cur->finish);
+//
+//	Seq_Switch();
+//	if (jump.state == JS_JUMP) JMP_Exec();
+//}
+//
+//void CMotionManager::JMP_Finish()
+//{
+//	if ((jump.ptr_cur->states_used & JUMP_FINISH_USED)==JUMP_FINISH_USED) jump.state = JS_FINISH;
+//	Seq_Switch();
+//}
+//
+//void CMotionManager::JMP_Exec()
+//{
+//	if (jump.entity) {
+//		// put target up to the head
+//		u16 bone_id = PKinematics(jump.entity->Visual())->LL_BoneID("bip01_head");
+//		CBoneInstance &bone = PKinematics(jump.entity->Visual())->LL_GetInstance(bone_id);
+//
+//		Fmatrix global_transform;
+//		global_transform.set(jump.entity->XFORM());
+//		global_transform.mulB(bone.mTransform);
+//		jump.target_pos = global_transform.c;
+//		jump.target_pos.y /= 1.5f;			
+//	}
+//	
+//	pMonster->AI_Path.TravelPath.clear();
+//	
+//	// get time of jump;
+//	jump.ph_time = pMonster->Movement.JumpMinVelTime(jump.target_pos);
+//	pMonster->Movement.Jump(jump.target_pos,jump.ph_time/pMonster->m_fJumpFactor);
+//	jump.started = pMonster->m_dwCurrentTime;
+//}
+//
+//// функция для UpdateCL
+//void CMotionManager::JMP_Update()
+//{
+//	if (!jump.active) return;
+//	
+//	TTime itime = TTime(jump.ph_time * 1000);
+//
+//	// проверить на завершение прыжка
+//	if ((jump.started + itime < pMonster->m_dwCurrentTime + TTime(itime/4)) && (jump.state == JS_JUMP)) {
+//		JMP_Finish();
+//	}else {
+//		// tracing enemy here
+//		if (jump.striked) return;
+//		if (!jump.entity) return;
+//		CEntity *pE = dynamic_cast<CEntity *>(jump.entity);
+//		if (!pE) return;
+//
+//		Fvector trace_from;
+//		pMonster->Center(trace_from);
+//		pMonster->setEnabled(false);
+//		Collide::ray_query	l_rq;
+//
+//		if (Level().ObjectSpace.RayPick(trace_from, pMonster->Direction(), jump.ptr_cur->trace_dist, l_rq)) {
+//			if ((l_rq.O == jump.entity) && (l_rq.range < jump.ptr_cur->trace_dist)) {
+//				pMonster->DoDamage(pE, pMonster->m_fHitPower,0,0);
+//				jump.striked = true;
+//			}
+//		}
+//		pMonster->setEnabled(true);			
+//	}
+//
+//	if ((jump.state == JS_JUMP) && (jump.entity)) {
+//		pMonster->LookPosition(jump.entity->Position());
+//	}
+//}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+// Other
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CMotionManager::ForceAnimSelect() 
 {
-	SJump tmpJump;
-
-	tmpJump.prepare			= ja_start;
-	tmpJump.jump			= ja_jump;
-	tmpJump.finish			= ja_finish;
-	tmpJump.trace_dist		= td;
-	tmpJump.states_used		= used;
-
-	jump.bank.push_back		(tmpJump);
+	m_tpCurAnim = 0; 
+	pMonster->SelectAnimation(pMonster->Direction(),pMonster->Direction(),0);
 }
-
-// Проверка на возможность прыжка
-bool CMotionManager::JMP_Check(Fvector from_pos, Fvector to_pos)
-{
-	if (jump.active || jump.bank.empty() || (jump.next_time_allowed > pMonster->m_dwCurrentTime) || seq_playing) return false;
-
-	// растояние до цели	
-	float dist = from_pos.distance_to(to_pos);	
-
-	// получить вектор направления и его мир угол
-	Fvector dir;
-	float  dest_yaw, pitch;
-	dir.sub(to_pos, from_pos);
-	dir.getHP(dest_yaw, pitch);
-	dest_yaw *= -1;
-	dest_yaw = angle_normalize(dest_yaw);
-	
-	// проверка на max_angle и на dist
-	if (!getAI().bfTooSmallAngle(pMonster->r_torso_current.yaw, dest_yaw, pMonster->m_fJumpMaxAngle) || !(pMonster->m_fJumpMinDist <=dist && dist <= pMonster->m_fJumpMaxDist)) return false;
-
-	jump.dest_yaw = dest_yaw;
-	return true;
-}
-
-void CMotionManager::JMP_Start(Fvector from_pos, Fvector to_pos, CObject *pE)
-{
-	// выбрать параметры прыжка
-	jump.ptr_cur			= &jump.bank.at(::Random.randI(jump.bank.size()));
-	jump.active				= true;
-	
-	if ((jump.ptr_cur->states_used & JUMP_PREPARE_USED)==JUMP_PREPARE_USED) jump.state = JS_PREPARE;
-	else jump.state = JS_JUMP;
-	
-	jump.target_pos			= to_pos;
-	
-	jump.started			= pMonster->m_dwCurrentTime;
-	jump.next_time_allowed	= jump.started + pMonster->m_dwDelayAfterJump;
-	jump.entity				= pE;
-	jump.ph_time			= 0.f;
-	jump.saved_anim			= cur_anim;
-
-	pMonster->r_torso_target.yaw = jump.dest_yaw;
-	pMonster->AI_Path.TravelPath.clear();
-
-	if (jump.state == JS_PREPARE) {
-		JMP_SetAnim();
-		Msg("No prepare!");
-	}
-	else JMP_Exec();
-}
-
-void CMotionManager::JMP_SetAnim()
-{
-	switch (jump.state) {
-		case JS_PREPARE:	cur_anim = jump.ptr_cur->prepare;	break;
-		case JS_JUMP:		cur_anim = jump.ptr_cur->jump;		break;
-		case JS_FINISH:		cur_anim = jump.ptr_cur->finish;	break;
-	}
-	
-	ApplyParams();
-
-	FORCE_ANIMATION_SELECT();
-}
-
-void CMotionManager::JMP_Finish()
-{
-	if ((jump.ptr_cur->states_used & JUMP_FINISH_USED)==JUMP_FINISH_USED) {
-		Msg("No finish!");
-		jump.state = JS_FINISH;
-		JMP_SetAnim();
-	} else {
-		jump.active = false;
-		cur_anim = jump.saved_anim;
-		ApplyParams();
-		FORCE_ANIMATION_SELECT();
-	}
-}
-
-// returns true, if m_tpCurAnim should be set in '0', false - do not change m_tpCurAnim
-bool CMotionManager::JMP_OnAnimEnd()
-{
-	bool ret_val = true;
-
-	switch (jump.state) {
-		case JS_PREPARE:
-			jump.state = JS_JUMP;
-			JMP_Exec();
-			break;
-		case JS_JUMP:
-			ret_val = false;
-			break;
-		case JS_FINISH:
-			jump.active = false;
-			cur_anim = jump.saved_anim;
-			break;
-	}
-
-	return ret_val;
-}
-
-void CMotionManager::JMP_Exec()
-{
-	if (jump.entity) {
-		// put target up to the head
-		u16 bone_id = PKinematics(jump.entity->Visual())->LL_BoneID("bip01_head");
-		CBoneInstance &bone = PKinematics(jump.entity->Visual())->LL_GetInstance(bone_id);
-
-		Fmatrix global_transform;
-		global_transform.set(jump.entity->XFORM());
-		global_transform.mulB(bone.mTransform);
-		jump.target_pos = global_transform.c;
-	}
-
-	// get time of jump;
-	jump.ph_time = pMonster->Movement.JumpMinVelTime(jump.target_pos);
-	pMonster->Movement.Jump(jump.target_pos,jump.ph_time/pMonster->m_fJumpFactor);
-	JMP_SetAnim();
-}
-
-// функция для UpdateCL
-void CMotionManager::JMP_Update()
-{
-	if (!jump.active) return;
-	
-	TTime itime = TTime(jump.ph_time * 1000);
-
-	// проверить на завершение прыжка
-	if ((jump.started + itime < pMonster->m_dwCurrentTime + 100) && (jump.state != JS_FINISH)) {
-		JMP_Finish();
-	}else {
-		// tracing enemy here
-		// ...
-	}
-}
-
-#define TEST_STRING(a,b,c) {if (strcmp(a,b) == 0) cur_anim = c;}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // Scripting
+#define TEST_STRING(a,b,c) {if (strcmp(a,b) == 0) cur_anim = c;}
+
 void CMotionManager::SCRIPT_SetAnim	(LPCSTR sa)
 {
 	// transform str to cur_anim
 	TEST_STRING(sa, "walk_forward", eAnimRun);
 
 	ApplyParams();
-	if (cur_anim != prev_anim) FORCE_ANIMATION_SELECT();		
+	if (cur_anim != prev_anim) ForceAnimSelect();		
 	prev_anim	= cur_anim;
 }
 

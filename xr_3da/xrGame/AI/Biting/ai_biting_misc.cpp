@@ -196,8 +196,37 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 
 	vfChoosePointAndBuildPath(0,&l_tMovementAction.m_tDestinationPosition, false, 0);
 	MotionMan.m_tAction = EAction(l_tMovementAction.m_tActState);
+	
+	if (MotionMan.m_tAction == ACT_DRAG) {
+		MotionMan.SetSpecParams(ASP_DRAG_CORPSE | ASP_MOVE_BKWD);
+	}
+	
 	MotionMan.ProcessAction();
 	return			(true);		
+}
+
+bool CAI_Biting::bfAssignObject(CEntityAction *tpEntityAction)
+{
+	if (!inherited::bfAssignObject(tpEntityAction))
+		return	(false);
+
+	CObjectAction	&l_tObjectAction = tpEntityAction->m_tObjectAction;
+	if (!l_tObjectAction.m_tpObject)
+		return	((l_tObjectAction.m_bCompleted = true) == false);
+
+	CEntityAlive	*l_tpEntity		= dynamic_cast<CEntityAlive*>(l_tObjectAction.m_tpObject);
+	if (!l_tpEntity) return	((l_tObjectAction.m_bCompleted = true) == false);
+	
+	switch (l_tObjectAction.m_tGoalType) {
+		case eObjectActionTake: 
+			Movement.PHCaptureObject(l_tpEntity);
+			break;
+		case eObjectActionDrop: 
+			Movement.PHReleaseObject();
+			break;
+	}
+	l_tObjectAction.m_bCompleted = true;
+	return	(true);
 }
 
 bool CAI_Biting::bfAssignAnimation (CEntityAction *tpEntityAction)

@@ -106,9 +106,15 @@ BOOL CAI_Dog::net_Spawn (LPVOID DC)
 	//...
 	MotionMan.AddAnim(eAnimSteal,			"stand_drag_",			-1, m_fsSteal,				m_fsWalkAngular,			PS_STAND);
 
-	MotionMan.AddAnim(eAnimJumpStart,		"jump1_",				 0, 0,						m_fsWalkAngular,			PS_STAND);
-	MotionMan.AddAnim(eAnimJumpFly,			"jump1_",				 1, 0,						m_fsWalkAngular,			PS_STAND);
-	MotionMan.AddAnim(eAnimJumpFinish,		"jump1_",				 2, 0,						m_fsWalkAngular,			PS_STAND);
+//	MotionMan.AddAnim(eAnimJumpStart,		"jump1_",				 0, 0,						m_fsWalkAngular,			PS_STAND);
+//	MotionMan.AddAnim(eAnimJumpFly,			"jump1_",				 1, 0,						m_fsWalkAngular,			PS_STAND);
+//	MotionMan.AddAnim(eAnimJumpFinish,		"jump1_",				 2, 0,						m_fsWalkAngular,			PS_STAND);
+
+	MotionMan.AddAnim(eAnimJumpStart,		"run_jump_",			 0, m_fsRunFwdNormal,	m_fsWalkAngular,			PS_STAND);
+	MotionMan.AddAnim(eAnimJumpFly,			"run_jump_",			 1, m_fsRunFwdNormal,	m_fsWalkAngular,			PS_STAND);
+
+	MotionMan.AddAnim(eAnimJumpLeft,		"jump_left_",			-1,	m_fsWalkFwdNormal,		m_fsRunAngular,			PS_STAND);
+	MotionMan.AddAnim(eAnimJumpRight,		"jump_right_",			-1,	m_fsWalkFwdNormal,		m_fsRunAngular,			PS_STAND);
 
 
 	// define transitions
@@ -126,7 +132,7 @@ BOOL CAI_Dog::net_Spawn (LPVOID DC)
 	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimLieIdle);
 	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
-	MotionMan.LinkAction(ACT_RUN,			eAnimRun);
+	MotionMan.LinkAction(ACT_RUN,			eAnimRun,	eAnimJumpLeft, eAnimJumpRight, PI_DIV_4);
 	MotionMan.LinkAction(ACT_EAT,			eAnimEat);
 	MotionMan.LinkAction(ACT_SLEEP,			eAnimSleep);
 	MotionMan.LinkAction(ACT_REST,			eAnimLieIdle);
@@ -142,14 +148,20 @@ BOOL CAI_Dog::net_Spawn (LPVOID DC)
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 600,	800,	center,		2.5f, m_fHitPower, 0.f, 0.f);
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 600,	700,	center,		1.5f, m_fHitPower, 0.f, 0.f);
 
-	int bone1		= PKinematics(Visual())->LL_BoneID("bone01");
-	PKinematics(Visual())->LL_GetInstance(u16(bone1)).set_callback(BoneCallback,this);
-
 	// Bones settings
-	Bones.Reset();
-	Bones.AddBone(GetBone(bone1), AXIS_Y); 
+	PKinematics(Visual())->LL_GetInstance(PKinematics(Visual())->LL_BoneID("bone01")).set_callback(BoneCallback,this);
+	PKinematics(Visual())->LL_GetInstance(PKinematics(Visual())->LL_BoneID("bip01_spine1")).set_callback(BoneCallback,this);
+	PKinematics(Visual())->LL_GetInstance(PKinematics(Visual())->LL_BoneID("bip01_spine2")).set_callback(BoneCallback,this);
+	PKinematics(Visual())->LL_GetInstance(PKinematics(Visual())->LL_BoneID("bip01_head")).set_callback(BoneCallback,this);
 
-	MotionMan.JMP_Add(eAnimJumpStart, eAnimJumpFly, eAnimJumpFinish, 0, 10.f);
+	Bones.Reset();
+	Bones.AddBone(GetBone("bone01"), AXIS_Y); 
+	
+	Bones.AddBone(GetBone("bip01_spine1"), AXIS_Z); 
+	Bones.AddBone(GetBone("bip01_spine2"), AXIS_Z); 
+	Bones.AddBone(GetBone("bip01_head"), AXIS_X); 
+
+//	MotionMan.JMP_Add(eAnimJumpStart, eAnimJumpFly, eAnimJumpFinish,JUMP_PREPARE_USED, 1.f);
 
 	return TRUE;
 }
@@ -166,3 +178,48 @@ void CAI_Dog::OnSoundPlay()
 {
 	if (!Bones.IsActive()) Bones.SetMotion(GetBone("bone01"),AXIS_Y, PI_DIV_6, PI_MUL_2, 1);
 }
+
+void CAI_Dog::LookPosition(Fvector pos)
+{
+//	if (Bones.IsActive()) return;
+//	TTime itime = TTime(MotionMan.jump.ph_time * 1000);
+//
+//	if (MotionMan.jump.started + TTime(itime / 3) > m_dwCurrentTime) return;
+//	float max_bone_angle = PI_DIV_4;
+//	
+//	Fvector to_dir;
+//	to_dir = pos;
+//	to_dir.sub(Position());
+//
+//	// получаем вектор направления к источнику звука и его мировые углы
+//	float		yaw,p;
+//	to_dir.getHP(yaw,p); // yaw - угол на который нужно повернуть монстра
+//
+//	float cur_yaw = -r_torso_current.yaw;				// текущий мировой угол монстра
+//	float dy = _abs(angle_normalize_signed(yaw - cur_yaw));		// дельта, на которую нужно поворачиваться
+//
+//	float y1,y2,y3;
+//	y1 = y2 = dy * 0.3f;
+//	y3 = dy * 0.4f;
+//	
+//	// normalize
+//	clamp(y1,0.f,max_bone_angle);
+//	clamp(y2,0.f,max_bone_angle);
+//	clamp(y3,0.f,max_bone_angle);
+//	
+//	float k;													// знаковый коэф. для боны (лево/право)
+//	if (angle_normalize_signed(yaw - cur_yaw) > 0) k = 1.f;		// right side
+//	else k = -1.f;												// left side
+//	
+//	y1 *= k;
+//	y2 *= k;
+//	y3 *= k;
+//	
+//	// Вычислить скорость вращения кости (с учётов возврата в исходное положение)
+//	float t = MotionMan.jump.ph_time;
+//	
+//	Bones.SetMotion(GetBone("bip01_spine1"), AXIS_Z, y1, y1/t * 4.f, 1);
+//	Bones.SetMotion(GetBone("bip01_spine2"), AXIS_Z, y2, y2/t * 4.f, 1);
+//	Bones.SetMotion(GetBone("bip01_head"),	 AXIS_X, y3, y3/t * 4.f, 1);
+}
+

@@ -2,9 +2,9 @@
 
 #include "..\\biting\\ai_biting.h"
 #include "..\\ai_monster_bones.h"
+#include "..\\ai_monster_jump.h"
 
-class CAI_Dog : public CAI_Biting {
-
+class CAI_Dog : public CAI_Biting, CJumping {
 	typedef		CAI_Biting	inherited;
 public:
 					CAI_Dog				();
@@ -22,5 +22,5 @@ public:
 	bonesManipulation		Bones;
 
 	virtual	bool			CanJump				() {return true;}
-	
+	virtual void			LookPosition		(Fvector to_point);		
 };

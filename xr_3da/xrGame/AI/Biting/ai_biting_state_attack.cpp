@@ -114,8 +114,8 @@ void CBitingAttack::Run()
 		}
 	}
 	
-	if (pMonster->CanJump() && pMonster->MotionMan.JMP_Check(pMonster->Position(),m_tEnemy.obj->Position()))
-		pMonster->MotionMan.JMP_Start(pMonster->Position(),m_tEnemy.obj->Position(),m_tEnemy.obj);
+//	if (pMonster->MotionMan.JMP_Check(pMonster->Position(),m_tEnemy.obj->Position()))
+//		pMonster->MotionMan.JMP_Start(pMonster->Position(),m_tEnemy.obj->Position(),m_tEnemy.obj);
 
 	if (pMonster->Movement.JumpState()) return;
 
@@ -173,10 +173,10 @@ void CBitingAttack::Run()
 			break;
 		case ACTION_JUMP:
 			DO_ONCE_BEGIN(flag_once_1);
-				pMonster->Jump(m_tEnemy.obj->Position());
+//				pMonster->Jump(m_tEnemy.obj->Position());
 			DO_ONCE_END();
 			
-			pMonster->MotionMan.m_tAction = ACT_JUMP;
+//			pMonster->MotionMan.m_tAction = ACT_JUMP;
 			break;
 	}
 

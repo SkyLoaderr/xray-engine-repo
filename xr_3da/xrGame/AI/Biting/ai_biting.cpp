@@ -65,6 +65,8 @@ void CAI_Biting::Die()
 	DeinitMemory();
 
 	SetSoundOnce(SND_TYPE_DIE, m_dwCurrentTime);
+
+	MotionMan.ForceAnimSelect();
 }
 
 void CAI_Biting::Load(LPCSTR section)
@@ -159,12 +161,6 @@ void CAI_Biting::Load(LPCSTR section)
 	m_dwIdleSndDelay				= pSettings->r_u32(section,"idle_sound_delay");
 	m_dwEatSndDelay					= pSettings->r_u32(section,"eat_sound_delay");
 	m_dwAttackSndDelay				= pSettings->r_u32(section,"attack_sound_delay");
-
-	m_fJumpFactor					= pSettings->r_float(section,"jump_factor");
-	m_fJumpMinDist					= pSettings->r_float(section,"jump_min_dist");		
-	m_fJumpMaxDist					= pSettings->r_float(section,"jump_max_dist");		
-	m_fJumpMaxAngle					= pSettings->r_float(section,"jump_max_angle");
-	m_dwDelayAfterJump				= pSettings->r_float(section,"jump_delay");
 
 	AS_Load							(section);
 	
@@ -280,7 +276,7 @@ void CAI_Biting::UpdateCL()
 	if (g_Alive()) {
 		
 		AA_CheckHit();
-		MotionMan.JMP_Update();
+		//MotionMan.JMP_Update();
 	}
 
 	m_pPhysics_support->in_UpdateCL();

@@ -128,13 +128,9 @@ public:
 
 	virtual	bool			bfAssignMovement				(CEntityAction	*tpEntityAction);
 	virtual	bool			bfAssignAnimation				(CEntityAction	*tpEntityAction);
+	virtual	bool			bfAssignObject					(CEntityAction	*tpEntityAction);
 
 			bool			IsStanding						(TTime time);		// проверить, стоит ли монстр на протяжении времени time
-	
-	// выполнить проверку на возможность прыжка в текущий момент времени
-	virtual	bool			CanJump							() {return false;}
-	virtual void			Jump							(Fvector pos) {};
-
 	virtual void			ProcessTurn						() {};
 
 			CBoneInstance*	GetBone							(LPCTSTR bone_name);
@@ -259,15 +255,6 @@ public:
 	u32						m_dwDayTimeEnd;
 	float					m_fMinSatiety;
 	float					m_fMaxSatiety;
-
-
-	// -------------------------------------------------------
-	// jumps
-	float					m_fJumpFactor;			// коэффициент-делитель времени прыжка
-	float					m_fJumpMinDist;			// мин. дистанция, возможная для прыжка
-	float					m_fJumpMaxDist;			// макс. дистанция возможная для прыжка
-	float					m_fJumpMaxAngle;		// макс. угол возможный для прыжка между монстром и целью
-	TTime					m_dwDelayAfterJump;		// задержка после прыжка
 
 	// -------------------------------------------------------
 	// attack stops

@@ -217,7 +217,7 @@ public:
 		Server->game->SetGameTimeFactor(fTimeFactor);
 	}
 
-	IC	_TIME_ID GetGameTimeSec()
+	IC	float GetGameTimeSec()
 	{
 		return			(float(s64(GetGameTime()))/1000.f);
 	}
