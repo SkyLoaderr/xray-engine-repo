@@ -34,7 +34,7 @@ bool SceneBuilder::WriteTextures(){
     bool bRes = true;
     UI.ProgressStart(m_TexNames.size(),"Save textures...");
 /*
-	for( DWORD i=0; i<m_TexNames.size(); i++){
+	for( u32 i=0; i<m_TexNames.size(); i++){
         if (UI.NeedAbort()) break;
         AnsiString src_nm = m_TexNames[i];
         AnsiString dst_nm = src_nm;

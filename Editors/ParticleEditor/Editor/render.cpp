@@ -32,6 +32,11 @@ BOOL CRender::occ_visible(sPoly& P)
 	return ViewBase.testPolyInside(P);
 }
 
+BOOL CRender::occ_visible(vis_data& P)
+{
+	return occ_visible(P.box);
+}
+
 void CRender::Calculate()
 {
 	// Transfer to global space to avoid deep pointer access

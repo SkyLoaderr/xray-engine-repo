@@ -104,9 +104,9 @@ void TfrmDOShuffle::ApplyInfo(){
     if (DM->RemoveObjects(true)) bNeedUpdate=true;
 	// update indices
 	DM->RemoveColorIndices();
-	for (DWORD k=0; k<color_indices.size(); k++){
+	for (u32 k=0; k<color_indices.size(); k++){
     	TfrmOneColor* OneColor = color_indices[k];
-        DWORD clr = bgr2rgb(OneColor->mcColor->Brush->Color);
+        u32 clr = bgr2rgb(OneColor->mcColor->Brush->Color);
 	    for ( TElTreeItem* node = OneColor->tvDOList->Items->GetFirstNode(); node; node = node->GetNext())
 	    	DM->AppendIndexObject(clr,AnsiString(node->Text).c_str(),false);
     }
@@ -122,7 +122,7 @@ void TfrmDOShuffle::ClearInfo()
 	for (DDIt it=DOData.begin(); it!=DOData.end(); it++)
 		xr_delete(*it);
     DOData.clear();
-	for (DWORD k=0; k<color_indices.size(); k++)
+	for (u32 k=0; k<color_indices.size(); k++)
     	xr_delete(color_indices[k]);
     color_indices.clear();
     xr_delete(m_Thm);
@@ -283,7 +283,7 @@ void __fastcall TfrmDOShuffle::ebDelObjectClick(TObject *Sender)
 {
 	if (tvItems->Selected){
 		ModifColorInd();
-		for (DWORD k=0; k<color_indices.size(); k++)
+		for (u32 k=0; k<color_indices.size(); k++)
     		color_indices[k]->RemoveObject(AnsiString(tvItems->Selected->Text).c_str());
         tvItems->Selected->Delete();
     }
@@ -308,7 +308,7 @@ void __fastcall TfrmDOShuffle::RemoveColorIndex(TfrmOneColor* p){
 void __fastcall TfrmDOShuffle::ebMultiClearClick(TObject *Sender)
 {
 	ModifColorInd();
-	for (DWORD k=0; k<color_indices.size(); k++)
+	for (u32 k=0; k<color_indices.size(); k++)
     	xr_delete(color_indices[k]);
     color_indices.clear();
 }

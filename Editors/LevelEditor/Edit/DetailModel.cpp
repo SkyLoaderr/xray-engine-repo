@@ -70,7 +70,7 @@ void CDetail::OnDeviceDestroy()
 int CDetail::_AddVert(const Fvector& p, float u, float v)
 {
 	fvfVertexIn V(p,u,v);
-    for (DWORD k=0; k<number_vertices; k++)
+    for (u32 k=0; k<number_vertices; k++)
     	if (vertices[k].similar(V)) return k;
     number_vertices++;
     vertices = (fvfVertexIn*)xr_realloc(vertices,number_vertices*sizeof(fvfVertexIn));
@@ -107,7 +107,7 @@ bool CDetail::Update	(LPCSTR name){
 
     // fill vertices
     bv_bb.invalidate();
-    DWORD idx			= 0;
+    u32 idx			= 0;
     for (FaceIt f_it=M->m_Faces.begin(); f_it!=M->m_Faces.end(); f_it++){
     	for (int k=0; k<3; k++,idx++){
         	WORD& i_it	= indices[idx];
@@ -129,7 +129,7 @@ bool CDetail::Update	(LPCSTR name){
 bool CDetail::Load(IReader& F){
 	// check version
     R_ASSERT			(F.find_chunk(DETOBJ_CHUNK_VERSION));
-    DWORD version		= F.r_u32();
+    u32 version		= F.r_u32();
     if (version!=DETOBJ_VERSION){
     	ELog.Msg(mtError,"CDetail: unsupported version.");
         return false;

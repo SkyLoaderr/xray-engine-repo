@@ -50,7 +50,7 @@ void CWayPoint::Render(bool bParentSelect)
     }
 	if (bParentSelect&&m_bSelected){
     	Fbox bb; GetBox(bb);
-        DWORD clr = 0xffffffff;
+        u32 clr = 0xffffffff;
 		DU::DrawSelectionBox(bb,&clr);
 	}
 }
@@ -369,7 +369,7 @@ void CWayObject::Render(int priority, bool strictB2F)
         if (::Render->occ_visible(bb)){
 			for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++) (*it)->Render(Selected());
             if( Selected() ){
-                DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
+                u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
                 DU::DrawSelectionBox(bb,&clr);
             }
         }
@@ -403,7 +403,7 @@ bool CWayObject::Load(IReader& F)
 {
 	Clear();
 
-	DWORD version = 0;
+	u32 version = 0;
 	char buf[1024];
 
     if (!F.find_chunk(WAYOBJECT_CHUNK_VERSION)) return false;

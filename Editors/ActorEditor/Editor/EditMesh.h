@@ -31,7 +31,7 @@ class st_VMap{
     FloatVec    	vm;			// u,v - координаты или weight
 public:
 	string128		name;		// vertex uv map name
-    BYTE			dim;
+    u8			dim;
     EVMType			type;
 	BOOL			polymap;
 	IntVec			vindices;
@@ -147,8 +147,8 @@ class CEditableMesh {
     void			UnloadSVertices  	();
 
     // internal variables
-    BYTE			m_Visible;
-    BYTE			m_Locked;
+    u8			m_Visible;
+    u8			m_Locked;
 public:
 	st_MeshOptions	m_Ops;
 

@@ -55,11 +55,11 @@ void		CDetailManager::cache_Decompress(Slot* S)
 #ifdef _EDITOR
 	// Select polygons
 	SBoxPickInfoVec		pinf;
-	Scene.BoxPick		(D.BB,pinf,GetSnapObjects());
-	u32	triCount	= pinf.size();
+	Scene.BoxPick		(D.vis.box,pinf,GetSnapObjects());
+	u32	triCount		= pinf.size();
 #else
 	XRC.box_query		(pCreator->ObjectSpace.GetStaticModel(),bC,bD);
-	u32	triCount	= XRC.r_count	();
+	u32	triCount		= XRC.r_count	();
 	CDB::TRI* tris		= pCreator->ObjectSpace.GetStaticTris();
 #endif
 

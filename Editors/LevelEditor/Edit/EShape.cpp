@@ -340,7 +340,7 @@ void CEditShape::Render(int priority, bool strictB2F)
 				Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
             }else{
                 if( Selected()&&m_Box.is_valid() ){
-                    DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
+                    u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
 	                RCache.set_xform_world(_Transform());
                     Device.SetShader(Device.m_WireShader);
                     DU::DrawSelectionBox(m_Box,&clr);

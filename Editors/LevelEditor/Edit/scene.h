@@ -94,7 +94,7 @@ struct st_LevelOptions{
 };
 
 struct st_GroupItem{
-	DWORD		dwUpdateFrame;
+	u32			dwUpdateFrame;
 	Fbox		box;
 	ObjectList	objects;
     st_GroupItem(){box.set(0,0,0,0,0,0);}

@@ -136,8 +136,8 @@ int CPortalUtils::CalculateAllPortals2()
         for(ObjectIt _F=s_lst.begin(); _F!=s_lst.end(); _F++) sectors.push_back((CSector*)(*_F));
 
         // calculate all portals
-        for (DWORD f=0; f<sectors.size()-1; f++)
-            for (DWORD b=f+1; b<sectors.size(); b++){
+        for (u32 f=0; f<sectors.size()-1; f++)
+            for (u32 b=f+1; b<sectors.size(); b++){
                 bResult+=CalculatePortals(sectors[f],sectors[b]);
                 AnsiString t;
                 t.sprintf("Calculate %d of %d",f,sectors.size());
@@ -180,7 +180,7 @@ bool CPortalUtils::Validate(bool bMsg)
         	const Fvector* PT[3];
 	        for (SItemIt it=sector_def->sector_items.begin(); it!=sector_def->sector_items.end(); it++){
             	ELog.Msg(mtError,"Object: %s", it->object->GetName());
-                for (DWORDIt dw_it=it->Face_IDs.begin(); dw_it!=it->Face_IDs.end(); dw_it++){
+                for (U32It dw_it=it->Face_IDs.begin(); dw_it!=it->Face_IDs.end(); dw_it++){
 					it->mesh->GetFacePT(*dw_it, PT);
 	            	ELog.Msg(mtError," PT: [%3.2f, %3.2f, %3.2f]", PT[0]->x, PT[0]->y, PT[0]->z);
                 }
@@ -213,24 +213,24 @@ class sCollector
 {
     struct sFace
     {
-        DWORD 		v[3];
+        u32 		v[3];
         CSector* 	sector;
 
-        bool	hasVertex(DWORD vert)
+        bool	hasVertex(u32 vert)
         {
             return (v[0]==vert)||(v[1]==vert)||(v[2]==vert);
         }
     };
     struct sVert : public Fvector
     {
-        DWORDVec adj;
+        U32Vec adj;
     };
     struct sEdge
     {
         CSector* s[2];
-        DWORD v[2];
-        DWORD used;
-        DWORD dummy;
+        u32 v[2];
+        u32 used;
+        u32 dummy;
 
         sEdge() { used=false; }
 	    static bool c_less(const sEdge& E1, const sEdge& E2)
@@ -274,22 +274,22 @@ public:
    	sPortalVec	 	portals;
 
     Fvector			VMmin, VMscale;
-    DWORDVec		VM[clpMX+1][clpMY+1][clpMZ+1];
+    U32Vec			VM[clpMX+1][clpMY+1][clpMZ+1];
     Fvector			VMeps;
 
-    DWORD			VPack(Fvector& V){
-        DWORD P = 0xffffffff;
+    u32				VPack(Fvector& V){
+        u32 P = 0xffffffff;
 
-        DWORD ix,iy,iz;
+        u32 ix,iy,iz;
         ix = floorf(float(V.x-VMmin.x)/VMscale.x*clpMX);
         iy = floorf(float(V.y-VMmin.y)/VMscale.y*clpMY);
         iz = floorf(float(V.z-VMmin.z)/VMscale.z*clpMZ);
         R_ASSERT(ix<=clpMX && iy<=clpMY && iz<=clpMZ);
 
         {
-            DWORDVec* vl;
+            U32Vec* vl;
             vl = &(VM[ix][iy][iz]);
-            for(DWORDIt it=vl->begin();it!=vl->end(); it++)
+            for(U32It it=vl->begin();it!=vl->end(); it++)
                 if( verts[*it].similar(V) )	{
                     P = *it;
                     break;
@@ -302,7 +302,7 @@ public:
 
             VM[ix][iy][iz].push_back(P);
 
-            DWORD ixE,iyE,izE;
+            u32 ixE,iyE,izE;
             ixE = floorf(float(V.x+VMeps.x-VMmin.x)/VMscale.x*clpMX);
             iyE = floorf(float(V.y+VMeps.y-VMmin.y)/VMscale.y*clpMY);
             izE = floorf(float(V.z+VMeps.z-VMmin.z)/VMscale.z*clpMZ);
@@ -344,7 +344,7 @@ public:
         faces.push_back(T);
     }
     void update_adjacency(){
-    	for (DWORD i=0; i<faces.size(); i++){
+    	for (u32 i=0; i<faces.size(); i++){
         	sFace& F=faces[i];
 			verts[F.v[0]].adj.push_back(i);
 			verts[F.v[1]].adj.push_back(i);
@@ -352,9 +352,9 @@ public:
         }
     }
     void find_edges(){
-    	for (DWORD i=0; i<faces.size(); i++){
+    	for (u32 i=0; i<faces.size(); i++){
         	sFace& F=faces[i];
-            DWORDIt a_it;
+            U32It a_it;
             sVert& v0=verts[F.v[0]];
             sVert& v1=verts[F.v[1]];
             sVert& v2=verts[F.v[2]];
@@ -411,14 +411,14 @@ public:
     }
     void dump_edges() {
        	ELog.Msg(mtInformation,"********* dump");
-    	for (DWORD i=0; i<edges.size(); i++){
+    	for (u32 i=0; i<edges.size(); i++){
         	sEdge& E = edges[i];
         	ELog.Msg(mtInformation,"%d: %d,%d",i,E.v[0],E.v[1]);
         }
     }
     void sort_edges(){
     	// sort inside edges
-    	for (DWORD i=0; i<edges.size(); i++){
+    	for (u32 i=0; i<edges.size(); i++){
         	sEdge& E = edges[i];
             if (E.v[0]>E.v[1]) swap(E.v[0],E.v[1]);
             if (E.s[0]>E.s[1]) swap(E.s[0],E.s[1]);
@@ -431,7 +431,7 @@ public:
 		//dump_edges();
     }
     void make_portals() {
-        for(DWORD e_it=0; e_it<edges.size(); e_it++)
+        for(u32 e_it=0; e_it<edges.size(); e_it++)
         {
 //        	ELog.Msg(mtInformation,"%d: %d,%d",e_it,edges[e_it].v[0],edges[e_it].v[1]);
         	if (edges[e_it].used) continue;
@@ -445,10 +445,10 @@ public:
             for (;;) {
                 sEdge& 	eFirst 	= edges[current.e[0]];
                 sEdge& 	eLast  	= edges[current.e.back()];
-                DWORD	vFirst	= eFirst.v[0];
-                DWORD	vLast	= eLast.v[1];
+                u32	vFirst	= eFirst.v[0];
+                u32	vLast	= eLast.v[1];
                 bool 	bFound 	= false;
-                for (DWORD i=0; i<edges.size(); i++)
+                for (u32 i=0; i<edges.size(); i++)
                 {
                     sEdge& E = edges[i];
                     if (E.used)					continue;
@@ -487,7 +487,7 @@ public:
                 string256 namebuffer;
                 Scene.GenObjectName( OBJCLASS_PORTAL, namebuffer );
                 CPortal* _O = xr_new<CPortal>((LPVOID)0,namebuffer);
-                for (DWORD i=0; i<vlist.size(); i++) {
+                for (u32 i=0; i<vlist.size(); i++) {
 	                _O->Vertices().push_back(verts[vlist[i]]);
                 }
                 _O->SetSectors(p_it->s[0],p_it->s[1]);

@@ -56,7 +56,7 @@ void __fastcall TfraObject::ebDeselectByRefsClick(TObject *Sender)
 void __fastcall TfraObject::MultiSelByRefObject ( bool clear_prev )
 {
     ObjectList 	objlist;
-    LPDWORDVec 	sellist;
+    LPU32Vec 	sellist;
     if (Scene.GetQueryObjects(objlist,OBJCLASS_SCENEOBJECT,1,1,-1)){
     	for (ObjectIt it=objlist.begin(); it!=objlist.end(); it++){
 	        LPCSTR N = ((CSceneObject*)*it)->GetRefName();
@@ -67,10 +67,10 @@ void __fastcall TfraObject::MultiSelByRefObject ( bool clear_prev )
                 if((*_F)->Visible()&&_O->RefCompare(N)){
                 	if (clear_prev){
                     	_O->Select( false );
-	                    sellist.push_back((LPDWORD)_O);
+	                    sellist.push_back((u32*)_O);
                     }else{
                     	if (!_O->Selected())
-                        	sellist.push_back((LPDWORD)_O);
+                        	sellist.push_back((u32*)_O);
                     }
                 }
             }
@@ -80,7 +80,7 @@ void __fastcall TfraObject::MultiSelByRefObject ( bool clear_prev )
         random_shuffle	(sellist.begin(),sellist.end());
         int max_k		= iFloor(float(sellist.size())/100.f*float(seSelPercent->Value)+0.5f);
         int k			= 0;
-        for (LPDWORDIt o_it=sellist.begin(); k<max_k; o_it++,k++){
+        for (LPU32It o_it=sellist.begin(); k<max_k; o_it++,k++){
             CSceneObject *_O = (CSceneObject *)(*o_it);
             _O->Select( true );
         }

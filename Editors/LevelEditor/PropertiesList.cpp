@@ -775,7 +775,7 @@ void __fastcall TProperties::ColorClick(TElTreeItem* item)
         Fcolor edit_val		= V->GetValue();
         prop->OnBeforeEdit	(&edit_val);
 
-        DWORD ev 			= edit_val.get();
+        u32 ev 				= edit_val.get();
         if (SelectColor(&ev)){
 	        edit_val.set	(ev);
             prop->OnAfterEdit(&edit_val);
@@ -787,7 +787,7 @@ void __fastcall TProperties::ColorClick(TElTreeItem* item)
     }break;
     case PROP_COLOR:{
 		U32Value* V			= dynamic_cast<U32Value*>(prop->GetFrontValue()); R_ASSERT(V);
-        DWORD edit_val		= V->GetValue();
+        u32 edit_val		= V->GetValue();
         prop->OnBeforeEdit	(&edit_val);
 
         if (SelectColor(&edit_val)){

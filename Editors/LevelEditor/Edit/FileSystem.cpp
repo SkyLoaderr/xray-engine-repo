@@ -53,7 +53,8 @@ void FSPath::VerifyPath(){
 //----------------------------------------------------
 
 
-CFileSystem::CFileSystem( ){
+CFileSystem::CFileSystem( )
+{
 	m_Local[0] = 0;
 	m_Server[0] = 0;
     m_FindItems = 0;
@@ -62,7 +63,7 @@ CFileSystem::CFileSystem( ){
 
 CFileSystem::~CFileSystem()
 {
-	xr_delete(m_AccessLog);
+	xr_free(m_AccessLog);
 }
 
 void CFileSystem::OnCreate()
@@ -100,8 +101,7 @@ void CFileSystem::OnCreate()
 
     strcpy					(m_LastAccessFN,"access.ini"); 	m_ServerDataRoot.Update(m_LastAccessFN);
     string256 fn; strcpy(fn,"access.log"); m_ServerDataRoot.Update(fn);
-    m_AccessLog				= xr_new<CLog>();
-	m_AccessLog->Create		(fn,true);
+    m_AccessLog				= xr_strdup(fn);
 }
 //----------------------------------------------------
 #ifdef _MSC_VER
@@ -491,8 +491,17 @@ LPSTR CFileSystem::UpdateTextureNameWithFolder(LPCSTR src_name, LPSTR dest_name)
 
 void CFileSystem::WriteAccessLog(LPSTR fn, LPSTR start_msg)
 {
+	string1024 buf;
 	string128 dt_buf, tm_buf;
-	m_AccessLog->Msg(mtInformation,"%s:   '%s' from computer: '%s' by user: '%s' at %s %s",start_msg,fn,Core.CompName,Core.UserName,_strdate(dt_buf),_strtime(tm_buf));
+	sprintf(buf, "%s:   '%s' from computer: '%s' by user: '%s' at %s %s",start_msg,fn,Core.CompName,Core.UserName,_strdate(dt_buf),_strtime(tm_buf));
+	int hf = open( m_AccessLog, _O_WRONLY|_O_APPEND|_O_BINARY );
+	if( hf<=0 )
+		hf = open( m_AccessLog,
+			_O_WRONLY|_O_CREAT|_O_TRUNC| _O_BINARY,
+			_S_IREAD | _S_IWRITE );
+
+	_write( hf, buf, strlen(buf) );
+	_close( hf );
 }
 
 void CFileSystem::RegisterAccess(LPSTR fn, LPSTR start_msg, bool bLog)
@@ -546,8 +555,7 @@ BOOL CFileSystem::UnlockFile(FSPath *initial, LPSTR fname, bool bLog)
 	if (it!=m_LockFiles.end()){
 		m_LockFiles.erase(it);
         if (bLog){
-			string128 dt_buf, tm_buf;
-    		m_AccessLog->Msg(mtInformation,"Unlock: '%s' from computer: '%s' by user: '%s' at %s %s",fn,Core.CompName,Core.UserName,_strdate(dt_buf),_strtime(tm_buf));
+        	WriteAccessLog(fn,"Unlock");
         }
     	return CloseHandle(it->second);
     }

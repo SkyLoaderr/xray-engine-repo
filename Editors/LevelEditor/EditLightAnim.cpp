@@ -310,7 +310,7 @@ void __fastcall TfrmEditLightAnim::ebDeleteKeyClick(TObject *Sender)
 
 void __fastcall TfrmEditLightAnim::ebCreateKeyClick(TObject *Sender)
 {
-    DWORD color=m_CurrentItem->Interpolate(sePointer->Value);
+    u32 color=m_CurrentItem->Interpolate(sePointer->Value);
     if (SelectColorWin(&color)){
         m_CurrentItem->InsertKey(sePointer->Value,color);
         UpdateView();

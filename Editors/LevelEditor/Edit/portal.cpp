@@ -59,7 +59,7 @@ void CPortal::Render(int priority, bool strictB2F){
 	if ((1==priority)&&(false==strictB2F)){
         FvectorVec& src 	= m_SimplifyVertices;//(fraBottomBar->miDrawPortalSimpleModel->Checked)?m_SimplifyVertices:m_Vertices;
         if (src.size()<2) 	return;
-        DWORD 				i;
+        u32 				i;
         FvectorVec	 		V;
         V.resize			(src.size()+2);
         V[0].set			(m_Center);
@@ -153,7 +153,7 @@ bool CPortal::Update(bool bLoadMode){
     R_ASSERT(!m_Vertices.empty());
     R_ASSERT(m_Vertices.size()>=3);
 
-    for (DWORD i=0; i<m_Vertices.size()-1; i++){
+    for (u32 i=0; i<m_Vertices.size()-1; i++){
     	Fvector temp;
         temp.mknormal(m_Center,m_Vertices[i],m_Vertices[i+1]);
     	m_Normal.add(temp);
@@ -201,7 +201,7 @@ bool CPortal::Update(bool bLoadMode){
         else ELog.Msg(mtError, "Check portal orientation: '%s'",Name);
 /*
         map<CSector*,int> counters;
-        for (DWORD i=0; i<m_Vertices.size()-1; i++){
+        for (u32 i=0; i<m_Vertices.size()-1; i++){
             Fbox bb; bb.set(m_Vertices[i],m_Vertices[i]); bb.grow(0.01f);
             SBoxPickInfoVec result;
 	        if (Scene.BoxPick(bb,result)!=2) continue;
@@ -331,7 +331,7 @@ void SimplifyVertices(Fvector2Vec& vertices)
     double  min_size = dbl_max;
     int     edge_id  = -1;
     Fvector2  P;
-    for (DWORD I=0; I<vertices.size(); I++){
+    for (u32 I=0; I<vertices.size(); I++){
         // 2. Build two lines (1[L1a,L1b], 2[L2a,L2b]) and search point of intersection
         int L1a = I-1; if (L1a<0) L1a = vertices.size()-1;
         int L1b = I;
@@ -382,7 +382,7 @@ void CPortal::Simplify()
     Fvector2Vec points, vertices;
     Fvector p;
     points.resize(m_Vertices.size());
-    for (DWORD k=0; k<m_Vertices.size(); k++){
+    for (u32 k=0; k<m_Vertices.size(); k++){
      	mView.transform_tiny(p,m_Vertices[k]);
         points[k].set(p.x,p.y);
     }
@@ -478,7 +478,7 @@ void CPortal::Simplify()
 //------------------------------------------------------------------------------
 
 bool CPortal::Load(IReader& F){
-	DWORD version = 0;
+	u32 version = 0;
 
     char buf[64];
     R_ASSERT(F.r_chunk(PORTAL_CHUNK_VERSION,&version));

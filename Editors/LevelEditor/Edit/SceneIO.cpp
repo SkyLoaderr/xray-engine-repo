@@ -106,14 +106,14 @@ void st_LevelOptions::Read(IReader& F)
 
     char buf[4096];
     R_ASSERT(F.find_chunk(CHUNK_LO_NAMES));
-    F.r_stringZ 	(buf); m_FNLevelPath=buf;
-    F.r_stringZ 	(buf); m_LevelName=buf;
+    F.r_stringZ 	(m_FNLevelPath);
+    F.r_stringZ 	(m_LevelName);
 
     R_ASSERT(F.find_chunk(CHUNK_LO_BOP));
-    F.r_stringZ 	(buf); m_BOPText=buf;
+    F.r_stringZ 	(m_BOPText); 
 
     R_ASSERT(F.find_chunk(CHUNK_LO_SKYDOME));
-	F.r_stringZ	(buf); m_SkydomeObjName=buf;
+	F.r_stringZ		(m_SkydomeObjName);
 
     R_ASSERT(F.find_chunk(CHUNK_LO_ENVS));
 	m_CurEnv	= F.r_u32( );

@@ -44,7 +44,7 @@ public:
 	CCustomObject*	m_AttachedObject;
 
     EPointType		m_Type;
-    DWORD			m_dwTeamID;
+    u32			m_dwTeamID;
 
     static ShaderMap m_Icons;
     static Shader* 	CreateIcon(LPCSTR name);

@@ -198,7 +198,7 @@ public:
 
 	void 			ShowContextMenu		(int cls);
 
-    void			SetGradient			(DWORD color){;}
+    void			SetGradient			(u32 color){;}
 
     void 			OnDeviceCreate		();
     void			OnDeviceDestroy		();

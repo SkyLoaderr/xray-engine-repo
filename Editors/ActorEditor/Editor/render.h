@@ -3,6 +3,7 @@
 #define renderH
 
 #include "frustum.h"
+#include "vis_common.h"
 
 // definition (Renderer)
 class	CRender{
@@ -13,6 +14,7 @@ public:
 	// Occlusion culling
 	virtual BOOL		occ_visible		(Fbox&	B);
 	virtual BOOL		occ_visible		(sPoly& P);
+	virtual BOOL		occ_visible		(vis_data& P);
 
 	// Constructor/destructor
 						CRender			();

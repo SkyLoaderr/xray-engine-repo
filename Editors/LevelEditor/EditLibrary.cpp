@@ -307,7 +307,7 @@ void __fastcall TfrmEditLibrary::tvObjectsDblClick(TObject *Sender)
 
 void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
 {
-	DWORDVec pixels;
+	U32Vec pixels;
 	if (tvObjects->Selected&&FHelper.IsObject(tvObjects->Selected)){
     	AnsiString name; FHelper.MakeName(tvObjects->Selected,0,name,false);
         int src_age;

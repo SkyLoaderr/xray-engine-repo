@@ -76,8 +76,8 @@ public:		// User declarations
 };
 
 typedef void __fastcall (__closure *ClickEvent)(System::TObject* Sender);
-AnsiString& GetTokenNameFromVal_EQ	(DWORD val, AnsiString& res, const xr_token *token_list);
-DWORD 		GetTokenValFromName		(AnsiString& res, const xr_token *token_list);
+AnsiString& GetTokenNameFromVal_EQ	(u32 val, AnsiString& res, const xr_token *token_list);
+u32 		GetTokenValFromName		(AnsiString& res, const xr_token *token_list);
 void 		FillMenuFromToken		(TMxPopupMenu* menu, const xr_token *token_list, ClickEvent func);
 
 //---------------------------------------------------------------------------

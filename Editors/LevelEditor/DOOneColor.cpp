@@ -37,7 +37,7 @@ void __fastcall TfrmOneColor::HideIndex(){
 void __fastcall TfrmOneColor::mcColorMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	DWORD color = ((TMultiObjColor*)Sender)->Brush->Color;
+	u32 color = ((TMultiObjColor*)Sender)->Brush->Color;
 	if (SelectColorWin(&color)){
     	((TMultiObjColor*)Sender)->_Set(color);
 		m_Parent->ModifColorInd();

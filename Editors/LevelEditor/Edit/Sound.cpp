@@ -50,7 +50,7 @@ bool CSound::GetBox( Fbox& box ){
 
 void CSound::Render(int priority, bool strictB2F){
     if((1==priority)&&(false==strictB2F)){
-        DWORD clr=Locked()?SOUND_LOCK_COLOR:(Selected()?SOUND_SEL_COLOR:SOUND_NORM_COLOR);
+        u32 clr=Locked()?SOUND_LOCK_COLOR:(Selected()?SOUND_SEL_COLOR:SOUND_NORM_COLOR);
         if (Selected()) DU::DrawLineSphere( PPosition, m_Range, clr, true );
         DU::DrawSound(PPosition,VIS_RADIUS, clr);
     }
@@ -80,7 +80,7 @@ bool CSound::RayPick(float& distance, const Fvector& start, const Fvector& direc
 //----------------------------------------------------
 
 bool CSound::Load(IReader& F){
-	DWORD version = 0;
+	u32 version = 0;
 
     R_ASSERT(F.r_chunk(SOUND_CHUNK_VERSION,&version));
     if(version!=SOUND_VERSION){

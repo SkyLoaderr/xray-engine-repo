@@ -104,7 +104,7 @@ bool CLight::GetBox( Fbox& box ){
 
 void CLight::Render(int priority, bool strictB2F){
     if ((1==priority)&&(false==strictB2F)){
-    	DWORD clr;
+    	u32 clr;
         clr = Locked()?LOCK_COLOR:(Selected()?SEL_COLOR:(m_Flags.is(flAffectDynamic)?NORM_DYN_COLOR:NORM_COLOR));
     	switch (m_D3D.type){
         case D3DLIGHT_POINT:
@@ -208,7 +208,7 @@ void CLight::OnShowHint(AStringVec& dest){
 }
 
 bool CLight::Load(IReader& F){
-	DWORD version = 0;
+	u32 version = 0;
 
     string1024 buf;
     R_ASSERT(F.r_chunk(LIGHT_CHUNK_VERSION,&version));
@@ -491,7 +491,7 @@ void CEditFlare::Load(IReader& F){
     // flares
     if (F.find_chunk(FLARE_CHUNK_FLARES2)){
 	    DeleteShaders();
-	    DWORD deFCnt	= F.r_u32(); VERIFY(deFCnt==6);
+	    u32 deFCnt	= F.r_u32(); VERIFY(deFCnt==6);
 	   	F.r				(m_Flares.begin(),m_Flares.size()*sizeof(SFlare));
     	for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) it->hShader=0;
     	CreateShaders();

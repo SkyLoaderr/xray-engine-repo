@@ -121,7 +121,7 @@ void CSceneObject::Render(int priority, bool strictB2F){
             if (false==strictB2F){
                 Device.SetShader(Device.m_WireShader);
                 RCache.set_xform_world(_Transform());
-                DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
+                u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
                 DU::DrawSelectionBox(m_pReference->GetBox(),&clr);
             }else{
                 if (m_iBlinkTime>(int)Device.dwTimeGlobal){
@@ -147,7 +147,7 @@ void CSceneObject::RenderAnimation(){
 
         Fvector T,r;
         FvectorVec v;
-        DWORD clr=0xffffffff;
+        u32 clr=0xffffffff;
         for (float t=min_t; t<max_t; t+=0.1f){
             m_ActiveOMotion->Evaluate(t,T,r);
 //            T.add(FPosition);
@@ -165,13 +165,13 @@ void CSceneObject::RenderBones(){
 	m_pReference->RenderBones(_Transform());
 }
 
-void CSceneObject::RenderEdge(CEditableMesh* mesh, DWORD color){
+void CSceneObject::RenderEdge(CEditableMesh* mesh, u32 color){
 	if (!m_pReference) return;
     if (::Render->occ_visible(m_TBBox))
 		m_pReference->RenderEdge(_Transform(), mesh, color);
 }
 
-void CSceneObject::RenderSelection(DWORD color){
+void CSceneObject::RenderSelection(u32 color){
 	if (!m_pReference) return;
 	m_pReference->RenderSelection(_Transform(),0,color);
 }

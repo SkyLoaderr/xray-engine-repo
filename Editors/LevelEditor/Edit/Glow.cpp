@@ -95,7 +95,7 @@ void CGlow::Render(int priority, bool strictB2F){
 			}
             if( Selected() ){
             	Fbox bb; GetBox(bb);
-                DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
+                u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
                 Device.SetShader(Device.m_WireShader);
                 DU::DrawSelectionBox(bb,&clr);
             }
@@ -127,7 +127,7 @@ bool CGlow::RayPick(float& distance, const Fvector& start, const Fvector& direct
 }
 
 bool CGlow::Load(IReader& F){
-	DWORD version = 0;
+	u32 version = 0;
     string256 buf;
 
     R_ASSERT(F.r_chunk(GLOW_CHUNK_VERSION,&version));

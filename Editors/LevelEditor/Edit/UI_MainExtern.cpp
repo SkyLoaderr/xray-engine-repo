@@ -116,7 +116,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 		break;
 
     case COMMAND_SAVE_BACKUP:{
-    	AnsiString fn = AnsiString(Engine.FS.m_CompName)+"_"+Engine.FS.m_UserName+"_backup.level";
+    	AnsiString fn = AnsiString(Core.CompName)+"_"+Core.UserName+"_backup.level";
         Engine.FS.m_Maps.Update(fn);
     	Command(COMMAND_SAVEAS,(int)fn.c_str());
     }break;

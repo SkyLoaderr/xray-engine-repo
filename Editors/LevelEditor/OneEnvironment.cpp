@@ -60,7 +60,7 @@ void __fastcall TfrmOneEnvironment::UpdateClick(TObject *Sender)
 void __fastcall TfrmOneEnvironment::mcAmbColorMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	DWORD color = ((TMultiObjColor*)Sender)->Brush->Color;
+	u32 color = ((TMultiObjColor*)Sender)->Brush->Color;
 	if (SelectColorWin(&color)) ((TMultiObjColor*)Sender)->_Set(color);
     UpdateClick(Sender);
 }

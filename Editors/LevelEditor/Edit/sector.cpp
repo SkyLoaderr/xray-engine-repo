@@ -286,7 +286,7 @@ void CSector::CaptureInsideVolume(){
 //----------------------------------------------------
 
 void CSector::CaptureAllUnusedMeshes(){
-    DWORDVec fl;
+    U32Vec fl;
     CSceneObject *obj=NULL;
     ObjectList& lst=Scene.ListObj(OBJCLASS_SCENEOBJECT);
     // ignore dynamic objects
@@ -376,7 +376,7 @@ void CSector::LoadSectorDef( IReader* F ){
 }
 
 bool CSector::Load(IReader& F){
-	DWORD version = 0;
+	u32 version = 0;
 
     char buf[1024];
     R_ASSERT(F.r_chunk(SECTOR_CHUNK_VERSION,&version));

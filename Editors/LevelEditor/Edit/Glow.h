@@ -15,7 +15,7 @@ class CGlow : public CCustomObject {
 public:
 	enum EFlags{
     	gfFixedSize	= (1<<0),
-    	gfForceDWORD= u8(-1)
+    	gfForce_u8	= u8(-1)
     };
     Shader*       	m_GShader;
     AnsiString		m_ShaderName;

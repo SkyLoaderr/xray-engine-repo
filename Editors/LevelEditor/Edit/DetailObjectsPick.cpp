@@ -25,9 +25,9 @@ int EDetailManager::RaySelect(bool flag, float& distance, const Fvector& start, 
 
     int count = 0;
 
-    for (DWORD z=0; z<dtH.size_z; z++){
+    for (u32 z=0; z<dtH.size_z; z++){
         fz			= fromSlotZ(z);
-        for (DWORD x=0; x<dtH.size_x; x++){
+        for (u32 x=0; x<dtH.size_x; x++){
 			DetailSlot* slot= dtSlots+z*dtH.size_x+x;
             fx		= fromSlotX(x);
             bbox.min.set(fx-DETAIL_SLOT_SIZE_2, slot->y_min, fz-DETAIL_SLOT_SIZE_2);
@@ -61,9 +61,9 @@ int EDetailManager::FrustumSelect(bool flag)
 
     float 			fx,fz;
     Fbox			bbox;
-    for (DWORD z=0; z<dtH.size_z; z++){
+    for (u32 z=0; z<dtH.size_z; z++){
         fz			= fromSlotZ(z);
-        for (DWORD x=0; x<dtH.size_x; x++){
+        for (u32 x=0; x<dtH.size_x; x++){
             DetailSlot* slot = dtSlots+z*dtH.size_x+x;
             fx			= fromSlotX(x);
 
@@ -84,7 +84,7 @@ int EDetailManager::FrustumSelect(bool flag)
 int EDetailManager::SelectObjects(bool flag){
 //	for (int i=0; i<m_Selected.size(); i++)
 //    	m_Selected[i] = flag;
-	for (BYTEIt it=m_Selected.begin(); it!=m_Selected.end(); it++)
+	for (U8It it=m_Selected.begin(); it!=m_Selected.end(); it++)
     	*it = flag;
     return m_Selected.size();
 }
@@ -93,7 +93,7 @@ int EDetailManager::InvertSelection(){
 	if (!fraBottomBar->miDrawDOSlotBoxes->Checked) return 0;
 //	for (int i=0; i<m_Selected.size(); i++)
 //    	m_Selected[i] = m_Selected[i];
-	for (BYTEIt it=m_Selected.begin(); it!=m_Selected.end(); it++)
+	for (U8It it=m_Selected.begin(); it!=m_Selected.end(); it++)
     	*it = !*it;
     return m_Selected.size();
 }
@@ -103,7 +103,7 @@ int EDetailManager::SelectionCount(bool testflag){
 	int count = 0;
 //	for (int i=0; i<m_Selected.size(); i++)
 //    	if (m_Selected[i]==testflag) count++;
-	for (BYTEIt it=m_Selected.begin(); it!=m_Selected.end(); it++)
+	for (U8It it=m_Selected.begin(); it!=m_Selected.end(); it++)
     	if (*it==testflag) count++;
     return count;
 }

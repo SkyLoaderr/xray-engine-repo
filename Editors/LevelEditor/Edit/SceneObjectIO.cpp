@@ -44,7 +44,7 @@ COMotion* CSceneObject::LoadOMotion(const char* fname){
 bool CSceneObject::Load(IReader& F){
     bool bRes = true;
 	do{
-        DWORD version = 0;
+        u32 version = 0;
         char buf[1024];
         R_ASSERT(F.r_chunk(SCENEOBJ_CHUNK_VERSION,&version));
         if ((version!=0x0010)&&(version!=SCENEOBJ_CURRENT_VERSION)){
@@ -181,14 +181,14 @@ bool CSceneObject::ExportGame(SExportStreams& F)
 	        string256 anm_name;	strconcat(anm_name,Name,".anms");
             dummy.s_Animation = xr_strdup(anm_name);
         	strconcat		(anm_name,Builder.m_LevelPath.m_Path,Name,".anms");
-	        Engine.FS.VerifyPath(anm_name);
+	        VerifyPath		(anm_name);
     	    SaveOMotions	(anm_name);
         }
 		// esModel
         string256 mdl_name;	strconcat(mdl_name,Name,".ogf");
         dummy.s_Model 		= xr_strdup(mdl_name);
         strconcat			(mdl_name,Builder.m_LevelPath.m_Path,Name,".ogf");
-		Engine.FS.VerifyPath(mdl_name);
+		VerifyPath			(mdl_name);
         if (m_pReference->IsSkeleton()) m_pReference->ExportSkeletonOGF(mdl_name); else m_pReference->ExportObjectOGF(mdl_name);
 		// esSound
         if (IsSoundable()){

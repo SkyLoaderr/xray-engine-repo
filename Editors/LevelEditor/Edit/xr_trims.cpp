@@ -22,7 +22,7 @@ LPSTR _TrimLeft( LPSTR str )
 LPSTR _TrimRight( LPSTR str )
 {
 	u32	num = strlen( str ) - 1;
-	while ( (num > 0)&&(isspace(BYTE(str[num]))))
+	while ( (num > 0)&&(isspace(u8(str[num]))))
 	{
 		num--;
 	}

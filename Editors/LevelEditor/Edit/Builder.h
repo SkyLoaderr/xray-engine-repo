@@ -26,7 +26,7 @@ typedef Fvector b_vnormal;
 struct sb_light_control						// controller or "layer", 30fps
 {
 	string64			name;				// empty for base layer
-    DWORDVec			data;
+    U32Vec				data;
 };
 class SceneBuilder{
 	int						l_vert_cnt, l_vert_it;
@@ -49,7 +49,7 @@ class SceneBuilder{
     vector<b_portal>        l_portals;
     vector<Flight>          l_light_keys;
 
-    void    GetBBox         (DWORD st_fid, DWORD cnt, Fbox& box);
+    void    GetBBox         (u32 st_fid, u32 cnt, Fbox& box);
 
     void    BuildGlow       (CGlow* e);
     void    BuildPortal   	(b_portal* b, CPortal* e);

@@ -285,7 +285,7 @@ void __fastcall TfrmSceneProperties::tvOptionsItemSelectedChange(
 void __fastcall TfrmSceneProperties::mcLMAmbientMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	DWORD color = ((TMultiObjColor*)Sender)->Brush->Color;
+	u32 color = ((TMultiObjColor*)Sender)->Brush->Color;
 #ifdef _LEVEL_EDITOR
 	if (SelectColorWin(&color))
 #else

@@ -102,7 +102,7 @@ void CPSObject::DrawPS(){
     float 	mb_step 	= 0;
 
 	for (PS::ParticleIt P=m_Particles.begin(); P!=m_Particles.end(); P++){
-		DWORD 	C;
+		u32 	C;
 		float 	sz, angl;
 		float 	angle, ang_vel;
         if (m_Definition->m_Flags.is(PS_MOTIONBLUR)){
@@ -163,7 +163,7 @@ void CPSObject::Render(int priority, bool strictB2F){
     if (1==priority){
     	if (false==strictB2F){
             // draw emitter
-            DWORD C = 0xFFFFEBAA;
+            u32 C = 0xFFFFEBAA;
             switch (m_Emitter.m_EmitterType){
             case PS::SEmitter::emPoint:
                 DU::DrawLineSphere(m_Emitter.m_Position, PSOBJECT_SIZE/10, C, true);
@@ -181,7 +181,7 @@ void CPSObject::Render(int priority, bool strictB2F){
             }
             if( Selected() ){
                 Fbox bb; GetBox(bb);
-                DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
+                u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
                 DU::DrawSelectionBox(bb,&clr);
             }
         }else{
@@ -308,7 +308,7 @@ void CPSObject::Stop(){
 //----------------------------------------------------
 
 bool CPSObject::Load(IReader& F){
-	DWORD version = 0;
+	u32 version = 0;
 
     R_ASSERT(F.r_chunk(CPSOBJECT_CHUNK_VERSION,&version));
     if( version!=CPSOBJECT_VERSION ){

@@ -528,7 +528,7 @@ void __fastcall TfraLeftBar::miRecentFilesClick(TObject *Sender)
 {
 	TMenuItem* MI = dynamic_cast<TMenuItem*>(Sender); R_ASSERT(MI&&(MI->Tag==0x1001));
     AnsiString fn = MI->Caption;
-    if (Engine.FS.Exist(fn.c_str()))UI.Command(COMMAND_LOAD,(DWORD)fn.c_str());
+    if (Engine.FS.Exist(fn.c_str()))UI.Command(COMMAND_LOAD,(u32)fn.c_str());
     else							ELog.DlgMsg(mtError, "Error reading file '%s'",fn.c_str());
 }
 //---------------------------------------------------------------------------

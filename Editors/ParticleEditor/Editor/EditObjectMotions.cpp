@@ -81,7 +81,7 @@ void CEditableObject::ResetAnimation(){
 //----------------------------------------------------
 void CEditableObject::CalculateAnimation(bool bGenInvMat){
     for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
-        DWORD flag=0;
+        u32 flag=0;
         if (m_ActiveSMotion) flag = m_ActiveSMotion->GetMotionFlag(b_it-m_Bones.begin());
 //        else if (bGenInvMat) flag = m_SMotions[0]->GetMotionFlag(b_it-m_Bones.begin());
         Fmatrix M,R;
@@ -291,7 +291,7 @@ void CEditableObject::GetBoneWorldTransform(u32 bone_idx, float t, CSMotion* mot
     do{ lst.push_back(idx); }while((idx=m_Bones[idx]->ParentIndex())>-1);
     for (int i=lst.size()-1; i>=0; i--){
     	idx = lst[i];
-	    DWORD flag	= motion->GetMotionFlag(idx);
+	    u32 flag	= motion->GetMotionFlag(idx);
     	Fvector T,R;
         Fmatrix rot, mat;
         motion->Evaluate(idx,t,T,R);

@@ -106,8 +106,8 @@ public:
     // render methods
 	virtual bool 	IsRender				();
 	virtual void 	Render					(int priority, bool strictB2F);
-	void 			RenderSelection			(DWORD color=0x40E64646);
-	void 			RenderEdge				(CEditableMesh* m=0, DWORD color=0xFFC0C0C0);
+	void 			RenderSelection			(u32 color=0x40E64646);
+	void 			RenderEdge				(CEditableMesh* m=0, u32 color=0xFFC0C0C0);
 	void 			RenderBones				();
 	void 			RenderAnimation			();
 	void 			RenderSingle			();

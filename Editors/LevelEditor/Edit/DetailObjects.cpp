@@ -33,7 +33,7 @@ static Fvector back_vec	={0.f,0.f,-1.f};
 
 static CRandom DetailRandom(0x26111975);
 
-const DWORD	vs_size				= 3000;
+const u32	vs_size				= 3000;
 //------------------------------------------------------------------------------
 
 #define DETMGR_CHUNK_VERSION		0x1000
@@ -125,12 +125,12 @@ void EDetailManager::Render(int priority, bool strictB2F)
 
                     Fvector			c;
                     Fbox			bbox;
-                    DWORD			inactive = 0xff808080;
-                    DWORD			selected = 0xffffffff;
+                    u32			inactive = 0xff808080;
+                    u32			selected = 0xffffffff;
                     float dist_lim	= 75.f*75.f;
-                    for (DWORD z=0; z<dtH.size_z; z++){
+                    for (u32 z=0; z<dtH.size_z; z++){
                         c.z			= fromSlotZ(z);
-                        for (DWORD x=0; x<dtH.size_x; x++){
+                        for (u32 x=0; x<dtH.size_x; x++){
                             bool bSel 	= m_Selected[z*dtH.size_x+x];
                             DetailSlot* slot = dtSlots+z*dtH.size_x+x;
                             c.x			= fromSlotX(x);
@@ -239,7 +239,7 @@ bool EDetailManager::LoadColorIndices(IReader& F)
     R_ASSERT			(F.find_chunk(DETMGR_CHUNK_COLOR_INDEX));
     int cnt				= F.r_u8();
     string256			buf;
-    DWORD index;
+    u32 index;
     int ref_cnt;
     for (int k=0; k<cnt; k++){
 		index			= F.r_u32();
@@ -257,7 +257,7 @@ bool EDetailManager::LoadColorIndices(IReader& F)
 bool EDetailManager::Load(IReader& F){
     string256 buf;
     R_ASSERT			(F.find_chunk(DETMGR_CHUNK_VERSION));
-	DWORD version		= F.r_u32();
+	u32 version		= F.r_u32();
 
     if (version!=DETMGR_VERSION){
     	ELog.Msg(mtError,"EDetailManager: unsupported version.");
@@ -448,7 +448,7 @@ void EDetailManager::SBase::Render()
 	RCache.set_xform_world(Fidentity);
     Device.SetShader((fraBottomBar->miDrawDOBlended->Checked)?shader_blended:shader_overlap);
     div_t cnt = div(mesh.size(),MAX_BUF_SIZE);
-    DWORD vBase;
+    u32 vBase;
     _VertexStream* Stream = &RCache.Vertex;
     for (int k=0; k<cnt.quot; k++){
 		FVF::V*	pv	 	= (FVF::V*)Stream->Lock(MAX_BUF_SIZE,geom->vb_stride,vBase);

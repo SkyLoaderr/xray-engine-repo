@@ -31,7 +31,7 @@ bool SceneBuilder::BuildObjectVCF(IWriter& FM, CEditableObject* obj){
     FvectorVec		V;
     VCFFaceVec		F;
 
-    DWORD           offs;
+    u32           offs;
 	Fvector         C;
     float           R;
 
@@ -54,7 +54,7 @@ bool SceneBuilder::BuildObjectVCF(IWriter& FM, CEditableObject* obj){
 //------------------------------------------------------------------------------
 	// Collect faces
 	RAPID::CollectorPacked CLP(BB);
-	for (DWORD k=0; k<F.size(); k++){
+	for (u32 k=0; k<F.size(); k++){
 		st_VCFFace&	T = F[k];
 //        SFaceTie& A = FT[k];
 		CLP.add_face(

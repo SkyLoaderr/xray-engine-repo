@@ -20,7 +20,7 @@ bool DrawThumbnail(HDC hdc, U32Vec& data, int offs_x, int offs_y, int dest_w, in
     bi.bmiHeader.biSizeImage 	= src_w*src_h*4;
 
     SetStretchBltMode			(hdc, STRETCH_HALFTONE);
-    int ln = StretchDIBits		(hdc, offs_x,offs_y, dest_w,dest_h, 0,0, src_w,src_h, (BYTE*)data.begin(), &bi, DIB_RGB_COLORS, SRCCOPY);
+    int ln = StretchDIBits		(hdc, offs_x,offs_y, dest_w,dest_h, 0,0, src_w,src_h, (u8*)data.begin(), &bi, DIB_RGB_COLORS, SRCCOPY);
 	if (ln==GDI_ERROR){
     	ELog.Msg(mtError,"%s",Engine.LastWindowsError());
     	return false;

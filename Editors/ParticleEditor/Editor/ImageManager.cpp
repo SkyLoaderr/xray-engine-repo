@@ -126,7 +126,7 @@ void CImageManager::MakeGameTexture(EImageThumbnail* THM, LPCSTR game_name, u32*
     u32 h = THM->_Height();
     u32 w4= w*4;
     // compress
-    bool bRes 	= DXTCompress(game_name, (LPBYTE)load_data, w, h, w4, &THM->m_TexParams, 4);
+    bool bRes 	= DXTCompress(game_name, (u8*)load_data, w, h, w4, &THM->m_TexParams, 4);
     if (!bRes){
     	Engine.FS.DeleteFileByName(game_name);
     	ELog.DlgMsg(mtError,"Can't make game texture '%s'.\nCheck texture size (%dx%d).",game_name,w,h);

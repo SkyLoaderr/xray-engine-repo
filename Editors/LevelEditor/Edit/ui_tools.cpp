@@ -28,7 +28,7 @@ TUI_Tools::TUI_Tools()
 //---------------------------------------------------------------------------
 TUI_Tools::~TUI_Tools()
 {
-    for (DWORD i=0; i<etMaxTarget; i++) xr_delete(m_pTools[i]);
+    for (u32 i=0; i<etMaxTarget; i++) xr_delete(m_pTools[i]);
 }
 //---------------------------------------------------------------------------
 

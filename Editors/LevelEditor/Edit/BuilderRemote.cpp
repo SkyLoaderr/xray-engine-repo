@@ -69,7 +69,7 @@ void SceneBuilder::SaveBuild()
     for (vector<sb_light_control>::iterator lc_it=l_light_control.begin(); lc_it!=l_light_control.end(); lc_it++){
     	F.w			(lc_it->name,sizeof(lc_it->name));
     	F.w_u32		(lc_it->data.size());
-    	F.w			(lc_it->data.begin(),sizeof(DWORD)*lc_it->data.size());
+    	F.w			(lc_it->data.begin(),sizeof(u32)*lc_it->data.size());
     }
     F.close_chunk	();
 
@@ -187,7 +187,7 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
     for (SurfFacesPairIt sp_it=mesh->m_SurfFaces.begin(); sp_it!=mesh->m_SurfFaces.end(); sp_it++){
 		IntVec& face_lst = sp_it->second;
         CSurface* surf = sp_it->first;
-		DWORD dwTexCnt = ((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
+		u32 dwTexCnt = ((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
         R_ASSERT(dwTexCnt==1);
 	    for (IntIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
 			st_Face& face = mesh->m_Faces[*f_it];
@@ -208,7 +208,7 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
                     first_face.v[k] = fv.pindex+point_offs;
                     // uv maps
                     int offs = 0;
-                    for (DWORD t=0; t<dwTexCnt; t++){
+                    for (u32 t=0; t<dwTexCnt; t++){
                         st_VMapPt& vm_pt 	= mesh->m_VMRefs[fv.vmref][t];
                         st_VMap& vmap		= *mesh->m_VMaps[vm_pt.vmap_index];
                         if (vmap.type!=vmtUV){
@@ -232,7 +232,7 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
                     second_face.v[k]=fv.pindex+point_offs;
                     // uv maps
                     int offs = 0;
-                    for (DWORD t=0; t<dwTexCnt; t++){
+                    for (u32 t=0; t<dwTexCnt; t++){
                         st_VMapPt& vm_pt 	= mesh->m_VMRefs[fv.vmref][t];
                         st_VMap& vmap		= *mesh->m_VMaps[vm_pt.vmap_index];
                         if (vmap.type!=vmtUV){
@@ -441,7 +441,7 @@ BOOL SceneBuilder::BuildPointLight(b_light* b, const Flags32& usage, svector<WOR
             float sample_energy	= (b->data.diffuse.magnitude_rgb())/float(soft_points->size());
             color.mul_rgb		(sample_energy);
 
-            for (DWORD k=0; k<soft_points->size(); k++){
+            for (u32 k=0; k<soft_points->size(); k++){
                 l_light_static.push_back(b_light_static());
                 b_light_static& sl	= l_light_static.back();
                 sl.controller_ID 	= b->controller_ID;
@@ -566,7 +566,7 @@ void SceneBuilder::BuildPortal(b_portal* b, CPortal* e){
 // shader build functions
 //------------------------------------------------------------------------------
 int SceneBuilder::FindInShaders(b_shader* s){
-    for (DWORD i=0; i<l_shaders.size(); i++)
+    for (u32 i=0; i<l_shaders.size(); i++)
         if(strcmp(l_shaders[i].name, s->name)==0)return i;
     return -1;
 }
@@ -592,7 +592,7 @@ int SceneBuilder::BuildShader(const char * s){
 // shader xrlc build functions
 //------------------------------------------------------------------------------
 int SceneBuilder::FindInShadersXRLC(b_shader* s){
-    for (DWORD i=0; i<l_shaders_xrlc.size(); i++)
+    for (u32 i=0; i<l_shaders_xrlc.size(); i++)
         if(strcmp(l_shaders_xrlc[i].name, s->name)==0)return i;
     return -1;
 }
@@ -618,7 +618,7 @@ int SceneBuilder::BuildShaderXRLC(const char * s){
 // texture build functions
 //------------------------------------------------------------------------------
 int SceneBuilder::FindInTextures(const char* name){
-    for (DWORD i=0; i<l_textures.size(); i++)
+    for (u32 i=0; i<l_textures.size(); i++)
     	if(stricmp(l_textures[i].name,name)==0) return i;
     return -1;
 }
@@ -685,7 +685,7 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* e, int 
 //------------------------------------------------------------------------------
 int SceneBuilder::FindInMaterials(b_material* m)
 {
-    for (DWORD i=0; i<l_materials.size(); i++){
+    for (u32 i=0; i<l_materials.size(); i++){
         if( (l_materials[i].surfidx		== m->surfidx) 		&&
             (l_materials[i].shader		== m->shader) 		&&
             (l_materials[i].shader_xrlc	== m->shader_xrlc) 	&&
@@ -699,7 +699,7 @@ int SceneBuilder::BuildMaterial(CSurface* surf, int sector_num){
     b_material mtl; ZeroMemory(&mtl,sizeof(mtl));
     VERIFY(sector_num>=0);
     int mtl_idx;
-	DWORD tex_cnt 	= ((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT); VERIFY(tex_cnt==1);
+	u32 tex_cnt 	= ((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT); VERIFY(tex_cnt==1);
     int en_sh_idx	= BuildShader(surf->_ShaderName());
     int cl_sh_idx	= BuildShaderXRLC(surf->_ShaderXRLCName());
     if ((en_sh_idx<0)||(cl_sh_idx<0)) return -1;

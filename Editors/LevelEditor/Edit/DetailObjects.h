@@ -16,7 +16,7 @@ class CEditableObject;
 class Shader;
 
 struct SIndexDist{
-    DWORD 	index;
+    u32 	index;
     float 	dist;
     float	dens[4];
     float	cnt[4];
@@ -24,7 +24,7 @@ struct SIndexDist{
 };
 DEFINE_SVECTOR		(SIndexDist,4,SIndexDistVec,SIndexDistIt);
 
-DEFINE_MAP			(DWORD,DOVec,ColorIndexMap,ColorIndexPairIt);
+DEFINE_MAP			(u32,DOVec,ColorIndexMap,ColorIndexPairIt);
 
 #define DETAIL_SLOT_SIZE_2 	DETAIL_SLOT_SIZE*0.5f
 #define DETAIL_SLOT_RADIUS	DETAIL_SLOT_SIZE*0.7071f
@@ -40,8 +40,8 @@ class EDetailManager:
 
     Fbox				m_BBox;
 
-	IC DWORD			toSlotX			(float x)	{return (x/DETAIL_SLOT_SIZE+0.5f)+dtH.offs_x;}
-	IC DWORD			toSlotZ			(float z)	{return (z/DETAIL_SLOT_SIZE+0.5f)+dtH.offs_z;}
+	IC u32			toSlotX			(float x)	{return (x/DETAIL_SLOT_SIZE+0.5f)+dtH.offs_x;}
+	IC u32			toSlotZ			(float z)	{return (z/DETAIL_SLOT_SIZE+0.5f)+dtH.offs_z;}
 	IC float			fromSlotX		(int x)		{return (x-dtH.offs_x)*DETAIL_SLOT_SIZE+DETAIL_SLOT_SIZE_2;}
 	IC float			fromSlotZ		(int z)		{return (z-dtH.offs_z)*DETAIL_SLOT_SIZE+DETAIL_SLOT_SIZE_2;}
 
@@ -49,13 +49,13 @@ class EDetailManager:
 
     void				GetSlotRect		(Frect& rect, int sx, int sz);
     void				GetSlotTCRect	(Irect& rect, int sx, int sz);
-    BYTE				GetRandomObject	(DWORD color_index);
-    BYTE				GetObject		(ColorIndexPairIt& CI, BYTE id);
+    u8				GetRandomObject	(u32 color_index);
+    u8				GetObject		(ColorIndexPairIt& CI, u8 id);
 
 	void 				CalcClosestCount(int part, const Fcolor& C, SIndexDistVec& best);
 	void 				FindClosestIndex(const Fcolor& C, SIndexDistVec& best);
 
-    DetailSlot&			GetSlot			(DWORD sx, DWORD sz);
+    DetailSlot&			GetSlot			(u32 sx, u32 sz);
 public:
 // render part -----------------------------------------------------------------
     void 				InitRender				();
@@ -84,7 +84,7 @@ public:
         void			RecreateShader		(){DestroyShader();CreateShader();}
         bool			LoadImage			(LPCSTR nm);
 		IC LPCSTR 		GetName				(){ return name; }
-		IC bool 		GetColor			(DWORD& color, int U, int V){
+		IC bool 		GetColor			(u32& color, int U, int V){
         	if (Valid()&&(U<(int)w)&&(V<(int)h)){
     			color 	= data[V*w+U];
     			return true;
@@ -110,7 +110,7 @@ public:
     };
 
     ColorIndexMap		m_ColorIndices;
-	BYTEVec				m_Selected;
+	U8Vec				m_Selected;
     SBase				m_Base;
 
     float				m_fDensity;
@@ -140,8 +140,8 @@ public:
     void				MarkAllObjectsAsDel		();
 
     void				RemoveColorIndices		();
-	void				AppendIndexObject		(DWORD color,LPCSTR name,bool bTestUnique=true);
-    CDetail*			FindObjectInColorIndices(DWORD index, LPCSTR name);
+	void				AppendIndexObject		(u32 color,LPCSTR name,bool bTestUnique=true);
+    CDetail*			FindObjectInColorIndices(u32 index, LPCSTR name);
     void				ExportColorIndices		(LPCSTR fname);
     void				ImportColorIndices		(LPCSTR fname);
 

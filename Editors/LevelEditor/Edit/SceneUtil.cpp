@@ -114,7 +114,7 @@ void EScene::SetLights(){
 
 void EScene::TurnLightsForObject(CSceneObject* obj)
 {
-    for (DWORD i=0; i<frame_light.size(); i++){
+    for (u32 i=0; i<frame_light.size(); i++){
         CLight* l = frame_light[i];
 
         if (!l->m_Flags.is(CLight::flAffectDynamic)&&!l->m_Flags.is(CLight::flAffectStatic)) continue;
@@ -134,7 +134,7 @@ void EScene::TurnLightsForObject(CSceneObject* obj)
 }
 
 void EScene::ClearLights(){
-    for (DWORD i=0; i<frame_light.size(); i++)
+    for (u32 i=0; i<frame_light.size(); i++)
         frame_light[i]->UnSet();
     frame_light.clear();
 }

@@ -26,7 +26,7 @@
 #define EVENT_CHUNK_FORMS					0x0311
 #define EVENT_CHUNK_ACTIONS					0x0312
 //----------------------------------------------------
-typedef BYTE T_IDX[3];
+typedef u8 T_IDX[3];
 static const T_IDX idx[12]={{0,4,3},{4,7,3},{7,6,2},{7,2,3},{4,5,6},{6,7,4},
 							{6,5,1},{6,1,2},{5,4,0},{5,0,1},{0,3,2},{0,2,1}};
 
@@ -68,7 +68,7 @@ void CEvent::SForm::RenderBox(const Fmatrix& parent, bool bAlpha){
 	// render
 	FVF::L v;
 	FLvertexVec V;
-	DWORD C;
+	u32 C;
 	if (bAlpha){
         C=D3DCOLOR_RGBA( 0, 255, 0, 24 );
 		Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
@@ -270,7 +270,7 @@ void CEvent::Render( int priority, bool strictB2F ){
         if(Selected()&&(false==strictB2F)){
             Fbox bb;
             GetRenderBox(bb);
-			DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
+			u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
 			RCache.set_xform_world(FTransform);
 			DU::DrawSelectionBox(bb,&clr);
         }
@@ -375,7 +375,7 @@ bool CEvent::IsFormMode(){
 //----------------------------------------------------
 
 bool CEvent::Load(IReader& F){
-	DWORD version = 0;
+	u32 version = 0;
     string4096 buf;
 
     R_ASSERT(F.r_chunk(EVENT_CHUNK_VERSION,&version));

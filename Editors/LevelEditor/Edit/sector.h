@@ -36,7 +36,7 @@ class CSector : public CCustomObject {
     friend class CPortal;
 	typedef CCustomObject inherited;
 
-    BYTE			m_bDefault;
+    u8			m_bDefault;
     bool			m_bHasLoadError;
 
     Fbox			m_Box;

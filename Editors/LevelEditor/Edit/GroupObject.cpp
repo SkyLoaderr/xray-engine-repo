@@ -252,7 +252,7 @@ void CGroupObject::Render(int priority, bool strictB2F)
     	if (Selected()&&m_BBox.is_valid()){
             Device.SetShader(Device.m_WireShader);
             RCache.set_xform_world(FTransform);
-            DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
+            u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
             DU::DrawSelectionBox(m_BBox,&clr);
         }
     }
@@ -293,7 +293,7 @@ void CGroupObject::OnDeviceDestroy(){
 
 bool CGroupObject::Load(IReader& F)
 {
-    DWORD version = 0;
+    u32 version = 0;
     char buf[1024];
     R_ASSERT(F.r_chunk(GROUPOBJ_CHUNK_VERSION,&version));
     if (version!=GROUPOBJ_CURRENT_VERSION){

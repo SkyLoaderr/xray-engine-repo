@@ -31,7 +31,7 @@ static Fvector back_vec	={0.f,0.f,-1.f};
 
 static CRandom DetailRandom(0x26111975);
 
-const DWORD	vs_size				= 3000;
+const u32	vs_size				= 3000;
 //------------------------------------------------------------------------------
 
 #define DETMGR_CHUNK_VERSION		0x1000
@@ -46,14 +46,14 @@ const DWORD	vs_size				= 3000;
 
 #define DETMGR_VERSION 				0x0002
 //------------------------------------------------------------------------------
-DetailSlot&	EDetailManager::GetSlot(DWORD sx, DWORD sz){
+DetailSlot&	EDetailManager::GetSlot(u32 sx, u32 sz){
 	VERIFY(sx<dtH.size_x);
 	VERIFY(sz<dtH.size_z);
 	return dtSlots[sz*dtH.size_x+sx];
 }
 
 void EDetailManager::FindClosestIndex(const Fcolor& C, SIndexDistVec& best){
-	DWORD index;
+	u32 index;
     float dist = flt_max;
     Fcolor src;
     float inv_a = 1-C.a;
@@ -74,7 +74,7 @@ void EDetailManager::FindClosestIndex(const Fcolor& C, SIndexDistVec& best){
     if (bRes){
         if (best.size()<4){
             bool bFound=false;
-            for (DWORD k=0; k<best.size(); k++){
+            for (u32 k=0; k<best.size(); k++){
                 if (best[k].index==index){
                 	if(dist<best[k].dist){
 	                    best[k].dist 	= dist;
@@ -222,7 +222,7 @@ void EDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot){
                 sPoly sDest;
                 sPoly* sRes = frustum.ClipPoly(sSrc, sDest);
                 if (sRes){
-                    for (DWORD k=0; k<sRes->size(); k++){
+                    for (u32 k=0; k<sRes->size(); k++){
                         float H = (*sRes)[k].y;
                         if (H>slot.y_max) slot.y_max = H+0.03f;
                         if (H<slot.y_min) slot.y_min = H-0.03f;
@@ -246,8 +246,8 @@ bool EDetailManager::UpdateSlots()
     dtSlots				= xr_alloc<DetailSlot>(dtH.size_x*dtH.size_z);
 
     UI.ProgressStart	(dtH.size_x*dtH.size_z,"Updating bounding boxes...");
-    for (DWORD z=0; z<dtH.size_z; z++){
-        for (DWORD x=0; x<dtH.size_x; x++){
+    for (u32 z=0; z<dtH.size_z; z++){
+        for (u32 x=0; x<dtH.size_x; x++){
         	DetailSlot* slot = dtSlots+z*dtH.size_x+x;
         	slot->y_min	= m_BBox.min.y;
         	slot->y_max	= m_BBox.max.y;
@@ -286,7 +286,7 @@ void EDetailManager::CalcClosestCount(int part, const Fcolor& C, SIndexDistVec& 
     float inv_a = 1-C.a;
     int idx = -1;
 
-    for (DWORD k=0; k<best.size(); k++){
+    for (u32 k=0; k<best.size(); k++){
 		src.set(best[k].index);
         float d = inv_a+sqrtf((C.r-src.r)*(C.r-src.r)+(C.g-src.g)*(C.g-src.g)+(C.b-src.b)*(C.b-src.b));
         if (d<dist){
@@ -297,7 +297,7 @@ void EDetailManager::CalcClosestCount(int part, const Fcolor& C, SIndexDistVec& 
     if (idx>=0) best[idx].cnt[part]++;
 }
 
-BYTE EDetailManager::GetRandomObject(DWORD color_index){
+u8 EDetailManager::GetRandomObject(u32 color_index){
 	ColorIndexPairIt CI=m_ColorIndices.find(color_index);
 	R_ASSERT(CI!=m_ColorIndices.end());
 	int k = DetailRandom.randI(0,CI->second.size());
@@ -306,7 +306,7 @@ BYTE EDetailManager::GetRandomObject(DWORD color_index){
 	return (it-objects.begin());
 }
 
-BYTE EDetailManager::GetObject(ColorIndexPairIt& CI, BYTE id){
+u8 EDetailManager::GetObject(ColorIndexPairIt& CI, u8 id){
 	VERIFY(CI!=m_ColorIndices.end());
     DOIt it = find(objects.begin(),objects.end(),CI->second[id]);
     VERIFY(it!=objects.end());
@@ -336,7 +336,7 @@ bool EDetailManager::UpdateSlotObjects(int x, int z){
     {
         for (int v=R.y1; v<=R.y2; v++){
             for (int u=R.x1; u<=R.x2; u++){
-                DWORD clr;
+                u32 clr;
                 if (m_Base.GetColor(clr,u,v)){
                     Fcolor C;
                     C.set(clr);
@@ -363,7 +363,7 @@ bool EDetailManager::UpdateSlotObjects(int x, int z){
         int 	cnt=0;
         for (int v=P[part].y1; v<=P[part].y2; v++){
             for (int u=P[part].x1; u<=P[part].x2; u++){
-                DWORD clr;
+                u32 clr;
                 if (m_Base.GetColor(clr,u,v)){
                     Fcolor C;
                     C.set(clr);
@@ -375,15 +375,15 @@ bool EDetailManager::UpdateSlotObjects(int x, int z){
         }
         alpha/=(cnt?float(cnt):1);
         alpha*=0.5f;
-        for (DWORD i=0; i<best.size(); i++)
+        for (u32 i=0; i<best.size(); i++)
             best[i].dens[part] = cnt?(best[i].cnt[part]*alpha)/float(cnt):0;
     }
 
     // fill empty slots
     R_ASSERT(best.size());
     int id=-1;
-    DWORD o_cnt=0;
-    for (DWORD i=0; i<best.size(); i++)
+    u32 o_cnt=0;
+    for (u32 i=0; i<best.size(); i++)
         o_cnt+=m_ColorIndices[best[i].index].size();
     // равномерно заполняем пустые слоты
     if (o_cnt>best.size()){
@@ -400,17 +400,17 @@ bool EDetailManager::UpdateSlotObjects(int x, int z){
 
     // заполним палитру и установим Random'ы
 //	Msg("Slot: %d %d",x,z);
-    for(DWORD k=0; k<best.size(); k++){
+    for(u32 k=0; k<best.size(); k++){
      	// objects
 		ColorIndexPairIt CI=m_ColorIndices.find(best[k].index); R_ASSERT(CI!=m_ColorIndices.end());
-        BYTEVec elem; elem.resize(CI->second.size());
-        for (BYTEIt b_it=elem.begin(); b_it!=elem.end(); b_it++) *b_it=b_it-elem.begin();
+        U8Vec elem; elem.resize(CI->second.size());
+        for (U8It b_it=elem.begin(); b_it!=elem.end(); b_it++) *b_it=b_it-elem.begin();
 //        best_rand A(DetailRandom);
         random_shuffle(elem.begin(),elem.end());//,A);
         for (b_it=elem.begin(); b_it!=elem.end(); b_it++){
 			bool bNotFound=true;
             slot->items[k].id       = GetObject(CI,*b_it);
-            for (DWORD j=0; j<k; j++)
+            for (u32 j=0; j<k; j++)
                 if (slot->items[j].id==slot->items[k].id){
                 	bNotFound=false;
                     break;
@@ -442,8 +442,8 @@ bool EDetailManager::UpdateObjects(bool bUpdateTex, bool bUpdateSelectedOnly){
     if (bUpdateTex&&!UpdateBaseTexture(0)) 	return false;
     // update objects
     UI.ProgressStart	(dtH.size_x*dtH.size_z,"Updating objects...");
-    for (DWORD z=0; z<dtH.size_z; z++)
-        for (DWORD x=0; x<dtH.size_x; x++){
+    for (u32 z=0; z<dtH.size_z; z++)
+        for (u32 x=0; x<dtH.size_x; x++){
         	if (!bUpdateSelectedOnly||(bUpdateSelectedOnly&&m_Selected[z*dtH.size_x+x]))
 	        	UpdateSlotObjects(x,z);
 		    UI.ProgressInc();
@@ -498,7 +498,7 @@ int EDetailManager::RemoveObjects(bool bOnlyMarked)
 {
 	int cnt=0;
 	if (bOnlyMarked){
-		for (DWORD i=0; i<objects.size(); i++){  // не менять int i; на DWORD
+		for (u32 i=0; i<objects.size(); i++){  // не менять int i; на u32
     		if (objects[i]->m_bMarkDel){
             	xr_delete(objects[i]);
 	            objects.erase(objects.begin()+i);
@@ -519,7 +519,7 @@ void EDetailManager::RemoveColorIndices(){
 	m_ColorIndices.clear();
 }
 
-CDetail* EDetailManager::FindObjectInColorIndices(DWORD index, LPCSTR name)
+CDetail* EDetailManager::FindObjectInColorIndices(u32 index, LPCSTR name)
 {
 	ColorIndexPairIt CI=m_ColorIndices.find(index);
 	if (CI!=m_ColorIndices.end()){
@@ -530,7 +530,7 @@ CDetail* EDetailManager::FindObjectInColorIndices(DWORD index, LPCSTR name)
     return 0;
 }
 
-void EDetailManager::AppendIndexObject(DWORD color,LPCSTR name, bool bTestUnique)
+void EDetailManager::AppendIndexObject(u32 color,LPCSTR name, bool bTestUnique)
 {
 	if (bTestUnique){
 		CDetail* DO = FindObjectInColorIndices(color,name);

@@ -82,7 +82,7 @@ void C3DCursor::Render(){
                 m_ViewMat.build_camera(pinf.pt, at, D); m_ViewMat.invert();
                 Fvector p;
                 float s_a = 0;
-                for (DWORD idx=0; idx<m_RenderBuffer.size(); s_a+=d_angle, idx++){
+                for (u32 idx=0; idx<m_RenderBuffer.size(); s_a+=d_angle, idx++){
                     p.set(cosf(s_a)*brush_radius, sinf(s_a)*brush_radius, 0);
                     m_ViewMat.transform(p);
                     GetPickPoint(p, m_RenderBuffer[idx], NULL);

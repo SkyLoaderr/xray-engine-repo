@@ -53,7 +53,6 @@ void CEngine::Initialize(void)
 	string256               fn;
     strconcat               (fn,_EDITOR_FILE_NAME_,".log");
     FS.m_LocalRoot.Update   (fn);
-    ELog.Create             (fn);
 
 #ifdef _EDITOR
 	// Bind PSGP

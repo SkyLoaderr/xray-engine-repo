@@ -33,7 +33,7 @@
 
 //----------------------------------------------------
 #define MAX_TEAM 6
-const DWORD RP_COLORS[MAX_TEAM]={0xff0000,0x00ff00,0x0000ff,0xffff00,0x00ffff,0xff00ff};
+const u32 RP_COLORS[MAX_TEAM]={0xff0000,0x00ff00,0x0000ff,0xffff00,0x00ffff,0xff00ff};
 
 ShaderMap CSpawnPoint::m_Icons;
 //----------------------------------------------------
@@ -286,7 +286,7 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                 }
                 if( Selected() ){
                     Fbox bb; GetBox(bb);
-                    DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
+                    u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
                     Device.SetShader(Device.m_WireShader);
                     DU::DrawSelectionBox(bb,&clr);
                 }
@@ -299,7 +299,7 @@ bool CSpawnPoint::FrustumPick(const CFrustum& frustum)
 {
     if (m_AttachedObject&&m_AttachedObject->FrustumPick(frustum)) return true;
     Fbox bb; GetBox(bb);
-    DWORD mask=0xff;
+    u32 mask=0xff;
     return (frustum.testAABB(bb.min,bb.max,mask));
 }
 
@@ -333,7 +333,7 @@ void CSpawnPoint::OnAppendObject(CCustomObject* object)
 }
 
 bool CSpawnPoint::Load(IReader& F){
-	DWORD version = 0;
+	u32 version = 0;
 
     R_ASSERT(F.r_chunk(SPAWNPOINT_CHUNK_VERSION,&version));
     if(version!=SPAWNPOINT_VERSION){
@@ -390,10 +390,10 @@ void CSpawnPoint::Save(IWriter& F){
 	if (m_SpawnData.Valid()){
     	m_SpawnData.Save(F);
     }else{
-		F.w_chunk	(SPAWNPOINT_CHUNK_TYPE,		&m_Type,	sizeof(DWORD));
+		F.w_chunk	(SPAWNPOINT_CHUNK_TYPE,		&m_Type,	sizeof(u32));
     	switch (m_Type){
         case ptRPoint:
-	        F.w_chunk	(SPAWNPOINT_CHUNK_TEAMID,	&m_dwTeamID,sizeof(DWORD));
+	        F.w_chunk	(SPAWNPOINT_CHUNK_TEAMID,	&m_dwTeamID,sizeof(u32));
         break;
         case ptAIPoint:
         break;

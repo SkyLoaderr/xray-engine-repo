@@ -441,7 +441,7 @@ void TUI::Redraw(){
 	Device.SetRS( D3DRS_FOGSTART,	*(DWORD *)(&fog_start)	);
 	Device.SetRS( D3DRS_FOGEND,		*(DWORD *)(&fog_end)	);
     // filter
-    for (DWORD k=0; k<HW.Caps.pixel.dwStages; k++){
+    for (u32 k=0; k<HW.Caps.pixel.dwStages; k++){
         if( psDeviceFlags.is(rsFilterLinear)){
             Device.SetTSS(k,D3DSAMP_MAGFILTER,D3DTEXF_LINEAR);
             Device.SetTSS(k,D3DSAMP_MINFILTER,D3DTEXF_LINEAR);
@@ -502,7 +502,7 @@ void TUI::Idle()
 	VERIFY(m_bReady);
 	// input
     pInput->OnFrame();
-    if (g_ErrorMode) return;
+    if (ELog.in_use) return;
     Sleep(1);
 	Device.UpdateTimer	();
     // tools on frame

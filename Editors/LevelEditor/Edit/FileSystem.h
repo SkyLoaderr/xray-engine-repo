@@ -36,7 +36,7 @@ class CFileSystem {
 
     HANDLEMap 	m_LockFiles;
     string256	m_LastAccessFN;
-    CLog*		m_AccessLog;
+    LPSTR		m_AccessLog;
 public:
 	string256	m_Local;
 	string256	m_Server;

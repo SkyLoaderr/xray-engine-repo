@@ -19,8 +19,8 @@ public:
 };
 static CTCD TCD;
 
-extern "C" DLL_API bool FSColorPickerExecute(LPDWORD currentColor, LPDWORD originalColor, const int initialExpansionState);
-bool SelectColor(LPDWORD currentcolor, bool bDefaultPicker){
+extern "C" DLL_API bool FSColorPickerExecute(u32* currentColor, LPDWORD originalColor, const int initialExpansionState);
+bool SelectColor(u32* currentcolor, bool bDefaultPicker){
 	VERIFY(currentcolor);
 	if (bDefaultPicker){
         TCD.cdColor->Color = TColor(rgb2bgr(*currentcolor));
@@ -30,7 +30,7 @@ bool SelectColor(LPDWORD currentcolor, bool bDefaultPicker){
         }
         return false;
     }else{
-    	DWORD clr=*currentcolor;
+    	u32 clr=*currentcolor;
   	    if (FSColorPickerExecute(&clr, 0, 0)){
         	*currentcolor = clr;
          	return true;
@@ -39,7 +39,7 @@ bool SelectColor(LPDWORD currentcolor, bool bDefaultPicker){
     }
 }
 
-bool SelectColorWin(LPDWORD currentcolor, bool bDefaultPicker){
+bool SelectColorWin(u32* currentcolor, bool bDefaultPicker){
 	VERIFY(currentcolor);
 	if (bDefaultPicker){
         TCD.cdColor->Color = TColor(*currentcolor);
@@ -49,7 +49,7 @@ bool SelectColorWin(LPDWORD currentcolor, bool bDefaultPicker){
         }
         return false;
     }else{
-        DWORD cur = bgr2rgb(*currentcolor);
+        u32 cur = bgr2rgb(*currentcolor);
         if (FSColorPickerExecute(&cur, 0, 0)){
 			*currentcolor = rgb2bgr(cur);
         	return true;
