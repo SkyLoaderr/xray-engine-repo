@@ -452,7 +452,7 @@ void CStalkerMovementManager::set_nearest_accessible_position(Fvector desired_po
 		desired_position		= ai().level_graph().vertex_position(level_vertex_id);
 
 	if (!restrictions().accessible(desired_position))
-		level_vertex_id			= restrictions().accessible_nearest(Fvector().set(des_position),desired_position);
+		level_vertex_id			= restrictions().accessible_nearest(Fvector().set(desired_position),desired_position);
 
 	VERIFY						(ai().level_graph().inside(level_vertex_id,desired_position));
 
