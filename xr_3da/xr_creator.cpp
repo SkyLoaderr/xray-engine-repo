@@ -81,7 +81,7 @@ BOOL CCreator::Load(DWORD dwNum)
 	strconcat					(LDesc,Path.Current,"level.");
 	
 	pApp->LoadTitle				("Opening virtual stream: ",LDesc);
-	LL_Stream					= new CVirtualFileStream (LDesc);
+	LL_Stream					= Engine.FS.Open	(LDesc);
 	CStream	&fs					= *LL_Stream;
 	
 	CStream *chunk = 0;

@@ -42,7 +42,7 @@ class CAI_Space	: public pureDeviceCreate, pureDeviceDestroy
 {
 private:
 	// Initial data
-	CVirtualFileStream*				vfs;			// virtual file
+	CStream*						vfs;			// virtual file
 	hdrNODES						m_header;		// m_header
 	BYTE*							m_nodes;		// virtual nodes DATA array
 	NodeCompressed**				m_nodes_ptr;	// pointers to node's data

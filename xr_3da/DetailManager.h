@@ -54,7 +54,7 @@ public:
 public:	
 	int						dither			[16][16];
 public:
-	CVirtualFileStream*		dtFS;
+	CStream*				dtFS;
 	DetailHeader			dtH;
 	DetailSlot*				dtSlots;		// note: pointer into VFS
 public:

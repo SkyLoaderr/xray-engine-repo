@@ -57,7 +57,7 @@ void CAI_Space::Load(LPCSTR name)
 	strconcat	(fName,name,"level.ai");
 	if (!Engine.FS.Exist(fName))	return;
 
-	vfs = new	CVirtualFileStream(fName);
+	vfs			= Engine.FS.Open	(fName);
 
 	// m_header & data
 	vfs->Read	(&m_header,sizeof(m_header));

@@ -75,7 +75,7 @@ void CDetailManager::Load		()
 		dtFS	= NULL;
 		return;
 	}
-	dtFS		= new CVirtualFileStream(fn);
+	dtFS		= Engine.FS.Open(fn);
 	
 	// Header
 	dtFS->ReadChunkSafe	(0,&dtH,sizeof(dtH));
