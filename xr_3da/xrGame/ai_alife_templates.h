@@ -9,10 +9,6 @@
 #ifndef XRAY_AI_ALIFE_TEMPLATES
 #define XRAY_AI_ALIFE_TEMPLATES
 
-//#include "ai_alife_space.h"
-//#include "ai_alife_interfaces.h"
-//using namespace ALife;
-
 template <class T>
 void free_vector(xr_vector<T *> &tpVector)
 {

@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "ai_alife_objects.h"
 #include "ai_alife_registries.h"
 
 class CSE_ALifeSimulator : 
