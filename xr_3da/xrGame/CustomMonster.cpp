@@ -796,7 +796,6 @@ bool CCustomMonster::bfScriptAnimation()
 		!GetCurrentAction()->m_tAnimationAction.m_bCompleted && 
 		xr_strlen(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay)) {
 
-		Msg					("[%8d] Script animation : %s",Level().timeServer(),*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
 		CSkeletonAnimated	&tVisualObject = *(PSkeletonAnimated(Visual()));
 		CMotionDef			*l_tpMotionDef = tVisualObject.ID_Cycle_Safe(*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
 		if (m_tpScriptAnimation != l_tpMotionDef)
@@ -804,7 +803,6 @@ bool CCustomMonster::bfScriptAnimation()
 		return		(true);
 	}
 	else {
-		Msg					("[%8d] No script animation!",Level().timeServer());
 		m_tpScriptAnimation	= 0;
 		return		(false);
 	}
