@@ -231,6 +231,7 @@ void CRender::Calculate()
 	// Frustum & HOM rendering
 	ViewBase.CreateFromMatrix		(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
 	View							= 0;
+	HOM.Enable						();
 	HOM.Render						(ViewBase);
 
 	// Build L_DB visibility & perform basic initialization
