@@ -1678,15 +1678,10 @@ texture		= ui\ui_global_map							; Текстура глобальной карты
 width		= 1000										;размера карты (в условных единицах)
 height		= 2000
 
-; Устарело. Удалить секцию global_map_locations
-;[global_map_locations]
-;escape		= 100,500,345,123
-;agroprom	= 100,1000,100,75
-;bar			= 300,1500,200,75
+[game_relations]
+rating			= novice, 10, veteran, 50, master, 100, super_master
+reputation		= bad, -20, neutral, 20, good, 40, very_good
 
-; Удалить следующие 2 строки после апдейта!!! Оставлены, для сохранения паботоспособности старых версий
-;[pda_maingame]
-;max_show_time = 20000
 
 ;параметры показывания входящих сообщений PDA в главном меню
 [maingame_ui]
