@@ -19,6 +19,11 @@
 #define mNode(x)			(this->Node(x))
 #define MAX_VALUE			100000.0
 #define MAX_NODES			4096
+#define fLightWeight		5.f
+#define fCoverWeight		10.f
+#define fDistanceWeight		40.f
+#define fEnemyViewWeight	100.f
+
 
 float fSize,fYSize,fSize2,fYSize2;
 
@@ -51,7 +56,7 @@ __forceinline float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1)
 
 	float fLight = (float)(tNode1.light)/255.f;
 	
-	return(fLight*10 + fCover*5 + 30*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + fYSize2*SQR(y2 - y1))));
+	return(fLight*fLightWeight + fCover*fCoverWeight + fDistanceWeight*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + fYSize2*SQR(y2 - y1))));
 	/**/
 }
 
@@ -87,7 +92,7 @@ __forceinline float ffAttackCriteria(NodeCompressed tNode0, NodeCompressed tNode
 	float fLight = (float)(tNode1.light)/255.f;
 	
 	//return(fLight*10 + fCover*5 + 30*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + fYSize2*SQR(y2 - y1))));
-	return(40.f*SQR((float)sqrt((float)(fSize2*(SQR(x3 - x1) + SQR(z3 - z1)) + fYSize2*SQR(y3 - y1))) - fOptimalEnemyDistance) + fLight*10 + fCover*5 + 30*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + fYSize2*SQR(y2 - y1))));
+	return(fEnemyViewWeight*SQR((float)sqrt((float)(fSize2*(SQR(x3 - x1) + SQR(z3 - z1)) + fYSize2*SQR(y3 - y1))) - fOptimalEnemyDistance) + fLight*fLightWeight + fCover*fCoverWeight + fDistanceWeight*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + fYSize2*SQR(y2 - y1))));
 	/**/
 }
 

@@ -34,7 +34,7 @@ public:
 		DestNode		= 0;
 	}
 
-	void				BuildTravelLine	(const Fvector& current_pos);
+	void				BuildTravelLine	(const Fvector& current_pos, const MemberPlacement &taMembers);
 
 	void				Calculate		(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, float speed, float dt);
 	void				Direction		(Fvector& dest);

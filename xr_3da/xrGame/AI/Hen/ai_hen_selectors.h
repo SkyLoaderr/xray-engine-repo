@@ -95,7 +95,6 @@ class CHenSelectorBase : public AI::NodeEstimator
 		virtual	void Load(CInifile* ini, const char* section);
 		virtual void Init();
 		
-		IC void vfNormalizeSafe(Fvector &Vector);
 		IC void vfAddTravelCost();
 		IC void vfAddLightCost();
 		IC void vfComputeCurrentPosition();
@@ -150,5 +149,7 @@ class CHenSelectorUnderFire : public CHenSelectorBase
 		CHenSelectorUnderFire();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
+
+extern IC void vfNormalizeSafe(Fvector& Vector);
 
 #endif

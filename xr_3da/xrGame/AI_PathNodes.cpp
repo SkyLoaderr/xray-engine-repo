@@ -193,7 +193,7 @@ BOOL SegmentsIntersect(Fvector& dst, Fvector& v1, Fvector& v2, Fvector& v3, Fvec
 	*/
 }
 
-void CPathNodes::BuildTravelLine(const Fvector& current_pos)
+void CPathNodes::BuildTravelLine(const Fvector& current_pos, const MemberPlacement &taMembers)
 {
 	R_ASSERT				(!Nodes.empty());
 	CTravelNode				current,next;
