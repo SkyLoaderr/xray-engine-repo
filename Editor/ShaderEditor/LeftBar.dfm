@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 481
+  Height = 472
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 145
-    Height = 481
+    Height = 472
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -151,7 +151,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 69
       Width = 143
-      Height = 411
+      Height = 402
       Align = alClient
       ParentShowHint = False
       ShowHint = True
@@ -172,7 +172,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 141
-        Height = 396
+        Height = 387
         ActiveTabColor = 10528425
         BorderWidth = 0
         Color = 10528425
@@ -185,7 +185,7 @@ object fraLeftBar: TfraLeftBar
         RaggedRight = False
         ScrollOpposite = False
         Style = etsNetTabs
-        TabIndex = 1
+        TabIndex = 0
         TabPosition = etpTop
         HotTrackFont.Charset = DEFAULT_CHARSET
         HotTrackFont.Color = 15790320
@@ -193,7 +193,7 @@ object fraLeftBar: TfraLeftBar
         HotTrackFont.Name = 'MS Sans Serif'
         HotTrackFont.Style = []
         TabBkColor = 10528425
-        ActivePage = tsCompiler
+        ActivePage = tsEngine
         FlatTabBorderColor = clBtnShadow
         Align = alClient
         ParentColor = False
@@ -205,7 +205,6 @@ object fraLeftBar: TfraLeftBar
           TabVisible = True
           Caption = 'Engine'
           Color = 10528425
-          Visible = False
           object Bevel1: TBevel
             Left = 0
             Top = 50
@@ -215,7 +214,7 @@ object fraLeftBar: TfraLeftBar
           end
           object Bevel2: TBevel
             Left = 0
-            Top = 353
+            Top = 344
             Width = 137
             Height = 2
             Align = alBottom
@@ -338,7 +337,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 137
-            Height = 301
+            Height = 292
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -429,7 +428,7 @@ object fraLeftBar: TfraLeftBar
           end
           object paAction: TPanel
             Left = 0
-            Top = 355
+            Top = 346
             Width = 137
             Height = 16
             Align = alBottom
@@ -465,9 +464,10 @@ object fraLeftBar: TfraLeftBar
           TabVisible = True
           Caption = 'Compiler'
           Color = 10528425
+          Visible = False
           object Bevel4: TBevel
             Left = 0
-            Top = 353
+            Top = 344
             Width = 137
             Height = 2
             Align = alBottom
@@ -586,7 +586,7 @@ object fraLeftBar: TfraLeftBar
           end
           object Panel5: TPanel
             Left = 0
-            Top = 355
+            Top = 346
             Width = 137
             Height = 16
             Align = alBottom
@@ -618,7 +618,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 137
-            Height = 301
+            Height = 292
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -861,6 +861,7 @@ object fraLeftBar: TfraLeftBar
     Top = 197
   end
   object InplaceCompilerEdit: TElTreeInplaceAdvancedEdit
+    Tree = tvCompiler
     Types = [sftText]
     OnValidateResult = InplaceEngineEditValidateResult
     Left = 10
