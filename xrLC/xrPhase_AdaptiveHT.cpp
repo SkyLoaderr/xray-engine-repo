@@ -73,24 +73,39 @@ void	callback_vertex_hemi	(Vertex* V)
 	V->C._set				(vC);
 }
 
+int		smfVertex		(Vertex* V)
+{
+	return 1 + (std::lower_bound(g_vertices.begin(),g_vertices.end(),V)-g_vertices.begin());
+}
+
 void SaveAsSMF					(LPCSTR fname)
 {
 	IWriter* W			= FS.w_open	(fname);
+	string256 			tmp;
+
 	// vertices
-	for (u32 v_idx=0; v_idx<g_vertices.getVS(); v_idx++){
-		Fvector* v		= CL.getV()+v_idx;
-		ref_str 		tmp;
-		tmp.sprintf		("v %f %f %f",v->x,v->y,-v->z);
-		W->w_string		(tmp.c_str());
+	std::sort			(g_vertices.begin(),g_vertices.end());
+	for (u32 v_idx=0; v_idx<g_vertices.size(); v_idx++){
+		Fvector v		= g_vertices[v_idx]->P;
+		sprintf			(tmp,"v %f %f %f",v->x,v->y,-v->z);
+		W->w_string		(tmp);
 	}
 	// transfer faces
-	for (u32 f_idx=0; f_idx<CL.getTS(); f_idx++){
-		CDB::TRI* t		= CL.getT()+f_idx;
-		ref_str 		tmp;
-		tmp.sprintf		("f %d %d %d",t->verts[0]+1,t->verts[2]+1,t->verts[1]+1);
-		W->w_string		(tmp.c_str());
+	for (u32 f_idx=0; f_idx<g_faces.size(); f_idx++){
+		Face*	t		= g_faces	[f_idx];
+		sprintf			(tmp,"f %d %d %d",
+			smfVertex(t->v[0]), smfVertex(t->v[2]), smfVertex(t->v[1]) 
+			);
+		W->w_string		(tmp);
 	}
-	W->w_string	("bind c vertex");
+	W->w_string			("bind c vertex");
+
+	// colors
+	for (u32 v_idx=0; v_idx<g_vertices.size(); v_idx++){
+		base_color_c c; g_vertices[v_idx]->C.get(c);
+		sprintf			(tmp,"v %f %f %f",c.hemi,c.hemi,c.hemi);
+		W->w_string		(tmp);
+	}
 	
 	FS.w_close	(W);
 }
