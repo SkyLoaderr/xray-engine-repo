@@ -328,6 +328,7 @@ public:
 	PERSONAL_EVENT_VECTOR			m_tpEvents;
 	TASK_VECTOR						m_tpTaskIDs;
 	DWORD_VECTOR					m_tpaVertices;
+	BOOL_VECTOR						m_baVisitedVertices;
 	float							m_fMaxItemMass;
 	ETaskState						m_tTaskState;
 	u32								m_dwCurNode;
@@ -369,6 +370,24 @@ public:
 			DWORD_IT 				E = m_tpaVertices.end();
 			for ( ; I != E; I++)
 				tMemoryStream.write	(I,sizeof(*I));
+		}
+		{
+			tMemoryStream.Wdword	(m_baVisitedVertices.size());
+			BOOL_IT 				I = m_baVisitedVertices.begin();
+			BOOL_IT 				E = m_baVisitedVertices.end();
+			u32						dwMask = 0;
+			if (I != E) {
+				for (int j=0; I != E; I++, j++) {
+					if (j >= 32) {
+						tMemoryStream.Wdword	(dwMask);
+						dwMask = 0;
+						j = 0;
+					}
+					if (*I)
+						dwMask |= u32(1) << j;
+				}
+				tMemoryStream.Wdword	(dwMask);
+			}
 		}
 		tMemoryStream.Wfloat		(m_fMaxItemMass);
 		tMemoryStream.Wdword		(m_tTaskState);
@@ -413,6 +432,19 @@ public:
 			for ( ; I != E; I++)
 				tFileStream.Read	(I,sizeof(*I));
 		}
+		{
+			m_baVisitedVertices.resize	(tFileStream.Rdword());
+			BOOL_IT 				I = m_baVisitedVertices.begin();
+			BOOL_IT 				E = m_baVisitedVertices.end();
+			u32						dwMask = 0;
+			for (int j=32; I != E; I++, j++) {
+				if (j >= 32) {
+					dwMask = tFileStream.Rdword();
+					j = 0;
+				}
+				*I = !!(dwMask & (u32(1) << j));
+			}
+		}
 		m_fMaxItemMass				= tFileStream.Rfloat();
 		m_tTaskState				= ETaskState(tFileStream.Rdword());
 		m_dwCurNode					= tFileStream.Rdword();
@@ -425,12 +457,13 @@ public:
 		inherited::Init				(tSpawnID,tpSpawnPoints);
 		m_tpEvents.	clear			();
 		m_tpTaskIDs.clear			();
+		m_tpaVertices.clear			();
+		m_baVisitedVertices.clear	();
 		m_fMaxItemMass				= pSettings->ReadFLOAT				(tpSpawnPoints[tSpawnID].caModel, "max_item_mass");
 		m_tTaskState				= eTaskStateNone;
 		m_tCurTask.tTaskID			= u32(-1);
 		m_dwCurNode					= u32(-1);
 		m_dwCurTaskLocation			= u32(-1);
-		m_tpaVertices.clear			();
 	};
 };
 
