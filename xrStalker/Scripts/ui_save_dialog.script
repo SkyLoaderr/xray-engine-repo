@@ -21,6 +21,8 @@ function save_dialog:InitControls()
 	local txt_main   = CUIStatic()
 	txt_main:SetAutoDelete(true)              --parent will delete this item on destructor
 	txt_main:SetWindowName("static_0")
+	txt_main:SetText("Save Dialog")
+	txt_main:SetTextAlign(CGameFont.alCenter)
 	txt_main:Init("ui\\ui_inv_info_over_b",0,0,257,271) --init texture and position relatively parent
     --textures name, root is Gamedata\Textures folder
 	txt_main:ClipperOn() --clip texture by window region
