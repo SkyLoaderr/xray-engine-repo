@@ -35,8 +35,10 @@ void CUIFragList::OnFrame()
 	H->OutSet			(float(list_rect.lt.x),float(list_rect.lt.y));
 	// global info
 	if (Game().fraglimit)	H->OutNext	("Frag Limit:  %3d",Game().fraglimit);
-	if (Game().timelimit)	H->OutNext	("Time remain: %3d (s)",(Game().timelimit-(Level().timeServer()-Game().start_time))/1000);
-	if (Game().fraglimit||Game().timelimit)	H->OutSkip(1.5f);
+	else					H->OutNext	("Frag Limit:  unlimited");
+	if (Game().timelimit)	H->OutNext	("Time remain: %3d (sec)",(Game().timelimit-(Level().timeServer()-Game().start_time))/1000);
+	else					H->OutNext	("Time remain: unlimited");
+	H->OutSkip			(1.5f);
 	int k=1;
 	for (ItemIt mI=items.begin(); mI!=items.end(); mI++){
 		game_cl_GameState::Player* P = (game_cl_GameState::Player*)*mI;
