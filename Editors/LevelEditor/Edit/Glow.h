@@ -20,7 +20,7 @@ public:
     Shader*       	m_GShader;
     AnsiString		m_ShaderName;
     AnsiString		m_TexName;
-    float           m_Range;
+    float           m_fRadius;
     DWORD			m_dwFlags;
 
     IC bool			GetFlag			(EFlags flag)const 	{return !!(m_dwFlags&flag);}
@@ -30,8 +30,8 @@ public:
 
     bool			m_bDefLoad;
 protected:
-    virtual Fvector& GetScale		()	{ FScale.set(m_Range,m_Range,m_Range); return FScale; 	}
-	virtual void 	SetScale		(Fvector& sc){float v=m_Range; if (!fsimilar(FScale.x,sc.x)) v=sc.x; if (!fsimilar(FScale.y,sc.y)) v=sc.y; if (!fsimilar(FScale.z,sc.z)) v=sc.z; FScale.set(v,v,v); m_Range=v; UpdateTransform();}
+    virtual Fvector& GetScale		()	{ FScale.set(m_fRadius,m_fRadius,m_fRadius); return FScale; 	}
+	virtual void 	SetScale		(Fvector& sc){float v=m_fRadius; if (!fsimilar(FScale.x,sc.x)) v=sc.x; if (!fsimilar(FScale.y,sc.y)) v=sc.y; if (!fsimilar(FScale.z,sc.z)) v=sc.z; FScale.set(v,v,v); m_fRadius=v; UpdateTransform();}
 public:
 	                CGlow       (LPVOID data, LPCSTR name);
     void            Construct   (LPVOID data);

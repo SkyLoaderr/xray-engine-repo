@@ -31,7 +31,7 @@ CGlow::CGlow(LPVOID data, LPCSTR name):CCustomObject(data,name){
 void CGlow::Construct(LPVOID data){
 	ClassID		= OBJCLASS_GLOW;
     m_GShader   = 0;
-    m_Range     = 0.5f;
+    m_fRadius	= 0.5f;
     m_bDefLoad	= false;
 }
 
@@ -60,14 +60,16 @@ void CGlow::FillProp(LPCSTR pref, PropValueVec& values)
 	inherited::FillProp(pref, values);
 	FILL_PROP_EX(values, pref, "Texture", 		&m_TexName, 	PROP::CreateATexture());
 	FILL_PROP_EX(values, pref, "Shader", 		&m_ShaderName, 	PROP::CreateAEShader());
-    FILL_PROP_EX(values, pref, "Radius", 		&m_Range, 		PROP::CreateFloat	());
+    FILL_PROP_EX(values, pref, "Radius", 		&m_fRadius,		PROP::CreateFloat	(0.01f,10000.f));
     FILL_PROP_EX(values, pref, "Fixed size", 	&m_dwFlags, 	PROP::CreateFlag	(gfFixedSize));
 }
 //----------------------------------------------------
-bool CGlow::GetBox( Fbox& box ){
+bool CGlow::GetBox( Fbox& box )
+{
+	float k = (GetFlag(gfFixedSize))?0.01f:1.f;
 	box.set( PPosition, PPosition );
-	box.min.sub(m_Range);
-	box.max.add(m_Range);
+	box.min.sub(m_fRadius*k);
+	box.max.add(m_fRadius*k);
 	return true;
 }
 
@@ -82,13 +84,14 @@ void CGlow::Render(int priority, bool strictB2F){
         if (pinf.inf.range) D.div(pinf.inf.range);
         // тестируем находится ли во фрустуме glow
 		Device.SetTransform(D3DTS_WORLD,Fidentity);
-        if (::Render->ViewBase.testSphere_dirty(PPosition,m_Range)){
+		float k = (GetFlag(gfFixedSize))?0.01f:1.f;
+        if (::Render->ViewBase.testSphere_dirty(PPosition,m_fRadius*k)){
         	// рендерим Glow
         	if ((fraBottomBar->miGlowTestVisibility->Checked&&!Scene.RayPick(PPosition,D,OBJCLASS_SCENEOBJECT,&pinf,true,0))||
             	!fraBottomBar->miGlowTestVisibility->Checked){
                 if (m_GShader){	Device.SetShader(m_GShader);
                 }else{			Device.SetShader(Device.m_WireShader);}
-                m_RenderSprite.Render(PPosition,m_Range);
+                m_RenderSprite.Render(PPosition,m_fRadius,GetFlag(gfFixedSize));
 			}else{
                 // рендерим bounding sphere
         		Device.SetShader(Device.m_WireShader);
@@ -104,18 +107,22 @@ void CGlow::Render(int priority, bool strictB2F){
     }
 }
 
-bool CGlow::FrustumPick(const CFrustum& frustum){
-    return (frustum.testSphere_dirty(PPosition,m_Range))?true:false;
+bool CGlow::FrustumPick(const CFrustum& frustum)
+{
+	float k = (GetFlag(gfFixedSize))?0.01f:1.f;
+    return (frustum.testSphere_dirty(PPosition,m_fRadius*k))?true:false;
 }
 
-bool CGlow::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
+bool CGlow::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf)
+{
 	Fvector ray2;
 	ray2.sub( PPosition, start );
 
     float d = ray2.dotproduct(direction);
     if( d > 0  ){
         float d2 = ray2.magnitude();
-        if( ((d2*d2-d*d) < (m_Range*m_Range)) && (d>m_Range) ){
+		float k = (GetFlag(gfFixedSize))?0.01f:1.f;
+        if( ((d2*d2-d*d) < (m_fRadius*m_fRadius*k*k)) && (d>m_fRadius*k) ){
         	if (d<distance){
 	            distance = d;
     	        return true;
@@ -145,7 +152,7 @@ bool CGlow::Load(CStream& F){
 	F.RstringZ	(buf); m_TexName = buf;
 
     R_ASSERT(F.FindChunk(GLOW_CHUNK_PARAMS));
-	m_Range  		= F.Rfloat();
+	m_fRadius  		= F.Rfloat();
 	if (version==0x0011){
 		F.Rvector	(FPosition);
         UpdateTransform();
@@ -162,7 +169,7 @@ void CGlow::Save(CFS_Base& F){
 	F.close_chunk	();
 
 	F.open_chunk	(GLOW_CHUNK_PARAMS);
-	F.Wfloat   		(m_Range);
+	F.Wfloat   		(m_fRadius);
 	F.close_chunk	();
 
     if (!m_ShaderName.IsEmpty()){

@@ -484,7 +484,7 @@ void SceneBuilder::BuildGlow(CGlow* e)
     VERIFY(!e->m_ShaderName.IsEmpty());
 	mtl.surfidx		= BuildTexture		(e->m_TexName.c_str());
     mtl.shader      = BuildShader		(e->m_ShaderName.c_str());
-    mtl.sector		= CalculateSector	(e->PPosition,e->m_Range);
+    mtl.sector		= CalculateSector	(e->PPosition,e->m_fRadius);
     mtl.shader_xrlc	= -1;
     mtl.lod_id		= -1;
 
@@ -496,7 +496,7 @@ void SceneBuilder::BuildGlow(CGlow* e)
 
 // fill params
 	b.P.set        	(e->PPosition);
-    b.size        	= e->m_Range;
+    b.size        	= e->m_fRadius;
 	b.dwMaterial   	= mtl_idx;
     b.flags			= 0;	// 0x01 - non scalable
 }

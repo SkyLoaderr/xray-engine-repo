@@ -20,24 +20,22 @@ CTLSprite::~CTLSprite( )
 {
 }
 
-void CTLSprite::Render(Fvector &pos, float radius){
+void CTLSprite::Render(Fvector &pos, float radius, bool bFixedSize)
+{
 	FVF::TL			P;
-	DWORD			cur;
-	BYTE			cc;
+    float 			cx,cy,sz;
 
 	P.transform		( pos, Device.mFullTransform );
-	float cx		= Device._x2real(P.p.x);
-	float cy		= Device._y2real(P.p.y);
-
-	float sz		= 0.7071f*UI.GetRenderWidth()*radius/P.p.w;
-
-	mesh.m[0].p.x = cx-sz;	mesh.m[0].p.y = cy+sz;
-	mesh.m[1].p.x = cx-sz;	mesh.m[1].p.y = cy-sz;
-	mesh.m[3].p.x = cx+sz;	mesh.m[3].p.y = cy-sz;
-	mesh.m[2].p.x = cx+sz;	mesh.m[2].p.y = cy+sz;
-
-	mesh.setdepth	( P.p.z, P.p.w );
-	mesh.setcolor	( 0xffffffff );
+    cx				= Device._x2real(P.p.x);
+    cy				= Device._y2real(P.p.y);
+    if (bFixedSize) sz = 0.7071f*radius;
+    else			sz = 0.7071f*UI.GetRenderWidth()*radius/P.p.w;
+    mesh.m[0].p.x = cx-sz;	mesh.m[0].p.y = cy+sz;
+    mesh.m[1].p.x = cx-sz;	mesh.m[1].p.y = cy-sz;
+    mesh.m[3].p.x = cx+sz;	mesh.m[3].p.y = cy-sz;
+    mesh.m[2].p.x = cx+sz;	mesh.m[2].p.y = cy+sz;
+    mesh.setdepth	( P.p.z, P.p.w );
+    mesh.setcolor	( 0xffffffff );
 
     DU::DrawPrimitiveTL(D3DPT_TRIANGLESTRIP,2,(FVF::TL*)&mesh,4,false,false);
 //    Device.DP		( D3DPT_TRIANGLESTRIP, FVF::F_TL, &mesh, 4);
@@ -46,8 +44,6 @@ void CTLSprite::Render(Fvector &pos, float radius){
 void CTLSprite::Render(Fvector &pos, DWORD color, float radius, float angle)
 {
 	FVF::TL			P;
-	DWORD			cur;
-	BYTE			cc;
 
 	P.transform     (pos, Device.mFullTransform);
     if (P.p.w<=0) 	return;
