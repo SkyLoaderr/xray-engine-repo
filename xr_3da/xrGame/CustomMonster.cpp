@@ -384,7 +384,6 @@ objQualifier* CCustomMonster::GetQualifier	()
 
 void CCustomMonster::GetVisible			(objVisible& R)
 {
-	R.clear		();
 	vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
 	for (; I!=E; I++)	if (positive(I->fuzzy)) R.insert(I->O);
 }
@@ -401,6 +400,7 @@ void CCustomMonster::eye_pp_s0			( )
 	Fmatrix		X;							X.mul_43	(svTransform,mEye);
 	eye_matrix.setHPB						(-r_current.yaw,-r_current.pitch,0);
 	eye_matrix.c.set						(X.c);
+//	X.transform_tiny						(eye_matrix.c,eye_shift);
 	Device.Statistic.TEST0.End				();
 }
 void CCustomMonster::eye_pp_s1			( )
