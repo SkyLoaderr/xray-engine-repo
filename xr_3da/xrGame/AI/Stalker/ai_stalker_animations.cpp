@@ -309,33 +309,6 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 	r_target.yaw		= angle_normalize_signed(r_target.yaw + r_torso_target.yaw);
 	r_torso_target.yaw	= angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
 	r_target.yaw		= angle_normalize_signed(r_target.yaw - r_torso_target.yaw);
-//	switch (m_tMovementDirection) {
-//		case eMovementDirectionForward : {
-//			tpLegsAnimation		= m_tAnims.A[m_tBodyState]->m_tMoves.A[m_tMovementType]->A[0]->A[0];
-//			r_target.yaw		= angle_normalize_signed(r_target.yaw + r_torso_target.yaw);
-//			r_torso_target.yaw	= angle_normalize_signed(yaw);
-//			r_target.yaw		= angle_normalize_signed(r_target.yaw - r_torso_target.yaw);
-//			break;
-//		}
-//		case eMovementDirectionBack : {
-//			tpLegsAnimation		= m_tAnims.A[m_tBodyState]->m_tMoves.A[m_tMovementType]->A[1]->A[0];
-//			r_target.yaw		= angle_normalize_signed(r_target.yaw + r_torso_target.yaw);
-//			r_torso_target.yaw	= angle_normalize_signed(yaw + PI);
-//			r_target.yaw		= angle_normalize_signed(r_target.yaw - r_torso_target.yaw);
-//		}
-//		case eMovementDirectionLeft : {
-//			tpLegsAnimation		= m_tAnims.A[m_tBodyState]->m_tMoves.A[m_tMovementType]->A[2]->A[0];
-//			r_target.yaw		= angle_normalize_signed(r_target.yaw + r_torso_target.yaw);
-//			r_torso_target.yaw	= angle_normalize_signed(yaw + 2*PI_DIV_6);
-//			r_target.yaw		= angle_normalize_signed(r_target.yaw - r_torso_target.yaw);
-//		}
-//		case eMovementDirectionRight : {
-//			tpLegsAnimation		= m_tAnims.A[m_tBodyState]->m_tMoves.A[m_tMovementType]->A[3]->A[0];
-//			r_target.yaw		= angle_normalize_signed(r_target.yaw + r_torso_target.yaw);
-//			r_torso_target.yaw	= angle_normalize_signed(yaw);
-//			r_target.yaw		= angle_normalize_signed(r_target.yaw - r_torso_target.yaw);
-//		}
-//	}
 }
 
 void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
