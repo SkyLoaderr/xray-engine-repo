@@ -447,8 +447,7 @@ PARTICLEDLL_API void __stdcall pVortex(float center_x, float center_y, float cen
 }
 
 PARTICLEDLL_API void __stdcall pFrame(BOOL animated, BOOL random_frame, BOOL random_playback,
-			WORD frame_width, WORD frame_height, WORD frame_count,
-			WORD texture_width, WORD texture_height, float speed)
+			WORD frame_count, float speed)
 {
 	PAFrame S;
 	
