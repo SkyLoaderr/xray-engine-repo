@@ -1460,6 +1460,7 @@ void CCar::OnEvent(NET_Packet& P, u16 type)
 void CCar::ResetScriptData(void	*P)
 {
 	CScriptMonster::ResetScriptData(P);
+	if (PPhysicsShell())
 	{
 		CScriptEntityAction	l_tpEntityAction;
 		l_tpEntityAction.m_tMovementAction.SetInputKeys(CScriptMovementAction::eInputKeyEngineOff);
