@@ -37,6 +37,15 @@ void CAI_Dog::Init()
 	CurrentState->Reset				();
 
 	Bones.Reset();
+
+	CJumping::Init(this);
+}
+
+void CAI_Dog::Load(LPCSTR section)
+{
+	inherited::Load	(section);
+
+	CJumping::Load	(section);
 }
 
 
@@ -160,8 +169,6 @@ BOOL CAI_Dog::net_Spawn (LPVOID DC)
 	Bones.AddBone(GetBone("bip01_spine1"), AXIS_Z); 
 	Bones.AddBone(GetBone("bip01_spine2"), AXIS_Z); 
 	Bones.AddBone(GetBone("bip01_head"), AXIS_X); 
-
-//	MotionMan.JMP_Add(eAnimJumpStart, eAnimJumpFly, eAnimJumpFinish,JUMP_PREPARE_USED, 1.f);
 
 	return TRUE;
 }

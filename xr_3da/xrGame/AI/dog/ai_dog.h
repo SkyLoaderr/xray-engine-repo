@@ -11,7 +11,9 @@ public:
 	virtual			~CAI_Dog			();	
 
 	virtual	BOOL	net_Spawn			(LPVOID DC);
-	
+	virtual void	Load				(LPCSTR section);
+
+
 	virtual void	Init				();
 	virtual void	StateSelector		();
 	virtual void	CheckSpecParams		(u32 spec_params);
@@ -21,6 +23,7 @@ public:
 
 	bonesManipulation		Bones;
 
-	virtual	bool			CanJump				() {return true;}
 	virtual void			LookPosition		(Fvector to_point);		
+	
+	
 };

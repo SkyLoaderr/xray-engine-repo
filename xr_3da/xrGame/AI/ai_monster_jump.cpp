@@ -104,9 +104,10 @@ void CJumping::ExecuteJump()
 		target_pos.y /= 1.5f;
 	}
 	
-	// get time of jump;
+	// get time of jump
 	ph_time = pMonster->Movement.JumpMinVelTime(target_pos);
 	pMonster->Movement.Jump(target_pos,ph_time/m_fJumpFactor);
+	
 	time_started		= pMonster->m_dwCurrentTime;
 	time_next_allowed	= time_started + m_dwDelayAfterJump;
 }

@@ -109,8 +109,7 @@ void CAI_Biting::Load(LPCSTR section)
 	m_dwHealth						= pSettings->r_u32   (section,"Health");
 	m_fHitPower						= pSettings->r_float (section,"hit_power");
 	// temp
-	///m_fHitPower						= 1.f;
-	fEntityHealth							= (float)m_dwHealth;
+	fEntityHealth					= (float)m_dwHealth;
 
 	// prefetching
 	cNameVisual_set					(pSettings->r_string(section,"visual"));

@@ -15,10 +15,14 @@ enum EJumpState {
 	JS_NONE
 };
 
-enum EJumpType {
-	JT_ATTACK_JUMP,
-	JT_JUMP_OVER
-};
+//struct SJump{
+//	EMotionAnim	prepare;
+//	EMotionAnim	jump;
+//	EMotionAnim	finish;
+//
+//	float		trace_dist;
+//	u8			states_used;
+//};
 
 
 class CJumping {
@@ -46,20 +50,28 @@ class CJumping {
 public:
 					CJumping			();
 				
-	// call this function from Monster::Init
+	// Инициализация параметров прыжка. Необходимо вызывать в Monster::Init
 			void	Init				(CCustomMonster *pM); 
-	// call this function from Monster::Load
+	// Загрузка параметров из ltx. Необходимо вызывать в Monster::Load
 			void	Load				(LPCSTR section);
-	// common check
+			
+			void	SetJump				();
+			
+	// Общая проверка на прыжок
 			bool	CheckJump			(Fvector from_pos, Fvector to_pos, CObject *pO);
-	// switch to new jump state	
+	// Переключить следующее состояние прыжка	
 			void	SwitchJumpState		();
 
-	// выполнить проверку на возможность прыжка в текущий момент времени
+	// Выполнить проверку на возможность прыжка в текущий момент времени
 	virtual bool	CanJump				() {return true;}
-	// monster can define its own functions	
+	
 	virtual	void	PrepareJump			();
 	virtual	void	ExecuteJump			();
 	virtual	void	FinishJump			();
+
+	//	// Обновляет состояние прыжка в каждом фрейме (вызывается из UpdateCL)
+	//	void		JMP_Update				();
+
+
 };
 

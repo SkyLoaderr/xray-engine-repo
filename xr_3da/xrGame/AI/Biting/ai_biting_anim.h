@@ -153,7 +153,6 @@ struct SMotionItem {
 
 #define CRITICAL_STAND_TIME 1400
 #define TIME_STAND_RECHECK  2000
-#define JUMP_MIN_TIME_DELAY 3000
 
 // Определение времени аттаки по анимации
 typedef struct {
@@ -174,16 +173,6 @@ typedef struct {
 } SAttackAnimation;
 
 
-
-struct SJump{
-	EMotionAnim	prepare;
-	EMotionAnim	jump;
-	EMotionAnim	finish;
-
-	float		trace_dist;
-	u8			states_used;
-};
-
 // Motion and animation management
 class CMotionManager {
 
@@ -192,7 +181,7 @@ class CMotionManager {
 	DEFINE_MAP		(EAction,			SMotionItem,			MOTION_ITEM_MAP,	MOTION_ITEM_MAP_IT);
 	DEFINE_VECTOR	(EMotionAnim,		SEQ_VECTOR,				SEQ_VECTOR_IT);
 	DEFINE_VECTOR	(SAttackAnimation,	ATTACK_ANIM,			ATTACK_ANIM_IT);
-	DEFINE_VECTOR	(SJump,				JUMP_VECTOR,			JUMP_VECTOR_IT);
+//	DEFINE_VECTOR	(SJump,				JUMP_VECTOR,			JUMP_VECTOR_IT);
 
 	ANIM_ITEM_MAP			m_tAnims;			// карта анимаций
 	MOTION_ITEM_MAP			m_tMotions;			// карта соответсвий EAction к SMotionItem
@@ -229,23 +218,6 @@ class CMotionManager {
 	bool					should_play_die_anim;	// должен отыгрывать анимацию смерти
 
 public:
-//	// Прыжки
-//	struct {
-//		bool				active;					// состояние прыжка активно?
-//		JUMP_VECTOR			bank;					// параметры прыжков
-//		SJump				*ptr_cur;				// текущий указатель
-//		EJumpState			state;					// состояние прыжка
-//		Fvector				target_pos;				// целевая позиция
-//		TTime				started;				// время начала прыжка
-//		TTime				next_time_allowed;		// время следующего разрешенного прыжка
-//		EMotionAnim			saved_anim;				// анимация до прыжка
-//		float				ph_time;				// расcчетное время прыжка
-//		float				dest_yaw;				// угол вектора направления
-//		CObject				*entity;				// указатель на объект-цель (0 - нет)
-//		bool				striked;
-//	} jump;
-
-	// ----------------------------------------------
 
 	EAction					m_tAction;
 	CMotionDef				*m_tpCurAnim;
@@ -272,20 +244,6 @@ public:
 	void		LinkAction				(EAction act, EMotionAnim pmt_motion, EMotionAnim pmt_left, EMotionAnim pmt_right, float pmt_angle);
 	void		LinkAction				(EAction act, EMotionAnim pmt_motion);
 	
-//	// -------------------------------------
-//	//	Прыжки
-//	// -------------------------------------
-//	// Добавить в вектор параметры прыжка
-//	void		JMP_Add					(EMotionAnim ja_start, EMotionAnim jump, EMotionAnim ja_finish, u8 used, float td);
-//	// Проверка на возможность прыжка
-//	bool		JMP_Check				(Fvector from_pos, Fvector to_pos);
-//	void		JMP_Start				(Fvector from_pos, Fvector to_pos, CObject *pE);
-//	void		JMP_Finish				();
-//	void		JMP_Exec				();
-//	// Обновляет состояние прыжка в каждом фрейме (вызывается из UpdateCL)
-//	void		JMP_Update				();
-	
-
 	// -------------------------------------
 
 	void		CheckTransition			(EMotionAnim from, EMotionAnim to);
@@ -340,12 +298,7 @@ private:
 
 	// sctipting
 public:
-	
 	void		SCRIPT_SetAnim			(LPCSTR sa);
-
-// [TEST]
-//	void		LookAtEnemy(const Fvector &pos);
-// [/TEST]
 
 	// Вызов PrepareAnimation() и установка анимации
 	void		ForceAnimSelect			();
