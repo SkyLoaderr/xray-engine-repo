@@ -65,7 +65,7 @@ public:
 	}
 
 	//////////////////////////////////////////////////////////////////////////
-	bool AddText_script(LPCSTR str, int shift, u32 color, CGameFont* pFont);
+	bool AddText_script(LPCSTR str, int shift, u32 color, CGameFont* pFont,bool doPreProcess);
 	template <class Element>
 	bool AddParsedItem(const CUIString &str, const int shift,
 					   const u32 &MsgColor, CGameFont* pFont = NULL,

@@ -20,6 +20,7 @@ public:
 				void				EventGen				( NET_Packet* P, u16 type, u16 dest);
 				void				GameEventGen			( NET_Packet* P, u16 dest);
 				void				EventSend				( NET_Packet* P);
+				LPCSTR				GetRoundTime			();
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(game_cl_mp_script)

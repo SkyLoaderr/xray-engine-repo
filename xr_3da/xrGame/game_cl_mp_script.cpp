@@ -8,6 +8,7 @@
 #include "GameObject.h"
 #include "script_game_object.h"
 #include "xrmessages.h"
+#include "date_time.h"
 
 #include <luabind/adopt_policy.hpp>
 
@@ -77,6 +78,19 @@ CScriptGameObject*	game_cl_mp_script::GetObjectByGameID (u32 id)
 	return pGameObject->lua_game_object();
 }
 
+LPCSTR game_cl_mp_script::GetRoundTime()
+{
+	static string32 bufTime;
+	u64 dt = Level().timeServer()-StartTime();
+
+	u32 year = 0, month = 0, day = 0, hours = 0, mins = 0, secs = 0, milisecs = 0;
+
+	split_time(dt, year, month, day, hours, mins, secs, milisecs);
+
+	sprintf(bufTime, "%02i:%02i", mins, secs);
+
+	return bufTime;
+}
 
 
 void game_cl_mp_script::script_register(lua_State *L)
@@ -99,6 +113,7 @@ void game_cl_mp_script::script_register(lua_State *L)
 			.def("StartStopMenu",		&BaseType::StartStopMenu)
 			.def("StartMenu",			&BaseType::StartMenu)
 			.def("StopMenu",			&BaseType::StopMenu)
+			.def("GetRoundTime",		&BaseType::GetRoundTime)
 
 			.def("CanBeReady",			&BaseType::CanBeReady, &WrapType::CanBeReady_static)
 			.def("Init",				&BaseType::Init, &WrapType::Init_static)
@@ -111,7 +126,8 @@ void game_cl_mp_script::script_register(lua_State *L)
 
 			.def("createPlayerState",	&BaseType::createPlayerState, &WrapType::createPlayerState_static, adopt(result) )
 			.def("createGameUI",		&BaseType::createGameUI, &WrapType::createGameUI_static, adopt(result) )
-			
+
+
 		];
 
 }
