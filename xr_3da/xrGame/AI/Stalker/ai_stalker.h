@@ -66,6 +66,22 @@ private:
 		u32					dwTime;
 	} SStalkerStates;
 
+	// firing
+	bool					m_bFiring;
+	u32						m_dwStartFireAmmo;
+	u32						m_dwNoFireTime;
+	float					m_fAddWeaponAngle;
+	
+	// fire  constants
+	u32						m_dwFireRandomMin;
+	u32						m_dwFireRandomMax;
+	u32						m_dwNoFireTimeMin;
+	u32						m_dwNoFireTimeMax;
+	float					m_fMinMissDistance;
+	float					m_fMinMissFactor;
+	float					m_fMaxMissDistance;
+	float					m_fMaxMissFactor;
+
 	// hit data
 	u32						m_dwHitTime;
 	Fvector					m_tHitDir;
@@ -174,6 +190,13 @@ private:
 			// movement and look
 			void			vfSetMovementType				(EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType);
 			void			vfSetMovementType				(EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType, Fvector &tPointToLook);
+			// fire
+			bool			bfCheckForMember				(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
+			bool			bfCheckIfCanKillEnemy			();
+			bool			bfCheckIfCanKillMember			();
+			void			vfSetFire						(bool bFire, CGroup &Group);
+			void			vfStopFire						();
+			
 			// miscellanious
 			void			DropItem						();
 			void			vfUpdateSearchPosition			();

@@ -84,6 +84,16 @@ void CAI_Stalker::Load				(LPCSTR section)
 	m_fWalkFactor					= pSettings->ReadFLOAT(section,"WalkFactor");
 	m_fRunFactor					= pSettings->ReadFLOAT(section,"RunFactor");
 
+	//fire
+	m_dwFireRandomMin  				= pSettings->ReadINT(section,"FireRandomMin");
+	m_dwFireRandomMax  				= pSettings->ReadINT(section,"FireRandomMax");
+	m_dwNoFireTimeMin  				= pSettings->ReadINT(section,"NoFireTimeMin");
+	m_dwNoFireTimeMax  				= pSettings->ReadINT(section,"NoFireTimeMax");
+	m_fMinMissDistance 				= pSettings->ReadFLOAT(section,"MinMissDistance");
+	m_fMinMissFactor   				= pSettings->ReadFLOAT(section,"MinMissFactor");
+	m_fMaxMissDistance 				= pSettings->ReadFLOAT(section,"MaxMissDistance");
+	m_fMaxMissFactor				= pSettings->ReadFLOAT(section,"MaxMissFactor");
+
 	m_tpaTerrain.clear				();
 	LPCSTR							S = pSettings->ReadSTRING(section,"terrain");
 	u32								N = _GetItemCount(S);

@@ -9,6 +9,8 @@
 #include "stdafx.h"
 #include "ai_stalker.h"
 
+#define	FIRE_SAFETY_ANGLE				PI/10
+
 void CAI_Stalker::g_fireParams(Fvector &fire_pos, Fvector &fire_dir)
 {
 	if (Weapons->ActiveWeapon()) {
@@ -121,4 +123,52 @@ void CAI_Stalker::SelectEnemy(SEnemySelected& S)
 			}
 		}
 	}
+}
+
+bool CAI_Stalker::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) 
+{
+	Fvector tMemberDirection;
+	tMemberDirection.sub(tMemberPoint,tMyPoint);
+	vfNormalizeSafe(tMemberDirection);
+	float fAlpha = tFireVector.dotproduct(tMemberDirection);
+	clamp(fAlpha,-.99999f,+.99999f);
+	fAlpha = acosf(fAlpha);
+	return(fAlpha < FIRE_SAFETY_ANGLE);
+}
+
+bool CAI_Stalker::bfCheckIfCanKillEnemy() 
+{
+	return(true);
+//	Fvector tMyLook;
+//	tMyLook.setHP	(-r_torso_current.yaw - m_fAddWeaponAngle,-r_torso_current.pitch);
+//	if (Enemy.Enemy) {
+//		Fvector tFireVector, tMyPosition = Position(), tEnemyPosition = Enemy.Enemy->Position();
+//		tFireVector.sub(tEnemyPosition,tMyPosition);
+//		vfNormalizeSafe(tFireVector);
+//		float fAlpha = tFireVector.dotproduct(tMyLook);
+//		clamp(fAlpha,-.99999f,+.99999f);
+//		fAlpha = acosf(fAlpha);
+//		return(fAlpha < FIRE_SAFETY_ANGLE);
+//	}
+//	else
+//		return(false);
+}
+
+bool CAI_Stalker::bfCheckIfCanKillMember()
+{
+	Fvector tFireVector, tMyPosition = Position();
+	tFireVector.setHP	(-r_torso_current.yaw - m_fAddWeaponAngle,-r_torso_current.pitch);
+	
+	bool bCanKillMember = false;
+	
+	for (int i=0, iTeam = (int)g_Team()/**, iSquad = (int)g_Squad(), iGroup = (int)g_Group()/**/; i<(int)m_tpaVisibleObjects.size(); i++) {
+		CCustomMonster* CustomMonster = dynamic_cast<CCustomMonster*>(m_tpaVisibleObjects[i]);
+		//if ((CustomMonster) && (CustomMonster->g_Team() == iTeam) && (CustomMonster->g_Squad() == iSquad) && (CustomMonster->g_Group() == iGroup))
+		if ((CustomMonster) && (CustomMonster->g_Team() == iTeam))
+			if ((CustomMonster->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,CustomMonster->Position()))) {
+				bCanKillMember = true;
+				break;
+			}
+	}
+	return(bCanKillMember);
 }
