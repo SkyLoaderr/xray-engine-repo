@@ -400,7 +400,7 @@ void CCF_Shape::ComputeBounds()
 
 BOOL CCF_Shape::Contact		( CObject* O )
 {
-	// Build object-sphere
+	// Build object-sphere in World-Space
 	Fsphere			S;
 	if (0==O->Visual())	return FALSE;
 	O->clCenter		(S.P);
@@ -408,6 +408,7 @@ BOOL CCF_Shape::Contact		( CObject* O )
 	
 	// Get our matrix
 	Fmatrix& XF		= Owner()->svTransform;
+	CFrustum	F;
 	
 	// Iterate
 	for (u32 el=0; el<shapes.size(); el++)
@@ -427,13 +428,12 @@ BOOL CCF_Shape::Contact		( CObject* O )
 		case 1:	// box
 			{
 				Fmatrix		Q;
-				Fplane		P;
-				Fvector		A[8],B[8];
 				Fmatrix&	T		= shapes[el].data.box;
 				Q.mul_43			(XF,T);
+				F.CreateFromMatrix	(Q,FRUSTUM_P_ALL);
 
-				// Build points
-				return TRUE;
+				// Build frustum
+				if (F.testSphere_dirty(S.P,S.R))	return TRUE;
 			}
 			break;
 		}

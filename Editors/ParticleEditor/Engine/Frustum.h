@@ -85,7 +85,7 @@ public:
 
 	sPoly*			ClipPoly			(sPoly& src, sPoly& dest) const;
 
-	u32			getMask				() const { return (1<<p_count)-1; }
+	u32				getMask				() const { return (1<<p_count)-1; }
 
 	IC EFC_Visible	testSphere			(Fvector& c, float r, u32& test_mask) const
 	{
