@@ -136,6 +136,8 @@ public:
 	virtual BOOL						net_Relevant		()				{ return FALSE; };	// relevant for export to server
 	virtual void						net_OwnershipTake	(CObject* O)	{};
 	virtual void						net_OwnershipReject	(CObject* O)	{};
+	virtual void						net_MigrateInactive	(NET_Packet& P)	{ net_Local = FALSE;	};
+	virtual void						net_MigrateActive	(NET_Packet& P)	{ net_Local = TRUE;		};
 
 	// Position stack
 	IC DWORD							ps_Size				()				{ return PositionStack.size(); }

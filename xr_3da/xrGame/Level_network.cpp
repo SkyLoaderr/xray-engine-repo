@@ -197,8 +197,18 @@ void CLevel::ClientReceive()
 			}
 			break;
 		case M_MIGRATE_DEACTIVATE:	// TO:   Changing server, just deactivate
+			{
+				P->r_u16		(ID);
+				CObject*	O	= Objects.net_Find		(ID);
+				if (O)			O->net_MigrateInactive	(*P);
+			}
 			break;
 		case M_MIGRATE_ACTIVATE:	// TO:   Changing server, full state
+			{
+				P->r_u16		(ID);
+				CObject*	O	= Objects.net_Find		(ID);
+				if (O)			O->net_MigrateActive	(*P);
+			}
 			break;
 		case M_HIT:
 			{
