@@ -23,6 +23,19 @@ end
 function main()
 	//printf	("Taking Script");
 
+	local	 monster = get_level_object("trader");
+	while true do
+		action(monster, anim("idle"), cond(cond.anim_end))
+		while monster2:action() do
+			wait()
+		end
+		action(monster, anim("idle_non_stop"), sound(snd, "bip01_head",
+			MonsterSpace.head_anim_normal), cond(cond.sound_end))
+		while monster:action() do
+			wait()
+		end
+	end
+
 	//local	 monster = get_level_object("trader");
 	//local	 monster2 = get_level_object("monster");
 	//wait	(5000);
