@@ -46,7 +46,7 @@ void CWeapon::Load(CInifile* ini, const char* section)
 	CLASS_ID load_cls	= TEXT2CLSID(Class);
 	R_ASSERT(load_cls==SUB_CLS_ID);
 
-	CObject::Load(ini,section);
+	CObject::Load	(ini,section);
 
 	SectorMode		= EPM_AT_LOAD;
 	if (pSector)	pSector->objectRemove	(this);
