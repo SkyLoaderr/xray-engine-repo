@@ -19,7 +19,7 @@
 
 DEFINE_VECTOR(CALifeObject *,	ALIFE_OBJECT_P_VECTOR,	ALIFE_OBJECT_P_IT);
 
-CGraph							*tpGraph = 0;
+CALifeGraph						*tpGraph = 0;
 
 class CSpawnComparePredicate {
 private:
@@ -252,7 +252,7 @@ void xrMergeSpawns()
 {
 	// load all the graphs
 	Phase						("Loading game graph");
-	tpGraph						= xr_new<CGraph>("gamedata\\game.graph");
+	tpGraph						= xr_new<CALifeGraph>("gamedata\\game.graph");
 	
 	Phase						("Reading level graphs");
 	CInifile 					*Ini = xr_new<CInifile>(INI_FILE);

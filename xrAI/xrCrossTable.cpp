@@ -54,7 +54,7 @@ void					xrBuildCrossTable(LPCSTR caProjectName)
 	strconcat			(caFileName,caProjectName,"level.graph");
 	
 	Phase				("Loading level graph");
-	CGraph				tGraph(caFileName);
+	CALifeGraph			tGraph(caFileName);
 	
 	Phase				("Loading AI map");
 	CAI_Map				tMap(caProjectName);
