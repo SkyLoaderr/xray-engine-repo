@@ -13,6 +13,25 @@
 #include "level.h"
 #include "inventory.h"
 
+#include "../CameraBase.h"
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////
+
+//для инерции HUD
+//граничные значения
+static float			m_fInertYawMin;
+static float			m_fInertYawMax;
+static float			m_fInertPitchMin;
+static float			m_fInertPitchMax;
+//скорости восстановления
+static float			m_fInertYawRestoreSpeed;
+static float			m_fInertPitchRestoreSpeed;
+
+
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -24,6 +43,9 @@ CHudItem::CHudItem(void)
 	hud_mode = FALSE;
 	m_dwStateTime = 0;
 	m_bRenderHud = true;
+
+	m_bInertionEnable  = true;
+	m_bInertionOn = true;
 }
 CHudItem::~CHudItem(void)
 {
@@ -166,15 +188,168 @@ void CHudItem::UpdateHudPosition	()
 {
 	if (m_pHUD && hud_mode)
 	{
+		if(IsHidden()) hud_mode = false;
+
 		Fmatrix							trans;
 
 		CActor* pActor = smart_cast<CActor*>(H_Parent());
 		if(pActor)
 		{
 			pActor->EffectorManager().affected_Matrix	(trans);
+			UpdateHudInertion							(trans, pActor->cam_FirstEye()->yaw, pActor->cam_FirstEye()->pitch);
+			UpdateHudAdditonal							(trans);
 			m_pHUD->UpdatePosition						(trans);
 		}
 	}
+}
+
+void CHudItem::UpdateHudAdditonal		(Fmatrix& hud_trans)
+{
+}
+
+
+void CHudItem::StartHudInertion()
+{
+	m_bInertionEnable = true;
+	m_bInertionOn = true;
+}
+void CHudItem::StopHudInertion()
+{
+	m_bInertionEnable = false;
+	m_bInertionOn = false;
+}
+
+
+
+static float cur_yaw			= 0.f;
+static float cur_pitch			= 0.f;
+
+static float min_yaw_speed		= 0.0000006f;
+static float max_yaw_speed		= 0.00456f;
+
+static float min_pitch_speed	= 0.01f;
+
+static float max_yaw_delta		= 0.15f;
+static float max_pitch_delta	= PI_DIV_4;
+
+static float delta_yaw			= 0;
+static float old_actor_yaw			= 0;
+
+/*
+delta_yaw = cur_yaw - actor_yaw;
+
+bool do_reverse = true;
+
+if(delta_yaw > max_yaw_delta)
+{
+cur_yaw = actor_yaw + max_yaw_delta;
+delta_yaw = max_yaw_delta;
+do_reverse = false;
+} else if(delta_yaw < -max_yaw_delta)
+{
+cur_yaw = actor_yaw - max_yaw_delta;
+delta_yaw = - max_yaw_delta;
+do_reverse = false;
+}
+
+float yaw_speed = min_yaw_speed + (max_yaw_speed - min_yaw_speed)*_abs(delta_yaw/max_yaw_delta)*_abs(delta_yaw/max_yaw_delta)*_abs(delta_yaw/max_yaw_delta);
+
+if(do_reverse && fis_zero(delta_yaw, min_yaw_speed))
+{
+delta_yaw = 0;
+}
+else if(!fis_zero(delta_yaw+yaw_speed, max_yaw_speed))
+{
+if(delta_yaw>0)
+cur_yaw -= yaw_speed;
+else
+cur_yaw += yaw_speed;
+}
+else
+{
+Msg("%f", delta_yaw+yaw_speed);
+cur_yaw = actor_yaw - delta_yaw;
+}
+
+//float delta_pitch = cur_pitch - actor_pitch;
+*/
+
+
+#define MEASURING_NUM 10
+static float yaw_w[MEASURING_NUM] = {0.f, 0.f, 0.f};
+static int cur_measure = 0;
+
+static float restore_yaw_speed = 0;
+
+void CHudItem::UpdateHudInertion		(Fmatrix& hud_trans, float actor_yaw, float actor_pitch)
+{
+	return;
+
+	if(!m_bInertionEnable) 
+	{
+		cur_yaw = actor_yaw;
+		cur_pitch = actor_pitch;
+		return;
+	}
+
+	float delta_actor_yaw = actor_yaw - old_actor_yaw;
+	old_actor_yaw = actor_yaw;
+
+	//вычслить мгновенную скорость поворота
+	cur_measure = cur_measure<MEASURING_NUM-1?cur_measure+1:0;
+	yaw_w[cur_measure]= delta_actor_yaw/Device.fTimeDelta;
+	
+	//вычислить усредненное значение скорости
+	float yaw_w_mean = 0.f;
+	for(int i=0; i<MEASURING_NUM; i++)
+		yaw_w_mean += yaw_w[i];
+
+	yaw_w_mean /= MEASURING_NUM;
+	
+/*	float restore_yaw_accel = -(cur_yaw-actor_yaw)*0.7f;
+	//добавить затухание трения
+	restore_yaw_accel += 0.73f*(restore_yaw_speed>0?-1.f:1.f)*_abs(restore_yaw_speed);
+	restore_yaw_speed += restore_yaw_accel*Device.fTimeDelta;
+	cur_yaw += restore_yaw_speed*Device.fTimeDelta;
+
+	if(yaw_w_mean > 0)
+	{
+		Msg("-- yaw w %f",yaw_w_mean);
+		Msg("restore yaw accel %f", restore_yaw_accel);
+		Msg("restore yaw speed %f", restore_yaw_speed);
+		Msg("cur yaw%f", cur_yaw);
+	}
+//	float k = 0.93f;
+//	if(_abs(cur_yaw-actor_yaw)>0.01f)
+//	cur_yaw = k*cur_yaw + (1.f-k)*actor_yaw;
+
+	//float delta_cur_yaw		= cur_yaw - old_cur_yaw;
+//	float delta_actor_yaw	= _abs(actor_yaw - old_actor_yaw);
+*/
+
+//	if(yaw_w_mean<0.0001f)
+	{	
+		actor_yaw = angle_normalize(actor_yaw);
+		float old_cur_yaw = cur_yaw;
+		angle_lerp(cur_yaw, actor_yaw, PI_DIV_2, Device.fTimeDelta);
+	}
+/*	
+	if(_abs(delta_cur_yaw - delta_actor_yaw)<0.01f && _abs(delta_cur_yaw)>0.001f
+		&& _abs(delta_actor_yaw)>0.001f)
+	{
+//		Msg("cur yaw delta   %f", cur_yaw - old_cur_yaw);
+//		Msg("actor yaw delta %f", actor_yaw - old_actor_yaw);
+
+		cur_yaw = old_cur_yaw +delta_actor_yaw;
+	}
+*/	
+	old_actor_yaw = actor_yaw;
+
+	Fmatrix inertion; 
+	inertion.identity();
+	inertion.rotateY(cur_yaw-actor_yaw);
+	//inertion.rotateY(0.2f);
+	hud_trans.mulB(inertion);
 }
 
 void CHudItem::UpdateCL()

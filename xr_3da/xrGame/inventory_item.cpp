@@ -28,6 +28,7 @@ CInventoryItem::CInventoryItem()
 	m_pInventory = NULL;
 	m_drop = false;
 	m_ruck = true;
+	m_bRuckDefault = false;
 
 	m_fCondition = 1.0f;
 	m_bUsingCondition = false;

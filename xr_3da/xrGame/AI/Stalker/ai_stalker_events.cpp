@@ -122,3 +122,26 @@ void CAI_Stalker::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index)
 {
 	CInventoryOwner::ReceivePdaMessage(who, msg, info_index);
 }
+
+
+void CAI_Stalker::UpdateAvailableDialogs(CPhraseDialogManager* partner)
+{
+/*	m_AvailableDialogs.clear();
+	m_CheckedDialogs.clear();
+
+	if(CInventoryOwner::m_known_info_registry->registry().objects_ptr())
+	{
+		for(KNOWN_INFO_VECTOR::const_iterator it = CInventoryOwner::m_known_info_registry->registry().objects_ptr()->begin();
+			CInventoryOwner::m_known_info_registry->registry().objects_ptr()->end() != it; ++it)
+		{
+			//подгрузить кусочек информации с которым мы работаем
+			CInfoPortion info_portion;
+			info_portion.Load((*it).id);
+
+			for(u32 i = 0; i<info_portion.DialogNames().size(); i++)
+				AddAvailableDialog(*info_portion.DialogNames()[i], partner);
+		}
+	}
+*/
+	CAI_PhraseDialogManager::UpdateAvailableDialogs(partner);
+}

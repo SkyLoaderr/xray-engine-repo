@@ -61,13 +61,6 @@ protected:
 	CUIListWnd			UIIdxList;
 	CUIListWnd			UIInfoList;
 	CUIEncyclopediaCore	UIInfo;
-
-//	// Хранилище статей
-//	typedef xr_vector<CEncyclopediaArticle*>			ArticlesDB;
-//	typedef xr_vector<CEncyclopediaArticle*>::iterator	ArticlesDB_it;
-//	ArticlesDB											m_ArticlesDB;
-
-//	CEncyclopediaArticle							   *m_pCurrArticle;
 };
 
 #endif	//UI_ENCYCLOPEDIA_WND_H_

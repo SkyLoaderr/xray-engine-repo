@@ -77,6 +77,7 @@ void CEncyclopediaArticle::load_shared	(LPCSTR)
 	}
 
 	Irect r = data()->image.GetUIStaticItem().GetOriginalRect();
+	data()->image.SetAutoDelete(false);
 
 	const int minSize = 65;
 

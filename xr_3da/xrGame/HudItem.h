@@ -81,6 +81,13 @@ public:
 	virtual void	Show() = 0;
 
 	virtual void	UpdateHudPosition	();
+	
+	//просчет инерции для HUD 
+	virtual void	UpdateHudInertion		(Fmatrix& hud_trans, float actor_yaw, float actor_pitch);
+	//просчет дополнительных вычислений (переопределяется в потомках)
+	virtual void	UpdateHudAdditonal		(Fmatrix&);
+
+
 	virtual	void	UpdateXForm			() = 0;
 
 	CWeaponHUD*		GetHUD				() {return m_pHUD;}
@@ -100,6 +107,14 @@ protected:
 	//кадры момента пересчета XFORM и FirePos
 	u32						dwFP_Frame;
 	u32						dwXF_Frame;
+
+	//есть ли инерция у оружия
+	bool m_bInertionEnable;
+	//вкл/выкл инерции (временное, с плавным возвращением оружия в состояние без инерции)
+	void StartHudInertion();
+	void StopHudInertion();
+private:
+	bool m_bInertionOn;
 
 protected:
 	u32				m_animation_slot;

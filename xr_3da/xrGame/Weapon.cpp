@@ -921,12 +921,16 @@ void CWeapon::OnZoomIn()
 {
 	m_bZoomMode = true;
 	m_fZoomFactor = m_fScopeZoomFactor;
+
+	StopHudInertion();
 }
 
 void CWeapon::OnZoomOut()
 {
 	m_bZoomMode = false;
 	m_fZoomFactor = DEFAULT_FOV;
+
+	StartHudInertion();
 }
 CUIStaticItem* CWeapon::ZoomTexture()
 {
@@ -1093,49 +1097,36 @@ bool CWeapon::ready_to_kill	() const
 }
 
 
-
-//Модификация функции для CWeapon
-//отличается от оригинала в CHUDItem,тем что
-//просчитывается смещения HUD в режиме приближения
-void CWeapon::UpdateHudPosition	()
+void CWeapon::UpdateHudAdditonal		(Fmatrix& trans)
 {
-	if (m_pHUD && hud_mode)
+	CActor* pActor = smart_cast<CActor*>(H_Parent());
+	if(!pActor) return;
+
+	if((pActor->IsZoomAimingMode() && m_fZoomRotationFactor<=1.f)
+		|| (!pActor->IsZoomAimingMode() && m_fZoomRotationFactor>0.f))
 	{
-		Fmatrix							trans;
+		Fmatrix hud_rotation;
+		hud_rotation.identity();
+		hud_rotation.rotateX(m_pHUD->ZoomRotateX()*m_fZoomRotationFactor);
 
-		CActor* pActor = smart_cast<CActor*>(H_Parent());
-		if(pActor)
-		{
-			pActor->EffectorManager().affected_Matrix	(trans);
-			
-			if((pActor->IsZoomAimingMode() && m_fZoomRotationFactor<=1.f)
-					|| (!pActor->IsZoomAimingMode() && m_fZoomRotationFactor>0.f))
-			{
-				Fmatrix hud_rotation;
-				hud_rotation.identity();
-				hud_rotation.rotateX(m_pHUD->ZoomRotateX()*m_fZoomRotationFactor);
+		Fmatrix hud_rotation_y;
+		hud_rotation_y.identity();
+		hud_rotation_y.rotateY(m_pHUD->ZoomRotateY()*m_fZoomRotationFactor);
+		hud_rotation.mulA(hud_rotation_y);
 
-				Fmatrix hud_rotation_y;
-				hud_rotation_y.identity();
-				hud_rotation_y.rotateY(m_pHUD->ZoomRotateY()*m_fZoomRotationFactor);
-				hud_rotation.mulA(hud_rotation_y);
+		Fvector offset = m_pHUD->ZoomOffset();
+		offset.mul(m_fZoomRotationFactor);
+		hud_rotation.translate_over(offset);
+		trans.mulB(hud_rotation);
 
-				Fvector offset = m_pHUD->ZoomOffset();
-				offset.mul(m_fZoomRotationFactor);
-				hud_rotation.translate_over(offset);
-				trans.mulB(hud_rotation);
-
-				if(pActor->IsZoomAimingMode())
-					m_fZoomRotationFactor += Device.fTimeDelta/m_fZoomRotateTime;
-				else
-					m_fZoomRotationFactor -= Device.fTimeDelta/m_fZoomRotateTime;
-				clamp(m_fZoomRotationFactor, 0.f, 1.f);
-			}
-
-			m_pHUD->UpdatePosition						(trans);
-		}
+		if(pActor->IsZoomAimingMode())
+			m_fZoomRotationFactor += Device.fTimeDelta/m_fZoomRotateTime;
+		else
+			m_fZoomRotationFactor -= Device.fTimeDelta/m_fZoomRotateTime;
+		clamp(m_fZoomRotationFactor, 0.f, 1.f);
 	}
 }
+
 
 
 const Fmatrix&	CWeapon::ParticlesXFORM() const	

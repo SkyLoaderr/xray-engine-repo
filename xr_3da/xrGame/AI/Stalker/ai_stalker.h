@@ -185,6 +185,7 @@ public:
 	
 	// PDA && Dialogs
 	virtual void						ReceivePdaMessage					(u16 who, EPdaMsg msg, INFO_INDEX info_index);
+	virtual void						UpdateAvailableDialogs				(CPhraseDialogManager* partner);
 
 	// scripts
 	virtual void						UseObject				(const CObject			*tpObject);

@@ -314,6 +314,8 @@ public:
 public:
 	CActorEffector&			EffectorManager		() 	{VERIFY(m_pActorEffector); return *m_pActorEffector;}
 	IC CCameraBase*			cam_Active			()	{return cameras[cam_active];}
+	IC CCameraBase*			cam_FirstEye		()	{return cameras[eacFirstEye];}
+
 protected:
 	void					cam_Set					(EActorCameras style);
 	void					cam_Update				(float dt, float fFOV);

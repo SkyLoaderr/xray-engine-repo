@@ -299,7 +299,7 @@ protected:
 	virtual void			UpdatePosition		(const Fmatrix& transform);
 	virtual void			UpdateFP			();
 	virtual void			UpdateXForm			();
-	virtual void			UpdateHudPosition	();
+	virtual void			UpdateHudAdditonal	(Fmatrix&);
 
 	virtual const Fvector&	CurrentFirePoint	() {return vLastFP;}
 //////////////////////////////////////////////////////////////////////////

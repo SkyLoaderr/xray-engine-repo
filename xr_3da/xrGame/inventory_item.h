@@ -129,6 +129,8 @@ public:
 			void	Belt				(bool on_belt) {m_belt = on_belt;}
 			bool	Ruck				() {return m_ruck;}
 			void	Ruck				(bool on_ruck) {m_ruck = on_ruck;}
+			bool	RuckDefault			() {return m_bRuckDefault;}
+			
 	
 			
 protected:
@@ -136,6 +138,7 @@ protected:
 	u32				m_slot;
 	// Может ли объект быть на поясе или в рюкзаке
 	bool			m_belt, m_ruck;			
+	bool			m_bRuckDefault;
 
 	// цена по умолчанию
 	u32				m_cost;

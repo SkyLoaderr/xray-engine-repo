@@ -10,6 +10,8 @@
 #include "HUDManager.h"
 #include "level.h"
 #include "../skeletoncustom.h"
+#include "../camerabase.h"
+
 
 
 const float TIME_2_HIDE		= 5.f;
@@ -267,11 +269,27 @@ void CTorch::UpdateCL	()
 
 		if (H_Parent()) {
 			smart_cast<CKinematics*>(H_Parent()->Visual())->CalculateBones	();
-			M.mul						(XFORM(),BI.mTransform);
-			light_render->set_rotation	(M.k,M.i);
-			light_render->set_position	(M.c);
-			glow_render->set_position	(M.c);
-			glow_render->set_direction	(M.k);
+
+						
+			CActor* actor = smart_cast<CActor*>(H_Parent());
+
+			if(actor)
+			{
+				light_render->set_position	(actor->cam_FirstEye()->vPosition);
+				glow_render->set_position	(actor->cam_FirstEye()->vPosition);
+				light_render->set_rotation	(actor->cam_FirstEye()->vDirection,
+											actor->cam_FirstEye()->vNormal);
+				glow_render->set_direction	(actor->cam_FirstEye()->vDirection);
+
+			}
+			else
+			{
+				M.mul						(XFORM(),BI.mTransform);
+				light_render->set_position	(M.c);
+				light_render->set_rotation	(M.k,M.i);
+				glow_render->set_position	(M.c);
+				glow_render->set_direction	(M.k);
+			}
 		}
 		else
 		{

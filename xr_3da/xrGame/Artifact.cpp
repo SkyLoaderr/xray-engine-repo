@@ -28,6 +28,8 @@ CArtefact::CArtefact(void)
 	m_pTrailLight = NULL;
 
 	m_bActorPropertiesEnabled = false;
+
+	m_bRuckDefault = true;
 }
 
 

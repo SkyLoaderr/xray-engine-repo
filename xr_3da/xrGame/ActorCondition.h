@@ -8,6 +8,9 @@
 
 #include "EntityCondition.h"
 
+class CActor;
+
+
 class CActorCondition: public CEntityCondition {
 private:
 	typedef CEntityCondition inherited;
