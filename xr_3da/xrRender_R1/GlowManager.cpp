@@ -30,7 +30,7 @@ void CGlowManager::Load		(IReader* fs)
 	// glows itself
 	u32 size	= fs->length();
 	R_ASSERT	(size);
-	u32 one		= 4*sizeof(float)+2*sizeof(u32);
+	u32 one		= 4*sizeof(float)+1*sizeof(u16);
 	R_ASSERT	(size%one == 0);
 	u32 count	= size/one;
 	Glows.reserve(count);
