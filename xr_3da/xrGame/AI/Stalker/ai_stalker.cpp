@@ -81,22 +81,22 @@ CAI_Stalker::CAI_Stalker			()
 	m_pPhysicsShell					= NULL;
 	m_saved_impulse					= 0.f;
 
-#ifdef LOG_PARAMETERS
-	if (ST_VF)
-		return;
-	
-	string4096						S;
-	for (int i=0; ; i++) {
-		sprintf(S,"C:\\vf_%d.dat",i);
-		ST_VF = fopen(S,"rt");
-		if (!ST_VF) {
-			ST_VF = fopen(S,"wt");
-			if (ST_VF)
-				break;
-		}
-		fclose(ST_VF);
-	}
-#endif
+//#ifdef LOG_PARAMETERS
+//	if (ST_VF)
+//		return;
+//	
+//	string4096						S;
+//	for (int i=0; ; i++) {
+//		sprintf(S,"C:\\vf_%d.dat",i);
+//		ST_VF = fopen(S,"rt");
+//		if (!ST_VF) {
+//			ST_VF = fopen(S,"wt");
+//			if (ST_VF)
+//				break;
+//		}
+//		fclose(ST_VF);
+//	}
+//#endif
 }
 
 CAI_Stalker::~CAI_Stalker			()
@@ -105,7 +105,7 @@ CAI_Stalker::~CAI_Stalker			()
 //	for (int i=0; i<(int)m_tStateStack.size(); i++)
 //		Msg							("%3d %6d",m_tStateList[i].eState,m_tStateList[i].dwTime);
 //	Msg								("Total updates : %d",m_dwUpdateCount);
-	fclose							(ST_VF);
+//	fclose							(ST_VF);
 	xr_delete						(m_pPhysicsShell);
 }
 
@@ -141,8 +141,6 @@ void CAI_Stalker::Load				(LPCSTR section)
 	m_fMovementSpeedWeight			= pSettings->r_float(section,"MovementSpeedWeight");
 	m_fDistanceWeight				= pSettings->r_float(section,"DistanceWeight");
 	m_fSpeedWeight					= pSettings->r_float(section,"SpeedWeight");
-	m_fCrouchVisibilityMultiplier	= pSettings->r_float(section,"CrouchVisibilityMultiplier");
-	m_fLieVisibilityMultiplier		= pSettings->r_float(section,"LieVisibilityMultiplier");
 	m_fVisibilityThreshold			= pSettings->r_float(section,"VisibilityThreshold");
 	m_fLateralMultiplier			= pSettings->r_float(section,"LateralMultiplier");
 	m_fShadowWeight					= pSettings->r_float(section,"ShadowWeight");

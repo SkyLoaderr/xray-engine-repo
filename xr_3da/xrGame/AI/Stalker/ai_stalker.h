@@ -175,8 +175,6 @@ private:
 	float					m_fMovementSpeedWeight;
 	float					m_fDistanceWeight;
 	float					m_fSpeedWeight;
-	float					m_fCrouchVisibilityMultiplier;
-	float					m_fLieVisibilityMultiplier;
 	float					m_fVisibilityThreshold;
 	float					m_fLateralMultiplier;
 	float					m_fShadowWeight;

@@ -76,18 +76,20 @@ bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
 	fResult += m_fCurSpeed < m_fMaxViewableSpeed ? m_fSpeedWeight*(1.f - m_fCurSpeed/m_fMaxViewableSpeed) : m_fSpeedWeight;
 	
 	// computing lightness weight
-	float fTemp = float(tpEntity->AI_Node->light)/255.f;
-	if (fTemp < .05f)
-		fResult = 0.f;
-	else
-		fResult += m_fShadowWeight*fTemp;
+	fResult += (1 - float(tpEntity->AI_Node->light)/255.f)*m_fShadowWeight;
 	
 #ifdef LOG_PARAMETERS
-	if (iLogParameters)
+	if ((g_Alive() && !!dynamic_cast<CActor*>(tpEntity)) && (fResult >= m_fVisibilityThreshold))
 		HUD().outMessage(0xffffffff,cName(),"%s : %d",fResult >= m_fVisibilityThreshold ? "I see actor" : "I don't see actor",Level().timeServer());
-	if (iLogParameters) {
-		fprintf(ST_VF,"%6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f\n",fDistance,fAlpha,fSpeed,AI_Path.fSpeed,float(tpEntity->AI_Node->light)/255.f,float(AI_Node->light)/255.f,tpEntity->Radius(),float(iLogParameters - 1));
-	}
+	Msg("**********");
+	Msg("Distance : %f [%f]",fDistance, fDistance >= fMaxViewableDistanceInDirection ? 0.f : m_fDistanceWeight*(1.f - fDistance/fMaxViewableDistanceInDirection));
+	Msg("MySpeed  : %f [%f]",m_fCurSpeed, m_fCurSpeed < m_fMaxViewableSpeed ? m_fSpeedWeight*(1.f - m_fCurSpeed/m_fMaxViewableSpeed) : m_fSpeedWeight);
+	Msg("Speed    : %f [%f]",fSpeed, fSpeed < m_fMaxInvisibleSpeed ? m_fMovementSpeedWeight*fSpeed/m_fMaxInvisibleSpeed : m_fMovementSpeedWeight);
+	Msg("Shadow   : %f [%f]",float(tpEntity->AI_Node->light)/255.f,(1 - float(tpEntity->AI_Node->light)/255.f)*m_fShadowWeight);
+	Msg("Result   : %f [%f]",fResult,m_fVisibilityThreshold);
+//	if (iLogParameters) {
+//		fprintf(ST_VF,"%6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f\n",fDistance,fAlpha,fSpeed,AI_Path.fSpeed,float(tpEntity->AI_Node->light)/255.f,float(AI_Node->light)/255.f,tpEntity->Radius(),float(iLogParameters - 1));
+//	}
 #endif
 	return(fResult >= m_fVisibilityThreshold);
 }
