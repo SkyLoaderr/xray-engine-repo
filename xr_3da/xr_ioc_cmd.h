@@ -8,18 +8,18 @@
 
 class ENGINE_API	IConsole_Command
 {
-public:
+public		:
 	friend class	CConsole;
 	typedef char	TInfo	[256];
 	typedef char	TStatus	[256];
-protected:
+protected	:
 	LPCSTR			cName;
 	bool			bEnabled;
 	bool			bLowerCaseArgs;
 	bool			bEmptyArgsHandled;
 
 	IC	bool		EQ(LPCSTR S1, LPCSTR S2) { return xr_strcmp(S1,S2)==0; }
-public:
+public		:
 	IConsole_Command		(LPCSTR N) : 
 	  cName				(N),
 	  bEnabled			(TRUE),
@@ -46,9 +46,10 @@ public:
 
 class ENGINE_API	CCC_Mask : public IConsole_Command
 {
+protected	:
 	Flags32*	value;
 	u32			mask;
-public:
+public		:
 	CCC_Mask(LPCSTR N, Flags32* V, u32 M) :
 	  IConsole_Command(N),
 	  value(V),
@@ -71,9 +72,10 @@ public:
 
 class ENGINE_API	CCC_Token : public IConsole_Command
 {
+protected	:
 	u32*			value;
 	xr_token*		tokens;
-public:
+public		:
 	CCC_Token(LPCSTR N, u32* V, xr_token* T) :
 	  IConsole_Command(N),
 	  value(V),
@@ -119,9 +121,10 @@ public:
 
 class ENGINE_API	CCC_Float : public IConsole_Command
 {
+protected	:
 	float*			value;
 	float			min,max;
-public:
+public		:
 	CCC_Float(LPCSTR N, float* V, float _min=0, float _max=1) :
 	  IConsole_Command(N),
 	  value(V),
@@ -151,9 +154,10 @@ public:
 
 class ENGINE_API	CCC_Vector3 : public IConsole_Command
 {
+protected	:
 	Fvector*		value;
 	Fvector			min,max;
-public:
+public		:
 	CCC_Vector3(LPCSTR N, Fvector* V, const Fvector _min, const Fvector _max) :
 	  IConsole_Command(N),
 	  value(V)
@@ -182,9 +186,10 @@ public:
 
 class ENGINE_API	CCC_Integer : public IConsole_Command
 {
+protected	:
 	int*			value;
 	int				min,max;
-public:
+public		:
 	  const int GetValue	() const {return *value;};
 	  const int GetMin		() const {return min;};
 	  const int GetMax		() const {return max;};
