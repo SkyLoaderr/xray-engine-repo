@@ -105,7 +105,7 @@ void CMotivationActionManagerStalker::script_register(lua_State *L)
 				luabind::value("action_alife_planner",						StalkerDecisionSpace::eWorldOperatorALifePlanner),
 				luabind::value("action_alife_dialog_planner",				StalkerDecisionSpace::eWorldOperatorALifeDialogPlanner),
 				luabind::value("action_combat_planner",						StalkerDecisionSpace::eWorldOperatorCombatPlanner),
-				luabind::value("action_anomaly_planner",					StalkerDecisionSpace::eWorldOperatorCombatPlanner),
+				luabind::value("action_anomaly_planner",					StalkerDecisionSpace::eWorldOperatorAnomalyPlanner),
 				luabind::value("action_script",								StalkerDecisionSpace::eWorldOperatorScript)
 			]
 
