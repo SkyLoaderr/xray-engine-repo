@@ -205,34 +205,6 @@
 
 
 <!---------------------------SVOBODA SNIPER---------------------->
-	<specific_character id="svoboda_sniper_default1" team_default = "1">
-	<name>Сталкер группировки "Свобода"</name>
-		<icon x="24" y="6"></icon>
-		<map_icon x="5" y="0"></map_icon>
-		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
-
-		<team>Svoboda_regular</team>
-		
-		<class>Svoboda_sniper</class>
-		<community>freedom</community>
-		
-		<rank>40</rank>
-		<reputation>0</reputation>
-
-		<visual>actors\svoboda\stalker_sv_rukzak_3</visual>
-		<supplies>
-			[spawn] \n
-			wpn_hpsa \n
-			ammo_9x19_pbp = 1 \n
-			wpn_svu \n
-			ammo_7.62x54_7h14 = 1 \n
-		</supplies>
-			
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-	</specific_character>
-
 	<specific_character id="svoboda_sniper_default2" team_default = "1">
 		<name>Сталкер группировки "Свобода"</name>
 		<icon x="10" y="2"></icon>
