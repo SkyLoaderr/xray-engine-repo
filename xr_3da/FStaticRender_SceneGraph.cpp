@@ -70,15 +70,8 @@ void CRender::InsertSG_Static(CVisual *pVisual)
 
 		if (SSA<=ssaLIMIT)	return;
 
-		/*
-		Fvector		__c,__r;
-		pVisual->bv_BBox.get_CD			(__c,__r);
-		Device.Shader.set_Shader		(shDEBUG);
-		Device.Primitive.dbg_DrawAABB	(__c,__r.x,__r.y,__r.z,0xffffffff);
-		//*/
-
 		// Select List and add to it
-		ShaderElement*		sh		= /*ShowLM?pVisual->hShader->lighting:*/pVisual->hShader->lod0;
+		ShaderElement*		sh		= ((sqrtf(distSQ)-pVisual->bv_Radius)<10)?pVisual->hShader->lod0:pVisual->hShader->lod1;
 		if (sh->Flags.bStrictB2F) {
 			SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
 			N->val.pVisual			= pVisual;
