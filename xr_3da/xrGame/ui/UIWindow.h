@@ -108,7 +108,7 @@ public:
 	//положение и размеры окна
 
 	//относительные координаты
-	Ivector2				GetWndPos			() const							(return Ivector2().set(m_WndRect.x1,m_WndRect.y1);)
+	const Ivector2&			GetWndPos			() const							(return m_WndRect.lt;)
 
 	Irect					GetWndRect			()									{return m_WndRect;}
 	void					SetWndRect			(int x, int y, int width, int height) 		
