@@ -23,7 +23,7 @@ function action_car:__init(obj, storage)
 	self.st = storage
 end
 
-function action_car:reset_scheme()
+function action_car:reset_scheme(loading)
 	printf("_bp: action_car:reset_scheme: self.object:name()='%s'", self.object:name())
 
 	self.object:set_nonscript_usable(self.st.nonscript_usable)
@@ -45,55 +45,30 @@ function action_car:reset_scheme()
 	
 	xr_logic.mob_capture(self.object, true)
 
-	--action(self.object, move(move.fwd), cond(cond.time_end, time_infinite))                                                                                                             
-		
-	--action(self.object, object("left_light", object.activate), cond(cond.time_end, 1000))
-	--action(self.object, object("right_light", object.activate), cond(cond.time_end, 1000))
-
-	--action(self.object,
-	--	move(move.on + move.fwd, 10),
-	--	object("right_light", object.activate),
-	--	object("left_light", object.activate),
-	--	cond(cond.time_end, 3000))
-	--[[
-	--action(self.object,
-	--	move(move.on + move.fwd + move.right, 10),
-	--	cond(cond.time_end, 1000))
-	--action(self.object,
-	--	move(move.on + move.back + move.right, 10),
-	--	cond(cond.time_end, 1000))
-	--]]
-
-	--action(self.object,
-	--	move(move.off, 0),
-	--	cond(cond.time_end, 100))
-	--action(self.object,
-	--	object("left_door", object.activate),
-	--	cond(cond.time_end, time_infinite))
-
---[[
-	action(self.object,
-		move(move.on + move.up + move.fwd, 20.1),
-		object("right_light", object.activate),
-		object("left_light", object.activate),
-		cond(cond.time_end, 8200))
-	action(self.object, move(move.right + move.on + move.fwd, 20.1), cond(cond.time_end, 655))
-	action(self.object, move(move.on + move.up + move.fwd, 20.1), cond(cond.time_end, 14750))
---]]
-
-	self.speed = default_speed
-	self.loop = false
+	if loading then
+		self.speed = xr_logic.pstor_retrieve(self.object, "speed")
+		self.loop = xr_logic.pstor_retrieve(self.object, "loop")
+		self.min_delta_per_sec = xr_logic.pstor_retrieve(self.object, "min_delta_per_sec")
+		self.min_car_explode_time = xr_logic.pstor_retrieve(self.object, "min_car_explode_time")
+	else
+		self.speed = default_speed
+		self.loop = false
+		self.min_delta_per_sec = default_min_delta_per_sec
+		self.min_car_explode_time = default_min_car_explode_time
+	end
 	self.last_pos = nil
 	self.last_pos_time = 0
-	self.min_delta_per_sec = default_min_delta_per_sec
-	self.min_car_explode_time = default_min_car_explode_time
 
 	self.state = state_none
 
 	self.st.signals = {}
 	self.arrival_signalled = false
 
-	self.target_pt = self:get_nearest_waypoint()
+	if loading then
+		self.target_pt = xr_logic.pstor_retrieve(self.object, "target_pt")
+	else
+		self.target_pt = self:get_nearest_waypoint()
+	end
 	if self:at_target_waypoint() then
 		self:arrival_callback(self.target_pt)
 	end
@@ -101,6 +76,14 @@ function action_car:reset_scheme()
 	self:go_to_waypoint(self.target_pt)
 
 	self.object:set_fastcall(self.fastcall, self)
+end
+
+function action_car:save()
+	xr_logic.pstor_store(self.object, "speed", self.speed)
+	xr_logic.pstor_store(self.object, "loop", self.loop)
+	xr_logic.pstor_store(self.object, "min_delta_per_sec", self.min_delta_per_sec)
+	xr_logic.pstor_store(self.object, "min_car_explode_time", self.min_car_explode_time)
+	xr_logic.pstor_store(self.object, "target_pt", self.target_pt)
 end
 
 function action_car:get_nearest_waypoint()
@@ -233,8 +216,7 @@ function action_car:fastcall()
 		-- Если активная схема - не машина, снять быстрый апдейт
 		return true
 	end
-	self:fast_update()
-	return false
+	return self:fast_update()
 end
 
 function action_car:update(delta)
@@ -243,16 +225,9 @@ function action_car:update(delta)
 	end
 end
 
+-- Вернуть true, если апдейты больше не нужны
 function action_car:fast_update()
 	printf("_bp: action_car:update(): state=%d", self.state)
-
-	-- Может вызваться с запозданием, поэтому здесь нужна проверка на активность
-	--if not xr_logic.is_active(self.object, self.st) then
-	--	return
-	--end
-	if db.storage[self.object:id()].active_scheme ~= "ph_car" then
-		return
-	end
 
 	--if not self.object:action() then
 	--	printf("_bp: CAR EXPLODE")
@@ -260,12 +235,12 @@ function action_car:fast_update()
 	--	self.object:Explode()
 	--end
 
-
 	if self.state == state_end then
 		if xr_logic.mob_captured(self.object) and not self.object:action() then
 			xr_logic.mob_release(self.object)
+			return true -- апдейты больше не нужны
 		end
-		return
+		return false
 	end
 
 	if device():time_global() >= self.last_pos_time + self.min_car_explode_time then
@@ -281,7 +256,7 @@ function action_car:fast_update()
 				action(self.object, move(move.off, 0), cond(cond.time_end, 1000))
 				self:car_explode()
 				self.state = state_end
-				return
+				return false
 			end
 			self.last_pos = cur_pos
 			self.last_pos_time = device():time_global()
@@ -295,6 +270,8 @@ function action_car:fast_update()
 		-- Продолжать ехать, или поворачиваться
 		self:go_to_waypoint(self.target_pt)
 	end
+	
+	return false
 end
 
 function action_car:car_explode()

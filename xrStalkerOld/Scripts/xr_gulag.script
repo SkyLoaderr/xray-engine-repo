@@ -211,7 +211,7 @@ function fract:setJob(npc, job)
 
 	xr_logic.configure_schemes(npc, gulag_tasks_ltx, gulag_tasks_file_name, self:get_stype(npc), job.section, self.name)
 	local sect = xr_logic.determine_section_to_activate(npc, gulag_tasks_ltx, job.section, db.actor)
-	xr_logic.activate_by_section(npc, gulag_tasks_ltx, sect)
+	xr_logic.activate_by_section(npc, gulag_tasks_ltx, sect, false)
 
 	--' Смена тим, сквад, груп
 	job.object:change_team(job.object:team(), job.squad or job.object:squad(), job.group or job.object:group())
