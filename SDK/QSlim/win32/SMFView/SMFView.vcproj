@@ -38,8 +38,8 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="fltk_d.lib libjpeg_d.lib libpng_d.lib libtiff_d.lib wsock32.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib"
-				OutputFile=".\Debug/SMFView.exe"
+				AdditionalDependencies="../../lib/fltk_d.lib ../../lib/libjpeg_d.lib ../../lib/libpng_d.lib ../../lib/libtiff_d.lib wsock32.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib"
+				OutputFile="$(OutDir)/$(ProjectName).exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
@@ -103,8 +103,8 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="fltk.lib libjpeg.lib libpng.lib libtiff.lib wsock32.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib"
-				OutputFile=".\Release/SMFView.exe"
+				AdditionalDependencies="../../lib/fltk.lib ../../lib/libjpeg.lib ../../lib/libpng.lib ../../lib/libtiff.lib wsock32.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib"
+				OutputFile="$(OutDir)/$(ProjectName).exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				ProgramDatabaseFile=".\Release/SMFView.pdb"

@@ -19,7 +19,7 @@ int jpeg_output_quality = 100;
 
 #include <stdio.h>
 extern "C" {
-#include <jpeglib.h>
+#include "../../lib/jpeglib.h"
 }
 
 bool write_jpeg_image(const char *filename, const ByteRaster& img)

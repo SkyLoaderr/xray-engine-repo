@@ -11,7 +11,7 @@
 #include <cstring>
 
 #ifdef HAVE_LIBTIFF
-#include <tiffio.h>
+#include "../../lib/tiffio.h" //<tiffio.h>
 
 ////////////////////////////////////////////////////////////////////////
 //

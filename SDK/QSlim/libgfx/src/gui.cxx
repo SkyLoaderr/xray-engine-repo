@@ -13,8 +13,8 @@
 #include <gfx/gui.h>
 #include <gfx/raster.h>
 
-#include <FL/Fl_File_Chooser.H>
-#include <FL/fl_ask.H>
+#include "../../lib/FL/Fl_File_Chooser.H"
+#include "../../lib/FL/fl_ask.H"
 
 #include <cstdio>
 #include <cstdarg>
