@@ -533,33 +533,59 @@ bool CSkeletonAnimated::LoadMotions(LPCSTR N, IReader *data)
             }
 		    for (u32 i=0; i<bones->size(); i++) rm_bones[i]=i;
         }else{
-            R_ASSERT3(vers==xrOGF_SMParamsVersion,"Invalid OGF/OMF version:",N);
-            // partitions
-            u16 part_count;
-            part_count 				= MP->r_u16();
-            for (u16 part_i=0; part_i<part_count; part_i++){
-                CPartDef&	PART	= (*partition)[part_i];
-                MP->r_stringZ		(buf);
-                PART.Name			= _strlwr(buf);
-                PART.bones.resize	(MP->r_u16());
-//				Log					("Part:",buf);
-                for (xr_vector<u32>::iterator b_it=PART.bones.begin(); b_it<PART.bones.end(); b_it++){
-                    MP->r_stringZ	(buf);
-                    u16 m_idx 		= MP->r_u32	();
-                    *b_it			= LL_BoneID	(buf); 
-//					Msg				("Bone: #%2d, ID: %2d, Name: '%s'",b_it-PART.bones.begin(),*b_it,buf);
-#ifdef _EDITOR
-                    if (*b_it==BI_NONE){
-                        bRes		= false;
-                        Msg			("!Can't find bone: '%s'",buf);
+        	if (2==vers){
+                // partitions
+                u16 part_count;
+                part_count 				= MP->r_u16();
+                for (u16 part_i=0; part_i<part_count; part_i++){
+                    CPartDef&	PART	= (*partition)[part_i];
+                    MP->r_stringZ		(buf);
+                    PART.Name			= _strlwr(buf);
+                    PART.bones.resize	(MP->r_u16());
+                    for (xr_vector<u32>::iterator b_it=PART.bones.begin(); b_it<PART.bones.end(); b_it++){
+                        MP->r_stringZ	(buf);
+                        *b_it			= LL_BoneID	(buf); 
+    #ifdef _EDITOR
+                        if (*b_it==BI_NONE){
+                            bRes		= false;
+                            Msg			("!Can't find bone: '%s'",buf);
+                        }
+    #else
+                        VERIFY3			(*b_it!=BI_NONE,"Can't find bone:",buf);
+    #endif
                     }
-#else
-                    VERIFY3			(*b_it!=BI_NONE,"Can't find bone:",buf);
-#endif
-                    rm_bones[m_idx] = *b_it;
+                    part_bone_cnt		+= (u16)PART.bones.size();
                 }
-                part_bone_cnt		+= (u16)PART.bones.size();
-            }
+			    for (u32 i=0; i<bones->size(); i++) rm_bones[i]=i;
+            }else{
+                R_ASSERT3(vers==xrOGF_SMParamsVersion,"Invalid OGF/OMF version:",N);
+                // partitions
+                u16 part_count;
+                part_count 				= MP->r_u16();
+                for (u16 part_i=0; part_i<part_count; part_i++){
+                    CPartDef&	PART	= (*partition)[part_i];
+                    MP->r_stringZ		(buf);
+                    PART.Name			= _strlwr(buf);
+                    PART.bones.resize	(MP->r_u16());
+    //				Log					("Part:",buf);
+                    for (xr_vector<u32>::iterator b_it=PART.bones.begin(); b_it<PART.bones.end(); b_it++){
+                        MP->r_stringZ	(buf);
+                        u16 m_idx 		= MP->r_u32	();
+                        *b_it			= LL_BoneID	(buf); 
+    //					Msg				("Bone: #%2d, ID: %2d, Name: '%s'",b_it-PART.bones.begin(),*b_it,buf);
+    #ifdef _EDITOR
+                        if (*b_it==BI_NONE){
+                            bRes		= false;
+                            Msg			("!Can't find bone: '%s'",buf);
+                        }
+    #else
+                        VERIFY3			(*b_it!=BI_NONE,"Can't find bone:",buf);
+    #endif
+                        rm_bones[m_idx] = *b_it;
+                    }
+                    part_bone_cnt		+= (u16)PART.bones.size();
+                }
+    		}
         }
 
         m_cycle = xr_new<mdef> ();
