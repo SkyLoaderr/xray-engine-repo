@@ -165,7 +165,7 @@
 	</info_portion>
 
 
-	<info_portion id="esc_dinamite_start">
+	<info_portion id="escape_dynamite_start">
 		<location>
 			<level>l01_escape</level>
 			<object>007</object>
@@ -175,11 +175,11 @@
 		<task>esc_dinamit_to_volk</task>
 	</info_portion>
 
-	<info_portion id="esc_dinamite_gain">
+	<info_portion id="escape_dynamite_gain">
 		<disable>esc_dinamite_start</disable>
 	</info_portion>
 
-	<info_portion id="esc_dinamite_done">
+	<info_portion id="escape_dynamite_done">
 		<disable>esc_dinamite_start</disable>
 	</info_portion>
 
