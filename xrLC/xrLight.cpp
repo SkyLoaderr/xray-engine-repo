@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "build.h"
+#include "xrThread.h"
 
 extern void LightPoint(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end);
 
