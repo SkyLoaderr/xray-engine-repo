@@ -4,8 +4,14 @@
 
 static	poolSS<R_constant,64>	g_constant_allocator;
 
-void	R_constant_table::fatal	(LPCSTR S)
+void	R_constant_table::fatal		(LPCSTR S)
 {
+}
+
+R_constant* R_constant_table::get	(LPCSTR S)
+{
+	// assumption - sorted by name
+
 }
 
 BOOL	R_constant_table::parse	(D3DXSHADER_CONSTANTTABLE* desc, u16 destination)
@@ -64,8 +70,11 @@ BOOL	R_constant_table::parse	(D3DXSHADER_CONSTANTTABLE* desc, u16 destination)
 			bSkip		= TRUE;
 			break;
 		}
-	
-		R_constant*	C		=	g_constant_allocator.create();
+
+		// We have determined all valuable info, search if constant already created
+		R_constant*	C		=	get(name);
+		if (0==C)	C		=	g_constant_allocator.create();
+
 	}
 	return TRUE;
 }
