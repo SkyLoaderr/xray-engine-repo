@@ -97,20 +97,17 @@ void __stdcall ActionCallback(CKinematics *tpKinematics)
 void CScriptMonster::vfUpdateParticles()
 {
 	CParticleAction	&l_tParticleAction = GetCurrentAction()->m_tParticleAction;
-	LPCSTR			l_caBoneName = *l_tParticleAction.m_caBoneName;
-
-	if (xr_strlen(l_caBoneName)) {
+	if (xr_strlen(l_tParticleAction.m_caBoneName)) {
 		CParticlesObject	*l_tpParticlesObject = l_tParticleAction.m_tpParticleSystem;
-		l_tpParticlesObject->UpdateParent(GetUpdatedMatrix(l_caBoneName,l_tParticleAction.m_tParticlePosition,l_tParticleAction.m_tParticleAngles),l_tParticleAction.m_tParticleVelocity);
+		l_tpParticlesObject->UpdateParent(GetUpdatedMatrix(l_tParticleAction.m_caBoneName,l_tParticleAction.m_tParticlePosition,l_tParticleAction.m_tParticleAngles),l_tParticleAction.m_tParticleVelocity);
 	}
 }
 
 void CScriptMonster::vfUpdateSounds()
 {
 	CSoundAction	&l_tSoundAction = GetCurrentAction()->m_tSoundAction;
-	LPCSTR			l_caBoneName	= *l_tSoundAction.m_caBoneName;
-	if (xr_strlen(l_caBoneName) && l_tSoundAction.m_tpSound && l_tSoundAction.m_tpSound->feedback)
-		l_tSoundAction.m_tpSound->feedback->set_position(GetUpdatedMatrix(l_caBoneName,l_tSoundAction.m_tSoundPosition,Fvector().set(0,0,0)).c);
+	if (xr_strlen(l_tSoundAction.m_caBoneName) && l_tSoundAction.m_tpSound && l_tSoundAction.m_tpSound->feedback)
+		l_tSoundAction.m_tpSound->feedback->set_position(GetUpdatedMatrix(l_tSoundAction.m_caBoneName,l_tSoundAction.m_tSoundPosition,Fvector().set(0,0,0)).c);
 }
 
 void CScriptMonster::vfFinishAction(CEntityAction *tpEntityAction)
@@ -163,7 +160,7 @@ bool CScriptMonster::bfAssignAnimation(CEntityAction *tpEntityAction)
 	return			(GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bCompleted);
 }
 
-const Fmatrix CScriptMonster::GetUpdatedMatrix(LPCSTR caBoneName, const Fvector &tPositionOffset, const Fvector &tAngleOffset)
+const Fmatrix CScriptMonster::GetUpdatedMatrix(ref_str caBoneName, const Fvector &tPositionOffset, const Fvector &tAngleOffset)
 {
 	Fmatrix			l_tMatrix;
 
@@ -171,10 +168,7 @@ const Fmatrix CScriptMonster::GetUpdatedMatrix(LPCSTR caBoneName, const Fvector 
 	l_tMatrix.c		= tPositionOffset;
 
 	if (xr_strlen(caBoneName)) {
-		CBoneInstance	&l_tBoneInstance = PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID(caBoneName));
-//#pragma todo("Dima to Dima : null callbacks after completion")
-//		if (fpBoneCallback)
-//			l_tBoneInstance.set_callback(fpBoneCallback,this);
+		CBoneInstance	&l_tBoneInstance = PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID(*caBoneName));
 		l_tMatrix.mulA	(l_tBoneInstance.mTransform);
 		l_tMatrix.mulA	(XFORM());
 	}
@@ -190,7 +184,7 @@ bool CScriptMonster::bfAssignSound(CEntityAction *tpEntityAction)
 	if (l_tSoundAction.m_tpSound) {
 		if (!l_tSoundAction.m_tpSound->feedback)
 			if (!l_tSoundAction.m_bStartedToPlay) {
-				const Fmatrix	&l_tMatrix = GetUpdatedMatrix(*l_tSoundAction.m_caBoneName,l_tSoundAction.m_tSoundPosition,l_tSoundAction.m_tSoundAngles);
+				const Fmatrix	&l_tMatrix = GetUpdatedMatrix(l_tSoundAction.m_caBoneName,l_tSoundAction.m_tSoundPosition,l_tSoundAction.m_tSoundAngles);
 				l_tSoundAction.m_tpSound->play_at_pos(this,l_tMatrix.c,l_tSoundAction.m_bLooped ? TRUE : FALSE);
 				l_tSoundAction.m_bStartedToPlay = true;
 			}
