@@ -32,6 +32,11 @@ function main_new_tab:InitControls(x, y, handler)
 							 y = btn_normal_rect.y + btn_normal_rect.height ,
 							 width = self.btn.width,
 							 height = self.btn.height}
+	
+	local btn_spawn_rect  = {x = self.btn.x,
+							 y = btn_hard_rect.y + 2*btn_hard_rect.height ,
+							 width = self.btn.width,
+							 height = self.btn.height}
 							 
 	local btn_back_rect   = {x = self.btn.x,
 							 y = self.main_rect.height - self.btn.height,
@@ -77,6 +82,18 @@ function main_new_tab:InitControls(x, y, handler)
 	btn:SetTextY(self.btn.indent)
 	handler:Register(btn)
 	self:AttachChild(btn)	
+	
+	--------->> SPAWN
+	btn = CUI3tButton()
+	btn:SetAutoDelete(true)
+	btn:SetWindowName("btn_spawn")
+	btn:Init(self.btn.texture, btn_spawn_rect.x, btn_spawn_rect.y, btn_spawn_rect.width, btn_spawn_rect.height)
+	btn:SetText("Load Spawn File")
+	btn:SetFont(self.btn.font)
+	btn:SetTextAlign(CGameFont.alCenter)
+	btn:SetTextY(self.btn.indent)
+	handler:Register(btn)
+	self:AttachChild(btn)
 	
 	btn = CUI3tButton()
 	btn:SetAutoDelete(true)

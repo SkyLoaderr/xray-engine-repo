@@ -131,6 +131,7 @@ function main_menu:InitCallBacks()
 	-- new game
 	self:AddCallback("btn_new_game",    ui_events.BUTTON_CLICKED,				self,"OnButton_new_game_clicked")
 	self:AddCallback("btn_hard",		ui_events.BUTTON_CLICKED,				self,"OnButton_new_hard_game")
+	self:AddCallback("btn_spawn",		ui_events.BUTTON_CLICKED,				self,"OnButton_load_spawn")
 	self:AddCallback("btn_new_back",	ui_events.BUTTON_CLICKED,				self,"OnButton_back")
 	-- options
 	self:AddCallback("btn_options",     ui_events.BUTTON_CLICKED,				self,"OnButton_options_clicked")
@@ -153,6 +154,11 @@ function main_menu:InitCallBacks()
 end
 
 function main_menu:OnButton_new_hard_game()
+	local console = get_console()
+--	console:execute("start server( |||| /single/alife) client(localhost)")
+end
+
+function main_menu:OnButton_load_spawn()
 	local dlg = ui_spawn_dialog.spawn_dialog()
 	self:GetHolder():start_stop_menu(dlg, true)
 end
