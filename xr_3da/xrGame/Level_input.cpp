@@ -45,6 +45,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 		net_packet.w_u32			(Level().timeServer());
 		Send						(net_packet,net_flags(TRUE));
 		return;
+#ifdef DEBUG
 	case DIK_F5: {
 		xr_vector<CObject*>::iterator I = Objects.objects.begin(), B = I, J;
 		xr_vector<CObject*>::iterator E = Objects.objects.end();
@@ -82,6 +83,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 		}
 		return;
 	}
+#endif
 
 	case DIK_DIVIDE:
 		Level().SetGameTimeFactor(1.f);	
