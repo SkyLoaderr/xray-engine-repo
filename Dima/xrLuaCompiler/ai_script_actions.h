@@ -12,6 +12,7 @@
 #include "ai_script_lua_space.h"
 #include "car.h"
 #include "movement_manager.h"
+#include "ai_script_sound.h"
 
 class CAbstractAction {
 public:
@@ -473,28 +474,61 @@ public:
 		m_tSoundAngles.set	(0,0,0);
 	}
 
-							CSoundAction		(LPCSTR caSoundToPlay, LPCSTR caBoneName, const Fvector &tPositionOffset = Fvector().set(0,0,0), const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false)
+							CSoundAction		(const CSoundAction &sound_action)
+	{
+		*this				= sound_action;
+		m_tpSound			= xr_new<ref_sound>(*sound_action.m_tpSound);
+	}
+
+							CSoundAction		(const CSoundAction *sound_action)
+	{
+		*this				= *sound_action;
+		m_tpSound			= xr_new<ref_sound>(*sound_action->m_tpSound);
+	}
+
+							CSoundAction		(LPCSTR caSoundToPlay, LPCSTR caBoneName, const Fvector &tPositionOffset = Fvector().set(0,0,0), const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
 	{
 		m_bLooped			= bLooped;
 		SetBone				(caBoneName);
 		SetPosition			(tPositionOffset);
 		SetAngles			(tAngleOffset);
 		SetSound			(caSoundToPlay);
+		SetSoundType		(sound_type);
 	}
 
-							CSoundAction		(LPCSTR caSoundToPlay, const Fvector &tPosition, const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false)
+							CSoundAction		(LPCSTR caSoundToPlay, const Fvector &tPosition, const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
 	{
 		m_bLooped			= bLooped;
 		SetSound			(caSoundToPlay);
 		SetPosition			(tPosition);
 		SetAngles			(tAngleOffset);
+		SetSoundType		(sound_type);
+	}
+
+							CSoundAction		(CLuaSound &sound, LPCSTR caBoneName, const Fvector &tPositionOffset = Fvector().set(0,0,0), const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
+	{
+		m_bLooped			= bLooped;
+		SetBone				(caBoneName);
+		SetPosition			(tPositionOffset);
+		SetAngles			(tAngleOffset);
+		SetSound			(sound);
+		SetSoundType		(sound_type);
+	}
+
+							CSoundAction		(CLuaSound &sound, const Fvector &tPosition, const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
+	{
+		m_bLooped			= bLooped;
+		SetSound			(sound);
+		SetPosition			(tPosition);
+		SetAngles			(tAngleOffset);
+		SetSoundType		(sound_type);
 	}
 
 	virtual					~CSoundAction		()
 	{
 		if (m_tpSound) {
 			m_tpSound->destroy();
-			m_tpSound		= 0;
+			xr_delete		(m_tpSound);
 		}
 	}
 
@@ -506,6 +540,8 @@ public:
 		m_bStartedToPlay	= false;
 		string256			l_caFileName;
 		if (FS.exist(l_caFileName,"$game_sounds$",*m_caSoundToPlay,".ogg")) {
+			m_tpSound		= xr_new<ref_sound>();
+			m_tpSound->create(TRUE,l_caFileName);
 			m_bStartedToPlay= false;
 			m_bCompleted	= false;
 		}
@@ -515,6 +551,18 @@ public:
 			m_bCompleted	= true;
 		}
 	}
+
+			void			SetSound			(const CLuaSound &sound)
+	{
+		m_caSoundToPlay		= sound.m_caSoundToPlay;
+		m_tGoalType			= eGoalTypeSoundAttached;
+		m_tpSound			= xr_new<ref_sound>(*sound.m_tpSound);
+		VERIFY				(sound.m_tpSound);
+		m_bStartedToPlay	= false;
+		m_bStartedToPlay	= false;
+		m_bCompleted		= false;
+	}
+
 			void			SetPosition			(const Fvector &tPosition)
 	{
 		m_tSoundPosition	= tPosition;
@@ -528,9 +576,16 @@ public:
 		m_bStartedToPlay	= false;
 	}
 	
-			void			SetAngles			(const Fvector &tAngles)
+	void			SetAngles			(const Fvector &tAngles)
 	{
 		m_tSoundAngles		= tAngles;
+		m_bStartedToPlay	= false;
+	}
+
+	void			SetSoundType		(const ESoundTypes sound_type)
+	{
+		VERIFY				(m_tpSound);
+		m_tpSound->g_type	= sound_type;
 		m_bStartedToPlay	= false;
 	}
 

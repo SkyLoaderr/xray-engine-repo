@@ -11,6 +11,8 @@
 #include "ai_script_lua_extension.h"
 #include "ai_script_classes.h"
 #include "ai_script_actions.h"
+#include "ai_script_sound.h"
+#include "ai_script_hit.h"
 #include "luabind/return_reference_to_policy.hpp"
 #include "luabind/out_value_policy.hpp"
 #include "luabind/adopt_policy.hpp"
@@ -308,6 +310,7 @@ void Script::vfExportSound(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.property("max_distance",			&CLuaSound::GetMaxDistance,	&CLuaSound::SetMaxDistance)
 			.property("volume",					&CLuaSound::GetVolume,		&CLuaSound::SetVolume)
 			.def(								constructor<LPCSTR>())
+			.def(								constructor<LPCSTR,ESoundTypes>())
 			.def("get_position",				&CLuaSound::GetPosition)
 			.def("set_position",				&CLuaSound::SetPosition)
 			.def("play",						&CLuaSound::Play)
@@ -510,7 +513,9 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def(								constructor<LPCSTR,const Fvector &>())
 			.def(								constructor<LPCSTR,const Fvector &,const Fvector &>())
 			.def(								constructor<LPCSTR,const Fvector &,const Fvector &,bool>())
-			.def("set_sound",					&CSoundAction::SetSound)
+			.def("set_sound",					(void (CSoundAction::*)(LPCSTR))(CSoundAction::SetSound))
+			.def("set_sound",					(void (CSoundAction::*)(const CLuaSound &))(CSoundAction::SetSound))
+			.def("set_sound_type",				&CSoundAction::SetSoundType)
 			.def("set_bone",					&CSoundAction::SetBone)
 			.def("set_position",				&CSoundAction::SetPosition)
 			.def("set_angles",					&CSoundAction::SetAngles)

@@ -9,11 +9,11 @@
 #pragma once
 
 #include "ai_script_space.h"
-#include "../effectorpp.h"
+#include "ai_script_bind.h"
+#include "ai_script_actions.h"
 #include "ai/stalker/ai_stalker.h"
 #include "script_zone.h"
 #include "ai/trader/ai_trader.h"
-#include "ai_script_actions.h"
 #include "weapon.h"
 #include "WeaponMagazined.h"
 #include "enemy_manager.h"
@@ -22,186 +22,7 @@
 #include "sound_memory_manager.h"
 
 class CInventoryItem;
-
-class CLuaEffector : public CEffectorPP {
-public:
-	typedef CEffectorPP inherited;
-	EEffectorPPType		m_tEffectorType;
-	SPPInfo				m_tInfo;
-
-					CLuaEffector				(int		iType, float time) : CEffectorPP(EEffectorPPType(iType),time,false)
-	{
-		m_tEffectorType		= EEffectorPPType(iType);
-	}
-
-	virtual			~CLuaEffector				()
-	{
-	}
-
-	virtual	BOOL	Process						(SPPInfo	&pp)
-	{
-		return		(inherited::Process(pp));
-	}
-
-	virtual	void	Add							()
-	{
-		Level().Cameras.AddEffector		(this);
-	}
-
-	virtual	void	Remove							()
-	{
-		Level().Cameras.RemoveEffector	(m_tEffectorType);
-	}
-};
-
-class CLuaEffectorWrapper : public CLuaEffector {
-public:
-	luabind::object		m_tLuaBindObject;
-
-					CLuaEffectorWrapper	(const luabind::object &tLuaBindObject, int iType, float fTime) : CLuaEffector(iType, fTime), m_tLuaBindObject(tLuaBindObject)
-	{
-	}
-
-	virtual BOOL	Process				(SPPInfo &pp)
-	{
-		BOOL	l_bResult = !!luabind::call_member<bool>(m_tLuaBindObject,"process",pp);
-		pp		= m_tInfo;
-		return	(l_bResult);
-	}
-
-	static	bool	Process_static		(CLuaEffector *tpLuaEffector, SPPInfo &pp)
-	{
-		return		(!!tpLuaEffector->CLuaEffector::Process(pp));
-	}
-};
-
-#define DECLARE_FUNCTION10(A,D)\
-	IC		D				A					() const\
-	{
-
-#define DECLARE_FUNCTION11(A,D,F)\
-	IC		D				A					(F f) \
-	{
-
-#define DECLARE_FUNCTION12(A,D,F,G)\
-	IC		D				A					(F f, G g) \
-	{
-
-#define DECLARE_FUNCTION13(A,D,F,G,H)\
-	IC		D				A					(F f, G g, H h) \
-	{
-
-#define CAST_OBJECT(Z,A,B)\
-		B				*l_tpEntity = dynamic_cast<B*>(Z);\
-		if (!l_tpEntity) {\
-			LuaOut		(Lua::eLuaMessageTypeError,"%s : cannot access class member %s!",#B,#A);
-
-#define CAST_OBJECT0(Z,A,B)\
-		CAST_OBJECT(Z,A,B)\
-			return;\
-		}
-
-#define CAST_OBJECT1(Z,A,B,D,E)\
-		CAST_OBJECT(Z,A,B)\
-			return		((D)(E));\
-		}
-
-#define GET_MEMBER(C,D)\
-		return			((D)(l_tpEntity->C));\
-	}
-
-#define CALL_FUNCTION10(C,D)\
-		return			((D)(l_tpEntity->C()));\
-	}
-
-#define CALL_FUNCTION11(C,D,F)\
-		return			((D)(l_tpEntity->C((F)(f))));\
-	}
-
-#define CALL_FUNCTION01(C,F)\
-		l_tpEntity->C((F)(f));\
-	}
-
-#define CALL_FUNCTION02(C,F,G)\
-		l_tpEntity->C((F)(f),(G)(g));\
-	}
-
-#define CALL_FUNCTION03(C,F,G,H)\
-		l_tpEntity->C((F)(f),(G)(g),(H)(h));\
-	}
-
-#define CALL_FUNCTION00(C)\
-		l_tpEntity->C();\
-	}
-
-#define BIND_MEMBER(Z,A,B,C,D,E) \
-	DECLARE_FUNCTION10	(A,D)\
-	CAST_OBJECT1		(Z,A,B,D,E)\
-	GET_MEMBER			(C,D)
-
-#define BIND_FUNCTION00(Z,A,B,C) \
-	DECLARE_FUNCTION10	(A,void)\
-	CAST_OBJECT0		(Z,A,B)\
-	CALL_FUNCTION00		(C)
-
-#define BIND_FUNCTION10(Z,A,B,C,D,E) \
-	DECLARE_FUNCTION10	(A,D)\
-	CAST_OBJECT1		(Z,A,B,D,E)\
-	CALL_FUNCTION10		(C,D)
-
-#define BIND_FUNCTION11(Z,A,B,C,D,E,F,I) \
-	DECLARE_FUNCTION11	(A,D,F)\
-	CAST_OBJECT1		(Z,A,B,D,E)\
-	CALL_FUNCTION11		(C,D,I)
-
-#define BIND_FUNCTION01(Z,A,B,C,F,I) \
-	DECLARE_FUNCTION11	(A,void,F)\
-	CAST_OBJECT0		(Z,A,B)\
-	CALL_FUNCTION01		(C,I)
-
-#define BIND_FUNCTION02(Z,A,B,C,F,G,I,J) \
-	DECLARE_FUNCTION12	(A,void,F,G)\
-	CAST_OBJECT0		(Z,A,B)\
-	CALL_FUNCTION02		(C,I,J)
-
-#define BIND_FUNCTION03(Z,A,B,C,F,G,H,I,J,K) \
-	DECLARE_FUNCTION13	(A,void,F,G,H)\
-	CAST_OBJECT0		(Z,A,B)\
-	CALL_FUNCTION03		(C,I,J,K)
-
-class CLuaHit {
-public:
-	float				m_fPower; 
-	Fvector				m_tDirection;
-	ref_str				m_caBoneName;
-	CLuaGameObject		*m_tpDraftsman;
-	float				m_fImpulse;
-	int					m_tHitType;
-
-							CLuaHit				()
-	{
-		m_fPower		= 100;
-		m_tDirection.set(1,0,0);
-		m_caBoneName	= "";
-		m_tpDraftsman	= 0;
-		m_fImpulse		= 100;
-		m_tHitType		= ALife::eHitTypeWound;
-	}
-
-							CLuaHit				(const CLuaHit *tpLuaHit)
-	{
-		*this			= *tpLuaHit;
-	}
-
-	virtual					~CLuaHit			()
-	{
-	}
-
-			void			set_bone_name		(LPCSTR bone_name)
-	{
-		m_caBoneName	= bone_name;
-	}
-};
+class CLuaHit;
 
 class CLuaGameObject {
 	CGameObject			*m_tpGameObject;
@@ -501,17 +322,17 @@ public:
 			l_tpScriptMonster->clear_callback(tActionType);
 	}
 
-	u32 GetAmmoElapsed(const CLuaGameObject *game_object)
+	u32 GetAmmoElapsed()
 	{
-		const CWeapon	*weapon = dynamic_cast<const CWeapon*>(game_object);
+		const CWeapon	*weapon = dynamic_cast<const CWeapon*>(m_tpGameObject);
 		if (!weapon)
 			return		(0);
 		return			(weapon->GetAmmoElapsed());
 	}
 
-	u32 GetAmmoCurrent(const CLuaGameObject *game_object) const
+	u32 GetAmmoCurrent() const
 	{
-		const CWeapon	*weapon = dynamic_cast<const CWeapon*>(game_object);
+		const CWeapon	*weapon = dynamic_cast<const CWeapon*>(m_tpGameObject);
 		if (!weapon)
 			return		(0);
 		return			(weapon->GetAmmoCurrent());
@@ -624,116 +445,3 @@ public:
 			l_tpScriptMonster->clear_hit_callback(member_callback);
 	}
 };
-
-class CLuaSound {
-	ref_sound				*m_tpSound;
-public:
-								CLuaSound		(LPCSTR caSoundName)
-	{
-		string256			l_caFileName;
-		if (FS.exist(l_caFileName,"$game_sounds$",caSoundName,".ogg"))
-			::Sound->create	(*(m_tpSound = xr_new<ref_sound>()),TRUE,caSoundName);
-		else {
-			LuaOut			(Lua::eLuaMessageTypeError,"File not found \"%s\"!",l_caFileName);
-			m_tpSound		= 0;
-		}
-	}
-
-	virtual						~CLuaSound		()
-	{
-		xr_delete			(m_tpSound);
-	}
-
-			u32					Length			()
-	{
-		VERIFY				(m_tpSound);
-		VERIFY				(m_tpSound->handle);
-		return				(m_tpSound->handle->length_ms());
-	}
-
-			void				Play			(CLuaGameObject *object, bool looped)
-	{
-		VERIFY				(m_tpSound);
-		m_tpSound->play		(object->object(),(BOOL)looped);
-	}
-
-			void				PlayUnlimited	(CLuaGameObject *object, bool looped)
-	{
-		VERIFY				(m_tpSound);
-		m_tpSound->play_unlimited(object->object(),(BOOL)looped);
-	}
-
-			void				PlayAtPos		(CLuaGameObject *object, const Fvector &position, bool looped)
-	{
-		VERIFY				(m_tpSound);
-		m_tpSound->play_at_pos(object->object(), position, (BOOL)looped);
-	}
-
-			void				PlayAtPosUnlimited(CLuaGameObject *object, const Fvector &position, bool looped)
-	{
-		VERIFY				(m_tpSound);
-		m_tpSound->play_at_pos_unlimited(object->object(), position, (BOOL)looped);
-	}
-
-	BIND_FUNCTION00	(m_tpSound,			Stop,				ref_sound,		stop);
-	BIND_FUNCTION01	(m_tpSound,			SetPosition,		ref_sound,		set_position,		const Fvector &,		const Fvector &);
-	BIND_FUNCTION01	(m_tpSound,			SetFrequency,		ref_sound,		set_frequency,		const float,			const float);
-	BIND_FUNCTION01	(m_tpSound,			SetVolume,			ref_sound,		set_volume,			const float,			const float);
-	BIND_FUNCTION10	(m_tpSound,			GetParams,			ref_sound,		get_params,			const CSound_params *,	0);
-	BIND_FUNCTION01	(m_tpSound,			SetParams,			ref_sound,		set_params,			CSound_params *,		CSound_params *);
-
-			 void				SetMinDistance	(const float fMinDistance)
-	{
-		VERIFY				(m_tpSound);
-		m_tpSound->set_range(fMinDistance,GetMaxDistance());
-	}
-
-			 void				SetMaxDistance	(const float fMaxDistance)
-	{
-		VERIFY				(m_tpSound);
-		m_tpSound->set_range(GetMinDistance(),fMaxDistance);
-	}
-
-			 const Fvector		&GetPosition	() const
-	{
-		VERIFY				(m_tpSound);
-		const CSound_params	*l_tpSoundParams = m_tpSound->get_params();
-		if (l_tpSoundParams)
-			return			(l_tpSoundParams->position);
-		else {
-			LuaOut			(Lua::eLuaMessageTypeError,"Sound was not launched, can't get position!");
-			return			(Fvector().set(0,0,0));
-		}
-	}
-
-			 const float		GetFrequency	() const
-	{
-		VERIFY				(m_tpSound);
-		return				(m_tpSound->get_params()->freq);
-	}
-
-			 const float		GetMinDistance	() const
-	{
-		VERIFY				(m_tpSound);
-		return				(m_tpSound->get_params()->min_distance);
-	}
-
-			 const float		GetMaxDistance	() const
-	{
-		VERIFY				(m_tpSound);
-		return				(m_tpSound->get_params()->max_distance);
-	}
-
-			 const float		GetVolume		() const
-	{
-		VERIFY				(m_tpSound);
-		return				(m_tpSound->get_params()->volume);
-	}
-
-			bool				IsPlaying		() const
-	{
-		VERIFY				(m_tpSound);
-		return				(!!m_tpSound->feedback);
-	}
-};
-

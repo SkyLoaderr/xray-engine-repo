@@ -1633,10 +1633,19 @@
 						RelativePath=".\ai_script_actions.h">
 					</File>
 					<File
+						RelativePath=".\ai_script_bind.h">
+					</File>
+					<File
 						RelativePath=".\ai_script_classes.cpp">
 					</File>
 					<File
 						RelativePath=".\ai_script_classes.h">
+					</File>
+					<File
+						RelativePath=".\ai_script_effector.h">
+					</File>
+					<File
+						RelativePath=".\ai_script_hit.h">
 					</File>
 					<File
 						RelativePath=".\ai_script_lua_debug.cpp">
@@ -1661,6 +1670,12 @@
 					</File>
 					<File
 						RelativePath=".\ai_script_processor.h">
+					</File>
+					<File
+						RelativePath=".\ai_script_sound.cpp">
+					</File>
+					<File
+						RelativePath=".\ai_script_sound.h">
 					</File>
 					<File
 						RelativePath=".\ai_script_space.h">
