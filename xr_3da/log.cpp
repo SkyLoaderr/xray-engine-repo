@@ -12,7 +12,8 @@ static DWORD			dwMainThreadID	= 0;
 std::vector <char *>	LogFile;
 std::vector <char *>	LogFileAddons;
 
-void AddOne(char *split) {
+void AddOne(char *split) 
+{
 	LogFile.push_back(split);
 #ifdef _DEBUG
 	OutputDebugString(split);
@@ -42,11 +43,11 @@ void AddOne(char *split) {
 	}
 }
 
-void Log(const char *s) {
+void Log(const char *s) 
+{
 	FILE	*f;
 	int		i,j;
 	char	split[1024];
-
 
 	f = fopen(logFName, "at");
 	if (f) {
