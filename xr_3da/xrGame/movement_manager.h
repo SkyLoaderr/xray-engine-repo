@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "gameobject.h"
 #include "path_manager_game_selector.h"
 #include "path_manager_level_selector.h"
 #include "game_location_selector.h"
@@ -16,7 +17,7 @@
 #include "level_path_manager.h"
 #include "detail_path_manager.h"
 #include "enemy_location_predictor.h"
-#include "gameobject.h"
+#include "patrol_path_manager.h"
 
 class CPHMovementControl;
 
@@ -27,6 +28,7 @@ class CMovementManager :
 	public CBasePathManager		<CLevelGraph,PathManagers::SBaseParameters<float,u32,u32>,u32,u32>,
 	public CDetailPathManager,
 	public CEnemyLocationPredictor,
+	public CPatrolPathManager,
 	virtual public CGameObject
 {
 protected:
@@ -48,6 +50,8 @@ private:
 		ePathStateSelectLevelVertex,
 		ePathStateBuildLevelPath,
 		ePathStateContinueLevelPath,
+
+		ePathStateSelectPatrolPoint,
 		
 		ePathStateBuildDetailPath,
 		
@@ -63,6 +67,7 @@ public:
 		ePathTypeGamePath = u32(0),
 		ePathTypeLevelPath,
 		ePathTypeEnemySearch,
+		ePathTypePatrolPath,
 		ePathTypeDummy = u32(-1),
 	};
 
@@ -83,6 +88,7 @@ private:
 			void	process_game_path		();
 			void	process_level_path		();
 			void	process_enemy_search	();
+			void	process_patrol_path		();
 
 	friend class CScriptMonster;
 	friend class CGroup;

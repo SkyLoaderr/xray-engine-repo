@@ -295,56 +295,55 @@ void CScriptMonster::vfChoosePatrolPathPoint(CEntityAction *tpEntityAction)
 		l_tMovementAction.m_tDestinationPosition = l_tPatrolPath.tpaWayPoints[m_iCurrentPatrolPoint].tWayPoint;
 		return;
 	}
-	else {
-		if (l_tMovementAction.m_tDestinationPosition.distance_to(Position()) > .1f)
-			return;
 
-		int			l_iCount = 0;
-		for (int i=0, n=(int)l_tPatrolPath.tpaWayLinks.size(); i<n; ++i)
-			if ((l_tPatrolPath.tpaWayLinks[i].wFrom == m_iCurrentPatrolPoint) && (l_tPatrolPath.tpaWayLinks[i].wTo != m_iPreviousPatrolPoint)) {
-				if (!l_iCount)
-					l_iFirst = i;
-				++l_iCount;
+	if (l_tMovementAction.m_tDestinationPosition.distance_to(Position()) > .1f)
+		return;
+
+	int			l_iCount = 0;
+	for (int i=0, n=(int)l_tPatrolPath.tpaWayLinks.size(); i<n; ++i)
+		if ((l_tPatrolPath.tpaWayLinks[i].wFrom == m_iCurrentPatrolPoint) && (l_tPatrolPath.tpaWayLinks[i].wTo != m_iPreviousPatrolPoint)) {
+			if (!l_iCount)
+				l_iFirst = i;
+			++l_iCount;
+		}
+
+	if (!l_iCount) {
+		switch (l_tMovementAction.m_tPatrolPathStop) {
+			case CPatrolPathParams::ePatrolPathStop : {
+				m_iPreviousPatrolPoint = -1;
+				l_tMovementAction.m_bCompleted = true;
+				return;
 			}
-
-		if (!l_iCount) {
-			switch (l_tMovementAction.m_tPatrolPathStop) {
-				case CPatrolPathParams::ePatrolPathStop : {
+			case CPatrolPathParams::ePatrolPathContinue : {
+				for (int i=0, n=(int)l_tPatrolPath.tpaWayLinks.size(); i<n; ++i)
+					if (l_tPatrolPath.tpaWayLinks[i].wFrom == m_iCurrentPatrolPoint) {
+						l_iFirst = i;
+						break;
+					}
+				if (l_iFirst == -1) {
 					m_iPreviousPatrolPoint = -1;
 					l_tMovementAction.m_bCompleted = true;
 					return;
 				}
-				case CPatrolPathParams::ePatrolPathContinue : {
-					for (int i=0, n=(int)l_tPatrolPath.tpaWayLinks.size(); i<n; ++i)
-						if (l_tPatrolPath.tpaWayLinks[i].wFrom == m_iCurrentPatrolPoint) {
-							l_iFirst = i;
-							break;
-						}
-					if (l_iFirst == -1) {
-						m_iPreviousPatrolPoint = -1;
-						l_tMovementAction.m_bCompleted = true;
-						return;
-					}
+				break;
+			}
+			default : NODEFAULT;
+		}
+	}
+	else {
+		int				l_iChoosed = l_iCount - 1;
+		if (l_tMovementAction.m_bRandom && (l_iCount > 1))
+			l_iChoosed	= ::Random.randI(l_iCount);
+		l_iCount	= 0;
+		for (int i=0, n=(int)l_tPatrolPath.tpaWayLinks.size(); i<n; ++i)
+			if ((l_tPatrolPath.tpaWayLinks[i].wFrom == m_iCurrentPatrolPoint) && (l_tPatrolPath.tpaWayLinks[i].wTo != m_iPreviousPatrolPoint))
+				if (l_iCount == l_iChoosed) {
+					l_iFirst = i;
 					break;
 				}
-				default : NODEFAULT;
-			}
-		}
-		else {
-			int				l_iChoosed = l_iCount - 1;
-			if (l_tMovementAction.m_bRandom && (l_iCount > 1))
-				l_iChoosed	= ::Random.randI(l_iCount);
-			l_iCount	= 0;
-			for (int i=0, n=(int)l_tPatrolPath.tpaWayLinks.size(); i<n; ++i)
-				if ((l_tPatrolPath.tpaWayLinks[i].wFrom == m_iCurrentPatrolPoint) && (l_tPatrolPath.tpaWayLinks[i].wTo != m_iPreviousPatrolPoint))
-					if (l_iCount == l_iChoosed) {
-						l_iFirst = i;
-						break;
-					}
-					else
-						++l_iCount;
-			VERIFY(l_iFirst > -1);
-		}
+				else
+					++l_iCount;
+		VERIFY(l_iFirst > -1);
 	}
 	
 	m_iPreviousPatrolPoint	= m_iCurrentPatrolPoint;
@@ -399,10 +398,10 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 		case CMovementAction::eGoalTypeNoPathPosition : {
 			l_tMovementAction.m_tNodeID	= 1;
 			if (l_tpCustomMonster) {
-//				if (l_tpCustomMonster->CDetailPathManager::m_path.empty() || (l_tpCustomMonster->CDetailPathManager::m_path[l_tpCustomMonster->CDetailPathManager::m_path.size() - 1].m_position.distance_to(l_tMovementAction.m_tDestinationPosition) > .1f)) {
-//					l_tpCustomMonster->CDetailPathManager::m_path.resize(2);
-//					l_tpCustomMonster->CDetailPathManager::m_path[0].m_position = Position();
-//					l_tpCustomMonster->CDetailPathManager::m_path[1].m_position = l_tMovementAction.m_tDestinationPosition;
+//				if (l_tpCustomMonster->CDetailPathManager::path().empty() || (l_tpCustomMonster->CDetailPathManager::path()[l_tpCustomMonster->CDetailPathManager::path().size() - 1].m_position.distance_to(l_tMovementAction.m_tDestinationPosition) > .1f)) {
+//					l_tpCustomMonster->CDetailPathManager::path().resize(2);
+//					l_tpCustomMonster->CDetailPathManager::path()[0].m_position = Position();
+//					l_tpCustomMonster->CDetailPathManager::path()[1].m_position = l_tMovementAction.m_tDestinationPosition;
 //					l_tpCustomMonster->CDetailPathManager::m_current_travel_point	= 0;
 //				}
 			}

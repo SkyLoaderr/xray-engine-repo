@@ -678,26 +678,25 @@ void CAI_Rat::EatCorpse()
 
 void CAI_Rat::vfUpdateSpawnPosition()
 {
-//	if (!g_Alive())
-//		return;
-//	INIT_SQUAD_AND_LEADER;
-//	if (this != Leader)	{
-//		CAI_Rat *tpLeader = dynamic_cast<CAI_Rat*>(Leader);
-//		if (tpLeader) {
-//			if (m_tSafeSpawnPosition.distance_to(tpLeader->m_tSafeSpawnPosition) > EPS_L) {
-//				vfAddActiveMember(true);
-//				m_eCurrentState = aiRatFreeHuntingActive;
-//			}
-//			m_tSafeSpawnPosition = tpLeader->m_tSafeSpawnPosition;
-//		}
-//	}
-//	else {
+	if (!g_Alive())
+		return;
+	INIT_SQUAD_AND_LEADER;
+	if (this != Leader)	{
+		CAI_Rat *tpLeader = dynamic_cast<CAI_Rat*>(Leader);
+		if (tpLeader) {
+			if (m_tSafeSpawnPosition.distance_to(tpLeader->m_tSafeSpawnPosition) > EPS_L) {
+				vfAddActiveMember(true);
+				m_eCurrentState = aiRatFreeHuntingActive;
+			}
+			m_tSafeSpawnPosition = tpLeader->m_tSafeSpawnPosition;
+		}
+	}
+	else {
 //		if ((Level().timeServer() >= m_time_to_change) && (ai().cross_table().vertex(level_vertex_id()).game_vertex_id() == m_tNextGP)) {
 //			m_tNextGP					= ai().cross_table().vertex(level_vertex_id()).game_vertex_id();
 //			vfChooseNextGraphPoint		();
 //			m_tSafeSpawnPosition.set	(ai().game_graph().vertex(m_tNextGP).level_point());
 ////.			Msg("Next graph point %d",m_tNextGP);
 //		}
-//
-//	}
+	}
 }

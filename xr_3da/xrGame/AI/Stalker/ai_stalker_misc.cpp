@@ -34,18 +34,18 @@ void CAI_Stalker::vfSetParameters(PathManagers::CAbstractVertexEvaluator * /**tp
 //
 //	m_fCurSpeed		= 1.f;
 //
-//	if (CDetailPathManager::m_path.size() && ((CDetailPathManager::m_path.size() - 1) > CDetailPathManager::m_current_travel_point)) {
+//	if (CDetailPathManager::path().size() && ((CDetailPathManager::path().size() - 1) > CDetailPathManager::m_current_travel_point)) {
 //		if (GetScriptControl() && GetCurrentAction() && (_abs(GetCurrentAction()->m_tMovementAction.m_fSpeed) > EPS_L))
 //			m_fCurSpeed = GetCurrentAction()->m_tMovementAction.m_fSpeed;
 //		else {
 //		// if linear speed is too big for a turn 
 //		// then decrease linear speed and 
 //		// increase angular speed
-////			if ((CDetailPathManager::m_path.size() - 2) > CDetailPathManager::m_current_travel_point) {
+////			if ((CDetailPathManager::path().size() - 2) > CDetailPathManager::m_current_travel_point) {
 ////				Fvector tPoint1, tPoint2;
 ////				float	yaw1, pitch1, yaw2, pitch2;
-//////				tPoint1.sub(CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point].P,CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point + 1].P);
-//////				tPoint2.sub(CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point + 1].P,CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point + 2].P);
+//////				tPoint1.sub(CDetailPathManager::path()[CDetailPathManager::m_current_travel_point].P,CDetailPathManager::path()[CDetailPathManager::m_current_travel_point + 1].P);
+//////				tPoint2.sub(CDetailPathManager::path()[CDetailPathManager::m_current_travel_point + 1].P,CDetailPathManager::path()[CDetailPathManager::m_current_travel_point + 2].P);
 //////				tPoint1.getHP(yaw1,pitch1);
 //////				tPoint2.getHP(yaw2,pitch2);
 ////				if (ps_Size() > 2) {

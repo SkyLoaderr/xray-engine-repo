@@ -94,13 +94,6 @@ void CAI_Rat::Load(LPCSTR section)
 	inherited::Load(section);
 	CEatableItem::Load(section);
 
-	/*
-	IRender_Visual*	temp;
-	temp = ::Render->model_Create("aaa");	::Render->model_Delete(temp);
-	temp = ::Render->model_Create("bbb");	::Render->model_Delete(temp);
-	temp = ::Render->model_Create("ccc");	::Render->model_Delete(temp);
-	*/
-
 	// initialize start position
 	Fvector	P						= Position();
 	P.x								+= ::Random.randF();

@@ -475,6 +475,162 @@
 				Name="AMonsters"
 				Filter="">
 				<Filter
+					Name="ai_biting"
+					Filter="">
+					<File
+						RelativePath="AI\Biting\ai_biting.cpp">
+					</File>
+					<File
+						RelativePath="AI\Biting\ai_biting.h">
+					</File>
+					<File
+						RelativePath="AI\Biting\ai_biting_anim.cpp">
+					</File>
+					<File
+						RelativePath="AI\Biting\ai_biting_feel.cpp">
+					</File>
+					<File
+						RelativePath="AI\Biting\ai_biting_fsm.cpp">
+					</File>
+					<File
+						RelativePath="AI\Biting\ai_biting_misc.cpp">
+					</File>
+					<File
+						RelativePath="AI\Biting\ai_biting_path.cpp">
+					</File>
+					<File
+						RelativePath=".\Ai\Biting\ai_biting_state.h">
+					</File>
+					<File
+						RelativePath=".\ai\biting\ai_biting_state_attack.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\biting\ai_biting_state_detour.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\biting\ai_biting_state_eat.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\biting\ai_biting_state_exploreDE.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\biting\ai_biting_state_exploreDNE.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\biting\ai_biting_state_exploreNDE.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\biting\ai_biting_state_exploreNDNE.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\biting\ai_biting_state_hide.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\biting\ai_biting_state_panic.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\biting\ai_biting_state_rest.cpp">
+					</File>
+					<File
+						RelativePath=".\Ai\Biting\ai_biting_state_squadtask.cpp">
+					</File>
+				</Filter>
+				<Filter
+					Name="ai_bloodsucker"
+					Filter="">
+					<File
+						RelativePath=".\Ai\Bloodsucker\ai_bloodsucker.cpp">
+					</File>
+					<File
+						RelativePath=".\Ai\Bloodsucker\ai_bloodsucker.h">
+					</File>
+					<File
+						RelativePath=".\ai\bloodsucker\ai_bloodsucker_effector.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\bloodsucker\ai_bloodsucker_effector.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="ai_boar"
+					Filter="">
+					<File
+						RelativePath=".\ai\boar\ai_boar.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\boar\ai_boar.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="ai_chimera"
+					Filter="">
+					<File
+						RelativePath=".\Ai\Chimera\ai_chimera.cpp">
+					</File>
+					<File
+						RelativePath=".\Ai\Chimera\ai_chimera.h">
+					</File>
+					<File
+						RelativePath=".\Ai\Chimera\ai_chimera_anim.cpp">
+					</File>
+				</Filter>
+				<Filter
+					Name="ai_crow"
+					Filter="">
+					<File
+						RelativePath=".\AI\Crow\ai_crow.cpp">
+					</File>
+					<File
+						RelativePath=".\AI\Crow\ai_crow.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="ai_custom"
+					Filter="">
+					<File
+						RelativePath=".\CustomMonster.cpp">
+					</File>
+					<File
+						RelativePath=".\CustomMonster.h">
+					</File>
+					<File
+						RelativePath=".\CustomMonster_VCPU.cpp">
+					</File>
+					<File
+						RelativePath=".\dbg_draw_frustum.cpp">
+					</File>
+				</Filter>
+				<Filter
+					Name="ai_dog"
+					Filter="">
+					<File
+						RelativePath=".\Ai\Dog\ai_dog.cpp">
+					</File>
+					<File
+						RelativePath=".\Ai\Dog\ai_dog.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="ai_flesh"
+					Filter="">
+					<File
+						RelativePath=".\Ai\Flesh\ai_flesh.cpp">
+					</File>
+					<File
+						RelativePath=".\Ai\Flesh\ai_flesh.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="ai_idol"
+					Filter="">
+					<File
+						RelativePath="AI\Idol\ai_idol.cpp">
+					</File>
+					<File
+						RelativePath="AI\Idol\ai_idol.h">
+					</File>
+				</Filter>
+				<Filter
 					Name="ai_misc"
 					Filter="">
 					<File
@@ -545,80 +701,13 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="ai_custom"
+					Name="ai_pseudodog"
 					Filter="">
 					<File
-						RelativePath=".\CustomMonster.cpp">
+						RelativePath=".\ai\pseudodog\ai_pseudodog.cpp">
 					</File>
 					<File
-						RelativePath=".\CustomMonster.h">
-					</File>
-					<File
-						RelativePath=".\CustomMonster_VCPU.cpp">
-					</File>
-					<File
-						RelativePath=".\dbg_draw_frustum.cpp">
-					</File>
-				</Filter>
-				<Filter
-					Name="ai_biting"
-					Filter="">
-					<File
-						RelativePath="AI\Biting\ai_biting.cpp">
-					</File>
-					<File
-						RelativePath="AI\Biting\ai_biting.h">
-					</File>
-					<File
-						RelativePath="AI\Biting\ai_biting_anim.cpp">
-					</File>
-					<File
-						RelativePath="AI\Biting\ai_biting_feel.cpp">
-					</File>
-					<File
-						RelativePath="AI\Biting\ai_biting_fsm.cpp">
-					</File>
-					<File
-						RelativePath="AI\Biting\ai_biting_misc.cpp">
-					</File>
-					<File
-						RelativePath="AI\Biting\ai_biting_path.cpp">
-					</File>
-					<File
-						RelativePath=".\Ai\Biting\ai_biting_state.h">
-					</File>
-					<File
-						RelativePath=".\ai\biting\ai_biting_state_attack.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\biting\ai_biting_state_detour.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\biting\ai_biting_state_eat.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\biting\ai_biting_state_exploreDE.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\biting\ai_biting_state_exploreDNE.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\biting\ai_biting_state_exploreNDE.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\biting\ai_biting_state_exploreNDNE.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\biting\ai_biting_state_hide.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\biting\ai_biting_state_panic.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\biting\ai_biting_state_rest.cpp">
-					</File>
-					<File
-						RelativePath=".\Ai\Biting\ai_biting_state_squadtask.cpp">
+						RelativePath=".\ai\pseudodog\ai_pseudodog.h">
 					</File>
 				</Filter>
 				<Filter
@@ -644,6 +733,16 @@
 					</File>
 					<File
 						RelativePath="AI\Rat\ai_rat_templates.cpp">
+					</File>
+				</Filter>
+				<Filter
+					Name="ai_script"
+					Filter="">
+					<File
+						RelativePath=".\Ai\script\ai_script_monster.cpp">
+					</File>
+					<File
+						RelativePath=".\Ai\script\ai_script_monster.h">
 					</File>
 				</Filter>
 				<Filter
@@ -696,36 +795,13 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="ai_crow"
+					Name="ai_trader"
 					Filter="">
 					<File
-						RelativePath=".\AI\Crow\ai_crow.cpp">
+						RelativePath=".\Ai\Trader\ai_trader.cpp">
 					</File>
 					<File
-						RelativePath=".\AI\Crow\ai_crow.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="ai_chimera"
-					Filter="">
-					<File
-						RelativePath=".\Ai\Chimera\ai_chimera.cpp">
-					</File>
-					<File
-						RelativePath=".\Ai\Chimera\ai_chimera.h">
-					</File>
-					<File
-						RelativePath=".\Ai\Chimera\ai_chimera_anim.cpp">
-					</File>
-				</Filter>
-				<Filter
-					Name="ai_flesh"
-					Filter="">
-					<File
-						RelativePath=".\Ai\Flesh\ai_flesh.cpp">
-					</File>
-					<File
-						RelativePath=".\Ai\Flesh\ai_flesh.h">
+						RelativePath=".\Ai\Trader\ai_trader.h">
 					</File>
 				</Filter>
 				<Filter
@@ -751,82 +827,6 @@
 					</File>
 					<File
 						RelativePath="AI\Zombie\ai_zombie_templates.cpp">
-					</File>
-				</Filter>
-				<Filter
-					Name="ai_bloodsucker"
-					Filter="">
-					<File
-						RelativePath=".\Ai\Bloodsucker\ai_bloodsucker.cpp">
-					</File>
-					<File
-						RelativePath=".\Ai\Bloodsucker\ai_bloodsucker.h">
-					</File>
-					<File
-						RelativePath=".\ai\bloodsucker\ai_bloodsucker_effector.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\bloodsucker\ai_bloodsucker_effector.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="ai_idol"
-					Filter="">
-					<File
-						RelativePath="AI\Idol\ai_idol.cpp">
-					</File>
-					<File
-						RelativePath="AI\Idol\ai_idol.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="ai_trader"
-					Filter="">
-					<File
-						RelativePath=".\Ai\Trader\ai_trader.cpp">
-					</File>
-					<File
-						RelativePath=".\Ai\Trader\ai_trader.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="ai_dog"
-					Filter="">
-					<File
-						RelativePath=".\Ai\Dog\ai_dog.cpp">
-					</File>
-					<File
-						RelativePath=".\Ai\Dog\ai_dog.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="ai_boar"
-					Filter="">
-					<File
-						RelativePath=".\ai\boar\ai_boar.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\boar\ai_boar.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="ai_script"
-					Filter="">
-					<File
-						RelativePath=".\Ai\script\ai_script_monster.cpp">
-					</File>
-					<File
-						RelativePath=".\Ai\script\ai_script_monster.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="ai_pseudodog"
-					Filter="">
-					<File
-						RelativePath=".\ai\pseudodog\ai_pseudodog.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\pseudodog\ai_pseudodog.h">
 					</File>
 				</Filter>
 			</Filter>
@@ -895,7 +895,22 @@
 						RelativePath=".\movement_manager.h">
 					</File>
 					<File
+						RelativePath=".\movement_manager_enemy.cpp">
+					</File>
+					<File
+						RelativePath=".\movement_manager_game.cpp">
+					</File>
+					<File
 						RelativePath=".\movement_manager_inline.h">
+					</File>
+					<File
+						RelativePath=".\movement_manager_level.cpp">
+					</File>
+					<File
+						RelativePath=".\movement_manager_patrol.cpp">
+					</File>
+					<File
+						RelativePath=".\movement_manager_physic.cpp">
 					</File>
 					<Filter
 						Name="LocationSelectors"
@@ -985,6 +1000,19 @@
 							</File>
 							<File
 								RelativePath=".\level_path_manager_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="PatrolPathManager"
+							Filter="">
+							<File
+								RelativePath=".\patrol_path_manager.cpp">
+							</File>
+							<File
+								RelativePath=".\patrol_path_manager.h">
+							</File>
+							<File
+								RelativePath=".\patrol_path_manager_inline.h">
 							</File>
 						</Filter>
 					</Filter>
