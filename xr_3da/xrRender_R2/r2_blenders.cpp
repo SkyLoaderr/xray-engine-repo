@@ -2,6 +2,7 @@
 
 #include "blender_deffer_flat.h"
 #include "blender_deffer_model.h"
+#include "blender_deffer_aref.h"
 #include "blender_screen_set.h"
 #include "blender_tree.h"
 #include "blender_detail_still.h"
@@ -11,7 +12,7 @@ CBlender*	CRender::blender_create	(CLASS_ID cls)
 	switch (cls)
 	{
 	case B_DEFAULT:			return xr_new<CBlender_deffer_flat>		();		
-	case B_DEFAULT_AREF:	return xr_new<CBlender_deffer_flat>		();
+	case B_DEFAULT_AREF:	return xr_new<CBlender_deffer_aref>		();
 	case B_VERT:			return xr_new<CBlender_deffer_flat>		();
 	case B_VERT_AREF:		return xr_new<CBlender_deffer_flat>		();
 	case B_SCREEN_SET:		return xr_new<CBlender_Screen_SET>		();	
