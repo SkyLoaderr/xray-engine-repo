@@ -170,14 +170,13 @@ bool CSE_ALifeSimulator::bfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 			m_tCombatType = eCombatTypeMonsterAnomaly;
 
 	if (bfCheckObjectDetection(tpALifeSchedulable2,tpALifeSchedulable1)) {
+#ifdef ALIFE_LOG
+		Msg						("[LSS] %s detected %s",tpALifeSchedulable2->s_name_replace,tpALifeSchedulable1->s_name_replace);
+#endif
 		if (!iCombatGroupIndex)
 			bMutualDetection		= true;
-		else {
+		else
 			iCombatGroupIndex		= 1;
-#ifdef ALIFE_LOG
-			Msg						("[LSS] %s detected %s",tpALifeSchedulable2->s_name_replace,tpALifeSchedulable1->s_name_replace);
-#endif
-		}
 	}
 	else {
 #ifdef ALIFE_LOG
@@ -279,7 +278,7 @@ void CSE_ALifeSimulator::vfAssignDeathPosition(CSE_ALifeCreatureAbstract *tpALif
 	if (tpALifeSchedulable) {
 		CSE_ALifeAnomalousZone				*l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(tpALifeSchedulable);
 		if (l_tpALifeAnomalousZone) {
-			vfAssignArtefactPosition			(l_tpALifeAnomalousZone,tpALifeCreatureAbstract);
+			vfAssignArtefactPosition		(l_tpALifeAnomalousZone,tpALifeCreatureAbstract);
 			return;
 		}
 	}

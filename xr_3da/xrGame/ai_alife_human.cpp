@@ -169,8 +169,10 @@ CSE_ALifeItemWeapon	*CSE_ALifeHumanAbstract::tpfGetBestWeapon(EHitType &tHitType
 	if (m_tpCurrentBestWeapon) {
 		fHitPower				= m_tpCurrentBestWeapon->m_fHitPower;
 		tHitType				= m_tpCurrentBestWeapon->m_tHitType;
+		return					(m_tpCurrentBestWeapon);
 	}
-	return						(m_tpCurrentBestWeapon);
+	else
+		inherited2::tpfGetBestWeapon(tHitType,fHitPower);
 }
 
 bool CSE_ALifeHumanAbstract::bfPerformAttack()
