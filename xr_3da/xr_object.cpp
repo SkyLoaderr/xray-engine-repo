@@ -276,24 +276,32 @@ CObject* CObject::H_SetParent	(CObject* O)
 	if (O==Parent)	return O;
 
 	CObject* S	= Parent; 
-	Parent		= O; 
 
-	if (0==S)	OnH_Chield		();
-	else		OnH_Independent	();
+	if (0==S)	OnH_B_Chield		();
+	else		OnH_B_Independent	();
+	Parent		= O; 
+	if (0==S)	OnH_A_Chield		();
+	else		OnH_A_Independent	();
 
 	return		S;
 }
 
-void CObject::OnH_Chield		()
+void CObject::OnH_A_Chield		()
 {
 	// Become chield
 	pCreator->ObjectSpace.Object_Unregister	(this);
 	Sector_Move								(0);
 }
+void CObject::OnH_B_Chield		()
+{
+}
 
-void CObject::OnH_Independent	()
+void CObject::OnH_A_Independent	()
 {
 	// Become independent
 	pCreator->ObjectSpace.Object_Register	(this);
 	Sector_Detect							();
+}
+void CObject::OnH_B_Independent	()
+{
 }

@@ -159,8 +159,10 @@ public:
 	// Active/non active
 	virtual void						OnActivate			();
 	virtual void						OnDeactivate		();
-	virtual void						OnH_Chield			();
-	virtual void						OnH_Independent		();
+	virtual void						OnH_B_Chield		();		// before
+	virtual void						OnH_B_Independent	();
+	virtual void						OnH_A_Chield		();		// after
+	virtual void						OnH_A_Independent	();
 	
 	// Device dependance
 	virtual void						OnDeviceDestroy		();

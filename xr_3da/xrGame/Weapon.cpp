@@ -398,18 +398,18 @@ void CWeapon::Update		(DWORD dT)
 	inherited::Update		(dT);
 }
 
-void CWeapon::OnH_Independent	()
+void CWeapon::OnH_B_Independent	()
 {
-	inherited::OnH_Independent	();
+	inherited::OnH_B_Independent();
 	setVisible					(true);
 	setEnabled					(true);
 	hud_mode					= FALSE;
 	UpdateXForm					();
 }
 
-void CWeapon::OnH_Chield		()
+void CWeapon::OnH_B_Chield		()
 {
-	inherited::OnH_Chield		();
+	inherited::OnH_B_Chield		();
 	setVisible					(false);
 	setEnabled					(false);
 }
