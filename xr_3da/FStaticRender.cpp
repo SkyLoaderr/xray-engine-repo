@@ -31,6 +31,7 @@ IC		void		gm_SetLevel		(int iLevel)
 		CHK_DX(HW.pDevice->SetMaterial	(gm_Data.d3d()));
 	}
 }
+
 IC		void		gm_SetAmbient	(DWORD C)
 {
 	if (C!=gm_Ambient)	{
@@ -38,6 +39,7 @@ IC		void		gm_SetAmbient	(DWORD C)
 		CHK_DX(HW.pDevice->SetRenderState(D3DRS_AMBIENT, C));
 	}
 }
+
 IC		void		gm_SetAmbientLevel(DWORD C)
 {
 	gm_SetAmbient	(D3DCOLOR_XRGB(C,C,C));
