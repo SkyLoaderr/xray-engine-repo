@@ -55,7 +55,6 @@ public:
 	FSPath 		m_GameLevels;
 	FSPath 		m_Maps;
 	FSPath 		m_Import;
-	FSPath 		m_Export;
 	FSPath		m_Envelope;
 	FSPath 		m_Groups;
 	FSPath 		m_OMotion;
