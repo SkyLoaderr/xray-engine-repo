@@ -40,6 +40,8 @@ struct VERTEX
 	D3DXVECTOR3 p;
 	D3DXVECTOR3 n;
 	FLOAT       tu, tv;
+	D3DXVECTOR3	tangent;
+	D3DXVECTOR3	binormal;
 };
 D3DVERTEXELEMENT9 decl_vert[] =
 {
