@@ -46,7 +46,9 @@ BEGIN_MESSAGE_MAP(CLuaView, CView)
 
 	ON_COMMAND(ID_EDIT_FIND, OnEditFind)
 	ON_COMMAND(ID_EDIT_REPLACE, OnEditReplace)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_FIND, OnUpdateGotoLineNumber)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_GOTOLINE, OnUpdateGotoLineNumber)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_FIND, OnUpdateFind)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_REPLACE, OnUpdateFind)
 	
 	//}}AFX_MSG_MAP
 	ON_REGISTERED_MESSAGE(_ScintillaMsgFindReplace, OnFindReplaceCmd)
@@ -251,6 +253,10 @@ void CLuaView::OnUpdateEditUndo(CCmdUI* pCmdUI)
 void CLuaView::OnUpdateGotoLineNumber(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(TRUE);
+}
+void CLuaView::OnUpdateFind(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(FALSE);
 }
 
 void CLuaView::OnEditRedo() 

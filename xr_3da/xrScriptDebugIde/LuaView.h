@@ -104,6 +104,8 @@ protected:
 	afx_msg void OnGotoLineNumber();
 	afx_msg void OnEditFind();
 	afx_msg void OnEditReplace();
+	afx_msg void OnUpdateFind(CCmdUI* pCmdUI);
+	
 	//}}AFX_MSG
 	afx_msg LRESULT OnFindReplaceCmd(WPARAM, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()
