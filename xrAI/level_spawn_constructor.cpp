@@ -333,33 +333,23 @@ void CLevelSpawnConstructor::generate_artefact_spawn_positions	()
 
 		graph_engine().search(level_graph(),zone->m_tNodeID,zone->m_tNodeID,&l_tpaStack,SFlooder<float,u32,u32>((float)zone->m_fRadius,u32(-1),u32(-1)));
 
-		if (zone->m_wArtefactSpawnCount >= l_tpaStack.size()) {
+		if (zone->m_wArtefactSpawnCount >= l_tpaStack.size())
 			zone->m_wArtefactSpawnCount	= (u16)l_tpaStack.size();
-			zone->m_dwStartIndex			= m_level_points.size();
-			m_level_points.resize							(zone->m_dwStartIndex + zone->m_wArtefactSpawnCount);
-			xr_vector<CGameGraph::CLevelPoint>::iterator	I = m_level_points.begin() + zone->m_dwStartIndex;
-			xr_vector<CGameGraph::CLevelPoint>::iterator	E = m_level_points.end();
-			xr_vector<u32>::iterator						i = l_tpaStack.begin();
-			for ( ; I != E; I++, i++) {
-				(*I).tNodeID	= *i;
-				(*I).tPoint		= level_graph().vertex_position(*i);
-				(*I).fDistance	= cross_table().vertex(*i).distance();
-			}
+		else
+			random_shuffle				(l_tpaStack.begin(),l_tpaStack.end());
+
+		zone->m_dwStartIndex			= m_level_points.size();
+		m_level_points.resize			(zone->m_dwStartIndex + zone->m_wArtefactSpawnCount);
+		xr_vector<CGameGraph::CLevelPoint>::iterator	I = m_level_points.begin() + zone->m_dwStartIndex;
+		xr_vector<CGameGraph::CLevelPoint>::iterator	E = m_level_points.end();
+		xr_vector<u32>::iterator		i = l_tpaStack.begin();
+		for ( ; I != E; ++I, ++i) {
+			(*I).tNodeID				= *i;
+			(*I).tPoint					= level_graph().vertex_position(*i);
+			(*I).fDistance				= cross_table().vertex(*i).distance();
 		}
-		else {
-			random_shuffle									(l_tpaStack.begin(),l_tpaStack.end());
-			zone->m_dwStartIndex			= m_level_points.size();
-			m_level_points.resize							(zone->m_dwStartIndex + zone->m_wArtefactSpawnCount);
-			xr_vector<CGameGraph::CLevelPoint>::iterator	I = m_level_points.begin() + zone->m_dwStartIndex;
-			xr_vector<CGameGraph::CLevelPoint>::iterator	E = m_level_points.end();
-			xr_vector<u32>::iterator						i = l_tpaStack.begin();
-			for ( ; I != E; I++, i++) {
-				(*I).tNodeID	= *i;
-				(*I).tPoint		= level_graph().vertex_position(*i);
-				(*I).fDistance	= cross_table().vertex(*i).distance();
-			}
-		}
-		l_tpaStack.clear		();
+		
+		l_tpaStack.clear				();
 	}
 }
 
