@@ -20,6 +20,7 @@ private:
 	};
 public:
 	BOOL								bPresent;
+	BOOL								bUserEnvironment;
 	
 	// DSound interface
 	IDirectSound8*						pDevice;				// The device itself
@@ -41,6 +42,7 @@ private:
 	vector<CSoundRender_Target*>		s_targets;
 	vector<CSoundRender_Target*>		s_targets_defer;
 	SoundEnvironment_LIB*				s_environment;
+	CSoundRender_Environment			s_user_environment;
 public:
 	CSoundRender_Core					();
 	~CSoundRender_Core					();
@@ -59,6 +61,7 @@ public:
 	virtual void						play_at_pos_unlimited	( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false);
 	virtual void						set_geometry			( CDB::MODEL* M );
 	virtual void						set_handler				( sound_event* E );
+	virtual void						set_user_environment	( CSound_environment* E);
 
 	virtual void						update					( const Fvector& P, const Fvector& D, const Fvector& N, float dt );
 public:

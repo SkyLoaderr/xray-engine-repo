@@ -21,6 +21,7 @@ float	psSoundVMusic			= 0.7f;
 CSoundRender_Core::CSoundRender_Core	()
 {
 	bPresent					= FALSE;
+	bUserEnvironment			= FALSE;
 	pDevice						= NULL;
 	pBuffer						= NULL;
 	pListener					= NULL;
@@ -197,9 +198,36 @@ void	CSoundRender_Core::destroy(sound& S )
 
 CSoundRender_Environment*	CSoundRender_Core::get_environment			( Fvector& P )
 {
-	static CSoundRender_Environment	identity;
+	if (bUserEnvironment)
+	{
+		return &s_user_environment;
+	} else 
+	{
+		static CSoundRender_Environment	identity;
+		identity.set_identity	(true,true,true);
+		// identity.set_default	(false,false,false);
+		return &identity;
+	}
+}
 
-	identity.set_identity	(true,true,true);
-	// identity.set_default	(false,false,false);
-	return &identity;
+void						CSoundRender_Core::set_user_environment		( CSound_environment* E)
+{
+	if (E)
+	{
+		s_user_environment	= *((CSoundRender_Environment*)E);
+		bUserEnvironment	= TRUE;
+
+		// Force all sounds to change their environment
+		// (set their positions to signal changes in environment)
+		for (u32 it=0; it<s_emitters.size(); it++)
+		{
+			CSoundRender_Emitter*	pEmitter	= s_emitters[it];
+			const CSound_params*	pParams		= pEmitter->get_params	();
+			pEmitter->set_position	(pParams->position);
+		}
+	}
+	else 
+	{
+		bUserEnvironment	= FALSE;
+	}
 }
