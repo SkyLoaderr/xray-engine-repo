@@ -35,10 +35,14 @@ void CSightAction::execute		()
 			break;
 		}
 		case SightManager::eSightTypeObject : {
+			Fvector					look_pos;
+			m_object_to_look->Center(look_pos);
+			look_pos.x				= m_object_to_look->Position().x;
+			look_pos.z				= m_object_to_look->Position().z;
 			if (m_torso_look)
-				m_object->SetFirePointLookAngles	(m_object_to_look->Position(),m_object->m_head.target.yaw,m_object->m_head.target.pitch);
+				m_object->SetFirePointLookAngles	(look_pos,m_object->m_head.target.yaw,m_object->m_head.target.pitch);
 			else
-				m_object->SetPointLookAngles		(m_object_to_look->Position(),m_object->m_head.target.yaw,m_object->m_head.target.pitch);
+				m_object->SetPointLookAngles		(look_pos,m_object->m_head.target.yaw,m_object->m_head.target.pitch);
 			break;
 		}
 		case SightManager::eSightTypeCover : {
