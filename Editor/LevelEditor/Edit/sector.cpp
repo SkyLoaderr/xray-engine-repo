@@ -29,7 +29,6 @@
 #define SECTOR_CHUNK_PRIVATE				0xF025
 #define SECTOR_CHUNK_ITEMS					0xF030
 #define 	SECTOR_CHUNK_ONE_ITEM			0xF031
-#define SECTOR_CHUNK_CHULL_DATA				0xF041
 //----------------------------------------------------
 CSectorItem::CSectorItem(){
 	object=NULL;
@@ -65,7 +64,7 @@ void CSector::Construct(){
 }
 
 CSector::~CSector(){
-//	OnDestroy();
+	OnDestroy();
 }
 
 bool CSector::FindSectorItem(const char* O, const char* M, SItemIt& it){
@@ -80,16 +79,30 @@ bool CSector::FindSectorItem(CSceneObject* o, CEditableMesh* m, SItemIt& it){
     return false;
 }
 
-void CSector::AddMesh	(CSceneObject* O, CEditableMesh* M){
+bool CSector::AddMesh	(CSceneObject* O, CEditableMesh* M){
 	SItemIt it;
 	if (!PortalUtils.FindSector(O,M))
-	    if (!FindSectorItem(O, M, it))
+	    if (!FindSectorItem(O, M, it)){
     	 	sector_items.push_back(CSectorItem(O, M));
+            UpdateVolume();
+            return true;
+        }
+    return false;
 }
 
-void CSector::DelMesh	(CSceneObject* O, CEditableMesh* M){
+bool CSector::DelMesh	(CSceneObject* O, CEditableMesh* M){
 	SItemIt it;
-    if (FindSectorItem(O, M, it)) sector_items.erase(it);
+    if (FindSectorItem(O, M, it)){
+    	sector_items.erase(it);
+		UpdateVolume();
+    }
+	if (sector_items.empty()){
+    	ELog.Msg(mtInformation,"Last mesh deleted.\nSector has no meshes and will be removed.");
+		Scene.RemoveObject(this,false);
+        delete this;
+        return false;
+    }
+    return true;
 }
 
 bool CSector::GetBox( Fbox& box ){
@@ -124,6 +137,8 @@ void CSector::Render(int priority, bool strictB2F){
             }
 			Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
         }
+
+//        DU::DrawSelectionBox(m_Box);
     }
 }
 
@@ -147,14 +162,10 @@ bool CSector::RayPick(float& distance, Fvector& start, Fvector& direction, SRayP
 }
 //----------------------------------------------------
 
-void CSector::SectorChanged(){
-    Update();
-}
-//----------------------------------------------------
-
-void CSector::Update(){
+void CSector::UpdateVolume(){
     Fbox bb;
     Fvector pt;
+    m_Box.invalidate();
     for (SItemIt s_it=sector_items.begin();s_it!=sector_items.end();s_it++){
         s_it->mesh->GetBox(bb);
         bb.transform(s_it->object->GetTransform());
@@ -193,28 +204,44 @@ void CSector::OnSceneUpdate(){
         }
     }
     if (bUpdate){
-    	Update();
         PortalUtils.RemoveSectorPortal(this);
     }
+	UpdateVolume();
 }
 //----------------------------------------------------
 
 EVisible CSector::Intersect(const Fvector& center, float radius)
 {
-	if (m_Box.contains(center)) return fvPartialInside;
-    else{
-    	if (m_SectorCenter.distance_to(center)<(radius+m_SectorRadius)) return fvPartialOutside;
+	float dist=m_SectorCenter.distance_to(center);
+
+    Fvector R;
+    m_Box.getradius(R);
+
+	bool bInSphere = ((dist+radius)<m_SectorRadius)&&(radius>R.x)&&(radius>R.y)&&(radius>R.z);
+	if (m_Box.contains(center)){
+    	if (bInSphere) return fvFully;
+        else return fvPartialInside;
+    }else{
+    	if (dist<(radius+m_SectorRadius)) return fvPartialOutside;
     }
 	return fvNone;
+}
+//----------------------------------------------------
+
+EVisible CSector::Intersect(const Fbox& box)
+{
+	if (m_Box.intersect(box)){
+    	Fvector c; float r;
+        box.getsphere(c,r);
+    	return Intersect(c,r);
+    }else return fvNone;
 }
 //----------------------------------------------------
 
 void CSector::CaptureInsideVolume(){
 	// test all mesh faces
 	// fill object list (test bounding sphere intersection)
-/*S
     ObjectList lst;
-	if (m_bNeedUpdateCHull) MakeCHull();
 	if (Scene.SpherePick(m_SectorCenter, m_SectorRadius, OBJCLASS_SCENEOBJECT, lst)){
     // test all object meshes
         Fmatrix matrix;
@@ -226,14 +253,17 @@ void CSector::CaptureInsideVolume(){
 	        EditMeshVec& M = obj->Meshes();
             for(EditMeshIt m_def = M.begin();m_def!=M.end();m_def++){
                 obj->GetFullTransformToWorld(matrix);
-                if ((*m_def)->CHullPickMesh(m_CHSectorPlanes,matrix))
-	                AddMesh(obj,*m_def);
+                Fbox bb;
+				(*m_def)->GetBox(bb);
+                bb.transform(matrix);
+                EVisible vis=Intersect(bb);
+            	if ((fvFully==vis)||(fvPartialInside==vis))
+					AddMesh(obj,*m_def);
             }
         }
-        MakeCHull();
+        UpdateVolume();
 		UI.RedrawScene();
     }
-*/
 }
 //----------------------------------------------------
 
@@ -264,11 +294,29 @@ bool CSector::SpherePick(const Fvector& center, float radius){
 }
 //----------------------------------------------------
 
-int CSector::GetSectorFacesCount(){
-	int count=0;
+bool CSector::IsEmpty()
+{
+    int count=0;
     for (SItemIt it=sector_items.begin();it!=sector_items.end();it++)
         count+=it->mesh->GetFaceCount(true);
-    return count;
+	return !count;
+}
+//----------------------------------------------------
+
+void CSector::GetCounts(int* objects, int* meshes, int* faces)
+{
+	if (faces){
+    	*faces=0;
+	    for (SItemIt it=sector_items.begin();it!=sector_items.end();it++)
+    	    *faces+=it->mesh->GetFaceCount(true);
+    }
+	if (meshes) *meshes=sector_items.size();
+	if (objects){
+        set<CSceneObject*> objs;
+	    for (SItemIt it=sector_items.begin();it!=sector_items.end();it++)
+        	objs.insert(it->object);
+    	*objects=objs.size();
+    }
 }
 //----------------------------------------------------
 
@@ -334,7 +382,7 @@ bool CSector::Load(CStream& F){
 
     if (sector_items.empty()) return false;
 
-    Update();
+    UpdateVolume();
     return true;
 }
 

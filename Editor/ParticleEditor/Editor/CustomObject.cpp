@@ -14,7 +14,6 @@
 //----------------------------------------------------
 
 CCustomObject::~CCustomObject(){
-	OnDestroy();
 }
 
 void CCustomObject::Select( BOOL flag ){

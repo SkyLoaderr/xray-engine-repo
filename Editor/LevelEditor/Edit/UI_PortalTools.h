@@ -30,14 +30,4 @@ public:
     virtual void OnExit ();
 };
 
-class TUI_ControlPortalSelect: public TUI_CustomControl{
-    TfraPortal*   	pFrame;
-public:
-    TUI_ControlPortalSelect(int st, int act, TUI_CustomTools* parent);
-	virtual bool Start  (TShiftState _Shift);
-	virtual bool End    (TShiftState _Shift);
-	virtual void Move   (TShiftState _Shift);
-    virtual void OnEnter();
-    virtual void OnExit ();
-};
 #endif //UI_PortalToolsH

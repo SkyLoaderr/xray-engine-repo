@@ -1,7 +1,7 @@
 object fraPortal: TfraPortal
   Left = 0
   Top = 0
-  Width = 443
+  Width = 123
   Height = 277
   VertScrollBar.ButtonSize = 11
   VertScrollBar.Range = 257
@@ -23,16 +23,16 @@ object fraPortal: TfraPortal
   TabOrder = 0
   object paCompute: TPanel
     Left = 0
-    Top = 90
-    Width = 443
-    Height = 132
+    Top = 51
+    Width = 123
+    Height = 118
     Align = alTop
     ParentColor = True
     TabOrder = 1
     Visible = False
     object ebCompute: TExtBtn
       Left = 2
-      Top = 31
+      Top = 17
       Width = 120
       Height = 15
       Align = alNone
@@ -52,21 +52,21 @@ object fraPortal: TfraPortal
     end
     object RxLabel1: TLabel
       Left = 3
-      Top = 62
+      Top = 48
       Width = 61
       Height = 13
       Caption = 'Sector Front:'
     end
     object RxLabel2: TLabel
       Left = 3
-      Top = 96
+      Top = 82
       Width = 62
       Height = 13
       Caption = 'Sector Back:'
     end
     object ebPickSectors: TExtBtn
       Left = 2
-      Top = 46
+      Top = 32
       Width = 120
       Height = 15
       Align = alNone
@@ -125,29 +125,10 @@ object fraPortal: TfraPortal
       Spacing = 10
       OnClick = ebPickSectorsClick
     end
-    object ebComputeAllPortals: TExtBtn
-      Left = 2
-      Top = 16
-      Width = 120
-      Height = 15
-      Align = alNone
-      BevelShow = False
-      HotTrack = True
-      HotColor = 15790320
-      CloseButton = False
-      Caption = 'Compute All Portals'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      OnClick = ebComputeAllPortalsClick
-    end
     object APHeadLabel2: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 121
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -182,7 +163,7 @@ object fraPortal: TfraPortal
     end
     object cbSectorFront: TComboBox
       Left = 3
-      Top = 77
+      Top = 63
       Width = 118
       Height = 18
       Style = csOwnerDrawVariable
@@ -201,7 +182,7 @@ object fraPortal: TfraPortal
     end
     object cbSectorBack: TComboBox
       Left = 3
-      Top = 111
+      Top = 97
       Width = 118
       Height = 18
       Style = csOwnerDrawVariable
@@ -222,26 +203,19 @@ object fraPortal: TfraPortal
   object paCommands: TPanel
     Left = 0
     Top = 0
-    Width = 443
-    Height = 90
+    Width = 123
+    Height = 51
     Align = alTop
     ParentColor = True
     TabOrder = 0
-    object RxLabel4: TLabel
-      Left = 3
-      Top = 15
-      Width = 37
-      Height = 13
-      Caption = 'Current:'
-    end
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 121
       Height = 13
       Align = alTop
       Alignment = taCenter
-      Caption = 'Select'
+      Caption = 'Command'
       Color = clGray
       ParentColor = False
       OnClick = TopClick
@@ -270,49 +244,9 @@ object fraPortal: TfraPortal
       ParentFont = False
       OnClick = PanelMinClick
     end
-    object RxLabel5: TLabel
-      Left = 4
-      Top = 48
-      Width = 16
-      Height = 13
-      Caption = 'FS:'
-    end
-    object RxLabel3: TLabel
-      Left = 4
-      Top = 60
-      Width = 17
-      Height = 13
-      Caption = 'BS:'
-    end
-    object lbFrontSector: TLabel
-      Left = 24
-      Top = 48
-      Width = 9
-      Height = 13
-      Caption = '...'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clMaroon
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-    end
-    object lbBackSector: TLabel
-      Left = 24
-      Top = 60
-      Width = 9
-      Height = 13
-      Caption = '...'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clMaroon
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-    end
     object ExtBtn3: TExtBtn
       Left = 2
-      Top = 73
+      Top = 18
       Width = 120
       Height = 15
       Align = alNone
@@ -329,24 +263,24 @@ object fraPortal: TfraPortal
       ParentFont = False
       OnClick = ExtBtn3Click
     end
-    object cbItems: TComboBox
-      Left = 3
-      Top = 30
-      Width = 118
-      Height = 18
-      Style = csOwnerDrawVariable
-      Color = 13158600
-      DropDownCount = 12
+    object ebComputeAllPortals: TExtBtn
+      Left = 2
+      Top = 34
+      Width = 120
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      CloseButton = False
+      Caption = 'Compute All Portals'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
-      ItemHeight = 12
       ParentFont = False
-      Sorted = True
-      TabOrder = 0
-      OnChange = cbItemsChange
+      OnClick = ebComputeAllPortalsClick
     end
   end
 end

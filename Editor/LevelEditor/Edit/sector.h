@@ -72,21 +72,22 @@ public:
 	virtual bool 	GetBox		(Fbox& box);
 	virtual void 	Move		( Fvector& amount ); // need for Shift Level
 	virtual void 	OnSceneUpdate();
-	virtual void 	OnDestroy	( );
-    void			Update		();
-    void			SectorChanged();
+	virtual void 	OnDestroy	();
+    void			UpdateVolume();
 
-	void			AddMesh		(CSceneObject* O, CEditableMesh* M);
-	void			DelMesh		(CSceneObject* O, CEditableMesh* M);
+	bool			AddMesh		(CSceneObject* O, CEditableMesh* M); // возвращает добавлен ли объект
+	bool	  		DelMesh		(CSceneObject* O, CEditableMesh* M); // возвращает false если обект удален
 
     bool			IsDefault	(){return m_bDefault;}
     bool			Contains	(CSceneObject* O, CEditableMesh* M){SItemIt it; return FindSectorItem(O,M,it);}
 
     void			CaptureInsideVolume();
     void			CaptureAllUnusedMeshes();
-    int 			GetSectorFacesCount();
+    void			GetCounts	(int* objects, int* meshes, int* faces);
+    bool			IsEmpty		();
 
     EVisible		Intersect	(const Fvector& center, float radius);
+	EVisible 		Intersect	(const Fbox& box);
 };
 
 #endif /*_INCDEF_Sector_H_*/

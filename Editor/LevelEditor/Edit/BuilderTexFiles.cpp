@@ -41,7 +41,7 @@ bool SceneBuilder::WriteTextures(){
         m_LevelPath.Update(dst_nm);
         EImageThumbnail m_Thm(src_nm.c_str(),EImageThumbnail::EITTexture);
         STextureParams& F=m_Thm._Format();
-		if (F.flag.bImplicitLighted)
+		if (F.flag&STextureParams::flImplicitLighted)
 	        FS.CopyFileTo(src_nm.c_str(),dst_nm.c_str(),true);
 	    UI.ProgressInc();
 	}

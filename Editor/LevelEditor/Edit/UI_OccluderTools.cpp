@@ -17,8 +17,6 @@ TUI_OccluderTools::TUI_OccluderTools():TUI_CustomTools(OBJCLASS_OCCLUDER){
     AddControlCB(new TUI_ControlOccluderSelect(estSelf,eaSelect,	this));
     AddControlCB(new TUI_ControlOccluderAdd (estSelf,eaAdd,		this));
     AddControlCB(new TUI_ControlOccluderMove(estSelf,eaMove,	this));
-    AddControlCB(new TUI_CustomControl		(estSelf,eaRotate,	this));
-    AddControlCB(new TUI_CustomControl		(estSelf,eaScale,	this));
 }
 //------------------------------------------------------------------------------
 void TUI_OccluderTools::OnActivate  (){

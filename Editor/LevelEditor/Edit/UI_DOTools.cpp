@@ -10,9 +10,7 @@
 //---------------------------------------------------------------------------
 
 TUI_DOTools::TUI_DOTools():TUI_CustomTools(OBJCLASS_DO){
-    AddControlCB(new TUI_CustomControl	(estSelf,eaSelect,	this));
     AddControlCB(new TUI_ControlDOAdd	(estSelf,eaAdd,		this));
-    AddControlCB(new TUI_CustomControl	(estSelf,eaMove,	this));
 }
 
 void TUI_DOTools::OnActivate(){

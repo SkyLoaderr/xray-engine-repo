@@ -18,6 +18,20 @@
 CPortalUtils PortalUtils;
 #define EPS_P 0.001f
 
+CSector* CPortalUtils::GetSelectedSector()
+{
+	ObjectList lst;
+	Scene.GetQueryObjects(lst,OBJCLASS_SECTOR,1,1,0);
+    if (lst.size()==0) return 0;
+    if (lst.size()>1){
+    	ELog.DlgMsg(mtError,"Please select only one sector.");
+    	return 0;
+    }
+    CSector* sector=(CSector*)*lst.begin();
+    VERIFY(sector);
+    return sector;
+}
+
 void CPortalUtils::RemoveSectorPortal(CSector* S){
 	UI.BeginEState(esSceneLocked);
 
@@ -68,7 +82,7 @@ bool CPortalUtils::CreateDefaultSector(){
         sector_def->sector_color.set(1,0,0,0);
         sector_def->m_bDefault=true;
         sector_def->CaptureAllUnusedMeshes();
-		if (sector_def->GetSectorFacesCount()>0){
+		if (!sector_def->IsEmpty()){
          	Scene.AddObject(sector_def,false);
             Scene.UndoSave();
 	        UI.UpdateScene();
@@ -148,7 +162,8 @@ bool CPortalUtils::Validate(bool bMsg){
 	if (Scene.GetBox(box,OBJCLASS_SCENEOBJECT)){
 		CSector* sector_def=new CSector(DEFAULT_SECTOR_NAME);
         sector_def->CaptureAllUnusedMeshes();
-        int f_cnt=sector_def->GetSectorFacesCount();
+        int f_cnt;
+        sector_def->GetCounts(0,0,&f_cnt);
 		if (f_cnt!=0){	if (bMsg) ELog.DlgMsg(mtError,"*ERROR: Scene has '%d' non associated face!",f_cnt);
         }else{
 			if (bMsg) ELog.DlgMsg(mtInformation,"Validation OK!");
@@ -170,7 +185,8 @@ bool CPortalUtils::Validate(bool bMsg){
         // verify sectors
         ObjectList& s_lst=Scene.ListObj(OBJCLASS_SECTOR);
         for(ObjectIt _F=s_lst.begin(); _F!=s_lst.end(); _F++){
-        	if (((CSector*)(*_F))->GetSectorFacesCount()<=4){
+	        ((CSector*)(*_F))->GetCounts(0,0,&f_cnt);
+        	if (f_cnt<=4){
             	bResult=false;
                 break;
             }

@@ -7,13 +7,16 @@ class TUI_Control;
 
 #include "SceneClassList.h"
 #include "CustomObject.h"
+#include "UI_Tools.h"
+
+DEFINE_MAP(EAction,TUI_CustomControl*,ControlsMap,ControlsPairIt);
 
 //---------------------------------------------------------------------------
 class TUI_CustomTools{
     friend class    TUI_Tools;
     friend class    TUI_CustomControl;
 
-    vector<TUI_CustomControl*> m_Controls;
+    ControlsMap 	m_Controls;
     TUI_CustomControl* pCurControl;
     int             action;
     vector<int>     sub_target_stack;

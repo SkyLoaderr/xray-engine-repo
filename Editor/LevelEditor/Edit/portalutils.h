@@ -43,6 +43,8 @@ public:
 
 	void CreateDebugCollection();
     bool Validate(bool bMsg);
+
+    CSector* GetSelectedSector();
 };
 
 extern CPortalUtils PortalUtils;

@@ -468,6 +468,7 @@ void EScene::Render( const Fmatrix& camera )
     RENDER_CLASS_NORMAL(1,OBJCLASS_EVENT);
     RENDER_CLASS_NORMAL(1,OBJCLASS_SECTOR);
     RENDER_CLASS_NORMAL(1,OBJCLASS_PS);
+	RENDER_CLASS_NORMAL(1,OBJCLASS_PORTAL);
 
     mapRenderObjects.traverseRL		(object_StrictB2F_1);
     m_DetailObjects->Render			(1,false);
@@ -477,7 +478,6 @@ void EScene::Render( const Fmatrix& camera )
 	RENDER_CLASS_ALPHA(1,OBJCLASS_GLOW);
 	RENDER_CLASS_ALPHA(1,OBJCLASS_EVENT);
 	RENDER_CLASS_ALPHA(1,OBJCLASS_SECTOR);
-	RENDER_CLASS_ALPHA(1,OBJCLASS_PORTAL);
 
 // priority #2
     mapRenderObjects.traverseLR		(object_Normal_2);

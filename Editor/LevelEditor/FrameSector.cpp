@@ -17,7 +17,6 @@
 __fastcall TfraSector::TfraSector(TComponent* Owner)
         : TFrame(Owner)
 {
-	OnChange();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraSector::PanelMinClick(TObject *Sender)
@@ -30,66 +29,12 @@ void __fastcall TfraSector::TopClick(TObject *Sender)
     PanelMaximizeOnlyClick(Sender);
 }
 //---------------------------------------------------------------------------
-void __fastcall TfraSector::FindAndSelectSectorInList(const char* _name){
-    cbItems->ItemIndex=cbItems->Items->IndexOf(AnsiString(_name));
-    OnSectorUpdate();
-}
-//---------------------------------------------------------------------------
-void __fastcall TfraSector::OnChange(){
-	AnsiString cur="";
-    cbItems->Items->Clear();
-    ObjectIt _F = Scene.FirstObj(OBJCLASS_SECTOR);
-    ObjectIt _E = Scene.LastObj(OBJCLASS_SECTOR);
-    for(;_F!=_E;_F++){
-    	cbItems->Items->AddObject((*_F)->GetName(),(TObject*)(*_F));
-        if ((*_F)->Selected()&&(*_F)->Visible())
-        	if(!cur.Length()) cur=(*_F)->GetName();
-            else cur="-";
-    }
-    FindAndSelectSectorInList(cur.c_str());
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraSector::OnSectorUpdate(){
-	if (cbItems->ItemIndex>-1){
-    	CSector* _O=(CSector*)cbItems->Items->Objects[cbItems->ItemIndex];
-        AnsiString tmp;
-        tmp.sprintf("%d %s",_O->GetSectorFacesCount(),(_O->GetSectorFacesCount()>1?" faces":" face"));
-		lbFacesCount->Caption = tmp;
-    }else{
-		lbFacesCount->Caption = "-";
-    }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraSector::ebCreateNewClick(TObject *Sender)
-{
-	char namebuffer[MAX_OBJ_NAME];
-	Scene.GenObjectName( OBJCLASS_SECTOR, namebuffer );
-	CSector* _O = new CSector(namebuffer);
-	Scene.SelectObjects(false,OBJCLASS_SECTOR);
-	Scene.AddObject( _O );
-    FindAndSelectSectorInList(namebuffer);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraSector::cbItemsChange(TObject *Sender)
-{
-	if (cbItems->ItemIndex>-1){
-    	CSector* _O=(CSector*)cbItems->Items->Objects[cbItems->ItemIndex];
-		Scene.SelectObjects(false,OBJCLASS_SECTOR);
-        _O->Select(true);
-    }
-    OnSectorUpdate();
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TfraSector::ebCaptureInsideVolumeClick(TObject *Sender)
 {
-	if (cbItems->ItemIndex>-1){
-		CSector* sector=(CSector*)cbItems->Items->Objects[cbItems->ItemIndex];
-    	sector->CaptureInsideVolume();
-	    OnSectorUpdate();
+	CSector* S = PortalUtils.GetSelectedSector();
+	if (S){
+    	S->CaptureInsideVolume();
         Scene.UndoSave();
     }
 }
@@ -117,24 +62,5 @@ void __fastcall TfraSector::ebValidateClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraSector::ExtBtn3Click(TObject *Sender)
-{
-    ObjectIt _F = Scene.FirstObj(OBJCLASS_SECTOR);
-    ObjectIt _E = Scene.LastObj(OBJCLASS_SECTOR);
-    for(;_F!=_E;_F++){
-		CSector* sector=(CSector*)(*_F);
-        if (sector->Selected()&&sector->Visible()) sector->Update();
-    }
-    OnSectorUpdate();
-    Scene.UndoSave();
-/*	if (cbItems->ItemIndex>-1){
-		CSector* sector=(CSector*)cbItems->Items->Objects[cbItems->ItemIndex];
-        sector->Update(true);
-        OnSectorUpdate();
-        Scene.UndoSave();
-    }
-*/
-}
-//---------------------------------------------------------------------------
 
 

@@ -20,7 +20,6 @@ __fastcall TfraPortal::TfraPortal(TComponent* Owner)
 {
 	iPickSectors=0;
 	ebPickSectors->Down=false;
-    OnChange();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraPortal::PanelMinClick(TObject *Sender)
@@ -33,52 +32,6 @@ void __fastcall TfraPortal::TopClick(TObject *Sender)
     PanelMaximizeOnlyClick(Sender);
 }
 //---------------------------------------------------------------------------
-void __fastcall TfraPortal::FindAndSelectPortalInList(const char* _name){
-    cbItems->ItemIndex=cbItems->Items->IndexOf(AnsiString(_name));
-    cbItemsChange(0);
-}
-//---------------------------------------------------------------------------
-void __fastcall TfraPortal::OnChange(){
-	AnsiString cur="";
-    cbItems->Items->Clear();
-    ObjectIt _F = Scene.FirstObj(OBJCLASS_PORTAL);
-    ObjectIt _E = Scene.LastObj(OBJCLASS_PORTAL);
-    for(;_F!=_E;_F++){
-    	cbItems->Items->AddObject((*_F)->GetName(),(TObject*)(*_F));
-        if ((*_F)->Selected()&&(*_F)->Visible())
-        	if(!cur.Length()) cur=(*_F)->GetName();
-            else cur="-";
-    }
-    FindAndSelectPortalInList(cur.c_str());
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraPortal::ebCreateNewClick(TObject *Sender)
-{
-	char namebuffer[MAX_OBJ_NAME];
-	Scene.GenObjectName( OBJCLASS_PORTAL, namebuffer );
-	CPortal* _O = new CPortal(namebuffer);
-	Scene.SelectObjects(false,OBJCLASS_PORTAL);
-	Scene.AddObject( _O );
-    FindAndSelectPortalInList(namebuffer);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraPortal::cbItemsChange(TObject *Sender)
-{
-	if (cbItems->ItemIndex>-1){
-    	CPortal* _O=(CPortal*)cbItems->Items->Objects[cbItems->ItemIndex];
-		Scene.SelectObjects(false,OBJCLASS_PORTAL);
-        _O->Select(true);
-	    lbFrontSector->Caption 	= _O->m_SectorFront->GetName();
-    	lbBackSector->Caption 	= _O->m_SectorBack->GetName();
-    }else{
-	    lbFrontSector->Caption 	= "...";
-    	lbBackSector->Caption 	= "...";
-    }
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraPortal::SetSector(CSector* obj){
 	if(iPickSectors==0){
     	cbSectorFront->ItemIndex=cbSectorFront->Items->IndexOf(obj->GetName());
@@ -163,8 +116,13 @@ void __fastcall TfraPortal::ebPickSectorsClick(TObject *Sender)
 
 void __fastcall TfraPortal::ExtBtn3Click(TObject *Sender)
 {
-	CPortal* _O=(CPortal*)cbItems->Items->Objects[cbItems->ItemIndex];
-    if (_O) _O->InvertOrientation();
+	ObjectList lst;
+    if (Scene.GetQueryObjects(lst,OBJCLASS_PORTAL,1,1,0)){
+    	for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
+			CPortal* _O = (CPortal*)*it;
+		    _O->InvertOrientation();
+        }
+    }
 }
 //---------------------------------------------------------------------------
 

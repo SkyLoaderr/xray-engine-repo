@@ -31,8 +31,10 @@ void TfrmPropertiesSector::GetObjectsInfo(){
 	ObjectIt _F = m_Objects->begin();	VERIFY( (*_F)->ClassID()==OBJCLASS_SECTOR );
 	CSector *_O = (CSector*)(*_F);
 
+    int t_objs,t_meshes,t_faces;
 	mcSectorColor->ObjFirstInit( _O->sector_color.get_windows() );
     edName->Text = _O->m_Name;
+    _O->GetCounts(&t_objs,&t_meshes,&t_faces);
 
 	_F++;
 	for(;_F!=m_Objects->end();_F++){
@@ -41,7 +43,12 @@ void TfrmPropertiesSector::GetObjectsInfo(){
 		mcSectorColor->ObjNextInit( _O->sector_color.get_windows() );
 	    edName->Text = "< Multiple selection >";
         edName->Enabled = false;
+	    int objs,meshes,faces;
+	    _O->GetCounts(&objs,&meshes,&faces);
+	    t_objs+=objs; t_meshes+=meshes; t_faces+=faces;
 	}
+    AnsiString stat; stat.sprintf("Objects: %d, Meshes: %d, Faces: %d",t_objs,t_meshes,t_faces);
+    lbContains->Caption = stat;
 
     if (m_Objects->size()==1) gbSector->Caption = AnsiString("Sector: '")+AnsiString((*m_Objects->begin())->GetName())+AnsiString("'");
 }

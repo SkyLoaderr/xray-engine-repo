@@ -20,7 +20,6 @@
 class TfrmPropertiesSector : public TForm
 {
 __published:	// IDE-managed Components
-    TPanel *Panel1;
     TExtBtn *ebOk;
     TExtBtn *ebCancel;
     TPanel *paBottom;
@@ -28,8 +27,10 @@ __published:	// IDE-managed Components
 	TLabel *RxLabel5;
 	TMultiObjColor *mcSectorColor;
 	TBevel *Bevel2;
-	TEdit *edName;
 	TLabel *RxLabel1;
+	TLabel *Label1;
+	TEdit *edName;
+	TLabel *lbContains;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);

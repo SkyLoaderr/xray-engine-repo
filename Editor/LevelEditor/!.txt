@@ -555,7 +555,7 @@ CHECK:
     - dds make
 - при плохом импорте не удаляются текстуры
 - медленный Load одинаковых объектов
-- Проверить коррекстный вызов OnDestroy в Секторе (перенес OnDestroy в SceneObject)
+--Проверить коррекстный вызов OnDestroy в Секторе (перенес OnDestroy в SceneObject) ЛАЖА!!!!!!!!!!!!!!!!!!!!!!!!
 - FindBoneByName и GetBoneIndexByWMap проверить "CEditObject* _O = m_LibRef?m_LibRef:this;"
 - посмотреть вс LWstyle компоненты
 

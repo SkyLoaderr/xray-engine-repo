@@ -20,7 +20,6 @@ class CPortal: public CCustomObject {
     Fvector 		m_Normal;
     CSector*		m_SectorFront;
     CSector*		m_SectorBack;
-	Fcolor			color;
 public:
 					CPortal		();
 					CPortal		(char *name);

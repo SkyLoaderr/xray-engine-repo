@@ -14,17 +14,7 @@
 
 //----------------------------------------------------------------------
 TUI_ObjectTools::TUI_ObjectTools():TUI_CustomTools(OBJCLASS_SCENEOBJECT){
-    AddControlCB(new TUI_CustomControl		(estSelf,eaSelect,	this));
     AddControlCB(new TUI_ControlObjectAdd   (estSelf,eaAdd,		this));
-    AddControlCB(new TUI_CustomControl		(estSelf,eaMove,	this));
-    AddControlCB(new TUI_CustomControl		(estSelf,eaRotate,	this));
-    AddControlCB(new TUI_CustomControl		(estSelf,eaScale,	this));
-
-//    AddControlCB(new TUI_ControlTexturingSelect (estTexturing,eaSelect));
-//    AddControlCB(new TUI_ControlTexturingSelect (estGizmo,eaSelect));
-//    AddControlCB(new TUI_ControlGizmoMove       (estGizmo,eaMove));
-//    AddControlCB(new TUI_ControlGizmoRotate     (estGizmo,eaRotate));
-//    AddControlCB(new TUI_ControlGizmoScale      (estGizmo,eaScale));
 }
 
 void TUI_ObjectTools::OnActivate  (){

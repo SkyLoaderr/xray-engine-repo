@@ -21,7 +21,7 @@ TUI_SectorTools::TUI_SectorTools():TUI_CustomTools(OBJCLASS_SECTOR){
 }
 void TUI_SectorTools::OnObjectsUpdate(){
     TfraSector* fraSector = (TfraSector*)pFrame; VERIFY(fraSector);
-    fraSector->OnChange();
+//    fraSector->OnChange();
 }
 void TUI_SectorTools::OnActivate  (){
     pFrame = new TfraSector(0);
@@ -41,19 +41,19 @@ void __fastcall TUI_ControlSectorAdd::OnEnter()
 {
     m_Action = saNone;
     fraSector = (TfraSector*)parent_tool->pFrame; VERIFY(fraSector);
-//    fraSector->paSectorActions->Show();
+    fraSector->paSectorActions->Show();
 }
 
 void __fastcall TUI_ControlSectorAdd::OnExit()
 {
-//    fraSector->paSectorActions->Hide();
+    fraSector->paSectorActions->Hide();
 	fraSector = 0;
 }
 
 void TUI_ControlSectorAdd::AddMesh(){
     m_Action = saAddMesh;
-    CSector* sector=(CSector*)fraSector->cbItems->Items->Objects[fraSector->cbItems->ItemIndex];
-    VERIFY(sector);
+    CSector* sector=PortalUtils.GetSelectedSector();
+    if (!sector) return;
     SRayPickInfo pinf;
     if (Scene.RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, false, false))
 		sector->AddMesh(pinf.s_obj,pinf.e_mesh);
@@ -61,17 +61,39 @@ void TUI_ControlSectorAdd::AddMesh(){
 
 void TUI_ControlSectorAdd::DelMesh(){
     m_Action = saDelMesh;
-    CSector* sector=(CSector*)fraSector->cbItems->Items->Objects[fraSector->cbItems->ItemIndex];
+    CSector* sector=PortalUtils.GetSelectedSector();
+    if (!sector) return;
     SRayPickInfo pinf;
     if (Scene.RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, false, false))
 		sector->DelMesh(pinf.s_obj,pinf.e_mesh);
 }
 
+bool TUI_ControlSectorAdd::AddSector(){
+	char namebuffer[MAX_OBJ_NAME];
+	Scene.GenObjectName( OBJCLASS_SECTOR, namebuffer );
+	CSector* _O = new CSector(namebuffer);
+    SRayPickInfo pinf;
+    if (Scene.RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, false, false)&&
+    	(_O->AddMesh(pinf.s_obj,pinf.e_mesh)))
+    {
+        Scene.SelectObjects(false,OBJCLASS_SECTOR);
+        Scene.AddObject( _O );
+		_O->UpdateVolume();
+        return true;
+    }else{
+    	_DELETE(_O);
+		return false;
+    }
+}
+
 bool __fastcall TUI_ControlSectorAdd::Start(TShiftState Shift)
 {
     if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_SECTOR); return false;}
+    if (fraSector->ebCreateNew->Down){
+    	if (AddSector()&&(!Shift.Contains(ssAlt))) fraSector->ebCreateNew->Down=false;
+        return false;
+    }
 	if (fraSector->ebAddMesh->Down||fraSector->ebDelMesh->Down){
-		if (fraSector->cbItems->ItemIndex==-1) return false;
 		bool bBoxSelection = Shift.Contains(ssCtrl) || fraSector->ebFaceBoxPick->Down;
 
         if( bBoxSelection ){
@@ -99,8 +121,8 @@ void __fastcall TUI_ControlSectorAdd::Move(TShiftState _Shift)
 
 bool __fastcall TUI_ControlSectorAdd::End(TShiftState _Shift)
 {
-	if (fraSector->cbItems->ItemIndex>-1){
-        CSector* sector=(CSector*)fraSector->cbItems->Items->Objects[fraSector->cbItems->ItemIndex];
+    CSector* sector=PortalUtils.GetSelectedSector();
+	if (sector){
         if (m_Action==saMeshBoxSelection){
             UI.EnableSelectionRect( false );
             DWORDVec fl;
@@ -119,7 +141,7 @@ bool __fastcall TUI_ControlSectorAdd::End(TShiftState _Shift)
                         fl.clear();
                         O_ref->GetFullTransformToWorld(matrix);
                         if (fraSector->ebAddMesh->Down)	sector->AddMesh(O_ref,*m_def);
-                        if (fraSector->ebDelMesh->Down)	sector->DelMesh(O_ref,*m_def);
+                        if (fraSector->ebDelMesh->Down)	if (!sector->DelMesh(O_ref,*m_def)) break;
                     }
                 }
             }
@@ -128,8 +150,6 @@ bool __fastcall TUI_ControlSectorAdd::End(TShiftState _Shift)
         case saAddMesh:
         case saDelMesh:
         case saMeshBoxSelection:
-        	sector->SectorChanged();
-            fraSector->OnSectorUpdate();
 			Scene.UndoSave();
         break;
         }
@@ -152,7 +172,7 @@ void TUI_ControlSectorSelect::OnExit (){
 }
 bool __fastcall TUI_ControlSectorSelect::Start(TShiftState Shift){
 	bool bRes = SelectStart(Shift);
-	if(!bBoxSelection) pFrame->OnChange();
+//	if(!bBoxSelection) pFrame->OnChange();
     return bRes;
 }
 void __fastcall TUI_ControlSectorSelect::Move(TShiftState Shift){
@@ -161,7 +181,7 @@ void __fastcall TUI_ControlSectorSelect::Move(TShiftState Shift){
 
 bool __fastcall TUI_ControlSectorSelect::End(TShiftState Shift){
 	bool bRes = SelectEnd(Shift);
-	if (bBoxSelection) pFrame->OnChange();
+//	if (bBoxSelection) pFrame->OnChange();
     return bRes;
 }
 

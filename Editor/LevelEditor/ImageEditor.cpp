@@ -198,7 +198,7 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
         ImageProps->AddItem(M,PROP_FLAG,"Implicit Lighted",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flImplicitLighted));
         ImageProps->AddItem(0,PROP_TOKEN,"Mip Filter",		ImageProps->MakeTokenValue(&fmt.mip_filter,tparam_token));
         ImageProps->AddItem(0,PROP_COLOR,"Border Color",	&fmt.border_color);
-        ImageProps->AddItem(0,PROP_INTEGER,"Fade Amount",	ImageProps->MakeIntValue(&fmt.fade_amount,0,100,1));
+        ImageProps->AddItem(0,PROP_INTEGER,"Fade Amount",	ImageProps->MakeIntValue(&fmt.fade_amount,0,1000,1));
         ImageProps->AddItem(0,PROP_COLOR,"Fade Color",		&fmt.fade_color);
         ImageProps->EndFillMode();
 

@@ -27,24 +27,28 @@ TUI_CustomTools::TUI_CustomTools(EObjClass cls){
     ResetSubTarget();
     pCurControl = 0;
     pFrame		= 0;
+    for (int a=0; a<eaMaxActions; a++)
+        m_Controls[EAction(a)]= new TUI_CustomControl(estSelf,a,this);
 }
 
 TUI_CustomTools::~TUI_CustomTools(){
-    for (vector<TUI_CustomControl*>::iterator it=m_Controls.begin(); it!=m_Controls.end(); it++) _DELETE (*it);
+	for (ControlsPairIt it=m_Controls.begin(); it!=m_Controls.end(); it++) _DELETE(it->second);
     m_Controls.clear();
 }
 
 void TUI_CustomTools::AddControlCB(TUI_CustomControl* c){
     VERIFY(c);
-    m_Controls.push_back(c);
+	ControlsPairIt it=m_Controls.find(EAction(c->action));
+    VERIFY(it!=m_Controls.end());
+    _DELETE(it->second);
+    it->second = c;
 }
 
 TUI_CustomControl* TUI_CustomTools::FindControl(int subtarget, int action){
-    for (DWORD i=0; i<m_Controls.size(); i++){
-        if ((m_Controls[i]->sub_target==subtarget)&&(m_Controls[i]->action==action))
-            return m_Controls[i];
-    }
-    return 0;
+	if (action==-1) return 0;
+	ControlsPairIt it=m_Controls.find(EAction(action));
+    VERIFY(it!=m_Controls.end());
+	return it->second;
 }
 
 void TUI_CustomTools::UpdateControl(){
@@ -94,12 +98,12 @@ void TUI_CustomTools::ShowProperties(){
 	    case OBJCLASS_OCCLUDER: 	frmPropertiesOccluderRun(&objset,bChange); 	break;
 	    case OBJCLASS_GLOW:     	frmPropertiesGlowRun(&objset,bChange);		break;
 	    case OBJCLASS_SECTOR:   	frmPropertiesSectorRun(&objset,bChange); 	break;
-    	case OBJCLASS_PORTAL:   	frmPropertiesPortalRun(&objset,bChange); 	break;
+//    	case OBJCLASS_PORTAL:   	frmPropertiesPortalRun(&objset,bChange); 	break;
 	    case OBJCLASS_EVENT:   		frmPropertiesEventRun(&objset,bChange);		break;
 	    case OBJCLASS_RPOINT:   	TfrmPropertiesRPoint::Run(&objset,bChange); break;
 //	    case OBJCLASS_AITRAFFIC:   	TfrmPropertiesAITraffic::Run(&objset,bChange);break;
         case OBJCLASS_PS:			TfrmPropertiesPS::Run(&objset,bChange);		break;
-    	default:{ ELog.DlgMsg(mtError, "Can't find properties form."); throw -1;}
+    	default:{ ELog.Msg(mtInformation, "Can't find properties form.");}
 	    }
 //        if (P->IsModified()) Scene.UndoSave();
         if (bChange) Scene.UndoSave();

@@ -2,7 +2,7 @@ object fraSector: TfraSector
   Left = 0
   Top = 0
   Width = 123
-  Height = 277
+  Height = 264
   VertScrollBar.ButtonSize = 11
   VertScrollBar.Range = 257
   VertScrollBar.Smooth = True
@@ -23,15 +23,16 @@ object fraSector: TfraSector
   TabOrder = 0
   object paSectorActions: TPanel
     Left = 0
-    Top = 99
+    Top = 80
     Width = 123
-    Height = 98
+    Height = 69
     Align = alTop
     Color = 10528425
     TabOrder = 1
+    Visible = False
     object ebAddMesh: TExtBtn
       Left = 59
-      Top = 67
+      Top = 36
       Width = 29
       Height = 15
       Align = alNone
@@ -91,7 +92,7 @@ object fraSector: TfraSector
     end
     object ebDelMesh: TExtBtn
       Left = 92
-      Top = 67
+      Top = 36
       Width = 29
       Height = 15
       Align = alNone
@@ -151,7 +152,7 @@ object fraSector: TfraSector
     end
     object ebFaceBoxPick: TExtBtn
       Left = 2
-      Top = 82
+      Top = 51
       Width = 119
       Height = 15
       Align = alNone
@@ -210,7 +211,7 @@ object fraSector: TfraSector
     end
     object RxLabel1: TLabel
       Left = 16
-      Top = 68
+      Top = 37
       Width = 40
       Height = 13
       Caption = 'Meshes:'
@@ -257,11 +258,13 @@ object fraSector: TfraSector
       Width = 119
       Height = 15
       Align = alNone
+      AllowAllUp = True
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
       CloseButton = False
-      Caption = 'New'
+      GroupIndex = 2
+      Caption = 'Create New'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -269,51 +272,10 @@ object fraSector: TfraSector
       Font.Style = []
       Margin = 13
       ParentFont = False
-      OnClick = ebCreateNewClick
-    end
-    object ebCreateDefault: TExtBtn
-      Left = 2
-      Top = 31
-      Width = 119
-      Height = 15
-      Align = alNone
-      BevelShow = False
-      HotTrack = True
-      HotColor = 15790320
-      CloseButton = False
-      Caption = 'Create Default'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      Margin = 13
-      ParentFont = False
-      OnClick = ebCreateDefaultClick
-    end
-    object ebRemoveDefault: TExtBtn
-      Left = 2
-      Top = 47
-      Width = 119
-      Height = 15
-      Align = alNone
-      BevelShow = False
-      HotTrack = True
-      HotColor = 15790320
-      CloseButton = False
-      Caption = 'Remove Default'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      Margin = 13
-      ParentFont = False
-      OnClick = ebRemoveDefaultClick
     end
     object Bevel1: TBevel
       Left = 1
-      Top = 64
+      Top = 33
       Width = 121
       Height = 2
     end
@@ -322,44 +284,10 @@ object fraSector: TfraSector
     Left = 0
     Top = 0
     Width = 123
-    Height = 99
+    Height = 80
     Align = alTop
     Color = 10528425
     TabOrder = 0
-    object RxLabel4: TLabel
-      Left = 3
-      Top = 49
-      Width = 37
-      Height = 13
-      Caption = 'Current:'
-    end
-    object RxLabel6: TLabel
-      Left = 4
-      Top = 83
-      Width = 44
-      Height = 13
-      Caption = 'Contains:'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-    end
-    object lbFacesCount: TLabel
-      Left = 51
-      Top = 83
-      Width = 70
-      Height = 13
-      AutoSize = False
-      Caption = 'faces'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clMaroon
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-    end
     object ebValidate: TExtBtn
       Left = 2
       Top = 16
@@ -387,7 +315,7 @@ object fraSector: TfraSector
       Height = 13
       Align = alTop
       Alignment = taCenter
-      Caption = 'Select'
+      Caption = 'Command'
       Color = clGray
       ParentColor = False
       OnClick = TopClick
@@ -427,7 +355,6 @@ object fraSector: TfraSector
       HotColor = 15790320
       CloseButton = False
       Caption = 'Capture Volume'
-      Enabled = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -437,24 +364,45 @@ object fraSector: TfraSector
       ParentFont = False
       OnClick = ebCaptureInsideVolumeClick
     end
-    object cbItems: TComboBox
-      Left = 18
-      Top = 64
-      Width = 103
-      Height = 18
-      Style = csOwnerDrawVariable
-      Color = 13158600
-      DropDownCount = 12
+    object ebCreateDefault: TExtBtn
+      Left = 2
+      Top = 48
+      Width = 119
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      CloseButton = False
+      Caption = 'Create Default'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
-      ItemHeight = 12
+      Margin = 13
       ParentFont = False
-      Sorted = True
-      TabOrder = 0
-      OnChange = cbItemsChange
+      OnClick = ebCreateDefaultClick
+    end
+    object ebRemoveDefault: TExtBtn
+      Left = 2
+      Top = 63
+      Width = 119
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      CloseButton = False
+      Caption = 'Remove Default'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Margin = 13
+      ParentFont = False
+      OnClick = ebRemoveDefaultClick
     end
   end
 end

@@ -18,33 +18,37 @@
 #include "bottombar.h"
 
 #define PORTAL_VERSION   					0x0010
-//----------------------------------------------------
+//------------------------------------------------------------------------------
 #define PORTAL_CHUNK_VERSION				0xFA10
 #define PORTAL_CHUNK_COLOR					0xFA20
 #define PORTAL_CHUNK_SECTOR_FRONT			0xFA30
 #define PORTAL_CHUNK_SECTOR_BACK			0xFA40
 #define PORTAL_CHUNK_VERTICES				0xFA50
-//----------------------------------------------------
+//------------------------------------------------------------------------------
 
 CPortal::CPortal( char *name ):CCustomObject(){
 	Construct();
 	strcpy( m_Name, name );
 }
+//------------------------------------------------------------------------------
 
 CPortal::CPortal():CCustomObject(){
 	Construct();
 }
+//------------------------------------------------------------------------------
 
 void CPortal::Construct(){
 	m_ClassID = OBJCLASS_PORTAL;
-    color.set(1,1,1,0);
 	m_Center.set(0,0,0);
 	m_SectorFront=0;
 	m_SectorBack=0;
 }
+//------------------------------------------------------------------------------
 
 CPortal::~CPortal(){
 }
+//------------------------------------------------------------------------------
+
 bool CPortal::GetBox( Fbox& box ){
 	if( m_Vertices.empty() ){
 		box.set(0,0,0, 0,0,0);
@@ -55,9 +59,10 @@ bool CPortal::GetBox( Fbox& box ){
 		box.modify(*pt);
 	return true;
 }
+//------------------------------------------------------------------------------
 
 void CPortal::Render(int priority, bool strictB2F){
-	if ((1==priority)&&(true==strictB2F)){
+	if ((1==priority)&&(false==strictB2F)){
         FvectorVec& src 	= (fraBottomBar->miDrawPortalSimpleModel->Checked)?m_SimplifyVertices:m_Vertices;
         if (src.size()<2) 	return;
         DWORD 				i;
@@ -66,22 +71,35 @@ void CPortal::Render(int priority, bool strictB2F){
         V[0].set			(m_Center);
         for(i=0; i<src.size(); i++) V[i+1].set(src[i]);
         V[V.size()-1].set	(src[0]);
-		Device.RenderNearer(0.0002);
 		// render portal tris
         Fcolor 				col;
-        Device.SetShader	(Device.m_SelectionShader);
+        Device.SetShader	(Device.m_WireShader);
         // front
-		col.set				(color.r,color.g,color.b,Selected()?0.8f:0.5f);
-        DU::DrawPrimitiveL	(D3DPT_TRIANGLEFAN, V.size()-2, V.begin(), V.size(), col.get(), false, false);
+		if (m_SectorFront){
+			col.set			(m_SectorFront->sector_color);
+	        if (!Selected())col.mul_rgb(0.5f);
+		    Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
+    	    DU::DrawPrimitiveL	(D3DPT_TRIANGLEFAN, V.size()-2, V.begin(), V.size(), col.get(), true, false);
+		    Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
+        }
         // back
-//		col.set				(color.r,color.g,color.b,Selected()?0.8f:0.5f);
-//        DU::DrawPrimitiveL	(D3DPT_TRIANGLEFAN, V.size()-2, V.begin(), V.size(), col.get(), false, false);
-		// render portal edges
+		if (m_SectorBack){
+			col.set			(m_SectorBack->sector_color);
+	        if (!Selected())col.mul_rgb(0.5f);
+		    Device.SetRS(D3DRS_CULLMODE,D3DCULL_CW);
+    	    DU::DrawPrimitiveL	(D3DPT_TRIANGLEFAN, V.size()-2, V.begin(), V.size(), col.get(), true, false);
+		    Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
+        }
+		col.set				(1.f,1.f,1.f,1.f);
+		Device.RenderNearer(0.0002);
+        if (!Selected())	col.mul_rgb(0.5f);
+    	// render portal edges
         Device.SetShader	(Device.m_WireShader);
         DU::DrawPrimitiveL	(D3DPT_LINESTRIP, src.size(), src.begin(), src.size(), col.get(), true, true);
         Device.ResetNearer	();
    	}
 }
+//------------------------------------------------------------------------------
 
 void CPortal::Move( Fvector& amount ){
 // internal use only!!!
@@ -92,12 +110,14 @@ void CPortal::Move( Fvector& amount ){
     	v_it->add(amount);
     m_Center.add(amount);
 }
+//------------------------------------------------------------------------------
 
 bool CPortal::FrustumPick(const CFrustum& frustum){
     sPoly s(m_Vertices.begin(),m_Vertices.size());
 	if (frustum.testPoly(s)) return true;
     return false;
 }
+//------------------------------------------------------------------------------
 
 bool CPortal::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
 	Fvector p[3];
@@ -118,7 +138,7 @@ bool CPortal::RayPick(float& distance, Fvector& start, Fvector& direction, SRayP
     }
     return bPick;
 }
-//----------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool CPortal::Update(bool bLoadMode){
 	Fbox box;
@@ -175,7 +195,7 @@ bool CPortal::Update(bool bLoadMode){
         else  if ((front.size()==1)&&(back.size()==2)) 	{ SF = front[0]; SB = back [(SF==back[0])?1:0]; }
 
         if (!(SF && (SF!=SB))){
-            ELog.DlgMsg(mtInformation, "Check portal orientation: '%s'",m_Name);
+            ELog.Msg(mtError, "Check portal orientation: '%s'",m_Name);
         }else{
             if (SF!=m_SectorFront) InvertOrientation();
         }
@@ -188,13 +208,13 @@ bool CPortal::Update(bool bLoadMode){
 
 void CPortal::InvertOrientation(){
     reverse(m_Vertices.begin(),m_Vertices.end());
+    reverse(m_SimplifyVertices.begin(),m_SimplifyVertices.end());
     m_Normal.invert();
     UI.RedrawScene();
+    Scene.UndoSave();
 }
 //------------------------------------------------------------------------------
 
-
-//----------------------------------------------------
 double tri_area(Fvector2 P0, Fvector2 P1, Fvector2 P2)
 {
 	double	e1 = P0.distance_to(P1);
@@ -204,6 +224,8 @@ double tri_area(Fvector2 P0, Fvector2 P1, Fvector2 P2)
 	double	p  = (e1+e2+e3)/2.0;
 	return	sqrt(p*(p-e1)*(p-e2)*(p-e3));
 }
+//------------------------------------------------------------------------------
+
 bool Isect2DLvs2DL (Fvector2& P1, Fvector2& P2, Fvector2& P3, Fvector2& P4, Fvector2& P)
 {
     double a1, a2, b1, b2, c1, c2;	/* Coefficients of line eqns. */
@@ -237,6 +259,7 @@ bool Isect2DLvs2DL (Fvector2& P1, Fvector2& P2, Fvector2& P3, Fvector2& P4, Fvec
 
     return true;
 }
+//------------------------------------------------------------------------------
 
 void SimplifyVertices(Fvector2Vec& vertices)
 {
@@ -271,6 +294,7 @@ void SimplifyVertices(Fvector2Vec& vertices)
     vertices[L1b] = P;
     vertices.erase(vertices.begin()+L2a);
 }
+//------------------------------------------------------------------------------
 
 void CPortal::Simplify(){
 	Fvector rkOffset;
@@ -376,7 +400,7 @@ void CPortal::Simplify(){
 	    m_Normal.set(norm);
     }
 }
-//----------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool CPortal::Load(CStream& F){
 	DWORD version = 0;
@@ -408,8 +432,6 @@ bool CPortal::Load(CStream& F){
     	return false;
     }
 
-    R_ASSERT(F.ReadChunk(PORTAL_CHUNK_COLOR,&color));
-
     R_ASSERT(F.FindChunk(PORTAL_CHUNK_VERTICES));
 	m_Vertices.resize(F.Rword());
 	F.Read			(m_Vertices.begin(), m_Vertices.size()*sizeof(Fvector));
@@ -422,6 +444,7 @@ bool CPortal::Load(CStream& F){
     Update(true);
     return true;
 }
+//------------------------------------------------------------------------------
 
 void CPortal::Save(CFS_Base& F){
 	CCustomObject::Save(F);
@@ -442,12 +465,10 @@ void CPortal::Save(CFS_Base& F){
 		F.close_chunk	();
     }
 
-    F.write_chunk	(PORTAL_CHUNK_COLOR,&color,sizeof(Fcolor));
-
 	F.open_chunk	(PORTAL_CHUNK_VERTICES);
     F.Wword			(m_Vertices.size());
     F.write			(m_Vertices.begin(),m_Vertices.size()*sizeof(Fvector));
 	F.close_chunk	();
 }
-//----------------------------------------------------
+//------------------------------------------------------------------------------
 

@@ -4,6 +4,8 @@
 #include "ui_control.h"
 #include "ui_customtools.h"
 
+class CSector;
+
 //---------------------------------------------------------------------------
 class TUI_SectorTools:public TUI_CustomTools{
 public:
@@ -26,6 +28,7 @@ enum ESectorAction{
 
 class TUI_ControlSectorAdd: public TUI_CustomControl{
 	ESectorAction 	m_Action;
+	bool 			AddSector();
 	void 			AddMesh();
 	void 			DelMesh();
     TfraSector*		fraSector;

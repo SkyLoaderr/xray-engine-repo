@@ -54,7 +54,6 @@ void __fastcall TfrmPropertiesObject::tsSAnimationShow(TObject *Sender)
 
     tvSMotions->Sort(true);
 
-    FEditNode = 0;
     selected_smotion = 0;
     tvSMotions->IsUpdating = false;
 }
@@ -147,15 +146,14 @@ void __fastcall TfrmPropertiesObject::tvSMotionsItemChange(TObject *Sender,
 	VERIFY(m_LibObject);
 	switch(ItemChangeMode){
     case icmText:
-        if (FEditNode){
+        if (!last_name.IsEmpty()){
             if (!m_LibObject->RenameSMotion(last_name.c_str(),AnsiString(Item->Text).c_str())){
                 ELog.DlgMsg(mtError,"Motion with name '%s' already present.",AnsiString(Item->Text).c_str());
-                FEditNode = 0;
                 Item->Text = last_name;
             }else{
-                FEditNode = 0;
+	            last_name 					= "";
 		        lbSMotionName->Caption 		= selected_smotion->Name();
-                Item->Text = selected_smotion->Name();
+                Item->Text 					= selected_smotion->Name();
                 OnModified(Sender);
             }
             last_name = "";
@@ -210,17 +208,6 @@ void __fastcall TfrmPropertiesObject::tvSMotionsItemFocused(
         gbSMotion->Show();
    }
 }
-//---------------------------------------------------------------------------
-//S
-/*
-void __fastcall TfrmPropertiesObject::tvSMotionsTryEdit(TObject *Sender,
-      TElTreeItem *Item, TElHeaderSection *Section, TFieldTypes &CellType,
-      bool &CanEdit)
-{
-	FEditNode = tvSMotions->Selected;
-    last_name = FEditNode->Text;
-}
-*/
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesObject::seSMotionChange(TObject *Sender)
@@ -296,8 +283,9 @@ void __fastcall TfrmPropertiesObject::ebSMotionLoadClick(TObject *Sender)
 void __fastcall TfrmPropertiesObject::InplaceTextValidateResult(
       TObject *Sender, bool &InputValid)
 {
-	TElEdit* E = InplaceText->Editor;
-	last_name = E->Text;
+	last_name = InplaceText->Item->Text;
+//	TElEdit* E = InplaceText->Editor;
+//	InplaceText->Item->Text = E->Text;
 }
 //---------------------------------------------------------------------------
 

@@ -149,8 +149,8 @@ public:
     void ClearSnapList				();
     void UpdateSnapList 			();
 
-	void AddObject                  (CCustomObject* object, bool bManual=true);
-	void RemoveObject               (CCustomObject* object, bool bManual=true);
+	void AddObject                  (CCustomObject* object, bool bExecUndo=true);
+	void RemoveObject               (CCustomObject* object, bool bExecUndo=true);
     bool ContainsObject             (CCustomObject* object, EObjClass classfilter);
 
 	CCustomObject *RayPick   		(const Fvector& start, const Fvector& dir, EObjClass classfilter, SRayPickInfo* pinf, bool bDynamicTest, bool bUseSnapList);

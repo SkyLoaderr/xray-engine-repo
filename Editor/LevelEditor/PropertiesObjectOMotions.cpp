@@ -41,7 +41,6 @@ void __fastcall TfrmPropertiesObject::tsOAnimationShow(TObject *Sender){
 
     tvOMotions->Sort(true);
 
-    FEditNode = 0;
     selected_omotion = 0;
     tvOMotions->IsUpdating = false;
 }
@@ -134,15 +133,14 @@ void __fastcall TfrmPropertiesObject::tvOMotionsItemChange(TObject *Sender,
 	VERIFY(m_LibObject);
 	switch(ItemChangeMode){
     case icmText:
-        if (FEditNode){
+        if (!last_name.IsEmpty()){
             if (!m_LibObject->RenameOMotion(last_name.c_str(),AnsiString(Item->Text).c_str())){
                 ELog.DlgMsg(mtError,"Motion with name '%s' already present.",AnsiString(Item->Text).c_str());
-                FEditNode = 0;
                 Item->Text = last_name;
             }else{
-                FEditNode = 0;
+	            last_name 					= "";
 		        lbOMotionName->Caption 		= selected_omotion->Name();
-                Item->Text = selected_omotion->Name();
+                Item->Text 					= selected_omotion->Name();
                 OnModified(Sender);
             }
             last_name = "";

@@ -37,6 +37,7 @@ void CAITPoint::Construct(){
 }
 
 CAITPoint::~CAITPoint(){
+	OnDestroy();
 }
 //----------------------------------------------------
 

@@ -81,6 +81,12 @@ struct st_SPLIT
 			// Convert
 			PM_Result R;
 			I_Current = PM_Convert(Indices.begin(),Indices.size(), &R);
+			DWORD progress_diff = Vlist.size()-R.minVertices;
+            if (progress_diff!=R.splitSIZE){
+                ELog.Msg(mtError,"PM_Convert return wrong indices.");
+                I_Current = -1;
+//				VERIFY(progress_diff==pmap_vsplit.size());
+            }
 			if (I_Current>=0) {
 				// Permute vertices
 				vSVERT temp_list = Vlist;

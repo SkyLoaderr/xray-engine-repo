@@ -10,9 +10,7 @@
 //---------------------------------------------------------------------------
 
 TUI_AITPointTools::TUI_AITPointTools():TUI_CustomTools(OBJCLASS_AITPOINT){
-    AddControlCB(new TUI_CustomControl		(estSelf,eaSelect,	this));
     AddControlCB(new TUI_ControlAITPointAdd	(estSelf,eaAdd,		this));
-    AddControlCB(new TUI_CustomControl		(estSelf,eaMove,	this));
 }
 
 void TUI_AITPointTools::OnActivate(){

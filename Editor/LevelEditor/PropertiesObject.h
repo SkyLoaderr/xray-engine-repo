@@ -244,7 +244,6 @@ private:	// User declarations
     CSMotion* 				selected_smotion;
     COMotion* 				selected_omotion;
     AnsiString   			last_name;
-    TElTreeItem* 			FEditNode;
 
     bool 					bLoadMode;
 

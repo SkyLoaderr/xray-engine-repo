@@ -11,11 +11,7 @@
 
 //----------------------------------------------------------------------
 TUI_PSTools::TUI_PSTools():TUI_CustomTools(OBJCLASS_PS){
-    AddControlCB(new TUI_CustomControl	(estSelf,eaSelect,	this));
     AddControlCB(new TUI_ControlPSAdd   (estSelf,eaAdd,		this));
-    AddControlCB(new TUI_CustomControl	(estSelf,eaMove,	this));
-    AddControlCB(new TUI_CustomControl	(estSelf,eaRotate,	this));
-    AddControlCB(new TUI_CustomControl	(estSelf,eaScale,	this));
 }
 void TUI_PSTools::OnActivate  (){
     pFrame = new TfraPS(0);

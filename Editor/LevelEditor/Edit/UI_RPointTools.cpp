@@ -10,10 +10,7 @@
 //---------------------------------------------------------------------------
 
 TUI_RPointTools::TUI_RPointTools():TUI_CustomTools(OBJCLASS_RPOINT){
-    AddControlCB(new TUI_CustomControl	(estSelf,eaSelect,	this));
     AddControlCB(new TUI_ControlRPointAdd(estSelf,eaAdd,	this));
-    AddControlCB(new TUI_CustomControl	(estSelf,eaMove,	this));
-    AddControlCB(new TUI_CustomControl	(estSelf,eaRotate,	this));
 }
 void TUI_RPointTools::OnActivate  (){
     pFrame = new TfraRPoint(0);
