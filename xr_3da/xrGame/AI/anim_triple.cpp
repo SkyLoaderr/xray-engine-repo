@@ -32,14 +32,12 @@ void CAnimTriple::activate()
 
 	cur_state	= eStatePrepare;
 	m_active	= true;
-	Msg("Triple Activate: state = [eStatestart]");
 }
 
 void CAnimTriple::deactivate()
 {
 	cur_state	= eStateNone;
 	m_active	= false;
-	Msg("Triple Deactivate: state = [%s]", dbg_states[cur_state]);
 }
 
 bool CAnimTriple::prepare_animation(CMotionDef **m)
@@ -58,8 +56,6 @@ bool CAnimTriple::prepare_animation(CMotionDef **m)
 void CAnimTriple::pointbreak()
 {
 	cur_state = eStateFinalize;
-
-	Msg("Triple Pointbreak: state = [%s]", dbg_states[cur_state]);
 }
 
 

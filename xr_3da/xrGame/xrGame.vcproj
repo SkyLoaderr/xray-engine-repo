@@ -2210,39 +2210,29 @@
 						RelativePath=".\ai\Monsters\Burer\burer_attack_gravi.cpp">
 					</File>
 					<File
+						RelativePath=".\ai\Monsters\Burer\burer_attack_gravi.h">
+					</File>
+					<File
+						RelativePath=".\ai\Monsters\Burer\burer_attack_melee.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\Monsters\Burer\burer_attack_melee.h">
+					</File>
+					<File
+						RelativePath=".\ai\Monsters\Burer\burer_attack_misc.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\Monsters\Burer\burer_attack_misc.h">
+					</File>
+					<File
 						RelativePath=".\ai\Monsters\Burer\burer_attack_tele.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\Monsters\Burer\burer_attack_tele.h">
 					</File>
 					<File
 						RelativePath=".\ai\Monsters\Burer\burer_states.h">
 					</File>
-					<Filter
-						Name="Burer States"
-						Filter="">
-						<File
-							RelativePath=".\ai\Monsters\Burer\burer_state_attack.h">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Burer\burer_state_attack_gravi.h">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Burer\burer_state_attack_gravi_inline.h">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Burer\burer_state_attack_inline.h">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Burer\burer_state_attack_tele.h">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Burer\burer_state_attack_tele_inline.h">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Burer\burer_state_manager.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Burer\burer_state_manager.h">
-						</File>
-					</Filter>
 				</Filter>
 				<Filter
 					Name="Controller"

@@ -44,10 +44,16 @@ protected:
 
 public:
 						IState			();
+		virtual			~IState			() {}
 
 				void	Execute			(TTime cur_time);						//!< bNothingChanged - true, если не было измений после предыдущего вызова данного метода
 
-	IC	virtual	bool	CheckCompletion	() {return false;}						//!< возвращает true, если задание выполнено
+	IC	virtual	bool	CheckCompletion		() {return false;}						//!< возвращает true, если задание выполнено
+	IC	virtual	bool	CheckStartCondition	() {return true;}						//!< возвращает true, если задание выполнено
+	IC	virtual bool	IsCompleted			() {return false;}
+	IC	virtual void	CriticalInterrupt	() {}
+		virtual void	UpdateExternal		() {}
+
 		virtual void	Reset			();										//!< инициализирует все значения по-умолчанию 
 
 	IC			void	Activate		() {m_tState = STATE_INIT;}				//!< Перейти в данное состояние
@@ -68,4 +74,8 @@ public:
 	
 	IC			u8		GetPriority		() {return m_Priority;}
 };
+
+
+
+
 

@@ -5,7 +5,7 @@
 #include "../../../PhysicsShell.h"
 #include "../../../actor.h"
 
-CBurer::CBurer() : CStateManagerBurer("Burer State Manager")
+CBurer::CBurer()
 {
 	stateRest			= xr_new<CBitingRest>		(this);
 	stateAttack			= xr_new<CBurerAttack>		(this);
@@ -47,7 +47,7 @@ void CBurer::Init()
 void CBurer::reinit()
 {
 	inherited::reinit			();
-	CStateManagerBurer::reinit	(this);	
+
 	
 }
 
@@ -86,7 +86,6 @@ void CBurer::reload(LPCSTR section)
 void CBurer::Load(LPCSTR section)
 {
 	inherited::Load				(section);
-	CStateManagerBurer::Load	(section);
 
 	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimStandIdle,		eAnimStandDamaged);	
 	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimRun,			eAnimRunDamaged);
@@ -201,7 +200,6 @@ void CBurer::ProcessTurn()
 
 bool CBurer::UpdateStateManager()
 {
-	//CStateManagerBurer::update(m_current_update - m_dwLastUpdateTime);
 	return false;
 }
 

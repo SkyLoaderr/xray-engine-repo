@@ -39,7 +39,7 @@ public:
 			bool	is_active_object	(CGameObject *obj);
 
 			// вернуть количество кониролируемых объектов
-			u32		get_objects_count	() {return objects.size();}
+			u32		get_objects_count	();
 			
 			// вернуть объект по индексу в массиве
 CTelekineticObject	get_object_by_index (u32 index) {VERIFY(objects.size() > index); return objects[index];}

@@ -1,20 +1,16 @@
 #pragma once
 #include "../../biting/ai_biting.h"
-#include "burer_state_manager.h"
 #include "../../telekinesis.h"
 #include "../../anim_triple.h"
 
 class CCharacterPhysicsSupport;
 
 class CBurer :	public CAI_Biting,
-				public CStateManagerBurer,
 				public CTelekinesis {
 
 	typedef		CAI_Biting					inherited;
 public:
 	typedef		CTelekinesis				TTelekinesis;
-
-	xr_vector<CGameObject *>			tele_objects;
 
 	struct	GraviObject {
 		bool		active;

@@ -161,5 +161,14 @@ void  CTelekinesis::PhTune(dReal step)
 	}
 }
 
+u32 CTelekinesis::get_objects_count() 
+{
+	u32 count = 0;
+	for (u32 i=0;i<objects.size(); i++) {
+		ETelekineticState state = objects[i].get_state();
+		if ((state == TS_Raise) || (state == TS_Keep)) count++;
+	}
 
+	return count;
+}
 

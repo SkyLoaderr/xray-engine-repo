@@ -1,63 +1,151 @@
 #include "stdafx.h"
 #include "../../ai_monster_state.h"
-#include "burer_attack.h"
+#include "burer_attack_gravi.h"
 #include "burer.h"
+
+#define MIN_DIST_FOR_GRAVI		3.f
+#define MAX_DIST_FOR_GRAVI		20.f
 
 #define GOOD_DISTANCE_FOR_GRAVI 8.f
 #define GRAVI_DELAY				5000
 #define GRAVI_HOLD				1500
 
-bool CBurerAttack::CheckGravi()
+CBurerAttackGravi::CBurerAttackGravi(CBurer *p)
 {
-	// если triple анимаци€ активна - выход
-	if (pMonster->MotionMan.TA_IsActive()) return false;
-	bool b_normal_trans = ((m_tAction == ACTION_DEFAULT) || (m_tAction == ACTION_RUN) || (m_tAction == ACTION_MELEE));
-	if (!b_normal_trans) return false;
+	pMonster = p;
+}
 
+void CBurerAttackGravi::Init()
+{
+	inherited::Init();
+	UpdateExternal();
+	
+	m_tAction					= ACTION_GRAVI_STARTED;
+
+	time_gravi_started			= 0;
+	time_enemy_last_faced		= 0;
+
+}
+
+void CBurerAttackGravi::Run()
+{
+
+	switch (m_tAction) {
+		/************************/
+		case ACTION_GRAVI_STARTED:
+		/************************/
+
+			ExecuteGraviStart();
+			m_tAction = ACTION_GRAVI_CONTINUE;
+
+			break;
+		/************************/
+		case ACTION_GRAVI_CONTINUE:
+		/************************/
+
+			ExecuteGraviContinue();
+
+			break;
+
+		/************************/
+		case ACTION_GRAVI_FIRE:
+		/************************/
+
+			ExecuteGraviFire();
+			m_tAction = ACTION_WAIT_TRIPLE_END;
+
+			break;
+		/***************************/
+		case ACTION_WAIT_TRIPLE_END:
+		/***************************/
+
+			if (!pMonster->MotionMan.TA_IsActive()) {
+				m_tAction = ACTION_COMPLETED; 
+			}
+
+		/*********************/
+		case ACTION_COMPLETED:
+		/*********************/
+
+			break;
+	}
+
+	pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;	
+
+	DO_IN_TIME_INTERVAL_BEGIN(time_enemy_last_faced, 1200);
+		pMonster->FaceTarget(enemy);
+	DO_IN_TIME_INTERVAL_END();
+
+}
+
+void CBurerAttackGravi::Done()
+{
+
+}
+
+
+bool CBurerAttackGravi::CheckStartCondition()
+{
 	// обработать объекты
 	float dist = pMonster->Position().distance_to(enemy->Position());
 	if (dist < GOOD_DISTANCE_FOR_GRAVI) return false;
 
-	bool see_enemy_now		= pMonster->EnemyMan.get_enemy_time_last_seen() == m_dwCurrentTime;
-	bool good_time_to_start = time_next_gravi_available < m_dwCurrentTime;
+	bool see_enemy_now		= pMonster->EnemyMan.get_enemy_time_last_seen() == Level().timeServer();
+	//bool good_time_to_start = time_next_gravi_available < Level().timeServer();
 
-	if (!see_enemy_now || !good_time_to_start) return false; 
+	if (!see_enemy_now) return false; 
 
 	// всЄ ок, можно начать грави атаку
 	return true;
 }
 
 
-void CBurerAttack::Execute_Gravi()
+bool CBurerAttackGravi::IsCompleted()
 {
+	return (m_tAction == ACTION_COMPLETED);
+}
 
-	if (m_tAction == ACTION_GRAVI_STARTED) {
-		pMonster->MotionMan.TA_Activate(&pMonster->anim_triple_gravi);
-		m_tAction = ACTION_GRAVI_CONTINUE;
-		time_gravi_started			= m_dwCurrentTime;
-		time_next_gravi_available	= u32(-1);
-		pMonster->StartGraviPrepare();
+void CBurerAttackGravi::CriticalInterrupt()
+{
+	pMonster->MotionMan.TA_Deactivate();
+}
+
+void CBurerAttackGravi::UpdateExternal()
+{
+	enemy = pMonster->EnemyMan.get_enemy();	
+}
+
+
+// выполн€ть состо€ние
+void CBurerAttackGravi::ExecuteGraviStart()
+{
+	pMonster->MotionMan.TA_Activate(&pMonster->anim_triple_gravi);
+	
+	time_gravi_started			= m_dwCurrentTime;
+	
+	pMonster->StartGraviPrepare();
+}
+
+void CBurerAttackGravi::ExecuteGraviContinue()
+{
+	// проверить на грави удар
+	if (time_gravi_started + GRAVI_HOLD < m_dwCurrentTime) {
+		m_tAction = ACTION_GRAVI_FIRE;
 	}
+}
 
-	if (m_tAction == ACTION_GRAVI_CONTINUE) {
-		// проверить на грави удар
-		if (time_gravi_started + GRAVI_HOLD < m_dwCurrentTime) {
-			m_tAction = ACTION_GRAVI_FIRE;
-		}
-	}
-
-	if (m_tAction == ACTION_GRAVI_FIRE) {
-		pMonster->MotionMan.TA_PointBreak();
-		Fvector from_pos;
-		Fvector target_pos;
-		from_pos	= pMonster->Position();	from_pos.y		+= 0.5f;
-		target_pos	= enemy->Position();	target_pos.y	+= 0.5f;
-		pMonster->m_gravi_object.activate(enemy, from_pos, target_pos);
-		time_next_gravi_available = m_dwCurrentTime + GRAVI_DELAY;
-		m_tAction = ACTION_WAIT_TRIPLE_END;
-		pMonster->StopGraviPrepare();
-		pMonster->CSoundPlayer::play(eMonsterSoundGraviAttack);
-	}
-
-}	
-
+void CBurerAttackGravi::ExecuteGraviFire()
+{
+	pMonster->MotionMan.TA_PointBreak();
+	
+	Fvector from_pos;
+	Fvector target_pos;
+	from_pos	= pMonster->Position();	from_pos.y		+= 0.5f;
+	target_pos	= enemy->Position();	target_pos.y	+= 0.5f;
+	
+	pMonster->m_gravi_object.activate(enemy, from_pos, target_pos);
+	//time_next_gravi_available = m_dwCurrentTime + GRAVI_DELAY;
+	
+	pMonster->StopGraviPrepare();
+	pMonster->CSoundPlayer::play(eMonsterSoundGraviAttack);
+}
