@@ -21,7 +21,10 @@ class CSHEngineTools
 {
 	BOOL				m_bFreezeUpdate;
 	BOOL				m_bModified;
-    BOOL				
+    BOOL				m_bNeedResetShaders;
+    BOOL				m_RemoteRenBlender;
+    AnsiString			m_RenBlenderOldName;
+    AnsiString			m_RenBlenderNewName;
 
 	TemplateVec			m_TemplatePalette;
 
@@ -77,6 +80,13 @@ friend class TfrmShaderProperties;
 	void __fastcall 	ConstOnAfterEdit	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
 	void __fastcall 	AddConstProps		(TElTreeItem* parent, LPSTR name);
 	void __fastcall 	RemoveConstProps	(TElTreeItem* parent);
+    // name
+	void __fastcall 	NameOnAfterEdit		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	NameOnBeforeEdit	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	NameOnDraw			(PropValue* sender, LPVOID draw_val);
+
+    void				RealResetShaders	();
+	void				RemoteRenameBlender	();
 public:
 	CFS_Memory 			m_RenderShaders;
 
@@ -86,6 +96,7 @@ public:
     void				RemoveBlender		(LPCSTR name);
 	void				RenameBlender		(LPCSTR old_full_name, LPCSTR ren_part, int level);
 	void				RenameBlender		(LPCSTR old_full_name, LPCSTR new_full_name);
+	void				RemoteRenameBlender	(LPCSTR old_full_name, LPCSTR new_full_name){m_RemoteRenBlender=TRUE;m_RenBlenderOldName=old_full_name;m_RenBlenderNewName=new_full_name;}
 
     void				ResetCurrentBlender();
     void				UpdateStreamFromObject();
@@ -107,14 +118,15 @@ public:
     void				OnCreate			();
     void				OnDestroy			();
 
-    void				UpdateDeviceShaders	();
+    void				ResetShaders		(bool bForced=false){m_bNeedResetShaders=true; if (bForced) RealResetShaders(); }
 
     // misc
-    void				SetCurrentBlender	(CBlender* B, bool bApply=true);
-    void				SetCurrentBlender	(LPCSTR name, bool bApply=true);
+    void				SetCurrentBlender	(CBlender* B);
+    void				SetCurrentBlender	(LPCSTR name);
     void				ApplyChanges		(bool bForced=false);
 
 	void 				UpdateProperties	();
+    void				Update				();           
 };
 //---------------------------------------------------------------------------
 #endif

@@ -99,6 +99,7 @@ void CShaderTools::Render(){
 void CShaderTools::Update(){
 	if (m_EditObject)
     	m_EditObject->RTL_Update(Device.fTimeDelta);
+    SEngine.Update();
 }
 
 void CShaderTools::ZoomObject(){
@@ -140,6 +141,8 @@ void CShaderTools::OnDeviceCreate(){
     L.direction.set(0,1,0); L.direction.normalize();
 	Device.SetLight(4,L);
 	Device.LightEnable(4,true);
+
+    SEngine.ResetShaders();
 }
 
 void CShaderTools::OnDeviceDestroy(){

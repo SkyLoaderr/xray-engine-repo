@@ -15,6 +15,8 @@
 #include <Menus.hpp>
 #include <StdCtrls.hpp>
 #include <ExtCtrls.hpp>
+#include "ElTreeAdvEdit.hpp"
+#include <Mask.hpp>
 
 // refs
 struct 	xr_token;
@@ -35,7 +37,12 @@ public:
 	virtual 			~PropValue		(){};
     virtual LPCSTR		GetText			()=0;
 };
-
+class TextValue: public PropValue{
+public:
+	LPSTR				val;
+						TextValue		(LPSTR value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),PropValue(after,before,draw){};
+    virtual LPCSTR		GetText			();
+};
 class IntValue: public PropValue{
 public:
 	int*				val;
@@ -75,7 +82,7 @@ public:
 	DWORD*				val;
 	DWORD				mask;
 						FlagValue		(DWORD* value, DWORD _mask, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),mask(_mask),PropValue(after,before,draw){};
-    virtual LPCSTR		GetText			();
+    virtual LPCSTR		GetText			(){return 0;}
 };
 class TokenValue: public PropValue{
 public:
@@ -120,20 +127,20 @@ __published:	// IDE-managed Components
 	TElTree *tvProperties;
 	TMxPopupMenu *pmEnum;
 	TFormStorage *fsStorage;
-	TElTreeInplaceEdit *InplaceText;
 	TMultiObjSpinEdit *seNumber;
+	TEdit *edText;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall tvPropertiesClick(TObject *Sender);
 	void __fastcall tvPropertiesItemDraw(TObject *Sender, TElTreeItem *Item,
           TCanvas *Surface, TRect &R, int SectionIndex);
 	void __fastcall tvPropertiesMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
-	void __fastcall InplaceTextValidateResult(TObject *Sender,
-          bool &InputValid);
 	void __fastcall seNumberExit(TObject *Sender);
 	void __fastcall seNumberKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
-	void __fastcall seNumberLWChange(TObject *Sender, int Val);
+	void __fastcall edTextExit(TObject *Sender);
+	void __fastcall edTextKeyDown(TObject *Sender, WORD &Key,
+          TShiftState Shift);
 private:	// User declarations
     void __fastcall PMItemClick(TObject *Sender);
 	void __fastcall CustomClick(TElTreeItem* item);
@@ -145,22 +152,28 @@ private:	// User declarations
 	void __fastcall SShaderCompileClick(TElTreeItem* item);
 	void __fastcall ColorClick(TElTreeItem* item);
 
-//	Graphics::TBitmap* m_BMEllipsis;
+	Graphics::TBitmap* m_BMCheck;
+	Graphics::TBitmap* m_BMDot;
+	Graphics::TBitmap* m_BMEllipsis;
     bool bModified;
     int iFillMode;
+    AnsiString last_selected_item;
 	// LW style inpl editor
     void HideLWNumber();
     void PrepareLWNumber(TElTreeItem* node);
     void ShowLWNumber(TRect& R);
     void ApplyLWNumber();
     void CancelLWNumber();
+	// text inplace editor
+    void HideLWText();
+    void PrepareLWText(TElTreeItem* node);
+    void ShowLWText(TRect& R);
+    void ApplyLWText();
+    void CancelLWText();
 
     PropValVec m_Params;
     TOnModifiedEvent OnModifiedEvent;
     void Modified(){bModified=true; if (OnModifiedEvent) OnModifiedEvent();}
-
-//    DEFINE_STACK(bool,boolStack);
-//    boolStack IsUpdating;
 public:		// User declarations
 	__fastcall TfrmProperties		        (TComponent* Owner);
 	static TfrmProperties* CreateProperties	(TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0);
@@ -236,6 +249,12 @@ public:		// User declarations
         m_Params.push_back(V);
     	return V;
     }
+	TextValue* 		MakeTextValue			(LPVOID val, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+    {
+    	TextValue* V=new TextValue((LPSTR)val,after,before,draw);
+        m_Params.push_back(V);
+    	return V;
+    }
 	IntValue* 		MakeIntValue			(LPVOID val, int mn=0, int mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
     	IntValue* V	=new IntValue((int*)val,mn,mx,inc,after,before,draw);
@@ -247,6 +266,10 @@ public:		// User declarations
     	FloatValue* V=new FloatValue((float*)val,mn,mx,inc,dec,after,before,draw);
         m_Params.push_back(V);
     	return V;
+    }
+    void 			IsUpdating				(bool bVal)
+    {
+    	tvProperties->IsUpdating = bVal;
     }
 };
 //---------------------------------------------------------------------------

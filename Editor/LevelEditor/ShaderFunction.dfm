@@ -3,7 +3,7 @@ object frmShaderFunction: TfrmShaderFunction
   Top = 203
   BorderStyle = bsDialog
   Caption = 'Shader Function'
-  ClientHeight = 152
+  ClientHeight = 157
   ClientWidth = 415
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -23,7 +23,7 @@ object frmShaderFunction: TfrmShaderFunction
     Left = 0
     Top = 0
     Width = 415
-    Height = 152
+    Height = 157
     Align = alClient
     BevelOuter = bvNone
     Color = 10528425
@@ -162,7 +162,7 @@ object frmShaderFunction: TfrmShaderFunction
     end
     object lbStart: TLabel
       Left = 221
-      Top = 138
+      Top = 139
       Width = 22
       Height = 13
       Alignment = taRightJustify
@@ -176,7 +176,7 @@ object frmShaderFunction: TfrmShaderFunction
     end
     object lbEnd: TLabel
       Left = 370
-      Top = 138
+      Top = 139
       Width = 40
       Height = 13
       Alignment = taRightJustify
@@ -189,9 +189,9 @@ object frmShaderFunction: TfrmShaderFunction
       ParentFont = False
     end
     object ebOk: TExtBtn
-      Left = 68
-      Top = 132
-      Width = 64
+      Left = 4
+      Top = 136
+      Width = 91
       Height = 18
       Align = alNone
       BevelShow = False
@@ -201,9 +201,9 @@ object frmShaderFunction: TfrmShaderFunction
       OnClick = ebOkClick
     end
     object ebCancel: TExtBtn
-      Left = 132
-      Top = 132
-      Width = 64
+      Left = 96
+      Top = 136
+      Width = 91
       Height = 18
       Align = alNone
       BevelShow = False
@@ -212,18 +212,19 @@ object frmShaderFunction: TfrmShaderFunction
       FlatAlwaysEdge = True
       OnClick = ebCancelClick
     end
-    object ebApply: TExtBtn
-      Left = 4
-      Top = 132
-      Width = 64
-      Height = 18
-      Align = alNone
-      BevelShow = False
-      CloseButton = False
-      Caption = 'Apply'
-      FlatAlwaysEdge = True
-      Visible = False
-      OnClick = ebApplyClick
+    object Label6: TLabel
+      Left = 256
+      Top = 139
+      Width = 30
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Scale:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
     end
     object stFunction: TStaticText
       Left = 89
@@ -247,12 +248,12 @@ object frmShaderFunction: TfrmShaderFunction
       Left = 89
       Top = 27
       Width = 95
-      Height = 21
+      Height = 19
       LWSensitivity = 0.1
       Alignment = taRightJustify
       ButtonKind = bkLightWave
-      Decimal = 4
-      Increment = 0.0001
+      Decimal = 5
+      Increment = 1E-5
       MaxValue = 100000
       MinValue = -100000
       ValueType = vtFloat
@@ -273,12 +274,12 @@ object frmShaderFunction: TfrmShaderFunction
       Left = 89
       Top = 51
       Width = 95
-      Height = 21
+      Height = 19
       LWSensitivity = 0.1
       Alignment = taRightJustify
       ButtonKind = bkLightWave
-      Decimal = 4
-      Increment = 0.0001
+      Decimal = 5
+      Increment = 1E-5
       MaxValue = 100000
       MinValue = -100000
       ValueType = vtFloat
@@ -299,12 +300,12 @@ object frmShaderFunction: TfrmShaderFunction
       Left = 89
       Top = 75
       Width = 95
-      Height = 21
+      Height = 19
       LWSensitivity = 0.1
       Alignment = taRightJustify
       ButtonKind = bkLightWave
-      Decimal = 4
-      Increment = 0.0001
+      Decimal = 5
+      Increment = 1E-5
       MaxValue = 100000
       MinValue = -100000
       ValueType = vtFloat
@@ -325,12 +326,12 @@ object frmShaderFunction: TfrmShaderFunction
       Left = 89
       Top = 99
       Width = 95
-      Height = 21
+      Height = 19
       LWSensitivity = 0.1
       Alignment = taRightJustify
       ButtonKind = bkLightWave
-      Decimal = 4
-      Increment = 0.0001
+      Decimal = 5
+      Increment = 1E-5
       MaxValue = 100000
       MinValue = -100000
       ValueType = vtFloat
@@ -343,6 +344,32 @@ object frmShaderFunction: TfrmShaderFunction
       Font.Style = []
       ParentFont = False
       TabOrder = 4
+      OnLWChange = seArgLWChange
+      OnExit = seArgExit
+      OnKeyDown = seArgKeyDown
+    end
+    object seScale: TMultiObjSpinEdit
+      Left = 289
+      Top = 137
+      Width = 58
+      Height = 17
+      LWSensitivity = 0.1
+      Alignment = taRightJustify
+      ButtonKind = bkLightWave
+      Increment = 0.01
+      MaxValue = 100
+      MinValue = 0.01
+      ValueType = vtFloat
+      Value = 1
+      AutoSize = False
+      Color = 13158600
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 5
       OnLWChange = seArgLWChange
       OnExit = seArgExit
       OnKeyDown = seArgKeyDown

@@ -9,6 +9,7 @@
 #include "LeftBar.h"
 #include "PropertiesList.h"
 #include "xr_trims.h"
+#include "folderlib.h"
 
 //------------------------------------------------------------------------------
 class CCollapseBlender: public CParseBlender{
@@ -52,6 +53,8 @@ CSHEngineTools::CSHEngineTools(){
     m_CurrentBlender 	= 0;
     m_bUpdateCurrent	= false;
     m_BlenderStream.clear();
+    m_bNeedResetShaders	= TRUE;
+    m_RemoteRenBlender	= FALSE;
 }
 
 CSHEngineTools::~CSHEngineTools(){
@@ -119,8 +122,19 @@ bool CSHEngineTools::IfModified(){
     return true;
 }
 
-void CSHEngineTools::UpdateDeviceShaders()
+void CSHEngineTools::Update()
 {
+	if (m_bNeedResetShaders)
+    	RealResetShaders();
+    if (m_RemoteRenBlender){
+    	RenameBlender(m_RenBlenderOldName.c_str(),m_RenBlenderNewName.c_str());
+        m_RemoteRenBlender=FALSE;
+    }
+}
+
+void CSHEngineTools::RealResetShaders()
+{
+	Tools.m_Props->IsUpdating(true);
 	// disable props vis update
     m_bFreezeUpdate 	= TRUE;
 	// mem current blender
@@ -136,15 +150,19 @@ void CSHEngineTools::UpdateDeviceShaders()
     m_bFreezeUpdate 	= FALSE;
 
 	// restore current shader
-	SetCurrentBlender	(name,false);
+	SetCurrentBlender	(name);
+
+	Tools.m_Props->IsUpdating(false);
+
+    m_bNeedResetShaders	= FALSE;
 }
 
 void CSHEngineTools::ApplyChanges(bool bForced){
     if (m_CurrentBlender&&(Tools.m_Props->IsModified()||bForced)){
     	UpdateObjectFromStream();
-        UpdateDeviceShaders();
 		Tools.m_Props->ResetModified();
-    }else if (bForced) UpdateDeviceShaders();
+	    ResetShaders();
+    }
 }
 
 void CSHEngineTools::Reload(){
@@ -210,7 +228,7 @@ void CSHEngineTools::Load(){
                 LPSTR blender_name = strdup(desc.cName);
                 pair<BlenderPairIt, bool> I =  m_Blenders.insert(make_pair(blender_name,B));
                 R_ASSERT2		(I.second,"shader.xr - found duplicate name!!!");
-                fraLeftBar->AddBlender(desc.cName,true);
+                fraLeftBar->AddBlender(desc.cName);
                 chunk->Close	();
                 chunk_id++;
             }
@@ -293,11 +311,14 @@ void CSHEngineTools::Save()
 
     m_bModified	= FALSE;
 	Tools.m_Props->ResetModified();
+    // restore shader
+    ResetShaders ();
 }
 
 void CSHEngineTools::PrepareRender()
 {
 	CollapseReferences();
+    m_RenderShaders.clear();
     Save(m_RenderShaders);
 }
 
@@ -414,7 +435,7 @@ CBlender* CSHEngineTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBl
 	pair<BlenderPairIt, bool> I = m_Blenders.insert(make_pair(strdup(name),B));
 	R_ASSERT2 (I.second,"shader.xr - found duplicate name!!!");
     // insert to TreeView
-	fraLeftBar->AddBlender(name,false);
+	fraLeftBar->AddBlender(name);
 
     return B;
 }
@@ -439,7 +460,9 @@ void CSHEngineTools::RenameBlender(LPCSTR old_full_name, LPCSTR new_full_name){
 
 	if (B==m_CurrentBlender) UpdateStreamFromObject();
 	// apply chages (forced)
-    ApplyChanges(true);
+    ApplyChanges();//true);
+    ResetShaders();
+    SetCurrentBlender(B);
 }
 
 void CSHEngineTools::RenameBlender(LPCSTR old_full_name, LPCSTR ren_part, int level){
@@ -536,20 +559,22 @@ void CSHEngineTools::UpdateObjectFromStream(){
     }
 }
 
-void CSHEngineTools::SetCurrentBlender(CBlender* B, bool bApply){
+void CSHEngineTools::SetCurrentBlender(CBlender* B){
     if (!m_bUpdateCurrent) return;
 
-    if (bApply) ApplyChanges(true);
 	if (m_CurrentBlender!=B){
         m_CurrentBlender = B;
         UpdateStreamFromObject();
         // apply this shader to non custom object
         Tools.UpdateObjectShader();
     }
+	if (B) fraLeftBar->SetCurrentBlender(B->getName());
 }
 
-void CSHEngineTools::SetCurrentBlender(LPCSTR name, bool bApply){
-	SetCurrentBlender(FindBlender(name),bApply);
+void CSHEngineTools::SetCurrentBlender(LPCSTR name){
+	CBlender* B=FindBlender(name);
+	SetCurrentBlender(B);
+	if (!B) fraLeftBar->SetCurrentBlender(name);
 }
 
 void CSHEngineTools::ResetCurrentBlender(){

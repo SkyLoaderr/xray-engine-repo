@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 709
+  Height = 729
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 260
-    Height = 709
+    Height = 729
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 494
+      Top = 514
       Width = 258
       Height = 2
       Cursor = crVSplit
@@ -162,7 +162,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 69
       Width = 258
-      Height = 425
+      Height = 445
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -184,7 +184,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 256
-        Height = 410
+        Height = 430
         ActiveTabColor = 10528425
         BorderWidth = 0
         Color = 10528425
@@ -197,7 +197,7 @@ object fraLeftBar: TfraLeftBar
         RaggedRight = False
         ScrollOpposite = False
         Style = etsNetTabs
-        TabIndex = 0
+        TabIndex = 1
         TabPosition = etpTop
         HotTrackFont.Charset = DEFAULT_CHARSET
         HotTrackFont.Color = 15790320
@@ -205,7 +205,7 @@ object fraLeftBar: TfraLeftBar
         HotTrackFont.Name = 'MS Sans Serif'
         HotTrackFont.Style = []
         TabBkColor = 10528425
-        ActivePage = tsEngine
+        ActivePage = tsCompiler
         FlatTabBorderColor = clBtnShadow
         Align = alClient
         ParentColor = False
@@ -217,6 +217,7 @@ object fraLeftBar: TfraLeftBar
           TabVisible = True
           Caption = 'Engine'
           Color = 10528425
+          Visible = False
           object Bevel1: TBevel
             Left = 0
             Top = 50
@@ -342,7 +343,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 333
+            Height = 353
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -380,6 +381,7 @@ object fraLeftBar: TfraLeftBar
             HorzScrollBarStyles.ButtonSize = 16
             IgnoreEnabled = False
             IncrementalSearch = False
+            InplaceEditorDelay = 1000
             ItemIndent = 14
             KeepSelectionWithinLevel = False
             LineBorderActiveColor = clBlack
@@ -438,14 +440,6 @@ object fraLeftBar: TfraLeftBar
           TabVisible = True
           Caption = 'Compiler'
           Color = 10528425
-          Visible = False
-          object Bevel4: TBevel
-            Left = 0
-            Top = 383
-            Width = 252
-            Height = 2
-            Align = alBottom
-          end
           object Bevel3: TBevel
             Left = 0
             Top = 50
@@ -562,7 +556,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 331
+            Height = 353
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -600,6 +594,7 @@ object fraLeftBar: TfraLeftBar
             HorzScrollBarStyles.ButtonSize = 16
             IgnoreEnabled = False
             IncrementalSearch = False
+            InplaceEditorDelay = 1000
             ItemIndent = 14
             KeepSelectionWithinLevel = False
             LineBorderActiveColor = clBlack
@@ -655,7 +650,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paShaderProperties: TPanel
       Left = 1
-      Top = 496
+      Top = 516
       Width = 258
       Height = 212
       Align = alBottom
@@ -828,13 +823,16 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 109
     Top = 165
-    object CreateFolder1: TMenuItem
-      Caption = 'Create Folder'
-      OnClick = CreateFolder1Click
-    end
     object Rename1: TMenuItem
       Caption = 'Rename'
       OnClick = Rename1Click
+    end
+    object N4: TMenuItem
+      Caption = '-'
+    end
+    object CreateFolder1: TMenuItem
+      Caption = 'Create Folder'
+      OnClick = CreateFolder1Click
     end
     object N1: TMenuItem
       Caption = '-'

@@ -7,6 +7,8 @@
 #include "UI_Tools.h"
 #include "PropertiesList.h"
 #include "xr_tokens.h"
+#include "xr_trims.h"
+#include "leftbar.h"
 
 #define MCSTRING_COUNT 	11
 LPCSTR MCString[MCSTRING_COUNT]={"Custom...","-","$null","$base0","$base1","$base2","$base3","$base4","$base5","$base6","$base7"};
@@ -76,9 +78,9 @@ void __fastcall CSHEngineTools::RemoveMatrixProps(TElTreeItem* parent){
 
 void __fastcall CSHEngineTools::MCOnDraw(PropValue* sender, LPVOID draw_val)
 {
-	LPSTR V=(LPSTR)draw_val;
-    VERIFY(V&&V[0]);
-	if (*V!='$') *V=0;
+	AnsiString& V=*(AnsiString*)draw_val;
+    VERIFY(V[1]);
+	if (V[1]!='$') V="";
 }
 //---------------------------------------------------------------------------
 
@@ -145,6 +147,48 @@ void __fastcall CSHEngineTools::ConstOnAfterEdit(TElTreeItem* item, PropValue* s
     }
 }
 //------------------------------------------------------------------------------
+void __fastcall CSHEngineTools::NameOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+{
+	TextValue* V=(TextValue*)sender;
+	AnsiString& N=*(AnsiString*)edit_val; N=N.LowerCase();
+	int cnt=_GetItemCount(N.c_str(),'\\');
+    if (cnt>1){
+    	N=V->val;
+        return;
+    }
+    //
+    TElTreeItem* node = fraLeftBar->tvEngine->Selected;
+    VERIFY(node);
+    for (TElTreeItem* itm=node->GetFirstSibling(); itm; itm=itm->GetNextSibling()){
+        if ((itm->Text==N)&&(itm!=node)){
+	        N=V->val;
+            return;
+        }
+    }
+    // all right
+    node->Text=N;
+	cnt=_GetItemCount(V->val,'\\');
+    string256 new_name;
+	_ReplaceItem(V->val,cnt-1,N.c_str(),new_name,'\\');
+    N=new_name;
+    if (0!=strcmp(new_name,V->val))
+    	RemoteRenameBlender(V->val,new_name);
+}
+//------------------------------------------------------------------------------
+void __fastcall CSHEngineTools::NameOnBeforeEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+{
+	AnsiString& N=*(AnsiString*)edit_val;
+	int cnt=_GetItemCount(N.c_str(),'\\');
+	N = _SetPos(N.c_str(),cnt-1,'\\');
+}
+//------------------------------------------------------------------------------
+void __fastcall CSHEngineTools::NameOnDraw(PropValue* sender, LPVOID draw_val)
+{
+	AnsiString& N=*(AnsiString*)draw_val;
+	int cnt=_GetItemCount(N.c_str(),'\\');
+	N = _SetPos(N.c_str(),cnt-1,'\\');
+}
+//------------------------------------------------------------------------------
 
 void CSHEngineTools::UpdateProperties()
 {
@@ -153,6 +197,7 @@ void CSHEngineTools::UpdateProperties()
     P->BeginFillMode("Engine shader");
 	if (m_CurrentBlender){ // fill Tree
     	CStream data(m_BlenderStream.pointer(), m_BlenderStream.size());
+        CBlender_DESC* desc=(CBlender_DESC*)data.Pointer();
         data.Advance(sizeof(CBlender_DESC));
         DWORD type;
         char key[255];
@@ -160,6 +205,7 @@ void CSHEngineTools::UpdateProperties()
         TElTreeItem* node;
 
         P->AddItem(0,PROP_MARKER2,"Type",(LPVOID)m_CurrentBlender->getComment());
+        P->AddItem(0,PROP_TEXT,"Name",P->MakeTextValue(&desc->cName,NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw));
 
         while (!data.Eof()){
             int sz=0;
@@ -176,13 +222,13 @@ void CSHEngineTools::UpdateProperties()
             }break;
             case xrPID_MATRIX:{
             	sz=sizeof(string64);
-                TElTreeItem* node=P->AddItem(marker_node,PROP_LIST,key,P->MakeListValueA(data.Pointer(),MCSTRING_COUNT,MCString,&MatrixOnAfterEdit,0,&MCOnDraw));
+                TElTreeItem* node=P->AddItem(marker_node,PROP_LIST,key,P->MakeListValueA(data.Pointer(),MCSTRING_COUNT,MCString,MatrixOnAfterEdit,0,MCOnDraw));
                 LPSTR V=(LPSTR)data.Pointer();
 				if (V&&V[0]&&(*V!='$')) AddMatrixProps(node,V);
             }break;
             case xrPID_CONSTANT:{
             	sz=sizeof(string64);
-                TElTreeItem* node=P->AddItem(marker_node,PROP_LIST,key,P->MakeListValueA(data.Pointer(),MCSTRING_COUNT,MCString,&ConstOnAfterEdit,0,&MCOnDraw));
+                TElTreeItem* node=P->AddItem(marker_node,PROP_LIST,key,P->MakeListValueA(data.Pointer(),MCSTRING_COUNT,MCString,ConstOnAfterEdit,0,MCOnDraw));
                 LPSTR V=(LPSTR)data.Pointer();
 				if (V&&V[0]&&(*V!='$')) AddConstProps(node,V);
             }break;
@@ -209,6 +255,7 @@ void CSHEngineTools::UpdateProperties()
             }
             data.Advance(sz);
         }
+        ApplyChanges(true);
     }
     P->EndFillMode();
     P->SetModifiedEvent(Modified);

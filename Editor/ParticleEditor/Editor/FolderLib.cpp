@@ -36,12 +36,30 @@ bool FOLDER::MakeName(TElTreeItem* begin_item, TElTreeItem* end_item, AnsiString
         name = "";
         while (node){
 			name.Insert(node->Text+AnsiString('\\'),0);
-        	if (node==end_item) continue;
+        	if (node==end_item) break;
             node=node->Parent;
         }
         if (!bOnlyFolder){
         	if (DWORD(begin_item->Data)==TYPE_OBJECT) name+=begin_item->Text;
             else return false;
+        }
+        return true;
+    }else{
+		name = "";
+        return false;
+    }
+}
+//---------------------------------------------------------------------------
+
+bool FOLDER::MakeFullName(TElTreeItem* begin_item, TElTreeItem* end_item, AnsiString& name)
+{
+	if (begin_item){
+    	TElTreeItem* node = begin_item;
+        name = "";
+        while (node){
+			name.Insert(node->Text+AnsiString('\\'),0);
+        	if (node==end_item) break;
+            node=node->Parent;
         }
         return true;
     }else{
@@ -61,6 +79,43 @@ TElTreeItem* FOLDER::FindItemInFolder(DWORD type, TElTree* tv, TElTreeItem* star
         	if (type==((DWORD)(node->Data))&&(node->Text==name)) return node;
     }
     return 0;
+}
+//---------------------------------------------------------------------------
+
+TElTreeItem* FOLDER::FindItemInFolder(TElTree* tv, TElTreeItem* start_folder, const AnsiString& name)
+{
+	if (start_folder){
+    	for (TElTreeItem* node=start_folder->GetFirstChild(); node; node=start_folder->GetNextChild(node))
+        	if (node->Text==name) return node;
+    }else{
+    	for (TElTreeItem* node=tv->Items->GetFirstNode(); node; node=node->GetNextSibling())
+        	if (node->Text==name) return node;
+    }
+    return 0;
+}
+//---------------------------------------------------------------------------
+
+TElTreeItem* FOLDER::FindItem(TElTree* tv, LPCSTR full_name, TElTreeItem** last_valid_node, int* last_valid_idx)
+{
+	int cnt = _GetItemCount(full_name,'\\');
+    if (cnt<=0) return 0;
+
+    // find folder item
+    int itm = 0;
+	char fld[64];
+	TElTreeItem* node = 0;
+    TElTreeItem* last_node = 0;
+    do{
+    	_GetItem(full_name,itm++,fld,'\\');
+        last_node = node;
+        node = FindItemInFolder(tv,node,fld);
+    }while (node&&(itm<cnt));
+
+    if(!node){
+		if (last_valid_node) *last_valid_node=last_node;
+        if (last_valid_idx) *last_valid_idx=--itm;
+    }
+    return node;
 }
 //---------------------------------------------------------------------------
 

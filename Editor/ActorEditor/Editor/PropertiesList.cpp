@@ -31,17 +31,12 @@
 #pragma link "multi_edit"
 #pragma link "MxMenus"
 #pragma link "mxPlacemnt"
+#pragma link "ElTreeAdvEdit"
 #pragma resource "*.dfm"
 
 #define TSTRING_COUNT 	4
-const LPSTR BOOLString[2]={"False","True"};
 const LPSTR TEXTUREString[TSTRING_COUNT]={"Custom...","-","$null","$base0"};
 
-LPCSTR	FlagValue::GetText(){
-	DWORD draw_val 	= *val;
-    if (OnDrawValue)OnDrawValue(this, &draw_val);
-	return BOOLString[!!((draw_val)&mask)];
-}
 LPCSTR 	TokenValue::GetText(){
 	DWORD draw_val 	= *val;
     if (OnDrawValue)OnDrawValue(this, &draw_val);
@@ -60,11 +55,16 @@ LPCSTR TokenValue3::GetText(){
     if (OnDrawValue)OnDrawValue(this, &draw_val);
     return items[draw_val].str;
 }
-string128 lv_draw_text;
+AnsiString prop_draw_text;
 LPCSTR	ListValue::GetText(){
-    strcpy(lv_draw_text,val);
-    if (OnDrawValue)OnDrawValue(this, &lv_draw_text);
-    return lv_draw_text;
+    prop_draw_text=val;
+    if (OnDrawValue)OnDrawValue(this, &prop_draw_text);
+    return prop_draw_text.c_str();
+}
+LPCSTR 	TextValue::GetText(){
+    prop_draw_text=val;
+    if (OnDrawValue)OnDrawValue(this, &prop_draw_text);
+    return prop_draw_text.c_str();
 }
 
 //---------------------------------------------------------------------------
@@ -88,14 +88,15 @@ void __fastcall TfrmProperties::EndEditMode(TElTreeItem* expand_node)
 void __fastcall TfrmProperties::BeginFillMode(const AnsiString& title, LPCSTR section)
 {
 	iFillMode++;
-//    IsUpdating.push(tvProperties->IsUpdating);
 	tvProperties->IsUpdating = true;
     if (section){
     	TElTreeItem* node = FOLDER::FindFolder(tvProperties,section);
         if (node) node->Delete();
     }else{
+		FOLDER::MakeFullName(tvProperties->Selected,0,last_selected_item);
 	    tvProperties->Items->Clear();
     }
+
     Caption = title;
 }
 //---------------------------------------------------------------------------
@@ -105,18 +106,14 @@ void __fastcall TfrmProperties::EndFillMode(bool bFullExpand)
     bModified=false;
 	if (bFullExpand) tvProperties->FullExpand();
     tvProperties->IsUpdating = false;
-//    IsUpdating.top();
-//    IsUpdating.pop();
+    tvProperties->Selected = FOLDER::FindItem(tvProperties,last_selected_item.c_str());
 };
 //---------------------------------------------------------------------------
 void __fastcall TfrmProperties::ClearProperties()
 {
-//	IsUpdating.push(tvProperties->IsUpdating);
 	tvProperties->IsUpdating = true;
     tvProperties->Items->Clear();
     tvProperties->IsUpdating = false;
-//    IsUpdating.top();
-//	IsUpdating.pop();
     for (PropValIt it=m_Params.begin(); it!=m_Params.end(); it++)
     	_DELETE(*it);
 	m_Params.clear();
@@ -126,13 +123,17 @@ void __fastcall TfrmProperties::ClearProperties()
 __fastcall TfrmProperties::TfrmProperties(TComponent* Owner)
 	: TForm(Owner)
 {
-	bModified = false;
-	iFillMode = 0;
-    DEFINE_INI(fsStorage);
-//	m_BMEllipsis = new Graphics::TBitmap();
-//	m_BMEllipsis->LoadFromResourceName((DWORD)HInstance,"ELLIPSIS");
-    seNumber->Parent = tvProperties;
-    seNumber->Hide();
+	bModified 		= false;
+	iFillMode 		= 0;
+    DEFINE_INI		(fsStorage);
+	m_BMCheck 		= new Graphics::TBitmap();
+    m_BMDot 		= new Graphics::TBitmap();
+    m_BMEllipsis 	= new Graphics::TBitmap();
+	m_BMCheck->LoadFromResourceName((DWORD)HInstance,"CHECK");
+	m_BMDot->LoadFromResourceName((DWORD)HInstance,"DOT");
+	m_BMEllipsis->LoadFromResourceName((DWORD)HInstance,"ELLIPSIS");
+    seNumber->Parent= tvProperties;
+    seNumber->Hide	();
 }
 //---------------------------------------------------------------------------
 
@@ -172,10 +173,9 @@ void __fastcall TfrmProperties::HideProperties(){
 void __fastcall TfrmProperties::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
-//	ClearProperties();
-
-//	Action = caFree;
-//    _DELETE(m_BMEllipsis);
+    _DELETE(m_BMCheck);
+    _DELETE(m_BMDot);
+    _DELETE(m_BMEllipsis);
 }
 //---------------------------------------------------------------------------
 
@@ -192,7 +192,8 @@ TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, DWORD type,
     case PROP_MARKER:		break;
     case PROP_MARKER2:		TI->ColumnText->Add(AnsiString((LPSTR)value)); 		break;
     case PROP_WAVE:			TI->ColumnText->Add("[Wave]");						CS->Style = ElhsOwnerDraw; break;
-    case PROP_BOOL:			TI->ColumnText->Add(BOOLString[*(LPDWORD)value]);	CS->Style = ElhsOwnerDraw; break;
+    case PROP_BOOL:			CS->Style = ElhsOwnerDraw; 							break;
+    case PROP_TEXT:			
     case PROP_FLAG:
     case PROP_TOKEN:
     case PROP_TOKEN2:
@@ -200,7 +201,6 @@ TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, DWORD type,
     case PROP_LIST:
     case PROP_FLOAT:
     case PROP_INTEGER:{		PropValue*  P=(PropValue*)value; TI->ColumnText->Add(P->GetText()); CS->Style = ElhsOwnerDraw; }break;
-    case PROP_TEXT:			TI->ColumnText->Add((LPSTR)value);  				break;
     case PROP_COLOR:		CS->Style = ElhsOwnerDraw; 							break;
     case PROP_TEXTURE:		TI->ColumnText->Add((LPSTR)value);  				CS->Style = ElhsOwnerDraw; break;
     case PROP_SH_ENGINE:	TI->ColumnText->Add((LPSTR)value);  				CS->Style = ElhsOwnerDraw; break;
@@ -245,10 +245,13 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
         case PROP_SH_ENGINE:
         case PROP_SH_COMPILE:
         case PROP_WAVE:{
-            R.Right	-=	1;
+            R.Right	-=	10;
             R.Left 	+= 	1;
             AnsiString name = Item->ColumnText->Strings[0];
     		DrawText	(Surface->Handle, name.IsEmpty()?"[none]":name.c_str(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+            R.Left	= R.Right;
+        	Surface->CopyMode = cmSrcAnd;//cmSrcErase;
+            Surface->Draw(R.Left,R.Top+5,m_BMEllipsis);
         }break;
         case PROP_COLOR:{
 			Surface->Brush->Style = bsSolid;
@@ -261,8 +264,18 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
 		    Surface->Brush->Color = rgb2bgr(*(LPDWORD)Item->Data);
             Surface->FillRect(R);
         }break;
-        case PROP_TEXTURE2:
+        case PROP_FLAG:{
+        	FlagValue* V=(FlagValue*)Item->Data;
+        	Surface->CopyMode = cmSrcAnd;//cmSrcErase;
+            if (*V->val&V->mask)Surface->Draw(R.Left,R.Top+3,m_BMCheck);
+            else				Surface->Draw(R.Left,R.Top+3,m_BMDot);
+        }break;
         case PROP_BOOL:
+        	Surface->CopyMode = cmSrcAnd;//cmSrcErase;
+            if (*(BOOL*)Item->Data)	Surface->Draw(R.Left,R.Top+3,m_BMCheck);
+            else				   	Surface->Draw(R.Left,R.Top+3,m_BMDot);
+        break;
+        case PROP_TEXTURE2:
             R.Right	-=	10;
             R.Left 	+= 	1;
     		DrawText	(Surface->Handle, AnsiString(Item->ColumnText->Strings[0]).c_str(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
@@ -270,7 +283,6 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
             R.Right += 	10;
             DrawArrow	(Surface, eadDown, R, clWindowText, true);
         break;
-        case PROP_FLAG:
 		case PROP_TOKEN:
         case PROP_TOKEN2:
         case PROP_TOKEN3:
@@ -281,6 +293,15 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
             R.Left 	= 	R.Right;
             R.Right += 	10;
             DrawArrow	(Surface, eadDown, R, clWindowText, true);
+        break;
+        case PROP_TEXT:
+        	if (edText->Tag!=(int)Item){
+                R.Right-= 1;
+                R.Left += 1;
+                DrawText(Surface->Handle, ((PropValue*)Item->Data)->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+            }else{
+            	if (!edText->Visible) ShowLWText(R);
+            }
         break;
         case PROP_INTEGER:
         case PROP_FLOAT:
@@ -300,29 +321,30 @@ void __fastcall TfrmProperties::tvPropertiesMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	CancelLWNumber();
+	CancelLWText();
 	int HS;
 	TElTreeItem* item = tvProperties->GetItemAt(X,Y,0,HS);
   	if ((HS==1)&&(Button==mbLeft)){
     	DWORD type = (DWORD)item->Tag;
 		pmEnum->Tag = (int)item;
         switch(type){
-		case PROP_BOOL:{
-            pmEnum->Items->Clear();
-            for (DWORD i=0; i<2; i++){
-                TMenuItem* mi = new TMenuItem(0);
-                mi->Caption = BOOLString[i];
-                mi->OnClick = PMItemClick;
-                pmEnum->Items->Add(mi);
+		case PROP_FLAG:{
+        	FlagValue*	V 				= (FlagValue*)item->Data;
+            DWORD new_val 				= *V->val;
+            if (new_val&V->mask)new_val &=~V->mask;
+            else				new_val |= V->mask;
+			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
+            if (new_val!=*V->val){
+            	*V->val 	= new_val;
+                Modified();
+	            RefreshProperties();
             }
         }break;
-		case PROP_FLAG:{
-            pmEnum->Items->Clear();
-            for (DWORD i=0; i<2; i++){
-                TMenuItem* mi = new TMenuItem(0);
-                mi->Caption = BOOLString[i];
-                mi->OnClick = PMItemClick;
-                pmEnum->Items->Add(mi);
-            }
+		case PROP_BOOL:{
+        	BOOL& V=*(BOOL*)item->Data;
+            V=!V;
+			Modified();
+            RefreshProperties();
         }break;
 		case PROP_TOKEN:{
             pmEnum->Items->Clear();
@@ -379,6 +401,9 @@ void __fastcall TfrmProperties::tvPropertiesMouseDown(TObject *Sender,
         case PROP_FLOAT:
         	PrepareLWNumber(item);
         break;
+        case PROP_TEXT:
+        	PrepareLWText(item);
+        break;
 		case PROP_TEXTURE2:{
             pmEnum->Items->Clear();
             for (DWORD i=0; i<TSTRING_COUNT; i++){
@@ -394,8 +419,6 @@ void __fastcall TfrmProperties::tvPropertiesMouseDown(TObject *Sender,
         case PROP_TOKEN2:
         case PROP_TOKEN3:
         case PROP_LIST:
-        case PROP_FLAG:
-		case PROP_BOOL:
         case PROP_TEXTURE2:
             TPoint P; P.x = X; P.y = Y;
             P=tvProperties->ClientToScreen(P);
@@ -412,25 +435,6 @@ void __fastcall TfrmProperties::PMItemClick(TObject *Sender)
         TElTreeItem* item = (TElTreeItem*)pmEnum->Tag;
     	DWORD type = (DWORD)item->Tag;
         switch(type){
-		case PROP_BOOL:
-            if ((*(BOOL*)item->Data) != mi->MenuIndex){
-	            item->ColumnText->Strings[0]= mi->Caption;
-	            (*(BOOL*)item->Data) = mi->MenuIndex;
-                Modified();
-            }
-        break;
-		case PROP_FLAG:{
-        	FlagValue*	V 				= (FlagValue*)item->Data;
-            DWORD new_val 				= *V->val;
-            if (mi->MenuIndex) 	new_val |= V->mask;
-            else				new_val &=~V->mask;
-			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
-            if (new_val!= *V->val){
-            	*V->val 	= new_val;
-                Modified();
-            }
-			item->ColumnText->Strings[0]= V->GetText();
-        }break;
 		case PROP_TOKEN:{
         	TokenValue* V				= (TokenValue*)item->Data;
             xr_token* token_list 	   	= V->token;
@@ -599,32 +603,13 @@ void __fastcall TfrmProperties::SShaderCompileClick(TElTreeItem* item)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmProperties::InplaceTextValidateResult(TObject *Sender,
-      bool &InputValid)
-{
-	TElEdit* E = InplaceText->Editor;
-	if (PROP_TEXT==InplaceText->Item->Tag){
-	    if (strcmp((LPSTR)InplaceText->Item->Data,AnsiString(E->Text).c_str())!=0){
-		    strcpy((LPSTR)InplaceText->Item->Data,AnsiString(E->Text).c_str());
-			Modified();
-	    }
-	}
-}
-//---------------------------------------------------------------------------
+
 
 //---------------------------------------------------------------------------
 // LW style inplace editor
 //---------------------------------------------------------------------------
 void TfrmProperties::CancelLWNumber()
 {
-/*
-не нужно вызывать After
-	TElTreeItem* item = (TElTreeItem*)seNumber->Tag;
-    if (item){
-		PropValue* V = (PropValue*)item->Data; VERIFY(V);
-		if (V->OnAfterEdit) V->OnAfterEdit(V);
-    }
-*/
     HideLWNumber();
 }
 
@@ -669,9 +654,9 @@ void TfrmProperties::PrepareLWNumber(TElTreeItem* item)
 void TfrmProperties::ShowLWNumber(TRect& R)
 {
     seNumber->Left 	= R.Left;
-    seNumber->Top  	= R.Top+18;
+    seNumber->Top  	= R.Top+19;
     seNumber->Width	= R.Right-R.Left+2;
-    seNumber->Height= R.Bottom-R.Top+3;
+    seNumber->Height= R.Bottom-R.Top+2;
     seNumber->Show();
     seNumber->SetFocus();
 }
@@ -714,12 +699,6 @@ void __fastcall TfrmProperties::seNumberExit(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmProperties::seNumberLWChange(TObject *Sender, int Val)
-{
-	ApplyLWNumber();
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfrmProperties::seNumberKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
@@ -732,6 +711,83 @@ void __fastcall TfrmProperties::seNumberKeyDown(TObject *Sender, WORD &Key,
 }
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Textinplace editor
+//---------------------------------------------------------------------------
+void TfrmProperties::CancelLWText()
+{
+    HideLWText();
+}
 
+void TfrmProperties::HideLWText()
+{
+    edText->Tag	= 0;
+    edText->Hide	();
+}
+//---------------------------------------------------------------------------
+void TfrmProperties::PrepareLWText(TElTreeItem* item)
+{
+	DWORD type 		= item->Tag;
+    switch (type){
+    case PROP_TEXT:{
+        TextValue* V 		= (TextValue*)item->Data; VERIFY(V);
+		AnsiString edit_val;
+    	edit_val=V->val;
+        if (V->OnBeforeEdit) V->OnBeforeEdit(item,V,&edit_val);
+	    edText->Text 		= edit_val;
+    }break;
+    }
+    edText->Tag 	= (int)item;
+    tvProperties->Refresh();
+}
+void TfrmProperties::ShowLWText(TRect& R)
+{
+    edText->Left 	= R.Left-2;
+    edText->Top  	= R.Top+17;
+    edText->Width	= R.Right-R.Left+0;
+    edText->Height	= R.Bottom-R.Top+2;
+    edText->Show	();
+    edText->SetFocus();
+}
+
+void TfrmProperties::ApplyLWText()
+{
+	TElTreeItem* item = (TElTreeItem*)edText->Tag;
+    if (item){
+		DWORD type = item->Tag;
+        edText->Update();
+	    switch (type){
+    	case PROP_TEXT:{
+	        TextValue* V 	= (TextValue*)item->Data; VERIFY(V);
+			AnsiString new_val=edText->Text;
+			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
+            if (new_val != *V->val){
+                strcpy(V->val,new_val.c_str());
+				Modified();
+            }
+            item->ColumnText->Strings[0] = V->GetText();
+        }break;
+    	}
+    }
+}
+
+void __fastcall TfrmProperties::edTextExit(TObject *Sender)
+{
+	ApplyLWText();
+	HideLWText();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmProperties::edTextKeyDown(TObject *Sender, WORD &Key,
+      TShiftState Shift)
+{
+	if (VK_RETURN==Key){
+		ApplyLWText();
+		HideLWText();
+    }else if (VK_ESCAPE==Key){
+		CancelLWText();
+    }
+}
+//---------------------------------------------------------------------------
 
 

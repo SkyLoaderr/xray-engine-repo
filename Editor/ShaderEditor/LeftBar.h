@@ -70,7 +70,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ebCompilerShaderClone;
 	TExtBtn *ExtBtn4;
 	TExtBtn *ebCShaderCreate;
-	TBevel *Bevel4;
 	TBevel *Bevel3;
 	TElTreeInplaceAdvancedEdit *InplaceCompilerEdit;
 	TElTree *tvCompiler;
@@ -80,6 +79,7 @@ __published:	// IDE-managed Components
 	TBevel *Bevel6;
 	TPanel *paShaderProps;
 	TSplitter *Splitter1;
+	TMenuItem *N4;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebReloadClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
@@ -128,13 +128,16 @@ private:	// User declarations
                                         return 0;
     								  }
     TElTreeItem*	DragItem;
+    bool			bFocusedAffected;
 public:		// User declarations
         __fastcall TfraLeftBar		(TComponent* Owner);
 	void 			ChangeTarget	(int tgt);
     void 			UpdateBar		();
     void 			InitPalette		(TemplateVec& lst);
-	void 			AddBlender		(LPCSTR full_name, bool bLoadMode);
-	void 			AddCShader		(LPCSTR full_name, bool bLoadMode);
+	void 			AddBlender		(LPCSTR full_name);
+	void 			AddCShader		(LPCSTR full_name);
+    void			SetCurrentBlender(LPCSTR full_name);
+    void			SetCurrentCShader(LPCSTR full_name);
 	void 			ClearEShaderList();
     void			ClearCShaderList();
 };

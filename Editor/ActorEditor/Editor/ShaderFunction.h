@@ -50,7 +50,8 @@ __published:	// IDE-managed Components
 	TExtBtn *ebCancel;
 	TMxPopupMenu *pmFunction;
 	TFormStorage *fsStorage;
-	TExtBtn *ebApply;
+	TMultiObjSpinEdit *seScale;
+	TLabel *Label6;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);
@@ -63,7 +64,6 @@ __published:	// IDE-managed Components
 	void __fastcall seArgKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
-	void __fastcall ebApplyClick(TObject *Sender);
 private:	// User declarations
     bool bLoadMode;
 

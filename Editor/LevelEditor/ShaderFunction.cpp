@@ -89,7 +89,7 @@ void __fastcall TfrmShaderFunction::DrawGraph()
     float yy = h-(delta*y + h/2);
     C->MoveTo(2,yy+2);
     for (int t=1; t<w; t++){
-    	tm = t*t_cost;
+    	tm = seScale->Value*t*t_cost/(fis_zero(m_CurFunc->arg[3])?1.f:m_CurFunc->arg[3]);
     	y = m_CurFunc->Calculate(tm) - m_CurFunc->arg[0];
         yy = h-(delta*y + h/2);
         C->LineTo(t+2,yy+2);
@@ -117,19 +117,11 @@ void __fastcall TfrmShaderFunction::ebOkClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmShaderFunction::ebApplyClick(TObject *Sender)
-{
-	UpdateFuncData();
-    _DELETE(m_SaveFunc);
-    m_SaveFunc	= new WaveForm(*m_CurFunc);
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfrmShaderFunction::ebCancelClick(TObject *Sender)
 {
+    CopyMemory(m_CurFunc,m_SaveFunc,sizeof(WaveForm));
     Close();
     ModalResult = mrCancel;
-    CopyMemory(m_CurFunc,m_SaveFunc,sizeof(WaveForm));
 //	*m_CurFunc = *m_SaveFunc;
 }
 //---------------------------------------------------------------------------
@@ -188,6 +180,10 @@ void TfrmShaderFunction::UpdateFuncData(){
     t.sprintf("%.2f",m_CurFunc->arg[1]+m_CurFunc->arg[0]);  lbMax->Caption = t;
     t.sprintf("%.2f",-m_CurFunc->arg[1]+m_CurFunc->arg[0]);	lbMin->Caption = t;
     t.sprintf("%.2f",m_CurFunc->arg[0]);    				lbCenter->Caption = t;
+    float v=seScale->Value*1000/m_CurFunc->arg[3];
+    if (v<=1000) 	t.sprintf("%4.0f ms",v);
+    else			t.sprintf("%.2f s",v/1000);
+    lbEnd->Caption = t;
 	DrawGraph();
 }
 void __fastcall TfrmShaderFunction::seArgExit(TObject *Sender)

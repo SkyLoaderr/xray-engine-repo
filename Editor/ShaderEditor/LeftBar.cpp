@@ -59,6 +59,7 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
     DragItem = 0;
     frmMain->paLeftBar->Width = paLeftBar->Width+2;
     frmMain->sbToolsMin->Left = paLeftBar->Width-frmMain->sbToolsMin->Width-3;
+    bFocusedAffected = true;
 }
 //---------------------------------------------------------------------------
 
@@ -185,6 +186,7 @@ void __fastcall TfraLeftBar::TemplateClick(TObject *Sender)
     AnsiString folder;
 	FOLDER::MakeName(tvEngine->Selected,0,folder,true);
     CBlender* B = Tools.SEngine.AppendBlender(((CBlender*)mi->Tag)->getDescription().CLS,folder.c_str(),0);
+	Tools.SEngine.ResetShaders(true);
 	Tools.SEngine.SetCurrentBlender(B);
 	Tools.SEngine.Modified();
 }
@@ -200,23 +202,32 @@ void TfraLeftBar::ClearCShaderList(){
 }
 //---------------------------------------------------------------------------
 
-void TfraLeftBar::AddBlender(LPCSTR full_name, bool bLoadMode){
+void TfraLeftBar::AddBlender(LPCSTR full_name){
 	TElTreeItem* node = FOLDER::AppendObject(tvEngine,full_name);
-    if (!bLoadMode){
-	    if (node&&node->Parent) node->Parent->Expand(false);
-    	node->Selected = true;
-		tvEngine->Selected = node;
-    }
 }
 //---------------------------------------------------------------------------
 
-void TfraLeftBar::AddCShader(LPCSTR full_name, bool bLoadMode){    
+void TfraLeftBar::AddCShader(LPCSTR full_name){
 	TElTreeItem* node = FOLDER::AppendObject(tvCompiler,full_name);
-    if (!bLoadMode){
-	    if (node&&node->Parent) node->Parent->Expand(false);
-    	node->Selected = true;
-		tvCompiler->Selected = node;
-    }
+}
+//---------------------------------------------------------------------------
+
+void TfraLeftBar::SetCurrentBlender(LPCSTR full_name)
+{
+	TElTreeItem* node = full_name?FOLDER::FindItem(tvEngine,full_name):0;
+	bFocusedAffected = false;
+	tvEngine->Selected=node;
+	bFocusedAffected = true;
+    tvEngine->EnsureVisibleBottom(node);
+}
+//---------------------------------------------------------------------------
+void TfraLeftBar::SetCurrentCShader(LPCSTR full_name)
+{
+	TElTreeItem* node = full_name?FOLDER::FindItem(tvCompiler,full_name):0;
+	bFocusedAffected = false;
+	tvCompiler->Selected=node;
+	bFocusedAffected = true;
+    tvCompiler->EnsureVisibleBottom(node);
 }
 //---------------------------------------------------------------------------
 
@@ -258,7 +269,8 @@ void __fastcall TfraLeftBar::ebEngineShaderRemoveClick(TObject *Sender)
                 	if (FOLDER::IsObject(item)) Tools.SEngine.RemoveBlender(full_name.c_str());
                 }
 				Tools.SEngine.ResetCurrentBlender();
-                Tools.SEngine.ApplyChanges(true);
+                Tools.SEngine.ApplyChanges();
+                Tools.SEngine.ResetShaders();
 	            pNode->Delete();
                 Tools.SEngine.Modified();
         	}
@@ -268,7 +280,8 @@ void __fastcall TfraLeftBar::ebEngineShaderRemoveClick(TObject *Sender)
 				FOLDER::MakeName(pNode,0,full_name,false);
 	            Tools.SEngine.RemoveBlender(full_name.c_str());
 				Tools.SEngine.ResetCurrentBlender();
-                Tools.SEngine.ApplyChanges(true);
+                Tools.SEngine.ApplyChanges();
+                Tools.SEngine.ResetShaders();
 	            pNode->Delete();
                 Tools.SEngine.Modified();
         	}
@@ -281,6 +294,7 @@ void __fastcall TfraLeftBar::ebEngineShaderRemoveClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::tvEngineItemFocused(TObject *Sender)
 {
+	if (!bFocusedAffected) return;
 	if (pcShaders->ActivePage==tsEngine){
     	AnsiString name;
     	FOLDER::MakeName(tvEngine->Selected, 0, name, false);
@@ -300,7 +314,9 @@ void __fastcall TfraLeftBar::ebEngineShaderCloneClick(TObject *Sender)
     if (pNode&&FOLDER::IsObject(pNode)){
 		AnsiString full_name;
 		FOLDER::MakeName(pNode,0,full_name,false);
-        Tools.SEngine.CloneBlender(full_name.c_str());
+        CBlender* B=Tools.SEngine.CloneBlender(full_name.c_str());
+		Tools.SEngine.ResetShaders(true);
+	    Tools.SEngine.SetCurrentBlender(B);
 		Tools.SEngine.Modified();
     }else{
 		ELog.DlgMsg(mtInformation, "At first select item.");
@@ -535,4 +551,5 @@ void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
 	Tools.m_Props->SaveColumnWidth(fsStorage);
 }
 //---------------------------------------------------------------------------
+
 
