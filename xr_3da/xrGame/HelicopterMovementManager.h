@@ -18,27 +18,17 @@ class CHelicopter;
 
 class CHelicopterMovManager :public CHelicopterMotion
 {
-	bool							m_bLoop;
+//	bool							m_bLoop;
 	Fmatrix							m_XFORM;
-	float							m_alt_korridor;
-	float							m_baseAltitude;
-	float							m_attackAltitude;
-	float							m_basePatrolSpeed;
-	float							m_baseAttackSpeed;
 	float							m_pitch_k;
 	Fbox							m_boundingVolume;
 	float							m_maxKeyDist;
 	float							m_endAttackTime;
 	Fvector							m_startDir;
-	Fvector							m_stayPoint;
 	float							m_time_last_patrol_end;
 	float							m_time_last_patrol_start;
-	float							m_time_delay_between_patrol;
-	float							m_time_patrol_period;
 	float							m_time_delay_before_start;
 	
-	float							m_hunt_dist;
-	float							m_hunt_time;
 	
 	float	_flerp					(float src, float dst, float t)		{return src*(1.f-t) + dst*t;};
 	bool	dice					()		{return (::Random.randF(-1.0f, 1.0f) > 0.0f); };
@@ -75,11 +65,21 @@ class CHelicopterMovManager :public CHelicopterMotion
 public:
 	CHelicopterMovManager			();
 	virtual ~CHelicopterMovManager	();
-	void	setHuntPathParam		(float dist, float time);
 
 	void	init					(const Fmatrix& heli_xform);
 	void	load					(LPCSTR		section);
 	void	shedule_Update			(u32 timeDelta, CHelicopter* heli);
 	void	getPathPosition			(float time, float fTimeDelta, Fmatrix& dest);
+
+	Fvector							m_stayPoint;
+	float							m_time_delay_between_patrol;
+	float							m_time_patrol_period;
+	float							m_alt_korridor;
+	float							m_baseAltitude;
+	float							m_attackAltitude;
+	float							m_basePatrolSpeed;
+	float							m_baseAttackSpeed;
+	float							m_hunt_dist;
+	float							m_hunt_time;
 
 };

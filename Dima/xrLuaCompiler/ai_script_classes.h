@@ -694,6 +694,13 @@ public:
 			void				air_attack				(CLuaGameObject*);
 			void				air_attack_wait			(CLuaGameObject*, float dist = 20.0f, float time = 5.0f);
 			bool				air_attack_active		();
-
+			void				heli_goto_stay_point	(float time=0.0f);
+			void				heli_goto_stay_point	(Fvector& pos, float time=0.0f);
+			void				heli_go_patrol			(float time=0.0f);
+/*			void				heli_use_rocket			(bool b);
+			bool				heli_is_use_rocket		()const;
+			void				heli_use_mgun			(bool b);
+			bool				heli_use_mgun			()const;*/
+			
 			Fvector				bone_position			(LPCSTR bone_name) const;
 };

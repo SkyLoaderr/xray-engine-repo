@@ -377,7 +377,7 @@ void CHelicopterMovManager::addPathToStayPoint (float from_time)
 	xr_vector<Fvector> vAddedKeys;
 
 	createStayPathTrajectory(fromPos, vAddedKeys);
-	insertKeyPoints(safe_time, vAddedKeys, m_basePatrolSpeed,false);
+	insertKeyPoints(safe_time, vAddedKeys, m_basePatrolSpeed, false);
 	fixateKeyPath(safe_time);
 //	CHelicopterMotion::NormalizeKeys(safe_time,m_endTime,m_basePatrolSpeed);
 	updatePathHPB(safe_time);
@@ -621,11 +621,4 @@ void CHelicopterMovManager::insertRounding(const Fvector& fromPos,
 		new_point.mad(destPos,dir_normale,radius);
 		vKeys.push_back(new_point);
 
-}
-
-
-void CHelicopterMovManager::setHuntPathParam (float dist, float time)
-{
-	m_hunt_dist = dist;
-	m_hunt_time = time;
 }

@@ -258,8 +258,13 @@ void CScriptEngine::export_object()
 			[
 				value("no_pda_msg",				int(ePdaMsgMax))
 			]
+			//HELICOPTER
 			.def("air_attack",                  &CLuaGameObject::air_attack)
 			.def("air_attack_wait",             &CLuaGameObject::air_attack_wait)
 			.def("air_attack_active",           &CLuaGameObject::air_attack_active)
+
+			.def("heli_goto_stay_point",        (void (CLuaGameObject::*)(float))(CLuaGameObject::heli_goto_stay_point))
+			.def("heli_goto_stay_point",        (void (CLuaGameObject::*)(Fvector&,float))(CLuaGameObject::heli_goto_stay_point))
+			.def("heli_go_patrol",				&CLuaGameObject::heli_go_patrol)
 	];
 }

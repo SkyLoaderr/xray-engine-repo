@@ -905,6 +905,42 @@ bool CLuaGameObject::air_attack_active ()
 	return !!helicopter->isOnAttack();
 }
 
+void CLuaGameObject::heli_goto_stay_point (float time)
+{
+	CHelicopter		*helicopter = dynamic_cast<CHelicopter*>(m_tpGameObject);
+	if (!helicopter) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member heli_goto_stay_point!");
+		NODEFAULT;
+	}
+	helicopter->gotoStayPoint(time);
+}
+
+void CLuaGameObject::heli_goto_stay_point (Fvector& pos, float time)
+{
+	CHelicopter		*helicopter = dynamic_cast<CHelicopter*>(m_tpGameObject);
+	if (!helicopter) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member heli_goto_stay_point!");
+		NODEFAULT;
+	}
+	helicopter->gotoStayPoint(time, &pos);
+}
+
+void CLuaGameObject::heli_go_patrol(float time)
+{
+	CHelicopter		*helicopter = dynamic_cast<CHelicopter*>(m_tpGameObject);
+	if (!helicopter) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member heli_go_patrol!");
+		NODEFAULT;
+	}
+	helicopter->goPatrol(time);
+}
+/*
+void				heli_use_rocket			(bool b);
+bool				heli_is_use_rocket		()const;
+void				heli_use_mgun			(bool b);
+bool				heli_use_mgun			()const;*/
+
+
 Fvector	CLuaGameObject::bone_position	(LPCSTR bone_name) const
 {
 	u16					bone_id;
