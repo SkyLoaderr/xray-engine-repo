@@ -119,7 +119,7 @@ public:
 	Fvector		camera	;
 public:
 	pred_fb		(occTri* _t, Fvector& _c) : m_pTris(_t), camera(_c)	{}
-	bool		operator()		(CDB::RESULT& _1, CDB::RESULT& _2)	{
+	ICF bool	operator()		(CDB::RESULT& _1, CDB::RESULT& _2)	{
 		occTri&	t0	= m_pTris	[_1.id];
 		occTri&	t1	= m_pTris	[_2.id];
 		return	camera.distance_to_sqr(t0.center) < camera.distance_to_sqr(t1.center);
@@ -161,6 +161,8 @@ void CHOM::Render_DB			(CFrustum& base)
 	clip.CreateFromMatrix		(Device.mFullTransform,FRUSTUM_P_NEAR);
 	sPoly						src,dst;
 	u32		_frame				= Device.dwFrame	;
+	tris_in_frame				= xrc.r_count();
+	tris_in_frame_visible		= 0;
 
 	// Perfrom selection, sorting, culling
 	for (; it!=end; it++)
@@ -185,13 +187,14 @@ void CHOM::Render_DB			(CFrustum& base)
 		if (0==P)		{ T.skip=next; continue; }
 
 		// XForm and Rasterize
-		u32		pixels	= 0;
-		int		limit	= int(P->size())-1;
+		tris_in_frame_visible	++;
+		u32		pixels			= 0;
+		int		limit			= int(P->size())-1;
 		for (int v=1; v<limit; v++)	{
-			m_xform.transform(T.raster[0],(*P)[0]);
-			m_xform.transform(T.raster[1],(*P)[v+0]);
-			m_xform.transform(T.raster[2],(*P)[v+1]);
-			pixels	+=		Raster.rasterize(&T);
+			m_xform.transform	(T.raster[0],(*P)[0]);
+			m_xform.transform	(T.raster[1],(*P)[v+0]);
+			m_xform.transform	(T.raster[2],(*P)[v+1]);
+			pixels	+=			Raster.rasterize(&T);
 		}
 		if (0==pixels)	{ T.skip=next; continue; }
 	}
@@ -358,8 +361,10 @@ void CHOM::OnStats()
 			CGameFont& F		= *Device.Statistic.Font();
 			F.OutSet			(200,0);
 			F.SetColor			(0xFFFFFFFF);
-			F.OutNext			("OCCLUSION:", m_pModel->get_tris_count());
-			F.OutNext			("  HOM TRIS:  %d", m_pModel->get_tris_count());
+			F.OutNext			("OCCLUSION:");
+			F.OutNext			("  visible:  %2d", tris_in_frame_visible);
+			F.OutNext			("  frustum:  %2d", tris_in_frame);
+			F.OutNext			("    total:  %2d", m_pModel->get_tris_count());
 		}
 	}
 }

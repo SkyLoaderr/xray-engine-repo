@@ -17,6 +17,10 @@ private:
 	BOOL					bEnabled;
 	Fmatrix					m_xform;
 	Fmatrix					m_xform_01;
+#ifdef DEBUG
+	u32						tris_in_frame_visible	;
+	u32						tris_in_frame			;
+#endif
 
 	void					Render_DB	(CFrustum&	base);
 public:
