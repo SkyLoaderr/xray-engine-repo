@@ -207,12 +207,15 @@ public:
 			v_trans				/=	float(V->adjacent.size());
 
 			// 
-			base_color_c		vC;
-			if (bVertexLight)	LightPoint			(&DB, RCAST_Model, vC, V->P, V->N, pBuild->L_static, LP_dont_hemi, 0);
-			vC._tmp_			= v_trans;
-			vC.mul				(.5f);
-			V->C._set			(vC);
-			if (bVertexLight)	g_trans_register	(V);
+			if (bVertexLight)	{
+				base_color_c		vC, old = V->C;
+				LightPoint			(&DB, RCAST_Model, vC, V->P, V->N, pBuild->L_static, LP_dont_hemi, 0);
+				vC._tmp_			= v_trans;
+				vC.mul				(.5f);
+				vC.hemi				= old.hemi;			// preserve pre-calculated hemisphere
+				V->C._set			(vC);
+				g_trans_register	(V);
+			}
 
 			thProgress			= float(counter) / float(g_vertices.size());
 		}
