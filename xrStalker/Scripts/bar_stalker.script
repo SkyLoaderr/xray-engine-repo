@@ -166,7 +166,30 @@ end
 
 
 ----------------------------------------------------------------------------
-function add_to_binder (npc)
+function add_to_binder (npc, ini)
+    if true then return end
+    
+   	if ini == nil or ini:section_exist ("bar") == false or ini:line_exist ("bar", "enabled") == false then 
+   	   return 
+    end
+    
+    local st = xr_motivator.storage[npc:id()].bar
+    st.enabled = ini:r_bool ("bar", "enabled")
+    if st.enabled == false then return end
+    if ini:line_exist ("bar", "meat") == true then 
+       st.meat = ini:r_bool ("bar", "meat")
+    end
+    
+    if ini:line_exist ("bar", "interlocutor") == true then
+       st.interlocutor = ini:r_string ("bar", "interlocutor")     
+    end
+    
+    if ini:line_exist ("bar", "talk_enable") == true then
+       st.talking = ini:r_bool ("bar", "talk_enable")
+    end
+    
+    local satiety = ini:r_u32 ("rest", "satiety_threshold") / 100.0
+    
     local manager = npc:motivation_action_manager ()
     local property = {}
     local operators = {}
@@ -174,9 +197,9 @@ function add_to_binder (npc)
     property["complete"] = xr_evaluators_id.sidor_bar
     operators["bar"] = xr_actions_id.sidor_act_bar
     
-    manager:add_evaluator (property["complete"], this.evaluator_complete (xr_motivator.storage[npc:id()].bar_stalker, "property_complete"))
+    manager:add_evaluator (property["complete"], this.evaluator_complete (xr_motivator.storage[npc:id()].bar, "property_complete"))
     
-    local action = this.action_bar ("action_bar", xr_motivator.storage[npc:id()].bar_stalker)
+    local action = this.action_bar ("action_bar", xr_motivator.storage[npc:id()].bar)
     action:add_precondition         (world_property (stalker_ids.property_alive,    true))
     action:add_precondition         (world_property (stalker_ids.property_enemy,    false))
     action:add_precondition         (world_property (property["complete"],        false))
