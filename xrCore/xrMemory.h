@@ -5,8 +5,13 @@
 #include "xrMemory_pso.h"
 #include "xrMemory_POOL.h"
 
-class XRCORE_API	xrMemory
+class XRCORE_API		xrMemory
 {
+private:
+	struct				mdbg {
+		void*			_p;
+		u32				_size;
+	};
 public:
 	xrMemory			();
 	void				_initialize		(BOOL _debug_mode=FALSE);
@@ -14,13 +19,13 @@ public:
 
 	xrCriticalSection	debug_cs;
 	BOOL				debug_mode;
-	std::vector<void*>	debug_info;
+	std::vector<mdbg>	debug_info;
 	u32					debug_info_update;
 
 	u32					stat_calls;
 	s32					stat_counter;
 public:
-	void				dbg_register	(void* _p);
+	void				dbg_register	(void* _p, u32 _size);
 	void				dbg_unregister	(void* _p);
 
 	u32					mem_usage		(u32* pBlocksUsed=NULL, u32* pBlocksFree=NULL);
