@@ -737,6 +737,9 @@
 					RelativePath=".\Config\weapons\w_pm.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\weapons\w_rg6.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\weapons\w_rgd5.ltx">
 				</File>
 				<File

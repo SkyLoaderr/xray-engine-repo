@@ -80,6 +80,7 @@
 #	include "weapongroza.h"
 #	include "weaponknife.h"
 #	include "weaponBM16.h"
+#	include "weaponRG6.h"
 
 #	include "scope.h"
 #	include "silencer.h"
@@ -255,6 +256,7 @@ void CObjectFactory::register_classes	()
 	ADD(CWeaponGroza			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_GROZA			,"wpn_groza");
 	ADD(CWeaponKnife			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_KNIFE			,"wpn_knife");
 	ADD(CWeaponBM16				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_BM16			,"wpn_bm16");
+	ADD(CWeaponRG6				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_RG6				,"wpn_rg6");
 	//-----------------------------------------------------------------------------------------------------
 	ADD(CWeaponAmmo				,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_PM				,"wpn_ammo");
 	ADD(CWeaponAmmo				,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_VOG25			,"wpn_ammo_vog25");

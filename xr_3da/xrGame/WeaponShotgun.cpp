@@ -272,7 +272,7 @@ void CWeaponShotgun::OnStateSwitch	(u32 S)
 		return;
 	}
 
-	if( m_magazine.size() == (u32)iMagazineSize ){
+	if( m_magazine.size() == (u32)iMagazineSize || !HaveCartridgeInInventory() ){
 			switch2_EndReload		();
 			m_sub_state = eSubstateReloadEnd;
 	};
@@ -284,8 +284,8 @@ void CWeaponShotgun::OnStateSwitch	(u32 S)
 			switch2_StartReload	();
 		break;
 	case eSubstateReloadInProcess:
-		if( HaveCartridgeInInventory() )
-			switch2_AddCartgidge	();
+			if( HaveCartridgeInInventory() )
+				switch2_AddCartgidge	();
 		break;
 	case eSubstateReloadEnd:
 			switch2_EndReload		();

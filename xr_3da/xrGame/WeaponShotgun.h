@@ -36,7 +36,7 @@ protected:
 	virtual void	OnStateSwitch		(u32 S);
 
 	bool			HaveCartridgeInInventory();
-	u8				AddCartridge		(u8 cnt);
+	virtual u8		AddCartridge		(u8 cnt);
 
 	HUD_SOUND		sndShotBoth;
 	ESoundTypes		m_eSoundShotBoth;
