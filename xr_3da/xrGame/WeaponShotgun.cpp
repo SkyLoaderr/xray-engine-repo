@@ -38,14 +38,16 @@ void CWeaponShotgun::Load	(LPCSTR section)
 	else vFirePoint2 = vFirePoint;
 }
 
-void CWeaponShotgun::OnShot () {
+void CWeaponShotgun::OnShot () 
+{
 	std::swap(m_pHUD->vFirePoint, m_pHUD->vFirePoint2);
 	std::swap(vFirePoint, vFirePoint2);
 	UpdateFP();
 	inherited::OnShot();
 }
 
-void CWeaponShotgun::Fire2Start () {
+void CWeaponShotgun::Fire2Start () 
+{
 	inherited::Fire2Start();
 	if (IsValid())
 	{
@@ -73,20 +75,27 @@ void CWeaponShotgun::Fire2Start () {
 	}
 }
 
-void CWeaponShotgun::Fire2End () {
+void CWeaponShotgun::Fire2End () 
+{
 	inherited::Fire2End();
 	if (IsWorking())
 	{
 		CWeapon::FireEnd	();
 	}
-	if (!iAmmoElapsed)	TryReload	();
-	else								SwitchState (eIdle);
+	if (!iAmmoElapsed)	
+		TryReload	();
+	else 
+		SwitchState (eIdle);
 }
 
 
 void CWeaponShotgun::OnShotBoth()
 {
-	if(iAmmoElapsed < iMagazineSize) { OnShot(); return; }
+	if(iAmmoElapsed < iMagazineSize) 
+	{ 
+		OnShot(); 
+		return; 
+	}
 
 	// Sound
 	Sound->play_at_pos			(sndShotBoth,H_Root(),vLastFP);
@@ -214,112 +223,23 @@ void CWeaponShotgun::OnDrawFlame	()
 
 void CWeaponShotgun::renderable_Render	()
 {
-	inherited::renderable_Render	();
+	inherited::renderable_Render();
 	if(STATE == eFire2) OnDrawFlame();
 }
 
 
-BOOL CWeaponShotgun::FireTrace2		(const Fvector& P, const Fvector& /**Peff/**/, Fvector& D)
+
+bool CWeaponShotgun::Action(s32 cmd, u32 flags) 
 {
-	BOOL bResult = 0;
-	int grape_shot = 5;
-	while(grape_shot--) {
-		if(!Parent) break;
-		Collide::rq_result		RQ;
-
-		// direct it by dispersion factor
-		Fvector					dir;
-		dir.random_dir			(D,(fireDispersionBase+fireDispersion*fireDispersion_Current)*GetPrecision(),Random);
-
-		// increase dispersion
-		fireDispersion_Current	+= fireDispersion_Inc;
-		clamp					(fireDispersion_Current,0.f,1.f);
-
-		// ...and trace line
-		H_Parent()->setEnabled	(false);
-		bResult			= Level().ObjectSpace.RayPick( P, dir, fireDistance, Collide::rqtBoth, RQ );
-		H_Parent()->setEnabled	(true);
-		D						= dir;
-
-		// ...analyze
-		Fvector end_point; 
-		end_point.mad		(P,D,RQ.range);
-		if (bResult)
-		{
-			if (Local() && RQ.O) 
-			{
-				float power		=	float(iHitPower);
-				float scale		=	1-(RQ.range/fireDistance);	clamp(scale,0.f,1.f);
-				power			*=	_sqrt(scale);
-				float impulse	=	fHitImpulse;
-				CEntity* E		=	dynamic_cast<CEntity*>(RQ.O);
-				//CGameObject* GO	=	dynamic_cast<CGameObject*>(RQ.O);
-				if (E) power	*=	E->HitScale(RQ.element);
-
-				// object-space
-				Fvector p_in_object_space,position_in_bone_space;
-				Fmatrix m_inv;
-				m_inv.invert			(RQ.O->XFORM());
-				m_inv.transform_tiny	(p_in_object_space, end_point);
-
-				// bone-space
-				CKinematics* V	=	PKinematics(RQ.O->Visual());
-				Fmatrix& m_bone	=	(V->LL_GetBoneInstance(u16(RQ.element))).mTransform;
-				Fmatrix  m_inv_bone;
-				m_inv_bone.invert			(m_bone);
-				m_inv_bone.transform_tiny	(position_in_bone_space, p_in_object_space);
-
-
-				//  
-				NET_Packet		P;
-				u_EventGen		(P,GE_HIT,RQ.O->ID());
-				P.w_u16			(u16(H_Parent()->ID()));
-				P.w_dir			(D);
-				P.w_float		(power);
-				P.w_s16			((s16)RQ.element);
-				P.w_vec3		(position_in_bone_space);
-				P.w_float		(impulse);
-				P.w_u16			(eHitTypeWound);
-				u_EventSend		(P);
-			}
-			FireShotmark		(D,end_point,RQ, GAMEMTL_NONE);
-		}
-	}
-
-	//// tracer
-	//if (tracerFrame != Device.dwFrame) 
-	//{
-	//	tracerFrame = Device.dwFrame;
-	//	Level().Tracers.Add	(Peff,end_point,tracerHeadSpeed,tracerTrailCoeff,tracerStartLength,tracerWidth);
-	//}
-
-	// light
-	Light_Start			();
-	
-	//// Ammo
-	//if (Local()) 
-	//{
-	//	////--iAmmoElapsed;
-	//	if (/*iAmmoElapsed==*/0) 
-	//	{
-	//		OnMagazineEmpty	();
-	//	}
-	//}
-	// Ammo
-	if(Local()) {
-		if (!(--iAmmoElapsed)) OnMagazineEmpty();
-	}
-	
-	return				bResult;
-}
-
-bool CWeaponShotgun::Action(s32 cmd, u32 flags) {
 	if(inherited::Action(cmd, flags)) return true;
-	switch(cmd) {
-		case kWPN_ZOOM : {
-			if(flags&CMD_START) Fire2Start();
-			else Fire2End();
-		} return true;
+	switch(cmd) 
+	{
+		case kWPN_ZOOM : 
+			{
+				if(flags&CMD_START) Fire2Start();
+				else Fire2End();
+			} 
+			return true;
 	}
 	return false;
 }

@@ -268,6 +268,8 @@ public:
 	virtual void			Fire2Start			();
 	virtual void			Fire2End			();
 	virtual void			Reload				();
+	// обработка визуализации выстрела
+	virtual void			OnShot				(){};
 	
 	virtual void			Hide				()				= 0;
 	virtual void			Show				()				= 0;

@@ -13,8 +13,7 @@
 #include "UIDragDropList.h"
 #include "UIProgressBar.h"
 #include "UIWpnDragDropItem.h"
-
-#include "UICharacterInfo.h"
+#include "UIListWnd.h"
 
 
 #include "../UIZoneMap.h"
@@ -57,12 +56,10 @@ protected:
 
 	//иконка, показывающая количество активных PDA
 	CUIStatic			UIPdaOnline;
-	CUICharacterInfo	UICharacterInfo;
-	CUIFrameWindow		UIPdaMessageWnd;
-	CUIStatic			UIMessageText;
+	//список входящих сообщений PDA
+	CUIListWnd			UIPdaMsgListWnd;
 	
 	//интервал показывания сообщения
-	int					m_dwMinShowTime;
 	int					m_dwMaxShowTime;
 	//время сколько показывается новое сообщение PDA
 	int					m_dwMsgShowingTime;

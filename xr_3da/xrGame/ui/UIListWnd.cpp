@@ -22,6 +22,8 @@ CUIListWnd::CUIListWnd(void)
 	m_dwFontColor = 0xFFFFFFFF;
 
 	SetItemHeight(DEFAULT_ITEM_HEIGHT);
+
+	m_bVertFlip = false;
 }
 
 CUIListWnd::~CUIListWnd(void)
@@ -85,19 +87,29 @@ void CUIListWnd::SetWidth(int width)
 
 
 //добавляет элемент созданный извне
-bool CUIListWnd::AddItem(CUIListItem* pItem)
+bool CUIListWnd::AddItem(CUIListItem* pItem, bool push_front)
 {	
 	AttachChild(pItem);
-	pItem->Init(0, GetSize()* m_iItemHeight, 
+	pItem->Init(0, m_bVertFlip?GetHeight()-GetSize()* m_iItemHeight-m_iItemHeight:GetSize()* m_iItemHeight, 
 				m_iItemWidth, m_iItemHeight);
 	
-	
-	m_ItemList.push_back(pItem);
-	pItem->SetIndex(m_ItemList.size()-1);
-//	m_ItemList.push_front(pItem);
-//pItem->SetIndex(0);
-	
-	
+	//добавление в конец или начало списка
+	if(push_front)	
+	{
+		//изменить значения индексов уже добавленых элементов
+		for(LIST_ITEM_LIST_it it=m_ItemList.begin();  m_ItemList.end() != it; ++it)
+		{
+			(*it)->SetIndex((*it)->GetIndex()+1);
+		}
+		m_ItemList.push_front(pItem);
+		pItem->SetIndex(0);
+
+	}
+	else
+	{
+		m_ItemList.push_back(pItem);
+		pItem->SetIndex(m_ItemList.size()-1);
+	}
 
 	UpdateList();
 
@@ -112,7 +124,7 @@ bool CUIListWnd::AddItem(CUIListItem* pItem)
 	return true;
 }
 
-bool CUIListWnd::AddItem(const char*  str, void* pData, int value)
+bool CUIListWnd::AddItem(const char*  str, void* pData, int value, bool push_front)
 {
 	//создать новый элемент и добавить его в список
 	CUIListItem* pItem = NULL;
@@ -121,14 +133,14 @@ bool CUIListWnd::AddItem(const char*  str, void* pData, int value)
     if(!pItem) return false;
 
 
-	pItem->Init(str, 0, GetSize()* m_iItemHeight, 
+	pItem->Init(str, 0, m_bVertFlip?GetHeight()-GetSize()* m_iItemHeight-m_iItemHeight:GetSize()* m_iItemHeight, 
 					m_iItemWidth, m_iItemHeight);
 
 	pItem->SetData(pData);
 	pItem->SetValue(value);
 	pItem->SetTextColor(m_dwFontColor);
 
-	return AddItem(pItem);
+	return AddItem(pItem, push_front);
 }
 
 void CUIListWnd::RemoveItem(int index)
@@ -159,6 +171,15 @@ void CUIListWnd::RemoveItem(int index)
 	m_ScrollBar.SetPageSize(s16((u32)m_iRowNum<m_ItemList.size()?
 									 m_iRowNum:m_ItemList.size()));
 	m_ScrollBar.SetScrollPos(s16(m_iFirstShownIndex));
+
+
+	//перенумеровать индексы заново
+	i=0;
+	for(LIST_ITEM_LIST_it it=m_ItemList.begin();  m_ItemList.end() != it; ++it,i++)
+	{
+		(*it)->SetIndex(i);
+	}
+
 }
 
 CUIListItem* CUIListWnd::GetItem(int index)
@@ -227,7 +248,7 @@ void CUIListWnd::UpdateList()
 			i<_min(m_ItemList.size(),m_iFirstShownIndex + m_iRowNum+1);
 			++i, ++it)
 	{
-		(*it)->SetWndRect(0, (i-m_iFirstShownIndex)* m_iItemHeight, 
+		(*it)->SetWndRect(0, m_bVertFlip?GetHeight()-(i-m_iFirstShownIndex)* m_iItemHeight-m_iItemHeight:(i-m_iFirstShownIndex)* m_iItemHeight, 
 							m_iItemWidth, m_iItemHeight);
 		(*it)->Show(true);
 		

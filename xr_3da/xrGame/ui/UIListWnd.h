@@ -37,8 +37,8 @@ public:
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData);
 	virtual void Draw();
 	
-	bool AddItem(const char*  str, void* pData = NULL, int value = 0);
-	bool AddItem(CUIListItem* pItem);
+	bool AddItem(const char*  str, void* pData = NULL, int value = 0, bool push_front = false);
+	bool AddItem(CUIListItem* pItem, bool push_front = false);
 	
 	void RemoveItem(int index);
 	void RemoveAll();
@@ -79,6 +79,9 @@ public:
 	void ActivateList(bool activity);
 	bool IsListActive() {return m_bListActivity;}
 
+	void SetVertFlip(bool vert_flip) {m_bVertFlip = vert_flip;}
+	bool GetVertFlip() {return m_bVertFlip;}
+
 protected:
 
 	//полоса прокрутки
@@ -114,6 +117,9 @@ protected:
 	u32 m_dwFontColor;
 
 	bool m_bListActivity;
+
+	//переворот списка по вертикали
+	bool m_bVertFlip;
 };
 
 #endif //_UI_LIST_WND_H_

@@ -167,6 +167,7 @@ void CWeaponMagazinedWGrenade::OnShot		()
 			m_pHUD->animPlay(mhud_shots_g[Random.randI(mhud_shots_g.size())],TRUE,this);
 		}
 		
+		//партиклы огня вылета гранаты из подствольника
 		CParticlesObject* pStaticPG;
 		pStaticPG = xr_new<CParticlesObject>(m_sGrenadeFlameParticles,Sector());
 		Fmatrix pos; 

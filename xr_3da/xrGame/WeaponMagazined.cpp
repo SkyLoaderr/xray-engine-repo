@@ -90,15 +90,8 @@ void CWeaponMagazined::FireStart		()
 			if(STATE==eHiding) return;
 			if(STATE==eMisfire) return;
 
-			/*if (iAmmoElapsed == 0) 
-			{
-				CWeapon::FireStart();
-				SwitchState(eMagEmpty);
-			} else 	{
-				CWeapon::FireStart();
-				SwitchState(eFire);
-			}*/
 			inherited::FireStart();
+			
 			if (iAmmoElapsed == 0) 
 				OnMagazineEmpty();
 			else
@@ -108,8 +101,6 @@ void CWeaponMagazined::FireStart		()
 	else 
 	{
 		if(eReload!=STATE && eMisfire!=STATE) OnMagazineEmpty();
-		//if (1/*!iAmmoElapsed && !iAmmoCurrent*/)	
-		//	
 	}
 }
 
@@ -123,8 +114,7 @@ void CWeaponMagazined::FireEnd()
 		SwitchState(eIdle);
 	}
 
-	if(!iAmmoElapsed) Reload();//TryReload();
-//		else SwitchState(eIdle);
+	if(!iAmmoElapsed) Reload();
 }
 
 void CWeaponMagazined::Reload() 
@@ -404,7 +394,8 @@ void CWeaponMagazined::state_Fire	(float dt)
 
 	UpdateSounds			();
 
-	//для стрельбы сталкеров, к которым апдейты приходят редко, очередями
+	//для стрельбы очередями сталкеров, 
+	//к которым апдейты приходят редко
 	if(m_shotNum == m_queueSize) FireEnd();
 }
 
@@ -517,7 +508,7 @@ void CWeaponMagazined::OnShellDrop	()
 void CWeaponMagazined::OnShot		()
 {
 	// Sound
-	//Sound->play_at_pos			(sndShot,H_Root(),vLastFP);
+	Sound->play_at_pos			(sndShot,H_Root(),vLastFP);
 
 	// Camera
 	if (hud_mode)	
@@ -536,21 +527,10 @@ void CWeaponMagazined::OnShot		()
 	
 	// Shell Drop
 	OnShellDrop					();
-
-
-/*	//particles of smoke from the gun
-	CParticlesObject* pStaticPG;
-	pStaticPG = xr_new<CParticlesObject>("weapons\\generic_weapon",Sector());
-	Fmatrix l_pos; 
-	l_pos.set(XFORM()); 
-	l_pos.c.set(vLastFP);
-	Fvector l_vel; 
-	l_vel.sub(Position(),ps_Element(0).vPosition); 
-	l_vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
-//	l_vel.set(0,0,0);
-	pStaticPG->UpdateParent(l_pos, l_vel); 
-	pStaticPG->Play();
-	//pStaticPG->SetTransform(l_pos); pStaticPG->Play();*/
+	
+	// Огонь из ствола
+	if(m_pFlameParticles && !m_pFlameParticles->IsLooped()) StopFlameParticles();
+	StartFlameParticles	();
 }
 
 void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R)

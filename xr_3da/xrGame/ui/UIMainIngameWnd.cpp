@@ -8,6 +8,8 @@
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 
+#include "UIPdaMsgListItem.h"
+
 #include "../Entity.h"
 #include "../HUDManager.h"
 #include "../PDA.h"
@@ -29,7 +31,6 @@ using namespace InventoryUtilities;
 
 
 
-
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -39,7 +40,6 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 	m_pActor = NULL;
 	m_pWeapon = NULL;
 
-	m_dwMinShowTime = 0;
 	m_dwMaxShowTime = 20000;
 	m_dwMsgShowingTime = 0;
 
@@ -101,20 +101,10 @@ void CUIMainIngameWnd::Init()
 	AttachChild(&UIPdaOnline);
 	xml_init.InitStatic(uiXml, "static", 10, &UIPdaOnline);
 	
-	AttachChild(&UIPdaMessageWnd);
-	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIPdaMessageWnd);
-	UIPdaMessageWnd.AttachChild(&UIMessageText);
-	xml_init.InitStatic(uiXml, "msg_text", 0, &UIMessageText);
-	
-	
-	AttachChild(&UICharacterInfo);
-	xml_init.InitWindow(uiXml, "window", 0, &UICharacterInfo);
-	UICharacterInfo.Init(UICharacterInfo.GetWndRect().left,
-							UICharacterInfo.GetWndRect().top,
-							UICharacterInfo.GetWidth(),
-							UICharacterInfo.GetHeight(),
-							 "maingame_character.xml");
-
+	AttachChild(&UIPdaMsgListWnd);
+	xml_init.InitListWnd(uiXml, "list", 0, &UIPdaMsgListWnd);
+	UIPdaMsgListWnd.SetVertFlip(true);
+		
 	AttachChild(&UITextWound);
 	UITextWound.Init(UIStaticWound.GetWndRect().left+12, 
 						UIStaticWound.GetWndRect().top+40,
@@ -130,15 +120,11 @@ void CUIMainIngameWnd::Init()
 	UIZoneMap.Init();
 	UIZoneMap.SetScale(2);
 
-
 	//для отображения входящих сообщений PDA
-	UICharacterInfo.Show(false);
-	UICharacterInfo.Enable(false);
-	UIPdaMessageWnd.Show(false);
-	UIPdaMessageWnd.Enable(false);
+	UIPdaMsgListWnd.Show(false);
+	UIPdaMsgListWnd.Enable(false);
 
 	m_dwMsgShowingTime = 0;
-	m_dwMinShowTime = pSettings->r_s32("pda_maingame","min_show_time");
 	m_dwMaxShowTime = pSettings->r_s32("pda_maingame","max_show_time");
 }
 
@@ -316,18 +302,24 @@ void CUIMainIngameWnd::Update()
 	}
 
 
-	if(m_dwMsgShowingTime>0) 
+
+	
+	for(int i=0; i<UIPdaMsgListWnd.GetSize(); i++)
 	{
-		m_dwMsgShowingTime -= Device.dwTimeDelta;
+		CUIPdaMsgListItem* pItem = dynamic_cast<CUIPdaMsgListItem*>(UIPdaMsgListWnd.GetItem(i));
+		R_ASSERT(pItem);
+		int* pShowTime = (int*)pItem->GetData();
+		
+		if(*pShowTime>0)
+		{
+			*pShowTime -= Device.dwTimeDelta;
+		}
+		else
+		{
+			xr_delete(pShowTime);
+			UIPdaMsgListWnd.RemoveItem(i);
+		}
 	}
-	//если сообщение выводится 
-	else if(UICharacterInfo.IsShown())
-	{
-		m_dwMsgShowingTime = 0;
-		UICharacterInfo.Show(false);
-		UIPdaMessageWnd.Show(false);
-	}
-    
 
 	CUIWindow::Update();
 }
@@ -351,17 +343,26 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, int info_index)
 {
 	R_ASSERT(pSender);
-	UICharacterInfo.InitCharacter(pSender);
-	UIPdaMessageWnd.UITitleText.SetText(pSender->GetGameName());
-	
+
+	CUIPdaMsgListItem* pItem = NULL;
+	pItem = xr_new<CUIPdaMsgListItem>();
+	UIPdaMsgListWnd.AddItem(pItem, true); 
+	UIPdaMsgListWnd.ScrollToBegin();
+
+	pItem->InitCharacter(dynamic_cast<CInventoryOwner*>(pSender));
+	int* pShowTime = xr_new<int>();
+	*pShowTime = m_dwMaxShowTime;
+	pItem->SetData(pShowTime);
+
+
+	UIPdaMsgListWnd.Show(true);	
+
 	if(msg == ePdaMsgInfo)
 	{
 		CInfoPortion info_portion;
 		info_portion.Load(info_index);
-		UIMessageText.SetText(info_portion.GetText());
+		pItem->UIMsgText.SetText(info_portion.GetText());
 	}
 
-	UICharacterInfo.Show(true);
-	UIPdaMessageWnd.Show(true);
 	m_dwMsgShowingTime = m_dwMaxShowTime;
 }

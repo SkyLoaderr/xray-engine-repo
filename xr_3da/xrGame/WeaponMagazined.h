@@ -50,6 +50,7 @@ protected:
 
 	virtual void	MediaLOAD		();
 	virtual void	MediaUNLOAD		();
+	
 	virtual void	switch2_Idle	();
 	virtual void	switch2_Fire	();
 	virtual void	switch2_Fire2	(){}
@@ -58,7 +59,9 @@ protected:
 	virtual void	switch2_Hiding	();
 	virtual void	switch2_Hidden	();
 	virtual void	switch2_Showing	();
+	
 	virtual void	OnShot			();
+	
 	virtual void	OnShellDrop		();
 	virtual void	OnEmptyClick	();
 	virtual void	OnShotmark		(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R);

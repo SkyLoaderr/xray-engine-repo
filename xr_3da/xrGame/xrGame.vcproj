@@ -3397,6 +3397,12 @@
 						RelativePath=".\ui\UIMainIngameWnd.h">
 					</File>
 					<File
+						RelativePath=".\ui\UIPdaMsgListItem.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIPdaMsgListItem.h">
+					</File>
+					<File
 						RelativePath=".\UIWeapon.cpp">
 					</File>
 					<File

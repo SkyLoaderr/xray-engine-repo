@@ -344,28 +344,16 @@ void CWeapon::StartFlameParticles	()
 	}
 
 	m_pFlameParticles = xr_new<CParticlesObject>(m_sFlameParitcles,Sector(),false);
-/*	m_pFlameParticles = xr_new<CParticlesObject>(m_sFlameParitcles,Sector());
-	Fmatrix pos; 
-	pos.set(XFORM()); 
-	pos.c.set(vLastFP);
-
-	Fvector vel; 
-	vel.sub(Position(),ps_Element(0).vPosition); 
-	vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
-	m_pFlameParticles->UpdateParent(pos, vel); 
-
-	m_pFlameParticles->Play();
-	m_pFlameParticles = NULL;
-	return;*/
 
 	//если партикл не цикличный то поставить
 	//автоудаление и просто забыть про него
 	if(!m_pFlameParticles->IsLooped())
 	{
 		UpdateFlameParticles();
-		m_pFlameParticles->SetAutoRemove(true);
 		m_pFlameParticles->Play();
-		m_pFlameParticles = NULL;
+
+		//m_pFlameParticles->SetAutoRemove(true);
+		//m_pFlameParticles = NULL;
 	}
 	else
 	{
@@ -391,7 +379,15 @@ void CWeapon::UpdateFlameParticles	()
 	Fmatrix pos; 
 	pos.set(XFORM()); 
 	pos.c.set(vLastFP);
-	m_pFlameParticles->SetXFORM(pos); 
+	m_pFlameParticles->SetXFORM(pos);
+
+	
+	if(!m_pFlameParticles->IsLooped() && !m_pFlameParticles->PSI_alive())
+	{
+		m_pFlameParticles->Stop();
+		m_pFlameParticles->PSI_destroy();
+		m_pFlameParticles = NULL;
+	}
 }
 
 /*	Fvector vel; 
@@ -404,16 +400,24 @@ void CWeapon::UpdateFlameParticles	()
 void CWeapon::FireStart	()
 {
 	bWorking=true;	
-	StartFlameParticles	();
 }
 void CWeapon::FireEnd	()				
 { 
 	bWorking=false;	
 	StopFlameParticles	();
 }
-void CWeapon::Fire2Start()				{ bWorking2=true;	}
-void CWeapon::Fire2End	()				{ bWorking2=false;	}
+void CWeapon::Fire2Start()				
+{ 
+	bWorking2=true;	
+}
+void CWeapon::Fire2End	()
+{ 
+	bWorking2=false;
+	StopFlameParticles	();
+}
 
+//StartFlameParticles	();
+//StopFlameParticles	();
 
 /*
 def:
