@@ -62,7 +62,7 @@ void CLightProjector::set_object	(IRenderable* O)
 	if ((0==O) || (receivers.size()>=P_o_count))	current		= 0;
 	else  
 	{
-		if (!O->renderable_ShadowReceive())	
+		if (!O->renderable_ShadowReceive() || RImplementation.val_bInvisible )	
 		{
 			current		= 0;
 			return;

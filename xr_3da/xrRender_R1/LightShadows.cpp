@@ -80,7 +80,11 @@ void CLightShadows::set_object	(IRenderable* O)
 	if (0==O)	current		= 0;
 	else 
 	{
-		if (!O->renderable_ShadowGenerate())	return;
+		if (!O->renderable_ShadowGenerate()	|| RImplementation.val_bHUD )
+		{
+			current		= 0;
+			return;
+		}
 
 		Fvector		C;	O->renderable.xform.transform_tiny		(C,O->renderable.visual->vis.sphere.P);
 		float		R	= O->renderable.visual->vis.sphere.R;
