@@ -9,8 +9,8 @@
 #ifndef __XRAY_AI_ZOMBIE__
 #define __XRAY_AI_ZOMBIE__
 
-#include "..\\ai_selector_template.h"
-#include "..\\..\\CustomMonster.h"
+#include "../../CustomMonster.h"
+#include "../../level_graph.h"
 
 class CAI_Zombie : public CCustomMonster  
 {
@@ -83,6 +83,15 @@ protected:
 		//////////////////////////
 		
 		// FSM
+		enum EZombieAction {
+			eZombieActionNone = u32(0),
+			eZombieActionAttackBegin,
+			eZombieActionAttackEnd,
+		};
+
+		EZombieAction			m_tAction;
+		float					m_fLookSpeed;
+
 		xr_stack<EZombieStates>	m_tStateStack;
 		EZombieStates			m_eCurrentState;
 		EZombieStates			m_ePreviousState;
@@ -122,8 +131,8 @@ protected:
 		u32					m_dwStartAttackTime;
 		float				m_fAttackSpeed;
 		// HIT
-		u32					m_dwHitTime;
-		Fvector				m_tHitDir;
+		u32					m_hit_time;
+		Fvector				m_hit_direction;
 		Fvector				m_tHitPosition;
 		float				m_fHitPower;
 		u32					m_dwHitInterval;
@@ -136,11 +145,11 @@ protected:
 		CEntity*			m_tSavedEnemy;
 		Fvector				m_tSavedEnemyPosition;
 		u32					m_dwLostEnemyTime;
-		NodeCompressed* 	m_tpSavedEnemyNode;
+		const CLevelGraph::CVertex* 	m_tpSavedEnemyNode;
 		u32					m_dwSavedEnemyNodeID;
 		
 		// PERFORMANCE
-		u32					m_dwLastRangeSearch;
+		u32					m_previous_query_time;
 		
 		// BEHAVIOUR
 		Fvector				m_tGoalDir;
@@ -241,7 +250,7 @@ protected:
 			if (!m_bActive && (bForceActive || (Group.m_dwAliveCount*m_dwActiveCountPercent/100 >= Group.m_dwActiveCount))) {
 				m_bActive = true;
 				m_eCurrentState = aiZombieFreeHuntingActive;
-				Group.m_dwActiveCount++;
+				++Group.m_dwActiveCount;
 				shedule.t_min	= m_dwActiveScheduleMin;
 				shedule.t_max	= m_dwActiveScheduleMax;
 			}
@@ -253,7 +262,7 @@ protected:
 			CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 			if (m_bActive) {
 				R_ASSERT(Group.m_dwActiveCount > 0);
-				Group.m_dwActiveCount--;
+				--(Group.m_dwActiveCount);
 				m_bActive = false;
 				m_eCurrentState = aiZombieFreeHuntingPassive;
 				shedule.t_min	= m_dwPassiveScheduleMin;
@@ -269,15 +278,12 @@ protected:
 		
 		IC bool bfCheckIfOutsideAIMap(Fvector &tTemp1)
 		{
-			u32 dwNewNode = AI_NodeID;
-			NodeCompressed *tpNewNode = AI_Node;
-			NodePosition	QueryPos;
-			getAI().PackPosition	(QueryPos,tTemp1);
-			if (!AI_NodeID || !getAI().u_InsideNode(*AI_Node,QueryPos)) {
-				dwNewNode = getAI().q_Node(AI_NodeID,tTemp1);
-				tpNewNode = getAI().Node(dwNewNode);
-			}
-			return(!dwNewNode || !getAI().u_InsideNode(*tpNewNode,QueryPos));
+			u32 dwNewNode = level_vertex_id();
+			const CLevelGraph::CVertex *tpNewNode = level_vertex();
+			CLevelGraph::CPosition QueryPos;
+			if (!level_vertex_id() || !ai().level_graph().inside(*level_vertex(),ai().level_graph().vertex_position(QueryPos,tTemp1)))
+				tpNewNode = ai().level_graph().vertex(dwNewNode = ai().level_graph().vertex(level_vertex_id(),tTemp1));
+			return(!dwNewNode || !ai().level_graph().inside(*tpNewNode,ai().level_graph().vertex_position(QueryPos,tTemp1)));
 		};
 		//////////////////////////
 		// MISCELLANIOUS FUNCTIONS
@@ -318,7 +324,6 @@ protected:
 		virtual float EnemyHeuristics(CEntity* E);
 		virtual void  SelectEnemy(SEnemySelected& S);
 		virtual void  SelectAnimation( const Fvector& _view, const Fvector& _move, float speed );
-		virtual void  Exec_Movement(float dt);
 		virtual void  Exec_Action			(float dt);
 		virtual	void  feel_sound_new		(CObject* who, int type, Fvector& Position, float power);
 		virtual BOOL  feel_vision_isRelevant(CObject* who);

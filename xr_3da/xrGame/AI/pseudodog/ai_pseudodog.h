@@ -1,7 +1,7 @@
 #pragma once
 
-#include "..\\biting\\ai_biting.h"
-#include "..\\ai_monster_jump.h"
+#include "../\biting/ai_biting.h"
+#include "../\ai_monster_jump.h"
 
 class CAI_PseudoDog : public CAI_Biting, public CJumping {
 	typedef		CAI_Biting	inherited;

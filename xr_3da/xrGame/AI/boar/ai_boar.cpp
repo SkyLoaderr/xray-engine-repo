@@ -131,7 +131,7 @@ void CAI_Boar::StateSelector()
 	else						SetState(stateRest); 
 }
 
-void CAI_Boar::CheckSpecParams(u32 spec_params)
+void CAI_Boar::CheckSpecParams(u32 /**spec_params/**/)
 {
 
 }
@@ -143,7 +143,7 @@ void CAI_Boar::LookPosition(Fvector to_point)
 	float yaw,pitch;
 	dir.getHP(yaw,pitch);
 
-	r_torso_target.yaw = angle_normalize(-yaw);
+	m_body.target.yaw = angle_normalize(-yaw);
 }
 
 // проверка включения поворота костей

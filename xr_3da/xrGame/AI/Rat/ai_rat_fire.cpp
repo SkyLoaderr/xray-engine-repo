@@ -8,19 +8,16 @@
 
 #include "stdafx.h"
 #include "ai_rat.h"
-#include "..\\..\\ai_funcs.h"
 
-void CAI_Rat::Exec_Action(float dt)
+void CAI_Rat::Exec_Action(float /**dt/**/)
 {
-	AI::C_Command* C	= &q_action;
-	AI::AIC_Action* L	= (AI::AIC_Action*)C;
-	switch (L->Command) {
-		case AI::AIC_Action::AttackBegin: {
+	switch (m_tAction) {
+		case eRatActionAttackBegin : {
 			u32 dwTime = Level().timeServer();
 			if (m_tSavedEnemy && (m_tSavedEnemy->g_Health() > 0) && (dwTime - m_dwStartAttackTime > m_dwHitInterval)) {
 				bool bOk = true;
 
-				for (int i=0; i<SND_ATTACK_COUNT; i++)
+				for (int i=0; i<SND_ATTACK_COUNT; ++i)
 					if (m_tpaSoundAttack[i].feedback) {
 						bOk = false;
 						break;
@@ -37,14 +34,14 @@ void CAI_Rat::Exec_Action(float dt)
 				tDirection.sub(m_tSavedEnemy->Position(),this->Position());
 				vfNormalizeSafe(tDirection);
 				
-				if ((this->Local()) && (m_tSavedEnemy) && (m_tSavedEnemy->CLS_ID == CLSID_ENTITY))
+				if ((this->Local()) && (m_tSavedEnemy) && (CLSID_ENTITY == m_tSavedEnemy->CLS_ID))
 					m_tSavedEnemy->Hit(m_fHitPower,tDirection,this,0,position_in_bone_space,0);
 			}
 			else {
 				if (m_tSavedEnemy) {
 					bool bOk = true;
 
-					for (int i=0; i<SND_ATTACK_COUNT; i++)
+					for (int i=0; i<SND_ATTACK_COUNT; ++i)
 						if (m_tpaSoundAttack[i].feedback) {
 							bOk = false;
 							break;
@@ -58,25 +55,23 @@ void CAI_Rat::Exec_Action(float dt)
 
 			break;
 		}
-		case AI::AIC_Action::AttackEnd: {
+		case eRatActionAttackEnd : {
 			m_bActionStarted = false;
 			break;
 		}
 		default:
 			break;
 	}
-	if (Device.dwTimeGlobal>=L->o_timeout)	
-		L->setTimeout();
 }
 
-void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)
+void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 /**element/**/)
 {
 	// Save event
 	Fvector D;
 	XFORM().transform_dir(D,vLocalDir);
-	m_dwHitTime = Level().timeServer();
-	m_tHitDir.set(D);
-	m_tHitDir.normalize();
+	m_hit_time = Level().timeServer();
+	m_hit_direction.set(D);
+	m_hit_direction.normalize();
 	m_tHitPosition = who->Position();
 	
 	// Play hit-ref_sound
@@ -115,11 +110,11 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 {
 	// Initiate process
 	objVisible&	Known	= Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
-	S.Enemy					= 0;
-	S.bVisible			= FALSE;
-	S.fCost				= flt_max-1;
+	S.m_enemy			= 0;
+	S.m_visible			= FALSE;
+	S.m_cost			= flt_max-1;
 	
-	if (Known.size()==0)
+	if (!Known.size())
 		return;
 	// Get visible list
 	feel_vision_get	(m_tpaVisibleObjects);
@@ -127,28 +122,28 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 	
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	
-	for (u32 i=0; i<Known.size(); i++) {
+	for (u32 i=0; i<Known.size(); ++i) {
 		CEntityAlive*	E = dynamic_cast<CEntityAlive*>(Known[i].key);
 		if (!E || E->getDestroy())
 			continue;
 		float		H = EnemyHeuristics(E);
-		if (H<S.fCost) {
+		if (H<S.m_cost) {
 			bool bVisible = false;
-			for (int i=0; i<(int)m_tpaVisibleObjects.size(); i++)
+			for (int i=0; i<(int)m_tpaVisibleObjects.size(); ++i)
 				if (m_tpaVisibleObjects[i] == E) {
 					bVisible = true;
 					break;
 				}
 			float	cost	 = H*(bVisible?1:_FB_invisible_hscale);
-			if (cost<S.fCost)	{
-				S.Enemy		= E;
-				S.bVisible	= bVisible;
-				S.fCost		= cost;
+			if (cost<S.m_cost)	{
+				S.m_enemy		= E;
+				S.m_visible		= bVisible;
+				S.m_cost		= cost;
 				Group.m_bEnemyNoticed = true;
 			}
 		}
 	}
-	if (S.Enemy)
+	if (S.m_enemy)
 		vfSaveEnemy();
 	if (m_tSavedEnemy && m_tSavedEnemy->getDestroy())
 		m_tSavedEnemy = 0;
@@ -172,9 +167,9 @@ void CAI_Rat::SelectCorp(SEnemySelected& S)
 {
 	// Initiate process
 	objVisible&	Known	= Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
-	S.Enemy				= 0;
-	S.bVisible			= FALSE;
-	S.fCost				= flt_max-1;
+	S.m_enemy			= 0;
+	S.m_visible			= FALSE;
+	S.m_cost			= flt_max-1;
 	
 	if (!Known.size())
 		return;
@@ -185,21 +180,21 @@ void CAI_Rat::SelectCorp(SEnemySelected& S)
 	
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	
-	for (u32 i=0; i<Known.size(); i++) {
+	for (u32 i=0; i<Known.size(); ++i) {
 		CEntity*	E = dynamic_cast<CEntity*>(Known[i].key);
 		float		H = CorpHeuristics(E);
 		if (H < flt_max) {
 			bool bVisible = false;
-			for (int i=0; i<(int)m_tpaVisibleObjects.size(); i++)
+			for (int i=0; i<(int)m_tpaVisibleObjects.size(); ++i)
 				if (m_tpaVisibleObjects[i] == E) {
 					bVisible = true;
 					break;
 				}
 				float	cost	 = bVisible? H*.95f : H;
-			if (cost<S.fCost)	{
-				S.Enemy		= E;
-				S.bVisible	= bVisible;
-				S.fCost		= cost;
+			if (cost<S.m_cost)	{
+				S.m_enemy		= E;
+				S.m_visible		= bVisible;
+				S.m_cost		= cost;
 				Group.m_bEnemyNoticed = true;
 			}
 		}
@@ -256,10 +251,10 @@ void CAI_Rat::vfUpdateMorale()
 	}
 }
 
-void CAI_Rat::vfUpdateMoraleBroadcast(float fValue, float fRadius)
+void CAI_Rat::vfUpdateMoraleBroadcast(float fValue, float /**fRadius/**/)
 {
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	for (int i=0; i<(int)Group.Members.size(); i++)
+	for (int i=0; i<(int)Group.Members.size(); ++i)
 		if (Group.Members[i]->g_Alive())
 			Group.Members[i]->m_fMorale += fValue;
 }

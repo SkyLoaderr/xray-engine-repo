@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ai_bloodsucker.h"
 #include "ai_bloodsucker_effector.h"
-#include "..\\ai_monsters_misc.h"
+#include "../ai_monsters_misc.h"
 
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
@@ -146,7 +146,7 @@ void CAI_Bloodsucker::StateSelector()
 	if (pSquad->GetLeader() == this) pSquad->ProcessGroupIntel();
 	GTask &pTask = pSquad->GetTask(this);
 
-	if (pSquad->GetLeader() == this) SetState(stateRest);
+	if (this == pSquad->GetLeader()) SetState(stateRest);
 	else {
 		if ((pTask.state.type == TS_REQUEST) && (pTask.state.ttl > m_dwCurrentTime)) {
 			pTask.state.type	= TS_PROGRESS;
@@ -233,15 +233,15 @@ void CAI_Bloodsucker::LookDirection(Fvector to_dir, float bone_turn_speed)
 	to_dir.getHP(yaw,pitch);
 
 	// установить параметры вращения по yaw
-	float cur_yaw = -r_torso_current.yaw;						// текущий мировой угол монстра
+	float cur_yaw = -m_body.current.yaw;						// текущий мировой угол монстра
 	float bone_angle;											// угол для боны	
 
 	float dy = _abs(angle_normalize_signed(yaw - cur_yaw));		// дельта, на которую нужно поворачиваться
 
-	if (getAI().bfTooSmallAngle(cur_yaw,yaw, MAX_BONE_ANGLE)) {	// bone turn only
+	if (angle_difference(cur_yaw,yaw) <= MAX_BONE_ANGLE) {		// bone turn only
 		bone_angle = dy;
 	} else {													// torso & bone turn 
-		if (AI_Path.TravelPath.empty()) r_torso_target.yaw = angle_normalize(-yaw);
+		if (path_completed()) m_body.target.yaw = angle_normalize(-yaw);
 		if (dy / 2 < MAX_BONE_ANGLE) bone_angle = dy / 2;
 		else bone_angle = MAX_BONE_ANGLE;
 	}

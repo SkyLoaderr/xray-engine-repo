@@ -8,31 +8,41 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
-#include "..\\ai_monsters_misc.h"
-#include "..\\..\\weapon.h"
-#include "..\\..\\CharacterPhysicsSupport.h"
-#include "..\\..\\pda.h"
-#include "..\\..\\ai_script_actions.h"
+#include "../ai_monsters_misc.h"
+#include "../../weapon.h"
+#include "../../CharacterPhysicsSupport.h"
+#include "../../pda.h"
+#include "../../ai_script_actions.h"
+#include "../../game_level_cross_table.h"
+#include "../../game_graph.h"
 
 CAI_Stalker::CAI_Stalker			()
 {
 	m_pPhysics_support				= xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etStalker,this);
 	Init							();
-	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
+	m_PhysicMovementControl.AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
 	shedule.t_min					= 200;
 	shedule.t_max					= 1;
 	m_dwParticularState				= u32(-1);
-
-	InitTrade();
+	InitTrade						();
+	m_tpSelectorFreeHunting			= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance> >();
+	m_tpSelectorReload				= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiCoverFromEnemyWeight> >();
+	m_tpSelectorCover				= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance> >();
+	m_tpSelectorRetreat				= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance | aiEnemyViewDeviationWeight> >();
 }
 
 CAI_Stalker::~CAI_Stalker			()
 {
 	xr_delete						(m_pPhysics_support);
+	xr_delete						(m_tpSelectorFreeHunting);
+	xr_delete						(m_tpSelectorReload);
+	xr_delete						(m_tpSelectorCover);
+	xr_delete						(m_tpSelectorRetreat);
 }
 
 void CAI_Stalker::Init()
 {
+	inherited::Init					();
 	m_pPhysics_support->in_Init		();
 	m_tMovementDirection			= eMovementDirectionForward;
 	m_tDesirableDirection			= eMovementDirectionForward;
@@ -40,10 +50,10 @@ void CAI_Stalker::Init()
 	m_tBodyState					= eBodyStateStand;
 	m_dwDirectionStartTime			= 0;
 	m_dwAnimationSwitchInterval		= 500;
-	r_torso_speed					= PI_MUL_2;
-	r_head_speed					= 3*PI_DIV_2;
+	m_body.speed					= PI_MUL_2;
+	m_head.speed					= 3*PI_DIV_2;
 
-	m_dwHitTime						= 0;
+	m_hit_time						= 0;
 
 	m_dwActionRefreshRate			= 1000;
 	m_fAttackSuccessProbability		= .7f;
@@ -60,21 +70,18 @@ void CAI_Stalker::Init()
 	m_iSoundIndex					= -1;
 	m_dwSoundTime					= 0;
 
-	m_dwLastRangeSearch				= 0;
+	m_previous_query_time				= 0;
 	m_dwRandomFactor				= 100;
 	m_dwInertion					= 20000;
 
 	m_tMovementType					= eMovementTypeStand;
-	m_tPathState					= ePathStateSearchNode;
-	m_tPathType						= ePathTypeDodge;
+//	m_tPathState					= ePathStateSearchNode;
+//	m_tPathType						= ePathTypeDodge;
 	m_tMentalState					= eMentalStateFree;
 
 	m_dwActionStartTime				= 0;
 	m_dwActionEndTime				= 0;
 	m_bHammerIsClutched				= false;
-
-	AI_Path.TravelStart				= 0;
-	AI_Path.DestNode				= u32(-1);
 
 	m_bIfSearchFailed				= false;
 	m_bStateChanged					= true;
@@ -87,14 +94,13 @@ void CAI_Stalker::Init()
 	m_fAttackSuccessProbability3	= .2f;
 	m_dwRandomState					= 2+0*::Random.randI(5);
 
-	//	m_fAccuracy						= 0.f;
-	//	m_fIntelligence					= 0.f;
+//	m_fAccuracy						= 0.f;
+//	m_fIntelligence					= 0.f;
 
 	m_fTimeToStep					= 0;
 	
 	m_dwMyMaterialID				= GMLib.GetMaterialIdx("actor");
 	m_dwLastMaterialID				= GMLib.GetMaterialIdx("default");
-
 
 	m_dwLookChangedTime				= 0;
 
@@ -108,9 +114,6 @@ void CAI_Stalker::Init()
 
 	m_dwLastUpdate					= 0;
 
-	AI_Path.TravelPath.clear		();
-	AI_Path.Nodes.clear				();
-
 	m_dwStartFireTime				= 0;
 
 	m_tTaskState					= eTaskStateChooseTask;
@@ -119,12 +122,7 @@ void CAI_Stalker::Init()
 
 void CAI_Stalker::Die				()
 {
-//#ifdef DEBUG
-//	Msg								("Death position : [%f][%f][%f]",VPUSH(Position()));
-//#endif
-	Fvector	dir;
-	AI_Path.Direction				(dir);
-	SelectAnimation					(XFORM().k,dir,AI_Path.fSpeed);
+	SelectAnimation					(XFORM().k,direction(),speed());
 	m_dwDeathTime					= Level().timeServer();
 
 	ref_sound						&S  = m_tpSoundDie[::Random.randI((u32)m_tpSoundDie.size())];
@@ -134,7 +132,7 @@ void CAI_Stalker::Die				()
 	m_bHammerIsClutched				= !::Random.randI(0,2);
 
 	//запретить использование слотов в инвенторе
-	m_inventory.SetSlotsUseful(false);
+	m_inventory.SetSlotsUseful		(false);
 //#ifdef DEBUG
 //	Msg								("Death position : [%f][%f][%f]",VPUSH(Position()));
 //#endif
@@ -144,11 +142,10 @@ void CAI_Stalker::Load				(LPCSTR section)
 { 
 	setEnabled						(false);
 	inherited::Load					(section);
-	//m_tSelectorAttack.Load			(section,"selector_attack");
-	m_tSelectorFreeHunting.Load		(section,"selector_free_hunting");
-	m_tSelectorReload.Load			(section,"selector_reload");
-	m_tSelectorRetreat.Load			(section,"selector_retreat");
-	m_tSelectorCover.Load			(section,"selector_cover");
+	m_tpSelectorFreeHunting->Load	(section,"selector_free_hunting");
+	m_tpSelectorReload->Load		(section,"selector_reload");
+	m_tpSelectorRetreat->Load		(section,"selector_retreat");
+	m_tpSelectorCover->Load			(section,"selector_cover");
 	
 	// visibility
 	m_dwMovementIdleTime			= pSettings->r_s32(section,"MovementIdleTime");
@@ -192,13 +189,13 @@ void CAI_Stalker::Load				(LPCSTR section)
 	m_tpaTerrain.clear				();
 	LPCSTR							S = pSettings->r_string(section,"terrain");
 	u32								N = _GetItemCount(S);
-	R_ASSERT						(((N % (LOCATION_TYPE_COUNT + 2)) == 0) && (N));
+	R_ASSERT						(!(N % (LOCATION_TYPE_COUNT + 2)) && N);
 	STerrainPlace					tTerrainPlace;
 	tTerrainPlace.tMask.resize		(LOCATION_TYPE_COUNT);
 	m_tpaTerrain.reserve			(32);
 	string16						I;
 	for (u32 i=0; i<N;) {
-		for (u32 j=0; j<LOCATION_TYPE_COUNT; j++, i++)
+		for (u32 j=0; j<LOCATION_TYPE_COUNT; ++j, ++i)
 			tTerrainPlace.tMask[j]	= _LOCATION_ID(atoi(_GetItem(S,i,I)));
 		tTerrainPlace.dwMinTime		= atoi(_GetItem(S,i++,I))*1000;
 		tTerrainPlace.dwMaxTime		= atoi(_GetItem(S,i++,I))*1000;
@@ -242,24 +239,30 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	//проспавнить PDA у InventoryOwner
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
 
-	Movement.SetPLastMaterial		(&m_dwLastMaterialID);
+	m_PhysicMovementControl.SetPLastMaterial		(&m_dwLastMaterialID);
 
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeHumanAbstract			*tpHuman = dynamic_cast<CSE_ALifeHumanAbstract*>(e);
 	R_ASSERT						(tpHuman);
 	cNameVisual_set					(tpHuman->get_visual());
 
-	r_current.yaw = r_target.yaw = r_torso_current.yaw = r_torso_target.yaw	= angle_normalize_signed(-tpHuman->o_Angle.y);
-	r_torso_current.pitch			= r_torso_target.pitch	= 0;
+	m_head.current.yaw = m_head.target.yaw = m_body.current.yaw = m_body.target.yaw	= angle_normalize_signed(-tpHuman->o_Angle.y);
+	m_body.current.pitch			= m_body.target.pitch	= 0;
 
 	m_tGraphID						= tpHuman->m_tGraphID;
 	m_tNextGraphID					= tpHuman->m_tNextGraphID;
 	m_dwBornTime					= Level().timeServer();
 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	if (m_dwParticularState == u32(-1)) {
-		R_ASSERT2					(getAI().bfCheckIfMapLoaded() && getAI().bfCheckIfGraphLoaded() && getAI().bfCheckIfCrossTableLoaded() && (getAI().m_dwCurrentLevelID != u32(-1)),"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!");
-		m_tNextGraphID				= m_tGraphID = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
+	if (u32(-1) == m_dwParticularState) {
+		R_ASSERT2					(
+			ai().get_game_graph() && 
+			ai().get_level_graph() && 
+			ai().get_cross_table() && 
+			(ai().level_graph().level_id() != u32(-1)),
+			"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!"
+		);
+		m_tNextGraphID				= m_tGraphID = ai().cross_table().vertex(level_vertex_id()).game_vertex_id();
 	}
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -269,8 +272,8 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	setEnabled						(true);
 
 	m_pPhysics_support->in_NetSpawn();
-	Movement.SetPosition	(Position());
-	Movement.SetVelocity	(0,0,0);
+	m_PhysicMovementControl.SetPosition	(Position());
+	m_PhysicMovementControl.SetVelocity	(0,0,0);
 
 	if (!Level().CurrentViewEntity())
 		Level().SetEntity(this);
@@ -279,13 +282,13 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	if (pSettings->line_exist(cNameSect(),"damage")) {
 		string32 buf;
 		CInifile::Sect& dam_sect	= pSettings->r_section(pSettings->r_string(cNameSect(),"damage"));
-		for (CInifile::SectIt it=dam_sect.begin(); it!=dam_sect.end(); it++)
+		for (CInifile::SectIt it=dam_sect.begin(); dam_sect.end() != it; ++it)
 		{
 			if (0==strcmp(*it->first,"default")){
 				m_fHitFactor	= (float)atof(*it->second);
 			}else{
 				int bone	= PKinematics(Visual())->LL_BoneID(*it->first); 
-				R_ASSERT2(bone!=BI_NONE,*it->first);
+				R_ASSERT2(BI_NONE!=bone,*it->first);
 				CBoneInstance& B = PKinematics(Visual())->LL_GetBoneInstance(u16(bone));
 				B.set_param(0,(float)atof(_GetItem(*it->second,0,buf)));
 				B.set_param(1,(float)atoi(_GetItem(*it->second,1,buf)));
@@ -332,10 +335,10 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	P.w								(&f1,						sizeof(f1));
 	P.w								(&f1,						sizeof(f1));
 
-	if (m_tGraphID != u16(-1)) {
-		f1							= Position().distance_to		(getAI().m_tpaGraph[m_tGraphID].tLocalPoint);
+	if (ai().game_graph().valid_vertex_id(m_tGraphID)) {
+		f1							= Position().distance_to	(ai().game_graph().vertex(m_tGraphID)->level_point());
 		P.w							(&f1,						sizeof(f1));
-		f1							= Position().distance_to		(getAI().m_tpaGraph[m_tNextGraphID].tLocalPoint);
+		f1							= Position().distance_to	(ai().game_graph().vertex(m_tNextGraphID)->level_point());
 		P.w							(&f1,						sizeof(f1));
 	}
 	else {
@@ -391,21 +394,11 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 	setEnabled						(TRUE);
 }
 
-void CAI_Stalker::Exec_Movement		(float dt)
-{
-	AI_Path.Calculate				(this,Position(),Position(),m_fCurSpeed,dt);
-}
-
-void CAI_Stalker::CreateSkeleton()
-{
-
-}
-
 void CAI_Stalker::UpdateCL(){
 
 	inherited::UpdateCL();
 	m_pPhysics_support->in_UpdateCL();
-		if (Level().CurrentViewEntity() == this) {
+		if (this == Level().CurrentViewEntity()) {
 			Exec_Visibility();
 		}
 }
@@ -461,7 +454,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			Fvector C; float R;
 			//////////////////////////////////////
 			// С Олеся - ПИВО!!!! (Диме :-))))
-			// Movement.GetBoundingSphere	(C,R);
+			// m_PhysicMovementControl.GetBoundingSphere	(C,R);
 			//////////////////////////////////////
 			Center(C);
 			R = Radius();
@@ -470,8 +463,8 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 
 			net_update				uNext;
 			uNext.dwTimeStamp		= Level().timeServer();
-			uNext.o_model			= r_torso_current.yaw;
-			uNext.o_torso			= r_current;
+			uNext.o_model			= m_body.current.yaw;
+			uNext.o_torso			= m_head.current;
 			uNext.p_pos				= vNewPosition;
 			uNext.fHealth			= fEntityHealth;
 			NET.push_back			(uNext);
@@ -480,8 +473,8 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		{
 			net_update			uNext;
 			uNext.dwTimeStamp	= Level().timeServer();
-			uNext.o_model		= r_torso_current.yaw;
-			uNext.o_torso		= r_current;
+			uNext.o_model		= m_body.current.yaw;
+			uNext.o_torso		= m_head.current;
 			uNext.p_pos			= vNewPosition;
 			uNext.fHealth		= fEntityHealth;
 			NET.push_back		(uNext);
@@ -495,14 +488,14 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		if (!tpWeapon || !tpWeapon->GetAmmoElapsed() || !m_bHammerIsClutched || (Level().timeServer() - m_dwDeathTime > 500)) {
 			xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
 			xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
-			for ( ; I != E; I++)
+			for ( ; I != E; ++I)
 				if ((I - B) == (int)m_inventory.GetActiveSlot()) 
 					(*I).m_pIItem->Drop();
 				else
 					if((*I).m_pIItem) m_inventory.Ruck((*I).m_pIItem);
 
 			/*TIItemList &l_list = m_inventory.m_ruck;
-			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++)
+			for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
 				if ((*l_it)->Useful())
 					(*l_it)->Drop();*/
 		}
@@ -510,13 +503,13 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			m_inventory.Action(kWPN_FIRE,	CMD_START);
 			xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
 			xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
-			for ( ; I != E; I++)
+			for ( ; I != E; ++I)
 				if ((I - B) != (int)m_inventory.GetActiveSlot())
 					m_inventory.Ruck((*I).m_pIItem);
 			//		(*I).m_pIItem->Drop();
 			
 			/*TIItemList &l_list = m_inventory.m_ruck;
-			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++)
+			for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
 				if ((*l_it)->Useful())
 					(**l_it).Drop();*/
 		}
@@ -524,23 +517,23 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	VERIFY				(_valid(Position()));
 
 	if (g_Alive()) {
-		R_ASSERT					(m_dwLastMaterialID != GAMEMTL_NONE);
+		R_ASSERT					(GAMEMTL_NONE != m_dwLastMaterialID);
 		SGameMtlPair				*mtl_pair = GMLib.GetMaterialPair(m_dwMyMaterialID,m_dwLastMaterialID);
 		R_ASSERT3					(mtl_pair,"Undefined material pair: Actor # ", GMLib.GetMaterial(m_dwLastMaterialID)->name);
 		// ref_sound step
-		if (m_tMovementType != eMovementTypeStand) {
+		if (eMovementTypeStand != m_tMovementType) {
 			if(m_fTimeToStep < 0) {
 				m_bStep				= !m_bStep;
-				float k				= (m_tBodyState == eBodyStateCrouch)?0.75f:1.f;
-				float tm			= (m_tMovementType == eMovementTypeRun) ? (PI/(k*10.f)) : (PI/(k*7.f));
+				float k				= (eBodyStateCrouch == m_tBodyState) ? 0.75f : 1.f;
+				float tm			= (eMovementTypeRun == m_tMovementType) ? (PI/(k*10.f)) : (PI/(k*7.f));
 				m_fTimeToStep		= tm;
 				m_tpSoundStep[m_bStep].clone		(mtl_pair->StepSounds[m_bStep]);
 				m_tpSoundStep[m_bStep].play_at_pos	(this,Position());
 			}
 			m_fTimeToStep -= dt;
 		}
-		float	s_k			= ffGetStartVolume(SOUND_TYPE_MONSTER_WALKING)*((m_tBodyState == eBodyStateCrouch) ? CROUCH_SOUND_FACTOR : 1.f);
-		float	s_vol		= s_k*((m_tMovementType == eMovementTypeRun) ? 1.f : ACCELERATED_SOUND_FACTOR);
+		float	s_k			= ffGetStartVolume(SOUND_TYPE_MONSTER_WALKING)*((eBodyStateCrouch == m_tBodyState) ? CROUCH_SOUND_FACTOR : 1.f);
+		float	s_vol		= s_k*((eMovementTypeRun == m_tMovementType) ? 1.f : ACCELERATED_SOUND_FACTOR);
 		if (m_tpSoundStep[0].feedback)		{
 			m_tpSoundStep[0].set_position	(Position());
 			m_tpSoundStep[0].set_volume	(s_vol);

@@ -8,17 +8,18 @@
 
 #pragma once
 
-#include "..\\..\\CustomMonster.h"
-#include "..\\ai_selector_template.h"
+#include "../../CustomMonster.h"
 #include "ai_stalker_animations.h"
 #include "ai_stalker_space.h"
-#include "..\\..\\inventory.h"
+#include "../../inventory.h"
+#include "../../path_manager_level_selector.h"
 
 using namespace StalkerSpace;
 
 class CSE_ALifeSimulator;
 class CCharacterPhysicsSupport;
 class CWeapon;
+class PathManagers::CAbstractVertexEvaluator;
 
 //#define LOG_PARAMETERS
 
@@ -37,9 +38,6 @@ private:
 	} SHurt;
 
 	// path structures
-	EPathState					m_tPathState;	
-	EPathType					m_tPathType;
-	EPathType					m_tPrevPathType;
 	EObjectAction				m_tWeaponState;
 	EActionState				m_tActionState;
 	EMentalState				m_tMentalState;
@@ -53,16 +51,13 @@ private:
 	bool						m_bCanFire;
 
 	// ALife members
-	xr_vector<Fvector>			m_tpaPoints;
-	xr_vector<Fvector>			m_tpaDeviations;
-	xr_vector<Fvector>			m_tpaTravelPath;
-	xr_vector<u32>				m_tpaPointNodes;
-	xr_vector<Fvector>			m_tpaLine;
-	xr_vector<u32>				m_tpaNodes;
-	xr_vector<Fvector>			m_tpaTempPath;
-
-	typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousPoints;
-	typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousForces;
+//	xr_vector<Fvector>			m_tpaPoints;
+//	xr_vector<Fvector>			m_tpaDeviations;
+//	xr_vector<Fvector>			m_tpaTravelPath;
+//	xr_vector<u32>				m_tpaPointNodes;
+//	xr_vector<Fvector>			m_tpaLine;
+//	xr_vector<u32>				m_tpaNodes;
+//	xr_vector<Fvector>			m_tpaTempPath;
 
 	// ref_sound
 	ref_sound				m_tpSoundStep[STALKER_SND_STEP_COUNT];
@@ -122,8 +117,8 @@ private:
 	float					m_fMaxMissFactor;
 
 	// hit data
-	u32						m_dwHitTime;
-	Fvector					m_tHitDir;
+	u32						m_hit_time;
+	Fvector					m_hit_direction;
 	Fvector					m_tHitPosition;
 	float					m_fHitFactor;
 	
@@ -132,7 +127,7 @@ private:
 	CEntity*				m_tSavedEnemy;
 	Fvector					m_tSavedEnemyPosition;
 	u32						m_dwLostEnemyTime;
-	NodeCompressed*			m_tpSavedEnemyNode;
+	const CLevelGraph::CVertex*	m_tpSavedEnemyNode;
 	u32						m_dwSavedEnemyNodeID;
 	Fvector					m_tMySavedPosition;
 	u32						m_dwMyNodeID;
@@ -143,8 +138,6 @@ private:
 	
 	// pursuiting
 	int						m_iCurrentSuspiciousNodeIndex;
-	SuspiciousPoints		m_tpaSuspiciousPoints;
-	SuspiciousForces		m_tpaSuspiciousForces;
 	bool					m_bActionStarted;
 	u32						m_dwSoundTime;
 
@@ -152,16 +145,15 @@ private:
 	
 	// FSM
 	u32						m_dwLastUpdate;
-	u32						m_dwCurrentUpdate;
+	u32						m_current_update;
 	u32						m_dwUpdateCount;
 	bool					m_bStopThinking;
 	bool					m_bStateChanged;
-	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance>			m_tSelectorFreeHunting;
-	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight>	m_tSelectorReload;
-	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance>	m_tSelectorCover;
-	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance | aiEnemyViewDeviationWeight >	m_tSelectorRetreat;
-	//CAI_NodeEvaluatorFull												m_tSelectorAttack;
-	CAI_NodeEvaluatorTemplate<aiSearchRange | aiInsideNode>				m_tSelectorNode;
+	PathManagers::CAbstractVertexEvaluator	*m_tpSelectorFreeHunting;
+	PathManagers::CAbstractVertexEvaluator	*m_tpSelectorReload;
+	PathManagers::CAbstractVertexEvaluator	*m_tpSelectorCover;
+	PathManagers::CAbstractVertexEvaluator	*m_tpSelectorRetreat;
+
 	u32						m_dwActionRefreshRate;
 	float					m_fAttackSuccessProbability;
 	
@@ -176,7 +168,6 @@ private:
 	float					m_fLateralMultiplier;
 	float					m_fShadowWeight;
 	ELookType				m_tLookType;
-	float					r_head_speed;
 	// movement
 	EBodyState				m_tBodyState;
 	EMovementType			m_tMovementType;
@@ -196,7 +187,7 @@ private:
 	float					m_fDamagedRunFreeFactor;
 	float					m_fDamagedPanicFactor;
 
-	u32						m_dwLastRangeSearch;
+	u32						m_previous_query_time;
 
 	// ALife
 	TERRAIN_VECTOR			m_tpaTerrain;
@@ -236,7 +227,7 @@ private:
 			void			vfGoToSOS						();
 			void			vfSendSOS						();
 			void			vfAccomplishTask				();
-			void			vfContinueWithALifeGoals		(IBaseAI_NodeEvaluator *tpNodeEvaluator = 0);
+			void			vfContinueWithALifeGoals		(PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator = 0);
 			void			vfSearchObject					();
 			bool			bfHealthIsGood					();
 			bool			bfItemCanTreat					(CInventoryItem *tpInventoryItem);
@@ -255,12 +246,12 @@ private:
 			void			vfFinishTask					();
 
 			// selectors
-			void			vfInitSelector					(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader);
-			void			vfSearchForBetterPosition		(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader);
-			void			vfBuildPathToDestinationPoint	(IBaseAI_NodeEvaluator *tpNodeEvaluator);
+			void			vfInitSelector					(PathManagers::CAbstractVertexEvaluator &S, CSquad &Squad, CEntity* &Leader);
+			void			vfSearchForBetterPosition		(PathManagers::CAbstractVertexEvaluator &S, CSquad &Squad, CEntity* &Leader);
+			void			vfBuildPathToDestinationPoint	(PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator);
 			void			vfBuildTravelLine				(Fvector *tpDestinationPosition = 0);
 			void			vfDodgeTravelLine				();
-			void			vfChoosePointAndBuildPath		(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition = 0, bool bSearchForNode = true);
+			void			vfChoosePointAndBuildPath		(PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition = 0, bool bSearchForNode = true);
 			// animations
 			void			vfAssignGlobalAnimation			(CMotionDef *&tpGlobalAnimation);
 			void			vfAssignTorsoAnimation			(CMotionDef *&tpGlobalAnimation);
@@ -275,12 +266,12 @@ private:
 			void			SetPointLookAngles				(const Fvector &tPosition, float &yaw, float &pitch);
 			void			SetFirePointLookAngles			(const Fvector &tPosition, float &yaw, float &pitch);
 			void			SetDirectionLook				();
-			void			SetLessCoverLook				(NodeCompressed *tpNode, bool bDifferenceLook);
-			void			SetLessCoverLook				(NodeCompressed *tpNode, float fMaxHeadTurnAngle, bool bDifferenceLook);
+			void			SetLessCoverLook				(CLevelGraph::CVertex *tpNode, bool bDifferenceLook);
+			void			SetLessCoverLook				(CLevelGraph::CVertex *tpNode, float fMaxHeadTurnAngle, bool bDifferenceLook);
 			void			vfValidateAngleDependency		(float x1, float &x2, float x3);
 			// movement and look
-			void			vfSetParameters					(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EObjectAction tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EMentalState tMentalState, ELookType tLookType);
-			void			vfSetParameters					(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EObjectAction tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EMentalState tMentalState, ELookType tLookType, const Fvector &tPointToLook, u32 dwLookOverDelay = 2000);
+			void			vfSetParameters					(PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EObjectAction tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EMentalState tMentalState, ELookType tLookType);
+			void			vfSetParameters					(PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EObjectAction tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EMentalState tMentalState, ELookType tLookType, const Fvector &tPointToLook, u32 dwLookOverDelay = 2000);
 			// fire
 			bool			bfCheckForMember				(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 			bool			bfCheckIfCanKillEnemy			();
@@ -297,7 +288,7 @@ private:
 			void			vfMarkVisibleNodes				(CEntity *tpEntity);
 			void			vfFindAllSuspiciousNodes		(u32 StartNode, Fvector tPointPosition, const Fvector& BasePos, float Range, CGroup &Group);
 			void			vfClasterizeSuspiciousNodes		(CGroup &Group);
-			void			vfChooseSuspiciousNode			(IBaseAI_NodeEvaluator &tSelector);
+			void			vfChooseSuspiciousNode			(PathManagers::CAbstractVertexEvaluator &tSelector);
 			int				ifGetSuspiciousAvailableNode	(int iLastIndex, CGroup &Group);
 			bool			bfCheckForNodeVisibility		(u32 dwNodeID, bool bIfRyPick = false);
 			void			SelectSound						(int &iIndex);
@@ -315,9 +306,6 @@ private:
 			bool			bfIfHuman						(CEntity *tpEntity = 0);
 			void			vfSelectItemToTake				(CInventoryItem *&tpItemToTake);
 	virtual	void			Init							();
-			// physics
-			void			CreateSkeleton					();
-
 	IC		void			GetDirectionAnglesByPrevPositions(float &yaw, float &pitch)
 	{
 		yaw						= pitch = 0;
@@ -342,15 +330,15 @@ private:
 		yaw						= pitch = 0;
 //		Fvector					tDirection;
 //		
-//		if (!AI_Path.TravelPath.empty() && (AI_Path.TravelStart <= (AI_Path.TravelPath.size() - 1)) && (AI_Path.TravelStart >= 0))
-//			if (Position().distance_to(AI_Path.TravelPath[AI_Path.TravelStart].P) > EPS_L) {
-//				tDirection.sub(Position(),AI_Path.TravelPath[AI_Path.TravelStart].P);
+//		if (!CDetailPathManager::m_path.empty() && (CDetailPathManager::m_current_travel_point <= (CDetailPathManager::m_path.size() - 1)) && (CDetailPathManager::m_current_travel_point >= 0))
+//			if (Position().distance_to(CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point].P) > EPS_L) {
+//				tDirection.sub(Position(),CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point].P);
 //				if (tDirection.magnitude() < EPS_L)
 //					GetDirectionAnglesByPrevPositions(yaw,pitch);
 //			}
 //			else
-//				if ((AI_Path.TravelStart < (AI_Path.TravelPath.size() - 1)) && (Position().distance_to(AI_Path.TravelPath[AI_Path.TravelStart + 1].P) > EPS_L)) {
-//					tDirection.sub(Position(),AI_Path.TravelPath[AI_Path.TravelStart + 1].P);
+//				if ((CDetailPathManager::m_current_travel_point < (CDetailPathManager::m_path.size() - 1)) && (Position().distance_to(CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point + 1].P) > EPS_L)) {
+//					tDirection.sub(Position(),CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point + 1].P);
 //					if (tDirection.magnitude() < EPS_L)
 //						GetDirectionAnglesByPrevPositions(yaw,pitch);
 //				}
@@ -360,46 +348,16 @@ private:
 			GetDirectionAnglesByPrevPositions(yaw,pitch);
 	};
 	
-	IC		bool		angle_lerp_bounds(float &a, float b, float c, float d, bool bCheck = false)
-	{
-		float fDifference;
-		if ((fDifference = _abs(a - b)) > PI - EPS_L)
-			fDifference = PI_MUL_2 - fDifference;
-
-		if (c*d >= fDifference) {
-			a = b;
-			return(true);
-		}
-		
-		angle_lerp(a,b,c,d);
-
-		return(false);
-	};
-
-	IC		float		ffSubAngles(float a, float b)
-	{
-		//a = normalize_angle_signed(a);
-		//b = normalize_angle_signed(b);
-		float c = a - b;
-		if (c > PI)
-			return(c - PI_MUL_2);
-		else
-			if (c < -PI)
-				return(c + PI_MUL_2);
-			else
-				return(c);
-	};
-
 	IC		void		vfSaveEnemy()
 	{
-		m_tSavedEnemy			= m_tEnemy.Enemy;
-		m_tSavedEnemyPosition	= m_tEnemy.Enemy->Position();
-		m_tpSavedEnemyNode		= m_tEnemy.Enemy->AI_Node;
-		m_dwSavedEnemyNodeID	= m_tEnemy.Enemy->AI_NodeID;
-		R_ASSERT3				(int(m_dwSavedEnemyNodeID) > 0, "Invalid enemy node", m_tEnemy.Enemy->cName());
+		m_tSavedEnemy			= m_tEnemy.m_enemy;
+		m_tSavedEnemyPosition	= m_tEnemy.m_enemy->Position();
+		m_tpSavedEnemyNode		= m_tEnemy.m_enemy->level_vertex();
+		m_dwSavedEnemyNodeID	= m_tEnemy.m_enemy->level_vertex_id();
+		R_ASSERT3				(ai().level_graph().valid_vertex_id(m_dwSavedEnemyNodeID), "Invalid enemy vertex", m_tEnemy.m_enemy->cName());
 		m_dwLostEnemyTime		= Level().timeServer();
 		m_tMySavedPosition		= Position();
-		m_dwMyNodeID			= AI_NodeID;
+		m_dwMyNodeID			= level_vertex_id();
 		vfValidatePosition		(m_tSavedEnemyPosition,m_dwSavedEnemyNodeID);
 	}
 
@@ -431,7 +389,6 @@ public:
 	virtual void			OnEvent							(NET_Packet& P, u16 type);
 	virtual void			feel_touch_new					(CObject* O);
 	virtual void			renderable_Render				();
-	virtual void			Exec_Movement					(float dt);
 	virtual void			Exec_Look						(float dt);
 	virtual void			shedule_Update					(u32 dt);
 	virtual void			UpdateCL						();

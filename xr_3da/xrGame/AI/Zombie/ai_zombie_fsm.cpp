@@ -8,7 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_zombie.h"
-#include "..\\ai_monsters_misc.h"
+#include "../ai_monsters_misc.h"
 
 #undef WRITE_TO_LOG
 #define WRITE_TO_LOG(s) m_bStopThinking = true;
@@ -19,14 +19,14 @@
 		Msg("* No objects in frustum",feel_visible.size());\
 	else {\
 		Msg("* Objects in frustum (%d) :",feel_visible.size());\
-		for (int i=0; i<(int)feel_visible.size(); i++)\
+		for (int i=0; i<(int)feel_visible.size(); ++i)\
 			Msg("*   %s",feel_visible[i].O->cName());\
 		feel_vision_get(m_tpaVisibleObjects);\
 		if (!m_tpaVisibleObjects.size())\
 			Msg("* No visible objects");\
 		else {\
 			Msg("* Visible objects (%d) :",m_tpaVisibleObjects.size());\
-			for (int i=0; i<(int)m_tpaVisibleObjects.size(); i++)\
+			for (int i=0; i<(int)m_tpaVisibleObjects.size(); ++i)\
 				Msg("*   %s (distance %7.2fm)",m_tpaVisibleObjects[i]->cName(),Position().distance_to(m_tpaVisibleObjects[i]->Position()));\
 		}\
 	}\
@@ -86,38 +86,38 @@ void CAI_Zombie::Think()
 	}
 	while (!m_bStopThinking);
 //	if (m_fSpeed > EPS_L) {
-//		AI_Path.TravelPath.resize(3);
-//		AI_Path.TravelPath[0].floating = AI_Path.TravelPath[1].floating = AI_Path.TravelPath[2].floating = FALSE;
-//		AI_Path.TravelPath[0].P = m_tOldPosition;
-//		AI_Path.TravelPath[1].P = Position();
+//		m_path.resize(3);
+//		m_path[0].floating = m_path[1].floating = m_path[2].floating = FALSE;
+//		m_path[0].P = m_tOldPosition;
+//		m_path[1].P = Position();
 //		Fvector tTemp;
-//		tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
+//		tTemp.setHP(m_body.current.yaw,m_body.current.pitch);
 //		tTemp.normalize_safe();
 //		tTemp.mul(10.f);
-//		AI_Path.TravelPath[2].P.add(Position(),tTemp);
-//		AI_Path.TravelStart = 0;
+//		m_path[2].P.add(Position(),tTemp);
+//		CDetailPathManager::m_current_travel_point = 0;
 //		Position() = m_tOldPosition;
 //	}
 //	else {
-//		AI_Path.TravelPath.clear();
-//		AI_Path.TravelStart = 0;
+//		m_path.clear();
+//		CDetailPathManager::m_current_travel_point = 0;
 //	}
 }
 void CAI_Zombie::Death()
 {
-	WRITE_TO_LOG("Dying...");
+	WRITE_TO_LOG	("Dying...");
 	m_bStopThinking = true;
 
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	vfSetFire(false,Group);
+	CGroup			&Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	vfSetFire		(false,Group);
 	
-	AI_Path.TravelPath.clear();
+	enable_movement	(false);
 
 	if (m_fFood <= 0) {
-		if (m_dwLastRangeSearch <= m_dwDeathTime)
-			m_dwLastRangeSearch = Level().timeServer();
-		setVisible(false);
-		if (Level().timeServer() - m_dwLastRangeSearch > m_dwToWaitBeforeDestroy) {
+		if (m_previous_query_time <= m_dwDeathTime)
+			m_previous_query_time = Level().timeServer();
+		setVisible	(false);
+		if (Level().timeServer() - m_previous_query_time > m_dwToWaitBeforeDestroy) {
 			setEnabled(false);
 //			NET_Packet			P;
 //			u_EventGen			(P,GE_DESTROY,ID());
@@ -126,10 +126,10 @@ void CAI_Zombie::Death()
 	}
 	else {
 		if (Level().timeServer() - m_dwDeathTime > m_dwTimeToLie) {
-			//m_fFood = Movement.GetMass()*100;
+			//m_fFood = m_PhysicMovementControl.GetMass()*100;
 			fEntityHealth = m_fMaxHealthValue;
 			m_tpSoundBeingPlayed = 0;
-			m_dwLastRangeSearch = Level().timeServer();
+			m_previous_query_time = Level().timeServer();
 			GO_TO_NEW_STATE(aiZombieResurrect);
 		}
 	}
@@ -142,11 +142,11 @@ void CAI_Zombie::Turn()
 	WRITE_TO_LOG("Turning...");
 
 	Fmatrix mXFORM;
-	mXFORM.setHPB	(m_tHPB.x = -r_torso_current.yaw,m_tHPB.y,m_tHPB.z);
+	mXFORM.setHPB	(m_tHPB.x = -m_body.current.yaw,m_tHPB.y,m_tHPB.z);
 	mXFORM.c.set	(Position()	);
 	XFORM().set		(mXFORM		);
 
-	CHECK_IF_GO_TO_PREV_STATE(getAI().bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw, PI_DIV_6))
+	CHECK_IF_GO_TO_PREV_STATE(angle_difference(m_body.target.yaw, m_body.current.yaw) <= PI_DIV_6)
 	
 	INIT_SQUAD_AND_LEADER
 	
@@ -154,8 +154,8 @@ void CAI_Zombie::Turn()
 
 	vfSetFire(false,Group);
 
-	float fTurnAngle = _min(_abs(r_torso_target.yaw - r_torso_current.yaw), PI_MUL_2 - _abs(r_torso_target.yaw - r_torso_current.yaw));
-	r_torso_speed = 3*fTurnAngle;
+	float fTurnAngle = _min(_abs(m_body.target.yaw - m_body.current.yaw), PI_MUL_2 - _abs(m_body.target.yaw - m_body.current.yaw));
+	m_body.speed = 3*fTurnAngle;
 
 	vfSetMovementType(0);
 }
@@ -173,11 +173,11 @@ void CAI_Zombie::FreeHuntingActive()
 
 	SelectEnemy(m_Enemy);
 	
-	if (m_Enemy.Enemy) {
+	if (m_Enemy.m_enemy) {
 		m_tpSoundBeingPlayed = &(m_tpaSoundNotice[::Random.randI(SND_NOTICE_COUNT)]);
 		::Sound->play_at_pos		(*m_tpSoundBeingPlayed,this,eye_matrix.c);
 		m_fGoalChangeTime = 0;
-		if ((m_Enemy.Enemy->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (Position().distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius))
+		if ((m_Enemy.m_enemy->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (Position().distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius))
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieAttackRun)
 	}
 
@@ -212,8 +212,8 @@ void CAI_Zombie::FreeHuntingActive()
 	if (bfComputeNewPosition(false))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
 
-//	if (Level().timeServer() - m_dwLastRangeSearch > 5000) {
-//		m_dwLastRangeSearch = Level().timeServer();
+//	if (Level().timeServer() - m_previous_query_time > 5000) {
+//		m_previous_query_time = Level().timeServer();
 //		PKinematics(Visual())->PlayFX(m_tZombieAnimations.tNormal.tTorso.tpBlaBlaBla0);
 //	}
 	
@@ -255,7 +255,7 @@ void CAI_Zombie::FreeHuntingPassive()
 
 	SelectEnemy(m_Enemy);
 	
-	if (m_Enemy.Enemy) {
+	if (m_Enemy.m_enemy) {
 		m_fGoalChangeTime = 0;
 		vfAddActiveMember(true);
 		m_bStopThinking = false;
@@ -284,32 +284,32 @@ void CAI_Zombie::AttackFire()
 		return;
 	}
 
-	SelectEnemy(m_Enemy);
+	SelectEnemy		(m_Enemy);
 	
-	if (m_Enemy.Enemy)
+	if (m_Enemy.m_enemy)
 		m_dwLostEnemyTime = Level().timeServer();
 
-	if (!(m_Enemy.Enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < m_dwLostMemoryTime))
-		m_Enemy.Enemy = m_tSavedEnemy;
+	if (!(m_Enemy.m_enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < m_dwLostMemoryTime))
+		m_Enemy.m_enemy = m_tSavedEnemy;
 
-	CHECK_IF_GO_TO_PREV_STATE(!(m_Enemy.Enemy) || !m_Enemy.Enemy->g_Alive());
+	CHECK_IF_GO_TO_PREV_STATE(!(m_Enemy.m_enemy) || !m_Enemy.m_enemy->g_Alive());
 		
-	CHECK_IF_GO_TO_NEW_STATE((m_Enemy.Enemy->Position().distance_to(Position()) > m_fAttackDistance),aiZombieAttackRun)
+	CHECK_IF_GO_TO_NEW_STATE((m_Enemy.m_enemy->Position().distance_to(Position()) > m_fAttackDistance),aiZombieAttackRun)
 
-	Fvector tTemp;
-	tTemp.sub(m_Enemy.Enemy->Position(),Position());
-	vfNormalizeSafe(tTemp);
-	SRotation sTemp;
-	mk_rotation(tTemp,sTemp);
+	Fvector			tTemp;
+	tTemp.sub		(m_Enemy.m_enemy->Position(),Position());
+	vfNormalizeSafe	(tTemp);
+	SRotation		sTemp;
+	mk_rotation		(tTemp,sTemp);
 	
-	CHECK_IF_GO_TO_NEW_STATE(!getAI().bfTooSmallAngle(r_torso_current.yaw,sTemp.yaw,m_fAttackAngle),aiZombieAttackRun)
+	CHECK_IF_GO_TO_NEW_STATE(angle_difference(m_body.current.yaw,sTemp.yaw) > m_fAttackAngle,aiZombieAttackRun)
 		
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	CGroup			&Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	
+	Fvector			tDistance;
+	tDistance.sub	(Position(),m_Enemy.m_enemy->Position());
 
-	Fvector tDistance;
-	tDistance.sub(Position(),m_Enemy.Enemy->Position());
-
-	AI_Path.TravelPath.clear();
+	enable_movement	(false);
 	
 	vfSaveEnemy();
 
@@ -332,45 +332,45 @@ void CAI_Zombie::AttackRun()
 
 	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 
-	if (m_Enemy.Enemy)
+	if (m_Enemy.m_enemy)
 		m_dwLostEnemyTime = Level().timeServer();
 
 	SelectEnemy(m_Enemy);
 
-	if (!(m_Enemy.Enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < m_dwLostMemoryTime))
-		m_Enemy.Enemy = m_tSavedEnemy;
+	if (!(m_Enemy.m_enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < m_dwLostMemoryTime))
+		m_Enemy.m_enemy = m_tSavedEnemy;
 
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.Enemy->Position()) > m_fMaxPursuitRadius),aiZombieReturnHome);
+	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_Enemy.m_enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.m_enemy->Position()) > m_fMaxPursuitRadius),aiZombieReturnHome);
 
-	CHECK_IF_GO_TO_PREV_STATE(!(m_Enemy.Enemy) || !m_Enemy.Enemy->g_Alive());
+	CHECK_IF_GO_TO_PREV_STATE(!(m_Enemy.m_enemy) || !m_Enemy.m_enemy->g_Alive());
 
 	vfSaveEnemy();
 
 	Fvector tDistance;
-	tDistance.sub(Position(),m_Enemy.Enemy->Position());
+	tDistance.sub(Position(),m_Enemy.m_enemy->Position());
 	
 	Fvector tTemp;
-	tTemp.sub(m_Enemy.Enemy->Position(),Position());
+	tTemp.sub(m_Enemy.m_enemy->Position(),Position());
 	vfNormalizeSafe(tTemp);
 	SRotation sTemp;
 	mk_rotation(tTemp,sTemp);
 
-	if (m_Enemy.Enemy->Position().distance_to(Position()) <= m_fAttackDistance) {
-		if (getAI().bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle)) {
+	if (m_Enemy.m_enemy->Position().distance_to(Position()) <= m_fAttackDistance) {
+		if (angle_difference(m_body.target.yaw, sTemp.yaw) <= m_fAttackAngle) {
 			GO_TO_NEW_STATE_THIS_UPDATE(aiZombieAttackFire);
 		}
 		else {
-			r_torso_target.yaw = sTemp.yaw;
+			m_body.target.yaw = sTemp.yaw;
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
 		}
 	}
 	else
-		CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!getAI().bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,m_fAttackAngle),aiZombieTurn);
+		CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(angle_difference(m_body.target.yaw, m_body.current.yaw) > m_fAttackAngle,aiZombieTurn);
 
 	INIT_SQUAD_AND_LEADER;
 	
-	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
-		m_tGoalDir.set(m_Enemy.Enemy->Position());
+	if ((Level().timeServer() - m_previous_query_time > TIME_TO_GO) || !m_previous_query_time)
+		m_tGoalDir.set(m_Enemy.m_enemy->Position());
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
 
@@ -412,12 +412,12 @@ void CAI_Zombie::Pursuit()
 
 	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 
-	if (m_Enemy.Enemy)
+	if (m_Enemy.m_enemy)
 		m_dwLostEnemyTime = Level().timeServer();
 
 	SelectEnemy(m_Enemy);
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy,aiZombieAttackRun);
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_Enemy.m_enemy,aiZombieAttackRun);
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Level().timeServer() - (int)m_tLastSound.dwTime >= m_dwLostMemoryTime);
 	
@@ -428,7 +428,7 @@ void CAI_Zombie::Pursuit()
 		m_dwLostEnemyTime = Level().timeServer();
 	}
 
-	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
+	if ((Level().timeServer() - m_previous_query_time > TIME_TO_GO) || !m_previous_query_time)
 		m_tGoalDir.set(m_tSavedEnemyPosition);
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
@@ -452,7 +452,7 @@ void CAI_Zombie::ReturnHome()
 
 	SelectEnemy(m_Enemy);
 	
-	if (m_Enemy.Enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.Enemy->Position()) < m_fMaxPursuitRadius)) {
+	if (m_Enemy.m_enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.m_enemy->Position()) < m_fMaxPursuitRadius)) {
 		SelectEnemy(m_Enemy);
 		m_fGoalChangeTime = 0;
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieAttackRun)
@@ -466,7 +466,7 @@ void CAI_Zombie::ReturnHome()
 	m_fASpeed				= m_fAngleSpeed;
 	m_fSpeed = m_fSafeSpeed = m_fAttackSpeed;
 
-	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
+	if ((Level().timeServer() - m_previous_query_time > TIME_TO_GO) || !m_previous_query_time)
 		m_tGoalDir.set			(m_tSafeSpawnPosition);
 
 	vfUpdateTime(m_fTimeUpdateDelta);
@@ -501,20 +501,20 @@ void CAI_Zombie::Resurrect()
 		if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
 			m_tpSoundBeingPlayed->set_position(eye_matrix.c);
 	
-	for (int i=0; i<3; i++)
+	for (int i=0; i<3; ++i)
 		if (m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[i]) {
 			bool bOk = false;
 			switch (i) {
 				case 0 : {
-					bOk = (Level().timeServer() - m_dwLastRangeSearch) > 60*1000/30;
+					bOk = (Level().timeServer() - m_previous_query_time) > 60*1000/30;
 					break;
 				}
 				case 1 : {
-					bOk = (Level().timeServer() - m_dwLastRangeSearch) > 80*1000/30;
+					bOk = (Level().timeServer() - m_previous_query_time) > 80*1000/30;
 					break;
 				}
 				case 2 : {
-					bOk = (Level().timeServer() - m_dwLastRangeSearch) > 50*1000/30;
+					bOk = (Level().timeServer() - m_previous_query_time) > 50*1000/30;
 					break;
 				}
 				default : NODEFAULT;

@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "..\\ai_monsters_anims.h"
+#include "../ai_monsters_anims.h"
 
 extern LPCSTR caStateNames			[];
 extern LPCSTR caWeaponNames			[];

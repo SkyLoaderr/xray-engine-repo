@@ -8,11 +8,11 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
-#include "..\\..\\ai_script_actions.h"
-#include "..\\..\\weapon.h"
-#include "..\\..\\WeaponMagazined.h"
+#include "../../ai_script_actions.h"
+#include "../../weapon.h"
+#include "../../WeaponMagazined.h"
 
-void CAI_Stalker::UseObject(const CObject *tpObject)
+void CAI_Stalker::UseObject(const CObject * /**tpObject/**/)
 {
 #pragma todo("Dima to Dima : Use object specified by script")
 }
@@ -56,8 +56,8 @@ CInventoryItem *CAI_Stalker::GetFood() const
 void CAI_Stalker::ResetScriptData(void *P)
 {
 	inherited::ResetScriptData	(P);
-	if (P)
-		vfSetParameters(0,0,false,eObjectActionIdle,m_tPathType,m_tBodyState,eMovementTypeStand,m_tMentalState,eLookTypeDirection);
+//	if (P)
+//		vfSetParameters(0,0,false,eObjectActionIdle,m_tPathType,m_tBodyState,eMovementTypeStand,m_tMentalState,eLookTypeDirection);
 }
 
 bool CAI_Stalker::bfAssignMovement(CEntityAction *tpEntityAction)
@@ -65,23 +65,23 @@ bool CAI_Stalker::bfAssignMovement(CEntityAction *tpEntityAction)
 	if (!inherited::bfAssignMovement(tpEntityAction))
 		return		(false);
 	
-	CMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
-	CWatchAction	&l_tWatchAction		= tpEntityAction->m_tWatchAction;
-	CAnimationAction&l_tAnimationAction	= tpEntityAction->m_tAnimationAction;
-	CObjectAction	&l_tObjectAction	= tpEntityAction->m_tObjectAction;
+//	CMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
+//	CWatchAction	&l_tWatchAction		= tpEntityAction->m_tWatchAction;
+//	CAnimationAction&l_tAnimationAction	= tpEntityAction->m_tAnimationAction;
+//	CObjectAction	&l_tObjectAction	= tpEntityAction->m_tObjectAction;
 
-	vfSetParameters	(0,
-		&l_tMovementAction.m_tDestinationPosition,
-		false,
-		l_tObjectAction.m_tGoalType,
-		l_tMovementAction.m_tPathType,
-		l_tMovementAction.m_tBodyState,
-		l_tMovementAction.m_tMovementType,
-		l_tAnimationAction.m_tMentalState,
-		l_tWatchAction.m_tWatchType,
-		l_tWatchAction.m_tWatchVector,
-		0
-	);
+//	vfSetParameters	(0,
+//		&l_tMovementAction.m_tDestinationPosition,
+//		false,
+//		l_tObjectAction.m_tGoalType,
+//		l_tMovementAction.m_tPathType,
+//		l_tMovementAction.m_tBodyState,
+//		l_tMovementAction.m_tMovementType,
+//		l_tAnimationAction.m_tMentalState,
+//		l_tWatchAction.m_tWatchType,
+//		l_tWatchAction.m_tWatchVector,
+//		0
+//	);
 
 	return			(true);
 }
@@ -123,7 +123,7 @@ bool CAI_Stalker::bfAssignWatch(CEntityAction *tpEntityAction)
 		default : NODEFAULT;
 	}
 
-	if ((CWatchAction::eGoalTypeWatchType != l_tWatchAction.m_tGoalType) && (_abs(yaw - r_current.yaw) < EPS_L) && (_abs(pitch - r_current.pitch) < EPS_L))
+	if ((CWatchAction::eGoalTypeWatchType != l_tWatchAction.m_tGoalType) && (angle_difference(yaw,m_head.current.yaw) < EPS_L) && (angle_difference(pitch,m_head.current.pitch) < EPS_L))
 		l_tWatchAction.m_bCompleted = true;
 	else
 		l_tWatchAction.m_bCompleted = false;
@@ -202,7 +202,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 				return	((l_tObjectAction.m_bCompleted = true) == false);
 			if (m_inventory.ActiveItem()) {
 				m_inventory.Action(kWPN_FIRE,	CMD_STOP);
-				if (l_tpWeapon->STATE != CWeapon::eReload)
+				if (CWeapon::eReload != l_tpWeapon->STATE)
 					m_inventory.Action(kWPN_RELOAD,	CMD_START);
 				else
 					l_tObjectAction.m_bCompleted = true;
@@ -216,7 +216,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 			if (l_tpInventoryItem) {
 				m_inventory.Slot(l_tpInventoryItem);
 				m_inventory.Activate(l_tpInventoryItem->GetSlot());
-				if (l_tpWeapon && (l_tpWeapon->STATE != CWeapon::eShowing))
+				if (l_tpWeapon && (CWeapon::eShowing != l_tpWeapon->STATE))
 					l_tObjectAction.m_bCompleted = true;
 			}
 			else

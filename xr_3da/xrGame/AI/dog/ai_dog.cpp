@@ -208,7 +208,7 @@ void CAI_Dog::OnSoundPlay()
 	if (!Bones.IsActive()) Bones.SetMotion(GetBoneInstance("bone01"),AXIS_Y, PI_DIV_6, PI_MUL_2, 1);
 }
 
-void CAI_Dog::LookPosition(Fvector pos)
+void CAI_Dog::LookPosition(Fvector /**pos/**/)
 {
 //	if (GetBoneInstance.IsActive()) return;
 //	TTime itime = TTime(MotionMan.jump.ph_time * 1000);
@@ -224,7 +224,7 @@ void CAI_Dog::LookPosition(Fvector pos)
 //	float		yaw,p;
 //	to_dir.getHP(yaw,p); // yaw - угол на который нужно повернуть монстра
 //
-//	float cur_yaw = -r_torso_current.yaw;				// текущий мировой угол монстра
+//	float cur_yaw = -m_body.current.yaw;				// текущий мировой угол монстра
 //	float dy = _abs(angle_normalize_signed(yaw - cur_yaw));		// дельта, на которую нужно поворачиваться
 //
 //	float y1,y2,y3;

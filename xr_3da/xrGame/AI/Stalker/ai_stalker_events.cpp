@@ -8,11 +8,10 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
-#include "..\\..\\weapon.h"
-#include "..\\..\\xr_weapon_list.h"
-#include "..\\..\\targetcs.h"
-#include "..\\..\\customdetector.h"
-#include "..\\..\\bolt.h"
+#include "../../weapon.h"
+#include "../../targetcs.h"
+#include "../../customdetector.h"
+#include "../../bolt.h"
 
 IC BOOL BE	(BOOL A, BOOL B)
 {
@@ -174,7 +173,7 @@ void CAI_Stalker::feel_touch_new				(CObject* O)
 	}
 //	else
 //		if (I) {
-//			float y = getAI().ffGetY(AI_NodeID,E->Position().x,E->Position().z);
+//			float y = ai().level_graph().vertex_plane_y(level_vertex_id(),E->Position().x,E->Position().z);
 //			if (_abs(y - E->Position().y) > .2f) {
 //				
 //			}
@@ -183,7 +182,7 @@ void CAI_Stalker::feel_touch_new				(CObject* O)
 
 void CAI_Stalker::DropItemSendMessage(CObject *O)
 {
-	if (!O || !O->H_Parent() || (O->H_Parent() != this))
+	if (!O || !O->H_Parent() || (this != O->H_Parent()))
 		return;
 
 #ifndef SILENCE

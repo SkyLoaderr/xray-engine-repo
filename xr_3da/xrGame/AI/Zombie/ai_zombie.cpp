@@ -9,13 +9,13 @@
 #include "stdafx.h"
 
 #include "ai_zombie.h"
-#include "..\\ai_monsters_misc.h"
+#include "../ai_monsters_misc.h"
 
 CAI_Zombie::CAI_Zombie()
 {
-	m_tHitDir.set			(0,0,1);
+	m_hit_direction.set			(0,0,1);
 	m_tSavedEnemyPosition.set(0,0,0);
-	m_dwHitTime				= 0;
+	m_hit_time				= 0;
 	m_tSavedEnemy			= 0;
 	m_tpSavedEnemyNode		= 0;
 	m_dwSavedEnemyNodeID	= u32(-1);
@@ -28,7 +28,7 @@ CAI_Zombie::CAI_Zombie()
 	m_dwLastPursuitTalk		= 0;
 	m_tpSoundBeingPlayed	= 0;
 	m_dwLastSoundRefresh	= 0;
-	m_dwLastRangeSearch		= 0;
+	m_previous_query_time		= 0;
 	m_tCurrentDir.set		(0,0,1);
 	m_tHPB.set				(0,0,0);
 	m_fDHeading				= 0;
@@ -39,9 +39,11 @@ CAI_Zombie::CAI_Zombie()
 	m_bNoWay				= false;
 	m_bActive				= false;
 	m_dwStartAttackTime		= 0;
-	q_look.o_look_speed		= PI;
+	m_fLookSpeed			= PI;
 	m_dwTimeToLie			= 6000;
 	m_dwToWaitBeforeDestroy = 10000;
+	m_tAction				= eZombieActionNone;
+	inherited::Init			();
 }
 
 CAI_Zombie::~CAI_Zombie()
@@ -61,14 +63,14 @@ void CAI_Zombie::Die()
 	m_eCurrentState = aiZombieDie;
 	
 	///Fvector	dir;
-	//AI_Path.Direction(dir);
-	//SelectAnimation(XFORM().k,dir,AI_Path.fSpeed);
+	//direction(dir);
+	//SelectAnimation(XFORM().k,dir,speed());
 	
 	::Sound->play_at_pos(m_tpaSoundDeath[Random.randI(SND_DEATH_COUNT)],this,Position());
 
 	CGroup &Group = Level().get_group(g_Team(),g_Squad(),g_Group());
 	vfRemoveActiveMember();
-	Group.m_dwAliveCount--;
+	--(Group.m_dwAliveCount);
 	m_eCurrentState = aiZombieDie;
 	m_dwDeathTime = Level().timeServer();
 //	Msg("%s : Death signal %d",cName(),Level().timeServer());
@@ -131,8 +133,8 @@ BOOL CAI_Zombie::net_Spawn	(LPVOID DC)
 	// model
 	cNameVisual_set					(tpSE_Zombie->get_visual());
 	// personal characteristics
-	r_torso_current.yaw				= r_torso_target.yaw	= -tpSE_Zombie->o_Angle.y;
-	r_torso_current.pitch			= r_torso_target.pitch	= 0;
+	m_body.current.yaw				= m_body.target.yaw	= -tpSE_Zombie->o_Angle.y;
+	m_body.current.pitch			= m_body.target.pitch	= 0;
 
 	eye_fov							= tpSE_Zombie->fEyeFov;
 	eye_range						= tpSE_Zombie->fEyeRange;
@@ -158,20 +160,15 @@ BOOL CAI_Zombie::net_Spawn	(LPVOID DC)
 	vfAddActiveMember(true);
 	m_bStateChanged = true;
 
-	r_torso_current = r_current;
-	r_torso_target = r_target;
-	m_tHPB.x = r_torso_current.yaw;
-	m_tHPB.y = r_torso_current.pitch;
+	m_body.current = m_head.current;
+	m_body.target = m_head.target;
+	m_tHPB.x = m_body.current.yaw;
+	m_tHPB.y = m_body.current.pitch;
 	m_tHPB.z = 0;
 	
 	vfLoadAnimations	();
 
 	return TRUE;
-}
-
-void CAI_Zombie::Exec_Movement	( float dt )
-{
-	AI_Path.Calculate(this,Position(),Position(),m_fCurSpeed,dt);
 }
 
 void CAI_Zombie::net_Export(NET_Packet& P)

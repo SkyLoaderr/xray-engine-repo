@@ -1,5 +1,5 @@
 #pragma once
-#include "..\\biting\\ai_biting.h"
+#include "../biting/ai_biting.h"
 
 class CAI_Flesh : public CAI_Biting {
 

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "..\\biting\\ai_biting.h"
-#include "..\\ai_monster_bones.h"
-#include "..\\ai_monster_invisibility.h"
+#include "../biting/ai_biting.h"
+#include "../ai_monster_bones.h"
+#include "../ai_monster_invisibility.h"
 
 class CAI_Bloodsucker : public CAI_Biting, 
 						public CMonsterInvisibility {
@@ -40,5 +40,3 @@ public:
 	float					m_fPowerThreshold;				// порог силы, после которого нельзя стать невидимым
 	float					m_fEffectDist;
 };
-
-

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "..\\biting\\ai_biting.h"
-#include "..\\ai_monster_bones.h"
+#include "../biting/ai_biting.h"
+#include "../ai_monster_bones.h"
 
 class CAI_Chimera : public CAI_Biting {
 

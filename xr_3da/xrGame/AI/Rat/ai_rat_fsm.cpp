@@ -8,7 +8,9 @@
 
 #include "stdafx.h"
 #include "ai_rat.h"
-#include "..\\ai_monsters_misc.h"
+#include "../ai_monsters_misc.h"
+#include "../../game_level_cross_table.h"
+#include "../../game_graph.h"
 
 #undef	WRITE_TO_LOG
 #define WRITE_TO_LOG(s) m_bStopThinking = true;
@@ -19,14 +21,14 @@
 		Msg("* No objects in frustum",feel_visible.size());\
 	else {\
 		Msg("* Objects in frustum (%d) :",feel_visible.size());\
-		for (int i=0; i<(int)feel_visible.size(); i++)\
+		for (int i=0; i<(int)feel_visible.size(); ++i)\
 			Msg("*   %s",feel_visible[i].O->cName());\
 		feel_vision_get(m_tpaVisibleObjects);\
 		if (!m_tpaVisibleObjects.size())\
 			Msg("* No visible objects");\
 		else {\
 			Msg("* Visible objects (%d) :",m_tpaVisibleObjects.size());\
-			for (int i=0; i<(int)m_tpaVisibleObjects.size(); i++)\
+			for (int i=0; i<(int)m_tpaVisibleObjects.size(); ++i)\
 				Msg("*   %s (distance %7.2fm)",m_tpaVisibleObjects[i]->cName(),Position().distance_to(m_tpaVisibleObjects[i]->Position()));\
 		}\
 	}\
@@ -41,7 +43,7 @@
 
 void CAI_Rat::Think()
 {
-	m_dwCurrentUpdate	= Level().timeServer();
+	m_current_update	= Level().timeServer();
 	vfUpdateMorale();
 	vfUpdateSpawnPosition();
 	m_bStopThinking = false;
@@ -101,44 +103,42 @@ void CAI_Rat::Think()
 	}
 	while (!m_bStopThinking);
 //	if (m_fSpeed > EPS_L) {
-//		AI_Path.TravelPath.resize(3);
-//		AI_Path.TravelPath[0].floating = AI_Path.TravelPath[1].floating = AI_Path.TravelPath[2].floating = FALSE;
-//		AI_Path.TravelPath[0].P = m_tOldPosition;
-//		AI_Path.TravelPath[1].P = Position();
+//		CDetailPathManager::m_path.resize(3);
+//		CDetailPathManager::m_path[0].floating = CDetailPathManager::m_path[1].floating = CDetailPathManager::m_path[2].floating = FALSE;
+//		CDetailPathManager::m_path[0].P = m_tOldPosition;
+//		CDetailPathManager::m_path[1].P = Position();
 //		Fvector tTemp;
-//		tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
+//		tTemp.setHP(m_body.current.yaw,m_body.current.pitch);
 //		tTemp.normalize_safe();
 //		tTemp.mul(10.f);
-//		AI_Path.TravelPath[2].P.add(Position(),tTemp);
-//		AI_Path.TravelStart = 0;
+//		CDetailPathManager::m_path[2].P.add(Position(),tTemp);
+//		CDetailPathManager::m_current_travel_point = 0;
 //		Position() = m_tOldPosition;
 //	}
 //	else {
-//		AI_Path.TravelPath.clear();
-//		AI_Path.TravelStart = 0;
+//		CDetailPathManager::m_path.clear();
+//		CDetailPathManager::m_current_travel_point = 0;
 //	}
 }
 
 void CAI_Rat::Death()
 {
-	//WRITE_TO_LOG("Dying...");
-	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
+	//WRITE_TO_LOG	("Dying...");
+	vfSetFire		(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 
 	m_bStopThinking = true;
 
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	vfSetFire(false,Group);
+	CGroup			&Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	vfSetFire		(false,Group);
 	
-	Fvector	dir;
-	AI_Path.Direction(dir);
-	SelectAnimation(XFORM().k,dir,AI_Path.fSpeed);
-	AI_Path.TravelPath.clear();
+	SelectAnimation	(XFORM().k,direction(),0);
+	enable_movement	(false);
 
 	if (m_fFood <= 0) {
-		if (m_dwLastRangeSearch <= m_dwDeathTime)
-			m_dwLastRangeSearch = Level().timeServer();
+		if (m_previous_query_time <= m_dwDeathTime)
+			m_previous_query_time = Level().timeServer();
 		setVisible(false);
-		if (Level().timeServer() - m_dwLastRangeSearch > 10000) {
+		if (Level().timeServer() - m_previous_query_time > 10000) {
 //			setEnabled(false);
 //			NET_Packet			P;
 //			u_EventGen			(P,GE_DESTROY,ID());
@@ -160,16 +160,16 @@ void CAI_Rat::Turn()
 	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 
 //	Fmatrix	mXFORM;
-//	mXFORM.setHPB	(m_tHPB.x = -r_torso_current.yaw,m_tHPB.y,m_tHPB.z);
+//	mXFORM.setHPB	(m_tHPB.x = -m_body.current.yaw,m_tHPB.y,m_tHPB.z);
 //	mXFORM.c		= Position();
 //	XFORM()			= mXFORM;
-	m_tHPB.x		= -r_torso_current.yaw;
+	m_tHPB.x		= -m_body.current.yaw;
 
-	CHECK_IF_GO_TO_PREV_STATE(getAI().bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw, PI_DIV_6))
+	CHECK_IF_GO_TO_PREV_STATE(angle_difference(m_body.target.yaw, m_body.current.yaw) <= PI_DIV_6)
 	
 	INIT_SQUAD_AND_LEADER
 	
-	r_torso_speed = PI_MUL_2;
+	m_body.speed = PI_MUL_2;
 
 	m_fSpeed = 0;
 }
@@ -187,11 +187,11 @@ void CAI_Rat::FreeHuntingActive()
 
 	SelectEnemy(m_Enemy);
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(((m_Enemy.Enemy) && ((m_Enemy.Enemy->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (Position().distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius))),aiRatAttackRun);
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(((m_Enemy.m_enemy) && ((m_Enemy.m_enemy->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (Position().distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius))),aiRatAttackRun);
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_fMorale < m_fMoraleNormalValue,aiRatUnderFire);
 	
-	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((!m_tLastSound.tpEntity) || (m_tLastSound.tpEntity->g_Team() != g_Team())) && (!m_Enemy.Enemy)) {
+	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((!m_tLastSound.tpEntity) || (m_tLastSound.tpEntity->g_Team() != g_Team())) && (!m_Enemy.m_enemy)) {
 		if (m_tLastSound.tpEntity)
 			m_tSavedEnemy = m_tLastSound.tpEntity;
 		m_tSavedEnemyPosition = m_tLastSound.tSavedPosition;
@@ -201,7 +201,7 @@ void CAI_Rat::FreeHuntingActive()
     
 	SelectCorp(m_Enemy);
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy,aiRatEatCorpse);
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_Enemy.m_enemy,aiRatEatCorpse);
 	
 	m_tSpawnPosition.set	(m_tSafeSpawnPosition);
 	m_fGoalChangeDelta		= m_fSafeGoalChangeDelta;
@@ -262,7 +262,7 @@ void CAI_Rat::FreeHuntingPassive()
 
 	SelectEnemy(m_Enemy);
 	
-	if (m_Enemy.Enemy) {
+	if (m_Enemy.m_enemy) {
 		m_fGoalChangeTime = 0;
 		vfAddActiveMember(true);
 		m_bStopThinking = false;
@@ -300,7 +300,7 @@ void CAI_Rat::UnderFire()
 
 	SelectEnemy(m_Enemy);
 	
-	if (m_Enemy.Enemy) {
+	if (m_Enemy.m_enemy) {
 		GO_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun);
 	}
 	else {
@@ -310,9 +310,9 @@ void CAI_Rat::UnderFire()
 				m_dwLostEnemyTime = Level().timeServer();
 				SWITCH_TO_NEW_STATE(aiRatAttackRun);
 			}
-			m_dwLastRangeSearch = Level().timeServer();
+			m_previous_query_time = Level().timeServer();
 			Fvector tTemp;
-			tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
+			tTemp.setHP(m_body.current.yaw,m_body.current.pitch);
 			tTemp.normalize_safe();
 			tTemp.mul(m_fUnderFireDistance);
 			m_tSpawnPosition.add(Position(),tTemp);
@@ -324,7 +324,7 @@ void CAI_Rat::UnderFire()
 
 	vfUpdateTime(m_fTimeUpdateDelta);
 
-	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
+	if ((Level().timeServer() - m_previous_query_time > TIME_TO_GO) || !m_previous_query_time)
 		m_tGoalDir = m_tSpawnPosition;
 	
 	m_fSpeed = m_fAttackSpeed;
@@ -348,34 +348,33 @@ void CAI_Rat::AttackFire()
 	//if (eState != m_eCurrentState)
 	//	GO_TO_NEW_STATE_THIS_UPDATE(eState);
 
-	if (m_Enemy.Enemy)
+	if (m_Enemy.m_enemy)
 		m_dwLostEnemyTime = Level().timeServer();
 
-	if (!(m_Enemy.Enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < m_dwLostMemoryTime))
-		m_Enemy.Enemy = m_tSavedEnemy;
+	if (!(m_Enemy.m_enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < m_dwLostMemoryTime))
+		m_Enemy.m_enemy = m_tSavedEnemy;
 
-	CHECK_IF_GO_TO_PREV_STATE(!(m_Enemy.Enemy));
+	CHECK_IF_GO_TO_PREV_STATE(!(m_Enemy.m_enemy));
 		
-	CHECK_IF_GO_TO_NEW_STATE((m_Enemy.Enemy->Position().distance_to(Position()) > m_fAttackDistance),aiRatAttackRun)
+	CHECK_IF_GO_TO_NEW_STATE((m_Enemy.m_enemy->Position().distance_to(Position()) > m_fAttackDistance),aiRatAttackRun)
 
 	Fvector tTemp;
-	tTemp.sub(m_Enemy.Enemy->Position(),Position());
+	tTemp.sub(m_Enemy.m_enemy->Position(),Position());
 	vfNormalizeSafe(tTemp);
 	SRotation sTemp;
 	mk_rotation(tTemp,sTemp);
 	
-	CHECK_IF_GO_TO_NEW_STATE(!getAI().bfTooSmallAngle(r_torso_current.yaw,sTemp.yaw,m_fAttackAngle),aiRatAttackRun)
+	CHECK_IF_GO_TO_NEW_STATE(angle_difference(m_body.current.yaw,sTemp.yaw) > m_fAttackAngle,aiRatAttackRun)
 		
-	Fvector tDistance;
-	tDistance.sub(Position(),m_Enemy.Enemy->Position());
-
-	AI_Path.TravelPath.clear();
+	Fvector			tDistance;
+	tDistance.sub	(Position(),m_Enemy.m_enemy->Position());
+	enable_movement	(false);
 	
-	vfSaveEnemy();
+	vfSaveEnemy		();
 
-	vfAimAtEnemy();
+	vfAimAtEnemy	();
 
-	vfSetFire(true,Level().get_group(g_Team(),g_Squad(),g_Group()));
+	vfSetFire		(true,Level().get_group(g_Team(),g_Squad(),g_Group()));
 	
 	vfSetMovementType(0);
 }
@@ -391,7 +390,7 @@ void CAI_Rat::AttackRun()
 
 	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 
-	if (m_Enemy.Enemy)
+	if (m_Enemy.m_enemy)
 		m_dwLostEnemyTime = Level().timeServer();
 
 	SelectEnemy(m_Enemy);
@@ -402,28 +401,28 @@ void CAI_Rat::AttackRun()
 		GO_TO_NEW_STATE_THIS_UPDATE(eState);
 	}
 
-	if (!(m_Enemy.Enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < m_dwLostMemoryTime))
-		m_Enemy.Enemy = m_tSavedEnemy;
+	if (!(m_Enemy.m_enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < m_dwLostMemoryTime))
+		m_Enemy.m_enemy = m_tSavedEnemy;
 
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.Enemy->Position()) > m_fMaxPursuitRadius),aiRatReturnHome);
+	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_Enemy.m_enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.m_enemy->Position()) > m_fMaxPursuitRadius),aiRatReturnHome);
 
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!m_Enemy.Enemy);
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!m_Enemy.m_enemy);
 
 	vfSaveEnemy();
 
 	Fvector tDistance;
-	tDistance.sub(Position(),m_Enemy.Enemy->Position());
+	tDistance.sub(Position(),m_Enemy.m_enemy->Position());
 	
 	Fvector tTemp;
-	tTemp.sub(m_Enemy.Enemy->Position(),Position());
+	tTemp.sub(m_Enemy.m_enemy->Position(),Position());
 	vfNormalizeSafe(tTemp);
 	SRotation sTemp;
 	mk_rotation(tTemp,sTemp);
 
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE((m_Enemy.Enemy->Position().distance_to(Position()) <= m_fAttackDistance) && (getAI().bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle)),aiRatAttackFire)
+	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE((m_Enemy.m_enemy->Position().distance_to(Position()) <= m_fAttackDistance) && (angle_difference(m_body.target.yaw, sTemp.yaw) <= m_fAttackAngle),aiRatAttackFire)
 
-	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
-		m_tGoalDir.set(m_Enemy.Enemy->Position());
+	if ((Level().timeServer() - m_previous_query_time > TIME_TO_GO) || !m_previous_query_time)
+		m_tGoalDir.set(m_Enemy.m_enemy->Position());
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
 
@@ -446,7 +445,7 @@ void CAI_Rat::Retreat()
 
 	SelectEnemy(m_Enemy);
 
-	if (m_Enemy.Enemy && m_Enemy.Enemy->g_Alive()) {
+	if (m_Enemy.m_enemy && m_Enemy.m_enemy->g_Alive()) {
 		vfSaveEnemy();
 		ERatStates eState = ERatStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,m_fAttackSuccessProbability,m_fAttackSuccessProbability,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),aiRatAttackRun,aiRatAttackRun,aiRatAttackRun,aiRatRetreat,aiRatRetreat));
 //		ERatStates eState = ERatStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,m_fAttackSuccessProbability,m_fAttackSuccessProbability,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),aiRatAttackRun,aiRatAttackRun,aiRatAttackRun,aiRatAttackRun,aiRatAttackRun));
@@ -457,22 +456,22 @@ void CAI_Rat::Retreat()
 		m_dwLostEnemyTime = Level().timeServer();
 		
 		Fvector tTemp;
-		tTemp.sub(m_Enemy.Enemy->Position(),Position());
+		tTemp.sub(m_Enemy.m_enemy->Position(),Position());
 		vfNormalizeSafe(tTemp);
 		SRotation sTemp;
 		mk_rotation(tTemp,sTemp);
 
-		CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE((m_Enemy.Enemy->Position().distance_to(Position()) <= m_fAttackDistance) && (!getAI().bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle)),aiRatTurn);
+		CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE((m_Enemy.m_enemy->Position().distance_to(Position()) <= m_fAttackDistance) && (angle_difference(m_body.target.yaw, sTemp.yaw) > m_fAttackAngle),aiRatTurn);
 
-		CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE((m_Enemy.Enemy->Position().distance_to(Position()) <= m_fAttackDistance) && (getAI().bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle)),aiRatAttackFire)
+		CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE((m_Enemy.m_enemy->Position().distance_to(Position()) <= m_fAttackDistance) && (angle_difference(m_body.target.yaw, sTemp.yaw) <= m_fAttackAngle),aiRatAttackFire)
 
-		tTemp.sub(Position(),m_Enemy.Enemy->Position());
+		tTemp.sub(Position(),m_Enemy.m_enemy->Position());
 		tTemp.normalize_safe();
 		tTemp.mul(m_fRetreatDistance);
 		m_tSpawnPosition.add(Position(),tTemp);
 	}
 	else
-		if ((m_Enemy.Enemy && (!m_Enemy.Enemy->g_Alive())) || ((Level().timeServer() - m_dwLostEnemyTime > m_dwRetreatTime) && ((m_tLastSound.dwTime < m_dwLastUpdateTime) || !m_tLastSound.tpEntity || (m_tLastSound.tpEntity->g_Team() == g_Team()) || (!bfCheckIfSoundFrightful())))) {
+		if ((m_Enemy.m_enemy && (!m_Enemy.m_enemy->g_Alive())) || ((Level().timeServer() - m_dwLostEnemyTime > m_dwRetreatTime) && ((m_tLastSound.dwTime < m_dwLastUpdateTime) || !m_tLastSound.tpEntity || (m_tLastSound.tpEntity->g_Team() == g_Team()) || (!bfCheckIfSoundFrightful())))) {
 			GO_TO_PREV_STATE;
 		}
 
@@ -480,7 +479,7 @@ void CAI_Rat::Retreat()
 	
 	m_fSpeed = m_fAttackSpeed;
 
-	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
+	if ((Level().timeServer() - m_previous_query_time > TIME_TO_GO) || !m_previous_query_time)
 		m_tGoalDir = m_tSpawnPosition;
 
 	if (bfComputeNewPosition(true,true))
@@ -498,12 +497,12 @@ void CAI_Rat::Pursuit()
 
 	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 
-	if (m_Enemy.Enemy)
+	if (m_Enemy.m_enemy)
 		m_dwLostEnemyTime = Level().timeServer();
 
 	SelectEnemy(m_Enemy);
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy,aiRatAttackRun);
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_Enemy.m_enemy,aiRatAttackRun);
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE((m_fMorale < m_fMoraleNormalValue),aiRatUnderFire);
 
@@ -517,7 +516,7 @@ void CAI_Rat::Pursuit()
 		GO_TO_NEW_STATE_THIS_UPDATE(aiRatFreeRecoil);
 	}
 
-	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
+	if ((Level().timeServer() - m_previous_query_time > TIME_TO_GO) || !m_previous_query_time)
 		m_tGoalDir.set(m_tSavedEnemyPosition);
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
@@ -541,17 +540,17 @@ void CAI_Rat::FreeRecoil()
 
 	SelectEnemy(m_Enemy);
 		
-	if (m_Enemy.Enemy)
+	if (m_Enemy.m_enemy)
 		m_dwLostEnemyTime = Level().timeServer();
 
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(m_Enemy.Enemy);
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(m_Enemy.m_enemy);
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(m_fMorale < m_fMoraleNormalValue);
 
 	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((!m_tLastSound.tpEntity) || (m_tLastSound.tpEntity->g_Team() != g_Team()))) {
 		m_dwLostEnemyTime = Level().timeServer();
 		Fvector tTemp;
-		tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
+		tTemp.setHP(m_body.current.yaw,m_body.current.pitch);
 		tTemp.normalize_safe();
 		tTemp.mul(m_fUnderFireDistance);
 		m_tSavedEnemyPosition = m_tLastSound.tSavedPosition;
@@ -560,7 +559,7 @@ void CAI_Rat::FreeRecoil()
 	
 	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(Level().timeServer() - m_dwLostEnemyTime >= m_dwLostRecoilTime,aiRatPursuit);
 	
-	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
+	if ((Level().timeServer() - m_previous_query_time > TIME_TO_GO) || !m_previous_query_time)
 		m_tGoalDir.set(m_tSpawnPosition);
 	
 	m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
@@ -584,25 +583,25 @@ void CAI_Rat::ReturnHome()
 
 	SelectEnemy(m_Enemy);
 	
-	if (m_Enemy.Enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.Enemy->Position()) < m_fMaxPursuitRadius)) {
+	if (m_Enemy.m_enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.m_enemy->Position()) < m_fMaxPursuitRadius)) {
 		SelectEnemy(m_Enemy);
 		m_fGoalChangeTime = 0;
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun)
 	}
  
-	if (m_Enemy.Enemy) {
+	if (m_Enemy.m_enemy) {
 		Fvector tTemp;
-		tTemp.sub(m_Enemy.Enemy->Position(),Position());
+		tTemp.sub(m_Enemy.m_enemy->Position(),Position());
 		vfNormalizeSafe(tTemp);
 		SRotation sTemp;
 		mk_rotation(tTemp,sTemp);
 
-		CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE((m_Enemy.Enemy->Position().distance_to(Position()) <= m_fAttackDistance) && (!getAI().bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle)),aiRatTurn);
+		CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE((m_Enemy.m_enemy->Position().distance_to(Position()) <= m_fAttackDistance) && (angle_difference(m_body.target.yaw, sTemp.yaw) > m_fAttackAngle),aiRatTurn);
 
-		CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE((m_Enemy.Enemy->Position().distance_to(Position()) <= m_fAttackDistance) && (getAI().bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle)),aiRatAttackFire)
+		CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE((m_Enemy.m_enemy->Position().distance_to(Position()) <= m_fAttackDistance) && (angle_difference(m_body.target.yaw, sTemp.yaw) <= m_fAttackAngle),aiRatAttackFire)
 	}
 
-	CHECK_IF_GO_TO_PREV_STATE(!m_Enemy.Enemy || !m_Enemy.Enemy->g_Alive() || Position().distance_to(m_tSafeSpawnPosition) < m_fMaxHomeRadius);
+	CHECK_IF_GO_TO_PREV_STATE(!m_Enemy.m_enemy || !m_Enemy.m_enemy->g_Alive() || Position().distance_to(m_tSafeSpawnPosition) < m_fMaxHomeRadius);
 
 	m_tSpawnPosition.set	(m_tSafeSpawnPosition);
 	m_fGoalChangeDelta		= m_fSafeGoalChangeDelta;
@@ -610,7 +609,7 @@ void CAI_Rat::ReturnHome()
 	m_fASpeed				= m_fAngleSpeed;
 	m_fSpeed = m_fSafeSpeed = m_fAttackSpeed;
 
-	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
+	if ((Level().timeServer() - m_previous_query_time > TIME_TO_GO) || !m_previous_query_time)
 		m_tGoalDir.set			(m_tSafeSpawnPosition);
 
 	vfUpdateTime(m_fTimeUpdateDelta);
@@ -634,20 +633,20 @@ void CAI_Rat::EatCorpse()
 
 	SelectEnemy(m_Enemy);
 
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(((m_Enemy.Enemy) && ((m_Enemy.Enemy->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (Position().distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius))));
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(((m_Enemy.m_enemy) && ((m_Enemy.m_enemy->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (Position().distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius))));
 
 	SelectCorp(m_Enemy);
 
-	if (!m_Enemy.Enemy) {
+	if (!m_Enemy.m_enemy) {
 		vfChangeGoal();
 		m_fGoalChangeTime = 10.f;
 	}
 
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!m_Enemy.Enemy || (m_fMorale < m_fMoraleNormalValue));
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!m_Enemy.m_enemy || (m_fMorale < m_fMoraleNormalValue));
 
 	vfSaveEnemy();
 	
-	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((!m_tLastSound.tpEntity) || (m_tLastSound.tpEntity->g_Team() != g_Team())) && (!m_Enemy.Enemy)) {
+	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((!m_tLastSound.tpEntity) || (m_tLastSound.tpEntity->g_Team() != g_Team())) && (!m_Enemy.m_enemy)) {
 		if (m_tLastSound.tpEntity)
 			m_tSavedEnemy = m_tLastSound.tpEntity;
 		m_tSavedEnemyPosition = m_tLastSound.tSavedPosition;
@@ -655,8 +654,8 @@ void CAI_Rat::EatCorpse()
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatFreeRecoil);
 	}
 	
-	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
-		m_tGoalDir.set(m_Enemy.Enemy->Position());
+	if ((Level().timeServer() - m_previous_query_time > TIME_TO_GO) || !m_previous_query_time)
+		m_tGoalDir.set(m_Enemy.m_enemy->Position());
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
 
@@ -666,12 +665,12 @@ void CAI_Rat::EatCorpse()
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
 
 	Fvector tTemp;
-	m_Enemy.Enemy->Center(tTemp);
+	m_Enemy.m_enemy->Center(tTemp);
 	if (tTemp.distance_to(Position()) <= m_fAttackDistance) {
 		m_fSpeed = 0;
-		if (Level().timeServer() - m_dwLastRangeSearch > m_dwHitInterval) {
-			m_dwLastRangeSearch = Level().timeServer();
-			m_Enemy.Enemy->m_fFood -= m_fHitPower/10.f;
+		if (Level().timeServer() - m_previous_query_time > m_dwHitInterval) {
+			m_previous_query_time = Level().timeServer();
+			m_Enemy.m_enemy->m_fFood -= m_fHitPower/10.f;
 		}
 		m_bFiring = true;
 	}
@@ -679,26 +678,26 @@ void CAI_Rat::EatCorpse()
 
 void CAI_Rat::vfUpdateSpawnPosition()
 {
-	if (!g_Alive())
-		return;
-	INIT_SQUAD_AND_LEADER;
-	if (this != Leader)	{
-		CAI_Rat *tpLeader = dynamic_cast<CAI_Rat*>(Leader);
-		if (tpLeader) {
-			if (m_tSafeSpawnPosition.distance_to(tpLeader->m_tSafeSpawnPosition) > EPS_L) {
-				vfAddActiveMember(true);
-				m_eCurrentState = aiRatFreeHuntingActive;
-			}
-			m_tSafeSpawnPosition = tpLeader->m_tSafeSpawnPosition;
-		}
-	}
-	else {
-		if ((Level().timeServer() >= m_dwTimeToChange) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGP)) {
-			m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
-			vfChooseNextGraphPoint		();
-			m_tSafeSpawnPosition.set	(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
-//.			Msg("Next graph point %d",m_tNextGP);
-		}
-
-	}
+//	if (!g_Alive())
+//		return;
+//	INIT_SQUAD_AND_LEADER;
+//	if (this != Leader)	{
+//		CAI_Rat *tpLeader = dynamic_cast<CAI_Rat*>(Leader);
+//		if (tpLeader) {
+//			if (m_tSafeSpawnPosition.distance_to(tpLeader->m_tSafeSpawnPosition) > EPS_L) {
+//				vfAddActiveMember(true);
+//				m_eCurrentState = aiRatFreeHuntingActive;
+//			}
+//			m_tSafeSpawnPosition = tpLeader->m_tSafeSpawnPosition;
+//		}
+//	}
+//	else {
+//		if ((Level().timeServer() >= m_time_to_change) && (ai().cross_table().vertex(level_vertex_id()).game_vertex_id() == m_tNextGP)) {
+//			m_tNextGP					= ai().cross_table().vertex(level_vertex_id()).game_vertex_id();
+//			vfChooseNextGraphPoint		();
+//			m_tSafeSpawnPosition.set	(ai().game_graph().vertex(m_tNextGP).level_point());
+////.			Msg("Next graph point %d",m_tNextGP);
+//		}
+//
+//	}
 }

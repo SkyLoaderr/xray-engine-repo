@@ -8,7 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_idol.h"
-#include "..\\..\\bolt.h"
+#include "../../bolt.h"
 
 CAI_Idol::CAI_Idol					()
 {
@@ -16,7 +16,7 @@ CAI_Idol::CAI_Idol					()
 	m_tpCurrentBlend				= 0;
 	m_bPlaying						= false;
 	m_dwCurrentAnimationIndex		= 0;
-	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
+	m_PhysicMovementControl.AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
 }
 
 CAI_Idol::~CAI_Idol					()
@@ -44,18 +44,18 @@ BOOL CAI_Idol::net_Spawn			(LPVOID DC)
 	m_dwAnyPlayType					= tpIdol->m_dwAniPlayType;
 	m_tpaAnims.clear				();
 	
-	r_torso_current.yaw				= r_torso_target.yaw	= -tpIdol->o_Angle.y;
-	r_torso_current.pitch			= r_torso_target.pitch	= 0;
+	m_body.current.yaw				= m_body.target.yaw	= -tpIdol->o_Angle.y;
+	m_body.current.pitch			= m_body.target.pitch	= 0;
 	
 	u32								N = _GetItemCount(tpIdol->m_caAnimations);
 	string32						I;
-	for (u32 i=0; i<N; i++)
+	for (u32 i=0; i<N; ++i)
 		m_tpaAnims.push_back		(PSkeletonAnimated(Visual())->ID_Cycle(_GetItem(tpIdol->m_caAnimations,i,I)));
 
 	return							TRUE;
 }
 
-void CAI_Idol::SelectAnimation		(const Fvector& _view, const Fvector& _move, float speed)
+void CAI_Idol::SelectAnimation		(const Fvector& /**_view/**/, const Fvector& /**_move/**/, float /**speed/**/)
 {
 	//R_ASSERT						(!m_tpaAnims.empty());
 	if (m_tpaAnims.empty())
@@ -82,7 +82,7 @@ void CAI_Idol::SelectAnimation		(const Fvector& _view, const Fvector& _move, flo
 					m_tpCurrentBlend		= PSkeletonAnimated(Visual())->PlayCycle	(m_tpaAnims[m_dwCurrentAnimationIndex],TRUE,AnimCallback,this);
 					m_bPlaying				= true;
 					if (m_dwCurrentAnimationIndex < m_tpaAnims.size() - 1)
-						m_dwCurrentAnimationIndex++;
+						++m_dwCurrentAnimationIndex;
 				}
 				break;
 			}
@@ -156,7 +156,7 @@ void CAI_Idol::feel_touch_new				(CObject* O)
 
 void CAI_Idol::DropItemSendMessage(CObject *O)
 {
-	if (!O || !O->H_Parent() || (O->H_Parent() != this))
+	if (!O || !O->H_Parent() || (this != O->H_Parent()))
 		return;
 
 	Msg("Dropping item!");

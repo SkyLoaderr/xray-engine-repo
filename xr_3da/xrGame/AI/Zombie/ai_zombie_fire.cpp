@@ -8,17 +8,14 @@
 
 #include "stdafx.h"
 #include "ai_zombie.h"
-#include "..\\..\\ai_funcs.h"
 
-void CAI_Zombie::Exec_Action(float dt)
+void CAI_Zombie::Exec_Action(float /**dt/**/)
 {
-	AI::C_Command* C	= &q_action;
-	AI::AIC_Action* L	= (AI::AIC_Action*)C;
-	switch (L->Command) {
-		case AI::AIC_Action::AttackBegin: {
+	switch (m_tAction) {
+		case eZombieActionAttackBegin : {
 			bool bOk = false;
 			if (m_tpSoundBeingPlayed) {
-				for (int i=0; i<SND_ATTACK_COUNT; i++)
+				for (int i=0; i<SND_ATTACK_COUNT; ++i)
 					if (&(m_tpaSoundAttack[i]) == m_tpSoundBeingPlayed) {
 						bOk = true;
 						break;
@@ -46,25 +43,23 @@ void CAI_Zombie::Exec_Action(float dt)
 
 			break;
 		}
-		case AI::AIC_Action::AttackEnd: {
+		case eZombieActionAttackEnd : {
 			m_bActionStarted = false;
 			break;
 		}
 		default:
 			break;
 	}
-	if (Device.dwTimeGlobal>=L->o_timeout)	
-		L->setTimeout();
 }
 
-void CAI_Zombie::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)
+void CAI_Zombie::HitSignal(float /**amount/**/, Fvector& vLocalDir, CObject* who, s16 /**element/**/)
 {
 	// Save event
 	Fvector D;
 	XFORM().transform_dir(D,vLocalDir);
-	m_dwHitTime = Level().timeServer();
-	m_tHitDir.set(D);
-	m_tHitDir.normalize();
+	m_hit_time = Level().timeServer();
+	m_hit_direction.set(D);
+	m_hit_direction.normalize();
 	m_tHitPosition = who->Position();
 	
 	// Play hit-ref_sound
@@ -100,9 +95,9 @@ void CAI_Zombie::SelectEnemy(SEnemySelected& S)
 {
 	// Initiate process
 	objVisible&	Known	= Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
-	S.Enemy					= 0;
-	S.bVisible			= FALSE;
-	S.fCost				= flt_max-1;
+	S.m_enemy			= 0;
+	S.m_visible			= FALSE;
+	S.m_cost			= flt_max-1;
 	
 	if (Known.size()==0)
 		return;
@@ -112,23 +107,23 @@ void CAI_Zombie::SelectEnemy(SEnemySelected& S)
 	
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	
-	for (u32 i=0; i<Known.size(); i++) {
+	for (u32 i=0; i<Known.size(); ++i) {
 		CEntityAlive*	E = dynamic_cast<CEntityAlive*>(Known[i].key);
 		if (!E)
 			continue;
 		float		H = EnemyHeuristics(E);
-		if (H<S.fCost) {
+		if (H<S.m_cost) {
 			bool bVisible = false;
-			for (int i=0; i<(int)m_tpaVisibleObjects.size(); i++)
+			for (int i=0; i<(int)m_tpaVisibleObjects.size(); ++i)
 				if (m_tpaVisibleObjects[i] == E) {
 					bVisible = true;
 					break;
 				}
 			float	cost	 = H*(bVisible?1:_FB_invisible_hscale);
-			if (cost<S.fCost)	{
-				S.Enemy		= E;
-				S.bVisible	= bVisible;
-				S.fCost		= cost;
+			if (cost<S.m_cost)	{
+				S.m_enemy		= E;
+				S.m_visible		= bVisible;
+				S.m_cost		= cost;
 				Group.m_bEnemyNoticed = true;
 			}
 		}

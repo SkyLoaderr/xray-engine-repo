@@ -13,44 +13,44 @@
 void CAI_Zombie::vfLoadSounds()
 {
 	// attack
-	::Sound->create(m_tpaSoundAttack[0],TRUE,"monsters\\zombie\\attack\\zm1att_1",SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
-	::Sound->create(m_tpaSoundAttack[1],TRUE,"monsters\\zombie\\attack\\zm1att_2",SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
-	::Sound->create(m_tpaSoundAttack[2],TRUE,"monsters\\zombie\\attack\\zm1att_3",SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
-	::Sound->create(m_tpaSoundAttack[3],TRUE,"monsters\\zombie\\attack\\zm1att_4",SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
+	::Sound->create(m_tpaSoundAttack[0],TRUE,"monsters/zombie/attack/zm1att_1",SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
+	::Sound->create(m_tpaSoundAttack[1],TRUE,"monsters/zombie/attack/zm1att_2",SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
+	::Sound->create(m_tpaSoundAttack[2],TRUE,"monsters/zombie/attack/zm1att_3",SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
+	::Sound->create(m_tpaSoundAttack[3],TRUE,"monsters/zombie/attack/zm1att_4",SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
 
 	// death
-	::Sound->create(m_tpaSoundDeath[0],TRUE,"monsters\\zombie\\death\\zm1die_1",SOUND_TYPE_MONSTER_DYING_ANIMAL);
-	::Sound->create(m_tpaSoundDeath[1],TRUE,"monsters\\zombie\\death\\zm1die_2",SOUND_TYPE_MONSTER_DYING_ANIMAL);
-	::Sound->create(m_tpaSoundDeath[2],TRUE,"monsters\\zombie\\death\\zm1die_3",SOUND_TYPE_MONSTER_DYING_ANIMAL);
+	::Sound->create(m_tpaSoundDeath[0],TRUE,"monsters/zombie/death/zm1die_1",SOUND_TYPE_MONSTER_DYING_ANIMAL);
+	::Sound->create(m_tpaSoundDeath[1],TRUE,"monsters/zombie/death/zm1die_2",SOUND_TYPE_MONSTER_DYING_ANIMAL);
+	::Sound->create(m_tpaSoundDeath[2],TRUE,"monsters/zombie/death/zm1die_3",SOUND_TYPE_MONSTER_DYING_ANIMAL);
 
 	// hit
-	::Sound->create(m_tpaSoundHit[0],TRUE,"monsters\\zombie\\hit\\zm2a1__1",SOUND_TYPE_MONSTER_INJURING_ANIMAL);
-	::Sound->create(m_tpaSoundHit[1],TRUE,"monsters\\zombie\\hit\\zm2a1__2",SOUND_TYPE_MONSTER_INJURING_ANIMAL);
-	::Sound->create(m_tpaSoundHit[2],TRUE,"monsters\\zombie\\hit\\zm2a1__3",SOUND_TYPE_MONSTER_INJURING_ANIMAL);
+	::Sound->create(m_tpaSoundHit[0],TRUE,"monsters/zombie/hit/zm2a1__1",SOUND_TYPE_MONSTER_INJURING_ANIMAL);
+	::Sound->create(m_tpaSoundHit[1],TRUE,"monsters/zombie/hit/zm2a1__2",SOUND_TYPE_MONSTER_INJURING_ANIMAL);
+	::Sound->create(m_tpaSoundHit[2],TRUE,"monsters/zombie/hit/zm2a1__3",SOUND_TYPE_MONSTER_INJURING_ANIMAL);
 
 	// idle
-	::Sound->create(m_tpaSoundIdle[0],TRUE,"monsters\\zombie\\idle\\hh1a0mo1",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundIdle[1],TRUE,"monsters\\zombie\\idle\\hh1a0mo2",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundIdle[2],TRUE,"monsters\\zombie\\idle\\hh1a0mo3",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundIdle[0],TRUE,"monsters/zombie/idle/hh1a0mo1",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundIdle[1],TRUE,"monsters/zombie/idle/hh1a0mo2",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundIdle[2],TRUE,"monsters/zombie/idle/hh1a0mo3",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
 
 	// notice
-	::Sound->create(m_tpaSoundNotice[0],TRUE,"monsters\\zombie\\notice\\hh1to1_1",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundNotice[0],TRUE,"monsters/zombie/notice/hh1to1_1",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
 
 	// pursuit
-	::Sound->create(m_tpaSoundPursuit[0],TRUE,"monsters\\zombie\\pursuit\\hh1a1__1",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundPursuit[1],TRUE,"monsters\\zombie\\pursuit\\hh1a1__2",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundPursuit[2],TRUE,"monsters\\zombie\\pursuit\\hh1a1__3",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundPursuit[3],TRUE,"monsters\\zombie\\pursuit\\hh1a1__4",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundPursuit[4],TRUE,"monsters\\zombie\\pursuit\\hh1a1__5",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundPursuit[5],TRUE,"monsters\\zombie\\pursuit\\hh1a1__6",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundPursuit[0],TRUE,"monsters/zombie/pursuit/hh1a1__1",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundPursuit[1],TRUE,"monsters/zombie/pursuit/hh1a1__2",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundPursuit[2],TRUE,"monsters/zombie/pursuit/hh1a1__3",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundPursuit[3],TRUE,"monsters/zombie/pursuit/hh1a1__4",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundPursuit[4],TRUE,"monsters/zombie/pursuit/hh1a1__5",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundPursuit[5],TRUE,"monsters/zombie/pursuit/hh1a1__6",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
 
 	// resurrect
-	::Sound->create(m_tpaSoundResurrect[0],TRUE,"monsters\\zombie\\resurrect\\hh1a3__1",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundResurrect[1],TRUE,"monsters\\zombie\\resurrect\\hh1a3__2",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundResurrect[2],TRUE,"monsters\\zombie\\resurrect\\hh1a3__3",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundResurrect[3],TRUE,"monsters\\zombie\\resurrect\\hh1a3__4",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundResurrect[4],TRUE,"monsters\\zombie\\resurrect\\hh1a3__5",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundResurrect[5],TRUE,"monsters\\zombie\\resurrect\\hh1a3__6",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundResurrect[0],TRUE,"monsters/zombie/resurrect/hh1a3__1",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundResurrect[1],TRUE,"monsters/zombie/resurrect/hh1a3__2",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundResurrect[2],TRUE,"monsters/zombie/resurrect/hh1a3__3",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundResurrect[3],TRUE,"monsters/zombie/resurrect/hh1a3__4",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundResurrect[4],TRUE,"monsters/zombie/resurrect/hh1a3__5",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundResurrect[5],TRUE,"monsters/zombie/resurrect/hh1a3__6",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
 }
 
 void CAI_Zombie::vfLoadAnimations()
@@ -97,20 +97,20 @@ void CAI_Zombie::vfLoadAnimations()
 	tpVisualObject->PlayCycle(m_tZombieAnimations.tNormal.tGlobal.tpaIdle[0]);
 }
 
-void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
+void CAI_Zombie::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_move/**/, float /**speed/**/)
 {
 	CSkeletonAnimated* tpVisualObject = PSkeletonAnimated(Visual());
 	CMotionDef*	tpGlobalAnimation = 0;
 
 	if (!g_Alive()) {
-		for (int i=0 ;i<3; i++)
+		for (int i=0 ;i<3; ++i)
 			if (m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[i] == m_tpCurrentGlobalAnimation) {
 				tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 				break;
 			}
 		
 		if (!tpGlobalAnimation) {
-			for (int i=0 ;i<3; i++)
+			for (int i=0 ;i<3; ++i)
 				if (m_tZombieAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
 					tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 					if (!m_tpCurrentGlobalBlend->playing)
@@ -123,20 +123,20 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 	}
 	else
 		if (m_eCurrentState == aiZombieResurrect) {
-			for (int i=0; i<3; i++)
+			for (int i=0; i<3; ++i)
 				if (m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[i] == m_tpCurrentGlobalAnimation) {
 					tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 					break;
 				}
 			if (!tpGlobalAnimation) {
-				for ( i=0; i<3; i++)
+				for ( i=0; i<3; ++i)
 					if (m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[i] == m_tpCurrentGlobalAnimation) {
 						tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[i];
 						break;
 					}
 				
 				if (!tpGlobalAnimation)
-					for ( i=0; i<3; i++)
+					for ( i=0; i<3; ++i)
 						if (m_tZombieAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
 							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[i];
 							break;
@@ -145,7 +145,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 		}
 		else
 			if (m_bFiring) {
-				for (int i=0 ;i<3; i++)
+				for (int i=0 ;i<3; ++i)
 					if (m_tZombieAnimations.tNormal.tGlobal.tpaAttack[i] == m_tpCurrentGlobalAnimation) {
 						tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 						break;
@@ -156,19 +156,19 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 			}
 			else
 				if (m_eCurrentState == aiZombieTurn)
-					if (_abs(r_torso_target.yaw - r_torso_current.yaw) <= PI)
-						if (r_torso_target.yaw - r_torso_current.yaw >= 0)
+					if (_abs(m_body.target.yaw - m_body.current.yaw) <= PI)
+						if (m_body.target.yaw - m_body.current.yaw >= 0)
 							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpTurnRight;
 						else
 							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpTurnLeft;
 					else
-						if (r_torso_target.yaw > r_torso_current.yaw)
+						if (m_body.target.yaw > m_body.current.yaw)
 							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpTurnLeft;
 						else
 							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpTurnRight;
 				else
 					if (m_fSpeed < 0.2f) {
-						for (int i=0 ;i<2; i++)
+						for (int i=0 ;i<2; ++i)
 							if (m_tZombieAnimations.tNormal.tGlobal.tpaIdle[i] == m_tpCurrentGlobalAnimation) {
 								tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 								break;

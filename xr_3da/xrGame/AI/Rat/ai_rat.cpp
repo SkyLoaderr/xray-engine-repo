@@ -9,8 +9,11 @@
 #include "stdafx.h"
 
 #include "ai_rat.h"
-#include "..\\ai_monsters_misc.h"
-#include "..\\..\\PhysicsShell.h"
+#include "../ai_monsters_misc.h"
+#include "../../PhysicsShell.h"
+#include "../../game_graph.h"
+#include "../../game_level_cross_table.h"
+
 CAI_Rat::CAI_Rat()
 {
 	Init();
@@ -26,9 +29,11 @@ CAI_Rat::~CAI_Rat()
 
 void CAI_Rat::Init()
 {
-	m_tHitDir.set			(0,0,1);
+	inherited::Init			();
+	m_tAction				= eRatActionNone;
+	m_hit_direction.set			(0,0,1);
 	m_tSavedEnemyPosition.set(0,0,0);
-	m_dwHitTime				= 0;
+	m_hit_time				= 0;
 	m_tSavedEnemy			= 0;
 	m_tpSavedEnemyNode		= 0;
 	m_dwSavedEnemyNodeID	= u32(-1);
@@ -40,7 +45,7 @@ void CAI_Rat::Init()
 	m_dwLastVoiceTalk		= 0;
 	m_tpSoundBeingPlayed	= 0;
 	m_dwLastSoundRefresh	= 0;
-	m_dwLastRangeSearch		= 0;
+	m_previous_query_time		= 0;
 	m_tGoalDir.set			(10.0f*(Random.randF()-Random.randF()),10.0f*(Random.randF()-Random.randF()),10.0f*(Random.randF()-Random.randF()));
 	m_tCurrentDir.set		(0,0,1);
 	m_tHPB.set				(0,0,0);
@@ -54,10 +59,9 @@ void CAI_Rat::Init()
 	m_bStanding				= false;
 	m_bActive				= false;
 	m_dwStartAttackTime		= 0;
-	q_look.o_look_speed		= PI;
+//	q_look.o_look_speed		= PI;
 	m_pPhysicsShell			= NULL;
 	m_saved_impulse			= 0.f;
-	m_dwTimeToChange		= 30000;
 	m_bMoving				= false;
 	m_bCanAdjustSpeed		= false;
 	m_bStraightForward		= false;
@@ -68,9 +72,7 @@ void CAI_Rat::Die()
 	inherited::Die( );
 	m_eCurrentState = aiRatDie;
 
-	Fvector	dir;
-	AI_Path.Direction(dir);
-	SelectAnimation(XFORM().k,dir,AI_Path.fSpeed);
+	SelectAnimation(XFORM().k,direction(),speed());
 
 	::Sound->play_at_pos(m_tpaSoundDie[Random.randI(SND_DIE_COUNT)],this,Position());
 
@@ -79,7 +81,7 @@ void CAI_Rat::Die()
 	CGroup &Group = Level().get_group(g_Team(),g_Squad(),g_Group());
 	vfRemoveActiveMember();
 	vfRemoveStandingMember();
-	Group.m_dwAliveCount--;
+	--(Group.m_dwAliveCount);
 	m_eCurrentState = aiRatDie;
 	m_dwDeathTime = Level().timeServer();
 }
@@ -155,20 +157,6 @@ void CAI_Rat::Load(LPCSTR section)
 	m_dwActiveScheduleMin			= shedule.t_min;
 	m_dwActiveScheduleMax			= shedule.t_max;
 
-	m_tpaTerrain.clear				();
-	LPCSTR							S = pSettings->r_string(section,"terrain");
-	u32								N = _GetItemCount(S);
-	R_ASSERT						(((N % (LOCATION_TYPE_COUNT + 2)) == 0) && (N));
-	STerrainPlace					tTerrainPlace;
-	tTerrainPlace.tMask.resize		(LOCATION_TYPE_COUNT);
-	string16						I;
-	for (u32 i=0; i<N;) {
-		for (u32 j=0; j<LOCATION_TYPE_COUNT; j++, i++)
-			tTerrainPlace.tMask[j] = _LOCATION_ID(atoi(_GetItem(S,i,I)));
-		tTerrainPlace.dwMinTime		= atoi(_GetItem(S,i++,I))*1000;
-		tTerrainPlace.dwMaxTime		= atoi(_GetItem(S,i++,I))*1000;
-		m_tpaTerrain.push_back(tTerrainPlace);
-	}
 	m_fGoingSpeed					= pSettings->r_float	(section, "going_speed");
 
 	// prefetching
@@ -187,8 +175,8 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
 	// personal characteristics
-	r_torso_current.yaw				= r_torso_target.yaw	= -tpSE_Rat->o_Angle.y;
-	r_torso_current.pitch			= r_torso_target.pitch	= 0;
+	m_body.current.yaw				= m_body.target.yaw	= -tpSE_Rat->o_Angle.y;
+	m_body.current.pitch			= m_body.target.pitch	= 0;
 
 	eye_fov							= tpSE_Rat->fEyeFov;
 	eye_range						= tpSE_Rat->fEyeRange;
@@ -213,8 +201,8 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_fAttackDistance				= tpSE_Rat->fAttackDistance;
 	m_fAttackAngle					= tpSE_Rat->fAttackAngle/180.f*PI;
 	m_fAttackSuccessProbability		= tpSE_Rat->fAttackSuccessProbability;
-	m_tCurGP						= tpSE_Rat->m_tGraphID;
-	m_tNextGP						= tpSE_Rat->m_tNextGraphID;
+//	m_tCurGP						= tpSE_Rat->m_tGraphID;
+//	m_tNextGP						= tpSE_Rat->m_tNextGraphID;
 	//////////////////////////////////////////////////////////////////////////
 
 	m_fCurSpeed						= m_fMaxSpeed;
@@ -225,12 +213,12 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_tStateStack.push				(m_eCurrentState = aiRatFreeHuntingActive);
 	vfAddActiveMember				(true);
 	m_bStateChanged					= true;
-	m_tCurGP						= m_tNextGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
+	set_game_vertex					(ai().cross_table().vertex(level_vertex_id()).game_vertex_id());
 
-	r_torso_current					= r_current;
-	r_torso_target					= r_target;
-	m_tHPB.x						= r_torso_current.yaw;
-	m_tHPB.y						= r_torso_current.pitch;
+	m_body.current					= m_head.current;
+	m_body.target					= m_head.target;
+	m_tHPB.x						= m_body.current.yaw;
+	m_tHPB.y						= m_body.current.pitch;
 	m_tHPB.z						= 0;
 
 	INIT_SQUAD_AND_LEADER;
@@ -250,10 +238,6 @@ void CAI_Rat::net_Destroy()
 	if (m_pPhysicsShell) m_pPhysicsShell->Deactivate();
 }
 
-void CAI_Rat::Exec_Movement	( float dt )
-{
-}
-
 void CAI_Rat::net_Export(NET_Packet& P)
 {
 	R_ASSERT				(Local());
@@ -269,14 +253,15 @@ void CAI_Rat::net_Export(NET_Packet& P)
 	P.w_angle8				(N.o_torso.yaw);
 	P.w_angle8				(N.o_torso.pitch);
 
-	P.w						(&m_tNextGP,				sizeof(m_tNextGP));
-	P.w						(&m_tCurGP,					sizeof(m_tCurGP));
+	ALife::_GRAPH_ID		l_game_vertex_id = game_vertex_id();
+	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
+	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
 	P.w						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
 	P.w						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
 	float					f1;
-	f1						= Position().distance_to		(getAI().m_tpaGraph[m_tCurGP].tLocalPoint);
+	f1						= Position().distance_to	(ai().game_graph().vertex(game_vertex_id())->level_point());
 	P.w						(&f1,						sizeof(f1));
-	f1						= Position().distance_to		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
+	f1						= Position().distance_to	(ai().game_graph().vertex(game_vertex_id())->level_point());
 	P.w						(&f1,						sizeof(f1));
 }
 
@@ -298,8 +283,10 @@ void CAI_Rat::net_Import(NET_Packet& P)
 	P.r_angle8				(N.o_torso.yaw);
 	P.r_angle8				(N.o_torso.pitch);
 
-	P.r						(&m_tNextGP,				sizeof(m_tNextGP));
-	P.r						(&m_tCurGP,					sizeof(m_tCurGP));
+	ALife::_GRAPH_ID		t;
+	P.r						(&t,				sizeof(t));
+	P.r						(&t,				sizeof(t));
+	set_game_vertex			(t);
 
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
 		NET.push_back			(N);
@@ -324,11 +311,11 @@ void CAI_Rat::CreateSkeleton(){
 	//sphere.R=0.25;
 	//element->add_Sphere(sphere);
 	element->setDensity(m_phMass);
-	element->SetMaterial("creatures\\rat");
+	element->SetMaterial("creatures/rat");
 	m_pPhysicsShell=P_create_Shell();
 	m_pPhysicsShell->add_Element(element);
 	m_pPhysicsShell->Activate(XFORM(),0,XFORM());
-	if(m_saved_impulse!=0.f){
+	if(!fsimilar(0.f,m_saved_impulse)){
 
 		m_pPhysicsShell->applyImpulseTrace(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse);
 	}
@@ -352,7 +339,7 @@ void CAI_Rat::CreateSkeleton(){
 
 	element->setDensity(200.f);
 	m_pPhysicsShell->add_Element(element);
-	element->SetMaterial("materials\\skel1");
+	element->SetMaterial("materials/skel1");
 
 	//set shell start position
 	Fmatrix m;
@@ -397,7 +384,7 @@ void CAI_Rat::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_o
 	}
 }
 
-void CAI_Rat::feel_touch_new(CObject* O)
+void CAI_Rat::feel_touch_new(CObject* /**O/**/)
 {
 }
 

@@ -8,10 +8,10 @@
 
 #include "stdafx.h"
 #include "ai_trader.h"
-#include "..\\..\\bolt.h"
+#include "../../bolt.h"
 
-#include "..\\..\\trade.h"
-#include "..\\..\\ai_script_actions.h"
+#include "../../trade.h"
+#include "../../ai_script_actions.h"
 
 CAI_Trader::CAI_Trader()
 {
@@ -57,8 +57,8 @@ BOOL CAI_Trader::net_Spawn			(LPVOID DC)
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
 
 	
-	//r_torso_current.yaw			= r_torso_target.yaw	= -tpTrader->o_Angle.y;
-	//r_torso_current.pitch			= r_torso_target.pitch	= 0;
+	//m_body.current.yaw			= m_body.target.yaw	= -tpTrader->o_Angle.y;
+	//m_body.current.pitch			= m_body.target.pitch	= 0;
 	
 	m_tAnimation					= PSkeletonAnimated(Visual())->ID_Cycle("trade");
 
@@ -94,7 +94,7 @@ void CAI_Trader::net_Import		(NET_Packet& P)
 	setEnabled						(TRUE);
 }
 
-void CAI_Trader::SelectAnimation		(const Fvector& _view, const Fvector& _move, float speed)
+void CAI_Trader::SelectAnimation		(const Fvector& /**_view/**/, const Fvector& /**_move/**/, float /**speed/**/)
 {
 	if (g_Alive()) 
 		if (!m_bPlaying) {
@@ -166,7 +166,7 @@ void CAI_Trader::feel_touch_new				(CObject* O)
 
 void CAI_Trader::DropItemSendMessage(CObject *O)
 {
-	if (!O || !O->H_Parent() || (O->H_Parent() != this))
+	if (!O || !O->H_Parent() || (this != O->H_Parent()))
 		return;
 
 	Msg("Dropping item!");

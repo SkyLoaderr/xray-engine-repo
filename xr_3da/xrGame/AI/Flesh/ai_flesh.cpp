@@ -1,8 +1,7 @@
 #include "stdafx.h"
 #include "ai_flesh.h"
 
-#include "..\\..\\ai_space.h"
-using namespace AI;
+#include "../../ai_space.h"
 
 CAI_Flesh::CAI_Flesh()
 {

@@ -46,13 +46,13 @@ void CAI_Rat::vfLoadAnimations()
 	tpVisualObject->PlayCycle(m_tRatAnimations.tNormal.tGlobal.tpaIdle[0]);
 }
 
-void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
+void CAI_Rat::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_move/**/, float /**speed/**/)
 {
 	CSkeletonAnimated* tpVisualObject = PSkeletonAnimated(Visual());
 	CMotionDef*	tpGlobalAnimation=0;
 
 	if (fEntityHealth <= 0) {
-		for (int i=0 ;i<2; i++)
+		for (int i=0 ;i<2; ++i)
 			if (m_tRatAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
 				tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 				break;
@@ -65,7 +65,7 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 	}
 	else
 		if (m_bFiring) {
-//			for (int i=0 ;i<3; i++)
+//			for (int i=0 ;i<3; ++i)
 //				if (m_tRatAnimations.tNormal.tGlobal.tpaAttack[i] == m_tpCurrentGlobalAnimation) {
 //					tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 //					break;
@@ -76,9 +76,9 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 			tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaAttack[2];
 		}
 		else
-			if (_abs(r_torso_target.yaw - r_torso_current.yaw) <= PI)
-				if (_abs(r_torso_target.yaw - r_torso_current.yaw) >= EPS_L)
-					if (r_torso_target.yaw - r_torso_current.yaw >= 0)
+			if (_abs(m_body.target.yaw - m_body.current.yaw) <= PI)
+				if (_abs(m_body.target.yaw - m_body.current.yaw) >= EPS_L)
+					if (m_body.target.yaw - m_body.current.yaw >= 0)
 						tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpTurnRight;
 					else
 						tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpTurnLeft;
@@ -98,8 +98,8 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 							else
 								tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tWalk.fwd;
 			else
-				if (PI_MUL_2 - _abs(r_torso_target.yaw - r_torso_current.yaw) >= EPS_L)
-					if (r_torso_target.yaw > r_torso_current.yaw)
+				if (PI_MUL_2 - _abs(m_body.target.yaw - m_body.current.yaw) >= EPS_L)
+					if (m_body.target.yaw > m_body.current.yaw)
 						tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpTurnLeft;
 					else
 						tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpTurnRight;

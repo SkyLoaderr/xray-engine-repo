@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\\biting\\ai_biting.h"
+#include "../\biting/ai_biting.h"
 
 class CAI_Boar : public CAI_Biting {
 

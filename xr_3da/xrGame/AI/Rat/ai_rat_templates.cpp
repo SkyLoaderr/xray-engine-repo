@@ -8,26 +8,26 @@
 
 #include "stdafx.h"
 #include "ai_rat.h"
-#include "..\\ai_monsters_misc.h"
-#include "..\\..\\ai_alife_graph.h"
+#include "../ai_monsters_misc.h"
+#include "../../game_graph.h"
 
 void CAI_Rat::vfSaveEnemy()
 {
-	m_tSavedEnemy = m_Enemy.Enemy;
-	m_tSavedEnemyPosition = m_Enemy.Enemy->Position();
-	m_tpSavedEnemyNode = m_Enemy.Enemy->AI_Node;
-	m_dwSavedEnemyNodeID = m_Enemy.Enemy->AI_NodeID;
+	m_tSavedEnemy = m_Enemy.m_enemy;
+	m_tSavedEnemyPosition = m_Enemy.m_enemy->Position();
+	m_tpSavedEnemyNode = m_Enemy.m_enemy->level_vertex();
+	m_dwSavedEnemyNodeID = m_Enemy.m_enemy->level_vertex_id();
 }
 
-void CAI_Rat::vfSetFire(bool bFire, CGroup &Group)
+void CAI_Rat::vfSetFire(bool bFire, CGroup &/**Group/**/)
 {
 	if (bFire) {
 		m_bFiring = true;
-		q_action.setup(AI::AIC_Action::AttackBegin);
+		m_tAction = eRatActionAttackBegin;
 	}
 	else {
 		m_bFiring = false;
-		q_action.setup(AI::AIC_Action::AttackEnd);
+		m_tAction = eRatActionAttackEnd;
 	}
 }
 
@@ -55,7 +55,7 @@ void CAI_Rat::vfAdjustSpeed()
 		if (fAngle >= 3*PI_DIV_2) {
 			m_fSpeed = 0;
 			m_fASpeed = m_fNullASpeed;
-			r_torso_target.yaw = fAngle;
+			m_body.target.yaw = fAngle;
 		}
 		else 
 		{
@@ -68,7 +68,7 @@ void CAI_Rat::vfAdjustSpeed()
 			if (fAngle >= 3*PI_DIV_2) {
 				m_fSpeed = 0;
 				m_fASpeed = m_fNullASpeed;
-				r_torso_target.yaw = fAngle;
+				m_body.target.yaw = fAngle;
 			}
 			else
 				if (fAngle >= PI_DIV_2) {
@@ -85,7 +85,7 @@ void CAI_Rat::vfAdjustSpeed()
 				if (fAngle >= 3*PI_DIV_2) {
 					m_fSpeed = 0;
 					m_fASpeed = m_fNullASpeed;
-					r_torso_target.yaw = fAngle;
+					m_body.target.yaw = fAngle;
 				}
 				else
 					if (fAngle >= PI_DIV_2) {
@@ -103,7 +103,7 @@ void CAI_Rat::vfAdjustSpeed()
 						}
 			}
 			else {
-				r_torso_target.yaw = fAngle;
+				m_body.target.yaw = fAngle;
 				m_fSpeed = 0;
 				m_fASpeed = m_fNullASpeed;
 			}
@@ -141,7 +141,7 @@ bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 	m_bStraightForward	= bStraightForward;
 	Fvector tSafeHPB = m_tHPB;
 	Fvector tSavedPosition = Position();
-	SRotation tSavedTorsoTarget = r_torso_target;
+	SRotation tSavedTorsoTarget = m_body.target;
 	float fSavedDHeading = m_fDHeading;
 
 	if (bCanAdjustSpeed)
@@ -225,26 +225,26 @@ bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 	Position()		= tSavedPosition;
 	Position().mad	(tDirection,m_fSpeed*m_fTimeUpdateDelta);
 //	Msg				("[%f][%f][%f]",VPUSH(Position()));
-	r_target.yaw	= r_torso_target.yaw = -m_tHPB.x;
+	m_head.target.yaw	= m_body.target.yaw = -m_tHPB.x;
 
 //	Fvector tAcceleration;
-//	tAcceleration.setHP(-r_torso_current.yaw,-r_torso_current.pitch);
+//	tAcceleration.setHP(-m_body.current.yaw,-m_body.current.pitch);
 //	tAcceleration.normalize_safe();
 //	tAcceleration.mul(m_fSpeed*12.f);
-//	Movement.SetPosition(Position());
-//	Movement.Calculate	(tAcceleration,0,0,m_fTimeUpdateDelta,false);
-//	Movement.GetPosition(Position());
+//	m_PhysicMovementControl.SetPosition(Position());
+//	m_PhysicMovementControl.Calculate	(tAcceleration,0,0,m_fTimeUpdateDelta,false);
+//	m_PhysicMovementControl.GetPosition(Position());
 
-	u32 dwNewNode = AI_NodeID;
-	NodeCompressed *tpNewNode = AI_Node;
-	NodePosition	QueryPos;
-	getAI().PackPosition	(QueryPos,Position());
-	if (!AI_NodeID || !getAI().u_InsideNode(*AI_Node,QueryPos)) {
-		dwNewNode = getAI().q_Node(AI_NodeID,Position());
-		tpNewNode = getAI().Node(dwNewNode);
+	u32 dwNewNode = level_vertex_id();
+	const CLevelGraph::CVertex *tpNewNode = level_vertex();
+	CLevelGraph::CPosition	QueryPos;
+	ai().level_graph().vertex_position	(QueryPos,Position());
+	if (!level_vertex_id() || !ai().level_graph().inside(*level_vertex(),QueryPos)) {
+		dwNewNode = ai().level_graph().vertex(level_vertex_id(),Position());
+		tpNewNode = ai().level_graph().vertex(dwNewNode);
 	}
-	if (dwNewNode && getAI().u_InsideNode(*tpNewNode,QueryPos)) {
-		Position().y = getAI().ffGetY(*tpNewNode,Position().x,Position().z);
+	if (dwNewNode && ai().level_graph().inside(*tpNewNode,QueryPos)) {
+		Position().y = ai().level_graph().vertex_plane_y(*tpNewNode,Position().x,Position().z);
 		m_tOldPosition.set(tSavedPosition);
 		m_bNoWay		= false;
 	}
@@ -254,23 +254,23 @@ bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 		m_tHPB			= tSafeHPB;
 		XFORM().setHPB	(m_tHPB.x,m_tHPB.y,m_tHPB.z);
 		Position()		= tSavedPosition;
-		r_torso_target	= tSavedTorsoTarget;
+		m_body.target	= tSavedTorsoTarget;
 		m_fDHeading		= fSavedDHeading;
 	}
 
 	bool m_bResult = false;
-	if (!getAI().bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
+	if ((angle_difference(m_body.target.yaw, m_body.current.yaw) > PI_DIV_8) || m_bNoWay) {
 		m_fSpeed = .1f;
 		if (m_bNoWay)
-			if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_RETURN) || (!m_dwLastRangeSearch)) {
+			if ((Level().timeServer() - m_previous_query_time > TIME_TO_RETURN) || (!m_previous_query_time)) {
 				float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-				r_torso_target.yaw = r_torso_current.yaw + fAngle;
-				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+				m_body.target.yaw = m_body.current.yaw + fAngle;
+				m_body.target.yaw = angle_normalize(m_body.target.yaw);
 				Fvector tTemp;
-				tTemp.setHP(-r_torso_target.yaw,-r_torso_target.pitch);
+				tTemp.setHP(-m_body.target.yaw,-m_body.target.pitch);
 				tTemp.mul(100.f);
 				m_tGoalDir.add(Position(),tTemp);
-				m_dwLastRangeSearch = Level().timeServer();
+				m_previous_query_time = Level().timeServer();
 			}
 		m_bResult = true;
 	}
@@ -280,41 +280,41 @@ bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 
 void CAI_Rat::vfChooseNextGraphPoint()
 {
-	_GRAPH_ID			tGraphID		= m_tNextGP;
-	u16					wNeighbourCount = (u16)getAI().m_tpaGraph[tGraphID].tNeighbourCount;
-	CSE_ALifeGraph::SGraphEdge			*tpaEdges		= (CSE_ALifeGraph::SGraphEdge *)((BYTE *)getAI().m_tpaGraph + getAI().m_tpaGraph[tGraphID].dwEdgeOffset);
-	
-	int					iPointCount		= (int)m_tpaTerrain.size();
-	int					iBranches		= 0;
-	for (int i=0; i<wNeighbourCount; i++)
-		for (int j=0; j<iPointCount; j++)
-			if (getAI().bfCheckMask(m_tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes) && (tpaEdges[i].dwVertexNumber != m_tCurGP))
-				iBranches++;
-	if (!iBranches) {
-		for (int i=0; i<wNeighbourCount; i++) {
-			for (int j=0; j<iPointCount; j++)
-				if (getAI().bfCheckMask(m_tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes)) {
-					m_tCurGP	= m_tNextGP;
-					m_tNextGP	= (_GRAPH_ID)tpaEdges[i].dwVertexNumber;
-					m_dwTimeToChange	= Level().timeServer() + ::Random.randI(m_tpaTerrain[j].dwMinTime,m_tpaTerrain[j].dwMaxTime);
-					return;
-				}
-		}
-	}
-	else {
-		int iChosenBranch = ::Random.randI(0,iBranches);
-		iBranches = 0;
-		for (int i=0; i<wNeighbourCount; i++) {
-			for (int j=0; j<iPointCount; j++)
-				if (getAI().bfCheckMask(m_tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes) && (tpaEdges[i].dwVertexNumber != m_tCurGP)) {
-					if (iBranches == iChosenBranch) {
-						m_tCurGP	= m_tNextGP;
-						m_tNextGP	= (_GRAPH_ID)tpaEdges[i].dwVertexNumber;
-						m_dwTimeToChange	= Level().timeServer() + ::Random.randI(m_tpaTerrain[j].dwMinTime,m_tpaTerrain[j].dwMaxTime);
-						return;
-					}
-					iBranches++;
-				}
-		}
-	}
+//	_GRAPH_ID			tGraphID		= m_tNextGP;
+//	CGameGraph::const_iterator	i,e;
+//	ai().game_graph().begin		(tGraphID,i,e);
+//	int					iPointCount		= (int)m_tpaTerrain.size();
+//	int					iBranches		= 0;
+//	for ( ; i != e; ++i)
+//		for (int j=0; j<iPointCount; ++j)
+//			if (ai().game_graph().mask(m_tpaTerrain[j].tMask,ai().game_graph().vertex((*i).vertex_id()).vertex_type()) && ((*i).vertex_id() != m_tCurGP))
+//				++iBranches;
+//	ai().game_graph().begin		(tGraphID,i,e);
+//	if (!iBranches) {
+//		for ( ; i != e; ++i) {
+//			for (int j=0; j<iPointCount; ++j)
+//				if (ai().game_graph().mask(m_tpaTerrain[j].tMask,ai().game_graph().vertex((*i).vertex_id()).vertex_type())) {
+//					m_tCurGP	= m_tNextGP;
+//					m_tNextGP	= (*i).vertex_id();
+//					m_dwTimeToChange	= Level().timeServer() + ::Random.randI(m_tpaTerrain[j].dwMinTime,m_tpaTerrain[j].dwMaxTime);
+//					return;
+//				}
+//		}
+//	}
+//	else {
+//		int iChosenBranch = ::Random.randI(0,iBranches);
+//		iBranches = 0;
+//		for ( ; i != e; ++i) {
+//			for (int j=0; j<iPointCount; ++j)
+//				if (ai().game_graph().mask(m_tpaTerrain[j].tMask,ai().game_graph().vertex((*i).vertex_id()).vertex_type()) && ((*i).vertex_id() != m_tCurGP)) {
+//					if (iBranches == iChosenBranch) {
+//						m_tCurGP			= m_tNextGP;
+//						m_tNextGP			= (*i).vertex_id();
+//						m_dwTimeToChange	= Level().timeServer() + ::Random.randI(m_tpaTerrain[j].dwMinTime,m_tpaTerrain[j].dwMaxTime);
+//						return;
+//					}
+//					++iBranches;
+//				}
+//		}
+//	}
 }

@@ -144,7 +144,7 @@ BOOL CAI_Chimera::net_Spawn (LPVOID DC)
 	return TRUE;
 }
 
-void CAI_Chimera::Jump(Fvector to_pos)
+void CAI_Chimera::Jump(Fvector /**to_pos/**/)
 {
 	// Select animation and time parameters for jump
 	//MotionMan.CheckJump(Position(),to_pos);

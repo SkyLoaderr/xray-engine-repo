@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include "..\\..\\CustomMonster.h"
-#include "..\\..\\inventory.h"
-#include "..\\..\\ai_space.h"
-#include "..\\script\\ai_script_monster.h"
+#include "../../CustomMonster.h"
+#include "../../inventory.h"
+#include "../../ai_space.h"
+#include "../script/ai_script_monster.h"
 
 class CAI_Trader : public CEntityAlive, public CInventoryOwner, public CScriptMonster 
 {
@@ -32,8 +32,8 @@ public:
 
 	virtual void		Die				();
 	virtual void		Think			();
-	virtual void		HitSignal		(float P, Fvector &local_dir,	CObject* who, s16 element){};
-	virtual void		HitImpulse		(float P, Fvector &vWorldDir, 	Fvector& vLocalDir){};
+	virtual void		HitSignal		(float /**P/**/, Fvector &/**local_dir/**/,	CObject* /**who/**/, s16 /**element/**/){};
+	virtual void		HitImpulse		(float /**P/**/, Fvector &/**vWorldDir/**/, 	Fvector& /**vLocalDir/**/){};
 	virtual void		Hit				(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = eHitTypeWound) {
 		inherited::Hit(P,dir,who,element,position_in_object_space,impulse,hit_type);
 	}

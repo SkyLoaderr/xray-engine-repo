@@ -7,15 +7,15 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "..\\..\\xr_weapon_list.h"
+#include "../../physicsshell.h"
 #include "ai_crow.h"
-#include "..\\..\\hudmanager.h"
+#include "../../hudmanager.h"
 
 void CAI_Crow::SAnim::Load(CSkeletonAnimated* visual, LPCSTR prefix)
 {
 	CMotionDef* M		= visual->ID_Cycle_Safe(prefix);
 	if (M)				m_Animations.push_back(M);
-	for (int i=0; (i<MAX_ANIM_COUNT)&&(m_Animations.size()<MAX_ANIM_COUNT); i++){
+	for (int i=0; (i<MAX_ANIM_COUNT)&&(m_Animations.size()<MAX_ANIM_COUNT); ++i){
 		string128		sh_anim;
 		sprintf			(sh_anim,"%s_%d",prefix,i);
 		M				= visual->ID_Cycle_Safe(sh_anim);
@@ -31,7 +31,7 @@ void CAI_Crow::SSound::Load(LPCSTR prefix)
 		m_Sounds.push_back	(ref_sound());
 		::Sound->create		(m_Sounds.back(),TRUE,prefix,0);
 	}
-	for (int i=0; (i<MAX_SND_COUNT)&&(m_Sounds.size()<MAX_SND_COUNT); i++){
+	for (int i=0; (i<MAX_SND_COUNT)&&(m_Sounds.size()<MAX_SND_COUNT); ++i){
 		string64		name;
 		sprintf			(name,"%s_%d",prefix,i);
 		if (FS.exist(fn,"$game_sounds$",name,".ogg")){
@@ -44,13 +44,13 @@ void CAI_Crow::SSound::Load(LPCSTR prefix)
 
 void CAI_Crow::SSound::SetPosition(const Fvector& pos)
 {
-	for (int i=0; i<(int)m_Sounds.size(); i++)
+	for (int i=0; i<(int)m_Sounds.size(); ++i)
 		m_Sounds[i].set_position(pos);
 }
 
 void CAI_Crow::SSound::Unload()
 {
-	for (int i=0; i<(int)m_Sounds.size(); i++)
+	for (int i=0; i<(int)m_Sounds.size(); ++i)
 		::Sound->destroy	(m_Sounds[i]);
 }
 
@@ -59,13 +59,27 @@ void __stdcall	cb_OnHitEndPlaying			(CBlend* B)
 	((CAI_Crow*)B->CallbackParam)->OnHitEndPlaying(B);
 }
 
-void CAI_Crow::OnHitEndPlaying(CBlend* B)
+void CAI_Crow::OnHitEndPlaying(CBlend* /**B/**/)
 {
 	PSkeletonAnimated(Visual())->PlayCycle	(m_Anims.m_death_idle.GetRandom());
 }
 
 CAI_Crow::CAI_Crow()
 {
+	Init				();
+}
+
+CAI_Crow::~CAI_Crow()
+{
+	// removing all data no more being neded 
+	m_Sounds.m_idle.Unload		();
+	xr_delete(m_pPhysicsShell);
+
+}
+
+void CAI_Crow::Init		()
+{
+	inherited::Init		();
 	st_current			= eUndef;
 	st_target			= eFlyIdle;
 	vGoalDir.set		(10.0f*(Random.randF()-Random.randF()),10.0f*(Random.randF()-Random.randF()),10.0f*(Random.randF()-Random.randF()));
@@ -80,14 +94,6 @@ CAI_Crow::CAI_Crow()
 	vVarGoal.set		(10.f,10.f,100.f);
 	fIdleSoundDelta		= 10.f;
 	fIdleSoundTime		= fIdleSoundDelta;
-}
-
-CAI_Crow::~CAI_Crow()
-{
-	// removing all data no more being neded 
-	m_Sounds.m_idle.Unload		();
-	xr_delete(m_pPhysicsShell);
-
 }
 
 void CAI_Crow::Load( LPCSTR section )
@@ -124,8 +130,6 @@ BOOL CAI_Crow::net_Spawn		(LPVOID DC)
 	//by Dandy 7.09.03 otherwise we can't hit the crow
 	setEnabled	(TRUE);
 
-	AI_Node		= 0;
-
 	// animations
 	CSkeletonAnimated*	M		= PSkeletonAnimated(Visual()); R_ASSERT(M);
 	m_Anims.m_death.Load		(M,"norm_death");
@@ -135,6 +139,11 @@ BOOL CAI_Crow::net_Spawn		(LPVOID DC)
 	m_Anims.m_idle.Load			(M,"norm_idle");
 
 	return		R;
+}
+
+void CAI_Crow::net_Destroy		()
+{
+	Init						();
 }
 
 // crow update
@@ -154,7 +163,7 @@ void CAI_Crow::switch2_DeathFall()
 {
 	Fvector V;
 	V.mul(XFORM().k,fSpeed);
-//	Movement.SetVelocity(V);
+//	m_PhysicMovementControl.SetVelocity(V);
 	PSkeletonAnimated(Visual())->PlayCycle	(m_Anims.m_death.GetRandom(),TRUE,cb_OnHitEndPlaying,this);
 }
 void CAI_Crow::shedule_Update(u32 DT)
@@ -193,7 +202,7 @@ void CAI_Crow::shedule_Update(u32 DT)
 		state_DeathFall();
 		break;
 	}
-	if ((st_current!=eDeathFall)&&(st_current!=eDeathDead)){
+	if ((eDeathFall!=st_current)&&(eDeathDead!=st_current)){
 		// At random times, change the direction (goal) of the plane
 		if(fGoalChangeTime<=0){
 			fGoalChangeTime += fGoalChangeDelta+fGoalChangeDelta*Random.randF(-0.5f,0.5f);
@@ -266,9 +275,9 @@ void CAI_Crow::state_DeathFall()
 {
 	Fvector tAcceleration;
 	tAcceleration.set(0,-10.f,0);
-	//Movement.SetPosition(Position());
-	//Movement.Calculate	(tAcceleration,0,0,Device.fTimeDelta > .1f ? .1f : Device.fTimeDelta,false);
-	//Movement.GetPosition(Position());
+	//m_PhysicMovementControl.SetPosition(Position());
+	//m_PhysicMovementControl.Calculate	(tAcceleration,0,0,Device.fTimeDelta > .1f ? .1f : Device.fTimeDelta,false);
+	//m_PhysicMovementControl.GetPosition(Position());
 
 	if (m_pPhysicsShell)
 	{
@@ -345,12 +354,12 @@ void CAI_Crow::net_Import	(NET_Packet& P)
 	XFORM().setHPB		(yaw,pitch,bank);
 }
 //---------------------------------------------------------------------
-void CAI_Crow::HitSignal	(float HitAmount, Fvector& local_dir, CObject* who, s16 element)
+void CAI_Crow::HitSignal	(float /**HitAmount/**/, Fvector& /**local_dir/**/, CObject* /**who/**/, s16 /**element/**/)
 {
 	
 	fEntityHealth		= 0;
 	m_dwDeathTime = Level().timeServer();
-	if (st_current!=eDeathDead) 
+	if (eDeathDead!=st_current) 
 	{	
 		Die();
 		st_target = eDeathFall;
@@ -358,13 +367,13 @@ void CAI_Crow::HitSignal	(float HitAmount, Fvector& local_dir, CObject* who, s16
 	else PSkeletonAnimated(Visual())->PlayCycle(m_Anims.m_death_dead.GetRandom());
 }
 //---------------------------------------------------------------------
-void CAI_Crow::HitImpulse	(float	amount,		Fvector& vWorldDir, Fvector& vLocalDir)
+void CAI_Crow::HitImpulse	(float	/**amount/**/,		Fvector& /**vWorldDir/**/, Fvector& /**vLocalDir/**/)
 {
 	/*
 	switch (st_current){
 	case eDeathDead:{
-		float Q	= float(amount)/Movement.GetMass();
-		Movement.vExternalImpulse.mad(vWorldDir,Q);
+		float Q	= float(amount)/m_PhysicMovementControl.GetMass();
+		m_PhysicMovementControl.vExternalImpulse.mad(vWorldDir,Q);
 	}break;
 	}
 */
@@ -378,7 +387,7 @@ void CAI_Crow::CreateSkeleton()
 	CPhysicsElement* E = P_create_Element(); R_ASSERT(E); E->add_Box(obb);
 	m_pPhysicsShell->add_Element(E);
 	m_pPhysicsShell->setMass(0.3f);
-	m_pPhysicsShell->SetMaterial("creatures\\crow");
+	m_pPhysicsShell->SetMaterial("creatures/crow");
 	m_pPhysicsShell->Activate(XFORM(),0,XFORM());
 	
 }

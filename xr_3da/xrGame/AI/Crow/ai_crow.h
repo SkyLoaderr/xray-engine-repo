@@ -6,7 +6,7 @@
 #ifndef __XRAY_AI_CROW__
 #define __XRAY_AI_CROW__
 
-#include "..\..\entity.h"
+#include "../../entity.h"
 class CAI_Crow : public CEntityAlive
 {
 	typedef	CEntityAlive inherited;
@@ -93,7 +93,9 @@ public:
 					CAI_Crow();
 	virtual			~CAI_Crow();
 	virtual void	Load			( LPCSTR section );
+	virtual void	Init			();
 	virtual BOOL	net_Spawn		( LPVOID DC );
+	virtual void	net_Destroy		();
 	virtual BOOL	renderable_ShadowGenerate	()			{ return FALSE;	}
 	virtual BOOL	renderable_ShadowReceive	()			{ return FALSE;	}
 	virtual void	shedule_Update	(u32 DT);
@@ -102,8 +104,8 @@ public:
 	virtual void	net_Export		(NET_Packet& P);
 	virtual void	net_Import		(NET_Packet& P);
 
-	virtual void	g_fireParams	(Fvector& P, Fvector& D)	{};
-	virtual void	g_WeaponBones	(int &L, int &R1, int &R2)	{};
+	virtual void	g_fireParams	(Fvector& /**P/**/, Fvector& /**D/**/)	{};
+	virtual void	g_WeaponBones	(int &/**L/**/, int &/**R1/**/, int &/**R2/**/)	{};
 
 	virtual void	HitSignal		(float	HitAmount,	Fvector& local_dir, CObject* who, s16 element);
 	virtual void	HitImpulse		(float	amount,		Fvector& vWorldDir, Fvector& vLocalDir);

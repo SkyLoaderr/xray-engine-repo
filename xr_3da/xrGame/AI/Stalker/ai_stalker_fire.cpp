@@ -8,7 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
-#include "..\\..\\WeaponMagazined.h"
+#include "../../WeaponMagazined.h"
 
 #define TIME_FIRE_DELTA		400
 
@@ -23,7 +23,7 @@ void CAI_Stalker::g_fireParams(Fvector& P, Fvector& D)
 {
 	if (g_Alive()) {
 		Center(P);
-		D.setHP(-r_current.yaw,-r_current.pitch);
+		D.setHP(-m_head.current.yaw,-m_head.current.pitch);
 		D.normalize_safe();
 	}
 }
@@ -54,7 +54,7 @@ bool CAI_Stalker::bfCheckIfCanKillTarget(CEntity *tpEntity, Fvector target_pos, 
 	if (tpInventoryOwner) {
 		if (!tpInventoryOwner->m_inventory.ActiveItem() || !dynamic_cast<CWeapon*>(tpInventoryOwner->m_inventory.ActiveItem()) || !dynamic_cast<CWeapon*>(tpInventoryOwner->m_inventory.ActiveItem())->GetAmmoElapsed())
 			return(false);
-		if (!(getAI().bfTooSmallAngle(yaw1,yaw2,fSafetyAngle) && getAI().bfTooSmallAngle(pitch1,pitch2,fSafetyAngle)))
+		if (!((angle_difference(yaw1,yaw2) <= fSafetyAngle) && (angle_difference(pitch1,pitch2) <= fSafetyAngle)))
 			return(false);
 
 #pragma todo("Dima to Dima : Recover check if can kill target function")
@@ -69,22 +69,22 @@ bool CAI_Stalker::bfCheckIfCanKillTarget(CEntity *tpEntity, Fvector target_pos, 
 		return				(true);
 	}
 	else
-		return((tpEntity->Position().distance_to(target_pos) < 2.f) && getAI().bfTooSmallAngle(yaw1,yaw2,PI_DIV_2));
+		return((tpEntity->Position().distance_to(target_pos) < 2.f) && (angle_difference(yaw1,yaw2) <= PI_DIV_2));
 }
 
 bool CAI_Stalker::bfCheckIfCanKillEnemy()
 {
-	return(m_tEnemy.Enemy && m_tEnemy.Enemy->g_Alive() && m_tEnemy.bVisible && bfCheckIfCanKillTarget(this,m_tEnemy.Enemy->Position(),-r_current.yaw,-r_current.pitch));
+	return(m_tEnemy.m_enemy && m_tEnemy.m_enemy->g_Alive() && m_tEnemy.m_visible && bfCheckIfCanKillTarget(this,m_tEnemy.m_enemy->Position(),-m_head.current.yaw,-m_head.current.pitch));
 }
 
 bool CAI_Stalker::bfCheckIfCanKillMember()
 {
 	bool bCanKillMember = false;
 	
-	for (int i=0, iTeam = (int)g_Team(); i<(int)m_tpaVisibleObjects.size(); i++) {
+	for (int i=0, iTeam = (int)g_Team(); i<(int)m_tpaVisibleObjects.size(); ++i) {
 		CCustomMonster* CustomMonster = dynamic_cast<CCustomMonster*>(m_tpaVisibleObjects[i]);
 		if ((CustomMonster) && (CustomMonster->g_Team() == iTeam))
-			if (CustomMonster->g_Alive() && bfCheckIfCanKillTarget(this,CustomMonster->Position(),-r_current.yaw,-r_current.pitch)) {
+			if (CustomMonster->g_Alive() && bfCheckIfCanKillTarget(this,CustomMonster->Position(),-m_head.current.yaw,-m_head.current.pitch)) {
 				bCanKillMember = true;
 				break;
 			}
@@ -100,9 +100,9 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 	if (g_Alive()) {
 //	if (fEntityHealth>0) {
 		// Save event
-		m_dwHitTime = Level().timeServer();
-		m_tHitDir.set(D);
-		m_tHitDir.normalize();
+		m_hit_time = Level().timeServer();
+		m_hit_direction.set(D);
+		m_hit_direction.normalize();
 		m_tHitPosition = who->Position();
 		
 		SHurt	tHurt;
@@ -122,7 +122,7 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 		D.getHP(yaw,pitch);
 		CSkeletonAnimated *tpKinematics = PSkeletonAnimated(Visual());
 #pragma todo("Dima to Dima : forward-back bone impulse direction has been determined incorrectly!")
-		CMotionDef *tpMotionDef = m_tAnims.A[m_tBodyState].m_tGlobal.A[0].A[iFloor(tpKinematics->LL_GetBoneInstance(element).get_param(1) + (getAI().bfTooSmallAngle(r_torso_current.yaw,-yaw,PI_DIV_2) ? 0 : 1))];
+		CMotionDef *tpMotionDef = m_tAnims.A[m_tBodyState].m_tGlobal.A[0].A[iFloor(tpKinematics->LL_GetBoneInstance(element).get_param(1) + (angle_difference(m_body.current.yaw,-yaw) <= PI_DIV_2 ? 0 : 1))];
 		float power_factor = 3.f*amount/100.f; clamp(power_factor,0.f,1.f);
 		tpKinematics->PlayFX(tpMotionDef,power_factor);
 	}
@@ -147,9 +147,9 @@ void CAI_Stalker::SelectEnemy(SEnemySelected& S)
 {
 	// Initiate process
 	objVisible&	Known	= Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
-	S.Enemy					= 0;
-	S.bVisible			= FALSE;
-	S.fCost				= flt_max-1;
+	S.m_enemy			= 0;
+	S.m_visible			= FALSE;
+	S.m_cost			= flt_max-1;
 	
 	if (Known.size()==0)
 		return;
@@ -159,43 +159,43 @@ void CAI_Stalker::SelectEnemy(SEnemySelected& S)
 	
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	
-	for (u32 i=0; i<Known.size(); i++) {
+	for (u32 i=0; i<Known.size(); ++i) {
 		CEntityAlive*	E = dynamic_cast<CEntityAlive*>(Known[i].key);
 		if (!E || !E->g_Alive() || E->getDestroy())
 			continue;
 
 		float		H = EnemyHeuristics(E);
-		if (H<S.fCost) {
+		if (H<S.m_cost) {
 			bool bVisible = false;
-			for (int i=0; i<(int)m_tpaVisibleObjects.size(); i++)
+			for (int i=0; i<(int)m_tpaVisibleObjects.size(); ++i)
 				if (m_tpaVisibleObjects[i] == E) {
 					bVisible = true;
 					break;
 				}
 			float	cost	 = H*(bVisible?1:_FB_invisible_hscale);
-			if (cost<S.fCost)	{
-				S.Enemy		= E;
-				S.bVisible	= bVisible;
-				S.fCost		= cost;
+			if (cost<S.m_cost)	{
+				S.m_enemy		= E;
+				S.m_visible		= bVisible;
+				S.m_cost		= cost;
 				Group.m_bEnemyNoticed = true;
 			}
 		}
 	}
-	if (m_tEnemy.Enemy)
+	if (m_tEnemy.m_enemy)
 		vfSaveEnemy();
 	if (m_tSavedEnemy && m_tSavedEnemy->getDestroy())
 		m_tSavedEnemy = 0;
 }
 
-bool CAI_Stalker::bfCheckForNodeVisibility(u32 dwNodeID, bool bIfRayPick)
+bool CAI_Stalker::bfCheckForNodeVisibility(u32 dwNodeID, bool /**bIfRayPick/**/)
 {
 	Fvector tDirection;
-	tDirection.sub(getAI().tfGetNodeCenter(dwNodeID),Position());
+	tDirection.sub(ai().level_graph().vertex_position(dwNodeID),Position());
 	tDirection.normalize_safe();
 	SRotation tRotation;
 	mk_rotation(tDirection,tRotation);
-	if (getAI().bfTooSmallAngle(r_current.yaw,tRotation.yaw,eye_fov*PI/180.f/2.f))
-		return(getAI().bfCheckNodeInDirection(AI_NodeID,Position(),dwNodeID));
+	if (angle_difference(m_head.current.yaw,tRotation.yaw) <= eye_fov*PI/180.f/2.f)
+		return(ai().level_graph().check_vertex_in_direction(level_vertex_id(),Position(),dwNodeID));
 	else
 		return(false);
 }
@@ -216,8 +216,8 @@ void CAI_Stalker::vfSetWeaponState(EObjectAction tWeaponState)
 
 	u32 dwStartFireAmmo, dwFireDelayMin = 0, dwFireDelayMax = 0;
 	CWeaponMagazined *tpWeaponMagazined = dynamic_cast<CWeaponMagazined*>(tpWeapon);
-	if (tpWeaponMagazined && m_tEnemy.Enemy) {
-		float fDistance = Position().distance_to(m_tEnemy.Enemy->Position());
+	if (tpWeaponMagazined && m_tEnemy.m_enemy) {
+		float fDistance = Position().distance_to(m_tEnemy.m_enemy->Position());
 		float fDistance1 = tpWeaponMagazined->m_fMaxRadius, fDistance2 = (tpWeaponMagazined->m_fMaxRadius + 0*tpWeaponMagazined->m_fMinRadius)/2,fDistance3 = 0*tpWeaponMagazined->m_fMinRadius;
 		u32 dwFuzzyDistance;
 		if (_abs(fDistance - fDistance1) <	_abs(fDistance - fDistance2))
@@ -325,7 +325,7 @@ void CAI_Stalker::vfSetWeaponState(EObjectAction tWeaponState)
 				tpWeaponMagazined->SetQueueSize(1);
 	}
 
-//	Msg	("Time : %d\nDESIRED : %s\nREAL : %s\nFIRING : %d",m_dwCurrentUpdate,(tWeaponState == eObjectActionIdle) ? "IDLE" : "FIRE",(tpWeapon->STATE == CWeapon::eFire) ? "FIRING" : ((tpWeapon->STATE == CWeapon::eIdle) ? "IDLE" : ((tpWeapon->STATE == CWeapon::eReload) ? "RELOAD" : "UNKNOWN")),int(m_bFiring));
+//	Msg	("Time : %d\nDESIRED : %s\nREAL : %s\nFIRING : %d",m_current_update,(tWeaponState == eObjectActionIdle) ? "IDLE" : "FIRE",(tpWeapon->STATE == CWeapon::eFire) ? "FIRING" : ((tpWeapon->STATE == CWeapon::eIdle) ? "IDLE" : ((tpWeapon->STATE == CWeapon::eReload) ? "RELOAD" : "UNKNOWN")),int(m_bFiring));
 	if (tWeaponState == eObjectActionIdle) {
 		m_bFiring = false;
 		if (tpWeapon->STATE == CWeapon::eFire)
@@ -333,7 +333,7 @@ void CAI_Stalker::vfSetWeaponState(EObjectAction tWeaponState)
 		xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
 		xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end() - 2;
 		s32 best_slot = -1;
-		for ( ; I != E; I++)
+		for ( ; I != E; ++I)
 			if ((*I).m_pIItem && ((I - B) != (int)m_inventory.GetActiveSlot()) && (!dynamic_cast<CWeaponMagazined*>((*I).m_pIItem) || dynamic_cast<CWeaponMagazined*>((*I).m_pIItem)->IsAmmoAvailable()))
 				best_slot = u32(I - B);
 		if (best_slot > (int)m_inventory.GetActiveSlot())
@@ -346,7 +346,7 @@ void CAI_Stalker::vfSetWeaponState(EObjectAction tWeaponState)
 					u32 dwStartFireAmmo = tpWeapon->GetAmmoElapsed();
 					if (dwStartFireAmmo) {
 						m_bFiring = true;
-						m_dwNoFireTime = m_dwCurrentUpdate + ::Random.randI(dwFireDelayMin,dwFireDelayMax);
+						m_dwNoFireTime = m_current_update + ::Random.randI(dwFireDelayMin,dwFireDelayMax);
 					}
 					else {
 						m_inventory.Action(kWPN_FIRE, CMD_STOP);
@@ -356,24 +356,24 @@ void CAI_Stalker::vfSetWeaponState(EObjectAction tWeaponState)
 				else {
 					m_inventory.Action(kWPN_FIRE, CMD_STOP);
 					m_bFiring = false;
-					m_dwNoFireTime = m_dwCurrentUpdate;
+					m_dwNoFireTime = m_current_update;
 				}
 			else
 				if (tpWeapon->STATE == CWeapon::eIdle)
 					if (bfCheckIfCanKillEnemy() && !bfCheckIfCanKillMember()) {
 						dwStartFireAmmo = tpWeapon->GetAmmoElapsed();
-						if (dwStartFireAmmo && (m_dwCurrentUpdate > m_dwNoFireTime)) {
-							if (m_bFiring && (m_dwCurrentUpdate - m_dwStartFireTime > TIME_FIRE_DELTA)) {
+						if (dwStartFireAmmo && (m_current_update > m_dwNoFireTime)) {
+							if (m_bFiring && (m_current_update - m_dwStartFireTime > TIME_FIRE_DELTA)) {
 								m_inventory.Action(kWPN_FIRE, CMD_START);
-//								Msg				("Weapon could fire (%d)",m_dwCurrentUpdate);
+//								Msg				("Weapon could fire (%d)",m_current_update);
 							}
 							else {
-								m_dwNoFireTime = m_dwCurrentUpdate;
+								m_dwNoFireTime = m_current_update;
 								m_inventory.Action(kWPN_FIRE, CMD_STOP);
 							}
 							if (!m_bFiring) {
-								m_dwStartFireTime	= m_dwCurrentUpdate;
-//								Msg				("Weapon shouldn't fire (%d)",m_dwCurrentUpdate);
+								m_dwStartFireTime	= m_current_update;
+//								Msg				("Weapon shouldn't fire (%d)",m_current_update);
 							}
 							m_bFiring = true;
 						}
@@ -390,22 +390,22 @@ void CAI_Stalker::vfSetWeaponState(EObjectAction tWeaponState)
 			
 	if (tpWeaponMagazined) {
 		dwStartFireAmmo = tpWeaponMagazined->GetAmmoElapsed();
-		if ((!dwStartFireAmmo) && (tpWeapon->STATE != CWeapon::eReload))
+		if ((!dwStartFireAmmo) && (CWeapon::eReload != tpWeapon->STATE))
 			if (tpWeaponMagazined->IsAmmoAvailable()) {
 				m_inventory.Action(kWPN_FIRE,	CMD_START);
 				m_inventory.Action(kWPN_FIRE,	CMD_STOP);
 			}
 			else
-				if ((tpWeapon->STATE != CWeapon::eHidden) && (tpWeapon->STATE != CWeapon::eHiding)) {
+				if ((CWeapon::eHidden != tpWeapon->STATE) && (CWeapon::eHiding != tpWeapon->STATE)) {
 					if (tpWeaponMagazined->STATE == CWeapon::eFire)
 						m_inventory.Action(kWPN_FIRE,	CMD_STOP);
 					xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
 					xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end() - 2;
 					u32 best_slot = u32(-1);
-					for ( ; I != E; I++)
+					for ( ; I != E; ++I)
 						if ((*I).m_pIItem && ((I - B) != (int)m_inventory.GetActiveSlot()) && (!dynamic_cast<CWeaponMagazined*>((*I).m_pIItem) || dynamic_cast<CWeaponMagazined*>((*I).m_pIItem)->IsAmmoAvailable()))
 							best_slot = u32(I - B);
-					if (best_slot != -1)														   
+					if (-1 != best_slot)														   
 						m_inventory.Activate(best_slot);
 //					else {
 //						m_inventory.Ruck(tpWeaponMagazined);
@@ -418,8 +418,8 @@ void CAI_Stalker::vfSetWeaponState(EObjectAction tWeaponState)
 
 	CGroup &Group = *getGroup();
 	if ((bSafeFire) && (!bFiring))
-		Group.m_dwFiring--;
+		--(Group.m_dwFiring);
 	else
 		if ((!bSafeFire) && (bFiring))
-			Group.m_dwFiring++;
+			++Group.m_dwFiring;
 }

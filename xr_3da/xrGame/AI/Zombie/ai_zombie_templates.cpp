@@ -8,25 +8,25 @@
 
 #include "stdafx.h"
 #include "ai_zombie.h"
-#include "..\\ai_monsters_misc.h"
+#include "../ai_monsters_misc.h"
 
 void CAI_Zombie::vfSaveEnemy()
 {
-	m_tSavedEnemy = m_Enemy.Enemy;
-	m_tSavedEnemyPosition = m_Enemy.Enemy->Position();
-	m_tpSavedEnemyNode = m_Enemy.Enemy->AI_Node;
-	m_dwSavedEnemyNodeID = m_Enemy.Enemy->AI_NodeID;
+	m_tSavedEnemy = m_Enemy.m_enemy;
+	m_tSavedEnemyPosition = m_Enemy.m_enemy->Position();
+	m_tpSavedEnemyNode = m_Enemy.m_enemy->level_vertex();
+	m_dwSavedEnemyNodeID = m_Enemy.m_enemy->level_vertex_id();
 }
 
-void CAI_Zombie::vfSetFire(bool bFire, CGroup &Group)
+void CAI_Zombie::vfSetFire(bool bFire, CGroup &/**Group/**/)
 {
 	if (bFire) {
 		m_bFiring = true;
-		q_action.setup(AI::AIC_Action::AttackBegin);
+		m_tAction = eZombieActionAttackBegin;
 	}
 	else {
 		m_bFiring = false;
-		q_action.setup(AI::AIC_Action::AttackEnd);
+		m_tAction = eZombieActionAttackEnd;
 	}
 }
 
@@ -53,7 +53,7 @@ void CAI_Zombie::vfAdjustSpeed()
 		if (fAngle >= 3*PI_DIV_2) {
 			m_fSpeed = 0;
 			m_fASpeed = fNullASpeed;
-			r_torso_target.yaw = fAngle;
+			m_body.target.yaw = fAngle;
 		}
 		else 
 		{
@@ -66,7 +66,7 @@ void CAI_Zombie::vfAdjustSpeed()
 			if (fAngle >= 3*PI_DIV_2) {
 				m_fSpeed = 0;
 				m_fASpeed = fNullASpeed;
-				r_torso_target.yaw = fAngle;
+				m_body.target.yaw = fAngle;
 			}
 			else
 				if (fAngle >= PI_DIV_2) {
@@ -83,7 +83,7 @@ void CAI_Zombie::vfAdjustSpeed()
 				if (fAngle >= 3*PI_DIV_2) {
 					m_fSpeed = 0;
 					m_fASpeed = fNullASpeed;
-					r_torso_target.yaw = fAngle;
+					m_body.target.yaw = fAngle;
 				}
 				else
 					if (fAngle >= PI_DIV_2) {
@@ -101,7 +101,7 @@ void CAI_Zombie::vfAdjustSpeed()
 						}
 			}
 			else {
-				r_torso_target.yaw = fAngle;
+				m_body.target.yaw = fAngle;
 				m_fSpeed = 0;
 				m_fASpeed = fNullASpeed;
 			}
@@ -137,7 +137,7 @@ bool CAI_Zombie::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForwar
 	// saving current parameters
 	Fvector tSafeHPB = m_tHPB;
 	Fvector tSavedPosition = Position();
-	SRotation tSavedTorsoTarget = r_torso_target;
+	SRotation tSavedTorsoTarget = m_body.target;
 	float fSavedDHeading = m_fDHeading;
 
 	if (bCanAdjustSpeed)
@@ -221,18 +221,18 @@ bool CAI_Zombie::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForwar
 	mXFORM.setHPB	(m_tHPB.x,m_tHPB.y,m_tHPB.z);
 	mXFORM.c.set	(Position());
 	XFORM().set		(mXFORM);
-	r_target.yaw	= r_torso_target.yaw = -m_tHPB.x;
+	m_head.target.yaw	= m_body.target.yaw = -m_tHPB.x;
 
 	// Update position
 //	Level().ObjectSpace.GetNearest(Position(),1.f);
 //	if (Level().ObjectSpace.q_nearest.size()) {
 //		Fvector tAcceleration;
-//		tAcceleration.setHP(-r_torso_current.yaw,-r_torso_current.pitch);
+//		tAcceleration.setHP(-m_body.current.yaw,-m_body.current.pitch);
 //		tAcceleration.normalize_safe();
 //		tAcceleration.mul(m_fSpeed*12.f);
-//		Movement.SetPosition(Position());
-//		Movement.Calculate	(tAcceleration,0,0,m_fTimeUpdateDelta,false);
-//		Movement.GetPosition(Position());
+//		m_PhysicMovementControl.SetPosition(Position());
+//		m_PhysicMovementControl.Calculate	(tAcceleration,0,0,m_fTimeUpdateDelta,false);
+//		m_PhysicMovementControl.GetPosition(Position());
 //	}
 //	else 
 	{
@@ -247,16 +247,16 @@ bool CAI_Zombie::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForwar
 	}
 
 
-	u32 dwNewNode = AI_NodeID;
-	NodeCompressed *tpNewNode = AI_Node;
-	NodePosition	QueryPos;
-	getAI().PackPosition	(QueryPos,Position());
-	if (!AI_NodeID || !getAI().u_InsideNode(*AI_Node,QueryPos)) {
-		dwNewNode = getAI().q_Node(AI_NodeID,Position());
-		tpNewNode = getAI().Node(dwNewNode);
+	u32 dwNewNode = level_vertex_id();
+	const CLevelGraph::CVertex *tpNewNode = level_vertex();
+	CLevelGraph::CPosition	QueryPos;
+	ai().level_graph().vertex_position	(QueryPos,Position());
+	if (!level_vertex_id() || !ai().level_graph().inside(*level_vertex(),QueryPos)) {
+		dwNewNode = ai().level_graph().vertex(level_vertex_id(),Position());
+		tpNewNode = ai().level_graph().vertex(dwNewNode);
 	}
-	if (dwNewNode && getAI().u_InsideNode(*tpNewNode,QueryPos)) {
-		Position().y = getAI().ffGetY(*tpNewNode,Position().x,Position().z);
+	if (dwNewNode && ai().level_graph().inside(*tpNewNode,QueryPos)) {
+		Position().y = ai().level_graph().vertex_plane_y(*tpNewNode,Position().x,Position().z);
 		m_tOldPosition.set(tSavedPosition);
 		m_bNoWay = false;
 	}
@@ -265,23 +265,23 @@ bool CAI_Zombie::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForwar
 		m_bNoWay = true;
 		Position() = tSavedPosition;
 		m_tHPB = tSafeHPB;
-		r_torso_target = tSavedTorsoTarget;
+		m_body.target = tSavedTorsoTarget;
 		m_fDHeading = fSavedDHeading;
 	}
 
 	bool m_bResult = false;
-	if (!getAI().bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
+	if ((angle_difference(m_body.target.yaw, m_body.current.yaw) > PI_DIV_8) || m_bNoWay) {
 		m_fSpeed = .1f;
 		if (m_bNoWay)
-			if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_RETURN) || (!m_dwLastRangeSearch)) {
+			if ((Level().timeServer() - m_previous_query_time > TIME_TO_RETURN) || (!m_previous_query_time)) {
 				float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-				r_torso_target.yaw = r_torso_current.yaw + fAngle;
-				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+				m_body.target.yaw = m_body.current.yaw + fAngle;
+				m_body.target.yaw = angle_normalize(m_body.target.yaw);
 				Fvector tTemp;
-				tTemp.setHP(-r_torso_target.yaw,-r_torso_target.pitch);
+				tTemp.setHP(-m_body.target.yaw,-m_body.target.pitch);
 				tTemp.mul(100.f);
 				m_tGoalDir.add(Position(),tTemp);
-				m_dwLastRangeSearch = Level().timeServer();
+				m_previous_query_time = Level().timeServer();
 			}
 		m_bResult = true;
 	}

@@ -8,8 +8,8 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
-#include "..\\..\\ai_alife.h"
-#include "..\\..\\a_star.h"
+#include "../../ai_alife.h"
+#include "../../graph_engine.h"
 
 void CAI_Stalker::vfChooseTask()
 {
@@ -68,37 +68,37 @@ void CAI_Stalker::vfChooseTask()
 
 void CAI_Stalker::vfGoToCustomer()
 {
-	if (m_tpGraphPath.empty()) {
-		getAI().m_tpAStar->ffFindMinimalPath(m_tGraphID,m_tpALife->tpfGetObjectByID(m_tpALife->tpfGetTaskByID(m_tTaskID)->m_tCustomerID)->m_tGraphID,m_tpGraphPath);
-		m_dwCurGraphPathNode					= 0;
-		m_tNextGraphID				= m_tGraphID;
-	}
-	if ((m_dwCurGraphPathNode >= (m_tpGraphPath.size() - 1)) && (m_tGraphID == m_tNextGraphID)) {
-		m_tpGraphPath.clear();
-		m_dwCurGraphPathNode = 0;
-		if (int(m_tTaskID) > 0) {
-//			CSE_ALifeTask			*l_tpTask = m_tpALife->tpfGetTaskByID(m_tTaskID);
-//			CSE_ALifeTrader			*l_tpTrader = dynamic_cast<CSE_ALifeTrader*>(m_tpALife->tpfGetObjectByID(l_tpTask->m_tCustomerID));
-//			if (l_tpTrader)
-//				m_tpALife->vfCommunicateWithCustomer(this,l_tpTrader);
-		}
-		m_tTaskState = eTaskStateChooseTask;
-	}
+//	if (m_tpGraphPath.empty()) {
+//		ai().m_tpAStar->ffFindMinimalPath(m_tGraphID,m_tpALife->tpfGetObjectByID(m_tpALife->tpfGetTaskByID(m_tTaskID)->m_tCustomerID)->m_tGraphID,m_tpGraphPath);
+//		m_dwCurGraphPathNode					= 0;
+//		m_tNextGraphID				= m_tGraphID;
+//	}
+//	if ((m_dwCurGraphPathNode >= (m_tpGraphPath.size() - 1)) && (m_tGraphID == m_tNextGraphID)) {
+//		m_tpGraphPath.clear();
+//		m_dwCurGraphPathNode = 0;
+//		if (int(m_tTaskID) > 0) {
+////			CSE_ALifeTask			*l_tpTask = m_tpALife->tpfGetTaskByID(m_tTaskID);
+////			CSE_ALifeTrader			*l_tpTrader = dynamic_cast<CSE_ALifeTrader*>(m_tpALife->tpfGetObjectByID(l_tpTask->m_tCustomerID));
+////			if (l_tpTrader)
+////				m_tpALife->vfCommunicateWithCustomer(this,l_tpTrader);
+//		}
+//		m_tTaskState = eTaskStateChooseTask;
+//	}
 }
 
 void CAI_Stalker::vfAccomplishTask()
 {
-	// build path and wait until we go to the end of it
-	if (m_tpGraphPath.empty() && (m_tGraphID != m_tDestGraphPointIndex)) {
-		getAI().m_tpAStar->ffFindMinimalPath(m_tGraphID,m_tDestGraphPointIndex,m_tpGraphPath);
-		m_dwCurGraphPathNode	= 0;
-		m_tNextGraphID			= m_tGraphID;
-	}
-
-	if (m_tNextGraphID == m_tpALife->tpfGetTaskByID(m_tTaskID)->m_tGraphID)
-		m_tTaskState	= eTaskStateSearchItem;
-	else
-		m_tTaskState	= eTaskStateGoingToSearchItem;
+//	// build path and wait until we go to the end of it
+//	if (m_tpGraphPath.empty() && (m_tGraphID != m_tDestGraphPointIndex)) {
+//		ai().m_tpAStar->ffFindMinimalPath(m_tGraphID,m_tDestGraphPointIndex,m_tpGraphPath);
+//		m_dwCurGraphPathNode	= 0;
+//		m_tNextGraphID			= m_tGraphID;
+//	}
+//
+//	if (m_tNextGraphID == m_tpALife->tpfGetTaskByID(m_tTaskID)->m_tGraphID)
+//		m_tTaskState	= eTaskStateSearchItem;
+//	else
+//		m_tTaskState	= eTaskStateGoingToSearchItem;
 }
 
 void CAI_Stalker::vfFinishTask()
@@ -113,16 +113,16 @@ void CAI_Stalker::vfFinishTask()
 			case eTaskTypeSearchForItemCG :
 			case eTaskTypeSearchForItemOG : {
 				if ((m_dwCurGraphPathNode + 1>= (m_tpGraphPath.size())) && (m_tGraphID == m_tNextGraphID)) {
-					l_tpALifeTask->m_dwTryCount++;
+					++(l_tpALifeTask->m_dwTryCount);
 					m_tTaskState = eTaskStateChooseTask;
 				}
 				break;
 			}
 			case eTaskTypeSearchForItemCL :
 			case eTaskTypeSearchForItemOL : {
-//					tpALife->tpfGetTaskByID(m_tTaskID)->m_dwTryCount++;
+//					++(tpALife->tpfGetTaskByID(m_tTaskID)->m_dwTryCount);
 //					m_tTaskState		= eTaskStateChooseTask;
-//					for (m_dwCurTaskLocation++; (m_dwCurTaskLocation < tpAlife->m_tpTerrain[m_tpTasks[m_dwCurTask]->m_tLocationID].size()) && (m_baVisitedVertices[m_dwCurTaskLocation]); m_dwCurTaskLocation++);
+//					for (++m_dwCurTaskLocation; (m_dwCurTaskLocation < tpAlife->m_tpTerrain[m_tpTasks[m_dwCurTask]->m_tLocationID].size()) && (m_baVisitedVertices[m_dwCurTaskLocation]); ++m_dwCurTaskLocation);
 //					if (m_dwCurTaskLocation < tpAlife->m_tpTerrain[m_tpTasks[m_dwCurTask]->m_tLocationID].size()) {
 //						m_baVisitedVertices[m_dwCurTaskLocation] = true;
 //						tpAlife->ffFindMinimalPath(m_tGraphID,tpAlife->m_tpTerrain[m_tpTasks[m_dwCurTask]->m_tLocationID][m_dwCurTaskLocation],m_tpGraphPath);

@@ -9,9 +9,9 @@
 #include "stdafx.h"
 #include "ai_stalker.h"
 #include "ai_stalker_animations.h"
-#include "..\..\..\motion.h"
-#include "..\\..\\weapon.h"
-#include "..\\..\\ai_script_actions.h"
+#include "../../../motion.h"
+#include "../../weapon.h"
+#include "../../ai_script_actions.h"
 
 static const float y_spin_factor			= 0.25f;
 static const float y_shoulder_factor		= 0.25f;
@@ -210,7 +210,7 @@ void __stdcall CAI_Stalker::SpinCallback(CBoneInstance *B)
 void CAI_Stalker::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
 {
 	if (g_Alive()) {
-		if ((m_tMentalState == eMentalStatePanic) && (AI_Path.fSpeed > EPS_L))
+		if ((eMentalStatePanic == m_tMentalState) && (speed() > EPS_L))
 			tpGlobalAnimation = m_tAnims.A[IsLimping() ? eBodyStateStandDamaged : eBodyStateStand].m_tGlobal.A[1].A[0];
 	}
 	//else
@@ -271,10 +271,10 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 //	Msg			("[%s] Current movement type : %d",cName(),m_tMovementType);
 
 	EBodyState l_tBodyState = (m_tBodyState == eBodyStateStand) && IsLimping() ? eBodyStateStandDamaged : m_tBodyState;
-	if (m_tMentalState == eMentalStateFree) {
+	if (eMentalStateFree == m_tMentalState) {
 		tpTorsoAnimation = 0;
-		R_ASSERT2(m_tBodyState == eBodyStateStand,"Cannot run !free! animation when body state is not stand!");
-		if (m_tMovementType == eMovementTypeStand)
+		R_ASSERT2(eBodyStateStand == m_tBodyState,"Cannot run !free! animation when body state is not stand!");
+		if (eMovementTypeStand == m_tMovementType)
 			tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[9].A[0];
 		else
 			tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[IsLimping() ? 9 : (7 + m_tMovementType)].A[IsLimping() ? 0 : 1];
@@ -297,7 +297,7 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 					break;
 				}
 				case CWeapon::eFire: {
-//					Msg				("Weapon is firing (%d)",m_dwCurrentUpdate);
+//					Msg				("Weapon is firing (%d)",m_current_update);
 					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[1].A[0];
 					break;
 				}
@@ -306,8 +306,8 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 					break;
 				}
 				default : {
-					if ((m_bFiring && (tpWeapon->STATE != CWeapon::eIdle)) || (m_tBodyState != eBodyStateStand))
-						tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[(IsLimping() && (m_tBodyState == eBodyStateStand)) ? 9 : 6].A[0];
+					if ((m_bFiring && (CWeapon::eIdle != tpWeapon->STATE)) || (eBodyStateStand != m_tBodyState))
+						tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[(IsLimping() && (eBodyStateStand == m_tBodyState)) ? 9 : 6].A[0];
 					else
 						switch (m_tMovementType) {
 							case eMovementTypeStand : {
@@ -340,10 +340,10 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 {
 	if (!g_Alive())
 		return;
-	EBodyState l_tBodyState = (m_tBodyState == eBodyStateStand) && IsLimping() ? eBodyStateStandDamaged : m_tBodyState;
-	if ((AI_Path.fSpeed < EPS_L) || (m_tMovementType == eMovementTypeStand)) {
+	EBodyState l_tBodyState = (eBodyStateStand == m_tBodyState) && IsLimping() ? eBodyStateStandDamaged : m_tBodyState;
+	if ((speed() < EPS_L) || (eMovementTypeStand == m_tMovementType)) {
 		// standing
-		if (getAI().bfTooSmallAngle(r_torso_target.yaw,r_torso_current.yaw,PI_DIV_6)) {
+		if (angle_difference(m_body.target.yaw,m_body.current.yaw) <= PI_DIV_6) {
 			tpLegsAnimation		= m_tAnims.A[m_tBodyState].m_tInPlace.A[0];
 		}
 		else {
@@ -355,27 +355,27 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 	float					yaw, pitch;
 	GetDirectionAngles		(yaw,pitch);
 	yaw						= angle_normalize_signed(-yaw);
-//	float					fAngleDifference = _abs(angle_normalize_signed(r_torso_current.yaw - r_current.yaw));
+//	float					fAngleDifference = _abs(angle_normalize_signed(m_body.current.yaw - m_head.current.yaw));
 	float					fAnimationSwitchFactor = 1.f;//fAngleDifference < PI_DIV_2 ? 1.f : 1.f - (fAngleDifference - PI_DIV_2)/(PI - PI_DIV_2);
-	if	(((m_tDesirableDirection == eMovementDirectionForward) && (m_tMovementDirection == eMovementDirectionBack))	||	((m_tDesirableDirection == eMovementDirectionBack) && (m_tMovementDirection == eMovementDirectionForward)))
+	if	(((eMovementDirectionForward == m_tDesirableDirection) && (eMovementDirectionBack == m_tMovementDirection))	||	((eMovementDirectionBack == m_tDesirableDirection) && (eMovementDirectionForward == m_tMovementDirection)))
 		fAnimationSwitchFactor = .0f;
-	if	(((m_tDesirableDirection == eMovementDirectionRight) && (m_tMovementDirection == eMovementDirectionLeft))	||	((m_tDesirableDirection == eMovementDirectionLeft) && (m_tMovementDirection == eMovementDirectionRight)))
+	if	(((eMovementDirectionRight == m_tDesirableDirection) && (eMovementDirectionLeft == m_tMovementDirection))	||	((eMovementDirectionLeft == m_tDesirableDirection) && (eMovementDirectionRight == m_tMovementDirection)))
 		fAnimationSwitchFactor = .0f;
 
-	if (m_tMentalState != eMentalStateDanger)
-		if (getAI().bfTooSmallAngle(r_torso_current.yaw,yaw,PI_DIV_6)) {
+	if (eMentalStateDanger != m_tMentalState)
+		if (angle_difference(m_body.current.yaw,yaw) <= PI_DIV_6) {
 			tpLegsAnimation = m_tAnims.A[l_tBodyState].m_tMoves.A[m_tMovementType].A[eMovementDirectionForward].A[m_tMentalState];
 			return;
 		}
 		else
 			fAnimationSwitchFactor = .0f;
 
-	if (getAI().bfTooSmallAngle(yaw,r_current.yaw,MAX_HEAD_TURN_ANGLE)) {
+	if (angle_difference(yaw,m_head.current.yaw) <= MAX_HEAD_TURN_ANGLE) {
 		// moving forward
-		if (m_tMovementDirection == eMovementDirectionForward)
+		if (eMovementDirectionForward == m_tMovementDirection)
 			m_dwDirectionStartTime	= Level().timeServer();
 		else
-			if (m_tDesirableDirection != eMovementDirectionForward) {
+			if (eMovementDirectionForward != m_tDesirableDirection) {
 				m_dwDirectionStartTime	= Level().timeServer();
 				m_tDesirableDirection	= eMovementDirectionForward;
 			}
@@ -386,14 +386,14 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 				}
 	}
 	else {
-		if (getAI().bfTooSmallAngle(yaw,r_current.yaw,4*PI_DIV_6))
+		if (angle_difference(yaw,m_head.current.yaw) <= 4*PI_DIV_6)
 			// moving left|right
-			if (getAI().bfTooSmallAngle(yaw,angle_normalize_signed(r_current.yaw + PI_DIV_2),PI_DIV_4)) {
+			if (angle_difference(yaw,angle_normalize_signed(m_head.current.yaw + PI_DIV_2)) <= PI_DIV_4) {
 				// moving right, looking left
-				if (m_tMovementDirection == eMovementDirectionRight)
+				if (eMovementDirectionRight == m_tMovementDirection)
 					m_dwDirectionStartTime	= Level().timeServer();
 				else
-					if (m_tDesirableDirection != eMovementDirectionRight) {
+					if (eMovementDirectionRight != m_tDesirableDirection) {
 						m_dwDirectionStartTime	= Level().timeServer();
 						m_tDesirableDirection	= eMovementDirectionRight;
 					}
@@ -405,10 +405,10 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 			}
 			else {
 				// moving left, looking right
-				if (m_tMovementDirection == eMovementDirectionLeft)
+				if (eMovementDirectionLeft == m_tMovementDirection)
 					m_dwDirectionStartTime	= Level().timeServer();
 				else
-					if (m_tDesirableDirection != eMovementDirectionLeft) {
+					if (eMovementDirectionLeft != m_tDesirableDirection) {
 						m_dwDirectionStartTime	= Level().timeServer();
 						m_tDesirableDirection	= eMovementDirectionLeft;
 					}
@@ -420,10 +420,10 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 			}
 		else {
 			// moving back
-			if (m_tMovementDirection == eMovementDirectionBack)
+			if (eMovementDirectionBack == m_tMovementDirection)
 				m_dwDirectionStartTime	= Level().timeServer();
 			else
-				if (m_tDesirableDirection != eMovementDirectionBack) {
+				if (eMovementDirectionBack != m_tDesirableDirection) {
 					m_dwDirectionStartTime	= Level().timeServer();
 					m_tDesirableDirection	= eMovementDirectionBack;
 				}
@@ -434,17 +434,17 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 					}
 		}
 	}
-//	Msg("----%d\n[W=%7.2f][TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",Level().timeServer(),yaw,r_torso_target.yaw,r_torso_current.yaw,r_target.yaw,r_current.yaw);
+//	Msg("----%d\n[W=%7.2f][TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",Level().timeServer(),yaw,m_body.target.yaw,m_body.current.yaw,m_head.target.yaw,m_head.current.yaw);
 //	Msg("Trying %s\nMoving %s",caMovementActionNames[m_tDesirableDirection],caMovementActionNames[m_tMovementDirection]);
-//	if (m_tMentalState == eMentalStateFree)
+//	if (eMentalStateFree == m_tMentalState)
 //		m_tMovementDirection = eMovementDirectionForward;
 
 	tpLegsAnimation			= m_tAnims.A[l_tBodyState].m_tMoves.A[m_tMovementType].A[m_tMovementDirection].A[0];
-	r_torso_target.yaw		= angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
-//	Msg("[W=%7.2f][TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",yaw,r_torso_target.yaw,r_torso_current.yaw,r_target.yaw,r_current.yaw);
+	m_body.target.yaw		= angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
+//	Msg("[W=%7.2f][TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",yaw,m_body.target.yaw,m_body.current.yaw,m_head.target.yaw,m_head.current.yaw);
 }
 
-void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
+void CAI_Stalker::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_move/**/, float /**speed/**/)
 {
 	CSkeletonAnimated		&tVisualObject		=	*(PSkeletonAnimated(Visual()));
 

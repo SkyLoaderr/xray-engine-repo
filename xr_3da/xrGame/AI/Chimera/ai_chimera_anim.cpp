@@ -22,7 +22,7 @@ void __stdcall CAI_Chimera::SpinCallback(CBoneInstance *B)
 }
 
 
-void CAI_Chimera::SpinBoneInMotion(CBoneInstance *B)
+void CAI_Chimera::SpinBoneInMotion(CBoneInstance * /**B/**/)
 {
 //	// выполнять вращение только во время движения
 //	if (!IsInMotion()) return;
@@ -32,8 +32,8 @@ void CAI_Chimera::SpinBoneInMotion(CBoneInstance *B)
 //	//     alfa		- текущий угол
 //	//     a, b		- диапазон вращения, т.е.  стартовый угол и конечный угол
 //
-//	float Mcy	= r_torso_current.yaw;
-//	float Mty	= r_torso_target.yaw;
+//	float Mcy	= m_body.current.yaw;
+//	float Mty	= m_body.target.yaw;
 //	float Amp	= PI_DIV_3;				
 //
 //	// проверить начало поворота (если target.yaw изменился больше чем на 30 град)
@@ -43,8 +43,8 @@ void CAI_Chimera::SpinBoneInMotion(CBoneInstance *B)
 //	}
 //
 //	float SY;	// текущий угол поворота для боны
-//	if (getAI().bfTooSmallAngle(fFinishYaw,fStartYaw,EPS_L)) SY = 0.f;	// если разница == 0, пропустить деление на 0 :)
-//	else if (getAI().bfTooSmallAngle(Mty,Mcy,EPS_L)) SY = 0.f;				// если поворот не требуется
+//	if (angle_difference(fFinishYaw,fStartYaw,EPS_L)) SY = 0.f;	// если разница == 0, пропустить деление на 0 :)
+//	else if (angle_difference(Mty,Mcy,EPS_L)) SY = 0.f;				// если поворот не требуется
 //	else SY = Amp * _sin((_abs(angle_normalize_signed(Mcy-fStartYaw))) * PI / (_abs(angle_normalize_signed(fFinishYaw - fStartYaw)))) ;
 //
 //	// поворот вправо?
@@ -75,7 +75,7 @@ void CAI_Chimera::SpinBoneInMotion(CBoneInstance *B)
 //	fPrevMty = Mty;
 }
 
-void CAI_Chimera::SpinBoneInAttack(CBoneInstance *B)
+void CAI_Chimera::SpinBoneInAttack(CBoneInstance * /**B/**/)
 {
 
 }

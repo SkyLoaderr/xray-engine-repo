@@ -8,9 +8,9 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
-#include "..\\ai_monsters_misc.h"
-#include "..\\..\\hudmanager.h"
-#include "..\\..\\actor.h"
+#include "../ai_monsters_misc.h"
+#include "../../hudmanager.h"
+#include "../../actor.h"
 
 //#undef SILENCE
 
@@ -63,10 +63,10 @@ bool CAI_Stalker::bfIf_I_SeePosition(Fvector tPosition)
 	tVector.getHP(yaw,pitch);
 	yaw		= angle_normalize_signed(-yaw);
 	pitch	= angle_normalize_signed(-pitch);
-	return	(getAI().bfTooSmallAngle(yaw,r_current.yaw,PI_DIV_6));// && getAI().bfTooSmallAngle(pitch,r_current.pitch,PI_DIV_6));
+	return	(angle_difference(yaw,m_head.current.yaw) <= PI_DIV_6);// && angle_difference(pitch,m_head.current.pitch,PI_DIV_6));
 }
 
-bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
+bool CAI_Stalker::bfCheckForVisibility(CEntity* /**tpEntity/**/)
 {
 	return(true);
 ////	if (Level().iGetKeyState(DIK_RCONTROL))
@@ -84,7 +84,7 @@ bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
 //	tDirection.sub(tpEntity->Position(),Position());
 //	tDirection.getHP(yaw,pitch);
 //
-//	float fEyeFov = eye_fov*PI/180.f, fAlpha = _abs(_min(angle_normalize_signed(yaw - r_current.yaw),angle_normalize_signed(pitch - r_current.pitch)));
+//	float fEyeFov = eye_fov*PI/180.f, fAlpha = _abs(_min(angle_normalize_signed(yaw - m_head.current.yaw),angle_normalize_signed(pitch - m_head.current.pitch)));
 //	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/m_fLateralMultiplier));
 //	
 //	// computing distance weight
@@ -104,7 +104,7 @@ bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
 //	fResult += m_fCurSpeed < m_fMaxViewableSpeed ? m_fSpeedWeight*(1.f - m_fCurSpeed/m_fMaxViewableSpeed) : m_fSpeedWeight;
 //	
 //	// computing lightness weight
-//	fResult += (1 - float(tpEntity->AI_Node->light)/255.f)*m_fShadowWeight;
+//	fResult += (1 - float(tpEntity->level_vertex()->light)/255.f)*m_fShadowWeight;
 //	
 //#ifdef LOG_PARAMETERS
 //	if ((g_Alive() && !!dynamic_cast<CActor*>(tpEntity)) && (fResult >= m_fVisibilityThreshold))
@@ -113,10 +113,10 @@ bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
 //	Msg("Distance : %f [%f]",fDistance, fDistance >= fMaxViewableDistanceInDirection ? 0.f : m_fDistanceWeight*(1.f - fDistance/fMaxViewableDistanceInDirection));
 //	Msg("MySpeed  : %f [%f]",m_fCurSpeed, m_fCurSpeed < m_fMaxViewableSpeed ? m_fSpeedWeight*(1.f - m_fCurSpeed/m_fMaxViewableSpeed) : m_fSpeedWeight);
 //	Msg("Speed    : %f [%f]",fSpeed, fSpeed < m_fMaxInvisibleSpeed ? m_fMovementSpeedWeight*fSpeed/m_fMaxInvisibleSpeed : m_fMovementSpeedWeight);
-//	Msg("Shadow   : %f [%f]",float(tpEntity->AI_Node->light)/255.f,(1 - float(tpEntity->AI_Node->light)/255.f)*m_fShadowWeight);
+//	Msg("Shadow   : %f [%f]",float(tpEntity->level_vertex()->light)/255.f,(1 - float(tpEntity->level_vertex()->light)/255.f)*m_fShadowWeight);
 //	Msg("Result   : %f [%f]",fResult,m_fVisibilityThreshold);
 ////	if (iLogParameters) {
-////		fprintf(ST_VF,"%6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f\n",fDistance,fAlpha,fSpeed,AI_Path.fSpeed,float(tpEntity->AI_Node->light)/255.f,float(AI_Node->light)/255.f,tpEntity->Radius(),float(iLogParameters - 1));
+////		fprintf(ST_VF,"%6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f\n",fDistance,fAlpha,fSpeed,speed(),float(tpEntity->level_vertex()->light)/255.f,float(level_vertex()->light)/255.f,tpEntity->Radius(),float(iLogParameters - 1));
 ////	}
 //#endif
 //	return(fResult >= m_fVisibilityThreshold);
@@ -124,30 +124,30 @@ bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
 
 void CAI_Stalker::SetDirectionLook()
 {
-	GetDirectionAngles(r_target.yaw,r_target.pitch);
-	r_target.yaw *= -1;
-	r_target.pitch = 0;
-	r_torso_target = r_target;
+	GetDirectionAngles(m_head.target.yaw,m_head.target.pitch);
+	m_head.target.yaw *= -1;
+	m_head.target.pitch = 0;
+	m_body.target = m_head.target;
 }
 
-void CAI_Stalker::SetLessCoverLook(NodeCompressed *tpNode, bool bDifferenceLook)
+void CAI_Stalker::SetLessCoverLook(CLevelGraph::CVertex *tpNode, bool bDifferenceLook)
 {
 	SetDirectionLook();
 	SetLessCoverLook(tpNode,MAX_HEAD_TURN_ANGLE,bDifferenceLook);
 }
 
-void CAI_Stalker::SetLessCoverLook(NodeCompressed *tpNode, float fMaxHeadTurnAngle, bool bDifferenceLook)
+void CAI_Stalker::SetLessCoverLook(CLevelGraph::CVertex *tpNode, float fMaxHeadTurnAngle, bool bDifferenceLook)
 {
-	float fAngleOfView = eye_fov/180.f*PI, fMaxSquare = -1.f, fBestAngle = r_target.yaw;
+	float fAngleOfView = eye_fov/180.f*PI, fMaxSquare = -1.f, fBestAngle = m_head.target.yaw;
 	
-	NodeCompressed *tpNextNode = 0;
+	CLevelGraph::CVertex *tpNextNode = 0;
 	bool bOk = false;
-	if (bDifferenceLook && !AI_Path.TravelPath.empty() && (AI_Path.TravelPath.size() - 1 > AI_Path.TravelStart)) {
-		NodeLink *taLinks = (NodeLink *)((BYTE *)AI_Node + sizeof(NodeCompressed));
-		int iCount = AI_Node->links;
-		for (int i=0; i<iCount; i++) {
-			tpNextNode = getAI().Node(getAI().UnpackLink(taLinks[i]));
- 			if (getAI().bfInsideNode(tpNextNode,AI_Path.TravelPath[AI_Path.TravelStart + 1].P)) {
+	if (bDifferenceLook && !CDetailPathManager::path().empty() && (CDetailPathManager::path().size() - 1 > CDetailPathManager::curr_travel_point_index())) {
+		CLevelGraph::const_iterator	i, e;
+		ai().level_graph().begin(tpNode,i,e);
+		for ( ; i != e; ++i) {
+			tpNextNode = ai().level_graph().vertex(ai().level_graph().value(tpNode,i));
+ 			if (ai().level_graph().inside(tpNextNode,CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index() + 1].m_position)) {
 				bOk = true;
 				break;
 			}
@@ -155,18 +155,18 @@ void CAI_Stalker::SetLessCoverLook(NodeCompressed *tpNode, float fMaxHeadTurnAng
 	}
 
 	if (!bDifferenceLook || !bOk) 
-		for (float fIncrement = r_torso_current.yaw - fMaxHeadTurnAngle; fIncrement <= r_torso_current.yaw + fMaxHeadTurnAngle; fIncrement += 2*fMaxHeadTurnAngle/60.f) {
-			float fSquare = ffCalcSquare(-fIncrement,fAngleOfView,tpNode);
+		for (float fIncrement = m_body.current.yaw - fMaxHeadTurnAngle; fIncrement <= m_body.current.yaw + fMaxHeadTurnAngle; fIncrement += 2*fMaxHeadTurnAngle/60.f) {
+			float fSquare = ai().level_graph().compute_square(-fIncrement,fAngleOfView,tpNode);
 			if (fSquare > fMaxSquare) {
 				fMaxSquare = fSquare;
 				fBestAngle = fIncrement;
 			}
 		}
 	else {
-		float fMaxSquareSingle = -1.f, fSingleIncrement = r_target.yaw;
-		for (float fIncrement = r_torso_current.yaw - fMaxHeadTurnAngle; fIncrement <= r_torso_current.yaw + fMaxHeadTurnAngle; fIncrement += 2*fMaxHeadTurnAngle/60.f) {
-			float fSquare0 = ffCalcSquare(-fIncrement,fAngleOfView,tpNode);
-			float fSquare1 = ffCalcSquare(-fIncrement,fAngleOfView,tpNextNode);
+		float fMaxSquareSingle = -1.f, fSingleIncrement = m_head.target.yaw;
+		for (float fIncrement = m_body.current.yaw - fMaxHeadTurnAngle; fIncrement <= m_body.current.yaw + fMaxHeadTurnAngle; fIncrement += 2*fMaxHeadTurnAngle/60.f) {
+			float fSquare0 = ai().level_graph().compute_square(-fIncrement,fAngleOfView,tpNode);
+			float fSquare1 = ai().level_graph().compute_square(-fIncrement,fAngleOfView,tpNextNode);
 			if (fSquare1 - fSquare0 > fMaxSquare) {
 				fMaxSquare = fSquare1 - fSquare0;
 				fBestAngle = fIncrement;
@@ -180,8 +180,8 @@ void CAI_Stalker::SetLessCoverLook(NodeCompressed *tpNode, float fMaxHeadTurnAng
 			fBestAngle = fSingleIncrement;
 	}
 	
-	r_target.yaw = fBestAngle;
-	VERIFY					(_valid(r_target.yaw));
+	m_head.target.yaw = fBestAngle;
+	VERIFY					(_valid(m_head.target.yaw));
 }
 
 void CAI_Stalker::vfValidateAngleDependency(float x1, float &x2, float x3)
@@ -195,59 +195,59 @@ void CAI_Stalker::vfValidateAngleDependency(float x1, float &x2, float x3)
 void CAI_Stalker::Exec_Look(float dt)
 {
 	// normalizing torso angles
-	r_torso_current.yaw		= angle_normalize_signed	(r_torso_current.yaw);
-	r_torso_current.pitch	= angle_normalize_signed	(r_torso_current.pitch);
-	r_torso_target.yaw		= angle_normalize_signed	(r_torso_target.yaw);
-	r_torso_target.pitch	= angle_normalize_signed	(r_torso_target.pitch);
+	m_body.current.yaw		= angle_normalize_signed	(m_body.current.yaw);
+	m_body.current.pitch	= angle_normalize_signed	(m_body.current.pitch);
+	m_body.target.yaw		= angle_normalize_signed	(m_body.target.yaw);
+	m_body.target.pitch	= angle_normalize_signed	(m_body.target.pitch);
 	
 	// normalizing head angles
-	r_current.yaw			= angle_normalize_signed	(r_current.yaw);
-	r_current.pitch			= angle_normalize_signed	(r_current.pitch);
-	r_target.yaw			= angle_normalize_signed	(r_target.yaw);
-	r_target.pitch			= angle_normalize_signed	(r_target.pitch);
+	m_head.current.yaw			= angle_normalize_signed	(m_head.current.yaw);
+	m_head.current.pitch			= angle_normalize_signed	(m_head.current.pitch);
+	m_head.target.yaw			= angle_normalize_signed	(m_head.target.yaw);
+	m_head.target.pitch			= angle_normalize_signed	(m_head.target.pitch);
 
 	// validating angles
 //#ifdef DEBUG
-//	Msg						("StalkerA (%d, %s) t=%f, c=%f, tt=%f, tc=%f",Level().timeServer(),cName(),r_target.yaw,r_current.yaw,r_torso_target.yaw,r_torso_current.yaw);
-	VERIFY					(_valid(r_current.yaw));
-	VERIFY					(_valid(r_current.pitch));
-	VERIFY					(_valid(r_target.yaw));
-	VERIFY					(_valid(r_target.pitch));
-	VERIFY					(_valid(r_torso_current.yaw));
-	VERIFY					(_valid(r_torso_current.pitch));
-	VERIFY					(_valid(r_torso_target.yaw));
-	VERIFY					(_valid(r_torso_target.pitch));
+//	Msg						("StalkerA (%d, %s) t=%f, c=%f, tt=%f, tc=%f",Level().timeServer(),cName(),m_head.target.yaw,m_head.current.yaw,m_body.target.yaw,m_body.current.yaw);
+	VERIFY					(_valid(m_head.current.yaw));
+	VERIFY					(_valid(m_head.current.pitch));
+	VERIFY					(_valid(m_head.target.yaw));
+	VERIFY					(_valid(m_head.target.pitch));
+	VERIFY					(_valid(m_body.current.yaw));
+	VERIFY					(_valid(m_body.current.pitch));
+	VERIFY					(_valid(m_body.target.yaw));
+	VERIFY					(_valid(m_body.target.pitch));
 //#endif
-	vfValidateAngleDependency(r_current.yaw,r_target.yaw,r_torso_target.yaw);
-	vfValidateAngleDependency(r_torso_current.yaw,r_torso_target.yaw,r_current.yaw);
+	vfValidateAngleDependency(m_head.current.yaw,m_head.target.yaw,m_body.target.yaw);
+	vfValidateAngleDependency(m_body.current.yaw,m_body.target.yaw,m_head.current.yaw);
 
 	// updating torso angles
-	//float					fAngleDifference = _abs(angle_normalize_signed(r_torso_current.yaw - r_torso_target.yaw));
+	//float					fAngleDifference = _abs(angle_normalize_signed(m_body.current.yaw - m_body.target.yaw));
 	float					fSpeedFactor = 1.f;//fAngleDifference < PI_DIV_2 ? 1.f/6.f : 1.f;
-	angle_lerp_bounds		(r_torso_current.yaw,r_torso_target.yaw,fSpeedFactor*r_torso_speed,dt);
-	angle_lerp_bounds		(r_torso_current.pitch,r_torso_target.pitch,r_torso_speed,dt);
+	angle_lerp_bounds		(m_body.current.yaw,m_body.target.yaw,fSpeedFactor*m_body.speed,dt);
+	angle_lerp_bounds		(m_body.current.pitch,m_body.target.pitch,m_body.speed,dt);
 	
 	// updating head angles
-	angle_lerp_bounds		(r_current.yaw,r_target.yaw,r_head_speed,dt);
-	angle_lerp_bounds		(r_current.pitch,r_target.pitch,r_head_speed,dt);
+	angle_lerp_bounds		(m_head.current.yaw,m_head.target.yaw,m_head.speed,dt);
+	angle_lerp_bounds		(m_head.current.pitch,m_head.target.pitch,m_head.speed,dt);
 
 	// normalizing torso angles
-	r_torso_current.yaw		= angle_normalize_signed	(r_torso_current.yaw);
-	r_torso_current.pitch	= angle_normalize_signed	(r_torso_current.pitch);
+	m_body.current.yaw		= angle_normalize_signed	(m_body.current.yaw);
+	m_body.current.pitch	= angle_normalize_signed	(m_body.current.pitch);
 	
 	// normalizing head angles
-	r_current.yaw			= angle_normalize_signed	(r_current.yaw);
-	r_current.pitch			= angle_normalize_signed	(r_current.pitch);
+	m_head.current.yaw			= angle_normalize_signed	(m_head.current.yaw);
+	m_head.current.pitch			= angle_normalize_signed	(m_head.current.pitch);
 //#ifdef DEBUG
-//	Msg						("StalkerB (%d, %s) t=%f, c=%f, tt=%f, tc=%f",Level().timeServer(),cName(),r_target.yaw,r_current.yaw,r_torso_target.yaw,r_torso_current.yaw);
-	VERIFY					(_valid(r_current.yaw));
-	VERIFY					(_valid(r_current.pitch));
-	VERIFY					(_valid(r_target.yaw));
-	VERIFY					(_valid(r_target.pitch));
-	VERIFY					(_valid(r_torso_current.yaw));
-	VERIFY					(_valid(r_torso_current.pitch));
-	VERIFY					(_valid(r_torso_target.yaw));
-	VERIFY					(_valid(r_torso_target.pitch));
+//	Msg						("StalkerB (%d, %s) t=%f, c=%f, tt=%f, tc=%f",Level().timeServer(),cName(),m_head.target.yaw,m_head.current.yaw,m_body.target.yaw,m_body.current.yaw);
+	VERIFY					(_valid(m_head.current.yaw));
+	VERIFY					(_valid(m_head.current.pitch));
+	VERIFY					(_valid(m_head.target.yaw));
+	VERIFY					(_valid(m_head.target.pitch));
+	VERIFY					(_valid(m_body.current.yaw));
+	VERIFY					(_valid(m_body.current.pitch));
+	VERIFY					(_valid(m_body.target.yaw));
+	VERIFY					(_valid(m_body.target.pitch));
 //#endif
 	
 	// updating rotation matrix
@@ -265,31 +265,31 @@ void CAI_Stalker::Exec_Look(float dt)
 void CAI_Stalker::vfUpdateDynamicObjects()
 {
 	feel_vision_get(m_tpaVisibleObjects);
-	u32 dwTime = m_dwCurrentUpdate;
-	for (int i=0; i<(int)m_tpaVisibleObjects.size(); i++) {
+	u32 dwTime = m_current_update;
+	for (int i=0; i<(int)m_tpaVisibleObjects.size(); ++i) {
 		
 		CEntity *tpEntity = dynamic_cast<CEntity *>(m_tpaVisibleObjects[i]);
 		
 		if (!tpEntity || !bfCheckForVisibility(tpEntity))
 			continue;
 		
-		for (int j=0; j<(int)m_tpaDynamicObjects.size(); j++)
+		for (int j=0; j<(int)m_tpaDynamicObjects.size(); ++j)
 			if (tpEntity == m_tpaDynamicObjects[j].tpEntity) {
 				m_tpaDynamicObjects[j].dwTime = dwTime;
-				m_tpaDynamicObjects[j].dwUpdateCount++;
-				m_tpaDynamicObjects[j].dwNodeID = tpEntity->AI_NodeID;
+				++(m_tpaDynamicObjects[j].dwUpdateCount);
+				m_tpaDynamicObjects[j].dwNodeID = tpEntity->level_vertex_id();
 				m_tpaDynamicObjects[j].tSavedPosition = tpEntity->Position();
 				m_tpaDynamicObjects[j].tOrientation = tfGetOrientation(tpEntity);
-				m_tpaDynamicObjects[j].dwMyNodeID = AI_NodeID;
+				m_tpaDynamicObjects[j].dwMyNodeID = level_vertex_id();
 				m_tpaDynamicObjects[j].tMySavedPosition = Position();
-				m_tpaDynamicObjects[j].tMyOrientation = r_torso_current;
+				m_tpaDynamicObjects[j].tMyOrientation = m_body.current;
 				break;
 			}
 		
 		if (j >= (int)m_tpaDynamicObjects.size()) {
 			if ((int)m_tpaDynamicObjects.size() >= m_dwMaxDynamicObjectsCount)	{
 				u32 dwBest = dwTime + 1, dwIndex = u32(-1);
-				for (int j=0; j<(int)m_tpaDynamicObjects.size(); j++)
+				for (int j=0; j<(int)m_tpaDynamicObjects.size(); ++j)
 					if (m_tpaDynamicObjects[j].dwTime < dwBest) {
 						dwIndex = i;
 						dwBest = m_tpaDynamicObjects[j].dwTime;
@@ -297,12 +297,12 @@ void CAI_Stalker::vfUpdateDynamicObjects()
 				if (dwIndex < m_tpaDynamicObjects.size()) {
 					m_tpaDynamicObjects[dwIndex].dwTime = dwTime;
 					m_tpaDynamicObjects[dwIndex].dwUpdateCount = 1;
-					m_tpaDynamicObjects[dwIndex].dwNodeID = tpEntity->AI_NodeID;
+					m_tpaDynamicObjects[dwIndex].dwNodeID = tpEntity->level_vertex_id();
 					m_tpaDynamicObjects[dwIndex].tSavedPosition = tpEntity->Position();
 					m_tpaDynamicObjects[dwIndex].tOrientation = tfGetOrientation(tpEntity);
-					m_tpaDynamicObjects[dwIndex].dwMyNodeID = AI_NodeID;
+					m_tpaDynamicObjects[dwIndex].dwMyNodeID = level_vertex_id();
 					m_tpaDynamicObjects[dwIndex].tMySavedPosition = Position();
-					m_tpaDynamicObjects[dwIndex].tMyOrientation = r_torso_current;
+					m_tpaDynamicObjects[dwIndex].tMyOrientation = m_body.current;
 					m_tpaDynamicObjects[dwIndex].tpEntity = tpEntity;
 				}
 			}
@@ -310,12 +310,12 @@ void CAI_Stalker::vfUpdateDynamicObjects()
 				SDynamicObject tDynamicObject;
 				tDynamicObject.dwTime = dwTime;
 				tDynamicObject.dwUpdateCount = 1;
-				tDynamicObject.dwNodeID = tpEntity->AI_NodeID;
+				tDynamicObject.dwNodeID = tpEntity->level_vertex_id();
 				tDynamicObject.tSavedPosition = tpEntity->Position();
 				tDynamicObject.tOrientation = tfGetOrientation(tpEntity);
-				tDynamicObject.dwMyNodeID = AI_NodeID;
+				tDynamicObject.dwMyNodeID = level_vertex_id();
 				tDynamicObject.tMySavedPosition = Position();
-				tDynamicObject.tMyOrientation = r_torso_current;
+				tDynamicObject.tMyOrientation = m_body.current;
 				tDynamicObject.tpEntity = tpEntity;
 				m_tpaDynamicObjects.push_back(tDynamicObject);
 			}
@@ -323,17 +323,17 @@ void CAI_Stalker::vfUpdateDynamicObjects()
 	}
 	
 	// verifying if object is online
-	for (int i=0, n=m_tpaDynamicObjects.size(); i<n; i++)
+	for (int i=0, n=m_tpaDynamicObjects.size(); i<n; ++i)
 		if (m_tpaDynamicObjects[i].tpEntity && m_tpaDynamicObjects[i].tpEntity->getDestroy()) {
 			m_tpaDynamicObjects.erase(m_tpaDynamicObjects.begin() + i);
-			i--;
-			n--;
+			--i;
+			--n;
 		}
 }
 
 int	 CAI_Stalker::ifFindDynamicObject(CEntity *tpEntity)
 {
-	for (int i=0, n=m_tpaDynamicObjects.size(); i<n; i++)
+	for (int i=0, n=m_tpaDynamicObjects.size(); i<n; ++i)
 		if (m_tpaDynamicObjects[i].tpEntity == tpEntity)
 			return(i);
 	return(-1);
@@ -341,7 +341,7 @@ int	 CAI_Stalker::ifFindDynamicObject(CEntity *tpEntity)
 
 int	 CAI_Stalker::ifFindHurtIndex(CEntity *tpEntity)
 {
-	for (int i=0; i<(int)m_tpaHurts.size(); i++)
+	for (int i=0; i<(int)m_tpaHurts.size(); ++i)
 		if (m_tpaHurts[i].tpEntity == tpEntity)
 			return(i);
 	return(-1);
@@ -357,7 +357,7 @@ void CAI_Stalker::vfAddHurt(const SHurt &tHurt)
 void CAI_Stalker::vfUpdateHurt(const SHurt &tHurt)
 {
 	int iIndex = ifFindHurtIndex(tHurt.tpEntity);
-	if (iIndex != -1)
+	if (-1 != iIndex)
 		m_tpaHurts[iIndex].dwTime = tHurt.dwTime;
 	else
 		vfAddHurt(tHurt);
@@ -380,9 +380,9 @@ void CAI_Stalker::SelectSound(int &iIndex)
 {
 	iIndex = -1;
 	float fMaxPower = 0.f;
-	for (int i=0; i<(int)m_tpaDynamicSounds.size(); i++)
+	for (int i=0; i<(int)m_tpaDynamicSounds.size(); ++i)
 		if (m_tpaDynamicSounds[i].tpEntity && (m_tpaDynamicSounds[i].tpEntity->g_Team() != g_Team()))
-			if ((m_tpaDynamicSounds[i].dwTime + SOUND_UPDATE_DELAY > m_dwCurrentUpdate) && (m_tpaDynamicSounds[i].fPower > fMaxPower)) {
+			if ((m_tpaDynamicSounds[i].dwTime + SOUND_UPDATE_DELAY > m_current_update) && (m_tpaDynamicSounds[i].fPower > fMaxPower)) {
 				fMaxPower = m_tpaDynamicSounds[i].fPower;
 				iIndex = i;
 			}
@@ -414,11 +414,11 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 		// if enemy made a shot to us, add a fictitious hurt
 		CEntity *tpEntity = dynamic_cast<CEntity *>(who);
 		if (tpEntity) {
-			if (tpEntity->getDestroy() || (int(tpEntity->AI_NodeID) <= 0))
+			if (tpEntity->getDestroy() || (int(tpEntity->level_vertex_id()) <= 0))
 				return;
 			bool bFound = false;
 			objVisible	&VisibleEnemies = Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
-			for (int i=0, n=VisibleEnemies.size(); i<n; i++)
+			for (int i=0, n=VisibleEnemies.size(); i<n; ++i)
 				if (VisibleEnemies[i].key == tpEntity) {
 					bFound = true;
 					break;
@@ -428,8 +428,8 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 				float yaw1 = 0, pitch1 = 0;
 				CCustomMonster	*tpCustomMonster = dynamic_cast<CCustomMonster *>(tpEntity);
 				if (tpCustomMonster) {
-					yaw1		= -tpCustomMonster->r_current.yaw;
-					pitch1		= -tpCustomMonster->r_current.pitch;
+					yaw1		= -tpCustomMonster->m_head.current.yaw;
+					pitch1		= -tpCustomMonster->m_head.current.pitch;
 					bFound		= true;
 				}
 				else {
@@ -453,38 +453,38 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 		}
 	}
 	
-	u32 dwTime = m_dwCurrentUpdate;
+	u32 dwTime = m_current_update;
 
 	if ((power >= 0*m_fSensetivity*m_fSoundPower) && (power >= MIN_SOUND_VOLUME)) {
 		if (!who || ((this != who) && (!who->H_Parent() || (who->H_Parent() != this)))) {
 			CEntity *tpEntity = dynamic_cast<CEntity *>(who);
 			int iIndex = ifFindDynamicObject(tpEntity);
-			if ((((!tpEntity || (tpEntity->g_Team() != g_Team()) || !m_tEnemy.Enemy) && (!who || !who->H_Parent() || !dynamic_cast<CEntity*>(who->H_Parent()) || (dynamic_cast<CEntity*>(who->H_Parent())->g_Team() != g_Team())))) && ((iIndex == -1) || (m_tpaDynamicObjects[iIndex].dwTime < m_dwCurrentUpdate))) {
+			if ((((!tpEntity || (tpEntity->g_Team() != g_Team()) || !m_tEnemy.m_enemy) && (!who || !who->H_Parent() || !dynamic_cast<CEntity*>(who->H_Parent()) || (dynamic_cast<CEntity*>(who->H_Parent())->g_Team() != g_Team())))) && ((iIndex == -1) || (m_tpaDynamicObjects[iIndex].dwTime < m_current_update))) {
 				int j;
 #ifndef SILENCE
 				Msg("* %s - ref_sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 #endif
-				for ( j=0; j<(int)m_tpaDynamicSounds.size(); j++)
+				for ( j=0; j<(int)m_tpaDynamicSounds.size(); ++j)
 					if (who == m_tpaDynamicSounds[j].tpEntity) {
 						m_tpaDynamicSounds[j].eSoundType		= ESoundTypes(eType);
 						m_tpaDynamicSounds[j].dwTime			= dwTime;
 						m_tpaDynamicSounds[j].fPower			= power;
-						m_tpaDynamicSounds[j].dwUpdateCount++;
+						++(m_tpaDynamicSounds[j].dwUpdateCount);
 						m_tpaDynamicSounds[j].tSavedPosition	= Position;
 						m_tpaDynamicSounds[j].tOrientation		= tfGetOrientation(tpEntity);
 						m_tpaDynamicSounds[j].tMySavedPosition	= this->Position();
-						m_tpaDynamicSounds[j].tMyOrientation	= r_torso_current;
+						m_tpaDynamicSounds[j].tMyOrientation	= m_body.current;
 						m_tpaDynamicSounds[j].tpEntity			= tpEntity;
-						m_tpaDynamicSounds[j].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : AI_NodeID;
-						m_tpaDynamicSounds[j].dwMyNodeID		= AI_NodeID;
-						R_ASSERT2(int(m_tpaDynamicSounds[j].dwNodeID) > 0, "Invalid sound object node!");
-						if (tpEntity && !getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[j].dwNodeID),Position))
-							m_tpaDynamicSounds[j].tSavedPosition	= getAI().tfGetNodeCenter(m_tpaDynamicSounds[j].dwNodeID);
+						m_tpaDynamicSounds[j].dwNodeID			= tpEntity ? tpEntity->level_vertex_id() : level_vertex_id();
+						m_tpaDynamicSounds[j].dwMyNodeID		= level_vertex_id();
+						R_ASSERT2(ai().level_graph().valid_vertex_id(m_tpaDynamicSounds[j].dwNodeID), "Invalid sound object vertex!");
+						if (tpEntity && !ai().level_graph().inside(ai().level_graph().vertex(m_tpaDynamicSounds[j].dwNodeID),Position))
+							m_tpaDynamicSounds[j].tSavedPosition	= ai().level_graph().vertex_position(m_tpaDynamicSounds[j].dwNodeID);
 					}
 				if (j >= (int)m_tpaDynamicSounds.size()) {
 					if ((int)m_tpaDynamicSounds.size() >= m_dwMaxDynamicSoundsCount)	{
 						u32 dwBest = dwTime + 1, dwIndex = u32(-1);
-						for (int j=0; j<(int)m_tpaDynamicSounds.size(); j++)
+						for (int j=0; j<(int)m_tpaDynamicSounds.size(); ++j)
 							if (m_tpaDynamicSounds[j].dwTime < dwBest) {
 								dwIndex = j;
 								dwBest = m_tpaDynamicSounds[j].dwTime;
@@ -497,13 +497,13 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 							m_tpaDynamicSounds[dwIndex].tSavedPosition		= Position;
 							m_tpaDynamicSounds[dwIndex].tOrientation		= tfGetOrientation(tpEntity);
 							m_tpaDynamicSounds[dwIndex].tMySavedPosition	= this->Position();
-							m_tpaDynamicSounds[dwIndex].tMyOrientation		= r_torso_current;
+							m_tpaDynamicSounds[dwIndex].tMyOrientation		= m_body.current;
 							m_tpaDynamicSounds[dwIndex].tpEntity			= tpEntity;
-							m_tpaDynamicSounds[dwIndex].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : AI_NodeID;
-							m_tpaDynamicSounds[dwIndex].dwMyNodeID			= AI_NodeID;
-							R_ASSERT2(int(m_tpaDynamicSounds[dwIndex].dwNodeID) > 0, "Invalid sound object node!");
-							if (tpEntity && !getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[dwIndex].dwNodeID),Fvector(Position)))
-								m_tpaDynamicSounds[dwIndex].tSavedPosition	= getAI().tfGetNodeCenter(m_tpaDynamicSounds[dwIndex].dwNodeID);
+							m_tpaDynamicSounds[dwIndex].dwNodeID			= tpEntity ? tpEntity->level_vertex_id() : level_vertex_id();
+							m_tpaDynamicSounds[dwIndex].dwMyNodeID			= level_vertex_id();
+							R_ASSERT2(ai().level_graph().valid_vertex_id(m_tpaDynamicSounds[dwIndex].dwNodeID), "Invalid sound object vertex!");
+							if (tpEntity && !ai().level_graph().inside(ai().level_graph().vertex(m_tpaDynamicSounds[dwIndex].dwNodeID),Fvector(Position)))
+								m_tpaDynamicSounds[dwIndex].tSavedPosition	= ai().level_graph().vertex_position(m_tpaDynamicSounds[dwIndex].dwNodeID);
 						}
 					}
 					else {
@@ -515,13 +515,13 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 						tDynamicSound.tSavedPosition	= Position;
 						tDynamicSound.tOrientation		= tfGetOrientation(tpEntity);
 						tDynamicSound.tMySavedPosition	= this->Position();
-						tDynamicSound.tMyOrientation	= r_torso_current;
+						tDynamicSound.tMyOrientation	= m_body.current;
 						tDynamicSound.tpEntity			= tpEntity;
-						tDynamicSound.dwNodeID			= tpEntity ? tpEntity->AI_NodeID : AI_NodeID;
-						tDynamicSound.dwMyNodeID		= AI_NodeID;
-						R_ASSERT2(int(tDynamicSound.dwNodeID) > 0, "Invalid sound object node!");
-						if (tpEntity && !getAI().bfInsideNode(getAI().Node(tDynamicSound.dwNodeID),Fvector(Position)))
-							tDynamicSound.tSavedPosition	= getAI().tfGetNodeCenter(tDynamicSound.dwNodeID);
+						tDynamicSound.dwNodeID			= tpEntity ? tpEntity->level_vertex_id() : level_vertex_id();
+						tDynamicSound.dwMyNodeID		= level_vertex_id();
+						R_ASSERT2(ai().level_graph().valid_vertex_id(tDynamicSound.dwNodeID), "Invalid sound object vertex!");
+						if (tpEntity && !ai().level_graph().inside(ai().level_graph().vertex(tDynamicSound.dwNodeID),Fvector(Position)))
+							tDynamicSound.tSavedPosition	= ai().level_graph().vertex_position(tDynamicSound.dwNodeID);
 						m_tpaDynamicSounds.push_back	(tDynamicSound);
 					}
 				}
@@ -538,7 +538,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 void CAI_Stalker::vfUpdateVisibilityBySensitivity()
 {
 	m_iSoundIndex = -1;
-	for (int i=0; i<(int)m_tpaDynamicSounds.size(); i++)
+	for (int i=0; i<(int)m_tpaDynamicSounds.size(); ++i)
 		if (m_tpaDynamicSounds[i].tpEntity == m_tSavedEnemy) {
 			if (m_tpaDynamicSounds[i].dwTime > m_dwLostEnemyTime) {
 				m_iSoundIndex			= i;
@@ -546,12 +546,12 @@ void CAI_Stalker::vfUpdateVisibilityBySensitivity()
 
 				m_tSavedEnemyPosition	= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 				m_dwSavedEnemyNodeID	= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
-				R_ASSERT2				(int(m_dwSavedEnemyNodeID) > 0, "Invalid enemy node");
+				R_ASSERT2				(ai().level_graph().valid_vertex_id(m_dwSavedEnemyNodeID), "Invalid enemy vertex");
 				m_tMySavedPosition		= m_tpaDynamicSounds[m_iSoundIndex].tMySavedPosition;
 				m_dwMyNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwMyNodeID;
 				m_dwLastEnemySearch		= 0;
 				int						iIndex = ifFindDynamicObject(m_tSavedEnemy);
-				if (iIndex != -1) {
+				if (-1 != iIndex) {
 					m_tpaDynamicObjects[iIndex].tSavedPosition		= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 					m_tpaDynamicObjects[iIndex].dwNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 					m_tpaDynamicObjects[iIndex].tMySavedPosition	= m_tpaDynamicSounds[m_iSoundIndex].tMySavedPosition;

@@ -8,20 +8,22 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
-#include "..\\..\\ai_alife.h"
-#include "..\\..\\a_star.h"
+#include "../../ai_alife.h"
+#include "../../graph_engine.h"
+#include "../../game_level_cross_table.h"
+#include "../../game_graph.h"
 
 bool CAI_Stalker::bfHealthIsGood			()
 {
 	return(true);
 }
 
-bool CAI_Stalker::bfItemCanTreat			(CInventoryItem *tpInventoryItem)
+bool CAI_Stalker::bfItemCanTreat			(CInventoryItem * /**tpInventoryItem/**/)
 {
 	return(false);
 }
 
-void CAI_Stalker::vfUseItem					(CInventoryItem *tpInventoryItem)
+void CAI_Stalker::vfUseItem					(CInventoryItem * /**tpInventoryItem/**/)
 {
 }
 
@@ -29,7 +31,7 @@ bool CAI_Stalker::bfCanTreat				()
 {
 //	xr_vector<u16>::iterator	I = children.begin();
 //	xr_vector<u16>::iterator	E = children.end();
-//	for ( ; I != E; I++) {
+//	for ( ; I != E; ++I) {
 //		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(m_tpALife->tpfGetObjectByID(*I));
 //		R_ASSERT2				(l_tpALifeInventoryItem,"Non inventory item ihas a parent?!");
 //		if (bfItemCanTreat(l_tpALifeInventoryItem))
@@ -90,15 +92,15 @@ void CAI_Stalker::vfChooseHumanTask()
 {
 	OBJECT_IT					I = m_tpKnownCustomers.begin();
 	OBJECT_IT					E = m_tpKnownCustomers.end();
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		OBJECT_TASK_PAIR_IT		J = m_tpALife->m_tTaskCrossMap.find(*I);
-		R_ASSERT2				(J != m_tpALife->m_tTaskCrossMap.end(),"Can't find a specified customer in the Task registry!\nPossibly, there is no traders at all or there is no anomalous zones.");
+		R_ASSERT2				(m_tpALife->m_tTaskCrossMap.end() != J,"Can't find a specified customer in the Task registry!\nPossibly, there is no traders at all or there is no anomalous zones.");
 
 		u32						l_dwMinTryCount = u32(-1);
 		_TASK_ID				l_tBestTaskID = _TASK_ID(-1);
 		TASK_SET_IT				i = (*J).second.begin();
 		TASK_SET_IT				e = (*J).second.end();
-		for ( ; i != e; i++) {
+		for ( ; i != e; ++i) {
 			CSE_ALifeTask		*l_tpTask = m_tpALife->tpfGetTaskByID(*i);
 			if (!l_tpTask->m_dwTryCount) {
 				l_tBestTaskID = l_tpTask->m_tTaskID;
@@ -111,7 +113,7 @@ void CAI_Stalker::vfChooseHumanTask()
 				}
 		}
 
-		if (l_tBestTaskID != _TASK_ID(-1)) {
+		if (_TASK_ID(-1) != l_tBestTaskID) {
 			vfSetCurrentTask	(l_tBestTaskID);
 			break;
 		}
@@ -125,9 +127,9 @@ void CAI_Stalker::vfSetCurrentTask(_TASK_ID &tTaskID)
 
 bool CAI_Stalker::bfAssignDestinationNode()
 {
-//	if ((AI_NodeID == AI_Path.DestNode) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGraphID)) {
+//	if ((level_vertex_id() == m_level_dest_vertex_id) && (ai().cross_table().vertex(level_vertex_id()) == m_tNextGraphID)) {
 	if (m_tpALife) {
-		if (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGraphID) {
+		if (ai().cross_table().vertex(level_vertex_id()).game_vertex_id() == m_tNextGraphID) {
 			m_tGraphID = m_tNextGraphID;
 			if (++m_dwCurGraphPathNode < m_tpGraphPath.size()) {
 				m_tNextGraphID	= _GRAPH_ID(m_tpGraphPath[m_dwCurGraphPathNode]);
@@ -136,31 +138,33 @@ bool CAI_Stalker::bfAssignDestinationNode()
 				return(false);
 		}
 
-		AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGraphID].tNodeID;
+		set_level_dest_vertex(ai().game_graph().vertex(m_tNextGraphID)->level_vertex_id());
 		return	(true);
 	}
 	else {
-		if (AI_NodeID != getAI().m_tpaGraph[m_tNextGraphID].tNodeID) {
-			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGraphID].tNodeID;
+		if (ai().game_graph().vertex(m_tNextGraphID)->level_vertex_id() != level_vertex_id()) {
+			set_level_dest_vertex(ai().game_graph().vertex(m_tNextGraphID)->level_vertex_id());
 			return(true);
 		}
 		_GRAPH_ID						tGraphID		= m_tNextGraphID;
-		u16								wNeighbourCount = (u16)getAI().m_tpaGraph[tGraphID].tNeighbourCount;
-		CSE_ALifeGraph::SGraphEdge		*tpaEdges		= (CSE_ALifeGraph::SGraphEdge *)((BYTE *)getAI().m_tpaGraph + getAI().m_tpaGraph[tGraphID].dwEdgeOffset);
-
+		CGameGraph::const_iterator		i,e;
+		ai().game_graph().begin			(tGraphID,i,e);
 		int								iPointCount		= (int)m_tpaTerrain.size();
 		int								iBranches		= 0;
-		for (int i=0; i<wNeighbourCount; i++)
-			for (int j=0; j<iPointCount; j++)
-				if (getAI().bfCheckMask(m_tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes) && (tpaEdges[i].dwVertexNumber != m_tGraphID))
-					iBranches++;
+		for ( ; i != e; ++i)
+			for (int j=0; j<iPointCount; ++j)
+				if (ai().game_graph().mask(m_tpaTerrain[j].tMask,ai().game_graph().vertex((*i).vertex_id())->vertex_type()) && ((*i).vertex_id() != m_tGraphID))
+					++iBranches;
+
+		ai().game_graph().begin			(tGraphID,i,e);
+
 		if (!iBranches) {
-			for (int i=0; i<wNeighbourCount; i++) {
-				for (int j=0; j<iPointCount; j++)
-					if (getAI().bfCheckMask(m_tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes)) {
+			for ( ; i != e; ++i) {
+				for (int j=0; j<iPointCount; ++j)
+					if (ai().game_graph().mask(m_tpaTerrain[j].tMask,ai().game_graph().vertex((*i).vertex_id())->vertex_type())) {
 						m_tGraphID		= m_tNextGraphID;
-						m_tNextGraphID	= (_GRAPH_ID)tpaEdges[i].dwVertexNumber;
-						AI_Path.DestNode= getAI().m_tpaGraph[m_tNextGraphID].tNodeID;
+						m_tNextGraphID	= (*i).vertex_id();
+						set_level_dest_vertex(ai().game_graph().vertex(m_tNextGraphID)->level_vertex_id());
 						return(true);
 					}
 			}
@@ -168,16 +172,16 @@ bool CAI_Stalker::bfAssignDestinationNode()
 		else {
 			int							iChosenBranch = ::Random.randI(0,iBranches);
 			iBranches					= 0;
-			for (int i=0; i<wNeighbourCount; i++) {
-				for (int j=0; j<iPointCount; j++)
-					if (getAI().bfCheckMask(m_tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes) && (tpaEdges[i].dwVertexNumber != m_tGraphID)) {
+			for ( ; i != e; ++i) {
+				for (int j=0; j<iPointCount; ++j)
+					if (ai().game_graph().mask(m_tpaTerrain[j].tMask,ai().game_graph().vertex((*i).vertex_id())->vertex_type()) && ((*i).vertex_id() != m_tGraphID)) {
 						if (iBranches == iChosenBranch) {
 							m_tGraphID	= m_tNextGraphID;
-							m_tNextGraphID	= (_GRAPH_ID)tpaEdges[i].dwVertexNumber;
-							AI_Path.DestNode= getAI().m_tpaGraph[m_tNextGraphID].tNodeID;
+							m_tNextGraphID	= (*i).vertex_id();
+							set_level_dest_vertex(ai().game_graph().vertex(m_tNextGraphID)->level_vertex_id());
 							return(true);
 						}
-						iBranches++;
+						++iBranches;
 					}
 			}
 		}

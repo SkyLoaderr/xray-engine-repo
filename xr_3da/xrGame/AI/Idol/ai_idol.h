@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "..\\..\\CustomMonster.h"
-#include "..\\..\\inventory.h"
+#include "../../CustomMonster.h"
+#include "../../inventory.h"
 
 class CAI_Idol : public CCustomMonster, public CInventoryOwner 
 {
@@ -25,12 +25,12 @@ public:
 	virtual				~CAI_Idol		();
 	virtual void		Load			( LPCSTR section );
 	virtual BOOL		net_Spawn		( LPVOID DC );
-	virtual void		net_Export		(NET_Packet& P){};
-	virtual void		net_Import		(NET_Packet& P){};
+	virtual void		net_Export		(NET_Packet& /**P/**/){};
+	virtual void		net_Import		(NET_Packet& /**P/**/){};
 	virtual void		Die				(){};
 	virtual void		Think			(){};
-	virtual void		HitSignal		(float P, Fvector &local_dir,	CObject* who, s16 element){};
-	virtual void		HitImpulse		(float P, Fvector &vWorldDir, 	Fvector& vLocalDir){};
+	virtual void		HitSignal		(float /**P/**/, Fvector &/**local_dir/**/,	CObject* /**who/**/, s16 /**element/**/){};
+	virtual void		HitImpulse		(float /**P/**/, Fvector &/**vWorldDir/**/, 	Fvector& /**vLocalDir/**/){};
 	virtual void		SelectAnimation	(const Fvector& _view, const Fvector& _move, float speed);
 	
 	static void			AnimCallback	(CBlend* B)
@@ -46,7 +46,7 @@ public:
 	virtual	void		OnEvent			(NET_Packet& P, u16 type);
 	virtual	void		DropItemSendMessage(CObject *O);
 
-	virtual BOOL		feel_vision_isRelevant	(CObject* O)	{ return FALSE;	}
+	virtual BOOL		feel_vision_isRelevant	(CObject* /**O/**/)	{ return FALSE;	}
 	virtual	void		feel_touch_new			(CObject* O);
 	virtual void		shedule_Update			(u32 dt);
 	virtual void		renderable_Render		();
