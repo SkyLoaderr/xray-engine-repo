@@ -19,7 +19,7 @@
 #include "xr_spawn_merge.h"
 
 DEFINE_VECTOR(u32,				DWORD_VECTOR,			DWORD_IT);
-DEFINE_VECTOR(xrALifeEntity *,	ALIFE_ENTITY_P_VECTOR,	ALIFE_ENTITY_P_IT);
+DEFINE_VECTOR(CALifeObject *,	ALIFE_OBJECT_P_VECTOR,	ALIFE_OBJECT_P_IT);
 
 CVirtualFileStream				*tpGraphVFS = 0;
 SCompressedGraphVertex			*tpaGameGraph;
@@ -44,7 +44,7 @@ public:
 class CSpawn : public CThread {
 public:
 	SLevel						m_tLevel;
-	ALIFE_ENTITY_P_VECTOR		m_tpSpawnPoints;
+	ALIFE_OBJECT_P_VECTOR		m_tpSpawnPoints;
 	u32							m_dwLevelID;
 	u32							m_dwAStarStaticCounter;
 	SNode						*m_tpHeap;
@@ -93,9 +93,9 @@ public:
 			E->Spawn_Read		(P);
 			//
 			if ((E->s_gameid == GAME_SINGLE) || (E->s_gameid == GAME_ANY)) {
-				xrALifeEntity	*tpALifeEntity = dynamic_cast<xrALifeEntity*>(E);
-				if (tpALifeEntity)
-					m_tpSpawnPoints.push_back(tpALifeEntity);
+				CALifeObject	*tpALifeObject = dynamic_cast<CALifeObject*>(E);
+				if (tpALifeObject)
+					m_tpSpawnPoints.push_back(tpALifeObject);
 			}
 			else
 				xr_delete(E);
