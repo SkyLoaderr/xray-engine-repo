@@ -133,6 +133,7 @@ void CWeaponRPG7Grenade::Load(LPCSTR section) {
 	}
 
 	sscanf(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_lightColor.r, &m_lightColor.g, &m_lightColor.b); m_lightColor.a=1.f;
+	m_lightColor.mul_rgb(2.f);
 	m_lightRange = pSettings->r_float(section,"light_range");
 	m_lightTime = pSettings->r_u32(section,"light_time");
 
@@ -403,7 +404,7 @@ void CWeaponRPG7Grenade::UpdateCL() {
 		return;
 	}
 	if(m_pLight->get_active()){
-		float scale			= 1.f-(m_explodeTime/EXPLODE_TIME)*10.f;
+		float scale			= (float(m_explodeTime)/float(EXPLODE_TIME))*10.f;
 		m_curColor.mul_rgb	(m_lightColor,scale);
 		m_pLight->set_color	(m_curColor);
 	}
