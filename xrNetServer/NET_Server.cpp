@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "net_server.h"
 
+#define		BASE_PORT		5445
+
 void	dump_URL	(LPCSTR p, IDirectPlay8Address* A);
 
 LPCSTR nameTraffic	= "traffic.net";
@@ -151,11 +153,6 @@ BOOL IPureServer::Connect(LPCSTR options)
 	BOOL	bSimulator		= FALSE;
 	if (strstr(Core.Params,"-netsim"))		bSimulator = TRUE;
 	
-    // Create our IDirectPlay8Address Device Address, --- Set the SP for our Device Address
-	net_Address_device = NULL;
-    CHK_DX(CoCreateInstance	(CLSID_DirectPlay8Address,NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Address,(LPVOID*) &net_Address_device )); 
-	CHK_DX(net_Address_device->SetSP		(bSimulator? &CLSID_NETWORKSIMULATOR_DP8SP_TCPIP : &CLSID_DP8SP_TCPIP ));
-	CHK_DX(net_Address_device->AddComponent	(DPNA_KEY_PORT, &psNET_Port, sizeof(psNET_Port), DPNA_DATATYPE_DWORD ));
 	
 	// dump_URL		("! sv ",	net_Address_device);
 
@@ -188,15 +185,34 @@ BOOL IPureServer::Connect(LPCSTR options)
 	dpAppDesc.pvApplicationReservedData	= session_options;
 	dpAppDesc.dwApplicationReservedDataSize = xr_strlen(session_options)+1;
 	
-    // We are now ready to host the app
-	CHK_DX(NET->Host			
-		(
-		&dpAppDesc,				// AppDesc
-		&net_Address_device, 1, // Device Address
-		NULL, NULL,             // Reserved
-		NULL,                   // Player Context
-		0 ) 
-		);					// dwFlags
+	// Create our IDirectPlay8Address Device Address, --- Set the SP for our Device Address
+	net_Address_device = NULL;
+	CHK_DX(CoCreateInstance	(CLSID_DirectPlay8Address,NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Address,(LPVOID*) &net_Address_device )); 
+	CHK_DX(net_Address_device->SetSP		(bSimulator? &CLSID_NETWORKSIMULATOR_DP8SP_TCPIP : &CLSID_DP8SP_TCPIP ));
+	
+	HRESULT HostSuccess = S_FALSE;
+	// We are now ready to host the app and will try different ports
+	psNET_Port = BASE_PORT;
+	while (HostSuccess != S_OK && psNET_Port <=BASE_PORT + 100)
+	{
+		CHK_DX(net_Address_device->AddComponent	(DPNA_KEY_PORT, &psNET_Port, sizeof(psNET_Port), DPNA_DATATYPE_DWORD ));
+
+		HostSuccess = NET->Host			
+			(
+			&dpAppDesc,				// AppDesc
+			&net_Address_device, 1, // Device Address
+			NULL, NULL,             // Reserved
+			NULL,                   // Player Context
+			0 );					// dwFlags
+		if (HostSuccess != S_OK)
+		{
+//			std::string res = Debug.error2string(HostSuccess);
+			Msg("xrServer : trying port %d - FAILED!\n", psNET_Port++);
+//			psNET_Port++;
+		};
+	};
+	
+	CHK_DX(HostSuccess);
 	
 	config_Load		();
 	return	TRUE;
@@ -247,7 +263,7 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 			string256				cname;
 			CHK_DX(WideCharToMultiByte(CP_ACP,0,Pinfo->pwszName,-1,cname,sizeof(cname),0,0));
 			
-			bool bLocal = (Pinfo->dwPlayerFlags&DPNPLAYER_LOCAL);
+			bool bLocal = (Pinfo->dwPlayerFlags&DPNPLAYER_LOCAL) != 0;
 			ClientID clientID; clientID.set(msg->dpnidPlayer);
 			new_client(clientID, cname, bLocal);
 
