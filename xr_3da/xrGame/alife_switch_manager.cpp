@@ -19,6 +19,42 @@
 
 using namespace ALife;
 
+//	TODO: 
+//
+//	add add_online method to CSE_ALifeObject
+//	declare add_online method in CSE_ALifeTraderAbstract
+//	override add_online method in child classes from CSE_ALifeTraderAbstract
+//
+//	add remove_online method to CSE_ALifeObject
+//	declare remove_online method in CSE_ALifeTraderAbstract
+//	override remove_online method in child classes from CSE_ALifeTraderAbstract
+//
+//	add switch_online method to CSE_ALifeObject
+//	declare switch_online method in CSE_ALifeGroupAbstract
+//	override switch_online method in child classes from CSE_ALifeGroupAbstract
+//
+//	add switch_offline method to CSE_ALifeObject
+//	declare switch_offline method in CSE_ALifeGroupAbstract
+//	override switch_offline method in child classes from CSE_ALifeGroupAbstract
+//
+//	add synchronize_location method to CSE_ALifeObject
+//	declare synchronize_location method in CSE_ALifeGroupAbstract
+//	override synchronize_location method in child classes from CSE_ALifeGroupAbstract
+//
+//	add can_switch_offline method to CSE_ALifeObject
+//	declare can_switch_offline method in CSE_ALifeGroupAbstract
+//	override can_switch_offline method in child classes from CSE_ALifeGroupAbstract
+//
+//	add can_switch_online method to CSE_ALifeObject
+//	declare can_switch_online method in CSE_ALifeGroupAbstract
+//	override can_switch_online method in child classes from CSE_ALifeGroupAbstract
+//
+//	Expected result : 
+//		no dynamic_cast's, 
+//		code is readable,
+//		code is scalable,
+//		CALifeSwitchManager looks simple 
+
 CALifeSwitchManager::~CALifeSwitchManager	()
 {
 }
@@ -248,7 +284,7 @@ void CALifeSwitchManager::furl_object	(CSE_ALifeDynamicObject *I)
 						continue;
 					}
 				}
-				switch_offline(I);
+			switch_offline(I);
 		}
 		else
 			R_ASSERT2	(objects().object(I->ID_Parent)->m_bOnline,"Object online - parent offline...");
@@ -332,7 +368,7 @@ void CALifeSwitchManager::switch_object	(CSE_ALifeDynamicObject	*I)
 	if (!synchronize_location(I))
 		return;
 
-	// checking if the object is online
+	// checking if object is online
 	if (I->m_bOnline) {
 		// checking if the object is not attached
 		if (0xffff == I->ID_Parent) {
