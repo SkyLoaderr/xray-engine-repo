@@ -36,7 +36,7 @@ void CTelekinesis<_Object>::Activate()
 	// все объекты внести в список 
 	for (u32 i = 0; i < tpNearest.size(); i++) {
 		
-		CGameObject *obj = dynamic_cast<CGameObject *>(tpNearest[i]);
+		CGameObject *obj = smart_cast<CGameObject *>(tpNearest[i]);
 		if (!obj || !obj->m_pPhysicsShell) continue;
 		
 		// отключить гравитацию

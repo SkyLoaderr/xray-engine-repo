@@ -27,7 +27,6 @@ public:
 public:
 									CALifeInteractionManager	(xrServer *server, LPCSTR section);
 	virtual							~CALifeInteractionManager	();
-			ALife::ERelationType	tfGetRelationType			(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract1,	CSE_ALifeMonsterAbstract*tpALifeMonsterAbstract2);
 			void					check_for_interaction		(CSE_ALifeSchedulable		*tpALifeSchedulable);
 			void					check_for_interaction		(CSE_ALifeSchedulable		*tpALifeSchedulable,		ALife::_GRAPH_ID		tGraphID);
 };
