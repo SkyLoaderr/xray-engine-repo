@@ -185,7 +185,7 @@ _ParticleState::_ParticleState()
 	Age = 0.0f;
 	AgeSigma = 0.0f;
 }
-
+/*
 ParticleGroup *_ParticleState::GetGroupPtr(int p_group_num)
 {
 	if(p_group_num < 0)
@@ -196,7 +196,7 @@ ParticleGroup *_ParticleState::GetGroupPtr(int p_group_num)
 
 	return group_list[p_group_num];
 }
-
+*/
 PAHeader *_ParticleState::GetListPtr(int a_list_num)
 {
 	if(a_list_num < 0)

@@ -14,6 +14,7 @@
 #pragma warning (disable:4244)
 #endif
 
+#pragma pack (push,4)
 // A single particle
 struct Particle
 {
@@ -420,7 +421,15 @@ struct _ParticleState
 	// p_group_count groups can be added.
 	int GenerateGroups(int p_group_count);
 	int GenerateLists(int alist_count);
-	ParticleGroup *GetGroupPtr(int p_group_num);
+	__forceinline ParticleGroup *GetGroupPtr(int p_group_num){
+		if(p_group_num < 0)
+			return NULL; // IERROR
+
+		if(p_group_num >= group_count)
+			return NULL; // IERROR
+
+		return group_list[p_group_num];
+	}
 	PAHeader *GetListPtr(int action_list_num);
 };
 
@@ -440,6 +449,8 @@ inline _ParticleState &_GetPState()
 // For the non-MP case this is practically a no-op.
 extern "C" PARTICLEDLL_API _ParticleState& __cdecl _GetPState();
 #endif
+
+#pragma pack( pop ) // push 4
 
 // Just a silly little function.
 static inline float fsqr(float f) { return f * f; }
