@@ -52,12 +52,14 @@ IPureServer::IPureServer	(CTimer* timer)
 	stats.clear				();
 	stats.dwSendTime		= TimeGlobal(device_timer);
 	psNET_Port				= 5445;
+	SV_Client = NULL;
 }
 
 IPureServer::~IPureServer	()
 {
 	for	(u32 it=0; it<BannedAddresses.size(); it++)	xr_delete(BannedAddresses[it]);
 	BannedAddresses.clear();
+	SV_Client = NULL;
 }
 
 void IPureServer::pCompress	(NET_Packet& D, NET_Packet& S)
@@ -569,11 +571,11 @@ bool			IPureServer::DisconnectAddress	(char* Address)
 	return true;
 };
 
-void			IPureServer::GetClientAddress	(IDirectPlay8Address* pClientAddress, char* Address)
+bool			IPureServer::GetClientAddress	(IDirectPlay8Address* pClientAddress, char* Address)
 {
-	if (!Address) return;
+	if (!Address) return false;
 	Address[0] = 0; Address[1] = 0; Address[2] = 0; Address[3] = 0;
-	if (!pClientAddress) return;
+	if (!pClientAddress) return false;
 
 	WCHAR wstrHostname[ 256 ] = {0};
 	DWORD dwSize = sizeof(wstrHostname);
@@ -588,18 +590,20 @@ void			IPureServer::GetClientAddress	(IDirectPlay8Address* pClientAddress, char*
 	for (int i=0; i<4; i++)
 	{
 		Address[i] = char(atol(a[i]));
-	};		
+	};
+
+	return true;
 };
 
-void			IPureServer::GetClientAddress	(ClientID ID, char* Address)
+bool			IPureServer::GetClientAddress	(ClientID ID, char* Address)
 {
-	if (!Address) return;
+	if (!Address) return false;
 	Address[0] = 0; Address[1] = 0; Address[2] = 0; Address[3] = 0;
 
 	IDirectPlay8Address* pClAddr = NULL;
 	CHK_DX(NET->GetClientAddress(ID.value(), &pClAddr, 0));
 
-	GetClientAddress(pClAddr, Address);
+	return GetClientAddress(pClAddr, Address);
 };
 
 IBannedClient*			IPureServer::GetBannedClient	(const char* Address)
