@@ -4,6 +4,7 @@ function loadJob(sj, gname, type)
 --'-----------------------------------------------------------------------------------------
 	if type == "blockpost" then
 		--' STATE 0
+--[[
 		t = { name = "patrol",
 			object = nil, begin = nil, idle = 6*60*60*1000,
 			prior = 8, state = 0,
@@ -244,6 +245,7 @@ function loadJob(sj, gname, type)
 			in_rest = gname.."_zone", out_rest = "",
 			path_main = gname.."_sleep_6"}
 		table.insert(sj, t)			
+	]]
 	end
 end
 
