@@ -23,10 +23,52 @@ const				SCROLLBARS_SHIFT			= 5;
 const				VSCROLLBAR_STEP				= 20; // В пикселях
 const				HSCROLLBAR_STEP				= 20; // В пикселях
 
+CUICustomMap::CUICustomMap ()
+{
+	m_BoundRect.set			(0,0,0,0);
+	m_zoom_factor			=1.f;
+}
+
+CUICustomMap::~CUICustomMap ()
+{}
+
+void CUICustomMap::Init	(shared_str name, CInifile& gameLtx)
+{
+	m_name = name;
+
+	LPCSTR tex	= gameLtx.r_string(name,"texture");
+	Fvector4 tmp = gameLtx.r_fvector4(name,"bound_rect");
+	m_BoundRect.set(tmp.x, tmp.y, tmp.z, tmp.w);
+	CUIStatic::Init(tex, 0, 0, iFloor(m_BoundRect.width()), iFloor(m_BoundRect.height()) );
+	SetStretchTexture(true);
+	ClipperOn();
+}
+
+Irect CUICustomMap::ConvertRealToLocal  (const Fvector2& src)// meters->pixels (relatively own left-top pos)
+{
+	Irect res;
+	return res;
+}
+
+void CUICustomMap::FitToWidth	(u32 width)
+{
+	float kW = m_BoundRect.width()/m_BoundRect.height();
+	int w = width;
+	int h = iFloor(kW*width);
+	SetWndRect(0,0,w,h);
+	
+	m_zoom_factor = m_BoundRect.width()/w;
+}
+
+void CUICustomMap::FitToHeight	(u32 height)
+{
+}
+
+
+
 
 CUIGlobalMap::CUIGlobalMap()
 {
-	m_Box.set			(0,0,0,0);
 	m_MinimizedSize.set	(0,0);
 	m_NormalSize.set	(0,0);
 	m_State				= stNone;
@@ -37,19 +79,24 @@ CUIGlobalMap::~CUIGlobalMap()
 {
 }
 
-void CUIGlobalMap::Init()
+void CUIGlobalMap::Init		(shared_str name, CInifile& gameLtx)
 {
+	inherited::Init(name, gameLtx);
+
 	CUIXml uiXml;
 	bool xml_result			= uiXml.Init(CONFIG_PATH, UI_PATH, "pda_map.xml");
 	R_ASSERT3(xml_result, "xml file not found", "global_map.xml");
 
 	// load map background
-	CUIXmlInit xml_init;
-	CUIStatic* background	= xr_new<CUIStatic>();
+/*	CUIStatic* background	= xr_new<CUIStatic>();
 	background->SetWindowName("background");
 	xml_init.InitStatic		(uiXml, "main_wnd:global_map:background", 0, background);
 	background->SetAutoDelete(true);
 	AttachChild				(background);
+*/
+
+
+	CUIXmlInit xml_init;
 	string256				path;
 	// load map state definition
 	strcpy					(path,"main_wnd:global_map:background:minimized_size");
@@ -67,7 +114,7 @@ void CUIGlobalMap::Init()
 	minimized_btn->SetWindowName("minimized_btn");
 	xml_init.InitButton			(uiXml, path, 0, minimized_btn);
 	minimized_btn->SetAutoDelete(true);
-	background->AttachChild		(minimized_btn);
+	AttachChild					(minimized_btn);
 
 	// maximized button
 	strcpy						(path,"main_wnd:global_map:background:maximized_btn");
@@ -75,14 +122,14 @@ void CUIGlobalMap::Init()
 	maximized_btn->SetWindowName("maximized_btn");
 	xml_init.InitButton			(uiXml, path, 0, maximized_btn);
 	maximized_btn->SetAutoDelete(true);
-	background->AttachChild		(maximized_btn);
+	AttachChild					(maximized_btn);
 
 	SwitchTo					(stNormal);
 	//init callbacks
-	Register(minimized_btn);
-	Register(maximized_btn);
-	AddCallback			("minimized_btn",BUTTON_CLICKED,boost::bind(&CUIGlobalMap::OnBtnMinimizedClick,this));
-	AddCallback			("maximized_btn",BUTTON_CLICKED,boost::bind(&CUIGlobalMap::OnBtnMaximizedClick,this));
+	Register					(minimized_btn);
+	Register					(maximized_btn);
+	AddCallback					("minimized_btn",BUTTON_CLICKED,boost::bind(&CUIGlobalMap::OnBtnMinimizedClick,this));
+	AddCallback					("maximized_btn",BUTTON_CLICKED,boost::bind(&CUIGlobalMap::OnBtnMaximizedClick,this));
 }
 
 void	CUIGlobalMap::SendMessage			(CUIWindow* pWnd, s16 msg, void* pData)
@@ -94,8 +141,6 @@ void	CUIGlobalMap::SendMessage			(CUIWindow* pWnd, s16 msg, void* pData)
 void CUIGlobalMap::SwitchTo(CUIGlobalMap::EState new_state)
 {
 	if (new_state!=m_State){
-		CUIWindow* background = FindChild("background");
-		VERIFY(background);
 
 		switch (new_state){
 		case stMinimized:		SetWidth(m_MinimizedSize.x); SetHeight(m_MinimizedSize.y);	break;
@@ -104,8 +149,6 @@ void CUIGlobalMap::SwitchTo(CUIGlobalMap::EState new_state)
 		}
 		m_State					= new_state;
 
-		background->SetWidth(	GetWidth()	);
-		background->SetHeight(	GetHeight()	);
 	}
 }
 
@@ -135,20 +178,27 @@ CUILevelMap::CUILevelMap()
 CUILevelMap::~CUILevelMap()
 {}
 
+void CUILevelMap::Init	(shared_str name, CInifile& gameLtx)
+{
+	SetWindowName(*name);
+	inherited::Init(name, gameLtx);
+
+	Fvector4 tmp = gameLtx.r_fvector4(name,"global_rect");
+	m_GlobalRect.set(tmp.x, tmp.y, tmp.z, tmp.w);
+}
+
 
 ///////////////////////////////////////////////////////////////////////////
 CUIMapWnd::CUIMapWnd()
 {
 	m_activeLevelMap		= NULL;
-	m_GlobalMap				= xr_new<CUIGlobalMap>();
-	m_GlobalMap->SetAutoDelete(true);
-//	AttachChild				(m_GlobalMap);
-	m_activeLevelMap		= xr_new<CUILevelMap>();
+//	m_activeLevelMap		= xr_new<CUILevelMap>();
 	m_flags.zero();
 }
 
 CUIMapWnd::~CUIMapWnd()
 {
+	delete_data(m_GameMaps);
 }
 
 void CUIMapWnd::Init()
@@ -161,7 +211,6 @@ void CUIMapWnd::Init()
 	CUIXmlInit xml_init;
 	xml_init.InitWindow		(uiXml, "main_wnd", 0, this);
 
-//	m_GlobalMap->Init		();
 
 
 	AttachChild(&m_UIMainFrame);
@@ -185,16 +234,32 @@ void CUIMapWnd::Init()
 //	AttachChild(&UIMainMapHeader);
 //	xml_init.InitFrameLine(uiXml, "map_header_frame_line", 0, &UIMainMapHeader);
 
-	static int xx = 0;
-	static int yy = 0;
 
-	m_activeLevelMap->Init("ui\\ui_l2save",0,0,0,0);
-	m_activeLevelMap->SetWndRect(0,0,1024,1024);
-	m_activeLevelMap->SetWndPos(xx,yy);
-	m_activeLevelMap->SetStretchTexture(true);
-	m_activeLevelMap->ClipperOn();
+// Load maps
+	string256			gameLtxPath;
+	FS.update_path		(gameLtxPath, CONFIG_PATH, "game.ltx");
+	CInifile gameLtx	(gameLtxPath);
 
-	m_UILevelFrame.AttachChild(m_activeLevelMap);
+	m_GlobalMap				= xr_new<CUIGlobalMap>();
+	m_GlobalMap->SetAutoDelete(true);
+	m_GlobalMap->Init	("global_map",gameLtx);
+	AttachChild			(m_GlobalMap);
+
+
+	// initialize local maps
+	if (gameLtx.section_exist("level_maps_single")){
+		CInifile::Sect& S		= gameLtx.r_section("level_maps_single");
+		CInifile::SectIt	it	= S.begin(), end = S.end();
+		for (;it!=end; it++){
+
+			R_ASSERT2	(m_GameMaps.end() == m_GameMaps.find(it->first), "Duplicate level name not allowed");
+			CUICustomMap*& l = m_GameMaps[it->first];
+
+			l = xr_new<CUILevelMap>();
+			l->Init(it->first, gameLtx);
+			l->FitToWidth( m_UILevelFrame.GetWidth() );
+		}
+	}
 }
 
 void CUIMapWnd::Show(bool status)
@@ -203,8 +268,8 @@ void CUIMapWnd::Show(bool status)
 	{
 		InitGlobalMapObjectives			();
 		InitLocalMapObjectives			();
-//		SwitchMapMode					(emmLocal);
-//		SetLocalMap						(Level().name());
+		if(m_activeLevelMap==NULL)
+			SetActiveMap				(Level().name());
 	}else{
 		GetUICursor()->HoldMode(false);
 		m_flags.set(lmMouseHold,FALSE);
@@ -213,7 +278,17 @@ void CUIMapWnd::Show(bool status)
 	inherited::Show(status);
 }
 
+void CUIMapWnd::SetActiveMap			(shared_str level_name)
+{
+	if(m_activeLevelMap)
+		DetachChild(m_activeLevelMap);
 
+	GameMapsPairIt it = m_GameMaps.find(level_name);
+	if( m_GameMaps.end()==it) return;
+	
+	m_activeLevelMap = it->second;
+	AttachChild(m_activeLevelMap);
+}
 
 void CUIMapWnd::Draw()
 {
@@ -229,12 +304,20 @@ void CUIMapWnd::OnMouse(int x, int y, EUIMessages mouse_action)
 {
 	inherited::OnMouse(x,y,mouse_action);
 
-	
-	if(m_activeLevelMap && GetAbsoluteRect().in(x,y) ){
+		
+	if(m_activeLevelMap && m_UILevelFrame.GetAbsoluteRect().in( GetUICursor()->GetPos() ) ){
 		switch (mouse_action){
 			case WINDOW_MOUSE_MOVE:
 				if(m_flags.test(lmMouseHold)){
 						m_activeLevelMap->MoveWndDelta( GetUICursor()->GetPosDelta() );
+						Irect clip = m_activeLevelMap->GetClipRect();
+						Irect r = m_activeLevelMap->GetWndRect();
+						if(r.x1>0)
+							r.x1=0;
+						if(r.y1>0)
+							r.y1=0;
+						m_activeLevelMap->SetWndPos(r.x1, r.y1);
+
 				}break;
 
 			case WINDOW_LBUTTON_DOWN:{

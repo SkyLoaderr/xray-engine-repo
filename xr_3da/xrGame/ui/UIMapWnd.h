@@ -15,16 +15,32 @@
 #include "UIFrameLineWnd.h"
 
 #include "UIMapSpot.h"
-#include "UIMapBackground.h"
+//#include "UIMapBackground.h"
 #include "UIGlobalMapLocation.h"
 
 #include "UICharacterInfo.h"
-//#include "UIScriptWnd.h"
 #include "UIWndCallback.h"
 
-//////////////////////////////////////////////////////////////////////////
-class CUIGlobalMap: public CUIWindow, public CUIWndCallback{
-	Frect			m_Box;
+
+class CUICustomMap : public CUIStatic, public CUIWndCallback{
+	
+	shared_str		m_name;
+	Frect			m_BoundRect;// real map size (meters)
+	float			m_zoom_factor;
+public:
+					CUICustomMap		();
+	virtual			~CUICustomMap		();
+
+	virtual void	Init				(shared_str name, CInifile& gameLtx);
+	Irect			ConvertRealToLocal  (const Fvector2& src);// meters->pixels (relatively own left-top pos)
+	void			FitToWidth			(u32 width);
+	void			FitToHeight			(u32 height);
+};
+
+
+class CUIGlobalMap: public CUICustomMap{
+	typedef  CUICustomMap inherited;
+
 	Ivector2		m_MinimizedSize;
 	Ivector2		m_NormalSize;
 	enum EState{
@@ -43,20 +59,21 @@ public:
 					CUIGlobalMap		();
 	virtual			~CUIGlobalMap		();
 	
-	virtual void	Init				();
+	virtual void	Init				(shared_str name, CInifile& gameLtx);
 };
 
-class CUILevelMap: public CUIStatic{
-	typedef  CUIStatic inherited;
+class CUILevelMap: public CUICustomMap{
+	typedef  CUICustomMap inherited;
+	Frect			m_GlobalRect;// virtual map size (meters)
 
-	Frect			m_LevelBox;
 public:
 					CUILevelMap			();
 	virtual			~CUILevelMap		();
+	virtual void	Init				(shared_str name, CInifile& gameLtx);
 
 };
 
-DEFINE_MAP(shared_str,CUILevelMap*,GameMaps,GameMapsPairIt);
+DEFINE_MAP(shared_str,CUICustomMap*,GameMaps,GameMapsPairIt);
 
 class CUIMapWnd: public CUIWindow
 {
@@ -65,7 +82,7 @@ class CUIMapWnd: public CUIWindow
 	Flags32			m_flags;
 
 
-	CUILevelMap*		m_activeLevelMap;
+	CUICustomMap*		m_activeLevelMap;
 
 	CUIGlobalMap*		m_GlobalMap;
 	GameMaps			m_GameMaps;
@@ -90,6 +107,7 @@ public:
 	void			InitLocalMapObjectives	(){}
 
 	void			SetActivePoint			(const Fvector &vNewPoint){}
+	void			SetActiveMap			(shared_str level_name);
 
 };
 
