@@ -1,14 +1,14 @@
 --[[------------------------------------------------------------------------------------------------------------------
-‘еҐ¬  "Ће®в­ЁЄ ­  ўҐав®«свл"
-—гЈ © ‘ и 
+Схема "Охотник на вертолёты"
+Чугай Саша
 
-‘¤Ґ« вм:
+Сделать:
 --------------------------------------------------------------------------------------------------------------------]]
 
-local def_attack_dist = 100 * 100 -- а ббв®п­ЁҐ, ­  Є®в®а®¬ ўҐав®«св ¬®¦Ґв Ўлвм  в Є®ў ­
+local def_attack_dist = 100 * 100 -- расстояние, на котором вертолёт может быть атакован
 
 ---------------------------------------------------------------------------------------------------------------------
--- ќў «г в®а бў®©бвў  "¬®¦­® Ї®бваҐ«пвм Ї® ўҐав®«свг"
+-- Эвалуатор свойства "можно пострелять по вертолёту"
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_shoot" ( property_evaluator )
 
@@ -19,6 +19,10 @@ end
 local overrides
 
 function evaluator_shoot:evaluate()
+	if not self.a.enabled then
+		return false
+	end
+
 	overrides = xr_logic.generic_scheme_overrides( self.object )
 	if overrides and overrides.heli_hunter then
 		if not self.a.heli then
@@ -33,7 +37,7 @@ function evaluator_shoot:evaluate()
 end
 
 ----------------------------------------------------------------------------------------------------------------------
--- „Ґ©бвўЁҐ "бваҐ«пвм Ї® ўҐав®«свг"
+-- Действие "стрелять по вертолёту"
 ----------------------------------------------------------------------------------------------------------------------
 class "action_shoot" ( action_base )
 
@@ -99,4 +103,13 @@ function set_scheme( npc, ini, scheme, section )
 
 	a.attack_dist_sqr = math.pow( utils.cfg_get_number( ini, section, "dist", npc, false, def_attack_dist ), 2 )
 	a.heli = nil
+	a.enabled = true
 end
+
+function disable_scheme(npc, scheme)
+	local st = db.storage[npc:id()][scheme]
+	if st then
+		st.enabled = false
+	end
+end
+

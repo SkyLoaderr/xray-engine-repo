@@ -43,3 +43,11 @@ function set_combat_checker(npc, ini, scheme, section)
 	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)		
 	st.enabled = true
 end
+
+function disable_scheme(npc, scheme)
+	local st = db.storage[npc:id()][scheme]
+	if st then
+		st.enabled = false
+	end
+end
+

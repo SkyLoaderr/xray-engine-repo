@@ -436,3 +436,13 @@ function no_need_to_rotate(npc, target_pos)
 
 	return y < 0.3
 end
+
+function ini_file(npc, filename)
+	if filename == "<customdata>" then
+		return npc:spawn_ini() or ini_file([[scripts\dummy.ltx]])
+	else
+		return ini_file(filename)
+	end
+end
+
+

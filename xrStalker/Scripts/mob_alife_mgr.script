@@ -15,6 +15,13 @@ function cfg_get_mode(ini, section, npc)
 end
 
 function alife_control(obj, actor, mode)
+	-- Мертвые монстры сразу отпускаются под alife
+	if not obj:alive() then
+		xr_logic.mob_release(obj)
+		return true
+	end
+
+	-- Монстры, у которых есть враг - также должны работать в alife
 	local enemy = obj:get_enemy()
 	if enemy then
 		if not mode.friendly and
@@ -25,6 +32,7 @@ function alife_control(obj, actor, mode)
 		end
 	end
 	
+	-- Отпускать в alife монстров, которых обстреляли
 	local h = obj:get_monster_hit_info()
 	if h.who and h.time ~= 0 then
 		if h.who:id() == actor:id() and mode.actor_friendly then
@@ -36,5 +44,7 @@ function alife_control(obj, actor, mode)
 		return true
 	end
 
+	-- Остальные монстры работают под схемой
 	return false
 end
+

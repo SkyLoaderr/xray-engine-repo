@@ -69,12 +69,12 @@ end
 
 function mob_walker:update(delta)
 	--printf("__bp: mob_walker update: %d", device():time_global())
-	local actor = level.actor()
-	if not actor then
+	if not xr_logic.is_active(self.object, self.st) then
 		return
 	end
 
-	if not xr_logic.is_active(self.object, self.st) then
+	local actor = level.actor()
+	if not actor then
 		return
 	end
 
@@ -88,8 +88,10 @@ function mob_walker:update(delta)
 		return
 	end
 
-	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
-		return
+	if self:arrived_to_first_waypoint() then
+		if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
+			return
+		end
 	end
 
 	if self.state == state_standing then
@@ -105,6 +107,10 @@ function mob_walker:update(delta)
 			end
 		end
 	end
+end
+
+function mob_walker:arrived_to_first_waypoint()
+	return self.last_index ~= nil
 end
 
 function mob_walker:waypoint_callback(obj, action_type, index)

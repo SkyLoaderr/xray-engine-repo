@@ -310,3 +310,9 @@ function set_actor_dialogs(npc, ini, name, dialog_section)
 		printf("*ACTOR_DIALOGS*: actor_disable=nil")
 	end
 end
+
+function disable_scheme(npc, scheme)
+	db.storage[npc:id()].actor_dialogs = nil
+	db.storage[npc:id()].actor_disable = nil
+end
+

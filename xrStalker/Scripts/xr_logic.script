@@ -21,17 +21,6 @@ function gulag_activate(npc, ini, section, gulag_name, death, combat, actor_dial
 	gulag_name - имя гулага, которое будет добавлено спереди к именам путей
 	death, combat, actor_dialogs, trade, hit - имена секций, задающих поведение при смерти и в бою
 	
-function enable_scripts(npc, ini, stype)
-Предназначение:
-	вызывается на reinit-е объекта, активирует для него исходную схему, исходя из данных в секции [logic]
-Здесь:
-	npc - персонаж, для которого будет активирована схема
-	ini - его customdata
-	stype - тип скрипта. Поскольку имя секции все еще неизвестно, его нужно задавать явно. Один из:
-		modules.stype_stalker
-		modules.stype_mobile
-		modules.stype_item
-
 function assign_storage_and_bind(npc, ini, scheme, section)
 Предназначение:
 	Вызывает функцию add_to_binder схемы, а также создает (если его еще нет) и возвращает ссылку на storage
@@ -79,11 +68,6 @@ function activate_by_section(npc, ini, section)
 Предназначение:
 	Активирует указанную секцию. Если в данный момент какая-либо секция уже активирована, сообщает об ошибке.
 
-function reset_generic_schemes_on_scheme_switch(npc)
-Предназначение:
-	Производит сброс состояния объекта (снимает коллбеки, отключает разговор) непосредственно перед включением
-	новой схемы.
-
 function reset_actions_event(npc, st)
 Предназначение:
 	Вызывает у всех классов, подписанных на события, метод reset_scheme.
@@ -130,143 +114,146 @@ function generic_scheme_overrides(npc)
 	
 --]]
 
-function gulag_activate(npc, ini, section, gulag_name, death, combat, actor_dialogs, trade, hit)
-	if npc == nil then
-		utils.abort("gulag_activate: npc is nil")
-	end
-	if section == nil then
-		utils.abort("gulag_activate: section is nil")
-	end
+--[[
+-- Предназначение:
+--	вызывается на reinit-е объекта, активирует для него исходную схему, исходя из данных в секции [section]
+-- Здесь:
+--	npc - персонаж, для которого будет активирована схема
+--	ini - его customdata
+--	stype - тип скрипта. Поскольку имя секции все еще неизвестно, его нужно задавать явно. Один из:
+--		modules.stype_stalker
+--		modules.stype_mobile
+--		modules.stype_item
+--	section - имя секции logic
+--	gulag_name - имя гулага, если скрипт включается гулагом, а не биндером
+--]]
+function configure_schemes(npc, ini, ini_filename, stype, section_logic, gulag_name)
+	--printf("DEBUG: enable_scripts: npc:name()=%s", npc:name())
 
-	local npc_id = npc:id()
-
-	local stype = stypes[utils.get_scheme_by_section(section)]
-	db.storage[npc_id]["active_section"] = nil
-	db.storage[npc_id]["active_scheme"] = nil
-	db.storage[npc_id]["gulag_name"] = if_then_else(gulag_name, gulag_name, "")
-	db.storage[npc_id]["stype"] = stype
-
-	set_generic_schemes(ini, npc, stype, death, combat, actor_dialogs, trade, hit)
-
-	activate_by_section(npc, ini, section)
-end
-
-function enable_scripts(npc, ini, stype)
-	--printf("DEBUG: stalker_enable_scripts")
-	--printf("_bp: obj:name()=%s, obj:id()=%s", npc:name(), npc:id())
-
-	local npc_id = npc:id()
-
-	db.storage[npc_id]["active_section"] = nil
-	db.storage[npc_id]["active_scheme"] = nil
-	db.storage[npc_id]["gulag_name"] = ""
-	db.storage[npc_id]["stype"] = stype
-
-	if ini:section_exist("logic") then
-		local cfg_filename = utils.cfg_get_string(ini, "logic", "cfg", npc, false, "")
-		local actual_ini
-		if cfg_filename then
-			--printf("enable_scripts: object '%s' has external configuration file '%s'", npc:name(), cfg_filename)
-			actual_ini = ini_file(cfg_filename)
-			if actual_ini:line_count("logic") == 0 then
-				utils.abort("file '%s' does not exist or is empty, or has no section 'logic'", cfg_filename)
+	local actual_ini
+	local actual_ini_filename
+	if not ini:section_exist(section_logic) then
+		if not gulag_name then
+			-- Общие схемы должны работать и без logic:
+			actual_ini_filename = ini_filename
+			actual_ini = ini -- этот персонаж включается не Gulag-ом и не обязательно должен иметь секцию logic
+		else
+			-- Иначе это персонаж Gulag-а и ему не задали работу:
+			utils.abort("ERROR: object '%s': unable to find section '%s'", npc:name(), section_logic)
+		end
+	else
+		local filename = utils.cfg_get_string(ini, section_logic, "cfg", npc, false, "")
+		if filename then
+			--printf("enable_scripts: object '%s' has external configuration file '%s'", npc:name(), filename)
+			actual_ini_filename = filename
+			actual_ini = ini_file(filename)
+			if actual_ini:line_count(section_logic) == 0 then
+				utils.abort("file '%s' does not exist or is empty, or has no section '%s'",
+					filename, section_logic)
 			end
 		else
+			actual_ini_filename = ini_filename
 			actual_ini = ini
 		end
-
-		set_generic_schemes(actual_ini, npc, stype)
-
-		-- Этот код не учитывал команды, заключенные в %%
-		--local active_section = utils.cfg_get_string(actual_ini, "logic", "active", npc, true, "")
-		--if active_section == "nil" then
-		--	printf("WARNING: object '%s': active section is 'nil'", npc:name())
-		--end
-
-		-- Распарсить строку выбора активной секции с учетом команд, заключенных в %%
-		local active_section_cond = cfg_get_condlist(actual_ini, "logic", "active", npc)
-		local active_section
-		if not active_section_cond then
-			active_section = nil
-		else
-			-- FIXME
-			active_section = pick_section_from_condlist(level.actor(), npc, active_section_cond.condlist)
-		end
-
-		if active_section == "nil" then
-			printf("WARNING: object '%s': active section is 'nil'", npc:name())
-		end
-
-		activate_by_section(npc, actual_ini, active_section)
-	else
-		--utils.abort("object '%s': unable to find section 'logic'", npc:name())
-		printf("WARNING: object '%s': unable to find section 'logic'", npc:name())
-
-		-- Общие схемы должны работать и без logic:
-		set_generic_schemes(ini, npc, stype)
 	end
-	--printf("DEBUG: stalker_enable_scripts end")
+
+	-- Поскольку в момент активации схемы могли работать ранее установленные общие схемы, нужно их все отключить:
+	disable_generic_schemes(npc, stype)
+	-- Включаем все общие схемы (раненный, коллбек на попадание и т.д.):
+	enable_generic_schemes(actual_ini, npc, stype, section_logic)
+
+	local npc_id = npc:id()
+	local st = db.storage[npc_id]
+	st.active_section = nil
+	st.active_scheme = nil
+	if gulag_name then
+		st.gulag_name = gulag_name
+	else
+		st.gulag_name = ""
+	end
+	st.stype = stype
+	st.ini = actual_ini
+	st.ini_filename = actual_ini_filename
+	st.section_logic = section_logic
 end
 
--- FIXME: параметры death, combat, trade не используются!!!
-function set_generic_schemes(ini, npc, stype, death, combat, actor_dialogs, trade, hit)
+-- Вызывается биндером с целью определить первую активную схему
+function determine_section_to_activate(npc, ini, section_logic, actor)
+	if not ini:section_exist(section_logic) then
+		return "nil"
+	end
+
+	-- Распарсить строку выбора активной секции с учетом команд, заключенных в %%
+	local active_section_cond = cfg_get_condlist(ini, section_logic, "active", npc)
+	local active_section
+	if not active_section_cond then
+		utils.abort("object '%s': section '%s': unable to find field 'active'", npc:name(), section_logic)
+	else
+		active_section = pick_section_from_condlist(actor, npc, active_section_cond.condlist)
+		if not active_section then
+			utils.abort("object '%s': section '%s': section 'active' has no conditionless else clause",
+				npc:name(), section_logic)
+		end
+	end
+	return active_section
+end
+
+------------------------------------------------------------------------------------------------------------
+-- ВНОСЯ ИЗМЕНЕНИЯ В ЭТУ ФУНКЦИЮ, НЕ ЗАБЫВАЙТЕ ДОБАВЛЯТЬ СООТВЕТСТВУЮЩИЕ СТРОКИ И В enable_generic_schemes!
+------------------------------------------------------------------------------------------------------------
+function disable_generic_schemes(npc, stype)
 	if stype == modules.stype_stalker then
-		local combat_section = utils.cfg_get_string(ini, "logic", "on_combat", npc, false, "")
-		--printf("_bp: npc='%s': combat section: %s", npc:name(), if_then_else(combat_section ~= nil, "found",
-		--	"not_found"))
+		xr_combat.disable_scheme(npc, "combat")
+		xr_death.disable_scheme(npc, "death")
+		xr_hit.disable_scheme(npc, "hit")
+		xr_meet.disable_scheme(npc, "actor_dialogs")
+		xr_wounded.disable_scheme(npc, "wounded")
+		xr_heli_hunter.disable_scheme(npc, "heli_hunter")
+	elseif stype == modules.stype_mobile then
+		mob_death.disable_scheme(npc, "mob_death")
+		mob_trade.disable_scheme(npc, "mob_trade")
+	end
+end
+
+------------------------------------------------------------------------------------------------------------
+-- ВНОСЯ ИЗМЕНЕНИЯ В ЭТУ ФУНКЦИЮ, НЕ ЗАБЫВАЙТЕ ДОБАВЛЯТЬ СООТВЕТСТВУЮЩИЕ СТРОКИ И В disable_generic_schemes!
+------------------------------------------------------------------------------------------------------------
+function enable_generic_schemes(ini, npc, stype, section)
+	if stype == modules.stype_stalker then
+		local combat_section = utils.cfg_get_string(ini, section, "on_combat", npc, false, "")
 		if combat_section then
 			xr_combat.set_combat_checker(npc, ini, "combat", combat_section)
 		end
 		
-		local death_section = utils.cfg_get_string(ini, "logic", "on_death", npc, false, "")
-		--printf("_bp: npc='%s': death section: %s", npc:name(), if_then_else(death_section ~= nil, "found",
-		--	"not_found"))
+		local death_section = utils.cfg_get_string(ini, section, "on_death", npc, false, "")
 		if death_section then
 			xr_death.set_death_checker(npc, ini, "death", death_section)
 		end
 
-		local hit_section = utils.cfg_get_string(ini, "logic", "on_hit", npc, false, "")
-		--printf("_bp: npc='%s': hit section: %s", npc:name(), if_then_else(hit_section ~= nil, "found",
-		--	"not_found"))
+		local hit_section = utils.cfg_get_string(ini, section, "on_hit", npc, false, "")
 		if hit_section then
 			xr_hit.set_hit_checker(npc, ini, "hit", hit_section)
 		end
 
-		--' actor dialogs
-		if actor_dialogs == nil then
-			xr_meet.set_actor_dialogs(npc, ini, "actor_dialogs", utils.cfg_get_string (ini, "logic", "actor_dialogs", npc, false, ""))
-		else
-			xr_meet.set_actor_dialogs(npc, ini, "actor_dialogs", actor_dialogs)
+		local actor_dialogs_section = utils.cfg_get_string (ini, section, "actor_dialogs", npc, false, "")
+		if actor_dialogs_section then
+			xr_meet.set_actor_dialogs(npc, ini, "actor_dialogs", actor_dialogs_section)
 		end
 		
-		-- wounded
-		local wounded_section = utils.cfg_get_string (ini, "logic", "wounded", npc, false, "")
-		--printf("_bp: npc='%s': wounded section: %s", npc:name(), if_then_else(wounded_section ~= nil, "found",
-		--	"not_found"))
+		local wounded_section = utils.cfg_get_string (ini, section, "wounded", npc, false, "")
 		xr_wounded.set_wounded (npc, ini, "wounded", wounded_section)
 
-		local rest_section = utils.cfg_get_string(ini, "logic", "rest", npc, false, "")
-		if rest_section ~= nil then
-			xr_rest.set_scheme (npc, ini, "rest", rest_section)
-		end   
-
-		local heli_hunter_section = utils.cfg_get_string(ini, "logic", "heli_hunter", npc, false, "")
-		--printf("_bp: npc='%s': heli_hunter section: %s", npc:name(), if_then_else(heli_hunter_section ~= nil, "found",
-		--	"not_found"))
+		local heli_hunter_section = utils.cfg_get_string(ini, section, "heli_hunter", npc, false, "")
 		--if heli_hunter_section then
 			xr_heli_hunter.set_scheme(npc, ini, "heli_hunter", heli_hunter_section)
 		--end
 	elseif stype == modules.stype_mobile then
-		local death_section = utils.cfg_get_string(ini, "logic", "on_death", npc, false, "")
-		--printf("_bp: npc='%s': death section: %s", npc:name(), if_then_else(death_section ~= nil, "found",
-		--	"not_found"))
+		local death_section = utils.cfg_get_string(ini, section, "on_death", npc, false, "")
 		if death_section then
 			mob_death.set_scheme(npc, ini, "mob_death", death_section)
 		end
 
-		local trade_section = utils.cfg_get_string(ini, "logic", "on_trade", npc, false, "")
-		--printf("_bp: npc='%s': trade section: %s", npc:name(), if_then_else(trade_section ~= nil, "found",
-		--	"not_found"))
+		local trade_section = utils.cfg_get_string(ini, section, "on_trade", npc, false, "")
 		if trade_section then
 			mob_trade.set_scheme(npc, ini, "mob_trade", trade_section)
 		end
@@ -326,6 +313,11 @@ function activate_by_section(npc, ini, section)
 	end
 end
 
+--[[
+-- Предназначение:
+--	Производит сброс состояния объекта (снимает коллбеки, отключает разговор) непосредственно перед включением
+--	новой схемы.
+--]]
 function reset_generic_schemes_on_scheme_switch(npc)
 	--printf("_bp: reset_generic_schemes_on_scheme_switch: npc:name()='%s'", npc:name())
 	local st = db.storage[npc:id()]
@@ -910,4 +902,111 @@ function mob_captured(mob)
 	return mob:get_script()
 end
 
+function save_obj(obj, packet)
+	printf("save_obj: obj:name()='%s'", obj:name())
+	
+	local npc_id = obj:id()
+	local st = db.storage[npc_id]
+
+	printf("save_obj: ini_filename='%s'", utils.to_str(st.ini_filename))
+	printf("save_obj: section_logic='%s'", utils.to_str(st.section_logic))
+	printf("save_obj: active_section='%s'", utils.to_str(st.active_section))
+	--printf("save_obj: active_scheme='%s'", utils.to_str(st.active_scheme))
+	printf("save_obj: gulag_name='%s'", utils.to_str(st.gulag_name))
+
+	if st.ini_filename then
+		packet:w_stringZ(st.ini_filename)
+	else
+		packet:w_stringZ("")
+	end
+
+	if st.section_logic then
+		packet:w_stringZ(st.section_logic)
+	else
+		packet:w_stringZ("")
+	end
+	
+	if st.active_section then
+		packet:w_stringZ(st.active_section)
+	else
+		packet:w_stringZ("")
+	end
+
+	--if st.active_scheme then
+	--	packet:w_stringZ(st.active_scheme)
+	--else
+	--	packet:w_stringZ("")
+	--end
+	
+	if st.gulag_name then
+		packet:w_stringZ(st.gulag_name)
+	else
+		packet:w_stringZ("")
+	end
+
+	--packet:w_s32(st.stype)
+end
+
+function load_obj(obj, reader)
+	printf("load_obj: obj:name()='%s'", obj:name())
+	local npc_id = obj:id()
+	local st = db.storage[npc_id]
+	
+	local ini_filename = reader:r_stringZ()
+	if ini_filename == "" then
+		ini_filename = nil
+	end
+
+	local section_logic = reader:r_stringZ()
+	if section_logic == "" then
+		section_logic = nil
+	end
+
+	local active_section = reader:r_stringZ()
+	if active_section == "" then
+		-- В activate_by_section нужно передать строку "nil", а не nil, чтобы не активировать ни одной из схем.
+		-- При этом реальная active_section станет равной nil.
+		active_section = "nil"
+	end
+
+	--local active_scheme = reader:r_stringZ()
+	--if active_scheme == "" then
+	--	active_scheme = nil
+	--end
+	
+	local gulag_name = reader:r_stringZ()
+	if gulag_name == "" then
+		gulag_name = nil
+	end
+	
+	--local stype = reader:r_s32()
+
+	st.loaded_ini_filename = ini_filename
+	st.loaded_section_logic = section_logic
+	st.loaded_active_section = active_section
+	--st.loaded_active_scheme = active_scheme
+	st.loaded_gulag_name = gulag_name
+	--st.loaded_stype = stype
+
+	printf("load_obj: ini_filename='%s'", utils.to_str(st.loaded_ini_filename))
+	printf("load_obj: section_logic='%s'", utils.to_str(st.loaded_section_logic))
+	printf("load_obj: active_section='%s'", utils.to_str(st.loaded_active_section))
+	--printf("load_obj: active_scheme='%s'", utils.to_str(st.loaded_active_scheme))
+	printf("load_obj: gulag_name='%s'", utils.to_str(st.loaded_gulag_name))
+end
+
+function initialize_obj(obj, st, loaded, actor, stype)
+	if not loaded then
+		local ini_filename = "<customdata>"
+		local ini = utils.ini_file(obj, ini_filename)
+		xr_logic.configure_schemes(obj, ini, ini_filename, stype, "logic", nil)
+		local sect = xr_logic.determine_section_to_activate(obj, ini, "logic", actor)
+		xr_logic.activate_by_section(obj, ini, sect)
+	else
+		local ini_filename = st.loaded_ini_filename
+		local ini = utils.ini_file(obj, ini_filename)
+		xr_logic.configure_schemes(obj, ini, ini_filename, stype, st.loaded_section_logic, st.loaded_gulag_name)
+		xr_logic.activate_by_section(obj, ini, st.loaded_active_section)
+	end
+end
 

@@ -74,13 +74,27 @@ function add_to_binder(npc, ini, scheme, section, storage)
 	printf("DEBUG: add_to_binder: npc:name()='%s', scheme='%s', section='%s'", npc:name(), scheme, section)
 
  	local action = mob_trade(npc, storage)
-	npc:set_callback(action, "start_trade", true)
-	npc:set_callback(action, "end_trade", false)
-	npc:set_trade_callback(action, "on_trade")
+	storage.action = action
 end
 
 function set_scheme(npc, ini, scheme, section, gulag_name)
+	if self.object:clsid() ~= clsid.trader then
+		utils.abort("object '%s': attempt to use mob_trade script on non-trader mobile", npc:name())
+	end
+
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
+	
+	npc:set_callback(st.action, "start_trade", true)
+	npc:set_callback(st.action, "end_trade", false)
+	npc:set_trade_callback(st.action, "on_trade")
+end
+
+function disable_scheme(npc, scheme)
+	if npc:clsid() == clsid.trader then
+		npc:clear_trade_callback()
+		npc:clear_callback(true)
+		npc:clear_callback(false)
+	end
 end
 

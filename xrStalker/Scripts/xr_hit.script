@@ -28,10 +28,17 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc, ini, scheme, section, storage) 	
  	local action = this.action_process_hit(npc, storage)
-	npc:set_hit_callback(action, "hit_callback")
+	storage.action = action
 end
 
 function set_hit_checker(npc, ini, scheme, section)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
+	npc:set_hit_callback(st.action, "hit_callback")
 end
+
+function disable_scheme(npc, scheme)
+	npc:clear_hit_callback(true);
+	npc:clear_hit_callback(false);
+end
+

@@ -59,7 +59,8 @@ function evaluator_wound:evaluate ()
   	   return false
 	end
 
-    return this.is_wounded(self.object, self.a.hp_max)   
+    -- self.a.enabled added by Zmey
+    return self.a.enabled and this.is_wounded(self.object, self.a.hp_max)   
 end
 ------------------------------------------------------------------------------------------
 
@@ -743,9 +744,19 @@ function set_wounded (object, ini, scheme, section)
     st.sit = false
     st.cover = false
     st.ignore_time = 0
-    
+
+    st.enabled = true -- added by Zmey
 end
 
 function is_wounded(npc, hp_max)
     return npc.health < hp_max
 end
+
+-- added by Zmey
+function disable_scheme(npc, scheme)
+	local st = db.storage[npc:id()][scheme]
+	if st then
+		st.enabled = false
+	end
+end
+
