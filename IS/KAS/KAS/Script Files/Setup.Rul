@@ -16,19 +16,76 @@
 
 string g_sSerial;
             
-#define DEF_FOLDER "KAC"
-//---------------------------------------------------------------------------                                                                        
-// OnFirstUIBefore
-//
-// First Install UI Sequence - Before Move Data
-//
-// The OnFirstUIBefore event is called by OnShowUI when the setup is
-// running in first install mode. By default this event displays UI allowing
-// the end user to specify installation parameters.
-//
-// Note: This event will not be called automatically in a
-// program...endprogram style setup.
+#define DEF_FOLDER 				"KAC"
+#define MSDE_INSTANCE_NAME	 	"kas_sql_srv"
+#define MSDE_INSTANCE_FOLDER	PROGRAMFILES^"Microsoft SQL Server\\Mssql$"+MSDE_INSTANCE_NAME+"\\"
+
 //---------------------------------------------------------------------------
+// User defined function prototype
+//---------------------------------------------------------------------------
+prototype 			ClearFolder					(byval string);
+prototype BOOL 		CheckAdminRights			();
+// SQL server management function
+prototype 			StartServer					();
+prototype 			StopServer					();
+prototype 			ParseSerialNumber			(byval string, byref string, byref string);
+// export events for IS
+export prototype 	MSDE_2000_Installed			();
+export prototype 	MSDE_2000_UnInstalling		();
+export prototype 	MSDE_2000_UnInstalled		();
+
+//---------------------------------------------------------------------------
+// User defined function
+//---------------------------------------------------------------------------
+function ClearFolder(folder)
+begin
+	DeleteDir(folder,ALLCONTENTS);
+end;                           
+function BOOL CheckAdminRights()
+begin
+	if (FALSE=SYSINFO.WIN9X.bWin9X) then
+		if (FALSE=SYSINFO.WINNT.bAdmin_Logged_On) then
+        	MessageBox("Для установки приложения необходимы права администратора!", SEVERE);
+        	return FALSE;
+		endif;
+	endif;
+	return TRUE;
+end;                    
+
+function ParseSerialNumber(src, tgt0, tgt1)
+    LIST   listID;
+begin
+    listID 		= ListCreate (STRINGLIST);
+
+    // Get each path from the search path into the list.
+    if (StrGetTokens (listID, src, "-") = 0) then
+    	if (ListCount(listID)==2) then
+    		ListGetFirstString(listID,tgt0);
+    		ListGetNextString (listID,tgt1);
+    	endif;
+    endif;
+
+    // Remove the list from memory.
+    ListDestroy (listID);
+end;
+function StartServer()
+begin
+	LaunchAppAndWait (PROGRAMFILES^"Microsoft SQL Server\\80\\Tools\\Binn\\scm.exe" , " -Action 1 -Silent 1 -Service mssql$kas_sql_srv", WAIT);
+end;
+function StopServer()
+begin
+	LaunchAppAndWait (PROGRAMFILES^"Microsoft SQL Server\\80\\Tools\\Binn\\scm.exe" , " -Action 6 -Silent 1 -Service mssql$kas_sql_srv", WAIT);
+end;
+
+//---------------------------------------------------------------------------                                                                        
+// InstallShield Events
+//---------------------------------------------------------------------------                                                                        
+function OnBegin()
+begin
+	// check admin rights
+	if (FALSE=CheckAdminRights()) then abort; endif;
+end;
+//---------------------------------------------------------------------------                                                                        
 function OnFirstUIBefore()
     number  nResult, nLevel, nSize, nSetupType, nUser;
     string  sTitle, sMsg, sOpt1, sOpt2, sLicenseFile;
@@ -37,18 +94,16 @@ function OnFirstUIBefore()
     BOOL    bLicenseAccepted;	
     LIST 	listStartCopy;
     number 	nRootKey; 
-    string 	mdac_ver;
+    string 	mdac_ver,au;
 	NUMBER 	nvType, nvSize, nLocation;
-	BOOL	mdac_install;
-begin	
-
+begin	  
     SetTitle( @IDS_PRODUCT_NAME, 0, BACKGROUNDCAPTION ); 	                  
    
-    nSetupType = COMPLETE;	
-    sDir = TARGETDIR;
-    sName = "";
-    sCompany = "";
-    bLicenseAccepted = FALSE;
+    nSetupType 		= COMPLETE;	
+    sDir 			= TARGETDIR;
+    sName 			= "";
+    sCompany		= "";
+    bLicenseAccepted= FALSE;
 
 // Beginning of UI Sequence
 Dlg_Start:
@@ -184,22 +239,11 @@ Dlg_SdStartCopy:
 	if (nResult = BACK) then
 		goto Dlg_SdAskDestPath2;    
 	endif; 
-
-// launch MuDAC setup	
-	nRootKey 				= HKEY_LOCAL_MACHINE;
-	mdac_install			= TRUE;
-	RegDBSetDefaultRoot		(nRootKey);
-	if (RegDBGetKeyValueEx("Software\\Microsoft\\dataAccess","FullInstallVer",nvType,mdac_ver,nvSize) = 0) then
-		nLocation		= StrFind(mdac_ver,"2.8");
-		if (nLocation=0)then mdac_install=FALSE; endif;
-	endif;
-
-	if (mdac_install=FALSE) then
-		if (AskYesNo("'MDAC 2.8' уже установлен. Переустановить?",NO)=YES) then
-	 		LaunchAppAndWait ("mdac_typ.exe", " /Q:A /C:\"dasetup /Q /N\"", WAIT);
-	 	endif;
-	endif;                                   
-	
+                           
+	// clear target folders
+    ClearFolder	(TARGETDIR);
+    ClearFolder	(MSDE_INSTANCE_FOLDER);
+        
     return 0;
 end;
 //---------------------------------------------------------------------------
@@ -219,7 +263,6 @@ function OnMaintUIBefore()
     number	nResult, nType, nMediaFlags;
     string	szTitle, szMsg, szIgnore;
 begin
-	
 	// nType defaults to MODIFY.
 	nType = MODIFY;
 
@@ -245,6 +288,9 @@ Dlg_Start:
 		endif;
 	endif;
 
+	// check admin rights
+	if (FALSE=CheckAdminRights()) then abort; endif;
+	
 Dlg_SdFeatureTree:
 	if ( nType = MODIFY ) then
 		szTitle = "";
@@ -290,14 +336,6 @@ Dlg_ObjDialogs:
 
     endswitch;
 end;
-
-export prototype 	MSDE_2000_Installed();
-export prototype 	MSDE_2000_UnInstalling();
-export prototype 	MSDE_2000_UnInstalled();
-
-prototype 			StartServer					();
-prototype 			StopServer					();
-prototype 			ParseSerialNumber			(byval string, byref string, byref string);
 
 prototype CDECL BOOL SQL_CONFIG.initLibrary		();
 prototype CDECL BOOL SQL_CONFIG.deInitLibrary	();
@@ -353,42 +391,40 @@ begin
     endcatch;
     return res;
 end;
-
-function ParseSerialNumber(src, tgt0, tgt1)
-    LIST   listID;
-begin
-    listID 		= ListCreate (STRINGLIST);
-
-    // Get each path from the search path into the list.
-    if (StrGetTokens (listID, src, "-") = 0) then
-    	if (ListCount(listID)==2) then
-    		ListGetFirstString(listID,tgt0);
-    		ListGetNextString (listID,tgt1);
-    	endif;
-    endif;
-
-    // Remove the list from memory.
-    ListDestroy (listID);
-end;
             
-            
-function StartServer()
-begin
-	LaunchAppAndWait (PROGRAMFILES^"Microsoft SQL Server\\80\\Tools\\Binn\\scm.exe" , " -Action 1 -Silent 1 -Service mssql$kas_sql_srv", WAIT);
-end;
-function StopServer()
-begin
-	LaunchAppAndWait (PROGRAMFILES^"Microsoft SQL Server\\80\\Tools\\Binn\\scm.exe" , " -Action 6 -Silent 1 -Service mssql$kas_sql_srv", WAIT);
-end;
-
 function MSDE_2000_Installed()
 	number 	nResult,nRootKey;
 	BOOL 	bRes;
 	string 	sTmp,db_files,sInsertSQL,sServerName;
 	string 	sPrimReg,sSecReg,sVersion,sBuild,sLastUpdate;
+	BOOL	mdac_found, mdac_need_install;
+    string 	mdac_ver;
+	NUMBER 	nvType, nvSize, nLocation;
 begin
 	bRes = CheckMSDEStatus();    
 	if (TRUE=bRes) then
+	// launch MuDAC setup	
+		nRootKey 				= HKEY_LOCAL_MACHINE;
+		mdac_found				= FALSE;
+		mdac_need_install		= TRUE;
+		RegDBSetDefaultRoot		(nRootKey);
+		if (RegDBGetKeyValueEx("Software\\Microsoft\\dataAccess","FullInstallVer",nvType,mdac_ver,nvSize) = 0) then
+			nLocation			= StrFind(mdac_ver,"2.8");
+			if (nLocation=0)	then  mdac_found=TRUE; endif;
+		endif;
+		if (mdac_found=TRUE) then
+			if (AskYesNo("'MDAC' версии 2.8 или выше уже установлен. Переустановить?",NO)=NO) then
+				mdac_need_install = FALSE;
+		 	endif;
+		endif;                                   
+		if (mdac_need_install=TRUE) then
+			LaunchAppAndWait ("mdac_typ.exe", " /Q:A /C:\"dasetup /Q /N\"", WAIT);
+		endif;
+
+		// register our SQLDMO.dll
+		LaunchAppAndWait (WINSYSDIR^"regsvr32" , "/s sqldmo.dll", WAIT); // /s 
+		           
+		// load dll
 	    nResult 	= UseDLL (DLL_FILE);
 	    if (nResult != 0) then
 	        MessageBox ("Невозможно загрузить: "+DLL_FILE, SEVERE);
@@ -416,7 +452,8 @@ begin
 		    bRes = SQL_CONFIG.tuneServer(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_);
 		    if(bRes != 0) then
 		        MessageBox ("Ошибка конфигурации сервера БД.", SEVERE);
-		        abort;
+		        bRes	= FALSE;
+		        goto label_end;
 		    endif;
 
 		    SetStatusWindow (40, "Подключение базы 'KAS'.");
@@ -424,7 +461,10 @@ begin
 		    bRes = SQL_CONFIG.attachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"KAS",db_files);
 		    if(bRes != 0) then
 		        MessageBox ("Ошибка при подключении базы 'KAS'.", SEVERE);
-		        abort;
+		        bRes	= FALSE;
+		        goto label_end; 
+		    else
+		    	bRes=TRUE;
 		    endif;
 		
 		    SetStatusWindow (50, "Подключение базы 'client_repl'.");
@@ -432,7 +472,10 @@ begin
 		    bRes = SQL_CONFIG.attachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"client_repl",db_files);
 		    if(bRes != 0) then
 		        MessageBox ("Ошибка при подключении базы 'client_repl'.", SEVERE);
-		        abort;
+		        bRes	= FALSE;
+		        goto label_end;
+		    else
+		    	bRes=TRUE;
 		    endif;
 		
 		    SetStatusWindow (60, "Подключение базы 'searchdb'.");
@@ -440,7 +483,10 @@ begin
 		    bRes = SQL_CONFIG.attachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"searchdb",db_files);
 		    if(bRes != 0) then
 		        MessageBox ("Ошибка при подключении базы 'searchdb'.", SEVERE);
-		        abort;
+		        bRes	= FALSE;
+		        goto label_end;
+		    else
+		    	bRes=TRUE;
 		    endif;
 		 
 		    SetStatusWindow (70, "Регистрация внешней хранимой поцедуры.");
@@ -451,7 +497,10 @@ begin
 		    								"EXEC sp_addextendedproc xp_check, '"+SQL_STORED_PROC_DLL_+"'");
 		    if(bRes != 0) then
 		        MessageBox ("Ошибка при регистрации внешней хранимой процедуры.", SEVERE);
-		        abort;
+		        bRes	= FALSE;
+		        goto label_end;
+		    else
+		    	bRes=TRUE;
 		    endif;
 		
 		    SetStatusWindow (80, "Чтение записей из файла инициализации.");
@@ -474,7 +523,10 @@ begin
 		    								sInsertSQL);
 		    if(bRes != 0) then
 		        MessageBox ("Ошибка при выполнении SQL запроса.", SEVERE);
-		        abort;
+		        bRes	= FALSE;
+		        goto label_end;
+		    else
+		    	bRes=TRUE;
 		    endif;
 		
 		    SetStatusWindow (95, "Добавление данных в реестр.");
@@ -489,22 +541,36 @@ begin
 			endif;
 		else
 	        MessageBox ("Ошибка соединения с сервером.", SEVERE);
+	        bRes	= FALSE;
+	        goto label_end;
 		endif;
+		
+label_end:
 	    // Set the progress bar to 100% and displays a message.
 	    SetStatusWindow (100, "Настройка окончена.");
 	
 	    SQL_CONFIG.deInitLibrary();
 	
 		// free dll
-	    UnUseDLL (DLL_FILE);
+	    nResult = UnUseDLL (DLL_FILE);
+	    if (nResult < 0) then
+	        MessageBox ("Невозможно выгрузить: "+DLL_FILE, SEVERE);
+	    else
+	    	bRes=TRUE;
+	    endif;
+	    
+	    // if error found -> abort instalation          
+	    if (bRes=FALSE) then abort; endif;
 	endif;
 end;
 
 function MSDE_2000_UnInstalling()
-//BOOL 	bRes; 
-//NUMBER	nResult; 
-begin
-/*
+BOOL 	bRes; 
+NUMBER	nResult; 
+begin     
+	//. 
+	return 0;
+
 	bRes = CheckMSDEStatus();
 	if (TRUE=bRes) then
 	    nResult 	= UseDLL (DLL_FILE);
@@ -571,12 +637,11 @@ begin
 		// free dll
 	    UnUseDLL 	(DLL_FILE);
 	endif;
-*/
 end;
 
 function MSDE_2000_UnInstalled()
 begin
-	if (DeleteDir(PROGRAMFILES^"Microsoft SQL Server\\Mssql$kas_sql_srv\\",ALLCONTENTS)<0) then
-        MessageBox ("Ошибка удаления каталога.", SEVERE);
-	endif;
+    StopServer	();
+    ClearFolder	(MSDE_INSTANCE_FOLDER);
+//	ClearFolder	(TARGETDIR);
 end;

@@ -106,6 +106,10 @@
 		<row><td>ClientComponent</td><td>{87AE0266-9EA1-407F-BA65-55E48BF83141}</td><td>TARGETDIR</td><td>0</td><td/><td/><td>51729</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>DefaultComponent</td><td>{39DA26D8-0E02-494D-9EF3-984ED5D4B54C}</td><td>TARGETDIR</td><td>0</td><td/><td/><td>51729</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Files</td><td>{1A12E2D5-A315-423C-A977-576357F43AE0}</td><td>BINN</td><td>0</td><td/><td>xp_indexing.dll</td><td>51729</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Files1</td><td>{839403DC-3FED-494D-9D28-2083117F3954}</td><td>_033</td><td>0</td><td/><td>sqlsvc.rll</td><td>51729</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Files2</td><td>{31FB857C-F337-4F57-9925-A6FBE4EB137A}</td><td>WINSYSDIR</td><td>0</td><td/><td>msdart32.dll</td><td>51729</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>PROGRAMFILESFiles</td><td>{D7D7BEA0-BBA7-491C-B16D-9E7389A1E2CD}</td><td>BINN</td><td>0</td><td/><td>msvcr71.dll</td><td>51729</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>SelfRegFiles</td><td>{C0D8C2BC-D90D-4BC8-ABDE-2694FF8629AE}</td><td>WINSYSDIR</td><td>0</td><td/><td>sqldmo.dll</td><td>51730</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ServerComponent</td><td>{5602AF85-FB21-4399-BCAD-C78BA5176006}</td><td>TARGETDIR</td><td>0</td><td/><td/><td>51729</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
@@ -178,12 +182,14 @@
 		<row><td>MSSQL_KAS_SQL_SRV</td><td>MICROSOFT_SQL_SERVER</td><td>MSSQL$kas_sql_srv</td><td/><td>0</td><td/></row>
 		<row><td>PROGRAMFILES</td><td/><td>Program Files</td><td/><td>0</td><td/></row>
 		<row><td>ProgramMenuFolder</td><td/><td>Programs</td><td/><td>3</td><td/></row>
+		<row><td>RESOURCES</td><td>WINSYSDIR</td><td>Resources</td><td/><td>0</td><td/></row>
 		<row><td>SUPPORTDIR</td><td/><td>Support Folder</td><td/><td>0</td><td/></row>
 		<row><td>StartMenuFolder</td><td/><td>Start Menu</td><td/><td>3</td><td/></row>
 		<row><td>StartupFolder</td><td/><td>Startup</td><td/><td>3</td><td/></row>
 		<row><td>TARGETDIR</td><td/><td>Application Target Folder</td><td/><td>0</td><td/></row>
 		<row><td>WINDIR</td><td/><td>Windows</td><td/><td>0</td><td/></row>
 		<row><td>WINSYSDIR</td><td>WINDIR</td><td>Windows System</td><td/><td>0</td><td/></row>
+		<row><td>_033</td><td>RESOURCES</td><td>1033</td><td/><td>0</td><td/></row>
 		<row><td>newfolder1</td><td>ProgramMenuFolder</td><td>&lt;SHELL_OBJECT_FOLDER&gt;</td><td/><td>1</td><td>newfolder1</td></row>
 	</table>
 
@@ -211,6 +217,10 @@
 		<col key="yes" def="s38">Feature_</col>
 		<col key="yes" def="s72">Component_</col>
 		<row><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td>Files</td></row>
+		<row><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td>Files1</td></row>
+		<row><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td>Files2</td></row>
+		<row><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td>PROGRAMFILESFiles</td></row>
+		<row><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td>SelfRegFiles</td></row>
 		<row><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td>ServerComponent</td></row>
 		<row><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td><td>ClientComponent</td></row>
 		<row><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td><td>DefaultComponent</td></row>
@@ -240,12 +250,22 @@
 		<row><td>kasbk.jpg</td><td>ClientComponent</td><td>kasbk.jpg</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\kasbk.jpg</td><td>1</td><td/></row>
 		<row><td>kashelp.chm</td><td>DefaultComponent</td><td>KAShelp.chm</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\KAShelp.chm</td><td>1</td><td/></row>
 		<row><td>mdisplit.ico</td><td>DefaultComponent</td><td>MDISplit.ico</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\MDISplit.ico</td><td>1</td><td/></row>
+		<row><td>msdart.dll</td><td>Files2</td><td>msdart.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\msdart.dll</td><td>1</td><td/></row>
+		<row><td>msdart32.dll</td><td>Files2</td><td>msdart32.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\msdart32.dll</td><td>1</td><td/></row>
+		<row><td>msvcp71.dll1</td><td>Files</td><td>MSVCP71.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\MSVCP71.dll</td><td>1</td><td/></row>
+		<row><td>msvcr71.dll1</td><td>Files</td><td>MSVCR71.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\MSVCR71.dll</td><td>1</td><td/></row>
 		<row><td>searchdb_data.mdf</td><td>ServerComponent</td><td>searchdb_Data.MDF</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\data\searchdb_Data.MDF</td><td>1</td><td>NewSubFolder1</td></row>
 		<row><td>searchdb_log.ldf</td><td>ServerComponent</td><td>searchdb_Log.LDF</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\data\searchdb_Log.LDF</td><td>1</td><td>NewSubFolder1</td></row>
 		<row><td>sql_config.dll</td><td>ServerComponent</td><td>sql_config.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\vc\sql_config\sql_config.dll</td><td>1</td><td/></row>
+		<row><td>sqldmo.dll</td><td>SelfRegFiles</td><td>SQLDMO.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\sqldmo_files\SQLDMO.dll</td><td>1</td><td/></row>
+		<row><td>sqldmo.rll</td><td>Files1</td><td>SQLDMO.RLL</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\sqldmo_files\resources\1033\SQLDMO.RLL</td><td>1</td><td/></row>
+		<row><td>sqlresld.dll</td><td>Files2</td><td>sqlresld.DLL</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\sqldmo_files\sqlresld.DLL</td><td>1</td><td/></row>
+		<row><td>sqlsvc.dll</td><td>Files2</td><td>sqlsvc.DLL</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\sqldmo_files\sqlsvc.DLL</td><td>1</td><td/></row>
+		<row><td>sqlsvc.rll</td><td>Files1</td><td>sqlsvc.RLL</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\sqldmo_files\resources\1033\sqlsvc.RLL</td><td>1</td><td/></row>
 		<row><td>trident.gif</td><td>ClientComponent</td><td>trident.gif</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\trident.gif</td><td>1</td><td/></row>
 		<row><td>updateclient.exe</td><td>ClientComponent</td><td>UpdateClient.exe</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\UpdateClient.exe</td><td>1</td><td>NewSubFolder4</td></row>
 		<row><td>updateserver.exe</td><td>ServerComponent</td><td>UpdateServer.exe</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\UpdateServer.exe</td><td>1</td><td>NewSubFolder5</td></row>
+		<row><td>w95scm.dll</td><td>Files2</td><td>w95scm.DLL</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\sqldmo_files\w95scm.DLL</td><td>1</td><td/></row>
 		<row><td>xp_indexing.dll</td><td>Files</td><td>xp_indexing.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\xp_indexing.dll</td><td>1</td><td/></row>
 	</table>
 
@@ -280,6 +300,10 @@
 		<row><td>ClientComponent</td><td/><td/><td>_4102D33D_43D8_4F2E_8679_B894505F57A5_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>DefaultComponent</td><td/><td/><td>_907897D9_883B_47CF_B1B4_2D5FC092A6DC_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Files</td><td/><td/><td>_C4BA076B_FD94_4A60_8A33_EEC9680664D0_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Files1</td><td/><td/><td>_DB99AA4E_F099_4029_9D77_AEB207BE3141_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Files2</td><td/><td/><td>_AB21BEE7_DD11_4C9F_B293_31113230C8D7_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>PROGRAMFILESFiles</td><td/><td/><td>_69DC3FA2_47A0_49CC_8906_91DE9F21AFD0_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>SelfRegFiles</td><td/><td/><td>_F451AF92_D681_4C38_A742_67A34EBA47D5_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ServerComponent</td><td/><td/><td>_40F7C334_2B6E_4108_918C_2807B036C7EA_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
@@ -335,7 +359,7 @@
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td/><td>NewMSDE2000Object1_Installed</td><td>MSDE_2000_Object_UnInstalling</td><td>MSDE_2000_Object_UnInstalled</td><td/><td/><td/><td/><td>20</td><td/><td/><td>@ismk10:1ADF3B18-18D7-4FB7-BDE9-D42DEDDF1A06</td></row>
 		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>20</td><td/><td/><td>@ismk10:ED4FF843-0DE2-4F5F-936C-29845A706E45</td></row>
 		<row><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
-		<row><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
+		<row><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>44</td><td/><td/><td/></row>
 	</table>
 
 	<table name="ISFeatureMergeModuleExcludes">
@@ -918,7 +942,7 @@ UgBlAGwAZQBhAHMAZQAgADEAAQBNAGUAZABpAGEA
 		<row><td>ISEnableUpdateService</td><td>0</td></row>
 		<row><td>ISEngineBinding</td><td>1</td></row>
 		<row><td>ISMaintenanceExperience</td><td>0</td></row>
-		<row><td>ISOSFilter</td><td>-1</td></row>
+		<row><td>ISOSFilter</td><td>13697216</td></row>
 		<row><td>ISSQLBatchMode</td><td>1</td></row>
 		<row><td>ISShowUpdateUI</td><td>0</td></row>
 		<row><td>ISUSLock</td><td>{D4484911-ED1F-449C-9AC1-18C896F492E8}</td></row>
@@ -974,7 +998,7 @@ UgBlAGwAZQBhAHMAZQAgADEAAQBNAGUAZABpAGEA
 		<row><td>DWUSLINK</td><td>CEFC90FFDE8B27D8E9ACF7C8F9FC978F9E1BC08FCEBBB08FCEEC50AFDE1CE798E93C90486EAC</td><td/></row>
 		<row><td>DefaultUIFont</td><td>Tahoma8</td><td/></row>
 		<row><td>FontRegistration</td><td>1</td><td/></row>
-		<row><td>ISAppExeFile</td><td>YourApp.exe</td><td/></row>
+		<row><td>ISAppExeFile</td><td>KAS.exe</td><td/></row>
 		<row><td>ISENABLEDWUSFINISHDIALOG</td><td/><td/></row>
 		<row><td>ISVROOT_PORT_NO</td><td>0</td><td/></row>
 		<row><td>IS_SQLSERVER_AUTHENTICATION</td><td>0</td><td/></row>
