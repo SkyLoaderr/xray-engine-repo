@@ -393,16 +393,20 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 		LPSTR		op_client		= LPSTR	(P2);
 		R_ASSERT	(0==g_pGameLevel);
 		g_pGameLevel= (IGame_Level*)	NEW_INSTANCE(CLSID_GAME_LEVEL);
-		R_ASSERT	(g_pGameLevel->net_Start(op_server,op_client));
+		BOOL		result			= g_pGameLevel->net_Start(op_server,op_client);
 		xr_free		(op_server);
 		xr_free		(op_client);
-
-		// start any console command
-		if (strstr(Core.Params,"-$")) {
-			string256				buf,cmd,param;
-			sscanf					(strstr(Core.Params,"-$")+2,"%[^ ] %[^ ] ",cmd,param);
-			strconcat				(buf,cmd," ",param);
-			Console->Execute		(buf);
+		if (result)	{
+			// start any console command
+			if (strstr(Core.Params,"-$")) {
+				string256				buf,cmd,param;
+				sscanf					(strstr(Core.Params,"-$")+2,"%[^ ] %[^ ] ",cmd,param);
+				strconcat				(buf,cmd," ",param);
+				Console->Execute		(buf);
+			}
+		} else {
+			Msg				("! Failed to start client. Check the connection or level existance.");
+			DEL_INSTANCE	(g_pGameLevel);
 		}
 	} else if (E==eDisconnect) {
 		if (g_pGameLevel) {
