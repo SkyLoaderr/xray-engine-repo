@@ -14,6 +14,7 @@ public:
 	_VertexStream					Vertex;
 	_IndexStream					Index;
 	IDirect3DIndexBuffer9*			QuadIB;
+	R_xforms						xforms;
 private:
 	// Render-targets
 	IDirect3DSurface9*				pRT[4];
@@ -26,7 +27,6 @@ private:
 	u32								vb_stride;
 
 	// Pixel/Vertex constants
-	R_xforms						xforms;
 	R_constants						constants;
 	R_constant_table*				ctable;
 

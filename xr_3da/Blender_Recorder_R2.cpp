@@ -30,8 +30,8 @@ void	CBlender_Compile::r2_Pass		(LPCSTR _vs, LPCSTR _ps, BOOL bZtest, BOOL bZwri
 	SVS* vs					= Device.Shader._CreateVS			(_vs);
 	dest.ps					= ps->ps;
 	dest.vs					= vs->vs;
-	ctable.merge			(ps->constants);
-	ctable.merge			(vs->constants);
+	ctable.merge			(&ps->constants);
+	ctable.merge			(&vs->constants);
 
 	// Standart constant-binding
 	r2_Constant				("m_W",		binder_w);

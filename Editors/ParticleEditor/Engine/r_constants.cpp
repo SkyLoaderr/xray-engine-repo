@@ -149,7 +149,6 @@ BOOL	R_constant_table::parse	(D3DXSHADER_CONSTANTTABLE* desc, u16 destination)
 
 void R_constant_table::merge(R_constant_table* T)
 {
-	mapping.empty	= TRUE;
 	if (0==T)		return;
 
 	// Real merge
