@@ -9,6 +9,8 @@
 #include "flightscontroller.h"
 #include "xr_creator.h"
 
+int		psSH_Blur			= 1;
+
 const	float	S_distance	= 48;
 const	float	S_distance2	= S_distance*S_distance;
 const	float	S_level		= .1f;
@@ -270,7 +272,7 @@ void CLightShadows::calculate	()
 		Device.Shader.set_Shader	(sh_BlurTR	);
 		Device.Primitive.Draw		(vs_Blur,	4, 2, Offset,	Device.Streams_QuadIB);
 		
-//		for (int it=0; it<50; it++)	
+		for (int it=0; it<psSH_Blur; it++)	
 		{
 			// Actual rendering (pass1, real2temp)
 			Device.Shader.set_RT		(RT_temp->pRT,	0);
