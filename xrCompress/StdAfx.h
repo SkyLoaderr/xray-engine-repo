@@ -20,6 +20,7 @@
 #include <io.h>
 #include <fcntl.h>
 #include <sys\stat.h>
+#include <assert.h>
 
 #include "limits"
 #include "list"
@@ -36,8 +37,8 @@ using namespace std;
 #define NO_XR_LIGHT
 #define NO_XR_MATERIAL
 #define NO_XR_3DBUFFER
-#define VERIFY(a)
-#define R_ASSERT(a)
+#define VERIFY(a)	assert(a)
+#define R_ASSERT(a)	assert(a)
 #define Msg printf
 struct D3DVECTOR;
 struct D3DMATRIX;

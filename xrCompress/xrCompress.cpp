@@ -50,6 +50,8 @@ int main(int argc, char* argv[])
 	InitMath		();
 	printf			("\n");
 	
+	
+
 	return 0;
 }
 
