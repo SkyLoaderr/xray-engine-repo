@@ -6,7 +6,7 @@
 
 void CShaderManager::xrStartUp()
 {
-#ifdef M_BORLAND
+#ifdef _EDITOR
 	if (!FS.Exist("game\\shaders.xr")) return;
 	CCompressedStream		FS("game\\shaders.xr","shENGINE");
 #else
@@ -19,12 +19,22 @@ void CShaderManager::xrStartUp()
 		CStream*	chunk	= NULL;
 		int			chunk_id= 0;
 
-		while ((chunk=fs->OpenChunk(chunk_id))!=NULL)	
+		while ((chunk=fs->OpenChunk(chunk_id))!=NULL)
 		{
 			CBlender_DESC	desc;
 			chunk->Read		(&desc,sizeof(desc));
 			CBlender*		B = CBlender::Create(desc.CLS);
+#ifdef _EDITOR
+			if (B->getDescription().version!=desc.version){
+                _DELETE		(B);
+                ELog.DlgMsg	(mtError,"Can't load blender '%s'. Unsupported version.",desc.cName);
+                chunk->Close	();
+                chunk_id++;
+                continue;
+            }
+#else
 			R_ASSERT		(B->getDescription().version == desc.version);
+#endif
             chunk->Seek		(0);
             B->Load			(*chunk);
 			blenders.insert	(make_pair(strdup(desc.cName),B));
