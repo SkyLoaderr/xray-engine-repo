@@ -68,7 +68,10 @@ void CAI_Space::load				(LPCSTR level_name)
 	m_level_graph			= xr_new<CLevelGraph>();
 	m_cross_table			= xr_new<CGameLevelCrossTable>();
 	m_graph_engine			= xr_new<CGraphEngine>(
-		_max(game_graph().header().vertex_count(),level_graph().header().vertex_count())
+		_max(
+			game_graph().header().vertex_count(),
+			level_graph().header().vertex_count()
+		)
 	);
 	
 	CGameGraph::LEVEL_MAP::const_iterator	I = game_graph().header().levels().begin();
@@ -77,14 +80,9 @@ void CAI_Space::load				(LPCSTR level_name)
 		if (!xr_strcmp((*I).second.name(),level_name))
 			break;
 
-#ifdef DEBUG
-	if (I == game_graph().header().levels().end()){
-		VERIFY2				(!get_alife(),"There is no graph for the current level!");
-		Msg					("! There is no graph for the level %s",level_name);
-		return;
-	}
+	VERIFY2					((I != game_graph().header().levels().end()),"There is no graph for the current level or current level is not included into the game graph!");
+	
 	validate				((*I).second.id());
-#endif
 
 	level_graph().set_level_id((*I).second.id());
 }

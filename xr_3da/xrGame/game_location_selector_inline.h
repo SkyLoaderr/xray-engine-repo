@@ -90,7 +90,7 @@ IC	void CGameLocationSelector::select_random_location(const _vertex_id_type star
 	int							iBranches	= 0;
 	for ( ; i != e; ++i)
 		for (int j=0; j<iPointCount; ++j)
-			if (m_graph->mask(location_manager->vertex_types()[j].tMask,m_graph->vertex((*i).vertex_id())->vertex_type()) && ((*i).vertex_id() != m_previous_vertex_id)) {
+			if ((m_graph->vertex((*i).vertex_id())->level_id() == ai().level_graph().level_id()) && m_graph->mask(location_manager->vertex_types()[j].tMask,m_graph->vertex((*i).vertex_id())->vertex_type()) && ((*i).vertex_id() != m_previous_vertex_id)) {
 				++iBranches;
 				if (k < 0)
 					k = j;
@@ -101,7 +101,7 @@ IC	void CGameLocationSelector::select_random_location(const _vertex_id_type star
 		m_graph->begin			(start_vertex_id,i,e);
 		for ( ; i != e; ++i)
 			for (int j=0; j<iPointCount; ++j)
-				if (m_graph->mask(location_manager->vertex_types()[j].tMask,m_graph->vertex((*i).vertex_id())->vertex_type())) {
+				if ((m_graph->vertex((*i).vertex_id())->level_id() == ai().level_graph().level_id()) && m_graph->mask(location_manager->vertex_types()[j].tMask,m_graph->vertex((*i).vertex_id())->vertex_type())) {
 					dest_vertex_id		= (*i).vertex_id();
 					m_time_to_change	= Level().timeServer() + ::Random.randI(location_manager->vertex_types()[j].dwMinTime,location_manager->vertex_types()[j].dwMaxTime);
 					++iBranches;
@@ -116,7 +116,7 @@ IC	void CGameLocationSelector::select_random_location(const _vertex_id_type star
 		bool					bOk = false;
 		for ( ; i != e; ++i) {
 			for (int j=0; j<iPointCount; ++j)
-				if (m_graph->mask(location_manager->vertex_types()[j].tMask,m_graph->vertex((*i).vertex_id())->vertex_type()) && ((*i).vertex_id() != m_previous_vertex_id)) {
+				if ((m_graph->vertex((*i).vertex_id())->level_id() == ai().level_graph().level_id()) && m_graph->mask(location_manager->vertex_types()[j].tMask,m_graph->vertex((*i).vertex_id())->vertex_type()) && ((*i).vertex_id() != m_previous_vertex_id)) {
 					if (iBranches == iChosenBranch) {
 						dest_vertex_id		= (*i).vertex_id();
 						m_time_to_change	= Level().timeServer() + ::Random.randI(location_manager->vertex_types()[j].dwMinTime,location_manager->vertex_types()[j].dwMaxTime);
