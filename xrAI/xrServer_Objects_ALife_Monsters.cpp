@@ -76,6 +76,13 @@ void CSE_ALifeTrader::UPDATE_Read			(NET_Packet &tNetPacket)
 	inherited2::UPDATE_Read		(tNetPacket);
 };
 
+#ifdef _EDITOR
+void CSE_ALifeTrader::FillProp				(LPCSTR pref, PropItemVec& items)
+{
+	inherited1::FillProp		(pref,items);
+	inherited2::FillProp		(pref,items);
+}
+#endif
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeCreatureAbstract
 ////////////////////////////////////////////////////////////////////////////
