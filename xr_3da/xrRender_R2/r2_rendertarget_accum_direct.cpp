@@ -7,7 +7,7 @@ void CRenderTarget::shadow_direct	(u32 dls_phase)
 	float			fTexelOffs			= (.5f / DSM_size);
 	u32				uRange				= 1; 
 	float			fRange				= float(uRange);
-	float			fBias				= -0.002f*fRange;
+	float			fBias				= -0.003f*fRange;
 	Fmatrix			m_TexelAdjust		= 
 	{
 		0.5f,				0.0f,				0.0f,			0.0f,
