@@ -41,7 +41,7 @@ const dReal world_erp		=0.54545456f;
 #endif
 
 const dReal world_spring	=1.0f*SPRING	(world_cfm,world_erp);
-const dReal world_damping	=10.0f*DAMPING	(world_cfm,world_erp);
+const dReal world_damping	=1.0f*DAMPING	(world_cfm,world_erp);
 
 
 const dReal	world_gravity	= 2.f*9.81f;
