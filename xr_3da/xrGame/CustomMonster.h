@@ -85,6 +85,8 @@ public:
 	SAnimState 			m_crouch_run;
 
 	bool				m_bCrouched; 
+	
+	float				m_fTimeUpdateDelta;
 
 	// movement
 	float				m_fWalkAccel;

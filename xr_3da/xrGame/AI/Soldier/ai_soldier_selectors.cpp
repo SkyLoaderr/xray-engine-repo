@@ -243,3 +243,31 @@ float CSoldierSelectorUnderFire::Estimate(NodeCompressed* tNode, float fDistance
 	// returning a value
 	return(m_fResult);
 }
+
+CSoldierSelectorWeaponReload::CSoldierSelectorWeaponReload()
+{ 
+	Name = "selector_weapon_reload"; 
+}
+
+float CSoldierSelectorWeaponReload::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+{
+	// initialization
+	m_tpCurrentNode = tNode;
+	m_fDistance = fDistance;
+	vfInit();
+	// computations
+	vfAddTravelCost();
+	CHECK_RESULT;
+	vfAddLightCost();
+	CHECK_RESULT;
+	vfAddTotalCoverCost();
+	CHECK_RESULT;
+	vfAddDistanceToEnemyCost();
+	CHECK_RESULT;
+	vfAddCoverFromEnemyCost();
+	CHECK_RESULT;
+	// checking for epsilon
+	vfCheckForEpsilon(bStop);
+	// returning a value
+	return(m_fResult);
+}

@@ -292,6 +292,7 @@ void CCustomMonster::Update	( DWORD DT )
 	if (Remote())		{
 	} else {
 		// here is monster AI call
+		m_fTimeUpdateDelta = dt;
 		Think();
 		
 		// Look and action streams

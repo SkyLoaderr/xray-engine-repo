@@ -28,7 +28,7 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierFollowMe,
 		aiSoldierAttack,
 		aiSoldierPursuit,
-		aiSoldierTest,
+		aiSoldierWeaponReload,
 	};
 	
 	typedef	CCustomMonster inherited;
@@ -71,15 +71,17 @@ class CAI_Soldier : public CCustomMonster
 		void FollowMe();
 		void Attack();
 		void Pursuit();
+		void WeaponReload();
 		IC bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 		bool bfCheckPath(AI::Path &Path);
 	
-		CSoldierSelectorAttack		SelectorAttack;
-		CSoldierSelectorFindEnemy	SelectorFindEnemy;
-		CSoldierSelectorFreeHunting SelectorFreeHunting;
-		CSoldierSelectorFollow		SelectorFollow;
-		CSoldierSelectorPursuit		SelectorPursuit;
-		CSoldierSelectorUnderFire	SelectorUnderFire;
+		CSoldierSelectorAttack			SelectorAttack;
+		CSoldierSelectorFindEnemy		SelectorFindEnemy;
+		CSoldierSelectorFreeHunting		SelectorFreeHunting;
+		CSoldierSelectorFollow			SelectorFollow;
+		CSoldierSelectorPursuit			SelectorPursuit;
+		CSoldierSelectorUnderFire		SelectorUnderFire;
+		CSoldierSelectorWeaponReload	SelectorWeaponReload;
 
 		void SetLessCoverLook(NodeCompressed *tNode);
 		void SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection);

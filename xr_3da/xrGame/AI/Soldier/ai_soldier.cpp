@@ -15,9 +15,14 @@
 
 //#define WRITE_LOG
 #define MIN_RANGE_SEARCH_TIME_INTERVAL	500.f
-#define MAX_TIME_RANGE_SEARCH 15000.f
-#define	FIRE_ANGLE			PI/30
-#define	FIRE_SAFETY_ANGLE	PI/30
+#define MAX_TIME_RANGE_SEARCH			15000.f
+#define	FIRE_ANGLE						PI/30
+#define	FIRE_SAFETY_ANGLE				PI/25
+#define CUBE(x)							((x)*(x)*(x))
+#define LEFT_NODE(Index)				((Index + 3) & 3)
+#define RIGHT_NODE(Index)				((Index + 5) & 3)
+#define FN(i)							(float(tNode->cover[(i)])/255.f)
+#define	AMMO_NEED_RELOAD				6
 
 CAI_Soldier::CAI_Soldier()
 {
@@ -72,6 +77,7 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 	SelectorFreeHunting.Load(ini,section);
 	SelectorPursuit.Load(ini,section);
 	SelectorUnderFire.Load(ini,section);
+	SelectorWeaponReload.Load(ini,section);
 
 	m_tpaDeathAnimations[0] = m_death;
 	m_tpaDeathAnimations[1] = PKinematics(pVisual)->ID_Cycle_Safe("norm_death_2");
@@ -245,8 +251,6 @@ bool CAI_Soldier::bfCheckPath(AI::Path &Path) {
 	return(true);
 }
 
-#define CUBE(x)				((x)*(x)*(x))
-
 float ffGetDirection(float fGamma,float fMaxOpened,float b1,float b2, float &fSquare)
 {
 	float a1 = (fMaxOpened - b1)/(PI/2.f), a2 = (fMaxOpened - b2)/(PI/2.f), fDelta = PI - fGamma, fAlpha;
@@ -302,13 +306,9 @@ float ffGetDirection(float fGamma,float fMaxOpened,float b1,float b2, float b3, 
 	return(fGamma/2.f + fAlpha);
 }
 
-#define LEFT_NODE(Index)	((Index + 3) & 3)
-#define RIGHT_NODE(Index)	((Index + 5) & 3)
-#define FN(i)				(float(tNode->cover[(i)])/255.f)
-
 void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode)
 {
-	float fAngleOfView = eye_fov/180.f*PI, fMaxSquare = 0.f, fSquare, fBestAngle, fCurrentAngle;
+	float fAngleOfView = eye_fov/180.f*PI, fMaxSquare = -1.f, fSquare, fBestAngle, fCurrentAngle;
 
 	for (int i=0, iSaveI = -1, iNormal = 0; i<4; i++) {
 		fCurrentAngle = ffGetDirection(fAngleOfView,FN(i),FN(RIGHT_NODE(i)),FN(LEFT_NODE(i)),FN(RIGHT_NODE(RIGHT_NODE(i))),fSquare);
@@ -327,9 +327,8 @@ void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode)
 		}
 	}
 
-	if (iNormal == 0) {
-		iNormal = iNormal;
-	}
+	VERIFY(iSaveI >= 0);
+
 	float fSinus,fCosinus;
 	_sincos(fBestAngle,fSinus,fCosinus);
 	switch (iSaveI) {
@@ -351,9 +350,8 @@ void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode)
 		}
 	}
 	
-	//tWatchDirection.invert();
 	q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &(tWatchDirection), 1000);
-	q_look.o_look_speed=100*_FB_look_speed;
+	q_look.o_look_speed=1*_FB_look_speed;
 }
 
 void CAI_Soldier::SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection)
@@ -589,9 +587,11 @@ void CAI_Soldier::Attack()
 		eCurrentState = aiSoldierDie;
 		return;
 	}
+	
 	SelectEnemy(Enemy);
+	
 	if (!(Enemy.Enemy)) {
-		if ((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) {
+		if (((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) || (!tSavedEnemy)) {
 			eCurrentState = tStateStack.top();
 			tStateStack.pop();
 			q_action.setup(AI::AIC_Action::FireEnd);
@@ -605,6 +605,14 @@ void CAI_Soldier::Attack()
 		}
 		return;
 	}
+	
+	if (Weapons->ActiveWeapon()->GetAmmoElapsed() < AMMO_NEED_RELOAD) {
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierWeaponReload;
+		m_dwLastRangeSearch = 0;
+		return;
+	}
+
 	if (Enemy.bVisible) {
 		
 		//Msg("soldier %d sees actor (time %d)",this,Level().timeServer());
@@ -669,6 +677,53 @@ void CAI_Soldier::Attack()
 		return;
 		/**/
 	}
+}
+
+void CAI_Soldier::WeaponReload()
+{
+	// if no more health then soldier is dead
+#ifdef WRITE_LOG
+	Msg("creature : %s, mode : %s",cName(),"WeaponReload");
+#endif
+	if (g_Health() <= 0) {
+		eCurrentState = aiSoldierDie;
+		return;
+	}
+
+	SelectEnemy(Enemy);
+
+	if (!Enemy.Enemy) {
+		eCurrentState = tStateStack.top();
+		tStateStack.pop();
+		q_action.setup(AI::AIC_Action::FireEnd);
+		m_dwLastRangeSearch = 0;
+		return;
+	}
+	
+	DWORD dwCurTime = Level().timeServer();
+	
+	INIT_SQUAD_AND_LEADER;
+
+	CGroup &Group = Squad.Groups[g_Group()];
+	
+	vfInitSelector(SelectorWeaponReload,Squad,Leader);
+
+	if (AI_Path.bNeedRebuild)
+		vfBuildPathToDestinationPoint(0);
+	else
+		vfSearchForBetterPosition(SelectorWeaponReload,Squad,Leader);
+
+	tWatchDirection.sub(Enemy.Enemy->Position(),Position());
+	if (tWatchDirection.magnitude() > 0.0001f)
+		SetSmartLook(AI_Node,tWatchDirection);
+	else
+		SetLessCoverLook(AI_Node);
+
+	vfSetFire(false,SelectorWeaponReload,Leader);
+
+	vfSetMovementType(true,m_fMinSpeed);
+	// stop processing more rules
+	bStopThinking = true;
 }
 
 void CAI_Soldier::Die()
@@ -951,6 +1006,10 @@ void CAI_Soldier::UnderFire()
 	
 	vfInitSelector(SelectorUnderFire,Squad,Leader);
 
+	CGroup &Group = Squad.Groups[g_Group()];
+	Group.m_dwLastHitTime = dwHitTime;
+	Group.m_tLastHitDirection = tHitDir;
+
 	if (AI_Path.bNeedRebuild)
 		vfBuildPathToDestinationPoint(0);
 	else
@@ -997,6 +1056,10 @@ void CAI_Soldier::Think()
 			}
 			case aiSoldierPursuit : {
 				Pursuit();
+				break;
+			}
+			case aiSoldierWeaponReload : {
+				WeaponReload();
 				break;
 			}
 		}

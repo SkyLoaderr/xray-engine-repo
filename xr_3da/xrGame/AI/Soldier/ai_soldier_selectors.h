@@ -54,4 +54,11 @@ class CSoldierSelectorUnderFire : public CAISelectorBase
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
+class CSoldierSelectorWeaponReload : public CAISelectorBase
+{
+	public:
+		CSoldierSelectorWeaponReload();
+		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
+};
+
 #endif
