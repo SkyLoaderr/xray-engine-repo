@@ -5,20 +5,17 @@
 #include "stdafx.h"
 #include "actor.h"
 #include "SleepEffector.h"
-
 #include "game_sv_single.h"
 #include "alife_simulator.h"
 #include "level.h"
 #include "xrmessages.h"
 #include "game_cl_base.h"
-
 #include "xrServer.h"
-
+#include "autosave_manager.h"
 
 #define ONLINE_RADIUS				2.f
 #define MIN_SPRING_TO_SLEEP			0.8f	
 #define ENEMIES_RADIUS				30.f
-
 
 //проверка можем ли мы спать на этом месте
 EActorSleep CActor::CanSleepHere()
@@ -49,8 +46,10 @@ EActorSleep CActor::CanSleepHere()
 			return easNotSolidGround;
 	}
 
-
 	//проверить нет ли в радиусе врагов
+	if (!Level().autosave_manager().ready_for_autosave())
+		return easEnemies;
+
 	setEnabled(false);
 	Level().ObjectSpace.GetNearest	(pos, ENEMIES_RADIUS); 
 	xr_vector<CObject*> &NearestList = Level().ObjectSpace.q_nearest; 
