@@ -8,6 +8,9 @@ using std::swap;
 #ifdef	__BORLANDC__
 #define M_NOSTDCONTAINERS_EXT
 #endif
+#ifdef	_M_AMD64
+#define M_DONTDEFERCLEAR_EXT
+#endif
 
 #ifdef	M_NOSTDCONTAINERS_EXT
 
@@ -91,12 +94,15 @@ template	<typename T>									class	xr_vector		: public std::vector<T,xr_allocat
 			xr_vector	(size_t _count, const T& _value)	: std::vector<T,xr_allocator_t<T> >	(_count,_value)	{}
 	explicit xr_vector	(size_t _count)						: std::vector<T,xr_allocator_t<T> > (_count)		{}
 	u32		size() const									{ return (u32)__super::size(); } 
-	void	clear()											{ erase(begin(),end());} 
-#ifdef _M_AMD64
+
+#ifdef M_DONTDEFERCLEAR_EXT
+	void	clear()											{ __super::clear();		} 
 	void	clear_and_free()								{ __super::clear();		}
 #else
+	void	clear()											{ erase(begin(),end());} 
 	void	clear_and_free()								{ __super::_Tidy();		}
 #endif
+
 	const_reference operator[](size_type _Pos) const		{ {VERIFY(_Pos<size());} return (*(begin() + _Pos)); }
 	reference operator[](size_type _Pos)					{ {VERIFY(_Pos<size());} return (*(begin() + _Pos)); }
 };
