@@ -33,11 +33,11 @@ bool TUI::Command( int _Command, int p1, int p2 )
 		//----------------
         EPrefs.OnCreate		();
         if (UI->OnCreate((TD3DWindow*)p1,(TPanel*)p2)){
+            Command			(COMMAND_CREATE_SOUND_LIB);	R_ASSERT(SndLib);
+            SndLib->OnCreate();
 			g_pGamePersistent= xr_new<IGame_Persistent>();
             Lib.OnCreate	();
             LALib.OnCreate	();
-            Command			(COMMAND_CREATE_SOUND_LIB);	R_ASSERT(SndLib);
-            SndLib->OnCreate();
 			if (!Tools->OnCreate()){
                 bRes=false;
             	break;

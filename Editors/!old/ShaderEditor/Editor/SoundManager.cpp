@@ -38,13 +38,13 @@ bool CSoundManager::OnCreate()
 {
 	psSoundFreq			= sf_44K;
 //	psSoundFlags.set	(ssHardware,FALSE);
-    Sound->_initialize	((u64)Device.m_hWnd);
+    CSound_manager_interface::_create		((u64)Device.m_hWnd);
     return true;
 }
 
 void CSoundManager::OnDestroy()
 {
-    Sound->_destroy		();
+    CSound_manager_interface::_destroy		();
 }
 
 void CSoundManager::OnFrame()
