@@ -17,7 +17,7 @@ public:
 										CPHDestroyable				()						;
 			void						Init						()						;
 			void						RespawnInit					()						;
-			void						Destroy						()						;	
+			u8							Destroy						()						;	
 			void						Load						(LPCSTR section)		;
 };
 

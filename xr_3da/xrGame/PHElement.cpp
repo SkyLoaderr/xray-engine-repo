@@ -847,11 +847,13 @@ void	CPHElement::setForce(const Fvector& force)
 {
 	if(!bActive||m_flags.test(flFixed)) return;
 	dBodySetForce(m_body,force.x,force.y,force.z);
+	BodyCutForce(m_body,m_l_limit,m_w_limit);
 }
 void	CPHElement::setTorque(const Fvector& torque)
 {
 	if(!bActive||m_flags.test(flFixed)) return;
 	dBodySetTorque(m_body,torque.x,torque.y,torque.z);
+	BodyCutForce(m_body,m_l_limit,m_w_limit);
 }
 
 void	CPHElement::applyForce(const Fvector& dir, float val)															//aux
@@ -865,6 +867,7 @@ void	CPHElement::applyForce(float x,float y,float z)																//called any
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	m_shell->EnableObject();
 	dBodyAddForce(m_body,x,y,z);
+	BodyCutForce(m_body,m_l_limit,m_w_limit);
 }
 
 void	CPHElement::applyImpulse(const Fvector& dir, float val)//aux

@@ -88,11 +88,11 @@ void CTelekineticObject::switch_state(ETelekineticState new_state)
 	}
 	state=new_state;
 }
-void CTelekineticObject::raise(float power) 
+void CTelekineticObject::raise(float step) 
 {
 	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->bActive) return;
 		
-	power *= strength;
+	step *= strength;
 	
 	Fvector dir;
 	dir.set(0.f,1.0f,0.f);

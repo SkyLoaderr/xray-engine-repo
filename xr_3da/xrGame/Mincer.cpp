@@ -20,7 +20,7 @@ void CMincer::SwitchZoneState(EZoneState new_state)
 		for(;e!=it;++it)
 		{
 			CPhysicsShellHolder * GO = smart_cast<CPhysicsShellHolder *>(*it);
-			Telekinesis().activate(GO,10000.f, m_fTeleHeight, 100000);
+			Telekinesis().activate(GO,m_fThrowInImpulse, m_fTeleHeight, 100000);
 
 		}
 	}
@@ -44,6 +44,7 @@ BOOL CMincer::net_Spawn(LPVOID DC)
 	Center(C);
 	C.y+=m_fTeleHeight;
 	m_telekinetics.SetCenter(C);
+	m_telekinetics.SetOwnerObject(smart_cast<CGameObject*>(this));
 	return result;
 }
 
@@ -57,7 +58,7 @@ void CMincer::feel_touch_new				(CObject* O)
 		)
 	{
 		CPhysicsShellHolder * GO = smart_cast<CPhysicsShellHolder *>(O);
-		Telekinesis().activate(GO, 10000.f, m_fTeleHeight, 100000);
+		Telekinesis().activate(GO, m_fThrowInImpulse, m_fTeleHeight, 100000);
 	}
 }
 

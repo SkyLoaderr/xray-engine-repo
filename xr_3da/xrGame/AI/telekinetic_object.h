@@ -37,7 +37,7 @@ public:
 	
 virtual		bool				init					(CTelekinesis* tele,CPhysicsShellHolder *obj, float s, float h, u32 ttk); 
 	
-virtual		void				raise					(float power);
+virtual		void				raise					(float step);
 virtual		void				raise_update			();
 
 			void				prepare_keep			();

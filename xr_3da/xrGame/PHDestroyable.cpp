@@ -10,9 +10,10 @@
 		m_flags.flags=0;
 	}
 
-void CPHDestroyable::Destroy()
+u8 CPHDestroyable::Destroy()
 {
-	if(!m_flags.test(fl_destroyable)||m_flags.test(fl_destroyed))return;
+	u8	new_obj_ID	=	u8(-1);
+	if(!m_flags.test(fl_destroyable)||m_flags.test(fl_destroyed))return new_obj_ID;
 //////////send destroy to self //////////////////////////////////////////////////////////////////
 	CPhysicsShellHolder* obj=PPhysicsShellHolder();
 
@@ -40,7 +41,8 @@ void CPHDestroyable::Destroy()
 	//	l_tpALifePhysicObject->startup_animation=m_startup_anim;
 		strcpy				(D->s_name,"ph_skeleton_object");//*cNameSect()
 		strcpy				(D->s_name_replace,"");
-		D->s_gameid			=	u8(GameID());
+		new_obj_ID		=	u8(GameID());
+		D->s_gameid			=	new_obj_ID;
 		D->s_RP				=	0xff;
 		D->ID				=	0xffff;
 		D->ID_Parent		=	0xffff;//u16(ID());//
@@ -58,6 +60,7 @@ void CPHDestroyable::Destroy()
 	}
 ///////////////////////////////////////////////////////////////////////////
 	m_flags.set(fl_destroyed,TRUE);
+	return new_obj_ID;
 }
 
 void CPHDestroyable::Load(LPCSTR section)
