@@ -454,6 +454,7 @@ public:
 //--------------------------------------------------------------------
 xrServerEntity*	F_entity_Create		(LPCSTR name)
 {
+	Log			("-----",name);
 	if (!pSettings->SectionExists(name)) return 0;
     
 	CLASS_ID cls = pSettings->ReadCLSID(name,"class");
