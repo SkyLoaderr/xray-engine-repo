@@ -72,13 +72,17 @@ void CWeaponAutoRifle::MediaLOAD		()
 	DWORD scnt		= _GetItemCount(S);
 	string256 name;
 	for (DWORD i=0; i<scnt; i++)
-		hFlames.push_back(Device.Shader.Create("particles\\add",_GetItem(S,i,name),false));
+	{
+		Shader* SH = 0;
+		ShaderCreate(SH,"particles\\add",_GetItem(S,i,name));
+		hFlames.push_back(SH);
+	}
 }
 
 void CWeaponAutoRifle::MediaUNLOAD	()
 {
 	for (DWORD i=0; i<hFlames.size(); i++)
-		Device.Shader.Delete(hFlames[i]);
+		ShaderDestroy(hFlames[i]);
 	hFlames.clear();
 }
 
