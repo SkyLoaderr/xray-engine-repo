@@ -30,6 +30,7 @@ CPseudoGigant::~CPseudoGigant()
 	xr_delete(stateDetour);
 	xr_delete(statePanic);
 	xr_delete(stateExploreNDE);
+	xr_delete(stateExploreDNE);
 	xr_delete(stateNull);
 }
 

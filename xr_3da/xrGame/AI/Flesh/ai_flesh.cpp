@@ -36,7 +36,7 @@ CAI_Flesh::~CAI_Flesh()
 	xr_delete(stateExploreDNE);
 	xr_delete(stateExploreDE);
 	xr_delete(stateExploreNDE);
-
+	xr_delete(stateControlled);
 	xr_delete(stateSearchEnemy);
 }
 
