@@ -136,9 +136,9 @@ void __fastcall _verify(const char *expr, char *file, int line);
 #include "engine\xr_list.h"
 #include "Log.h"
 
-extern "C" DLL_API LPCSTR InterpretError(HRESULT hr);
-#define CHK_DX(_expr_)			{HRESULT hr=_expr_; if (FAILED(hr)){char buf[255]; sprintf(buf,"%s\n\nD3D Error: %s",#_expr_,InterpretError(hr)); _verify(buf, __FILE__, __LINE__);}}
-#define R_CHK(_expr_)			{HRESULT hr=_expr_; if (FAILED(hr)){char buf[255]; sprintf(buf,"%s\n\nD3D Error: %s",#_expr_,InterpretError(hr)); _verify(buf, __FILE__, __LINE__);}}
+extern LPCSTR InterpretError(HRESULT hr);
+#define CHK_DX(_expr_)			{HRESULT hr=_expr_; if (FAILED(hr)){char buf[1024]; sprintf(buf,"%s\n\nD3D Error: %s",#_expr_,InterpretError(hr)); _verify(buf, __FILE__, __LINE__);}}
+#define R_CHK(_expr_)			{HRESULT hr=_expr_; if (FAILED(hr)){char buf[1024]; sprintf(buf,"%s\n\nD3D Error: %s",#_expr_,InterpretError(hr)); _verify(buf, __FILE__, __LINE__);}}
 
 #define DEFINE_SVECTOR(type,sz,lst,it)\
 	typedef svector<type,sz> lst;\
@@ -170,6 +170,7 @@ DEFINE_VECTOR(AnsiString,AStringVec,AStringIt);
 #include "FS.h"
 #include "FileSystem.h"
 #include "device.h"
+#include "properties.h"
 
 DEFINE_VECTOR(FVF::L,FLvertexVec,FLvertexIt);
 DEFINE_VECTOR(FVF::TL,FTLvertexVec,FTLvertexIt);
@@ -190,6 +191,13 @@ DEFINE_VECTOR(FVF::LIT,FLITvertexVec,FLITvertexIt);
 #define RGBA_GETBLUE(rgb)       DWORD((rgb) & 0xff)
 #define RGBA_MAKE(r,g,b,a)		D3DCOLOR_ARGB(a,r,g,b)
 #endif
+
+IC DWORD subst_alpha(DWORD val, BYTE a)
+{	BYTE r, g, b; b=(BYTE)(val>>0); g=(BYTE)(val>>8); r=(BYTE)(val>>16); return ((DWORD)(a<<24)|(r<<16)|(g<<8)|(b));}
+IC DWORD bgr2rgb(DWORD val)
+{	BYTE r, g, b; r=(BYTE)(val>>0); g=(BYTE)(val>>8); b=(BYTE)(val>>16); return ((DWORD)(r<<16)|(g<<8)|(b));}
+IC DWORD rgb2bgr(DWORD val)
+{	BYTE r, g, b; r=(BYTE)(val>>16);g=(BYTE)(val>>8); b=(BYTE)(val>>0); return ((DWORD)(b<<16)|(g<<8)|(r)); }
 
 typedef char		sh_name[64];
 

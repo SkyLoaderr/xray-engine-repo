@@ -44,12 +44,13 @@ bool TUI::Command( int _Command, int p1, int p2 ){
             PSLib.OnCreate	();
             Lib.OnCreate	();
 
+		    BeginEState		(esEditScene);
+
 		    Command			(COMMAND_CLEAR);
 			Command			(COMMAND_CHECK_TEXTURES);
 			Command			(COMMAND_RENDER_FOCUS);
 			Command			(COMMAND_CHANGE_TARGET, etObject);
 			Command			(COMMAND_CHANGE_ACTION, eaSelect);
-		    BeginEState		(esEditScene);
         }else{
         	bRes = false;
         }

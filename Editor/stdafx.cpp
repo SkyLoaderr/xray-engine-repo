@@ -3,6 +3,12 @@
 
 bool g_ErrorMode=false;
 
+LPCSTR InterpretError(HRESULT hr){
+	static char errStr[1024];
+    D3DXGetErrorString(hr, errStr, 1024 );
+    return errStr;
+}
+
 void __fastcall _verify(const char *expr, char *file, int line) {
 	// Log Description
 	int res = ELog.DlgMsg(mtError,TMsgDlgButtons()<<mbOK<<mbAbort<<mbIgnore,"Assertion failed in file %s, line %d.\nExpression was\n'%s'\n\nClick on OK to debug the program.",file, line, expr);

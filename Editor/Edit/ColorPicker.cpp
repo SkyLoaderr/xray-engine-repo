@@ -5,7 +5,6 @@
 
 #include "ColorPicker.h"
 #include "D3DUtils.h"
-#include "xr_func.h"
 
 class CTCD{
 public:

@@ -14,7 +14,6 @@
 #include "DetailObjects.h"
 #include "D3DUtils.h"
 #include "PropertiesDetailObject.h"
-#include "xr_func.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"

@@ -6,7 +6,6 @@
 #include "EditorPref.h"
 #include "ui_main.h"
 #include "texture.h"
-#include "xr_func.h"
 #ifdef _LEVEL_EDITOR
 	#include "cursor3d.h"	
 #endif

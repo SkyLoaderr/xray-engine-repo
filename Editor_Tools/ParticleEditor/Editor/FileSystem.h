@@ -29,6 +29,7 @@ class CFileSystem {
     bool	bFiles;
 public:
 	char 	m_Root[MAX_PATH];
+	char 	m_Server[MAX_PATH];
 	FSPath 	m_ExeRoot;
 	FSPath 	m_GameRoot;
 	FSPath 	m_GameSounds;
@@ -46,7 +47,6 @@ public:
 	FSPath 	m_SMotions;
 	FSPath 	m_Objects;
 	FSPath 	m_Textures;
-	FSPath 	m_Config;
 	FSPath 	m_Temp;
 public:
 			CFileSystem		();

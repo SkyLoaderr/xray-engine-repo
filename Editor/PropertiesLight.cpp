@@ -169,23 +169,23 @@ void TfrmPropertiesLight::GetObjectsInfo(){
         TElTreeItem* M=0;
         TElTreeItem* N=0;
 		M = m_Props->AddItem(0,PROP_MARKER,	"Flares");
-			m_Props->AddItem(M,PROP_FLAG,	"Enabled",(LPDWORD)&F.m_Flags,(LPDWORD)CEditFlare::flFlare);
+			m_Props->AddItem(M,PROP_FLAG,	"Enabled",	m_Props->MakeFlagValue(&F.m_Flags,CEditFlare::flFlare));
 		for (CEditFlare::FlareIt it=F.m_Flares.begin(); it!=F.m_Flares.end(); it++){
             AnsiString nm; nm.sprintf("Flare %d",it-F.m_Flares.begin());
-		N = m_Props->AddItem(M,PROP_MARKER,	nm.c_str());          
-			m_Props->AddItem(N,PROP_TEXTURE,"Texture",(LPDWORD)&it->texture);
-			m_Props->AddItem(N,PROP_FLOAT,	"Radius", (LPDWORD)&it->fRadius,	(LPDWORD)TfrmProperties::MakeFParam(0.f,10.f));
-			m_Props->AddItem(N,PROP_FLOAT,	"Opacity", (LPDWORD)&it->fOpacity,	(LPDWORD)TfrmProperties::MakeFParam(0.f,1.f));
-			m_Props->AddItem(N,PROP_FLOAT,	"Position",(LPDWORD)&it->fPosition,	(LPDWORD)TfrmProperties::MakeFParam(-10.f,10.f));
+		N = m_Props->AddItem(M,PROP_MARKER,	nm.c_str());
+			m_Props->AddItem(N,PROP_TEXTURE,"Texture",	&it->texture);
+			m_Props->AddItem(N,PROP_FLOAT,	"Radius", 	m_Props->MakeFloatValue(&it->fRadius,0.f,10.f));
+			m_Props->AddItem(N,PROP_FLOAT,	"Opacity", 	m_Props->MakeFloatValue(&it->fOpacity,0.f,1.f));
+			m_Props->AddItem(N,PROP_FLOAT,	"Position",	m_Props->MakeFloatValue(&it->fPosition,-10.f,10.f));
 		}
 
 		M = m_Props->AddItem(0,PROP_MARKER,	"Source");
-			m_Props->AddItem(M,PROP_FLAG,	"Enabled",(LPDWORD)&F.m_Flags,(LPDWORD)CEditFlare::flSource);
-			m_Props->AddItem(M,PROP_FLOAT,	"Radius", (LPDWORD)&F.m_fSourceRadius,(LPDWORD)TfrmProperties::MakeFParam(0.f,10.f));
-			m_Props->AddItem(M,PROP_TEXTURE,"Texture",(LPDWORD)&F.m_cSourceTexture);
+			m_Props->AddItem(M,PROP_FLAG,	"Enabled",	m_Props->MakeFlagValue(&F.m_Flags,CEditFlare::flSource));
+			m_Props->AddItem(M,PROP_FLOAT,	"Radius", 	m_Props->MakeFloatValue(&F.m_fSourceRadius,0.f,10.f));
+			m_Props->AddItem(M,PROP_TEXTURE,"Texture",	&F.m_cSourceTexture);
 		M = m_Props->AddItem(0,PROP_MARKER,	"Gradient");
-			m_Props->AddItem(M,PROP_FLAG,	"Enabled",(LPDWORD)&F.m_Flags,(LPDWORD)CEditFlare::flGradient);
-			m_Props->AddItem(M,PROP_FLOAT,	"Density",(LPDWORD)&F.m_fGradientDensity,(LPDWORD)TfrmProperties::MakeFParam(0.f,1.f));
+			m_Props->AddItem(M,PROP_FLAG,	"Enabled",	m_Props->MakeFlagValue(&F.m_Flags,CEditFlare::flGradient));
+			m_Props->AddItem(M,PROP_FLOAT,	"Density",	m_Props->MakeFloatValue(&F.m_fGradientDensity,0.f,1.f));
 		m_Props->EndFillMode();
     }else{
     	m_Props->Enabled = false;

@@ -64,13 +64,6 @@ void st_LevelOptions::InitDefaultText(){
 	char deffilename[MAX_PATH];
 	int handle;
 	m_BOPText="";
-	strcpy(deffilename,"default.scenetext");
-	FS.m_Config.Update( deffilename );
-    char buf[4096];
-    if (FS.Exist(deffilename,true)&&FS.FileLength(deffilename)){
-	    CFileStream F(deffilename);
-		F.RstringZ(buf); m_BOPText = buf;
-	}
 }
 
 void st_LevelOptions::Reset(){

@@ -12,6 +12,7 @@
 #include "UI_Main.h"
 #include "Texture.h"
 #include "Shader.h"
+#include "xr_trims.h"
 
 extern "C" __declspec(dllimport) lwObject* LWO_ImportObject(char* filename, lwObject *new_obj);
 extern "C" __declspec(dllimport) void LWO_CloseFile(lwObject *new_obj);
@@ -91,7 +92,15 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                             }
                             char tex_name[_MAX_FNAME];
                             _splitpath( tname, 0, 0, tex_name, 0 );
-                            Osf->SetTexture(tex_name);
+                            if (_GetItemCount(tex_name,'_')>0){
+                            	char fn[_MAX_FNAME];
+                            	char fld[_MAX_FNAME];
+                                _GetItem(tex_name,0,fld,'_');
+                                sprintf(fn,"%s\\%s",fld,tex_name);
+	                            Osf->SetTexture(fn);
+                            }else{
+	                            Osf->SetTexture(tex_name);
+                            }
                             // get vmap refs
                             Osf->SetVMap(Itx->param.imap.vmap_name);
 				            Osf->SetShaderXRLC("default");

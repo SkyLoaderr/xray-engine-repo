@@ -9,7 +9,6 @@
 #include "xr_tokens.h"
 #include "ShaderFunction.h"
 #include "ColorPicker.h"
-#include "xr_func.h"
 #include "ChoseForm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -35,11 +34,14 @@ void __fastcall TfrmProperties::EndFillMode(bool bFullExpand)
     tvProperties->IsUpdating = false;
 };
 //---------------------------------------------------------------------------
-void __fastcall TfrmProperties::Clear()
+void __fastcall TfrmProperties::ClearProperties()
 {
 	tvProperties->IsUpdating = true;
     tvProperties->Items->Clear();
     tvProperties->IsUpdating = false;
+    for (LPVOIDIt it=m_Params.begin(); it!=m_Params.end(); it++)
+    	_DELETE(*it);
+	m_Params.clear();
 }
 //---------------------------------------------------------------------------
 
@@ -84,14 +86,7 @@ void __fastcall TfrmProperties::HideProperties(){
 void __fastcall TfrmProperties::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
-	for (TElTreeItem* node=tvProperties->Items->GetFirstNode(); node; node=node->GetNext()){
-    	DWORD type = (DWORD)node->Tag;
-        LPVOID P=0;
-        switch(type){
-	    case PROP_FLOAT:	P = node->ColumnText->Objects[0]; delete (FParam*)P; break;
-    	case PROP_INTEGER:	P = node->ColumnText->Objects[0]; delete (IParam*)P; break;
-        }
-    }
+	ClearProperties();
 
 	Action = caFree;
     _DELETE(m_BMEllipsis);
@@ -106,7 +101,7 @@ LPCSTR GetToken2(xr_token* token_list, int id)
 }
 
 
-TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, DWORD type, LPCSTR key, LPDWORD value, LPDWORD param){
+TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, DWORD type, LPCSTR key, LPVOID value){
 	R_ASSERT(bFillMode);
     TElTreeItem* TI     = tvProperties->Items->AddChildObject(parent,key,(TObject*)value);
     TI->Tag	            = type;
@@ -115,19 +110,21 @@ TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, DWORD type,
     CS->OwnerProps 		= true;
 
     switch (type){
+    case PROP_MARKER:	CS->CellType = sftUndef;	break;
     case PROP_TYPE:		CS->CellType = sftUndef;	TI->ColumnText->Add(AnsiString((LPSTR)value)); break;
     case PROP_WAVE:		CS->CellType = sftUndef;	TI->ColumnText->Add("[Wave]");	CS->Style = ElhsOwnerDraw; break;
-    case PROP_BOOL:		CS->CellType = sftUndef;	TI->ColumnText->Add(BOOLString[*value]);	CS->Style = ElhsOwnerDraw; break;
-    case PROP_FLAG:		CS->CellType = sftUndef;	TI->ColumnText->AddObject(BOOLString[!!((*value)&(DWORD)param)],(TObject*)param);	CS->Style = ElhsOwnerDraw; break;
-    case PROP_TOKEN:	CS->CellType = sftUndef;	TI->ColumnText->AddObject(GetToken2((xr_token*)param,*value),(TObject*)param);	CS->Style = ElhsOwnerDraw; break;
-    case PROP_MARKER:	CS->CellType = sftUndef;	break;
-    case PROP_FLOAT:	CS->CellType = sftFloating; TI->ColumnText->AddObject(AnsiString(double(iFloor(double(*(float*)value)*10000))/10000),(TObject*)param); CS->Style = ElhsOwnerDraw; break;
-    case PROP_INTEGER:	CS->CellType = sftNumber; 	TI->ColumnText->AddObject(AnsiString(*((int*)value)),(TObject*)param); CS->Style = ElhsOwnerDraw; break;
+    case PROP_BOOL:		CS->CellType = sftUndef;	TI->ColumnText->Add(BOOLString[*(LPDWORD)value]);	CS->Style = ElhsOwnerDraw; break;
+    case PROP_FLAG:{	CS->CellType = sftUndef;	FlagValue* F=(FlagValue*)value; TI->ColumnText->Add(BOOLString[!!((*F->val)&F->mask)]); CS->Style = ElhsOwnerDraw; }break;
+    case PROP_TOKEN:{	CS->CellType = sftUndef;	TokenValue*T=(TokenValue*)value;TI->ColumnText->Add(GetToken2(T->token,*T->val));		CS->Style = ElhsOwnerDraw; }break;
+    case PROP_FLOAT:{  	CS->CellType = sftFloating;	FloatValue*F=(FloatValue*)value;
+    					AnsiString s,fmt; fmt.sprintf("%%.%df",F->dec); s.sprintf(fmt.c_str(),*F->val);
+                        TI->ColumnText->Add(s); CS->Style = ElhsOwnerDraw; }break;
+    case PROP_INTEGER:{	CS->CellType = sftNumber; 	IntValue*  I=(IntValue*)value; TI->ColumnText->Add(*I->val); CS->Style = ElhsOwnerDraw; }break;
     case PROP_TEXT:		CS->CellType = sftText; 	TI->ColumnText->Add((LPSTR)value);  break;
     case PROP_COLOR:	CS->CellType = sftUndef; 	CS->Style = ElhsOwnerDraw; break;
     case PROP_TEXTURE:	CS->CellType = sftUndef; 	TI->ColumnText->Add((LPSTR)value);  CS->Style = ElhsOwnerDraw; break;
     case PROP_SHADER:	CS->CellType = sftUndef; 	TI->ColumnText->Add((LPSTR)value);  CS->Style = ElhsOwnerDraw; break;
-    default: THROW2("BPID_????");
+    default: THROW2("PROP_????");
     }
     return TI;
 }
@@ -228,7 +225,8 @@ void __fastcall TfrmProperties::tvPropertiesMouseDown(TObject *Sender,
         }break;
 		case PROP_TOKEN:{
             pmEnum->Items->Clear();
-            xr_token* token_list = (xr_token*)item->ColumnText->Objects[0];
+            TokenValue* T = (TokenValue*)item->Data;
+            xr_token* token_list = T->token;
 			for(int i=0; token_list[i].name; i++){
                 TMenuItem* mi = new TMenuItem(0);
                 mi->Caption = token_list[i].name;
@@ -272,22 +270,23 @@ void __fastcall TfrmProperties::PMItemClick(TObject *Sender)
             }
         break;
 		case PROP_FLAG:{
-            item->ColumnText->Strings[0] 	= mi->Caption;
-            DWORD val 						= *(LPDWORD)item->Data;
-            DWORD fl 						= (DWORD)item->ColumnText->Objects[0];
-            if (mi->MenuIndex) 	val |= fl;
-            else				val &=~fl;
-            if (val!= *(LPDWORD)item->Data){
-            	*(LPDWORD)item->Data = val;
-		    	bModified = true;
+        	FlagValue*	V 				= (FlagValue*)item->Data;
+            DWORD val 					= *V->val;
+            if (mi->MenuIndex) 	val |= V->mask;
+            else				val &=~V->mask;
+            if (val!= *V->val){
+	            item->ColumnText->Strings[0]= mi->Caption;
+            	*V->val 	= val;
+		    	bModified 	= true;
             }
         }break;
 		case PROP_TOKEN:{
-            xr_token* token_list 	   		= (xr_token*)item->ColumnText->Objects[0];
-            if ((DWORD)(item->Data)	!= token_list[mi->MenuIndex].id){
+        	TokenValue* V				= (TokenValue*)item->Data;
+            xr_token* token_list 	   	= V->token;
+            if (*V->val	!= token_list[mi->MenuIndex].id){
 	            item->ColumnText->Strings[0]= mi->Caption;
-    	        *(LPDWORD)(item->Data)		= token_list[mi->MenuIndex].id;
-		    	bModified = true;
+    	        *V->val		= token_list[mi->MenuIndex].id;
+		    	bModified 	= true;
             }
         }break;
         }
@@ -371,34 +370,24 @@ void TfrmProperties::PrepareLWNumber(TElTreeItem* item)
 	DWORD type 		= item->Tag;
     switch (type){
     case PROP_INTEGER:{
-        IParam* P = (IParam*)item->ColumnText->Objects[0];
-        if (P){
-            seNumber->MinValue = P->lim_mn;
-            seNumber->MaxValue = P->lim_mx;
-        }else{
-            seNumber->MinValue = 0.;
-            seNumber->MaxValue = 0.;
-        }
-	    seNumber->Increment=1;
-	    seNumber->Decimal=0;
-    	seNumber->ValueType=vtInt;
-	    seNumber->Value = *(int*)item->Data;
+        IntValue* V 		= (IntValue*)item->Data; VERIFY(V);
+		seNumber->MinValue 	= V->lim_mn;
+        seNumber->MaxValue 	= V->lim_mx;
+	    seNumber->Increment	= V->inc;
+        seNumber->LWSensitivity=V->inc/100;
+	    seNumber->Decimal  	= 0;
+    	seNumber->ValueType	= vtInt;
+	    seNumber->Value 	= *V->val;
     }break;
     case PROP_FLOAT:{
-        FParam* P = (FParam*)item->ColumnText->Objects[0];
-        if (P){
-            seNumber->MinValue = P->lim_mn;
-            seNumber->MaxValue = P->lim_mx;
-		    seNumber->Increment= P->inc;
-		    seNumber->Decimal  = P->dec;
-        }else{
-            seNumber->MinValue = 0.;
-            seNumber->MaxValue = 0.;
-		    seNumber->Increment= 0.01f;
-		    seNumber->Decimal  = 2;
-        }
-    	seNumber->ValueType=vtFloat;
-	    seNumber->Value = *(float*)item->Data;
+        FloatValue* V 		= (FloatValue*)item->Data; VERIFY(V);
+		seNumber->MinValue 	= V->lim_mn;
+        seNumber->MaxValue 	= V->lim_mx;
+	    seNumber->Increment	= V->inc;
+        seNumber->LWSensitivity=V->inc/100;
+	    seNumber->Decimal  	= V->dec;
+    	seNumber->ValueType	= vtFloat;
+	    seNumber->Value 	= *V->val;
     }break;
     }
     seNumber->Tag 	= (int)item;
@@ -420,21 +409,21 @@ void TfrmProperties::ApplyLWNumber()
     if (item){
 		DWORD type = item->Tag;
 	    switch (type){
-    	case PROP_INTEGER:
-            if (*(int*)item->Data != seNumber->Value){
-                *(int*)item->Data = seNumber->Value;
-                bModified = true;
+    	case PROP_INTEGER:{
+	        IntValue* V 	= (IntValue*)item->Data; VERIFY(V);
+            if (*V->val != seNumber->Value){
+                *V->val 	= seNumber->Value;
+                bModified 	= true;
             }
-            item->ColumnText->Strings[0] = AnsiString(int(seNumber->Value));
-        break;
+            item->ColumnText->Strings[0] = seNumber->Text;
+        }break;
 	    case PROP_FLOAT:{
-		    if (!fsimilar(*(float*)item->Data,seNumber->Value)){
-	            *(float*)item->Data = seNumber->Value;
+	        FloatValue* V 	= (FloatValue*)item->Data; VERIFY(V);
+		    if (!fsimilar(*V->val,seNumber->Value)){
+                *V->val 	= seNumber->Value;
         	    bModified = true;
 		    }
-         	AnsiString p;
-            p.sprintf("%.4f",float(seNumber->Value));
-            item->ColumnText->Strings[0] = p;
+            item->ColumnText->Strings[0] = seNumber->Text;
         }break;
     	}
     }

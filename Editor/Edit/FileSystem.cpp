@@ -64,27 +64,27 @@ void CFileSystem::OnCreate(){
 //	_splitpath( _ExeName, m_Root, 0, 0, 0 );
 //	_splitpath( _ExeName, 0, m_Root+strlen(m_Root), 0, 0 );
 	strcpy(m_Root,"x:\\");
+    strcpy(m_Server,"s:\\");
 
-	m_ExeRoot.Init  ( m_Root, "",               		"",     	"" );
-    m_GameLevels.Init(m_Root, "game\\data\\levels\\",	"",     	"" );
-    m_GameSounds.Init(m_Root, "game\\data\\sounds\\",	"wav",		"Wave (*.wav)|*.wav" );
-	m_GameRoot.Init ( m_Root, "game\\",         		"",     	"" );
-	m_GameCForms.Init(m_Root, "game\\data\\cforms\\",	"vcf",		"Collision form (*.vcf)|*.vcf" );
-	m_GameMeshes.Init(m_Root, "game\\data\\meshes\\",	"ogf",		"Render model (*.ogf)|*.ogf" );
-    m_GameDO.Init	(m_Root,  "game\\data\\meshes\\",	"do",		"Detail object (*.do)|*.do" );
-    m_GameTextures.Init(m_Root,"game\\data\\textures\\","dds",		"Textures (*.dds)|*.dds" );
+	m_ExeRoot.Init  	(m_Root, 	"",               		"",     	"" );
+    m_GameLevels.Init	(m_Server, 	"game\\data\\levels\\",	"",     	"" );
+    m_GameSounds.Init	(m_Server, 	"game\\data\\sounds\\",	"wav",		"Wave (*.wav)|*.wav" );
+	m_GameRoot.Init 	(m_Server, 	"game\\",         		"",     	"" );
+	m_GameCForms.Init	(m_Server, 	"game\\data\\cforms\\",	"vcf",		"Collision form (*.vcf)|*.vcf" );
+	m_GameMeshes.Init	(m_Server, 	"game\\data\\meshes\\",	"ogf",		"Render model (*.ogf)|*.ogf" );
+    m_GameDO.Init		(m_Server,  "game\\data\\meshes\\",	"do",		"Detail object (*.do)|*.do" );
+    m_GameTextures.Init	(m_Server,	"game\\data\\textures\\","dds",		"Textures (*.dds)|*.dds" );
 
-	m_Groups.Init   ( m_Root, "objects\\",       		"mesh", 	"Groups (*.group)|*.group" );
-    m_Objects.Init  ( m_Root, "objects\\",       		"object",	"Editor objects (*.object,*.lwo)|*.object;*.lwo" );
-	m_Import.Init  	( m_Root, "import\\",       		"object",	"Import objects (*.object,*.lwo)|*.object;*.lwo" );
-	m_OMotion.Init	( m_Root, "import\\", 		      	"anm",		"Object animation (*.anim)|*.anim" );
-	m_OMotions.Init	( m_Root, "import\\", 		      	"anms",	    "Object animation list (*.anims)|*.anims" );
-	m_SMotion.Init	( m_Root, "import\\", 		      	"skl",		"Skeleton motion file (*.skl)|*.skl" );
-	m_SMotions.Init	( m_Root, "import\\", 		      	"skls",		"Skeleton motions file (*.skls)|*.skls" );
-	m_Maps.Init     ( m_Root, "maps\\",         		"lv2",  	"Levels (*.lv2)|*.lv2" );
-	m_Textures.Init ( m_Root, "textures\\",     		"bmp",  	"Textures (*.bmp;*.tga)|*.bmp;*.tga" );
-	m_Config.Init   ( m_Root, "config\\",       		"",     	"" );
-	m_Temp.Init     ( m_Root, "temp\\",         		"",     	"" );
+	m_Groups.Init   	(m_Server, 	"objects\\",       		"mesh", 	"Groups (*.group)|*.group" );
+    m_Objects.Init  	(m_Server, 	"objects\\",       		"object",	"Editor objects (*.object,*.lwo)|*.object;*.lwo" );
+	m_Import.Init  		(m_Root, 	"import\\",       		"object",	"Import objects (*.object,*.lwo)|*.object;*.lwo" );
+	m_OMotion.Init		(m_Root, 	"import\\", 		   	"anm",		"Object animation (*.anim)|*.anim" );
+	m_OMotions.Init		(m_Root, 	"import\\", 		    "anms",	    "Object animation list (*.anims)|*.anims" );
+	m_SMotion.Init		(m_Root, 	"import\\", 		    "skl",		"Skeleton motion file (*.skl)|*.skl" );
+	m_SMotions.Init		(m_Root, 	"import\\", 		    "skls",		"Skeleton motions file (*.skls)|*.skls" );
+	m_Maps.Init     	(m_Server, 	"maps\\",         		"lv2",  	"Levels (*.lv2)|*.lv2" );
+	m_Textures.Init 	(m_Server, 	"textures\\",     		"bmp",  	"Textures (*.bmp;*.tga)|*.bmp;*.tga" );
+	m_Temp.Init     	(m_Root, 	"temp\\",         		"",     	"" );
 }
 
 //----------------------------------------------------

@@ -95,7 +95,6 @@ USEUNIT("engine\motion.cpp");
 USEUNIT("engine\bone.cpp");
 USELIB("lib\gauss.lib");
 USEUNIT("engine\clsid.cpp");
-USELIB("lib\CreateDX.lib");
 USEUNIT("engine\cl_raypick.cpp");
 USEUNIT("engine\cl_build.cpp");
 USEUNIT("engine\cl_collector.cpp");
@@ -197,6 +196,7 @@ USEUNIT("edit\UI_MainExtern.cpp");
 USEUNIT("PropertiesListExtern.cpp");
 USEFORM("edit\PropertiesSceneObject.cpp", frmPropertiesSceneObject);
 USEUNIT("Engine\xr_efflensflare.cpp");
+USELIB("lib\ETools.lib");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

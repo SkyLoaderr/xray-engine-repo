@@ -62,13 +62,9 @@ bool __fastcall TfrmImageLib::HideImageLib(){
 //---------------------------------------------------------------------------
 void __fastcall TfrmImageLib::FormShow(TObject *Sender)
 {
-    ImageProps = new TfrmProperties(paProperties);
-	ImageProps->Parent = paProperties;
-    ImageProps->Align = alClient;
-    ImageProps->BorderStyle = bsNone;
+	ImageProps = TfrmProperties::CreateProperties(paProperties,alClient);
     ImageProps->tvProperties->HeaderSections->Item[0]->Width = 101;
     ImageProps->tvProperties->HeaderSections->Item[1]->Width = 65;
-    ImageProps->ShowProperties();
 
     InitItemsList();
     UI.BeginEState(esEditImages);
@@ -113,6 +109,8 @@ void __fastcall TfrmImageLib::FormClose(TObject *Sender, TCloseAction &Action)
 
 	_DELETE(m_Thm);
     m_SelectedName = "";
+
+    TfrmProperties::DestroyProperties(ImageProps);
 
 	form = 0;
 	Action = caFree;
@@ -189,30 +187,30 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
         STextureParams& fmt 	= m_Thm->_Format();
 
         char key[255];
-        TElTreeItem* marker_node=0;
+        TElTreeItem* M=0;
 
         ImageProps->BeginFillMode("Image properties");
-        ImageProps->AddItem(0,PROP_TOKEN,"Format",(LPDWORD)&fmt.fmt,(LPDWORD)tfmt_token);
-        marker_node = ImageProps->AddItem(0,PROP_MARKER,"Flags");
-        ImageProps->AddItem(marker_node,PROP_FLAG,"Generate MipMaps",	(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flGenerateMipMaps);
-        ImageProps->AddItem(marker_node,PROP_FLAG,"Binary Alpha",		(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flBinaryAlpha);
-        ImageProps->AddItem(marker_node,PROP_FLAG,"Normal Map",			(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flNormalMap);
-        ImageProps->AddItem(marker_node,PROP_FLAG,"Du Dv Map",			(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flDuDvMap);
-        ImageProps->AddItem(marker_node,PROP_FLAG,"Border",				(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flColorBorder);
-        ImageProps->AddItem(marker_node,PROP_FLAG,"Alpha Border",		(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flAlphaBorder);
-        ImageProps->AddItem(marker_node,PROP_FLAG,"Fade To Color",		(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flFadeToColor);
-        ImageProps->AddItem(marker_node,PROP_FLAG,"Fade To Alpha",		(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flFadeToAlpha);
-        ImageProps->AddItem(marker_node,PROP_FLAG,"Dither",				(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flDitherColor);
-        ImageProps->AddItem(marker_node,PROP_FLAG,"Dither Each MIP",	(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flDitherEachMIPLevel);
-        ImageProps->AddItem(marker_node,PROP_FLAG,"Grayscale",			(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flGreyScale);
-        ImageProps->AddItem(marker_node,PROP_FLAG,"Implicit Lighted",	(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flImplicitLighted);
-        ImageProps->AddItem(0,PROP_TOKEN,"Mip Filter",		(LPDWORD)&fmt.mip_filter,(LPDWORD)tparam_token);
-        ImageProps->AddItem(0,PROP_COLOR,"Border Color",	(LPDWORD)&fmt.border_color);
-        ImageProps->AddItem(0,PROP_INTEGER,"Fade Amount",	(LPDWORD)&fmt.fade_amount);
-        ImageProps->AddItem(0,PROP_COLOR,"Fade Color",		(LPDWORD)&fmt.fade_color);
+        ImageProps->AddItem(0,PROP_TOKEN,"Format",			ImageProps->MakeTokenValue(&fmt.fmt,tfmt_token));
+        M = ImageProps->AddItem(0,PROP_MARKER,"Flags");
+        ImageProps->AddItem(M,PROP_FLAG,"Generate MipMaps",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flGenerateMipMaps));
+        ImageProps->AddItem(M,PROP_FLAG,"Binary Alpha",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flBinaryAlpha));
+        ImageProps->AddItem(M,PROP_FLAG,"Normal Map",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flNormalMap));
+        ImageProps->AddItem(M,PROP_FLAG,"Du Dv Map",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flDuDvMap));
+        ImageProps->AddItem(M,PROP_FLAG,"Border",			ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flColorBorder));
+        ImageProps->AddItem(M,PROP_FLAG,"Alpha Border",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flAlphaBorder));
+        ImageProps->AddItem(M,PROP_FLAG,"Fade To Color",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flFadeToColor));
+        ImageProps->AddItem(M,PROP_FLAG,"Fade To Alpha",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flFadeToAlpha));
+        ImageProps->AddItem(M,PROP_FLAG,"Dither",			ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flDitherColor));
+        ImageProps->AddItem(M,PROP_FLAG,"Dither Each MIP",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flDitherEachMIPLevel));
+        ImageProps->AddItem(M,PROP_FLAG,"Grayscale",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flGreyScale));
+        ImageProps->AddItem(M,PROP_FLAG,"Implicit Lighted",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flImplicitLighted));
+        ImageProps->AddItem(0,PROP_TOKEN,"Mip Filter",		ImageProps->MakeTokenValue(&fmt.mip_filter,tparam_token));
+        ImageProps->AddItem(0,PROP_COLOR,"Border Color",	&fmt.border_color);
+        ImageProps->AddItem(0,PROP_INTEGER,"Fade Amount",	ImageProps->MakeIntValue(&fmt.fade_amount,0,100,1));
+        ImageProps->AddItem(0,PROP_COLOR,"Fade Color",		&fmt.fade_color);
         ImageProps->EndFillMode();
     }else{
-		ImageProps->Clear();
+		ImageProps->ClearProperties();
 		_DELETE(m_Thm);
         m_SelectedName = "";
 		lbFileName->Caption	= "...";
