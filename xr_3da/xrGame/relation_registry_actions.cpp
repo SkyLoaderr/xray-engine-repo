@@ -54,10 +54,10 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 	static CHARACTER_REPUTATION_VALUE enemy_fight_help_reputation	= pSettings->r_s32(ACTIONS_POINTS_SECT, "enemy_fight_help_reputation");
 
 
-	//CActor*			actor	= smart_cast<CActor*>		(from);
-	CActor*			actor			= smart_cast<CActor*>				(from);
-	CInventoryOwner* inv_owner_from	= smart_cast<CInventoryOwner*>		(from);
-	CAI_Stalker*	stalker			= smart_cast<CAI_Stalker*>			(to);
+	CActor*				actor			= smart_cast<CActor*>				(from);
+	CInventoryOwner*	inv_owner_from	= smart_cast<CInventoryOwner*>		(from);
+	CAI_Stalker*		stalker_from	= smart_cast<CAI_Stalker*>			(from);
+	CAI_Stalker*		stalker			= smart_cast<CAI_Stalker*>			(to);
 	//CBaseMonster*	monster	= smart_cast<CBaseMonster*>	(to);
 
 	//вычисление изменения репутации и рейтинга пока ведется 
@@ -75,24 +75,27 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 	{
 	case ATTACK:
 		{
-			//учитывать ATTACK и FIGHT_HELP, только если прошло время
-			//min_attack_delta_time 
-			FIGHT_DATA* fight_data_from = FindFight (from->ID());
-			if(Device.dwTimeGlobal - fight_data_from->attack_time < min_attack_delta_time)
-				break;
-
-			fight_data_from->attack_time = Device.dwTimeGlobal;
-			
-			//если мы атаковали персонажа или монстра, который 
-			//кого-то атаковал, то мы помогли тому, кто защищался
-			FIGHT_DATA* fight_data = FindFight (to->ID());
-			if(fight_data && fight_data->total_hit > help_hit_threshold)
+			if(actor)
 			{
+				//учитывать ATTACK и FIGHT_HELP, только если прошло время
+				//min_attack_delta_time 
+				FIGHT_DATA* fight_data_from = FindFight (from->ID());
+				if(Device.dwTimeGlobal - fight_data_from->attack_time < min_attack_delta_time)
+					break;
+
+				fight_data_from->attack_time = Device.dwTimeGlobal;
+
+				//если мы атаковали персонажа или монстра, который 
+				//кого-то атаковал, то мы помогли тому, кто защищался
+				FIGHT_DATA* fight_data = FindFight (to->ID());
+				if(fight_data && fight_data->total_hit > help_hit_threshold)
+				{
 #pragma todo("убрать поиск Level().Objects.net_Find, так как могут быть тормоза")
-				CAI_Stalker* defending_stalker = smart_cast<CAI_Stalker*>(Level().Objects.net_Find(fight_data->defender));
-				CAI_Stalker* attacking_stalker = smart_cast<CAI_Stalker*>(Level().Objects.net_Find(fight_data->attacker));
-				if(defending_stalker)
-					Action(actor, defending_stalker, attacking_stalker?FIGHT_HELP_HUMAN:FIGHT_HELP_MONSTER);
+					CAI_Stalker* defending_stalker = smart_cast<CAI_Stalker*>(Level().Objects.net_Find(fight_data->defender));
+					CAI_Stalker* attacking_stalker = smart_cast<CAI_Stalker*>(Level().Objects.net_Find(fight_data->attacker));
+					if(defending_stalker)
+						Action(actor, defending_stalker, attacking_stalker?FIGHT_HELP_HUMAN:FIGHT_HELP_MONSTER);
+				}
 			}
 
 			if(stalker)
@@ -115,7 +118,10 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 					delta_reputation = friend_attack_reputation;
 				}
 
-				if(delta_goodwill)
+				//сталкер при нападении на членов своей же группировки отношения не меняют
+				//(считается, что такое нападение всегда случайно)
+				bool stalker_attack_team_mate = stalker_from && (stalker_from->Community() == stalker->Community());
+				if(delta_goodwill && !stalker_attack_team_mate)
 				{
 					//изменить отношение ко всем членам атакованой группы (если такая есть)
 					//как к тому кого атаковали

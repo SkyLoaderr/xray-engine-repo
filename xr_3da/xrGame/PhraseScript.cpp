@@ -116,7 +116,7 @@ void CPhraseScript::Action			(const CGameObject* pSpeakerGO, LPCSTR dialog_id, i
 		R_ASSERT(*Actions()[i]);
 		bool functor_exists = ai().script_engine().functor(*Actions()[i] ,lua_function);
 		R_ASSERT3(functor_exists, "Cannot find phrase dialog script function", *Actions()[i]);
-		lua_function		(pSpeakerGO->lua_game_object());
+		lua_function		(pSpeakerGO->lua_game_object(), dialog_id);
 	}
 }
 
@@ -133,7 +133,7 @@ bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO1, const CGameObj
 		R_ASSERT(*Preconditions()[i]);
 		bool functor_exists = ai().script_engine().functor(*Preconditions()[i] ,lua_function);
 		R_ASSERT3(functor_exists, "Cannot find phrase precondition", *Preconditions()[i]);
-		predicate_result = lua_function	(pSpeakerGO1->lua_game_object(), pSpeakerGO2->lua_game_object());
+		predicate_result = lua_function	(pSpeakerGO1->lua_game_object(), pSpeakerGO2->lua_game_object(), dialog_id, phrase_num);
 		if(!predicate_result) break;
 	}
 	return predicate_result;
@@ -149,7 +149,7 @@ void CPhraseScript::Action			(const CGameObject* pSpeakerGO1, const CGameObject*
 		R_ASSERT(*Actions()[i]);
 		bool functor_exists = ai().script_engine().functor(*Actions()[i] ,lua_function);
 		R_ASSERT3(functor_exists, "Cannot find phrase dialog script function", *Actions()[i]);
-		lua_function		(pSpeakerGO1->lua_game_object(), pSpeakerGO2->lua_game_object());
+		lua_function		(pSpeakerGO1->lua_game_object(), pSpeakerGO2->lua_game_object(), dialog_id, phrase_num);
 	}
 }
 
@@ -160,5 +160,5 @@ LPCSTR  CPhraseScript::Text		(LPCSTR original_text, const CGameObject* pSpeakerG
 	luabind::functor<LPCSTR>	lua_function;
 	bool functor_exists = ai().script_engine().functor(*m_sScriptTextFunc ,lua_function);
 	R_ASSERT3(functor_exists, "Cannot find phrase dialog text script function", *m_sScriptTextFunc);
-	return lua_function		(original_text, pSpeakerGO1->lua_game_object(), pSpeakerGO2->lua_game_object());
+	return lua_function		(original_text, pSpeakerGO1->lua_game_object(), pSpeakerGO2->lua_game_object(), dialog_id, phrase_num);
 }
