@@ -118,13 +118,13 @@ struct	DumbClipper
 				// clip p0
 				D			= p1-p0;
 				denum		= D3DXPlaneDotNormal(&P,&D);
-				if (denum!=0) p0 = - D * cls0 / denum;
+				if (denum!=0) p0 += - D * cls0 / denum;
 			}
 			if (cls1>0)	{
 				// clip p1
 				D			= p0-p1;
 				denum		= D3DXPlaneDotNormal(&P,&D);
-				if (denum!=0) p1 = - D * cls1 / denum;
+				if (denum!=0) p1 += - D * cls1 / denum;
 			}
 		}
 		return	true;
