@@ -1610,6 +1610,8 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	m_pd3dDevice->SetTexture				(0, d_Bloom_2		);
 
 	// Shader-params
+	for (o_it=0; o_it<7; o_it++)
+		cc.seta								(O,o_it,bloom_V[o_it].x,bloom_V[o_it].y,bloom_V[o_it].z,bloom_V[o_it].w);
 
 	// Filter over-bright information to BLOOM-2
 	cc.flush								(m_pd3dDevice);
