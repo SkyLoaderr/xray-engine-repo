@@ -12,7 +12,7 @@ CWeaponShotgun::~CWeaponShotgun(void)
 
 void CWeaponShotgun::OnAnimationEnd	() {
 	__super::OnAnimationEnd();
-	if(m_reload) {
+	if(false && m_reload) {
 		m_reload = false;
 		Reload();
 	}
