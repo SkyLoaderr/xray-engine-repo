@@ -106,7 +106,7 @@ public:
 	SVS*							_CreateVS			(LPCSTR Name);
 	void							_DeleteVS			(const SVS*	VS	);
 
-	SPass*							_CreatePass			(SPass& P	);
+	SPass*							_CreatePass			(ref_state& _state, ref_ps& _ps, ref_vs& _vs, ref_ctable& _ctable, ref_texture_list& _T, ref_matrix_list& _M, ref_constant_list& _C);
 	void							_DeletePass			(const SPass* P	);
 
 	// Shader compiling / optimizing

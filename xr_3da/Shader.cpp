@@ -39,16 +39,16 @@ void	resptrcode_geom::create			(D3DVERTEXELEMENT9* decl, IDirect3DVertexBuffer9*
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-BOOL	SPass::equal	(SPass& P)
+BOOL	SPass::equal	(ref_state& _state, ref_ps& _ps, ref_vs& _vs, ref_ctable& _ctable, ref_texture_list& _T, ref_matrix_list& _M, ref_constant_list& _C)
 {
-	if (state		!= P.state)						return FALSE;
-	if (ps			!= P.ps)						return FALSE;
-	if (vs			!= P.vs)						return FALSE;
-	if (constants	!= P.constants)					return FALSE;	// is this nessesary??? (ps+vs already combines)
+	if (state		!= _state)		return FALSE;
+	if (ps			!= _ps)			return FALSE;
+	if (vs			!= _vs)			return FALSE;
+	if (constants	!= _ctable)		return FALSE;	// is this nessesary??? (ps+vs already combines)
 
-	if (T != P.T)									return FALSE;
-	if (M != P.M)									return FALSE;
-	if (C != P.C)									return FALSE;
+	if (T != _T)					return FALSE;
+	if (M != _M)					return FALSE;
+	if (C != _C)					return FALSE;
 	return TRUE;
 }
 

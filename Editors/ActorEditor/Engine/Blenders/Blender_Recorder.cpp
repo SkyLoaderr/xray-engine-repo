@@ -65,21 +65,19 @@ void	CBlender_Compile::PassEnd			()
 	RS.SetTSS				(Stage(),D3DTSS_ALPHAOP,D3DTOP_DISABLE);
 
 	// Create pass
-	SPS* ps					= Device.Shader._CreatePS			(pass_ps);
-	SVS* vs					= Device.Shader._CreateVS			(pass_vs);
+	ref_state	state		= Device.Shader._CreateState		(RS.GetContainer());
+	ref_ps		ps			= Device.Shader._CreatePS			(pass_ps);
+	ref_vs		vs			= Device.Shader._CreateVS			(pass_vs);
 	ctable.merge			(&ps->constants);
 	ctable.merge			(&vs->constants);
 	SetMapping				();
+	ref_ctable			ct	= Device.Shader._CreateConstantTable(ctable);
+	ref_texture_list	T 	= Device.Shader._CreateTextureList	(passTextures);
+	ref_matrix_list		M	= Device.Shader._CreateMatrixList	(passMatrices);
+	ref_constant_list	C	= Device.Shader._CreateConstantList	(passConstants);
 
-	SPass					P;
-	P.ps					= ps;
-	P.vs					= vs;
-	P.constants				= Device.Shader._CreateConstantTable(ctable);
-	P.state					= Device.Shader._CreateState		(RS.GetContainer());
-	P.T						= Device.Shader._CreateTextureList	(passTextures);
-	P.M						= Device.Shader._CreateMatrixList	(passMatrices);
-	P.C						= Device.Shader._CreateConstantList	(passConstants);
-	SH->Passes.push_back	(Device.Shader._CreatePass(P));
+	ref_pass	_pass_		= Device.Shader._CreatePass			(state,ps,vs,ct,T,M,C);
+	SH->Passes.push_back	(_pass_);
 }
 
 void	CBlender_Compile::PassSET_VS		(LPCSTR name)

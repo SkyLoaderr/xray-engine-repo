@@ -43,12 +43,22 @@ void		CShaderManager::_DeleteState		(const SState* state)
 }
 
 //--------------------------------------------------------------------------------------------------------------
-SPass*		CShaderManager::_CreatePass			(SPass& P)
+SPass*		CShaderManager::_CreatePass			(ref_state& _state, ref_ps& _ps, ref_vs& _vs, ref_ctable& _ctable, ref_texture_list& _T, ref_matrix_list& _M, ref_constant_list& _C)
 {
 	for (u32 it=0; it<v_passes.size(); it++)
-		if (v_passes[it]->equal(P))	return v_passes[it];
+		if (v_passes[it]->equal(_state,_ps,_vs,_ctable,_T,_M,_C))
+			return v_passes[it];
 
-	v_passes.push_back			(xr_new<SPass>(P));
+	SPass*	P					= xr_new<SPass>(P);
+	P->state					= _state;
+	P->ps						= _ps;
+	P->vs						= _vs;
+	P->constants				= _ctable;
+	P->T						= _T;
+	P->M						= _M;
+	P->C						= _C;
+
+	v_passes.push_back			(P);
 	return v_passes.back();
 }
 
