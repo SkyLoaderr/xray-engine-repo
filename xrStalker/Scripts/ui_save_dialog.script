@@ -162,10 +162,7 @@ end
 
 function save_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
    CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
-   
-   messageBox = CUIMessageBox()
-   messageBox:Init();
-   
+     
    DIK_RETURN = 28
    WINDOW_KEY_PRESSED = 6
    
