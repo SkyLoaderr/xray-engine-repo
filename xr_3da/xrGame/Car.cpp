@@ -290,16 +290,16 @@ void	CCar::UpdateCL				( )
 		m_pPhysicsShell->get_LinearVel(v);
 		string32 s;
 		sprintf(s,"speed, %f km/hour",v.magnitude()/1000.f*3600.f);
-		HUD().pFontSmall->SetColor(color_rgba(0xff,0xff,0xff,0xff));
-		HUD().pFontSmall->OutSet	(120,530);
-		HUD().pFontSmall->OutNext(s);
-		HUD().pFontSmall->OutNext("Transmission num:      [%d]",m_current_transmission_num);
-		HUD().pFontSmall->OutNext("gear ratio:			  [%3.2f]",m_current_gear_ratio);
-		HUD().pFontSmall->OutNext		("Power:      [%3.2f]",m_current_engine_power/(0.8f*1000.f));
-		HUD().pFontSmall->OutNext		("rpm:      [%3.2f]",m_current_rpm/(1.f/60.f*2.f*M_PI));
-		HUD().pFontSmall->OutNext		("wheel torque:      [%3.2f]",RefWheelCurTorque());
-		HUD().pFontSmall->OutNext		("engine torque:      [%3.2f]",EngineCurTorque());
-		HUD().pFontSmall->OutNext		("fuel:      [%3.2f]",m_fuel);
+		HUD().Font().pFontSmall->SetColor(color_rgba(0xff,0xff,0xff,0xff));
+		HUD().Font().pFontSmall->OutSet	(120,530);
+		HUD().Font().pFontSmall->OutNext(s);
+		HUD().Font().pFontSmall->OutNext("Transmission num:      [%d]",m_current_transmission_num);
+		HUD().Font().pFontSmall->OutNext("gear ratio:			  [%3.2f]",m_current_gear_ratio);
+		HUD().Font().pFontSmall->OutNext		("Power:      [%3.2f]",m_current_engine_power/(0.8f*1000.f));
+		HUD().Font().pFontSmall->OutNext		("rpm:      [%3.2f]",m_current_rpm/(1.f/60.f*2.f*M_PI));
+		HUD().Font().pFontSmall->OutNext		("wheel torque:      [%3.2f]",RefWheelCurTorque());
+		HUD().Font().pFontSmall->OutNext		("engine torque:      [%3.2f]",EngineCurTorque());
+		HUD().Font().pFontSmall->OutNext		("fuel:      [%3.2f]",m_fuel);
 		//HUD().pFontSmall->OutNext("Vel Magnitude: [%3.2f]",m_PhysicMovementControl->GetVelocityMagnitude());
 		//HUD().pFontSmall->OutNext("Vel Actual:    [%3.2f]",m_PhysicMovementControl->GetVelocityActual());
 	}
@@ -365,10 +365,10 @@ void	CCar::OnHUDDraw				(CCustomHUD* /**hud/**/)
 #ifdef DEBUG
 	Fvector velocity;
 	m_pPhysicsShell->get_LinearVel(velocity);
-	HUD().pFontSmall->SetColor		(0xffffffff);
-	HUD().pFontSmall->OutSet		(120,530);
-	HUD().pFontSmall->OutNext		("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(Position()));
-	HUD().pFontSmall->OutNext		("Velocity:      [%3.2f]",velocity.magnitude());
+	HUD().Font().pFontSmall->SetColor		(0xffffffff);
+	HUD().Font().pFontSmall->OutSet		(120,530);
+	HUD().Font().pFontSmall->OutNext		("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(Position()));
+	HUD().Font().pFontSmall->OutNext		("Velocity:      [%3.2f]",velocity.magnitude());
 
 
 #endif
