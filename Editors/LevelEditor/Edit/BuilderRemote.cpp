@@ -186,20 +186,20 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
         R_ASSERT(dwTexCnt==1);
 	    for (IntIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
 			st_Face& face = mesh->m_Faces[*f_it];
+            R_ASSERT(l_faces_it<l_faces_cnt);
+            b_face& first_face 		= l_faces[l_faces_it++];
         	{
-		    	R_ASSERT(l_faces_it<l_faces_cnt);
-                b_face& new_face 	= l_faces[l_faces_it++];
                 int m_id			= BuildMaterial(surf,sect_num,lod_id);
                 if (m_id<0){
                 	bResult 		= FALSE;
                     break;
                 }
-                new_face.dwMaterial 	= m_id;
-                new_face.dwMaterialGame = surf->_GameMtl();
+                first_face.dwMaterial 		= m_id;
+                first_face.dwMaterialGame 	= surf->_GameMtl();
                 for (int k=0; k<3; k++){
                     st_FaceVert& fv = face.pv[k];
                     // vertex index
-                    new_face.v[k]=fv.pindex+point_offs;
+                    first_face.v[k]=fv.pindex+point_offs;
                     // uv maps
                     int offs = 0;
                     for (DWORD t=0; t<dwTexCnt; t++){
@@ -210,19 +210,20 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
                             t--;
                             continue;
                         }
-                        new_face.t[k].set(vmap.getUV(vm_pt.index));
+                        first_face.t[k].set(vmap.getUV(vm_pt.index));
                     }
                 }
             }
 
 	        if (surf->m_Flags.is(CSurface::sf2Sided)){
 		    	R_ASSERT(l_faces_it<l_faces_cnt);
-                b_face& new_face 	= l_faces[l_faces_it++];
-                new_face.dwMaterial = l_faces[l_faces_it-2].dwMaterial;
+                b_face& second_face 		= l_faces[l_faces_it++];
+                second_face.dwMaterial 		= first_face.dwMaterial;
+                second_face.dwMaterialGame 	= first_face.dwMaterialGame;
                 for (int k=0; k<3; k++){
                     st_FaceVert& fv = face.pv[2-k];
                     // vertex index
-                    new_face.v[k]=fv.pindex+point_offs;
+                    second_face.v[k]=fv.pindex+point_offs;
                     // uv maps
                     int offs = 0;
                     for (DWORD t=0; t<dwTexCnt; t++){
@@ -233,7 +234,7 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
                             t--;
                             continue;
                         }
-                        new_face.t[k].set(vmap.getUV(vm_pt.index));
+                        second_face.t[k].set(vmap.getUV(vm_pt.index));
                     }
                 }
             }
