@@ -168,6 +168,9 @@ public:
 	void			SetWindowName(LPCSTR wn) { m_windowName = wn; }
 	LPCSTR			WindowName_script() {return *m_windowName;}
 	CUIWindow*		FindChild(const ref_str name);
+
+	void			EnableDoubleClick(bool value) { m_bDoubleClickEnabled = value; }
+	bool			IsDBClickEnabled() const { return m_bDoubleClickEnabled; }
 protected:
 	ref_str		m_windowName;
 	//список дочерних окон
@@ -213,6 +216,9 @@ protected:
 
 	//флаг автоматического удаления во время вызова деструктора
 	bool m_bAutoDelete;
+
+	// Флаг разрешающий/запрещающий генерацию даблклика
+	bool m_bDoubleClickEnabled;
 
 public:
 	// Последняя позиция мышки

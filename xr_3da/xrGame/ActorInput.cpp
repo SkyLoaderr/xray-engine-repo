@@ -240,7 +240,7 @@ void CActor::ActorUse()
 				TryToTalk();
 			}
 			//обыск трупа
-			else if(Level().IR_GetKeyState(DIK_LSHIFT))
+			else  if(!Level().IR_GetKeyState(DIK_LSHIFT))
 			{
 				//только если находимся в режиме single
 				CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
@@ -259,39 +259,40 @@ void CActor::ActorUse()
 
 		}
 
-		if(Level().IR_GetKeyState(DIK_LSHIFT)) return;
-
-		Collide::rq_result& RQ = HUD().GetCurrentRayQuery();
-		CPhysicsShellHolder* object = dynamic_cast<CPhysicsShellHolder*>(RQ.O);
-		u16 element = BI_NONE;
-		if(object) 
-			element = (u16)RQ.element;
-
-		if (object)
+		if(Level().IR_GetKeyState(DIK_LSHIFT))
 		{
-			switch (object->SUB_CLS_ID)
+			Collide::rq_result& RQ = HUD().GetCurrentRayQuery();
+			CPhysicsShellHolder* object = dynamic_cast<CPhysicsShellHolder*>(RQ.O);
+			u16 element = BI_NONE;
+			if(object) 
+				element = (u16)RQ.element;
+
+			if (object)
 			{
-			case CLSID_CAR:					if(use_Vehicle(object))			return;	break;
-			case CLSID_OBJECT_W_MOUNTED:	if(use_MountedWeapon(object))	return;	break;
-			}
-		}
-		else
-		{
-			if (m_holder)
-			{
-				CGameObject* holder			= dynamic_cast<CGameObject*>(m_holder);
-				switch (holder->SUB_CLS_ID)
+				switch (object->SUB_CLS_ID)
 				{
-				case CLSID_CAR:					if(use_Vehicle(0))			return;	break;
-				case CLSID_OBJECT_W_MOUNTED:	if(use_MountedWeapon(0))	return;	break;
+				case CLSID_CAR:					if(use_Vehicle(object))			return;	break;
+				case CLSID_OBJECT_W_MOUNTED:	if(use_MountedWeapon(object))	return;	break;
 				}
 			}
-		}
+			else
+			{
+				if (m_holder)
+				{
+					CGameObject* holder			= dynamic_cast<CGameObject*>(m_holder);
+					switch (holder->SUB_CLS_ID)
+					{
+					case CLSID_CAR:					if(use_Vehicle(0))			return;	break;
+					case CLSID_OBJECT_W_MOUNTED:	if(use_MountedWeapon(0))	return;	break;
+					}
+				}
+			}
 
-		if(!m_PhysicMovementControl->PHCapture())
-			m_PhysicMovementControl->PHCaptureObject(object,element);
-		else
-			m_PhysicMovementControl->PHReleaseObject();
+			if(!m_PhysicMovementControl->PHCapture())
+				m_PhysicMovementControl->PHCaptureObject(object,element);
+			else
+				m_PhysicMovementControl->PHReleaseObject();
+		}
 	}
 }
 //void CActor::IR_OnMousePress(int btn)

@@ -30,6 +30,7 @@ CUITreeViewItem::CUITreeViewItem()
 	UIBkg.TextureOff();
 	UIBkg.SetTextureOffset(-20, 0);
 	EnableTextHighlighting(false);
+	EnableDoubleClick(false);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -249,11 +250,14 @@ void CUITreeViewItem::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	}
 	else if (pWnd == this && BUTTON_FOCUS_RECEIVED == msg)
 	{
+		static CUITreeViewItem *pPrevFocusedItem = NULL;
 		UIBkg.TextureOn();
-	}
-	else if (pWnd == this && BUTTON_FOCUS_LOST == msg)
-	{
-		UIBkg.TextureOff();
+
+		if (pPrevFocusedItem)
+		{
+			pPrevFocusedItem->UIBkg.TextureOff();
+		}
+		pPrevFocusedItem = this;
 	}
 	else
 		inherited::SendMessage(pWnd, msg, pData);

@@ -236,7 +236,7 @@ void  CUIButton::Draw()
 
 	RECT rect = GetAbsoluteRect();
 
-	if(m_bAvailableTexture)
+	if(m_bAvailableTexture && m_bTextureEnable)
 	{
 		if(m_eButtonState == BUTTON_UP || m_eButtonState == BUTTON_NORMAL)
 		{

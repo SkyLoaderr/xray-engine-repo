@@ -63,6 +63,8 @@ void CUIItemInfo::Init(int x, int y, int width, int height, const char* xml_name
 		xml_init.InitStatic(uiXml, "image_static", 0, &UIItemImage);
 		UIItemImage.TextureAvailable(true);
 	}
+	UIItemImage.TextureOff();
+	UIItemImage.ClipperOn();
 }
 
 //////////////////////////////////////////////////////////////////////////

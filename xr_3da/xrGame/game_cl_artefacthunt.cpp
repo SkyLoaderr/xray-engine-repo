@@ -288,7 +288,7 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 	{
 	case GAME_PHASE_INPROGRESS:
 		{
-			HUD().GetUI()->ShowIndicators();
+//			HUD().GetUI()->ShowIndicators();
 
 			if (m_bBuyEnabled)
 			{

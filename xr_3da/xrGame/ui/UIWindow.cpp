@@ -27,6 +27,7 @@ CUIWindow::CUIWindow()
 
     Show(true);
 	Enable(true);
+	EnableDoubleClick(true);
 }
 
 CUIWindow::~CUIWindow()
@@ -152,7 +153,7 @@ void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 
 //	static CUIWindow *pWnd = NULL;
 
-	if(mouse_action == WINDOW_LBUTTON_DOWN)
+	if(mouse_action == WINDOW_LBUTTON_DOWN && IsDBClickEnabled())
 	{
 		u32 dwCurTime = Device.TimerAsync();
 		if(dwCurTime - m_dwLastClickTime < DOUBLE_CLICK_TIME)
