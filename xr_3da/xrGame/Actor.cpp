@@ -290,6 +290,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 		D->ID				=	0xffff;
 		D->ID_Parent		=	E->ID;
 		D->ID_Phantom		=	0xffff;
+		D->o_Position.set	(E->o_Position);
 		D->s_flags.set		(M_SPAWN_OBJECT_ACTIVE | M_SPAWN_OBJECT_LOCAL);
 		D->RespawnTime		=	0;
 		// Send
