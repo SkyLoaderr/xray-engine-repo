@@ -47,6 +47,7 @@ enum {
 	ssWaveTrace			= (1ul<<0ul),	//!< Flag to control wave-tracing
 	ssEAX				= (1ul<<1ul),	//!< Use \a EAX or not
 	ssHardware			= (1ul<<2ul),	//!< Use hardware mixing only
+    ssFX				= (1ul<<3ul),	//!< Use effects
 	ss_forcedword		= u32(-1)
 };
 enum {

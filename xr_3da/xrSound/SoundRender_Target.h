@@ -13,7 +13,7 @@ class CSoundRender_Target
 
 	IDirectSoundFXWavesReverb8*	pFX_Reverb;
 	IDirectSoundFXEcho8*		pFX_Echo;
-	IDirectSoundFXDistortion8*	pFX_Distortion;
+	IDirectSoundFXI3DL2Reverb8*	pFX_EReverb;
 
 	BOOL						bDX7;
 

@@ -12,9 +12,9 @@ CSoundRender_Target::CSoundRender_Target(void)
 	pBuffer			= NULL;
 	pControl		= NULL;
 
+	pFX_EReverb		= NULL;
 	pFX_Reverb		= NULL;
 	pFX_Echo		= NULL;
-	pFX_Distortion	= NULL;
 
 	cache_hw_volume	= DSBVOLUME_MIN;
 	cache_hw_freq	= 11025;
@@ -54,7 +54,8 @@ void	CSoundRender_Target::_initialize		()
 		DSBCAPS_CTRLFREQUENCY | 
 		DSBCAPS_CTRLVOLUME |
 		DSBCAPS_GETCURRENTPOSITION2 |
-		(psSoundFlags.test(ssHardware) ? 0 : (DSBCAPS_LOCSOFTWARE | DSBCAPS_CTRLFX))
+		(psSoundFlags.test(ssHardware) 	? 0 				: (DSBCAPS_LOCSOFTWARE)) |
+		(psSoundFlags.test(ssFX) 		? (DSBCAPS_CTRLFX) 	: 0)
 		;
 	dsBD.dwBufferBytes		= buf_size;
 	dsBD.dwReserved			= 0;
@@ -66,9 +67,10 @@ void	CSoundRender_Target::_initialize		()
 	case sq_NOVIRT:		dsBD.guid3DAlgorithm = DS3DALG_NO_VIRTUALIZATION; 	break;
 	case sq_LIGHT:		dsBD.guid3DAlgorithm = DS3DALG_HRTF_LIGHT;			break;
 	case sq_HIGH:		dsBD.guid3DAlgorithm = DS3DALG_HRTF_FULL;			break;
-	default:			Debug.fatal("Unknown 3D-ref_sound algorithm");			break;
+	default:			Debug.fatal("Unknown 3D-ref_sound algorithm");		break;
 	}
-//	dsBD.guid3DAlgorithm	= DS3DALG_DEFAULT;
+    if (psSoundFlags.test(ssHardware)) 
+    	dsBD.guid3DAlgorithm = DS3DALG_HRTF_FULL;
 
 	// Create
 	bDX7				= FALSE;
@@ -86,24 +88,34 @@ void	CSoundRender_Target::_initialize		()
 	R_ASSERT(pBuffer_base && pBuffer && pControl);
 
 	// DMOs
-	if (!psSoundFlags.test(ssHardware) && !bDX7)	{
+	if (psSoundFlags.test(ssFX) && !bDX7)	{
 		DSEFFECTDESC	desc	[2];
-		desc[0].dwSize			= sizeof(DSEFFECTDESC);
-		desc[0].dwFlags			= DSFX_LOCSOFTWARE;
-		desc[0].guidDSFXClass	= GUID_DSFX_WAVES_REVERB;
-		desc[0].dwReserved1		= 0;
-		desc[0].dwReserved2		= 0;
+        if (psSoundFlags.test(ssHardware)){
+            desc[0].dwSize			= sizeof(DSEFFECTDESC);
+            desc[0].dwFlags			= DSFX_LOCSOFTWARE;
+            desc[0].guidDSFXClass	= GUID_DSFX_STANDARD_I3DL2REVERB;
+            desc[0].dwReserved1		= 0;
+            desc[0].dwReserved2		= 0;
+			R_CHK	(pBuffer->SetFX(1,desc,NULL));
+        	pBuffer->GetObjectInPath(desc[0].guidDSFXClass, 0, IID_IDirectSoundFXI3DL2Reverb8,	(void**)&pFX_EReverb);
+        }else{
+            desc[0].dwSize			= sizeof(DSEFFECTDESC);
+            desc[0].dwFlags			= DSFX_LOCSOFTWARE;
+            desc[0].guidDSFXClass	= GUID_DSFX_WAVES_REVERB;
+            desc[0].dwReserved1		= 0;
+            desc[0].dwReserved2		= 0;
 
-		desc[1].dwSize			= sizeof(DSEFFECTDESC);
-		desc[1].dwFlags			= DSFX_LOCSOFTWARE;
-		desc[1].guidDSFXClass	= GUID_DSFX_STANDARD_ECHO;
-		desc[1].dwReserved1		= 0;
-		desc[1].dwReserved2		= 0;
-
-		R_CHK	(pBuffer->SetFX(2,desc,NULL));
-		R_CHK	(pBuffer->GetObjectInPath(desc[0].guidDSFXClass, 0, IID_IDirectSoundFXWavesReverb8,	(void**)&pFX_Reverb));
-		R_CHK	(pBuffer->GetObjectInPath(desc[1].guidDSFXClass, 0, IID_IDirectSoundFXEcho8,		(void**)&pFX_Echo));
+            desc[1].dwSize			= sizeof(DSEFFECTDESC);
+            desc[1].dwFlags			= DSFX_LOCSOFTWARE;
+            desc[1].guidDSFXClass	= GUID_DSFX_STANDARD_ECHO;
+            desc[1].dwReserved1		= 0;
+            desc[1].dwReserved2		= 0;
+			R_CHK	(pBuffer->SetFX(2,desc,NULL));
+			R_CHK	(pBuffer->GetObjectInPath(desc[0].guidDSFXClass, 0, IID_IDirectSoundFXWavesReverb8,	(void**)&pFX_Reverb));
+			R_CHK	(pBuffer->GetObjectInPath(desc[1].guidDSFXClass, 0, IID_IDirectSoundFXEcho8,		(void**)&pFX_Echo));
+        }
 	} else {
+    	pFX_EReverb				= NULL;
 		pFX_Reverb				= NULL;
 		pFX_Echo				= NULL;
 		if (bDX7)				{
@@ -114,7 +126,7 @@ void	CSoundRender_Target::_initialize		()
 
 void	CSoundRender_Target::_destroy		()
 {
-	_RELEASE(pFX_Distortion);
+	_RELEASE(pFX_EReverb);
 	_RELEASE(pFX_Echo);
 	_RELEASE(pFX_Reverb);
 	_RELEASE(pControl);
@@ -249,7 +261,26 @@ void	CSoundRender_Target::fill_parameters()
 	{
 		CSoundRender_Environment& E		= pEmitter->e_current;
 
-		// 1. Reverb
+		// 1. Environment Reverb
+        if (pFX_EReverb)
+        {
+        	DSFXI3DL2Reverb					para;
+            para.lRoom               		= iFloor(E.L_Room);              
+            para.lRoomHF             		= iFloor(E.L_RoomHF);            
+            para.flRoomRolloffFactor 		= E.L_RoomRolloffFactor;
+            para.flDecayTime         		= E.L_DecayTime;        
+            para.flDecayHFRatio      		= E.L_DecayHFRatio;     
+            para.lReflections        		= iFloor(E.L_Reflections);       
+            para.flReflectionsDelay  		= E.L_ReflectionsDelay; 
+            para.lReverb             		= iFloor(E.L_Reverb);            
+            para.flReverbDelay       		= E.L_ReverbDelay;      
+            para.flDiffusion         		= E.L_Diffusion;        
+            para.flDensity           		= E.L_Density;          
+            para.flHFReference       		= E.L_HFReference;                  
+			pFX_EReverb->SetAllParameters	(&para);
+        }
+
+		// 2. Wave Reverb
 		if (pFX_Reverb)
 		{
 			DSFXWavesReverb					para;
@@ -260,7 +291,7 @@ void	CSoundRender_Target::fill_parameters()
 			pFX_Reverb->SetAllParameters	(&para);
 		}
 
-		// 2. Echo
+		// 3. Echo
 		if (pFX_Echo)
 		{
 			DSFXEcho						para;

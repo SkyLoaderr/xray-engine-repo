@@ -8,24 +8,34 @@ public:
 	u32				version;
 	string64		name;
 
-	float			R_InGain;		//	[-96	..	0]		// 0
-	float			R_Mix;			//	[-96	..	0]		// -96
-	float			R_Time;			//	[0.01	..	3000]
-	float			R_HFRatio;		//	[0.001	..	0.999]
+    // I3DL2 Reverb
+    float          	L_Room;              	// 	[DSFX_I3DL2REVERB_ROOM_MIN 				.. DSFX_I3DL2REVERB_ROOM_MAX]
+    float          	L_RoomHF;            	//  [DSFX_I3DL2REVERB_ROOMHF_MIN 			.. DSFX_I3DL2REVERB_ROOMHF_MAX]
+    float           L_RoomRolloffFactor;	//	[DSFX_I3DL2REVERB_ROOMROLLOFFFACTOR_MIN .. DSFX_I3DL2REVERB_ROOMROLLOFFFACTOR_MAX]
+    float           L_DecayTime;          	//  [DSFX_I3DL2REVERB_DECAYTIME_MIN 		.. DSFX_I3DL2REVERB_DECAYTIME_MAX]
+    float           L_DecayHFRatio;       	//  [DSFX_I3DL2REVERB_DECAYHFRATIO_MIN 		.. DSFX_I3DL2REVERB_DECAYHFRATIO_MAX]
+    float          	L_Reflections;         	//  [DSFX_I3DL2REVERB_REFLECTIONS_MIN 		.. DSFX_I3DL2REVERB_REFLECTIONS_MAX]
+    float           L_ReflectionsDelay;   	//  [DSFX_I3DL2REVERB_REFLECTIONSDELAY_MIN 	.. DSFX_I3DL2REVERB_REFLECTIONSDELAY_MAX]
+    float          	L_Reverb;              	//  [DSFX_I3DL2REVERB_REVERB_MIN 			.. DSFX_I3DL2REVERB_REVERB_MAX]
+    float           L_ReverbDelay;        	//  [DSFX_I3DL2REVERB_REVERBDELAY_MIN 		.. DSFX_I3DL2REVERB_REVERBDELAY_MAX]
+    float           L_Diffusion;          	//  [DSFX_I3DL2REVERB_DIFFUSION_MIN 		.. DSFX_I3DL2REVERB_DIFFUSION_MAX]
+    float           L_Density;            	//  [DSFX_I3DL2REVERB_DENSITY_MIN 			.. DSFX_I3DL2REVERB_DENSITY_MAX]
+    float           L_HFReference;        	//  [DSFX_I3DL2REVERB_HFREFERENCE_MIN 		.. DSFX_I3DL2REVERB_HFREFERENCE_MAX]
 
-	float			E_WetDry;		//	[0		..	100]	// 0
-	float			E_FeedBack;		//	[0		..	100]	// 0
-	float			E_Delay;		//	[1		..	2000]	
+    // Waves Reverb
+	float			R_InGain;				//	[-96	..	0]		// 0
+	float			R_Mix;					//	[-96	..	0]		// -96
+	float			R_Time;					//	[0.01	..	3000]
+	float			R_HFRatio;				//	[0.001	..	0.999]
 
-	float			D_Gain;			//	[-60	..	0]		// 0
-	float			D_Edge;			//	[0		..	100]	// 0
-	float			D_CenterF;		//	[100	..	8000]	// 8k
-	float			D_BandWidth;	//	[100	..	8000]	// 8k
-	float			D_Cutoff;		//	[100	..	8000]	// 8k
+    // Echo
+	float			E_WetDry;				//	[0		..	100]	// 0
+	float			E_FeedBack;				//	[0		..	100]	// 0
+	float			E_Delay;				//	[1		..	2000]	
 public:
-	void			set_identity	(bool R, bool E, bool D);
-	void			set_default		(bool R, bool E, bool D);
-	void			clamp			(bool R, bool E, bool D);
+	void			set_identity	(bool R, bool E, bool L);
+	void			set_default		(bool R, bool E, bool L);
+	void			clamp			(bool R, bool E, bool L);
 	void			lerp			(CSoundRender_Environment& A, CSoundRender_Environment& B, float f);
 	void			load			(IReader* fs);
 	void			save			(IWriter* fs);

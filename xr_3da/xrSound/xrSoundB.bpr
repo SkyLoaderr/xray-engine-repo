@@ -43,12 +43,12 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-IR:\SDK\DirectX9.0\include -I$(BCB)\include -I$(BCB)\include\vcl 
+    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_XRSOUNDB -DXRSOUND_EXPORTS -D_DEBUG 
+      -IR:\SDK\DirectX9.0\include -I$(BCB)\include -I$(BCB)\include\vcl 
       -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source 
       -IR:\VS7.NET\Vc7\atlmfc\include -IP:\xrCore -IR:\SDK\ogg\ogg\include 
-      -IR:\SDK\ogg\vorbis\include -src_suffix cpp -D_EDITOR -D_XRSOUNDB 
-      -DXRSOUND_EXPORTS -D_DEBUG -boa"/>
+      -IR:\SDK\ogg\vorbis\include -boa"/>
     <CFLAG1 value="-WD -Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps 
       -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -131,9 +131,6 @@ ProductName=
 ProductVersion=1.0.0.0
 Comments=
 
-[Excluded Packages]
-R:\Borland\CBuilder6\Bin\dclbcbsmp60.bpl=Borland Sample Controls Design Time Package
-
 [HistoryLists\hlIncludePath]
 Count=18
 Item0=R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include;P:\xrCore;R:\SDK\ogg\ogg\include;R:\SDK\ogg\vorbis\include
@@ -208,7 +205,7 @@ RunParams=
 Launcher=
 UseLauncher=0
 DebugCWD=
-HostApplication=x:\ActorEditor.exe
+HostApplication=x:\ShaderEditor.exe
 RemoteHost=
 RemotePath=
 RemoteLauncher=
