@@ -5,7 +5,7 @@
 #include "entity.h"
 #include "hudmanager.h"
 
-static const int money_x_offs = 700;
+static const int money_x_offs = 690; 
 static const int money_y_offs = 485;
 
 //--------------------------------------------------------------------
