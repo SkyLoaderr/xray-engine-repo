@@ -21,6 +21,7 @@ class "action_test_activity" (action_base)
 function action_test_activity:__init (npc_name, action_name, storage) super(nil, action_name)
   self.st = storage
   self.move_mgr = move_mgr.move_mgr(storage.npc)
+  self.was_reset  = false
 end
 
 function action_test_activity:initialize()

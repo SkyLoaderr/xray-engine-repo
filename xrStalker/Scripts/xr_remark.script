@@ -30,6 +30,7 @@ class "action_remark_activity" (action_base)
 
 function action_remark_activity:__init (npc_name, action_name, storage) super(nil, action_name)
 	self.st = storage
+	self.was_reset = false
 end
 
 function action_remark_activity:initialize()
@@ -44,8 +45,13 @@ function action_remark_activity:initialize()
 	self:reset_scheme()
 end
 
+function action_remark_activity:activate_scheme()
+        self.was_reset = false
+end
 
 function action_remark_activity:reset_scheme()
+	self.was_reset = true
+
 	printf("_bp: action_remark_activity [%s]: reset_scheme", self.object:name())
 
 	--self.object:clear_animations()
@@ -266,6 +272,10 @@ end
 	
 function action_remark_activity:execute()
 	action_base.execute(self)
+
+	if not self.was_reset then
+		self:reset_scheme()
+	end
 
 	--printf("_bp: action_remark_activity [%s]: execute", self.object:name())
 

@@ -342,7 +342,11 @@ function activate_by_section(npc, ini, section, loading)
 			db.storage[npc_id].pstor = nil
 		end
 
-		issue_event(npc, db.storage[npc_id][scheme], "reset_scheme", loading)
+		if db.storage[npc:id()].stype == stype_stalker then
+			issue_event(npc, db.storage[npc_id][scheme], "activate_scheme", loading)
+		else
+			issue_event(npc, db.storage[npc_id][scheme], "reset_scheme", loading)
+		end
 	else
 		utils.abort("object '%s': activate_by_section: section '%s' does not exist",
 			npc:name(), section)
@@ -440,11 +444,17 @@ function issue_event(npc, st, event_fn, ...)
 			"subscribed for events", global_st.active_scheme, global_st.active_section)
 		return
 	end
+	local activation_count = 0
 	for action_ptr, is_active in pairs(st.actions) do
 		if is_active and action_ptr[event_fn] then
 			--printf("DEBUG: event issued")
 			action_ptr[event_fn](action_ptr, unpack(arg))
+			activation_count = activation_count + 1
 		end
+	end
+	if activation_count == 0 and event_fn == "activate_scheme" then
+		utils.abort("xr_logic: issue_event: activate_scheme handler not found, active_scheme is '%s'",
+			db.storage[npc:id()].active_scheme)
 	end
 end
 
@@ -541,8 +551,12 @@ function switch_to_section(npc, st, section)
 	if section == nil or section == "" then
 		return false
 	end
-	db.storage[npc:id()]["active_section"] = nil
-	db.storage[npc:id()]["active_scheme"] = nil
+	local active_section = db.storage[npc:id()].active_section
+	if active_section == section then
+		return false
+	end
+	db.storage[npc:id()].active_section = nil
+	db.storage[npc:id()].active_scheme = nil
 	activate_by_section(npc, st.ini, section, false)
 	return true
 end

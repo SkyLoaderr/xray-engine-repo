@@ -21,6 +21,7 @@ class "action_walker_activity" (action_base)
 function action_walker_activity:__init (npc_name, action_name, storage) super(nil, action_name)
 	self.st = storage
 	self.move_mgr = move_mgr.move_mgr(storage.npc)
+	self.was_reset = false
 end
 
 function action_walker_activity:initialize()
@@ -38,8 +39,13 @@ function action_walker_activity:initialize()
 	self:reset_scheme()
 end
 
+function action_walker_activity:activate_scheme()
+	self.was_reset = false
+end
 
 function action_walker_activity:reset_scheme()
+	self.was_reset = true
+
 	--printf("reset_scheme, initialized=%s", utils.to_str(self.initialized))
 
 	--self.object:clear_animations()
@@ -59,6 +65,11 @@ end
 
 function action_walker_activity:execute()
 	action_base.execute(self)
+	
+        if not self.was_reset then
+                self:reset_scheme()
+        end
+	
 	self.move_mgr:update()
 	if self.move_mgr:arrived_to_first_waypoint() then
 		if xr_logic.try_switch_to_another_section(self.object, self.st, db.actor) then
