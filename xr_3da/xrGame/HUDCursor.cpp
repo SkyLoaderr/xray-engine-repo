@@ -15,6 +15,8 @@
 #define C_SIZE		0.025f
 #define NEAR_LIM	0.5f
 
+#define SHOW_INFO_SPEED	1.f
+#define HIDE_INFO_SPEED	10.f
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -24,6 +26,7 @@ CHUDCursor::CHUDCursor	()
 {    
 	hShader				= 0;
 	hVS					= 0;
+	fuzzyShowInfo		= 0.f;
 	OnDeviceCreate		();
 	
 	Device.seqDevCreate.Add		(this);
@@ -49,6 +52,8 @@ void CHUDCursor::OnDeviceDestroy()
 	Device.Shader.Delete		(hShader);
 	Device.Shader._DeleteVS		(hVS);
 }
+
+IC u32 subst_alpha(u32 val, u8 a){ return (val&0x00FFFFFF)|(a<<24); }
 
 void CHUDCursor::Render()
 {
@@ -88,17 +93,29 @@ void CHUDCursor::Render()
 	if (psHUD_Flags&HUD_CROSSHAIR_DIST){
 		F->SetColor	(C);
 		F->SetSize	(di_size*1.5f);
-		F->Out		(PT.p.x,PT.p.y+di_size*2,"~%3.1f",dist);
+		F->SetAligment(CGameFont::alCenter);
+		F->Out		(PT.p.x,PT.p.y+di_size*2,"%3.1f",dist);
 	}
-	if (RQ.O && (psHUD_Flags&HUD_INFO))
+	if (psHUD_Flags&HUD_INFO)
 	{ 
-		CEntityAlive*	E = dynamic_cast<CEntityAlive*>(RQ.O);
-		if (E && (E->g_Health()>0)) 
-		{
-			F->SetColor	(C);
-			F->SetSize	(0.02f);
-			F->Out		(PT.p.x,PT.p.y+di_size*4,"~%s",RQ.O->cName());
+		if (RQ.O){
+			CEntityAlive*	E = dynamic_cast<CEntityAlive*>(RQ.O);
+			if (E && (E->g_Health()>0)) 
+			{
+				if (fuzzyShowInfo>0.5f){
+					subst_alpha	(C,u8(255.f*(fuzzyShowInfo-0.5f)*2.f));
+					F->SetColor	(C);
+					F->SetSize	(0.02f);
+					F->SetAligment(CGameFont::alCenter);
+					F->Out		(PT.p.x,PT.p.y+di_size*4,"%s",RQ.O->cName());
+				}else{
+					fuzzyShowInfo += SHOW_INFO_SPEED*Device.fTimeDelta;
+				}
+			}
+		}else{
+			fuzzyShowInfo -= HIDE_INFO_SPEED*Device.fTimeDelta;
 		}
+		clamp(fuzzyShowInfo,0.f,1.f);
 	}
 
 	// actual rendering
