@@ -45,7 +45,9 @@ void	CRenderTarget::phase_combine	()
 
 	// Perform blooming filter and distortion if needed
 	phase_bloom			( );
-	if (RImplementation.b_distortion)	phase_distortion	();
+	BOOL	bDistort	= RImplementation.b_distortion;
+	if (0==RImplementation.mapDistort.size())	bDistort	= FALSE;
+	if (bDistort)		phase_distortion		();
 
 	// Combine everything + perform AA
 	u_setrt				( Device.dwWidth,Device.dwHeight,HW.pBaseRT,NULL,NULL,HW.pBaseZB);
@@ -80,8 +82,8 @@ void	CRenderTarget::phase_combine	()
 		RCache.Vertex.Unlock		(4,g_aa_AA->vb_stride);
 
 		// Draw COLOR
-		if (ps_r2_ls_flags.test(R2FLAG_AA))			RCache.set_Element	(s_combine->E[1]);
-		else										RCache.set_Element	(s_combine->E[2]);
+		if (ps_r2_ls_flags.test(R2FLAG_AA))			RCache.set_Element	(s_combine->E[bDistort?3:1]);
+		else										RCache.set_Element	(s_combine->E[bDistort?4:2]);
 		RCache.set_c				("e_barrier",	ps_r2_aa_barier.x,	ps_r2_aa_barier.y,	ps_r2_aa_barier.z,	0);
 		RCache.set_c				("e_weights",	ps_r2_aa_weight.x,	ps_r2_aa_weight.y,	ps_r2_aa_weight.z,	0);
 		RCache.set_c				("e_kernel",	ps_r2_aa_kernel,	ps_r2_aa_kernel,	ps_r2_aa_kernel,	0);
