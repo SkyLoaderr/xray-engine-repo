@@ -482,7 +482,7 @@ void CPHJoint::SetLimits(const float low, const float high, const int axis_num)
 	axes[ax].zero=zer;
 	//m2.invert();
 	//axes[ax].zero_transform.set(m2);
-
+	if(bActive)SetLimitsActive(axis_num);
 }
 
 
@@ -628,7 +628,11 @@ SetForce(force,axis_num);
 SetVelocity(velocity,axis_num);
 }
 
-
+void CPHJoint::GetMaxForceAndVelocity(float &force,float &velocity,int axis_num)
+{
+	force=axes[axis_num].force;
+	velocity=axes[axis_num].velocity;
+}
 
 
 void CPHJoint::SetForce		(const float force,const int axis_num){
@@ -668,6 +672,7 @@ void CPHJoint::SetForce		(const float force,const int axis_num){
 	SetForceActive(ax);
 	}
 }
+
 
 void CPHJoint::SetForceActive		(const int axis_num)
 {
@@ -784,6 +789,70 @@ void CPHJoint::SetVelocityActive(const int axis_num)
 	}
 }
 
+void CPHJoint::SetLimitsActive(int axis_num)
+{
+	switch(eType){
+
+						case hinge2:
+									switch(axis_num)
+											{
+											case -1:
+											case 0:
+											case 1:
+												dJointSetHinge2Param(m_joint,dParamLoStop ,axes[0].low);
+												dJointSetHinge2Param(m_joint,dParamHiStop,axes[1].high);break;
+											}
+									break;
+						case universal_hinge:		;
+						case shoulder1:				;
+						case shoulder2:				;
+						case car_wheel:				;
+						case welding:				; 
+						case ball:					break;
+						case hinge:					dJointSetHingeParam(m_joint,dParamLoStop ,axes[0].low);
+													dJointSetHingeParam(m_joint,dParamHiStop ,axes[0].high);
+							break;
+
+
+
+						case full_control:
+							switch(axis_num){
+						case -1:
+							dJointSetAMotorParam(m_joint1,dParamLoStop ,axes[0].low);
+							dJointSetAMotorParam(m_joint1,dParamLoStop ,axes[1].low);
+							dJointSetAMotorParam(m_joint1,dParamLoStop2 ,axes[2].low);
+							dJointSetAMotorParam(m_joint1,dParamHiStop2 ,axes[0].high);
+							dJointSetAMotorParam(m_joint1,dParamHiStop3 ,axes[1].high);
+							dJointSetAMotorParam(m_joint1,dParamHiStop3 ,axes[2].high);
+						case 0:dJointSetAMotorParam(m_joint1,dParamLoStop ,axes[0].low);
+							   dJointSetAMotorParam(m_joint1,dParamHiStop ,axes[0].high);
+								break;
+						case 1:dJointSetAMotorParam(m_joint1,dParamLoStop2 ,axes[1].low);
+								dJointSetAMotorParam(m_joint1,dParamHiStop2 ,axes[1].high);
+								break;
+						case 2:dJointSetAMotorParam(m_joint1,dParamLoStop3 ,axes[2].low);
+								dJointSetAMotorParam(m_joint1,dParamHiStop3 ,axes[2].high);
+								break;
+							}
+							break;
+	}
+}
+
+float CPHJoint::GetAxisAngle(int axis_num)
+{
+	switch(eType){
+						case hinge2:				return dJointGetHinge2Angle1(m_joint);
+						case universal_hinge:		;
+						case shoulder1:				;
+						case shoulder2:				;
+						case car_wheel:				;
+						case welding:				; 
+						case ball:					return dInfinity;
+						case hinge:					return dJointGetHingeAngle(m_joint);
+						case full_control:			return dJointGetAMotorAngle(m_joint1,axis_num);
+					}
+	return dInfinity;
+}
 void CPHJoint::LimitAxisNum(int &axis_num)
 {
 	if(axis_num<-1) 

@@ -212,6 +212,8 @@ public:
 	virtual void 				SetBreakable				(float force, float torque)										  =0;
 virtual CPHJointDestroyInfo*	JointDestroyInfo			()																  =0;
 	virtual void				SetForceAndVelocity			(const float force,const float velocity=0.f,const int axis_num=-1)=0;
+	virtual void				GetMaxForceAndVelocity		(float &force,float &velocity,int axis_num)						  =0;
+	virtual float				GetAxisAngle				(int axis_num)													  =0;
 	virtual dJointID			GetDJoint					()																  =0;
 	virtual void 				GetLimits					(float& lo_limit,float& hi_limit,int axis_num)					  =0;
 	virtual void 				GetAxisDir					(int num,Fvector& axis,eVs& vs)									  =0;

@@ -54,6 +54,7 @@ class CPHJoint: public CPhysicsJoint{
 			void 				LimitAxisNum				(int &axis_num);
 			void 				SetForceActive				(const int axis_num);
 			void 				SetVelocityActive			(const int axis_num);
+			void				SetLimitsActive				(int axis_num);
 			void 				CalcAxis					(int ax_num,Fvector& axis,float& lo,float& hi,const Fmatrix& first_matrix,const Fmatrix& second_matrix);
 			void 				CalcAxis					(int ax_num,Fvector& axis,float& lo,float& hi,const Fmatrix& first_matrix,const Fmatrix& second_matrix,const Fmatrix& rotate);
 	virtual	u16					GetAxesNumber				()																															 ;
@@ -103,6 +104,8 @@ public:
 	virtual void 				GetAxisDir					(int num,Fvector& axis,eVs& vs);
 	virtual void 				GetAxisDirDynamic			(int num,Fvector& axis);
 	virtual void 				GetAnchorDynamic			(Fvector& anchor);
+	virtual void				GetMaxForceAndVelocity		(float &force,float &velocity,int axis_num);
+	virtual float				GetAxisAngle				(int axis_num);
 	virtual void 				Deactivate					();
 			void 				ReattachFirstElement		(CPHElement* new_element);
 			CODEGeom			*&RootGeom					(){return pFirstGeom;}
