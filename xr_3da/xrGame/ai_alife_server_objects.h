@@ -364,6 +364,7 @@ public:
 	};
 
 	#ifdef _EDITOR
+	#include "PropertiesListHelper.h"
 	virtual void FillProp		(LPCSTR pref, PropItemVec& items)
 	{
 		PHelper.CreateU16		(items,	PHelper.PrepareKey(pref, "ALife\\Count"),			&m_wCount,			0,0xff);
