@@ -245,9 +245,6 @@ void CScriptMonster::ProcessScripts()
 
 		m_tpCurrentEntityAction	= l_tpEntityAction;
 
-		if (!xr_strcmp("prisluh",*l_tpEntityAction->m_tAnimationAction.m_caAnimationToPlay)) {
-			l_tpEntityAction = l_tpEntityAction;
-		}
 		if (!l_tpEntityAction->CheckIfActionCompleted())
 			break;
 
