@@ -49,7 +49,7 @@ CCameraManager::CCameraManager()
 	fAspect			= 1.f;
 
 	unaffected_PP.blur = unaffected_PP.gray = unaffected_PP.duality.h = unaffected_PP.duality.v = 0;
-	unaffected_PP.noise.intensity=0; unaffected_PP.noise.grain = 0; unaffected_PP.noise.fps = 0;
+	unaffected_PP.noise.intensity=0; unaffected_PP.noise.grain = 0.2f;	unaffected_PP.noise.fps = 0;
 	unaffected_PP.color_base.set	(0,0,0);
 	unaffected_PP.color_gray.set	(0,0,0);
 	unaffected_PP.color_add.set		(0,0,0);
