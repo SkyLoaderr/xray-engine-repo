@@ -104,15 +104,13 @@ public:
 
 	// Main 
 	IC		void					set_Frustum				(CFrustum*	O	)				{ VERIFY(O);	View = O;			}
-	IC		void					set_Transform			(Fmatrix*	M	)				{ VERIFY(M);	val_pTransform = M;	}
+	virtual void					set_Transform			(Fmatrix*	M	);
 	virtual void					set_HUD					(BOOL 		V	);
-	virtual BOOL					get_HUD					();
 	virtual void					set_Invisible			(BOOL 		V	);
-	virtual BOOL					get_Invisible			();
-	virtual void					flush					()								= 0;	
-	virtual void					set_Object				(IRenderable*		O	)		= 0;
-	virtual void					add_Visual				(IRender_Visual*	V	)		= 0;	// add visual leaf	(no culling performed at all)
-	virtual void					add_Geometry			(IRender_Visual*	V	)		= 0;	// add visual(s)	(all culling performed)
+	virtual void					flush					()											= 0;	
+	virtual void					set_Object				(IRenderable*		O	)					= 0;
+	virtual void					add_Visual				(IRender_Visual*	V	)					= 0;	// add visual leaf	(no culling performed at all)
+	virtual void					add_Geometry			(IRender_Visual*	V	)					= 0;	// add visual(s)	(all culling performed)
 	virtual void					add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB::TRI* T)				= 0;
 
 	virtual IBlender*				blender_create			(CLASS_ID cls)								= 0;

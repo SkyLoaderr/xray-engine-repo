@@ -43,10 +43,9 @@ public:
 	xr_vector<int>												lstLODgroups;
 	xr_vector<ISpatial*>										lstRenderables;
 public:
+	virtual		void					set_Transform			(Fmatrix*	M	)				{ VERIFY(M);	val_pTransform = M;	}
 	virtual		void					set_HUD					(BOOL 		V	)				{ val_bHUD		= V;				}
-	virtual		BOOL					get_HUD					()								{ return val_bHUD;					}
 	virtual		void					set_Invisible			(BOOL 		V	)				{ val_bInvisible= V;				}
-	virtual		BOOL					get_Invisible			()								{ return val_bInvisible;			}
 public:
 	void		r_dsgraph_insert_dynamic						(IRender_Visual	*pVisual, Fvector& Center);
 	void		r_dsgraph_insert_static							(IRender_Visual	*pVisual);
