@@ -672,8 +672,8 @@ function Projector:process ()
 	   self.first_call = false
     end	
 
-	if self.projector:action () then return end
---    if self.time - game.time () > 0 then return end
+--	if self.projector:action () then return end
+    if self.time - game.time () > 0 then return end
 
 
 	local point
@@ -694,7 +694,7 @@ function Projector:process ()
 
 	printf ("Set projector target  x:%f, y:%f, z:%f", point.x, point.y, point.z)
 	reset_action (self.projector, self.script)
-	action (self.projector, look (point, self.speedh, self.speedv), cond (cond.look_end))
+	action (self.projector, look (point, self.speedh, self.speedv))
 
 	self.time = game.time () + 5000
 	
