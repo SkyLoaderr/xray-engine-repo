@@ -50,13 +50,17 @@ IC	void CSolverPathManager::setup					(
 TEMPLATE_SPECIALIZATION
 IC	bool CSolverPathManager::is_goal_reached		(const _index_type &vertex_id) const
 {
+#ifdef INTENSIVE_MEMORY_USAGE
 	return					(vertex_id.includes(goal_node_index));
+#else
+	return					(vertex_id.includes(goal_node_index,graph->current_state()));
+#endif
 }
 
 TEMPLATE_SPECIALIZATION
 IC	const _index_type &CSolverPathManager::get_value(const_iterator &i) const
 {
-	return					(graph->value(best_node_index,i));
+	return					(graph->value(*best_node_index,i));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -69,7 +73,7 @@ TEMPLATE_SPECIALIZATION
 IC	_dist_type CSolverPathManager::evaluate			(const _index_type &node_index1, const _index_type &node_index2, const const_iterator &i) const
 {
 	VERIFY					(graph);
-	return					(graph->get_edge_weight(node_index1,node_index2,i));
+	return					(1);//graph->get_edge_weight(node_index1,node_index2,i));
 }
 
 TEMPLATE_SPECIALIZATION

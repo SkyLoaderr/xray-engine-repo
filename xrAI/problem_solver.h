@@ -10,6 +10,8 @@
 
 #include "operator_abstract.h"
 
+//#define INTENSIVE_MEMORY_USAGE
+
 template <
 	typename _condition_type,
 	typename _value_type,
@@ -47,7 +49,7 @@ public:
 	IC		const CState		&target_state		() const;
 	IC		const OPERATOR_MAP	&operators			() const;
 	// graph interface
-	IC		u8					get_edge_weight		(const _index_type	&vertex_index0,	const _index_type	vertex_index1,	const const_iterator	&i) const;
+	IC		u8					get_edge_weight		(const _index_type	&vertex_index0,	const _index_type &vertex_index1,	const const_iterator	&i) const;
 	IC		bool				is_accessible		(const _index_type	&vertex_index) const;
 	IC		const _index_type	&value				(const _index_type	&vertex_index,	const_iterator		&i) const;
 	IC		void				begin				(const _index_type	&vertex_index,	const_iterator		&b,				const_iterator			&e) const;

@@ -22,13 +22,14 @@ typedef u32																		_iteration_type;
 typedef CSProblemSolver::_edge_type												_edge_type;
 typedef CSProblemSolver::CState													_index_type;
 typedef SBaseParameters<_dist_type,_index_type,_iteration_type>	CBaseParameters;
+CRandom								random;
 
 CState random_condition(int _max = 100, int _min = 20, int __max = 2, int __min = 1)
 {
 	CState		result;
 	for (u32 i=0; i<8; ++i)
-		if (::Random.randI(_max) < _min)
-			result.add_condition(CCondition(u32(1) << i,::Random.randI(__max) < __min ? 1 : 0));
+		if (random.randI(_max) < _min)
+			result.add_condition(CCondition(u32(1) << i,random.randI(__max) < __min ? 1 : 0));
 	return		(result);
 }
 
@@ -79,28 +80,40 @@ void test_goap	()
 	u32	max_length						= 0;
 	u32 best_test						= 0;
 	u32 jj								= 0;
-//	::Random.seed						(u32(CPU::GetCycleCount()));
+	random.seed							(0);//u32(CPU::GetCycleCount()));
+	u64 start							= CPU::GetCycleCount();
 	for (u64 ii=0; ; ++ii) {
 		CSProblemSolver					problem_solver;
 		problem_solver.set_current_state(random_condition(100,100,4,1));
+//		problem_solver.set_target_state	(random_condition(100,100,4,3) -= problem_solver.current_state());
 		problem_solver.set_target_state	(random_condition(100,100,4,3));
-		u32						operator_count = ::Random.randI(4,64);
+		u32						operator_count = random.randI(4,8);
 		for (u32 i=0; i<operator_count; ++i)
 			problem_solver.add_operator	(random_operator(),i);
 
 		path.clear						();
+
+//		graph_engine->search			(problem_solver,problem_solver.current_state(),problem_solver.target_state(),&path,CBaseParameters());
+#ifdef INTENSIVE_MEMORY_USAGE
 		graph_engine->search			(problem_solver,problem_solver.current_state(),problem_solver.target_state(),&path,CBaseParameters());
+#else
+		if (ii == 216) {
+			ii = ii;
+		}
+		graph_engine->search			(problem_solver,CState(),problem_solver.target_state(),&path,CBaseParameters());
+#endif
 
 		xr_vector<_edge_type>::iterator	I = path.begin(), B = I;
 		xr_vector<_edge_type>::iterator	E = path.end();
 		
+//		if ((ii != 14602) &&((B == E) || (path.size() <= max_length)))
 		if ((B == E) || (path.size() <= max_length))
 			continue;
 
 		max_length						= path.size();
 		best_test						= jj;
 		
-		Msg								("Problem %5d (try %I64d)",jj,ii);
+		Msg								("Problem %5d (try %I64d, %f sec)",jj,ii,CPU::cycles2seconds*(CPU::GetCycleCount() - start));
 		++jj;
 		show_condition					(problem_solver.current_state());
 		show_condition					(problem_solver.target_state(),1);
@@ -119,11 +132,21 @@ void test_goap	()
 		for ( ; I != E; ++I) {
 			CSProblemSolver::OPERATOR_MAP::const_iterator	i = problem_solver.operators().find(*I);
 			show_operator				(*(*i).second,(*i).first);
+#ifdef INTENSIVE_MEMORY_USAGE
 			VERIFY						((*i).second->applicable(world_state));
 			world_state					= (*i).second->apply(world_state,temp);
+#else
+			VERIFY						((*i).second->applicable(world_state,problem_solver.current_state()));
+			world_state					= (*i).second->apply(world_state,problem_solver.current_state(),temp);
+#endif
 			show_condition				(world_state);
 		}
 
+#ifdef INTENSIVE_MEMORY_USAGE
+		VERIFY							(world_state.includes(problem_solver.target_state()));
+#else
+		VERIFY							(world_state.includes(problem_solver.target_state(),problem_solver.current_state()));
+#endif
 		Msg								("Max solution length : %d (test %d)",max_length,best_test);
 		Msg								("");
 		FlushLog						();

@@ -40,8 +40,8 @@ IC	void CLevelFlooderPathManager::setup			(
 		const _Graph			*_graph,
 		_DataStorage			*_data_storage,
 		xr_vector<_index_type>	*_path,
-		const _index_type		_start_node_index,
-		const _index_type		_goal_node_index,
+		const _index_type		&_start_node_index,
+		const _index_type		&_goal_node_index,
 		const _Parameters		&parameters
 	)
 {
@@ -84,7 +84,7 @@ IC	_dist_type CLevelFlooderPathManager::estimate	(const _index_type &node_index)
 }
 
 TEMPLATE_SPECIALIZATION
-IC	bool CLevelFlooderPathManager::is_accessible	(const _index_type vertex_id) const
+IC	bool CLevelFlooderPathManager::is_accessible	(const _index_type &vertex_id) const
 {
 	if (!inherited::is_accessible(vertex_id))
 		return				(false);
@@ -94,7 +94,7 @@ IC	bool CLevelFlooderPathManager::is_accessible	(const _index_type vertex_id) co
 }
 
 TEMPLATE_SPECIALIZATION
-IC	bool CLevelFlooderPathManager::is_limit_reached	(const _iteration_type	iteration_count) const
+IC	bool CLevelFlooderPathManager::is_limit_reached	(const _iteration_type iteration_count) const
 {
 	VERIFY					(data_storage);
 	return					(

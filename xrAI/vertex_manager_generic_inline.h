@@ -97,7 +97,7 @@ IC	typename CGenericVertexManager::CGraphVertex &CGenericVertexManager::create_v
 	CGraphIndexVertex				index_vertex;
 	index_vertex.m_vertex			= &vertex;
 	vertex.index()					= vertex_id;
-	m_indexes.insert				(std::make_pair(&vertex._manager,index_vertex));
+	m_indexes.insert				(std::make_pair(&vertex._index,index_vertex));
 	return							(vertex);
 }
 

@@ -84,7 +84,7 @@ protected:
 		CVertexManager,
 		CVertexAllocator
 	>														CAlgorithm;
-	typedef CAStar<
+	typedef CDijkstra<
 		_dist_type,
 		CSolverPriorityQueue,
 		CSolverVertexManager,

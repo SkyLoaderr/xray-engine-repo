@@ -27,7 +27,7 @@ TEMPLATE_SPECIALIZATION
 CProblemSolverAbstract::~CProblemSolver					()
 {
 	while (!m_operators.empty())
-		remove_operator((*m_operators.begin()).first);
+		remove_operator		((*m_operators.begin()).first);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -68,49 +68,58 @@ IC	void CProblemSolverAbstract::set_current_operator	(const _edge_type &operator
 {
 	xr_map<_edge_type,COperator>::const_iterator	I = m_operators.find(operator_id);
 	VERIFY					(m_operators.end() != E);
-	m_current_operator		operator_id;
+	m_current_operator		= operator_id;
 }
 
 TEMPLATE_SPECIALIZATION
 IC	const typename CProblemSolverAbstract::CState &CProblemSolverAbstract::current_state	() const
 {
-	return			(m_current_state);
+	return					(m_current_state);
 }
 
 TEMPLATE_SPECIALIZATION
 IC	const typename CProblemSolverAbstract::CState &CProblemSolverAbstract::target_state	() const
 {
-	return			(m_target_state);
+	return					(m_target_state);
 }
 
 TEMPLATE_SPECIALIZATION
-IC	u8	CProblemSolverAbstract::get_edge_weight	(const _index_type &vertex_index0, const _index_type vertex_index1, const const_iterator &i) const
+IC	u8	CProblemSolverAbstract::get_edge_weight	(const _index_type &vertex_index0, const _index_type &vertex_index1, const const_iterator &i) const
 {
-	return				(vertex_index0.weight(vertex_index1));
+#ifdef INTENSIVE_MEMORY_USAGE
+	return					(vertex_index0.weight(vertex_index1));
+#else
+	return					(vertex_index0.weight(vertex_index1,current_state()));
+#endif
 }
 
 TEMPLATE_SPECIALIZATION
 IC	bool CProblemSolverAbstract::is_accessible	(const _index_type &vertex_index) const
 {
-	return				(!vertex_index.conditions().empty());
+	return					(!vertex_index.conditions().empty());
 }
 
 TEMPLATE_SPECIALIZATION
 IC	const typename CProblemSolverAbstract::_index_type &CProblemSolverAbstract::value(const _index_type &vertex_index, const_iterator &i) const
 {
+#ifdef INTENSIVE_MEMORY_USAGE
 	if ((*i).second->applicable(vertex_index))
-		return			((*i).second->apply(vertex_index,m_temp));
+		return				((*i).second->apply(vertex_index,m_temp));
+#else
+	if ((*i).second->applicable(vertex_index,current_state()))
+		return				((*i).second->apply(vertex_index,current_state(),m_temp));
+#endif
 	else {
-		m_temp.clear	();
-		return			(m_temp);
+		m_temp.clear		();
+		return				(m_temp);
 	}
 }
 
 TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::begin			(const _index_type &vertex_index, const_iterator &b, const_iterator &e) const
 {
-	b					= m_operators.begin();
-	e					= m_operators.end();
+	b						= m_operators.begin();
+	e						= m_operators.end();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -121,7 +130,7 @@ IC	void CProblemSolverAbstract::solve			()
 TEMPLATE_SPECIALIZATION
 IC	const typename CProblemSolverAbstract::OPERATOR_MAP &CProblemSolverAbstract::operators	() const
 {
-	return				(m_operators);
+	return					(m_operators);
 }
 
 #undef TEMPLATE_SPECIALIZATION

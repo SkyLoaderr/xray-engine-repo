@@ -43,8 +43,8 @@ IC	void CGenericPathManager::setup					(
 		const _Graph			*_graph,
 		_DataStorage			*_data_storage,
 		xr_vector<_index_type>	*_path,
-		const _index_type		_start_node_index,
-		const _index_type		_goal_node_index,
+		const _index_type		&_start_node_index,
+		const _index_type		&_goal_node_index,
 		const _Parameters		&params
 	)
 {
@@ -83,7 +83,7 @@ IC	void CGenericPathManager::create_path			(T &vertex)
 }
 
 TEMPLATE_SPECIALIZATION
-IC	_index_type	CGenericPathManager::start_node		() const
+IC	const _index_type &CGenericPathManager::start_node		() const
 {
 	return					(start_node_index);
 }
@@ -120,16 +120,16 @@ IC	bool CGenericPathManager::is_metric_euclidian	() const
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CGenericPathManager::begin					(const _index_type vertex_id, const_iterator &begin, const_iterator &end)
+IC	void CGenericPathManager::begin					(const _index_type &vertex_id, const_iterator &begin, const_iterator &end)
 {
-	best_node_index			= vertex_id;
+	best_node_index			= &vertex_id;
 	graph->begin			(vertex_id,begin,end);
 }
 
 TEMPLATE_SPECIALIZATION
 IC	const _index_type CGenericPathManager::get_value(const_iterator &i) const
 {
-	return					(graph->value(best_node_index,i));
+	return					(graph->value(*best_node_index,i));
 }
 
 TEMPLATE_SPECIALIZATION

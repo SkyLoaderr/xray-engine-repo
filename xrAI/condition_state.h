@@ -16,6 +16,7 @@ template <
 >
 class CConditionState {
 protected:
+	typedef CConditionState<T2,T3>				CSConditionState;
 	typedef COperatorConditionAbstract<T2,T3>	COperatorCondition;
 
 protected:
@@ -28,9 +29,12 @@ public:
 	IC	const xr_vector<COperatorCondition>		&conditions			() const;
 	IC	void									add_condition		(const COperatorCondition &condition);
 	IC	u8										weight				(const CConditionState &condition) const;
+	IC	u8										weight				(const CConditionState &condition, const CConditionState &start) const;
 	IC	bool									operator<			(const CConditionState &condition) const;
 	IC	bool									includes			(const CConditionState &condition) const;
+	IC	bool									includes			(const CConditionState &condition, const CConditionState &start) const;
 	IC	void									clear				();
+	IC	CSConditionState						&operator-=			(const CConditionState &condition);
 };
 
 #include "condition_state_inline.h"

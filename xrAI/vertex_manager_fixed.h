@@ -20,12 +20,12 @@ struct CVertexManagerFixed {
 		template<typename T2>
 		struct _vertex : public T1<T2> {
 			typedef _index_type _index_type;
-			_index_type	_manager  : 8*sizeof(_index_type) - mask;
+			_index_type	_index  : 8*sizeof(_index_type) - mask;
 			_index_type	_opened : mask;
 
 			IC	_index_type index() const
 			{
-				return	(_manager);
+				return	(_index);
 			}
 
 			IC	_index_type opened() const

@@ -88,7 +88,7 @@ IC	typename CFixedVertexManager::CGraphVertex &CFixedVertexManager::create_verte
 	VERIFY							(vertex_id < m_max_node_count);
 	m_indexes[vertex_id].m_vertex	= &vertex;
 	m_indexes[vertex_id].m_path_id	= m_current_path_id;
-	vertex._manager					= vertex_id;
+	vertex._index					= vertex_id;
 	return							(vertex);
 }
 

@@ -40,8 +40,8 @@ IC	void CLevelStraightLinePathManager::setup		(
 			const _Graph			*_graph,
 			_DataStorage			*_data_storage,
 			xr_vector<_index_type>	*_path,
-			const _index_type		_start_node_index,
-			const _index_type		_goal_node_index,
+			const _index_type		&_start_node_index,
+			const _index_type		&_goal_node_index,
 			_Parameters				&parameters
 		)
 {
@@ -69,7 +69,7 @@ IC	void CLevelStraightLinePathManager::create_path	(T &vertex)
 	
 	xr_vector<_index_type>::iterator	I = path->begin();
 	xr_vector<_index_type>::iterator	E = path->end();
-	_index_type							dwNode = *I;
+	_index_type							&dwNode = *I;
 	for ( ++I; I != E; ++I) {
 		u32								vertex_id = graph->check_position_in_direction(dwNode,tPosition,graph->vertex_position(*I));
 		if (graph->valid_vertex_id(vertex_id))

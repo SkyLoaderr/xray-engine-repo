@@ -39,8 +39,8 @@ IC	void CLevelPathManager::setup			(
 		const _Graph			*_graph,
 		_DataStorage			*_data_storage,
 		xr_vector<_index_type>	*_path,
-		const _index_type		_start_node_index,
-		const _index_type		_goal_node_index,
+		const _index_type		&_start_node_index,
+		const _index_type		&_goal_node_index,
 		const _Parameters		&parameters
 	)
 {
@@ -118,20 +118,20 @@ IC	bool CLevelPathManager::is_limit_reached(const _iteration_type	iteration_coun
 }
 
 TEMPLATE_SPECIALIZATION
-IC	bool CLevelPathManager::is_accessible	(const _index_type vertex_id) const
+IC	bool CLevelPathManager::is_accessible	(const _index_type &vertex_id) const
 {
 	VERIFY					(graph);
 	return					(graph->valid_vertex_id(vertex_id));
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CLevelPathManager::begin			(const _index_type vertex_id, const_iterator &begin, const_iterator &end)
+IC	void CLevelPathManager::begin			(const _index_type &vertex_id, const_iterator &begin, const_iterator &end)
 {
 	graph->begin			(best_node,begin,end);
 }
 
 TEMPLATE_SPECIALIZATION
-IC	u32	 CLevelPathManager::get_value		(const_iterator &i) const
+IC	const _index_type CLevelPathManager::get_value		(const_iterator &i) const
 {
 	return					(graph->value(best_node,i));
 }

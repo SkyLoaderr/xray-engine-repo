@@ -26,7 +26,7 @@ protected:
 	_dist_type				max_range;
 	_iteration_type			max_iteration_count;
 	u32						max_visited_node_count;
-	_index_type				best_node_index;
+	const _index_type		*best_node_index;
 
 public:
 	typedef	typename _Graph::const_iterator const_iterator;
@@ -34,18 +34,18 @@ public:
 						CPathManagerGeneric	();
 	virtual				~CPathManagerGeneric();
 	IC		void		init				();
-	IC		void		setup				(const _Graph *graph, _DataStorage *_data_storage, xr_vector<_index_type> *_path, const _index_type	_start_node_index, const _index_type _goal_node_index, const _Parameters &params);
+	IC		void		setup				(const _Graph *graph, _DataStorage *_data_storage, xr_vector<_index_type> *_path, const _index_type	&_start_node_index, const _index_type &_goal_node_index, const _Parameters &params);
 	IC		_dist_type	evaluate			(const _index_type &node_index1, const _index_type &node_index2, const const_iterator &i) const;
 	IC		_dist_type	estimate			(const _index_type &vertex_id) const;
 	template <typename T>
 	IC		void		create_path			(T &vertex);
-	IC		_index_type	start_node			() const;
+	IC		const _index_type &start_node	() const;
 	IC		bool		is_goal_reached		(const _index_type &vertex_id) const;
-	IC		bool		is_limit_reached	(const _iteration_type	iteration_count) const;
+	IC		bool		is_limit_reached	(const _iteration_type iteration_count) const;
 	IC		bool		is_accessible		(const _index_type &vertex_id) const;
 	IC		bool		is_metric_euclidian	() const;
-	IC		void		begin				(const _index_type vertex_id, const_iterator &begin, const_iterator &end);
-	IC		const _index_type	get_value	(const_iterator &i) const;
+	IC		void		begin				(const _index_type &vertex_id, const_iterator &begin, const_iterator &end);
+	IC		const _index_type get_value		(const_iterator &i) const;
 	IC		void		finalize			();
 	IC		const const_iterator &edge		(const_iterator &i) const;
 };

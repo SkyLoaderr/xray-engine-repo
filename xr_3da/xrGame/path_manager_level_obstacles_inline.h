@@ -39,8 +39,8 @@ IC	void CLevelObstaclesPathManager::setup			(
 			const _Graph			*_graph,
 			_DataStorage			*_data_storage,
 			xr_vector<_index_type>	*_path,
-			const _index_type		_start_node_index,
-			const _index_type		_goal_node_index,
+			const _index_type		&_start_node_index,
+			const _index_type		&_goal_node_index,
 			const _Parameters		&parameters
 		)
 {
@@ -56,7 +56,7 @@ IC	void CLevelObstaclesPathManager::setup			(
 }
 
 TEMPLATE_SPECIALIZATION
-IC	bool CLevelObstaclesPathManager::is_accessible	(const _index_type vertex_id) const
+IC	bool CLevelObstaclesPathManager::is_accessible	(const _index_type &vertex_id) const
 {
 	VERIFY					(graph);
 	return					(graph->valid_vertex_id(vertex_id) && (!m_avoid_dynamic_obstacles || graph->is_accessible(vertex_id)));

@@ -32,8 +32,10 @@ public:
 	IC		const xr_vector<COperatorCondition>	&effects			() const;
 	IC		void								add_condition		(const COperatorCondition &condition);
 	IC		void								add_effect			(const COperatorCondition &effect);
+	virtual bool								applicable			(const CSConditionState &condition, const CSConditionState &start) const;
 	virtual bool								applicable			(const CSConditionState &condition) const;
 	virtual const CSConditionState				&apply				(const CSConditionState &condition, CSConditionState &result) const;
+	virtual const CSConditionState				&apply				(const CSConditionState &condition, const CSConditionState &start, CSConditionState &result) const;
 	virtual void								initialize			();
 	virtual void								execute				();
 	virtual void								finalize			();

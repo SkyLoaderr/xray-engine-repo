@@ -19,17 +19,17 @@ struct CVertexManagerGeneric {
 		template<typename T2>
 		struct _vertex : public T1<T2> {
 			typedef _index_type _index_type;
-			_index_type	_manager;
+			_index_type	_index;
 			bool		_opened;
 
 			IC	const _index_type &index() const
 			{
-				return	(_manager);
+				return	(_index);
 			}
 
 			IC	_index_type &index()
 			{
-				return	(_manager);
+				return	(_index);
 			}
 
 			IC	bool &opened()

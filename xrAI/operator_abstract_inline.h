@@ -34,6 +34,27 @@ CAbstractOperator::~COperatorAbstract	()
 }
 
 TEMPLATE_SPECIALIZATION
+IC	void CAbstractOperator::initialize	()
+{
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CAbstractOperator::execute		()
+{
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CAbstractOperator::finalize	()
+{
+}
+
+TEMPLATE_SPECIALIZATION
+IC	bool CAbstractOperator::completed	() const
+{
+	return					(true);
+}
+
+TEMPLATE_SPECIALIZATION
 IC	u32	CAbstractOperator::priority			() const
 {
 	return				(m_priority);
@@ -80,6 +101,54 @@ IC	bool CAbstractOperator::applicable		(const CSConditionState &condition) const
 }
 
 TEMPLATE_SPECIALIZATION
+IC	bool CAbstractOperator::applicable		(const CSConditionState &condition, const CSConditionState &start) const
+{
+	xr_vector<COperatorCondition>::const_iterator	i = conditions().begin();
+	xr_vector<COperatorCondition>::const_iterator	e = conditions().end();
+	xr_vector<COperatorCondition>::const_iterator	I = condition.conditions().begin();
+	xr_vector<COperatorCondition>::const_iterator	E = condition.conditions().end();
+	xr_vector<COperatorCondition>::const_iterator	J = start.conditions().begin();
+	xr_vector<COperatorCondition>::const_iterator	EE = start.conditions().end();
+	for ( ; (I != E) && (i != e); )
+		if ((*I).condition() < (*i).condition())
+			++I;
+		else
+			if ((*I).condition() > (*i).condition()) {
+				while ((J != EE) && ((*J).condition() < (*i).condition()))
+					++J;
+				if ((J != EE) && ((*J).condition() == (*i).condition())) {
+					if ((*J).value() != (*i).value())
+						return	(false);
+					++J;
+				}
+				++i;
+			}
+			else {
+				if ((*I).value() != (*i).value())
+					return	(false);
+				++I;
+				++i;
+			}
+
+	if (i == e)
+		return				(true);
+
+	for ( ; (J != EE) && (i != e); )
+		if ((*J).condition() < (*i).condition())
+			++J;
+		else
+			if ((*J).condition() > (*i).condition())
+				++i;
+			else {
+				if ((*J).value() != (*i).value())
+					return	(false);
+				++J;
+				++i;
+			}
+	return					(true);
+}
+
+TEMPLATE_SPECIALIZATION
 IC	const typename CAbstractOperator::CSConditionState &CAbstractOperator::apply	(const CSConditionState &condition, CSConditionState &result) const
 {
 	result.clear			();
@@ -115,24 +184,82 @@ IC	const typename CAbstractOperator::CSConditionState &CAbstractOperator::apply	
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CAbstractOperator::initialize	()
+IC	const typename CAbstractOperator::CSConditionState &CAbstractOperator::apply	(const CSConditionState &condition, const CSConditionState &start, CSConditionState &result) const
 {
-}
+	result.clear			();
+	bool					changed = false;
+	xr_vector<COperatorCondition>::const_iterator	i = effects().begin();
+	xr_vector<COperatorCondition>::const_iterator	e = effects().end();
+	xr_vector<COperatorCondition>::const_iterator	I = condition.conditions().begin();
+	xr_vector<COperatorCondition>::const_iterator	E = condition.conditions().end();
+	xr_vector<COperatorCondition>::const_iterator	J = start.conditions().begin();
+	xr_vector<COperatorCondition>::const_iterator	EE = start.conditions().end();
+	for ( ; (I != E) && (i != e); )
+		if ((*I).condition() < (*i).condition()) {
+			result.add_condition(*I);
+			++I;
+		}
+		else
+			if ((*I).condition() > (*i).condition()) {
+				while ((J != EE) && ((*J).condition() < (*i).condition()))
+					++J;
+				if ((J != EE) && ((*J).condition() == (*i).condition())) {
+					if ((*J).value() != (*i).value()) {
+						result.add_condition(*i);
+						changed	= true;
+					}
+					++J;
+				}
+				++i;
+			}
+			else {
+				if ((*I).value() == (*i).value())
+					result.add_condition(*I);
+				else {
+					while ((J != EE) && ((*J).condition() < (*i).condition()))
+						++J;
+					if ((J != EE) && ((*J).condition() == (*i).condition())) {
+						if ((*J).value() != (*i).value()) {
+							result.add_condition(*i);
+							changed	= true;
+						}
+						++J;
+					}
+				}
+				++I;
+				++i;
+			}
 
-TEMPLATE_SPECIALIZATION
-IC	void CAbstractOperator::execute		()
-{
-}
+	if (i == e) {
+		if (!changed) {
+			result.clear	();
+			return			(result);
+		}
+		for ( ; (I != E); ++I)
+			result.add_condition(*I);
+		return				(result);
+	}
 
-TEMPLATE_SPECIALIZATION
-IC	void CAbstractOperator::finalize	()
-{
-}
-
-TEMPLATE_SPECIALIZATION
-IC	bool CAbstractOperator::completed	() const
-{
-	return					(true);
+	for ( ; (J != EE) && (i != e); )
+		if ((*J).condition() < (*i).condition())
+			++J;
+		else
+			if ((*J).condition() > (*i).condition()) {
+				result.add_condition(*i);
+				changed		= true;
+				++i;
+			}
+			else {
+				if ((*J).value() != (*i).value()) {
+					result.add_condition(*i);
+					changed	= true;
+				}
+				++J;
+				++i;
+			}
+	if (!changed)
+		result.clear		();
+	return					(result);
 }
 
 #undef TEMPLATE_SPECIALIZATION
