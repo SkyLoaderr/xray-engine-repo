@@ -149,7 +149,11 @@ void	CEventAPI::Defer(LPCSTR N, u64 P1, u64 P2)
 #ifdef DEBUG
 void msParse			(LPCSTR c)
 {
-	if ((0==stricmp(c,"quit")) || (0==stricmp(c,"exit"))) 
+	if (0==stricmp(c,"exit")) 
+	{
+		Console->Execute	("quit");
+	}
+	if (0==stricmp(c,"quit"))
 	{
 		TerminateProcess	(GetCurrentProcess(),0);
 		Console->Execute	("quit");
