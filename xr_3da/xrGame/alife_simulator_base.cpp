@@ -143,6 +143,7 @@ CSE_Abstract *CALifeSimulatorBase::spawn_item	(LPCSTR section, const Fvector &po
 	dynamic_object->m_tSpawnID	= u16(-1);
 	register_object				(dynamic_object,true);
 
+//	Msg							("LSS : SPAWN : [%s],[%s], level %s",*dynamic_object->s_name,dynamic_object->name_replace(),*ai().game_graph().header().level(ai().game_graph().vertex(dynamic_object->m_tGraphID)->level_id()).name());
 	return						(dynamic_object);
 }
 
