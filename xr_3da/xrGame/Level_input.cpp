@@ -79,6 +79,8 @@ void CLevel::IR_OnKeyboardPress(int key)
 	}
 #ifdef DEBUG
 	case DIK_F9:
+		ai().level_graph().set_start_point();
+		ai().level_graph().compute_path();
 		return;
 	case DIK_F10:
 		ai().level_graph().set_start_point();
