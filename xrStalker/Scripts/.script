@@ -111,7 +111,127 @@ end
 
 
 
--- для устройства артефактов
---function artifact_merge()
---	log	("artifact merge in global space!")
---end
+--------------------------------------------------
+-- Класс LUA реализующий Finite State Machine
+-- для управления персонажами
+--------------------------------------------------
+class 'FSM'
+
+-- 	инициализация путем задания объекта Non-Player Character
+function FSM:__init(script_name, npc_obj)
+	-- указатель на подконтрольный NPC
+	self.npc = npc_obj
+	-- строка - имя скрипта, который запускает игру
+	self.script_name = script_name
+	-- матрица, задающая граф переходов состояний
+	-- реализуется как двумерная таблица
+	self.transition_matrix = {[0] = {}}
+	-- номер текущего состояния
+	self.current_state = 0
+
+	-- флаг того, что машина включена
+	self.machine_running = true
+
+	printf("inialization FSM for NPC %s", self.npc:name())
+end
+
+function FSM:is_running()
+	return self.machine_running
+end
+
+function FSM:start()
+	printf("starting FSM for %s", self.npc:name())
+	self.machine_running = true
+end
+
+function FSM:stop()
+	printf("stoping FSM for %s", self.npc:name())
+	self.machine_running = false
+	self:reset_script_control()
+end
+
+
+-- 	добавление указателя на булеву
+-- 	функцию условия перехода
+function FSM:set_transition(from_state_num, to_state_num, cond_func)
+	printf("in setting transition %d, %d ", from_state_num, to_state_num)
+
+	if self.transition_matrix[from_state_num] == nil then
+	   self.transition_matrix[from_state_num] = {[to_state_num] = cond_func}
+	else
+	   self.transition_matrix[from_state_num][to_state_num] = cond_func
+	end
+end
+
+-- единичная проверка FSM
+function FSM:run()
+	local transition_vector = self.transition_matrix[self.current_state]
+	table.foreach(transition_vector, 
+				  function(to_state_num, cond_func) 
+						if cond_func(self.npc, self) == true then
+							printf("transition from %d to %d", self.current_state, to_state_num)
+
+							if to_state_num == 0 then 
+								self:reset_script_control()
+							end
+
+							if  self.current_state == 0 then 
+								self:set_script_control()
+							end
+				
+							self.current_state = to_state_num
+							return true
+						end
+						return nil
+				  end)
+end
+
+
+-- запуск бесконечного цикла FSM
+function FSM:run_loop()
+	printf("running FSM loop for NPC %s", self.npc:name())
+
+	while self:is_running() do
+		local transition_vector = self.transition_matrix[self.current_state]
+		table.foreach(transition_vector, 
+					  function(to_state_num, cond_func) 
+							if cond_func(self.npc, self) == true then
+								printf("transition from %d to %d", self.current_state, to_state_num)
+
+								if to_state_num == 0 then 
+									self:reset_script_control()
+								end
+
+								if  self.current_state == 0 then 
+									self:set_script_control()
+								end
+				
+								self.current_state = to_state_num
+								return true
+							end
+							return nil
+					  end)
+		wait()
+	end
+end
+
+-- взятие под контроль скрипта NPC (переход из нулевого состояния)
+function FSM:set_script_control()
+	self.npc:script(true, self.script_name)
+end
+
+-- отпускание из под контроля скрипта NPC (переход в нулевое состояние)
+function FSM:reset_script_control()
+	self.npc:script(false, self.script_name)
+end
+
+--------------------------------------------------
+-- end of  class 'FSM'
+--------------------------------------------------
+
+
+
+
+
+
+
