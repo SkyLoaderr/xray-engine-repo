@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+#include "..\render.h"
 #include "..\igame_persistent.h"
 #include "..\environment.h"
 
@@ -417,7 +418,7 @@ void	R_dsgraph_structure::r_dsgraph_render_sorted	()
 
 //////////////////////////////////////////////////////////////////////////
 // sub-space rendering
-void	R_dsgraph_structure::r_dsgraph_render_subspace	(CSector* _sector, Fmatrix& mCombined, Fvector& _cop, BOOL _dynamic	)
+void	R_dsgraph_structure::r_dsgraph_render_subspace	(IRender_Sector* _sector, Fmatrix& mCombined, Fvector& _cop, BOOL _dynamic	)
 {
 	R_ASSERT						(_sector);
 
