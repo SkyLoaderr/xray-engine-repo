@@ -855,6 +855,9 @@ void CUIInventoryWnd::DropItem()
 	(dynamic_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
 										DetachChild(m_pCurrentDragDropItem);
 
+	//-----------------------------------------------------------------------
+	SendEvent_ItemDrop(m_pCurrentItem);
+	//-----------------------------------------------------------------------
 	SetCurrentItem(NULL);
 	m_pCurrentDragDropItem = NULL;
 }
@@ -1219,17 +1222,12 @@ void CUIInventoryWnd::AttachAddon()
 
 	//спрятать вещь из активного слота в инвентарь на время вызова менюшки
 	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-	if(pActor)
+	if(pActor && m_pItemToUpgrade == pActor->inventory().ActiveItem())
 	{
-		if(m_pItemToUpgrade == pActor->inventory().ActiveItem())
-		{
-			m_iCurrentActiveSlot = pActor->inventory().GetActiveSlot();
-			pActor->inventory().Activate(NO_ACTIVE_SLOT);
-		}
+					m_iCurrentActiveSlot = pActor->inventory().GetActiveSlot();
+					pActor->inventory().Activate(NO_ACTIVE_SLOT);
+//		m_iCurrentActiveSlot = pActor->HideActiveItem();
 	}
-
-
-
 
 	(dynamic_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
 									DetachChild(m_pCurrentDragDropItem);
@@ -1249,16 +1247,13 @@ void CUIInventoryWnd::DetachAddon(const char* addon_name)
 	};
 	m_pCurrentItem->Detach(addon_name);
 
-
 	//спрятать вещь из активного слота в инвентарь на время вызова менюшки
 	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-	if(pActor)
+	if(pActor && m_pCurrentItem == pActor->inventory().ActiveItem())
 	{
-		if(m_pCurrentItem == pActor->inventory().ActiveItem())
-		{
 			m_iCurrentActiveSlot = pActor->inventory().GetActiveSlot();
 			pActor->inventory().Activate(NO_ACTIVE_SLOT);
-		}
+//			m_iCurrentActiveSlot = pActor->HideActiveItem();
 	}
 }
 
@@ -1356,6 +1351,14 @@ void	CUIInventoryWnd::SendEvent_Item2Ruck			(PIItem	pItem)
 {
 	NET_Packet	P;
 	pItem->u_EventGen(P, GEG_PLAYER_ITEM2RUCK, pItem->H_Parent()->ID());
+	P.w_u16		(pItem->ID());
+	pItem->u_EventSend(P);
+};
+
+void	CUIInventoryWnd::SendEvent_ItemDrop			(PIItem	pItem)
+{
+	NET_Packet	P;
+	pItem->u_EventGen(P, GEG_PLAYER_ITEMDROP, pItem->H_Parent()->ID());
 	P.w_u16		(pItem->ID());
 	pItem->u_EventSend(P);
 };

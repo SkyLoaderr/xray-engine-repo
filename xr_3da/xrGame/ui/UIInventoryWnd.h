@@ -153,6 +153,7 @@ protected:
 	static void	SendEvent_Item2Slot			(PIItem	pItem);
 	static void	SendEvent_Item2Belt			(PIItem	pItem);
 	static void	SendEvent_Item2Ruck			(PIItem	pItem);
+	static void	SendEvent_ItemDrop			(PIItem	pItem);
 	//---------------------------------------------------------------------
 	//для запуска меню по правой клавиши
 	void ActivatePropertiesBox();
