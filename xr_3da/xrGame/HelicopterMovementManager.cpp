@@ -238,7 +238,7 @@ CHelicopterMovementManager::shedule_Update(u32 time_delta)
 		};
 
 		u32 z = m_keyTrajectory.size();
-		if( m_currKeyIdx == z-1 )
+		if( m_currKeyIdx == (int)z-1 )
 		{
 			helicopter()->setState(CHelicopter::eInitiatePatrolZone);
 			Log("-------add trajectory path");

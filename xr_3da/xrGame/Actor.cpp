@@ -1124,7 +1124,8 @@ void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index)
 	HUD().GetUI()->UIMainIngameWnd.ReceivePdaMessage(pPda->GetOriginalOwner(), msg, info_index);
 
 	SPdaMessage last_pda_message;
-	bool prev_msg = GetPDA()->GetLastMessageFromLog(who, last_pda_message);
+	//bool prev_msg = 
+	GetPDA()->GetLastMessageFromLog(who, last_pda_message);
 
 
     CInventoryOwner::ReceivePdaMessage(who, msg, info_index);

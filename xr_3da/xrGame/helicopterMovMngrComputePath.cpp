@@ -509,7 +509,7 @@ CHelicopterMovementManager::build_smooth_path (int startKeyIdx, bool bClearOld, 
 			
 			fullDist += dist; //for altitude
 
-			u32 t = (*B).time + (dist/helicopter()->velocity())*1000;
+			u32 t = iFloor((*B).time + (dist/helicopter()->velocity())*1000);
 			(*E).time = t;
 
 			//direction in point

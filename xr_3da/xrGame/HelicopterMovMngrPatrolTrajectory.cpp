@@ -17,7 +17,7 @@ CHelicopterMovementManager::createLevelPatrolTrajectory(u32 keyCount, xr_vector<
 	bool		useXBound;
 	bool		min_max;
 
-	Collide::rq_result R;
+//	Collide::rq_result R;
 
 	down_dir.set(0.0f, -1.0f, 0.0f);
 
