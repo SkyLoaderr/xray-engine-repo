@@ -1437,10 +1437,18 @@ bool CActor:: ActivateBox(DWORD id)
 	saved_callback=m_PhysicMovementControl->ObjectContactCallback();
 	m_PhysicMovementControl->SetOjectContactCallback(TestDepthCallback);
 	max_depth=0.f;
-	bool ret=false;
-	for(int i=0;20>i;i++){
+	bool	ret=false;
+	const	int		num_it=20;
+	const   float	fnum_it=float(num_it);
+	Fvector vel;
+	m_PhysicMovementControl->GetCharacterVelocity(vel);
+	const Fbox& box =m_PhysicMovementControl->Box();
+	float pass=box.x2-box.x1;
+	float max_vel=pass/fnum_it/fixed_step; 
+	for(int i=0;num_it>i;i++){
 		max_depth=0.f;
 		m_PhysicMovementControl->EnableCharacter();
+		m_PhysicMovementControl->SetVelocityLimit(max_vel);
 		ph_world->Step();
 		if(max_depth<0.1f) 
 		{
@@ -1455,6 +1463,7 @@ bool CActor:: ActivateBox(DWORD id)
 	}
 	ph_world->UnFreeze();
 	m_PhysicMovementControl->SetOjectContactCallback(saved_callback);
+	m_PhysicMovementControl->SetVelocity(vel);
 	saved_callback=0;
 	return ret;
 }
