@@ -13,6 +13,7 @@
 function main()
 
 	local helicopter = get_level_object( "helicopter" )
+	local car = get_level_object( "m_car" )
 	local actor = get_actor()
 --	wait(10000)	
 --	while(true)do
@@ -22,7 +23,7 @@ function main()
 --			helicopter:air_attack(actor)
    	
 			local vecDst = vector():set(actor:position())
-			local vecVia = vector():set(0,0,0)
+			local vecVia = vector():set(car:position())
 			
 			helicopter:heli_go_to_point(vecDst,vecVia,20)
 		end
