@@ -73,21 +73,23 @@ void	CRenderTarget::phase_combine	()
 			Fvector2	uv2;
 			Fvector2	uv3;
 			Fvector2	uv4;
+			Fvector4	uv5;
+			Fvector4	uv6;
 		};
 
 		float	_w					= float(Device.dwWidth);
 		float	_h					= float(Device.dwHeight);
-		float	ddw					= 1.f/_w;
-		float	ddh					= 1.f/_h;
+		float	ddw					= 1.f/_w;	float kw = ddw;
+		float	ddh					= 1.f/_h;	float kh = ddh;
 		p0.set						(.5f/_w, .5f/_h);
 		p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
 
 		// Fill vertex buffer
 		v_aa* pv					= (v_aa*) RCache.Vertex.Lock	(4,g_aa->vb_stride,Offset);
-		pv->p.set(EPS,			float(_h+EPS),	EPS,1.f); pv->uv0.set(p0.x, p1.y);pv->uv1.set(p0.x-ddw,p1.y);pv->uv2.set(p0.x+ddw,p1.y);pv->uv3.set(p0.x,p1.y-ddh);pv->uv4.set(p0.x,p1.y+ddh);pv++;
-		pv->p.set(EPS,			EPS,			EPS,1.f); pv->uv0.set(p0.x, p0.y);pv->uv1.set(p0.x-ddw,p0.y);pv->uv2.set(p0.x+ddw,p0.y);pv->uv3.set(p0.x,p0.y-ddh);pv->uv4.set(p0.x,p0.y+ddh);pv++;
-		pv->p.set(float(_w+EPS),float(_h+EPS),	EPS,1.f); pv->uv0.set(p1.x, p1.y);pv->uv1.set(p1.x-ddw,p1.y);pv->uv2.set(p1.x+ddw,p1.y);pv->uv3.set(p1.x,p1.y-ddh);pv->uv4.set(p1.x,p1.y+ddh);pv++;
-		pv->p.set(float(_w+EPS),EPS,			EPS,1.f); pv->uv0.set(p1.x, p0.y);pv->uv1.set(p1.x-ddw,p0.y);pv->uv2.set(p1.x+ddw,p0.y);pv->uv3.set(p1.x,p0.y-ddh);pv->uv4.set(p1.x,p0.y+ddh);pv++;
+		pv->p.set(EPS,			float(_h+EPS),	EPS,1.f); pv->uv0.set(p0.x, p1.y);pv->uv1.set(p0.x-kw,p1.y-kh);pv->uv2.set(p0.x+kw,p1.y+kh);pv->uv3.set(p0.x+kw,p1.y-kh);pv->uv4.set(p0.x-kw,p1.y+kh);pv->uv5.set(p0.x-ddw,p1.y,p1.y,p0.x+ddw);pv->uv6.set(p0.x,p1.y-ddh,p1.y+ddh,p0.x);pv++;
+		pv->p.set(EPS,			EPS,			EPS,1.f); pv->uv0.set(p0.x, p0.y);pv->uv1.set(p0.x-kw,p0.y-kh);pv->uv2.set(p0.x+kw,p0.y+kh);pv->uv3.set(p0.x+kw,p0.y-kh);pv->uv4.set(p0.x-kw,p0.y+kh);pv->uv5.set(p0.x-ddw,p0.y,p0.y,p0.x+ddw);pv->uv6.set(p0.x,p0.y-ddh,p0.y+ddh,p0.x);pv++;
+		pv->p.set(float(_w+EPS),float(_h+EPS),	EPS,1.f); pv->uv0.set(p1.x, p1.y);pv->uv1.set(p1.x-kw,p1.y-kh);pv->uv2.set(p1.x+kw,p1.y+kh);pv->uv3.set(p1.x+kw,p1.y-kh);pv->uv4.set(p1.x-kw,p1.y+kh);pv->uv5.set(p1.x-ddw,p1.y,p1.y,p1.x+ddw);pv->uv6.set(p1.x,p1.y-ddh,p1.y+ddh,p1.x);pv++;
+		pv->p.set(float(_w+EPS),EPS,			EPS,1.f); pv->uv0.set(p1.x, p0.y);pv->uv1.set(p1.x-kw,p0.y-kh);pv->uv2.set(p1.x+kw,p0.y+kh);pv->uv3.set(p1.x+kw,p0.y-kh);pv->uv4.set(p1.x-kw,p0.y+kh);pv->uv5.set(p1.x-ddw,p0.y,p0.y,p1.x+ddw);pv->uv6.set(p1.x,p0.y-ddh,p0.y+ddh,p1.x);pv++;
 		RCache.Vertex.Unlock		(4,g_aa->vb_stride);
 
 		// Draw COLOR
