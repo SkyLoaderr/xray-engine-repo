@@ -1,4 +1,4 @@
-class "CSE_NewAttachableItem" (alife_3item)
+class "CSE_NewAttachableItem" (cse_alife_item)
 
 function CSE_NewAttachableItem:__init() super()
 	printf		("CSE_NewAttachableItem::CSE_NewAttachableItem called!")
