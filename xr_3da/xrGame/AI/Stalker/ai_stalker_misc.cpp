@@ -333,11 +333,8 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 			if (ifFindHurtIndex(getAI().m_tpCurrentEnemy) != -1)
 				H = true;
 	}
-	//H = true;
-	if (E) {
-		E = false;
-		E = true;
-	}
+	H = true;
+	
 	// is there any items to pick up?
 	L = false;
 	if (m_dwParticularState != 7)
