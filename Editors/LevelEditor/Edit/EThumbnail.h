@@ -87,8 +87,8 @@ class EObjectThumbnail: public EImageThumbnail{
 	friend class CImageManager;
 	typedef EImageThumbnail inherited;
 private:
-    float			face_count;
-    float			vertex_count;
+    u32				face_count;
+    u32				vertex_count;
 public:
 					EObjectThumbnail	(LPCSTR src_name, bool bLoad=true);
 	virtual			~EObjectThumbnail	();

@@ -21,6 +21,7 @@
 #include "soundrender_source.h"
 #include "render.h"
 #include "ResourceManager.h"
+#include "PropertiesList.h"               
 
 #ifdef _LEVEL_EDITOR
  #include "Scene.h"
@@ -38,6 +39,18 @@ TfrmChoseItem *TfrmChoseItem::form=0;
 AnsiString TfrmChoseItem::select_item="";
 AnsiString TfrmChoseItem::m_LastSelection[smMaxMode];
 //---------------------------------------------------------------------------
+void __fastcall TfrmChoseItem::FormCreate(TObject *Sender)
+{
+    m_Props = TProperties::CreateForm("Info",paInfo,alClient);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmChoseItem::FormDestroy(TObject *Sender)
+{
+	TProperties::DestroyForm		(m_Props);
+}
+//---------------------------------------------------------------------------
+
 int __fastcall TfrmChoseItem::SelectItem(EChooseMode mode, LPCSTR& dest, int sel_cnt, LPCSTR init_name, AStringVec* items)
 {
 	VERIFY(!form);
@@ -450,6 +463,7 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
 	TElTreeItem* Item 	= tvItems->Selected;
 	xr_delete			(m_Thm);
 	m_Snd.destroy		();
+    PropItemVec 		items;
 	if (Item&&FHelper.IsObject(Item)){
     	switch (Mode){
         case smTexture:{
@@ -457,15 +471,8 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
                 AnsiString nm;
                 FHelper.MakeName		(Item,0,nm,false);
                 if (nm!=NONE_CAPTION)	m_Thm	= xr_new<ETextureThumbnail>(nm.c_str());
-                if (!m_Thm||!m_Thm->Valid()) paImage->Repaint();
-                else	 				paImage->Repaint();
                 lbItemName->Caption 	= "\""+ChangeFileExt(Item->Text,"")+"\"";
                 lbFileName->Caption 	= "\""+Item->Text+"\"";
-                AnsiString temp; 		
-                if (m_Thm) temp.sprintf	("          %d x %d x %s",((ETextureThumbnail*)m_Thm)->_Width(),((ETextureThumbnail*)m_Thm)->_Height(),((ETextureThumbnail*)m_Thm)->_Alpha()?"32b":"24b");
-                lbInfo->Caption			= temp;
-            }else{
-	            lbInfo->Caption			= "";
             }
         }break;
         case smObject:{
@@ -477,10 +484,6 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
                 if (FS.exist(fn.c_str())){
                     m_Thm 				= xr_new<EObjectThumbnail>(nm.c_str());
                 }
-                paImage->Repaint		();
-	            lbInfo->Caption			= "          -";
-            }else{
-				lbInfo->Caption		= "";
             }
 			lbItemName->Caption 	= "\""+Item->Text+"\"";
 			lbFileName->Caption		= "\""+Item->Text+".object\"";
@@ -495,16 +498,10 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
                     m_Snd.create		(TRUE,fn.c_str());
                     m_Snd.play			(0,FALSE);
                     m_Snd.set_position	(Device.m_Camera.GetPosition());
-                    AnsiString temp; 		
-                    CSoundRender_Source* src= (CSoundRender_Source*)m_Snd.handle;
-                    if (src) temp.sprintf	("          Size: %.2f Kb\nTime: %.2f sec",float(file->size_real)/1024.f,float(src->dwTimeTotal)/1000.f);
-                    lbInfo->Caption			= temp;
-                }else						paImage->Repaint();
-            }else{
-				lbInfo->Caption		= "";
+                }
             }
 			lbItemName->Caption 	= "\""+Item->Text+"\"";
-			lbFileName->Caption		= "\""+Item->Text+".ogf\"";
+			lbFileName->Caption		= "\""+Item->Text+".ogg\"";
         }break;
         case smGameObject:{
 	        AnsiString fn;
@@ -513,21 +510,15 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
             if (ebExt->Down){
                 IRender_Visual* visual	= ::Render->model_Create(fn.c_str());
                 if (visual){
-                    AnsiString temp; 		
-                    temp.sprintf	("          Source: '%s'\nCreator: '%s' - '%s'\nModif: '%s' - '%s'\nBuild: '%s' - '%s'",
-                                    *visual->desc.source_file?*visual->desc.source_file:"unknown",
-                                    *visual->desc.create_name?*visual->desc.create_name:"unknown",Trim(AnsiString(ctime(&visual->desc.create_time))).c_str(),
-                                    *visual->desc.modif_name ?*visual->desc.modif_name :"unknown",Trim(AnsiString(ctime(&visual->desc.modif_time))).c_str(),
-                                    *visual->desc.build_name ?*visual->desc.build_name :"unknown",Trim(AnsiString(ctime(&visual->desc.build_time))).c_str()
-                                    );
-                    lbInfo->Caption	= temp;
-                    lbInfo->Hint	= temp;
-                }else{
-					lbInfo->Caption	= "";
+                    PHelper.CreateCaption	(items, 	"Source File",	*visual->desc.source_file?*visual->desc.source_file:"unknown");
+                    PHelper.CreateCaption	(items, 	"Creator Name",	*visual->desc.create_name?*visual->desc.create_name:"unknown");
+                    PHelper.CreateCaption	(items, 	"Creator Time",	Trim(AnsiString(ctime(&visual->desc.create_time))));
+                    PHelper.CreateCaption	(items, 	"Modif Name",	*visual->desc.modif_name ?*visual->desc.modif_name :"unknown");
+                    PHelper.CreateCaption	(items, 	"Modif Time",	Trim(AnsiString(ctime(&visual->desc.modif_time))));
+                    PHelper.CreateCaption	(items, 	"Build Name",	*visual->desc.build_name ?*visual->desc.build_name :"unknown");
+                    PHelper.CreateCaption	(items, 	"Build Time",	Trim(AnsiString(ctime(&visual->desc.build_time))));
                 }
                 ::Render->model_Delete(visual);
-            }else{
-				lbInfo->Caption		= "";
             }
 			lbItemName->Caption 	= "\""+Item->Text+"\"";
 			lbFileName->Caption		= "\""+Item->Text+".ogf\"";
@@ -535,25 +526,39 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
         default:
 			lbItemName->Caption = "\""+Item->Text+"\"";
 			lbFileName->Caption	= "-";
-            lbInfo->Caption		= "";
         }
     }else{
 		lbItemName->Caption = "-";
 		lbFileName->Caption	= "-";
-		lbInfo->Caption		= "";
     }
+    if (m_Thm)	m_Thm->FillProp		(items);
+    m_Props->AssignItems			(items,true);
+    paInfo->Visible					= !items.empty();
+	paImage->Repaint				();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmChoseItem::paImagePaint(TObject *Sender)
 {
-	if (m_Thm) m_Thm->Draw(paImage,false);
+	if (m_Thm) m_Thm->Draw			(paImage,false);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmChoseItem::ebExtClick(TObject *Sender)
 {
-	tvItemsItemFocused(0);
+	tvItemsItemFocused				(0);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmChoseItem::fsStorageRestorePlacement(TObject *Sender)
+{
+	m_Props->RestoreParams(fsStorage);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmChoseItem::fsStorageSavePlacement(TObject *Sender)
+{
+	m_Props->SaveParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 

@@ -25,6 +25,7 @@
 //---------------------------------------------------------------------------
 // refs
 class EImageThumbnail;
+class TProperties;
 
 class TfrmChoseItem : public TForm
 {
@@ -44,14 +45,14 @@ __published:	// IDE-managed Components
 	TElTree *tvItems;
 	TPanel *paItemsCount;
 	TGradient *grdFon;
-	TLabel *lbInfo;
 	TLabel *mxLabel2;
 	TLabel *lbFileName;
 	TLabel *lbItemName;
 	TLabel *mxLabel1;
 	TMxPanel *paImage;
-	TLabel *Label1;
 	TExtBtn *ebExt;
+	TPanel *paInfo;
+	TBevel *Bevel1;
     void __fastcall sbSelectClick(TObject *Sender);
     void __fastcall sbCancelClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
@@ -75,14 +76,18 @@ __published:	// IDE-managed Components
 	void __fastcall tvItemsItemFocused(TObject *Sender);
 	void __fastcall paImagePaint(TObject *Sender);
 	void __fastcall ebExtClick(TObject *Sender);
+	void __fastcall FormCreate(TObject *Sender);
+	void __fastcall FormDestroy(TObject *Sender);
+	void __fastcall fsStorageRestorePlacement(TObject *Sender);
+	void __fastcall fsStorageSavePlacement(TObject *Sender);
 private:	// User declarations
 	static TfrmChoseItem* form;
     static AnsiString select_item;
-    const char* StartFolder;
 
     EImageThumbnail* 	m_Thm;
 	ref_sound			m_Snd;
 
+    TProperties*	m_Props;
     void 	InitItemsList(const char* nm=0);
 
     bool 	bMultiSel;
