@@ -17,10 +17,10 @@ void CActor::OnKeyboardPress(int cmd){
 	case kBACK:		mstate_wishful |= mcBack;		break;
 	case kJUMP:		mstate_wishful |= mcJump;		break;
 	case kCROUCH:	mstate_wishful |= mcCrouch;		break;
-	case kFIRE:		g_cl_fireStart();				break;
-	case kCAM1:		ChangeCamStyle(eacFirstEye);	break;
-	case kCAM2:		ChangeCamStyle(eacLookAt);		break;
-	case kCAM3:		ChangeCamStyle(eacFreeLook);	break;
+	case kWPN_FIRE:	g_cl_fireStart();				break;
+	case kCAM_1:	ChangeCamStyle(eacFirstEye);	break;
+	case kCAM_2:	ChangeCamStyle(eacLookAt);		break;
+	case kCAM_3:	ChangeCamStyle(eacFreeLook);	break;
 	case kWPN_ZOOM:	pCreator->Environment.Zoom(TRUE);break;
 	}
 }
@@ -36,7 +36,7 @@ void CActor::OnKeyboardRelease(int cmd){
 	case kBACK:		mstate_wishful &=~mcBack;		break;
 	case kJUMP:		mstate_wishful &=~mcJump;		break;
 	case kCROUCH:	mstate_wishful &=~mcCrouch;		break;
-	case kFIRE:		g_fireEnd();					break;
+	case kWPN_FIRE:	g_fireEnd();					break;
 	case kWPN_ZOOM:	pCreator->Environment.Zoom(FALSE);break;
 	}
 }
@@ -49,8 +49,8 @@ void CActor::OnKeyboardHold(int cmd)
 	{
 	case kUP:
 	case kDOWN: 
-	case kZOOMIN: 
-	case kZOOMOUT: 
+	case kCAM_ZOOM_IN: 
+	case kCAM_ZOOM_OUT: 
 		cameras[cam_active]->Move(cmd); break;
 	case kLEFT:
 	case kRIGHT:

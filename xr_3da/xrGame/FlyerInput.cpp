@@ -18,9 +18,9 @@ void CFlyer::OnKeyboardPress(int cmd){
 	case kLEFT:		new_mstate |= mcLeft;		break;
 	case kRIGHT:	new_mstate |= mcRight;		break;
 //	case kFIRE:		FireStart();				break;
-	case kCAM1:		ChangeCamStyle(efcFrontView);break;
-	case kCAM2:		ChangeCamStyle(efcLookAt);	break;
-	case kCAM3:		ChangeCamStyle(efcFreeLook);break;
+	case kCAM_1:	ChangeCamStyle(efcFrontView);break;
+	case kCAM_2:	ChangeCamStyle(efcLookAt);	break;
+	case kCAM_3:	ChangeCamStyle(efcFreeLook);break;
 	}
 }
 
@@ -42,8 +42,8 @@ void CFlyer::OnKeyboardRelease(int cmd){
 void CFlyer::OnKeyboardHold(int cmd){
 	if (eState==fsDead) return;
 	switch(cmd){
-	case kZOOMIN: 
-	case kZOOMOUT: 
+	case kCAM_ZOOM_IN: 
+	case kCAM_ZOOM_OUT: 
 	case kUP:
 	case kDOWN: 
 		cameras[cam_active]->Move(cmd); 
