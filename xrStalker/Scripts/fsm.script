@@ -4,15 +4,42 @@
 --------------------------------------------------
 class 'FSM'
 
--- инициализация путем задания объекта Non-Player Character
+-- 	инициализация путем задания объекта Non-Player Character
 function FSM:__init(npc_obj)
 	-- указатель на подконтрольный NPC
 	self.npc = npc_obj
 	-- матрица, задающая граф переходов состояний
-	transition_matrix = {[0] = 0}
+	-- реализуется как двумерная таблица
+	transition_matrix = {}
 	-- номер текущего состояния
 	self.current_state = 0
 end
 
---
+-- 	добавление указателя на булеву
+-- 	функцию условия перехода
+function FSM:add_transition(cond_func, from_state_num, to_state_num)
+	local transition_vector = self.transition_matrix[from_state_num] 
+	
+	if transition_vector == nil
+		transition_vector = {[to_state_num] = cond_func}
+	else
+		transition_vector[to_state_num] = cond_func
+	end
+end
 
+-- запускает на выполнение функцию проверки и перехода
+-- в  новое состояние 
+function FSM:check_condition(to_state_num, cond_func)
+	if cond_func() == true
+		self.current_state = to_state_num
+	end
+end
+
+-- запуск бесконечного цикла FSM
+function FSM:run()
+	while true
+		local transition_vector = self.transition_matrix[self.current_state]
+		transition_vector.foreach(transition_vector, 
+								  self.check_condition)
+	end
+end
