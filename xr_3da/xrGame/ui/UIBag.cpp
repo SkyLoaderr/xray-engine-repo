@@ -357,18 +357,14 @@ void CUIBag::HideAll(){
 
 // Init Boxes SLOT
 void CUIBag::InitBoxes(CUIXml& xml){
-	// Пробегаемся по всем ящичкам и создаем соответсвующие им айтемы
-//	char buff[5];
 	for (u32 i = 0; i < 4; ++i)
 	{
 		CUITabButtonMP* pNewBtn = xr_new<CUITabButtonMP>();
 		pNewBtn->SetAutoDelete(true);
 		pNewBtn->SetOrientation(O_HORIZONTAL);
-//		pNewBtn->SetNumber(itoa(i+1, buff, 10));
 		pNewBtn->SetMessageTarget(this);
 		CUIXmlInit::Init3tButton(xml, *m_boxesDefs[i].xmlTag, 0, pNewBtn);
 		m_boxesDefs[i].pButton = pNewBtn;
-
 		m_groups[GROUP_BOXES].AttachChild(pNewBtn);
 	}
 }
