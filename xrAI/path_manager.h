@@ -334,9 +334,9 @@ public:
 		if (node_index == goal_node_index)
 			return				(true);
 		
-		_Graph::CVertex			&tNode0 = *graph->vertex(node_index);
+		best_node				= graph->vertex(node_index);
 
-		y1						= (float)(tNode0.position().y());
+		y1						= (float)(best_node->position().y());
 
 		return					(false);
 	}
@@ -360,7 +360,6 @@ public:
 
 	IC		void		begin			(const _index_type vertex_id, const_iterator &begin, const_iterator &end)
 	{
-		best_node				= graph->vertex(vertex_id);
 		graph->begin			(best_node,begin,end);
 	}
 
