@@ -206,7 +206,7 @@ bool CALifeCombatManager::bfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSch
 	// perform interaction
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		_GRAPH_ID						l_tGraphID = l_tpALifeMonsterAbstract1 ? l_tpALifeMonsterAbstract1->m_tGraphID : l_tpALifeMonsterAbstract2->m_tGraphID;
+		GameGraph::_GRAPH_ID			l_tGraphID = l_tpALifeMonsterAbstract1 ? l_tpALifeMonsterAbstract1->m_tGraphID : l_tpALifeMonsterAbstract2->m_tGraphID;
 		print_time						("\n[LSS]",time_manager().game_time());
 		Msg								("[LSS] %s met %s on the graph point %d (level %s[%d][%d][%d][%d])",
 			tpALifeSchedulable1->base()->name_replace(),
@@ -358,7 +358,7 @@ void CALifeCombatManager::vfFinishCombat(ECombatResult tCombatResult)
 	// processing weapons and dead monsters
 	CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = smart_cast<CSE_ALifeDynamicObject*>(m_tpaCombatObjects[0]);
 	R_ASSERT2				(l_tpALifeDynamicObject,"Unknown schedulable object class");
-	_GRAPH_ID				l_tGraphID = l_tpALifeDynamicObject->m_tGraphID;
+	GameGraph::_GRAPH_ID	l_tGraphID = l_tpALifeDynamicObject->m_tGraphID;
 	m_temp_item_vector.clear();
 	for (int i=0; i<2; ++i) {
 		CSE_ALifeGroupAbstract	*l_tpALifeGroupAbstract = smart_cast<CSE_ALifeGroupAbstract*>(m_tpaCombatObjects[i]);
@@ -389,7 +389,7 @@ void CALifeCombatManager::vfFinishCombat(ECombatResult tCombatResult)
 			CSE_ALifeMonsterAbstract							*l_tpALifeMonsterAbstract = smart_cast<CSE_ALifeMonsterAbstract*>(m_tpaCombatObjects[i]);
 			if (l_tpALifeMonsterAbstract && (l_tpALifeMonsterAbstract->fHealth <= EPS_L)) {
 				append_item_vector								(l_tpALifeMonsterAbstract->children,m_temp_item_vector);
-				_GRAPH_ID										l_tGraphID1 = l_tpALifeMonsterAbstract->m_tGraphID;
+				GameGraph::_GRAPH_ID							l_tGraphID1 = l_tpALifeMonsterAbstract->m_tGraphID;
 				assign_death_position							(l_tpALifeMonsterAbstract, l_tGraphID, m_tpaCombatObjects[i ^ 1]);
 				l_tpALifeMonsterAbstract->vfDetachAll			();
 				R_ASSERT										(l_tpALifeMonsterAbstract->children.empty());

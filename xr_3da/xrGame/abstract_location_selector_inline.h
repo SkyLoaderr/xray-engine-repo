@@ -36,7 +36,7 @@ IC	void CSelectorTemplate::init					()
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CSelectorTemplate::reinit					(CRestrictedObject *object, const _Graph *graph)
+IC	void CSelectorTemplate::reinit					(CRestrictedObject *object, CSelectorManager *selector_manager, const _Graph *graph)
 {
 	m_failed				= true;
 	m_selected_vertex_id	= _vertex_id_type(-1);
@@ -47,7 +47,8 @@ IC	void CSelectorTemplate::reinit					(CRestrictedObject *object, const _Graph *
 	m_path					= 0;
 	dest_vertex_id			= 0;
 	m_restricted_object		= object;
-	m_selector_manager		= smart_cast<CSelectorManager*>(object);
+	m_selector_manager		= selector_manager;
+	VERIFY					(m_restricted_object);
 	VERIFY					(m_selector_manager);
 }	
 

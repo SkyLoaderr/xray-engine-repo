@@ -40,9 +40,6 @@
 #include "HudItem.h"
 #include "WeaponMagazined.h"
 
-#include "targetassault.h"
-#include "targetcs.h"
-
 #include "ai_sounds.h"
 #include "ai_space.h"
 
@@ -982,26 +979,14 @@ void CActor::g_PerformDrop	( )
 	VERIFY					(b_DropActivated);
 	b_DropActivated			= FALSE;
 
-	if (m_pArtefact)
-	{
-		NET_Packet				P;
-		u_EventGen				(P,GE_OWNERSHIP_REJECT,ID());
-		P.w_u16					(u16(m_pArtefact->ID()));
-		u_EventSend				(P);
+	PIItem pItem = inventory().ActiveItem();
+	if (0==pItem) return;
+	pItem->Drop();
 
-		m_pArtefact				= 0;
-	} else {
-		//
-		
-		PIItem pItem = inventory().ActiveItem();
-		if (0==pItem) return;
-		pItem->Drop();
-
-		/*NET_Packet				P;
-		u_EventGen				(P,GE_OWNERSHIP_REJECT,ID());
-		P.w_u16					(u16(O->ID()));
-		u_EventSend				(P);*/
-	}
+	/*NET_Packet				P;
+	u_EventGen				(P,GE_OWNERSHIP_REJECT,ID());
+	P.w_u16					(u16(O->ID()));
+	u_EventSend				(P);*/
 }
 
 

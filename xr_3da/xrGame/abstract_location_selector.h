@@ -40,7 +40,7 @@ public:
 	IC							CAbstractLocationSelector	();
 	IC	virtual					~CAbstractLocationSelector	();
 	IC			void			init						();
-	IC	virtual void			reinit						(CRestrictedObject *object, const _Graph *graph = 0);
+	IC	virtual void			reinit						(CRestrictedObject *object, CSelectorManager *selector_manager, const _Graph *graph = 0);
 
 	IC			_vertex_id_type get_selected_vertex_id		() const;
 

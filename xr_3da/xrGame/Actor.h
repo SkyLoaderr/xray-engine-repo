@@ -37,7 +37,6 @@ class ENGINE_API CMotionDef;
 class ENGINE_API CBlend;
 class CWeaponList;
 class CEffectorBobbing;
-class CTargetCS;
 class CHolderCustom;
 class CUsableScriptObject;
 
@@ -200,9 +199,6 @@ protected:
 	/////////////////////////////////////////////////////////////////
 	// misc properties
 protected:
-	// Weapons and Items
-	CTargetCS*				m_pArtefact;
-
 	// Death
 	float					hit_slowmo;
 

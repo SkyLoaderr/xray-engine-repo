@@ -16,12 +16,12 @@ CALifeGraphRegistry::CALifeGraphRegistry	(shared_str *server_command_line)
 {
 	VERIFY							(server_command_line);
 	m_server_command_line			= server_command_line;
-	for (int i=0; i<LOCATION_TYPE_COUNT; ++i) {
+	for (int i=0; i<GameGraph::LOCATION_TYPE_COUNT; ++i) {
 		{
-			for (int j=0; j<LOCATION_COUNT; ++j)
+			for (int j=0; j<GameGraph::LOCATION_COUNT; ++j)
 				m_terrain[i][j].clear();
 		}
-		for (_GRAPH_ID j=0; j<(_GRAPH_ID)ai().game_graph().header().vertex_count(); ++j)
+		for (GameGraph::_GRAPH_ID j=0; j<(GameGraph::_GRAPH_ID)ai().game_graph().header().vertex_count(); ++j)
 			m_terrain[i][ai().game_graph().vertex(j)->vertex_type()[i]].push_back(j);
 	}
 
@@ -87,7 +87,7 @@ void CALifeGraphRegistry::setup_current_level	()
 	strcpy						(S,**m_server_command_line);
 	LPSTR						temp = strchr(S,'/');
 	R_ASSERT2					(temp,"Invalid server options!");
-	xr_map<_LEVEL_ID,CGameGraph::SLevel>::const_iterator I = ai().game_graph().header().levels().find(ai().game_graph().vertex(actor()->m_tGraphID)->level_id());
+	GameGraph::LEVEL_MAP::const_iterator I = ai().game_graph().header().levels().find(ai().game_graph().vertex(actor()->m_tGraphID)->level_id());
 	R_ASSERT2					(ai().game_graph().header().levels().end() != I,"Graph point level ID not found!");
 	strconcat					(S1,*(*I).second.name(),temp);
 	*m_server_command_line		= S1;
@@ -98,7 +98,7 @@ void CALifeGraphRegistry::setup_current_level	()
 	ai().load					(*(*I).second.name());
 }
 
-void CALifeGraphRegistry::attach	(CSE_Abstract &object, CSE_ALifeInventoryItem *item, ALife::_GRAPH_ID game_vertex_id, bool alife_query)
+void CALifeGraphRegistry::attach	(CSE_Abstract &object, CSE_ALifeInventoryItem *item, GameGraph::_GRAPH_ID game_vertex_id, bool alife_query)
 {
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
@@ -118,7 +118,7 @@ void CALifeGraphRegistry::attach	(CSE_Abstract &object, CSE_ALifeInventoryItem *
 		trader->attach			(item,alife_query);
 }
 
-void CALifeGraphRegistry::detach	(CSE_Abstract &object, CSE_ALifeInventoryItem *item, ALife::_GRAPH_ID game_vertex_id, bool alife_query)
+void CALifeGraphRegistry::detach	(CSE_Abstract &object, CSE_ALifeInventoryItem *item, GameGraph::_GRAPH_ID game_vertex_id, bool alife_query)
 {
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
@@ -145,7 +145,7 @@ void CALifeGraphRegistry::detach	(CSE_Abstract &object, CSE_ALifeInventoryItem *
 		R_ASSERT2				(std::find(object.children.begin(),object.children.end(),item->base()->ID) != object.children.end(),"Can't detach an item which is not on my own");
 }
 
-void CALifeGraphRegistry::add	(CSE_ALifeDynamicObject *object, ALife::_GRAPH_ID game_vertex_id, bool update)
+void CALifeGraphRegistry::add	(CSE_ALifeDynamicObject *object, GameGraph::_GRAPH_ID game_vertex_id, bool update)
 {
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
@@ -167,7 +167,7 @@ void CALifeGraphRegistry::add	(CSE_ALifeDynamicObject *object, ALife::_GRAPH_ID 
 		level().add				(object);
 }
 
-void CALifeGraphRegistry::remove	(CSE_ALifeDynamicObject *object, ALife::_GRAPH_ID game_vertex_id, bool update)
+void CALifeGraphRegistry::remove	(CSE_ALifeDynamicObject *object, GameGraph::_GRAPH_ID game_vertex_id, bool update)
 {
 	if (object->used_ai_locations() && object->interactive()) {
 	#ifdef DEBUG
