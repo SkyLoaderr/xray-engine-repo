@@ -14,6 +14,7 @@ class CEffectorShot : public CEffector
 	float	fAngleCurrent;
 	float	fRelaxSpeed;
 	float	fMaxAngle;
+	BOOL	bActive;
 public:
 	CEffectorShot			(float max_angle, float relax_time);
 	virtual ~CEffectorShot	();

@@ -328,13 +328,9 @@ void CWeapon::Load		(LPCSTR section)
 
 	fireDispersion_Current	= 0;
 
-	camMaxAngle			= pSettings->r_float		(section,"cam_max_angle"	); 
-	camMaxAngle			= deg2rad					(camMaxAngle);
-	camRelaxSpeed		= pSettings->r_float		(section,"cam_relax_speed"	); 
-	R_ASSERT			(camRelaxSpeed>=0.f); 
-	camRelaxSpeed		= deg2rad					(camRelaxSpeed); 
-	camDispersion		= pSettings->r_float		(section,"cam_dispersion"	); 
-	camDispersion		= deg2rad					(camDispersion);
+	camMaxAngle			= pSettings->r_float		(section,"cam_max_angle"	); camMaxAngle = deg2rad(camMaxAngle);
+	camRelaxSpeed		= pSettings->r_float		(section,"cam_relax_speed"	); camRelaxSpeed = deg2rad(camRelaxSpeed);
+	camDispersion		= pSettings->r_float		(section,"cam_dispersion"	); camDispersion = deg2rad(camDispersion);/**/
 
 	dispVelFactor		= pSettings->r_float		(section,"disp_vel_factor"	);
 	dispJumpFactor		= pSettings->r_float		(section,"disp_jump_factor"	);
