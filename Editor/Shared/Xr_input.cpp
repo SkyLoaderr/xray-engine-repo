@@ -193,12 +193,12 @@ void CInput::MouseUpdate( )
 		case DIMOFS_X:	offs[0]	+= od[i].dwData; timeStamp[0] = od[i].dwTimeStamp;	break;
 		case DIMOFS_Y:	offs[1]	+= od[i].dwData; timeStamp[1] = od[i].dwTimeStamp;	break;
 		case DIMOFS_BUTTON0:
-			if ( od[i].dwData & 0x80 )	{ cbStack.top()->OnMousePress(0);	mouseState[0] = TRUE;			}
-			if ( !(od[i].dwData & 0x80)){ mouseState[0] = FALSE;			cbStack.top()->OnMouseRelease(0);}
+			if ( od[i].dwData & 0x80 )	{ mouseState[0] = TRUE;				cbStack.top()->OnMousePress(0);		}
+			if ( !(od[i].dwData & 0x80)){ mouseState[0] = FALSE;			cbStack.top()->OnMouseRelease(0);	}
 			break;
 		case DIMOFS_BUTTON1:
-			if ( od[i].dwData & 0x80 )	{ cbStack.top()->OnMousePress(1);	mouseState[1] = TRUE;			}
-			if ( !(od[i].dwData & 0x80)){ mouseState[1] = FALSE;			cbStack.top()->OnMouseRelease(1);}
+			if ( od[i].dwData & 0x80 )	{ mouseState[1] = TRUE;				cbStack.top()->OnMousePress(1);		}
+			if ( !(od[i].dwData & 0x80)){ mouseState[1] = FALSE;			cbStack.top()->OnMouseRelease(1);	}
 			break;
 		}
 	}
@@ -245,6 +245,11 @@ void CInput::OnAppActivate		(void)
 void CInput::OnAppDeactivate	(void)
 {
 	SetAllAcquire	( false );
+	ZeroMemory		( mouseState,	sizeof(mouseState) );
+	ZeroMemory		( KBState,		sizeof(KBState) );
+	ZeroMemory		( timeStamp,	sizeof(timeStamp) );
+	ZeroMemory		( timeSave,		sizeof(timeStamp) );
+	ZeroMemory		( offs,			sizeof(offs) );
 }
 
 void CInput::OnFrame			(void)
