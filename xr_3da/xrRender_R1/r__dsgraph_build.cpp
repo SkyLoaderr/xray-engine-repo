@@ -27,7 +27,7 @@ IC	float	CalcSSA				(float& distSQ, Fvector& C, IRender_Visual* V)
 	return	R*R/distSQ;
 }
 
-void CRender::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fvector& Center)
+void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fvector& Center)
 {
 	if (pVisual->vis.frame	==	RImplementation.marker)	return;
 	pVisual->vis.frame		=	RImplementation.marker;
@@ -87,7 +87,7 @@ void CRender::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fvector& Center
 	}
 }
 
-void CRender::r_dsgraph_insert_static	(IRender_Visual *pVisual)
+void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 {
 	if (pVisual->vis.frame == RImplementation.marker)	return;
 	pVisual->vis.frame			= RImplementation.marker;
@@ -164,7 +164,7 @@ void CRender::add_leafs_Dynamic(IRender_Visual *pVisual)
 	case MT_SKELETON_RIGID:
 		{
 			// Add all children, doesn't perform any tests
-			CKinematics * pV = (CKinematics*)pVisual;
+			CKinematics * pV	= (CKinematics*)pVisual;
 			pV->Calculate			();
 			I = pV->children.begin	();
 			E = pV->children.end		();

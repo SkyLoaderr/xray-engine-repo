@@ -220,7 +220,7 @@ void		sort_tlist_mat
 	}
 }
 
-void CRender::r_dsgraph_render				(u32	_priority)
+void R_dsgraph_structure::r_dsgraph_render	(u32	_priority)
 {
 	Device.Statistic.RenderDUMP.Begin		();
 
