@@ -193,6 +193,7 @@ public:
 		}
 
 		Query			Q;
+		Q.q_List.reserve(8192);
 		for (DWORD N=Nstart; N<Nend; N++)
 		{
 			FPU::m24r	();
@@ -209,7 +210,6 @@ public:
 			// perform volumetric query
 			Q.q_Marks.assign(g_nodes.size()+2,false);
 			Q.q_List.clear	();
-			Q.q_List.reserve(4096);
 			Q.q_Base.set	(BasePos);
 			Q.Perform		(N);
 			
