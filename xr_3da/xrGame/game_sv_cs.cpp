@@ -112,7 +112,7 @@ BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_target)
 
 void	game_sv_CS::Update			()
 {
-	if ((Device.TimerAsync()-start_time)>timelimit)
+	if (((s32)Device.TimerAsync()-start_time)>timelimit)
 		OnTimelimitExceed	();
 }
 
