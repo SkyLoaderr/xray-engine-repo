@@ -4,6 +4,7 @@ class light		:	public IRender_Light
 {
 public:
 	struct {
+		u32			type	:	4;
 		u32			bStatic	:	1;
 		u32			bActive	:	1;
 		u32			bShadow	:	1;
@@ -17,6 +18,7 @@ public:
 
 	u32				dwFrame;
 public:
+	virtual void	set_type		(LT type)						{ flags.type = type;		}
 	virtual void	set_active		(bool b);
 	virtual void	set_shadow		(bool b)						{ flags.bShadow=b;			}
 	virtual void	set_position	(const Fvector& P)				{ position.set(P);			}

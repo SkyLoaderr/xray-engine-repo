@@ -24,6 +24,7 @@ public:
 	CLightPPA			();
 	virtual ~CLightPPA	();
 
+	virtual void	set_type		(LT type)						{ };
 	virtual void	set_active		(bool b);
 	virtual void	set_shadow		(bool)							{ };
 	virtual void	set_position	(const Fvector& P)				{ sphere.P.set(P);	}
