@@ -222,14 +222,16 @@ void CWeapon::UpdateFlameParticles	()
 void CWeapon::StartSmokeParticles	()
 {
 	CParticlesObject* pSmokeParticles = NULL;
-	StartParticles(pSmokeParticles, m_sSmokeParticles, vLastFP, zero_vel, true);
-	/*if(!m_sSmokeParticles) return;
-
-	CParticlesObject* pSmokeParticles = xr_new<CParticlesObject>(m_sSmokeParticles,Sector());
 
 	Fvector vel; 
 	vel.sub(Position(),ps_Element(0).vPosition); 
 	vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
+
+	StartParticles(pSmokeParticles, m_sSmokeParticles, vLastFP, vel, true);
+	/*if(!m_sSmokeParticles) return;
+
+	CParticlesObject* pSmokeParticles = xr_new<CParticlesObject>(m_sSmokeParticles,Sector());
+
 
 	Fmatrix pos; 
 	pos.set(XFORM()); 
@@ -239,6 +241,26 @@ void CWeapon::StartSmokeParticles	()
 	pSmokeParticles->Play();*/
 }
 
+//партиклы гильз
+void CWeapon::OnShellDrop	()
+{
+	if(!m_sShellParticles) return;
+
+	CParticlesObject* pShellParticles = xr_new<CParticlesObject>(m_sShellParticles,Sector());
+
+	Fmatrix pos; 
+	pos.k.set(vLastSD);
+	Fvector::generate_orthonormal_basis(pos.k, pos.i, pos.j);
+	pos.c.set(vLastSP);
+
+	Fvector vel; 
+	vel.sub(Position(),ps_Element(0).vPosition); 
+	vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
+
+
+	pShellParticles->UpdateParent(pos, vel); 
+	pShellParticles->Play();
+}
 
 
 void CWeapon::StartParticles (CParticlesObject*& pParticles, LPCSTR particles_name, 

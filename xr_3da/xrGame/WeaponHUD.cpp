@@ -10,13 +10,23 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-
-CWeaponHUD::CWeaponHUD()
+CWeaponHUD::CWeaponHUD		()
 {
 	mTransform.identity			();
 	m_Offset.identity			();
 	pVisualName					= 0;
 	iFireBone					= -1;
+	m_pParentWeapon				= NULL;
+	m_bHidden = true;
+}
+CWeaponHUD::CWeaponHUD(CWeapon* pWeapon)
+{
+	mTransform.identity			();
+	m_Offset.identity			();
+	pVisualName					= 0;
+	iFireBone					= -1;
+	
+	m_pParentWeapon				= pWeapon;
 
 	m_bHidden = true;
 }
@@ -53,7 +63,11 @@ void CWeaponHUD::Load			(LPCSTR section)
 	else 
 		vFirePoint2 = vFirePoint;
 
-	vShellPoint					= pSettings->r_fvector3					(section,"shell_point");
+	if(m_pParentWeapon && pSettings->line_exist(m_pParentWeapon->cNameSect(), "shell_particles")) 
+	{
+		vShellPoint = pSettings->r_fvector3	(section,"shell_point");
+		//vShellDir	= pSettings->r_fvector3	(section,"shell_dir");
+	}
 
 	// play default animation
 	pVisual						= ::Render->model_Create(*pVisualName);

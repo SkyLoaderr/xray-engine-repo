@@ -490,18 +490,6 @@ void CWeaponMagazined::MediaUNLOAD	()
 	hFlames.clear();
 }
 
-void CWeaponMagazined::OnShellDrop	()
-{
-	// shells
-	/*
-	CPSObject* PS				= xr_new<CPSObject>("weapons\\shells_generic",H_Parent()->Sector(),true);
-	Fmatrix M;
-	M.setHPB(PS->m_Emitter.m_ConeHPB.x, PS->m_Emitter.m_ConeHPB.y, PS->m_Emitter.m_ConeHPB.z);
-	Fvector V; M.transform_dir(V,vLastFD);
-	PS->m_Emitter.m_ConeDirection.set(V);
-	PS->play_at_pos				(vLastSP);
-	*/
-}
 
 void CWeaponMagazined::OnShot		()
 {

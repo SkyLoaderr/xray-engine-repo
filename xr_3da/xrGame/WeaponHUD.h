@@ -17,15 +17,23 @@ class CWeaponHUD
 	ref_str				pVisualName;
 	IRender_Visual*		pVisual;
 
+	//родительский объект оружия
+	CWeapon*			m_pParentWeapon;		
+
+
 	//флаг, если hud спрятан не показывается
 	bool				m_bHidden;
 public:	
 	int					iFireBone;
 	Fvector				vFirePoint;
 	Fvector				vFirePoint2;
+
+	//гильзы
+	Fvector				vShellDir;
 	Fvector				vShellPoint;
 public:
 						CWeaponHUD		();
+						CWeaponHUD		(CWeapon* pWeapon);
 	virtual				~CWeaponHUD		();
 
 	// misc

@@ -11,7 +11,7 @@
 #include "WeaponAmmo.h"
 
 #define HIT_POWER_EPSILON 0.05f
-#define WALLMARK_SIZE 0.09f
+#define WALLMARK_SIZE 0.04f
 
 u16 CShootingObject::bullet_material_id = GAMEMTL_NONE;
 

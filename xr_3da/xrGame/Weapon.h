@@ -56,7 +56,6 @@ protected:
 
 	Fvector					vFirePoint;
 	Fvector					vFirePoint2;
-	Fvector					vShellPoint;
 
 	// Media :: flames
 	svector<ref_shader,8>	hFlames;
@@ -89,7 +88,9 @@ protected:
 	float					fHitImpulse;
 
 	Fvector					vLastFP, vLastFP2;
-	Fvector					vLastFD, vLastSP;
+	Fvector					vLastFD;
+	//направление и точка полета гильз
+	Fvector					vLastSP, vLastSD;
 
 	//рассеивание во время стрельбы
 	float					fireDistance;
@@ -237,6 +238,8 @@ public:
 	virtual void			UpdateFlameParticles();
 	//партиклы дыма
 	virtual void			StartSmokeParticles	();
+	//партиклы гильз
+	virtual void			OnShellDrop		();
 	
 	virtual void			OnStateSwitch		(u32 /**S/**/)		{};
 public:
@@ -357,6 +360,12 @@ public:
 
 	//имя пратиклов для дыма
 	LPCSTR				m_sSmokeParticles;
+
+	//точка и направление вылета партиклов гильз
+	Fvector				vShellDir;
+	Fvector				vShellPoint;
+	//имя пратиклов для гильз
+	LPCSTR				m_sShellParticles;
 
 
 	// Multitype ammo support

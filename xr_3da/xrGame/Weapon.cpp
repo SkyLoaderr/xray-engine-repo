@@ -43,7 +43,8 @@ CWeapon::CWeapon(LPCSTR name)
 	STATE				= NEXT_STATE		= eHidden;
 
 	SetDefaults			();
-	m_pHUD				= xr_new<CWeaponHUD> ();
+	m_pHUD				= xr_new<CWeaponHUD> (this);
+
 	m_WpnName			= name;
 	m_Offset.identity	();
 
@@ -86,6 +87,7 @@ CWeapon::CWeapon(LPCSTR name)
 
 
 	m_sFlameParticles = m_sSmokeParticles = NULL;
+	m_sShellParticles = NULL;
 }
 
 CWeapon::~CWeapon		()
@@ -266,13 +268,18 @@ void CWeapon::UpdateFP		()
 			// fire point&direction
 			Fmatrix& fire_mat		= V->LL_GetTransform(u16(m_pHUD->iFireBone));
 			Fmatrix& parent			= m_pHUD->Transform	();
-			
+
 			Fvector& fp				= m_pHUD->vFirePoint;
 			Fvector& sp				= m_pHUD->vShellPoint;
+			//Fvector& sd				= m_pHUD->vShellDir;
+
 			fire_mat.transform_tiny	(vLastFP,fp);
 			parent.transform_tiny	(vLastFP);
 			fire_mat.transform_tiny	(vLastSP,sp);
 			parent.transform_tiny	(vLastSP);
+
+			vLastSD.set				(0.f,0.f,1.f);
+			parent.transform_dir	(vLastSD);
 
 			Fvector& fp2			= m_pHUD->vFirePoint2;
 			fire_mat.transform_tiny	(vLastFP2,fp2);
@@ -285,10 +292,17 @@ void CWeapon::UpdateFP		()
 			Fmatrix& parent			= XFORM();
 			Fvector& fp				= vFirePoint;
 			Fvector& sp				= vShellPoint;
+			//Fvector& sd				= vShellDir;
+
 			parent.transform_tiny	(vLastFP,fp);
 			parent.transform_tiny	(vLastSP,sp);
+			
 			vLastFD.set				(0.f,0.f,1.f);
 			parent.transform_dir	(vLastFD);
+
+			//vLastSD = sd;
+			vLastSD.set				(0.f,0.f,1.f);
+			parent.transform_dir	(vLastSD);
 
 			Fvector& fp2			= vFirePoint2;
 			parent.transform_tiny	(vLastFP2,fp2);
@@ -407,15 +421,13 @@ void CWeapon::Load		(LPCSTR section)
 	else fHitImpulse = 1.f;
 
 	vFirePoint			= pSettings->r_fvector3		(section,"fire_point"		);
-	vShellPoint			= pSettings->r_fvector3		(section,"shell_point"		);
-
+	
 	if(pSettings->line_exist(section,"fire_point2")) 
 		vFirePoint2 = pSettings->r_fvector3(section,"fire_point2");
 	else 
 		vFirePoint2 = vFirePoint;
 
-
-
+	
 	// flames
 	iFlameDiv			= pSettings->r_s32			(section,"flame_div"		);
 	fFlameLength		= pSettings->r_float		(section,"flame_length"		);
@@ -426,6 +438,14 @@ void CWeapon::Load		(LPCSTR section)
 
 	if(pSettings->line_exist(section,"smoke_particles"))
 			m_sSmokeParticles = pSettings->r_string (section,"smoke_particles" );
+
+	if(pSettings->line_exist(section,"shell_particles")) 
+	{
+		m_sShellParticles = pSettings->r_string (section,"shell_particles");
+		vShellPoint	= pSettings->r_fvector3	(section,"shell_point");
+		//vShellDir	= pSettings->r_fvector3	(section,"shell_dir");
+	}
+
 
 	// hands
 	eHandDependence		= EHandDependence(pSettings->r_s32(section,"hand_dependence"));

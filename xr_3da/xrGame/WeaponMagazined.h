@@ -62,7 +62,6 @@ protected:
 	
 	virtual void	OnShot			();
 	
-	virtual void	OnShellDrop		();
 	virtual void	OnEmptyClick	();
 	virtual void	OnShotmark		(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R);
 	virtual void	OnAnimationEnd	();
