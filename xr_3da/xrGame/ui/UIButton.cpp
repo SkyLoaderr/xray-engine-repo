@@ -232,9 +232,6 @@ void  CUIButton::Draw()
 
 void  CUIButton::Update()
 {
-	inherited::Update();
-	return;
-
 	RECT rect = GetAbsoluteRect();
 
 	int right_offset;
@@ -254,9 +251,10 @@ void  CUIButton::Update()
 
 	UpdateTextAlign();
 	GetFont()->SetAligment(GetTextAlign());
-	
 
-	if(m_bCursorOverButton)
+
+
+	if(m_bCursorOverButton && m_str && xr_strlen(m_str)>0)
 	{
 			GetFont()->SetColor(0xFF999999);
 			GetFont()->Out((float)rect.left + right_offset + 1 +m_iTextOffsetX, 
@@ -283,8 +281,11 @@ void  CUIButton::Update()
 			GetFont()->Out((float)rect.left + right_offset + 0 +m_iTextOffsetX,  
 					   (float)rect.top + down_offset - 1 +m_iTextOffsetY,
 					    m_str);
-
 	}
+
+//	inherited::Update();
+//	return;
+
 
 	GetFont()->SetColor(m_dwFontColor);
 
