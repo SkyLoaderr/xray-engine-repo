@@ -17,7 +17,6 @@ void xrMU_Reference::Load(IReader& F)
 void xrMU_Model::Load	(IReader& F)
 {
 	F.r_stringZ			(m_name);
-	clMsg				("* Loading model: '%s'...",m_name);
 
 	// READ: vertices
 	xr_vector<b_vertex>	b_vertices;
@@ -42,7 +41,7 @@ void xrMU_Model::Load	(IReader& F)
 	}
 
 	// 
-	clMsg	("%5s v(%d/%d), f(%d/%d)","-",m_vertices.size(),b_vertices.size(),m_faces.size(),b_faces.size());
+	clMsg	("* Loading model: '%s' - v(%d/%d), f(%d/%d)",m_name,m_vertices.size(),b_vertices.size(),m_faces.size(),b_faces.size());
 }
 
 xrMU_Model::_face* xrMU_Model::load_create_face(Fvector& P1, Fvector& P2, Fvector& P3, b_face& B)

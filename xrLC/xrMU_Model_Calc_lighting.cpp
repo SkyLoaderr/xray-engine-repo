@@ -243,7 +243,7 @@ void xrMU_Reference::calc_lighting	()
 		xr_vector<xr_vector<REAL> >	B;	B.resize(color.size());
 		xr_vector<REAL>			C;
 		xr_vector<REAL>			D;
-
+		/*
 		if (bFirst)
 		{
 			bFirst				= FALSE;
@@ -254,7 +254,7 @@ void xrMU_Reference::calc_lighting	()
 				Msg				("[%1.3f,%1.3f,%1.3f]-[%1.3f,%1.3f,%1.3f]",__A.r,__A.g,__A.b,__B.r,__B.g,__B.b);
 			}
 		}
-
+		*/
 		for (u32 it=0; it<color.size(); it++)
 		{
 			Fcolor&		__A		= model->color	[it];
