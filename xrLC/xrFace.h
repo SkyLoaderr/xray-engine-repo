@@ -249,13 +249,4 @@ public:
 	~Face();
 };
 
-#pragma pack(push,1)
-class DetailPatch : public b_particle
-{
-public:
-	DWORD	color;
-};
-#pragma pack(pop)
-
-extern vector<DetailPatch>	g_pathes; 
 extern bool					g_bUnregister;

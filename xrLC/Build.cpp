@@ -14,25 +14,30 @@ b_params			g_params;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 template <class T>
-void transfer(const char *name, vector<T> &dest, T* src, DWORD cnt )
+void transfer(const char *name, vector<T> &dest, CStream& F, DWORD chunk)
 {
-	Msg("* %16s: %d",name,cnt);
-	dest.reserve(cnt);
-	dest.insert	(dest.begin(), src, src+cnt);
+	CStream*	O		= F.OpenChunk(chunk);
+	DWORD		count	= O->Length()/sizeof(T);
+	Msg			("* %16s: %d",name,count);
+	dest.reserve(count);
+	dest.insert	(dest.begin(), (T*)O->Pointer(), (T*)O->Pointer() + count);
+	O->Close	();
 }
 
 extern DWORD*	Surface_Load	(char* name, DWORD& w, DWORD& h);
 extern void		Surface_Init	();
 
-CBuild::CBuild(b_transfer * L)
+CBuild::CBuild	(b_params* L, CStream& FS)
 {
-	DWORD	i=0;
+	DWORD			i	= 0;
 
-	float	p_total = 0;
-	float	p_cost  = 1.f/3.f;
+	float			p_total = 0;
+	float			p_cost  = 1.f/3.f;
+	
+	CStream*		F	= 0;
 
-	Phase		("Loading shaders...");
-	shaders.Load("x:\\game\\shaders_xrlc.xr");
+	// 
+	shaders.Load	("x:\\game\\shaders_xrlc.xr");
 	{
 		Shader_xrLCVec&	S = shaders.Library();
 		for (Shader_xrLCIt I = S.begin(); I!=S.end(); I++)
@@ -41,78 +46,125 @@ CBuild::CBuild(b_transfer * L)
 		}
 	}
 	
-	Phase		("Converting data structures...");
-
 	//*******
-	Status		("Vertices...");
-	g_vertices.reserve	(L->vertex_count);
-	scene_bb.invalidate	();
-	for (i=0; i<L->vertex_count; i++)
+	Status					("Vertices...");
 	{
-		Vertex*	pV		= new Vertex;
-		pV->P.set		(L->vertices[i]);
-		pV->N.set		(0,0,0);
-		pV->Color.set	(0,0,0,0);
-		scene_bb.modify	(pV->P);
-	}
-	Progress(p_total+=p_cost);
-	Msg("%d vertices processed.",g_vertices.size());
-
-	//*******
-	Status	("Faces...");
-	g_faces.reserve	(L->face_count);
-	for (i=0; i<L->face_count; i++)
-	{
-		Face*	F		= new Face;
-		b_face*	B		= &(L->faces[i]);
-
-		F->dwMaterial	= WORD(B->dwMaterial);
-
-		// Vertices and adjacement info
-		for (DWORD it=0; it<3; it++)
+		F = FS.OpenChunk		(EB_Vertices);
+		DWORD v_count			=	F->Length()/sizeof(b_vertex);
+		g_vertices.reserve		(3*v_count/2);
+		scene_bb.invalidate		();
+		for (i=0; i<L->v_count; i++)
 		{
-			int id = B->v[it];
-			R_ASSERT(id<(int)g_vertices.size());
-			F->SetVertex(it,g_vertices[id]);
+			Vertex*	pV			= new Vertex;
+			F->Rvector			(pV->P);
+			pV->N.set			(0,0,0);
+			pV->Color.set		(0,0,0,0);
+			scene_bb.modify		(pV->P);
 		}
-
-		// transfer TC
-		UVpoint uv1,uv2,uv3;
-		uv1.set(B->t[0].tu,B->t[0].tv);
-		uv2.set(B->t[1].tu,B->t[1].tv);
-		uv3.set(B->t[2].tu,B->t[2].tv);
-		F->AddChannel( uv1, uv2, uv3 );
+		Progress			(p_total+=p_cost);
+		Msg					("* %16s: %d","vertices",g_vertices.size());
+		F->Close			();
 	}
-	Progress(p_total+=p_cost);
-	Msg("%d faces processed.",g_faces.size());
 
-	for (i=0; i<L->particle_count; i++)
+	//*******
+	Status					("Faces...");
 	{
-		DetailPatch DP;
-		CopyMemory(&DP,&(L->particles[i]),sizeof(b_particle));
-		g_pathes.push_back(DP);
+		F = FS.OpenChunk		(EB_Faces);
+		DWORD f_count			=	F->Length()/sizeof(b_face);
+		g_faces.reserve			(f_count);
+		for (i=0; i<L->f_count; i++)
+		{
+			Face*	_F			= new Face;
+			b_face	B;
+			F->Read				(&B,sizeof(B));
+
+			_F->dwMaterial		= WORD(B->dwMaterial);
+
+			// Vertices and adjacement info
+			for (DWORD it=0; it<3; it++)
+			{
+				int id			= B->v[it];
+				R_ASSERT		(id<(int)g_vertices.size());
+				_F->SetVertex	(it,g_vertices[id]);
+			}
+
+			// transfer TC
+			UVpoint				uv1,uv2,uv3;
+			uv1.set				(B->t[0].x,B->t[0].y);
+			uv2.set				(B->t[1].x,B->t[1].y);
+			uv3.set				(B->t[2].x,B->t[2].y);
+			_F->AddChannel		( uv1, uv2, uv3 );
+		}
+		Progress			(p_total+=p_cost);
+		Msg					("* %16s: %d","faces",g_faces.size());
+		F->Close			();
 	}
-	Msg("%d detail patches processed.",g_pathes.size());
 
 	//*******
 	Status	("Other transfer...");
-	transfer("materials",	materials,	L->material,	L->mtl_count);
-	transfer("shaders",		shader_names,L->shaders,	L->shader_count);
-	transfer("shaders_xrlc",shader_xrlc_names,L->shaders_xrlc,	L->shader_xrlc_count);
-	transfer("glows",		glows,		L->glows,		L->glow_count);
-	transfer("occluders",	occluders,	L->occluders,	L->occluder_count);
-	transfer("portals",		portals,	L->portals,		L->portal_count);
+	transfer("materials",	materials,			FS,		EB_Materials);
+	transfer("shaders",		shader_render,		FS,		EB_Shaders_Render);
+	transfer("shaders_xrlc",shader_compile,		FS,		EB_Shaders_Compile);
+	transfer("glows",		glows,				FS,		EB_Glows);
+	transfer("portals",		portals,			FS,		EB_Portals);
+	transfer("d-lights",	L_dynamic,			FS,		EB_Light_dynamic);
 
-	// post-process lights
-	Status	("Post-process lights...");
-	for (DWORD l=0; l<L->light_count; l++) {
-		b_light R = L->lights[l];
-		R.direction.normalize_safe();
-		// R.flags.bAffectDynamic	= TRUE;
-		if (R.flags.bAffectStatic)	lights_lmaps.push_back	(R);
-		if (R.flags.bAffectDynamic) lights_dynamic.push_back(R);
+	// Load lights
+	Status	("Loading lights...");
+	{
+		// Controlles/Layers
+		{
+			F = FS.OpenChunk(EB_Light_control);
+			R_Layer			temp;
+			
+			while (!F->Eof())
+			{
+				F->Read				(temp.control.name,sizeof(temp.control.name));
+				DWORD cnt			= F->Rdword();
+				temp.control.data.resize(cnt);
+				F->Read				(temp.control.data.begin(),cnt*sizeof(DWORD));
+
+				L_layers.push_back	(temp);
+			}
+
+			F->Close		();
+		}
+		// Static
+		{
+			F = FS.OpenChunk(EB_Light_control);
+			b_light_static	temp;
+			DWORD cnt		= F->Length()/sizeof(temp);
+			for				(i=0; i<cnt; i++)
+			{
+				R_Light		RL;
+				F->Read		(&temp,sizeof(temp));
+				Flight&		L = temp.data;
+
+				// type
+				if			(L.type == D3DLIGHT_DIRECTIONAL)	RL.type	= LT_DIRECT;
+				else											RL.type = LT_POINT;
+
+				// generic properties
+				RL.diffuse.normalize_rgb	(L.diffuse);
+				RL.position.set				(L.position);
+				RL.direction.normalize_safe	(L.direction);
+				RL.range				=	L.range*1.1f;
+				RL.range2				=	RL.range*RL.range;
+				RL.attenuation0			=	L.attenuation0;
+				RL.attenuation1			=	L.attenuation1;
+				RL.attenuation2			=	L.attenuation2;
+				RL.energy				=	L.diffuse.magnitude_rgb	();
+
+				// place into layer
+				R_ASSERT	(temp.controller_ID<L_layers.size());
+				L_layers	[temp.controller_ID].lights.push_back	(RL);
+			}
+			F->Close		();
+		}
+
+		// Dynamic
+		transfer("d-lights",	L_dynamic,			FS,		EB_Light_dynamic);
 	}
-	lights.resize	(1);
 	
 	// process textures
 	Status			("Processing textures...");
@@ -129,24 +181,10 @@ CBuild::CBuild(b_transfer * L)
 		LPSTR N			= BT.name;
 		if (strchr(N,'.')) *(strchr(N,'.')) = 0;
 		char th_name[256]; strconcat(th_name,"\\\\x-ray\\stalkerdata$\\textures\\",N,".thm");
-		CCompressedStream THM(th_name,THM_SIGN);
+		CCompressedStream THM	(th_name,THM_SIGN);
 		
 		// analyze thumbnail information
 		R_ASSERT(THM.ReadChunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
-		/*
-		if (strstr(th_name,"terrain"))	{
-			Log("BT.THM.flag.bAlphaBorder",BT.THM.flag.bAlphaBorder?"TRUE":"FALSE");
-			BT.THM.flag.bBinaryAlpha;
-			BT.THM.flag.bColorBorder;
-			BT.THM.flag.bDitherColor;
-			BT.THM.flag.bDitherEachMIPLevel;
-			BT.THM.flag.bDuDvMap;
-			BT.THM.flag.bFadeToAlpha;
-			BT.THM.flag.bFadeToColor;
-			BT.THM.flag.bGenerateMipMaps;
-			BT.THM.flag.bGreyScale;
-		}
-		*/
 		
 		// load surface if it has an alpha channel or has "implicit lighting" flag
 		BT.dwWidth	= BT.THM.width;
@@ -177,7 +215,7 @@ CBuild::CBuild(b_transfer * L)
 		} else {
 			int id = shaders.GetID(shader_xrlc_names[M.shader_xrlc].name);
 			if (id<0) {
-				Msg("ERROR: Shader '%s' not found in library",shader_names[M.shader].name);
+				Msg("ERROR: Shader '%s' not found in library",shader_compile[M.shader].name);
 				R_ASSERT(id>=0);
 			}
 			M.reserved = DWORD(id);

@@ -369,6 +369,15 @@
 				RelativePath=".\Shader_xrLC.h">
 			</File>
 			<File
+				RelativePath=".\b_globals.h">
+			</File>
+			<File
+				RelativePath=".\communicate.h">
+			</File>
+			<File
+				RelativePath=".\light.h">
+			</File>
+			<File
 				RelativePath=".\progmesh.h">
 			</File>
 			<File
@@ -389,19 +398,6 @@
 			<File
 				RelativePath=".\xrSpherical.h">
 			</File>
-			<Filter
-				Name="Communication"
-				Filter="">
-				<File
-					RelativePath=".\b_globals.h">
-				</File>
-				<File
-					RelativePath=".\communicate.h">
-				</File>
-				<File
-					RelativePath=".\light.h">
-				</File>
-			</Filter>
 			<Filter
 				Name="NV_Strips"
 				Filter="">

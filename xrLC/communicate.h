@@ -3,72 +3,71 @@
 
 #pragma pack(push,4)
 
-const DWORD XR_MAX_UVMAPS		= 1;
 const DWORD XR_MAX_TEXTURES		= 32;
 const DWORD XR_MAX_PORTAL_VERTS	= 6;
 
 // All types to interact with xrLC
-typedef Fvector b_vertex;
+typedef Fvector			b_vertex;
 
-struct b_uvmap
-{
-	float tu;
-	float tv;
-};
 struct b_face
 {
 	DWORD				v[3];				// vertices
-	b_uvmap				t[3];				// TC
+	Fvector2			t[3];				// TC
 	WORD				dwMaterial;			// index of material
 };
+
 struct b_material
 {
-	WORD				surfidx;			// indices of texture surfaces
+	WORD				surfidx;			// indices of texture surface
 	WORD				shader;				// index of shader that combine them
 	WORD				shader_xrlc;		// compiler options
 	WORD				sector;				// ***
-	DWORD				reserved;
+	WORD				lod_id;				// WORD(-1) = no lod, just static geometry
+	WORD				reserved;			// 
 };
+
 struct b_shader
 {
-	char				name		[128];
+	string128			name;
 };
+
 struct b_texture
 {
-	char				name		[128];
+	string128			name;
 	DWORD				dwWidth;
 	DWORD				dwHeight;
 	BOOL				bHasAlpha;
 	DWORD*				pSurface;
 };
-struct b_light : public Flight
+
+struct b_light_control						// controller or "layer", 30fps
 {
-	struct {
-		DWORD			bAffectStatic	: 1;
-		DWORD			bAffectDynamic	: 1;
-		DWORD			bProcedural		: 1;
-	}					flags;
 	string64			name;
+	DWORD				count;
+	// DWORD			data[];
+};
+
+struct b_light_static						// For static lighting
+{
+	DWORD				controller_ID;		// DWORD(-1) = no controller
+	Flight				data;
+};
+
+struct b_light_dynamic						// For dynamic models
+{
+	DWORD				controller_ID;		// DWORD(-1) = no controller
+	Flight				data;
 	svector<WORD,16>	sectors;
 };
+
 struct b_glow
 {
 	Fvector				P;
 	float				size;
+	DWORD				flags;				// 0x01 = non scalable
 	DWORD				dwMaterial;			// index of material
 };
-struct b_particle
-{
-	Fvector				P;
-	Fvector				N;
-	float				size;
-	DWORD				dwMaterial;
-};
-struct b_occluder
-{
-	WORD				sector;				
-	svector<Fvector,XR_MAX_PORTAL_VERTS>	vertices;
-};
+
 struct b_portal
 {
 	WORD				sector_front;
@@ -76,12 +75,19 @@ struct b_portal
 	svector<Fvector,XR_MAX_PORTAL_VERTS>	vertices;
 };
 
+struct b_lod_face
+{
+	Fvector				v		[4];
+	Fvector2			t		[4];
+};
+
+struct b_lod
+{
+	b_lod_face			faces	[4];
+};
+
 struct b_params
 {
-	// Tesselation
-	BOOL		m_bTesselate;
-	float		m_maxedge;			// for tesselation - by default: 32m
-
 	// Normals & optimization
 	float		m_sm_angle;			// normal smooth angle		- 89.0
 	float		m_weld_distance;	// by default 0.005f		- 5mm
@@ -132,18 +138,14 @@ struct b_params
 
 	// Strippifier
 	BOOL		m_bStripify;		// true
-	int			m_vCacheSize;		// Radeon = 16, Radeon2 = 24, GeForce(1/2/MX) = 16, GeForce3 = 24
+	int			m_vCacheSize;		// R200 = 10, R300 = 12, GeForce(1/2/MX) = 16/12, GeForce3 = 24/16
 
-	char		L_name[64];			// Level name
-	char		L_path[256];		// Path to level. Like "x:\game\data\try\"
+	string128	L_name;				// Level name
 
     void        Init()
 	{
-        m_bTesselate            = FALSE;
-        m_maxedge               = 32;
-
         // Normals & optimization
-        m_sm_angle              = 120.f;
+        m_sm_angle              = 89.f;
         m_weld_distance         = 0.005f;
 
         // Vertex buffers
@@ -151,7 +153,7 @@ struct b_params
         m_VB_maxVertices        = 65535;
 
         // Subdivision & PVS
-        m_SS_maxsize            = 48;
+        m_SS_maxsize            = 32;
 		m_SS_merge_coeff		= 0.5f;
 		m_SS_Low				= 32;
 		m_SS_High				= 2048;
@@ -166,8 +168,8 @@ struct b_params
 		m_lm_jitter_samples		= 4;
         m_lm_amb_color.set      (1,1,1,0);
         m_lm_amb_fogness        = 0.05f;
-		m_lm_rms_zero			= 12;
-		m_lm_rms				= 12;
+		m_lm_rms_zero			= 4;
+		m_lm_rms				= 4;
 
 		// Area(hemi-sphere) lighting
 		area_color.set			(1,1,1,1);
@@ -194,8 +196,7 @@ struct b_params
 		m_bStripify				= TRUE;
 		m_vCacheSize			= 16;
 
-        L_name[0] = 0;
-        L_path[0] = 0;
+        L_name[0]				= 0;
     }
 	void		setDebug()
 	{
@@ -211,41 +212,29 @@ struct b_params
 		m_lm_pixels_per_meter	= 14;
 		m_lm_jitter_samples		= 9;
 		area_quality			= 2;
-		fuzzy_enable			= TRUE;
+		fuzzy_enable			= FALSE;
 	}
 };
-
-struct b_transfer
-{
-	DWORD		_version;		// XRCL_CURRENT_VERSION
-	b_params	params;
-
-	b_vertex*	vertices;
-	DWORD		vertex_count;
-	b_face*		faces;
-	DWORD		face_count;
-	b_material*	material;
-	DWORD		mtl_count;
-	b_shader*	shaders;
-	DWORD		shader_count;
-	b_shader*	shaders_xrlc;
-	DWORD		shader_xrlc_count;
-	b_texture*	textures;
-	DWORD		tex_count;
-	b_light*	lights;
-	DWORD		light_count;
-	Flight*		light_keys;
-	DWORD		light_keys_count;
-	b_glow*		glows;
-	DWORD		glow_count;
-	b_particle*	particles;
-	DWORD		particle_count;
-	b_occluder*	occluders;
-	DWORD		occluder_count;
-	b_portal*	portals;		
-	DWORD		portal_count;
-};
-
 #pragma pack(pop)
+
+enum EBUILD_CHUNKS
+{
+	EB_Version			= 0,	// XRCLC_CURRENT_VERSION
+	EB_Parameters,
+	EB_Vertices,
+	EB_Faces,
+	EB_Materials,
+	EB_Shaders_Render,
+	EB_Shaders_Compile,
+	EB_Textures,
+	EB_Glows,
+	EB_Portals,
+	EB_Light_control,
+	EB_Light_static,
+	EB_Light_dynamic,
+	EB_LOD_models,
+
+	EB_FORCE_DWORD = DWORD(-1)
+};
 
 #endif

@@ -39,14 +39,17 @@ struct b_BuildTexture : public b_texture
 		}
 	}
 };
-struct b_LightLayer
-{
-	b_light*				original;
-	vector<R_Light>			lights;
-	
-	b_LightLayer()			{ original=0; }
-};
 
+struct R_Control
+{
+	string64				name;
+	vector<DWORD>			data;
+};
+struct R_Layer
+{
+	R_Control				control;
+	vector<R_Light>			lights;
+};
 
 class CBuild  
 {
@@ -54,17 +57,15 @@ public:
 	Fbox					scene_bb;
 	
 	vector<b_material>		materials;
-	vector<b_shader>		shader_names;
-	vector<b_shader>		shader_xrlc_names;
+	vector<b_shader>		shader_render;
+	vector<b_shader>		shader_compile;
 	vector<b_BuildTexture>	textures;
 
 	vector<b_glow>			glows;
-	vector<b_occluder>		occluders;
 	vector<b_portal>		portals;
 
-	vector<b_light>			lights_dynamic;
-	vector<b_light>			lights_lmaps;
-	vector<b_LightLayer>	lights;
+	vector<R_Layer>			L_layers;
+	vector<b_light_dynamic>	L_dynamic;
 
 	Shader_xrLC_LIB			shaders;
 
@@ -72,7 +73,7 @@ public:
 	void	mem_Compact				();
 	void	mem_CompactSubdivs		();
 public:
-	void	Run();
+	void	Run						();
 
 	void	PreOptimize				();
 	void	CorrectTJunctions		();
@@ -101,7 +102,7 @@ public:
 	void	SaveTREE				(CFS_Base &fs);
 	void	SaveSectors				(CFS_Base &fs);
 
-	CBuild	(b_transfer * leveldesc);
+	CBuild	(b_params& P, CStream&  FS);
 	~CBuild	();
 };
 

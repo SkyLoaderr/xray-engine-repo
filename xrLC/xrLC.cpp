@@ -17,7 +17,7 @@
 #pragma comment(lib,"X:\\FreeImage.lib")
 #pragma comment(lib,"X:\\xrHemisphere.lib")
 
-CBuild*	pBuild = NULL;
+CBuild*	pBuild		= NULL;
 
 extern void __cdecl logThread(void *dummy);
 extern volatile BOOL bClose;
@@ -56,66 +56,61 @@ void Startup(LPSTR     lpCmdLine)
 	Sleep				(150);
 	
 	// Faster FPU 
-	InitMath			();
-	DWORD				dwStartupTime	= timeGetTime();
-	SetPriorityClass	(GetCurrentProcess(),IDLE_PRIORITY_CLASS);
+	InitMath				();
+	DWORD					dwStartupTime	= timeGetTime();
+	SetPriorityClass		(GetCurrentProcess(),IDLE_PRIORITY_CLASS);
 	
 	// Load project
-	name[0]=0;			sscanf(strstr(cmd,"-f")+2,"%s",name);
-	string prjName		= "x:\\game\\data\\levels\\"+string(name)+"\\build.prj";
-	Phase				("Reading project...");
-	CVirtualFileStream*	FS	= new CVirtualFileStream(prjName.c_str());
-	void*				data= FS->Pointer();
+	name[0]=0;				sscanf(strstr(cmd,"-f")+2,"%s",name);
+	string prjName			= "game\\data\\levels\\"+string(name)+"\\build.prj";
+	Phase					("Reading project...");
+	CCompressedStream		FS(prjName.c_str(),	"xrLC");
 
-	b_transfer	Header		= *((b_transfer *) data);
-	R_ASSERT(XRCL_CURRENT_VERSION==Header._version);
-	Header.faces			= (b_face*)		(DWORD(data)+DWORD(Header.faces));
-	Header.vertices			= (b_vertex*)	(DWORD(data)+DWORD(Header.vertices));
-	Header.material			= (b_material*)	(DWORD(data)+DWORD(Header.material));
-	Header.shaders			= (b_shader*)	(DWORD(data)+DWORD(Header.shaders));
-	Header.shaders_xrlc		= (b_shader*)	(DWORD(data)+DWORD(Header.shaders_xrlc));
-	Header.textures			= (b_texture*)	(DWORD(data)+DWORD(Header.textures));
-	Header.lights			= (b_light*)	(DWORD(data)+DWORD(Header.lights));
-	Header.light_keys		= (Flight*)		(DWORD(data)+DWORD(Header.light_keys));
-	Header.glows			= (b_glow*)		(DWORD(data)+DWORD(Header.glows));
-	Header.particles		= (b_particle*)	(DWORD(data)+DWORD(Header.particles));
-	Header.occluders		= (b_occluder*)	(DWORD(data)+DWORD(Header.occluders));
-	Header.portals			= (b_portal*)	(DWORD(data)+DWORD(Header.portals));
+	// Version
+	DWORD version;
+	FS.ReadChunk			(EB_Version,&version);
+	R_ASSERT(XRCL_CURRENT_VERSION==version);
+
+	// Header
+	b_params				Params;
+	FS.ReadChunk			(EB_Parameters,&Params);
 
 	// Show options if needed
-	if (bModifyOptions)		{
+	if (bModifyOptions)		
+	{
 		Phase		("Project options...");
-		HMODULE		L = LoadLibrary("xrLC_Options.dll");
-		void*		P = GetProcAddress(L,"_frmScenePropertiesRun");
+		HMODULE		L = LoadLibrary		("xrLC_Options.dll");
+		void*		P = GetProcAddress	(L,"_frmScenePropertiesRun");
 		R_ASSERT	(P);
 		xrOptions*	O = (xrOptions*)P;
-		int			R = O(&Header.params,Header._version,false);
+		int			R = O(&Params,version,false);
 		FreeLibrary	(L);
 		if (R==2)	{
 			ExitProcess(0);
 		}
 	}
 	
-	pBuild	= new CBuild(&Header);
-	_DELETE	(FS);
+	// Conversion
+	Phase					("Converting data structures...");
+	pBuild					= new CBuild(&Params,FS);
+	_DELETE					(FS);
 	
 	// Call for builder
-	pBuild->Run();
-	delete pBuild;
+	pBuild->Run				();
+	delete					pBuild;
 
 	// Show statistic
 	char	stats[256];
 	extern	string make_time(DWORD sec);
 	extern  HWND logWindow;
 
-	DWORD	dwEndTime = timeGetTime();
-	sprintf(stats,"Time elapsed: %s",make_time((dwEndTime-dwStartupTime)/1000).c_str());
-	MessageBox(logWindow,stats,"Congratulation!",MB_OK|MB_ICONINFORMATION);
+	DWORD	dwEndTime		= timeGetTime();
+	sprintf					(stats,"Time elapsed: %s",make_time((dwEndTime-dwStartupTime)/1000).c_str());
+	MessageBox				(logWindow,stats,"Congratulation!",MB_OK|MB_ICONINFORMATION);
 
 	// Close log
-	bClose = TRUE;
-	Sleep	(500);
-	
+	bClose					= TRUE;
+	Sleep					(500);
 }
 
 int APIENTRY WinMain(HINSTANCE hInst,
