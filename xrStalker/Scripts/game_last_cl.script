@@ -5,7 +5,7 @@ module("game_last_tmp")
 module("game_last_dialog")
 module("game_last_charselect_dlg")
 module("game_last_header_wnd")
-
+test
 class "game_cl_LastStanding" (game_cl_mp_script)
 
 function game_cl_LastStanding:__init() super()
