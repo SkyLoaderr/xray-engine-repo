@@ -243,6 +243,8 @@ extern char		psNET_Name[32];
 extern int		psNET_Port;
 extern float	ssaLIMIT;
 extern float	ssaDONTSORT;
+extern float	psDetailDensity;
+
 
 void CCC_Register()
 {
@@ -285,6 +287,7 @@ void CCC_Register()
 	CMD4(CCC_Float,		"rs_occ_reject",		&psOSSR,		0, 1);
 	CMD4(CCC_Float,		"rs_ssa_discard",		&ssaLIMIT,		1, 16);
 	CMD4(CCC_Float,		"rs_ssa_dontsort",		&ssaDONTSORT,	16,65536);
+	CMD4(CCC_Float,		"rs_detail_density",	&psDetailDensity,.05f,0.3f);
 	
 	CMD1(CCC_Gamma,		"rs_gamma"				);
 	CMD4(CCC_Integer,	"rs_skeleton_update",	&psSkeletonUpdate,	2,		128	);

@@ -8,6 +8,8 @@
 #include "xr_creator.h"
 #include "collide\cl_intersect.h"
 
+float		psDetailDensity		= 0.15f;
+
 const DWORD	vs_size				= 3000;
 const float slot_size			= DETAIL_SLOT_SIZE;
 const float slot_radius			= DETAIL_SLOT_SIZE*0.70710678118654752440084436210485f; // (slot_size/2)*sqrtf(2)
@@ -491,7 +493,7 @@ void CDetailManager::UpdateCache	(int limit)
 		}
 		
 		// Prepare to selection
-		float		density		= 0.15f;
+		float		density		= psDetailDensity;
 		float		jitter		= density/2.f;
 		DWORD		d_size		= iCeil	(slot_size/density);
 		svector<int,dm_obj_in_slot>		selected;
