@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#pragma hdrstop
 
 /* minilzo.c -- mini subset of the LZO real-time data compression library
 

@@ -15,7 +15,8 @@
       Intermediate\LocatorAPI.obj Intermediate\LocatorAPI_borland.obj 
       Intermediate\FileSystem_borland.obj Intermediate\FileSystem.obj 
       Intermediate\xrMemory_subst_msvc.obj Intermediate\xrMemory_POOL.obj 
-      Intermediate\xrMemory_subst_borland.obj"/>
+      Intermediate\xrMemory_subst_borland.obj Intermediate\rt_lzo.obj 
+      Intermediate\rt_compressor.obj"/>
     <RESFILES value="Intermediate\xrCore.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -89,6 +90,8 @@
       <FILE FILENAME="xrMemory_subst_msvc.cpp" FORMNAME="" UNITNAME="xrMemory_subst_msvc.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="xrMemory_POOL.cpp" FORMNAME="" UNITNAME="xrMemory_POOL.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="xrMemory_subst_borland.cpp" FORMNAME="" UNITNAME="xrMemory_subst_borland.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="rt_lzo.cpp" FORMNAME="" UNITNAME="rt_lzo.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="rt_compressor.cpp" FORMNAME="" UNITNAME="rt_compressor.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

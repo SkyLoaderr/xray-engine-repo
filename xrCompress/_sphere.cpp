@@ -144,7 +144,7 @@ void Miniball::pivot_mb (It i)
 {
 	It t = ++L.begin();
 	mtf_mb (t);
-	float max_e =0, old_sqr_r = 0;
+	float max_e, old_sqr_r = 0;
 	do 
 	{
 		It pivot = L.begin();

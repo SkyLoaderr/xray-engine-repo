@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "rt_lzo.h"
 
 #define HEAP_ALLOC(var,size) \

@@ -145,12 +145,14 @@ public:
 	}
 
 	// Normalize
-	IC	void	normalize(void) {
+	IC	T	normalize(void) {
 		VERIFY(square_magnitude() > std::numeric_limits<T>::min());
-		T mag=_sqrt(1/(x*x + y*y + z*z));
-		x *= mag;
-		y *= mag;
-		z *= mag;
+		T len		= magnitude();
+        T inv_len 	= 1.0f/len;
+		x *= inv_len;
+		y *= inv_len;
+		z *= inv_len;
+        return len;
 	}
 
 	// Safe-Normalize
@@ -296,6 +298,28 @@ public:
 	IC	void	slide(const Self& dir, const Self& norm){	// non normalized
 		mad(dir,norm,-dir.dotproduct(norm));
 	}
+    IC static void generate_orthonormal_basis(const _vector& dir, _vector& up, _vector& right)
+    {
+        T fInvLength;
+
+        if ( _abs(dir.x) >= _abs(dir.y) ){
+            // W.x or W.z is the largest magnitude component, swap them
+            fInvLength = 1.f/_sqrt(dir.x*dir.x+dir.z*dir.z);
+            up.x = -dir.z*fInvLength;
+            up.y = 0.0f;
+            up.z = +dir.x*fInvLength;
+        }
+        else
+        {
+            // W.y or W.z is the largest magnitude component, swap them
+            fInvLength = 1.f/_sqrt(dir.y*dir.y+dir.z*dir.z);
+            up.x = 0.0f;
+            up.y = +dir.z*fInvLength;
+            up.z = -dir.y*fInvLength;
+        }
+
+        right.crossproduct(dir,up); //. <->
+    }
 };
 typedef _vector<float>	Fvector;
 typedef _vector<float>	Fvector3;
