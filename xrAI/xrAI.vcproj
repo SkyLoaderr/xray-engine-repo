@@ -1574,6 +1574,34 @@
 						RelativePath=".\server_entity_wrapper_inline.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="guid_generator"
+					Filter="">
+					<File
+						RelativePath=".\guid_generator.cpp">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="3"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\guid_generator.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Verify"

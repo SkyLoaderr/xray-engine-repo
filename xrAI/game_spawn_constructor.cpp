@@ -158,6 +158,7 @@ void CGameSpawnConstructor::save_spawn		(LPCSTR name, LPCSTR output)
 	CMemoryWriter					stream;
 
 	m_spawn_header.m_version		= XRAI_CURRENT_VERSION;
+	m_spawn_header.m_guid			= generate_guid();
 	m_spawn_header.m_level_count	= (u32)m_level_spawns.size();
 	m_spawn_header.m_spawn_count	= spawn_graph().vertex_count();
 	

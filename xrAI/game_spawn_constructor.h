@@ -15,6 +15,7 @@
 #include "xrServer_Object_Base.h"
 #include "spawn_constructor_space.h"
 #include "server_entity_wrapper.h"
+#include "guid_generator.h"
 
 class CSE_Abstract;
 class CLevelSpawnConstructor;
@@ -32,6 +33,7 @@ public:
 private:
 	struct CSpawnHeader {
 		u32							m_version;
+		GUID						m_guid;
 		u32							m_spawn_count;
 		u32							m_level_count;
 	};
