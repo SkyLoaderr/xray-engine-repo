@@ -53,4 +53,8 @@
 		<text>Вы находитесь на территории группировки "Долг".</text>
 	</info_portion>
 
+	<info_portion id="encyclopedy">
+		<article>one</article>
+	</info_portion>
+
 </game_information_portions>

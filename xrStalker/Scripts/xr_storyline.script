@@ -1,6 +1,11 @@
 function set_storyline(object, char_ini)
     local actor = level.actor()
 
+	-- подключение всей энциклопедии
+	if actor ~= nil then
+	       actor:give_info_portion("encyclopedy")
+	end
+
         -- Реакция на бобика
         if char_ini:section_exist ("bobik") == true then
             escape_bobik.add_to_binder(object)
