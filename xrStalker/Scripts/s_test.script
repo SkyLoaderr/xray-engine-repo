@@ -20,6 +20,7 @@ function main ()
 	local door = get_level_object ("door")
 	local bones = {"bone16"}
 
+	local starthit = 1;
 	while true do
 		  wait (500)
 		  local h = hit ()	
@@ -27,9 +28,10 @@ function main ()
           h.direction:set (-1, 0, 0)
           h:bone (bones[math.random (1, table.getn (bones))])
           h.draftsman = get_actor ()
-          h.impulse = math.random (30, 100)
+          h.impulse = starthit
           h.type  = hit.strike
           door:hit (h)
+		  starthit = starthit + math.random (5, 10)
 	end			
 
  end
