@@ -75,7 +75,7 @@ void vfOptimizeParameters(vector<vector<REAL> > &A, vector<vector<REAL> > &B, ve
 	}
 	u32						i = 0;
 	REAL					dFunctional = dfComputeEvalResults(daEvalResults,A,B,C,D), dPreviousFunctional;
-	clMsg					("***MU***: %6d : %17.8f (%17.8f)",i,dFunctional,dFunctional/dwTestCount);
+	clMsg					("***MU-fitter***: %6d : %17.8f (%17.8f)",i,dFunctional,dFunctional/dwTestCount);
 	do {
 		dPreviousFunctional = dFunctional;
 		dafGradient			(daEvalResults,			daGradient,			B,					dNormaFactor);
@@ -96,5 +96,5 @@ void vfOptimizeParameters(vector<vector<REAL> > &A, vector<vector<REAL> > &B, ve
 	}
 	
 	dFunctional				= dfComputeEvalResults(daEvalResults,A,B,C,D);
-	clMsg					("***MU***: %6d : %17.8f (%17.8f)",i,dFunctional,dFunctional/dwTestCount);
+	clMsg					("***MU-fitter***: %6d : %17.8f (%17.8f)",i,dFunctional,dFunctional/dwTestCount);
 }
