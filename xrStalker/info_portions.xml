@@ -15,6 +15,7 @@
 	<info_portion id="storyline_actor_start">
 		<task>storyline_eliminate_gunslinger</task>
 		<dialog>actor_break_dialog</dialog>
+		<dialog>escape_talk_about_escape</dialog>
 	</info_portion>
 
 

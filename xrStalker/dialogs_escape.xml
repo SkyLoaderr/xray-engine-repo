@@ -357,7 +357,7 @@
     </dialog>
     
 	<dialog id="escape_talk_about_escape">
-	<precondition>dialogs.level_escape</precondition>
+	<!-- <precondition>dialogs.level_escape</precondition> -->
 	<phrase_list>
 	   	<phrase id="0">
 			<text>escape_talk_about_escape__0</text>
