@@ -139,7 +139,7 @@ void	CROS_impl::update	(IRenderable* O)
 	}
 
 	// light-tracing
-	BOOL	bTraceLights	= MODE & IRender_ObjectSpecific::TRACE_SUN;
+	BOOL	bTraceLights	= MODE & IRender_ObjectSpecific::TRACE_LIGHTS;
 	if		((!O->renderable_ShadowGenerate()) && (!O->renderable_ShadowReceive()))	bTraceLights = FALSE;
 	if		(bTraceLights)	{
 		// Select nearest lights
