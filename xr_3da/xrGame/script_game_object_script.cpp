@@ -163,7 +163,7 @@ void CScriptGameObject::script_register(lua_State *L)
 
 			// bloodsucker
 			.def("set_invisible",				&CScriptGameObject::set_invisible)
-			.def("set_manual_invisible",		&CScriptGameObject::set_manual_invisibility)
+			.def("set_manual_invisibility",		&CScriptGameObject::set_manual_invisibility)
 
 			// movement manager
 			.def("set_body_state",				&CScriptGameObject::set_body_state			)
