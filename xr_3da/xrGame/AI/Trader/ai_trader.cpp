@@ -52,7 +52,8 @@ BOOL CAI_Trader::net_Spawn			(LPVOID DC)
 	if (!inherited::net_Spawn(DC))	return FALSE;
 
 	//проспавнить PDA у InventoryOwner
-	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
+	if(!getAI().m_tpALife)
+		if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
 
 	
 	//r_torso_current.yaw			= r_torso_target.yaw	= -tpTrader->o_Angle.y;

@@ -237,7 +237,8 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 		return						(FALSE);
 
 	//проспавнить PDA у InventoryOwner
-	//if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
+	if(!getAI().m_tpALife)
+		if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
 
 	Movement.SetPLastMaterial		(&m_dwLastMaterialID);
 
@@ -508,14 +509,18 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	if (m_dwDeathTime && (m_inventory.TotalWeight() > 0)) {
 		CWeapon *tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 		if (!tpWeapon || !tpWeapon->GetAmmoElapsed() || !m_bHammerIsClutched || (Level().timeServer() - m_dwDeathTime > 500)) {
-			xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin();
+			xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
 			xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
 			for ( ; I != E; I++)
-				m_inventory.Ruck((*I).m_pIItem);
-			TIItemList &l_list = m_inventory.m_ruck;
+				if ((I - B) == (int)m_inventory.m_activeSlot) 
+					(*I).m_pIItem->Drop();
+				else
+					if((*I).m_pIItem) m_inventory.Ruck((*I).m_pIItem);
+
+			/*TIItemList &l_list = m_inventory.m_ruck;
 			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++)
 				if ((*l_it)->Useful())
-					(*l_it)->Drop();
+					(*l_it)->Drop();*/
 		}
 		else {
 			m_inventory.Action(kWPN_FIRE,	CMD_START);
@@ -524,10 +529,12 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			for ( ; I != E; I++)
 				if ((I - B) != (int)m_inventory.m_activeSlot)
 					m_inventory.Ruck((*I).m_pIItem);
-			TIItemList &l_list = m_inventory.m_ruck;
+			//		(*I).m_pIItem->Drop();
+			
+			/*TIItemList &l_list = m_inventory.m_ruck;
 			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++)
 				if ((*l_it)->Useful())
-					(**l_it).Drop();
+					(**l_it).Drop();*/
 		}
 	}
 	VERIFY				(_valid(Position()));

@@ -2066,6 +2066,16 @@
 							RelativePath=".\ui\UITalkWnd.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="CarBodyWnd"
+						Filter="">
+						<File
+							RelativePath=".\ui\UICarBodyWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UICarBodyWnd.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Single"

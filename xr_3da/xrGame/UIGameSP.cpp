@@ -44,10 +44,6 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 		StartStopMenu(&InventoryMenu);
 		return true;
 		break;
-	case DIK_T:
-		StartStopMenu(&TalkMenu);
-		return true;
-		break;
 	case DIK_P:
 		StartStopMenu(&PdaMenu);
 		return true;
@@ -131,4 +127,11 @@ void CUIGameSP::StartStopMenu(CUIDialogWnd* pDialog)
 void CUIGameSP::StartTalk()
 {
 	StartStopMenu(&TalkMenu);
+}
+void CUIGameSP::StartCarBody(CInventory* pOurInv,    CGameObject* pOurObject,
+							 CInventory* pOthersInv, CGameObject* pOthersObject)
+{
+	UICarBodyMenu.InitCarBody(pOurInv,  pOurObject,
+		                      pOthersInv, pOthersObject);
+	StartStopMenu(&UICarBodyMenu);
 }

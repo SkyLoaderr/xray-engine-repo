@@ -44,6 +44,9 @@ CCar::CCar(void)
 	/////////////////////////////
 	Memory.mem_copy(m_exhaust_particles,"vehiclefx\\exhaust_1",sizeof("vehiclefx\\exhaust_1"));
 	m_car_sound=xr_new<SCarSound>(this);
+
+	//у машины слотов в инвентаре нет
+	m_inventory.m_bSlotsUseful = true;
 }
 
 CCar::~CCar(void)
@@ -1113,6 +1116,44 @@ void CCar::SExhaust::Stop()
 void CCar::OnEvent(NET_Packet& P, u16 type)
 {
 	inherited::OnEvent		(P,type);
+
+	
+	//обработка сообщений, нужных для работы с багажником машины
+	u16 id;
+	switch (type)
+	{
+	case GE_OWNERSHIP_TAKE:
+		{
+			P.r_u16		(id);
+			CObject* O	= Level().Objects.net_Find	(id);
+		
+			if(m_inventory.Take(dynamic_cast<CGameObject*>(O))) 
+			{
+				O->H_SetParent(this);
+			}
+			else 
+			{
+				if (!O || !O->H_Parent() || (O->H_Parent() != this)) return;
+				NET_Packet P;
+				u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
+				P.w_u16(u16(O->ID()));
+				u_EventSend(P);
+			}
+		}
+		break;
+	case GE_OWNERSHIP_REJECT:
+		{
+			P.r_u16		(id);
+			CObject* O	= Level().Objects.net_Find	(id);
+			
+			if(m_inventory.Drop(dynamic_cast<CGameObject*>(O))) 
+			{
+				O->H_SetParent(0);
+			}
+		}
+		break;
+	}
+
 }
 
 void CCar::ResetScriptData(void	*P)

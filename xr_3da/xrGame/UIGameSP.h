@@ -8,6 +8,7 @@
 #include "ui\\UIMapWnd.h"
 #include "ui\\UIDiaryWnd.h"
 #include "ui\\UITalkWnd.h"
+#include "ui\\UICarBodyWnd.h"
 
 class CUIGameSP :
 	public CUIGameCustom
@@ -26,6 +27,8 @@ public:
 	virtual bool		IR_OnMouseMove			(int dx, int dy);
 
 	void StartTalk();
+	void StartCarBody(CInventory* pOurInv,    CGameObject* pOurObject,
+					  CInventory* pOthersInv, CGameObject* pOthersObject);
 	void StartStopMenu(CUIDialogWnd* pDialog);
 
 	CUIInventoryWnd		InventoryMenu;
@@ -34,6 +37,7 @@ public:
 	CUIMapWnd			MapMenu;
 	CUIDiaryWnd			DiaryMenu;
 	CUITalkWnd			TalkMenu;
+	CUICarBodyWnd		UICarBodyMenu;
 
 protected:
 	//текущее меню пользователя показанное на экране

@@ -50,7 +50,8 @@ void CUIDragDropList::AttachChild(CUIDragDropItem* pChild)
 	UpdateList();
 	*/
 
-	pChild->TextureClipper();
+	pChild->ClipperOn();
+//	pChild->TextureClipper();
 }
 
 void CUIDragDropList::DetachChild(CUIDragDropItem* pChild)

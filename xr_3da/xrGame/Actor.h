@@ -225,6 +225,8 @@ private:
 
 	// Person we're looking at
 	CInventoryOwner*		m_pPersonWeLookingAt;
+	// Car or lorry we're looking at
+	CCar*					m_pCarWeLookingAt;
 
 	
 	//------------------------------

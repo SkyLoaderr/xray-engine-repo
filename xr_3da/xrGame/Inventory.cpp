@@ -411,6 +411,7 @@ CInventory::CInventory()
 	} while(true);
 	m_pTarget = NULL;
 
+	m_bSlotsUseful = true;
 	m_bBeltUseful = false;
 }
 
@@ -618,74 +619,72 @@ bool CInventory::FreeBeltRoom()
 }
 
 
-bool CInventory::Take(CGameObject *pObj, bool bNotActivate) 
+bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 {
 	CInventoryItem *l_pIItem = dynamic_cast<CInventoryItem*>(pObj);
 	//if(l_pIItem && l_pIItem->Useful() && (l_pIItem->m_weight + TotalWeight() < m_maxWeight) && (m_ruck.size() < m_maxRuck) && (m_all.find(l_pIItem) == m_all.end())) {
+	
 	if(m_all.find(l_pIItem) != m_all.end()) 
 	{
 		Debug.fatal("Item already exist in inventory: %s(%s)",pObj->cName(),pObj->cNameSect());
 	}
 
-	if(l_pIItem && l_pIItem->Useful() && 
-		(l_pIItem->m_weight + TotalWeight() < m_maxWeight) && 
-		(m_all.find(l_pIItem) == m_all.end())) 
+	if(!l_pIItem || !l_pIItem->Useful() || 
+	  !(l_pIItem->m_weight + TotalWeight() < m_maxWeight)) return false;
+
+	l_pIItem->m_pInventory = this;
+	l_pIItem->m_drop = false;
+	m_all.insert(l_pIItem);
+		
+	//сначала закинуть вещь в рюкзак
+	if(l_pIItem->m_ruck) m_ruck.insert(m_ruck.end(), l_pIItem); 
+		
+	SortRuckAndBelt(this);
+		
+	l_subs.insert(l_subs.end(), l_pIItem->m_subs.begin(), l_pIItem->m_subs.end());
+		
+	while(l_subs.size())
 	{
+		l_pIItem = *l_subs.begin();
 		l_pIItem->m_pInventory = this;
-		l_pIItem->m_drop = false;
 		m_all.insert(l_pIItem);
-		
-		if(l_pIItem->m_ruck) 
-			m_ruck.insert(m_ruck.end(), l_pIItem); 
-		
-		SortRuckAndBelt(this);
-		
 		l_subs.insert(l_subs.end(), l_pIItem->m_subs.begin(), l_pIItem->m_subs.end());
+		l_subs.erase(l_subs.begin());
+	}
 		
-		while(l_subs.size())
+	//поытаться закинуть в слот
+	if(!Slot(l_pIItem)) 
+	{
+		if(l_pIItem->m_slot < 0xffffffff) 
 		{
-			l_pIItem = *l_subs.begin();
-			l_pIItem->m_pInventory = this;
-			m_all.insert(l_pIItem);
-			l_subs.insert(l_subs.end(), l_pIItem->m_subs.begin(), l_pIItem->m_subs.end());
-			l_subs.erase(l_subs.begin());
-		}
-		
-		//поытаться закинуть в слот
-		if(!Slot(l_pIItem)) 
-		{
-			if(l_pIItem->m_slot < 0xffffffff) 
+			if(m_slots[l_pIItem->m_slot].m_pIItem->Attach(l_pIItem))
 			{
-				if(m_slots[l_pIItem->m_slot].m_pIItem->Attach(l_pIItem))
-				{
-					m_ruck.erase(std::find(m_ruck.begin(), m_ruck.end(), l_pIItem));
-					return true;
-				} 
-				else if(!Belt(l_pIItem) || !FreeBeltRoom()) 
-					 if(m_ruck.size() > m_maxRuck || 
-						!l_pIItem->m_ruck || !FreeRuckRoom()) 
-				{
-					//return true;
-					//else 
-					return !Drop(l_pIItem);
-				}
+				m_ruck.erase(std::find(m_ruck.begin(), m_ruck.end(), l_pIItem));
+				return true;
 			} 
-			else if(!Belt(l_pIItem) || !FreeBeltRoom()) 
-					  if(m_ruck.size() > m_maxRuck || !FreeRuckRoom()) 
+			else if(!Belt(l_pIItem)/* || !FreeBeltRoom()*/) 
+				 if(m_ruck.size() > m_maxRuck || 
+					!l_pIItem->m_ruck || !FreeRuckRoom()) 
 			{
+				//return true;
+				//else 
+				return !Drop(l_pIItem);
+			}
+		} 
+		else if(!Belt(l_pIItem)/* || !FreeBeltRoom()*/) 
+				  if(m_ruck.size() > m_maxRuck || !FreeRuckRoom()) 
+		{
 //				if(Belt(l_pIItem)) 
 //					return true;
 //				else 
-					return !Drop(l_pIItem);
-			}
-		} 
-		else if(m_activeSlot == 0xffffffff && !bNotActivate) 
-		{
-			Activate(l_pIItem->m_slot);
+				return !Drop(l_pIItem);
 		}
-		return true;
+	} 
+	else if(m_activeSlot == 0xffffffff && !bNotActivate) 
+	{
+		Activate(l_pIItem->m_slot);
 	}
-	return false;
+	return true;
 }
 
 bool CInventory::Drop(CGameObject *pObj) 
@@ -714,7 +713,7 @@ bool CInventory::Drop(CGameObject *pObj)
 	return false;
 }
 
-bool CInventory::DropAll() 
+bool CInventory::DropAll()
 {
 	PSPIItem l_it;
 	
@@ -742,7 +741,7 @@ void CInventory::ClearAll()
 
 bool CInventory::Slot(PIItem pIItem) 
 {
-	if(pIItem->m_slot < m_slots.size()) 
+	if(m_bSlotsUseful && pIItem->m_slot < m_slots.size()) 
 	{
 		//if(m_slots[pIItem->m_slot].m_pIItem && !Belt(m_slots[pIItem->m_slot].m_pIItem)) Ruck(m_slots[pIItem->m_slot].m_pIItem);
 		if(!m_slots[pIItem->m_slot].m_pIItem) 
@@ -778,7 +777,7 @@ bool CInventory::Slot(PIItem pIItem)
 		for(u32 i = 0; i < m_slots.size(); i++) 
 			if(m_slots[i].m_pIItem && m_slots[i].m_pIItem->Attach(pIItem)) 
 			{
-				PPIItem l_it = std::find(m_ruck.begin(), m_ruck.end(), pIItem); 
+				PPIItem l_it = std::find(m_ruck.begin(), m_ruck.end(), pIItem);
 				if(l_it != m_ruck.end()) m_ruck.erase(l_it);
 				return true;
 			}
@@ -793,39 +792,51 @@ bool CInventory::Belt(PIItem pIItem)
 	if(!pIItem || !pIItem->m_belt) return false;
 	if(m_belt.size() == m_maxBelt) return false;
 	
+	//вещь - уже на поясе
 	if(std::find(m_belt.begin(), m_belt.end(), pIItem) != m_belt.end()) return true;
 	
+	//вещь была в слоте
 	if((pIItem->m_slot < m_slots.size()) && (m_slots[pIItem->m_slot].m_pIItem == pIItem)) 
 	{
 		if(m_activeSlot == pIItem->m_slot) Activate(0xffffffff);
 		m_slots[pIItem->m_slot].m_pIItem = NULL;
 	}
 	
-	PPIItem l_it = std::find(m_ruck.begin(), m_ruck.end(), pIItem); 
-	
-	if(l_it != m_ruck.end()) m_ruck.erase(l_it);
 	m_belt.insert(m_belt.end(), pIItem); 
-	SortRuckAndBelt(this);
-	
-	return true;
+
+	//если на поясе нет свободного места - выбросить вещь
+	if(!FreeBeltRoom()) 
+	{
+		PPIItem l_it = std::find(m_belt.begin(), m_belt.end(), pIItem); 
+		m_belt.erase(l_it);
+		return false;
+	}
+	else
+	{
+		PPIItem l_it = std::find(m_ruck.begin(), m_ruck.end(), pIItem); 
+		if(l_it != m_ruck.end()) m_ruck.erase(l_it);
+		SortRuckAndBelt(this);
+		return true;
+	}
 }
 
 bool CInventory::Ruck(PIItem pIItem) 
 {
-
 	if(!pIItem || !pIItem->m_ruck) return false;
 
 	if(std::find(m_ruck.begin(), m_ruck.end(), pIItem) != m_ruck.end()) return true;
 	
+	//вещь была в слоте
 	if((pIItem->m_slot < m_slots.size()) && (m_slots[pIItem->m_slot].m_pIItem == pIItem)) 
 	{
-		if(m_activeSlot == pIItem->m_slot)    Activate(0xffffffff);
+		if(m_activeSlot == pIItem->m_slot) Activate(0xffffffff);
 		m_slots[pIItem->m_slot].m_pIItem = NULL;
 	}
-	
+
+	//вещь была на поясе
 	PPIItem l_it = std::find(m_belt.begin(), m_belt.end(), pIItem); 
-	
 	if(l_it != m_belt.end()) m_belt.erase(l_it);
+	
 	m_ruck.insert(m_ruck.end(), pIItem); 
 	SortRuckAndBelt(this);
 	return true;
@@ -1242,24 +1253,3 @@ CInventorySlot::CInventorySlot()
 CInventorySlot::~CInventorySlot() 
 {
 }
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// CInventoryOwner class //////////////////////////////////////////////////////////////////////////
-/*
-CInventoryOwner::CInventoryOwner()
- {
-	m_inventory.m_pOwner		= this;
-	m_trade_storage.m_pOwner	= this;
-	m_trade						= NULL;
-
-	m_dwMoney					= 0;
-	m_tRank						= eStalkerRankNone;
-
-	m_pPDA = NULL;
-}
-
-CInventoryOwner::~CInventoryOwner() 
-{
-}
-*/

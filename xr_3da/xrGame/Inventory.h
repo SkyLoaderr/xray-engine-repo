@@ -204,7 +204,8 @@ public:
 	//буфферный список
 	TIItemList l_subs; 
 
-	bool m_bBeltUseful;										//флаг, показывающий наличие пояса в инвенторе
+	bool m_bBeltUseful;					//флаг, показывающий наличие пояса в инвенторе
+	bool m_bSlotsUseful;				//флаг, допускающий использование слотов
 
 	//для проверки свободного места
 	bool FreeRuckRoom();

@@ -4,6 +4,7 @@
 #include "PhysicsShell.h"
 #include "ai\\script\\ai_script_monster.h"
 
+#include "inventory.h"
 
 // refs
 class ENGINE_API			CBoneInstance;
@@ -410,6 +411,9 @@ public:
 
 	CCameraBase*			Camera				(){return active_camera;}
 
+	// Inventory for the car
+	CInventory*				GetInventory		(){return &m_inventory;}
+
 public:
 	CCar(void);
 	virtual ~CCar(void);
@@ -489,4 +493,9 @@ private:
 
 		}
 	}
+
+
+	//Inventory for the car
+	CInventory	m_inventory;
+
 };

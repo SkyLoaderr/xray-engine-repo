@@ -14,6 +14,7 @@
 #include "Actor_Flags.h"
 #include "UI.h"
 #include "PDA.h"
+#include "Car.h"
 #include "UIGameSP.h"
 
 // breakpoints
@@ -118,6 +119,7 @@ CActor::CActor() : CEntityAlive()
 	m_inventory.m_bBeltUseful = true;
 
 	m_pPersonWeLookingAt = NULL;
+	m_pCarWeLookingAt = NULL;
 
 }
 
@@ -1062,6 +1064,7 @@ void CActor::shedule_Update	(u32 DT)
 	{
 		m_inventory.m_pTarget = dynamic_cast<PIItem>(l_rq.O);
 		m_pPersonWeLookingAt = dynamic_cast<CInventoryOwner*>(l_rq.O);
+		m_pCarWeLookingAt = dynamic_cast<CCar*>(l_rq.O);
 	}
 	else 
 	{

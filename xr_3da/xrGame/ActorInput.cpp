@@ -29,34 +29,47 @@ void CActor::IR_OnKeyboardPress(int cmd)
 
 	if (cmd == kUSE) 
 	{
-		if(!IsTalking())
+		if(m_pPersonWeLookingAt)
 		{
-			//предложить поговорить с нами
-			if(m_pPersonWeLookingAt && m_pPersonWeLookingAt->OfferTalk(this))
-			{	
-				StartTalk(m_pPersonWeLookingAt);
+			CEntityAlive* pEntityAliveWeLookingAt = 
+							dynamic_cast<CEntityAlive*>(m_pPersonWeLookingAt);
+			
+			R_ASSERT(pEntityAliveWeLookingAt);
 
+			if(pEntityAliveWeLookingAt->g_Alive())
+			{
+				if(!IsTalking())
+				{
+					//предложить поговорить с нами
+					if(m_pPersonWeLookingAt->OfferTalk(this))
+					{	
+						StartTalk(m_pPersonWeLookingAt);
+
+						//только если находимся в режиме single
+						CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+						if(pGameSP)pGameSP->StartTalk();
+					}
+				}
+			}
+			//обыск трупа
+			else
+			{
 				//только если находимся в режиме single
 				CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-				if(pGameSP)pGameSP->StartTalk();
+				if(pGameSP)pGameSP->StartCarBody(&m_inventory, this,
+												 &m_pPersonWeLookingAt->m_inventory,
+												 dynamic_cast<CGameObject*>(m_pPersonWeLookingAt));
 			}
+		}
+		else if(m_pCarWeLookingAt)
+		{
+			//только если находимся в режиме single
+			CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+			if(pGameSP)pGameSP->StartCarBody(&m_inventory, this,
+											 m_pCarWeLookingAt->GetInventory(),
+											 dynamic_cast<CGameObject*>(m_pCarWeLookingAt));
 
 		}
-		
-		/*if (!GetTrade()->IsInTradeState()) 
-		{
-			if (GetTrade()->CanTrade()) {
-				GetTrade()->Communicate();		
-				//если предложение начать торговлю принято, запустить окно торговли
-				if(GetTrade()->IsInTradeState())
-				{
-					//только если находимся в режиме single
-					CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-					if(pGameSP)pGameSP->StartTrade();
-				}
-				return;
-			}
-		}*/
 	}
 
 	if(m_vehicle && cmd!= kUSE)

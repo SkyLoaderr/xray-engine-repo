@@ -687,8 +687,8 @@ void CUIInventoryWnd::Update()
 
 void CUIInventoryWnd::DropItem()
 {
-	CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
-	if(!l_pA) return;
+	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	if(!pActor) return;
 
 	m_pCurrentItem->Drop();
 	
