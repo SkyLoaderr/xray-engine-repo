@@ -98,10 +98,18 @@ public:
 	virtual void					add_Glows				(vector<WORD> &V);
 	virtual void					add_Patch				(Shader* S, Fvector& P1, float s, float a, BOOL bNearer);
 	
+	// Models
+	virtual CVisual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E);
+	virtual CVisual*				model_Create			(LPCSTR name);
+	virtual CVisual*				model_Create			(CStream* data);
+	virtual void					model_Delete			(CVisual* &V);
+	
+	// Main
 	virtual void					Calculate				();
 	virtual void					Render					();
 	virtual void					Screenshot				();
 	
+	// Render mode
 	virtual void					rmNear					();
 	virtual void					rmFar					();
 	virtual void					rmNormal				();

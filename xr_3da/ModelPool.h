@@ -24,19 +24,18 @@ class ENGINE_API CModelPool : public pureDeviceDestroy
 public:
 	CVisual*			Instance_Create		(DWORD Type);
 	CVisual*			Instance_Duplicate	(CVisual* V);
-	CVisual*			Instance_Load		(const char* N);
+	CVisual*			Instance_Load		(LPCSTR N);
 	CVisual*			Instance_Load		(CStream* data);
 
 	virtual void		OnDeviceDestroy		();
 
-	CVisual*			Create				(const char* name);
+	CVisual*			CreatePS			(LPCSTR name, PS::SEmitter* E);
+	CVisual*			Create				(LPCSTR name);
 	CVisual*			Create				(CStream* data);
 	void				Delete				(CVisual* &V);
 
-	CVisual*			CreatePS			(const char* name, PS::SEmitter* E);
-
 	CModelPool			();
-	~CModelPool			();
+	virtual ~CModelPool	();
 };
 
 #endif // !defined(AFX_MODELPOOL_H__F4AB6697_66F2_45A2_A501_4E791B8C0A3E__INCLUDED_)
