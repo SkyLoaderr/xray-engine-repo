@@ -242,6 +242,16 @@ void CCustomMonster::Exec_Physics( float dt )
 
 void CCustomMonster::shedule_Update	( u32 DT )
 {
+	// Queue shrink
+	u32	dwTimeCL		= Level().timeServer()-NET_Latency;
+	VERIFY				(!NET.empty());
+	while ((NET.size()>2) && (NET[1].dwTimeStamp<dwTimeCL)) NET.pop_front();
+
+	// Queue setup
+	float dt			= float(DT)/1000.f;
+	if (dt > 3)
+		return;
+
 	if (!Remote()) {
 		if ((fHealth>0) || bfExecMovement())
 			// функция должна выполняться до inherited::shedule_Update, для smooth movement
@@ -251,16 +261,6 @@ void CCustomMonster::shedule_Update	( u32 DT )
 	// *** general stuff
 	inherited::shedule_Update	(DT);
 
-	// Queue shrink
-	u32	dwTimeCL		= Level().timeServer()-NET_Latency;
-	VERIFY				(!NET.empty());
-	while ((NET.size()>2) && (NET[1].dwTimeStamp<dwTimeCL)) NET.pop_front();
-	
-	// Queue setup
-	float dt			= float(DT)/1000.f;
-	if (dt > 3)
-		return;
-	
 	if (Remote())		{
 	} else {
 		// here is monster AI call
