@@ -56,21 +56,18 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 		{
 			u16			from,to;
 			P.r_u16		(from);
-			P.r_u16		(to);
 
 			CObject* Ofrom	= Level().Objects.net_Find	(from);
-			CObject* Oto	= Level().Objects.net_Find	(to);
-			if (!(Ofrom && Oto))	break;
-
-			// Test for weapon
+			if (0==Ofrom)	break;
 			CWeapon* Wfrom	= dynamic_cast<CWeapon*>	(Ofrom);
-			CWeapon* Wto	= dynamic_cast<CWeapon*>	(Oto);
-			if (Wfrom && Wto)
-			{
-				R_ASSERT							(BE(Local(),Wfrom->Local()));
-				R_ASSERT							(BE(Local(),Wto->Local()));
-				Wto->Ammo_add	(Wfrom->Ammo_eject());
-			}
+			if (0==Wfrom)	break;
+			CWeapon* Wto	= Weapons->getWeaponByWeapon(Wfrom);
+			if (0==Wto)		break;
+
+			// Test for locality
+			R_ASSERT		(BE(Local(),Wfrom->Local()));
+			R_ASSERT		(BE(Local(),Wto->Local()));
+			Wto->Ammo_add	(Wfrom->Ammo_eject());
 		}
 		break;
 	}
