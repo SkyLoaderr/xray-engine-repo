@@ -177,7 +177,7 @@ void	CEffect_Rain::Hit		(Fvector& pos)
 	Particle*	P	= p_allocate();
 	if (0==P)	return;
 
-	P->dwNextUpdate				= Device.dwTimeGlobal+particles_update;
+	P->dwNextUpdate				= Device.dwTimeGlobal;
 	P->emitter.m_Position.set	(pos);
 	P->emitter.Play				();
 }
