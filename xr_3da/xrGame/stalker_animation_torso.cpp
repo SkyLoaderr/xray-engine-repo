@@ -13,6 +13,8 @@
 #include "weapon.h"
 #include "missile.h"
 #include "clsid_game.h"
+#include "object_handler_space.h"
+#include "object_handler_planner.h"
 
 void CStalkerAnimationManager::torso_play_callback	(CBlend *blend)
 {
@@ -46,7 +48,7 @@ const CAnimationPair *CStalkerAnimationManager::no_object_animation(const EBodyS
 
 const CAnimationPair *CStalkerAnimationManager::unknown_object_animation(u32 slot, const EBodyState &body_state) const
 {
-	switch (object()->CObjectHandler::current_action_state_id()) {
+	switch (object()->CObjectHandler::planner().current_action_state_id()) {
 		case ObjectHandlerSpace::eWorldOperatorAim1 :
 		case ObjectHandlerSpace::eWorldOperatorAim2 :
 		case ObjectHandlerSpace::eWorldOperatorAimingReady1 :

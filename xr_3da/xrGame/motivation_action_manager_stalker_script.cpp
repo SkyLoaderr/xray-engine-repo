@@ -12,6 +12,7 @@
 #include "stalker_decision_space.h"
 #include "ai/stalker/ai_stalker_space.h"
 #include "ai/stalker/ai_stalker.h"
+#include "script_game_object.h"
 
 using namespace luabind;
 

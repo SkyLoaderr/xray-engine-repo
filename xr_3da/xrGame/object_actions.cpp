@@ -15,6 +15,7 @@
 #include "fooditem.h"
 #include "weapon.h"
 #include "weaponmagazined.h"
+#include "object_handler_space.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CObjectActionCommand

@@ -8,12 +8,13 @@
 
 #pragma once
 
-IC	bool CObjectHandler::goal_reached			() const
-{
-	return				(solution().size() < 2);
-}
-
-IC	bool CObjectHandler::hammer_is_clutched		() const
+IC	bool CObjectHandler::hammer_is_clutched			() const
 {
 	return				(m_hammer_is_clutched);
+}
+
+IC	CObjectHandlerPlanner &CObjectHandler::planner	() const
+{
+	VERIFY				(m_planner);
+	return				(*m_planner);
 }

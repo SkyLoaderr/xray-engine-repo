@@ -29,6 +29,7 @@
 #include "../../relation_registry.h"
 #include "../../stalker_animation_manager.h"
 #include "../../motivation_action_manager_stalker.h"
+#include "../../script_game_object.h"
 
 extern int g_AI_inactive_time;
 

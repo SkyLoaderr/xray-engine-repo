@@ -187,7 +187,7 @@ LPCSTR CPlanner::property2string	(const _condition_type &property_id)
 TEMPLATE_SPECIALIZATION
 LPCSTR CPlanner::object_name		() const
 {
-	return			("");//*m_object->cName());
+	return			(*m_object->cName());
 }
 
 TEMPLATE_SPECIALIZATION

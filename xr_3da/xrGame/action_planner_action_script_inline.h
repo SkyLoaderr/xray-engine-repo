@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: action_planner_action_script.h
+//	Module 		: action_planner_action_script_inline.h
 //	Created 	: 07.07.2004
 //  Modified 	: 07.07.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Action planner action with script support
+//	Description : Action planner action with script support inline functions
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
