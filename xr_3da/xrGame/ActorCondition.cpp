@@ -71,6 +71,7 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 void CActorCondition::UpdateCondition()
 {
 	if (psActorFlags.test(AF_GODMODE)) return;
+	if (!object().g_Alive()) return;
 	
 	if (object().Remote()) return;
 

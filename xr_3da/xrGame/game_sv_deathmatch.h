@@ -44,6 +44,7 @@ protected:
 	u32								m_dwSM_SwitchDelta;
 	u32								m_dwSM_LastSwitchTime;
 	u32								m_dwSM_CurViewEntity;
+	CObject	*						m_pSM_CurViewEntity;
 	void							SM_SwitchOnNextActivePlayer			();
 	void							SM_SwitchOnPlayer		(CObject* pNewObject);//(game_PlayerState* ps);
 

@@ -29,6 +29,7 @@ void	game_sv_Deathmatch::Create					(shared_str& options)
 	//-----------------------------------------------------------------------
 	int		SpectatorMode = -1;
 	m_dwSM_CurViewEntity = 0;
+	m_pSM_CurViewEntity = NULL;
 	if (!g_pGamePersistent->bDedicatedServer)
 	{
 		SpectatorMode = get_option_i		(*options,"spectr",-1);	// in (ms)
@@ -216,7 +217,7 @@ void	game_sv_Deathmatch::Update					()
 
 			if (m_bSpectatorMode)
 			{
-				if (m_dwSM_LastSwitchTime<Level().timeServer())
+				if (!m_pSM_CurViewEntity || m_pSM_CurViewEntity->CLS_ID != CLSID_OBJECT_ACTOR || m_dwSM_LastSwitchTime<Level().timeServer())
 					SM_SwitchOnNextActivePlayer();
 				
 				CUIGameDM* GameDM = smart_cast<CUIGameDM*>(HUD().GetUI()->UIGame());
@@ -333,7 +334,7 @@ void	game_sv_Deathmatch::SM_SwitchOnNextActivePlayer()
 		C	= (xrClientData*)m_server->client_Get			(it);	
 		pNewObject =  Level().Objects.net_Find(C->ps->GameID);
 		CActor* pActor = smart_cast<CActor*>(pNewObject);
-		if (!pActor || !pActor->g_Alive()) return;
+		if (!pActor || !pActor->g_Alive() || !pActor->inventory().ActiveItem()) return;
 	};
 	SM_SwitchOnPlayer(pNewObject);
 };
@@ -360,6 +361,7 @@ void	game_sv_Deathmatch::SM_SwitchOnPlayer(CObject* pNewObject)
 			pWeapon->UpdateAddonsVisibility();
 		}
 	}
+	m_pSM_CurViewEntity = pNewObject;
 	m_dwSM_CurViewEntity = pNewObject->ID();
 	m_dwSM_LastSwitchTime = Level().timeServer() + m_dwSM_SwitchDelta;
 }
