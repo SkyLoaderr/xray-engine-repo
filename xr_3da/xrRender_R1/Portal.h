@@ -24,22 +24,13 @@ public:
 
 	void					Setup						(Fvector* V, int vcnt, CSector* face, CSector* back);
 
-	svector<Fvector,8>&		getPoly()					{ return poly;		}
-	CSector*				Back()						{ return pBack;		}
-	CSector*				Front()						{ return pFace;		}
-	CSector*				getSector(CSector* pFrom)	{ return pFrom==pFace?pBack:pFace; }
-	CSector*				getSectorFacing(Fvector& V) {
-		if (P.classify(V)>0) return pFace;
-		else				 return pBack;
-	}
-	CSector*				getSectorBack(Fvector& V) {
-		if (P.classify(V)>0) return pBack;
-		else				 return pFace;
-	}
-	float					distance(Fvector &V)
-	{
-		return _abs(P.classify(V));
-	}
+	svector<Fvector,8>&		getPoly()							{ return poly;		}
+	CSector*				Back()								{ return pBack;		}
+	CSector*				Front()								{ return pFace;		}
+	CSector*				getSector		(CSector* pFrom)	{ return pFrom==pFace?pBack:pFace; }
+	CSector*				getSectorFacing	(Fvector& V)		{ if (P.classify(V)>0) return pFace; else return pBack; }
+	CSector*				getSectorBack	(Fvector& V)		{ if (P.classify(V)>0) return pBack; else return pFace;	}
+	float					distance		(Fvector &V)		{ return _abs(P.classify(V)); }
 	virtual ~CPortal		();
 };
 
@@ -62,7 +53,7 @@ protected:
 	xr_vector<CTempObject*>	tempObjects;	// $$$temp: временные псевдостатические объекты
 
 #if RENDER==R_R2
-	xr_vector<light*>			tempLights;
+	xr_vector<light*>		tempLights;
 #endif
 
 	xr_vector<WORD>			Glows;

@@ -549,9 +549,6 @@
 				<File
 					RelativePath="Portal.h">
 				</File>
-				<File
-					RelativePath="spatial.h">
-				</File>
 			</Filter>
 			<Filter
 				Name="HOM Occlusion"
