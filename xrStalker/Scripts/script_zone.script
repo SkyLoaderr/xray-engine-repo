@@ -1,5 +1,6 @@
 module("monsterAi")
 module("storage")
+module("script_zone_scene")
 
 class "monster_zone"
 function monster_zone:__init(obj, ini)
@@ -10,7 +11,7 @@ function monster_zone:__init(obj, ini)
 	else
 		assert(false)
 	end
-	
+
 	self.custom_data	= {}
 	
 	//' Читаем время действия скрипта для монстра в этой зоне
@@ -36,6 +37,7 @@ end
 
 function monster_zone:on_enter(obj)
 
+	printf("!!!!!!!!!!!! Enter %s", obj:name())
 	if(is_object_monster(obj)) then
 		
 		// Если еще менеджер зоны не создан, то создаем его
@@ -44,6 +46,14 @@ function monster_zone:on_enter(obj)
 		end
 		
 		self.zone_manager:add_member(obj)
+	elseif(get_clsid(obj) == clsid.actor) then
+	
+		// Защел актер
+		if(self.zone_manager == nil) then
+			self.zone_manager = self.ref_manager(self.custom_data)
+		end
+		
+		self.zone_manager:actor_enter()
 	end
 	
 end
@@ -64,36 +74,41 @@ function monster_zone:read_custom_data(ini)
 			end
 		end
 		
-		self.ref_manager = CZombieWalk
+		self.ref_manager = CZombieWalkManager
 
-	elseif(self.type == "aaa") then
+	elseif(self.type == "troop_sleep") then
+		// Читаем пути для патрулирования, когда другие спят
+		self.custom_data.ways 	= {}
+		
+		self.custom_data.sleep_path	= ini:r_string("monster", "sleep_way")
+		
+		for i = 1, 30 do
+			if(ini:line_exist("monster", "way"..i)) then
+				self.custom_data.ways[i] = ini:r_string("monster", "way"..i)
+				printf("read way %s", "way"..i)
+			else
+				break
+			end
+		end
+		
+		self.ref_manager = CTroopSleepManager
 	
+	elseif(self.type == "monster_camper") then
+		self.custom_data.path = ini:r_string("monster", "path")
+		
+		self.ref_manager = CMonsterCamper
+	elseif(self.type == "zombie_sham") then
+		self.custom_data.path = ini:r_string("monster", "path")
+		printf("read path %s", self.custom_data.path)
+		
+		self.ref_manager = CZombieSham
+	elseif(self.type == "zombie_sham_actor") then		
+		self.custom_data.path = ini:r_string("monster", "path")
+		printf("read path %s", self.custom_data.path)
+
+		self.ref_manager = CZombieShamActor
 	end
 	
-end
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-function is_object_monster(obj)
-	local otype = get_clsid(obj)
-	if(otype == clsid.crow			or
-		otype == clsid.zombie		or
-		otype == clsid.flesh		or
-		otype == clsid.controller	or
-		otype == clsid.bloodsucker	or
-		otype == clsid.burer		or
-		otype == clsid.chimera		or	
-		otype == clsid.boar			or
-		otype == clsid.idol			or
-		otype == clsid.dog_red		or		
-		otype == clsid.dog_black	or
-		otype == clsid.pseudo_gigant  )
-	then
-		return true
-	end
-	
-	return false
 end
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -101,7 +116,7 @@ end
 class "CBaseManager"
 function CBaseManager:__init(_custom_data)
 	self.custom_data	= _custom_data
-	self.members		= { {obj = nil, time = nil, id = 0 } }
+	self.members		= {} //{ {obj = nil, time = nil, id = 0 } }
 end
 
 function CBaseManager:add_member(obj)
@@ -109,6 +124,7 @@ function CBaseManager:add_member(obj)
 end
 
 function CBaseManager:update()
+	//printf("table size = %d", table.getn(self.members))
 	for i = table.getn(self.members), 1, -1 do
 		
 		
@@ -132,10 +148,13 @@ end
 function CBaseManager:remove_member(obj_id)
 
 end
+
+function CBaseManager:actor_enter()
+end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class "CZombieWalk" (CBaseManager)
-function CZombieWalk:__init(_custom_data) super(_custom_data)
+class "CZombieWalkManager" (CBaseManager)
+function CZombieWalkManager:__init(_custom_data) super(_custom_data)
 	self.storage = storage.CStorage()
 	
 	for i = 1, table.getn(_custom_data.ways) do
@@ -143,7 +162,7 @@ function CZombieWalk:__init(_custom_data) super(_custom_data)
 	end
 end
 
-function CZombieWalk:add_member(object)
+function CZombieWalkManager:add_member(object)
 
 	if(object:binded_object()) then
 		return										// Объект уже прибинденный
@@ -155,7 +174,7 @@ function CZombieWalk:add_member(object)
 	end
 
 	object:bind_object(monsterai.CMonsterBaseBind(object, nil,	staterest.CStateRestBind(nil, nil,
-												statewalk.CStateWalk(nil, nil, self.storage:get_data(object:id()))))
+												statewalk.CStateWalk(nil, nil, self.storage:get_data(object:id()))), nil, statehit.CStateZombieHit())
 					)
 												
 	table.insert(self.members, { obj = object, time = nil, id = object:id() }	)
@@ -166,6 +185,219 @@ function CZombieWalk:add_member(object)
 
 end	
 
-function CZombieWalk:remove_member(obj_id)
+function CZombieWalkManager:remove_member(obj_id)
+	self.storage:release_data(obj_id)
+end
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//        Стая собак. Некоторые спят, часть патрулируют территорию
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class "CTroopSleepManager" (CBaseManager)
+function CTroopSleepManager:__init(_custom_data) super(_custom_data)
+	
+	// Запоминаем пути по которым будут патрулировать и точки, в которых будут спать
+	self.sleep_points = storage.CStorage()
+	self.patrol_paths = storage.CStorage()
+
+	for i = 1, table.getn(_custom_data.ways) do
+		self.patrol_paths:insert(_custom_data.ways[i])
+	end
+	
+	local points = patrol(_custom_data.sleep_path)
+	for i = 1, points:count() do
+		self.sleep_points:insert(points:point(i-1))
+	end
+end
+
+function CTroopSleepManager:add_member(object)
+
+	if(object:binded_object()) then
+		return										// Объект уже прибинденный
+	end
+	
+	if(self.patrol_paths:empty() and self.sleep_points:empty()) then							
+		printf("not work for monster %s", object:name())
+		return
+	end
+
+	// Если исчерпались ресурсы патрульных путей или точек для сна, то биндим хоть какого-то монстра
+	if(self.sleep_points:empty()) then
+		
+		// биндим патрульного
+		object:bind_object(monsterai.CMonsterBaseBind(object, nil,	staterest.CStateRestBind(nil, nil, statewalk.CStateWalkPatrol( nil, nil, self.patrol_paths:get_data(object:id()) )) )
+							)
+	elseif(self.patrol_paths:empty()) then
+
+		// биндим сонного монстра
+		object:bind_object(monsterai.CMonsterBaseBind(object, nil,	staterest.CStateRestSleep(nil, nil, self.sleep_points:get_data(object:id())))
+							)
+	end
+
+
+	// Проверка, не прибиндили уже к монстру
+	if(object:binded_object() == nil) then
+	
+		// Биндим либо соннового монстра, либо патрульного
+		if(self.patrol_paths:use_count() < self.sleep_points:use_count()) then
+			local i = self.patrol_paths:use_count()
+			local j = self.sleep_points:use_count() + 1
+			
+			// патрульных меньше чем сонных + 1, биндим патрульного
+			object:bind_object(monsterai.CMonsterBaseBind(object, nil,	staterest.CStateRestBind(nil, nil, statewalk.CStateWalkPatrol( nil, nil, self.patrol_paths:get_data(object:id()) )) )
+								)
+		else
+	
+			// биндим сонного монстра
+			object:bind_object(monsterai.CMonsterBaseBind(object, nil,	staterest.CStateRestSleep(nil, nil, self.sleep_points:get_data(object:id())))
+								)
+		end
+	
+	end
+	table.insert(self.members, { obj = object, time = nil, id = object:id() }	)
+				
+	if(self.custom_data.work_time) then
+		self.members[table.getn(self.members)].time	= device():time_global() + self.custom_data.work_time
+	end
+
+end	
+
+function CTroopSleepManager:remove_member(obj_id)
+
+	// Освободился либо патрульный путь, либо точка для сна
+	if(self.patrol_paths:use_data(obj_id)) then
+		self.patrol_paths:release_data(obj_id)		
+	else
+		self.sleep_points:release_data(obj_id)
+	end
+end
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// Монстр входит в зону и начинает кемперить некоторое время
+//////////////////////////////////////////////////////////////////////////////////////////
+
+class "CMonsterCamper" (CBaseManager)
+function CMonsterCamper:__init(_custom_data) super(_custom_data)
+	self.bind_monster	= false									// прибиндин ли монстр
+end
+
+function CMonsterCamper:add_member(object)
+
+	if(object:binded_object()) then
+		return										// Объект уже прибинденный
+	end
+	
+	if(self.bind_monster) then
+		printf("not free way for monster %s", object:name())
+		return
+	end
+
+	// биндим монстра кемпера
+	object:bind_object(monsterai.CMonsterBaseBind(object, nil,	staterest.CStateRestCamper(nil, nil, self.custom_data.path ))
+						)
+	table.insert(self.members, { obj = object, time = nil, id = object:id() }	)											
+	
+	if(self.custom_data.work_time) then
+		self.members[table.getn(self.members)].time	= device():time_global() + self.custom_data.work_time
+	end
+end	
+
+function CMonsterCamper:remove_member(obj_id)
+	self.bind_monster	= false
+end
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// Зомби. Некоторое время притворяются, что спять. Когда актер входит в зону, они встают
+// и начинают атаковать.
+
+class "CZombieSham" (CBaseManager)
+function CZombieSham:__init(_custom_data) super(_custom_data)
+	self.storage	= storage.CStorage()
+	
+	local points = patrol(_custom_data.path)
+	for i = 1, points:count() do
+		self.storage:insert(points:point(i-1))
+	end
+end
+
+function CZombieSham:add_member(object)
+
+	if(object:binded_object()) then
+		return										// Объект уже прибинденный
+	end
+	
+	if(get_clsid(object) ~= clsid.zombie) then
+		printf("object is not zombie")
+		return
+	end
+	
+	if(self.storage:empty()) then
+		printf("not free poitns for monster %s", object:name())
+		return
+	end
+
+	object:bind_object(script_zone_scene.CZombieLie(object, self.storage:get_data(object:id())) )
+												
+	table.insert(self.members, { obj = object, time = nil, id = object:id() }	)
+				
+	if(self.custom_data.work_time) then
+		self.members[table.getn(self.members)].time	= device():time_global() + self.custom_data.work_time
+	end
+
+end	
+
+function CZombieSham:actor_enter()
+	printf("actor enter !!!!!!!!!!!!!!!!!!!!!!!")
+	for i = 1, table.getn(self.members) do
+		// сообщаем зомби, что актер зашел. Пора ставать и начинать атаковать
+		self.members[i].obj:binded_object():actor_enter()
+	end
+end
+
+function CZombieSham:remove_member(obj_id)
+	self.storage:release_data(obj_id)
+end
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// Зомби. Некоторое время притворяются, что спять. Когда актер подходит рядом они встают
+// и начинают атаковать.
+
+class "CZombieShamActor" (CBaseManager)
+function CZombieShamActor:__init(_custom_data) super(_custom_data)
+	self.storage	= storage.CStorage()
+	
+	local points = patrol(_custom_data.path)
+	for i = 1, points:count() do
+		self.storage:insert(points:point(i-1))
+	end
+end
+
+function CZombieShamActor:add_member(object)
+
+	if(object:binded_object()) then
+		return										// Объект уже прибинденный
+	end
+	
+	if(get_clsid(object) ~= clsid.zombie) then
+		printf("object is not zombie")
+		return
+	end
+	
+	if(self.storage:empty()) then
+		printf("not free poitns for monster %s", object:name())
+		return
+	end
+
+	object:bind_object(script_zone_scene.CZombieLie2(object, self.storage:get_data(object:id())) )
+												
+	table.insert(self.members, { obj = object, time = nil, id = object:id() }	)
+				
+	if(self.custom_data.work_time) then
+		self.members[table.getn(self.members)].time	= device():time_global() + self.custom_data.work_time
+	end
+
+end	
+
+function CZombieShamActor:remove_member(obj_id)
 	self.storage:release_data(obj_id)
 end

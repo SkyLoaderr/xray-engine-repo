@@ -1,0 +1,148 @@
+//module("monsterAi")
+//module("storage")
+
+local zombie_attack_time	= 10000
+
+
+//-------------------------------------------------------------------------------------------------------
+// Зомби который притворяется мертвым и ждет, пока актер зайдет в скриптовую зону
+//-------------------------------------------------------------------------------------------------------
+
+class "CZombieLie" (object_binder)
+function CZombieLie:__init(object, _point) super(object)
+	self.zombie_lie		= false
+	self.point			= _point
+	self.finishing		= false				// Пора заканчивать работу
+	self.end_work		= false
+	self.enter_actor	= false
+	self.time			= 0					// Когда зашел актер
+	self.index			= math.random(0, 2) // В какой позе будет лежать
+	
+	if(self.object:get_script() == false) then
+		self.object:script(true, script_name())
+	end
+end
+
+function CZombieLie:update(delta)
+	object_binder.update(self, delta)
+
+	if(self.end_work) then return end
+	
+	if(self.finishing) then
+		if(self.object:action() == nil) then
+			if(self.object:get_script()) then
+				self.object:script(false, script_name())
+			end
+			self.end_work	= true
+		end
+		
+		return
+	end
+	
+	if(self.object:best_enemy() or self.object:get_monster_hit_info().time ~= 0) then
+		
+		// Если появился враг, либо получили хит, то оканчиваем работу
+		self:finalize()
+		return
+	end
+	
+	if(self.object:action() == nil) then
+		if(self.enter_actor) then
+			self:attack()
+		else
+			self:set_zombie_actions()
+		end
+	end
+end
+
+function CZombieLie:set_zombie_actions()
+	if(self.zombie_lie == false) then
+		if(self.object:position():distance_to(self.point)) > 1 then
+		
+			// Точка где мы должны лежать далеко, подходим к ней
+			action(self.object, move(move.walk_fwd, self.point, 1), sound(sound.idle),
+					cond(cond.move_end))
+		else
+			
+			// Ложимся
+			printf("%s", "fake_death_"..self.index.."_0")
+			printf("%s", "fake_death_"..self.index.."_1")
+			action(self.object, anim("fake_death_"..self.index.."_0"), cond(cond.anim_end) )
+			action(self.object, anim("fake_death_"..self.index.."_1"), cond(cond.time_end, 10000000))
+			self.zombie_lie	= true
+		end
+	else	
+		action(self.object, anim("fake_death_"..self.index.."_1"), cond(cond.time_end, 10000000))	
+	end
+end
+
+function CZombieLie:attack()
+	if(device():time_global() > (self.time + zombie_attack_time) or
+		self.object:best_enemy()) then
+		
+		// Если долго ищем и не можем найти, либо у нас появился враг, то перестаем искать актера
+		self:finalize()
+		return
+	end
+	
+	if(level.actor()) then
+		action(self.object, move(move.walk_fwd, level.actor():position()), cond(cond.time_end, 5000))
+	else
+		self:finalize()				// Нет актера - нет скриптов
+	end
+end 
+
+function CZombieLie:actor_enter()
+	
+	if(self.end_work) then return end
+	
+	// Запоминаем что актер зашел, если лежали, то встаем
+	self.enter_actor	= true
+	self.time		= device():time_global()
+	reset_action(self.object, script_name())
+	
+	if(self.zombie_lie) then
+		action(self.object, anim("fake_death_"..self.index.."_2"), cond(cond.anim_end))
+		self.zombie_lie	= false
+	end
+end 
+
+//function CZombieLie:check_completed()
+//	return (self.end_work == true)
+//end 
+
+function CZombieLie:finalize()
+	if(self.end_work) then return end
+	
+	self.finishing	= true
+
+	if(self.zombie_lie == false) then
+		if(self.object:get_script()) then
+			self.object:script(false, script_name())
+		end
+		self.end_work	= true
+	else
+		reset_action(self.object, script_name())
+		action(self.object, anim("fake_death_"..self.index.."_2"), cond(cond.anim_end))
+	end
+end
+
+//-------------------------------------------------------------------------------------------------------
+// Зомби который притворяется мертвым и ждет, пока актер подойдет рядом
+//-------------------------------------------------------------------------------------------------------
+
+class "CZombieLie2" (CZombieLie)
+function CZombieLie2:__init(object, _point) super(object, _point)
+end
+
+function CZombieLie2:update(delta)
+	// fake.  Если актер рядом, то вызываем функцию actor_enter предка, чтоб зомби встал
+	if(level.actor() and distance_between(self.object, level.actor()) < 2) then
+		printf("1.finalize")
+		this.CZombieLie.actor_enter(self)
+	end
+	
+	printf("start call update()")
+	this.CZombieLie.update(self, delta)
+	printf("end call update()")
+end

@@ -17,6 +17,7 @@ function CStorage:insert(_data)
 end
 
 function CStorage:get_data(npc_id)
+	printf("%d", npc_id)
 	assert(table.getn(self.data) >= 0)				// Попытка вызвать get_date() без проверки empty()
 	
 	self.index		 	= if_then_else(table.getn(self.data) > 1, table.getn(self.data), 1)
@@ -28,10 +29,12 @@ function CStorage:get_data(npc_id)
 end
 
 function CStorage:release_data(npc_id)
+	printf("%d", npc_id)
+	//printf("%f", self.use[npc_id]:position().x)
 	assert(self.use[npc_id] ~= nil)					// данный npc и не брал никаких данных
 
 	table.insert(self.data, self.use[npc_id])
-	table.remove(self.use, npc_id)
+	self.use[npc_id]	= nil
 	self.n 	= self.n - 1 
 	assert(self.n >= 0)
 	printf("Release data")
