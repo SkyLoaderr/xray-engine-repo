@@ -17,6 +17,7 @@
 #define TORSO_ANGLE_DELTA				(PI/30.f)
 //#define PRE_THINK_COUNT					4
 #define ATTACK_DISTANCE						.5f
+#define ATTACK_ANGLE					PI_DIV_6
 
 void CAI_Rat::Die()
 {
@@ -54,7 +55,7 @@ void CAI_Rat::Turn()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
 
-	CHECK_IF_GO_TO_PREV_STATE(Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw, PI_DIV_6))
+	CHECK_IF_GO_TO_PREV_STATE(Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw, EPS_L))
 	
 	INIT_SQUAD_AND_LEADER
 	
@@ -86,7 +87,7 @@ void CAI_Rat::AttackFire()
 	SRotation sTemp;
 	mk_rotation(tTemp,sTemp);
 	
-	CHECK_IF_GO_TO_NEW_STATE(!Level().AI.bfTooSmallAngle(r_torso_current.yaw,sTemp.yaw,PI_DIV_6),aiRatAttackRun)
+	CHECK_IF_GO_TO_NEW_STATE(!Level().AI.bfTooSmallAngle(r_torso_current.yaw,sTemp.yaw,ATTACK_ANGLE),aiRatAttackRun)
 		
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 
@@ -127,9 +128,9 @@ void CAI_Rat::AttackRun()
 	SRotation sTemp;
 	mk_rotation(tTemp,sTemp);
 
-	CHECK_IF_GO_TO_NEW_STATE(Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,PI_DIV_6) && (Enemy.Enemy->Position().distance_to(vPosition) <= ATTACK_DISTANCE),aiRatAttackFire);
+	CHECK_IF_GO_TO_NEW_STATE(Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,ATTACK_ANGLE) && (Enemy.Enemy->Position().distance_to(vPosition) <= ATTACK_DISTANCE),aiRatAttackFire);
 
-	CHECK_IF_SWITCH_TO_NEW_STATE(!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_6),aiRatTurn)
+	CHECK_IF_SWITCH_TO_NEW_STATE(!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,ATTACK_ANGLE),aiRatTurn)
 
 	INIT_SQUAD_AND_LEADER;
 	
@@ -140,6 +141,7 @@ void CAI_Rat::AttackRun()
 	m_tVarGoal.set			(0,0,0);
 	m_fGoalChangeDelta		= .5f;
 	m_fSpeed				= m_fCurSpeed = m_fMaxSpeed;
+	//m_fASpeed				= .4f;
 	//vfChangeGoal();
 
 	if (Enemy.Enemy->Position().distance_to(vPosition) <= ATTACK_DISTANCE)
@@ -173,6 +175,8 @@ void CAI_Rat::FreeHunting()
 	//m_tSpawnPosition.set(m_tSafeSpawnPosition);
 	
 	//m_fGoalChangeDelta		= 10.f;
+	//m_tVarGoal.set			(10.0,0.0,20.0);
+	//m_fASpeed				= .2f;
 	if (bfCheckIfGoalChanged())
 		vfChooseNewSpeed();
 

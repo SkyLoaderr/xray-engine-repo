@@ -69,7 +69,7 @@ public:
 	void			q_Range_Bit		(DWORD StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, DWORD &BestNode, float &BestCost);
 	void			q_Range_Bit_X	(DWORD StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, DWORD &BestNode, float &BestCost);
 	//void			q_Range_Bit		(DWORD StartNode, const Fvector& BasePos, float Range, DWORD &BestNode, float &BestCost);
-	DWORD			q_Node			(DWORD PrevNode,  const Fvector& Pos);
+	DWORD			q_Node			(DWORD PrevNode,  const Fvector& Pos, bool bShortSearch = false);
 
 	// yet another A* search
 	#define DEFAULT_LIGHT_WEIGHT		  5.f 

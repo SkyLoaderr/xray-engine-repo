@@ -153,7 +153,7 @@ void CAI_Space::q_Range_Bit_X(DWORD StartNode, const Fvector& BasePos, float Ran
 	Device.Statistic.AI_Range.End();
 }
 
-DWORD CAI_Space::q_Node(DWORD PrevNode, const Fvector& BasePos)
+DWORD CAI_Space::q_Node(DWORD PrevNode, const Fvector& BasePos, bool bShortSearch)
 {
 	if (0==vfs)	return	0;
 	
@@ -174,12 +174,16 @@ DWORD CAI_Space::q_Node(DWORD PrevNode, const Fvector& BasePos)
 	float BestCost;
 	q_Range_Bit(PrevNode,BasePos,m_header.size*3,&QueryPos,BestNode,BestCost);
 	//q_Range_Bit(PrevNode,BasePos,m_header.size*3,BestNode,BestCost);
-	if (BestCost < 3*m_header.size)	{
+	if (BestCost <= 3*m_header.size)	{
 		// small distance from node
 		Device.Statistic.AI_Node.End();
 		return BestNode;
 	}
 	
+	if (bShortSearch) {
+		Device.Statistic.AI_Node.End		();
+		return(PrevNode);
+	}
 	// degrade to linear search
 	int id = q_LoadSearch(BasePos);
 	if (id>=0) return DWORD(id);
