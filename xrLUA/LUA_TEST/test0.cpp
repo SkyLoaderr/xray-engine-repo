@@ -624,17 +624,6 @@ void nmf(const nmf_test &instance)
 	printf			("ok : %d",instance.d);
 }
 
-// STATIC_CHECK macro for compile-time assertion.
-// From Andrei Alexandrescu, "Modern C++ Design", 6th printing, p. 25,
-// and Loki Library file "static_check.h", June 20, 2001.
-template<bool> struct CompileTimeError;
-template<> struct CompileTimeError<true> {};
-#define STATIC_CHECK(expr, msg)  \
-{  \
-	CompileTimeError<((expr) != 0)> ERROR_##msg;  \
-	(void)ERROR_##msg;  \
-} 
-
 void test0()
 {
 	test_shared();
@@ -822,6 +811,61 @@ void test0()
 	delete			m;
 	lua_setgcthreshold	(L,0);
 	lua_setgcthreshold	(L,0);
+
+	lua_close		(L);
+}
+
+struct CClassA {
+	CClassA()
+	{
+		printf	("constructor CClassA\n");
+	}
+};
+
+void register_smth0	(module_ &module_ref)
+{
+	module_ref
+	[
+		class_<CClassA>("ClassA")
+			.def(		constructor<>())
+	];
+}
+
+void test1()
+{
+	string4096		SSS;
+	strcpy			(SSS,"");
+	g_ca_stdout		= SSS;
+
+	L				= lua_open();
+
+	if (!L)
+		lua_error	(L);
+
+	luaopen_base	(L);
+	luaopen_string	(L);
+	luaopen_math	(L);
+	luaopen_table	(L);
+	luaopen_debug	(L);
+
+	open			(L);
+
+	module_			game_engine = module(L,"game_engine");
+	register_smth0	(game_engine);
+//	register_smth1	(game_engine);
+
+//	module(L,"game_engine")
+//	[
+//		register_class()
+//	];
+
+	lua_dofile		(L,"x:\\split_test.script");
+	if (xr_strlen(SSS)) {
+		printf		("\n%s\n",SSS);
+		strcpy		(SSS,"");
+		lua_close	(L);
+		return;
+	}
 
 	lua_close		(L);
 }

@@ -1433,10 +1433,12 @@ luabind::object lua_this()
 }
 
 extern void test0();
+extern void test1();
 
 int __cdecl main(int argc, char* argv[])
 {
-	test0();
+	test1();
+//	test0();
 	return 0;
 	printf	("xrLuaCompiler v0.1\n");
 	if (argc < 2) {
