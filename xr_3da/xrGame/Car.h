@@ -177,7 +177,7 @@ public:
 			pcar=acar;
 			joint=NULL;
 			state=closed;
-			torque=100.f;
+			torque=500.f;
 			a_vel=M_PI;
 		}
 
