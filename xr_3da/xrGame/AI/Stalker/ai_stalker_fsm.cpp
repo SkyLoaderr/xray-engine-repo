@@ -916,6 +916,9 @@ void CAI_Stalker::TakeItems()
 
 void CAI_Stalker::Think()
 {
+ 	if ((-1 != m_dwParticularState))
+		return;
+
 	CSStateManager::update	(Level().timeServer() - m_dwLastUpdateTime);
 
 	play					(eStalkerSoundHumming,60000,10000);
