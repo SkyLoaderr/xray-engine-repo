@@ -7,10 +7,17 @@
 #include "stdafx.h"
 #include "UIInventoryUtilities.h"
 #include "..\\WeaponAmmo.h"
-
+#include "..\\UIStaticItem.h"
 
 //буферный список для сортировки
 static TIItemList ruck_list;
+
+
+
+static ref_shader g_EquipmentIconsShader = NULL;
+
+
+
 
 
 //для надписей на иконках с оружием
@@ -128,11 +135,19 @@ bool InventoryUtilities::FreeRoom(TIItemList item_list, int width, int height)
 		}
 	}
 
-
-//	xr_free(ruck_room);
-
 	//для какого-то элемента места не нашлось
 	if(!found_place) return false;
 
 	return true;
+}
+
+ref_shader& InventoryUtilities::GetEquipmentIconsShader()
+{	
+	if(!g_EquipmentIconsShader)
+	{
+		g_EquipmentIconsShader.create("hud\\default", 
+									  "ui\\ui_icon_equipment");
+	}
+
+	return g_EquipmentIconsShader;
 }

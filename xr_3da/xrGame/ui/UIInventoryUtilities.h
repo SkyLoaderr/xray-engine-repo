@@ -6,7 +6,11 @@
 
 #include "..\inventory.h"
 #include "UIDragDropItem.h"
+#include "..\\UIStaticItem.h"
 
+
+#define INV_GRID_WIDTH	50
+#define INV_GRID_HEIGHT	50
 
 namespace InventoryUtilities
 {
@@ -21,6 +25,8 @@ bool FreeRoom(TIItemList item_list, int width, int height);
 void AmmoUpdateProc(CUIDragDropItem* pItem);
 //для надписей на иконках с едой
 void FoodUpdateProc(CUIDragDropItem* pItem);
+//получить shader на иконки инвенторя
+ref_shader& GetEquipmentIconsShader();
 
 
 };
