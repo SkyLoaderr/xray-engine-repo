@@ -27,12 +27,10 @@ public:
 	IBlender*					b_decompress;
 
 	// MRT-path (or decompressed MET)
+	ref_rt						rt_Depth;		// Z-buffer like - initial depth
 	ref_rt						rt_Position;	// 64bit,	fat	(x,y,z,?)				(eye-space)
 	ref_rt						rt_Normal;		// 64bit,	fat	(x,y,z,hemi)			(eye-space)
 	ref_rt						rt_Color;		// 64/32bit,fat	(r,g,b,specular-gloss)	(or decompressed MET-8-8-8-8)
-
-	// MET-path
-	ref_rt						rt_Deffer;		// NVE3, 8*4_8*4_16*2_16*2 = 128bit
 
 	// 
 	ref_rt						rt_Accumulator;	// 32bit		(r,g,b,specular)

@@ -124,27 +124,14 @@ void	CRenderTarget::OnDeviceCreate	()
 	b_decompress					= xr_new<CBlender_decompress>			();
 
 	//	NORMAL
-	if (RImplementation.b_nv3x)
 	{
 		u32	w=Device.dwWidth, h=Device.dwHeight;
-		rt_Deffer.create			(r2_RT_DEFFER,	w,h,(D3DFORMAT)MAKEFOURCC('N','V','E','3'));
+		rt_Depth.create				(r2_RT_depth,	w,h,D3DFMT_R32F			);
 		rt_Position.create			(r2_RT_P,		w,h,D3DFMT_A16B16G16R16F);
 		rt_Normal.create			(r2_RT_N_H,		w,h,D3DFMT_A16B16G16R16F);
-		rt_Color.create				(r2_RT_D_G,		w,h,D3DFMT_A8R8G8B8);
-	}
-	else
-	{
-		u32	w=Device.dwWidth, h=Device.dwHeight;
-		rt_Position.create			(r2_RT_P,		w,h,D3DFMT_A16B16G16R16F);
-		rt_Normal.create			(r2_RT_N_H,		w,h,D3DFMT_A16B16G16R16F);
-		rt_Color.create				(r2_RT_D_G,		w,h,D3DFMT_A8R8G8B8);
-	}
-
-	// NORMAL-part2
-	{
-		u32	w=Device.dwWidth, h=Device.dwHeight;
-		rt_Accumulator.create		(r2_RT_accum,	w,h,D3DFMT_A8R8G8B8);
-		rt_Generic.create			(r2_RT_generic,	w,h,D3DFMT_A8R8G8B8);
+		rt_Color.create				(r2_RT_D_G,		w,h,D3DFMT_A8R8G8B8		);
+		rt_Accumulator.create		(r2_RT_accum,	w,h,D3DFMT_A8R8G8B8		);
+		rt_Generic.create			(r2_RT_generic,	w,h,D3DFMT_A8R8G8B8		);
 	}
 
 	// DECOMPRESSION

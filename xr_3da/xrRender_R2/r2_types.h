@@ -1,13 +1,7 @@
 #pragma once
 
-// nv3x code-path (MET)
-#define	r2_RT_DEFFER		"$user$deffer"			// *MET
-#define r2_RT_DEFFER_D_G	0						// element 0 for NVE3
-#define r2_RT_DEFFER_N_H	1						// element 1 for NVE3
-#define r2_RT_DEFFER_P0		2						// element 2 for NVE3
-#define r2_RT_DEFFER_P1		3						// element 2 for NVE3
-
 // r3xx code-path (MRT)
+#define	r2_RT_depth			"$user$position"		// MRT
 #define	r2_RT_P				"$user$position"		// MRT
 #define	r2_RT_N_H			"$user$normal_hemi"		// MRT
 #define	r2_RT_D_G			"$user$color_gloss"		// MRT
