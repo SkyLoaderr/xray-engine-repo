@@ -27,10 +27,12 @@ function FSM:is_running()
 end
 
 function FSM:start()
+	printf("starting FSM for %s", self.npc:name())
 	self.machine_running = true
 end
 
 function FSM:stop()
+	printf("stoping FSM for %s", self.npc:name())
 	self.machine_running = false
 end
 
@@ -113,9 +115,10 @@ end
 
 -----------------------------------------------------------------
 -----------------------------------------------------------------
-function if_see_actor(npc)
+function if_see_actor(npc, fsm)
 	if npc:see(actor) == true then
 		log("saw a fucking actor")
+		fsm:stop()
 		return true
 	end
 
@@ -144,10 +147,7 @@ function main()
 	fsm_stalker:set_transition(0, 1, fsm.if_see_actor)
 	fsm_stalker:set_transition(1, 0, fsm.dont_see_actor)
 
-	while true do
-		fsm_stalker:run()
-		wait()
-	end
+	fsm_stalker:run_loop()
 
 
 end
