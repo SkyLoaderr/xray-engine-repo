@@ -10,6 +10,7 @@
 //#include "script_process.h"
 #include "xrserver_objects_alife.h"
 #include "level.h"
+#include "script_space.h"
 
 //глобальный указатель на функтор, который
 //запускает функцию сочетания артефактов из 
