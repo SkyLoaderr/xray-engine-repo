@@ -22,7 +22,6 @@ extern void export_classes(lua_State *L);
 CScriptEngine::CScriptEngine			()
 {
 //	lua_setgcthreshold		(lua(),64*1024);
-	m_current_thread		= 0;
 	m_stack_level			= 0;
 	m_reload_modules		= false;
 	m_global_script_loaded	= false;
@@ -68,13 +67,12 @@ void CScriptEngine::lua_error			(CLuaVirtualMachine *L)
 int  CScriptEngine::lua_pcall_failed	(CLuaVirtualMachine *L)
 {
 	print_output			(L,"",LUA_ERRRUN);
-	
 #ifndef XRAY_EXCEPTIONS
-	Debug.fatal				("LUA error: %s",lua_tostring(L,-1));
-	return					(-1);
-#else
-	throw					lua_tostring(L,-1);
+	Debug.fatal				("LUA error: %s",lua_isstring(L,-1) ? lua_tostring(L,-1) : "");
 #endif
+	if (lua_isstring(L,-1))
+		lua_pop				(L,1);
+	return					(LUA_ERRRUN);
 }
 
 void lua_cast_failed					(CLuaVirtualMachine *L, LUABIND_TYPE_INFO info)
@@ -107,6 +105,14 @@ void CScriptEngine::setup_callbacks		()
 	lua_atpanic							(lua(),CScriptEngine::lua_panic);
 }
 
+#ifdef DEBUG
+#	include "script_thread.h"
+void lua_hook_call						(CLuaVirtualMachine *L, lua_Debug *tpLuaDebug)
+{
+	ai().script_engine().m_stack_is_ready	= true;
+}
+#endif
+
 void CScriptEngine::script_export		()
 {
 	luabind::open						(lua());
@@ -117,6 +123,13 @@ void CScriptEngine::script_export		()
 
 	load_class_registrators				();
 	object_factory().register_script	();
+
+#ifdef DEBUG
+#	ifdef USE_DEBUGGER
+		if( !debugger() || !debugger()->Active()  )
+#	endif
+			lua_sethook					(lua(),lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET,	0);
+#endif
 
 #ifdef XRGAME_EXPORTS
 	load_common_scripts					();

@@ -60,22 +60,22 @@ void CScriptProcess::run_scripts()
 
 void CScriptProcess::run_strings()
 {
+	LPSTR			S;
 	for ( ; !m_strings_to_run.empty(); ) {
 		LPSTR		I = m_strings_to_run.back();
-		int			err_code;
-		try {
-			err_code = lua_dostring(ai().script_engine().lua(),I);
-		}
-		catch(...) {
-			err_code = LUA_ERRRUN;
-		}
-
-		ai().script_engine().print_output(ai().script_engine().lua(),"console_string",err_code);
+		S			= xr_strdup(I);
 		xr_free		(I);
 		m_strings_to_run.pop_back();
+
+		CScriptThread		*l_tpScript = xr_new<CScriptThread>(S,true);
+		xr_free		(S);
+
+		if (l_tpScript->active())
+			m_scripts.push_back(l_tpScript);
+		else
+			xr_delete(l_tpScript);
 	}
 }
-
 
 // Oles: 
 //		changed to process one script per-frame
@@ -97,7 +97,7 @@ void CScriptProcess::update()
 	// update script
 	g_ca_stdout[0]		= 0;
 	u32					_id	= (++m_iterator)%m_scripts.size();
-	if (!m_scripts[_id]->Update()) {
+	if (!m_scripts[_id]->update()) {
 		xr_delete			(m_scripts[_id]);
 		m_scripts.erase	(m_scripts.begin() + _id);
 		--m_iterator;		// try to avoid skipping

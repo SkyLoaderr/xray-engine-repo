@@ -58,17 +58,6 @@ IC	bool CScriptEngine::functor(LPCSTR function_to_call, luabind::functor<_result
 	return					(true);
 }
 
-IC	void CScriptEngine::current_thread				(CScriptThread *thread)
-{
-	VERIFY					(!m_current_thread);
-	m_current_thread		= thread;
-}
-
-IC	CScriptThread *CScriptEngine::current_thread	() const
-{
-	return					(m_current_thread);
-}
-
 #ifdef USE_DEBUGGER
 IC CScriptDebugger *CScriptEngine::debugger			()
 {

@@ -8,11 +8,6 @@
 
 #pragma once
 
-IC	lua_State *CScriptThread::lua			() const
-{
-	return		(m_virtual_machine);
-}
-
 IC	bool CScriptThread::active				() const
 {
 	return		(m_active);

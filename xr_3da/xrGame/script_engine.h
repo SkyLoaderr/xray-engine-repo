@@ -34,7 +34,6 @@ protected:
 	bool						m_reload_modules;
 	shared_str					m_class_registrators;
 	bool						m_global_script_loaded;
-	CScriptThread				*m_current_thread;
 #ifdef USE_DEBUGGER
 	CScriptDebugger				*m_scriptDebugger;
 #endif
@@ -60,8 +59,6 @@ public:
 			void				register_script_classes		();
 	IC		void				parse_script_namespace		(LPCSTR function_to_call, LPSTR name_space, LPSTR functor);
 			void				load_class_registrators		();
-	IC		void				current_thread				(CScriptThread *thread);
-	IC		CScriptThread		*current_thread				() const;
 
 	template <typename _result_type>
 	IC		bool				functor						(LPCSTR function_to_call, luabind::functor<_result_type> &lua_function);

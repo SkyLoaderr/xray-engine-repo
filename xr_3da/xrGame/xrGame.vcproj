@@ -5385,6 +5385,15 @@
 					Name="ScriptThread"
 					Filter="">
 					<File
+						RelativePath=".\script_stack_tracker.cpp">
+					</File>
+					<File
+						RelativePath=".\script_stack_tracker.h">
+					</File>
+					<File
+						RelativePath=".\script_stack_tracker_inline.h">
+					</File>
+					<File
 						RelativePath=".\script_thread.cpp">
 					</File>
 					<File
