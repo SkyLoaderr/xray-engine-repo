@@ -41,7 +41,7 @@ function main ()
 		cond			(cond.time_end,2000)
     )
     
-    while stalker:action() ~= nil do
+    while stalker:action() do
 		wait			()
     end
     
