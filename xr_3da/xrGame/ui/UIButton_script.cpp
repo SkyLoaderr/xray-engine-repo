@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "UIButton.h"
+#include "UICheckButton.h"
+#include "UIRadioButton.h"
+#include "UIRadioGroup.h"
 #include "../script_space.h"
+#include <luabind\adopt_policy.hpp>
 
 using namespace luabind;
 

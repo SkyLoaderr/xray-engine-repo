@@ -7,7 +7,6 @@
 #include "UIDMFragList.h"
 #include "UIDMPlayerList.h"
 #include "script_space.h"
-#include <luabind\adopt_policy.hpp>
 using namespace luabind;
 
 void UIRegistrator::script_register(lua_State *L)
