@@ -132,8 +132,8 @@ function main()
 		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 30  then
 			guard01:script	(false,script_guards_pr02.script_name())
 			guard02:script	(false,script_guards_pr02.script_name())
-			guard01:script	(false,script_guards_pr02.script_name())
-			guard02:script	(false,script_guards_pr02.script_name())
+			guard01:script	(true,script_guards_pr02.script_name())
+			guard02:script	(true,script_guards_pr02.script_name())
 			action(
 				guard01,
 			  	move	(move.standing, move.stand,move.line,patrol("way0001")),
