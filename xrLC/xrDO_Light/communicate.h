@@ -24,7 +24,6 @@ struct b_material
 	u16					shader;				// index of shader that combine them
 	u16					shader_xrlc;		// compiler options
 	u16					sector;				// ***
-	u16					lod_id;				// u16(-1) = no lod, just static geometry
 	u16					reserved;			// 
 };
 
@@ -46,7 +45,7 @@ struct b_light_control						// controller or "layer", 30fps
 {
 	string64			name;				// empty for base layer
 	u32					count;				// 0 for base layer
-	// u32			data[];
+	// u32				data[];
 };
 
 struct b_light
@@ -92,13 +91,14 @@ struct b_lod
 };
 
 /*
-	NUMBER-OF-OBJECTS
+	u32 NUMBER-OF-OBJECTS
 
-	nameZ
-	vert_count
-	vertices[]
-	face_count
-	faces[]
+	stringZ		name
+	u32			vert_count
+	b_vertex	vertices[]
+	u32			face_count
+	b_faces		faces[]
+	u16			lod_id;			// u16(-1) = no lod, just static geometry
 */
 struct b_mu_model
 {
@@ -107,6 +107,7 @@ struct b_mu_model
     b_vertex*			verts;
     int					face_cnt;
     b_face*				faces;
+	u16					lod_id;				// u16(-1) = no lod, just static geometry
 };
 
 /*
@@ -118,7 +119,7 @@ struct b_mu_reference
     Fmatrix				transform;
     Flags32				flags;
 	u16					sector;
-    u32					reserved[8];
+    u32					reserved	[8];
 };
 
 struct b_params

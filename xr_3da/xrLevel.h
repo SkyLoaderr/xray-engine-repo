@@ -40,20 +40,20 @@ enum fsSLS_Chunks {
 #pragma pack(push,8)
 struct hdrLEVEL
 {
-	u32	XRLC_version;
+	u32		XRLC_version;
 	char	name[124];
 };
 struct hdrCFORM 
 {
-	u32	version;
-	u32	vertcount;
-	u32	facecount;
+	u32		version;
+	u32		vertcount;
+	u32		facecount;
 	Fbox	aabb;
 };
 struct	hdrNODES
 {
-	u32	version;
-	u32	count;
+	u32		version;
+	u32		count;
 	float	size;
 	float	size_y;
 	Fbox	aabb;
@@ -83,7 +83,7 @@ struct NodeCompressed
 #pragma warning	(default:4200)
 #pragma pack	(pop)
 
-const u32 XRCL_CURRENT_VERSION		=	13;
+const u32 XRCL_CURRENT_VERSION		=	14;
 const u32 XRCL_PRODUCTION_VERSION	=	9;
 const u32 CFORM_CURRENT_VERSION		=	3;
 const u32 XRAI_CURRENT_VERSION		=	3;
