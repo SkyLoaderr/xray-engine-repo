@@ -454,19 +454,54 @@ CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeDyna
 	m_maxPower					= 100.f;
 	m_attn						= 1.f;
 	m_period					= 1000;
+	m_fRadius					= 30.f;
+	strcpy						(m_caParameters,pSettings->r_string(caSection,"artefacts"));
+	m_fGlobalProbability		= pSettings->r_float(caSection,"GlobalProbability");
+	vfParseParams				();
 }
 
-void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)	{
+CSE_ALifeAnomalousZone::~CSE_ALifeAnomalousZone()
+{
+	xr_free						(m_dwaWeights);
+	xr_free						(m_cppArtefactSections);
+}
+
+void CSE_ALifeAnomalousZone::vfParseParams	()
+{
+	char						*l_cpPointer = m_caParameters;
+	for (u32 i=0; i<m_dwItemCount; i++)
+		l_cpPointer += sprintf(l_cpPointer,i ? ",%s,%d" : "%s,%d",m_cppArtefactSections[i],m_dwaWeights[i]);
+	*l_cpPointer				= 0;
+}
+
+void CSE_ALifeAnomalousZone::vfMergeParams	()
+{
+	string512					l_caBuffer;
+	for (u32 i=0; i<m_dwItemCount; i++) {
+		m_dwaWeights[i]			= atoi(_GetItem(m_caParameters,i << 1,l_caBuffer));
+		strcpy					(m_cppArtefactSections[i],_GetItem(m_caParameters,(i << 1) | 1,l_caBuffer));
+	}
+}
+
+void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
 	// CForm
 	if (m_wVersion >= 15)
 		inherited1::STATE_Read	(tNetPacket,size);
+	
 	cform_read					(tNetPacket);
 
 	tNetPacket.r_float			(m_maxPower);
 	tNetPacket.r_float			(m_attn);
 	tNetPacket.r_u32			(m_period);
-};
-void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)				{
+	tNetPacket.r_float			(m_fRadius);
+	tNetPacket.r_string			(m_caParameters);
+	tNetPacket.r_float			(m_fGlobalProbability);
+	vfParseParams				();
+}
+
+void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)
+{
 	inherited1::STATE_Write		(tNetPacket);
 	// CForm
 	cform_write					(tNetPacket);
@@ -474,7 +509,12 @@ void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)				{
 	tNetPacket.w_float			(m_maxPower);
 	tNetPacket.w_float			(m_attn);
 	tNetPacket.w_u32			(m_period);
-};
+	tNetPacket.w_float			(m_fRadius);
+	vfMergeParams				();
+	tNetPacket.w_string			(m_caParameters);
+	tNetPacket.w_float			(m_fGlobalProbability);
+}
+
 void CSE_ALifeAnomalousZone::UPDATE_Read	(NET_Packet	&tNetPacket)
 {
 	inherited1::UPDATE_Read		(tNetPacket);
@@ -489,9 +529,17 @@ void CSE_ALifeAnomalousZone::UPDATE_Write	(NET_Packet	&tNetPacket)
 void CSE_ALifeAnomalousZone::FillProp		(LPCSTR pref, PropItemVec& items)
 {
 	inherited1::FillProp		(pref,items);
-    PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Power"),	&m_maxPower,0.f,1000.f);
-    PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Attenuation"),	&m_attn,0.f,100.f);
-    PHelper.CreateU32			(items,PHelper.PrepareKey(pref,s_name,"Period"), &m_period,20,10000);
+    PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Power"),				&m_maxPower,0.f,1000.f);
+    PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Attenuation"),		&m_attn,0.f,100.f);
+    PHelper.CreateU32			(items,PHelper.PrepareKey(pref,s_name,"Period"),			&m_period,20,10000);
+    PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Radius"),			&m_fRadius,0.f,100.f);
+	string512					S;
+	for (u32 i=0; i<m_dwItemCount; i++) {
+		strcpy					(S,s_name);
+		strcat					(S,"\\",m_cppArtefactSections[i]);
+		PHelper.CreateU32		(items,PHelper.PrepareKey(pref,S,"Weight"),					m_dwaWeights + i,20,10000);
+	}
+    PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Global probability"),&m_fGlobalProbability,0.f,1.f);
 }
 #endif
 
