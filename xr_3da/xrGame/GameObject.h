@@ -49,6 +49,7 @@ public:
 	virtual void			OnH_B_Chield		();
 	virtual void			OnH_B_Independent	();
 	virtual void			PHGetLinearVell		(Fvector& velocity);
+	virtual void			PHSetLinearVell		(Fvector& velocity);
 	virtual void			PHSetMaterial		(LPCSTR m);
 	virtual void			PHSetMaterial		(u32 m);
 	virtual void			PHSetPushOut		(u32 time = 5000);

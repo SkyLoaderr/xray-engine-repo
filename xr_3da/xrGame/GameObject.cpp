@@ -359,13 +359,21 @@ void CGameObject::PHSetMaterial(LPCSTR m)
 
 void CGameObject::PHGetLinearVell		(Fvector& velocity)
 {
-if(!m_pPhysicsShell)
-{
-	velocity.set(0,0,0);
-	return;
+	if(!m_pPhysicsShell)
+	{
+		velocity.set(0,0,0);
+		return;
+	}
+	m_pPhysicsShell->get_LinearVel(velocity);
 }
-m_pPhysicsShell->get_LinearVel(velocity);
 
+void CGameObject::PHSetLinearVell(Fvector& velocity)
+{
+	if(!m_pPhysicsShell)
+	{
+		return;
+	}
+	m_pPhysicsShell->set_LinearVel(velocity);
 }
 
 void CGameObject::OnH_B_Chield()
