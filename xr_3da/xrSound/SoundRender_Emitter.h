@@ -33,7 +33,7 @@ public:
 
 	State						state;
 	u32							position;
-	CSoundRender_EmitterParams	p_source;
+	CSound_params				p_source;
 	CSoundRender_Environment	e_current;
 	CSoundRender_Environment	e_target;
 
@@ -49,6 +49,7 @@ public:
 	virtual void				set_frequency			(float scale)			{ p_source.freq=scale;									}
 	virtual void				set_range				(float min, float max)	{ p_source.min_distance=min; p_source.max_distance=max;	}
 	virtual void				set_volume				(float vol)				{ p_source.volume = vol;								}
+	virtual	const CSound_params* get_params				( )						{ return &p_source;										}
 
 	void						fill_block				(void* ptr, u32 size);
 

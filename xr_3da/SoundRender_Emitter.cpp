@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "soundrender_emitter.h"
-#include "xr_creator.h"
-#include "xr_object.h"
-#include "feel_sound.h"
+#include "soundrender_core.h"
 
 extern	u32				psSoundModel;
 extern	u32				psSoundFreq;
@@ -33,19 +31,30 @@ CSoundRender_Emitter::~CSoundRender_Emitter(void)
 //////////////////////////////////////////////////////////////////////
 void CSoundRender_Emitter::PropagadeEvent()
 {
-	dwTimeToPropagade		+= ::Random.randI	(sdef_event_pulse-30,sdef_event_pulse+30);
-	if (0==owner)			return;
-	if (0==owner->g_type)	return;
-	if (0==pCreator)		return;
+	dwTimeToPropagade			+= ::Random.randI	(sdef_event_pulse-30,sdef_event_pulse+30);
+	if (0==owner)					return;
+	if (0==owner->g_type)			return;
+	if (0==SoundRender.Handler)		return;
 
 	// Calculate range
-	float	limitV			= .01f;
-	float	clip			= (p_source.min_distance*p_source.volume) / (psSoundRolloff*limitV); // (Dmin*V)/(R*V')
-	float	range			= _min(p_source.max_distance,clip);
-	if	(clip<0)			return;
+	float	limitV					= .01f;
+	float	clip					= (p_source.min_distance*p_source.volume) / (psSoundRolloff*limitV); // (Dmin*V)/(R*V')
+	float	range					= _min(p_source.max_distance,clip);
+	if	(clip<0)					return;
+
+	// Inform objects
+	SoundRender.Handler				(owner,range);
+}
+
+/*
+void _sound_event			(sound* S, float range)
+{
+	VERIFY					(S->feedback);
+	const CSound_params*	p	= S->feedback->get_params();
+	VERIFY					(p);
 
 	// Query objects
-	pCreator->ObjectSpace.GetNearest	(p_source.position,range);
+	pCreator->ObjectSpace.GetNearest	(p->position,range);
 
 	// Iterate
 	CObjectSpace::NL_IT		it	= pCreator->ObjectSpace.q_nearest.begin	();
@@ -59,10 +68,11 @@ void CSoundRender_Emitter::PropagadeEvent()
 		// Energy and signal
 		Fvector				Oc;
 		O->clCenter			(Oc);
-		float D				= p_source.position.distance_to(Oc);
-		float A				= p_source.min_distance/(psSoundRolloff*D);					// (Dmin*V)/(R*D) 
+		float D				= p->position.distance_to(Oc);
+		float A				= p->min_distance/(psSoundRolloff*D);					// (Dmin*V)/(R*D) 
 		clamp				(A,0.f,1.f);
-		float Power			= A*p_source.volume;
-		if (Power>EPS_S)	L->feel_sound_new	(owner->g_object,owner->g_type,p_source.position,Power);
+		float Power			= A*p->volume;
+		if (Power>EPS_S)	L->feel_sound_new	(S->g_object,S->g_type,p->position,Power);
 	}
 }
+*/

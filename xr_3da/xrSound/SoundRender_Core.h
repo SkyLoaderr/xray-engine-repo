@@ -26,6 +26,7 @@ public:
 	LPKSPROPERTYSET						pExtensions;
 	SListener							Listener;
 	CTimer								Timer;
+	sound_event*						Handler;
 private:
 	// Collider
 	CDB::COLLIDER						geom_DB;
@@ -55,6 +56,7 @@ public:
 	virtual void						play_at_pos				( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false);
 	virtual void						play_at_pos_unlimited	( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false);
 	virtual void						set_geometry			( CDB::MODEL* M );
+	virtual void						set_handler				( sound_event* E );
 
 	virtual void						update					( const Fvector& P, const Fvector& D, const Fvector& N, float dt );
 public:

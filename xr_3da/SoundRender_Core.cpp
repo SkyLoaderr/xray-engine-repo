@@ -28,6 +28,7 @@ CSoundRender_Core::CSoundRender_Core	()
 	geom_MODEL					= NULL;
 	geom_ENV					= NULL;
 	s_environment				= NULL;
+	Handler						= NULL;
 }
 
 CSoundRender_Core::~CSoundRender_Core()
@@ -125,6 +126,11 @@ void CSoundRender_Core::_restart	()
 void CSoundRender_Core::set_geometry(CDB::MODEL* M)
 {
 	geom_MODEL		= M;
+}
+
+void CSoundRender_Core::set_handler(sound_event* E)
+{
+	Handler			= E;
 }
 
 void	CSoundRender_Core::create				( sound& S, BOOL _3D, const char* fName, int type )

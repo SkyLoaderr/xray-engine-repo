@@ -182,9 +182,6 @@
 				RelativePath="SoundRender_Emitter_FSM.cpp">
 			</File>
 			<File
-				RelativePath="SoundRender_Emitter_Params.h">
-			</File>
-			<File
 				RelativePath="SoundRender_Emitter_StartStop.cpp">
 			</File>
 			<File
