@@ -492,7 +492,7 @@ void CCustomMonster::OnRender()
 		Fvector P2;	P2.set(S.v2); P2.y+=0.1f;
 		Device.Primitive.dbg_DrawAABB(P1,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
 		Device.Primitive.dbg_DrawAABB(P2,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
-		Device.Primitive.dbg_DrawLINE(precalc_identity,P1,P2,D3DCOLOR_XRGB(255,255,255));
+		Device.Primitive.dbg_DrawLINE(Fidentity,P1,P2,D3DCOLOR_XRGB(255,255,255));
 	}
 	}
 
