@@ -225,7 +225,9 @@ function fract:add_restrictor(npc, r_out, r_in)
 	printf		("RESTR NEED (IN)  : %s", r_in)
 	printf		("RESTR NEED (OUT) : %s", r_out)
 	
-	npc:add_restrictions(r_out,r_in)
+	if r_in ~= "" or r_out ~= "" then
+		npc:add_restrictions(r_out,r_in)
+	end
 
 	printf		("RESTR AFTER (IN) : %s", npc:in_restrictions())
 	printf		("RESTR AFTER (OUT): %s", npc:out_restrictions())
