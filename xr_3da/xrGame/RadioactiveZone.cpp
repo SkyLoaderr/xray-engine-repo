@@ -69,10 +69,11 @@ void CRadioactiveZone::Affect(CObject* O)
 			position_in_bone_space.set(0.f,0.f,0.f);
 			NET_Packet		l_P;
 			l_pO->u_EventGen	(l_P,GE_HIT,l_pO->ID());
-			l_P.w_u16			(u16(l_pO->ID()));
+			l_P.w_u16			(u16(ID()));
 			l_P.w_dir			(l_dir);
 			l_P.w_float			(power);
-			l_P.w_s16			((s16)-1);
+			l_P.w_s16			((s16)0);
+			//l_P.w_s16			((s16)-1);  while not handle -1
 			l_P.w_vec3			(position_in_bone_space);
 			l_P.w_float			(impulse);
 			l_P.w_u16			(eHitTypeRadiation);
