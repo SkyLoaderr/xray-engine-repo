@@ -69,10 +69,12 @@ void CObjectList::DestroyObject	( CObject *pObject )
 	if (it!=objects.end())	objects.erase(it);
 	DEL_INSTANCE			(pObject);
 }
+
 void CObjectList::DestroyObject	( u32 ID )
 {
 	DestroyObject(net_Find(ID));
 }
+
 void CObjectList::OnMove		()
 {
 	// Clients
