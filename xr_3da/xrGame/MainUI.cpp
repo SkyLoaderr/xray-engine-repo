@@ -3,8 +3,8 @@
 #include "UI/UIDialogWnd.h"
 #include "UICursor.h"
 #include "HUDManager.h"
-#include "../xray/xr_IOConsole.h"
-#include "../xray/IGame_Level.h"
+#include "../xr_IOConsole.h"
+#include "../IGame_Level.h"
 #include "xr_Level_controller.h"
 
 

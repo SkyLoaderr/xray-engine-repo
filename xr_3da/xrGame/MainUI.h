@@ -4,8 +4,8 @@ struct CFontManager;
 class CUIWindow;
 class CUIDialogWnd;
 class CUICursor;
-#include "../xray/IInputReceiver.h"
-#include "../xray/IGame_Persistent.h"
+#include "../IInputReceiver.h"
+#include "../IGame_Persistent.h"
 #include "UIDialogHolder.h"
 
 class CMainUI :
