@@ -194,11 +194,10 @@ void CLevel::IR_OnKeyboardPress(int key)
 	case kCONSOLE:
 		Console->Show				();
 		break;
-#ifdef DEBUG
+
 	case kQUIT:	
-		Console->Execute			("quit");
+		Console->Execute			("main_menu");
 		break;
-#endif
 	default:{
 	
 		if(bindConsoleCmds.execute(key))
