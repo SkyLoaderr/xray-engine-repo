@@ -37,7 +37,7 @@ public:
 	IC	void	getsize(Fvector2& sz)						{ sz.sub(rb,lt); }
 
 	IC float	width()										{return rb.x-lt.x;}
-	IC float	heught()									{return rb.y-lt.y;}
+	IC float	height()									{return rb.y-lt.y;}
 
 	IC	void	shrink(float x, float y)					{ lt.x+=x; lt.y+=y; rb.x-=x; rb.y-=y; };
 	IC	void	grow(float x, float y)						{ lt.x-=x; lt.y-=y; rb.x+=x; rb.y+=y; };
