@@ -278,9 +278,11 @@ void CApplication::LoadSwitch()
 
 void CApplication::OnFrame( )
 {
+	/*
 	CTimer	T;
 	T.Start	();
 	while	(T.GetElapsed_ms()<10);
+	*/
 	::Sound->update		(Device.vCameraPosition,Device.vCameraDirection,Device.vCameraTop,Device.fTimeDelta);
 	Engine.Event.OnFrame();
 }
