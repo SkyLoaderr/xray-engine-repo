@@ -168,5 +168,6 @@ end
 
 function init		(obj)
 	printf			("stalker.init is called with %s!",obj:name())
+	return
 	obj:set_object	(stalker.stalker_script(obj))
 end
