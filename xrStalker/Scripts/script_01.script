@@ -8,8 +8,8 @@ function main()
 	local 	ps2 = particles("ghoul\\fx-01-camp-fire_00",false)
 
 	local artf1	= get_level_object("af_mercury_ball0001")
-	local artf2	= get_level_object("af_mercury_ball0001")
-	local artf3	= get_level_object("af_mercury_ball0001")
+	local artf2	= get_level_object("af_mercury_ball0002")
+	local artf3	= get_level_object("af_mercury_ball0003")
 
 	wait		(1000)
 
