@@ -136,7 +136,7 @@ function r_CTime( p )
 
 	if Y ~= 0 then
 		local t = game.CTime()
-		t:set( Y, p:r_u8(), p:r_u8(), p:r_u8(), p:r_u8(), p:r_u8(), p:r_u16() )
+		t:set( Y + 2000, p:r_u8(), p:r_u8(), p:r_u8(), p:r_u8(), p:r_u8(), p:r_u16() )
 		return t
 	else
 		return CTime_0
@@ -164,7 +164,7 @@ end
 
 function se_smart_terrain:smart_touch( monster )
 	log( "se_smart_terrain::smart_touch called!" )
-	cse_alife_smart_zone.smart_touch( self )
+	cse_alife_smart_zone.smart_touch( self, monster )
 	on_touch( self, monster )
 end
 
