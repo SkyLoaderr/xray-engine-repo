@@ -142,6 +142,7 @@ function Defender:process ()
 	   self.waiting = self.waiting - game.time ()
 	   if self.waiting < 0 then
 		  reset_action (self.npc, self.script_name)
+		  printf ("Attack %s target %s", self.npc:name (), enemy.npc:name ())
 		  action (self.npc, move (move.crouch, move.stand, move.line, vector ():set (0, 0, 0)), 
 				  look (look.fire_point, enemy.npc), object (self.weapon, object.fire1, math.random (2, 4)),
 				  cond (cond.time_end, time_infinite))	
@@ -213,7 +214,7 @@ function Monster:process ()
 
 	if self.moving == true then 
 	   if self.npc:action () then 
-		  printf ("Attacker %s in move", self.npc:name ())
+--		  printf ("Attacker %s in move", self.npc:name ())
 		  return 
        end
 	   printf ("Attacker %s is end move", self.npc:name ())	
