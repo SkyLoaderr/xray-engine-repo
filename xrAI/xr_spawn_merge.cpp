@@ -27,6 +27,17 @@ public:
 	NodeCompressed**			m_nodes_ptr;	// pointers to node's data
 	vector<xrServerEntity *>	m_tpSpawnPoints;
 	u32							m_dwLevelID;
+	u32							m_dwStart;
+	u32							m_dwEnd;
+	u32							m_dwAStarStaticCounter;
+	SNode						*m_tpHeap;
+	SNode						**m_tppHeap;
+	SIndexNode					*m_tpIndexes;
+	float						m_fMaxDistance;
+	vector<u32>					m_tpaNodes;
+	CAStarSearch<CAIMapShortestPathNode,SAIMapData> m_tpMapPath;
+	SAIMapData					m_tData;
+	u32							m_dwMaxNodeCount;
 
 								CSpawn(SLevel &tLevel, u32 dwLevelID)
 	{
@@ -57,6 +68,9 @@ public:
 			u32					L = C.links;
 			vfs->Advance		(L*sizeof(NodeLink));
 		}
+		m_dwMaxNodeCount		= m_header.count + 2;
+		m_fMaxDistance			= MAX_DISTANCE_TO_CONNECT;
+
 		// loading spawn points
 		fName[0]				= 0;
 		strconcat				(fName,"gamedata\\levels\\",m_tLevel.caLevelName);
@@ -92,8 +106,35 @@ public:
 
 	void					vfAssignCorrespondingVertices()
 	{
+//		float				fDistance;
+//		m_tData.dwFinishNode	= tNeighbourGraphVertex.tNodeID;
+//		m_tpMapPath.vfFindOptimalPath(
+//			m_tppHeap,
+//			m_tpHeap,
+//			m_tpIndexes,
+//			m_dwAStarStaticCounter,
+//			m_tData,
+//			tCurrentGraphVertex.tNodeID,
+//			tNeighbourGraphVertex.tNodeID,
+//			fDistance,
+//			m_fMaxDistance,
+//			m_tpaNodes,
+//			m_dwMaxNodeCount);
 	}
 	
+};
+
+class CSpawnThread : public CThread {
+private:
+
+public:
+	CSpawnThread(u32 ID, CSpawn *tpSpawn) : CThread(ID)
+	{
+		tpSpawn->vfAssignCorrespondingVertices();
+	}
+	virtual void			Execute()
+	{
+	};
 };
 
 void vfLoadGameGraph()
@@ -119,8 +160,8 @@ void vfLoadGameGraph()
 void xrMergeSpawns()
 {
 	// load all the graphs
-	CInifile ENGINE_API *pIni	= xr_new<CInifile>(INI_FILE);
 	Phase						("Reading level graphs");
+	CInifile ENGINE_API *pIni	= xr_new<CInifile>(INI_FILE);
 	vfLoadGameGraph				();
 	SSpawnHeader				tSpawnHeader;
 	tSpawnHeader.dwVersion		= XRAI_CURRENT_VERSION;
@@ -137,5 +178,14 @@ void xrMergeSpawns()
 		tpLevels.push_back(xr_new<CSpawn>(tLevel,dwLevelID));
 	}
 	R_ASSERT(tpLevels.size());
+	
+	CThreadManager		tThreadManager;		// multithreading
+	xrCriticalSection	tCriticalSection;	// thread synchronization
 
+	Phase						("Searching for corresponding graph vertices");
+	for (u32 thID=0, N = tpLevels.size(); thID<N; thID++)
+		tThreadManager.start(xr_new<CSpawnThread>(thID,tpLevels[thID]));
+	tThreadManager.wait();
+	
+	Phase						("Freeing resources being allocated");
 }

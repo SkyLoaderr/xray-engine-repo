@@ -45,7 +45,7 @@ public:
 		for ( ; I != E; I++) {
 			(*I).tLocalPoint		= m_tpaGraph[I - B].tLocalPoint;
 			(*I).tGlobalPoint.add	(m_tpaGraph[I - B].tGlobalPoint,m_tLevel.tOffset);
-			(*I).tNodeID			= m_tpaGraph[I - B].tNodeID;
+			//(*I).tNodeID			= m_tpaGraph[I - B].tNodeID;
 			(*I).tVertexType		= m_tpaGraph[I - B].tVertexType;
 			(*I).tLevelID			= dwLevelID;
 			(*I).tNeighbourCount	= m_tpaGraph[I - B].tNeighbourCount;
@@ -81,7 +81,7 @@ public:
 			SCompressedGraphVertex tVertex;
 			tVertex.tLocalPoint		= (*I).tLocalPoint;
 			tVertex.tGlobalPoint	= (*I).tGlobalPoint;
-			tVertex.tNodeID			= (*I).tNodeID;
+			//tVertex.tNodeID			= (*I).tNodeID;
 			tVertex.tVertexType		= (*I).tVertexType;
 			tVertex.tLevelID		= (*I).tLevelID;
 			tVertex.dwEdgeOffset	= dwOffset;

@@ -16,7 +16,6 @@
 #include "xrGraph.h"
 #include "xrSort.h"
 
-#define MAX_DISTANCE_TO_CONNECT		512.f
 #define THREAD_COUNT				6
 
 #define GET_INDEX(N,K)				iFloor((2*N - 1 - _sqrt((2*N - 1)*(2*N - 1) - 4*float(N)*(N - 1)/float(K)))/2.f)
@@ -338,7 +337,7 @@ void vfSaveGraph(LPCSTR name)
 		SGraphVertex &tGraphVertex				= tpaGraph[i];
 		tCompressedGraphVertex.tLocalPoint		= tGraphVertex.tLocalPoint;
 		tCompressedGraphVertex.tGlobalPoint		= tGraphVertex.tGlobalPoint;
-		tCompressedGraphVertex.tNodeID			= tGraphVertex.tNodeID;
+		//tCompressedGraphVertex.tNodeID			= tGraphVertex.tNodeID;
 		tCompressedGraphVertex.tVertexType		= tGraphVertex.tVertexType;
 		tCompressedGraphVertex.tLevelID			= tGraphVertex.tLevelID;
 		tCompressedGraphVertex.tNeighbourCount = tGraphVertex.tNeighbourCount;

@@ -27,10 +27,9 @@ typedef struct tagSGraphVertex {
 typedef struct tagSCompressedGraphVertex {
 	Fvector				tLocalPoint;
 	Fvector				tGlobalPoint;
-	u32					tNodeID:24;
-	u32					tLevelID:8;
-	u32					tVertexType:24;
-	u32					tNeighbourCount:8;
+	u8					tLevelID;
+	u16					tVertexType;
+	u8					tNeighbourCount;
 	u32					dwEdgeOffset;
 } SCompressedGraphVertex;
 
@@ -46,6 +45,8 @@ typedef struct tagSGraphHeader {
 	vector<SLevel>		tpLevels;
 } SGraphHeader;
 #pragma pack(pop)
+
+#define MAX_DISTANCE_TO_CONNECT		512.f
 
 DEFINE_VECTOR(SGraphVertex,	GRAPH_VERTEX_VECTOR,	GRAPH_VERTEX_IT);
 DEFINE_VECTOR(SGraphEdge,	GRAPH_EDGE_VECTOR,		GRAPH_EDGE_IT);
