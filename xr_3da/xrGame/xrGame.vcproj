@@ -8238,6 +8238,13 @@
 						</File>
 					</Filter>
 				</Filter>
+				<Filter
+					Name="Impact"
+					Filter="">
+					<File
+						RelativePath=".\PHImpact.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="CharacterSupport"

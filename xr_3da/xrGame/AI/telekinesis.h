@@ -27,6 +27,8 @@ public:
 
 			//clear objects (does not call release, but call switch to TS_None)
 			void	clear_deactivate	();
+			// clear 
+virtual		void	clear				();
 			// деактивировать объект
 			void	deactivate			(CPhysicsShellHolder *obj);
 			void	remove_object		(TELE_OBJECTS_IT it);

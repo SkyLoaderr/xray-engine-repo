@@ -11,6 +11,34 @@ CTeleWhirlwind ::CTeleWhirlwind ()
 	m_owner_object=NULL;
 	m_center.set(0.f,0.f,0.f);
 }
+void CTeleWhirlwind::clear_impacts()
+{
+	m_saved_impacts.clear();
+}
+void CTeleWhirlwind::clear()
+{
+	inherited::clear();
+	
+}
+void CTeleWhirlwind::add_impact(const Fvector& dir,float val)
+{
+	Fvector force,point;
+	force.set(dir);
+	force.mul(val);
+	point.set(0.f,0.f,0.f);
+	m_saved_impacts.push_back(SPHImpact(force,point,0));
+}
+
+void CTeleWhirlwind::draw_out_impact(Fvector& dir,float& val)
+{
+	VERIFY2(m_saved_impacts.size(),"NO IMPACTS ADDED!");
+	dir.set(m_saved_impacts[0].force);
+	val=dir.magnitude();
+	if(!fis_zero(val))dir.mul(1.f/val);
+	m_saved_impacts.erase(m_saved_impacts.begin());
+}
+
+
 	CTeleWhirlwindObject::		CTeleWhirlwindObject()
 {
 			m_telekinesis=0;
@@ -61,7 +89,7 @@ void		CTeleWhirlwindObject::		release					()
 	object->m_pPhysicsShell->set_ApplyByGravity(TRUE);
 /////////////////////////////////////
 	float impulse=0.f;
-	if(!fis_zero(magnitude))
+	if(magnitude>0.1f)
 	{
 		dir_inv.mul(1.f/magnitude);
 		impulse=throw_power/magnitude/magnitude;
@@ -77,24 +105,8 @@ void		CTeleWhirlwindObject::		release					()
 		CPHDestroyable* D=object->ph_destroyable();
 		if(D)
 		{
-			u8 new_obj_ID=	D->Destroy();
-			CGameObject* owner=m_telekinesis->OwnerObject();
-			if (OnServer())
-			{
-				NET_Packet	l_P;
-				owner->u_EventGen	(l_P,GE_HIT, new_obj_ID);
-				l_P.w_u16	(u16(new_obj_ID));
-				l_P.w_u16	(owner->ID());
-				l_P.w_dir	(dir_inv);
-				l_P.w_float	(0.f);
-				l_P.w_s16	(0/*(s16)BI_NONE*/);
-				Fvector		position_in_bone_space={0.f,0.f,0.f};
-				l_P.w_vec3	(position_in_bone_space);
-				l_P.w_float	(impulse);
-				l_P.w_u16	(ALife::eHitTypeStrike);
-				owner->u_EventSend	(l_P);
-			};
-		
+			D->Destroy(m_telekinesis->OwnerObject()->ID());
+			m_telekinesis->add_impact(dir_inv,impulse);
 		}
 	}
 
@@ -188,6 +200,8 @@ void		CTeleWhirlwindObject::		raise					(float step)
 			E->applyForce(force.x,force.y,force.z);
 		}
 }
+
+
 void		CTeleWhirlwindObject::		keep					()
 {
 	//inherited::keep();

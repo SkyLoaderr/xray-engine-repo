@@ -10,10 +10,10 @@
 		m_flags.flags=0;
 	}
 
-u8 CPHDestroyable::Destroy()
+void CPHDestroyable::Destroy(u16 parent_id/*=u16(-1)*/)
 {
-	u8	new_obj_ID	=	u8(-1);
-	if(!m_flags.test(fl_destroyable)||m_flags.test(fl_destroyed))return new_obj_ID;
+	
+	if(!m_flags.test(fl_destroyable)||m_flags.test(fl_destroyed))return ;
 //////////send destroy to self //////////////////////////////////////////////////////////////////
 	CPhysicsShellHolder* obj=PPhysicsShellHolder();
 
@@ -41,11 +41,10 @@ u8 CPHDestroyable::Destroy()
 	//	l_tpALifePhysicObject->startup_animation=m_startup_anim;
 		strcpy				(D->s_name,"ph_skeleton_object");//*cNameSect()
 		strcpy				(D->s_name_replace,"");
-		new_obj_ID		=	u8(GameID());
-		D->s_gameid			=	new_obj_ID;
+		D->s_gameid			=	u8(GameID());
 		D->s_RP				=	0xff;
 		D->ID				=	0xffff;
-		D->ID_Parent		=	0xffff;//u16(ID());//
+		D->ID_Parent		=	parent_id;
 		D->ID_Phantom		=	0xffff;
 		D->o_Position		=	obj->Position();
 		obj->XFORM()			.getHPB(D->o_Angle);
@@ -60,7 +59,7 @@ u8 CPHDestroyable::Destroy()
 	}
 ///////////////////////////////////////////////////////////////////////////
 	m_flags.set(fl_destroyed,TRUE);
-	return new_obj_ID;
+	return;
 }
 
 void CPHDestroyable::Load(LPCSTR section)

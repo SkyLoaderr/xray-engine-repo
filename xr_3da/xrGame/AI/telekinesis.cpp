@@ -16,7 +16,10 @@ void	CTelekinesis::activate			(CPhysicsShellHolder *obj, float strength, float h
 	if (!objects.empty()) CPHUpdateObject::Activate();
 }
 
-
+void CTelekinesis::clear()
+{
+		objects.clear	();
+}
 void CTelekinesis::deactivate()
 {
 	active			= false;
@@ -29,8 +32,8 @@ void CTelekinesis::deactivate()
 		objects[i]->release();
 		xr_delete(objects[i]);
 	}
-	objects.clear	();
 
+	clear();
 	CPHUpdateObject::Deactivate();
 }
 
@@ -46,8 +49,7 @@ void CTelekinesis::clear_deactivate()
 		objects[i]->switch_state(TS_None);
 		xr_delete(objects[i]);
 	}
-	objects.clear	();
-
+	clear();
 	CPHUpdateObject::Deactivate();
 }
 
@@ -93,6 +95,7 @@ void CTelekinesis::remove_object		(TELE_OBJECTS_IT it)
 
 	// проверить на полную деактивацию
 	if (objects.empty()) {
+		clear();
 		CPHUpdateObject::Deactivate();
 		active = false;
 	}

@@ -25,7 +25,7 @@ private:
 	IRender_Light*	light_ambient;
 	CLAItem*		lanim;
 	float			ambient_power;
-
+	
 	IRender_Glow*	glow_render;
 	
 	float			fHealth;

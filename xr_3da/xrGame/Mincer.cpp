@@ -47,7 +47,11 @@ BOOL CMincer::net_Spawn(LPVOID DC)
 	m_telekinetics.SetOwnerObject(smart_cast<CGameObject*>(this));
 	return result;
 }
-
+void CMincer::net_Destroy()
+{
+	inherited::net_Destroy();
+	m_telekinetics.clear_impacts();
+}
 void CMincer::feel_touch_new				(CObject* O)
 {
 	inherited::feel_touch_new(O);
@@ -84,6 +88,38 @@ void CMincer ::ThrowInCenter(Fvector& C)
 void CMincer ::Center	(Fvector& C) const
 {
 	C.set(Position());
+}
+
+void CMincer ::OnEvent(NET_Packet& P,u16 type)
+{
+
+	switch(type)
+	{
+	
+	case GE_OWNERSHIP_TAKE:
+		u16 id=P.r_u16();
+		Fvector dir;float impulse;
+		m_telekinetics.draw_out_impact(dir,impulse);
+		if (OnServer())
+		{
+			NET_Packet	l_P;
+			u_EventGen	(l_P,GE_HIT, id);
+			l_P.w_u16	(u16(id));
+			l_P.w_u16	(ID());
+			l_P.w_dir	(dir);
+			l_P.w_float	(0.f);
+			l_P.w_s16	(0/*(s16)BI_NONE*/);
+			Fvector		position_in_bone_space={0.f,0.f,0.f};
+			l_P.w_vec3	(position_in_bone_space);
+			l_P.w_float	(impulse);
+			l_P.w_u16	(ALife::eHitTypeStrike);
+			u_EventSend	(l_P);
+	/////////////////////////////////////////////////////////
+			Level().Objects.net_Find(id)->H_SetParent(NULL);
+			return;
+		};
+	}
+		inherited::OnEvent(P,type);
 }
 #ifdef DEBUG
 void CMincer::OnRender()

@@ -30,6 +30,8 @@ public:
 	virtual void AffectThrow				(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist);
 	virtual void ThrowInCenter				(Fvector& C);
 	virtual BOOL net_Spawn					(LPVOID DC);
+	virtual void net_Destroy				();
 	virtual void Center						(Fvector& C) const;
+	virtual void OnEvent					(NET_Packet& P,u16 type);
 
 };
