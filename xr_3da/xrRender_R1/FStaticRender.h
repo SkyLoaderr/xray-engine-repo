@@ -114,7 +114,7 @@ public:
 		void*							ppConstantTable);
 
 	// Information
-	virtual LPCSTR					getShaderPath			()									{ return "xr1\\";	} //.?????
+	virtual LPCSTR					getShaderPath			()									{ return "r1\\";	}
 	virtual ref_shader				getShader				(int id);
 	virtual IRender_Sector*			getSector				(int id);
 	virtual IRender_Visual*			getVisual				(int id);
