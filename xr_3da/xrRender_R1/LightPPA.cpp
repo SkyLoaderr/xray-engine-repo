@@ -196,6 +196,7 @@ void CLightR_Manager::render_point	()
 		bHUD				= F.testSphere_dirty	(Device.vCameraPosition,2.f);
 
 		//		5. Dump sorting tree
+		RCache.set_Constants((R_constant_table*)0);
 		if (bHUD)			g_pGameLevel->pHUD->Render_Last		();	
 		RImplementation.r_dsgraph_render_graph					(0);
 		if (bHUD)			RImplementation.r_dsgraph_render_hud();	
