@@ -250,7 +250,7 @@ void	CShaderManager::OnDeviceCreate	(LPCSTR shName)
 #ifdef _EDITOR
 	if (!Engine.FS.Exist(shName)) return;
 #endif
-	CCompressedStream		FS(shName,		"shENGINE");
+	CCompressedStream		FS		(shName,		"shENGINE");
     OnDeviceCreate			(&FS);
 }
 
