@@ -240,7 +240,12 @@ int CLuaEditor::GetCurrentPos()
 void CLuaEditor::SetCurrentPos(int pos)
 {
 	Sci(SCI_GOTOPOS, pos);
-//	Sci(SCI_SETCURRENTPOS,pos);
+	int lc= Sci(SCI_LINESONSCREEN);
+	if(pos<=lc)
+		return;
+
+	int ln = lc/2;
+	Sci(SCI_LINESCROLL, 0, ln);
 }
 
 BOOL CLuaEditor::CanCutOrClear()
