@@ -53,6 +53,21 @@ function action_guard_activity:__init (npc_name,action_name,storage) super (nil,
     self.state_anim_playing = 3
     self.state_moving = 4
 
+  --[[printf("_bp: ... path_main=%s, path_hideout=%s, projector_name=%s",
+    if_then_else(self.path_main, self.path_main, "nil"),
+    if_then_else(self.path_hideout, self.path_hideout, "nil"),
+    if_then_else(self.path_projector_name, self.projector_name, "nil")
+    )]]
+
+end
+function action_guard_activity:initialize()
+  --printf("_bp: action_guard_activity: initialize")
+    action_base.initialize(self)
+    self.object:set_node_evaluator()
+    self.object:set_path_evaluator()
+    self.object:set_desired_position()
+    self.object:set_desired_direction()
+
     self.state = self.state_none
 
     self.path_main = self.a.path_main
@@ -62,12 +77,6 @@ function action_guard_activity:__init (npc_name,action_name,storage) super (nil,
     self.path_hideout = self.path_main
   end
   self.projector_name = self.a.projector_name
-
-  --[[printf("_bp: ... path_main=%s, path_hideout=%s, projector_name=%s",
-    if_then_else(self.path_main, self.path_main, "nil"),
-    if_then_else(self.path_hideout, self.path_hideout, "nil"),
-    if_then_else(self.path_projector_name, self.projector_name, "nil")
-    )]]
 
   -- TODO: выбирать активный путь в зависимости от погоды (сделать выбор функцией)
     self.path_active = self.path_main
@@ -83,15 +92,6 @@ function action_guard_activity:__init (npc_name,action_name,storage) super (nil,
   self.projector = nil
   self.speedh = 0.52
   self.speedv = 0.22
-
-end
-function action_guard_activity:initialize()
-  --printf("_bp: action_guard_activity: initialize")
-    action_base.initialize(self)
-    self.object:set_node_evaluator()
-    self.object:set_path_evaluator()
-    self.object:set_desired_position()
-    self.object:set_desired_direction()
 
     self.object:set_item(object.idle, self.object:best_weapon())
     self.object:set_detail_path_type(move.line)
