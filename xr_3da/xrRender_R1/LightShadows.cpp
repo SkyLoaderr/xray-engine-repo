@@ -45,37 +45,37 @@ void CLightShadows::OnDeviceCreate	()
 	string128 RTtemp2;	strconcat(RTtemp2,RTtemp,",",RTtemp);
 	
 	// 
-	RT			= Device.Shader._CreateRT	(RTname,S_rt_size,S_rt_size,HW.Caps.fTarget);
-	RT_temp		= Device.Shader._CreateRT	(RTtemp,S_rt_size,S_rt_size,HW.Caps.fTarget);
-	sh_Texture	= Device.Shader.Create		("effects\\shadow_texture");
-	sh_World	= Device.Shader.Create		("effects\\shadow_world",	RTname);
-	geom_World	= Device.Shader.CreateGeom	(FVF::F_LIT,	RCache.Vertex.Buffer(), NULL);
-	sh_BlurTR	= Device.Shader.Create		("effects\\blur",			RTtemp2);
-	sh_BlurRT	= Device.Shader.Create		("effects\\blur",			RTname2);
-	geom_Blur	= Device.Shader.CreateGeom	(FVF::F_TL2uv,	RCache.Vertex.Buffer(), RCache.QuadIB);
+	RT			= Device.Resources->_CreateRT	(RTname,S_rt_size,S_rt_size,HW.Caps.fTarget);
+	RT_temp		= Device.Resources->_CreateRT	(RTtemp,S_rt_size,S_rt_size,HW.Caps.fTarget);
+	sh_Texture	= Device.Resources->Create		("effects\\shadow_texture");
+	sh_World	= Device.Resources->Create		("effects\\shadow_world",	RTname);
+	geom_World	= Device.Resources->CreateGeom	(FVF::F_LIT,	RCache.Vertex.Buffer(), NULL);
+	sh_BlurTR	= Device.Resources->Create		("effects\\blur",			RTtemp2);
+	sh_BlurRT	= Device.Resources->Create		("effects\\blur",			RTname2);
+	geom_Blur	= Device.Resources->CreateGeom	(FVF::F_TL2uv,	RCache.Vertex.Buffer(), RCache.QuadIB);
 
 	// Debug
-	sh_Screen	= Device.Shader.Create		("effects\\screen_set",RTname);
-	geom_Screen	= Device.Shader.CreateGeom	(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
+	sh_Screen	= Device.Resources->Create		("effects\\screen_set",RTname);
+	geom_Screen	= Device.Resources->CreateGeom	(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
 }
 
 void CLightShadows::OnDeviceDestroy	()
 {
 	// Debug
-	Device.Shader.Delete					(sh_Screen	);
-	Device.Shader.DeleteGeom				(geom_Screen	);
+	Device.Resources->Delete					(sh_Screen	);
+	Device.Resources->DeleteGeom				(geom_Screen	);
 	
 	// 
-	Device.Shader.DeleteGeom				(geom_Blur);
-	Device.Shader.DeleteGeom				(geom_World);
+	Device.Resources->DeleteGeom				(geom_Blur);
+	Device.Resources->DeleteGeom				(geom_World);
 
 	// 
-	Device.Shader.Delete					(sh_BlurRT	);
-	Device.Shader.Delete					(sh_BlurTR	);
-	Device.Shader.Delete					(sh_World	);
-	Device.Shader.Delete					(sh_Texture	);
-	Device.Shader._DeleteRT					(RT_temp	);
-	Device.Shader._DeleteRT					(RT			);
+	Device.Resources->Delete					(sh_BlurRT	);
+	Device.Resources->Delete					(sh_BlurTR	);
+	Device.Resources->Delete					(sh_World	);
+	Device.Resources->Delete					(sh_Texture	);
+	Device.Resources->_DeleteRT					(RT_temp	);
+	Device.Resources->_DeleteRT					(RT			);
 }
 
 void CLightShadows::set_object	(IRenderable* O)

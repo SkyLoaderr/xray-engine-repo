@@ -63,7 +63,7 @@ void FTreeVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 	}
 
 	// Geom
-	hGeom				= Device.Shader.CreateGeom	(vFormat,pVertices,pIndices);
+	hGeom.create		(vFormat,pVertices,pIndices);
 
 	// Get constants
 	R_constant_table& T	= *(hShader->E[0]->Passes[0]->constants);

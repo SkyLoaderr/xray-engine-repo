@@ -93,16 +93,16 @@ void CHOM::Load			()
 	m_ZB.clear			();
 
 	/*
-	h_Geom					= Device.Shader.CreateGeom	(FVF::F_L, RCache.Vertex.Buffer(), NULL	);
-	h_Shader				= Device.Shader.Create		("zfill"	);
+	h_Geom					= Device.Resources->CreateGeom	(FVF::F_L, RCache.Vertex.Buffer(), NULL	);
+	h_Shader				= Device.Resources->Create		("zfill"	);
 	
 	// Debug
 	HW.pDevice->CreateTexture(occ_dim_0,occ_dim_0,1,0,D3DFMT_X8R8G8B8,D3DPOOL_MANAGED,&dbg_surf,NULL);
 	R_ASSERT				(dbg_surf);
 	LPCSTR		RTname		= "$user$hom";
-	dbg_geom				= Device.Shader.CreateGeom		(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
-	dbg_texture				= Device.Shader._CreateTexture	(RTname);
-	dbg_shader				= Device.Shader.Create			("effects\\screen_set",		RTname);
+	dbg_geom				= Device.Resources->CreateGeom		(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
+	dbg_texture				= Device.Resources->_CreateTexture	(RTname);
+	dbg_shader				= Device.Resources->Create			("effects\\screen_set",		RTname);
 	dbg_texture->surface_set(dbg_surf);
 	*/
 }
@@ -110,8 +110,8 @@ void CHOM::Load			()
 void CHOM::Unload		()
 {
 	/*
-	Device.Shader.Delete		(h_Shader);
-	Device.Shader.DeleteGeom	(h_Geom);
+	Device.Resources->Delete		(h_Shader);
+	Device.Resources->DeleteGeom	(h_Geom);
 	_RELEASE	(dbg_surf);
 	*/
 	xr_delete	(m_pModel);

@@ -55,7 +55,6 @@ void CDetailManager::hw_Load	()
 	}
 
 	// Create VB/IB
-	Device.Shader.Evict		();
 	R_CHK			(HW.pDevice->CreateVertexBuffer(dwVerts*vSize,dwUsage,0,D3DPOOL_MANAGED,&hw_VB,0));
 	R_CHK			(HW.pDevice->CreateIndexBuffer(dwIndices*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_MANAGED,&hw_IB,0));
 	Msg("* [DETAILS] Batch(%d), VB(%dK), IB(%dK)",hw_BatchSize,(dwVerts*vSize)/1024, (dwIndices*2)/1024);
@@ -106,7 +105,7 @@ void CDetailManager::hw_Load	()
 	}
 
 	// Create shader to access constant storage
-	ref_shader		S		= Device.Shader.Create	("details\\set");
+	ref_shader		S		= Device.Resources->Create	("details\\set");
 	R_constant_table&	T0	= *(S->E[0]->Passes[0]->constants);
 	R_constant_table&	T1	= *(S->E[1]->Passes[0]->constants);
 	hwc_consts			= T0.get("consts");
