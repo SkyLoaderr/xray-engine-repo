@@ -329,10 +329,13 @@ void CAI_Soldier::OnRetreatAloneFire()
 	if (AI_Path.bNeedRebuild)
 		vfBuildPathToDestinationPoint(0);
 	else
-		vfSearchForBetterPositionWTime(SelectorRetreat,Squad,Leader);
+		vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
 
-	if (bfTooBigDistance(tSavedEnemyPosition,25.f))
-		SetDirectionLook();
+	if (bfTooBigDistance(tSavedEnemyPosition,15.f) || !Enemy.bVisible || ((Enemy.Enemy) && !bfCheckForEntityVisibility(Enemy.Enemy)))
+		if (AI_Path.fSpeed < EPS_L)
+			SetLessCoverLook(AI_Node);
+		else
+			SetDirectionLook();
 	else
 		vfAimAtEnemy();
 	
