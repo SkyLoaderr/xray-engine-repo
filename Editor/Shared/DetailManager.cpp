@@ -179,7 +179,7 @@ void CDetailManager::Render		(Fvector& EYE)
 	UpdateCache					(1);
 
 	float fade_limit	= 13.5f;fade_limit=fade_limit*fade_limit;
-	float fade_start	= 8.f;	fade_start=fade_start*fade_start;
+	float fade_start	= 1.f;	fade_start=fade_start*fade_start;
 	float fade_range	= fade_limit-fade_start;
 
 	// Collect objects for rendering
@@ -276,7 +276,7 @@ void CDetailManager::Render		(Fvector& EYE)
 
 		// Fill VB (and flush it as nesessary)
 		Device.Shader.Set		(Object.shader);
-		Fmatrix		mXform,mScale,mRot,mRotY,mRotXZ;
+		Fmatrix		mXform,mScale,mRot,mRotXZ;
 		for (DWORD L_ID=0; L_ID<lock_count; L_ID++)
 		{
 			// Calculate params
@@ -474,7 +474,7 @@ void CDetailManager::UpdateCache	(int limit)
 				Item.scale	= r_scale.randF		(0.3f,1.8f);
 				Item.phase_x= ::Random.randFs	(phase_range);
 				Item.phase_z= ::Random.randF	(phase_range);
-				Item.mRotY.rotateY(r_yaw.randF	(0,PI_MUL_2))
+				Item.mRotY.rotateY(r_yaw.randF	(0,PI_MUL_2));
 				
 				// Color
 				Item.C		= 0xffffffff;
@@ -501,12 +501,24 @@ DetailSlot&	CDetailManager::QueryDB(int sx, int sz)
 
 	DS.items[0].id			= 1;
 	DS.items[0].palette.a0	= 15;
-	DS.items[0].palette.a1	= 15;
+	DS.items[0].palette.a1	= 7;
 	DS.items[0].palette.a2	= 15;
-	DS.items[0].palette.a3	= 15;
+	DS.items[0].palette.a3	= 2;
 
-	DS.items[1].id			= 0xff;
-	DS.items[2].id			= 0xff;
+	DS.items[1].id			= 2;
+	DS.items[1].palette.a0	= 2;
+	DS.items[1].palette.a1	= 7;
+	DS.items[1].palette.a2	= 15;
+	DS.items[1].palette.a3	= 8;
+
+	DS.items[2].id			= 3;
+	DS.items[2].palette.a0	= 4;
+	DS.items[2].palette.a1	= 0;
+	DS.items[2].palette.a2	= 1;
+	DS.items[2].palette.a3	= 8;
+
+//	DS.items[1].id			= 0xff;
+//	DS.items[2].id			= 0xff;
 	DS.items[3].id			= 0xff;
 
 	return DS;
