@@ -274,7 +274,7 @@ LPCSTR	CInifile::ReadSTRING(LPCSTR S, LPCSTR L )
 	Item Test; Test.first=(char*)L; SectIt	A = std::lower_bound(I.begin(),I.end(),Test,item_pred());
 #ifdef ENGINE_BUILD
 	if (A!=I.end() && strcmp(A->first,L)==0)	return A->second;
-	else										Device.Fatal("Can't find variable '%s'",L);
+	else										{ Device.Fatal("Can't find variable '%s'",L); return 0; }
 #else
 	#ifdef _EDITOR
 		if (A!=I.end() && strcmp(A->first,L)==0)	return A->second;
