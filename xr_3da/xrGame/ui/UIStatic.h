@@ -12,7 +12,7 @@
 #include "uistring.h"
 
 
-#include "..\uistaticitem.h"
+#include "../uistaticitem.h"
 
 
 
