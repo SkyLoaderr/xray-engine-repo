@@ -5,6 +5,42 @@
 
 //////////////////////////////////////////////////////////////////////
 #include "blender_clsid.h"
+IC bool		p_sort			(CBlender* A, CBlender* B)
+{
+	return stricmp(A->getComment(),B->getComment())<0;
+}
+
+void		CBlender::CreatePalette(vector<CBlender*> &palette)
+{
+	R_ASSERT(palette.empty());
+	palette.push_back(Create(B_DEFAULT));
+	palette.push_back(Create(B_DEFAULT_AREF));
+	palette.push_back(Create(B_VERT));
+	palette.push_back(Create(B_VERT_AREF));
+	palette.push_back(Create(B_SCREEN_SET));
+	palette.push_back(Create(B_SCREEN_GRAY));
+	palette.push_back(Create(B_EDITOR_WIRE));
+	palette.push_back(Create(B_EDITOR_SEL));
+	palette.push_back(Create(B_LIGHT));
+	palette.push_back(Create(B_LmBmmD));
+	palette.push_back(Create(B_LaEmB));
+	palette.push_back(Create(B_LmEbB));
+	palette.push_back(Create(B_BmmD));
+	palette.push_back(Create(B_B));
+	palette.push_back(Create(B_SHADOW_TEX));
+	palette.push_back(Create(B_SHADOW_WORLD));
+	palette.push_back(Create(B_BLUR));
+	palette.push_back(Create(B_MODEL));
+	palette.push_back(Create(B_MODEL_EbB));
+	palette.push_back(Create(B_DETAIL));
+	palette.push_back(Create(B_TREE));
+
+	std::sort		(palette.begin(),palette.end(),p_sort);
+}
+
+#ifndef _EDITOR
+	
+#else
 #include "blenderdefault.h"
 #include "blender_default_aref.h"
 #include "blender_vertex.h"
@@ -55,36 +91,4 @@ CBlender*	CBlender::Create	(CLASS_ID cls)
 	}
 	return 0;
 }
-
-IC bool		p_sort			(CBlender* A, CBlender* B)
-{
-	return stricmp(A->getComment(),B->getComment())<0;
-}
-
-void		CBlender::CreatePalette(vector<CBlender*> &palette)
-{
-	R_ASSERT(palette.empty());
-	palette.push_back(Create(B_DEFAULT));
-	palette.push_back(Create(B_DEFAULT_AREF));
-	palette.push_back(Create(B_VERT));
-	palette.push_back(Create(B_VERT_AREF));
-	palette.push_back(Create(B_SCREEN_SET));
-	palette.push_back(Create(B_SCREEN_GRAY));
-	palette.push_back(Create(B_EDITOR_WIRE));
-	palette.push_back(Create(B_EDITOR_SEL));
-	palette.push_back(Create(B_LIGHT));
-	palette.push_back(Create(B_LmBmmD));
-	palette.push_back(Create(B_LaEmB));
-	palette.push_back(Create(B_LmEbB));
-	palette.push_back(Create(B_BmmD));
-	palette.push_back(Create(B_B));
-	palette.push_back(Create(B_SHADOW_TEX));
-	palette.push_back(Create(B_SHADOW_WORLD));
-	palette.push_back(Create(B_BLUR));
-	palette.push_back(Create(B_MODEL));
-	palette.push_back(Create(B_MODEL_EbB));
-	palette.push_back(Create(B_DETAIL));
-	palette.push_back(Create(B_TREE));
-
-	std::sort		(palette.begin(),palette.end(),p_sort);
-}
+#endif

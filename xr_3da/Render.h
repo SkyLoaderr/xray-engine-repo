@@ -9,6 +9,7 @@ class ENGINE_API	IVisual;
 class ENGINE_API	CTempObject;
 class ENGINE_API	CObject;
 class ENGINE_API	xrLIGHT;
+class ENGINE_API	CBlender;
 namespace PS	{ 
 	struct ENGINE_API SDef;
 	struct ENGINE_API SEmitter; 
@@ -148,8 +149,14 @@ public:
 	virtual void					add_Patch				(Shader* S, const Fvector& P, float s, float a, BOOL bNearer)	= 0;
 	virtual void					add_Wallmark			(Shader* S, const Fvector& P, float s, CDB::TRI* T)				= 0;
 
+	CBlender*						blender_create			(CLSID cls)								= 0;
+	void							blender_destroy			(CBlender* &)							= 0;
+
 	// Lighting
 	virtual void					L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>&	dest)			= 0;
+	virtual IRender_Light*			light_create			()										= 0;
+	virtual void					light_destroy			(IRender_Light* &)						= 0;
+
 
 	// Models
 	virtual IVisual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E)			= 0;
@@ -159,9 +166,6 @@ public:
 	virtual IVisual*				model_Duplicate			(IVisual*	V)							= 0;
 	virtual void					model_Delete			(IVisual* &	V)							= 0;
 	virtual void 					model_Delete			(IRender_DetailModel* & F)				= 0;
-
-	virtual IRender_Light*			light_create			()										= 0;
-	virtual void					light_destroy			(IRender_Light* &)						= 0;
 
 	// Occlusion culling
 	virtual BOOL					occ_visible				(vis_data&	V)							= 0;
