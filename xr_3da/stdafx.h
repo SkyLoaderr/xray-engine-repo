@@ -13,12 +13,13 @@
 
 // #define DIRECTSOUND_VERSION 0x0700
 #define DIRECTINPUT_VERSION 0x0700
-
+#pragma warning(disable:4995)
 #include <d3d9.h>
 #include <d3dx9.h>
 #include <dinput.h>
 #include <dsound.h>
 #include <dplay8.h>
+#pragma warning(default:4995)
 
 // you must define ENGINE_BUILD then building the engine itself
 // and not define it if you are about to build DLL
