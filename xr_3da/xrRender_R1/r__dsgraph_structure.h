@@ -48,6 +48,10 @@ public:
 	virtual		void					set_Transform			(Fmatrix*	M	)				{ VERIFY(M);	val_pTransform = M;	}
 	virtual		void					set_HUD					(BOOL 		V	)				{ val_bHUD		= V;				}
 	virtual		void					set_Invisible			(BOOL 		V	)				{ val_bInvisible= V;				}
+
+public:
+	virtual		ShaderElement*			rimp_select_sh_static	(IRender_Visual	*pVisual, Fvector& Center)							= 0;
+	virtual		ShaderElement*			rimp_select_sh_dynamic	(IRender_Visual	*pVisual, Fvector& Center)							= 0;
 public:
 	void		r_dsgraph_insert_dynamic						(IRender_Visual	*pVisual, Fvector& Center);
 	void		r_dsgraph_insert_static							(IRender_Visual	*pVisual);
