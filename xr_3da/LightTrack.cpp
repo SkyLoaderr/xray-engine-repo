@@ -52,29 +52,29 @@ IC bool	pred_energy		(const CLightTrack::Light& L1, const CLightTrack::Light& L2
 	return L1.energy>L2.energy;
 }
 
-void	CLightDB_Static::Track	(IRenderable* O)
+void	CLightTrack::Track	(IRenderable* O)
 {
-	Fvector				pos; 
-	float				fRadius;
+	Fvector					pos; 
+	float					fRadius;
 
 	// Prepare
-	if					(0==O)																	return;
-	if					((!O->renderable_ShadowGenerate()) && (!O->renderable_ShadowReceive()))	return;
+	if						(0==O)																	return;
+	if						((!O->renderable_ShadowGenerate()) && (!O->renderable_ShadowReceive()))	return;
 
-	CLightTrack* pROS	= dynamic_cast<CLightTrack*>	(O->renderable.ROS);
-	R_ASSERT			(pROS);
-	CLightTrack& dest	= *pROS;
-	if					(dest.dwFrame==Device.dwFrame)	return;
-	dest.dwFrame		= Device.dwFrame;
+	CLightTrack* pROS		= dynamic_cast<CLightTrack*>	(O->renderable.ROS);
+	R_ASSERT				(pROS);
+	CLightTrack& dest		= *pROS;
+	if						(dest.dwFrame==Device.dwFrame)	return;
+	dest.dwFrame			= Device.dwFrame;
 	O->renderable.xform.transform_tiny	(pos,O->renderable.visual->vis.sphere.P);
-	fRadius				= O->renderable.visual->vis.sphere.R;
+	fRadius					= O->renderable.visual->vis.sphere.R;
 	
 	// Process ambient lighting
-	float	dt			= Device.fTimeDelta;
-	float	l_f			= dt*lt_smooth;
-	float	l_i			= 1.f-l_f;
-	dest.ambient		= l_i*dest.ambient + l_f*O->renderable_Ambient();
-	clamp				(dest.ambient,0.f,255.f);
+	float	dt				= Device.fTimeDelta;
+	float	l_f				= dt*lt_smooth;
+	float	l_i				= 1.f-l_f;
+	dest.ambient			= l_i*dest.ambient + l_f*O->renderable_Ambient();
+	clamp					(dest.ambient,0.f,255.f);
 	
 	// Select nearest lights
 	Fvector					bb_size	=	{fRadius,fRadius,fRadius};

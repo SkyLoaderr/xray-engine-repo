@@ -104,21 +104,4 @@ void			CLight_DB::Update			()
 	// Clear selection
 	v_selected_shadowed.clear	();
 	v_selected_unshadowed.clear	();
-
-	// move point/spot lights
-	if (0)
-	{
-		static float t		=	0;
-		t					+=	.01f;
-		for (u32 l=0; l<v_static.size(); l++)
-		{
-			light*  T	= v_static[l];
-			if (0==T)	continue;
-
-			Fvector move;
-			move.set		(_sin(t),_sin(t),_sin(t));
-			move.mul		(.005f);
-			T->position.add	(move);
-		}
-	}
 }
