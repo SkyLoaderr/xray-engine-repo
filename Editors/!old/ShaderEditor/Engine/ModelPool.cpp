@@ -18,7 +18,6 @@
 	#include "fskinned.h"
 	#include "flod.h"
     #include "ftreevisual.h"
-    #include "PSVisual.h"
     #include "ParticleGroup.h"
 #else
     #include "fmesh.h"

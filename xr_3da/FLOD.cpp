@@ -1,6 +1,6 @@
 #include "stdafx.h"
+#include "../fmesh.h"
 #include "flod.h"
-#include "fmesh.h"
 
 void FLOD::Load			(LPCSTR N, IReader *data, u32 dwFlags)
 {
