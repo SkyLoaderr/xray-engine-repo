@@ -350,8 +350,7 @@ function cl_smart_terrain:__init( se_obj, ini )
 --	printf( utils.to_str( self.gulagN ) )
 --	printf( if_then_else( self.gulags, "GULAGS", "GULAGS=NIL" ) )
 --	printf( if_then_else( self.gparams, "GPARAMS", "GPARAMS=NIL" ) )
-	
-	
+
 	-- если в офлайне был гулаг-затычка, то создать настоящий такого же типа
 	if se_obj.gulag then
 		self.gulag = self:createGulag()
