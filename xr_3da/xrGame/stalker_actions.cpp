@@ -246,7 +246,7 @@ void CStalkerActionGetEnemySeen::initialize	()
 void CStalkerActionGetEnemySeen::finalize	()
 {
 	inherited::finalize		();
-	if (m_object->enemy() && m_object->visible(m_object->enemy()))
+	if (m_object->enemy() && m_object->visible_now(m_object->enemy()))
 		m_storage->set_property		(eWorldPropertyEnemyAimed,true);
 	m_object->set_sound_mask(0);
 }
@@ -614,7 +614,7 @@ void CStalkerActionKillEnemyVeryAggressive::execute		()
 	if (!mem_object.m_object)
 		return;
 
-	if (!m_object->visible(m_object->enemy()))
+	if (!m_object->visible_now(m_object->enemy()))
 		return;
 
 	Fvector							position;
@@ -685,7 +685,7 @@ void CStalkerActionGetReadyToKillAggressive::execute	()
 	if (m_object->enemy())
 		mem_object					= m_object->memory(m_object->enemy());
 
-	if (m_object->enemy() && (m_object->visible(mem_object.m_object) || !completed())) {
+	if (m_object->enemy() && (m_object->visible_now(mem_object.m_object) || !completed())) {
 		Fvector						position = mem_object.m_object_params.m_position;
 		m_object->m_ce_close->setup	(position,10.f,170.f,10.f);
 		CCoverPoint					*point = ai().cover_manager().best_cover(m_object->Position(),10.f,*m_object->m_ce_close);
@@ -787,7 +787,7 @@ void CStalkerActionKillEnemyAggressive::execute		()
 	if (!mem_object.m_object)
 		return;
 
-	if (!m_object->visible(m_object->enemy()))
+	if (!m_object->visible_now(m_object->enemy()))
 		return;
 
 	if (completed()) {
@@ -840,7 +840,7 @@ void CStalkerActionAimEnemy::initialize	()
 	if (m_object->enemy() && m_object->enemy()->human_being() && !m_storage->property(eWorldPropertyFireEnough)) {
 		CMemoryInfo			mem_object = m_object->memory(m_object->enemy());
 		if (mem_object.m_object && 
-			m_object->visible(m_object->enemy()) && 
+			m_object->visible_now(m_object->enemy()) && 
 			(Level().timeServer() >= mem_object.m_last_level_time + 1000)) {
 			if (m_object->see(m_object->enemy(),m_object))
 				m_object->play	(eStalkerSoundAttack);
@@ -887,7 +887,7 @@ void CStalkerActionAimEnemy::execute		()
 	if (!mem_object.m_object)
 		return;
 
-	if (!m_object->visible(m_object->enemy()))
+	if (!m_object->visible_now(m_object->enemy()))
 		return;
 
 	Fvector							position;
@@ -1022,7 +1022,7 @@ void CStalkerActionKillEnemyAvoid::execute		()
 	if (!mem_object.m_object)
 		return;
 
-	if (!m_object->visible(m_object->enemy()))
+	if (!m_object->visible_now(m_object->enemy()))
 		return;
 
 	Fvector							position;
@@ -1094,7 +1094,7 @@ void CStalkerActionRetreatFromEnemy::execute		()
 
 	CMemoryInfo						mem_object = m_object->memory(m_object->enemy());
 
-	if (!m_object->visible(m_object->enemy()))
+	if (!m_object->visible_now(m_object->enemy()))
 		return;
 
 	Fvector							position;
@@ -1341,8 +1341,8 @@ void CStalkerActionKillEnemyModerate::execute		()
 	if (!mem_object.m_object)
 		return;
 
-	VERIFY							(m_object->visible(m_object->enemy()));
-	if (!m_object->visible(m_object->enemy()))
+	VERIFY							(m_object->visible_now(m_object->enemy()));
+	if (!m_object->visible_now(m_object->enemy()))
 		return;
 
 	if (completed()) {
@@ -1409,7 +1409,7 @@ void CStalkerActionGetEnemySeenModerate::finalize	()
 //	if (m_object->enemy() && m_object->enemy()->human_being()) {
 //		CMemoryInfo			mem_object = m_object->memory(m_object->enemy());
 //		if (mem_object.m_object && 
-//			m_object->visible(m_object->enemy()) && 
+//			m_object->visible_now(m_object->enemy()) && 
 //			(Level().timeServer() >= mem_object.m_last_level_time + 20000)) {// && !m_object->see(m_object->enemy(),m_object)) {
 //			m_object->play	(eStalkerSoundAlarm);
 //		}
@@ -1434,7 +1434,7 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 	if (!mem_object.m_object)
 		return;
 
-	VERIFY						(!m_object->visible(m_object->enemy()));
+	VERIFY						(!m_object->visible_now(m_object->enemy()));
 
 	if (Level().timeServer() >= m_start_level_time + 7000) {
 		m_storage->set_property	(eWorldPropertySafeToKill,false);
@@ -1526,7 +1526,7 @@ void CStalkerActionKillEnemyLostModerate::initialize	()
 	if (m_object->enemy() && m_object->enemy()->human_being() && !m_storage->property(eWorldPropertyFireEnough)) {
 		CMemoryInfo			mem_object = m_object->memory(m_object->enemy());
 		if (mem_object.m_object && 
-			m_object->visible(m_object->enemy()) && 
+			m_object->visible_now(m_object->enemy()) && 
 			(Level().timeServer() >= mem_object.m_last_level_time + 1000)) {
 				if (m_object->see(m_object->enemy(),m_object))
 					m_object->play	(eStalkerSoundAttack);
@@ -1555,7 +1555,7 @@ void CStalkerActionKillEnemyLostModerate::execute		()
 	if (!mem_object.m_object)
 		return;
 
-	if (!m_object->visible(m_object->enemy()))
+	if (!m_object->visible_now(m_object->enemy()))
 		return;
 
 	Fvector							position;

@@ -23,7 +23,7 @@ void CMonsterEnemyMemory::update()
 {
 	// Обновить врагов
 	for (xr_set<const CEntityAlive *>::const_iterator I = monster->enemies().begin(); I != monster->enemies().end(); ++I) {
-		if (!monster->CMemoryManager::visible(*I)) continue;
+		if (!monster->CMemoryManager::visible_now(*I)) continue;
 		add_enemy(*I);
 	}
 

@@ -56,7 +56,7 @@ _value_type CStalkerPropertyEvaluatorEnemies::evaluate	()
 
 _value_type CStalkerPropertyEvaluatorSeeEnemy::evaluate	()
 {
-	return				(m_object->enemy() ? m_object->visible(m_object->enemy()) : false);
+	return				(m_object->enemy() ? m_object->visible_now(m_object->enemy()) : false);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -132,7 +132,7 @@ _value_type CStalkerPropertyEvaluatorSafeToKill::evaluate	()
 	if (!mem_object.m_object)
 		return			(false);
 
-	if (!m_object->visible(m_object->enemy())) {
+	if (!m_object->visible_now(m_object->enemy())) {
 		Fvector			direction;
 		float			y,p;
 		direction.sub	(mem_object.m_object_params.m_position,m_object->Position());

@@ -130,7 +130,7 @@ void CSoundMemoryManager::add_sound_object(const CObject *object, int sound_type
 
 	const CGameObject *game_object	= dynamic_cast<const CGameObject*>(object);
 	CGameObject *self			= dynamic_cast<CGameObject*>(this);
-	if (!game_object || (visual_memory_manager && !visual_memory_manager->visible(game_object)))
+	if (!game_object || (visual_memory_manager && !visual_memory_manager->visible_now(game_object)))
 		return;
 
 #ifndef SILENCE

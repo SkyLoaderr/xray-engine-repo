@@ -10,6 +10,7 @@
 #include "visual_memory_manager.h"
 #include "custommonster.h"
 #include "ai/stalker/ai_stalker.h"
+//#include "actor.h"
 
 CVisualMemoryManager::CVisualMemoryManager		()
 {
@@ -64,7 +65,7 @@ void CVisualMemoryManager::reload				(LPCSTR section)
 {
 }
 
-bool CVisualMemoryManager::visible(const CGameObject *game_object) const
+bool CVisualMemoryManager::visible				(const CGameObject *game_object) const
 {
 	VERIFY								(game_object);
 	
@@ -79,7 +80,7 @@ bool CVisualMemoryManager::visible(const CGameObject *game_object) const
 
 	eye_matrix.transform_tiny			(temp,eye_position);
 	XFORM().transform_tiny				(eye_position,temp);
-	eye_direction.setHP					(m_stalker->m_head.current.yaw, m_stalker->m_head.current.pitch);
+	eye_direction.setHP					(-m_stalker->m_head.current.yaw, -m_stalker->m_head.current.pitch);
 	
 	Fvector								object_direction;
 	game_object->Center					(object_direction);
@@ -102,13 +103,15 @@ bool CVisualMemoryManager::visible(const CGameObject *game_object) const
 		min_view_distance				*= m_min_view_distance_free;
 	}
 
-	float								distance = (1.f - (fov - alpha)/fov)*(max_view_distance - min_view_distance) + min_view_distance;
+	float								distance = (1.f - alpha/fov)*(max_view_distance - min_view_distance) + min_view_distance;
 	if (distance < object_distance) {
-//		Msg								("Object %s IS NOT visible",*game_object->cName());
+//		if (dynamic_cast<const CActor*>(game_object))
+//			Msg							("Object %s IS NOT visible",*game_object->cName());
 		return							(false);
 	}
 	
-//	Msg									("Object %s IS visible",*game_object->cName());
+//	if (dynamic_cast<const CActor*>(game_object))
+//		Msg								("Object %s IS visible",*game_object->cName());
 	return								(true);
 ////	if (Level().iGetKeyState(DIK_RCONTROL))
 ////		return(false);

@@ -64,7 +64,7 @@ void CStateAttackWeak::execute			()
 	if (!mem_object.m_object)
 		return;
 
-	if (m_object->visible(m_object->enemy())) {
+	if (m_object->visible_now(m_object->enemy())) {
 #ifdef OLD_OBJECT_HANDLER
 		m_object->CObjectHandler::set_dest_state(eObjectActionFire1,m_object->best_weapon());
 #else
@@ -87,7 +87,7 @@ void CStateAttackWeak::execute			()
 		m_object->setup					(SightManager::eSightTypeDirection,&direction);
 	}
 
-	if (m_object->visible(m_object->enemy()) && (m_object->Position().distance_to(m_object->enemy()->Position()) < 10.f)) {
+	if (m_object->visible_now(m_object->enemy()) && (m_object->Position().distance_to(m_object->enemy()->Position()) < 10.f)) {
 		m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
 		m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
 		m_object->set_body_state		(eBodyStateStand);

@@ -156,7 +156,7 @@ bool CObjectHandler::check_if_can_kill_enemy(const SRotation &orientation) const
 	return			(
 		memory_manager->enemy() && 
 		memory_manager->enemy()->g_Alive() && 
-		memory_manager->visible(memory_manager->enemy()) && 
+		memory_manager->visible_now(memory_manager->enemy()) && 
 		check_if_can_kill_target(
 			entity,
 			memory_manager->enemy()->Position(),
