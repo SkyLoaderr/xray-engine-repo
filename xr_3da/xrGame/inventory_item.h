@@ -150,11 +150,12 @@ protected:
 	Fquaternion		IEndRot;
 
 	SPHNetState		RecalculatedState;
+	SPHNetState		PredictedState;
 
 	bool			m_bInInterpolation;
 	u32				m_dwIStartTime;
 	u32				m_dwIEndTime;
-	u64				m_u64IEndStep;
+	u32				m_dwILastUpdateTime;
 
 private:
 	u64				m_inventory_mask;

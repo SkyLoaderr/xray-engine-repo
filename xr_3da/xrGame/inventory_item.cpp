@@ -42,6 +42,7 @@ CInventoryItem::CInventoryItem()
 	////////////////////////////////////
 	m_bHasUpdate = false;
 	m_bInInterpolation = false;
+	
 	m_inventory_mask = u64(-1);
 }
 
@@ -405,6 +406,10 @@ void CInventoryItem::net_Import			(NET_Packet& P)
 		Level().m_dwNumSteps = NumSteps;
 
 		NET_IItem.push_back			(N);
+		while (NET_IItem.size() > 2)
+		{
+			NET_IItem.pop_front();
+		};
 	}
 };
 
@@ -453,38 +458,32 @@ void CInventoryItem::net_Export			(NET_Packet& P)
 void CInventoryItem::PH_B_CrPr		()
 {
 	//just set last update data for now
-//	u32 CurTime = Level().timeServer();
-	if (m_bHasUpdate)
+	if (!m_bHasUpdate) return;	
+	///////////////////////////////////////////////
+	CPHSynchronize* pSyncObj = NULL;
+	pSyncObj = PHGetSyncItem(0);
+	if (!pSyncObj) return;
+	///////////////////////////////////////////////
+	m_bInInterpolation = false;
+	net_update_IItem N_I = NET_IItem.back();
+	if (!N_I.State.enabled) 
 	{
-		m_bInInterpolation = false;
-		///////////////////////////////////////////////
-		CPHSynchronize* pSyncObj = NULL;
-		pSyncObj = PHGetSyncItem(0);
-		if (!pSyncObj) return;
-		///////////////////////////////////////////////
+		pSyncObj->set_State(N_I.State);//, N_A.State.enabled);
+	}
+	else
+	{
 		PHUnFreeze();
-		///////////////////////////////////////////////
-		while (NET_IItem.size() > 2)
-		{
-			NET_IItem.pop_front();
-		};
 
-		net_update_IItem N = NET_IItem.back();
-		///////////////////////////////////////////////
-		IStartPos.set(Position());
-		IStartRot.set(XFORM());
-		///////////////////////////////////////////////
-		pSyncObj->set_State(N.State);
-		if (!N.State.enabled) PHFreeze();
-		///////////////////////////////////////////////
-		if (int(Level().InterpolationSteps()) < 0)
-		{
-			m_bHasUpdate = false;
-			m_bInInterpolation = false;
-		};
+		pSyncObj->set_State(N_I.State);//, N_A.State.enabled);
 	};
+	///////////////////////////////////////////////
+	if (Level().InterpolationDisabled())
+	{
+		m_bHasUpdate = false;
+		m_bInInterpolation = false;
+	};
+	///////////////////////////////////////////////
 };	
-
 
 void CInventoryItem::PH_I_CrPr		()		// actions & operations between two phisic prediction steps
 {
@@ -497,12 +496,6 @@ void CInventoryItem::PH_I_CrPr		()		// actions & operations between two phisic p
 	////////////////////////////////////
 	pSyncObj->get_State(RecalculatedState);
 	///////////////////////////////////////////////
-	if (!getVisible())
-	{
-		m_bHasUpdate = false;
-		
-		PHFreeze();
-	};
 }; 
 
 void CInventoryItem::PH_A_CrPr		()
@@ -515,7 +508,7 @@ void CInventoryItem::PH_A_CrPr		()
 	pSyncObj = PHGetSyncItem(0);
 	if (!pSyncObj) return;
 	////////////////////////////////////
-	SPHNetState		PredictedState;
+//	SPHNetState		PredictedState;
 	pSyncObj->get_State(PredictedState);
 	
 	Fmatrix xformX;
@@ -524,21 +517,50 @@ void CInventoryItem::PH_A_CrPr		()
 	IEndRot.set(xformX);
 	IEndPos.set(xformX.c);
 
+	IStartPos.set(Position());
+	IStartRot.set(XFORM());
+
 	m_bInInterpolation = true;
-	m_dwIStartTime = Level().timeServer();
-	m_dwIEndTime = m_dwIStartTime + Level().InterpolationSteps()*u32(fixed_step*1000);
-	m_u64IEndStep = ph_world->m_steps_num + Level().InterpolationSteps();
+	m_dwIStartTime = m_dwILastUpdateTime;
+	m_dwIEndTime = Level().timeServer() + u32((fixed_step - ph_world->m_frame_time)*1000)+ Level().GetInterpolationSteps()*u32(fixed_step*1000);
 	////////////////////////////////////
 	pSyncObj->set_State(RecalculatedState);
 };
 
 void CInventoryItem::make_Interpolation	()
 {
+	m_dwILastUpdateTime = Level().timeServer();
 	if (!m_bInInterpolation) return;
-
-	u32 CurrentTime = Level().timeServer();
+	
 	if(!H_Parent() && getVisible() && m_pPhysicsShell) 
-	{		
+	{
+		u32 CurTime = Level().timeServer();
+		if (CurTime >= m_dwIEndTime)
+		{
+			m_bInInterpolation = false;
+
+			CPHSynchronize* pSyncObj = NULL;
+			pSyncObj = PHGetSyncItem(0);
+			pSyncObj->set_State(PredictedState);//, PredictedState.enabled);
+//			Position().set(PredictedState.position);
+			Fmatrix xformI;
+			pSyncObj->cv2obj_Xfrom(PredictedState.quaternion, PredictedState.position, xformI);
+			XFORM().set(xformI);
+		}
+		else
+		{
+			float factor = float(CurTime - m_dwIStartTime)/(m_dwIEndTime - m_dwIStartTime);
+
+			Fvector IPos;
+			Fquaternion IRot;
+			IPos.lerp(IStartPos, IEndPos, factor);
+			IRot.slerp(IStartRot, IEndRot, factor);
+
+			XFORM().rotation(IRot);
+			Position().set(IPos);
+			
+		};
+		/*
 		if (ph_world->m_steps_num > m_u64IEndStep)
 		{
 			m_bInInterpolation = false;
@@ -584,6 +606,7 @@ void CInventoryItem::make_Interpolation	()
 			XFORM().rotation(IRot);
 			Position().set(IPos);
 		}
+		*/
 	}
 }
 
