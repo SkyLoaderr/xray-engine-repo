@@ -5,16 +5,18 @@
 
 void CSoundRender_Emitter::start(
 								 sound*							_owner, 
-								 CSoundRender_Source*			_source, 
-								 CSoundRender_EmitterParams*	_params,
 								 BOOL							_loop
 								 )
 {
-	source		= dynamic_cast<CSoundRender_Source*>_source;
-	owner		= _owner;
-	p_source	= *_params;
+	source					= (CSoundRender_Source*)_owner->handle;
+	owner					= _owner;
+	p_source.position.set	(0,0,0);
+	p_source.min_distance	= DS3D_DEFAULTMINDISTANCE;
+	p_source.max_distance	= 300.f;
+	p_source.freq			= 1.f;
+	p_source.volume			= 1.f;
 
-	state		= stStarting;
+	state					= stStarting;
 }
 
 void CSoundRender_Emitter::stop	()
