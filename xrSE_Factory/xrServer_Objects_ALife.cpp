@@ -745,7 +745,7 @@ CSE_ALifeObjectPhysic::CSE_ALifeObjectPhysic(LPCSTR caSection) : CSE_ALifeDynami
 
 	m_flags.set					(flUseSwitches,FALSE);
 	m_flags.set					(flSwitchOffline,FALSE);
-
+	m_flags.set					(flUsedAI_Locations,FALSE);
 }
 
 CSE_ALifeObjectPhysic::~CSE_ALifeObjectPhysic		() 
