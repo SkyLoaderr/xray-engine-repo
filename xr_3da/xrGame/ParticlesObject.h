@@ -11,7 +11,6 @@ class CParticlesObject		:	public CPS_Instance
 	typedef CPS_Instance	inherited;
 
 	u32					dwLastTime;
-	u32					dwFrameDisableSheduleUpdate;
 	void				Init				(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove);
 	void				UpdateSpatial		();
 protected:
@@ -27,6 +26,7 @@ public:
 	virtual float		shedule_Scale		()	{ return Device.vCameraPosition.distance_to(Position())/200.f; }
 	virtual void		shedule_Update		(u32 dt);
 	virtual void		renderable_Render	();
+	void				PerformAllTheWork	(u32 dt);
 
 	Fvector&			Position			();
 	void				SetXFORM			(const Fmatrix& m);

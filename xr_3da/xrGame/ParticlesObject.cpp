@@ -95,22 +95,20 @@ const ref_str CParticlesObject::Name()
 void CParticlesObject::Play()
 {
 	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
-	V->Play			();
-	dwLastTime		= Device.dwTimeGlobal-33ul;
-	shedule_Update	(0);
-
-	m_bStoppig = false;
+	V->Play				();
+	dwLastTime			= Device.dwTimeGlobal-33ul;
+	PerformAllTheWork	(0);
+	m_bStoppig			= false;
 }
 
 void CParticlesObject::play_at_pos(const Fvector& pos, BOOL xform)
 {
-	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
-	Fmatrix m; m.identity(); m.c.set(pos); 
+	IParticleCustom* V			= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
+	Fmatrix m; m.translate		(pos); 
 	V->UpdateParent				(m,zero_vel,xform);
 	V->Play						();
 	dwLastTime					= Device.dwTimeGlobal-33ul;
-	shedule_Update				(0);
-	dwFrameDisableSheduleUpdate	= Device.dwFrame;
+	PerformAllTheWork			(0);
 	m_bStoppig					= false;
 }
 
@@ -124,27 +122,20 @@ void CParticlesObject::Stop(BOOL bDefferedStop)
 
 void CParticlesObject::shedule_Update	(u32 _dt)
 {
-	if (Device.dwFrame==dwFrameDisableSheduleUpdate)	return;	//. hack
-	dwFrameDisableSheduleUpdate		= Device.dwFrame;
 	inherited::shedule_Update		(_dt);
+	PerformAllTheWork				(_dt);
+}
 
-	// visual
+void CParticlesObject::PerformAllTheWork(u32 _dt)
+{
+	// Update
 	u32 dt							= Device.dwTimeGlobal - dwLastTime;
 	if (dt)							{
-		IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
-		V->OnFrame			(dt);
-		dwLastTime			= Device.dwTimeGlobal;
+		IParticleCustom* V		= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
+		V->OnFrame				(dt);
+		dwLastTime				= Device.dwTimeGlobal;
 	}
-
-	UpdateSpatial			();
-
-
-
-	//Msg	("update(%s): %3.1f,%3.1f,%3.1f,%3.1f",V->GetDefinition()->m_Name,VPUSH(spatial.center),spatial.radius);
-
-	//const Fmatrix& m = XFORM();
-	//Msg("%.3f %.3f %.3f", m.c.x, m.c.y, m.c.z);
-
+	UpdateSpatial					();
 }
 
 void CParticlesObject::SetXFORM		(const Fmatrix& m)
