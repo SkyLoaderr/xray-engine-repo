@@ -28,6 +28,12 @@ void CStalkerAnimationManager::reinit				()
 	m_desirable_direction		= eMovementDirectionForward;
 	
 	m_script_animations.clear	();
+
+	m_global.reset				();
+	m_head.reset				();
+	m_torso.reset				();
+	m_legs.reset				();
+	m_script.reset				();
 	
 	m_legs.step_dependence		(true);
 	m_global.step_dependence	(true);
