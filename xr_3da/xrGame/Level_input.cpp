@@ -12,7 +12,7 @@
 #include "xr_level_controller.h"
 #include "game_cl_base.h"
 #include "stalker_movement_manager.h"
-#include "ai/monsters/chimera/chimera.h"
+#include "ai/monsters/cat/cat.h"
 #include "Inventory.h"
 #include "WeaponHUD.h"
 #include "xrServer.h"
@@ -212,14 +212,14 @@ void CLevel::IR_OnKeyboardPress(int key)
 
 	CObject *obj = Level().Objects.FindObjectByName("monster");
 	if (obj) {
-		CChimera *monster = smart_cast<CChimera*>(obj);
+		CCat *monster = smart_cast<CCat *>(obj);
 
 		switch (key) {
 		case DIK_1:
-			monster->SetUpperState();
+			//monster->SetUpperState();
 			break;
 		case DIK_2:
-			monster->SetUpperState(false);
+			//monster->SetUpperState(false);
 			break;
 		case DIK_5:
 			monster->try_to_jump();

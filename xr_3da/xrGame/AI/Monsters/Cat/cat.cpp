@@ -1,10 +1,13 @@
 #include "stdafx.h"
 #include "cat.h"
 #include "cat_state_manager.h"
+#include "../../../../skeletonanimated.h"
 
 CCat::CCat()
 {
-	StateMan = xr_new<CStateManagerCat>(this);
+	StateMan = xr_new<CStateManagerCat>		(this);
+	
+	CJumpingAbility::init_external			(this);
 }
 
 CCat::~CCat()
@@ -14,7 +17,8 @@ CCat::~CCat()
 
 void CCat::Load(LPCSTR section)
 {
-	inherited::Load	(section);
+	inherited::Load			(section);
+	CJumpingAbility::load	(section);
 
 	MotionMan.accel_load			(section);
 	MotionMan.accel_chain_add		(eAnimWalkFwd,		eAnimRun);
@@ -48,7 +52,9 @@ void CCat::Load(LPCSTR section)
 		MotionMan.AddAnim(eAnimDragCorpse,		"stand_drag_",			-1, &inherited::get_sd()->m_fsVelocityDrag,				PS_STAND);
 		MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, &inherited::get_sd()->m_fsVelocitySteal,			PS_STAND);
 		MotionMan.AddAnim(eAnimStandLieDown,	"stand_lie_down_",		-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);		
-
+		
+		MotionMan.AddAnim(eAnimJumpLeft,		"stand_jump_ls_",		-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
+		MotionMan.AddAnim(eAnimJumpRight,		"stand_jump_rs_",		-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
 		
 		MotionMan.AddTransition(PS_LIE,		PS_STAND,	eAnimLieStandUp,		false);
 		MotionMan.AddTransition(PS_STAND,	PS_LIE,		eAnimStandLieDown,		false);
@@ -80,6 +86,29 @@ void CCat::Load(LPCSTR section)
 #endif
 
 	//*****************************************************************************
+}
+
+void CCat::reinit()
+{
+	inherited::reinit();
+
+	CMotionDef			*def1, *def2, *def3;
+	CSkeletonAnimated	*pSkel = smart_cast<CSkeletonAnimated*>(Visual());
+
+	def1 = pSkel->ID_Cycle_Safe("jump_attack_0");	VERIFY(def1);
+	def2 = pSkel->ID_Cycle_Safe("jump_attack_1");	VERIFY(def2);
+	def3 = pSkel->ID_Cycle_Safe("jump_attack_2");	VERIFY(def3);
+
+	CJumpingAbility::reinit(def1, def2, def3);
+}
+
+void CCat::try_to_jump()
+{
+	CObject *target = const_cast<CEntityAlive *>(EnemyMan.get_enemy());
+	if (!target || !EnemyMan.see_enemy_now()) return;
+
+	if (CJumpingAbility::can_jump(target))
+		CJumpingAbility::jump(target);
 }
 
 void CCat::CheckSpecParams(u32 spec_params)

@@ -11,6 +11,7 @@
 #include "../states/monster_state_hitted.h"
 #include "cat_state_attack_rat.h"
 #include "../../../clsid_game.h"
+#include "../states/state_test_look_actor.h"
 
 CStateManagerCat::CStateManagerCat(CCat *obj) : inherited(obj)
 {
@@ -22,6 +23,8 @@ CStateManagerCat::CStateManagerCat(CCat *obj) : inherited(obj)
 	add_state(eStateDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CCat> >		(obj));
 	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CCat> >					(obj));
 	add_state(eStateAttackRat,			xr_new<CStateCatAttackRat<CCat> >					(obj));
+
+	add_state(eStateThreaten,			xr_new<CStateMonsterLookActor<CCat> >				(obj));
 }
 
 CStateManagerCat::~CStateManagerCat()
@@ -65,6 +68,8 @@ void CStateManagerCat::execute()
 		if (can_eat)	state_id = eStateEat;
 		else			state_id = eStateRest;
 	}
+
+	state_id = eStateThreaten;
 
 	select_state(state_id); 
 
