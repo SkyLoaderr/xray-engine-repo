@@ -100,6 +100,8 @@ void CScintillaView::Clear()
 void CScintillaView::Write(CString& strMsg)
 {
 	m_view.SetReadOnly(FALSE);
+	int len = m_view.GetLength();
+	m_view.SetCurrentPos(len);
 	m_view.AddText(strMsg);
 	m_view.AddText("\n");
 	m_view.SetReadOnly(TRUE);
