@@ -17,6 +17,20 @@
 #	include "actor.h"
 #endif
 
+struct CNotYetVisibleObjectPredicate{
+	const CGameObject *m_game_object;
+
+	IC				CNotYetVisibleObjectPredicate(const CGameObject *game_object)
+	{
+		m_game_object	= game_object;
+	}
+
+	IC		bool	operator()	(const CNotYetVisibleObject &object) const
+	{
+		return		(object.m_object->ID() == m_game_object->ID());
+	}
+};
+
 CVisualMemoryManager::CVisualMemoryManager		()
 {
 	Init				();
@@ -42,10 +56,13 @@ void CVisualMemoryManager::Load					(LPCSTR section)
 	if (!m_stalker)
 		return;
 	
-	m_min_view_distance_danger	= pSettings->r_float(section,"min_view_distance_danger");
-	m_max_view_distance_danger	= pSettings->r_float(section,"max_view_distance_danger");
-	m_min_view_distance_free	= pSettings->r_float(section,"min_view_distance_free");
-	m_max_view_distance_free	= pSettings->r_float(section,"max_view_distance_free");
+	m_min_view_distance_danger			= pSettings->r_float(section,"min_view_distance_danger");
+	m_max_view_distance_danger			= pSettings->r_float(section,"max_view_distance_danger");
+	m_min_view_distance_free			= pSettings->r_float(section,"min_view_distance_free");
+	m_max_view_distance_free			= pSettings->r_float(section,"max_view_distance_free");
+	m_visibility_value					= pSettings->r_float(section,"visibility_value");
+	m_always_visible_distance_danger	= pSettings->r_float(section,"always_visible_distance_danger");
+	m_always_visible_distance_free		= pSettings->r_float(section,"always_visible_distance_free");
 }
 
 void CVisualMemoryManager::reinit					()
@@ -100,32 +117,78 @@ float CVisualMemoryManager::object_visible_distance(const CGameObject *game_obje
 	return								(distance);
 }
 
-bool CVisualMemoryManager::visible				(const CGameObject *game_object) const
+float CVisualMemoryManager::get_visible_value	(float distance, float object_distance) const
 {
-	VERIFY		(game_object);
+	float								always_visible_distance = m_always_visible_distance_free;
+	if (m_stalker->mental_state() == eMentalStateDanger)
+		always_visible_distance			= m_always_visible_distance_danger;
+	return								(
+		(distance - object_distance)
+		/
+		(distance - always_visible_distance)
+	);
+}
+
+CNotYetVisibleObject *CVisualMemoryManager::not_yet_visible_object(const CGameObject *game_object)
+{
+	xr_vector<CNotYetVisibleObject>::iterator	I = std::find_if(
+		m_not_yet_visible_objects.begin(),
+		m_not_yet_visible_objects.end(),
+		CNotYetVisibleObjectPredicate(game_object)
+	);
+	if (I == m_not_yet_visible_objects.end())
+		return							(0);
+	return								(&*I);
+}
+
+void CVisualMemoryManager::add_not_yet_visible_object	(const CNotYetVisibleObject &not_yet_visible_object)
+{
+	m_not_yet_visible_objects.push_back	(not_yet_visible_object);
+}
+
+bool CVisualMemoryManager::visible				(const CGameObject *game_object)
+{
+	VERIFY						(game_object);
 	
 	if (game_object->getDestroy())
-		return	(false);
+		return					(false);
 
 	if (!m_stalker)
-		return	(true);
+		return					(true);
 
-	float		object_distance, distance = object_visible_distance(game_object,object_distance);
+	float						object_distance, distance = object_visible_distance(game_object,object_distance);
 
 	if (distance < object_distance) {
 #ifdef VISIBILITY_TEST
 		if (dynamic_cast<const CActor*>(game_object))
-			Msg	("Object %s IS NOT visible",*game_object->cName());
+			Msg					("Object %s IS NOT visible",*game_object->cName());
 #endif
-		return	(false);
+		return					(false);
+	}
+
+	CNotYetVisibleObject		*object = not_yet_visible_object(game_object);
+	if (!object) {
+		CNotYetVisibleObject	new_object;
+		new_object.m_object		= game_object;
+		new_object.m_value		= get_visible_value(distance,object_distance);
+		new_object.m_updated	= true;
+		add_not_yet_visible_object(new_object);
+#ifdef VISIBILITY_TEST
+		if ((new_object.m_value > m_visibility_value) && dynamic_cast<const CActor*>(game_object))
+			Msg					("Object %s IS visible",*game_object->cName());
+#endif
+		return					(new_object.m_value >= m_visibility_value);
 	}
 	
+	object->m_updated			= true;
+	object->m_value				+= get_visible_value(distance,object_distance);
+
 #ifdef VISIBILITY_TEST
-	if (dynamic_cast<const CActor*>(game_object))
-		Msg		("Object %s IS visible",*game_object->cName());
+	if ((object->m_value > m_visibility_value) && dynamic_cast<const CActor*>(game_object))
+		Msg						("Object %s IS visible",*game_object->cName());
 #endif
 
-	return		(true);
+	return						(object->m_value >= m_visibility_value);
 }
 
 void CVisualMemoryManager::add_visible_object	(const CObject *object)
@@ -183,12 +246,27 @@ void CVisualMemoryManager::update				()
 	}
 
 	{
+		xr_vector<CNotYetVisibleObject>::iterator	I = m_not_yet_visible_objects.begin();
+		xr_vector<CNotYetVisibleObject>::iterator	E = m_not_yet_visible_objects.end();
+		for ( ; I != E; ++I)
+			(*I).m_updated				= false;
+	}
+
+	{
 		xr_vector<CObject*>::const_iterator	I = m_visible_objects.begin();
 		xr_vector<CObject*>::const_iterator	E = m_visible_objects.end();
 		for ( ; I != E; ++I)
 			add_visible_object			(*I);
 	}
 	
+	{
+		xr_vector<CNotYetVisibleObject>::iterator	I = m_not_yet_visible_objects.begin();
+		xr_vector<CNotYetVisibleObject>::iterator	E = m_not_yet_visible_objects.end();
+		for ( ; I != E; ++I)
+			if (!(*I).m_updated)
+				(*I).m_value			= 0.f;
+	}
+
 	// verifying if object is online
 	xr_vector<CVisibleObject>::iterator		J = remove_if(m_objects->begin(),m_objects->end(),SRemoveOfflivePredicate());
 	m_objects->erase						(J,m_objects->end());

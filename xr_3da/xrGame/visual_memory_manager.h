@@ -53,11 +53,13 @@ private:
 	CCustomMonster					*m_monster;
 	CAI_Stalker						*m_stalker;
 	xr_vector<CNotYetVisibleObject>	m_not_yet_visible_objects;
-	// visibility parameters
 	float							m_min_view_distance_danger;
 	float							m_max_view_distance_danger;
 	float							m_min_view_distance_free;
 	float							m_max_view_distance_free;
+	float							m_visibility_value;
+	float							m_always_visible_distance_danger;
+	float							m_always_visible_distance_free;
 
 protected:
 	IC		void	fill_object						(CVisibleObject &visible_object, const CGameObject *game_object);
@@ -65,6 +67,9 @@ protected:
 			void	add_visible_object				(const CVisibleObject visible_object);
 	virtual	void	update							();
 			float	object_visible_distance			(const CGameObject *game_object, float &object_distance) const;
+			float	get_visible_value				(float distance, float object_distance) const;
+			void	add_not_yet_visible_object		(const CNotYetVisibleObject &not_yet_visible_object);
+			CNotYetVisibleObject *not_yet_visible_object(const CGameObject *game_object);
 
 public:
 					CVisualMemoryManager			();
@@ -75,7 +80,7 @@ public:
 	virtual	void	reload							(LPCSTR section);
 	IC		const xr_vector<CVisibleObject>	&memory_visible_objects() const;
 	IC		const xr_vector<CObject*>	&visible_objects() const;
-			bool	visible							(const CGameObject *game_object) const;
+			bool	visible							(const CGameObject *game_object);
 			bool	visible							(u32 level_vertex_id, float yaw, float eye_fov) const;
 	IC		void	set_squad_objects				(xr_vector<CVisibleObject> *squad_objects);
 	IC		bool	visible_now						(const CGameObject *game_object) const;

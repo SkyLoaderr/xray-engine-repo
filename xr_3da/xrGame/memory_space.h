@@ -18,8 +18,9 @@ class CGameObject;
 namespace MemorySpace {
 
 	struct CNotYetVisibleObject {
-		CGameObject					*m_object;
+		const CGameObject			*m_object;
 		float						m_value;
+		bool						m_updated;
 	};
 
 	struct SObjectParams {
