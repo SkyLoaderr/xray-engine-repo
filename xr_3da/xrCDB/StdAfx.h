@@ -19,8 +19,6 @@
 #include "limits"
 #include "list"
 
-#include "opcode.h"
-
 #undef min
 #undef max
 #define ENGINE_API 
@@ -36,6 +34,8 @@ struct D3DVECTOR;
 struct D3DMATRIX;
 #define NODEFAULT
 #include "vector.h"
+
+#include "opcode.h"
 
 // TODO: reference additional headers your program requires here
 

@@ -5,21 +5,25 @@
 #ifdef M_PI
 #undef M_PI
 #endif
+
 #ifdef PI
 #undef PI
 #endif
+
 #ifdef FLT_MAX
 #undef FLT_MAX
-#endif
-#ifdef FLT_MIN
 #undef FLT_MIN
 #endif
+
 #ifdef abs
 #undef abs
 #endif
+
 #ifdef _MIN
 #undef _MIN
 #undef _MAX
+#undef min
+#undef max
 #endif
 
 // Select platform
