@@ -488,19 +488,21 @@ public:
 xrSE_Rat::xrSE_Rat()
 {
 	u16ActionRefreshRate = 1000;
-	caModel = 0;
+	caModel[0] = 0;
 }
 
 void xrSE_Rat::STATE_Read(NET_Packet& P, u16 size)
 {
 	inherited::STATE_Read(P,size);
 	P.r_u16(u16ActionRefreshRate);
+	P.r_string(caModel);
 }
 
 void xrSE_Rat::STATE_Write(NET_Packet& P)
 {
 	inherited::STATE_Write(P);
 	P.w_u16(u16ActionRefreshRate);
+	P.w_string(caModel);
 }
 
 void xrSE_Rat::UPDATE_Read(NET_Packet& P)
@@ -517,7 +519,8 @@ void xrSE_Rat::UPDATE_Write(NET_Packet& P)
 void xrSE_Rat::FillProp(LPCSTR pref, PropValueVec& values)
 {
    	inherited::FillProp(pref, values);
-   	FILL_PROP_EX(values,PHelper.PrepareKey(pref,s_name),"Attack refresh rate",	&u16ActionRefreshRate, PHelper.CreateU16(0,10000,100));
+   	FILL_PROP_EX(values,PHelper.PrepareKey(pref,s_name),"Action refresh rate",	&u16ActionRefreshRate, PHelper.CreateU16(0,10000,100));
+   	//FILL_PROP_EX(values,PHelper.PrepareKey(pref,s_name),"Attack refresh rate",	&u16ActionRefreshRate, PHelper.CreateU16(0,10000,100));
 }
 #endif
 
