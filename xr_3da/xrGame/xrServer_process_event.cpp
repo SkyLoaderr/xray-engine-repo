@@ -198,7 +198,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 
 			R_ASSERT			(e_dest			);
 			xrClientData*		c_dest		=	e_dest->owner;				// клиент, чей юнит
-			R_ASSERT		(c_dest			);
+			R_ASSERT			(c_dest			);
 			xrClientData*		c_from		=	ID_to_client	(sender);	// клиент, кто прислал
 			R_ASSERT			(c_dest == c_from);							// assure client ownership of event
 
@@ -222,7 +222,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 				if (tpGame && tpGame->m_tpALife)
 					tpGame->m_tpALife->vfReleaseObject(e_dest,false);
 			}
-			entity_Destroy		(e_dest);
+			entity_Destroy			(e_dest);
 		}
 		break;
 	case GE_GRENADE_EXPLODE:

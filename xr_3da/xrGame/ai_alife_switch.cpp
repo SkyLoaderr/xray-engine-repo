@@ -115,28 +115,47 @@ void CSE_ALifeSimulator::vfRemoveOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 #endif
 
 	CSE_ALifeTraderAbstract			*tpTraderParams = dynamic_cast<CSE_ALifeTraderAbstract*>(tpALifeDynamicObject);
+//	if (tpTraderParams) {
+//		OBJECT_IT					I = tpALifeDynamicObject->children.begin();
+//		OBJECT_IT					E = tpALifeDynamicObject->children.end();
+//		for ( ; I != E; ++I) {
+//			CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = tpfGetObjectByID(*I);
+//			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject);
+//			R_ASSERT2				(l_tpALifeInventoryItem,"Non inventory item object has parent?!");
+//#ifdef DEBUG
+//			if (psAI_Flags.test(aiALife)) {
+//				Msg					("[LSS] Destroying item [%s][%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->s_name,l_tpALifeInventoryItem->ID);
+//			}
+//#endif
+//			m_tpServer->Perform_destroy(l_tpALifeInventoryItem,net_flags(TRUE,TRUE));
+//			_OBJECT_ID				l_tObjectID = l_tpALifeInventoryItem->ID;
+//			l_tpALifeInventoryItem->ID	= m_tpServer->PerformIDgen(l_tpALifeInventoryItem->ID);
+//			R_ASSERT2				(l_tpALifeInventoryItem->ID == l_tObjectID,"Object ID has changed during ID generation!");
+//			l_tpALifeDynamicObject->m_bOnline = false;
+//		}
+//	}
 	if (tpTraderParams) {
-		OBJECT_IT					I = tpALifeDynamicObject->children.begin();
-		OBJECT_IT					E = tpALifeDynamicObject->children.end();
-		for ( ; I != E; ++I) {
-			CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = tpfGetObjectByID(*I);
-			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject);
-			R_ASSERT2				(l_tpALifeInventoryItem,"Non inventory item object has parent?!");
+		for (int i=0, n=(int)tpALifeDynamicObject->children.size(); i<n; ++i) {
+			CSE_ALifeDynamicObject	*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(tpfGetObjectByID(tpALifeDynamicObject->children[i]));
+			VERIFY					(dynamic_object);
+			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(dynamic_object);
+			VERIFY2					(l_tpALifeInventoryItem,"Non inventory item object has parent?!");
 #ifdef DEBUG
 			if (psAI_Flags.test(aiALife)) {
 				Msg					("[LSS] Destroying item [%s][%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->s_name,l_tpALifeInventoryItem->ID);
 			}
 #endif
-//			CSE_ALifeItemBolt		*bolt = dynamic_cast<CSE_ALifeItemBolt*>(l_tpALifeDynamicObject);
-//			if (!bolt) {
-				m_tpServer->Perform_destroy(l_tpALifeInventoryItem,net_flags(TRUE,TRUE));
-				_OBJECT_ID				l_tObjectID = l_tpALifeInventoryItem->ID;
-				l_tpALifeInventoryItem->ID	= m_tpServer->PerformIDgen(l_tpALifeInventoryItem->ID);
-				R_ASSERT2				(l_tpALifeInventoryItem->ID == l_tObjectID,"Object ID has changed during ID generation!");
-				l_tpALifeDynamicObject->m_bOnline = false;
-//			}
-//			else
-//				vfReleaseObject		(bolt);
+			_OBJECT_ID				l_tObjectID = l_tpALifeInventoryItem->ID;
+			l_tpALifeInventoryItem->ID	= m_tpServer->PerformIDgen(l_tpALifeInventoryItem->ID);
+			VERIFY2					(l_tpALifeInventoryItem->ID == l_tObjectID,"Object ID has changed during ID generation!");
+			dynamic_object->m_bOnline = false;
+
+			if (!dynamic_object->can_save()) {
+				vfDetachItem		(*tpALifeDynamicObject,dynamic_cast<CSE_ALifeInventoryItem*>(dynamic_object),tpALifeDynamicObject->m_tGraphID);
+				vfReleaseObject		(dynamic_object);
+				--i;
+				--n;
+			}
 		}
 	}
 	

@@ -58,7 +58,11 @@ void	game_sv_Single::OnCreate		(u16 id_who)
 			CSE_ALifeTraderAbstract		*trader = dynamic_cast<CSE_ALifeTraderAbstract*>(parent);
 			if (trader)
 				m_tpALife->vfCreateItem	(alife_object);
+			else
+				alife_object->m_bALifeControl	= false;
 		}
+		else
+			alife_object->m_bALifeControl		= false;
 	}
 	else
 		m_tpALife->vfCreateItem			(alife_object);
@@ -125,8 +129,9 @@ BOOL	game_sv_Single::OnDetach		(u16 eid_who, u16 eid_what)
 				
 				CSE_ALifeDynamicObject *dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(e_what);
 				VERIFY			(dynamic_object);
-				dynamic_object->m_tNodeID	= l_tpDynamicObject->m_tNodeID;
-				dynamic_object->m_tGraphID	= l_tpDynamicObject->m_tGraphID;
+				dynamic_object->m_tNodeID		= l_tpDynamicObject->m_tNodeID;
+				dynamic_object->m_tGraphID		= l_tpDynamicObject->m_tGraphID;
+				dynamic_object->m_bALifeControl	= true;
 				m_tpALife->vfCreateItem	(dynamic_object);
 				l_tpALifeInventoryItem->ID_Parent	= id;
 			}
