@@ -549,6 +549,9 @@ void CUIMainIngameWnd::RenderQuickInfos()
 	static string256	text;
 	static const u32	C = 0xffffffff;
 
+	if (!m_pActor)
+		return;
+
 	CGameObject *pObject = m_pActor->ObjectWeLookingAt();
 
 	UIStaticQuickHelp.SetTextColor(0x00000000);
