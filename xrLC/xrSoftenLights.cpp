@@ -131,7 +131,7 @@ void CBuild::SoftenLights()
 				h_data.dest				= dest;
 				h_data.T				= RL;
 				h_data.T.diffuse.set	(g_params.area_color);
-				xrHemisphereBuild		(g_params.area_quality,TRUE,0.5f,g_params.area_energy_summary,hemi_callback,&h_data);
+				xrHemisphereBuild		(g_params.area_quality,FALSE,0.5f,g_params.area_energy_summary,hemi_callback,&h_data);
 			}
 		} else {
 			RL.type			= LT_POINT;
