@@ -37,7 +37,7 @@ struct SFillPropData{
     {
         // create ini
         CInifile				*Ini = 0;
-        string256				gm_name;
+        string_path				gm_name;
         FS.update_path			(gm_name,_game_data_,"game.ltx");
         R_ASSERT2				(FS.exist(gm_name),"Couldn't find file 'game.ltx'");
         Ini						= xr_new<CInifile>(gm_name);
