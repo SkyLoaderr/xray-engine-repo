@@ -8,6 +8,8 @@
 
 #include "stdafx.h"
 #include "sound_player.h"
+#include "script_engine.h"
+#include "ai/stalker/ai_stalker_space.h"
 
 CSoundPlayer::CSoundPlayer			()
 {
@@ -77,7 +79,12 @@ void CSoundPlayer::load				(xr_vector<ref_sound*> &sounds, LPCSTR prefix, u32 ma
 bool CSoundPlayer::check_sound_legacy(u32 internal_type) const
 {
 	xr_map<u32,CSoundCollection>::const_iterator	J = m_sounds.find(internal_type);
-	VERIFY							(m_sounds.end() != J);
+	if (m_sounds.end() == J) {
+		ai().script_engine().script_log(eLuaMessageTypeError,"Can't find sound with internal type %d (sound_script = %d)",internal_type,StalkerSpace::eStalkerSoundScript);
+		return						(false);
+	}
+
+//	VERIFY							(m_sounds.end() != J);
 	const CSoundCollection			&sound = (*J).second;
 	if (sound.m_synchro_mask & m_sound_mask)
 		return						(false);
