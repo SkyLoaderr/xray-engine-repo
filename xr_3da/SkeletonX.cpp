@@ -212,7 +212,7 @@ void CSkeletonX_PM::Load(const char* N, IReader *data, u32 dwFlags)
 {
 	_Load							(N,data,vCount);
 	inherited::Load					(N, data, dwFlags|VLOAD_NOVERTICES|VLOAD_NOINDICES);
-	Render->shader_option_skinning	(0);
+	::Render->shader_option_skinning(0);
 
 	// Load indices with replication in mind
 	R_ASSERT			(data->find_chunk(OGF_INDICES));
@@ -231,14 +231,14 @@ void CSkeletonX_PM::Load(const char* N, IReader *data, u32 dwFlags)
 	pIndices->Unlock	();
 
 	// Create HW VB in case this is possible
-	_Load_hw						();
+	_Load_hw						(pVertices,pIndices);
 }
 void CSkeletonX_ST::Load(const char* N, IReader *data, u32 dwFlags) 
 {
 	_Load							(N,data,vCount);
 	inherited::Load					(N,data,dwFlags|VLOAD_NOVERTICES);
-	Render->shader_option_skinning	(0);
-	_Load_hw						();
+	::Render->shader_option_skinning(0);
+	_Load_hw						(pVertices,pIndices);
 }
 
 static	D3DVERTEXELEMENT9 dwDecl_1W	[] =
@@ -272,10 +272,10 @@ struct	vertHW_2W
 	u32			weight;
 };
 
-void CSkeletonX::_Load_hw()
+void CSkeletonX::_Load_hw	(IDirect3DVertexBuffer9* &pVertices, IDirect3DIndexBuffer9*	&pIndices;)
 {
 	// Create HW VB in case this is possible
-	BOOL	bSoft		= HW.Caps.geometry.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
+	BOOL	bSoft		= HW.Caps.geometry.bSoftware;
 	u32		dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
 	switch	(RenderMode)
 	{

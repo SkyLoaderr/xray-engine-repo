@@ -12,9 +12,9 @@ class ENGINE_API FCached  : public IRender_Visual
 {
 public:
 	LPVOID			pVertices;
-	u32			vCount;
+	u32				vCount;
 	LPWORD			pIndices;
-	u32			iCount;
+	u32				iCount;
 
 	virtual void	Load	(const char* N, IReader *data, u32 dwFlags);
 	virtual void	Release	();						// Shared memory release
