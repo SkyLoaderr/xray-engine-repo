@@ -87,7 +87,7 @@ void GSaveAsSMF					(LPCSTR fname)
 	std::sort			(g_vertices.begin(),g_vertices.end());
 	for (u32 v_idx=0; v_idx<g_vertices.size(); v_idx++){
 		Fvector v		= g_vertices[v_idx]->P;
-		sprintf			(tmp,"v %f %f %f",v->x,v->y,-v->z);
+		sprintf			(tmp,"v %f %f %f",v.x,v.y,-v.z);
 		W->w_string		(tmp);
 	}
 	// transfer faces
