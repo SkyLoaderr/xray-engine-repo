@@ -6,8 +6,8 @@ class "stalker_script" (object_binder)
 function stalker_script:__init		(object) super(object)
 end
 
-function stalker_script:reinit		(obj,storage)
-	object_binder.reinit	(obj,storage)
+function stalker_script:reinit		()
+	object_binder.reinit	()
 end
 
 function stalker_script:reload		(section)
