@@ -576,13 +576,13 @@ namespace PROP{
         V->type			= PROP_TOKEN;
         return V;
     }
-	TokenValue2* 		CreateTokenValue	(AStringVec* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+	TokenValue2* 		CreateTokenValue2	(AStringVec* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
         TokenValue2* V	= new TokenValue2(lst,after,before,draw);
         V->type			= PROP_TOKEN2;
         return V;
     }
-	TokenValue3* 		CreateTokenValue	(DWORD cnt, const TokenValue3::Item* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+	TokenValue3* 		CreateTokenValue3	(DWORD cnt, const TokenValue3::Item* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
         TokenValue3* V	= new TokenValue3(cnt,lst,after,before,draw);
         V->type			= PROP_TOKEN3;
