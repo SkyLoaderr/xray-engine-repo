@@ -14,9 +14,9 @@
 #include "path_manager.h"
 #include "path_test_old.h"
 
-typedef CDataStorage<float,u32,u32,true,24,8>							CHeapDataStorage;
-typedef CPathManager<CAI_Map,CHeapDataStorage,float,u32,u32>			CDistancePathManager;
-typedef CAStar<CHeapDataStorage,CDistancePathManager,CAI_Map,u32,float>	CAStarSearch;
+typedef CDLSLDataStorage<float,u32,u32,true,24,8>						CDataStorage;
+typedef CPathManager<CAI_Map,CDataStorage,float,u32,u32>				CDistancePathManager;
+typedef CAStar<CDataStorage,CDistancePathManager,CAI_Map,u32,float>		CAStarSearch;
 
 #define TIME_TEST
 
@@ -24,7 +24,7 @@ void path_test(LPCSTR caLevelName)
 {
 	xr_vector<u32>			path, path1;
 	CAI_Map					*graph			= xr_new<CAI_Map>				(caLevelName);
-	CHeapDataStorage		*data_storage	= xr_new<CHeapDataStorage>		(graph->get_node_count());
+	CDataStorage			*data_storage	= xr_new<CDataStorage>			(graph->get_node_count());
 	CDistancePathManager	*path_manager	= xr_new<CDistancePathManager>	();
 	CAStarSearch			*a_star			= xr_new<CAStarSearch>			();
 	
@@ -51,20 +51,6 @@ void path_test(LPCSTR caLevelName)
 	SetPriorityClass		(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 	Msg						("%f microseconds",float(s64(finish - start))*CPU::cycles2microsec);
 #else
-	int min = 10000, max = -10000, miny = 0x7fffffff, maxy = 0x80000000;
-	for (int i=0, n=graph->get_node_count(); i<n; i++) {
-		NodeCompressed	&a = *graph->Node(i);
-		if (_max(a.p0.x,a.p0.z) > max)
-			max = _max(a.p0.x,a.p0.z);
-		if (_min(a.p0.x,a.p0.z) < min)
-			min = _min(a.p0.x,a.p0.z);
-		if (a.p0.y > maxy)
-			maxy = a.p0.y;
-		if (a.p0.y < miny)
-			miny = a.p0.y;
-	}
-	Msg						("%d : %d",min,max);
-	Msg						("%d : %d",miny,maxy);
 	for (int I=0, N = graph->get_node_count() - 2; I<N; ++I) {
 		path_manager->setup		(
 			graph,

@@ -8,7 +8,14 @@
 
 #pragma once
 
-template <typename _DataStorage, typename _PathManager, typename _Graph, typename _iteration_type = u32, typename _dist_type = float> class CAStar {
+template <
+	typename _DataStorage, 
+	typename _PathManager, 
+	typename _Graph, 
+	typename _iteration_type = u32, 
+	typename _dist_type = float
+> class CAStar 
+{
 	typedef typename _DataStorage::CGraphNode CGraphNode;
 public:
 						CAStar			()
@@ -34,7 +41,7 @@ public:
 		// assign correspoding values to the created node
 		start.g()				= _dist_type(0);
 		start.h()				= path_manager.estimate(start.index());
-		start.f()				= start.h();
+		start.f()				= start.g() + start.h();
 		// assign null parent to the start node
 		data_storage.assign_parent(start,0);
 		// add start node to the opened list
@@ -65,7 +72,6 @@ public:
 		graph.begin				(best.index(),i,e);
 		for (  ; i != e; ++i) {
 			// check if neighbour is accessible
-#pragma todo("Dima to Dima : override operator * here instead of calling get_value function")
 			if (!path_manager.is_accessible(graph.get_value(i)))
 				continue;
 			// check if neighbour is visited, i.e. is in the opened or 
