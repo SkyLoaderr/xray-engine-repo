@@ -86,7 +86,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		// Build shadow2fade
 		{
 			// Surface
-			R_CHK						(D3DXCreateTexture(HW.pDevice,TEX_ds2_fade,1,1,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED,&t_ds2fade_surf));
+			R_CHK						(D3DXCreateTexture(HW.pDevice,TEX_ds2_fade_size,1,1,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED,&t_ds2fade_surf));
 			t_ds2fade					= Device.Shader._CreateTexture(r2_ds2_fade);
 			t_ds2fade->surface_set		(t_ds2fade_surf);
 
@@ -98,8 +98,8 @@ void	CRenderTarget::OnDeviceCreate	()
 				u32*	p		= (u32*)	(LPBYTE (R.pBits) + x*4);
 				float	frac	= float(x)  / float	(TEX_ds2_fade_size-1);
 				float	len		= frac		* DSM_distance_2;
-				float	alpha_l	= len		/ DSM_distance_1;	clamp	(alpha,	0.f,1.f);
-				float	fade_l	= len		/ DSM_distance_2;	clamp	(fade_l,0.f,1.f);
+				float	alpha_l	= len		/ DSM_distance_1;	clamp	(alpha_l,	0.f,1.f);
+				float	fade_l	= len		/ DSM_distance_2;	clamp	(fade_l,	0.f,1.f);
 				float	alpha	= _sqr(alpha_l);
 				float	fade	= _sqr(fade_l);
 				float	_mul_	= (1-fade)*alpha;
