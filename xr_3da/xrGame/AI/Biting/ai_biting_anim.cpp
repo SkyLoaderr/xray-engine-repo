@@ -61,31 +61,30 @@ void CAI_Biting::OnAnimationEnd()
 			Motion.m_tSeq.Init();		// сброс
 			// После проигрывания Seq, m_tParams содержит необходимые данные для установки анимации
 			Motion.m_tParams.ApplyData(this);
-			// восстановление времени состояния
-			CurrentState->RestoreState(m_dwCurrentUpdate);
+			// восстановление текущего состояния
+			CurrentState->UnlockState(m_dwCurrentUpdate);
 		}
 	}
 }
 
 void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
 {
-//	if (bShowDeath)	{
-//		m_tpCurrentGlobalAnimation = m_tAnimations.A[ePostureStand].A[eActionDie].A[::Random.randI((int)m_tAnimations.A[ePostureStand].A[eActionDie].A.size())];
-//		PKinematics(Visual())->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
-//		bShowDeath  = false;
-//		return;
-//	}
-//	
-//	if (g_Alive())
-//		if (!m_tpCurrentGlobalAnimation && m_bActionFinished) {
-//
-//			int i1,i2;
-//			MotionToAnim(m_tAnim,i1,i2);
-//
-//			m_tpCurrentGlobalAnimation = m_tAnimations.A[i1].A[i2].A[::Random.randI((int)m_tAnimations.A[i1].A[i2].A.size())];
-//			PKinematics(Visual())->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
-//		}
+	if (bShowDeath)	{
+		m_tpCurrentGlobalAnimation = m_tAnimations.A[ePostureStand].A[eActionDie].A[::Random.randI((int)m_tAnimations.A[ePostureStand].A[eActionDie].A.size())];
+		PKinematics(Visual())->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
+		bShowDeath  = false;
+		return;
+	}
+	
+	if (g_Alive())
+		if (!m_tpCurrentGlobalAnimation && m_bActionFinished) {
 
+			int i1,i2;
+			MotionToAnim(m_tAnim,i1,i2);
+
+			m_tpCurrentGlobalAnimation = m_tAnimations.A[i1].A[i2].A[::Random.randI((int)m_tAnimations.A[i1].A[i2].A.size())];
+			PKinematics(Visual())->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
+		}
 }
 
 

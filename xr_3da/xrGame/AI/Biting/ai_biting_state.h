@@ -31,7 +31,7 @@ const float m_cfRunAttackTurnRSpeed	=	5* PI_DIV_6;
 const float m_cfRunRSpeed			=	PI_DIV_2;
 const float m_cfRunAttackMinAngle	=   PI_DIV_6;
 
-
+#define		DEFAULT_ANIM	eMotionStandIdle
 
 #define		MASK_ANIM		(1 << 0)
 #define		MASK_SPEED		(1 << 1)
@@ -159,9 +159,9 @@ protected:
 
 	TTime			m_dwCurrentTime;					//!< текущее время
 	TTime			m_dwNextThink;						//!< время следующего выполнения состояния
-	TTime			m_dwTimeFreezed;					//!< текущее сохренённое время
+	TTime			m_dwTimeLocked;						//!< время заблокировки состояния
 
-	bool			m_bFreezed;							//!< Состояние деактивировано
+	bool			m_bLocked;							//!< Состояние заблокировано
 
 public:
 						IState			(CAI_Biting *p);
@@ -182,9 +182,9 @@ public:
 		
 		 
 		/* сохранение и восстановление времени при активации критических состояний (kinda StandUp) */
-				void	FreezeState		();				
-		virtual	TTime	RestoreState	(TTime cur_time);					//!< возвращает dt=текущее время - сохранённое
-				bool	IsFreezed		() {return m_bFreezed;}
+				void	LockState		();				
+		virtual	TTime	UnlockState		(TTime cur_time);					//!< возвращает dt=(текущее время - сохранённое)
+				bool	IsLocked		() {return m_bLocked;}
 		
 };
 
@@ -212,7 +212,7 @@ public:
 
 	virtual void Reset();
 
-	virtual TTime RestoreState(TTime cur_time);
+	virtual TTime UnlockState(TTime cur_time);
 private:
 	virtual void Run();
 	void Replanning();

@@ -27,16 +27,25 @@ using namespace AI_Biting;
 
 void CMotionParams::SetParams(EMotionAnim a, float s, float r_s, float y, TTime t, u32 m)
 {
-	mask =m;
+	mask = m;
 	anim = a;
 	speed = s;
 	r_speed = r_s;
 	yaw = y;
-	speed = s;
+	time = t;
 }
 
 void CMotionParams::ApplyData(CAI_Biting *pData)
 {
+	if ((mask & MASK_TIME) == MASK_TIME) {
+		if (time < pData->m_dwCurrentUpdate) {
+			pData->m_tAnim = DEFAULT_ANIM;
+			pData->m_fCurSpeed = 0.f; 
+			pData->r_torso_speed = 0.f; 
+			return;
+		}
+	}
+
 	if ((mask & MASK_ANIM) == MASK_ANIM) pData->m_tAnim = anim; 
 	if ((mask & MASK_SPEED) == MASK_SPEED) pData->m_fCurSpeed = speed; 
 	if ((mask & MASK_R_SPEED) == MASK_R_SPEED) pData->r_torso_speed = r_speed; 
@@ -180,7 +189,7 @@ IState::IState(CAI_Biting *p)
 
 void IState::Execute(bool bNothingChanged) 
 {
-	if (m_bFreezed) return;
+	if (m_bLocked) return;
 
 	m_dwCurrentTime = pData->m_dwCurrentUpdate;
 
@@ -220,26 +229,26 @@ void IState::Reset()
 {
 	m_dwCurrentTime		= 0;
 	m_dwNextThink		= 0;
-	m_dwTimeFreezed		= 0;
+	m_dwTimeLocked		= 0;
 	m_tState			= STATE_NOT_ACTIVE;	
 
-	m_bFreezed			= false;
+	m_bLocked			= false;
 }
 
-void IState::FreezeState()
+void IState::LockState()
 {
-	m_dwTimeFreezed = m_dwCurrentTime;
-	m_bFreezed		= true;
+	m_dwTimeLocked = m_dwCurrentTime;
+	m_bLocked		= true;
 }
 
 //Info: если в классах-потомках, используются дополнительные поля времени,
-//      метод RestoreState() должне быть переопределены 
-TTime IState::RestoreState(TTime cur_time)
+//      метод UnlockState() должне быть переопределены 
+TTime IState::UnlockState(TTime cur_time)
 {
-	TTime dt = (m_dwCurrentTime = cur_time) - m_dwTimeFreezed;
+	TTime dt = (m_dwCurrentTime = cur_time) - m_dwTimeLocked;
 	
 	m_dwNextThink  += dt;
-	m_bFreezed		= false;
+	m_bLocked		= false;
 
 	return dt;
 }
@@ -318,8 +327,11 @@ void CRest::Replanning()
 
 	} else if (rand_val < 70) {	
 		m_tAction = ACTION_LIE;
-		pData->Motion.m_tSeq.Add(eMotionLieDown,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-		pData->Motion.m_tSeq.Switch();
+		// проверить лежит уже?
+		if (pData->m_tAnim != eMotionLieIdle) {
+			pData->Motion.m_tSeq.Add(eMotionLieDown,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pData->Motion.m_tSeq.Switch();
+		}
 
 		dwMinRand = 5000;
 		dwMaxRand = 7000;
@@ -328,8 +340,8 @@ void CRest::Replanning()
 		m_tAction = ACTION_TURN;
 		pData->r_torso_target.yaw = angle_normalize(pData->r_torso_target.yaw + PI_DIV_2);
 
-		dwMinRand = 1200;
-		dwMaxRand = 1700;
+		dwMinRand = 800;
+		dwMaxRand = 900;
 
 	}
 	
@@ -338,9 +350,9 @@ void CRest::Replanning()
 }
 
 
-TTime CRest::RestoreState(TTime cur_time)
+TTime CRest::UnlockState(TTime cur_time)
 {
-	TTime dt = inherited::RestoreState(cur_time);
+	TTime dt = inherited::UnlockState(cur_time);
 
 	m_dwReplanTime		+= dt;
 	m_dwLastPlanTime	+= dt;
@@ -461,7 +473,9 @@ void CAI_Biting::ControlAnimation()
 	if (Motion.m_tSeq.Started) {
 		Motion.m_tSeq.Playing = true;
 		Motion.m_tSeq.Started = false;
-		Motion.m_tSeq.Finished = false;	
+		Motion.m_tSeq.Finished = false;
+		// блокировка состояния
+		CurrentState->LockState();
 		FORCE_ANIMATION_SELECT();
 	} 
 

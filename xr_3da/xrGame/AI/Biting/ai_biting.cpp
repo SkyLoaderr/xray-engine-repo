@@ -17,15 +17,15 @@ CAI_Biting::CAI_Biting()
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
 
 
-//	stateRest			= xr_new<CRest>(this);
-//	stateAttack			= xr_new<CAttack>(this);
-//	CurrentState		= stateRest;
+	stateRest			= xr_new<CRest>(this);
+	stateAttack			= xr_new<CAttack>(this);
+	CurrentState		= stateRest;
 }
 
 CAI_Biting::~CAI_Biting()
 {
-//	xr_delete(stateRest);
-//	xr_delete(stateAttack);
+	xr_delete(stateRest);
+	xr_delete(stateAttack);
 
 }
 
@@ -46,7 +46,7 @@ void CAI_Biting::Init()
 									eMovementDirectionNone, eStateTypeNormal, eActionTypeStand);
 
 	// Инициализация параметров анимации
-	m_tAnim							= eMotionStandIdle;
+	m_tAnim							= DEFAULT_ANIM;
 
 	m_tPathType						= ePathTypeStraight;
 
@@ -205,6 +205,7 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 
 void CAI_Biting::net_Destroy()
 {
+	inherited::net_Destroy();
 	Init();
 	Movement.DestroyCharacter();
 }
