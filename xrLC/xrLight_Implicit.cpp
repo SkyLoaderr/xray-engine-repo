@@ -361,6 +361,7 @@ void CBuild::ImplicitLighting()
 			sscanf(strstr(GetCommandLine(),"-f")+2,"%s",name);
 			b_BuildTexture& TEX		= *defl.texture;
 			char	out_name[256];	strconcat(out_name,"x:\\game\\data\\levels\\",name,"\\",TEX.name,".dds");
+			Msg		("Saving texture '%s'...",out_name);
 			BYTE*	raw_data		= LPBYTE(TEX.pSurface);
 			DWORD	w				= TEX.dwWidth;
 			DWORD	h				= TEX.dwHeight;
