@@ -92,7 +92,7 @@ function action_go_to_pos:initialize()
     self.object:set_mental_state        ( anim.free )
     self.object:set_path_type           ( game_object.patrol_path )
     self.object:set_detail_path_type    ( move.line )
-    self.object:set_patrol_path         ( self.way_name, patrol.nearest, patrol.stop, true )
+    self.object:set_patrol_path         ( self.way_name, patrol.start, patrol.stop, true )
 
     self.lp = nil
     self.object:set_callback( self, "move_callback", game_object.movement )
