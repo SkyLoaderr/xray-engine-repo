@@ -1209,6 +1209,15 @@
 				Name="Shared"
 				Filter="">
 				<File
+					RelativePath=".\alife_event_personal.cpp">
+				</File>
+				<File
+					RelativePath=".\alife_event_personal.h">
+				</File>
+				<File
+					RelativePath=".\alife_event_personal_inline.h">
+				</File>
+				<File
 					RelativePath=".\alife_interfaces.h">
 				</File>
 				<File
@@ -1264,6 +1273,12 @@
 				</File>
 				<File
 					RelativePath=".\object_factory_register.cpp">
+				</File>
+				<File
+					RelativePath=".\PHNetState.cpp">
+				</File>
+				<File
+					RelativePath=".\PHNetState.h">
 				</File>
 				<File
 					RelativePath=".\PHSynchronize.cpp">

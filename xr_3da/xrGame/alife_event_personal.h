@@ -11,6 +11,10 @@
 #include "alife_interfaces.h"
 #include "alife_space.h"
 
+#ifdef AI_COMPILER
+#	include "net_utils.h"
+#endif
+
 class CALifeEventPersonal : public IPureALifeLSObject {
 public:
 	ALife::_EVENT_ID			m_tEventID;
