@@ -23,7 +23,7 @@ void IGame_Persistent::OnAppCycleStart()
 #ifndef _EDITOR
 	ObjectPool.load					();
 #endif
-	Environment.Load				();
+	Environment.load				();
 }
 
 void IGame_Persistent::OnAppCycleEnd()
