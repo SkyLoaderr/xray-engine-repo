@@ -129,8 +129,33 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>	
-	
-	
+
+	<specific_character id="stalker_agr_krot" team_default = "1">
+		<name>Сталкер "Крот"</name>
+		<icon x="16" y="10"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Бывший диггер, которому с возрастом надоели скучные городские дренажки. Пришёл в зону полазить по заброшенным лабораториям и бункерам в поисках чего-то необычного. Сам не знает, что ищет. Со временем нашёл единомышленников. По традиции их прозвали "группировка Крота"</bio>
+
+		<class>stalker_agr_krot</class>
+		<community>stalker</community>
+
+		<rank>30</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\neytral\stalker_neytral_balon_2</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_pbp \n
+			wpn_ak74 \n
+			ammo_5.45x39_fmj \n
+			device_torch \n
+		</supplies>
+
+		<start_dialog>agr_factory_krot_start</start_dialog>
+		<actor_dialog>agr_factory_krot_about</actor_dialog>
+	</specific_character>
+
 <!---------------------------STALKER NOVICE----------------------->
 	<specific_character id="stalker_novice_default1" team_default = "1">
 		<name>Неизвестный новичок</name>
@@ -156,7 +181,7 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>escape_factory_assault_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_novice_default2" team_default = "1">
@@ -183,7 +208,7 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>escape_factory_assault_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_novice_default3" team_default = "1">
@@ -212,7 +237,7 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>	
 		<actor_dialog>escape_factory_assault_talk</actor_dialog>	
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_novice_default4" team_default = "1">
@@ -239,7 +264,7 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>escape_factory_assault_talk</actor_dialog>	
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_novice_default5" team_default = "1">
@@ -266,7 +291,7 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>escape_factory_assault_talk</actor_dialog>	
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_novice_default6" team_default = "1">
@@ -295,7 +320,7 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>escape_factory_assault_talk</actor_dialog>		
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_novice_default9" team_default = "1">
@@ -322,7 +347,7 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>escape_factory_assault_talk</actor_dialog>	
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_novice_default10" team_default = "1">
@@ -349,7 +374,7 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>escape_factory_assault_talk</actor_dialog>	
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!---------------------------STALKER GENERAL---------------------->
@@ -377,7 +402,9 @@
 				
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_factory_stalker_about</actor_dialog>
 	</specific_character>
 
 <specific_character id="stalker_general_default2" team_default = "1">
@@ -404,7 +431,9 @@
 				
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_factory_stalker_about</actor_dialog>
 </specific_character>
 
 <specific_character id="stalker_general_default3" team_default = "1">
@@ -428,10 +457,12 @@
 			ammo_9x19_fmj = 1 \n
 			device_torch \n
 		</supplies>
-			
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_factory_stalker_about</actor_dialog>
 </specific_character>
 
 	<specific_character id="stalker_general_default4" team_default = "1">
@@ -455,10 +486,12 @@
 			ammo_5.45x39_ap = 1 \n
 			device_torch \n
 		</supplies>
-			
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_factory_stalker_about</actor_dialog>
 	</specific_character>
 	
 	<specific_character id="stalker_general_default5" team_default = "1">
@@ -482,10 +515,12 @@
 			ammo_5.45x39_fmj \n
 			device_torch \n
 		</supplies>
-				
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_factory_stalker_about</actor_dialog>
 	</specific_character>
 	
 <!---------------------------STALKER VETERAN---------------------->
@@ -513,7 +548,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_veteran_default2" team_default = "1">
@@ -540,7 +575,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_veteran_default3" team_default = "1">
@@ -567,7 +602,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_veteran_default4" team_default = "1">
@@ -594,7 +629,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_veteran_default5" team_default = "1">
@@ -621,7 +656,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!---------------------------STALKER MASTER----------------------->
@@ -650,7 +685,7 @@
 						
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_master_default2" team_default = "1">
@@ -678,7 +713,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_master_default3" team_default = "1">
@@ -706,7 +741,7 @@
 
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_master_default4" team_default = "1">
@@ -734,7 +769,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>	
 
 	<specific_character id="stalker_master_default5" team_default = "1">
@@ -762,7 +797,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>	
 
 <!--	
@@ -784,7 +819,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_leshiy">
@@ -804,7 +839,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_chuchelo">
@@ -826,7 +861,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_upir">
@@ -845,7 +880,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_diodor">
@@ -866,7 +901,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_zob">
@@ -889,7 +924,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_neumeha">
@@ -911,7 +946,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_kocherga">
@@ -934,7 +969,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_barin">
@@ -955,7 +990,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_vorobey">
@@ -977,7 +1012,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 	-->
 </xml>

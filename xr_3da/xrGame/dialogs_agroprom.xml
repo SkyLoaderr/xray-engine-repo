@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
     <dialog id="agr_stalker_talk_level">
+        <precondition>dialogs.level_agroprom</precondition>
         <phrase_list>
             <phrase id="11">
                 <text></text>
@@ -49,6 +50,7 @@
         </phrase_list>
     </dialog>
     <dialog id="agr_factory_stalker_about">
+    	<precondition>dialogs.dialog_allowed</precondition>
         <phrase_list>
             <phrase id="0">
                 <text>agr_factory_stalker_about_0</text>

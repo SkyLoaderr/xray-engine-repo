@@ -285,19 +285,19 @@
     <string id="escape_lager_volk_job_2">
         <text>Ничего нет.</text>
     </string>
-    <string id="escape_talk_about_escape_0">
+    <string id="esc_stalker_talk_level_0">
         <text>Расскажи мне об этом месте.</text>
     </string>
-    <string id="escape_talk_about_escape_1">
+    <string id="esc_stalker_talk_level_1">
         <text>Это дорога в Зону. В погребе за деревеньке возле армейского блокпоста найдешь торговца. Соваться на блокпост и попадаться на глаза солдатам не советую, у них приказ стрелять без предупреждения… Убивать солдат нельзя, только в крайнем случае, за каждого убитого торговцу приходится расплачиваться и он не будет доволен таким раскладом. На равнинах крупные стаи слепых псов, соваться к ним новичкам опасно. Иногда сюда забегают мутанты.</text>
     </string>
-    <string id="escape_talk_about_escape_10">
+    <string id="esc_stalker_talk_level_10">
         <text>Спасибо.</text>
     </string>
-    <string id="escape_talk_about_escape_2">
+    <string id="esc_stalker_talk_level_2">
         <text>А что там дальше, по дороге на север?</text>
     </string>
-    <string id="escape_talk_about_escape_21">
+    <string id="esc_stalker_talk_level_21">
         <text>Там свалка. Мрачное место. Местами из-за мусора пройти невозможно.</text>
     </string>
     <string id="escape_trader_done_artefact_0">

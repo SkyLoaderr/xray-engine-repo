@@ -474,26 +474,26 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="escape_talk_about_escape" priority="2">
+    <dialog id="esc_stalker_talk_level" priority="2">
         <precondition>dialogs.level_escape</precondition>
         <phrase_list>
             <phrase id="2">
-                <text>escape_talk_about_escape_2</text>
+                <text>esc_stalker_talk_level_2</text>
                 <next>21</next>
             </phrase>
             <phrase id="21">
-                <text>escape_talk_about_escape_21</text>
+                <text>esc_stalker_talk_level_21</text>
             </phrase>
             <phrase id="10">
-                <text>escape_talk_about_escape_10</text>
+                <text>esc_stalker_talk_level_10</text>
             </phrase>
             <phrase id="1">
-                <text>escape_talk_about_escape_1</text>
+                <text>esc_stalker_talk_level_1</text>
                 <next>2</next>
                 <next>10</next>
             </phrase>
             <phrase id="0">
-                <text>escape_talk_about_escape_0</text>
+                <text>esc_stalker_talk_level_0</text>
                 <next>1</next>
             </phrase>
         </phrase_list>

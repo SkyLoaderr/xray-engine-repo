@@ -285,19 +285,19 @@
     <string id="escape_lager_volk_job_2">
         <text>There is nothing.</text>
     </string>
-    <string id="escape_talk_about_escape_0">
+    <string id="esc_stalker_talk_level_0">
         <text>Tell me about this place.</text>
     </string>
-    <string id="escape_talk_about_escape_1">
+    <string id="esc_stalker_talk_level_1">
         <text>This is the road inside the Zone. Trader can be found in the cellar beyond the village near the army post. I don’t advise you to poke your nose in the army post, cos soldiers are directed to fire on sight… Killing soldiers isn’t allowed, only if worst comes to worst, trader will pay off on his own and he won’t be satisfied with that. Packs of blind dogs on the plains, perilously for the newbies. Mutants visit it now and then.</text>
     </string>
-    <string id="escape_talk_about_escape_10">
+    <string id="esc_stalker_talk_level_10">
         <text>Thanks.</text>
     </string>
-    <string id="escape_talk_about_escape_2">
+    <string id="esc_stalker_talk_level_2">
         <text>And what is further to the north?</text>
     </string>
-    <string id="escape_talk_about_escape_21">
+    <string id="esc_stalker_talk_level_21">
         <text>Dump is there. Gloomy place. Garbage even pesters sometimes.</text>
     </string>
     <string id="escape_trader_done_artefact_0">

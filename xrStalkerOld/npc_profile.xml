@@ -212,5 +212,9 @@
 	<character id="stalker_garbage_seriy">
 		<class>stalker_gar_seriy</class>
 	</character>	
-	
+
+	<!-- Krot  -->
+	<character id="stalker_agr_krot">
+		<class>stalker_agr_krot</class>
+	</character>	
 </xml>
