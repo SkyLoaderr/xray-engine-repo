@@ -171,7 +171,7 @@ void CHelicopter::Load(LPCSTR section)
 	m_syncronize_rocket						= pSettings->r_bool(section,"syncronize_rocket");
 
 	m_min_mgun_dist						= pSettings->r_float(section,"min_mgun_attack_dist");
-	m_max_mgun_dist						= pSettings->r_float(section,"min_mgun_attack_dist");
+	m_max_mgun_dist						= pSettings->r_float(section,"max_mgun_attack_dist");
 
 
 }
@@ -477,6 +477,7 @@ void CHelicopter::doHunt(CObject* dest)
 
 		m_destEnemy		= dest;
 		dest->Center	(m_destEnemyPos);
+		
 
 	/*	updateMGunDir();
 		Log("CHelicopter::doHunt allow=",m_allow_fire);
