@@ -11,7 +11,7 @@ function callback_static(object,action,index)
 end
 
 function main ()
-    stalker				= get_actor()
+    actor				= get_actor()
     stalker				= get_level_object ("m_stalker_e0000")
     ak					= get_level_object ("wpn_ak0001")
     stalker:script		(true,stalker_test:script_name());
