@@ -167,22 +167,22 @@ int get_sound_type(const CSoundObject &sound_object)
 	return			((int)sound_object.m_sound_type);
 }
 
-u32 bit_and(const u32 i, const u32 j)
+u32 bit_and(u32 i, u32 j)
 {
 	return			(i & j);
 }
 
-u32 bit_or(const u32 i, const u32 j)
+u32 bit_or(u32 i, u32 j)
 {
 	return			(i | j);
 }
 
-u32 bit_xor(const u32 i, const u32 j)
+u32 bit_xor(u32 i, u32 j)
 {
 	return			(i ^ j);
 }
 
-u32 bit_not(const u32 i)
+u32 bit_not(u32 i)
 {
 	return			(~i);
 }
@@ -267,7 +267,7 @@ void Script::vfExportMemoryObjects(CLuaVirtualMachine *tpLuaVirtualMachine)
 		def("bit_and",						bit_and),
 		def("bit_or",						bit_or),
 		def("bit_xor",						bit_xor),
-		def("bit_not",						bit_and)
+		def("bit_not",						bit_not)
 
 	];
 }
