@@ -200,12 +200,7 @@ void CSector::Render_prepare	(CFrustum &F)
 	// дл€ того чтобы показать ѕрофу что отрисовать тень в 
 	// принципе возможно(но не нужно - выгл€дит хреново)
 	// св€зано с тем что лайты нужно заполнить чуть раньше
-	{
-		RImplementation.set_Frustum		(&F);
-		RImplementation.add_Glows		(Glows);
-		RImplementation.add_Lights		(Lights);
-		RImplementation.add_Geometry	(pRoot);
-	}
+	RImplementation.add_Lights	(Lights);
 }
 
 void CSector::Render			(CFrustum &F)
@@ -217,6 +212,32 @@ void CSector::Render			(CFrustum &F)
 		RImplementation.add_Glows		(Glows);
 		RImplementation.add_Lights		(Lights);
 		RImplementation.add_Geometry	(pRoot);
+
+		// R2-lights/spots
+#if RENDER==R_R2
+		{
+			vector<light*>::iterator I=tempLights.begin(), E=tempLights.end();
+			for (; I!=E; I++) {
+				light* O = *I;
+				if (!O->get_active())	continue;
+				switch	(O->flags.type)
+				{
+				case IRender_Light::POINT:
+					if (F.testSphere_dirty(O->position,O->range))
+						RImplementation.L_DB.add_sector_dlight(O);
+					break;
+				case IRender_Light::SPOT:
+					{
+						Fvector P;
+						P.mad	(O->position,O->direction,O->range/2);
+						if (F.testSphere_dirty(P,O->range/2))
+							RImplementation.L_DB.add_sector_dlight(O);
+					}
+					break;
+				}
+			}
+		}
+#endif
 
 		// 1 sorting-pass on objects
 		for (int s=0; s<int(Objects.size())-1; s++)

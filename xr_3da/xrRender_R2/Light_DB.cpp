@@ -164,7 +164,21 @@ void			CLight_DB::add_sector_lights(vector<WORD> &L)
 		}
 	}
 }
+void			CLight_DB::add_sector_dlight(light* L)
+{
+	if (Device.dwFrame==L->dwFrame)	return;
+	L->dwFrame	=	Device.dwFrame;
 
+	if (L->flags.bShadow)	
+	{
+		//$$$ nv3x codepath doesn't implement shadowed point lights
+		if (RImplementation.b_nv3x && (IRender_Light::POINT==L->flags.type))
+			v_selected_unshadowed.push_back	(L);
+		else
+			v_selected_shadowed.push_back	(L);
+	}
+	else	v_selected_unshadowed.push_back	(L);
+}
 void			CLight_DB::Update()
 {
 	// Clear selection

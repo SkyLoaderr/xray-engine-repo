@@ -50,17 +50,21 @@ class CSector				: public IRender_Sector
 public:
 	struct	objQuery
 	{
-		u32				dwMark;
-		objSET*			Collector;
-		objQualifier*	Qualifier;
-		void*			Param;
+		u32					dwMark;
+		objSET*				Collector;
+		objQualifier*		Qualifier;
+		void*				Param;
 	};
 protected:
-	IVisual*				pRoot;		// whole geometry of that sector
+	IVisual*				pRoot;			// whole geometry of that sector
 	vector<CPortal*>		Portals;
 
 	vector<CObject*>		Objects;
-	vector<CTempObject*>	tempObjects;// временные псевдостатические объекты
+	vector<CTempObject*>	tempObjects;	// $$$temp: временные псевдостатические объекты
+
+#if RENDER==R_R2
+	vector<light*>			tempLights;
+#endif
 
 	vector<WORD>			Glows;
 	vector<WORD>			Lights;
@@ -89,6 +93,16 @@ public:
 		vector<CTempObject*>::iterator I = find(tempObjects.begin(),tempObjects.end(),O);
 		if (I!=tempObjects.end()) tempObjects.erase(I);
 	}
+
+#if RENDER==R_R2
+	void					lightAdd	(light* O)
+	{	tempLights.push_back	(O); }
+	void					lightRemove	(CTempObject* O)
+	{
+		vector<light*>::iterator I = find(tempLights.begin(),tempLights.end(),O);
+		if (I!=tempLights.end()) tempLights.erase(I);
+	}
+#endif
 
 	// Main interface
 	void					Render_prepare	(CFrustum& F); //. temp
