@@ -509,17 +509,12 @@ void CCustomZone::PlayEntranceParticles(CGameObject* pObject)
 	CParticlesObject* pParticles = NULL;
 	//pParticles = CParticlesObject::Create(*particle_str,Sector());
 	pParticles = CParticlesObject::Create(*particle_str);
+
+	CParticlesPlayer::UpdateParticlesPosition(pObject, pParticles, 
+											(*it).index, (*it).offset, 
+											Fvector().set(0,1,0));
+
 	pParticles->Play();
-
-	CParticlesPlayer::UpdateParticlesPosition(pObject, pParticles, 
-											(*it).index, (*it).offset, 
-											Fvector().set(0,1,0),
-											zero_vel, false);
-
-	CParticlesPlayer::UpdateParticlesPosition(pObject, pParticles, 
-											(*it).index, (*it).offset, 
-											Fvector().set(0,1,0),
-											zero_vel, true);
 
 
 	//Fmatrix m = Fmatrix().identity();
