@@ -496,23 +496,23 @@ void CLevelGraph::compute_path() const
 
 void CLevelGraph::draw_dynamic_obstacles() const
 {
-	Level().CurrentEntity()->setEnabled	(false);
-	Level().ObjectSpace.GetNearest		(m_start_point,100.f); 
-	xr_vector<CObject*>					&tpNearestList = Level().ObjectSpace.q_nearest; 
-	Level().CurrentEntity()->setEnabled	(true);
-
-	{
-		xr_vector<CObject*>::iterator		I = tpNearestList.begin();
-		xr_vector<CObject*>::iterator		E = tpNearestList.end();
-		for ( ; I != E; ++I) {
-			Fvector							c, d, C2;
-			(*I)->Visual()->vis.box.get_CD	(c,d);
-			Fmatrix							M = (*I)->XFORM();
-			M.transform_tiny				(C2,c);
-			M.c								= C2;
-			draw_oriented_bounding_box		(M,d,color_rgba(0,0,255,255),color_rgba(0,255,0,255));
-		}
-	}
+//	Level().CurrentEntity()->setEnabled	(false);
+//	Level().ObjectSpace.GetNearest		(m_start_point,100.f); 
+//	xr_vector<CObject*>					&tpNearestList = Level().ObjectSpace.q_nearest; 
+//	Level().CurrentEntity()->setEnabled	(true);
+//
+//	{
+//		xr_vector<CObject*>::iterator		I = tpNearestList.begin();
+//		xr_vector<CObject*>::iterator		E = tpNearestList.end();
+//		for ( ; I != E; ++I) {
+//			Fvector							c, d, C2;
+//			(*I)->Visual()->vis.box.get_CD	(c,d);
+//			Fmatrix							M = (*I)->XFORM();
+//			M.transform_tiny				(C2,c);
+//			M.c								= C2;
+//			draw_oriented_bounding_box		(M,d,color_rgba(0,0,255,255),color_rgba(0,255,0,255));
+//		}
+//	}
 }
 
 #endif // DEBUG
