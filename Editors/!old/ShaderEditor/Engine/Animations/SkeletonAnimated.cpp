@@ -566,7 +566,9 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
                 CKeyQR*			K1r		=	&M._keysR[(frame+0)%count];
                 CKeyQR*			K2r		=	&M._keysR[(frame+1)%count];
                 // rotation
-                if (M.is_r_present()){
+                if (M.test_flag(flRKeyAbsent)){
+                    D->Q.set	(M._initR);
+                }else{
                     Fquaternion	Q1,Q2;
                     Q1.x		= float(K1r->x)*KEY_QuantI;
                     Q1.y		= float(K1r->y)*KEY_QuantI;
@@ -579,12 +581,10 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
                     Q2.w		= float(K2r->w)*KEY_QuantI;
 
                     D->Q.slerp	(Q1,Q2,clampr(delta,0.f,1.f));
-                }else{
-                    D->Q.set	(M._initR);
                 }
 
                 // translate
-                if (M.is_t_present()){
+                if (M.test_flag(flTKeyPresent)){
 	                CKeyQT*	K1t	= &M._keysT[(frame+0)%count];
     	            CKeyQT*	K2t	= &M._keysT[(frame+1)%count];
 
@@ -597,7 +597,7 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
                     T2.z		= float(K2t->z)*M._sizeT.z+M._initT.z;
                     
 	                D->T.lerp	(T1,T2,delta);
-                }else{
+				}else{
 	                D->T.set	(M._initT);
                 }
 //                PSGP.blerp				(D,&K1,&K2,delta);

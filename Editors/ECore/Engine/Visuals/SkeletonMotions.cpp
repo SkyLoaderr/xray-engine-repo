@@ -115,9 +115,6 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 	for (u32 i=0; i<bones->size(); i++)
 		m_motions[bones->at(i)->name].resize(dwCNT);
 	// load motions
-	u32 m_total = 0;
-	u32 m_load	= 0;
-	u32 m_r		= 0;
 	for (u32 m_idx=0; m_idx<dwCNT; m_idx++){
 		string128			mname;
 		R_ASSERT			(MS->find_chunk(m_idx+1));             
@@ -131,32 +128,30 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 			u16 bone_id		= rm_bones[i];
 			VERIFY2			(bone_id!=BI_NONE,"Invalid remap index.");
 			CMotion&		M	= m_motions[bones->at(bone_id)->name][m_idx];
-			M.set_count		(dwLen);
-			Flags8			FL;
-            FL.assign		(MS->r_u8());
-            M.set_t_present	(FL.is(flTKeyPresent));
-            M.set_r_present	(FL.is(flRKeyPresent));
-			if (M.is_r_present())	{
-                u32 crc_q		= MS->r_u32	();
-                M._keysR.create	(crc_q,dwLen,(CKeyQR*)MS->pointer());
-                MS->advance		(dwLen * sizeof(CKeyQR));
-			}else{
-            	CKeyQR* r 		= (CKeyQR*)MS->pointer();
+			M.set_count			(dwLen);
+			M.set_flags			(MS->r_u8());
+            
+            if (M.test_flag(flRKeyAbsent))	{
+                CKeyQR* r 		= (CKeyQR*)MS->pointer();
                 M._initR.x		= float(r->x)*KEY_QuantI;
                 M._initR.y		= float(r->y)*KEY_QuantI;
                 M._initR.z		= float(r->z)*KEY_QuantI;
                 M._initR.w		= float(r->w)*KEY_QuantI;
                 MS->advance		(1 * sizeof(CKeyQR));
-			}
-			if (M.is_t_present())	{
-				u32 crc_t		= MS->r_u32	();
-				M._keysT.create	(crc_t,dwLen,(CKeyQT*)MS->pointer());
-				MS->advance		(dwLen * sizeof(CKeyQT));
-				MS->r_fvector3	(M._sizeT);
-				MS->r_fvector3	(M._initT);
-			}else{
-				MS->r_fvector3	(M._initT);
-			}
+            }else{
+                u32 crc_q		= MS->r_u32	();
+                M._keysR.create	(crc_q,dwLen,(CKeyQR*)MS->pointer());
+                MS->advance		(dwLen * sizeof(CKeyQR));
+            }
+            if (M.test_flag(flTKeyPresent))	{
+                u32 crc_t		= MS->r_u32	();
+                M._keysT.create	(crc_t,dwLen,(CKeyQT*)MS->pointer());
+                MS->advance		(dwLen * sizeof(CKeyQT));
+                MS->r_fvector3	(M._sizeT);
+                MS->r_fvector3	(M._initT);
+            }else{
+                MS->r_fvector3	(M._initT);
+            }
 		}
 	}
 //	Msg("Motions %d/%d %4d/%4d/%d, %s",p_cnt,m_cnt, m_load,m_total,m_r,N);
