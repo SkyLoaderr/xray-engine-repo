@@ -80,6 +80,7 @@ public:
 	void	CorrectTJunctions		();
 
 	void	xrPhase_AdaptiveHT		();
+	void	SmoothVertColors		(int count);
 
 	void	CalcNormals				();
 	void	xrPhase_TangentBasis	();
