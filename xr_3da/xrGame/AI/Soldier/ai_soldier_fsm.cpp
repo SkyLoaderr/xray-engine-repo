@@ -23,6 +23,9 @@
 #define RECHARGE_MEDIAN					(1.f/3.f)
 #define RECHARGE_EPSILON				(0.f/6.f)
 #define SPECIAL_SQUAD					6
+
+#define ATTACK_NON_FIRE_FIRE_DISTANCE	5.f
+#define ATTACK_FIRE_FIRE_DISTANCE		15.f
 //#define AMMO_NEED_RELOAD				6
 //#define MIN_COVER_MOVE					120
 //#define MIN_SPINE_TURN_ANGLE			PI_DIV_6
@@ -212,26 +215,58 @@ void CAI_Soldier::OnAttackAloneNonFire()
 	
 	SelectEnemy(Enemy);
 	
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate || !Enemy.Enemy || !Enemy.bVisible);
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate || !Enemy.Enemy || !Enemy.bVisible)
 
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy),aiSoldierAttackAloneNonFireSteal)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy),aiSoldierAttackAloneNonFireSteal)
 
-
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE((Enemy.Enemy->Position().distance_to(vPosition) > ATTACK_NON_FIRE_FIRE_DISTANCE) || (Weapons->ActiveWeapon()->GetAmmoCurrent() == 0),aiSoldierAttackAloneNonFireRun)
+	
+	SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierAttackAloneNonFireFire)
 }
 
 void CAI_Soldier::OnAttackAloneFire()
 {
 	WRITE_TO_LOG("attack alone fire");
+	
+	SelectEnemy(Enemy);
+	
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate || !Enemy.Enemy || !Enemy.bVisible);
+
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy),aiSoldierAttackAloneNonFireSteal)
+
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(Enemy.Enemy->Position().distance_to(vPosition) > ATTACK_FIRE_FIRE_DISTANCE,aiSoldierAttackAloneNonFireRun)
+	
+	SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierAttackAloneNonFireFire)
 }
 
 void CAI_Soldier::OnDefendAloneNonFire()
 {
 	WRITE_TO_LOG("defend alone non-fire");
+	
+	SelectEnemy(Enemy);
+	
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate || !Enemy.Enemy || !Enemy.bVisible);
+
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy),aiSoldierDefendAloneNonFireSteal)
+
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(Enemy.Enemy->Position().distance_to(vPosition) > ATTACK_NON_FIRE_FIRE_DISTANCE,aiSoldierDefendAloneNonFireRun)
+	
+	SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierDefendAloneNonFireFire)
 }
 
 void CAI_Soldier::OnDefendAloneFire()
 {
 	WRITE_TO_LOG("defend alone fire");
+	
+	SelectEnemy(Enemy);
+	
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate || !Enemy.Enemy || !Enemy.bVisible);
+
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy),aiSoldierDefendAloneNonFireSteal)
+
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(Enemy.Enemy->Position().distance_to(vPosition) > ATTACK_FIRE_FIRE_DISTANCE,aiSoldierDefendAloneNonFireRun)
+	
+	SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierDefendAloneNonFireFire)
 }
 
 void CAI_Soldier::OnPursuitAloneNonFire()
@@ -272,11 +307,51 @@ void CAI_Soldier::OnRetreatAloneDialog()
 void CAI_Soldier::OnAttackAloneNonFireFire()
 {
 	WRITE_TO_LOG("attack alone non-fire fire");
+	
+	SelectEnemy(Enemy);
+	
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!Weapons->ActiveWeapon()->GetAmmoCurrent() || bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate || !Enemy.Enemy || !Enemy.bVisible);
+
+	vfAimAtEnemy(true);
+
+	vfSetFire(true,getGroup());
+	
+	Squat();
+	vfSetMovementType(WALK_NO);
 }
 
 void CAI_Soldier::OnAttackAloneNonFireRun()
 {
 	WRITE_TO_LOG("attack alone non-fire run");
+	
+	vfStopFire();
+	
+	SelectEnemy(Enemy);
+	
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate || !Enemy.Enemy || !Enemy.bVisible);
+
+	if (!Weapons->ActiveWeapon()->GetAmmoCurrent()) {
+		if (!bfSaveFromEnemy(Enemy.Enemy)) {
+			INIT_SQUAD_AND_LEADER
+			vfInitSelector(SelectorUnderFireCover,Squad,Leader);
+
+		}
+		else
+			switch (m_cBodyState) {
+				case BODY_STATE_STAND : {
+					m_tpAnimationBeingWaited = tSoldierAnimations.tNormal.tGlobal.tpReload;
+					break;
+				}
+				case BODY_STATE_CROUCH : {
+					m_tpAnimationBeingWaited = tSoldierAnimations.tCrouch.tGlobal.tpReload;
+					break;
+				}
+				case BODY_STATE_LIE : {
+					m_tpAnimationBeingWaited = tSoldierAnimations.tLie.tGlobal.tpReload;
+					break;
+				}
+			}
+	}
 }
 
 void CAI_Soldier::OnAttackAloneNonFireSteal()

@@ -680,3 +680,8 @@ DWORD CAI_Soldier::tfGetGroupFightType()
 		else
 			return(FIGHT_TYPE_ATTACK);
 }
+
+bool CAI_Soldier::bfSaveFromEnemy(CEntity *tpEntity)
+{
+	return(true);
+}

@@ -481,6 +481,7 @@ class CAI_Soldier : public CCustomMonster
 		void OnDefendGroupFireDialog();
 
 		// miscellanious funtions	
+		bool bfSaveFromEnemy(CEntity *tpEntity);
 		DWORD tfGetAloneFightType();
 		DWORD tfGetGroupFightType();
 		bool bfCheckIfGroupFightType();
