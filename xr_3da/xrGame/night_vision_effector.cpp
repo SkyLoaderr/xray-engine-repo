@@ -4,7 +4,7 @@
 #include "level.h"
 #include "../CameraManager.h"
 
-#define NIGHT_VISION_EFFECTOR_TYPE_ID 555
+
 
 //////////////////////////////////////////////////////////////////////////
 // NightVision

@@ -4,7 +4,7 @@
 #include "CameraEffector.h"
 #include "../cameramanager.h"
 
-
+#define NIGHT_VISION_EFFECTOR_TYPE_ID 555
 class CNightVisionEffector;
 
 class CNightVisionEffectorPP: public CEffectorPP 
