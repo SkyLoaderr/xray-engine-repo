@@ -690,22 +690,6 @@ SOURCE=.\tss_def.h
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\Blenders\blender_2tex_add.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Blenders\blender_2tex_add.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\Blenders\blender_2tex_blend.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Blenders\blender_2tex_blend.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\Blenders\blender_complex2.cpp
 
 !IF  "$(CFG)" == "XR_3DA - Win32 Release"
@@ -802,11 +786,11 @@ SOURCE=.\Blenders\BlenderDefault.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Blenders\CBlender_2tex_mul2x.cpp
+SOURCE=.\Blenders\CBlender_lm_detail.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Blenders\CBlender_2tex_mul2x.h
+SOURCE=.\Blenders\CBlender_lm_detail.h
 # End Source File
 # End Group
 # Begin Source File
