@@ -35,7 +35,7 @@ const float					DSM_d_range			= 100.f;
 const float					SSM_near_plane		= .1f;
 
 const u32					PSM_size			= 512;
-const float					PSM_near_plane		= .08f;
+const float					PSM_near_plane		= .1f;
 
 const u32					TEX_material_LdotN	= 128;	// diffuse,		X
 const u32					TEX_material_LdotH	= 256;	// specular,	Y

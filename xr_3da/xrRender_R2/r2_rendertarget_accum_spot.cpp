@@ -98,7 +98,7 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		float			fTexelOffs			= (.5f / DSM_size);
 		u32				uRange				= 1; 
 		float			fRange				= float(uRange);
-		float			fBias				= -0.0002f*fRange;
+		float			fBias				= -0.0003f*fRange;
 		Fmatrix			m_TexelAdjust		= 
 		{
 			0.5f,				0.0f,				0.0f,			0.0f,
