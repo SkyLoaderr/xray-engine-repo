@@ -10,10 +10,17 @@
 const float JUMP_UP_VELOCITY=6.0f;//5.6f;
 const float JUMP_INCREASE_VELOCITY_RATE=1.2f;
 
-CPHActorCharacter::CPHActorCharacter(float restictor_radius)
+CPHActorCharacter::CPHActorCharacter()
 {
-	m_restrictor=NULL;
-	m_restrictor_radius=restictor_radius;
+	SetRestrictionType(CPHCharacter::rtActor);
+
+	std::fill(m_restrictors_index,m_restrictors_index+CPHCharacter::rtNone,end(m_restrictors));
+	m_restrictors_index[CPHCharacter::rtStalker]		=begin(m_restrictors)+0;
+	m_restrictors_index[CPHCharacter::rtMonsterMedium]	=begin(m_restrictors)+1;
+	
+	m_restrictors[0]=(xr_new<stalker_restrictor>());
+	m_restrictors[0]->b_non_movable=true;
+	m_restrictors[1]=(xr_new<medium_monster_restrictor>());
 }
 
 CPHActorCharacter::~CPHActorCharacter(void)
@@ -23,6 +30,24 @@ CPHActorCharacter::~CPHActorCharacter(void)
 void CPHActorCharacter::Create(dVector3 sizes)
 {
 	if(b_exist) return;
+	inherited::Create(sizes);
+
+	RESTRICTOR_I i=begin(m_restrictors),e=end(m_restrictors);
+	for(;e!=i;++i)
+	{
+		(*i)->Create(this,sizes);
+	}
+
+	if(m_phys_ref_object)
+	{
+		SetPhysicsRefObject(m_phys_ref_object);
+	}
+}
+void SPHCharacterRestrictor::Create(CPHCharacter* ch,dVector3 sizes)
+{
+	VERIFY(ch);
+	if(m_character)return;
+	m_character=ch;
 	m_restrictor=dCreateCylinder(0,m_restrictor_radius,sizes[1]);
 	dGeomSetPosition(m_restrictor,0.f,sizes[1]/2.f,0.f);
 	m_restrictor_transform=dCreateGeomTransform(0);
@@ -30,16 +55,34 @@ void CPHActorCharacter::Create(dVector3 sizes)
 	dGeomTransformSetInfo(m_restrictor_transform,1);
 	dGeomTransformSetGeom(m_restrictor_transform,m_restrictor);
 	dGeomCreateUserData(m_restrictor);
-	dGeomUserDataSetObjectContactCallback(m_restrictor,RestrictorCallBack);
-	inherited::Create(sizes);
-	dGeomSetBody(m_restrictor_transform,m_body);
-	dSpaceAdd(m_space,m_restrictor_transform);
-	dGeomUserDataSetPhObject(m_restrictor,(CPHObject*)this);
+
+	
+	dGeomSetBody(m_restrictor_transform,m_character->get_body());
+	dSpaceAdd(m_character->dSpace(),m_restrictor_transform);
+	dGeomUserDataSetPhObject(m_restrictor,(CPHObject*)m_character);
+	switch(m_type) {
+		case CPHCharacter::rtStalker:static_cast<CPHActorCharacter::stalker_restrictor*>(this)->Create(ch,sizes);
+		break;
+		case CPHCharacter::rtMonsterMedium:static_cast<CPHActorCharacter::medium_monster_restrictor*>(this)->Create(ch,sizes);
+		break;
+		default:NODEFAULT;
+	}
+	
 }
-void CPHActorCharacter::SetRestrictorRadius(float r)
+
+RESTRICTOR_I CPHActorCharacter::Restrictor(CPHCharacter::ERestrictionType rtype)
+{
+	return m_restrictors_index[rtype];
+}
+void CPHActorCharacter::SetRestrictorRadius(CPHCharacter::ERestrictionType rtype,float r)
+{
+	(*Restrictor(rtype))->SetRadius(r);
+}
+
+void SPHCharacterRestrictor::SetRadius(float r)
 {
 	m_restrictor_radius=r;
-	if(b_exist)
+	if(m_character)
 	{
 		float h;
 		dGeomCylinderGetParams(m_restrictor,&r,&h);
@@ -49,6 +92,16 @@ void CPHActorCharacter::SetRestrictorRadius(float r)
 void CPHActorCharacter::Destroy()
 {
 	if(!b_exist) return;
+	RESTRICTOR_I i=begin(m_restrictors),e=end(m_restrictors);
+	for(;e!=i;++i)
+	{
+		(*i)->Destroy();
+	}
+	inherited::Destroy();
+}
+
+void SPHCharacterRestrictor::Destroy()
+{
 	if(m_restrictor) {
 		dGeomDestroyUserData(m_restrictor);
 		dGeomDestroy(m_restrictor);
@@ -59,18 +112,32 @@ void CPHActorCharacter::Destroy()
 		dGeomDestroyUserData(m_restrictor_transform);
 		m_restrictor_transform=NULL;
 	}
-	inherited::Destroy();
 }
-
 void CPHActorCharacter::SetPhysicsRefObject(CPhysicsShellHolder* ref_object)
 {
 	inherited::SetPhysicsRefObject(ref_object);
+	RESTRICTOR_I i=begin(m_restrictors),e=end(m_restrictors);
+	for(;e!=i;++i)
+	{
+		(*i)->SetPhysicsRefObject(ref_object);
+	}
+}
+void SPHCharacterRestrictor::SetPhysicsRefObject(CPhysicsShellHolder* ref_object)
+{
 	dGeomUserDataSetPhysicsRefObject(m_restrictor,ref_object);
 }
 void CPHActorCharacter::SetMaterial							(u16 material)
 {
 	inherited::SetMaterial(material);
 	if(!b_exist) return;
+	RESTRICTOR_I i=begin(m_restrictors),e=end(m_restrictors);
+	for(;e!=i;++i)
+	{
+		(*i)->SetMaterial(material);
+	}
+}
+void SPHCharacterRestrictor::SetMaterial(u16 material)
+{
 	dGeomGetUserData(m_restrictor)->material=material;
 }
 void CPHActorCharacter::SetAcceleration(Fvector accel)
@@ -94,8 +161,7 @@ void CPHActorCharacter::Jump(const Fvector& accel)
 void CPHActorCharacter::SetObjectContactCallback(ObjectContactCallbackFun* callback)
 {
 	inherited::SetObjectContactCallback(callback);
-///	if(!b_exist) return;
-//	dGeomUserDataSetObjectContactCallback(m_cap,callback);
+
 }
 
 void CPHActorCharacter::Disable()
@@ -103,58 +169,40 @@ void CPHActorCharacter::Disable()
 	inherited::Disable();
 }
 
-void CPHActorCharacter::RestrictorCallBack (bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
+
+struct SFindPredicate
 {
-	do_colide=false;
-	dBodyID						b1		=	dGeomGetBody(c.geom.g1);
-	dBodyID						b2		=	dGeomGetBody(c.geom.g2);
-	if(!(b1&&b2))	return;
-	dxGeomUserData				*ud1	=	retrieveGeomUserData(c.geom.g1);
-	dxGeomUserData				*ud2	=	retrieveGeomUserData(c.geom.g2);
-	if(!(ud1&&ud2))return;
-
-	CPhysicsShellHolder			*o1		=	NULL;if(ud1)o1=ud1->ph_ref_object;
-	CPhysicsShellHolder			*o2		=	NULL;if(ud2)o2=ud2->ph_ref_object;
-	
-	if(!(o1&&o2))return;
-	
-	CGameObject					*go1		=	static_cast<CGameObject*>(o1);
-	CGameObject					*go2		=	static_cast<CGameObject*>(o2);
-	CAI_Stalker					*S			=	NULL;
-	CActor						*A			=	go1->cast_actor();
-
-	if(A)
+	SFindPredicate(const dContact* ac,bool *b)
 	{
-		 S=smart_cast<CAI_Stalker*>(go2);
+		c=ac;
+		b1=b;
 	}
-	else
+	bool			*b1	;
+	const dContact	*c	;
+	bool operator ()	(SPHCharacterRestrictor* o)
 	{
-		 S=smart_cast<CAI_Stalker*>(go1);
-		 A=go2->cast_actor();
+		*b1=c->geom.g1==o->m_restrictor_transform;
+		return *b1||c->geom.g2==o->m_restrictor_transform;
 	}
-	VERIFY2(A,"wrong callback or reference object");
-	
-	if(S&&S->g_Alive())	
-	{
-		do_colide=true;
-	}
-}
-
+};
 void CPHActorCharacter::InitContact(dContact* c,bool &do_collide,SGameMtl * material_1,SGameMtl *material_2 )
 {
 
-	bool b_restrictor=false;
-	if(c->geom.g1==m_restrictor_transform||c->geom.g2==m_restrictor_transform)
+	
+	bool b1;
+	SFindPredicate fp(c,&b1);
+	RESTRICTOR_I r=std::find_if(begin(m_restrictors),end(m_restrictors),fp);
+	bool b_restrictor=(r!=end(m_restrictors));
+	if(b_restrictor)
 	{
-		b_restrictor=true;
 		b_side_contact=true;
 		MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,def_spring_rate,def_dumping_rate);
 		c->surface.mu		=0.00f;
 	}
 	inherited::InitContact(c,do_collide,material_1,material_2);
-	if(b_restrictor&&do_collide)
+	if(b_restrictor&&(*r)->b_non_movable&&do_collide)
 	{
-		bool b1=c->geom.g1==m_restrictor_transform;
+		
 
 		dJointID contact_joint	= dJointCreateContact(0, ContactGroup, c);
 		Enable();

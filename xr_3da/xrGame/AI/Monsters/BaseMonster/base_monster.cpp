@@ -29,7 +29,7 @@
 CBaseMonster::CBaseMonster()
 {
 	m_movement_manager				= 0;
-	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
+
 	m_pPhysics_support=xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etBitting,this);
 	
 	m_pPhysics_support				->in_Init();

@@ -142,7 +142,7 @@ CActor::CActor() : CEntityAlive()
 	m_holder				=	NULL;
 	m_holderID				=	u16(-1);
 	m_pPhysics_support		=	xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etActor,this);
-	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::actor);
+
 #ifdef DEBUG
 	Device.seqRender.Add(this,REG_PRIORITY_LOW);
 #endif
@@ -282,7 +282,7 @@ void CActor::Load	(LPCSTR section )
 	m_PhysicMovementControl->SetCrashSpeeds	(cs_min,cs_max);
 	m_PhysicMovementControl->SetMass		(mass);
 	if(pSettings->line_exist(section,"restrictor_radius"))
-		m_PhysicMovementControl->SetActorRestrictorRadius(pSettings->r_float(section,"restrictor_radius"));
+		m_PhysicMovementControl->SetActorRestrictorRadius(CPHCharacter::rtStalker,pSettings->r_float(section,"restrictor_radius"));
 	m_PhysicMovementControl->Load(section);
 
 	m_PhysicMovementControl->SetParent(this);

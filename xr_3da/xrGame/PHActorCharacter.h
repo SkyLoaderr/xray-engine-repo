@@ -1,15 +1,92 @@
 #pragma once
 #include "phsimplecharacter.h"
+#include "PHActorCharacterInline.h"
 class CPhysicShellHolder;
+struct SPHCharacterRestrictor
+{
+							SPHCharacterRestrictor							(CPHCharacter::ERestrictionType Ttype)
+							{
+								m_type=Ttype;
+								m_character=NULL;
+								m_restrictor=NULL;
+								m_restrictor_transform=NULL;
+								b_non_movable=false;
+								m_restrictor_radius=0.1f;
+							}
+										~SPHCharacterRestrictor				();
+				CPHCharacter*			m_character;
+				CPHCharacter::ERestrictionType m_type;
+				bool					b_non_movable;
+				dGeomID					m_restrictor;
+				dGeomID					m_restrictor_transform;
+				float					m_restrictor_radius;
+				void					SetObjectContactCallback			(ObjectContactCallbackFun* callback);
+				void					SetMaterial							(u16 material);
+				void					Create								(CPHCharacter* ch,dVector3 sizes);
+				void					Destroy								(void);
+				void					SetPhysicsRefObject					(CPhysicsShellHolder* ref_object);
+				void					SetRadius							(float r);
+};
+
+template <CPHCharacter::ERestrictionType Ttype>
+struct TPHCharacterRestrictor : public SPHCharacterRestrictor
+{
+		TPHCharacterRestrictor():SPHCharacterRestrictor(Ttype){}
+		void	Create(CPHCharacter* ch,dVector3 sizes)
+		{
+			dGeomUserDataSetObjectContactCallback(m_restrictor,RestrictorCallBack);
+		}
+static	void __stdcall	RestrictorCallBack	(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
+		{
+			do_colide=false;
+			dBodyID						b1		=	dGeomGetBody(c.geom.g1);
+			dBodyID						b2		=	dGeomGetBody(c.geom.g2);
+			if(!(b1&&b2))	return;
+			dxGeomUserData				*ud1	=	retrieveGeomUserData(c.geom.g1);
+			dxGeomUserData				*ud2	=	retrieveGeomUserData(c.geom.g2);
+			if(!(ud1&&ud2))return;
+
+			CPHObject					*o1		=	NULL;if(ud1)o1=ud1->ph_object;
+			CPHObject					*o2		=	NULL;if(ud2)o2=ud2->ph_object;
+			if(!(o1&&o2))				return;
+			if(o1->CastType()!=CPHObject::tpCharacter||o2->CastType()!=CPHObject::tpCharacter) return;
+
+			CPHCharacter* ch1					=	static_cast<CPHCharacter*>(o1);
+			CPHCharacter* ch2					=	static_cast<CPHCharacter*>(o2);
+
+			if(ch1->RestrictionType()==CPHCharacter::rtActor)
+			{
+				do_colide= ch2->RestrictionType()==Ttype;
+			}
+			else
+			{
+				do_colide= ch1->RestrictionType()==Ttype;
+			}
+		}
+	};
+//DEFINE_VECTOR(SPHCharacterRestrictor*,RESRICTORS_V,RESTRICTOR_I);
+typedef SPHCharacterRestrictor*		RESRICTORS_V[2];
+typedef SPHCharacterRestrictor**	RESTRICTOR_I;
+IC RESTRICTOR_I begin(RESRICTORS_V& v)
+{
+	return v;
+}
+
+IC RESTRICTOR_I end(RESRICTORS_V v)
+{
+	return v+sizeof(RESRICTORS_V)/sizeof(SPHCharacterRestrictor*);
+}
 
 class CPHActorCharacter :
 	public CPHSimpleCharacter
 {
 	typedef CPHSimpleCharacter	inherited;
-	dGeomID				m_restrictor;
-	dGeomID				m_restrictor_transform;
-	float				m_restrictor_radius;
-static void __stdcall RestrictorCallBack (bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2);
+
+	RESRICTORS_V		m_restrictors;
+	RESTRICTOR_I		m_restrictors_index[CPHCharacter::rtNone];
+public:
+	typedef TPHCharacterRestrictor<CPHCharacter::rtStalker>		  stalker_restrictor;
+	typedef TPHCharacterRestrictor<CPHCharacter::rtMonsterMedium> medium_monster_restrictor;
 public:
 	virtual	void		SetObjectContactCallback			(ObjectContactCallbackFun* callback);
 	virtual void		SetMaterial							(u16 material);
@@ -20,7 +97,8 @@ public:
 	virtual	void		Disable								();
 	virtual	void		Jump								(const Fvector& jump_velocity);
 	virtual void		InitContact							(dContact* c,bool &do_collide,SGameMtl *material_1 ,SGameMtl * material_2);
-			void		SetRestrictorRadius					(float r);
-						CPHActorCharacter					(float restrictor_radius);
+			void		SetRestrictorRadius					(CPHCharacter::ERestrictionType rtype,float r);
+		RESTRICTOR_I	Restrictor							(CPHCharacter::ERestrictionType rtype);
+						CPHActorCharacter					();
 	virtual				~CPHActorCharacter					(void);
 };

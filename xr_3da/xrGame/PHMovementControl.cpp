@@ -20,7 +20,7 @@
 #define def_Y_SIZE_2	0.8f
 #define def_Z_SIZE_2	0.35f
 
-float CPHMovementControl::fActorRestrictorRadius=0.9f;
+
 
 CPHMovementControl::CPHMovementControl(void)
 {
@@ -621,11 +621,10 @@ void CPHMovementControl::PathDIrPoint(const xr_vector<DetailPathManager::STravel
 	dir.add(tangent,to_path_point);
 	dir.normalize_safe();
 }
-void CPHMovementControl::SetActorRestrictorRadius(float r)
+void CPHMovementControl::SetActorRestrictorRadius(CPHCharacter::ERestrictionType rt,float r)
 {
-	fActorRestrictorRadius=r;
 	if(m_character&&eCharacterType==actor)
-		static_cast<CPHActorCharacter*>(m_character)->SetRestrictorRadius(r);
+		static_cast<CPHActorCharacter*>(m_character)->SetRestrictorRadius(rt,r);
 }
 void CPHMovementControl::Load					(LPCSTR section){
 
@@ -711,7 +710,7 @@ void	CPHMovementControl::AllocateCharacterObject(CharacterType type)
 {
 	switch(type)
 	{
-	case actor:			m_character = xr_new<CPHActorCharacter>	(fActorRestrictorRadius);	break;
+	case actor:			m_character = xr_new<CPHActorCharacter>	()							;	break;
 	case ai:			m_character = xr_new<CPHAICharacter>	()							;	break;
 	}
 	eCharacterType=type;

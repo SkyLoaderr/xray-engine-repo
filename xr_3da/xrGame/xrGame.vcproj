@@ -9019,6 +9019,9 @@
 							<File
 								RelativePath="PHActorCharacter.h">
 							</File>
+							<File
+								RelativePath=".\PHActorCharacterInline.h">
+							</File>
 						</Filter>
 						<Filter
 							Name="AICharacter"

@@ -796,7 +796,6 @@ DLL_Pure *CAI_Stalker::_construct			()
 	CObjectHandler::_construct			();
 	CStepManager::_construct			();
 	m_pPhysics_support					= xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etStalker,this);
-	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
 	m_actor_relation_flags.zero			();
 	m_animation_manager					= xr_new<CStalkerAnimationManager>();
 	m_brain								= xr_new<CMotivationActionManagerStalker>();

@@ -47,14 +47,27 @@ u16* p_lastMaterial;
 dVector3 m_safe_velocity;
 dVector3 m_safe_position;
 
+public:
+enum ERestrictionType
+{
 
+	rtActor,
+	rtStalker,
+	rtMonsterMedium,
+	rtNone
+};
 
+private:
+ERestrictionType m_restriction_type;
 
 public:
 	virtual ECastType	CastType							(){return CPHObject::tpCharacter;}
+	ERestrictionType	RestrictionType						(){return m_restriction_type;}
+	void				SetRestrictionType					(ERestrictionType rt){m_restriction_type=rt;}
 	virtual void		FreezeContent						();
 	virtual void		UnFreezeContent						();
 	virtual	dBodyID		get_body							()															{return m_body;}
+	virtual	dSpaceID	dSpace								()															=0;		
 	virtual	void		Disable								()															;																		
 	virtual	void		ReEnable							()															{;}																				
 			void		Enable								()															;											//!!

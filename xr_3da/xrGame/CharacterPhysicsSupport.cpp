@@ -19,18 +19,7 @@ CCharacterPhysicsSupport::CCharacterPhysicsSupport(EType atype,CEntityAlive* aen
   mXFORM(aentity->XFORM()),
   m_ph_sound_player(aentity)
 {
-	//R_ASSERT2(aentity->PMovement()->CharacterExist()!=
-	//			((!!aentity->PPhysicsShell())
-	//			&&aentity->PPhysicsShell()->bActive)
-	//			,"wrong parameter state");
-	//if(!aentity->PPhysicsShell() )
-	//{
-	//	m_eState=esAlive;
-	//}
-	//else
-	//{
-	//	m_eState=esDead;
-	//}
+
 m_eType=atype;
 m_eState=esAlive;
 b_death_anim_on					= false;
@@ -40,6 +29,19 @@ m_physics_skeleton				= NULL;
 b_skeleton_in_shell				= false;
 m_shot_up_factor				=0.f;
 m_after_death_velocity_factor	=1.f;
+switch(atype)
+{
+case etActor:
+	m_PhysicMovementControl.AllocateCharacterObject(CPHMovementControl::actor);
+	m_PhysicMovementControl.SetRestrictionType(CPHCharacter::rtActor);
+	break;
+case etStalker:
+	m_PhysicMovementControl.AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
+	m_PhysicMovementControl.SetRestrictionType(CPHCharacter::rtStalker);
+	break;
+case etBitting:
+	m_PhysicMovementControl.AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
+}
 };
 
 void CCharacterPhysicsSupport::SetRemoved()

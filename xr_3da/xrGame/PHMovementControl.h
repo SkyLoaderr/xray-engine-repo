@@ -30,7 +30,8 @@ Fvector				PHCaptureGetNearestElemPos(const CPhysicsShellHolder* object);
 Fmatrix				PHCaptureGetNearestElemTransform(CPhysicsShellHolder* object);
 void				SetMaterial(u16 material);
 void				SetAirControlParam(float param){fAirControlParam=param;}
-void				SetActorRestrictorRadius(float r);
+void				SetActorRestrictorRadius(CPHCharacter::ERestrictionType rt, float r);
+void				SetRestrictionType(CPHCharacter::ERestrictionType rt){if(m_character)m_character->SetRestrictionType(rt);}
 enum				JumpType 
 {
 					jtStrait, //end point before uppermost point
@@ -85,7 +86,6 @@ private:
 	//float				fWallFriction;
 	//float				fGroundFriction;
 	//float				fFriction;				// Current friction
-static	float			fActorRestrictorRadius;
 	float				fMass;
 	float				fMinCrashSpeed;
 	float				fMaxCrashSpeed;
