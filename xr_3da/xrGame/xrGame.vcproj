@@ -45,7 +45,7 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="odeN_D.lib  odbc32.lib odbccp32.lib x:\game\xr_3da.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib x:\game\xr_3da.lib"
 				ShowProgress="0"
 				OutputFile="x:\game/xrGame.dll"
 				LinkIncremental="2"
@@ -1024,6 +1024,27 @@
 				</File>
 				<File
 					RelativePath="tri-colliderKNoOPC\dTriList.h">
+				</File>
+				<File
+					RelativePath="tri-colliderknoopc\dcTriListCollider.cpp">
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="tri-colliderKNoOPC\dcTriListCollider.h">

@@ -1,12 +1,12 @@
 #include "stdafx.h"
-#include <ode/common.h>
-#include <ode/geom.h>
-#include <ode/rotation.h>
-#include <ode/odemath.h>
-#include <ode/memory.h>
-#include <ode/misc.h>
-#include <ode/objects.h>
-#include <ode/matrix.h>
+#include <include/ode/common.h>
+#include <include/ode/geom.h>
+#include <include/ode/rotation.h>
+#include <include/ode/odemath.h>
+#include <include/ode/memory.h>
+#include <include/ode/misc.h>
+#include <include/ode/objects.h>
+#include <include/ode/matrix.h>
 #include <ode/src/geom_internal.h>
 #include "dTriCollideK.h"
 #include "dxTriList.h"
@@ -14,13 +14,7 @@
 #include "dcTriListCollider.cpp"	// Allow inlining
 
 
-
-
-
-
 int dTriListClass = -1;
-
-
 
 dcTriListCollider* GetData(dxGeom* TriList){
 

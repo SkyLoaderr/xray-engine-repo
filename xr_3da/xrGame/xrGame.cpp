@@ -2,6 +2,9 @@
 //
  
 #include "stdafx.h"
+
+#pragma comment(lib,"ode.lib" )
+
 #include "..\xr_ioconsole.h"
 #include "..\xr_ioc_cmd.h"
 #include "..\customhud.h"

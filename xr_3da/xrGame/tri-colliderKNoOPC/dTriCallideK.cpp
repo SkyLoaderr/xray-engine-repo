@@ -1,9 +1,9 @@
 #include "stdafx.h"
 
-#include <ode/common.h>
-#include <ode/geom.h>
-#include <ode/rotation.h>
-#include <ode/odemath.h>
+#include <include/ode/common.h>
+#include <include/ode/geom.h>
+#include <include/ode/rotation.h>
+#include <include/ode/odemath.h>
 #include <ode/src/geom_internal.h>
 
 #include "dTriCollideK.h"

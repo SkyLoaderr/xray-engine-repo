@@ -2,8 +2,8 @@
 #include "StdAfx.h"
 #include "PHDynamicData.h"
 #include "Physics.h"
-#include <dTriList.h>
-#include  <dRay.h>
+#include "tri-colliderknoopc/dTriList.h"
+#include "contrib/dRay/include/dRay.h"
 
 //////////////////////////////////////////////////////////////
 //////////////CPHMesh///////////////////////////////////////////
