@@ -39,40 +39,40 @@ void CLight_DB::Load			(IReader *fs)
 		u32 element		= sizeof(Flight)+4;
 		u32 count		= size/element;
 		R_ASSERT		(count*element == size);
-		Lights.resize	(count);
-		Distance.resize	(count);
-		Enabled.resize	(count);
-
+		v_static.reserve(count);
 		for (u32 i=0; i<count; i++) 
 		{
-
-			F->r						(&Lights[i].dwController,4);
-			F->r						(&Lights[i],sizeof(Flight));
-
-			Lights[i].specular.set		(Lights[i].diffuse);
-			Lights[i].specular.mul_rgb	(0.2f);
-			if (Lights[i].type==D3DLIGHT_DIRECTIONAL)
+			Flight		Ldata;
+			light*		L				= xr_new<light>		();
+			F->r						(&L->controller,4);
+			F->r						(&Ldata,sizeof(Flight));
+			if (Ldata.type==D3DLIGHT_DIRECTIONAL)
 			{
-				Lights[i].position.invert	(Lights[i].direction);
-				Lights[i].position.mul		(1000.f);
-				Lights[i].range				= 1000.f;
+				// directional
+				v_static.push_back	(NULL);
+				xr_delete			(L);
+				sun_dir.set			(Ldata.direction);
+				sun_dir.normalize	();
+				sun_color.set		(Ldata.diffuse.r,Ldata.diffuse.g,Ldata.diffuse.b,1.f);
 			}
-			Enabled[i]	= FALSE;
+			else
+			{
+				// point
+				v_static.push_back	(L);
+				L->set_position		(Ldata.position);
+				L->set_range		(Ldata.range);
+				L->set_color		(Ldata.diffuse);
+			}
 		}
 
-		F->close		();
+		F->close			();
 	}
-	Msg	("* Layers/Lights : %d / %d",Layers.size(),Lights.size());
+	Msg	("* Layers/Lights : %d / %d",v_static_controls.size(),v_static.size());
 }
 
-void CLightDB_Static::Unload		(void)
+void CLight_DB::Unload		()
 {
-	for (u32 i=0; i<Lights.size(); i++) Disable(i);
-	for (u32 L=0; L<Layers.size(); L++) Device.Shader._DeleteConstant(Layers[L].dest);
-
-	Layers.clear			();
-	Lights.clear			();
-	Distance.clear			();
-	Enabled.clear			();
+	v_static_controls.clear	();
+	for	(u32 it=0; it<v_static.size(); it++)	xr_delete(v_static[it]);
+	v_static.clear			();
 }
-

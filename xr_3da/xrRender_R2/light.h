@@ -3,9 +3,12 @@
 class light		:	public IRender_Light
 {
 public:
-	mode			M;
+	mode			M;				
 	Fsphere			sphere;
 	Fcolor			color;
+	u32				controller;
+
+	u32				dwFrame;
 public:
 	virtual void	set_mode		(mode M);
 	virtual void	set_position	(const Fvector& P)				{ sphere.P.set(P);		}
