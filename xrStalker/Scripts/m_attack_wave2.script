@@ -95,7 +95,7 @@ function Monster:process ()
        h.direction = self.targetdir
        h:bone ("bip01_pelvis")
        h.draftsman = self.npc
-       h.impulse = 200
+       h.impulse = 300
        h.type = hit.strike
        self.target:hit (h)
        self.play = 1
