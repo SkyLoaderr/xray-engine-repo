@@ -220,8 +220,10 @@ void CAI_Stalker::vfCheckForItems()
 		CInventoryItem	*tpInventoryItem	= dynamic_cast<CInventoryItem*>	(m_tpaVisibleObjects[i]);
 		CBolt			*tpBolt				= dynamic_cast<CBolt*>			(m_tpaVisibleObjects[i]);
 #pragma todo("Check if rukzak is not full!!")
-		if (tpInventoryItem && !tpBolt)
+		if (tpInventoryItem && !tpBolt) {
+			Msg			("Adding item to take %s",tpInventoryItem->cName());
 			m_tpItemsToTake.push_back(tpInventoryItem);
+		}
 	}
 	for (int i=0; i<(int)m_tpItemsToTake.size(); i++)
 		if (m_tpItemsToTake[i]->H_Parent())

@@ -15,6 +15,7 @@
 #define MIN_SOUND_VOLUME				.05f
 BOOL CAI_Stalker::feel_vision_isRelevant(CObject* O)
 {
+	Msg				("Checking if I see an item %s",O->cName());
 	CEntityAlive*	E = dynamic_cast<CEntityAlive*>		(O);
 	CInventoryItem*	I = dynamic_cast<CInventoryItem*>	(O);
 	if (!E && !I)	return	(FALSE);

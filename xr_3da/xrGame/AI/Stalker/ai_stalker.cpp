@@ -897,7 +897,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	if (!Remote()) {
 		if ((fHealth>0) || bfExecMovement())
 			// функция должна выполняться до inherited::shedule_Update, для smooth movement
-			Msg				("TIME DELTA : %d",DT);
+			//Msg				("TIME DELTA : %d",DT);
 			Exec_Movement	(dt);  
 	}
 

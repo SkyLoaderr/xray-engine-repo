@@ -394,8 +394,19 @@ void CPathNodes::BuildTravelLine(const Fvector& current_pos)
 	//Engine.Sheduler.Slice	();
 }
 
+#define TIME_DELTA_THRESHOLD 0.2f
+
 void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, float speed, float dt)
 {
+//	if (dt + m_fAccumulatedDT < TIME_DELTA_THRESHOLD) {
+//		m_fAccumulatedDT += dt;
+//		return;
+//	}
+//	else {
+//		dt += m_fAccumulatedDT;
+//		m_fAccumulatedDT = 0.f;
+//	}
+
 	Fvector				motion;
 	if ((TravelPath.empty()) || (TravelPath.size() - 1 <= TravelStart))	{
 		fSpeed = 0;
@@ -419,7 +430,7 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 		return;
 	}
 	//Msg("TP %d",TravelPath.size());
-	if (dt<EPS)			return;
+//	if (dt<EPS)			return;
 	float	dist		=	speed*dt;
 	float	dist_save	=	dist;
 #ifndef NO_PHYSICS_IN_AI_MOVE
@@ -503,7 +514,7 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	float	real_motion	= motion.magnitude() + dist_save-dist;
 	float	real_speed	= real_motion/dt;
 	fSpeed				= 0.5f*fSpeed + 0.5f*real_speed;
-	Msg					("Movement : %f * %f = %f ",fSpeed,dt,p_dest.distance_to(p_src));
+	//Msg					("Movement : %f * %f = %f ",fSpeed,dt,p_dest.distance_to(p_src));
 	Device.Statistic.Physics.End	();
 
 }

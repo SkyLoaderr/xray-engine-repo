@@ -10,19 +10,21 @@ namespace AI
 	{
 	public:
 		BOOL				bNeedRebuild;
-		u32				DestNode;
+		u32					DestNode;
 
-		u32				TravelStart;
+		u32					TravelStart;
 		xr_vector<CTravelNode>	TravelPath;
 		xr_vector<PSegment>	Segments;
 
 		float				fSpeed;
+		float				m_fAccumulatedDT;
 		BOOL				m_bCollision;
 
 		CPathNodes()	{
 			bNeedRebuild	= FALSE;
 			DestNode		= 0;
 			m_bCollision	= true;
+			m_fAccumulatedDT = 0.f;
 		}
 
 		void				BuildTravelLine	(const Fvector& current_pos);
