@@ -37,7 +37,7 @@ CEffect_Rain::CEffect_Rain()
 {
 	state							= stIdle;
 	
-	Sound->create					(snd_Ambient,TRUE,"amb_rain");
+	Sound->create					(snd_Ambient,TRUE,"ambient\\rain");
 
 	destructor<IReader>	F			(FS.r_open("$game_meshes$","dm\\rain.dm"));
 	DM_Drop							= ::Render->model_CreateDM		(&F());
