@@ -40,6 +40,7 @@ void CMissile::Load(LPCSTR section) {
 		else{inst_z;}
 
 BOOL CMissile::net_Spawn(LPVOID DC) {
+#pragma todo("Dima to Oles and Vitya : find out why m_pInventory != NULL on net_spawn after net_destroy")
 	//R_ASSERT(!m_pInventory);
 	m_pInventory = 0;
 	BOOL l_res = inherited::net_Spawn(DC);
