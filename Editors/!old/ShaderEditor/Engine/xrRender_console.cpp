@@ -96,7 +96,17 @@ public:
 			ps_r2_ls_flags.set	(R2FLAG_GLOBALMATERIAL,TRUE);
 		} else if (0==xr_strcmp(args,"off"))	{
 			ps_r2_ls_flags.set	(R2FLAG_GLOBALMATERIAL,FALSE);
-		} else CCC_Float::Execute(args);
+		} else {
+			CCC_Float::Execute	(args);
+			if (ps_r2_ls_flags.test(R2FLAG_GLOBALMATERIAL))	{
+				static LPCSTR	name[4]	= { "oren", "blin", "phong", "metal" };
+				float	mid		= *value +0.000001f;
+				int		m0		= iFloor(mid)	% 4;
+				int		m1		= (m0+1)		% 4;
+				float	frc		= mid - float(iFloor(mid));
+				Msg		("~ material set to [%s]-[%s], with lerp of [%f]",name[m0],name[m1],frc);
+			}
+		}
 	}
 };
 
@@ -142,6 +152,7 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r2_ssa_hzb_vs_tex",	&ps_r2_ssaHZBvsTEX,			16,		512		);
 
 	// R2-specific
+	CMD3(CCC_R2GM,		"r2em",					&ps_r2_gmaterial							);
 	CMD3(CCC_Mask,		"r2_tonemap",			&ps_r2_ls_flags,			R2FLAG_TONEMAP	);
 	CMD4(CCC_Float,		"r2_tonemap_middlegray",&ps_r2_tonemap_middlegray,	0.0f,	2.0f	);
 	CMD4(CCC_Float,		"r2_tonemap_adaptation",&ps_r2_tonemap_adaptation,	0.01f,	10.0f	);
