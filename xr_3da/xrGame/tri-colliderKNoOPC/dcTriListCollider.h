@@ -21,7 +21,6 @@ public:
 #ifdef DEBUG
 	virtual ~dcTriListCollider();
 #else
-#pragma todo("Dima to Kostia : check if you need here a non-virtual destructor!")
 	~dcTriListCollider();
 #endif
 

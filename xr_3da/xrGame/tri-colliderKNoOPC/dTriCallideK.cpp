@@ -114,7 +114,7 @@ if (maxc == 1) goto done;
   if (depth < 0) goto done; \
   if (A ## sideinc > 0) { FOO(ctact,side,+) } else { FOO(ctact,side,-) } \
   CONTACT(contact,ctact*skip)->depth = depth; \
-  ret++;
+  ++ret;
 
   CONTACT(contact,skip)->normal[0] =  triAx[0]*signum;
   CONTACT(contact,skip)->normal[1] =  triAx[1]*signum;
@@ -165,7 +165,7 @@ contact->pos[2] = pos[2];
 
 contact->depth = outDepth;
 
- for (i=0; i<ret; i++) {
+ for (i=0; i<ret; ++i) {
     CONTACT(contact,i*skip)->g1 = const_cast<dxGeom*> (o2);
     CONTACT(contact,i*skip)->g2 = const_cast<dxGeom*> (o1);
 	CONTACT(contact,i*skip)->normal[0] = norm[0];
@@ -340,7 +340,7 @@ dVector3 axis,outAx;
 
 /*
 #define TEST(ax,ox,c) \
-for(i=0;i<3;i++){\
+for(i=0;i<3;++i){\
 	dCROSS114(axis,=,triSideAx##ax,R+i);\
 	dNormalize3(axis);\
 	int ix1=(i+1)%3;\
@@ -374,7 +374,7 @@ depth##ox=sidePr-signum*dist##ox;\
 dVector3 pos;
 
 #define TEST(ax,ox,c) \
-for(i=0;i<3;i++){\
+for(i=0;i<3;++i){\
 	dCROSS114(axis,=,triSideAx##ax,R+i);\
 	dNormalize3(axis);\
 	int ix1=(i+1)%3;\
@@ -399,7 +399,7 @@ depth##ox=sidePr-dFabs(dist##ox);\
 						dReal sgn=dist##ax<0.f ? -1.f : 1.f;\
 						dReal sgn1=sgn*dDOT14(axis,R+ix1)<0.f ? -1.f : 1.f;\
 						dReal sgn2=sgn*dDOT14(axis,R+ix2)<0.f ? -1.f : 1.f;\
-						for(int ii=0;ii<3;ii++) crpos[ii]=p[ii]+R[ii*4+ix1]*hside[ix1]*sgn1+R[ii*4+ix2]*hside[ix2]*sgn2;\
+						for(int ii=0;ii<3;++ii) crpos[ii]=p[ii]+R[ii*4+ix1]*hside[ix1]*sgn1+R[ii*4+ix2]*hside[ix2]*sgn2;\
 						if(CrossProjLine14(v##ax,triSideAx##ax,crpos,R+i,hside[i],pos))\
 						{\
 						outDepth=depth##ax;\
@@ -476,7 +476,7 @@ if(code==0){
 \
   if(dDOT(cross0,pos)-ds0>0.f && \
 	 dDOT(cross1,pos)-ds1>0.f && \
-	 dDOT(cross2,pos)-ds2>0.f) ret++;\
+	 dDOT(cross2,pos)-ds2>0.f) ++ret;\
 }
 ///////////////////////////////////////////////////////////
 
@@ -499,7 +499,7 @@ prc=c;
   prc=c;\
   if (!(*pdepth < 0)) \
 	{\
-	ret++;\
+	++ret;\
 	c=CONTACT(contact,ret*skip);\
 	}\
   }
@@ -685,7 +685,7 @@ case 2:
 
 
 
-//if(code!=0){
+//if(0!=code){
 contact->pos[0] = pos[0];
 contact->pos[1] = pos[1];
 contact->pos[2] = pos[2];
@@ -698,7 +698,7 @@ contact->pos[2] = pos[2];
 contact->depth = outDepth;
 
 //}
- for (u32 i=0; i<ret; i++) {
+ for (u32 i=0; i<ret; ++i) {
     CONTACT(contact,i*skip)->g1 = const_cast<dxGeom*> (o2);
     CONTACT(contact,i*skip)->g2 = const_cast<dxGeom*> (o1);
 	CONTACT(contact,i*skip)->normal[0] = norm[0];
@@ -1162,13 +1162,13 @@ depth##ox=sidePr-dFabs(dist##ox);\
 }\
 }
 
-if(code!=7)
+if(7!=code)
 TEST(0,1,2,10)
 
-if(code!=8)
+if(8!=code)
 TEST(1,2,0,11)
 
-if(code!=9)
+if(9!=code)
 TEST(2,0,1,12)
 
 #undef TEST
@@ -1243,7 +1243,7 @@ if(dFabs(Q2)>M_SQRT1_2){
   if(CONTACT(contact,ret*skip)->depth>0.f)
     if(dDOT(cross0,CONTACT(contact,ret*skip)->pos)-ds0>0.f && 
 	   dDOT(cross1,CONTACT(contact,ret*skip)->pos)-ds1>0.f && 
-	   dDOT(cross2,CONTACT(contact,ret*skip)->pos)-ds2>0.f) ret++;
+	   dDOT(cross2,CONTACT(contact,ret*skip)->pos)-ds2>0.f) ++ret;
   
   
   CONTACT(contact,ret*skip)->pos[0]=pos[0]+2.f*A3*R[2];
@@ -1254,7 +1254,7 @@ if(dFabs(Q2)>M_SQRT1_2){
   if(CONTACT(contact,ret*skip)->depth>0.f)
     if(dDOT(cross0,CONTACT(contact,ret*skip)->pos)-ds0>0.f && 
 	   dDOT(cross1,CONTACT(contact,ret*skip)->pos)-ds1>0.f && 
-	   dDOT(cross2,CONTACT(contact,ret*skip)->pos)-ds2>0.f) ret++;
+	   dDOT(cross2,CONTACT(contact,ret*skip)->pos)-ds2>0.f) ++ret;
 } else {
 
   CONTACT(contact,ret*skip)->pos[0]=pos[0]+2.f*(A2>0 ? hlz*R[1]:-hlz*R[1]);
@@ -1265,7 +1265,7 @@ if(dFabs(Q2)>M_SQRT1_2){
   if(CONTACT(contact,ret*skip)->depth>0.f)
     if(dDOT(cross0,CONTACT(contact,ret*skip)->pos)-ds0>0.f && 
 	   dDOT(cross1,CONTACT(contact,ret*skip)->pos)-ds1>0.f && 
-	   dDOT(cross2,CONTACT(contact,ret*skip)->pos)-ds2>0.f) ret++;
+	   dDOT(cross2,CONTACT(contact,ret*skip)->pos)-ds2>0.f) ++ret;
 }
 	}
 else if(code<7)//1-6
@@ -1315,7 +1315,7 @@ else {//7-12
 
 	if((int)ret>maxc) ret=(unsigned int)maxc;
 
- for (unsigned int i=0; i<ret; i++) {
+ for (unsigned int i=0; i<ret; ++i) {
     CONTACT(contact,i*skip)->g1 = const_cast<dxGeom*> (o2);
     CONTACT(contact,i*skip)->g2 = const_cast<dxGeom*> (o1);
 	CONTACT(contact,i*skip)->normal[0] = norm[0];
