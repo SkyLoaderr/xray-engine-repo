@@ -10,6 +10,8 @@
 #include "ai_funcs.h"
 #include "CustomMonster.h"
 
+#define AI_PATH		"ai\\"
+
 CPatternFunction::CPatternFunction()
 {
 	m_dwPatternCount = m_dwVariableCount = m_dwParameterCount = 0;
@@ -47,16 +49,21 @@ CPatternFunction::~CPatternFunction()
 
 void CPatternFunction::vfLoadEF(const char *caFileName, CBaseFunction **fpaBaseFunctions)
 {
-	FILE *fTestParameters = fopen(caFileName,"rb");
+	char caPath[260];
+	memcpy(caPath,Path.GameData,(strlen(Path.GameData) + 1)*sizeof(char));
+	strcat(caPath,AI_PATH);
+	strcat(caPath,caFileName);
+
+	FILE *fTestParameters = fopen(caPath,"rb");
 	if (!fTestParameters) {
-		Msg("Evaluation function : File not found \"%s\"",caFileName);
+		Msg("Evaluation function : File not found \"%s\"",caPath);
 		return;
 	}
 	
 	fread(&m_tEFHeader,1,sizeof(SEFHeader),fTestParameters);
 	if (m_tEFHeader.dwBuilderVersion != EFC_VERSION) {
 		fclose(fTestParameters);
-		Msg("Evaluation function (%s) : Not supported version of the Evaluation Function Contructor",caFileName);
+		Msg("Evaluation function (%s) : Not supported version of the Evaluation Function Contructor",caPath);
 		return;
 	}
 
@@ -106,6 +113,7 @@ void CPatternFunction::vfLoadEF(const char *caFileName, CBaseFunction **fpaBaseF
 	_FREE(m_dwaAtomicIndexes);
     
 	fpaBaseFunctions[m_dwFunctionType - 1] = this;
+	Msg("Evaluation function (%s) is successfully loaded",caPath);
 }
 
 float CPatternFunction::ffEvaluate()

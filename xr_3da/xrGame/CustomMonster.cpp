@@ -10,6 +10,8 @@
 #include "hudmanager.h"
 #include "ai_funcs.h"
 
+#define PATH_AI			"ai\\"
+
 bool					CCustomMonster::bPatternFunctionLoaded = false;
 CBaseFunction			*CCustomMonster::fpaBaseFunctions[MAX_FUNCTION_COUNT];
 // primary functions
@@ -132,7 +134,23 @@ void CCustomMonster::Load		(LPCSTR section)
 
 	if (!bPatternFunctionLoaded) {
 		bPatternFunctionLoaded = true;
-		//pfRelation.vfLoadEF(pSettings->ReadSTRING(section,"Relation"),fpaBaseFunctions);
+		fpaBaseFunctions[0] = &pfHealth;
+		fpaBaseFunctions[1] = &pfMorale;
+		fpaBaseFunctions[2] = &pfCreatureType;
+		fpaBaseFunctions[3] = &pfWeaponType;
+		fpaBaseFunctions[4] = &pfDistance;
+		// complex functions
+		fpaBaseFunctions[50] = &pfPersonalStatus;
+		fpaBaseFunctions[51] = &pfEnemyStatus;
+		fpaBaseFunctions[52] = &pfWeaponEffectiveness;
+		fpaBaseFunctions[53] = &pfAttackSuccessProbability;
+		fpaBaseFunctions[54] = &pfDefendSuccessProbability;
+
+		pfEnemyStatus.				vfLoadEF("common\\EnemyStatus.dat",				fpaBaseFunctions);
+		pfPersonalStatus.			vfLoadEF("common\\PersonalStatus.dat",			fpaBaseFunctions);
+		pfWeaponEffectiveness.		vfLoadEF("common\\WeaponEffectiveness.dat",		fpaBaseFunctions);
+		pfAttackSuccessProbability.	vfLoadEF("common\\AttackSuccessProbability.dat",fpaBaseFunctions);
+		pfDefendSuccessProbability.	vfLoadEF("common\\DefendSuccessProbability.dat",fpaBaseFunctions);
 	}
 
 	//Msg("Evaluation Function Relation : %8.2f",pfRelation.dfGetValue(this,fpaBaseFunctions));
