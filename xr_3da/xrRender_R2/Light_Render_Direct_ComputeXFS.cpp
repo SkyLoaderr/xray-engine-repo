@@ -58,7 +58,7 @@ void CLight_Compute_XFORM_and_VIS::compute_xf_spot	(light* L)
 	u32 _size					= iFloor( factor * SMAP_adapt_optimal );
 	if (_size<SMAP_adapt_min)	_size	= SMAP_adapt_min;
 	if (_size>SMAP_adapt_max)	_size	= SMAP_adapt_max;
-	int _epsilon				= iCeil	(float(_size)*0.02f);
+	int _epsilon				= iCeil	(float(_size)*0.01f);
 	int _diff					= _abs	(int(_size)-int(_cached_size));
 	L->X.S.size					= (_diff>=_epsilon)?_size:_cached_size;
 
