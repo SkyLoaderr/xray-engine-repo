@@ -17,6 +17,8 @@ extern float		ssaDONTSORT;
 extern float		ssaLOD_A;
 extern float		ssaLOD_B;
 extern float		ssaHZBvsTEX;
+extern int			psGlowsPerFrame;
+
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
                        DWORD  ul_reason_for_call, 
@@ -41,6 +43,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD4(CCC_Float,		"rs_ssa_discard",		&ssaDISCARD,		1,  16		);
 		CMD4(CCC_Float,		"rs_ssa_dontsort",		&ssaDONTSORT,		16, 128		);
 		CMD4(CCC_Float,		"rs_ssa_hzb_vs_tex",	&ssaHZBvsTEX,		16,	512		);
+		CMD4(CCC_Integer,	"rs_glows_per_frame",	&psGlowsPerFrame,	2,		32	);
 		break;
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:

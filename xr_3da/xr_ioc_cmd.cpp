@@ -269,7 +269,6 @@ ENGINE_API float	psHUD_FOV=0.5f;
 
 extern int			psSkeletonUpdate;
 extern int			psPhysicsFPS;
-extern int			psGlowsPerFrame;
 extern int			rsDVB_Size;
 extern int			rsDIB_Size;
 extern int			psNET_ClientUpdate;
@@ -347,7 +346,6 @@ void CCC_Register()
 	CMD1(CCC_Gamma,		"rs_c_brightness"		);
 	CMD1(CCC_Gamma,		"rs_c_contrast"			);
 	CMD4(CCC_Integer,	"rs_skeleton_update",	&psSkeletonUpdate,	2,		128	);
-	CMD4(CCC_Integer,	"rs_glows_per_frame",	&psGlowsPerFrame,	2,		32	);
 	CMD4(CCC_Integer,	"rs_vb_size",			&rsDVB_Size,		32,		4096);
 	CMD4(CCC_Integer,	"rs_ib_size",			&rsDIB_Size,		32,		4096);
 	

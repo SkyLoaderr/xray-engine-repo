@@ -2,8 +2,8 @@
 //
 //////////////////////////////////////////////////////////////////////
 #pragma once
-#include "frustum.h"
-class ENGINE_API	CWallmarksEngine
+
+class CWallmarksEngine
 {
 public:
 	class  wallmark 

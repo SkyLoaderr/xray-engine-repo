@@ -287,6 +287,16 @@
 				RelativePath="GlowManager.h">
 			</File>
 		</Filter>
+		<Filter
+			Name="Wallmarks"
+			Filter="">
+			<File
+				RelativePath="WallmarksEngine.cpp">
+			</File>
+			<File
+				RelativePath="WallmarksEngine.h">
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
