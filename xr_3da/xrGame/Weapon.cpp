@@ -235,13 +235,13 @@ void CWeapon::UpdatePosition(const Fmatrix& trans){
 void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
 	if (0==hWallmark)	return;
-	Fvector D;			D.invert(vDir);
-	CSector* S			= 0;
 	
 	if (R.O) {
-		S = R.O->Sector();
 		if (R.O->CLS_ID==CLSID_ENTITY)
 		{
+			CSector* S = R.O->Sector();
+			Fvector D;	D.invert(vDir);
+
 			LPCSTR ps_gibs		= "blood_1";//(Random.randI(5)==0)?"sparks_1":"stones";
 			CPSObject* PS		= new CPSObject(ps_gibs,S,true);
 			PS->m_Emitter.m_ConeDirection.set(D);

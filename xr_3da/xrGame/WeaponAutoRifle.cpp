@@ -199,7 +199,7 @@ void CWeaponAutoRifle::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Col
 		PS->PlayAtPos		(vEnd);
 		
 		// stones
-		CPSObject* PS		= new CPSObject("stones",S,true);
+		PS					= new CPSObject("stones",S,true);
 		PS->m_Emitter.m_ConeDirection.set(D);
 		PS->PlayAtPos		(vEnd);
 	}
