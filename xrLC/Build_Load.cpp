@@ -283,43 +283,51 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 			LPSTR N			= BT.name;
 			if (strchr(N,'.')) *(strchr(N,'.')) = 0;
 			strlwr			(N);
-			char			th_name[256]; 
-			FS.update_path	(th_name,"$textures$",strconcat(th_name,N,".thm"));
-			IReader* THM	= FS.r_open(th_name);
-			R_ASSERT2		(THM,th_name);
+			if (0==xr_strcmp(N,"level_lods"))	{
+				// HACK for merged lod textures
+				BT.dwWidth	= 1024;
+				BT.dwHeight	= 1024;
+				BT.bHasAlpha= TRUE;
+				BT.pSurface	= 0;
+			} else {
+				char			th_name[256]; 
+				FS.update_path	(th_name,"$textures$",strconcat(th_name,N,".thm"));
+				IReader* THM	= FS.r_open(th_name);
+				R_ASSERT2		(THM,th_name);
 
-			// version
-			u32 version = 0;
-			R_ASSERT(THM->r_chunk(THM_CHUNK_VERSION,&version));
-			// if( version!=THM_CURRENT_VERSION )	Debug.fatal("Unsupported version of THM file.");
+				// version
+				u32 version = 0;
+				R_ASSERT(THM->r_chunk(THM_CHUNK_VERSION,&version));
+				// if( version!=THM_CURRENT_VERSION )	Debug.fatal("Unsupported version of THM file.");
 
-			// analyze thumbnail information
-			R_ASSERT(THM->find_chunk(THM_CHUNK_TEXTUREPARAM));
-			THM->r                  (&BT.THM.fmt,sizeof(STextureParams::ETFormat));
-			BT.THM.flags.set		(THM->r_u32());
-			BT.THM.border_color		= THM->r_u32();
-			BT.THM.fade_color		= THM->r_u32();
-			BT.THM.fade_amount		= THM->r_u32();
-			BT.THM.mip_filter		= THM->r_u32();
-			BT.THM.width			= THM->r_u32();
-			BT.THM.height           = THM->r_u32();
-			BOOL			bLOD=FALSE;
-			if (N[0]=='l' && N[1]=='o' && N[2]=='d' && N[3]=='\\') bLOD = TRUE;
+				// analyze thumbnail information
+				R_ASSERT(THM->find_chunk(THM_CHUNK_TEXTUREPARAM));
+				THM->r                  (&BT.THM.fmt,sizeof(STextureParams::ETFormat));
+				BT.THM.flags.set		(THM->r_u32());
+				BT.THM.border_color		= THM->r_u32();
+				BT.THM.fade_color		= THM->r_u32();
+				BT.THM.fade_amount		= THM->r_u32();
+				BT.THM.mip_filter		= THM->r_u32();
+				BT.THM.width			= THM->r_u32();
+				BT.THM.height           = THM->r_u32();
+				BOOL			bLOD=FALSE;
+				if (N[0]=='l' && N[1]=='o' && N[2]=='d' && N[3]=='\\') bLOD = TRUE;
 
-			// load surface if it has an alpha channel or has "implicit lighting" flag
-			BT.dwWidth	= BT.THM.width;
-			BT.dwHeight	= BT.THM.height;
-			BT.bHasAlpha= BT.THM.HasAlphaChannel();
-			if (!bLOD) 
-			{
-				if (BT.bHasAlpha || BT.THM.flags.test(STextureParams::flImplicitLighted))
+				// load surface if it has an alpha channel or has "implicit lighting" flag
+				BT.dwWidth	= BT.THM.width;
+				BT.dwHeight	= BT.THM.height;
+				BT.bHasAlpha= BT.THM.HasAlphaChannel();
+				if (!bLOD) 
 				{
-					clMsg		("- loading: %s",N);
-					u32			w=0, h=0;
-					BT.pSurface = Surface_Load(N,w,h);
-					BT.Vflip	();
-				} else {
-					// Free surface memory
+					if (BT.bHasAlpha || BT.THM.flags.test(STextureParams::flImplicitLighted))
+					{
+						clMsg		("- loading: %s",N);
+						u32			w=0, h=0;
+						BT.pSurface = Surface_Load(N,w,h);
+						BT.Vflip	();
+					} else {
+						// Free surface memory
+					}
 				}
 			}
 
