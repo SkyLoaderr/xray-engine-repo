@@ -83,7 +83,7 @@ void CRender::InsertSG_Static(IVisual *pVisual)
 				SceneGraph::mapNormalVS::TNode*			Nvs		= Ntex->val.insert	(pass.vs);
 				SceneGraph::mapNormalVB::TNode*			Nvb		= Nvs->val.insert	(pVisual->hGeom->vb);
 				SceneGraph::mapNormalMatrices::TNode*	Nmat	= Nvb->val.insert	(pass.M);
-				SceneGraph::mapNormalConstants::TNode*	Nconst	= Nmat->val.insert	(pass.C);
+				SceneGraph::mapNormalConstants::TNode*	Nconst	= Nmat->val.insert	(pass.constants);
 				SceneGraph::mapNormalItems&				item	= Nconst->val;
 				if (pass_id)	{
 					// No need to sort - ZB already setted up
