@@ -45,7 +45,7 @@ void CUIFragList::OnFrame()
 	for (;I!=E;I++,k++){
 		if (I->second.flags&GAME_PLAYER_FLAG_LOCAL)	H->Color(0xf0a0ffa0);
 		else										H->Color(0xb0a0a0a0);
-		H->OutNext		("%3d: %-20s %-5d",k,I->second.name,I->second.kills);
+		H->OutNext		("%3d: %-20s %-5d",k,I->second.name,I->first);
 	}
 }
 //--------------------------------------------------------------------
