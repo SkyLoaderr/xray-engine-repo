@@ -71,7 +71,7 @@ void vfLoadAIPoints(LPCSTR name)
 			tGraphVertex.tGlobalPoint		= tGraphVertex.tLocalPoint;
 			tGraphVertex.tNodeID			= 0;
 			tGraphVertex.tNeighbourCount	= 0;
-			tGraphVertex.tVertexType		= tpGraphPoint->m_tLocBaseID || (tpGraphPoint->m_tLocAuxID << 16);
+			Memory.mem_copy					(tGraphVertex.tVertexTypes,tpGraphPoint->m_tLocations,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
 			tGraphVertex.tLevelID			= 0;
 			tGraphVertex.tpaEdges			= 0;
 			tpaGraph.push_back				(tGraphVertex);
@@ -313,8 +313,8 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 		SGraphVertex &tGraphVertex				= tpaGraph[i];
 		tCompressedGraphVertex.tLocalPoint		= tGraphVertex.tLocalPoint;
 		tCompressedGraphVertex.tGlobalPoint		= tGraphVertex.tGlobalPoint;
-		//tCompressedGraphVertex.tNodeID			= tGraphVertex.tNodeID;
-		tCompressedGraphVertex.tVertexType		= tGraphVertex.tVertexType;
+		tCompressedGraphVertex.tNodeID			= tGraphVertex.tNodeID;
+		Memory.mem_copy							(tCompressedGraphVertex.tVertexTypes,tGraphVertex.tVertexTypes,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
 		tCompressedGraphVertex.tLevelID			= tGraphVertex.tLevelID;
 		tCompressedGraphVertex.tNeighbourCount = tGraphVertex.tNeighbourCount;
 		tCompressedGraphVertex.dwEdgeOffset		= k + j*sizeof(SGraphEdge);

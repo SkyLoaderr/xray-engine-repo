@@ -68,7 +68,7 @@ public:
 		for ( ; I != E; I++) {
 			(*I).tLocalPoint		= m_tpaGraph[I - B].tLocalPoint;
 			(*I).tGlobalPoint.add	(m_tpaGraph[I - B].tGlobalPoint,m_tLevel.tOffset);
-			(*I).tVertexType		= m_tpaGraph[I - B].tVertexType;
+			Memory.mem_copy			((*I).tVertexTypes,m_tpaGraph[I - B].tVertexTypes,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
 			(*I).tLevelID			= dwLevelID;
 			(*I).tNeighbourCount	= m_tpaGraph[I - B].tNeighbourCount;
 			(*I).tpaEdges			= (SGraphEdge *)xr_malloc((*I).tNeighbourCount*sizeof(SGraphEdge));
@@ -170,8 +170,8 @@ public:
 			SCompressedGraphVertex tVertex;
 			tVertex.tLocalPoint		= (*I).tLocalPoint;
 			tVertex.tGlobalPoint	= (*I).tGlobalPoint;
-			//tVertex.tNodeID			= (*I).tNodeID;
-			tVertex.tVertexType		= (*I).tVertexType;
+			tVertex.tNodeID			= (*I).tNodeID;
+			Memory.mem_copy			(tVertex.tVertexTypes,(*I).tVertexTypes,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
 			tVertex.tLevelID		= (*I).tLevelID;
 			tVertex.dwEdgeOffset	= dwOffset;
 			dwOffset				+= (tVertex.tNeighbourCount = (*I).tNeighbourCount)*sizeof(SGraphEdge);

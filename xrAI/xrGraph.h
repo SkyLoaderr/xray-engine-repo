@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "ai_alife_space.h"
+
 #pragma pack(push,4)
 typedef struct tagSGraphEdge {
 	u32		dwVertexNumber;
@@ -18,7 +20,7 @@ typedef struct tagSGraphVertex {
 	Fvector				tLocalPoint;
 	Fvector				tGlobalPoint;
 	u32					tNodeID;
-	u32					tVertexType;
+	u8					tVertexTypes[LOCATION_TYPE_COUNT];
 	u32					tLevelID;
 	u32					tNeighbourCount;
 	tagSGraphEdge		*tpaEdges;
@@ -28,7 +30,8 @@ typedef struct tagSCompressedGraphVertex {
 	Fvector				tLocalPoint;
 	Fvector				tGlobalPoint;
 	u8					tLevelID;
-	u16					tVertexType;
+	u32					tNodeID;
+	u8					tVertexTypes[LOCATION_TYPE_COUNT];
 	u8					tNeighbourCount;
 	u32					dwEdgeOffset;
 } SCompressedGraphVertex;
