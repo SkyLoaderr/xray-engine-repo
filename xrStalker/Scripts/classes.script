@@ -1,3 +1,4 @@
+----------------------------------------------------------------------------------------------------
 -- класс AnimationSet 
 
 --флаги для Animation Set
@@ -32,6 +33,7 @@ function AnimationSet:get_animation ()
  	return self.anims_list[self.current_animation]
 end
 
+----------------------------------------------------------------------------------------------------
 -- класс ActionSet
 class "ActionSet"
 
@@ -59,6 +61,7 @@ function ActionSet:set_action (npc, num_act)
 end
 
 
+----------------------------------------------------------------------------------------------------
 class "SinglePatrol"
 
 function SinglePatrol:__init (npc, script_name)
