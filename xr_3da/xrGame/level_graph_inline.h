@@ -40,8 +40,8 @@ IC u8	CLevelGraph::ref_dec		(u32 id)
 
 IC void CLevelGraph::unpack_xz(const CLevelGraph::CPosition &vertex_position, int &x, int &z) const
 {
-	x					= vertex_position.xz / m_row_length;
-	z					= vertex_position.xz % m_row_length;
+	x					= vertex_position.xz() / m_row_length;
+	z					= vertex_position.xz() % m_row_length;
 }
 
 IC void CLevelGraph::unpack_xz(const CLevelGraph::CPosition &vertex_position, float &x, float &z) const
@@ -68,7 +68,7 @@ IC const Fvector CLevelGraph::vertex_position	(const CLevelGraph::CPosition &sou
 {
 	Fvector				dest_position;
 	unpack_xz			(source_position,dest_position.x,dest_position.z);
-	dest_position.y 	= (float(source_position.y)/65535)*header().factor_y() + header().box().min.y;
+	dest_position.y 	= (float(source_position.y())/65535)*header().factor_y() + header().box().min.y;
 	return				(dest_position);
 }
 
@@ -83,9 +83,9 @@ IC const CLevelGraph::CPosition &CLevelGraph::vertex_position	(CLevelGraph::CPos
 	int					pxz	= iFloor(((source_position.x - header().box().min.x)*sp + EPS_L + .5f))*m_row_length + iFloor((source_position.z - header().box().min.z)*sp   + EPS_L + .5f);
 	int					py	= iFloor(65535.f*(source_position.y - header().box().min.y)/header().factor_y() + EPS_L);
 	clamp				(pxz,0,(1 << 24) - 1);
-	dest_position.xz	= u32(pxz);
+	dest_position.xz	(u32(pxz));
 	clamp				(py,0,65535);
-	dest_position.y	= u16(py);
+	dest_position.y		(u16(py));
 	return				(dest_position);
 }
 
@@ -114,7 +114,7 @@ IC	const CLevelGraph::CPosition	CLevelGraph::vertex_position	(const Fvector &pos
 
 IC bool	CLevelGraph::inside				(const CLevelGraph::CVertex &vertex, const CLevelGraph::CPosition &vertex_position) const
 {
-	return 				(vertex_position.xz == vertex.position().xz);
+	return 				(vertex_position.xz() == vertex.position().xz());
 }
 
 IC bool	CLevelGraph::inside				(const CLevelGraph::CVertex &vertex, const Fvector &position) const
@@ -240,7 +240,7 @@ IC	const Fbox &CLevelGraph::CHeader::box() const
 
 IC	u8	CLevelGraph::CVertex::light() const
 {
-	return				(NodeCompressed::light);
+	return				(NodeCompressed::light());
 }
 
 IC	u8	CLevelGraph::CVertex::cover() const
@@ -255,14 +255,7 @@ IC	u16	CLevelGraph::CVertex::plane() const
 
 IC	u32	CLevelGraph::CVertex::link(int i) const
 {
-	switch (i) {
-			case 0 :	return link0;
-			case 1 :	return link1;
-			case 2 :	return link2;
-			case 3 :	return link3;
-			default :	NODEFAULT;
-	}
-	return		(u32(-1));
+	return		(NodeCompressed::link(i));
 }
 
 IC	const CLevelGraph::CPosition &CLevelGraph::CVertex::position() const

@@ -1,21 +1,22 @@
 #include "stdafx.h"
 #include "compiler.h"
 
-IC void	CompressPos	(NodePosition& Pdest, Fvector& Psrc, hdrNODES& H)
-{
-	float sp = 1/g_params.fPatchSize;
-	int row_length = iFloor((H.aabb.max.z - H.aabb.min.z)/H.size + EPS_L + .5f);
-	int pxz	= iFloor((Psrc.x - H.aabb.min.x)*sp + EPS_L + .5f)*row_length + iFloor((Psrc.z - H.aabb.min.z)*sp   + EPS_L + .5f);
-	int py	= iFloor(65535.f*(Psrc.y-H.aabb.min.y)/(H.size_y)+EPS_L);
-	clamp	(pxz,0,(1 << 24) - 1);	Pdest.xz = pxz;
-	clamp	(py,0,     65535);	Pdest.y = u16	(py);
-}
-
-IC BYTE	CompressCover(float c)
+IC BYTE	compress(float c)
 {
 	int	cover = iFloor(c*15.f+EPS_L);
 	clamp(cover,0,15);
 	return BYTE(cover);
+}
+
+struct CNodeCompressed {
+	IC	void	compress_node(NodeCompressed& Dest, vertex& Src);
+};
+
+IC void	CNodeCompressed::compress_node(NodeCompressed& Dest, vertex& Src)
+{
+	Dest.light	(compress(Src.LightLevel));
+	for	(u32 L=0; L<4; L++)
+		Dest.link(L,Src.n[L]);
 }
 
 void	Compress	(NodeCompressed& Dest, vertex& Src, hdrNODES& H)
@@ -24,7 +25,7 @@ void	Compress	(NodeCompressed& Dest, vertex& Src, hdrNODES& H)
 	Dest.plane	= pvCompress	(Src.Plane.n);
 	
 	// Compress position
-	CompressPos	(Dest.p,Src.Pos,H);
+	CNodePositionCompressor(Dest.p,Src.Pos,H);
 //	CompressPos	(Dest.p1,Src.P1,H);
 	
 	// Sector
@@ -32,7 +33,7 @@ void	Compress	(NodeCompressed& Dest, vertex& Src, hdrNODES& H)
 	// Dest.sector = BYTE(Src.sector);
 
 	// Light & Cover
-	Dest.light		= CompressCover(Src.LightLevel);
+	CNodeCompressed().compress_node(Dest,Src);
 //	Dest.cover[0]	= CompressCover(Src.cover[0]);
 //	Dest.cover[1]	= CompressCover(Src.cover[1]);
 //	Dest.cover[2]	= CompressCover(Src.cover[2]);
@@ -91,29 +92,6 @@ void xrSaveNodes(LPCSTR N)
 		vertex&		N	= g_nodes[i];
 
 		Compress		(NC,N,H);
-		NC.link0		= 0xffffffff;
-		NC.link1		= 0xffffffff;
-		NC.link2		= 0xffffffff;
-		NC.link3		= 0xffffffff;
-		for	(u32 L=0; L<4; L++)
-			switch (L) {
-				case 0 : {
-					NC.link0	= N.n[L];
-					break;
-				}
-				case 1 : {
-					NC.link1	= N.n[L];
-					break;
-				}
-				case 2 : {
-					NC.link2	= N.n[L];
-					break;
-				 }
-				case 3 : {
-					NC.link3	= N.n[L];
-					break;
-				}
-			}
 		
 		fs->w			(&NC,sizeof(NC));
 

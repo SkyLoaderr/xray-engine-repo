@@ -34,8 +34,8 @@ public:
 		const CLevelGraph::CVertex	&tNode1	= *tData.m_tpAI_Map->vertex(tData.dwFinishNode);
 		tData.m_tpAI_Map->unpack_xz(tNode1,x3,z3);
 		m_sqr_distance_xz		= _sqr(tData.m_tpAI_Map->header().cell_size());
-		y3						= (float)(tNode1.position().y);
-		m_fYSize2				= _sqr(tData.m_tpAI_Map->header().factor_y());
+		y3						= (float)(tNode1.position().y());
+		m_fYSize2				= _sqr((float)(tData.m_tpAI_Map->header().factor_y()/32767.0));
 	}
 
 	IC void begin(u32 dwNode, const_iterator &tIterator, const_iterator &tEnd)
@@ -43,7 +43,7 @@ public:
 		tData.m_tpAI_Map->begin	(dwNode,tIterator,tEnd);
 		m_tpNode				= tData.m_tpAI_Map->vertex(dwNode);
 		const CLevelGraph::CVertex	&tNode0	= *m_tpNode;
-		y1						= (float)(tNode0.position().y);
+		y1						= (float)(tNode0.position().y());
 	}
 
 	IC u32 get_value(const_iterator &tIterator)
@@ -60,7 +60,7 @@ public:
 	{
 		const CLevelGraph::CVertex	&tNode1 = *tData.m_tpAI_Map->vertex(dwFinishNode);
 
-		y2						= (float)(tNode1.position().y);
+		y2						= (float)(tNode1.position().y());
 
 		return					(_sqrt(m_fYSize2*_sqr(y2 - y1) + m_sqr_distance_xz));
 	}
@@ -70,7 +70,7 @@ public:
 		const CLevelGraph::CVertex	&tNode0 = *tData.m_tpAI_Map->vertex(dwStartNode);
 		
 		tData.m_tpAI_Map->unpack_xz(tNode0,x2,z2);
-		y2						= (float)(tNode0.position().y);
+		y2						= (float)(tNode0.position().y());
 
 		return					(_sqrt((float)(m_sqr_distance_xz*float(_sqr(x3 - x2) + _sqr(z3 - z2)) + m_fYSize2*_sqr(y3 - y2))));
 	}

@@ -51,23 +51,101 @@ struct	hdrNODES
 	Fbox	aabb;
 };
 #pragma pack(pop)
+
 #pragma pack(push,1)
-struct NodePosition
-{
-	u32				xz:24;
-	u32				y:16;
+#pragma pack(1)
+class NodePosition {
+	u8	data[5];
+	
+	void xz	(u32 value)
+	{
+		Memory.mem_copy	(data,&value,3);
+	}
+
+	void y	(u16 value)
+	{
+		Memory.mem_copy	(data + 3,&value,2);
+	}
+
+public:
+	u32	xz	() const
+	{
+		return			((*((u32*)data)) & 0x00ffffff);
+	}
+	u32	y	() const
+	{
+		return			(*((u16*)(data + 3)));
+	}
+
+	friend class CLevelGraph;
+	friend struct CNodePositionCompressor;
+	friend struct CNodePositionConverter;
 };
 
-struct NodeCompressed
-{
-	u16				plane;			// 2
-	NodePosition	p;				// 2+2+2 = 6
-	u8				cover;			// 1
-	u64				light	:4;		// 1
-	u64				link0	:21;
-	u64				link1	:21;
-	u64				link2	:21;
-	u64				link3	:21;
+class NodeCompressed {
+	u8				data[11];
+	
+	void link(u8 link_index, u32 value)
+	{
+		value			&= 0x001fffff;
+		switch (link_index) {
+			case 0 : {
+				value	|= (*(u32*)data) & 0xffe00000;
+				Memory.mem_copy(data, &value, sizeof(u32));
+				break;
+			}
+			case 1 : {
+				value	<<= 5;
+				value	|= (*(u32*)(data + 2)) & 0xfc00001f;
+				Memory.mem_copy(data + 2, &value, sizeof(u32));
+				break;
+			}
+			case 2 : {
+				value	<<= 2;
+				value	|= (*(u32*)(data + 5)) & 0xff100003;
+				Memory.mem_copy(data + 5, &value, sizeof(u32));
+				break;
+			}
+			case 3 : {
+				value	<<= 7;
+				value	|= (*(u32*)(data + 7)) & 0xf000007f;
+				Memory.mem_copy(data + 7, &value, sizeof(u32));
+				break;
+			}
+		}
+	}
+	
+	void light(u8 value)
+	{
+		data[10]		|= value << 4;
+	}
+
+public:
+	u8				cover;
+	u16				plane;
+	NodePosition	p;
+
+	u32	link(u8 index) const
+	{
+		switch (index) {
+			case 0 :	return	((*(u32*)data) & 0x001fffff);
+			case 1 :	return (((*(u32*)(data + 2)) >> 5) & 0x001fffff);
+			case 2 :	return (((*(u32*)(data + 5)) >> 2) & 0x001fffff);
+			case 3 :	return	(((*(u32*)(data + 7)) >> 7) & 0x001fffff);
+			default :	NODEFAULT;
+		}
+#ifdef DEBUG
+		return			(0);
+#endif
+	}
+	
+	u8	light() const
+	{
+		return			(data[10] >> 4);
+	}
+	
+	friend class CLevelGraph;
+	friend struct CNodeCompressed;
 };									// 2+5+1+11 = 19b
 #pragma pack	(pop)
 

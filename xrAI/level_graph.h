@@ -8,7 +8,11 @@
 
 #pragma once
 
-#include "../xrLevel.h"
+#ifndef AI_COMPILER
+	#include "../xrLevel.h"
+#else
+	#include "xrLevel.h"
+#endif
 #include "ai_alife_space.h"
 #include <math.h>
 

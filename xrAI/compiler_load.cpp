@@ -10,10 +10,10 @@ IC	const Fvector vertex_position(const CLevelGraph::CPosition &Psrc, const Fbox 
 	Fvector				Pdest;
 	int	x,z, row_length;
 	row_length			= iFloor((bb.max.z - bb.min.z)/params.fPatchSize + EPS_L + .5f);
-	x					= Psrc.xz / row_length;
-	z					= Psrc.xz % row_length;
+	x					= Psrc.xz() / row_length;
+	z					= Psrc.xz() % row_length;
 	Pdest.x =			float(x)*params.fPatchSize + bb.min.x;
-	Pdest.y =			(float(Psrc.y)/65535)*(bb.max.y-bb.min.y) + bb.min.y;
+	Pdest.y =			(float(Psrc.y())/65535)*(bb.max.y-bb.min.y) + bb.min.y;
 	Pdest.z =			float(z)*params.fPatchSize + bb.min.z;
 	return				(Pdest);
 }
@@ -24,16 +24,18 @@ struct SNodePositionOld {
 	s16				z;
 };
 
-extern void	CompressPos	(NodePosition& Pdest, Fvector& Psrc, hdrNODES& H);
+struct CNodePositionConverter {
+	IC		CNodePositionConverter(const SNodePositionOld &Psrc, hdrNODES &m_header, NodePosition &np);
+};
 
-void convert_node_position(const SNodePositionOld &Psrc, hdrNODES &m_header, NodePosition &np)
+IC CNodePositionConverter::CNodePositionConverter(const SNodePositionOld &Psrc, hdrNODES &m_header, NodePosition &np)
 {
 	Fvector		Pdest;
 	Pdest.x		= float(Psrc.x)*m_header.size;
 	Pdest.y		= (float(Psrc.y)/65535)*m_header.size_y + m_header.aabb.min.y;
 	Pdest.z		= float(Psrc.z)*m_header.size;
-	CompressPos	(np,Pdest,m_header);
-	np.y		= Psrc.y;
+	CNodePositionCompressor(np,Pdest,m_header);
+	np.y		(Psrc.y);
 }
 
 void xrLoad(LPCSTR name)
@@ -190,7 +192,7 @@ void xrLoad(LPCSTR name)
 			pl				= F->r_u16();
 			pvDecompress	(g_nodes[i].Plane.n,pl);
 			F->r			(&_np,sizeof(_np));
-			convert_node_position(_np,H,np);
+			CNodePositionConverter(_np,H,np);
 			g_nodes[i].Pos	= vertex_position(np,LevelBB,g_params);
 
 			g_nodes[i].Plane.build(g_nodes[i].Pos,g_nodes[i].Plane.n);

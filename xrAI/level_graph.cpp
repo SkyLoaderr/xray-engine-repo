@@ -51,14 +51,17 @@ CLevelGraph::CLevelGraph					(LPCSTR filename)
 		}
 	}
 
-	bool	b;
-	for (int i=1; i<(int)header().vertex_count(); ++i) {
-		b		= inside(i,vertex_position(i));
-		if (!b) {
-			b=b;
-		}
-	}
+	m_ref_counts.assign			(header().vertex_count(),0);
 
+	for (u32 i=1; i<header().vertex_count(); ++i) {
+		const_iterator			I, E;
+		begin					(i,I,E);
+		for ( ; I != E; ++I)
+			if (valid_vertex_id(value(i,I)))
+				if (vertex_position(value(i,I)).distance_to_xz(vertex_position(i)) > header().cell_size() + EPS_L) {
+					I = I;
+				}
+	}
 }
 
 CLevelGraph::~CLevelGraph		()

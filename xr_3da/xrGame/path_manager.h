@@ -124,12 +124,6 @@ public:
 		return					(false);
 	}
 
-	IC	bool		is_accessible	(const _index_type node_index) const
-	{
-		VERIFY					(graph);
-		return					(graph->is_accessible(node_index));
-	}
-
 	IC	bool		is_metric_euclidian() const
 	{
 		return					(true);
@@ -214,7 +208,7 @@ public:
 		return					(false);
 	}
 
-	IC	bool		is_accessible	(const _index_type node_index) const
+	IC		bool		is_accessible	(const _index_type vertex_id) const
 	{
 		VERIFY					(graph);
 		return					(true);
@@ -302,19 +296,19 @@ public:
 			_goal_node_index,
 			parameters
 		);
-		square_size_y			= graph->header().factor_y();
 		m_sqr_distance_xz		= _sqr(graph->header().cell_size());
+		square_size_y			= _sqr((float)(graph->header().factor_y()/32767.0));;
 	}
 
 	IC	void		init			()
 	{
 		const _Graph::CVertex	&tNode1	= *graph->vertex(start_node_index);
 		graph->unpack_xz		(tNode1,x2,z2);
-		y2						= (float)(tNode1.position().y);
+		y2						= (float)(tNode1.position().y());
 		
 		const _Graph::CVertex	&tNode2	= *graph->vertex(goal_node_index);
 		graph->unpack_xz		(tNode2,x3,z3);
-		y3						= (float)(tNode2.position().y);
+		y3						= (float)(tNode2.position().y());
 	}
 
 	IC	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const _Graph::const_iterator &i)
@@ -323,7 +317,7 @@ public:
 		
 		const _Graph::CVertex	&tNode1 = *graph->vertex(node_index2);
 
-		y2						= (float)(tNode1.position().y);
+		y2						= (float)(tNode1.position().y());
 
 		return					(_sqrt(square_size_y*(float)_sqr(y2 - y1) + m_sqr_distance_xz));
 	}
@@ -341,7 +335,7 @@ public:
 		
 		_Graph::CVertex			&tNode0 = *graph->vertex(node_index);
 
-		y1						= (float)(tNode0.position().y);
+		y1						= (float)(tNode0.position().y());
 
 		return					(false);
 	}
@@ -352,10 +346,10 @@ public:
 		return					(inherited::is_limit_reached(iteration_count));
 	}
 
-	IC	bool		is_accessible	(const _index_type node_index) const
+	IC	bool		is_accessible	(const _index_type vertex_id) const
 	{
 		VERIFY					(graph);
-		return					(true);
+		return					(graph->valid_vertex_id(vertex_id));
 	}
 
 	IC	bool		is_metric_euclidian() const
@@ -442,7 +436,7 @@ public:
 	IC	bool		is_accessible	(const _index_type node_index) const
 	{
 		VERIFY					(graph);
-		return					(!m_avoid_dynamic_obstacles || graph->is_accessible(node_index));
+		return					(graph->valid_vertex_id(vertex_id) && (!m_avoid_dynamic_obstacles || graph->is_accessible(node_index)));
 	}
 };
 
@@ -531,7 +525,7 @@ public:
 
 		const _Graph::CVertex	&tNode1 = *graph->vertex(node_index2);
 
-		y2						= (float)(tNode1.position().y);
+		y2						= (float)(tNode1.position().y());
 
 		float					cover = 1/(EPS_L + (float)(graph->cover(tNode1)[0])/255.f + (float)(graph->cover(tNode1)[1])/255.f + (float)(graph->cover(tNode1)[2])/255.f  + (float)(graph->cover(tNode1)[3])/255.f);
 		float					light = (float)(tNode1.light())/15.f;
@@ -717,7 +711,7 @@ public:
 		VERIFY					(m_flood);
 		m_flood->push_back		(node_index);
 		_Graph::CVertex			&tNode0 = *graph->vertex(node_index);
-		y1						= (float)(tNode0.position().y);
+		y1						= (float)(tNode0.position().y());
 		return					(false);
 	}
 
@@ -814,7 +808,7 @@ public:
 			return					(false);
 		}
 
-		if ((_abs(m_params->m_position.y - ai().level_graph().vertex_plane_y(node_index,m_params->m_position.x,m_params->m_position.z)) >= m_params->m_epsilon))
+		if ((_abs(m_params->m_position.y() - ai().level_graph().vertex_plane_y(node_index,m_params->m_position.x,m_params->m_position.z)) >= m_params->m_epsilon))
 			return					(false);
 		else {
 			m_params->m_distance	= 0.f;
@@ -911,7 +905,7 @@ public:
 		}
 
 		_Graph::CVertex			&tNode0 = *graph->vertex(node_index);
-		y1						= (float)(tNode0.position().y);
+		y1						= (float)(tNode0.position().y());
 
 		return					(false);
 	}
@@ -1088,10 +1082,9 @@ public:
 
 	IC		void		create_path		()
 	{
-		VERIFY					(data_storage && path);
-		data_storage->get_path	(*path);
+		inherited::create_path				();
 
-		_dist_type				fCumulativeDistance = 0, fLastDirectDistance = 0, fDirectDistance;
+		_dist_type							fCumulativeDistance = 0, fLastDirectDistance = 0, fDirectDistance;
 
 		Fvector								tPosition = m_parameters->m_start_point;
 		
@@ -1099,31 +1092,31 @@ public:
 		xr_vector<_index_type>::iterator	E = path->end();
 		_index_type							dwNode = *I;
 		for ( ++I; I != E; ++I) {
-			fDirectDistance = graph->check_position_in_direction(dwNode,tPosition,graph->vertex_position(*I),m_parameters->max_range);
+			fDirectDistance					= graph->check_position_in_direction(dwNode,tPosition,graph->vertex_position(*I),m_parameters->max_range);
 			if (fDirectDistance == m_parameters->max_range) {
 				if (fLastDirectDistance == 0) {
-					fCumulativeDistance += graph->distance(dwNode,*I);
+					fCumulativeDistance		+= graph->distance(dwNode,*I);
 					dwNode = *I;
 				}
 				else {
-					fCumulativeDistance += fLastDirectDistance;
-					fLastDirectDistance = 0;
-					dwNode = *--I;
+					fCumulativeDistance		+= fLastDirectDistance;
+					fLastDirectDistance		= 0;
+					dwNode					= *--I;
 				}
-				tPosition = graph->vertex_position(dwNode);
+				tPosition					= graph->vertex_position(dwNode);
 			}
 			else 
-				fLastDirectDistance = fDirectDistance;
+				fLastDirectDistance			= fDirectDistance;
 			if (fCumulativeDistance + fLastDirectDistance >= m_parameters->max_range) {
-				m_parameters->m_distance = m_parameters->max_range;
+				m_parameters->m_distance	= m_parameters->max_range;
 				return;
 			}
 		}
 
-		fDirectDistance = graph->check_position_in_direction(dwNode,tPosition,m_parameters->m_dest_point,m_parameters->max_range);
+		fDirectDistance						= graph->check_position_in_direction(dwNode,tPosition,m_parameters->m_dest_point,m_parameters->max_range);
 		if (fDirectDistance == m_parameters->max_range)
-			m_parameters->m_distance = fCumulativeDistance + fLastDirectDistance + m_parameters->m_dest_point.distance_to(graph->vertex_position((*path)[path->size() - 1]));
+			m_parameters->m_distance		= fCumulativeDistance + fLastDirectDistance + m_parameters->m_dest_point.distance_to(graph->vertex_position((*path)[path->size() - 1]));
 		else
-			m_parameters->m_distance = fCumulativeDistance + fDirectDistance;
+			m_parameters->m_distance		= fCumulativeDistance + fDirectDistance;
 	}
 };

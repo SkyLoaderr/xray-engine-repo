@@ -147,7 +147,7 @@ bool CLevelGraph::check_vertex_in_direction(u32 start_vertex_id, const Fvector &
 		contour				(_contour,dwCurNode);
 		for ( ; I != E; ++I) {
 			iNextNode = value(dwCurNode,I);
-			if (valid_vertex_id(iNextNode) && (iPrevIndex == iNextNode))
+			if (valid_vertex_id(iNextNode) && (iPrevIndex != iNextNode))
 				choose_point(start_point,finish_point,_contour, iNextNode,temp_point,saved_index);
 		}
 
@@ -177,7 +177,7 @@ u32 CLevelGraph::check_position_in_direction(u32 start_vertex_id, const Fvector 
 		contour				(_contour,dwCurNode);
 		for ( ; I != E; ++I) {
 			iNextNode = value(dwCurNode,I);
-			if (valid_vertex_id(iNextNode) && (iPrevIndex == iNextNode))
+			if (valid_vertex_id(iNextNode) && (iPrevIndex != iNextNode))
 				choose_point(start_point,finish_point,_contour, iNextNode,temp_point,saved_index);
 		}
 
@@ -211,12 +211,12 @@ float CLevelGraph::check_position_in_direction(u32 start_vertex_id, const Fvecto
 		contour				(_contour,dwCurNode);
 		for ( ; I != E; ++I) {
 			iNextNode = value(dwCurNode,I);
-			if (valid_vertex_id(iNextNode) && (iPrevIndex == iNextNode))
+			if (valid_vertex_id(iNextNode) && (iPrevIndex != iNextNode))
 				choose_point(start_point,finish_point,_contour, iNextNode,temp_point,saved_index);
 		}
 
 		if (saved_index > -1) {
-			fCurDistance	= start_point.distance_to_xz(temp_point);
+			fCurDistance	= start_point.distance_to(temp_point);
 			iPrevIndex		= dwCurNode;
 			dwCurNode		= saved_index;
 		}
@@ -259,7 +259,7 @@ float CLevelGraph::mark_nodes_in_direction(u32 start_vertex_id, const Fvector &s
 		contour				(_contour,dwCurNode);
 		for ( ; I != E; ++I) {
 			iNextNode = value(dwCurNode,I);
-			if (valid_vertex_id(iNextNode) && (iPrevIndex == iNextNode))
+			if (valid_vertex_id(iNextNode) && (iPrevIndex != iNextNode))
 				choose_point(start_point,finish_point,_contour, iNextNode,temp_point,saved_index);
 		}
 
@@ -294,7 +294,7 @@ float CLevelGraph::find_farthest_node_in_direction(u32 start_vertex_id, const Fv
 		contour				(_contour,dwCurNode);
 		for ( ; I != E; ++I) {
 			iNextNode = value(dwCurNode,I);
-			if (valid_vertex_id(iNextNode) && (iPrevIndex == iNextNode))
+			if (valid_vertex_id(iNextNode) && (iPrevIndex != iNextNode))
 				choose_point(start_point,finish_point,_contour, iNextNode,temp_point,saved_index);
 		}
 
@@ -335,7 +335,7 @@ bool CLevelGraph::create_straight_PTN_path(u32 start_vertex_id, const Fvector &s
 		contour				(_contour,dwCurNode);
 		for ( ; I != E; ++I) {
 			iNextNode = value(dwCurNode,I);
-			if (valid_vertex_id(iNextNode) && (iPrevIndex == iNextNode))
+			if (valid_vertex_id(iNextNode) && (iPrevIndex != iNextNode))
 				choose_point(start_point,finish_point,_contour, iNextNode,temp_point,saved_index);
 		}
 
@@ -411,7 +411,7 @@ void CLevelGraph::find_game_point_in_direction(u32 start_vertex_id, const Fvecto
 		contour				(_contour,dwCurNode);
 		for ( ; I != E; ++I) {
 			iNextNode = value(dwCurNode,I);
-			if (valid_vertex_id(iNextNode) && (iPrevIndex == iNextNode) && (ai().cross_table().vertex(iNextNode).game_vertex_id() == tGraphID))
+			if (valid_vertex_id(iNextNode) && (iPrevIndex != iNextNode) && (ai().cross_table().vertex(iNextNode).game_vertex_id() == tGraphID))
 				choose_point(start_point,finish_point,_contour, iNextNode,temp_point,saved_index);
 		}
 
