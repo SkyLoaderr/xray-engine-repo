@@ -4573,9 +4573,9 @@ $prefetch 			 = 16
 Scheduled		     = on						; option for ALife Simulator
 Human		     	 = off						; option for ALife Simulator
 Health			     = 400						; option for ALife Simulator
-MinSpeed		     = 1.0						; option for ALife Simulator
-MaxSpeed		     = 1.5						; option for ALife Simulator
-going_speed          = 1.0                      ; option for ALife Simulator
+MinSpeed		     = 2.0	;1.0						; option for ALife Simulator
+MaxSpeed		     = 4.5	;1.5						; option for ALife Simulator
+going_speed          = 2.0	;1.0                      ; option for ALife Simulator
 search_speed         = .5                       ; option for ALife Simulator
 visual				 = monsters\krovosos\krovosos
 MaxHealthValue		 = 100						; range [0..200]
@@ -4651,17 +4651,17 @@ SleepTimeMax		= 3000
 
 
 ; "Rest" state specific 
-ProbRestWalkFree	= 50    ; при выборе действия, в 50% случаях монстр будет ходить
+ProbRestWalkFree	= 60	;50    ; при выборе действия, в 50% случаях монстр будет ходить
 ProbRestStandIdle	= 15		
-ProbRestLieIdle		= 25
+ProbRestLieIdle		= 15	;25
 ProbRestTurnLeft	= 10
 
 ; параметры невидимости
-BlinkTime			= 300		; время мерцания
+BlinkTime			= 400	;300		; время мерцания
 BlinkMicroInterval  = 30		; время кванта мерцания
 RestoreInterval		= 5000		; время восстановления 5 сек
 InvisibilityTimeMin	= 2000		; мин время, на которое монстр становится невидимым
-InvisibilityTimeMax	= 4000		; макс время, на которое монстр становится невидимым
+InvisibilityTimeMax	= 7000	;4000		; макс время, на которое монстр становится невидимым
 PowerDownFactor		= 0.10		; [0..1] коэффициент, на который падает сила монстра при активации невидимости
 PowerThreshold		= 0.70		; [0..1] порог силы, после которого нельзя стать невидимым 
 InvisibilityDist	= 8.0		; [1..n] дистанция до врага, на которой монстр может становиться нивидимым
@@ -4702,7 +4702,7 @@ power_hit_part = 1.0		;0.9			;процент хита, уходящий на отнимание силы
 burn_immunity = 1.0							;коэффициенты иммунитета 
 strike_immunity = 1.0
 shock_immunity = 1.0
-wound_immunity = 1.0		
+wound_immunity = 0.3	;1.0		
 radiation_immunity = 1.0
 telepatic_immunity = 1.0
 
