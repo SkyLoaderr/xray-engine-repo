@@ -7,8 +7,8 @@
 #define DETAIL_VERSION		1
 #define DETAIL_SLOT_SIZE	4.f
 
-//	int s_x	= iFloor			(EYE.x/slot_size+.5f)-min_x;		// [0...size_x)
-//	int s_z	= iFloor			(EYE.z/slot_size+.5f)-min_z;		// [0...size_z)
+//	int s_x	= iFloor			(EYE.x/slot_size+.5f)+offs_x;		// [0...size_x)
+//	int s_z	= iFloor			(EYE.z/slot_size+.5f)+offs_z;		// [0...size_z)
 
 
 /*
@@ -26,7 +26,7 @@ struct ENGINE_API DetailHeader
 {
 	DWORD	version;
 	DWORD	object_count;
-	DWORD	min_x,	min_z;
+	DWORD	offs_x,	offs_z;
 	DWORD	size_x,	size_z;
 };
 
