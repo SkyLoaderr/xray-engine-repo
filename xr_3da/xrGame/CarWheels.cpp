@@ -29,20 +29,7 @@ void CCar::SWheelDrive::Init()
 	case jtWheel:
 		pos_fvd=bone_map.find(pwheel->bone_id)->second.element->mXFORM.k.x;
 		break;
-/*
-	case jtWheelXZ:	
-	case jtWheelYZ:
-		pos_fvd=bone_map.find(pwheel->bone_id)->second.element->mXFORM.k.x;
-		break;
-	case jtWheelXY:
-	case jtWheelZY:
-		pos_fvd=bone_map.find(pwheel->bone_id)->second.element->mXFORM.j.x;
-		break;
-	case jtWheelYX:
-	case jtWheelZX:
-		pos_fvd=bone_map.find(pwheel->bone_id)->second.element->mXFORM.i.x;
-		break;
-*/
+
 	default: NODEFAULT;
 	}
 
