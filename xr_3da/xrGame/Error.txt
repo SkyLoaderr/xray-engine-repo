@@ -19,6 +19,13 @@ To SLIPCH:
 -S			колеса жестко не фиксируются (интегратор?)
 
 To OLES : 
+---D	"pure.h" : 
+		template <class T> class CRegistrator
+		void Process(RP_FUNC *f)
+		f(R[i].Object);
+		ASSERT(strlen(string) > 127)
+		вылетает консоль
+		
 ---D	[CLevel::ClientSend][Objects.net_Export(&P)][NET_Packet.w] :
 		VERIFY		(B.count<NET_PacketSizeLimit);
 		B.count == 16260, я так понял слишком много объектов за один раз, всё не помещается в пакет
