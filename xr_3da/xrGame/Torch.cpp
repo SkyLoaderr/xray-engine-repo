@@ -90,7 +90,7 @@ BOOL CTorch::net_Spawn(LPVOID DC)
 	glow_render->set_radius	(pUserData->r_float					("torch_definition","glow_radius"));
 
 	//выключить фонарик
-	Switch					(false);
+	Switch					(torch->m_active);
 	return					(TRUE);
 }
 
@@ -195,4 +195,16 @@ void CTorch::activate_physic_shell()
 void CTorch::setup_physic_shell	()
 {
 	CGameObject::setup_physic_shell();
+}
+
+void CTorch::net_Export			(NET_Packet& P)
+{
+	inherited::net_Export		(P);
+	P.w_u8						(light_render->get_active() ? 1 : 0);
+}
+
+void CTorch::net_Import			(NET_Packet& P)
+{
+	inherited::net_Import		(P);
+	light_render->set_active	(!!P.r_u8());
 }

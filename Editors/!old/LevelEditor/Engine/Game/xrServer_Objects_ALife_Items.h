@@ -58,6 +58,8 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemTorch,CSE_ALifeItem)
 	float							glow_radius;
     u16								guid_bone;
 */
+	bool							m_active;
+
 									CSE_ALifeItemTorch	(LPCSTR caSection);
     virtual							~CSE_ALifeItemTorch	();
 SERVER_ENTITY_DECLARE_END

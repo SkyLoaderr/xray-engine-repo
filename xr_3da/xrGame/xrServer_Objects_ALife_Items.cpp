@@ -195,6 +195,7 @@ CSE_ALifeItemTorch::CSE_ALifeItemTorch		(LPCSTR caSection) : CSE_ALifeItem(caSec
 	glow_radius					= 0.1f;
     guid_bone					= u32(BI_NONE);
 */
+	m_active					= false;
 }
 
 CSE_ALifeItemTorch::~CSE_ALifeItemTorch		()
@@ -242,11 +243,13 @@ void CSE_ALifeItemTorch::STATE_Write		(NET_Packet	&tNetPacket)
 void CSE_ALifeItemTorch::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
+	m_active					= !!tNetPacket.r_u8();
 }
 
 void CSE_ALifeItemTorch::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
+	tNetPacket.w_u8				(m_active ? 1 : 0);
 }
 
 #ifdef _EDITOR
