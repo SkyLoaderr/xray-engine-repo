@@ -185,15 +185,12 @@ void __fastcall TfrmEditLightAnim::NameOnDraw(PropItem* sender, LPVOID draw_val)
 void TfrmEditLightAnim::GetItemData()
 {
 	if (m_CurrentItem){
-/*
-//p    
-    	m_Props->BeginFillMode();
-        m_Props->AddItem(0,PROP_TEXT,	"Name",			m_Props->MakeTextValue	(m_CurrentItem->cName,sizeof(m_CurrentItem->cName),NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw));
-        m_Props->AddItem(0,PROP_FLOAT,	"FPS",			m_Props->MakeFloatValue	(&m_CurrentItem->fFPS,0.1f,1000,1.f,1));
-        m_Props->AddItem(0,PROP_INTEGER,"Frame Count",	m_Props->MakeIntValue	(&m_CurrentItem->iFrameCount,1,100000,1));
-    	m_Props->EndFillMode();
-*/
-        UpdateView			();
+    	m_Props->BeginFillMode	();
+        m_Props->AddTextItem	(0,"Name",			m_CurrentItem->cName,sizeof(m_CurrentItem->cName),NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw);
+        m_Props->AddFloatItem	(0,"FPS",			&m_CurrentItem->fFPS,0.1f,1000,1.f,1);
+        m_Props->AddIntItem		(0,"Frame Count",	&m_CurrentItem->iFrameCount,1,100000,1);
+    	m_Props->EndFillMode	();
+        UpdateView				();
     }
 }
 //---------------------------------------------------------------------------

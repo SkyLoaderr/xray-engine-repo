@@ -38,9 +38,11 @@ __published:	// IDE-managed Components
 	void __fastcall FormDestroy(TObject *Sender);
 private:	// User declarations
 	static TfrmPropertiesSpawnPoint* form;
-    TProperties* m_Props;
+    TProperties* 	m_Props;
     CFS_Memory 		m_SPData;
     CSpawnPoint* 	m_SPObject;
+//	PropItemVec		m_Items;
+
     void GetObjectInfo	();
     bool ApplyObjectInfo();
     void __fastcall OnModified();

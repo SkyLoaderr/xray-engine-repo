@@ -177,9 +177,9 @@ void __fastcall TProperties::FormClose(TObject *Sender,
 //---------------------------------------------------------------------------
 
 //CBlender* CSHEngineTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBlender* parent){
+/*
 void __fastcall TProperties::AddItems(TElTreeItem* parent, CStream& data)
 {
-/*
 	// parse data
     DWORD type;
     char key[255];
@@ -216,8 +216,8 @@ void __fastcall TProperties::AddItems(TElTreeItem* parent, CStream& data)
         data.Advance(sz);
     }
     data.Seek(0);
-*/
 }
+*/
 //---------------------------------------------------------------------------
 
 PropItem* __fastcall TProperties::AddItem(TElTreeItem* parent, EPropType type, LPCSTR key, PropItem* prop)
@@ -291,13 +291,31 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
 	   	Surface->Font->Style 	= TFontStyles()<< fsBold;
     }
   	if (SectionIndex == 1){
+    	PropItem* prop 	= (PropItem*)Item->Data;
+        PropValue* val	= dynamic_cast<PropValue*>(prop);
+        if (val){
+        	if (val->IsDiffValues()){ 
+            	TColor C 		= Surface->Brush->Color;
+                TBrushStyle S 	= Surface->Brush->Style;
+                Surface->Brush->Style = bsSolid;
+                Surface->Brush->Color = 0x008E8E8E;
+                TRect r	=	R;
+            	r.Left 	-= 	1;
+            	r.Right	+=	1;
+            	r.Bottom+= 	2;
+            	r.Top	-=	1;
+                Surface->FillRect(r);
+                Surface->Brush->Color 	= C;
+                Surface->Brush->Style	= S;
+            }
+        }
     	DWORD type = (DWORD)Item->Tag;
         switch(type){
     	case PROP_MARKER:
 		    Surface->Font->Color = clSilver;
             R.Right-= 1;
             R.Left += 1;
-    		DrawText	(Surface->Handle, ((PropItem*)Item->Data)->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+    		DrawText	(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
         break;
         case PROP_COLOR:{
 			Surface->Brush->Style = bsSolid;
@@ -307,20 +325,20 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             R.Left 	+= 	1;
             R.Top	+=	1;
             R.Bottom-= 	1;
-        	DWORDValue* V=(DWORDValue*)Item->Data;
+        	DWORDValue* V=(DWORDValue*)prop;
 		    Surface->Brush->Color = (TColor)rgb2bgr(V->GetValue());
             Surface->FillRect(R);
         }break;
         case PROP_FLAG:{
-        	FlagValue* V=(FlagValue*)Item->Data;
+        	FlagValue* V=(FlagValue*)prop;
         	Surface->CopyMode = cmSrcAnd;//cmSrcErase;
             if (V->GetValue())	Surface->Draw(R.Left,R.Top+3,m_BMCheck);
             else				Surface->Draw(R.Left,R.Top+3,m_BMDot);
         }break;
         case PROP_BOOLEAN:{
-        	BOOLValue* V=(BOOLValue*)Item->Data;
+        	BOOLValue* V=(BOOLValue*)prop;
         	Surface->CopyMode = cmSrcAnd;//cmSrcErase;
-            if (*V->GetText())	Surface->Draw(R.Left,R.Top+3,m_BMCheck);
+            if (V->GetValue())	Surface->Draw(R.Left,R.Top+3,m_BMCheck);
             else			   	Surface->Draw(R.Left,R.Top+3,m_BMDot);
         }break;
         case PROP_WAVE:
@@ -336,7 +354,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
         case PROP_SH_COMPILE:
             R.Right	-=	12;
             R.Left 	+= 	1;
-    		DrawText	(Surface->Handle, ((PropItem*)Item->Data)->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+    		DrawText	(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
             R.Left 	= 	R.Right;
         	Surface->CopyMode = cmSrcAnd;
             Surface->Draw(R.Left+1,R.Top+5,m_BMEllipsis);
@@ -347,7 +365,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
         case PROP_LIST:
             R.Right	-=	12;
             R.Left 	+= 	1;
-    		DrawText	(Surface->Handle, ((PropItem*)Item->Data)->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+    		DrawText	(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
             R.Left 	= 	R.Right;
             R.Right += 	10;
             DrawArrow	(Surface, eadDown, R, clWindowText, true);
@@ -363,7 +381,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
 //                Surface->Draw(R.Left+1,R.Top+5,m_BMEllipsis);
                 R.Right-= 1;
                 R.Left += 1;
-                DrawText(Surface->Handle, ((PropItem*)Item->Data)->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+                DrawText(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
             }else{
             	if (!edText->Visible) ShowLWText(R);
             }
@@ -371,7 +389,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
         case PROP_VECTOR:
             R.Right-= 1;
             R.Left += 1;
-            DrawText(Surface->Handle, ((PropItem*)Item->Data)->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+            DrawText(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
         break;
         case PROP_DWORD:
         case PROP_INTEGER:
@@ -379,7 +397,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
         	if (seNumber->Tag!=(int)Item){
 	            R.Right-= 1;
     	        R.Left += 1;
-    			DrawText(Surface->Handle, ((PropItem*)Item->Data)->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+    			DrawText(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
             }else{
             	if (!seNumber->Visible) ShowLWNumber(R);
             }
@@ -423,10 +441,13 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
         }break;
 		case PROP_TOKEN:{
             pmEnum->Items->Clear();
-            TokenValue* T = (TokenValue*)item->Data;
+            TokenValue* T 	= (TokenValue*)item->Data;
             xr_token* token_list = T->token;
+			TMenuItem* mi 	= new TMenuItem(0);
+			mi->Caption 	= "-";
+			pmEnum->Items->Add(mi);
 			for(int i=0; token_list[i].name; i++){
-                TMenuItem* mi = new TMenuItem(0);
+                mi 			= new TMenuItem(0);
                 mi->Caption = token_list[i].name;
                 mi->OnClick = PMItemClick;
                 pmEnum->Items->Add(mi);
@@ -436,8 +457,11 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
             pmEnum->Items->Clear();
             TokenValue2* T = (TokenValue2*)item->Data;
             AStringVec& lst = T->items;
+			TMenuItem* mi 	= new TMenuItem(0);
+			mi->Caption 	= "-";
+			pmEnum->Items->Add(mi);
 			for(AStringIt it=lst.begin(); it!=lst.end(); it++){
-                TMenuItem* mi = new TMenuItem(0);
+                mi 			= new TMenuItem(0);
                 mi->Caption = *it;
                 mi->OnClick = PMItemClick;
                 pmEnum->Items->Add(mi);
@@ -445,9 +469,12 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
         }break;
 		case PROP_TOKEN3:{
             pmEnum->Items->Clear();
-            TokenValue3* T = (TokenValue3*)item->Data;
+            TokenValue3* T 	= (TokenValue3*)item->Data;
+			TMenuItem* mi 	= new TMenuItem(0);
+			mi->Caption 	= "-";
+			pmEnum->Items->Add(mi);
             for (DWORD i=0; i<T->cnt; i++){
-                TMenuItem* mi = new TMenuItem(0);
+                mi 			= new TMenuItem(0);
                 mi->Caption = T->items[i].str;
                 mi->OnClick = PMItemClick;
                 pmEnum->Items->Add(mi);

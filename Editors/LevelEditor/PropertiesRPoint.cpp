@@ -23,25 +23,28 @@ __fastcall TfrmPropertiesSpawnPoint::TfrmPropertiesSpawnPoint(TComponent* Owner)
 }
 //---------------------------------------------------------------------------
 
+static float a=1.5f;
+static float b=2.75f;
+
 void TfrmPropertiesSpawnPoint::GetObjectInfo()
 {
-/*
-//p
     m_Props->BeginFillMode();
     TElTreeItem* M=0;
 //	M = m_Props->AddItem(0,PROP_MARKER2,	"Entity",	m_SPObject->m_SpawnData->s_name);
-	m_Props->AddItem	(0,PROP_TEXT,		"Name",		m_Props->MakeTextValue(m_SPObject->FName,sizeof(m_SPObject->FName),OnNameAfterEdit));
-    m_SPObject->PropWrite(m_SPData);
-    CStream F(m_SPData.pointer(),m_SPData.size());
-    m_Props->AddItems	(M,F);
+	m_Props->AddTextItem	(0,"Name",		m_SPObject->FName,sizeof(m_SPObject->FName),OnNameAfterEdit);
+	PropItem* V = m_Props->AddFloatItem	(0,"V",		&a);
+    V->InitNext(&b);
+
+//    m_SPObject->PropWrite(m_SPData);
+//    CStream F(m_SPData.pointer(),m_SPData.size());
+//    m_Props->AddItems	(M,F);
     m_Props->EndFillMode();
-*/
 }
 //---------------------------------------------------------------------------
 
 bool TfrmPropertiesSpawnPoint::ApplyObjectInfo(){
     CStream F(m_SPData.pointer(),m_SPData.size());
-    m_SPObject->PropRead(F);
+//    m_SPObject->PropRead(F);
     return true;
 }
 //---------------------------------------------------------------------------

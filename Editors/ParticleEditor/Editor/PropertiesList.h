@@ -141,7 +141,7 @@ private:	// User declarations
         m_Params.push_back(V);
     	return V;
     }
-	DWORDValue* 	MakeDWORDValue			(LPDWORD val, int mx, int inc, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw)
+	DWORDValue* 	MakeDWORDValue			(LPDWORD val, DWORD mx, DWORD inc, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw)
     {
     	DWORDValue* V	=new DWORDValue(val,mx,inc,after,before,draw);
         m_Params.push_back(V);
@@ -189,7 +189,6 @@ public:		// User declarations
     void __fastcall EndFillMode				(bool bFullExpand=true);
     TElTreeItem* __fastcall BeginEditMode	(LPCSTR section=0);
     void __fastcall EndEditMode				(TElTreeItem* expand_node=0);
-	void __fastcall AddItems				(TElTreeItem* parent, CStream& F);
     void __fastcall GetColumnWidth			(int& c0, int& c1)
     {
     	c0=tvProperties->HeaderSections->Item[0]->Width;
@@ -224,6 +223,7 @@ public:		// User declarations
         return t.c_str();
     }
 
+//	void __fastcall AddItems				(TElTreeItem* parent, CStream& F);
     IC MarkerItem* 			AddMarkerItem	(TElTreeItem* parent, LPCSTR key, LPCSTR value=0){
         return (MarkerItem*)AddItem 		(parent,PROP_MARKER,key,MakeMarker(value));
     }

@@ -249,7 +249,7 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
             ImageProps->AddTokenItem	(0,"Format",(LPDWORD)&fmt.fmt,tfmt_token);
             M=ImageProps->AddMarkerItem	(0,"MipMaps")->item;
             ImageProps->AddFlagItem		(M,"Enabled",		&fmt.flag,STextureParams::flGenerateMipMaps);
-            ImageProps->AddTokenItem	(M,"Filter",		&fmt.mip_filter,tparam_token);
+            ImageProps->AddTokenItem	(M,"Filter",		(LPDWORD)&fmt.mip_filter,tparam_token);
             M=ImageProps->AddMarkerItem	(0,"Fade")->item;
             ImageProps->AddFlagItem		(M,"Color Enabled",	&fmt.flag,STextureParams::flFadeToColor);
             ImageProps->AddFlagItem		(M,"Alpha Enabled",	&fmt.flag,STextureParams::flFadeToAlpha);
@@ -260,9 +260,10 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
             ImageProps->AddFlagItem		(M,"Alpha Enabled",	&fmt.flag,STextureParams::flAlphaBorder);
             ImageProps->AddColorItem	(M,"Color",			&fmt.border_color);
             M=ImageProps->AddMarkerItem	(0,"Flags")->item;
-            ImageProps->AddFlagItem		(M,"Binary Alpha",	&fmt.flag,STextureParams::flBinaryAlpha);
+            ImageProps->AddFlagItem		(M,"Cube Map",		&fmt.flag,STextureParams::flCubeMap);
             ImageProps->AddFlagItem		(M,"Normal Map",	&fmt.flag,STextureParams::flNormalMap);
             ImageProps->AddFlagItem		(M,"Du Dv Map",		&fmt.flag,STextureParams::flDuDvMap);
+            ImageProps->AddFlagItem		(M,"Binary Alpha",	&fmt.flag,STextureParams::flBinaryAlpha);
             ImageProps->AddFlagItem		(M,"Dither",		&fmt.flag,STextureParams::flDitherColor);
             ImageProps->AddFlagItem		(M,"Dither Each MIP",&fmt.flag,STextureParams::flDitherEachMIPLevel);
             ImageProps->AddFlagItem		(M,"Grayscale",		&fmt.flag,STextureParams::flGreyScale);

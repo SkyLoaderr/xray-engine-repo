@@ -16,6 +16,7 @@
 // Windows headers
 #include <windows.h>
 #include <mmsystem.h>
+#include <typeinfo.h>
 
 #define fabsf(a) fabs(a)
 #define sinf(a) sin(a)
