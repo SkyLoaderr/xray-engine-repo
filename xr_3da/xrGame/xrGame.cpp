@@ -141,7 +141,7 @@ public:
 				if (_max(id1,id2) > (int)getAI().GraphHeader().dwVertexCount - 1)
 					Msg("! there are only %d vertexes!",getAI().GraphHeader().dwVertexCount);
 				else
-					if (min(id1,id2) < 0)
+					if (_min(id1,id2) < 0)
 						Msg("! invalid vertex number (%d)!",_min(id1,id2));
 					else {
 						Sleep				(1);
@@ -494,7 +494,7 @@ public:
 				int id1 = 0;
 				sscanf(args ,"%d",&id1);
 				if (id1 < 0)
-					Msg("Invalid schedule min time! (%d)",id1);
+					Msg("Invalid schedule _min time! (%d)",id1);
 				else
 					tpGame->m_tpALife->vfSetScheduleMin(id1);
 			}

@@ -218,7 +218,7 @@ bool CInventory::Take(CGameObject *pObj) {
 bool CInventory::Drop(CGameObject *pObj) {
 	CInventoryItem *l_pIItem = dynamic_cast<CInventoryItem*>(pObj);
 	if(l_pIItem && (m_all.find(l_pIItem) != m_all.end()) && Ruck(l_pIItem)) {
-		m_ruck.erase(find(m_ruck.begin(), m_ruck.end(), l_pIItem)); m_all.erase(l_pIItem);
+		m_ruck.erase(std::find(m_ruck.begin(), m_ruck.end(), l_pIItem)); m_all.erase(l_pIItem);
 		l_pIItem->m_pInventory = NULL;
 		TIItemList l_subs; l_subs.insert(l_subs.end(), l_pIItem->m_subs.begin(), l_pIItem->m_subs.end());
 		while(l_subs.size()) {

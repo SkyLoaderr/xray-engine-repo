@@ -99,7 +99,7 @@ public:
 	{	tempLights.push_back	(O); }
 	void					lightRemove	(light* O)
 	{
-		xr_vector<light*>::iterator I = find(tempLights.begin(),tempLights.end(),O);
+		xr_vector<light*>::iterator I = std::find(tempLights.begin(),tempLights.end(),O);
 		if (I!=tempLights.end()) tempLights.erase(I);
 	}
 #endif

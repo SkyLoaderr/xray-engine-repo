@@ -205,9 +205,9 @@ void game_sv_CS::OnRoundStart() {
 	SpawnArtifacts();
 	srand((unsigned)time(NULL));
 	xr_vector<RPoint> &rp1 = rpoints[0];
-	random_shuffle(rp1.begin(), rp1.end());
+	std::random_shuffle(rp1.begin(), rp1.end());
 	xr_vector<RPoint> &rp2 = rpoints[0];
-	random_shuffle(rp2.begin(), rp2.end());
+	std::random_shuffle(rp2.begin(), rp2.end());
 	for(u32 i = 0; i < l_cnt; i++) SpawnPlayer(i, l_memAr[i]);
 }
 

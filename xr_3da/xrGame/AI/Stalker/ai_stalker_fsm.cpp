@@ -391,8 +391,8 @@ void CAI_Stalker::ForwardCover()
 		CWeapon					*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 		if (tpWeapon)
 			m_tSelectorCover.m_fOptEnemyDistance = (tpWeapon->m_fMinRadius + 0*tpWeapon->m_fMaxRadius)/1;
-		m_tSelectorCover.m_fMaxEnemyDistance = max(fDistance - 1.f,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
-		m_tSelectorCover.m_fMinEnemyDistance = max(fDistance - m_tSelectorCover.m_fSearchRange,m_tSelectorCover.m_fOptEnemyDistance - 3.f);
+		m_tSelectorCover.m_fMaxEnemyDistance = _max(fDistance - 1.f,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
+		m_tSelectorCover.m_fMinEnemyDistance = _max(fDistance - m_tSelectorCover.m_fSearchRange,m_tSelectorCover.m_fOptEnemyDistance - 3.f);
 		m_dwLastRangeSearch		= 0;
 		AI_Path.TravelPath.clear();
 	}
@@ -443,8 +443,8 @@ void CAI_Stalker::ForwardCover()
 			CWeapon					*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 			if (tpWeapon)
 				m_tSelectorCover.m_fOptEnemyDistance = (tpWeapon->m_fMinRadius + 0*tpWeapon->m_fMaxRadius)/1;
-			m_tSelectorCover.m_fMaxEnemyDistance = max(fDistance - 1.f,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
-			m_tSelectorCover.m_fMinEnemyDistance = max(fDistance - m_tSelectorCover.m_fSearchRange,m_tSelectorCover.m_fOptEnemyDistance - 3.f);
+			m_tSelectorCover.m_fMaxEnemyDistance = _max(fDistance - 1.f,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
+			m_tSelectorCover.m_fMinEnemyDistance = _max(fDistance - m_tSelectorCover.m_fSearchRange,m_tSelectorCover.m_fOptEnemyDistance - 3.f);
 			vfSetParameters			(&m_tSelectorCover,0,true,(m_tpCurrentSound && m_tpCurrentSound->feedback) ? eWeaponStateIdle : eWeaponStatePrimaryFire,ePathTypeDodgeCriteria,eBodyStateCrouch,eMovementTypeStand,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 			if (!tpWeapon || (tpWeapon->STATE != CWeapon::eFire) && !tpWeapon->GetAmmoElapsed() && (!m_bIfSearchFailed || ((!AI_Path.TravelPath.empty() && AI_Path.TravelPath.size() > AI_Path.TravelStart + 1) && (Level().timeServer() - m_dwActionStartTime > 5000)))) {
 				m_tActionState		= eActionStateWatchGo;
@@ -471,8 +471,8 @@ void CAI_Stalker::ForwardCover()
 			CWeapon					*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 			if (tpWeapon)
 				m_tSelectorCover.m_fOptEnemyDistance = (tpWeapon->m_fMinRadius + 0*tpWeapon->m_fMaxRadius)/1;
-			m_tSelectorCover.m_fMaxEnemyDistance = max(fDistance - 1.f,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
-			m_tSelectorCover.m_fMinEnemyDistance = max(fDistance - m_tSelectorCover.m_fSearchRange,m_tSelectorCover.m_fOptEnemyDistance - 3.f);
+			m_tSelectorCover.m_fMaxEnemyDistance = _max(fDistance - 1.f,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
+			m_tSelectorCover.m_fMinEnemyDistance = _max(fDistance - m_tSelectorCover.m_fSearchRange,m_tSelectorCover.m_fOptEnemyDistance - 3.f);
 			vfSetParameters			(&m_tSelectorCover,0,true,(m_tpCurrentSound && m_tpCurrentSound->feedback) ? eWeaponStateIdle : eWeaponStatePrimaryFire,ePathTypeDodgeCriteria,eBodyStateCrouch,eMovementTypeStand,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 			if (!tpWeapon || ((tpWeapon->STATE != CWeapon::eFire) && !tpWeapon->GetAmmoElapsed() && (!m_bIfSearchFailed || ((!AI_Path.TravelPath.empty() && AI_Path.TravelPath.size() > AI_Path.TravelStart + 1) && (Level().timeServer() - m_dwActionStartTime > 5000))))) {
 				m_tActionState		= eActionStateWatchGo;
@@ -689,7 +689,7 @@ void CAI_Stalker::ExploreDNE()
 		m_dwActionStartTime = Level().timeServer();
 		AI_Path.TravelPath.clear();
 	}
-	m_tSelectorFreeHunting.m_fOptEnemyDistance = max(25.f,vPosition.distance_to(tPoint));
+	m_tSelectorFreeHunting.m_fOptEnemyDistance = _max(25.f,vPosition.distance_to(tPoint));
 	switch (m_tActionState) {
 		case eActionStateDontWatch : {
 			WRITE_TO_LOG			("DontWatch : Exploring danger non-expedient sound");
@@ -755,7 +755,7 @@ void CAI_Stalker::ExploreDE()
 //		m_dwActionStartTime = Level().timeServer();
 //		AI_Path.TravelPath.clear();
 //	}
-//	m_tSelectorFreeHunting.m_fOptEnemyDistance = max(15.f,vPosition.distance_to(tPoint));
+//	m_tSelectorFreeHunting.m_fOptEnemyDistance = _max(15.f,vPosition.distance_to(tPoint));
 //	switch (m_tActionState) {
 //		case eActionStateDontWatch : {
 //			WRITE_TO_LOG			("DontWatch : Exploring danger expedient sound");
