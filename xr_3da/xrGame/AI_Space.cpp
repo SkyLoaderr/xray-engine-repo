@@ -25,6 +25,8 @@ CAI_Space::CAI_Space	()
 	m_tpGraphVFS				= NULL;
 	sh_debug					= 0;
 
+	m_tpHeap					= 0;
+	m_tpIndexes					= 0;
 	Device.seqDevCreate.Add		(this);
 	Device.seqDevDestroy.Add	(this);
 	OnDeviceCreate				();
@@ -89,15 +91,6 @@ void CAI_Space::Load(LPCSTR name)
 	q_mark_bit.assign	(m_header.count,false);
 	q_mark_bit_x.assign	(m_header.count,false);
 
-	// for a* search
-	u32 S1					= (MAX_NODES + 1)*sizeof(SNode);
-	m_tpHeap				= (SNode *)xr_malloc(S1);
-	ZeroMemory				(m_tpHeap,S1);
-	u32 S2					= (m_header.count)*sizeof(SIndexNode);
-	m_tpIndexes				= (SIndexNode *)xr_malloc(S2);
-	ZeroMemory				(m_tpIndexes,S2);
-	Msg("* AI path-finding structures: %d K",(S1 + S2)/(1024));
-	
 	// for graph
 	strconcat	(fName,name,"level.graph");
 	if (!Engine.FS.Exist(fName))
@@ -106,6 +99,22 @@ void CAI_Space::Load(LPCSTR name)
 	m_tpGraphVFS->Read(&m_tGraphHeader,sizeof(SGraphHeader));
 	R_ASSERT(m_tGraphHeader.dwVersion == XRAI_CURRENT_VERSION);
 	m_tpaGraph = (SGraphVertex*)m_tpGraphVFS->Pointer();
+
+	// for a* search
+	u32 S1					= (MAX_NODES + 1)*sizeof(SNode);
+	m_tpHeap				= (SNode *)xr_malloc(S1);
+	ZeroMemory				(m_tpHeap,S1);
+	u32 S2					= m_header.count*sizeof(SIndexNode);
+	m_tpIndexes				= (SIndexNode *)xr_malloc(S2);
+	ZeroMemory				(m_tpIndexes,S2);
+	Msg("* AI path-finding structures: %d K",(S1 + S2)/(1024));
+	
+//	AI::Path		tPath;
+//	vector<u32> tpPath;
+//	float		fDistance;
+//	tpMapPath   = new CAStarSearch<CAIMapShortestPathNode>(MAX_NODES);
+//	vfFindTheXestPath(77,67,tPath);
+//	tpMapPath->vfFindOptimalPath(m_tpHeap,m_tpIndexes,77,67,1000.f,fDistance,tpPath);
 }
 
 void CAI_Space::Render()
@@ -246,6 +255,7 @@ void CAI_Space::Render()
 				T.set		(PC); T.y+=0.3f;
 				Device.mFullTransform.transform	(S,T);
 				F->SetSize	(0.05f/sqrtf(_abs(S.w)));
+				F->SetColor(0xffffffff);
 				F->Out		(S.x,-S.y,"~%d",Nid);
 			}
 		}

@@ -27,11 +27,17 @@ typedef struct tagSIndexNode {
 	u32			dwTime;
 } SIndexNode;
 
+class CTemplateNode {
+public:
+	float	ffEvaluate(u32 dwStartNode, u32 dwFinishNode) {};
+	u32		dwfGetNodeEdgeCount(u32 dwNode){};
+	u32		dwfGetNodeNeighbour(u32 dwNode, u32 dwNeighbourIndex){};
+};
+
 template<class CTemplateNode> class CAStarSearch {
 
 private:
 	u32			m_dwAStarStaticCounter;
-	u32			m_dwNodeCount;
 	u32			m_dwMaxNodeCount;
 
 	IC void vfUpdateSuccessors(SNode *tpList, float dDifference)
@@ -68,11 +74,10 @@ private:
 
 
 public:
-	CAStarSearch(u32 dwMaxNodeCount, u32 dwNodeCount)
+	CAStarSearch(u32 dwMaxNodeCount)
 	{
 		m_dwAStarStaticCounter	= 0;
 		m_dwMaxNodeCount		= dwMaxNodeCount;
-		m_dwNodeCount			= dwNodeCount;
 	}
 	
 	void vfFindOptimalPath(
@@ -252,7 +257,7 @@ public:
 		}
 		
 		tpaNodes.clear();
-		fValue = m_ffMaxValue;
+		fValue = fMaxValue;
 		Device.Statistic.AI_Path.End();
 	}
 };
