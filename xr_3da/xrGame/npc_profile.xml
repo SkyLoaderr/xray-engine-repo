@@ -74,20 +74,20 @@
 
 	<!-- Dolg  -->
 	<character id="dolg">
-		<team>Dolg_general</team>
-		<class>Dolg_general</class>
+		<team>Dolg_regular</team>
+		<class>Dolg_regular</class>
 	</character>
-	<character id="dolg_novice">
-		<team>Dolg_novice</team>
-		<class>Dolg_novice</class>
+	<character id="dolg_regular">
+		<team>Dolg_regular</team>
+		<class>Dolg_regular</class>
 	</character>
-	<character id="dolg_general">
-		<team>Dolg_general</team>
-		<class>Dolg_general</class>
+	<character id="dolg_sniper">
+		<team>Dolg_sniper</team>
+		<class>Dolg_sniper</class>
 	</character>
-	<character id="dolg_veteran">
-		<team>Dolg_veteran</team>
-		<class>Dolg_veteran</class>
+	<character id="dolg_specnaz">
+		<team>Dolg_specnaz</team>
+		<class>Dolg_specnaz</class>
 	</character>
 	<character id="dolg_master">
 		<team>Dolg_master</team>
