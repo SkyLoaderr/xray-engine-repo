@@ -18,7 +18,7 @@ public:
 	{
 	}
 
-	virtual	void		execute			()
+	virtual	void		initialize			()
 	{
 		VERIFY			(m_inventory_item);
 		m_object->inventory().Slot(m_inventory_item);

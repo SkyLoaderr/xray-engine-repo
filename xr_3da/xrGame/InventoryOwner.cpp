@@ -114,8 +114,8 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 		F_entity_Destroy		(D);
 	}
 
-	//спавним каждому актеру в инвентарь болты
-	if (true && use_bolts()) {
+	//спавним каждому inventory owner-у в инвентарь болты
+	if (use_bolts()) {
 		CSE_Abstract						*D	= F_entity_Create("bolt");
 		R_ASSERT							(D);
 		CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);

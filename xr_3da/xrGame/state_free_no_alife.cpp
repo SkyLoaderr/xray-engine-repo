@@ -68,10 +68,10 @@ void CStateFreeNoAlife::execute			()
 		CMovementManager::eDetailPathTypeSmooth,
 		eBodyStateStand,
 		eMovementTypeStand,
-		eMentalStateFree
+		eMentalStateDanger
 	);
-	m_object->CSightManager::update				(eLookTypeCurrentDirection);
-//	m_object->CSightManager::update				(eLookTypePathDirection);
+//	m_object->CSightManager::update				(eLookTypeCurrentDirection);
+	m_object->CSightManager::update				(eLookTypePathDirection);
 //	m_object->CObjectHandler::set_dest_state	(eObjectActionIdle);
 	m_object->play								(eStalkerSoundHumming,60000,10000);
 }
