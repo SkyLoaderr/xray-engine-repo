@@ -595,7 +595,7 @@ end
 
 function CStateAmbush:execute()
     if(self.npc:action() == nil) then
-    if(self.npc:level_vertex_id() ~= self.ambush_way:level_vertex_id(0)) then
+		if(self.npc:level_vertex_id() ~= self.ambush_way:level_vertex_id(0)) then
 			action(self.npc, move(move.walk_fwd, self.ambush_way:point(0), move.force), sound(sound.idle), cond(cond.move_end))
         else
 			action(self.npc, look(look.point, self.ambush_way:point(1)), anim(anim.turn, 0), sound(sound.attack), cond(cond.look_end))
