@@ -192,7 +192,10 @@ bool game_sv_Deathmatch::checkForRoundStart()
 	if( (Level().timeServer())>u32(10*1000) && AllPlayers_Ready() )
 	{
 		if (!SwitchToNextMap() || !OnNextMap())
+		{
+			AllPlayers_Ready();
 			OnRoundStart();
+		};
 		return true;
 	};
 
@@ -259,12 +262,8 @@ void	game_sv_Deathmatch::SM_SwitchOnNextActivePlayer()
 	
 	CObject* pNewObject = NULL;
 	if (!PPlayersCount)
-
-
-
 	{
-		xrClientData*	C = NULL;
-		C	= m_server->GetServer_client();
+		xrClientData*	C = (xrClientData*) m_server->GetServerClient();
 		pNewObject =  Level().Objects.net_Find(C->ps->GameID);
 	}
 	else
@@ -308,6 +307,7 @@ void	game_sv_Deathmatch::SM_SwitchOnPlayer(CObject* pNewObject)
 
 BOOL	game_sv_Deathmatch::AllPlayers_Ready ()
 {
+	if (!m_server->GetServerClient()) return FALSE;
 	// Check if all players ready
 	u32		cnt		= get_players_count	();
 	u32		ready	= 0;
@@ -317,7 +317,7 @@ BOOL	game_sv_Deathmatch::AllPlayers_Ready ()
 		game_PlayerState* ps	= l_pC->ps;
 		if (!l_pC->net_Ready)
 		{
-			if (l_pC->ID == m_server->GetServer_client()->ID)
+			if (l_pC->ID == m_server->GetServerClient()->ID)
 			{
 				continue;
 			}
@@ -328,7 +328,7 @@ BOOL	game_sv_Deathmatch::AllPlayers_Ready ()
 			if (ps->Skip) ++ready;
 	}
 
-	if (ready == cnt) return TRUE;
+	if (ready == cnt && ready != 0) return TRUE;
 	return FALSE;
 };
 	
@@ -360,7 +360,7 @@ void	game_sv_Deathmatch::OnPlayerReady			(ClientID id)
 			game_PlayerState*	ps	=	get_id	(id);
 			if (ps->Skip) break;
 			if (!(ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))) break;
-			xrClientData* xrSCData	=	m_server->GetServer_client();
+			xrClientData* xrSCData	=	(xrClientData*)m_server->GetServerClient();
 			if (xrSCData && xrSCData->ID == id && m_bSpectatorMode) 
 			{
 				SM_SwitchOnNextActivePlayer();
@@ -1272,7 +1272,7 @@ void game_sv_Deathmatch::OnPlayerConnect	(ClientID id_who)
 //	ClearPlayerState(ps_who);
 	ps_who->team				=	0;	
 	
-	if (g_pGamePersistent->bDedicatedServer && (xrCData == m_server->GetServer_client()) )
+	if (g_pGamePersistent->bDedicatedServer && (xrCData == m_server->GetServerClient()) )
 	{
 		ps_who->Skip = true;
 		return;

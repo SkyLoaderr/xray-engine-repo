@@ -9,11 +9,14 @@
 #include "ui/UIChatWnd.h"
 #include "ui/UIChatLog.h"
 #include "clsid_game.h"
+#include <dinput.h>
 
 game_cl_mp::game_cl_mp()
 {
 	pChatWnd		= NULL;
 	pChatLog		= NULL;
+
+	m_bVotingActive = false;
 };
 
 game_cl_mp::~game_cl_mp()
@@ -141,6 +144,18 @@ bool	game_cl_mp::OnKeyboardPress			(int key)
 			}
 			return false;
 		}
+
+		if (IsVoteEnabled() && IsVotingActive())
+		{
+			if (key == kVOTEYES)
+			{
+				SendVoteYesMessage();
+			};
+			if (key == kVOTENO)
+			{
+				SendVoteNoMessage();
+			};
+		}
 	}
 
 	return inherited::OnKeyboardPress(key);
@@ -191,6 +206,32 @@ void game_cl_mp::TranslateGameMessage	(u32 msg, NET_Packet& P)
 								pKiller->name);
 
 			CommonMessageOut(Text);
+		}break;
+	case GAME_EVENT_VOTE_START:
+		{
+			sprintf(Text, "%sVoting started!", 
+				Color_Main);
+			CommonMessageOut(Text);
+			OnVoteStart(P);
+		}break;
+	case GAME_EVENT_VOTE_STOP:
+		{
+			sprintf(Text, "%sVoting breaked by server!", 
+				Color_Main);
+			CommonMessageOut(Text);
+
+			OnVoteStop(P);
+		}break;
+	case GAME_EVENT_VOTE_END:
+		{
+			string512 Reason;
+			P.r_stringZ(Reason);
+			sprintf(Text, "%s%s", 
+				Color_Main, 
+				Reason);
+			CommonMessageOut(Text);
+
+			OnVoteEnd(P);
 		}break;
 	default:
 		inherited::TranslateGameMessage(msg,P);
@@ -256,3 +297,44 @@ void game_cl_mp::shedule_Update(u32 dt)
 	}
 }
 
+void game_cl_mp::SendStartVoteMessage	(LPCSTR args)
+{
+	if (!args) return;
+	if (!IsVoteEnabled()) return;
+	NET_Packet P;
+	Game().u_EventGen		(P,GE_GAME_EVENT,Game().local_player->GameID);
+	P.w_u16(GAME_EVENT_VOTE_START);
+	P.w_stringZ(args);
+	Game().u_EventSend		(P);
+};
+
+void game_cl_mp::SendVoteYesMessage		()	
+{
+	if (!IsVoteEnabled() || !IsVotingActive()) return;
+	NET_Packet P;
+	Game().u_EventGen		(P,GE_GAME_EVENT,Game().local_player->GameID);
+	P.w_u16(GAME_EVENT_VOTE_YES);
+	Game().u_EventSend		(P);
+};
+void game_cl_mp::SendVoteNoMessage		()	
+{
+	if (!IsVoteEnabled() || !IsVotingActive()) return;
+	NET_Packet P;
+	Game().u_EventGen		(P,GE_GAME_EVENT,Game().local_player->GameID);
+	P.w_u16(GAME_EVENT_VOTE_NO);
+	Game().u_EventSend		(P);
+};
+
+void game_cl_mp::OnVoteStart				(NET_Packet& P)	
+{
+	SetVotingActive(true);
+};
+void game_cl_mp::OnVoteStop				(NET_Packet& P)	
+{
+	SetVotingActive(false);
+};
+
+void game_cl_mp::OnVoteEnd				(NET_Packet& P)
+{
+	SetVotingActive(false);
+};

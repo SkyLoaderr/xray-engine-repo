@@ -132,9 +132,7 @@ public:
 	void					SLS_Default			();
 	void					SLS_Clear			();
 	void					SLS_Save			(IWriter&	fs);
-	void					SLS_Load			(IReader&	fs);
-
-	xrClientData*			GetServer_client	()			{ return (xrClientData*)	SV_Client; };
+	void					SLS_Load			(IReader&	fs);	
 
 public:
 #ifdef DEBUG

@@ -510,7 +510,7 @@ void	game_sv_ArtefactHunt::SpawnArtefact			()
 
 	Assign_Artefact_RPoint	(E);
 
-	CSE_Abstract*  af =  spawn_end				(E, m_server->GetServer_client()->ID);
+	CSE_Abstract*  af =  spawn_end				(E, m_server->GetServerClient()->ID);
 	m_dwArtefactID = af->ID;
 	//-----------------------------------------------
 	NET_Packet P;

@@ -721,7 +721,7 @@ public:
 			u32 Num = atol(Number);
 			xrClientData *l_pC = (xrClientData*)	Level().Server->client_Get	(Num-1);
 			if (!l_pC) return;
-			if (Level().Server->GetServer_client() == l_pC)
+			if (Level().Server->GetServerClient() == l_pC)
 			{
 				Msg("! Can't disconnect server's client");
 				return;
@@ -738,7 +738,7 @@ public:
 			if (!l_pC) continue;
 			if (!_stricmp(l_pC->ps->getName(), Name))
 			{
-				if (Level().Server->GetServer_client() == l_pC)
+				if (Level().Server->GetServerClient() == l_pC)
 				{
 					Msg("! Can't disconnect server's client");
 					return;
@@ -822,7 +822,7 @@ public:
 
 		if (l_pC && BanByName)
 		{
-			if (l_pC != Level().Server->GetServer_client())
+			if (l_pC != Level().Server->GetServerClient())
 			{
 				Msg("Player %s Banned%s", l_pC->ps->getName(), (NeedKick)? " and Kicked!" : "!");
 				Level().Server->BanClient(l_pC, BanTime);
@@ -846,7 +846,7 @@ public:
 
 		if (NeedKick) 
 		{
-			if (l_pC && BanByName && (l_pC != Level().Server->GetServer_client())) Level().Server->DisconnectClient(l_pC);
+			if (l_pC && BanByName && (l_pC != Level().Server->GetServerClient())) Level().Server->DisconnectClient(l_pC);
 			if (!BanByName) Level().Server->DisconnectAddress(Address);
 		};
 	};
@@ -1002,6 +1002,159 @@ public:
 	{
 		strcpy(I,"Changing Game Type"); 
 	}
+};
+
+class CCC_Vote_Start : public IConsole_Command {
+public:
+	CCC_Vote_Start(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = false; };
+	virtual void Execute(LPCSTR args) 
+	{
+		if (GameID() == GAME_SINGLE)
+		{
+			Msg("! Only for multiplayer games!");
+			return;
+		}
+
+		if (!Game().IsVoteEnabled())
+		{
+			Msg("! Voting is disabled by server!");
+			return;
+		}
+		if (Game().IsVotingActive())
+		{
+			Msg("! There is voting already!");
+			return;
+		}
+
+		if (Game().Phase() != GAME_PHASE_INPROGRESS)
+		{
+			Msg("! Voting is allowed only when game is in progress!");
+			return;
+		};
+
+		Game().SendStartVoteMessage(args);		
+	};
+
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"Starts Voting"); 
+	};
+};
+
+class CCC_Vote_Stop : public IConsole_Command {
+public:
+	CCC_Vote_Stop(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) 
+	{
+		if (!OnServer()) return;
+
+		if (Level().Server->game->Type() == GAME_SINGLE)
+		{
+			Msg("! Only for multiplayer games!");
+			return;
+		}
+
+		if (!Level().Server->game->IsVoteEnabled())
+		{
+			Msg("! Voting is disabled by server!");
+			return;
+		}
+
+		if (!Level().Server->game->IsVotingActive())
+		{
+			Msg("! Currently there is no active voting!");
+			return;
+		}
+
+		if (Level().Server->game->Phase() != GAME_PHASE_INPROGRESS)
+		{
+			Msg("! Voting is allowed only when game is in progress!");
+			return;
+		};
+
+		Level().Server->game->OnVoteStop();
+	};
+
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"Stops Current Voting"); 
+	};
+};
+
+class CCC_Vote_Yes : public IConsole_Command {
+public:
+	CCC_Vote_Yes(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) 
+	{
+		if (GameID() == GAME_SINGLE)
+		{
+			Msg("! Only for multiplayer games!");
+			return;
+		}
+
+		if (!Game().IsVoteEnabled())
+		{
+			Msg("! Voting is disabled by server!");
+			return;
+		}
+
+		if (!Game().IsVotingActive())
+		{
+			Msg("! Currently there is no active voting!");
+			return;
+		}
+
+		if (Game().Phase() != GAME_PHASE_INPROGRESS)
+		{
+			Msg("! Voting is allowed only when game is in progress!");
+			return;
+		};
+
+		Game().SendVoteYesMessage();
+	};
+
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"Vote Yes"); 
+	};
+};
+
+class CCC_Vote_No : public IConsole_Command {
+public:
+	CCC_Vote_No(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) 
+	{
+		if (GameID() == GAME_SINGLE)
+		{
+			Msg("! Only for multiplayer games!");
+			return;
+		}
+
+		if (!Game().IsVoteEnabled())
+		{
+			Msg("! Voting is disabled by server!");
+			return;
+		}
+
+		if (!Game().IsVotingActive())
+		{
+			Msg("! Currently there is no active voting!");
+			return;
+		}
+
+		if (Game().Phase() != GAME_PHASE_INPROGRESS)
+		{
+			Msg("! Voting is allowed only when game is in progress!");
+			return;
+		};
+
+		Game().SendVoteNoMessage();
+	};
+
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"Vote No"); 
+	};
 };
 
 class CCC_Net_CL_InputUpdateRate : public CCC_Integer {
@@ -1404,5 +1557,11 @@ void CCC_RegisterCommands()
 	CMD1(CCC_AddMap,		"sv_addmap"				);	
 	CMD1(CCC_NextMap,		"sv_nextmap"				);	
 	CMD1(CCC_PrevMap,		"sv_prevmap"				);	
+
+	CMD1(CCC_Vote_Start,	"cl_votestart"				);
+	CMD1(CCC_Vote_Stop,		"sv_votestop"				);
+	CMD1(CCC_Vote_Yes,		"cl_voteyes"				);
+	CMD1(CCC_Vote_No,		"cl_voteno"				);
+
 }
 

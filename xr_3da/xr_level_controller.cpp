@@ -86,6 +86,10 @@ _keybind  keybind[]		= {
 	{ "ext_14",			kEXT_14			},
 	{ "ext_15",			kEXT_15			},
 
+	{ "vote_yes",			kVOTEYES	},
+	{ "vote_no",			kVOTENO		},
+
+
 	{ NULL, 			0				}
 };
 

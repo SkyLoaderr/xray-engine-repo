@@ -16,7 +16,8 @@ game_cl_GameState::game_cl_GameState()
 	shedule.t_max				= 20;
 	m_game_ui_custom			= NULL;
 	shedule_register();
-	
+
+	m_bVotingEnabled = false;	
 }
 
 game_cl_GameState::~game_cl_GameState()
@@ -39,6 +40,7 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 
 	P.r_s32			(round);
 	P.r_u32			(start_time);
+	m_bVotingEnabled = bool(P.r_u8());
 
 	// Players
 	u16	p_count;

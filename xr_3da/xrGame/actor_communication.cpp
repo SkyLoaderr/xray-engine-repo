@@ -316,7 +316,17 @@ void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 	map_location.attached_to_object = true;
 	map_location.object_id = GO->ID();
 
-	ALife::ERelationType relation = RELATION_REGISTRY().GetRelationType(pInvOwner, static_cast<CInventoryOwner*>(this));
+
+	ALife::ERelationType relation = ALife::eRelationTypeDummy;
+	if(Game().Type() == GAME_SINGLE)
+		relation =  pInvOwner->CharacterInfo().Relations().GetRelationType(ID(), CharacterInfo().Community().index());
+	else
+	{
+		CEntityAlive* EA = smart_cast<CEntityAlive*>(GO); VERIFY(EA);
+		relation = EA->tfGetRelationType(this);
+	}
+
+
 	LPCSTR anim_name = NULL;
 
 	switch(relation)

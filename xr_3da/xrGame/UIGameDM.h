@@ -44,6 +44,8 @@ protected:
 	shared_str					m_spectator_caption;
 	shared_str					m_pressjump_caption;
 	shared_str					m_pressbuy_caption;
+	shared_str					m_vote_caption0, m_vote_caption1;
+	shared_str					m_votetimeresult_caption;
 
 	virtual	void					ClearLists				();
 
@@ -61,6 +63,9 @@ public:
 			void					SetSpectatorMsgCaption			(LPCSTR str);
 			void					SetPressJumpMsgCaption			(LPCSTR str);
 			void					SetPressBuyMsgCaption			(LPCSTR str);
+
+			void					SetVoteMessage					(LPCSTR str);
+			void					SetVoteTimeResultMsg			(LPCSTR str);
 
 
 			void					ShowFragList			(bool bShow);

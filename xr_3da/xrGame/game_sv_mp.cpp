@@ -14,6 +14,7 @@ u32		g_dwMaxCorpses = 10;
 
 game_sv_mp::game_sv_mp() :inherited()
 {
+	m_bVotingActive = false;
 }
 
 void	game_sv_mp::Update	()
@@ -31,6 +32,7 @@ void	game_sv_mp::Update	()
 		Level().Send(P,net_flags(TRUE,TRUE));
 	};
 
+	if (IsVoteEnabled() && IsVotingActive()) UpdateVote();
 }
 
 void game_sv_mp::OnRoundStart			()
@@ -131,7 +133,23 @@ void	game_sv_mp::OnEvent (NET_Packet &P, u16 type, u32 time, ClientID sender )
 			OnPlayerReady		(l_pC->ID);
 			
 		}break;
-	
+	case GAME_EVENT_VOTE_START:
+		{
+			if (!IsVoteEnabled()) break;
+			string1024 VoteCommand;
+			P.r_stringZ(VoteCommand);
+			OnVoteStart(VoteCommand, sender);
+		}break;
+	case GAME_EVENT_VOTE_YES:
+		{
+			if (!IsVoteEnabled()) break;
+			OnVoteYes(sender);
+		}break;
+	case GAME_EVENT_VOTE_NO:
+		{
+			if (!IsVoteEnabled()) break;
+			OnVoteNo(sender);
+		}break;
 	default:
 		inherited::OnEvent(P, type, time, sender);
 	};//switch
@@ -166,6 +184,7 @@ void	game_sv_mp::SendPlayerKilledMessage	(ClientID id_killer, ClientID id_killed
 
 void game_sv_mp::Create (shared_str &options)
 {
+	SetVotingActive(false);
 	inherited::Create(options);
 };
 
@@ -202,9 +221,9 @@ void	game_sv_mp::RespawnPlayer			(ClientID id_who, bool NoSpectator)
 	else
 	{
 		//------------------------------------------------------------
-		if (pOwner->owner != m_server->GetServer_client())
+		if (pOwner->owner != m_server->GetServerClient())
 		{
-			pOwner->owner = m_server->GetServer_client();
+			pOwner->owner = (xrClientData*)m_server->GetServerClient();
 		};
 		//------------------------------------------------------------
 		//remove spectator entity
@@ -277,14 +296,14 @@ void	game_sv_mp::AllowDeadBodyRemove		(ClientID id, u16 GameID)
 	/*
 	xrClientData* xrCData	=	m_server->ID_to_client(id);
 	
-	if (xrCData && xrCData->owner->owner != m_server->GetServer_client())
+	if (xrCData && xrCData->owner->owner != m_server->GetServerClient())
 	{
-		xrCData->owner->owner = m_server->GetServer_client();
+		xrCData->owner->owner = m_server->GetServerClient();
 	};
 	*/
 
 	CSE_Abstract* pSObject = get_entity_from_eid(GameID);
-	pSObject->owner = m_server->GetServer_client();
+	pSObject->owner = (xrClientData*)m_server->GetServerClient();
 
 	CObject* pObject =  Level().Objects.net_Find(GameID);
 	
@@ -436,7 +455,7 @@ void	game_sv_mp::SpawnWeapon4Actor		(u16 actorId,  LPCSTR N, u8 Addons)
 	};
 	/////////////////////////////////////////////////////////////////////////////////
 
-	spawn_end				(E,m_server->GetServer_client()->ID);
+	spawn_end				(E,m_server->GetServerClient()->ID);
 };
 
 void game_sv_mp::OnDestroyObject			(u16 eid_who)
@@ -486,4 +505,161 @@ void game_sv_mp::OnPrevMap				()
 	string1024	Command;
 	sprintf(Command, "sv_changelevel %s", MapName.c_str());
 	Console->Execute(Command);
+};
+
+struct _votecommands		{
+	char *	name;
+	char *	command;
+};
+
+_votecommands	votecommands[] = {
+	{ "kick",			"sv_kick"	},
+	{ "ban",			"sv_banplayer"	},
+	{ "restart",		"g_restart"	},
+	{ "nextmap",		"sv_nextmap"},
+	{ "prevmap",		"sv_prevmap"},
+	{ "changemap",		"sv_changelevel"},
+	{ "changegame",		"sv_changegametype"},
+	{ "changemapgame",	"sv_changelevelgametype"},
+
+	{ NULL, 			NULL }
+};
+
+#define		VOTE_LENGTH_TIME		120000
+
+void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
+{
+	if (!IsVoteEnabled()) return;
+	char	CommandName[256];	CommandName[0]=0;
+	char	CommandParams[256];	CommandParams[0]=0;
+	sscanf	(VoteCommand,"%s ", CommandName);
+	if (xr_strlen(CommandName)+1 < xr_strlen(VoteCommand))
+	{
+		strcpy(CommandParams, VoteCommand + xr_strlen(CommandName)+1);
+	}
+
+	int i=0;
+	bool Found = false;
+	while (votecommands[i].command)
+	{
+		if (!stricmp(votecommands[i].name, CommandName))
+		{
+			Found = true;
+			break;
+		};
+		i++;
+	};
+	if (!Found) 
+	{
+		Msg("Unknown Vote Command - %s", CommandName);
+		return;
+	};
+
+	//-----------------------------------------------------------------------------
+	SetVotingActive(true);
+	u32 CurTime = Level().timeServer();
+	m_uVoteEndTime = CurTime+VOTE_LENGTH_TIME;
+	m_pVoteCommand.sprintf("%s %s", votecommands[i].command, CommandParams);
+
+	xrClientData *pStartedPlayer = NULL;
+	u32	cnt = get_players_count();	
+	for(u32 it=0; it<cnt; it++)	
+	{
+		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+		if (!l_pC) continue;
+		if (l_pC->ID == sender)
+		{
+			l_pC->ps->m_bCurrentVoteAgreed = 1;
+			pStartedPlayer = l_pC;
+		}
+		else
+			l_pC->ps->m_bCurrentVoteAgreed = 0;
+	};
+
+	signal_Syncronize();
+	//-----------------------------------------------------------------------------
+	NET_Packet P;
+	GenerateGameMessage (P);
+	P.w_u32(GAME_EVENT_VOTE_START);
+	P.w_stringZ(VoteCommand);
+	P.w_stringZ(pStartedPlayer ? pStartedPlayer->ps->getName() : "");
+	P.w_u32(VOTE_LENGTH_TIME);
+	u_EventSend(P);
+	//-----------------------------------------------------------------------------	
+};
+
+void		game_sv_mp::UpdateVote				()
+{
+	if (!IsVoteEnabled() || !IsVotingActive()) return;
+
+	u32 NumAgreed = 0;
+	u32 NumToCount = 0;
+	u32	cnt = get_players_count();	
+	for(u32 it=0; it<cnt; it++)	
+	{
+		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+		game_PlayerState* ps	= l_pC->ps;
+		if (!l_pC || !l_pC->net_Ready || !ps || ps->Skip) continue;
+		if (ps->m_bCurrentVoteAgreed == 1) NumAgreed++;
+		NumToCount++;
+	};
+
+	bool VoteSucceed = false;
+	u32 CurTime = Level().timeServer();
+	if (m_uVoteEndTime > CurTime)
+	{
+		if (NumToCount == NumAgreed) VoteSucceed = true;
+		if (!VoteSucceed) return;
+	}
+	else
+	{
+		VoteSucceed = (float(NumAgreed)/float(NumToCount)) > 50.0f;		
+	};
+
+	SetVotingActive(false);
+	if (!VoteSucceed) 
+	{
+		NET_Packet P;
+		GenerateGameMessage (P);
+		P.w_u32(GAME_EVENT_VOTE_END);
+		P.w_stringZ("Voting failed!");
+		u_EventSend(P);
+		return;
+	};
+
+	Console->Execute(m_pVoteCommand.c_str());
+
+	NET_Packet P;
+	GenerateGameMessage (P);
+	P.w_u32(GAME_EVENT_VOTE_END);
+	P.w_stringZ("Voting Succeed!");
+	u_EventSend(P);
+};
+
+
+void		game_sv_mp::OnVoteYes				(ClientID sender)
+{
+	game_PlayerState* ps = get_id(sender);
+	if (!ps) return;
+	ps->m_bCurrentVoteAgreed = 1;
+	signal_Syncronize();
+};
+
+void		game_sv_mp::OnVoteNo				(ClientID sender)
+{
+	game_PlayerState* ps = get_id(sender);
+	if (!ps) return;
+	ps->m_bCurrentVoteAgreed = 0;
+};
+
+void		game_sv_mp::OnVoteStop				()
+{
+	SetVotingActive(false);
+	//-----------------------------------------------------------------
+	NET_Packet P;
+	GenerateGameMessage (P);
+	P.w_u32(GAME_EVENT_VOTE_STOP);
+	u_EventSend(P);
+	//-----------------------------------------------------------------
+	signal_Syncronize();
 };

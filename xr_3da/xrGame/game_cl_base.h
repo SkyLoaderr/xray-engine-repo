@@ -27,6 +27,8 @@ class	game_cl_GameState	: public game_GameState, public ISheduled
 	string256							m_game_type_name;
 	CUIGameCustom*						m_game_ui_custom;
 	bool								m_bCrosshair;	//был ли показан прицел-курсор HUD перед вызовом меню
+protected:
+	bool								m_bVotingEnabled;	
 
 public:
 	typedef xr_map<ClientID,game_PlayerState*> PLAYERS_MAP;
@@ -92,4 +94,13 @@ public:
 	virtual		void				ChatSayTeam				(const shared_str &phrase)	{};
 	virtual		void				ChatSayAll				(const shared_str &phrase)	{};
 	virtual		void				OnChatMessage			(NET_Packet* P)	{};
+
+	virtual		bool				IsVoteEnabled			()	{return m_bVotingEnabled;};
+	virtual		bool				IsVotingActive			()	{ return false; };
+	virtual		void				SetVotingActive			( bool Active )	{ };
+	virtual		void				SendStartVoteMessage	(LPCSTR args)	{};
+	virtual		void				SendVoteYesMessage		()	{};
+	virtual		void				SendVoteNoMessage		()	{};
+	virtual		void				OnVoteStart				(NET_Packet& P)	{};
+	virtual		void				OnVoteStop				(NET_Packet& P)	{};
 };

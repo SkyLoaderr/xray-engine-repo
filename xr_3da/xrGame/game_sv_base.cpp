@@ -151,6 +151,7 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, ClientID to)
 	P.w_u16			(phase);
 	P.w_s32			(round);
 	P.w_u32			(start_time);
+	P.w_u8			(u8(m_bVotingEnabled));
 
 	// Players
 //	u32	p_count			= get_players_count() - ((g_pGamePersistent->bDedicatedServer)? 1 : 0);
@@ -304,6 +305,8 @@ void game_sv_GameState::Create					(shared_str &options)
 	{
 		Console->ExecuteScript(MAPROT_LIST);
 	};
+
+	m_bVotingEnabled = get_option_i(*options,"vote",0) != 0;
 }
 
 void	game_sv_GameState::assign_RP				(CSE_Abstract* E)
@@ -621,3 +624,4 @@ void game_sv_GameState::SaveMapList				()
 	};
 	FS.w_close		(fs);
 };
+

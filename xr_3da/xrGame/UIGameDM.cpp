@@ -19,6 +19,9 @@
 #define TIME_MSG_COLOR		0xffff0000
 #define SPECTRMODE_MSG_COLOR		0xffff0000
 #define NORMAL_MSG_COLOR	0xffffffff
+
+#define VOTE0_MSG_COLOR	0xffff0000
+#define VOTE1_MSG_COLOR	0xff00ff00
 //--------------------------------------------------------------------
 CUIGameDM::CUIGameDM()
 {
@@ -37,6 +40,12 @@ CUIGameDM::CUIGameDM()
 	m_pressbuy_caption = "pressbuy";
 	m_gameCaptions.addCustomMessage(m_pressbuy_caption, 0.0f, 0.95f, 0.02f, HUD().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
 	//-----------------------------------------------------------------------
+	m_vote_caption0 = "votecaption0";
+	m_vote_caption1 = "votecaption1";
+	m_votetimeresult_caption= "votetimeresultcaption";
+	m_gameCaptions.addCustomMessage(m_vote_caption0, -1.0f, -0.45f, 0.018f, HUD().pFontDI, CGameFont::alLeft, VOTE0_MSG_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_vote_caption1, -1.0f, -0.4f, 0.018f, HUD().pFontDI, CGameFont::alLeft, VOTE1_MSG_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_votetimeresult_caption, -1.0f, -0.35f, 0.018f, HUD().pFontDI, CGameFont::alLeft, VOTE0_MSG_COLOR, "");
 }
 //--------------------------------------------------------------------
 void CUIGameDM::SetClGame (game_cl_GameState* g)
@@ -132,3 +141,21 @@ void CUIGameDM::SetPressBuyMsgCaption		(LPCSTR str)
 		m_gameCaptions.setCaption(m_pressbuy_caption, str, NORMAL_MSG_COLOR, true);
 }
 
+void CUIGameDM::SetVoteMessage					(LPCSTR str)
+{
+	if (str[0])
+	{
+		m_gameCaptions.setCaption(m_vote_caption0, str, VOTE0_MSG_COLOR, true);
+		m_gameCaptions.setCaption(m_vote_caption1, "Press [ for Yes or ] for No", VOTE1_MSG_COLOR, true);
+	}
+	else
+	{
+		m_gameCaptions.setCaption(m_vote_caption0, str, VOTE0_MSG_COLOR, true);
+		m_gameCaptions.setCaption(m_vote_caption1, "", VOTE1_MSG_COLOR, true);
+	}
+};
+
+void CUIGameDM::SetVoteTimeResultMsg			(LPCSTR str)
+{
+	m_gameCaptions.setCaption(m_votetimeresult_caption, str, VOTE0_MSG_COLOR, true);
+}

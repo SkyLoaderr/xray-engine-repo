@@ -21,6 +21,7 @@ protected:
 	u32								m_RPointFreezeTime;
 	xrServer*						m_server;
 	GameEventQueue*					m_event_queue;
+	bool							m_bVotingEnabled;
 
 	//Events
 	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender );
@@ -58,6 +59,12 @@ public:
 	virtual		bool				OnNextMap				()									{return false;}
 	virtual		void				OnPrevMap				()									{}
 	virtual		bool				SwitchToNextMap			()	{ return m_bMapNeedRotation; };
+	
+	virtual		bool				IsVoteEnabled			()	{return m_bVotingEnabled;};
+	virtual		bool				IsVotingActive			()	{ return false; };
+	virtual		void				SetVotingActive			( bool Active )	{ };
+	virtual		void				OnVoteStart				(LPCSTR VoteCommand, ClientID sender)			{};
+	virtual		void				OnVoteStop				()				{};
 
 public:
 									game_sv_GameState		();

@@ -23,6 +23,8 @@ game_PlayerState::game_PlayerState()
 	pItemList.clear();
 
 	LastBuyAcount = 0;
+	//---------------------------------
+	m_bCurrentVoteAgreed = 0;
 }
 
 void game_PlayerState::clear()
@@ -72,6 +74,7 @@ void	game_PlayerState::net_Export		(NET_Packet& P)
 
 	P.w_u16			(	GameID	);
 	P.w_u8			(	skin	);
+	P.w_u8			(	m_bCurrentVoteAgreed	);
 };
 
 void	game_PlayerState::net_Import		(NET_Packet& P)
@@ -88,6 +91,7 @@ void	game_PlayerState::net_Import		(NET_Packet& P)
 
 	P.r_u16			(	GameID	);
 	P.r_u8			(	skin	);
+	P.r_u8			(	m_bCurrentVoteAgreed	);
 };
 
 game_TeamState::game_TeamState()

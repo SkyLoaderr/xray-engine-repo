@@ -76,6 +76,9 @@ enum	EKeyBinding
 	kEXT_13			,
 	kEXT_14			,
 	kEXT_15			,
+
+	kVOTEYES		,
+	kVOTENO			,
 	kFORCEDWORD		= u32(-1)
 };
 

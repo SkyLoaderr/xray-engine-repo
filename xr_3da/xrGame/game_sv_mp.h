@@ -14,6 +14,12 @@ protected:
 
 	TEAM_DATA_LIST					TeamList;
 
+	//-------------------------------------------------------
+	bool			m_bVotingActive;
+	u32				m_uVoteEndTime;
+	shared_str		m_pVoteCommand;
+	//-------------------------------------------------------
+
 	virtual		void				SendPlayerKilledMessage	(ClientID id_killer, ClientID id_killed);
 	virtual		void				RespawnPlayer			(ClientID id_who, bool NoSpectator);
 				void				SpawnPlayer				(ClientID id, LPCSTR N);
@@ -40,7 +46,15 @@ public:
 	virtual		void				OnRoundEnd				(LPCSTR reason);								// конец раунда
 	virtual		bool				OnNextMap				();
 	virtual		void				OnPrevMap				();
-
+	
+	virtual		void				OnVoteStart				(LPCSTR VoteCommand, ClientID sender);
+	virtual		bool				IsVotingActive			()	{ return m_bVotingActive; };
+	virtual		void				SetVotingActive			( bool Active )	{ m_bVotingActive = Active; };
+	virtual		void				UpdateVote				();
+	virtual		void				OnVoteYes				(ClientID sender);
+	virtual		void				OnVoteNo				(ClientID sender);
+	virtual		void				OnVoteStop				();
+	
 	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender );
 	virtual		void				Update					();
 				void				KillPlayer				(ClientID id_who, u16 GameID);

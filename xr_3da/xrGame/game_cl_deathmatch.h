@@ -48,6 +48,8 @@ protected:
 	BOOL							m_bBuyEnabled;
 	s16								m_iCurrentPlayersMoney;
 
+	u32								m_dwVoteEndTime;
+
 			void					CheckItem				(PIItem pItem, PRESET_ITEMS* pPresetItems);
 	virtual s16						ModifyTeam				(s16 Team)	{return Team;};
 
@@ -75,4 +77,8 @@ public:
 
 	virtual CUIDialogWnd*			GetBuyWnd				()	{ return (CUIDialogWnd*) pCurBuyMenu; };
 	virtual CUIDialogWnd*			GetSkinWnd				()	{ return (CUIDialogWnd*) pCurSkinMenu; };
+
+	virtual		void				OnVoteStart				(NET_Packet& P);
+	virtual		void				OnVoteStop				(NET_Packet& P);
+	virtual		void				OnVoteEnd				(NET_Packet& P);
 };

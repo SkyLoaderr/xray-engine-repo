@@ -34,12 +34,10 @@ xrClientData::~xrClientData()
 
 xrServer::xrServer():IPureServer(Device.GetTimerGlobal())
 {
-	SV_Client = NULL;
 }
 
 xrServer::~xrServer()
 {
-
 }
 
 //--------------------------------------------------------------------
@@ -339,13 +337,13 @@ void			xrServer::entity_Destroy	(CSE_Abstract *&P)
 void			xrServer::Server_Client_Check	( IClient* CL )
 {
 	clients_Lock	();
-	
+	/*
 	if (SV_Client && SV_Client->ID != CL->ID)
 	{
 		clients_Unlock	();
 		return;
 	};
-
+*/
 	if (SV_Client && SV_Client->ID == CL->ID)
 	{
 		if (!CL->flags.bConnected)
@@ -365,21 +363,13 @@ void			xrServer::Server_Client_Check	( IClient* CL )
 	IDirectPlay8Address* pAddr = NULL;
 	CHK_DX(NET->GetClientAddress(CL->ID.value(), &pAddr, 0));
 
-	if (pAddr) {
-
-		string256	aaaa;
-		DWORD		aaaa_s			= sizeof(aaaa);
-		R_CHK		(pAddr->GetURLA(aaaa,&aaaa_s));
-		aaaa_s		= xr_strlen(aaaa);
-
-		LPSTR ClientIP = NULL;
-		if (strstr(aaaa, "hostname="))
+	if (pAddr) 
+	{
+		IBannedClient xClient;
+		bool res = GetClientAddress(pAddr, xClient.HAddr);
+		if (res)
 		{
-			ClientIP = strstr(aaaa, "hostname=")+ xr_strlen("hostname=");
-			if (strstr(ClientIP, ";")) strstr(ClientIP, ";")[0] = 0;
-		};
-		if (ClientIP && ClientIP[0]) {
-
+			char HostIP[4] = {0, 0, 0, 0};
 			DWORD	NumAdresses = 0;
 			NET->GetLocalHostAddresses(NULL, &NumAdresses, 0);
 
@@ -393,19 +383,8 @@ void			xrServer::Server_Client_Check	( IClient* CL )
 			{
 				if (!p_pAddr[i]) continue;
 
-				string256	bbbb;
-				DWORD		bbbb_s			= sizeof(bbbb);
-				R_CHK		(p_pAddr[i]->GetURLA(bbbb,&bbbb_s));
-				bbbb_s		= xr_strlen(bbbb);
-
-				LPSTR ServerIP = NULL;
-				if (strstr(aaaa, "hostname="))
-				{
-					ServerIP = strstr(bbbb, "hostname=")+ xr_strlen("hostname=");
-					if (strstr(ServerIP, ";")) strstr(ServerIP, ";")[0] = 0;
-				};
-				if (!ServerIP || !ServerIP[0]) continue;
-				if (!stricmp(ServerIP, ClientIP))
+				if (!GetClientAddress(p_pAddr[i], HostIP)) continue;
+				if (xClient == HostIP)
 				{
 					CL->flags.bLocal = 1;
 					SV_Client = (xrClientData*)(CL);
@@ -414,7 +393,7 @@ void			xrServer::Server_Client_Check	( IClient* CL )
 				else
 				{
 					CL->flags.bLocal = 0;
-				};
+				};				
 			};	
 		};
 	};

@@ -92,7 +92,7 @@ void	game_sv_mp_script::SpawnPlayer				(ClientID id, LPCSTR N, LPCSTR SkinName, 
 		};
 		if (pOldSpectator)
 		{
-			pOldSpectator->owner = m_server->GetServer_client();
+			pOldSpectator->owner = (xrClientData*)m_server->GetServerClient();
 			NET_Packet			P;
 			u_EventGen			(P,GE_DESTROY,pOldSpectator->ID);
 			Level().Send(P,net_flags(TRUE,TRUE));
