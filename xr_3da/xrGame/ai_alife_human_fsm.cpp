@@ -15,6 +15,7 @@ void CSE_ALifeHumanAbstract::Update			()
 {
 	if (!bfActive())
 		return;
+	m_dwTotalMoney		= u32(-1);
 #ifdef OLD_BEHAVIOUR
 	inherited2::Update	(m_tpALife);
 	vfProcessItems		();

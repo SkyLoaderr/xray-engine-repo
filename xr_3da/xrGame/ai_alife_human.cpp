@@ -332,8 +332,10 @@ u16	CSE_ALifeHumanAbstract::get_available_ammo_count(CSE_ALifeItemWeapon *tpALif
 	ITEM_P_IT					E = tpItemVector.end();
 	for ( ; I != E; I++) {
 		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(*I);
-		if (l_tpALifeItemAmmo && strstr(tpALifeItemWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name))
+		if (l_tpALifeItemAmmo && strstr(tpALifeItemWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name) && (l_tpALifeItemAmmo->m_dwCost <= m_dwTotalMoney)) {
 			l_dwResult			+= l_tpALifeItemAmmo->a_elapsed;
+			m_dwTotalMoney		-= l_tpALifeItemAmmo->m_dwCost;
+		}
 	}
 	return						(u16(l_dwResult));
 }
@@ -553,7 +555,7 @@ bool CSE_ALifeHumanAbstract::bfChooseFast()
 	return							(false);
 }
 
-int CSE_ALifeHumanAbstract::ifChooseEquipment(OBJECT_VECTOR *tpObjectVector, u32 dwTotalMoney)
+int CSE_ALifeHumanAbstract::ifChooseEquipment(OBJECT_VECTOR *tpObjectVector)
 {
 	// choosing equipment
 	CSE_ALifeInventoryItem			*l_tpALifeItemBest	= 0;
@@ -566,6 +568,8 @@ int CSE_ALifeHumanAbstract::ifChooseEquipment(OBJECT_VECTOR *tpObjectVector, u32
 		// checking if it is an equipment item
 		getAI().m_tpCurrentALifeObject = dynamic_cast<CSE_ALifeObject*>(*I);
 		if (getAI().m_pfEquipmentType->ffGetValue() > getAI().m_pfEquipmentType->ffGetMaxResultValue())
+			continue;
+		if (m_dwTotalMoney < (*I)->m_dwCost)
 			continue;
 		// evaluating item
 		float					l_fCurrentValue = getAI().m_pfEquipmentType->ffGetValue();
@@ -588,17 +592,21 @@ int CSE_ALifeHumanAbstract::ifChooseEquipment(OBJECT_VECTOR *tpObjectVector, u32
 	return						(0);
 }
 
-int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityType, OBJECT_VECTOR *tpObjectVector, u32 dwTotalMoney)
+int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityType, OBJECT_VECTOR *tpObjectVector)
 {
 	CSE_ALifeInventoryItem			*l_tpALifeItemBest	= 0;
 	float							l_fItemBestValue	= -1.f;
 	getAI().m_tpCurrentALifeMember	= this;
 
+	u32						l_dwSafeMoney = m_dwTotalMoney;
 	ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin();
 	ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
 	for ( ; I != E; I++) {
 		// checking if it is a hand weapon
 		getAI().m_tpCurrentALifeObject = dynamic_cast<CSE_ALifeObject*>(*I);
+		if (m_dwTotalMoney < (*I)->m_dwCost)
+			continue;
+		m_dwTotalMoney			-= (*I)->m_dwCost;
 		int						j = getAI().m_pfPersonalWeaponType->dwfGetWeaponType();
 		float					l_fCurrentValue = -1.f;
 		switch (tWeaponPriorityType) {
@@ -628,6 +636,7 @@ int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityT
 			}
 			default : NODEFAULT;
 		}
+		m_dwTotalMoney			= l_dwSafeMoney;
 		// choosing the best item
 		if ((l_fCurrentValue > l_fItemBestValue) && bfCanGetItem(*I) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),(*I)->ID) == tpObjectVector->end()))) {
 			l_fItemBestValue = l_fCurrentValue;
@@ -656,18 +665,21 @@ int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityT
 	return						(0);
 }
 
-int  CSE_ALifeHumanAbstract::ifChooseFood(OBJECT_VECTOR *tpObjectVector, u32 dwTotalMoney)
+int  CSE_ALifeHumanAbstract::ifChooseFood(OBJECT_VECTOR *tpObjectVector)
 {
 #pragma todo("Dima to Dima : Add food and medikit items need count computations")
 	// choosing food
 	getAI().m_tpCurrentALifeMember	= this;
-	u32							l_dwCount = 0;
+	u32							l_dwCount = 0, l_dwSafeMoney = m_dwTotalMoney;
 	ITEM_P_IT					I = m_tpALife->m_tpItemVector.begin();
 	ITEM_P_IT					E = m_tpALife->m_tpItemVector.end();
 	for ( ; I != E; I++) {
 		if ((*I)->m_iFoodValue <= 0)
 			continue;
+		if (m_dwTotalMoney < (*I)->m_dwCost)
+			continue;
 		if (bfCanGetItem(*I) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),(*I)->ID) == tpObjectVector->end()))) {
+			m_dwTotalMoney		-= (*I)->m_dwCost;
 			if (!tpObjectVector)
 				m_tpALife->vfAttachItem	(*this,*I,dynamic_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
 			else
@@ -677,6 +689,7 @@ int  CSE_ALifeHumanAbstract::ifChooseFood(OBJECT_VECTOR *tpObjectVector, u32 dwT
 				break;
 		}
 	}
+	m_dwTotalMoney = l_dwSafeMoney;
 	if (l_dwCount) {
 		if (!tpObjectVector) {
 			ITEM_P_IT			I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
@@ -688,16 +701,19 @@ int  CSE_ALifeHumanAbstract::ifChooseFood(OBJECT_VECTOR *tpObjectVector, u32 dwT
 	return					(l_dwCount);
 }
 
-int  CSE_ALifeHumanAbstract::ifChooseMedikit(OBJECT_VECTOR *tpObjectVector, u32 dwTotalMoney)
+int  CSE_ALifeHumanAbstract::ifChooseMedikit(OBJECT_VECTOR *tpObjectVector)
 {
 	// choosing medikits
-	u32						l_dwCount = 0;
+	u32						l_dwCount = 0, l_dwSafeMoney = m_dwTotalMoney;
 	ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin();
 	ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
 	for ( ; I != E; I++) {
 		if ((*I)->m_iHealthValue <= 0)
 			continue;
+		if (m_dwTotalMoney < (*I)->m_dwCost)
+			continue;
 		if (bfCanGetItem(*I) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),(*I)->ID) == tpObjectVector->end()))) {
+			m_dwTotalMoney	-= (*I)->m_dwCost;
 			if (!tpObjectVector)
 				m_tpALife->vfAttachItem	(*this,*I,dynamic_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
 			else
@@ -707,6 +723,7 @@ int  CSE_ALifeHumanAbstract::ifChooseMedikit(OBJECT_VECTOR *tpObjectVector, u32 
 				break;
 		}
 	}
+	m_dwTotalMoney = l_dwSafeMoney;
 	if (l_dwCount) {
 		if (!tpObjectVector) {
 			ITEM_P_IT		I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
@@ -719,7 +736,7 @@ int  CSE_ALifeHumanAbstract::ifChooseMedikit(OBJECT_VECTOR *tpObjectVector, u32 
 	return					(l_dwCount);
 }
 
-int  CSE_ALifeHumanAbstract::ifChooseDetector(OBJECT_VECTOR *tpObjectVector, u32 dwTotalMoney)
+int  CSE_ALifeHumanAbstract::ifChooseDetector(OBJECT_VECTOR *tpObjectVector)
 {
 	// choosing detector
 	CSE_ALifeInventoryItem		*l_tpALifeItemBest	= 0;
@@ -731,6 +748,8 @@ int  CSE_ALifeHumanAbstract::ifChooseDetector(OBJECT_VECTOR *tpObjectVector, u32
 		// checking if it is an item
 		CSE_ALifeItemDetector	*l_tpALifeItem = dynamic_cast<CSE_ALifeItemDetector*>(*I);
 		if (!l_tpALifeItem)
+			continue;
+		if (m_dwTotalMoney < l_tpALifeItem->m_dwCost)
 			continue;
 		// evaluating item
 		getAI().m_tpCurrentALifeObject = l_tpALifeItem;
@@ -754,7 +773,7 @@ int  CSE_ALifeHumanAbstract::ifChooseDetector(OBJECT_VECTOR *tpObjectVector, u32
 	return						(0);
 }
 
-int  CSE_ALifeHumanAbstract::ifChooseValuables(OBJECT_VECTOR *tpObjectVector, u32 dwTotalMoney)
+int  CSE_ALifeHumanAbstract::ifChooseValuables(OBJECT_VECTOR *tpObjectVector)
 {
 	// choosing the rest objects
 	ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin();

@@ -1029,6 +1029,7 @@ void CSE_ALifeHumanAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 //////////////////////////////////////////////////////////////////////////
 CSE_ALifeHumanStalker::CSE_ALifeHumanStalker(LPCSTR caSection) : CSE_ALifeHumanAbstract(caSection), CSE_Abstract(caSection)
 {
+	m_dwTotalMoney				= 0;
 }
 
 void CSE_ALifeHumanStalker::STATE_Write		(NET_Packet &tNetPacket)

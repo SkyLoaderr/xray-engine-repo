@@ -105,7 +105,7 @@ class CSE_ALifeSimulator :
 			void					vfFinishCombat				(ECombatResult				tCombatResult);
 	// trading routines
 			u32						dwfComputeItemCost			(ITEM_P_VECTOR				&tpItemVector);
-			void					vfRunFunctionByIndex		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		OBJECT_VECTOR			&tpBlockedItems,				ITEM_P_VECTOR	&tpItems,					int						i,						int						&j,							u32				dwTotalMoney);
+			void					vfRunFunctionByIndex		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		OBJECT_VECTOR			&tpBlockedItems,				ITEM_P_VECTOR	&tpItems,					int						i,						int						&j);
 			void					vfAssignItemParents			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		int						iItemCount);
 			void					vfAttachOwnerItems			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		ITEM_P_VECTOR			&tpItemVector,					ITEM_P_VECTOR	&tpOwnItems);
 			void					vfRestoreItems				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		ITEM_P_VECTOR			&tpItemVector);
