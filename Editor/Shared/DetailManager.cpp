@@ -139,7 +139,7 @@ void CDetailManager::Load		()
 
 	// Get pointer to database (slots)
 	CStream* m_slots= dtFS->OpenChunk(2);
-	dtSlots			= m_slots->Pointer();
+	dtSlots			= (DetailSlot*)m_slots->Pointer();
 	m_slots->Close	();
 
 	// Initialize 'vis' and 'cache'
@@ -578,7 +578,7 @@ DetailSlot&	CDetailManager::QueryDB(int sx, int sz)
 
 	int db_x = sx+dtH.offs_x;
 	int db_z = sz+dtH.offs_z;
-	if (db_x>=0 && db_x<dtH.size_x && db_z>=0 && db_z<dtH.size_z)
+	if ((db_x>=0) && (db_x<int(dtH.size_x)) && (db_z>=0) && (db_z<int(dtH.size_z)))
 	{
 		DWORD linear_id = db_z*dtH.size_x + db_x;
 		return dtSlots			[linear_id];
