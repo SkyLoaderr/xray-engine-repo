@@ -28,16 +28,10 @@ void	CBlender_deffer_flat::Compile(CBlender_Compile& C)
 			strcat				(fname,"_bump.dds");
 			if (FS.exist("$game_textures$",	fname))
 			{
-				/*
 				// bump found
 				C.r2_Pass			("r2_deffer_base_bump","r2_deffer_base_bump");
 				C.r2_Sampler		("s_base",C.L_textures[0]);
 				C.r2_Sampler		("s_bump",fname);
-				C.r2_End			();
-				*/
-				// flat
-				C.r2_Pass			("r2_deffer_base_flat","r2_deffer_base_flat");
-				C.r2_Sampler		("s_base",fname);
 				C.r2_End			();
 			} else {
 				// flat

@@ -152,7 +152,7 @@ ENGINE_API IDirect3DBaseTexture9*	TWLoader2D
 	char fname[_MAX_PATH];
 	strcpy(fname,fRName); if (strext(fname)) *strext(fname)=0;
 	if (strstr(fname,"_bump"))								
-		if (FS.exist(fn,"$level$",		fname,	".dds"))	goto _BUMP;
+		if (FS.exist(fn,"$game_textures$",	fname,	".dds"))	goto _BUMP;
 	if (FS.exist(fn,"$level$",			fname,	".dds"))	goto _DDS;
 	if (FS.exist(fn,"$game_textures$",	fname,	".dds"))	goto _DDS;
 
@@ -283,7 +283,7 @@ _BUMP:
 			D3DX_DEFAULT,D3DX_DEFAULT,
 			D3DX_DEFAULT,0,
 			D3DFMT_A8R8G8B8,
-			D3DPOOL_SYSTEMMEM,
+			D3DPOOL_SCRATCH,
 			D3DX_DEFAULT,
 			D3DX_DEFAULT,
 			0,&IMG,0,
