@@ -27,6 +27,9 @@ void	game_sv_CS::OnRoundStart	()
 			game_PlayerState*	ps	=	get_it	(it);
 			ps->money_total			=	1000;
 			ps->money_for_round		=	0;
+			ps->flags = 0;
+			ps->deaths = 0;
+			ps->kills = 0;
 		}
 	} else {
 		// sum-up money for round with total
@@ -116,7 +119,10 @@ void	game_sv_CS::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 
 		// Check if there is no opponents left
 		u32 alive					=	get_alive_count	(ps_killed->team);
-		if (0==alive)				OnTeamScore(ps_killer->team);
+		if (0==alive) {
+			OnTeamScore(ps_killer->team);
+			OnRoundEnd("ENEMY_quelled");
+		}
 	}
 
 	// Drop everything
