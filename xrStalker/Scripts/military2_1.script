@@ -138,7 +138,7 @@ function main ()
     update_action (stalker2, military2_1.script_name (), object (stalker1:best_weapon (), object.fire1))
     
     
-    int icount = 0
+    icount = 0
     while true do
           if stalker1.health <= 0 then 
              icount = icount + 1 
