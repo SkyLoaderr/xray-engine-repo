@@ -2136,6 +2136,9 @@
 					Name="entities"
 					Filter="">
 					<File
+						RelativePath=".\ai_alife_combat.cpp">
+					</File>
+					<File
 						RelativePath=".\ai_alife_human.cpp">
 					</File>
 					<File

@@ -29,6 +29,9 @@ class CEnemyWeaponTypeFunction;
 class CEnemyEquipmentCostFunction;
 class CEnemyRukzakWeightFunction;
 class CEnemyAnomalityFunction;
+class CEyeRange;
+class CMaxMonsterHealth;
+
 class CAI_DDD;
 
 class CPatternFunction : public CBaseFunction {
@@ -85,6 +88,8 @@ public:
 	CEntityAlive							*m_tpCurrentMember;
 	CEntityAlive							*m_tpCurrentEnemy;
 	CSE_ALifeObject							*m_tpCurrentALifeObject;
+	CSE_ALifeMonsterAbstract				*m_tpCurrentALifeMember;
+	CSE_ALifeMonsterAbstract				*m_tpCurrentALifeEnemy;
 	// primary functions
 	CBaseFunction							*m_fpaBaseFunctions		[AI_MAX_EVALUATION_FUNCTION_COUNT];
 
@@ -118,6 +123,9 @@ public:
 	CPatternFunction						*m_pfEntityCost;
 	CPatternFunction						*m_pfExpediency;
 	CPatternFunction						*m_pfSurgeDeathProbability;
+	CPatternFunction						*m_pfTerrainType;
+	CPatternFunction						*m_pfNoticability;
+	CPatternFunction						*m_pfNoticeProbability;
 
 											CAI_DDD();
 	virtual									~CAI_DDD();

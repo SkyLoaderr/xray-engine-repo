@@ -40,7 +40,7 @@ void CSE_ALifeEvent::UPDATE_Write			(NET_Packet &tNetPacket)
 	tNetPacket.w				(&m_tEventID,		sizeof(m_tEventID));
 	tNetPacket.w				(&m_tTimeID,		sizeof(m_tTimeID));
 	tNetPacket.w				(&m_tGraphID,		sizeof(m_tGraphID));
-	tNetPacket.w				(&m_tBattleResult,	sizeof(m_tBattleResult));
+	tNetPacket.w				(&m_tCombatResult,	sizeof(m_tCombatResult));
 	m_tpMonsterGroup1->UPDATE_Write(tNetPacket);
 	m_tpMonsterGroup2->UPDATE_Write(tNetPacket);
 };
@@ -50,7 +50,7 @@ void CSE_ALifeEvent::UPDATE_Read			(NET_Packet &tNetPacket)
 	tNetPacket.r				(&m_tEventID,		sizeof(m_tEventID));
 	tNetPacket.r				(&m_tTimeID,		sizeof(m_tTimeID));
 	tNetPacket.r				(&m_tGraphID,		sizeof(m_tGraphID));
-	tNetPacket.r				(&m_tBattleResult,	sizeof(m_tBattleResult));
+	tNetPacket.r				(&m_tCombatResult,	sizeof(m_tCombatResult));
 	m_tpMonsterGroup1->UPDATE_Read(tNetPacket);
 	m_tpMonsterGroup2->UPDATE_Read(tNetPacket);
 };
@@ -325,7 +325,7 @@ CSE_ALifeObject::CSE_ALifeObject			(LPCSTR caSection) : CSE_Abstract(caSection)
 {
 	m_bOnline					= false;
 	m_fDistance					= 0.0f;
-	m_tClassID					= _CLASS_ID(-1);
+	Memory.mem_copy				(&m_tClassID,pSettings->r_string(caSection,"class"),sizeof(m_tClassID));
 	ID							= _OBJECT_ID(-1);
 	m_tGraphID					= _GRAPH_ID(-1);
 	m_tGraphID					= _SPAWN_ID(-1);

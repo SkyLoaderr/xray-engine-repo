@@ -57,6 +57,9 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisu
 	u8								s_squad;
 	u8								s_group;
 	float							fHealth;
+	float							m_fMorale;
+	float							m_fAccuracy;
+	float							m_fIntelligence;
 
 	u32								timestamp;				// server(game) timestamp
 	u8								flags;
@@ -68,6 +71,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisu
 	virtual u8						g_team					();
 	virtual u8						g_squad					();
 	virtual u8						g_group					();
+	IC		float					g_Health				()										{ return fHealth;}
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,IPureSchedulableObject)
@@ -78,15 +82,19 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	float							m_fDistanceFromPoint;
 	float							m_fDistanceToPoint;
 	TERRAIN_VECTOR					m_tpaTerrain;
+	float							m_fMaxHealthValue;
+	float							m_fRetreatThreshold;
+	float							m_fEyeRange;
 	
 									CSE_ALifeMonsterAbstract(LPCSTR caSection);
+	IC		float					g_MaxHealth				()										{ return m_fMaxHealthValue;	}
 #ifdef _EDITOR
-									virtual	void					Update					(CSE_ALifeSimulator *tpALifeSimulator){};
+	virtual	void					Update					(CSE_ALifeSimulator *tpALifeSimulator)	{};
 #else
 #ifdef AI_COMPILER
-									virtual	void					Update					(CSE_ALifeSimulator *tpALifeSimulator){};
+	virtual	void					Update					(CSE_ALifeSimulator *tpALifeSimulator)	{};
 #else
-									virtual	void					Update					(CSE_ALifeSimulator *tpALifeSimulator);
+	virtual	void					Update					(CSE_ALifeSimulator *tpALifeSimulator);
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END
@@ -172,6 +180,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	string128						m_caKnownCustomers;
 	OBJECT_VECTOR					m_tpKnownCustomers;
 	CSE_ALifeSimulator				*m_tpALife;
+
 
 									CSE_ALifeHumanAbstract	(LPCSTR caSection);
 	virtual							~CSE_ALifeHumanAbstract	();

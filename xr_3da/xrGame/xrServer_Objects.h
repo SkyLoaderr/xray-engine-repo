@@ -96,6 +96,7 @@ public:
 	virtual void					OnEvent			(NET_Packet &tNetPacket, u16 type, u32 time, u32 sender ){};
 	void							Spawn_Write		(NET_Packet &tNetPacket, BOOL bLocal);
 	BOOL							Spawn_Read		(NET_Packet &tNetPacket);
+	IC		Fvector					Position		()						{return o_Position;};
 	// editor integration
 #ifdef _EDITOR
     virtual void					FillProp		(LPCSTR pref, PropItemVec &items);

@@ -134,7 +134,7 @@ float CPatternFunction::ffEvaluate()
 
 float CPatternFunction::ffGetValue()
 {
-	if (inherited::bfCheckForCachedResult())
+	if (bfCheckForCachedResult())
 		return(m_fLastValue);
 
 	for (u32 i=0; i<m_dwVariableCount; i++)
@@ -155,6 +155,12 @@ float CPatternFunction::ffGetValue()
 
 CAI_DDD::CAI_DDD()
 {	
+	m_tpCurrentMember					= 0;
+	m_tpCurrentEnemy					= 0;
+	m_tpCurrentALifeObject				= 0;
+	m_tpCurrentALifeMember				= 0;
+	m_tpCurrentALifeEnemy				= 0;
+
 	Memory.mem_fill						(m_fpaBaseFunctions,0,sizeof(CBaseFunction*)*AI_MAX_EVALUATION_FUNCTION_COUNT);
 	
 	m_fpaBaseFunctions[0]				= m_pfDistance				= xr_new<CDistanceFunction>				();
@@ -186,6 +192,9 @@ CAI_DDD::CAI_DDD()
 	m_pfEntityCost						= xr_new<CPatternFunction>	("common\\EntityCost.dat",				this);
 	m_pfExpediency						= xr_new<CPatternFunction>	("common\\Expediency.dat",				this);
 	m_pfSurgeDeathProbability			= xr_new<CPatternFunction>	("common\\SurgeDeathProbability.dat",	this);
+//	m_pfTerrainType						= xr_new<CPatternFunction>	("alife\\TerrainType.dat",				this);
+//	m_pfNoticability					= xr_new<CPatternFunction>	("alife\\Noticability.dat",			this);
+//	m_pfNoticeProbability				= xr_new<CPatternFunction>	("alife\\NoticeProbability.dat",		this);
 }
 
 CAI_DDD::~CAI_DDD()

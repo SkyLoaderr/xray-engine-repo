@@ -216,6 +216,9 @@ CSE_ALifeCreatureAbstract::CSE_ALifeCreatureAbstract(LPCSTR caSection)	: CSE_ALi
 	s_team = s_squad = s_group	= 0;
 	fHealth						= 100;
 	m_bDeathIsProcessed			= false;
+	m_fAccuracy					= 25.f;
+	m_fIntelligence				= 25.f;
+	m_fMorale					= 100.f;
 }
 
 void CSE_ALifeCreatureAbstract::STATE_Write	(NET_Packet &tNetPacket)
@@ -305,6 +308,13 @@ CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALife
 	m_fDistanceFromPoint		= 0.0f;
 	m_fDistanceToPoint			= 0.0f;
 	m_tpaTerrain.clear			();
+	m_fMaxHealthValue	 		= pSettings->r_float	(caSection,"MaxHealthValue");
+	if (pSettings->line_exist(caSection,"retreat_threshold"))
+		m_fRetreatThreshold		= pSettings->r_float(caSection,"retreat_threshold");
+	else
+		m_fRetreatThreshold		= 0.2f;
+	m_fEyeRange					= pSettings->r_float(caSection,"eye_range");;
+
 	LPCSTR						S;
 	if (pSettings->line_exist(caSection,"monster_section")) {
 		S						= pSettings->r_string	(pSettings->r_string(caSection,"monster_section"),"terrain");

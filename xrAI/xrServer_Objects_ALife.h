@@ -17,7 +17,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeEvent,CPureServerObject)
 	_EVENT_ID						m_tEventID;
 	_TIME_ID						m_tTimeID;
 	_GRAPH_ID						m_tGraphID;
-	EBattleResult					m_tBattleResult;
+	ECombatResult					m_tCombatResult;
 	CSE_ALifeEventGroup				*m_tpMonsterGroup1;
 	CSE_ALifeEventGroup				*m_tpMonsterGroup2;
 

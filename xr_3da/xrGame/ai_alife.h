@@ -33,8 +33,8 @@ class CSE_ALifeSimulator :
 	bool							m_bActorEnabled;
 	string256						m_caSaveName;
 	bool							m_bFirstUpdate;
-	u32								m_dwMaxBattleIterationCount;
-	MONSTER_P_VECTOR				m_tpGroupVector[2];
+	u32								m_dwMaxCombatIterationCount;
+	MONSTER_P_VECTOR				m_tpaCombatGroups[2];
 	
 	// temporary buffer for purchased by the particular trader artefacts
 	ITEM_COUNT_MAP					m_tpTraderItems;
@@ -69,14 +69,13 @@ class CSE_ALifeSimulator :
 			void					vfFurlObjectOffline			(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 	// interaction routines
 			void					vfCheckForTheInteraction	(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract,	_GRAPH_ID					tGraphID);
-			void					vfFillBattleGroup			(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract,	MONSTER_P_VECTOR			&tpGroupVector);
-			bool					bfCheckForBattle			(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract1,	CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract2, int &iGroupIndex);
-			EBattleAction			tfChooseBattleAction		(int						iGroupIndex);
-			void					vfPerformAttackAction		(int						iGroupIndex);
-			bool					bfCheckIfRetreated			(int						iGroupIndex);
+			void					vfFillCombatGroup			(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract,	MONSTER_P_VECTOR			&tpGroupVector);
+			bool					bfCheckForCombat			(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract1,	CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract2, int &iCombatGroupIndex);
+			ECombatAction			tfChooseCombatAction		(int						iCombatGroupIndex);
+			void					vfPerformAttackAction		(int						iCombatGroupIndex);
+			bool					bfCheckIfRetreated			(int						iCombatGroupIndex);
 			void					vfPerformCommunication		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract		*tpALifeHumanAbstract2);
-			void					vfUpdateGroupMembers		(int						iGroupIndex);
-			void					vfFinishBattle				(EBattleResult				tBattleResult);
+			void					vfFinishCombat				(ECombatResult				tCombatResult);
 public:
 	// members
 	bool							m_bLoaded;

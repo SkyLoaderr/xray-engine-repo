@@ -293,3 +293,34 @@ public:
 
 	virtual float ffGetValue();
 };
+
+class CEyeRange : public CBaseFunction {
+public:
+	typedef CBaseFunction inherited;
+
+	CEyeRange()
+	{
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 100.0;
+		strcat(m_caName,"EyeRange");
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
+	};
+
+	virtual float ffGetValue();
+};
+
+class CMaxMonsterHealth : public CBaseFunction {
+public:
+	typedef CBaseFunction inherited;
+
+	CMaxMonsterHealth()
+	{
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 1000.0;
+		strcat(m_caName,"MaxMonsterHealth");
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
+	};
+
+	virtual float	ffGetValue();
+	virtual u32		dwfGetDiscreteValue(u32 dwDiscretizationValue);
+};

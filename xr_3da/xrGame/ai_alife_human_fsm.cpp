@@ -18,7 +18,7 @@ void CSE_ALifeHumanAbstract::Update			(CSE_ALifeSimulator *tpALife)
 	m_tpALife				= tpALife;
 #ifdef OLD_BEHAVIOUR
 	inherited2::Update		(m_tpALife);
-	m_tpALife->vfCheckForTheBattle(this);
+	m_tpALife->vfCheckForTheCombat(this);
 	bfProcessItems			();
 #else
 	R_ASSERT3			(!m_bOnline,"Can't update online object ",s_name_replace);

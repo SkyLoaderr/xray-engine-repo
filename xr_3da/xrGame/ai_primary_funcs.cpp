@@ -15,31 +15,45 @@
 
 float CDistanceFunction::ffGetValue()
 {
-	if (inherited::bfCheckForCachedResult())
+	if (bfCheckForCachedResult())
 		return(m_fLastValue);
-	return(m_fLastValue = getAI().m_tpCurrentMember->Position().distance_to(getAI().m_tpCurrentEnemy->Position()));
+	if (getAI().m_tpCurrentMember)
+		return(m_fLastValue = getAI().m_tpCurrentMember->Position().distance_to(getAI().m_tpCurrentEnemy->Position()));
+	else
+		return(m_fLastValue = getAI().m_tpCurrentALifeMember->Position().distance_to(getAI().m_tpCurrentALifeEnemy->Position()));
 }
 
 float CPersonalHealthFunction::ffGetValue()
 {
-	if (inherited::bfCheckForCachedResult())
+	if (bfCheckForCachedResult())
 		return(m_fLastValue);
-	m_fMaxResultValue = getAI().m_tpCurrentMember->g_MaxHealth();
-	return(m_fLastValue = getAI().m_tpCurrentMember->g_Health());
+	if (getAI().m_tpCurrentMember) {
+		m_fMaxResultValue = getAI().m_tpCurrentMember->g_MaxHealth();
+		return(m_fLastValue = getAI().m_tpCurrentMember->g_Health());
+	}
+	else {
+		m_fMaxResultValue = getAI().m_tpCurrentALifeMember->g_MaxHealth();
+		return(m_fLastValue = getAI().m_tpCurrentALifeMember->g_Health());
+	}
 }
 
 float CPersonalMoraleFunction::ffGetValue()
 {
-	if (inherited::bfCheckForCachedResult())
+	if (bfCheckForCachedResult())
 		return(m_fLastValue);
-	return(m_fLastValue = getAI().m_tpCurrentMember->m_fMorale);
+	if (getAI().m_tpCurrentMember)
+		return(m_fLastValue = getAI().m_tpCurrentMember->m_fMorale);
+	else
+		return(m_fLastValue = getAI().m_tpCurrentALifeMember->m_fMorale);
 }
 
 float CPersonalCreatureTypeFunction::ffGetValue()
 {
-	if (inherited::bfCheckForCachedResult())
+	if (bfCheckForCachedResult())
 		return(m_fLastValue);
-	switch (getAI().m_tpCurrentMember->SUB_CLS_ID) {
+	
+	CLASS_ID	l_tClassID = getAI().m_tpCurrentMember ? getAI().m_tpCurrentMember->SUB_CLS_ID : getAI().m_tpCurrentALifeMember->m_tClassID;
+	switch (l_tClassID) {
 		case CLSID_AI_RAT				: {
 			m_fLastValue =  1;
 			break;
@@ -136,6 +150,7 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 
 float CPersonalWeaponTypeFunction::ffGetTheBestWeapon() 
 {
+#pragma todo("Implement weapon type function for ALife monsters")
 	u32 dwBestWeapon = 0;
 	CInventoryOwner *tpInventoryOwner = dynamic_cast<CInventoryOwner*>(getAI().m_tpCurrentMember);
 	if (tpInventoryOwner) {
@@ -190,9 +205,11 @@ float CPersonalWeaponTypeFunction::ffGetTheBestWeapon()
 
 float CPersonalWeaponTypeFunction::ffGetValue()
 {
-	if (inherited::bfCheckForCachedResult())
+	if (bfCheckForCachedResult())
 		return(m_fLastValue);
-	switch (getAI().m_tpCurrentMember->SUB_CLS_ID) {
+	
+	CLASS_ID	l_tClassID = getAI().m_tpCurrentMember ? getAI().m_tpCurrentMember->SUB_CLS_ID : getAI().m_tpCurrentALifeMember->m_tClassID;
+	switch (l_tClassID) {
 		case CLSID_AI_RAT				: {
 			m_fLastValue =  1;
 			break;
@@ -294,102 +311,188 @@ float CPersonalWeaponTypeFunction::ffGetValue()
 
 float CPersonalAccuracyFunction::ffGetValue()
 {
-	if (inherited::bfCheckForCachedResult())
+	if (bfCheckForCachedResult())
 		return(m_fLastValue);
-	return(m_fLastValue = getAI().m_tpCurrentMember->m_fAccuracy);
+	if (getAI().m_tpCurrentMember)
+		return(m_fLastValue = getAI().m_tpCurrentMember->m_fAccuracy);
+	else
+		return(m_fLastValue = getAI().m_tpCurrentALifeMember->m_fAccuracy);
 }
 
 float CPersonalIntelligenceFunction::ffGetValue()
 {
-	if (inherited::bfCheckForCachedResult())
+	if (bfCheckForCachedResult())
 		return(m_fLastValue);
-	return(m_fLastValue = getAI().m_tpCurrentMember->m_fIntelligence);
+	if (getAI().m_tpCurrentMember)
+		return(m_fLastValue = getAI().m_tpCurrentMember->m_fIntelligence);
+	else
+		return(m_fLastValue = getAI().m_tpCurrentALifeMember->m_fIntelligence);
 }
 
 float CPersonalRelationFunction::ffGetValue()
 {
-	if (inherited::bfCheckForCachedResult())
+	if (bfCheckForCachedResult())
 		return(m_fLastValue);
+#pragma todo("Implement relation function")
 	return(m_fLastValue = 0);
 }
 
 float CPersonalGreedFunction::ffGetValue()
 {
-	if (inherited::bfCheckForCachedResult())
+	if (bfCheckForCachedResult())
 		return(m_fLastValue);
+#pragma todo("Implement greed function")
 	return(m_fLastValue = 0);
 }
 
 float CPersonalAggressivenessFunction::ffGetValue()
 {
-	if (inherited::bfCheckForCachedResult())
+	if (bfCheckForCachedResult())
 		return(m_fLastValue);
+#pragma todo("Implement aggressiveness function")
 	return(m_fLastValue = 0);
 }
 
 // enemy inversion functions	
 float CEnemyHealthFunction::ffGetValue()
 {
-	if (inherited::bfCheckForCachedResult())
+	if (bfCheckForCachedResult())
 		return(m_fLastValue);
-	CEntityAlive *tpEntity = getAI().m_tpCurrentMember;
-	getAI().m_tpCurrentMember = getAI().m_tpCurrentEnemy;
-	m_fLastValue = getAI().m_pfPersonalHealth->ffGetValue();
-	getAI().m_tpCurrentMember = tpEntity;
+	if (getAI().m_tpCurrentMember) {
+		CEntityAlive *tpEntity = getAI().m_tpCurrentMember;
+		getAI().m_tpCurrentMember = getAI().m_tpCurrentEnemy;
+		m_fLastValue = getAI().m_pfPersonalHealth->ffGetValue();
+		getAI().m_tpCurrentMember = tpEntity;
+	}
+	else {
+		CSE_ALifeMonsterAbstract *l_tpALifeMonsterAbstract = getAI().m_tpCurrentALifeMember;
+		getAI().m_tpCurrentALifeMember = getAI().m_tpCurrentALifeEnemy;
+		m_fLastValue = getAI().m_pfPersonalHealth->ffGetValue();
+		getAI().m_tpCurrentALifeMember = l_tpALifeMonsterAbstract;
+	}
 	return(m_fLastValue);
 }
 
 float CEnemyCreatureTypeFunction::ffGetValue()
 {
-	if (inherited::bfCheckForCachedResult())
+	if (bfCheckForCachedResult())
 		return(m_fLastValue);
-	CEntityAlive *tpEntity = getAI().m_tpCurrentMember;
-	getAI().m_tpCurrentMember = getAI().m_tpCurrentEnemy;
-	m_fLastValue = getAI().m_pfPersonalCreatureType->ffGetValue();
-	getAI().m_tpCurrentMember = tpEntity;
+	if (getAI().m_tpCurrentMember) {
+		CEntityAlive *tpEntity = getAI().m_tpCurrentMember;
+		getAI().m_tpCurrentMember = getAI().m_tpCurrentEnemy;
+		m_fLastValue = getAI().m_pfPersonalCreatureType->ffGetValue();
+		getAI().m_tpCurrentMember = tpEntity;
+	}
+	else {
+		CSE_ALifeMonsterAbstract *l_tpALifeMonsterAbstract = getAI().m_tpCurrentALifeMember;
+		getAI().m_tpCurrentALifeMember = getAI().m_tpCurrentALifeEnemy;
+		m_fLastValue = getAI().m_pfPersonalCreatureType->ffGetValue();
+		getAI().m_tpCurrentALifeMember = l_tpALifeMonsterAbstract;
+	}
 	return(m_fLastValue);
 }
 
 float CEnemyWeaponTypeFunction::ffGetValue()
 {
-	if (inherited::bfCheckForCachedResult())
+	if (bfCheckForCachedResult())
 		return(m_fLastValue);
-	CEntityAlive *tpEntity = getAI().m_tpCurrentMember;
-	getAI().m_tpCurrentMember = getAI().m_tpCurrentEnemy;
-	m_fLastValue = getAI().m_pfPersonalWeaponType->ffGetValue();
-	getAI().m_tpCurrentMember = tpEntity;
+	if (getAI().m_tpCurrentMember) {
+		CEntityAlive *tpEntity = getAI().m_tpCurrentMember;
+		getAI().m_tpCurrentMember = getAI().m_tpCurrentEnemy;
+		m_fLastValue = getAI().m_pfPersonalWeaponType->ffGetValue();
+		getAI().m_tpCurrentMember = tpEntity;
+	}
+	else {
+		CSE_ALifeMonsterAbstract *l_tpALifeMonsterAbstract = getAI().m_tpCurrentALifeMember;
+		getAI().m_tpCurrentALifeMember = getAI().m_tpCurrentALifeEnemy;
+		m_fLastValue = getAI().m_pfPersonalWeaponType->ffGetValue();
+		getAI().m_tpCurrentALifeMember = l_tpALifeMonsterAbstract;
+	}
 	return(m_fLastValue);
 }
 
 float CEnemyEquipmentCostFunction::ffGetValue()
 {
-	if (inherited::bfCheckForCachedResult())
+	if (bfCheckForCachedResult())
 		return(m_fLastValue);
-	return(m_fLastValue = 0);
+#pragma todo("Implement enemy equipment cost function")
+	return					(m_fLastValue = 0);
 }
 
 float CEnemyRukzakWeightFunction::ffGetValue()
 {
-	if (inherited::bfCheckForCachedResult())
+	if (bfCheckForCachedResult())
 		return(m_fLastValue);
-	CInventoryOwner* tpInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpLastMonster);
-	if (tpInventoryOwner)
-		m_fLastValue	= tpInventoryOwner->m_inventory.TotalWeight();
-	else
-		m_fLastValue	= 0;
-	return			(m_fLastValue);
+	
+	if (getAI().m_tpCurrentMember) {
+		CInventoryOwner	*tpInventoryOwner = dynamic_cast<CInventoryOwner*>(getAI().m_tpCurrentMember);
+		if (tpInventoryOwner)
+			m_fLastValue	= tpInventoryOwner->m_inventory.TotalWeight();
+		else
+			m_fLastValue	= 0;
+	}
+	else {
+		CSE_ALifeHumanAbstract *l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(getAI().m_tpCurrentALifeMember);
+		if (l_tpALifeHumanAbstract)
+			m_fLastValue	= l_tpALifeHumanAbstract->m_fCumulativeItemMass;
+		else
+			m_fLastValue	= 0;
+	}
+	return					(m_fLastValue);
 }
 
 float CEnemyAnomalityFunction::ffGetValue()
 {
-	if (inherited::bfCheckForCachedResult())
+	if (bfCheckForCachedResult())
 		return(m_fLastValue);
+#pragma todo("Implement enemy anomality function")
 	return(m_fLastValue = 0);
 }
 
 float CGraphPointType0::ffGetValue()
 {
-	if (inherited::bfCheckForCachedResult())
+	if (bfCheckForCachedResult())
 		return(m_fLastValue);
 	return(m_fLastValue = getAI().m_tpaGraph[getAI().m_tpCurrentALifeObject->m_tGraphID].tVertexTypes[0]);
+}
+
+float CEyeRange::ffGetValue()
+{
+	if (bfCheckForCachedResult())
+		return(m_fLastValue);
+	return(m_fLastValue = getAI().m_tpCurrentALifeMember->m_fEyeRange);
+}
+
+float CMaxMonsterHealth::ffGetValue()
+{
+	if (bfCheckForCachedResult())
+		return(m_fLastValue);
+	return(m_fLastValue = getAI().m_tpCurrentALifeMember->m_fEyeRange);
+}
+
+u32 CMaxMonsterHealth::dwfGetDiscreteValue(u32 dwDiscretizationValue)
+{
+	float fTemp = ffGetValue();
+	if (fTemp <= m_fMinResultValue)
+		return(0);
+	else
+		if (fTemp >= m_fMaxResultValue)
+			return(dwDiscretizationValue - 1);
+		else {
+			if (fTemp >= 30)
+				return(_min(2,dwDiscretizationValue - 1));
+			if (fTemp >= 50)
+				return(_min(3,dwDiscretizationValue - 1));
+			if (fTemp >= 80)
+				return(_min(4,dwDiscretizationValue - 1));
+			if (fTemp >= 100)
+				return(_min(5,dwDiscretizationValue - 1));
+			if (fTemp >= 150)
+				return(_min(6,dwDiscretizationValue - 1));
+			if (fTemp >= 250)
+				return(_min(7,dwDiscretizationValue - 1));
+			if (fTemp >= 500)
+				return(_min(8,dwDiscretizationValue - 1));
+			return(_min(9,dwDiscretizationValue - 1));
+		}
 }

@@ -97,7 +97,7 @@ void CSE_ALifeSimulator::vfListEvents()
 	EVENT_PAIR_IT	E = m_tEventRegistry.end();
 	Msg("%s->Listing events :",cName());
 	for (int i=0; I != E; I++, i++)
-		Msg("* %4d : [ID=%4d][BR=%1d][GID=%4d][TIME=%d]",i,(*I).first,(*I).second->m_tBattleResult,(*I).second->m_tGraphID,(*I).second->m_tTimeID);
+		Msg("* %4d : [ID=%4d][BR=%1d][GID=%4d][TIME=%d]",i,(*I).first,(*I).second->m_tCombatResult,(*I).second->m_tGraphID,(*I).second->m_tTimeID);
 	Msg("Total %d events",i);
 }
 
@@ -283,7 +283,7 @@ void CSE_ALifeSimulator::vfEventInfo(_EVENT_ID tEventID)
 	Msg("* Event ID  : %d",tEvent.m_tEventID);
 	Msg("* Graph ID  : %d",tEvent.m_tGraphID);
 	vfPrintTime("* Time  ID  :",tEvent.m_tTimeID);
-	Msg("* Battle    : %d",tEvent.m_tBattleResult);
+	Msg("* Combat    : %d",tEvent.m_tCombatResult);
 	Msg("* Monster 1 :");
 	CSE_ALifeEventGroup *tpMG = tEvent.m_tpMonsterGroup1;
 	Msg("*     Class  ID    : %d",tpMG->m_tClassID);
