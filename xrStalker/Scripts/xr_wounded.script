@@ -60,7 +60,7 @@ function evaluator_final:__init (name, storage) super ()
 end
 ------------
 function evaluator_final:evaluate ()
-    if self.object.health < self.a.threshold == true and self.a.ignore_time == 0 then 
+    if self.object.health < 20 and self.a.ignore_time == 0 then 
        self.a.final = false 
     end
     return self.a.final
