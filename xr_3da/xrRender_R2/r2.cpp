@@ -55,7 +55,7 @@ IRender_Light*			CRender::light_create			()					{ return Lights.Create();							
 void					CRender::light_destroy			(IRender_Light* &L)	{ if (L) { Lights.Destroy((light*)L); L=0; }			}
 void					CRender::L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>& dest)
 {	
-	Msg		("! NotImplemented: CRender::L_select");
+	//Msg		("! NotImplemented: CRender::L_select");
 }
 
 void					CRender::flush					()					{ flush_Models();									}
@@ -72,15 +72,15 @@ void					CRender::add_Lights				(vector<WORD> &	V )
 }
 void					CRender::add_Glows				(vector<WORD> &	V )	
 {
-	Msg		("! NotImplemented: CRender::add_Glows");
+	//Msg		("! NotImplemented: CRender::add_Glows");
 }
 void					CRender::add_Patch				(Shader* S, const Fvector& P1, float s, float a, BOOL bNearer)
 {
-	Msg		("! NotImplemented: CRender::add_Patch");
+	//Msg		("! NotImplemented: CRender::add_Patch");
 }
 void		CRender::add_Wallmark		(Shader* S, const Fvector& P, float s, CDB::TRI* T)
 {
-	Msg		("! NotImplemented: CRender::add_Wallmark");
+	//Msg		("! NotImplemented: CRender::add_Wallmark");
 }
 void		CRender::set_Object			(CObject*		O )	
 { 
@@ -153,7 +153,7 @@ void CRender::OnDeviceDestroy	()
 
 void CRender::RenderBox			(IRender_Sector* _S, Fbox& BB, int sh)
 {
-	Msg		("! NotImplemented: CRender::RenderBox");
+	//Msg		("! NotImplemented: CRender::RenderBox");
 	/*
 	CSector*	S			= (CSector*)_S;
 	lstVisuals.clear		();
