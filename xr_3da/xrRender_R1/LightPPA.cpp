@@ -191,7 +191,7 @@ void CLightR_Manager::render_point	()
 		BOOL				bHUD	= FALSE;
 		CFrustum			F;
 		F.CreateFromMatrix	(L_combine,FRUSTUM_P_ALL);
-		bHUD				= F.testSphere_dirty	(Device.vCameraPosition,1.f);
+		bHUD				= F.testSphere_dirty	(Device.vCameraPosition,2.f);
 
 		//		5. Dump sorting tree
 		if (bHUD)			g_pGameLevel->pHUD->Render_Last		();	
@@ -250,7 +250,7 @@ void CLightR_Manager::render_spot	()
 		BOOL				bHUD	= FALSE;
 		CFrustum			F;
 		F.CreateFromMatrix	(L_combine,FRUSTUM_P_ALL);
-		bHUD				= F.testSphere_dirty	(Device.vCameraPosition,1.f);
+		bHUD				= F.testSphere_dirty	(Device.vCameraPosition,2.f);
 		// if (bHUD)		Msg	("HUD");
 
 		//		4. Dump sorting tree
