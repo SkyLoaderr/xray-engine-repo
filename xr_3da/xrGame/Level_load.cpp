@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "HUDmanager.h"
-#include "WayPointDef.h"
+#include "LevelGameDef.h"
 
 void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 {
@@ -11,12 +11,12 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 	vector<DWORD>		tpaNodes;
 
 	int i;
-	bool bStop = false;
+	bool bStop			= false;
 	int iStartPoint = -1, iFinishPoint = -1, iCurPoint = 0, iPrevPoint = -1;
 	DWORD N = tpPatrolPath.tpaWayPoints.size(), dwOneZero = 0, dwZeroOne = 0, dwOneCount = 0, dwTwoCount = 0;
 
-	tpaFrom.resize(N);
-	tpaTo.resize(N);
+	tpaFrom.resize		(N);
+	tpaTo.resize		(N);
 	
 	tpPatrolPath.dwType = PATH_LOOPED | PATH_BIDIRECTIONAL;
 	
@@ -196,24 +196,37 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 BOOL CLevel::Load_GameSpecific_Before()
 {
 	// AI space
-	pApp->LoadTitle("Loading AI space...");
-	AI.Load(Path.Current);
-
-	// Load RPoints
-	CInifile::Sect& S = pLevel->ReadSection("respawn_point");
-	for (CInifile::SectIt I=S.begin(); I!=S.end(); I++) {
-		Fvector4	pos;
-		int			team;
-		const char*	sVal = I->second;
-		sscanf(sVal,"%f,%f,%f,%d,%f",&pos.x,&pos.y,&pos.z,&team,&pos.w); pos.y += 0.1f;
-		Level().get_team(team).RespawnPoints.push_back(pos);
-	}
+	pApp->LoadTitle	("Loading AI space...");
+	AI.Load			(Path.Current);
 
 	FILE_NAME	fn_game;
-	if (Engine.FS.Exist(fn_game, Path.Current, "level.game")) {
-		CStream *F = Engine.FS.Open(fn_game);
-		CStream *O = F->OpenChunk(WAY_PATH_CHUNK);
-		if (O) {
+	if (Engine.FS.Exist(fn_game, Path.Current, "level.game")) 
+	{
+		CStream *F = Engine.FS.Open	(fn_game);
+		CStream *O = 0;
+
+		// Load RPoints
+		if (0!=(O = F->OpenChunk	(RPOINT_CHUNK)))
+		{
+			for (int id=0; O->FindChunk(id); id++)
+			{
+				Fvector4	dest;
+				Fvector		pos,angles;
+				int			team;
+
+				O->Rvector	(pos);
+				O->Rvector	(angles);
+				team		= O->Rdword	();
+
+				dest.set		(pos.x,pos.y,pos.z,angles.y);
+				Level().get_team(team).RespawnPoints.push_back(dest);
+			}
+			O->Close();
+		}
+
+		// Load WayPoints
+		if (0!=(O = F->OpenChunk	(WAY_PATH_CHUNK)))
+		{
 			int chunk = 0;
 			for (CStream *OBJ = O->OpenChunk(chunk++); OBJ; OBJ = O->OpenChunk(chunk++)) {
 				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_VERSION));
