@@ -292,7 +292,7 @@ namespace std{
 
     void	xrDebug::_initialize		()
     {
-//        _set_new_mode					(1);					// gen exception if can't allocate memory
+//        std::set_new_mode 				(1);					// gen exception if can't allocate memory
         std::set_new_handler			(def_new_handler  );	// exception-handler for 'out of memory' condition
         ::SetUnhandledExceptionFilter	( UnhandledFilter );	// exception handler to all "unhandled" exceptions
     }
