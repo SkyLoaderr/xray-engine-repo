@@ -13,7 +13,7 @@
 #include "alife_space.h"
 #ifndef _EDITOR
 #	ifndef AI_COMPILER
-#		include "phsynchronize.h"
+#		include "phnetstate.h"
 		class 	CALifeSimulator;
 #	endif
 #endif
@@ -261,7 +261,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual)
 	u64								bones_mask;
 	u16								root_bone;
 	PHNETSTATE_VECTOR				saved_bones;
-	u16								saved_bones_number;
 	u16								source_id;//for break only
 	ref_str							startup_animation;
     enum{
