@@ -595,22 +595,22 @@ void CHelicopter::shedule_Update(u32 time_delta)
 	if (!getEnabled())	return;
 	inherited::shedule_Update	(time_delta);
 	CPHSkeleton::Update(time_delta);
-/*
-	if ( (state() != CHelicopter::eDead) && (GetfHealth() < 30.0f) )
-		PrepareDie();
-
-	if ( (state() != CHelicopter::eDead) && (GetfHealth() <= 0.0f) )
-		Die();
-*/
 	if(state() != CHelicopter::eDead){
-//		float dist = 
-			GetDistanceToDestPosition();
 
-
-
-		m_movMngr->shedule_Update (time_delta);
-//		float dt			= float(time_delta)/1000.f;
-//		CMemoryManager::update(dt);
+	float dist = m_heli->GetDistanceToDestPosition();
+	if( m_heli->m_last_point_range_dist < m_heli->m_on_point_range_dist)
+	{//GENARATE EVENT	
+		NET_Packet P;
+		P.write_start();
+		P.w_float(dist);
+		P.w_vec3(XFORM().c);
+		s16 curr_idx = -1;
+		if(m_movMngr->m_currPatrolVertex)
+			curr_idx = (s16)m_movMngr->m_currPatrolVertex->vertex_id();
+		P.w_s16(curr_idx);
+		m_heli->lua_game_object()->OnEventRaised(CHelicopter::EV_ON_POINT,P);
+	}
+	m_movMngr->shedule_Update (time_delta);
 
 
 	if(getRocketCount()<4)

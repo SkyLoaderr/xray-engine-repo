@@ -767,23 +767,11 @@ void CHelicopterMovManager::GoBySpecifiedPatrolPath()
 void CHelicopterMovManager::UpdatePatrolPath()
 {
 	float dist = m_heli->GetDistanceToDestPosition();
-//	if( dist < m_heli->m_on_point_range_dist){
 	if( m_heli->m_last_point_range_dist < m_heli->m_on_point_range_dist){
 		CPatrolPath::const_iterator b,e;
 		m_currPatrolPath->begin(m_currPatrolVertex->vertex_id(),b,e);
 		if(b!=e){
 		
-			{//GENARATE EVENT	
-				NET_Packet P;
-				P.write_start();
-				P.w_float(dist);
-				P.w_vec3(m_heli->XFORM().c);
-				s16 curr_idx = -1;
-				if(m_currPatrolVertex)
-					curr_idx = (s16)m_currPatrolVertex->vertex_id();
-				P.w_s16(curr_idx);
-				m_heli->lua_game_object()->OnEventRaised(CHelicopter::EV_ON_POINT,P);
-			}
 
 			m_currPatrolVertex =  m_currPatrolPath->vertex((*b).vertex_id());
 			Fvector p = m_currPatrolVertex->data().position();
