@@ -7,6 +7,7 @@
 
 class CActor;
 class CLAItem;
+class CArtefact;
 
 #define SMALL_OBJECT_RADIUS 0.6f
 
@@ -173,10 +174,13 @@ protected:
 	//игнорирование воздействия зоны на виды объектов
 	bool m_bIgnoreNonAlive;
 	bool m_bIgnoreSmall;
+	bool m_bIgnoreArtefacts;
 
 	//время, через которое, зона перестает реагировать 
 	//на объект мертвый объект (-1 если не указано)
 	int m_iDisableHitTime;
+	//тоже самое но для маленьких объектов
+	int m_iDisableHitTimeSmall;
 	int m_iDisableIdleTime;
 
 	////////////////////////////////
@@ -281,8 +285,43 @@ protected:
 
 	//////////////////////////////////////////////////////////////////////////
 	// список артефактов
-public:
-	//рождение артефакта в зоне, во время ее срабатывания
-	virtual void SpawnArtefact(LPCSTR artefact_sect, const Fvector& offset, const Fvector& impulse);
 protected:
+	virtual void SpawnArtefact			();
+	virtual void AddArtefact			(CArtefact* pArtefact);
+
+	//рождение артефакта в зоне, во время ее срабатывания
+	//и присоединение его к зоне
+	virtual void BornArtefact			();
+	//выброс артефактов из зоны
+	virtual void ThrowOutArtefact		(CArtefact* pArtefact);
+	
+	virtual void PrefetchArtefacts		();
+
+protected:
+	DEFINE_VECTOR(CArtefact*, ARTEFACT_VECTOR, ARTEFACT_VECTOR_IT);
+	ARTEFACT_VECTOR m_SpawnedArtefacts;
+
+	//есть ли вообще функция выбрасывания артефактов во время срабатывания
+	bool m_bSpawnBlowoutArtefacts;
+	//вероятность того, что артефакт засповниться при единичном 
+	//срабатывании аномалии
+	float m_fArtefactSpawnProbability;
+	//величина импульса выкидывания артефакта из зоны
+	float m_fThrowOutPower;
+	//высота над центром зоны, где будет появляться артефакт
+	float m_fArtefactSpawnHeight;
+
+	//имя партиклов, которые проигрываются во время и на месте рождения артефакта
+	ref_str m_sArtefactSpawnParticles;
+	//звук рождения артефакта
+	ref_sound m_ArtefactBornSound;
+
+	struct ARTEFACT_SPAWN
+	{
+		ref_str section;
+		float probability;
+	};
+
+	DEFINE_VECTOR(ARTEFACT_SPAWN, ARTEFACT_SPAWN_VECTOR, ARTEFACT_SPAWN_IT);
+	ARTEFACT_SPAWN_VECTOR m_ArtefactSpawn;
 };

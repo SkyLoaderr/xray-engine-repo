@@ -137,7 +137,11 @@ void CArtefact::OnH_B_Independent()
 void CArtefact::UpdateCL() 
 {
 	Fvector vel = {0, 0, 0};
-	if (H_Parent()) dynamic_cast<CPhysicsShellHolder*>(H_Parent())->PHGetLinearVell(vel);
+	if (H_Parent()) 
+	{
+		CPhysicsShellHolder* pPhysicsShellHolder = dynamic_cast<CPhysicsShellHolder*>(H_Parent());
+		if(pPhysicsShellHolder) pPhysicsShellHolder->PHGetLinearVell(vel);
+	}
 
 	CParticlesPlayer::SetParentVel(vel);
 	inherited::UpdateCL();
