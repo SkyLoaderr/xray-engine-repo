@@ -24,25 +24,29 @@ class CGameObject;
 using namespace PatrolPathManager;
 
 class CPatrolPathManager {
-	friend struct CAccessabilityEvaluator;
-	typedef CScriptCallbackEx<bool>	CExtrapolateCallback;
 private:
-	const CPatrolPath			*m_path;
-	shared_str					m_path_name;
-	EPatrolStartType			m_start_type;
-	EPatrolRouteType			m_route_type;
-	bool						m_actuality;
-	bool						m_failed;
-	bool						m_completed;
-	bool						m_random;
-	u32							m_curr_point_index;
-	u32							m_prev_point_index;
-	u32							m_start_point_index;
-	Fvector						m_dest_position;
-	CScriptCallback				*m_callback;
-	CExtrapolateCallback		*m_extrapolate_callback;
-	CRestrictedObject			*m_object;
-	CGameObject					*m_game_object;
+	friend struct CAccessabilityEvaluator;
+
+private:
+	typedef CScriptCallbackEx<bool>	CExtrapolateCallback;
+
+private:
+	const CPatrolPath				*m_path;
+	shared_str						m_path_name;
+	EPatrolStartType				m_start_type;
+	EPatrolRouteType				m_route_type;
+	bool							m_actuality;
+	bool							m_failed;
+	bool							m_completed;
+	bool							m_random;
+	u32								m_curr_point_index;
+	u32								m_prev_point_index;
+	u32								m_start_point_index;
+	Fvector							m_dest_position;
+	CScriptCallback					*m_callback;
+	CExtrapolateCallback			*m_extrapolate_callback;
+	CRestrictedObject				*m_object;
+	CGameObject						*m_game_object;
 
 protected:
 	IC			bool				random					() const;
