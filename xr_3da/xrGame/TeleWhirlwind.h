@@ -17,6 +17,7 @@ public:
 	virtual		void				raise					(float power);
 	virtual		void				raise_update			();
 	virtual		void				keep					();
+	virtual		void				release					();
 	virtual		void				fire					(const Fvector &target);
 	virtual		void				fire					(const Fvector &target, float power);
 };

@@ -41,6 +41,7 @@ BOOL CMincer::net_Spawn(LPVOID DC)
 	BOOL result=inherited::net_Spawn(DC);
 	Fvector C;
 	Center(C);
+	C.y+=5.f;
 	m_telekinetics.SetCenter(C);
 	return result;
 }

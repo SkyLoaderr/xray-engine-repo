@@ -225,14 +225,19 @@ void CHelicopter::reload(LPCSTR section)
 	inherited::reload	(section);
 }
 
+void CollisionCallbackAlife(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
+{
+	do_colide=false;
+}
 BOOL CHelicopter::net_Spawn(LPVOID	DC)
 {
 	SetfHealth(100.0f);
 	setState(CHelicopter::eIdleState);
 	if (!inherited::net_Spawn(DC))
 		return			(FALSE);
-
-
+	PPhysicsShell()=P_build_Shell	(this,false);
+	PPhysicsShell()->EnabledCallbacks(FALSE);
+	PPhysicsShell()->set_ObjectContactCallback(CollisionCallbackAlife);
 	for(u32 i=0; i<4; ++i)
 		CRocketLauncher::SpawnRocket(*m_sRocketSection, smart_cast<CGameObject*>(this/*H_Parent()*/));
 
@@ -358,7 +363,7 @@ void CHelicopter::net_Destroy()
 
 void	CHelicopter::SpawnInitPhysics	(CSE_Abstract	*D)	
 {
-	if(!g_Alive())PPhysicsShell()=P_build_Shell	(this,true);
+	if(!g_Alive())PPhysicsShell()=P_build_Shell	(this,false);
 }
 
 void	CHelicopter::net_Save			(NET_Packet& P)	
@@ -476,7 +481,7 @@ void CHelicopter::UpdateCL()
 	XFORM().setHPB(m_currBodyH,m_currBodyP,m_currBodyB);
 
 	XFORM().translate_over(m_currP);
-	
+//PPhysicsShell()->setXForn()	
 /*
 	HUD().pFontSmall->SetColor(color_rgba(0xff,0xff,0xff,0xff));
 	HUD().pFontSmall->OutSet	(120,630);
@@ -712,7 +717,10 @@ void CHelicopter::OnEvent(	NET_Packet& P, u16 type)
 
 void CHelicopter::Die()
 {
-	if(!PPhysicsShell()){
+	if ( state() == CHelicopter::eDead )
+		return;
+
+	if(true /*!PPhysicsShell()*/){
 		string256						I;
 		LPCSTR bone;
 		CKinematics* K		= smart_cast<CKinematics*>(Visual());
@@ -723,11 +731,11 @@ void CHelicopter::Die()
 			K->LL_SetBoneVisible(bone_id,FALSE,TRUE);
 		}
 
-		PPhysicsShell()=P_build_Shell	(this,false);
+		///PPhysicsShell()=P_build_Shell	(this,false);
+		PPhysicsShell()->EnabledCallbacks(TRUE);
+		PPhysicsShell()->set_ObjectContactCallback(NULL);
 	}
 	Fvector lin_vel;
-//	lin_vel.sub(m_data.m_desiredP,XFORM().c);
-//	lin_vel.div(Device.fTimeDelta);
 
 	Fvector prev_pos = PositionStack.back().vPosition;
 	lin_vel.sub(XFORM().c,prev_pos);
@@ -739,9 +747,6 @@ void CHelicopter::Die()
 
 	setState(CHelicopter::eDead);
 	m_engineSound.stop();
-
-//	Fvector last_pos = PositionStack.back().vPosition;
-
 }
 
 void CHelicopter::gotoStayPoint(float time, Fvector* pos)

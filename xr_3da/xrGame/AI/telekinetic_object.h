@@ -43,7 +43,7 @@ virtual		void				raise_update			();
 			void				prepare_keep			();
 virtual		void				keep					();
 virtual		void				keep_update				();
-			void				release					();
+virtual		void				release					();
 virtual		void				fire					(const Fvector &target);
 virtual		void				fire					(const Fvector &target, float power);
 virtual		void				fire_update				();
