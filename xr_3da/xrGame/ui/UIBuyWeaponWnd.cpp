@@ -1960,11 +1960,11 @@ void CUIBuyWeaponWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bReal
 					if (uAddonFlags != 0)
 					{
 						if ((uAddonFlags & 1) != 0)
-							DDItemMP.AttachDetachAddon(CUIDragDropItemMP::ID_SCOPE, true);
+							DDItemMP.AttachDetachAddon(CUIDragDropItemMP::ID_SCOPE, true, bRealRepresentationSet);
 						if ((uAddonFlags & 2) != 0)
-							DDItemMP.AttachDetachAddon(CUIDragDropItemMP::ID_GRENADE_LAUNCHER, true);
+							DDItemMP.AttachDetachAddon(CUIDragDropItemMP::ID_GRENADE_LAUNCHER, true, bRealRepresentationSet);
 						if ((uAddonFlags & 4) != 0)
-							DDItemMP.AttachDetachAddon(CUIDragDropItemMP::ID_SILENCER, true);
+							DDItemMP.AttachDetachAddon(CUIDragDropItemMP::ID_SILENCER, true, bRealRepresentationSet);
 					}
 
 //					IgnoreMoney(bPrevMoneyMode);
@@ -2076,7 +2076,7 @@ CUIBuyWeaponWnd::CUIDragDropItemMP * CUIBuyWeaponWnd::IsItemAnAddon(CUIDragDropI
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void CUIBuyWeaponWnd::CUIDragDropItemMP::AttachDetachAddon(int iAddonIndex, bool bAttach)
+void CUIBuyWeaponWnd::CUIDragDropItemMP::AttachDetachAddon(int iAddonIndex, bool bAttach, bool bRealRepresentationSet)
 {
 	R_ASSERT(iAddonIndex >= 0 && iAddonIndex < 3);
 	if (m_AddonInfo[iAddonIndex].iAttachStatus != -1)
@@ -2094,6 +2094,7 @@ void CUIBuyWeaponWnd::CUIDragDropItemMP::AttachDetachAddon(int iAddonIndex, bool
 		m_AddonInfo[iAddonIndex].iAttachStatus = bAttach ? 1 : 0;
 		m_pAddon[iAddonIndex]->GetUIStaticItem().SetColor(bAttach ? cAttached : cDetached);
 		m_pAddon[iAddonIndex]->EnableDragDrop(!bAttach);
+		m_pAddon[iAddonIndex]->m_bHasRealRepresentation = bRealRepresentationSet;
 
 	}
 }
@@ -2164,7 +2165,11 @@ void CUIBuyWeaponWnd::CUIDragDropItemMP::Draw()
 				down_offset +  iFloor(0.5f+(float)nfo.y * GetTextureScale()), 
 				NULL, pDDItemMP->GetUIStaticItem());
 
-			pDDItemMP->GetUIStaticItem().SetColor(cDetached);
+			if (pDDItemMP->m_bHasRealRepresentation)
+				pDDItemMP->GetUIStaticItem().SetColor(cAbleToBuyOwned);
+			else
+				pDDItemMP->GetUIStaticItem().SetColor(cDetached);
+
 			pDDItemMP->GetUIStaticItem().Render();
 			pDDItemMP->GetUIStaticItem().SetColor(cAttached);
 

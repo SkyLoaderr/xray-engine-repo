@@ -147,7 +147,7 @@ protected:
 		char				m_strAddonTypeNames[NUM_OF_ADDONS][25];
 
 		// Аттачим/детачим аддоны
-		void				AttachDetachAddon(int iAddonIndex, bool bAttach);
+		void				AttachDetachAddon(int iAddonIndex, bool bAttach, bool bRealRepresentationSet = false);
 		void				AttachDetachAllAddons(bool bAttach);
 		bool				IsAddonAttached(int iAddonIndex) { return m_AddonInfo[iAddonIndex].iAttachStatus == 1; }
 		// Переопределяем некоторые функции, которые нам нужны для коректной отрисовки оружия с аддонами
