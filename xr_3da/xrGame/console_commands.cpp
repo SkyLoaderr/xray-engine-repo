@@ -637,17 +637,23 @@ public:
 	CCC_ALifeSave(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR args) {
 		
-//		if (!Level().autosave_manager().ready_for_autosave()) {
-//			Msg		("! Cannot save the game right now!");
-//			return;
-//		}
+#if 0
+		if (!Level().autosave_manager().ready_for_autosave()) {
+			Msg		("! Cannot save the game right now!");
+			return;
+		}
+#endif
 
+#ifdef DEBUG
 		u64						start, finish;
+#endif
 		string_path				S,S1;
 		S[0]					= 0;
 		sscanf					(args ,"%s",S);
 		
+#ifdef DEBUG
 		start					= CPU::GetCycleCount();
+#endif
 		if (!xr_strlen(S)) {
 			strconcat			(S,Core.UserName,"_","quicksave");
 			NET_Packet			net_packet;
@@ -663,17 +669,28 @@ public:
 			net_packet.w_u8		(1);
 			Level().Send		(net_packet,net_flags(TRUE));
 		}
+#ifdef DEBUG
 		finish					= CPU::GetCycleCount();
+#endif
+
+#ifdef DEBUG
 		Msg						("Game save overhead  : %f milliseconds",CPU::cycles2milisec*(finish - start));
+#endif
 
 		strcat					(S,".dds");
 		FS.update_path			(S1,"$game_saves$",S);
 		
+#ifdef DEBUG
 		start					= CPU::GetCycleCount();
+#endif
 		::Render->Screenshot	(IRender_interface::SM_FOR_GAMESAVE,S1);
+#ifdef DEBUG
 		finish					= CPU::GetCycleCount();
+#endif
 
+#ifdef DEBUG
 		Msg						("Screenshot overhead : %f milliseconds",CPU::cycles2milisec*(finish - start));
+#endif
 	}
 };
 
