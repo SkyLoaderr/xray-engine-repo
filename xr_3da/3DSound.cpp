@@ -46,9 +46,9 @@ C3DSound::~C3DSound	()
 	_FREE				( fName );
 }
 
+// Update params
 void C3DSound::Update_Params()
 {
-//	if (dwStatus&DSBSTATUS_BUFFERLOST) pBuffer->Restore();
 	if (bNeedUpdate) 
 	{
 		bNeedUpdate		= false;
@@ -75,6 +75,10 @@ BOOL C3DSound::Update_Volume()
 			return FALSE;
 		}
 	}
+}
+
+void C3DSound::Update_Occlusion()
+{
 }
 
 void C3DSound::OnMove		()
