@@ -5,19 +5,19 @@ function loadJob(sj, gname, type, squad, groups)
 		t = { section = "walker1",
 			idle = 0,
 			prior = 0, state = {0},
-			in_rest = "", out_rest = "",
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "walker2",
 			idle = 0,
 			prior = 0, state = {0},
-			in_rest = "", out_rest = "",
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "walker3",
 			idle = 0,
 			prior = 0, state = {0},
-			in_rest = "", out_rest = "",
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 	end
@@ -25,7 +25,7 @@ function loadJob(sj, gname, type, squad, groups)
 		t = { section = "esc_bl_sleeper_1",
 			idle = 0,
 			prior = 0, state = {0},
-			in_rest = "", out_rest = "",
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
 	end

@@ -41,7 +41,7 @@ end
 function fract:checkNpc(npc)
 	if self.type == "blockpost"
 	then
-		return true
+		return npc:character_community() == "military"
 	end
 
 	if self.type == "test"
