@@ -52,6 +52,8 @@ public:
 	CUIDialogWnd*		MainInputReceiver		();
 	virtual void		ReInitInventoryWnd		() = 0;
 
+	virtual	shared_str	shedule_Name			() const		{ return shared_str("CUIGameCustom"); };
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CUIGameCustom)

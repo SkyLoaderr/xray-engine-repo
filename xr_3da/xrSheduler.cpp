@@ -195,11 +195,19 @@ void CSheduler::ProcessStep			()
 #ifdef DEBUG
 		T.Object->dbg_startframe	= Device.dwFrame;
 		eTimer.Start				();
+		LPCSTR		_obj_name		= T.Object->shedule_Name().c_str();
 #endif
 
-		T.Object->shedule.b_locked	= TRUE;
-		T.Object->shedule_Update	(clampr(Elapsed,u32(1),u32(_max(u32(T.Object->shedule.t_max),u32(1000)))) );
-		T.Object->shedule.b_locked	= FALSE;
+		try {
+			T.Object->shedule.b_locked	= TRUE;
+			T.Object->shedule_Update	(clampr(Elapsed,u32(1),u32(_max(u32(T.Object->shedule.t_max),u32(1000)))) );
+			T.Object->shedule.b_locked	= FALSE;
+		} catch (...) {
+#ifdef DEBUG
+			Msg		("! xrSheduler: object '%s' raised an exception", _obj_name);
+			throw	;
+#endif
+		}
 
 		// Calc next update interval
 		u32		dwMin				= _max(u32(30),T.Object->shedule.t_min);
@@ -218,15 +226,12 @@ void CSheduler::ProcessStep			()
 
 #ifdef DEBUG
 		u32	execTime				= eTimer.GetElapsed_ms		();
-		//void*	dbgaddr				= dynamic_cast<void*>		(T.Object);
-		CObject*	O				= dynamic_cast<CObject*>	(T.Object);
-		LPCSTR		N				= O?O->cName().c_str():"unknown";
-		VERIFY3						(T.Object->dbg_update_shedule == T.Object->dbg_startframe, "Broken sequence of calls to 'shedule_Update'", O?*O->cName():"unknown object" );
+		VERIFY3						(T.Object->dbg_update_shedule == T.Object->dbg_startframe, "Broken sequence of calls to 'shedule_Update'", _obj_name );
 		if (delta_ms> 3*dwUpdate)	{
-			//Msg	("! xrSheduler: failed to shedule object [%s] (%dms)",		N, delta_ms	);
+			//Msg	("! xrSheduler: failed to shedule object [%s] (%dms)",	_obj_name, delta_ms	);
 		}
 		if (execTime> 15)			{
-			Msg	("* xrSheduler: too much time consumed by object [%s] (%dms)",	N, execTime	);
+			Msg	("* xrSheduler: too much time consumed by object [%s] (%dms)",	_obj_name, execTime	);
 		}
 #endif
 

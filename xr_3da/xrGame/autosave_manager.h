@@ -28,11 +28,12 @@ private:
 	ESaveState		m_save_state;
 
 public:
-					CAutosaveManager		();
-	virtual			~CAutosaveManager		();
-	virtual	void	shedule_Update			(u32 dt);
-	virtual float	shedule_Scale			();
-			void	OnRender				();
+						CAutosaveManager		();
+	virtual				~CAutosaveManager		();
+	virtual	shared_str	shedule_Name			() const		{ return shared_str("autosave_manager"); };
+	virtual	void		shedule_Update			(u32 dt);
+	virtual float		shedule_Scale			();
+			void		OnRender				();
 
 public:
 	IC		u32		autosave_interval		() const;

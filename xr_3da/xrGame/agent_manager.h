@@ -39,7 +39,7 @@ public:
 	virtual void							shedule_Update		(u32 time_delta);	
 	virtual BOOL							shedule_Ready		();
 	virtual	void							remove_links		(CObject *object);
-	IC		shared_str						cName				() const;
+	virtual	shared_str						cName				() const;
 
 public:
 	IC		CAgentCorpseManager				&corpse				() const;

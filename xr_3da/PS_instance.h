@@ -28,6 +28,8 @@ public:
 	virtual void			Play				()				= 0;
 	virtual BOOL			Locked				()				{ return FALSE; }
 
+	virtual	shared_str		shedule_Name		() const		{ return shared_str("particle_instance"); };
+
 	virtual void			shedule_Update		(u32 dt);
 	virtual	IRenderable*	dcast_Renderable	()				{ return this;	}
 };

@@ -50,8 +50,9 @@ protected:
 
 	//for scripting enhancement
 	virtual		void				TranslateGameMessage	(u32 msg, NET_Packet& P);
-	virtual			void				CommonMessageOut		(LPCSTR msg);
+	virtual		void				CommonMessageOut		(LPCSTR msg);
 
+	virtual		shared_str			shedule_Name			() const		{ return shared_str("game_cl_GameState"); };
 	virtual		float				shedule_Scale			();
 
 				void				sv_GameEventGen			(NET_Packet& P);
