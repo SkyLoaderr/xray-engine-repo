@@ -185,7 +185,16 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 				bFlame	= TRUE;
 				VERIFY(m_pParent);
 				fTime+=fTimeToFire;
-				
+
+				// bullet_trace
+				{
+					Fvector		b1,b2;
+					b1.direct	(p1,Device.vCameraRight,1.f);
+					b1.direct	(b1,d,3	);
+					b2.direct	(p1,d,30);
+					::Render.add_Line(b1,b2,.2f,0xffffffff,sh_BulletTracer);
+				}
+
 				// real fire
 				Collide::ray_query RQ;
 				if (FireTrace( p1, d, RQ )){
@@ -239,6 +248,7 @@ void CWeaponGroza::Render(BOOL bHUDView)
 		::Render.set_LightLevel		(iFloor(m_pParent->AI_Lighting));
 		::Render.add_leafs_Dynamic	(Visual());
 	}
+	/*
 	if ((st_current==eFire) && bFlame) 
 	{
 		UpdateFP	(bHUDView);
@@ -255,6 +265,7 @@ void CWeaponGroza::Render(BOOL bHUDView)
 			P.add(D);
 		}
 	}
+	*/
 }
 
 void CWeaponGroza::SetDefaults	()
