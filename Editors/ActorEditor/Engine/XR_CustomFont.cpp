@@ -28,14 +28,12 @@ CFontBase::~CFontBase()
 
 void CFontBase::OnDeviceCreate()
 {
-	REQ_CREATE		();
-	Log			("+ CFontBase");
-	OnInitialize	();
+	REQ_CREATE				();
+	OnInitialize			();
 }
 void CFontBase::OnDeviceDestroy()
 {
-	REQ_DESTROY		();
-	Log			("- CFontBase");
+	REQ_DESTROY				();
 	Device.Shader.Delete	(pShader);
 }
 

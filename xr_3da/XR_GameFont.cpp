@@ -14,11 +14,12 @@ CFontGame::CFontGame()
 void	CFontGame::OnInitialize	()
 {
 	if (!Device.bReady)	return;
+	if (pShader)		return;
 
-	pShader			= Device.Shader.Create	("font","fonts\\game");
-	TextureSize.x	= 256;
-	TextureSize.y	= 256;
-	iNumber			= 8;
+	pShader				= Device.Shader.Create	("font","fonts\\game");
+	TextureSize.x		= 256;
+	TextureSize.y		= 256;
+	iNumber				= 8;
 	
 	// Character map
 	int i;

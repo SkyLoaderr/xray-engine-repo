@@ -14,7 +14,6 @@ CUIDynamicItem::CUIDynamicItem()
 
 CUIDynamicItem::~CUIDynamicItem()
 {
-	Log			("- CUIDynamicItem::Init");
 	Device.Shader.Delete(hShader);
 }
 //--------------------------------------------------------------------
@@ -22,7 +21,6 @@ CUIDynamicItem::~CUIDynamicItem()
 void CUIDynamicItem::Init(LPCSTR tex, LPCSTR sh, float tx_width, float tx_height){
 	inherited::Init(tx_width,tx_height);
 	Stream		= Device.Streams.Create	(FVF::F_TL,128);
-	Log			("+ CUIDynamicItem::Init");
 	hShader		= Device.Shader.Create	(sh,tex,FALSE);
 }
  

@@ -38,13 +38,11 @@ CHitMarker::~CHitMarker(){
 
 void CHitMarker::OnDeviceDestroy()
 {
-	Log			("- CHitMarker");
 	Device.Shader.Delete(hShader);
 }
 void CHitMarker::OnDeviceCreate()
 {
 	REQ_CREATE	();
-	Log			("+ CHitMarker");
 	hShader		= Device.Shader.Create("hud\\hitmarker","ui\\hud_hitmarker");
 	VS			= Device.Streams.Create(FVF::F_TL,4*3);
 }

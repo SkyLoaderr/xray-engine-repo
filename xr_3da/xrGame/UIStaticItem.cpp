@@ -15,17 +15,16 @@ CUIStaticItem::CUIStaticItem()
 
 CUIStaticItem::~CUIStaticItem()
 {
-	Log			("- CUIStaticItem::Init");
-	if (hShader) Device.Shader.Delete(hShader);
+	Device.Shader.Delete	(hShader);
 }
 //--------------------------------------------------------------------
 
-void CUIStaticItem::Init(LPCSTR tex, LPCSTR sh, float left, float top, float tx_width, float tx_height, DWORD align){
+void CUIStaticItem::Init(LPCSTR tex, LPCSTR sh, float left, float top, float tx_width, float tx_height, DWORD align)
+{
 	Init		(left,top,tx_width,tx_height,align);
-	Log			("+ CUIStaticItem::Init");
-	hShader		= Device.Shader.Create	(sh,tex,FALSE);
+	if (0==hShader)	hShader	= Device.Shader.Create	(sh,tex,FALSE);
 }
- 
+
 void CUIStaticItem::Init(float left, float top, float tx_width, float tx_height, DWORD align){
 	inherited::Init(tx_width,tx_height);
 	Level().HUD()->ClientToScreenScaled(left,top,vPos,align);

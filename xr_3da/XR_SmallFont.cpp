@@ -13,6 +13,7 @@ CFontSmall::CFontSmall()
 void CFontSmall::OnInitialize()
 {
 	if (!Device.bReady)	return;
+	if (pShader)		return;
 	
 	pShader			= Device.Shader.Create("font","fonts\\small");
 

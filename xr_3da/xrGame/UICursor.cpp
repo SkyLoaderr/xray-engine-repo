@@ -14,15 +14,13 @@ CUICursor::CUICursor()
 	vPos.set		(0.f,0.f);
 
 	Stream		= Device.Streams.Create	(FVF::F_TL,4);
-	Log			("+ CUICursor");
 	hShader		= Device.Shader.Create	("hud\\cursor","ui\\ui_cursor",FALSE);
 }
 //--------------------------------------------------------------------
 
 CUICursor::~CUICursor()
 {
-	Log			("- CUICursor");
-	Device.Shader.Delete(hShader);
+	Device.Shader.Delete	(hShader);
 }
 //--------------------------------------------------------------------
 void CUICursor::Render()
