@@ -1549,7 +1549,7 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	// Set Bloom 1
 	m_pd3dDevice->SetRenderTarget			(0, d_Bloom_1_S		);
 	m_pd3dDevice->SetDepthStencilSurface	(NULL);
-	m_pd3dDevice->SetRenderState			(D3DRS_ZENABLE,		FALSE);
+	// m_pd3dDevice->SetRenderState			(D3DRS_ZENABLE,		FALSE);
 	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE,	D3DCULL_NONE);
 
 	// samplers and texture (diffuse + gloss)
@@ -1572,8 +1572,8 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	D3DVIEWPORT9	VP;
 	VP.X									= 0;
 	VP.Y									= 0;
-	VP.Width								= m_d3dsdBackBuffer.Width;
-	VP.Height								= m_d3dsdBackBuffer.Height;
+	VP.Width								= m_d3dsdBackBuffer.Width/2;
+	VP.Height								= m_d3dsdBackBuffer.Height/2;
 	VP.MinZ									= 0.0f;
 	VP.MaxZ									= 1.0f;
 	m_pd3dDevice->SetViewport				(&VP);
@@ -1637,7 +1637,7 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	*/
 
 	// Cleanup
-	m_pd3dDevice->SetRenderState			(D3DRS_ZENABLE,	TRUE);
+	// m_pd3dDevice->SetRenderState			(D3DRS_ZENABLE,	TRUE);
 	m_pd3dDevice->SetTexture				(0, NULL			);
 	m_pd3dDevice->SetTexture				(1, NULL			);
 	m_pd3dDevice->SetRenderTarget			(0, pBaseTarget		);
