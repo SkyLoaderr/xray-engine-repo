@@ -10,8 +10,8 @@ class CSceneObject;
 class CSector;
 
 struct SVertex: public Fvector{
-	INTVec link[2];
-    INTVec ulink;
+	IntVec link[2];
+    IntVec ulink;
     int portal;
     SVertex(const Fvector& v){set(v);portal=-1;}
     IC void SetLink(int id, int i0, int i1){if (i0>=0)link[id].push_back(i0); if (i1>=0)link[id].push_back(i1);}

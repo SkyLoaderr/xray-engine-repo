@@ -25,6 +25,8 @@ __fastcall TfrmPropertiesSpawnPoint::TfrmPropertiesSpawnPoint(TComponent* Owner)
 
 void TfrmPropertiesSpawnPoint::GetObjectInfo()
 {
+/*
+//p
     m_Props->BeginFillMode();
     TElTreeItem* M=0;
 //	M = m_Props->AddItem(0,PROP_MARKER2,	"Entity",	m_SPObject->m_SpawnData->s_name);
@@ -33,6 +35,7 @@ void TfrmPropertiesSpawnPoint::GetObjectInfo()
     CStream F(m_SPData.pointer(),m_SPData.size());
     m_Props->AddItems	(M,F);
     m_Props->EndFillMode();
+*/
 }
 //---------------------------------------------------------------------------
 
@@ -43,11 +46,11 @@ bool TfrmPropertiesSpawnPoint::ApplyObjectInfo(){
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesSpawnPoint::OnNameAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall TfrmPropertiesSpawnPoint::OnNameAfterEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
 {
 	TextValue* V = (TextValue*)sender;
 	AnsiString* new_name = (AnsiString*)edit_val;
-	if (Scene.FindObjectByName(new_name->c_str(),0)) *new_name = V->val;
+	if (Scene.FindObjectByName(new_name->c_str(),0)) *new_name = V->GetValue();
     else *new_name = new_name->LowerCase();
 }
 //---------------------------------------------------------------------------

@@ -245,7 +245,8 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
 
             char key[255];
             TElTreeItem* M=0;
-
+/*
+//p
             ImageProps->BeginFillMode("Image properties");
             ImageProps->AddItem(0,PROP_TOKEN,"Format",			ImageProps->MakeTokenValue(&fmt.fmt,tfmt_token));
             M = ImageProps->AddItem(0,PROP_MARKER,"MipMaps");
@@ -269,7 +270,7 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
             ImageProps->AddItem(M,PROP_FLAG,"Grayscale",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flGreyScale));
             ImageProps->AddItem(M,PROP_FLAG,"Implicit Lighted",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flImplicitLighted));
             ImageProps->EndFillMode();
-
+*/
             m_LastSelection = m_SelectedName;
         }
     }else{

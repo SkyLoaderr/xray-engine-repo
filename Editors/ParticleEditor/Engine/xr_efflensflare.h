@@ -41,11 +41,7 @@ public:
     	flSource	= (1<<1),
     	flGradient 	= (1<<2)
     };
-	struct{
-        DWORD		bFlare			: 1;
-        DWORD		bSource			: 1;
-        DWORD		bGradient		: 1;
-	}				m_Flags;
+	DWORD			m_dwFlags;
     // source
     SFlare			m_Source;
     // gradient

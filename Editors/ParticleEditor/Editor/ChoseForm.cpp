@@ -40,6 +40,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectEntity(LPCSTR init_name)
 {
 	VERIFY(!form);
 	form 							= new TfrmChoseItem(0);
+    form->Caption					= "Select Entity";
 	form->Mode 						= smEntity;
     form->bMultiSel 				= false;
 	// init
@@ -71,6 +72,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectEntityCLSID(LPCSTR init_name)
 {
 	VERIFY(!form);
 	form 							= new TfrmChoseItem(0);
+    form->Caption					= "Select Entity CLSID";
 	form->Mode 						= smEntityCLSID;
     form->bMultiSel 				= false;
 	// init
@@ -101,6 +103,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectEntityCLSID(LPCSTR init_name)
 LPCSTR __fastcall TfrmChoseItem::SelectSound(bool bMulti, LPCSTR init_name, bool bIgnoreExt){
 	VERIFY(!form);
 	form 							= new TfrmChoseItem(0);
+    form->Caption					= "Select Sound";
 	form->Mode 						= smSound;
     form->bMultiSel 				= bMulti;
     form->iMultiSelLimit 			= 32;
@@ -130,6 +133,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectSound(bool bMulti, LPCSTR init_name, bool
 LPCSTR __fastcall TfrmChoseItem::SelectObject(bool bMulti, LPCSTR start_folder, LPCSTR start_name){
 	VERIFY(!form);
 	form 							= new TfrmChoseItem(0);
+    form->Caption					= "Select Object";
 	form->Mode 						= smObject;
     form->bMultiSel 				= bMulti;
     form->iMultiSelLimit 			= 32;
@@ -160,6 +164,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectLAnim(bool bMulti, LPCSTR start_folder, L
 {
 	VERIFY(!form);
 	form 							= new TfrmChoseItem(0);
+    form->Caption					= "Select Light Animation";
 	form->Mode 						= smLAnim;
     form->bMultiSel 				= bMulti;
     form->iMultiSelLimit 			= 32;
@@ -189,6 +194,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectLAnim(bool bMulti, LPCSTR start_folder, L
 LPCSTR __fastcall TfrmChoseItem::SelectShader(LPCSTR init_name){
 	VERIFY(!form);
 	form = new TfrmChoseItem(0);
+    form->Caption					= "Select Engine Shader";
 	form->Mode = smShader;
 	// init
 	if (init_name) m_LastSelection[form->Mode] = init_name;
@@ -211,6 +217,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectShader(LPCSTR init_name){
 LPCSTR __fastcall TfrmChoseItem::SelectShaderXRLC(LPCSTR init_name){
 	VERIFY(!form);
 	form = new TfrmChoseItem(0);
+    form->Caption					= "Select Compiler Shader";
 	form->Mode = smShaderXRLC;
 	// init
 	if (init_name) m_LastSelection[form->Mode] = init_name;
@@ -234,6 +241,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectShaderXRLC(LPCSTR init_name){
 LPCSTR __fastcall TfrmChoseItem::SelectPS(LPCSTR start_folder, LPCSTR init_name){
 	VERIFY(!form);
 	form = new TfrmChoseItem(0);
+    form->Caption					= "Select Particel System";
 	form->Mode = smPS;
 	// init
 	if (init_name) m_LastSelection[form->Mode] = init_name;
@@ -257,6 +265,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectPS(LPCSTR start_folder, LPCSTR init_name)
 LPCSTR __fastcall TfrmChoseItem::SelectTexture(bool msel, LPCSTR init_name, bool bIgnoreExt){
 	VERIFY(!form);
 	form = new TfrmChoseItem(0);
+    form->Caption					= "Select Texture";
 	form->Mode = smTexture;
     form->bMultiSel = msel;
     form->iMultiSelLimit = 8;

@@ -7,6 +7,8 @@
 #include "ExtBtn.hpp"
 #include "MxMenus.hpp"
 
+// refs
+
 namespace FOLDER{
 	const DWORD TYPE_INVALID=-1;
 	const DWORD TYPE_FOLDER=0;
@@ -41,9 +43,9 @@ namespace FOLDER{
     // popup menu
     void				ShowPPMenu			(TMxPopupMenu* M, TExtBtn* B=0);
     // folder text edit
-    void 				AfterTextEdit		(TElTreeItem* node, LPSTR value, AnsiString& edit_val);
-    void 				BeforeTextEdit		(LPSTR value, AnsiString& edit_val);
-    void 				TextDraw			(LPSTR value, AnsiString& edit_val);
+    void 				AfterTextEdit		(TElTreeItem* node, LPCSTR value, AnsiString& edit_val);
+    void 				BeforeTextEdit		(LPCSTR value, AnsiString& edit_val);
+    void 				TextDraw			(LPCSTR value, AnsiString& edit_val);
 //------------------------------------------------------------------------------
 }
 #endif

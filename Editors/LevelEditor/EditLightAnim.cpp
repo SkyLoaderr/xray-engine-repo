@@ -167,29 +167,32 @@ void TfrmEditLightAnim::UpdateView()
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditLightAnim::NameOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall TfrmEditLightAnim::NameOnAfterEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
 {
-	FOLDER::AfterTextEdit(tvItems->Selected,((TextValue*)sender)->val,*(AnsiString*)edit_val);
+	FOLDER::AfterTextEdit(tvItems->Selected,((TextValue*)sender)->GetValue(),*(AnsiString*)edit_val);
 }
 //------------------------------------------------------------------------------
-void __fastcall TfrmEditLightAnim::NameOnBeforeEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall TfrmEditLightAnim::NameOnBeforeEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
 {
-	FOLDER::BeforeTextEdit(((TextValue*)sender)->val,*(AnsiString*)edit_val);
+	FOLDER::BeforeTextEdit(((TextValue*)sender)->GetValue(),*(AnsiString*)edit_val);
 }
 //------------------------------------------------------------------------------
-void __fastcall TfrmEditLightAnim::NameOnDraw(PropValue* sender, LPVOID draw_val)
+void __fastcall TfrmEditLightAnim::NameOnDraw(PropItem* sender, LPVOID draw_val)
 {
-	FOLDER::TextDraw(((TextValue*)sender)->val,*(AnsiString*)draw_val);
+	FOLDER::TextDraw(((TextValue*)sender)->GetValue(),*(AnsiString*)draw_val);
 }
 //------------------------------------------------------------------------------
 void TfrmEditLightAnim::GetItemData()
 {
 	if (m_CurrentItem){
+/*
+//p    
     	m_Props->BeginFillMode();
         m_Props->AddItem(0,PROP_TEXT,	"Name",			m_Props->MakeTextValue	(m_CurrentItem->cName,sizeof(m_CurrentItem->cName),NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw));
         m_Props->AddItem(0,PROP_FLOAT,	"FPS",			m_Props->MakeFloatValue	(&m_CurrentItem->fFPS,0.1f,1000,1.f,1));
         m_Props->AddItem(0,PROP_INTEGER,"Frame Count",	m_Props->MakeIntValue	(&m_CurrentItem->iFrameCount,1,100000,1));
     	m_Props->EndFillMode();
+*/
         UpdateView			();
     }
 }

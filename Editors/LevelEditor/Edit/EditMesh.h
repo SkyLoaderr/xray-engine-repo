@@ -34,8 +34,8 @@ public:
     BYTE			dim;
     EVMType			type;
 	BOOL			polymap;
-	INTVec			vindices;
-	INTVec			pindices;
+	IntVec			vindices;
+	IntVec			pindices;
 public:
 	st_VMap			(LPCSTR nm=0, EVMType t=vmtUV, BOOL pm=false){
 		type=t; 
@@ -87,10 +87,10 @@ struct st_MeshOptions{
 };
 #pragma pack( pop )
 
-DEFINE_VECTOR		(INTVec,AdjVec,AdjIt);
+DEFINE_VECTOR		(IntVec,AdjVec,AdjIt);
 DEFINE_VECTOR		(st_VMap*,VMapVec,VMapIt);
 DEFINE_VECTOR		(st_Face,FaceVec,FaceIt);
-DEFINE_MAP			(CSurface*,INTVec,SurfFaces,SurfFacesPairIt);
+DEFINE_MAP			(CSurface*,IntVec,SurfFaces,SurfFacesPairIt);
 DEFINE_VECTOR		(st_SVert,SVertVec,SVertIt);
 
 //refs
@@ -166,7 +166,7 @@ protected:
     VMapVec			m_VMaps;
     VMRefsVec		m_VMRefs;
 
-	void 			FillRenderBuffer		(INTVec& face_lst, int start_face, int num_face, const CSurface* surf, LPBYTE& data);
+	void 			FillRenderBuffer		(IntVec& face_lst, int start_face, int num_face, const CSurface* surf, LPBYTE& data);
 
 	void 			RecurseTri				(int id);
 

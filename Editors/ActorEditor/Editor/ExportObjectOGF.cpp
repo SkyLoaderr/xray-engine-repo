@@ -246,7 +246,7 @@ bool CExportObjectOGF::ExportGeometry(CFS_Base& F)
         if (!(MESH->m_LoadState&EMESH_LS_PNORMALS)) MESH->GeneratePNormals();
         // fill faces
         for (SurfFacesPairIt sp_it=MESH->m_SurfFaces.begin(); sp_it!=MESH->m_SurfFaces.end(); sp_it++){
-            INTVec& face_lst = sp_it->second;
+            IntVec& face_lst = sp_it->second;
             CSurface* surf = sp_it->first;
             DWORD dwTexCnt = ((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
             R_ASSERT(dwTexCnt==1);
@@ -256,7 +256,7 @@ bool CExportObjectOGF::ExportGeometry(CFS_Base& F)
                 mtl_idx=mtl_cnt++;
             }
             SSplit& split=m_Splits[mtl_idx];
-            for (INTIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
+            for (IntIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
                 st_Face& face = MESH->m_Faces[*f_it];
                 {
                     SOGFVert v[3];

@@ -210,7 +210,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
 //	                    	if ((i%id)==0) UI.ProgressUpdate(i);
                             st_lwPoint& Ipt = Ilr->point.pt[i];
                             Fvector& Mpt	= MESH->m_Points[i];
-                            INTVec& a_lst	= MESH->m_Adjs[i];
+                            IntVec& a_lst	= MESH->m_Adjs[i];
                             Mpt.set			(Ipt.pos);
                             copy			(Ipt.pol,Ipt.pol+Ipt.npols,inserter(a_lst,a_lst.begin()));
                             sort			(a_lst.begin(),a_lst.end());
@@ -221,7 +221,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
 //					UI.ProgressStart(Ilr->polygon.count,"Fill polygons:");
                     MESH->m_Faces.resize(Ilr->polygon.count);
                     MESH->m_VMRefs.reserve(Ilr->polygon.count*3);
-                    INTVec surf_ids;
+                    IntVec surf_ids;
                     surf_ids.resize(Ilr->polygon.count);
                     int id = Ilr->polygon.count/50;
                     if (id==0) id = 1;

@@ -3,6 +3,7 @@
 
 #include "FolderLib.h"
 #include "xr_trims.h"
+#include "PropertiesListTypes.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -383,7 +384,7 @@ void FOLDER::StartDrag(TObject *Sender, TDragObject *&DragObject)
 }
 //---------------------------------------------------------------------------
 
-void FOLDER::AfterTextEdit(TElTreeItem* node, LPSTR value, AnsiString& N)
+void FOLDER::AfterTextEdit(TElTreeItem* node, LPCSTR value, AnsiString& N)
 {
 	N=N.LowerCase();
 	int cnt=_GetItemCount(N.c_str(),'\\');
@@ -405,13 +406,13 @@ void FOLDER::AfterTextEdit(TElTreeItem* node, LPSTR value, AnsiString& N)
 }
 //---------------------------------------------------------------------------
 
-void FOLDER::BeforeTextEdit(LPSTR value, AnsiString& N)
+void FOLDER::BeforeTextEdit(LPCSTR value, AnsiString& N)
 {
 	int cnt=_GetItemCount(N.c_str(),'\\');
 	N = _SetPos(N.c_str(),cnt-1,'\\');
 }
 //------------------------------------------------------------------------------
-void FOLDER::TextDraw(LPSTR value, AnsiString& N)
+void FOLDER::TextDraw(LPCSTR value, AnsiString& N)
 {
 	int cnt=_GetItemCount(N.c_str(),'\\');
 	N = _SetPos(N.c_str(),cnt-1,'\\');

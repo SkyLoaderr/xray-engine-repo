@@ -109,9 +109,9 @@ void CEditableMesh::GeneratePNormals(){
         for (int k=0; k<3; k++){
             Fvector& N = m_PNormals[f_i*3+k];
             N.set(0,0,0);
-            INTVec& a_lst=m_Adjs[m_Faces[f_i].pv[k].pindex];
+            IntVec& a_lst=m_Adjs[m_Faces[f_i].pv[k].pindex];
             VERIFY(a_lst.size());
-            for (INTIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++){
+            for (IntIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++){
             	Fvector& TN = m_FNormals[*i_it];
 	            float cosa = TN.dotproduct(FN);
     	        if (cosa<m_fSoftAngle) continue;
@@ -135,7 +135,7 @@ void CEditableMesh::GenerateSVertices(){
     for (DWORD i=0; i<m_Points.size(); i++){
     	Fvector&  P =m_Points[i];
     	st_SVert& SV=m_SVertices[i];
-    	INTVec& a_lst = m_Adjs[i];
+    	IntVec& a_lst = m_Adjs[i];
         VERIFY2(a_lst.size(),"Karma pidaras!!! Uberi degenerats.");
 		bool bRes = false;
         for (DWORD a=0; a<m_Adjs[i].size(); a++){
@@ -175,7 +175,7 @@ void CEditableMesh::GenerateSVertices(){
 
 CSurface*	CEditableMesh::GetSurfaceByFaceID(int fid){
     for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
-		INTVec& face_lst = sp_it->second;
+		IntVec& face_lst = sp_it->second;
         if (std::find(face_lst.begin(),face_lst.end(),fid)!=face_lst.end()) return sp_it->first;
 	}
     return 0;
@@ -229,7 +229,7 @@ void CEditableMesh::DumpAdjacency(){
 	ELog.Msg(mtInformation,"Adjacency dump.");
 	ELog.Msg(mtInformation,"------------------------------------------------------------------------");
     for (DWORD i=0; i<m_Adjs.size(); i++){
-        INTVec& a_lst	= m_Adjs[i];
+        IntVec& a_lst	= m_Adjs[i];
         AnsiString s; s = "Point "; s+=i; s+=":";
         AnsiString s1; 
         for (DWORD j=0; j<a_lst.size(); j++){ s1=a_lst[j]; s+=" "+s1; }

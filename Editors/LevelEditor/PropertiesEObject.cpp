@@ -52,7 +52,7 @@ void TfrmPropertiesEObject::DestroyProperties(TfrmPropertiesEObject*& props)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesEObject::RotateOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall TfrmPropertiesEObject::RotateOnAfterEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
 {
 	Fvector* V = (Fvector*)edit_val;
 	V->x = deg2rad(V->x);
@@ -61,7 +61,7 @@ void __fastcall TfrmPropertiesEObject::RotateOnAfterEdit(TElTreeItem* item, Prop
 	UI.RedrawScene();
 }
 
-void __fastcall TfrmPropertiesEObject::RotateOnBeforeEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall TfrmPropertiesEObject::RotateOnBeforeEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
 {
 	Fvector* V = (Fvector*)edit_val;
 	V->x = rad2deg(V->x);
@@ -69,7 +69,7 @@ void __fastcall TfrmPropertiesEObject::RotateOnBeforeEdit(TElTreeItem* item, Pro
 	V->z = rad2deg(V->z);
 }
 
-void __fastcall TfrmPropertiesEObject::RotateOnDraw(PropValue* sender, LPVOID draw_val)
+void __fastcall TfrmPropertiesEObject::RotateOnDraw(PropItem* sender, LPVOID draw_val)
 {
 	Fvector* V = (Fvector*)draw_val;
 	V->x = rad2deg(V->x);
@@ -84,26 +84,26 @@ void TfrmPropertiesEObject::FillBasicProps()
 	m_Basic->BeginFillMode();
     if (S->GetReference()){
     	CEditableObject* 	O = S->GetReference();
-		m_Basic->AddItem	(0,PROP_MARKER2,"Name",(LPVOID)S->GetRefName());
-		m_Basic->AddItem	(0,PROP_FLAG,	"Dynamic",		m_Basic->MakeFlagValue(&O->m_dwFlags,CEditableObject::eoDynamic));
-		m_Basic->AddItem	(0,PROP_FLAG,	"HOM",			m_Basic->MakeFlagValue(&O->m_dwFlags,CEditableObject::eoHOM));
-        m_Basic->AddItem	(0,PROP_FLAG,	"Use LOD", 		m_Basic->MakeFlagValue(&O->m_dwFlags,CEditableObject::eoUsingLOD));
+		m_Basic->AddMarkerItem	(0,"Name",		S->GetRefName());
+		m_Basic->AddFlagItem	(0,"Dynamic",	&O->m_dwFlags,CEditableObject::eoDynamic);
+		m_Basic->AddFlagItem	(0,"HOM",		&O->m_dwFlags,CEditableObject::eoHOM);
+        m_Basic->AddFlagItem	(0,"Use LOD", 	&O->m_dwFlags,CEditableObject::eoUsingLOD);
         TElTreeItem* M;
-		M=m_Basic->AddItem	(0,PROP_MARKER,	"Transformation");
-		m_Basic->AddItem	(M,PROP_VECTOR,	"Position",		m_Basic->MakeVectorValue(&S->FPosition,	-10000,	10000,0.01,2,OnAfterTransformation));
-		m_Basic->AddItem	(M,PROP_VECTOR,	"Rotation",		m_Basic->MakeVectorValue(&S->FRotation,	-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
-		m_Basic->AddItem	(M,PROP_VECTOR,	"Scale",		m_Basic->MakeVectorValue(&S->FScale,	0.01,	10000,0.01,2,OnAfterTransformation));
-		M=m_Basic->AddItem	(0,PROP_MARKER,	"Summary");
-        AnsiString t; t.sprintf("V: %d, F: %d",S->GetVertexCount(),S->GetFaceCount());
-		m_Basic->AddItem	(M,PROP_MARKER2,"Object",		t.c_str());
-		M=m_Basic->AddItem	(M,PROP_MARKER,	"Meshes");
+		M=m_Basic->AddMarkerItem(0,"Transformation")->item;
+		m_Basic->AddVectorItem	(M,"Position",	&S->FPosition,	-10000,	10000,0.01,2,OnAfterTransformation);
+		m_Basic->AddVectorItem	(M,"Rotation",	&S->FRotation,	-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw);
+		m_Basic->AddVectorItem	(M,"Scale",		&S->FScale,		0.01,	10000,0.01,2,OnAfterTransformation);
+		M=m_Basic->AddMarkerItem(0,"Summary")->item;
+        AnsiString t; t.sprintf("V: %d, F: %d",	S->GetVertexCount(),S->GetFaceCount());
+		m_Basic->AddMarkerItem	(M,"Object",   	t.c_str());
+		M=m_Basic->AddMarkerItem(M,"Meshes")->item;
         for (EditMeshIt m_it=O->FirstMesh(); m_it!=O->LastMesh(); m_it++){
         	CEditableMesh* MESH=*m_it;
 	        t.sprintf("V: %d, F: %d",MESH->GetVertexCount(),MESH->GetFaceCount());
-			m_Basic->AddItem(M,PROP_MARKER2,MESH->GetName(),t.c_str());
+			m_Basic->AddMarkerItem(M,MESH->GetName(),t.c_str());
         }
-		M=m_Basic->AddItem	(0,PROP_MARKER,	"Game options");
-		m_Basic->AddItem	(M,PROP_ANSI_TEXT,"Script",		m_Basic->MakeAnsiTextValue(&O->m_ClassScript));
+		M=m_Basic->AddMarkerItem(0,"Game options")->item;
+		m_Basic->AddAnsiTextItem(M,"Script",	&O->m_ClassScript);
     }
     m_Basic->EndFillMode(true);
 }
@@ -119,10 +119,10 @@ void TfrmPropertiesEObject::FillSurfProps()
         TElTreeItem* M;
         for (SurfaceIt s_it=O->FirstSurface(); s_it!=O->LastSurface(); s_it++){
         	CSurface* SURF=*s_it;
-			M=m_Surfaces->AddItem(0,PROP_MARKER,SURF->_Name(),SURF);
-			m_Surfaces->AddItem(M,PROP_ANSI_SH_ENGINE,	"Shader",	m_Surfaces->MakeAnsiTextValue(&SURF->m_ShaderName, 	OnAfterShaderEdit));
-			m_Surfaces->AddItem(M,PROP_ANSI_SH_COMPILE,	"Compile",	m_Surfaces->MakeAnsiTextValue(&SURF->m_ShaderXRLCName));
-            m_Surfaces->AddItem(M,PROP_ANSI_TEXTURE,	"Texture",	m_Surfaces->MakeAnsiTextValue(&SURF->m_Texture,		OnAfterTextureEdit));
+			M=m_Surfaces->AddMarkerItem(0,SURF->_Name())->item;
+			m_Surfaces->AddAnsiEShaderItem(M,"Shader",	&SURF->m_ShaderName, 	OnAfterShaderEdit);
+			m_Surfaces->AddAnsiCShaderItem(M,"Compile",	&SURF->m_ShaderXRLCName);
+            m_Surfaces->AddAnsiTextureItem(M,"Texture",	&SURF->m_Texture,		OnAfterTextureEdit);
         }
     }
     m_Surfaces->EndFillMode(true);
@@ -233,7 +233,7 @@ void __fastcall TfrmPropertiesEObject::OnPick(const SRayPickInfo& pinf)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesEObject::OnAfterShaderEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall TfrmPropertiesEObject::OnAfterShaderEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
 {
 	AnsiString new_name = *(AnsiString*)edit_val;
 	TElTreeItem* parent	= item->Parent; VERIFY(parent);
@@ -244,7 +244,7 @@ void __fastcall TfrmPropertiesEObject::OnAfterShaderEdit(TElTreeItem* item, Prop
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesEObject::OnAfterTextureEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall TfrmPropertiesEObject::OnAfterTextureEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
 {
 	AnsiString new_name = *(AnsiString*)edit_val;
 	TElTreeItem* parent	= item->Parent; VERIFY(parent);
@@ -255,7 +255,7 @@ void __fastcall TfrmPropertiesEObject::OnAfterTextureEdit(TElTreeItem* item, Pro
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesEObject::OnAfterTransformation(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall TfrmPropertiesEObject::OnAfterTransformation(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
 {
 	UI.RedrawScene();
 }

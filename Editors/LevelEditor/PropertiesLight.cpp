@@ -171,24 +171,24 @@ void TfrmPropertiesLight::GetObjectsInfo(){
 		m_SunProps->BeginFillMode();
         TElTreeItem* M=0;
         TElTreeItem* N=0;
-		M = m_SunProps->AddItem(0,PROP_MARKER,	"Source");
-			m_SunProps->AddItem(M,PROP_FLAG,	"Enabled",	m_SunProps->MakeFlagValue(&F.m_Flags,CEditFlare::flSource));
-			m_SunProps->AddItem(M,PROP_FLOAT,	"Radius", 	m_SunProps->MakeFloatValue(&F.m_Source.fRadius,0.f,10.f));
-			m_SunProps->AddItem(M,PROP_TEXTURE,"Texture",	m_SunProps->MakeTextValue(&F.m_Source.texture,sizeof(F.m_Source.texture)));
-		M = m_SunProps->AddItem(0,PROP_MARKER,	"Gradient");
-			m_SunProps->AddItem(M,PROP_FLAG,	"Enabled",	m_SunProps->MakeFlagValue(&F.m_Flags,CEditFlare::flGradient));
-			m_SunProps->AddItem(M,PROP_FLOAT,	"Radius", 	m_SunProps->MakeFloatValue(&F.m_Gradient.fRadius,0.f,100.f));
-			m_SunProps->AddItem(M,PROP_FLOAT,	"Opacity",	m_SunProps->MakeFloatValue(&F.m_Gradient.fOpacity,0.f,1.f));
-			m_SunProps->AddItem(M,PROP_TEXTURE,"Texture",	m_SunProps->MakeTextValue(&F.m_Gradient.texture,sizeof(F.m_Gradient.texture)));
-		M = m_SunProps->AddItem(0,PROP_MARKER,	"Flares");
-			m_SunProps->AddItem(M,PROP_FLAG,	"Enabled",	m_SunProps->MakeFlagValue(&F.m_Flags,CEditFlare::flFlare));
+		M = m_SunProps->AddMarkerItem	(0,"Source")->item;
+			m_SunProps->AddFlagItem		(M,"Enabled",	&F.m_dwFlags,CEditFlare::flSource);
+			m_SunProps->AddFloatItem	(M,"Radius", 	&F.m_Source.fRadius,0.f,10.f);
+			m_SunProps->AddTextureItem	(M,"Texture",	F.m_Source.texture,sizeof(F.m_Source.texture));
+		M = m_SunProps->AddMarkerItem	(0,"Gradient")->item;
+			m_SunProps->AddFlagItem		(M,"Enabled",	&F.m_dwFlags,CEditFlare::flGradient);
+			m_SunProps->AddFloatItem	(M,"Radius", 	&F.m_Gradient.fRadius,0.f,100.f);
+			m_SunProps->AddFloatItem	(M,"Opacity",	&F.m_Gradient.fOpacity,0.f,1.f);
+			m_SunProps->AddTextureItem	(M,"Texture",	F.m_Gradient.texture,sizeof(F.m_Gradient.texture));
+		M = m_SunProps->AddMarkerItem	(0,"Flares")->item;
+			m_SunProps->AddFlagItem		(M,"Enabled",	&F.m_dwFlags,CEditFlare::flFlare);
 		for (CEditFlare::FlareIt it=F.m_Flares.begin(); it!=F.m_Flares.end(); it++){
             AnsiString nm; nm.sprintf("Flare %d",it-F.m_Flares.begin());
-		N = m_SunProps->AddItem(M,PROP_MARKER,	nm.c_str());
-			m_SunProps->AddItem(N,PROP_FLOAT,	"Radius", 	m_SunProps->MakeFloatValue(&it->fRadius,0.f,10.f));
-			m_SunProps->AddItem(N,PROP_FLOAT,	"Opacity", 	m_SunProps->MakeFloatValue(&it->fOpacity,0.f,1.f));
-			m_SunProps->AddItem(N,PROP_FLOAT,	"Position",	m_SunProps->MakeFloatValue(&it->fPosition,-10.f,10.f));
-			m_SunProps->AddItem(N,PROP_TEXTURE,"Texture",	m_SunProps->MakeTextValue(&it->texture,sizeof(it->texture)));
+		N = m_SunProps->AddMarkerItem	(M,nm.c_str())->item;
+			m_SunProps->AddFloatItem	(N,"Radius", 	&it->fRadius,0.f,10.f);
+			m_SunProps->AddFloatItem	(N,"Opacity", 	&it->fOpacity,0.f,1.f);
+			m_SunProps->AddFloatItem	(N,"Position",	&it->fPosition,-10.f,10.f);
+			m_SunProps->AddTextureItem	(N,"Texture",	it->texture,sizeof(it->texture));
 		}
 
 		m_SunProps->EndFillMode();

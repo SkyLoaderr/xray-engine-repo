@@ -117,7 +117,7 @@ struct st_AnimParam{
 
 struct SBonePart{
 	AnsiString 		alias;
-    INTVec 			bones;
+    IntVec 			bones;
 };
 DEFINE_VECTOR(SBonePart,BPVec,BPIt);
 

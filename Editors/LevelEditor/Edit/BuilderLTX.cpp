@@ -15,6 +15,7 @@
 #include "Event.h"
 #include "WayPoint.h"
 #include "xr_ini.h"
+#include "xr_efflensflare.h"
 #include "GroupObject.h"
 //----------------------------------------------------
 
@@ -42,9 +43,9 @@ BOOL SceneBuilder::ParseLTX(CInifile* pIni, ObjectList& lst, LPCSTR prefix)
     	        suns += l->Name;
            	    pIni->WriteColor	(l->Name, "sun_color", 			l->m_D3D.diffuse.get());
                	pIni->WriteVector	(l->Name, "sun_dir", 			l->m_D3D.direction);
-               	pIni->WriteString	(l->Name, "gradient", 			l->m_LensFlare.m_Flags.bGradient?"on":"off");
-               	pIni->WriteString	(l->Name, "source", 			l->m_LensFlare.m_Flags.bSource?"on":"off");
-               	pIni->WriteString	(l->Name, "flares", 			l->m_LensFlare.m_Flags.bFlare?"on":"off");
+               	pIni->WriteString	(l->Name, "gradient", 			l->m_LensFlare.m_dwFlags&CLensFlare::flGradient?"on":"off");
+               	pIni->WriteString	(l->Name, "source", 			l->m_LensFlare.m_dwFlags&CLensFlare::flSource?"on":"off");
+               	pIni->WriteString	(l->Name, "flares", 			l->m_LensFlare.m_dwFlags&CLensFlare::flFlare?"on":"off");
                 pIni->WriteFloat	(l->Name, "gradient_opacity", 	l->m_LensFlare.m_Gradient.fOpacity);
                 pIni->WriteString	(l->Name, "gradient_texture", 	l->m_LensFlare.m_Gradient.texture);
                 pIni->WriteFloat	(l->Name, "gradient_radius", 	l->m_LensFlare.m_Gradient.fRadius);

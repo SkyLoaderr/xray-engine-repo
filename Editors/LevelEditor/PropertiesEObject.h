@@ -73,12 +73,12 @@ private:	// User declarations
     void			ResetSurfInfo			(bool imageinfo, bool surfinfo);
     void			FillBasicProps			();
     void			FillSurfProps			();
-	void __fastcall OnAfterShaderEdit		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
-	void __fastcall OnAfterTextureEdit		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
-	void __fastcall OnAfterTransformation	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
-	void __fastcall RotateOnAfterEdit	 	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
-	void __fastcall RotateOnBeforeEdit		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
-	void __fastcall RotateOnDraw			(PropValue* sender, LPVOID draw_val);
+	void __fastcall OnAfterShaderEdit		(TElTreeItem* item, PropItem* sender, LPVOID edit_val);
+	void __fastcall OnAfterTextureEdit		(TElTreeItem* item, PropItem* sender, LPVOID edit_val);
+	void __fastcall OnAfterTransformation	(TElTreeItem* item, PropItem* sender, LPVOID edit_val);
+	void __fastcall RotateOnAfterEdit	 	(TElTreeItem* item, PropItem* sender, LPVOID edit_val);
+	void __fastcall RotateOnBeforeEdit		(TElTreeItem* item, PropItem* sender, LPVOID edit_val);
+	void __fastcall RotateOnDraw			(PropItem* sender, LPVOID draw_val);
 public:
 public:		// User declarations
     __fastcall 		TfrmPropertiesEObject	(TComponent* Owner);

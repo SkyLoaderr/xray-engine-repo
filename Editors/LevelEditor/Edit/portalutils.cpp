@@ -547,7 +547,7 @@ public:
                 	vlist.push_back(edges[*e].v[0]);
                 	vlist.push_back(edges[*e].v[1]);
                 }
-                INTIt end = std::unique(vlist.begin(), vlist.end());
+                IntIt end = std::unique(vlist.begin(), vlist.end());
                 vlist.erase(end,vlist.end());
 
                 // append portal

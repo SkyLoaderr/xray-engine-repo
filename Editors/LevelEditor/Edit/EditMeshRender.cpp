@@ -24,7 +24,7 @@ void CEditableMesh::OnDeviceCreate()
 	UI.Command(COMMAND_EVICT_TEXTURES);
     
     for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
-		INTVec& face_lst = sp_it->second;
+		IntVec& face_lst = sp_it->second;
         CSurface* _S = sp_it->first;
         int num_verts=face_lst.size()*3;
         RBVector rb_vec;
@@ -68,7 +68,7 @@ void CEditableMesh::OnDeviceDestroy(){
 }
 //----------------------------------------------------
 
-void CEditableMesh::FillRenderBuffer(INTVec& face_lst, int start_face, int num_face, const CSurface* surf, LPBYTE& src_data){
+void CEditableMesh::FillRenderBuffer(IntVec& face_lst, int start_face, int num_face, const CSurface* surf, LPBYTE& src_data){
 	LPBYTE data = src_data;
     DWORD dwFVF = surf->_FVF();
 	DWORD dwTexCnt = ((dwFVF&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);

@@ -22,7 +22,7 @@ void CEditableMesh::Transform(const Fmatrix& parent){
 //----------------------------------------------------
 
 void CEditableMesh::RebuildVMaps(){
-	INTVec			m_PointVMap;
+	IntVec			m_PointVMap;
 	m_PointVMap.resize(m_Points.size(),-1);
 	VMapVec		nVMaps;
 	VMRefsVec	nVMRefs = m_VMRefs;
@@ -190,7 +190,7 @@ void CEditableMesh::Optimize(BOOL NoOpt){
 
 		ELog.Msg(mtInformation,"Optimize...");
 
-		INTVec mark_for_del;
+		IntVec mark_for_del;
 		mark_for_del.clear();
 		for (DWORD k=0; k<m_Faces.size(); k++){
     		if (!OptimizeFace(m_Faces[k]))
@@ -203,12 +203,12 @@ void CEditableMesh::Optimize(BOOL NoOpt){
 			std::sort	(mark_for_del.begin(),mark_for_del.end());
 			std::reverse(mark_for_del.begin(),mark_for_del.end());
 			// delete degenerate faces
-			for (INTIt i_it=mark_for_del.begin(); i_it!=mark_for_del.end(); i_it++)
+			for (IntIt i_it=mark_for_del.begin(); i_it!=mark_for_del.end(); i_it++)
 				m_Faces.erase(m_Faces.begin()+(*i_it));
 			// delete degenerate faces refs
-			for (INTIt m_d=mark_for_del.begin(); m_d!=mark_for_del.end(); m_d++){
+			for (IntIt m_d=mark_for_del.begin(); m_d!=mark_for_del.end(); m_d++){
 				for (SurfFacesPairIt plp_it=m_SurfFaces.begin(); plp_it!=m_SurfFaces.end(); plp_it++){
-					INTVec& 	pol_lst = plp_it->second;
+					IntVec& 	pol_lst = plp_it->second;
 					for (int k=0; k<int(pol_lst.size()); k++){
 						int& f = pol_lst[k];
 						if (f>*m_d){ f--;

@@ -283,23 +283,23 @@ void CLight::OnDeviceDestroy()
 //----------------------------------------------------
 CEditFlare::CEditFlare()
 {
-    m_Flags.bFlare 		= true;
-    m_Flags.bSource 	= true;
-    m_Flags.bGradient 	= true;
+    m_dwFlags |= flFlare;
+    m_dwFlags |= flSource;
+    m_dwFlags |= flGradient;
 	// flares
     m_Flares.resize		(6);
     FlareIt it=m_Flares.begin();
-	it->fRadius=0.08f; it->fOpacity=0.06f; it->fPosition=1.3f; strcpy(it->texture,"fx\\fx_flare1.tga"); it++;
-	it->fRadius=0.12f; it->fOpacity=0.04f; it->fPosition=1.0f; strcpy(it->texture,"fx\\fx_flare2.tga"); it++;
-	it->fRadius=0.04f; it->fOpacity=0.10f; it->fPosition=0.5f; strcpy(it->texture,"fx\\fx_flare2.tga"); it++;
-	it->fRadius=0.08f; it->fOpacity=0.08f; it->fPosition=-0.3f; strcpy(it->texture,"fx\\fx_flare2.tga"); it++;
-	it->fRadius=0.12f; it->fOpacity=0.04f; it->fPosition=-0.6f; strcpy(it->texture,"fx\\fx_flare3.tga"); it++;
-	it->fRadius=0.30f; it->fOpacity=0.04f; it->fPosition=-1.0f; strcpy(it->texture,"fx\\fx_flare1.tga"); it++;
+	it->fRadius=0.08f; it->fOpacity=0.06f; it->fPosition=1.3f; strcpy(it->texture,"fx\\fx_flare1"); it++;
+	it->fRadius=0.12f; it->fOpacity=0.04f; it->fPosition=1.0f; strcpy(it->texture,"fx\\fx_flare2"); it++;
+	it->fRadius=0.04f; it->fOpacity=0.10f; it->fPosition=0.5f; strcpy(it->texture,"fx\\fx_flare2"); it++;
+	it->fRadius=0.08f; it->fOpacity=0.08f; it->fPosition=-0.3f; strcpy(it->texture,"fx\\fx_flare2"); it++;
+	it->fRadius=0.12f; it->fOpacity=0.04f; it->fPosition=-0.6f; strcpy(it->texture,"fx\\fx_flare3"); it++;
+	it->fRadius=0.30f; it->fOpacity=0.04f; it->fPosition=-1.0f; strcpy(it->texture,"fx\\fx_flare1"); it++;
 	// source
-    strcpy(m_Source.texture,"fx\\fx_sun.tga");
+    strcpy(m_Source.texture,"fx\\fx_sun");
     m_Source.fRadius 	= 0.15f;
     // gradient
-    strcpy(m_Gradient.texture,"fx\\fx_gradient.tga");
+    strcpy(m_Gradient.texture,"fx\\fx_gradient");
     m_Gradient.fOpacity = 0.9f;
     m_Gradient.fRadius 	= 4.f;
 }
@@ -308,7 +308,7 @@ void CEditFlare::Load(CStream& F){
 	if (!F.FindChunk(FLARE_CHUNK_FLAG)) return;
 
     R_ASSERT(F.FindChunk(FLARE_CHUNK_FLAG));
-    F.Read			(&m_Flags,sizeof(DWORD));
+    F.Read			(&m_dwFlags,sizeof(DWORD));
 
     R_ASSERT(F.FindChunk(FLARE_CHUNK_SOURCE));
     F.RstringZ		(m_Source.texture);
@@ -337,7 +337,7 @@ void CEditFlare::Load(CStream& F){
 void CEditFlare::Save(CFS_Base& F)
 {
 	F.open_chunk	(FLARE_CHUNK_FLAG);
-    F.write			(&m_Flags,sizeof(DWORD));
+    F.write			(&m_dwFlags,sizeof(DWORD));
 	F.close_chunk	();
 
 	F.open_chunk	(FLARE_CHUNK_SOURCE);
@@ -360,7 +360,7 @@ void CEditFlare::Save(CFS_Base& F)
 
 void CEditFlare::Render()  
 {
-	CLensFlare::Render(m_Flags.bSource,m_Flags.bFlare,m_Flags.bGradient);
+	CLensFlare::Render(m_dwFlags&flSource,m_dwFlags&flFlare,m_dwFlags&flGradient);
 }
 //----------------------------------------------------
 

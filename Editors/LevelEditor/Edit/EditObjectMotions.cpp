@@ -288,7 +288,7 @@ void CEditableObject::GetBoneWorldTransform(DWORD bone_idx, float t, CSMotion* m
 	VERIFY(bone_idx<m_Bones.size());
     int idx	= bone_idx;
     matrix.identity();
-    INTVec lst;
+    IntVec lst;
     do{ lst.push_back(idx); }while((idx=m_Bones[idx]->ParentIndex())>-1);
     for (int i=lst.size()-1; i>=0; i--){
     	idx = lst[i];

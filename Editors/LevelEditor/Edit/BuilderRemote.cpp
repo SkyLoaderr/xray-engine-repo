@@ -165,9 +165,9 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
 		Fvector N;
         for(FvectorIt pt=mesh->m_Points.begin();pt!=mesh->m_Points.end();pt++){
             N.set(0,0,0);
-            INTVec& a_lst = mesh->m_Adjs[pt-mesh->m_Points.begin()];
+            IntVec& a_lst = mesh->m_Adjs[pt-mesh->m_Points.begin()];
             VERIFY(a_lst.size());
-            for (INTIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++)
+            for (IntIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++)
                 N.add(mesh->m_FNormals[*i_it]);
             N.normalize_safe();
             parent.transform_dir(N);
@@ -178,11 +178,11 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
     }
     // fill faces
     for (SurfFacesPairIt sp_it=mesh->m_SurfFaces.begin(); sp_it!=mesh->m_SurfFaces.end(); sp_it++){
-		INTVec& face_lst = sp_it->second;
+		IntVec& face_lst = sp_it->second;
         CSurface* surf = sp_it->first;
 		DWORD dwTexCnt = ((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
         R_ASSERT(dwTexCnt==1);
-	    for (INTIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
+	    for (IntIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
 			st_Face& face = mesh->m_Faces[*f_it];
         	{
                 b_face& new_face 	= l_faces[l_faces_it++];

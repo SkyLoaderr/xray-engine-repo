@@ -29,7 +29,7 @@ void CEditableMesh::CHullPickFaces(PlaneVec& pl, Fmatrix& parent, DWORDVec& fl){
 */
 //----------------------------------------------------
 
-static INTVec		sml_processed;
+static IntVec		sml_processed;
 static Fvector		sml_normal;
 static float		m_fSoftAngle;
 //----------------------------------------------------
@@ -46,8 +46,8 @@ void CEditableMesh::GenerateCFModel(){
 	CDB::Collector CL;
 	// double sided
 	for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
-		INTVec& face_lst = sp_it->second;
-		for (INTIt it=face_lst.begin(); it!=face_lst.end(); it++){
+		IntVec& face_lst = sp_it->second;
+		for (IntIt it=face_lst.begin(); it!=face_lst.end(); it++){
 			st_Face&	F = m_Faces[*it];
 			CL.add_face(m_Points[F.pv[0].pindex],m_Points[F.pv[1].pindex],m_Points[F.pv[2].pindex], 0,0,0, 0,0,*it);
 			if (sp_it->first->_2Sided())
@@ -120,8 +120,8 @@ void CEditableMesh::RecurseTri(int id)
 
     // recurse
     for (int k=0; k<3; k++){
-	    INTVec& PL = m_Adjs[m_Faces[id].pv[k].pindex];
-        for (INTIt pl_it=PL.begin(); pl_it!=PL.end(); pl_it++){
+	    IntVec& PL = m_Adjs[m_Faces[id].pv[k].pindex];
+        for (IntIt pl_it=PL.begin(); pl_it!=PL.end(); pl_it++){
             Fvector &test_normal = m_FNormals[*pl_it];
             float cosa = test_normal.dotproduct(sml_normal);
             if (cosa<m_fSoftAngle) continue;
