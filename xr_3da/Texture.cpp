@@ -496,7 +496,7 @@ _DDS_2D:
 	{
 		// Check for LMAP and compress if needed
 		strlwr					(fn);
-		if ((psDeviceFlags&rsCompressLMAPs)	&& strstr(fn,"lmap#"))	
+		if (psDeviceFlags.is(rsCompressLMAPs)	&& strstr(fn,"lmap#"))	
 		{
 			IMG.Format			= D3DFMT_DXT1;
 		}

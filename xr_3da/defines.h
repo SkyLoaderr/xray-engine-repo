@@ -1,5 +1,5 @@
-#ifndef _DEFINES_H_
-#define _DEFINES_H_
+#ifndef DefinesH
+#define DefinesH
 
 ENGINE_API	extern BOOL		bDebug;
 
@@ -88,7 +88,7 @@ enum {
 };
 ENGINE_API extern	u32			psCurrentMode		;
 ENGINE_API extern	u32			psCurrentBPP		;
-ENGINE_API extern	u32			psDeviceFlags		;
+ENGINE_API extern	Flags32		psDeviceFlags		;
 ENGINE_API extern	string64	psSystemUserName	;
 
 #endif

@@ -64,7 +64,7 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	CreateD3D				();
 
 	// General 
-	BOOL  bWindowed	= !(psDeviceFlags&rsFullscreen);
+	BOOL  bWindowed			= !psDeviceFlags.is(rsFullscreen);
 
 	u32 dwWindowStyle=0;
 #ifndef _EDITOR
@@ -140,10 +140,10 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
     P.BackBufferHeight		= dwHeight;
 	P.BackBufferFormat		= fTarget;
 	if (bWindowed)			P.BackBufferCount	= 1;
-	else					P.BackBufferCount	= (psDeviceFlags&rsTriplebuffer)?2:1;
+	else					P.BackBufferCount	= psDeviceFlags.is(rsTriplebuffer)?2:1;
 
 	// Multisample
-	if ((!bWindowed) && (psDeviceFlags&rsAntialias))
+	if ((!bWindowed) && psDeviceFlags.is(rsAntialias))
 	{
 		P.MultiSampleType	= D3DMULTISAMPLE_2_SAMPLES;
 	} else {
@@ -211,7 +211,7 @@ u32	CHW::selectPresentInterval	()
 	D3DCAPS8	caps;
 	pD3D->GetDeviceCaps(D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,&caps);
 
-	if (psDeviceFlags&rsNoVSync) {
+	if (psDeviceFlags.is(rsNoVSync)) {
 		if (caps.PresentationIntervals & D3DPRESENT_INTERVAL_IMMEDIATE) 
 			return D3DPRESENT_INTERVAL_IMMEDIATE;
 		if (caps.PresentationIntervals & D3DPRESENT_INTERVAL_ONE) 
@@ -240,7 +240,7 @@ u32 CHW::selectGPU ()
 
 u32 CHW::selectRefresh(u32 dwWidth, u32 dwHeight)
 {
-	if (psDeviceFlags&rsRefresh60hz)	return D3DPRESENT_RATE_DEFAULT;
+	if (psDeviceFlags.is(rsRefresh60hz))	return D3DPRESENT_RATE_DEFAULT;
 	else 
 	{
 		u32 selected	= D3DPRESENT_RATE_DEFAULT;

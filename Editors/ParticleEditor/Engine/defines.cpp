@@ -34,7 +34,7 @@ struct _GUID g_AppGUID		= { 0xeb89097, 0x1520, 0x11d4, { 0xb4, 0xe3, 0x48, 0x54,
 // Video
 u32	psCurrentMode		= 800;
 u32	psCurrentBPP		= 32;
-u32	psDeviceFlags		= rsFullscreen|rsNoVSync|mtSound;
+Flags32	psDeviceFlags	= {rsFullscreen|rsNoVSync|mtSound};
 
 // Network
 char	psName[12]			= "";

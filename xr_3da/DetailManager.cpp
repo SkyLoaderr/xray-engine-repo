@@ -156,7 +156,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 #ifndef _EDITOR
 	if (0==dtFS)						return;
 #endif
-	if (0==(psDeviceFlags&rsDetails))	return;
+	if (!psDeviceFlags.is(rsDetails))	return;
 
 	float	r_ssaCHEAP			= 16*r_ssaDISCARD;
 
