@@ -87,6 +87,7 @@ IC	void	xr_delete	(T* &ptr)
 	if (ptr) 
 	{
 		ptr->~T();
+		Memory.mem_free	(ptr);
 		ptr = NULL;
 	}
 }
