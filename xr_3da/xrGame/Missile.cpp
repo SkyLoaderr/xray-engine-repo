@@ -210,46 +210,65 @@ u32 CMissile::State(u32 state)
         {
 			m_bPending = true;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimShow), TRUE, this);
+			
+			Msg("------------------");
+			Msg("Missile show begin");
 		} break;
 	case MS_IDLE:
 		{
 			m_bPending = false;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimIdle));
+			
+			Msg("Missile idle begin");
 		} break;
 	case MS_HIDING:
 		{
 			m_bPending = true;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimHide), true, this);
+
+			Msg("Missile hide begin");
 		} break;
 	case MS_HIDDEN:
 		{
 			m_bPending = false;
 			setVisible(false);
 			setEnabled(false);
+		
+			Msg("Missile hidden");
 		} break;
 	case MS_THREATEN:
 		{
 			m_fThrowForce = m_fMinForce;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowBegin), true, this);
+
+			Msg("Missile throw begin");
 		} break;
 	case MS_READY:
 		{
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowIdle), true, this);
+
+			Msg("Missile throw idle");
 		} break;
 	case MS_THROW:
 		{
 			m_bPending = true;
 			m_throw = false;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowAct), true, this);
+
+			Msg("Missile throw act");
 		} break;
 	case MS_END:
 		{
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowEnd), true, this);
+
+			Msg("Missile throw finish");
 		} break;
 	case MS_PLAYING:
 		{
 			PlaySound(sndPlaying,Position());
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimPlaying), true, this);
+
+			Msg("Missile playing");
 		} break;
 	}
 	return State();
@@ -273,6 +292,8 @@ void CMissile::OnAnimationEnd()
 		} break;
 	case MS_SHOWING:
 		{
+			Msg("Missile show end");
+
 			setVisible(TRUE);
 			OnStateSwitch(MS_IDLE);
 		} break;
@@ -391,7 +412,6 @@ void CMissile::Throw()
 	//entity->g_fireParams				(throw_point,throw_direction);
 	setup_throw_params					();
 	
-	m_fake_missile->m_throw_point		= m_throw_point;
 	m_fake_missile->m_throw_direction	= m_throw_direction;
 	m_fake_missile->m_throw_matrix		= m_throw_matrix;
 	
@@ -448,10 +468,11 @@ bool CMissile::Action(s32 cmd, u32 flags)
 		{
         	if(flags&CMD_START) 
 			{
-				 m_throw = false;
+				m_throw = false;
 				if(State() == MS_IDLE) SwitchState(MS_THREATEN);
 			} 
-			else if(State() == MS_READY || State() == MS_THREATEN) 
+			else if(State() == MS_READY || State() == MS_THREATEN
+				    || State() == MS_IDLE) 
 			{
 				m_throw = true; 
 				if(State() == MS_READY) SwitchState(MS_THROW);
@@ -480,23 +501,13 @@ void  CMissile::UpdateFP()
 
 			// fire point&direction
 			Fmatrix& parent			= m_pHUD->Transform	();
-			m_throw_point			= m_vHudThrowPoint;
-			parent.transform_tiny	(m_throw_point);
-			
-			//m_throw_direction.set	(0.f,0.f,1.f);
-			//m_throw_direction.set	(m_vHudThrowDir);
-			//parent.transform_dir	(m_throw_direction);
 			m_throw_direction.set	(parent.k);
 		} 
 		else 
 		{
 			// 3rd person
 			Fmatrix& parent			= H_Parent()->XFORM();
-			Fvector& fp				= m_vThrowPoint;
 
-			parent.transform_tiny	(m_throw_point,fp);
-			
-			//m_throw_direction.set	(0.f,0.f,1.f);
 			m_throw_direction.set	(m_vThrowDir);
 			parent.transform_dir	(m_throw_direction);
 		}
@@ -524,7 +535,7 @@ void CMissile::activate_physic_shell()
 	a_vel.set(rxy*_cos(fi),rxy*_sin(fi),r*_cos(teta));
 
 	XFORM().set(m_throw_matrix);
-	m_pPhysicsShell->Activate	(XFORM(), l_vel, zero_vel);
+	m_pPhysicsShell->Activate	(XFORM(), l_vel, a_vel);
 	PKinematics(Visual())->Calculate();
 }
 

@@ -113,6 +113,7 @@ void CTorch::OnH_B_Independent()
 {
 	inherited::OnH_B_Independent();
 	time2hide				= TIME_2_HIDE;
+	Switch							(false);
 }
 
 void CTorch::UpdateCL() 
@@ -123,6 +124,7 @@ void CTorch::UpdateCL()
 	Fmatrix M;
 
 	if (H_Parent()) {
+		PKinematics(H_Parent()->Visual())->Calculate();
 		M.mul						(XFORM(),BI.mTransform);
 		light_render->set_direction	(M.k);
 		light_render->set_position	(M.c);

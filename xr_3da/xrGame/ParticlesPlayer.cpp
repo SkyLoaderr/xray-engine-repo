@@ -54,8 +54,8 @@ CParticlesObject* CParticlesPlayer::StartParticles(ref_str particles_name,
 	m_ParticlesInfoMap[pParticlesObject] = pParticlesInfo;
 	
 	//начать играть партиклы
-	pParticlesObject->Play();
 	UpdateParticlesPosition(pParticlesObject,pParticlesInfo);
+	pParticlesObject->Play();
 		
 	return pParticlesObject;
 }

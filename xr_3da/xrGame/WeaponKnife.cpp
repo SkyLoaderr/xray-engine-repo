@@ -103,7 +103,8 @@ void CWeaponKnife::UpdateCL	()
 
 void CWeaponKnife::Hide	()
 {
-	if (Local())	SwitchState						(eHiding);
+	//if (Local())	SwitchState						(eHiding);
+	SwitchState(eHidden);
 }
 
 void CWeaponKnife::Show	()

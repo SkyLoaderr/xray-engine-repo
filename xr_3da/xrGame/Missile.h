@@ -69,7 +69,6 @@ protected:
 	Fmatrix					m_offset;
 
 	Fvector					m_throw_direction;
-	Fvector					m_throw_point;
 	Fmatrix					m_throw_matrix;
 
 	CMissile				*m_fake_missile;

@@ -246,9 +246,9 @@ void CWeapon::StartParticles (CParticlesObject*& pParticles, LPCSTR particles_na
 	}
 
 	pParticles = xr_new<CParticlesObject>(particles_name,Sector(),auto_remove_flag);
-
-	pParticles->Play();
+	
 	UpdateParticles(pParticles, pos, vel);
+	pParticles->Play();
 }
 void CWeapon::StopParticles (CParticlesObject*&	pParticles)
 {
