@@ -318,6 +318,5 @@ void	CEffect_Rain::Render	()
 		}
 		
 		P = next;
-		cnt++;
 	}
 }
