@@ -300,7 +300,7 @@
         <precondition>dialogs.dialog_allowed</precondition>
         <phrase_list>
             <phrase id="1">
-                <text></text>
+                <text />
                 <next>100</next>
                 <next>200</next>
                 <next>300</next>
@@ -324,7 +324,7 @@
                 <next>3333</next>
             </phrase>
             <phrase id="0">
-                <text></text>
+                <text />
                 <next>1</next>
             </phrase>
             <phrase id="3333">
