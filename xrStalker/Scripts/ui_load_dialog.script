@@ -8,6 +8,9 @@
 function main()
 	local dlg = ui_load_dialog.load_dialog()
 	level.start_stop_menu(dlg,true)
+	while true do
+		wait(3000)
+	end
 end
 
 class "load_dialog" (CUIScriptWnd)

@@ -18,6 +18,7 @@ class "save_dialog" (CUIScriptWnd)
 
 function save_dialog:__init() super()
 	self.FileTable = {}
+	self.new_save = ""
 	
 	self:SetFont(GetFontMedium()) --set base font for dialog.
 	
@@ -228,6 +229,7 @@ end
 function save_dialog:OnMsgYes()
 	local msg_box = self:GetMessageBox("message_box")
 	msg_box:Hide()
+	self:SaveFile(self.new_save)
 end
 
 function save_dialog:OnMsgNo()
