@@ -86,9 +86,15 @@ template <class T>
 IC void clamp( T& val, const T& _low, const T& _high ){
 	if( val<_low ) val = _low; else if( val>_high ) val = _high;
 };
+template <class T>
+IC T clamp( const T& val, const T& _low, const T& _high ){
+	if		( val<_low	)	return _low; 
+	else if	( val>_high )	return _high;
+	else					return val;
+};
 IC float snapto( float value, float snap ){
 	if( snap<=0.f ) return value;
-	return floorf((value+(snap*0.5f)) / snap ) * snap;
+	return float(iFloor((value+(snap*0.5f)) / snap )) * snap;
 };
 
 // pre-definitions
