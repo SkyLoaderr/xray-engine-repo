@@ -273,29 +273,13 @@ void CSE_ALifeObject::UPDATE_Read			(NET_Packet &tNetPacket)
 {
 };
 
-#ifdef _EDITOR      
-#include "scene.h"
-void CSE_ALifeObject::OnChooseGroupControl(ChooseItemVec& lst)
-{
-	LPCSTR gcs					= pSettings->r_string(s_name,"GroupControlSection");
-    ObjectList objects;
-    Scene->GetQueryObjects		(objects,OBJCLASS_SPAWNPOINT,-1,-1,-1);
-    
-    for (ObjectIt it=objects.begin(); it!=objects.end(); it++)
-        if ((*it)->OnChooseQuery(gcs))	lst.push_back(SChooseItem((*it)->Name,""));
-}
-#endif
-
 void CSE_ALifeObject::FillProps				(LPCSTR pref, PropItemVec& items)
 {
-	inherited::FillProps			(pref, 	items);
+	inherited::FillProps		(pref, 	items);
 	PHelper().CreateRText		(items,	PrepareKey(pref,s_name,"Custom data"),&m_ini_string);
 	PHelper().CreateFloat		(items,	PrepareKey(pref,s_name,"ALife\\Probability"),		&m_fProbability,	0,100);
-#ifdef _EDITOR      
-    ChooseValue* V;
-    V=PHelper().CreateChoose	(items, PrepareKey(pref,s_name,"ALife\\Group control"),		&m_caGroupControl, smCustom);
-    V->OnChooseFillEvent.bind	(this,&CSE_ALifeObject::OnChooseGroupControl);
-#endif
+	LPCSTR gcs					= pSettings->r_string(s_name,"GroupControlSection");
+    PHelper().CreateChoose		(items, PrepareKey(pref,s_name,"ALife\\Group control"),		&m_caGroupControl, smSpawnItem, 0, (void*)gcs);
 	if (m_flags.is(flUseSwitches)) {
 		PHelper().CreateFlag32	(items,	PrepareKey(pref,s_name,"ALife\\Can switch online"),	&m_flags,			flSwitchOnline);
 		PHelper().CreateFlag32	(items,	PrepareKey(pref,s_name,"ALife\\Can switch offline"),&m_flags,			flSwitchOffline);

@@ -89,9 +89,6 @@ public:
 	CALifeSimulator					*m_alife_simulator;
 #endif
 
-#ifdef _EDITOR
-	void __stdcall 					OnChooseGroupControl(ChooseItemVec& lst);
-#endif
 									CSE_ALifeObject		(LPCSTR caSection);
 	virtual							~CSE_ALifeObject	();
 	virtual bool					used_ai_locations	() const;
