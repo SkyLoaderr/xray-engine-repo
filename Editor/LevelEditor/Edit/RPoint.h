@@ -6,7 +6,7 @@
 #define _INCDEF_RPoint_H_
 
 #include "CustomObject.h"
-
+                                                    
 #define RPOINT_SIZE 0.5f
 
 class CFrustum;

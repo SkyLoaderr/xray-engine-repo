@@ -188,15 +188,14 @@ void DrawDirectionalLight(const Fvector& p, const Fvector& d, float radius, floa
 	// fill VB
 	DWORD			vBase;
 	FVF::L*	pv	 	= (FVF::L*)LStream->Lock(6,vBase);
-    pv->set			(0,0,r,		c); pv++;
-    pv->set			(0,0,sz,	c); pv++;
-    pv->set			(-r,0,r,	c); pv++;
-    pv->set			(-r,0,sz,	c); pv++;
-    pv->set			(r,0,r,		c); pv++;
-    pv->set			(r,0,sz,	c); pv++;
+    pv->set			(0,0,r,		c); rot.transform_tiny(pv->p); pv++;
+    pv->set			(0,0,sz,	c); rot.transform_tiny(pv->p); pv++;
+    pv->set			(-r,0,r,	c); rot.transform_tiny(pv->p); pv++;
+    pv->set			(-r,0,sz,	c); rot.transform_tiny(pv->p); pv++;
+    pv->set			(r,0,r,		c); rot.transform_tiny(pv->p); pv++;
+    pv->set			(r,0,sz,	c); rot.transform_tiny(pv->p); pv++;
 	LStream->Unlock	(6);
 	// and Render it as triangle list
-	Device.SetTransform(D3DTS_WORLD,rot);
     Device.DP		(D3DPT_LINELIST,LStream,vBase,3);
 
     Fbox b;
@@ -204,7 +203,6 @@ void DrawDirectionalLight(const Fvector& p, const Fvector& d, float radius, floa
     b.max.set(r,r,r);
 
     DrawSelectionBox(b,&c);
-	Device.SetTransform(D3DTS_WORLD,Fidentity);
 }
 
 void DrawPointLight(const Fvector& p, float radius, DWORD c)

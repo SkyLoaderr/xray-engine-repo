@@ -54,7 +54,7 @@ public:
 	virtual void 	Show			(BOOL flag);
 	virtual void 	Lock			(BOOL flag);
     void			SetValid		(BOOL flag){m_bValid=flag;}
-
+                                                                              
 	virtual bool 	IsRender		(){return true;}
 	virtual void 	Render			(int priority, bool strictB2F);
 	virtual void 	OnFrame			();
@@ -74,7 +74,8 @@ public:
     virtual void 	UpdateTransform	(bool bForced=false){m_bUpdateTransform=TRUE;if(bForced)OnUpdateTransform();}
 
     // grouping methods
-    void            SetGroup		(CGroupObject* group);
+    void			RemoveFromGroup	();
+    void            AppendToGroup	(CGroupObject* group);
     CGroupObject* 	GetGroup		(){return m_pGroupObject;}
 
     // change position/orientation methods

@@ -3,7 +3,7 @@
 // hjxsbhzabha
 //----------------------------------------------------
 #include "stdafx.h"
-#pragma hdrstop
+#pragma hdrstop                                      
 
 #include "Log.h"
 #include "Sector.h"

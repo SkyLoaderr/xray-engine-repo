@@ -3,7 +3,7 @@
 //----------------------------------------------------
 
 #ifndef _INCDEF_Occluder_H_
-#define _INCDEF_Occluder_H_
+#define _INCDEF_Occluder_H_              
 
 #include "CustomObject.h"
 

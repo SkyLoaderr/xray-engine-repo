@@ -7,7 +7,7 @@
 
 #include "CustomObject.h"
 #include "tlsprite.h"
-class CFrustum;
+class CFrustum;                                 
 
 class CGlow : public CCustomObject {
     CTLSprite       m_RenderSprite;

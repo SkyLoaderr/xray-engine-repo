@@ -9,7 +9,7 @@ class CSector;
 class CPortal: public CCustomObject {
 	friend class TfrmPropertiesPortal;
     friend class CSector;
-    friend class TfraPortal;
+    friend class TfraPortal;                                 
     friend class SceneBuilder;
     friend class CPortalUtils;
 

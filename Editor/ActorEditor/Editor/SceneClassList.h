@@ -61,6 +61,7 @@ CCustomObject*	NewObjectFromClassID	(int _ClassID);
 LPSTR 			GetNameByClassID		(EObjClass cls_id);
 bool 			IsClassID				(EObjClass cls_id);
 bool 			IsObjectListClassID		(EObjClass cls_id);
+bool 			IsGroupClassID			(EObjClass cls_id);
 EObjClass 		ClassIDFromTargetID		(int target);
 //----------------------------------------------------
 #endif /*_INCDEF_SceneClassList_H_*/

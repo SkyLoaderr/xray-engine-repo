@@ -97,7 +97,8 @@
       intermediate\SH_RT.obj Intermediate\_math.obj 
       intermediate\EditLightAnim.obj intermediate\LightAnimLibrary.obj 
       intermediate\PropertiesEObject.obj intermediate\GroupObject.obj 
-      intermediate\UI_GroupTools.obj intermediate\FrameGroup.obj"/>
+      intermediate\UI_GroupTools.obj intermediate\FrameGroup.obj 
+      intermediate\Blender_Shadow_Texture.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>

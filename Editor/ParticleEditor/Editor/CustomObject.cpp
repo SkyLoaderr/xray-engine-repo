@@ -23,19 +23,26 @@
 
 CCustomObject::~CCustomObject()
 {
+	OnDestroy();
 }
 
-void CCustomObject::SetGroup(CGroupObject* group)
+void CCustomObject::RemoveFromGroup()
 {
-	if (m_pGroupObject) m_pGroupObject->RemoveObject(this);
+    m_pGroupObject = 0;
+    Scene.AddObject(this,true);
+}
+
+void CCustomObject::AppendToGroup(CGroupObject* group)
+{
+	R_ASSERT(group&&!m_pGroupObject);
     m_pGroupObject = group;
+    Scene.RemoveObject(this,true);
 }
 
 void CCustomObject::OnDestroy()
 {
-	if (m_pGroupObject){
+	if (m_pGroupObject)
 		m_pGroupObject->RemoveObject(this);
-    }
 }
 
 void CCustomObject::OnUpdateTransform()
@@ -260,11 +267,11 @@ void CCustomObject::Scale( Fvector& center, Fvector& amount )
 void CCustomObject::LocalScale( Fvector& amount )
 {
 	R_ASSERT(!Locked());
-    UI.UpdateScene();
+    UI.UpdateScene();                                                       
     Fvector s	= PScale;
 	s.add(amount);
     if (s.x<EPS) s.x=EPS;
-    if (s.y<EPS) s.y=EPS;
+    if (s.y<EPS) s.y=EPS;                                 
     if (s.z<EPS) s.z=EPS;
     PScale		= s;
 }

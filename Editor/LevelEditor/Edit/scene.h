@@ -191,14 +191,17 @@ public:
     void WriteToLTX					(CInifile* pIni);
 
 public:
-	CCustomObject* GetQueryObject		(EObjClass classfilter, int iSel=1, int iVis=1, int iLock=0);
 	int  GetQueryObjects			(ObjectList& objset, EObjClass classfilter, int iSel=1, int iVis=1, int iLock=0);
     template <class Predicate>
     int  GetQueryObjects_if			(ObjectList& dest, EObjClass classfilter, Predicate cmp){
-        VERIFY(classfilter!=OBJCLASS_DUMMY);
-    	ObjectIt _F = FirstObj(classfilter);
-        ObjectIt _E = LastObj(classfilter);
-        for(;_F!=_E;_F++) if (cmp(_F)) dest.push_back(*_F);
+        for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
+            ObjectList& lst = it->second;
+            if ((classfilter==OBJCLASS_DUMMY)||(classfilter==it->first)){
+                for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
+        			if (cmp(_F)) dest.push_back(*_F);
+                }
+            }
+        }
         return dest.size();
     }
 public:

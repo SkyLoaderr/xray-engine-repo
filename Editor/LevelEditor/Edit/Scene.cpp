@@ -383,28 +383,26 @@ int EScene::SelectionCount(bool testflag, EObjClass classfilter){
 }
 
 //----------------------------------------------------
-void __fastcall object_Normal_0(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( 0, false ); }
-void __fastcall object_Normal_1(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( 1, false ); }
-void __fastcall object_Normal_2(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( 2, false ); }
-void __fastcall object_Normal_3(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( 3, false ); }
+void __fastcall object_Normal_0(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( Fidentity, 0, false ); }
+void __fastcall object_Normal_1(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( Fidentity, 1, false ); }
+void __fastcall object_Normal_2(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( Fidentity, 2, false ); }
+void __fastcall object_Normal_3(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( Fidentity, 3, false ); }
 //----------------------------------------------------
-void __fastcall object_StrictB2F_0(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( 0, true );}
-void __fastcall object_StrictB2F_1(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( 1, true );}
-void __fastcall object_StrictB2F_2(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( 2, true );}
-void __fastcall object_StrictB2F_3(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( 3, true );}
+void __fastcall object_StrictB2F_0(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( Fidentity, 0, true );}
+void __fastcall object_StrictB2F_1(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( Fidentity, 1, true );}
+void __fastcall object_StrictB2F_2(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( Fidentity, 2, true );}
+void __fastcall object_StrictB2F_3(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( Fidentity, 3, true );}
 //----------------------------------------------------
 
 #define RENDER_CLASS_NORMAL(P,C)\
  	Device.SetShader(Device.m_WireShader);\
-    Device.SetTransform(D3DTS_WORLD,Fidentity);\
     _E=LastObj(C); _F=FirstObj(C);\
-    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(P,false);
+    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(Fidentity,P,false);
 
 #define RENDER_CLASS_ALPHA(P,C)\
  	Device.SetShader(Device.m_SelectionShader);\
-    Device.SetTransform(D3DTS_WORLD,Fidentity);\
     _E=LastObj(C); _F=FirstObj(C);\
-    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(P,true);
+    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(Fidentity,P,true);
 
 void EScene::RenderSky(const Fmatrix& camera)
 {
@@ -434,7 +432,7 @@ void EScene::Render( const Fmatrix& camera )
     ObjectList& lst = ListObj(OBJCLASS_SCENEOBJECT);
     _E=lst.end(); _F=lst.begin();
     for(;_F!=_E;_F++){
-        if( (*_F)->Visible()&& (*_F)->IsRender( ) ){
+        if( (*_F)->Visible()&& (*_F)->IsRender(Fidentity) ){
             CSceneObject* _pT = (CSceneObject*)(*_F);
             Fmatrix m; _pT->GetFullTransformToWorld(m);
             float distSQ = cam_pos.distance_to_sqr(m.c);
@@ -446,9 +444,11 @@ void EScene::Render( const Fmatrix& camera )
     mapRenderObjects.traverseLR		(object_Normal_0);
     mapRenderObjects.traverseRL		(object_StrictB2F_0);
     mapRenderObjects.traverseLR		(object_Normal_1);
+	RENDER_CLASS_NORMAL(0,OBJCLASS_GROUP);
 
     // draw detail objects (normal)
     m_DetailObjects->Render			(0,false);
+	RENDER_CLASS_ALPHA(0,OBJCLASS_GROUP);
 
 // priority #1
 	// draw lights, sounds, respawn points, pclipper, sector, event
@@ -461,6 +461,7 @@ void EScene::Render( const Fmatrix& camera )
     RENDER_CLASS_NORMAL(1,OBJCLASS_SECTOR);
     RENDER_CLASS_NORMAL(1,OBJCLASS_PS);
 	RENDER_CLASS_NORMAL(1,OBJCLASS_PORTAL);
+	RENDER_CLASS_NORMAL(1,OBJCLASS_GROUP);
 
     mapRenderObjects.traverseRL		(object_StrictB2F_1);
     m_DetailObjects->Render			(1,false);
@@ -470,18 +471,23 @@ void EScene::Render( const Fmatrix& camera )
 	RENDER_CLASS_ALPHA(1,OBJCLASS_GLOW);
 	RENDER_CLASS_ALPHA(1,OBJCLASS_EVENT);
 	RENDER_CLASS_ALPHA(1,OBJCLASS_SECTOR);
+	RENDER_CLASS_ALPHA(1,OBJCLASS_GROUP);
 
 // priority #2
     mapRenderObjects.traverseLR		(object_Normal_2);
     m_DetailObjects->Render			(2,false);
+	RENDER_CLASS_NORMAL(2,OBJCLASS_GROUP);
     mapRenderObjects.traverseRL		(object_StrictB2F_2);
     m_DetailObjects->Render			(2,true);
+	RENDER_CLASS_ALPHA(2,OBJCLASS_GROUP);
 
 // priority #3
     mapRenderObjects.traverseLR		(object_Normal_3);
     m_DetailObjects->Render			(3,false);
+	RENDER_CLASS_NORMAL(3,OBJCLASS_GROUP);
     mapRenderObjects.traverseRL		(object_StrictB2F_3);
     m_DetailObjects->Render			(3,true);
+	RENDER_CLASS_ALPHA(3,OBJCLASS_GROUP);
 
 	// draw lights (flares)
     RENDER_CLASS_ALPHA(3,OBJCLASS_LIGHT);
@@ -496,8 +502,8 @@ void EScene::Render( const Fmatrix& camera )
     _E = LastObj(OBJCLASS_PS);
    	for(;_F!=_E;_F++)
     	if((*_F)->Visible()){
-        	(*_F)->Render(1,false);
-			(*_F)->Render(1,true);
+        	(*_F)->Render(Fidentity,1,false);
+			(*_F)->Render(Fidentity,1,true);
         }
 
     mapRenderObjects.clear			();
@@ -662,31 +668,20 @@ void EScene::OnDeviceDestroy(){
 }
 
 int EScene::GetQueryObjects(ObjectList& objset, EObjClass classfilter, int iSel, int iVis, int iLock){
-	ObjectIt _F = FirstObj(classfilter);
-	ObjectIt _E = LastObj(classfilter);
-	for(;_F!=_E;_F++)
-    	if(	((iSel==-1)||((*_F)->Selected()==iSel))&&
-        	((iVis==-1)||((*_F)->Visible()==iVis))&&
-            ((iLock==-1)||((*_F)->Locked()==iLock)))
-            	objset.push_back(*_F);
+    for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
+        ObjectList& lst = it->second;
+        if ((classfilter==OBJCLASS_DUMMY)||(classfilter==it->first)){
+            for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
+                if(	((iSel==-1)||((*_F)->Selected()==iSel))&&
+                    ((iVis==-1)||((*_F)->Visible()==iVis))&&
+                    ((iLock==-1)||((*_F)->Locked()==iLock))){
+                        objset.push_back(*_F);
+                }
+            }
+        }
+    }
     return objset.size();
 }
-
-CCustomObject* EScene::GetQueryObject(EObjClass classfilter, int iSel, int iVis, int iLock){
-    CCustomObject* O=0;
-    int cnt=0;
-	ObjectIt _F = FirstObj(classfilter);
-	ObjectIt _E = LastObj(classfilter);
-	for(;_F!=_E;_F++)
-    	if(	((iSel==-1)||((*_F)->Selected()==iSel))&&
-        	((iVis==-1)||((*_F)->Visible()==iVis))&&
-            ((iLock==-1)||((*_F)->Locked()==iLock))){
-                cnt++;
-            	O=*_F;
-            }
-    return (cnt==1)?O:0;
-}
-
 
 void EScene::ZoomExtents( BOOL bSel ){
 	BOOL bAllCat = fraLeftBar->ebIgnoreMode->Down;

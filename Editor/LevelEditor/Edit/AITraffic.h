@@ -3,7 +3,7 @@
 //----------------------------------------------------
 
 #ifndef _INCDEF_AITraffic_H_
-#define _INCDEF_AITraffic_H_
+#define _INCDEF_AITraffic_H_                                
 
 #include "CustomObject.h"
 

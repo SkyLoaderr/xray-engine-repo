@@ -211,6 +211,7 @@ USEFORM("PropertiesEObject.cpp", frmPropertiesEObject);
 USEUNIT("edit\GroupObject.cpp");
 USEUNIT("edit\UI_GroupTools.cpp");
 USEFORM("FrameGroup.cpp", fraGroup); /* TFrame: File Type */
+USEUNIT("Engine\Blenders\Blender_Shadow_Texture.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

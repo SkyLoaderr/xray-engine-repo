@@ -112,4 +112,18 @@ bool IsObjectListClassID(EObjClass cls_id){
     default: return false;
     }
 }
+bool IsGroupClassID(EObjClass cls_id)
+{
+    switch(cls_id){
+    case OBJCLASS_SCENEOBJECT: return true;
+    case OBJCLASS_LIGHT:    return true;
+    case OBJCLASS_SOUND:    return true;
+    case OBJCLASS_GLOW:     return true;
+    case OBJCLASS_RPOINT:   return true;
+    case OBJCLASS_AITPOINT:	return true;
+    case OBJCLASS_EVENT:	return true;
+    case OBJCLASS_PS:		return true;
+    default: return false;
+    }
+}
 
