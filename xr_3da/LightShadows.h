@@ -23,6 +23,10 @@ private:
 		float				D;
 		svector<NODE*,32>	nodes;
 	};
+	struct	light
+	{
+		
+	};
 private:
 	CObject*				current;
 	vector<caster>			casters;

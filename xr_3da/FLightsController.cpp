@@ -4,7 +4,7 @@
 const float DE_Speed=0.5f;
 
 // Adds dynamic Light - return handle
-int CLightsController::Add(xrLIGHT &L)
+int CLightDB_Static::Add(xrLIGHT &L)
 {
 	LightsDynamic.push_back	(L);
 	Enabled.push_back		(FALSE);
@@ -12,7 +12,7 @@ int CLightsController::Add(xrLIGHT &L)
 	return LightsDynamic.size()-1;
 }
 // Removes dynamic Light
-void CLightsController::Remove(int handle)
+void CLightDB_Static::Remove(int handle)
 {
 	for (DWORD j=handle+Lights.size(); j<Enabled.size(); j++) Disable(j);
 	LightsDynamic.erase	(LightsDynamic.begin()+handle);
@@ -21,7 +21,7 @@ void CLightsController::Remove(int handle)
 }
 
 // Disables all lights
-void CLightsController::UnselectAll(void) {
+void CLightDB_Static::UnselectAll(void) {
 	vecI_it it;
 	for (it=Selected.begin(); it!=Selected.end(); it++)
 		Disable(*it);
@@ -36,7 +36,7 @@ void CLightsController::UnselectAll(void) {
 }
 
 // for dynamic
-void	CLightsController::SelectDynamic(Fvector &pos, float fRadius)
+void	CLightDB_Static::SelectDynamic(Fvector &pos, float fRadius)
 {
 	// for all dynamic objects we apply not only dynamic but static lights too.
 	for (vecI_it it=Selected.begin(); it!=Selected.end(); it++)
@@ -68,7 +68,7 @@ void	CLightsController::SelectDynamic(Fvector &pos, float fRadius)
 	}
 }
 
-void CLightsController::Load(CStream *fs) 
+void CLightDB_Static::Load(CStream *fs) 
 {
 	DWORD size	= fs->Length();
 	DWORD count	= size/sizeof(xrLIGHT);
@@ -89,7 +89,7 @@ void CLightsController::Load(CStream *fs)
 	Log("* Total number of light sources on level: ",count);
 }
 
-void CLightsController::Unload(void)
+void CLightDB_Static::Unload(void)
 {
 	for (DWORD i=0; i<Lights.size(); i++) Disable(i);
 
@@ -99,7 +99,7 @@ void CLightsController::Unload(void)
 }
 
 IC BOOL lights_compare(int a, int b) {
-	CLightsController &L = Render.Lights;
+	CLightDB_Static &L = Render.Lights;
 	return L.Distance[a]<L.Distance[b];
 }
 IC float spline(float *m, float p0, float p1, float p2, float p3)
@@ -115,7 +115,7 @@ IC void t_spline(float t, float *m)
 	m[2] = ( 0.5f * ( (-3.0f * t3) + ( 4.0f * t2) + ( 1.0f * t) ) );
 	m[3] = ( 0.5f * ( ( 1.0f * t3) + (-1.0f * t2) + ( 0.0f * t) ) );
 }
-void CLightsController::BuildSelection()
+void CLightDB_Static::BuildSelection()
 {
 	DWORD	i;
 
@@ -139,7 +139,7 @@ void CLightsController::BuildSelection()
 		lights_compare);
 }
 
-void	CLightsController::add_sector_lights(vector<WORD> &L)
+void	CLightDB_Static::add_sector_lights(vector<WORD> &L)
 {
 	for (vector<WORD>::iterator I=L.begin(); I!=L.end(); I++)
 	{
