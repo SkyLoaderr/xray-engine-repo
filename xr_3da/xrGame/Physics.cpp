@@ -432,6 +432,14 @@ cutted_add_speed/add_speed/fixed_step*m.mass*add_vel[2]-force[2]
 }
 */
 //limit for angular accel
+void dBodyAngAccelFromTorqu(const dBodyID body, dReal* ang_accel, const dReal* torque){
+	dMass m;
+	dMatrix3 invI;
+	dBodyGetMass(body,&m);
+	dInvertPDMatrix (m.I, invI, 3);
+	dMULTIPLY1_333(ang_accel,invI, torque);
+}
+
 void FixBody(dBodyID body)
 {
 	FixBody(body,10000000.f,10000000000000.f);

@@ -14,12 +14,13 @@
 //#define ODE_SLOW_SOLVER
 ///////////////////////////////////////////////////////////////////////////////
 
-void	BodyCutForce	(dBodyID body,float l_limit,float w_limit)			;
-float	E_NlS			(dBodyID body,dReal* norm,float norm_sign);
-void	FixBody			(dBodyID body)										;
-void	FixBody			(dBodyID body,float ext_param,float mass_param)		;
-void	dMassSub		(dMass *a,const dMass *b)							;
-void	SaveContacts	(dGeomID o1, dGeomID o2,dJointGroupID jointGroup)	;
+void	BodyCutForce			(dBodyID body,float l_limit,float w_limit)					;
+void	dBodyAngAccelFromTorqu	(const dBodyID body, dReal* ang_accel, const dReal* torque)	;
+float	E_NlS					(dBodyID body,dReal* norm,float norm_sign)					;
+void	FixBody					(dBodyID body)												;
+void	FixBody					(dBodyID body,float ext_param,float mass_param)				;
+void	dMassSub				(dMass *a,const dMass *b)									;
+void	SaveContacts			(dGeomID o1, dGeomID o2,dJointGroupID jointGroup)			;
 
 
 IC BOOL dV_valid			(const dReal * v)

@@ -162,7 +162,7 @@ public:																																				//
 	virtual	void			net_Export						(NET_Packet& P)				  ;
 ///////////////////////////////////////////////////Position///////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			void			SetTransform					(const Fmatrix& m0);															//
+	virtual void			SetTransform					(const Fmatrix& m0);															//
 	virtual void			getQuaternion					(Fquaternion& quaternion);														//
 	virtual void			setQuaternion					(const Fquaternion& quaternion);												//
 	virtual void			SetGlobalPositionDynamic		(const Fvector& position);														//

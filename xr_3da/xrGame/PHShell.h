@@ -186,6 +186,8 @@ private:
 	void AddSplitter			  			(CPHShellSplitter::EType type,u16 element,u16 joint,u16 position)				;
 	/////////////////////////////////////////
 	void AddElementRecursive				(CPhysicsElement* root_e, u16 id,Fmatrix global_parent,u16 element_number)		;
+	void PlaceBindToElForms					();
+	void PlaceBindToElFormsRecursive		(Fmatrix parent,u16 id,u16 element,Flags64 &mask);
 	void ZeroCallbacksRecursive				(u16 id)																		;
 	void SetCallbacksRecursive				(u16 id,u16 element)															;
 	void ResetCallbacksRecursive			(u16 id,u16 element,Flags64 &mask)												;

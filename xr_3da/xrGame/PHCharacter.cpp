@@ -11,13 +11,7 @@
 
 
 
-void dBodyAngAccelFromTorqu(const dBodyID body, dReal* ang_accel, const dReal* torque){
-      dMass m;
-      dMatrix3 invI;
-      dBodyGetMass(body,&m);
-      dInvertPDMatrix (m.I, invI, 3);
-      dMULTIPLY1_333(ang_accel,invI, torque);
-      }
+
 
 
 CPHCharacter::CPHCharacter(void):

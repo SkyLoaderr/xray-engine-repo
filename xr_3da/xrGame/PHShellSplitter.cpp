@@ -281,9 +281,30 @@ shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &sp
 		JOINT_I i=joints.begin()+ start_joint,e=joints.begin()+ end_joint;
 		for(;i!=e;++i)
 		{
+	
 			CPHJoint* joint=(*i);
 			if(joint->PFirst_element()==source_element)
+			{
+				//CKinematics* K = m_pShell->PKinematics();
+				dVector3 safe_pos1, safe_pos2;
+				dQuaternion safe_q1, safe_q2;
+				CPhysicsElement* el1=joint->PFirst_element(),*el2=joint->PSecond_element();
+				dBodyID body1=el1->get_body(), body2=el2->get_body();
+				Memory.mem_copy(safe_pos1,dBodyGetPosition(body1),sizeof(dVector3));
+				Memory.mem_copy(safe_pos2,dBodyGetPosition(body2),sizeof(dVector3));
+
+				Memory.mem_copy(safe_q1,dBodyGetQuaternion(body1),sizeof(dQuaternion));
+				Memory.mem_copy(safe_q2,dBodyGetQuaternion(body2),sizeof(dQuaternion));
+				
+				//el1->SetTransform(K->accel)
+				
 				joint->ReattachFirstElement(split_elem.first);
+
+				dBodySetPosition(body1,safe_pos1[0],safe_pos1[1],safe_pos1[2]);
+				dBodySetPosition(body2,safe_pos2[0],safe_pos2[1],safe_pos2[2]);
+				dBodySetQuaternion(body1,safe_q1);
+				dBodySetQuaternion(body2,safe_q2);
+			}
 		}
 	//	m_pShell->joints[split_elem.second.m_start_jt_num]->ReattachFirstElement(split_elem.first);
 	}
