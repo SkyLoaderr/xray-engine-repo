@@ -65,7 +65,7 @@ public:
 
 // Implementation
 public:
-	void			StackLevelChanged(int nLine);
+	void			StackLevelChanged(int nLevel);
 	BOOL			ErrorStringToFileLine(CString strError, CString &strPathName, int &nLine);
 	void			SetMode(int nMode);
 	int				GetMode() { return m_nAppMode; };

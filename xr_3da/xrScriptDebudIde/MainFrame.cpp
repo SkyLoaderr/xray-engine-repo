@@ -266,7 +266,6 @@ void CMainFrame::OnClose()
 {
 	if(m_needAnswer){
 		CMailSlotMsg msg;
-		msg.w_int(DMSG_SHOW_IDE);
 		msg.w_int(DMSG_DEBUG_GO);
 		if(CheckExisting(DEBUGGER_MAIL_SLOT))
 			SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
@@ -314,12 +313,16 @@ LRESULT CMainFrame::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 		m_wndLocals.RemoveAll();
 		GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Clear();
 		GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write("Script debugger connected...\n");
+		OnUpdateFrameTitle(TRUE);
 		break;
-	case DMSG_NEED_ANSWER:
+
+	case DMSG_ACTIVATE_IDE:
+		SendMessage(SW_SHOW,0,0);
 		m_needAnswer = TRUE;
 		OnUpdateFrameTitle(TRUE);
-
+		SetMode(modeDebugBreak);
 		break;
+
 	case DMSG_WRITE_DEBUG:
 		GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write((const char*)wParam);
 		GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write("\n");
@@ -332,10 +335,12 @@ LRESULT CMainFrame::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 	case DMSG_DEBUG_START:
 		SetMode(modeDebug);
 		break;
-	case DMSG_DEBUG_BREAK:
+
+/*	case DMSG_DEBUG_BREAK:
 	case DMSG_SHOW_IDE:
 		SetMode(modeDebugBreak);
-		break;
+		break;*/
+
 	case DMSG_DEBUG_END:
 		SetMode(modeIdle);
 		break;
@@ -419,7 +424,7 @@ void CMainFrame::OnDebugGo()
 	if (!m_needAnswer)return;
 
 	CMailSlotMsg msg;
-	msg.w_int(DMSG_SHOW_IDE);
+//	msg.w_int(DMSG_SHOW_IDE);
 	msg.w_int(DMSG_DEBUG_GO);
 	SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
 
@@ -432,7 +437,7 @@ void CMainFrame::OnDebugStepinto()
 {
 	if (!m_needAnswer)return;
 	CMailSlotMsg msg;
-	msg.w_int(DMSG_SHOW_IDE);
+//	msg.w_int(DMSG_SHOW_IDE);
 	msg.w_int(DMSG_DEBUG_STEP_INTO);
 	SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
 	
@@ -444,7 +449,7 @@ void CMainFrame::OnDebugStepover()
 {
 	if (!m_needAnswer)return;
 	CMailSlotMsg msg;
-	msg.w_int(DMSG_SHOW_IDE);
+//	msg.w_int(DMSG_SHOW_IDE);
 	msg.w_int(DMSG_DEBUG_STEP_OVER);
 	SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
 
@@ -456,7 +461,7 @@ void CMainFrame::OnDebugStepout()
 {
 	if (!m_needAnswer)return;
 	CMailSlotMsg msg;
-	msg.w_int(DMSG_SHOW_IDE);
+//	msg.w_int(DMSG_SHOW_IDE);
 	msg.w_int(DMSG_DEBUG_STEP_OUT);
 	SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
 
@@ -471,7 +476,7 @@ void CMainFrame::OnDebugRuntocursor()
 	return;
 	if (!m_needAnswer)return;
 	CMailSlotMsg msg;
-	msg.w_int(DMSG_SHOW_IDE);
+//	msg.w_int(DMSG_SHOW_IDE);
 	msg.w_int(DMSG_DEBUG_RUN_TO_CURSOR);
 	SendMailslotMessage(DEBUGGER_MAIL_SLOT, msg);
 
@@ -497,7 +502,7 @@ void CMainFrame::OnDebugStopdebugging()
 {
 	if (!m_needAnswer)return;
 	CMailSlotMsg msg;
-	msg.w_int(DMSG_SHOW_IDE);
+//	msg.w_int(DMSG_SHOW_IDE);
 	msg.w_int(DMSG_STOP_DEBUGGING);
 	SendMailslotMessage(DEBUGGER_MAIL_SLOT, msg);
 
@@ -524,10 +529,11 @@ void CMainFrame::OpenDefaultProject()
 
 	GetUserName			(UserName,&sz_user);
 
-	AfxGetModuleShortFileName(AfxGetInstanceHandle(),sAppName);
-	_splitpath( sAppName, drive, dir, fname, ext );
+//	AfxGetModuleShortFileName(AfxGetInstanceHandle(),sAppName);
+//	_splitpath( sAppName, drive, dir, fname, ext );
 
-	sFullFileName.Format("%s%s%s_scr_dbg.lpr",drive,dir,UserName);
+//	sFullFileName.Format("%s%s%s_scr_dbg.lpr",drive,dir,UserName);
+	sFullFileName.Format("x:\\%s_scr_dbg.lpr",UserName);
 
 	BOOL bFileExist = FALSE;
 
@@ -643,14 +649,15 @@ void CMainFrame::UpdateFrameTitleForDocument(LPCTSTR lpszDocName)
 	AfxSetWindowText(m_hWnd, szText);
 }
 
-void CMainFrame::StackLevelChanged(int nLine)
+void CMainFrame::StackLevelChanged(int nLevel)
 {
 	if (!m_needAnswer)return;
 	CMailSlotMsg msg;
-	msg.w_int(DMSG_SHOW_IDE);
+//	msg.w_int(DMSG_SHOW_IDE);
 	msg.w_int (DMSG_GOTO_STACKTRACE_LEVEL);
+	msg.w_int(nLevel);
 	SendMailslotMessage(DEBUGGER_MAIL_SLOT, msg);
-	m_needAnswer = FALSE;
+//	m_needAnswer = TRUE;
 	OnUpdateFrameTitle(TRUE);
 }
 
@@ -667,10 +674,8 @@ void CMainFrame::TranslateMsg( CMailSlotMsg& msg )
 			SendMessage(DMSG_NEW_CONNECTION,0,0);
 		break;
 
-	case DMSG_SHOW_IDE:
-			SendMessage(SW_SHOW,0,0);
-			SendMessage(DMSG_NEED_ANSWER,0,0);
-			SendMessage(DMSG_SHOW_IDE,0,0);
+	case DMSG_ACTIVATE_IDE:
+			SendMessage(DMSG_ACTIVATE_IDE,0,0);
 		break;
 
 	case DMSG_WRITE_DEBUG:{
@@ -679,7 +684,7 @@ void CMainFrame::TranslateMsg( CMailSlotMsg& msg )
 //			GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write(str);
 			SendMessage(DMSG_WRITE_DEBUG,(WPARAM)(&str),0);
 		}break;
-
+/*
 	case DMSG_HAS_BREAKPOINT:{
 	//		msg.w_string((char*)wParam);
 	//		msg.r_int((int)lParam);
@@ -700,7 +705,7 @@ void CMainFrame::TranslateMsg( CMailSlotMsg& msg )
 				sprintf(outstr,"breakPoint at %s line %d\n",str,i);
 				SendMessage(DMSG_WRITE_DEBUG,(WPARAM)outstr,0);
 			};
-		}break;
+		}break;*/
 
 	case DMSG_GOTO_FILELINE:{
 	//		msg.w_string((char*)wParam);
@@ -740,14 +745,14 @@ void CMainFrame::TranslateMsg( CMailSlotMsg& msg )
 			SendMessage(DMSG_ADD_LOCALVARIABLE,(WPARAM)(&v),0);
 		}break;
 
-	case DMSG_GET_STACKTRACE_LEVEL:{
+/*	case DMSG_GET_STACKTRACE_LEVEL:{
 			msg.Reset();
 			msg.w_int(DMSG_GET_STACKTRACE_LEVEL);
 			
 			int level = SendMessage(DMSG_GET_STACKTRACE_LEVEL,0,0);
 			msg.w_int(level);
 			SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
-		}break;
+		}break;*/
 	default:
 		break;
 	}
