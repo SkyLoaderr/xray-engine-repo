@@ -9,8 +9,9 @@
 #include "xr_sndman.h"
 #include "xr_ini.h"
 
-int		psSoundRelaxTime	= 3;
-DWORD	psSoundFlags		= ssWaveTrace;
+int		psSoundRelaxTime		= 3;
+DWORD	psSoundFlags			= ssWaveTrace;
+float	psSoundOcclusionCoeff	= 0.7f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
