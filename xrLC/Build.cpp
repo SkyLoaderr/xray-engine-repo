@@ -231,6 +231,7 @@ void CBuild::Run()
 
 	// All lighting
 	FPU::m64r();
+	Phase	("Lighting...");
 	Light						();
 	
 	FPU::m64r();
