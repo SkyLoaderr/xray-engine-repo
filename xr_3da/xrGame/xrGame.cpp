@@ -565,10 +565,10 @@ extern "C" {
 		case CLSID_LEVEL:				P = xr_new<CLevel>();				break;
 		case CLSID_HUDMANAGER:			P = xr_new<CHUDManager>();			break;
 		case CLSID_OBJECT_ACTOR:		P = xr_new<CActor>();				break;
-		case CLSID_TARGET:				P = xr_new<CCustomTarget()>;		break;
-		case CLSID_SPECTATOR:			P = xr_new<CSpectator()>;			break;
+		case CLSID_TARGET:				P = xr_new<CCustomTarget>();		break;
+		case CLSID_SPECTATOR:			P = xr_new<CSpectator>();			break;
 
-		case CLSID_AI_RAT:				P = xr_new<CAI_Rat()>;				break;
+		case CLSID_AI_RAT:				P = xr_new<CAI_Rat>();				break;
 		case CLSID_AI_SOLDIER:			P =	xr_new<CAI_Soldier>();			break;
 		case CLSID_AI_ZOMBIE:			P = xr_new<CAI_Zombie>();			break;
 		case CLSID_AI_CROW:				P = xr_new<CAI_Crow>();				break;
