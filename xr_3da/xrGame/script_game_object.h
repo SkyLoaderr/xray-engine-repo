@@ -336,7 +336,7 @@ public:
 			void				enable_memory_object	(CScriptGameObject *object, bool enable);
 			int					active_sound_count		();
 			const CCoverPoint	*best_cover				(const Fvector &position, const Fvector &enemy_position, float radius, float min_enemy_distance, float max_enemy_distance);
-			const CCoverPoint	*safe_cover				(float radius, float min_enemy_distance);
+			const CCoverPoint	*safe_cover				(const Fvector &position, float radius, float min_distance);
 			CScriptIniFile		*spawn_ini				() const;
 			///
 			void				add_restrictions		(LPCSTR in, LPCSTR out);

@@ -1174,15 +1174,15 @@ const CCoverPoint *CScriptGameObject::best_cover	(const Fvector &position, const
 	return			(point);
 }
 
-const CCoverPoint *CScriptGameObject::safe_cover	(float radius, float min_enemy_distance)
+const CCoverPoint *CScriptGameObject::safe_cover	(const Fvector &position, float radius, float min_distance)
 {
 	CAI_Stalker		*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!stalker) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member best_cover!");
 		return		(0);
 	}
-	stalker->m_ce_safe->setup(min_enemy_distance);
-	CCoverPoint		*point = ai().cover_manager().best_cover(m_tpGameObject->Position(),radius,*stalker->m_ce_safe);
+	stalker->m_ce_safe->setup(min_distance);
+	CCoverPoint		*point = ai().cover_manager().best_cover(position,radius,*stalker->m_ce_safe);
 	return			(point);
 }
 
