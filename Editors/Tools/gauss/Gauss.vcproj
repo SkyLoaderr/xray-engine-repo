@@ -264,6 +264,12 @@
 				RelativePath=".\_vertex.h">
 			</File>
 			<File
+				RelativePath="clsid.cpp">
+			</File>
+			<File
+				RelativePath="clsid.h">
+			</File>
+			<File
 				RelativePath=".\cpuid.cpp">
 			</File>
 			<File
@@ -277,7 +283,25 @@
 			</File>
 		</Filter>
 		<File
+			RelativePath="Engine.cpp">
+		</File>
+		<File
+			RelativePath="Engine.h">
+		</File>
+		<File
+			RelativePath="FileSystem.cpp">
+		</File>
+		<File
+			RelativePath="FileSystem.h">
+		</File>
+		<File
 			RelativePath=".\Gauss.cpp">
+		</File>
+		<File
+			RelativePath="Log.cpp">
+		</File>
+		<File
+			RelativePath="Log.h">
 		</File>
 		<File
 			RelativePath=".\ReadMe.txt">
