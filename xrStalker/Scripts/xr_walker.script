@@ -60,12 +60,12 @@ function action_walker_activity:reset_scheme()
 end	
 
 function action_walker_activity:execute()
+	action_base.execute(self)
 	self.move_mgr:update()
 end
 
 function action_walker_activity:finalize()
 	self.move_mgr:finalize()
-
 	action_base.finalize(self)
 end
 
