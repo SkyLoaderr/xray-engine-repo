@@ -142,6 +142,9 @@ public:
 	virtual Fvector&	__stdcall	position		();
 	virtual Fvector&	__stdcall	angle			();
 	virtual Flags16&	__stdcall	flags			();
+	virtual CSE_Visual* __stdcall	visual			();
+	virtual CSE_Shape*  __stdcall	shape			();
+	virtual CSE_Motion* __stdcall	motion			();
 	//
 
 	IC		const Fvector			&Position		() const					{return o_Position;};

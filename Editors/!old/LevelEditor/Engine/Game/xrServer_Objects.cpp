@@ -68,6 +68,21 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 CSE_Abstract::~CSE_Abstract					()
 {
 }
+
+CSE_Visual* CSE_Abstract::visual			()
+{
+	return						(0);
+}
+
+CSE_Shape*  CSE_Abstract::shape				()
+{
+	return						(0);
+}
+
+CSE_Motion* CSE_Abstract::motion			()
+{
+	return						(0);
+}
 	
 void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 {
