@@ -83,7 +83,7 @@ public:
 				PIItem pIItem = *it;
 				pIItem->Drop();
 				NET_Packet P;
-				CGameObject* pObject = dynamic_cast<CGameObject*>(pIItem->H_Parent());
+				CGameObject* pObject = static_cast<CGameObject*>(pIItem->H_Parent());
 				R_ASSERT(pObject);
 				pObject->u_EventGen(P,GE_DESTROY,pIItem->ID());
 //				Msg		("ge_destroy: [%d] - %s",pIItem->ID(),*pIItem->cName());

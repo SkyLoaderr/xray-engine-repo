@@ -72,6 +72,10 @@ public:
 	// General
 	CEntity					();
 	virtual ~CEntity		();
+public:
+	virtual CEntity*					cast_entity				()						{return this;}
+	virtual const CEntity*				cast_entity				() const				{return this;}
+public:
 
 	// Core events
 	virtual void			Load				(LPCSTR section);

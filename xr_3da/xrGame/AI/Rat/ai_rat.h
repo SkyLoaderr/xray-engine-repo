@@ -255,6 +255,17 @@ public:
 public:
 								CAI_Rat					();
 	virtual						~CAI_Rat				();
+
+public:
+	CInventoryItem*					cast_inventory_item		()						{return CInventoryItem::cast_inventory_item();}
+	const CInventoryItem*			cast_inventory_item		() const				{return CInventoryItem::cast_inventory_item();}
+	virtual CEntityAlive*			cast_entity_alive		()						{return CEntityAlive::cast_entity_alive();}
+	virtual const CEntityAlive*		cast_entity_alive		() const				{return CEntityAlive::cast_entity_alive();}
+	virtual CEntity*				cast_entity				()						{return CEntity::cast_entity();}
+	virtual const CEntity*			cast_entity				() const				{return CEntity::cast_entity();}
+
+public:
+
 	virtual BOOL				renderable_ShadowReceive();
 	virtual BOOL				renderable_ShadowGenerate();
 	virtual BOOL				net_Spawn				(LPVOID DC);

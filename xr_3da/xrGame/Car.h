@@ -441,6 +441,9 @@ protected:
 public:
 	CCar(void);
 	virtual ~CCar(void);
+public:
+	virtual CEntity*					cast_entity				()						{return CEntity::cast_entity();}
+	virtual const CEntity*				cast_entity				() const				{return CEntity::cast_entity();}
 private:
 	template <class T> IC void fill_wheel_vector(LPCSTR S,xr_vector<T>& type_wheels)
 	{

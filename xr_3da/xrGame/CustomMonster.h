@@ -124,6 +124,14 @@ public:
 						CCustomMonster			( );
 	virtual				~CCustomMonster			( );
 
+public:
+	virtual CEntityAlive*				cast_entity_alive		()						{return CEntityAlive::cast_entity_alive();}
+	virtual const CEntityAlive*			cast_entity_alive		() const				{return CEntityAlive::cast_entity_alive();}
+	virtual CEntity*					cast_entity				()						{return CEntity::cast_entity();}
+	virtual const CEntity*				cast_entity				() const				{return CEntity::cast_entity();}
+
+public:
+
 	virtual BOOL		net_Spawn				( LPVOID DC);
 	virtual void		Die						( );
 

@@ -31,7 +31,8 @@ public:
 
 	virtual void Explode();
 	virtual void ExplodeParams(const Fvector& pos, const Fvector& dir);
-	
+
+	static float ExplosionEffect(CGameObject* pExpObject,  const Fvector &expl_centre, const float expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions);
 
 	virtual void OnH_B_Chield		() {inherited::OnH_B_Chield();}
 	virtual void OnH_B_Independent	() {inherited::OnH_B_Independent();}

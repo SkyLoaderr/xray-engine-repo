@@ -8,6 +8,7 @@
 
 #pragma once
 
+class CGameObject;
 class CAttachableItem;
 class CInventoryItem;
 
@@ -18,6 +19,11 @@ protected:
 public:
 	IC						CAttachmentOwner	();
 	virtual					~CAttachmentOwner	();
+public:
+	virtual CGameObject*			cast_game_object		()		 = 0;
+	virtual const CGameObject*		cast_game_object		() const = 0;
+public:
+
 	virtual	void			reinit				();
 	virtual	void			reload				(LPCSTR section);
 	virtual void			net_Destroy			();

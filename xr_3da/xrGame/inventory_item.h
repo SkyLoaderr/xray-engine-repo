@@ -25,6 +25,11 @@ public:
 					CInventoryItem		();
 	virtual			~CInventoryItem		();
 
+public:
+	CInventoryItem*				cast_inventory_item		()		 {return this;}
+	const CInventoryItem*		cast_inventory_item		() const {return this;}
+
+public:
 	virtual void	Load				(LPCSTR section);
 
 	virtual LPCSTR	Name				();

@@ -19,6 +19,10 @@ private:
 public:
 	CExplosiveRocket(void);
 	virtual ~CExplosiveRocket(void);
+public:
+	virtual CInventoryItem*				cast_inventory_item		()						{return CInventoryItem::cast_inventory_item();}
+	virtual const CInventoryItem*		cast_inventory_item		() const				{return CInventoryItem::cast_inventory_item();}
+public:
 
 	virtual void Load(LPCSTR section);
 	virtual BOOL net_Spawn(LPVOID DC);

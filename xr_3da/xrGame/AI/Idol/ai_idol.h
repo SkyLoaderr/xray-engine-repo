@@ -23,6 +23,11 @@ public:
 	
 						CAI_Idol		();
 	virtual				~CAI_Idol		();
+public:
+	virtual CGameObject*				cast_game_object		()						{return CGameObject::cast_game_object();}
+	virtual const CGameObject*			cast_game_object		() const				{return CGameObject::cast_game_object();}
+public:
+
 	virtual void		Load			( LPCSTR section );
 	virtual BOOL		net_Spawn		( LPVOID DC );
 	virtual void		net_Export		(NET_Packet& /**P/**/){};

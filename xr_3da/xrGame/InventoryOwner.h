@@ -18,6 +18,7 @@ class CInventoryItem;
 class CTrade;
 class CPda;
 class CCharacterInfo;
+class CGameObject;
 class CEntityAlive;
 class CCustomZone;
 
@@ -25,6 +26,11 @@ class CInventoryOwner : public CAttachmentOwner {
 public:
 					CInventoryOwner				();
 	virtual			~CInventoryOwner			();
+
+public:
+	CInventoryOwner*			cast_inventory_owner	()						{return this;}
+	const CInventoryOwner*		cast_inventory_owner	() const				{return this;}
+public:
 
 	//////////////////////////////////////////////////////////////////////////
 	// общие функции
