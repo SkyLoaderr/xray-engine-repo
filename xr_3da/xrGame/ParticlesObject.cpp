@@ -142,7 +142,7 @@ void CParticlesObject::shedule_Update	(u32 _dt)
 		if (psDeviceFlags.test(mtParticles))	{
 			mt_dt					= dt;
 			fastdelegate::FastDelegate0			delegate	(this,&CParticlesObject::PerformAllTheWork_mt);
-			//Device.seqParallel.push_back		(delegate);
+			Device.seqParallel.push_back		(delegate);
 		} else {
 			IParticleCustom* V		= smart_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 			V->OnFrame				(dt);
