@@ -64,6 +64,8 @@ protected:
 	IC		bool	completed				() const;
 			bool	valid					() const;
 			bool	valid					(const Fvector &position) const;
+	IC		const xr_vector<STravelPoint> &path() const;
+	IC		const STravelPoint &curr_travel_point() const;
 
 public:
 					CDetailPathManager		();

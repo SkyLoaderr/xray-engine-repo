@@ -22,3 +22,14 @@ IC	void CDetailPathManager::set_dest_position(const Fvector &dest_position)
 {
 	m_dest_position			= dest_position;
 }
+
+IC	const xr_vector<CDetailPathManager::STravelPoint> &CDetailPathManager::path() const
+{
+	return					(m_path);
+}
+
+IC	const CDetailPathManager::STravelPoint &CDetailPathManager::curr_travel_point() const
+{
+	VERIFY					(!m_path.empty() && (m_current_travel_point < m_path.size()));
+	return					(m_path[m_current_travel_point]);
+}

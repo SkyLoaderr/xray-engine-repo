@@ -17,6 +17,13 @@
 #define CLevelManagerTemplate CBasePathManager<CLevelGraph,_VertexEvaluator,_vertex_id_type,_index_type>
 
 TEMPLATE_SPECIALIZATION
+IC	void CLevelManagerTemplate::Init(const CLevelGraph *graph = 0)
+{
+	inherited::Init	(graph);
+	CAI_ObjectLocation::Init();
+}
+
+TEMPLATE_SPECIALIZATION
 IC	bool CLevelManagerTemplate::actual() const
 {
 	return		(inherited::actual(level_vertex_id(),dest_vertex_id()));

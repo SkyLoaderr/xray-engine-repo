@@ -155,7 +155,7 @@ void CDetailPathManager::build_smooth_path		(const xr_vector<u32> &level_path, u
 {
 	VERIFY(!level_path.empty());
 
-	if (ai().level_graph().inside(ai().level_graph().vertex(CLevelPathManager::dest_vertex_id()),dest_position))
+	if (ai().level_graph().inside(ai().level_graph().vertex(level_dest_vertex_id()),dest_position))
 		dest_position.y = 
 			ai().level_graph().vertex_plane_y(
 				*ai().level_graph().vertex(level_path),
