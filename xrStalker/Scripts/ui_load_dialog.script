@@ -94,7 +94,7 @@ function load_dialog:InitControls()
 	main_frame:SetAutoDelete(true)              --parent will delete this item in destructor
 	main_frame:SetWindowName("main_frame")
 	main_frame:Init("ui\\ui_frame",0,0,main_rect.width, main_rect.height)    
-	main_frame:InitLeftTop("ui\\ui_frame_over_lt", 20, 30)
+	main_frame:InitLeftTop("ui\\ui_frame_over_lt", 20, 40)
 	self:AttachChild(main_frame)
 	
 	-- CAPTION frame --
