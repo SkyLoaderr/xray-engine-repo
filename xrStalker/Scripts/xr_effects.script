@@ -59,6 +59,15 @@ function actor_friend(actor, npc)
 	npc:set_relation(game_object.friend, actor)
 end
 
+function actor_neutral(actor, npc)
+	npc:set_relation(game_object.neutral, actor)
+end
+
+function actor_enemy(actor, npc)
+	npc:set_relation(game_object.enemy, actor)
+end
+
+
 -- Вызов этой функции отключит обработчик [combat] боя для персонажа.
 -- Используется в случаях, когда все необходимые действия, такие как переключение на другую секцию,
 -- уже выполнены, и повторно выполнять их во время боя нельзя (а условия секции [combat] проверяются на каждом

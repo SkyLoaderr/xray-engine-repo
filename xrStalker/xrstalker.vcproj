@@ -1841,6 +1841,9 @@
 							RelativePath=".\scripts\bar_dialogs.script">
 						</File>
 						<File
+							RelativePath=".\scripts\dar_dialogs.script">
+						</File>
+						<File
 							RelativePath=".\scripts\dialogs.script">
 						</File>
 						<File

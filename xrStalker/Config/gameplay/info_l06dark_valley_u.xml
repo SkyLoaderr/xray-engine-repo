@@ -2,6 +2,12 @@
 
 <game_information_portions>
 
+<!-- Диалог со сталкером -->
+<info_portion id="dar_explorer_dlg_open"></info_portion>
+<info_portion id="dar_explorer_dlg_completed"></info_portion>
+<info_portion id="dar_explorer_actor_has_docs"></info_portion>
+<info_portion id="dar_explorer_dlg_angry"></info_portion>
+
 <!-- Кодовый замок 1 -->
 <info_portion id="dar_codelock1_unlock"></info_portion>
 <info_portion id="dar_codelock2_unlock"></info_portion>
