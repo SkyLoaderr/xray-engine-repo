@@ -11,6 +11,8 @@
 #include "CustomZone.h"
 
 class CLevelChanger : public CGameObject, public Feel::Touch {
+private:
+	string32		m_caLevelToChange;
 public:
 	typedef	CGameObject	inherited;
 
