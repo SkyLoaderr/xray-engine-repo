@@ -20,7 +20,7 @@ CEntityCondition::CEntityCondition(void)
 	m_iLastTimeCalled = 0;
 	m_bTimeValid = false;
 
-	m_fHealthMax = MAX_HEALTH;				
+	m_fHealthMax = MAX_HEALTH;
 	m_fPowerMax = MAX_POWER;
 	m_fSatietyMax = MAX_SATIETY;
 	m_fRadiationMax = MAX_RADIATION;
@@ -71,7 +71,7 @@ CEntityCondition::CEntityCondition(void)
 	m_mWound.clear();
 
 	Awoke();
-/*
+	/*
 	m_fK_SleepHealth = 1.0f;
 	m_fK_SleepPower = 1.0f;
 	m_fK_SleepSatiety = 1.0f;	
@@ -119,6 +119,33 @@ void CEntityCondition::Load(LPCSTR section)
 
 void CEntityCondition::reinit	()
 {
+	m_iLastTimeCalled = 0;
+	m_bTimeValid = false;
+
+	m_fHealthMax = MAX_HEALTH;
+	m_fPowerMax = MAX_POWER;
+	m_fSatietyMax = MAX_SATIETY;
+	m_fRadiationMax = MAX_RADIATION;
+
+	m_fCircumspection = m_fCircumspectionMax = 1.f;
+	m_fEntityMorale =  m_fEntityMoraleMax = 1.f;
+
+	m_fHealth  = MAX_HEALTH;
+	m_fPower  = MAX_POWER;
+	m_fSatiety = MAX_SATIETY;
+	m_fRadiation  = 0;
+
+	m_fDeltaHealth = 0;
+	m_fDeltaPower = 0;
+	m_fDeltaSatiety = 0;
+	m_fDeltaRadiation = 0;
+
+	m_fHealthLost = 0.f;
+	m_pWho = NULL;
+
+	m_mWound.clear();
+
+	Awoke();
 }
 
 void CEntityCondition::ChangeHealth(float value)
