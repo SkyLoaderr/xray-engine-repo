@@ -61,7 +61,7 @@ function load_dialog:InitControls()
 							 
 							 
 							 
-	local list_rect_f     = {x = self.indent*2,
+	local list_rect_f     = {x = self.left_align_x,
 						     y = info_rect.y + info_rect.height + self.indent,
 						     width = 0,
 						     height = 0}
