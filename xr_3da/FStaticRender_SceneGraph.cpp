@@ -19,8 +19,8 @@ float ssaLIMIT;
 float ssaDONTSORT;
 const float ssLOD_A		= 96.f;
 const float ssLOD_B		= 64.f;
-const float ssaLOD_A	= (ssLOD_A*ssLOD_A)/(800*600);
-const float ssaLOD_B	= (ssLOD_B*ssLOD_B)/(800*600);
+float ssaLOD_A			= (ssLOD_A*ssLOD_A)/(800*600);
+float ssaLOD_B			= (ssLOD_B*ssLOD_B)/(800*600);
 
 IC	float	CalcSSA(float& distSQ, Fvector& C, CVisual* V)
 {

@@ -5,7 +5,7 @@
 
 void	CSharedStreams::OnDeviceCreate	()
 {
-	// Create TL-primitive
+	// Create Quad-IB
 	{
 		const DWORD dwTriCount	= 4*1024;
 		const DWORD dwIdxCount	= dwTriCount*2*3;

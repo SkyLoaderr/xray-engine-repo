@@ -2,9 +2,22 @@
 #include "fstaticrender.h"
 #include "flod.h"
 
+extern float ssaLOD_A;
+extern float ssaLOD_B;
+
+#define RGBA_GETALPHA(rgb)      DWORD((rgb) >> 24)
+#define RGBA_GETRED(rgb)        DWORD(((rgb) >> 16) & 0xff)
+#define RGBA_GETGREEN(rgb)      DWORD(((rgb) >> 8) & 0xff)
+#define RGBA_GETBLUE(rgb)       DWORD((rgb) & 0xff)
+
+IC DWORD	color		(DWORD Base, DWORD Alpha)
+{
+	return D3DCOLOR_RGBA(RGBA_GETRED(Base),RGBA_GETGREEN(Base),RGBA_GETBLUE(Base),Alpha);
+}
+
 void CRender::flush_LODs()
 {
-	mapLOD.getLR				(lstLODs);
+	mapLOD.getRL				(lstLODs);
 	if (lstLODs.empty())		return;
 
 	// *** Fill VB and generate groups
@@ -12,7 +25,8 @@ void CRender::flush_LODs()
 	Shader*						cur_S		= firstV->hShader;
 	int							cur_count	= 0;
 	DWORD						vOffset;
-	FVF::LIT*					V = (FVF::LIT*)Device.Streams.Vertex.Lock	(lstLODs.size()*4,firstV->hVS->dwStride, vOffset);
+	FVF::LIT*					V	= (FVF::LIT*)Device.Streams.Vertex.Lock	(lstLODs.size()*4,firstV->hVS->dwStride, vOffset);
+	float	ssaRange				= ssaLOD_A - ssaLOD_B;
 	for (DWORD i=0; i<lstLODs.size(); i++)
 	{
 		// sort out redundancy
@@ -23,13 +37,22 @@ void CRender::flush_LODs()
 			cur_S				= P.pVisual->hShader;
 			cur_count			= 1;
 		}
-        
-		// gen geometry
+
+		// calculate alpha
+		float	ssaDiff					= P.ssa-ssaLOD_B;
+		float	scale					= ssaDiff/ssaRange;
+		int		iA						= iFloor((1-scale)*255.f);	clamp(iA,0,255);
+		DWORD	uA						= DWORD(iA);
+		float	shift_scale				= scale;					clamp(shift_scale,0.f,1.f);
+
+		// calculate direction and shift
 		FLOD*							lodV		= (FLOD*)P.pVisual;
-		Fvector							Ldir;
+		Fvector							Ldir,shift,_P;
 		Ldir.sub						(lodV->bv_Position,Device.vCameraPosition);
 		Ldir.normalize					();
+		shift.mul						(Ldir,-lodV->bv_Radius/*shift_scale*/);
 
+		// gen geometry
 		FLOD::_face*					facets		= lodV->facets;
 		int								best_id		= 0;
 		float							best_dot	= Ldir.dotproduct(facets[0].N);
@@ -45,10 +68,10 @@ void CRender::flush_LODs()
 
 		// Fill VB
 		FLOD::_face&	F				= facets[best_id];
-		V->set							(F.v[0].v,F.v[0].c,F.v[0].t.x,F.v[0].t.y); V++;
-		V->set							(F.v[1].v,F.v[1].c,F.v[1].t.x,F.v[1].t.y); V++;
-		V->set							(F.v[2].v,F.v[2].c,F.v[2].t.x,F.v[2].t.y); V++;
-		V->set							(F.v[3].v,F.v[3].c,F.v[3].t.x,F.v[3].t.y); V++;
+		_P.add(F.v[3].v,shift);	V->set	(_P,color(F.v[3].c,uA),F.v[3].t.x,F.v[3].t.y); V++;	// 3
+		_P.add(F.v[0].v,shift);	V->set	(_P,color(F.v[0].c,uA),F.v[0].t.x,F.v[0].t.y); V++;	// 0
+		_P.add(F.v[2].v,shift);	V->set	(_P,color(F.v[2].c,uA),F.v[2].t.x,F.v[2].t.y); V++;	// 2
+		_P.add(F.v[1].v,shift);	V->set	(_P,color(F.v[1].c,uA),F.v[1].t.x,F.v[1].t.y); V++;	// 1
 	}
 	vecGroups.push_back				(cur_count);
 	Device.Streams.Vertex.Unlock	(lstLODs.size()*4,firstV->hVS->dwStride);
