@@ -194,9 +194,9 @@ function action_follow:execute ()
     action_base.execute                 (self)
     
     if self.object:active_item () ~= nil then
-       self.object:set_item                  (object.idle, self.object:best_weapon ())
+       self.object:set_item (object.idle, self.object:best_weapon ())
     else
-       self.object:set_item                  (object.activate, self.object:best_weapon ())     
+       self.object:set_item (object.activate, self.object:best_weapon ())     
     end   
             
     if self.stage == 0 then 
@@ -204,16 +204,16 @@ function action_follow:execute ()
           self:update_stage_0 ()
        end   
     elseif self.stage == 1 then        
-       self:check_path                     ()
+       self:check_path     ()
        self:update_stage_1 ()
     elseif self.stage == 2 then
        self:update_stage_2 ()
     elseif self.stage == 3 then
-       --
+       self.object:set_mental_state (anim.danger)
+       self.object:set_movement_type (move.run)
     elseif self.stage == 4 then
        self:update_stage_4 ()         
     end       
-    --printf ("CURRENT STAGE = %d", self.stage)
 end    
 --------------
 function action_follow:finalize ()
@@ -249,11 +249,13 @@ function action_follow:check_path ()
     if self.last_time - device ():time_global () > 0 then 
        return false 
     end
-    self.last_time = 500 + device ():time_global ()
+    self.last_time = 5000 + device ():time_global ()
 
-    if self.object:level_vertex_id () ~= self.current_vertex_id and self.current_vertex_id ~= -1 then 
-       return false 
-    end
+    if self.current_vertex_id ~= -1 then
+       if self.object:level_vertex_id () ~= self.current_vertex_id then --and self.current_vertex_id ~= -1 then 
+          return false 
+       end
+    end   
     
     if self.a.leader_command == leader_stop then
        self.object:set_movement_type (move.stand)
@@ -270,7 +272,9 @@ function action_follow:check_path ()
     local cv_id = level.vertex_in_direction (self.a.leader:level_vertex_id (), self.a.direction, self.a.distance)
     if cv_id == self.current_vertex_id then return false end
     self.current_vertex_id = cv_id
-    self.object:set_desired_direction (self.a.leader:direction ())
+    local leader_direction = self.a.leader:direction ()
+    leader_direction.invert(leader_direction)
+    self.object:set_desired_direction (leader_direction)
     self.object:set_dest_level_vertex_id  (self.current_vertex_id)   
     self.object:set_sight (look.path_dir, nil, 0)
     return false
