@@ -22,10 +22,10 @@ public:
 	void			set_W		(const Fmatrix& m);
 	void			set_V		(const Fmatrix& m);
 	void			set_P		(const Fmatrix& m);
-	IC void			set_c_w		(R_constant* C)		{	c_w		= C;	RCache.set_c(C,m_w);	};
-	IC void			set_c_v		(R_constant* C)		{	c_v		= C;	RCache.set_c(C,m_v);	};
-	IC void			set_c_p		(R_constant* C)		{	c_p		= C;	RCache.set_c(C,m_p);	};
-	IC void			set_c_wv	(R_constant* C)		{	c_wv	= C;	RCache.set_c(C,m_wv);	};
-	IC void			set_c_vp	(R_constant* C)		{	c_vp	= C;	RCache.set_c(C,m_vp);	};
-	IC void			set_c_wvp	(R_constant* C)		{	c_wvp	= C;	RCache.set_c(C,m_wvp);	};
+	IC void			set_c_w		(R_constant* C);
+	IC void			set_c_v		(R_constant* C);
+	IC void			set_c_p		(R_constant* C);
+	IC void			set_c_wv	(R_constant* C);
+	IC void			set_c_vp	(R_constant* C);
+	IC void			set_c_wvp	(R_constant* C);
 };
