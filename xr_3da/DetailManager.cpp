@@ -354,6 +354,10 @@ void CDetailManager::UpdateCache	(int limit)
 		CRandom				r_jitter	(0x12071980);
 		CRandom				r_yaw		(0x12071980);
 		CRandom				r_scale		(0x12071980);
+
+		// Prepare to actual-bounds-calculations
+		Fbox				Bounds;	
+		Bounds.invalidate	();
 		
 		// Decompressing itself
 		for (DWORD z=0; z<=d_size; z++)
