@@ -21,6 +21,7 @@ public:
 			bool	inside				(const Fvector &position, float radius = EPS_L) const;
 	virtual void	Center				(Fvector &C) const;
 	virtual float	Radius				() const;
+	virtual BOOL	UsedAI_Locations	();
 #ifdef DEBUG
 	virtual void	OnRender			();
 #endif

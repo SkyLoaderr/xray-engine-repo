@@ -183,3 +183,8 @@ void CSpaceRestrictor::OnRender	()
 	}
 }
 #endif
+
+BOOL CSpaceRestrictor::UsedAI_Locations	()
+{
+	return	(FALSE);
+}

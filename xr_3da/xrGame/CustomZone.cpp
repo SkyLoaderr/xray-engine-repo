@@ -1270,8 +1270,3 @@ u32	CCustomZone::ef_weapon_type		() const
 	VERIFY	(m_ef_weapon_type != u32(-1));
 	return	(m_ef_weapon_type);
 }
-
-BOOL CCustomZone::UsedAI_Locations	()
-{
-	return	(FALSE);
-}
