@@ -40,12 +40,15 @@ void	CPortal::Setup	(Fvector* V, int vcnt, CSector* face, CSector* back)
 		N.add		(T);
 	}
 	float	tcnt = float(vcnt)-2;
-	N.div	(tcnt);
-	P.build	(poly[0],N);
-	FPU::m24r();
+	N.div		(tcnt);
+	N.normalize	();
+	P.build		(poly[0],N);
+	FPU::m24r	();
 
-	if (_abs(1-P.n.magnitude())<EPS_S)
+	/*
+	if (_abs(1-P.n.magnitude())<EPS)
 		Debug.fatal		("Degenerated portal found at {%3.2f,%3.2f,%3.2f}.",VPUSH(poly[0]));
+	*/
 }
 
 //

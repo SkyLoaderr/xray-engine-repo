@@ -441,7 +441,7 @@ void CWeapon::net_Export	(NET_Packet& P)
 	P.w_vec3				(XFORM().c);
 
 	float					_x,_y,_z;
-	XFORM().getHPB		(_y,_x,_z);
+	XFORM().getHPB			(_y,_x,_z);
 	P.w_angle8				(_x);
 	P.w_angle8				(_y);
 	P.w_angle8				(_z);
