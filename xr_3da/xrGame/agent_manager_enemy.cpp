@@ -41,7 +41,6 @@ void CAgentManager::fill_enemies		()
 		(*I).probability			(1.f);
 		(*I).object()->fill_enemies	(CEnemyFiller(&m_enemies,mask((*I).object())));
 	}
-	VERIFY							(!m_enemies.empty());
 }
 
 void CAgentManager::compute_enemy_danger()
