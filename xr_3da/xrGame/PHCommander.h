@@ -6,8 +6,8 @@ class CPHReqComparerV;
 class CPHReqBase
 {
 public:	
-	virtual bool 				obsolete						()						=0					;
-	virtual bool				compare							(CPHReqComparerV* v)	{return false;}		;
+	virtual bool 				obsolete						()							const	=0					;
+	virtual bool				compare							(const CPHReqComparerV* v)	const	{return false;}		;
 };
 
 
@@ -50,6 +50,7 @@ public:
 						~CPHCommander				()																;
 	void				add_call_unique				(CPHCondition* condition,CPHReqComparerV* cmp_condition,CPHAction* action,CPHReqComparerV* cmp_action);
 	void				add_call					(CPHCondition* condition,CPHAction* action)						;
+
 	void				remove_call					(PHCALL_I i)													;
 	PHCALL_I			find_call					(CPHReqComparerV* cmp_condition,CPHReqComparerV* cmp_action)	;				
 	void				remove_call					(CPHReqComparerV* cmp_condition,CPHReqComparerV* cmp_action)	;
@@ -57,5 +58,7 @@ public:
 
 	void				update  					()																;
 	void				clear						()																;
+private:
+	
 };
 #endif

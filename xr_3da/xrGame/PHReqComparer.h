@@ -10,10 +10,10 @@ class CPHScriptObjectActionN;
 class CPHReqComparerV
 {
 	public: 
-		virtual		bool compare(CPHScriptCondition* v)			{return false;}
-		virtual		bool compare(CPHScriptAction* v)			{return false;}
-		virtual		bool compare(CPHScriptObjectCondition* v)	{return false;}
-		virtual		bool compare(CPHScriptObjectAction* v)		{return false;}
-		virtual		bool compare(CPHScriptObjectConditionN* v)	{return false;}
-		virtual		bool compare(CPHScriptObjectActionN* v)		{return false;}
+		virtual		bool compare(const	CPHScriptCondition* v)			const		{return false;}
+		virtual		bool compare(const	CPHScriptAction* v)				const		{return false;}
+		virtual		bool compare(const	CPHScriptObjectCondition* v)	const		{return false;}
+		virtual		bool compare(const	CPHScriptObjectAction* v)		const		{return false;}
+		virtual		bool compare(const	CPHScriptObjectConditionN* v)	const		{return false;}
+		virtual		bool compare(const	CPHScriptObjectActionN* v)		const		{return false;}
 };

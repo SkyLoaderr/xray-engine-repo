@@ -226,11 +226,25 @@ void add_call(const luabind::functor<bool> &condition,const luabind::functor<voi
 	Level().ph_commander().add_call_unique(c,c,a,a);
 }
 
+void remove_call(const luabind::functor<bool> &condition,const luabind::functor<void> &action)
+{
+	CPHScriptCondition	c(condition);
+	CPHScriptAction		a(action);
+	Level().ph_commander().remove_call(&c,&a);
+}
+
 void add_call(const luabind::object &lua_object, LPCSTR condition,LPCSTR action)
 {
 	CPHScriptObjectCondition	*c=xr_new<CPHScriptObjectCondition>(lua_object,condition);
 	CPHScriptObjectAction		*a=xr_new<CPHScriptObjectAction>(lua_object,action);
 	Level().ph_commander().add_call_unique(c,c,a,a);
+}
+
+void remove_call(const luabind::object &lua_object, LPCSTR condition,LPCSTR action)
+{
+	CPHScriptObjectCondition	c(lua_object,condition);
+	CPHScriptObjectAction		a(lua_object,action);
+	Level().ph_commander().remove_call(&c,&a);
 }
 
 void add_call(const luabind::object &lua_object, const luabind::functor<bool> &condition,const luabind::functor<void> &action)
@@ -239,6 +253,20 @@ void add_call(const luabind::object &lua_object, const luabind::functor<bool> &c
 	CPHScriptObjectActionN		*a=xr_new<CPHScriptObjectActionN>(lua_object,action);
 	Level().ph_commander().add_call_unique(c,c,a,a);
 }
+
+void remove_call(const luabind::object &lua_object, const luabind::functor<bool> &condition,const luabind::functor<void> &action)
+{
+	CPHScriptObjectConditionN	c(lua_object,condition);
+	CPHScriptObjectActionN		a(lua_object,action);
+	Level().ph_commander().remove_call(&c,&a);
+}
+
+void remove_calls_for_object(const luabind::object &lua_object)
+{
+	CPHSriptReqObjComparer c(lua_object);
+	Level().ph_commander().remove_calls(&c);
+}
+
 
 CEnvironment *environment()
 {
@@ -307,6 +335,10 @@ void CLevel::script_register(lua_State *L)
 		def("add_call",							((void (*) (const luabind::functor<bool> &,const luabind::functor<void> &)) &add_call)),
 		def("add_call",							((void (*) (const luabind::object &,const luabind::functor<bool> &,const luabind::functor<void> &)) &add_call)),
 		def("add_call",							((void (*) (const luabind::object &, LPCSTR, LPCSTR)) &add_call)),
+		def("remove_call",						((void (*) (const luabind::functor<bool> &,const luabind::functor<void> &)) &remove_call)),
+		def("remove_call",						((void (*) (const luabind::object &,const luabind::functor<bool> &,const luabind::functor<void> &)) &remove_call)),
+		def("remove_call",						((void (*) (const luabind::object &, LPCSTR, LPCSTR)) &remove_call)),
+		def("remove_calls_for_object",			remove_calls_for_object),
 		def("present",							is_level_present)
 	];
 }

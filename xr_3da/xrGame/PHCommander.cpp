@@ -30,6 +30,8 @@ bool CPHCall::is_any(CPHReqComparerV* v)
 {
 	return m_action->compare(v)||m_condition->compare(v);
 }
+
+
 CPHCommander::~CPHCommander()
 {
 	clear();
@@ -40,17 +42,25 @@ void CPHCommander::add_call(CPHCondition* condition,CPHAction* action)
 	m_calls.push_back(xr_new<CPHCall>(condition,action));
 }
 
-void CPHCommander::remove_call(PHCALL_I i)
+void delete_call(CPHCall* &call)
 {
 	try{
-		xr_delete(*i);
-		}
+		xr_delete(call);
+	}
 	catch(...)
 	{
-		(*i)=NULL;
+		call=NULL;
 	}
+}
+
+void CPHCommander::remove_call(PHCALL_I i)
+{
+	delete_call(*i);
 	m_calls.erase(i);
 }
+
+
+
 void CPHCommander::clear	()
 {
 	while (m_calls.size())	{
@@ -99,7 +109,8 @@ PHCALL_I CPHCommander::find_call(CPHReqComparerV* cmp_condition,CPHReqComparerV*
 
 void CPHCommander::remove_call(CPHReqComparerV* cmp_condition,CPHReqComparerV* cmp_action)
 {
-	remove_call(find_call(cmp_condition,cmp_action));
+	PHCALL_I i=find_call(cmp_condition,cmp_action);
+	if(i!=m_calls.end())remove_call(i);
 }
 
 void CPHCommander::add_call_unique(CPHCondition* condition,CPHReqComparerV* cmp_condition,CPHAction* action,CPHReqComparerV* cmp_action)
@@ -109,8 +120,25 @@ void CPHCommander::add_call_unique(CPHCondition* condition,CPHReqComparerV* cmp_
 		add_call(condition,action);
 	}
 }
-
+struct SRemoveRped
+{
+	CPHReqComparerV*	cmp_object;
+	SRemoveRped(CPHReqComparerV* cmp_o)
+	{
+		cmp_object=cmp_o;
+	}
+	bool operator() (CPHCall* call)
+	{
+		if(call->is_any(cmp_object))
+		{
+			delete_call(call);
+			return true;
+		}
+		else
+			return false;
+	}
+};
 void CPHCommander::remove_calls(CPHReqComparerV* cmp_object)
 {
-	
+	remove_if(m_calls.begin(),m_calls.end(),SRemoveRped(cmp_object));
 }

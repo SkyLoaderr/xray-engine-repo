@@ -22,7 +22,7 @@ bool CPHScriptCondition::is_true()
 	return (*m_lua_function)();
 }
 
-bool CPHScriptCondition::obsolete()
+bool CPHScriptCondition::obsolete()const
 {
 	return false;
 }
@@ -44,7 +44,7 @@ void CPHScriptAction::run()
 	b_obsolete=true;
 }
 
-bool CPHScriptAction::obsolete()
+bool CPHScriptAction::obsolete()const
 {
 	return b_obsolete;
 }
@@ -68,7 +68,7 @@ void CPHScriptObjectAction::run()
 	b_obsolete=true;
 }
 
-bool CPHScriptObjectAction::obsolete()
+bool CPHScriptObjectAction::obsolete()const
 {
 	return b_obsolete;
 }
@@ -88,7 +88,7 @@ bool CPHScriptObjectCondition::is_true()
 {
 	return luabind::call_member<bool>(*m_lua_object,*m_method_name);
 }
-bool CPHScriptObjectCondition::obsolete()
+bool CPHScriptObjectCondition::obsolete()const
 {
 	return false;
 }
@@ -110,7 +110,7 @@ void CPHScriptObjectActionN::run()
 	b_obsolete=true;
 }
 
-bool CPHScriptObjectActionN::obsolete()
+bool CPHScriptObjectActionN::obsolete()const
 {
 	return b_obsolete;
 }
@@ -129,7 +129,7 @@ bool CPHScriptObjectConditionN::is_true()
 {
 	return m_callback();
 }
-bool CPHScriptObjectConditionN::obsolete()
+bool CPHScriptObjectConditionN::obsolete()const
 {
 	return false;
 }

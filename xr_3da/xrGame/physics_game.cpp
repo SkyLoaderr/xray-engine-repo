@@ -39,7 +39,7 @@ public:
 		ps->UpdateParent(pos,zero_vel);
 		Level().ps_needtoplay.push_back(ps);
 	};
-	virtual bool 			obsolete						(){return false;}
+	virtual bool 			obsolete						()const{return false;}
 };
 
 
@@ -63,7 +63,7 @@ public:
 			0.09f, T,
 			Level().ObjectSpace.GetStaticVerts());
 	};
-	virtual bool 			obsolete						(){return false;}
+	virtual bool 			obsolete						()const{return false;}
 };
 
 class CPHOnesCondition:
@@ -73,7 +73,7 @@ class CPHOnesCondition:
 public:
 							CPHOnesCondition				(){b_called=false;}
 	virtual bool 			is_true							(){b_called =true;return true;}
-	virtual bool 			obsolete						(){return b_called;}
+	virtual bool 			obsolete						()const{return b_called;}
 };
 
 
