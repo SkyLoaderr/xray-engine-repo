@@ -15,6 +15,10 @@
 #include "..\xr_level_controller.h"
 #include "HUDmanager.h"
 #include "WayPointDef.h"
+#include "PHdynamicdata.h"
+#include "Physics.h"
+
+static CPHWorld*	ph_world = 0;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -34,6 +38,9 @@ CLevel::CLevel()
 	eEnvironment				= Engine.Event.Handler_Attach	("LEVEL:Environment",this);
 
 	eEntitySpawn				= Engine.Event.Handler_Attach	("LEVEL:spawn",this);
+
+	ph_world	= new CPHWorld;
+	ph_world->Create	();
 }
 
 CLevel::~CLevel()
@@ -58,6 +65,8 @@ CLevel::~CLevel()
 	}
 	//tpaPatrolPaths.clear();
 	/**/
+	ph_world->Destroy		();
+	_DELETE		(ph_world);
 }
 
 // Game interface ////////////////////////////////////////////////////
@@ -439,6 +448,9 @@ void CLevel::OnFrame	()
 
 	// Inherited update
 	inherited::OnFrame	();
+
+	// Physics
+	ph_world->Step		(Device.fTimeDelta);
 
 	// Merge visibility data from all units in the team
 	for (DWORD T=0; T<Teams.size(); T++)
