@@ -59,7 +59,7 @@
 				MapFileName="x:\xrSE_Factory.map"
 				SubSystem="2"
 				ImportLibrary="x:\xrSE_Factory.lib"
-				TargetMachine="0"/>
+				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -570,7 +570,8 @@
 				<File
 					RelativePath=".\luabind\class.cpp">
 					<FileConfiguration
-						Name="Debug|Win32">
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
@@ -591,7 +592,8 @@
 				<File
 					RelativePath=".\luabind\class_info.cpp">
 					<FileConfiguration
-						Name="Debug|Win32">
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
@@ -612,7 +614,8 @@
 				<File
 					RelativePath=".\luabind\class_registry.cpp">
 					<FileConfiguration
-						Name="Debug|Win32">
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
@@ -633,7 +636,8 @@
 				<File
 					RelativePath=".\luabind\class_rep.cpp">
 					<FileConfiguration
-						Name="Debug|Win32">
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
@@ -654,7 +658,8 @@
 				<File
 					RelativePath=".\luabind\create_class.cpp">
 					<FileConfiguration
-						Name="Debug|Win32">
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
@@ -675,7 +680,8 @@
 				<File
 					RelativePath=".\luabind\error.cpp">
 					<FileConfiguration
-						Name="Debug|Win32">
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
@@ -696,7 +702,8 @@
 				<File
 					RelativePath=".\luabind\find_best_match.cpp">
 					<FileConfiguration
-						Name="Debug|Win32">
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
@@ -717,7 +724,8 @@
 				<File
 					RelativePath=".\luabind\function.cpp">
 					<FileConfiguration
-						Name="Debug|Win32">
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
@@ -738,7 +746,8 @@
 				<File
 					RelativePath=".\luabind\implicit_cast.cpp">
 					<FileConfiguration
-						Name="Debug|Win32">
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
@@ -759,7 +768,8 @@
 				<File
 					RelativePath=".\luabind\link_compatibility.cpp">
 					<FileConfiguration
-						Name="Debug|Win32">
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
@@ -780,7 +790,8 @@
 				<File
 					RelativePath=".\luabind\object.cpp">
 					<FileConfiguration
-						Name="Debug|Win32">
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
@@ -801,7 +812,8 @@
 				<File
 					RelativePath=".\luabind\object_rep.cpp">
 					<FileConfiguration
-						Name="Debug|Win32">
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
@@ -822,7 +834,8 @@
 				<File
 					RelativePath=".\luabind\open.cpp">
 					<FileConfiguration
-						Name="Debug|Win32">
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
@@ -843,7 +856,8 @@
 				<File
 					RelativePath=".\luabind\pcall.cpp">
 					<FileConfiguration
-						Name="Debug|Win32">
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
@@ -864,7 +878,8 @@
 				<File
 					RelativePath=".\luabind\ref.cpp">
 					<FileConfiguration
-						Name="Debug|Win32">
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
@@ -885,7 +900,8 @@
 				<File
 					RelativePath=".\luabind\scope.cpp">
 					<FileConfiguration
-						Name="Debug|Win32">
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
@@ -906,7 +922,8 @@
 				<File
 					RelativePath=".\luabind\stack_content_by_name.cpp">
 					<FileConfiguration
-						Name="Debug|Win32">
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
@@ -927,7 +944,8 @@
 				<File
 					RelativePath=".\luabind\weak_ref.cpp">
 					<FileConfiguration
-						Name="Debug|Win32">
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
@@ -948,7 +966,8 @@
 				<File
 					RelativePath=".\luabind\wrapper_base.cpp">
 					<FileConfiguration
-						Name="Debug|Win32">
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>

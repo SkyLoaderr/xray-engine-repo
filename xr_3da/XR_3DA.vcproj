@@ -1293,19 +1293,22 @@
 			<File
 				RelativePath=".\class.cpp">
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32">
+					Name="Mixed|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
@@ -1314,19 +1317,22 @@
 			<File
 				RelativePath=".\class_info.cpp">
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32">
+					Name="Mixed|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
@@ -1335,19 +1341,22 @@
 			<File
 				RelativePath=".\class_registry.cpp">
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32">
+					Name="Mixed|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
@@ -1356,19 +1365,22 @@
 			<File
 				RelativePath=".\class_rep.cpp">
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32">
+					Name="Mixed|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
@@ -1377,19 +1389,22 @@
 			<File
 				RelativePath=".\create_class.cpp">
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32">
+					Name="Mixed|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
@@ -1398,19 +1413,22 @@
 			<File
 				RelativePath=".\error.cpp">
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32">
+					Name="Mixed|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
@@ -1419,19 +1437,22 @@
 			<File
 				RelativePath=".\find_best_match.cpp">
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32">
+					Name="Mixed|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
@@ -1440,19 +1461,22 @@
 			<File
 				RelativePath=".\function.cpp">
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32">
+					Name="Mixed|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
@@ -1461,19 +1485,22 @@
 			<File
 				RelativePath=".\implicit_cast.cpp">
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32">
+					Name="Mixed|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
@@ -1482,19 +1509,22 @@
 			<File
 				RelativePath=".\link_compatibility.cpp">
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32">
+					Name="Mixed|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
@@ -1503,19 +1533,22 @@
 			<File
 				RelativePath=".\object.cpp">
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32">
+					Name="Mixed|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
@@ -1524,19 +1557,22 @@
 			<File
 				RelativePath=".\object_rep.cpp">
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32">
+					Name="Mixed|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
@@ -1545,19 +1581,22 @@
 			<File
 				RelativePath=".\open.cpp">
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32">
+					Name="Mixed|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
@@ -1566,19 +1605,22 @@
 			<File
 				RelativePath=".\pcall.cpp">
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32">
+					Name="Mixed|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
@@ -1587,19 +1629,22 @@
 			<File
 				RelativePath=".\ref.cpp">
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32">
+					Name="Mixed|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
@@ -1608,19 +1653,22 @@
 			<File
 				RelativePath=".\scope.cpp">
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32">
+					Name="Mixed|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
@@ -1629,19 +1677,22 @@
 			<File
 				RelativePath=".\stack_content_by_name.cpp">
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32">
+					Name="Mixed|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
@@ -1650,19 +1701,22 @@
 			<File
 				RelativePath=".\weak_ref.cpp">
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32">
+					Name="Mixed|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>

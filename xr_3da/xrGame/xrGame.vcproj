@@ -4064,21 +4064,24 @@
 					<File
 						RelativePath=".\luabind\class.cpp">
 						<FileConfiguration
-							Name="Debug|Win32">
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Mixed|Win32">
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Release|Win32">
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
@@ -4088,21 +4091,24 @@
 					<File
 						RelativePath=".\luabind\class_info.cpp">
 						<FileConfiguration
-							Name="Debug|Win32">
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Mixed|Win32">
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Release|Win32">
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
@@ -4112,21 +4118,24 @@
 					<File
 						RelativePath=".\luabind\class_registry.cpp">
 						<FileConfiguration
-							Name="Debug|Win32">
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Mixed|Win32">
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Release|Win32">
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
@@ -4136,21 +4145,24 @@
 					<File
 						RelativePath=".\luabind\class_rep.cpp">
 						<FileConfiguration
-							Name="Debug|Win32">
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Mixed|Win32">
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Release|Win32">
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
@@ -4160,21 +4172,24 @@
 					<File
 						RelativePath=".\luabind\create_class.cpp">
 						<FileConfiguration
-							Name="Debug|Win32">
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Mixed|Win32">
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Release|Win32">
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
@@ -4184,21 +4199,24 @@
 					<File
 						RelativePath=".\luabind\error.cpp">
 						<FileConfiguration
-							Name="Debug|Win32">
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Mixed|Win32">
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Release|Win32">
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
@@ -4208,21 +4226,24 @@
 					<File
 						RelativePath=".\luabind\find_best_match.cpp">
 						<FileConfiguration
-							Name="Debug|Win32">
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Mixed|Win32">
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Release|Win32">
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
@@ -4232,21 +4253,24 @@
 					<File
 						RelativePath=".\luabind\function.cpp">
 						<FileConfiguration
-							Name="Debug|Win32">
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Mixed|Win32">
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Release|Win32">
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
@@ -4256,21 +4280,24 @@
 					<File
 						RelativePath=".\luabind\implicit_cast.cpp">
 						<FileConfiguration
-							Name="Debug|Win32">
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Mixed|Win32">
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Release|Win32">
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
@@ -4280,21 +4307,24 @@
 					<File
 						RelativePath=".\luabind\link_compatibility.cpp">
 						<FileConfiguration
-							Name="Debug|Win32">
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Mixed|Win32">
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Release|Win32">
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
@@ -4304,21 +4334,24 @@
 					<File
 						RelativePath=".\luabind\object.cpp">
 						<FileConfiguration
-							Name="Debug|Win32">
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Mixed|Win32">
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Release|Win32">
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
@@ -4328,21 +4361,24 @@
 					<File
 						RelativePath=".\luabind\object_rep.cpp">
 						<FileConfiguration
-							Name="Debug|Win32">
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Mixed|Win32">
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Release|Win32">
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
@@ -4352,21 +4388,24 @@
 					<File
 						RelativePath=".\luabind\open.cpp">
 						<FileConfiguration
-							Name="Debug|Win32">
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Mixed|Win32">
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Release|Win32">
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
@@ -4376,21 +4415,24 @@
 					<File
 						RelativePath=".\luabind\pcall.cpp">
 						<FileConfiguration
-							Name="Debug|Win32">
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Mixed|Win32">
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Release|Win32">
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
@@ -4400,21 +4442,24 @@
 					<File
 						RelativePath=".\luabind\ref.cpp">
 						<FileConfiguration
-							Name="Debug|Win32">
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Mixed|Win32">
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Release|Win32">
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
@@ -4424,21 +4469,24 @@
 					<File
 						RelativePath=".\luabind\scope.cpp">
 						<FileConfiguration
-							Name="Debug|Win32">
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Mixed|Win32">
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Release|Win32">
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
@@ -4448,21 +4496,24 @@
 					<File
 						RelativePath=".\luabind\stack_content_by_name.cpp">
 						<FileConfiguration
-							Name="Debug|Win32">
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Mixed|Win32">
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Release|Win32">
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
@@ -4472,21 +4523,24 @@
 					<File
 						RelativePath=".\luabind\weak_ref.cpp">
 						<FileConfiguration
-							Name="Debug|Win32">
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Mixed|Win32">
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Release|Win32">
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
@@ -4496,21 +4550,24 @@
 					<File
 						RelativePath=".\luabind\wrapper_base.cpp">
 						<FileConfiguration
-							Name="Debug|Win32">
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Mixed|Win32">
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
 								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Release|Win32">
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
@@ -8713,12 +8770,6 @@
 			<File
 				RelativePath=".\UICursor.h">
 			</File>
-			<File
-				RelativePath=".\UIGroup.cpp">
-			</File>
-			<File
-				RelativePath=".\UIGroup.h">
-			</File>
 			<Filter
 				Name="Custom"
 				Filter="">
@@ -8733,12 +8784,6 @@
 				</File>
 				<File
 					RelativePath=".\UICustomItem.h">
-				</File>
-				<File
-					RelativePath="UICustomMenu.cpp">
-				</File>
-				<File
-					RelativePath="UICustomMenu.h">
 				</File>
 				<File
 					RelativePath=".\UIDynamicItem.cpp">
@@ -8759,12 +8804,6 @@
 					RelativePath="UIFrameRect.h">
 				</File>
 				<File
-					RelativePath="UIIcon.cpp">
-				</File>
-				<File
-					RelativePath="UIIcon.h">
-				</File>
-				<File
 					RelativePath="UIListBox.cpp">
 				</File>
 				<File
@@ -8780,18 +8819,6 @@
 			<Filter
 				Name="Common"
 				Filter="">
-				<File
-					RelativePath="UIBuyMenu.cpp">
-				</File>
-				<File
-					RelativePath="UIBuyMenu.h">
-				</File>
-				<File
-					RelativePath="UICHTMenu.cpp">
-				</File>
-				<File
-					RelativePath="UICHTMenu.h">
-				</File>
 				<Filter
 					Name="InventoryWnd"
 					Filter="">

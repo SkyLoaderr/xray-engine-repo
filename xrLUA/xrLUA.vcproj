@@ -24,7 +24,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="include\"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;XRLUA_EXPORTS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;XRLUA_EXPORTS;LUABIND_BUILDING"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -1019,6 +1019,63 @@
 		<Filter
 			Name="luabind"
 			Filter="">
+			<File
+				RelativePath=".\luabind\class.cpp">
+			</File>
+			<File
+				RelativePath=".\luabind\class_info.cpp">
+			</File>
+			<File
+				RelativePath=".\luabind\class_registry.cpp">
+			</File>
+			<File
+				RelativePath=".\luabind\class_rep.cpp">
+			</File>
+			<File
+				RelativePath=".\luabind\create_class.cpp">
+			</File>
+			<File
+				RelativePath=".\luabind\error.cpp">
+			</File>
+			<File
+				RelativePath=".\luabind\find_best_match.cpp">
+			</File>
+			<File
+				RelativePath=".\luabind\function.cpp">
+			</File>
+			<File
+				RelativePath=".\luabind\implicit_cast.cpp">
+			</File>
+			<File
+				RelativePath=".\luabind\link_compatibility.cpp">
+			</File>
+			<File
+				RelativePath=".\luabind\object.cpp">
+			</File>
+			<File
+				RelativePath=".\luabind\object_rep.cpp">
+			</File>
+			<File
+				RelativePath=".\luabind\open.cpp">
+			</File>
+			<File
+				RelativePath=".\luabind\pcall.cpp">
+			</File>
+			<File
+				RelativePath=".\luabind\ref.cpp">
+			</File>
+			<File
+				RelativePath=".\luabind\scope.cpp">
+			</File>
+			<File
+				RelativePath=".\luabind\stack_content_by_name.cpp">
+			</File>
+			<File
+				RelativePath=".\luabind\weak_ref.cpp">
+			</File>
+			<File
+				RelativePath=".\luabind\wrapper_base.cpp">
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
