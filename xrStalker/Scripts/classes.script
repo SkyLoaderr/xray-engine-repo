@@ -14,25 +14,73 @@ class "AnimationSet"
 function AnimationSet:__init (flags)
 	self.flags = flags
 	self.current_animation = 0
-	self.anims_list = {}
+	self.anims_list = {}                -- Список анимаций
+	self.move_types_list = {}           -- move.walk или move.stand
+	self.anim_snd_list = {}             -- Соответствующие им звуки
+	self.anim_snd_prob_list = {}        -- Вероятность старта звуков, играемых во время ходьбы
 end
 
-function AnimationSet:add_animation (name, flag)
+function AnimationSet:add_animation (name, flag, move_type, anim_snd, anim_snd_prob)
 	printf ("Add animation %s", name)
 	table.insert (self.anims_list, anim (name, flag))
+	
+	if move_type then
+		table.insert (self.move_types_list, move_type)
+	else
+		table.insert (self.move_types_list, move.stand)
+	end
+	
+	if anim_snd then
+		table.insert (self.anim_snd_list, sound (anim_snd, "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false))
+	else
+		table.insert (self.anim_snd_list, nil)
+	end
+
+	if anim_snd_prob then
+		table.insert (self.anim_snd_prob_list, anim_snd_prob)
+	else
+		table.insert (self.anim_snd_prob_list, 100)
+	end
 end
 
+-- Возвращает следующую в очереди анимацию, движение, звук, вероятность проигрывания звука
+function AnimationSet:next_anim()
+	local size = table.getn (self.anims_list)
+	if size == 0 then
+		return nil, 0, nil, 0
+	end
+	if self.flags == 0 then
+		self.current_animation = self.current_animation + 1
+		if self.current_animation > size then
+			self.current_animation = 1
+		end
+		printf("AnimationSet:next_anim(): current_animation == %d", self.current_animation)
+	else
+		self.current_animation = math.random (1, size)
+		printf("AnimationSet:next_anim(): current_animation = math.random (1, %d) == %d", size, self.current_animation)
+	end
+	return self.anims_list[self.current_animation], self.move_types_list[self.current_animation],
+	       self.anim_snd_list[self.current_animation], self.anim_snd_prob_list[self.current_animation]
+end
+
+-- // УСТАРЕЛА, ИСПОЛЬЗУЙТЕ next_anim()
+-- Возвращает следующую в очереди анимацию
 function AnimationSet:get_animation ()
 	local size = table.getn (self.anims_list)
-	if size == 0 then return nil end
+	if size == 0 then
+		return nil
+	end
 	if self.flags == 0 then
-	   self.current_animation = self.current_animation  + 1
-	   if self.current_animation > size then self.current_animation = 1 end
-   	   return self.anims_list[self.current_animation]
+	   self.current_animation = self.current_animation + 1
+	   if self.current_animation > size then
+		   self.current_animation = 1
 	   end
-	self.current_animation = math.random (1, size  + 1)
- 	return self.anims_list[self.current_animation]
+   	   return self.anims_list[self.current_animation]
+	end
+	self.current_animation = math.random (1, size)
+	return self.anims_list[self.current_animation]
 end
+
 
 ----------------------------------------------------------------------------------------------------
 -- класс ActionSet
@@ -72,6 +120,29 @@ function SinglePatrol:__init (npc, script_name, path_name, ...)
 	self.path_name = path_name
 	self.current_state = 0
 	self.anims = arg
+	
+	self.phrase_list = {}
+	self.phrase_len_list = {}
+	self.phrase_interval_min = 0
+	self.phrase_interval_max = 0
+	self.next_phrase_time = 0
+
+	self.last_action = nil
+end
+
+function SinglePatrol:set_phrase_interval(imin, imax)
+	self.phrase_interval_min = imin
+	self.phrase_interval_max = imax
+	self.next_phrase_time = game.time() + math.random(self.phrase_interval_min, self.phrase_interval_max)
+end
+
+function SinglePatrol:add_random_phrase(...)
+	local n = 1
+	while arg[n] ~= nil do
+		table.insert (self.phrase_list, arg[n])
+		table.insert (self.phrase_len_list, arg[n + 1])
+		n = n + 2
+	end
 end
 
 function SinglePatrol:callback (obj, action_type, index)
@@ -88,8 +159,20 @@ function SinglePatrol:callback (obj, action_type, index)
 
 	for anim_num = 1, self.anims.n do
 		if ptr:flag(index, anim_num) then
-			action_first (obj, move (move.standing, move.stand, move.line, ptr),
-				self.anims[anim_num]:get_animation (), cond (cond.anim_end))
+			local anim, mov, snd, snd_prob = self.anims[anim_num]:next_anim()
+			act = entity_action();
+			act:set_action( anim )
+			act:set_action( move (move.standing, mov, move.line, ptr) )
+			if snd ~= nil and snd_prob >= math.random(1, 100) then
+				act:set_action( snd )
+			end
+			act:set_action( cond (cond.anim_end) )
+
+			--self.last_action = act
+			
+			if obj ~= nil then
+				obj:command(act, true)
+			end
 			return
 		end
 	end
@@ -98,13 +181,26 @@ end
 function SinglePatrol:process ()
 
 	if self.started == false then
-	   self.npc:script (true, self.script_name)
-	   action (self.npc, move (move.standing, move.walk, move.line, patrol (self.path_name)),
-			   look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
-	   self.started = true
-	   self.npc:set_callback (self, "callback", game_object.movement)
-	   return 
-	   end
+		self.npc:script (true, self.script_name)
+		self.last_action = action (self.npc, move (move.standing, move.walk, move.line, patrol (self.path_name)),
+		        look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
+		self.started = true
+		self.npc:set_callback (self, "callback", game_object.movement)
+		return
+	end
+
+	if game.time() >= self.next_phrase_time then
+		local size = table.getn (self.phrase_list)
+		local phr_num = math.random(1, size)
+		printf("PHRASE=%s", self.phrase_list[phr_num])
+		
+		local act = self.last_action
+		act:set_action( sound (self.phrase_list[phr_num], "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false) )
+		self.npc:command(act, true)
+		
+		self.next_phrase_time = game.time() + self.phrase_len_list[phr_num] +
+		                        math.random(self.phrase_interval_min, self.phrase_interval_max)
+	end
 end
 
 function SinglePatrol:finish ()
@@ -143,3 +239,4 @@ end
 function Guardian:finish ()
 	self.npc:script (false, self.script_name)
 end
+
