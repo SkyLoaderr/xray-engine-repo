@@ -435,7 +435,7 @@ class CAI_Soldier : public CCustomMonster
 		float					m_fMaxPatrolDistance;
 
 		// finite state machine
-		stack<ESoldierStates>	m_tStateStack;
+		xr_stack<ESoldierStates>	m_tStateStack;
 		svector<SSoldierStates,MAX_STATE_LIST_SIZE>	m_tStateList;
 		bool					m_bStateChanged;
 		

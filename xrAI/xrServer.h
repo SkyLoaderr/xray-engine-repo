@@ -42,9 +42,9 @@ IC bool operator < (const svs_respawn& A, const svs_respawn& B)	{ return A.times
 class xrServer	: public IPureServer  
 {
 private:
-	xrS_entities			entities;
-	deque<u16>				id_free;
-	multiset<svs_respawn>	q_respawn;
+	xrS_entities				entities;
+	xr_deque<u16>				id_free;
+	xr_multiset<svs_respawn>	q_respawn;
 
 public:
 	game_sv_GameState*		game;

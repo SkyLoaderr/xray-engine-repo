@@ -110,7 +110,7 @@ void CCustomZone::UpdateCL() {
 	feel_touch_update		(P,s.R);
 
 	if(m_ready) {
-		set<CObject*>::iterator l_it;
+		xr_set<CObject*>::iterator l_it;
 		for(l_it = m_inZone.begin(); l_it != m_inZone.end(); l_it++) {
 			Affect(*l_it);
 		}

@@ -230,9 +230,9 @@ private:
 		{	return strcmp(x,y)<0;	}
 	};
 
-	typedef FHierrarhyVisual				inherited;
-	typedef map<LPSTR,int,str_pred>			accel;
-	typedef map<LPSTR,CMotionDef,str_pred>	mdef;
+	typedef FHierrarhyVisual					inherited;
+	typedef xr_map<LPSTR,int,str_pred>			accel;
+	typedef xr_map<LPSTR,CMotionDef,str_pred>	mdef;
 private:
 	// Globals
 	vecBones*								bones;			// all bones+motions	(shared)

@@ -190,10 +190,10 @@ public:
 //		}
 //
 	};
-	deque<net_update>	NET;
-	net_update			NET_Last;
-	BOOL				NET_WasInterpolating;	// previous update was by interpolation or by extrapolation
-	u32				NET_Time;				// server time of last update
+	xr_deque<net_update>	NET;
+	net_update				NET_Last;
+	BOOL					NET_WasInterpolating;	// previous update was by interpolation or by extrapolation
+	u32						NET_Time;				// server time of last update
 //------------------------------
 
 	// utils

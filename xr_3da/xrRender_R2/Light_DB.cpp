@@ -106,7 +106,7 @@ light*			CLight_DB::Create	()
 
 void			CLight_DB::Destroy	(light* L)
 {
-	set<light*>::iterator	it;
+	xr_set<light*>::iterator	it;
 
 	//
 	it = v_dynamic_active.find	(L);
@@ -133,7 +133,7 @@ void			CLight_DB::Destroy	(light* L)
 
 void			CLight_DB::Activate		(light* L)
 {
-	set<light*>::iterator	it			= v_dynamic_inactive.find	(L);
+	xr_set<light*>::iterator	it		= v_dynamic_inactive.find	(L);
 	R_ASSERT							(it!=v_dynamic_inactive.end());
 	v_dynamic_inactive.erase			(it);
 
@@ -141,7 +141,7 @@ void			CLight_DB::Activate		(light* L)
 }
 void			CLight_DB::Deactivate	(light* L)
 {
-	set<light*>::iterator	it			= v_dynamic_active.find	(L);
+	xr_set<light*>::iterator	it		= v_dynamic_active.find	(L);
 	R_ASSERT							(it!=v_dynamic_active.end());
 	v_dynamic_active.erase				(it);
 

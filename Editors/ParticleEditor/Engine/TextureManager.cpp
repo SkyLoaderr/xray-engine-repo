@@ -490,7 +490,7 @@ void	CShaderManager::_DeleteTexture		(CTexture* &T)
 LPCSTR	CShaderManager::DBG_GetTextureName	(CTexture* T)
 {
 	R_ASSERT(T);
-	for (map<LPSTR,CTexture*,str_pred>::iterator I=m_textures.begin(); I!=m_textures.end(); I++)
+	for (xr_map<LPSTR,CTexture*,str_pred>::iterator I=m_textures.begin(); I!=m_textures.end(); I++)
 		if (I->second == T)	return I->first;
 	return 0;
 }
@@ -501,7 +501,7 @@ CMatrix*	CShaderManager::_CreateMatrix	(LPCSTR Name)
 	if (0==stricmp(Name,"$null"))	return NULL;
 
 	LPSTR N = LPSTR(Name);
-	map<LPSTR,CMatrix*,str_pred>::iterator I = m_matrices.find	(N);
+	xr_map<LPSTR,CMatrix*,str_pred>::iterator I = m_matrices.find	(N);
 	if (I!=m_matrices.end())
 	{
 		CMatrix* M		=	I->second;
@@ -525,7 +525,7 @@ void	CShaderManager::_DeleteMatrix		(CMatrix* &M)
 LPCSTR	CShaderManager::DBG_GetMatrixName	(CMatrix* T)
 {
 	R_ASSERT(T);
-	for (map<LPSTR,CMatrix*,str_pred>::iterator I=m_matrices.begin(); I!=m_matrices.end(); I++)
+	for (xr_map<LPSTR,CMatrix*,str_pred>::iterator I=m_matrices.begin(); I!=m_matrices.end(); I++)
 		if (I->second == T)	return I->first;
 	return 0;
 }
@@ -543,7 +543,7 @@ CConstant*	CShaderManager::_CreateConstant	(LPCSTR Name)
 	if (0==stricmp(Name,"$null"))	return NULL;
 
 	LPSTR N = LPSTR(Name);
-	map<LPSTR,CConstant*,str_pred>::iterator I = m_constants.find	(N);
+	xr_map<LPSTR,CConstant*,str_pred>::iterator I = m_constants.find	(N);
 	if (I!=m_constants.end())
 	{
 		CConstant* C	=	I->second;
@@ -567,7 +567,7 @@ void	CShaderManager::_DeleteConstant		(CConstant* &C)
 LPCSTR	CShaderManager::DBG_GetConstantName	(CConstant* T)
 {
 	R_ASSERT(T);
-	for (map<LPSTR,CConstant*,str_pred>::iterator I=m_constants.begin(); I!=m_constants.end(); I++)
+	for (xr_map<LPSTR,CConstant*,str_pred>::iterator I=m_constants.begin(); I!=m_constants.end(); I++)
 		if (I->second == T)	return I->first;
 	return 0;
 }
@@ -584,7 +584,7 @@ CBlender* CShaderManager::_GetBlender		(LPCSTR Name)
 	R_ASSERT(Name && Name[0]);
 
 	LPSTR N = LPSTR(Name);
-	map<LPSTR,CBlender*,str_pred>::iterator I = m_blenders.find	(N);
+	xr_map<LPSTR,CBlender*,str_pred>::iterator I = m_blenders.find	(N);
 #ifdef _EDITOR
 	if (I==m_blenders.end())	return 0;
 #else
@@ -598,7 +598,7 @@ CBlender* CShaderManager::_FindBlender		(LPCSTR Name)
 	if (!(Name && Name[0])) return 0;
 
 	LPSTR N = LPSTR(Name);
-	map<LPSTR,CBlender*,str_pred>::iterator I = m_blenders.find	(N);
+	xr_map<LPSTR,CBlender*,str_pred>::iterator I = m_blenders.find	(N);
 	if (I==m_blenders.end())	return 0;
 	else						return I->second;
 }
@@ -606,7 +606,7 @@ CBlender* CShaderManager::_FindBlender		(LPCSTR Name)
 void	CShaderManager::ED_UpdateBlender	(LPCSTR Name, CBlender* data)
 {
 	LPSTR N = LPSTR(Name);
-	map<LPSTR,CBlender*,str_pred>::iterator I = m_blenders.find	(N);
+	xr_map<LPSTR,CBlender*,str_pred>::iterator I = m_blenders.find	(N);
 	if (I!=m_blenders.end())	{
 		R_ASSERT	(data->getDescription().CLS == I->second->getDescription().CLS);
 		xr_delete	(I->second);
@@ -907,11 +907,11 @@ void	CShaderManager::ED_UpdateTextures(AStringVec* names)
     if (names){
         for (u32 nid=0; nid<names->size(); nid++)
         {
-            map<LPSTR,CTexture*,str_pred>::iterator I = m_textures.find	((*names)[nid].c_str());
+            xr_map<LPSTR,CTexture*,str_pred>::iterator I = m_textures.find	((*names)[nid].c_str());
             if (I!=m_textures.end())	I->second->Unload();
         }
     }else{
-		for (map<LPSTR,CTexture*,str_pred>::iterator t=m_textures.begin(); t!=m_textures.end(); t++)
+		for (xr_map<LPSTR,CTexture*,str_pred>::iterator t=m_textures.begin(); t!=m_textures.end(); t++)
 			t->second->Unload();
     }
 
@@ -923,8 +923,8 @@ void	CShaderManager::_GetMemoryUsage(u32& m_base, u32& c_base, u32& m_lmaps, u32
 {
 	m_base=c_base=m_lmaps=c_lmaps=0;
 
-	map<LPSTR,CTexture*,str_pred>::iterator I = m_textures.begin	();
-	map<LPSTR,CTexture*,str_pred>::iterator E = m_textures.end		();
+	xr_map<LPSTR,CTexture*,str_pred>::iterator I = m_textures.begin	();
+	xr_map<LPSTR,CTexture*,str_pred>::iterator E = m_textures.end		();
 	for (; I!=E; I++)
 	{
 		u32 m = I->second->dwMemoryUsage;
@@ -948,7 +948,7 @@ void	CShaderManager::Evict()
 BOOL	CShaderManager::_GetDetailTexture(LPCSTR Name,LPCSTR& T, LPCSTR& M)
 {
 	LPSTR N = LPSTR(Name);
-	map<LPSTR,texture_detail,str_pred>::iterator I = m_td.find	(N);
+	xr_map<LPSTR,texture_detail,str_pred>::iterator I = m_td.find	(N);
 	if (I!=m_td.end())
 	{
 		T = I->second.T;

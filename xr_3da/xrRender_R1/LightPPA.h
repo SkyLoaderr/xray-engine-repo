@@ -41,8 +41,8 @@ public:
 
 class CLightPPA_Manager
 {
-	set<CLightPPA*>					active;
-	set<CLightPPA*>					inactive;
+	xr_set<CLightPPA*>				active;
+	xr_set<CLightPPA*>				inactive;
 	
 	Shader*							hShader;
 	SGeometry*						hGeom;

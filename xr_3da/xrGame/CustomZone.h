@@ -41,7 +41,7 @@ public:
 
 	f32 Power(f32 dist);
 
-	set<CObject*> m_inZone;
+	xr_set<CObject*> m_inZone;
 	CActor *m_pLocalActor;
 	f32 m_maxPower, m_attn;
 	u32 m_period;

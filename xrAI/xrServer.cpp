@@ -14,7 +14,7 @@ xrServer::xrServer()
 {
 	id_free.resize	(0xfffe);
 	u16 id			= 0;
-	for (deque<u16>::iterator I=id_free.begin(); I!=id_free.end(); *I++ = id++);
+	for (xr_deque<u16>::iterator I=id_free.begin(); I!=id_free.end(); *I++ = id++);
 }
 
 xrServer::~xrServer()

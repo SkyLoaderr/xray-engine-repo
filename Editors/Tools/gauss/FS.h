@@ -15,7 +15,7 @@ XRCORE_API void VerifyPath	(LPCSTR path);
 class XRCORE_API IWriter
 {
 private:
-	std::stack<int>	chunk_pos;
+	xr_stack<u32>	chunk_pos;
 	int				align_correction;
 
 	IC u32		correction	(u32 p)

@@ -117,7 +117,7 @@ protected:
 		Fvector				pos,angles;
 		void	lerp		(net_update& A,net_update& B, float f);
 	};
-	deque<net_update>		NET;
+	xr_deque<net_update>	NET;
 	net_update				NET_Last;
 protected:
 	void					Light_Start			();
@@ -233,7 +233,7 @@ public:
 	//
 
 	// Multitype ammo support
-	stack<CCartridge> m_magazine;
+	xr_stack<CCartridge> m_magazine;
 	//
 };
 

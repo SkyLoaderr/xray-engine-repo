@@ -81,11 +81,11 @@ class CAI_Rat : public CCustomMonster
 		TERRAIN_VECTOR		m_tpaTerrain;
 
 		// FSM
-		stack<ERatStates>	m_tStateStack;
-		ERatStates			m_eCurrentState;
-		ERatStates			m_ePreviousState;
-		bool				m_bStopThinking;
-		bool				m_bStateChanged;
+		xr_stack<ERatStates>	m_tStateStack;
+		ERatStates				m_eCurrentState;
+		ERatStates				m_ePreviousState;
+		bool					m_bStopThinking;
+		bool					m_bStateChanged;
 
 		// ANIMATIONS
 		SRatAnimations		m_tRatAnimations;

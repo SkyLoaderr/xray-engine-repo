@@ -74,16 +74,16 @@ class CAI_Dog : public CCustomMonster
 		//////////////////////////
 		
 		// FSM
-		stack<EDogStates>	m_tStateStack;
-		EDogStates			m_eCurrentState;
-		EDogStates			m_ePreviousState;
-		bool				m_bStopThinking;
-		bool				m_bStateChanged;
+		xr_stack<EDogStates>	m_tStateStack;
+		EDogStates				m_eCurrentState;
+		EDogStates				m_ePreviousState;
+		bool					m_bStopThinking;
+		bool					m_bStateChanged;
 
 		// ANIMATIONS
-		SDogAnimations		m_tDogAnimations;
-		CMotionDef*			m_tpCurrentGlobalAnimation;
-		CBlend*				m_tpCurrentGlobalBlend;
+		SDogAnimations			m_tDogAnimations;
+		CMotionDef*				m_tpCurrentGlobalAnimation;
+		CBlend*					m_tpCurrentGlobalBlend;
 		
 		// SOUNDS
 		sound				m_tpaSoundHit[SND_HIT_COUNT];

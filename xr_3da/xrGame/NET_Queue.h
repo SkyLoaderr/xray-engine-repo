@@ -46,7 +46,7 @@ IC bool operator < (const NET_Event& A, const NET_Event& B)	{ return A.timestamp
 class	NET_Queue_Event
 {
 public:
-	multiset<NET_Event>	queue;	
+	xr_multiset<NET_Event>	queue;	
 public:
 	IC void				insert		(NET_Packet& P)
 	{

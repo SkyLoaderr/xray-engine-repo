@@ -83,11 +83,11 @@ class CAI_Zombie : public CCustomMonster
 		//////////////////////////
 		
 		// FSM
-		stack<EZombieStates>m_tStateStack;
-		EZombieStates		m_eCurrentState;
-		EZombieStates		m_ePreviousState;
-		bool				m_bStopThinking;
-		bool				m_bStateChanged;
+		xr_stack<EZombieStates>	m_tStateStack;
+		EZombieStates			m_eCurrentState;
+		EZombieStates			m_ePreviousState;
+		bool					m_bStopThinking;
+		bool					m_bStateChanged;
 
 		// ANIMATIONS
 		SZombieAnimations	m_tZombieAnimations;

@@ -131,7 +131,7 @@ void CLightPPA_Manager::Render()
 	RCache.set_xform_project	(Device.mProject);
 
 	RCache.set_Shader	(hShader);
-	for (set<CLightPPA*>::iterator it=active.begin(); it!=active.end(); it++)
+	for (xr_set<CLightPPA*>::iterator it=active.begin(); it!=active.end(); it++)
 	{
 		CLightPPA&	PPL = *(*it);
 
@@ -165,7 +165,7 @@ CLightPPA*		CLightPPA_Manager::Create			()
 }
 void			CLightPPA_Manager::Destroy			(CLightPPA* L)
 {
-	set<CLightPPA*>::iterator	it;
+	xr_set<CLightPPA*>::iterator	it;
 
 	//
 	it = inactive.find	(L);
@@ -192,16 +192,16 @@ void			CLightPPA_Manager::Destroy			(CLightPPA* L)
 
 void	CLightPPA_Manager::Activate		(CLightPPA* L)
 {
-	set<CLightPPA*>::iterator	it		= inactive.find	(L);
-	R_ASSERT							(it!=inactive.end());
-	inactive.erase				(it);
+	xr_set<CLightPPA*>::iterator	it		= inactive.find	(L);
+	R_ASSERT								(it!=inactive.end());
+	inactive.erase							(it);
 
 	active.insert				(L);
 }
 void	CLightPPA_Manager::Deactivate	(CLightPPA* L)
 {
-	set<CLightPPA*>::iterator	it		= active.find	(L);
-	R_ASSERT							(it!=active.end());
+	xr_set<CLightPPA*>::iterator	it		= active.find	(L);
+	R_ASSERT								(it!=active.end());
 	active.erase				(it);
 
 	inactive.insert				(L);

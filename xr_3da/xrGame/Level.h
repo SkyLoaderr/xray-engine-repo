@@ -61,7 +61,7 @@ public:
 	game_cl_GameState			game;
 	BOOL						game_configured;
 	NET_Queue_Event				game_events;
-	deque<xrServerEntity*>		game_spawn_queue;
+	xr_deque<xrServerEntity*>	game_spawn_queue;
 
 	xrServer*					Server;
 

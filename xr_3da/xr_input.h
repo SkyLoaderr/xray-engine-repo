@@ -61,7 +61,7 @@ private:
 													const DIDATAFORMAT* pdidDataFormat, u32 dwFlags,
 													u32 buf_size );
 
-	stack<CController*>			cbStack;
+	xr_stack<CController*>		cbStack;
 
 	void						MouseUpdate					( );
 	void						KeyUpdate					( );

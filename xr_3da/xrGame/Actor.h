@@ -236,7 +236,7 @@ private:
 		}
 		void	lerp		(net_update& A,net_update& B, float f);
 	};
-	deque<net_update>		NET;
+	xr_deque<net_update>	NET;
 	Fvector					NET_SavedAccel;
 	net_update				NET_Last;
 	BOOL					NET_WasInterpolating;	// previous update was by interpolation or by extrapolation

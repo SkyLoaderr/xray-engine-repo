@@ -11,7 +11,7 @@ u16		xrServer::PerformIDgen		(u16 ID)
 		return		ID;
 	} else {
 		// USE SUPPLIED
-		for (deque<u16>::iterator I=id_free.begin(); I!=id_free.end(); I++)
+		for (xr_deque<u16>::iterator I=id_free.begin(); I!=id_free.end(); I++)
 		{
 			if (*I==ID)	
 			{
