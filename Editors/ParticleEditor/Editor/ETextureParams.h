@@ -102,6 +102,10 @@ struct STextureParams{
 			return FALSE;
 		}
 	}
+    void LoadTex (IReader& F);
+    void SaveTex (IWriter& F);
+    void LoadObj (IReader& F);
+    void SaveObj (IWriter& F);
 };
 #pragma pack( pop )
 
