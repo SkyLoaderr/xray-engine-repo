@@ -111,9 +111,10 @@ void	CRenderTarget::phase_luminance()
 		pv++;
 		RCache.Vertex.Unlock		(4,g_bloom_filter->vb_stride);
 		float	mgray				= ps_r2_tonemap_middlegray;
+		f_luminance_adapt			= .9f*f_luminance_adapt + .1f*Device.fTimeDelta*ps_r2_tonemap_adaptation;
 		RCache.set_Element			(s_luminance->E[2]	);
 		RCache.set_Geometry			(g_bloom_filter		);
-		RCache.set_c				("MiddleGray",mgray,mgray,mgray,ps_r2_tonemap_adaptation);
+		RCache.set_c				("MiddleGray",mgray,mgray,mgray,f_luminance_adapt);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 
