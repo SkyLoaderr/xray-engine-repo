@@ -8,7 +8,7 @@
 
 #include "stdafx.h"
 #include "script_space.h"
-#include "ai_script_effector.h"
+#include "script_effector.h"
 #include "../cameramanager.h"
 #include "luabind/return_reference_to_policy.hpp"
 #include "luabind/out_value_policy.hpp"

@@ -11,9 +11,6 @@
 #include "alife_space.h"
 #include "script_export_space.h"
 
-#pragma warning(push)
-#pragma warning(disable:4005)
-
 class CLuaGameObject;
 
 class CScriptHit {
@@ -33,8 +30,7 @@ public:
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CScriptHit)
+#undef script_type_list
 #define script_type_list save_type_list(CScriptHit)
-
-#pragma warning(pop)
 
 #include "script_hit_inline.h"

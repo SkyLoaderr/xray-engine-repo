@@ -10,7 +10,7 @@
 
 #include "GameObject.h"
 #include "../feel_touch.h"
-#include "ai_script_callback.h"
+#include "script_callback.h"
 
 class CLuaGameObject;
 

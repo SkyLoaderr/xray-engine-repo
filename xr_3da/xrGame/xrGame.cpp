@@ -998,6 +998,8 @@ BOOL APIENTRY DllMain(HANDLE hModule, u32 ul_reason_for_call, LPVOID lpReserved)
 		case DLL_PROCESS_DETACH: {
 			// xml parser options
 			XML_CleanUpMemory			();
+			// destroy ai space
+			xr_delete					(g_ai_space);
 			break;
 		}
 	}

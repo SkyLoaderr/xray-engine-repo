@@ -100,7 +100,6 @@ void CScriptEngine::export()
 	export_level						();
 	export_device						();
 	export_particles					();
-	export_sound						();
 #endif
 	export_classes						(lua());
 #ifdef XRGAME_EXPORTS
@@ -111,8 +110,6 @@ void CScriptEngine::export()
 	export_memory_objects				();
 	export_action_management			();
 	export_motivation_management		();
-	export_monster_info					();
-	export_task							();
 #endif
 
 

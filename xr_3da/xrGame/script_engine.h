@@ -45,7 +45,6 @@ protected:
 			void				export_level				();
 			void				export_device				();
 			void				export_particles			();
-			void				export_sound				();
 			void				export_actions				();
 			void				export_object				();
 			void				export_effector				();
@@ -53,8 +52,6 @@ protected:
 			void				export_memory_objects		();
 			void				export_action_management	();
 			void				export_motivation_management();
-			void				export_monster_info			();
-			void				export_task					();
 #endif
 
 

@@ -7,7 +7,7 @@
 #include "InfoPortion.h"
 #include "PdaMsg.h"
 #include "attachment_owner.h"
-#include "ai_script_callback.h"
+#include "script_callback.h"
 
 
 class CInventory;

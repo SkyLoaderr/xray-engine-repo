@@ -16,4 +16,7 @@
 #	include "script_ini_file.h"
 #	include "alife_simulator.h"
 #	include "script_hit.h"
+#	include "script_monster_hit_info.h"
+#	include "script_sound_info.h"
+#	include "script_sound.h"
 #endif

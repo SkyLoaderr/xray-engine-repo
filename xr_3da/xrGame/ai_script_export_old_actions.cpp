@@ -10,7 +10,7 @@
 #include "script_space.h"
 #include "ai_script_classes.h"
 #include "ai_script_actions.h"
-#include "ai_script_sound.h"
+#include "script_sound.h"
 #include "script_hit.h"
 #include "luabind/return_reference_to_policy.hpp"
 #include "luabind/out_value_policy.hpp"
@@ -214,12 +214,12 @@ void CScriptEngine::export_actions()
 			.def(								constructor<LPCSTR,const Fvector &>())
 			.def(								constructor<LPCSTR,const Fvector &,const Fvector &>())
 			.def(								constructor<LPCSTR,const Fvector &,const Fvector &,bool>())
-			.def(								constructor<CLuaSound&,LPCSTR,const Fvector &>())
-			.def(								constructor<CLuaSound&,LPCSTR,const Fvector &,const Fvector &>())
-			.def(								constructor<CLuaSound&,LPCSTR,const Fvector &,const Fvector &,bool>())
-			.def(								constructor<CLuaSound&,const Fvector &>())
-			.def(								constructor<CLuaSound&,const Fvector &,const Fvector &>())
-			.def(								constructor<CLuaSound&,const Fvector &,const Fvector &,bool>())
+			.def(								constructor<CScriptSound&,LPCSTR,const Fvector &>())
+			.def(								constructor<CScriptSound&,LPCSTR,const Fvector &,const Fvector &>())
+			.def(								constructor<CScriptSound&,LPCSTR,const Fvector &,const Fvector &,bool>())
+			.def(								constructor<CScriptSound&,const Fvector &>())
+			.def(								constructor<CScriptSound&,const Fvector &,const Fvector &>())
+			.def(								constructor<CScriptSound&,const Fvector &,const Fvector &,bool>())
 
 			// monster specific
 			.def(								constructor<MonsterSpace::EMonsterSounds>())
@@ -230,7 +230,7 @@ void CScriptEngine::export_actions()
 
 
 			.def("set_sound",					(void (CScriptSoundAction::*)(LPCSTR))(CScriptSoundAction::SetSound))
-			.def("set_sound",					(void (CScriptSoundAction::*)(const CLuaSound &))(CScriptSoundAction::SetSound))
+			.def("set_sound",					(void (CScriptSoundAction::*)(const CScriptSound &))(CScriptSoundAction::SetSound))
 			.def("set_sound_type",				&CScriptSoundAction::SetSoundType)
 			.def("set_bone",					&CScriptSoundAction::SetBone)
 			.def("set_position",				&CScriptSoundAction::SetPosition)

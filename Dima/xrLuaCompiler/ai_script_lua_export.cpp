@@ -10,22 +10,11 @@
 #include "script_space.h"
 #include "ai_script_classes.h"
 #include "ai_script_actions.h"
-#include "ai_script_sound.h"
-#include "script_hit.h"
-#include "ai_script_snd_info.h"
-#include "ai_script_monster_hit_info.h"
 #include "luabind/return_reference_to_policy.hpp"
 #include "luabind/out_value_policy.hpp"
 #include "luabind/adopt_policy.hpp"
-//#include "luabind/dependency_policy.hpp"
-//#include "luabind/discard_result_policy.hpp"
-//#include "luabind/iterator_policy.hpp"
 #include "script_engine.h"
 #include "gametask.h"
-
-#include "WeaponAK74.h"
-
-#include "WeaponAK74.h"
 
 using namespace luabind;
 
@@ -212,24 +201,6 @@ void CScriptEngine::export_game()
 	];
 }
 
-struct SLuaTask {};
-
-void CScriptEngine::export_task()
-{
-	module(lua())
-	[
-        class_<SLuaTask>("task")
-			.enum_("state")
-			[
-				value("in_progress",			int(eTaskStateInProgress)),
-				value("completed",				int(eTaskStateCompleted)),
-				value("fail",					int(eTaskStateFail)),
-				value("dummy",					int(eTaskStateMax))
-			]
-	];
-}
-
-
 void CScriptEngine::export_device()
 {
 	module(lua())
@@ -248,86 +219,5 @@ void CScriptEngine::export_device()
 			.def_readonly("fov",					&CRenderDevice::fFOV)
 			.def_readonly("aspect_ratio",			&CRenderDevice::fASPECT)
 			.def("time_global",						&CRenderDevice::TimerAsync)
-	];
-}
-
-void CScriptEngine::export_sound()
-{
-	module(lua())
-	[
-		class_<CSound_params>("sound_params")
-			.def_readwrite("position",			&CSound_params::position)
-			.def_readwrite("volume",			&CSound_params::volume)
-			.def_readwrite("frequency",			&CSound_params::freq)
-			.def_readwrite("min_distance",		&CSound_params::min_distance)
-			.def_readwrite("max_distance",		&CSound_params::max_distance),
-			
-		class_<CLuaSound>("sound_object")
-			.enum_("sound_play_type")
-			[
-				value("looped",					sm_Looped),
-				value("s2d",					sm_2D),
-				value("s3d",					0)
-			]
-			.property("frequency",				&CLuaSound::GetFrequency,	&CLuaSound::SetFrequency)
-			.property("min_distance",			&CLuaSound::GetMinDistance,	&CLuaSound::SetMinDistance)
-			.property("max_distance",			&CLuaSound::GetMaxDistance,	&CLuaSound::SetMaxDistance)
-			.property("volume",					&CLuaSound::GetVolume,		&CLuaSound::SetVolume)
-			.def(								constructor<LPCSTR>())
-			.def(								constructor<LPCSTR,ESoundTypes>())
-			.def("get_position",				&CLuaSound::GetPosition)
-			.def("set_position",				&CLuaSound::SetPosition)
-			.def("play",						(void (CLuaSound::*)(CLuaGameObject*))(CLuaSound::Play))
-			.def("play",						(void (CLuaSound::*)(CLuaGameObject*,float))(CLuaSound::Play))
-			.def("play",						(void (CLuaSound::*)(CLuaGameObject*,float,int))(CLuaSound::Play))
-			.def("play_at_pos",					(void (CLuaSound::*)(CLuaGameObject*,const Fvector &))(CLuaSound::PlayAtPos))
-			.def("play_at_pos",					(void (CLuaSound::*)(CLuaGameObject*,const Fvector &,float))(CLuaSound::PlayAtPos))
-			.def("play_at_pos",					(void (CLuaSound::*)(CLuaGameObject*,const Fvector &,float, int))(CLuaSound::PlayAtPos))
-			.def("play_clone",					(void (CLuaSound::*)(CLuaGameObject*))(CLuaSound::PlayUnlimited))
-			.def("play_clone",					(void (CLuaSound::*)(CLuaGameObject*,float))(CLuaSound::PlayUnlimited))
-			.def("play_clone",					(void (CLuaSound::*)(CLuaGameObject*,float,int))(CLuaSound::PlayUnlimited))
-			.def("play_at_pos_clone",			(void (CLuaSound::*)(CLuaGameObject*,const Fvector &))(CLuaSound::PlayAtPosUnlimited))
-			.def("play_at_pos_clone",			(void (CLuaSound::*)(CLuaGameObject*,const Fvector &,float))(CLuaSound::PlayAtPosUnlimited))
-			.def("play_at_pos_clone",			(void (CLuaSound::*)(CLuaGameObject*,const Fvector &,float, int))(CLuaSound::PlayAtPosUnlimited))
-			.def("stop",						&CLuaSound::Stop)
-			.def("playing",						&CLuaSound::IsPlaying)
-			.def("length",						&CLuaSound::Length)
-	];
-}
-
-struct CMonsterSpace {};
-
-void CScriptEngine::export_monster_info()
-{
-	module(lua())
-	[
-		class_<CLuaMonsterHitInfo>("MonsterHitInfo")
-			.def_readwrite("who",				&CLuaMonsterHitInfo::who)
-			.def_readwrite("direction",			&CLuaMonsterHitInfo::direction)
-			.def_readwrite("time",				&CLuaMonsterHitInfo::time),
-
-		class_<CLuaSoundInfo>("SoundInfo")
-			.def_readwrite("who",				&CLuaSoundInfo::who)
-			.def_readwrite("danger",			&CLuaSoundInfo::dangerous)
-			.def_readwrite("position",			&CLuaSoundInfo::position)
-			.def_readwrite("power",				&CLuaSoundInfo::power)
-			.def_readwrite("time",				&CLuaSoundInfo::time),
-
-		class_<CMonsterSpace>("MonsterSpace")
-			.enum_("sounds")
-			[
-				value("sound_script",			MonsterSpace::eMonsterSoundScript)
-			]
-
-			.enum_("head_anim")
-			[
-				value("head_anim_normal",		MonsterSpace::eHeadAnimNormal),
-				value("head_anim_angry",		MonsterSpace::eHeadAnimAngry),
-				value("head_anim_glad",			MonsterSpace::eHeadAnimGlad),
-				value("head_anim_kind",			MonsterSpace::eHeadAnimKind)
-			],
-
-		class_<CWeaponAK74Lua>("AK74Lua")
-			.def( constructor<>())
 	];
 }

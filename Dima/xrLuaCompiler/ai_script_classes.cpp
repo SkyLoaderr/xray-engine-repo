@@ -412,9 +412,9 @@ CLuaGameObject *CLuaGameObject::GetCorpse() const
 	}
 }
 
-CLuaSoundInfo CLuaGameObject::GetSoundInfo()
+CScriptSoundInfo CLuaGameObject::GetSoundInfo()
 {
-	CLuaSoundInfo	ret_val;
+	CScriptSoundInfo	ret_val;
 	
 	CAI_Biting *l_tpMonster = dynamic_cast<CAI_Biting *>(m_tpGameObject);
 	if (l_tpMonster) {
@@ -432,9 +432,9 @@ CLuaSoundInfo CLuaGameObject::GetSoundInfo()
 	return			(ret_val);
 }
 
-CLuaMonsterHitInfo CLuaGameObject::GetMonsterHitInfo()
+CScriptMonsterHitInfo CLuaGameObject::GetMonsterHitInfo()
 {
-	CLuaMonsterHitInfo	ret_val;
+	CScriptMonsterHitInfo	ret_val;
 
 	CAI_Biting *l_tpMonster = dynamic_cast<CAI_Biting *>(m_tpGameObject);
 	if (l_tpMonster) {

@@ -60,4 +60,6 @@ public:
 
 IC	CAI_Space	&ai	();
 
+extern CAI_Space *g_ai_space;
+
 #include "ai_space_inline.h"

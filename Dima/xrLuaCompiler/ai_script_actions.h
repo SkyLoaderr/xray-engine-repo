@@ -11,7 +11,7 @@
 #include "ai_monster_space.h"
 #include "car.h"
 #include "movement_manager.h"
-#include "ai_script_sound.h"
+#include "script_sound.h"
 #include "sight_manager_space.h"
 
 class CAbstractAction {
@@ -531,7 +531,7 @@ public:
 		m_tHeadAnimType		= MonsterSpace::eHeadAnimNone;
 	}
 
-							CScriptSoundAction		(CLuaSound &sound, LPCSTR caBoneName, const Fvector &tPositionOffset = Fvector().set(0,0,0), const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
+							CScriptSoundAction		(CScriptSound &sound, LPCSTR caBoneName, const Fvector &tPositionOffset = Fvector().set(0,0,0), const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
 	{
 		m_bLooped			= bLooped;
 		SetBone				(caBoneName);
@@ -543,7 +543,7 @@ public:
 		m_tHeadAnimType		= MonsterSpace::eHeadAnimNone;
 	}
 
-							CScriptSoundAction		(CLuaSound &sound, const Fvector &tPosition, const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
+							CScriptSoundAction		(CScriptSound &sound, const Fvector &tPosition, const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
 	{
 		m_bLooped			= bLooped;
 		SetSound			(sound);
@@ -612,7 +612,7 @@ public:
 		}
 	}
 
-			void			SetSound			(const CLuaSound &sound)
+			void			SetSound			(const CScriptSound &sound)
 	{
 		m_caSoundToPlay		= sound.m_caSoundToPlay;
 		m_tGoalType			= eGoalTypeSoundAttached;

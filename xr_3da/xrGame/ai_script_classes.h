@@ -9,7 +9,7 @@
 #pragma once
 
 #include "script_space.h"
-#include "ai_script_bind.h"
+#include "script_bind_macroses.h"
 #include "ai_script_actions.h"
 #include "script_zone.h"
 #include "ai/trader/ai_trader.h"
@@ -24,8 +24,8 @@
 #include "script_binder.h"
 #include "motivation_action_manager.h"
 #include "object_handler.h"
-#include "ai_script_snd_info.h"
-#include "ai_script_monster_hit_info.h"
+#include "script_sound_info.h"
+#include "script_monster_hit_info.h"
 #include "physicsshellholder.h"
 
 class CInventoryItem;
@@ -618,8 +618,8 @@ public:
 
 			CLuaGameObject		*GetEnemy			() const;
 			CLuaGameObject		*GetCorpse			() const;
-			CLuaSoundInfo		GetSoundInfo		();
-			CLuaMonsterHitInfo	GetMonsterHitInfo	();
+			CScriptSoundInfo		GetSoundInfo		();
+			CScriptMonsterHitInfo	GetMonsterHitInfo	();
 
 	IC		void				bind_object			(CScriptBinderObject *object)
 	{

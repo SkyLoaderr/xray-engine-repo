@@ -13,7 +13,7 @@
 #include "../script/ai_script_monster.h"
 #include "../script/ai_script_monster.h"
 #include "../ai_monster_bones.h"
-#include "../../ai_script_callback.h"
+#include "../../script_callback.h"
 #include "../../sound_player.h"
 #include "../../AI_PhraseDialogManager.h"
 
