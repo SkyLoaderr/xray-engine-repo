@@ -102,9 +102,9 @@ BOOL CCreator::Load(DWORD dwNum)
 	
 	// CForms
 	pApp->LoadTitle("Loading CFORM...");
-	chunk = fs.OpenChunk(fsL_CFORM);
-	ObjectSpace.Load(chunk);
-	chunk->Close();
+	chunk = fs.OpenChunk		(fsL_CFORM);
+	ObjectSpace.Load			(chunk);
+	chunk->Close				();
 
 	// Render-level Load
 	Device.seqDevDestroy.Add	(&Render);
