@@ -2609,6 +2609,10 @@ SOURCE=.\DetailManager.cpp
 
 SOURCE=.\DetailManager.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\DetailManager_soft.cpp
+# End Source File
 # End Group
 # Begin Group "Particle Sorter"
 
