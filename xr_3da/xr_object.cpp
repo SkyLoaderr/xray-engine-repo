@@ -76,16 +76,10 @@ CObject::CObject		( )
 	NameObject					= 0;
 	NameSection					= 0;
 	NameVisual					= NULL;
-
-	Device.seqDevDestroy.Add	(this);
-	Device.seqDevCreate.Add		(this);
 }
 
 CObject::~CObject( )
 {
-	Device.seqDevCreate.Remove	(this);
-	Device.seqDevDestroy.Remove	(this);
-
 	OnDeviceDestroy				();
 	_DELETE						( cfModel		);
 	_FREE						( NameObject	);
