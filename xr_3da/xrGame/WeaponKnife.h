@@ -19,6 +19,7 @@ protected:
 	MotionSVec		mhud_hide;
 	MotionSVec		mhud_show;
 	MotionSVec		mhud_attack;
+	MotionSVec		mhud_attack2;
 
 protected:
 
@@ -27,6 +28,7 @@ protected:
 	virtual void	switch2_Hidden	();
 	virtual void	switch2_Showing	();
 	virtual void	switch2_Attacking	();
+	virtual void	switch2_Attacking2	();
 
 	virtual void	OnAnimationEnd	();
 	virtual void	OnStateSwitch	(u32 S);
@@ -45,6 +47,9 @@ public:
 	virtual BOOL	HasOpticalAim	()		{ return FALSE; }
 	virtual void	Fire2Start			();
 	virtual void	Fire2End			();
+	virtual void	FireStart			();
+	virtual void	FireEnd				();
+
 
 	virtual const char* Name();
 	virtual bool Action(s32 cmd, u32 flags);

@@ -22,10 +22,11 @@ void CWeaponKnife::Load	(LPCSTR section)
 	
 	// HUD :: Anims
 	R_ASSERT			(m_pHUD);
-	animGet				(mhud_idle,		"idle_0");
+	animGet				(mhud_idle,		"idle");
 	animGet				(mhud_show,		"draw");
-	animGet				(mhud_hide,		"idle_0");
-	animGet				(mhud_attack,	"draw");
+	animGet				(mhud_hide,		"hide");
+	animGet				(mhud_attack,	"shoot1");	
+	animGet				(mhud_attack2,	"shoot2");	
 }
 
 void CWeaponKnife::OnVisible	()
@@ -65,6 +66,9 @@ void CWeaponKnife::OnStateSwitch	(u32 S)
 	case eFire:
 		switch2_Attacking	();
 		break;
+	case eFire2:
+		switch2_Attacking2 ();
+		break;
 	}
 	STATE = S;
 }
@@ -81,8 +85,9 @@ void CWeaponKnife::UpdateCL	()
 	case eShowing:
 	case eHiding:
 		PKinematics		(m_pHUD->Visual())->Update();
+		break;
 	case eFire:
-		state_Attacking	(dt);
+		//state_Attacking	(dt);
 		break;
 	}
 
@@ -111,22 +116,28 @@ void CWeaponKnife::OnAnimationEnd()
 	switch (STATE)
 	{
 	case eHiding:	SwitchState(eHidden);	break;	// End of Hide
-	case eShowing:	
+	case eShowing:									// End of Show
+	case eFire:										
+	case eFire2:
 	case eIdle:	
-		SwitchState(eIdle);		break;	// End of Show
+		SwitchState(eIdle);		break;	
 	}
 }
 
 void CWeaponKnife::state_Attacking	(float dt)
 {
-
 }
 
 void CWeaponKnife::switch2_Attacking	()
 {
-
-	
+	m_pHUD->animPlay(mhud_attack[Random.randI(mhud_attack.size())]);
 }
+
+void CWeaponKnife::switch2_Attacking2	()
+{
+	m_pHUD->animPlay(mhud_attack2[Random.randI(mhud_attack2.size())]);
+}
+
 
 void CWeaponKnife::switch2_Idle	()
 {
@@ -135,7 +146,7 @@ void CWeaponKnife::switch2_Idle	()
 	case eFire: 
 		break;
 	}
-	m_pHUD->animPlay(mhud_attack[Random.randI(mhud_idle.size())]);
+	m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);
 }
 
 void CWeaponKnife::switch2_Hiding	()
@@ -159,9 +170,21 @@ void CWeaponKnife::switch2_Showing	()
 }
 
 
+void CWeaponKnife::FireStart()
+{
+	inherited::FireStart();
+	OnStateSwitch(eFire);
+}
+
+void CWeaponKnife::FireEnd()
+{
+	inherited::FireEnd();
+}
+
 
 void CWeaponKnife::Fire2Start () {
 	inherited::Fire2Start();
+	OnStateSwitch(eFire2);
 }
 
 void CWeaponKnife::Fire2End () {
