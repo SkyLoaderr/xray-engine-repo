@@ -11,6 +11,7 @@ struct ZONE_TYPE
 	float		max_freq;
 	//звук реакции детектора на конкретную зону
 	ref_sound	detect_snd;
+	shared_str	zone_map_location;
 };
 
 //описание зоны, обнаруженной детектором
@@ -47,12 +48,17 @@ public:
 	virtual void feel_touch_delete	(CObject* O);
 	virtual BOOL feel_touch_contact	(CObject* O);
 
-	void TurnOn() {m_bWorking = true;}
-	void TurnOff() {m_bWorking = false;}
-	bool IsWorking() {return m_bWorking;}
+			void TurnOn				();
+			void TurnOff			();
+			bool IsWorking			() {return m_bWorking;}
+
+	virtual void OnMoveToBelt		();
+	virtual void OnMoveToRuck		();
 
 protected:
 	void StopAllSounds				();
+	void UpdateMapLocations			();
+	void AddRemoveMapSpot			(CCustomZone* pZone, bool bAdd);
 
 	bool m_bWorking;
 

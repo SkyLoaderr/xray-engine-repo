@@ -83,7 +83,7 @@ void CMiniMapSpot::Load(CUIXml* xml, LPCSTR path)
 	XML_NODE* n = NULL;
 
 	strconcat(buf, path, ":texture_above");
-	n = xml->NavigateToNode(path,0);
+	n = xml->NavigateToNode(buf,0);
 	if(n){
 		LPCSTR texture  = xml->Read(buf, 0, NULL);
 		int x				= xml->ReadAttribInt(buf, 0, "x", 0);
@@ -96,7 +96,7 @@ void CMiniMapSpot::Load(CUIXml* xml, LPCSTR path)
 	}
 
 	strconcat(buf, path, ":texture_below");
-	n = xml->NavigateToNode(path,0);
+	n = xml->NavigateToNode(buf,0);
 	if(n){
 		LPCSTR texture  = xml->Read(buf, 0, NULL);
 		int x				= xml->ReadAttribInt(buf, 0, "x", 0);
@@ -108,7 +108,7 @@ void CMiniMapSpot::Load(CUIXml* xml, LPCSTR path)
 		m_tex_rect_below.set(x,y,width,height);
 	}
 	strconcat(buf, path, ":texture");
-	n = xml->NavigateToNode(path,0);
+	n = xml->NavigateToNode(buf,0);
 	if(n){
 		LPCSTR texture  = xml->Read(buf, 0, NULL);
 		int x				= xml->ReadAttribInt(buf, 0, "x", 0);

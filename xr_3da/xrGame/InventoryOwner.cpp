@@ -94,7 +94,7 @@ BOOL CInventoryOwner::net_Spawn		(CSE_Abstract* DC)
 		if(!pTrader) return FALSE;
 
 //		R_ASSERT(NO_PROFILE != pTrader->character_profile());
-		R_ASSERT( xr_strlen(pTrader->character_profile()) );
+		R_ASSERT( xr_strlen(*pTrader->character_profile()) );
 
 		//синхронизируем параметры персонажа с серверным объектом
 		CharacterInfo().m_CurrentCommunity.set(pTrader->m_community_index);
@@ -277,8 +277,8 @@ bool CInventoryOwner::OfferTalk(CInventoryOwner* talk_partner)
 	CEntityAlive* pPartnerEntityAlive = smart_cast<CEntityAlive*>(talk_partner);
 	R_ASSERT(pPartnerEntityAlive);
 	
-	ALife::ERelationType relation = RELATION_REGISTRY().GetRelationType(this, talk_partner);
-	if(relation == ALife::eRelationTypeEnemy) return false;
+//	ALife::ERelationType relation = RELATION_REGISTRY().GetRelationType(this, talk_partner);
+//	if(relation == ALife::eRelationTypeEnemy) return false;
 
 	if(!pOurEntityAlive->g_Alive() || !pPartnerEntityAlive->g_Alive()) return false;
 

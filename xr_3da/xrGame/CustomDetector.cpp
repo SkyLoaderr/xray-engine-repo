@@ -4,10 +4,10 @@
 #include "artifact.h"
 #include "inventory.h"
 #include "level.h"
-
+#include "map_manager.h"
 CCustomDetector::CCustomDetector(void) 
 {
-	TurnOn();
+	TurnOff();
 	m_belt = true;
 }
 
@@ -23,8 +23,8 @@ CCustomDetector::~CCustomDetector(void)
 
 BOOL CCustomDetector::net_Spawn(CSE_Abstract* DC) 
 {
-	m_pCurrentActor = NULL;
-	m_pCurrentInvOwner = NULL;
+	m_pCurrentActor		 = NULL;
+	m_pCurrentInvOwner	 = NULL;
 
 	return		(inherited::net_Spawn(DC));
 }
@@ -66,6 +66,11 @@ void CCustomDetector::Load(LPCSTR section)
 			sprintf					(temp, "zone_sound_%d", i);
 			zone_type.detect_snd.create(TRUE,pSettings->r_string(section,temp));
 
+			sprintf					(temp, "zone_map_location_%d", i);
+			
+			if( pSettings->line_exist(section,temp) )
+				zone_type.zone_map_location = pSettings->r_string(section,temp);
+
 			++i;
 		}
 		else break;
@@ -82,8 +87,9 @@ void CCustomDetector::net_Destroy()
 void CCustomDetector::shedule_Update(u32 dt) 
 {
 	inherited::shedule_Update	(dt);
-
-	if(!H_Parent()) return;
+	
+	if( !IsWorking() ) return;
+	if( !H_Parent()  ) return;
 
 	Position().set(H_Parent()->Position());
 
@@ -158,12 +164,13 @@ void CCustomDetector::UpdateCL()
 {
 	inherited::UpdateCL();
 
-
-	if(!H_Parent()) return;
+	if( !IsWorking() ) return;
+	if( !H_Parent()  ) return;
 
 	//если у актера, то только на поясе
-	if(m_pCurrentActor && !m_pCurrentActor->m_inventory->Get(ID(),false))
-		return;
+	if(!m_pCurrentActor) return;
+	if( !m_pCurrentActor->m_inventory->Get(ID(),false))	return;
+
 	bool sound_2d = m_pCurrentActor && m_pCurrentActor->HUDview();
 
 
@@ -181,7 +188,8 @@ void CCustomDetector::UpdateCL()
 		//такой тип зон не обнаруживается
 		if(m_ZoneTypeMap.find(pZone->CLS_ID) == m_ZoneTypeMap.end() ||
 			!pZone->VisibleByDetector())
-			return;
+			continue;
+
 		ZONE_TYPE& zone_type = m_ZoneTypeMap[pZone->CLS_ID];
 
 		float dist_to_zone = H_Parent()->Position().distance_to(pZone->Position()) - 0.8f*pZone->Radius();
@@ -216,6 +224,8 @@ void CCustomDetector::feel_touch_new(CObject* O)
 		if(bDebug) HUD().outMessage(0xffffffff,cName(),"started to feel a zone.");
 		m_ZoneInfoMap[pZone].snd_time = 0;
 		m_pCurrentInvOwner->FoundZone(pZone);
+		
+		AddRemoveMapSpot(pZone,true);
 	}
 }
 
@@ -227,6 +237,7 @@ void CCustomDetector::feel_touch_delete(CObject* O)
 		if(bDebug) HUD().outMessage(0xffffffff,cName(),"stoped to feel a zone.");
 		m_ZoneInfoMap.erase(pZone);
 		m_pCurrentInvOwner->LostZone(pZone);
+		AddRemoveMapSpot(pZone,false);
 	}
 }
 
@@ -280,4 +291,50 @@ void CCustomDetector::renderable_Render()
 u32	CCustomDetector::ef_detector_type	() const
 {
 	return	(m_ef_detector_type);
+}
+
+void CCustomDetector::OnMoveToBelt()
+{
+	inherited::OnMoveToBelt();
+	TurnOn();
+}
+
+void CCustomDetector::OnMoveToRuck()
+{
+	inherited::OnMoveToRuck();
+	TurnOff();
+}
+void CCustomDetector::TurnOn()
+{
+	m_bWorking = true;
+	UpdateMapLocations();
+}
+
+void CCustomDetector::TurnOff() 
+{
+	m_bWorking = false;
+	UpdateMapLocations();
+}
+
+void CCustomDetector::AddRemoveMapSpot(CCustomZone* pZone, bool bAdd)
+{
+	if(m_ZoneTypeMap.find(pZone->CLS_ID) == m_ZoneTypeMap.end() )return;
+	
+	if ( bAdd && !pZone->VisibleByDetector() ) return;
+		
+
+	ZONE_TYPE& zone_type = m_ZoneTypeMap[pZone->CLS_ID];
+	if( xr_strlen(zone_type.zone_map_location) ){
+		if( bAdd )
+			Level().MapManager().AddMapLocation(*zone_type.zone_map_location,pZone->ID());
+		else
+			Level().MapManager().RemoveMapLocation(*zone_type.zone_map_location,pZone->ID());
+	}
+}
+
+void CCustomDetector::UpdateMapLocations() // called on turn on/off only
+{
+	ZONE_INFO_MAP_IT it;
+	for(it = m_ZoneInfoMap.begin(); it != m_ZoneInfoMap.end(); ++it)
+		AddRemoveMapSpot(it->first,IsWorking());
 }
