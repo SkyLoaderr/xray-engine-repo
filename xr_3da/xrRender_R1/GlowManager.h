@@ -26,7 +26,7 @@ public:
 
 	// Ray-testing cache
 	BOOL				bTestResult;
-	Collide::ray_cache	RayCache;
+	collide::ray_cache	RayCache;
 public:
 	CGlow();
 
