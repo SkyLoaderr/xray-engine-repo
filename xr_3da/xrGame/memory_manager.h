@@ -29,13 +29,13 @@ public:
 	virtual	void			reinit					();
 	virtual	void			reload					(LPCSTR section);
 	virtual	void			update					();
-	IC		ERelationType	get_relation			(CEntityAlive *tpEntityAlive);
+	IC		ERelationType	get_relation			(const CEntityAlive *tpEntityAlive) const;
 	template <typename T>
 			void			update					(const xr_vector<T> &objects);
 	IC		bool			visible					(const CObject *object) const;
 	IC		const CEntityAlive	*enemy				() const;
 	IC		const CGameObject	*item				() const;
-			const CMemoryObject<const CGameObject>	memory(const CObject *object) const;
+			const CMemoryInfo	memory				(const CObject *object) const;
 };
 
 #include "memory_manager_inline.h"

@@ -166,14 +166,6 @@ void Script::vfExportParticles(CLuaVirtualMachine *tpLuaVirtualMachine)
 	];
 }
 
-template<typename T>
-CLuaGameObject *get_memory_object(T &object)
-{
-	if (!object.m_object || !dynamic_cast<CGameObject*>(object.m_object))
-		return		(0);
-	return			(xr_new<CLuaGameObject>(dynamic_cast<CGameObject*>(object.m_object)));
-}
-
 int get_sound_type(const CSoundObject &sound_object)
 {
 	return			((int)sound_object.m_sound_type);
@@ -198,6 +190,8 @@ u32 bit_not(u32 i)
 {
 	return			(~i);
 }
+
+struct SSoundType{};
 
 void Script::vfExportMemoryObjects(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
@@ -232,8 +226,13 @@ void Script::vfExportMemoryObjects(CLuaVirtualMachine *tpLuaVirtualMachine)
 		
 		class_<MemorySpace::CVisibleObject,MemorySpace::CMemoryObject<CGameObject> >("visible_memory_object")
 			.def_readonly("visible",		&MemorySpace::CSoundObject::m_visible),
-		
-		class_<MemorySpace::CSoundObject,MemorySpace::CVisibleObject>("sound_memory_object")
+
+		class_<MemorySpace::CMemoryInfo,MemorySpace::CVisibleObject>("memory_info")
+			.def_readonly("visual_info",	&MemorySpace::CMemoryInfo::m_visual_info)
+			.def_readonly("sound_info",		&MemorySpace::CMemoryInfo::m_sound_info)
+			.def_readonly("hit_info",		&MemorySpace::CMemoryInfo::m_hit_info),
+
+		class_<SSoundType>("snd_type")
 			.enum_("sound_types")
 			[
 				value("no_sound",				int(SOUND_TYPE_NO_SOUND					)),
@@ -242,6 +241,26 @@ void Script::vfExportMemoryObjects(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("monster",				int(SOUND_TYPE_MONSTER					)),
 				value("anomaly",				int(SOUND_TYPE_ANOMALY					)),
 				value("world",					int(SOUND_TYPE_WORLD					)),
+				value("pick_up",				int(SOUND_TYPE_PICKING_UP				)),
+				value("drop",					int(SOUND_TYPE_DROPPING					)),
+				value("hide",					int(SOUND_TYPE_HIDING					)),
+				value("take",					int(SOUND_TYPE_TAKING					)),
+				value("use",					int(SOUND_TYPE_USING					)),
+				value("shoot",					int(SOUND_TYPE_SHOOTING					)),
+				value("empty",					int(SOUND_TYPE_EMPTY_CLICKING			)),
+				value("bullet_hit",				int(SOUND_TYPE_BULLET_HIT				)),
+				value("reload",					int(SOUND_TYPE_RECHARGING				)),
+				value("die",					int(SOUND_TYPE_DYING					)),
+				value("injure",					int(SOUND_TYPE_INJURING					)),
+				value("step",					int(SOUND_TYPE_STEP						)),
+				value("talk",					int(SOUND_TYPE_TALKING					)),
+				value("attack",					int(SOUND_TYPE_ATTACKING				)),
+				value("eat",					int(SOUND_TYPE_EATING					)),
+				value("idle",					int(SOUND_TYPE_IDLE						)),
+				value("object_break",			int(SOUND_TYPE_OBJECT_BREAKING			)),
+				value("object_collide",			int(SOUND_TYPE_OBJECT_COLLIDING			)),
+				value("object_explode",			int(SOUND_TYPE_OBJECT_EXPLODING			)),
+				value("ambient",				int(SOUND_TYPE_AMBIENT					)),
 				value("item_pick_up",			int(SOUND_TYPE_ITEM_PICKING_UP			)),
 				value("item_drop",				int(SOUND_TYPE_ITEM_DROPPING			)),
 				value("item_hide",				int(SOUND_TYPE_ITEM_HIDING				)),
@@ -261,21 +280,13 @@ void Script::vfExportMemoryObjects(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("world_object_break",		int(SOUND_TYPE_WORLD_OBJECT_BREAKING	)),
 				value("world_object_collide",	int(SOUND_TYPE_WORLD_OBJECT_COLLIDING	)),
 				value("world_object_explode",	int(SOUND_TYPE_WORLD_OBJECT_EXPLODING	)),
-				value("world_object_ambient",	int(SOUND_TYPE_WORLD_AMBIENT			)),
-				value("weapon_pistol",			int(SOUND_TYPE_WEAPON_PISTOL			)),
-				value("weapon_gun",				int(SOUND_TYPE_WEAPON_GUN				)),
-				value("weapon_submachinegun",	int(SOUND_TYPE_WEAPON_SUBMACHINEGUN		)),
-				value("weapon_machinegun",		int(SOUND_TYPE_WEAPON_MACHINEGUN		)),
-				value("weapon_sniper_rifle",	int(SOUND_TYPE_WEAPON_SNIPERRIFLE		)),
-				value("weapon_grenade_launcher",int(SOUND_TYPE_WEAPON_GRENADELAUNCHER	)),
-				value("weapon_rocket_launcher",	int(SOUND_TYPE_WEAPON_ROCKETLAUNCHER	))
-			]
+				value("world_ambient",			int(SOUND_TYPE_WORLD_AMBIENT			))
+			],
 
+		class_<MemorySpace::CSoundObject,MemorySpace::CVisibleObject>("sound_memory_object")
 			.def("type",					&MemorySpace::CSoundObject::sound_type)
 			.def_readonly("power",			&MemorySpace::CSoundObject::m_power),
 
-		def("get_memory_object",			get_memory_object<CHitObject>),
-		def("get_memory_object",			get_memory_object<CSoundObject>),
 		def("bit_and",						bit_and),
 		def("bit_or",						bit_or),
 		def("bit_xor",						bit_xor),

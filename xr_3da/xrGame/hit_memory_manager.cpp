@@ -40,7 +40,7 @@ void CHitMemoryManager::reload				(LPCSTR section)
 {
 }
 
-void CHitMemoryManager::add_hit_object		(float amount, const Fvector &vLocalDir, CObject *who, s16 element)
+void CHitMemoryManager::add_hit_object		(float amount, const Fvector &vLocalDir, const CObject *who, s16 element)
 {
 	VERIFY						(m_hits);
 	CEntityAlive				*self = dynamic_cast<CEntityAlive*>(this);
@@ -58,7 +58,7 @@ void CHitMemoryManager::add_hit_object		(float amount, const Fvector &vLocalDir,
 	Fvector						direction;
 	object->XFORM().transform_dir(direction,vLocalDir);
 
-	CEntityAlive				*entity_alive = dynamic_cast<CEntityAlive*>(who);
+	const CEntityAlive			*entity_alive = dynamic_cast<const CEntityAlive*>(who);
 	if (!entity_alive)
 		return;
 	xr_vector<CHitObject>::iterator	J = std::find(m_hits->begin(),m_hits->end(),object_id(who));
@@ -88,7 +88,7 @@ void CHitMemoryManager::add_hit_object(const CHitObject &hit_object)
 		return;
 	}
 
-	CEntityAlive				*entity_alive = hit_object.m_object;
+	const CEntityAlive			*entity_alive = hit_object.m_object;
 	xr_vector<CHitObject>::iterator	J = std::find(m_hits->begin(),m_hits->end(),object_id(entity_alive));
 	if (m_hits->end() == J) {
 		if (m_max_hit_count <= m_hits->size()) {

@@ -60,13 +60,6 @@ bool CVisualMemoryManager::visible(const CGameObject *game_object) const
 	if (game_object->getDestroy())
 		return			(false);
 
-//	xr_vector<CVisibleObject>::iterator	I = std::find(m_objects->begin(),m_objects->end(),game_object->ID());
-//	if (m_objects->end() == I)
-//		return			(false);
-
-//	if (!(*I).m_visible)
-//		return			(false);
-
 	return				(true);
 ////	if (Level().iGetKeyState(DIK_RCONTROL))
 ////		return(false);
@@ -121,10 +114,10 @@ bool CVisualMemoryManager::visible(const CGameObject *game_object) const
 //	return(fResult >= m_fVisibilityThreshold);
 }
 
-void CVisualMemoryManager::add_visible_object	(CObject *object)
+void CVisualMemoryManager::add_visible_object	(const CObject *object)
 {
-	CGameObject *game_object	= dynamic_cast<CGameObject*>(object);
-	CGameObject *self			= dynamic_cast<CGameObject*>(this);
+	const CGameObject *game_object	= dynamic_cast<const CGameObject*>(object);
+	const CGameObject *self			= dynamic_cast<const CGameObject*>(this);
 	if (!game_object || !visible(game_object))
 		return;
 

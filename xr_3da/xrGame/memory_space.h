@@ -47,7 +47,7 @@ namespace MemorySpace {
 
 	template <typename T>
 	struct CMemoryObject : public SMemoryObject {
-		T							*m_object;
+		const T						*m_object;
 		CObjectParams<T>			m_object_params;
 		CObjectParams<T>			m_self_params;
 
@@ -57,7 +57,7 @@ namespace MemorySpace {
 			return					(object_id(m_object) == id);
 		}
 
-		IC	void	fill							(T *game_object, T *self)
+		IC	void	fill							(const T *game_object, const T *self)
 		{
 			++m_update_count;
 			m_object				= game_object;
@@ -77,7 +77,7 @@ namespace MemorySpace {
 			return					(m_visible);
 		}
 
-		IC	void	fill							(CGameObject *game_object, CGameObject *self)
+		IC	void	fill							(const CGameObject *game_object, const CGameObject *self)
 		{
 			inherited::fill			(game_object,self);
 			m_visible				= true;
@@ -94,7 +94,7 @@ namespace MemorySpace {
 		ESoundTypes					m_sound_type;
 		float						m_power;
 
-		IC	void	fill							(CGameObject *game_object, CGameObject *self, const ESoundTypes sound_type, const float sound_power)
+		IC	void	fill							(const CGameObject *game_object, const CGameObject *self, const ESoundTypes sound_type, const float sound_power)
 		{
 			CVisibleObject::fill	(game_object,self);
 			m_sound_type			= sound_type;
@@ -104,6 +104,19 @@ namespace MemorySpace {
 		IC	int		sound_type		() const
 		{
 			return					(int(m_sound_type));
+		}
+	};
+
+	struct CMemoryInfo : public CVisibleObject {
+		bool						m_visual_info;
+		bool						m_sound_info;
+		bool						m_hit_info;
+					
+					CMemoryInfo		()
+		{
+			m_visual_info			= false;
+			m_sound_info			= false;
+			m_hit_info				= false;
 		}
 	};
 

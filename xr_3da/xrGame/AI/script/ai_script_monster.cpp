@@ -676,16 +676,16 @@ const CEntityAction *CScriptMonster::GetActionByIndex	(u32 action_index) const
 	return							(m_tpActionQueue[action_index]);
 }
 
-void CScriptMonster::sound_callback	(CObject *object, int sound_type, const Fvector &position, float sound_power)
+void CScriptMonster::sound_callback	(const CObject *object, int sound_type, const Fvector &position, float sound_power)
 {
-	if (!dynamic_cast<CGameObject*>(object))
+	if (!dynamic_cast<const CGameObject*>(object))
 		return;
 	if (m_tSoundCallback.m_lua_object)
 		luabind::call_member<void>(
 			*m_tSoundCallback.m_lua_object,
 			*m_tSoundCallback.m_method_name,
 			CLuaGameObject(this),
-			CLuaGameObject(dynamic_cast<CGameObject*>(object)),
+			CLuaGameObject(const_cast<CGameObject*>(dynamic_cast<const CGameObject*>(object))),
 			sound_type,
 			position,
 			sound_power
@@ -694,16 +694,16 @@ void CScriptMonster::sound_callback	(CObject *object, int sound_type, const Fvec
 	if (m_tSoundCallback.m_lua_function)
 		(*m_tSoundCallback.m_lua_function)(
 			CLuaGameObject(this),
-			CLuaGameObject(dynamic_cast<CGameObject*>(object)),
+			CLuaGameObject(const_cast<CGameObject*>(dynamic_cast<const CGameObject*>(object))),
 			sound_type,
 			position,
 			sound_power
 		);
 }
 
-void CScriptMonster::hit_callback	(float amount, const Fvector &vLocalDir, CObject *who, s16 element)
+void CScriptMonster::hit_callback	(float amount, const Fvector &vLocalDir, const CObject *who, s16 element)
 {
-	if (!dynamic_cast<CGameObject*>(who))
+	if (!dynamic_cast<const CGameObject*>(who))
 		return;
 	if (m_tHitCallback.m_lua_object)
 		luabind::call_member<void>(
@@ -712,7 +712,7 @@ void CScriptMonster::hit_callback	(float amount, const Fvector &vLocalDir, CObje
 			CLuaGameObject(this),
 			amount,
 			vLocalDir,
-			CLuaGameObject(dynamic_cast<CGameObject*>(who)),
+			CLuaGameObject(const_cast<CGameObject*>(dynamic_cast<const CGameObject*>(who))),
 			element
 		);
 
@@ -721,7 +721,7 @@ void CScriptMonster::hit_callback	(float amount, const Fvector &vLocalDir, CObje
 			CLuaGameObject(this),
 			amount,
 			vLocalDir,
-			CLuaGameObject(dynamic_cast<CGameObject*>(who)),
+			CLuaGameObject(const_cast<CGameObject*>(dynamic_cast<const CGameObject*>(who))),
 			element
 		);
 }

@@ -39,8 +39,8 @@ public:
 	virtual	void	Load						(LPCSTR				section);
 	virtual	void	reinit						();
 	virtual	void	reload						(LPCSTR				section);
-	IC		void	add_hit_object				(CEntityAlive		*who);
-			void	add_hit_object				(float				amount,		const Fvector &vLocalDir, CObject *who, s16 element);
+	IC		void	add_hit_object				(const CEntityAlive	*who);
+			void	add_hit_object				(float				amount,		const Fvector &vLocalDir, const CObject *who, s16 element);
 			void	add_hit_object				(const CHitObject	&hit_object);
 	virtual void	update						();
 	IC		const xr_vector<CHitObject> &hit_objects() const;

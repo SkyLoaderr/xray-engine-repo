@@ -13,7 +13,7 @@
 
 class CVisualMemory : public Feel::Vision {
 protected:
-	xr_vector<CObject*>				m_visible_objects;
+	xr_vector<CObject*>	m_visible_objects;
 	friend class CScriptMonster;
 };
 
@@ -59,8 +59,8 @@ private:
 	float							m_fShadowWeight;
 
 protected:
-	IC		void	fill_object						(CVisibleObject &visible_object, CGameObject *game_object);
-			void	add_visible_object				(CObject *object);
+	IC		void	fill_object						(CVisibleObject &visible_object, const CGameObject *game_object);
+			void	add_visible_object				(const CObject *object);
 			void	add_visible_object				(const CVisibleObject visible_object);
 	virtual	void	update							();
 
@@ -72,7 +72,7 @@ public:
 	virtual	void	reinit							();
 	virtual	void	reload							(LPCSTR section);
 	IC		const xr_vector<CVisibleObject>	&memory_visible_objects() const;
-	IC		const xr_vector<CObject*>		&visible_objects() const;
+	IC		const xr_vector<CObject*>	&visible_objects() const;
 			bool	visible							(const CGameObject *game_object) const;
 			bool	visible							(u32 level_vertex_id, float yaw, float eye_fov) const;
 	IC		void	set_squad_objects				(xr_vector<CVisibleObject> *squad_objects);

@@ -41,7 +41,7 @@ public:
 	virtual	void	reload						(LPCSTR section);
 	virtual void	feel_sound_new				(CObject* who, int eType, const Fvector &Position, float power);
 	virtual	void	update						();
-			void	add_sound_object			(CObject *object, int sound_type, const Fvector &position, float sound_power);
+			void	add_sound_object			(const CObject *object, int sound_type, const Fvector &position, float sound_power);
 	IC		const xr_vector<CSoundObject>		&sound_objects	() const;
 	IC		const CSoundObject					*sound			() const;
 	IC		void	set_squad_objects			(xr_vector<CSoundObject> *squad_objects);

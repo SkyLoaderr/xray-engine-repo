@@ -90,7 +90,7 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const 
 	m_sound_threshold	= _max(m_sound_threshold,sound_power);
 }
 
-void CSoundMemoryManager::add_sound_object(CObject *object, int sound_type, const Fvector &position, float sound_power)
+void CSoundMemoryManager::add_sound_object(const CObject *object, int sound_type, const Fvector &position, float sound_power)
 {
 	CObject					*self_object = dynamic_cast<CObject*>(this);
 	VERIFY					(self_object);
@@ -108,16 +108,16 @@ void CSoundMemoryManager::add_sound_object(CObject *object, int sound_type, cons
 
 	//if (object && memory_manager && !memory_manager->enemy() && !dynamic_cast<CEntityAlive*>(object->H_Parent()))
 	//return;
-	if (object && memory_manager && !memory_manager->enemy() && !dynamic_cast<CEntityAlive*>(object))
+	if (object && memory_manager && !memory_manager->enemy() && !dynamic_cast<const CEntityAlive*>(object))
 		return;
 
 	// we do not want to save sounds from the teammates items
 	CEntityAlive	*me				= dynamic_cast<CEntityAlive*>(this);
-	if (object && object->H_Parent() && (dynamic_cast<CEntityAlive*>(object->H_Parent())->g_Team() == me->g_Team()))
+	if (object && object->H_Parent() && (dynamic_cast<const CEntityAlive*>(object->H_Parent())->g_Team() == me->g_Team()))
 		return;
 
 	// we do not want ot save sounds from the teammates
-	CEntityAlive	*entity_alive	= dynamic_cast<CEntityAlive*>(object);
+	const CEntityAlive	*entity_alive	= dynamic_cast<const CEntityAlive*>(object);
 	if (entity_alive && me && (entity_alive->g_Team() == me->g_Team()))
 		return;
 
@@ -129,7 +129,7 @@ void CSoundMemoryManager::add_sound_object(CObject *object, int sound_type, cons
 			return;
 	}
 
-	CGameObject *game_object	= dynamic_cast<CGameObject*>(object);
+	const CGameObject *game_object	= dynamic_cast<const CGameObject*>(object);
 	CGameObject *self			= dynamic_cast<CGameObject*>(this);
 	if (!game_object || (visual_memory_manager && !visual_memory_manager->visible(game_object)))
 		return;

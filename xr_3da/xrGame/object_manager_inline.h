@@ -52,8 +52,8 @@ void CAbstractObjectManager::update					()
 {
 	float						result = flt_max;
 	m_selected					= 0;
-	xr_set<T*>::const_iterator	I = m_objects.begin();
-	xr_set<T*>::const_iterator	E = m_objects.end();
+	xr_set<const T*>::const_iterator	I = m_objects.begin();
+	xr_set<const T*>::const_iterator	E = m_objects.end();
 	for ( ; I != E; ++I) {
 		float					value = evaluate(*I);
 		if (result > value) {
@@ -64,13 +64,13 @@ void CAbstractObjectManager::update					()
 }
 
 TEMPLATE_SPECIALIZATION
-float CAbstractObjectManager::evaluate				(T *object) const
+float CAbstractObjectManager::evaluate				(const T *object) const
 {
 	return					(0.f);
 }
 
 TEMPLATE_SPECIALIZATION
-bool CAbstractObjectManager::useful					(T *object) const
+bool CAbstractObjectManager::useful					(const T *object) const
 {
 	const ISpatial			*self = dynamic_cast<const ISpatial*>(object);
 	if (!self)
@@ -83,16 +83,16 @@ bool CAbstractObjectManager::useful					(T *object) const
 }
 
 TEMPLATE_SPECIALIZATION
-bool CAbstractObjectManager::add					(T *object)
+bool CAbstractObjectManager::add					(const T *object)
 {
 	if (!useful(object))
 		return				(false);
 
-	T						*type = dynamic_cast<T*>(object);
+	T						*type = dynamic_cast<const T*>(object);
 	if (!type)
 		return				(false);
 
-	xr_set<T*>::const_iterator	I = m_objects.find(type);
+	xr_set<const T*>::const_iterator	I = m_objects.find(type);
 	if (m_objects.end() == I) {
 		m_objects.insert	(type);
 		return				(true);
@@ -113,7 +113,7 @@ void CAbstractObjectManager::reset					()
 }
 
 TEMPLATE_SPECIALIZATION
-IC	const xr_set<T*> &CAbstractObjectManager::objects() const
+IC	const xr_set<const T*> &CAbstractObjectManager::objects() const
 {
 	return					(m_objects);
 }

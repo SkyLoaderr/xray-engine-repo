@@ -8,9 +8,9 @@
 
 #pragma once
 
-IC	ERelationType	CMemoryManager::get_relation(CEntityAlive *tpEntityAlive)
+IC	ERelationType	CMemoryManager::get_relation(const CEntityAlive *tpEntityAlive) const
 {
-	CEntityAlive			*self = dynamic_cast<CEntityAlive*>(this);
+	const CEntityAlive		*self = dynamic_cast<const CEntityAlive*>(this);
 	VERIFY					(self);
 	if (tpEntityAlive->g_Team() != self->g_Team())
 		return				(eRelationTypeEnemy);

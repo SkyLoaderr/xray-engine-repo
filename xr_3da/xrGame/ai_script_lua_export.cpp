@@ -718,6 +718,7 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("set_hear_callback",			(void (CLuaGameObject::*)(const luabind::object &, LPCSTR))(CLuaGameObject::SetSoundCallback))
 			.def("set_hear_callback",			(void (CLuaGameObject::*)(const luabind::functor<void> &))(CLuaGameObject::SetSoundCallback))
 			.def("clear_hear_callback",			&CLuaGameObject::ClearSoundCallback)
+			.def("memory",						&CLuaGameObject::memory, adopt(return_value))
 
 	];
 }

@@ -79,46 +79,43 @@ void CMemoryManager::update			(const xr_vector<T> &objects)
 	}
 }
 
-const CMemoryObject<const CGameObject>	CMemoryManager::memory(const CObject *object) const
+const CMemoryInfo	CMemoryManager::memory(const CObject *object) const
 {
-	CMemoryObject<const CGameObject>	result;
+	CMemoryInfo							result;
+	_TIME_ID							game_time = 0;
+	const CGameObject					*game_object = dynamic_cast<const CGameObject*>(object);
+	VERIFY								(game_object);
 
 	{
 		xr_vector<CVisibleObject>::const_iterator	I = std::find(memory_visible_objects().begin(),memory_visible_objects().end(),object_id(object));
 		if (memory_visible_objects().end() != I) {
-			(SMemoryObject&)result					= (SMemoryObject&)(*I);
-			(SObjectParams&)result.m_object_params	= (SObjectParams&)((*I).m_object_params);
-			(SObjectParams&)result.m_self_params	= (SObjectParams&)((*I).m_self_params);
-			result.m_object							= dynamic_cast<const CGameObject*>((*I).m_object);
+			(CMemoryObject<CGameObject>&)result = (CMemoryObject<CGameObject>&)(*I);
+			result.m_visible						= (*I).m_visible;
+			result.m_visual_info					= true;
+			game_time								= (*I).m_game_time;
 			VERIFY									(result.m_object);
-			return									(result);
 		}
 	}
 
 	{
 		xr_vector<CSoundObject>::const_iterator	I = std::find(sound_objects().begin(),sound_objects().end(),object_id(object));
-		if (sound_objects().end() != I) {
-			(SMemoryObject&)result					= (SMemoryObject&)(*I);
-			(SObjectParams&)result.m_object_params	= (SObjectParams&)((*I).m_object_params);
-			(SObjectParams&)result.m_self_params	= (SObjectParams&)((*I).m_self_params);
-			result.m_object							= dynamic_cast<const CGameObject*>((*I).m_object);
+		if ((sound_objects().end() != I) && (game_time < (*I).m_game_time)) {
+			(CMemoryObject<CGameObject>&)result = (CMemoryObject<CGameObject>&)(*I);
+			result.m_sound_info						= true;
+			game_time								= (*I).m_game_time;
 			VERIFY									(result.m_object);
-			return									(result);
 		}
 	}
 	
 	{
 		xr_vector<CHitObject>::const_iterator	I = std::find(hit_objects().begin(),hit_objects().end(),object_id(object));
-		if (hit_objects().end() != I) {
-			(SMemoryObject&)result					= (SMemoryObject&)(*I);
-			(SObjectParams&)result.m_object_params	= (SObjectParams&)((*I).m_object_params);
-			(SObjectParams&)result.m_self_params	= (SObjectParams&)((*I).m_self_params);
-			result.m_object							= dynamic_cast<const CGameObject*>((*I).m_object);
+		if ((hit_objects().end() != I) && (game_time > (*I).m_game_time)) {
+			(CMemoryObject<CGameObject>&)result = (CMemoryObject<CGameObject>&)(*I);
+			result.m_object							= game_object;
+			result.m_hit_info						= true;
 			VERIFY									(result.m_object);
-			return									(result);
 		}
 	}
 
-	VERIFY		(false);
 	return		(result);
 }

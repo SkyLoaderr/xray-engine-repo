@@ -1024,21 +1024,6 @@
 					</File>
 					<File
 						RelativePath=".\ai\ai_monster_movement.cpp">
-						<FileConfiguration
-							Name="Debug|Win32">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Mixed|Win32">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\ai\ai_monster_movement.h">
@@ -1112,16 +1097,16 @@
 					<File
 						RelativePath="AI\Rat\ai_rat_templates.cpp">
 					</File>
-					<Filter
-						Name="ai_pseudodog"
-						Filter="">
-						<File
-							RelativePath=".\ai\pseudodog\ai_pseudodog.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\pseudodog\ai_pseudodog.h">
-						</File>
-					</Filter>
+				</Filter>
+				<Filter
+					Name="ai_pseudodog"
+					Filter="">
+					<File
+						RelativePath=".\ai\pseudodog\ai_pseudodog.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\pseudodog\ai_pseudodog.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="ai_script"

@@ -14,7 +14,7 @@ IC	const xr_vector<CHitObject> &CHitMemoryManager::hit_objects() const
 	return				(*m_hits);
 }
 
-IC	void CHitMemoryManager::add_hit_object	(CEntityAlive *entity_alive)
+IC	void CHitMemoryManager::add_hit_object	(const CEntityAlive *entity_alive)
 {
 	add_hit_object		(0,Fvector().set(0,0,1),entity_alive,0);
 }

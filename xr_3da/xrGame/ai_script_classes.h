@@ -444,4 +444,13 @@ public:
 		else
 			l_tpScriptMonster->clear_hit_callback(member_callback);
 	}
+
+	MemorySpace::CMemoryInfo *memory(const CLuaGameObject &lua_game_object)
+	{
+		CMemoryManager	*memory_manager = dynamic_cast<CMemoryManager*>(m_tpGameObject);
+		if (!memory_manager)
+			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member memory!");
+		else
+			return			(xr_new<MemorySpace::CMemoryInfo>(memory_manager->memory(lua_game_object.m_tpGameObject)));
+	}
 };

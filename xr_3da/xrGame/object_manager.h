@@ -14,8 +14,8 @@ template <
 class CObjectManager {
 private:
 protected:
-	xr_set<T*>		m_objects;
-	T				*m_selected;
+	xr_set<const T*>	m_objects;
+	const T				*m_selected;
 public:
 					CObjectManager				();
 	virtual			~CObjectManager				();
@@ -24,12 +24,12 @@ public:
 	virtual void	reinit						();
 	virtual void	reload						(LPCSTR section);
 	virtual void	update						();
-			bool	add							(T *object);
-	virtual bool	useful						(T *object) const;
-	virtual	float	evaluate					(T *object) const;
+			bool	add							(const T *object);
+	virtual bool	useful						(const T *object) const;
+	virtual	float	evaluate					(const T *object) const;
 	virtual	void	reset						();
 	IC		const T *selected					() const;
-	IC		const xr_set<T*> &objects		() const;
+	IC		const xr_set<const T*> &objects		() const;
 };
 
 #include "object_manager_inline.h"
