@@ -659,17 +659,17 @@ IC	void CLevelNavigationGraph::generate_sectors()
 
 	start					= CPU::GetCycleCount();
 	m_cross.resize			(header().vertex_count());
-	finish					= CPU::GetCycleCount();
-	Msg						("* Filling cross (%f seconds)",CPU::cycles2seconds*float(finish - start));
+//	finish					= CPU::GetCycleCount();
+//	Msg						("* Filling cross (%f seconds)",CPU::cycles2seconds*float(finish - start));
 
 	fill_cells				();
-	finish					= CPU::GetCycleCount();
-	Msg						("* Filling cells (%f seconds)",CPU::cycles2seconds*float(finish - start));
+//	finish					= CPU::GetCycleCount();
+//	Msg						("* Filling cells (%f seconds)",CPU::cycles2seconds*float(finish - start));
 	
 #ifdef AI_COMPILER
 #	ifdef DEBUG
-	Phase					("generating sectors");
-	Progress				(0.f);
+		Phase				("generating sectors");
+		Progress			(0.f);
 #	endif
 #endif
 	while (!m_temp.empty()) {
@@ -683,7 +683,7 @@ IC	void CLevelNavigationGraph::generate_sectors()
 		update_cells		(id,right,down);
 	}
 	finish					= CPU::GetCycleCount();
-	Msg						("* Building sectors (%f seconds)",CPU::cycles2seconds*float(finish - start));
+//	Msg						("* Building sectors (%f seconds)",CPU::cycles2seconds*float(finish - start));
 }
 
 IC	void CLevelNavigationGraph::generate_edges	()
