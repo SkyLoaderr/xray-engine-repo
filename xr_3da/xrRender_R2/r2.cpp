@@ -63,7 +63,7 @@ int								emapslice;
 static class cl_emap			: public R_constant_setup		{	virtual void setup	(R_constant* C)
 {
 	// x=clip factor, y=position shift
-	float	factor				= float(emapslice)/float(ps_r2_emap_slices);
+	float	factor				= float(emapslice+1)/float(ps_r2_emap_slices);
 	float	shift				= factor*ps_r2_emap_height;
 	float	clip				= factor;				// 5cm?
 	float	range				= 1.f / ps_r2_emap_range;
