@@ -174,6 +174,30 @@ void CAI_Stalker::Panic()
 	WRITE_TO_LOG				("Panic");
 	
 	m_dwInertion				= 60000;
+	
+	if (AI_Path.TravelPath.size() && (AI_Path.fSpeed < EPS_L) && !m_tEnemy.Enemy) {
+		switch (m_tActionState) {
+			case eActionStateWatch : {
+				vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateCrouch,eMovementTypeStand,eStateTypeDanger,eLookTypeDanger);
+				if (r_torso_current.yaw == r_torso_target.yaw) {
+					m_ls_yaw = r_torso_current.yaw;
+					m_tActionState = eActionStateDontWatch;
+				}
+				break;
+			}
+			case eActionStateDontWatch : {
+				Fvector					tPoint;
+				tPoint.setHP			(m_ls_yaw,0);
+				tPoint.mul				(100.f);
+				tPoint.add				(vPosition);
+				vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateCrouch,eMovementTypeStand,eStateTypeDanger,eLookTypeLookOver,tPoint,2500);
+				break;
+			}
+		}
+		return;
+	}
+
+	m_tActionState = eActionStateWatch;
 	if (!m_tEnemy.Enemy) {
 		int						iIndex = ifFindDynamicObject(m_tSavedEnemy);
 		if (iIndex != -1) {

@@ -90,6 +90,7 @@ private:
 	int						m_iSoundIndex;
 	int						m_iSuspPoint;
 	EActionState			m_tLastActionState;
+	float					m_ls_yaw;
 	
 	u32						m_dwDeathTime;
 	bool					m_bHammerIsClutched;

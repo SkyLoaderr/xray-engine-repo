@@ -160,8 +160,11 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 			if (Level().timeServer() - m_dwLookChangedTime > dwLookOverDelay)
 				if (Level().timeServer() - m_dwLookChangedTime < 2*dwLookOverDelay)
 					r_target.yaw += PI_DIV_6*2;
-				else
+				else {
+					if (Level().timeServer() - m_dwLookChangedTime >= 3*dwLookOverDelay)
+						m_dwLookChangedTime = Level().timeServer();
 					r_target.yaw -= PI_DIV_6*2;
+				}
 			r_target.yaw *= -1;
 			r_target.pitch *= -1;
 			break;
@@ -339,10 +342,10 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 				H = true;
 	}
 	H = true;
-//	if (K) {
-//		C = true;
-//		D = E = F = G = false;
-//	}
+	if (K) {
+		C = true;
+		D = E = F = G = false;
+	}
 	
 	// is there any items to pick up?
 	L = false;
