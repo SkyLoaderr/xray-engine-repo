@@ -143,7 +143,7 @@ class ImplicitThread : public CThread
 {
 public:
 	ImplicitDeflector*	DATA;			// Data for this thread
-	u32				y_start,y_end;
+	u32					y_start,y_end;
 
 	ImplicitThread		(u32 ID, ImplicitDeflector* _DATA, u32 _y_start, u32 _y_end) : CThread (ID)
 	{
