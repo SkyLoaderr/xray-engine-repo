@@ -225,7 +225,7 @@ void CSheduler::ProcessStep			()
 		if (delta_ms> 3*dwUpdate)	{
 			//Msg	("! xrSheduler: failed to shedule object [%s] (%dms)",		N, delta_ms	);
 		}
-		if (execTime> 10)			{
+		if (execTime> 15)			{
 			Msg	("* xrSheduler: too much time consumed by object [%s] (%dms)",	N, execTime	);
 		}
 #endif
