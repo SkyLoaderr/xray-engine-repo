@@ -4,7 +4,7 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="x:\ParticleDLLB.dll"/>
-    <OBJFILES value="Intermediate\system.obj Intermediate\actions.obj Intermediate\StdAfx.obj 
+    <OBJFILES value="Intermediate\system.obj Intermediate\actions.obj Intermediate\stdafx.obj 
       Intermediate\action_api.obj"/>
     <RESFILES value=""/>
     <IDLFILES value=""/>
@@ -22,7 +22,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_PARTICLEDLLB;PARTICLEDLL_EXPORTS;_DEBUG"/>
+    <USERDEFINES value="_EDITOR;_PARTICLEDLLB;PARTICLEDLL_EXPORTS;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="ParticleDLLB.bpf"/>
     <INCLUDEPATH value="R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include;P:\xrCore"/>
@@ -34,14 +34,14 @@
     <IDLCFLAGS value="-IR:\SDK\DirectX9.0\include -I$(BCB)\include -I$(BCB)\include\vcl 
       -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source 
-      -IR:\VS7.NET\Vc7\atlmfc\include -IP:\xrCore -src_suffix cpp -D_PARTICLEDLLB 
-      -DPARTICLEDLL_EXPORTS -D_DEBUG -boa"/>
+      -IR:\VS7.NET\Vc7\atlmfc\include -IP:\xrCore -src_suffix cpp -D_EDITOR 
+      -D_PARTICLEDLLB -DPARTICLEDLL_EXPORTS -D_DEBUG -boa"/>
     <CFLAG1 value="-WD -Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps 
       -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mu /w2 /zi"/>
-    <LFLAGS value="-IIntermediate -D&quot;&quot; -aa -Tpd -x -Gi -v"/>
+    <LFLAGS value="-l&quot;x:\&quot; -IIntermediate -D&quot;&quot; -aa -Tpd -x -Gi -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -54,7 +54,7 @@
       <FILE FILENAME="ParticleDLLB.bpf" FORMNAME="" UNITNAME="ParticleDLLB" CONTAINERID="BPF" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="system.cpp" FORMNAME="" UNITNAME="system.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="actions.cpp" FORMNAME="" UNITNAME="actions.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="StdAfx.cpp" FORMNAME="" UNITNAME="StdAfx.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="stdafx.cpp" FORMNAME="" UNITNAME="StdAfx.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="action_api.cpp" FORMNAME="" UNITNAME="action_api.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
@@ -134,16 +134,21 @@ Count=1
 Item0=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
-Count=3
-Item0=_PARTICLEDLLB;PARTICLEDLL_EXPORTS;_DEBUG
-Item1=_PARTICLEDLLB;PARTICLEDLL_EXPORTS
-Item2=_PARTICLEDLLB
+Count=4
+Item0=_EDITOR;_PARTICLEDLLB;PARTICLEDLL_EXPORTS;_DEBUG
+Item1=_PARTICLEDLLB;PARTICLEDLL_EXPORTS;_DEBUG
+Item2=_PARTICLEDLLB;PARTICLEDLL_EXPORTS
+Item3=_PARTICLEDLLB
 
 [HistoryLists\hlIntOutputDir]
 Count=1
 Item0=Intermediate
 
 [HistoryLists\hlFinalOutputDir]
+Count=1
+Item0=x:\
+
+[HistoryLists\hIBPIOutputDir]
 Count=1
 Item0=x:\
 

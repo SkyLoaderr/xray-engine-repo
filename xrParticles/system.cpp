@@ -381,6 +381,16 @@ PARTICLEDLL_API void pVelocity(float x, float y, float z)
 	_ps.Vel = pDomain(PDPoint, x, y, z);
 }
 
+PARTICLEDLL_API void __cdecl pVelocityD(PDomainEnum dtype,
+				float a0, float a1, float a2,
+				float a3, float a4, float a5,
+				float a6, float a7, float a8)
+{
+	_ParticleState &_ps = _GetPState();
+
+	_ps.Vel = pDomain(dtype, a0, a1, a2, a3, a4, a5, a6, a7, a8);
+}
+
 PARTICLEDLL_API void pVertexB(float x, float y, float z)
 {
 	_ParticleState &_ps = _GetPState();
