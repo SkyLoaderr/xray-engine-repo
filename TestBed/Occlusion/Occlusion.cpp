@@ -130,13 +130,13 @@ int __cdecl main	(int argc, char* argv[])
 		
 		// draw tri
 		TM.Start		();
-		for (int t=0; t<100; t++)
-		{
+		//for (int t=0; t<100; t++)
+		//{
 			occ.rasterize	(&T1);
 			occ.rasterize	(&T2);
-		}
+		//}
 		total += TM.GetElapsed();
-		count += 2*100;
+		count += 2; //*100;
 	}
 	SetPriorityClass(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 	DWORD cycles_per_tri	= DWORD(u64(u64(total)/u64(count)));
