@@ -81,7 +81,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_scout" (property_evaluator)
 
-function evaluator_scout:__init( name, storage ) super ()
+function evaluator_scout:__init( name, storage ) super (nil, name)
     self.a = storage
 end
 
@@ -98,7 +98,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_in_pos" (property_evaluator)
 
-function evaluator_in_pos:__init( name, npc, storage ) super ()
+function evaluator_in_pos:__init( name, npc, storage ) super (nil, name)
     self.a   = storage
     self.npc = npc
 end
@@ -117,7 +117,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_timer" (property_evaluator)
 
-function evaluator_timer:__init( name, storage ) super ()
+function evaluator_timer:__init( name, storage ) super (nil, name)
     self.a = storage
 end
 
@@ -133,7 +133,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_dead_hook" ( property_evaluator )
 
-function evaluator_dead_hook:__init( storage ) super()
+function evaluator_dead_hook:__init( storage ) super(nil, name)
     self.a = storage
 end
 
@@ -326,10 +326,10 @@ function add_to_binder( obj )
     a.dead_hook   = false
 
     local manager = obj:motivation_action_manager ()
-    manager:add_evaluator( properties["scout"],     this.evaluator_scout( "property_scout", a ) )
-    manager:add_evaluator( properties["in_pos"],    this.evaluator_in_pos( "property_in_pos", obj, a ) )
-    manager:add_evaluator( properties["timer"],     this.evaluator_timer( "property_timer", a ) )
-    manager:add_evaluator( properties["dead_hook"], this.evaluator_dead_hook( "property_dead_hook", a ) )
+    manager:add_evaluator( properties["scout"],     this.evaluator_scout( "scout_scout", a ) )
+    manager:add_evaluator( properties["in_pos"],    this.evaluator_in_pos( "scout_in_pos", obj, a ) )
+    manager:add_evaluator( properties["timer"],     this.evaluator_timer( "scout_timer", a ) )
+    manager:add_evaluator( properties["dead_hook"], this.evaluator_dead_hook( "scout_dead_hook", a ) )
 
     local action = this.action_go_to_pos( "action_go_to_pos", aa )
     action:add_precondition( world_property( stalker_ids.property_alive, true  ) )
