@@ -7,6 +7,7 @@ function printf(fmt,...)
 end
 
 function wait_game(time_to_wait)
+	verify_if_thread_is_running()
 	if (time_to_wait == nil) then
 		coroutine.yield()
 	else
@@ -18,6 +19,7 @@ function wait_game(time_to_wait)
 end
  
 function wait(time_to_wait)
+	verify_if_thread_is_running()
 	if (time_to_wait == nil) then
 		coroutine.yield()
 	else
