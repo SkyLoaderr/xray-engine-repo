@@ -523,7 +523,7 @@ void CDetailManager::UpdateCache	(int limit)
 				if (selected.size()==1)	index = selected[0];
 				else					index = selected[r_selection.randI(selected.size())]; 
 				
-				CDetail&	Dobj = objects[DS.items[index]];
+				CDetail&	Dobj = objects[DS.items[index].id];
 				SlotItem	Item;
 				
 				// Position (XZ)
