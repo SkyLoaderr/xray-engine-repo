@@ -51,7 +51,7 @@ void FHierrarhyVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 #ifdef _EDITOR
                     chields.push_back	(Device.CreateVisual(chield));
 #else
-//					chields.push_back	(::Render.Models.Create(chield));
+					chields.push_back	(::Render.Models.Create(chield));
 #endif
                     chield->Close();
                     chield = data->OpenChunk(count);
