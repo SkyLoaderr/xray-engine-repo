@@ -351,4 +351,6 @@ CHolderCustom* CScriptGameObject::get_current_holder()
 
 	if(actor)
 		return actor->Holder();
+	else
+		return NULL;
 }
