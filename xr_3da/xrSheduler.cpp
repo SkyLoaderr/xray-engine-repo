@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "xrSheduler.h"
+#include "xr_object.h"
 
 float					psUpdateFar		= 200.f;
 int						psSheduler		= 3000;
