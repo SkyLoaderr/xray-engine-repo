@@ -441,10 +441,10 @@ void CWeapon::OnH_B_Chield		()
 
 	if (Local() && (0xffff!=respawnPhantom)) 
 	{
-		respawnPhantom	= 0xffff;
 		NET_Packet		P;
 		u_EventGen		(P,GE_RESPAWN,respawnPhantom);
 		u_EventSend		(P);
+		respawnPhantom	= 0xffff;
 	}
 }
 
