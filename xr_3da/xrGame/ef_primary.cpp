@@ -111,6 +111,7 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 			m_fLastValue = 10;
 			break;
 		}
+		case CLSID_AI_SNORK				:
 		case CLSID_AI_BOAR				: {
 			m_fLastValue = 11;
 			break;
@@ -341,6 +342,7 @@ float CPersonalWeaponTypeFunction::ffGetValue()
 		}
 		case CLSID_AI_TRADER: 
 			break;
+		case CLSID_AI_SNORK:
 		case CLSID_AI_BOAR: 
 			m_fLastValue =  2;
 			break;
@@ -897,6 +899,7 @@ float CDetectorType::ffGetValue()
 		case CLSID_AI_DOG_RED			:
 		case CLSID_AI_DOG_BLACK			: 
 		case CLSID_AI_BOAR				: 
+		case CLSID_AI_SNORK				:
 		case CLSID_DETECTOR_SIMPLE		: {
 			m_fLastValue		=  2;
 			break;

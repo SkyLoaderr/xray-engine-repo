@@ -45,7 +45,7 @@ stand_drag_0		=	  1,	0.2,    1,	     0.25,    0.7,    0.7,    1.0,     0.7,   1.
 
 [m_snork_e]
 GroupControlSection		= spawn_group
-$spawn				= "monsters\snork"					 ; option for Level Editor
+$spawn					= "monsters\snork"					 ; option for Level Editor
 $npc					= on								 ; option for Level Editor
 $prefetch 				= 16
 Scheduled				= on								 ; option for ALife Simulator
@@ -53,14 +53,14 @@ Human		     		= off								 ; option for ALife Simulator
 Health					= 400								 ; option for ALife Simulator
 MinSpeed				= 1.0								 ; option for ALife Simulator
 MaxSpeed				= 5.0								 ; option for ALife Simulator
-going_speed			= 4.5								 ; option for ALife Simulator
+going_speed				= 4.5								 ; option for ALife Simulator
 search_speed			= 1.5						         ; option for ALife Simulator
-visual				= monsters\mutant_boar\mutant_boar
-MaxHealthValue		    	= 200								 ; range [0..200]
+visual					= monsters\snork\snork
+MaxHealthValue		    = 200								 ; range [0..200]
 DynamicObjectsCount		= 32
 
 cform					 = skeleton					; collision class
-class					 = AI_BOAR					; AI class
+class					 = AI_SNORK					; AI class
 
 bone_torso				= bip01_spine1 			; bone name
 bone_head				= bip01_head				; bone name
