@@ -45,6 +45,13 @@ private:
 	LEVEL_SPAWN_STORAGE				m_level_spawns;
 	LEVEL_CHANGER_STORAGE			m_level_changers;
 	LEVEL_POINT_STORAGE				m_level_points;
+
+private:
+	xr_vector<ALife::_SPAWN_ID>		m_spawn_roots;
+	xr_vector<ALife::_SPAWN_ID>		m_temp0;
+	xr_vector<ALife::_SPAWN_ID>		m_temp1;
+
+private:
 	CGameGraph						*m_game_graph;
 	SPAWN_GRAPH						*m_spawn_graph;
 	CInifile						*m_game_info;
@@ -54,10 +61,14 @@ protected:
 	IC		shared_str				spawn_name				(LPCSTR output);
 			void					save_spawn				(LPCSTR name, LPCSTR output);
 			void					verify_level_changers	();
+			void					build_root_spawns		();
+			void					verify_spawns			(ALife::_SPAWN_ID spawn_id);
+			void					verify_spawns			();
 			void					process_spawns			();
 			void					load_spawns				(LPCSTR name);
 	IC		SPAWN_GRAPH				&spawn_graph			();
 	IC		ALife::_SPAWN_ID		spawn_id				();
+	IC		void					process_spawns			(xr_vector<ALife::_SPAWN_ID> &spawns);
 
 public:
 									CGameSpawnConstructor	(LPCSTR name, LPCSTR output);

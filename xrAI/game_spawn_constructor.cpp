@@ -121,6 +121,70 @@ void CGameSpawnConstructor::process_spawns	()
 		(*I)->update					();
 
 	verify_level_changers				();
+	verify_spawns						();
+}
+
+void CGameSpawnConstructor::build_root_spawns		()
+{
+	m_temp0.clear		();
+	m_temp1.clear		();
+
+	{
+		SPAWN_GRAPH::const_vertex_iterator	I = m_spawn_graph->vertices().begin();
+		SPAWN_GRAPH::const_vertex_iterator	E = m_spawn_graph->vertices().end();
+		for ( ; I != E; ++I)
+			m_temp0.push_back				((*I)->vertex_id());
+	}
+
+	{
+		SPAWN_GRAPH::const_vertex_iterator	I = m_spawn_graph->vertices().begin();
+		SPAWN_GRAPH::const_vertex_iterator	E = m_spawn_graph->vertices().end();
+		for ( ; I != E; ++I) {
+			SPAWN_GRAPH::const_iterator	i = (*I)->edges().begin();
+			SPAWN_GRAPH::const_iterator	e = (*I)->edges().end();
+			for ( ; i != e; ++i)
+				m_temp1.push_back			((*i).vertex_id());
+		}
+	}
+
+	process_spawns							(m_temp0);
+	process_spawns							(m_temp1);
+
+	m_spawn_roots.resize					(m_temp0.size() + m_temp1.size());
+	xr_vector<ALife::_SPAWN_ID>::iterator	I = set_difference(
+		m_temp0.begin(),
+		m_temp0.end(),
+		m_temp1.begin(),
+		m_temp1.end(),
+		m_spawn_roots.begin()
+		);
+
+	m_spawn_roots.erase						(I,m_spawn_roots.end());
+}
+
+void CGameSpawnConstructor::verify_spawns			(ALife::_SPAWN_ID spawn_id)
+{
+	xr_vector<ALife::_SPAWN_ID>::iterator	J = std::find(m_temp0.begin(),m_temp0.end(),spawn_id);
+	R_ASSERT3								(J == m_temp0.end(),"RECURSIVE Spawn group chain found in spawn",m_spawn_graph->vertex(spawn_id)->data()->object().s_name_replace);
+	m_temp0.push_back						(spawn_id);
+
+	SPAWN_GRAPH::CVertex					*vertex = m_spawn_graph->vertex(spawn_id);
+	SPAWN_GRAPH::const_iterator				I = vertex->edges().begin();
+	SPAWN_GRAPH::const_iterator				E = vertex->edges().end();
+	for ( ; I != E; ++I)
+		verify_spawns						((*I).vertex_id());
+}
+
+void CGameSpawnConstructor::verify_spawns			()
+{
+	build_root_spawns						();
+	
+	xr_vector<ALife::_SPAWN_ID>::iterator	I = m_spawn_roots.begin();
+	xr_vector<ALife::_SPAWN_ID>::iterator	E = m_spawn_roots.end();
+	for ( ; I != E; ++I) {
+		m_temp0.clear						();
+		verify_spawns						(*I);
+	}
 }
 
 void CGameSpawnConstructor::verify_level_changers	()
