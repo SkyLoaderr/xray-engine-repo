@@ -451,7 +451,7 @@ void CScriptGameObject::set_desired_position	(const Fvector *desired_position)
 	if (!stalker)
 		ai().script_engine().script_log							(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
 	else {
-		VERIFY2							(stalker->accessible(desired_position),*stalker->cName());
+		VERIFY2							(stalker->accessible(*desired_position),*stalker->cName());
 		stalker->set_desired_position	(desired_position);
 	}
 }
