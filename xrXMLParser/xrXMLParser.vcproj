@@ -57,7 +57,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="odbc32.lib odbccp32.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib ChilKatRelDll.lib CKBaseRelDll.lib  wininet.lib"
 				OutputFile="$(OutDir)\xrXMLParser.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -129,7 +129,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="odbc32.lib odbccp32.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib ChilKatDbgDll.lib CKBaseDbgDll.lib wininet.lib"
 				OutputFile="$(OutDir)\xrXMLParser.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
@@ -194,6 +194,15 @@
 		<Filter
 			Name="Parser"
 			Filter="">
+			<File
+				RelativePath=".\CkSettings.h">
+			</File>
+			<File
+				RelativePath=".\CkString.h">
+			</File>
+			<File
+				RelativePath=".\CkXml.h">
+			</File>
 			<File
 				RelativePath=".\xrXMLParser.cpp">
 			</File>
