@@ -1,38 +1,49 @@
-local zone_name		= "script_zone"
-local path_pause 	= 10000						// Пауза между монстрома бегущими в одном забеге по одному пути
-local group_pause 	= 30000						// Пауза между набегами
+local zone_name		= "rush_zone"
+local path_pause 	= 5000						// Пауза между монстрома бегущими в одном забеге по одному пути
+local group_pause 	= 20000						// Пауза между набегами
 
 local ways	= {	
 				"way1",
 				"way2",
 				"way3",
-				"way4"
+				"way4",
+				"way5"
 			}
 				
 local monster1	=
 			{
-				"boar1",
-				"boar2",
-				"boar3",
-				"boar4",
-				"boar5",
-				"boar6",
-				"boar7",
-				"boar8",
-				"boar9"
+				"m_boar_e0004",
+				"m_boar_e0005",
+				"m_boar_e0006",
+				"m_boar_e0007",
+				"m_boar_e0008",
+				"m_boar_e0009",
+				"m_boar_e0010",
+				"m_boar_e0011",
+				"m_boar_e0012",
+				"m_boar_e0013",
+				"m_boar_e0014",
+				"m_boar_e0015"
 			}
 
 local monster2	=
 			{
-				"dog1",
-				"dog2",
-				"dog3",
-				"dog4",
-				"dog5",
-				"dog6",
-				"dog7",
-				"dog8",
-				"dog9"
+				"m_dog_e0009",
+				"m_dog_e0008",
+				"m_dog_e0003",
+				"m_dog_e0062",
+				"m_dog_e0004",
+				"m_dog_e0007",
+				"m_dog_e0052",
+				"m_dog_e0053",
+				"m_dog_e0061",
+				"m_dog_e0060",
+				"m_dog_e0054",
+				"m_dog_e0055",
+				"m_dog_e0056",
+				"m_dog_e0059",
+				"m_dog_e0057",
+				"m_dog_e0058"				
 			}
 			
 local monster3	=
@@ -47,9 +58,8 @@ local monster3	=
 				"zombie8"
 			}
 
-local g_monsters 		= { monster1, monster2, monster3 }
+local g_monsters 		= { monster1, monster2 }
 local g_monsters_id 	= {}
-local i					= 10
 
 function main()
 	
