@@ -318,6 +318,12 @@
 			</File>
 			<File
 				RelativePath="DetailManager.cpp">
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AssemblerOutput="4"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="DetailManager.h">
@@ -333,6 +339,12 @@
 			</File>
 			<File
 				RelativePath="DetailManager_VS.cpp">
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AssemblerOutput="4"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="DetailModel.cpp">

@@ -202,20 +202,21 @@ void CDetailManager::Render		(Fvector& vecEYE)
 			{
 				SlotPart&			sp	= S.G		[sp_id];
 				if (sp.id==DetailSlot::ID_Empty)	continue;
-				float				R   = objects	[sp.id]->bv_sphere.R;
+				float				R		= objects	[sp.id]->bv_sphere.R;
+				float				Rq_drcp	= R*R*dist_sq_rcp;
 
 				SlotItem			**siIT=&(*sp.items.begin()), **siEND=&(*sp.items.end());
 				for (; siIT!=siEND; siIT++)
 				{
 					SlotItem& Item			= *(*siIT);
 
-					float	scale			= Item.scale*alpha_i;
-					float	radius			= R*scale;
-					float	ssa				= radius*radius*dist_sq_rcp;
+					float   scale			= Item.scale_calculated	= Item.scale*alpha_i;
+					float	ssa				= scale*scale*Rq_drcp;
 					if (ssa < r_ssaDISCARD) continue;
 
-					Item.scale_calculated	= scale;
-					visible[(ssa < r_ssaCHEAP) ? 0 : Item.vis_ID][sp.id].push_back	(*siIT);
+					u32		vis_id			= 0;
+					if (ssa > r_ssaCHEAP)	vis_id = Item.vis_ID;
+					visible[vis_id][sp.id].push_back	(*siIT);
 				}
 			}
 		}
